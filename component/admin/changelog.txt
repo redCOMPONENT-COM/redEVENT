@@ -27,6 +27,8 @@ Version 2.0 beta 2.1
 * Fixed venue deletion
 * Fixed SQL error in venues
 / Moved courseinfo.php and courseinfo_pdf.php to details/tmpl folder for override
+* Fixed redFORM error when no form selected
+* Fixed form not showing due to missing xref
 
 Version 2.0 beta 2
 * Restored availability overview

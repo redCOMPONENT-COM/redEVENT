@@ -115,29 +115,30 @@ class redEVENT_tags {
 				else $eventplacesleft = $this->_maxattendees;
 				if (isset($waitinglist[1])) $waitinglistplacesleft = $this->_maxwaitinglist - $waitinglist[1]->total;
 				else $waitinglistplacesleft = $this->_maxwaitinglist;
-				/* Create the redFORM */
 				/* Include redFORM */
 				$redform = '';
-				JPluginHelper::importPlugin( 'content' );
-				$dispatcher = JDispatcher::getInstance();
-				$form = new stdClass();
-				$form->text = '{redform}'.$this->_data->redform_id.','.$this->_data->max_multi_signup.'{/redform}';
-				$form->eventid = $this->_eventid;
-				$tpl = JRequest::getVar('page', false);
-				switch ($tpl) {
-					case 'confirmation':
-						$form->task = 'review';
-						break;
-					default:
-						$form->task = 'userregister';
-						break;
-				}
+				if ($this->_data->redform_id > 0) {
+					JPluginHelper::importPlugin( 'content' );
+					$dispatcher = JDispatcher::getInstance();
+					$form = new stdClass();
+					$form->text = '{redform}'.$this->_data->redform_id.','.$this->_data->max_multi_signup.'{/redform}';
+					$form->eventid = $this->_eventid;
+					$tpl = JRequest::getVar('page', false);
+					switch ($tpl) {
+						case 'confirmation':
+							$form->task = 'review';
+							break;
+						default:
+							$form->task = 'userregister';
+							break;
+					}
 				
-				$results = $dispatcher->trigger('PrepareEvent', array($form));
-				if (!isset($results[1])) {
-					$redform = JText::_('REGISTRATION_NOT_POSSIBLE');
+					$results = $dispatcher->trigger('PrepareEvent', array($form));
+					if (!isset($results[1])) {
+						$redform = JText::_('REGISTRATION_NOT_POSSIBLE');
+					}
+					else $redform = $results[1];
 				}
-				else $redform = $results[1];
 				
 				/* Form fields */
 				$name = '<div id="divsubemailname"><div class="divsubemailnametext">'.JText::_('NAME').'</div><div class="divsubemailnameinput"><input type="text" name="subemailname" /></div></div>';

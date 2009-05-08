@@ -334,7 +334,7 @@ class RedeventController extends JController
 		$cache->clean();
 		
 		/* Go to the confirmation page */
-		$this->setRedirect(JRoute::_('index.php?view=confirmation&page=confirmation&submit_key='.JRequest::getVar('submit_key').'&action='.JRequest::getVar('action'), false));
+		$this->setRedirect(JRoute::_('index.php?view=confirmation&page=confirmation&xref='.$xref.'&submit_key='.JRequest::getVar('submit_key').'&action='.JRequest::getVar('action'), false));
 	}
 
 	/**
