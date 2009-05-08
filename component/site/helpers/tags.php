@@ -190,8 +190,8 @@ class redEVENT_tags {
 	 */
 	private function SignUpLinks() {
 		ob_start();
-		if (JRequest::getVar('format') == 'raw') include('courseinfo_pdf.php');
-		else include('courseinfo.php');
+		if (JRequest::getVar('format') == 'raw') include(JPATH_COMPONENT.DS.'views'.DS.'details'.DS.'tmpl'.DS.'courseinfo_pdf.php');
+		else include(JPATH_COMPONENT.DS.'views'.DS.'details'.DS.'tmpl'.DS.'courseinfo.php');
 		$contents = ob_get_contents();
 		ob_end_clean();
 		return $contents;

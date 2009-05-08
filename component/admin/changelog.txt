@@ -24,6 +24,9 @@ Version 2.0 beta 2.1
 * Fixed missing default_jsscript file
 * Fixed usercheck giving DB error
 * Fixed incorrect tags
+* Fixed venue deletion
+* Fixed SQL error in venues
+/ Moved courseinfo.php and courseinfo_pdf.php to details/tmpl folder for override
 
 Version 2.0 beta 2
 * Restored availability overview

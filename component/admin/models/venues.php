@@ -271,8 +271,8 @@ class RedEventModelVenues extends JModel
 			* Get nr of assigned events
 			*/
 			$query = 'SELECT COUNT( id )'
-				.' FROM #__redevent_events'
-				.' WHERE locid = ' . (int)$rows[$i]->id
+				.' FROM #__redevent_event_venue_xref'
+				.' WHERE venueid = ' . (int)$rows[$i]->id
 				;
 					
 			$this->_db->setQuery($query);
@@ -348,9 +348,9 @@ class RedEventModelVenues extends JModel
 	{
 		$cids = implode( ',', $cid );
 
-		$query = 'SELECT v.id, v.venue, COUNT( e.locid ) AS numcat'
+		$query = 'SELECT v.id, v.venue, COUNT( x.venueid ) AS numcat'
 				. ' FROM #__redevent_venues AS v'
-				. ' LEFT JOIN #__redevent_events AS e ON e.locid = v.id'
+				. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.venueid = v.id'
 				. ' WHERE v.id IN ('. $cids .')'
 				. ' GROUP BY v.id'
 				;
