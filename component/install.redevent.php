@@ -479,7 +479,7 @@ if ($upgrade) {
 			<?php
 			if (($direxists) || ($makedir)) {
 			?>
-				<font color="green"><b>redEVENT 2.0 beta 2 Installed Successfully!</b></font><br />
+				<font color="green"><b>redEVENT 2.0 beta 2.1 Installed Successfully!</b></font><br />
 				Ensure that redEVENT has write access to the directories shown above! Have Fun.
 				</code>
 			<?php
