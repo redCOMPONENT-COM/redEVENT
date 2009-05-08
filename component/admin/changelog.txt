@@ -1,0 +1,109 @@
+/**
+ * @version 1.0 $Id: admin.class.php 662 2008-05-09 22:28:53Z schlu $
+ * @package Joomla
+ * @subpackage redEVENT
+ * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license GNU/GPL, see LICENSE.php
+ * redEVENT is based on EventList made by Christoph Lukes from schlu.net
+ * redEVENT can be downloaded from www.redcomponent.com
+ * redEVENT is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License 2
+ * as published by the Free Software Foundation.
+
+ * redEVENT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with redEVENT; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+Version 2.0 beta 2.1
+* Fixed missing default_jsscript file
+* Fixed usercheck giving DB error
+* Fixed incorrect tags
+
+Version 2.0 beta 2
+* Restored availability overview
+* Restored event image
+* Restored category link
+* Fixed front-end event editing
++ Added missing language strings
+* Fixed multiple warnings
+/ Moved price and credit to venue settings
++ Added [eventplaces], [waitinglistplaces], [eventplacesleft], [waitinglistplacesleft] tags
+/ Updated help section
++ Added event images in the category view
++ Added text library
+/ Updated images
+* Fixed archived events view
+* Link registered users to a new page
+- Removed redFORM yes/no from settings. This is controlled by the [redform] tag
+* Fixed date and time settings not being saved.
+
+Version 2.0 beta 1.1
+* Fixed installer to work on clean installations
+* Fixed error on saving event
+/ Updated installer to no longer required un-installation
+
+Version 2.0 beta 1
+/ Complete rewrite of many parts of the program
+
+Version 1.0 beta 43
+* Fixed simplelist given fatal error
+- Removed legacy check for jComment integration check
+* Fixed undefined error if no forms are active in redFORM
+* Fixed confirmation page not using redEVENT date and time settings
+
+Version 1.0 beta 42
+* Fixed events not saving on certain MySQL installations
+* Fixed undefined errors
+- Removed obsolete div
+ 
+Version 1.0 beta 41
+/ Updated images
+
+Version 1.0 beta 40
+* Fixed Lightbox popup not showing
+/ Changed registration section not to show if redFORM is not installed
+* Fixed confirmation mail not to properly fill tags
+- Removed obsolete div
+/ Changed archive to show only selected event
+/ Updated images
+ 
+Version 1.0 beta 39
+* Fixed URL showing on details page even when empty
+* Fixed confirmation mail not send
+* Fixed reply to address malformed
+* Fixed warning in editing event when no redFORM forms are found
+/ Changed front-end event redFORM to drop down selection
+/ Changed text areas to text editors
++ Added French language files
+/ Changed showing of registered users to only those users who are confirmed and not on waitinglist
+
+Version 1.0 beta 38
+* Fixed event details layout div
+* Fixed when day view has no Itemid
+* Fixed error when redFORM is not installed
+* Fixed error with missing default_configuration
+
+Version 1.0 beta 37
++ Added Dutch language
+* Fixed Time has wrong format
+* Fixed undefined variable
+* Fixed user not registering when Community Builder enabled
+/ Changed confirmation mails to HTML input
++ Added confirmation message page
+
+Version 1.0 beta 36
+/ Changed venue URL links to open in a new window
+* Fixed waitinglist mails to contain linebreaks
+/ Updated German language
+
+Version 1.0 beta 35
+
+* Fixed user data not showing at front-end
+* Fixed category image not to show when none is set
+/ Updated redFORM selector to a dropdown with form names

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/component-install.dtd">
+<install type="component" version="1.5.0">
+	<name>redEVENT</name>
+	<creationDate>07 January 2009</creationDate>
+	<author>Redweb.dk</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+   	<authorUrl>www.redweb.dk</authorUrl>
+   	<copyright>(c) 2008 Redweb.dk</copyright>
+   	<license>GNU/GPL</license>
+   	<version>1.0 beta 39</version>
+	<description>redEVENT an event calender based on Eventlist</description>
+	<installfile>install.redevent.php</installfile>
+	<uninstallfile>uninstall.redevent.php</uninstallfile>
+	
+	<install>
+		<sql>
+			<file driver="mysql" charset="utf8">install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8">uninstall.mysql.utf8.sql</file>
+		</sql>
+	</uninstall>
+
+	<files folder="site">
+		<filename>index.html</filename>
+		<filename>redevent.php</filename>
+		<filename>controller.php</filename>
+		<filename>router.php</filename>
+		<filename>LICENSE.php</filename>
+		<folder>assets</folder>
+		<folder>classes</folder>
+		<folder>controllers</folder>
+		<folder>helpers</folder>
+		<folder>models</folder>
+		<folder>views</folder>
+	</files>
+
+	<languages folder="site/languages">
+		<language tag="en-GB">en-GB.com_redevent.ini</language>
+		<language tag="de-DE">de-DE.com_redevent.ini</language>
+		<language tag="dk-DK">dk-DK.com_redevent.ini</language>
+		<language tag="fr-FR">fr-FR.com_redevent.ini</language>
+		<language tag="nl-NL">nl-NL.com_redevent.ini</language>
+	</languages>
+
+	<params>
+		<param name="display_num" default="15" />
+		<param name="cat_num" default="4" />
+		<param name="filter" default="1" />
+		<param name="display" default="1" />
+		<param name="icons" default="1" />
+		<param name="show_print_icon" default="1" />
+		<param name="show_email_icon" default="1" />
+	</params>
+
+	<administration>
+
+	<menu img="../administrator/components/com_redevent/assets/images/redevent.png">redEVENT</menu>
+
+	<files folder="admin">
+		<filename>changelog.txt</filename>
+		<filename>index.html</filename>
+		<filename>admin.redevent.php</filename>
+		<filename>controller.php</filename>
+		<filename>config.xml</filename>
+		<filename>install.mysql.utf8.sql</filename>
+		<filename>uninstall.mysql.utf8.sql</filename>
+		<filename>install.redevent.php</filename>
+		<filename>uninstall.redevent.php</filename>
+		<folder>classes</folder>
+		<folder>assets</folder>
+		<folder>help</folder>
+		<folder>views</folder>
+		<folder>models</folder>
+		<folder>controllers</folder>
+		<folder>elements</folder>
+		<folder>tables</folder>
+	</files>
+
+	<languages folder="admin/languages">
+		<language tag="en-GB">en-GB.com_redevent.ini</language>
+		<language tag="de-DE">de-DE.com_redevent.ini</language>
+		<language tag="dk-DK">dk-DK.com_redevent.ini</language>
+		<language tag="fr-FR">fr-FR.com_redevent.ini</language>
+		<language tag="nl-NL">nl-NL.com_redevent.ini</language>
+	</languages>
+
+</administration>
+</install>

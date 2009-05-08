@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5.0">
+	<name>redEventQ Calendar module</name>
+	<creationDate>17 April 2009</creationDate>
+	<author>Toni Smillie</author>
+	<copyright>GNU General Public License 2</copyright>	 
+	<authorEmail>toni@qivva.com</authorEmail>
+	<authorUrl>http://www.qivva.com</authorUrl>
+	<version>2.0 beta 1</version>
+	<description><![CDATA[<h2>redEVENT Calendar Module for Joomla 1.5.x</h2>]]></description>
+	<files>
+		<filename module="mod_eventlistcal15q">mod_eventlistcal15q.php</filename>
+		<filename>mod_eventlistcal15q.css</filename>
+		<filename>index.html</filename>
+        <filename>helper.php</filename>
+        <filename>tmpl/default.php</filename>
+        <filename>tmpl/index.html</filename>		
+	</files>
+	<params>
+		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
+		<param name="locale_override" type="text" default="" label="Locale Override" description="Define the locale you want the calendar to use to override the default" />
+		<param name="charset_override" type="text" default="" label="Charset" description="Define the override charset you want the calendar to use e.g. UTF-8 or ISO8859-15" />
+		<param name="cal15q_tooltips_title" type="text" default="Events" label="ToolTips Title" description="Define the tooltips title" />			
+        <param name="day_name_length" type="list" default="2" label="Length of the Dayname" description="Select if you want to display the full dayname or a short version">
+			<option value="0">Don't display days</option>
+			<option value="1">One letter</option>
+			<option value="2">Two letters</option>
+			<option value="3">Three letters</option>
+			<option value="4">Full name</option>
+		</param>
+		<param name="first_day" type="list" default="1" label="Start week" description="Start the week at sunday or monday">
+			<option value="0">Sunday</option>
+			<option value="1">Monday</option>
+		</param>
+		<param name="Year_length" type="radio" default="1" label="Year Length" description="Select to show 2 or 4 letters">
+			<option value="0">Two</option>
+			<option value="1">Four</option>
+		</param>
+		<param name="Month_length" type="radio" default="0" label="Short month name?" description="Select if you wish to display the full month name or not.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="Month_offset" type="text" default="0" label="Month Offset" description="Offset the month so enter 1 for a month ahear, -1 for a month behind etc" />
+		<param name="Show_Tooltips" type="radio" default="1" label="Show Tooltips?" description="Choose to show tooltips on mouse rollover on calendar dates.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="Remember" type="radio" default="1" label="Remember?" description="Remember which month/year is selected on page change, no jumping back to current day.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="catid" type="text" default="" label="CATEGORY ID" description="Category ID" />
+		<param name="venid" type="text" default="" label="VENUE ID" description="Venue ID" />
+	</params>
+</install>

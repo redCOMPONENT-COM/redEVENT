@@ -1,0 +1,161 @@
+/* Modification to eventlistcal by Toni Smillie www.qivva.com toni@qivva.com */
+/* @version 0.8 $Id: mod_eventlistcal15q.css 24 2008-08-01 22:32:57Z qivva $ */
+/* @package Eventlist CalModuleQ */
+/* @copyright (C) 2008  Toni Smillie */
+/* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL */
+
+/* Overall calendar table properties */
+.eventcalqc table.mod_eventlistcalqc_calendar {
+	padding: 0;
+	margin: 0;
+	border-left: 1px solid #A2ADBC;
+	font: normal 12px/20px "Trebuchet MS", Arial, Verdana,  Helvetica, sans-serif;
+	color: #616B76;
+	text-align: center;
+	background-color: #fff;
+}
+
+/* Blank cell properties */
+.eventcalqc td.mod_eventlistcalqc {
+	font: bold 11px/20px "Trebuchet MS", Arial, Verdana, Helvetica, sans-serif;
+	border-right: 1px solid #A2ADBC;
+	border-bottom: 1px solid #A2ADBC;
+	width: 21px;
+	height: 20px;
+	text-align: center;
+	background-color: #F0F8FF;
+}
+
+/* Today cell preperties */
+.eventcalqc td.mod_eventlistcalqc_caltoday
+{
+	font: bold 11px/20px "Trebuchet MS", Arial, Verdana, Helvetica, sans-serif;
+	border-right: 1px solid #A2ADBC;
+	border-bottom: 1px solid #A2ADBC;	
+	width: 21px;
+	height: 20px;
+	text-align: center;
+	color: #F6F4DA;
+	background-color: #DF9496;
+}
+
+/* Today Event day cell hover Link / Visited*/
+.eventcalqc td.mod_eventlistcalqc_caltodaylink a:link,
+.eventcalqc td.mod_eventlistcalqc_caltodaylink a:visited{
+	text-decoration: none;
+	width: 19px;
+	height: 18px;
+	font-weight: bold;
+	display: block;
+	color: #608194;
+	border: 1px solid #DF9496;
+}
+
+/* Today Event day cell hover */
+.eventcalqc td.mod_eventlistcalqc_caltodaylink a:hover {
+	text-decoration: none;
+	width: 19px;
+	height: 18px;
+	font-weight: bold;
+	display: block;
+	color: #FFFFFF;
+	background-color: #0066FF;
+	border: 1px solid #DF9496;
+}
+
+/* Non event day cell preperties */
+.eventcalqc td.mod_eventlistcalqc_calday {
+	font: bold 11px/20px "Trebuchet MS", Arial, Verdana, Helvetica, sans-serif;
+	border-right: 1px solid #A2ADBC;
+	border-bottom: 1px solid #A2ADBC;
+	width: 21px;
+	height: 20px;
+	text-align: center;
+	background-color: #EFEFEF;
+}
+
+/* Event day cell properties */
+.eventcalqc td.mod_eventlistcalqc_caldaylink, 
+.eventcalqc td.mod_eventlistcalqc_caltodaylink {
+	font: bold 11px/20px "Trebuchet MS", Arial, Verdana, Helvetica, sans-serif;
+	border-right: 1px solid #A2ADBC;
+	border-bottom: 1px solid #A2ADBC;
+	width: 21px;
+	height: 20px;
+	text-align: center;
+	background-color: #CCE0FF;
+}
+
+/* Event day cell hover Link / Visited*/
+.eventcalqc td.mod_eventlistcalqc_caldaylink a:link,
+.eventcalqc td.mod_eventlistcalqc_caldaylink a:visited{
+	text-decoration: none;
+	font-weight: bold;
+	display: block;
+	color: #608194;
+	background-color: #CCE0FF;
+}
+
+/* Event day cell hover */
+.eventcalqc td.mod_eventlistcalqc_caldaylink a:hover {
+	text-decoration: none;
+	font-weight: bold;
+	display: block;
+	color: #FFFFFF;
+	background-color: #0066FF;
+}
+/* Month heading properies */
+.eventcalqc caption.mod_eventlistcalqc_calendar-month {
+	font: bold 12px/20px "Trebuchet MS", Arial, Verdana, Helvetica, sans-serif;
+	color: #ffffff;
+	background-color: #666666;
+	text-align: center;
+}
+
+/* Month heading Link / Visited properties */
+.eventcalqc caption.mod_eventlistcalqc_calendar-month a,
+.eventcalqc caption.mod_eventlistcalqc_calendar-month a:link,
+.eventcalqc caption.mod_eventlistcalqc_calendar-month a:visited
+{
+color: #DFEFFF;
+}
+
+
+/* Month heading Hover properties */
+.eventcalqc caption.mod_eventlistcalqc_calendar-month a:hover{
+color: #990000;
+text-decoration: none;
+}
+
+/* Day of week heading properties*/
+.eventcalqc th.mod_eventlistcalqc_daynames {
+	font: bold 11px/20px "Trebuchet MS", Arial, Verdana, Helvetica, sans-serif;
+	color: #616B76;
+	background: #D9E2E1;
+}
+
+
+/* Tooltips */
+.tool-tip {
+	float: left;
+	background: #ffc;
+	border: 1px solid #D4D5AA;
+	padding: 5px;
+	max-width: 200px;
+}
+
+.tool-title {
+	padding: 0;
+	margin: 0;
+	font-size: 100%;
+	font-weight: bold;
+	margin-top: -15px;
+	padding-top: 15px;
+	padding-bottom: 5px;
+	background: url(../../administrator/templates/khepri/images/selector-arrow.png) no-repeat;
+}
+
+.tool-text {
+	font-size: 100%;
+	margin: 0;
+}

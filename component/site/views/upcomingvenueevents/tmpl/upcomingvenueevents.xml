@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="UPCOMING_VENUE_EVENTS_LAYOUT">
+		<message>
+			<![CDATA[UPCOMING_VENUE_EVENTS_DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>UPCOMING_VENUE_EVENTS_LAYOUT</name>
+		<description>UPCOMING_VENUE_EVENTS_DESC</description>
+	</state>
+</metadata>

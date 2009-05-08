@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="UPCOMING_EVENTS_LAYOUT">
+		<message>
+			<![CDATA[UPCOMING_EVENTS_DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>UPCOMING_EVENTS_LAYOUT</name>
+		<description>UPCOMING_EVENTS_DESC</description>
+		<params>
+			<param name="show_number_courses" type="text" size="10" default="10" label="SHOW_NUMBER_COURSES" description="SHOW_NUMBER_COURSES_TIP" />
+			<param name="upcoming_days_ahead" type="text" size="10" default="30" label="UPCOMING_DAYS_AHEAD" description="UPCOMING_DAYS_AHEAD_TIP" />
+			<param name="show_days_no_date" type="radio" default="0" label="SHOW_DAYS_NO_DATE" description="SHOW_DAYS_NO_DATE_TIP">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</param>
+		</params>
+	</state>
+</metadata>
