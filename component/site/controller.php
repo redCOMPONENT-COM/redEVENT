@@ -144,6 +144,8 @@ class RedeventController extends JController
 		$post = JRequest::get( 'post' );
 		$post['locdescription'] = JRequest::getVar( 'locdescription', '', 'post', 'string', JREQUEST_ALLOWRAW );
 
+    $isNew = ($post['id']) ? false : true;
+    
 		$file 		= JRequest::getVar( 'userfile', '', 'files', 'array' );
 
 		$model = $this->getModel('editvenue');
@@ -153,6 +155,11 @@ class RedeventController extends JController
 			$msg 	= JText::_( 'VENUE SAVED' );
 			$link 	= JRoute::_('index.php?view=venueevents&id='.$returnid, false) ;
 
+				
+			JPluginHelper::importPlugin( 'redevent' );
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger( 'onVenueEdited', array( $returnid, $isNew ) );
+          
 			$cache = &JFactory::getCache('com_redevent');
 			$cache->clean();
 
@@ -194,6 +201,8 @@ class RedeventController extends JController
 			}
 		}
 		$post['showfields'] = substr($showfields, 0, -1);
+		
+    $isNew = ($post['id']) ? false : true;
 		
 		$model = $this->getModel('editevent');
 		$this->addModelPath(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models');
@@ -269,6 +278,10 @@ class RedeventController extends JController
 				$db->query();
 			}
 
+      JPluginHelper::importPlugin( 'redevent' );
+      $dispatcher =& JDispatcher::getInstance();
+      $res = $dispatcher->trigger( 'onEventEdited', array( $returnid, $isNew ) );   
+      
 			$cache = &JFactory::getCache('com_redevent');
 			$cache->clean();
 
@@ -313,6 +326,10 @@ class RedeventController extends JController
 		$model_wait->setXrefId($xref);
 		$model_wait->UpdateWaitingList();
 		
+		JPluginHelper::importPlugin( 'redevent' );
+		$dispatcher =& JDispatcher::getInstance();
+		$res = $dispatcher->trigger( 'onEventUserRegistered', array( $id ) );
+      
 		$cache = JFactory::getCache('com_redevent');
 		$cache->clean();
 		
@@ -344,6 +361,10 @@ class RedeventController extends JController
 		$model_wait->setEventId($id);
 		$model_wait->UpdateWaitingList();
 		
+		JPluginHelper::importPlugin( 'redevent' );
+		$dispatcher =& JDispatcher::getInstance();
+		$res = $dispatcher->trigger( 'onEventUserUnregistered', array( $id ) );
+      
 		$cache = JFactory::getCache('com_redevent');
 		$cache->clean();
 
