@@ -1,6 +1,6 @@
 <?php
 /**
-* @version 0.8 $Id: mod_eventlistcal15q.php 30 2008-11-04 22:14:15Z qivva $
+* @version 0.8 $Id$
 * @package Eventlist CalModuleQ for Joomla 1.5
 * @copyright (C) 2008 Toni Smillie www.qivva.com
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL

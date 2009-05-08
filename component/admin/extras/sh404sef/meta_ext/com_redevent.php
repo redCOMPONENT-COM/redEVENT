@@ -4,7 +4,7 @@
  * Yannick Gaultier, shumisha
  * shumisha@gmail.com
  * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @version     $Id: com_content.php 843 2009-01-02 21:05:49Z silianacom-svn $
+ * @version     $Id$
  *
  *  This module must set $shCustomTitleTag, $shCustomDescriptionTag, $shCustomKeywordsTag,$shCustomLangTag, $shCustomRobotsTag according to specific component output
  *

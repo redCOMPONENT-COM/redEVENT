@@ -3,7 +3,7 @@
  * sh404SEF support for com_search component.
  * Copyright Yannick Gaultier (shumisha) - 2007
  * shumisha@gmail.com
- * @version     $Id: com_search.php 229 2008-01-21 19:53:39Z silianacom-svn $
+ * @version     $Id$
  * {shSourceVersionTag: Version x - 2007-09-20}
  */
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 0.9 $Id: default.php 495 2008-10-13 10:31:44Z Roland $
+ * @version 0.9 $Id$
  * @package Joomla
  * @subpackage RedEvent
  * @copyright (C) 2005 - 2008 Christoph Lukes

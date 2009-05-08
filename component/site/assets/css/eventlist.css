@@ -1,5 +1,5 @@
 /**
- * @version 1.0 $Id: admin.class.php 662 2008-05-09 22:28:53Z schlu $
+ * @version 1.0 $Id$
  * @package Joomla
  * @subpackage redEVENT
  * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes

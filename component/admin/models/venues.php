@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.0 $Id: venues.php 662 2008-05-09 22:28:53Z schlu $
+ * @version 1.0 $Id$
  * @package Joomla
  * @subpackage EventList
  * @copyright (C) 2005 - 2008 Christoph Lukes

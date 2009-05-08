@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 0.9 $Id: helper.php 874 2009-04-17 11:33:37Z Suami $
+ * @version 0.9 $Id$
  * @package Joomla
  * @subpackage RedEvent
  * @copyright (C) 2005 - 2008 Christoph Lukes
