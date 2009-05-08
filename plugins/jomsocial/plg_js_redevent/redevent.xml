@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="plugin" group="community" method="upgrade">
+	<name>RedEvent</name>
+	<creationDate>05/05/2009</creationDate>
+	<author>Julien Vonthron</author>
+	<copyright>This component is released under the GNU/GPL License</copyright>
+  <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+  <authorEmail>jlv@jlv-solutions.com</authorEmail>
+	<authorUrl>www.jlv-solutions.com</authorUrl>
+	<version>1.0</version>
+	<isapplication>true</isapplication>
+	<description>
+		REDEvent Application for JomSocial
+	</description>
+	<languages>
+	    <language tag="en-GB">en-GB.plg_js_redevent.ini</language>
+	</languages>
+	<files>
+		<file plugin="redevent">redevent.php</file>
+		<file>redevent/favicon.png</file>
+		<file>redevent/style.css</file>
+	</files>
+	
+	<params>
+		<param name="coreapp" type="list" default="0" label="Core Application" description="Causes this application to not appearin the users applications list but it will allow this application to appear in the user profile automatically if selected.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this plugin">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+    <param type="spacer" default="" label="" name="spacer"/>
+    <param name="showattending" type="list" default="1" label="Show Attending" description="Select whether to show the events the user is registered to">
+      <option value="1">Yes</option>
+      <option value="0">No</option>
+    </param>
+    <param name="showmanaging" type="list" default="1" label="Show Managing" description="Select whether to show the events the user is managing">
+      <option value="1">Yes</option>
+      <option value="0">No</option>
+    </param>
+    <param name="dateformat" type="text" default="%d/%m/%Y" label="Date Format" description="date format for event. See php function strftime for details"/>
+	</params>
+</install>
