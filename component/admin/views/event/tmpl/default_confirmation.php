@@ -30,7 +30,7 @@
 	<tr>
 		<td colspan="2">
 			<?php echo JText::_('WEBFORM_PRINT_FORMAL_OFFER'); ?>
-			<div id="submission_type_webform_input" style="display: <?php echo $display;?>">
+			<div id="submission_type_webform_input" style="display: block">
 				<?php echo JHTML::_('link', '#', JText::_('TAGS'), "onClick='jQuery(\"div#webform_formal_offer_tags\").toggle(\"slideUp\"); return false;'"); ?>
 				<div id="webform_formal_offer_tags" style="display: none;">
 					[event_description] = <?php echo JText::_('SUBMISSION_COURSE_DESCRIPTION');?><br />
