@@ -36,7 +36,7 @@ JHTML::_('behavior.calendar');
 		} else if (form.title.value == ""){
 			alert( "<?php echo JText::_( 'ADD TITLE'); ?>" );
 			form.title.focus();
-		} else if (form.catsid.value == "0"){
+		} else if (form.catsid.value == ""){
 			alert( "<?php echo JText::_( 'CHOOSE CATEGORY'); ?>" );
 		} else {
 			<?php

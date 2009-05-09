@@ -288,10 +288,12 @@ class RedEventControllerEvents extends RedEventController
 			foreach ($existing_xrefs as $xid => $xref) {
 				$remove_xrefs[] = $xid;
 			}
-			$q = "DELETE FROM #__redevent_event_venue_xref
-				WHERE id IN (".implode(',', $remove_xrefs).")";
-			$db->setQuery($q);
-			$db->query();
+			if (count($remove_xrefs) > 0) {
+				$q = "DELETE FROM #__redevent_event_venue_xref
+					WHERE id IN (".implode(',', $remove_xrefs).")";
+				$db->setQuery($q);
+				$db->query();
+			}
 			
 			$cache = &JFactory::getCache('com_redevent');
 			$cache->clean();

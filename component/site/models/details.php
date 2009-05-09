@@ -165,6 +165,7 @@ class RedeventModelDetails extends JModel
 	 */
 	function _buildDetailsWhere()
 	{
+		$where = '';
 		if ($this->_xref) $where = ' WHERE x.id = '.$this->_xref;
 		else if ($this->_id) $where = ' WHERE x.eventid = '.$this->_id;
 
@@ -348,29 +349,39 @@ class RedeventModelDetails extends JModel
 		}
 		
 		/* Get the form details */
-		$q = "SELECT r.id, submitter_id, redform_id
-			FROM #__redevent_register r, #__redevent_events e
-			WHERE r.event = e.id
-			AND uid = ".$userid." 
-			AND event = ".$event;
+		$q = "SELECT r.id, submit_key, redform_id
+			FROM #__redevent_event_venue_xref x
+			LEFT JOIN #__redevent_register r
+			ON x.id = r.xref
+			LEFT JOIN #__redevent_events e
+			ON x.eventid = e.id
+			WHERE uid = ".$userid." 
+			AND xref = ".$xref;
 		$db->setQuery($q);
 		$submitterinfo = $db->loadObject();
 		
 		/* Delete the redFORM entry first */
 		/* Submitter answers first*/
-		$q = "DELETE FROM #__rwf_forms_".$submitterinfo->redform_id."
-			WHERE id = ".$submitterinfo->submitter_id;
+		$deleteids = '';
+		$q = "SELECT CONCAT_WS(',', f.id) AS id
+				FROM #__rwf_forms_1 f
+				LEFT JOIN #__rwf_submitters s
+				ON s.answer_id = f.id
+				WHERE s.submit_key = '".$submitterinfo->submit_key."'";
 		$db->setQuery($q);
-		if (!$db->query()) {
-			JError::raiseWarning('error', JText::_('Cannot delete answers').' '.$db->getErrorMsg());
-			return false;
+		$deleteids = $db->loadResult();
+		if (strlen($deleteids) > 0) {
+			$q = "DELETE FROM #__rwf_forms_".$submitterinfo->redform_id."
+				WHERE id IN (".$deleteids.")";
+			$db->setQuery($q);
+			if (!$db->query()) {
+				JError::raiseWarning('error', JText::_('Cannot delete answers').' '.$db->getErrorMsg());
+				return false;
+			}
 		}
-		
 		/* Submitter second */
 		$q = "DELETE FROM #__rwf_submitters
-			WHERE answer_id = ".$submitterinfo->submitter_id."
-			AND event_id = ".$event."
-			AND form_id = ".$submitterinfo->redform_id;
+			WHERE submit_key = '".$submitterinfo->submit_key."'";
 		$db->setQuery($q);
 		if (!$db->query()) {
 			JError::raiseWarning('error', JText::_('Cannot delete registration').' '.$db->getErrorMsg());

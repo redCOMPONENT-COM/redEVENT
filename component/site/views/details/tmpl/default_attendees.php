@@ -23,7 +23,6 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
 if ($this->row->show_names && $this->registers) {
 	?>
 	<div id="eventlist" class="event_id<?php echo $this->row->did; ?> el_details">
@@ -69,6 +68,35 @@ if ($this->row->show_names && $this->registers) {
 		</ul>
 		</div>
 	</div>
-<?php }
+	<?php
+	if ($this->formhandler == 3) {
+		//the user is allready registered. Let's check if he can unregister from the event
+				if ($this->row->unregistra == 0) :
+		
+					//no he is not allowed to unregister
+					echo JText::_( 'ALLREADY REGISTERED' );
+		
+				else:
+		
+					//he is allowed to unregister -> display form
+					?>
+		<form id="Eventlist" action="<?php echo JRoute::_('index.php'); ?>" method="post">
+			<p>
+				<?php echo JText::_( 'UNREGISTER BOX' ).': '; ?>
+				<input type="checkbox" name="reg_check" onclick="check(this, document.getElementById('el_send_attend'))" />
+			</p>
+			<p>
+				<input type="submit" id="el_send_attend" name="el_send_attend" value="<?php echo JText::_( 'UNREGISTER' ); ?>" disabled="disabled" />
+			</p>
+			<p>
+				<input type="hidden" name="xref" value="<?php echo $this->row->xref; ?>" />
+				<?php echo JHTML::_( 'form.token' ); ?>
+				<input type="hidden" name="task" value="delreguser" />
+			</p>
+		</form>
+		<?php
+		endif;
+	}
+}
 echo JHTML::_('link', JRoute::_('index.php?view=details&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id')), JText::_('RETURN_EVENT_DETAILS'));
 ?>

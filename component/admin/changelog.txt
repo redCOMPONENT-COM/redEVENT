@@ -20,6 +20,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+Version 2.0 beta 2.2
+* Fixed database error WHERE id IN ()
+* Fixed category check on event saving
+* Fixed unregistration
+
 Version 2.0 beta 2.1
 * Fixed missing default_jsscript file
 * Fixed usercheck giving DB error
