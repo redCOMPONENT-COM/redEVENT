@@ -211,7 +211,7 @@ class RedeventModelEditevent extends JModel
 		if (empty($this->_event))
 		{
 			$query = 'SELECT e.*, v.venue, x.id AS xref, x.eventid, x.venueid, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees,
-					x.maxwaitinglist, x.course_price, course_credit'
+					x.maxwaitinglist, x.course_price, x.course_credit'
 					. ' FROM #__redevent_events AS e'
 					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id'
 					. ' LEFT JOIN #__redevent_venues AS v ON v.id = x.venueid'
