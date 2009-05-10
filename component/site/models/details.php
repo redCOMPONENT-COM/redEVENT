@@ -205,31 +205,33 @@ class RedeventModelDetails extends JModel
 	 */
 	function getRegisters() {
 		$db = JFactory::getDBO();
-	if (0) {	
-		/* Avatars should be displayed */
-		$elsettings = redEVENTHelper::config();
 		
-		$avatar	= '';
-		$join	= '';
-		
-		if ($elsettings->comunoption == 1 && $elsettings->comunsolution == 1) {
-			$avatar = ', c.avatar';
-			$join	= ' LEFT JOIN #__comprofiler as c ON c.user_id = r.uid';
+		if (0) {	
+			/* Avatars should be displayed */
+			$elsettings = redEVENTHelper::config();
+			
+			$avatar	= '';
+			$join	= '';
+			
+			if ($elsettings->comunoption == 1 && $elsettings->comunsolution == 1) {
+				$avatar = ', c.avatar';
+				$join	= ' LEFT JOIN #__comprofiler as c ON c.user_id = r.uid';
+			}
+			
+			$name = $elsettings->regname ? 'u.name' : 'u.username';
+			
+			//Get registered users
+			$query = 'SELECT '.$name.' AS name, r.uid'
+					. $avatar
+					. ' FROM #__redevent_register AS r'
+					. ' LEFT JOIN #__users AS u ON u.id = r.uid'
+					. $join
+					. ' WHERE event = '.$this->_id
+					;
+			$this->_db->setQuery( $query );
+			$this->_registers = $this->_db->loadObjectList();
 		}
 		
-		$name = $elsettings->regname ? 'u.name' : 'u.username';
-		
-		//Get registered users
-		$query = 'SELECT '.$name.' AS name, r.uid'
-				. $avatar
-				. ' FROM #__redevent_register AS r'
-				. ' LEFT JOIN #__users AS u ON u.id = r.uid'
-				. $join
-				. ' WHERE event = '.$this->_id
-				;
-		$this->_db->setQuery( $query );
-		$this->_registers = $this->_db->loadObjectList();
-	}
 		/* At least 1 redFORM field must be selected to show the user data from */
 		if (!empty($this->_details->showfields) && $this->_details->redform_id > 0) {
 			$q = "SELECT field, form_id 
@@ -242,23 +244,19 @@ class RedeventModelDetails extends JModel
 			}
 			else {
 				$fields = $db->loadObjectList();
-				$query = "SELECT ";
-				$lastkey = end(array_keys($fields));
+				$table_fields = array();
 				foreach ($fields as $key => $field) {
-					$q = "SELECT LOWER(REPLACE(".$db->Quote($field->field).", ' ',''))";
-					$db->setQuery($q);
-					$query .= "`".$db->loadResult()."`";
-					if ($lastkey != $key) $query .= ', ';
+					$table_fields[] = $db->nameQuote( 'a.' . strtolower( str_replace(' ', '', $field->field) ) );
 				}
-				$query .= " FROM #__redevent_register r 
-						LEFT JOIN #__rwf_submitters s 
-						ON r.submit_key = s.submit_key 
-						LEFT JOIN #__rwf_forms_".$fields[0]->form_id." a
-						ON s.answer_id = a.id 
-						WHERE s.xref = ".$this->_xref." 
-						AND s.waitinglist = 0 
-						AND s.confirmed = 1";
+				$query = ' SELECT ' . implode(', ', $table_fields);
+				$query .= ' FROM #__redevent_register AS r '
+				        . ' LEFT JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key '
+                . ' LEFT JOIN #__rwf_forms_' . $fields[0]->form_id . ' AS a ON s.answer_id = a.id '
+                . ' WHERE s.xref = ' . $this->_xref
+                . ' AND s.confirmed = 1'
+                ;
 				$db->setQuery($query);
+				
 				if (!$db->query()) {
 					JError::raiseWarning('error', JText::_('Cannot load registered users').' '.$db->getErrorMsg());
 					return false;

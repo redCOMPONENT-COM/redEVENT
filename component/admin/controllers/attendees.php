@@ -83,7 +83,7 @@ class RedEventControllerAttendees extends RedEventController
 	 */
 	function remove()
 	{
-		$cid = JRequest::getVar( 'cid', array(0), 'post', 'array' );
+		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
 		$xref 	= JRequest::getInt('xref');
 		$total 	= count( $cid );
 		$db = JFactory::getDBO();
@@ -99,16 +99,15 @@ class RedEventControllerAttendees extends RedEventController
 		
 		/* Delete the redFORM entry first */
 		/* Submitter answers first*/
-		$cids = 'id=' . implode( ' OR id=', $cid );
+		//TODO: put this in the model !
 		$q = "DELETE FROM #__rwf_forms_".JRequest::getInt('form_id')."
-			WHERE (".$cids.")";
+			WHERE id IN (".implode(', ', $cid).")";
 		$db->setQuery($q);
 		$db->query();
 		
 		/* Submitter second */
-		$cids = 'answer_id=' . implode( ' OR answer_id=', $cid );
 		$q = "DELETE FROM #__rwf_submitters
-			WHERE (".$cids.")
+      WHERE answer_id IN (".implode(', ', $cid).")
 			AND xref = ".$xref."
 			AND form_id = ".$formid;
 		$db->setQuery($q);

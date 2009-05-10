@@ -132,12 +132,9 @@ class redEVENT_tags {
 							$form->task = 'userregister';
 							break;
 					}
-				
-					$results = $dispatcher->trigger('PrepareEvent', array($form));
-					if (!isset($results[1])) {
-						$redform = JText::_('REGISTRATION_NOT_POSSIBLE');
-					}
-					else $redform = $results[1];
+									
+					$results = $dispatcher->trigger('PrepareEvent', array(& $form));
+          $redform = $form->text;
 				}
 				
 				/* Form fields */
@@ -156,18 +153,22 @@ class redEVENT_tags {
 				$regurl = JRoute::_($uri->toString());
 				
 				/* Clean up some tags */
-				$findoffer = array('[event_description]', '[event_title]', '[price]', '[credits]', '[code]', '[redform]', '[inputname]', '[inputemail]', '[submit]',
+				$findoffer = array('[event_description]', '[event_title]', '[price]', '[credits]', '[code]', '[inputname]', '[inputemail]', '[submit]',
 									'[event_info_text]', '[time]', '[date]', '[duration]', '[venue]', '[city]', '[username]', '[useremail]', '[venues]','[regurl]',
 									'[eventplaces]', '[waitinglistplaces]', '[eventplacesleft]', '[waitinglistplacesleft]');
-				$replaceoffer = array($event_description, $this->_data->title, $price, $this->_data->course_credit, $this->_data->course_code, $redform,
+				$replaceoffer = array($event_description, $this->_data->title, $price, $this->_data->course_credit, $this->_data->course_code, 
 									$name, $email, $submit, $event_info_description, $time, $date, $duration, $this->_data->venue, $this->_data->location,
 									$username, $useremail, $venues_html, $regurl, $this->_maxattendees, $this->_maxwaitinglist, $eventplacesleft, $waitinglistplacesleft);
 				/* First tag replacement */
 				$message = str_replace($findoffer, $replaceoffer, $page);
+			  /* second replacement, add the form */
+				/* if done in first one, username in the form javascript is replaced too... */
+        $message = str_replace('[redform]', $redform, $message); 
 				foreach ($customdata as $tag => $data) {
 					$data->text_field = str_replace($findoffer, $replaceoffer, $data->text_field);
 					$message = str_ireplace('['.$tag.']', $data->text_field, $message);
 				}
+				
 				return ELOutput::ImgRelAbs($message);
 			}
 			else return '';
