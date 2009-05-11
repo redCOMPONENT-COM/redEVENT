@@ -254,7 +254,9 @@ class RedeventViewDetails extends JView
         	$row->countryimg = ELOutput::getFlag( $row->country );
         }
 		}
-		/* Check if we have a confirmation message and show the confirmation page */
+		
+		/* Get the Venue Dates */
+		$venuedates = $this->get('VenueDates');
 		
 		//assign vars to jview
 		$this->assignRef('row', 					$row);
@@ -275,6 +277,7 @@ class RedeventViewDetails extends JView
 		$this->assignRef('maxwaitinglist' ,			$row->maxwaitinglist);
 		$this->assignRef('messages' ,				$messages);
 		$this->assignRef('redform_install'	, $redform_install);
+		$this->assignRef('venuedates'	, $venuedates);
 		
 		$tpl = JRequest::getVar('tpl', $tpl);
 		

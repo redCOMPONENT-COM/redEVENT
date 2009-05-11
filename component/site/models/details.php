@@ -246,7 +246,7 @@ class RedeventModelDetails extends JModel
 				$fields = $db->loadObjectList();
 				$table_fields = array();
 				foreach ($fields as $key => $field) {
-					$table_fields[] = $db->nameQuote( 'a.' . strtolower( str_replace(' ', '', $field->field) ) );
+					$table_fields[] = 'a.`' . strtolower( str_replace(' ', '', $field->field) ).'`';
 				}
 				$query = ' SELECT ' . implode(', ', $table_fields);
 				$query .= ' FROM #__redevent_register AS r '
@@ -256,7 +256,6 @@ class RedeventModelDetails extends JModel
                 . ' AND s.confirmed = 1'
                 ;
 				$db->setQuery($query);
-				
 				if (!$db->query()) {
 					JError::raiseWarning('error', JText::_('Cannot load registered users').' '.$db->getErrorMsg());
 					return false;
@@ -405,6 +404,18 @@ class RedeventModelDetails extends JModel
 			FROM #__redevent_venues v
 			LEFT JOIN #__redevent_event_venue_xref x
 			ON v.id = x.venueid
+			WHERE x.eventid IN (".$this->_details->did.")";
+		$db->setQuery($q);
+		return $db->loadObjectList('id');
+	}
+	
+	/**
+	 * Get a list of venue/date relations
+	 */
+	public function getVenueDates() {
+		$db = JFactory::getDBO();
+		$q = "SELECT *
+			FROM #__redevent_event_venue_xref x
 			WHERE x.eventid IN (".$this->_details->did.")";
 		$db->setQuery($q);
 		return $db->loadObjectList('id');

@@ -90,8 +90,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 if ($this->row->registra == 1) : ?>
 		<!-- Registration -->
 		<h2 class="register"><?php echo JText::_( 'REGISTERED USERS' ).':'; ?></h2>
-		<?php 
-			echo JHTML::_('link', JRoute::_('index.php?view=details&tpl=attendees&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id')), JText::_('SHOW_REGISTERED_USERS'));
+		<?php
+			foreach ($this->venuedates AS $key => $venuedate) {
+				$date = ELOutput::formatdate($venuedate->dates, $venuedate->times).' - '.ELOutput::formatdate($venuedate->enddates, $venuedate->endtimes);
+				$time = ELOutput::formattime($venuedate->dates, $venuedate->times).' - '.ELOutput::formattime($venuedate->enddates, $venuedate->endtimes);
+				echo JHTML::_('link', JRoute::_('index.php?view=details&tpl=attendees&xref='.$venuedate->id.'&id='.$venuedate->eventid), JText::_('SHOW_REGISTERED_USERS').' '.$date.' '.$time);
+				echo '<br />';
+			}
 		?>
 	<?php endif; ?>
 	

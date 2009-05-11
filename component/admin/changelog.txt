@@ -24,6 +24,8 @@ Version 2.0 beta 2.2
 * Fixed database error WHERE id IN ()
 * Fixed category check on event saving
 * Fixed unregistration
+/ Updated registered users list to show a link per venue/date option
+* Fixed quoting of column names. Joomla nameQuote isn't complete.
 
 Version 2.0 beta 2.1
 * Fixed missing default_jsscript file
