@@ -74,6 +74,7 @@
 			[price] = <?php echo JText::_('SUBMISSION_EVENT_PRICE');?><br />
 			[credits] = <?php echo JText::_('SUBMISSION_EVENT_CREDITS');?><br />
 			[code] = <?php echo JText::_('SUBMISSION_EVENT_CODE');?><br />
+			[event_title]  = <?php echo JText::_('SUBMISSION_EVENT_TITLE');?><br />
 			[eventplaces] = <?php echo JText::_('SUBMISSION_EVENTPLACES');?><br />
 			[waitinglistplaces] = <?php echo JText::_('SUBMISSION_WAITINGLISTPLACES');?><br />
 			[eventplacesleft] = <?php echo JText::_('SUBMISSION_EVENTPLACES_LEFT');?><br />
