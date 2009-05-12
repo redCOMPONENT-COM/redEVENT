@@ -372,7 +372,7 @@ class RedeventController extends JController
 		$cache->clean();
 
 		$msg = JText::_( 'UNREGISTERED SUCCESSFULL' );
-		$this->setRedirect( JRoute::_('index.php?view=details&id='.$id, false), $msg );
+		$this->setRedirect( JRoute::_('index.php?view=details&xref=' . $xref . '&id=' . $id, false), $msg );
 	}
 
 	/**
