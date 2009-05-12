@@ -187,9 +187,12 @@ class RedeventModelVenueevents extends JModel
 		$orderby	= $this->_buildContentOrderBy();
 
 		//Get Events from Database
-		$query = 'SELECT a.id, x.dates, x.enddates, x.times, x.endtimes, x.id AS xref, a.title, a.datdescription, a.created, l.venue, l.city, l.state, l.url, c.catname, c.id AS catid,'
+		$query = 'SELECT a.id, a.title, a.datdescription, a.created, '
+		    . ' x.dates, x.enddates, x.times, x.endtimes, x.id AS xref, '
+		    . ' l.venue, l.city, l.state, l.url, '
+		    . ' c.catname, c.id AS catid,'
 				. ' a.id as slug,'
-				. ' x.venueid as venueslug,'
+				. ' l.id as venueslug,'
 				. ' c.id as categoryslug'
 				. ' FROM #__redevent_events AS a'
 				. ' LEFT JOIN #__redevent_event_venue_xref AS x ON a.id = x.eventid'
@@ -297,7 +300,7 @@ class RedeventModelVenueevents extends JModel
 		if ($this->_xref) {
 				$query .= ' WHERE x.id ='. $this->_xref;
 		}
-		else $query .= ' WHERE x.venueid = '.$this->_id;
+		else $query .= ' WHERE v.id = '.$this->_id;
 
 		$this->_db->setQuery( $query );
 		$_venue = $this->_db->loadObject();
