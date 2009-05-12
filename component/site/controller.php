@@ -328,7 +328,7 @@ class RedeventController extends JController
 		
 		JPluginHelper::importPlugin( 'redevent' );
 		$dispatcher =& JDispatcher::getInstance();
-		$res = $dispatcher->trigger( 'onEventUserRegistered', array( $id ) );
+		$res = $dispatcher->trigger( 'onEventUserRegistered', array( $xref ) );
       
 		$cache = JFactory::getCache('com_redevent');
 		$cache->clean();
@@ -347,8 +347,11 @@ class RedeventController extends JController
 		// Check for request forgeries
 		JRequest::checkToken() or die( 'Invalid Token' );
 
+		// TODO: is $id still usefull ? xref seems to be used in delreguser...
 		$id 	= JRequest::getInt( 'rdid', 0, 'post' );
-
+		
+    $xref   = JRequest::getInt( 'xref', 0, 'post' );
+    
 		// Get/Create the model
 		$model = $this->getModel('Details', 'RedeventModel');
 
@@ -363,7 +366,7 @@ class RedeventController extends JController
 		
 		JPluginHelper::importPlugin( 'redevent' );
 		$dispatcher =& JDispatcher::getInstance();
-		$res = $dispatcher->trigger( 'onEventUserUnregistered', array( $id ) );
+		$res = $dispatcher->trigger( 'onEventUserUnregistered', array( $xref ) );
       
 		$cache = JFactory::getCache('com_redevent');
 		$cache->clean();

@@ -145,7 +145,7 @@ class plgRedeventjomsocial extends JPlugin {
     return true;
   }
 	
-  public function onEventUserRegistered($event_id)
+  public function onEventUserRegistered($xref)
   {
     // only add to activity stream if selected
     if (!$this->params->get('activity_eventregister', '1')) {
@@ -159,7 +159,7 @@ class plgRedeventjomsocial extends JPlugin {
            . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug '
            . ' FROM #__redevent_events AS a '
            . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id '
-           . ' WHERE a.id = ' . $event_id;
+           . ' WHERE x.id = ' . $xref;
     $db->setQuery($query);    
     if (!$event = $db->loadObject()) {
       if ($db->getErrorNum()) {
@@ -192,7 +192,7 @@ class plgRedeventjomsocial extends JPlugin {
     return true;
   }  
 
-  public function onEventUserUnregistered($event_id)
+  public function onEventUserUnregistered($xref)
   {   
     // only add to activity stream if selected
     if (!$this->params->get('activity_eventunregister', '1')) {
@@ -206,7 +206,7 @@ class plgRedeventjomsocial extends JPlugin {
            . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug '
            . ' FROM #__redevent_events AS a '
            . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id '
-           . ' WHERE a.id = ' . $event_id;
+           . ' WHERE x.id = ' . $xref;
     $db->setQuery($query);    
     if (!$event = $db->loadObject()) {    
 	    if ($db->getErrorNum()) {

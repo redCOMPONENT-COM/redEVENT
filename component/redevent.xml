@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/component-install.dtd">
-<install type="component" version="1.5.0">
+<install type="component" version="1.5.0" method="upgrade">
 	<name>redEVENT</name>
 	<creationDate>08 May 2009</creationDate>
 	<author>Redweb.dk</author>
