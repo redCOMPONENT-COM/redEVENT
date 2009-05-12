@@ -27,8 +27,9 @@ if ($this->registration) {
 	?>
 	<div id="eventlist" class="event_id<?php echo $this->registration['event']->id; ?> el_details">
 		<?php echo $this->tags->ReplaceTags($this->registration['event']->review_message); ?>
-	</div>
+	</div>	
 	<?php
+	echo JHTML::_('link', JRoute::_('index.php?view=details&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id')), JText::_('RETURN_EVENT_DETAILS'));
 }
 else {
 	echo $this->message;
