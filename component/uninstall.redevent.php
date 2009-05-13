@@ -38,6 +38,6 @@ function com_uninstall() {
 		JFile::delete(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_sh404sef'.DS.'language'.DS.'plugins'.DS.'com_redevent.php');
 	}
 
-	echo "<strong>redEVENT 2.0 beta 2.1 has been uninstalled</strong>";
+	echo "<strong>redEVENT 2.0 beta 3 has been uninstalled</strong>";
 }
 ?>

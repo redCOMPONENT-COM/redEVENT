@@ -75,6 +75,11 @@
 			[credits] = <?php echo JText::_('SUBMISSION_EVENT_CREDITS');?><br />
 			[code] = <?php echo JText::_('SUBMISSION_EVENT_CODE');?><br />
 			[event_title]  = <?php echo JText::_('SUBMISSION_EVENT_TITLE');?><br />
+			[time] = <?php echo JText::_('SUBMISSION_EVENT_TIME');?><br />
+			[date] = <?php echo JText::_('SUBMISSION_EVENT_DATE');?><br />
+			[duration] = <?php echo JText::_('SUBMISSION_EVENT_DURATION');?><br />
+			[venue] = <?php echo JText::_('SUBMISSION_EVENT_VENUE');?><br />
+			[city] = <?php echo JText::_('SUBMISSION_EVENT_CITY');?><br />
 			[eventplaces] = <?php echo JText::_('SUBMISSION_EVENTPLACES');?><br />
 			[waitinglistplaces] = <?php echo JText::_('SUBMISSION_WAITINGLISTPLACES');?><br />
 			[eventplacesleft] = <?php echo JText::_('SUBMISSION_EVENTPLACES_LEFT');?><br />
