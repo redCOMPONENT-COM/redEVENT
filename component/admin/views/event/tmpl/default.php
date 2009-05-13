@@ -54,48 +54,58 @@ JHTML::_('behavior.calendar');
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <?php
 echo $this->pane->startPane("det-pane");
-echo $this->pane->startPanel( JText::_('EVENT'), 'event' );
+
+	echo $this->pane->startPanel( JText::_('EVENT'), 'event' );
 	echo $this->loadTemplate('event');
 	echo $this->pane->endPanel();
+	
 	$title = JText::_( 'VENUES' );
 	echo $this->pane->startPanel( $title, 'venues' );
-		echo $this->loadTemplate('venues');
+	echo $this->loadTemplate('venues');
 	echo $this->pane->endPanel();
+	
 	$title = JText::_( 'SUBMIT_TYPES' );
 	echo $this->pane->startPanel( $title, 'submit_types' );
-		echo $this->loadTemplate('submission_types');
+	echo $this->loadTemplate('submission_types');
 	echo $this->pane->endPanel();
+	
 	$title = JText::_( 'EMAILS' );
 	echo $this->pane->startPanel( $title, 'emails' );
-		echo $this->loadTemplate('emails');
+	echo $this->loadTemplate('emails');
 	echo $this->pane->endPanel();
+	
 	$title = JText::_( 'FORM' );
 	echo $this->pane->startPanel( $title, 'form' );
-		if ($this->redform_install) {
-			echo $this->loadTemplate('form');
-		}
-		else echo JText::_('REDFORM_NOT_INSTALLED');
+	if ($this->redform_install) {
+		echo $this->loadTemplate('form');
+	}
+	else echo JText::_('REDFORM_NOT_INSTALLED');
 	echo $this->pane->endPanel();
+	
 	$title = JText::_( 'SUBMISSION' );
 	echo $this->pane->startPanel( $title, 'submission' );
-		$k = 0;
-		echo $this->loadTemplate('submission');
+	$k = 0;
+	echo $this->loadTemplate('submission');
 	echo $this->pane->endPanel();
+	
 	$title = JText::_( 'WAITINGLIST' );
 	echo $this->pane->startPanel( $title, 'waitinglist' );
-		$k = 0;
-		echo $this->loadTemplate('waitinglist');
+	$k = 0;
+	echo $this->loadTemplate('waitinglist');
 	echo $this->pane->endPanel();
+
 	$title = JText::_( 'CONFIRMATION' );
 	echo $this->pane->startPanel( $title, 'confirmation' );
-		echo $this->loadTemplate('confirmation');
+	echo $this->loadTemplate('confirmation');
 	echo $this->pane->endPanel();
+	
 	$title = JText::_( 'REGISTRATION' );
 	echo $this->pane->startPanel( $title, 'registra' );
-	$k = 0;
-		echo $this->loadTemplate('registration');
-	$title = JText::_( 'IMAGE' );
+  $k = 0;
+ 	echo $this->loadTemplate('registration');
 	echo $this->pane->endPanel();
+	
+	$title = JText::_( 'IMAGE' );
 	echo $this->pane->startPanel( $title, 'image' );
 	$k = 0;
 	?>
@@ -127,9 +137,10 @@ echo $this->pane->startPanel( JText::_('EVENT'), 'event' );
 		</tr>
 	</table>
 	<?php
+	echo $this->pane->endPanel();
+
 	if (0) {
 		$title = JText::_( 'RECURRING EVENTS' );
-		echo $this->pane->endPanel();
 		echo $this->pane->startPanel( $title, 'recurrence' );
 		$k = 0;
 		?>
@@ -183,13 +194,15 @@ echo $this->pane->startPanel( JText::_('EVENT'), 'event' );
 		-->
 		</script>
 		<?php
+  	echo $this->pane->endPanel();
 	}
+	
 	$title = JText::_( 'METADATA INFORMATION' );
-	echo $this->pane->endPanel();
 	echo $this->pane->startPanel( $title, 'meta' );
-		$k = 0;
-		echo $this->loadTemplate('metadata');
+	$k = 0;
+	echo $this->loadTemplate('metadata');
 	echo $this->pane->endPanel();
+
 echo $this->pane->endPane(); ?>
 
 <?php echo JHTML::_( 'form.token' ); ?>
