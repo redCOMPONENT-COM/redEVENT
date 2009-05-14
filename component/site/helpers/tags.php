@@ -169,7 +169,9 @@ class redEVENT_tags {
 					$message = str_ireplace('['.$tag.']', $data->text_field, $message);
 				}
 				
-				return ELOutput::ImgRelAbs($message);
+				// FIXME: I don't see the point of this relative to abs for pictures, only causing problems... I'll comment it for now.
+				//return ELOutput::ImgRelAbs($message);
+				return($message);
 			}
 			else return '';
 		}
@@ -204,17 +206,16 @@ class redEVENT_tags {
 	 */
 	private function getEventLinks() {
 		$db = JFactory::getDBO();
-		$q = "SELECT e.*, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, x.course_price, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, v.venue, x.venueid,
+		$q = " SELECT e.*, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, x.course_price, "
+		    . " x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, v.venue, x.venueid,
 					v.city AS location,
 					v.country, DATEDIFF(x.enddates, x.dates)+1 AS duration,
 					UNIX_TIMESTAMP(x.dates) AS unixdates
-			FROM #__redevent_venues v
-			LEFT JOIN #__redevent_event_venue_xref x
-			ON x.venueid = v.id
-			LEFT JOIN #__redevent_events e
-			ON x.eventid = e.id
+			FROM #__redevent_events AS e
+			INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id
+			INNER JOIN #__redevent_venues AS v ON x.venueid = v.id
 			WHERE x.published = 1
-			AND x.eventid IN (".$this->_eventid.")
+			AND e.id IN (".$this->_eventid.")
 			";
 		$db->setQuery($q);
 		$this->_eventlinks = $db->loadObjectList();
