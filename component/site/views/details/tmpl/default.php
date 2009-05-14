@@ -87,7 +87,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		</dl>
 	<?php } 
 /* If registration is enabled */
-if ($this->row->registra == 1) : ?>
+if ($this->row->show_names) : ?>
 		<!-- Registration -->
 		<h2 class="register"><?php echo JText::_( 'REGISTERED USERS' ).':'; ?></h2>
 		<?php
