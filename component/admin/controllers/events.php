@@ -244,32 +244,32 @@ class RedEventControllerEvents extends RedEventController
 			/* Now add all the xref values */
 			foreach ($post['locid'] as $key => $locid) {
 				foreach ($post['locid'.$locid] as $random => $datetimes) {
-					if (isset($datetimes['dates'])) $dates = $datetimes['dates'];
+					if (isset($datetimes['dates']) && $datetimes['dates']) $dates = $db->Quote($datetimes['dates']);
 					else $dates = 'NULL';
-					if (isset($datetimes['enddates'])) $enddates = $datetimes['enddates'];
+					if (isset($datetimes['enddates']) && $datetimes['enddates']) $enddates = $db->Quote($datetimes['enddates']);
 					else $enddates = 'NULL';
-					if (isset($datetimes['times'])) $times = $datetimes['times'];
+					if (isset($datetimes['times']) && $datetimes['times']) $times = $db->Quote($datetimes['times']);
 					else $times = 'NULL';
-					if (isset($datetimes['endtimes'])) $endtimes = $datetimes['endtimes'];
+					if (isset($datetimes['endtimes']) && $datetimes['endtimes']) $endtimes = $db->Quote($datetimes['endtimes']);
 					else $endtimes = 'NULL';
-					if (isset($datetimes['maxattendees'])) $maxattendees = $datetimes['maxattendees'];
+					if (isset($datetimes['maxattendees']) && $datetimes['maxattendees']) $maxattendees = $db->Quote($datetimes['maxattendees']);
 					else $maxattendees = 'NULL';
-					if (isset($datetimes['maxwaitinglist'])) $maxwaitinglist = $datetimes['maxwaitinglist'];
+					if (isset($datetimes['maxwaitinglist']) && $datetimes['maxwaitinglist']) $maxwaitinglist = $db->Quote($datetimes['maxwaitinglist']);
 					else $maxwaitinglist = 'NULL';
-					if (isset($datetimes['course_price'])) $course_price = $datetimes['course_price'];
+					if (isset($datetimes['course_price']) && $datetimes['course_price']) $course_price = $db->Quote($datetimes['course_price']);
 					else $course_price = 'NULL';
-					if (isset($datetimes['course_credit'])) $course_credit = $datetimes['course_credit'];
+					if (isset($datetimes['course_credit']) && $datetimes['course_credit']) $course_credit = $db->Quote($datetimes['course_credit']);
 					else $course_credit = 'NULL';
 					if (isset($existing_xrefs[$random])) {
 						$q = "UPDATE #__redevent_event_venue_xref 
-							SET dates = ".$db->Quote($dates).",
-							enddates = ".$db->Quote($enddates).", 
-							times = ".$db->Quote($times).", 
-							endtimes = ".$db->Quote($endtimes).",
-							maxattendees = ".$db->Quote($maxattendees).",
-							maxwaitinglist = ".$db->Quote($maxwaitinglist).",
-							course_price = ".$db->Quote($course_price).",
-							course_credit = ".$db->Quote($course_credit)."
+							SET dates = ".$dates.",
+							enddates = ".$enddates.", 
+							times = ".$times.", 
+							endtimes = ".$endtimes.",
+							maxattendees = ".$maxattendees.",
+							maxwaitinglist = ".$maxwaitinglist.",
+							course_price = ".$course_price.",
+							course_credit = ".$course_credit."
 							WHERE id = ".$random;
 						$db->setQuery($q);
 						$db->query();
@@ -277,8 +277,8 @@ class RedEventControllerEvents extends RedEventController
 					}
 					else {
 						$q = "INSERT INTO #__redevent_event_venue_xref (eventid, venueid, dates, enddates, times, endtimes, maxattendees, maxwaitinglist, course_price, course_credit, published) VALUES ";
-						$q .= "(".$returnid.", ".$locid.", ".$db->Quote($dates).", ".$db->Quote($enddates).", ".$db->Quote($times).", ".$db->Quote($endtimes)."
-								, ".$db->Quote($maxattendees).", ".$db->Quote($maxwaitinglist).", ".$db->Quote($course_price).", ".$db->Quote($course_credit).", 1)";
+						$q .= "(".$returnid.", ".$locid.", ".$dates.", ".$enddates.", ".$times.", ".$endtimes."
+								, ".$maxattendees.", ".$maxwaitinglist.", ".$course_price.", ".$course_credit.", 1)";
 						$db->setQuery($q);
 						$db->query();
 					}
