@@ -487,7 +487,7 @@ JHTML::_('behavior.calendar');
 					<label id="recurrence_output">&nbsp;</label>
 				  <div id="counter_row" style="display:none;">
 					  <label for="recurrence_counter"><?php echo JText::_( 'RECURRENCE COUNTER' ); ?>:</label>
-					  <div class="el_date>"><?php echo JHTML::_('calendar', ($this->row->recurrence_counter <> 0000-00-00) ? $this->row->recurrence_counter : JText::_( 'UNLIMITED' ), "recurrence_counter", "recurrence_counter"); ?>
+					  <div class="el_date>"><?php echo JHTML::_('calendar', ($this->row->recurrence_counter <> '0000-00-00') ? $this->row->recurrence_counter : JText::_( 'UNLIMITED' ), "recurrence_counter", "recurrence_counter"); ?>
 						<a href="#" onclick="include_unlimited('<?php echo JText::_( 'UNLIMITED' ); ?>'); return false;"><img src="components/com_redevent/assets/images/unlimited.png" width="16" height="16" alt="<?php echo JText::_( 'UNLIMITED' ); ?>" /></a>
 					</div>
 				  </div>

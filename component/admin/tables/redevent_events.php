@@ -60,7 +60,7 @@ class RedEvent_events extends JTable
 	/** @var int */         		
 	var $recurrence_type			= 0;
 	/** @var date */        		
-	var $recurrence_counter 		= null;
+	var $recurrence_counter 		= '0000-00-00';
 	/** @var string */      		
 	var $datimage 					= '';
 	/** @var string */      		
