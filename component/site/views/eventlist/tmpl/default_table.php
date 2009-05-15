@@ -134,7 +134,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     					<?php echo ELOutput::formatdate($row->dates, $row->times); ?>
     					
     					<?php
-    					if ($row->enddates) :
+    					if ($row->enddates && $row->enddates != '0000-00-00' && $row->enddates != $row->dates) :
     						echo ' - '.ELOutput::formatdate($row->enddates, $row->endtimes);
     					endif;
     					?>
