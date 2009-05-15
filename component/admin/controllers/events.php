@@ -253,13 +253,13 @@ class RedEventControllerEvents extends RedEventController
 					if (isset($datetimes['endtimes']) && $datetimes['endtimes']) $endtimes = $db->Quote($datetimes['endtimes']);
 					else $endtimes = 'NULL';
 					if (isset($datetimes['maxattendees']) && $datetimes['maxattendees']) $maxattendees = $db->Quote($datetimes['maxattendees']);
-					else $maxattendees = 'NULL';
+					else $maxattendees = $db->Quote(0);
 					if (isset($datetimes['maxwaitinglist']) && $datetimes['maxwaitinglist']) $maxwaitinglist = $db->Quote($datetimes['maxwaitinglist']);
-					else $maxwaitinglist = 'NULL';
+					else $maxwaitinglist = $db->Quote(0);
 					if (isset($datetimes['course_price']) && $datetimes['course_price']) $course_price = $db->Quote($datetimes['course_price']);
-					else $course_price = 'NULL';
+					else $course_price = $db->Quote('0.00');
 					if (isset($datetimes['course_credit']) && $datetimes['course_credit']) $course_credit = $db->Quote($datetimes['course_credit']);
-					else $course_credit = 'NULL';
+					else $course_credit = $db->Quote('');
 					if (isset($existing_xrefs[$random])) {
 						$q = "UPDATE #__redevent_event_venue_xref 
 							SET dates = ".$dates.",
