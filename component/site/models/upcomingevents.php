@@ -56,7 +56,7 @@ class RedeventModelUpcomingevents extends JModel {
 		   . ' LEFT JOIN #__redevent_event_venue_xref x	ON x.venueid = v.id '
 		   . ' LEFT JOIN #__redevent_events e	ON x.eventid = e.id '
 		   . ' WHERE x.published = 1 '
-		   . ' AND (x.dates > NOW() AND x.dates < DATE_ADD(NOW(), INTERVAL '.$params->getValue('upcoming_days_ahead', 30).' DAY) '
+		   . ' AND ((CASE WHEN x.times THEN CONCAT(x.dates, " ", x.times) ELSE x.dates END) > NOW() AND x.dates < DATE_ADD(NOW(), INTERVAL '.$params->getValue('upcoming_days_ahead', 30).' DAY) '
 		   ;
 		if ($params->getValue('show_days_no_date', 0) == 1) $q .= "OR x.dates = '0000-00-00' ";
 		$q .= ") ORDER BY x.dates ";
