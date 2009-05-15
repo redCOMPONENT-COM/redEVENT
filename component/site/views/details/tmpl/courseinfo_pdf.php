@@ -42,9 +42,7 @@ foreach ($this->_eventlinks as $key => $event) {
 		<td><?php echo JHTML::_('link', $event_url, $event->title); ?></td>
 		<td><?php echo $event->location; ?></td>
 		<td><?php echo ELOutput::formatdate($event->dates, $event->times); ?> 
-		<?php echo $event->duration;
-		if ($event->duration == 1) echo JText::_('DAY');
-		else if ($event->duration > 1) echo JText::_('DAYS');?> 
+		<?php echo redEVENTHelper::getEventDuration($event); ?> 
 		<?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
 		<td><?php echo ELOutput::formatprice($event->course_price).'/'.$event->course_credit ?></td>
 	</tr>

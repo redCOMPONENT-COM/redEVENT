@@ -273,5 +273,58 @@ class redEVENTHelper {
 			return false;
 		}
 	}
+	
+	/**
+	 * returns formated event duration.
+	 *
+	 * @param $event object having properties dates, enddates, times, endtimes 
+	 */
+	function getEventDuration($event)
+	{
+		if (!$event->dates || $event->dates == '0000-00-00') {
+			return '-';
+		}
+		
+		// start time in seconds
+		if (!$event->times || $event->times == '00:00:00') {
+			$start = strtotime($event->dates. ' ' . $event->times);
+		}
+		else {
+      $start = strtotime($event->dates. ' ' . $event->times);			
+		}
+		
+		// end time in seconds
+    if (!$event->enddates || $event->enddates == '0000-00-00') {
+    	// same day
+      if (!$event->endtimes || $event->endtimes == '00:00:00') {
+        // we set it to end of the day, user should set it anyway
+        $end = strtotime($event->dates. ' 00:00') + 3600 * 24;         
+      }
+      else {
+        $end = strtotime($event->dates . ' ' . $event->endtimes);      	
+      }
+    }
+    else {
+      if (!$event->endtimes || $event->endtimes == '00:00:00') {
+        // we set it to end of the day
+        $end = strtotime($event->enddates. ' 00:00') + 3600 * 24;
+      }
+      else {
+        $end = strtotime($event->enddates . ' ' . $event->endtimes);
+      }    	
+    }
+    
+    $duration = $end - $start;
+		
+		if ($duration > 3600 * 24) {
+			return floor($duration / (3600 * 24)) . ' ' . JText::_('Days');
+		}
+		else if ($duration == 3600 * 24) {
+      return '1' . ' ' . JText::_('Day');			
+		}
+		else {
+			return floor($duration / 3600) . JText::_('LOC_H') . sprintf('%02d', floor(($duration % 3600) / 60));
+		}
+	}
 }
 ?>

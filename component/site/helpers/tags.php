@@ -144,9 +144,7 @@ class redEVENT_tags {
 				$time = ELOutput::formattime($this->_data->dates, $this->_data->times).' - '.ELOutput::formattime($this->_data->enddates, $this->_data->endtimes);
 				$date = ELOutput::formatdate($this->_data->dates, $this->_data->times);
 				$price = ELOutput::formatprice($this->_data->course_price);
-				$duration = $this->_data->duration;
-				if ($this->_data->duration == 1) $duration .= JText::_('DAY');
-				else if ($this->_data->duration > 1) $duration .= JText::_('DAYS');
+				$duration = redEVENTHelper::getEventDuration($this->_data);
 				$username = JRequest::getVar('subemailname', '');
 				$useremail = JRequest::getVar('subemailaddress', '');
 				$uri = JURI::getInstance();
@@ -209,7 +207,7 @@ class redEVENT_tags {
 		$q = " SELECT e.*, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, x.course_price, "
 		    . " x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, v.venue, x.venueid,
 					v.city AS location,
-					v.country, DATEDIFF(x.enddates, x.dates)+1 AS duration,
+					v.country, 
 					UNIX_TIMESTAMP(x.dates) AS unixdates
 			FROM #__redevent_events AS e
 			INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id

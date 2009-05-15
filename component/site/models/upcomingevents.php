@@ -49,17 +49,15 @@ class RedeventModelUpcomingevents extends JModel {
 		$db = JFactory::getDBO();
 		$params = $mainframe->getParams();
 		
-		$q = "SELECT e.*, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, x.course_price, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, v.venue, x.venueid,
-					v.city AS location, v.id AS venueid,
-					v.country, DATEDIFF(x.enddates, x.dates)+1 AS duration
-			FROM #__redevent_venues v
-			LEFT JOIN #__redevent_event_venue_xref x
-			ON x.venueid = v.id
-			LEFT JOIN #__redevent_events e
-			ON x.eventid = e.id
-			WHERE x.published = 1
-			AND (
-				x.dates > NOW() AND x.dates < DATE_ADD(NOW(), INTERVAL ".$params->getValue('upcoming_days_ahead', 30)." DAY) ";
+		$q = ' SELECT e.*, IF (x.course_credit = 0, "", x.course_credit) AS course_credit, x.course_price, x.id AS xref, '
+		   . ' x.dates, x.enddates, x.times, x.endtimes, '
+		   . ' v.venue, x.venueid, v.city AS location, v.id AS venueid,	v.country '
+		   . ' FROM #__redevent_venues v '
+		   . ' LEFT JOIN #__redevent_event_venue_xref x	ON x.venueid = v.id '
+		   . ' LEFT JOIN #__redevent_events e	ON x.eventid = e.id '
+		   . ' WHERE x.published = 1 '
+		   . ' AND (x.dates > NOW() AND x.dates < DATE_ADD(NOW(), INTERVAL '.$params->getValue('upcoming_days_ahead', 30).' DAY) '
+		   ;
 		if ($params->getValue('show_days_no_date', 0) == 1) $q .= "OR x.dates = '0000-00-00' ";
 		$q .= ") ORDER BY x.dates ";
 		$q .= "LIMIT ".$params->getValue('show_number_courses', 10);

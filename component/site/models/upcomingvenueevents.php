@@ -50,8 +50,7 @@ class RedeventModelUpcomingVenueevents extends JModel {
 		$params = $mainframe->getParams();
 		
 		$q = "SELECT e.*, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, x.course_price, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, v.venue, x.venueid,
-					v.city AS location, v.id AS venueid,
-					v.country, DATEDIFF(x.enddates, x.dates)+1 AS duration
+					v.city AS location, v.id AS venueid, v.country 
 			FROM #__redevent_venues v
 			LEFT JOIN #__redevent_event_venue_xref x
 			ON x.venueid = v.id
