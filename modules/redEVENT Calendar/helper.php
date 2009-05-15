@@ -7,47 +7,6 @@
  * @link http://extensions.qivva.com
  * @license        http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @copyright (C) 2008 Toni Smillie www.qivva.com
- * Eventlist Calendar Q by Toni Smillie www.qivva.com
- * 
-  * Version 0.8
- * Changes for v0.8
- * 1. Roll over year end bug fixed
- * 2. Check for mb_substr
- * 3. Removed hard coded text align center (Now uses stylesheet)
-  * Version 0.7
- * Changes for v0.7
- * 1. Removed JDate again - causing too many date/time problems
- * 2. Better Tooltips
- * Version 0.6
- * Changes for v0.6
- * 1. Use JDate for month and day languages
- * 2. XHTML validation fixes
- * 3. Tests if mbstring functions are installed before using them, defaults to ucfirst if no mb_convert_case
- * 4. Allows a calendar offset so can have multiple calendars displaying different months
- *
-  * Version 0.5
- * Changes for v0.5
- * 1. Remember which month was being viewed, so doesn't revery back to "today" on a page change - controlled by Parameter
- * 2. Fix for Windows IIS servers
- * 3. Fix for SEF links
- * 4. Replace instead of concatenate month view changes
- * 5. Set $month_href = NULL; (bug fix)
- * 6. Use multibyte strings for days and months. Parameter overrides for locale and charset.
- *
- * Version 0.4
- * Changes for v0.4
- * 1. New Parameters Category ID and Venue ID to allow for filtering of calendar module events
- * 2. Removed the 2 styling parameters form the parameter list. All styling is now done in the CSS
- * 3. Enhanced styling and new stylesheet
- * 
- * Changes for v0.3
- * 1. Fixed timeoffset properly for Joomla 1.5
- * 2. Fixed problem that caused "Notice: Undefined index:" with PHP5
- * 
- * Changes for v0.2
- * 1. Added Title on Tooltips
- * 2. Fix for time offset
- * 3 Bug fix - not picking up all events when on the same day
  * 
  * Original Eventlist calendar from Christoph Lukes www.schlu.net
  * PHP Calendar (version 2.3), written by Keith Devens
@@ -56,7 +15,7 @@
  * License: http://keithdevens.com/software/license
 */
 
-class modeventlistcalqhelper
+class modredeventcalhelper
 {
 
 	function getdays ($greq_year, $greq_month, &$params)
@@ -66,7 +25,7 @@ class modeventlistcalqhelper
 		
 		$catid 				= trim( $params->get('catid') );
 		$venid 				= trim( $params->get('venid') );
-		setlocale(LC_TIME, 'swedish');
+		
 		//Get eventdates
 		if ($catid)
 		{
@@ -103,8 +62,7 @@ class modeventlistcalqhelper
 			{
 				$eyear = $event->created_year;
 				$emonth = $event->created_month;
-				$eday = $event->created_day;
-		
+				$eday = $event->created_day;		
 			}
 			else
 			{
@@ -130,7 +88,6 @@ class modeventlistcalqhelper
 				{
 					$emonth = $greq_month;
 
-		//			$eday = cal_days_in_month(CAL_GREGORIAN, $greq_month,$greq_year);
 					$eday = date('t', mktime(0,0,0, $greq_month, 1, $greq_year));
 				}
 
@@ -148,9 +105,6 @@ class modeventlistcalqhelper
 				$tdate = strftime('%Y%m%d',$uxdate);// Toni change Joomla 1.5
 				$created_day = $count;
 		
-	//			$tt = $days[$count][1];
-		
-	//			if (strlen($tt) == 0)
 				if (empty($days[$count][1]))
 				{
 					$title = htmlspecialchars($event->title);
@@ -164,7 +118,6 @@ class modeventlistcalqhelper
 				$days[$count] = array($link,$title);
 				}
 		}
-	// End of Toni modification	
 	}
 	return $days;
 	} //End of function getdays

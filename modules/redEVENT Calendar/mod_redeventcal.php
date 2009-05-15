@@ -69,32 +69,32 @@ JHTML::_('behavior.tooltip');
 	$Show_Tooltips		= $params->get( 'Show_Tooltips', '1' );	
 	$Remember			= $params->get( 'Remember', '1' );
 	$LocaleOverride		= $params->get( 'locale_override', '' );
-	$CalTooltipsTitle		= $params->get( 'cal15q_tooltips_title', 'Events' );	
+	$CalTooltipsTitle		= $params->get( 'recal_tooltips_title', 'Events' );	
 	$CharsetOverride		= $params->get( 'charset_override', '' );
 	
 	if (empty($LocaleOverride))
 	{
 	}
 	else
-	{
-		setlocale(LC_ALL, $LocaleOverride ) ;
+	{		 
+		$my_loc = setlocale(LC_TIME, $LocaleOverride ) ;
 	}
 
 	//get switch trigger
-	$req_month 		= (int)JRequest::getVar( 'el_mcal_month', '', 'request' );
-	$req_year       = (int)JRequest::getVar( 'el_mcal_year', '', 'request' );	
+	$req_month 		= (int)JRequest::getVar( 're_mcal_month', '', 'request' );
+	$req_year       = (int)JRequest::getVar( 're_mcal_year', '', 'request' );	
 	
 	if ($Remember == 1) // Remember which month / year is selected. Don't jump back to tday on page change
 	{
 		if ($req_month == 0) 
 		{
-			$req_month = $mainframe->getUserState("eventlistcalqmonth");
-			$req_year = $mainframe->getUserState("eventlistcalqyear");	
+			$req_month = $mainframe->getUserState("redeventcalmonth");
+			$req_year = $mainframe->getUserState("redeventcalyear");	
 		}
 		else
 		{
-			$mainframe->setUserState("eventlistcalqmonth",$req_month);
-			$mainframe->setUserState("eventlistcalqyear",$req_year);
+			$mainframe->setUserState("redeventcalmonth",$req_month);
+			$mainframe->setUserState("redeventcalyear",$req_year);
 		}
 	}
 	
@@ -139,17 +139,20 @@ JHTML::_('behavior.tooltip');
 	else $newuri = $myurl;
 	
 	// Clean up
-	$find = array('/.el_mcal_month=[0-9]/', '/.el_mcal_year=[0-9]+/');
+	$find = array('/.re_mcal_month=[0-9]/', '/.re_mcal_year=[0-9]+/');
 	$replace = '';
 	$newuri = preg_replace($find,$replace,$newuri);
 	
 	$newuri .= (stristr($newuri, '?')) ? '&' : '?';
 
 	//Create Links
- 	$prev_link = $newuri.'el_mcal_month='.$prev_month.'&el_mcal_year='.$prev_month_year ;
- 	$next_link = $newuri.'el_mcal_month='.$next_month.'&el_mcal_year='.$next_month_year ;
+ 	$prev_link = $newuri.'re_mcal_month='.$prev_month.'&re_mcal_year='.$prev_month_year ;
+ 	$next_link = $newuri.'re_mcal_month='.$next_month.'&re_mcal_year='.$next_month_year ;
 
-	$days = modeventlistcalqHelper::getdays($req_year, $offset_month, $params);
+	$days = modredeventcalHelper::getdays($req_year, $offset_month, $params);
 	
-	require( JModuleHelper::getLayoutPath( 'mod_eventlistcal15q' ) );	
+	require( JModuleHelper::getLayoutPath( 'mod_redeventcal' ) );	
+	
+	// reset the local
+	setlocale(LC_TIME, NULL) ;
 ?> 

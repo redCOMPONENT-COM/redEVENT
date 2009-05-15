@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <install type="module" version="1.5.0">
-	<name>redEventQ Calendar module</name>
+	<name>redEvent Calendar module</name>
 	<creationDate>17 April 2009</creationDate>
 	<author>Toni Smillie</author>
 	<copyright>GNU General Public License 2</copyright>	 
 	<authorEmail>toni@qivva.com</authorEmail>
 	<authorUrl>http://www.qivva.com</authorUrl>
 	<version>2.0 beta 1</version>
-	<description><![CDATA[<h2>redEVENT Calendar Module for Joomla 1.5.x</h2>]]></description>
+	<description><![CDATA[<h2>Calendar Module for redEVENT 2.0</h2>]]></description>
 	<files>
-		<filename module="mod_eventlistcal15q">mod_eventlistcal15q.php</filename>
-		<filename>mod_eventlistcal15q.css</filename>
+		<filename module="mod_redeventcal">mod_redeventcal.php</filename>
+		<filename>mod_redeventcal.css</filename>
 		<filename>index.html</filename>
-        <filename>helper.php</filename>
-        <filename>tmpl/default.php</filename>
-        <filename>tmpl/index.html</filename>		
+    <filename>helper.php</filename>
+    <filename>tmpl/default.php</filename>
+    <filename>tmpl/index.html</filename>
 	</files>
 	<params>
 		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
 		<param name="locale_override" type="text" default="" label="Locale Override" description="Define the locale you want the calendar to use to override the default" />
 		<param name="charset_override" type="text" default="" label="Charset" description="Define the override charset you want the calendar to use e.g. UTF-8 or ISO8859-15" />
-		<param name="cal15q_tooltips_title" type="text" default="Events" label="ToolTips Title" description="Define the tooltips title" />			
-        <param name="day_name_length" type="list" default="2" label="Length of the Dayname" description="Select if you want to display the full dayname or a short version">
+		<param name="recal_tooltips_title" type="text" default="Events" label="ToolTips Title" description="Define the tooltips title" />			
+    <param name="day_name_length" type="list" default="2" label="Length of the Day name" description="Select if you want to display the full dayname or a short version">
 			<option value="0">Don't display days</option>
 			<option value="1">One letter</option>
 			<option value="2">Two letters</option>
