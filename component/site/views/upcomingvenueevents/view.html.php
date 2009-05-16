@@ -104,7 +104,7 @@ class RedeventViewUpcomingVenueevents extends JView
 		
 		//set Page title
 		$mainframe->setPageTitle( $pagetitle );
-   		$mainframe->addMetaTag( 'title' , $pagetitle );
+   	$mainframe->addMetaTag( 'title' , $pagetitle );
 		$document->setMetadata('keywords', $venue->meta_keywords );
 		$document->setDescription( strip_tags($venue->meta_description) );
 		
@@ -135,21 +135,21 @@ class RedeventViewUpcomingVenueevents extends JView
 		}
 
 		//build the url
-        if(!empty($venue->url) && strtolower(substr($venue->url, 0, 7)) != "http://") {
-        	$venue->url = 'http://'.$venue->url;
-        }
+		if(!empty($venue->url) && strtolower(substr($venue->url, 0, 7)) != "http://") {
+			$venue->url = 'http://'.$venue->url;
+		}
 
-        //prepare the url for output
-        if (strlen(htmlspecialchars($venue->url, ENT_QUOTES)) > 35) {
+		//prepare the url for output
+		if (strlen(htmlspecialchars($venue->url, ENT_QUOTES)) > 35) {
 			$venue->urlclean = substr( htmlspecialchars($venue->url, ENT_QUOTES), 0 , 35).'...';
 		} else {
 			$venue->urlclean = htmlspecialchars($venue->url, ENT_QUOTES);
 		}
 
-        //create flag
-        if ($venue->country) {
-        	$venue->countryimg = ELOutput::getFlag( $venue->country );
-        } 
+		//create flag
+		if ($venue->country) {
+			$venue->countryimg = ELOutput::getFlag( $venue->country );
+		}
 		
 		// Create the pagination object
 		$limitstart		= JRequest::getInt('limitstart');

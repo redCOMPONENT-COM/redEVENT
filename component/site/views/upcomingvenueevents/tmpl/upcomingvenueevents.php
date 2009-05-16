@@ -116,16 +116,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		echo $this->loadTemplate('courseinfo');
 	} ?>
 
-	<p>
-	<input type="hidden" name="option" value="com_redevent" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="" />
-	<input type="hidden" name="view" value="venueevents" />
-	<input type="hidden" name="id" value="<?php echo $this->venue->id; ?>" />
-	<input type="hidden" name="Itemid" value="<?php echo $this->item->id;?>" />
-	</p>
-	</form>
-
 <!--pagination-->
 <?php if (!$this->params->get( 'popup' ) ) : ?>
 <div class="pageslinks">

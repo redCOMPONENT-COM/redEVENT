@@ -8,5 +8,8 @@
 	<state>
 		<name>UPCOMING_VENUE_EVENTS_LAYOUT</name>
 		<description>UPCOMING_VENUE_EVENTS_DESC</description>
+    <url addpath="/administrator/components/com_redevent/elements">
+      <param name="id" type="venue" default="0" label="Select Venue" description="SELECTVENUE" />
+    </url>
 	</state>
 </metadata>
