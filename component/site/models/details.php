@@ -142,8 +142,8 @@ class RedeventModelDetails extends JModel
 					. ' x.*, a.catsid, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, a.show_attendants, a.show_waitinglist, '
 					. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone,'
 					. " a.confirmation_message, x.course_price, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.catname, c.published, c.access,"
-					. ' a.id as slug, '
-					. ' c.id as categoryslug'
+	        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
+	        . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
 					. ' FROM #__redevent_events AS a'
 					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
 					. ' LEFT JOIN #__redevent_categories AS c ON c.id = a.catsid'

@@ -229,9 +229,9 @@ class RedeventModelCategoriesdetailed extends JModel
 
 		//Get Events from Category
 		$query = 'SELECT a.*, x.*, l.venue, l.city, l.state, l.url, c.catname, c.id AS catid,'
-				. ' a.id as slug,'
-				. ' x.venueid as venueslug,'
-				. ' c.id as categoryslug'
+        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
+        . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
+        . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
 				. ' FROM #__redevent_events AS a'
 				. ' LEFT JOIN #__redevent_event_venue_xref AS x on x.eventid = a.id'
 				. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
