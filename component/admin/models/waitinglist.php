@@ -246,37 +246,39 @@ class RedEventModelWaitinglist extends JModel {
 		$db->setQuery($q);
 		$selectfield = $db->loadResult();
 		
-		/* Inform the ids that they can attend the event */
-		$subids = "id = ".implode(" OR id = ", $update_ids);
-		if (function_exists('mb_strtolower')) $field = $db->nameQuote(mb_strtolower(str_replace(" ", "", $selectfield), "UTF-8"));
-		else $field = $db->nameQuote(strtolower(str_replace(" ", "", $selectfield)));
-		$query = "SELECT ".$field."
-				FROM #__rwf_forms_".$this->event_data->redform_id."
-				WHERE ".$subids;
-		$db->setQuery($query);
-		$addresses = $db->loadResultArray();
-		
-		/* Check if there are any addresses to be mailed */
-		if (count($addresses) > 0) {
-			/* Start mailing */
-			$this->Mailer();
-			foreach ($addresses as $key => $email) {
-				/* Send a off mailinglist mail to the submitter if set */
-				/* Add the email address */
-				$this->mailer->AddAddress($email);
-				
-				/* Mail submitter */
-				$htmlmsg = '<html><head><title></title></title></head><body>'.$body.'</body></html>';
-				$this->mailer->setBody($htmlmsg);
-				$this->mailer->setSubject($subject);
-				
-				/* Send the mail */
-				if (!$this->mailer->Send()) {
-					$mainframe->enqueueMessage(JText::_('THERE WAS A PROBLEM SENDING MAIL'));
+		if ($selectfield) {
+			/* Inform the ids that they can attend the event */
+			$subids = "id = ".implode(" OR id = ", $update_ids);
+			if (function_exists('mb_strtolower')) $field = $db->nameQuote(mb_strtolower(str_replace(" ", "", $selectfield), "UTF-8"));
+			else $field = $db->nameQuote(strtolower(str_replace(" ", "", $selectfield)));
+			$query = "SELECT ".$field."
+					FROM #__rwf_forms_".$this->event_data->redform_id."
+					WHERE ".$subids;
+			$db->setQuery($query);
+			$addresses = $db->loadResultArray();
+			
+			/* Check if there are any addresses to be mailed */
+			if (count($addresses) > 0) {
+				/* Start mailing */
+				$this->Mailer();
+				foreach ($addresses as $key => $email) {
+					/* Send a off mailinglist mail to the submitter if set */
+					/* Add the email address */
+					$this->mailer->AddAddress($email);
+					
+					/* Mail submitter */
+					$htmlmsg = '<html><head><title></title></title></head><body>'.$body.'</body></html>';
+					$this->mailer->setBody($htmlmsg);
+					$this->mailer->setSubject($subject);
+					
+					/* Send the mail */
+					if (!$this->mailer->Send()) {
+						$mainframe->enqueueMessage(JText::_('THERE WAS A PROBLEM SENDING MAIL'));
+					}
+					
+					/* Clear the mail details */
+					$this->mailer->ClearAddresses();
 				}
-				
-				/* Clear the mail details */
-				$this->mailer->ClearAddresses();
 			}
 		}
 	}
