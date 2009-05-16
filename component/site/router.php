@@ -156,6 +156,10 @@ function RedEventParseRoute($segments)
 
 		} break;
 		
+		default:
+      $vars['view'] = $segments[0];
+			
+			break;
 	}
 
 	return $vars;
