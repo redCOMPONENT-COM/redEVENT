@@ -208,7 +208,8 @@ class redEVENT_tags {
 		    . " x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, v.venue, x.venueid,
 					v.city AS location,
 					v.country, 
-					UNIX_TIMESTAMP(x.dates) AS unixdates
+					UNIX_TIMESTAMP(x.dates) AS unixdates,
+          CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(':', v.id, v.alias) ELSE v.id END as venueslug
 			FROM #__redevent_events AS e
 			INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id
 			INNER JOIN #__redevent_venues AS v ON x.venueid = v.id

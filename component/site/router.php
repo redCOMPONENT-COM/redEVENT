@@ -156,6 +156,17 @@ function RedEventParseRoute($segments)
 
 		} break;
 		
+    case 'upcomingvenueevents':
+    {
+      $vars['view'] = 'upcomingvenueevents';
+      
+      $count = count($segments);
+      if($count == 2) {
+        $vars['id'] = $segments[1];
+      }
+
+    } break;
+    
 		default:
       $vars['view'] = $segments[0];
 			

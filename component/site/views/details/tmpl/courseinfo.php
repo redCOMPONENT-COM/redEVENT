@@ -42,13 +42,13 @@ $elsettings = redEVENTHelper::config();
 $imagepath = JURI::base() . '/administrator/components/com_redevent/assets/images/';
 foreach ($this->_eventlinks as $key => $event) {
 	$event_url = JRoute::_('index.php?option=com_redevent&view=details&xref='.$event->xref);
-	$venue_url = JRoute::_('index.php?option=com_redevent&view=upcomingvenueevents&id='.$event->venueid);
+	$venue_url = JRoute::_('index.php?option=com_redevent&view=upcomingvenueevents&id='.$event->venueslug);
 	?>
 	<tr>
 			<td width="350"><?php echo JHTML::_('link', $event_url, $event->title); ?></td>
 			<td width="90"><?php echo ELOutput::formatdate($event->dates, $event->times); ?></td>
 			<td width="80"><?php echo redEVENTHelper::getEventDuration($event); ?></td>
-			<td width="65"><?php echo JHTML::_('link', $venue_url, $event->location); ?></td>
+			<td width="65"><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
 			<td width="30"><?php echo ELOutput::getFlag( $event->country ); ?></td>
 			<td width="60"><?php echo ELOutput::formatprice($event->course_price) ?></td>
 			<td width="70"><?php echo $event->course_credit ?></td>
