@@ -161,15 +161,17 @@ class redEVENT_tags {
 				$message = str_replace($findoffer, $replaceoffer, $page);
 			  /* second replacement, add the form */
 				/* if done in first one, username in the form javascript is replaced too... */
-        $message = str_replace('[redform]', $redform, $message); 
+				$message = str_replace('[redform]', $redform, $message); 
 				foreach ($customdata as $tag => $data) {
 					$data->text_field = str_replace($findoffer, $replaceoffer, $data->text_field);
+					/* Do a redFORM replacement here too for when used in the text library */
+					$data->text_field = str_replace('[redform]', $redform, $data->text_field);
 					$message = str_ireplace('['.$tag.']', $data->text_field, $message);
 				}
 				
 				// FIXME: I don't see the point of this relative to abs for pictures, only causing problems... I'll comment it for now.
-				//return ELOutput::ImgRelAbs($message);
-				return($message);
+				// FEEDBACK: relative to absolute images is necessary for e-mail messages that contain relative image links. The images won't show up in the e-mail.
+				return ELOutput::ImgRelAbs($message);
 			}
 			else return '';
 		}

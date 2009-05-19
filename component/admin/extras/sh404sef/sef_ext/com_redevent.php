@@ -94,7 +94,7 @@ else {
 				WHERE x.id = ".$shGETVars['xref'];
 			$db->setQuery($q);
 			$details = $db->loadObject();
-			$title[] = $details->title;
+			$title[] = $shGETVars['xref'].'-'.$details->title;
 			$title[] = $details->city;
 			$title[] = $details->dates;
 			$title[] = $details->times;
@@ -130,9 +130,16 @@ else {
 		if (strtolower($shGETVars['task']) == 'confirm') {
 			$title[] = 'confirm';
 			$title[] = $shGETVars['confirmid'];
+			shRemoveFromGETVarsList('task');
+			shRemoveFromGETVarsList('confirmid');
 		}
-		shRemoveFromGETVarsList('task');
-		shRemoveFromGETVarsList('confirmid');
+	}
+	
+	if (isset($shGETVars['pop'])) {
+		if ($shGETVars['pop'] == 1) {
+			$title[] = 'print';
+		}
+		shRemoveFromGETVarsList('pop');
 	}
 	
 	/* Handle the RSS feed */

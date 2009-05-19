@@ -44,48 +44,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     	?>
 	</h2>
 	<?php //flyer
-	echo ELOutput::flyer( $this->row, $this->dimage, 'event' );
-	?> 
-	<dl class="event_info floattext"> 
-	<dt class="category"><?php echo JText::_( 'CATEGORY' ).':'; ?></dt>
-    		<dd class="category">
-				<?php echo "<a href='".JRoute::_( 'index.php?option=com_redevent&view=categoryevents&id='.$this->row->categoryslug )."'>".$this->escape($this->row->catname)."</a>";?>
-			</dd>
-	</dl>
-	<?php
 		echo $this->tags->ReplaceTags($this->row->datdescription);
-	?>
-	<?php if ($this->row->show_attendants || $this->row->show_waitinglist) { ?>
-		<h2 class="eventlist">
-			<?php
-			echo JText::_( 'EVENT_AVAILABILITY' );
-			?>
-		</h2>
-		<dl class="event_availability floattext">
-			<?php 
-			if ($this->row->show_attendants) { ?>
-			<dt class="max_attendants"><?php echo JText::_( 'MAX_ATTENDANTS' ).':'; ?></dt>
-				<dd class="max_attendants">
-					<?php echo $this->maxattendance; ?>
-				</dd>
-			<dt class="show_attendants"><?php echo JText::_( 'SHOW_ATTENDANTS' ).':'; ?></dt>
-				<dd class="show_attendants">
-					<?php echo $this->attendancelist; ?>
-				</dd>
-			<?php }
-			
-			if ($this->row->show_waitinglist) { ?>
-			<dt class="max_waitinglist"><?php echo JText::_( 'MAX_WAITINGLIST' ).':'; ?></dt>
-				<dd class="max_waitinglist">
-					<?php echo $this->maxwaitinglist; ?>
-				</dd>
-			<dt class="show_waitinglist"><?php echo JText::_( 'SHOW_WAITINGLIST' ).':'; ?></dt>
-				<dd class="show_waitinglist">
-					<?php echo $this->waitinglist; ?>
-				</dd>
-			<?php } ?>
-		</dl>
-	<?php } 
 /* If registration is enabled */
 if ($this->row->show_names) : ?>
 		<!-- Registration -->
