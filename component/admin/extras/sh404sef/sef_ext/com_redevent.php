@@ -74,6 +74,8 @@ else {
 		}
 		if ($shGETVars['view'] == 'confirmation') {
 			$title[] = $shGETVars['view'];
+			$title[] = $shGETVars['task'];
+			shRemoveFromGETVarsList('task');
 		}
 	}
 	
@@ -113,6 +115,7 @@ else {
 					break;
 				default:
 					if ($shGETVars['page'] != 'confirmation') $title[] = $shGETVars['page'];
+					else $title[] = $shGETVars['action'];
 					break;
 			}
 			shRemoveFromGETVarsList('page');
@@ -130,9 +133,9 @@ else {
 		if (strtolower($shGETVars['task']) == 'confirm') {
 			$title[] = 'confirm';
 			$title[] = $shGETVars['confirmid'];
-			shRemoveFromGETVarsList('task');
-			shRemoveFromGETVarsList('confirmid');
 		}
+		shRemoveFromGETVarsList('task');
+		shRemoveFromGETVarsList('confirmid');
 	}
 	
 	if (isset($shGETVars['pop'])) {

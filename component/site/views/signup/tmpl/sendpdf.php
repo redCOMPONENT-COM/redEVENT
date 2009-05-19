@@ -72,7 +72,6 @@ if ($this->course->pdf_form_data) {
 	
 	$form = new stdClass();
 	
-	/* TODO: real form */
 	$form->text = '{redform}'.$this->course->redform_id.','.$this->course->max_multi_signup.'{/redform}';
 	$form->eventid = $course->did;
 	$form->task = 'userregister';
