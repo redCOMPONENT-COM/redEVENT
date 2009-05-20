@@ -20,6 +20,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+Version 2.0 beta 4
++ Added tags to subject
+
 Version 2.0 beta 3
 * Fixed database error WHERE id IN ()
 * Fixed category check on event saving

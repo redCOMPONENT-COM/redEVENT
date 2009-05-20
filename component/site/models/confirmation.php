@@ -257,7 +257,7 @@ class RedeventModelConfirmation extends JModel
 			$htmlmsg .= '</body></html>';
 			$tags = new redEVENT_tags;
 			$this->mailer->setBody($tags->ReplaceTags($htmlmsg));
-			$this->mailer->Subject = $eventsettings->notify_subject;
+			$this->mailer->setSubject($tags->ReplaceTags($eventsettings->notify_subject));
 			
 			/* Count number of messages sent */
 			$this->mailer->Send();

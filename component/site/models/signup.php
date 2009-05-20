@@ -222,7 +222,7 @@ class RedeventModelSignup extends JModel
 		$this->mailer->setBody($message);
 		
 		/* Set the subject */
-		$this->mailer->setSubject($email_settings->submission_type_email_subject);
+		$this->mailer->setSubject($tags->ReplaceTags($email_settings->submission_type_email_subject));
 		
 		/* Sent out the mail */
 		if (!$this->mailer->Send()) {
@@ -262,7 +262,7 @@ class RedeventModelSignup extends JModel
 		$this->mailer->AddAddress(JRequest::getVar('subemailaddress'), JRequest::getVar('subemailname'));
 		
 		/* Set the subject */
-		$this->mailer->setSubject($details->submission_type_formal_offer_subject);
+		$this->mailer->setSubject($tags->ReplaceTags($details->submission_type_formal_offer_subject));
 		
 		/* Add the body to the mail */
 		/* Read the template */

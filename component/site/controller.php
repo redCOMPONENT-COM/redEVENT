@@ -543,7 +543,7 @@ class RedeventController extends JController
 						/* Mail submitter */
 						$htmlmsg = '<html><head><title></title></title></head><body>'.$tags->ReplaceTags($eventdata->notify_confirm_body).'</body></html>';
 						$this->mailer->setBody($htmlmsg);
-						$this->mailer->setSubject($eventdata->notify_confirm_subject);
+						$this->mailer->setSubject($tags->ReplaceTags($eventdata->notify_confirm_subject));
 						
 						/* Send the mail */
 						if (!$this->mailer->Send()) {
