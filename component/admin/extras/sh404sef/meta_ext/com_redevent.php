@@ -21,6 +21,8 @@ global 	$shCustomTitleTag, $shCustomDescriptionTag, $shCustomKeywordsTag, $shCus
 $subtype = JREQUEST::getVar('subtype', null);
 $xref = JRequest::getInt('xref', false);
 
+$app = & JFactory::getApplication();
+
 if (!is_null($subtype) && $xref) {
 	$db = JFactory::getDBO();
 	/* Get the event name/place/start date/start time */
@@ -33,7 +35,7 @@ if (!is_null($subtype) && $xref) {
 		WHERE x.id = ".$xref;
 	$db->setQuery($q);
 	$details = $db->loadObject();
-	// Axcon Training Online Signup | Date | Location | Coursetitle
-	$shCustomTitleTag = 'Axcon Training Online Signup | '.$details->dates.' | '.ucfirst($details->city).' | '.ucfirst($details->title);
+	// 'website' Online Signup | Date | Location | Coursetitle
+	$shCustomTitleTag = $app->getCfg('sitename'). ' Online Signup'.' | '.$details->dates.' | '.ucfirst($details->city).' | '.ucfirst($details->title);
 }
 ?>

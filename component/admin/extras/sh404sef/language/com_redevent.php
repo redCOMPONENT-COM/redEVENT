@@ -18,6 +18,7 @@
   $sh_LANG['en']['venues'] = 'venues';
   $sh_LANG['en']['editevent'] = 'editevent';
   $sh_LANG['en']['editvenue'] = 'editvenue';
+  $sh_LANG['en']['onlinesignup'] = 'Online Signup';
   // dutch
   $sh_LANG['nl']['_COM_SEF_REDEVENT'] = 'redEVENT';
   $sh_LANG['nl']['_COM_SEF_TITLE_REDEVENT'] = 'redEVENT';
