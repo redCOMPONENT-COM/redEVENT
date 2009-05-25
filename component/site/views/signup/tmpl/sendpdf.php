@@ -24,8 +24,10 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 // set document information
-$this->pdf->SetCreator('Axcon');
-$this->pdf->SetAuthor("Axcon");
+$app = & JFactory::getApplication();
+
+$this->pdf->SetCreator($app->getCfg('sitename'));
+$this->pdf->SetAuthor($app->getCfg('sitename'));
 $this->pdf->SetTitle($this->course->title);
 $this->pdf->SetSubject($this->course->title);
 
