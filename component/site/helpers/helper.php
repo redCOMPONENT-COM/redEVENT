@@ -315,16 +315,17 @@ class redEVENTHelper {
     }
     
     $duration = $end - $start;
-	if ($duration > 3600 * 24) {
-		$day = floor($duration / (3600 * 24));
-		if ($day == 1) return $day . ' ' . JText::_('Day');
-		else return $day . ' ' . JText::_('Days');
-	}
-	else if ($duration == 3600 * 24) {
-		return '1' . ' ' . JText::_('Day');			
-	}
-	else {
-		return floor($duration / 3600) . JText::_('LOC_H') . sprintf('%02d', floor(($duration % 3600) / 60));
+		if ($duration > 3600 * 24) {
+			$day = floor($duration / (3600 * 24));
+			if ($day == 1) return $day . ' ' . JText::_('Day');
+			else return $day . ' ' . JText::_('Days');
+		}
+		else if ($duration == 3600 * 24) {
+			return '1' . ' ' . JText::_('Day');			
+		}
+		else {
+			return floor($duration / 3600) . JText::_('LOC_H') . sprintf('%02d', floor(($duration % 3600) / 60));
+		}
 	}
 }
 ?>
