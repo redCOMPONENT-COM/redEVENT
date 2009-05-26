@@ -138,14 +138,19 @@ class redEVENTHelper {
 
 			//delete outdated events
 			if ($elsettings->oldevent == 1) {
-				$query = 'DELETE FROM #__redevent_event_venue_xref WHERE DATE_SUB(NOW(), INTERVAL '.$elsettings->minus.' DAY) > (IF (enddates <> '.$nulldate.', enddates, dates))';
+				$query = ' DELETE x,e FROM #__redevent_event_venue_xref AS x, #__redevent_events AS e '
+				       . ' WHERE DATE_SUB(NOW(), INTERVAL '.$elsettings->minus.' DAY) > (IF (x.enddates <> '.$nulldate.', x.enddates, x.dates)) '
+				       . ' AND e.id = x.eventid ';
 				$db->SetQuery( $query );
 				$db->Query();
 			}
 
 			//Set state archived of outdated events
-			if ($elsettings->oldevent == 2) {
-				$query = 'UPDATE #__redevent_event_venue_xref SET published = -1 WHERE DATE_SUB(NOW(), INTERVAL '.$elsettings->minus.' DAY) > (IF (enddates <> '.$nulldate.', enddates, dates))';
+			if ($elsettings->oldevent == 2) {				
+				$query = ' UPDATE #__redevent_event_venue_xref AS x '
+				       . ' INNER JOIN #__redevent_events AS e ON e.id = x.eventid '
+				       . ' SET e.published = -1, x.published = -1 '
+				       . ' WHERE DATE_SUB(NOW(), INTERVAL '.$elsettings->minus.' DAY) > (IF (x.enddates <> '.$nulldate.', x.enddates, x.dates))';
 				$db->SetQuery( $query );
 				$db->Query();
 			}
