@@ -132,8 +132,11 @@ class redEVENT_tags {
 							$form->task = 'userregister';
 							break;
 					}
+					// params for plugin
+					$params = array();
+					$params['show_submission_type_webform_formal_offer'] = $this->_data->show_submission_type_webform_formal_offer;		
 									
-					$results = $dispatcher->trigger('PrepareEvent', array(& $form));
+					$results = $dispatcher->trigger('onPrepareEvent', array(& $form, $params));
           $redform = $form->text;
 				}
 				

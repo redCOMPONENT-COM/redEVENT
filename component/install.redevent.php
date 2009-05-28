@@ -210,6 +210,13 @@ if (is_array($cols)) {
 		$db->setQuery($q);
 		$db->query();
 	}
+	
+  /* Check if we have the show_submission_type_webform_formal_offer column */
+  if (!array_key_exists('show_submission_type_webform_formal_offer', $cols)) {
+    $q = "ALTER IGNORE TABLE `#__redevent_events` ADD `show_submission_type_webform_formal_offer` TINYINT( 2 ) NOT NULL DEFAULT '0' AFTER `pdf_form_data`";
+    $db->setQuery($q);
+    $db->query();
+  }	
 }
 
 /* Get the current columns */
