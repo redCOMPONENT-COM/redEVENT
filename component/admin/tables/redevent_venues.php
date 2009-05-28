@@ -173,13 +173,17 @@ class RedEvent_venues extends JTable
      	 	return false;
 		}
 		
-		/** check for existing name */
-		$query = 'SELECT id FROM #__redevent_venues WHERE venue = '.$this->_db->Quote($this->venue);
+		/** check for existing venue */
+		$query = ' SELECT id FROM #__redevent_venues'
+		       . ' WHERE venue = ' . $this->_db->Quote($this->venue)
+		       . '   AND street = ' . $this->_db->Quote($this->street)
+           . '   AND city = ' . $this->_db->Quote($this->city)
+		       ;
 		$this->_db->setQuery($query);
 
 		$xid = intval($this->_db->loadResult());
 		if ($xid && $xid != intval($this->id)) {
-			JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('VENUE NAME ALREADY EXIST', $this->venue));
+			JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('VENUE ALREADY EXIST', $this->venue));
 			return false;
 		}
 
