@@ -37,6 +37,6 @@ else {
 if ($this->action == 'print') {
 ?>
 <script type="text/javascript">
-	window.open( window.location.protocol+"//"+window.location.host+'/index2.php?view=confirmation&page=print&xref=<?php echo JRequest::getVar('xref'); ?>&submit_key=<?php echo JRequest::getVar('submit_key'); ?>&option=com_redevent' );
+	window.open( window.location.protocol+"//"+window.location.host+'/index.php?view=confirmation&tmpl=component&page=print&xref=<?php echo JRequest::getVar('xref'); ?>&submit_key=<?php echo JRequest::getVar('submit_key'); ?>&option=com_redevent' );
 </script>
 <?php } ?>
