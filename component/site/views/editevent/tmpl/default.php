@@ -28,16 +28,12 @@ JHTML::_('behavior.calendar');
 
 <script type="text/javascript">
 		Window.onDomReady(function(){
-			document.formvalidator.setHandler('catsid',
+			document.formvalidator.setHandler('categories',
 				function (value) {
 					if(value=="") {
-						return true;
+						return false;
 					} else {
-						timer = new Date();
-						time = timer.getTime();
-						regexp = new Array();
-						regexp[time] = new RegExp('^[1-9]{1}[0-9]{0,}$');
-						return regexp[time].test(value);
+					  return true;
 					}
 				}
 			);
@@ -45,10 +41,9 @@ JHTML::_('behavior.calendar');
 
 		function submitbutton( pressbutton ) {
 
-
 			if (pressbutton == 'cancelevent' || pressbutton == 'addvenue') {
 				elsubmitform( pressbutton );
-				return;
+				return false;
 			}
 
 			var form = document.getElementById('adminForm');
@@ -59,12 +54,10 @@ JHTML::_('behavior.calendar');
 			if ( title.length==0 ) {
    				alert("<?php echo JText::_( 'ADD TITLE', true ); ?>");
    				validator.handleResponse(false,form.title);
-   				form.title.focus();
    				return false;
-			} else if ( validator.validate(form.catsid) === false ) {
+			} else if ( validator.validate(form.categories) === false ) {
     			alert("<?php echo JText::_( 'SELECT CATEGORY', true ); ?>");
-    			validator.handleResponse(false,form.catsid);
-    			form.catsid.focus();
+    			validator.handleResponse(false,form.categories);
     			return false;
   			} else {
   			<?php
@@ -74,7 +67,7 @@ JHTML::_('behavior.calendar');
 				// submit_unlimited();
 				elsubmitform(pressbutton);
 
-				return true;
+				return false;
 			}
 		}
 		
@@ -148,13 +141,10 @@ JHTML::_('behavior.calendar');
           </div>
           
           <div class="el_category floattext">
-          		<label for="catsid" class="catsid">
+          		<label for="categories" class="catsid">
                   <?php echo JText::_( 'CATEGORY' ).':';?>
               </label>
-          		<?php
-                	$html = JHTML::_('select.genericlist', $this->categories, 'catsid','size="1" class="inputbox required validate-catsid"', 'value', 'text', $this->row->catsid );
-                	echo $html;
-          		?>
+          		<?php	echo $this->lists['categories']; ?>
           </div>
 		
 		<?php echo $this->lists['venueselectbox']; ?>

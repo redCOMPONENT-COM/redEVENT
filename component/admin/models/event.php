@@ -119,6 +119,11 @@ class RedEventModelEvent extends JModel
 					;
 			$this->_db->setQuery($query);
 			$this->_data = $this->_db->loadObject();
+			
+			if ($this->_data) {
+			  $categories = & $this->getEventCategories();
+			  $this->_data->categories_ids = array_keys($categories);
+			}
 			return (boolean) $this->_data;
 		}
 		return true;
@@ -131,55 +136,42 @@ class RedEventModelEvent extends JModel
 	 * @return	boolean	True on success
 	 * @since	0.9
 	 */
-	function &getCategoriess()
+	function &getEventCategories()
 	{
-		$query = 'SELECT id AS value, catname AS text'
-				. ' FROM #__redevent_categories'
-				. ' WHERE published = 1'
-				. ' ORDER BY ordering'
+		$query = ' SELECT c.id, c.catname '
+				. ' FROM #__redevent_categories as c '
+				. ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
+				. ' WHERE x.event_id = ' . $this->_db->Quote($this->_id)
 				;
 		$this->_db->setQuery( $query );
 
-		$this->_categories = $this->_db->loadObjectList();
+		$this->_categories = $this->_db->loadObjectList('id');
 
 		return $this->_categories;
 	}
 	
 	/**
-	 * Get a list of all categories and put them in a select list
+	 * Get a option list of all categories
 	 */
-	public function getCategories() {
-		$db = JFactory::getDBO();
-		/* 1. Get all categories */
-		$q = "SELECT id, parent_id, catname
-			FROM #__redevent_categories";
-		$db->setQuery($q);
-		$rawcats = $db->loadObjectList();
-		
-		/* 2. Group categories based on their parent_id */
-		$categories = array();
-		foreach ($rawcats as $key => $rawcat) {
-			$categories[$rawcat->parent_id][$rawcat->id]['pid'] = $rawcat->parent_id;
-			$categories[$rawcat->parent_id][$rawcat->id]['cid'] = $rawcat->id;
-			$categories[$rawcat->parent_id][$rawcat->id]['catname'] = $rawcat->catname;
-		}
-		/* Take the toplevels first */
-		$html = '<select id="catsid" class="inputbox" size="10" name="catsid">';
-		if (isset($categories[0])) {
-			foreach ($categories[0] as $key => $category) {
-				$this->html = '';
-				/* Write out toplevel */
-				$html .= '<option value="'.$category['cid'].'"';
-				if ($this->_data->catsid == $category['cid']) $html .= 'selected="selected"';
-				$html .= '>'.$category['catname'].'</option>';
-				
-				/* Write the subcategories */
-				$this->buildCategory($categories, $category['cid'], array());
-				$html .= $this->html;
-			}
-		}
-		$html .= '</select>';
-		return $html;
+	public function getCategories() 
+	{
+	 $query = ' SELECT c.id, c.catname, (COUNT(parent.catname) - 1) AS depth '
+           . ' FROM #__redevent_categories AS c, '
+           . ' #__redevent_categories AS parent '
+           . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
+           . ' GROUP BY c.id '
+           . ' ORDER BY c.lft;'
+           ;
+    $this->_db->setQuery($query);
+    
+    $results = $this->_db->loadObjectList();
+    
+    $options = array();
+    foreach((array) $results as $cat)
+    {
+      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->catname);
+    }
+		return $options;
 	}
 	
 	/**
@@ -419,7 +411,25 @@ class RedEventModelEvent extends JModel
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
-
+		
+		// update the event category xref
+		// first, delete current rows for this event
+    $query = ' DELETE FROM #__redevent_event_category_xref WHERE event_id = ' . $this->_db->Quote($row->id);
+    $this->_db->setQuery($query);
+    if (!$this->_db->query()) {
+      $this->setError($this->_db->getErrorMsg());
+      return false;    	
+    }
+		// insert new ref
+		foreach ((array) $data['categories'] as $cat_id) {
+		  $query = ' INSERT INTO #__redevent_event_category_xref (event_id, category_id) VALUES (' . $this->_db->Quote($row->id) . ', '. $this->_db->Quote($cat_id) . ')';
+		  $this->_db->setQuery($query);
+	    if (!$this->_db->query()) {
+	      $this->setError($this->_db->getErrorMsg());
+	      return false;     
+	    }		  
+		}  
+    
 		return $row->id;
 	}
 	

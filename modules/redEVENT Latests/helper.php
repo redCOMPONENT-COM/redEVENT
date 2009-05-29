@@ -75,11 +75,13 @@ class modRedEventHelper
 				.' FROM #__redevent_event_venue_xref AS x'
 				.' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
 				.' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-				.' LEFT JOIN #__redevent_categories AS c ON c.id = a.catsid'
+        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+        . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
 				. $where
 				.' AND c.access <= '.$user_gid
 				.($catid ? $categories : '')
 				.($venid ? $venues : '')
+				. ' GROUP BY x.id '
 				. $order
 				.' LIMIT '.(int)$params->get( 'count', '2' )
 				;
@@ -119,11 +121,11 @@ class modRedEventHelper
 	function _builddateinfo($row, &$params)
 	{
 		$date 		= modRedEventHelper::_format_date($row->dates, $row->times, $params->get('formatdate', '%d.%m.%Y'));
-		$enddate 	= $row->enddates ? modRedEventHelper::_format_date($row->enddates, $row->endtimes, $params->get('formatdate', '%d.%m.%Y')) : null;
-		$time		= $row->times ? modRedEventHelper::_format_date($row->dates, $row->times, $params->get('formattime', '%H:%M')) : null;
+		$enddate 	= ($row->enddates && $row->enddates != '0000-00-00') ? modRedEventHelper::_format_date($row->enddates, $row->endtimes, $params->get('formatdate', '%d.%m.%Y')) : null;
+		$time		= ($row->times && $row->times != '00:00:00') ? modRedEventHelper::_format_date($row->dates, $row->times, $params->get('formattime', '%H:%M')) : null;
 		$dateinfo	= $date;
 
-		if ( isset($enddate) ) {
+		if ( isset($enddate)) {
 			$dateinfo .= ' - '.$enddate;
 		}
 

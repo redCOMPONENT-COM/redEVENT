@@ -46,6 +46,7 @@ class RedEventViewEvent extends JView {
 		//Load behavior
 		jimport('joomla.html.pane');
 		JHTML::_('behavior.tooltip');
+    JHTML::_('behavior.formvalidation');
 		require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'helper.php');
 		require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'output.class.php');
 		
@@ -160,6 +161,13 @@ class RedEventViewEvent extends JView {
 				$Lists['venueselectbox'] .= '</div>';
 			}
 		}
+		
+		// categories selector
+    $selected = array();
+    foreach ((array) $row->categories_ids as $cat) {
+      $selected[] = $cat;
+    }
+    $Lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('Categories'), 'categories[]', 'class="inputbox required validate-categories" multiple="multiple" size="10"', 'value', 'text', $selected); 
 		
 		/* Create submission types */
 		$submission_types = explode(',', $row->submission_types);

@@ -238,11 +238,11 @@ class RedEvent_events extends JTable
 			return false;
 		}
 		*/
-		if($this->catsid == 0) {
-			$this->_error = JText::_( 'CATEGORY EMPTY');
-			JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
-			return false;
-		}
+//		if($this->catsid == 0) {
+//			$this->_error = JText::_( 'CATEGORY EMPTY');
+//			JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
+//			return false;
+//		}
 
 		return true;
 	}

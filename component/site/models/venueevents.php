@@ -131,8 +131,10 @@ class RedeventModelVenueevents extends JModel
 
 			if ($pop) {
 				$this->_data = $this->_getList( $query );
+        $this->_data = $this->_getEventsCategories($this->_data);
 			} else {
 				$this->_data = $this->_getList( $query, $this->getState('limitstart'), $this->getState('limit') );
+        $this->_data = $this->_getEventsCategories($this->_data);
 			}
 		}
 		return $this->_data;
@@ -197,8 +199,10 @@ class RedeventModelVenueevents extends JModel
 				. ' FROM #__redevent_events AS a'
 				. ' LEFT JOIN #__redevent_event_venue_xref AS x ON a.id = x.eventid'
 				. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-				. ' LEFT JOIN #__redevent_categories AS c ON c.id = a.catsid'
+        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+        . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
 				. $where
+				. ' GROUP BY x.id '
 				. $orderby
 				;
 		return $query;
@@ -307,5 +311,30 @@ class RedeventModelVenueevents extends JModel
 
 		return $_venue;
 	}
+	
+  /**
+   * adds categories property to event rows
+   *
+   * @param array $rows of events
+   * @return array
+   */
+  function _getEventsCategories($rows)
+  {
+    for ($i=0, $n=count($rows); $i < $n; $i++) {
+      $query =  ' SELECT c.id, c.catname, '
+              . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
+              . ' FROM #__redevent_categories as c '
+              . ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
+              . ' WHERE c.published = 1 '
+              . '   AND x.event_id = ' . $this->_db->Quote($rows[$i]->id)
+              . ' ORDER BY c.ordering'
+              ;
+      $this->_db->setQuery( $query );
+
+      $rows[$i]->categories = $this->_db->loadObjectList();
+    }
+
+    return $rows;   
+  }
 }
 ?>

@@ -146,6 +146,7 @@ class RedeventModelEditevent extends JModel
 			$this->_event->xref				= 0;
 			$this->_event->locid			= '';
 			$this->_event->catsid			= 0;
+      $this->_event->categories  = null;
 			$this->_event->dates			= '';
 			$this->_event->enddates			= null;
 			$this->_event->title			= '';
@@ -219,6 +220,20 @@ class RedeventModelEditevent extends JModel
 					;
 			$this->_db->setQuery($query);
 			$this->_event = $this->_db->loadObject();
+			
+			if ($this->_event->id) {
+				$query =  ' SELECT c.id, c.catname, '
+              . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
+              . ' FROM #__redevent_categories as c '
+              . ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
+              . ' WHERE c.published = 1 '
+              . '   AND x.event_id = ' . $this->_db->Quote($this->_event->id)
+              . ' ORDER BY c.ordering'
+              ;
+	      $this->_db->setQuery( $query );
+	
+	      $this->_event->categories = $this->_db->loadObjectList();
+			}
 
 			return (boolean) $this->_event;
 		}
@@ -226,12 +241,12 @@ class RedeventModelEditevent extends JModel
 	}
 
 	/**
-	 * logic to get the categories
+	 * logic to get the categories options
 	 *
 	 * @access public
 	 * @return void
 	 */
-	function getCategories( )
+	function getCategoryOptions( )
 	{
 		$user		= & JFactory::getUser();
 		$elsettings = & redEVENTHelper::config();
@@ -274,17 +289,26 @@ class RedeventModelEditevent extends JModel
 		}
 
 		//get the maintained categories and the categories whithout any group
-		//or just get all if somebody have edit rights
-		$query = 'SELECT c.id AS value, c.catname AS text, c.groupid'
-				. ' FROM #__redevent_categories AS c'
-				. $where
-				. ' ORDER BY c.ordering'
-				;
-		$this->_db->setQuery( $query );
+		//or just get all if somebody have edit rights	
+    $query = ' SELECT c.id, c.catname, (COUNT(parent.catname) - 1) AS depth '
+           . ' FROM #__redevent_categories AS c, '
+           . ' #__redevent_categories AS parent '
+           . $where
+           . ' AND c.lft BETWEEN parent.lft AND parent.rgt '
+           . ' GROUP BY c.id '
+           . ' ORDER BY c.lft;'
+           ;
+    $this->_db->setQuery($query);
+    
+    $results = $this->_db->loadObjectList();
+    
+    $options = array();
+    foreach((array) $results as $cat)
+    {
+      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->catname);
+    }
 
-		$this->_category = array();
-		$this->_category[] = JHTML::_('select.option', '0', JText::_( 'SELECT CATEGORY' ) );
-		$this->_categories = array_merge( $this->_category, $this->_db->loadObjectList() );
+    $this->_categories = $options;
 
 		return $this->_categories;
 	}
@@ -675,6 +699,24 @@ class RedeventModelEditevent extends JModel
 			JError::raiseError( 500, $this->_db->stderr() );
 			return false;
 		}
+				
+    // update the event category xref
+    // first, delete current rows for this event
+    $query = ' DELETE FROM #__redevent_event_category_xref WHERE event_id = ' . $this->_db->Quote($row->id);
+    $this->_db->setQuery($query);
+    if (!$this->_db->query()) {
+      $this->setError($this->_db->getErrorMsg());
+      return false;     
+    }
+    // insert new ref
+    foreach ((array) $data['categories'] as $cat_id) {
+      $query = ' INSERT INTO #__redevent_event_category_xref (event_id, category_id) VALUES (' . $this->_db->Quote($row->id) . ', '. $this->_db->Quote($cat_id) . ')';
+      $this->_db->setQuery($query);
+      if (!$this->_db->query()) {
+        $this->setError($this->_db->getErrorMsg());
+        return false;     
+      }     
+    }
 		
 		$this->_db->setQuery('SELECT * FROM #__redevent_venues AS v LEFT JOIN #__redevent_event_venue_xref AS x ON x.venueid = v.id WHERE x.eventid = '.(int)$row->id);
 		$rowloc = $this->_db->loadObject();

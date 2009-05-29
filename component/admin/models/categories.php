@@ -176,8 +176,9 @@ class RedEventModelCategories extends JModel
 		$where		= $this->_buildContentWhere();
 		$orderby	= $this->_buildContentOrderBy();
 
-		$query = 'SELECT c.*, c.catname AS catname, c.access, c.groupid, u.name AS editor, g.name AS groupname, gr.name AS catgroup'
+		$query = 'SELECT c.*, c.catname AS catname, c.access, c.groupid, u.name AS editor, g.name AS groupname, gr.name AS catgroup, p.catname as parent_name '
 					. ' FROM #__redevent_categories AS c'
+          . ' LEFT JOIN #__redevent_categories AS p ON p.id = c.parent_id '
 					. ' LEFT JOIN #__groups AS g ON g.id = c.access'
 					. ' LEFT JOIN #__users AS u ON u.id = c.checked_out'
 					. ' LEFT JOIN #__redevent_groups AS gr ON gr.id = c.groupid'
@@ -322,6 +323,7 @@ class RedEventModelCategories extends JModel
 
 		return true;
 	}
+	
 	/**
 	 * Method to count the nr of assigned events to the category
 	 *
@@ -331,9 +333,9 @@ class RedEventModelCategories extends JModel
 	 */
 	function _countcatevents($id)
 	{
-		$query = 'SELECT COUNT( e.id )'
-				.' FROM #__redevent_events AS e'
-				.' WHERE e.catsid = ' . (int)$id
+		$query = 'SELECT COUNT( * )'
+				.' FROM #__redevent_event_category_xref AS x'
+				.' WHERE x.category_id = ' . (int)$id
 				;
 					
 		$this->_db->setQuery($query);

@@ -178,6 +178,14 @@ class RedeventViewEditevent extends JView
 			}
 		}
 		
+		// categories selector
+		$selected = array();
+		foreach ((array)$row->categories as $cat) {
+			$selected[] = $cat->id;
+		}
+		$this->get('CategoryOptions');
+		$lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('CategoryOptions'), 'categories[]', 'class="inputbox required validate-categories" multiple="multiple" size="10"', 'value', 'text', $selected);
+		
 		
 		$this->assignRef('row' , 					$row);
 		$this->assignRef('categories' , 			$categories);

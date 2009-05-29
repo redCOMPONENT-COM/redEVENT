@@ -106,7 +106,7 @@ function submitbutton(pressbutton)
 				<tr>
 					<td>
 						<label for="categories">
-							<?php echo JText::_( 'CATEGORIES' ).':'; ?>
+							<?php echo JText::_( 'PARENT CATEGORY' ).':'; ?>
 						</label>
 					</td>
 					<td>

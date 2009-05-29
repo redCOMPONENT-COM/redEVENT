@@ -168,10 +168,12 @@ class RedeventModelCategories extends JModel
 		}
 				
 		//get categories
-		$query = 'SELECT c.*, c.id AS catid, COUNT( a.id ) AS assignedevents,'
+		$query = 'SELECT c.*, c.id AS catid, COUNT( * ) AS assignedevents,'
 				. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug'
 				. ' FROM #__redevent_categories AS c'
-				. ' LEFT JOIN #__redevent_events AS a ON a.catsid = c.id'
+				. ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = c.id'
+        . ' INNER JOIN #__redevent_events AS a ON xcat.event_id = a.id'
+        . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
 				. ' WHERE c.published = 1'
 				. ' AND c.access <= '.$gid
 				. $eventstate

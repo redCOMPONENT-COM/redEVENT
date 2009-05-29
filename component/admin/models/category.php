@@ -309,7 +309,12 @@ class RedEventModelCategory extends JModel
 		$db = JFactory::getDBO();
 		/* 1. Get all categories */
 		$q = "SELECT id, parent_id, catname
-			FROM #__redevent_categories";
+			FROM #__redevent_categories"
+			;
+
+		if ($this->_id) {
+			$q .= ' WHERE id <> ' . $db->Quote($this->_id);
+		}
 		$db->setQuery($q);
 		$rawcats = $db->loadObjectList();
 		

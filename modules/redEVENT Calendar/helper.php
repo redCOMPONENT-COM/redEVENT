@@ -41,15 +41,17 @@ class modredeventcalhelper
 		}
 		
 		$query = 'SELECT x.dates, x.times, x.enddates,a.title, DAYOFMONTH(x.dates) AS created_day, YEAR(x.dates) AS created_year, MONTH(x.dates) AS created_month'
-		. ' FROM #__redevent_event_venue_xref AS x'
-		. ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
-		. ' LEFT JOIN #__redevent_categories AS c ON c.id = a.catsid'
-		. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-		. ' WHERE a.published = 1'
-		. ' AND c.access <= '.(int)$user->aid
-		.($catid ? $categories : '')
-		.($venid ? $venues : '')	
-		;
+				. ' FROM #__redevent_event_venue_xref AS x'
+				. ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
+        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+        . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+				. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
+				. ' WHERE a.published = 1'
+				. ' AND c.access <= '.(int)$user->aid
+				.($catid ? $categories : '')
+				.($venid ? $venues : '')
+				. ' GROUP BY x.id '
+				;
 		
 		$db->setQuery( $query );
 		$events = $db->loadObjectList();

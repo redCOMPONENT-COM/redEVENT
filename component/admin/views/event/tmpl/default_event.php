@@ -57,7 +57,7 @@
 			</td>
 			<td>
 				<?php
-				echo $this->Lists['category']
+				echo $this->Lists['categories']
 				?>
 			</td>
 		</tr>

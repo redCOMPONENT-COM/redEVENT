@@ -25,20 +25,35 @@ defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.calendar');
 ?>
 <script language="javascript" type="text/javascript">
+
+    Window.onDomReady(function(){
+      document.formvalidator.setHandler('categories',
+        function (value) {
+          if(value=="") {
+            return false;
+          } else {
+            return true;
+          }
+        }
+      );
+    });
+    
 	function submitbutton(task)
 	{
+      var form = document.getElementById('adminForm');
+      var validator = document.formvalidator;
+      var title = $(form.title).getValue();
+      title.replace(/\s/g,'');
 
-		var form = document.adminForm;
-		var datdescription = <?php echo $this->editor->getContent( 'datdescription' ); ?>
-
-		if (task == 'cancel') {
-			submitform( task );
-		} else if (form.title.value == ""){
-			alert( "<?php echo JText::_( 'ADD TITLE'); ?>" );
-			form.title.focus();
-		} else if (form.catsid.value == ""){
-			alert( "<?php echo JText::_( 'CHOOSE CATEGORY'); ?>" );
-		} else {
+      if ( title.length==0 ) {
+          alert("<?php echo JText::_( 'ADD TITLE', true ); ?>");
+          validator.handleResponse(false,form.title);
+          return false;
+      } else if ( validator.validate(form.categories) === false ) {
+          alert("<?php echo JText::_( 'SELECT CATEGORY', true ); ?>");
+          validator.handleResponse(false,form.categories);
+          return false;
+        } else {
 			<?php
 			echo $this->editor->save( 'datdescription' );
 			?>

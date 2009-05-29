@@ -25,6 +25,9 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * EventList categories Model class
+ * 
+ * The hierachical structure uses the The Nested Set Model (Modified Preorder Tree Traversal)
+ * see http://dev.mysql.com/tech-resources/articles/hierarchical-data.html for reference
  *
  * @package Joomla
  * @subpackage EventList
@@ -100,6 +103,56 @@ class RedEvent_categories extends JTable
 		}
 
 		return true;
+	}
+	
+	function store($updateNulls = false)
+	{
+		if (parent::store($updateNulls)) {
+			$this->rebuildTree();			
+		}
+		else return false;
+		
+		return true;
+	}
+	
+	function rebuildTree()
+	{
+		// get first category with parent_id = 0. This will be our root
+		$query = ' SELECT id FROM #__redevent_categories WHERE parent_id = ' . $this->_db->Quote(0);
+		$this->_db->setQuery($query);
+    $root = $this->_db->loadResult();
+
+    if (!$root) {
+    	JError::raiseNotice(0, JText::_('THERE IS NO ROOT TREE'));
+    	return false;
+    }
+		
+		$this->_rebuildTree($root, 1);
+	}
+	
+	function _rebuildTree($parent, $left) {
+	   // the right value of this node is the left value + 1
+	   $right = $left+1;
+	
+	   // get all children of this node
+	   $this->_db->setQuery('SELECT id FROM #__redevent_categories WHERE parent_id = '.$this->_db->Quote($parent));
+	   $children = $this->_db->loadResultArray();
+	   foreach((array)$children as $child_id) {
+	       // recursive execution of this function for each
+	       // child of this node
+	       // $right is the current right value, which is
+	       // incremented by the rebuild_tree function
+	       $right = $this->_rebuildTree($child_id, $right);
+	   }
+	
+	   // we've got the left value, and now that we've processed
+	   // the children of this node we also know the right value
+	   $this->_db->setQuery('UPDATE #__redevent_categories SET lft='.$left.', rgt='.
+	                $right.' WHERE id='.$parent);
+	   $this->_db->query();
+	
+	   // return the right value of this node + 1
+	   return $right+1;
 	}
 }
 ?>

@@ -202,6 +202,7 @@ class RedeventModelCategoriesdetailed extends JModel
 		// Lets load the content
 		$query = $this->_buildDataQuery( $id );
 		$this->_data = $this->_getList( $query, 0, $params->get('detcat_nr') );
+    $this->_data = $this->_getEventsCategories($this->_data);
 
 		return $this->_data;
 	}
@@ -222,22 +223,24 @@ class RedeventModelCategoriesdetailed extends JModel
 
 		// First thing we need to do is to select only the requested events
 		if ($task == 'archive') {
-			$where = ' WHERE a.published = -1 && a.catsid = '.$id;
+			$where = ' WHERE a.published = -1 && xcat.category_id = '.$id;
 		} else {
-			$where = ' WHERE a.published = 1 && a.catsid = '.$id;
+			$where = ' WHERE a.published = 1 && xcat.category_id = '.$id;
 		}
 
 		//Get Events from Category
-		$query = 'SELECT a.*, x.*, l.venue, l.city, l.state, l.url, c.catname, c.id AS catid,'
+		$query = 'SELECT a.*, a.id as event_id, x.*, l.venue, l.city, l.state, l.url, c.catname, c.id AS catid,'
         . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
         . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
         . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
 				. ' FROM #__redevent_events AS a'
 				. ' LEFT JOIN #__redevent_event_venue_xref AS x on x.eventid = a.id'
 				. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-				. ' LEFT JOIN #__redevent_categories AS c ON c.id = a.catsid'
+        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+        . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
 				. $where
 				. ' AND c.access <= '.$aid
+        . ' GROUP BY (x.id) '
 				. ' ORDER BY x.dates, x.times'
 				;
 		return $query;
@@ -263,10 +266,12 @@ class RedeventModelCategoriesdetailed extends JModel
 		}
 
 		//Get Categories
-		$query = 'SELECT c.*, COUNT( a.id ) AS assignedevents,'
+		$query = 'SELECT c.*, COUNT( * ) AS assignedevents,'
 				. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug'
 				. ' FROM #__redevent_categories AS c'
-				. ' LEFT JOIN #__redevent_events AS a ON a.catsid = c.id'
+				. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = c.id'
+				. ' LEFT JOIN #__redevent_events AS a ON a.id = xcat.event_id'
+        . ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
 				. ' WHERE c.published = 1'
 				. ' AND c.access <= '.$gid
 				. $eventstate
@@ -276,5 +281,30 @@ class RedeventModelCategoriesdetailed extends JModel
 
 		return $query;
 	}
+	
+ /**
+   * adds categories property to event rows
+   *
+   * @param array $rows of events
+   * @return array
+   */
+  function _getEventsCategories($rows)
+  {
+    for ($i=0, $n=count($rows); $i < $n; $i++) {
+      $query =  ' SELECT c.id, c.catname, '
+              . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
+              . ' FROM #__redevent_categories as c '
+              . ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
+              . ' WHERE c.published = 1 '
+              . '   AND x.event_id = ' . $this->_db->Quote($rows[$i]->event_id)
+              . ' ORDER BY c.ordering'
+              ;
+      $this->_db->setQuery( $query );
+
+      $rows[$i]->categories = $this->_db->loadObjectList();
+    }
+
+    return $rows;   
+  }
 }
 ?>

@@ -73,7 +73,6 @@ defined('_JEXEC') or die('Restricted access');
 				$row = &$this->rows[$i];
 
 				$link 			= 'index.php?option=com_redevent&amp;controller=events&amp;task=edit&amp;cid[]='.$row->id;
-				$catlink 		= 'index.php?option=com_redevent&amp;controller=categories&amp;task=edit&amp;cid[]='.$row->catsid;
 
 				$checked 	= JHTML::_('grid.checkedout', $row, $i );
 				$published 	= JHTML::_('grid.published', $row, $i );
@@ -130,19 +129,23 @@ defined('_JEXEC') or die('Restricted access');
 				</td>
 				<td>
 					<?php
-					if ($row->catname) {
-							if ( $row->cchecked_out && ( $row->cchecked_out != $this->user->get('id') ) ) {
-							echo htmlspecialchars($row->catname, ENT_QUOTES, 'UTF-8');
-						} else {
-					?>
-						<span class="editlinktip hasTip" title="<?php echo JText::_( 'EDIT CATEGORY' );?>::<?php echo $row->catname; ?>">
-						<a href="<?php echo $catlink; ?>">
-							<?php echo htmlspecialchars($row->catname, ENT_QUOTES, 'UTF-8'); ?>
-						</a></span>
-					<?php
-						}
-					} else {
-						echo '-';
+					//$cats_html = array();
+					foreach ((array) $row->categories as $k => $cat)
+					{
+						if ($cat->checked_out && ( $cat->checked_out != $this->user->get('id') ) ) {
+              echo htmlspecialchars($cat->catname, ENT_QUOTES, 'UTF-8');
+            } else {
+              $catlink    = 'index.php?option=com_redevent&amp;controller=categories&amp;task=edit&amp;cid[]='.$cat->id;
+		          ?>
+		            <span class="editlinktip hasTip" title="<?php echo JText::_( 'EDIT CATEGORY' );?>::<?php echo $cat->catname; ?>">
+		            <a href="<?php echo $catlink; ?>">
+		              <?php echo htmlspecialchars($cat->catname, ENT_QUOTES, 'UTF-8'); ?>
+		            </a></span>
+		          <?php
+		          if ($k < count($row->categories)-1) {
+		            echo "<br/>";
+		          }
+            }
 					}
 					?>
 				</td>

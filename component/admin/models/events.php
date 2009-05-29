@@ -89,6 +89,7 @@ class RedEventModelEvents extends JModel
 			$query = $this->_buildQuery();
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 			$this->_data = $this->_additionals($this->_data);
+      $this->_data = $this->_categories($this->_data);
 		}
 
 		return $this->_data;
@@ -142,10 +143,11 @@ class RedEventModelEvents extends JModel
 		$where		= $this->_buildContentWhere();
 		$orderby	= $this->_buildContentOrderBy();
 
-		$query = 'SELECT a.*, cat.checked_out AS cchecked_out, cat.catname, u.email, u.name AS author, x.id AS xref'
+		$query = ' SELECT a.*, cat.checked_out AS cchecked_out, cat.catname, u.email, u.name AS author, x.id AS xref'
 					. ' FROM #__redevent_events AS a'
+          . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+					. ' LEFT JOIN #__redevent_categories AS cat ON cat.id = xcat.category_id'
 					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
-					. ' LEFT JOIN #__redevent_categories AS cat ON cat.id = a.catsid'
 					. ' LEFT JOIN #__users AS u ON u.id = a.created_by'
 					. $where
 					. ' GROUP BY a.id'
@@ -252,6 +254,30 @@ class RedEventModelEvents extends JModel
 		}
 
 		return $rows;
+	}
+	
+	/**
+	 * adds categories property to event rows
+	 *
+	 * @param array $rows of events
+	 * @return array
+	 */
+	function _categories($rows)
+	{
+		for ($i=0, $n=count($rows); $i < $n; $i++) {
+			$query =  ' SELECT c.id, c.catname, c.checked_out '
+							. ' FROM #__redevent_categories as c '
+							. ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
+							. ' WHERE c.published = 1 '
+							. '   AND x.event_id = ' . $this->_db->Quote($rows[$i]->id)
+							. ' ORDER BY c.ordering'
+							;
+			$this->_db->setQuery( $query );
+
+			$rows[$i]->categories = $this->_db->loadObjectList();
+		}
+
+    return $rows;		
 	}
 
 	/**

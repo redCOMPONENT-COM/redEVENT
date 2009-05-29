@@ -355,6 +355,50 @@ if (is_array($cols)) {
 		$db->query();
 	}
 }
+
+/* Get the categories columns */
+$cols = false;
+$q = "SHOW COLUMNS FROM #__redevent_categories";
+$db->setQuery($q);
+$cols = $db->loadObjectList('Field');
+
+if (is_array($cols)) {
+  /* Check if we have the published column */
+  if (!array_key_exists('lft', $cols)) {
+  	
+  	// this revision added the multiple categories: we need to add the lft and rgt fields, and convert catsid field to new table
+  	    
+  	$q = "ALTER IGNORE TABLE #__redevent_categories ADD COLUMN `lft` TINYINT(1) NOT NULL DEFAULT 0";
+    $db->setQuery($q);
+    $db->query();
+        
+    $q = "ALTER IGNORE TABLE #__redevent_categories ADD COLUMN `rgt` TINYINT(1) NOT NULL DEFAULT 0";
+    $db->setQuery($q);
+    $db->query();
+    
+    //Then, we'll need to rebuild the category tree
+    require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_redevent'.DS.'tables'.DS.'redevent_categories.php');
+    $table = & JTable::getInstance('RedEvent_categories', '');
+    $table->rebuildTree();
+    
+    /* copy all event-category relationship to new table */
+    $q = "INSERT INTO #__redevent_event_category_xref (event_id, category_id) SELECT #__redevent_events.id, #__redevent_events.catsid";
+    $db->setQuery($q);
+    $db->query();
+  }
+  
+  if (!array_key_exists('course_credit', $cols)) {
+    $q = "ALTER IGNORE TABLE #__redevent_event_venue_xref ADD COLUMN `course_credit` INT(11) NOT NULL";
+    $db->setQuery($q);
+    $db->query();
+  }
+  
+  if (!array_key_exists('course_price', $cols)) {
+    $q = "ALTER IGNORE TABLE #__redevent_event_venue_xref ADD COLUMN `course_price` DECIMAL(12,2) default '0.00'";
+    $db->setQuery($q);
+    $db->query();
+  }
+}
 /* Add the basic configuration entry */
 $q = "INSERT IGNORE INTO `#__redevent_settings` VALUES (1, 0, 1, 0, 1, 1, 1, 0, '', '', '100%', '15%', '25%', '20%', '20%', 'Date', 'Title', 'Venue', 'City', '%d.%m.%Y', '%H.%M', 'h', 1, 0, 1, 1, 1, 1, 1, 2, -2, 0, 'example@example.com', 0, '1000', -2, -2, -2, 1, '20%', 'Type', 1, 1, 1, 1, '100', '100', '100', 0, 1, 0, 0, 1, 2, 2, -2, 1, 0, -2, 1, 0, 0, '[title], [a_name], [catsid], [times]', 'The event titled [title] starts on [dates]!', 0, 'State', 0, '', 1, 0, '1174491851', '', '', 1, 'decimals', ',', '.', 'SIGNUP_EXTERNAL', 'external_icon.gif','SIGNUP_WEBFORM','form_icon.gif','SIGNUP_EMAIL','email_icon.gif', 'SIGNUP_FORMAL_OFFER', 'formal_icon.gif', 'SIGNUP_PHONE','phone_icon.gif');";
 $db->setQuery($q);
