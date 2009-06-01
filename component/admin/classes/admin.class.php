@@ -65,6 +65,7 @@ class ELAdmin {
     JSubMenuHelper::addEntry( JText::_( 'EVENTS' ), 'index.php?option=com_redevent&view=events', $view == 'events');
     JSubMenuHelper::addEntry( JText::_( 'VENUES' ), 'index.php?option=com_redevent&view=venues', $view == 'venues');
     JSubMenuHelper::addEntry( JText::_( 'CATEGORIES' ), 'index.php?option=com_redevent&view=categories', $view == 'categories');
+    JSubMenuHelper::addEntry( JText::_( 'VENUES CATEGORIES' ), 'index.php?option=com_redevent&view=venuescategories', $view == 'venuescategories');
     JSubMenuHelper::addEntry( JText::_( 'ARCHIVESCREEN' ), 'index.php?option=com_redevent&view=archive', $view == 'archive');
     JSubMenuHelper::addEntry( JText::_( 'GROUPS' ), 'index.php?option=com_redevent&view=groups', $view == 'groups');
     JSubMenuHelper::addEntry( JText::_( 'TEXT_LIBRARY' ), 'index.php?option=com_redevent&view=textlibrary', $view == 'textlibrary');
