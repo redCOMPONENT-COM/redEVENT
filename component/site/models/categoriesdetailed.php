@@ -221,11 +221,12 @@ class RedeventModelCategoriesdetailed extends JModel
 		
 		$task 		= JRequest::getWord('task');
 
+		$where = ' WHERE top.id = ' . $this->_db->Quote($id) . ' AND c.lft BETWEEN top.lft AND top.rgt ';
 		// First thing we need to do is to select only the requested events
 		if ($task == 'archive') {
-			$where = ' WHERE a.published = -1 && xcat.category_id = '.$id;
+			$where .= ' AND a.published = -1 ';
 		} else {
-			$where = ' WHERE a.published = 1 && xcat.category_id = '.$id;
+			$where .= ' AND a.published = 1 ';
 		}
 
 		//Get Events from Category
@@ -233,7 +234,7 @@ class RedeventModelCategoriesdetailed extends JModel
         . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
         . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
         . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
-				. ' FROM #__redevent_events AS a'
+				. ' FROM #__redevent_categories AS top, #__redevent_events AS a '
 				. ' LEFT JOIN #__redevent_event_venue_xref AS x on x.eventid = a.id'
 				. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
         . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
@@ -265,19 +266,25 @@ class RedeventModelCategoriesdetailed extends JModel
 			$eventstate = ' AND a.published = 1';
 		}
 
-		//Get Categories
-		$query = 'SELECT c.*, COUNT( * ) AS assignedevents,'
-				. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug'
-				. ' FROM #__redevent_categories AS c'
-				. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = c.id'
-				. ' LEFT JOIN #__redevent_events AS a ON a.id = xcat.event_id'
-        . ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
-				. ' WHERE c.published = 1'
-				. ' AND c.access <= '.$gid
-				. $eventstate
-				. ' GROUP BY c.id'
-				. ' ORDER BY c.ordering'
-				;
+    //get categories
+    // TODO: it works, but maybe there could be a simpler solution...
+    $query = 'SELECT top.*, COUNT( sub.catid ) AS assignedevents,'
+        . ' CASE WHEN CHAR_LENGTH(top.alias) THEN CONCAT_WS(\':\', top.id, top.alias) ELSE top.id END as slug'
+        . ' FROM #__redevent_categories AS top'
+        . ' INNER JOIN ( '
+        . '   SELECT DISTINCT top.id as catid, x.id '
+        . '   FROM #__redevent_categories AS top'
+        . '   INNER JOIN #__redevent_categories AS c ON c.lft BETWEEN top.lft AND top.rgt'
+        . '   INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = c.id'
+        . '   INNER JOIN #__redevent_events AS a ON xcat.event_id = a.id'
+        . '   INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
+        . '   WHERE c.published = 1'
+        . '   AND c.access <= '.$gid
+        .     $eventstate
+        . ' ) AS sub ON sub.catid = top.id' // itself and descendants
+        . ' GROUP BY top.id'
+        . ' ORDER BY top.ordering'
+        ;
 
 		return $query;
 	}

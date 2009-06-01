@@ -168,17 +168,23 @@ class RedeventModelCategories extends JModel
 		}
 				
 		//get categories
-		$query = 'SELECT c.*, c.id AS catid, COUNT( * ) AS assignedevents,'
-				. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug'
-				. ' FROM #__redevent_categories AS c'
-				. ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = c.id'
-        . ' INNER JOIN #__redevent_events AS a ON xcat.event_id = a.id'
-        . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
-				. ' WHERE c.published = 1'
-				. ' AND c.access <= '.$gid
-				. $eventstate
-				. ' GROUP BY c.id'
-				. ' ORDER BY c.ordering'
+		// TODO: it works, but maybe there could be a simpler solution...
+		$query = 'SELECT top.*, top.id AS catid, COUNT( sub.catid ) AS assignedevents,'
+				. ' CASE WHEN CHAR_LENGTH(top.alias) THEN CONCAT_WS(\':\', top.id, top.alias) ELSE top.id END as slug'
+				. ' FROM #__redevent_categories AS top'
+				. ' INNER JOIN ( '
+				. '   SELECT DISTINCT top.id as catid, x.id '
+        . '   FROM #__redevent_categories AS top'
+        . '   INNER JOIN #__redevent_categories AS c ON c.lft BETWEEN top.lft AND top.rgt'
+				. '   INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = c.id'
+        . '   INNER JOIN #__redevent_events AS a ON xcat.event_id = a.id'
+        . '   INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
+				. '   WHERE c.published = 1'
+				. '   AND c.access <= '.$gid
+				.     $eventstate
+        . ' ) AS sub ON sub.catid = top.id' // itself and descendants
+				. ' GROUP BY top.id'
+				. ' ORDER BY top.ordering'
 				;
 
 		return $query;

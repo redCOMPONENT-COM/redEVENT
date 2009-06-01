@@ -233,21 +233,26 @@ class RedeventModelCategoryevents extends JModel {
 
 		$user		= & JFactory::getUser();
 		$gid		= (int) $user->get('aid');
+		$category = & $this->getCategory();
 
 		// Get the paramaters of the active menu item
 		$params 	= & $mainframe->getParams();
 
 		$task 		= JRequest::getWord('task');
 
+		$where = array();
+		
+		$where[] = 'c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . ')';
+		
 		// First thing we need to do is to select only the requested events
 		if ($task == 'archive') {
-			$where = ' WHERE a.published = -1 && xcat.category_id = '.$this->_id;
+			$where[] = ' a.published = -1 ';
 		} else {
-			$where = ' WHERE a.published = 1 && xcat.category_id = '.$this->_id;
+			$where[] = ' a.published = 1 ';
 		}
 
 		// Second is to only select events assigned to category the user has access to
-		$where .= ' AND c.access <= '.$gid;
+		$where[] = ' c.access <= '.$gid;
 
 		/*
 		 * If we have a filter, and this is enabled... lets tack the AND clause
@@ -268,20 +273,20 @@ class RedeventModelCategoryevents extends JModel {
 				switch ($filter_type)
 				{
 					case 'title' :
-						$where .= ' AND LOWER( a.title ) LIKE '.$filter;
+						$where[] = ' LOWER( a.title ) LIKE '.$filter;
 						break;
 
 					case 'venue' :
-						$where .= ' AND LOWER( l.venue ) LIKE '.$filter;
+						$where[] = ' LOWER( l.venue ) LIKE '.$filter;
 						break;
 
 					case 'city' :
-						$where .= ' AND LOWER( l.city ) LIKE '.$filter;
+						$where[] = ' LOWER( l.city ) LIKE '.$filter;
 						break;
 				}
 			}
 		}
-		return $where;
+		return ' WHERE ' . implode(' AND ', $where);
 	}
 
 	/**
@@ -290,16 +295,19 @@ class RedeventModelCategoryevents extends JModel {
 	 * @access public
 	 * @return integer
 	 */
-	function getCategory( ) {
+	function getCategory( ) 
+	{
+		if (!$this->_category) {
 		$query = 'SELECT *,'
 				.' CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\', id, alias) ELSE id END as slug'
 				.' FROM #__redevent_categories'
 				.' WHERE id = '.$this->_id;
 
 		$this->_db->setQuery( $query );
-		$_category = $this->_db->loadObject();
-
-		return $_category;
+		$this->_category = $this->_db->loadObject();
+		}
+		
+		return $this->_category;
 	}
 	
  /**
