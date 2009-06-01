@@ -255,3 +255,29 @@ CREATE TABLE IF NOT EXISTS `#__redevent_textlibrary` (
   UNIQUE KEY `id` (`id`),
   UNIQUE KEY `text_name` (`text_name`)
 ) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+
+CREATE TABLE IF NOT EXISTS `#__redevent_venues_categories` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `parent_id` int(11) unsigned NOT NULL default '0',
+  `name` varchar(100) NOT NULL,
+  `alias` varchar(100) NOT NULL default '',
+  `description` mediumtext NOT NULL,
+  `meta_keywords` text NOT NULL,
+  `meta_description` text NOT NULL,
+  `image` varchar(100) NOT NULL default '',
+  `published` tinyint(1) NOT NULL default '0',
+  `checked_out` int(11) NOT NULL default '0',
+  `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
+  `access` int(11) unsigned NOT NULL default '0',
+  `groupid` int(11) NOT NULL default '0',
+  `ordering` int(11) NOT NULL default '0',
+  `lft` int(11) NOT NULL default '0',
+  `rgt` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_venue_category_xref` (
+  `venue_id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL
+) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
