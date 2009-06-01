@@ -120,11 +120,20 @@ class RedEventViewVenue extends JView {
 		$imageselect .= "\n&nbsp;<input class=\"inputbox\" type=\"button\" onclick=\"elSelectImage('', '".JText::_('SELECTIMAGE')."' );\" value=\"".JText::_('Reset')."\" />";
 		$imageselect .= "\n<input type=\"hidden\" id=\"a_image\" name=\"locimage\" value=\"$row->locimage\" />";
 
+		$lists = array();
+    // categories selector
+    $selected = array();
+    foreach ((array) $row->categories as $cat) {
+      $selected[] = $cat;
+    }
+    $lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('Categories'), 'categories[]', 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $selected); 
+    
 		//assign data to template
 		$this->assignRef('row'      	, $row);
 		$this->assignRef('pane'      	, $pane);
 		$this->assignRef('editor'      	, $editor);
 		$this->assignRef('settings'     , $settings);
+    $this->assignRef('lists'      , $lists);
 		$this->assignRef('imageselect' 	, $imageselect);
 
 		parent::display($tpl);

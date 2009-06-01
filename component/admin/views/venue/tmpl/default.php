@@ -94,6 +94,18 @@ defined('_JEXEC') or die('Restricted access');
 				<input class="inputbox" type="text" name="alias" id="alias" size="40" maxlength="100" value="<?php echo $this->row->alias; ?>" />
 			</td>
 		</tr>
+    <tr>
+      <td>
+        <label for="categories">
+          <?php echo JText::_( 'CATEGORY' ).':'; ?>
+        </label>
+      </td>
+      <td>
+        <?php
+        echo $this->lists['categories']
+        ?>
+      </td>
+    </tr>
 	</table>
 			<table class="adminform">
 				<tr>

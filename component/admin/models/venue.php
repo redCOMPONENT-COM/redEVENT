@@ -111,11 +111,36 @@ class RedEventModelVenue extends JModel
 			$this->_db->setQuery($query);
 
 			$this->_data = $this->_db->loadObject();
-
+		
+      if ($this->_data) {
+        $this->_data->categories = $this->getVenueCategories();
+      }
+      
 			return (boolean) $this->_data;
 		}
 		return true;
 	}
+	
+  /**
+   * Method to get the category data
+   *
+   * @access  public
+   * @return  boolean True on success
+   * @since 0.9
+   */
+  function &getVenueCategories()
+  {
+    $query = ' SELECT c.id '
+        . ' FROM #__redevent_venues_categories as c '
+        . ' INNER JOIN #__redevent_venue_category_xref as x ON x.category_id = c.id '
+        . ' WHERE x.venue_id = ' . $this->_db->Quote($this->_id)
+        ;
+    $this->_db->setQuery( $query );
+
+    $this->_categories = $this->_db->loadResultArray();
+
+    return $this->_categories;
+  }
 
 	/**
 	 * Method to initialise the venue data
@@ -152,6 +177,7 @@ class RedEventModelVenue extends JModel
 			$venue->enddates			= null;
 			$venue->times 				= null;
 			$venue->endtimes			= null;
+      $venue->categories    = null;
 			$this->_data				= $venue;
 			return (boolean) $this->_data;
 		}
@@ -299,8 +325,50 @@ class RedEventModelVenue extends JModel
 			JError::raiseError(500, $this->_db->getErrorMsg() );
 			return false;
 		}
+		
+    // update the venue category xref
+    // first, delete current rows for this event
+    $query = ' DELETE FROM #__redevent_venue_category_xref WHERE venue_id = ' . $this->_db->Quote($row->id);
+    $this->_db->setQuery($query);
+    if (!$this->_db->query()) {
+      $this->setError($this->_db->getErrorMsg());
+      return false;     
+    }
+    // insert new ref
+    foreach ((array) $data['categories'] as $cat_id) {
+      $query = ' INSERT INTO #__redevent_venue_category_xref (venue_id, category_id) VALUES (' . $this->_db->Quote($row->id) . ', '. $this->_db->Quote($cat_id) . ')';
+      $this->_db->setQuery($query);
+      if (!$this->_db->query()) {
+        $this->setError($this->_db->getErrorMsg());
+        return false;     
+      }     
+    }  
 
 		return $row->id;
 	}
+	
+  /**
+   * Get a option list of all categories
+   */
+  public function getCategories() 
+  {
+   $query = ' SELECT c.id, c.name, (COUNT(parent.name) - 1) AS depth '
+           . ' FROM #__redevent_venues_categories AS c, '
+           . ' #__redevent_venues_categories AS parent '
+           . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
+           . ' GROUP BY c.id '
+           . ' ORDER BY c.lft;'
+           ;
+    $this->_db->setQuery($query);
+    
+    $results = $this->_db->loadObjectList();
+    
+    $options = array();
+    foreach((array) $results as $cat)
+    {
+      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->name);
+    }
+    return $options;
+  }
 }
 ?>
