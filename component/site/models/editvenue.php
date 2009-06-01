@@ -42,6 +42,8 @@ class RedeventModelEditvenue extends JModel
 	 */
 	var $_venue = null;
 
+	var $_categories = null;
+	
 	/**
 	 * Constructor
 	 *
@@ -120,6 +122,7 @@ class RedeventModelEditvenue extends JModel
 			//prepare output
 			$this->_venue->id				= '';
 			$this->_venue->venue			= '';
+      $this->_venue->categories = null;
 			$this->_venue->url				= '';
 			$this->_venue->street			= '';
 			$this->_venue->plz				= '';
@@ -140,6 +143,79 @@ class RedeventModelEditvenue extends JModel
 		return $this->_venue;
 
 	}
+	
+ /**
+   * logic to get the categories options
+   *
+   * @access public
+   * @return void
+   */
+  function getCategoryOptions( )
+  {
+    $user   = & JFactory::getUser();
+    $elsettings = & redEVENTHelper::config();
+    $userid   = (int) $user->get('id');
+    $gid    = (int) $user->get('aid');
+    $superuser  = ELUser::superuser();
+
+    $where = ' WHERE c.published = 1 AND c.access <= '.$gid;
+
+    //only check for maintainers if we don't have an edit action
+    if(!$this->_id) {
+      //get the ids of the categories the user maintaines
+      $query = 'SELECT g.group_id'
+          . ' FROM #__redevent_groupmembers AS g'
+          . ' WHERE g.member = '.$userid
+          ;
+      $this->_db->setQuery( $query );
+      $catids = $this->_db->loadResultArray();
+
+      $categories = implode(' OR c.groupid = ', $catids);
+
+      //build ids query
+      if ($categories) {
+        //check if user is allowed to submit events in general, if yes allow to submit into categories
+        //which aren't assigned to a group. Otherwise restrict submission into maintained categories only 
+        if (ELUser::validate_user($elsettings->evdelrec, $elsettings->delivereventsyes)) {
+          $where .= ' AND c.groupid = 0 OR c.groupid = '.$categories;
+        } else {
+          $where .= ' AND c.groupid = '.$categories;
+        }
+      } else {
+        $where .= ' AND c.groupid = 0';
+      }
+
+    }
+
+    //administrators or superadministrators have access to all categories, also maintained ones
+    if($superuser) {
+      $where = ' WHERE c.published = 1';
+    }
+
+    //get the maintained categories and the categories whithout any group
+    //or just get all if somebody have edit rights  
+    $query = ' SELECT c.id, c.name, (COUNT(parent.name) - 1) AS depth '
+           . ' FROM #__redevent_venues_categories AS c, '
+           . ' #__redevent_venues_categories AS parent '
+           . $where
+           . ' AND c.lft BETWEEN parent.lft AND parent.rgt '
+           . ' GROUP BY c.id '
+           . ' ORDER BY c.lft;'
+           ;
+    $this->_db->setQuery($query);
+    
+    $results = $this->_db->loadObjectList();
+    
+    $options = array();
+    foreach((array) $results as $cat)
+    {
+      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->name);
+    }
+
+    $this->_categories = $options;
+
+    return $this->_categories;
+  }
 
 	/**
 	 * logic to get the venue
@@ -152,7 +228,19 @@ class RedeventModelEditvenue extends JModel
 		if (empty($this->_venue)) {
 
 			$this->_venue =& JTable::getInstance('redevent_venues', '');
-			$this->_venue->load( $this->_id );
+			$this->_venue->load( $this->_id );			
+		
+      if ($this->_venue->id) {
+        $query =  ' SELECT c.id '
+              . ' FROM #__redevent_venues_categories as c '
+              . ' INNER JOIN #__redevent_venue_category_xref as x ON x.category_id = c.id '
+              . ' WHERE c.published = 1 '
+              . '   AND x.venue_id = ' . $this->_db->Quote($this->_venue->id)
+              ;
+        $this->_db->setQuery( $query );
+  
+        $this->_venue->categories = $this->_db->loadResultArray();
+      }
 
 			return $this->_venue;
 		}
@@ -340,7 +428,25 @@ class RedeventModelEditvenue extends JModel
 		if (!$row->store()) {
 			$this->setError($this->_db->getErrorMsg());
 			return false;
-		}
+		}		
+	        
+    // update the event category xref
+    // first, delete current rows for this event
+    $query = ' DELETE FROM #__redevent_venue_category_xref WHERE venue_id = ' . $this->_db->Quote($row->id);
+    $this->_db->setQuery($query);
+    if (!$this->_db->query()) {
+      $this->setError($this->_db->getErrorMsg());
+      return false;     
+    }
+    // insert new ref
+    foreach ((array) $data['categories'] as $cat_id) {
+      $query = ' INSERT INTO #__redevent_venue_category_xref (venue_id, category_id) VALUES (' . $this->_db->Quote($row->id) . ', '. $this->_db->Quote($cat_id) . ')';
+      $this->_db->setQuery($query);
+      if (!$this->_db->query()) {
+        $this->setError($this->_db->getErrorMsg());
+        return false;     
+      }     
+    }
 
 		jimport('joomla.utilities.mail');
 

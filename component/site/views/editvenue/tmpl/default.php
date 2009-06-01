@@ -266,6 +266,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
       	</fieldset>
       	<?php endif; ?>
 
+        <fieldset class="el_fldst_category">
+
+            <legend><?php echo JText::_('DESCRIPTION'); ?></legend>
+
+          <div class="el_category floattext">
+              <label for="categories" class="catsid">
+                  <?php echo JText::_( 'CATEGORY' ).':';?>
+              </label>
+              <?php echo $this->lists['categories']; ?>
+          </div>
+        </fieldset>
+          
       	<fieldset class="el_fldst_description">
 
           	<legend><?php echo JText::_('DESCRIPTION'); ?></legend>

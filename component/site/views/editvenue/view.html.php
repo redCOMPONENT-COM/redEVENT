@@ -92,12 +92,22 @@ class RedeventViewEditvenue extends JView
 		//Set the info image
 		$infoimage = JHTML::_('image', 'components/com_redevent/assets/images/icon-16-hint.png', JText::_( 'NOTES' ) );
 
+		$lists = array();
+    // categories selector
+    $selected = array();
+    foreach ((array)$row->categories as $cat) {
+      $selected[] = $cat->id;
+    }
+    $this->get('CategoryOptions');
+    $lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('CategoryOptions'), 'categories[]', 'class="inputbox validate-categories" multiple="multiple" size="10"', 'value', 'text', $selected);
+    
 		$this->assignRef('row' , 					$row);
 		$this->assignRef('editor' , 				$editor);
 		$this->assignRef('editoruser' , 			$editoruser);
 		$this->assignRef('limage' , 				$limage);
 		$this->assignRef('infoimage' , 				$infoimage);
 		$this->assignRef('elsettings' , 			$elsettings);
+    $this->assignRef('lists' ,           $lists);
 		$this->assignRef('item' , 					$item);
 		$this->assignRef('params' , 				$params);
 
