@@ -391,6 +391,10 @@ class RedEventModelCategories extends JModel
 				$this->setError($this->_db->getErrorMsg());
 				return false;
 			}
+			
+			// rebuild the tree
+      $table = JTable::getInstance('redevent_categories', '');
+      $table->rebuildTree();
 		}
 
 		if (count( $err )) {
