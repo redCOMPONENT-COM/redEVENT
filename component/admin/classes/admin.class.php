@@ -54,6 +54,25 @@ class ELAdmin {
 
 		return $config;
 	}
+	
+	function setMenu()
+	{
+		$user = & JFactory::getUser();
+		$view = JRequest::getVar('view', '');
+		$controller = JRequest::getVar('controller', '');
+	  //Create Submenu
+    JSubMenuHelper::addEntry( JText::_( 'REDEVENT' ), 'index.php?option=com_redevent', $view == '');
+    JSubMenuHelper::addEntry( JText::_( 'EVENTS' ), 'index.php?option=com_redevent&view=events', $view == 'events');
+    JSubMenuHelper::addEntry( JText::_( 'VENUES' ), 'index.php?option=com_redevent&view=venues', $view == 'venues');
+    JSubMenuHelper::addEntry( JText::_( 'CATEGORIES' ), 'index.php?option=com_redevent&view=categories', $view == 'categories');
+    JSubMenuHelper::addEntry( JText::_( 'ARCHIVESCREEN' ), 'index.php?option=com_redevent&view=archive', $view == 'archive');
+    JSubMenuHelper::addEntry( JText::_( 'GROUPS' ), 'index.php?option=com_redevent&view=groups', $view == 'groups');
+    JSubMenuHelper::addEntry( JText::_( 'TEXT_LIBRARY' ), 'index.php?option=com_redevent&view=textlibrary', $view == 'textlibrary');
+    JSubMenuHelper::addEntry( JText::_( 'HELP' ), 'index.php?option=com_redevent&view=help', $view == 'help');
+    if ($user->get('gid') > 24) {
+      JSubMenuHelper::addEntry( JText::_( 'SETTINGS' ), 'index.php?option=com_redevent&controller=settings&task=edit', $controller == 'settings');
+    }
+	}
 }
 
 ?>
