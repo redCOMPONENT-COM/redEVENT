@@ -203,7 +203,8 @@ class RedEventModelEvent extends JModel
 			$event = new stdClass();
 			$event->id							= 0;
 			$event->locid						= 0;
-			$event->catsid						= 0;
+			$event->categories			= null;
+      $event->categories_ids      = null;
 			$event->dates						= null;
 			$event->enddates					= null;
 			$event->times						= null;
