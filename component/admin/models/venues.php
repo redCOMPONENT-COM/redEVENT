@@ -277,6 +277,18 @@ class RedEventModelVenues extends JModel
 					
 			$this->_db->setQuery($query);
 			$rows[$i]->assignedevents = $this->_db->loadResult();
+			
+			// get categories
+			$query =  ' SELECT c.id, c.name, c.checked_out '
+              . ' FROM #__redevent_venues_categories as c '
+              . ' INNER JOIN #__redevent_venue_category_xref as x ON x.category_id = c.id '
+              . ' WHERE c.published = 1 '
+              . '   AND x.venue_id = ' . $this->_db->Quote($rows[$i]->id)
+              . ' ORDER BY c.ordering'
+              ;
+      $this->_db->setQuery( $query );
+
+      $rows[$i]->categories = $this->_db->loadObjectList();
 		}
 
 		return $rows;

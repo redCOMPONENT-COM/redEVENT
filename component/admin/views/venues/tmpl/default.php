@@ -47,6 +47,7 @@ defined('_JEXEC') or die('Restricted access');
 			<th width="20%"><?php echo JHTML::_('grid.sort', 'ALIAS', 'l.alias', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th><?php echo JText::_( 'WEBSITE' ); ?></th>
 			<th><?php echo JHTML::_('grid.sort', 'CITY', 'l.city', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+      <th><?php echo JText::_( 'CATEGORY' ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JText::_( 'PUBLISHED' ); ?></th>
 			<th><?php echo JText::_( 'CREATION' ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JText::_( 'EVENTS' ); ?></th>
@@ -118,6 +119,28 @@ defined('_JEXEC') or die('Restricted access');
 				?>
 			</td>
 			<td align="left"><?php echo $row->city ? htmlspecialchars($row->city, ENT_QUOTES, 'UTF-8') : '-'; ?></td>
+        <td>
+          <?php
+          //$cats_html = array();
+          foreach ((array) $row->categories as $k => $cat)
+          {
+            if ($cat->checked_out && ( $cat->checked_out != $this->user->get('id') ) ) {
+              echo htmlspecialchars($cat->name, ENT_QUOTES, 'UTF-8');
+            } else {
+              $catlink    = 'index.php?option=com_redevent&amp;controller=venuescategories&amp;task=edit&amp;cid[]='.$cat->id;
+              ?>
+                <span class="editlinktip hasTip" title="<?php echo JText::_( 'EDIT CATEGORY' );?>::<?php echo $cat->name; ?>">
+                <a href="<?php echo $catlink; ?>">
+                  <?php echo htmlspecialchars($cat->name, ENT_QUOTES, 'UTF-8'); ?>
+                </a></span>
+              <?php
+              if ($k < count($row->categories)-1) {
+                echo "<br/>";
+              }
+            }
+          }
+          ?>
+        </td>
 			<td align="center"><?php echo $published; ?></td>
 			<td>
 				<?php echo JText::_( 'AUTHOR' ).': '; ?><a href="<?php echo 'index.php?option=com_users&amp;task=edit&amp;hidemainmenu=1&amp;cid[]='.$row->created_by; ?>"><?php echo $row->author; ?></a><br />
