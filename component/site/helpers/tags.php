@@ -208,9 +208,25 @@ class redEVENT_tags {
 	 * Load the HTML table with signup links
 	 */
 	private function SignUpLinks() {
+		$app = & JFactory::getApplication();
+		$template_path = JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'com_redevent';
 		ob_start();
-		if (JRequest::getVar('format') == 'raw') include(JPATH_COMPONENT.DS.'views'.DS.'details'.DS.'tmpl'.DS.'courseinfo_pdf.php');
-		else include(JPATH_COMPONENT.DS.'views'.DS.'details'.DS.'tmpl'.DS.'courseinfo.php');
+		if (JRequest::getVar('format') == 'raw') {
+			if (file_exists($template_path.DS.'details'.DS.'courseinfo_pdf.php')) {
+  			include($template_path.DS.'details'.DS.'courseinfo_pdf.php');				
+			}
+			else {
+        include(JPATH_COMPONENT.DS.'views'.DS.'details'.DS.'tmpl'.DS.'courseinfo_pdf.php'); 				
+			}
+		}
+		else {
+      if (file_exists($template_path.DS.'details'.DS.'courseinfo.php')) {
+        include($template_path.DS.'details'.DS.'courseinfo.php');       
+      }
+      else {
+        include(JPATH_COMPONENT.DS.'views'.DS.'details'.DS.'tmpl'.DS.'courseinfo.php');         
+      }
+		}
 		$contents = ob_get_contents();
 		ob_end_clean();
 		return $contents;
