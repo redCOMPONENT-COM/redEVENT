@@ -76,7 +76,9 @@ class redEVENT_tags {
 	 */
 	public function ReplaceTags($page) {
 		if ($this->_xref) {
-			/* Load the event links */
+      $elsettings = redEVENTHelper::config();
+
+      /* Load the event links */
 			if (is_null($this->_eventlinks)) $this->getEventLinks();
 			if (count($this->_eventlinks) == 0) return '';
 			$this->getData();
@@ -121,7 +123,7 @@ class redEVENT_tags {
 					JPluginHelper::importPlugin( 'content' );
 					$dispatcher = JDispatcher::getInstance();
 					$form = new stdClass();
-					$form->text = '{redform}'.$this->_data->redform_id.','.$this->_data->max_multi_signup.'{/redform}';
+					$form->text = '{redform}'.$this->_data->redform_id.','.($this->_data->max_multi_signup ? $this->_data->max_multi_signup : 1).'{/redform}';
 					$form->eventid = $this->_eventid;
 					$tpl = JRequest::getVar('page', false);
 					switch ($tpl) {
@@ -153,13 +155,23 @@ class redEVENT_tags {
 				$uri = JURI::getInstance();
 				$regurl = JRoute::_($uri->toString());
 				
+				// signup links
+        $imagepath = JURI::base() . '/administrator/components/com_redevent/assets/images/';
+				$webformsignup = '<span class="vlink webform">'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&subtype=webform&task=signup&xref='.$this->_xref.'&id='.$this->_data->id), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text), 'width="24px" height="24px"')).'</span> ';
+				$emailsignup = '<span class="vlink email">'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&task=signup&subtype=email&xref='.$this->_xref.'&id='.$this->_data->id), JHTML::_('image', $imagepath.$elsettings->signup_email_img,  JText::_($elsettings->signup_email_text), 'width="24px" height="24px"')).'</span> ';
+				$formalsignup = '<span class="vlink formaloffer">'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&subtype=formaloffer&task=signup&xref='.$this->_xref.'&id='.$this->_data->id), JHTML::_('image', $imagepath.$elsettings->signup_formal_offer_img,  JText::_($elsettings->signup_formal_offer_text), 'width="24px" height="24px"')).'</span> ';
+				$externalsignup = '<span class="vlink external">'.JHTML::_('link', $this->_data->submission_type_external, JHTML::_('image', $imagepath.$elsettings->signup_external_img,  $elsettings->signup_external_text), 'target="_blank"').'</span> ';
+				$phonesignup = '<span class="vlink phone">'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&task=signup&subtype=phone&xref='.$this->_xref.'&id='.$this->_data->id), JHTML::_('image', $imagepath.$elsettings->signup_phone_img,  JText::_($elsettings->signup_phone_text), 'width="24px" height="24px"')).'</span> ';
+				
 				/* Clean up some tags */
 				$findoffer = array('[event_description]', '[event_title]', '[price]', '[credits]', '[code]', '[inputname]', '[inputemail]', '[submit]',
 									'[event_info_text]', '[time]', '[date]', '[duration]', '[venue]', '[city]', '[username]', '[useremail]', '[venues]','[regurl]',
-									'[eventplaces]', '[waitinglistplaces]', '[eventplacesleft]', '[waitinglistplacesleft]');
+									'[eventplaces]', '[waitinglistplaces]', '[eventplacesleft]', '[waitinglistplacesleft]'
+				          , '[webformsignup]', '[emailsignup]', '[formalsignup]', '[externalsignup]', '[phonesignup]');
 				$replaceoffer = array($event_description, $this->_data->title, $price, $this->_data->course_credit, $this->_data->course_code, 
 									$name, $email, $submit, $event_info_description, $time, $date, $duration, $this->_data->venue, $this->_data->location,
-									$username, $useremail, $venues_html, $regurl, $this->_maxattendees, $this->_maxwaitinglist, $eventplacesleft, $waitinglistplacesleft);
+									$username, $useremail, $venues_html, $regurl, $this->_maxattendees, $this->_maxwaitinglist, $eventplacesleft, $waitinglistplacesleft, 
+									$webformsignup, $emailsignup, $formalsignup, $externalsignup, $phonesignup);
 				/* First tag replacement */
 				$message = str_replace($findoffer, $replaceoffer, $page);
 			  /* second replacement, add the form */
