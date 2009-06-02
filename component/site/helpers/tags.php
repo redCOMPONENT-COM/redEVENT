@@ -179,6 +179,9 @@ class redEVENT_tags {
         $category = '<span class="details-categories">'.implode(', ', $cats).'</span>';
         $categoryimage = '<span class="details-categories-images"><span class="details-categories-image">'.implode('</span><span class="details-categories-image">', $cats_images).'</span></span>';
         
+        //comments
+        $eventcomments = $this->_getComments($this->_data);
+        
 				/* Clean up some tags */
 				$findoffer = array('[event_description]', '[event_title]', '[price]', '[credits]', '[code]', '[inputname]', '[inputemail]', '[submit]',
 									'[event_info_text]', '[time]', '[date]', '[duration]', '[venue]', '[city]', '[username]', '[useremail]', '[venues]','[regurl]',
@@ -186,6 +189,7 @@ class redEVENT_tags {
 				          , '[webformsignup]', '[emailsignup]', '[formalsignup]', '[externalsignup]', '[phonesignup]'
 				          , '[venueimage]', '[eventimage]', '[categoryimage]'
 				          , '[category]'
+				          , '[eventcomments]'
 				          );
 				$replaceoffer = array($event_description, $this->_data->title, $price, $this->_data->course_credit, $this->_data->course_code, 
 									$name, $email, $submit, $event_info_description, $time, $date, $duration, $this->_data->venue, $this->_data->location,
@@ -193,6 +197,7 @@ class redEVENT_tags {
 									$webformsignup, $emailsignup, $formalsignup, $externalsignup, $phonesignup
                   , $venueimage, $eventimage, $categoryimage
                   , $category
+                  , $eventcomments
                   );
 				/* First tag replacement */
 				$message = str_replace($findoffer, $replaceoffer, $page);
@@ -321,6 +326,34 @@ class redEVENT_tags {
 			WHERE text_name ='". implode( "' OR text_name ='", $customtags[1] )."'";
 		$db->setQuery($q);
 		return $db->loadObjectList('text_name');
+	}
+	
+	/**
+	 * Returns the content of comments
+	 *
+	 * @param object $event
+	 * @return html
+	 */
+	private function _getComments($event)
+	{
+		$app = & JFactory::getApplication();
+    $template_path = JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'com_redevent';
+    $contents = '';
+    $this->row = $event;
+    $this->row->did = $event->id;
+    $this->elsettings = & redEVENTHelper::config();
+    if (JRequest::getVar('format') != 'raw') {
+      ob_start();
+      if (file_exists($template_path.DS.'details'.DS.'default_comments.php')) {
+        include($template_path.DS.'details'.DS.'default_comments.php');       
+      }
+      else {
+        include(JPATH_COMPONENT.DS.'views'.DS.'details'.DS.'tmpl'.DS.'default_comments.php');         
+      }
+	    $contents = ob_get_contents();
+	    ob_end_clean();
+    }
+    return $contents;
 	}
 
 }
