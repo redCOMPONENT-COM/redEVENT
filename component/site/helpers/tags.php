@@ -88,8 +88,8 @@ class redEVENT_tags {
 				
 				/* Load custom tags */
 				$customtags = array();
-				preg_match_all("/\[(.+?)\]/", $page, $customtags);
-				$customdata = $this->getCustomData($customtags);
+				preg_match_all("/\[(.+?)\]/", $page, $alltags);
+				$customdata = $this->getCustomData($alltags);
 				
 				/* Only do the event description if it is in on the page */
 				$event_description = '';
@@ -117,6 +117,7 @@ class redEVENT_tags {
 				else $eventplacesleft = $this->_maxattendees;
 				if (isset($waitinglist[1])) $waitinglistplacesleft = $this->_maxwaitinglist - $waitinglist[1]->total;
 				else $waitinglistplacesleft = $this->_maxwaitinglist;
+				
 				/* Include redFORM */
 				$redform = '';
 				if ($this->_data->redform_id > 0) {
@@ -163,6 +164,20 @@ class redEVENT_tags {
 				$externalsignup = '<span class="vlink external">'.JHTML::_('link', $this->_data->submission_type_external, JHTML::_('image', $imagepath.$elsettings->signup_external_img,  $elsettings->signup_external_text), 'target="_blank"').'</span> ';
 				$phonesignup = '<span class="vlink phone">'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&task=signup&subtype=phone&xref='.$this->_xref.'&id='.$this->_data->id), JHTML::_('image', $imagepath.$elsettings->signup_phone_img,  JText::_($elsettings->signup_phone_text), 'width="24px" height="24px"')).'</span> ';
 				
+				//signup pages
+				if (in_array('[phonesignuppage]', $alltags[0])) {
+					$phonesignuppage = $this->ReplaceTags($this->_data->submission_type_phone);
+				}
+				else {
+					$phonesignuppage = '';
+				}
+        if (in_array('[webformsignuppage]', $alltags[0])) {
+          $webformsignuppage = $this->ReplaceTags($this->_data->submission_type_webform);
+        }
+        else {
+          $webformsignuppage = '';
+        }
+				
 				//images
 				$venueimage = redEVENTImage::flyercreator($this->_data->locimage);
 				$venueimage = JHTML::image(JURI::root().'/'.$venueimage['original'], $this->_data->venue, array('title' => $this->_data->venue));
@@ -182,11 +197,12 @@ class redEVENT_tags {
         //comments
         $eventcomments = $this->_getComments($this->_data);
         
-				/* Clean up some tags */
+				/* tags  replacements array */
 				$findoffer = array('[event_description]', '[event_title]', '[price]', '[credits]', '[code]', '[inputname]', '[inputemail]', '[submit]',
 									'[event_info_text]', '[time]', '[date]', '[duration]', '[venue]', '[city]', '[username]', '[useremail]', '[venues]','[regurl]',
 									'[eventplaces]', '[waitinglistplaces]', '[eventplacesleft]', '[waitinglistplacesleft]'
 				          , '[webformsignup]', '[emailsignup]', '[formalsignup]', '[externalsignup]', '[phonesignup]'
+				          , '[phonesignuppage]', '[webformsignuppage]'
 				          , '[venueimage]', '[eventimage]', '[categoryimage]'
 				          , '[category]'
 				          , '[eventcomments]'
@@ -195,15 +211,19 @@ class redEVENT_tags {
 									$name, $email, $submit, $event_info_description, $time, $date, $duration, $this->_data->venue, $this->_data->location,
 									$username, $useremail, $venues_html, $regurl, $this->_maxattendees, $this->_maxwaitinglist, $eventplacesleft, $waitinglistplacesleft, 
 									$webformsignup, $emailsignup, $formalsignup, $externalsignup, $phonesignup
+									, $phonesignuppage, $webformsignuppage
                   , $venueimage, $eventimage, $categoryimage
                   , $category
                   , $eventcomments
                   );
 				/* First tag replacement */
 				$message = str_replace($findoffer, $replaceoffer, $page);
+				
 			  /* second replacement, add the form */
 				/* if done in first one, username in the form javascript is replaced too... */
 				$message = str_replace('[redform]', $redform, $message); 
+				
+				// then the tags from the custom library
 				foreach ($customdata as $tag => $data) {
 					$data->text_field = str_replace($findoffer, $replaceoffer, $data->text_field);
 					/* Do a redFORM replacement here too for when used in the text library */
@@ -316,8 +336,7 @@ class redEVENT_tags {
 	}
 	
 	/**
-	 * Load the number of people that are confirmed and if they are on or off
-	 * the waitinglist
+	 *
 	 */
 	private function getCustomData($customtags) {
 		$db = JFactory::getDBO();
