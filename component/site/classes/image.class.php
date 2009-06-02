@@ -344,5 +344,24 @@ class redEVENTImage {
 
 		return $filename;
 	}
+	
+	/**
+	 * returns html code for category image, or just the category name if image is not set
+	 *
+	 * @param object $category
+	 * @param array attribs
+	 * @return html
+	 */
+	function getCategoryImage($category, $attribs = null)
+	{
+		$image_attribs = array('title' => $category->catname);
+		if ($attribs && is_array($attribs)) {
+			$image_attribs = array_merge( $image_attribs, $attribs);
+		}
+		if ($category->image) {
+		  return JHTML::image(JURI::root().'images/stories/'.$category->image, $category->catname, $image_attribs);	
+		}
+		else return $category->catname; 
+	}
 }
 ?>

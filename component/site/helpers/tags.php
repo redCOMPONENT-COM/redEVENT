@@ -163,15 +163,37 @@ class redEVENT_tags {
 				$externalsignup = '<span class="vlink external">'.JHTML::_('link', $this->_data->submission_type_external, JHTML::_('image', $imagepath.$elsettings->signup_external_img,  $elsettings->signup_external_text), 'target="_blank"').'</span> ';
 				$phonesignup = '<span class="vlink phone">'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&task=signup&subtype=phone&xref='.$this->_xref.'&id='.$this->_data->id), JHTML::_('image', $imagepath.$elsettings->signup_phone_img,  JText::_($elsettings->signup_phone_text), 'width="24px" height="24px"')).'</span> ';
 				
+				//images
+				$venueimage = redEVENTImage::flyercreator($this->_data->locimage);
+				$venueimage = JHTML::image(JURI::root().'/'.$venueimage['original'], $this->_data->venue, array('title' => $this->_data->venue));
+        $eventimage = redEVENTImage::flyercreator($this->_data->datimage, 'event');
+        $eventimage = JHTML::image(JURI::root().'/'.$eventimage['original'], $this->_data->title, array('title' => $this->_data->title));
+				
+        // categories
+        $cats = array();
+        $cats_images = array();
+        foreach ($this->_data->categories as $c){
+        	$cats[] = JHTML::link(JRoute::_('index.php?option=com_redevent&view=categoryevents&id=' . $c->slug), $c->catname);
+          $cats_images[] = redEVENTImage::getCategoryImage($c);
+        }
+        $category = '<span class="details-categories">'.implode(', ', $cats).'</span>';
+        $categoryimage = '<span class="details-categories-images"><span class="details-categories-image">'.implode('</span><span class="details-categories-image">', $cats_images).'</span></span>';
+        
 				/* Clean up some tags */
 				$findoffer = array('[event_description]', '[event_title]', '[price]', '[credits]', '[code]', '[inputname]', '[inputemail]', '[submit]',
 									'[event_info_text]', '[time]', '[date]', '[duration]', '[venue]', '[city]', '[username]', '[useremail]', '[venues]','[regurl]',
 									'[eventplaces]', '[waitinglistplaces]', '[eventplacesleft]', '[waitinglistplacesleft]'
-				          , '[webformsignup]', '[emailsignup]', '[formalsignup]', '[externalsignup]', '[phonesignup]');
+				          , '[webformsignup]', '[emailsignup]', '[formalsignup]', '[externalsignup]', '[phonesignup]'
+				          , '[venueimage]', '[eventimage]', '[categoryimage]'
+				          , '[category]'
+				          );
 				$replaceoffer = array($event_description, $this->_data->title, $price, $this->_data->course_credit, $this->_data->course_code, 
 									$name, $email, $submit, $event_info_description, $time, $date, $duration, $this->_data->venue, $this->_data->location,
 									$username, $useremail, $venues_html, $regurl, $this->_maxattendees, $this->_maxwaitinglist, $eventplacesleft, $waitinglistplacesleft, 
-									$webformsignup, $emailsignup, $formalsignup, $externalsignup, $phonesignup);
+									$webformsignup, $emailsignup, $formalsignup, $externalsignup, $phonesignup
+                  , $venueimage, $eventimage, $categoryimage
+                  , $category
+                  );
 				/* First tag replacement */
 				$message = str_replace($findoffer, $replaceoffer, $page);
 			  /* second replacement, add the form */
@@ -240,17 +262,37 @@ class redEVENT_tags {
 		$q = " SELECT e.*, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, x.course_price, "
 		    . " x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, v.venue, x.venueid,
 					v.city AS location,
-					v.country, 
+					v.country, v.locimage,
 					UNIX_TIMESTAMP(x.dates) AS unixdates,
           CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(':', v.id, v.alias) ELSE v.id END as venueslug
 			FROM #__redevent_events AS e
 			INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id
 			INNER JOIN #__redevent_venues AS v ON x.venueid = v.id
+      LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id
+      LEFT JOIN #__redevent_categories AS c ON xcat.category_id = c.id
 			WHERE x.published = 1
 			AND e.id IN (".$this->_eventid.")
 			";
 		$db->setQuery($q);
 		$this->_eventlinks = $db->loadObjectList();
+		$this->_eventlinks = $this->_getCategories($this->_eventlinks);
+	}
+	
+	private function _getCategories($rows)
+	{		
+    $db = JFactory::getDBO();
+		foreach ($rows as $k => $r) {
+			$query = ' SELECT c.id, c.catname, c.image, '
+             . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(":", c.id, c.alias) ELSE c.id END as slug '
+			       . ' FROM #__redevent_categories AS c '
+			       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = c.id '
+			       . ' WHERE xcat.event_id = ' . $db->Quote($r->id)
+			       . ' ORDER BY c.lft '
+			       ;
+			$db->setQuery($query);
+			$rows[$k]->categories = $db->loadObjectList();
+		}
+		return ($rows);
 	}
 	
 	/**
