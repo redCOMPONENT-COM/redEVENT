@@ -177,6 +177,18 @@ class redEVENT_tags {
         else {
           $webformsignuppage = '';
         }
+        if (in_array('[formalsignuppage]', $alltags[0])) {
+          $formalsignuppage = $this->_getFormalOffer($this->_data);
+        }
+        else {
+          $formalsignuppage = '';
+        }
+        if (in_array('[emailsignuppage]', $alltags[0])) {
+          $emailsignuppage = $this->_getEmailSubmission($this->_data);
+        }
+        else {
+          $emailsignuppage = '';
+        }
 				
 				//images
 				$venueimage = redEVENTImage::flyercreator($this->_data->locimage);
@@ -202,7 +214,7 @@ class redEVENT_tags {
 									'[event_info_text]', '[time]', '[date]', '[duration]', '[venue]', '[city]', '[username]', '[useremail]', '[venues]','[regurl]',
 									'[eventplaces]', '[waitinglistplaces]', '[eventplacesleft]', '[waitinglistplacesleft]'
 				          , '[webformsignup]', '[emailsignup]', '[formalsignup]', '[externalsignup]', '[phonesignup]'
-				          , '[phonesignuppage]', '[webformsignuppage]'
+				          , '[phonesignuppage]', '[webformsignuppage]', '[formalsignuppage]', '[emailsignuppage]'
 				          , '[venueimage]', '[eventimage]', '[categoryimage]'
 				          , '[category]'
 				          , '[eventcomments]'
@@ -211,7 +223,7 @@ class redEVENT_tags {
 									$name, $email, $submit, $event_info_description, $time, $date, $duration, $this->_data->venue, $this->_data->location,
 									$username, $useremail, $venues_html, $regurl, $this->_maxattendees, $this->_maxwaitinglist, $eventplacesleft, $waitinglistplacesleft, 
 									$webformsignup, $emailsignup, $formalsignup, $externalsignup, $phonesignup
-									, $phonesignuppage, $webformsignuppage
+									, $phonesignuppage, $webformsignuppage, $formalsignuppage, $emailsignuppage
                   , $venueimage, $eventimage, $categoryimage
                   , $category
                   , $eventcomments
@@ -374,6 +386,45 @@ class redEVENT_tags {
     }
     return $contents;
 	}
+	
+	private function _getFormalOffer($event)
+	{
+		ob_start();
+		?>
+		<form name="subemail" action="<?php echo JRoute::_('index.php'); ?>" method="post">
+		  <?php echo $this->ReplaceTags($event->submission_type_formal_offer); ?>
+		  <input type="hidden" name="task" value="signup" />
+		  <input type="hidden" name="option" value="com_redevent" />
+		  <input type="hidden" name="view" value="signup" />
+		  <input type="hidden" name="subtype" value="formaloffer" />
+		  <input type="hidden" name="sendmail" value="1" />
+		  <input type="hidden" name="xref" value="<?php echo $event->xref; ?>" />
+		  <input type="hidden" name="id" value="<?php echo $event->id; ?>" />
+		</form>
+		<?php
+    $contents = ob_get_contents();
+    ob_end_clean();
+    return $contents;    
+	}
 
+  private function _getEmailSubmission($event)
+  {
+    ob_start();
+    ?>
+		<form name="subemail" action="<?php echo JRoute::_('index.php'); ?>" method="post">
+		  <?php echo $this->ReplaceTags($event->submission_type_email); ?>
+		  <input type="hidden" name="task" value="signup" />
+		  <input type="hidden" name="option" value="com_redevent" />
+		  <input type="hidden" name="view" value="signup" />
+		  <input type="hidden" name="subtype" value="email" />
+		  <input type="hidden" name="sendmail" value="1" />
+      <input type="hidden" name="xref" value="<?php echo $event->xref; ?>" />
+      <input type="hidden" name="id" value="<?php echo $event->id; ?>" />
+		</form>
+    <?php
+    $contents = ob_get_contents();
+    ob_end_clean();
+    return $contents;    
+  }
 }
 ?>
