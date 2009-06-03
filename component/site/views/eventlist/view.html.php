@@ -85,11 +85,11 @@ class RedeventViewEventList extends JView
 		$pathway->setItemName( 1, $item->name );
 		
 		if ( $task == 'archive' ) {
-			$pathway->addItem(JText::_( 'ARCHIVE' ), JRoute::_('index.php?view=eventlist&task=archive') );
-			$print_link = JRoute::_('index.php?view=eventlist&task=archive&tmpl=component&pop=1');
+			$pathway->addItem(JText::_( 'ARCHIVE' ), JRoute::_('index.php?option=com_redevent&view=eventlist&task=archive') );
+			$print_link = JRoute::_('index.php?option=com_redevent&view=eventlist&task=archive&tmpl=component&pop=1');
 			$pagetitle = $params->get('page_title').' - '.JText::_( 'ARCHIVE' );
 		} else {
-			$print_link = JRoute::_('index.php?view=eventlist&tmpl=component&pop=1');
+			$print_link = JRoute::_('index.php?option=com_redevent&view=eventlist&tmpl=component&pop=1');
 			$pagetitle = $params->get('page_title');
 		}
 		

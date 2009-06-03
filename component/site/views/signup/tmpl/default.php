@@ -25,7 +25,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 echo $this->tags->ReplaceTags($this->page);
 
-echo JHTML::_('link', JRoute::_('index.php?view=details&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id')), JText::_('RETURN_EVENT_DETAILS'));
+echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id')), JText::_('RETURN_EVENT_DETAILS'));
 ?>
 <p class="copyright">
 	<?php echo ELOutput::footer( ); ?>

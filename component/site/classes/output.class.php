@@ -64,7 +64,7 @@ class ELOutput {
 				$image = JText::_( 'DELIVER NEW EVENT' );
 			}
 
-			$link 		= 'index.php?view=editevent';
+			$link 		= 'index.php?option=com_redevent&view=editevent';
 			$overlib 	= JText::_( 'SUBMIT EVENT TIP' );
 			$output		= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.JText::_( 'DELIVER NEW EVENT' ).'::'.$overlib.'">'.$image.'</a>';
 
@@ -107,7 +107,7 @@ class ELOutput {
 				$title 		= JText::_( 'SHOW EVENTS' );
 				
 				if ($id) {
-						$link 		= JRoute::_( 'index.php?view='.$view.'&id='.$id );
+						$link 		= JRoute::_( 'index.php?option=com_redevent&view='.$view.'&id='.$id );
 				} else {
 						$link 		= JRoute::_( 'index.php' );
 				}
@@ -123,9 +123,9 @@ class ELOutput {
 				$title 		= JText::_( 'SHOW ARCHIVE' );
 					
 				if ($id) {
-					$link 		= JRoute::_( 'index.php?view='.$view.'&id='.$id.'&task=archive' );
+					$link 		= JRoute::_( 'index.php?option=com_redevent&view='.$view.'&id='.$id.'&task=archive' );
 				} else {
-					$link		= JRoute::_('index.php?view='.$view.'&task=archive');
+					$link		= JRoute::_('index.php?option=com_redevent&view='.$view.'&task=archive');
 				}
 			}
 
@@ -177,7 +177,7 @@ class ELOutput {
 					break;
 			}
 
-			$link 	= 'index.php?view='.$view.'&id='.$id.'&returnid='.JRequest::getInt('xref');
+			$link 	= 'index.php?option=com_redevent&view='.$view.'&id='.$id.'&returnid='.JRequest::getInt('xref');
 			$output	= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
 
 			return $output;
@@ -238,7 +238,7 @@ class ELOutput {
 			JHTML::_('behavior.tooltip');
 			$uri    =& JURI::getInstance();
 			$base  	= $uri->toString( array('scheme', 'host', 'port'));
-			$link 	= $base.JRoute::_( 'index.php?view='.$view.'&id='.$slug, false );
+			$link 	= $base.JRoute::_( 'index.php?option=com_redevent&view='.$view.'&id='.$slug, false );
 			$url	= 'index.php?option=com_mailto&tmpl=component&link='.base64_encode( $link );
 			$status = 'width=400,height=300,menubar=yes,resizable=yes';
 

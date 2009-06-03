@@ -66,7 +66,7 @@ class RedeventViewCategories extends JView
 		$pathway->setItemName(1, $item->name);
 
 		if ( $task == 'archive' ) {
-			$pathway->addItem(JText::_( 'ARCHIVE' ), JRoute::_('index.php?view=categories&task=archive') );
+			$pathway->addItem(JText::_( 'ARCHIVE' ), JRoute::_('index.php?option=com_redevent&view=categories&task=archive') );
 			$pagetitle = $params->get('page_title').' - '.JText::_( 'ARCHIVE' );
 		} else {
 			$pagetitle = $params->get('page_title');

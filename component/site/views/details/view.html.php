@@ -117,11 +117,11 @@ class RedeventViewDetails extends JView
 			$params->set( 'popup', 1 );
 		}
 
-		$print_link = JRoute::_('index.php?view=details&id='.$row->slug.'&pop=1&tmpl=component');
+		$print_link = JRoute::_('index.php?option=com_redevent&view=details&id='.$row->slug.'&pop=1&tmpl=component');
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
-		$pathway->addItem( JText::_( 'DETAILS' ). ' - '.$row->title, JRoute::_('index.php?view=details&id='.$row->slug));
+		$pathway->addItem( JText::_( 'DETAILS' ). ' - '.$row->title, JRoute::_('index.php?option=com_redevent&view=details&id='.$row->slug));
 
 		//Get images
 		$dimage = redEVENTImage::flyercreator($row->datimage, 'event');

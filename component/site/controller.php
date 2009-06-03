@@ -64,7 +64,7 @@ class RedeventController extends JController
 			$row->load($id);
 			$row->checkin();
 
-			$this->setRedirect( JRoute::_('index.php?view=details&xref='.JRequest::getInt('returnid'), false ) );
+			$this->setRedirect( JRoute::_('index.php?option=com_redevent&view=details&xref='.JRequest::getInt('returnid'), false ) );
 
 		} else {
 			$link = JRequest::getString('referer', JURI::base(), 'post');
@@ -96,7 +96,7 @@ class RedeventController extends JController
 			$row->checkin();
 		}
 
-		$this->setRedirect( JRoute::_('index.php?view=editvenue', false ) );
+		$this->setRedirect( JRoute::_('index.php?option=com_redevent&view=editvenue', false ) );
 	}
 
 	/**
@@ -122,7 +122,7 @@ class RedeventController extends JController
 			$row->load($id);
 			$row->checkin();
 
-			$this->setRedirect( JRoute::_('index.php?view=venueevents&id='.$id, false) );
+			$this->setRedirect( JRoute::_('index.php?option=com_redevent&view=venueevents&id='.$id, false) );
 
 		} else {
 			$link = JRequest::getString('referer', JURI::base(), 'post');
@@ -153,7 +153,7 @@ class RedeventController extends JController
 		if ($returnid = $model->store($post, $file)) {
 
 			$msg 	= JText::_( 'VENUE SAVED' );
-			$link 	= JRoute::_('index.php?view=venueevents&id='.$returnid, false) ;
+			$link 	= JRoute::_('index.php?option=com_redevent&view=venueevents&id='.$returnid, false) ;
 
 				
 			JPluginHelper::importPlugin( 'redevent' );
@@ -264,7 +264,7 @@ class RedeventController extends JController
 				}
 				
 				$msg 	= JText::_( 'EVENT SAVED' );
-				$link 	= JRoute::_('index.php?view=details&xref='.$xref, false) ;
+				$link 	= JRoute::_('index.php?option=com_redevent&view=details&xref='.$xref, false) ;
 			}
 			
 			if (count($existing_xrefs) > 0) {
@@ -334,7 +334,7 @@ class RedeventController extends JController
 		$cache->clean();
 		
 		/* Go to the confirmation page */
-		$this->setRedirect(JRoute::_('index.php?view=confirmation&page=confirmation&xref='.$xref.'&submit_key='.JRequest::getVar('submit_key').'&action='.JRequest::getVar('action'), false));
+		$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=confirmation&page=confirmation&xref='.$xref.'&submit_key='.JRequest::getVar('submit_key').'&action='.JRequest::getVar('action'), false));
 	}
 
 	/**
@@ -372,7 +372,7 @@ class RedeventController extends JController
 		$cache->clean();
 
 		$msg = JText::_( 'UNREGISTERED SUCCESSFULL' );
-		$this->setRedirect( JRoute::_('index.php?view=details&xref=' . $xref . '&id=' . $id, false), $msg );
+		$this->setRedirect( JRoute::_('index.php?option=com_redevent&view=details&xref=' . $xref . '&id=' . $id, false), $msg );
 	}
 
 	/**
