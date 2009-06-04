@@ -36,15 +36,35 @@ class redEVENT_tags {
 	private $_data = false;
 	
 	public function __construct() {
-		$xref = JRequest::getVar('xref', false);
-		if ($xref) {
-			$this->_xref = $xref;
-			$db = JFactory::getDBO();
-			$q = "SELECT eventid, venueid, maxattendees, maxwaitinglist FROM #__redevent_event_venue_xref WHERE id = ".$xref;
+				
+		$this->_xref = JRequest::getVar('xref', false);
+		
+		// if no xref specified. try to get one associated to the event id
+		if (!$this->_xref)
+		{
+			$eventid = JRequest::getVar('id', false);
+			if ($eventid)
+			{
+  			$db = & JFactory::getDBO();
+				$query = ' SELECT x.id FROM #__redevent_event_venue_xref AS x '
+				       . ' INNER JOIN #__redevent_events AS e ON e.id = x.eventid '
+				       . ' WHERE x.published = 1 '
+				       . ' ORDER BY x.dates ASC '
+				       ;
+				$db->setQuery($query);
+				$res = $db->loadResult();
+				if ($res) {
+					$this->_xref = $res;
+				}
+			}
+		}
+		
+		if ($this->_xref) {
+      $db = & JFactory::getDBO();
+			$q = "SELECT eventid, venueid, maxattendees, maxwaitinglist FROM #__redevent_event_venue_xref WHERE id = ".$this->_xref;
 			$db->setQuery($q);
 			list($this->_eventid, $this->_venueid, $this->_maxattendees, $this->_maxwaitinglist) = $db->loadRow();
 		}
-		else $this->_xref = false;
 	}
 	
 	/**
@@ -309,6 +329,7 @@ class redEVENT_tags {
       LEFT JOIN #__redevent_categories AS c ON xcat.category_id = c.id
 			WHERE x.published = 1
 			AND e.id IN (".$this->_eventid.")
+      GROUP BY x.id
 			";
 		$db->setQuery($q);
 		$this->_eventlinks = $db->loadObjectList();
