@@ -230,7 +230,7 @@ class RedeventModelCategoriesdetailed extends JModel
 		}
 
 		//Get Events from Category
-		$query = 'SELECT a.*, a.id as event_id, x.*, l.venue, l.city, l.state, l.url, c.catname, c.id AS catid,'
+		$query = 'SELECT a.*, a.id as event_id, x.*, x.id as xref, l.venue, l.city, l.state, l.url, c.catname, c.id AS catid,'
         . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
         . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
         . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
