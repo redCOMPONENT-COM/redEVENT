@@ -24,16 +24,16 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <div id="upcomingevents">
-<table width="940">
+<table class="courseinfo_tabel">
 <thead>
 	<tr>
-			<th align="left"><?php echo JText::_('EVENT_NAME'); ?></th>
-			<th align="left"><?php echo JText::_('EVENT_DATE'); ?></th>
-			<th align="left"><?php echo JText::_('EVENT_DURATION'); ?></th>
-			<th align="left" colspan="2"><?php echo JText::_('EVENT_VENUE'); ?></th>
-			<th align="left"><?php echo JText::_('EVENT_PRICE'); ?></th>
-			<th align="left"><?php echo JText::_('EVENT_CREDITS'); ?></th>
-			<th align="left"><?php echo JText::_('EVENT_SIGNUP'); ?></th>
+			<th class="courseinfo_titlename"><?php echo JText::_('EVENT_NAME'); ?></th>
+			<th class="courseinfo_titledate"><?php echo JText::_('EVENT_DATE'); ?></th>
+			<th class="courseinfo_titleduration"><?php echo JText::_('EVENT_DURATION'); ?></th>
+			<th class="courseinfo_titlevenue" colspan="2"><?php echo JText::_('EVENT_VENUE'); ?></th>
+			<th class="courseinfo_titleprice"><?php echo JText::_('EVENT_PRICE'); ?></th>
+			<th class="courseinfo_titlecredit"><?php echo JText::_('EVENT_CREDITS'); ?></th>
+			<th class="courseinfo_titlesignup"><?php echo JText::_('EVENT_SIGNUP'); ?></th>
 	</tr>
 </thead>
 <tbody>
@@ -45,13 +45,13 @@ foreach ($this->_eventlinks as $key => $event) {
 	$venue_url = JRoute::_('index.php?option=com_redevent&view=upcomingvenueevents&id='.$event->venueslug);
 	?>
 	<tr>
-			<td width="350"><?php echo JHTML::_('link', $event_url, $event->title); ?></td>
-			<td width="90"><?php echo ELOutput::formatdate($event->dates, $event->times); ?></td>
-			<td width="80"><?php echo redEVENTHelper::getEventDuration($event); ?></td>
-			<td width="65"><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
-			<td width="30"><?php echo ELOutput::getFlag( $event->country ); ?></td>
-			<td width="60"><?php echo ELOutput::formatprice($event->course_price) ?></td>
-			<td width="70"><?php echo $event->course_credit ?></td>
+			<td class="courseinfo_name"><?php echo JHTML::_('link', $event_url, $event->title); ?></td>
+			<td class="courseinfo_date"><?php echo ELOutput::formatdate($event->dates, $event->times); ?></td>
+			<td class="courseinfo_duration"><?php echo redEVENTHelper::getEventDuration($event); ?></td>
+			<td class="courseinfo_venue"><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
+			<td class="courseinfo_price"><?php echo ELOutput::getFlag( $event->country ); ?></td>
+			<td class="courseinfo_credit"><?php echo ELOutput::formatprice($event->course_price) ?></td>
+			<td class="courseinfo_signup"><?php echo $event->course_credit ?></td>
 		<td width="*">
 		<?php
 		if ($event->unixdates >= time() && $event->registra) {
