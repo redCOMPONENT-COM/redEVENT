@@ -1,6 +1,6 @@
 <?php
 /**
- * Helper class for mod_eventlistcalq module
+ * Helper class for mod_redeventcal module
  * 
  * @package    Eventlist CalModuleQ for Joomla 1.5
  * @subpackage Modules

@@ -70,15 +70,15 @@ echo "<div class='redeventcal' align='center'>";
 	
 	$month_href = NULL;
     
-    $calendar .= '<table class="mod_redeventlistcal_calendar" cellspacing="0" cellpadding="0">'."\n".	  
-       '<caption class="mod_redeventlistcal_calendar-month">'.$p.($month_href ? '<a href="'.htmlspecialchars($month_href).'">'.$title.'</a>' : $title).$n."</caption>\n<tr>";
+    $calendar .= '<table class="mod_redeventcal_calendar" cellspacing="0" cellpadding="0">'."\n".	  
+       '<caption class="mod_redeventcal_calendar-month">'.$p.($month_href ? '<a href="'.htmlspecialchars($month_href).'">'.$title.'</a>' : $title).$n."</caption>\n<tr>";
 
  
     if($day_name_length){ #if the day names should be shown ($day_name_length > 0)
         #if day_name_length is >3, the full name of the day will be printed
 		if ($day_name_length >3){
         foreach($day_names_long as $d)
-            $calendar .= '<th class="mod_redeventlistcal_daynames" abbr="'.$d.'">&nbsp;'.$d.'&nbsp;</th>';
+            $calendar .= '<th class="mod_redeventcal_daynames" abbr="'.$d.'">&nbsp;'.$d.'&nbsp;</th>';
         $calendar .= "</tr>\n<tr>";
 		}
 		else
@@ -86,11 +86,11 @@ echo "<div class='redeventcal' align='center'>";
 		   foreach($day_names_short as $d)
 		   if (function_exists('mb_substr'))
 		   {
-                $calendar .= '<th class="mod_redeventlistcal_daynames" abbr="'.$d.'">&nbsp;'.mb_substr($d,0,$day_name_length).'&nbsp;</th>';
+                $calendar .= '<th class="mod_redeventcal_daynames" abbr="'.$d.'">&nbsp;'.mb_substr($d,0,$day_name_length).'&nbsp;</th>';
 		   }
 		   else
 		   {
-		   	   $calendar .= '<th class="mod_redeventlistcal_daynames" abbr="'.$d.'">&nbsp;'.substr($d,0,$day_name_length).'&nbsp;</th>';
+		   	   $calendar .= '<th class="mod_redeventcal_daynames" abbr="'.$d.'">&nbsp;'.substr($d,0,$day_name_length).'&nbsp;</th>';
 		   }
         	$calendar .= "</tr>\n<tr>";
 		}
@@ -105,7 +105,7 @@ echo "<div class='redeventcal' align='center'>";
    $curryear 	= date( 'Y', $time);
 
    	for ($counti = 0; $counti < $weekday; $counti++) {
-		$calendar .= '<td class="mod_redeventlistcal">&nbsp;</td>'; #initial 'empty' days
+		$calendar .= '<td class="mod_redeventcal">&nbsp;</td>'; #initial 'empty' days
 	}
     
    for($day = 1, $days_in_month = gmdate('t', $uxtime_first_of_month); $day <= $days_in_month; $day++, $weekday++) {
@@ -120,7 +120,7 @@ echo "<div class='redeventcal' align='center'>";
    		} else {
       		$istoday = 0;
    		}
-		$tdbaseclass = ( $istoday ) ? 'mod_redeventlistcal_caltoday' : 'mod_redeventlistcal_calday';
+		$tdbaseclass = ( $istoday ) ? 'mod_redeventcal_caltoday' : 'mod_redeventcal_calday';
 
    		//space in front of daynumber when day < 10
 		($day < 10) ? $space = '&nbsp;&nbsp;': $space = '';
@@ -161,7 +161,7 @@ echo "<div class='redeventcal' align='center'>";
 		}
 	}
 	for ($counti = $weekday; $counti < 7; $counti++) {
-		$calendar .= '<td class="mod_redeventlistcal">&nbsp;</td>'; #remaining 'empty' days
+		$calendar .= '<td class="mod_redeventcal">&nbsp;</td>'; #remaining 'empty' days
 	}
 
     echo $calendar."</tr>\n</table>\n";
