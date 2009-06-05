@@ -117,17 +117,7 @@ class RedEvent_venues_categories extends JTable
 	
 	function rebuildTree()
 	{
-		// get first category with parent_id = 0. This will be our root
-		$query = ' SELECT id FROM #__redevent_venues_categories WHERE parent_id = ' . $this->_db->Quote(0);
-		$this->_db->setQuery($query);
-    $root = $this->_db->loadResult();
-
-    if (!$root) {
-    	JError::raiseNotice(0, JText::_('THERE IS NO ROOT TREE'));
-    	return false;
-    }
-		
-		$this->_rebuildTree($root, 1);
+		$this->_rebuildTree(0, 0);
 	}
 	
 	function _rebuildTree($parent, $left) {
