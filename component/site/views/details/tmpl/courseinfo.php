@@ -49,10 +49,10 @@ foreach ($this->_eventlinks as $key => $event) {
 			<td class="courseinfo_date"><?php echo ELOutput::formatdate($event->dates, $event->times); ?></td>
 			<td class="courseinfo_duration"><?php echo redEVENTHelper::getEventDuration($event); ?></td>
 			<td class="courseinfo_venue"><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
-			<td class="courseinfo_price"><?php echo ELOutput::getFlag( $event->country ); ?></td>
-			<td class="courseinfo_credit"><?php echo ELOutput::formatprice($event->course_price) ?></td>
-			<td class="courseinfo_signup"><?php echo $event->course_credit ?></td>
-		<td width="*">
+			<td class="courseinfo_country"><?php echo ELOutput::getFlag( $event->country ); ?></td>
+			<td class="courseinfo_prices"><?php echo ELOutput::formatprice($event->course_price) ?></td>
+			<td class="courseinfo_credit"><?php echo $event->course_credit ?></td>
+		<td class="courseinfo_signup" width="*"><div class="courseinfo_signupwrapper">
 		<?php
 		if ($event->unixdates >= time() && $event->registra) {
 			/* Get the different submission types */
@@ -61,26 +61,26 @@ foreach ($this->_eventlinks as $key => $event) {
 			foreach ($submissiontypes as $key => $subtype) {
 				switch ($subtype) {
 					case 'email':
-						$venues_html .= '<div class="vlink email">'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&task=signup&subtype=email&xref='.$event->xref.'&id='.$event->id), JHTML::_('image', $imagepath.$elsettings->signup_email_img,  JText::_($elsettings->signup_email_text), 'width="24px" height="24px"')).'</div> ';
+						$venues_html .= '<div class="courseinfo_vlink courseinfo_email">'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&task=signup&subtype=email&xref='.$event->xref.'&id='.$event->id), JHTML::_('image', $imagepath.$elsettings->signup_email_img,  JText::_($elsettings->signup_email_text), 'width="24px" height="24px"')).'</div> ';
 						break;
 					case 'phone':
-						$venues_html .= '<div class="vlink phone">'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&task=signup&subtype=phone&xref='.$event->xref.'&id='.$event->id), JHTML::_('image', $imagepath.$elsettings->signup_phone_img,  JText::_($elsettings->signup_phone_text), 'width="24px" height="24px"')).'</div> ';
+						$venues_html .= '<div class="courseinfo_vlink courseinfo_phone">'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&task=signup&subtype=phone&xref='.$event->xref.'&id='.$event->id), JHTML::_('image', $imagepath.$elsettings->signup_phone_img,  JText::_($elsettings->signup_phone_text), 'width="24px" height="24px"')).'</div> ';
 						break;
 					case 'external':
-						$venues_html .= '<div class="vlink external">'.JHTML::_('link', $event->submission_type_external, JHTML::_('image', $imagepath.$elsettings->signup_external_img,  $elsettings->signup_external_text), 'target="_blank"').'</div> ';
+						$venues_html .= '<div class="courseinfo_vlink courseinfo_external">'.JHTML::_('link', $event->submission_type_external, JHTML::_('image', $imagepath.$elsettings->signup_external_img,  $elsettings->signup_external_text), 'target="_blank"').'</div> ';
 						break;
 					case 'webform':
-						$venues_html .= '<div class="vlink webform">'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&subtype=webform&task=signup&xref='.$event->xref.'&id='.$event->id), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text), 'width="24px" height="24px"')).'</div> ';
+						$venues_html .= '<div class="courseinfo_vlink courseinfo_webform">'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&subtype=webform&task=signup&xref='.$event->xref.'&id='.$event->id), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text), 'width="24px" height="24px"')).'</div> ';
 						break;
 					case 'formaloffer':
-						$venues_html .= '<div class="vlink formaloffer">'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&subtype=formaloffer&task=signup&xref='.$event->xref.'&id='.$event->id), JHTML::_('image', $imagepath.$elsettings->signup_formal_offer_img,  JText::_($elsettings->signup_formal_offer_text), 'width="24px" height="24px"')).'</div> ';
+						$venues_html .= '<div class="courseinfo_vlink courseinfo_formaloffer">'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&subtype=formaloffer&task=signup&xref='.$event->xref.'&id='.$event->id), JHTML::_('image', $imagepath.$elsettings->signup_formal_offer_img,  JText::_($elsettings->signup_formal_offer_text), 'width="24px" height="24px"')).'</div> ';
 						break;
 				}
 			}
 			echo $venues_html;
 		}
 		?>
-		</td>
+		</div></td>
 	</tr>
 <?php }
 ?>
