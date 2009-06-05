@@ -381,3 +381,142 @@ div.vlink {
 	display: block;
 	padding: 0.5em;
 }
+
+/** Courseinfo.php CSS **/
+
+table.courseinfo_tabel {
+	width: 100%;
+}
+
+th.courseinfo_titlename {
+	font-weight: bold;
+	text-align: left;
+}
+
+th.courseinfo_titledate {
+	font-weight: bold;
+	text-align: left;
+}
+
+th.courseinfo_titleduration {
+	font-weight: bold;
+	text-align: left;
+}
+
+th.courseinfo_titlevenue {
+	font-weight: bold;
+	text-align: left;
+}
+
+th.courseinfo_titleprice {
+	font-weight: bold;
+	text-align: left;
+}
+
+th.courseinfo_titlecredit {
+	font-weight: bold;
+	text-align: left;
+}
+
+th.courseinfo_titlesignup {
+	font-weight: bold;
+	text-align: left;
+}
+
+td.courseinfo_name {
+	font-weight: normal;
+	text-align: left;
+}
+
+td.courseinfo_date {
+	font-weight: normal;
+	text-align: left;
+}
+
+td.courseinfo_duration {
+	font-weight: normal;
+	text-align: left;
+}
+
+td.courseinfo_venue {
+	font-weight: normal;
+	text-align: left;
+}
+
+td.courseinfo_country {
+	font-weight: normal;
+	text-align: left;
+}
+
+td.courseinfo_price {
+	font-weight: normal;
+	text-align: left;
+}
+
+td.courseinfo_credit {
+	font-weight: normal;
+	text-align: left;
+}
+
+td.courseinfo_signup {
+	font-weight: normal;
+	text-align: left;
+}
+
+div.courseinfo_signupwrapper {
+	width: 100%;
+}
+
+div.courseinfo_vlink {
+	float: left;
+}
+
+div.courseinfo_vlink img {
+	float: left;
+	border: 0px solid #000000;
+}
+
+div.courseinfo_email {
+	float: left;
+}
+
+div.courseinfo_email img {
+	float: left;
+	border: 0px solid #000000;	
+}
+
+div.courseinfo_phone {
+	float: left;
+}
+
+div.courseinfo_phone img {
+	float: left;
+	border: 0px solid #000000;	
+}
+
+div.courseinfo_external {
+	float: left;
+}
+
+div.courseinfo_external img {
+	float: left;
+	border: 0px solid #000000;	
+}
+
+div.courseinfo_webform {
+	float: left;
+}
+
+div.courseinfo_webform img {
+	float: left;
+	border: 0px solid #000000;	
+}
+
+div.courseinfo_formaloffer {
+	float: left;
+}
+
+div.courseinfo_formaloffer img {
+	float: left;
+	border: 0px solid #000000;	
+}
