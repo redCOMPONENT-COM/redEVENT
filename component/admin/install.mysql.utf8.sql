@@ -1,6 +1,5 @@
 CREATE TABLE IF NOT EXISTS `#__redevent_events` (
   `id` int(11) unsigned NOT NULL auto_increment,
-  `catsid` int(11) unsigned NOT NULL default '0',
   `title` varchar(100) NOT NULL default '',
   `alias` varchar(100) NOT NULL default '',
   `created_by` int(11) unsigned NOT NULL default '0',

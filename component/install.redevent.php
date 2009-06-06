@@ -382,7 +382,7 @@ if (is_array($cols)) {
     $table->rebuildTree();
     
     /* copy all event-category relationship to new table */
-    $q = "INSERT INTO #__redevent_event_category_xref (event_id, category_id) SELECT #__redevent_events.id, #__redevent_events.catsid";
+    $q = "INSERT IGNORE INTO #__redevent_event_category_xref (event_id, category_id) SELECT #__redevent_events.id, #__redevent_events.catsid";
     $db->setQuery($q);
     $db->query();
   }  

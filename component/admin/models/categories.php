@@ -346,7 +346,7 @@ class RedEventModelCategories extends JModel
 	
 
 	/**
-	 * Method to remove a event
+	 * Method to remove a category
 	 *
 	 * @access	public
 	 * @return	string $msg
@@ -356,9 +356,9 @@ class RedEventModelCategories extends JModel
 	{
 		$cids = implode( ',', $cid );
 
-		$query = 'SELECT c.id, c.catname, COUNT( e.catsid ) AS numcat'
+		$query = 'SELECT c.id, c.catname, COUNT( xcat.event_id ) AS numcat'
 				. ' FROM #__redevent_categories AS c'
-				. ' LEFT JOIN #__redevent_events AS e ON e.catsid = c.id'
+        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = c.id'
 				. ' WHERE c.id IN ('. $cids .')'
 				. ' GROUP BY c.id'
 				;

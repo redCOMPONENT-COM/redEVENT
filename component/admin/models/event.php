@@ -175,20 +175,6 @@ class RedEventModelEvent extends JModel
 	}
 	
 	/**
-	 * Create the subcategory layout
-	 */
-	private function buildCategory($cattree, $catfilter, $subcats, $loop=1) {
-		if (isset($cattree[$catfilter])) {
-			foreach ($cattree[$catfilter] as $subcatid => $category) {
-				$this->html .= '<option value="'.$category['cid'].'"';
-				if ($this->_data->catsid == $category['cid']) $this->html .= 'selected="selected"';
-				$this->html .= '>'.str_repeat('>', $loop).' '.$category['catname'].'</option>';
-				$subcats = $this->buildCategory($cattree, $subcatid, $subcats, $loop+1);
-			}
-		}
-	}
-
-	/**
 	 * Method to initialise the event data
 	 *
 	 * @access	private

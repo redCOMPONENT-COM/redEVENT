@@ -68,7 +68,6 @@ defined('_JEXEC') or die('Restricted access');
 				
 				if (array_key_exists($row->id, $this->eventvenues)) {
 					$link 			= 'index.php?option=com_redevent&amp;controller=events&amp;task=edit&amp;cid[]='.$row->id;
-					$catlink 		= 'index.php?option=com_redevent&amp;controller=categories&amp;task=edit&amp;cid[]='.$row->catsid;
 	
 					$checked 	= JHTML::_('grid.checkedout', $row, $i );
 				?>

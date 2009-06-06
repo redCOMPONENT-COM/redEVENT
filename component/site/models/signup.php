@@ -99,18 +99,21 @@ class RedeventModelSignup extends JModel
 		if ($this->_loadDetails())
 		{
 			$user	= & JFactory::getUser();
+		
+      // Is the category published?
+      if (!count($this->_details->categories))
+      {
+        JError::raiseError( 404, JText::_("CATEGORY NOT PUBLISHED") );
+      }
 
-			// Is the category published?
-			if (!$this->_details->published && $this->_details->catsid)
-			{
-				JError::raiseError( 404, JText::_("CATEGORY NOT PUBLISHED") );
-			}
-
-			// Do we have access to the category?
-			if (($this->_details->access > $user->get('aid')) && $this->_details->catsid)
-			{
-				JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
-			}
+      // Do we have access to each category ?
+      foreach ($this->_details->categories as $cat)
+      {
+        if ($cat->access > $user->get('aid'))
+        {
+          JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+        }
+      }
 
 		}
 
@@ -132,7 +135,7 @@ class RedeventModelSignup extends JModel
 			$where	= $this->_buildDetailsWhere();
 
 			$query = 'SELECT a.id AS did, x.dates, x.enddates, a.title, x.times, x.endtimes, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, a.registra, a.unregistra,' 
-					. ' a.catsid, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, a.show_attendants, a.show_waitinglist, '
+					. ' a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, a.show_attendants, a.show_waitinglist, '
 					. ' a.max_multi_signup, a.confirmation_message, x.course_price, x.course_credit, a.course_code, c.catname, c.published, c.access, a.submission_type_phone,'
 					. ' a.submission_type_webform, a.submission_type_formal_offer, a.submission_type_email, v.venue, v.city AS location, '
 					. ' a.submission_type_email_pdf, a.submission_type_formal_offer_pdf, a.send_pdf_form, a.pdf_form_data, '
@@ -141,11 +144,25 @@ class RedeventModelSignup extends JModel
 					. ' FROM #__redevent_events AS a'
 					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON a.id = x.eventid'
 					. ' LEFT JOIN #__redevent_venues AS v ON x.venueid = v.id'
-					. ' LEFT JOIN #__redevent_categories AS c ON c.id = a.catsid'
+					. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+          . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
 					. $where
 					;
     		$this->_db->setQuery($query);
 			$this->_details = $this->_db->loadObject();
+						
+      if ($this->_details->did) {
+        $query =  ' SELECT c.id, c.catname, '
+              . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
+              . ' FROM #__redevent_categories as c '
+              . ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
+              . ' WHERE c.published = 1 '
+              . '   AND x.event_id = ' . $this->_db->Quote($this->_details->did)
+              . ' ORDER BY c.ordering'
+              ;
+        $this->_db->setQuery( $query );
+  
+        $this->_details->categories = $this->_db->loadObjectList();
 			return (boolean) $this->_details;
 		}
 		return true;

@@ -145,7 +145,6 @@ class RedeventModelEditevent extends JModel
 			$this->_event->id				= 0;
 			$this->_event->xref				= 0;
 			$this->_event->locid			= '';
-			$this->_event->catsid			= 0;
       $this->_event->categories  = null;
 			$this->_event->dates			= '';
 			$this->_event->enddates			= null;

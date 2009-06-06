@@ -119,7 +119,9 @@ class RedeventViewConfirmation extends JView
 	function keyword_switcher($keyword, $row, $formattime, $formatdate) {
 		switch ($keyword) {
 			case "catsid":
-				$content = $row->catname;
+				// TODO: fix for multiple cats
+				//$content = $row->catname;
+        $content = '';
 				break;
 			case "a_name":
 				// $content = $row->venue;
