@@ -144,8 +144,10 @@ class RedEventModelEventelement extends JModel
 					. ' FROM #__redevent_events AS a'
 					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
 					. ' LEFT JOIN #__redevent_venues AS loc ON loc.id = x.venueid'
-					. ' LEFT JOIN #__redevent_categories AS cat ON cat.id = a.catsid'
+          . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+					. ' LEFT JOIN #__redevent_categories AS cat ON cat.id = xcat.category_id'
 					. $where
+					. ' GROUP BY x.id '
 					. $orderby
 					;
 		return $query;
