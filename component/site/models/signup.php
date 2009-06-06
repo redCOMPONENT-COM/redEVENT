@@ -152,7 +152,7 @@ class RedeventModelSignup extends JModel
 			$this->_details = $this->_db->loadObject();
 						
       if ($this->_details->did) {
-        $query =  ' SELECT c.id, c.catname, '
+        $query =  ' SELECT c.id, c.catname, c.access, '
               . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
               . ' FROM #__redevent_categories as c '
               . ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
@@ -163,7 +163,8 @@ class RedeventModelSignup extends JModel
         $this->_db->setQuery( $query );
   
         $this->_details->categories = $this->_db->loadObjectList();
-			return (boolean) $this->_details;
+      }
+			return (boolean) $this->_details;			
 		}
 		return true;
 	}
