@@ -113,10 +113,13 @@ class RedeventModelDetails extends JModel
 				JError::raiseError( 404, JText::_("CATEGORY NOT PUBLISHED") );
 			}
 
-			// Do we have access to the category?
-			if (($this->_details->access > $user->get('aid')) && $this->_details->catsid)
+			// Do we have access to each category ?
+			foreach ($this->_details->categories as $cat)
 			{
-				JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+				if ($cat->access > $user->get('aid'))
+				{
+					JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+				}
 			}
 
 		}
@@ -434,7 +437,7 @@ class RedeventModelDetails extends JModel
    */
   function _getEventCategories($row)
   {
-  	$query =  ' SELECT c.id, c.catname, '
+  	$query =  ' SELECT c.id, c.catname, c.access, '
 			  	. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
 			  	. ' FROM #__redevent_categories as c '
 			  	. ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
