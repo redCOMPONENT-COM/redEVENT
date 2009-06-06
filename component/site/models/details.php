@@ -108,7 +108,7 @@ class RedeventModelDetails extends JModel
 			$user	= & JFactory::getUser();
 
 			// Is the category published?
-			if (!$this->_details->published && $this->_details->catsid)
+			if (!count($this->_details->categories))
 			{
 				JError::raiseError( 404, JText::_("CATEGORY NOT PUBLISHED") );
 			}
@@ -139,7 +139,7 @@ class RedeventModelDetails extends JModel
 			$where	= $this->_buildDetailsWhere();
 
 			$query = 'SELECT a.id AS did, x.id AS xref, a.title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, a.registra, a.unregistra,' 
-					. ' x.*, a.catsid, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, a.show_attendants, a.show_waitinglist, '
+					. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, a.show_attendants, a.show_waitinglist, '
 					. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone,'
 					. " a.confirmation_message, x.course_price, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.catname, c.published, c.access,"
 	        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
