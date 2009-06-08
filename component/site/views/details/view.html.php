@@ -153,7 +153,8 @@ class RedeventViewDetails extends JView
 		}
 		
 		//check if it is too late to register and overwrite $formhandler
-		if ( $timecheck > 0 || ($row->maxwaitinglist == 0 && count($registers) >= $row->maxattendees)) {
+		// TODO: we should separate 'too late' and event full cases...
+		if ( $timecheck > 0 || ($row->maxattendees && $row->maxwaitinglist == 0 && count($registers) >= $row->maxattendees)) {
 			$formhandler = 1;
 		}
 		
