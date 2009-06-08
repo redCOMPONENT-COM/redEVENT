@@ -356,6 +356,7 @@ if (is_array($cols)) {
 	}
 }
 
+/* multiple / hierarchical categories upgrade */
 /* Get the categories columns */
 $cols = false;
 $q = "SHOW COLUMNS FROM #__redevent_categories";
@@ -382,11 +383,12 @@ if (is_array($cols)) {
     $table->rebuildTree();
     
     /* copy all event-category relationship to new table */
-    $q = "INSERT IGNORE INTO #__redevent_event_category_xref (event_id, category_id) SELECT #__redevent_events.id, #__redevent_events.catsid";
+    $q = "INSERT IGNORE INTO #__redevent_event_category_xref (event_id, category_id) SELECT e.id, e.catsid FROM #__redevent_events AS e";
     $db->setQuery($q);
     $db->query();
   }  
 }
+
 /* Add the basic configuration entry */
 $q = "INSERT IGNORE INTO `#__redevent_settings` VALUES (1, 0, 1, 0, 1, 1, 1, 0, '', '', '100%', '15%', '25%', '20%', '20%', 'Date', 'Title', 'Venue', 'City', '%d.%m.%Y', '%H.%M', 'h', 1, 0, 1, 1, 1, 1, 1, 2, -2, 0, 'example@example.com', 0, '1000', -2, -2, -2, 1, '20%', 'Type', 1, 1, 1, 1, '100', '100', '100', 0, 1, 0, 0, 1, 2, 2, -2, 1, 0, -2, 1, 0, 0, '[title], [a_name], [catsid], [times]', 'The event titled [title] starts on [dates]!', 0, 'State', 0, '', 1, 0, '1174491851', '', '', 1, 'decimals', ',', '.', 'SIGNUP_EXTERNAL', 'external_icon.gif','SIGNUP_WEBFORM','form_icon.gif','SIGNUP_EMAIL','email_icon.gif', 'SIGNUP_FORMAL_OFFER', 'formal_icon.gif', 'SIGNUP_PHONE','phone_icon.gif');";
 $db->setQuery($q);
@@ -467,7 +469,7 @@ if ($upgrade) {
 		<td valign="top" width="100%">
 			<strong>redEVENT</strong><br/>
         	<font class="small">by <a href="http://www.redcomponent.com" target="_blank">redcomponent.com </a><br/>
-       	 	<strong>EventList</strong><br/>
+       	 	<strong>EventList</strong></font><br/>
         	<font class="small">by <a href="http://www.schlu.net" target="_blank">schlu.net </a><br/>
         	Released under the terms and conditions of the <a href="http://www.gnu.org/licenses/gpl-2.0.html" target="_blank">GNU General Public License</a>.
         	</font>
@@ -475,7 +477,7 @@ if ($upgrade) {
 	</tr>
 	<tr>
 		<td colspan="2">
-			<code>Installation Status:<br />
+			<h2>Installation Status:</h2>
 			<?php
 			// Check for existing /images/redevent directory
 			if ($direxists = JFolder::exists( JPATH_SITE.'/images/redevent' )) {
@@ -520,7 +522,6 @@ if ($upgrade) {
 			?>
 				<font color="green"><b>redEVENT 2.0 beta 3 Installed Successfully!</b></font><br />
 				Ensure that redEVENT has write access to the directories shown above! Have Fun.
-				</code>
 			<?php
 			} else {
 			?>
@@ -529,7 +530,6 @@ if ($upgrade) {
 				</font>
 				<br /><br />
 				Please check following directories:<br />
-				</code>
 				<ul>
 					<li>/images/redevent</li>
 					<li>/images/redevent/events</li>
