@@ -26,7 +26,7 @@
 					$display = 'block';
 				}
 			?>
-			/><?php echo JText::_('PHONE'); ?>
+			/><label for="submission_type_phone"><?php echo JText::_('PHONE'); ?></label>
 			<div id="submission_type_phone_input" style="display: <?php echo $display;?>">
 				<?php echo JHTML::_('link', '#', JText::_('TAGS'), "onClick='jQuery(\"div#phone_tags\").toggle(\"slideUp\"); return false;'"); ?>
 				<div id="phone_tags" style="display: none;">
@@ -46,10 +46,6 @@
           [formalsignup] = <?php echo JText::_('SUBMISSION_FORMAL_SIGNUP_LINK');?><br />
           [externalsignup] = <?php echo JText::_('SUBMISSION_EXTERNAL_SIGNUP_LINK');?><br />
           [phonesignup] = <?php echo JText::_('SUBMISSION_PHONE_SIGNUP_LINK');?><br />
-          [webformsignuppage] = <?php echo JText::_('SUBMISSION_WEBFORM_SIGNUP_PAGE');?><br />
-          [emailsignuppage] = <?php echo JText::_('SUBMISSION_EMAIL_SIGNUP_PAGE');?><br />
-          [formalsignuppage] = <?php echo JText::_('SUBMISSION_FORMAL_SIGNUP_PAGE');?><br />
-          [phonesignuppage] = <?php echo JText::_('SUBMISSION_PHONE_SIGNUP_PAGE');?><br />
           [venueimage] = <?php echo JText::_('SUBMISSION_VENUE_IMAGE');?><br />
           [eventimage] = <?php echo JText::_('SUBMISSION_EVENT_IMAGE');?><br />
           [categoryimage] = <?php echo JText::_('SUBMISSION_CATEGORY_IMAGE');?><br />
@@ -74,7 +70,7 @@
 					$display = 'block';
 				}
 			?>
-			/><?php echo JText::_('WEBFORM'); ?>
+			/><label for="submission_type_webform"><?php echo JText::_('WEBFORM'); ?></label>
 			<div id="submission_type_webform_input" style="display: <?php echo $display;?>">
 				<?php echo JHTML::_('link', '#', JText::_('TAGS'), "onClick='jQuery(\"div#webform_tags\").toggle(\"slideUp\"); return false;'"); ?>
 				<div id="webform_tags" style="display: none;">
@@ -95,10 +91,6 @@
           [formalsignup] = <?php echo JText::_('SUBMISSION_FORMAL_SIGNUP_LINK');?><br />
           [externalsignup] = <?php echo JText::_('SUBMISSION_EXTERNAL_SIGNUP_LINK');?><br />
           [phonesignup] = <?php echo JText::_('SUBMISSION_PHONE_SIGNUP_LINK');?><br />
-          [webformsignuppage] = <?php echo JText::_('SUBMISSION_WEBFORM_SIGNUP_PAGE');?><br />
-          [emailsignuppage] = <?php echo JText::_('SUBMISSION_EMAIL_SIGNUP_PAGE');?><br />
-          [formalsignuppage] = <?php echo JText::_('SUBMISSION_FORMAL_SIGNUP_PAGE');?><br />
-          [phonesignuppage] = <?php echo JText::_('SUBMISSION_PHONE_SIGNUP_PAGE');?><br />
           [venueimage] = <?php echo JText::_('SUBMISSION_VENUE_IMAGE');?><br />
           [eventimage] = <?php echo JText::_('SUBMISSION_EVENT_IMAGE');?><br />
           [categoryimage] = <?php echo JText::_('SUBMISSION_CATEGORY_IMAGE');?><br />
@@ -124,8 +116,7 @@
 					$display = 'block';
 				}
 			?>
-			/><?php echo JText::_('EMAIL');
-			?>
+			/><label for="submission_type_email"><?php echo JText::_('EMAIL'); ?></label>
 			<div id="submission_type_email_input" style="display: <?php echo $display;?>">
 				<?php echo JHTML::_('link', '#', JText::_('TAGS'), "onClick='jQuery(\"div#email_tags\").toggle(\"slideUp\"); return false;'"); ?>
 				<div id="email_tags" style="display: none;">
@@ -148,10 +139,6 @@
           [formalsignup] = <?php echo JText::_('SUBMISSION_FORMAL_SIGNUP_LINK');?><br />
           [externalsignup] = <?php echo JText::_('SUBMISSION_EXTERNAL_SIGNUP_LINK');?><br />
           [phonesignup] = <?php echo JText::_('SUBMISSION_PHONE_SIGNUP_LINK');?><br />
-          [webformsignuppage] = <?php echo JText::_('SUBMISSION_WEBFORM_SIGNUP_PAGE');?><br />
-          [emailsignuppage] = <?php echo JText::_('SUBMISSION_EMAIL_SIGNUP_PAGE');?><br />
-          [formalsignuppage] = <?php echo JText::_('SUBMISSION_FORMAL_SIGNUP_PAGE');?><br />
-          [phonesignuppage] = <?php echo JText::_('SUBMISSION_PHONE_SIGNUP_PAGE');?><br />
           [venueimage] = <?php echo JText::_('SUBMISSION_VENUE_IMAGE');?><br />
           [eventimage] = <?php echo JText::_('SUBMISSION_EVENT_IMAGE');?><br />
           [categoryimage] = <?php echo JText::_('SUBMISSION_CATEGORY_IMAGE');?><br />
@@ -190,7 +177,7 @@
 					$display = 'block';
 				}
 			?>
-			/><?php echo JText::_('FORMALOFFER'); ?>
+			/><label for="submission_type_formal_offer"><?php echo JText::_('FORMALOFFER'); ?></label>
 			<div id="submission_type_formaloffer_input" style="display: <?php echo $display;?>">
 				<?php echo JHTML::_('link', '#', JText::_('TAGS'), "onClick='jQuery(\"div#formal_offer_tags\").toggle(\"slideUp\"); return false;'"); ?>
 				<div id="formal_offer_tags" style="display: none;">
@@ -213,10 +200,6 @@
           [formalsignup] = <?php echo JText::_('SUBMISSION_FORMAL_SIGNUP_LINK');?><br />
           [externalsignup] = <?php echo JText::_('SUBMISSION_EXTERNAL_SIGNUP_LINK');?><br />
           [phonesignup] = <?php echo JText::_('SUBMISSION_PHONE_SIGNUP_LINK');?><br />
-          [webformsignuppage] = <?php echo JText::_('SUBMISSION_WEBFORM_SIGNUP_PAGE');?><br />
-          [emailsignuppage] = <?php echo JText::_('SUBMISSION_EMAIL_SIGNUP_PAGE');?><br />
-          [formalsignuppage] = <?php echo JText::_('SUBMISSION_FORMAL_SIGNUP_PAGE');?><br />
-          [phonesignuppage] = <?php echo JText::_('SUBMISSION_PHONE_SIGNUP_PAGE');?><br />
           [venueimage] = <?php echo JText::_('SUBMISSION_VENUE_IMAGE');?><br />
           [eventimage] = <?php echo JText::_('SUBMISSION_EVENT_IMAGE');?><br />
           [categoryimage] = <?php echo JText::_('SUBMISSION_CATEGORY_IMAGE');?><br />

@@ -165,3 +165,7 @@ div.clear
 .redevent_settings_repeat {
 	width: 15em;
 }
+
+label.invalid {
+  color: red;
+}

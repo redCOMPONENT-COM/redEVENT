@@ -186,25 +186,56 @@ class redEVENT_tags {
 				
 				//signup pages
 				if (in_array('[phonesignuppage]', $alltags[0])) {
-					$phonesignuppage = $this->ReplaceTags($this->_data->submission_type_phone);
+					// check that there is no loop with the tag inclusion
+					if (preg_match('/\[[a-z]*signuppage\]/', $this->_data->submission_type_phone) == 0) {
+					  $phonesignuppage = $this->ReplaceTags($this->_data->submission_type_phone);
+					}
+					else {
+						JError::raiseNotice(0, JText::_('ERROR TAG LOOP XXXXSIGNUPPAGE'));
+						$phonesignuppage = '';
+					}
 				}
 				else {
 					$phonesignuppage = '';
 				}
+				
         if (in_array('[webformsignuppage]', $alltags[0])) {
-          $webformsignuppage = $this->ReplaceTags($this->_data->submission_type_webform);
+          // check that there is no loop with the tag inclusion
+          if (preg_match('/\[[a-z]*signuppage\]/', $this->_data->submission_type_webform) == 0) {
+            $webformsignuppage = $this->ReplaceTags($this->_data->submission_type_webform);
+          }
+          else {
+            JError::raiseNotice(0, JText::_('ERROR TAG LOOP XXXXSIGNUPPAGE'));
+            $webformsignuppage = '';
+          }
         }
         else {
           $webformsignuppage = '';
         }
+        
         if (in_array('[formalsignuppage]', $alltags[0])) {
-          $formalsignuppage = $this->_getFormalOffer($this->_data);
+          // check that there is no loop with the tag inclusion
+          if (preg_match('/\[[a-z]*signuppage\]/', $this->_data->submission_type_formal_offer) == 0) {
+            $formalsignuppage = $this->_getFormalOffer($this->_data);
+          }
+          else {
+            JError::raiseNotice(0, JText::_('ERROR TAG LOOP XXXXSIGNUPPAGE'));
+            $formalsignuppage = '';
+          }
         }
         else {
           $formalsignuppage = '';
         }
+        
         if (in_array('[emailsignuppage]', $alltags[0])) {
-          $emailsignuppage = $this->_getEmailSubmission($this->_data);
+          // check that there is no loop with the tag inclusion
+          if (preg_match('/\[[a-z]*signuppage\]/', $this->_data->submission_type_email) == 0) {
+            $emailsignuppage = $this->_getEmailSubmission($this->_data);
+          }
+          else {
+            JError::raiseNotice(0, JText::_('ERROR TAG LOOP XXXXSIGNUPPAGE'));
+            $emailsignuppage = '';
+          }
         }
         else {
           $emailsignuppage = '';

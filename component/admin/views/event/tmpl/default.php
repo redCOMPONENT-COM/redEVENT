@@ -40,11 +40,20 @@ JHTML::_('behavior.calendar');
     
 	function submitbutton(task)
 	{
+	
+    if (task == 'cancel') {
+      submitform( task );
+      return;
+    }
+    
       var form = document.getElementById('adminForm');
       var validator = document.formvalidator;
       var title = $(form.title).getValue();
       title.replace(/\s/g,'');
-
+      
+      <?php
+      echo $this->editor->save('datdescription');
+      ?>
       if ( title.length==0 ) {
           alert("<?php echo JText::_( 'ADD TITLE', true ); ?>");
           validator.handleResponse(false,form.title);
@@ -53,16 +62,41 @@ JHTML::_('behavior.calendar');
           alert("<?php echo JText::_( 'SELECT CATEGORY', true ); ?>");
           validator.handleResponse(false,form.categories);
           return false;
-        } else {
-			<?php
-			echo $this->editor->save( 'datdescription' );
-			?>
+      } else if (validateSignupWysiwyg(form.submission_type_email) === false ) {
+          alert("<?php echo JText::_( 'ERROR TAG LOOP XXXXSIGNUPPAGE', true ); ?>");
+          validator.handleResponse(false, form.submission_type_email);
+          return false;
+      } else if (validateSignupWysiwyg(form.submission_type_phone) === false ) {
+          alert("<?php echo JText::_( 'ERROR TAG LOOP XXXXSIGNUPPAGE', true ); ?>");
+          validator.handleResponse(false, form.submission_type_phone);
+          return false;
+      } else if (validateSignupWysiwyg(form.submission_type_formal_offer) === false ) {
+          alert("<?php echo JText::_( 'ERROR TAG LOOP XXXXSIGNUPPAGE', true ); ?>");
+          validator.handleResponse(false, form.submission_type_formal_offer);
+          return false;
+      } else if (validateSignupWysiwyg(form.submission_type_webform) === false ) {
+          alert("<?php echo JText::_( 'ERROR TAG LOOP XXXXSIGNUPPAGE', true ); ?>");
+          validator.handleResponse(false, form.submission_type_webform);
+          return false;
+      } else {
 			$("meta_keywords").value = $keywords;
 			$("meta_description").value = $description;
 			// submit_unlimited();
 
 			submitform( task );
 		}
+	}
+	
+	function validateSignupWysiwyg(element)
+	{
+	  regex = new RegExp('\[[a-z]*signuppage\]', 'g');
+	  if (regex.test(element.getText()) == true) {
+	  alert(element.getText());
+		  return false;
+	  }
+	  else {
+	    return true;
+	  }
 	}
 </script>
 

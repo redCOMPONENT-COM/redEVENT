@@ -237,6 +237,33 @@ class RedEvent_events extends JTable
 		}
 		*/
 
+		
+          
+		// check that there is no loop with the tag inclusion
+		if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_email) > 0) {
+      $this->_error = JText::_( 'ERROR TAG LOOP XXXXSIGNUPPAGE');
+      JError::raiseWarning(0, $this->_error);
+			return false;
+		}
+	
+    if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_phone) > 0) {
+      $this->_error = JText::_( 'ERROR TAG LOOP XXXXSIGNUPPAGE');
+      JError::raiseWarning(0, $this->_error);
+      return false;
+    }
+	
+    if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_webform) > 0) {
+      $this->_error = JText::_( 'ERROR TAG LOOP XXXXSIGNUPPAGE');
+      JError::raiseWarning(0, $this->_error);
+      return false;
+    }
+	
+    if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_webform_formal_offer) > 0) {
+      $this->_error = JText::_( 'ERROR TAG LOOP XXXXSIGNUPPAGE');
+      JError::raiseWarning(0, $this->_error);
+      return false;
+    }
+          
 		return true;
 	}
 }
