@@ -240,7 +240,8 @@ CREATE TABLE IF NOT EXISTS `#__redevent_event_venue_xref` (
 
 CREATE TABLE IF NOT EXISTS `#__redevent_event_category_xref` (
   `event_id` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL
+  `category_id` int(11) NOT NULL,
+  UNIQUE KEY `event_category` (`event_id`,`category_id`)
 ) COMMENT='Event Category Cross reference' CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_textlibrary` (
@@ -278,5 +279,6 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues_categories` (
 
 CREATE TABLE IF NOT EXISTS `#__redevent_venue_category_xref` (
   `venue_id` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL
+  `category_id` int(11) NOT NULL,
+  UNIQUE KEY `venue_category` (`venue_id`,`category_id`)
 ) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
