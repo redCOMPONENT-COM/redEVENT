@@ -240,6 +240,21 @@ class redEVENT_tags {
         else {
           $emailsignuppage = '';
         }
+        
+			  // xref details
+        if (in_array('[info]', $alltags[0])) {
+          // check that there is no loop with the tag inclusion
+          if (strpos($this->_data->details, '[info]') === false) {
+            $info = $this->ReplaceTags($this->_data->details);
+          }
+          else {
+            JError::raiseNotice(0, JText::_('ERROR TAG LOOP XREF DETAILS'));
+            $info = '';
+          }
+        }
+        else {
+          $info = '';
+        }
 				
 				//images
 				$venueimage = redEVENTImage::flyercreator($this->_data->locimage);
@@ -267,6 +282,7 @@ class redEVENT_tags {
 				          , '[webformsignup]', '[emailsignup]', '[formalsignup]', '[externalsignup]', '[phonesignup]'
 				          , '[phonesignuppage]', '[webformsignuppage]', '[formalsignuppage]', '[emailsignuppage]'
 				          , '[venueimage]', '[eventimage]', '[categoryimage]'
+                  , '[info]'
 				          , '[category]'
 				          , '[eventcomments]'
 				          );
@@ -276,6 +292,7 @@ class redEVENT_tags {
 									$webformsignup, $emailsignup, $formalsignup, $externalsignup, $phonesignup
 									, $phonesignuppage, $webformsignuppage, $formalsignuppage, $emailsignuppage
                   , $venueimage, $eventimage, $categoryimage
+                  , $info                  
                   , $category
                   , $eventcomments
                   );
@@ -296,6 +313,7 @@ class redEVENT_tags {
 				
 				// FIXME: I don't see the point of this relative to abs for pictures, only causing problems... I'll comment it for now.
 				// FEEDBACK: relative to absolute images is necessary for e-mail messages that contain relative image links. The images won't show up in the e-mail.
+				// FIXME: this function doesn't work when website is not at domain root... So it has to be fixed !
 				return ELOutput::ImgRelAbs($message);
 			}
 			else return '';
@@ -348,7 +366,7 @@ class redEVENT_tags {
 	private function getEventLinks() {
 		$db = JFactory::getDBO();
 		$q = " SELECT e.*, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, x.course_price, "
-		    . " x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, v.venue, x.venueid,
+		    . " x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, v.venue, x.venueid, x.details, 
 					v.city AS location,
 					v.country, v.locimage,
 					UNIX_TIMESTAMP(x.dates) AS unixdates,

@@ -148,7 +148,7 @@ class RedEventViewEvent extends JView {
 						/* Course price and credit */
 						$Lists['venueselectbox'] .= '<tr class="row1"><td>'.JText::_('COURSE_PRICE').'</td><td><input class="inputbox" name="locid'.$venue->id.'['.$random.'][course_price]" value="'.$eventvenue[$venue->id][$evkey]->course_price.'" size="15" maxlength="8" /></td>';
 						$Lists['venueselectbox'] .= '<td>'.JText::_('COURSE_CREDIT').'</td><td><input class="inputbox" name="locid'.$venue->id.'['.$random.'][course_credit]" value="'.$eventvenue[$venue->id][$evkey]->course_credit.'" size="15" maxlength="8" /></td></tr>';
-            $Lists['venueselectbox'] .= '<td>'.JText::_('DETAILS').'</td><td>' . $editor->display('locid'.$venue->id.'['.$random.'][details]', $eventvenue[$venue->id][$evkey]->details, '100%;', '300', '75', '20', array('pagebreak', 'readmore')) . '</td></tr>';
+            $Lists['venueselectbox'] .= '<td>'.JText::_('DETAILS').'</td><td colspan="3">' . $editor->display('locid'.$venue->id.'['.$random.'][details]', $eventvenue[$venue->id][$evkey]->details, '100%;', '300', '75', '20', array('pagebreak', 'readmore')) . '</td></tr>';
 					$Lists['venueselectbox'] .= '</table>';
 					$Lists['venueselectbox'] .= '</div></div>';
 				}
