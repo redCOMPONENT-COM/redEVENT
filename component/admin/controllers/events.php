@@ -260,12 +260,15 @@ class RedEventControllerEvents extends RedEventController
 					else $course_price = $db->Quote('0.00');
 					if (isset($datetimes['course_credit']) && $datetimes['course_credit']) $course_credit = $db->Quote($datetimes['course_credit']);
 					else $course_credit = $db->Quote('');
+          if (isset($datetimes['details']) && $datetimes['details']) $details = $db->Quote($datetimes['details']);
+          else $details = $db->Quote('');
 					if (isset($existing_xrefs[$random])) {
 						$q = "UPDATE #__redevent_event_venue_xref 
 							SET dates = ".$dates.",
 							enddates = ".$enddates.", 
 							times = ".$times.", 
 							endtimes = ".$endtimes.",
+              details = ".$details.",
 							maxattendees = ".$maxattendees.",
 							maxwaitinglist = ".$maxwaitinglist.",
 							course_price = ".$course_price.",

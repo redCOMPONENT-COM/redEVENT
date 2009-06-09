@@ -354,6 +354,12 @@ if (is_array($cols)) {
 		$db->setQuery($q);
 		$db->query();
 	}
+		
+  if (!array_key_exists('details', $cols)) {
+    $q ="ALTER IGNORE TABLE `#__redevent_event_venue_xref` ADD COLUMN `details` TEXT NOT NULL AFTER `endtimes`";
+    $db->setQuery($q);
+    $db->query();
+  }
 }
 
 /* multiple / hierarchical categories upgrade */

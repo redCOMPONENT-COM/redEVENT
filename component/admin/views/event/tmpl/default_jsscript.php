@@ -41,6 +41,7 @@
 		/* Course credit and price */
 		datetime += '<tr class="row1"><td><?php echo JText::_('COURSE_PRICE');?></td><td><input type="text" id="course_price'+random+'" name="'+parentid+'['+random+'][course_price]" value="" size="15" maxlength="8" /></td>';
 		datetime += '<td><?php echo JText::_('COURSE_CREDIT');?></td><td><input type="text" id="course_credit'+random+'" name="'+parentid+'['+random+'][course_credit]" value="" size="15" maxlength="8" /></td>';
+    datetime += '<tr class="row0"><td><?php echo JText::_('DETAILS');?></td><td>Please save/apply first to be able to add details</td></tr>';
 		datetime += '</table>';
 		datetime += '</div></div>';
 		jQuery(datetime).appendTo("div#locid"+childvalue);
