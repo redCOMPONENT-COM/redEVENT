@@ -5,20 +5,21 @@
   // english
   $sh_LANG['en']['_COM_SEF_REDEVENT'] = 'redEVENT';
   $sh_LANG['en']['_COM_SEF_TITLE_REDEVENT'] = 'redEVENT';
-  $sh_LANG['en']['upcomingevents'] = 'Upcoming courses';
-  $sh_LANG['en']['upcomingevents'] = 'upcomingcourses';
+  $sh_LANG['en']['upcomingevents'] = 'upcoming-courses';
   $sh_LANG['en']['categories'] = 'categories';
   $sh_LANG['en']['calendar'] = 'calendar';
   $sh_LANG['en']['day'] = 'day';
-  $sh_LANG['en']['venueevents'] = 'venueevents';
-  $sh_LANG['en']['categoryevents'] = 'categoryevents';
-  $sh_LANG['en']['eventlist'] = 'eventlist';
+  $sh_LANG['en']['venueevents'] = 'venue-events';
+  $sh_LANG['en']['categoryevents'] = 'category-events';
+  $sh_LANG['en']['eventlist'] = 'event-list';
   $sh_LANG['en']['details'] = 'details';
-  $sh_LANG['en']['categoriesdetailed'] = 'categoriesdetailed';
+  $sh_LANG['en']['categoriesdetailed'] = 'categories-detailed';
   $sh_LANG['en']['venues'] = 'venues';
-  $sh_LANG['en']['editevent'] = 'editevent';
-  $sh_LANG['en']['editvenue'] = 'editvenue';
+  $sh_LANG['en']['editevent'] = 'edit-event';
+  $sh_LANG['en']['editvenue'] = 'edit-venue';
   $sh_LANG['en']['onlinesignup'] = 'Online Signup';
+  $sh_LANG['en']['upcomingvenueevents'] = 'upcoming-venue-events';
+  $sh_LANG['en']['signup'] = 'signup';
   // dutch
   $sh_LANG['nl']['_COM_SEF_REDEVENT'] = 'redEVENT';
   $sh_LANG['nl']['_COM_SEF_TITLE_REDEVENT'] = 'redEVENT';
