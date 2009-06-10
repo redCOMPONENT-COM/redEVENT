@@ -266,5 +266,27 @@ class RedEvent_events extends JTable
           
 		return true;
 	}
+	
+	function xload($xref)
+	{
+	  $this->reset();
+
+    $db =& $this->getDBO();
+
+    $query = 'SELECT e.* '
+    . ' FROM #__redevent_events as e '
+    . ' INNER JOIN #__redevent_event_venue_xref as x ON x.eventid = e.id '
+    . ' WHERE x.id = ' . $db->Quote($xref);
+    $db->setQuery( $query );
+
+    if ($result = $db->loadAssoc( )) {
+      return $this->bind($result);
+    }
+    else
+    {
+      $this->setError( $db->getErrorMsg() );
+      return false;
+    }
+	}
 }
 ?>

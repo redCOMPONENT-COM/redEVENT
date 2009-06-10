@@ -51,7 +51,7 @@ class JElementEvent extends JElement
 
 		$event =& JTable::getInstance('redevent_events', '');
 		if ($value) {
-			$event->load($value);
+			$event->xload($value);
 		} else {
 			$event->title = JText::_('SELECTEVENT');
 		}
