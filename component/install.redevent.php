@@ -577,6 +577,14 @@ if (JFolder::exists(JPATH_SITE.DS.'components'.DS.'com_sh404sef')) {
 	if(!JFile::copy($redadmin.DS.'sh404sef'.DS.'language'.DS.'com_redevent.php', $sh404sefadmin.DS.'language'.DS.'plugins'.DS.'com_redevent.php')) {
 		echo JText::_('<b>Failed</b> to copy sh404SEF plugin language file<br />');
 	}
+	
+	?>
+	<h3>Note for sh404sef</h3>
+	<p>If you want your modules to avoid disappearing while you browse pages on redevent, you should set "Insert menu Itemid if none", "Insert menu title if no Itemid"
+	and "Always insert menu title" to "yes" in sh404sef configuration > advanced tab > category "itemid management"</p>
+	
+	<?php
+	
 }
 
 }
