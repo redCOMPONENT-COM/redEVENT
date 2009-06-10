@@ -180,7 +180,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<td headers="el_location" align="left" valign="top">
 						<?php
 						if ($this->elsettings->showlinkvenue == 1 ) :
-							echo $row->xref != 0 ? "<a href='".JRoute::_('index.php?option=com_redevent&view=venueevents&xref='.$row->xref.'&id='.$row->venueslug)."'>".$this->escape($row->venue)."</a>" : '-';
+							echo $row->xref != 0 ? "<a href='".JRoute::_('index.php?option=com_redevent&view=venueevents&id='.$row->venueslug)."'>".$this->escape($row->venue)."</a>" : '-';
 						else :
 							echo $row->xref ? $this->escape($row->venue) : '-';
 						endif;
