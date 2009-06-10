@@ -105,6 +105,7 @@ class RedEventViewArchive extends JView {
 
 		//assign data to template
 		$this->assignRef('lists'      	, $lists);
+    $this->assignRef('user'        , $user);
 		$this->assignRef('rows'      	, $rows);
 		$this->assignRef('pageNav' 		, $pageNav);
 		$this->assignRef('elsettings'	, $elsettings);
