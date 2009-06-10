@@ -86,7 +86,10 @@ else {
     $title[] = $sh_LANG[$shLangIso][$view];
     /* Check for calender entry */
     if ($view == 'day') {
-      //$title[] = $shGETVars['id'];
+    	if (isset($id)) {
+        $title[] = $id;    
+        shRemoveFromGETVarsList('id');		
+    	}
     }
     if ($view == 'categoryevents') {
       $q = "SELECT catname FROM #__redevent_categories WHERE id = ".$id;
@@ -114,7 +117,7 @@ else {
     if ($view == 'details') {
       if (isset($xref))
       {
-	      $q = "SELECT e.title, v.city, DATE_FORMAT(x.dates, '%d-%m-%Y') AS dates, TIME_FORMAT(x.times, '%H-%i') AS times
+	      $q = "SELECT e.title, v.city, DATE_FORMAT(x.dates, '%Y-%m-%d') AS dates, TIME_FORMAT(x.times, '%H-%i') AS times
 	        FROM #__redevent_event_venue_xref x
 	        LEFT JOIN #__redevent_events e
 	        ON e.id = x.eventid
@@ -126,7 +129,7 @@ else {
 	      $title[] = $xref.'-'.$details->title;
 	      $title[] = $details->city;
 	      $title[] = $details->dates;
-	      $title[] = $details->times;
+	      if ($details->times != '00-00') $title[] = $details->times;
         shRemoveFromGETVarsList('xref');
 			  if (!empty($id)) 
 			    shRemoveFromGETVarsList('id');
