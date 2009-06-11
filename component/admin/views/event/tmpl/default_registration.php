@@ -41,7 +41,7 @@
 	<tr class="row<?php echo $k = 1 - $k; ?>">
 		<td>
 			<label for="show_names">
-				<?php echo JText::_( 'SHOW NAMES FRONTEND' ).':'; ?>
+				<?php echo JText::_( 'SHOW REGISTERED FRONTEND' ).':'; ?>
 			</label>
 		</td>
 		<td>
