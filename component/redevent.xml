@@ -8,7 +8,7 @@
    	<authorUrl>www.redweb.dk</authorUrl>
    	<copyright>(c) 2008 - 2009 Redweb.dk</copyright>
    	<license>GNU/GPL</license>
-   	<version>2.0 beta 3.5</version>
+   	<version>2.0 beta 3.5.1</version>
 	<description>redEVENT Event and Calendar Component for Joomla 1.5 by redCOMPONENT.com</description>
 	<installfile>install.redevent.php</installfile>
 	<uninstallfile>uninstall.redevent.php</uninstallfile>
