@@ -243,25 +243,25 @@ class RedEvent_events extends JTable
 		if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_email) > 0) {
       $this->_error = JText::_( 'ERROR TAG LOOP XXXXSIGNUPPAGE');
       JError::raiseWarning(0, $this->_error);
-			return false;
+//			return false;
 		}
 	
     if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_phone) > 0) {
       $this->_error = JText::_( 'ERROR TAG LOOP XXXXSIGNUPPAGE');
       JError::raiseWarning(0, $this->_error);
-      return false;
+//      return false;
     }
 	
     if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_webform) > 0) {
       $this->_error = JText::_( 'ERROR TAG LOOP XXXXSIGNUPPAGE');
       JError::raiseWarning(0, $this->_error);
-      return false;
+//      return false;
     }
 	
     if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_webform_formal_offer) > 0) {
       $this->_error = JText::_( 'ERROR TAG LOOP XXXXSIGNUPPAGE');
       JError::raiseWarning(0, $this->_error);
-      return false;
+//      return false;
     }
           
 		return true;
