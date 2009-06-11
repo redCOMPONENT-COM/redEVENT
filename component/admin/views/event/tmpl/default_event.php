@@ -98,7 +98,7 @@
 			[eventplaces] = <?php echo JText::_('SUBMISSION_EVENTPLACES');?><br />
 			[waitinglistplaces] = <?php echo JText::_('SUBMISSION_WAITINGLISTPLACES');?><br />
 			[eventplacesleft] = <?php echo JText::_('SUBMISSION_EVENTPLACES_LEFT');?><br />
-			[waitinglistplacesleft] = <?php echo JText::_('SUBMISSION_WAITINGLISTPLACES_LEFT');?>
+			[waitinglistplacesleft] = <?php echo JText::_('SUBMISSION_WAITINGLISTPLACES_LEFT');?><br />
       [info] = <?php echo JText::_('SUBMISSION_XREF_INFO');?>
 		</div>
 	</td>
