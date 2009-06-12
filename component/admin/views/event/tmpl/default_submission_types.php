@@ -1,11 +1,14 @@
 <table class="adminform">
 	<tr>
 		<td colspan="2" class="redevent_settings_details">
-			<label for="venueid">
 				<?php echo JText::_( 'SUBMIT_TYPES' ).':'; ?>
-			</label>
 		</td>
 	</tr>
+  <tr>
+    <td colspan="2" class="redevent_settings_details_info">
+        <?php echo JText::_( 'SUBMISSION TAB DESC' ); ?>
+    </td>
+  </tr>
 	<tr>
 		<td>
 			<input type="checkbox" id="submission_type_external" name="submission_types[]" value="external"
@@ -149,20 +152,6 @@
 					[eventplacesleft] = <?php echo JText::_('SUBMISSION_EVENTPLACES_LEFT');?><br />
 					[waitinglistplacesleft] = <?php echo JText::_('SUBMISSION_WAITINGLISTPLACES_LEFT');?>
 				</div>
-				<div>
-				<table class="adminform">
-					<tr>
-						<td>
-							<label for="title">
-								<?php echo JText::_( 'EMAIL_SUBJECT' ).':'; ?>
-							</label>
-						</td>
-						<td>
-							<input class="inputbox" name="submission_type_email_subject" value="<?php echo $this->row->submission_type_email_subject; ?>" size="50" maxlength="255" id="submission_type_email_subject" />
-						</td>
-					</tr>
-				</table>
-				</div>
 				<?php echo $this->editor->display( 'submission_type_email',  $this->row->submission_type_email, '100%;', '350', '75', '20', array('pagebreak', 'readmore', 'image') ) ; ?>
 			</div>
 		</td>
@@ -209,20 +198,6 @@
 					[waitinglistplaces] = <?php echo JText::_('SUBMISSION_WAITINGLISTPLACES');?><br />
 					[eventplacesleft] = <?php echo JText::_('SUBMISSION_EVENTPLACES_LEFT');?><br />
 					[waitinglistplacesleft] = <?php echo JText::_('SUBMISSION_WAITINGLISTPLACES_LEFT');?>
-				</div>
-				<div>
-				<table class="adminform">
-					<tr>
-						<td>
-							<label for="title">
-								<?php echo JText::_( 'FORMAL_OFFER_SUBJECT' ).':'; ?>
-							</label>
-						</td>
-						<td>
-							<input class="inputbox" name="submission_type_formal_offer_subject" value="<?php echo $this->row->submission_type_formal_offer_subject; ?>" size="50" maxlength="255" id="submission_type_formal_offer_subject" />
-						</td>
-					</tr>
-				</table>
 				</div>
 				<?php echo $this->editor->display( 'submission_type_formal_offer',  $this->row->submission_type_formal_offer, '100%;', '350', '75', '20', array('pagebreak', 'readmore', 'image') ) ; ?>
 			</div>

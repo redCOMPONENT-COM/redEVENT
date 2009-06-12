@@ -1,16 +1,13 @@
 <table class="adminform">
 <tr>
 <td colspan="2">
-	<input type="checkbox" id="submission_type_email_body_check" name="submission_types_emails[]" value="email"
 	<?php 
 		$display = 'none';
 		if (in_array('email', $this->submission_types)) {
-			echo ' checked="checked"';
 			$display = 'block';
 		}
-	?>
-	/><?php echo JText::_('email');
-	?>
+		?>
+	<?php echo JText::_('Submission email');	?>
 	<div id="submission_type_email_body_input" style="display: <?php echo $display;?>">
 		<?php echo JHTML::_('link', '#', JText::_('TAGS'), "onClick='jQuery(\"div#email_body_tags\").toggle(\"slideUp\"); return false;'"); ?>
 		<div id="email_body_tags" style="display: none;">
@@ -124,17 +121,17 @@
 	</div>
 </td>
 </tr>
+</table>
+<table class="adminform">
 <tr>
 <td colspan="2">
-	<input type="checkbox" id="submission_type_formaloffer_body_check" name="submission_type_emails[]" value="formaloffer"
 	<?php 
 		$display = 'none';
 		if (in_array('formaloffer', $this->submission_types)) {
-			echo ' checked="checked"';
 			$display = 'block';
 		}
 	?>
-	/><?php echo JText::_('formaloffer'); ?>
+	<?php echo JText::_('formaloffer'); ?>
 	<div id="submission_type_formaloffer_body_input" style="display: <?php echo $display;?>">
 		<?php echo JHTML::_('link', '#', JText::_('TAGS'), "onClick='jQuery(\"div#formal_offer_body_tags\").toggle(\"slideUp\"); return false;'"); ?>
 		<div id="formal_offer_body_tags" style="display: none;">
