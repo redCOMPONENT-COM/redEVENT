@@ -91,25 +91,27 @@ class modRedEventHelper
 
 		$i		= 0;
 		$lists	= array();
-		foreach ( $rows as $row )
+		foreach ( $rows as $k => $row )
 		{
-			//cut titel
+			//cut title
 			$length = strlen(htmlspecialchars( $row->title ));
-
 			if ($length > $params->get('cuttitle', '18')) {
-				$row->titel = substr($row->title, 0, $params->get('cuttitle', '18'));
-				$row->titel = htmlspecialchars( $row->title.'...', ENT_COMPAT, 'UTF-8');
+				$rows[$k]->title_short = htmlspecialchars(substr($row->title, 0, $params->get('cuttitle', '18')).'...', ENT_COMPAT, 'UTF-8');
 			}
+			// cut venue name
+      $length = strlen(htmlspecialchars( $row->venue ));
+      if ($length > $params->get('cuttitle', '18')) {
+        $rows[$k]->venue_short = htmlspecialchars(substr($row->venue, 0, $params->get('cuttitle', '18')).'...', ENT_COMPAT, 'UTF-8');
+      }
 			
-			$lists[$i]->link		= JRoute::_('index.php?option=com_redevent&view=details&xref='.$row->xref);
-			$lists[$i]->dateinfo 	= modRedEventHelper::_builddateinfo($row, $params);
-			$lists[$i]->text		= $params->get('showtitloc', 0 ) ? $row->title : htmlspecialchars( $row->venue, ENT_COMPAT, 'UTF-8' );
-			$lists[$i]->city		= htmlspecialchars( $row->city, ENT_COMPAT, 'UTF-8' );
-			$lists[$i]->venueurl 	= !empty( $row->url ) ? modRedEventHelper::_format_url($row->url) : null;
-			$i++;
+			$rows[$k]->link		= JRoute::_('index.php?option=com_redevent&view=details&xref='.$row->xref);
+			$rows[$k]->dateinfo 	= modRedEventHelper::_builddateinfo($row, $params);
+			$rows[$k]->text		= $params->get('showtitloc', 0 ) ? $rows[$k]->title_short : $rows[$k]->venue_short;
+			$rows[$k]->city		= htmlspecialchars( $row->city, ENT_COMPAT, 'UTF-8' );
+			$rows[$k]->venueurl 	= !empty( $row->url ) ? modRedEventHelper::_format_url($row->url) : null;
 		}
 
-		return $lists;
+		return $rows;
 	}
 
 	/**
