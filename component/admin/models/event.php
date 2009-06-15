@@ -248,6 +248,7 @@ class RedEventModelEvent extends JModel
 			$event->submission_type_webform = null;
 			$event->submission_type_email_subject = null;
 			$event->submission_type_webform_formal_offer = null;
+			$event->show_submission_type_webform_formal_offer = 0;
 			$event->send_pdf_form = 0;
 			$event->pdf_form_data = 0;
 			$this->_data						= $event;
