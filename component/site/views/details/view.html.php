@@ -142,6 +142,24 @@ class RedeventViewDetails extends JView
 		//is the user allready registered at the event
 		if ( $regcheck ) {
 			$formhandler = 3;
+			JHTML::_('behavior.mootools');
+			$unreg_link = JURI::root().'index.php?option=com_redevent&view=details&task=delreguser&xref='.$row->xref;
+			$js = " window.addEvent('domready', function(){
+		            $$('ul[id^=submitid]').each(function(el){
+		              lastli = el.getChildren().getLast();
+		              newli = new Element('li').injectAfter(lastli);
+		              link = new Element('a', {'href': '".$unreg_link."&sid='+el.id.substr(9)}).appendText('cancel').injectInside(newli).addEvent('click', function(event){
+		                if (confirm('".JText::_('CONFIRM CANCEL REGISTRATION')."')) {
+		                  return true;
+		                }
+		                else {
+  	                  event.preventDefault();
+		                  return false;
+		                }
+		              });
+		            });
+		        }); ";
+      $document->addScriptDeclaration($js);
 		} else {
 			//no, he isn't
 			$formhandler = 4;
@@ -262,6 +280,7 @@ class RedeventViewDetails extends JView
 		//assign vars to jview
 		$this->assignRef('row', 					$row);
 		$this->assignRef('params' , 				$params);
+    $this->assignRef('user' ,         $user);
 		$this->assignRef('allowedtoeditevent' , 	$allowedtoeditevent);
 		// $this->assignRef('allowedtoeditvenue' , 	$allowedtoeditvenue);
 		$this->assignRef('dimage' , 				$dimage);

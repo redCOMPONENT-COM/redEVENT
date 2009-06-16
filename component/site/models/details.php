@@ -258,7 +258,7 @@ class RedeventModelDetails extends JModel
 			}
 			
 			$query = ' SELECT ' . implode(', ', $table_fields)
-			. ' , s.submit_key '
+			. ' , s.submit_key, s.id '
 			. ' FROM #__redevent_register AS r '
 			. ' INNER JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key '
 			. ' INNER JOIN #__rwf_forms_' . $fields[0]->form_id . ' AS a ON s.answer_id = a.id '
@@ -270,23 +270,29 @@ class RedeventModelDetails extends JModel
 				JError::raiseWarning('error', JText::_('Cannot load registered users').' '.$db->getErrorMsg());
 				return false;
 			}			
-			$answers = $db->loadObjectList('submit_key');
+			$answers = $db->loadObjectList();
 			
 		  // add the answers to submitters list
-      foreach ($submitters as $key => $submitter) 
+		  $registers = array();
+      foreach ($answers as $answer) 
       {
-        if (!isset($answers[$key])) 
+        if (!isset($submitters[$answer->submit_key])) 
         {
-        	$msg = JText::_('MISSING SUBMITTER REGISTRATION') . ': ' . $key;
+        	$msg = JText::_('ERROR REGISTRATION WITHOUT SUBMITTER') . ': ' . $answer->id;
         	$this->setError($msg);
         	JError::raise(10, $msg);
         	return false;
         }
-        $submitters[$key]->answers = $answers[$key];
-        // remove the key from answers
-        unset($submitters[$key]->answers->submit_key);        
+        // build the object
+        $register = new stdclass();
+        $register->id = $answer->id;
+        $register->submitter = $submitters[$answer->submit_key];
+        $register->answers = $answer;
+        unset($register->answers->id); // just the fields
+        unset($register->answers->submit_key); // just the fields
+        $registers[] = $register;
       }
-      return $submitters;
+      return $registers;
 		}
 		return false;
 	}
@@ -361,62 +367,67 @@ class RedeventModelDetails extends JModel
 	 * @todo Fix as it is broken now
 	 */
 	function delreguser() {
-		$db = JFactory::getDBO();
-		$user =  JFactory::getUser();
+		$db = & JFactory::getDBO();
+		$user =  & JFactory::getUser();
 		$userid = $user->get('id');
 		$xref = JRequest::getInt('xref');
+    $submitter_id = JRequest::getInt('sid');
 		
 		if ($userid < 1) {
 			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 			return;
 		}
 		
-		/* Get the form details */
-		$q = "SELECT r.id, submit_key, redform_id
-			FROM #__redevent_event_venue_xref x
-			LEFT JOIN #__redevent_register r
-			ON x.id = r.xref
-			LEFT JOIN #__redevent_events e
-			ON x.eventid = e.id
-			WHERE uid = ".$userid." 
-			AND xref = ".$xref;
+		// first, check if the user is allowed to unregister from this
+		// he must be the one that submitted the form, plus the unregistration must be allowed
+		$q = ' SELECT s.* '
+        . ' FROM #__rwf_submitters AS s '
+        . ' INNER JOIN #__redevent_register AS r ON r.submit_key = s.submit_key '
+        . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.id = r.xref '
+        . ' INNER JOIN #__redevent_events AS e ON x.eventid = e.id '
+        . ' WHERE r.uid = ' . $db->Quote($userid)
+        . '   AND s.id = ' . $db->Quote($submitter_id)
+        . '   AND e.unregistra = 1'
+		;
 		$db->setQuery($q);
 		$submitterinfo = $db->loadObject();
 		
-		/* Delete the redFORM entry first */
-		/* Submitter answers first*/
-		$deleteids = '';
-		$q = "SELECT CONCAT_WS(',', f.id) AS id
-				FROM #__rwf_forms_1 f
-				LEFT JOIN #__rwf_submitters s
-				ON s.answer_id = f.id
-				WHERE s.submit_key = '".$submitterinfo->submit_key."'";
-		$db->setQuery($q);
-		$deleteids = $db->loadResult();
-		if (strlen($deleteids) > 0) {
-			$q = "DELETE FROM #__rwf_forms_".$submitterinfo->redform_id."
-				WHERE id IN (".$deleteids.")";
-			$db->setQuery($q);
-			if (!$db->query()) {
-				JError::raiseWarning('error', JText::_('Cannot delete answers').' '.$db->getErrorMsg());
-				return false;
-			}
-		}
-		/* Submitter second */
-		$q = "DELETE FROM #__rwf_submitters
-			WHERE submit_key = '".$submitterinfo->submit_key."'";
-		$db->setQuery($q);
-		if (!$db->query()) {
-			JError::raiseWarning('error', JText::_('Cannot delete registration').' '.$db->getErrorMsg());
-			return false;
+		if (empty($submitterinfo)) {
+      JError::raiseWarning('1', JText::_('Cannot delete registration').' '.$db->getErrorMsg());
+      return false;			
 		}
 		
-		/* Now remove the redevent registration */
-		$q = "DELETE FROM #__redevent_register WHERE id = ".$submitterinfo->id;
-		$db->setQuery($q);
-		if (!$db->query()) {
-			JError::raiseWarning('error', JText::_('Cannot delete registration').' '.$db->getErrorMsg());
-			return false;
+		// Now that we made sure, we can delete the submitter and corresponding form values
+    /* Delete the redFORM entry first */
+    /* Submitter answers first*/
+    $q =  ' DELETE s, f '
+        . ' FROM #__rwf_submitters AS s '
+        . ' INNER JOIN #__rwf_forms_'.$submitterinfo->form_id .' AS f ON f.id = s.answer_id '
+        . ' WHERE s.id = ' . $db->Quote($submitter_id)
+        ;
+    $db->setQuery($q);
+    if ( !$db->query() ) {
+      JError::raiseWarning('2', JText::_('Error deleting redform registration').' '.$db->getErrorMsg());
+      return false;     
+    }
+        
+    /* Now remove the redevent registration */
+    /* if there is no more submitter associated to register submit_key, we can delete the record */
+    $q = ' SELECT COUNT(*) FROM #__rwf_submitters WHERE submit_key = ' . $db->Quote($submitterinfo->submit_key);
+    $db->setQuery($q);
+    $res = $db->loadResult();
+		if ($res === null) {
+      JError::raiseWarning('3', JText::_('Error counting remaining associated submission').' '.$db->getErrorMsg());
+      return false;     			
+		}
+		
+		if ($res == 0) { // no more records associated in redform
+			$q = "DELETE FROM #__redevent_register WHERE submit_key = " . $db->Quote($submitterinfo->submit_key);
+			$db->setQuery($q);
+			if (!$db->query()) {
+				JError::raiseWarning('error', JText::_('Cannot delete registration in redevent').' '.$db->getErrorMsg());
+				return false;
+			}
 		}
 		return true;
 	}

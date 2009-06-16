@@ -58,12 +58,17 @@ if ($this->row->show_names && $this->registers) {
 			
 				//no communitycomponent is set so only show the username
 				// if ($this->elsettings->comunsolution == 0) :
-				if ($register->waitinglist == 0)
+				if ($register->submitter->waitinglist == 0)
 				{
-					echo '<li><ul class="attendee">';
-					foreach ($register->answers as $key => $name) {
+					if ($register->submitter->uid == $this->user->get('id') && $this->row->unregistra) {
+						echo '<li><ul id="submitid-'.$register->id.'" class="attendee">';
+					}
+					else {
+					  echo '<li><ul class="attendee">';
+					}
+					foreach ($register->answers as $k => $name) {
 						if (stristr($name, '~~~')) $name = str_replace('~~~', '<br />', $name).'<br />';
-						echo "<li class='userfield ".strtolower($key)."'>".$name."</li>";
+						echo "<li class='userfield ".strtolower($k)."'>".$name."</li>";
 					}
 					echo '</ul></li>';
 				}
@@ -78,33 +83,14 @@ if ($this->row->show_names && $this->registers) {
       <?php
       //loop through attendees
       foreach ($this->registers as $key => $register) {
-//        //if CB
-//        if ($this->elsettings->comunsolution == 1) :
-//          $thumb_path = 'images/comprofiler/tn';
-//          $no_photo   = ' alt="'.$register->name.'"';
-//          if ($this->elsettings->comunoption == 1) :
-//            //User has avatar
-//            if(!empty($register->avatar)) :
-//              echo "<li><a href='".JRoute::_('index.php?option=com_comprofiler&task=userProfile&user='.$register->uid )."'><img src=".$thumb_path.$register->avatar.$no_photo." alt='no photo' /><span class='username'>".$register->name."</span></a></li>";
-//            //User has no avatar
-//            else :
-//              echo "<li><a href='".JRoute::_( 'index.php?option=com_comprofiler&task=userProfile&user='.$register->uid )."'><img src=\"components/com_comprofiler/images/english/tnnophoto.jpg\" alt=\"no photo\" /><span class='username'>".$register->name."</span></a></li>";
-//            endif;
-//          endif;
-//      
-//          //only show the username with link to profile
-//          if ($this->elsettings->comunoption == 0) :
-//            echo "<li><span class='username'><a href='".JRoute::_( 'index.php?option=com_comprofiler&amp;task=userProfile&amp;user='.$register->uid )."'>".$register->name." </a></span></li>";
-//          endif;
-//      
-//        //if CB end - if not CB than only name
-//        endif;
-      
-        //no communitycomponent is set so only show the username
-        // if ($this->elsettings->comunsolution == 0) :
-        if ($register->waitinglist == 1)
+        if ($register->submitter->waitinglist == 1)
         {
-          echo '<li><ul class="attendee">';
+          if ($register->submitter->uid == $this->user->get('id') && $this->row->unregistra) {
+            echo '<li><ul id="submitid-'.$register->id.'" class="attendee">'; // javascript will create the link
+          }
+          else {
+            echo '<li><ul class="attendee">';
+          }
           foreach ($register->answers as $key => $name) {
             if (stristr($name, '~~~')) $name = str_replace('~~~', '<br />', $name).'<br />';
             echo "<li class='userfield ".strtolower($key)."'>".$name."</li>";
@@ -116,34 +102,6 @@ if ($this->row->show_names && $this->registers) {
     </div>
 	</div>
 	<?php
-	if ($this->formhandler == 3) {
-		//the user is allready registered. Let's check if he can unregister from the event
-				if ($this->row->unregistra == 0) :
-		
-					//no he is not allowed to unregister
-					echo JText::_( 'ALLREADY REGISTERED' );
-		
-				else:
-		
-					//he is allowed to unregister -> display form
-					?>
-		<form id="Eventlist" action="<?php echo JRoute::_('index.php'); ?>" method="post">
-			<p>
-				<?php echo JText::_( 'UNREGISTER BOX' ).': '; ?>
-				<input type="checkbox" name="reg_check" onclick="check(this, document.getElementById('el_send_attend'))" />
-			</p>
-			<p>
-				<input type="submit" id="el_send_attend" name="el_send_attend" value="<?php echo JText::_( 'UNREGISTER' ); ?>" disabled="disabled" />
-			</p>
-			<p>
-				<input type="hidden" name="xref" value="<?php echo $this->row->xref; ?>" />
-				<?php echo JHTML::_( 'form.token' ); ?>
-				<input type="hidden" name="task" value="delreguser" />
-			</p>
-		</form>
-		<?php
-		endif;
-	}
 }
 echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id')), JText::_('RETURN_EVENT_DETAILS'));
 ?>

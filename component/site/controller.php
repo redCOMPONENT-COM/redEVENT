@@ -345,12 +345,12 @@ class RedeventController extends JController
 	function delreguser()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
+		//JRequest::checkToken() or die( 'Invalid Token' );
 
 		// TODO: is $id still usefull ? xref seems to be used in delreguser...
-		$id 	= JRequest::getInt( 'rdid', 0, 'post' );
+		$id 	= JRequest::getInt( 'rdid', 0 );
 		
-    $xref   = JRequest::getInt( 'xref', 0, 'post' );
+    $xref   = JRequest::getInt( 'xref', 0 );
     
 		// Get/Create the model
 		$model = $this->getModel('Details', 'RedeventModel');
@@ -364,15 +364,15 @@ class RedeventController extends JController
 		$model_wait->setEventId($id);
 		$model_wait->UpdateWaitingList();
 		
-		JPluginHelper::importPlugin( 'redevent' );
-		$dispatcher =& JDispatcher::getInstance();
-		$res = $dispatcher->trigger( 'onEventUserUnregistered', array( $xref ) );
+//		JPluginHelper::importPlugin( 'redevent' );
+//		$dispatcher =& JDispatcher::getInstance();
+//		$res = $dispatcher->trigger( 'onEventUserUnregistered', array( $xref ) );
       
 		$cache = JFactory::getCache('com_redevent');
 		$cache->clean();
 
 		$msg = JText::_( 'UNREGISTERED SUCCESSFULL' );
-		$this->setRedirect( JRoute::_('index.php?option=com_redevent&view=details&xref=' . $xref . '&id=' . $id, false), $msg );
+		$this->setRedirect( JRoute::_('index.php?option=com_redevent&view=details&tpl=attendees&xref=' . $xref, false), $msg );
 	}
 
 	/**
