@@ -20,6 +20,7 @@
   $sh_LANG['en']['onlinesignup'] = 'Online Signup';
   $sh_LANG['en']['upcomingvenueevents'] = 'upcoming-venue-events';
   $sh_LANG['en']['signup'] = 'signup';
+  $sh_LANG['en']['confirmation'] = 'confirmation';
   // dutch
   $sh_LANG['nl']['_COM_SEF_REDEVENT'] = 'redEVENT';
   $sh_LANG['nl']['_COM_SEF_TITLE_REDEVENT'] = 'redEVENT';
