@@ -212,66 +212,85 @@ class RedeventModelDetails extends JModel
 	 */
 	function getRegisters() {
 		$db = JFactory::getDBO();
+
+		// first, get all submissions			
+		$query = ' SELECT r.*, s.waitinglist, s.confirmed, s.confirmdate, s.submit_key '
+						. ' FROM #__redevent_register AS r '
+						. ' INNER JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key '
+						. ' INNER JOIN #__users AS u ON r.uid = u.id '
+						. ' WHERE s.xref = ' . $this->_xref
+            . ' AND s.confirmed = 1'
+						;
+		$db->setQuery($query);
+		$submitters = $db->loadObjectList('submit_key');
 		
-		if (0) {	
-			/* Avatars should be displayed */
-			$elsettings = redEVENTHelper::config();
-			
-			$avatar	= '';
-			$join	= '';
-			
-			if ($elsettings->comunoption == 1 && $elsettings->comunsolution == 1) {
-				$avatar = ', c.avatar';
-				$join	= ' LEFT JOIN #__comprofiler as c ON c.user_id = r.uid';
-			}
-			
-			$name = $elsettings->regname ? 'u.name' : 'u.username';
-			
-			//Get registered users
-			$query = 'SELECT '.$name.' AS name, r.uid'
-					. $avatar
-					. ' FROM #__redevent_register AS r'
-					. ' LEFT JOIN #__users AS u ON u.id = r.uid'
-					. $join
-					. ' WHERE event = '.$this->_id
-					;
-			$this->_db->setQuery( $query );
-			$this->_registers = $this->_db->loadObjectList();
+		if ($submitters === null) {
+			$msg = JText::_('ERROR GETTING ATTENDEES');
+			$this->setError($msg);
+			JError::raiseWarning(5, $msg);
+			return false;
+		}
+		else if (empty($submitters)) {
+			// no submitters
+			return false;
 		}
 		
 		/* At least 1 redFORM field must be selected to show the user data from */
-		if (!empty($this->_details->showfields) && $this->_details->redform_id > 0) {
+		if (!empty($this->_details->showfields) && $this->_details->redform_id > 0) 
+		{
+			// load form fields
 			$q = "SELECT field, form_id 
 				FROM #__rwf_fields j
 				WHERE j.id in (".$this->_details->showfields.")";
 			$db->setQuery($q);
-			if (!$db->query()) {
+			
+			if (!$db->query()) 
+			{
 				JError::raiseWarning('error', JText::_('Cannot load fields').$db->getErrorMsg());
 				return false;
 			}
-			else {
-				$fields = $db->loadObjectList();
-				$table_fields = array();
-				foreach ($fields as $key => $field) {
-					$table_fields[] = 'a.`' . strtolower( str_replace(' ', '', $field->field) ).'`';
-				}
-				$query = ' SELECT ' . implode(', ', $table_fields);
-				$query .= ' FROM #__redevent_register AS r '
-				        . ' LEFT JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key '
-                . ' LEFT JOIN #__rwf_forms_' . $fields[0]->form_id . ' AS a ON s.answer_id = a.id '
-                . ' WHERE s.xref = ' . $this->_xref
-                . ' AND s.confirmed = 1'
-                ;
-				$db->setQuery($query);
-				if (!$db->query()) {
-					JError::raiseWarning('error', JText::_('Cannot load registered users').' '.$db->getErrorMsg());
-					return false;
-				}
-				else return $db->loadObjectList();
+			
+			
+			$fields = $db->loadObjectList();
+			$table_fields = array();
+			foreach ($fields as $key => $field) {
+				$table_fields[] = 'a.`' . strtolower( str_replace(' ', '', $field->field) ).'`';
 			}
+			
+			$query = ' SELECT ' . implode(', ', $table_fields)
+			. ' , s.submit_key '
+			. ' FROM #__redevent_register AS r '
+			. ' INNER JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key '
+			. ' INNER JOIN #__rwf_forms_' . $fields[0]->form_id . ' AS a ON s.answer_id = a.id '
+			. ' WHERE s.xref = ' . $this->_xref
+			. ' AND s.confirmed = 1'
+			;
+			$db->setQuery($query);
+			if (!$db->query()) {
+				JError::raiseWarning('error', JText::_('Cannot load registered users').' '.$db->getErrorMsg());
+				return false;
+			}			
+			$answers = $db->loadObjectList('submit_key');
+			
+		  // add the answers to submitters list
+      foreach ($submitters as $key => $submitter) 
+      {
+        if (!isset($answers[$key])) 
+        {
+        	$msg = JText::_('MISSING SUBMITTER REGISTRATION') . ': ' . $key;
+        	$this->setError($msg);
+        	JError::raise(10, $msg);
+        	return false;
+        }
+        $submitters[$key]->answers = $answers[$key];
+        // remove the key from answers
+        unset($submitters[$key]->answers->submit_key);        
+      }
+      return $submitters;
 		}
 		return false;
 	}
+	
 	
 	/**
 	 * Saves the registration to the database
