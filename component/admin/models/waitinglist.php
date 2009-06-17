@@ -190,7 +190,7 @@ class RedEventModelWaitinglist extends JModel {
 			WHERE xref = ".$this->xref."
 			AND waitinglist = 0
 			AND confirmed = 1
-			ORDER BY id DESC
+			ORDER BY confirmdate DESC
 			LIMIT ".$this->move_on;
 		$db->setQuery($q);
 		$this->move_on_ids = $db->loadResultArray();
