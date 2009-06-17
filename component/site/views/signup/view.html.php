@@ -50,6 +50,20 @@ class RedeventViewSignup extends JView
 		$course = $this->get('Details');
 		$venue = $this->get('Venue');
 		
+		if ($this->get('Isfull')) {
+			echo JText::_('event full');
+      echo '<br/>';
+			echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id')), JText::_('RETURN_EVENT_DETAILS'));
+			return;
+		}
+	
+    if ($this->get('RegistrationClose')) {
+      echo JText::_('Registration closed');
+      echo '<br/>';
+      echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id')), JText::_('RETURN_EVENT_DETAILS'));
+      return;
+    }
+    
 		/* This loads the tags replacer */
 		JView::loadHelper('tags');
 		$tags = new redEVENT_tags;

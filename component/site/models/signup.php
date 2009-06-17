@@ -49,6 +49,8 @@ class RedeventModelSignup extends JModel
 	 * @var array
 	 */
 	var $_registers = null;
+	
+	var $_xref = null;
 
 	/**
 	 * Constructor
@@ -297,6 +299,30 @@ class RedeventModelSignup extends JModel
 		$this->mailer->ClearAddresses();
 		
 		return true;
+	}
+	
+	function getIsFull()
+	{
+		$details = & $this->getDetails();
+		if (!$details->maxattendees) { // no max number, the event is never full
+			return false;
+		}
+		
+		$max = $details->maxwaitinglist + $details->maxattendees;
+		
+		$query = ' SELECT COUNT(*) as total '
+		        . ' FROM #__redevent_event_venue_xref AS x'
+            . ' INNER JOIN #__redevent_register AS r on r.xref = x.id ' 
+		        . ' INNER JOIN #__rwf_submitters AS s ON s.submit_key = r.submit_key'
+		        . ' WHERE x.id = ' . $this->_db->Quote($this->_xref)
+		        . '   AND s.confirmed = 1'
+		        ;
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadResult();
+		
+		if ($res >= $max) {
+      return true;			
+		}
 	}
 }
 ?>
