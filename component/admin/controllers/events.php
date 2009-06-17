@@ -121,10 +121,36 @@ class RedEventControllerEvents extends RedEventController
 		}
 
 		$total = count( $cid );
-		$msg 	= $total.' '.JText::_('EVENT ARCHIVED');
+		$msg 	= $total.' '.JText::_('OLD EVENT DATE ARCHIVED');
 
 		$this->setRedirect( 'index.php?option=com_redevent&view=events', $msg );
 	}
+	
+  /**
+   * Logic to archive events
+   *
+   * @access public
+   * @return void
+   * @since 0.9
+   */
+  function archivepast()
+  {
+    $cid  = JRequest::getVar( 'cid', array(0), 'post', 'array' );
+
+    if (!is_array( $cid ) || count( $cid ) < 1) {
+      JError::raiseError(500, JText::_( 'Select an item to archive' ) );
+    }
+
+    $model = $this->getModel('events');
+    if(!$model->archive($cid)) {
+      echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
+    }
+
+    $total = count( $cid );
+    $msg  = $total.' '.JText::_('OLD EVENT DATE ARCHIVED');
+
+    $this->setRedirect( 'index.php?option=com_redevent&view=events', $msg );
+  }
 
 	/**
 	 * logic for cancel an action

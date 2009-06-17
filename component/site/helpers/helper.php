@@ -138,21 +138,63 @@ class redEVENTHelper {
 
 			//delete outdated events
 			if ($elsettings->oldevent == 1) {
-				$query = ' DELETE x,e FROM #__redevent_event_venue_xref AS x, #__redevent_events AS e '
+				// lists event_id for which we are going to delete xrefs
+				$query = ' SELECT x.eventid FROM #__redevent_event_venue_xref AS x '
+               . ' WHERE DATE_SUB(NOW(), INTERVAL '.$elsettings->minus.' DAY) > (IF (x.enddates <> '.$nulldate.', x.enddates, x.dates)) '
+               ;
+        $db->SetQuery( $query );
+        $event_ids = $db->loadResultArray();
+        
+        if (!count($event_ids)) {
+        	return true;
+        }
+        
+				$query = ' DELETE x FROM #__redevent_event_venue_xref AS x '
 				       . ' WHERE DATE_SUB(NOW(), INTERVAL '.$elsettings->minus.' DAY) > (IF (x.enddates <> '.$nulldate.', x.enddates, x.dates)) '
-				       . ' AND e.id = x.eventid ';
+				       ;
 				$db->SetQuery( $query );
 				$db->Query();
+				
+				// now delete the events with no more xref
+        $query = ' DELETE e FROM #__redevent_events AS e '
+               . ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
+               . ' WHERE x.id IS NULL '
+               . '   AND e.id IN (' . implode(', ', $event_ids) . ')'
+               ;
+        $db->SetQuery( $query );
+        $db->Query();			
+				
 			}
 
 			//Set state archived of outdated events
-			if ($elsettings->oldevent == 2) {				
+			if ($elsettings->oldevent == 2) {
+        // lists event_id for which we are going to archive xrefs
+        $query = ' SELECT x.eventid FROM #__redevent_event_venue_xref AS x '
+               . ' WHERE DATE_SUB(NOW(), INTERVAL '.$elsettings->minus.' DAY) > (IF (x.enddates <> '.$nulldate.', x.enddates, x.dates)) '
+               ;
+        $db->SetQuery( $query );
+        $event_ids = $db->loadResultArray();
+        
+        if (!count($event_ids)) {
+          return true;
+        }
+        
+        // update xref to archive
 				$query = ' UPDATE #__redevent_event_venue_xref AS x '
-				       . ' INNER JOIN #__redevent_events AS e ON e.id = x.eventid '
-				       . ' SET e.published = -1, x.published = -1 '
+				       . ' SET x.published = -1 '
 				       . ' WHERE DATE_SUB(NOW(), INTERVAL '.$elsettings->minus.' DAY) > (IF (x.enddates <> '.$nulldate.', x.enddates, x.dates))';
 				$db->SetQuery( $query );
 				$db->Query();
+								
+        // update events to archive (if no more published xref)
+        $query = ' UPDATE #__redevent_events AS e '
+               . ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id AND x.published <> -1 '
+               . ' SET e.published = -1 '
+               . ' WHERE x.id IS NULL '
+               . '   AND e.id IN (' . implode(', ', $event_ids) . ')'
+               ;
+        $db->SetQuery( $query );
+        $db->Query();
 			}
 
 			//Set timestamp of last cleanup

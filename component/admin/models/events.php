@@ -322,6 +322,37 @@ class RedEventModelEvents extends JModel
 			}
 		}
 	}
+	
+	function archive($event_ids = array())
+	{
+		if (!count($event_ids)) {
+			return true;
+		}
+
+		$db = & $this->_db;
+		
+    $nulldate = '0000-00-00';
+      
+		// update xref to archive
+		$query = ' UPDATE #__redevent_event_venue_xref AS x '
+		. ' SET x.published = -1 '
+		. ' WHERE DATE_SUB(NOW(), INTERVAL 1 DAY) > (IF (x.enddates <> '.$nulldate.', x.enddates, x.dates))'
+		. '   AND x.eventid IN (' . implode(', ', $event_ids) . ')'
+		;
+		$db->SetQuery( $query );
+		$db->Query();
+
+		// update events to archive (if no more published xref)
+		$query = ' UPDATE #__redevent_events AS e '
+		. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id AND x.published <> -1 '
+		. ' SET e.published = -1 '
+		. ' WHERE x.id IS NULL '
+		. '   AND e.id IN (' . implode(', ', $event_ids) . ')'
+		;
+		$db->SetQuery( $query );
+		$db->Query();
+		return true;
+	}
 
 	/**
 	 * Method to remove a event

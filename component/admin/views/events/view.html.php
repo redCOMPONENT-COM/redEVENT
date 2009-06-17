@@ -64,6 +64,7 @@ class RedEventViewEvents extends JView {
 		//create the toolbar
 		JToolBarHelper::title( JText::_( 'EVENTS' ), 'events' );
 		JToolBarHelper::customX('archive', 'redevent_archive', 'redevent_archive', JText::_('ARCHIVE'), true);
+    JToolBarHelper::customX('archivepast', 'redevent_archive', 'redevent_archive', JText::_('ARCHIVE OLD EVENTS'), true);
 		JToolBarHelper::spacer();
 		JToolBarHelper::publishList();
 		JToolBarHelper::spacer();
