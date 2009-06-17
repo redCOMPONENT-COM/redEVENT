@@ -55,25 +55,12 @@ class RedeventViewDetails extends JView
 		$row		= $this->get('Details');
 		$registers	= $this->get('Registers');
 		$regcheck	= $this->get('Usercheck');
-		$formcheck	= $this->get('FormDependencies');
+		$formcheck	= $this->get('FormDependencies'); // TODO: still used ?
 		$model_event = $this->getModel('Event', 'RedEventModel');
-		$model_wait = $this->getModel('Waitinglist', 'RedEventModel');
-		$model_wait->setXrefId(JRequest::getInt('xref'));
-		$this->get('WaitingList', 'Waitinglist');
 		
 		/* Get the message queue */
 		$messages = $mainframe->getMessageQueue();
 		$mainframe->_messageQueue = array();
-		
-		/* Calculate the number of spots left on the attendance list */
-		if (isset($model_wait->waitinglist[0])) $attendancelist = $row->maxattendees - $model_wait->waitinglist[0]->total;
-		else $attendancelist = $row->maxattendees;
-		if ($attendancelist < 0) $attendancelist = 0;
-		
-		/* Calculate the number of spots left on the waitinglist */
-		if (isset($model_wait->waitinglist[1])) $waitinglist = $row->maxwaitinglist - $model_wait->waitinglist[1]->total;
-		else $waitinglist = $row->maxwaitinglist;
-		if ($waitinglist < 0) $waitinglist = 0;
 		
 		/* Check if redFORM is installed */
 		$redform_install = $model_event->getCheckredFORM();
@@ -122,9 +109,6 @@ class RedeventViewDetails extends JView
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
 		$pathway->addItem( JText::_( 'DETAILS' ). ' - '.$row->title, JRoute::_('index.php?option=com_redevent&view=details&id='.$row->slug));
-
-		//Get images
-		$dimage = redEVENTImage::flyercreator($row->datimage, 'event');
 		
 		//Check user if he can edit
 		$allowedtoeditevent = ELUser::editaccess($elsettings->eventowner, $row->created_by, $elsettings->eventeditrec, $elsettings->eventedit);
@@ -135,13 +119,9 @@ class RedeventViewDetails extends JView
 		$now = strtotime($jetzt);
 		$date = strtotime($row->dates);
 		$timecheck = $now - $date;
-		
-		//let's build the registration handling
-		$formhandler  = 0;
-		
+				
 		//is the user allready registered at the event
 		if ( $regcheck ) {
-			$formhandler = 3;
 			JHTML::_('behavior.mootools');
 			$unreg_link = JURI::root().'index.php?option=com_redevent&view=details&task=delreguser&xref='.$row->xref;
 			$js = " window.addEvent('domready', function(){
@@ -160,39 +140,8 @@ class RedeventViewDetails extends JView
 		            });
 		        }); ";
       $document->addScriptDeclaration($js);
-		} else {
-			//no, he isn't
-			$formhandler = 4;
-		}
+		}		
 		
-		//is the user registered at joomla and overwrite $formhandler if not
-		if ( !$user->get('id') ) {
-			$formhandler = 2;
-		}
-		
-		//check if it is too late to register and overwrite $formhandler
-		// TODO: we should separate 'too late' and event full cases...
-		if ( $timecheck > 0 || ($row->maxattendees && $row->maxwaitinglist == 0 && count($registers) >= $row->maxattendees)) {
-			$formhandler = 1;
-		}
-		
-		// Check if the maximum number of ppl on the waitinglist has been reached
-		if ($row->maxwaitinglist > 0 && $waitinglist == 0) {
-			$formhandler = 5;
-		}
-		
-		
-		/* HACK: Greater than 2 to allow non-registered user registration */
-		if ($formhandler >= 2) {
-			$js = "function check(checkbox, senden) {
-				if(checkbox.checked==true){
-					senden.disabled = false;
-				} else {
-					senden.disabled = true;
-				}}";
-			$document->addScriptDeclaration($js);
-		}
-
 		//Generate Eventdescription
 		if (($row->datdescription == '') || ($row->datdescription == '<br />')) {
 			$row->datdescription = JText::_( 'NO DESCRIPTION' ) ;
@@ -205,19 +154,6 @@ class RedeventViewDetails extends JView
 			$row->datdescription = $row->text;
 		}
 
-		//Generate Venuedescription
-		if (0) {
-		if (($row->locdescription == '') || ($row->locdescription == '<br />')) {
-			$row->locdescription = JText::_( 'NO DESCRIPTION' );
-		} else {
-			//execute plugins
-			$row->text	=	$row->locdescription;
-
-			JPluginHelper::importPlugin('content');
-			$results = $dispatcher->trigger('onPrepareContent', array (& $row, & $params, 0));
-			$row->locdescription = $row->text;
-		}
-		}
 		// generate Metatags
 		$meta_keywords_content = "";
 		if (!empty($row->meta_keywords)) {
@@ -259,19 +195,12 @@ class RedeventViewDetails extends JView
 
 		//set page title and meta stuff
 		$document->setTitle( $item->name.' - '.$row->title );
-        $document->setMetadata('keywords', $meta_keywords_content );
-        $document->setDescription( strip_tags($description_content) );
+		$document->setMetadata('keywords', $meta_keywords_content );
+		$document->setDescription( strip_tags($description_content) );
 
-        //build the url
-        if(!empty($row->url) && strtolower(substr($row->url, 0, 7)) != "http://") {
-        	$row->url = 'http://'.$row->url;
-        }
-
-        //create flag
-		if (0) {
-        if ($row->country) {
-        	$row->countryimg = ELOutput::getFlag( $row->country );
-        }
+		//build the url
+		if(!empty($row->url) && strtolower(substr($row->url, 0, 7)) != "http://") {
+			$row->url = 'http://'.$row->url;
 		}
 		
 		/* Get the Venue Dates */
@@ -282,19 +211,11 @@ class RedeventViewDetails extends JView
 		$this->assignRef('params' , 				$params);
     $this->assignRef('user' ,         $user);
 		$this->assignRef('allowedtoeditevent' , 	$allowedtoeditevent);
-		// $this->assignRef('allowedtoeditvenue' , 	$allowedtoeditvenue);
-		$this->assignRef('dimage' , 				$dimage);
-		//$this->assignRef('limage' , 				$limage);
 		$this->assignRef('print_link' , 			$print_link);
 		$this->assignRef('registers' , 				$registers);
-		$this->assignRef('formhandler',				$formhandler);
 		$this->assignRef('elsettings' , 			$elsettings);
 		$this->assignRef('item' , 					$item);
-		$this->assignRef('formcheck' ,				$formcheck);
-		$this->assignRef('waitinglist' ,			$waitinglist);
-		$this->assignRef('attendancelist' ,			$attendancelist);
-		$this->assignRef('maxattendance' ,			$row->maxattendees);
-		$this->assignRef('maxwaitinglist' ,			$row->maxwaitinglist);
+		$this->assignRef('formcheck' ,				$formcheck); // TODO: still used ?
 		$this->assignRef('messages' ,				$messages);
 		$this->assignRef('redform_install'	, $redform_install);
 		$this->assignRef('venuedates'	, $venuedates);
