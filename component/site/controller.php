@@ -361,7 +361,7 @@ class RedeventController extends JController
 		/* Check if we have space on the waiting list */
 		$this->addModelPath(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models');
 		$model_wait = $this->getModel('waitinglist');
-		$model_wait->setEventId($id);
+    $model_wait->setXrefId($xref);
 		$model_wait->UpdateWaitingList();
 		
 //		JPluginHelper::importPlugin( 'redevent' );

@@ -85,7 +85,9 @@ class RedEventModelWaitinglist extends JModel {
 				$this->clean();
 			}
 		}
-		else $this->ProcessWaitingList();
+		else {
+			$this->ProcessWaitingList();
+		}
 		
 	}
 	
@@ -162,7 +164,7 @@ class RedEventModelWaitinglist extends JModel {
 			WHERE xref = ".$this->xref."
 			AND waitinglist = 1
 			AND confirmed = 1
-			ORDER BY id
+			ORDER BY confirmdate
 			LIMIT ".$this->move_off;
 		$db->setQuery($q);
 		$this->move_off_ids = $db->loadResultArray();
