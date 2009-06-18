@@ -1,6 +1,8 @@
 <?php $infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-hint.png', JText::_( 'NOTES' ) ); ?>
 <?php $k = 0; ?>
 <table class="adminform">
+
+<?php /* TODO: to be removed ? these fields are not used any more, as there is a tag for the display now 
 	<tr class="row<?php echo $k = 1 - $k; ?>">
 		<td>
 			<label for="show_attendants">
@@ -31,6 +33,7 @@
 			</span>
 		</td>
 	</tr>
+	*/ ?>
 	<tr class="row<?php echo $k = 1 - $k; ?>">
 		<td>
 			<label for="notify_on_list_subject">

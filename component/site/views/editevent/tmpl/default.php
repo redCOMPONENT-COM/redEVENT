@@ -288,6 +288,7 @@ JHTML::_('behavior.calendar');
 	<fieldset class="el_fldst_waitinglist">
 
           <legend><?php echo JText::_('WAITINGLIST'); ?></legend>
+<?php /* TODO: to be removed ? these fields are not used any more, as there is a tag for the display now 
           
       	<div class="el_show_attendants floattext">
               <p><strong><?php echo JText::_( 'SHOW_ATTENDANTS_EDIT' ).':'; ?></strong></p>
@@ -334,7 +335,7 @@ JHTML::_('behavior.calendar');
 				<input type="radio" name="show_waitinglist" id="show_waitinglist1" value="1" checked="checked" />
 			<?php } ?>
           </div>
-
+ */ ?>
 			<div class="el_notify_on_list_subject floattext">
         			<p><strong><?php echo JText::_( 'NOTIFY ON LIST SUBJECT' ).':'; ?></strong></p>
 
