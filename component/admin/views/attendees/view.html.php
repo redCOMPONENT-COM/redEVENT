@@ -73,7 +73,7 @@ class RedEventViewAttendees extends JView {
     ELAdmin::setMenu();
 
 		//add toolbar
-		JToolBarHelper::title( JText::_( 'REGISTERED USERS' ), 'users' );
+		JToolBarHelper::title( JText::_( 'REGISTRATIONS' ), 'users' );
 		JToolBarHelper::custom('submitters', 'redevent_submitters', 'redevent_submitters', JText::_('Attendees'), false);
 		JToolBarHelper::deleteList();
 		JToolBarHelper::spacer();

@@ -81,7 +81,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<td><?php echo $this->pageNav->getRowOffset( $i ); ?></td>
 				<td><input type="checkbox" id="cb<?php echo $i;?>" name="cid[]" value="<?php echo $row->answer_id; ?>" onclick="isChecked(this.checked);" /></td>
 				<td><?php echo JHTML::Date( $row->uregdate, JText::_( 'DATE_FORMAT_LC2' ) ); ?></td>
-				<td><?php echo JHTML::Date( $row->confirmdate, JText::_( 'DATE_FORMAT_LC2' ) ); ?></td>
+				<td><?php echo ($row->confirmdate) ? JHTML::Date( $row->confirmdate, JText::_( 'DATE_FORMAT_LC2' ) ) : '-'; ?></td>
 				<td><?php echo $row->uip == 'DISABLED' ? JText::_( 'DISABLED' ) : $row->uip; ?></td>
 				<td><?php echo $row->name; ?></td>
 				<td style="text-align: center;"><a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i;?>','remove')"><img src="images/publish_x.png" width="16" height="16" border="0" alt="Delete" /></a></td>
