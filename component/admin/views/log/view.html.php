@@ -32,7 +32,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage EventList
  * @since 0.9
  */
-class RedEventViewLog extends JView {
+class RedFormViewLog extends JView {
 
 	function display($tpl = null)
 	{
@@ -41,19 +41,12 @@ class RedEventViewLog extends JView {
 		$user 		= & JFactory::getUser();
 
 		//build toolbar
-		JToolBarHelper::title( JText::_( 'REDEVENT LOG' ), 'home' );
+		JToolBarHelper::title( JText::_( 'REDForm LOG' ), 'home' );
     JToolBarHelper::custom('clearlog', 'delete', 'delete', 'Clear Log', false);
-		JToolBarHelper::help( 'el.intro', true );
     //create the toolbar
 
 		// Get data from the model
 		$log      = & $this->get( 'Data');
-
-		//add css and submenu to document
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
-
-		//Create Submenu
-    ELAdmin::setMenu();
 
 		//assign vars to the template
 		$this->assignRef('log'		, $log);
