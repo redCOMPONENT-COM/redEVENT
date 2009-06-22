@@ -25,9 +25,11 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $document = JFactory::getDocument();
-$document->addCustomTag( '<script type="text/javascript" src="'.JURI::root().'administrator/components/com_redform/js/jquery.js"></script>' );
-$document->addCustomTag( '<script type="text/javascript">jQuery.noConflict();</script>' );
-$document->addCustomTag( '<script type="text/javascript" src="'.JURI::root().'administrator/components/com_redform/js/jquery.random.js"></script>' );
+if ($document->getType() == 'html') {
+	$document->addCustomTag( '<script type="text/javascript" src="'.JURI::root().'administrator/components/com_redform/js/jquery.js"></script>' );
+	$document->addCustomTag( '<script type="text/javascript">jQuery.noConflict();</script>' );
+	$document->addCustomTag( '<script type="text/javascript" src="'.JURI::root().'administrator/components/com_redform/js/jquery.random.js"></script>' );
+}
 
 //Require classes
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'image.class.php');

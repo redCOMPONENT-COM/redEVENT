@@ -70,6 +70,7 @@ class ELAdmin {
     JSubMenuHelper::addEntry( JText::_( 'GROUPS' ), 'index.php?option=com_redevent&view=groups', $view == 'groups');
     JSubMenuHelper::addEntry( JText::_( 'TEXT_LIBRARY' ), 'index.php?option=com_redevent&view=textlibrary', $view == 'textlibrary');
     JSubMenuHelper::addEntry( JText::_( 'HELP' ), 'index.php?option=com_redevent&view=help', $view == 'help');
+    JSubMenuHelper::addEntry( JText::_( 'LOG' ), 'index.php?option=com_redevent&view=log', $view == 'log');
     if ($user->get('gid') > 24) {
       JSubMenuHelper::addEntry( JText::_( 'SETTINGS' ), 'index.php?option=com_redevent&controller=settings&task=edit', $controller == 'settings');
     }
