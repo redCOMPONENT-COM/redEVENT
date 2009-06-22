@@ -31,6 +31,7 @@ $document->addCustomTag( '<script type="text/javascript" src="'.JURI::root().'ad
 
 //Require classes
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'image.class.php');
+require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'log.php');
 require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'admin.class.php');
 
 // Set the table directory
