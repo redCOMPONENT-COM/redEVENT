@@ -57,7 +57,7 @@ class RedEventController extends JController
 	 */
 	function savecss()
 	{
-		global $mainframe;
+		$mainframe = & JFactory::getApplication();
 		
 		JRequest::checkToken() or die( 'Invalid Token' );
 
@@ -121,6 +121,18 @@ class RedEventController extends JController
 		JRequest::setVar( 'layout', 'addvenue'  );
 
 		parent::display();
+	}
+	
+	/**
+	 * Clears log file
+	 *
+	 */
+	function clearlog()
+	{
+		RedeventHelperLog::clear();
+		$msg = JText::_('LOG CLEARED');
+		$this->setRedirect('index.php?option=com_redevent&view=log', $msg);
+		$this->redirect();
 	}
 }
 ?>

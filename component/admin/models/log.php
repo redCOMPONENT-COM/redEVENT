@@ -69,8 +69,13 @@ class RedEventModelLog extends JModel
 			fclose($handle);
 		}
 		
-		$contents = explode("\n", $contents);
-		array_shift($contents);
+		if (empty($contents)) {
+			$contents = array(JText::_('No log'));
+		}
+		else {
+			$contents = explode("\n", $contents);
+			array_shift($contents);
+		}
 		return $contents;
 	}
 }

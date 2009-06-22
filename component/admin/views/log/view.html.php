@@ -42,7 +42,9 @@ class RedEventViewLog extends JView {
 
 		//build toolbar
 		JToolBarHelper::title( JText::_( 'REDEVENT LOG' ), 'home' );
+    JToolBarHelper::custom('clearlog', 'delete', 'delete', 'Clear Log', false);
 		JToolBarHelper::help( 'el.intro', true );
+    //create the toolbar
 
 		// Get data from the model
 		$log      = & $this->get( 'Data');
