@@ -82,8 +82,21 @@ else {
   $db = JFactory::getDBO();
   
   /* Set the main title of the component */
-  if (isset($view)) {
-    $title[] = $sh_LANG[$shLangIso][$view];
+  if (isset($view)) 
+  {
+  	if (isset($sh_LANG[$shLangIso][$view])) {
+      $title[] = $sh_LANG[$shLangIso][$view];
+  	}
+  	else {
+      $title[] = $view;  		
+  	}
+    
+    // layout, no replacement
+    if (isset($layout)) {
+    	$title[] = $layout;
+    	shRemoveFromGETVarsList('layout');
+    }
+    
     /* Check for calender entry */
     if ($view == 'day') {
     	if (isset($id)) {
