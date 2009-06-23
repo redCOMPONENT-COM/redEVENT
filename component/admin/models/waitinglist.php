@@ -75,7 +75,13 @@ class RedEventModelWaitinglist extends JModel {
 		$this->mailer = null;
 	}
 	
-	public function UpdateWaitingList() {
+	public function UpdateWaitingList() 
+	{
+		// nothing to do if there is no max
+		if (empty($this->event_data->maxattendees)) {
+			return true;
+		}
+		
 		/* If there is an event ID set, update all waitinglists for that event */
 		if (!is_null($this->eventid)) {
 			$xrefids = $this->getXrefIds();
