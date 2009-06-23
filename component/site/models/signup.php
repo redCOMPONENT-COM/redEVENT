@@ -247,6 +247,7 @@ class RedeventModelSignup extends JModel
 		/* Sent out the mail */
 		if (!$this->mailer->Send()) {
 			JError::raiseWarning(0, JText::_('NO_MAIL_SEND').' '.$this->mailer->error);
+      RedeventHelperLog::simpleLog('Error sending signup email'.': '.$this->mailer->error);
 			return false;
 		}
 		/* Clear the mail details */
@@ -292,6 +293,7 @@ class RedeventModelSignup extends JModel
 		/* Sent out the mail */
 		if (!$this->mailer->Send()) {
 			JError::raiseWarning(0, JText::_('NO_MAIL_SEND').' '.$this->mailer->error);
+      RedeventHelperLog::simpleLog('Error sending formal offer email'.': '.$this->mailer->error);
 			return false;
 		}
 		

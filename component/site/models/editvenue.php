@@ -480,7 +480,9 @@ class RedeventModelEditvenue extends JModel
 			$mail->setSender( array( $MailFrom, $FromName ) );
 			$mail->setBody( $mailbody );
 
-			$sent = $mail->Send();
+      if (!$mail->Send()) {
+        RedeventHelperLog::simpleLog('Error sending created/edited venue notification to site owner');
+      }
 		}
 
 		//create the mail for the user
@@ -508,7 +510,9 @@ class RedeventModelEditvenue extends JModel
 			$usermail->setSender( array( $MailFrom, $FromName ) );
 			$usermail->setBody( $mailbody );
 
-			$sent = $usermail->Send();
+      if (!$usermail->Send()) {
+        RedeventHelperLog::simpleLog('Error sending created/edited venue notification to venue owner');
+      }
 		}
 
 		//update item order

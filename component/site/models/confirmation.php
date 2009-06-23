@@ -260,7 +260,9 @@ class RedeventModelConfirmation extends JModel
 			$this->mailer->setSubject($tags->ReplaceTags($eventsettings->notify_subject));
 			
 			/* Count number of messages sent */
-			$this->mailer->Send();
+			if (!$this->mailer->Send()) {
+				RedeventHelperLog::simpleLog('Error sending notify message to submitter');
+			}
 			
 			/* Clear the mail details */
 			$this->mailer->ClearAddresses();
@@ -299,6 +301,9 @@ class RedeventModelConfirmation extends JModel
 						
 						/* Count number of messages sent */
 						$this->mailer->Send();
+			      if (!$this->mailer->Send()) {
+			        RedeventHelperLog::simpleLog('Error sending notify message to submitted attendants');
+			      }
 						
 						/* Clear the mail details */
 						$this->mailer->ClearAddresses();

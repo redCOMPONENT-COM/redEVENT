@@ -548,6 +548,7 @@ class RedeventController extends JController
 						/* Send the mail */
 						if (!$this->mailer->Send()) {
 							$mainframe->enqueueMessage(JText::_('THERE WAS A PROBLEM SENDING MAIL'));
+              RedeventHelperLog::simpleLog('Error sending confirm email'.': '.$this->mailer->error);
 						}
 						
 						/* Clear the mail details */

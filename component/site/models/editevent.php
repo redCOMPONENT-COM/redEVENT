@@ -753,6 +753,9 @@ class RedeventModelEditevent extends JModel
 			$mail->setBody( $mailbody );
 
 			$sent = $mail->Send();
+      if (!$sent) {
+        RedeventHelperLog::simpleLog('Error sending created/edited event notification to site owner');
+      }
 
 		}//mail end
 
@@ -782,6 +785,9 @@ class RedeventModelEditevent extends JModel
 			$usermail->setBody( $mailbody );
 
 			$sent = $usermail->Send();
+      if (!$sent) {
+        RedeventHelperLog::simpleLog('Error sending created/edited event notification to event owner');
+      }
 		}
 
 		return $row->id;

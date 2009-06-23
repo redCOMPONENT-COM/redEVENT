@@ -282,6 +282,7 @@ class RedEventModelWaitinglist extends JModel {
 					/* Send the mail */
 					if (!$this->mailer->Send()) {
 						$mainframe->enqueueMessage(JText::_('THERE WAS A PROBLEM SENDING MAIL'));
+						RedeventHelperLog::simpleLog('Error sending mail on/off waiting list');
 					}
 					
 					/* Clear the mail details */
