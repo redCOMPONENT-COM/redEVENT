@@ -63,6 +63,7 @@ class RedeventViewUpcomingevents extends JView
 		$document->addHeadLink(JRoute::_($link.'&type=rss'), 'alternate', 'rel', $attribs);
 		
 		$this->assignRef('upcomingevents' , $upcomingevents);
+    $this->assignRef('params' , $params);
 		parent::display($tpl);
 	}
 }

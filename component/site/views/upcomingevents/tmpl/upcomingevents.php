@@ -24,6 +24,13 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <div id="upcomingevents">
+
+<?php if ($this->params->get('showintrotext')) : ?>
+  <div class="description no_space floattext">
+    <?php echo $this->params->get('introtext'); ?>
+  </div>
+<?php endif; ?>
+
 <?php
 if (count($this->upcomingevents) == 0) {
 	echo JText::_('NO_UPCOMING_EVENTS');
