@@ -305,8 +305,9 @@ class RedEventControllerEvents extends RedEventController
 						unset($existing_xrefs[$random]);
 					}
 					else {
-						$q = "INSERT INTO #__redevent_event_venue_xref (eventid, venueid, dates, enddates, times, endtimes, maxattendees, maxwaitinglist, course_price, course_credit, published) VALUES ";
+						$q = "INSERT INTO #__redevent_event_venue_xref (eventid, venueid, dates, enddates, times, endtimes, details, maxattendees, maxwaitinglist, course_price, course_credit, published) VALUES ";
 						$q .= "(".$returnid.", ".$locid.", ".$dates.", ".$enddates.", ".$times.", ".$endtimes."
+						    , ".$details."
 								, ".$maxattendees.", ".$maxwaitinglist.", ".$course_price.", ".$course_credit.", 1)";
 						$db->setQuery($q);
 						$db->query();
