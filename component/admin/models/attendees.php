@@ -190,7 +190,7 @@ class RedEventModelAttendees extends JModel
 		. ' LEFT JOIN #__redevent_event_venue_xref AS x ON r.xref = x.id'
 		. ' LEFT JOIN #__redevent_events AS a ON x.eventid = a.id '
 		. ' LEFT JOIN #__users AS u ON r.uid = u.id'
-		. ' LEFT JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key'
+		. ' INNER JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key'
 		. $where
 		. $orderby;
 		return $query;
@@ -281,7 +281,7 @@ class RedEventModelAttendees extends JModel
 	 * @return true on success
 	 * @since 0.9
 	 */
-	function remove($cid = array(), $xref)
+	function remove($cid = array())
 	{
 		if (count( $cid ))
 		{
@@ -290,11 +290,12 @@ class RedEventModelAttendees extends JModel
 			
 			if (substr($ids, -1) == ',') $ids = substr($ids, 0, -1);
 			
-			$query = 'DELETE FROM #__redevent_register WHERE id IN ('. $ids .') AND xref = '.$xref;
+			$query = 'DELETE FROM #__redevent_register WHERE id IN ('. $ids .') ';
 			$this->_db->setQuery( $query );
 			
 			if (!$this->_db->query()) {
 				RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
+				return false;
 			}
 		}
 		return true;

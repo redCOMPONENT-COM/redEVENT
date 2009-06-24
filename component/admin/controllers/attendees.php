@@ -96,7 +96,7 @@ class RedEventControllerAttendees extends RedEventController
 		
 		/* Get all submitter ID's */
 		$model = $this->getModel('attendees');
-		
+				
 		/* Delete the redFORM entry first */
 		/* Submitter answers first*/
 		//TODO: put this in the model !
@@ -108,14 +108,24 @@ class RedEventControllerAttendees extends RedEventController
 		/* Submitter second */
 		$q = "DELETE FROM #__rwf_submitters
       WHERE answer_id IN (".implode(', ', $cid).")
-			AND xref = ".$xref."
 			AND form_id = ".$formid;
 		$db->setQuery($q);
 		$db->query();
 		
-		if(!$model->remove($cid, $xref)) {
-			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
-		}
+		// all the redevent_register records in redevent without an associated record in redform submitters can be deleted
+		$q =  ' SELECT r.id FROM #__redevent_register AS r '
+        . ' LEFT JOIN #__rwf_submitters AS s ON s.submit_key = r.submit_key '
+        . ' WHERE s.id IS NULL '
+        ;
+    $db->setQuery($q);
+    $register_ids = $db->loadResultArray();		
+    if (!empty($register_ids))
+    {
+			if(!$model->remove($register_ids)) {
+	      RedeventError::raiseWarning(0, JText::_( "CANT DELETE REGISTRATIONS" ) . ': ' . $model->getError() );
+				echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
+			}
+    }
 		
 		/* Check if we have space on the waiting list */
 		$model_wait = $this->getModel('waitinglist');

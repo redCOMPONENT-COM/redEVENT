@@ -27,3 +27,4 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div id="confirmation_message">
 	<?php echo $this->tags->ReplaceTags($this->message); ?>
 </div>
+<div><?php echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id')), JText::_('RETURN_EVENT_DETAILS')); ?></div>
