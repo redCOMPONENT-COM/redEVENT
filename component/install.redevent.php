@@ -362,6 +362,20 @@ if (is_array($cols)) {
   }
 }
 
+/* register table */
+$cols = false;
+$q = "SHOW COLUMNS FROM #__redevent_register";
+$db->setQuery($q);
+$cols = $db->loadObjectList('Field');
+
+if (is_array($cols)) {
+  if (!stristr($cols['submit_key']->Type, 'varchar')) {
+  	$q = "ALTER TABLE `#__redevent_register` CHANGE `submit_key` `submit_key` VARCHAR( 45 ) NULL DEFAULT NULL";
+  	$db->setQuery($q);
+  	$db->query();
+  }
+}
+
 /* multiple / hierarchical categories upgrade */
 /* Get the categories columns */
 $cols = false;
@@ -430,7 +444,7 @@ if ($upgrade) {
 	
 	/* 4. Register table */
 	/* The submitter_id becomes the submit_key */
-	$q = "ALTER TABLE `#__redevent_register` CHANGE `submitter_id` `submit_key` INT( 11 ) NULL DEFAULT NULL";
+	$q = "ALTER TABLE `#__redevent_register` CHANGE `submitter_id` `submit_key` VARCHAR( 45 ) NULL DEFAULT NULL";
 	$db->setQuery($q);
 	$db->query();
 	
