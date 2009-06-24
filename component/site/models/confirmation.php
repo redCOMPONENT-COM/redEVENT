@@ -242,6 +242,7 @@ class RedeventModelConfirmation extends JModel
 			/* Mail attendee */
 			$htmlmsg = '<html><head><title></title></title></head><body>';
 			$htmlmsg .= str_replace('[activatelink]', $activatelink, $eventsettings->notify_body);
+      $htmlmsg = str_replace('[fullname]', $user->name, $htmlmsg);
 			
 			
 			/* Check if user was registered */
@@ -282,6 +283,7 @@ class RedeventModelConfirmation extends JModel
 						/* Mail attendee */
 						$htmlmsg = '<html><head><title></title></title></head><body>';
 						$htmlmsg .= str_replace('[activatelink]', $activatelink, $eventsettings->notify_body);
+            $htmlmsg = str_replace('[fullname]', $useremail->fullname, $htmlmsg);
 						
 						
 						/* Check if user was registered */
