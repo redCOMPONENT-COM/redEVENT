@@ -454,9 +454,10 @@ class RedeventModelDetails extends JModel
 	 */
 	public function getVenueDates() {
 		$db = JFactory::getDBO();
-		$q = "SELECT *
-			FROM #__redevent_event_venue_xref x
-			WHERE x.eventid IN (".$this->_details->did.")";
+		$q = " SELECT *
+			     FROM #__redevent_event_venue_xref x
+			     WHERE x.eventid IN (".$this->_details->did.")"
+		    . " ORDER BY x.dates ASC, x.times ASC ";
 		$db->setQuery($q);
 		return $db->loadObjectList('id');
 	}

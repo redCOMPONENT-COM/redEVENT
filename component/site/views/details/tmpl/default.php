@@ -51,8 +51,16 @@ if ($this->row->show_names) : ?>
 		<h2 class="register"><?php echo JText::_( 'REGISTERED USERS' ).':'; ?></h2>
 		<?php
 			foreach ($this->venuedates AS $key => $venuedate) {
-				$date = ELOutput::formatdate($venuedate->dates, $venuedate->times).' - '.ELOutput::formatdate($venuedate->enddates, $venuedate->endtimes);
-				$time = ELOutput::formattime($venuedate->dates, $venuedate->times).' - '.ELOutput::formattime($venuedate->enddates, $venuedate->endtimes);
+				$date = ELOutput::formatdate($venuedate->dates, $venuedate->times);
+				$enddate = ELOutput::formatdate($venuedate->enddates, $venuedate->endtimes);
+				if ($enddate) {
+					$date .= ' - ' . $enddate;
+				}
+				$time = ELOutput::formattime($venuedate->dates, $venuedate->times);
+        $endtime = ELOutput::formattime($venuedate->enddates, $venuedate->endtimes);
+        if ($endtime) {
+          $time .= ' - ' . $endtime;
+        }
 				echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&tpl=attendees&xref='.$venuedate->id.'&id='.$venuedate->eventid), JText::_('SHOW_REGISTERED_USERS').' '.$date.' '.$time);
 				echo '<br />';
 			}

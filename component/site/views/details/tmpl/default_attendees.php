@@ -33,6 +33,7 @@ if ($this->row->show_names && $this->registers) {
 			<ul class="user floattext">
 			<?php
 			//loop through attendees
+			$waiting_count = 0;
 			foreach ($this->registers as $key => $register) {
 //				//if CB
 //				if ($this->elsettings->comunsolution == 1) :
@@ -72,10 +73,14 @@ if ($this->row->show_names && $this->registers) {
 					}
 					echo '</ul></li>';
 				}
+				else {
+					$waiting_count++;
+				}
 			} ?>
 		</ul>
 		</div>
 		
+		<?php if ($waiting_count): ?>
 		<h2 class="register"><?php echo JText::_( 'WAITING LIST' ); ?></h2>
     
     <div class="register">
@@ -99,7 +104,8 @@ if ($this->row->show_names && $this->registers) {
         }
       } ?>
     </ul>
-    </div>
+    </div>    
+    <?php endif; ?>
 	</div>
 	<?php
 }
