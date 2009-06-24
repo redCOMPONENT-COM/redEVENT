@@ -42,7 +42,7 @@
 	<languages folder="site/languages">
 		<language tag="en-GB">en-GB.com_redevent.ini</language>
 		<language tag="de-DE">de-DE.com_redevent.ini</language>
-		<language tag="dk-DK">dk-DK.com_redevent.ini</language>
+		<language tag="dk-DK">da-DK.com_redevent.ini</language>
 		<language tag="fr-FR">fr-FR.com_redevent.ini</language>
 		<language tag="nl-NL">nl-NL.com_redevent.ini</language>
 	</languages>
@@ -83,7 +83,7 @@
 	<languages folder="admin/languages">
 		<language tag="en-GB">en-GB.com_redevent.ini</language>
 		<language tag="de-DE">de-DE.com_redevent.ini</language>
-		<language tag="dk-DK">dk-DK.com_redevent.ini</language>
+		<language tag="dk-DK">da-DK.com_redevent.ini</language>
 		<language tag="fr-FR">fr-FR.com_redevent.ini</language>
 		<language tag="nl-NL">nl-NL.com_redevent.ini</language>
 	</languages>
