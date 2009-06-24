@@ -82,6 +82,13 @@ foreach ($this->_eventlinks as $key => $event) {
 		?>
 		</div></td>
 	</tr>
+	<?php if ($event->details): ?>
+	<tr>
+	 <td colspan="7">
+	   <?php echo $event->details; ?>
+	 </td>
+	</tr>
+	<?php endif; ?>
 <?php }
 ?>
 </tbody>
