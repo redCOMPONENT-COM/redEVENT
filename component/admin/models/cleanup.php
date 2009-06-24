@@ -120,7 +120,7 @@ class RedEventModelCleanup extends JModel
 			foreach ($images as $image)
 			{
 				if ($image !== JFilterInput::clean($image, 'path')) {
-					JError::raiseWarning(100, JText::_('UNABLE TO DELETE').' '.htmlspecialchars($image, ENT_COMPAT, 'UTF-8'));
+					RedeventError::raiseWarning(100, JText::_('UNABLE TO DELETE').' '.htmlspecialchars($image, ENT_COMPAT, 'UTF-8'));
 					$fail++;
 					continue;
 				}

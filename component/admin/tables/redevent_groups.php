@@ -56,7 +56,7 @@ class RedEvent_groups extends JTable
 		// Not typed in a category name?
 		if (trim( $this->name ) == '') {
 			$this->_error = JText::_( 'ADD GROUP NAME' );
-			JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
+			RedeventError::raiseWarning('SOME_ERROR_CODE', $this->_error );
 			return false;
 		}
 		

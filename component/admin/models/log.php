@@ -60,7 +60,7 @@ class RedEventModelLog extends JModel
 		if (file_exists($file)) {
 			$handle = fopen($file, "r");
 			if (!$handle) {
-	      JError::raiseWarning('0','error opening: '. $file);
+	      RedeventError::raiseWarning('0','error opening: '. $file);
 	    }
 			$contents = '';
 			while (!feof($handle)) {

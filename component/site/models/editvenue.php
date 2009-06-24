@@ -291,7 +291,7 @@ class RedeventModelEditvenue extends JModel
 
 		//bind it to the table
 		if (!$row->bind($data)) {
-			JError::raiseError( 500, $this->_db->stderr() );
+			RedeventError::raiseError( 500, $this->_db->stderr() );
 			return false;
 		}
 

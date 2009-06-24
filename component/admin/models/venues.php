@@ -369,7 +369,7 @@ class RedEventModelVenues extends JModel
 		$this->_db->setQuery( $query );
 
 		if (!($rows = $this->_db->loadObjectList())) {
-			JError::raiseError( 500, $this->_db->stderr() );
+			RedeventError::raiseError( 500, $this->_db->stderr() );
 			return false;
 		}
 

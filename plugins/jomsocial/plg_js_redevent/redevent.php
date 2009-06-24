@@ -245,7 +245,7 @@ class plgCommunityRedevent extends CApplications
 
 		$registered = $db->loadObjectList();	
     if ($db->getErrorNum()) {
-      JError::raiseWarning('0', $db->getErrorMsg());
+      RedeventError::raiseWarning('0', $db->getErrorMsg());
     }	
     
     // events he created
@@ -268,7 +268,7 @@ class plgCommunityRedevent extends CApplications
 
     $managed = $db->loadObjectList();
     if ($db->getErrorNum()) {
-    	JError::raiseWarning('0', $db->getErrorMsg());
+    	RedeventError::raiseWarning('0', $db->getErrorMsg());
     }
     // TODO: multiple cats
 

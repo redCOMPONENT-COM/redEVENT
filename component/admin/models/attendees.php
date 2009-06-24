@@ -294,7 +294,7 @@ class RedEventModelAttendees extends JModel
 			$this->_db->setQuery( $query );
 			
 			if (!$this->_db->query()) {
-				JError::raiseError( 1001, $this->_db->getErrorMsg() );
+				RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
 			}
 		}
 		return true;
@@ -322,7 +322,7 @@ class RedEventModelAttendees extends JModel
 			$this->_db->setQuery( $query );
 			JRequest::setVar('form_id', $this->_db->loadResult());
 			if ($this->_db->getErrorNum() > 0) {
-				JError::raiseError( 1001, $this->_db->getErrorMsg() );
+				RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
 			}
 		}
 	}

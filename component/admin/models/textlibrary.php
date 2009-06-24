@@ -125,7 +125,7 @@ class RedEventModelTextLibrary extends JModel
 		
 		// bind it to the table
 		if (!$row->bind($data)) {
-			JError::raiseError(500, $this->_db->getErrorMsg() );
+			RedeventError::raiseError(500, $this->_db->getErrorMsg() );
 			return false;
 		}
 
@@ -137,7 +137,7 @@ class RedEventModelTextLibrary extends JModel
 
 		// Store it in the db
 		if (!$row->store()) {
-			JError::raiseError(500, $this->_db->getErrorMsg() );
+			RedeventError::raiseError(500, $this->_db->getErrorMsg() );
 			return false;
 		}
 		else $mainframe->enqueueMessage(JText::_('TEXT_ADDED'));

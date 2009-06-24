@@ -314,7 +314,7 @@ class RedEventModelGroup extends JModel
 		} elseif ($this->_id < 1) {
 			return false;
 		} else {
-			JError::raiseWarning( 0, 'Unable to Load Data');
+			RedeventError::raiseWarning( 0, 'Unable to Load Data');
 			return false;
 		}
 	}

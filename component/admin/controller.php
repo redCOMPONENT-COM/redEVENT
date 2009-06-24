@@ -79,7 +79,7 @@ class RedEventController extends JController
 		
 		// Try to make the css file writeable
 		if (!$ftp['enabled'] && JPath::isOwner($file) && !JPath::setPermissions($file, '0755')) {
-			JError::raiseNotice('SOME_ERROR_CODE', 'COULD NOT MAKE CSS FILE WRITABLE');
+			RedeventError::raiseNotice('SOME_ERROR_CODE', 'COULD NOT MAKE CSS FILE WRITABLE');
 		}
 
 		jimport('joomla.filesystem.file');
@@ -87,7 +87,7 @@ class RedEventController extends JController
 
 		// Try to make the css file unwriteable
 		if (!$ftp['enabled'] && JPath::isOwner($file) && !JPath::setPermissions($file, '0555')) {
-			JError::raiseNotice('SOME_ERROR_CODE', 'COULD NOT MAKE CSS FILE UNWRITABLE');
+			RedeventError::raiseNotice('SOME_ERROR_CODE', 'COULD NOT MAKE CSS FILE UNWRITABLE');
 		}
 		
 		if ($return)

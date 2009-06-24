@@ -14,6 +14,7 @@ require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'log.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'user.class.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'image.class.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'output.class.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'error.class.php');
 
 //perform cleanup if it wasn't done today (archive, delete, recurrence)
 redEVENTHelper::cleanup();

@@ -197,7 +197,7 @@ class RedeventModelConfirmation extends JModel
 						
 						// If there was an error with registration, set the message and display form
 						if (!$user->save()){
-							JError::raiseWarning('', JText::_($user->getError()));
+							RedeventError::raiseWarning('', JText::_($user->getError()));
 							/* We cannot save the user, need to delete already stored user data */
 							
 							/* Delete the redFORM entry first */
@@ -216,7 +216,7 @@ class RedeventModelConfirmation extends JModel
 								$q = "INSERT INTO #__comprofiler (id, user_id, avatarapproved, approved, confirmed, banned)
 									VALUES (".$uid.", ".$uid.", 1, 1, 1, 0)";
 								$db->setQuery($q);
-								if (!$db->query()) JError::raiseWarning('', JText::_($db->getErrorMsg()));
+								if (!$db->query()) RedeventError::raiseWarning('', JText::_($db->getErrorMsg()));
 							}
 						}
 					}
@@ -376,12 +376,20 @@ class RedeventModelConfirmation extends JModel
 		
 		/* Load registration details */
 		$q = "SELECT submit_key
-			FROM #__redevent_register r
+			FROM #__redevent_register
 			WHERE submit_key = ".$db->Quote($submit_key);
 		$db->setQuery($q);
 		$result = $db->loadResult();
-		if ($result == $submit_key) return true;
-		else return false;
+		if ($result == $submit_key) {
+			return true;
+		}
+    if ($result == null) {
+      RedeventHelperLog::simpleLog('Confirm submit_key Query error: ' . $db->getErrorMsg());    
+    }
+		else {
+			RedeventHelperLog::simpleLog('No registration found for key ' . $submit_key);
+			return false;
+		}
 	}
 }
 ?>

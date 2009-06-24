@@ -141,7 +141,7 @@ class RedEventModelSettings extends JModel
 
 		// save the changes
 		if (!$table->store()) {
-			JError::raiseWarning( 500, $table->getError() );
+			RedeventError::raiseWarning( 500, $table->getError() );
 			return false;
 		}
 

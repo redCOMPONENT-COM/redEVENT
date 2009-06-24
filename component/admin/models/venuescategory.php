@@ -235,7 +235,7 @@ class RedEventModelVenuesCategory extends JModel
 		} elseif ($this->_id < 1) {
 			return false;
 		} else {
-			JError::raiseWarning( 0, 'Unable to Load Data');
+			RedeventError::raiseWarning( 0, 'Unable to Load Data');
 			return false;
 		}
 	}
@@ -253,7 +253,7 @@ class RedEventModelVenuesCategory extends JModel
 		
 		// bind it to the table
 		if (!$row->bind($data)) {
-			JError::raiseError(500, $this->_db->getErrorMsg() );
+			RedeventError::raiseError(500, $this->_db->getErrorMsg() );
 			return false;
 		}
 
@@ -269,7 +269,7 @@ class RedEventModelVenuesCategory extends JModel
 
 		// Store it in the db
 		if (!$row->store()) {
-			JError::raiseError(500, $this->_db->getErrorMsg() );
+			RedeventError::raiseError(500, $this->_db->getErrorMsg() );
 			return false;
 		}
 

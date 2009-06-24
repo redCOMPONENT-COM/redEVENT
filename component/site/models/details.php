@@ -110,7 +110,7 @@ class RedeventModelDetails extends JModel
 			// Is the category published?
 			if (!count($this->_details->categories))
 			{
-				JError::raiseError( 404, JText::_("CATEGORY NOT PUBLISHED") );
+				RedeventError::raiseError( 404, JText::_("CATEGORY NOT PUBLISHED") );
 			}
 
 			// Do we have access to each category ?
@@ -227,7 +227,7 @@ class RedeventModelDetails extends JModel
 		if ($submitters === null) {
 			$msg = JText::_('ERROR GETTING ATTENDEES');
 			$this->setError($msg);
-			JError::raiseWarning(5, $msg);
+			RedeventError::raiseWarning(5, $msg);
 			return false;
 		}
 		else if (empty($submitters)) {
@@ -246,7 +246,7 @@ class RedeventModelDetails extends JModel
 			
 			if (!$db->query()) 
 			{
-				JError::raiseWarning('error', JText::_('Cannot load fields').$db->getErrorMsg());
+				RedeventError::raiseWarning('error', JText::_('Cannot load fields').$db->getErrorMsg());
 				return false;
 			}
 			
@@ -267,7 +267,7 @@ class RedeventModelDetails extends JModel
 			;
 			$db->setQuery($query);
 			if (!$db->query()) {
-				JError::raiseWarning('error', JText::_('Cannot load registered users').' '.$db->getErrorMsg());
+				RedeventError::raiseWarning('error', JText::_('Cannot load registered users').' '.$db->getErrorMsg());
 				return false;
 			}			
 			$answers = $db->loadObjectList();
@@ -280,7 +280,7 @@ class RedeventModelDetails extends JModel
         {
         	$msg = JText::_('ERROR REGISTRATION WITHOUT SUBMITTER') . ': ' . $answer->id;
         	$this->setError($msg);
-        	JError::raise(10, $msg);
+        	RedeventError::raise(10, $msg);
         	return false;
         }
         // build the object
@@ -341,7 +341,10 @@ class RedeventModelDetails extends JModel
 		$obj->submit_key = $submit_key;
 		
 		/* Store the user registration */
-		$this->_db->insertObject('#__redevent_register', $obj);
+		if (!$this->_db->insertObject('#__redevent_register', $obj)) {
+			$this->setError(JText::_('Error in registration') . ': ' . $this->_db->getErrorMsg());
+			return false;
+		}
 		
 		/* Set the message all is good */
 		// $mainframe->enqueueMessage(JText::_('REGISTERED SUCCESSFULL'));
@@ -393,7 +396,7 @@ class RedeventModelDetails extends JModel
 		$submitterinfo = $db->loadObject();
 		
 		if (empty($submitterinfo)) {
-      JError::raiseWarning('1', JText::_('Cannot delete registration').' '.$db->getErrorMsg());
+      RedeventError::raiseWarning('1', JText::_('Cannot delete registration').' '.$db->getErrorMsg());
       return false;			
 		}
 		
@@ -407,7 +410,7 @@ class RedeventModelDetails extends JModel
         ;
     $db->setQuery($q);
     if ( !$db->query() ) {
-      JError::raiseWarning('2', JText::_('Error deleting redform registration').' '.$db->getErrorMsg());
+      RedeventError::raiseWarning('2', JText::_('Error deleting redform registration').' '.$db->getErrorMsg());
       return false;     
     }
         
@@ -417,7 +420,7 @@ class RedeventModelDetails extends JModel
     $db->setQuery($q);
     $res = $db->loadResult();
 		if ($res === null) {
-      JError::raiseWarning('3', JText::_('Error counting remaining associated submission').' '.$db->getErrorMsg());
+      RedeventError::raiseWarning('3', JText::_('Error counting remaining associated submission').' '.$db->getErrorMsg());
       return false;     			
 		}
 		
@@ -425,7 +428,7 @@ class RedeventModelDetails extends JModel
 			$q = "DELETE FROM #__redevent_register WHERE submit_key = " . $db->Quote($submitterinfo->submit_key);
 			$db->setQuery($q);
 			if (!$db->query()) {
-				JError::raiseWarning('error', JText::_('Cannot delete registration in redevent').' '.$db->getErrorMsg());
+				RedeventError::raiseWarning('error', JText::_('Cannot delete registration in redevent').' '.$db->getErrorMsg());
 				return false;
 			}
 		}

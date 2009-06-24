@@ -292,7 +292,7 @@ class redEVENTImage {
 		foreach($html_tags as $tag) {
 			// A tag is '<tagname ', so we need to add < and a space or '<tagname>'
 			if(stristr($xss_check, '<'.$tag.' ') || stristr($xss_check, '<'.$tag.'>')) {
-				JError::raiseWarning(100, JText::_('WARN IE XSS'));
+				RedeventError::raiseWarning(100, JText::_('WARN IE XSS'));
 				return false;
 			}
 		}

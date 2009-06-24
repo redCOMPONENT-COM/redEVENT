@@ -82,7 +82,7 @@ class RedEvent_categories extends JTable
 		// Not typed in a category name?
 		if (trim( $this->catname ) == '') {
 			$this->_error = JText::_( 'ADD NAME CATEGORY' );
-			JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
+			RedeventError::raiseWarning('SOME_ERROR_CODE', $this->_error );
 			return false;
 		}
 

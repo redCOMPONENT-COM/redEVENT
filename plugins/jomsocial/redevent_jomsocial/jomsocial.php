@@ -62,7 +62,7 @@ class plgRedeventjomsocial extends JPlugin {
     
     if (!$event = $db->loadObject()) {
       if ($db->getErrorNum()) {
-        JError::raiseWarning('0', $db->getErrorMsg());
+        RedeventError::raiseWarning('0', $db->getErrorMsg());
       }
     	return false;
     }
@@ -115,7 +115,7 @@ class plgRedeventjomsocial extends JPlugin {
     
     if (!$venue = $db->loadObject()) {
 	    if ($db->getErrorNum()) {
-	      JError::raiseWarning('0', $db->getErrorMsg());
+	      RedeventError::raiseWarning('0', $db->getErrorMsg());
 	    }
       return false;
     }
@@ -163,7 +163,7 @@ class plgRedeventjomsocial extends JPlugin {
     $db->setQuery($query);    
     if (!$event = $db->loadObject()) {
       if ($db->getErrorNum()) {
-        JError::raiseWarning('0', $db->getErrorMsg());
+        RedeventError::raiseWarning('0', $db->getErrorMsg());
       }
       return false;
     }    
@@ -210,7 +210,7 @@ class plgRedeventjomsocial extends JPlugin {
     $db->setQuery($query);    
     if (!$event = $db->loadObject()) {    
 	    if ($db->getErrorNum()) {
-	      JError::raiseWarning('0', $db->getErrorMsg());
+	      RedeventError::raiseWarning('0', $db->getErrorMsg());
 	    }
       return false;
     }    

@@ -168,7 +168,7 @@ class RedeventController extends JController
 			$msg 		= '';
 			$link = JRequest::getString('referer', JURI::base(), 'post');
 
-			JError::raiseWarning('SOME_ERROR_CODE', $model->getError() );
+			RedeventError::raiseWarning('SOME_ERROR_CODE', $model->getError() );
 		}
 
 		$model->checkin();
@@ -290,7 +290,7 @@ class RedeventController extends JController
 			$msg 		= '';
 			$link = JRequest::getString('referer', JURI::base(), 'post');
 
-			JError::raiseWarning('SOME_ERROR_CODE', $model->getError() );
+			RedeventError::raiseWarning('SOME_ERROR_CODE', $model->getError() );
 		}
 
 		$model->checkin();
@@ -320,6 +320,9 @@ class RedeventController extends JController
 		$model->setXref($xref);
 		/* Store the user registration */
 		$result = $model->userregister();
+		if (!$result) {
+      RedeventHelperLog::simpleLog("Error registering new user for xref $xref" . $model->getError());			
+		}
 		
 		$this->addModelPath( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_redevent' . DS . 'models' );
 		$model_wait = $this->getModel('Waitinglist', 'RedEventModel');
