@@ -116,7 +116,7 @@ class RedeventModelVenues extends JModel
 					$venue->text	= $venue->locdescription;
 					$venue->title 	= $venue->venue;
 					JPluginHelper::importPlugin('content');
-					$results = $mainframe->triggerEvent( 'onPrepareContent', array( &$venue, &$params, 0 ));
+					$results = $mainframe->triggerEvent( 'onPrepareContent', array( &$venue, array(), 0 ));
 					$venue->locdescription = $venue->text;
 				}
 

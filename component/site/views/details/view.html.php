@@ -151,7 +151,7 @@ class RedeventViewDetails extends JView
 			$row->text	= $row->datdescription;
 
 			JPluginHelper::importPlugin('content');
-			$results = $dispatcher->trigger('onPrepareContent', array (& $row, & $params, 0));
+			$results = $dispatcher->trigger('onPrepareContent', array (& $row, array(), 0));
 			$row->datdescription = $row->text;
 		}
 

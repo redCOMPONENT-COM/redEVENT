@@ -137,7 +137,7 @@ class RedeventViewCategoryevents extends JView
 			$category->text	= $category->catdescription;
 			$category->title 	= $category->catname;
 			JPluginHelper::importPlugin('content');
-			$results = $mainframe->triggerEvent( 'onPrepareContent', array( &$category, &$params, 0 ));
+			$results = $mainframe->triggerEvent( 'onPrepareContent', array( &$category, array(), 0 ));
 			$catdescription = $category->text;
 		}
 

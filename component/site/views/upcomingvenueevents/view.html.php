@@ -130,7 +130,7 @@ class RedeventViewUpcomingVenueevents extends JView
 			$venue->text	= $venue->locdescription;
 			$venue->title 	= $venue->venue;
 			JPluginHelper::importPlugin('content');
-			$results = $mainframe->triggerEvent( 'onPrepareContent', array( &$venue, &$params, 0 ));
+			$results = $mainframe->triggerEvent( 'onPrepareContent', array( &$venue, array(), 0 ));
 			$venuedescription = $venue->text;
 		}
 
