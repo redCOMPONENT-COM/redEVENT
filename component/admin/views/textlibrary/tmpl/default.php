@@ -65,7 +65,7 @@ defined('_JEXEC') or die('Restricted access');
 	</tbody>
 	</table>
 <input type="hidden" name="option" value="com_redevent" />
-<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
+<input type="hidden" name="id" value="" />
 <input type="hidden" name="controller" value="textlibrary" />
 <input type="hidden" name="view" value="textlibrary" />
 <input type="hidden" name="task" value="" />

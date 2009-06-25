@@ -144,5 +144,32 @@ class RedEventModelTextLibrary extends JModel
 
 		return $row->id;
 	}
+	
+ /**
+   * Method to remove a text libray element
+   *
+   * @access  public
+   * @return  boolean True on success
+   * @since 0.9
+   */
+  function delete($cid = array())
+  {
+    if (count( $cid ))
+    {
+      $cids = implode( ',', $cid );
+
+      $query = 'DELETE FROM #__redevent_textlibrary'
+          . ' WHERE id IN ('. $cids .')'
+          ;
+
+      $this->_db->setQuery( $query );
+      
+      if(!$this->_db->query()) {
+        $this->setError($this->_db->getErrorMsg());
+        return false;
+      }
+    }
+    return true;
+  }
 }
 ?>

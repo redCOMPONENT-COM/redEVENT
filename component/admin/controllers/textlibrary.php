@@ -53,5 +53,38 @@ class RedEventControllerTextLibrary extends RedEventController {
 		
 		parent::display();
 	}
+	
+  /**
+   * Logic to delete text library element
+   *
+   * @access public
+   * @return void
+   * @since 2.0
+   */
+  function remove()
+  {
+    global $option;
+
+    $cid    = JRequest::getVar( 'cid', array(0), 'post', 'array' );
+
+    if (!is_array( $cid ) || count( $cid ) < 1) {
+      JError::raiseError(500, JText::_( 'Select an item to delete' ) );
+    }
+
+    $model = $this->getModel('textlibrary');
+
+    if ($model->delete($cid)) {
+	    $msg = count( $cid ).' '.JText::_( 'TAGS DELETED');
+    }
+    else {
+    	$msg = JText::_('ERROR REMOVE TAG FAILED' . ': ' . $model->getError());
+    	RedeventError::raiseWarning(1, $msg);
+    }    
+
+    $cache = &JFactory::getCache('com_redevent');
+    $cache->clean();
+
+    $this->setRedirect( 'index.php?option='. $option .'&view=textlibrary', $msg );
+  }
 }
 ?>
