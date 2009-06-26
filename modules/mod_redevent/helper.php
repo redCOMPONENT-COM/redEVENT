@@ -91,17 +91,24 @@ class modRedEventHelper
 
 		$i		= 0;
 		$lists	= array();
+		$title_length = $params->get('cuttitle', '18');
 		foreach ( $rows as $k => $row )
 		{
 			//cut title
 			$length = strlen(htmlspecialchars( $row->title ));
-			if ($length > $params->get('cuttitle', '18')) {
-				$rows[$k]->title_short = htmlspecialchars(substr($row->title, 0, $params->get('cuttitle', '18')).'...', ENT_COMPAT, 'UTF-8');
+			if ($title_length && $length > $title_length) {
+				$rows[$k]->title_short = htmlspecialchars(substr($row->title, 0, $title_length).'...', ENT_COMPAT, 'UTF-8');
+			}
+			else {
+				$rows[$k]->title_short = htmlspecialchars($row->title, ENT_COMPAT, 'UTF-8');
 			}
 			// cut venue name
       $length = strlen(htmlspecialchars( $row->venue ));
-      if ($length > $params->get('cuttitle', '18')) {
-        $rows[$k]->venue_short = htmlspecialchars(substr($row->venue, 0, $params->get('cuttitle', '18')).'...', ENT_COMPAT, 'UTF-8');
+      if ($title_length && $length > $title_length) {
+        $rows[$k]->venue_short = htmlspecialchars(substr($row->venue, 0, $title_length).'...', ENT_COMPAT, 'UTF-8');
+      }
+      else {
+        $rows[$k]->venue_short = htmlspecialchars($row->venue, ENT_COMPAT, 'UTF-8');
       }
 			
 			$rows[$k]->link		= JRoute::_('index.php?option=com_redevent&view=details&xref='.$row->xref);
