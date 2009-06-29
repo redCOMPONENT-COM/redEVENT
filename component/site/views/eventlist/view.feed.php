@@ -57,9 +57,19 @@ class RedeventViewEventList extends JView
 			$title = $this->escape( $row->title );
 			$title = html_entity_decode( $title );
 
-			// strip html from feed item category
-			$category = $this->escape( $row->catname );
-			$category = html_entity_decode( $category );
+		  // handle categories
+      if (!empty($row->categories)) 
+      {
+        $category = array();
+        foreach ($row->categories AS $cat) {
+          $category[] = $cat->catname;
+        }
+        $category = $this->escape( implode(', ', $category) );
+        $category = html_entity_decode( $category );        
+      }
+      else {
+        $category = '';
+      }
 
 			//Format date
 			$date = strftime( $elsettings->formatdate, strtotime( $row->dates ));

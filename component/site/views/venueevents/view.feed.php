@@ -57,9 +57,20 @@ class RedeventViewVenueevents extends JView
 			$title = $this->escape( $row->title );
 			$title = html_entity_decode( $title );
 
-			// strip html from feed item category
-			$category = $this->escape( $row->catname );
-			$category = html_entity_decode( $category );
+		
+      // handle categories
+      if (!empty($row->categories)) 
+      {
+        $category = array();
+        foreach ($row->categories AS $cat) {
+          $category[] = $cat->catname;
+        }
+        $category = $this->escape( implode(', ', $category) );
+        $category = html_entity_decode( $category );        
+      }
+      else {
+        $category = '';
+      }
 
 			//Format date
 			$date = strftime( $elsettings->formatdate, strtotime( $row->dates ));
@@ -93,7 +104,7 @@ class RedeventViewVenueevents extends JView
 			$description .= JText::_( 'CATEGORY' ).': '.$category.'<br />';
 			$description .= JText::_( 'DATE' ).': '.$displaydate.'<br />';
 			$description .= JText::_( 'TIME' ).': '.$displaytime.'<br />';
-			$description .= JText::_( 'DESCRIPTION' ).': '.$row->datdescription;
+			//$description .= JText::_( 'DESCRIPTION' ).': '.$row->datdescription;
 
 			@$created = ( $row->created ? date( 'r', strtotime($row->created) ) : '' );
 
