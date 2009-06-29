@@ -103,7 +103,7 @@ class RedeventViewEventList extends JView
 			$description .= JText::_( 'CATEGORY' ).': '.$category.'<br />';
 			$description .= JText::_( 'DATE' ).': '.$displaydate.'<br />';
 			$description .= JText::_( 'TIME' ).': '.$displaytime.'<br />';
-			$description .= JText::_( 'DESCRIPTION' ).': '.$row->datdescription;
+			//$description .= JText::_( 'DESCRIPTION' ).': '.$row->datdescription;
 
 			@$created = ( $row->created ? date( 'r', strtotime($row->created) ) : '' );
 
