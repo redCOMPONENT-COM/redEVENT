@@ -97,66 +97,92 @@ else {
     	shRemoveFromGETVarsList('layout');
     }
     
-    /* Check for calender entry */
-    if ($view == 'day') {
-    	if (isset($id)) {
-        $title[] = $id;    
-        shRemoveFromGETVarsList('id');		
-    	}
+    if (isset($xref))
+    {
+	    $q = "SELECT e.title, v.city, DATE_FORMAT(x.dates, '%Y-%m-%d') AS dates, TIME_FORMAT(x.times, '%H-%i') AS times,
+              CASE WHEN CHAR_LENGTH(v.alias) THEN v.alias ELSE v.id END as venueslug
+	            FROM #__redevent_event_venue_xref x
+	            LEFT JOIN #__redevent_events e
+	            ON e.id = x.eventid
+	            LEFT JOIN #__redevent_venues v
+	            ON v.id = x.venueid
+	            WHERE x.id = ".$xref;
+	    $db->setQuery($q);
+	    $details = $db->loadObject();
     }
-    if ($view == 'categoryevents') {
-      $q = "SELECT catname FROM #__redevent_categories WHERE id = ".$id;
-      $db->setQuery($q);
-      $title[] = $db->loadResult();
-      //$title[] = $id;
-      /* Remove xref so no other course details are added */
-      shRemoveFromGETVarsList('id');
-      shRemoveFromGETVarsList('xref');
+    else if (isset($id))
+    {
+	    $q = "SELECT e.title
+	            FROM  #__redevent_events e
+	            WHERE e.id = ".$id;
+	    $db->setQuery($q);
+	    $details = $db->loadObject();
     }
-    if ($view == 'venueevents') {
-      $q = "SELECT venue FROM #__redevent_venues WHERE id = ".$id;
-      $db->setQuery($q);
-      $title[] = $db->loadResult();
-      /* Remove xref so no other course details are added */
-      shRemoveFromGETVarsList('id');
-    }
-    if ($view == 'upcomingvenueevents') {
-      $q = "SELECT venue FROM #__redevent_venues WHERE id = ".$id;
-      $db->setQuery($q);
-      $title[] = $db->loadResult();
-      /* Remove xref so no other course details are added */
-      shRemoveFromGETVarsList('id');
-    }
-    if ($view == 'details') {
-      if (isset($xref))
-      {
-	      $q = "SELECT e.title, v.city, DATE_FORMAT(x.dates, '%Y-%m-%d') AS dates, TIME_FORMAT(x.times, '%H-%i') AS times
-	        FROM #__redevent_event_venue_xref x
-	        LEFT JOIN #__redevent_events e
-	        ON e.id = x.eventid
-	        LEFT JOIN #__redevent_venues v
-	        ON v.id = x.venueid
-	        WHERE x.id = ".$xref;
+    
+    switch ($view)
+    {
+	    case 'day':
+	    	if (isset($id)) {
+	        $title[] = $id;    
+	        shRemoveFromGETVarsList('id');		
+	    	}
+	      break;
+	      
+	    case 'categoryevents':
+	      $q = "SELECT catname FROM #__redevent_categories WHERE id = ".$id;
 	      $db->setQuery($q);
-	      $details = $db->loadObject();
-	      $title[] = $xref.'-'.$details->title;
-	      $title[] = $details->city;
-	      $title[] = $details->dates;
-	      if ($details->times != '00-00') $title[] = $details->times;
-        shRemoveFromGETVarsList('xref');
-			  if (!empty($id)) 
-			    shRemoveFromGETVarsList('id');
-      }
-      else if (isset($id))
-      {
-        $q = "SELECT e.title 
-          FROM  #__redevent_events e
-          WHERE e.id = ".$id;
-        $db->setQuery($q);
-        $details = $db->loadObject();
-        $title[] = $id.'-'.$details->title;
-        shRemoveFromGETVarsList('id');
-      }
+	      $title[] = $db->loadResult();
+	      //$title[] = $id;
+	      /* Remove xref so no other course details are added */
+	      shRemoveFromGETVarsList('id');
+	      shRemoveFromGETVarsList('xref');
+	      break;
+	      
+	   case 'venueevents':
+	      $q = "SELECT venue FROM #__redevent_venues WHERE id = ".$id;
+	      $db->setQuery($q);
+	      $title[] = $db->loadResult();
+	      /* Remove xref so no other course details are added */
+	      shRemoveFromGETVarsList('id');
+	      break;
+	      
+	   case 'upcomingvenueevents':
+	      $q = "SELECT venue FROM #__redevent_venues WHERE id = ".$id;
+	      $db->setQuery($q);
+	      $title[] = $db->loadResult();
+	      /* Remove xref so no other course details are added */
+	      shRemoveFromGETVarsList('id');
+        break;
+        
+	   case 'details':
+	      if (isset($xref))
+	      {
+		      $title[] = $xref.'-'.$details->title;
+		      $title[] = $details->city;
+		      $title[] = $details->dates;
+		      if ($details->times != '00-00') $title[] = $details->times;
+            shRemoveFromGETVarsList('xref');
+				  if (!empty($id)) 
+				    shRemoveFromGETVarsList('id');
+	      }
+	      else if (isset($id))
+	      {
+	        $title[] = $id.'-'.$details->title;
+	        shRemoveFromGETVarsList('id');
+	      }
+	      break;
+	      
+	   case 'signup':
+	     $title[] = $details->venueslug;
+       $title[] = $details->dates;
+       $title[] = $details->times;
+       $title[] = $xref;
+       shRemoveFromGETVarsList('xref');
+       shRemoveFromGETVarsList('id');
+	     break;
+	     
+      default:
+        break; 
     }
 //    if ($shGETVars['view'] == 'editevent') {
 //      $title[] = $shGETVars['layout'];
@@ -169,76 +195,66 @@ else {
   }
   
   /* Remove ID field as we no longer need it */
-//  shRemoveFromGETVarsList('id');
-//  shRemoveFromGETVarsList('layout');
   shRemoveFromGETVarsList('view');
   
-//  if (isset($shGETVars['xref'])) {
-//    if ($shGETVars['xref'] > 0) {
-//      /* Get the event name/place/start date/start time */
-//      $q = "SELECT e.title, v.city, DATE_FORMAT(x.dates, '%d-%m-%Y') AS dates, TIME_FORMAT(x.times, '%H-%i') AS times
-//        FROM #__redevent_event_venue_xref x
-//        LEFT JOIN #__redevent_events e
-//        ON e.id = x.eventid
-//        LEFT JOIN #__redevent_venues v
-//        ON v.id = x.venueid
-//        WHERE x.id = ".$shGETVars['xref'];
-//      $db->setQuery($q);
-//      $details = $db->loadObject();
-//      $title[] = $shGETVars['xref'].'-'.$details->title;
-//      $title[] = $details->city;
-//      $title[] = $details->dates;
-//      $title[] = $details->times;
-//    }
-//    shRemoveFromGETVarsList('xref');
-//  }
-//  if (isset($shGETVars['subtype'])) {
-//    $title[] = $shGETVars['subtype'];
-//    shRemoveFromGETVarsList('subtype');
-//  }
-//  if (isset($shGETVars['submit_key'])) {
-//    if (isset($shGETVars['page'])) {
-//      switch($shGETVars['page']) {
-//        case 'final':
-//          $title[] = $shGETVars['action'];
-//          break;
-//        default:
-//          if ($shGETVars['page'] != 'confirmation') $title[] = $shGETVars['page'];
-//          else $title[] = $shGETVars['action'];
-//          break;
-//      }
-//      shRemoveFromGETVarsList('page');
-//      shRemoveFromGETVarsList('action');
-//    }
-//    else $title[] = 'submit';
-//  }
-//  
-//  if (isset($shGETVars['page'])) {
-//    $title[] = $shGETVars['page'];
-//    shRemoveFromGETVarsList('page');
-//  }
-//  
-//  if (isset($shGETVars['task'])) {
-//    if (strtolower($shGETVars['task']) == 'confirm') {
-//      $title[] = 'confirm';
-//      $title[] = $shGETVars['confirmid'];
-//    }
-//    shRemoveFromGETVarsList('task');
-//    shRemoveFromGETVarsList('confirmid');
-//  }
-//  
-//  if (isset($shGETVars['pop'])) {
-//    if ($shGETVars['pop'] == 1) {
-//      $title[] = 'print';
-//    }
-//    shRemoveFromGETVarsList('pop');
-//  }
-//  
-//  /* Handle the RSS feed */
-//  if (isset($shGETVars['format'])) {
-//    if (strtolower($shGETVars['format']) == 'feed') $title[] = 'feed';
-//    shRemoveFromGETVarsList('format');
-//  }
+
+
+  if (isset($subtype)) {
+	  $title[] = $subtype;
+	  shRemoveFromGETVarsList('subtype');
+  }
+  if (isset($submit_key)) {
+    if (isset($page)) {
+      switch($page) {
+        case 'final':
+          $title[] = $action;
+          break;
+        default:
+          if ($page != 'confirmation') $title[] = $page;
+          else $title[] = $action;
+          break;
+      }
+      shRemoveFromGETVarsList('page');
+      shRemoveFromGETVarsList('action');
+    }
+    else $title[] = 'submit';
+  }
+  
+  if (isset($page)) {
+    $title[] = $page;
+    shRemoveFromGETVarsList('page');
+  }
+  
+  if (isset($task)) {
+    if (strtolower($task) == 'confirm') {
+      $title[] = 'confirm';
+      $title[] = $confirmid;
+    }
+    shRemoveFromGETVarsList('task');
+    shRemoveFromGETVarsList('confirmid');
+  }
+
+  if (isset($tpl)) {
+    $title[] = $tpl;
+    shRemoveFromGETVarsList('tpl');
+  }
+  
+  if (isset($pop)) {
+    if ($pop == 1) {
+      $title[] = 'print';
+    }
+    shRemoveFromGETVarsList('pop');
+  }
+  
+  /* Handle the RSS feed */
+  if (isset($format)) {
+    if (strtolower($format) == 'feed') $title[] = 'feed';
+    shRemoveFromGETVarsList('format');
+  }
+  if (isset($type)) {
+    $title[] = $type;
+    shRemoveFromGETVarsList('type');
+  }
 }
 // ------------------  standard plugin finalize function - don't change ---------------------------  
 if ($dosef){
