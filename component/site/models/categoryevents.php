@@ -242,7 +242,7 @@ class RedeventModelCategoryevents extends JModel {
 
 		$where = array();
 		
-		$where[] = 'c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . ')';
+		$where[] = '(c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
 		
 		// First thing we need to do is to select only the requested events
 		if ($task == 'archive') {
