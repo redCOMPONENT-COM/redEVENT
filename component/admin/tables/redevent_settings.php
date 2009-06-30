@@ -187,9 +187,9 @@ class RedEvent_settings extends JTable
 	/** @var date */
 	var $defaultredformid 	= null;
 	/** @var string */
-	var $currency_separator	= null;
+	var $currency_decimal_separator	= null;
 	/** @var string */
-	var $currency_decimals	= null;
+	var $currency_thousand_separator = null;
 	var $signup_external_text = null;
 	var $signup_external_img = null;
 	var $signup_webform_text = null;
