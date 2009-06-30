@@ -40,15 +40,30 @@ class RedeventViewSignup extends JView
 	 *
  	 * @since 0.9
 	 */
-	function display($tpl = null) {
-		global $mainframe;
+	function display($tpl = null) 
+	{
+		$mainframe = & JFactory::getApplication();
 		
 		$document 	= & JFactory::getDocument();
-		$document->setTitle(JText::_('Signup'));
+    $params   = & $mainframe->getParams();
+    $menu   = & JSite::getMenu();
+    $item     = $menu->getActive();
 		
 		/* Load the event details */
 		$course = $this->get('Details');
 		$venue = $this->get('Venue');
+				
+    $pagetitle = $params->set('page_title', JText::_('SIGNUP_PAGE_TITLE'));
+		$document->setTitle($pagetitle);
+    $mainframe->setPageTitle( $pagetitle );
+    
+    //Print
+    $params->def( 'print', !$mainframe->getCfg( 'hidePrint' ) );
+    $params->def( 'icons', $mainframe->getCfg( 'icons' ) );
+		
+    //add css file
+    $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/eventlist.css');
+    $document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 		
 		if ($this->get('Isfull')) {
 			echo JText::_('event full');
@@ -110,12 +125,23 @@ class RedeventViewSignup extends JView
 				break;
 			case 'webform':
 			default:
+          $this->tmp_xref = JRequest::getInt('xref');
+          $this->tmp_id = JRequest::getInt('id');
 				$this->assignRef('page', $course->submission_type_webform);
+    		$print_link = JRoute::_( 'index.php?option=com_redevent&view=signup&subtype=webform&task=signup&xref='.$this->tmp_xref.'&id='.$this->tmp_id.'&pop=1&tmpl=component' );
+        $this->assignRef('print_link', $print_link);
 				break;
 		}
 		
+		// The replaceTag function can sometime call the layout directly. This variable allows to make the difference with regular
+		// call
+		$fullpage = true;
+		
 		$this->assignRef('course', $course);
-		$this->assignRef('venue', $venue);
+		$this->assignRef('venue',  $venue);
+    $this->assignRef('params', $params);
+    $this->assignRef('pagetitle', $pagetitle);
+    $this->assignRef('fullpage', $fullpage);
 		
 		parent::display($tpl);
 	}

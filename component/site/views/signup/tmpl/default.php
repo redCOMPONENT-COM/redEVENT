@@ -23,10 +23,28 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
+?>
+<?php if (isset($this->fullpage)): ?>
+<div id="eventlist" class="el_webformsignup">
+	<p class="buttons">
+	  <?php
+	    echo ELOutput::printbutton( $this->print_link, $this->params );
+	  ?>
+	</p>
+	
+	<?php if ($this->params->get('show_page_title', true)) : ?>
+	
+	<h1 class="componentheading">
+	<?php echo $this->escape($this->pagetitle); ?>
+	</h1>
+	
+	<?php endif; ?>
+<?php endif; ?>
+<?php
 echo $this->tags->ReplaceTags($this->page);
 
 echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id')), JText::_('RETURN_EVENT_DETAILS'));
 ?>
-<p class="copyright">
-	<?php echo ELOutput::footer( ); ?>
-</p>
+<?php if (isset($this->fullpage)): ?>
+</div>
+<?php endif; ?>
