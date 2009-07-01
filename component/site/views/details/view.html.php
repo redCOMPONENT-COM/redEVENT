@@ -59,8 +59,8 @@ class RedeventViewDetails extends JView
 		$model_event = $this->getModel('Event', 'RedEventModel');
 		
 		/* Get the message queue */
-		$messages = $mainframe->getMessageQueue();
-		$mainframe->_messageQueue = array();
+//		$messages = $mainframe->getMessageQueue();
+//		$mainframe->_messageQueue = array();
 		
 		/* Check if redFORM is installed */
 		$redform_install = $model_event->getCheckredFORM();
