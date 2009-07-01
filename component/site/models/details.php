@@ -280,7 +280,7 @@ class RedeventModelDetails extends JModel
         {
         	$msg = JText::_('ERROR REGISTRATION WITHOUT SUBMITTER') . ': ' . $answer->id;
         	$this->setError($msg);
-        	RedeventError::raise(10, $msg);
+        	RedeventError::raiseWarning(10, $msg);
         	return false;
         }
         // build the object
