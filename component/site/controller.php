@@ -563,7 +563,7 @@ class RedeventController extends JController
 		else if ($regdata && $regdata->confirmed == 1) $this->setMessage(JText::_('YOUR SUBMISSION HAS ALREADY BEEN CONFIRMED'));
 		else $this->setMessage(JText::_('YOUR SUBMISSION CANNOT BE CONFIRMED'));
 		
-		$this->setRedirect(JURI::base());
+		$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=details&xref=' . $xref, false));
 	 }
 	 
 	 /**
