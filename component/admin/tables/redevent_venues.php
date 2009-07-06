@@ -53,6 +53,10 @@ class RedEvent_venues extends JTable
 	var $state				= null;
 	/** @var string */
 	var $country			= null;
+  /** @var float */
+  var $latitude      = '';
+  /** @var float */
+  var $longitude     = '';
 	/** @var string */
 	var $locdescription 	= null;
 	/** @var string */

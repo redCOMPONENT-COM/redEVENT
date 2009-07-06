@@ -323,6 +323,58 @@ class ELOutput {
 
 		return $output;
 	}
+	
+
+  /**
+   * Creates the map button
+   *
+   * @param obj $data
+   * @param obj $settings
+   *
+   * @since 0.9
+   */
+  function pinpointicon($data)
+  {
+    global $mainframe;
+    
+    $settings = & redEVENTHelper::config();
+        
+    $url    = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+    
+    //Link to map
+    $mapimage = '<img src="'.$url.'/components/com_redevent/assets/images/marker.png" alt="'.JText::_( 'PINPOINTLOCATION' ).'" />';
+
+    //set var
+    $output   = null;
+    $attributes = null;
+    
+    $data->country = JString::strtoupper($data->country);
+
+    //google or map24
+    switch ($settings->showmapserv)
+    {
+      case 1:
+      {
+          $output = "";
+      } break;
+
+      case 2:
+      {
+        if($settings->gmapkey) {
+
+          $document   = & JFactory::getDocument();
+          JHTML::_('behavior.mootools');
+          
+          $document->addScript('http://maps.google.com/maps?file=api&amp;v=2&sensor=true&amp;key='.trim($settings->gmapkey));
+          $document->addScript($url.'/components/com_redevent/assets/js/gmapspinpoint.js');
+          $document->addStyleSheet($url.'/components/com_redevent/assets/css/gmapsoverlay.css', 'text/css');
+          $output   = $mapimage;
+        }
+      } break;
+    }
+
+    return $output;
+  }
 
 	/**
 	 * Creates the flyer

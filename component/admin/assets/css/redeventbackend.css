@@ -169,3 +169,18 @@ div.clear
 label.invalid {
   color: red;
 }
+
+/* venue pinpoint */
+div#setmap {
+  clear:both;
+}
+
+div#setmap table {
+  float:left;
+}
+
+div#pinpointicon {
+  float:left;
+  position:relative;
+  bottom: -30px;
+}

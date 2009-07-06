@@ -127,6 +127,8 @@ class RedEventViewVenue extends JView {
       $selected[] = $cat;
     }
     $lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('Categories'), 'categories[]', 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $selected); 
+        
+    $pinpointicon = ELOutput::pinpointicon( $row );
     
 		//assign data to template
 		$this->assignRef('row'      	, $row);
@@ -135,6 +137,7 @@ class RedEventViewVenue extends JView {
 		$this->assignRef('settings'     , $settings);
     $this->assignRef('lists'      , $lists);
 		$this->assignRef('imageselect' 	, $imageselect);
+    $this->assignRef('pinpointicon', $pinpointicon);
 
 		parent::display($tpl);
 	}

@@ -219,6 +219,22 @@ if (is_array($cols)) {
   }	
 }
 
+
+$cols = false;
+/* Get the venues table columns */
+$q = "SHOW COLUMNS FROM #__redevent_venues";
+$db->setQuery($q);
+$cols = $db->loadObjectList('Field');
+
+if (is_array($cols)) {
+  /* Check if we have the latitude / longitude columns */
+  if (!array_key_exists('latitude', $cols)) {
+    $q = "ALTER IGNORE TABLE #__redevent_venues ADD COLUMN `latitude` float default NULL after `country`, ADD COLUMN `longitude` float default NULL after `latitude`";
+    $db->setQuery($q);
+    $db->query();
+  }
+}
+
 /* Get the current columns */
 $cols = false;
 $q = "SHOW COLUMNS FROM #__redevent_settings";

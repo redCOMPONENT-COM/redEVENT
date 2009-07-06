@@ -1,24 +1,22 @@
 /**
- * @version 1.0 $Id$
+ * @version 1.1 $Id$
  * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @subpackage EventList
+ * @copyright (C) 2005 - 2008 Christoph Lukes
  * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
+ * EventList is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License 2
  * as published by the Free Software Foundation.
 
- * redEVENT is distributed in the hope that it will be useful,
+ * EventList is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
+ * along with EventList; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
+
  * This code is based on GMapsOverlay v1.0
  * by André Fiedler (http://www.visualdrugs.net) - GNU license.
  * modified for EventList by Christoph Lukes (http://www.schlu.net)
@@ -28,6 +26,8 @@
 var GMapsOverlay = {
 
 	init: function(options){
+	
+	  this.marker = null;
 
 		this.options = Object.extend({
 
@@ -115,6 +115,8 @@ var GMapsOverlay = {
 	},
 
 	click: function(link){
+	
+    this.linkobject = link;
 
 		return this.show(link.href);
 
@@ -123,7 +125,7 @@ var GMapsOverlay = {
 	show: function(link){
 
 		this.link = link;
-
+		
 		this.position();
 
 		this.setup(true);
@@ -184,9 +186,20 @@ var GMapsOverlay = {
 		var venuestring	= decodeURI(this.link.substring(this.link.indexOf('venue=')));
 
 		var addressclean = addressstring.substr(0, ((addressstring.length)-(venuestring.length+1)) )
+		
+		this.address = addressclean;
+    this.venue = venuestring.substr(6); 
 
-		this.showAddress(addressclean);
-
+    var latitude = $(this.linkobject).getProperty('latitude');
+    var longitude= $(this.linkobject).getProperty('longitude');
+    
+    if (latitude != 0 && longitude != 0 && latitude != "" && longitude != "") {
+      venuepos = new GLatLng(latitude, longitude);
+      this.showPoint(venuepos, this.address);
+    }
+    else {
+		  this.showAddress(addressclean);
+		}
 		this.nextEffect();
 
 		return false;
@@ -200,9 +213,14 @@ var GMapsOverlay = {
 			case 1:
 
 			this.center.className = '';
+			
+			var link = 'http://maps.google.com/maps?q='+encodeURI(this.address)+'('+encodeURI(this.venue)+')';
+			if (this.marker){		
+			  link += '@'+ this.marker.getLatLng().lat() + ','  + this.marker.getLatLng().lng();
+			}
 
-			this.caption.setHTML("<a href=\""+this.link+"\" target=\"_blank\">Google-Maps</a>");
-
+			this.caption.setHTML("<a href=\""+link+"\" target=\"_blank\">"+sGetDirections+"</a>");
+			
 			if (this.center.clientHeight != this.maplayer.offsetHeight){
 
 				this.fx.resize.start({height: this.maplayer.offsetHeight, width: this.maplayer.offsetWidth, marginLeft: -this.maplayer.offsetWidth/2});
@@ -294,17 +312,27 @@ var GMapsOverlay = {
 
 				this.map.addOverlay(marker);
 
-				//get data from json
+				/*get data from json
+				* removed cause of sometimes (happens us based addresses) undefined SubAdministrativeArea
+				*
 				var streetAddress = place.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality.Thoroughfare.ThoroughfareName;
 				var city = place.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.SubAdministrativeAreaName;
 				var zip = place.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality.PostalCode.PostalCodeNumber;
 				var state = place.AddressDetails.Country.AdministrativeArea.AdministrativeAreaName;
 				var country = place.AddressDetails.Country.CountryNameCode;
+				
+				*/
 				//get venue param
 				var venue = decodeURI(this.link.substring(this.link.indexOf('venue=')+6));
 
 				//html window
-				marker.openInfoWindowHtml('<strong>' + venue + '</strong><br />' + streetAddress + '<br />' + country + '-' + zip + ' ' + city + '<br />' + state);
+		//		marker.openInfoWindowHtml('<strong>' + venue + '</strong><br />' + streetAddress + '<br />' + country + '-' + zip + ' ' + city + '<br />' + state);
+				
+				var daddress = place.address;
+				
+				marker.openInfoWindowHtml('<strong>' + venue + '</strong><br />' + daddress);
+				
+				this.marker = marker;
 
 			}
 
@@ -320,7 +348,49 @@ var GMapsOverlay = {
 
 		}.bind(this));
 
-	}
+	},
+	
+	showPoint: function(target, address){
+    
+      if(target){
+
+        //set center
+        this.map.setCenter(target, 15);
+
+        //scroll == zoom
+        this.map.enableScrollWheelZoom();
+
+        //zoom only when mous in map area
+        GEvent.addDomListener(this.map.getContainer(), "DOMMouseScroll",
+        function(oEvent) { if (oEvent.preventDefault)
+        oEvent.preventDefault(); });
+
+        //set marker
+        var marker = new GMarker(target);
+
+        this.map.addOverlay(marker);
+
+        /*get data from json
+        * removed cause of sometimes (happens us based addresses) undefined SubAdministrativeArea
+        *
+        var streetAddress = place.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality.Thoroughfare.ThoroughfareName;
+        var city = place.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.SubAdministrativeAreaName;
+        var zip = place.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality.PostalCode.PostalCodeNumber;
+        var state = place.AddressDetails.Country.AdministrativeArea.AdministrativeAreaName;
+        var country = place.AddressDetails.Country.CountryNameCode;
+        
+        */
+        //get venue param
+        var venue = decodeURI(this.link.substring(this.link.indexOf('venue=')+6));
+
+        //html window
+    //    marker.openInfoWindowHtml('<strong>' + venue + '</strong><br />' + streetAddress + '<br />' + country + '-' + zip + ' ' + city + '<br />' + state);
+                
+        marker.openInfoWindowHtml('<strong>' + venue + '</strong><br />' + address);
+        
+        this.marker = marker;
+      }
+  }
 };
 
 window.addEvent('domready', GMapsOverlay.init.bind(GMapsOverlay));

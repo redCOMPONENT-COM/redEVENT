@@ -54,6 +54,13 @@ defined('_JEXEC') or die('Restricted access');
 			submitform( task );
 		}
 	}
+	
+    var sApply = "<?php echo JText::_('APPLY'); ?>";
+    var sClose = "<?php echo JText::_('CLOSE'); ?>";
+    var sMove = "<?php echo JText::_('MOVEMARKERHERE'); ?>";
+    var sLatitude = "<?php echo JText::_('LATITUDE'); ?>";
+    var sLongitude = "<?php echo JText::_('LONGITUDE'); ?>";
+    var sTitle = "<?php echo JText::_('PINPOINTTITLE'); ?>";
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -196,25 +203,58 @@ defined('_JEXEC') or die('Restricted access');
 				</span>
 			</td>
 		</tr>
-		<?php if ( $this->settings->showmapserv != 0 ) { ?>
-		<tr>
-			<td>
-				<label for="map">
-					<?php echo JText::_( 'ENABLE MAP' ).':'; ?>
-				</label>
-			</td>
-			<td>
-				<?php
-          			echo JHTML::_('select.booleanlist', 'map', 'class="inputbox"', $this->row->map );
-          		?>
-          		&nbsp;
-          		<span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('ADDRESS NOTICE'); ?>">
-					<?php echo $infoimage; ?>
-				</span>
-			</td>
-		</tr>
+  </table>
+  <?php if ( $this->settings->showmapserv != 0 ) { ?>
+  <div id="setmap">
+  <table>
+    <tr>
+      <td>
+        <label for="map">
+          <?php echo JText::_( 'ENABLE MAP' ).':'; ?>
+        </label>
+      </td>
+      <td>
+        <?php
+                echo JHTML::_('select.booleanlist', 'map', 'class="inputbox"', $this->row->map );
+              ?>
+              &nbsp;
+              <span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('ADDRESS NOTICE'); ?>">
+          <?php echo $infoimage; ?>
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label for="latitude">
+          <?php echo JText::_( 'LATITUDE' ).':'; ?>
+        </label>
+      </td>
+      <td>
+        <input class="inputbox" name="latitude" id="latitude" value="<?php echo $this->row->latitude; ?>" size="14" maxlength="25" />
+              <span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('LATITUDE HINT'); ?>">
+          <?php echo $infoimage; ?>
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label for="longitude">
+          <?php echo JText::_( 'LONGITUDE' ).':'; ?>
+        </label>
+      </td>
+      <td>
+        <input class="inputbox" name="longitude" id="longitude" value="<?php echo $this->row->longitude; ?>" size="14" maxlength="25" />
+              <span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('LONGITUDE HINT'); ?>">
+          <?php echo $infoimage; ?>
+        </span>
+      </td>
+    </tr>
+  </table>
+  <div id="pinpointicon">
+    <?php echo $this->pinpointicon; ?>
+  </div>
+  </div>
 		<?php } ?>
-	</table>
 	<?php
 	echo $this->pane->endPanel();
 	$title = JText::_( 'IMAGE' );
