@@ -229,9 +229,12 @@ else {
     if (strtolower($task) == 'confirm') {
       $title[] = 'confirm';
       $title[] = $confirmid;
+      shRemoveFromGETVarsList('confirmid');
+    }
+    else {
+      $title[] = $task;    	
     }
     shRemoveFromGETVarsList('task');
-    shRemoveFromGETVarsList('confirmid');
   }
 
   if (isset($tpl)) {
