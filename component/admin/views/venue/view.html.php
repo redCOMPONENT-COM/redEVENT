@@ -128,6 +128,12 @@ class RedEventViewVenue extends JView {
     }
     $lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('Categories'), 'categories[]', 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $selected); 
         
+    $countries = array();
+    $countries[] = JHTML::_('select.option', '', JText::_('Select country'));
+    $countries = array_merge($countries, redEVENTHelper::getCountryOptions());
+    $lists['countries'] = JHTML::_('select.genericlist', $countries, 'country', 'class="inputbox"', 'value', 'text', $row->country );
+    unset($countries);    
+    
     $pinpointicon = ELOutput::pinpointicon( $row );
     
 		//assign data to template

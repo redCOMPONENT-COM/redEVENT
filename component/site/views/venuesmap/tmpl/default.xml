@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Venues map Layout">
+		<message>
+			<![CDATA[VENUESMAP LAYOUT DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>VENUESMAP LAYOUT</name>
+		<description>VENUESMAP LAYOUT DESC</description>
+	</state>
+</metadata>

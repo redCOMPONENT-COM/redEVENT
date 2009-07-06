@@ -464,6 +464,26 @@ class ELOutput {
         return null;
 	}
 	
+  /**
+   * Creates the country flag
+   *
+   * @param string $country
+   *
+   * @since 0.9
+   */
+  function getFlagUrl($country)
+  {
+        $country = JString::strtolower($country);
+
+        jimport('joomla.filesystem.file');
+
+        if (JFile::exists(JPATH_COMPONENT_SITE.DS.'assets'.DS.'images'.DS.'flags'.DS.$country.'.gif')) {
+          return JURI::base(true).'/components/com_redevent/assets/images/flags/'.$country.'.gif';
+        }
+
+        return null;
+  }
+	
 	/**
 	 * Formats date
 	 *

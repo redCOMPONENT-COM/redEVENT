@@ -182,7 +182,7 @@ defined('_JEXEC') or die('Restricted access');
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" name="country" id="country" value="<?php echo $this->row->country; ?>" size="3" maxlength="2" />&nbsp;
+				<?php echo $this->lists['countries']; ?>
 
 				<span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('COUNTRY HINT'); ?>">
 					<?php echo $infoimage; ?>

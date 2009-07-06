@@ -374,5 +374,19 @@ class redEVENTHelper {
 			return floor($duration / 3600) . JText::_('LOC_H') . sprintf('%02d', floor(($duration % 3600) / 60));
 		}
 	}
+	
+
+  /**
+   * return country options from the database
+   *
+   * @return unknown
+   */
+  function getCountryOptions()
+  {
+    $db   = & JFactory::getDBO();
+    $sql  = 'SELECT iso2 AS value, name AS text FROM #__redevent_countries ORDER BY name';
+    $db->setQuery($sql);
+    return $db->loadObjectList();
+  }
 }
 ?>
