@@ -73,6 +73,7 @@ class RedeventViewVenuesmap extends JView
     
     // filters
     $vcats = $mainframe->getUserStateFromRequest('com_redevent.venuemap.vcats', 'vcats', $params->def('vcats', 0), 'int');
+    $cats = $mainframe->getUserStateFromRequest('com_redevent.venuemap.cats', 'cats', $params->def('cats', 0), 'int');
 
 		$rows 		= & $this->get('Data');
 				
@@ -104,6 +105,11 @@ class RedeventViewVenuesmap extends JView
     $vcat_options = redEVENTHelper::getVenuesCatOptions();
     array_unshift($vcat_options, JHTML::_('select.option', 0, JText::_('ALL')));
     $lists['venuescats'] = JHTML::_('select.genericlist', $vcat_options, 'vcats', '', 'value', 'text', $vcats);
+    
+    // events categories
+    $cat_options = redEVENTHelper::getEventsCatOptions();
+    array_unshift($cat_options, JHTML::_('select.option', 0, JText::_('ALL')));
+    $lists['eventscats'] = JHTML::_('select.genericlist', $cat_options, 'cats', '', 'value', 'text', $cats);
     
 		//Set Page title
 		$mainframe->setPageTitle( $pagetitle );

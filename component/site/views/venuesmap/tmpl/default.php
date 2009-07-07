@@ -48,6 +48,9 @@ window.addEvent('domready', function() {
 	$('vcats').addEvent('change', function() {
 	  $('filterform').submit();
 	});
+  $('cats').addEvent('change', function() {
+    $('filterform').submit();
+  });
 });
 -->
 </script>
@@ -65,6 +68,9 @@ window.addEvent('domready', function() {
     <div class="el_fleft">
       <label for="filter_type"><?php echo JText::_('FILTER VENUES CATEGORY'); ?></label>
       <?php echo $this->lists['venuescats']; ?>
+      <br/>
+      <label for="filter_type"><?php echo JText::_('FILTER EVENTS CATEGORY'); ?></label>
+      <?php echo $this->lists['eventscats']; ?>
     </div>
     <?php endif; ?>
 </div>

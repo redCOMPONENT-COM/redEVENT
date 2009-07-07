@@ -141,6 +141,7 @@ class RedEventModelVenuesmap extends JModel
 	{
 		$app = & JFactory::getApplication();
     $vcat = $app->getUserState('com_redevent.venuemap.vcats');
+    $cat = $app->getUserState('com_redevent.venuemap.cats');
         
 		//check archive task
 		$task 	= JRequest::getVar('task', '', '', 'string');
@@ -156,7 +157,14 @@ class RedEventModelVenuesmap extends JModel
 						. ' FROM #__redevent_venues as v'
 						. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.venueid = v.id'
 						;
-
+	
+    if ($cat)
+    {
+      $query .= ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = v.id '
+              . ' INNER JOIN #__redevent_categories AS cat ON cat.id = xcat.category_id '
+              . ' INNER JOIN #__redevent_categories AS topcat ON cat.lft BETWEEN topcat.lft AND topcat.rgt '
+              ;
+    }
 		if ($vcat)
 		{
 			$query .= ' INNER JOIN #__redevent_venue_category_xref AS xvcat ON xvcat.venue_id = v.id '
@@ -169,6 +177,10 @@ class RedEventModelVenuesmap extends JModel
 		$query .= ' WHERE v.published = 1 '
 				. $eventstate
 				;
+    if ($cat)
+    {
+      $query .= ' AND topcat.id = ' . $this->_db->Quote($cat);
+    }   
 	  if ($vcat)
     {
       $query .= ' AND top.id = ' . $this->_db->Quote($vcat);

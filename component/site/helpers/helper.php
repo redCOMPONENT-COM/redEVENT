@@ -389,6 +389,34 @@ class redEVENTHelper {
     return $db->loadObjectList();
   }
   
+
+  /**
+   * returns indented event category options
+   *
+   * @return array
+   */
+  function getEventsCatOptions() 
+  {
+    $db   = & JFactory::getDBO();
+    $query =  ' SELECT c.id, c.catname, (COUNT(parent.catname) - 1) AS depth '
+            . ' FROM #__redevent_categories AS c, '
+            . ' #__redevent_categories AS parent '
+            . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
+            . ' GROUP BY c.id '
+            . ' ORDER BY c.lft;'
+            ;
+    $db->setQuery($query);
+
+    $results = $db->loadObjectList();
+
+    $options = array();
+    foreach((array) $results as $cat)
+    {
+      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->catname);
+    }
+    return $options;
+  }
+  
   /**
    * returns indented venues category options
    *
