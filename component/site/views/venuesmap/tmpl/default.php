@@ -36,7 +36,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 var venueurl = '<?php echo JRoute::_('index.php?option=com_redevent&view=venue&format=raw', false); ?>';
 var countries = new Array;
 <?php foreach ((array) $this->countries AS $row) : ?>
-countries.push({'name':'<?php echo addslashes($row->name); ?>','lat':'<?php echo $row->latitude; ?>','lng':'<?php echo $row->longitude; ?>','flag':'<?php echo $row->flagurl; ?>','targetlink':'<?php echo $row->targetlink; ?>','assignedevents':'<?php echo $row->assignedevents; ?>'});
+countries.push({'name':'<?php echo addslashes($row->name); ?>','lat':'<?php echo $row->latitude; ?>','lng':'<?php echo $row->longitude; ?>','flag':'<?php echo $row->flagurl; ?>'});
 <?php endforeach; ?>
 
 var venues = new Array;

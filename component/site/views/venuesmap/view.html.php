@@ -40,7 +40,7 @@ class RedeventViewVenuesmap extends JView
 	 */
 	function display( $tpl = null )
 	{
-		global $mainframe;
+		$mainframe = & JFactory::getApplication();
 
 		$document 	= & JFactory::getDocument();
 		$elsettings = & redEVENTHelper::config();
@@ -72,12 +72,13 @@ class RedeventViewVenuesmap extends JView
     $document->addScript($this->baseurl.'/components/com_redevent/assets/js/labeled_marker.js');
     
     // filters
-    $vcats = $mainframe->getUserStateFromRequest('com_redevent.vcats', 'vcats', $params->def('vcats', 0), 'int');
+    $vcats = $mainframe->getUserStateFromRequest('com_redevent.venuemap.vcats', 'vcats', $params->def('vcats', 0), 'int');
 
 		$rows 		= & $this->get('Data');
 				
-    $cmodel = &JModel::getInstance('countriesmap', 'RedeventModel');
-    $countries = $cmodel->getData();
+//    $cmodel = &JModel::getInstance('countriesmap', 'RedeventModel');
+//    $countries = $cmodel->getData();
+    $countries = $this->get('Countries');
 
 		//Add needed scripts if the lightbox effect is enabled
 		if ($elsettings->lightbox == 1) {

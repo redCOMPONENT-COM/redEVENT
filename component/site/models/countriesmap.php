@@ -73,7 +73,6 @@ class RedeventModelCountriesmap extends JModel
 			
       // Get a reference to the global cache object.
       $cache = & JFactory::getCache('redevent');
-      $cache->setCaching( 0 );
       
 			$this->_data = $cache->call( array( 'RedeventModelCountriesmap', '_getResultList' ), $query );
       

@@ -77,7 +77,11 @@ class RedEventModelVenuesmap extends JModel
 		if (empty($this->_data))
 		{
 			$query = $this->_buildQuery();
-			$this->_data = $this->_getList($query);
+			
+      // Get a reference to the global cache object.
+      $cache = & JFactory::getCache('redevent');
+      
+      $this->_data = $cache->call( array( 'RedeventModelVenuesmap', '_getResultList' ), $query );
 
 			$k = 0;
 			for($i = 0; $i <  count($this->_data); $i++)
@@ -126,7 +130,7 @@ class RedEventModelVenuesmap extends JModel
 
 		return $this->_data;
 	}
-
+	
 	/**
 	 * Build the query
 	 *
@@ -135,6 +139,9 @@ class RedEventModelVenuesmap extends JModel
 	 */
 	function _buildQuery()
 	{
+		$app = & JFactory::getApplication();
+    $vcat = $app->getUserState('com_redevent.venuemap.vcats');
+        
 		//check archive task
 		$task 	= JRequest::getVar('task', '', '', 'string');
 		if($task == 'archive') {
@@ -145,16 +152,81 @@ class RedEventModelVenuesmap extends JModel
 		
 		//get events
 		$query = 'SELECT v.*, COUNT( x.id ) AS assignedevents,'
-				. ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as slug'
-				. ' FROM #__redevent_venues as v'
-				. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.venueid = v.id'
-				. ' WHERE v.published = 1 '
+						. ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as slug'
+						. ' FROM #__redevent_venues as v'
+						. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.venueid = v.id'
+						;
+
+		if ($vcat)
+		{
+			$query .= ' INNER JOIN #__redevent_venue_category_xref AS xvcat ON xvcat.venue_id = v.id '
+              . ' INNER JOIN #__redevent_venues_categories AS vcat ON vcat.id = xvcat.category_id '
+							. ' INNER JOIN #__redevent_venues_categories AS top ON vcat.lft BETWEEN top.lft AND top.rgt '
+							;
+		}
+	  
+		// where
+		$query .= ' WHERE v.published = 1 '
 				. $eventstate
-				. ' GROUP BY v.id'
-				. ' ORDER BY v.venue'
 				;
+	  if ($vcat)
+    {
+      $query .= ' AND top.id = ' . $this->_db->Quote($vcat);
+    }		
+    
+		$query .= ' GROUP BY v.id'
+						. ' ORDER BY v.venue'
+						;
 
 		return $query;
+	}
+	
+  /**
+   * used by the caching function
+   *
+   * @param string $query
+   * @return array
+   */
+  function _getResultList($query)
+  {
+    $db = & JFactory::getDBO();
+    
+    $db->setQuery($query);
+
+    return ($db->loadObjectList());
+  }
+	
+	function getCountries()
+	{
+		$venues = $this->getData();
+		$countries = array();
+		foreach ((array)$venues AS $v)
+		{
+			if (!in_array($v->country, $countries)) {
+				$countries[] = $this->_db->Quote($v->country);
+			}
+		}
+		if (!count($countries)) {
+			return array();
+		}
+		
+		$query = ' SELECT * FROM #__redevent_countries WHERE iso2 IN (' . implode(', ', $countries) . ') ';
+		$this->_db->setQuery($query);
+		$rows = $this->_db->loadObjectList();
+		
+		
+	  $countrycoords = redEVENTHelper::getCountrycoordArray();
+      
+	  for($i = 0; $i <  count($rows); $i++)
+	  {
+	  	$country =& $rows[$i];
+
+	  	$country->flag = ELOutput::getFlag( $country->iso2 );
+	  	$country->flagurl = ELOutput::getFlagUrl( $country->iso2 );
+	  	$country->latitude = $countrycoords[$country->iso2][0];
+	  	$country->longitude = $countrycoords[$country->iso2][1];
+	  }
+		return $rows;
 	}
 }
 ?>

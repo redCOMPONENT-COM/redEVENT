@@ -89,8 +89,6 @@ function initialize() {
         opts = {
           "icon": icon,
           "clickable": true,
-          "labelText": element.assignedevents,
-          "labelOffset": new GSize(-6, -7)
         };
         var marker = new LabeledMarker(target, opts);
         GEvent.addListener(marker, 'click', function(aa, latlng){
