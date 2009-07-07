@@ -69,7 +69,6 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues` (
 `city` varchar(50) default NULL,
 `state` varchar(50) default NULL,
 `country` varchar(2) default NULL,
-`country` varchar(2) default NULL,
 `latitude` float default NULL,
 `longitude` float default NULL,
 `locdescription` mediumtext NOT NULL,
