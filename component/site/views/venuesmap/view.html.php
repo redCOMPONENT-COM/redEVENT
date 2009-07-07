@@ -44,6 +44,7 @@ class RedeventViewVenuesmap extends JView
 
 		$document 	= & JFactory::getDocument();
 		$elsettings = & redEVENTHelper::config();
+    $uri        = & JFactory::getURI();
 
 		//get menu information
 		$menu		= & JSite::getMenu();
@@ -69,6 +70,9 @@ class RedeventViewVenuesmap extends JView
     $document->addScript($this->baseurl.'/components/com_redevent/assets/js/venuesmap.js');
     $document->addScript($this->baseurl.'/components/com_redevent/assets/js/markermanager.js');
     $document->addScript($this->baseurl.'/components/com_redevent/assets/js/labeled_marker.js');
+    
+    // filters
+    $vcats = $mainframe->getUserStateFromRequest('com_redevent.vcats', 'vcats', $params->def('vcats', 0), 'int');
 
 		$rows 		= & $this->get('Data');
 				
@@ -93,6 +97,13 @@ class RedeventViewVenuesmap extends JView
       $print_link = JRoute::_('index.php?view=venues&pop=1&tmpl=component');
     }
     
+    $lists = array();
+    
+    // venues categories
+    $vcat_options = redEVENTHelper::getVenuesCatOptions();
+    array_unshift($vcat_options, JHTML::_('select.option', 0, JText::_('ALL')));
+    $lists['venuescats'] = JHTML::_('select.genericlist', $vcat_options, 'vcats', '', 'value', 'text', $vcats);
+    
 		//Set Page title
 		$mainframe->setPageTitle( $pagetitle );
    	$mainframe->addMetaTag( 'title' , $pagetitle );
@@ -105,8 +116,10 @@ class RedeventViewVenuesmap extends JView
 		$this->assignRef('elsettings' , 			$elsettings);
 		$this->assignRef('task' , 					$task);
 		$this->assignRef('pagetitle' , 				$pagetitle);
+    $this->assignRef('lists' ,        $lists);
+    $this->assign('action',           $uri->toString());
 
-		parent::display('js');
+		parent::display($tpl);
 	}
 }
 ?>

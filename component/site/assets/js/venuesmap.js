@@ -102,7 +102,7 @@ function initialize() {
     }.bind(map));
 
     
-    mgr.addMarkers(countrymarkers, 0 , 3);
+    mgr.addMarkers(countrymarkers, 0 , 5);
     mgr.addMarkers(markers, 4);
     
     // optimal zoom

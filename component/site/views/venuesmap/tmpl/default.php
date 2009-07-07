@@ -23,90 +23,55 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 
-<div id="eventlist" class="jlmap">
+<div id="redevent" class="jlmap">
+  <div id="goback"><a href="javascript:history.back()"><?php echo JText::_('Back'); ?></a></div>
   <h1 class="componentheading">
-    <?php echo JText::_('100 Hours of Astronomy Event Locations'); ?>
+    <?php echo JText::_('Locations'); ?>
   </h1>
 
 <?php if ($this->elsettings->gmapkey): ?>
 
-<div id="gmap" style="height: 500px"></div>
+<script type="text/javascript">
+<!--
+var venueurl = '<?php echo JRoute::_('index.php?option=com_redevent&view=venue&format=raw', false); ?>';
+var countries = new Array;
+<?php foreach ((array) $this->countries AS $row) : ?>
+countries.push({'name':'<?php echo addslashes($row->name); ?>','lat':'<?php echo $row->latitude; ?>','lng':'<?php echo $row->longitude; ?>','flag':'<?php echo $row->flagurl; ?>','targetlink':'<?php echo $row->targetlink; ?>','assignedevents':'<?php echo $row->assignedevents; ?>'});
+<?php endforeach; ?>
 
-<?php foreach ($this->rows AS $row): ?>
-<div class="venue" latitude="<?php echo $row->latitude; ?>" longitude="<?php echo $row->longitude; ?>">
-  <div class="address">
-  <h2 class="eventlist">
-      <a href="<?php echo $row->targetlink; ?>"><?php echo $this->escape($row->venue); ?></a>
-    </h2>
+var venues = new Array;
+<?php foreach ($this->rows AS $row) : ?>
+venues.push({'id':'<?php echo $row->id; ?>','name':'<?php echo addslashes($row->venue); ?>','lat':'<?php echo $row->latitude; ?>','lng':'<?php echo $row->longitude; ?>'});
+<?php endforeach; ?>
 
-      <?php
-        echo ELOutput::flyer( $row, $row->limage );
-      ?>
+window.addEvent('domready', function() {
+	$('vcats').addEvent('change', function() {
+	  $('filterform').submit();
+	});
+});
+-->
+</script>
 
-      <dl class="location floattext">
-        <?php if (($this->elsettings->showdetlinkvenue == 1) && (!empty($row->url))) : ?>
-        <dt class="venue_website"><?php echo JText::_( 'WEBSITE' ).':'; ?></dt>
-          <dd class="venue_website">
-          <a href="<?php echo $row->url; ?>" target="_blank"> <?php echo $row->urlclean; ?></a>
-        </dd>
-        <?php endif; ?>
+<?php if ($this->params->get('showintrotext')) : ?>
+  <div class="description no_space floattext">
+    <?php echo $this->params->get('introtext'); ?>
+  </div>
+<?php endif; ?>
 
-        <?php
-          if ( $this->elsettings->showdetailsadress == 1 ) :
-          ?>
-
-          <?php if ( $row->street ) : ?>
-          <dt class="venue_street"><?php echo JText::_( 'STREET' ).':'; ?></dt>
-        <dd class="venue_street">
-            <?php echo $this->escape($row->street); ?>
-        </dd>
-        <?php endif; ?>
-
-        <?php if ( $row->plz ) : ?>
-          <dt class="venue_plz"><?php echo JText::_( 'ZIP' ).':'; ?></dt>
-        <dd class="venue_plz">
-            <?php echo $this->escape($row->plz); ?>
-        </dd>
-        <?php endif; ?>
-
-        <?php if ( $row->city ) : ?>
-          <dt class="venue_city"><?php echo JText::_( 'CITY' ).':'; ?></dt>
-          <dd class="venue_city">
-            <?php echo $this->escape($row->city); ?>
-          </dd>
-          <?php endif; ?>
-
-          <?php if ( $row->state ) : ?>
-        <dt class="venue_state"><?php echo JText::_( 'STATE' ).':'; ?></dt>
-        <dd class="venue_state">
-            <?php echo $this->escape($row->state); ?>
-        </dd>
-        <?php endif; ?>
-
-        <?php if ( $row->country ) : ?>
-        <dt class="venue_country"><?php echo JText::_( 'COUNTRY' ).':'; ?></dt>
-          <dd class="venue_country">
-            <?php echo $row->countryimg ? $row->countryimg : $row->country; ?>
-          </dd>
-          <?php endif; ?>
-
-          <dt class="venue_assignedevents"><?php echo JText::_( 'EVENTS' ).':'; ?></dt>
-          <dd class="venue_assignedevents">
-            <a href="<?php echo $row->targetlink; ?>"><?php echo $row->assignedevents; ?></a>
-          </dd>
-      <?php
-      endif;
-      ?>
-
-    </dl>
-    </div>
-    <?php if ($this->elsettings->showlocdescription == 1) : ?>
-    <div class="description">
-      <h2 class="description"><?php echo JText::_( 'DESCRIPTION' ).':'; ?></h2>
-        <?php echo $row->locdescription; ?>
+<?php if ($this->params->get('filter')) : ?>
+<form action="<?php echo $this->action; ?>" method="post" id="filterform">
+<div id="red_filter" class="floattext">
+    <?php if ($this->params->get('filter')) : ?>
+    <div class="el_fleft">
+      <label for="filter_type"><?php echo JText::_('FILTER VENUES CATEGORY'); ?></label>
+      <?php echo $this->lists['venuescats']; ?>
     </div>
     <?php endif; ?>
 </div>
-<?php endforeach; ?>
+</form>
+<?php endif; ?>
+
+
+<div id="gmap" style="height: 500px"></div>
 <?php endif; ?>
 </div>

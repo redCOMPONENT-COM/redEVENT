@@ -35,6 +35,19 @@ $row = & $this->row;
       <?php endif; ?>
 
       <dl class="location floattext">
+        <?php if (count($row->categories)): ?>
+        <dt class="venue_categories"><?php echo (count($row->categories) > 1 ? JText::_( 'CATEGORIES' ) : JText::_( 'CATEGORY' )) .':'; ?></dt>
+          <dd class="venue_categories">
+          <?php
+          $cats = array(); 
+          foreach ($row->categories as $cat) {
+          	$cats[] = $cat->name;
+          }
+          echo implode(', ', $cats);
+          ?>
+          </dd>
+        <?php endif; ?>
+        
         <?php if (($this->elsettings->showdetlinkvenue == 1) && (!empty($row->url))) : ?>
         <dt class="venue_website"><?php echo JText::_( 'WEBSITE' ).':'; ?></dt>
           <dd class="venue_website">
