@@ -353,7 +353,7 @@ class RedEventModelVenuesCategory extends JModel
 			foreach ($cattree[$catfilter] as $subcatid => $category) {
 				$this->html .= '<option value="'.$category['cid'].'"';
 				if ($this->_data->parent_id == $category['cid']) $this->html .= 'selected="selected"';
-				$this->html .= '>'.str_repeat('>', $loop).' '.$category['catname'].'</option>';
+				$this->html .= '>'.str_repeat('>', $loop).' '.$category['name'].'</option>';
 				$subcats = $this->buildCategory($cattree, $subcatid, $subcats, $loop+1);
 			}
 		}
