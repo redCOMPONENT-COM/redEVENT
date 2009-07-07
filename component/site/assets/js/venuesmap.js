@@ -48,7 +48,10 @@ function initialize() {
         oEvent.preventDefault(); }
     );
     
+    // get marker manager
     var mgr = new MarkerManager(map);
+    // get bound object to calculate best fit later
+    var bounds = new GLatLngBounds();
     
     var markers = [];
     // add marker for each location
@@ -56,7 +59,10 @@ function initialize() {
       if (venue.lat !=0 && venue.lng !=0) {
 
         // create marker
-        var marker = new GMarker(new GLatLng(venue.lat, venue.lng), {'title':venue.venue});
+        var point = new GLatLng(venue.lat, venue.lng)
+        var marker = new GMarker(point, {'title':venue.venue});
+        // add the point to the bounds
+        bounds.extend(point);
         
         GEvent.addListener(marker, 'click', function(latlng){
 	          GDownloadUrl(venueurl + '&id=' + this.venue.id, popvenueinfo.bind(this.marker));
@@ -98,6 +104,11 @@ function initialize() {
     
     mgr.addMarkers(countrymarkers, 0 , 3);
     mgr.addMarkers(markers, 4);
+    
+    // optimal zoom
+    map.setZoom(map.getBoundsZoomLevel(bounds));
+    map.setCenter(bounds.getCenter());
+    
     mgr.refresh();
     
 	}

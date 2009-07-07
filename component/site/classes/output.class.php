@@ -365,7 +365,7 @@ class ELOutput {
           $document   = & JFactory::getDocument();
           JHTML::_('behavior.mootools');
           
-          $document->addScript('http://maps.google.com/maps?file=api&amp;v=2&sensor=true&amp;key='.trim($settings->gmapkey));
+          $document->addScript('http://maps.google.com/maps?file=api&amp;v=2&sensor=false&amp;key='.trim($settings->gmapkey));
           $document->addScript($url.'/components/com_redevent/assets/js/gmapspinpoint.js');
           $document->addStyleSheet($url.'/components/com_redevent/assets/css/gmapsoverlay.css', 'text/css');
           $output   = $mapimage;
