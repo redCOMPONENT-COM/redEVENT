@@ -69,6 +69,7 @@ class ELAdmin {
     JSubMenuHelper::addEntry( JText::_( 'ARCHIVESCREEN' ), 'index.php?option=com_redevent&view=archive', $view == 'archive');
     JSubMenuHelper::addEntry( JText::_( 'GROUPS' ), 'index.php?option=com_redevent&view=groups', $view == 'groups');
     JSubMenuHelper::addEntry( JText::_( 'TEXT_LIBRARY' ), 'index.php?option=com_redevent&view=textlibrary', $view == 'textlibrary');
+    JSubMenuHelper::addEntry( JText::_( 'CUSTOM FIELDS' ), 'index.php?option=com_redevent&view=customfields', $view == 'customfields');
     JSubMenuHelper::addEntry( JText::_( 'HELP' ), 'index.php?option=com_redevent&view=help', $view == 'help');
     JSubMenuHelper::addEntry( JText::_( 'LOG' ), 'index.php?option=com_redevent&view=log', $view == 'log');
     if ($user->get('gid') > 24) {
