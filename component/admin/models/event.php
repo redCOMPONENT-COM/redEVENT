@@ -417,6 +417,43 @@ class RedEventModelEvent extends JModel
 	      return false;     
 	    }		  
 		}  
+	    // custom fields
+    // first delete records for this object
+    $query = ' DELETE fv FROM #__redevent_fields_values as fv '
+           . ' INNER JOIN #__redevent_fields as f ON f.id = fv.field_id '
+           . ' WHERE fv.object_id = ' . $this->_db->Quote($row->id)
+           . '   AND f.object_key = ' . $this->_db->Quote('redevent.event')
+           ;
+    $this->_db->setQuery($query);
+    if (!$this->_db->query()) {
+      $this->setError($this->_db->getErrorMsg());
+      return false;     
+    }
+    
+    // input new values
+    foreach ($data as $key => $value)
+    {
+      if (strstr($key, "custom"))
+      {
+        $fieldid = (int) substr($key, 6);
+        $field = & $this->getTable('Redevent_customfieldvalue','');
+        $field->object_id = $row->id;
+        $field->field_id = $fieldid;
+        if (is_array($value)) {
+          $value = implode("\n", $value);
+        }
+        $field->value = $value;
+        
+        if (!$field->check()) {
+          $this->setError($field->getError());
+          return false;         
+        }
+        if (!$field->store()) {
+          $this->setError($field->getError());
+          return false;         
+        }       
+      }
+    }
     
 		return $row->id;
 	}
@@ -492,5 +529,35 @@ class RedEventModelEvent extends JModel
 		}
 		return $ardatetimes;
 	}
+	
+
+  /**
+   * get custom fields
+   *
+   * @return objects array
+   */
+  function getCustomfields()
+  {
+    $query = ' SELECT f.*, fv.value '
+           . ' FROM #__redevent_fields AS f '
+           . ' LEFT JOIN #__redevent_fields_values AS fv ON fv.field_id = f.id AND fv.object_id = '.(int) $this->_id
+           . ' WHERE f.object_key = '. $this->_db->Quote("redevent.event")
+           . ' ORDER BY f.ordering '
+           ;
+    $this->_db->setQuery($query);
+    $result = $this->_db->loadObjectList();    
+  
+    if (!$result) {
+      return array();
+    }
+    $fields = array();
+    foreach ($result as $c)
+    {
+      $field =& redEVENTHelper::getCustomField($c->type);
+      $field->bind($c);
+      $fields[] = $field;
+    }
+    return $fields;     
+  }
 }
 ?>

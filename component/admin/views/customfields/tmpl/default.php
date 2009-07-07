@@ -53,6 +53,9 @@ JHTML::_('behavior.tooltip');
 			<th class="title">
 				<?php echo JHTML::_('grid.sort',  'Name', 'obj.name', $this->lists['order_Dir'], $this->lists['order'] ); ?>
 			</th>
+      <th class="title">
+        <?php echo JHTML::_('grid.sort',  'Tag', 'obj.tag', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+      </th>
 			<th class="title">
 				<?php echo JHTML::_('grid.sort',  'Assigned', 'obj.object', $this->lists['order_Dir'], $this->lists['order'] ); ?>
 			</th>
@@ -72,7 +75,7 @@ JHTML::_('behavior.tooltip');
 	</thead>
 	<tfoot>
 		<tr>
-			<td colspan="8">
+			<td colspan="9">
 				<?php echo $this->pagination->getListFooter(); ?>
 			</td>
 		</tr>
@@ -109,6 +112,11 @@ JHTML::_('behavior.tooltip');
 				}
 				?>
 			</td>
+      <td>
+        <?php
+        echo $row->tag;
+        ?>
+      </td>
 			<td>
 				<?php
 				echo $row->object_key;

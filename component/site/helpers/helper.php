@@ -662,5 +662,42 @@ class redEVENTHelper {
     $countrycoord['ZW']= array(-20 , 30);
     return $countrycoord;
   }
+  
+
+  function getCustomField($type)
+  {
+    require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield.php');
+    switch ($type)
+    {
+      case 'select':
+        return new TCustomfieldSelect();
+        break;
+        
+      case 'select_multiple':
+        return new TCustomfieldSelectmultiple();
+        break;
+        
+      case 'date':
+        return new TCustomfieldDate();
+        break;
+        
+      case 'radio':
+        return new TCustomfieldRadio();
+        break;
+        
+      case 'checkbox':
+        return new TCustomfieldCheckbox();
+        break;
+        
+      case 'textarea':
+        return new TCustomfieldTextarea();
+        break;
+        
+      case 'textbox':
+      default:
+        return new TCustomfieldTextbox();
+        break;
+    }
+  }
 }
 ?>

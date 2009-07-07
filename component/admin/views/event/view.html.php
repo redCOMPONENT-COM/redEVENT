@@ -101,6 +101,7 @@ class RedEventViewEvent extends JView {
 		//get data from model
 		$model		= & $this->getModel();
 		$row     	= & $this->get('Data');
+    $customfields =& $this->get('Customfields');
 		
 		/* Check if we have a redFORM id */
 		if (empty($row->redform_id)) $row->redform_id = $elsettings->defaultredformid;
@@ -225,7 +226,8 @@ class RedEventViewEvent extends JView {
 		$this->assignRef('elsettings'	, $elsettings);
 		$this->assignRef('formfields'	, $formfields);
 		$this->assignRef('venueslist'	, $venueslist);
-$this->assignRef('redform_install'	, $redform_install);
+    $this->assignRef('redform_install'	, $redform_install);
+    $this->assignRef('customfields'  , $customfields);
 
 		parent::display($tpl);
 	}

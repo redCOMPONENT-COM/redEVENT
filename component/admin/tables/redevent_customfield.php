@@ -48,6 +48,12 @@ class Redevent_customfield extends JTable
 	 */
   var $name;
   /**
+   * tag name, must be unique
+   *
+   * @var string
+   */
+  var $tag;
+  /**
    * field type
    *
    * @var string
@@ -110,7 +116,7 @@ class Redevent_customfield extends JTable
 	 */
 	function check()
 	{
-		//should check name unicity
+		// check that there is only alphanumerics in tag ?
 		return true;
 	}
 }

@@ -218,6 +218,12 @@ echo $this->pane->startPane("det-pane");
   	echo $this->pane->endPanel();
 	}
 	
+  $title = JText::_( 'CUSTOM FIELDS' );
+  echo $this->pane->startPanel( $title, 'customfields' );
+  $k = 0;
+  echo $this->loadTemplate('customfields');
+  echo $this->pane->endPanel();
+  
 	$title = JText::_( 'METADATA INFORMATION' );
 	echo $this->pane->startPanel( $title, 'meta' );
 	$k = 0;

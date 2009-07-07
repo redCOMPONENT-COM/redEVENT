@@ -59,9 +59,16 @@ JToolBarHelper::help( 'screen.tracks.edit' );
 		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_( 'Name' ); ?>:
 		</label></td>
 		<td><input class="text_area required" type="text" name="name" id="name"
-			size="32" maxlength="250" value="<?php echo $this->object->name?>" />
+			size="32" maxlength="250" value="<?php echo $this->object->name; ?>" />
 		</td>
 	</tr>
+  <tr>
+    <td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'Tag' ).'::'.JText::_('SET TAG HINT'); ?>"><label for="tag"> <?php echo JText::_( 'Tag' ); ?>:
+    </label></td>
+    <td><input class="text_area required" type="text" name="tag" id="tag"
+      size="32" maxlength="250" value="<?php echo $this->object->tag; ?>" />
+    </td>
+  </tr>
   <tr>
     <td valign="top" align="right" class="key"><label for="ordering"> <?php echo JText::_( 'Field for' ); ?>:
     </label></td>

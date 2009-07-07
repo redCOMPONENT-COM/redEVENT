@@ -290,6 +290,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venue_category_xref` (
 CREATE TABLE IF NOT EXISTS `#__redevent_fields` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `object_key` varchar(50) NOT NULL,
+  `tag` varchar(100) NOT NULL,
   `type` varchar(255) NOT NULL,
   `ordering` int(11) DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '0',
