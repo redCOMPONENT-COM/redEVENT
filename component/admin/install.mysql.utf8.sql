@@ -287,6 +287,46 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venue_category_xref` (
   UNIQUE KEY `venue_category` (`venue_id`,`category_id`)
 ) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
+CREATE TABLE IF NOT EXISTS `#__redevent_fields` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `object_key` varchar(50) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `ordering` int(11) DEFAULT '0',
+  `published` tinyint(1) NOT NULL DEFAULT '0',
+  `min` int(5) NOT NULL,
+  `max` int(5) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `tips` text NOT NULL,
+  `visible` tinyint(1) DEFAULT '0',
+  `required` tinyint(1) DEFAULT '0',
+  `searchable` tinyint(1) DEFAULT '1',
+  `options` text,
+  `fieldcode` varchar(255) NOT NULL,
+  `checked_out` int(11) NOT NULL,
+  `checked_out_time` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `object_key` (`object_key`)
+) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_fields_values` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `object_id` int(11) NOT NULL,
+  `field_id` int(10) NOT NULL,
+  `value` text NOT NULL,
+  PRIMARY KEY (`id`)
+) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_countries` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `continent` varchar(2) NOT NULL DEFAULT '',
+  `iso2` varchar(2) NOT NULL DEFAULT '',
+  `iso3` varchar(3) NOT NULL DEFAULT '',
+  `un` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(30) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `iso2` (`iso2`)
+) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
 INSERT IGNORE INTO `#__redevent_countries` (`id`, `continent`, `iso2`, `iso3`, `un`, `name`) VALUES
 (1, 'AS', 'AF', 'AFG', 4, 'Afghanistan, Islamic Republic '),
 (2, 'EU', 'AX', 'ALA', 248, 'Åland Islands'),
