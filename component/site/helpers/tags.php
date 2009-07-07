@@ -111,6 +111,8 @@ class redEVENT_tags {
 				preg_match_all("/\[(.+?)\]/", $page, $alltags);
 				$customdata = $this->getCustomData($alltags);
 				
+				$customfields = $this->getCustomFields($alltags[1], $this->_data->id);
+				
 				/* Only do the event description if it is in on the page */
 				$event_description = '';
 				/* Fix the tags of the event description */
@@ -311,6 +313,16 @@ class redEVENT_tags {
 					$message = str_ireplace('['.$tag.']', $data->text_field, $message);
 				}
 				
+        // then the tags from the custom library
+        foreach ($customfields as $tag => $data) {
+          $data->text_field = str_replace($findoffer, $replaceoffer, $data->text_field);
+          /* Do a redFORM replacement here too for when used in the text library */
+          $data->text_field = str_replace('[redform]', $redform, $data->text_field);
+          $message = str_ireplace('['.$tag.']', $data->text_field, $message);
+        }
+				
+				// then the custom tags
+				
 				// FIXME: I don't see the point of this relative to abs for pictures, only causing problems... I'll comment it for now.
 				// FEEDBACK: relative to absolute images is necessary for e-mail messages that contain relative image links. The images won't show up in the e-mail.
 				// FIXME: this function doesn't work when website is not at domain root... So it has to be fixed !
@@ -495,6 +507,38 @@ class redEVENT_tags {
     $contents = ob_get_contents();
     ob_end_clean();
     return $contents;    
+  }
+  
+  /**
+   * get custom fields and their value
+   *
+   * @return unknown
+   */
+  function getCustomfields($tags, $event_id)
+  {
+  	$db = & JFactory::getDBO();
+    $query = ' SELECT f.*, fv.value '
+           . ' FROM #__redevent_fields AS f '
+           . ' INNER JOIN #__redevent_fields_values AS fv ON fv.field_id = f.id AND fv.object_id = '.(int) $event_id
+           . ' WHERE f.published = 1 AND f.object_key = '. $db->Quote("redevent.event")
+           . ' ORDER BY f.ordering ASC '
+           ;
+    $db->setQuery($query);
+    $fields = $db->loadObjectList('tag');
+    
+    $replace = array();
+    foreach ($tags as $tag)
+    {
+    	if (isset($fields[$tag]))
+    	{
+    		$obj = new stdclass();
+    		$obj->text_name = $tag;
+        $obj->text_field = redEVENTHelper::renderFieldValue($fields[$tag]);
+        $replace[$tag] = $obj;
+    	}
+    }
+    
+    return $replace;
   }
 }
 ?>

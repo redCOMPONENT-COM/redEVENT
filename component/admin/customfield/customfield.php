@@ -54,6 +54,12 @@ class TCustomfield extends JObject {
    */
   var $name;
   /**
+   * name to display as tag
+   *
+   * @var string
+   */
+  var $tag;
+  /**
    * type of field
    *
    * @var string

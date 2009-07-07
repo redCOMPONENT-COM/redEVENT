@@ -699,5 +699,22 @@ class redEVENTHelper {
         break;
     }
   }
+  
+  function renderFieldValue($field)
+  {
+    switch ($field->type)
+    {
+      case 'select_multiple':
+      case 'checkbox':
+        return str_replace("\n", "<br/>", $field->value);
+      case 'textarea':
+        return str_replace("\n", "<br/>", htmlspecialchars($field->value));
+      case 'date':
+        return strftime(($field->options ? $field->options : '%Y-%m-%d'), strtotime($field->value));
+      case 'textbox':
+      default:
+        return htmlspecialchars($field->value);
+    }
+  }
 }
 ?>
