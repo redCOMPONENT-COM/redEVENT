@@ -2,15 +2,15 @@
 <!DOCTYPE install PUBLIC 
   "-//Joomla! 1.5//DTD plugin 1.0//EN" "http://dev.joomla.org/xml/1.5/plugin-install.dtd">
 <install version="1.5" type="plugin" group="redevent" method="upgrade">
-  <name>Redevent - JomSocial plugin</name>
-  <creationDate>May 2009</creationDate>
-  <author>Julien Vonthron</author>
-  <authorEmail>jlv@jlv-solutions.com</authorEmail>
-  <authorUrl>http://www.jlv-solutions.com</authorUrl> 
-  <copyright>This extension is released under the GNU/GPL License</copyright>
-  <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-  <version>1.0</version>
-  <description>PLUGIN DESC</description>
+	<name>redEVENT - JomSocial Plugin</name>
+	<creationDate>07/07/2009</creationDate>
+	<author>Redweb.dk</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redweb.dk</authorUrl>
+	<copyright>(c) 2008 - 2009 Redweb.dk</copyright>
+	<license>GNU/GPL</license>
+	<version>1.0</version>
+  <description>Plugin for JomSocial and redEVENT</description>
   
   <files>
     <filename plugin="jomsocial">jomsocial.php</filename>
