@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <install version="1.5" type="plugin" group="community" method="upgrade">
-	<name>RedEvent</name>
-	<creationDate>05/05/2009</creationDate>
-	<author>Julien Vonthron</author>
-	<copyright>This component is released under the GNU/GPL License</copyright>
-  <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-  <authorEmail>jlv@jlv-solutions.com</authorEmail>
-	<authorUrl>www.jlv-solutions.com</authorUrl>
+	<name>redEVENT</name>
+	<creationDate>07/07/2009</creationDate>
+	<author>Redweb.dk</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redweb.dk</authorUrl>
+	<copyright>(c) 2008 - 2009 Redweb.dk</copyright>
+	<license>GNU/GPL</license>
 	<version>1.0</version>
 	<isapplication>true</isapplication>
 	<description>
-		REDEvent Application for JomSocial
+		redEVENT Application for JomSocial
 	</description>
 	<languages>
 	    <language tag="en-GB">en-GB.plg_js_redevent.ini</language>
