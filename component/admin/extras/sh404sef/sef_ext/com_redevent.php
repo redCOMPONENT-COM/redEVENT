@@ -180,6 +180,10 @@ else {
        shRemoveFromGETVarsList('xref');
        shRemoveFromGETVarsList('id');
 	     break;
+	     	     
+     case 'venue': // ajax call, no need for sef
+       $dosef = false;
+       break;
 	     
       default:
         break; 
