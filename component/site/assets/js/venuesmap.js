@@ -33,7 +33,7 @@ function initialize() {
     // add controls
 		map.addControl(new GLargeMapControl());
 		map.addControl(new GMapTypeControl());
-    map.addControl(new GSmallZoomControl());
+    //map.addControl(new GSmallZoomControl());
     map.addControl(new GScaleControl());
     map.addControl(new GOverviewMapControl());
     
