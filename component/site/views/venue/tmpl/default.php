@@ -96,7 +96,7 @@ $row = & $this->row;
 
           <dt class="venue_assignedevents"><?php echo JText::_( 'EVENTS' ).':'; ?></dt>
           <dd class="venue_assignedevents">
-            <a href="<?php echo $row->targetlink; ?>"><?php echo $row->assignedevents; ?></a>
+            <a href="<?php echo $row->target; ?>"><?php echo $row->assignedevents; ?></a>
           </dd>
       <?php
       endif;
