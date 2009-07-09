@@ -33,7 +33,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <script type="text/javascript">
 <!--
-var venueurl = '<?php echo JRoute::_('index.php?option=com_redevent&view=venue&format=raw', false); ?>';
+var venueurl = '<?php echo JRoute::_($this->ajaxurl, false); ?>';
 var countries = new Array;
 <?php foreach ((array) $this->countries AS $row) : ?>
 countries.push({'name':'<?php echo addslashes($row->name); ?>','lat':'<?php echo $row->latitude; ?>','lng':'<?php echo $row->longitude; ?>','flag':'<?php echo $row->flagurl; ?>'});
@@ -45,10 +45,10 @@ venues.push({'id':'<?php echo $row->id; ?>','name':'<?php echo addslashes($row->
 <?php endforeach; ?>
 
 window.addEvent('domready', function() {
-	$('vcats').addEvent('change', function() {
+	$('vcat').addEvent('change', function() {
 	  $('filterform').submit();
 	});
-  $('cats').addEvent('change', function() {
+  $('cat').addEvent('change', function() {
     $('filterform').submit();
   });
 });

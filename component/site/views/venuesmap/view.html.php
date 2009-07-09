@@ -72,8 +72,8 @@ class RedeventViewVenuesmap extends JView
     $document->addScript($this->baseurl.'/components/com_redevent/assets/js/labeled_marker.js');
     
     // filters
-    $vcats = $mainframe->getUserStateFromRequest('com_redevent.venuemap.vcats', 'vcats', $params->def('vcats', 0), 'int');
-    $cats = $mainframe->getUserStateFromRequest('com_redevent.venuemap.cats', 'cats', $params->def('cats', 0), 'int');
+    $vcat = $mainframe->getUserStateFromRequest('com_redevent.venuemap.vcat', 'vcat', $params->def('vcat', 0), 'int');
+    $cat = $mainframe->getUserStateFromRequest('com_redevent.venuemap.cat', 'cat', $params->def('cat', 0), 'int');
 
 		$rows 		= & $this->get('Data');
 				
@@ -104,27 +104,36 @@ class RedeventViewVenuesmap extends JView
     // venues categories
     $vcat_options = redEVENTHelper::getVenuesCatOptions(false);
     array_unshift($vcat_options, JHTML::_('select.option', 0, JText::_('ALL')));
-    $lists['venuescats'] = JHTML::_('select.genericlist', $vcat_options, 'vcats', '', 'value', 'text', $vcats);
+    $lists['venuescats'] = JHTML::_('select.genericlist', $vcat_options, 'vcat', '', 'value', 'text', $vcat);
     
     // events categories
     $cat_options = redEVENTHelper::getEventsCatOptions(false);
     array_unshift($cat_options, JHTML::_('select.option', 0, JText::_('ALL')));
-    $lists['eventscats'] = JHTML::_('select.genericlist', $cat_options, 'cats', '', 'value', 'text', $cats);
+    $lists['eventscats'] = JHTML::_('select.genericlist', $cat_options, 'cat', '', 'value', 'text', $cat);
     
 		//Set Page title
 		$mainframe->setPageTitle( $pagetitle );
    	$mainframe->addMetaTag( 'title' , $pagetitle );
    	$document->setMetadata('keywords', $pagetitle );
+   	
+   	$ajaxurl = 'index.php?option=com_redevent&view=venue&format=raw';
+   	if ($vcat) {
+   		$ajaxurl .= '&vcat=' . $vcat;
+   	}
+    if ($cat) {
+      $ajaxurl .= '&cat=' . $vcat;
+    }
 
-		$this->assignRef('rows' , 					$rows);
-    $this->assignRef('countries' ,           $countries);
-		$this->assignRef('params' , 				$params);
-		$this->assignRef('item' , 					$item);
-		$this->assignRef('elsettings' , 			$elsettings);
-		$this->assignRef('task' , 					$task);
-		$this->assignRef('pagetitle' , 				$pagetitle);
+		$this->assignRef('rows' , 				$rows);
+    $this->assignRef('countries' ,    $countries);
+		$this->assignRef('params' , 			$params);
+		$this->assignRef('item' , 				$item);
+		$this->assignRef('elsettings' , 	$elsettings);
+		$this->assignRef('task' , 				$task);
+		$this->assignRef('pagetitle' , 		$pagetitle);
     $this->assignRef('lists' ,        $lists);
     $this->assign('action',           $uri->toString());
+    $this->assign('ajaxurl',          $ajaxurl);
 
 		parent::display($tpl);
 	}

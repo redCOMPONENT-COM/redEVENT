@@ -140,8 +140,8 @@ class RedEventModelVenuesmap extends JModel
 	function _buildQuery()
 	{
 		$app = & JFactory::getApplication();
-    $vcat = $app->getUserState('com_redevent.venuemap.vcats');
-    $cat = $app->getUserState('com_redevent.venuemap.cats');
+    $vcat = $app->getUserState('com_redevent.venuemap.vcat');
+    $cat = $app->getUserState('com_redevent.venuemap.cat');
         
 		//check archive task
 		$task 	= JRequest::getVar('task', '', '', 'string');
