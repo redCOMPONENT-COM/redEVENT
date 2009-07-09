@@ -102,12 +102,12 @@ class RedeventViewVenuesmap extends JView
     $lists = array();
     
     // venues categories
-    $vcat_options = redEVENTHelper::getVenuesCatOptions();
+    $vcat_options = redEVENTHelper::getVenuesCatOptions(false);
     array_unshift($vcat_options, JHTML::_('select.option', 0, JText::_('ALL')));
     $lists['venuescats'] = JHTML::_('select.genericlist', $vcat_options, 'vcats', '', 'value', 'text', $vcats);
     
     // events categories
-    $cat_options = redEVENTHelper::getEventsCatOptions();
+    $cat_options = redEVENTHelper::getEventsCatOptions(false);
     array_unshift($cat_options, JHTML::_('select.option', 0, JText::_('ALL')));
     $lists['eventscats'] = JHTML::_('select.genericlist', $cat_options, 'cats', '', 'value', 'text', $cats);
     

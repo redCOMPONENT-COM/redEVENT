@@ -160,7 +160,7 @@ class RedEventModelVenuesmap extends JModel
 	
     if ($cat)
     {
-      $query .= ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = v.id '
+      $query .= ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = x.eventid '
               . ' INNER JOIN #__redevent_categories AS cat ON cat.id = xcat.category_id '
               . ' INNER JOIN #__redevent_categories AS topcat ON cat.lft BETWEEN topcat.lft AND topcat.rgt '
               ;

@@ -393,18 +393,53 @@ class redEVENTHelper {
   /**
    * returns indented event category options
    *
+   * @param boolean show categories with no publish xref associated
+   * @param boolean show unpublished categories
    * @return array
    */
-  function getEventsCatOptions() 
+  function getEventsCatOptions($show_empty = true, $show_unpublished = false) 
   {
     $db   = & JFactory::getDBO();
+
+    if ($show_empty == false)
+    {
+    	// select categories with events first
+    	$query = ' SELECT c.id '
+    	       . ' FROM #__redevent_categories AS c '
+    	       . ' INNER JOIN #__redevent_categories AS child ON child.lft BETWEEN c.lft AND c.rgt '
+    	       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = child.id '
+    	       . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = xcat.event_id '
+    	       . ' WHERE x.published = 1 '
+    	       . ' GROUP BY c.id '
+    	       ;
+	    $db->setQuery($query);
+	
+	    $notempty = $db->loadResultArray();
+	    if (empty($notempty)) {
+	    	return array();
+	    }
+    }
+  	
     $query =  ' SELECT c.id, c.catname, (COUNT(parent.catname) - 1) AS depth '
-            . ' FROM #__redevent_categories AS c, '
-            . ' #__redevent_categories AS parent '
-            . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
-            . ' GROUP BY c.id '
-            . ' ORDER BY c.lft;'
-            ;
+            . ' FROM #__redevent_categories AS c '
+            . ' INNER JOIN #__redevent_categories AS parent ON c.lft BETWEEN parent.lft AND parent.rgt '
+            ;    
+
+    $where = array();    
+    if ($show_empty == false)
+    {
+      $where[] = ' c.id IN (' . implode(', ', $notempty) . ')';
+    }            
+    if (!$show_unpublished) {
+    	$where[] = ' c.published = 1 ';
+    }
+    if (count($where)) {
+    	$query .= ' WHERE ' . implode(' AND ', $where);
+    }
+    
+    $query .= ' GROUP BY c.id ';       
+    $query .= ' ORDER BY c.lft ';
+    
     $db->setQuery($query);
 
     $results = $db->loadObjectList();
@@ -420,16 +455,52 @@ class redEVENTHelper {
   /**
    * returns indented venues category options
    *
+   * @param boolean show venues categories with no published venue associated
+   * @param boolean show unpublished venues categories
    * @return array
    */
-  function getVenuesCatOptions() 
+  function getVenuesCatOptions($show_empty = true, $show_unpublished = false) 
   {
     $db   = & JFactory::getDBO();
+  
+    if ($show_empty == false)
+    {
+      // select only categories with published venues
+      $query = ' SELECT c.id '
+             . ' FROM #__redevent_venues_categories AS c '
+             . ' INNER JOIN #__redevent_venues_categories AS child ON child.lft BETWEEN c.lft AND c.rgt '
+             . ' INNER JOIN #__redevent_venue_category_xref AS xcat ON xcat.category_id = child.id '
+             . ' INNER JOIN #__redevent_venues AS v ON v.id = xcat.venue_id '
+             . ' WHERE v.published = 1 '
+             . ' GROUP BY c.id '
+             ;
+      $db->setQuery($query);
+  
+      $notempty = $db->loadResultArray();
+      if (empty($notempty)) {
+        return array();
+      }
+    }
+    
     $query =  ' SELECT c.id, c.name, (COUNT(parent.name) - 1) AS depth '
 				    . ' FROM #__redevent_venues_categories AS c, '
 				    . ' #__redevent_venues_categories AS parent '
 				    . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
-				    . ' GROUP BY c.id '
+				    ;
+
+    $where = array();    
+    if ($show_empty == false)
+    {
+      $where[] = ' c.id IN (' . implode(', ', $notempty) . ')';
+    }            
+    if (!$show_unpublished) {
+      $where[] = ' c.published = 1 ';
+    }
+    if (count($where)) {
+      $query .= 'AND ' . implode(' AND ', $where);
+    }
+    
+    $query .= ' GROUP BY c.id '
 				    . ' ORDER BY c.lft;'
 				    ;
     $db->setQuery($query);
