@@ -57,8 +57,34 @@ class TCustomfieldCheckbox extends TCustomfield {
     {
     	foreach ($options as $opt) {
     		$opt = trim($opt);
-    		$html .= '<input type="checkbox" name="custom'.$this->id.'[]" value="'.$opt.'"'.(strstr($this->value, $opt) ? ' checked="checked"':'').'/>'.$opt;
+    		$html .= '<input type="checkbox" name="custom'.$this->id.'[]" value="'.$opt.'"'.(strstr($this->value, $opt) ? ' checked="checked"':'')." $attributes " .'/>'.$opt;
     	}
+    }
+    return $html;
+  }
+  
+  function renderFilter($attributes = '') 
+  {
+    $app = & JFactory::getApplication();
+    
+    // the filtered value should be stored in session
+    $customs = $app->getUserState('com_redevent.venuesmap.customs');
+    if (is_array($customs) && isset($customs[$this->id])) {
+      $value = $customs[$this->id];
+    }
+    else {
+      $value = '';
+    }
+        
+    $html = '';    
+    $option_list = array();
+    $options = explode("\n", $this->options);
+    if ($options) 
+    {
+      foreach ($options as $opt) {
+        $opt = trim($opt);
+        $html .= '<input type="checkbox" name="custom'.$this->id.'[]" value="'.$opt.'"'.(strstr($value, $opt) ? ' checked="checked"':'')." $attributes " .'/>'.$opt;
+      }
     }
     return $html;
   }

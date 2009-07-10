@@ -61,5 +61,32 @@ class TCustomfieldSelect extends TCustomfield {
     }
     return JHTML::_('select.genericlist', $option_list, 'custom'.$this->id, $attributes, 'value', 'text', $this->value);
   }
+  
+  
+  function renderFilter($attributes = '') 
+  {
+  	$app = & JFactory::getApplication();
+  	
+  	// the filtered value should be stored in session
+  	$customs = $app->getUserState('com_redevent.venuesmap.customs');
+  	if (is_array($customs) && isset($customs[$this->id])) {
+  		$value = $customs[$this->id];
+  	}
+  	else {
+  		$value = '';
+  	}
+  	
+    $option_list = array();
+    $option_list[] = JHTML::_('select.option', '', JText::_('Select'));
+    $options = explode("\n", $this->options);
+    if ($options) 
+    {
+      foreach ($options as $opt) {
+        $opt = trim($opt);
+        $option_list[] = JHTML::_('select.option', $opt, $opt);
+      }     
+    }
+    return JHTML::_('select.genericlist', $option_list, 'filtercustom['.$this->id.']', $attributes, 'value', 'text', $value);  
+  }
 }
 ?>

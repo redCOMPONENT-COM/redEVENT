@@ -74,11 +74,9 @@ class RedeventViewVenuesmap extends JView
     // filters
     $vcat = $mainframe->getUserStateFromRequest('com_redevent.venuemap.vcat', 'vcat', $params->def('vcat', 0), 'int');
     $cat = $mainframe->getUserStateFromRequest('com_redevent.venuemap.cat', 'cat', $params->def('cat', 0), 'int');
+    $custom = $this->get('CustomFilters'); 
 
 		$rows 		= & $this->get('Data');
-				
-//    $cmodel = &JModel::getInstance('countriesmap', 'RedeventModel');
-//    $countries = $cmodel->getData();
     $countries = $this->get('Countries');
 
 		//Add needed scripts if the lightbox effect is enabled
@@ -110,6 +108,8 @@ class RedeventViewVenuesmap extends JView
     $cat_options = redEVENTHelper::getEventsCatOptions(false);
     array_unshift($cat_options, JHTML::_('select.option', 0, JText::_('ALL')));
     $lists['eventscats'] = JHTML::_('select.genericlist', $cat_options, 'cat', '', 'value', 'text', $cat);
+    
+    $lists['customfilters'] = $custom;
     
 		//Set Page title
 		$mainframe->setPageTitle( $pagetitle );

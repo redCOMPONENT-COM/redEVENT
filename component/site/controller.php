@@ -48,6 +48,8 @@ class RedeventController extends JController
 
 	function _checkfilter()
 	{
+		$app = & JFactory::getApplication();
+		
 		if (!JRequest::getVar('filter', 0, 'post'))
 		{
 			return false;
@@ -64,7 +66,8 @@ class RedeventController extends JController
         $vcat = JRequest::getVar('vcat', '');
         if (!empty($vcat)) {
           $url .= '&vcat=' . $vcat;
-        }
+        }        
+        $customs = $app->getUserStateFromRequest('com_redevent.venuesmap.customs', 'filtercustom', array(), 'array');
 				$this->setRedirect(JRoute::_($url, false));
 				break;
 		}

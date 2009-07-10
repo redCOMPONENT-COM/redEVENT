@@ -32,13 +32,13 @@ defined('JPATH_BASE') or die();
 * @since 2.0
 */
 
-require_once (JPATH_COMPONENT.DS.'customfield'.DS.'customfield'.DS.'textbox.php');
-require_once (JPATH_COMPONENT.DS.'customfield'.DS.'customfield'.DS.'textarea.php');
-require_once (JPATH_COMPONENT.DS.'customfield'.DS.'customfield'.DS.'date.php');
-require_once (JPATH_COMPONENT.DS.'customfield'.DS.'customfield'.DS.'radio.php');
-require_once (JPATH_COMPONENT.DS.'customfield'.DS.'customfield'.DS.'checkbox.php');
-require_once (JPATH_COMPONENT.DS.'customfield'.DS.'customfield'.DS.'select.php');
-require_once (JPATH_COMPONENT.DS.'customfield'.DS.'customfield'.DS.'selectmultiple.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'textbox.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'textarea.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'date.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'radio.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'checkbox.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'select.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'selectmultiple.php');
 
 class TCustomfield extends JObject {
 	/**
@@ -135,6 +135,24 @@ class TCustomfield extends JObject {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * returns form field for filtering
+	 *
+	 * @param unknown_type $attributes
+	 */
+	function renderFilter($attributes = '') {
+		return 'no filter';
+	}
+	
+	/**
+	 * returns the value
+	 *
+	 */
+	function renderValue()
+	{
+		return $this->value;
 	}
 }
 ?>

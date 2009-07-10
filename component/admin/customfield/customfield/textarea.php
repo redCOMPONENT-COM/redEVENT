@@ -59,5 +59,23 @@ class TCustomfieldTextarea extends TCustomfield {
 
     return '<textarea name="custom'.$this->id.'" id="custom'.$this->id.'" '.$attributes.'>'.$value.'</textarea>';
   }
+
+  function renderFilter($attributes = '') 
+  {
+    $app = & JFactory::getApplication();
+    
+    // the filtered value should be stored in session
+    $customs = $app->getUserState('com_redevent.venuesmap.customs');
+    if (is_array($customs) && isset($customs[$this->id])) {
+      $value = $customs[$this->id];
+    }
+    else {
+      $value = '';
+    }
+    
+    $value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
+
+    return '<input type="text" name="filtercustom['.$this->id.']" id="filtercustom['.$this->id.']" value="'.$value.'" '.$attributes.'/>'; 
+  }
 }
 ?>

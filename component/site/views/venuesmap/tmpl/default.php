@@ -46,18 +46,22 @@ venues.push({'id':'<?php echo $row->id; ?>','name':'<?php echo addslashes($row->
 
 window.addEvent('domready', function() {
 	$('vcat').addEvent('change', function() {
-	  if ($('vcat').value > 0) {
-	    $('filter').value = 1;
-	  }
+	  $('filter').value = 1;
 	  $('filterform').submit();
 	});
   $('cat').addEvent('change', function() {
-    if ($('cat').value > 0) {
-      $('filter').value = 1;
-    }
+    $('filter').value = 1;
     $('filterform').submit();
   });
+  
+  $$('.customfilter').each(function(element){
+    element.addEvent('change', function(){
+      $('filter').value = 1;
+      $('filterform').submit();
+	  });
+	});
 });
+
 -->
 </script>
 
@@ -71,14 +75,39 @@ window.addEvent('domready', function() {
 <form action="<?php echo $this->action; ?>" method="post" id="filterform">
 <div id="red_filter" class="floattext">
     <div class="el_fleft">
-    <?php if ($this->params->get('show_vcat_filter', 1)) : ?>
-      <label for="filter_type"><?php echo JText::_('FILTER VENUES CATEGORY'); ?></label>
-      <?php echo $this->lists['venuescats']; ?>
-      <?php echo ($this->params->get('show_cat_filter', 1) ? '<br/>': ''); ?>
-    <?php endif; ?>
-    <?php if ($this->params->get('show_cat_filter', 1)) : ?>
-      <label for="filter_type"><?php echo JText::_('FILTER EVENTS CATEGORY'); ?></label>
-      <?php echo $this->lists['eventscats']; ?>
+    <table>
+	    <?php if ($this->params->get('show_vcat_filter', 1)) : ?>
+      <tr>
+        <td>
+		      <label for="filter_type"><?php echo JText::_('FILTER VENUES CATEGORY'); ?></label>
+		    </td>
+		    <td>
+		      <?php echo $this->lists['venuescats']; ?>
+        </td>
+	    </tr>
+	    <?php endif; ?>
+	    <?php if ($this->params->get('show_cat_filter', 1)) : ?>
+      <tr>
+        <td>
+	      <label for="filter_type"><?php echo JText::_('FILTER EVENTS CATEGORY'); ?></label>
+        </td>
+        <td>
+	      <?php echo $this->lists['eventscats']; ?>
+        </td>
+      </tr>
+      <?php endif; ?>
+    <?php if ($this->params->get('show_custom_filters', 1)) : ?>
+      <?php foreach ((array) $this->lists['customfilters'] as $filter) : ?>
+      <tr>
+        <td>
+	      <label for="filter_type"><?php echo $filter->name; ?></label>
+        </td>
+        <td>
+	      <?php echo $filter->renderFilter('class="customfilter"'); ?>
+        </td>
+      </tr>
+      <?php endforeach; ?>
+    </table>
     </div>
     <?php endif; ?>
 </div>
