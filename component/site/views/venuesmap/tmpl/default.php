@@ -67,14 +67,16 @@ window.addEvent('domready', function() {
   </div>
 <?php endif; ?>
 
-<?php if ($this->params->get('filter')) : ?>
+<?php if ($this->params->get('show_cat_filter', 1) || $this->params->get('show_vcat_filter', 1)) : ?>
 <form action="<?php echo $this->action; ?>" method="post" id="filterform">
 <div id="red_filter" class="floattext">
-    <?php if ($this->params->get('filter')) : ?>
     <div class="el_fleft">
+    <?php if ($this->params->get('show_vcat_filter', 1)) : ?>
       <label for="filter_type"><?php echo JText::_('FILTER VENUES CATEGORY'); ?></label>
       <?php echo $this->lists['venuescats']; ?>
-      <br/>
+      <?php echo ($this->params->get('show_cat_filter', 1) ? '<br/>': ''); ?>
+    <?php endif; ?>
+    <?php if ($this->params->get('show_cat_filter', 1)) : ?>
       <label for="filter_type"><?php echo JText::_('FILTER EVENTS CATEGORY'); ?></label>
       <?php echo $this->lists['eventscats']; ?>
     </div>

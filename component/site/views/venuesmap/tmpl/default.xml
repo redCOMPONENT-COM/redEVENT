@@ -8,5 +8,15 @@
 	<state>
 		<name>VENUESMAP LAYOUT</name>
 		<description>VENUESMAP LAYOUT DESC</description>
+    <params>
+      <param name="show_cat_filter" type="radio" default="1" label="DISPLAY CATEGORY FILTER" description="DISPLAY CATEGORY FILTER DESC">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </param>
+      <param name="show_vcat_filter" type="radio" default="1" label="DISPLAY VENUE CATEGORY FILTER" description="DISPLAY CATEGORY FILTER DESC">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </param>
+    </params>
 	</state>
 </metadata>
