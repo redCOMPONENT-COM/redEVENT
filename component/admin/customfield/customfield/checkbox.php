@@ -53,11 +53,12 @@ class TCustomfieldCheckbox extends TCustomfield {
   	$html = '';    
     $option_list = array();
     $options = explode("\n", $this->options);
+    $values = explode("\n", $this->value);
     if ($options) 
     {
     	foreach ($options as $opt) {
     		$opt = trim($opt);
-    		$html .= '<input type="checkbox" name="custom'.$this->id.'[]" value="'.$opt.'"'.(strstr($this->value, $opt) ? ' checked="checked"':'')." $attributes " .'/>'.$opt;
+    		$html .= '<input type="checkbox" name="custom'.$this->id.'[]" value="'.$opt.'"'.(in_array($opt, $values) ? ' checked="checked"':'')." $attributes " .'/>'.$opt;
     	}
     }
     return $html;
