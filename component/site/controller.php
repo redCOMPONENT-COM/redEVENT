@@ -37,10 +37,39 @@ class RedeventController extends JController
 	 * 
 	 * @since 0.9
 	 */
-	function display() {
+	function display() 
+	{
+		// if filter is set, put the filter values as get variable so that the user can go back without warning
+		if ($this->_checkfilter()) { // a redirect was set in the filter function
+			return;
+		}
 		parent::display();
 	}
 
+	function _checkfilter()
+	{
+		if (!JRequest::getVar('filter', 0, 'post'))
+		{
+			return false;
+		}
+		
+		switch (JRequest::getVar('view', ''))
+		{
+			case 'venuesmap':
+				$url = 'index.php?option=com_redevent&view=venuesmap';
+				$cat = JRequest::getVar('cat', '');
+				if (!empty($cat)) {
+					$url .= '&cat=' . $cat;
+				}
+        $vcat = JRequest::getVar('vcat', '');
+        if (!empty($vcat)) {
+          $url .= '&vcat=' . $vcat;
+        }
+				$this->setRedirect(JRoute::_($url, false));
+				break;
+		}
+	}
+	
 	/**
 	 * Logic for canceling an event edit task
 	 * 

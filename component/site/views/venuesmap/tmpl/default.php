@@ -46,9 +46,15 @@ venues.push({'id':'<?php echo $row->id; ?>','name':'<?php echo addslashes($row->
 
 window.addEvent('domready', function() {
 	$('vcat').addEvent('change', function() {
+	  if ($('vcat').value > 0) {
+	    $('filter').value = 1;
+	  }
 	  $('filterform').submit();
 	});
   $('cat').addEvent('change', function() {
+    if ($('cat').value > 0) {
+      $('filter').value = 1;
+    }
     $('filterform').submit();
   });
 });
@@ -74,6 +80,7 @@ window.addEvent('domready', function() {
     </div>
     <?php endif; ?>
 </div>
+<input type="hidden" name="filter" id="filter" value="0"/>
 </form>
 <?php endif; ?>
 
