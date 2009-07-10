@@ -94,6 +94,11 @@ JToolBarHelper::help( 'screen.tracks.edit' );
     </label></td>
     <td><textarea name="tips" id="tips" rows="6" cols="20"><?php echo $this->object->tips; ?></textarea></td>
   </tr>
+  <tr>
+    <td valign="top" align="right" class="key"><?php echo JText::_( 'Searchable' ); ?>:
+    </td>
+    <td><?php echo $this->lists['searchable']; ?></td>
+  </tr>
   <tr id="row-min">
     <td valign="top" align="right" class="key"><label for="ordering"> <?php echo JText::_( 'Min. characters' ); ?>:
     </label></td>

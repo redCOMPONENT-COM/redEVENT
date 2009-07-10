@@ -66,6 +66,12 @@ class Redevent_customfield extends JTable
    */
   var $tips;
   /**
+   * is it searchable
+   *
+   * @var boolean
+   */
+  var $searchable;
+  /**
    * object key (individual / round / ...)
    *
    * @var string

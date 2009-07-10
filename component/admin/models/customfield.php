@@ -191,6 +191,7 @@ class RedeventModelCustomfield extends JModel
 			$object->id					= 0;
 			$object->name				= null;
       $object->type       = null;
+      $object->tag       = '';
       $object->object_key  = 0;
       $object->tips  = null;
       $object->min  = 0;
@@ -200,6 +201,7 @@ class RedeventModelCustomfield extends JModel
 			$object->checked_out_time	= 0;
 			$object->ordering			= 0;
       $object->published     = 0;
+      $object->searchable    = 0;
 			$this->_data					= $object;
 			return (boolean) $this->_data;
 		}
