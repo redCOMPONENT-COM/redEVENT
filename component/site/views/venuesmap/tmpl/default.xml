@@ -17,6 +17,10 @@
         <option value="0">No</option>
         <option value="1">Yes</option>
       </param>
+      <param name="show_custom_filters" type="radio" default="1" label="DISPLAY CUSTOM FIELDS FILTER" description="DISPLAY CUSTOM FIELDS FILTER DESC">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </param>
     </params>
 	</state>
 </metadata>

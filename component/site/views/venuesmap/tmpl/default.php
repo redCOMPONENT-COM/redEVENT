@@ -45,14 +45,18 @@ venues.push({'id':'<?php echo $row->id; ?>','name':'<?php echo addslashes($row->
 <?php endforeach; ?>
 
 window.addEvent('domready', function() {
-	$('vcat').addEvent('change', function() {
-	  $('filter').value = 1;
-	  $('filterform').submit();
-	});
-  $('cat').addEvent('change', function() {
-    $('filter').value = 1;
-    $('filterform').submit();
-  });
+	if ($('vcat')) {
+		$('vcat').addEvent('change', function() {
+		  $('filter').value = 1;
+		  $('filterform').submit();
+		});
+	}
+  if ($('cat')) {
+	  $('cat').addEvent('change', function() {
+	    $('filter').value = 1;
+	    $('filterform').submit();
+	  });
+  }
   
   $$('.customfilter').each(function(element){
     element.addEvent('change', function(){
@@ -71,45 +75,45 @@ window.addEvent('domready', function() {
   </div>
 <?php endif; ?>
 
-<?php if ($this->params->get('show_cat_filter', 1) || $this->params->get('show_vcat_filter', 1)) : ?>
+<?php if ($this->params->get('show_cat_filter', 1) || $this->params->get('show_vcat_filter', 1) || $this->params->get('show_custom_filters', 1)) : ?>
 <form action="<?php echo $this->action; ?>" method="post" id="filterform">
 <div id="red_filter" class="floattext">
     <div class="el_fleft">
     <table>
 	    <?php if ($this->params->get('show_vcat_filter', 1)) : ?>
-      <tr>
-        <td>
-		      <label for="filter_type"><?php echo JText::_('FILTER VENUES CATEGORY'); ?></label>
-		    </td>
-		    <td>
-		      <?php echo $this->lists['venuescats']; ?>
-        </td>
-	    </tr>
+	      <tr>
+	        <td>
+			      <label for="filter_type"><?php echo JText::_('FILTER VENUES CATEGORY'); ?></label>
+			    </td>
+			    <td>
+			      <?php echo $this->lists['venuescats']; ?>
+	        </td>
+		    </tr>
 	    <?php endif; ?>
 	    <?php if ($this->params->get('show_cat_filter', 1)) : ?>
-      <tr>
-        <td>
-	      <label for="filter_type"><?php echo JText::_('FILTER EVENTS CATEGORY'); ?></label>
-        </td>
-        <td>
-	      <?php echo $this->lists['eventscats']; ?>
-        </td>
-      </tr>
+	      <tr>
+	        <td>
+		      <label for="filter_type"><?php echo JText::_('FILTER EVENTS CATEGORY'); ?></label>
+	        </td>
+	        <td>
+		      <?php echo $this->lists['eventscats']; ?>
+	        </td>
+	      </tr>
       <?php endif; ?>
-    <?php if ($this->params->get('show_custom_filters', 1)) : ?>
-      <?php foreach ((array) $this->lists['customfilters'] as $filter) : ?>
-      <tr>
-        <td>
-	      <label for="filter_type"><?php echo $filter->name; ?></label>
-        </td>
-        <td>
-	      <?php echo $filter->renderFilter('class="customfilter"'); ?>
-        </td>
-      </tr>
-      <?php endforeach; ?>
+      <?php if ($this->params->get('show_custom_filters', 1)) : ?>
+	      <?php foreach ((array) $this->lists['customfilters'] as $filter) : ?>
+	      <tr>
+	        <td>
+		      <label for="filter_type"><?php echo $filter->name; ?></label>
+	        </td>
+	        <td>
+		      <?php echo $filter->renderFilter('class="customfilter"'); ?>
+	        </td>
+	      </tr>
+	      <?php endforeach; ?>
+      <?php endif; ?>
     </table>
     </div>
-    <?php endif; ?>
 </div>
 <input type="hidden" name="filter" id="filter" value="0"/>
 </form>
