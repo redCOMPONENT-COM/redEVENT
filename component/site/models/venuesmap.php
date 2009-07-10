@@ -140,8 +140,9 @@ class RedEventModelVenuesmap extends JModel
 	function _buildQuery()
 	{
 		$app = & JFactory::getApplication();
-    $vcat = $app->getUserState('com_redevent.venuemap.vcat');
-    $cat = $app->getUserState('com_redevent.venuemap.cat');
+    $vcat = $app->getUserState('com_redevent.venuesmap.vcat');
+    $cat = $app->getUserState('com_redevent.venuesmap.cat');
+    $customs = $app->getUserState('com_redevent.venuesmap.customs');
         
 		//check archive task
 		$task 	= JRequest::getVar('task', '', '', 'string');
@@ -172,7 +173,12 @@ class RedEventModelVenuesmap extends JModel
 							. ' INNER JOIN #__redevent_venues_categories AS top ON vcat.lft BETWEEN top.lft AND top.rgt '
 							;
 		}
-	  
+		foreach ((array) $customs as $key => $custom)
+		{
+			if ($custom != '') {
+			  $query .= ' INNER JOIN #__redevent_fields_values AS custom'.$key.' ON custom'.$key.'.object_id = x.eventid AND custom'.$key.'.field_id = ' . $this->_db->Quote($key);
+			}
+		}	  
 		// where
 		$query .= ' WHERE v.published = 1 '
 				. $eventstate
@@ -185,6 +191,15 @@ class RedEventModelVenuesmap extends JModel
     {
       $query .= ' AND top.id = ' . $this->_db->Quote($vcat);
     }		
+    foreach ((array) $customs as $key => $custom)
+    {
+      if ($custom != '') {
+      	if (is_array($custom)) {
+      		$custom = implode("/n", $custom);
+      	}
+        $query .= ' AND custom'.$key.'.value LIKE ' . $this->_db->Quote('%'.$custom.'%');
+      }
+    }
     
 		$query .= ' GROUP BY v.id'
 						. ' ORDER BY v.venue'

@@ -531,7 +531,6 @@ class redEVENT_tags {
     {
     	if (isset($fields[$tag]))
     	{
-    		$field = new TCustomfield();
     		$obj = new stdclass();
     		$obj->text_name = $tag;
         $obj->text_field = redEVENTHelper::renderFieldValue($fields[$tag]);

@@ -73,7 +73,7 @@ class TCustomfieldCheckbox extends TCustomfield {
       $value = $customs[$this->id];
     }
     else {
-      $value = '';
+      $value = array();
     }
         
     $html = '';    
@@ -83,7 +83,7 @@ class TCustomfieldCheckbox extends TCustomfield {
     {
       foreach ($options as $opt) {
         $opt = trim($opt);
-        $html .= '<input type="checkbox" name="custom'.$this->id.'[]" value="'.$opt.'"'.(strstr($value, $opt) ? ' checked="checked"':'')." $attributes " .'/>'.$opt;
+        $html .= '<input type="checkbox" name="filtercustom['.$this->id.'][]" value="'.$opt.'"'.(in_array($opt, $value) ? ' checked="checked"':'')." $attributes " .'/>'.$opt;
       }
     }
     return $html;

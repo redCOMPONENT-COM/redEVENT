@@ -72,8 +72,8 @@ class RedeventViewVenuesmap extends JView
     $document->addScript($this->baseurl.'/components/com_redevent/assets/js/labeled_marker.js');
     
     // filters
-    $vcat = $mainframe->getUserStateFromRequest('com_redevent.venuemap.vcat', 'vcat', $params->def('vcat', 0), 'int');
-    $cat = $mainframe->getUserStateFromRequest('com_redevent.venuemap.cat', 'cat', $params->def('cat', 0), 'int');
+    $vcat = $mainframe->getUserStateFromRequest('com_redevent.venuesmap.vcat', 'vcat', $params->def('vcat', 0), 'int');
+    $cat = $mainframe->getUserStateFromRequest('com_redevent.venuesmap.cat', 'cat', $params->def('cat', 0), 'int');
     $custom = $this->get('CustomFilters'); 
 
 		$rows 		= & $this->get('Data');
