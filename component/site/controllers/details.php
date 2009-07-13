@@ -51,6 +51,8 @@ class RedEventControllerDetails extends RedEventController
 	 */
 	function display() {
 		
+		if (JRequest::getVar('format', 'html') == 'html')
+		{
 		/* Create the view object */
 		$view = $this->getView('details', 'html');
 		$this->addModelPath(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models');
@@ -64,6 +66,10 @@ class RedEventControllerDetails extends RedEventController
 		
 		/* Now display the view. */
 		$view->display();
+		}
+		else {
+			parent::display();
+		}
 	}
 }
 ?>

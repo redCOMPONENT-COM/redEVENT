@@ -40,15 +40,18 @@ class RedeventModelDetails extends JModel
 	 *
 	 * @var array
 	 */
-	var $_details = null;
+	protected $_details = null;
 
+	protected $_xreflinks = null;
 
 	/**
 	 * registeres in array
 	 *
 	 * @var array
 	 */
-	var $_registers = null;
+	protected $_registers = null;
+	
+	protected $_id = null;
 
 	/**
 	 * Constructor
@@ -162,6 +165,48 @@ class RedeventModelDetails extends JModel
 		}
 		return true;
 	}
+	
+ 
+  /**
+   * Load all venues and their signup links
+   */
+  public function getXrefLinks() 
+  {
+  	if (empty($this->_xreflinks))
+  	{
+	    $q = " SELECT e.*, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, x.course_price, "
+	        . " x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, v.venue, x.venueid, x.details, 
+	          v.city AS location,
+	          v.country, v.locimage,
+	          UNIX_TIMESTAMP(x.dates) AS unixdates,
+	          CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(':', v.id, v.alias) ELSE v.id END as venueslug
+	      FROM #__redevent_events AS e
+	      INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id
+	      INNER JOIN #__redevent_venues AS v ON x.venueid = v.id
+	      LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id
+	      LEFT JOIN #__redevent_categories AS c ON xcat.category_id = c.id
+	      WHERE x.published = 1
+	      AND e.id = ".$this->_db->Quote($this->_id) ."
+	      GROUP BY x.id
+	      ";
+	    $this->_db->setQuery($q);
+	    $rows = $this->_db->loadObjectList();
+	    	  	
+	    foreach ((array)$rows as $k => $r) {
+	      $query = ' SELECT c.id, c.catname, c.image, '
+	             . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(":", c.id, c.alias) ELSE c.id END as slug '
+	             . ' FROM #__redevent_categories AS c '
+	             . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = c.id '
+	             . ' WHERE xcat.event_id = ' . $this->_db->Quote($r->id)
+	             . ' ORDER BY c.lft '
+	             ;
+	      $this->_db->setQuery($query);
+	      $rows[$k]->categories = $this->_db->loadObjectList();
+	    }
+	    $this->_xreflinks = $rows;
+  	}
+  	return $this->_xreflinks;
+  }
 
 	/**
 	 * Method to build the WHERE clause of the query to select the details

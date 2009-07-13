@@ -95,6 +95,7 @@ class redEVENT_tags {
 	 * [waitinglistplacesleft] 
 	 */
 	public function ReplaceTags($page) {
+		//exit($page);
 		if ($this->_xref) {
       $elsettings = redEVENTHelper::config();
 
