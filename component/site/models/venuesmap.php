@@ -143,6 +143,7 @@ class RedEventModelVenuesmap extends JModel
     $vcat = $app->getUserState('com_redevent.venuesmap.vcat');
     $cat = $app->getUserState('com_redevent.venuesmap.cat');
     $customs = $app->getUserState('com_redevent.venuesmap.customs');
+    $params = $app->getParams();
         
 		//check archive task
 		$task 	= JRequest::getVar('task', '', '', 'string');
@@ -153,11 +154,16 @@ class RedEventModelVenuesmap extends JModel
 		}
 		
 		//get events
-		$query = 'SELECT v.*, COUNT( x.id ) AS assignedevents,'
+		$query = 'SELECT v.*, COUNT(x.id) AS assignedevents,'
 						. ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as slug'
 						. ' FROM #__redevent_venues as v'
-						. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.venueid = v.id'
 						;
+		if ($params->get('show_empty_venues', 0)) {
+		  $query .= ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.venueid = v.id'. $eventstate;
+		}
+		else {
+      $query .= ' INNER JOIN #__redevent_event_venue_xref AS x ON x.venueid = v.id'. $eventstate;			
+		}
 	
     if ($cat)
     {
@@ -178,10 +184,9 @@ class RedEventModelVenuesmap extends JModel
 			if ($custom != '') {
 			  $query .= ' INNER JOIN #__redevent_fields_values AS custom'.$key.' ON custom'.$key.'.object_id = x.eventid AND custom'.$key.'.field_id = ' . $this->_db->Quote($key);
 			}
-		}	  
+		}
 		// where
 		$query .= ' WHERE v.published = 1 '
-				. $eventstate
 				;
     if ($cat)
     {

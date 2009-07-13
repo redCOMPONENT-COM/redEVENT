@@ -166,6 +166,8 @@ class RedEventModelVenue extends JModel
 			$venue->country				= null;
 			$venue->locimage			= JText::_('SELECTIMAGE');
 			$venue->map					= 1;
+      $venue->latitude      = null;
+      $venue->longitude     = null;
 			$venue->published			= 1;
 			$venue->locdescription		= null;
 			$venue->meta_keywords		= null;

@@ -84,9 +84,8 @@ class RedeventModelVenue extends JModel
 				  . ' COUNT( a.id ) AS assignedevents,'
 	        . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as slug'
 	        . ' FROM #__redevent_venues as v'
-	        . ' LEFT JOIN #__redevent_event_venue_xref AS a ON a.venueid = v.id'
+	        . ' LEFT JOIN #__redevent_event_venue_xref AS a ON a.venueid = v.id AND a.published = 1'
 	        . ' WHERE v.id = ' . $this->_db->Quote($this->_id)
-	        . '   AND a.published = 1 '
 	        . ' GROUP BY v.id '
 	        ;
 				$this->_db->setQuery($query);

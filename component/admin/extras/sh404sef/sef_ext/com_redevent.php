@@ -114,7 +114,7 @@ else {
     {
 	    $q = "SELECT e.title
 	            FROM  #__redevent_events e
-	            WHERE e.id = ".$id;
+	            WHERE e.id = ".(int)$id;
 	    $db->setQuery($q);
 	    $details = $db->loadObject();
     }

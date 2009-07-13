@@ -21,6 +21,10 @@
         <option value="0">No</option>
         <option value="1">Yes</option>
       </param>
+      <param name="show_empty_venues" type="radio" default="0" label="DISPLAY EMPTY VENUES" description="DISPLAY EMPTY VENUES DESC">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </param>
     </params>
 	</state>
 </metadata>
