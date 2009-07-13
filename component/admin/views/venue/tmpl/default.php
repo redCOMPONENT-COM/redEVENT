@@ -30,21 +30,31 @@ defined('_JEXEC') or die('Restricted access');
 		var form = document.adminForm;
 		var locdescription = <?php echo $this->editor->getContent( 'locdescription' ); ?>
 
+    // check if map is set to yes
+    var map = $$('input[name=map]');
+    var mapset = false;
+    for (var i = 0; i < map.length ; i++) {
+      if (map[i].checked) {
+        mapset = true;
+        break;
+      }
+    }
+
 		if (task == 'cancel') {
 			submitform( task );
 		} else if (form.venue.value == ""){
 			alert( "<?php echo JText::_( 'ADD VENUE' ); ?>" );
 			form.venue.focus();
-		} else if (form.city.value == "" && form.map.value == "1"){
+		} else if (form.city.value == "" && mapset){
 			alert( "<?php echo JText::_( 'ADD CITY' ); ?>" );
 			form.city.focus();
-		} else if (form.street.value == "" && form.map.value == "1"){
+		} else if (form.street.value == "" && mapset){
 			alert( "<?php echo JText::_( 'ADD STREET' ); ?>" );
 			form.street.focus();
-		} else if (form.plz.value == "" && form.map.value == "1"){
+		} else if (form.plz.value == "" && mapset){
 			alert( "<?php echo JText::_( 'ADD ZIP' ); ?>" );
 			form.plz.focus();
-		} else if (form.country.value == "" && form.map.value == "1"){
+		} else if (form.country.value == "" && mapset){
 			alert( "<?php echo JText::_( 'ADD COUNTRY' ); ?>" );
 			form.country.focus();
 		} else {

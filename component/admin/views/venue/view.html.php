@@ -40,7 +40,7 @@ class RedEventViewVenue extends JView {
 
 		// Load pane behavior
 		jimport('joomla.html.pane');
-		JHTML::_('behavior.tooltip');
+		JHTML::_('behavior.mootools');
 
 		//initialise variables
 		$editor 	= & JFactory::getEditor();
