@@ -83,19 +83,31 @@ defined('_JEXEC') or die('Restricted access');
 				<td><div id="timedetails">
 				<?php if (isset($this->eventvenues[$row->id])) { ?>
 					<table class="adminlist">
-					<thead><tr><th><?php echo JText::_('VENUE'); ?></th><th><?php echo JText::_('CITY'); ?></th><th><?php echo JText::_('DATE'); ?></th><th><?php echo JText::_('TIME'); ?></th></tr></thead>
+					<thead>
+					 <tr>
+					   <th class="colvenue"><?php echo JText::_('VENUE'); ?></th>
+					   <th class="colcity"><?php echo JText::_('CITY'); ?></th>
+					   <th class="coldate"><?php echo JText::_('DATE'); ?></th>
+					   <th class="coltime"><?php echo JText::_('TIME'); ?></th>
+					 </tr>
+				  </thead>
 					<tbody>
 					<?php
 						foreach ($this->eventvenues[$row->id] as $key => $eventdetails) {
 							/* Get the date */
-							$date = strftime( $this->elsettings->formatdate, strtotime( $eventdetails->dates )); 
+							$date = (!isset($eventdetails->dates) ? Jtext::_('Open date') : strftime( $this->elsettings->formatdate, strtotime( $eventdetails->dates ))); 
 							$enddate 	= strftime( $this->elsettings->formatdate, strtotime( $eventdetails->enddates ));
-							$displaydate = $date.' - '.$enddate;
+							$displaydate = $date. ($eventdetails->enddates ? ' - '.$enddate: '');
 							
+              $displaytime = '';
 							/* Get the time */
-							$time = strftime( $this->elsettings->formattime, strtotime( $eventdetails->times ));
-							$endtimes = strftime( $this->elsettings->formattime, strtotime( $eventdetails->endtimes ));
-							$displaytime = $time.' '.$this->elsettings->timename.' - '.$endtimes. ' '.$this->elsettings->timename;
+							if (isset($eventdetails->times)) {
+							 $displaytime = strftime( $this->elsettings->formattime, strtotime( $eventdetails->times )).' '.$this->elsettings->timename;
+							 
+                if (isset($eventdetails->endtimes)) {
+                  $displaytime .= ' - '.strftime( $this->elsettings->formattime, strtotime( $eventdetails->endtimes )). ' '.$this->elsettings->timename;
+                }
+							}
 							echo '<tr class="eventdatetime"><td>'.$eventdetails->venue.'</td><td>'.$eventdetails->city.'</td><td>'.$displaydate.'</td><td>'.$displaytime.'</td></tr>';
 						}
 						?>

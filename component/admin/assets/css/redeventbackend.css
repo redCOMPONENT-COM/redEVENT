@@ -184,3 +184,16 @@ div#pinpointicon {
   position:relative;
   bottom: -30px;
 }
+
+div#timedetails th.colvenue {
+  width: 30%;
+}
+div#timedetails th.colcity {
+  width: 20%;
+}
+div#timedetails th.coldate {
+  width: 30%px;
+}
+div#timedetails th.coltime {
+  width: 20%;
+}

@@ -376,6 +376,13 @@ if (is_array($cols)) {
     $db->setQuery($q);
     $db->query();
   }
+
+  if (stristr($cols['dates']->Null, 'no')) {
+    $q = "ALTER TABLE `#__redevent_event_venue_xref` CHANGE `dates` `dates` DATE NULL DEFAULT NULL";
+    $db->setQuery($q);
+    $db->query();
+    print_r($db->getQuery());
+  }
 }
 
 /* register table */

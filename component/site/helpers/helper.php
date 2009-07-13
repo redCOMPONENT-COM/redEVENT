@@ -140,7 +140,7 @@ class redEVENTHelper {
 			if ($elsettings->oldevent == 1) {
 				// lists event_id for which we are going to delete xrefs
 				$query = ' SELECT x.eventid FROM #__redevent_event_venue_xref AS x '
-               . ' WHERE DATE_SUB(NOW(), INTERVAL '.$elsettings->minus.' DAY) > (IF (x.enddates <> '.$nulldate.', x.enddates, x.dates)) '
+               . ' WHERE x.dates <> '.$nulldate.' AND DATE_SUB(NOW(), INTERVAL '.$elsettings->minus.' DAY) > (IF (x.enddates <> '.$nulldate.', x.enddates, x.dates)) '
                ;
         $db->SetQuery( $query );
         $event_ids = $db->loadResultArray();
@@ -150,7 +150,7 @@ class redEVENTHelper {
         }
         
 				$query = ' DELETE x FROM #__redevent_event_venue_xref AS x '
-				       . ' WHERE DATE_SUB(NOW(), INTERVAL '.$elsettings->minus.' DAY) > (IF (x.enddates <> '.$nulldate.', x.enddates, x.dates)) '
+				       . ' WHERE x.dates <> '.$nulldate.' AND DATE_SUB(NOW(), INTERVAL '.$elsettings->minus.' DAY) > (IF (x.enddates <> '.$nulldate.', x.enddates, x.dates)) '
 				       ;
 				$db->SetQuery( $query );
 				$db->Query();
@@ -170,7 +170,7 @@ class redEVENTHelper {
 			if ($elsettings->oldevent == 2) {
         // lists event_id for which we are going to archive xrefs
         $query = ' SELECT x.eventid FROM #__redevent_event_venue_xref AS x '
-               . ' WHERE DATE_SUB(NOW(), INTERVAL '.$elsettings->minus.' DAY) > (IF (x.enddates <> '.$nulldate.', x.enddates, x.dates)) '
+               . ' WHERE x.dates <> '.$nulldate.' AND DATE_SUB(NOW(), INTERVAL '.$elsettings->minus.' DAY) > (IF (x.enddates <> '.$nulldate.', x.enddates, x.dates)) '
                ;
         $db->SetQuery( $query );
         $event_ids = $db->loadResultArray();
@@ -182,7 +182,7 @@ class redEVENTHelper {
         // update xref to archive
 				$query = ' UPDATE #__redevent_event_venue_xref AS x '
 				       . ' SET x.published = -1 '
-				       . ' WHERE DATE_SUB(NOW(), INTERVAL '.$elsettings->minus.' DAY) > (IF (x.enddates <> '.$nulldate.', x.enddates, x.dates))';
+				       . ' WHERE x.dates <> '.$nulldate.' AND DATE_SUB(NOW(), INTERVAL '.$elsettings->minus.' DAY) > (IF (x.enddates <> '.$nulldate.', x.enddates, x.dates))';
 				$db->SetQuery( $query );
 				$db->Query();
 								
