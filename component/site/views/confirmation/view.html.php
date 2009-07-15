@@ -63,9 +63,23 @@ class RedeventViewConfirmation extends JView
 		if ($key_ok) {
 			switch ($tpl) {
 				case 'confirmation':
-				case 'print':
+				case 'print':					
 					/* Collect registration details */
 					$registration	= $this->get('Details');
+					
+					if (empty($registration['event']->review_message)) 
+					{
+						// nothing in review message, so skip it !
+						$redirect = 'index.php?option=com_redevent&task='.JRequest::getVar('event_task')
+						           .'&xref='.JRequest::getInt('xref')
+						           .'&submit_key='.JRequest::getVar('submit_key')
+						           .'&form_id='.JRequest::getInt('form_id')
+						           .'&view=confirmation&page=final'
+                       .'&action=confirmreg'
+						           ;
+						$mainframe->redirect($redirect);
+						return;			
+					}
 					
 					JRequest::setVar('answers', $registration['answers']);
 					JRequest::setVar('xref', $registration['event']->xref);
