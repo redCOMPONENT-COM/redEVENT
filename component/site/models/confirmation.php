@@ -164,10 +164,7 @@ class RedeventModelConfirmation extends JModel
       
       $attendees[] = $attendee;
 		}
-				
-		/* Add the submission ID */
-		$user->set('answer_id', $useremails[0]->id);
-		
+						        
 		if ($user->id > 1) {
 			/* user is logged in thus contact person */
 		}
@@ -178,8 +175,8 @@ class RedeventModelConfirmation extends JModel
 			{
 				// use info from first attendee to create a new user
 				$attendee = $attendees[0];
-				
-				if (strlen($attendee->getUsername()) > 0 && strlen($attendee->getEmail()) > 0) {
+				if (strlen($attendee->getUsername()) > 0 && strlen($attendee->getEmail()) > 0) 
+				{
 					/* Check if the user already exists in Joomla with this e-mail address */
 					$query = "SELECT id
 							FROM #__users
@@ -194,6 +191,10 @@ class RedeventModelConfirmation extends JModel
 					{
 						/* Load the User helper */
 						jimport('joomla.user.helper');
+						
+            if (!$attendee->getFullname()) {
+            	$attendee->setFullname($attendee->getUsername());
+            }						
 						
 						// Get required system objects
 						$user 		= JFactory::getUser(0);
@@ -226,7 +227,7 @@ class RedeventModelConfirmation extends JModel
 							/* Delete the redFORM entry first */
 							/* Submitter records */
 							$q = "DELETE FROM #__rwf_submitters
-								WHERE submit_key = ".JRequest::getVar('submit_key');
+								WHERE submit_key = ".$db->Quote(JRequest::getVar('submit_key'));
 							$db->setQuery($q);
 							$db->query();
 							
@@ -235,6 +236,40 @@ class RedeventModelConfirmation extends JModel
 						}
 						else
 						{
+							// send mail with account details
+							/* Load the mailer */
+				      $this->Mailer();
+				    
+				      /* Add the email address */
+				      $this->mailer->AddAddress($user->email, $user->name);
+
+				      /* Get the activation link */
+				      $activatelink = '<a href="'.JRoute::_(JURI::root().'index.php?task=confirm&option=com_redevent&confirmid='.str_replace(".", "_", $registration->uip).'x'.$registration->xref.'x'.$registration->uid.'x'.$user->get('answer_id').'x'.JRequest::getVar('submit_key')).'">'.JText::_('Activate').'</a>';
+
+				      /* Mail attendee */
+				      $htmlmsg = '<html><head><title></title></title></head><body>';
+				      $htmlmsg .= str_replace('[activatelink]', $activatelink, $eventsettings->notify_body);
+				      $htmlmsg = str_replace('[fullname]', $user->name, $htmlmsg);
+
+				      $htmlmsg .= '<br /><br />';
+				      $reginfo = nl2br(JText::_('INFORM_USERNAME'));
+				      $reginfo = str_replace('[fullname]', $user->name, $reginfo);
+				      $reginfo = str_replace('[username]', $user->username, $reginfo);
+				      $reginfo = str_replace('[password]', $password, $reginfo);
+				      $htmlmsg .= $reginfo;
+
+				      $htmlmsg .= '</body></html>';
+				      $tags = new redEVENT_tags;
+				      $this->mailer->setBody($tags->ReplaceTags($htmlmsg));
+				      $this->mailer->setSubject($tags->ReplaceTags($eventsettings->notify_subject));
+
+				      /* Count number of messages sent */
+				      if (!$this->mailer->Send()) {
+				      	RedeventHelperLog::simpleLog('Error sending notify message to submitter');
+				      }
+				      /* Clear the mail details */
+				      $this->mailer->ClearAddresses();
+        
 							/* Check if the user needs to be added to Community Builder */
 							if ($elsettings->comunsolution == 1) 
 							{
@@ -253,96 +288,51 @@ class RedeventModelConfirmation extends JModel
 		 * Send a submission mail to the attendantee and/or contactperson 
 		 * This will only work if the contactperson has an e-mail address
 		 **/
-		 
-		if (isset($eventsettings->notify) && $eventsettings->notify && !empty($user->email)) {
+		
+		if (isset($eventsettings->notify) && $eventsettings->notify) 
+		{
 			/* Load the mailer */
 			$this->Mailer();
-			
-			/* Add the email address */
-			$this->mailer->AddAddress($user->email, $user->name);
-			
-			/* Get the activation link */
-			$activatelink = '<a href="'.JRoute::_(JURI::root().'index.php?task=confirm&option=com_redevent&confirmid='.str_replace(".", "_", $registration->uip).'x'.$registration->xref.'x'.$registration->uid.'x'.$user->get('answer_id').'x'.JRequest::getVar('submit_key')).'">'.JText::_('Activate').'</a>';
-			
-			/* Mail attendee */
-			$htmlmsg = '<html><head><title></title></title></head><body>';
-			$htmlmsg .= str_replace('[activatelink]', $activatelink, $eventsettings->notify_body);
-      $htmlmsg = str_replace('[fullname]', $user->name, $htmlmsg);
-			
-			
-			/* Check if user was registered */
-			if (isset($password)) {
-				$htmlmsg .= '<br /><br />';
-				$reginfo = nl2br(JText::_('INFORM_USERNAME'));
-				$reginfo = str_replace('[fullname]', $user->name, $reginfo);
-				$reginfo = str_replace('[username]', $user->username, $reginfo);
-				$reginfo = str_replace('[password]', $password, $reginfo);
-				$htmlmsg .= $reginfo;
-			}
-			
-			$htmlmsg .= '</body></html>';
+      
 			$tags = new redEVENT_tags;
-			$this->mailer->setBody($tags->ReplaceTags($htmlmsg));
-			$this->mailer->setSubject($tags->ReplaceTags($eventsettings->notify_subject));
-			
-			/* Count number of messages sent */
-			if (!$this->mailer->Send()) {
-				RedeventHelperLog::simpleLog('Error sending notify message to submitter');
-			}
-			
-			/* Clear the mail details */
-			$this->mailer->ClearAddresses();
 			
 			/* Now send some mail to the attendants */
-			if (JRequest::getInt('notify_attendants', false)) 
-			{
-				foreach ($attendees as $attendee) 
-				{
-					if ($attendee->getEmail()) 
-					{						
-						/* Check if we have all the fields */
-						if (!$attendee->getUsername()) $attendee->setUsername($attendee->getEmail());
-						if (!$attendee->getFullname()) $attendee->setFullname($attendee->getUsername());
-						
-						/* Add the email address */
-						$this->mailer->AddAddress($attendee->getEmail(), $attendee->getFullname());
-						
-						/* Mail attendee */
-						$htmlmsg = '<html><head><title></title></title></head><body>';
-						$htmlmsg .= str_replace('[activatelink]', $activatelink, $eventsettings->notify_body);
-            $htmlmsg = str_replace('[fullname]', $attendee->getFullname(), $htmlmsg);
-						
-						
-						/* Check if user just registered */
-						if (isset($password)) 
-						{
-							$htmlmsg .= '<br /><br />';
-							$reginfo = nl2br(JText::_('INFORM_USERNAME'));
-							$reginfo = str_replace('[fullname]', $attendee->getFullname(), $reginfo);
-							$reginfo = str_replace('[username]', $attendee->getUsername(), $reginfo);
-							$reginfo = str_replace('[password]', $password, $reginfo);
-							$htmlmsg .= $reginfo;
-						}
-						
-						$htmlmsg .= '</body></html>';
-						
-						$this->mailer->setBody($htmlmsg);
-						$this->mailer->Subject = $eventsettings->notify_subject;
-						
-						/* Count number of messages sent */
-						$this->mailer->Send();
-			      if (!$this->mailer->Send()) {
-			        RedeventHelperLog::simpleLog('Error sending notify message to submitted attendants');
-			      }
-						
-						/* Clear the mail details */
-						$this->mailer->ClearAddresses();
-					}
-					else { 
-						/* Not sending mail as there is no e-mail address */
-					}
-				}
-			}
+      foreach ($attendees as $attendee)
+      {
+      	if ($attendee->getEmail())
+      	{
+      		/* Check if we have all the fields */
+      		if (!$attendee->getUsername()) $attendee->setUsername($attendee->getEmail());
+      		if (!$attendee->getFullname()) $attendee->setFullname($attendee->getUsername());
+
+      		/* Add the email address */
+      		$this->mailer->AddAddress($attendee->getEmail(), $attendee->getFullname());
+              
+      		$activatelink = '<a href="'.JRoute::_(JURI::root().'index.php?task=confirm&option=com_redevent&confirmid='.str_replace(".", "_", $registration->uip).'x'.$registration->xref.'x'.$registration->uid.'x'.$user->get('answer_id').'x'.JRequest::getVar('submit_key')).'">'.JText::_('Activate').'</a>';
+      		
+      		/* Mail attendee */
+      		$htmlmsg = '<html><head><title></title></title></head><body>';
+      		$body = str_replace('[activatelink]', $activatelink, $eventsettings->notify_body);
+      		$body = str_replace('[fullname]', $attendee->getFullname(), $body);
+      		$htmlmsg .= $body;
+      		$htmlmsg .= '</body></html>';
+
+      		$this->mailer->setBody($tags->ReplaceTags($htmlmsg));
+      		$this->mailer->setSubject($tags->ReplaceTags($eventsettings->notify_subject));
+
+      		/* Count number of messages sent */
+      		$this->mailer->Send();
+      		if (!$this->mailer->Send()) {
+      			RedeventHelperLog::simpleLog('Error sending notify message to submitted attendants');
+      		}
+
+      		/* Clear the mail details */
+      		$this->mailer->ClearAddresses();
+      	}
+      	else {
+      		/* Not sending mail as there is no e-mail address */
+      	}
+      }
 		}
 		
 		return $registration;
@@ -351,15 +341,20 @@ class RedeventModelConfirmation extends JModel
 	/**
      * Initialise the mailer object to start sending mails
      */
-	private function Mailer() {
-		global $mainframe;
-		jimport('joomla.mail.helper');
-		/* Start the mailer object */
-		$this->mailer = JFactory::getMailer();
-		$this->mailer->isHTML(true);
-		$this->mailer->From = $mainframe->getCfg('mailfrom');
-		$this->mailer->FromName = $mainframe->getCfg('sitename');
-		$this->mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
+	private function Mailer() 
+	{
+		if (empty($this->mailer))
+		{
+			$mainframe = & JFactory::getApplication();
+			jimport('joomla.mail.helper');
+			/* Start the mailer object */
+			$this->mailer = JFactory::getMailer();
+			$this->mailer->isHTML(true);
+			$this->mailer->From = $mainframe->getCfg('mailfrom');
+			$this->mailer->FromName = $mainframe->getCfg('sitename');
+			$this->mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
+		}
+		return $this->mailer;
 	}
 	
 	/**
