@@ -255,21 +255,23 @@ class RedeventModelDetails extends JModel
 	 * @since	0.9
 	 * @todo Complete CB integration
 	 */
-	function getRegisters() {
+	function getRegisters() 
+	{
 		$db = JFactory::getDBO();
 
 		// first, get all submissions			
 		$query = ' SELECT r.*, s.waitinglist, s.confirmed, s.confirmdate, s.submit_key '
 						. ' FROM #__redevent_register AS r '
 						. ' INNER JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key '
-						. ' INNER JOIN #__users AS u ON r.uid = u.id '
+						. ' LEFT JOIN #__users AS u ON r.uid = u.id '
 						. ' WHERE s.xref = ' . $this->_xref
             . ' AND s.confirmed = 1'
 						;
 		$db->setQuery($query);
 		$submitters = $db->loadObjectList('submit_key');
 		
-		if ($submitters === null) {
+		if ($submitters === null)
+		{
 			$msg = JText::_('ERROR GETTING ATTENDEES');
 			$this->setError($msg);
 			RedeventError::raiseWarning(5, $msg);
@@ -284,7 +286,7 @@ class RedeventModelDetails extends JModel
 		if (!empty($this->_details->showfields) && $this->_details->redform_id > 0) 
 		{
 			// load form fields
-			$q = "SELECT field, form_id 
+			$q = "SELECT id, field, form_id 
 				FROM #__rwf_fields j
 				WHERE j.id in (".$this->_details->showfields.")";
 			$db->setQuery($q);
@@ -299,7 +301,7 @@ class RedeventModelDetails extends JModel
 			$fields = $db->loadObjectList();
 			$table_fields = array();
 			foreach ($fields as $key => $field) {
-				$table_fields[] = 'a.`' . strtolower( str_replace(' ', '', $field->field) ).'`';
+				$table_fields[] = 'a.field_'. $field->id;
 			}
 			
 			$query = ' SELECT ' . implode(', ', $table_fields)

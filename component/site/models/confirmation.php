@@ -26,6 +26,8 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
+require_once JPATH_COMPONENT.DS.'classes'.DS.'attendee.class.php';
+
 /**
  * EventList Component Details Model
  *
@@ -85,14 +87,15 @@ class RedeventModelConfirmation extends JModel
 	/**
 	 * Send e-mail confirmations
 	 */
-	public function getMailConfirmation() {
-		global $mainframe;
+	public function getMailConfirmation() 
+	{
+		$mainframe = & JFactory::getApplication();
 		
 		/* Load database connection */
-		$db = JFactory::getDBO();
+		$db = & JFactory::getDBO();
 		
 		/* Determine contact person */
-		$user = JFactory::getUser();
+		$user = & JFactory::getUser();
 		
 		/* Get the global settings */
 		$elsettings = redEVENTHelper::config();
@@ -117,7 +120,7 @@ class RedeventModelConfirmation extends JModel
 		$eventsettings = $db->loadObject();
 		
 		/* Get a list of fields that are of type email/username/fullname */
-		$q = "SELECT ".$db->nameQuote('field').", fieldtype 
+		$q = "SELECT f.id, f.field, v.fieldtype 
 			FROM #__rwf_fields f, #__rwf_values v
 			WHERE f.id = v.field_id
 			AND f.published = 1
@@ -125,59 +128,75 @@ class RedeventModelConfirmation extends JModel
 			AND fieldtype in ('email', 'username', 'fullname')
 			GROUP BY fieldtype";
 		$db->setQuery($q);
-		$selectfields = $db->loadObjectList();
+		$selectfields = $db->loadObjectList('fieldtype');
 
 		/* Get the username and e-mail from the redFORM database */
-		$getfields = '';
-		$last = end(array_keys($selectfields));
-		foreach ($selectfields as $key => $selectfield) {
-			$q = "SELECT LOWER(REPLACE(".$db->Quote($selectfield->field).", ' ',''))";
-			$db->setQuery($q);
-			$replacefield = $db->loadResult();
-			$getfields .= $db->nameQuote($replacefield)." AS ".$selectfield->fieldtype;
-			if ($last != $key) $getfields .= ",";
+		$getfields = array($db->nameQuote('id'));
+		foreach ((array) $selectfields as $selectfield) {
+			$getfields[] = $db->nameQuote('field_'. $selectfield->id);
 		}
 		
+		
 		/* Get list of attendees */
-		$q = "SELECT id, ".$getfields." 
-			FROM #__rwf_forms_".$eventsettings->redform_id."
-			WHERE id IN (SELECT answer_id FROM #__rwf_submitters WHERE submit_key = ".$db->Quote($registration->submit_key).")";
+		$q = ' SELECT '. implode(', ', $getfields)
+		   . ' FROM '. $db->nameQuote('#__rwf_forms_'.$eventsettings->redform_id)
+		   . ' WHERE id IN (SELECT answer_id FROM #__rwf_submitters WHERE submit_key = '.$db->Quote($registration->submit_key).')'
+		   ;
 		$db->setQuery($q);
 		$useremails = $db->loadObjectList();
 		
-		/* Set up user object */
-		$user->set('email', $useremails[0]->email);
-		if (isset($useremails[0]->username)) $user->set('username', str_replace(" ", "", $useremails[0]->username));
-		else $user->set('username', $useremails[0]->email);
-		if (isset($useremails[0]->fullname)) $user->set('name', $useremails[0]->fullname);
-		else $user->set('name', $user->get('username'));
-		
+		$attendees = array();
+		foreach ($useremails as $attendeeinfo)
+		{
+			$attendee = new REattendee($attendeeinfo->id);
+			if (isset($selectfields['fullname'])) {
+				$property = 'field_'. $selectfields['fullname']->id;
+				$attendee->setFullname($attendeeinfo->$property);
+			}
+      if (isset($selectfields['username'])) {
+        $property = 'field_'. $selectfields['username']->id;
+        $attendee->setUsername($attendeeinfo->$property);
+      }
+      if (isset($selectfields['email'])) {
+        $property = 'field_'. $selectfields['email']->id;
+        $attendee->setEmail($attendeeinfo->$property);
+      }
+      
+      $attendees[] = $attendee;
+		}
+				
 		/* Add the submission ID */
 		$user->set('answer_id', $useremails[0]->id);
 		
 		if ($user->id > 1) {
 			/* user is logged in thus contact person */
 		}
-		else {
+		else 
+		{
 			/* Register the user in Joomla if chosen*/
-			if ($eventsettings->juser) {
-				if (strlen($user->username) > 0 && strlen($user->email) > 0) {
+			if ($eventsettings->juser) 
+			{
+				// use info from first attendee to create a new user
+				$attendee = $attendees[0];
+				
+				if (strlen($attendee->getUsername()) > 0 && strlen($attendee->getEmail()) > 0) {
 					/* Check if the user already exists in Joomla with this e-mail address */
 					$query = "SELECT id
 							FROM #__users
-							WHERE email = ".$db->Quote($user->email)."
+							WHERE email = ".$db->Quote($attendee->getEmail())."
 							LIMIT 1";
 					$db->setQuery($query);
 					$found_id = $db->loadResult();
 					if ($found_id) {
 						$uid = $found_id;
 					}
-					else {
+					else 
+					{
 						/* Load the User helper */
 						jimport('joomla.user.helper');
 						
 						// Get required system objects
-						$user 		= clone(JFactory::getUser());
+						$user 		= JFactory::getUser(0);
 						$pathway 	= $mainframe->getPathway();
 						$config		= JFactory::getConfig();
 						$authorize	= JFactory::getACL();
@@ -188,6 +207,9 @@ class RedeventModelConfirmation extends JModel
 						
 						// Set some initial user values
 						$user->set('id', 0);
+            $user->set('name', $attendee->getFullname());
+            $user->set('username', $attendee->getUsername());
+            $user->set('email', $attendee->getEmail());
 						$user->set('usertype', $newUsertype);
 						$user->set('gid', $authorize->get_group_id( '', $newUsertype, 'ARO' ));
 						$user->set('password', md5($password));
@@ -196,7 +218,8 @@ class RedeventModelConfirmation extends JModel
 						$user->set('registerDate', date('Y-m-d H:i:s'));
 						
 						// If there was an error with registration, set the message and display form
-						if (!$user->save()){
+						if (!$user->save())
+						{
 							RedeventError::raiseWarning('', JText::_($user->getError()));
 							/* We cannot save the user, need to delete already stored user data */
 							
@@ -210,9 +233,11 @@ class RedeventModelConfirmation extends JModel
 							/* All cleaned up, return false */
 							return false;
 						}
-						else {
+						else
+						{
 							/* Check if the user needs to be added to Community Builder */
-							if ($elsettings->comunsolution == 1) {
+							if ($elsettings->comunsolution == 1) 
+							{
 								$q = "INSERT INTO #__comprofiler (id, user_id, avatarapproved, approved, confirmed, banned)
 									VALUES (".$uid.", ".$uid.", 1, 1, 1, 0)";
 								$db->setQuery($q);
@@ -269,29 +294,32 @@ class RedeventModelConfirmation extends JModel
 			$this->mailer->ClearAddresses();
 			
 			/* Now send some mail to the attendants */
-			if (JRequest::getInt('notify_attendants', false)) {
-				foreach ($useremails as $key => $useremail) {
-					if (isset($useremail->email) && !empty($useremail->email)) {
-						
+			if (JRequest::getInt('notify_attendants', false)) 
+			{
+				foreach ($attendees as $attendee) 
+				{
+					if ($attendee->getEmail()) 
+					{						
 						/* Check if we have all the fields */
-						if (!isset($useremail->username)) $useremail->username = $useremail->email;
-						if (!isset($useremail->fullname)) $useremail->fullname = $useremail->username;
+						if (!$attendee->getUsername()) $attendee->setUsername($attendee->getEmail());
+						if (!$attendee->getFullname()) $attendee->setFullname($attendee->getUsername());
 						
 						/* Add the email address */
-						$this->mailer->AddAddress($useremail->email, $useremail->fullname);
+						$this->mailer->AddAddress($attendee->getEmail(), $attendee->getFullname());
 						
 						/* Mail attendee */
 						$htmlmsg = '<html><head><title></title></title></head><body>';
 						$htmlmsg .= str_replace('[activatelink]', $activatelink, $eventsettings->notify_body);
-            $htmlmsg = str_replace('[fullname]', $useremail->fullname, $htmlmsg);
+            $htmlmsg = str_replace('[fullname]', $attendee->getFullname(), $htmlmsg);
 						
 						
-						/* Check if user was registered */
-						if (isset($password)) {
+						/* Check if user just registered */
+						if (isset($password)) 
+						{
 							$htmlmsg .= '<br /><br />';
 							$reginfo = nl2br(JText::_('INFORM_USERNAME'));
-							$reginfo = str_replace('[fullname]', $useremail->fullname, $reginfo);
-							$reginfo = str_replace('[username]', $useremail->username, $reginfo);
+							$reginfo = str_replace('[fullname]', $attendee->getFullname(), $reginfo);
+							$reginfo = str_replace('[username]', $attendee->getUsername(), $reginfo);
 							$reginfo = str_replace('[password]', $password, $reginfo);
 							$htmlmsg .= $reginfo;
 						}
