@@ -308,7 +308,7 @@ class RedeventModelConfirmation extends JModel
       		/* Add the email address */
       		$this->mailer->AddAddress($attendee->getEmail(), $attendee->getFullname());
               
-      		$activatelink = '<a href="'.JRoute::_(JURI::root().'index.php?task=confirm&option=com_redevent&confirmid='.str_replace(".", "_", $registration->uip).'x'.$registration->xref.'x'.$registration->uid.'x'.$user->get('answer_id').'x'.JRequest::getVar('submit_key')).'">'.JText::_('Activate').'</a>';
+      		$activatelink = '<a href="'.JRoute::_(JURI::root().'index.php?task=confirm&option=com_redevent&confirmid='.str_replace(".", "_", $registration->uip).'x'.$registration->xref.'x'.$registration->uid.'x'.$attendee->getAnswerId().'x'.JRequest::getVar('submit_key')).'">'.JText::_('Activate').'</a>';
       		
       		/* Mail attendee */
       		$htmlmsg = '<html><head><title></title></title></head><body>';

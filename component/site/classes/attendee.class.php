@@ -51,5 +51,10 @@ class REattendee {
   {
     $this->_answer_id = (int) $answer_id; 
   }
+  
+  public function getAnswerId()
+  {
+    return $this->_answer_id; 
+  }
 }
 ?>

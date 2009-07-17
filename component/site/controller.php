@@ -546,54 +546,58 @@ class RedeventController extends JController
 				$id_details = $db->loadObject();
 				
 				/* Find out what the fieldname is for the email field */
-				$q = "SELECT ".$db->nameQuote('field').", fieldtype 
+				$q = "SELECT f.id
 					FROM #__rwf_fields f, #__rwf_values v
 					WHERE f.id = v.field_id
 					AND f.published = 1
 					AND f.form_id = ".$id_details->form_id."
-					AND fieldtype in ('email')
+					AND fieldtype = 'email'
 					LIMIT 1";
 				$db->setQuery($q);
 				$selectfield = $db->loadResult();
 				
-				/* Inform the ids that they can attend the event */
-				$q = "SELECT LOWER(REPLACE(".$db->Quote($selectfield).", ' ',''))";
-				$db->setQuery($q);
-				$field = $db->loadResult();
-				$query = "SELECT `".$field."`
-						FROM #__rwf_forms_".$id_details->form_id."
-						WHERE ID = ".$id_details->answer_id;
-				$db->setQuery($query);
-				$addresses = $db->loadResultArray();
-				
-				/* Check if there are any addresses to be mailed */
-				if (count($addresses) > 0) {
-					/* Start mailing */
-					$this->Mailer();
-					foreach ($addresses as $key => $email) {
-						/* Send a off mailinglist mail to the submitter if set */
-						/* Add the email address */
-						$this->mailer->AddAddress($email);
-						
-						/* Mail submitter */
-						$htmlmsg = '<html><head><title></title></title></head><body>'.$tags->ReplaceTags($eventdata->notify_confirm_body).'</body></html>';
-						$this->mailer->setBody($htmlmsg);
-						$this->mailer->setSubject($tags->ReplaceTags($eventdata->notify_confirm_subject));
-						
-						/* Send the mail */
-						if (!$this->mailer->Send()) {
-							$mainframe->enqueueMessage(JText::_('THERE WAS A PROBLEM SENDING MAIL'));
-              RedeventHelperLog::simpleLog('Error sending confirm email'.': '.$this->mailer->error);
+				if (!empty($selectfield)) 
+				{					
+					/* Inform the ids that they can attend the event */
+					$query = "SELECT ". $db->nameQuote('field_'. $selectfield) . "
+							FROM #__rwf_forms_".$id_details->form_id."
+							WHERE ID = ".$id_details->answer_id;
+					$db->setQuery($query);
+					$addresses = $db->loadResultArray();
+					
+					/* Check if there are any addresses to be mailed */
+					if (count($addresses) > 0) {
+						/* Start mailing */
+						$this->Mailer();
+						foreach ($addresses as $key => $email) {
+							/* Send a off mailinglist mail to the submitter if set */
+							/* Add the email address */
+							$this->mailer->AddAddress($email);
+							
+							/* Mail submitter */
+							$htmlmsg = '<html><head><title></title></title></head><body>'.$tags->ReplaceTags($eventdata->notify_confirm_body).'</body></html>';
+							$this->mailer->setBody($htmlmsg);
+							$this->mailer->setSubject($tags->ReplaceTags($eventdata->notify_confirm_subject));
+							
+							/* Send the mail */
+							if (!$this->mailer->Send()) {
+								$mainframe->enqueueMessage(JText::_('THERE WAS A PROBLEM SENDING MAIL'));
+	              RedeventHelperLog::simpleLog('Error sending confirm email'.': '.$this->mailer->error);
+							}
+							
+							/* Clear the mail details */
+							$this->mailer->ClearAddresses();
 						}
-						
-						/* Clear the mail details */
-						$this->mailer->ClearAddresses();
 					}
 				}
 			}
 		}
-		else if ($regdata && $regdata->confirmed == 1) $this->setMessage(JText::_('YOUR SUBMISSION HAS ALREADY BEEN CONFIRMED'));
-		else $this->setMessage(JText::_('YOUR SUBMISSION CANNOT BE CONFIRMED'));
+		else if ($regdata && $regdata->confirmed == 1) {
+			$this->setMessage(JText::_('YOUR SUBMISSION HAS ALREADY BEEN CONFIRMED'));
+		}
+		else {
+			$this->setMessage(JText::_('YOUR SUBMISSION CANNOT BE CONFIRMED'));
+		}
 		
 		$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=details&xref=' . $xref, false));
 	 }
