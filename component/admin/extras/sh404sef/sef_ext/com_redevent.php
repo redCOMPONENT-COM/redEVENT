@@ -24,24 +24,70 @@ $shLangIso = shLoadPluginLanguage( 'com_redevent', $shLangIso, '_COM_SEF_REDEVEN
 if (isset($task) && $task == 'createpdfemail') $dosef = false;
 else if (isset($page) && $page == 'print') $dosef = false;
 else {
+	  
+  /* Get the DB connection */
+  $db = JFactory::getDBO();
   
   // do something about that Itemid thing
-  if (eregi('Itemid=[0-9]+', $string) === false) { // if no Itemid in non-sef URL
+  if (eregi('Itemid=[0-9]+', $string) === false) 
+  { // if no Itemid in non-sef URL
     // V 1.2.4.t moved back here
-    if ($sefConfig->shInsertGlobalItemidIfNone && !empty($shCurrentItemid)) {
+    // try to find an item id that belongs to redevent fo default routing.
+    if (empty($shCurrentItemid)) 
+    {
+	    $component =& JComponentHelper::getComponent('com_redevent');
+	
+	    $menus  = & JSite::getMenu();
+	    $items  = $menus->getItems('componentid', $component->id);
+	    $access = 0;
+
+	    if (isset($view) && !empty($view))
+	    {
+	      foreach($items as $item)
+	      {
+	        if ((@$item->query['view'] == $view) && ($item->published == 1) && ($item->access <= $access)) {
+	          $shCurrentItemid = $item->id;
+	          break;
+	        }
+	      }
+	    }
+      if (empty($shCurrentItemid))
+      {
+	      //no menuitem exists -> return first possible match
+	      foreach($items as $item)
+	      {
+	        if ($item->published == 1 && $item->access <= $access) 
+	        {
+            $shCurrentItemid = $item->id;
+            break;
+	        }
+	      }
+      }
+    }
+    
+    if ($sefConfig->shInsertGlobalItemidIfNone && !empty($shCurrentItemid)) 
+    {
       $string .= '&Itemid='.$shCurrentItemid; ;  // append current Itemid
       $Itemid = $shCurrentItemid;
       shAddToGETVarsList('Itemid', $Itemid); // V 1.2.4.m
     }
 
     if ($sefConfig->shInsertTitleIfNoItemid)
+    {
     $title[] = $sefConfig->shDefaultMenuItemName ?
       $sefConfig->shDefaultMenuItemName : getMenuTitle($option, (isset($view) ? @$view : null), $shCurrentItemid, null, $shLangName );  // V 1.2.4.q added forced language
-      $shItemidString = '';
-      if ($sefConfig->shAlwaysInsertItemid && (!empty($Itemid) || !empty($shCurrentItemid)))
-    $shItemidString = _COM_SEF_SH_ALWAYS_INSERT_ITEMID_PREFIX.$sefConfig->replacement
-    .(empty($Itemid)? $shCurrentItemid :$Itemid);
-  } else {  // if Itemid in non-sef URL
+    }
+    
+    $shItemidString = '';    
+    if ($sefConfig->shAlwaysInsertItemid && (!empty($Itemid) || !empty($shCurrentItemid)))
+    {
+      $shItemidString = _COM_SEF_SH_ALWAYS_INSERT_ITEMID_PREFIX
+                      .$sefConfig->replacement
+                      .(empty($Itemid)? $shCurrentItemid :$Itemid);
+    }
+  } 
+  else 
+  {  // if Itemid in non-sef URL
     $shItemidString = $sefConfig->shAlwaysInsertItemid ?
     _COM_SEF_SH_ALWAYS_INSERT_ITEMID_PREFIX.$sefConfig->replacement.$Itemid
     : '';
@@ -77,10 +123,7 @@ else {
     shRemoveFromGETVarsList('limit'); 
   if (isset($limitstart))                    // use isset to test $limitstart, as it can be zero
     shRemoveFromGETVarsList('limitstart');
-  
-  /* Get the DB connection */
-  $db = JFactory::getDBO();
-  
+    
   /* Set the main title of the component */
   if (isset($view)) 
   {
@@ -97,7 +140,7 @@ else {
     	shRemoveFromGETVarsList('layout');
     }
     
-    if (isset($xref))
+    if (isset($xref) && $xref)
     {
 	    $q = "SELECT e.title, v.city, DATE_FORMAT(x.dates, '%Y-%m-%d') AS dates, TIME_FORMAT(x.times, '%H-%i') AS times,
               CASE WHEN CHAR_LENGTH(v.alias) THEN v.alias ELSE v.id END as venueslug
@@ -155,7 +198,7 @@ else {
         break;
         
 	   case 'details':
-	      if (isset($xref))
+	      if (isset($xref) && $xref)
 	      {
 		      $title[] = $xref.'-'.$details->title;
 		      $title[] = $details->city;
