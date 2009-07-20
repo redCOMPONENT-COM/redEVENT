@@ -73,7 +73,6 @@ class RedeventViewConfirmation extends JView
 						$redirect = 'index.php?option=com_redevent&task='.JRequest::getVar('event_task')
 						           .'&xref='.JRequest::getInt('xref')
 						           .'&submit_key='.JRequest::getVar('submit_key')
-						           .'&form_id='.JRequest::getInt('form_id')
 						           .'&view=confirmation&page=final'
                        .'&action=confirmreg'
 						           ;
