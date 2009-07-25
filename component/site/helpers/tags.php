@@ -94,7 +94,8 @@ class redEVENT_tags {
 	 * [eventplacesleft]
 	 * [waitinglistplacesleft] 
 	 */
-	public function ReplaceTags($page) {
+	public function ReplaceTags($page) 
+	{
 		//exit($page);
 		if ($this->_xref) {
       $elsettings = redEVENTHelper::config();
@@ -135,11 +136,8 @@ class redEVENT_tags {
 				$event_info_description = str_replace($findcourse, $replacecourse, $this->_data->datdescription);
 				
 				/* Get waitinglist information */
-				$waitinglist = $this->getWaitingList();
-				if (isset($waitinglist[0])) $eventplacesleft = $this->_maxattendees - $waitinglist[0]->total;
-				else $eventplacesleft = $this->_maxattendees;
-				if (isset($waitinglist[1])) $waitinglistplacesleft = $this->_maxwaitinglist - $waitinglist[1]->total;
-				else $waitinglistplacesleft = $this->_maxwaitinglist;
+				$eventplacesleft = $this->_maxattendees - $this->_data->registered;
+				$waitinglistplacesleft = $this->_maxwaitinglist - $this->_data->waiting;
 				
 				/* Include redFORM */
 				$redform = '';
@@ -348,7 +346,8 @@ class redEVENT_tags {
 	/**
 	 * Load the HTML table with signup links
 	 */
-	private function SignUpLinks() {
+	private function SignUpLinks() 
+	{
 		$app = & JFactory::getApplication();
 		$template_path = JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'com_redevent';
 		ob_start();
@@ -376,10 +375,11 @@ class redEVENT_tags {
 	/**
 	 * Load all venues and their signup links
 	 */
-	private function getEventLinks() {
+	private function getEventLinks() 
+	{
 		$db = JFactory::getDBO();
 		$q = " SELECT e.*, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, x.course_price, "
-		    . " x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, v.venue, x.venueid, x.details, 
+		    . " x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees, x.maxwaitinglist, v.venue, x.venueid, x.details, 
 					v.city AS location,
 					v.country, v.locimage,
 					UNIX_TIMESTAMP(x.dates) AS unixdates,
@@ -395,7 +395,9 @@ class redEVENT_tags {
 			";
 		$db->setQuery($q);
 		$this->_eventlinks = $db->loadObjectList();
+    $this->_eventlinks = $this->_getPlacesLeft($this->_eventlinks);
 		$this->_eventlinks = $this->_getCategories($this->_eventlinks);
+    $this->_eventlinks = $this->_getUserRegistrations($this->_eventlinks);
 	}
 	
 	private function _getCategories($rows)
@@ -414,22 +416,62 @@ class redEVENT_tags {
 		}
 		return ($rows);
 	}
-	
-	/**
-	 * Load the number of people that are confirmed and if they are on or off
-	 * the waitinglist
-	 */
-	private function getWaitingList() {
-		$db = JFactory::getDBO();
-		$q = "SELECT waitinglist, COUNT(id) AS total
-			FROM #__rwf_submitters
-			WHERE xref = ".$this->_xref."
-			AND confirmed = 1
-			GROUP BY waitinglist";
-		$db->setQuery($q);
-		return $db->loadObjectList('waitinglist');
-	}
-	
+    
+  /**
+   * adds registered (int) and waiting (int) properties to rows.
+   * 
+   * @return array 
+   */
+  private function _getPlacesLeft($rows) 
+  {
+    $db = JFactory::getDBO();
+    foreach ($rows as $k => $r) 
+    {
+	    $q = "SELECT waitinglist, COUNT(id) AS total
+	      FROM #__rwf_submitters
+	      WHERE xref = ".$r->xref."
+	      AND confirmed = 1
+	      GROUP BY waitinglist";
+	    $db->setQuery($q);
+	    $res = $db->loadObjectList('waitinglist');
+      $rows[$k]->registered = (isset($res[0]) ? $res[0]->total : 0) ;
+      $rows[$k]->waiting = (isset($res[1]) ? $res[1]->total : 0) ;
+    }
+    return $rows;
+  }
+
+  /**
+   * adds property userregistered to rows: the number of time this user is already registered for each xref
+   * 
+   * @return array 
+   */
+  private function _getUserRegistrations($rows) 
+  {
+    $db = JFactory::getDBO();
+    $user = & JFactory::getUser();
+    
+    foreach ($rows as $k => $r) 
+    {
+	    if ($user->get('id'))
+	    {
+	      $q = "SELECT COUNT(s.id) AS total
+	        FROM #__rwf_submitters AS s
+	        INNER JOIN #__redevent_register AS r USING(submit_key)
+	        WHERE s.xref = ". $db->Quote($r->xref) ."
+	        AND s.confirmed = 1
+	        AND r.uid = ". $db->Quote($user->get('id')) ."
+	        ";
+	      $db->setQuery($q);
+	      $rows[$k]->userregistered = $db->loadResult();
+	    }
+	    else 
+	    {
+        $rows[$k]->userregistered = 0;	    	
+	    }
+    }
+    return $rows;
+  }
+  	
 	/**
 	 *
 	 */
