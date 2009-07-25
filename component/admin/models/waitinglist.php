@@ -244,7 +244,7 @@ class RedEventModelWaitinglist extends JModel {
 		$db = JFactory::getDBO();
 		
 		/* Find out what the fieldname is for the email field */
-		$q = "SELECT ".$db->nameQuote('field').", fieldtype 
+		$q = "SELECT f.id, f.field, v.fieldtype 
 			FROM #__rwf_fields f, #__rwf_values v
 			WHERE f.id = v.field_id
 			AND f.published = 1
@@ -254,12 +254,12 @@ class RedEventModelWaitinglist extends JModel {
 		$db->setQuery($q);
 		$selectfield = $db->loadResult();
 		
-		if ($selectfield) {
+		if ($selectfield) 
+		{
 			/* Inform the ids that they can attend the event */
 			$subids = "id = ".implode(" OR id = ", $update_ids);
-			if (function_exists('mb_strtolower')) $field = $db->nameQuote(mb_strtolower(str_replace(" ", "", $selectfield), "UTF-8"));
-			else $field = $db->nameQuote(strtolower(str_replace(" ", "", $selectfield)));
-			$query = "SELECT ".$field."
+			$fieldname = 'field_'. $selectfield;
+			$query = "SELECT ".$fieldname."
 					FROM #__rwf_forms_".$this->event_data->redform_id."
 					WHERE ".$subids;
 			$db->setQuery($query);
