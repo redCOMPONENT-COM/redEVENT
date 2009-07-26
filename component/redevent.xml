@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/component-install.dtd">
-<install type="component" version="1.5.0" method="upgrade">
+<install type="component" version="1.5" method="upgrade">
 	<name>redEVENT</name>
-	<creationDate>26-07-2009</creationDate>
+	<creationDate>26/07/2009</creationDate>
 	<author>Redweb.dk</author>
 	<authorEmail>email@redweb.dk</authorEmail>
    	<authorUrl>www.redweb.dk</authorUrl>
@@ -70,7 +70,7 @@
 		<filename>install.mysql.utf8.sql</filename>
 		<filename>uninstall.mysql.utf8.sql</filename>
 		<folder>classes</folder>
-    <folder>customfield</folder>
+		<folder>customfield</folder>
 		<folder>assets</folder>
 		<folder>extras</folder>
 		<folder>help</folder>

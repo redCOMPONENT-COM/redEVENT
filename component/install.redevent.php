@@ -618,7 +618,8 @@ if (JFolder::exists(JPATH_SITE.DS.'components'.DS.'com_sh404sef')) {
 	<h3>Note for sh404sef</h3>
 	<p>If you want your modules to avoid disappearing while you browse pages on redevent, you should set "Insert menu Itemid if none", "Insert menu title if no Itemid"
 	and "Always insert menu title" to "yes" in sh404sef configuration > advanced tab > category "itemid management"</p>
-	
+	<p>Remember to check for updates on: 
+	<a href="http://redcomponent.com/" target="_new"><img src="http://images.redcomponent.com/redcomponent.jpg" alt=""></a></p>	
 	<?php
 	
 }
