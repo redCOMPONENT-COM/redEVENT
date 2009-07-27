@@ -4,6 +4,7 @@
 		<td colspan="2">
 			<?php echo JText::_('REVIEW_SCREEN'); ?>
 			<div id="review_screen">
+			  <p><?php echo $infoimage; ?><?php echo JText::_('REVIEW WYSIWYG TIP') ?></p>
 				<?php echo JHTML::_('link', '#', JText::_('TAGS'), "onClick='jQuery(\"div#review_tags\").toggle(\"slideUp\"); return false;'"); ?>
 				<div id="review_tags" style="display: none;">
 					[event_description] = <?php echo JText::_('SUBMISSION_COURSE_DESCRIPTION');?><br />
