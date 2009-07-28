@@ -256,7 +256,7 @@ class plgCommunityRedevent extends CApplications
         . ' FROM #__redevent_event_venue_xref AS x'
         . ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
         . ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-        . ' LEFT JOIN #__redevent_event_category AS xcat ON xcat.event_id = a.id'
+        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
         . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
         . ' WHERE a.created_by=' . $db->Quote( $this->_user->id ) . ' '
         . ' AND a.published=' . $db->Quote( '1' ) . ' '
@@ -268,6 +268,7 @@ class plgCommunityRedevent extends CApplications
 
     $managed = $db->loadObjectList();
     if ($db->getErrorNum()) {
+      require_once JPATH_ADMINISTRATOR . DS . 'components' . DS .  'com_redevent' . 'classes' . DS .  'error.class.php';    	
     	RedeventError::raiseWarning('0', $db->getErrorMsg());
     }
     // TODO: multiple cats
