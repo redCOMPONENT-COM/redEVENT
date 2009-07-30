@@ -191,7 +191,7 @@ class RedeventModelVenueevents extends JModel
 		//Get Events from Database
 		$query = 'SELECT a.id, a.title, a.datdescription, a.created, '
 		    . ' x.dates, x.enddates, x.times, x.endtimes, x.id AS xref, '
-		    . ' l.venue, l.city, l.state, l.url, '
+		    . ' l.venue, l.city, l.state, l.url, l.latitude, l.longitude, '
 		    . ' c.catname, c.id AS catid,'
         . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
         . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '

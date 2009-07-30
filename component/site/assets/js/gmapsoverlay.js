@@ -187,7 +187,11 @@ var GMapsOverlay = {
 
 		var addressclean = addressstring.substr(0, ((addressstring.length)-(venuestring.length+1)) )
 		
-		this.address = addressclean;
+		addressclean = addressclean.replace(/\+/g, ' ');
+    addressclean = addressclean.replace(/,/g, ', ');
+    
+    this.address = addressclean;
+    
     this.venue = venuestring.substr(6); 
 
     var latitude = $(this.linkobject).getProperty('latitude');

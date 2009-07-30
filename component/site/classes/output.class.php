@@ -307,11 +307,28 @@ class ELOutput {
 					//TODO: move map into squeezebox
 					//TODO: temporary fix (v=2.115) for the gmaps issue caused by a bug in the gmaps api..set back when google finaly was able to fix this
 					$document->addScript(JURI::root().'/components/com_redevent/assets/js/gmapsoverlay.js');
-					$document->addScript('http://maps.google.com/maps?file=api&amp;v=2.115&amp;key='.trim($settings->gmapkey));
-  					$document->addStyleSheet(JURI::root().'/components/com_redevent/assets/css/gmapsoverlay.css', 'text/css');
+					$document->addScript('http://maps.google.com/maps?file=api&amp;v=2&amp;key='.trim($settings->gmapkey));
+  				$document->addStyleSheet(JURI::root().'/components/com_redevent/assets/css/gmapsoverlay.css', 'text/css');
+          $document->addScriptDeclaration(
+            'var gkey="'.trim($settings->gmapkey).'";'
+          . 'var sGetDirections="'.JText::_( 'GETDIRECTIONS' ).'";'  
+          );
+          $address = array();
+          if (!empty($data->street)) {
+            $address[] = $data->street;
+          }
+          if (!empty($data->plz) || !empty($data->city)) {
+            $address[] = (!empty($data->plz) ? $data->plz.' ': '') . trim($data->city);
+          }
+          if (!empty($data->country)) {
+            $address[] = $data->country;
+          }
+          $address = implode(',', $address);
+          $address = str_replace(" ", "+", $address);
 
-					$url		= 'http://maps.google.com/maps?q='.str_replace(" ", "+", $data->street).', '.$data->plz.' '.str_replace(" ", "+", $data->city).', '.$data->country.'&amp;venue='.$data->venue;
-					$attributes = ' rel="gmapsoverlay"';
+					$url		= 'http://maps.google.com/maps?q='. $address .'&venue='. $data->venue;
+					$attributes = ' rel="gmapsoverlay" latitude="'.(($data->latitude) ? $data->latitude : '') .'" longitude="'.(($data->longitude) ? $data->longitude : '').'"';
+					
 				} else {
 					$url		= 'http://maps.google.com/maps?q='.str_replace(" ", "+", $data->street).', '.$data->plz.' '.str_replace(" ", "+", $data->city).', '.$data->country;
 				}
