@@ -392,6 +392,7 @@ class redEVENT_tags {
 			WHERE x.published = 1
 			AND e.id IN (".$this->_eventid.")
       GROUP BY x.id
+      ORDER BY x.dates, x.times
 			";
 		$db->setQuery($q);
 		$this->_eventlinks = $db->loadObjectList();
