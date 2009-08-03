@@ -65,18 +65,12 @@ class RedeventViewSignup extends JView
     $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/eventlist.css');
     $document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 		
-		if ($this->get('Isfull')) {
-			echo JText::_('event full');
-      echo '<br/>';
-			echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id')), JText::_('RETURN_EVENT_DETAILS'));
-			return;
-		}
-	
-    if ($this->get('RegistrationClose')) {
-      echo JText::_('Registration closed');
+    $canRegister = $this->get('RegistrationStatus');
+    if ($canRegister->canregister == 0) {
+      echo $canRegister->status;
       echo '<br/>';
       echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id')), JText::_('RETURN_EVENT_DETAILS'));
-      return;
+      return;    	
     }
     
 		/* This loads the tags replacer */

@@ -15,16 +15,16 @@
 		foreach ($this->xrefs as $eventdetails) 
 		{
 			/* Get the date */
-			$date = (!isset($eventdetails->dates) ? Jtext::_('Open date') : strftime( $this->elsettings->formatdate, strtotime( $eventdetails->dates )));
-			$enddate  = strftime( $this->elsettings->formatdate, strtotime( $eventdetails->enddates ));
-			$displaydate = $date. ($eventdetails->enddates ? ' - '.$enddate: '');
+			$date = (!isset($eventdetails->dates) || $eventdetails->dates == '0000-00-00' ? Jtext::_('Open date') : strftime( $this->elsettings->formatdate, strtotime( $eventdetails->dates )));
+			$enddate  = (!isset($eventdetails->enddates) || $eventdetails->enddates == '0000-00-00') ? '' : strftime( $this->elsettings->formatdate, strtotime( $eventdetails->enddates ));
+			$displaydate = $date. ($enddate ? ' - '.$enddate: '');
 	
 			$displaytime = '';
 			/* Get the time */
-			if (isset($eventdetails->times)) {
+			if (isset($eventdetails->times) && $eventdetails->times != '00:00:00') {
 				$displaytime = strftime( $this->elsettings->formattime, strtotime( $eventdetails->times )).' '.$this->elsettings->timename;
 	
-				if (isset($eventdetails->endtimes)) {
+				if (isset($eventdetails->endtimes) && $eventdetails->endtimes != '00:00:00') {
 					$displaytime .= ' - '.strftime( $this->elsettings->formattime, strtotime( $eventdetails->endtimes )). ' '.$this->elsettings->timename;
 				}
 			}

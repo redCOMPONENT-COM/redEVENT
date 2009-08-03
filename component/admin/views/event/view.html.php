@@ -255,22 +255,21 @@ class RedEventViewEvent extends JView {
     $elsettings = ELAdmin::config();
     
     $xref = $this->get('xref');
-	
-      /* Get the date */
-      $date = (!isset($xref->dates) ? Jtext::_('Open date') : strftime( $elsettings->formatdate, strtotime( $xref->dates )));
-      $enddate  = strftime( $elsettings->formatdate, strtotime( $xref->enddates ));
-      $displaydate = $date. ($xref->enddates ? ' - '.$enddate: '');
-  
-      $displaytime = '';
-      /* Get the time */
-      if (isset($xref->times)) {
-        $displaytime = strftime( $elsettings->formattime, strtotime( $xref->times )).' '.$elsettings->timename;
-  
-        if (isset($xref->endtimes)) {
-          $displaytime .= ' - '.strftime( $elsettings->formattime, strtotime( $xref->endtimes )). ' '.$elsettings->timename;
-        }
-      }
-      
+    
+    /* Get the date */
+    $date = (!isset($xref->dates) || $xref->dates == '0000-00-00' ? Jtext::_('Open date') : strftime( $elsettings->formatdate, strtotime( $xref->dates )));
+    $enddate  = (!isset($xref->enddates) || $xref->enddates == '0000-00-00') ? '' : strftime( $elsettings->formatdate, strtotime( $xref->enddates ));
+    $displaydate = $date. ($enddate ? ' - '.$enddate: '');
+
+    $displaytime = '';
+    /* Get the time */
+    if (isset($xref->times) && $xref->times != '00:00:00') {
+    	$displaytime = strftime( $elsettings->formattime, strtotime( $xref->times )).' '.$elsettings->timename;
+
+    	if (isset($xref->endtimes) && $xref->endtimes != '00:00:00') {
+    		$displaytime .= ' - '.strftime( $elsettings->formattime, strtotime( $xref->endtimes )). ' '.$elsettings->timename;
+    	}
+    }
 		
     $js = 'window.parent.updatexref("'.$xref->id.'", "'.addslashes($xref->venue).'", "'.$displaydate.'", "'.$displaytime.'", "'.$xref->published.'");';
     $document->addScriptDeclaration($js);
