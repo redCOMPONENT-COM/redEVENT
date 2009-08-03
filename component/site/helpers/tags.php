@@ -42,13 +42,14 @@ class redEVENT_tags {
 		// if no xref specified. try to get one associated to the event id
 		if (!$this->_xref)
 		{
-			$eventid = JRequest::getVar('id', false);
+			$eventid = JRequest::getVar('id', 0, 'request', 'int');
 			if ($eventid)
 			{
   			$db = & JFactory::getDBO();
 				$query = ' SELECT x.id FROM #__redevent_event_venue_xref AS x '
 				       . ' INNER JOIN #__redevent_events AS e ON e.id = x.eventid '
 				       . ' WHERE x.published = 1 '
+				       . '   AND x.eventid = '. $db->Quote($eventid)
 				       . ' ORDER BY x.dates ASC '
 				       ;
 				$db->setQuery($query);
