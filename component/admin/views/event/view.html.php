@@ -38,10 +38,14 @@ class RedEventViewEvent extends JView {
 	{
 		global $mainframe;
 
-		if($this->getLayout() == 'addvenue') {
-			$this->_displayaddvenue($tpl);
+		if($this->getLayout() == 'editxref') {
+			$this->_displayeditxref($tpl);
 			return;
 		}
+		else if($this->getLayout() == 'closexref') {
+      $this->_displayclosexref($tpl);
+      return;
+    }
 
 		//Load behavior
 		jimport('joomla.html.pane');
@@ -68,6 +72,8 @@ class RedEventViewEvent extends JView {
 		$document->addScript($url.'components/com_redevent/assets/js/recurrence.js');
 		// include the unlimited script
 		$document->addScript($url.'components/com_redevent/assets/js/unlimited.js');
+		
+    $document->addScript($url.'administrator/components/com_redevent/assets/js/xrefedit.js');
 
 		//build toolbar
 		
@@ -122,48 +128,9 @@ class RedEventViewEvent extends JView {
 		$Lists['category'] = $model->getCategories();
 		
 		/* Create venue selection tab */
-		$Lists['venueselectbox'] = '';
 		$venueslist = $this->get('Venues');
-		$eventvenue = $this->get('EventVenue');
-		$infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-hint.png', JText::_( 'NOTES' ) );
-		foreach ($venueslist as $key => $venue) {
-			if (isset($eventvenue[$venue->id])) {
-				$Lists['venueselectbox'] .= '<div id="locid'.$venue->id.'"><input type="checkbox" name="locid[]" value="'.$venue->id.'"';
-				if (isset($eventvenue[$venue->id])) $Lists['venueselectbox'] .= ' checked="checked" /> '.$venue->venue;
-				$Lists['venueselectbox'] .= '<div class="adddatetime"><input type="button" name="adddatetime" value="'.JText::_('ADD_DATE_TIME').'" /></div>';
-				$Lists['venueselectbox'] .= '<div class="showalldatetime"><input type="button" name="showalldatetime" value="'.JText::_('SHOW_ALL_DATE_TIME').'" /></div>';
-				foreach ($eventvenue[$venue->id] as $evkey => $ev) {
-					$random = $eventvenue[$venue->id][$evkey]->id;
-					$Lists['venueselectbox'] .= '<div id="datetimecontainer'.$venue->id.$random.'" style="display: block;"><input type="button" name="removedatetime" value="'.JText::_('SHOW_HIDE_DATE_TIME').'" onClick=\'jQuery("#datetime'.$venue->id.'-'.$eventvenue[$venue->id][$evkey]->id.'").toggle("slideUp"); return false;\'/><input type="button" name="removedatetime" value="'.JText::_('REMOVE_DATE_TIME').'" onClick=\'removeDateTimeFields('.$venue->id.$eventvenue[$venue->id][$evkey]->id.');\'; return false;\'/>';
-					$Lists['venueselectbox'] .= '<div id="datetime'.$venue->id.'-'.$eventvenue[$venue->id][$evkey]->id.'" style="display: none;">';
-					$Lists['venueselectbox'] .= '<table class="adminform">';
-						/* start date and start time */
-						$Lists['venueselectbox'] .= '<tr class="row0"><td class="redevent_settings_details">'.JText::_('DATE').'</td><td>'.JHTML::_('calendar', $eventvenue[$venue->id][$evkey]->dates, "locid$venue->id[$random][dates]", "dates$random").'</td>';
-						$Lists['venueselectbox'] .= '<td>'.JText::_('TIME').'</td><td><input type="text" name="locid'.$venue->id.'['.$random.'][times]" value="'.$eventvenue[$venue->id][$evkey]->times.'" /></td></tr>';
-						/* End date and end time */
-						$Lists['venueselectbox'] .= '<tr class="row1"><td>'.JText::_('ENDDATE').'</td><td>'.JHTML::_('calendar', $eventvenue[$venue->id][$evkey]->enddates, "locid$venue->id[$random][enddates]", "enddates$random").'</td>';
-						$Lists['venueselectbox'] .= '<td>'.JText::_('ENDTIMES').'</td><td><input type="text" name="locid'.$venue->id.'['.$random.'][endtimes]" value="'.$eventvenue[$venue->id][$evkey]->endtimes.'" /></td></tr>';
-						/* Attendees and waitinglist */
-						$Lists['venueselectbox'] .= '<tr class="row0"><td><span class="editlinktip hasTip" title="'.JText::_( 'MAXIMUM_ATTENDEES' ).'::'.JText::_('MAXIMUM_ATTENDEES_TIP').'"'.$infoimage.'</span>'.JText::_('MAXIMUM_ATTENDEES').'</td><td><input class="inputbox" name="locid'.$venue->id.'['.$random.'][maxattendees]" value="'.$eventvenue[$venue->id][$evkey]->maxattendees.'" size="15" maxlength="8" /></td>';
-						$Lists['venueselectbox'] .= '<td><span class="editlinktip hasTip" title="'.JText::_( 'MAXIMUM_WAITINGLIST' ).'::'.JText::_('MAXIMUM_WAITINGLIST_TIP').'"'.$infoimage.'</span>'.JText::_('MAXIMUM_WAITINGLIST').'</td><td><input class="inputbox" name="locid'.$venue->id.'['.$random.'][maxwaitinglist]" value="'.$eventvenue[$venue->id][$evkey]->maxwaitinglist.'" size="15" maxlength="8" /></td></tr>';
-						/* Course price and credit */
-						$Lists['venueselectbox'] .= '<tr class="row1"><td>'.JText::_('COURSE_PRICE').'</td><td><input class="inputbox" name="locid'.$venue->id.'['.$random.'][course_price]" value="'.$eventvenue[$venue->id][$evkey]->course_price.'" size="15" maxlength="8" /></td>';
-						$Lists['venueselectbox'] .= '<td>'.JText::_('COURSE_CREDIT').'</td><td><input class="inputbox" name="locid'.$venue->id.'['.$random.'][course_credit]" value="'.$eventvenue[$venue->id][$evkey]->course_credit.'" size="15" maxlength="8" /></td></tr>';
-            $Lists['venueselectbox'] .= '<td>'.JText::_('DETAILS').'</td><td colspan="3">' . $editor->display('locid'.$venue->id.'['.$random.'][details]', $eventvenue[$venue->id][$evkey]->details, '100%;', '300', '75', '20', array('pagebreak', 'readmore')) . '</td></tr>';
-					$Lists['venueselectbox'] .= '</table>';
-					$Lists['venueselectbox'] .= '</div></div>';
-				}
-				$Lists['venueselectbox'] .= '</div>';
-			}
-			else {
-				$Lists['venueselectbox'] .= '<div id="locid'.$venue->id.'"><input type="checkbox" name="locid[]" value="'.$venue->id.'"';
-				$Lists['venueselectbox'] .= ' />'.$venue->venue;
-				$Lists['venueselectbox'] .= '<div class="adddatetime" style="display: none;"><input type="button" name="adddatetime" value="'.JText::_('ADD_DATE_TIME').'" /></div>';
-				$Lists['venueselectbox'] .= '<div class="showalldatetime" style="display: none;"><input type="button" name="showalldatetime" value="'.JText::_('SHOW_ALL_DATE_TIME').'" /></div>';
-				$Lists['venueselectbox'] .= '</div>';
-			}
-		}
-		
+		$xrefs = $this->get('xrefs');
+				
 		// categories selector
     $selected = array();
     foreach ((array) $row->categories_ids as $cat) {
@@ -214,6 +181,9 @@ class RedEventViewEvent extends JView {
 			$formfields = '';
 		}
 		
+		JHTML::script('modal.js');
+		JHTML::stylesheet('modal.css');
+      		
 		//assign vars to the template
 		$this->assignRef('Lists'      	, $Lists);
 		$this->assignRef('row'      	, $row);
@@ -228,6 +198,7 @@ class RedEventViewEvent extends JView {
 		$this->assignRef('venueslist'	, $venueslist);
     $this->assignRef('redform_install'	, $redform_install);
     $this->assignRef('customfields'  , $customfields);
+    $this->assignRef('xrefs'  , $xrefs);
 
 		parent::display($tpl);
 	}
@@ -238,10 +209,8 @@ class RedEventViewEvent extends JView {
 	 * @since 0.9
 	 *
 	 */
-	function _displayaddvenue($tpl)
+	function _displayeditxref($tpl)
 	{
-		global $mainframe;
-
 		//initialise variables
 		$editor 	= & JFactory::getEditor();
 		$document	= & JFactory::getDocument();
@@ -249,8 +218,9 @@ class RedEventViewEvent extends JView {
 		$elsettings = ELAdmin::config();
 
 		//add css and js to document
-		JHTML::_('behavior.modal', 'a.modal');
+		//JHTML::_('behavior.modal', 'a.modal');
 		JHTML::_('behavior.tooltip');
+		JHTML::_('behavior.formvalidation');
 
 		//Build the image select functionality
 		$js = "
@@ -260,28 +230,51 @@ class RedEventViewEvent extends JView {
 			document.getElementById('sbox-window').close();
 		}";
 
-		$link = 'index.php?option=com_redevent&amp;view=imagehandler&amp;layout=uploadimage&amp;task=venueimg&amp;tmpl=component';
-		$link2 = 'index.php?option=com_redevent&amp;view=imagehandler&amp;task=selectvenueimg&amp;tmpl=component';
-		$document->addScriptDeclaration($js);
-		$imageselect = "\n<input style=\"background: #ffffff;\" type=\"text\" id=\"a_imagename\" value=\"".JText::_('SELECTIMAGE')."\" disabled=\"disabled\" onchange=\"javascript:if (document.forms[0].a_imagename.value!='') {document.imagelib.src='../images/redevent/events/' + document.forms[0].a_imagename.value} else {document.imagelib.src='../images/blank.png'}\"; /><br />";
-
-		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('Upload')."\" href=\"$link\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('Upload')."</a></div></div>\n";
-		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('SELECTIMAGE')."\" href=\"$link2\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('SELECTIMAGE')."</a></div></div>\n";
-
-		$imageselect .= "\n&nbsp;<input class=\"inputbox\" type=\"button\" onclick=\"elSelectImage('', '".JText::_('SELECTIMAGE')."' );\" value=\"".JText::_('Reset')."\" />";
-		$imageselect .= "\n<input type=\"hidden\" id=\"a_image\" name=\"locimage\" value=\"".JText::_('SELECTIMAGE')."\" />";
-
-		//set published
-		$published = 1;
-
+		$xref = $this->get('xref');
+		$xref->eventid = ($xref->eventid) ? $xref->eventid : JRequest::getVar('eventid', 0, 'request', 'int'); 
+		
+		$lists = array();
+		
+    $venues = array(JHTML::_('select.option', 0, JText::_('Select Venue')));
+		$venues = array_merge($venues, $this->get('VenuesOptions'));
+		$lists['venue'] = JHTML::_('select.genericlist', $venues, 'venueid', 'class="validate-venue"', 'value', 'text', $xref->venueid);
+		
 		//assign to template
+    $this->assignRef('xref'         , $xref);
 		$this->assignRef('editor'      	, $editor);
-		$this->assignRef('imageselect' 	, $imageselect);
-		$this->assignRef('published' 	, $published);
+    $this->assignRef('lists'        , $lists);
 		$this->assignRef('request_url'	, $uri->toString());
-		$this->assignRef('elsettings'	, $elsettings);
+		$this->assignRef('elsettings'	  , $elsettings);
 
 		parent::display($tpl);
+	}
+	
+	function _displayclosexref($tpl)
+	{	
+    $document = & JFactory::getDocument();
+    $elsettings = ELAdmin::config();
+    
+    $xref = $this->get('xref');
+	
+      /* Get the date */
+      $date = (!isset($xref->dates) ? Jtext::_('Open date') : strftime( $elsettings->formatdate, strtotime( $xref->dates )));
+      $enddate  = strftime( $elsettings->formatdate, strtotime( $xref->enddates ));
+      $displaydate = $date. ($xref->enddates ? ' - '.$enddate: '');
+  
+      $displaytime = '';
+      /* Get the time */
+      if (isset($xref->times)) {
+        $displaytime = strftime( $elsettings->formattime, strtotime( $xref->times )).' '.$elsettings->timename;
+  
+        if (isset($xref->endtimes)) {
+          $displaytime .= ' - '.strftime( $elsettings->formattime, strtotime( $xref->endtimes )). ' '.$elsettings->timename;
+        }
+      }
+      
+		
+    $js = 'window.parent.updatexref("'.$xref->id.'", "'.addslashes($xref->venue).'", "'.$displaydate.'", "'.$displaytime.'", "'.$xref->published.'");';
+    $document->addScriptDeclaration($js);
+		return;
 	}
 }
 ?>

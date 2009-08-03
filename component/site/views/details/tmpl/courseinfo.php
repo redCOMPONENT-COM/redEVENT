@@ -60,7 +60,7 @@ foreach ($this->_eventlinks as $key => $event) {
 			{
 				echo JTEXT::_('EVENT FULL');
 			}
-			else if ($event->userregistered >= $event->max_multi_signup )
+			else if ($event->userregistered >= ($event->max_multi_signup ? $event->max_multi_signup : 1) )
 			{
         echo JTEXT::_('USER MAX REGISTRATION REACHED');
 			}

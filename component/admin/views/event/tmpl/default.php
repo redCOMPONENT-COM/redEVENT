@@ -70,6 +70,13 @@ JHTML::_('behavior.calendar');
 			submitform( task );
 		}
 	}
+	
+	// for xref update script
+	var edittext = "<?php echo JText::_('EDIT'); ?>";
+  var confirmremove = "<?php echo JText::_('REMOVE_DATE_TIME_BLOCK'); ?>";
+  var textremove = "<?php echo JText::_('REMOVE'); ?>";
+  var textyes = "<?php echo JText::_('YES'); ?>";
+  var textno = "<?php echo JText::_('NO'); ?>";
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">

@@ -258,73 +258,7 @@ class RedEventControllerEvents extends RedEventController
 					break;
 			}
 			$msg	= JText::_( 'EVENT SAVED');
-			
-			/* Get all the xref values for this particular event */
-			$q = "SELECT id
-				FROM #__redevent_event_venue_xref 
-				WHERE eventid = ".$returnid;
-			$db->setQuery($q);
-			$existing_xrefs = $db->loadObjectList('id');
-			
-			/* Compute the differences */
-			/* Now add all the xref values */
-			foreach ($post['locid'] as $key => $locid) {
-				foreach ($post['locid'.$locid] as $random => $datetimes) {
-					if (isset($datetimes['dates']) && $datetimes['dates']) $dates = $db->Quote($datetimes['dates']);
-					else $dates = 'NULL';
-					if (isset($datetimes['enddates']) && $datetimes['enddates']) $enddates = $db->Quote($datetimes['enddates']);
-					else $enddates = 'NULL';
-					if (isset($datetimes['times']) && $datetimes['times']) $times = $db->Quote($datetimes['times']);
-					else $times = 'NULL';
-					if (isset($datetimes['endtimes']) && $datetimes['endtimes']) $endtimes = $db->Quote($datetimes['endtimes']);
-					else $endtimes = 'NULL';
-					if (isset($datetimes['maxattendees']) && $datetimes['maxattendees']) $maxattendees = $db->Quote($datetimes['maxattendees']);
-					else $maxattendees = $db->Quote(0);
-					if (isset($datetimes['maxwaitinglist']) && $datetimes['maxwaitinglist']) $maxwaitinglist = $db->Quote($datetimes['maxwaitinglist']);
-					else $maxwaitinglist = $db->Quote(0);
-					if (isset($datetimes['course_price']) && $datetimes['course_price']) $course_price = $db->Quote($datetimes['course_price']);
-					else $course_price = $db->Quote('0.00');
-					if (isset($datetimes['course_credit']) && $datetimes['course_credit']) $course_credit = $db->Quote($datetimes['course_credit']);
-					else $course_credit = $db->Quote('');
-          if (isset($datetimes['details']) && $datetimes['details']) $details = $db->Quote($datetimes['details']);
-          else $details = $db->Quote('');
-					if (isset($existing_xrefs[$random])) {
-						$q = "UPDATE #__redevent_event_venue_xref 
-							SET dates = ".$dates.",
-							enddates = ".$enddates.", 
-							times = ".$times.", 
-							endtimes = ".$endtimes.",
-              details = ".$details.",
-							maxattendees = ".$maxattendees.",
-							maxwaitinglist = ".$maxwaitinglist.",
-							course_price = ".$course_price.",
-							course_credit = ".$course_credit."
-							WHERE id = ".$random;
-						$db->setQuery($q);
-						$db->query();
-						unset($existing_xrefs[$random]);
-					}
-					else {
-						$q = "INSERT INTO #__redevent_event_venue_xref (eventid, venueid, dates, enddates, times, endtimes, details, maxattendees, maxwaitinglist, course_price, course_credit, published) VALUES ";
-						$q .= "(".$returnid.", ".$locid.", ".$dates.", ".$enddates.", ".$times.", ".$endtimes."
-						    , ".$details."
-								, ".$maxattendees.", ".$maxwaitinglist.", ".$course_price.", ".$course_credit.", 1)";
-						$db->setQuery($q);
-						$db->query();
-					}
-				}
-			}
-			$remove_xrefs = array();
-			foreach ($existing_xrefs as $xid => $xref) {
-				$remove_xrefs[] = $xid;
-			}
-			if (count($remove_xrefs) > 0) {
-				$q = "DELETE FROM #__redevent_event_venue_xref
-					WHERE id IN (".implode(',', $remove_xrefs).")";
-				$db->setQuery($q);
-				$db->query();
-			}
-			
+						
 			$cache = &JFactory::getCache('com_redevent');
 			$cache->clean();
 
@@ -372,5 +306,61 @@ class RedEventControllerEvents extends RedEventController
 
 		$this->setRedirect( 'index.php?option=com_redevent&view=events', $msg );
 	}
+	
+	function editxref()
+	{
+    JRequest::setVar( 'view', 'event' );
+    JRequest::setVar( 'layout', 'editxref' );
+		
+    parent::display();
+	}
+	
+	function savexref()
+	{		
+    // Check for request forgeries
+    JRequest::checkToken() or die( 'Invalid Token' );
+        
+    $post = JRequest::get( 'post' );
+    $post['details'] = JRequest::getVar('details', '', 'post', 'string', JREQUEST_ALLOWRAW);
+    
+    $model = $this->getModel('event');
+    if ($returnid = $model->savexref($post)) {
+      $msg = 'saved event';
+      $this->setRedirect('index.php?option=com_redevent&controller=events&task=closexref&tmpl=component&xref='. $returnid, $msg);      
+    }
+    else {
+    	$msg = 'error saving: '. $model->getError() ;
+      $this->setRedirect('index.php?option=com_redevent&controller=events&task=editxref&tmpl=component&xref='. $returnid,  $msg, 'error');
+    }
+	}
+	
+	function removexref()
+	{
+		$id = JRequest::getVar('xref', 0, 'request', 'int');
+		
+		if (!$id) {
+			echo '0' .':'. JText::_('NO XREF ID');
+      return true;
+		}
+		else { 
+			$model = $this->getModel('event');
+			if ($model->removexref($id)) {
+				echo '1' .':'. JText::_('DATE DELETED');
+        return true;
+			}
+			else {
+        echo '0' .':'. JText::_('COULDNT DELETE DATE') .' - '. $model->getError() ;
+        return true;				
+			}
+		}
+	}
+	
+  function closexref()
+  {
+    JRequest::setVar( 'view', 'event' );
+    JRequest::setVar( 'layout', 'closexref' );
+    
+    parent::display();
+  }
 }
 ?>

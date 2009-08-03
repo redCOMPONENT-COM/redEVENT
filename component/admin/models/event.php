@@ -530,7 +530,21 @@ class RedEventModelEvent extends JModel
 		return $ardatetimes;
 	}
 	
-
+  /**
+   * Retrieve a list of events, venues and times
+   */
+  public function getXrefs() 
+  {
+    $db = & $this->_db;
+    $q = ' SELECT x.*, v.venue '
+       . ' FROM #__redevent_event_venue_xref AS x '
+       . ' INNER JOIN #__redevent_venues AS v ON x.venueid = v.id '
+       . ' WHERE eventid = '.$this->_id
+       . ' ORDER BY dates';
+    $db->setQuery($q);
+    return $db->loadObjectList();
+  }
+  
   /**
    * get custom fields
    *
@@ -558,6 +572,108 @@ class RedEventModelEvent extends JModel
       $fields[] = $field;
     }
     return $fields;     
+  }
+  
+  /**
+   * return xref from request
+   *
+   * @return unknown
+   */
+  function getXref()
+  {
+  	$xref = JRequest::getVar('xref', 0, 'request', 'int');  	
+  	
+  	if ($xref) {
+    	$query = ' SELECT x.*, v.venue '
+  	       . ' FROM #__redevent_event_venue_xref AS x '
+  	       . ' LEFT JOIN #__redevent_venues AS v on v.id = x.venueid '
+  	       . ' WHERE x.id = '. $this->_db->Quote($xref);
+  	       ;  	
+      $this->_db->setQuery($query);
+  		$object = $this->_db->loadObject();
+  	}
+  	else {
+      $object = JTable::getInstance('RedEvent_eventvenuexref', '');
+  		$object->venue = '';
+  	}
+  	return $object;
+  }
+  
+  /**
+   * return list of venues as options
+   *
+   * @return array
+   */
+  function getVenuesOptions()
+  {
+  	$query = ' SELECT id AS value, venue AS text '
+  	       . ' FROM #__redevent_venues AS v'
+  	       . ' ORDER BY venue '
+  	       ;
+    $this->_db->setQuery($query);
+    return $this->_db->loadObjectList();    
+  }
+  
+  /**
+   * save xref data
+   *
+   * @param array $data
+   * @return boolean true on success
+   */
+  function savexref($data)
+  {
+  	$object = & JTable::getInstance('RedEvent_eventvenuexref', '');
+  	$id = (int) $data['id'];
+
+  	$object = & JTable::getInstance('RedEvent_eventvenuexref', '');
+  	
+  	if ($id) {
+  		$object->load($id);
+  	}
+  	
+  	if (!$object->bind($data)) {
+  		$this->setError($object->getError());
+  		return false;
+  	}  	
+  
+    if (!$object->check()) {
+      $this->setError($object->getError());
+      return false;
+    }
+  
+    if (!$object->store()) {
+      $this->setError($object->getError());
+      return false;
+    }
+    
+    return $object->id;
+  }
+  
+  /**
+   * remove xref if there is no attendees
+   *
+   * @param int xref_id
+   * @return boolean result true on success
+   */
+  function removexref($id)
+  {
+  	// do not delete xref if there are attendees
+  	$query = ' SELECT COUNT(*) FROM #__redevent_register WHERE xref = '. $this->_db->Quote((int)$id);
+  	$this->_db->setQuery($query);
+  	if ($this->_db->loadResult()) {
+  		$this->setError(JText::_('CANNOT DELETE XREF HAS REGISTRATIONS'));
+  		return false;
+  	}
+  	
+  	
+  	$q = "DELETE FROM #__redevent_event_venue_xref WHERE id =". $this->_db->Quote((int)$id);
+    $this->_db->setQuery($q);
+    if (!$this->_db->query()) {
+      $this->setError(JText::_('DB ERROR DELETING XREF'));
+      return false;
+    }
+    
+    return true;
   }
 }
 ?>
