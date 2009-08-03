@@ -175,7 +175,7 @@ class RedeventModelDetails extends JModel
   	if (empty($this->_xreflinks))
   	{
 	    $q = " SELECT e.*, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, x.course_price, "
-	        . " x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, v.venue, x.venueid, x.details, 
+	        . " x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, v.venue, x.venueid, x.details, x.registrationend, 
 	          v.city AS location,
 	          v.country, v.locimage,
 	          UNIX_TIMESTAMP(x.dates) AS unixdates,

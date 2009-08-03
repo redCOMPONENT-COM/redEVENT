@@ -382,6 +382,12 @@ if (is_array($cols)) {
     $db->setQuery($q);
     $db->query();
   }
+
+  if (!array_key_exists('registrationend', $cols)) {
+    $q ="ALTER IGNORE TABLE `#__redevent_event_venue_xref` ADD COLUMN `registrationend` DATETIME NULL AFTER `endtimes`";
+    $db->setQuery($q);
+    $db->query();
+  }
 }
 
 /* register table */

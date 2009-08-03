@@ -91,6 +91,14 @@ function validateForm(f) {
     </td>
   </tr>
   <tr>
+    <td class="key hasTip" title="<?php echo JText::_('XREF REGISTRATION END TIP'); ?>">
+      <label for="registrationend"><?php echo JText::_('XREF REGISTRATION END') .': '; ?></label>
+    </td>
+    <td>
+      <?php echo JHTML::calendar($this->xref->registrationend, 'registrationend', 'registrationend', '%Y-%m-%d %H:%M'); ?>
+    </td>
+  </tr>
+  <tr>
     <td class="key">
       <label for="published"><?php echo JText::_('PUBLISHED') .': '; ?></label>
     </td>

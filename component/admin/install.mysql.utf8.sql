@@ -231,6 +231,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_event_venue_xref` (
   `enddates` date NULL default NULL,
   `times` time NULL default NULL,
   `endtimes` time NULL default NULL,
+  `registrationend` datetime NULL,
   `details` text NOT NULL,
   `maxattendees` int(11) NOT NULL default '0',
   `maxwaitinglist` int(11) NOT NULL default '0',

@@ -54,7 +54,7 @@ foreach ($this->_eventlinks as $key => $event) {
 			<td class="courseinfo_credit"><?php echo $event->course_credit ?></td>
 		<td class="courseinfo_signup" width="*"><div class="courseinfo_signupwrapper">
 		<?php
-		if ($event->unixdates >= time() && $event->registra) {
+		if ($event->unixdates >= time() && $event->registra && (empty($event->registrationend) || strtotime($event->registrationend) > time())) {
 
 			if ($event->maxattendees && $event->maxattendees <= $event->registered && $event->maxwaitinglist <= $event->waiting)
 			{
