@@ -347,7 +347,7 @@ class RedeventModelSignup extends JModel
       return $result;
     }
     else if ( (!empty($event->dates) && strtotime($event->dates .' '. $event->times) < time()) 
-           || (!empty($event->registrationend) && strtotime($event->registrationend) < time()) )
+           || (!empty($event->registrationend) && $event->registrationend != '0000-00-00 00:00:00' && strtotime($event->registrationend) < time()) )
     {
       $result->canregister = 0;
       $result->status = JTEXT::_('REGISTRATION IS OVER');
