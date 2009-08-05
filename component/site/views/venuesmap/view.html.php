@@ -66,10 +66,11 @@ class RedeventViewVenuesmap extends JView
 
 		// specific for eventsmap
     JHTML::_('behavior.mootools');
-    $document->addScript('http://www.google.com/jsapi?key='.trim($elsettings->gmapkey));
-    $document->addScript($this->baseurl.'/components/com_redevent/assets/js/venuesmap.js');
+    //$document->addScript('http://www.google.com/jsapi?key='.trim($elsettings->gmapkey));
+    $document->addScript('http://maps.google.com/maps?file=api&amp;v=2&amp;key='.trim($elsettings->gmapkey).'&sensor=false');
     $document->addScript($this->baseurl.'/components/com_redevent/assets/js/markermanager.js');
     $document->addScript($this->baseurl.'/components/com_redevent/assets/js/labeled_marker.js');
+    $document->addScript($this->baseurl.'/components/com_redevent/assets/js/venuesmap.js');
     
     // filters
     $vcat = $mainframe->getUserStateFromRequest('com_redevent.venuesmap.vcat', 'vcat', $params->def('vcat', 0), 'int');

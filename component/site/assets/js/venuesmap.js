@@ -20,7 +20,7 @@
  * google map documentation: http://code.google.com/apis/maps/documentation/reference.html
  */
 
-google.load("maps", "2");
+//google.load("maps", "2");
 
 // Call this function when the page has been loaded
 function initialize() {
@@ -75,6 +75,7 @@ function initialize() {
 
     var countrymarkers = [];
     // add marker for each location
+    
     countries.each(function(element) {
       var marker;
       if (element.lat !=0 && element.lng !=0) {
@@ -88,17 +89,17 @@ function initialize() {
         // create marker
         opts = {
           "icon": icon,
-          "clickable": true,
+          "clickable": true
         };
+
         var marker = new LabeledMarker(target, opts);
+        
         GEvent.addListener(marker, 'click', function(aa, latlng){
            this.map.setCenter(this.marker.getLatLng(), 5);
         }.bind({'map':this, 'marker': marker}));
-                
         countrymarkers.push(marker);
       }
     }.bind(map));
-
     
     mgr.addMarkers(countrymarkers, 0 , 5);
     mgr.addMarkers(markers, 4);
@@ -123,4 +124,5 @@ function popvenueinfo(text, status)
 }
 
 // the google 'domready' callback
-google.setOnLoadCallback(initialize);
+window.addEvent('domready', initialize);
+//google.setOnLoadCallback(initialize);
