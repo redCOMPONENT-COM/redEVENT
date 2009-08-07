@@ -265,7 +265,7 @@ class RedeventModelDetails extends JModel
 						. ' INNER JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key '
 						. ' LEFT JOIN #__users AS u ON r.uid = u.id '
 						. ' WHERE s.xref = ' . $this->_xref
-            . ' AND s.confirmed = 1'
+            			. ' AND s.confirmed = 1'
 						;
 		$db->setQuery($query);
 		$submitters = $db->loadObjectList('submit_key');
@@ -286,9 +286,11 @@ class RedeventModelDetails extends JModel
 		if (!empty($this->_details->showfields) && $this->_details->redform_id > 0) 
 		{
 			// load form fields
-			$q = "SELECT id, field, form_id 
-				FROM #__rwf_fields j
-				WHERE j.id in (".$this->_details->showfields.")";
+			$q = ' SELECT id, field, form_id '
+				 . ' FROM #__rwf_fields j '
+				 . ' WHERE j.id in ('.$this->_details->showfields. ')'
+         . ' ORDER BY ordering '
+				 ;
 			$db->setQuery($q);
 			
 			if (!$db->query()) 
