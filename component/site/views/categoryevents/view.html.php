@@ -203,12 +203,14 @@ class RedeventViewCategoryevents extends JView
 
 	function _buildSortLists($elsettings)
 	{
+    $app = & JFactory::getApplication();
+    
 		// Table ordering values
 		$filter_order		= JRequest::getCmd('filter_order', 'x.dates');
 		$filter_order_Dir	= JRequest::getCmd('filter_order_Dir', 'ASC');
 
-		$filter				= JRequest::getString('filter');
-		$filter_type		= JRequest::getString('filter_type');
+    $filter     = $app->getUserState('com_redevent.categoryevents.filter');
+    $filter_type  = $app->getUserState('com_redevent.categoryevents.filter_type');
 
 		$sortselects = array();
 		$sortselects[]	= JHTML::_('select.option', 'title', $elsettings->titlename );

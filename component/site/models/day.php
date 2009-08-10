@@ -284,8 +284,8 @@ class RedeventModelDay extends JModel
 		 */
 		if ($params->get('filter'))
 		{
-			$filter 		= JRequest::getString('filter', '', 'request');
-			$filter_type 	= JRequest::getWord('filter_type', '', 'request');
+      $filter     = $mainframe->getUserStateFromRequest('com_redevent.day.filter', 'filter', '', 'string');
+      $filter_type  = $mainframe->getUserStateFromRequest('com_redevent.day.filter_type', 'filter_type', '', 'string');
 
 			if ($filter)
 			{

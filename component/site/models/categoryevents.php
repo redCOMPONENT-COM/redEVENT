@@ -260,8 +260,8 @@ class RedeventModelCategoryevents extends JModel {
 		 */
 		if ($params->get('filter'))
 		{
-			$filter 		= JRequest::getString('filter', '', 'request');
-			$filter_type 	= JRequest::getWord('filter_type', '', 'request');
+      $filter     = $mainframe->getUserStateFromRequest('com_redevent.categoryevents.filter', 'filter', '', 'string');
+      $filter_type  = $mainframe->getUserStateFromRequest('com_redevent.categoryevents.filter_type', 'filter_type', '', 'string');
 
 			if ($filter)
 			{

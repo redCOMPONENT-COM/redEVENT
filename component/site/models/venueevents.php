@@ -261,8 +261,8 @@ class RedeventModelVenueevents extends JModel
 		 */
 		if ($params->get('filter'))
 		{
-			$filter 		= JRequest::getString('filter');
-			$filter_type 	= JRequest::getWord('filter_type', '', 'request');
+      $filter     = $mainframe->getUserStateFromRequest('com_redevent.venueevents.filter', 'filter', '', 'string');
+      $filter_type  = $mainframe->getUserStateFromRequest('com_redevent.venueevents.filter_type', 'filter_type', '', 'string');
 
 			if ($filter)
 			{
