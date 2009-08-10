@@ -63,14 +63,12 @@ class RedeventViewEventList extends JView
     $document->addScript($this->baseurl.'/components/com_redevent/assets/js/eventsfilterhint.js');
 
 		// get variables
-		$limitstart	= JRequest::getVar('limitstart', 0, '', 'int');
-		$limit		= $mainframe->getUserStateFromRequest('com_redevent.eventlist.limit', 'limit', $params->def('display_num', 0), 'int');
 		$task 		= JRequest::getWord('task');
-		$pop		= JRequest::getBool('pop');
+		$pop		= JRequest::getBool('pop');		
 
 		//get data from model
 		$rows 	= & $this->get('Data');
-		$total 	= & $this->get('Total');
+		$pagination =& $this->get('Pagination');
 
 		//are events available?
 		if (!$rows) {
@@ -100,7 +98,7 @@ class RedeventViewEventList extends JView
 		
 		//Set Page title
 		$mainframe->setPageTitle( $pagetitle );
-   		$mainframe->addMetaTag( 'title' , $pagetitle );
+   	$mainframe->addMetaTag( 'title' , $pagetitle );
 
 		//Check if the user has access to the form
 		$maintainer = ELUser::ismaintainer();
@@ -119,21 +117,16 @@ class RedeventViewEventList extends JView
 		$lists	= $this->_buildSortLists();
 		
 		if ($lists['filter']) {
-			//$uri->setVar('filter', JRequest::getString('filter'));
-			//$filter		= $mainframe->getUserStateFromRequest('com_redevent.eventlist.filter', 'filter', '', 'string');
-			$uri->setVar('filter', $lists['filter']);
-			$uri->setVar('filter_type', JRequest::getString('filter_type'));
-		} else {
-			$uri->delVar('filter');
-			$uri->delVar('filter_type');
+//			//$uri->setVar('filter', JRequest::getString('filter'));
+//			//$filter		= $mainframe->getUserStateFromRequest('com_redevent.eventlist.filter', 'filter', '', 'string');
+//			$uri->setVar('filter', $lists['filter']);
+//			$uri->setVar('filter_type', JRequest::getString('filter_type'));
+//		} else {
+//			$uri->delVar('filter');
+//			$uri->delVar('filter_type');
 		}
-
-		// Create the pagination object
-		jimport('joomla.html.pagination');
-		$pageNav = new JPagination($total, $limitstart, $limit);
-
+		
 		$this->assign('lists' , 					$lists);
-		$this->assign('total',						$total);
 		$this->assign('action', 					$uri->toString());
 
 		$this->assignRef('rows' , 					$rows);
@@ -142,7 +135,7 @@ class RedeventViewEventList extends JView
 		$this->assignRef('print_link' , 			$print_link);
 		$this->assignRef('params' , 				$params);
 		$this->assignRef('dellink' , 				$dellink);
-		$this->assignRef('pageNav' , 				$pageNav);
+		$this->assignRef('pageNav' , 				$pagination);
 		$this->assignRef('elsettings' , 			$elsettings);
 		$this->assignRef('pagetitle' , 				$pagetitle);
 
@@ -186,14 +179,16 @@ class RedeventViewEventList extends JView
 	 */
 	function _buildSortLists()
 	{
+	  $app = & JFactory::getApplication();
+	  
 		$elsettings = & redEVENTHelper::config();
 		
 		$filter_order		= JRequest::getCmd('filter_order', 'x.dates');
 		$filter_order_Dir	= JRequest::getWord('filter_order_Dir', 'ASC');
 
-		$filter				= JRequest::getString('filter');
-		$filter_type		= JRequest::getString('filter_type');
-
+    $filter     = $app->getUserState('com_redevent.eventlist.filter');
+    $filter_type  = $app->getUserState('com_redevent.eventlist.filter_type');
+      
 		$sortselects = array();
 		$sortselects[]	= JHTML::_('select.option', 'title', $elsettings->titlename );
 		$sortselects[] 	= JHTML::_('select.option', 'venue', $elsettings->locationname );

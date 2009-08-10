@@ -64,7 +64,7 @@ class RedeventModelEventList extends JModel
 	{
 		parent::__construct();
 
-		global $mainframe;
+		$mainframe = & JFactory::getApplication();
 
 		// Get the paramaters of the active menu item
 		$params 	= & $mainframe->getParams('com_redevent');
@@ -72,7 +72,10 @@ class RedeventModelEventList extends JModel
 		//get the number of events from database
 		$limit       	= $mainframe->getUserStateFromRequest('com_redevent.eventlist.limit', 'limit', $params->def('display_num', 0), 'int');
 		$limitstart		= JRequest::getVar('limitstart', 0, '', 'int');
-			
+			        
+		// In case limit has been changed, adjust it
+    $limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
+		
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
 
@@ -224,8 +227,8 @@ class RedeventModelEventList extends JModel
 		 */
 		if ($params->get('filter'))
 		{
-			$filter 		= JRequest::getString('filter', '', 'request');
-			$filter_type 	= JRequest::getWord('filter_type', '', 'request');
+			$filter 		= $mainframe->getUserStateFromRequest('com_redevent.eventlist.filter', 'filter', '', 'string');
+			$filter_type 	= $mainframe->getUserStateFromRequest('com_redevent.eventlist.filter_type', 'filter_type', '', 'string');
 
 			if ($filter)
 			{
