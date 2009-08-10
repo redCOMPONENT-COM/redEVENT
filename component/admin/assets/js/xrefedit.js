@@ -59,6 +59,7 @@ function updatexref(id, venue, date, time, published)
     newtr.injectBefore($('add-xref'));
   }
   addremove(newtr);
+  $('sbox-window').close();
 }
 
 function removexref(event)
