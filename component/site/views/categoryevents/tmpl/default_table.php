@@ -46,7 +46,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			echo '<label for="filter_type">'.JText::_('FILTER').'</label>&nbsp;';
 			echo $this->lists['filter_type'].'&nbsp;';
 			?>
-			<input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="text_area" onchange="document.getElementById('adminForm').submit();" />
+			<input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="text_area" onchange="document.getElementById('adminForm').submit();" title="<?php echo JText::_('EVENTS_FILTER_HINT'); ?>"/>
 			<button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_( 'GO' ); ?></button>
 			<button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_( 'RESET' ); ?></button>
 		</div>

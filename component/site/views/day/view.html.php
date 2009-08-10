@@ -54,6 +54,11 @@ class RedeventViewDay extends JView
 		//add css file
 		$document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/eventlist.css');
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
+		
+    // add js
+    JHTML::_('behavior.mootools');
+    // for filter hint
+    $document->addScript($this->baseurl.'/components/com_redevent/assets/js/eventsfilterhint.js');
 
 		// get variables
 		$limitstart	= JRequest::getVar('limitstart', 0, '', 'int');

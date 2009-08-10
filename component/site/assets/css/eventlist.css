@@ -520,3 +520,7 @@ div.courseinfo_formaloffer img {
 	float: left;
 	border: 0px solid #000000;	
 }
+
+input.blur {
+  color:#999999;
+}
