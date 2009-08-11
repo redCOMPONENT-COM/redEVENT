@@ -58,7 +58,7 @@ class RedeventViewDay extends JView
     // add js
     JHTML::_('behavior.mootools');
     // for filter hint
-    $document->addScript($this->baseurl.'/components/com_redevent/assets/js/eventsfilterhint.js');
+    $document->addScript($this->baseurl.'/components/com_redevent/assets/js/eventslist.js');
 
 		// get variables
 		$limitstart	= JRequest::getVar('limitstart', 0, '', 'int');

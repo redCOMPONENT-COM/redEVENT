@@ -23,18 +23,12 @@
 // requires mootools
 window.addEvent('domready', function(){
 	
-	var blurClass = 'blur';
+	blurClass = 'blur';
 
-	var $input = $('filter');
-	
-	var $form = $('adminForm');
+	$input = $('filter');
 	var title = $input.title;
 	
-	function removehint() {
-		if ($input.value === title && $input.hasClass(blurClass)) {
-			$input.setProperty('value','').removeClass(blurClass);
-		}
-	}
+	$form = $('adminForm');
 	
 	// only apply logic if the element has the attribute
 	if (title) {
@@ -48,5 +42,31 @@ window.addEvent('domready', function(){
 	
 	// clear the pre-defined text when form is submitted
     $form.addEvent('submit', removehint);
+    
+//    // for some reason, the stop doesn't seem to work...
+//    $('limit').addEvent('change', function(event){
+//    	alert('before'+event.name);
+//    	event.stop();
+//    	alert('test');
+//    });
+    $('limit').addEvent('click', removehint);
     window.addEvent('unload', removehint); // handles Firefox's autocomplete
 });
+
+function removehint() {
+	if ($input.value === $input.title && $input.hasClass(blurClass)) {
+		$input.setProperty('value','').removeClass(blurClass);
+	}
+}
+
+function tableOrdering( order, dir, view )
+{
+	var form = document.getElementById("adminForm");
+
+	// remove the hint from the filter
+	removehint();
+
+	form.filter_order.value 	= order;
+	form.filter_order_Dir.value	= dir;
+	form.submit( view );
+}

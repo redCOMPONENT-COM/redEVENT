@@ -24,18 +24,6 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
-<script type="text/javascript">
-
-	function tableOrdering( order, dir, view )
-	{
-		var form = document.getElementById("adminForm");
-
-		form.filter_order.value 	= order;
-		form.filter_order_Dir.value	= dir;
-		form.submit( view );
-	}
-</script>
-
 <form action="<?php echo JRoute::_('index.php') ?>" method="post" id="adminForm">
 
 <?php if ($this->params->get('filter') || $this->params->get('display')) : ?>
