@@ -816,5 +816,92 @@ class redEVENTHelper {
         return htmlspecialchars($field->value);
     }
   }
+  
+  /**
+   * Check if the user can register to the specified xref. Returns an object with properties canregister and status
+   * 
+   * @param $xref_id
+   * @param $user_id
+   * @return object (canregister, status)
+   */
+  function canRegister($xref_id, $user_id = null)
+  {
+    $db = & JFactory::getDBO();
+    $user = & JFactory::getUser($user_id);
+    $result = new stdclass();
+    $result->canregister = 1;
+    
+    $query = ' SELECT x.dates, x.times, x.enddates, x.endtimes, x.maxattendees, x.maxwaitinglist, x.registrationend, e.registra, e.max_multi_signup '
+           . ' FROM #__redevent_event_venue_xref AS x '
+           . ' INNER JOIN #__redevent_events AS e ON x.eventid = e.id '
+           . ' WHERE x.id='. $db->Quote($xref_id)
+            ;
+    $db->setQuery($query);
+    $event = & $db->loadObject();
+    
+    // first, let's check the thing that don't need database queries
+    if (!$event->registra)
+    {
+      $result->canregister = 0;
+      $result->status = JTEXT::_('NO REGISTRATION FOR THIS EVENT');
+      return $result;
+    }
+    else if ( (!empty($event->dates) && strtotime($event->dates .' '. $event->times) < time()) 
+           || (!empty($event->registrationend) && $event->registrationend != '0000-00-00 00:00:00' && strtotime($event->registrationend) < time()) )
+    {
+      $result->canregister = 0;
+      $result->status = JTEXT::_('REGISTRATION IS OVER');
+      return $result;
+    }
+
+    // now check the max registrations and waiting list
+    if ($event->maxattendees)
+    {
+      // get places taken
+      $q = "SELECT waitinglist, COUNT(id) AS total
+          FROM #__rwf_submitters
+          WHERE xref = ". $db->Quote($xref_id)."
+          AND confirmed = 1
+          GROUP BY waitinglist";
+      $db->setQuery($q);
+      $res = $db->loadObjectList('waitinglist');
+      $event->registered = (isset($res[0]) ? $res[0]->total : 0) ;
+      $event->waiting = (isset($res[1]) ? $res[1]->total : 0) ;
+      
+      if ($event->maxattendees <= $event->registered && $event->maxwaitinglist <= $event->waiting)
+      {
+        $result->canregister = 0;
+        $result->status = JTEXT::_('EVENT FULL');
+        return $result;
+      }
+    }
+    
+    // then the max registration per user
+    if ($user->get('id'))
+    {
+      $q = "SELECT COUNT(s.id) AS total
+          FROM #__rwf_submitters AS s
+          INNER JOIN #__redevent_register AS r USING(submit_key)
+          WHERE s.xref = ". $db->Quote($xref_id) ."
+          AND s.confirmed = 1
+          AND r.uid = ". $db->Quote($user->get('id')) ."
+          ";
+      $db->setQuery($q);
+      $event->userregistered = $db->loadResult();
+    }
+    else
+    {
+      $event->userregistered = 0;
+    }
+    
+    if ($event->userregistered >= ($event->max_multi_signup ? $event->max_multi_signup : 1) )
+    {
+      $result->canregister = 0;
+      $result->status = JTEXT::_('USER MAX REGISTRATION REACHED');
+      return $result;
+    }
+        
+    return $result;
+  }
 }
 ?>

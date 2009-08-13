@@ -143,26 +143,32 @@ class redEVENT_tags {
 				/* Include redFORM */
 				$redform = '';
 				if ($this->_data->redform_id > 0) {
-					JPluginHelper::importPlugin( 'content' );
-					$dispatcher = JDispatcher::getInstance();
-					$form = new stdClass();
-					$form->text = '{redform}'.$this->_data->redform_id.','.($this->_data->max_multi_signup ? $this->_data->max_multi_signup : 1).'{/redform}';
-					$form->eventid = $this->_eventid;
-					$tpl = JRequest::getVar('page', false);
-					switch ($tpl) {
-						case 'confirmation':
-							$form->task = 'review';
-							break;
-						default:
-							$form->task = 'userregister';
-							break;
-					}
-					// params for plugin
-					$params = array();
-					$params['show_submission_type_webform_formal_offer'] = $this->_data->show_submission_type_webform_formal_offer;		
-									
-					$results = $dispatcher->trigger('onPrepareEvent', array(& $form, $params));
-          $redform = $form->text;
+				  $status = redEVENTHelper::canRegister($this->_xref);
+				  if ($status->canregister) {
+  					JPluginHelper::importPlugin( 'content' );
+  					$dispatcher = JDispatcher::getInstance();
+  					$form = new stdClass();
+  					$form->text = '{redform}'.$this->_data->redform_id.','.($this->_data->max_multi_signup ? $this->_data->max_multi_signup : 1).'{/redform}';
+  					$form->eventid = $this->_eventid;
+  					$tpl = JRequest::getVar('page', false);
+  					switch ($tpl) {
+  						case 'confirmation':
+  							$form->task = 'review';
+  							break;
+  						default:
+  							$form->task = 'userregister';
+  							break;
+  					}
+  					// params for plugin
+  					$params = array();
+  					$params['show_submission_type_webform_formal_offer'] = $this->_data->show_submission_type_webform_formal_offer;		
+  									
+  					$results = $dispatcher->trigger('onPrepareEvent', array(& $form, $params));
+            $redform = $form->text;
+				  }
+				  else {
+				    $redform = $status->status;
+				  }
 				}
 				
 				/* Form fields */

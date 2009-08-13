@@ -333,75 +333,7 @@ class RedeventModelSignup extends JModel
 	 */
 	function getRegistrationStatus()
 	{
-    $db = & $this->_db;
-    $event = & $this->getDetails();
-    $user = & JFactory::getUser();
-    $result = new stdclass();
-    $result->canregister = 1;
-    
-    // first, let's check the thing that don't need database queries
-    if (!$event->registra)
-    {
-      $result->canregister = 0;
-      $result->status = JTEXT::_('NO REGISTRATION FOR THIS EVENT');
-      return $result;
-    }
-    else if ( (!empty($event->dates) && strtotime($event->dates .' '. $event->times) < time()) 
-           || (!empty($event->registrationend) && $event->registrationend != '0000-00-00 00:00:00' && strtotime($event->registrationend) < time()) )
-    {
-      $result->canregister = 0;
-      $result->status = JTEXT::_('REGISTRATION IS OVER');
-      return $result;
-    }
-
-    // now check the max registrations and waiting list
-		if ($event->maxattendees)
-		{
-	    // get places taken
-	    $q = "SELECT waitinglist, COUNT(id) AS total
-	        FROM #__rwf_submitters
-	        WHERE xref = ". $this->_db->Quote($this->_xref)."
-	        AND confirmed = 1
-	        GROUP BY waitinglist";
-	    $this->_db->setQuery($q);
-	    $res = $this->_db->loadObjectList('waitinglist');
-	    $event->registered = (isset($res[0]) ? $res[0]->total : 0) ;
-	    $event->waiting = (isset($res[1]) ? $res[1]->total : 0) ;
-	    
-			if ($event->maxattendees <= $event->registered && $event->maxwaitinglist <= $event->waiting)
-			{
-				$result->canregister = 0;
-				$result->status = JTEXT::_('EVENT FULL');
-				return $result;
-			}
-		}
-		
-		// then the max registration per user
-	  if ($user->get('id'))
-    {
-      $q = "SELECT COUNT(s.id) AS total
-          FROM #__rwf_submitters AS s
-          INNER JOIN #__redevent_register AS r USING(submit_key)
-          WHERE s.xref = ". $db->Quote($this->_xref) ."
-          AND s.confirmed = 1
-          AND r.uid = ". $db->Quote($user->get('id')) ."
-          ";
-      $db->setQuery($q);
-      $event->userregistered = $db->loadResult();
-    }
-    else
-    {
-      $event->userregistered = 0;
-    }
-    
-		if ($event->userregistered >= ($event->max_multi_signup ? $event->max_multi_signup : 1) )
-		{
-			$result->canregister = 0;
-			$result->status = JTEXT::_('USER MAX REGISTRATION REACHED');
-      return $result;
-		}
-    		
-		return $result;
+	  return redEVENTHelper::canRegister($this->_xref);
 	}
 }
 ?>
