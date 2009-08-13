@@ -1,131 +1,53 @@
-<table class="noshow">
-	<tr>
-   		<td width="50%" valign="top">
-			<table class="noshow">
-      			<tr>
-        			<td width="50%" valign="top">
-						<fieldset class="adminform">
-							<legend><?php echo JText::_( 'GLOBAL PARAMETERS' ); ?></legend>
-							<table class="admintable" cellspacing="1">
-								<tbody>
-      								<tr>
-	          							<td width="300" class="key">
-											<span class="editlinktip hasTip" title="<?php echo JText::_( 'EVENT NUMBER' ); ?>::<?php echo JText::_('EVENT NUMBER TIP'); ?>">
-												<?php echo JText::_( 'EVENT NUMBER' ); ?>
-											</span>
-										</td>
-       									<td valign="top">
-        									<?php
-		  									$nr = array();
-											$nr[] = JHTML::_('select.option', '5', 5 );
-											$nr[] = JHTML::_('select.option', '10', 10 );
-											$nr[] = JHTML::_('select.option', '15', 15 );
-											$nr[] = JHTML::_('select.option', '20', 20 );
-											$nr[] = JHTML::_('select.option', '25', 25 );
-											$nr[] = JHTML::_('select.option', '30', 30 );
-											$nr[] = JHTML::_('select.option', '50', 50 );
-											$nrevents = JHTML::_('select.genericlist', $nr, 'globalparams[display_num]', 'size="1" class="inputbox"', 'value', 'text', $this->globalparams->get('display_num') );
-											echo $nrevents;
-        									?>
-       	 								</td>
-      								</tr>
-      								<tr>
-	          							<td width="300" class="key">
-											<span class="editlinktip hasTip" title="<?php echo JText::_( 'CAT DISPLAY' ); ?>::<?php echo JText::_('CAT DISPLAY DESC'); ?>">
-												<?php echo JText::_( 'CAT DISPLAY' ); ?>
-											</span>
-										</td>
-       									<td valign="top">
-											<input type="text" name="globalparams[cat_num]" value="<?php echo $this->globalparams->get('cat_num'); ?>" size="3" maxlength="3" />
-       	 								</td>
-      								</tr>
-      								<tr>
-	          							<td width="300" class="key">
-											<span class="editlinktip hasTip" title="<?php echo JText::_( 'FILTER' ); ?>::<?php echo JText::_('FILTER DESC'); ?>">
-												<?php echo JText::_( 'FILTER' ); ?>
-											</span>
-										</td>
-       									<td valign="top">
-        									<?php
-											echo JHTML::_('select.booleanlist', 'globalparams[filter]', 'class="inputbox"', $this->globalparams->get('filter'), 'Show', 'Hide' );
-        									?>
-       	 								</td>
-      								</tr>
-      								<tr>
-	          							<td width="300" class="key">
-											<span class="editlinktip hasTip" title="<?php echo JText::_( 'DISPLAY SELECT' ); ?>::<?php echo JText::_('DISPLAY SELECT DESC'); ?>">
-												<?php echo JText::_( 'DISPLAY SELECT' ); ?>
-											</span>
-										</td>
-       									<td valign="top">
-        									<?php
-											echo JHTML::_('select.booleanlist', 'globalparams[display]', 'class="inputbox"', $this->globalparams->get('display'), 'Show', 'Hide' );
-        									?>
-       	 								</td>
-      								</tr>
-      								<tr valign="top">
-	          							<td width="300" class="key">
-											<span class="editlinktip hasTip" title="<?php echo JText::_( 'SHOW ICONS' ); ?>::<?php echo JText::_('SHOW ICONS DESC'); ?>">
-												<?php echo JText::_( 'SHOW ICONS' ); ?>
-											</span>
-										</td>
-       									<td valign="top">
-		 									<?php
-          									echo JHTML::_('select.booleanlist', 'globalparams[icons]', 'class="inputbox"', $this->globalparams->get('icons'), 'Show', 'Hide' );
-       										?>
-       	 								</td>
-      								</tr>
-      								<tr valign="top">
-	          							<td width="300" class="key">
-											<span class="editlinktip hasTip" title="<?php echo JText::_( 'PRINT ICON' ); ?>::<?php echo JText::_('PRINT ICON DESC'); ?>">
-												<?php echo JText::_( 'PRINT ICON' ); ?>
-											</span>
-										</td>
-       									<td valign="top">
-		 									<?php
-          									echo JHTML::_('select.booleanlist', 'globalparams[show_print_icon]', 'class="inputbox"', $this->globalparams->get('show_print_icon'), 'Show', 'Hide' );
-       										?>
-       	 								</td>
-      								</tr>
-      								<tr valign="top">
-	          							<td width="300" class="key">
-											<span class="editlinktip hasTip" title="<?php echo JText::_( 'EMAIL ICON' ); ?>::<?php echo JText::_('EMAIL ICON DESC'); ?>">
-												<?php echo JText::_( 'EMAIL ICON' ); ?>
-											</span>
-										</td>
-       									<td valign="top">
-		 									<?php
-          									echo JHTML::_('select.booleanlist', 'globalparams[show_email_icon]', 'class="inputbox"', $this->globalparams->get('show_email_icon'), 'Show', 'Hide' );
-       										?>
-       	 								</td>
-      								</tr>
-								</tbody>
-							</table>
-						</fieldset>
-					</td>
+<?php
+/**
+ * @version 1.0 $Id$
+ * @package Joomla
+ * @subpackage redEVENT
+ * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license GNU/GPL, see LICENSE.php
+ * redEVENT is based on EventList made by Christoph Lukes from schlu.net
+ * redEVENT can be downloaded from www.redcomponent.com
+ * redEVENT is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License 2
+ * as published by the Free Software Foundation.
 
-					<td width="50%" valign="top">
-						<table class="noshow">
-      						<tr>
-        						<td width="50%" valign="top">
-									<fieldset class="adminform">
-										<legend><?php echo JText::_( 'ATTENTION' ); ?></legend>
-										<table class="admintable" cellspacing="1">
-											<tbody>
-	 											<tr>
-	          										<td>
-														<?php echo JText::_( 'GLOBAL PARAM DESC' ); ?>
-       	 											</td>
-      											</tr>
-											</tbody>
-										</table>
-		 							</fieldset>
-								</td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
+ * redEVENT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with redEVENT; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+ 
+defined('_JEXEC') or die('Restricted access');
+?>
+<table class="noshow">
+  <tr>
+    <td>
+    <fieldset class="adminform"><legend><?php echo JText::_( 'ATTENTION' ); ?></legend>
+    <table class="admintable" cellspacing="1">
+      <tbody>
+        <tr>
+          <td><?php echo JText::_( 'GLOBAL PARAM DESC' ); ?></td>
+        </tr>
+      </tbody>
+    </table>
+    </fieldset>
+    </td>
+  </tr>
+  <tr>
+    <td>    
+    <fieldset class="adminform"><legend><?php echo JText::_( 'GLOBAL PARAMETERS' ); ?></legend>
+    <?php echo $this->globalparams->render('globalparams'); ?></fieldset>
+    
+    <?php foreach ($this->globalparams->getGroups() as $key => $groups): ?>
+      <?php if (strtolower($key) != '_default'): ?>
+        <fieldset class="adminform"><legend><?php echo JText::_( strtoupper($key) ); ?></legend>
+        <?php echo $this->globalparams->render('globalparams', $key); ?></fieldset>
+      <?php endif; ?>
+    <?php endforeach; ?>
+    </td>
+  </tr>
 </table>
