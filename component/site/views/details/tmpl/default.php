@@ -61,7 +61,9 @@ if ($this->row->show_names) : ?>
         if ($endtime) {
           $time .= ' - ' . $endtime;
         }
-				echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&tpl=attendees&xref='.$venuedate->id.'&id='.$venuedate->eventid), JText::_('SHOW_REGISTERED_USERS').' '.$date.' '.$time);
+        $attendees_layout = ($this->params->get('details_attendees_layout', 0) ? 'attendees' : 'attendees_table');
+        
+				echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&tpl='. $attendees_layout .'&xref='.$venuedate->id.'&id='.$venuedate->eventid), JText::_('SHOW_REGISTERED_USERS').' '.$date.' '.$time);
 				echo '<br />';
 			}
 		?>

@@ -32,4 +32,10 @@
 			<option value="1">Show</option>
 		</param>
  	</params>
+ 	<params group="Layout">
+    <param name="details_attendees_layout" type="list" default="0" label="DETAILS ATTENDEES LAYOUT" description="DETAILS ATTENDEES LAYOUT TIP">
+      <option value="1">Table</option>
+      <option value="0">List</option>
+    </param> 	  
+ 	</params>
 </config>
