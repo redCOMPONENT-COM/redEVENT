@@ -302,8 +302,10 @@ class RedeventModelDetails extends JModel
 			
 			$fields = $db->loadObjectList();
 			$table_fields = array();
+			$fields_names = array();
 			foreach ($fields as $key => $field) {
 				$table_fields[] = 'a.field_'. $field->id;
+				$fields_names['field_'. $field->id] = $field->field;
 			}
 			
 			$query = ' SELECT ' . implode(', ', $table_fields)
@@ -337,6 +339,7 @@ class RedeventModelDetails extends JModel
         $register->id = $answer->id;
         $register->submitter = $submitters[$answer->submit_key];
         $register->answers = $answer;
+        $register->fields = $fields_names;
         unset($register->answers->id); // just the fields
         unset($register->answers->submit_key); // just the fields
         $registers[] = $register;

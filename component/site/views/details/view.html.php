@@ -124,21 +124,16 @@ class RedeventViewDetails extends JView
 		if ( $regcheck ) {
 			// add javascript code for cancel button on attendees layout.
 			JHTML::_('behavior.mootools');
-			$unreg_link = JURI::root().'index.php?option=com_redevent&view=details&task=delreguser&xref='.$row->xref;
 			$js = " window.addEvent('domready', function(){
-		            $$('ul[id^=submitid]').each(function(el){
-		              lastli = el.getChildren().getLast();
-		              newli = new Element('li').injectAfter(lastli);
-		              link = new Element('a', {'href': '".$unreg_link."&sid='+el.id.substr(9)}).appendText('cancel').injectInside(newli).addEvent('click', function(event){
-		                if (confirm('".JText::_('CONFIRM CANCEL REGISTRATION')."')) {
-		                  return true;
-		                }
-		                else {
-  	                  event.preventDefault();
-		                  return false;
-		                }
-		              });
-		            });
+		            $$('.unreglink').addEvent('click', function(event){
+		                  if (confirm('".JText::_('CONFIRM CANCEL REGISTRATION')."')) {
+                      return true;
+                    }
+                    else {
+                      event.preventDefault();
+                      return false;
+                    }
+		            });		            
 		        }); ";
       $document->addScriptDeclaration($js);
 		}		
