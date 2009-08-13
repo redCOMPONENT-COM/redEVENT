@@ -26,41 +26,37 @@ defined('_JEXEC') or die('Restricted access');
 
 <form action="index.php" method="post" name="adminForm">
 
-    	<div id="elconfig-document">
-			<div id="page-basic">
-				<?php require_once(dirname(__FILE__).DS.'el.settings_basic.html'); ?>
-			</div>
+      <div id="elconfig-document">
+      <div id="page-basic">
+        <?php echo $this->loadTemplate('basic'); ?>
+      </div>
 
-			<div id="page-usercontrol">
-				<?php require_once(dirname(__FILE__).DS.'el.settings_usercontrol.html'); ?>
-			</div>
+      <div id="page-usercontrol">
+        <?php echo $this->loadTemplate('usercontrol'); ?>
+      </div>
 
-			<div id="page-details">
-				<?php require_once(dirname(__FILE__).DS.'el.settings_detailspage.html'); ?>
-			</div>
+      <div id="page-details">
+        <?php echo $this->loadTemplate('detailspage'); ?>
+      </div>
 
-			<div id="page-layout">
-				<?php require_once(dirname(__FILE__).DS.'el.settings_layout.html'); ?>
-			</div>
+      <div id="page-layout">
+        <?php echo $this->loadTemplate('layout'); ?>
+      </div>
+      
+      <div id="page-parameters">
+        <?php echo $this->loadTemplate('global'); ?>
+      </div>
+      
+      <div id="page-signup">
+        <?php echo $this->loadTemplate('signup'); ?>
+      </div>
+    </div>
+    <div class="clr"></div>
 
-			<div id="page-parameters">
-				<?php require_once(dirname(__FILE__).DS.'el.settings_parameters.html'); ?>
-			</div>
-			
-			<div id="page-signup">
-				<?php require_once(dirname(__FILE__).DS.'el.settings_signup.html'); ?>
-			</div>
-		</div>
-		<div class="clr"></div>
-
-		<?php echo JHTML::_( 'form.token' ); ?>
-		<input type="hidden" name="task" value="">
-		<input type="hidden" name="id" value="1">
-		<input type="hidden" name="lastupdate" value="<?php echo $this->elsettings->lastupdate; ?>">
-		<input type="hidden" name="option" value="com_redevent">
-		<input type="hidden" name="controller" value="settings">
-		</form>
-
-		<p class="copyright">
-			<?php echo ELAdmin::footer( ); ?>
-		</p>
+    <?php echo JHTML::_( 'form.token' ); ?>
+    <input type="hidden" name="task" value="">
+    <input type="hidden" name="id" value="1">
+    <input type="hidden" name="lastupdate" value="<?php echo $this->elsettings->lastupdate; ?>">
+    <input type="hidden" name="option" value="com_redevent">
+    <input type="hidden" name="controller" value="settings">
+</form>
