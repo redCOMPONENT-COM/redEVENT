@@ -818,7 +818,9 @@ class redEVENTHelper {
   }
   
   /**
-   * Check if the user can register to the specified xref. Returns an object with properties canregister and status
+   * Check if the user can register to the specified xref. 
+   *  
+   * Returns an object with properties canregister and status
    * 
    * @param $xref_id
    * @param $user_id
