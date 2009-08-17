@@ -257,6 +257,10 @@ class RedeventModelDetails extends JModel
 	 */
 	function getRegisters() 
 	{
+	  if (!$this->_details->registra) {
+	    return null;
+	  }
+	  
 		$db = JFactory::getDBO();
 
 		// first, get all submissions			
