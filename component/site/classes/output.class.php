@@ -84,10 +84,14 @@ class ELOutput {
 	* @param array $params needed params
 	* @param string $task The current task
 	* @param int $categid The cat id
+	* @return string html
 	*/
 	function archivebutton( &$params, $task = NULL, $id = NULL )
 	{
-
+    if (!$params->get( 'show_gotoarchive_icon', 1)) {
+      return '';
+    }
+    
 		$settings = & redEVENTHelper::config();
 		
 		if ( $settings->oldevent == 2 ) {

@@ -31,6 +31,10 @@
 			<option value="0">Hide</option>
 			<option value="1">Show</option>
 		</param>
+    <param name="show_gotoarchive_icon" type="radio" default="1" label="GO TO ARCHIVE ICON" description="GO TO ARCHIVE ICON DESC">
+      <option value="0">Hide</option>
+      <option value="1">Show</option>
+    </param>
  	</params>
  	<params group="Layout">
     <param name="details_attendees_layout" type="list" default="0" label="DETAILS ATTENDEES LAYOUT" description="DETAILS ATTENDEES LAYOUT TIP">
