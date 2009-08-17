@@ -37,7 +37,7 @@ class RedEventModelWaitinglist extends JModel {
 	
 	private $xref = null;
 	private $eventid = null;
-	private $event_data = null;
+	var $event_data = null;
 	private $move_on = null;
 	private $move_off = null;
 	private $move_on_ids = array();
@@ -96,6 +96,8 @@ class RedEventModelWaitinglist extends JModel {
 		}
 		
 	}
+	
+	
 	
 	/**
 	 * Process waitinglist
@@ -295,17 +297,106 @@ class RedEventModelWaitinglist extends JModel {
 	/**
 	 * Get the basic event information
 	 */
-	private function getEventData() {
-		$db = JFactory::getDBO();
-		$q = "SELECT x.maxattendees, x.maxwaitinglist, e.notify_off_list_body,
-			e.notify_on_list_body, e.notify_off_list_subject, e.notify_on_list_subject,
-			e.redform_id
-			FROM #__redevent_event_venue_xref x
-			LEFT JOIN #__redevent_events e
-			ON x.eventid = e.id
-			WHERE x.id = ".$this->xref;
-		$db->setQuery($q);
-		$this->event_data = $db->loadObject();
+	private function getEventData() 
+	{
+	  if (empty($this->event_data))
+	  {
+  		$db = JFactory::getDBO();
+  		$q = "SELECT x.maxattendees, x.maxwaitinglist, e.notify_off_list_body,
+  			e.notify_on_list_body, e.notify_off_list_subject, e.notify_on_list_subject,
+  			e.redform_id
+  			FROM #__redevent_event_venue_xref x
+  			LEFT JOIN #__redevent_events e
+  			ON x.eventid = e.id
+  			WHERE x.id = ".$this->xref;
+  		$db->setQuery($q);
+  		$this->event_data = $db->loadObject();
+	  }
+	  return $this->event_data;
 	}
+	
+	/**
+	 * put people off from the waiting list
+	 * 
+	 * @param array $answer_ids to put off waiting
+	 */
+	public function putOffWaitingList($answer_ids)
+	{
+	  if (!count($answer_ids)) {
+	    return true;
+	  }
+	  
+	  /* Get attendee total first */
+    $this->getEventData();
+    $this->getWaitingList();
+    
+    /* Check if there are too many ppl going to the event */
+    $remaining = $this->event_data->maxattendees - $this->waitinglist[0]->total;
+    
+    // if there are places remaining, or no limit, put people off the list.
+    if ($this->event_data->maxattendees == 0 || $remaining) 
+    {
+      /* Need to move people on the waitinglist */
+      // we can only take as many new people off the list as there are remaining places
+      if ($this->event_data->maxattendees) {
+        $this->move_off_ids = array_slice($answer_ids, 0, $remaining);
+      }
+      else {
+        $this->move_off_ids = $answer_ids;
+      }
+      
+      $query = ' UPDATE #__rwf_submitters SET waitinglist = 0 WHERE answer_id IN ('.implode(',', $this->move_off_ids).')';
+      $this->_db->setQuery($query);
+
+      if (!$this->_db->query($query)) {
+        $this->setError($this->_db->getErrorMsg());
+        return false;
+      }
+    }
+    else {
+      $this->setError(JText::_('NOT ENOUGH PLACES LEFT'));
+      return false;
+      // event is full already
+    }
+    
+    /* Mail the attendees of their new status */
+    if (count($this->move_off_ids) > 0) {
+      /* Mail attendees they have been moved on the waitlinglist */
+      $this->SendMail('off');
+    }	  
+    return true;
+	}
+	
+  /**
+   * put people on the waiting list
+   * 
+   * @param array $answer_ids to put on waiting list
+   */
+  public function putOnWaitingList($answer_ids)
+  {    
+    /* Check if there are too many ppl going to the event */
+    if (count($answer_ids)) {
+      $this->move_on_ids = $answer_ids;
+      /* Need to move people on the waitinglist */      
+      $query = ' UPDATE #__rwf_submitters SET waitinglist = 1 WHERE answer_id IN ('.implode(',', $this->move_on_ids).')';
+      $this->_db->setQuery($query);
+    
+      if (!$this->_db->query($query)) {
+        $this->setError($this->_db->getErrorMsg());
+        return false;
+      }
+    }
+    else {
+      return true;
+      // event is full already
+    }
+    
+    /* Mail the attendees of their new status */
+    if (count($this->move_on_ids) > 0) {
+      /* Mail attendees they have been moved on the waitlinglist */
+      $this->SendMail('on');
+    }   
+    return true;
+  }
 }
 ?>

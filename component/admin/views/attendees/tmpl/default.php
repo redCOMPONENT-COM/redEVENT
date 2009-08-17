@@ -96,7 +96,20 @@ defined('_JEXEC') or die('Restricted access'); ?>
           }
 				  ?>
 				</td>
-				<td><?php echo $row->waitinglist == 0 ? JText::_('NO') : JText::_('YES'); ?></td>
+				<td><?php // echo $row->waitinglist == 0 ? JText::_('NO') : JText::_('YES'); ?>
+          <?php 
+          //echo $row->confirmed == 0 ? JText::_('NO') : JText::_('YES'); 
+          if (!$row->waitinglist) {
+            echo JHTML::link('javascript: void(0);', 
+                             JHTML::_('image.administrator', 'publish_x.png'), 
+                             array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'onwaiting\');', 'title' => JText::_('PUT ON WAITING LIST')));
+          }
+          else {
+            echo JHTML::link( 'javascript: void(0);', 
+                              JHTML::_('image.administrator', 'tick.png'), 
+                              array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'offwaiting\');', 'title' => JText::_('PUT OFF WAITING LIST')));
+          }
+          ?></td>
 			</tr>
 			<?php $k = 1 - $k; $i++; } ?>
 		</tbody>

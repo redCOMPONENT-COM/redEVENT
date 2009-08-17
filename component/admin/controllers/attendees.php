@@ -189,6 +189,48 @@ class RedEventControllerAttendees extends RedEventController
     }
     return true;
   }
+  
+  function onwaiting()
+  {
+    $cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
+    $xref   = JRequest::getInt('xref');
+    
+    $model = $this->getModel('waitinglist');
+    $model->setXrefId($xref);
+    
+    if ($model->putOnWaitingList($cid))
+    {
+      $msg = JText::_( 'PUT ON WAITING SUCCESS');
+      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg );
+    }
+    else
+    {
+      $msg = JText::_( 'PUT ON WAITING FAILURE') . ': ' . $model->getError();
+      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg, 'error' );      
+    }
+    return true;    
+  }
+
+  function offwaiting()
+  {
+    $cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
+    $xref   = JRequest::getInt('xref');
+    
+    $model = $this->getModel('waitinglist');
+    $model->setXrefId($xref);
+    
+    if ($model->putOffWaitingList($cid))
+    {
+      $msg = JText::_( 'PUT OFF WAITING SUCCESS');
+      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg );
+    }
+    else
+    {
+      $msg = JText::_( 'PUT OFF WAITING FAILURE') . ': ' . $model->getError();
+      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg, 'error' );      
+    }
+    return true;    
+  }
 		
 	/* Obsolete */
 	function export()
