@@ -114,7 +114,7 @@ class redEVENT_tags {
 				preg_match_all("/\[(.+?)\]/", $page, $alltags);
 				$customdata = $this->getCustomData($alltags);
 				
-				$customfields = $this->getCustomFields($alltags[1], $this->_data->id);
+				$customfields = $this->getCustomFields($this->_data->id);
 				
 				/* Only do the event description if it is in on the page */
 				$event_description = '';
@@ -320,10 +320,12 @@ class redEVENT_tags {
 				}
 				
         // then the tags from the custom library
-        foreach ($customfields as $tag => $data) {
-          $data->text_field = str_replace($findoffer, $replaceoffer, $data->text_field);
-          /* Do a redFORM replacement here too for when used in the text library */
-          $data->text_field = str_replace('[redform]', $redform, $data->text_field);
+        foreach ($customfields as $tag => $data) 
+        {
+//          // in case tags are used in custom fields...
+//          $data->text_field = str_replace($findoffer, $replaceoffer, $data->text_field);
+//          /* Do a redFORM replacement here too for when used in the text library */
+//          $data->text_field = str_replace('[redform]', $redform, $data->text_field);
           $message = str_ireplace('['.$tag.']', $data->text_field, $message);
         }
 				
@@ -565,7 +567,7 @@ class redEVENT_tags {
    *
    * @return unknown
    */
-  function getCustomfields($tags, $event_id)
+  function getCustomfields($event_id)
   {
   	$db = & JFactory::getDBO();
     $query = ' SELECT f.*, fv.value '
@@ -575,18 +577,15 @@ class redEVENT_tags {
            . ' ORDER BY f.ordering ASC '
            ;
     $db->setQuery($query);
-    $fields = $db->loadObjectList('tag');
+    $fields = $db->loadObjectList();
     
     $replace = array();
-    foreach ($tags as $tag)
+    foreach ($fields as $field)
     {
-    	if (isset($fields[$tag]))
-    	{
     		$obj = new stdclass();
-    		$obj->text_name = $tag;
-        $obj->text_field = redEVENTHelper::renderFieldValue($fields[$tag]);
-        $replace[$tag] = $obj;
-    	}
+    		$obj->text_name = $field->tag;
+        $obj->text_field = redEVENTHelper::renderFieldValue($field);
+        $replace[$field->tag] = $obj;
     }
     
     return $replace;
