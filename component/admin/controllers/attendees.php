@@ -140,6 +140,56 @@ class RedEventControllerAttendees extends RedEventController
 		$this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg );
 	}
 	
+	/**
+	 * confirm an attendee registration
+	 * 
+	 * @return unknown_type
+	 */
+	function confirmattendees()
+	{
+    $cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
+    $xref   = JRequest::getInt('xref');
+    
+    $model = $this->getModel('attendees');
+    
+    if ($model->confirmattendees($cid))
+    {
+  	  $msg = JText::_( 'REGISTRATION CONFIRMED');
+      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg );
+  	}
+  	else
+  	{
+      $msg = JText::_( 'ERROR REGISTRATION CONFIRM') . ': ' . $model->getError();
+      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg, 'error' );  	  
+  	}
+    return true;
+	}
+	
+  /**
+   * remove confirm status from an attendee registration
+   * 
+   * @return unknown_type
+   */
+  function unconfirmattendees()
+  {
+    $cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
+    $xref   = JRequest::getInt('xref');
+    
+    $model = $this->getModel('attendees');
+    
+    if ($model->unconfirmattendees($cid))
+    {
+      $msg = JText::_( 'REGISTRATION UNCONFIRMED');
+      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg );
+    }
+    else
+    {
+      $msg = JText::_( 'ERROR REGISTRATION UNCONFIRM') . ': ' . $model->getError();
+      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg, 'error' );      
+    }
+    return true;
+  }
+		
 	/* Obsolete */
 	function export()
 	{

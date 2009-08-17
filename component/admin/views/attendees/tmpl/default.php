@@ -85,7 +85,17 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<td><?php echo $row->uip == 'DISABLED' ? JText::_( 'DISABLED' ) : $row->uip; ?></td>
 				<td><?php echo $row->name; ?></td>
 				<td style="text-align: center;"><a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i;?>','remove')"><img src="images/publish_x.png" width="16" height="16" border="0" alt="Delete" /></a></td>
-				<td><?php echo $row->confirmed == 0 ? JText::_('NO') : JText::_('YES'); ?></td>
+				<td>
+				  <?php 
+				  //echo $row->confirmed == 0 ? JText::_('NO') : JText::_('YES'); 
+				  if (!$row->confirmed) {
+            echo JHTML::link('javascript: void(0);', JHTML::_('image.administrator', 'publish_x.png'), array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'confirmattendees\');'));
+				  }
+          else {
+            echo JHTML::link('javascript: void(0);', JHTML::_('image.administrator', 'tick.png'), array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'unconfirmattendees\');'));
+          }
+				  ?>
+				</td>
 				<td><?php echo $row->waitinglist == 0 ? JText::_('NO') : JText::_('YES'); ?></td>
 			</tr>
 			<?php $k = 1 - $k; $i++; } ?>

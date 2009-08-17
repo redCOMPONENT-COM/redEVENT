@@ -70,6 +70,7 @@ class RedEventModelAttendees extends JModel
 	 */
 	var $_eventid = null;
 
+	var $_xref = null;
 	/**
 	 * Constructor
 	 *
@@ -355,5 +356,52 @@ class RedEventModelAttendees extends JModel
 		$row->check();
 		$row->store();
 	}
+	
+	/**
+	 * confirm attendees
+	 * 
+	 * @param $cid array of attendees id to confirm
+	 * @return boolean true on success
+	 */
+	function confirmattendees($cid = array())
+  {
+    if (count( $cid ))
+    {
+      $ids = implode(',', $cid);
+            
+      $query = 'UPDATE #__rwf_submitters SET confirmed = 1 WHERE answer_id IN ('. $ids .') AND xref = '. $this->_db->Quote($this->_xref);
+      $this->_db->setQuery( $query );
+      
+      if (!$this->_db->query()) {
+        RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
+        return false;
+      }
+    }
+    return true;
+  }
+  
+
+  /**
+   * unconfirm attendees
+   * 
+   * @param $cid array of attendees id to unconfirm
+   * @return boolean true on success
+   */
+  function unconfirmattendees($cid = array())
+  {
+    if (count( $cid ))
+    {
+      $ids = implode(',', $cid);
+            
+      $query = 'UPDATE #__rwf_submitters SET confirmed = 0 WHERE answer_id IN ('. $ids .') AND xref = '. $this->_db->Quote($this->_xref);
+      $this->_db->setQuery( $query );
+      
+      if (!$this->_db->query()) {
+        RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
+        return false;
+      }
+    }
+    return true;
+  }
 }
 ?>
