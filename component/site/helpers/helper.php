@@ -848,9 +848,18 @@ class redEVENTHelper {
       $result->status = JTEXT::_('NO REGISTRATION FOR THIS EVENT');
       return $result;
     }
-    else if ( (!empty($event->dates) && strtotime($event->dates .' '. $event->times) < time()) 
-           || (!empty($event->registrationend) && $event->registrationend != '0000-00-00 00:00:00' && strtotime($event->registrationend) < time()) )
+    else if (!empty($event->registrationend) && $event->registrationend != '0000-00-00 00:00:00')
     {
+      if ( strtotime($event->registrationend) < time() )
+      {
+        $result->canregister = 0;
+        $result->status = JTEXT::_('REGISTRATION IS OVER');
+        return $result;
+      }
+    }
+    else if (!empty($event->dates) && strtotime($event->dates .' '. $event->times) < time())
+    {
+      // it's separated from previous case so that it is not checked if a registration end was set
       $result->canregister = 0;
       $result->status = JTEXT::_('REGISTRATION IS OVER');
       return $result;
