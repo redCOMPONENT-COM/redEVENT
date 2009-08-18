@@ -379,6 +379,10 @@ class RedeventController extends JController
 	 */
 	function delreguser()
 	{
+	  $mainframe = & JFactory::getApplication();
+	  
+	  $params  = & $mainframe->getParams('com_redevent');
+	  
 		// Check for request forgeries
 		//JRequest::checkToken() or die( 'Invalid Token' );
 
@@ -407,7 +411,13 @@ class RedeventController extends JController
 		$cache->clean();
 
 		$msg = JText::_( 'UNREGISTERED SUCCESSFULL' );
-		$this->setRedirect( JRoute::_('index.php?option=com_redevent&view=details&tpl=attendees&xref=' . $xref, false), $msg );
+		
+		if ($params->get('details_attendees_layout', 0)) {
+		  $this->setRedirect( JRoute::_('index.php?option=com_redevent&view=details&tpl=attendees&xref=' . $xref, false), $msg );
+		}
+		else {
+      $this->setRedirect( JRoute::_('index.php?option=com_redevent&view=details&tpl=attendees_table&xref=' . $xref, false), $msg );
+    }
 	}
 
 	/**
