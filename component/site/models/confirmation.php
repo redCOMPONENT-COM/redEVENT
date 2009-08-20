@@ -244,7 +244,7 @@ class RedeventModelConfirmation extends JModel
 				      $this->mailer->AddAddress($user->email, $user->name);
 
 				      /* Get the activation link */
-				      $activatelink = '<a href="'.JRoute::_(JURI::root().'index.php?task=confirm&option=com_redevent&confirmid='.str_replace(".", "_", $registration->uip).'x'.$registration->xref.'x'.$registration->uid.'x'.$user->get('answer_id').'x'.JRequest::getVar('submit_key')).'">'.JText::_('Activate').'</a>';
+				      $activatelink = '<a href="'.JRoute::_(JURI::root().'index.php?task=confirm&option=com_redevent&confirmid='.str_replace(".", "_", $registration->uip).'x'.$registration->xref.'x'.$registration->uid.'x'.$attendee->getAnswerId().'x'.JRequest::getVar('submit_key')).'">'.JText::_('Activate').'</a>';
 
 				      /* Mail attendee */
 				      $htmlmsg = '<html><head><title></title></title></head><body>';
@@ -278,6 +278,7 @@ class RedeventModelConfirmation extends JModel
 								$db->setQuery($q);
 								if (!$db->query()) RedeventError::raiseWarning('', JText::_($db->getErrorMsg()));
 							}
+  						return $registration;
 						}
 					}
 				}
@@ -287,8 +288,7 @@ class RedeventModelConfirmation extends JModel
 		/**
 		 * Send a submission mail to the attendantee and/or contactperson 
 		 * This will only work if the contactperson has an e-mail address
-		 **/
-		
+		 **/		
 		if (isset($eventsettings->notify) && $eventsettings->notify) 
 		{
 			/* Load the mailer */
