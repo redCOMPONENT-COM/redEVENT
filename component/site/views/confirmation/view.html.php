@@ -76,7 +76,7 @@ class RedeventViewConfirmation extends JView
 						           .'&view=confirmation&page=final'
                        .'&action=confirmreg'
 						           ;
-						$mainframe->redirect($redirect);
+						$mainframe->redirect(JRoute::_($redirect, false));
 						return;			
 					}
 					
