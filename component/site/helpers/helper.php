@@ -897,8 +897,17 @@ class redEVENTHelper {
           AND s.confirmed = 1
           AND r.uid = ". $db->Quote($user->get('id')) ."
           ";
+      // if there is a submit key set, it means we are reviewing, so we need to discard this submit_key from the count.
+      if (JRequest::getVar('submit_key')) {
+        $q .= '  AND s.submit_key <> '. $db->Quote(JRequest::getVar('submit_key', ''));
+      }
       $db->setQuery($q);
       $event->userregistered = $db->loadResult();
+      
+      // in case this is a review, user has already registered... but not finished yet.
+      if ($event->userregistered && JRequest::getVar('event_task') == 'review') {
+        $event->userregistered--;
+      }
     }
     else
     {
