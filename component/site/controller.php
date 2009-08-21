@@ -368,8 +368,12 @@ class RedeventController extends JController
 		$cache = JFactory::getCache('com_redevent');
 		$cache->clean();
 		
+		$link = 'index.php?option=com_redevent&view=confirmation&page=confirmation&xref='.$xref.'&submit_key='.JRequest::getVar('submit_key').'&action='.JRequest::getVar('action');
+		if (JRequest::getBool('redformback', 0)) {
+		  $link .= '&redformback=1&form_id='. JRequest::getInt('form_id');
+		}
 		/* Go to the confirmation page */
-		$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=confirmation&page=confirmation&xref='.$xref.'&submit_key='.JRequest::getVar('submit_key').'&action='.JRequest::getVar('action'), false));
+		$this->setRedirect(JRoute::_($link, false));
 	}
 
 	/**
