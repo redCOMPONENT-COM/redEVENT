@@ -68,7 +68,15 @@ class RedeventViewConfirmation extends JView
 					$registration	= $this->get('Details');
 					
 					if (empty($registration['event']->review_message)) 
-					{
+					{					
+            /** 
+             * Check if redFORM wants control again
+             * in case of a VirtueMart redirect
+             */
+            if (JRequest::getBool('redformback', false)) {
+              $mainframe->redirect('index.php?option=com_redform&task=redeventvm&controller=redform&form_id='.JRequest::getInt('form_id'));
+            }
+            
 						// nothing in review message, so skip it !
 						$redirect = 'index.php?option=com_redevent&task='.JRequest::getVar('event_task')
 						           .'&xref='.JRequest::getInt('xref')
@@ -104,7 +112,15 @@ class RedeventViewConfirmation extends JView
 							else {
 								/* Assign to jview */
 								$this->assignRef('message', JText::_('CONFIRM_REGISTRATION'));
-							}
+							}    
+							
+              /** 
+               * Check if redFORM wants control again
+               * in case of a VirtueMart redirect
+               */
+              if (JRequest::getBool('redformback', false)) {
+                $mainframe->redirect('index.php?option=com_redform&task=redeventvm&controller=redform&form_id='.JRequest::getInt('form_id'));
+              }
 						}
 					}
 					else if ($action == 'cancelreg') {

@@ -404,15 +404,7 @@ class RedeventModelDetails extends JModel
 		
 		/* Set the message all is good */
 		// $mainframe->enqueueMessage(JText::_('REGISTERED SUCCESSFULL'));
-		
-		/** 
-		 * Check if redFORM wants control again
-		 * in case of a VirtueMart redirect
-		 */
-		if (JRequest::getBool('redformback', false)) {
-			$mainframe->redirect('index.php?option=com_redform&task=redeventvm&controller=redform&form_id='.JRequest::getInt('form_id'));
-		}
-		
+				
 		/* All is good */
 		return true;
 	}
