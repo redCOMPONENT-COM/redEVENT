@@ -11,27 +11,39 @@ function RedEventBuildRoute(&$query)
 
 	if(isset($query['view']))
 	{
+	  $view = $query['view'];
 		$segments[] = $query['view'];
 		unset($query['view']);
 	}
+	else {
+	  $view = '';
+	}
 
-	if(isset($query['id']))
-	{
-		$segments[] = $query['id'];
-		unset($query['id']);
-	};
-
-	if(isset($query['task']))
-	{
-		$segments[] = $query['task'];
-		unset($query['task']);
-	};
-
-	if(isset($query['returnid']))
-	{
-		$segments[] = $query['returnid'];
-		unset($query['returnid']);
-	};
+	switch ($view) {
+	  
+	  case 'confirmation':
+	    break;
+	  
+	  default:
+    	if(isset($query['id']))
+    	{
+    		$segments[] = $query['id'];
+    		unset($query['id']);
+    	};
+    
+    	if(isset($query['task']))
+    	{
+    		$segments[] = $query['task'];
+    		unset($query['task']);
+    	};
+    
+    	if(isset($query['returnid']))
+    	{
+    		$segments[] = $query['returnid'];
+    		unset($query['returnid']);
+    	};
+    	break;
+	}
 
 	return $segments;
 }
@@ -59,6 +71,10 @@ function RedEventParseRoute($segments)
 		{
 			$id = explode(':', $segments[1]);
 			$vars['id'] = $id[0];
+      $count = count($segments);
+      if($count > 2) {
+        $vars['task'] = $segments[2];
+      }
 			$vars['view'] = 'details';
 
 		} break;
@@ -167,6 +183,11 @@ function RedEventParseRoute($segments)
 
     } break;
     
+    case 'confirmation':
+      $vars['view'] = $segments[0];
+      
+      break;
+      
 		default:
       $vars['view'] = $segments[0];
 			

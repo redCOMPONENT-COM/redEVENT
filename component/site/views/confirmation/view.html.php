@@ -60,12 +60,11 @@ class RedeventViewConfirmation extends JView
 		$tags = new redEVENT_tags;
 		$this->assignRef('tags', $tags);
 		
-		if ($key_ok) {
+  	if ($key_ok) {
 			switch ($tpl) {
 				case 'confirmation':
 				case 'print':					
 					/* Collect registration details */
-					$registration	= $this->get('Details');
 					
 					if (empty($registration['event']->review_message)) 
 					{					
@@ -115,7 +114,8 @@ class RedeventViewConfirmation extends JView
 							else {
 								/* Assign to jview */
 								$this->assignRef('message', JText::_('CONFIRM_REGISTRATION'));
-							}    
+							}
+              $this->assignRef('event', $row);
 							
               /** 
                * Check if redFORM wants control again

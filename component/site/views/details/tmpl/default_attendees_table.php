@@ -57,7 +57,7 @@ if ($this->row->show_names && $this->registers) {
       				  <?php endforeach; ?>
       				  
       				  <?php if ($register->submitter->uid == $this->user->get('id') && $this->row->unregistra): ?>
-      				  <?php $unreg_url = JRoute::_('index.php?option=com_redevent&view=details&task=delreguser&xref='. $this->row->xref .'&sid=' .$register->id); ?>
+      				  <?php $unreg_url = JRoute::_('index.php?option=com_redevent&view=details&id='. $this->row->slug .'&task=delreguser&xref='. $this->row->xref .'&sid=' .$register->id); ?>
                 <td class="attendee">
                   <?php echo JHTML::link($unreg_url, JText::_('cancel'), array('class' => 'unreglink')); ?>
                 </td>
@@ -102,7 +102,7 @@ if ($this->row->show_names && $this->registers) {
                 <?php endforeach; ?>
                 
                 <?php if ($register->submitter->uid == $this->user->get('id') && $this->row->unregistra): ?>
-                <?php $unreg_url = JRoute::_('index.php?option=com_redevent&view=details&task=delreguser&xref='. $this->row->xref .'&sid=' .$register->id); ?>
+                <?php $unreg_url = JRoute::_('index.php?option=com_redevent&view=details&id='. $this->row->slug .'&task=delreguser&xref='. $this->row->xref .'&sid=' .$register->id); ?>
                 <td class="attendee">
                   <?php echo JHTML::link($unreg_url, JText::_('cancel'), array('class' => 'unreglink')); ?>
                 </td>
@@ -119,5 +119,5 @@ if ($this->row->show_names && $this->registers) {
 	</div>
 	<?php
 }
-echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id')), JText::_('RETURN_EVENT_DETAILS'));
+echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&id='.$this->row->slug.'&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id')), JText::_('RETURN_EVENT_DETAILS'));
 ?>

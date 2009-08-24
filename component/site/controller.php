@@ -391,7 +391,7 @@ class RedeventController extends JController
 		//JRequest::checkToken() or die( 'Invalid Token' );
 
 		// TODO: is $id still usefull ? xref seems to be used in delreguser...
-		$id 	= JRequest::getInt( 'rdid', 0 );
+		$id 	= JRequest::getInt( 'id', 0 );
 		
     $xref   = JRequest::getInt( 'xref', 0 );
     
@@ -417,10 +417,10 @@ class RedeventController extends JController
 		$msg = JText::_( 'UNREGISTERED SUCCESSFULL' );
 		
 		if ($params->get('details_attendees_layout', 0)) {
-		  $this->setRedirect( JRoute::_('index.php?option=com_redevent&view=details&tpl=attendees&xref=' . $xref, false), $msg );
+		  $this->setRedirect( JRoute::_('index.php?option=com_redevent&view=details&id='.$id.'&tpl=attendees&xref=' . $xref, false), $msg );
 		}
 		else {
-      $this->setRedirect( JRoute::_('index.php?option=com_redevent&view=details&tpl=attendees_table&xref=' . $xref, false), $msg );
+      $this->setRedirect( JRoute::_('index.php?option=com_redevent&view=details&id='.$id.'&tpl=attendees_table&xref=' . $xref, false), $msg );
     }
 	}
 

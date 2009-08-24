@@ -43,7 +43,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php
 echo $this->tags->ReplaceTags($this->page);
 
-echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id')), JText::_('RETURN_EVENT_DETAILS'));
+echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&id='.JRequest::getInt('id').'&xref='.JRequest::getInt('xref')), JText::_('RETURN_EVENT_DETAILS'));
 ?>
 <?php if (isset($this->fullpage)): ?>
 </div>

@@ -63,7 +63,7 @@ if ($this->row->show_names) : ?>
         }
         $attendees_layout = ($this->params->get('details_attendees_layout', 0) ? 'attendees' : 'attendees_table');
         
-				echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&tpl='. $attendees_layout .'&xref='.$venuedate->id.'&id='.$venuedate->eventid), JText::_('SHOW_REGISTERED_USERS').' '.$date.' '.$time);
+				echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&id='.$this->row->slug.'&tpl='. $attendees_layout .'&xref='.$venuedate->id), JText::_('SHOW_REGISTERED_USERS').' '.$date.' '.$time);
 				echo '<br />';
 			}
 		?>
