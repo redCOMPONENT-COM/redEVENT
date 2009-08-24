@@ -103,8 +103,8 @@ class RedeventModelEventList extends JModel
 				$this->_data = $this->_getList( $query );
 			} else {
 				$this->_data = $this->_getList( $query, $this->getState('limitstart'), $this->getState('limit') );
-				$this->_data = $this->_categories($this->_data);
 			}
+			$this->_data = $this->_categories($this->_data);
 		}
 
 		return $this->_data;
