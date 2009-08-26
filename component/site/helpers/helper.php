@@ -923,5 +923,46 @@ class redEVENTHelper {
         
     return $result;
   }
+  
+  function canUnregister($xref_id, $user_id = null)
+  {
+    $db = & JFactory::getDBO();
+    $user = & JFactory::getUser($user_id);
+    
+    // if user is not logged, he can't unregister
+    if (!$user->get('id')) {
+      return false;
+    }    
+    
+    $query = ' SELECT x.dates, x.times, x.enddates, x.endtimes, x.registrationend, e.unregistra '
+           . ' FROM #__redevent_event_venue_xref AS x '
+           . ' INNER JOIN #__redevent_events AS e ON x.eventid = e.id '
+           . ' WHERE x.id='. $db->Quote($xref_id)
+            ;
+    $db->setQuery($query);
+    $event = & $db->loadObject();    
+    
+    // check if unregistration is allowed
+    if (!$event->unregistra) {
+      return false;
+    }
+    
+    if (!empty($event->registrationend) && $event->registrationend != '0000-00-00 00:00:00')
+    {
+      if ( strtotime($event->registrationend) < time() )
+      {
+        // REGISTRATION IS OVER
+        return false;
+      }
+    }
+    else if (!empty($event->dates) && strtotime($event->dates .' '. $event->times) < time())
+    {
+      // it's separated from previous case so that it is not checked if a registration end was set
+      // REGISTRATION IS OVER
+      return false;
+    }
+    
+    return true;
+  }
 }
 ?>

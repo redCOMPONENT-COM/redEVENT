@@ -46,7 +46,7 @@ if ($this->row->show_names && $this->registers) {
     			$waiting_count = 0;
     			foreach ($this->registers as $key => $register):
     				if ($register->submitter->waitinglist == 0): ?>
-    				  <tr <?php echo ($register->submitter->uid == $this->user->get('id')) ? 'class="myreg"': ''; ?>>
+    				  <tr <?php echo ($this->unreg_check && $register->submitter->uid == $this->user->get('id')) ? 'class="myreg"': ''; ?>>
      				    <?php	foreach ($register->answers as $k => $name): ?>
       				  <td class='userfield <?php echo strtolower($k); ?>'>
       				    <?php 
@@ -56,7 +56,7 @@ if ($this->row->show_names && $this->registers) {
       				  </td>
       				  <?php endforeach; ?>
       				  
-      				  <?php if ($this->user->get('id') && $register->submitter->uid == $this->user->get('id') && $this->row->unregistra): ?>
+      				  <?php if ($this->unreg_check && $register->submitter->uid == $this->user->get('id')): ?>
       				  <?php $unreg_url = JRoute::_('index.php?option=com_redevent&view=details&id='. $this->row->slug .'&task=delreguser&xref='. $this->row->xref .'&sid=' .$register->id); ?>
                 <td class="attendee">
                   <?php echo JHTML::link($unreg_url, JText::_('cancel'), array('class' => 'unreglink')); ?>
@@ -91,7 +91,7 @@ if ($this->row->show_names && $this->registers) {
           //loop through attendees
           foreach ($this->registers as $key => $register):
             if ($register->submitter->waitinglist == 1): ?>
-              <tr <?php echo ($register->submitter->uid == $this->user->get('id')) ? 'class="myreg"': ''; ?>>
+              <tr <?php echo ($this->unreg_check && $register->submitter->uid == $this->user->get('id')) ? 'class="myreg"': ''; ?>>
                 <?php foreach ($register->answers as $k => $name): ?>
                 <td class='userfield <?php echo strtolower($k); ?>'>
                   <?php 
@@ -101,7 +101,7 @@ if ($this->row->show_names && $this->registers) {
                 </td>
                 <?php endforeach; ?>
                 
-                <?php if ($this->user->get('id') && $register->submitter->uid == $this->user->get('id') && $this->row->unregistra): ?>
+                <?php if ($this->unreg_check && $register->submitter->uid == $this->user->get('id')): ?>
                 <?php $unreg_url = JRoute::_('index.php?option=com_redevent&view=details&id='. $this->row->slug .'&task=delreguser&xref='. $this->row->xref .'&sid=' .$register->id); ?>
                 <td class="attendee">
                   <?php echo JHTML::link($unreg_url, JText::_('cancel'), array('class' => 'unreglink')); ?>

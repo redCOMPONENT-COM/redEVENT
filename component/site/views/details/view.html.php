@@ -214,6 +214,9 @@ class RedeventViewDetails extends JView
     $document->addHeadLink(JRoute::_($link.'&type=rss'), 'alternate', 'rel', $attribs);
     $attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
     $document->addHeadLink(JRoute::_($link.'&type=atom'), 'alternate', 'rel', $attribs);
+    
+    // check unregistration rights
+    $unreg_check = redEVENTHelper::canUnregister($row->xref);
 		
 		//assign vars to jview
 		$this->assignRef('row', 					$row);
@@ -228,6 +231,7 @@ class RedeventViewDetails extends JView
 		$this->assignRef('messages' ,				$messages);
 		$this->assignRef('redform_install'	, $redform_install);
 		$this->assignRef('venuedates'	, $venuedates);
+    $this->assignRef('unreg_check' , $unreg_check);
 		
 		$tpl = JRequest::getVar('tpl', $tpl);
 		
