@@ -32,6 +32,7 @@ class redEVENT_tags {
 	private $_venueid;
 	private $_maxattendees;
 	private $_maxwaitinglist;
+  private $_published;
 	protected $_eventlinks = null;
 	private $_data = false;
 	
@@ -62,9 +63,9 @@ class redEVENT_tags {
 		
 		if ($this->_xref) {
       $db = & JFactory::getDBO();
-			$q = "SELECT eventid, venueid, maxattendees, maxwaitinglist FROM #__redevent_event_venue_xref WHERE id = ".$this->_xref;
+			$q = "SELECT eventid, venueid, maxattendees, maxwaitinglist, published FROM #__redevent_event_venue_xref WHERE id = ".$this->_xref;
 			$db->setQuery($q);
-			list($this->_eventid, $this->_venueid, $this->_maxattendees, $this->_maxwaitinglist) = $db->loadRow();
+			list($this->_eventid, $this->_venueid, $this->_maxattendees, $this->_maxwaitinglist, $this->_published) = $db->loadRow();
 		}
 	}
 	
@@ -398,7 +399,7 @@ class redEVENT_tags {
 			INNER JOIN #__redevent_venues AS v ON x.venueid = v.id
       LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id
       LEFT JOIN #__redevent_categories AS c ON xcat.category_id = c.id
-			WHERE x.published = 1
+			WHERE x.published = ". $db->Quote($this->_published) ."
 			AND e.id IN (".$this->_eventid.")
       GROUP BY x.id
       ORDER BY x.dates, x.times
