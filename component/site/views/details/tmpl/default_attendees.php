@@ -48,7 +48,7 @@ if ($this->row->show_names && $this->registers) {
 						if (stristr($name, '~~~')) $name = str_replace('~~~', '<br />', $name).'<br />';
 						echo "<li class='userfield ".strtolower($k)."'>".$name."</li>";
 					}
-					if ($register->submitter->uid == $this->user->get('id') && $this->row->unregistra) {
+					if ($this->user->get('id') && $register->submitter->uid == $this->user->get('id') && $this->row->unregistra) {
 					  $unreg_url = JRoute::_('index.php?option=com_redevent&view=details&task=delreguser&xref='. $this->row->xref .'&sid=' .$register->id);
             echo '<li>'. JHTML::link($unreg_url, JText::_('cancel'), array('class' => 'unreglink')) .'</li>';
           }
@@ -81,7 +81,7 @@ if ($this->row->show_names && $this->registers) {
             if (stristr($name, '~~~')) $name = str_replace('~~~', '<br />', $name).'<br />';
             echo "<li class='userfield ".strtolower($k)."'>".$name."</li>";
           }
-          if ($register->submitter->uid == $this->user->get('id') && $this->row->unregistra) {
+          if ($this->user->get('id') && $register->submitter->uid == $this->user->get('id') && $this->row->unregistra) {
             $unreg_url = JRoute::_('index.php?option=com_redevent&view=details&task=delreguser&xref='. $this->row->xref .'&sid=' .$register->id);
             echo '<li>'. JHTML::link($unreg_url, JText::_('cancel'), array('class' => 'unreglink')) .'</li>';
           }
