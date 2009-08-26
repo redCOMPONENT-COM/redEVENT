@@ -47,10 +47,10 @@ class modRedEventHelper
 		$user_gid	= (int) $user->get('aid');
 
 		if ($params->get( 'type', '0' ) == 0) {
-			$where = ' WHERE a.published = 1';
+			$where = ' WHERE x.published = 1';
 			$order = ' ORDER BY x.dates, x.times';
 		} else {
-			$where = ' WHERE a.published = -1';
+			$where = ' WHERE x.published = -1';
 			$order = ' ORDER BY x.dates DESC, x.times DESC';
 		}
 
@@ -61,20 +61,22 @@ class modRedEventHelper
 		{
 			$ids = explode( ',', $catid );
 			JArrayHelper::toInteger( $ids );
-			$categories = ' AND (c.id=' . implode( ' OR c.id=', $ids ) . ')';
+			$categories = ' AND c.id IN (' . implode( ',', $ids ) . ')';
 		}
 		if ($venid)
 		{
 			$ids = explode( ',', $venid );
 			JArrayHelper::toInteger( $ids );
-			$venues = ' AND (l.id=' . implode( ' OR l.id=', $ids ) . ')';
+			$venues = ' AND l.id IN (' . implode( ',', $ids ) . ')';
 		}
 
 		//get $params->get( 'count', '2' ) nr of datasets
-		$query = 'SELECT a.*, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, l.venue, l.city, l.url'
-				.' FROM #__redevent_event_venue_xref AS x'
-				.' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
-				.' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
+		$query = 'SELECT a.*, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, l.venue, l.city, l.url ,'
+        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
+		    . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug '
+				. ' FROM #__redevent_event_venue_xref AS x'
+				. ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
+				. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
         . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
         . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
 				. $where
@@ -111,11 +113,11 @@ class modRedEventHelper
         $rows[$k]->venue_short = htmlspecialchars($row->venue, ENT_COMPAT, 'UTF-8');
       }
 			
-			$rows[$k]->link		= JRoute::_('index.php?option=com_redevent&view=details&xref='.$row->xref);
+			$rows[$k]->link		= JRoute::_('index.php?option=com_redevent&view=details&id='. $row->venueslug .'&xref='.$row->xref);
 			$rows[$k]->dateinfo 	= modRedEventHelper::_builddateinfo($row, $params);
 			$rows[$k]->text		= $params->get('showtitloc', 0 ) ? $rows[$k]->title_short : $rows[$k]->venue_short;
 			$rows[$k]->city		= htmlspecialchars( $row->city, ENT_COMPAT, 'UTF-8' );
-			$rows[$k]->venueurl 	= !empty( $row->url ) ? modRedEventHelper::_format_url($row->url) : null;
+			$rows[$k]->venueurl 	= !empty( $row->url ) ? modRedEventHelper::_format_url($row->url) : JRoute::_('index.php?option=com_redevent&view=venueevents&id='. $row->venueslug , false);
 		}
 
 		return $rows;
@@ -134,11 +136,11 @@ class modRedEventHelper
 		$time		= ($row->times && $row->times != '00:00:00') ? modRedEventHelper::_format_date($row->dates, $row->times, $params->get('formattime', '%H:%M')) : null;
 		$dateinfo	= $date;
 
-		if ( isset($enddate)) {
+		if ( isset($enddate) && $params->get('show_enddate', 1)) {
 			$dateinfo .= ' - '.$enddate;
 		}
 
-		if ( isset($time) ) {
+		if ( isset($time) && $params->get('show_time', 1) ) {
 			$dateinfo .= ' | '.$time;
 		}
 

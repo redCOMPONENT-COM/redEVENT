@@ -47,6 +47,14 @@
 			<option value="1">DATE</option>
 			<option value="2">TITLE</option>
 		</param>
+    <param name="show_enddate" type="list" default="1" label="SHOW END DATE" description="SHOW END DATE DESC">
+      <option value="0">NO</option>
+      <option value="1">YES</option>
+    </param>
+    <param name="show_time" type="list" default="1" label="SHOW TIME" description="SHOW TIME DESC">
+      <option value="0">NO</option>
+      <option value="1">YES</option>
+    </param>
 		<param name="catid" type="text" default="" label="CATEGORY ID" description="CATEGORY ID DESC" />
 		<param name="venid" type="text" default="" label="VENUE ID" description="VENUE ID DESC" />
 		<param name="formatdate" type="text" default="%d.%m.%Y" label="DATE FORMAT" description="DATE FORMAT DESC" />
