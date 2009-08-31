@@ -50,7 +50,7 @@ class RedEventViewEditcss extends JView {
 
 		//get vars
 		$option		= JRequest::getVar('option');
-		$filename	= 'eventlist.css';
+		$filename	= 'redevent.css';
 		$path		= JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'assets'.DS.'css';
 		$css_path	= $path.DS.$filename;
 

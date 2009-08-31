@@ -41,5 +41,6 @@
       <option value="0">Table</option>
       <option value="1">List</option>
     </param> 	  
+    <param name="custom_css" type="text" default="" size="60" label="CUSTOM CSS PATH" description="CUSTOM CSS PATH DESC"/>
  	</params>
 </config>

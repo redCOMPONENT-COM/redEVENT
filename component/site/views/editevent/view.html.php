@@ -70,7 +70,12 @@ class RedeventViewEditevent extends JView
 		JHTML::_('behavior.modal', 'a.modal');
 
 		//add css file
-		$doc->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/eventlist.css');
+    if (!$params->get('custom_css')) {
+      $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
+    }
+    else {
+      $document->addStyleSheet($params->get('custom_css'));     
+    }
 		$doc->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 		
 		/* Add jQuery */
@@ -239,7 +244,12 @@ class RedeventViewEditevent extends JView
 		$lists['order'] 		= $filter_order;
 
 		$document->setTitle(JText::_( 'SELECTVENUE' ));
-		$document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/eventlist.css');
+    if (!$params->get('custom_css')) {
+      $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
+    }
+    else {
+      $document->addStyleSheet($params->get('custom_css'));     
+    }
 
 		$filters = array();
 		$filters[] = JHTML::_('select.option', '1', JText::_( 'VENUE' ) );

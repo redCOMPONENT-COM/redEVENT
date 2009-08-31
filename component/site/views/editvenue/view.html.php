@@ -60,7 +60,12 @@ class RedeventViewEditvenue extends JView
 		JHTML::_('behavior.tooltip');
 
 		//add css file
-		$doc->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/eventlist.css');
+    if (!$params->get('custom_css')) {
+      $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
+    }
+    else {
+      $document->addStyleSheet($params->get('custom_css'));     
+    }
 		$doc->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
 		// Get the menu object of the active menu item
