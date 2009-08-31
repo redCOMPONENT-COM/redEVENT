@@ -24,7 +24,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
-<form action="<?php echo JRoute::_('index.php') ?>" method="post" id="adminForm">
+<form action="<?php echo $this->action; ?>" method="post" id="adminForm">
 
 <?php if ($this->params->get('filter') || $this->params->get('display')) : ?>
 <div id="el_filter" class="floattext">

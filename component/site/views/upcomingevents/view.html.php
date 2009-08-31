@@ -64,6 +64,7 @@ class RedeventViewUpcomingevents extends JView
 		
 		$this->assignRef('upcomingevents' , $upcomingevents);
     $this->assignRef('params' , $params);
+    $this->assign('action',   str_replace('&', '&amp;', $uri->toString()));
 		parent::display($tpl);
 	}
 }

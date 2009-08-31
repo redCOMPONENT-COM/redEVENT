@@ -50,6 +50,7 @@ class RedeventViewDay extends JView
 		$menu		= & JSite::getMenu();
 		$item    	= $menu->getActive();
 		$params 	= & $mainframe->getParams();
+    $uri    =& JFactory::getURI();
 
 		//add css file
 		$document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/eventlist.css');
@@ -133,6 +134,7 @@ class RedeventViewDay extends JView
 		$this->assignRef('elsettings' , 			$elsettings);
 		$this->assignRef('lists' , 					$lists);
 		$this->assignRef('daydate' , 				$daydate);
+    $this->assign('action',   str_replace('&', '&amp;', $uri->toString()));
 
 		parent::display($tpl);
 

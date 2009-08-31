@@ -127,7 +127,7 @@ class RedeventViewEventList extends JView
 		}
 		
 		$this->assign('lists' , 					$lists);
-		$this->assign('action', 					$uri->toString());
+    $this->assign('action',   str_replace('&', '&amp;', $uri->toString()));
 
 		$this->assignRef('rows' , 					$rows);
 		$this->assignRef('task' , 					$task);

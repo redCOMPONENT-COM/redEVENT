@@ -170,6 +170,7 @@ class RedeventViewUpcomingVenueevents extends JView
 		$this->assignRef('limage' , 				$limage); 
 		$this->assignRef('print_link' , 			$print_link);
 		$this->assignRef('dellink' , 				$dellink);
+    $this->assign('action',   str_replace('&', '&amp;', $uri->toString()));
 		
 		parent::display($tpl);
 	}
