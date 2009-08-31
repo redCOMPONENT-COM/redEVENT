@@ -164,7 +164,7 @@ class redEVENT_tags {
   					$params = array();
   					$params['show_submission_type_webform_formal_offer'] = $this->_data->show_submission_type_webform_formal_offer;		
   									
-  					$results = $dispatcher->trigger('onPrepareEvent', array(& $form, $params));
+  					$results = $dispatcher->trigger('onPrepareContent', array(& $form, $params));
             $redform = $form->text;
 				  }
 				  else {
