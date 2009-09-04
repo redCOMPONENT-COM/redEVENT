@@ -8,9 +8,13 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+// Set the table directory
+JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
+
 //Require helperfile
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'helper.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'log.php');
+require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'recurrence.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'customfields.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'user.class.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'image.class.php');
@@ -20,8 +24,6 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'error.class.php');
 //perform cleanup if it wasn't done today (archive, delete, recurrence)
 redEVENTHelper::cleanup();
 
-// Set the table directory
-JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
 
 // Require the controller
 require_once (JPATH_COMPONENT.DS.'controller.php');

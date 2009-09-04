@@ -584,17 +584,21 @@ class RedEventModelEvent extends JModel
   	$xref = JRequest::getVar('xref', 0, 'request', 'int');  	
   	
   	if ($xref) {
-    	$query = ' SELECT x.*, v.venue '
+    	$query = ' SELECT x.*, v.venue, r.id as recurrence_id, r.rrule, rp.count '
   	       . ' FROM #__redevent_event_venue_xref AS x '
   	       . ' LEFT JOIN #__redevent_venues AS v on v.id = x.venueid '
+           . ' LEFT JOIN #__redevent_repeats AS rp on rp.xref_id = x.id '
+           . ' LEFT JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
   	       . ' WHERE x.id = '. $this->_db->Quote($xref);
   	       ;  	
       $this->_db->setQuery($query);
   		$object = $this->_db->loadObject();
+  		$object->rrules = RedeventHelperRecurrence::getRule($object->rrule);
   	}
   	else {
       $object = JTable::getInstance('RedEvent_eventvenuexref', '');
   		$object->venue = '';
+  		$object->rrules = RedeventHelperRecurrence::getRule();
   	}
   	return $object;
   }
@@ -646,6 +650,42 @@ class RedEventModelEvent extends JModel
       return false;
     }
     
+    // we need to save the recurrence too
+    $rrule = RedeventHelperRecurrence::parsePost($data);
+    $recurrence = & JTable::getInstance('RedEvent_recurrences', '');
+    if (!$data['recurrenceid'])
+    {
+      // new recurrence
+      $recurrence->rrule = $rrule;
+      if (!$recurrence->store()) {
+        $this->setError($recurrence->getError());
+        return false;        
+      }
+      
+      // add repeat record
+      $repeat = & JTable::getInstance('RedEvent_repeats', '');
+      $repeat->set('xref_id', $object->id);
+      $repeat->set('recurrence_id', $recurrence->id);
+      $repeat->set('count', 0);      
+      if (!$repeat->store()) {
+        $this->setError($repeat->getError());
+        return false;        
+      }
+    }
+    else 
+    {
+      $recurrence->load($data['recurrenceid']);
+      // reset the status
+      $recurrence->ended = 0;
+      // TODO: maybe add a check to have a choice between updating rrule or not...
+      $recurrence->rrule = $rrule;
+      if (!$recurrence->store()) {
+        $this->setError($recurrence->getError());
+        return false;        
+      }
+    }
+    redEVENTHelper::generaterecurrences($recurrence->id);
+    
     return $object->id;
   }
   
@@ -670,6 +710,14 @@ class RedEventModelEvent extends JModel
     $this->_db->setQuery($q);
     if (!$this->_db->query()) {
       $this->setError(JText::_('DB ERROR DELETING XREF'));
+      return false;
+    }
+    
+    // delete corresponding record in repeats table in case of recurrences
+    $q = "DELETE FROM #__redevent_repeats WHERE xref_id =". $this->_db->Quote((int)$id);
+    $this->_db->setQuery($q);
+    if (!$this->_db->query()) {
+      $this->setError(JText::_('DB ERROR DELETING XREF REPEAT'));
       return false;
     }
     

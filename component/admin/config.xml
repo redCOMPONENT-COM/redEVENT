@@ -35,6 +35,11 @@
       <option value="0">Hide</option>
       <option value="1">Show</option>
     </param>
+    <param name="week_start" type="radio" default="MO" label="WEEK START" description="WEEK START DESC">
+      <option value="SU">SUNDAY</option>
+      <option value="MO">MONDAY</option>
+    </param>
+    <param name="recurrence_limit" type="text" default="30" label="RECURRENCE ANTICIPATION WINDOW" description="RECURRENCE ANTICIPATION WINDOW DESC" />
  	</params>
  	<params group="Layout">
     <param name="details_attendees_layout" type="list" default="0" label="DETAILS ATTENDEES LAYOUT" description="DETAILS ATTENDEES LAYOUT TIP">

@@ -82,60 +82,9 @@ class redEVENTHelper {
 			$db			= & JFactory::getDBO();
 
 			$nulldate = '0000-00-00';
-			/* Turn off recurrence */
-			if (0) {
-				$query = 'SELECT * FROM #__redevent_events WHERE DATE_SUB(NOW(), INTERVAL '.$elsettings->minus.' DAY) > (IF (enddates <> '.$nulldate.', enddates, dates)) AND recurrence_number <> "0" AND recurrence_type <> "0" AND `published` = 1';
-				$db->SetQuery( $query );
-				$recurrence_array = $db->loadAssocList();
-	
-				foreach($recurrence_array as $recurrence_row) {
-					$insert_keys = '';
-					$insert_values = '';
-					$wherequery = '';
-	
-					// get the recurrence information
-					$recurrence_number = $recurrence_row['recurrence_number'];
-					$recurrence_type = $recurrence_row['recurrence_type'];
-	
-					$recurrence_row = redEVENTHelper::calculate_recurrence($recurrence_row);
-					if (($recurrence_row['dates'] <= $recurrence_row['recurrence_counter']) || ($recurrence_row['recurrence_counter'] == "0000-00-00")) {
-	
-						// create the INSERT query
-						foreach ($recurrence_row as $key => $result) {
-							if ($key != 'id') {
-								if ($insert_keys != '') {
-									if (redEVENTHelper::where_table_rows($key)) {
-										$wherequery .= ' AND ';
-									}
-									$insert_keys .= ', ';
-									$insert_values .= ', ';
-								}
-								$insert_keys .= $key;
-								if (($key == "enddates" || $key == "times" || $key == "endtimes") && $result == "") {
-									$insert_values .= "NULL";
-									$wherequery .= '`'.$key.'` IS NULL';
-								} else {
-									$insert_values .= "'".$result."'";
-									if (redEVENTHelper::where_table_rows($key)) {
-										$wherequery .= '`'.$key.'` = "'.$result.'"';
-									}
-	
-								}
-							}
-						}
-	
-						$query = 'SELECT id FROM #__redevent_events WHERE '.$wherequery.';';
-						$db->SetQuery( $query );
-	
-						if (count($db->loadAssocList()) == 0) {
-							$query = 'INSERT INTO #__redevent_events ('.$insert_keys.') VALUES ('.$insert_values.');';
-							$db->SetQuery( $query );
-							$db->Query();
-						}
-					}
-				}
-			}
-
+			
+			redEVENTHelper::generaterecurrences();
+			
 			//delete outdated events
 			if ($elsettings->oldevent == 1) {
 				// lists event_id for which we are going to delete xrefs
@@ -204,6 +153,96 @@ class redEVENTHelper {
 		}
 	}
 
+	/**
+	 * adds xref repeats to the database.
+	 * 
+	 * @return bool true on success
+	 */
+	function generaterecurrences($recurrence_id = null)
+	{
+	   $db = & JFactory::getDBO();
+
+	   $nulldate = '0000-00-00';
+	   
+	   // generate until limit
+	   $params = & JComponentHelper::getParams('com_redevent');
+	   $limit = $params->get('recurrence_limit', 30);
+	   $limit_date_int = time() + $limit*3600*24;
+
+	   // get active recurrences
+	   $query = ' SELECT MAX(rp.xref_id) as xref_id, r.rrule, r.id as recurrence_id '
+        	   . ' FROM #__redevent_repeats AS rp '
+        	   . ' INNER JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
+        	   . ' WHERE r.ended = 0 '
+        	   ;
+     if ($recurrence_id) {
+       $query .= ' AND r.id = '. $db->Quote($recurrence_id);
+     }
+     $query .= ' GROUP BY recurrence_id ';
+	   $db->setQuery($query);
+	   $recurrences = $db->loadObjectList();
+
+	   if (empty($recurrences)) {
+	     return true;
+	   }
+	        
+	   // get corresponding xrefs
+	   $rids = array();
+	   foreach ($recurrences as $r) {
+	     $rids[] = $r->xref_id;
+	   }
+	   $query = ' SELECT x.*, rp.count '
+        	   . ' FROM #__redevent_event_venue_xref AS x '
+             . ' INNER JOIN #__redevent_repeats AS rp ON rp.xref_id = x.id '
+        	   . ' WHERE id IN ('. implode(",", $rids) .')'
+  	         ;
+	   $db->setQuery($query);
+	   $xrefs = $db->loadObjectList('id');
+	   	   
+	   // now, do the job...
+	   foreach ($recurrences as $r) 
+	   {
+	     $next = RedeventHelperRecurrence::getnext($r->rrule, $xrefs[$r->xref_id]);
+	     while ($next)
+	     {
+	       if (strtotime($next->dates) > $limit_date_int) {
+	         break;
+	       }
+	       
+         //record xref
+         $object = & JTable::getInstance('RedEvent_eventvenuexref', '');
+         $object->bind($next);
+         if ($object->store()) 
+         {
+           // update repeats table          
+           $query = ' INSERT INTO #__redevent_repeats '
+                  . ' SET xref_id = '. $db->Quote($object->id)
+                  . '   , recurrence_id = '. $db->Quote($r->recurrence_id)
+                  . '   , count = '. $db->Quote($next->count)
+                  ;
+           $db->setQuery($query);
+           if (!$db->query()) {
+             RedeventHelperLog::simpleLog('saving repeat error: '.$db->getErrorMsg());
+           }
+//           echo "added xref $object->id / count $next->count";           
+//           echo '<br>';
+         }
+         else {
+           RedeventHelperLog::simpleLog('saving recurrence xref error: '.$db->getErrorMsg());
+         }
+         $next = RedeventHelperRecurrence::getnext($r->rrule, $next);
+	     }
+	     if (!$next) 
+	     {
+	       // no more events to generate, we can disable the rule    	       
+         $query = ' UPDATE #__redevent_recurrences SET ended = 1 WHERE id = '. $db->Quote($r->recurrence_id);
+         $db->setQuery($query);
+         $db->query();
+	     }	     
+	   }
+	   return true;
+	}
+	
 	/**
 	 * this methode calculate the next date
 	 */

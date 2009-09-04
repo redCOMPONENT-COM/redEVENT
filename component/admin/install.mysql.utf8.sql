@@ -328,6 +328,20 @@ CREATE TABLE IF NOT EXISTS `#__redevent_countries` (
   KEY `iso2` (`iso2`)
 ) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
+CREATE TABLE IF NOT EXISTS `#__redevent_recurrences` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rrule` text NOT NULL DEFAULT '',
+  `ended` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_repeats` (
+  `xref_id` int(11) NOT NULL,
+  `recurrence_id` int(11) NOT NULL,
+  `count` int(11) NOT NULL,
+  UNIQUE KEY `recurrence_repeat` (`xref_id`,`recurrence_id`)
+) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
 INSERT IGNORE INTO `#__redevent_countries` (`id`, `continent`, `iso2`, `iso3`, `un`, `name`) VALUES
 (1, 'AS', 'AF', 'AFG', 4, 'Afghanistan, Islamic Republic '),
 (2, 'EU', 'AX', 'ALA', 248, 'Åland Islands'),

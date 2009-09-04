@@ -137,7 +137,7 @@ class RedEventViewEvent extends JView {
       $selected[] = $cat;
     }
     $Lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('Categories'), 'categories[]', 'class="inputbox required validate-categories" multiple="multiple" size="10"', 'value', 'text', $selected); 
-		
+		    
 		/* Create submission types */
 		$submission_types = explode(',', $row->submission_types);
 		
@@ -222,6 +222,8 @@ class RedEventViewEvent extends JView {
 		JHTML::_('behavior.tooltip');
 		JHTML::_('behavior.formvalidation');
 
+    $document->addScript('components/com_redevent/assets/js/xref_recurrence.js');
+    
 		//Build the image select functionality
 		$js = "
 		function elSelectImage(image, imagename) {
@@ -235,9 +237,24 @@ class RedEventViewEvent extends JView {
 		
 		$lists = array();
 		
+		// venues selector
     $venues = array(JHTML::_('select.option', 0, JText::_('Select Venue')));
 		$venues = array_merge($venues, $this->get('VenuesOptions'));
 		$lists['venue'] = JHTML::_('select.genericlist', $venues, 'venueid', 'class="validate-venue"', 'value', 'text', $xref->venueid);
+		
+		
+    // if this is not the first xref of the recurrence, we shouldn't modify it
+    $lockedrecurrence = ($xref->count > 0); 
+
+    // Recurrence selector
+    $recur_type = array( JHTML::_('select.option', 'NONE', JText::_('NO REPEAT')),
+                         JHTML::_('select.option', 'DAILY', JText::_('DAILY')),
+                         JHTML::_('select.option', 'WEEKLY', JText::_('WEEKLY')),
+                         JHTML::_('select.option', 'MONTHLY', JText::_('MONTHLY')),
+                         JHTML::_('select.option', 'YEARLY', JText::_('YEARLY'))
+                       );
+    $lists['recurrence_type'] = JHTML::_('select.radiolist', $recur_type, 'recurrence_type', '', 'value', 'text', $xref->rrules->type);
+    
 		
 		//assign to template
     $this->assignRef('xref'         , $xref);

@@ -197,3 +197,11 @@ div#timedetails th.coldate {
 div#timedetails th.coltime {
   width: 20%;
 }
+
+div#xref_recurrence_repeat_common {
+  clear: both;	
+}
+
+div#xref_recurrence_repeat_common fieldset.adminform {
+  float: left !important;
+}
