@@ -651,10 +651,10 @@ class RedEventModelEvent extends JModel
     }
     
     // we need to save the recurrence too
-    $rrule = RedeventHelperRecurrence::parsePost($data);
     $recurrence = & JTable::getInstance('RedEvent_recurrences', '');
     if (!$data['recurrenceid'])
     {
+      $rrule = RedeventHelperRecurrence::parsePost($data);
       // new recurrence
       $recurrence->rrule = $rrule;
       if (!$recurrence->store()) {
@@ -674,14 +674,18 @@ class RedEventModelEvent extends JModel
     }
     else 
     {
-      $recurrence->load($data['recurrenceid']);
-      // reset the status
-      $recurrence->ended = 0;
-      // TODO: maybe add a check to have a choice between updating rrule or not...
-      $recurrence->rrule = $rrule;
-      if (!$recurrence->store()) {
-        $this->setError($recurrence->getError());
-        return false;        
+      if ($data['repeat'] == 0) // only update if it's the first xref.
+      {
+        $recurrence->load($data['recurrenceid']);
+        // reset the status
+        $recurrence->ended = 0;
+        // TODO: maybe add a check to have a choice between updating rrule or not...
+        $rrule = RedeventHelperRecurrence::parsePost($data);
+        $recurrence->rrule = $rrule;
+        if (!$recurrence->store()) {
+          $this->setError($recurrence->getError());
+          return false;        
+        }
       }
     }
     redEVENTHelper::generaterecurrences($recurrence->id);
