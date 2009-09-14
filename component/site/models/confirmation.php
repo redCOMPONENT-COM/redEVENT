@@ -92,10 +92,10 @@ class RedeventModelConfirmation extends JModel
 		$mainframe = & JFactory::getApplication();
 		
 		/* Load database connection */
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		
 		/* Determine contact person */
-		$user = & JFactory::getUser();
+		$user = JFactory::getUser();
 		
 		/* Get the global settings */
 		$elsettings = redEVENTHelper::config();
@@ -289,51 +289,47 @@ class RedeventModelConfirmation extends JModel
 		 * Send a submission mail to the attendantee and/or contactperson 
 		 * This will only work if the contactperson has an e-mail address
 		 **/		
-		if (isset($eventsettings->notify) && $eventsettings->notify) 
-		{
+		if (isset($eventsettings->notify) && $eventsettings->notify) {
 			/* Load the mailer */
 			$this->Mailer();
       
 			$tags = new redEVENT_tags;
 			
 			/* Now send some mail to the attendants */
-      foreach ($attendees as $attendee)
-      {
-      	if ($attendee->getEmail())
-      	{
-      		/* Check if we have all the fields */
-      		if (!$attendee->getUsername()) $attendee->setUsername($attendee->getEmail());
-      		if (!$attendee->getFullname()) $attendee->setFullname($attendee->getUsername());
-
-      		/* Add the email address */
-      		$this->mailer->AddAddress($attendee->getEmail(), $attendee->getFullname());
-              
-      		$activatelink = '<a href="'.JRoute::_(JURI::root().'index.php?task=confirm&option=com_redevent&confirmid='.str_replace(".", "_", $registration->uip).'x'.$registration->xref.'x'.$registration->uid.'x'.$attendee->getAnswerId().'x'.JRequest::getVar('submit_key')).'">'.JText::_('Activate').'</a>';
-      		
-      		/* Mail attendee */
-      		$htmlmsg = '<html><head><title></title></title></head><body>';
-      		$body = str_replace('[activatelink]', $activatelink, $eventsettings->notify_body);
-      		$body = str_replace('[fullname]', $attendee->getFullname(), $body);
-      		$htmlmsg .= $body;
-      		$htmlmsg .= '</body></html>';
-
-      		$this->mailer->setBody($tags->ReplaceTags($htmlmsg));
-      		$this->mailer->setSubject($tags->ReplaceTags($eventsettings->notify_subject));
-
-      		/* Count number of messages sent */
-      		if (!$this->mailer->Send()) {
-      			RedeventHelperLog::simpleLog('Error sending notify message to submitted attendants');
-      		}
-
-      		/* Clear the mail details */
-      		$this->mailer->ClearAddresses();
-      	}
-      	else {
-      		/* Not sending mail as there is no e-mail address */
-      	}
-      }
-		}
+			foreach ($attendees as $attendee) {
+				if ($attendee->getEmail()) {
+					/* Check if we have all the fields */
+					if (!$attendee->getUsername()) $attendee->setUsername($attendee->getEmail());
+					if (!$attendee->getFullname()) $attendee->setFullname($attendee->getUsername());
 		
+					/* Add the email address */
+					$this->mailer->AddAddress($attendee->getEmail(), $attendee->getFullname());
+					  
+					$activatelink = '<a href="'.JRoute::_(JURI::root().'index.php?task=confirm&option=com_redevent&confirmid='.str_replace(".", "_", $registration->uip).'x'.$registration->xref.'x'.$registration->uid.'x'.$attendee->getAnswerId().'x'.JRequest::getVar('submit_key')).'">'.JText::_('Activate').'</a>';
+					
+					/* Mail attendee */
+					$htmlmsg = '<html><head><title></title></title></head><body>';
+					$body = str_replace('[activatelink]', $activatelink, $eventsettings->notify_body);
+					$body = str_replace('[fullname]', $attendee->getFullname(), $body);
+					$htmlmsg .= $body;
+					$htmlmsg .= '</body></html>';
+		
+					$this->mailer->setBody($tags->ReplaceTags($htmlmsg));
+					$this->mailer->setSubject($tags->ReplaceTags($eventsettings->notify_subject));
+		
+					/* Count number of messages sent */
+					if (!$this->mailer->Send()) {
+						RedeventHelperLog::simpleLog('Error sending notify message to submitted attendants');
+					}
+		
+					/* Clear the mail details */
+					$this->mailer->ClearAllRecipients();
+				}
+				else {
+					/* Not sending mail as there is no e-mail address */
+				}
+			}
+		}
 		return $registration;
 	}
 	

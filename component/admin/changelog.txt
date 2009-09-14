@@ -20,6 +20,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+Version 2.0 beta 6
+* Fixed double e-mails send
+* Fixed a number of undefined notices
+
+Version 2.0 beta 5
++ Added recurrence
+
 Version 2.0 beta 4
 + Added tags to subject
 

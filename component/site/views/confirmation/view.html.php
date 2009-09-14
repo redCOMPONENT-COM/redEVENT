@@ -39,6 +39,8 @@ class RedeventViewConfirmation extends JView
 	 * Creates the output for the details view
 	 *
  	 * @since 0.9
+ 	 * @see redFORM::saveform
+ 	 * User gets redirected here from the redFORM model where the form data is first saved
 	 */
 	function display($tpl = null)
 	{
@@ -60,36 +62,35 @@ class RedeventViewConfirmation extends JView
 		$tags = new redEVENT_tags;
 		$this->assignRef('tags', $tags);
 		
-  	if ($key_ok) {
+		if ($key_ok) {
 			switch ($tpl) {
 				case 'confirmation':
-				case 'print':					
+				case 'print':				
 					/* Collect registration details */
+					$registration	= $this->get('Details');
 					
-					if (empty($registration['event']->review_message)) 
-					{					
-						// nothing in review message, so skip it !
-            $result = $this->get('MailConfirmation');
-
-            /** 
-             * Check if redFORM wants control again
-             * in case of a VirtueMart redirect
-             */
-            if (JRequest::getBool('redformback', false)) {
-              $mainframe->redirect('index.php?option=com_redform&task=redeventvm&controller=redform&form_id='.JRequest::getInt('form_id'));
-              return;     
-            }
+					/* No review so need to bypass it */
+					if (empty($registration['event']->review_message)) {					
+						/** 
+						 * Check if redFORM wants control again
+						 * in case of a VirtueMart redirect
+						 */
+						if (JRequest::getBool('redformback', false)) {
+						  $mainframe->redirect('index.php?option=com_redform&task=redeventvm&controller=redform&form_id='.JRequest::getInt('form_id'));
+						  return;     
+						}
             
 						$redirect = 'index.php?option=com_redevent&task='.JRequest::getVar('event_task')
 						           .'&xref='.JRequest::getInt('xref')
 						           .'&submit_key='.JRequest::getVar('submit_key')
 						           .'&view=confirmation&page=final'
-                       .'&action=confirmreg'
+						           .'&action=confirmreg'
+						           .'&redformback='.JRequest::getInt('redformback', 0)
+						           .'&form_id='.JRequest::getInt('form_id')
 						           ;
 						$mainframe->redirect(JRoute::_($redirect, false));
 						return;			
 					}
-					
 					JRequest::setVar('answers', $registration['answers']);
 					JRequest::setVar('xref', $registration['event']->xref);
 					
@@ -115,21 +116,26 @@ class RedeventViewConfirmation extends JView
 								/* Assign to jview */
 								$this->assignRef('message', JText::_('CONFIRM_REGISTRATION'));
 							}
-              $this->assignRef('event', $row);
+							$this->assignRef('event', $row);
 							
-              /** 
-               * Check if redFORM wants control again
-               * in case of a VirtueMart redirect
-               */
-              if (JRequest::getBool('redformback', false)) {
-                $mainframe->redirect('index.php?option=com_redform&task=redeventvm&controller=redform&form_id='.JRequest::getInt('form_id'));
-                return;     
-              }
+							  /** 
+							   * Check if redFORM wants control again
+							   * in case of a VirtueMart redirect
+							   */
+							  if (JRequest::getBool('redformback', false)) {
+								$mainframe->redirect('index.php?option=com_redform&task=redeventvm&controller=redform&form_id='.JRequest::getInt('form_id'));
+								return;     
+							  }
 						}
 					}
 					else if ($action == 'cancelreg') {
 						$this->get('CancelConfirmation');
 						$this->assignRef('message', JText::_('CANCEL_CONFIRMATION'));
+						/* Get some details for the link */
+						$model_details = $this->getModel('Details', 'RedEventModel');
+						$model_details->setXref(JRequest::getInt('xref'));
+						$row = $model_details->getDetails();
+						$this->assignRef('event', $row);
 					}
 					break;
 			}
