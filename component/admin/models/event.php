@@ -598,6 +598,9 @@ class RedEventModelEvent extends JModel
   	else {
       $object = JTable::getInstance('RedEvent_eventvenuexref', '');
   		$object->venue = '';
+      $object->recurrence_id = 0;
+      $object->rrule = '';
+      $object->count = 0;
   		$object->rrules = RedeventHelperRecurrence::getRule();
   	}
   	return $object;
