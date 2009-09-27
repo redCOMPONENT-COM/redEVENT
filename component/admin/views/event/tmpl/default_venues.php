@@ -34,7 +34,17 @@
 			  <td><?php echo $eventdetails->venue; ?></td>
 	      <td><?php echo $displaydate; ?></td>
 	      <td><?php echo $displaytime; ?></td>
-        <td><?php echo ($eventdetails->published) ? JText::_('YES') : JText::_('No'); ?></td>
+        <td><?php switch ($eventdetails->published):
+                    case '-1':
+                      echo JText::_('ARCHIVED');
+                      break;
+                    case '0': 
+                      echo JText::_('UNPUBLISHED');
+                      break; 
+                    case '1': 
+                      echo JText::_('PUBLISHED');
+                      break; 
+                    endswitch; ?></td>
 	      <td class="cell-delxref"><?php echo ''; ?></td>
 	    </tr>
 	    <?php
