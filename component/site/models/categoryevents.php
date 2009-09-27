@@ -246,9 +246,9 @@ class RedeventModelCategoryevents extends JModel {
 		
 		// First thing we need to do is to select only the requested events
 		if ($task == 'archive') {
-			$where[] = ' a.published = -1 ';
+			$where[] = ' x.published = -1';
 		} else {
-			$where[] = ' a.published = 1 ';
+			$where[] = ' x.published = 1 ';
 		}
 
 		// Second is to only select events assigned to category the user has access to

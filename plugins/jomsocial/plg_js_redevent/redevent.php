@@ -224,7 +224,7 @@ class plgCommunityRedevent extends CApplications
         . ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
         . ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
         . ' WHERE r.uid=' . $db->Quote( $this->_user->id ) . ' '
-        . ' AND a.published=' . $db->Quote( '1' ) . ' '
+        . ' AND x.published=' . $db->Quote( '1' ) . ' '
         . ' ORDER BY x.dates ASC '
         . ' LIMIT 0,' . $limit;
         ;
@@ -259,7 +259,7 @@ class plgCommunityRedevent extends CApplications
         . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
         . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
         . ' WHERE a.created_by=' . $db->Quote( $this->_user->id ) . ' '
-        . ' AND a.published=' . $db->Quote( '1' ) . ' '
+        . ' AND x.published=' . $db->Quote( '1' ) . ' '
         . ' ORDER BY x.dates ASC '
         . ' LIMIT 0,' . $limit;
         ;

@@ -71,7 +71,7 @@ class RedeventModelCalendar extends JModel {
 		        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
 		        . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
 						. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-						. ' WHERE a.published = 1'
+						. ' WHERE x.published = 1'
 						. ' AND c.access <= '.(int)$user->aid
 						.($catid ? $categories : '')
 						.($venid ? $venues : '')

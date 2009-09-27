@@ -270,7 +270,7 @@ class RedeventModelDay extends JModel
 		$params 	= & $mainframe->getParams();
 
 		// First thing we need to do is to select only published events
-		$where = ' WHERE a.published = 1';
+		$where = ' WHERE x.published = 1';
 
 		// Second is to only select events assigned to category the user has access to
 		$where .= ' AND c.access <= '.$gid;

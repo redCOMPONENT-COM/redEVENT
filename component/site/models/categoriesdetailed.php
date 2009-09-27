@@ -224,9 +224,9 @@ class RedeventModelCategoriesdetailed extends JModel
 		$where = ' WHERE top.id = ' . $this->_db->Quote($id) . ' AND c.lft BETWEEN top.lft AND top.rgt ';
 		// First thing we need to do is to select only the requested events
 		if ($task == 'archive') {
-			$where .= ' AND a.published = -1 ';
+			$where .= ' AND x.published = -1 ';
 		} else {
-			$where .= ' AND a.published = 1 ';
+			$where .= ' AND x.published = 1 ';
 		}
 
 		//Get Events from Category
@@ -261,9 +261,9 @@ class RedeventModelCategoriesdetailed extends JModel
 		//check archive task and ensure that only categories get selected if they contain a published/archived event
 		$task 	= JRequest::getWord('task');
 		if($task == 'archive') {
-			$eventstate = ' AND a.published = -1';
+			$eventstate = ' AND x.published = -1';
 		} else {
-			$eventstate = ' AND a.published = 1';
+			$eventstate = ' AND x.published = 1';
 		}
 
     //get categories

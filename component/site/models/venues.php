@@ -201,9 +201,9 @@ class RedeventModelVenues extends JModel
 		//check archive task
 		$task 	= JRequest::getVar('task', '', '', 'string');
 		if($task == 'archive') {
-			$eventstate = ' AND a.published = -1';
+			$eventstate = ' AND x.published = -1';
 		} else {
-			$eventstate = ' AND a.published = 1';
+			$eventstate = ' AND x.published = 1';
 		}
 		
 		//get categories
