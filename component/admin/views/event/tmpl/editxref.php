@@ -103,7 +103,7 @@ function validateForm(f) {
       <label for="published"><?php echo JText::_('PUBLISHED') .': '; ?></label>
     </td>
     <td>
-      <?php echo JHTML::_('select.booleanlist', 'published', '', $this->xref->published); ?> 
+      <?php echo $this->lists['published']; ?>
     </td>
   </tr>
 </tbody>

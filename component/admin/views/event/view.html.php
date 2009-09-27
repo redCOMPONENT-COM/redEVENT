@@ -255,6 +255,12 @@ class RedEventViewEvent extends JView {
                        );
     $lists['recurrence_type'] = JHTML::_('select.radiolist', $recur_type, 'recurrence_type', '', 'value', 'text', $xref->rrules->type);
     
+    // published state selector
+    $published = array( JHTML::_('select.option', '1', JText::_('PUBLISHED')),
+                         JHTML::_('select.option', '0', JText::_('UNPUBLISHED')),
+                         JHTML::_('select.option', '-1', JText::_('ARCHIVED'))
+                       );
+    $lists['published'] = JHTML::_('select.radiolist', $published, 'published', '', 'value', 'text', $xref->published);
 		
 		//assign to template
     $this->assignRef('xref'         , $xref);
