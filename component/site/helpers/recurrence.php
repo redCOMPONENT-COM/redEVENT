@@ -531,12 +531,16 @@ class RedeventHelperRecurrence
     }
     
     // return the new occurence
-    $new = $last_xref;
+    $new = clone $last_xref;
+    
     unset($new->id);
+    $delta = $next_start - strtotime($last_xref->dates);
     $new->dates = strftime('%Y-%m-%d', $next_start);
     if ($last_xref->enddates && $last_xref->enddates != '0000-00-00') {
-      $delta = $next_start - strtotime($last_xref->dates);
       $new->enddates = strftime('%Y-%m-%d', strtotime($last_xref->enddates) + $delta);
+    }
+    if ($last_xref->registrationend && $last_xref->registrationend != '0000-00-00') {
+      $new->registrationend = strftime('%Y-%m-%d', strtotime($last_xref->registrationend) + $delta);
     }
     $new->count++;
 
