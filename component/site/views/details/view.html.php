@@ -212,9 +212,7 @@ class RedeventViewDetails extends JView
     if (!empty($row->slug)) {
     	$link .= '&id='.$row->slug;
     }
-    if (!empty($row->xref)) {
-      $link .= '&xref='.$row->xref;
-    }
+
     $attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
     $document->addHeadLink(JRoute::_($link.'&type=rss'), 'alternate', 'rel', $attribs);
     $attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
