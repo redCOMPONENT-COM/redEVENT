@@ -200,7 +200,6 @@ class redEVENTHelper {
 	   $db->setQuery($query);
 	   $xrefs = $db->loadObjectList('id');
 	   	   
-	   print_r($xrefs);exit;
 	   // now, do the job...
 	   foreach ($recurrences as $r) 
 	   {
