@@ -26,6 +26,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
+require_once('baseeventslist.php');
 /**
  * EventList Component Day Model
  *
@@ -33,35 +34,9 @@ jimport('joomla.application.component.model');
  * @subpackage EventList
  * @since		0.9
  */
-class RedeventModelDay extends JModel
+class RedeventModelDay extends RedeventModelBaseEventList
 {
-	/**
-	 * Events data array
-	 *
-	 * @var array
-	 */
-	var $_data = null;
-
-	/**
-	 * Events total
-	 *
-	 * @var integer
-	 */
-	var $_total = null;
 	
-	/**
-	 * Date
-	 *
-	 * @var string
-	 */
-	var $_date = null;
-
-	/**
-	 * Pagination object
-	 *
-	 * @var object
-	 */
-	var $_pagination = null;
 
 	/**
 	 * Constructor
@@ -71,22 +46,6 @@ class RedeventModelDay extends JModel
 	function __construct()
 	{
 		parent::__construct();
-
-		global $mainframe;
-
-		// Get the paramaters of the active menu item
-		$params 	= & $mainframe->getParams('com_redevent');
-
-		//get the number of events from database
-		$limit       	= $mainframe->getUserStateFromRequest('com_redevent.eventlist.limit', 'limit', $params->def('display_num', 0), 'int');
-		$limitstart		= JRequest::getInt('limitstart');
-
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-
-		// Get the filter request variables
-		$this->setState('filter_order', JRequest::getCmd('filter_order', 'x.dates'));
-		$this->setState('filter_order_dir', JRequest::getCmd('filter_order_Dir', 'ASC'));
 			
 		$rawday = JRequest::getInt('id', 0, 'request');
 		$this->setDate($rawday);
@@ -100,7 +59,7 @@ class RedeventModelDay extends JModel
 	 */
 	function setDate($date)
 	{
-		global $mainframe;
+		$mainframe = & JFactory::getApplication();
 
 		// Get the paramaters of the active menu item
 		$params 	= & $mainframe->getParams('com_redevent');
@@ -140,116 +99,6 @@ class RedeventModelDay extends JModel
 		}
 
 		$this->_date = $date;
-	}
-
-	/**
-	 * Method to get the Events
-	 *
-	 * @access public
-	 * @return array
-	 */
-	function &getData( )
-	{
-		$pop	= JRequest::getBool('pop');
-
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_data))
-		{
-			$query = $this->_buildQuery();
-
-			if ($pop) {
-				$this->_data = $this->_getList( $query );
-        $this->_data = $this->_getEventsCategories($this->_data);
-			} else {
-				$this->_data = $this->_getList( $query, $this->getState('limitstart'), $this->getState('limit') );
-        $this->_data = $this->_getEventsCategories($this->_data);
-			}
-		}
-
-		return $this->_data;
-	}
-
-	/**
-	 * Total nr of events
-	 *
-	 * @access public
-	 * @return integer
-	 */
-	function getTotal()
-	{
-		// Lets load the total nr if it doesn't already exist
-		if (empty($this->_total))
-		{
-			$query = $this->_buildQuery();
-			$this->_total = $this->_getListCount($query);
-		}
-
-		return $this->_total;
-	}
-
-	/**
-	 * Method to get a pagination object for the events
-	 *
-	 * @access public
-	 * @return integer
-	 */
-	function getPagination()
-	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_pagination))
-		{
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
-		}
-
-		return $this->_pagination;
-	}
-
-	/**
-	 * Build the query
-	 *
-	 * @access private
-	 * @return string
-	 */
-	function _buildQuery()
-	{
-		// Get the WHERE and ORDER BY clauses for the query
-		$where		= $this->_buildEventListWhere();
-		$orderby	= $this->_buildEventListOrderBy();
-
-		//Get Events from Database
-		$query = 'SELECT a.id, x.dates, x.enddates, x.times, x.endtimes, x.id AS xref, a.title, a.created, a.datdescription,'
-				. ' l.venue, l.city, l.state, l.url,'
-				. ' c.catname, c.id AS catid,'
-        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
-        . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
-        . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
-				. ' FROM #__redevent_events AS a'
-				. ' LEFT JOIN #__redevent_event_venue_xref AS x on x.eventid = a.id'
-				. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-        . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-				. $where
-        . ' GROUP BY x.id '
-				. $orderby
-				;
-		return $query;
-	}
-
-	/**
-	 * Build the order clause
-	 *
-	 * @access private
-	 * @return string
-	 */
-	function _buildEventListOrderBy()
-	{
-		$filter_order		= $this->getState('filter_order');
-		$filter_order_dir	= $this->getState('filter_order_dir');
-
-		$orderby 	= ' ORDER BY '.$filter_order.' '.$filter_order_dir.', x.dates, x.times';
-
-		return $orderby;
 	}
 
 	/**
@@ -327,31 +176,5 @@ class RedeventModelDay extends JModel
 	{
 		return $this->_date;
 	}
-	
-
-  /**
-   * adds categories property to event rows
-   *
-   * @param array $rows of events
-   * @return array
-   */
-  function _getEventsCategories($rows)
-  {
-    for ($i=0, $n=count($rows); $i < $n; $i++) {
-      $query =  ' SELECT c.id, c.catname, '
-              . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
-              . ' FROM #__redevent_categories as c '
-              . ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
-              . ' WHERE c.published = 1 '
-              . '   AND x.event_id = ' . $this->_db->Quote($rows[$i]->id)
-              . ' ORDER BY c.ordering'
-              ;
-      $this->_db->setQuery( $query );
-
-      $rows[$i]->categories = $this->_db->loadObjectList();
-    }
-
-    return $rows;   
-  }
 }
 ?>

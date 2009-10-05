@@ -26,6 +26,8 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
+require_once('baseeventslist.php');
+
 /**
  * EventList Component Venueevents Model
  *
@@ -33,35 +35,14 @@ jimport('joomla.application.component.model');
  * @subpackage EventList
  * @since		0.9
  */
-class RedeventModelVenueevents extends JModel
+class RedeventModelVenueevents extends RedeventModelBaseEventList
 {
-	/**
-	 * Events data array
-	 *
-	 * @var array
-	 */
-	var $_data = null;
-
 	/**
 	 * venue data array
 	 *
 	 * @var array
 	 */
 	var $_venue = null;
-
-	/**
-	 * Events total
-	 *
-	 * @var integer
-	 */
-	var $_total = null;
-
-	/**
-	 * Pagination object
-	 *
-	 * @var object
-	 */
-	var $_pagination = null;
 
 	/**
 	 * Constructor
@@ -112,116 +93,6 @@ class RedeventModelVenueevents extends JModel
 	{
 		// Set new venue ID and wipe data
 		$this->_xref		= $xref;
-	}
-
-	/**
-	 * Method to get the events
-	 *
-	 * @access public
-	 * @return array
-	 */
-	function &getData( )
-	{
-		$pop	= JRequest::getBool('pop');
-
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_data))
-		{
-			$query = $this->_buildQuery();
-
-			if ($pop) {
-				$this->_data = $this->_getList( $query );
-        $this->_data = $this->_getEventsCategories($this->_data);
-			} else {
-				$this->_data = $this->_getList( $query, $this->getState('limitstart'), $this->getState('limit') );
-        $this->_data = $this->_getEventsCategories($this->_data);
-			}
-		}
-		return $this->_data;
-	}
-
-	/**
-	 * Total nr of events
-	 *
-	 * @access public
-	 * @return integer
-	 */
-	function getTotal()
-	{
-		// Lets load the total nr if it doesn't already exist
-		if (empty($this->_total))
-		{
-			$query = $this->_buildQuery();
-			$this->_total = $this->_getListCount($query);
-		}
-
-		return $this->_total;
-	}
-
-	/**
-	 * Method to get a pagination object for the events
-	 *
-	 * @access public
-	 * @return integer
-	 */
-	function getPagination()
-	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_pagination))
-		{
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
-		}
-
-		return $this->_pagination;
-	}
-
-	/**
-	 * Build the query
-	 *
-	 * @access private
-	 * @return string
-	 */
-	function _buildQuery()
-	{
-		// Get the WHERE and ORDER BY clauses for the query
-		$where		= $this->_buildContentWhere();
-		$orderby	= $this->_buildContentOrderBy();
-
-		//Get Events from Database
-		$query = 'SELECT a.id, a.title, a.datdescription, a.created, '
-		    . ' x.dates, x.enddates, x.times, x.endtimes, x.id AS xref, '
-		    . ' l.venue, l.city, l.state, l.url, l.latitude, l.longitude, '
-		    . ' c.catname, c.id AS catid,'
-        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
-        . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
-        . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
-				. ' FROM #__redevent_events AS a'
-				. ' LEFT JOIN #__redevent_event_venue_xref AS x ON a.id = x.eventid'
-				. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-        . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-				. $where
-				. ' GROUP BY x.id '
-				. $orderby
-				;
-		return $query;
-	}
-
-	/**
-	 * Build the order clause
-	 *
-	 * @access private
-	 * @return string
-	 */
-	function _buildContentOrderBy()
-	{
-		$filter_order		= $this->getState('filter_order');
-		$filter_order_dir	= $this->getState('filter_order_dir');
-
-		$orderby 	= ' ORDER BY '.$filter_order.' '.$filter_order_dir.', x.dates, x.times';
-
-		return $orderby;
 	}
 
 	/**
@@ -311,30 +182,5 @@ class RedeventModelVenueevents extends JModel
 
 		return $_venue;
 	}
-	
-  /**
-   * adds categories property to event rows
-   *
-   * @param array $rows of events
-   * @return array
-   */
-  function _getEventsCategories($rows)
-  {
-    for ($i=0, $n=count($rows); $i < $n; $i++) {
-      $query =  ' SELECT c.id, c.catname, '
-              . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
-              . ' FROM #__redevent_categories as c '
-              . ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
-              . ' WHERE c.published = 1 '
-              . '   AND x.event_id = ' . $this->_db->Quote($rows[$i]->id)
-              . ' ORDER BY c.ordering'
-              ;
-      $this->_db->setQuery( $query );
-
-      $rows[$i]->categories = $this->_db->loadObjectList();
-    }
-
-    return $rows;   
-  }
 }
 ?>

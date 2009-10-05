@@ -203,7 +203,7 @@ class RedeventViewDay extends JView
 		$lists['order_Dir'] 	= $filter_order_Dir;
 		$lists['order'] 		= $filter_order;
 		$lists['filter'] 		= $filter;
-		$lists['filter_type'] 	= $sortselect;
+		$lists['filter_types'] 	= $sortselect;
 
 		return $lists;
 	}

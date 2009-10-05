@@ -26,6 +26,8 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
+require_once('baseeventslist.php');
+
 /**
  * EventList Component Categoriesdetailed Model
  *
@@ -33,35 +35,14 @@ jimport('joomla.application.component.model');
  * @subpackage EventList
  * @since		0.9
  */
-class RedeventModelCategoriesdetailed extends JModel
-{
-	/**
-	 * Event data array
-	 *
-	 * @var array
-	 */
-	var $_data = null;
-
-	/**
-	 * Categories total
-	 *
-	 * @var integer
-	 */
-	var $_total = null;
-
+class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
+{	
 	/**
 	 * Categories data array
 	 *
 	 * @var integer
 	 */
 	var $_categories = null;
-
-	/**
-	 * Pagination object
-	 *
-	 * @var object
-	 */
-	var $_pagination = null;
 
 	/**
 	 * Constructor
@@ -152,42 +133,6 @@ class RedeventModelCategoriesdetailed extends JModel
 	}
 
 	/**
-	 * Total nr of Categories
-	 *
-	 * @access public
-	 * @return integer
-	 */
-	function getTotal()
-	{
-		// Lets load the total nr if it doesn't already exist
-		if (empty($this->_total))
-		{
-			$query = $this->_buildQuery();
-			$this->_total = $this->_getListCount($query);
-		}
-
-		return $this->_total;
-	}
-
-	/**
-	 * Method to get a pagination object for the events
-	 *
-	 * @access public
-	 * @return integer
-	 */
-	function getPagination()
-	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_pagination))
-		{
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
-		}
-
-		return $this->_pagination;
-	}
-
-	/**
 	 * Method to get the Categories events
 	 *
 	 * @access public
@@ -202,7 +147,8 @@ class RedeventModelCategoriesdetailed extends JModel
 		// Lets load the content
 		$query = $this->_buildDataQuery( $id );
 		$this->_data = $this->_getList( $query, 0, $params->get('detcat_nr') );
-    $this->_data = $this->_getEventsCategories($this->_data);
+    $this->_data = $this->_categories($this->_data);
+    $this->_data = $this->_getPlacesLeft($this->_data);
 
 		return $this->_data;
 	}
@@ -289,29 +235,5 @@ class RedeventModelCategoriesdetailed extends JModel
 		return $query;
 	}
 	
- /**
-   * adds categories property to event rows
-   *
-   * @param array $rows of events
-   * @return array
-   */
-  function _getEventsCategories($rows)
-  {
-    for ($i=0, $n=count($rows); $i < $n; $i++) {
-      $query =  ' SELECT c.id, c.catname, '
-              . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
-              . ' FROM #__redevent_categories as c '
-              . ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
-              . ' WHERE c.published = 1 '
-              . '   AND x.event_id = ' . $this->_db->Quote($rows[$i]->event_id)
-              . ' ORDER BY c.ordering'
-              ;
-      $this->_db->setQuery( $query );
-
-      $rows[$i]->categories = $this->_db->loadObjectList();
-    }
-
-    return $rows;   
-  }
 }
 ?>

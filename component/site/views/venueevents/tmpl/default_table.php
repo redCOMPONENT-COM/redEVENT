@@ -69,6 +69,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<?php if ($this->elsettings->showcat == 1) :	?>
 			<col width="<?php echo $this->elsettings->catfrowidth; ?>" class="el_col_category" />
 		<?php endif; ?>
+    <?php if ($this->params->get('display_placesleft', 0 == 1)) :  ?>
+      <col width="<?php echo $this->elsettings->catfrowidth; ?>" class="el_col_places" />
+    <?php endif; ?>
 	</colgroup>
 
 	<thead>
@@ -100,6 +103,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<th id="el_category" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', $this->escape($this->elsettings->catfroname), 'c.catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php
 				endif;
+        if ($this->params->get('display_placesleft', 0 == 1)) :
+        ?>
+        <th id="el_places" class="sectiontableheader" align="left"><?php echo JText::_('Places'); ?></th>
+        <?php
+        endif;
 				?>
 			</tr>
 	</thead>
@@ -207,7 +215,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
           <?php endforeach; ?>
           </td> 
         <?php endif; ?>
-
+        
+        <?php if ($this->params->get('display_placesleft', 0 == 1)) : ?>
+          <td headers="el_places" align="left" valign="top"><?php echo redEVENTHelper::getRemainingPlaces($row); ?></td>
+        <?php endif; ?>
 			</tr>
 
   		<?php

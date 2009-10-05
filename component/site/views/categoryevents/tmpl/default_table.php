@@ -100,7 +100,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<th id="el_category" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', $this->escape($this->elsettings->catfroname), 'c.catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php
 				endif;
-				?>
+				
+        if ($this->params->get('display_placesleft', 0 == 1)) :
+        ?>
+        <th id="el_places" class="sectiontableheader" align="left"><?php echo JText::_('Places'); ?></th>
+        <?php
+        endif;
+        ?>
 				<th id="el_image" class="sectiontableheader" align="left"><?php echo JText::_('IMAGE'); ?></th>
 			</tr>
 	</thead>
@@ -208,7 +214,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             <?php echo ($k < count($row->categories)) ? '<br/>' : '' ; ?>
           <?php endforeach; ?>
           </td> 
-        <?php endif;
+        <?php endif; 
+
+        if ($this->params->get('display_placesleft', 0 == 1)) : ?>
+
+          <td headers="el_places" align="left" valign="top"><?php echo redEVENTHelper::getRemainingPlaces($row); ?></td>
+
+        <?php endif; 
         
 				$dimage = redEVENTImage::flyercreator($row->datimage, 'event');
 				?>
