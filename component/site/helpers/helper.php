@@ -173,6 +173,7 @@ class redEVENTHelper {
 	   $query = ' SELECT MAX(rp.xref_id) as xref_id, r.rrule, r.id as recurrence_id '
         	   . ' FROM #__redevent_repeats AS rp '
         	   . ' INNER JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
+             . ' INNER JOIN #__redevent_event_venue_xref AS x on x.id = rp.xref_id ' // make sure there are still events associated...
         	   . ' WHERE r.ended = 0 '
         	   ;
      if ($recurrence_id) {
@@ -199,6 +200,7 @@ class redEVENTHelper {
 	   $db->setQuery($query);
 	   $xrefs = $db->loadObjectList('id');
 	   	   
+	   print_r($xrefs);exit;
 	   // now, do the job...
 	   foreach ($recurrences as $r) 
 	   {
@@ -1002,6 +1004,34 @@ class redEVENTHelper {
     }
     
     return true;
+  }
+  
+  /**
+   * this function is used to return the number of places left in event lists
+   * 
+   * it requires the input object to have the properties registra, registrationend, dates, times, maxattendees, registered
+   * 
+   * @param object xref
+   * @return string
+   */ 
+  function getRemainingPlaces($xref)
+  {
+    // only display for events were registrations still open
+    if (!$xref->registra) {
+      return '-';      
+    }
+    if (    (strtotime($xref->registrationend) && strtotime($xref->registrationend) < time())
+         || strtotime($xref->dates . ' ' . $xref->times) < time() ) 
+    {
+      return '-';
+    }
+    
+    // if there is no limit...
+    if (!$xref->maxattendees) 
+    {
+      return '-';
+    }
+    return $xref->maxattendees - $xref->registered;
   }
 }
 ?>
