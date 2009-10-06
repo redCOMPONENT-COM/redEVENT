@@ -67,7 +67,7 @@ class redEVENT_tags {
 			$db->setQuery($q);
 			list($this->_eventid, $this->_venueid, $this->_maxattendees, $this->_maxwaitinglist, $this->_published) = $db->loadRow();
       if (!$this->_published) {
-        JError::raiseError(404, 'This event is not published', 'test');
+        JError::raiseError(404, JText::_('This event is not published'), 'this xref is not published, can\'t be displayed in venues');
       }
 		}
 	}
