@@ -68,6 +68,9 @@ class RedEventViewAttendees extends JView {
 
 		//add css and submenu to document
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		
+		// add javascript
+		JHTML::_('behavior.modal', 'a.answersmodal');
 
 		//Create Submenu
     ELAdmin::setMenu();

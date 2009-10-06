@@ -88,7 +88,6 @@ class RedEventModelEvents extends JModel
 		{
 			$query = $this->_buildQuery();
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-			$this->_data = $this->_additionals($this->_data);
       $this->_data = $this->_categories($this->_data);
 		}
 
@@ -143,12 +142,13 @@ class RedEventModelEvents extends JModel
 		$where		= $this->_buildContentWhere();
 		$orderby	= $this->_buildContentOrderBy();
 
-		$query = ' SELECT a.*, cat.checked_out AS cchecked_out, cat.catname, u.email, u.name AS author, x.id AS xref'
+		$query = ' SELECT a.*, cat.checked_out AS cchecked_out, cat.catname, u.email, u.name AS author, u2.name as editor, x.id AS xref'
 					. ' FROM #__redevent_events AS a'
           . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
 					. ' LEFT JOIN #__redevent_categories AS cat ON cat.id = xcat.category_id'
 					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
 					. ' LEFT JOIN #__users AS u ON u.id = a.created_by'
+          . ' LEFT JOIN #__users AS u2 ON u2.id = a.modified_by'
 					. $where
 					. ' GROUP BY a.id'
 					. $orderby
@@ -222,38 +222,6 @@ class RedEventModelEvents extends JModel
 		$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
 
 		return $where;
-	}
-
-	/**
-	 * Get the editor name and the nr of attendees
-	 *
-	 * @access private
-	 * @param array $rows
-	 * @return array
-	 */
-	function _additionals($rows)
-	{
-		for ($i=0, $n=count($rows); $i < $n; $i++) {
-
-			// count registered users
-			$query = 'SELECT count(r.id)'
-					. ' FROM #__redevent_register AS r'
-					. ' WHERE r.xref IN (SELECT id FROM #__redevent_event_venue_xref WHERE eventid = '.$rows[$i]->id.')';
-					;
-			$this->_db->SetQuery( $query );
-			$rows[$i]->regCount = $this->_db->loadResult();
-
-			// Get editor name
-			$query = 'SELECT name'
-					. ' FROM #__users'
-					. ' WHERE id = '.$rows[$i]->modified_by
-					;
-			$this->_db->SetQuery( $query );
-
-			$rows[$i]->editor = $this->_db->loadResult();
-		}
-
-		return $rows;
 	}
 	
 	/**
@@ -395,16 +363,29 @@ class RedEventModelEvents extends JModel
 	/**
 	 * Retrieve a list of events, venues and times
 	 */
-	public function getEventVenues() {
+	public function getEventVenues() 
+	{
+	  $events_id = array();
+	  foreach ((array) $this->getData() as $e) {
+	    $events_id[] = $e->id;
+	  }
+	  if (empty($events_id)) {
+	    return false;
+	  }
+	  
 		$db = JFactory::getDBO();
-		$q = "SELECT x.*, v.venue, v.city
-			FROM #__redevent_event_venue_xref x
-			LEFT JOIN #__redevent_venues v
-			ON x.venueid = v.id
-			WHERE x.published > -1
-			ORDER BY v.venue, x.dates";
+		$q = ' SELECT count(r.id) AS regcount, x.*, v.venue, v.city '
+		   . ' FROM #__redevent_event_venue_xref AS x '
+       . ' LEFT JOIN #__redevent_venues AS v ON x.venueid = v.id '
+       . ' LEFT JOIN #__redevent_register AS r ON r.xref = x.id'
+       . ' WHERE x.published > -1 '
+       . '   AND x.eventid IN ('. implode(', ', $events_id) .')'
+       . ' GROUP BY x.id '
+       . ' ORDER BY x.dates, v.venue '
+       ;
 		$db->setQuery($q);
 		$datetimes = $db->loadObjectList();
+		
 		$ardatetimes = array();
 		foreach ($datetimes as $key => $datetime) {
 			$ardatetimes[$datetime->eventid][] = $datetime;

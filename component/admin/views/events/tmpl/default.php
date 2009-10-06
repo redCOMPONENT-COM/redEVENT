@@ -53,14 +53,13 @@ defined('_JEXEC') or die('Restricted access');
 				<th><?php echo JHTML::_('grid.sort', 'CATEGORY', 'cat.catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			    <th width="1%" nowrap="nowrap"><?php echo JText::_( 'PUBLISHED' ); ?></th>
 				<th class="title"><?php echo JText::_( 'CREATION' ); ?></th>
-				<th width="1%" nowrap="nowrap"><?php echo JText::_( 'REGISTERED USERS' ); ?></th>
 				<th width="1%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'ID', 'a.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			</tr>
 		</thead>
 
 		<tfoot>
 			<tr>
-				<td colspan="12">
+				<td colspan="11">
 					<?php echo $this->pageNav->getListFooter(); ?>
 				</td>
 			</tr>
@@ -89,6 +88,7 @@ defined('_JEXEC') or die('Restricted access');
 					   <th class="colcity"><?php echo JText::_('CITY'); ?></th>
 					   <th class="coldate"><?php echo JText::_('DATE'); ?></th>
 					   <th class="coltime"><?php echo JText::_('TIME'); ?></th>
+             <th class="coltime"><?php echo JText::_('ATTENDEES'); ?></th>
 					 </tr>
 				  </thead>
 					<tbody>
@@ -108,8 +108,24 @@ defined('_JEXEC') or die('Restricted access');
                   $displaytime .= ' - '.strftime( $this->elsettings->formattime, strtotime( $eventdetails->endtimes )). ' '.$this->elsettings->timename;
                 }
 							}
-							echo '<tr class="eventdatetime"><td>'.$eventdetails->venue.'</td><td>'.$eventdetails->city.'</td><td>'.$displaydate.'</td><td>'.$displaytime.'</td></tr>';
-						}
+							?>
+    					<tr class="eventdatetime">
+    						<td><?php echo $eventdetails->venue; ?></td>
+    						<td><?php echo $eventdetails->city; ?></td>
+    						<td><?php echo $displaydate; ?></td>
+    						<td><?php echo $displaytime; ?></td>
+    						<td>
+    						  <?php	if ($row->registra == 1):
+      						  $linkreg  = 'index.php?option=com_redevent&amp;view=attendees&amp;eventid='.$row->id.'&filter='.$eventdetails->id;
+      						  ?>
+      						  <a href="<?php echo $linkreg; ?>" title="Edit Users"><?php echo $eventdetails->regcount; ?></a>
+      						<?php else: ?> 
+      						  <img src="images/publish_x.png" width="16" height="16" border="0" alt="Registration disabled" />
+      						<?php endif; ?>
+    						</td>
+    					</tr>
+    					<?php
+						  }
 						?>
 					</tbody>
 					</table>
@@ -180,22 +196,6 @@ defined('_JEXEC') or die('Restricted access');
 					<span class="editlinktip hasTip" title="<?php echo JText::_('EVENT STATS'); ?>::<?php echo $overlib; ?>">
 						<?php echo $image; ?>
 					</span>
-				</td>
-				<td align="center">
-					<?php
-					if ($row->registra == 1) {
-						$linkreg 	= 'index.php?option=com_redevent&amp;view=attendees&amp;eventid='.$row->id;
-					?>
-						<a href="<?php echo $linkreg; ?>" title="Edit Users">
-						<?php echo $row->regCount; ?>
-						</a>
-					<?php
-					}else {
-					?>
-						<img src="images/publish_x.png" width="16" height="16" border="0" alt="Registration disabled" />
-					<?php
-					}
-					?>
 				</td>
 				<td align="center"><?php echo $row->id; ?></td>
 			</tr>
