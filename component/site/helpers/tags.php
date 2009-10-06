@@ -66,6 +66,9 @@ class redEVENT_tags {
 			$q = "SELECT eventid, venueid, maxattendees, maxwaitinglist, published FROM #__redevent_event_venue_xref WHERE id = ".$this->_xref;
 			$db->setQuery($q);
 			list($this->_eventid, $this->_venueid, $this->_maxattendees, $this->_maxwaitinglist, $this->_published) = $db->loadRow();
+      if (!$this->_published) {
+        JError::raiseError(404, 'This event is not published', 'test');
+      }
 		}
 	}
 	
