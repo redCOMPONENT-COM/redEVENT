@@ -51,7 +51,7 @@ class RedeventViewDetails extends JView
     $xreflinks = $this->get('XrefLinks');
     $this->_eventlinks = $xreflinks;
         
-    $document->setTitle($row->title);
+    $document->setTitle($this->escape($row->title));
     $document->setDescription('');
     
     ob_start();
