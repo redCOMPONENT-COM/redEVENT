@@ -49,8 +49,10 @@ class RedEventViewEvent extends JView {
 
 		//Load behavior
 		jimport('joomla.html.pane');
-		JHTML::_('behavior.tooltip');
+//		JHTML::_('behavior.tooltip');
     JHTML::_('behavior.formvalidation');
+    JHTML::_('behavior.mootools');
+    
 		require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'helper.php');
 		require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'output.class.php');
 		
@@ -74,6 +76,7 @@ class RedEventViewEvent extends JView {
 		$document->addScript($url.'components/com_redevent/assets/js/unlimited.js');
 		
     $document->addScript($url.'administrator/components/com_redevent/assets/js/xrefedit.js');
+    $document->addScript($url.'administrator/components/com_redevent/assets/js/editevent.js');
 
 		//build toolbar
 		
@@ -297,6 +300,51 @@ class RedEventViewEvent extends JView {
     $js = 'window.parent.updatexref("'.$xref->id.'", "'.addslashes($xref->venue).'", "'.$displaydate.'", "'.$displaytime.'", "'.$xref->published.'");';
     $document->addScriptDeclaration($js);
 		return;
+	}
+	
+	/**
+	 * prints the code for tags display
+	 * 
+	 * @param array tags to exclude from printing 
+	 */
+	function printTags($exclude = array())
+	{ 
+    ?>	
+	  <div class="tagsdiv">
+      <?php echo JHTML::_('link', '#', JText::_('TAGS'), 'class="tagstoggle"'); ?>
+      <div class="tagslist">
+        [venues] = <?php echo JText::_('SUBMISSION_VENUES');?><br />
+        [price] = <?php echo JText::_('SUBMISSION_EVENT_PRICE');?><br />
+        [credits] = <?php echo JText::_('SUBMISSION_EVENT_CREDITS');?><br />
+        [code] = <?php echo JText::_('SUBMISSION_EVENT_CODE');?><br />
+        [event_title]  = <?php echo JText::_('SUBMISSION_EVENT_TITLE');?><br />
+        [time] = <?php echo JText::_('SUBMISSION_EVENT_TIME');?><br />
+        [date] = <?php echo JText::_('SUBMISSION_EVENT_DATE');?><br />
+        [duration] = <?php echo JText::_('SUBMISSION_EVENT_DURATION');?><br />
+        [venue] = <?php echo JText::_('SUBMISSION_EVENT_VENUE');?><br />
+        [city] = <?php echo JText::_('SUBMISSION_EVENT_CITY');?><br />
+        [webformsignup] = <?php echo JText::_('SUBMISSION_WEBFORM_SIGNUP_LINK');?><br />
+        [emailsignup] = <?php echo JText::_('SUBMISSION_EMAIL_SIGNUP_LINK');?><br />
+        [formalsignup] = <?php echo JText::_('SUBMISSION_FORMAL_SIGNUP_LINK');?><br />
+        [externalsignup] = <?php echo JText::_('SUBMISSION_EXTERNAL_SIGNUP_LINK');?><br />
+        [phonesignup] = <?php echo JText::_('SUBMISSION_PHONE_SIGNUP_LINK');?><br />
+        [webformsignuppage] = <?php echo JText::_('SUBMISSION_WEBFORM_SIGNUP_PAGE');?><br />
+        [emailsignuppage] = <?php echo JText::_('SUBMISSION_EMAIL_SIGNUP_PAGE');?><br />
+        [formalsignuppage] = <?php echo JText::_('SUBMISSION_FORMAL_SIGNUP_PAGE');?><br />
+        [phonesignuppage] = <?php echo JText::_('SUBMISSION_PHONE_SIGNUP_PAGE');?><br />
+        [venueimage] = <?php echo JText::_('SUBMISSION_VENUE_IMAGE');?><br />
+        [eventimage] = <?php echo JText::_('SUBMISSION_EVENT_IMAGE');?><br />
+        [categoryimage] = <?php echo JText::_('SUBMISSION_CATEGORY_IMAGE');?><br />
+        [eventcomments] = <?php echo JText::_('SUBMISSION_EVENT_COMMENTS');?><br />
+        [category] = <?php echo JText::_('SUBMISSION_CATEGORY');?><br />
+        [eventplaces] = <?php echo JText::_('SUBMISSION_EVENTPLACES');?><br />
+        [waitinglistplaces] = <?php echo JText::_('SUBMISSION_WAITINGLISTPLACES');?><br />
+        [eventplacesleft] = <?php echo JText::_('SUBMISSION_EVENTPLACES_LEFT');?><br />
+        [waitinglistplacesleft] = <?php echo JText::_('SUBMISSION_WAITINGLISTPLACES_LEFT');?><br />
+        [info] = <?php echo JText::_('SUBMISSION_XREF_INFO');?>
+      </div>
+    </div>  
+	  <?php 
 	}
 }
 ?>
