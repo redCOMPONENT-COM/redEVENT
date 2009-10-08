@@ -321,8 +321,10 @@ class RedEventViewEvent extends JView {
         [time] = <?php echo JText::_('SUBMISSION_EVENT_TIME');?><br />
         [date] = <?php echo JText::_('SUBMISSION_EVENT_DATE');?><br />
         [duration] = <?php echo JText::_('SUBMISSION_EVENT_DURATION');?><br />
-        [venue] = <?php echo JText::_('SUBMISSION_EVENT_VENUE');?><br />
-        [city] = <?php echo JText::_('SUBMISSION_EVENT_CITY');?><br />
+        [venue_title] = <?php echo JText::_('SUBMISSION_EVENT_VENUE');?><br />
+        [venue_city] = <?php echo JText::_('SUBMISSION_EVENT_CITY');?><br />
+        [venue_street] = <?php echo JText::_('SUBMISSION_EVENT_STREET');?><br />
+        [venue_zip] = <?php echo JText::_('SUBMISSION_EVENT_ZIP');?><br />
         [webformsignup] = <?php echo JText::_('SUBMISSION_WEBFORM_SIGNUP_LINK');?><br />
         [emailsignup] = <?php echo JText::_('SUBMISSION_EMAIL_SIGNUP_LINK');?><br />
         [formalsignup] = <?php echo JText::_('SUBMISSION_FORMAL_SIGNUP_LINK');?><br />

@@ -297,6 +297,7 @@ class redEVENT_tags {
                   , '[info]'
 				          , '[category]'
 				          , '[eventcomments]'
+				          , '[venue_title]', '[venue_city]', '[venue_street]', '[venue_zip]'
 				          );
 				$replaceoffer = array($event_description, $this->_data->title, $price, $this->_data->course_credit, $this->_data->course_code, 
 									$name, $email, $submit, $event_info_description, $time, $date, $duration, $this->_data->venue, $this->_data->location,
@@ -307,6 +308,7 @@ class redEVENT_tags {
                   , $info                  
                   , $category
                   , $eventcomments
+                  , $this->_data->venue, $this->_data->location, $this->_data->street, $this->_data->zip
                   );
 				/* First tag replacement */
 				$message = str_replace($findoffer, $replaceoffer, $page);
@@ -394,7 +396,7 @@ class redEVENT_tags {
 		$q = " SELECT e.*, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, x.course_price, "
 		    . " x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees, x.maxwaitinglist, v.venue, x.venueid, x.details, x.registrationend,
 					v.city AS location,
-					v.country, v.locimage,
+					v.country, v.locimage, v.street, v.plz,
 					UNIX_TIMESTAMP(x.dates) AS unixdates,
           CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(':', v.id, v.alias) ELSE v.id END as venueslug
 			FROM #__redevent_events AS e
