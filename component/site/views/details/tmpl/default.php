@@ -61,9 +61,26 @@ if ($this->row->show_names) : ?>
         if ($endtime) {
           $time .= ' - ' . $endtime;
         }
+			
+        /* Get the date */
+        $date = (!isset($venuedate->dates) || $venuedate->dates == '0000-00-00' ? Jtext::_('Open date') : strftime( $this->elsettings->formatdate, strtotime( $venuedate->dates )));
+        $enddate  = (!isset($venuedate->enddates) || $venuedate->enddates == '0000-00-00') ? '' : strftime( $this->elsettings->formatdate, strtotime( $venuedate->enddates ));
+        $displaydate = $date. ($enddate ? ' - '.$enddate: '');
+    
+        $displaytime = '';
+        /* Get the time */
+        if (isset($venuedate->times) && $venuedate->times != '00:00:00') {
+          $displaytime = strftime( $this->elsettings->formattime, strtotime( $venuedate->times )).' '.$this->elsettings->timename;
+    
+          if (isset($venuedate->endtimes) && $venuedate->endtimes != '00:00:00') {
+            $displaytime .= ' - '.strftime( $this->elsettings->formattime, strtotime( $venuedate->endtimes )). ' '.$this->elsettings->timename;
+          }
+        }
+        
+        
         $attendees_layout = ($this->params->get('details_attendees_layout', 0) ? 'attendees' : 'attendees_table');
         
-				echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&id='.$this->row->slug.'&tpl='. $attendees_layout .'&xref='.$venuedate->id), JText::_('SHOW_REGISTERED_USERS').' '.$date.' '.$time);
+				echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&id='.$this->row->slug.'&tpl='. $attendees_layout .'&xref='.$venuedate->id), JText::_('SHOW_REGISTERED_USERS').' '.$displaydate.' '.$displaytime);
 				echo '<br />';
 			}
 		?>
