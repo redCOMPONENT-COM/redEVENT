@@ -308,7 +308,7 @@ class redEVENT_tags {
                   , $info                  
                   , $category
                   , $eventcomments
-                  , $this->_data->venue, $this->_data->location, $this->_data->street, $this->_data->zip
+                  , $this->_data->venue, $this->_data->location, $this->_data->street, $this->_data->plz
                   );
 				/* First tag replacement */
 				$message = str_replace($findoffer, $replaceoffer, $page);
