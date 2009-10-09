@@ -271,6 +271,8 @@ class redEVENT_tags {
 				//images
 				$venueimage = redEVENTImage::flyercreator($this->_data->locimage);
 				$venueimage = JHTML::image(JURI::root().'/'.$venueimage['original'], $this->_data->venue, array('title' => $this->_data->venue));
+				$venueimage = JHTML::link(JRoute::_('index.php?option=com_redevent&view=venueevents&id=' . $this->_data->venueslug), $venueimage);
+				
         $eventimage = redEVENTImage::flyercreator($this->_data->datimage, 'event');
         $eventimage = JHTML::image(JURI::root().'/'.$eventimage['original'], $this->_data->title, array('title' => $this->_data->title));
 				
