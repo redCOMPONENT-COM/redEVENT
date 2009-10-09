@@ -81,8 +81,8 @@ JHTML::_('behavior.tooltip');
 	}
 
 	//get switch trigger
-	$req_month 		= (int)JRequest::getVar( 're_mcal_month', '', 'request' );
-	$req_year       = (int)JRequest::getVar( 're_mcal_year', '', 'request' );	
+	$req_month 		= JRequest::getVar( 're_mcal_month', '', 'request', 'int' );
+	$req_year       = JRequest::getVar( 're_mcal_year', '', 'request', 'int' );	
 	
 	if ($Remember == 1) // Remember which month / year is selected. Don't jump back to tday on page change
 	{
@@ -106,9 +106,13 @@ JHTML::_('behavior.tooltip');
 	$today_year 	= date( 'Y', $time);
 	$today          = date( 'j',$time);
 	
-	if ($req_month == 0) $req_month = $today_month;
+	if ($req_month == 0) {
+	  $req_month = $today_month;
+	}
 	$offset_month = $req_month + $Month_offset;
-	if ($req_year == 0) $req_year = $today_year;
+	if ($req_year == 0) {
+	  $req_year = $today_year;
+	}
 	if ($offset_month >12) 
 	{
 		$offset_month = $offset_month -12; // Roll over year end	
@@ -132,23 +136,20 @@ JHTML::_('behavior.tooltip');
 	}
 	
 	//Requested URL
-	$uri    = JURI::getInstance();
-	$myurl = $uri->toString();
+	$uri    = & JURI::getInstance();
 	
-	if (empty($myurl)) $newuri = $uri->current();
-	else $newuri = $myurl;
+	// link for previous month
+	$prev = clone $uri;	
+  $prev->setVar('re_mcal_month', $prev_month);
+  $prev->setVar('re_mcal_year', $prev_month_year);
+  $prev_link = $prev->toString();
+  
+  // link for next month
+  $next = clone $uri;  
+  $next->setVar('re_mcal_month', $next_month);
+  $next->setVar('re_mcal_year', $next_month_year);
+  $next_link = $next->toString();
 	
-	// Clean up
-	$find = array('/.re_mcal_month=[0-9]/', '/.re_mcal_year=[0-9]+/');
-	$replace = '';
-	$newuri = preg_replace($find,$replace,$newuri);
-	
-	$newuri .= (stristr($newuri, '?')) ? '&' : '?';
-
-	//Create Links
- 	$prev_link = $newuri.'re_mcal_month='.$prev_month.'&re_mcal_year='.$prev_month_year ;
- 	$next_link = $newuri.'re_mcal_month='.$next_month.'&re_mcal_year='.$next_month_year ;
-
 	$days = modredeventcalHelper::getdays($req_year, $offset_month, $params);
 	
 	require( JModuleHelper::getLayoutPath( 'mod_redeventcal' ) );	

@@ -85,8 +85,8 @@ class RedeventViewCalendar extends JView
 		}
 	
 		//get switch trigger
-		$req_month 		= (int)JRequest::getVar( 'el_mcal_month', '', 'request' );
-		$req_year       = (int)JRequest::getVar( 'el_mcal_year', '', 'request' );	
+		$req_month 		= JRequest::getVar( 're_mcal_month', '', 'request', 'int' );
+		$req_year       = JRequest::getVar( 're_mcal_year', '', 'request', 'int' );
 		
 		if ($Remember == 1) // Remember which month / year is selected. Don't jump back to tday on page change
 		{
@@ -137,21 +137,18 @@ class RedeventViewCalendar extends JView
 		
 		//Requested URL
 		$uri    = JURI::getInstance();
-		$myurl = $uri->toString();
 		
-		if (empty($myurl)) $newuri = $uri->current();
-		else $newuri = $myurl;
-		
-		// Clean up
-		$find = array('/.el_mcal_month=[0-9]/', '/.el_mcal_year=[0-9]+/');
-		$replace = '';
-		$newuri = preg_replace($find,$replace,$newuri);
-		
-		$newuri .= (stristr($newuri, '?')) ? '&' : '?';
-	
-		//Create Links
-		$prev_link = $newuri.'el_mcal_month='.$prev_month.'&el_mcal_year='.$prev_month_year ;
-		$next_link = $newuri.'el_mcal_month='.$next_month.'&el_mcal_year='.$next_month_year ;
+    // link for previous month
+    $prev = clone $uri; 
+    $prev->setVar('re_mcal_month', $prev_month);
+    $prev->setVar('re_mcal_year', $prev_month_year);
+    $prev_link = $prev->toString();
+    
+    // link for next month
+    $next = clone $uri;  
+    $next->setVar('re_mcal_month', $next_month);
+    $next->setVar('re_mcal_year', $next_month_year);
+    $next_link = $next->toString();
 		
 		$model_days = $this->getModel('calendar');
 		
