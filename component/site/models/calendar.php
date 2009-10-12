@@ -167,6 +167,7 @@ class RedeventModelCalendar extends JModel
                 .' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
                 .' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
                 .$where
+                . ' GROUP BY x.id '
         		    .' ORDER BY x.dates, x.times'
                 ;
 
