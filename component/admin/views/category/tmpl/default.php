@@ -79,9 +79,19 @@ function submitbutton(pressbutton)
 								<?php echo JText::_( 'Alias' ).':'; ?>
 							</label>
 						</td>
-						<td colspan="3">
+						<td>
 							<input class="inputbox" type="text" name="alias" id="alias" size="50" maxlength="100" value="<?php echo $this->row->alias; ?>" />
 						</td>
+            <td>
+              <label for="color">
+                <?php echo JText::_( 'COLOR' ).':'; ?>
+              </label>
+            </td>
+            <td>
+              <input class="inputbox" type="text" style="background: <?php echo ( $this->row->color == '' )?"transparent":$this->row->color; ?>;"
+                     name="color" id="color" size="10" maxlength="20" value="<?php echo $this->row->color; ?>" />                   
+              <input type="button" class="button" value="<?php echo JText::_( 'PICK' ); ?>" onclick="openPicker('color', -200, 20);" /> 
+            </td>
 					</tr>
 				</table>
 

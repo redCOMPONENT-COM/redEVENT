@@ -52,6 +52,8 @@ class RedEvent_categories extends JTable
 	var $meta_description 	= null;
 	/** @var string */
 	var $meta_keywords		= null;
+  /** @var string */
+  var $color        = '';
 	/** @var string */
 	var $image 				= '';
 	/** @var int */

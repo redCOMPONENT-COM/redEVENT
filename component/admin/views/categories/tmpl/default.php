@@ -48,6 +48,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<th width="5"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
 			<th class="title"><?php echo JHTML::_('grid.sort', 'CATEGORY', 'catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="20%"><?php echo JHTML::_('grid.sort', 'ALIAS', 'c.alias', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+      <th width="10px" nowrap="nowrap"><?php echo JText::_( 'COLOR' ); ?></th>
       <th width="20%"><?php echo JHTML::_('grid.sort', 'PARENT CATEGORY', 'p.catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="15%"><?php echo JHTML::_('grid.sort', 'GROUP', 'gr.name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JText::_( 'EVENTS' ); ?></th>
@@ -61,7 +62,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 	<tfoot>
 		<tr>
-			<td colspan="11">
+			<td colspan="12">
 				<?php echo $this->pageNav->getListFooter(); ?>
 			</td>
 		</tr>
@@ -105,6 +106,11 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				}
 				?>
 			</td>
+      <td align="center">
+        <div class="colorpreview" style="width: 15px; background: <?php echo ( $row->color == '' )?"transparent":$row->color; ?>;" title="<?php echo $row->color; ?>">
+        &nbsp;
+        </div>
+      </td>
       <td>
         <?php echo ($row->parent_name) ? htmlspecialchars($row->parent_name, ENT_QUOTES, 'UTF-8') : '-'; ?>
       </td>

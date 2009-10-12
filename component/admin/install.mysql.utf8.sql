@@ -96,6 +96,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_categories` (
 `catdescription` mediumtext NOT NULL,
 `meta_keywords` text NOT NULL,
 `meta_description` text NOT NULL,
+`color` varchar(100) NOT NULL default '',
 `image` varchar(100) NOT NULL default '',
 `published` tinyint(1) NOT NULL default '0',
 `checked_out` int(11) NOT NULL default '0',

@@ -36,7 +36,7 @@ class RedEventViewCategory extends JView {
 
 	function display($tpl = null)
 	{
-		global $mainframe;
+		$mainframe = & JFactory::getApplication();
 
 		//Load pane behavior
 		jimport('joomla.html.pane');
@@ -49,9 +49,13 @@ class RedEventViewCategory extends JView {
 
 		//get vars
 		$cid 		= JRequest::getVar( 'cid' );
+    $url    = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
 
 		//add css to document
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		$document->addStyleSheet($url.'/administrator/components/com_redevent/assets/css/redeventbackend.css');
+    // js color picker
+    $document->addStyleSheet($url.'/administrator/components/com_redevent/assets/css/colorpicker.css');
+    $document->addScript($url.'/administrator/components/com_redevent/assets/js/colorpicker.js');
 
 		//create the toolbar
 		if ( $cid ) {
