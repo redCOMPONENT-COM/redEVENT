@@ -87,7 +87,7 @@ class RedeventViewCalendar extends JView
         //init calendar
     		$cal = new RECalendar($year, $month, 0, $app->getCfg('offset'));
     		$cal->enableMonthNav('index.php?optin=com_redevent&view=calendar');
-    		$cal->setFirstWeekDay($params->get('firstweekday', 1));
+    		$cal->setFirstWeekDay(($params->get('week_start', "SU") == 'SU' ? 0 : 1));
     		$cal->enableDayLinks(false);
 
         $this->assignRef('rows', 		$rows);

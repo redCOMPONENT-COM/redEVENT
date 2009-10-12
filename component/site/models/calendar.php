@@ -48,6 +48,8 @@ class RedeventModelCalendar extends JModel
      * @var array
      */
     var $_categories = null;
+    
+    var $_topcat = null;
 
     /**
      * Events total
@@ -75,9 +77,6 @@ class RedeventModelCalendar extends JModel
         $app = & JFactory::getApplication();
 
         $this->setdate(time());
-
-        // Get the paramaters of the active menu item
-        $params = & $app->getParams();
     }
 
     function setdate($date)
@@ -156,7 +155,7 @@ class RedeventModelCalendar extends JModel
     function _buildQuery()
     {
         // Get the WHERE clauses for the query
-        $where = $this->_buildCategoryWhere();
+        $where = $this->_buildWhere();
 
         //Get Events from Database
         $query = 'SELECT DATEDIFF(x.enddates, x.dates) AS datediff, a.id, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, a.title, x.venueid as locid, a.datdescription, a.created, l.venue, l.city, l.state, l.url,'
@@ -166,6 +165,7 @@ class RedeventModelCalendar extends JModel
                 .' FROM #__redevent_events AS a'
                 .' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id '
                 .' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
+                .' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
                 .$where
         		    .' ORDER BY x.dates, x.times'
                 ;
@@ -179,13 +179,13 @@ class RedeventModelCalendar extends JModel
      * @access private
      * @return array
      */
-    function _buildCategoryWhere()
+    function _buildWhere()
     {
         $app = & JFactory::getApplication();
 
         // Get the paramaters of the active menu item
         $params = & $app->getParams();
-
+        
         $task = JRequest::getWord('task');
 
         // First thing we need to do is to select only the published events
@@ -203,6 +203,30 @@ class RedeventModelCalendar extends JModel
         
         $where .= ' AND (x.dates BETWEEN (\''.strftime('%Y-%m-%d', $monthstart).'\') AND (\''.strftime('%Y-%m-%d', $monthend).'\'))';
         $where .= ' OR (x.enddates BETWEEN (\''.strftime('%Y-%m-%d', $monthstart).'\') AND (\''.strftime('%Y-%m-%d', $monthend).'\'))';
+    
+        // check if a category is specified
+        $topcat = $params->get('topcat', '');
+        if (is_numeric($topcat) && $topcat) 
+        {
+          // get children categories
+          $query = ' SELECT lft, rgt FROM #__redevent_categories WHERE id = '. $this->_db->Quote($topcat);
+          $this->_db->setQuery($query);
+          $obj = $this->_db->loadObject();
+          if ($obj) {
+            $query = ' SELECT id FROM #__redevent_categories '
+                   . ' WHERE lft >= '. $this->_db->Quote($obj->lft)
+                   . ' AND rgt <= '. $this->_db->Quote($obj->rgt)
+                   ;
+            $this->_db->setQuery($query);
+            $cats = $this->_db->loadResultArray();
+            if ($cats) {
+               $where .= ' AND xcat.category_id IN ('. implode(', ', $cats) .')';
+            }            
+          }
+          else {
+            JError::raiseWarning(0, JText::_('CATEGORY NOT FOUND'));
+          }
+        }
 
         return $where;
     }
