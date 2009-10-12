@@ -404,7 +404,6 @@ if (is_array($cols)) {
   }
 }
 
-/* multiple / hierarchical categories upgrade */
 /* Get the categories columns */
 $cols = false;
 $q = "SHOW COLUMNS FROM #__redevent_categories";
@@ -412,7 +411,8 @@ $db->setQuery($q);
 $cols = $db->loadObjectList('Field');
 
 if (is_array($cols)) {
-  /* Check if we have the published column */
+  
+  /* multiple / hierarchical categories upgrade */
   if (!array_key_exists('lft', $cols)) {
   	
   	// this revision added the multiple categories: we need to add the lft and rgt fields, and convert catsid field to new table
@@ -435,6 +435,13 @@ if (is_array($cols)) {
     $db->setQuery($q);
     $db->query();
   }  
+  
+  /* category color */
+  if (!array_key_exists('color', $cols)) {
+    $q = "ALTER IGNORE TABLE #__redevent_categories ADD COLUMN `color` VARCHAR(100) NOT NULL DEFAULT ''";
+    $db->setQuery($q);
+    $db->query();    
+  }
 }
 
 /* Add the basic configuration entry */

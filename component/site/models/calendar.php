@@ -22,137 +22,212 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die ('Restricted access');
 
 jimport('joomla.application.component.model');
 
 /**
- * EventList Component Details Model
+ * redevent Component calendar Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redevent
  * @since		0.9
  */
-class RedeventModelCalendar extends JModel {
-	/**
-	 * Constructor
-	 *
-	 * @since 0.9
-	 */
-	function __construct() {
-		parent::__construct();
-	}
-	
-	function getdays ($greq_year, $greq_month, &$params)
-	{
-		$db			=& JFactory::getDBO();
-		$user		=& JFactory::getUser();
-		
-		$catid 				= trim( $params->get('catid') );
-		$venid 				= trim( $params->get('venid') );
-		
-		//Get eventdates
-		if ($catid)
-		{
-			$ids = explode( ',', $catid );
-			JArrayHelper::toInteger( $ids );
-			$categories = ' AND (c.id=' . implode( ' OR c.id=', $ids ) . ')';
-		}
-		if ($venid)
-		{
-			$ids = explode( ',', $venid );
-			JArrayHelper::toInteger( $ids );
-			$venues = ' AND (l.id=' . implode( ' OR l.id=', $ids ) . ')';
-		}
-		
-		$query = 'SELECT x.dates, x.times, x.enddates,a.title, DAYOFMONTH(x.dates) AS created_day, YEAR(x.dates) AS created_year, MONTH(x.dates) AS created_month'
-						. ' FROM #__redevent_events AS a'
-						. ' LEFT JOIN #__redevent_event_venue_xref AS x ON a.id = x.eventid'
-		        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-		        . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-						. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-						. ' WHERE x.published = 1'
-						. ' AND c.access <= '.(int)$user->aid
-						.($catid ? $categories : '')
-						.($venid ? $venues : '')
-						. ' GROUP BY x.id'
-						;
-		
-		$db->setQuery( $query );
-		$events = $db->loadObjectList();
-		
-		$days = array();
-		foreach ( $events as $event )
-		{
-		   // Cope with no end date set i.e. set it to same as start date
-			if  (($event->enddates == '0000-00-00') or (is_null($event->enddates)))
-			{
-				$eyear = $event->created_year;
-				$emonth = $event->created_month;
-				$eday = $event->created_day;
-		
-			}
-			else
-			{
-				list($eyear, $emonth, $eday) = explode('-', $event->enddates);
-			}
-			// The two cases for roll over the year end with an event that goes across the year boundary.
-			if ($greq_year < $eyear) 
-			{
-				$emonth = $emonth + 12; 
-			}
-					
-			if ($event->created_year < $greq_year) 
-			{
-				$event->created_month = $event->created_month - 12;
-			}
+class RedeventModelCalendar extends JModel
+{
+    /**
+     * Events data array
+     *
+     * @var array
+     */
+    var $_data = null;
 
-			if (  ($greq_year >= $event->created_year) && ($greq_year <= $eyear) 
-			   && ($greq_month >= $event->created_month) && ($greq_month <= $emonth) )
-		   {
-			// Set end day for current month
+    /**
+     * Tree categories data array
+     *
+     * @var array
+     */
+    var $_categories = null;
 
-				if ($emonth > $greq_month)
-				{
-					$emonth = $greq_month;
+    /**
+     * Events total
+     *
+     * @var integer
+     */
+    var $_total = null;
 
-		//			$eday = cal_days_in_month(CAL_GREGORIAN, $greq_month,$greq_year);
-					$eday = date('t', mktime(0,0,0, $greq_month, 1, $greq_year));
-				}
+    /**
+     * The reference date
+     *
+     * @var int unix timestamp
+     */
+    var $_date = 0;
 
-			// Set start day for current month
-				if ($event->created_month < $greq_month)
-				{
-					$event->created_month = $greq_month;
-					$event->created_day = 1;
-				}	
-			
-				for ($count = $event->created_day; $count <= $eday; $count++)
-				{
-		
-				$uxdate = mktime(0,0,0,$event->created_month,$count,$event->created_year); // Toni change
-				$tdate = strftime('%Y%m%d',$uxdate);// Toni change Joomla 1.5
-				$created_day = $count;
-		
-	//			$tt = $days[$count][1];
-		
-	//			if (strlen($tt) == 0)
-				if (empty($days[$count][1]))
-				{
-					$title = htmlspecialchars($event->title);
-				}
-				else
-				{
-					$tt = $days[$count][1];
-					$title = $tt . '&#013 +' . htmlspecialchars($event->title);
-				}			
-				$link			= RedeventHelperRoute::getRoute( $tdate, 'day') ;		
-				$days[$count] = array($link,$title);
-				}
-		}
-	// End of Toni modification	
-	}
-	return $days;
-	} //End of function getdays
+    /**
+     * Constructor
+     *
+     * @since 0.9
+     */
+    function __construct()
+    {
+        parent::__construct();
+
+        $app = & JFactory::getApplication();
+
+        $this->setdate(time());
+
+        // Get the paramaters of the active menu item
+        $params = & $app->getParams();
+    }
+
+    function setdate($date)
+    {
+        $this->_date = $date;
+    }
+
+    /**
+     * Method to get the events
+     *
+     * @access public
+     * @return array
+     */
+    function &getData()
+    {
+      // Lets load the content if it doesn't already exist
+      if ( empty($this->_data))
+      {
+        $query = $this->_buildQuery();
+        $this->_data = $this->_getList( $query );
+        
+        // we have the events happening this month. We have to create occurences for each day for multiple day events.
+        $multi = array();        
+        foreach($this->_data AS $item)
+        {
+          $item->categories = $this->getCategories($item->id);
+
+          if(!is_null($item->enddates) ) 
+          {
+            if( $item->enddates != $item->dates) {
+              	
+              $day = $item->start_day;
+
+              for ($counter = 0; $counter <= $item->datediff-1; $counter++)
+              {
+                $day++;
+
+                //next day:
+                $nextday = mktime(0, 0, 0, $item->start_month, $day, $item->start_year);
+                	
+                //ensure we only generate days of current month in this loop
+                if (strftime('%m', $this->_date) == strftime('%m', $nextday)) {
+                  $multi[$counter] = clone $item;
+                  $multi[$counter]->dates = strftime('%Y-%m-%d', $nextday);
+
+                  //add generated days to data
+                  $this->_data = array_merge($this->_data, $multi);
+                }
+                //unset temp array holding generated days before working on the next multiday event
+                unset($multi);
+              }
+            }
+          }
+
+          //remove events without categories (users have no access to them)
+          if (empty($item->categories)) {
+            unset($item);
+          }
+
+          //remove event with a start date from previous months
+          if ( strftime('%m', strtotime($item->dates)) != strftime('%m', $this->_date) ) {
+            array_shift($this->_data);
+          }
+        }
+      }
+
+      return $this->_data;
+    }
+
+    /**
+     * Build the query
+     *
+     * @access private
+     * @return string
+     */
+    function _buildQuery()
+    {
+        // Get the WHERE clauses for the query
+        $where = $this->_buildCategoryWhere();
+
+        //Get Events from Database
+        $query = 'SELECT DATEDIFF(x.enddates, x.dates) AS datediff, a.id, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, a.title, x.venueid as locid, a.datdescription, a.created, l.venue, l.city, l.state, l.url,'
+                .' DAYOFMONTH(x.dates) AS start_day, YEAR(x.dates) AS start_year, MONTH(x.dates) AS start_month,'
+                .' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug,'
+                .' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug'
+                .' FROM #__redevent_events AS a'
+                .' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id '
+                .' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
+                .$where
+        		    .' ORDER BY x.dates, x.times'
+                ;
+
+        return $query;
+    }
+
+    /**
+     * Method to build the WHERE clause
+     *
+     * @access private
+     * @return array
+     */
+    function _buildCategoryWhere()
+    {
+        $app = & JFactory::getApplication();
+
+        // Get the paramaters of the active menu item
+        $params = & $app->getParams();
+
+        $task = JRequest::getWord('task');
+
+        // First thing we need to do is to select only the published events
+        if ($task == 'archive')
+        {
+            $where = ' WHERE x.published = -1 ';
+        } else
+        {
+            $where = ' WHERE x.published = 1 ';
+        }
+
+        // only select events within specified dates. (chosen month)
+        $monthstart = mktime(0, 0, 1, strftime('%m', $this->_date), 1, strftime('%Y', $this->_date));
+        $monthend = mktime(0, 0, -1, strftime('%m', $this->_date)+1, 1, strftime('%Y', $this->_date));
+        
+        $where .= ' AND (x.dates BETWEEN (\''.strftime('%Y-%m-%d', $monthstart).'\') AND (\''.strftime('%Y-%m-%d', $monthend).'\'))';
+        $where .= ' OR (x.enddates BETWEEN (\''.strftime('%Y-%m-%d', $monthstart).'\') AND (\''.strftime('%Y-%m-%d', $monthend).'\'))';
+
+        return $where;
+    }
+
+    /**
+     * Method to get the Categories
+     *
+     * @access public
+     * @return integer
+     */
+    function getCategories($id)
+    {
+      $query =  ' SELECT c.id, c.catname, c.color, '
+            . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
+            . ' FROM #__redevent_categories as c '
+            . ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
+            . ' WHERE c.published = 1 '
+            . '   AND x.event_id = ' . $this->_db->Quote((int)$id)
+            . ' ORDER BY c.ordering'
+            ;
+      $this->_db->setQuery( $query );
+      
+      $this->_categories = $this->_db->loadObjectList();
+
+      return $this->_categories;
+    }
 }
 ?>

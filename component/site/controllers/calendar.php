@@ -45,16 +45,7 @@ class RedEventControllerCalendar extends RedEventController
 	}
 
 	function display() {
-		/* Create the view object */
-		$view = $this->getView('calendar', 'html');
-		$this->addModelPath(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models');
-		
-		/* Standard model */
-		$view->setModel( $this->getModel( 'calendar', 'RedeventModel' ), true );
-		$view->setLayout('calendar');
-		
-		/* Now display the view. */
-		$view->display();
+		parent::display();
 	}
 }
 ?>

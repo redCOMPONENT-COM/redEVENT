@@ -22,154 +22,112 @@
  */
 
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die ('Restricted access');
 
-jimport( 'joomla.application.component.view');
+jimport('joomla.application.component.view');
+
+require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'calendar.class.php');
 
 /**
- * HTML View class for the Upcoming events View
+ * HTML View class for the Calendar View
  *
  * @package Joomla
  * @subpackage EventList
- * @since 0.9
+ * @since 1.1
  */
 class RedeventViewCalendar extends JView
 {
+    /**
+     * Creates the Calendar View
+     *
+     * @since 1.1
+     */
+    function display($tpl = null)
+    {
+        $app = & JFactory::getApplication();
+
+        // Load tooltips behavior
+        JHTML::_('behavior.tooltip');
+
+        //initialize variables
+        $document 	= & JFactory::getDocument();
+        $menu 		= & JSite::getMenu();
+        $elsettings = & redEVENTHelper::config();
+        $item 		= $menu->getActive();
+        $params 	= & $app->getParams();
+        $uri 		= & JFactory::getURI();
+        $pathway 	= & $app->getPathWay();
+
+        //add css file
+        $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
+        $document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #redevent dd { height: 1%; }</style><![endif]-->');
+        $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redeventcalendar.css');
+        
+        // add javascript
+        $document->addScript($this->baseurl.'/components/com_redevent/assets/js/calendar.js');
+
+        $year 	= (int)JRequest::getVar('yearID', strftime("%Y"));
+        $month 	= (int)JRequest::getVar('monthID', strftime("%m"));
+        $day 	= (int)JRequest::getVar('dayID', strftime("%d"));
+
+        //get data from model and set the month
+        $model = & $this->getModel();
+        $model->setDate(mktime(0, 0, 1, $month, $day, $year));
+
+        $rows = & $this->get('Data');
+
+        //Set Meta data
+        $document->setTitle($item->name);
+
+        //Set Page title
+        $pagetitle = $params->def('page_title', $item->name);
+        $app->setPageTitle($pagetitle);
+        $app->addMetaTag('title', $pagetitle);
+
+        //init calendar
+    		$cal = new RECalendar($year, $month, 0, $app->getCfg('offset'));
+    		$cal->enableMonthNav('index.php?optin=com_redevent&view=calendar');
+    		$cal->setFirstWeekDay($params->get('firstweekday', 1));
+    		$cal->enableDayLinks(false);
+
+        $this->assignRef('rows', 		$rows);
+        $this->assignRef('params', 		$params);
+        $this->assignRef('elsettings', 	$elsettings);
+        $this->assignRef('cal', 		$cal);
+        
+        parent::display($tpl);
+    }
+
 	/**
-	 * Creates the Venueevents View
-	 *
-	 * @since 0.9
-	 */
-	function display( $tpl = null )
-	{
-		global $mainframe, $option;
-		
-		//initialize variables
-		$document 	= & JFactory::getDocument();
-		$menu		= & JSite::getMenu();
-		$elsettings = & redEVENTHelper::config();
-		$item    	= $menu->getActive();
-		$params 	= & $mainframe->getParams('com_redevent');
-		$uri 		= & JFactory::getURI();
-		JView::loadHelper('route');
-		
-		//add css file
-		if (!$params->get('custom_css')) {
-		  $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
-		}
-		else {
-      $document->addStyleSheet($params->get('custom_css'));		  
-		}
-		
-		$document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redeventcalendar.css');
-		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
-		
-		// Parameters
-		$day_name_length	= $params->get( 'day_name_length', '2' );
-		$first_day			= $params->get( 'first_day', '1' );
-		$Year_length		= $params->get( 'Year_length', '1' );
-		$Month_length		= $params->get( 'Month_length', '0' );
-		$Month_offset		= $params->get( 'Month_offset', '0' );	
-		$Show_Tooltips		= $params->get( 'Show_Tooltips', '1' );	
-		$Remember			= $params->get( 'Remember', '1' );
-		$LocaleOverride		= $params->get( 'locale_override', '' );
-		$CalTooltipsTitle		= $params->get( 'cal15q_tooltips_title', 'Events' );	
-		$CharsetOverride		= $params->get( 'charset_override', '' );
-		
-		if (empty($LocaleOverride))
-		{
-		}
-		else
-		{
-			setlocale(LC_ALL, $LocaleOverride ) ;
-		}
-	
-		//get switch trigger
-		$req_month 		= JRequest::getVar( 're_mcal_month', '', 'request', 'int' );
-		$req_year       = JRequest::getVar( 're_mcal_year', '', 'request', 'int' );
-		
-		if ($Remember == 1) // Remember which month / year is selected. Don't jump back to tday on page change
-		{
-			if ($req_month == 0) 
-			{
-				$req_month = $mainframe->getUserState("eventlistcalqmonth");
-				$req_year = $mainframe->getUserState("eventlistcalqyear");	
-			}
-			else
-			{
-				$mainframe->setUserState("eventlistcalqmonth",$req_month);
-				$mainframe->setUserState("eventlistcalqyear",$req_year);
-			}
-		}
-		
-		//set now
-		$config =& JFactory::getConfig();
-		$tzoffset = $config->getValue('config.offset');
-		$time 			= time()  + ($tzoffset*60*60); //25/2/08 Change for v 0.6 to incorporate server offset into time;
-		$today_month 	= date( 'm', $time);
-		$today_year 	= date( 'Y', $time);
-		$today          = date( 'j',$time);
-		
-		if ($req_month == 0) $req_month = $today_month;
-		$offset_month = $req_month + $Month_offset;
-		if ($req_year == 0) $req_year = $today_year;
-		if ($offset_month >12) 
-		{
-			$offset_month = $offset_month -12; // Roll over year end	
-			$req_year = $req_year + 1;
-		}
-		
-		//Setting the previous and next month numbers
-		$prev_month_year = $req_year;
-		$next_month_year = $req_year;
-		
-		$prev_month = $req_month-1;
-		if($prev_month < 1){
-			$prev_month = 12;
-			$prev_month_year = $prev_month_year-1;
-		}
-		
-		$next_month = $req_month+1;
-		if($next_month > 12){
-			$next_month = 1;
-			$next_month_year = $next_month_year+1;
-		}
-		
-		//Requested URL
-		$uri    = JURI::getInstance();
-		
-    // link for previous month
-    $prev = clone $uri; 
-    $prev->setVar('re_mcal_month', $prev_month);
-    $prev->setVar('re_mcal_year', $prev_month_year);
-    $prev_link = $prev->toString();
+     * Creates a tooltip
+     *
+     * @access  public
+     * @param string  $tooltip The tip string
+     * @param string  $title The title of the tooltip
+     * @param string  $text The text for the tip
+     * @param string  $href An URL that will be used to create the link
+     * @param string  $class the class to use for tip.
+     * @return  string
+     * @since 1.5
+     */
+    function caltooltip($tooltip, $title = '', $text = '', $href = '', $class = 'editlinktip hasTip')
+    {
+        $tooltip = (htmlspecialchars($tooltip));
+        $title = (htmlspecialchars($title));
     
-    // link for next month
-    $next = clone $uri;  
-    $next->setVar('re_mcal_month', $next_month);
-    $next->setVar('re_mcal_year', $next_month_year);
-    $next_link = $next->toString();
-		
-		$model_days = $this->getModel('calendar');
-		
-		$days = $model_days->getdays($req_year, $offset_month, $params);
-		
-		$this->assignRef('days', $days);
-		$this->assignRef('req_month', $req_month);
-		$this->assignRef('req_year', $req_year);
-		$this->assignRef('prev_link', $prev_link);
-		$this->assignRef('next_link', $next_link);
-		$this->assignRef('prev_month', $prev_month);
-		$this->assignRef('next_month', $next_month);
-		$this->assignRef('first_day', $first_day);
-		$this->assignRef('Year_length', $Year_length);
-		$this->assignRef('Month_length', $Month_length);
-		$this->assignRef('offset_month', $offset_month);
-		$this->assignRef('day_name_length', $day_name_length);
-		$this->assignRef('Show_Tooltips', $Show_Tooltips);
-		$this->assignRef('CalTooltipsTitle', $CalTooltipsTitle);
-		
-		parent::display($tpl);
-	}
+        if ($title) {
+            $title = $title.'::';
+        }
+    
+        if ($href) {
+            $href = JRoute::_($href);
+            $style = '';
+            $tip = '<span class="'.$class.'" title="'.$title.$tooltip.'"><a href="'.$href.'">'.$text.'</a></span>';
+        } else {
+            $tip = '<span class="'.$class.'" title="'.$title.$tooltip.'">'.$text.'</span>';
+        }
+    
+        return $tip;
+    }
 }
 ?>
