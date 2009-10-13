@@ -42,7 +42,7 @@ class RedeventModelEventList extends RedeventModelBaseEventList
 	 * @access private
 	 * @return string
 	 */
-	function _buildEventListWhere()
+	function _buildWhere()
 	{
 		global $mainframe;
 
