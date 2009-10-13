@@ -10,6 +10,10 @@
 		<description>VENUES LAYOUT DESC</description>
 		<params>
 			<param name="display_venues_num" type="text" size="2" default="5" label="VENUE NUMBER" description="VENUE NUMBER TIP" />
+      <param name="display_all_venues" type="radio" default="false" label="DISPLAY ALL VENUES" description="DISPLAY ALL VENUES TIP">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </param>
 		</params>
 	</state>
 </metadata>

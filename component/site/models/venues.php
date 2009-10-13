@@ -65,7 +65,7 @@ class RedeventModelVenues extends JModel
 	{
 		parent::__construct();
 
-		global $mainframe;
+		$mainframe = & JFactory::getApplication();
 
 		// Get the paramaters of the active menu item
 		$params 	= & $mainframe->getParams('com_redevent');
@@ -205,15 +205,25 @@ class RedeventModelVenues extends JModel
 		} else {
 			$eventstate = ' AND x.published = 1';
 		}
+				
+    $mainframe = & JFactory::getApplication();
+
+    // Get the paramaters of the active menu item
+    $params   = & $mainframe->getParams('com_redevent');
+    if ($params->get('display_all_venues', 0) == 0) {
+      $filter = ' AND x.eventid IS NOT NULL ';
+    }
+    else {
+      $filter = '';
+    }
 		
 		//get categories
 		$query = 'SELECT v.*, COUNT( x.eventid ) AS assignedevents,'
         . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as slug '
-				. ' FROM #__redevent_event_venue_xref AS x'
-				. ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
-				. ' LEFT JOIN #__redevent_venues as v ON v.id = x.venueid'
+				. ' FROM #__redevent_venues as v'
+				. ' LEFT JOIN #__redevent_event_venue_xref AS x ON v.id = x.venueid '. $eventstate
 				. ' WHERE v.published = 1'
-				. $eventstate
+				. $filter
 				. ' GROUP BY v.id'
 				. ' ORDER BY v.venue'
 				;

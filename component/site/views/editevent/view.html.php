@@ -43,7 +43,7 @@ class RedeventViewEditevent extends JView
 	 */
 	function display( $tpl=null )
 	{
-		global $mainframe;
+		$mainframe = & JFactory::getApplication();
 
 		if($this->getLayout() == 'selectvenue') {
 			$this->_displayselectvenue($tpl);
@@ -52,8 +52,9 @@ class RedeventViewEditevent extends JView
 
 		// Initialize variables
 		$editor 	= & JFactory::getEditor();
-		$doc 		= & JFactory::getDocument();
+		$document 	= & JFactory::getDocument();
 		$elsettings = & redEVENTHelper::config();
+    $params   = & $mainframe->getParams();
 
 		//Get Data from the model
 		$row 		= $this->Get('Event');
@@ -76,17 +77,17 @@ class RedeventViewEditevent extends JView
     else {
       $document->addStyleSheet($params->get('custom_css'));     
     }
-		$doc->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
+		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 		
 		/* Add jQuery */
-		$doc->addCustomTag( '<script type="text/javascript" src="'.JURI::root().'administrator/components/com_redform/js/jquery.js"></script>' );
-		$doc->addCustomTag( '<script type="text/javascript">jQuery.noConflict();</script>' );
-		$doc->addCustomTag( '<script type="text/javascript" src="'.JURI::root().'administrator/components/com_redform/js/jquery.random.js"></script>');
+		$document->addCustomTag( '<script type="text/javascript" src="'.JURI::root().'administrator/components/com_redform/js/jquery.js"></script>' );
+		$document->addCustomTag( '<script type="text/javascript">jQuery.noConflict();</script>' );
+		$document->addCustomTag( '<script type="text/javascript" src="'.JURI::root().'administrator/components/com_redform/js/jquery.random.js"></script>');
 		
 		//Set page title
 		$id ? $title = JText::_( 'EDIT EVENT' ) : $title = JText::_( 'ADD EVENT' );
 
-		$doc->setTitle($title);
+		$document->setTitle($title);
 
 		// Get the menu object of the active menu item
 		$menu		= & JSite::getMenu();
@@ -123,11 +124,11 @@ class RedeventViewEditevent extends JView
 			document.getElementById('sbox-window').close();
 		}";
 
-		$doc->addScriptDeclaration($js);
+		$document->addScriptDeclaration($js);
 		// include the recurrence script
-		$doc->addScript($url.'components/com_redevent/assets/js/recurrence.js');
+		$document->addScript($url.'components/com_redevent/assets/js/recurrence.js');
 		// include the unlimited script
-		$doc->addScript($url.'components/com_redevent/assets/js/unlimited.js');
+		$document->addScript($url.'components/com_redevent/assets/js/unlimited.js');
 
 		
 		/* Check if a redform ID exists, if so, get the fields */

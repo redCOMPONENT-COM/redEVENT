@@ -117,7 +117,7 @@ class RedeventViewVenues extends JView
 
 		// Create the pagination object
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination($total, $limitstart, $limit);
+		$pageNav = $this->get('pagination');
 
 		$this->assignRef('rows' , 					$rows);
 		$this->assignRef('print_link' , 			$print_link);
