@@ -513,6 +513,13 @@ if ($upgrade) {
 		$db->query();
 	}
 }
+
+// remove old calendar layout
+echo JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'views'.DS.'calendar'.DS.'tmpl'.DS.'calendar.php';
+if (JFile::exists(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'views'.DS.'calendar'.DS.'tmpl'.DS.'calendar.php')) {
+  JFile::delete(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'views'.DS.'calendar'.DS.'tmpl'.DS.'calendar.php');
+  JFile::delete(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'views'.DS.'calendar'.DS.'tmpl'.DS.'calendar.xml');
+}
 ?>
 
 <center>
