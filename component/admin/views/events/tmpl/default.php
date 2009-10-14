@@ -95,9 +95,14 @@ defined('_JEXEC') or die('Restricted access');
 					<?php
 						foreach ($this->eventvenues[$row->id] as $key => $eventdetails) {
 							/* Get the date */
-							$date = (!isset($eventdetails->dates) ? Jtext::_('Open date') : strftime( $this->elsettings->formatdate, strtotime( $eventdetails->dates ))); 
-							$enddate 	= strftime( $this->elsettings->formatdate, strtotime( $eventdetails->enddates ));
-							$displaydate = $date. ($eventdetails->enddates ? ' - '.$enddate: '');
+							$date = (!isset($eventdetails->dates) ? Jtext::_('Open date') : strftime( $this->elsettings->formatdate, strtotime( $eventdetails->dates )));
+							if ($eventdetails->enddates && $eventdetails->enddates != $eventdetails->dates && strtotime( $eventdetails->enddates )) {
+							  $enddate   = strftime( $this->elsettings->formatdate, strtotime( $eventdetails->enddates ));
+							}
+							else {
+							 $enddate = null;
+							}
+							$displaydate = $date. ($enddate ? ' - '.$enddate: '');
 							
               $displaytime = '';
 							/* Get the time */

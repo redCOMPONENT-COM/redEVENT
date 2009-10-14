@@ -50,21 +50,10 @@ if ($this->row->show_names) : ?>
 		<!-- Registration -->
 		<h2 class="register"><?php echo JText::_( 'REGISTERED USERS' ).':'; ?></h2>
 		<?php
-			foreach ($this->venuedates AS $key => $venuedate) {
-				$date = ELOutput::formatdate($venuedate->dates, $venuedate->times);
-				$enddate = ELOutput::formatdate($venuedate->enddates, $venuedate->endtimes);
-				if ($enddate) {
-					$date .= ' - ' . $enddate;
-				}
-				$time = ELOutput::formattime($venuedate->dates, $venuedate->times);
-        $endtime = ELOutput::formattime($venuedate->enddates, $venuedate->endtimes);
-        if ($endtime) {
-          $time .= ' - ' . $endtime;
-        }
-			
+			foreach ($this->venuedates AS $key => $venuedate) {			
         /* Get the date */
         $date = (!isset($venuedate->dates) || $venuedate->dates == '0000-00-00' ? Jtext::_('Open date') : strftime( $this->elsettings->formatdate, strtotime( $venuedate->dates )));
-        $enddate  = (!isset($venuedate->enddates) || $venuedate->enddates == '0000-00-00') ? '' : strftime( $this->elsettings->formatdate, strtotime( $venuedate->enddates ));
+        $enddate  = (!isset($venuedate->enddates) || $venuedate->enddates == '0000-00-00' || $venuedate->enddates == $venuedate->dates) ? '' : strftime( $this->elsettings->formatdate, strtotime( $venuedate->enddates ));
         $displaydate = $date. ($enddate ? ' - '.$enddate: '');
     
         $displaytime = '';

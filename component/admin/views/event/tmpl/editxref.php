@@ -28,8 +28,14 @@ defined('_JEXEC') or die('Restricted access');
 Window.onDomReady(function() {
         document.formvalidator.setHandler('venue', function(value) {
                 return value != 0;
-        })
-})
+        });
+
+        $('enddates').addEvent('click', function(){
+        	 if (this.value === "" || this.value === "0000-00-00") {
+        		  this.value = $('dates').value;
+         	 }
+        });
+});
 
 function validateForm(f) {
         if (document.formvalidator.isValid(f)) {
@@ -40,6 +46,11 @@ function validateForm(f) {
                 alert('Some values are not acceptable.  Please retry.');
         }
         return false;
+}
+
+function updateend(cal)
+{
+	$('enddates').value = cal.date.print(cal.params.ifFormat);
 }
 </script>
 
@@ -63,7 +74,7 @@ function validateForm(f) {
       <label for="dates"><?php echo JText::_('DATE') .': '; ?></label>
     </td>
     <td>
-      <?php echo JHTML::calendar($this->xref->dates, 'dates', 'dates'); ?>
+      <?php echo $this->calendar($this->xref->dates, 'dates', 'dates', '%Y-%m-%d', 'updateend'); ?>
     </td>
 	</tr>
   <tr>
@@ -79,7 +90,7 @@ function validateForm(f) {
       <label for="enddates"><?php echo JText::_('ENDDATE') .': '; ?></label>
     </td>
     <td>
-      <?php echo JHTML::calendar($this->xref->enddates, 'enddates', 'enddates'); ?>
+      <?php echo $this->calendar($this->xref->enddates, 'enddates', 'enddates'); ?>
     </td>
   </tr>
   <tr>

@@ -284,7 +284,7 @@ class RedEventViewEvent extends JView {
     
     /* Get the date */
     $date = (!isset($xref->dates) || $xref->dates == '0000-00-00' ? Jtext::_('Open date') : strftime( $elsettings->formatdate, strtotime( $xref->dates )));
-    $enddate  = (!isset($xref->enddates) || $xref->enddates == '0000-00-00') ? '' : strftime( $elsettings->formatdate, strtotime( $xref->enddates ));
+    $enddate  = (!isset($xref->enddates) || $xref->enddates == '0000-00-00' || $xref->enddates == $xref->dates) ? '' : strftime( $elsettings->formatdate, strtotime( $xref->enddates ));
     $displaydate = $date. ($enddate ? ' - '.$enddate: '');
 
     $displaytime = '';
@@ -348,5 +348,35 @@ class RedEventViewEvent extends JView {
     </div>  
 	  <?php 
 	}
+	
+  /**
+   * Displays a calendar control field
+   *
+   * @param string  The date value
+   * @param string  The name of the text field
+   * @param string  The id of the text field
+   * @param string  The date format
+   * @param array Additional html attributes
+   */
+  function calendar($value, $name, $id, $format = '%Y-%m-%d', $onUpdate = null, $attribs = null)
+  {
+    JHTML::_('behavior.calendar'); //load the calendar behavior
+
+    if (is_array($attribs)) {
+      $attribs = JArrayHelper::toString( $attribs );
+    }
+    $document =& JFactory::getDocument();
+    $document->addScriptDeclaration('window.addEvent(\'domready\', function() {Calendar.setup({
+        inputField     :    "'.$id.'",     // id of the input field
+        ifFormat       :    "'.$format.'",      // format of the input field
+        button         :    "'.$id.'_img",  // trigger for the calendar (button ID)
+        align          :    "Tl",           // alignment (defaults to "Bl")
+        onUpdate       :    '.($onUpdate ? $onUpdate : 'null').',
+        singleClick    :    true
+    });});');
+
+    return '<input type="text" name="'.$name.'" id="'.$id.'" value="'.htmlspecialchars($value, ENT_COMPAT, 'UTF-8').'" '.$attribs.' />'.
+         '<img class="calendar" src="'.JURI::root(true).'/templates/system/images/calendar.png" alt="calendar" id="'.$id.'_img" />';
+  }
 }
 ?>
