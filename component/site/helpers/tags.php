@@ -581,7 +581,7 @@ class redEVENT_tags {
     $query = ' SELECT f.*, fv.value '
            . ' FROM #__redevent_fields AS f '
            . ' INNER JOIN #__redevent_fields_values AS fv ON fv.field_id = f.id AND fv.object_id = '.(int) $event_id
-           . ' WHERE f.published = 1 AND f.object_key = '. $db->Quote("redevent.event")
+           . ' WHERE f.published = 1 AND CHAR_LENGTH(f.tag) > 0 AND f.object_key = '. $db->Quote("redevent.event")
            . ' ORDER BY f.ordering ASC '
            ;
     $db->setQuery($query);
