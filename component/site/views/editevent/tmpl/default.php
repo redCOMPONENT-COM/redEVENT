@@ -287,55 +287,8 @@ JHTML::_('behavior.calendar');
 	
 	<fieldset class="el_fldst_waitinglist">
 
-          <legend><?php echo JText::_('WAITINGLIST'); ?></legend>
-<?php /* TODO: to be removed ? these fields are not used any more, as there is a tag for the display now 
-          
-      	<div class="el_show_attendants floattext">
-              <p><strong><?php echo JText::_( 'SHOW_ATTENDANTS_EDIT' ).':'; ?></strong></p>
+    <legend><?php echo JText::_('WAITINGLIST'); ?></legend>
 
-              <?php if ($this->row->show_attendants == 0) { ?>
-					<label for="registra0"><?php echo JText::_( 'NO' ); ?></label>
-					<input type="radio" name="show_attendants" id="show_attendants0" value="0" checked="checked" />
-					
-					<br class="clear" />
-	
-			    <label for="show_attendants1"><?php echo JText::_( 'YES' ); ?></label>
-				<input type="radio" name="show_attendants" id="show_attendants1" value="1" />
-				<?php } 
-			else {?>
-        			<label for="show_attendants0"><?php echo JText::_( 'NO' ); ?></label>
-					<input type="radio" name="show_attendants" id="show_attendants0" value="0" />
-					
-					<br class="clear" />
-	
-			    <label for="show_attendants1"><?php echo JText::_( 'YES' ); ?></label>
-				<input type="radio" name="show_attendants" id="show_attendants1" value="1" checked="checked" />
-			<?php } ?>
-          </div>
-          
-          <div class="el_show_waitinglist floattext">
-              <p><strong><?php echo JText::_( 'SHOW_WAITINGLIST_EDIT' ).':'; ?></strong></p>
-
-              <?php if ($this->row->show_waitinglist == 0) { ?>
-					<label for="registra0"><?php echo JText::_( 'NO' ); ?></label>
-					<input type="radio" name="show_waitinglist" id="show_waitinglist0" value="0" checked="checked" />
-					
-					<br class="clear" />
-	
-			    <label for="show_waitinglist1"><?php echo JText::_( 'YES' ); ?></label>
-				<input type="radio" name="show_waitinglist" id="show_waitinglist1" value="1" />
-				<?php } 
-			else {?>
-        			<label for="show_waitinglist0"><?php echo JText::_( 'NO' ); ?></label>
-					<input type="radio" name="show_waitinglist" id="show_waitinglist0" value="0" />
-					
-					<br class="clear" />
-	
-			    <label for="show_waitinglist1"><?php echo JText::_( 'YES' ); ?></label>
-				<input type="radio" name="show_waitinglist" id="show_waitinglist1" value="1" checked="checked" />
-			<?php } ?>
-          </div>
- */ ?>
 			<div class="el_notify_on_list_subject floattext">
         			<p><strong><?php echo JText::_( 'NOTIFY ON LIST SUBJECT' ).':'; ?></strong></p>
 

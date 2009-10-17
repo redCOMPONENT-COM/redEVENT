@@ -180,8 +180,6 @@ class RedeventModelEditevent extends JModel
 			$this->_event->redform_id					= null;
 			$this->_event->activate					= null;
 			$this->_event->show_names					= 0;
-			$this->_event->show_attendants				= 1;
-			$this->_event->show_waitinglist			= 1;
 			$this->_event->showfields					= '';
 			$this->_event->course_credit				= 0;
 			$this->_event->course_price				= 0;

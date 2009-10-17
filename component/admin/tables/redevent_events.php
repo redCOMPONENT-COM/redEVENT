@@ -107,10 +107,6 @@ class RedEvent_events extends JTable
 	var $activate 					= null;
 	/** @var string */
 	var $showfields 				= null;
-	/** @var boolean */
-	var $show_waitinglist 			= null;
-	/** @var boolean */
-	var $show_attendants 			= null;
 	/** @var string */
 	var $submission_types			= null;
 	/** @var string */

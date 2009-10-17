@@ -1,39 +1,6 @@
 <?php $infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-hint.png', JText::_( 'NOTES' ) ); ?>
 <?php $k = 0; ?>
 <table class="adminform">
-
-<?php /* TODO: to be removed ? these fields are not used any more, as there is a tag for the display now 
-	<tr class="row<?php echo $k = 1 - $k; ?>">
-		<td>
-			<label for="show_attendants">
-				<?php echo JText::_( 'SHOW_ATTENDANTS' ).':'; ?>
-			</label>
-		</td>
-		<td>
-			<?php echo JHTML::_('select.booleanlist', 'show_attendants', '', $this->row->show_attendants ); ?>
-		</td>
-		<td>
-			<span class="editlinktip hasTip" title="<?php echo JText::_( 'SHOW_ATTENDANTS' ); ?>::<?php echo JText::_('SHOW_ATTENDANTS_TIP'); ?>">
-				<?php echo $infoimage; ?>
-			</span>
-		</td>
-	</tr>
-	<tr class="row<?php echo $k = 1 - $k; ?>">
-		<td>
-			<label for="show_waitinglist">
-				<?php echo JText::_( 'SHOW_WAITINGLIST' ).':'; ?>
-			</label>
-		</td>
-		<td>
-			<?php echo JHTML::_('select.booleanlist', 'show_waitinglist', '', $this->row->show_waitinglist ); ?>
-		</td>
-		<td>
-			<span class="editlinktip hasTip" title="<?php echo JText::_( 'SHOW_WAITINGLIST' ); ?>::<?php echo JText::_('SHOW_WAITINGLIST_TIP'); ?>">
-				<?php echo $infoimage; ?>
-			</span>
-		</td>
-	</tr>
-	*/ ?>
 	<tr class="row<?php echo $k = 1 - $k; ?>">
 		<td>
 			<label for="notify_on_list_subject">

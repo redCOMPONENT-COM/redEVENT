@@ -137,7 +137,7 @@ class RedeventModelSignup extends JModel
 			$where	= $this->_buildDetailsWhere();
 
 			$query = 'SELECT a.id AS did, x.dates, x.enddates, a.title, x.times, x.endtimes, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, a.registra, a.unregistra,' 
-					. ' a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, a.show_attendants, a.show_waitinglist, '
+					. ' a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
 					. ' a.max_multi_signup, a.confirmation_message, x.course_price, x.course_credit, a.course_code, c.catname, c.published, c.access, a.submission_type_phone,'
 					. ' a.submission_type_webform, a.submission_type_formal_offer, a.submission_type_email, v.venue, v.city AS location, '
 					. ' a.submission_type_email_pdf, a.submission_type_formal_offer_pdf, a.send_pdf_form, a.pdf_form_data, '

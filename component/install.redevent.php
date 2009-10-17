@@ -51,15 +51,15 @@ if (is_array($cols)) {
 	}
 	
 	/* Check if we have the show_waitinglist column */
-	if (!array_key_exists('show_waitinglist', $cols)) {
-		$q = "ALTER IGNORE TABLE #__redevent_events ADD COLUMN `show_waitinglist` tinyint(1) NOT NULL default '1'";
+	if (array_key_exists('show_waitinglist', $cols)) {
+    $q = "ALTER IGNORE TABLE `#__redevent_events` DROP `show_waitinglist`";
 		$db->setQuery($q);
 		$db->query();
 	}
 	
 	/* Check if we have the show_attendants column */
-	if (!array_key_exists('show_attendants', $cols)) {
-		$q = "ALTER IGNORE TABLE #__redevent_events ADD COLUMN `show_attendants` tinyint(1) NOT NULL default '1'";
+	if (array_key_exists('show_attendants', $cols)) {
+		$q = "ALTER IGNORE TABLE `#__redevent_events` DROP `show_attendants`";
 		$db->setQuery($q);
 		$db->query();
 	}

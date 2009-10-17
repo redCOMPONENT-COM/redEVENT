@@ -228,8 +228,6 @@ class RedEventModelEvent extends JModel
 			$event->redform_id					= null;
 			$event->activate					= null;
 			$event->show_names					= 0;
-			$event->show_attendants				= 1;
-			$event->show_waitinglist			= 1;
 			$event->showfields					= '';
 			$event->course_credit				= 0;
 			$event->course_price				= 0;
