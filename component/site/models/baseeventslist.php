@@ -295,7 +295,7 @@ class RedeventModelBaseEventList extends JModel
   function _getPlacesLeft($rows) 
   {
     $db = JFactory::getDBO();
-    foreach ($rows as $k => $r) 
+    foreach ((array) $rows as $k => $r) 
     {
       $q = "SELECT waitinglist, COUNT(id) AS total
         FROM #__rwf_submitters

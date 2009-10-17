@@ -387,7 +387,7 @@ class RedEventModelEvents extends JModel
 		$datetimes = $db->loadObjectList();
 		
 		$ardatetimes = array();
-		foreach ($datetimes as $key => $datetime) {
+		foreach ((array) $datetimes as $key => $datetime) {
 			$ardatetimes[$datetime->eventid][] = $datetime;
 		}
 		return $ardatetimes;
