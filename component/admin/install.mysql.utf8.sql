@@ -35,8 +35,6 @@ CREATE TABLE IF NOT EXISTS `#__redevent_events` (
   `notify_confirm_subject` varchar(45) NOT NULL default '',
   `notify_confirm_body` text NOT NULL,
   `showfields` text,
-  `show_waitinglist` tinyint(1) NOT NULL default '1',
-  `show_attendants` tinyint(1) NOT NULL default '1',
   `confirmation_message` text,
   `submission_types` varchar(255) default 'email',
   `course_code` varchar(255) NOT NULL,
