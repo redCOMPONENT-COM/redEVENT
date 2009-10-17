@@ -71,9 +71,6 @@ class RedEventViewEvent extends JView {
 		//add the custom stylesheet and the seo javascript
 		$document->addStyleSheet($url.'administrator/components/com_redevent/assets/css/redeventbackend.css');
 		$document->addScript($url.'administrator/components/com_redevent/assets/js/seo.js');
-		$document->addScript($url.'components/com_redevent/assets/js/recurrence.js');
-		// include the unlimited script
-		$document->addScript($url.'components/com_redevent/assets/js/unlimited.js');
 		
     $document->addScript($url.'administrator/components/com_redevent/assets/js/xrefedit.js');
     $document->addScript($url.'administrator/components/com_redevent/assets/js/editevent.js');

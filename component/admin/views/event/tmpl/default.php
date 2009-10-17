@@ -166,64 +166,6 @@ echo $this->pane->startPane("det-pane");
 	</table>
 	<?php
 	echo $this->pane->endPanel();
-
-	if (0) {
-		$title = JText::_( 'RECURRING EVENTS' );
-		echo $this->pane->startPanel( $title, 'recurrence' );
-		$k = 0;
-		?>
-			<table class="adminform">
-				<tr class="row<?php echo $k = 1 - $k; ?>">
-					<td class="redevent_settings_repeat"><?php echo JText::_( 'RECURRENCE' ); ?>:</td>
-					<td>
-					  <select id="recurrence_select" name="recurrence_select" size="1">
-						<option value="0"><?php echo JText::_( 'NOTHING' ); ?></option>
-						<option value="1"><?php echo JText::_( 'DAYLY' ); ?></option>
-						<option value="2"><?php echo JText::_( 'WEEKLY' ); ?></option>
-						<option value="3"><?php echo JText::_( 'MONTHLY' ); ?></option>
-						<option value="4"><?php echo JText::_( 'WEEKDAY' ); ?></option>
-					  </select>
-					</td>
-				</tr>
-				<tr class="row<?php echo $k = 1 - $k; ?>">
-					<td colspan="2" id="recurrence_output">&nbsp;</td>
-				</tr>
-				<tr id="counter_row" style="display:none;" class="row<?php echo $k = 1 - $k; ?>">
-					<td><?php echo JText::_( 'RECURRENCE COUNTER' ); ?>:</td>
-					<td>
-						<?php echo JHTML::_('calendar', ($this->row->recurrence_counter <> '0000-00-00')? $this->row->recurrence_counter: JText::_( 'UNLIMITED' ), "recurrence_counter", "recurrence_counter"); ?><a href="#" onclick="include_unlimited('<?php echo JText::_( 'UNLIMITED' ); ?>'); return false;"><img src="../components/com_redevent/assets/images/unlimited.png" width="16" height="16" alt="<?php echo JText::_( 'UNLIMITED' ); ?>" /></a>
-					</td>
-				<tr>
-			</table>
-		<br/>
-		<input type="hidden" name="recurrence_number" id="recurrence_number" value="<?php echo $this->row->recurrence_number; ?>" />
-		<input type="hidden" name="recurrence_type" id="recurrence_type" value="<?php echo $this->row->recurrence_type; ?>" />
-		<script type="text/javascript">
-		<!--
-			var $select_output = new Array();
-			$select_output[1] = "<?php echo JText::_( 'OUTPUT DAY' ); ?>";
-			$select_output[2] = "<?php echo JText::_( 'OUTPUT WEEK' ); ?>";
-			$select_output[3] = "<?php echo JText::_( 'OUTPUT MONTH' ); ?>";
-			$select_output[4] = "<?php echo JText::_( 'OUTPUT WEEKDAY' ); ?>";
-
-			var $weekday = new Array();
-			$weekday[0] = "<?php echo JText::_( 'MONDAY' ); ?>";
-			$weekday[1] = "<?php echo JText::_( 'TUESDAY' ); ?>";
-			$weekday[2] = "<?php echo JText::_( 'WEDNESDAY' ); ?>";
-			$weekday[3] = "<?php echo JText::_( 'THURSDAY' ); ?>";
-			$weekday[4] = "<?php echo JText::_( 'FRIDAY' ); ?>";
-			$weekday[5] = "<?php echo JText::_( 'SATURDAY' ); ?>";
-			$weekday[6] = "<?php echo JText::_( 'SUNDAY' ); ?>";
-
-			var $before_last = "<?php echo JText::_( 'BEFORE LAST' ); ?>";
-			var $last = "<?php echo JText::_( 'LAST' ); ?>";
-
-			start_recurrencescript();
-		-->
-		</script>
-		<?php
-  	echo $this->pane->endPanel();
-	}
 	
   $title = JText::_( 'CUSTOM FIELDS' );
   echo $this->pane->startPanel( $title, 'customfields' );

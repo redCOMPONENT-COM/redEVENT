@@ -245,91 +245,6 @@ class redEVENTHelper {
 	}
 	
 	/**
-	 * this methode calculate the next date
-	 */
-	function calculate_recurrence($recurrence_row) {
-		// get the recurrence information
-		$recurrence_number = $recurrence_row['recurrence_number'];
-		$recurrence_type = $recurrence_row['recurrence_type'];
-
-		$day_time = 86400;	// 60 sec. * 60 min. * 24 h
-		$week_time = 604800;// $day_time * 7days
-		$date_array = redEVENTHelper::generate_date($recurrence_row['dates'], $recurrence_row['enddates']);
-
-
-		switch($recurrence_type) {
-			case "1":
-				// +1 hour for the Summer to Winter clock change
-				$start_day = mktime(1,0,0,$date_array["month"],$date_array["day"],$date_array["year"]);
-				$start_day = $start_day + ($recurrence_number * $day_time);
-				break;
-			case "2":
-				// +1 hour for the Summer to Winter clock change
-				$start_day = mktime(1,0,0,$date_array["month"],$date_array["day"],$date_array["year"]);
-				$start_day = $start_day + ($recurrence_number * $week_time);
-				break;
-			case "3":
-				$start_day = mktime(1,0,0,($date_array["month"] + $recurrence_number),$date_array["day"],$date_array["year"]);;
-				break;
-			default:
-				$weekday_must = ($recurrence_row['recurrence_type'] - 3);	// the 'must' weekday
-				if ($recurrence_number < 5) {	// 1. - 4. week in a month
-					// the first day in the new month
-					$start_day = mktime(1,0,0,($date_array["month"] + 1),1,$date_array["year"]);
-					$weekday_is = date("w",$start_day);							// get the weekday of the first day in this month
-
-					// calculate the day difference between these days
-					if ($weekday_is <= $weekday_must) {
-						$day_diff = $weekday_must - $weekday_is;
-					} else {
-						$day_diff = ($weekday_must + 7) - $weekday_is;
-					}
-					$start_day = ($start_day + ($day_diff * $day_time)) + ($week_time * ($recurrence_number - 1));
-				} else {	// the last or the before last week in a month
-					// the last day in the new month
-					$start_day = mktime(1,0,0,($date_array["month"] + 2),1,$date_array["year"]) - $day_time;
-					$weekday_is = date("w",$start_day);
-					// calculate the day difference between these days
-					if ($weekday_is >= $weekday_must) {
-						$day_diff = $weekday_is - $weekday_must;
-					} else {
-						$day_diff = ($weekday_is - $weekday_must) + 7;
-					}
-					$start_day = ($start_day - ($day_diff * $day_time));
-					if ($recurrence_number == 6) {	// before last?
-						$start_day = $start_day - $week_time;
-					}
-				}
-				break;
-		}
-		$recurrence_row['dates'] = date("Y-m-d", $start_day);
-		if ($recurrence_row['enddates']) {
-			$recurrence_row['enddates'] = date("Y-m-d", $start_day + $date_array["day_diff"]);
-		}
-		return $recurrence_row;
-	}
-
-	/**
-	 * this method generate the date string to a date array
-	 *
-	 * @var string the date string
-	 * @return array the date informations
-	 * @access public
-	 */
-	function generate_date($startdate, $enddate) {
-		$startdate = explode("-",$startdate);
-		$date_array = array("year" => $startdate[0],
-							"month" => $startdate[1],
-							"day" => $startdate[2],
-							"weekday" => date("w",mktime(1,0,0,$startdate[1],$startdate[2],$startdate[0])));
-		if ($enddate) {
-			$enddate = explode("-", $enddate);
-			$day_diff = (mktime(1,0,0,$enddate[1],$enddate[2],$enddate[0]) - mktime(1,0,0,$startdate[1],$startdate[2],$startdate[0]));
-			$date_array["day_diff"] = $day_diff;
-		}
-		return $date_array;
-	}
-	/**
 	 * transforms <br /> and <br> back to \r\n
 	 *
 	 * @param string $string
@@ -338,27 +253,6 @@ class redEVENTHelper {
 	function br2break($string)
 	{
 		return preg_replace("=<br(>|([\s/][^>]*)>)\r?\n?=i", "\r\n", $string);
-	}
-
-	/**
-	 * use only some importent keys of the redevent_events - database table for the where query
-	 *
-	 * @param string $key
-	 * @return boolean
-	 */
-	function where_table_rows($key) {
-		if ($key == 'locid' ||
-			$key == 'catsid' ||
-			$key == 'dates' ||
-			$key == 'enddates' ||
-			$key == 'times' ||
-			$key == 'endtimes' ||
-			$key == 'alias' ||
-			$key == 'created_by') {
-			return true;
-		} else {
-			return false;
-		}
 	}
 	
 	/**

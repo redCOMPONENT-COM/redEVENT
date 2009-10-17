@@ -125,11 +125,6 @@ class RedeventViewEditevent extends JView
 		}";
 
 		$document->addScriptDeclaration($js);
-		// include the recurrence script
-		$document->addScript($url.'components/com_redevent/assets/js/recurrence.js');
-		// include the unlimited script
-		$document->addScript($url.'components/com_redevent/assets/js/unlimited.js');
-
 		
 		/* Check if a redform ID exists, if so, get the fields */
 		if (isset($row->redform_id) && $row->redform_id > 0) {
