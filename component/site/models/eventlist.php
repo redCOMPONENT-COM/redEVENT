@@ -27,10 +27,10 @@ jimport('joomla.application.component.model');
 
 require_once('baseeventslist.php');
 /**
- * EventList Component EventList Model
+ * Redevents Component events list Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage Redevent
  * @since		0.9
  */
 class RedeventModelEventList extends RedeventModelBaseEventList
