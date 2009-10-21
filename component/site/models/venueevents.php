@@ -101,10 +101,10 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 	 * @access private
 	 * @return array
 	 */
-	function _buildContentWhere( )
+	function _buildWhere( )
 	{
-		global $mainframe;
-
+		$mainframe = &JFactory::getApplication();
+		
 		$user		=& JFactory::getUser();
 		$gid		= (int) $user->get('aid');
 
