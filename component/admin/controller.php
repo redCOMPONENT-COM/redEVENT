@@ -134,5 +134,30 @@ class RedEventController extends JController
 		$this->setRedirect('index.php?option=com_redevent&view=log', $msg);
 		$this->redirect();
 	}
+	
+  /**
+   * import eventlist events, categories, and venues.
+   * 
+   * @return unknown_type
+   */
+  function importeventlist()
+  {
+    $model = $this->getModel('import');
+    
+    $result = $model->importeventlist();
+    
+    $link = 'index.php?option=com_redevent&view=cleanup';
+
+    if (!$result) {
+      $msg = $model->getError();
+      $this->setRedirect( $link, $msg, 'error' );      
+    }
+    else {
+      $msg = JText::sprintf( 'EVENTLIST IMPORT SUCCESS', $result['events'], $result['categories'], $result['venues']);
+      $this->setRedirect( $link, $msg );
+    }
+      
+    return true;
+  }
 }
 ?>

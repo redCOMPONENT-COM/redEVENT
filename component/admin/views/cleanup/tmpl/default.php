@@ -47,4 +47,25 @@ defined('_JEXEC') or die('Restricted access');
 		<td width="40%" valign="middle">
 			<?php echo JText::_( 'CLEANUP VENUE IMG DESC' ); ?>
 		</td>
+	</tr>
+	<tr>
+    <td width="10%">
+      <div class="linkicon">
+        <a href="index.php?option=com_redevent&amp;task=importeventlist">
+          <?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/icon-48-cleaneventimg.png',  JText::_( 'IMPORT EVENTLIST' ) ); ?>
+          <span><?php echo JText::_( 'IMPORT EVENTLIST' ); ?></span>
+        </a>
+      </div>
+    </td>
+    <td width="40%" valign="middle">
+      <?php echo JText::_( 'IMPORT EVENTLIST DESC' ); ?>
+    </td>	
+    <td width="10%">
+      &nbsp;
+    </td>
+    <td width="40%" valign="middle">
+      &nbsp;
+    </td> 
+	</tr>
+	
 </table>
