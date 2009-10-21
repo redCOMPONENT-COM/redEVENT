@@ -23,50 +23,55 @@
 // requires mootools
 window.addEvent('domready', function(){
 	
-	blurClass = 'blur';
+	redhint = {
+			
+		// some global variables
+		blurClass : 'blur',
+		$input : $('filter'),	
+		$form : $('adminForm'),
+		
+		removehint : function() {
+			if (redhint.$input) {
+					if (redhint.$input.value === redhint.$input.title && redhint.$input.hasClass(redhint.blurClass)) {
+						redhint.$input.setProperty('value','').removeClass(redhint.blurClass);
+					}
+			}
+		},
+			
+		init : function() {
+			// only apply logic if the element has the attribute
+			if (redhint.$input) {
+				var title = redhint.$input.title;
+				// on blur, set value to title attr if text is blank
+				redhint.$input.addEvent('blur', function(){
+					if (this.value === '') {
+						this.setProperty('value', title).addClass(redhint.blurClass);
+					}
+				}).addEvent('focus', redhint.removehint).fireEvent('blur'); // now change input to title
 
-	$input = $('filter');
-	var title = $input.title;
+				// clear the pre-defined text when form is submitted
+				redhint.$form.addEvent('submit', redhint.removehint);    
+				if ($('limit')) {
+					$('limit').addEvent('click', redhint.removehint);
+				}
+				window.addEvent('unload', redhint.removehint); // handles Firefox's autocomplete
+			}
+		}
 	
-	$form = $('adminForm');
-	
-	// only apply logic if the element has the attribute
-	if (title) {
-		// on blur, set value to title attr if text is blank
-		$input.addEvent('blur', function(){
-	        if (this.value === '') {
-	            $input.setProperty('value', title).addClass(blurClass);
-	          }
-		}).addEvent('focus', removehint).fireEvent('blur'); // now change input to title
-	}
-	
-	// clear the pre-defined text when form is submitted
-    $form.addEvent('submit', removehint);
-    
-//    // for some reason, the stop doesn't seem to work...
-//    $('limit').addEvent('change', function(event){
-//    	alert('before'+event.name);
-//    	event.stop();
-//    	alert('test');
-//    });
-    $('limit').addEvent('click', removehint);
-    window.addEvent('unload', removehint); // handles Firefox's autocomplete
+	};
+	redhint.init();
+
 });
-
-function removehint() {
-	if ($input.value === $input.title && $input.hasClass(blurClass)) {
-		$input.setProperty('value','').removeClass(blurClass);
-	}
-}
 
 function tableOrdering( order, dir, view )
 {
 	var form = document.getElementById("adminForm");
-
+	
 	// remove the hint from the filter
-	removehint();
-
+	redhint.removehint();
+	
 	form.filter_order.value 	= order;
 	form.filter_order_Dir.value	= dir;
 	form.submit( view );
 }
+
