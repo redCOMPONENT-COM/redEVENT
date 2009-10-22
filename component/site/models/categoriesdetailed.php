@@ -37,6 +37,13 @@ require_once('baseeventslist.php');
  */
 class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 {	
+  /**
+   * Top category for the view.
+   * 
+   * @var object
+   */
+  var $_parent = null;
+  
 	/**
 	 * Categories data array
 	 *
@@ -57,15 +64,40 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 
 		// Get the paramaters of the active menu item
 		$params 	= & $mainframe->getParams('com_redevent');
+		
+		if ($params->get('parentcategory', 0)) {
+		  $this->setParent($params->get('parentcategory', 0));
+		}
 
 		//get the number of events from database
-		$limit			= JRequest::getInt('limit', $params->get('cat_num'));
-		$limitstart		= JRequest::getInt('limitstart');
+		$limit			= $params->get('cat_num');
+    $limitstart = JRequest::getVar('limitstart', 0, '', 'int');
 
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
 	}
 
+	/**
+	 * set the parent category id
+	 * 
+	 * @param int id
+	 * @return boolean
+	 */
+	function setParent($id)
+	{	  
+    $sub = ' SELECT id, lft, rgt FROM #__redevent_categories WHERE id = '. $this->_db->Quote((int) $id);
+    $this->_db->setQuery($sub);
+    $obj = $this->_db->loadObject();
+    if (!$obj) {
+      JError::raiseWarning(0, JText::_('PARENT CATEGORY NOT FOUND'));
+    }
+    else {
+  	  $this->_parent = $obj;
+  	  $this->_categories = null;
+    }
+	  return true;
+	}
+	
 	/**
 	 * Method to get the Categories
 	 *
@@ -85,12 +117,13 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 			$query = $this->_buildQuery();
 			$this->_categories = $this->_getList( $query, $this->getState('limitstart'), $this->getState('limit') );
 
-			$k = 0;
 			$count = count($this->_categories);
 			for($i = 0; $i < $count; $i++)
 			{
 				$category =& $this->_categories[$i];
-
+				$category->events = $this->_getEvents($category);
+        $category->assignedevents = $this->_getEventsTotal($category);
+        
 				//Generate description
 				if (empty ($category->catdescription)) {
 					$category->catdescription = JText::_( 'NO DESCRIPTION' );
@@ -123,8 +156,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 				} else {
 					$category->linktarget = JRoute::_('index.php?option=com_redevent&view=categoryevents&id='.$category->slug);
 				}
-
-				$k = 1 - $k;
+				
 			}
 
 		}
@@ -138,14 +170,14 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 	 * @access public
 	 * @return array
 	 */
-	function &getEventdata( $id )
+	function &_getEvents( &$category )
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		$params 	= & $mainframe->getParams('com_redevent');
 
 		// Lets load the content
-		$query = $this->_buildDataQuery( $id );
+		$query = $this->_buildDataQuery( $category );
 		$this->_data = $this->_getList( $query, 0, $params->get('detcat_nr') );
     $this->_data = $this->_categories($this->_data);
     $this->_data = $this->_getPlacesLeft($this->_data);
@@ -153,21 +185,33 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 		return $this->_data;
 	}
 
+  /**
+   * Method to get the Categories events
+   *
+   * @access public
+   * @return array
+   */
+  function _getEventsTotal( &$category )
+  {
+    // Lets load the content
+    $query = $this->_buildDataQuery( $category );
+    return $this->_getListCount( $query, 0, 0 );
+  }
+  
 	/**
 	 * Method get the event query
 	 *
 	 * @access private
 	 * @return array
 	 */
-	function _buildDataQuery( $id )
+	function _buildDataQuery( &$category )
 	{
 		$user		= & JFactory::getUser();
 		$aid		= (int) $user->get('aid');
-		$id			= (int) $id;
 		
 		$task 		= JRequest::getWord('task');
 
-		$where = ' WHERE top.id = ' . $this->_db->Quote($id) . ' AND c.lft BETWEEN top.lft AND top.rgt ';
+		$where = ' WHERE c.lft BETWEEN '. $this->_db->Quote($category->lft) .' AND '. $this->_db->Quote($category->rgt);
 		// First thing we need to do is to select only the requested events
 		if ($task == 'archive') {
 			$where .= ' AND x.published = -1 ';
@@ -175,21 +219,21 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 			$where .= ' AND x.published = 1 ';
 		}
 
-		//Get Events from Category
-		$query = 'SELECT a.*, a.id as event_id, x.*, x.id as xref, l.venue, l.city, l.state, l.url, c.catname, c.id AS catid,'
+		//Get Events from Category				
+    $query = 'SELECT a.id, a.datimage, x.venueid, x.dates, x.enddates, x.times, x.endtimes, x.id AS xref, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, '
+        . ' a.title, a.registra, l.venue, l.city, l.state, l.url, c.catname, c.id AS catid, '
         . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
         . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
         . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
-				. ' FROM #__redevent_categories AS top, #__redevent_events AS a '
-				. ' LEFT JOIN #__redevent_event_venue_xref AS x on x.eventid = a.id'
-				. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-        . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-				. $where
-				. ' AND c.access <= '.$aid
+        . ' FROM #__redevent_events AS a'
+        . ' INNER JOIN #__redevent_event_venue_xref AS x on x.eventid = a.id'
+        . ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
+        . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+        . ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+        . $where
         . ' GROUP BY (x.id) '
-				. ' ORDER BY x.dates, x.times'
-				;
+        . ' ORDER BY x.dates, x.times'
+        ;
 		return $query;
 	}
 
@@ -201,37 +245,53 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 	 */
 	function _buildQuery( )
 	{
+    $mainframe = &JFactory::getApplication();
+    $params   = & $mainframe->getParams('com_redevent');
 		$user		= & JFactory::getUser();
 		$gid 		= (int) $user->get('aid');
-		
-		//check archive task and ensure that only categories get selected if they contain a published/archived event
-		$task 	= JRequest::getWord('task');
-		if($task == 'archive') {
-			$eventstate = ' AND x.published = -1';
-		} else {
-			$eventstate = ' AND x.published = 1';
-		}
 
     //get categories
-    // TODO: it works, but maybe there could be a simpler solution...
-    $query = 'SELECT top.*, COUNT( sub.catid ) AS assignedevents,'
-        . ' CASE WHEN CHAR_LENGTH(top.alias) THEN CONCAT_WS(\':\', top.id, top.alias) ELSE top.id END as slug'
-        . ' FROM #__redevent_categories AS top'
-        . ' INNER JOIN ( '
-        . '   SELECT DISTINCT top.id as catid, x.id '
-        . '   FROM #__redevent_categories AS top'
-        . '   INNER JOIN #__redevent_categories AS c ON c.lft BETWEEN top.lft AND top.rgt'
-        . '   INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = c.id'
-        . '   INNER JOIN #__redevent_events AS a ON xcat.event_id = a.id'
-        . '   INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
-        . '   WHERE c.published = 1'
-        . '   AND c.access <= '.$gid
-        .     $eventstate
-        . ' ) AS sub ON sub.catid = top.id' // itself and descendants
-        . ' GROUP BY top.id'
-        . ' ORDER BY top.ordering'
-        ;
-
+    if ($params->get('display_all_categories', 1)) 
+    {
+      $query = ' SELECT c.*, '
+            . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug'
+            . ' FROM #__redevent_categories AS c '
+            . ' WHERE c.published = 1 '
+            ;        
+      if ($this->_parent) {
+        $query .= ' AND c.parent_id = '. $this->_db->Quote($this->_parent->id);     
+      }
+    }
+    else
+    {   
+      //check archive task and ensure that only categories get selected if they contain a published/archived event
+      $task   = JRequest::getWord('task');
+      if($task == 'archive') {
+        $eventstate = ' AND x.published = -1';
+      } else {
+        $eventstate = ' AND x.published = 1';
+      }
+      
+      $query = ' SELECT DISTINCT c.*,  '
+          . '   CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
+          . ' FROM #__redevent_categories AS c '
+          . ' INNER JOIN #__redevent_categories AS child ON child.lft BETWEEN c.lft AND c.rgt '
+          . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = child.id '
+          . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = xcat.event_id '
+          . ' WHERE child.published = 1 '
+          . '   AND child.access <= '.$gid
+          .     $eventstate
+          ;  
+      
+      if ($this->_parent) {
+        $query .= ' AND c.parent_id = '. $this->_db->Quote($this->_parent->id);      
+      }
+      
+      $query .= '   GROUP BY c.id ';      
+    }		     
+		
+		$query .= ' ORDER BY c.catname ASC ';
+		
 		return $query;
 	}
 	

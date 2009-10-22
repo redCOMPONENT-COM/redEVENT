@@ -42,7 +42,7 @@ class RedeventViewCategoriesdetailed extends JView
 	 */
 	function display( $tpl = null )
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		//initialise variables
 		$document 	= & JFactory::getDocument();
@@ -53,15 +53,13 @@ class RedeventViewCategoriesdetailed extends JView
 		$params 	= & $mainframe->getParams();
 
 		//get vars
-		$limitstart		= JRequest::getInt('limitstart');
-		$limit			= JRequest::getInt('limit', $params->get('cat_num'));
 		$pathway 		= & $mainframe->getPathWay();
 		$pop			= JRequest::getBool('pop');
 		$task 			= JRequest::getWord('task');
 
 		//Get data from the model
 		$categories	= & $this->get('Data');
-		$total 		= & $this->get('Total');
+    $pageNav = & $this->get('pagination');
 
 		//add css file
     if (!$params->get('custom_css')) {
@@ -114,8 +112,6 @@ class RedeventViewCategoriesdetailed extends JView
 
 		// Create the pagination object
 		jimport('joomla.html.pagination');
-
-		$pageNav = new JPagination($total, $limitstart, $limit);
 
 		$this->assignRef('categories' , 			$categories);
 		$this->assignRef('print_link' , 			$print_link);

@@ -76,8 +76,7 @@ foreach($this->categories as $category) :
 
 <!--table-->
 <?php
-//TODO: move out of template
-$this->rows		= & $this->model->getEventdata( $category->id );
+$this->rows		= & $category->events;
 $this->categoryid = $category->id;
 
 echo $this->loadTemplate('table');
