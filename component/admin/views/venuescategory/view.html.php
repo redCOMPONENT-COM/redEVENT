@@ -93,8 +93,8 @@ class RedEventViewVenuesCategory extends JView {
 		$Lists = array();
 		
 		/* Build a select list for categories */
-		$Lists['categories'] = $this->get('Categories');
-		
+    $Lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('Categories'), 'parent_id', 'class="inputbox" size="10"', 'value', 'text', $row->parent_id); 
+    		
 		//build selectlists
 		$javascript = "onchange=\"javascript:if (document.forms[0].image.options[selectedIndex].value!='') {document.imagelib.src='../images/stories/' + document.forms[0].image.options[selectedIndex].value} else {document.imagelib.src='../images/blank.png'}\"";
 		$Lists['imagelist'] 		= JHTML::_('list.images', 'image', $row->image, $javascript, '/images/stories/' );

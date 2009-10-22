@@ -24,7 +24,14 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<script language="javascript" type="text/javascript">
+<script language="javascript">
+window.addEvent('domready', function() {
+	// allow to deselect the category
+	$('noparent').addEvent('click', function(){
+		  $('parent_id').selectedIndex = '-1';
+  });
+});
+
 function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
@@ -112,8 +119,9 @@ function submitbutton(pressbutton)
 					<td>
 						<?php
 						echo $this->Lists['categories'];
-						?>
+						?>						
 					</td>
+				  <td><a href="#" id="noparent"><?php echo JText::_('NONE'); ?></a></td>
 				</tr>
 			</table>
 			<?php

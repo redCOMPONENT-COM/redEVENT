@@ -303,46 +303,33 @@ class RedEventModelVenuesCategory extends JModel
 	}
 	
 	/**
-	 * Get a list of all categories and put them in a select list
+	 * Get a list of all categories as options
 	 */
-	public function getCategories() {
-		$db = JFactory::getDBO();
-		/* 1. Get all categories */
-		$q = "SELECT id, parent_id, name
-			FROM #__redevent_venues_categories"
-			;
-
-		if ($this->_id) {
-			$q .= ' WHERE id <> ' . $db->Quote($this->_id);
-		}
-		$db->setQuery($q);
-		$rawcats = $db->loadObjectList();
-		
-		/* 2. Group categories based on their parent_id */
-		$categories = array();
-		foreach ($rawcats as $key => $rawcat) {
-			$categories[$rawcat->parent_id][$rawcat->id]['pid'] = $rawcat->parent_id;
-			$categories[$rawcat->parent_id][$rawcat->id]['cid'] = $rawcat->id;
-			$categories[$rawcat->parent_id][$rawcat->id]['name'] = $rawcat->name;
-		}
-		$html = '<select id="parent_id" class="inputbox" size="10" name="parent_id">';
-		if (count($categories) > 0) {
-			/* Take the toplevels first */
-			foreach ($categories[0] as $key => $category) {
-				$this->html = '';
-				/* Write out toplevel */
-				$html .= '<option value="'.$category['cid'].'"';
-				if ($this->_data->parent_id == $category['cid']) $html .= 'selected="selected"';
-				$html .= '>'.$category['name'].'</option>';
-				
-				/* Write the subcategories */
-				$this->buildCategory($categories, $category['cid'], array());
-				$html .= $this->html;
-			}
-		}
-		$html .= '</select>';
-		
-		return $html;
+	public function getCategories() 
+	{	  
+	  $current = &$this->getData();
+	  
+    $query = ' SELECT c.id, c.name, (COUNT(parent.name) - 1) AS depth '
+           . ' FROM #__redevent_venues_categories AS c, '
+           . ' #__redevent_venues_categories AS parent '
+           . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
+           ;
+    if ($this->_id) { // prevent loops !
+      $query .= '   AND c.lft NOT BETWEEN '. $this->_db->Quote($current->lft) .' AND '. $this->_db->Quote($current->rgt);
+    }  
+    $query .= ' GROUP BY c.id '
+           . ' ORDER BY c.lft;'
+           ;
+    $this->_db->setQuery($query);
+    
+    $results = $this->_db->loadObjectList();
+    
+    $options = array();
+    foreach((array) $results as $cat)
+    {
+      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->name);
+    }
+    return $options;
 	}
 	
 	/**
