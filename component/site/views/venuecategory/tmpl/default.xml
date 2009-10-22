@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="Venuecategory Layout">
+	<layout title="VENUECATEGORY DEFAULT LAYOUT">
 		<message>
-			<![CDATA[VENUECATEGORY LAYOUT DESC]]>
+			<![CDATA[VENUECATEGORY DEFAULT LAYOUT DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>VENUECATEGORY LAYOUT</name>
-		<description>VENUECATEGORY LAYOUT DESC</description>
+		<name>VENUECATEGORY DEFAULT LAYOUT</name>
+		<description>VENUECATEGORY DEFAULT LAYOUT DESC</description>
 		<url addpath="/administrator/components/com_redevent/elements">
 			<param name="id" type="venuecategories" default="0" label="SELECT VENUE CATEGORY" description="SELECT VENUE CATEGORY DESC" />
 		</url>

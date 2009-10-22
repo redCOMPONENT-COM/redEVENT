@@ -335,15 +335,18 @@ class RedEventModelVenuesCategories extends JModel
 	 */
 	function _countcatvenues($id)
 	{
-		$query = 'SELECT COUNT( * )'
-				.' FROM #__redevent_venue_category_xref AS xv'
-				.' WHERE xv.category_id = ' . (int)$id
+		$query = 'SELECT COUNT( v.id )'
+				.' FROM #__redevent_venues_categories AS c '
+				.' INNER JOIN #__redevent_venues_categories AS child ON child.lft BETWEEN c.lft AND c.rgt '
+        .' INNER JOIN #__redevent_venue_category_xref AS xv ON xv.category_id = child.id '
+        .' INNER JOIN #__redevent_venues AS v ON v.id = xv.venue_id '
+				.' WHERE c.id = ' . (int)$id
 				;
 					
 		$this->_db->setQuery($query);
 		$number = $this->_db->loadResult();
     	
-    	return $number;
+    return $number;
 	}
 	
 
