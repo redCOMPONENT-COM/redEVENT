@@ -49,7 +49,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<th class="title"><?php echo JHTML::_('grid.sort', 'CATEGORY', 'catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="20%"><?php echo JHTML::_('grid.sort', 'ALIAS', 'c.alias', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
       <th width="10px" nowrap="nowrap"><?php echo JText::_( 'COLOR' ); ?></th>
-      <th width="20%"><?php echo JHTML::_('grid.sort', 'PARENT CATEGORY', 'p.catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+      <th width="20%"><?php echo JHTML::_('grid.sort', 'PARENT CATEGORY', 'c.lft', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="15%"><?php echo JHTML::_('grid.sort', 'GROUP', 'gr.name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JText::_( 'EVENTS' ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JText::_( 'PUBLISHED' ); ?></th>
@@ -84,6 +84,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<td><?php echo $this->pageNav->getRowOffset( $i ); ?></td>
 			<td width="7"><?php echo $checked; ?></td>
 			<td align="left">
+			  <?php if ($this->filter_order == 'c.lft') :?>
+			  <?php echo str_repeat('-', $row->depth). ' '; ?>
+			  <?php endif;?>
 				<?php
 				if ( $row->checked_out && ( $row->checked_out != $this->user->get('id') ) ) {
 					echo htmlspecialchars($row->catname, ENT_QUOTES, 'UTF-8');
