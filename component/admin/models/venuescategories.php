@@ -176,13 +176,15 @@ class RedEventModelVenuesCategories extends JModel
 		$where		= $this->_buildContentWhere();
 		$orderby	= $this->_buildContentOrderBy();
 
-		$query = 'SELECT c.*, c.access, c.groupid, u.name AS editor, g.name AS groupname, gr.name AS catgroup, p.name as parent_name '
-					. ' FROM #__redevent_venues_categories AS c'
+		$query = 'SELECT c.*, (COUNT(parent.name) - 1) AS depth, c.access, c.groupid, u.name AS editor, g.name AS groupname, gr.name AS catgroup, p.name as parent_name '
+					. ' FROM #__redevent_venues_categories AS parent, #__redevent_venues_categories AS c'
           . ' LEFT JOIN #__redevent_venues_categories AS p ON p.id = c.parent_id '
 					. ' LEFT JOIN #__groups AS g ON g.id = c.access'
 					. ' LEFT JOIN #__users AS u ON u.id = c.checked_out'
 					. ' LEFT JOIN #__redevent_groups AS gr ON gr.id = c.groupid'
+          . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
 					. $where
+          . ' GROUP BY c.id '
 					. $orderby
 					;
 
@@ -200,7 +202,7 @@ class RedEventModelVenuesCategories extends JModel
 	{
 		global $mainframe, $option;
 
-		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.categories.filter_order', 		'filter_order', 	'c.ordering', 'cmd' );
+		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.categories.filter_order', 		'filter_order', 	'c.lft', 'cmd' );
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.categories.filter_order_Dir',	'filter_order_Dir',	'', 'word' );
 
 		$orderby 	= ' ORDER BY '.$filter_order.' '.$filter_order_Dir.', c.ordering';
@@ -237,7 +239,7 @@ class RedEventModelVenuesCategories extends JModel
 			$where[] = ' LOWER(c.name) LIKE \'%'.$search.'%\' ';
 		}
 
-		$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
+		$where 		= implode( ' AND ', $where );
 
 		return $where;
 	}
