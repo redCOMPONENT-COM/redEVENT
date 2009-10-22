@@ -31,7 +31,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			echo ELOutput::submitbutton( $this->dellink, $this->params );
 			echo ELOutput::archivebutton( $this->params, $this->task, $this->category->slug );
 		endif;
-		echo ELOutput::mailbutton( $this->category->slug, 'categoryevents', $this->params );
+		echo ELOutput::mailbutton( $this->category->slug, 'venuecategory', $this->params );
 		echo ELOutput::printbutton( $this->print_link, $this->params );
 	?>
 </p>
@@ -50,7 +50,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 </div>
 
 <div class="catdescription">
-	<?php echo $this->catdescription; ?>
+	<?php echo $this->description; ?>
 </div>
 </div>
 <!--table-->
@@ -60,7 +60,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <input type="hidden" name="option" value="com_redevent" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="" />
-<input type="hidden" name="view" value="categoryevents" />
+<input type="hidden" name="view" value="venuecategory" />
 <input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 <input type="hidden" name="id" value="<?php echo $this->category->id; ?>" />
 <input type="hidden" name="Itemid" value="<?php echo (isset($this->item->id) ? $this->item->id:""); ?>" />

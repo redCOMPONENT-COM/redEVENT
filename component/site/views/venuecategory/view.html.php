@@ -141,15 +141,15 @@ class RedeventViewVenuecategory extends JView
 		$pageNav = new JPagination($total, $limitstart, $limit);
 
 		//Generate Categorydescription
-		if (empty ($category->catdescription)) {
-			$catdescription = JText::_( 'NO DESCRIPTION' );
+		if (empty ($category->description)) {
+			$description = JText::_( 'NO DESCRIPTION' );
 		} else {
 			//execute plugins
-			$category->text	= $category->catdescription;
+			$category->text	= $category->description;
 			$category->title 	= $category->name;
 			JPluginHelper::importPlugin('content');
 			$results = $mainframe->triggerEvent( 'onPrepareContent', array( &$category, array(), 0 ));
-			$catdescription = $category->text;
+			$description = $category->text;
 		}
 
 		if ($category->image != '') {
@@ -174,7 +174,7 @@ class RedeventViewVenuecategory extends JView
 		$this->assignRef('params' , 				$params);
 		$this->assignRef('dellink' , 				$dellink);
 		$this->assignRef('task' , 					$task);
-		$this->assignRef('catdescription' , 		$catdescription);
+		$this->assignRef('description' , 		$description);
 		$this->assignRef('pageNav' , 				$pageNav);
 		$this->assignRef('elsettings' , 			$elsettings);
 		$this->assignRef('item' , 					$item);
