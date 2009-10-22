@@ -35,6 +35,13 @@ jimport('joomla.application.component.model');
  */
 class RedeventModelCategories extends JModel
 {
+  /**
+   * category to use as a base for queries
+   * 
+   * @var unknown_type
+   */
+  var $_parent = null;
+  
 	/**
 	 * Categories data array
 	 *
@@ -65,11 +72,15 @@ class RedeventModelCategories extends JModel
 	{
 		parent::__construct();
 
-		global $mainframe;
+    $mainframe = &JFactory::getApplication();
 
 		// Get the paramaters of the active menu item
 		$params = & $mainframe->getParams();
-
+	
+    if ($params->get('parentcategory', 0)) {
+      $this->setParent($params->get('parentcategory', 0));
+    }
+    
 		//get the number of events from database
 		$limit			= JRequest::getInt('limit', $params->get('cat_num'));
 		$limitstart		= JRequest::getInt('limitstart');
@@ -78,6 +89,27 @@ class RedeventModelCategories extends JModel
 		$this->setState('limitstart', $limitstart);
 	}
 
+  /**
+   * set the parent category id
+   * 
+   * @param int id
+   * @return boolean
+   */
+  function setParent($id)
+  {   
+    $sub = ' SELECT id, lft, rgt FROM #__redevent_categories WHERE id = '. $this->_db->Quote((int) $id);
+    $this->_db->setQuery($sub);
+    $obj = $this->_db->loadObject();
+    if (!$obj) {
+      JError::raiseWarning(0, JText::_('PARENT CATEGORY NOT FOUND'));
+    }
+    else {
+      $this->_parent = $obj;
+      $this->_categories = null;
+    }
+    return true;
+  }
+  
 	/**
 	 * Method to get the Categories
 	 *
@@ -156,37 +188,43 @@ class RedeventModelCategories extends JModel
 	function _buildQuery()
 	{
 		//initialize some vars
+    $mainframe = &JFactory::getApplication();
+    $params   = & $mainframe->getParams('com_redevent');
 		$user		= & JFactory::getUser();
 		$gid		= (int) $user->get('aid');
 
 		//check archive task and ensure that only categories get selected if they contain a published/archived event
 		$task 	= JRequest::getVar('task', '', '', 'string');
+		$eventstate = array();
 		if($task == 'archive') {
-			$eventstate = ' AND x.published = -1';
+		  $eventstate[] = 'x.published = -1';
 		} else {
-			$eventstate = ' AND x.published = 1';
+      $eventstate[] = 'x.published = 1';
 		}
+    if ($params->get('display_all_categories', 1)) {
+      $eventstate[] = ' x.id IS NULL ';
+    }
+    $eventstate = ' AND ('.implode(' OR ', $eventstate).')';
+		
 				
 		//get categories
-		// TODO: it works, but maybe there could be a simpler solution...
-		$query = 'SELECT top.*, top.id AS catid, COUNT( sub.catid ) AS assignedevents,'
-				. ' CASE WHEN CHAR_LENGTH(top.alias) THEN CONCAT_WS(\':\', top.id, top.alias) ELSE top.id END as slug'
-				. ' FROM #__redevent_categories AS top'
-				. ' INNER JOIN ( '
-				. '   SELECT DISTINCT top.id as catid, x.id '
-        . '   FROM #__redevent_categories AS top'
-        . '   INNER JOIN #__redevent_categories AS c ON c.lft BETWEEN top.lft AND top.rgt'
-				. '   INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = c.id'
-        . '   INNER JOIN #__redevent_events AS a ON xcat.event_id = a.id'
-        . '   INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
-				. '   WHERE c.published = 1'
-				. '   AND c.access <= '.$gid
-				.     $eventstate
-        . ' ) AS sub ON sub.catid = top.id' // itself and descendants
-				. ' GROUP BY top.id'
-				. ' ORDER BY top.ordering'
-				;
-
+      $query = ' SELECT c.*, COUNT(x.id) AS assignedevents, '
+          . '   CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
+          . ' FROM #__redevent_categories AS c '
+          . ' LEFT JOIN #__redevent_categories AS child ON child.lft BETWEEN c.lft AND c.rgt '
+          . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = child.id '
+          . ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = xcat.event_id '
+          . ' WHERE child.published = 1 '
+          . '   AND child.access <= '.$gid
+          .     $eventstate
+          ;  
+      
+      if ($this->_parent) {
+        $query .= ' AND c.parent_id = '. $this->_db->Quote($this->_parent->id);      
+      }
+      
+      $query .= '   GROUP BY c.id '; 
+      
 		return $query;
 	}
 }

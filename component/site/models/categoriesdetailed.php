@@ -60,7 +60,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 	{
 		parent::__construct();
 
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		// Get the paramaters of the active menu item
 		$params 	= & $mainframe->getParams('com_redevent');

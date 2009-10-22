@@ -8,5 +8,12 @@
 	<state>
 		<name>CATEGORIES LAYOUT</name>
 		<description>CATEGORIES LAYOUT DESC</description>
+    <params addpath="/administrator/components/com_redevent/elements">
+      <param name="parentcategory" type="categories" default="0" label="SELECT PARENT CATEGORY" description="SELECT PARENT CATEGORY DESC" />
+      <param name="display_all_categories" type="radio" default="1" label="DISPLAY ALL CATEGORIES" description="DISPLAY ALL CATEGORIES TIP">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </param>
+    </params>
 	</state>
 </metadata>
