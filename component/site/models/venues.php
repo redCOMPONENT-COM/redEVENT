@@ -35,6 +35,12 @@ jimport('joomla.application.component.model');
  */
 class RedeventModelVenues extends JModel
 {
+  /**
+   * limit venues to a certain category
+   * @var object
+   */
+  var $_category;
+  
 	/**
 	 * Venues data array
 	 *
@@ -69,7 +75,11 @@ class RedeventModelVenues extends JModel
 
 		// Get the paramaters of the active menu item
 		$params 	= & $mainframe->getParams('com_redevent');
-
+	
+    if ($params->get('id', 0)) {
+      $this->setCategory($params->get('id', 0));
+    }
+    
 		//get the number of events from database
 		$limit			= JRequest::getInt('limit', $params->get('display_venues_num'));
 		$limitstart		= JRequest::getInt('limitstart');
@@ -78,6 +88,27 @@ class RedeventModelVenues extends JModel
 		$this->setState('limitstart', $limitstart);
 	}
 
+  /**
+   * set the category
+   * 
+   * @param int id
+   * @return boolean
+   */
+  function setCategory($id)
+  {   
+    $sub = ' SELECT id, lft, rgt FROM #__redevent_venues_categories WHERE id = '. $this->_db->Quote((int) $id);
+    $this->_db->setQuery($sub);
+    $obj = $this->_db->loadObject();
+    if (!$obj) {
+      JError::raiseWarning(0, JText::_('VENUE CATEGORY NOT FOUND'));
+    }
+    else {
+      $this->_category = $obj;
+      $this->_data = null;
+    }
+    return true;
+  }
+  
 	/**
 	 * Method to get the Venues
 	 *
@@ -216,12 +247,17 @@ class RedeventModelVenues extends JModel
     else {
       $filter = '';
     }
+    if ($this->_category) {
+      $filter .= ' AND c.lft BETWEEN '. $this->_db->Quote($this->_category->lft) .' AND '. $this->_db->Quote($this->_category->rgt);
+    }
 		
-		//get categories
+		//get venues
 		$query = 'SELECT v.*, COUNT( x.eventid ) AS assignedevents,'
         . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as slug '
 				. ' FROM #__redevent_venues as v'
 				. ' LEFT JOIN #__redevent_event_venue_xref AS x ON v.id = x.venueid '. $eventstate
+				. ' LEFT JOIN #__redevent_venue_category_xref AS xc ON xc.venue_id = v.id '
+        . ' LEFT JOIN #__redevent_venues_categories AS c ON c.id = xc.category_id '
 				. ' WHERE v.published = 1'
 				. $filter
 				. ' GROUP BY v.id'
