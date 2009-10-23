@@ -76,8 +76,8 @@ class RedeventModelVenues extends JModel
 		// Get the paramaters of the active menu item
 		$params 	= & $mainframe->getParams('com_redevent');
 	
-    if ($params->get('id', 0)) {
-      $this->setCategory($params->get('id', 0));
+    if ($params->get('categoryid', 0)) {
+      $this->setCategory($params->get('categoryid', 0));
     }
     
 		//get the number of events from database

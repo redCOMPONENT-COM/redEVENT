@@ -21,6 +21,11 @@
   $sh_LANG['en']['upcomingvenueevents'] = 'upcoming-venue-events';
   $sh_LANG['en']['signup'] = 'signup';
   $sh_LANG['en']['confirmation'] = 'confirmation';
+  $sh_LANG['en']['today'] = 'today';
+  $sh_LANG['en']['tomorrow'] = 'tomorrow';
+  $sh_LANG['en']['yesterday'] = 'yesterday';
+  $sh_LANG['en']['in x days'] = 'in-%d-days';
+  
   // dutch
   $sh_LANG['nl']['_COM_SEF_REDEVENT'] = 'redEVENT';
   $sh_LANG['nl']['_COM_SEF_TITLE_REDEVENT'] = 'redEVENT';

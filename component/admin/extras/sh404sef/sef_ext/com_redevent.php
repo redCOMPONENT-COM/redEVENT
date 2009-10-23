@@ -28,8 +28,18 @@ else {
   /* Get the DB connection */
   $db = JFactory::getDBO();
   
+  $Itemid = isset($Itemid) ? @$Itemid : null; 
+  if (!empty($Itemid))
+  {
+    $menu = JSite::getMenu();
+    $menuparams = $menu->getParams( $Itemid );
+  }
+  else {
+    $menuparams = null;     
+  }
+    
   // do something about that Itemid thing
-  if (eregi('Itemid=[0-9]+', $string) === false) 
+  if (empty($Itemid)) 
   { // if no Itemid in non-sef URL
     // V 1.2.4.t moved back here
     // try to find an item id that belongs to redevent fo default routing.
@@ -149,7 +159,7 @@ else {
 	            ON e.id = x.eventid
 	            LEFT JOIN #__redevent_venues v
 	            ON v.id = x.venueid
-	            WHERE x.id = ".$xref;
+	            WHERE x.id = ".$db->Quote((int) $xref);
 	    $db->setQuery($q);
 	    $details = $db->loadObject();
     }
@@ -169,10 +179,29 @@ else {
 	        $title[] = $id;    
 	        shRemoveFromGETVarsList('id');		
 	    	}
+        if ($menuparams) 
+        {
+          $offset = $menuparams->get('days', 0);
+          switch ($offset)
+          {
+            case 0: 
+              $title[] = $sh_LANG[$shLangIso]['today']; 
+              break;
+            case 1:
+              $title[] = $sh_LANG[$shLangIso]['tomorrow']; 
+              break;
+            case -1:
+              $title[] = $sh_LANG[$shLangIso]['yesterday']; 
+              break;
+            default:
+              $title[] = sprintf($sh_LANG[$shLangIso]['in x days'], $offset); 
+              break;
+          } 
+        }	    	
 	      break;
 	      
 	    case 'categoryevents':
-	      $q = "SELECT catname FROM #__redevent_categories WHERE id = ".$id;
+	      $q = "SELECT catname FROM #__redevent_categories WHERE id = ".$db->Quote((int) $id);
 	      $db->setQuery($q);
 	      $title[] = $db->loadResult();
 	      //$title[] = $id;
@@ -181,16 +210,54 @@ else {
 	      shRemoveFromGETVarsList('xref');
 	      break;
 	      
+      case 'categories':
+        if ($menuparams && $menuparams->get('parentcategory', 0)) 
+        {
+          $vcat = $menuparams->get('parentcategory', 0);
+          $q = "SELECT catname FROM #__redevent_categories WHERE id = ".$db->Quote((int) $vcat);
+          $db->setQuery($q);
+          $title[] = $db->loadResult();
+        }
+        break;
+        
+      case 'categoriesdetailed':
+        if ($menuparams && $menuparams->get('parentcategory', 0)) 
+        {
+          $vcat = $menuparams->get('parentcategory', 0);
+          $q = "SELECT catname FROM #__redevent_categories WHERE id = ".$db->Quote((int) $vcat);
+          $db->setQuery($q);
+          $title[] = $db->loadResult();
+        }
+        break;
+        
+      case 'venues':
+        if ($menuparams && $menuparams->get('categoryid', 0)) 
+        {
+          $vcat = $menuparams->get('categoryid', 0);
+          $q = "SELECT name FROM #__redevent_venues_categories WHERE id = ".$db->Quote((int) $vcat);
+          $db->setQuery($q);
+          $title[] = $db->loadResult();
+        }
+        break;
+        
 	   case 'venueevents':
-	      $q = "SELECT venue FROM #__redevent_venues WHERE id = ".$id;
+	      $q = "SELECT venue FROM #__redevent_venues WHERE id = ".$db->Quote((int) $id);
 	      $db->setQuery($q);
 	      $title[] = $db->loadResult();
 	      /* Remove xref so no other course details are added */
 	      shRemoveFromGETVarsList('id');
 	      break;
 	      
+	   case 'venuecategory':
+        $q = "SELECT name FROM #__redevent_venues_categories WHERE id = ".$db->Quote((int) $id);
+        $db->setQuery($q);
+        $title[] = $db->loadResult();
+        /* Remove xref so no other course details are added */
+        shRemoveFromGETVarsList('id');
+        break;
+	      
 	   case 'upcomingvenueevents':
-	      $q = "SELECT venue FROM #__redevent_venues WHERE id = ".$id;
+	      $q = "SELECT venue FROM #__redevent_venues WHERE id = ".$db->Quote((int) $id);
 	      $db->setQuery($q);
 	      $title[] = $db->loadResult();
 	      /* Remove xref so no other course details are added */

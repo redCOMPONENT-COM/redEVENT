@@ -9,7 +9,7 @@
 		<name>VENUES LAYOUT</name>
 		<description>VENUES LAYOUT DESC</description>
 		<params addpath="/administrator/components/com_redevent/elements"> 
-      <param name="id" type="venuecategories" default="0" label="SELECT VENUE CATEGORY" description="SELECT VENUE CATEGORY DESC" />
+      <param name="categoryid" type="venuecategories" default="0" label="SELECT VENUE CATEGORY" description="SELECT VENUE CATEGORY DESC" />
 			<param name="display_venues_num" type="text" size="2" default="5" label="VENUE NUMBER" description="VENUE NUMBER TIP" />
       <param name="display_all_venues" type="radio" default="1" label="DISPLAY ALL VENUES" description="DISPLAY ALL VENUES TIP">
         <option value="0">No</option>
