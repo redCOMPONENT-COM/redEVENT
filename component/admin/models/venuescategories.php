@@ -182,7 +182,6 @@ class RedEventModelVenuesCategories extends JModel
 					. ' LEFT JOIN #__groups AS g ON g.id = c.access'
 					. ' LEFT JOIN #__users AS u ON u.id = c.checked_out'
 					. ' LEFT JOIN #__redevent_groups AS gr ON gr.id = c.groupid'
-          . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
 					. $where
           . ' GROUP BY c.id '
 					. $orderby
@@ -226,6 +225,7 @@ class RedEventModelVenuesCategories extends JModel
 		$search 			= $this->_db->getEscaped( trim(JString::strtolower( $search ) ) );
 
 		$where = array();
+    $where[] = 'c.lft BETWEEN parent.lft AND parent.rgt';
 
 		if ( $filter_state ) {
 			if ( $filter_state == 'P' ) {
@@ -239,7 +239,7 @@ class RedEventModelVenuesCategories extends JModel
 			$where[] = ' LOWER(c.name) LIKE \'%'.$search.'%\' ';
 		}
 
-		$where 		= implode( ' AND ', $where );
+		$where 		= ' WHERE '. implode( ' AND ', $where );
 
 		return $where;
 	}
