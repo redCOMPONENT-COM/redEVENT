@@ -35,6 +35,7 @@ class redEVENT_tags {
   private $_published;
 	protected $_eventlinks = null;
 	private $_data = false;
+	private $_libraryTags = null;
 	
 	public function __construct() {
 				
@@ -102,22 +103,27 @@ class redEVENT_tags {
 	public function ReplaceTags($page) 
 	{
 		//exit($page);
-		if ($this->_xref) {
+		if ($this->_xref) 
+		{
       $elsettings = redEVENTHelper::config();
 
       /* Load the event links */
 			if (is_null($this->_eventlinks)) $this->getEventLinks();
 			if (count($this->_eventlinks) == 0) return '';
 			$this->getData();
-			if ($this->_data) {
+			
+			if ($this->_data) 
+			{
 				/* Load the signup links */
 				$venues_html = $this->SignUpLinks();
 				
-				/* Load custom tags */
-				$customtags = array();
-				preg_match_all("/\[(.+?)\]/", $page, $alltags);
-				$customdata = $this->getCustomData($alltags);
+				// first, let's do the library tags replacement
+				$page = $this->_replaceLibraryTags($page);
 				
+				// now get the list of all remaining tags
+				preg_match_all("/\[(.+?)\]/", $page, $alltags);
+				
+				/* Load custom fields */
 				$customfields = $this->getCustomFields($this->_data->id);
 				
 				/* Only do the event description if it is in on the page */
@@ -146,7 +152,7 @@ class redEVENT_tags {
 				
 				/* Include redFORM */
 				$redform = '';
-				if ($this->_data->redform_id > 0) {
+				if (in_array('[redform]', $alltags[0]) && $this->_data->redform_id > 0) {
 				  $status = redEVENTHelper::canRegister($this->_xref);
 				  if ($status->canregister) {
   					JPluginHelper::importPlugin( 'content' );
@@ -318,26 +324,17 @@ class redEVENT_tags {
 			  /* second replacement, add the form */
 				/* if done in first one, username in the form javascript is replaced too... */
 				$message = str_replace('[redform]', $redform, $message); 
-				
-				// then the tags from the custom library
-				foreach ($customdata as $tag => $data) {
-					$data->text_field = str_replace($findoffer, $replaceoffer, $data->text_field);
-					/* Do a redFORM replacement here too for when used in the text library */
-					$data->text_field = str_replace('[redform]', $redform, $data->text_field);
-					$message = str_ireplace('['.$tag.']', $data->text_field, $message);
-				}
-				
-        // then the tags from the custom library
+								
+				// then the custom tags
+				$search = array();
+				$replace = array();
         foreach ($customfields as $tag => $data) 
         {
-//          // in case tags are used in custom fields...
-//          $data->text_field = str_replace($findoffer, $replaceoffer, $data->text_field);
-//          /* Do a redFORM replacement here too for when used in the text library */
-//          $data->text_field = str_replace('[redform]', $redform, $data->text_field);
-          $message = str_ireplace('['.$tag.']', $data->text_field, $message);
+          $search[] = '['.$tag.']';
+          $replace[] = $data;
         }
+        $message = str_ireplace($search, $replace, $message);
 				
-				// then the custom tags
 				
 				// FIXME: I don't see the point of this relative to abs for pictures, only causing problems... I'll comment it for now.
 				// FEEDBACK: relative to absolute images is necessary for e-mail messages that contain relative image links. The images won't show up in the e-mail.
@@ -489,17 +486,50 @@ class redEVENT_tags {
     }
     return $rows;
   }
-  	
+  		
 	/**
-	 *
+	 * recursively replaces all the library tags from the text
+	 * 
+	 * @param string
+	 * @return string
 	 */
-	private function getCustomData($customtags) {
-		$db = JFactory::getDBO();
-		$q = "SELECT text_name, text_field
-			FROM #__redevent_textlibrary
-			WHERE text_name ='". implode( "' OR text_name ='", $customtags[1] )."'";
-		$db->setQuery($q);
-		return $db->loadObjectList('text_name');
+	private function _replaceLibraryTags($text) 
+	{
+	  $tags = &$this->_getLibraryTags();
+	  
+	  foreach ($tags as $tag => $data) 
+	  {
+	    $search[] = '['.$data->text_name.']';
+	    $replace[] = $data->text_field;
+	  }
+	  // first replacement
+	  $text = str_ireplace($search, $replace, $text, $count);
+	  
+	  // now, the problem that there could have been libray tags embedded into one another, so we keep replacing if $count is > 0
+	  if ($count) {
+	    $text = $this->_replaceLibraryTags($text);
+	  }
+	  return $text;
+	}
+
+	/**
+	 * gets list of tags belonging to the text library
+   * 
+   * @param array
+   * @return array (objects: text_name, text_field)
+   */
+	private function &_getLibraryTags() 
+	{
+	  if (empty($this->_libraryTags)) 
+	  {
+  		$db = JFactory::getDBO();
+  		$q = "SELECT text_name, text_field
+  			FROM #__redevent_textlibrary WHERE CHAR_LENGTH(text_name) > 0";
+  		$db->setQuery($q);
+  		
+  		$this->_libraryTags = $db->loadObjectList('text_name');
+	  }
+	  return $this->_libraryTags;
 	}
 	
 	/**
