@@ -225,7 +225,7 @@ class RedeventModelSignup extends JModel
 		
 		/* Check if the attachment needs to be send */
 		if ($send_attachment) {
-			$pdf = file_get_contents(JURI::root().'index.php?option=com_redevent&view=signup&task=createpdfemail&subtype=email&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id').'&format=raw');
+			$pdf = file_get_contents(JURI::root().'index.php?option=com_redevent&view=signup&task=createpdfemail&format=pdf&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id'));
 			$pdffile = JPATH_CACHE.DS.'signup.pdf';
 			file_put_contents($pdffile, $pdf);
 			$this->mailer->AddAttachment($pdffile);

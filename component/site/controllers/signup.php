@@ -50,32 +50,31 @@ class RedEventControllerSignup extends RedEventController
 	 * 
 	 * @since 0.9
 	 */
-	function display() {
-		
-		/* Create the view object */
-		$view = $this->getView('signup', 'html');
-		$this->addModelPath(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models');
-		
-		/* Standard model */
-		$view->setModel( $this->getModel( 'signup', 'RedeventModel' ), true );
-		$view->setModel( $this->getModel( 'details', 'RedeventModel' ) );
-		$view->setLayout('default');
-		
-		/* Now display the view. */
-		$view->display();
+	function display() 
+	{	  
+		if (JRequest::getVar('format', 'html') == 'html')
+		{
+  		/* Create the view object */
+  		$view = $this->getView('signup', 'html');
+  		$this->addModelPath(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models');
+  		
+  		/* Standard model */
+  		$view->setModel( $this->getModel( 'signup', 'RedeventModel' ), true );
+  		$view->setModel( $this->getModel( 'details', 'RedeventModel' ) );
+  		$view->setLayout('default');
+  		
+  		/* Now display the view. */
+  		$view->display();
+		}
+		else
+		{
+		  parent::display();
+		}
 	}
 	
-	function CreatePdfEmail() {
-		/* Create the view object */
-		$view = $this->getView('signup', 'raw');
-		$this->addModelPath(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models');
-		
-		/* Standard model */
-		$view->setModel( $this->getModel( 'signup', 'RedeventModel' ), true );
-		$view->setLayout('sendpdf');
-		
-		/* Now display the view. */
-		$view->display();
+	function Createpdfemail() 
+	{
+		parent::display();
 	}
 }
 ?>
