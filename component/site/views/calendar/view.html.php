@@ -68,11 +68,10 @@ class RedeventViewCalendar extends JView
 
         $year 	= (int)JRequest::getVar('yearID', strftime("%Y"));
         $month 	= (int)JRequest::getVar('monthID', strftime("%m"));
-        $day 	= (int)JRequest::getVar('dayID', strftime("%d"));
 
         //get data from model and set the month
         $model = & $this->getModel();
-        $model->setDate(mktime(0, 0, 1, $month, $day, $year));
+        $model->setDate(mktime(0, 0, 1, $month, 1, $year));
 
         $rows = & $this->get('Data');
 
@@ -89,7 +88,7 @@ class RedeventViewCalendar extends JView
     		$cal->enableMonthNav('index.php?optin=com_redevent&view=calendar');
     		$cal->setFirstWeekDay(($params->get('week_start', "SU") == 'SU' ? 0 : 1));
     		$cal->enableDayLinks(false);
-
+    		
         $this->assignRef('rows', 		$rows);
         $this->assignRef('params', 		$params);
         $this->assignRef('elsettings', 	$elsettings);
