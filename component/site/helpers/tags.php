@@ -647,6 +647,8 @@ class redEVENT_tags {
 	{
 	  $tags = &$this->_getLibraryTags();
 	  
+	  $search = array();
+	  $replace = array();
 	  foreach ($tags as $tag => $data) 
 	  {
 	    $search[] = '['.$data->text_name.']';
