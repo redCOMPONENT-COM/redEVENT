@@ -65,11 +65,9 @@ defined('_JEXEC') or die('Restricted access');
 			$k = 0;
 			for($i=0, $n=count( $this->rows ); $i < $n; $i++) {
 				$row = $this->rows[$i];
-				
-				if (array_key_exists($row->id, $this->eventvenues)) {
-					$link 			= 'index.php?option=com_redevent&amp;controller=events&amp;task=edit&amp;cid[]='.$row->id;
+				$link 			= 'index.php?option=com_redevent&amp;controller=events&amp;task=edit&amp;cid[]='.$row->id;
 	
-					$checked 	= JHTML::_('grid.checkedout', $row, $i );
+				$checked 	= JHTML::_('grid.checkedout', $row, $i );
 				?>
 				<tr class="<?php echo "row$k"; ?>">
 					<td><?php echo $this->pageNav->getRowOffset( $i ); ?></td>
@@ -151,7 +149,7 @@ defined('_JEXEC') or die('Restricted access');
 						</span>
 					</td>
 				</tr>
-				<?php $k = 1 - $k;  }
+				<?php $k = 1 - $k;
 			} ?>
 
 		</tbody>

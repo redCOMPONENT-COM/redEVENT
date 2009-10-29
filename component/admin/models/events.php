@@ -291,6 +291,12 @@ class RedEventModelEvents extends JModel
 		}
 	}
 	
+	/**
+	 * archive past xrefs
+	 * 
+	 * @param $event_ids
+	 * @return unknown_type
+	 */
 	function archive($event_ids = array())
 	{
 		if (!count($event_ids)) {

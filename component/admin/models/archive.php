@@ -209,7 +209,7 @@ class RedEventModelArchive extends JModel
 		$search 			= $mainframe->getUserStateFromRequest( $option.'.archive.search', 'search', '', 'string' );
 		$search 			= $this->_db->getEscaped( trim(JString::strtolower( $search ) ) );
 
-		$where = array();
+		$where = array('a.published = -1');
 
 		if ($search && $filter == 1) {
 			$where[] = ' LOWER(a.title) LIKE \'%'.$this->_db->getEscaped($search).'%\' ';
