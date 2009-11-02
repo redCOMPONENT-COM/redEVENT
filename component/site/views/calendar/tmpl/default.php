@@ -19,6 +19,105 @@
 
 // no direct access
 defined('_JEXEC') or die ('Restricted access');
+
+// build calendar
+$countcatevents = array ();
+ 
+foreach ($this->rows as $row)
+{
+	//get event date
+	$year = strftime('%Y', strtotime($row->dates));
+	$month = strftime('%m', strtotime($row->dates));
+	$day = strftime('%d', strtotime($row->dates));
+
+	//for time printing
+	$timehtml = '';
+
+	if ($this->elsettings->showtime == 1)
+	{
+		$start = ELOutput::formattime($row->dates, $row->times);
+		$end = ELOutput::formattime($row->dates, $row->endtimes);
+
+		if ($start != '')
+		{
+			$timehtml = '<div class="time"><span class="label">'.JText::_('TIME').': </span>';
+			$timehtml .= $start;
+			if ($end != '') {
+				$timehtml .= ' - '.$end;
+			}
+			$timehtml .= '</div>';
+		}
+	}
+
+	$eventname = '<div class="eventName">'.$this->escape($row->title).'</div>';
+
+	//initialize variables
+	$colorpic = '';
+	$content = '';
+	$contentend = '';
+	$detaillink   = 'index.php?option=com_redevent&view=details&id='.$row->slug.'&xref='.$row->xref;
+
+	$cat_classes = array();
+	$cat_names = array();
+	//walk through categories assigned to an event
+	foreach($row->categories AS $category)
+	{
+		$cat_classes[] = 'cat'.$category->id;
+		 
+		//attach category color if any in front of the catname
+		if ($category->color) {
+			$cat_names[] = '<span class="colorpic" style="background-color: '.$category->color.';"></span>'.$category->catname;
+		}
+		else {
+			$cat_names[] = $category->catname;
+		}
+			
+		//attach category color if any in front of the event title in the calendar overview
+		if ( isset ($category->color) && $category->color) {
+			$colorpic .= '<span class="colorpic" style="background-color: '.$category->color.';"></span>';
+		}
+			
+		//count number of events per category
+		if (!array_key_exists($category->id, $countcatevents)) {
+			$countcatevents[$category->id] = 1;
+		}
+		else {
+			$countcatevents[$category->id]++;
+		}
+	}
+	//wrap a div for each category around the event for show hide toggler
+	$content    .= '<div class="'.implode(' ', $cat_classes).'">';
+	$contentend   .= '</div>';
+
+	$catname = '<div class="catname">'.implode(', ', $cat_names).'</div>';
+
+	$eventdate = ELOutput::formatdate($row->dates, $row->times);
+
+	//venue
+	if ($this->elsettings->showlocate == 1)
+	{
+		$venue = '<div class="location"><span class="label">'.JText::_('VENUE').': </span>';
+
+		if ($this->elsettings->showlinkvenue == 1 && 0) {
+			$venue .= $row->locid ? "<a href='".'index.php?option=com_redevent&view=venueevents&id='.$row->venueslug."'>".$this->escape($row->venue)."</a>" : '-';
+		}
+		else {
+			$venue .= $row->locid ? $this->escape($row->venue) : '-';
+		}
+		$venue .= '</div>';
+	}
+	else {
+		$venue = '';
+	}
+
+	//generate the output
+	$content .= $colorpic;
+	$content .= $this->caltooltip($catname.$eventname.$timehtml.$venue, $eventdate, $row->title, $detaillink, 'eventTip');
+	$content .= $contentend;
+	// add the event to the calendar
+	$this->cal->setEventContent($year, $month, $day, $content);
+
+}
 ?>
 <div id="redevent" class="jlcalendar">
     <?php if ($this->params->def('show_page_title', 1)): ?>
@@ -27,108 +126,7 @@ defined('_JEXEC') or die ('Restricted access');
     	</h1>
     <?php endif; ?>
 	
-<?php
-  $countcatevents = array ();
-   
-  foreach ($this->rows as $row) 
-  {    
-    //get event date
-    $year = strftime('%Y', strtotime($row->dates));
-    $month = strftime('%m', strtotime($row->dates));
-    $day = strftime('%d', strtotime($row->dates));
-
-    //for time printing
-    $timehtml = '';
-        
-		if ($this->elsettings->showtime == 1) 
-		{
-		  $start = ELOutput::formattime($row->dates, $row->times);
-		  $end = ELOutput::formattime($row->dates, $row->endtimes);
-
-		  if ($start != '')
-		  {
-		    $timehtml = '<div class="time"><span class="label">'.JText::_('TIME').': </span>';
-		    $timehtml .= $start;
-		    if ($end != '') {
-		      $timehtml .= ' - '.$end;
-		    }
-		    $timehtml .= '</div>';
-		  }
-		}
-
-		$eventname = '<div class="eventName">'.$this->escape($row->title).'</div>';
-
-		//initialize variables
-		$multicatname = '';
-		$colorpic = '';
-		$nr = count($row->categories);
-		$ix = 0;
-		$content = '';
-		$contentend = '';
-    $detaillink   = 'index.php?option=com_redevent&view=details&id='.$row->slug.'&xref='.$row->xref;
-		
-    $cat_classes = array();
-    $cat_names = array();
-		//walk through categories assigned to an event
-    foreach($row->categories AS $category) 
-    {
-      $cat_classes[] = 'cat'.$category->id;
-       
-      //attach category color if any in front of the catname
-      if ($category->color) {
-        $cat_names[] = '<span class="colorpic" style="background-color: '.$category->color.';"></span>'.$category->catname;
-      }
-      else {
-        $cat_names[] = $category->catname;
-      }
-			
-			//attach category color if any in front of the event title in the calendar overview
-			if ( isset ($category->color) && $category->color) {
-        $colorpic .= '<span class="colorpic" style="background-color: '.$category->color.';"></span>';
-			}
-			
-			//count occurence of the category
-			if (!array_key_exists($category->id, $countcatevents)) {
-			  $countcatevents[$category->id] = 1;
-			}
-			else {
-			  $countcatevents[$category->id]++;
-			}
-    }
-    $content    .= '<div class="'.implode(' ', $cat_classes).'">';
-    //wrap a div for each category around the event for show hide toggler
-    $contentend   .= '</div>';
-       	
-    $catname = '<div class="catname">'.implode(', ', $cat_names).'</div>';
-
-    $eventdate = ELOutput::formatdate($row->dates, $row->times);
-
-    //venue
-    if ($this->elsettings->showlocate == 1)
-    {
-      $venue = '<div class="location"><span class="label">'.JText::_('VENUE').': </span>';
-
-      if ($this->elsettings->showlinkvenue == 1 && 0) {
-        //                $venue .= $row->locid != 0 ? "<a href='".JRoute::_('index.php?option=com_redevent&view=venueevents&id='.$row->venueslug)."'>".$this->escape($row->venue)."</a>" : '-';
-        $venue .= $row->locid != 0 ? "<a href='".'index.php?option=com_redevent&view=venueevents&id='.$row->venueslug."'>".$this->escape($row->venue)."</a>" : '-';
-      }
-      else {
-        $venue .= $row->locid ? $this->escape($row->venue) : '-';
-      }
-      $venue .= '</div>';
-    }
-    else {
-      $venue = '';
-    }
-        
-		//generate the output
-		$content .= $colorpic;       
-		$content .= $this->caltooltip($catname.$eventname.$timehtml.$venue, $eventdate, $row->title, $detaillink, 'eventTip');
-    $content .= $contentend;
-    
-    $this->cal->setEventContent($year, $month, $day, $content);
-        
-	}
+<?php  
   // print the calendar
   print ($this->cal->showMonth());
   //return; 
