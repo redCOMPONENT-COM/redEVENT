@@ -22,6 +22,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+require_once (JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'route.php');
+
 /**
  * RedEvent Module helper
  *
@@ -112,10 +114,11 @@ class modRedEventHelper
       else {
         $rows[$k]->venue_short = htmlspecialchars($row->venue, ENT_COMPAT, 'UTF-8');
       }
-			
-			$rows[$k]->link		= JRoute::_('index.php?option=com_redevent&view=details&id='. $row->slug .'&xref='.$row->xref);
+      
+			$rows[$k]->link		= JRoute::_(RedeventHelperRoute::getRoute($row->slug, 'details', $row->xref));
+//			$rows[$k]->link		= JRoute::_('index.php?option=com_redevent&view=details&id='. $row->slug .'&xref='.$row->xref);
 			$rows[$k]->dateinfo 	= modRedEventHelper::_builddateinfo($row, $params);
-			$rows[$k]->text		= $params->get('showtitloc', 0 ) ? $rows[$k]->title_short : $rows[$k]->venue_short;
+			$rows[$k]->text		= ($params->get('showtitloc', 0 )) ? $rows[$k]->title_short : $rows[$k]->venue_short;
 			$rows[$k]->city		= htmlspecialchars( $row->city, ENT_COMPAT, 'UTF-8' );
 			$rows[$k]->venueurl 	= !empty( $row->url ) ? modRedEventHelper::_format_url($row->url) : JRoute::_('index.php?option=com_redevent&view=venueevents&id='. $row->venueslug , false);
 		}

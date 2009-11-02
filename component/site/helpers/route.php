@@ -42,19 +42,29 @@ class RedeventHelperRoute
 	 *
 	 * @param int The id of an EventList item
 	 * @param string The view
+	 * @param int The xref for the details view
 	 * @since 0.9
 	 *
 	 * @return string determined Link
 	 */
-	function getRoute($id, $view = 'details')
+	function getRoute($id, $view = 'details', $xref = null)
 	{
-		//Not needed currently but kept because of a possible hierarchic link structure in future
-		$needles = array(
-			$view  => (int) $id
-		);
-
 		//Create the link
-		$link = 'index.php?option=com_redevent&view='.$view.'&id='. $id;
+		switch ($view) 
+		{
+			case 'details':
+				$needles = array(
+					$view  => (int) $xref
+				);
+				$link = 'index.php?option=com_redevent&view='.$view.'&id='. $id.'&xref='. $xref;
+				break;
+			default:
+				$needles = array(
+					$view  => (int) $id
+				);
+				$link = 'index.php?option=com_redevent&view='.$view.'&id='. $id;
+				break;
+		}
 
 		if($item = RedEventHelperRoute::_findItem($needles)) {
 			$link .= '&Itemid='.$item->id;
@@ -87,9 +97,8 @@ class RedeventHelperRoute
 		{
 			if ($items) {
 				foreach($items as $item)
-				{
-	
-					if ((@$item->query['view'] == $needle) && (@$item->query['id'] == $id) && ($item->published == 1) && ($item->access <= $access)) {
+				{	
+					if ((@$item->query['view'] == $needle) && (@$item->query['id'] == $id || @$item->query['xref'] == $id) && ($item->published == 1) && ($item->access <= $access)) {
 						return $item;
 					}
 				}
