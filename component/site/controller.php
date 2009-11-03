@@ -645,6 +645,17 @@ class RedeventController extends JController
 		$post 		= JRequest::get('post');
 		$xref 		= JRequest::getInt('id');
 		
+		$post['details'] = JRequest::getVar( 'details', '', 'post', 'string', JREQUEST_ALLOWRAW );
+		
+		$model = $this->getModel('editevent');
+		
+		if ($returnid = $model->storeXref($post)) {
+			$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=details&xref=' . $returnid, false));			
+		}
+		else {
+			$msg = JText::_('SUBMIT XREF ERROR');
+			$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=myevents', false), $msg, 'error');			
+		}		
 	}
 }
 ?>

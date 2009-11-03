@@ -286,15 +286,21 @@ class RedeventViewEditevent extends JView
 		$events = array();
 		$events[] = JHTML::_('select.option', '0', JText::_( 'SELECT EVENT' ) );
 		$events= array_merge($events, $this->get('EventOptions'));
-		$lists['event'] = JHTML::_('select.genericlist', $events, 'eventid', 'size="1" class="inputbox validate-event"', 'value', 'text', $row->eventid );
+		$lists['event'] = JHTML::_('select.genericlist', $events, 'eventid', 'size="1" class="inputbox validate-event"', 'value', 'text', $xref->eventid );
 		unset($events);
 		
 		// venues
 		$venues = array();
 		$venues[] = JHTML::_('select.option', '0', JText::_( 'SELECT VENUE' ) );
 		$venues = array_merge($venues, $this->get('VenueOptions'));
-		$lists['venue'] = JHTML::_('select.genericlist', $venues, 'venueid', 'size="1" class="inputbox validate-venue"', 'value', 'text', $row->venueid );
+		$lists['venue'] = JHTML::_('select.genericlist', $venues, 'venueid', 'size="1" class="inputbox validate-venue"', 'value', 'text', $xref->venueid );
 		unset($venues);
+		
+    // published state selector
+    $published = array( JHTML::_('select.option', '1', JText::_('PUBLISHED')),
+                         JHTML::_('select.option', '0', JText::_('UNPUBLISHED')),
+                       );
+    $lists['published'] = JHTML::_('select.radiolist', $published, 'published', '', 'value', 'text', $xref->published);
 		
 		$this->assignRef('params',       $params);
 		$this->assignRef('editor',       $editor);

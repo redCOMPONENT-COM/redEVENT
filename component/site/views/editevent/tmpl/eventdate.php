@@ -82,7 +82,7 @@ function updateend(cal)
     </td>
   </tr>
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF VENUE TIP'); ?>">
+    <td class="key hasTip" title="<?php echo JText::_('EDIT XREF VENUE TIP'); ?>">
       <label for="venueid"><?php echo JText::_('Venue') .': '; ?></label>
     </td>
     <td>
@@ -90,7 +90,7 @@ function updateend(cal)
     </td>
   </tr>
 	<tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF START DATE TIP'); ?>">
+    <td class="key hasTip" title="<?php echo JText::_('EDIT XREF START DATE TIP'); ?>">
       <label for="dates"><?php echo JText::_('DATE') .': '; ?></label>
     </td>
     <td>
@@ -98,7 +98,7 @@ function updateend(cal)
     </td>
 	</tr>
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF START TIME TIP'); ?>">
+    <td class="key hasTip" title="<?php echo JText::_('EDIT XREF START TIME TIP'); ?>">
       <label for="times"><?php echo JText::_('TIME') .': '; ?></label>
     </td>
     <td>
@@ -106,7 +106,7 @@ function updateend(cal)
     </td>
   </tr>
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF END DATE TIP'); ?>">
+    <td class="key hasTip" title="<?php echo JText::_('EDIT XREF END DATE TIP'); ?>">
       <label for="enddates"><?php echo JText::_('ENDDATE') .': '; ?></label>
     </td>
     <td>
@@ -114,7 +114,7 @@ function updateend(cal)
     </td>
   </tr>
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF END TIME TIP'); ?>">
+    <td class="key hasTip" title="<?php echo JText::_('EDIT XREF END TIME TIP'); ?>">
       <label for="endtimes"><?php echo JText::_('ENDTIMES') .': '; ?></label>
     </td>
     <td>
@@ -122,8 +122,8 @@ function updateend(cal)
     </td>
   </tr>
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF REGISTRATION END TIP'); ?>">
-      <label for="registrationend"><?php echo JText::_('XREF REGISTRATION END') .': '; ?></label>
+    <td class="key hasTip" title="<?php echo JText::_('EDIT XREF REGISTRATION END TIP'); ?>">
+      <label for="registrationend"><?php echo JText::_('EDIT XREF REGISTRATION END') .': '; ?></label>
     </td>
     <td>
       <?php echo JHTML::calendar($this->xref->registrationend, 'registrationend', 'registrationend', '%Y-%m-%d %H:%M'); ?>

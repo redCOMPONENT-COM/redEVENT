@@ -268,11 +268,11 @@ class RedeventModelEditevent extends JModel
 				$obj->endtimes          = null;
 				$obj->registrationend   = null;
 				$obj->details           = null;
-				$obj->maxattendees      = null;
-				$obj->maxwaitinglist    = null;
-				$obj->course_credit     = null;
-				$obj->course_price      = null;
-				$obj->published         = null;
+				$obj->maxattendees      = 0;
+				$obj->maxwaitinglist    = 0;
+				$obj->course_credit     = 0;
+				$obj->course_price      = 0;
+				$obj->published         = 0;
 				$this->_xref = $obj;
 			}
 		}
@@ -915,6 +915,43 @@ class RedeventModelEditevent extends JModel
 		       ;
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
+	}
+	
+	/**
+	 * Saves xref data
+	 * @param array
+	 * @return boolean true on success
+	 */
+	function storeXref($data)
+	{		
+		$user 		= & JFactory::getUser();
+		$settings = & redEVENTHelper::config();
+		
+		// TODO : check user group access ?
+		$row 	= & JTable::getInstance('redevent_eventvenuexref', '');
+		if ($data->id) {
+			$row->load($data->id);
+		}
+		
+		if (!$row->bind($data)) {
+			$this->setError('SUBMIT XREF ERROR BINDING DATA');
+			RedeventHelperLog::simplelog('SUBMIT XREF ERROR BINDING DATA');
+			return false;
+		}
+	
+		if (!$row->check()) {
+			$this->setError('SUBMIT XREF ERROR CHECK DATA');
+			RedeventHelperLog::simplelog('SUBMIT XREF ERROR CHECK DATA');
+			return false;
+		}
+			
+		if (!$row->store()) {
+			$this->setError('SUBMIT XREF ERROR STORE DATA');
+			RedeventHelperLog::simplelog('SUBMIT XREF ERROR STORE DATA');
+			return false;
+		}
+		
+		return true;
 	}
 }
 ?>
