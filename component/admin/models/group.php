@@ -357,8 +357,8 @@ class RedEventModelGroup extends JModel
 			$this->_db->setQuery ("INSERT INTO #__redevent_groupmembers (group_id, member) VALUES ($row->id, $member)");
 			$this->_db->query();
 		}
-
-		return true;
+		
+		return $row->id;
 	}
 }
 ?>

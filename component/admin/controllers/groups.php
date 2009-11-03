@@ -42,6 +42,8 @@ class RedEventControllerGroups extends RedEventController
 	function __construct()
 	{
 		parent::__construct();
+
+		$this->registerTask( 'apply', 		'save' );
 	}
 
 	/**
@@ -113,14 +115,24 @@ class RedEventControllerGroups extends RedEventController
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or die( 'Invalid Token' );
+		$task		= JRequest::getVar('task');
 
 		$post 	= JRequest::get( 'post' );
 				
 		$model = $this->getModel('group');
 
-		if ($model->store($post)) {
+		if ($returnid = $model->store($post)) 
+		{		
+			switch ($task)
+			{
+				case 'apply' :
+					$link = 'index.php?option=com_redevent&controller=groups&view=group&hidemainmenu=1&cid[]='.$returnid;
+					break;
 
-			$link 	= 'index.php?option=com_redevent&view=groups';
+				default :
+					$link 	= 'index.php?option=com_redevent&view=groups';
+					break;
+			}
 			$msg	= JText::_( 'GROUP SAVED');
 			
 		} else {

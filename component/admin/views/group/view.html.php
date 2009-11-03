@@ -90,6 +90,7 @@ class RedEventViewGroup extends JView {
 				JSubMenuHelper::addEntry( JText::_( 'SETTINGS' ), 'index.php?option=com_redevent&controller=settings&task=edit');
 			}
 		}
+		JToolBarHelper::apply();
 		JToolBarHelper::save();
 		JToolBarHelper::spacer();
 		JToolBarHelper::cancel();
