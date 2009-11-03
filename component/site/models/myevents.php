@@ -322,6 +322,8 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         . ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
         . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
         . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+        . ' LEFT JOIN #__redevent_groups AS g ON g.id = l.admin_group '
+        . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
         . $where
         . ' GROUP BY (x.id) '
         . $orderby
@@ -424,11 +426,11 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
             $where = ' WHERE x.published = -1';
         } else
         {
-            $where = ' WHERE x.published = 1';
+            $where = ' WHERE x.published > -1';
         }
 
-        // then if the user is the owner of the event
-        $where .= ' AND a.created_by = '.$this->_db->Quote($user->id);
+        // then if the user is the owner of the event or member of admin group
+        $where .= ' AND (a.created_by = '. $this->_db->Quote($user->id). ' OR gm.member = '. $this->_db->Quote($user->id) .') ';
 
         // Second is to only select events assigned to category the user has access to
         $where .= ' AND c.access <= '.$gid;

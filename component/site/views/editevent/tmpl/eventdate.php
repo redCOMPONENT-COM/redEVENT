@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.calendar');
 JHTML::_('behavior.keepalive');
-JHTML::_('behavior.formvalidation') 
+JHTML::_('behavior.formvalidation');
 ?>
 <script language="javascript" type="text/javascript">
 Window.onDomReady(function() {

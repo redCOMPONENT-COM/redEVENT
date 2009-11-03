@@ -84,6 +84,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<?php if ($this->elsettings->showcat == 1) :	?>
 			<col width="<?php echo $this->elsettings->catfrowidth; ?>" class="el_col_category" />
 		<?php endif; ?>
+			<col width="5" class="el_col_edit" />
 	</colgroup>
 
 	<thead>
@@ -115,7 +116,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<th id="el_category" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', $this->escape($this->elsettings->catfroname), 'c.catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php
 				endif;
-				?>
+				?>				
+				<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('Edit'); ?></th>
 			</tr>
 	</thead>
 	<tbody>
@@ -222,6 +224,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
           </td> 
         <?php endif; ?>
 
+				<td headers="el_edit" align="left" valign="top"><?php echo $this->xrefeditbutton($row->xref); ?></td>
 			</tr>
 
   		<?php

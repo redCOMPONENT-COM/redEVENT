@@ -255,7 +255,7 @@ class RedeventModelEditevent extends JModel
 				       . ' WHERE x.id = '. $this->_db->Quote($this->_id)
 				       ;
 	      $this->_db->setQuery( $query );
-				$this->_xref = $this->_db->loadObjectList();
+				$this->_xref = $this->_db->loadObject();
 			}
 			else
 			{
