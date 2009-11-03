@@ -53,7 +53,7 @@ class RedeventModelEventList extends RedeventModelBaseEventList
 		$params 	= & $mainframe->getParams();
 
 		$task 		= JRequest::getWord('task');
-		
+				
 		// First thing we need to do is to select only needed events
 		if ($task == 'archive') {
 			$where = ' WHERE x.published = -1';
