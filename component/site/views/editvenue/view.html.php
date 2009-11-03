@@ -45,9 +45,10 @@ class RedeventViewEditvenue extends JView
 	{
 		global $mainframe;
 
-		$editor 	= & JFactory::getEditor();
-		$doc 		= & JFactory::getDocument();
+		$editor 	  = & JFactory::getEditor();
+		$document 	= & JFactory::getDocument();
 		$elsettings = & redEVENTHelper::config();
+		$params 	= & $mainframe->getParams();
 
 		// Get requests
 		$id				= JRequest::getInt('id');
@@ -66,7 +67,7 @@ class RedeventViewEditvenue extends JView
     else {
       $document->addStyleSheet($params->get('custom_css'));     
     }
-		$doc->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
+		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
 		// Get the menu object of the active menu item
 		$menu		= & JSite::getMenu();
@@ -81,7 +82,7 @@ class RedeventViewEditvenue extends JView
 		$pathway->addItem($title, '');
 
 		//Set Title
-		$doc->setTitle($title);
+		$document->setTitle($title);
 
 		//editor user
 		$editoruser = ELUser::editoruser();

@@ -100,8 +100,8 @@ class RedeventModelEditvenue extends JModel
 
 			//access check
 			$allowedtoeditvenue = ELUser::editaccess($elsettings->venueowner, $this->_venue->created_by, $elsettings->venueeditrec, $elsettings->venueedit);
-
-			if ($allowedtoeditvenue == 0) {
+			
+			if ($allowedtoeditvenue == 0 && $this->_inAdminGroup() == 0) {
 
 				JError::raiseError( 403, JText::_( 'NO ACCESS' ) );
 
@@ -225,12 +225,13 @@ class RedeventModelEditvenue extends JModel
 	 */
 	function _loadVenue( )
 	{
-		if (empty($this->_venue)) {
-
+		if (empty($this->_venue)) 
+		{
 			$this->_venue =& JTable::getInstance('redevent_venues', '');
 			$this->_venue->load( $this->_id );			
 		
-      if ($this->_venue->id) {
+      if ($this->_venue->id) 
+      {
         $query =  ' SELECT c.id '
               . ' FROM #__redevent_venues_categories as c '
               . ' INNER JOIN #__redevent_venue_category_xref as x ON x.category_id = c.id '
@@ -241,10 +242,8 @@ class RedeventModelEditvenue extends JModel
   
         $this->_venue->categories = $this->_db->loadResultArray();
       }
-
-			return $this->_venue;
 		}
-		return true;
+	  return $this->_venue;
 	}
 
 	/**
@@ -297,11 +296,11 @@ class RedeventModelEditvenue extends JModel
 
 		//Are we saving from an item edit?
 		if ($row->id) {
-
+			
 			//check if user is allowed to edit venues
 			$allowedtoeditvenue = ELUser::editaccess($elsettings->venueowner, $row->created_by, $elsettings->venueeditrec, $elsettings->venueedit);
 
-			if ($allowedtoeditvenue == 0) {
+			if ($allowedtoeditvenue == 0 && $this->_inAdminGroup() == 0) {
 				$row->checkin();
 				$mainframe->enqueueMessage( JText::_( 'NO ACCESS' ) );
 				return false;
@@ -519,6 +518,27 @@ class RedeventModelEditvenue extends JModel
 		$row->reorder();
 
 		return $row->id;
+	}
+	
+	function _inAdminGroup()
+	{
+		$venue = $this->_loadVenue();
+		
+		if (!$venue->admin_group) {
+			return false;
+		}
+		
+		$user 		= & JFactory::getUser();
+		$elsettings = & redEVENTHelper::config();
+		
+		$query = ' SELECT v.id '
+		       . ' FROM #__redevent_venues AS v '
+		       . ' INNER JOIN #__redevent_groupmembers AS gm ON v.admin_group = gm.group_id '
+		       . ' WHERE gm.member ='. $this->_db->Quote($user->id)
+		       ;
+		$this->_db->setQuery($query);
+		
+		return (int) $this->_db->loadResult();
 	}
 }
 ?>
