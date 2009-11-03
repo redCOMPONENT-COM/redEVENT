@@ -30,6 +30,11 @@ class RedeventController extends JController
 		
 		//register extratasks
 		$this->registerTask( 'ical', 'vcal' );
+		
+		// prevent issues with view name change in 2.0 beta 6.2
+		if (JRequest::getVar('view') == 'eventlist') {
+			JRequest::setVar('view', 'simplelist');
+		}
 	}
 
 	/**
