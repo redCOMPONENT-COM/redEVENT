@@ -303,12 +303,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
             <div class="el_box_left">
               	<label for="metadesc"><?php echo JText::_( 'META DESCRIPTION' ); ?></label>
-          		<textarea class="inputbox" cols="40" rows="5" name="meta_description" id="metadesc" style="width:250px;"></textarea>
+          		<textarea class="inputbox" cols="40" rows="5" name="meta_description" id="metadesc" style="width:250px;"><?php echo  $this->row->meta_description; ?></textarea>
             </div>
 
             <div class="el_box_right">
         		<label for="metakey"><?php echo JText::_( 'META KEYWORDS' ); ?></label>
-        		<textarea class="inputbox" cols="40" rows="5" name="meta_keywords" id="metakey" style="width:250px;"></textarea>
+        		<textarea class="inputbox" cols="40" rows="5" name="meta_keywords" id="metakey" style="width:250px;"><?php echo  $this->row->meta_keywords; ?></textarea>
             </div>
 
             <br class="clear" />

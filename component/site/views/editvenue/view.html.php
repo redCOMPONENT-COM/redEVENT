@@ -85,7 +85,8 @@ class RedeventViewEditvenue extends JView
 		$document->setTitle($title);
 
 		//editor user
-		$editoruser = ELUser::editoruser();
+//		$editoruser = ELUser::editoruser();
+		$editoruser = true;
 		
 		//transform <br /> and <br> back to \r\n for non editorusers
 		if (!$editoruser) {
@@ -102,7 +103,7 @@ class RedeventViewEditvenue extends JView
     // categories selector
     $selected = array();
     foreach ((array)$row->categories as $cat) {
-      $selected[] = $cat->id;
+      $selected[] = $cat;
     }
     $this->get('CategoryOptions');
     $lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('CategoryOptions'), 'categories[]', 'class="inputbox validate-categories" multiple="multiple" size="10"', 'value', 'text', $selected);

@@ -276,7 +276,7 @@ class RedeventModelEditvenue extends JModel
 	function store($data, $file)
 	{
 		global $mainframe;
-
+		
 		$user 		= & JFactory::getUser();
 		$elsettings = & redEVENTHelper::config();
 
