@@ -33,7 +33,7 @@ require_once('baseeventslist.php');
  * @subpackage Redevent
  * @since		0.9
  */
-class RedeventModelEventList extends RedeventModelBaseEventList
+class RedeventModelSimpleList extends RedeventModelBaseEventList
 {
 	
 	/**
@@ -70,8 +70,8 @@ class RedeventModelEventList extends RedeventModelBaseEventList
 		 */
 		if ($params->get('filter'))
 		{
-			$filter 		= $mainframe->getUserStateFromRequest('com_redevent.eventlist.filter', 'filter', '', 'string');
-			$filter_type 	= $mainframe->getUserStateFromRequest('com_redevent.eventlist.filter_type', 'filter_type', '', 'string');
+			$filter 		= $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter', 'filter', '', 'string');
+			$filter_type 	= $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter_type', 'filter_type', '', 'string');
 
 			if ($filter)
 			{

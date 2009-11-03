@@ -117,9 +117,9 @@ function RedEventParseRoute($segments)
 
 		} break;
 
-		case 'eventlist':
+		case 'simplelist':
 		{
-			$vars['view'] = 'eventlist';
+			$vars['view'] = 'simplelist';
 			
 			$count = count($segments);
 			if($count == 2) {

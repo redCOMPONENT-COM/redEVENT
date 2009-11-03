@@ -86,7 +86,7 @@ class RedeventViewCategories extends JView
 		$params->def( 'icons', $mainframe->getCfg( 'icons' ) );
 
 		//add alternate feed link
-		$link    = 'index.php?option=com_redevent&view=eventlist&format=feed';
+		$link    = 'index.php?option=com_redevent&view=simplelist&format=feed';
 		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
 		$document->addHeadLink(JRoute::_($link.'&type=rss'), 'alternate', 'rel', $attribs);
 		$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');

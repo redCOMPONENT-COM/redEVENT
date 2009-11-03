@@ -70,7 +70,7 @@ class RedeventModelBaseEventList extends JModel
 		$params 	= & $mainframe->getParams('com_redevent');
 
 		//get the number of events from database
-		$limit       	= $mainframe->getUserStateFromRequest('com_redevent.eventlist.limit', 'limit', $params->def('display_num', 0), 'int');
+		$limit       	= $mainframe->getUserStateFromRequest('com_redevent.simplelist.limit', 'limit', $params->def('display_num', 0), 'int');
 		$limitstart		= JRequest::getVar('limitstart', 0, '', 'int');
 			        
 		// In case limit has been changed, adjust it
@@ -229,8 +229,8 @@ class RedeventModelBaseEventList extends JModel
 		 */
 		if ($params->get('filter'))
 		{
-			$filter 		= $mainframe->getUserStateFromRequest('com_redevent.eventlist.filter', 'filter', '', 'string');
-			$filter_type 	= $mainframe->getUserStateFromRequest('com_redevent.eventlist.filter_type', 'filter_type', '', 'string');
+			$filter 		= $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter', 'filter', '', 'string');
+			$filter_type 	= $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter_type', 'filter_type', '', 'string');
 
 			if ($filter)
 			{

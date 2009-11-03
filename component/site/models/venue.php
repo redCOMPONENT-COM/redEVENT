@@ -146,7 +146,7 @@ class RedeventModelVenue extends JModel
 	{
 		if (empty($this->_venue)) {
 
-			$this->_venue =& JTable::getInstance('eventlist_venues', '');
+			$this->_venue =& JTable::getInstance('redevent_venues', '');
 			$this->_venue->load( $this->_id );
 
 			return $this->_venue;

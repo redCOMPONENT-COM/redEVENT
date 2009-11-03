@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage EventList
  * @since 0.9
  */
-class RedeventViewEventList extends JView
+class RedeventViewSimpleList extends JView
 {
 	/**
 	 * Creates the Simple List View
@@ -93,11 +93,11 @@ class RedeventViewEventList extends JView
 		$pathway->setItemName( 1, $item->name );
 		
 		if ( $task == 'archive' ) {
-			$pathway->addItem(JText::_( 'ARCHIVE' ), JRoute::_('index.php?option=com_redevent&view=eventlist&task=archive') );
-			$print_link = JRoute::_('index.php?option=com_redevent&view=eventlist&task=archive&tmpl=component&pop=1');
+			$pathway->addItem(JText::_( 'ARCHIVE' ), JRoute::_('index.php?option=com_redevent&view=simplelist&task=archive') );
+			$print_link = JRoute::_('index.php?option=com_redevent&view=simplelist&task=archive&tmpl=component&pop=1');
 			$pagetitle = $params->get('page_title').' - '.JText::_( 'ARCHIVE' );
 		} else {
-			$print_link = JRoute::_('index.php?option=com_redevent&view=eventlist&tmpl=component&pop=1');
+			$print_link = JRoute::_('index.php?option=com_redevent&view=simplelist&tmpl=component&pop=1');
 			$pagetitle = $params->get('page_title');
 		}
 		
@@ -112,7 +112,7 @@ class RedeventViewEventList extends JView
 		if ($maintainer || $genaccess ) $dellink = 1;
 
 		//add alternate feed link
-		$link    = 'index.php?option=com_redevent&view=eventlist&format=feed';
+		$link    = 'index.php?option=com_redevent&view=simplelist&format=feed';
 		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
 		$document->addHeadLink(JRoute::_($link.'&type=rss'), 'alternate', 'rel', $attribs);
 		$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');

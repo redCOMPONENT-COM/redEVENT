@@ -95,8 +95,6 @@ class RedeventViewMyevents extends JView
 
         if ($lists['filter'])
         {
-            //$uri->setVar('filter', JRequest::getString('filter'));
-            //$filter   = $mainframe->getUserStateFromRequest('com_eventlist.eventlist.filter', 'filter', '', 'string');
             $uri->setVar('filter', $lists['filter']);
             $uri->setVar('filter_type', JRequest::getString('filter_type'));
         } else
