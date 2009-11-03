@@ -59,9 +59,9 @@ class redEVENTHelper {
    	* Currently it archives and removes outdated events
    	* and takes care of the recurrence of events
    	*
- 	* @since 0.9
+ 	  * @since 0.9
    	*/
-	function cleanup()
+	function cleanup($forced = 0)
 	{
 		$elsettings = & redEVENTHelper::config();
 
@@ -77,19 +77,21 @@ class redEVENTHelper {
 		$nrdaysnow = floor($now / 86400);
 		$nrdaysupdate = floor($lastupdate / 86400);
 
-		if ( $nrdaysnow > $nrdaysupdate ) {
-
+		if ( $nrdaysnow > $nrdaysupdate || $forced) 
+		{
 			$db			= & JFactory::getDBO();
 
 			$nulldate = '0000-00-00';
+			$limit_date = strftime('%Y-%m-%d', time() - $elsettings->minus * 3600 * 24);
 			
 			redEVENTHelper::generaterecurrences();
 			
 			//delete outdated events
-			if ($elsettings->oldevent == 1) {
+			if ($elsettings->oldevent == 1) 
+			{
 				// lists event_id for which we are going to delete xrefs
 				$query = ' SELECT x.eventid FROM #__redevent_event_venue_xref AS x '
-               . ' WHERE x.dates IS NOT NULL AND DATE_SUB(NOW(), INTERVAL '.$elsettings->minus.' DAY) > (IF (x.enddates <> '.$nulldate.', x.enddates, x.dates)) '
+               . ' WHERE x.dates IS NOT NULL AND DATEDIFF('. $db->Quote($limit_date) .', (IF (x.enddates <> '. $db->Quote($nulldate) .', x.enddates, x.dates))) >= 0 '
                ;
         $db->SetQuery( $query );
         $event_ids = $db->loadResultArray();
@@ -99,10 +101,13 @@ class redEVENTHelper {
         }
         
 				$query = ' DELETE x FROM #__redevent_event_venue_xref AS x '
-				       . ' WHERE x.dates IS NOT NULL AND DATE_SUB(NOW(), INTERVAL '.$elsettings->minus.' DAY) > (IF (x.enddates <> '.$nulldate.', x.enddates, x.dates)) '
+               . ' WHERE x.dates IS NOT NULL AND DATEDIFF('. $db->Quote($limit_date) .', (IF (x.enddates <> '. $db->Quote($nulldate) .', x.enddates, x.dates))) >= 0 '
 				       ;
 				$db->SetQuery( $query );
-				$db->Query();
+				if (!$db->Query()) {
+					RedeventHelperLog::simpleLog('CLEANUP Error while deleting old xrefs: '. $db->getErrorMsg());
+				}
+				
 				
 				// now delete the events with no more xref
         $query = ' DELETE e FROM #__redevent_events AS e '
@@ -111,29 +116,47 @@ class redEVENTHelper {
                . '   AND e.id IN (' . implode(', ', $event_ids) . ')'
                ;
         $db->SetQuery( $query );
-        $db->Query();			
-				
+				if (!$db->Query()) {
+					RedeventHelperLog::simpleLog('CLEANUP Error while deleting old events with no more xrefs: '. $db->getErrorMsg());
+				}
 			}
 
 			//Set state archived of outdated events
-			if ($elsettings->oldevent == 2) {
-        // lists event_id for which we are going to archive xrefs
-        $query = ' SELECT x.eventid FROM #__redevent_event_venue_xref AS x '
-               . ' WHERE x.dates IS NOT NULL AND DATE_SUB(NOW(), INTERVAL '.$elsettings->minus.' DAY) > (IF (x.enddates <> '.$nulldate.', x.enddates, x.dates)) '
+			if ($elsettings->oldevent == 2) 
+			{
+        // lists xref_id and associated event_id for which we are going to be archived
+        $query = ' SELECT x.id, x.eventid '
+               . ' FROM #__redevent_event_venue_xref AS x '
+               . ' WHERE x.dates IS NOT NULL AND DATEDIFF('. $db->Quote($limit_date) .', (IF (x.enddates <> '. $db->Quote($nulldate) .', x.enddates, x.dates))) >= 0 '
+               . ' AND x.published = 1 '
                ;
         $db->SetQuery( $query );
-        $event_ids = $db->loadResultArray();
+        $xrefs = $db->loadObjectList();
         
-        if (!count($event_ids)) {
+        if (empty($xrefs)) {
           return true;
         }
+        
+        // build list of xref and corresponding events
+        $event_ids = array();
+        $xref_ids  = array();
+        foreach ($xrefs AS $xref) 
+        {
+        	$event_ids[] = $db->Quote($xref->eventid);
+        	$xref_ids[]  = $db->Quote($xref->id);
+        }
+        // filter duplicates
+        $event_ids = array_unique($event_ids);
         
         // update xref to archive
 				$query = ' UPDATE #__redevent_event_venue_xref AS x '
 				       . ' SET x.published = -1 '
-				       . ' WHERE x.dates IS NOT NULL AND DATE_SUB(NOW(), INTERVAL '.$elsettings->minus.' DAY) > (IF (x.enddates <> '.$nulldate.', x.enddates, x.dates))';
+               . ' WHERE x.id IN ('. implode(', ', $xref_ids) .')'
+				       ;
 				$db->SetQuery( $query );
-				$db->Query();
+				if (!$db->Query()) {
+					RedeventHelperLog::simpleLog('CLEANUP Error while archiving old xrefs: '. $db->getErrorMsg());
+				}
 								
         // update events to archive (if no more published xref)
         $query = ' UPDATE #__redevent_events AS e '
@@ -143,7 +166,9 @@ class redEVENTHelper {
                . '   AND e.id IN (' . implode(', ', $event_ids) . ')'
                ;
         $db->SetQuery( $query );
-        $db->Query();
+				if (!$db->Query()) {
+					RedeventHelperLog::simpleLog('CLEANUP Error while archiving events with only archived xrefs: '. $db->getErrorMsg());
+				}
 			}
 
 			//Set timestamp of last cleanup

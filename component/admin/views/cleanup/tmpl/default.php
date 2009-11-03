@@ -60,12 +60,18 @@ defined('_JEXEC') or die('Restricted access');
     <td width="40%" valign="middle">
       <?php echo JText::_( 'IMPORT EVENTLIST DESC' ); ?>
     </td>	
+    
     <td width="10%">
-      &nbsp;
+      <div class="linkicon">
+        <a href="index.php?option=com_redevent&amp;task=autoarchive">
+          <?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/icon-48-cleaneventimg.png',  JText::_( 'TRIGGER AUTOARCHIVE' ) ); ?>
+          <span><?php echo JText::_( 'TRIGGER AUTOARCHIVE' ); ?></span>
+        </a>
+      </div>
     </td>
     <td width="40%" valign="middle">
-      &nbsp;
-    </td> 
+      <?php echo JText::_( 'TRIGGER AUTOARCHIVE DESC' ); ?>
+    </td>	
 	</tr>
 	
 </table>

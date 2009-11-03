@@ -138,7 +138,6 @@ class RedEventController extends JController
   /**
    * import eventlist events, categories, and venues.
    * 
-   * @return unknown_type
    */
   function importeventlist()
   {
@@ -156,8 +155,18 @@ class RedEventController extends JController
       $msg = JText::sprintf( 'EVENTLIST IMPORT SUCCESS', $result['events'], $result['categories'], $result['venues']);
       $this->setRedirect( $link, $msg );
     }
-      
-    return true;
+  }
+  
+  /**
+   * triggers the autoarchive function
+   * 
+   */
+  function autoarchive()
+  {
+  	$res = redEVENTHelper::cleanup(1);
+    $msg = JText::_('AUTOARCHIVE DONE');
+    $link = 'index.php?option=com_redevent&view=cleanup';
+    $this->setRedirect( $link, $msg );    
   }
 }
 ?>
