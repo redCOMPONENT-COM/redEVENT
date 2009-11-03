@@ -377,9 +377,11 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         $user = & JFactory::getUser();
         //Get Events from Database
         $query = 'SELECT l.id, l.venue, l.city, l.state, l.url, l.published, '
-        .' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug'
-        .' FROM #__redevent_venues AS l '
-        .' WHERE l.created_by = '.$this->_db->Quote($user->id)
+        . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug'
+        . ' FROM #__redevent_venues AS l '
+        . ' LEFT JOIN #__redevent_groups AS g ON g.id = l.admin_group '
+        . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
+        .' WHERE (l.created_by = '.$this->_db->Quote($user->id) .' OR gm.member = '. $this->_db->Quote($user->id) .')'
         .' ORDER BY l.venue ASC '
         ;
 
