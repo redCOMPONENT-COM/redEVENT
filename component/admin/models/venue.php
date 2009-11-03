@@ -383,7 +383,7 @@ class RedEventModelVenue extends JModel
   {
   	$query = ' SELECT g.id AS value, g.name AS text '
   	       . ' FROM #__redevent_groups AS g '
-  	       . ' ORDER BY g.name DESC '
+  	       . ' ORDER BY g.name ASC '
   	       ;
   	$this->_db->setQuery($query);
   	return $this->_db->loadObjectList();  	       
