@@ -480,8 +480,8 @@ class redEVENT_tags {
 				$replace = array();
         foreach ($customfields as $tag => $data) 
         {
-          $search[] = '['.$tag.']';
-          $replace[] = $data;
+          $search[] = '['.$data->text_name.']';
+          $replace[] = $data->text_field;
         }
         $message = str_ireplace($search, $replace, $message);
 				
