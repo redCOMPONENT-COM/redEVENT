@@ -78,6 +78,8 @@ class RedEvent_venues extends JTable
 	/** @var int */
 	var $modified_by 		= null;
 	/** @var int */
+	var $admin_group	 	= null;
+	/** @var int */
 	var $published	 		= null;
 	/** @var int */
 	var $checked_out 		= null;

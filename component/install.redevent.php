@@ -226,10 +226,20 @@ $q = "SHOW COLUMNS FROM #__redevent_venues";
 $db->setQuery($q);
 $cols = $db->loadObjectList('Field');
 
-if (is_array($cols)) {
+if (is_array($cols)) 
+{
   /* Check if we have the latitude / longitude columns */
-  if (!array_key_exists('latitude', $cols)) {
+  if (!array_key_exists('latitude', $cols)) 
+  {
     $q = "ALTER IGNORE TABLE #__redevent_venues ADD COLUMN `latitude` float default NULL after `country`, ADD COLUMN `longitude` float default NULL after `latitude`";
+    $db->setQuery($q);
+    $db->query();
+  }
+  
+  /* Check if we have the latitude / longitude columns */
+  if (!array_key_exists('admin_group', $cols)) 
+  {
+    $q = "ALTER IGNORE TABLE #__redevent_venues ADD `admin_group` INT NULL DEFAULT NULL AFTER `modified`";
     $db->setQuery($q);
     $db->query();
   }

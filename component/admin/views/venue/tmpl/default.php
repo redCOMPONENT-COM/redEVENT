@@ -107,9 +107,19 @@ defined('_JEXEC') or die('Restricted access');
 					<?php echo JText::_( 'Alias' ).':'; ?>
 				</label>
 			</td>
-			<td colspan="3">
+			<td>
 				<input class="inputbox" type="text" name="alias" id="alias" size="40" maxlength="100" value="<?php echo $this->row->alias; ?>" />
 			</td>
+			<td>
+				<label for="alias">
+					<?php echo JText::_( 'Admin group' ).':'; ?>
+				</label>
+			</td>
+			<td>
+        <?php
+        echo $this->lists['groups'];
+        ?>			
+      </td>
 		</tr>
     <tr>
       <td>
@@ -119,7 +129,7 @@ defined('_JEXEC') or die('Restricted access');
       </td>
       <td>
         <?php
-        echo $this->lists['categories']
+        echo $this->lists['categories'];
         ?>
       </td>
     </tr>
