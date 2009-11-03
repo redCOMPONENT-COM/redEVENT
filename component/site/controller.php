@@ -634,5 +634,17 @@ class RedeventController extends JController
 		$this->mailer->FromName = $mainframe->getCfg('sitename');
 		$this->mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
 	}
+	
+	
+	function savexref()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or die( 'Invalid Token' );
+		
+		//get image
+		$post 		= JRequest::get('post');
+		$xref 		= JRequest::getInt('id');
+		
+	}
 }
 ?>

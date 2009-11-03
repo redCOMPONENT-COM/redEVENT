@@ -50,6 +50,13 @@ class RedeventModelEditevent extends JModel
 	var $_categories = null;
 
 	/**
+	 * Xref data
+	 *
+	 * @var array
+	 */
+	var $_xref = null;
+	
+	/**
 	 * Constructor
 	 *
 	 * @since 1.5
@@ -235,6 +242,41 @@ class RedeventModelEditevent extends JModel
 			return (boolean) $this->_event;
 		}
 		return true;
+	}
+	
+	function getXref()
+	{
+		if (empty($this->_xref))
+		{
+			if ($this->_id)
+			{
+				$query = ' SELECT x.* '
+				       . ' FROM #__redevent_event_venue_xref AS x '
+				       . ' WHERE x.id = '. $this->_db->Quote($this->_id)
+				       ;
+	      $this->_db->setQuery( $query );
+				$this->_xref = $this->_db->loadObjectList();
+			}
+			else
+			{
+				$obj = new stdclass();
+				$obj->eventid           = 0;
+				$obj->venueid           = 0;
+				$obj->dates             = null;
+				$obj->enddates          = null;
+				$obj->times             = null;
+				$obj->endtimes          = null;
+				$obj->registrationend   = null;
+				$obj->details           = null;
+				$obj->maxattendees      = null;
+				$obj->maxwaitinglist    = null;
+				$obj->course_credit     = null;
+				$obj->course_price      = null;
+				$obj->published         = null;
+				$this->_xref = $obj;
+			}
+		}
+		return $this->_xref;
 	}
 
 	/**
@@ -836,6 +878,43 @@ class RedeventModelEditevent extends JModel
 			$ardatetimes[$datetime->venueid][] = $datetime;
 		}
 		return $ardatetimes;
+	}
+	
+	/**
+	 * return venues lists as options
+	 * 
+	 * @return array
+	 */
+	function getVenueOptions()
+	{
+		$app = &JFactory::getApplication();
+		$params = $app->getParams();
+		
+		$query = ' SELECT v.id AS value, v.venue AS text '
+		       . ' FROM #__redevent_venues AS v '
+		       . ' ORDER BY v.venue ASC '
+		       ;
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadObjectList();
+		return $res;
+	}
+
+	/**
+	 * return events lists as options
+	 * 
+	 * @return array
+	 */
+	function getEventOptions()
+	{
+		$app = &JFactory::getApplication();
+		$params = $app->getParams();
+		
+		$query = ' SELECT e.id AS value, e.title AS text '
+		       . ' FROM #__redevent_events AS e '
+		       . ' ORDER BY e.title ASC '
+		       ;
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
 	}
 }
 ?>

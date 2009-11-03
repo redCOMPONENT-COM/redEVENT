@@ -45,10 +45,15 @@ class RedeventViewEditevent extends JView
 	{
 		$mainframe = & JFactory::getApplication();
 
-		if($this->getLayout() == 'selectvenue') {
+		if ($this->getLayout() == 'selectvenue') {
 			$this->_displayselectvenue($tpl);
 			return;
 		}
+		else if($this->getLayout() == 'eventdate') {
+			$this->_displayEventdate($tpl);
+			return;
+		}
+		
 
 		// Initialize variables
 		$editor 	= & JFactory::getEditor();
@@ -261,5 +266,72 @@ class RedeventViewEditevent extends JView
 
 		parent::display($tpl);
 	}
+	
+	function _displayEventdate($tpl = null)
+	{
+		$mainframe = &Jfactory::getApplication();
+
+		$document	= & JFactory::getDocument();
+		$params 	= & $mainframe->getParams();
+		
+		$editor 	= & JFactory::getEditor();
+
+		// get xref data
+		$xref = $this->get('Xref');
+		
+		// form elements
+		$lists = array();
+
+		// events
+		$events = array();
+		$events[] = JHTML::_('select.option', '0', JText::_( 'SELECT EVENT' ) );
+		$events= array_merge($events, $this->get('EventOptions'));
+		$lists['event'] = JHTML::_('select.genericlist', $events, 'eventid', 'size="1" class="inputbox validate-event"', 'value', 'text', $row->eventid );
+		unset($events);
+		
+		// venues
+		$venues = array();
+		$venues[] = JHTML::_('select.option', '0', JText::_( 'SELECT VENUE' ) );
+		$venues = array_merge($venues, $this->get('VenueOptions'));
+		$lists['venue'] = JHTML::_('select.genericlist', $venues, 'venueid', 'size="1" class="inputbox validate-venue"', 'value', 'text', $row->venueid );
+		unset($venues);
+		
+		$this->assignRef('params',       $params);
+		$this->assignRef('editor',       $editor);
+		$this->assignRef('xref',         $xref);
+		$this->assignRef('lists',        $lists);
+		parent::display($tpl);
+	}
+	
+
+  /**
+   * Displays a calendar control field
+   *
+   * @param string  The date value
+   * @param string  The name of the text field
+   * @param string  The id of the text field
+   * @param string  The date format
+   * @param array Additional html attributes
+   */
+  function calendar($value, $name, $id, $format = '%Y-%m-%d', $onUpdate = null, $attribs = null)
+  {
+    JHTML::_('behavior.calendar'); //load the calendar behavior
+
+    if (is_array($attribs)) {
+      $attribs = JArrayHelper::toString( $attribs );
+    }
+    $document =& JFactory::getDocument();
+    $document->addScriptDeclaration('window.addEvent(\'domready\', function() {Calendar.setup({
+        inputField     :    "'.$id.'",     // id of the input field
+        ifFormat       :    "'.$format.'",      // format of the input field
+        button         :    "'.$id.'_img",  // trigger for the calendar (button ID)
+        align          :    "Tl",           // alignment (defaults to "Bl")
+        onUpdate       :    '.($onUpdate ? $onUpdate : 'null').',
+        singleClick    :    true
+    });});');
+
+    return '<input type="text" name="'.$name.'" id="'.$id.'" value="'.htmlspecialchars($value, ENT_COMPAT, 'UTF-8').'" '.$attribs.' />'.
+         '<img class="calendar" src="'.JURI::root(true).'/templates/system/images/calendar.png" alt="calendar" id="'.$id.'_img" />';
+  }
 }
 ?>
