@@ -650,7 +650,8 @@ class RedeventController extends JController
 		$model = $this->getModel('editevent');
 		
 		if ($returnid = $model->storeXref($post)) {
-			$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=details&xref=' . $returnid, false));			
+			$msg = JText::_('EVENT DATE SAVED');
+			$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=myevents', false), $msg);				
 		}
 		else {
 			$msg = JText::_('SUBMIT XREF ERROR');
