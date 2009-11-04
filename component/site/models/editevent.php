@@ -890,9 +890,10 @@ class RedeventModelEditevent extends JModel
 		$app = &JFactory::getApplication();
 		$params = $app->getParams();
 		
-		$query = ' SELECT v.id AS value, v.venue AS text '
-		       . ' FROM #__redevent_venues AS v '
-		       . ' ORDER BY v.venue ASC '
+		$query = ' SELECT id AS value, '
+		       . ' CASE WHEN CHAR_LENGTH(city) THEN CONCAT_WS(\' - \', venue, city) ELSE venue END as text '
+		       . ' FROM #__redevent_venues '
+		       . ' ORDER BY venue ASC '
 		       ;
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
