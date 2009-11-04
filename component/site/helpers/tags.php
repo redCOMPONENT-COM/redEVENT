@@ -432,6 +432,11 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
               $replace[] = $this->_data->plz;
       				break;
+      				      				
+				    case 'permanentlink':
+				      $search[]  = '['.$tag.']';
+              $replace[] = JHTML::link(JRoute::_('index.php?option=com_redevent&view=details&id='. $this->_data->slug, false), JText::_('Permanent link'), 'class="permalink"');
+      				break;
 				  }
 				    
 				}
@@ -515,7 +520,7 @@ class redEVENT_tags {
 		$app = & JFactory::getApplication();
 		$template_path = JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'com_redevent';
 		ob_start();
-		if (JRequest::getVar('format') == 'raw') {
+		if (JRequest::getVar('format') == 'pdf') {
 			if (file_exists($template_path.DS.'details'.DS.'courseinfo_pdf.php')) {
   			include($template_path.DS.'details'.DS.'courseinfo_pdf.php');				
 			}
@@ -547,6 +552,7 @@ class redEVENT_tags {
 					v.city AS location,
 					v.country, v.locimage, v.street, v.plz,
 					UNIX_TIMESTAMP(x.dates) AS unixdates,
+          CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(':', e.id, e.alias) ELSE e.id END as slug,
           CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(':', v.id, v.alias) ELSE v.id END as venueslug
 			FROM #__redevent_events AS e
 			INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id

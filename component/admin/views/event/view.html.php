@@ -341,6 +341,7 @@ class RedEventViewEvent extends JView {
         [eventplacesleft] = <?php echo JText::_('SUBMISSION_EVENTPLACES_LEFT');?><br />
         [waitinglistplacesleft] = <?php echo JText::_('SUBMISSION_WAITINGLISTPLACES_LEFT');?><br />
         [info] = <?php echo JText::_('SUBMISSION_XREF_INFO');?>
+        [permanentlink] = <?php echo JText::_('SUBMISSION_PERMANENT_LINK');?>
       </div>
     </div>  
 	  <?php 
