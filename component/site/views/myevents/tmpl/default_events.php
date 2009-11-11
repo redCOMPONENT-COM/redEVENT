@@ -64,7 +64,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     <?php endif; ?>
 </div>
 <?php endif; ?>
-
+<div><?php echo JHTML::link(JRoute::_('index.php?option=com_redevent&view=editevent&layout=eventdate', false), JText::_('Add new')); ?></div>
 <table class="eventtable" width="<?php echo $this->elsettings->tablewidth; ?>" border="0" cellspacing="0" cellpadding="0" summary="eventlist">
 
 	<colgroup>

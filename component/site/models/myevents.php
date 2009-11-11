@@ -60,6 +60,8 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 
     var $_total_attending = null;
 
+    var $_groups = null;
+    
     /**
      * Pagination object
      *
@@ -189,6 +191,24 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         return $this->_venues;
     }
 
+    /**
+     * Method to get the Venues
+     *
+     * @access public
+     * @return array
+     */
+    function & getGroups()
+    {
+        // Lets load the content if it doesn't already exist
+        if ( empty($this->_groups))
+        {
+            $query = $this->_buildQueryGroups();
+            $this->_groups = $this->_getList($query);
+        }
+
+        return $this->_groups;
+    }
+    
     /**
      * Total nr of events
      *
@@ -388,6 +408,26 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         return $query;
     }
 
+    /**
+     * Build the query
+     *
+     * @access private
+     * @return string
+     */
+    function _buildQueryGroups()
+    {
+        $user = & JFactory::getUser();
+        //Get Events from Database
+        $query = 'SELECT g.id, g.name '
+        . ' FROM #__redevent_groups AS g '
+        . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
+        .' WHERE gm.member = '. $this->_db->Quote($user->id)
+        .' ORDER BY g.name ASC '
+        ;
+
+        return $query;
+    }
+    
     /**
      * Build the order clause
      *
@@ -773,6 +813,23 @@ class MyVenuesPagination extends JPagination
         $html .= "\n</div>";
 
         return $html;
+    }
+    
+    function getGroups()
+    {
+    	if (empty($this->_groups)) 
+    	{
+    		$user = &JFactory::getUser();
+    		$query = ' SELECT g.name'
+    		       . ' FROM #__redevent_groups AS g '
+    		       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
+    		       . ' WHERE gm.member = '. $this->_db->Quote($user->id)
+    		       . ' ORDER BY g.name ASC '
+    		       ;
+    		$this->_db->setQuery($query);
+    		$this->_groups = $this->_db->loadObjectList();
+    	}
+    	return $this->_groups;
     }
 
 }

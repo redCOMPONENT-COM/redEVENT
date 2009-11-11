@@ -67,6 +67,7 @@ class RedeventViewMyevents extends JView
         $events = & $this->get('Events');
         $venues = & $this->get('Venues');
         $attending = & $this->get('Attending');
+        $groups = & $this->get('Groups');
 
         //paginations
         $events_pageNav = & $this->get('EventsPagination');
@@ -108,6 +109,7 @@ class RedeventViewMyevents extends JView
         $this->assignRef('events', $events);
         $this->assignRef('venues', $venues);
         $this->assignRef('attending', $attending);
+        $this->assignRef('groups', $groups);
         $this->assignRef('task', $task);
         $this->assignRef('print_link', $print_link);
         $this->assignRef('params', $params);
