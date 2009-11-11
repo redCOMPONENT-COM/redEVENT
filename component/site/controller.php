@@ -658,5 +658,15 @@ class RedeventController extends JController
 			$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=myevents', false), $msg, 'error');			
 		}		
 	}
+	
+
+  function insertevent()
+  {
+		JRequest::setVar( 'view', 'simplelist' );
+		JRequest::setVar( 'layout', 'editors-xtd'  );
+		JRequest::setVar( 'filter_state', 'P'  );
+
+		parent::display();  	
+  }
 }
 ?>
