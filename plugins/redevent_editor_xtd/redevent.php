@@ -69,7 +69,7 @@ class plgButtonRedevent extends JPlugin
 		
 		$doc->addStyleDeclaration($declaration);
 
-		$link = 'index.php?option=com_redevent&amp;task=ins_event&amp;tmpl=component&amp;e_name='.$name;
+		$link = 'index.php?option=com_redevent&amp;task=insertevent&amp;tmpl=component&amp;e_name='.$name;
 
 		JHTML::_('behavior.modal');
 

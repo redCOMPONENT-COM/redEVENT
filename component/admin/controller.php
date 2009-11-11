@@ -168,5 +168,14 @@ class RedEventController extends JController
     $link = 'index.php?option=com_redevent&view=cleanup';
     $this->setRedirect( $link, $msg );    
   }
+  
+  function insertevent()
+  {
+		JRequest::setVar( 'view', 'eventelement' );
+		JRequest::setVar( 'layout', 'editors-xtd'  );
+		JRequest::setVar( 'filter_state', 'P'  );
+
+		parent::display();  	
+  }
 }
 ?>
