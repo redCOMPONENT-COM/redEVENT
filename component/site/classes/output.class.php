@@ -80,7 +80,6 @@ class ELOutput {
 	* @author Christoph Lukes
 	* @since 0.9
 	*
-	* @param int $oldevent Archive used or not
 	* @param array $params needed params
 	* @param string $task The current task
 	* @param int $categid The cat id
@@ -94,7 +93,7 @@ class ELOutput {
     
 		$settings = & redEVENTHelper::config();
 		
-		if ( $settings->oldevent == 2 ) {
+		if ( $params->get('pastevents_action', 0) == 2 ) {
 
 			JHTML::_('behavior.tooltip');
 			

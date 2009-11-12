@@ -130,8 +130,6 @@ CREATE TABLE IF NOT EXISTS `#__redevent_groupmembers` (
 
 CREATE TABLE IF NOT EXISTS `#__redevent_settings` (
   `id` int(11) NOT NULL,
-  `oldevent` tinyint(4) NOT NULL,
-  `minus` tinyint(4) NOT NULL,
   `showtime` tinyint(4) NOT NULL,
   `showtitle` tinyint(4) NOT NULL,
   `showlocate` tinyint(4) NOT NULL,

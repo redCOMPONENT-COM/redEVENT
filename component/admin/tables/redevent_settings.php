@@ -37,10 +37,6 @@ class RedEvent_settings extends JTable
 	 */
 	var $id					= "1";
 	/** @var int */
-	var $oldevent 			= "2";
-	/** @var int */
-	var $minus 				= "1";
-	/** @var int */
 	var $showtime 			= "0";
 	/** @var int */
 	var $showtitle 			= "1";
