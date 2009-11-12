@@ -64,6 +64,7 @@ class redEVENTHelper {
 	function cleanup($forced = 0)
 	{
 		$elsettings = & redEVENTHelper::config();
+		$params = &JComponentHelper::getParams('com_redevent');
 
 		$now 		= time();
 		$lastupdate = $elsettings->lastupdate;
@@ -82,18 +83,35 @@ class redEVENTHelper {
 			$db			= & JFactory::getDBO();
 
 			$nulldate = '0000-00-00';
-			$limit_date = strftime('%Y-%m-%d', time() - $elsettings->minus * 3600 * 24);
+			$limit_date = strftime('%Y-%m-%d', time() - $params->get('pastevents_delay', 3) * 3600 * 24);
 			
 			redEVENTHelper::generaterecurrences();
 			
-			//delete outdated events
-			if ($elsettings->oldevent == 1) 
+			// date filtering
+			$where = array('x.dates IS NOT NULL');
+			switch ($params->get('pastevents_reference_date', 'end'))
 			{
+				case 'start':
+					$where[] = ' DATEDIFF('. $db->Quote($limit_date) .', x.dates) >= 0 ';
+					break;
+				case 'registration':
+					$where[] = ' DATEDIFF('. $db->Quote($limit_date) .', (IF (x.registrationend <> '. $db->Quote($nulldate) .', x.registrationend, x.dates))) >= 0 ';
+					break;
+				case 'end':
+					$where[] = ' DATEDIFF('. $db->Quote($limit_date) .', (IF (x.enddates <> '. $db->Quote($nulldate) .', x.enddates, x.dates))) >= 0 ';
+					break;
+			}
+			$where_date = implode(' AND ', $where);
+
+			//delete outdated events
+			if ($params->get('pastevents_action', 0) == 1) 
+			{
+				
 				// lists event_id for which we are going to delete xrefs
-				$query = ' SELECT x.eventid FROM #__redevent_event_venue_xref AS x '
-               . ' WHERE x.dates IS NOT NULL AND DATEDIFF('. $db->Quote($limit_date) .', (IF (x.enddates <> '. $db->Quote($nulldate) .', x.enddates, x.dates))) >= 0 '
-               ;
-        $db->SetQuery( $query );
+				$query = ' SELECT x.eventid FROM #__redevent_event_venue_xref AS x ';
+				$query .= ' WHERE '. $where_date;
+
+				$db->SetQuery( $query );
         $event_ids = $db->loadResultArray();
         
         if (!count($event_ids)) {
@@ -101,7 +119,7 @@ class redEVENTHelper {
         }
         
 				$query = ' DELETE x FROM #__redevent_event_venue_xref AS x '
-               . ' WHERE x.dates IS NOT NULL AND DATEDIFF('. $db->Quote($limit_date) .', (IF (x.enddates <> '. $db->Quote($nulldate) .', x.enddates, x.dates))) >= 0 '
+               . ' WHERE '. $where_date;
 				       ;
 				$db->SetQuery( $query );
 				if (!$db->Query()) {
@@ -122,12 +140,12 @@ class redEVENTHelper {
 			}
 
 			//Set state archived of outdated events
-			if ($elsettings->oldevent == 2) 
+			if ($params->get('pastevents_action', 0) == 2) 
 			{
         // lists xref_id and associated event_id for which we are going to be archived
         $query = ' SELECT x.id, x.eventid '
                . ' FROM #__redevent_event_venue_xref AS x '
-               . ' WHERE x.dates IS NOT NULL AND DATEDIFF('. $db->Quote($limit_date) .', (IF (x.enddates <> '. $db->Quote($nulldate) .', x.enddates, x.dates))) >= 0 '
+               . ' WHERE '. $where_date
                . ' AND x.published = 1 '
                ;
         $db->SetQuery( $query );

@@ -107,47 +107,6 @@
 		  </fieldset>
 
 		  <fieldset class="adminform">
-			<legend><?php echo JText::_( 'EVENT HANDLING' ); ?></legend>
-				<table class="admintable" cellspacing="1">
-				<tbody>
-					<tr>
-        				<td width="300" class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_( 'OLD EVENTS' ); ?>::<?php echo JText::_('OLD EVENTS TIP'); ?>">
-								<?php echo JText::_( 'OLD EVENTS' ); ?>
-							</span>
-						</td>
-      					<td valign="top">
-							<?php
-							$mode = 0;
-							if ($this->elsettings->oldevent >= 1) {
-								$mode = 1;
-							} // if
-							?>
-							<select name="oldevent" size="1" class="inputbox" onChange="changeoldMode()">
-  								<option value="0"<?php if ($this->elsettings->oldevent == 0) { ?> selected="selected"<?php } ?>><?php echo JText::_( 'DO NOTHING' ); ?></option>
-  								<option value="1"<?php if ($this->elsettings->oldevent == 1) { ?> selected="selected"<?php } ?>><?php echo JText::_( 'DELETE OLD EVENTS' ); ?></option>
-  								<option value="2"<?php if ($this->elsettings->oldevent == 2) { ?> selected="selected"<?php } ?>><?php echo JText::_( 'ARCHIVE OLD EVENTS' ); ?></option>
-							</select>&nbsp;
-							<span class="error hasTip" title="<?php echo JText::_( 'WARNING' ); ?>::<?php echo JText::_( 'OLD EVENTS WARN' ); ?>">
-								<?php echo $this->WarningIcon(); ?>
-							</span>
-      					</td>
-      				</tr>
-	 				<tr id="old"<?php if (!$mode) echo ' style="display:none"'; ?>>
-	          			<td width="300" class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_( 'NUMBER DELETE DAYS' ); ?>::<?php echo JText::_('NUMBER DELETE DAYS TIP'); ?>">
-								<?php echo JText::_( 'NUMBER DELETE DAYS' ); ?>
-							</span>
-						</td>
-       					<td valign="top">
-							<input type="text" name="minus" value="<?php echo $this->elsettings->minus; ?>" size="3" maxlength="2" />
-       	 				</td>
-      				</tr>
-				</tbody>
-				</table>
-		  </fieldset>
-
-		  <fieldset class="adminform">
 			<legend><?php echo JText::_( 'MAIL HANDLING' ); ?></legend>
 				<table class="admintable" cellspacing="1">
 				<tbody>
