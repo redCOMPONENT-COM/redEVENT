@@ -106,6 +106,7 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
     // Get the WHERE and ORDER BY clauses for the query
     $where    = $this->_buildCategoryWhere();
     $orderby  = $this->_buildCategoryOrderBy();
+		$customs  = $this->getCustomFields();
 
     //Get Events from Database
     $query = 'SELECT a.id, a.datimage, x.dates, x.enddates, x.times, x.endtimes, x.id AS xref, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, '
@@ -113,12 +114,25 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
         . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
         . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
         . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
-        . ' FROM #__redevent_events AS a'
-        . ' LEFT JOIN #__redevent_event_venue_xref AS x on x.eventid = a.id'
-        . ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-        . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-        . $where
+        ;
+		// add the custom fields
+		foreach ((array) $customs as $c)
+		{
+			$query .= ', c'. $c->id .'.value AS custom'. $c->id;
+		}
+    $query .= ' FROM #__redevent_events AS a'
+        . ' INNER JOIN #__redevent_event_venue_xref AS x on x.eventid = a.id'
+        . ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
+        . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+        . ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+		    ;
+		
+		// add the custom fields tables
+		foreach ((array) $customs as $c)
+		{
+			$query .= ' INNER JOIN #__redevent_fields_values AS c'. $c->id .' ON c'. $c->id .'.object_id = a.id';
+		}
+    $query .= $where
         . ' GROUP BY (x.id) '
         . $orderby
         ;

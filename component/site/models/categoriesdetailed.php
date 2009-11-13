@@ -181,7 +181,6 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 		$this->_data = $this->_getList( $query, 0, $params->get('detcat_nr') );
     $this->_data = $this->_categories($this->_data);
     $this->_data = $this->_getPlacesLeft($this->_data);
-    $this->_data = $this->_getEventsCustoms($this->_data);
 
 		return $this->_data;
 	}
@@ -211,6 +210,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 		$aid		= (int) $user->get('aid');
 		
 		$task 		= JRequest::getWord('task');
+		$customs = $this->getCustomFields();
 
 		$where = ' WHERE c.lft BETWEEN '. $this->_db->Quote($category->lft) .' AND '. $this->_db->Quote($category->rgt);
 		// First thing we need to do is to select only the requested events
@@ -226,12 +226,25 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
         . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
         . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
         . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
-        . ' FROM #__redevent_events AS a'
+        ;
+		// add the custom fields
+		foreach ((array) $customs as $c)
+		{
+			$query .= ', c'. $c->id .'.value AS custom'. $c->id;
+		}
+   $query .= ' FROM #__redevent_events AS a'
         . ' INNER JOIN #__redevent_event_venue_xref AS x on x.eventid = a.id'
         . ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
         . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
         . ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-        . $where
+        ;
+		// add the custom fields tables
+		foreach ((array) $customs as $c)
+		{
+			$query .= ' INNER JOIN #__redevent_fields_values AS c'. $c->id .' ON c'. $c->id .'.object_id = a.id';
+		}        
+		        
+    $query .= $where
         . ' GROUP BY (x.id) '
         . ' ORDER BY x.dates, x.times'
         ;

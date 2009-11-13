@@ -42,6 +42,13 @@ class RedeventModelBaseEventList extends JModel
 	var $_data = null;
 
 	/**
+	 * custom fields data array
+	 *
+	 * @var array
+	 */
+	var $_customfields = null;
+	
+	/**
 	 * Events total
 	 *
 	 * @var integer
@@ -106,7 +113,6 @@ class RedeventModelBaseEventList extends JModel
 			}
 			$this->_data = $this->_categories($this->_data);
       $this->_data = $this->_getPlacesLeft($this->_data);
-      $this->_data = $this->_getEventsCustoms($this->_data);
 		}
 
 		return $this->_data;
@@ -159,6 +165,7 @@ class RedeventModelBaseEventList extends JModel
 		// Get the WHERE and ORDER BY clauses for the query
 		$where		= $this->_buildWhere();
 		$orderby	= $this->_buildOrderBy();
+		$customs = $this->getCustomFields();
 
 		//Get Events from Database
 		$query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, '
@@ -168,17 +175,30 @@ class RedeventModelBaseEventList extends JModel
         . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
         . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
         . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
-				. ' FROM #__redevent_event_venue_xref AS x'
-				. ' INNER JOIN #__redevent_events AS a ON a.id = x.eventid'
-				. ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
-        . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-				. ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-				. ' LEFT JOIN #__redevent_fields_values AS custom ON custom.object_id = a.id'
-				. ' LEFT JOIN #__redevent_fields AS f ON custom.field_id = f.id AND f.object_key = '. $this->_db->Quote('redevent.event')
-				. $where
-				. ' GROUP BY (x.id) '
-				. $orderby
-				;
+        ;
+		// add the custom fields
+		foreach ((array) $customs as $c)
+		{
+			$query .= ', c'. $c->id .'.value AS custom'. $c->id;
+		}
+		
+    $query .= ' FROM #__redevent_event_venue_xref AS x'
+		        . ' INNER JOIN #__redevent_events AS a ON a.id = x.eventid'
+		        . ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
+            . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+	          . ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+		        ;
+		
+		// add the custom fields tables
+		foreach ((array) $customs as $c)
+		{
+			$query .= ' INNER JOIN #__redevent_fields_values AS c'. $c->id .' ON c'. $c->id .'.object_id = a.id';
+		}
+		
+		$query .= $where
+		       . ' GROUP BY (x.id) '
+				   . $orderby
+				   ;
 		return $query;
 	}
 
@@ -194,7 +214,7 @@ class RedeventModelBaseEventList extends JModel
 		$filter_order_dir	= $this->getState('filter_order_dir');
 			
 		if (ereg("field([0-9]+)", $filter_order, $regs)) {
-			$filter_order = 'custom.value';
+			$filter_order = 'c'. $regs[1] .'.value';
 		}
 		$orderby 	= ' ORDER BY '.$filter_order.' '.$filter_order_dir.', x.dates, x.times';
 
@@ -228,12 +248,6 @@ class RedeventModelBaseEventList extends JModel
 				
 		// Second is to only select events assigned to category the user has access to
 		$where .= ' AND c.access <= '.$gid;
-
-		// include proper custom field in query if it is the sorting considition
-		$filter_order		= $this->getState('filter_order');
-		if (ereg("/field([0-9]+)/", $filter_order, $regs)) {
-			$where .= ' AND f.id = '. $this->_db->Quote($regs[1]);
-		}
 		
 		/*
 		 * If we have a filter, and this is enabled... lets tack the AND clause
@@ -349,21 +363,60 @@ class RedeventModelBaseEventList extends JModel
   }
   
   /**
-   * returns custom fields names to be shown in lists
+   * returns all custom fields for events
    * 
    * @return array
    */
   function getCustomFields()
   {
-  	$query = ' SELECT f.id, f.name '
-  	       . ' FROM #__redevent_fields AS f'
-  	       . ' WHERE f.in_lists = 1'
-  	       . '   AND f.published = 1'
-  	       . '   AND f.object_key = '. $this->_db->Quote('redevent.event')
-  	       . ' ORDER BY f.ordering ASC '
-  	       ;
-  	$this->_db->setQuery($query);
-  	$res = $this->_db->loadObjectList();
+  	if (empty($this->_customfields))
+  	{
+	  	$query = ' SELECT f.id, f.name, f.in_lists, f.searchable '
+	  	       . ' FROM #__redevent_fields AS f'
+	  	       . ' WHERE f.published = 1'
+	  	       . '   AND f.object_key = '. $this->_db->Quote('redevent.event')
+	  	       . ' ORDER BY f.ordering ASC '
+	  	       ;
+	  	$this->_db->setQuery($query);
+	  	$this->_customfields = $this->_db->loadObjectList();
+  	}
+  	return $this->_customfields;
+  }
+  
+
+  /**
+   * returns custom fields to be shown in lists
+   * 
+   * @return array
+   */
+  function getListCustomFields()
+  {
+  	$fields = $this->getCustomFields();
+  	$res = array();
+  	foreach ((array)$fields as $f)
+  	{
+  		if ($f->in_lists) {
+  			$res[] = $f;
+  		}
+  	}
+  	return $res;
+  }
+
+  /**
+   * returns searchable custom fields
+   * 
+   * @return array
+   */
+  function getSearchableCustomFields()
+  {
+  	$fields = $this->getCustomFields();
+  	$res = array();
+  	foreach ((array)$fields as $f)
+  	{
+  		if ($f->searchable) {
+  			$res[] = $f;
+  		}
+  	}
   	return $res;
   }
 }

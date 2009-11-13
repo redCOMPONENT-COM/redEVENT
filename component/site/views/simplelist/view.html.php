@@ -73,7 +73,7 @@ class RedeventViewSimpleList extends JView
 
 		//get data from model
 		$rows 	= & $this->get('Data');
-		$customs 	= & $this->get('CustomFields');
+		$customs 	= & $this->get('ListCustomFields');
 		$pagination =& $this->get('Pagination');
 
 		//are events available?

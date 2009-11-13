@@ -230,9 +230,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         <?php endif; ?>
         
-		    <?php foreach ($row->customs AS $c): ?>
-          <td headers="el_customs" align="left" valign="top"><?php echo $c->value; ?></td>
+        <!-- custom fields -->
+		    <?php foreach ($this->customs AS $c): ?>
+		    <?php $property = 'custom'.$c->id; ?>
+          <td headers="el_customs" align="left" valign="top"><?php echo $row->$property; ?></td>
 		    <?php endforeach;?>
+        <!-- custom fields end-->
 		    
 				<?php $dimage = redEVENTImage::flyercreator($row->datimage, 'event');	?>				
 				<td headers="el_title" align="left" valign="top"><?php echo  ELOutput::flyer( $row, $dimage, 'event' ); ?></td>

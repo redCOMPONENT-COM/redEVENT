@@ -194,9 +194,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         <?php endif; ?>
         
-		    <?php foreach ($row->customs AS $c): ?>
-          <td headers="el_customs" align="left" valign="top"><?php echo $c->value; ?></td>
+        <!-- custom fields -->
+		    <?php foreach ($this->customs AS $c): ?>
+		    <?php $property = 'custom'.$c->id; ?>
+          <td headers="el_customs" align="left" valign="top"><?php echo $row->$property; ?></td>
 		    <?php endforeach;?>
+        <!-- custom fields end-->
 			</tr>
   			<?php
 			endforeach;
