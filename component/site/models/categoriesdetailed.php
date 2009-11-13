@@ -181,6 +181,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 		$this->_data = $this->_getList( $query, 0, $params->get('detcat_nr') );
     $this->_data = $this->_categories($this->_data);
     $this->_data = $this->_getPlacesLeft($this->_data);
+    $this->_data = $this->_getEventsCustoms($this->_data);
 
 		return $this->_data;
 	}

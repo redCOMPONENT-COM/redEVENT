@@ -59,6 +59,7 @@ class RedeventViewCategoriesdetailed extends JView
 
 		//Get data from the model
 		$categories	= & $this->get('Data');
+		$customs 	= & $this->get('CustomFields');
     $pageNav = & $this->get('pagination');
 
 		//add css file
@@ -114,6 +115,7 @@ class RedeventViewCategoriesdetailed extends JView
 		jimport('joomla.html.pagination');
 
 		$this->assignRef('categories' , 			$categories);
+		$this->assignRef('customs',     $customs);
 		$this->assignRef('print_link' , 			$print_link);
 		$this->assignRef('params' , 				$params);
 		$this->assignRef('dellink' , 				$dellink);
