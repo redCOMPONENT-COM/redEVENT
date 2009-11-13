@@ -73,6 +73,7 @@ class RedeventViewSimpleList extends JView
 
 		//get data from model
 		$rows 	= & $this->get('Data');
+		$customs 	= & $this->get('CustomFields');
 		$pagination =& $this->get('Pagination');
 
 		//are events available?
@@ -131,18 +132,19 @@ class RedeventViewSimpleList extends JView
 //			$uri->delVar('filter_type');
 		}
 		
-		$this->assign('lists' , 					$lists);
-    $this->assign('action',   str_replace('&', '&amp;', $uri->toString()));
+		$this->assign('lists',  $lists);
+    $this->assign('action', str_replace('&', '&amp;', $uri->toString()));
 
-		$this->assignRef('rows' , 					$rows);
-		$this->assignRef('task' , 					$task);
-		$this->assignRef('noevents' , 				$noevents);
-		$this->assignRef('print_link' , 			$print_link);
-		$this->assignRef('params' , 				$params);
-		$this->assignRef('dellink' , 				$dellink);
-		$this->assignRef('pageNav' , 				$pagination);
-		$this->assignRef('elsettings' , 			$elsettings);
-		$this->assignRef('pagetitle' , 				$pagetitle);
+		$this->assignRef('rows',        $rows);
+		$this->assignRef('customs',     $customs);
+		$this->assignRef('task',        $task);
+		$this->assignRef('noevents',    $noevents);
+		$this->assignRef('print_link',  $print_link);
+		$this->assignRef('params',      $params);
+		$this->assignRef('dellink',     $dellink);
+		$this->assignRef('pageNav',     $pagination);
+		$this->assignRef('elsettings',  $elsettings);
+		$this->assignRef('pagetitle',   $pagetitle);
 
 		parent::display($tpl);
 

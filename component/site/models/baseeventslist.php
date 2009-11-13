@@ -106,6 +106,7 @@ class RedeventModelBaseEventList extends JModel
 			}
 			$this->_data = $this->_categories($this->_data);
       $this->_data = $this->_getPlacesLeft($this->_data);
+      $this->_data = $this->_getEventsCustoms($this->_data);
 		}
 
 		return $this->_data;
@@ -172,6 +173,8 @@ class RedeventModelBaseEventList extends JModel
 				. ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
         . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
 				. ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+				. ' LEFT JOIN #__redevent_fields_values AS custom ON custom.object_id = a.id'
+				. ' LEFT JOIN #__redevent_fields AS f ON custom.field_id = f.id'
 				. $where
 				. ' GROUP BY (x.id) '
 				. $orderby
@@ -308,6 +311,51 @@ class RedeventModelBaseEventList extends JModel
       $rows[$k]->waiting = (isset($res[1]) ? $res[1]->total : 0) ;
     }
     return $rows;
+  }
+  
+  /**
+   * adds custom fields to rows.
+   * 
+   * @return array 
+   */
+  function _getEventsCustoms($rows) 
+  {
+    foreach ((array) $rows as $k => $r) 
+    {
+    	$query = ' SELECT f.name, custom.value '
+    	       . ' FROM #__redevent_fields_values AS custom'
+						 . ' INNER JOIN #__redevent_fields AS f ON custom.field_id = f.id'
+						 . ' WHERE custom.object_id = '. $this->_db->Quote($r->id)
+						 . '   AND f.searchable = 1'
+						 . '   AND f.published = 1'
+						 . '   AND f.object_key = '. $this->_db->Quote('redevent.event')
+  	         . ' ORDER BY f.ordering ASC '
+    	       ;
+    	$this->_db->setQuery($query);
+    	$res = $this->_db->loadObjectList();
+    	
+   		$rows[$k]->customs = $res;
+    }
+    return $rows;
+  }
+  
+  /**
+   * returns custom fields names to be shown in lists
+   * 
+   * @return array
+   */
+  function getCustomFields()
+  {
+  	$query = ' SELECT f.id, f.name '
+  	       . ' FROM #__redevent_fields AS f'
+  	       . ' WHERE f.searchable = 1'
+  	       . '   AND f.published = 1'
+  	       . '   AND f.object_key = '. $this->_db->Quote('redevent.event')
+  	       . ' ORDER BY f.ordering ASC '
+  	       ;
+  	$this->_db->setQuery($query);
+  	$res = $this->_db->loadObjectList();
+  	return $res;
   }
 }
 ?>
