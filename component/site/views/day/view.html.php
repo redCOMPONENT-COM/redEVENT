@@ -75,6 +75,7 @@ class RedeventViewDay extends JView
 
 		//get data from model
 		$rows 		= & $this->get('Data');
+		$customs 	= & $this->get('CustomFields');
 		$total 		= & $this->get('Total');
 		$day	= & $this->get('Day');
 		
@@ -130,6 +131,7 @@ class RedeventViewDay extends JView
 		$this->assign('lists' , 					$lists);
 
 		$this->assignRef('rows' , 					$rows);
+		$this->assignRef('customs',     $customs);
 		$this->assignRef('noevents' , 				$noevents);
 		$this->assignRef('print_link' , 			$print_link);
 		$this->assignRef('params' , 				$params);
