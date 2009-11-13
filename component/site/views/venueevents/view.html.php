@@ -76,6 +76,7 @@ class RedeventViewVenueevents extends JView
 		$rows 		= & $this->get('Data');
 		$venue	 	= & $this->get('Venue');
 		$total 		= & $this->get('Total');
+		$customs 	= & $this->get('CustomFields');
 
 		//does the venue exist?
 		if ($venue->id == 0)
@@ -181,6 +182,7 @@ class RedeventViewVenueevents extends JView
     $this->assign('action',   str_replace('&', '&amp;', $uri->toString()));
 
 		$this->assignRef('rows' , 					$rows);
+		$this->assignRef('customs',     $customs);
 		$this->assignRef('noevents' , 				$noevents);
 		$this->assignRef('venue' , 					$venue);
 		$this->assignRef('print_link' , 			$print_link);
