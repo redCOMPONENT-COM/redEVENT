@@ -99,6 +99,11 @@ JToolBarHelper::help( 'screen.tracks.edit' );
     </td>
     <td><?php echo $this->lists['searchable']; ?></td>
   </tr>
+  <tr>
+    <td valign="top" align="right" class="key"><?php echo JText::_( 'Show in lists' ); ?>:
+    </td>
+    <td><?php echo $this->lists['in_lists']; ?></td>
+  </tr>
   <tr id="row-min">
     <td valign="top" align="right" class="key"><label for="ordering"> <?php echo JText::_( 'Min. characters' ); ?>:
     </label></td>

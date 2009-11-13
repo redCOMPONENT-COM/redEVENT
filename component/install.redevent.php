@@ -454,6 +454,21 @@ if (is_array($cols)) {
   }
 }
 
+/* Get the custom fields columns */
+$q = "SHOW COLUMNS FROM #__redevent_fields";
+$db->setQuery($q);
+$cols = $db->loadObjectList('Field');
+
+if (is_array($cols)) 
+{  
+	/* show in lists ? */
+  if (!array_key_exists('in_lists', $cols)) {
+    $q = "ALTER IGNORE TABLE #__redevent_fields ADD COLUMN `in_lists` TINYINT(1) NOT NULL DEFAULT '0' AFTER `searchable`";
+    $db->setQuery($q);
+    $db->query();    
+  }	
+}
+
 /* Add the basic configuration entry */
 $q = "INSERT IGNORE INTO `#__redevent_settings` SET "
    . " id = 1, "

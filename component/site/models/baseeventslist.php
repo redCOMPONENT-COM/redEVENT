@@ -326,7 +326,7 @@ class RedeventModelBaseEventList extends JModel
     	       . ' FROM #__redevent_fields_values AS custom'
 						 . ' INNER JOIN #__redevent_fields AS f ON custom.field_id = f.id'
 						 . ' WHERE custom.object_id = '. $this->_db->Quote($r->id)
-						 . '   AND f.searchable = 1'
+						 . '   AND f.in_lists = 1'
 						 . '   AND f.published = 1'
 						 . '   AND f.object_key = '. $this->_db->Quote('redevent.event')
   	         . ' ORDER BY f.ordering ASC '
@@ -348,7 +348,7 @@ class RedeventModelBaseEventList extends JModel
   {
   	$query = ' SELECT f.id, f.name '
   	       . ' FROM #__redevent_fields AS f'
-  	       . ' WHERE f.searchable = 1'
+  	       . ' WHERE f.in_lists = 1'
   	       . '   AND f.published = 1'
   	       . '   AND f.object_key = '. $this->_db->Quote('redevent.event')
   	       . ' ORDER BY f.ordering ASC '

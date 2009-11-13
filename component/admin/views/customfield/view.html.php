@@ -95,6 +95,7 @@ class RedeventViewCustomfield extends JView
 		// build the html select lists
 		$lists['published'] 		= JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $object->published );
     $lists['searchable']    = JHTML::_('select.booleanlist',  'searchable', 'class="inputbox"', $object->searchable );
+    $lists['in_lists']    = JHTML::_('select.booleanlist',  'in_lists', 'class="inputbox"', $object->in_lists );
 		
     // build the html select list for object key
     $object_keys = array();
