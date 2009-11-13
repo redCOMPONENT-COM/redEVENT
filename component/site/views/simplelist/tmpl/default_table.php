@@ -113,7 +113,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         endif;
 				?>
 		    <?php foreach ($this->customs AS $c): ?>
-        	<th id="el_places_<?php echo $c->id; ?>" class="sectiontableheader" align="left"><?php echo JText::_($c->name); ?></th>
+        	<th id="el_places_<?php echo $c->id; ?>" class="sectiontableheader" align="left">
+        	<?php echo JHTML::_('grid.sort', $this->escape($c->name), 'field'. $c->id, $this->lists['order_Dir'], $this->lists['order'] ); ?>
+        	</th>
 		    <?php endforeach;?>
 			</tr>
 	</thead>

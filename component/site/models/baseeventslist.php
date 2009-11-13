@@ -174,7 +174,7 @@ class RedeventModelBaseEventList extends JModel
         . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
 				. ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
 				. ' LEFT JOIN #__redevent_fields_values AS custom ON custom.object_id = a.id'
-				. ' LEFT JOIN #__redevent_fields AS f ON custom.field_id = f.id'
+				. ' LEFT JOIN #__redevent_fields AS f ON custom.field_id = f.id AND f.object_key = '. $this->_db->Quote('redevent.event')
 				. $where
 				. ' GROUP BY (x.id) '
 				. $orderby
@@ -192,7 +192,10 @@ class RedeventModelBaseEventList extends JModel
 	{
 		$filter_order		= $this->getState('filter_order');
 		$filter_order_dir	= $this->getState('filter_order_dir');
-
+			
+		if (ereg("field([0-9]+)", $filter_order, $regs)) {
+			$filter_order = 'custom.value';
+		}
 		$orderby 	= ' ORDER BY '.$filter_order.' '.$filter_order_dir.', x.dates, x.times';
 
 		return $orderby;
@@ -226,6 +229,12 @@ class RedeventModelBaseEventList extends JModel
 		// Second is to only select events assigned to category the user has access to
 		$where .= ' AND c.access <= '.$gid;
 
+		// include proper custom field in query if it is the sorting considition
+		$filter_order		= $this->getState('filter_order');
+		if (ereg("/field([0-9]+)/", $filter_order, $regs)) {
+			$where .= ' AND f.id = '. $this->_db->Quote($regs[1]);
+		}
+		
 		/*
 		 * If we have a filter, and this is enabled... lets tack the AND clause
 		 * for the filter onto the WHERE clause of the item query.
