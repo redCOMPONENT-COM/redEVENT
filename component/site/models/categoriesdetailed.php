@@ -291,7 +291,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
       $query .= '   GROUP BY c.id ';      
     }		     
 		
-		$query .= ' ORDER BY c.catname ASC ';
+		$query .= ' ORDER BY c.ordering ASC ';
 		
 		return $query;
 	}
