@@ -22,17 +22,30 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
 ?>
+<script type="text/javascript">
+function tableOrdering( order, dir, view )
+{
+	var form = document.getElementById("venuesform");
+		
+	form.filter_order.value 	= order;
+	form.filter_order_Dir.value	= dir;
+	form.submit( view );
+}
+</script>
+
+<form action="<?php echo $this->action; ?>" method="post" id="venuesform">
 <div id="upcomingevents">
 <table class="courseinfo_tabel">
 <thead>
 	<tr>
 			<th class="courseinfo_titlename"><?php echo JText::_('EVENT_NAME'); ?></th>
-			<th class="courseinfo_titledate"><?php echo JText::_('EVENT_DATE'); ?></th>
+			<th class="courseinfo_titledate"><?php echo JHTML::_('grid.sort', 'EVENT_DATE', 'x.dates', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th class="courseinfo_titleduration"><?php echo JText::_('EVENT_DURATION'); ?></th>
-			<th class="courseinfo_titlevenue" colspan="2"><?php echo JText::_('EVENT_VENUE'); ?></th>
-			<th class="courseinfo_titleprice"><?php echo JText::_('EVENT_PRICE'); ?></th>
-			<th class="courseinfo_titlecredit"><?php echo JText::_('EVENT_CREDITS'); ?></th>
+			<th class="courseinfo_titlevenue" colspan="2"><?php echo JHTML::_('grid.sort', 'EVENT_VENUE', 'v.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th class="courseinfo_titleprice"><?php echo JHTML::_('grid.sort', 'EVENT_PRICE', 'x.course_price', $this->lists['order_Dir'], $this->lists['order'] );JText::_('EVENT_PRICE'); ?></th>
+			<th class="courseinfo_titlecredit"><?php echo JHTML::_('grid.sort', 'EVENT_CREDITS', 'x.course_credit', $this->lists['order_Dir'], $this->lists['order'] );JText::_('EVENT_CREDITS'); ?></th>
 			<th class="courseinfo_titlesignup"><?php echo JText::_('EVENT_SIGNUP'); ?></th>
 	</tr>
 </thead>
@@ -103,3 +116,7 @@ foreach ($this->_eventlinks as $key => $event) {
 </tbody>
 </table>
 </div>
+
+<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
+<input type="hidden" name="filter_order_Dir" value="" />
+</form>

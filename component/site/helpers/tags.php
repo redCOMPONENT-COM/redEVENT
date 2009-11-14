@@ -519,6 +519,14 @@ class redEVENT_tags {
 	{
 		$app = & JFactory::getApplication();
 		$template_path = JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'com_redevent';
+		
+		$lists['order_Dir'] 	= JRequest::getWord('filter_order_Dir', 'ASC');
+		$lists['order'] 		= JRequest::getCmd('filter_order', 'x.dates');
+		$this->lists = $lists;
+		
+    $uri    = &JFactory::getURI();
+    $this->action = $uri->toString();
+    
 		ob_start();
 		if (JRequest::getVar('format') == 'pdf') {
 			if (file_exists($template_path.DS.'details'.DS.'courseinfo_pdf.php')) {
@@ -546,6 +554,10 @@ class redEVENT_tags {
 	 */
 	private function getEventLinks() 
 	{
+		
+		$order_Dir = JRequest::getWord('filter_order_Dir', 'ASC');
+		$order 		  = JRequest::getCmd('filter_order', 'x.dates');
+		
 		$db = JFactory::getDBO();
 		$q = " SELECT e.*, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, x.course_price, "
 		    . " x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees, x.maxwaitinglist, v.venue, x.venueid, x.details, x.registrationend,
@@ -562,7 +574,7 @@ class redEVENT_tags {
 			WHERE x.published = ". $db->Quote($this->_published) ."
 			AND e.id IN (".$this->_eventid.")
       GROUP BY x.id
-      ORDER BY x.dates, x.times
+      ORDER BY $order $order_Dir, x.dates, x.times
 			";
 		$db->setQuery($q);
 		$this->_eventlinks = $db->loadObjectList();
