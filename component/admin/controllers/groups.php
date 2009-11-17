@@ -215,7 +215,7 @@ class RedEventControllerGroups extends RedEventController
 		else 
 		{
 			$link 	= 'index.php?option=com_redevent&view=groups';
-			$msg	= 'Error saving acl';
+			$msg	= JText::_( 'GROUP ACL SAVE ERROR'). ': ' .$model->getError();		
 			$this->setRedirect( $link, $msg, 'error' );
 		}		
 	}

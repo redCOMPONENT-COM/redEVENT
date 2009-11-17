@@ -53,8 +53,8 @@ class RedEventViewGroupacl extends JView {
 
 		//Get data from the model
 		$group        = & $this->get('group');
-		$gcategories	= & $this->get('MaintainCategories');
-		$gvenues	    = & $this->get('MaintainVenues');
+		$gcategories	= & $this->get('MaintainedCategories');
+		$gvenues	    = & $this->get('MaintainedVenues');
 
 		//build toolbar
 		JToolBarHelper::title( JText::_( 'EDIT GROUP ACL' ) .' - '. $group->name, 'groupedit' );

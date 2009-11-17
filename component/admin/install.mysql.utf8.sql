@@ -136,6 +136,22 @@ CREATE TABLE IF NOT EXISTS `#__redevent_groupmembers` (
   PRIMARY KEY (`id`)
 ) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
+CREATE TABLE IF NOT EXISTS `#__redevent_groups_categories` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `group_id` int(11) NOT NULL DEFAULT '0',
+  `category_id` int(11) NOT NULL DEFAULT '0',
+  `accesslevel` tinyint(4) NOT NULL DEFAULT '0',
+PRIMARY KEY  (`id`)
+) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_groups_venues` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `group_id` int(11) NOT NULL DEFAULT '0',
+  `venue_id` int(11) NOT NULL DEFAULT '0',
+  `accesslevel` tinyint(4) NOT NULL DEFAULT '0',
+PRIMARY KEY  (`id`)
+) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+
 CREATE TABLE IF NOT EXISTS `#__redevent_settings` (
   `id` int(11) NOT NULL,
   `showtime` tinyint(4) NOT NULL,

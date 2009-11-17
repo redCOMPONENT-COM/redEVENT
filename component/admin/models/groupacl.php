@@ -96,7 +96,13 @@ class RedEventModelGroupacl extends JModel
 	 */
 	function getMaintainedCategories()
 	{
-		return array();
+		$query = ' SELECT category_id FROM #__redevent_groups_categories '
+		       . ' WHERE group_id ='. $this->_db->Quote($this->_id)
+		       . '   AND accesslevel >= 1'
+		       ;
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadResultArray();
+		return $res;
 	} 
 
 	/**
@@ -105,7 +111,13 @@ class RedEventModelGroupacl extends JModel
 	 */
 	function getMaintainedVenues()
 	{
-		return array();
+		$query = ' SELECT venue_id FROM #__redevent_groups_venues '
+		       . ' WHERE group_id ='. $this->_db->Quote($this->_id)
+		       . '   AND accesslevel >= 1'
+		       ;
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadResultArray();
+		return $res;
 	} 
 	
 	/**
@@ -117,6 +129,55 @@ class RedEventModelGroupacl extends JModel
 	 */
 	function store($data)
 	{
+		$group_id = $data['group_id'];
+		$cats = $data['maintaincategories'];
+		$venues = $data['maintainvenues'];
+				
+		// wipe previous records
+		$query = 'DELETE FROM #__redevent_groups_categories WHERE group_id = '. $this->_db->Quote((int) $group_id);
+		$this->_db->setQuery($query);
+		if (!$this->_db->query())
+		{
+			$this->setError('ERROR DELETING PREVIOUS RECORDS');
+			return false;
+		}
+		// add new records
+		foreach ((array) $cats as $cat)
+		{
+			$obj = &JTable::getInstance('redevent_groupscategories', '');
+			$obj->set('group_id', $group_id);
+			$obj->set('category_id', $cat);
+			$obj->set('accesslevel', 1);
+			
+			if (!($obj->check() && $obj->store()))
+			{
+				$this->setError(JText::_('Error saving group category acl') .': '. $obj->getError());
+				return false;
+			}			
+		}
+		
+	  // wipe previous records
+		$query = 'DELETE FROM #__redevent_groups_venues WHERE group_id = '. $this->_db->Quote((int) $group_id);
+		$this->_db->setQuery($query);
+		if (!$this->_db->query())
+		{
+			$this->setError('ERROR DELETING PREVIOUS RECORDS');
+			return false;
+		}
+		// add new records
+		foreach ((array) $venues as $v)
+		{
+			$obj = &JTable::getInstance('redevent_groupsvenues', '');
+			$obj->set('group_id', $group_id);
+			$obj->set('venue_id', $v);
+			$obj->set('accesslevel', 1);
+			
+			if (!($obj->check() && $obj->store()))
+			{
+				$this->setError(JText::_('Error saving group venue acl') .': '. $obj->getError());
+				return false;
+			}			
+		}
 		return true;
 	}
 	
