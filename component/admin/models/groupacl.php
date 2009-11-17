@@ -117,7 +117,7 @@ class RedEventModelGroupacl extends JModel
 	 */
 	function store($data)
 	{
-		return false;
+		return true;
 	}
 	
 	/**

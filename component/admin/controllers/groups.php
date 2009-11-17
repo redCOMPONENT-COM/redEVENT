@@ -44,6 +44,7 @@ class RedEventControllerGroups extends RedEventController
 		parent::__construct();
 
 		$this->registerTask( 'apply', 		'save' );
+		$this->registerTask( 'applyacl', 		'saveacl' );
 	}
 
 	/**
@@ -187,6 +188,43 @@ class RedEventControllerGroups extends RedEventController
 		JRequest::setVar('view', 'groupacl');
 		
 		parent::display();
+	}
+	
+	function saveacl()
+	{
+		$task		= JRequest::getVar('task');
+		$post 	= JRequest::get( 'post' );
+				
+		$model = $this->getModel('groupacl');
+
+		if ($returnid = $model->store($post)) 
+		{		
+			switch ($task)
+			{
+				case 'applyacl' :
+					$link = 'index.php?option=com_redevent&controller=groups&task=groupacl&hidemainmenu=1&group_id='.$post['group_id'];
+					break;
+
+				default :
+					$link 	= 'index.php?option=com_redevent&view=groups';
+					break;
+			}
+			$msg	= JText::_( 'GROUP ACL SAVED');			
+			$this->setRedirect( $link, $msg );			
+		} 
+		else 
+		{
+			$link 	= 'index.php?option=com_redevent&view=groups';
+			$msg	= 'Error saving acl';
+			$this->setRedirect( $link, $msg, 'error' );
+		}		
+	}
+	
+	function cancelacl()
+	{
+		$link 	= 'index.php?option=com_redevent&view=groups';
+		$msg	= JText::_( 'OPERATION CANCELLED');				
+		$this->setRedirect( $link, $msg );		
 	}
 }
 ?>
