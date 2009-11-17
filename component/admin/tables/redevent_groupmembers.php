@@ -37,11 +37,43 @@ class RedEvent_groupmembers extends JTable
 	 * @var int
 	 */
 	var $id 				= null;
-	/** @var int */
+	/** 
+	 * user id
+	 * @var int 
+	 * */
 	var $member				= null;
-
+	/**
+	 * is group admin ?
+	 * @var int
+	 */
+	var $is_admin = 0;
+	/**
+	 * allowed to add events
+	 * @var int
+	 */
+	var $add_events = 0;
+	/**
+	 * allowed to add xrefs
+	 * @var int
+	 */
+	var $add_events = 0;
+	/**
+	 * receive registrations to events
+	 * @var int
+	 */
+	var $receive_registrations = 0;
+	
 	function redevent_groupmembers(& $db) {
 		parent::__construct('#__redevent_groupmembers', '', $db);
+	}
+	
+	function check()
+	{
+		if (!($this->member)) {
+			$this->setError(JText::_('USER ID REQUIRED'));
+			return false;
+		}
+		return true;
 	}
 }
 ?>

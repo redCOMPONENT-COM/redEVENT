@@ -469,6 +469,27 @@ if (is_array($cols))
   }	
 }
 
+/* Get the group members fields columns */
+$q = "SHOW COLUMNS FROM #__redevent_groupemembers";
+$db->setQuery($q);
+$cols = $db->loadObjectList('Field');
+
+if (is_array($cols)) 
+{  
+	/* show in lists ? */
+  if (!array_key_exists('id', $cols)) {
+    $q = ' ALTER TABLE `#__redevent_groupmembers` '
+       . '   ADD `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST'
+       . '   ADD `is_admin` TINYINT( 1 ) NOT NULL AFTER `member` ,'
+       . '   ADD `add_events` TINYINT( 1 ) NOT NULL AFTER `is_admin` ,'
+       . '   ADD `add_xrefs` TINYINT( 1 ) NOT NULL AFTER `add_events` ,'
+       . '   ADD `receive_registrations` TINYINT( 1 ) NOT NULL AFTER `add_xrefs` ';
+    $db->setQuery($q);
+    $db->query();    
+  }	
+}
+
+
 /* Add the basic configuration entry */
 $q = "INSERT IGNORE INTO `#__redevent_settings` SET "
    . " id = 1, "

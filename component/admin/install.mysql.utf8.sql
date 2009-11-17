@@ -124,8 +124,14 @@ PRIMARY KEY  (`id`)
 ) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_groupmembers` (
-`group_id` INT( 11 ) NOT NULL DEFAULT '0',
-`member` INT( 11 ) NOT NULL DEFAULT '0'
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_id` int(11) NOT NULL DEFAULT '0',
+  `member` int(11) NOT NULL DEFAULT '0',
+  `is_admin` tinyint(1) NOT NULL,
+  `add_events` tinyint(1) NOT NULL,
+  `add_xrefs` tinyint(1) NOT NULL,
+  `receive_registrations` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
 ) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_settings` (
