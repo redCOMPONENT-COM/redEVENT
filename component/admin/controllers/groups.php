@@ -181,5 +181,12 @@ class RedEventControllerGroups extends RedEventController
 		
 		parent::display();
 	}
+
+	function groupacl()
+	{
+		JRequest::setVar('view', 'groupacl');
+		
+		parent::display();
+	}
 }
 ?>

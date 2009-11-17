@@ -45,14 +45,13 @@ defined('_JEXEC') or die('Restricted access');
 			<th width="30%" class="title"><?php echo JHTML::_('grid.sort', 'GROUP NAME', 'name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th><?php echo JText::_( 'DESCRIPTION' ); ?></th>
 			<th width="5"><?php echo JText::_( 'Members' ); ?></th>
-			<th width="5"><?php echo JText::_( 'Categories ACL' ); ?></th>
-			<th width="5"><?php echo JText::_( 'Venues ACL' ); ?></th>
+			<th width="5"><?php echo JText::_( 'Group ACL' ); ?></th>6
 		</tr>
 	</thead>
 
 	<tfoot>
 		<tr>
-			<td colspan="7">
+			<td colspan="6">
 				<?php echo $this->pageNav->getListFooter(); ?>
 			</td>
 		</tr>
@@ -88,15 +87,10 @@ defined('_JEXEC') or die('Restricted access');
 																	         JText::_( 'Edit group members' ), 
 																	         'title= "'. JText::_( 'Edit group members' ) . '"' )); ?>
 			</td>
-			<td style="text-align:center;"><?php echo JHTML::link('index.php?option=com_redevent&amp;controller=groups&amp;task=categoriesacl&amp;group_id='.$row->id, 
+			<td style="text-align:center;"><?php echo JHTML::link('index.php?option=com_redevent&amp;controller=groups&amp;task=groupacl&amp;group_id='.$row->id, 
 																	JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/icon-16-categories.png',
-																	         JText::_( 'Edit categories ACL' ), 
-																	         'title= "'. JText::_( 'Edit categories ACL' ) . '"' )); ?>
-			</td>
-			<td style="text-align:center;"><?php echo JHTML::link('index.php?option=com_redevent&amp;controller=groups&amp;task=venuesacl&amp;group_id='.$row->id, 
-																	JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/icon-16-venues.png',
-																	         JText::_( 'Edit venues ACL' ), 
-																	         'title= "'. JText::_( 'Edit venues ACL' ) . '"' )); ?>
+																	         JText::_( 'Edit group ACL' ), 
+																	         'title= "'. JText::_( 'Edit group ACL' ) . '"' )); ?>
 			</td>
 		</tr>
 		<?php $k = 1 - $k;  } ?>
