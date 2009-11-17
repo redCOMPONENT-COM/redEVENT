@@ -174,5 +174,12 @@ class RedEventControllerGroups extends RedEventController
 
 		$this->setRedirect( 'index.php?option=com_redevent&view=groups', $msg );
 	}
+	
+	function editmembers()
+	{
+		JRequest::setVar('view', 'groupmembers');
+		
+		parent::display();
+	}
 }
 ?>

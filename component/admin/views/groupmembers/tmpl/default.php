@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.0 $Id$
+ * @version 1.0 $Id: default.php 1586 2009-11-17 16:39:21Z julien $
  * @package Joomla
  * @subpackage redEVENT
  * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
@@ -40,19 +40,20 @@ defined('_JEXEC') or die('Restricted access');
 <table class="adminlist" cellspacing="1">
 	<thead>
 		<tr>
-			<th width="5"><?php echo JText::_( 'Num' ); ?></th>
+			<th width="20"><?php echo JText::_( 'Num' ); ?></th>
 			<th width="20"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
-			<th width="30%" class="title"><?php echo JHTML::_('grid.sort', 'GROUP NAME', 'name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			<th><?php echo JText::_( 'DESCRIPTION' ); ?></th>
-			<th width="5"><?php echo JText::_( 'Members' ); ?></th>
-			<th width="5"><?php echo JText::_( 'Categories ACL' ); ?></th>
-			<th width="5"><?php echo JText::_( 'Venues ACL' ); ?></th>
+			<th class="title"><?php echo JHTML::_('grid.sort', 'NAME', 'name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th class="title"><?php echo JHTML::_('grid.sort', 'USERNAME', 'username', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th width="20"><?php echo JText::_( 'Admin' ); ?></th>
+			<th width="20"><?php echo JText::_( 'Add events' ); ?></th>
+			<th width="20"><?php echo JText::_( 'Add xrefs' ); ?></th>
+			<th width="20"><?php echo JText::_( 'Get registrations' ); ?></th>
 		</tr>
 	</thead>
 
 	<tfoot>
 		<tr>
-			<td colspan="7">
+			<td colspan="8">
 				<?php echo $this->pageNav->getListFooter(); ?>
 			</td>
 		</tr>
@@ -64,7 +65,7 @@ defined('_JEXEC') or die('Restricted access');
 		for($i=0, $n=count( $this->rows ); $i < $n; $i++) {
 			$row = &$this->rows[$i];
 
-			$link 		= 'index.php?option=com_redevent&amp;controller=groups&amp;task=edit&amp;cid[]='.$row->id;
+			$link 		= 'index.php?option=com_redevent&amp;controller=groupmembers&amp;task=edit&amp;cid[]='.$row->id;
 			$checked 	= JHTML::_('grid.checkedout', $row, $i );
    		?>
 		<tr class="<?php echo "row$k"; ?>">
@@ -76,27 +77,28 @@ defined('_JEXEC') or die('Restricted access');
 						echo htmlspecialchars($row->name, ENT_QUOTES, 'UTF-8');
 					} else {
 				?>
-				<span class="editlinktip hasTip" title="<?php echo JText::_( 'EDIT GROUP' );?>::<?php echo $row->name; ?>">
+				<span class="editlinktip hasTip" title="<?php echo JText::_( 'EDIT MEMBER' );?>::<?php echo $row->name; ?>">
 				<a href="<?php echo $link; ?>">
 				<?php echo htmlspecialchars($row->name, ENT_QUOTES, 'UTF-8'); ?>
 				</a></span>
 				<?php } ?>
 			</td>
-			<td><?php echo htmlspecialchars($row->description, ENT_QUOTES, 'UTF-8'); ?></td>
-			<td style="text-align:center;"><?php echo JHTML::link('index.php?option=com_redevent&amp;controller=groups&amp;task=editmembers&amp;group_id='.$row->id, 
-																	JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/groupmembers.png',
-																	         JText::_( 'Edit group members' ), 
-																	         'title= "'. JText::_( 'Edit group members' ) . '"' )); ?>
+			<td><?php echo $row->username; ?></td>
+			<td style="text-align:center;"><?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/groupmembers.png',
+																	         JText::_( 'Yes' ), 
+																	         'title= "'. JText::_( 'yes' ) . '"' ); ?>
 			</td>
-			<td style="text-align:center;"><?php echo JHTML::link('index.php?option=com_redevent&amp;controller=groups&amp;task=categoriesacl&amp;group_id='.$row->id, 
-																	JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/icon-16-categories.png',
-																	         JText::_( 'Edit categories ACL' ), 
-																	         'title= "'. JText::_( 'Edit categories ACL' ) . '"' )); ?>
+			<td style="text-align:center;"><?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/groupmembers.png',
+																	         JText::_( 'Yes' ), 
+																	         'title= "'. JText::_( 'yes' ) . '"' ); ?>
 			</td>
-			<td style="text-align:center;"><?php echo JHTML::link('index.php?option=com_redevent&amp;controller=groups&amp;task=venuesacl&amp;group_id='.$row->id, 
-																	JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/icon-16-venues.png',
-																	         JText::_( 'Edit venues ACL' ), 
-																	         'title= "'. JText::_( 'Edit venues ACL' ) . '"' )); ?>
+			<td style="text-align:center;"><?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/groupmembers.png',
+																	         JText::_( 'Yes' ), 
+																	         'title= "'. JText::_( 'yes' ) . '"' ); ?>
+			</td>
+			<td style="text-align:center;"><?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/groupmembers.png',
+																	         JText::_( 'Yes' ), 
+																	         'title= "'. JText::_( 'yes' ) . '"' ); ?>
 			</td>
 		</tr>
 		<?php $k = 1 - $k;  } ?>
@@ -111,8 +113,9 @@ defined('_JEXEC') or die('Restricted access');
 
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="option" value="com_redevent" />
-<input type="hidden" name="controller" value="groups" />
-<input type="hidden" name="view" value="groups" />
+<input type="hidden" name="controller" value="groupmembers" />
+<input type="hidden" name="view" value="groupmembers" />
+<input type="hidden" name="group_id" value="<?php echo $this->group_id; ?>" />
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="" />

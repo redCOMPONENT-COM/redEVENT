@@ -62,6 +62,10 @@ class RedEvent_groupmembers extends JTable
 	 * @var int
 	 */
 	var $receive_registrations = 0;
+	/** @var int */
+	var $checked_out 		= 0;
+	/** @var date */
+	var $checked_out_time	= 0;
 	
 	function redevent_groupmembers(& $db) {
 		parent::__construct('#__redevent_groupmembers', '', $db);

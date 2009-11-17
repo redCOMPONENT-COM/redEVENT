@@ -131,6 +131,8 @@ CREATE TABLE IF NOT EXISTS `#__redevent_groupmembers` (
   `add_events` tinyint(1) NOT NULL,
   `add_xrefs` tinyint(1) NOT NULL,
   `receive_registrations` tinyint(1) NOT NULL,
+	`checked_out` int(11) NOT NULL default '0',
+	`checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
 ) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 

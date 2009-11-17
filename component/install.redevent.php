@@ -483,7 +483,10 @@ if (is_array($cols))
        . '   ADD `is_admin` TINYINT( 1 ) NOT NULL AFTER `member` ,'
        . '   ADD `add_events` TINYINT( 1 ) NOT NULL AFTER `is_admin` ,'
        . '   ADD `add_xrefs` TINYINT( 1 ) NOT NULL AFTER `add_events` ,'
-       . '   ADD `receive_registrations` TINYINT( 1 ) NOT NULL AFTER `add_xrefs` ';
+       . '   ADD `receive_registrations` TINYINT( 1 ) NOT NULL AFTER `add_xrefs` ,'
+       . '   ADD `checked_out` int(11) NOT NULL default "0" ,'
+       . '   ADD `checked_out_time` datetime NOT NULL default "0000-00-00 00:00:00",
+       ;
     $db->setQuery($q);
     $db->query();    
   }	
