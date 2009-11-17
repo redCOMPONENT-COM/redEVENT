@@ -41,6 +41,12 @@ class RedEventModelGroupacl extends JModel
 	 * @var int
 	 */
 	var $_id = null;
+	/**
+	 * group
+	 *
+	 * @var int
+	 */
+	var $_group = null;
 
 	/**
 	 * Constructor
@@ -157,6 +163,24 @@ class RedEventModelGroupacl extends JModel
       $options[] = JHTML::_('select.option', $r->id, $r->venue);
     }
 		return $options;
+	}
+	
+	/**
+	 * returns group id and name
+	 * @return array
+	 */
+	function getGroup()
+	{
+		if (empty($this->_group))
+		{
+			$query = ' SELECT id, name '
+			       . ' FROM #__redevent_groups '
+			       . ' WHERE id = '. $this->_db->Quote($this->get('_id'))
+			            ;
+			$this->_db->setQuery($query);
+			$this->_group = $this->_db->loadObject();
+		}
+		return $this->_group;
 	}
 }
 ?>

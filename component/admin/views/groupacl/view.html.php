@@ -46,18 +46,18 @@ class RedEventViewGroupacl extends JView {
 		$user 		= & JFactory::getUser();
 
 		//get vars
-		$cid 			= JRequest::getInt( 'cid' );
+		$group_id 			= JRequest::getInt( 'group_id' );
 
 		//add css
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 
 		//Get data from the model
-		$model				= & $this->getModel();
-		$gcategories	= & $this->get( 'MaintainCategories');
-		$gvenues	    = & $this->get( 'MaintainVenues');
+		$group        = & $this->get('group');
+		$gcategories	= & $this->get('MaintainCategories');
+		$gvenues	    = & $this->get('MaintainVenues');
 
 		//build toolbar
-		JToolBarHelper::title( JText::_( 'EDIT GROUP ACL' ), 'groupedit' );
+		JToolBarHelper::title( JText::_( 'EDIT GROUP ACL' ) .' - '. $group->name, 'groupedit' );
 		JToolBarHelper::spacer();
 		JToolBarHelper::apply('applyacl');
 		JToolBarHelper::save('saveacl');
@@ -76,6 +76,7 @@ class RedEventViewGroupacl extends JView {
 		
 		//assign data to template
 		$this->assignRef('lists'      	, $lists);
+		$this->assign('group_id'      	, $group_id);
 
 		parent::display($tpl);
 	}

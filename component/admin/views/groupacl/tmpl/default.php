@@ -62,7 +62,7 @@ defined('_JEXEC') or die('Restricted access');
 <input type="hidden" name="option" value="com_redevent" />
 <input type="hidden" name="controller" value="groups" />
 <input type="hidden" name="view" value="groupacl" />
-<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
+<input type="hidden" name="group_id" value="<?php echo $this->group_id; ?>" />
 <input type="hidden" name="task" value="" />
 </form>
 
