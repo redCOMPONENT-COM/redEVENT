@@ -42,6 +42,13 @@ class RedEventModelGroupmembers extends JModel
 	var $_data = null;
 
 	/**
+	 * group data
+	 *
+	 * @var array
+	 */
+	var $_group = null;
+	
+	/**
 	 * Events total
 	 *
 	 * @var integer
@@ -105,6 +112,20 @@ class RedEventModelGroupmembers extends JModel
 		}
 
 		return $this->_data;
+	}
+	
+	function getGroup()
+	{
+		if (empty($this->_group))
+		{
+			$query = ' SELECT id, name '
+			       . ' FROM #__redevent_groups '
+			       . ' WHERE id = '. $this->_db->Quote($this->get('_id'))
+			            ;
+			$this->_db->setQuery($query);
+			$this->_group = $this->_db->loadObject();
+		}
+		return $this->_group;
 	}
 
 	/**

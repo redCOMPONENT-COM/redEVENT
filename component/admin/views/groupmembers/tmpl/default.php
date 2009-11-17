@@ -65,7 +65,7 @@ defined('_JEXEC') or die('Restricted access');
 		for($i=0, $n=count( $this->rows ); $i < $n; $i++) {
 			$row = &$this->rows[$i];
 
-			$link 		= 'index.php?option=com_redevent&amp;controller=groupmembers&amp;task=edit&amp;cid[]='.$row->id;
+			$link 		= 'index.php?option=com_redevent&amp;controller=groupmembers&amp;task=edit&amp;group_id='. $this->group_id .'&amp;cid[]='.$row->id;
 			$checked 	= JHTML::_('grid.checkedout', $row, $i );
    		?>
 		<tr class="<?php echo "row$k"; ?>">
@@ -84,21 +84,49 @@ defined('_JEXEC') or die('Restricted access');
 				<?php } ?>
 			</td>
 			<td><?php echo $row->username; ?></td>
-			<td style="text-align:center;"><?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/groupmembers.png',
+			<td style="text-align:center;">
+			<?php if ($row->is_admin): ?>
+				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/ok.png',
 																	         JText::_( 'Yes' ), 
 																	         'title= "'. JText::_( 'yes' ) . '"' ); ?>
+			<?php else: ?>
+				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/no.png',
+																	         JText::_( 'No' ), 
+																	         'title= "'. JText::_( 'No' ) . '"' ); ?>
+			<?php endif; ?>
 			</td>
-			<td style="text-align:center;"><?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/groupmembers.png',
+			<td style="text-align:center;">
+			<?php if ($row->add_events): ?>
+				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/ok.png',
 																	         JText::_( 'Yes' ), 
 																	         'title= "'. JText::_( 'yes' ) . '"' ); ?>
+			<?php else: ?>
+				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/no.png',
+																	         JText::_( 'No' ), 
+																	         'title= "'. JText::_( 'No' ) . '"' ); ?>
+			<?php endif; ?>
 			</td>
-			<td style="text-align:center;"><?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/groupmembers.png',
+			<td style="text-align:center;">
+			<?php if ($row->add_xrefs): ?>
+				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/ok.png',
 																	         JText::_( 'Yes' ), 
 																	         'title= "'. JText::_( 'yes' ) . '"' ); ?>
+			<?php else: ?>
+				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/no.png',
+																	         JText::_( 'No' ), 
+																	         'title= "'. JText::_( 'No' ) . '"' ); ?>
+			<?php endif; ?>
 			</td>
-			<td style="text-align:center;"><?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/groupmembers.png',
+			<td style="text-align:center;">
+			<?php if ($row->receive_registrations): ?>
+				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/ok.png',
 																	         JText::_( 'Yes' ), 
 																	         'title= "'. JText::_( 'yes' ) . '"' ); ?>
+			<?php else: ?>
+				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/no.png',
+																	         JText::_( 'No' ), 
+																	         'title= "'. JText::_( 'No' ) . '"' ); ?>
+			<?php endif; ?>
 			</td>
 		</tr>
 		<?php $k = 1 - $k;  } ?>

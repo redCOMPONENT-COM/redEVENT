@@ -61,11 +61,11 @@ class RedEventViewGroupmembers extends JView {
 
 		// Get data from the model
 		$rows      	= & $this->get( 'Data');
-		//$total      = & $this->get( 'Total');
+		$group     	= & $this->get( 'Group');
 		$pageNav 	= & $this->get( 'Pagination' );
 
 		//create the toolbar
-		JToolBarHelper::title( JText::_( 'GROUP MEMBERS' ), 'groups' );
+		JToolBarHelper::title( JText::_( 'GROUP MEMBERS' ). ' - ' . $group->name, 'groups' );
 		JToolBarHelper::addNew();
 		JToolBarHelper::spacer();
 		JToolBarHelper::editList();

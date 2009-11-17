@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.0 $Id$
+ * @version 1.0 $Id: default.php 1586 2009-11-17 16:39:21Z julien $
  * @package Joomla
  * @subpackage redEVENT
  * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
@@ -22,6 +22,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+JHTML::_('behavior.tooltip');
 ?>
 
 <script language="javascript" type="text/javascript">
@@ -34,9 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 			submitform( task );
 			return;
 		}
-		else if (form.name.value == ""){
-			alert( "<?php echo JText::_( 'ADD GROUP NAME'); ?>" );
-		} else {
+		else {
 			submitform( task );
 		}
 	}
@@ -44,21 +44,46 @@ defined('_JEXEC') or die('Restricted access');
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
-<fieldset class="adminform"><legend><?php echo JText::_( 'Group' ); ?></legend>
+<fieldset class="adminform"><legend><?php echo JText::_( 'Group member' ); ?></legend>
 
 <table class="admintable">
 	<tr>
-		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_( 'GROUP NAME' ); ?>:
+		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_( 'USER' ); ?>:
 		</label></td>
-		<td><input class="text_area required" type="text" name="name" id="name"
-			size="32" maxlength="250" value="<?php echo $this->row->name; ?>" />
+		<td>
+			<?php echo $this->lists['user']; ?>
 		</td>
 	</tr>
 	<tr>
-		<td width="100" align="right" class="key"><label for="description"> <?php echo JText::_( 'DESCRIPTION' ); ?>:
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'MEMBER IS ADMIN' ).'::'.JText::_( 'MEMBER IS ADMIN TIP' ); ?>">
+			<label for="is_admin"> <?php echo JText::_( 'MEMBER IS ADMIN' ); ?>:
 		</label></td>
 		<td>
-			<textarea wrap="virtual" rows="10" cols="40" name="description" class="inputbox"><?php echo $this->row->description; ?></textarea>
+			<?php echo $this->lists['is_admin']; ?>
+		</td>
+	</tr>
+	<tr>
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'MEMBER ADDS EVENTS' ).'::'.JText::_( 'MEMBER ADDS EVENTS TIP' ); ?>">
+			<label for="is_admin"> <?php echo JText::_( 'MEMBER ADD EVENTS' ); ?>:
+		</label></td>
+		<td>
+			<?php echo $this->lists['add_events']; ?>
+		</td>
+	</tr>
+	<tr>
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'MEMBER ADDS XREFS' ).'::'.JText::_( 'MEMBER ADDS XREFS TIP' ); ?>">
+			<label for="is_admin"> <?php echo JText::_( 'MEMBER ADDS XREFS' ); ?>:
+		</label></td>
+		<td>
+			<?php echo $this->lists['add_xrefs']; ?>
+		</td>
+	</tr>
+	<tr>
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'MEMBER RECEIVE REGISTRATIONS' ).'::'.JText::_( 'MEMBER RECEIVE REGISTRATIONS TIP' ); ?>">
+			<label for="is_admin"> <?php echo JText::_( 'MEMBER RECEIVE REGISTRATIONS' ); ?>:
+		</label></td>
+		<td>
+			<?php echo $this->lists['receive_registrations']; ?>
 		</td>
 	</tr>
 </table>
@@ -67,9 +92,10 @@ defined('_JEXEC') or die('Restricted access');
 
 <?php echo JHTML::_( 'form.token' ); ?>
 <input type="hidden" name="option" value="com_redevent" />
-<input type="hidden" name="controller" value="groups" />
-<input type="hidden" name="view" value="group" />
+<input type="hidden" name="controller" value="groupmembers" />
+<input type="hidden" name="view" value="groupmember" />
 <input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
+<input type="hidden" name="group_id" value="<?php echo $this->group_id; ?>" />
 <input type="hidden" name="task" value="" />
 </form>
 

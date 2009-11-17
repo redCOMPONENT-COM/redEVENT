@@ -37,6 +37,11 @@ class RedEvent_groupmembers extends JTable
 	 * @var int
 	 */
 	var $id 				= null;
+	/**
+	 * group id
+	 * @var int
+	 */
+	var $group_id 				= null;
 	/** 
 	 * user id
 	 * @var int 
@@ -56,25 +61,30 @@ class RedEvent_groupmembers extends JTable
 	 * allowed to add xrefs
 	 * @var int
 	 */
-	var $add_events = 0;
+	var $add_xrefs = 0;
 	/**
 	 * receive registrations to events
 	 * @var int
 	 */
 	var $receive_registrations = 0;
+	
 	/** @var int */
 	var $checked_out 		= 0;
 	/** @var date */
 	var $checked_out_time	= 0;
 	
 	function redevent_groupmembers(& $db) {
-		parent::__construct('#__redevent_groupmembers', '', $db);
+		parent::__construct('#__redevent_groupmembers', 'id', $db);
 	}
 	
 	function check()
 	{
 		if (!($this->member)) {
 			$this->setError(JText::_('USER ID REQUIRED'));
+			return false;
+		}
+		if (!($this->group_id)) {
+			$this->setError(JText::_('GROUP ID REQUIRED'));
 			return false;
 		}
 		return true;
