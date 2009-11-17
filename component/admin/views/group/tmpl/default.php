@@ -37,100 +37,33 @@ defined('_JEXEC') or die('Restricted access');
 		else if (form.name.value == ""){
 			alert( "<?php echo JText::_( 'ADD GROUP NAME'); ?>" );
 		} else {
-			allSelected(document.adminForm['maintainers[]']);
 			submitform( task );
-		}
-	}
-</script>
-
-<script>
-	// moves elements from one select box to another one
-	function moveOptions(from,to) {
-		// Move them over
-		for (var i=0; i<from.options.length; i++) {
-			var o = from.options[i];
-			if (o.selected) {
-			  to.options[to.options.length] = new Option( o.text, o.value, false, false);
-			}
-		}
-
-		// Delete them from original
-		for (var i=(from.options.length-1); i>=0; i--) {
-			var o = from.options[i];
-			if (o.selected) {
-			  from.options[i] = null;
-			}
-		}
-		from.selectedIndex = -1;
-		to.selectedIndex = -1;
-	}
-
-	function allSelected(element) {
-
-		for (var i=0; i<element.options.length; i++) {
-			var o = element.options[i];
-			o.selected = true;
 		}
 	}
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
-<table cellspacing="0" cellpadding="0" border="0" width="100%">
+<fieldset class="adminform"><legend><?php echo JText::_( 'Custom field' ); ?></legend>
+
+<table class="admintable">
 	<tr>
-		<td valign="top">
-
-			<table class="adminform">
-				<tr>
-					<td>
-						<label for="name">
-							<?php echo JText::_( 'GROUP NAME' ).':'; ?>
-						</label>
-					</td>
-					<td>
-						<input name="name" value="<?php echo $this->row->name; ?>" size="50" maxlength="60" id="name" />
-					</td>
-				</tr>
-			</table>
-
-			<table class="adminform">
-				<tr>
-					<td><b><?php echo JText::_( 'AVAILABLE USERS' ).':'; ?></b></td>
-					<td>&nbsp;</td>
-					<td><b><?php echo JText::_( 'MAINTAINERS' ).':'; ?></b></td>
-				</tr>
-				<tr>
-					<td width="260px"><?php echo $this->lists['available_users']; ?></td>
-					<td width="110px">
-						<input style="width: 50px" type="button" name="right" value="&gt;" onClick="moveOptions(document.adminForm['available_users'], document.adminForm['maintainers[]'])" />
-						<br /><br />
-						<input style="width: 50px" type="button" name="left" value="&lt;" onClick="moveOptions(document.adminForm['maintainers[]'], document.adminForm['available_users'])" />
-					</td>
-					<td width="260px"><?php echo $this->lists['maintainers']; ?></td>
-				</tr>
-			</table>
-
+		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_( 'GROUP NAME' ); ?>:
+		</label></td>
+		<td><input class="text_area required" type="text" name="name" id="name"
+			size="32" maxlength="250" value="<?php echo $this->row->name; ?>" />
 		</td>
-		<td valign="top" width="320px" style="padding: 7px 0 0 5px">
-			<?php
-			$title = JText::_( 'DESCRIPTION' );
-			echo $this->pane->startPane("det-pane");
-			echo $this->pane->startPanel( $title, 'desc' );
-			?>
-			<table>
-				<tr>
-					<td>
-						<textarea wrap="virtual" rows="10" cols="40" name="description" class="inputbox"><?php echo $this->row->description; ?></textarea>
-					</td>
-				</tr>
-			</table>
-			<?php
-			echo $this->pane->endPanel();
-			echo $this->pane->endPane();
-			?>
+	</tr>
+	<tr>
+		<td width="100" align="right" class="key"><label for="description"> <?php echo JText::_( 'DESCRIPTION' ); ?>:
+		</label></td>
+		<td>
+			<textarea wrap="virtual" rows="10" cols="40" name="description" class="inputbox"><?php echo $this->row->description; ?></textarea>
 		</td>
 	</tr>
 </table>
+	
+</fieldset>
 
 <?php echo JHTML::_( 'form.token' ); ?>
 <input type="hidden" name="option" value="com_redevent" />

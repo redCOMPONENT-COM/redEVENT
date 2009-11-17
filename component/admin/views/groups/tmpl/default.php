@@ -44,12 +44,15 @@ defined('_JEXEC') or die('Restricted access');
 			<th width="20"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
 			<th width="30%" class="title"><?php echo JHTML::_('grid.sort', 'GROUP NAME', 'name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th><?php echo JText::_( 'DESCRIPTION' ); ?></th>
+			<th width="5"><?php echo JText::_( 'Members' ); ?></th>
+			<th width="5"><?php echo JText::_( 'Categories ACL' ); ?></th>
+			<th width="5"><?php echo JText::_( 'Venues ACL' ); ?></th>
 		</tr>
 	</thead>
 
 	<tfoot>
 		<tr>
-			<td colspan="4">
+			<td colspan="7">
 				<?php echo $this->pageNav->getListFooter(); ?>
 			</td>
 		</tr>
@@ -80,6 +83,21 @@ defined('_JEXEC') or die('Restricted access');
 				<?php } ?>
 			</td>
 			<td><?php echo htmlspecialchars($row->description, ENT_QUOTES, 'UTF-8'); ?></td>
+			<td style="text-align:center;"><?php echo JHTML::link('index.php?option=com_redevent&amp;controller=groups&amp;task=editmembers&amp;cid[]='.$row->id, 
+																	JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/groupmembers.png',
+																	         JText::_( 'Edit group members' ), 
+																	         'title= "'. JText::_( 'Edit group members' ) . '"' )); ?>
+			</td>
+			<td style="text-align:center;"><?php echo JHTML::link('index.php?option=com_redevent&amp;controller=groups&amp;task=categoriesacl&amp;cid[]='.$row->id, 
+																	JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/icon-16-categories.png',
+																	         JText::_( 'Edit categories ACL' ), 
+																	         'title= "'. JText::_( 'Edit categories ACL' ) . '"' )); ?>
+			</td>
+			<td style="text-align:center;"><?php echo JHTML::link('index.php?option=com_redevent&amp;controller=groups&amp;task=venuesacl&amp;cid[]='.$row->id, 
+																	JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/icon-16-venues.png',
+																	         JText::_( 'Edit venues ACL' ), 
+																	         'title= "'. JText::_( 'Edit venues ACL' ) . '"' )); ?>
+			</td>
 		</tr>
 		<?php $k = 1 - $k;  } ?>
 

@@ -346,18 +346,6 @@ class RedEventModelGroup extends JModel
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
-
-		$members =JRequest::getVar('maintainers',  '', 'post', 'array');
-
-		$this->_db->setQuery ('DELETE FROM #__redevent_groupmembers WHERE group_id = '.$row->id);
-		$this->_db->query();
-
-		foreach ($members as $member){
-			$member = intval($member);
-			$this->_db->setQuery ("INSERT INTO #__redevent_groupmembers (group_id, member) VALUES ($row->id, $member)");
-			$this->_db->query();
-		}
-		
 		return $row->id;
 	}
 }

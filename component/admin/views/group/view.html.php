@@ -56,12 +56,12 @@ class RedEventViewGroup extends JView {
 		//Get data from the model
 		$model				= & $this->getModel();
 		$row      			= & $this->get( 'Data');
-		$maintainers 		= & $this->get( 'Members');
-		$available_users 	= & $this->get( 'Available');
 
 		// fail if checked out not by 'me'
-		if ($row->id) {
-			if ($model->isCheckedOut( $user->get('id') )) {
+		if ($row->id) 
+		{
+			if ($model->isCheckedOut( $user->get('id') )) 
+			{
 				JError::raiseWarning( 'SOME_ERROR_CODE', $row->name.' '.JText::_( 'EDITED BY ANOTHER ADMIN' ));
 				$mainframe->redirect( 'index.php?option=com_redevent&view=groups' );
 			}
@@ -77,18 +77,6 @@ class RedEventViewGroup extends JView {
 		} else {
 			JToolBarHelper::title( JText::_( 'ADD GROUP' ), 'groupedit' );
 			JToolBarHelper::spacer();
-
-			//Create Submenu
-			JSubMenuHelper::addEntry( JText::_( 'REDEVENT' ), 'index.php?option=com_redevent');
-			JSubMenuHelper::addEntry( JText::_( 'EVENTS' ), 'index.php?option=com_redevent&view=events');
-			JSubMenuHelper::addEntry( JText::_( 'VENUES' ), 'index.php?option=com_redevent&view=venues');
-			JSubMenuHelper::addEntry( JText::_( 'CATEGORIES' ), 'index.php?option=com_redevent&view=categories');
-			JSubMenuHelper::addEntry( JText::_( 'ARCHIVESCREEN' ), 'index.php?option=com_redevent&view=archive');
-			JSubMenuHelper::addEntry( JText::_( 'GROUPS' ), 'index.php?option=com_redevent&view=groups');
-			JSubMenuHelper::addEntry( JText::_( 'HELP' ), 'index.php?option=com_redevent&view=help');
-			if ($user->get('gid') > 24) {
-				JSubMenuHelper::addEntry( JText::_( 'SETTINGS' ), 'index.php?option=com_redevent&controller=settings&task=edit');
-			}
 		}
 		JToolBarHelper::apply();
 		JToolBarHelper::save();
@@ -99,9 +87,6 @@ class RedEventViewGroup extends JView {
 
 		//create selectlists
 		$lists = array();
-		$lists['maintainers']		= JHTML::_('select.genericlist', $maintainers, 'maintainers[]', 'class="inputbox" size="20" onDblClick="moveOptions(document.adminForm[\'maintainers[]\'], document.adminForm[\'available_users\'])" multiple="multiple" style="padding: 6px; width: 250px;"', 'value', 'text' );
-		$lists['available_users']	= JHTML::_('select.genericlist', $available_users, 'available_users', 'class="inputbox" size="20" onDblClick="moveOptions(document.adminForm[\'available_users\'], document.adminForm[\'maintainers[]\'])" multiple="multiple" style="padding: 6px; width: 250px;"', 'value', 'text' );
-
 		//assign data to template
 		$this->assignRef('row'      	, $row);
 		$this->assignRef('pane'      	, $pane);
