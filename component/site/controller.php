@@ -30,6 +30,7 @@ class RedeventController extends JController
 		
 		//register extratasks
 		$this->registerTask( 'ical', 'vcal' );
+		$this->registerTask( 'managedelreguser', 'delreguser' );
 		
 		// prevent issues with view name change in 2.0 beta 6.2
 		if (JRequest::getVar('view') == 'eventlist') {
@@ -418,15 +419,26 @@ class RedeventController extends JController
       
 		$cache = JFactory::getCache('com_redevent');
 		$cache->clean();
-
-		$msg = JText::_( 'UNREGISTERED SUCCESSFULL' );
 		
-		if ($params->get('details_attendees_layout', 0)) {
-		  $this->setRedirect( JRoute::_('index.php?option=com_redevent&view=details&id='.$id.'&tpl=attendees&xref=' . $xref, false), $msg );
+		$task = JRequest::getVar('task');
+		
+		if ($task == 'managedelreguser')
+		{
+			$msg = JText::_( 'REGISTRATION REMOVAL SUCCESSFULL' );			
+	    $this->setRedirect( JRoute::_('index.php?option=com_redevent&view=details&id='.$id.'&tpl=manage_attendees&xref=' . $xref, false), $msg );
 		}
-		else {
-      $this->setRedirect( JRoute::_('index.php?option=com_redevent&view=details&id='.$id.'&tpl=attendees_table&xref=' . $xref, false), $msg );
-    }
+		else
+		{
+			$msg = JText::_( 'UNREGISTERED SUCCESSFULL' );
+			
+			if ($params->get('details_attendees_layout', 0)) {
+			  $this->setRedirect( JRoute::_('index.php?option=com_redevent&view=details&id='.$id.'&tpl=attendees&xref=' . $xref, false), $msg );
+			}
+			else {
+	      $this->setRedirect( JRoute::_('index.php?option=com_redevent&view=details&id='.$id.'&tpl=attendees_table&xref=' . $xref, false), $msg );
+	    }
+		}
+		
 	}
 
 	/**

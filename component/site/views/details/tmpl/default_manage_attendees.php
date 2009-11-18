@@ -62,7 +62,7 @@ if ($this->manage_attendees) {
                 <td class="edit">
                   <?php echo JHTML::link($edit_url, JText::_('edit'), array('class' => 'editlink')); ?>
                 </td>
-      				  <?php $unreg_url = JRoute::_('index.php?option=com_redevent&view=details&id='. $this->row->slug .'&task=delreguser&xref='. $this->row->xref .'&sid=' .$register->id); ?>
+      				  <?php $unreg_url = JRoute::_('index.php?option=com_redevent&view=details&id='. $this->row->slug .'&task=managedelreguser&xref='. $this->row->xref .'&sid=' .$register->id); ?>
                 <td class="attendee">
                   <?php echo JHTML::link($unreg_url, JText::_('cancel'), array('class' => 'unreglink')); ?>
                 </td>
