@@ -881,39 +881,72 @@ class RedeventModelEditevent extends JModel
 	}
 	
 	/**
-	 * return venues lists as options
+	 * return venues lists as options, according to group ACL
 	 * 
 	 * @return array
 	 */
 	function getVenueOptions()
 	{
+		$user = &JFactory::getUser();
 		$app = &JFactory::getApplication();
 		$params = $app->getParams();
 		
-		$query = ' SELECT id AS value, '
-		       . ' CASE WHEN CHAR_LENGTH(city) THEN CONCAT_WS(\' - \', venue, city) ELSE venue END as text '
-		       . ' FROM #__redevent_venues '
-		       . ' ORDER BY venue ASC '
+		$query = ' SELECT v.id AS value, '
+		       . ' CASE WHEN CHAR_LENGTH(v.city) THEN CONCAT_WS(\' - \', v.venue, v.city) ELSE v.venue END as text '
+		       . ' FROM #__redevent_venues AS v '
+		       . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.venueid = v.id '
+		       . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = x.venueid '
+		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gv.group_id '
 		       ;
+		       
+		$where = array();
+		
+		$where[] = ' v.published = 1 ';
+		$where[] = ' gv.accesslevel > 0 AND gm.add_xrefs = 1 AND gm.member =' . $this->_db->Quote($user->get('id'));
+		
+		if (count($where)) {
+			$query .= ' WHERE '. implode(' AND ', $where);
+		}
+		        
+		$query .= ' GROUP BY v.id ';
+		$query .= ' ORDER BY v.venue ASC ';
+		
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
+		dump($res);
 		return $res;
 	}
 
 	/**
-	 * return events lists as options
+	 * return events lists as options, according to group ACL
 	 * 
 	 * @return array
 	 */
 	function getEventOptions()
 	{
+		$user = &JFactory::getUser();
 		$app = &JFactory::getApplication();
 		$params = $app->getParams();
 		
 		$query = ' SELECT e.id AS value, e.title AS text '
 		       . ' FROM #__redevent_events AS e '
-		       . ' ORDER BY e.title ASC '
+		       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
+		       . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
+		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
 		       ;
+		       
+		$where = array();
+		
+		$where[] = ' e.published = 1 ';
+		$where[] = ' gc.accesslevel > 0 AND gm.add_xrefs = 1 AND gm.member =' . $this->_db->Quote($user->get('id'));
+		
+		if (count($where)) {
+			$query .= ' WHERE '. implode(' AND ', $where);
+		}
+		        
+		$query .= ' GROUP BY e.id ';
+		$query .= ' ORDER BY e.title ASC ';
+		
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
