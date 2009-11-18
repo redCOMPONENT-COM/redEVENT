@@ -49,8 +49,8 @@ class RedEventControllerDetails extends RedEventController
 	 * 
 	 * @since 0.9
 	 */
-	function display() {
-		
+	function display() 
+	{		
 		if (JRequest::getVar('format', 'html') == 'html')
 		{
 		/* Create the view object */
@@ -70,6 +70,14 @@ class RedEventControllerDetails extends RedEventController
 		else {
 			parent::display();
 		}
+	}
+	
+	function exportattendees()
+	{
+		JRequest::setVar('view', 'details');
+		JRequest::setVar('layout', 'exportattendees');
+		
+		parent::display();
 	}
 }
 ?>

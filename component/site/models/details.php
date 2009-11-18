@@ -255,8 +255,11 @@ class RedeventModelDetails extends JModel
 	 * @since	0.9
 	 * @todo Complete CB integration
 	 */
-	function getRegisters() 
+	function getRegisters($all_fields = false) 
 	{
+		// make sure the init is done
+		$this->getDetails();
+		
 	  if (!$this->_details->registra) {
 	    return null;
 	  }
@@ -292,9 +295,12 @@ class RedeventModelDetails extends JModel
 			// load form fields
 			$q = ' SELECT id, field, form_id '
 				 . ' FROM #__rwf_fields j '
-				 . ' WHERE j.id in ('.$this->_details->showfields. ')'
-         . ' ORDER BY ordering '
 				 ;
+			if (!$all_fields)
+			{
+				$q .= ' WHERE j.id in ('.$this->_details->showfields. ')';
+			}
+      $q .= ' ORDER BY ordering ';
 			$db->setQuery($q);
 			
 			if (!$db->query()) 
@@ -312,14 +318,14 @@ class RedeventModelDetails extends JModel
 				$fields_names['field_'. $field->id] = $field->field;
 			}
 			
-			$query = ' SELECT ' . implode(', ', $table_fields)
-			. ' , s.submit_key, s.id '
-			. ' FROM #__redevent_register AS r '
-			. ' INNER JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key '
-			. ' INNER JOIN #__rwf_forms_' . $fields[0]->form_id . ' AS a ON s.answer_id = a.id '
-			. ' WHERE s.xref = ' . $this->_xref
-			. ' AND s.confirmed = 1'
-			;
+			$query  = ' SELECT ' . implode(', ', $table_fields)
+			        . ' , s.submit_key, s.id '
+			        . ' FROM #__redevent_register AS r '
+			        . ' INNER JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key '
+			        . ' INNER JOIN #__rwf_forms_' . $fields[0]->form_id . ' AS a ON s.answer_id = a.id '
+			        . ' WHERE s.xref = ' . $this->_xref
+			        . ' AND s.confirmed = 1'
+			        ;
 			$db->setQuery($query);
 			if (!$db->query()) {
 				RedeventError::raiseWarning('error', JText::_('Cannot load registered users').' '.$db->getErrorMsg());
