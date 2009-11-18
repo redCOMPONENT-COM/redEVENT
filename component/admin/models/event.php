@@ -592,7 +592,7 @@ class RedEventModelEvent extends JModel
   	}
   	else {
       $object = JTable::getInstance('RedEvent_eventvenuexref', '');
-  		$object->venue = '';
+  		$object->venue = 0;
       $object->recurrence_id = 0;
       $object->rrule = '';
       $object->count = 0;
@@ -612,6 +612,22 @@ class RedEventModelEvent extends JModel
 		       . ' CASE WHEN CHAR_LENGTH(city) THEN CONCAT_WS(\' - \', venue, city) ELSE venue END as text '
   	       . ' FROM #__redevent_venues AS v'
   	       . ' ORDER BY venue, city '
+  	       ;
+    $this->_db->setQuery($query);
+    return $this->_db->loadObjectList();    
+  }
+
+  /**
+   * return list of groups as options
+   *
+   * @return array
+   */
+  function getGroupsOptions()
+  {
+		$query = ' SELECT id AS value, '
+		       . ' name as text '
+  	       . ' FROM #__redevent_groups '
+  	       . ' ORDER BY name '
   	       ;
     $this->_db->setQuery($query);
     return $this->_db->loadObjectList();    

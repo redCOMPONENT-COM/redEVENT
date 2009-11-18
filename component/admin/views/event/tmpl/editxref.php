@@ -69,6 +69,14 @@ function updateend(cal)
       <?php echo $this->lists['venue']; ?>
     </td>
   </tr>
+  <tr>
+    <td class="key hasTip" title="<?php echo JText::_('XREF GROUP TIP'); ?>">
+      <label for="groupid"><?php echo JText::_('Group') .': '; ?></label>
+    </td>
+    <td>
+      <?php echo $this->lists['group']; ?>
+    </td>
+  </tr>
 	<tr>
     <td class="key hasTip" title="<?php echo JText::_('XREF START DATE TIP'); ?>">
       <label for="dates"><?php echo JText::_('DATE') .': '; ?></label>

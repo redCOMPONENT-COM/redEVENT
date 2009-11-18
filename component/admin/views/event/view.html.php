@@ -242,6 +242,10 @@ class RedEventViewEvent extends JView {
 		$venues = array_merge($venues, $this->get('VenuesOptions'));
 		$lists['venue'] = JHTML::_('select.genericlist', $venues, 'venueid', 'class="validate-venue"', 'value', 'text', $xref->venueid);
 		
+		// group selector
+    $options = array(JHTML::_('select.option', 0, JText::_('Select group')));
+		$options = array_merge($options, $this->get('GroupsOptions'));
+		$lists['group'] = JHTML::_('select.genericlist', $options, 'groupid', 'class="validate-venue"', 'value', 'text', $xref->groupid);
 		
     // if this is not the first xref of the recurrence, we shouldn't modify it
     $lockedrecurrence = ($xref->count > 0); 
