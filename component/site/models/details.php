@@ -431,19 +431,20 @@ class RedeventModelDetails extends JModel
 		
 		// first, check if the user is allowed to unregister from this
 		// he must be the one that submitted the form, plus the unregistration must be allowed
-		$q = ' SELECT s.* '
+		$q = ' SELECT s.*, r.uid, e.unregistra '
         . ' FROM #__rwf_submitters AS s '
         . ' INNER JOIN #__redevent_register AS r ON r.submit_key = s.submit_key '
         . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.id = r.xref '
         . ' INNER JOIN #__redevent_events AS e ON x.eventid = e.id '
-        . ' WHERE r.uid = ' . $db->Quote($userid)
-        . '   AND s.id = ' . $db->Quote($submitter_id)
-        . '   AND e.unregistra = 1'
-		;
+        . ' WHERE s.id = ' . $db->Quote($submitter_id)
+		    ;
 		$db->setQuery($q);
 		$submitterinfo = $db->loadObject();
 		
-		if (empty($submitterinfo)) {
+		// or be allowed to manage attendees
+		$manager = $this->getManageAttendees();
+		
+		if (($submitterinfo->uid <> $userid || $submitterinfo->unregistra == 0) && !$manager) {
       RedeventError::raiseWarning('1', JText::_('Cannot delete registration').' '.$db->getErrorMsg());
       return false;			
 		}

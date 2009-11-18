@@ -24,13 +24,15 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+$waiting_count = 0;
+
 if ($this->manage_attendees) {
 	?>
 	<div id="eventlist" class="event_id<?php echo $this->row->did; ?> el_details">
 		<h2 class="register"><?php echo JText::_( 'REGISTERED USERS' ).': '.$this->row->title; ?></h2>
 		
 		<div class="register">
-			<?php	if (count($this->registers)):	?>
+			<?php	if (!empty($this->registers)):	?>
 			<table class="registered">
 			<thead>
   			<tr>
@@ -44,7 +46,6 @@ if ($this->manage_attendees) {
 			<tbody>
   			<?php 
     			//loop through attendees
-    			$waiting_count = 0;
     			foreach ($this->registers as $key => $register):
     				if ($register->submitter->waitinglist == 0): ?>
     				  <tr>
