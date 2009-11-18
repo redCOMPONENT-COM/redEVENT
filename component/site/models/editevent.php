@@ -262,6 +262,7 @@ class RedeventModelEditevent extends JModel
 				$obj = new stdclass();
 				$obj->eventid           = 0;
 				$obj->venueid           = 0;
+				$obj->groupid           = 0;
 				$obj->dates             = null;
 				$obj->enddates          = null;
 				$obj->times             = null;
@@ -945,6 +946,34 @@ class RedeventModelEditevent extends JModel
 		        
 		$query .= ' GROUP BY e.id ';
 		$query .= ' ORDER BY e.title ASC ';
+		
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+	
+
+	/**
+	 * return user groups as options
+	 * 
+	 * @return array
+	 */
+	function getGroupOptions()
+	{
+		$user = &JFactory::getUser();
+		
+		$query = ' SELECT g.id AS value, g.name AS text '
+		       . ' FROM #__redevent_groups AS g '
+		       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
+		       ;
+		       
+		$where = array();		
+		$where[] = 'gm.member =' . $this->_db->Quote($user->get('id'));
+		
+		if (count($where)) {
+			$query .= ' WHERE '. implode(' AND ', $where);
+		}
+		        
+		$query .= ' ORDER BY g.name ASC ';
 		
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();

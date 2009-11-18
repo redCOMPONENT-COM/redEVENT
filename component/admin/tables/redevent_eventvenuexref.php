@@ -41,6 +41,8 @@ class RedEvent_eventvenuexref extends JTable
 	var $eventid 		= null;
   /** @var int */
   var $venueid    = null;
+  /** @var int */
+  var $groupid    = null;
   /** @var string */
   var $dates    = null;
   /** @var string */

@@ -398,6 +398,12 @@ if (is_array($cols)) {
     $db->setQuery($q);
     $db->query();
   }
+  
+  if (!array_key_exists('groupid', $cols)) {
+    $q ="ALTER IGNORE TABLE `#__redevent_event_venue_xref` ADD COLUMN `groupid` INT(11) NOT NULL DEFAULT '0' AFTER `venueid`";
+    $db->setQuery($q);
+    $db->query();
+  }
 }
 
 /* register table */

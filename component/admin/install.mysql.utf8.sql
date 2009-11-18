@@ -245,6 +245,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_event_venue_xref` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `eventid` int(11) unsigned NOT NULL,
   `venueid` int(11) unsigned NOT NULL,
+  `groupid` int(11) unsigned NOT NULL default '0',
   `dates` date NULL default NULL,
   `enddates` date NULL default NULL,
   `times` time NULL default NULL,
