@@ -913,7 +913,6 @@ class RedeventModelEditevent extends JModel
 		
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
-		dump($res);
 		return $res;
 	}
 
