@@ -25,7 +25,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 
-<h2><?php echo JText::_('My events'); ?></h2>
+<h2><?php echo JText::_('Manage Events'); ?></h2>
 
 <script type="text/javascript">
 
@@ -64,7 +64,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     <?php endif; ?>
 </div>
 <?php endif; ?>
-<div><?php echo JHTML::link(JRoute::_('index.php?option=com_redevent&view=editevent&layout=eventdate', false), JText::_('Add new')); ?></div>
 <table class="eventtable" width="<?php echo $this->elsettings->tablewidth; ?>" border="0" cellspacing="0" cellpadding="0" summary="eventlist">
 
 	<colgroup>
@@ -248,3 +247,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <p class="pagescounter">
   <?php echo $this->events_pageNav->getPagesCounter(); ?>
 </p>
+
+<div><?php echo JHTML::link(JRoute::_('index.php?option=com_redevent&view=editevent&layout=eventdate', false), JText::_('Add new event date')); ?></div>

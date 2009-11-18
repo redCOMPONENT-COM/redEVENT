@@ -27,7 +27,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <?php if (count((array)$this->venues)) : ?>
 
-<h2><?php echo JText::_('My Venues'); ?></h2>
+<h2><?php echo JText::_('Manage Venues'); ?></h2>
 
 <table class="eventtable" width="<?php echo $this->elsettings->tablewidth; ?>" border="0" cellspacing="0" cellpadding="0" summary="venues list">
 	<thead>
