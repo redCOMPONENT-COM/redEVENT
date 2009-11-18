@@ -117,6 +117,7 @@ class RedeventViewDetails extends JView
 		
 		//Check user if he can edit
 		$allowedtoeditevent = ELUser::editaccess($elsettings->eventowner, $row->created_by, $elsettings->eventeditrec, $elsettings->eventedit);
+		$manage_attendees  = $this->get('ManageAttendees');
 		// $allowedtoeditvenue = ELUser::editaccess($elsettings->venueowner, $row->venueowner, $elsettings->venueeditrec, $elsettings->venueedit);
 		
 		//Timecheck for registration
@@ -235,6 +236,7 @@ class RedeventViewDetails extends JView
 		$this->assignRef('redform_install'	, $redform_install);
 		$this->assignRef('venuedates'	, $venuedates);
     $this->assignRef('unreg_check' , $unreg_check);
+    $this->assignRef('manage_attendees' , $manage_attendees);
 		
 		$tpl = JRequest::getVar('tpl', $tpl);
 		

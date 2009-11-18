@@ -535,5 +535,21 @@ class RedeventModelDetails extends JModel
 
     return $row;   
   }
+  
+  function getManageAttendees()
+  {
+  	$user = & JFactory::getUser();
+  	
+  	$query = ' SELECT gm.id '
+  	       . ' FROM #__redevent_event_venue_xref AS x '
+  	       . ' INNER JOIN #__redevent_groups AS g ON x.groupid = g.id '
+  	       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
+  	       . ' WHERE gm.member = '. $this->_db->Quote($user->get('id'))
+  	       . '   AND (gm.add_xrefs > 0 OR gm.add_events > 0) '
+  	       ;
+  	$this->_db->setQuery($query);
+  	$res = $this->_db->loadObjectList();
+  	return count($res);
+  }
 }
 ?>
