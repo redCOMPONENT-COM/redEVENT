@@ -43,17 +43,18 @@ defined('_JEXEC') or die('Restricted access');
 			<th width="20"><?php echo JText::_( 'Num' ); ?></th>
 			<th width="20"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
 			<th class="title"><?php echo JHTML::_('grid.sort', 'NAME', 'name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			<th class="title"><?php echo JHTML::_('grid.sort', 'USERNAME', 'username', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			<th width="20"><?php echo JText::_( 'Admin' ); ?></th>
-			<th width="20"><?php echo JText::_( 'Add events' ); ?></th>
-			<th width="20"><?php echo JText::_( 'Add xrefs' ); ?></th>
-			<th width="20"><?php echo JText::_( 'Get registrations' ); ?></th>
+			<th><?php echo JHTML::_('grid.sort', 'USERNAME', 'username', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th width="30"><?php echo JText::_( 'Admin' ); ?></th>
+			<th width="30"><?php echo JText::_( 'Manage events' ); ?></th>
+			<th width="30"><?php echo JText::_( 'Manage events dates' ); ?></th>
+			<th width="30"><?php echo JText::_( 'Manage Venues' ); ?></th>
+			<th width="30"><?php echo JText::_( 'Get registrations' ); ?></th>
 		</tr>
 	</thead>
 
 	<tfoot>
 		<tr>
-			<td colspan="8">
+			<td colspan="9">
 				<?php echo $this->pageNav->getListFooter(); ?>
 			</td>
 		</tr>
@@ -108,6 +109,17 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td style="text-align:center;">
 			<?php if ($row->add_xrefs): ?>
+				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/ok.png',
+																	         JText::_( 'Yes' ), 
+																	         'title= "'. JText::_( 'yes' ) . '"' ); ?>
+			<?php else: ?>
+				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/no.png',
+																	         JText::_( 'No' ), 
+																	         'title= "'. JText::_( 'No' ) . '"' ); ?>
+			<?php endif; ?>
+			</td>
+			<td style="text-align:center;">
+			<?php if ($row->edit_venues): ?>
 				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/ok.png',
 																	         JText::_( 'Yes' ), 
 																	         'title= "'. JText::_( 'yes' ) . '"' ); ?>

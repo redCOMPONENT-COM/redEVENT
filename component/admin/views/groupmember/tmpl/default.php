@@ -63,19 +63,27 @@ JHTML::_('behavior.tooltip');
 		</td>
 	</tr>
 	<tr>
-		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'MEMBER ADDS EVENTS' ).'::'.JText::_( 'MEMBER ADDS EVENTS TIP' ); ?>">
-			<label for="is_admin"> <?php echo JText::_( 'MEMBER ADD EVENTS' ); ?>:
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'MEMBER MANAGES EVENTS' ).'::'.JText::_( 'MEMBER MANAGES EVENTS TIP' ); ?>">
+			<label for="is_admin"> <?php echo JText::_( 'MEMBER MANAGES EVENTS' ); ?>:
 		</label></td>
 		<td>
 			<?php echo $this->lists['add_events']; ?>
 		</td>
 	</tr>
 	<tr>
-		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'MEMBER ADDS XREFS' ).'::'.JText::_( 'MEMBER ADDS XREFS TIP' ); ?>">
-			<label for="is_admin"> <?php echo JText::_( 'MEMBER ADDS XREFS' ); ?>:
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'MEMBER MANAGES XREFS' ).'::'.JText::_( 'MEMBER MANAGES XREFS TIP' ); ?>">
+			<label for="is_admin"> <?php echo JText::_( 'MEMBER MANAGES XREFS' ); ?>:
 		</label></td>
 		<td>
 			<?php echo $this->lists['add_xrefs']; ?>
+		</td>
+	</tr>
+	<tr>
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'MEMBER MANAGES VENUES' ).'::'.JText::_( 'MEMBER MANAGES VENUES TIP' ); ?>">
+			<label for="edit_venues"> <?php echo JText::_( 'MEMBER MANAGES VENUES' ); ?>:
+		</label></td>
+		<td>
+			<?php echo $this->lists['edit_venues']; ?>
 		</td>
 	</tr>
 	<tr>

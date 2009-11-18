@@ -63,6 +63,11 @@ class RedEvent_groupmembers extends JTable
 	 */
 	var $add_xrefs = 0;
 	/**
+	 * allowed to add/edit venues
+	 * @var int
+	 */
+	var $edit_venues = 0;
+	/**
 	 * receive registrations to events
 	 * @var int
 	 */

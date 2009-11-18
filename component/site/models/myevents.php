@@ -342,7 +342,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         . ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
         . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
         . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-        . ' LEFT JOIN #__redevent_groups AS g ON g.id = l.admin_group '
+        . ' LEFT JOIN #__redevent_groups AS g ON g.id = x.groupid '
         . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
         . $where
         . ' GROUP BY (x.id) '
@@ -399,9 +399,10 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         $query = 'SELECT l.id, l.venue, l.city, l.state, l.url, l.published, '
         . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug'
         . ' FROM #__redevent_venues AS l '
-        . ' LEFT JOIN #__redevent_groups AS g ON g.id = l.admin_group '
+        . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = l.id '
+        . ' LEFT JOIN #__redevent_groups AS g ON g.id = gv.group_id '
         . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
-        .' WHERE (l.created_by = '.$this->_db->Quote($user->id) .' OR gm.member = '. $this->_db->Quote($user->id) .')'
+        .' WHERE (l.created_by = '.$this->_db->Quote($user->id) .' OR (gm.member = '. $this->_db->Quote($user->id) .' AND gv.accesslevel > 0 AND gm.edit_venues = 1))'
         .' ORDER BY l.venue ASC '
         ;
 
@@ -472,7 +473,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         }
 
         // then if the user is the owner of the event or member of admin group
-        $where .= ' AND (a.created_by = '. $this->_db->Quote($user->id). ' OR gm.member = '. $this->_db->Quote($user->id) .') ';
+        $where .= ' AND (a.created_by = '. $this->_db->Quote($user->id). ' OR (gm.member = '. $this->_db->Quote($user->id) .' AND gm.add_xrefs > 0)) ';
 
         // Second is to only select events assigned to category the user has access to
         $where .= ' AND c.access <= '.$gid;

@@ -96,6 +96,7 @@ class RedEventViewGroupmember extends JView {
 		$lists['is_admin'] = JHTML::_('select.booleanlist', 'is_admin', '', $row->is_admin);
 		$lists['add_events'] = JHTML::_('select.booleanlist', 'add_events', '', $row->add_events);
 		$lists['add_xrefs'] = JHTML::_('select.booleanlist', 'add_xrefs', '', $row->add_xrefs);
+		$lists['edit_venues'] = JHTML::_('select.booleanlist', 'edit_venues', '', $row->edit_venues);
 		$lists['receive_registrations'] = JHTML::_('select.booleanlist', 'receive_registrations', '', $row->receive_registrations);
 		
 		//assign data to template
