@@ -83,6 +83,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<?php if ($this->elsettings->showcat == 1) :	?>
 			<col width="<?php echo $this->elsettings->catfrowidth; ?>" class="el_col_category" />
 		<?php endif; ?>
+			<col width="5" class="el_col_attendees" />
 			<col width="5" class="el_col_edit" />
 	</colgroup>
 
@@ -116,6 +117,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<?php
 				endif;
 				?>				
+				<th id="el_attendees" class="sectiontableheader" align="left"><?php echo JText::_('Attendees'); ?></th>
 				<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('Edit'); ?></th>
 			</tr>
 	</thead>
@@ -223,6 +225,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
           </td> 
         <?php endif; ?>
 
+				<td headers="el_edit" align="left" valign="top"><?php echo $this->xrefattendeesbutton($row->xref); ?></td>
 				<td headers="el_edit" align="left" valign="top"><?php echo $this->xrefeditbutton($row->xref); ?></td>
 			</tr>
 

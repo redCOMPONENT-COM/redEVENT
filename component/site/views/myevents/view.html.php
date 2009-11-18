@@ -173,12 +173,8 @@ class RedeventViewMyevents extends JView
 	/**
 	 * Creates the xref edit button
 	 *
-	 * @param int $Itemid
-	 * @param int $id
-	 * @param array $params
-	 * @param int $allowedtoedit
-	 * @param string $view
-	 * @since 0.9
+	 * @param int xref id
+	 * @since 2.0
 	 */
 	function xrefeditbutton($id)
 	{
@@ -194,7 +190,26 @@ class RedeventViewMyevents extends JView
 
 		return $output;
 	}
-	
+
+	/**
+	 * Creates the attendees edit button
+	 *
+	 * @param int xref id
+	 * @since 2.0
+	 */
+	function xrefattendeesbutton($id)
+	{
+		JHTML::_('behavior.tooltip');
+
+		$image = JHTML::_('image.site', 'attendees.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'VIEW ATTENDEES' ));
+
+		$overlib = JText::_( 'VIEW ATTENDEES TIP' );
+		$text = JText::_( 'VIEW ATTENDEES' );
+		$link 	= 'index.php?option=com_redevent&view=details&tpl=attendees_table&xref='. $id;
+		$output	= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
+
+		return $output;
+	}
 
 	/**
 	 * Creates the xref edit button
