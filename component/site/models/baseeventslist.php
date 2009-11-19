@@ -77,7 +77,7 @@ class RedeventModelBaseEventList extends JModel
 		$params 	= & $mainframe->getParams('com_redevent');
 
 		//get the number of events from database
-		$limit       	= $mainframe->getUserStateFromRequest('com_redevent.simplelist.limit', 'limit', $params->def('display_num', 0), 'int');
+		$limit       	= $mainframe->getUserStateFromRequest('com_redevent.limit', 'limit', $params->def('display_num', 0), 'int');
 		$limitstart		= JRequest::getVar('limitstart', 0, '', 'int');
 			        
 		// In case limit has been changed, adjust it
@@ -185,6 +185,8 @@ class RedeventModelBaseEventList extends JModel
     $query .= ' FROM #__redevent_event_venue_xref AS x'
 		        . ' INNER JOIN #__redevent_events AS a ON a.id = x.eventid'
 		        . ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
+		        . ' LEFT JOIN #__redevent_venue_category_xref AS xvcat ON l.id = xvcat.venue_id'
+		        . ' LEFT JOIN #__redevent_venues_categories AS vc ON xvcat.category_id = vc.id'
             . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
 	          . ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
 		        ;

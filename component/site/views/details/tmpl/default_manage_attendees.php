@@ -58,8 +58,8 @@ if ($this->manage_attendees) {
       				  ?>
       				  </td>
       				  <?php endforeach; ?>
-      				  
-                <?php $edit_url = JRoute::_('index.php?option=com_redevent&view=details&id='. $this->row->slug .'&task=editreguser&xref='. $this->row->xref .'&sid=' .$register->id); ?>
+      				  <?php $edit_url = JRoute::_('index.php?option=com_redevent&view=signup&subtype=webform&task=signup&xref='. $this->row->xref .'&id='. $this->row->slug.'&submitter_id=' .$register->id); ?>
+                <?php //$edit_url = JRoute::_('index.php?option=com_redevent&view=details&id='. $this->row->slug .'&task=editreguser&xref='. $this->row->xref .'&sid=' .$register->id); ?>
                 <td class="edit">
                   <?php echo JHTML::link($edit_url, JText::_('edit'), array('class' => 'editlink')); ?>
                 </td>
