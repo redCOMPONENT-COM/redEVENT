@@ -297,10 +297,11 @@ class RedeventModelDetails extends JModel
 			// load form fields
 			$q = ' SELECT id, field, form_id '
 				 . ' FROM #__rwf_fields j '
+				 . ' WHERE form_id = '. $this->_db->Quote($this->_details->redform_id)
 				 ;
 			if (!$all_fields)
 			{
-				$q .= ' WHERE j.id in ('.$this->_details->showfields. ')';
+				$q .= ' AND j.id in ('.$this->_details->showfields. ')';
 			}
       $q .= ' ORDER BY ordering ';
 			$db->setQuery($q);
