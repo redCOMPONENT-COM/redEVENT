@@ -171,11 +171,11 @@ class RedeventViewSignup extends JView
 		$form->text = '{redform}'.$course->redform_id.', 1'.'{/redform}';
 		$form->eventid = $course->did;
 		
-		if ($registration->uid == $user->get('id')) {
-			$form->task = 'edit';
-		}
-		else if ($model->getManageAttendees($registration->xref)) {
+		if ($model->getManageAttendees($registration->xref) && JRequest::getVar('task') == 'manageredit') {
 			$form->task = 'manageredit';			
+		}
+		else if ($registration->uid == $user->get('id')) {
+			$form->task = 'edit';
 		}
 		else {
 			JError::raiseError(403,'NOT AUTHORIZED');

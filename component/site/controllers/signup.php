@@ -43,6 +43,7 @@ class RedEventControllerSignup extends RedEventController
 		parent::__construct();
 		$this->registerTask( 'signup', 'display' );
 		$this->registerTask( 'sendsignupemail', 'display' );
+		$this->registerTask( 'manageredit', 'edit' );
 	}
 
 	/**
