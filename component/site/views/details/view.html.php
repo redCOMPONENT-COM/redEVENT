@@ -133,12 +133,16 @@ class RedeventViewDetails extends JView
 			$js = " window.addEvent('domready', function(){
 		            $$('.unreglink').addEvent('click', function(event){
 		                  if (confirm('".JText::_('CONFIRM CANCEL REGISTRATION')."')) {
-                      return true;
-                    }
-                    else {
-                      event.preventDefault();
-                      return false;
-                    }
+                      	return true;
+	                    }
+	                    else {
+	                    	if (event.preventDefault) {
+	                    		event.preventDefault();
+												} else {
+													event.returnValue = false;
+												}
+												return false;
+                    	}
 		            });		            
 		        }); ";
       $document->addScriptDeclaration($js);
