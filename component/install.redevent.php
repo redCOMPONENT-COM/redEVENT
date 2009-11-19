@@ -476,7 +476,7 @@ if (is_array($cols))
 }
 
 /* Get the group members fields columns */
-$q = "SHOW COLUMNS FROM #__redevent_groupemembers";
+$q = "SHOW COLUMNS FROM #__redevent_groupmembers";
 $db->setQuery($q);
 $cols = $db->loadObjectList('Field');
 
@@ -485,11 +485,12 @@ if (is_array($cols))
 	/* show in lists ? */
   if (!array_key_exists('id', $cols)) {
     $q = ' ALTER TABLE `#__redevent_groupmembers` '
-       . '   ADD `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST'
-       . '   ADD `is_admin` TINYINT( 1 ) NOT NULL AFTER `member` ,'
-       . '   ADD `add_events` TINYINT( 1 ) NOT NULL AFTER `is_admin` ,'
-       . '   ADD `add_xrefs` TINYINT( 1 ) NOT NULL AFTER `add_events` ,'
-       . '   ADD `receive_registrations` TINYINT( 1 ) NOT NULL AFTER `add_xrefs` ,'
+       . '   ADD `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST, '
+       . '   ADD `is_admin` TINYINT( 4 ) NOT NULL AFTER `member` ,'
+       . '   ADD `add_events` TINYINT( 4 ) NOT NULL AFTER `is_admin` ,'
+       . '   ADD `add_xrefs` TINYINT( 4 ) NOT NULL AFTER `add_events` ,'
+       . '   ADD `edit_venues` TINYINT( 4 ) NOT NULL AFTER `add_xrefs` ,'
+       . '   ADD `receive_registrations` TINYINT( 1 ) NOT NULL AFTER `edit_venues` ,'
        . '   ADD `checked_out` int(11) NOT NULL default "0" ,'
        . '   ADD `checked_out_time` datetime NOT NULL default "0000-00-00 00:00:00"'
        ;
@@ -585,7 +586,7 @@ $q = "INSERT IGNORE INTO `#__redevent_settings` SET "
    . " signup_formal_offer_text = 'SIGNUP_FORMAL_OFFER', "
    . " signup_formal_offer_img = 'formal_icon.gif', "
    . " signup_phone_text = 'SIGNUP_PHONE', "
-   . " signup_phone_img ='phone_icon.gif');";
+   . " signup_phone_img ='phone_icon.gif'";
 $db->setQuery($q);
 $db->query();
 
