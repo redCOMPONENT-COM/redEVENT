@@ -127,7 +127,7 @@ class RedeventViewDetails extends JView
 		$timecheck = $now - $date;
 				
 		//is the user allready registered at the event
-		if ( $regcheck ) {
+		if ( $regcheck || $manage_attendees ) {
 			// add javascript code for cancel button on attendees layout.
 			JHTML::_('behavior.mootools');
 			$js = " window.addEvent('domready', function(){
