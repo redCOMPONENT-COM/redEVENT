@@ -26,6 +26,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $waiting_count = 0;
 
+$edit_image   = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Edit' ), 'class="hasTip" title="'.JText::_( 'Edit' ).'::"');
+$remove_image = JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Delete' ), 'class="hasTip" title="'.JText::_( 'Delete' ).'::"');
+
 if ($this->manage_attendees) {
 	?>
 	<div id="eventlist" class="event_id<?php echo $this->row->did; ?> el_details">
@@ -58,14 +61,14 @@ if ($this->manage_attendees) {
       				  ?>
       				  </td>
       				  <?php endforeach; ?>
+      				  
       				  <?php $edit_url = JRoute::_('index.php?option=com_redevent&view=signup&task=manageredit&xref='. $this->row->xref .'&submitter_id='. $register->id); ?>
-                <?php //$edit_url = JRoute::_('index.php?option=com_redevent&view=details&id='. $this->row->slug .'&task=editreguser&xref='. $this->row->xref .'&sid=' .$register->id); ?>
                 <td class="edit">
-                  <?php echo JHTML::link($edit_url, JText::_('edit'), array('class' => 'editlink')); ?>
+                  <?php echo JHTML::link($edit_url, $edit_image, array('class' => 'editlink')); ?>
                 </td>
       				  <?php $unreg_url = JRoute::_('index.php?option=com_redevent&view=details&id='. $this->row->slug .'&task=managedelreguser&xref='. $this->row->xref .'&sid=' .$register->id); ?>
                 <td class="attendee">
-                  <?php echo JHTML::link($unreg_url, JText::_('cancel'), array('class' => 'unreglink')); ?>
+                  <?php echo JHTML::link($unreg_url, $remove_image, array('class' => 'unreglink')); ?>
                 </td>
               </tr>
     				<?php else:	$waiting_count++; ?>
@@ -104,13 +107,13 @@ if ($this->manage_attendees) {
                 </td>
                 <?php endforeach; ?>
                 
-                <?php $edit_url = JRoute::_('index.php?option=com_redevent&view=details&id='. $this->row->slug .'&task=editreguser&xref='. $this->row->xref .'&sid=' .$register->id); ?>
+      				  <?php $edit_url = JRoute::_('index.php?option=com_redevent&view=signup&task=manageredit&xref='. $this->row->xref .'&submitter_id='. $register->id); ?>
                 <td class="edit">
-                  <?php echo JHTML::link($edit_url, JText::_('edit'), array('class' => 'editlink')); ?>
+                  <?php echo JHTML::link($edit_url, $edit_image, array('class' => 'editlink')); ?>
                 </td>
-                <?php $unreg_url = JRoute::_('index.php?option=com_redevent&view=details&id='. $this->row->slug .'&task=delreguser&xref='. $this->row->xref .'&sid=' .$register->id); ?>
+      				  <?php $unreg_url = JRoute::_('index.php?option=com_redevent&view=details&id='. $this->row->slug .'&task=managedelreguser&xref='. $this->row->xref .'&sid=' .$register->id); ?>
                 <td class="attendee">
-                  <?php echo JHTML::link($unreg_url, JText::_('cancel'), array('class' => 'unreglink')); ?>
+                  <?php echo JHTML::link($unreg_url, $remove_image, array('class' => 'unreglink')); ?>
                 </td>
               </tr>
             <?php endif;?>
