@@ -61,10 +61,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <form action="<?php echo $this->action; ?>" method="post" id="adminForm">
 
-<?php if ($this->params->get('filter') || $this->params->get('display')) : ?>
 <div id="el_filter" class="floattext">
   <div class="el_fleft">
 		<table>
+			<?php if ($this->params->get('show_filter')) : ?>
 		  <tr>
 		    <td>
 			    <label for="filter_type"><?php echo JText::_('FILTER');  ?></label>
@@ -76,22 +76,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	      <button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_( 'RESET' ); ?></button>
 				</td>
 			</tr>
-			<tr>
-        <td>
-	        <?php echo '<label for="category">'.JText::_('Category').'</label>&nbsp;'; ?>
-	      </td>
-	      <td>
-	        <?php echo $this->lists['categories']; ?>
-	      </td>
-	    </tr>
-      <tr>
-        <td>
-          <?php echo '<label for="date">'.JText::_('Date').'</label>&nbsp;'; ?>
-        </td>
-        <td>
-          <?php echo $this->lists['date'];?>
-        </td>
-      </tr>
+    	<?php endif; ?>
+	    <?php if ($this->params->get('show_filter_country')): ?>
       <tr>
         <td>
           <?php echo '<label for="country">'.JText::_('Country').'</label>&nbsp;'; ?>
@@ -100,7 +86,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
           <?php echo $this->lists['countries'];?>
         </td>
       </tr>
-      <?php if ($this->filter_country): ?>
+    	<?php endif; ?>
+	    <?php if ($this->params->get('show_filter_city') && (!$this->params->get('show_filter_country') || $this->filter_country)): ?>
       <tr>
         <td>
           <?php echo '<label for="city">'.JText::_('City').'</label>&nbsp;';?>
@@ -109,7 +96,47 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
           <?php echo $this->lists['cities'];?>
         </td>
       </tr>
-    <?php endif; ?>
+  		<?php endif; ?>
+	    <?php if ($this->params->get('show_filter_venuecategory')): ?>
+			<tr>
+        <td>
+	        <?php echo '<label for="filter_venuecategory">'.JText::_('Venue Category').'</label>&nbsp;'; ?>
+	      </td>
+	      <td>
+	        <?php echo $this->lists['vcategories']; ?>
+	      </td>
+	    </tr>
+    	<?php endif; ?>
+	    <?php if ($this->params->get('show_filter_venue')): ?>
+			<tr>
+        <td>
+	        <?php echo '<label for="filter_venue">'.JText::_('Venue').'</label>&nbsp;'; ?>
+	      </td>
+	      <td>
+	        <?php echo $this->lists['venues']; ?>
+	      </td>
+	    </tr>
+    	<?php endif; ?>
+	    <?php if ($this->params->get('show_filter_category')): ?>
+			<tr>
+        <td>
+	        <?php echo '<label for="category">'.JText::_('Category').'</label>&nbsp;'; ?>
+	      </td>
+	      <td>
+	        <?php echo $this->lists['categories']; ?>
+	      </td>
+	    </tr>
+    	<?php endif; ?>
+	    <?php if ($this->params->get('show_filter_date')): ?>
+      <tr>
+        <td>
+          <?php echo '<label for="date">'.JText::_('Date').'</label>&nbsp;'; ?>
+        </td>
+        <td>
+          <?php echo JHTML::_('calendar', $this->filter_date, 'filter_date', 'filter_date', '%Y-%m-%d', 'class="inputbox dynfilter"');?>
+        </td>
+      </tr>
+    	<?php endif; ?>
     </table>	
   </div>
   <?php if ($this->params->get('display')) : ?>
@@ -117,10 +144,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<?php	echo '<label for="limit">'.JText::_('DISPLAY NUM').'</label>&nbsp;';
 	echo $this->pageNav->getLimitBox();
 	?>
-	</div>
   <?php endif; ?>
+	</div>
 </div>
-<?php endif; ?>
 
 <?php echo $this->loadTemplate('table'); ?>
 

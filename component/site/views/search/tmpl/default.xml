@@ -14,6 +14,34 @@
 				<option value="0">Hide</option>
 				<option value="1">Show</option>
 			</param>
+			<param name="show_filter" type="radio" default="1" label="SHOW FILTER SEARCH" description="SHOW FILTER SEARCH TIP">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="show_filter_venuecategory" type="radio" default="1" label="SHOW FILTER VENUE CATEGORY" description="SHOW FILTER VENUE CATEGORY TIP">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="show_filter_category" type="radio" default="1" label="SHOW FILTER CATEGORY" description="SHOW FILTER CATEGORY TIP">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="show_filter_date" type="radio" default="1" label="SHOW FILTER DATE" description="SHOW FILTER DATE TIP">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="show_filter_country" type="radio" default="1" label="SHOW FILTER COUNTRY" description="SHOW FILTER COUNTRY TIP">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="show_filter_city" type="radio" default="1" label="SHOW FILTER CITY" description="SHOW FILTER CITY TIP">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="show_filter_venue" type="radio" default="1" label="SHOW FILTER VENUE" description="SHOW FILTER VENUE TIP">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
 		</params>
 	</state>
 </metadata>

@@ -66,6 +66,7 @@ class RedeventViewSearch extends JView
 		$limit		= $mainframe->getUserStateFromRequest('com_redevent.search.limit', 'limit', $params->def('display_num', 0), 'int');
 		$filter_country = $mainframe->getUserStateFromRequest('com_redevent.search.filter_country', 'filter_country', '', 'string');
     $filter_city = $mainframe->getUserStateFromRequest('com_redevent.search.filter_city', 'filter_city', '', 'string');
+    $filter_venue = $mainframe->getUserStateFromRequest('com_redevent.search.filter_venue', 'filter_venue', 0, 'int');
     $filter_date = $mainframe->getUserStateFromRequest('com_redevent.search.filter_date', 'filter_date', '', 'string');
     $filter_venuecategory = $mainframe->getUserStateFromRequest('com_redevent.search.filter_venuecategory', 'filter_venuecategory', 0, 'int');
     $filter_category = $mainframe->getUserStateFromRequest('com_redevent.search.filter_category', 'filter_category', 0, 'int');
@@ -123,39 +124,41 @@ class RedeventViewSearch extends JView
     $catoptions = array_merge($catoptions, redEVENTHelper::getEventsCatOptions());
     $selectedcats = ($filter_category) ? array($filter_category) : array();
     //build select
-    $lists['categories'] =  JHTML::_('select.genericlist', $catoptions, 'filter_category', 'size="1" class="inputbox"', 'value', 'text', $selectedcats);
+    $lists['categories'] =  JHTML::_('select.genericlist', $catoptions, 'filter_category', 'size="1" class="inputbox dynfilter"', 'value', 'text', $selectedcats);
     unset($catoptions);
 				
     $vcatoptions = array();
     $vcatoptions[] = JHTML::_('select.option', '0', JText::_('Select venue category'));
     $vcatoptions = array_merge($vcatoptions, redEVENTHelper::getVenuesCatOptions());
-    $selectedcats = ($filter_category) ? array($filter_category) : array();    
+    $selectedcats = ($filter_venuecategory) ? array($filter_venuecategory) : array();    
     //build select
-    $lists['vcategories'] =  JHTML::_('select.genericlist', $vcatoptions, 'filter_venuecategory', 'size="1" class="inputbox"', 'value', 'text', $selectedcats);
+    $lists['vcategories'] =  JHTML::_('select.genericlist', $vcatoptions, 'filter_venuecategory', 'size="1" class="inputbox dynfilter"', 'value', 'text', $selectedcats);
     unset($catoptions);
     
 		// Create the pagination object
 		$pageNav = $this->get('Pagination');
-		
-		// date filter
-		$lists['date'] = JHTML::_('calendar', $filter_date, 'filter_date', 'filter_date', '%Y-%m-%d', 'class="inputbox" onChange="this.form.submit();"');
     
 		// country filter
     $countries = array();
     $countries[] = JHTML::_('select.option', '', JText::_('Select country'));
     $countries = array_merge($countries, $this->get('CountryOptions'));
-    $lists['countries'] = JHTML::_('select.genericlist', $countries, 'filter_country', 'class="inputbox"', 'value', 'text', $filter_country);
+    $lists['countries'] = JHTML::_('select.genericlist', $countries, 'filter_country', 'class="inputbox dynfilter"', 'value', 'text', $filter_country);
     unset($countries);
     
     // city filter
-    if ($filter_country) {
-	    $cities = array();
-	    $cities[] = JHTML::_('select.option', '', JText::_('Select city'));
-	    $cities = array_merge($cities, $this->get('CityOptions'));
-	    $lists['cities'] = JHTML::_('select.genericlist', $cities, 'filter_city', 'class="inputbox"', 'value', 'text', $filter_city);
-	    unset($cities);    	
-    }
-
+    $cities = array();
+    $cities[] = JHTML::_('select.option', '', JText::_('Select city'));
+    $cities = array_merge($cities, $this->get('CityOptions'));
+    $lists['cities'] = JHTML::_('select.genericlist', $cities, 'filter_city', 'class="inputbox dynfilter"', 'value', 'text', $filter_city);
+    unset($cities);    
+	
+    // venues filter
+    $venues = array();
+    $venues[] = JHTML::_('select.option', '', JText::_('Select venue'));
+    $venues = array_merge($venues, $this->get('VenuesOptions'));
+    $lists['venues'] = JHTML::_('select.genericlist', $venues, 'filter_venue', 'class="inputbox dynfilter"', 'value', 'text', $filter_venue);
+    unset($venues); 
+    
 		$this->assign('lists' , 					$lists);
 		$this->assign('total',						$total);
 		$this->assign('action', 					$uri->toString());
@@ -170,7 +173,8 @@ class RedeventViewSearch extends JView
 		$this->assignRef('pageNav' , 				$pageNav);
 		$this->assignRef('elsettings' , 			$elsettings);
 		$this->assignRef('pagetitle' , 				$pagetitle);
-    $this->assignRef('filter_country' ,        $filter_country);
+    $this->assign('filter_country',        $filter_country);
+		$this->assign('filter_date', 			$filter_date);
 
 		parent::display($tpl);
 
