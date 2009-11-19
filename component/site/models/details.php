@@ -555,6 +555,7 @@ class RedeventModelDetails extends JModel
   	       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
   	       . ' WHERE gm.member = '. $this->_db->Quote($user->get('id'))
   	       . '   AND (gm.add_xrefs > 0 OR gm.add_events > 0) '
+  	       . '   AND x.id = '. $this->_db->Quote($this->_xref)
   	       ;
   	$this->_db->setQuery($query);
   	$res = $this->_db->loadObjectList();
