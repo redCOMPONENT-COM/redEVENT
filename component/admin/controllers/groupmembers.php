@@ -180,5 +180,10 @@ class RedEventControllerGroupmembers extends RedEventController
 
 		$this->setRedirect( 'index.php?option=com_redevent&view=groupmembers&group_id='. $group_id, $msg );
 	}	
+	
+	function back()
+	{
+		$this->setRedirect( 'index.php?option=com_redevent&view=groups');		
+	}
 }
 ?>

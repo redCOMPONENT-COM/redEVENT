@@ -66,6 +66,7 @@ class RedEventViewGroupmembers extends JView {
 
 		//create the toolbar
 		JToolBarHelper::title( JText::_( 'GROUP MEMBERS' ). ' - ' . $group->name, 'groups' );
+		JToolBarHelper::custom('back', 'back', 'back', 'back', false);
 		JToolBarHelper::addNew();
 		JToolBarHelper::spacer();
 		JToolBarHelper::editList();
