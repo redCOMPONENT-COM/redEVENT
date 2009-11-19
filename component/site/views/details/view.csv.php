@@ -55,17 +55,19 @@ class RedeventViewDetails extends JView
 	 */
 	function _displayAttendees($tpl = null)
 	{
-		header('Content-type: application/excel');
-		header('Content-Disposition: attachment; filename="filename.csv"');
 		$model = $this->getModel();
+		
+		$event     = $this->get('Details');		
 		$registers = $model->getRegisters(true);
+		
+		$text = "";
 		if (count($registers))
 		{
 			$fields = array();
 			foreach ($registers[0]->fields AS $f) {
 				$fields[] = $f;
 			}
-			echo implode(';', $fields)."\n";
+			$text .= $this->writecsvrow($fields);
 		}
 		foreach((array) $registers as $r) 
 		{
@@ -77,8 +79,24 @@ class RedeventViewDetails extends JView
 				}
 				$data[] = $val;
 			}
-			echo implode(';', $data)."\n";
+			$text .= $this->writecsvrow($data);
 		}
+		$title = JFile::makeSafe($event->title .'_'. $event->dates .'_'. $event->venue .'.csv');
+		header('Content-type: application/excel');
+		header('Content-Disposition: attachment; filename="'.$title.'"');
+		echo $text;
+	}
+	
+	function writecsvrow($dataArray, $delimiter = ';',$enclosure = '"')
+	{
+		$fields = array();
+		$writeDelimiter = FALSE;
+		foreach($dataArray as $dataElement) 
+		{
+			$dataElement=str_replace("\"", "\"\"", $dataElement);
+			$fields[] = $enclosure . $dataElement . $enclosure;
+		}
+		return implode($delimiter, $fields) ."\n";
 	}
 }
 ?>

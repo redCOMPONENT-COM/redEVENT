@@ -147,11 +147,13 @@ class RedeventModelDetails extends JModel
 			$query = 'SELECT a.id AS did, x.id AS xref, a.title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, a.registra, a.unregistra,' 
 					. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
 					. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone,'
+					. ' v.venue,'
 					. " a.confirmation_message, x.course_price, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.catname, c.published, c.access,"
 	        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
 	        . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
 					. ' FROM #__redevent_events AS a'
 					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
+					. ' LEFT JOIN #__redevent_venues AS v ON x.venueid = v.id'
 	        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
 	        . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
 					. $where
