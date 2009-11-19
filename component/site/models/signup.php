@@ -335,5 +335,50 @@ class RedeventModelSignup extends JModel
 	{
 	  return redEVENTHelper::canRegister($this->_xref);
 	}
+	
+	function getRegistration($submitter_id)
+	{
+		$query =' SELECT s.*, r.uid, e.unregistra '
+        . ' FROM #__rwf_submitters AS s '
+        . ' INNER JOIN #__redevent_register AS r ON r.submit_key = s.submit_key '
+        . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.id = r.xref '
+        . ' INNER JOIN #__redevent_events AS e ON x.eventid = e.id '
+        . ' WHERE s.id = ' . $this->_db->Quote($submitter_id)
+		    ;
+		$this->_db->setQuery($query);
+		$registration = $this->_db->loadObject();
+		
+		if (!$registration) {
+			$this->setError(JText::_('REGISTRATION NOT VALID'));
+			return false;
+		}
+		  
+		$query = ' SELECT * '
+		       . ' FROM #__rwf_forms_'. $registration->form_id
+		       . ' WHERE id = '. $registration->answer_id
+		            ;
+		$this->_db->setQuery($query);
+		$registration->answers = $this->_db->loadObject();
+		return $registration;
+	}
+	
+
+  function getManageAttendees($xref_id)
+  {
+  	$user = & JFactory::getUser();
+  	
+  	$query = ' SELECT gm.id '
+  	       . ' FROM #__redevent_event_venue_xref AS x '
+  	       . ' INNER JOIN #__redevent_groups AS g ON x.groupid = g.id '
+  	       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
+  	       . ' WHERE gm.member = '. $this->_db->Quote($user->get('id'))
+  	       . '   AND (gm.add_xrefs > 0 OR gm.add_events > 0) '
+  	       . '   AND x.id = '. $this->_db->Quote($xref_id)
+  	       ;
+  	$this->_db->setQuery($query);
+  	$res = $this->_db->loadObjectList();
+  	
+  	return count($res);
+  }
 }
 ?>

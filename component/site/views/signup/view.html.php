@@ -42,6 +42,9 @@ class RedeventViewSignup extends JView
 	 */
 	function display($tpl = null) 
 	{
+		if (JRequest::getVar('layout') == 'edit') {
+			return $this->_displayEdit();
+		}
 		$mainframe = & JFactory::getApplication();
 		
 		$document 	= & JFactory::getDocument();
@@ -143,6 +146,52 @@ class RedeventViewSignup extends JView
     $this->assignRef('fullpage', $fullpage);
 		
 		parent::display($tpl);
+	}
+	
+	function _displayEdit($tpl = null)
+	{
+		$user = &JFactory::getUser();
+		$submitter_id = JRequest::getInt('submitter_id', 0);
+		if (!$submitter_id) {
+			JError::raise(0,'Registration id required');
+			return false;
+		}
+		$course = $this->get('Details');
+		$model = $this->getModel();
+		
+		$registration = $model->getRegistration($submitter_id);
+		if (!$registration) {
+			JError::raise(0,$model->getError);
+			return false;
+		}		
+		
+		JPluginHelper::importPlugin('content', 'redform');
+		$dispatcher = JDispatcher::getInstance();
+		$form = new stdClass();
+		$form->text = '{redform}'.$course->redform_id.', 1'.'{/redform}';
+		$form->eventid = $course->did;
+		
+		if ($registration->uid == $user->get('id')) {
+			$form->task = 'edit';
+		}
+		else if ($model->getManageAttendees($registration->xref)) {
+			$form->task = 'manageredit';			
+		}
+		else {
+			JError::raiseError(403,'NOT AUTHORIZED');
+			return false;
+		}
+		
+		// params for plugin
+		$params = array();
+		$params['answers'] = array($registration->answers);
+		$params['submitter_id'] = $submitter_id;
+			
+		$results = $dispatcher->trigger('onPrepareEvent', array(& $form, $params, 0));
+		$redform = $form->text;
+		
+		echo $form->text;
+//		parent::display($tpl);
 	}
 }
 ?>

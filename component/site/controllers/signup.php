@@ -76,5 +76,11 @@ class RedEventControllerSignup extends RedEventController
 	{
 		parent::display();
 	}
+	
+	function edit()
+	{		
+		JRequest::setvar('layout', 'edit');
+		parent::display();
+	}
 }
 ?>
