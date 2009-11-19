@@ -330,7 +330,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         $orderby = $this->_buildEventListOrderBy();
 
         //Get Events from Database        
-        $query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, '
+        $query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published, '
         . ' a.id, a.title, a.created, a.datdescription, a.registra, '
         . ' l.venue, l.city, l.state, l.url, l.id as locid, '
         . ' c.catname, c.id AS catid,'

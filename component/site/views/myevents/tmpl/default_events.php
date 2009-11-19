@@ -85,6 +85,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<?php endif; ?>
 			<col width="5" class="el_col_attendees" />
 			<col width="5" class="el_col_edit" />
+			<col width="5" class="el_col_published" />
 	</colgroup>
 
 	<thead>
@@ -119,6 +120,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				?>				
 				<th id="el_attendees" class="sectiontableheader" align="left"><?php echo JText::_('Attendees'); ?></th>
 				<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('Edit'); ?></th>
+				<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('Published'); ?></th>
 			</tr>
 	</thead>
 	<tbody>
@@ -227,6 +229,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 				<td headers="el_edit" align="left" valign="top"><?php echo $this->xrefattendeesbutton($row->xref); ?></td>
 				<td headers="el_edit" align="left" valign="top"><?php echo $this->xrefeditbutton($row->xref); ?></td>
+				<td headers="el_edit" align="left" valign="top">
+					<?php if ($row->published == '1'): ?>
+						<?php echo JHTML::_('image.site', 'ok.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Published' )); ?>
+					<?php elseif ($row->published == '0'):?>
+						<?php echo JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Unpublished' )); ?>
+					<?php elseif ($row->published == '-1'):?>
+						<?php echo JHTML::_('image.site', 'archive_front.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Archived' )); ?>
+					<?php endif;?>
+				</td>
 			</tr>
 
   		<?php
