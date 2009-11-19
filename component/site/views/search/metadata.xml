@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<view title="SEARCH LAYOUT">
+	<view title="SEARCH VIEW">
 		<message>
-			<![CDATA[SEARCH LAYOUT TIP]]>
+			<![CDATA[SEARCH VIEW TIP]]>
 		</message>
 	</view>
 </metadata>
