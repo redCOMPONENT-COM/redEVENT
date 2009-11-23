@@ -168,7 +168,7 @@ class RedeventModelBaseEventList extends JModel
 		$customs = $this->getCustomFields();
 
 		//Get Events from Database
-		$query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, '
+		$query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.course_credit, x.course_price,'
 		    . ' a.id, a.title, a.created, a.datdescription, a.registra, '
 				. ' l.venue, l.city, l.state, l.url,'
 				. ' c.catname, c.id AS catid,'
