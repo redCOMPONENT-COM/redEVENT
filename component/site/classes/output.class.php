@@ -93,51 +93,46 @@ class ELOutput {
     
 		$settings = & redEVENTHelper::config();
 		
-		if ( $params->get('pastevents_action', 0) == 2 ) {
-
-			JHTML::_('behavior.tooltip');
+		JHTML::_('behavior.tooltip');
+		
+		$view = JRequest::getWord('view');
+		
+		if ($task == 'archive') {
 			
-			$view = JRequest::getWord('view');
-			
-			if ($task == 'archive') {
-				
-				if ( $params->get('icons') ) {
-					$image = JHTML::_('image.site', 'eventlist.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'SHOW EVENTS' ));
-				} else {
-					$image = JText::_( 'SHOW EVENTS' );
-				}
-				$overlib 	= JText::_( 'SHOW EVENTS TIP' );
-				$title 		= JText::_( 'SHOW EVENTS' );
-				
-				if ($id) {
-						$link 		= JRoute::_( 'index.php?option=com_redevent&view='.$view.'&id='.$id );
-				} else {
-						$link 		= JRoute::_( 'index.php' );
-				}
-				
+			if ( $params->get('icons') ) {
+				$image = JHTML::_('image.site', 'eventlist.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'SHOW EVENTS' ));
 			} else {
-				
-				if ( $params->get('icons') ) {
-					$image = JHTML::_('image.site', 'archive_front.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'SHOW ARCHIVE' ));
-				} else {
-					$image = JText::_( 'SHOW ARCHIVE' );
-				}
-				$overlib 	= JText::_( 'SHOW ARCHIVE TIP' );
-				$title 		= JText::_( 'SHOW ARCHIVE' );
-					
-				if ($id) {
-					$link 		= JRoute::_( 'index.php?option=com_redevent&view='.$view.'&id='.$id.'&task=archive' );
-				} else {
-					$link		= JRoute::_('index.php?option=com_redevent&view='.$view.'&task=archive');
-				}
+				$image = JText::_( 'SHOW EVENTS' );
 			}
-
-			$output = '<a href="'.$link.'" class="editlinktip hasTip" title="'.$title.'::'.$overlib.'">'.$image.'</a>';
-
-			return $output;
-
+			$overlib 	= JText::_( 'SHOW EVENTS TIP' );
+			$title 		= JText::_( 'SHOW EVENTS' );
+			
+			if ($id) {
+					$link 		= JRoute::_( 'index.php?option=com_redevent&view='.$view.'&id='.$id );
+			} else {
+					$link 		= JRoute::_( 'index.php' );
+			}
+			
+		} else {
+			
+			if ( $params->get('icons') ) {
+				$image = JHTML::_('image.site', 'archive_front.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'SHOW ARCHIVE' ));
+			} else {
+				$image = JText::_( 'SHOW ARCHIVE' );
+			}
+			$overlib 	= JText::_( 'SHOW ARCHIVE TIP' );
+			$title 		= JText::_( 'SHOW ARCHIVE' );
+				
+			if ($id) {
+				$link 		= JRoute::_( 'index.php?option=com_redevent&view='.$view.'&id='.$id.'&task=archive' );
+			} else {
+				$link		= JRoute::_('index.php?option=com_redevent&view='.$view.'&task=archive');
+			}
 		}
-		return;
+
+		$output = '<a href="'.$link.'" class="editlinktip hasTip" title="'.$title.'::'.$overlib.'">'.$image.'</a>';
+
+		return $output;
 	}
 
 	/**
