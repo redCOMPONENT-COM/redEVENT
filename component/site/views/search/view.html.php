@@ -122,7 +122,7 @@ class RedeventViewSearch extends JView
 				
     $catoptions = array();
     $catoptions[] = JHTML::_('select.option', '0', JText::_('Select category'));
-    $catoptions = array_merge($catoptions, redEVENTHelper::getEventsCatOptions());
+    $catoptions = array_merge($catoptions, $this->get('CategoriesOptions'));
     $selectedcats = ($filter_category) ? array($filter_category) : array();
     //build select
     $lists['categories'] =  JHTML::_('select.genericlist', $catoptions, 'filter_category', 'size="1" class="inputbox dynfilter"', 'value', 'text', $selectedcats);

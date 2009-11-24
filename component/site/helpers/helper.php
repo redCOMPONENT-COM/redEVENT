@@ -373,9 +373,10 @@ class redEVENTHelper {
    *
    * @param boolean show categories with no publish xref associated
    * @param boolean show unpublished categories
+   * @param array   id of enabled categories
    * @return array
    */
-  function getEventsCatOptions($show_empty = true, $show_unpublished = false) 
+  function getEventsCatOptions($show_empty = true, $show_unpublished = false, $enabled = false) 
   {
     $db   = & JFactory::getDBO();
 
@@ -425,7 +426,7 @@ class redEVENTHelper {
     $options = array();
     foreach((array) $results as $cat)
     {
-      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->catname);
+      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->catname, 'value', 'text', ($enabled ? !in_array($cat->id, $enabled) : false));
     }
     return $options;
   }

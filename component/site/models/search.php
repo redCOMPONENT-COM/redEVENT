@@ -290,7 +290,58 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		$res = $this->_db->loadObjectList();
 		return $res;
 	}
-	
+
+	/**
+	 * get list of events as options, according to category, venue, and venue category criteria
+	 * @return unknown_type
+	 */
+	function getCategoriesOptions()
+	{
+		$app = &JFactory::getApplication();
+    $filter_venuecategory = $app->getUserState('com_redevent.search.filter_venuecategory');
+		$filter_venue = $app->getUserState('com_redevent.search.filter_venue');
+		$task 		= JRequest::getWord('task');
+			
+		//Get Events from Database
+		$query  = ' SELECT c.id '
+		        . ' FROM #__redevent_event_venue_xref AS x'
+		        . ' INNER JOIN #__redevent_events AS a ON a.id = x.eventid'
+		        . ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
+		        . ' LEFT JOIN #__redevent_venue_category_xref AS xvcat ON l.id = xvcat.venue_id'
+		        . ' LEFT JOIN #__redevent_venues_categories AS vc ON xvcat.category_id = vc.id'
+            . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+	          . ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+		        ;	
+		
+		$where = array();		
+		// First thing we need to do is to select only needed events
+		if ($task == 'archive') {
+			$where[] = ' x.published = -1';
+		} else {
+			$where[] = ' x.published = 1';
+		}
+		
+    // filter category
+    if ($filter_venuecategory) {
+    	$category = $this->getVenueCategory((int) $filter_venuecategory);
+			$where[] = '(vc.id = '.$this->_db->Quote($category->id) . ' OR (vc.lft > ' . $this->_db->Quote($category->lft) . ' AND vc.rgt < ' . $this->_db->Quote($category->rgt) . '))';
+    }
+    if ($filter_venue)
+    {
+    	$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);    	
+    }
+    
+    if (count($where)) {
+    	$query .= ' WHERE '. implode(' AND ', $where);
+    }
+    $query .= ' GROUP BY c.id ';
+    
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadResultArray();
+		
+//		return redEVENTHelper::getEventsCatOptions(true, false, $res);
+		return redEVENTHelper::getEventsCatOptions(true, false);
+	}
 	/**
 	 * get a category
 	 * @param int id
@@ -298,6 +349,10 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	 */
 	function getCategory($id)
 	{
+		$app = &JFactory::getApplication();
+    $filter_venuecategory = $app->getUserState('com_redevent.search.filter_venuecategory');
+    $filter_category = $app->getUserState('com_redevent.search.filter_category');
+    
 		$query = ' SELECT id, catname, lft, rgt '
 		       . ' FROM #__redevent_categories '
 		       . ' WHERE id = '. $this->_db->Quote($id)
