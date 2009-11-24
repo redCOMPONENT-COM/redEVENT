@@ -193,8 +193,8 @@ class RedeventViewSimpleList extends JView
 		$filter_order		= JRequest::getCmd('filter_order', 'x.dates');
 		$filter_order_Dir	= JRequest::getWord('filter_order_Dir', 'ASC');
 
-    $filter     = $app->getUserState('com_redevent.eventlist.filter');
-    $filter_type  = $app->getUserState('com_redevent.eventlist.filter_type');
+    $filter     = $app->getUserState('com_redevent.simplelist.filter');
+    $filter_type  = $app->getUserState('com_redevent.simplelist.filter_type');
       
 		$sortselects = array();
 		$sortselects[]	= JHTML::_('select.option', 'title', $elsettings->titlename );
