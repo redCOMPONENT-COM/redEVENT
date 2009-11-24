@@ -91,18 +91,19 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 			$where[] = ' x.published = 1';
 		}
 
-		$filter 		= JRequest::getString('filter', '', 'request');
-		$filter_type 	= JRequest::getWord('filter_type', '', 'request');
+		$filter 		      = JRequest::getString('filter', '', 'request');
+		$filter_type 	    = JRequest::getWord('filter_type', '', 'request');
     $filter_continent = $mainframe->getUserStateFromRequest('com_redevent.search.filter_continent', 'filter_continent', '', 'string');
-    $filter_country = $mainframe->getUserStateFromRequest('com_redevent.search.filter_country', 'filter_country', '', 'string');
-    $filter_city = $mainframe->getUserStateFromRequest('com_redevent.search.filter_city', 'filter_city', '', 'string');
-		$filter_venue = $mainframe->getUserStateFromRequest('com_redevent.search.filter_venue', 'filter_venue', 0, '', 'int');
-    $filter_date = $mainframe->getUserStateFromRequest('com_redevent.search.filter_date', 'filter_date', '', 'string');
+    $filter_country   = $mainframe->getUserStateFromRequest('com_redevent.search.filter_country', 'filter_country', '', 'string');
+    $filter_city      = $mainframe->getUserStateFromRequest('com_redevent.search.filter_city', 'filter_city', '', 'string');
+		$filter_venue     = $mainframe->getUserStateFromRequest('com_redevent.search.filter_venue', 'filter_venue', 0, '', 'int');
+    $filter_date      = $mainframe->getUserStateFromRequest('com_redevent.search.filter_date', 'filter_date', '', 'string');
     $filter_venuecategory = $mainframe->getUserStateFromRequest('com_redevent.search.filter_venuecategory', 'filter_venuecategory', 0, 'int');
-    $filter_category = $mainframe->getUserStateFromRequest('com_redevent.search.filter_category', 'filter_category', 0, 'int');
+    $filter_category  = $mainframe->getUserStateFromRequest('com_redevent.search.filter_category', 'filter_category', 0, 'int');
+    $filter_event     = $mainframe->getUserStateFromRequest('com_redevent.search.filter_event', 'filter_event', 0, 'int');
     
     // no result if no filter:
-    if ( !($filter || $filter_continent || $filter_country || $filter_city || $filter_date || $filter_category || $filter_venuecategory || $filter_venue) ) {
+    if ( !($filter || $filter_continent || $filter_country || $filter_city || $filter_date || $filter_category || $filter_venuecategory || $filter_venue || $filter_event) ) {
     	return ' WHERE 0 ';
     }
 
@@ -159,6 +160,10 @@ class RedeventModelSearch extends RedeventModelBaseEventList
     if ($filter_venue)
     {
     	$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);    	
+    }
+    if ($filter_event)
+    {
+    	$where[] = ' a.id = ' . $this->_db->Quote($filter_event);    	
     }
     if (count($where)) {
     	$where = ' WHERE '. implode(' AND ', $where);
@@ -224,6 +229,62 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 			$query .= ' WHERE (vcat.id = '.$this->_db->Quote($category->id) . ' OR (vcat.lft > ' . $this->_db->Quote($category->lft) . ' AND vcat.rgt < ' . $this->_db->Quote($category->rgt) . '))';
     }
     $query .= ' ORDER BY v.venue ';
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadObjectList();
+		return $res;
+	}
+	
+	/**
+	 * get list of events as options, according to category, venue, and venue category criteria
+	 * @return unknown_type
+	 */
+	function getEventsOptions()
+	{
+		$app = &JFactory::getApplication();
+    $filter_venuecategory = $app->getUserState('com_redevent.search.filter_venuecategory');
+    $filter_category = $app->getUserState('com_redevent.search.filter_category');
+		$filter_venue = $app->getUserState('com_redevent.search.filter_venue');
+		$task 		= JRequest::getWord('task');
+			
+		//Get Events from Database
+		$query  = ' SELECT a.id AS value, a.title AS text '
+		        . ' FROM #__redevent_event_venue_xref AS x'
+		        . ' INNER JOIN #__redevent_events AS a ON a.id = x.eventid'
+		        . ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
+		        . ' LEFT JOIN #__redevent_venue_category_xref AS xvcat ON l.id = xvcat.venue_id'
+		        . ' LEFT JOIN #__redevent_venues_categories AS vc ON xvcat.category_id = vc.id'
+            . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+	          . ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+		        ;
+	
+		
+		$where = array();		
+		// First thing we need to do is to select only needed events
+		if ($task == 'archive') {
+			$where[] = ' x.published = -1';
+		} else {
+			$where[] = ' x.published = 1';
+		}
+		// filter category
+    if ($filter_category) {
+    	$category = $this->getCategory((int) $filter_category);
+			$where[] = '(c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
+    }
+    // filter category
+    if ($filter_venuecategory) {
+    	$category = $this->getVenueCategory((int) $filter_venuecategory);
+			$where[] = '(vc.id = '.$this->_db->Quote($category->id) . ' OR (vc.lft > ' . $this->_db->Quote($category->lft) . ' AND vc.rgt < ' . $this->_db->Quote($category->rgt) . '))';
+    }
+    if ($filter_venue)
+    {
+    	$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);    	
+    }
+    
+    if (count($where)) {
+    	$query .= ' WHERE '. implode(' AND ', $where);
+    }
+    $query .= ' GROUP BY a.id ';
+    
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
 		return $res;

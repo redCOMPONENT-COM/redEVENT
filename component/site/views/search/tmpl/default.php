@@ -120,7 +120,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	    <?php if ($this->params->get('show_filter_category')): ?>
 			<tr>
         <td>
-	        <?php echo '<label for="category">'.JText::_('Category').'</label>&nbsp;'; ?>
+	        <?php echo '<label for="filter_category">'.JText::_('Category').'</label>&nbsp;'; ?>
 	      </td>
 	      <td>
 	        <?php echo $this->lists['categories']; ?>
@@ -130,10 +130,20 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	    <?php if ($this->params->get('show_filter_date')): ?>
       <tr>
         <td>
-          <?php echo '<label for="date">'.JText::_('Date').'</label>&nbsp;'; ?>
+          <?php echo '<label for="filter_date">'.JText::_('Date').'</label>&nbsp;'; ?>
         </td>
         <td>
           <?php echo JHTML::_('calendar', $this->filter_date, 'filter_date', 'filter_date', '%Y-%m-%d', 'class="inputbox dynfilter"');?>
+        </td>
+      </tr>
+    	<?php endif; ?>
+	    <?php if ($this->params->get('show_filter_event')): ?>
+      <tr>
+        <td>
+          <?php echo '<label for="filter_event">'.JText::_('Date').'</label>&nbsp;'; ?>
+        </td>
+        <td>
+          <?php echo $this->lists['events']; ?>
         </td>
       </tr>
     	<?php endif; ?>

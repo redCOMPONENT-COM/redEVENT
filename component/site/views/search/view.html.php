@@ -62,14 +62,15 @@ class RedeventViewSearch extends JView
     $document->addScript( $this->baseurl.'/components/com_redevent/assets/js/search.js' );
 
 		// get variables
-		$limitstart	= JRequest::getVar('limitstart', 0, '', 'int');
-		$limit		= $mainframe->getUserStateFromRequest('com_redevent.search.limit', 'limit', $params->def('display_num', 0), 'int');
-		$filter_country = $mainframe->getUserStateFromRequest('com_redevent.search.filter_country', 'filter_country', '', 'string');
-    $filter_city = $mainframe->getUserStateFromRequest('com_redevent.search.filter_city', 'filter_city', '', 'string');
-    $filter_venue = $mainframe->getUserStateFromRequest('com_redevent.search.filter_venue', 'filter_venue', 0, 'int');
-    $filter_date = $mainframe->getUserStateFromRequest('com_redevent.search.filter_date', 'filter_date', '', 'string');
+		$limitstart	      = JRequest::getVar('limitstart', 0, '', 'int');
+		$limit		        = $mainframe->getUserStateFromRequest('com_redevent.search.limit', 'limit', $params->def('display_num', 0), 'int');
+		$filter_country   = $mainframe->getUserStateFromRequest('com_redevent.search.filter_country', 'filter_country', '', 'string');
+    $filter_city      = $mainframe->getUserStateFromRequest('com_redevent.search.filter_city', 'filter_city', '', 'string');
+    $filter_venue     = $mainframe->getUserStateFromRequest('com_redevent.search.filter_venue', 'filter_venue', 0, 'int');
+    $filter_date      = $mainframe->getUserStateFromRequest('com_redevent.search.filter_date', 'filter_date', '', 'string');
     $filter_venuecategory = $mainframe->getUserStateFromRequest('com_redevent.search.filter_venuecategory', 'filter_venuecategory', 0, 'int');
-    $filter_category = $mainframe->getUserStateFromRequest('com_redevent.search.filter_category', 'filter_category', 0, 'int');
+    $filter_category  = $mainframe->getUserStateFromRequest('com_redevent.search.filter_category', 'filter_category', 0, 'int');
+    $filter_event     = $mainframe->getUserStateFromRequest('com_redevent.search.filter_event', 'filter_event', 0, 'int');
 		$task 		= JRequest::getWord('task');
 		$pop		= JRequest::getBool('pop');
 
@@ -157,6 +158,13 @@ class RedeventViewSearch extends JView
     $venues[] = JHTML::_('select.option', '', JText::_('Select venue'));
     $venues = array_merge($venues, $this->get('VenuesOptions'));
     $lists['venues'] = JHTML::_('select.genericlist', $venues, 'filter_venue', 'class="inputbox dynfilter"', 'value', 'text', $filter_venue);
+    unset($venues); 
+    
+    // events filter
+    $options = array();
+    $options[] = JHTML::_('select.option', '', JText::_('Search select event'));
+    $options = array_merge($options, $this->get('EventsOptions'));
+    $lists['events'] = JHTML::_('select.genericlist', $options, 'filter_event', 'class="inputbox dynfilter"', 'value', 'text', $filter_event);
     unset($venues); 
     
 		$this->assign('lists' , 					$lists);

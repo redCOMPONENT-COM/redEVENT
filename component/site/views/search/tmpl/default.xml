@@ -42,6 +42,10 @@
 				<option value="0">Hide</option>
 				<option value="1">Show</option>
 			</param>
+			<param name="show_filter_event" type="radio" default="0" label="SHOW FILTER EVENT" description="SHOW FILTER EVENT TIP">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
 		</params>
 	</state>
 </metadata>
