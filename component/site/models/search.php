@@ -339,8 +339,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadResultArray();
 		
-//		return redEVENTHelper::getEventsCatOptions(true, false, $res);
-		return redEVENTHelper::getEventsCatOptions(true, false);
+		return redEVENTHelper::getEventsCatOptions(true, false, $res);
 	}
 	/**
 	 * get a category

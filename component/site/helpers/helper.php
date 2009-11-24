@@ -426,7 +426,7 @@ class redEVENTHelper {
     $options = array();
     foreach((array) $results as $cat)
     {
-      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->catname, 'value', 'text', ($enabled ? !in_array($cat->id, $enabled) : false));
+      $options[] = JHTML::_('select.option', $cat->id, str_repeat('&nbsp;', $cat->depth) . ' ' . $cat->catname, 'value', 'text', ($enabled ? !in_array($cat->id, $enabled) : false));
     }
     return $options;
   }
@@ -489,7 +489,7 @@ class redEVENTHelper {
     $options = array();
     foreach((array) $results as $cat)
     {
-    	$options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->name);
+    	$options[] = JHTML::_('select.option', $cat->id, str_repeat('&nbsp;', $cat->depth) . ' ' . $cat->name);
     }
     return $options;
   }
