@@ -122,7 +122,7 @@ class RedeventViewVenuesmap extends JView
    	$mainframe->addMetaTag( 'title' , $pagetitle );
    	$document->setMetadata('keywords', $pagetitle );
    	
-   	$ajaxurl = 'index.php?option=com_redevent&view=venue&format=raw';
+   	$ajaxurl = 'index.php?option=com_redevent&view=venue&tmpl=component';
    	if ($vcat) {
    		$ajaxurl .= '&vcat=' . $vcat;
    	}
