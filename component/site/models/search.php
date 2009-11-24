@@ -219,7 +219,8 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		$app = &JFactory::getApplication();
 		$vcat = $app->getUserState('com_redevent.search.filter_venuecategory');
 		
-		$query = ' SELECT v.id AS value, v.venue AS text '
+		$query = ' SELECT v.id AS value, '
+           . ' CASE WHEN CHAR_LENGTH(v.city) THEN CONCAT_WS(\' - \', v.venue, v.city) ELSE v.venue END as text '
 		       . ' FROM #__redevent_venues AS v '
 		       . ' LEFT JOIN #__redevent_venue_category_xref AS xcat ON xcat.venue_id = v.id '
 		       . ' LEFT JOIN #__redevent_venues_categories AS vcat ON vcat.id = xcat.category_id '
