@@ -273,7 +273,7 @@ class RedeventModelEditevent extends JModel
 				$obj->maxwaitinglist    = 0;
 				$obj->course_credit     = 0;
 				$obj->course_price      = 0;
-				$obj->published         = 0;
+				$obj->published         = 1;
 				$this->_xref = $obj;
 			}
 		}
