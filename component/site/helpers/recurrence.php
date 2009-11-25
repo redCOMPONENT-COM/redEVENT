@@ -465,54 +465,61 @@ class RedeventHelperRecurrence
         break;
         
       case 'YEARLY':
-        $current = strftime('%j', strtotime($last_xref->dates));
+        $current = strtotime($last_xref->dates);
         
-        if (!$rule->reverse_bydays)
+        if (empty($rule->bydays)) // in that case, use current date, plus a year
         {
-          sort($rule->bydays);
-          $next_day = $rule->bydays[0];
-          foreach ($rule->bydays as $day)
-          {
-            if ($day > $current) {
-              $next_day = $day;
-              break;
-            }
-          }
-          if ($next_day == $rule->bydays[0]) // not this year => this year + interval year!
-          {
-            $next_start = mktime(0, 0, 0, 1, $next_day, strftime('%Y', strtotime($last_xref->dates)) + 1);
-          }
-          else {
-            $next_start = mktime(0, 0, 0, 1, $next_day, strftime('%Y', strtotime($last_xref->dates)));
-          }
+          $next_start = mktime(0, 0, 0, strftime('%m', $current), strftime('%d', $current), strftime('%Y',  $current) + $rule->interval);        	
         }
         else
         {
-          // total days in this year          
-          $total = strftime('%j', mktime(0, 0, 0, 1, 0, strftime('%Y', strtotime($last_xref->dates)) + 1));
-          $rev_days = array();
-          // get number in proper order
-          rsort($rule->bydays);
-          foreach ($rule->bydays as $day) {
-            $rev_days[] = $total - $day + 1;
-          }
-          
-          $next_day = null;
-          foreach ($rev_days as $day)
-          {
-            if ($day > $current) {
-              $next_day = $day;
-              break;
-            }
-          }
-          
-          if ($next_day == null) // not this year => this year + interval year!
-          {
-            $next_start = mktime(0, 0, 0, 1, -$rule->bydays[0], strftime('%Y', strtotime($last_xref->dates)) + 1 + $rule->interval);
-          }
-          else {
-            $next_start = mktime(0, 0, 0, 1, $next_day, strftime('%Y', strtotime($last_xref->dates)));
-          }
+	        if (!$rule->reverse_bydays)
+	        {
+	          sort($rule->bydays);
+	          $next_day = $rule->bydays[0];
+	          foreach ($rule->bydays as $day)
+	          {
+	            if ($day > $current) {
+	              $next_day = $day;
+	              break;
+	            }
+	          }
+	          if ($next_day == $rule->bydays[0]) // not this year => this year + interval year!
+	          {
+	            $next_start = mktime(0, 0, 0, 1, $next_day, strftime('%Y', strtotime($last_xref->dates)) + 1);
+	          }
+	          else {
+	            $next_start = mktime(0, 0, 0, 1, $next_day, strftime('%Y', strtotime($last_xref->dates)));
+	          }
+	        }
+	        else
+	        {
+	          // total days in this year          
+	          $total = strftime('%j', mktime(0, 0, 0, 1, 0, strftime('%Y', strtotime($last_xref->dates)) + 1));
+	          $rev_days = array();
+	          // get number in proper order
+	          rsort($rule->bydays);
+	          foreach ($rule->bydays as $day) {
+	            $rev_days[] = $total - $day + 1;
+	          }
+	          
+	          $next_day = null;
+	          foreach ($rev_days as $day)
+	          {
+	            if ($day > $current) {
+	              $next_day = $day;
+	              break;
+	            }
+	          }
+	          
+	          if ($next_day == null) // not this year => this year + interval year!
+	          {
+	            $next_start = mktime(0, 0, 0, 1, -$rule->bydays[0], strftime('%Y', strtotime($last_xref->dates)) + 1 + $rule->interval);
+	          }
+	          else {
+	            $next_start = mktime(0, 0, 0, 1, $next_day, strftime('%Y', strtotime($last_xref->dates)));
+	          }
+	        }
         }
         break;
         
@@ -536,10 +543,10 @@ class RedeventHelperRecurrence
     unset($new->id);
     $delta = $next_start - strtotime($last_xref->dates);
     $new->dates = strftime('%Y-%m-%d', $next_start);
-    if ($last_xref->enddates && $last_xref->enddates != '0000-00-00') {
+    if (strtotime($last_xref->enddates)) {
       $new->enddates = strftime('%Y-%m-%d', strtotime($last_xref->enddates) + $delta);
     }
-    if ($last_xref->registrationend && $last_xref->registrationend != '0000-00-00') {
+    if (strtotime($last_xref->registrationend)) {
       $new->registrationend = strftime('%Y-%m-%d', strtotime($last_xref->registrationend) + $delta);
     }
     $new->count++;
