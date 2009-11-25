@@ -994,7 +994,17 @@ class RedeventModelEditevent extends JModel
   	$row = & JTable::getInstance('RedEvent_eventvenuexref', '');
   	
 		if ($data['id']) {
+			if (!$this->canManageXref($data['id'])) {
+				$this->setError('YOU ARE NOT ALLOWED TO EDIT THIS DATE');
+				return false;				
+			}
 			$row->load($data['id']);
+		}
+		else {
+			if (!$this->getCanAddXref()) {
+				$this->setError('YOU ARE NOT ALLOWED TO ADD EVENT DATE');
+				return false;				
+			}			
 		}
 		
 		if (!$row->bind($data)) {
@@ -1017,5 +1027,62 @@ class RedeventModelEditevent extends JModel
 		
 		return true;
 	}
+	
+	function publishxref($xref_id, $newstate)
+	{
+		if (!$this->canManageXref($xref_id)) {
+			$this->setError('YOU ARE NOT ALLOWED TO EDIT THIS DATE');
+			return false;				
+		}
+  	$row = & JTable::getInstance('RedEvent_eventvenuexref', '');
+  	
+		if (!$row->publish(array($xref_id), $newstate)) {
+			$this->setError('ERROR CHANGING STATE').'<br>'.$row->getError();
+			return false;
+		}
+		return true;
+	}
+	
+  function canManageXref($xref_id = 0)
+  {
+  	if (!$xref_id) {
+  		$xref_id = $this->_xref;
+  	}
+  	if (!$xref_id) {
+  		return false;
+  	}
+  	$user = & JFactory::getUser();
+  	
+  	$query = ' SELECT gm.id '
+  	       . ' FROM #__redevent_event_venue_xref AS x '
+  	       . ' INNER JOIN #__redevent_groups AS g ON x.groupid = g.id '
+  	       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
+  	       . ' WHERE gm.member = '. $this->_db->Quote($user->get('id'))
+  	       . '   AND (gm.add_xrefs > 0 OR gm.add_events > 0) '
+  	       . '   AND x.id = '. $this->_db->Quote($xref_id)
+  	       ;
+  	$this->_db->setQuery($query);
+  	$res = $this->_db->loadObjectList();
+  	return count($res) > 0;
+  }
+	
+  /**
+   * check if user is allowed to addxrefs
+   * @return boolean
+   */
+	function getCanAddXref()
+  {
+  	$user = & JFactory::getUser();
+  	
+  	$query = ' SELECT gm.id '
+  	       . ' FROM #__redevent_groups AS g '
+  	       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
+  	       . ' WHERE gm.member = '. $this->_db->Quote($user->get('id'))
+  	       . '   AND (gm.add_xrefs > 0 OR gm.add_events > 0) '
+  	       ;
+  	$this->_db->setQuery($query);
+  	$res = $this->_db->loadObjectList();
+  	return count($res) > 0;
+  } 
 }
 ?>

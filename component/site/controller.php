@@ -31,6 +31,8 @@ class RedeventController extends JController
 		//register extratasks
 		$this->registerTask( 'ical', 'vcal' );
 		$this->registerTask( 'managedelreguser', 'delreguser' );
+		$this->registerTask( 'unpublishxref', 'publishxref' );
+		$this->registerTask( 'archivexref', 'publishxref' );
 		
 		// prevent issues with view name change in 2.0 beta 6.2
 		if (JRequest::getVar('view') == 'eventlist') {
@@ -671,7 +673,35 @@ class RedeventController extends JController
 		}		
 	}
 	
-
+	function publishxref()
+	{		
+		$xref = JRequest::getInt('xref');
+				
+		$model = $this->getModel('editevent');
+		$task = JRequest::getVar('task');
+		switch (JRequest::getVar('task'))
+		{
+			case 'publishxref':
+				$newstate = 1;
+				break;
+			case 'unpublishxref':
+				$newstate = 0;
+				break;
+			case 'archivexref':
+				$newstate = -1;
+				break;
+		}
+		
+		if ($model->publishxref($xref, $newstate)) {
+			$msg = JText::_('PUBLISHED STATE UPDATED');
+			$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=myevents', false), $msg);				
+		}
+		else {
+			$msg = JText::_('PUBLISHED STATE UPDATE ERROR').'<br>'.$model->getError();
+			$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=myevents', false), $msg, 'error');			
+		}		
+	}
+	
   function insertevent()
   {
 		JRequest::setVar( 'view', 'simplelist' );

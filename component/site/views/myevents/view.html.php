@@ -120,6 +120,7 @@ class RedeventViewMyevents extends JView
         $this->assignRef('elsettings', $elsettings);
         $this->assignRef('pagetitle', $pagetitle);
         $this->assignRef('lists', $lists);
+        $this->assignRef('canAddXref', $this->get('CanAddXref'));
 
         parent::display($tpl);
 

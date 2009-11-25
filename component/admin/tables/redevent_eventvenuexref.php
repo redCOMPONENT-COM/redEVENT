@@ -70,5 +70,64 @@ class RedEvent_eventvenuexref extends JTable
 	function RedEvent_eventvenuexref(& $db) {
 		parent::__construct('#__redevent_event_venue_xref', 'id', $db);
 	}
+	
+	/**
+	 * Generic Publish/Unpublish function
+	 *
+	 * @access public
+	 * @param array An array of id numbers
+	 * @param integer 0 if unpublishing, 1 if publishing
+	 * @param integer The id of the user performnig the operation
+	 * @since 1.0.4
+	 */
+	function publish( $cid=null, $publish=1, $user_id=0 )
+	{
+		JArrayHelper::toInteger( $cid );
+		$user_id	= (int) $user_id;
+		$publish	= (int) $publish;
+		$k			= $this->_tbl_key;
+
+		if (count( $cid ) < 1)
+		{
+			if ($this->$k) {
+				$cid = array( $this->$k );
+			} else {
+				$this->setError("No items selected.");
+				return false;
+			}
+		}
+		$cids = $k . '=' . implode( ' OR ' . $k . '=', $cid );
+
+		$query = 'UPDATE '. $this->_tbl
+		. ' SET published = ' . (int) $publish
+		. ' WHERE ('.$cids.')'
+		;
+
+		$checkin = in_array( 'checked_out', array_keys($this->getProperties()) );
+		if ($checkin)
+		{
+			$query .= ' AND (checked_out = 0 OR checked_out = '.(int) $user_id.')';
+		}
+
+		$this->_db->setQuery( $query );
+		if (!$this->_db->query())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+
+		if (count( $cid ) == 1 && $checkin)
+		{
+			if ($this->_db->getAffectedRows() == 1) {
+				$this->checkin( $cid[0] );
+				if ($this->$k == $cid[0]) {
+					$this->published = $publish;
+				}
+			}
+		}
+		$this->setError('');
+		return true;
+	}
+	
 }
 ?>

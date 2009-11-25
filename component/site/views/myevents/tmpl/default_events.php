@@ -231,11 +231,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<td headers="el_edit" align="left" valign="top"><?php echo $this->xrefeditbutton($row->xref); ?></td>
 				<td headers="el_edit" align="left" valign="top">
 					<?php if ($row->published == '1'): ?>
-						<?php echo JHTML::_('image.site', 'ok.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Published' )); ?>
+						<?php echo JHTML::link('index.php?option=com_redevent&task=unpublishxref&xref='. $row->xref, JHTML::_('image.site', 'ok.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Published' ))); ?>
 					<?php elseif ($row->published == '0'):?>
-						<?php echo JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Unpublished' )); ?>
-					<?php elseif ($row->published == '-1'):?>
-						<?php echo JHTML::_('image.site', 'archive_front.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Archived' )); ?>
+						<?php echo JHTML::link('index.php?option=com_redevent&task=publishxref&xref='. $row->xref, JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Unpublished' ))); ?>
 					<?php endif;?>
 				</td>
 			</tr>
@@ -262,4 +260,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   <?php echo $this->events_pageNav->getPagesCounter(); ?>
 </p>
 
+<?php if ($this->canAddXref): ?>
 <div><?php echo JHTML::link(JRoute::_('index.php?option=com_redevent&view=editevent&layout=eventdate', false), JText::_('Add new event date')); ?></div>
+<?php endif; ?>
