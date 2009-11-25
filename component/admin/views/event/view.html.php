@@ -233,8 +233,9 @@ class RedEventViewEvent extends JView {
 		}";
 
 		$xref = $this->get('xref');
-		$xref->eventid = ($xref->eventid) ? $xref->eventid : JRequest::getVar('eventid', 0, 'request', 'int'); 
-		
+		$xref->eventid = ($xref->eventid) ? $xref->eventid : JRequest::getVar('eventid', 0, 'request', 'int'); 		
+    $customfields =& $this->get('XrefCustomfields');
+    
 		$lists = array();
 		
 		// venues selector
@@ -272,6 +273,7 @@ class RedEventViewEvent extends JView {
     $this->assignRef('lists'        , $lists);
 		$this->assignRef('request_url'	, $uri->toString());
 		$this->assignRef('elsettings'	  , $elsettings);
+    $this->assignRef('customfields' , $customfields);
 
 		parent::display($tpl);
 	}

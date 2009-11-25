@@ -55,6 +55,13 @@ class RedEventModelEvent extends JModel
 	 * @var array
 	 */
 	var $_categories = null;
+	
+	/**
+	 * Xrefs custom fields data array
+	 *
+	 * @var array
+	 */
+	var $_xrefcustomfields = null;
 
 	/**
 	 * Constructor
@@ -568,7 +575,36 @@ class RedEventModelEvent extends JModel
     }
     return $fields;     
   }
+
+  /**
+   * get custom fields
+   *
+   * @return objects array
+   */
+  function getXrefCustomfields()
+  {
+  	$xref = JRequest::getVar('xref', 0, 'request', 'int');  
+    $query = ' SELECT f.*, fv.value '
+           . ' FROM #__redevent_fields AS f '
+           . ' LEFT JOIN #__redevent_fields_values AS fv ON fv.field_id = f.id AND fv.object_id = '.(int) $xref
+           . ' WHERE f.object_key = '. $this->_db->Quote("redevent.xref")
+           . ' ORDER BY f.ordering '
+           ;
+    $this->_db->setQuery($query);
+    $result = $this->_db->loadObjectList();    
   
+    if (!$result) {
+      return array();
+    }
+    $fields = array();
+    foreach ($result as $c)
+    {
+      $field =& redEVENTHelper::getCustomField($c->type);
+      $field->bind($c);
+      $fields[] = $field;
+    }
+    return $fields;     
+  }
   /**
    * return xref from request
    *
@@ -578,14 +614,30 @@ class RedEventModelEvent extends JModel
   {
   	$xref = JRequest::getVar('xref', 0, 'request', 'int');  	
   	
-  	if ($xref) {
-    	$query = ' SELECT x.*, v.venue, r.id as recurrence_id, r.rrule, rp.count '
-  	       . ' FROM #__redevent_event_venue_xref AS x '
+  	if ($xref) 
+  	{  		
+			$customs = $this->_getXCustomFields();
+		
+    	$query = ' SELECT x.*, v.venue, r.id as recurrence_id, r.rrule, rp.count ';
+			// add the custom fields
+			foreach ((array) $customs as $c)
+			{
+				$query .= ', c'. $c->id .'.value AS custom'. $c->id;
+			}
+			
+  	  $query .= ' FROM #__redevent_event_venue_xref AS x '
   	       . ' LEFT JOIN #__redevent_venues AS v on v.id = x.venueid '
            . ' LEFT JOIN #__redevent_repeats AS rp on rp.xref_id = x.id '
            . ' LEFT JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
-  	       . ' WHERE x.id = '. $this->_db->Quote($xref);
-  	       ;  	
+           ;
+			// add the custom fields tables
+			foreach ((array) $customs as $c)
+			{
+				$query .= ' LEFT JOIN #__redevent_fields_values AS c'. $c->id .' ON c'. $c->id .'.object_id = x.id';
+			}
+			
+  	  $query .= ' WHERE x.id = '. $this->_db->Quote($xref);
+  	  
       $this->_db->setQuery($query);
   		$object = $this->_db->loadObject();
   		$object->rrules = RedeventHelperRecurrence::getRule($object->rrule);
@@ -665,6 +717,44 @@ class RedEventModelEvent extends JModel
       return false;
     }
     
+  	// custom fields
+    // first delete records for this object
+    $query = ' DELETE fv FROM #__redevent_fields_values as fv '
+           . ' INNER JOIN #__redevent_fields as f ON f.id = fv.field_id '
+           . ' WHERE fv.object_id = ' . $this->_db->Quote($object->id)
+           . '   AND f.object_key = ' . $this->_db->Quote('redevent.xref')
+           ;
+    $this->_db->setQuery($query);
+    if (!$this->_db->query()) {
+      $this->setError($this->_db->getErrorMsg());
+      return false;     
+    }
+    
+    // input new values
+    foreach ($data as $key => $value)
+    {
+      if (strstr($key, "custom"))
+      {
+        $fieldid = (int) substr($key, 6);
+        $field = & $this->getTable('Redevent_customfieldvalue','');
+        $field->object_id = $object->id;
+        $field->field_id = $fieldid;
+        if (is_array($value)) {
+          $value = implode("\n", $value);
+        }
+        $field->value = $value;
+        
+        if (!$field->check()) {
+          $this->setError($field->getError());
+          return false;         
+        }
+        if (!$field->store()) {
+          $this->setError($field->getError());
+          return false;         
+        }       
+      }
+    }
+    
     // we need to save the recurrence too
     $recurrence = & JTable::getInstance('RedEvent_recurrences', '');
     if (!$data['recurrenceid'])
@@ -741,6 +831,27 @@ class RedEventModelEvent extends JModel
     }
     
     return true;
+  }
+  
+  /**
+   * returns all custom fields for xrefs
+   * 
+   * @return array
+   */
+  function _getXCustomFields()
+  {
+  	if (empty($this->_xrefcustomfields))
+  	{
+	  	$query = ' SELECT f.id, f.name, f.in_lists, f.searchable '
+	  	       . ' FROM #__redevent_fields AS f'
+	  	       . ' WHERE f.published = 1'
+	  	       . '   AND f.object_key = '. $this->_db->Quote('redevent.xref')
+	  	       . ' ORDER BY f.ordering ASC '
+	  	       ;
+	  	$this->_db->setQuery($query);
+	  	$this->_xrefcustomfields = $this->_db->loadObjectList();
+  	}
+  	return $this->_xrefcustomfields;
   }
 }
 ?>

@@ -182,7 +182,7 @@ class RedEventModelVenuesmap extends JModel
 		foreach ((array) $customs as $key => $custom)
 		{
 			if ($custom != '') {
-			  $query .= ' INNER JOIN #__redevent_fields_values AS custom'.$key.' ON custom'.$key.'.object_id = x.eventid AND custom'.$key.'.field_id = ' . $this->_db->Quote($key);
+			  $query .= ' LEFT JOIN #__redevent_fields_values AS custom'.$key.' ON custom'.$key.'.object_id = x.eventid AND custom'.$key.'.field_id = ' . $this->_db->Quote($key);
 			}
 		}
 		// where

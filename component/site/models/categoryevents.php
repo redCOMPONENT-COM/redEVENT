@@ -130,7 +130,7 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
 		// add the custom fields tables
 		foreach ((array) $customs as $c)
 		{
-			$query .= ' INNER JOIN #__redevent_fields_values AS c'. $c->id .' ON c'. $c->id .'.object_id = a.id';
+			$query .= ' LEFT JOIN #__redevent_fields_values AS c'. $c->id .' ON c'. $c->id .'.object_id = a.id';
 		}
     $query .= $where
         . ' GROUP BY (x.id) '

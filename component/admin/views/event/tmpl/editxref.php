@@ -130,6 +130,26 @@ function updateend(cal)
 
 </fieldset>
 
+<fieldset class="adminform">
+<legend><?php echo JText::_('Custom fields'); ?></legend>
+<table class="admintable">
+	<tbody>
+    <?php foreach ($this->customfields as $field): ?>
+    <tr>
+      <td class="key">
+        <label for="custom" class="hasTip" title="<?php echo JText::_($field->get('name')).'::'.JText::_('USE TAG') .': ['. $field->get('tag') .']'; ?>">
+          <?php echo JText::_( $field->name ); ?>:
+        </label>
+      </td>
+      <td>
+        <?php echo $field->render(); ?>
+      </td>   
+    </tr>
+    <?php endforeach; ?>
+	</tbody>
+</table>
+
+</fieldset>
 
 <fieldset class="adminform">
 <legend><?php echo JText::_('Registration'); ?></legend>

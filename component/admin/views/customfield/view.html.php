@@ -100,6 +100,7 @@ class RedeventViewCustomfield extends JView
     // build the html select list for object key
     $object_keys = array();
     $object_keys[] = JHTML::_('select.option', 'redevent.event', 'Event');
+    $object_keys[] = JHTML::_('select.option', 'redevent.xref', 'Event date');
     //$object_keys[] = JHTML::_('select.option', 'redevent.venue', 'Venue');   
     $lists['objects'] = JHTML::_('select.genericlist', $object_keys, 'object_key', 'class="inputbox"', 'value', 'text', $object->object_key );
     

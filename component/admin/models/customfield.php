@@ -202,6 +202,7 @@ class RedeventModelCustomfield extends JModel
 			$object->ordering			= 0;
       $object->published     = 0;
       $object->searchable    = 0;
+      $object->in_lists      = 0;
 			$this->_data					= $object;
 			return (boolean) $this->_data;
 		}
