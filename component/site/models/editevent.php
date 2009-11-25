@@ -57,6 +57,13 @@ class RedeventModelEditevent extends JModel
 	var $_xref = null;
 	
 	/**
+	 * Xrefs custom fields data array
+	 *
+	 * @var array
+	 */
+	var $_xrefcustomfields = null;
+	
+	/**
 	 * Constructor
 	 *
 	 * @since 1.5
@@ -250,9 +257,21 @@ class RedeventModelEditevent extends JModel
 		{
 			if ($this->_id)
 			{
-				$query = ' SELECT x.* '
-				       . ' FROM #__redevent_event_venue_xref AS x '
-				       . ' WHERE x.id = '. $this->_db->Quote($this->_id)
+				$customs = $this->_getXCustomFields();
+				
+				$query = ' SELECT x.* ';
+				// add the custom fields
+				foreach ((array) $customs as $c)
+				{
+					$query .= ', c'. $c->id .'.value AS custom'. $c->id;
+				}
+				$query .= ' FROM #__redevent_event_venue_xref AS x ';
+				// add the custom fields tables
+				foreach ((array) $customs as $c)
+				{
+					$query .= ' LEFT JOIN #__redevent_fields_values AS c'. $c->id .' ON c'. $c->id .'.object_id = x.id';
+				}
+				$query .= ' WHERE x.id = '. $this->_db->Quote($this->_id)
 				       ;
 	      $this->_db->setQuery( $query );
 				$this->_xref = $this->_db->loadObject();
@@ -1024,7 +1043,45 @@ class RedeventModelEditevent extends JModel
 			RedeventHelperLog::simplelog('SUBMIT XREF ERROR STORE DATA');
 			return false;
 		}
-		
+	
+  	// custom fields
+    // first delete records for this object
+    $query = ' DELETE fv FROM #__redevent_fields_values as fv '
+           . ' INNER JOIN #__redevent_fields as f ON f.id = fv.field_id '
+           . ' WHERE fv.object_id = ' . $this->_db->Quote($row->id)
+           . '   AND f.object_key = ' . $this->_db->Quote('redevent.xref')
+           ;
+    $this->_db->setQuery($query);
+    if (!$this->_db->query()) {
+      $this->setError($this->_db->getErrorMsg());
+      return false;     
+    }
+    
+    // input new values
+    foreach ($data as $key => $value)
+    {
+      if (strstr($key, "custom"))
+      {
+        $fieldid = (int) substr($key, 6);
+        $field = & $this->getTable('Redevent_customfieldvalue','');
+        $field->object_id = $row->id;
+        $field->field_id = $fieldid;
+        if (is_array($value)) {
+          $value = implode("\n", $value);
+        }
+        $field->value = $value;
+        
+        if (!$field->check()) {
+          $this->setError($field->getError());
+          return false;         
+        }
+        if (!$field->store()) {
+          $this->setError($field->getError());
+          return false;         
+        }       
+      }
+    }
+    
 		return true;
 	}
 	
@@ -1084,5 +1141,56 @@ class RedeventModelEditevent extends JModel
   	$res = $this->_db->loadObjectList();
   	return count($res) > 0;
   } 
+
+  /**
+   * returns all custom fields for xrefs
+   * 
+   * @return array
+   */
+  function _getXCustomFields()
+  {
+  	if (empty($this->_xrefcustomfields))
+  	{
+	  	$query = ' SELECT f.id, f.name, f.in_lists, f.searchable '
+	  	       . ' FROM #__redevent_fields AS f'
+	  	       . ' WHERE f.published = 1'
+	  	       . '   AND f.object_key = '. $this->_db->Quote('redevent.xref')
+	  	       . ' ORDER BY f.ordering ASC '
+	  	       ;
+	  	$this->_db->setQuery($query);
+	  	$this->_xrefcustomfields = $this->_db->loadObjectList();
+  	}
+  	return $this->_xrefcustomfields;
+  }
+  
+  /**
+   * get custom fields
+   *
+   * @return objects array
+   */
+  function getXrefCustomfields()
+  {
+  	$xref = $this->_id;  
+    $query = ' SELECT f.*, fv.value '
+           . ' FROM #__redevent_fields AS f '
+           . ' LEFT JOIN #__redevent_fields_values AS fv ON fv.field_id = f.id AND fv.object_id = '.(int) $xref
+           . ' WHERE f.object_key = '. $this->_db->Quote("redevent.xref")
+           . ' ORDER BY f.ordering '
+           ;
+    $this->_db->setQuery($query);
+    $result = $this->_db->loadObjectList();    
+  
+    if (!$result) {
+      return array();
+    }
+    $fields = array();
+    foreach ($result as $c)
+    {
+      $field =& redEVENTHelper::getCustomField($c->type);
+      $field->bind($c);
+      $fields[] = $field;
+    }
+    return $fields;     
+  }
 }
 ?>

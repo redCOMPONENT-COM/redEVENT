@@ -277,7 +277,8 @@ class RedeventViewEditevent extends JView
 		$editor 	= & JFactory::getEditor();
 
 		// get xref data
-		$xref = $this->get('Xref');
+		$xref     = $this->get('Xref');
+		$customs  = &$this->get('XrefCustomfields');
 		
 		// form elements
 		$lists = array();
@@ -313,6 +314,7 @@ class RedeventViewEditevent extends JView
 		$this->assignRef('editor',       $editor);
 		$this->assignRef('xref',         $xref);
 		$this->assignRef('lists',        $lists);
+		$this->assignRef('customfields', $customs);
 		parent::display($tpl);
 	}
 	
