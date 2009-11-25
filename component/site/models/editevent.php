@@ -260,6 +260,7 @@ class RedeventModelEditevent extends JModel
 			else
 			{
 				$obj = new stdclass();
+				$obj->id                = null;
 				$obj->eventid           = 0;
 				$obj->venueid           = 0;
 				$obj->groupid           = 0;
@@ -990,9 +991,10 @@ class RedeventModelEditevent extends JModel
 		$settings = & redEVENTHelper::config();
 		
 		// TODO : check user group access ?
-		$row 	= & JTable::getInstance('redevent_eventvenuexref', '');
-		if ($data->id) {
-			$row->load($data->id);
+  	$row = & JTable::getInstance('RedEvent_eventvenuexref', '');
+  	
+		if ($data['id']) {
+			$row->load($data['id']);
 		}
 		
 		if (!$row->bind($data)) {

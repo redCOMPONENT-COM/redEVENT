@@ -592,6 +592,7 @@ class RedEventModelEvent extends JModel
   	}
   	else {
       $object = JTable::getInstance('RedEvent_eventvenuexref', '');
+  		$object->id    = null;
   		$object->venue = 0;
       $object->recurrence_id = 0;
       $object->rrule = '';
@@ -641,7 +642,6 @@ class RedEventModelEvent extends JModel
    */
   function savexref($data)
   {
-  	$object = & JTable::getInstance('RedEvent_eventvenuexref', '');
   	$id = (int) $data['id'];
 
   	$object = & JTable::getInstance('RedEvent_eventvenuexref', '');
