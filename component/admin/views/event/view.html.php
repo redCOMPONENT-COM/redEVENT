@@ -49,7 +49,7 @@ class RedEventViewEvent extends JView {
 
 		//Load behavior
 		jimport('joomla.html.pane');
-//		JHTML::_('behavior.tooltip');
+		JHTML::_('behavior.tooltip');
     JHTML::_('behavior.formvalidation');
     JHTML::_('behavior.mootools');
     
@@ -310,42 +310,54 @@ class RedEventViewEvent extends JView {
 	 */
 	function printTags($exclude = array())
 	{ 
+		$tags = array();
+		$tags['venues'] = JText::_('SUBMISSION_VENUES');
+		$tags['price'] = JText::_('SUBMISSION_EVENT_PRICE');
+		$tags['credits'] = JText::_('SUBMISSION_EVENT_CREDITS');
+		$tags['code'] = JText::_('SUBMISSION_EVENT_CODE');
+		$tags['event_title'] = JText::_('SUBMISSION_EVENT_TITLE');
+		$tags['time'] = JText::_('SUBMISSION_EVENT_TIME');
+		$tags['date'] = JText::_('SUBMISSION_EVENT_DATE');
+		$tags['duration'] = JText::_('SUBMISSION_EVENT_DURATION');
+		$tags['venue_title'] = JText::_('SUBMISSION_EVENT_VENUE');
+		$tags['venue_city'] = JText::_('SUBMISSION_EVENT_CITY');
+		$tags['venue_street'] = JText::_('SUBMISSION_EVENT_STREET');
+		$tags['venue_zip'] = JText::_('SUBMISSION_EVENT_ZIP');
+		$tags['webformsignup'] = JText::_('SUBMISSION_WEBFORM_SIGNUP_LINK');
+		$tags['emailsignup'] = JText::_('SUBMISSION_EMAIL_SIGNUP_LINK');
+		$tags['formalsignup'] = JText::_('SUBMISSION_FORMAL_SIGNUP_LINK');
+		$tags['externalsignup'] = JText::_('SUBMISSION_EXTERNAL_SIGNUP_LINK');
+		$tags['phonesignup'] = JText::_('SUBMISSION_PHONE_SIGNUP_LINK');
+		$tags['webformsignuppage'] = JText::_('SUBMISSION_WEBFORM_SIGNUP_PAGE');
+		$tags['emailsignuppage'] = JText::_('SUBMISSION_EMAIL_SIGNUP_PAGE');
+		$tags['formalsignuppage'] = JText::_('SUBMISSION_FORMAL_SIGNUP_PAGE');
+		$tags['phonesignuppage'] = JText::_('SUBMISSION_PHONE_SIGNUP_PAGE');
+		$tags['venueimage'] = JText::_('SUBMISSION_VENUE_IMAGE');
+		$tags['eventimage'] = JText::_('SUBMISSION_EVENT_IMAGE');
+		$tags['categoryimage'] = JText::_('SUBMISSION_CATEGORY_IMAGE');
+		$tags['eventcomments'] = JText::_('SUBMISSION_EVENT_COMMENTS');
+		$tags['category'] = JText::_('SUBMISSION_CATEGORY');
+		$tags['eventplaces'] = JText::_('SUBMISSION_EVENTPLACES');
+		$tags['waitinglistplaces'] = JText::_('SUBMISSION_WAITINGLISTPLACES');
+		$tags['eventplacesleft'] = JText::_('SUBMISSION_EVENTPLACES_LEFT');
+		$tags['waitinglistplacesleft'] = JText::_('SUBMISSION_WAITINGLISTPLACES_LEFT');
+		$tags['info'] = JText::_('SUBMISSION_XREF_INFO');
+		$tags['permanentlink'] = JText::_('SUBMISSION_PERMANENT_LINK');
+		$tags['redform'] = JText::_('SUBMISSION_EVENT_REDFORM');
     ?>	
 	  <div class="tagsdiv">
       <?php echo JHTML::_('link', '#', JText::_('TAGS'), 'class="tagstoggle"'); ?>
       <div class="tagslist">
-        [venues] = <?php echo JText::_('SUBMISSION_VENUES');?><br />
-        [price] = <?php echo JText::_('SUBMISSION_EVENT_PRICE');?><br />
-        [credits] = <?php echo JText::_('SUBMISSION_EVENT_CREDITS');?><br />
-        [code] = <?php echo JText::_('SUBMISSION_EVENT_CODE');?><br />
-        [event_title]  = <?php echo JText::_('SUBMISSION_EVENT_TITLE');?><br />
-        [time] = <?php echo JText::_('SUBMISSION_EVENT_TIME');?><br />
-        [date] = <?php echo JText::_('SUBMISSION_EVENT_DATE');?><br />
-        [duration] = <?php echo JText::_('SUBMISSION_EVENT_DURATION');?><br />
-        [venue_title] = <?php echo JText::_('SUBMISSION_EVENT_VENUE');?><br />
-        [venue_city] = <?php echo JText::_('SUBMISSION_EVENT_CITY');?><br />
-        [venue_street] = <?php echo JText::_('SUBMISSION_EVENT_STREET');?><br />
-        [venue_zip] = <?php echo JText::_('SUBMISSION_EVENT_ZIP');?><br />
-        [webformsignup] = <?php echo JText::_('SUBMISSION_WEBFORM_SIGNUP_LINK');?><br />
-        [emailsignup] = <?php echo JText::_('SUBMISSION_EMAIL_SIGNUP_LINK');?><br />
-        [formalsignup] = <?php echo JText::_('SUBMISSION_FORMAL_SIGNUP_LINK');?><br />
-        [externalsignup] = <?php echo JText::_('SUBMISSION_EXTERNAL_SIGNUP_LINK');?><br />
-        [phonesignup] = <?php echo JText::_('SUBMISSION_PHONE_SIGNUP_LINK');?><br />
-        [webformsignuppage] = <?php echo JText::_('SUBMISSION_WEBFORM_SIGNUP_PAGE');?><br />
-        [emailsignuppage] = <?php echo JText::_('SUBMISSION_EMAIL_SIGNUP_PAGE');?><br />
-        [formalsignuppage] = <?php echo JText::_('SUBMISSION_FORMAL_SIGNUP_PAGE');?><br />
-        [phonesignuppage] = <?php echo JText::_('SUBMISSION_PHONE_SIGNUP_PAGE');?><br />
-        [venueimage] = <?php echo JText::_('SUBMISSION_VENUE_IMAGE');?><br />
-        [eventimage] = <?php echo JText::_('SUBMISSION_EVENT_IMAGE');?><br />
-        [categoryimage] = <?php echo JText::_('SUBMISSION_CATEGORY_IMAGE');?><br />
-        [eventcomments] = <?php echo JText::_('SUBMISSION_EVENT_COMMENTS');?><br />
-        [category] = <?php echo JText::_('SUBMISSION_CATEGORY');?><br />
-        [eventplaces] = <?php echo JText::_('SUBMISSION_EVENTPLACES');?><br />
-        [waitinglistplaces] = <?php echo JText::_('SUBMISSION_WAITINGLISTPLACES');?><br />
-        [eventplacesleft] = <?php echo JText::_('SUBMISSION_EVENTPLACES_LEFT');?><br />
-        [waitinglistplacesleft] = <?php echo JText::_('SUBMISSION_WAITINGLISTPLACES_LEFT');?><br />
-        [info] = <?php echo JText::_('SUBMISSION_XREF_INFO');?>
-        [permanentlink] = <?php echo JText::_('SUBMISSION_PERMANENT_LINK');?>
+      	<table class="tag_list">
+      		<?php foreach ($tags as $tag => $desc): ?>
+      		<?php if (!in_array($tag, $exclude)):?>
+	      	<tr>
+		      	<th>[<?php echo $tag; ?>]</th>
+		      	<td><?php echo $desc; ?></td>
+      		</tr>
+      		<?php endif; ?>
+      		<?php endforeach; ?>
+      	</table>
       </div>
     </div>  
 	  <?php 

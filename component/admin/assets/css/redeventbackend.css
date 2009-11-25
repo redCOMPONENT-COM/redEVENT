@@ -205,3 +205,8 @@ div#xref_recurrence_repeat_common {
 div#xref_recurrence_repeat_common fieldset.adminform {
   float: left !important;
 }
+
+div.tagsdiv table.tag_list td, div.tagsdiv table.tag_list th {
+  padding:0px;
+  height:10px
+}
