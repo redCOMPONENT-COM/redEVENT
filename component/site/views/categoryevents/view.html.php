@@ -80,7 +80,7 @@ class RedeventViewCategoryevents extends JView
 		
 		//get data from model
 		$rows 		= & $this->get('Data');
-		$customs 	= & $this->get('CustomFields');
+		$customs 	= & $this->get('ListCustomFields');
 		$category 	= & $this->get('Category');
 		$total 		= & $this->get('Total');
 
@@ -179,7 +179,7 @@ class RedeventViewCategoryevents extends JView
 		$this->assignRef('pageNav' , 				$pageNav);
 		$this->assignRef('elsettings' , 			$elsettings);
 		$this->assignRef('item' , 					$item);
-
+		
 		parent::display($tpl);
 	}
 

@@ -211,6 +211,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 		
 		$task 		= JRequest::getWord('task');
 		$customs = $this->getCustomFields();
+		$xcustoms = $this->getXrefCustomFields();
 
 		$where = ' WHERE c.lft BETWEEN '. $this->_db->Quote($category->lft) .' AND '. $this->_db->Quote($category->rgt);
 		// First thing we need to do is to select only the requested events
@@ -232,7 +233,12 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 		{
 			$query .= ', c'. $c->id .'.value AS custom'. $c->id;
 		}
-   $query .= ' FROM #__redevent_events AS a'
+		// add the custom fields
+		foreach ((array) $xcustoms as $c)
+		{
+			$query .= ', c'. $c->id .'.value AS custom'. $c->id;
+		}
+    $query .= ' FROM #__redevent_events AS a'
         . ' INNER JOIN #__redevent_event_venue_xref AS x on x.eventid = a.id'
         . ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
         . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
@@ -241,8 +247,13 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 		// add the custom fields tables
 		foreach ((array) $customs as $c)
 		{
-			$query .= ' LEFT JOIN #__redevent_fields_values AS c'. $c->id .' ON c'. $c->id .'.object_id = a.id';
-		}        
+			$query .= ' LEFT JOIN #__redevent_fields_values AS c'. $c->id .' ON c'. $c->id .'.object_id = a.id AND c'. $c->id .'.field_id = '. $c->id;
+		}
+		// add the custom fields tables
+		foreach ((array) $xcustoms as $c)
+		{
+			$query .= ' LEFT JOIN #__redevent_fields_values AS c'. $c->id .' ON c'. $c->id .'.object_id = x.id AND c'. $c->id .'.field_id = '. $c->id;
+		} 
 		        
     $query .= $where
         . ' GROUP BY (x.id) '

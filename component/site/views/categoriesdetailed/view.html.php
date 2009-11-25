@@ -59,7 +59,7 @@ class RedeventViewCategoriesdetailed extends JView
 
 		//Get data from the model
 		$categories	= & $this->get('Data');
-		$customs 	= & $this->get('CustomFields');
+		$customs 	= & $this->get('ListCustomFields');
     $pageNav = & $this->get('pagination');
 
 		//add css file

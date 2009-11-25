@@ -76,7 +76,7 @@ class RedeventViewVenueevents extends JView
 		$rows 		= & $this->get('Data');
 		$venue	 	= & $this->get('Venue');
 		$total 		= & $this->get('Total');
-		$customs 	= & $this->get('CustomFields');
+		$customs 	= & $this->get('ListCustomFields');
 
 		//does the venue exist?
 		if ($venue->id == 0)

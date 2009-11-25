@@ -49,6 +49,13 @@ class RedeventModelBaseEventList extends JModel
 	var $_customfields = null;
 	
 	/**
+	 * xref custom fields data array
+	 *
+	 * @var array
+	 */
+	var $_xrefcustomfields = null;
+	
+	/**
 	 * Events total
 	 *
 	 * @var integer
@@ -166,6 +173,7 @@ class RedeventModelBaseEventList extends JModel
 		$where		= $this->_buildWhere();
 		$orderby	= $this->_buildOrderBy();
 		$customs = $this->getCustomFields();
+		$xcustoms = $this->getXrefCustomFields();
 
 		//Get Events from Database
 		$query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.course_credit, x.course_price,'
@@ -178,6 +186,11 @@ class RedeventModelBaseEventList extends JModel
         ;
 		// add the custom fields
 		foreach ((array) $customs as $c)
+		{
+			$query .= ', c'. $c->id .'.value AS custom'. $c->id;
+		}
+		// add the custom fields
+		foreach ((array) $xcustoms as $c)
 		{
 			$query .= ', c'. $c->id .'.value AS custom'. $c->id;
 		}
@@ -194,7 +207,12 @@ class RedeventModelBaseEventList extends JModel
 		// add the custom fields tables
 		foreach ((array) $customs as $c)
 		{
-			$query .= ' LEFT JOIN #__redevent_fields_values AS c'. $c->id .' ON c'. $c->id .'.object_id = a.id';
+			$query .= ' LEFT JOIN #__redevent_fields_values AS c'. $c->id .' ON c'. $c->id .'.object_id = a.id AND c'. $c->id .'.field_id = '. $c->id;
+		}
+		// add the custom fields tables
+		foreach ((array) $xcustoms as $c)
+		{
+			$query .= ' LEFT JOIN #__redevent_fields_values AS c'. $c->id .' ON c'. $c->id .'.object_id = x.id AND c'. $c->id .'.field_id = '. $c->id;
 		}
 		
 		$query .= $where
@@ -373,7 +391,7 @@ class RedeventModelBaseEventList extends JModel
   {
   	if (empty($this->_customfields))
   	{
-	  	$query = ' SELECT f.id, f.name, f.in_lists, f.searchable '
+	  	$query = ' SELECT f.id, f.name, f.in_lists, f.searchable, f.ordering '
 	  	       . ' FROM #__redevent_fields AS f'
 	  	       . ' WHERE f.published = 1'
 	  	       . '   AND f.object_key = '. $this->_db->Quote('redevent.event')
@@ -384,7 +402,27 @@ class RedeventModelBaseEventList extends JModel
   	}
   	return $this->_customfields;
   }
-  
+
+  /**
+   * returns all custom fields for xrefs
+   * 
+   * @return array
+   */
+  function getXrefCustomFields()
+  {
+  	if (empty($this->_xrefcustomfields))
+  	{
+	  	$query = ' SELECT f.id, f.name, f.in_lists, f.searchable, f.ordering '
+	  	       . ' FROM #__redevent_fields AS f'
+	  	       . ' WHERE f.published = 1'
+	  	       . '   AND f.object_key = '. $this->_db->Quote('redevent.xref')
+	  	       . ' ORDER BY f.ordering ASC '
+	  	       ;
+	  	$this->_db->setQuery($query);
+	  	$this->_xrefcustomfields = $this->_db->loadObjectList();
+  	}
+  	return $this->_xrefcustomfields;
+  }
 
   /**
    * returns custom fields to be shown in lists
@@ -393,7 +431,8 @@ class RedeventModelBaseEventList extends JModel
    */
   function getListCustomFields()
   {
-  	$fields = $this->getCustomFields();
+  	$fields = array_merge($this->getCustomFields(), $this->getXrefCustomFields());
+  	uasort($fields, array('RedeventModelBaseEventList', '_cmpCustomFields'));
   	$res = array();
   	foreach ((array)$fields as $f)
   	{
@@ -404,6 +443,11 @@ class RedeventModelBaseEventList extends JModel
   	return $res;
   }
 
+  function _cmpCustomFields($a, $b)
+  {
+    return $a->ordering - $b->ordering;
+  }
+  
   /**
    * returns searchable custom fields
    * 

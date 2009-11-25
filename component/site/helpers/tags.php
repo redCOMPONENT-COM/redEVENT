@@ -124,7 +124,7 @@ class redEVENT_tags {
 				preg_match_all("/\[(.+?)\]/", $page, $alltags);
 				
 				/* Load custom fields */
-				$customfields = $this->getCustomFields($this->_data->id);
+				$customfields = $this->getCustomFields($this->_xref);
 				
 				$search = array();
 				$replace = array();
@@ -775,25 +775,64 @@ class redEVENT_tags {
    *
    * @return unknown
    */
-  function getCustomfields($event_id)
+  function getCustomfields($xref)
   {
   	$db = & JFactory::getDBO();
     $query = ' SELECT f.*, fv.value '
-           . ' FROM #__redevent_fields AS f '
-           . ' INNER JOIN #__redevent_fields_values AS fv ON fv.field_id = f.id AND fv.object_id = '.(int) $event_id
-           . ' WHERE f.published = 1 AND CHAR_LENGTH(f.tag) > 0 AND f.object_key = '. $db->Quote("redevent.event")
-           . ' ORDER BY f.ordering ASC '
+           . ' FROM #__redevent_event_venue_xref AS xref '
+           . ' INNER JOIN #__redevent_fields_values AS fv ON fv.object_id = xref.eventid '
+           . ' INNER JOIN #__redevent_fields AS f ON fv.field_id = f.id '
+           . ' WHERE f.published = 1 '
+           . ' AND CHAR_LENGTH(f.tag) > 0 '
+           . ' AND f.object_key = '. $db->Quote("redevent.event")
+           . ' AND xref.id = '. $db->Quote($xref)
            ;
     $db->setQuery($query);
     $fields = $db->loadObjectList();
     
+    $query = ' SELECT f.*, fv.value '
+           . ' FROM #__redevent_event_venue_xref AS xref '
+           . ' INNER JOIN #__redevent_fields_values AS fv ON fv.object_id = xref.id '
+           . ' INNER JOIN #__redevent_fields AS f ON fv.field_id = f.id '
+           . ' WHERE f.published = 1 '
+           . ' AND CHAR_LENGTH(f.tag) > 0 '
+           . ' AND f.object_key = '. $db->Quote("redevent.xref")
+           . ' AND xref.id = '. $db->Quote($xref)
+           ;
+    $db->setQuery($query);
+    $fields = array_merge($fields, $db->loadObjectList());
+        
+    $have_values = array();
     $replace = array();
-    foreach ($fields as $field)
+    foreach ((array) $fields as $field)
     {
-    		$obj = new stdclass();
-    		$obj->text_name = $field->tag;
-        $obj->text_field = redEVENTHelper::renderFieldValue($field);
-        $replace[$field->tag] = $obj;
+    	$have_values[] = $field->id;
+    	$obj = new stdclass();
+    	$obj->text_name = $field->tag;
+      $obj->text_field = redEVENTHelper::renderFieldValue($field);
+      $replace[$field->tag] = $obj;
+    }
+    
+    //there might be some empty ones if the tag were added after event/xref creations    
+    $query = ' SELECT f.*, null '
+           . ' FROM #__redevent_fields_values AS fv '
+           . ' INNER JOIN #__redevent_fields AS f ON fv.field_id = f.id '
+           . ' WHERE f.published = 1 '
+           . ' AND CHAR_LENGTH(f.tag) > 0 '
+           . ' AND (f.object_key = '. $db->Quote("redevent.xref"). ' OR f.object_key = '. $db->Quote("redevent.event"). ')'
+           ;
+    if (count($have_values)) {
+    	$query .= ' AND f.id NOT IN ('.implode(',', $have_values).')';
+    }
+    $db->setQuery($query);
+    $empty = $db->loadObjectList();
+    
+    foreach ((array) $empty as $field)
+    {
+    	$obj = new stdclass();
+    	$obj->text_name = $field->tag;
+      $obj->text_field = null;
+      $replace[$field->tag] = $obj;
     }
     
     return $replace;
