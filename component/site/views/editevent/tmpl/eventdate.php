@@ -145,6 +145,22 @@ function updateend(cal)
       <?php echo $this->lists['published']; ?>
     </td>
   </tr>
+  <tr>
+    <td class="key hasTip" title="<?php echo JText::_('XREF COURSE PRICE TIP'); ?>">
+      <label for="course_price"><?php echo JText::_( 'COURSE_PRICE' ) .': '; ?></label>
+    </td>
+    <td>
+      <input type="text" size="8" maxlength="8" name="course_price" id="course_price" value="<?php echo $this->xref->course_price; ?>" /> 
+    </td>
+  </tr>
+  <tr>
+    <td class="key hasTip" title="<?php echo JText::_('XREF COURSE CREDIT TIP'); ?>">
+      <label for="course_credit"><?php echo JText::_( 'COURSE_CREDIT' ) .': '; ?></label>
+    </td>
+    <td>
+      <input type="text" size="8" maxlength="8" name="course_credit" id="course_credit" value="<?php echo $this->xref->course_credit; ?>" /> 
+    </td>
+  </tr>
 </tbody>
 </table>
 
@@ -193,22 +209,6 @@ function updateend(cal)
     </td>
     <td>
       <input type="text" size="8" maxlength="8" name="maxwaitinglist" id="maxwaitinglist" value="<?php echo $this->xref->maxwaitinglist; ?>" /> 
-    </td>
-  </tr>
-  <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF COURSE PRICE TIP'); ?>">
-      <label for="course_price"><?php echo JText::_( 'COURSE_PRICE' ) .': '; ?></label>
-    </td>
-    <td>
-      <input type="text" size="8" maxlength="8" name="course_price" id="course_price" value="<?php echo $this->xref->course_price; ?>" /> 
-    </td>
-  </tr>
-  <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF COURSE CREDIT TIP'); ?>">
-      <label for="course_credit"><?php echo JText::_( 'COURSE_CREDIT' ) .': '; ?></label>
-    </td>
-    <td>
-      <input type="text" size="8" maxlength="8" name="course_credit" id="course_credit" value="<?php echo $this->xref->course_credit; ?>" /> 
     </td>
   </tr>
 </tbody>

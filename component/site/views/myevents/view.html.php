@@ -57,6 +57,25 @@ class RedeventViewMyevents extends JView
         $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
         $document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
+        
+				JHTML::_('behavior.mootools');
+				$js = " window.addEvent('domready', function(){
+			            $$('.deletelink').addEvent('click', function(event){
+			                  if (confirm('".JText::_('CONFIRM DELETE DATE')."')) {
+	                      	return true;
+		                    }
+		                    else {
+		                    	if (event.preventDefault) {
+		                    		event.preventDefault();
+													} else {
+														event.returnValue = false;
+													}
+													return false;
+	                    	}
+			            });		            
+		        }); ";
+				$document->addScriptDeclaration( $js );
+				
         // get variables
         $limitstart = JRequest::getVar('limitstart', 0, '', 'int');
         $limit = $mainframe->getUserStateFromRequest('com_redevent.myevents.limit', 'limit', $params->def('display_num', 5), 'int');
@@ -192,6 +211,28 @@ class RedeventViewMyevents extends JView
 		return $output;
 	}
 
+	/**
+	 * Creates the xref edit button
+	 *
+	 * @param int xref id
+	 * @since 2.0
+	 */
+	function xrefdeletebutton($id)
+	{
+		JHTML::_('behavior.tooltip');
+    $document = & JFactory::getDocument();
+
+		$image = JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'EDIT XREF' ));
+
+		$overlib = JText::_( 'EDIT XREF TIP' );
+		$text = JText::_( 'EDIT XREF' );
+
+		$link 	= 'index.php?option=com_redevent&task=deletexref&xref='.$id;
+		$output	= '<a href="'.JRoute::_($link).'" class="deletelink hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
+
+		return $output;
+	}
+	
 	/**
 	 * Creates the attendees edit button
 	 *

@@ -701,6 +701,22 @@ class RedeventController extends JController
 			$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=myevents', false), $msg, 'error');			
 		}		
 	}
+
+	function deletexref()
+	{		
+		$xref = JRequest::getInt('xref');
+				
+		$model = $this->getModel('editevent');
+		
+		if ($model->deletexref($xref)) {
+			$msg = JText::_('EVENT DATE DELETED');
+			$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=myevents', false), $msg);				
+		}
+		else {
+			$msg = JText::_('EVENT DATE DELETION ERROR').'<br>'.$model->getError();
+			$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=myevents', false), $msg, 'error');			
+		}		
+	}
 	
   function insertevent()
   {

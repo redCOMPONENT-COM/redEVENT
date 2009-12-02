@@ -1088,13 +1088,28 @@ class RedeventModelEditevent extends JModel
 	function publishxref($xref_id, $newstate)
 	{
 		if (!$this->canManageXref($xref_id)) {
-			$this->setError('YOU ARE NOT ALLOWED TO EDIT THIS DATE');
+			$this->setError(JText::_('YOU ARE NOT ALLOWED TO EDIT THIS DATE'));
 			return false;				
 		}
   	$row = & JTable::getInstance('RedEvent_eventvenuexref', '');
   	
 		if (!$row->publish(array($xref_id), $newstate)) {
-			$this->setError('ERROR CHANGING STATE').'<br>'.$row->getError();
+			$this->setError(JText::_('ERROR CHANGING STATE')).'<br>'.$row->getError();
+			return false;
+		}
+		return true;
+	}
+	
+	function deletexref($xref_id)
+	{
+		if (!$this->canManageXref($xref_id)) {
+			$this->setError(JText::_('YOU ARE NOT ALLOWED TO DELETE THIS DATE'));
+			return false;				
+		}
+  	$row = & JTable::getInstance('RedEvent_eventvenuexref', '');
+  	
+		if (!$row->delete($xref_id)) {
+			$this->setError(JText::_('ERROR DELETING EVENT DATE').': '.$row->getError());
 			return false;
 		}
 		return true;

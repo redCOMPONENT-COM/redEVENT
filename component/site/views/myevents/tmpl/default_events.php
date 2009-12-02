@@ -86,6 +86,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			<col width="5" class="el_col_attendees" />
 			<col width="5" class="el_col_edit" />
 			<col width="5" class="el_col_published" />
+			<col width="5" class="el_col_delete" />
 	</colgroup>
 
 	<thead>
@@ -121,6 +122,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<th id="el_attendees" class="sectiontableheader" align="left"><?php echo JText::_('Attendees'); ?></th>
 				<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('Edit'); ?></th>
 				<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('Published'); ?></th>
+				<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('Delete'); ?></th>
 			</tr>
 	</thead>
 	<tbody>
@@ -236,6 +238,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						<?php echo JHTML::link('index.php?option=com_redevent&task=publishxref&xref='. $row->xref, JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Unpublished' ))); ?>
 					<?php endif;?>
 				</td>
+				<td headers="el_delete" align="left" valign="top"><?php echo $this->xrefdeletebutton($row->xref); ?></td>
 			</tr>
 
   		<?php

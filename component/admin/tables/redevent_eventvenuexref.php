@@ -129,5 +129,55 @@ class RedEvent_eventvenuexref extends JTable
 		return true;
 	}
 	
+
+	/**
+	 * Default delete method
+	 *
+	 * can be overloaded/supplemented by the child class
+	 *
+	 * @access public
+	 * @return true if successful otherwise returns and error message
+	 */
+	function delete( $oid=null )
+	{
+		if (!$this->canDelete( $oid ))
+		{
+			return false;
+		}
+
+		$k = $this->_tbl_key;
+		if ($oid) {
+			$this->$k = intval( $oid );
+		}
+
+		$query = 'DELETE FROM '.$this->_db->nameQuote( $this->_tbl ).
+				' WHERE '.$this->_tbl_key.' = '. $this->_db->Quote($this->$k);
+		$this->_db->setQuery( $query );
+
+		if ($this->_db->query())
+		{
+			return true;
+		}
+		else
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+	}
+	
+	function canDelete($id)
+	{
+		// can't delete if there are attendees
+		$query = ' SELECT COUNT(*) FROM #__redevent_register WHERE xref = '. intval( $id );
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadResult();
+		
+		if ($res) {
+			$this->setError(JText::_('EVENT DATE HAS ATTENDEES'));	
+			return false;		
+		}
+		
+		return true;
+	}
 }
 ?>
