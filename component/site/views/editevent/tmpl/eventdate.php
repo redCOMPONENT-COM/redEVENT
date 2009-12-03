@@ -361,5 +361,6 @@ function updateend(cal)
 <input type="hidden" name="recurrenceid" value="<?php echo (isset($this->xref->recurrence_id) ? $this->xref->recurrence_id : ''); ?>"/>
 <input type="hidden" name="repeat" id="repeat" value="<?php echo (isset($this->xref->recurrence_id) ? $this->xref->count : ''); ?>"/>
 
-<input type="submit" name="submitbutton" value="submit"/> 
+<input type="submit" name="submitbutton" value="<?php echo JText::_('Submit'); ?>"/> 
+<input type="button" name="cancelbutton" value="<?php echo JText::_('Cancel'); ?>" onclick="javascript:history.go(-1);"/> 
 </form>
