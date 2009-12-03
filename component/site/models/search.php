@@ -93,14 +93,14 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 
 		$filter 		      = JRequest::getString('filter', '', 'request');
 		$filter_type 	    = JRequest::getWord('filter_type', '', 'request');
-    $filter_continent = $mainframe->getUserStateFromRequest('com_redevent.search.filter_continent', 'filter_continent', '', 'string');
-    $filter_country   = $mainframe->getUserStateFromRequest('com_redevent.search.filter_country', 'filter_country', '', 'string');
-    $filter_city      = $mainframe->getUserStateFromRequest('com_redevent.search.filter_city', 'filter_city', '', 'string');
-		$filter_venue     = $mainframe->getUserStateFromRequest('com_redevent.search.filter_venue', 'filter_venue', 0, '', 'int');
-    $filter_date      = $mainframe->getUserStateFromRequest('com_redevent.search.filter_date', 'filter_date', '', 'string');
-    $filter_venuecategory = $mainframe->getUserStateFromRequest('com_redevent.search.filter_venuecategory', 'filter_venuecategory', 0, 'int');
-    $filter_category  = $mainframe->getUserStateFromRequest('com_redevent.search.filter_category', 'filter_category', 0, 'int');
-    $filter_event     = $mainframe->getUserStateFromRequest('com_redevent.search.filter_event', 'filter_event', 0, 'int');
+    $filter_continent = JRequest::getVar('filter_continent', '', 'string');
+    $filter_country   = JRequest::getVar('filter_country', '', 'string');
+    $filter_city      = JRequest::getVar('filter_city', '', 'string');
+		$filter_venue     = JRequest::getVar('filter_venue', 0, '', 'int');
+    $filter_date      = JRequest::getVar('filter_date', '', 'string');
+    $filter_venuecategory = JRequest::getVar('filter_venuecategory', 0, 'int');
+    $filter_category  = JRequest::getVar('filter_category', 0, 'int');
+    $filter_event     = JRequest::getVar('filter_event', 0, 'int');
     
     // no result if no filter:
     if ( !($filter || $filter_continent || $filter_country || $filter_city || $filter_date || $filter_category || $filter_venuecategory || $filter_venue || $filter_event) ) {
@@ -177,7 +177,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
   function getCountryOptions()
   {
     global $mainframe;
-  	$filter_continent = $mainframe->getUserStateFromRequest('com_redevent.search.filter_continent', 'filter_continent', '', 'string');
+  	$filter_continent = JRequest::getVar('filter_continent', '', 'string');
   	
     $query = ' SELECT DISTINCT c.iso2 as value, c.name as text '
            . ' FROM #__redevent_event_venue_xref AS x'
@@ -217,7 +217,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	function getVenuesOptions()
 	{
 		$app = &JFactory::getApplication();
-		$vcat = $app->getUserState('com_redevent.search.filter_venuecategory');
+		$vcat = JRequest::getVar('filter_venuecategory');
 		
 		$query = ' SELECT v.id AS value, '
            . ' CASE WHEN CHAR_LENGTH(v.city) THEN CONCAT_WS(\' - \', v.venue, v.city) ELSE v.venue END as text '
@@ -242,9 +242,9 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	function getEventsOptions()
 	{
 		$app = &JFactory::getApplication();
-    $filter_venuecategory = $app->getUserState('com_redevent.search.filter_venuecategory');
-    $filter_category = $app->getUserState('com_redevent.search.filter_category');
-		$filter_venue = $app->getUserState('com_redevent.search.filter_venue');
+    $filter_venuecategory = JRequest::getVar('filter_venuecategory');
+    $filter_category = JRequest::getVar('filter_category');
+		$filter_venue = JRequest::getVar('filter_venue');
 		$task 		= JRequest::getWord('task');
 			
 		//Get Events from Database
@@ -298,8 +298,8 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	function getCategoriesOptions()
 	{
 		$app = &JFactory::getApplication();
-    $filter_venuecategory = $app->getUserState('com_redevent.search.filter_venuecategory');
-		$filter_venue = $app->getUserState('com_redevent.search.filter_venue');
+    $filter_venuecategory = JRequest::getVar('filter_venuecategory');
+		$filter_venue = JRequest::getVar('filter_venue');
 		$task 		= JRequest::getWord('task');
 			
 		//Get Events from Database
@@ -349,8 +349,8 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	function getCategory($id)
 	{
 		$app = &JFactory::getApplication();
-    $filter_venuecategory = $app->getUserState('com_redevent.search.filter_venuecategory');
-    $filter_category = $app->getUserState('com_redevent.search.filter_category');
+    $filter_venuecategory = JRequest::getVar('filter_venuecategory');
+    $filter_category = JRequest::getVar('filter_category');
     
 		$query = ' SELECT id, catname, lft, rgt '
 		       . ' FROM #__redevent_categories '

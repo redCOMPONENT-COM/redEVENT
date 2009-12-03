@@ -64,13 +64,13 @@ class RedeventViewSearch extends JView
 		// get variables
 		$limitstart	      = JRequest::getVar('limitstart', 0, '', 'int');
 		$limit		        = $mainframe->getUserStateFromRequest('com_redevent.search.limit', 'limit', $params->def('display_num', 0), 'int');
-		$filter_country   = $mainframe->getUserStateFromRequest('com_redevent.search.filter_country', 'filter_country', '', 'string');
-    $filter_city      = $mainframe->getUserStateFromRequest('com_redevent.search.filter_city', 'filter_city', '', 'string');
-    $filter_venue     = $mainframe->getUserStateFromRequest('com_redevent.search.filter_venue', 'filter_venue', 0, 'int');
-    $filter_date      = $mainframe->getUserStateFromRequest('com_redevent.search.filter_date', 'filter_date', '', 'string');
-    $filter_venuecategory = $mainframe->getUserStateFromRequest('com_redevent.search.filter_venuecategory', 'filter_venuecategory', 0, 'int');
-    $filter_category  = $mainframe->getUserStateFromRequest('com_redevent.search.filter_category', 'filter_category', 0, 'int');
-    $filter_event     = $mainframe->getUserStateFromRequest('com_redevent.search.filter_event', 'filter_event', 0, 'int');
+		$filter_country   = JRequest::getVar('filter_country', '', 'string');
+    $filter_city      = JRequest::getVar('filter_city', '', 'string');
+    $filter_venue     = JRequest::getVar('filter_venue', 0, 'int');
+    $filter_date      = JRequest::getVar('filter_date', '', 'string');
+    $filter_venuecategory = JRequest::getVar('filter_venuecategory', 0, 'int');
+    $filter_category  = JRequest::getVar('filter_category', 0, 'int');
+    $filter_event     = JRequest::getVar('filter_event', 0, 'int');
 		$task 		= JRequest::getWord('task');
 		$pop		= JRequest::getBool('pop');
 
