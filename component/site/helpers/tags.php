@@ -36,6 +36,8 @@ class redEVENT_tags {
 	protected $_eventlinks = null;
 	private $_data = false;
 	private $_libraryTags = null;
+	private $_xrefcustomfields = null;
+	
 	
 	public function __construct() {
 				
@@ -527,6 +529,8 @@ class redEVENT_tags {
     $uri    = &JFactory::getURI();
     $this->action = $uri->toString();
     
+    $this->customs = $this->getXrefCustomFields();
+    
 		ob_start();
 		if (JRequest::getVar('format') == 'pdf') {
 			if (file_exists($template_path.DS.'details'.DS.'courseinfo_pdf.php')) {
@@ -553,30 +557,47 @@ class redEVENT_tags {
 	 * Load all venues and their signup links
 	 */
 	private function getEventLinks() 
-	{
+	{		
+		$xcustoms = $this->getXrefCustomFields();
 		
 		$order_Dir = JRequest::getWord('filter_order_Dir', 'ASC');
 		$order 		  = JRequest::getCmd('filter_order', 'x.dates');
 		
 		$db = JFactory::getDBO();
-		$q = " SELECT e.*, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, x.course_price, "
-		    . " x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees, x.maxwaitinglist, v.venue, x.venueid, x.details, x.registrationend,
-					v.city AS location,
-					v.country, v.locimage, v.street, v.plz,
-					UNIX_TIMESTAMP(x.dates) AS unixdates,
-          CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(':', e.id, e.alias) ELSE e.id END as slug,
-          CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(':', v.id, v.alias) ELSE v.id END as venueslug
-			FROM #__redevent_events AS e
-			INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id
-			INNER JOIN #__redevent_venues AS v ON x.venueid = v.id
-      LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id
-      LEFT JOIN #__redevent_categories AS c ON xcat.category_id = c.id
-			WHERE x.published = ". $db->Quote($this->_published) ."
-			AND e.id IN (".$this->_eventid.")
-      GROUP BY x.id
-      ORDER BY $order $order_Dir, x.dates, x.times
-			";
-		$db->setQuery($q);
+		$query = ' SELECT e.*, IF (x.course_credit = 0, "", x.course_credit) AS course_credit, x.course_price, '
+		   . ' x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees, x.maxwaitinglist, v.venue, x.venueid, x.details, x.registrationend, '
+		   . ' v.city AS location, '
+		   . ' v.country, v.locimage, v.street, v.plz, '
+		   . ' UNIX_TIMESTAMP(x.dates) AS unixdates, '
+		   . ' CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(":", e.id, e.alias) ELSE e.id END as slug, '
+		   . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(":", v.id, v.alias) ELSE v.id END as venueslug '
+		   ;
+	
+		// add the custom fields
+		foreach ((array) $xcustoms as $c)
+		{
+			$query .= ', c'. $c->id .'.value AS custom'. $c->id;
+		}
+		
+		$query .= ' FROM #__redevent_events AS e '
+		   . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
+		   . ' INNER JOIN #__redevent_venues AS v ON x.venueid = v.id '
+		   . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
+		   . ' LEFT JOIN #__redevent_categories AS c ON xcat.category_id = c.id '
+		   ;		   
+	
+		// add the custom fields tables
+		foreach ((array) $xcustoms as $c)
+		{
+			$query .= ' LEFT JOIN #__redevent_fields_values AS c'. $c->id .' ON c'. $c->id .'.object_id = x.id AND c'. $c->id .'.field_id = '. $c->id;
+		}
+		
+		$query .= ' WHERE x.published = '. $db->Quote($this->_published)
+		   . ' AND e.id = '.$this->_eventid
+		   . ' GROUP BY x.id '
+		   . ' ORDER BY '.$order.' '.$order_Dir.', x.dates, x.times '
+		   ;
+		$db->setQuery($query);
 		$this->_eventlinks = $db->loadObjectList();
     $this->_eventlinks = $this->_getPlacesLeft($this->_eventlinks);
 		$this->_eventlinks = $this->_getCategories($this->_eventlinks);
@@ -764,7 +785,26 @@ class redEVENT_tags {
       <input type="hidden" name="xref" value="<?php echo $event->xref; ?>" />
       <input type="hidden" name="id" value="<?php echo $event->id; ?>" />
 		</form>
-    <?php
+    <?php  /**
+   * returns all custom fields for xrefs
+   * 
+   * @return array
+   */
+  function getXrefCustomFields()
+  {
+  	if (empty($this->_xrefcustomfields))
+  	{
+	  	$query = ' SELECT f.id, f.name, f.in_lists, f.searchable, f.ordering '
+	  	       . ' FROM #__redevent_fields AS f'
+	  	       . ' WHERE f.published = 1'
+	  	       . '   AND f.object_key = '. $this->_db->Quote('redevent.xref')
+	  	       . ' ORDER BY f.ordering ASC '
+	  	       ;
+	  	$this->_db->setQuery($query);
+	  	$this->_xrefcustomfields = $this->_db->loadObjectList();
+  	}
+  	return $this->_xrefcustomfields;
+  }
     $contents = ob_get_contents();
     ob_end_clean();
     return $contents;    
@@ -836,6 +876,29 @@ class redEVENT_tags {
     }
     
     return $replace;
+  }
+  
+  /**
+   * returns all custom fields for xrefs
+   * 
+   * @return array
+   */
+  function getXrefCustomFields()
+  {
+  	if (empty($this->_xrefcustomfields))
+  	{
+  		$db = & JFactory::getDBO();
+	  	$query = ' SELECT f.id, f.name, f.in_lists, f.searchable, f.ordering '
+	  	       . ' FROM #__redevent_fields AS f'
+	  	       . ' WHERE f.published = 1'
+	  	       . '   AND f.object_key = '. $db->Quote('redevent.xref')
+	  	       . '   AND f.in_lists = 1 '
+	  	       . ' ORDER BY f.ordering ASC '
+	  	       ;
+	  	$db->setQuery($query);
+	  	$this->_xrefcustomfields = $db->loadObjectList();
+  	}
+  	return $this->_xrefcustomfields;
   }
 }
 ?>
