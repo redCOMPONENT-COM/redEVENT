@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <install type="module" version="1.5.0">
 	<name>redEVENT Calendar module</name>
-	<creationDate>05/08/2009</creationDate>
+	<creationDate>07/12/2009</creationDate>
 	<author>redWEB.dk</author>
    	<copyright>(c) 2008 Redweb.dk</copyright> 
 	<authorEmail>email@redCOMPONENT.com</authorEmail>
 	<authorUrl>http://www.redcomponent.com</authorUrl>
-	<version>2.0 beta 4.1</version>
+	<version>2.0b7.5</version>
 	<description><![CDATA[<h2>Calendar Module for redEVENT 2.0</h2>]]></description>
 	<files>
 		<filename module="mod_redeventcal">mod_redeventcal.php</filename>
