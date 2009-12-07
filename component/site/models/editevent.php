@@ -909,21 +909,20 @@ class RedeventModelEditevent extends JModel
 	function getVenueOptions()
 	{
 		$user = &JFactory::getUser();
-		$app = &JFactory::getApplication();
+		$app  = &JFactory::getApplication();
 		$params = $app->getParams();
 		
 		$query = ' SELECT v.id AS value, '
 		       . ' CASE WHEN CHAR_LENGTH(v.city) THEN CONCAT_WS(\' - \', v.venue, v.city) ELSE v.venue END as text '
 		       . ' FROM #__redevent_venues AS v '
-		       . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.venueid = v.id '
-		       . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = x.venueid '
-		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gv.group_id '
+		       . ' INNER JOIN #__redevent_groups_venues AS gv ON gv.venue_id = v.id '
+		       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = gv.group_id '
 		       ;
 		       
 		$where = array();
 		
 		$where[] = ' v.published = 1 ';
-		$where[] = ' gv.accesslevel > 0 AND gm.add_xrefs = 1 AND gm.member =' . $this->_db->Quote($user->get('id'));
+		$where[] = ' gv.accesslevel > 0 AND gm.edit_venues > 0 AND gm.member =' . $this->_db->Quote($user->get('id'));
 		
 		if (count($where)) {
 			$query .= ' WHERE '. implode(' AND ', $where);
