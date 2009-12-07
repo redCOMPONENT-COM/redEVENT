@@ -134,12 +134,6 @@ class RedEventViewVenue extends JView {
     $lists['countries'] = JHTML::_('select.genericlist', $countries, 'country', 'class="inputbox"', 'value', 'text', $row->country );
     unset($countries);    
     
-    $groups = array();
-    $groups[] = JHTML::_('select.option', '', JText::_('none'));
-    $groups = array_merge($groups, $this->get('groupoptions'));
-    $lists['groups'] = JHTML::_('select.genericlist', $groups, 'admin_group', 'class="inputbox"', 'value', 'text', $row->admin_group );
-    unset($groups);    
-    
     $pinpointicon = ELOutput::pinpointicon( $row );
     
 		//assign data to template

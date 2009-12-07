@@ -180,7 +180,6 @@ class RedEventModelVenue extends JModel
 			$venue->times 				= null;
 			$venue->endtimes			= null;
       $venue->categories    = null;
-      $venue->admin_group   = null;
 			$this->_data				= $venue;
 			return (boolean) $this->_data;
 		}
@@ -373,20 +372,6 @@ class RedEventModelVenue extends JModel
     }
     return $options;
   }
-  
-  /**
-   * return groups as options
-   * 
-   * @return array
-   */
-  function getGroupOptions()
-  {
-  	$query = ' SELECT g.id AS value, g.name AS text '
-  	       . ' FROM #__redevent_groups AS g '
-  	       . ' ORDER BY g.name ASC '
-  	       ;
-  	$this->_db->setQuery($query);
-  	return $this->_db->loadObjectList();  	       
-  }
+
 }
 ?>
