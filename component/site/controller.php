@@ -162,7 +162,7 @@ class RedeventController extends JController
 			$row->load($id);
 			$row->checkin();
 
-			$this->setRedirect( JRoute::_('index.php?option=com_redevent&view=venueevents&id='.$id, false) );
+			$this->setRedirect( JRoute::_('index.php?option=com_redevent&view=venueevents&id='.$id) );
 
 		} else {
 			$link = JRequest::getString('referer', JURI::base(), 'post');
