@@ -88,7 +88,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<span class="editlinktip hasTip" title="<?php echo JText::_( 'SELECT' );?>::<?php echo $row->title; ?>">
 				<a style="cursor:pointer" 
-					 onclick="insertEvent('<?php echo $row->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $row->title ); ?>', '<?php echo JRoute::_('index.php?option=com_redevent&view=details&id='. $row->slug .'&xref='. $row->xref, true); ?>');">
+					 onclick="insertEvent('<?php echo $row->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $row->title ); ?>', '<?php echo JRoute::_('index.php?option=com_redevent&view=details&id='. $row->slug, true); ?>');">
 					<?php echo htmlspecialchars($row->title, ENT_QUOTES, 'UTF-8'); ?>
 				</a></span>
 			</td>
