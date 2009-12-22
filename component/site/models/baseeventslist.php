@@ -431,14 +431,19 @@ class RedeventModelBaseEventList extends JModel
    */
   function getListCustomFields()
   {
-  	$fields = array_merge($this->getCustomFields(), $this->getXrefCustomFields());
-  	uasort($fields, array('RedeventModelBaseEventList', '_cmpCustomFields'));
   	$res = array();
-  	foreach ((array)$fields as $f)
-  	{
-  		if ($f->in_lists) {
-  			$res[] = $f;
-  		}
+
+  	$fields = array_merge((array) $this->getCustomFields(), (array) $this->getXrefCustomFields());
+  
+  	if (!empty($fields)) 
+  	{  		
+	  	uasort($fields, array('RedeventModelBaseEventList', '_cmpCustomFields'));
+	  	foreach ((array)$fields as $f)
+	  	{
+	  		if ($f->in_lists) {
+	  			$res[] = $f;
+	  		}
+	  	}
   	}
   	return $res;
   }
