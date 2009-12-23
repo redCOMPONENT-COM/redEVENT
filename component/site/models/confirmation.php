@@ -294,7 +294,7 @@ class RedeventModelConfirmation extends JModel
 			$this->Mailer();
       
 			$tags = new redEVENT_tags;
-			
+			dump($attendees, '$attendees');
 			/* Now send some mail to the attendants */
 			foreach ($attendees as $attendee) {
 				if ($attendee->getEmail()) {

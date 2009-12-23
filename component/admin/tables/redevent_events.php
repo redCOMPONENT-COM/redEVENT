@@ -248,10 +248,9 @@ class RedEvent_events extends JTable
 //      return false;
     }
 	
-    if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_webform_formal_offer) > 0) {
-      $this->_error = JText::_( 'ERROR TAG LOOP XXXXSIGNUPPAGE');
+    if (!empty($this->review_message) && !strstr($this->review_message, '[redform]')) {
+      $this->_error = JText::_( 'WARNING REDFORM TAG MUST BE INCLUDED IN REVIEW SCREEN IF NOT EMPTY');
       JError::raiseWarning(0, $this->_error);
-//      return false;
     }
           
 		return true;
