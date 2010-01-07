@@ -115,7 +115,7 @@ class modRedEventHelper
         $rows[$k]->venue_short = htmlspecialchars($row->venue, ENT_COMPAT, 'UTF-8');
       }
       
-			$rows[$k]->link		= JRoute::_(RedeventHelperRoute::getRoute($row->slug, 'details', $row->xref));
+			$rows[$k]->link		= JRoute::_(RedeventHelperRoute::getDetailsRoute($row->slug, $row->xref));
 //			$rows[$k]->link		= JRoute::_('index.php?option=com_redevent&view=details&id='. $row->slug .'&xref='.$row->xref);
 			$rows[$k]->dateinfo 	= modRedEventHelper::_builddateinfo($row, $params);
 			$rows[$k]->text		= ($params->get('showtitloc', 0 )) ? $rows[$k]->title_short : $rows[$k]->venue_short;

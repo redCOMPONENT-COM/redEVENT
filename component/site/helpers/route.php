@@ -36,55 +36,77 @@ jimport('joomla.application.component.helper');
  * @since 0.9
  */
 class RedeventHelperRoute
-{
+{	
 	/**
-	 * Determines an EventList Link
-	 *
-	 * @param int The id of an EventList item
-	 * @param string The view
-	 * @param int The xref for the details view
-	 * @since 0.9
-	 *
-	 * @return string determined Link
+	 * return link to details view of specified event
+	 * @param int $id
+	 * @param int $xref
+	 * @return url
 	 */
-	function getRoute($id, $view = 'details', $xref = null)
+	function getDetailsRoute($id = 0, $xref = 0)
 	{
-		//Create the link
-		switch ($view) 
-		{
-			case 'details':
-				$needles = array(
-					$view  => (int) $xref
-				);
-				$link = 'index.php?option=com_redevent&view='.$view.'&id='. $id.'&xref='. $xref;
-				break;
-			default:
-				$needles = array(
-					$view  => (int) $id
-				);
-				$link = 'index.php?option=com_redevent&view='.$view.'&id='. $id;
-				break;
+		$parts = array( "option" => "com_redevent",
+		                "view"   => "details" );
+		if ($id) {
+			$parts['id'] = $id;
 		}
-
-		if($item = RedEventHelperRoute::_findItem($needles)) {
-			$link .= '&Itemid='.$item->id;
-		};
-
-		return $link;
+		if ($xref) {
+			$parts['xref'] = $xref;
+		}
+		return RedEventHelperRoute::buildUrl( $parts );
+	}
+	
+	/**
+	 * return link to day view
+	 * @param mixed date
+	 * @return url
+	 */
+	function getDayRoute($id = 0)
+	{
+		$parts = array( "option" => "com_redevent",
+		                "view"   => "day",
+		                "id"     => $id );
+		return RedEventHelperRoute::buildUrl( $parts );
+	}
+	
+	
+	function getVenueEventsRoute($id)
+	{
+		$parts = array( "option" => "com_redevent",
+		                "view"   => "venueevents",
+		                "id"     => $id );
+		return RedEventHelperRoute::buildUrl( $parts );
 	}
 
+	function getCategoryEventsRoute($id)
+	{
+		$parts = array( "option" => "com_redevent",
+		                "view"   => "categoryevents",
+		                "id"     => $id );
+		return RedEventHelperRoute::buildUrl( $parts );
+	}
+	
+	function buildUrl($parts)
+	{		
+		if($item = RedEventHelperRoute::_findItem($parts)) {
+			$parts['Itemid'] = $item->id;
+		};
+		
+		return 'index.php?'.JURI::buildQuery( $parts );
+	}
+	
 	/**
 	 * Determines the Itemid
 	 *
 	 * searches if a menuitem for this item exists
 	 * if not the first match will be returned
 	 *
-	 * @param array The id and view
+	 * @param array url parameters
 	 * @since 0.9
 	 *
 	 * @return int Itemid
 	 */
-	function _findItem($needles)
+	function _findItem($query)
 	{
 		$component =& JComponentHelper::getComponent('com_redevent');
 		$menus	= & JSite::getMenu();
@@ -92,23 +114,50 @@ class RedeventHelperRoute
 		$user 	= & JFactory::getUser();
 		$access = (int)$user->get('aid');
 		
-		//Not needed currently but kept because of a possible hierarchic link structure in future
-		foreach($needles as $needle => $id)
+		if ($items) 
 		{
-			if ($items) {
-				foreach($items as $item)
-				{	
-					if ((@$item->query['view'] == $needle) && (@$item->query['id'] == $id || @$item->query['xref'] == $id) && ($item->published == 1) && ($item->access <= $access)) {
-						return $item;
+			foreach($items as $item)
+			{	
+				if ((@$item->query['view'] == $query['view']) && ($item->published == 1) && ($item->access <= $access)) 
+				{					
+					switch ($query['view'])
+					{
+						case 'details':
+							if (isset($query['xref']) && (int) $query['xref'] == (int) @$item->query['xref']) {
+								return $item;
+							}
+							// needs a second round to check just for 'id'
+							break;
+						default:
+							if (isset($query['id']) && (int) @$item->query['id'] == (int) @$query['id']) {
+								return $item;
+							}
 					}
 				}
-	
-				//no menuitem exists -> return first possible match
-				foreach($items as $item)
-				{
-					if ($item->published == 1 && $item->access <= $access) {
-						return $item;
+			}
+
+			// second round for view with optional params
+			foreach($items as $item)
+			{	
+				if ((@$item->query['view'] == $query['view']) && ($item->published == 1) && ($item->access <= $access)) 
+				{					
+					switch ($query['view'])
+					{
+						case 'details':
+							if (isset($query['id']) && (int) $query['id'] == (int) @$item->query['id']) {
+								return $item;
+							}
+							// needs a second round to check just for 'id'
+							break;
 					}
+				}
+			}
+			
+			//still no menuitem exists -> return first possible match (any link to the component)
+			foreach($items as $item)
+			{
+				if ($item->published == 1 && $item->access <= $access) {
+					return $item;
 				}
 			}
 		}

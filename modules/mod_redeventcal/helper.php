@@ -116,7 +116,7 @@ class modredeventcalhelper
 					$tt = $days[$count][1];
 					$title = $tt . '&#013 +' . htmlspecialchars($event->title);
 				}			
-				$link			= RedeventHelperRoute::getRoute( $tdate, 'day') ;		
+				$link			= RedeventHelperRoute::getDayRoute( $tdate, 'day') ;		
 				$days[$count] = array($link,$title);
 				}
 		}
