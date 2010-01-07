@@ -402,7 +402,8 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = l.id '
         . ' LEFT JOIN #__redevent_groups AS g ON g.id = gv.group_id '
         . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
-        .' WHERE (l.created_by = '.$this->_db->Quote($user->id) .' OR (gm.member = '. $this->_db->Quote($user->id) .' AND gv.accesslevel > 0 AND gm.edit_venues = 1))'
+        . ' WHERE (l.created_by = '.$this->_db->Quote($user->id) .' OR (gm.member = '. $this->_db->Quote($user->id) .' AND gv.accesslevel > 0 AND gm.edit_venues = 1))'
+        . ' GROUP BY (l.id) '
         .' ORDER BY l.venue ASC '
         ;
 
