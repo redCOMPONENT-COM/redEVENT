@@ -94,7 +94,7 @@ class RedeventViewCategoryevents extends JView
 
 			// url link to article
 			// & used instead of &amp; as this is converted by feed creator
-			$link = 'index.php?option=com_redevent&view=details&id='. $row->id;
+			$link = RedeventHelperRoute::getDetailsRoute($row->id);
 			$link = JRoute::_( $link );
 
 			// feed item description text

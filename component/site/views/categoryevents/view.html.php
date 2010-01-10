@@ -111,7 +111,7 @@ class RedeventViewCategoryevents extends JView
 		}
 		
 		//add alternate feed link
-		$link    = 'index.php?option=com_redevent&view=categoryevents&format=feed&id='.$category->id;
+		$link    = RedeventHelperRoute::getCategoryEventsRoute($category->slug).'&format=feed';
 		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
 		$document->addHeadLink(JRoute::_($link.'&type=rss'), 'alternate', 'rel', $attribs);
 		$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
@@ -121,13 +121,13 @@ class RedeventViewCategoryevents extends JView
 		if ($item->name) $pathway->setItemName(1, $item->name);
 		
 		if ($task == 'archive') {
-			$pathway->addItem( JText::_( 'ARCHIVE' ).' - '.$category->catname, JRoute::_('index.php?option='.$option.'&view=categoryevents&task=archive&id='.$category->slug));
-			$link = JRoute::_( 'index.php?option=com_redevent&view=categoryevents&task=archive&id='.$category->slug );
-			$print_link = JRoute::_( 'index.php?option=com_redevent&view=categoryevents&id='. $category->id .'&task=archive&pop=1&tmpl=component');
+			$link = RedeventHelperRoute::getCategoryEventsRoute($category->slug, 'archive');
+			$pathway->addItem( JText::_( 'ARCHIVE' ).' - '.$category->catname, JRoute::_($link));
+			$print_link = JRoute::_( $link.'&pop=1&tmpl=component');
 		} else {
-			$pathway->addItem( $category->catname, JRoute::_('index.php?option='.$option.'&view=categoryevents&id='.$category->slug));
-			$link = JRoute::_( 'index.php?option=com_redevent&view=categoryevents&id='.$category->slug );
-			$print_link = JRoute::_( 'index.php?option=com_redevent&view=categoryevents&id='. $category->id .'&pop=1&tmpl=component');
+			$link = RedeventHelperRoute::getCategoryEventsRoute($category->slug);
+			$pathway->addItem( $category->catname, JRoute::_($link));
+			$print_link = JRoute::_( $link.'&pop=1&tmpl=component');
 		}
 
 		//Check if the user has access to the form

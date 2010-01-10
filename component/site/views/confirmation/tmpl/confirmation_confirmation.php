@@ -29,7 +29,7 @@ if ($this->registration) {
 		<?php echo $this->tags->ReplaceTags($this->registration['event']->review_message); ?>
 	</div>	
 	<?php
-	echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&id='.$this->registration['event']->eventid.'&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id')), JText::_('RETURN_EVENT_DETAILS'));
+	echo JHTML::_('link', JRoute::_(RedeventHelperRoute::getDetailsRoute($this->registration['event']->eventid, JRequest::getInt('xref'))), JText::_('RETURN_EVENT_DETAILS'));
 }
 else {
 	echo $this->message;

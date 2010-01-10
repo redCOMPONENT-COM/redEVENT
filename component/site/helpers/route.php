@@ -43,7 +43,7 @@ class RedeventHelperRoute
 	 * @param int $xref
 	 * @return url
 	 */
-	function getDetailsRoute($id = 0, $xref = 0)
+	function getDetailsRoute($id = 0, $xref = 0, $task = null)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "details" );
@@ -52,6 +52,9 @@ class RedeventHelperRoute
 		}
 		if ($xref) {
 			$parts['xref'] = $xref;
+		}
+		if ($task) {
+			$parts['task'] = $task;
 		}
 		return RedEventHelperRoute::buildUrl( $parts );
 	}
@@ -81,6 +84,17 @@ class RedeventHelperRoute
 		return RedEventHelperRoute::buildUrl( $parts );
 	}
 
+	function getUpcomingVenueEventsRoute($id, $task = null)
+	{
+		$parts = array( "option" => "com_redevent",
+		                "view"   => "upcomingvenueevents",
+		                "id"     => $id );
+		if ($task) {
+			$parts['task'] = $task;
+		}
+		return RedEventHelperRoute::buildUrl( $parts );
+	}
+	
 	function getCategoryEventsRoute($id, $task = null)
 	{
 		$parts = array( "option" => "com_redevent",
@@ -102,6 +116,25 @@ class RedeventHelperRoute
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "categories" );
+		if ($id) {
+			$parts['id'] = $id;			
+		}
+		if ($task) {
+			$parts['task'] = $task;
+		}
+		return RedEventHelperRoute::buildUrl( $parts );
+	}
+
+	/**
+	 * return route to categories view
+	 * @param int top category id, 0 or null for all categories
+	 * @param string $task
+	 * @return string
+	 */
+	function getCategoriesDetailedRoute($id = null, $task = null)
+	{
+		$parts = array( "option" => "com_redevent",
+		                "view"   => "categoriesdetailed" );
 		if ($id) {
 			$parts['id'] = $id;			
 		}

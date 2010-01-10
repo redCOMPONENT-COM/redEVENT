@@ -449,7 +449,7 @@ class RedeventModelEditvenue extends JModel
 
 		jimport('joomla.utilities.mail');
 
-		$link 	= JRoute::_(RedeventHelperRoute::getDetailsRoute($row->id), false);
+		$link 	= JRoute::_(RedeventHelperRoute::getVenueEventsRoute($row->id), false);
 
 		//create mail
 		if (($elsettings->mailinform == 2) || ($elsettings->mailinform == 3)) {

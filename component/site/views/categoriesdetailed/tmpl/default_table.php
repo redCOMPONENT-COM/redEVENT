@@ -133,7 +133,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				</td>
 				<?php
 				//Link to details
-				$detaillink = JRoute::_( 'index.php?option=com_redevent&view=details&id='. $row->slug . '&xref=' . $row->xref);
+				$detaillink = JRoute::_(RedeventHelperRoute::getDetailsRoute($row->id, $row->xref));
 				//title
 				if (($this->elsettings->showtitle == 1 ) && ($this->elsettings->showdetails == 1) ) :
 				?>
