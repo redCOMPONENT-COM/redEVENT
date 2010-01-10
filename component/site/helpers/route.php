@@ -70,19 +70,70 @@ class RedeventHelperRoute
 	}
 	
 	
-	function getVenueEventsRoute($id)
+	function getVenueEventsRoute($id, $task = null)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "venueevents",
 		                "id"     => $id );
+		if ($task) {
+			$parts['task'] = $task;
+		}
 		return RedEventHelperRoute::buildUrl( $parts );
 	}
 
-	function getCategoryEventsRoute($id)
+	function getCategoryEventsRoute($id, $task = null)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "categoryevents",
 		                "id"     => $id );
+		if ($task) {
+			$parts['task'] = $task;
+		}
+		return RedEventHelperRoute::buildUrl( $parts );
+	}
+	
+	/**
+	 * return route to categories view
+	 * @param int top category id, 0 or null for all categories
+	 * @param string $task
+	 * @return string
+	 */
+	function getCategoriesRoute($id = null, $task = null)
+	{
+		$parts = array( "option" => "com_redevent",
+		                "view"   => "categories" );
+		if ($id) {
+			$parts['id'] = $id;			
+		}
+		if ($task) {
+			$parts['task'] = $task;
+		}
+		return RedEventHelperRoute::buildUrl( $parts );
+	}
+	
+	/**
+	 * return route to simple list view
+	 * @param string $task
+	 * @return string
+	 */
+	function getSimpleListRoute($task = null)
+	{
+		$parts = array( "option" => "com_redevent",
+		                "view"   => "simplelist" );
+		if ($task) {
+			$parts['task'] = $task;
+		}
+		return RedEventHelperRoute::buildUrl( $parts );
+	}
+	
+	function getSignupRoute($type, $id, $xref)
+	{
+		$parts = array( "option" => "com_redevent",
+		                "view"   => "signup",
+		                "subtype"   => $type,
+		                "task"   => "signup",
+		                "id"   => $id,
+		                "xref"   => $xref);
 		return RedEventHelperRoute::buildUrl( $parts );
 	}
 	

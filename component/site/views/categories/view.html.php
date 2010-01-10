@@ -72,7 +72,7 @@ class RedeventViewCategories extends JView
 		$pathway->setItemName(1, $item->name);
 
 		if ( $task == 'archive' ) {
-			$pathway->addItem(JText::_( 'ARCHIVE' ), JRoute::_('index.php?option=com_redevent&view=categories&task=archive') );
+			$pathway->addItem(JText::_( 'ARCHIVE' ), JRoute::_(RedeventHelperRoute::getCategoriesRoute(null, 'archive')) );
 			$pagetitle = $params->get('page_title').' - '.JText::_( 'ARCHIVE' );
 		} else {
 			$pagetitle = $params->get('page_title');
@@ -86,11 +86,11 @@ class RedeventViewCategories extends JView
 		$params->def( 'icons', $mainframe->getCfg( 'icons' ) );
 
 		//add alternate feed link
-		$link    = 'index.php?option=com_redevent&view=simplelist&format=feed';
+		$link    = RedeventHelperRoute::getSimpleListRoute();
 		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
-		$document->addHeadLink(JRoute::_($link.'&type=rss'), 'alternate', 'rel', $attribs);
+		$document->addHeadLink(JRoute::_($link.'&format=feed&type=rss'), 'alternate', 'rel', $attribs);
 		$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
-		$document->addHeadLink(JRoute::_($link.'&type=atom'), 'alternate', 'rel', $attribs);
+		$document->addHeadLink(JRoute::_($link.'&format=feed&type=atom'), 'alternate', 'rel', $attribs);
 
 		//Check if the user has access to the form
 		$maintainer = ELUser::ismaintainer();

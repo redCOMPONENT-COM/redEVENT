@@ -172,9 +172,9 @@ class RedeventModelVenues extends JModel
 				$task 	= JRequest::getVar('task', '', '', 'string');
 				
 				if ($task == 'archive') {
-					$venue->targetlink = JRoute::_('index.php?option=com_redevent&view=venueevents&id='.$venue->slug.'&task=archive');
+					$venue->targetlink = JRoute::_(RedeventHelperRoute::getVenueEventsRoute($venue->slug, 'archive'));
 				} else {
-					$venue->targetlink = JRoute::_('index.php?option=com_redevent&view=venueevents&id='.$venue->slug);
+					$venue->targetlink = JRoute::_(RedeventHelperRoute::getVenueEventsRoute($venue->slug));
 				}
 		
 				$k = 1 - $k;

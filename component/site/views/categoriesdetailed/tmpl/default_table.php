@@ -151,7 +151,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<td headers="el_location_cat<?php echo $this->categoryid; ?>" align="left" valign="top">
 				<?php
 					if ($this->elsettings->showlinkvenue == 1 ) :
-							echo $row->venueid != 0 ? "<a href='".JRoute::_("index.php?option=com_redevent&view=venueevents&id=$row->venueslug")."'>".$this->escape($row->venue)."</a>" : '-';
+							echo $row->venueid != 0 ? "<a href='".JRoute::_(RedeventHelperRoute::getVenueEventsRoute($row->venueslug))."'>".$this->escape($row->venue)."</a>" : '-';
 						else :
 							echo $row->venueid ? $this->escape($row->venue) : '-';
 						endif;
@@ -176,7 +176,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
           <td headers="el_category" align="left" valign="top">
           <?php foreach ($row->categories as $k => $cat): ?>
             <?php if ($this->elsettings->catlinklist == 1) : ?> 
-              <a href="<?php echo JRoute::_('index.php?option=com_redevent&view=categoryevents&id='.$cat->slug); ?>">
+              <a href="<?php echo JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($cat->slug)); ?>">
                 <?php echo $cat->catname ? $this->escape($cat->catname) : '-' ; ?>
               </a>
             <?php else: ?>

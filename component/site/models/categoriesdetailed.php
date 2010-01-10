@@ -152,9 +152,9 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 				$category->linktext = $task == 'archive' ? JText::_( 'SHOW ARCHIVE' ) : JText::_( 'SHOW EVENTS' );
 
 				if ($task == 'archive') {
-					$category->linktarget = JRoute::_('index.php?option=com_redevent&view=categoryevents&id='.$category->slug.'&task=archive');
+					$category->linktarget = JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($category->slug, 'archive'));
 				} else {
-					$category->linktarget = JRoute::_('index.php?option=com_redevent&view=categoryevents&id='.$category->slug);
+					$category->linktarget = JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($category->slug));
 				}
 				
 			}

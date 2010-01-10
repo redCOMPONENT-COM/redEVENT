@@ -121,7 +121,7 @@ class RedEventModelVenuesmap extends JModel
 				}
 				
 				//create target link
-				$venue->targetlink = JRoute::_('index.php?view=venueevents&id='.$venue->slug);
+				$venue->targetlink = JRoute::_(RedeventHelperRoute::getVenueEventsRoute($venue->slug));
 		
 				$k = 1 - $k;
 			}
