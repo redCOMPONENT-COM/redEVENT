@@ -54,7 +54,12 @@ class RedeventViewMyevents extends JView
         $pathway = & $mainframe->getPathWay();
 
         //add css file
-        $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
+		    if (!$params->get('custom_css')) {
+		      $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
+		    }
+		    else {
+		      $document->addStyleSheet($params->get('custom_css'));     
+		    }
         $document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
         
