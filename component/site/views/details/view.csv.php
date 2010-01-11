@@ -86,17 +86,20 @@ class RedeventViewDetails extends JView
 		header('Content-Disposition: attachment; filename="'.$title.'"');
 		echo $text;
 	}
-	
-	function writecsvrow($dataArray, $delimiter = ';',$enclosure = '"')
+		
+	function writecsvrow($fields, $delimiter = ',', $enclosure = '"') 
 	{
-		$fields = array();
-		$writeDelimiter = FALSE;
-		foreach($dataArray as $dataElement) 
-		{
-			$dataElement=str_replace("\"", "\"\"", $dataElement);
-			$fields[] = $enclosure . $dataElement . $enclosure;
-		}
-		return implode($delimiter, $fields) ."\n";
-	}
+    $delimiter_esc = preg_quote($delimiter, '/');
+    $enclosure_esc = preg_quote($enclosure, '/');
+
+    $output = array();
+    foreach ($fields as $field) {
+        $output[] = preg_match("/(?:${delimiter_esc}|${enclosure_esc}|\s)/", $field) ? (
+            $enclosure . str_replace($enclosure, $enclosure . $enclosure, $field) . $enclosure
+        ) : $field;
+    }
+
+    return join($delimiter, $output) . "\n";
+	} 
 }
 ?>
