@@ -261,7 +261,7 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
               $replace[] = '<span class="vlink webform">'
                            . JHTML::_('link', 
-                                      JRoute::_('index.php?option=com_redevent&view=signup&subtype=webform&task=signup&xref='.$this->_xref.'&id='.$this->_data->id), 
+                                      JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->_data->id, $this->_xref)), 
                                       JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  
                                       JText::_($elsettings->signup_webform_text), 
                                       'width="24px" height="24px"'))
@@ -272,7 +272,7 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
 				      $replace[] = '<span class="vlink email">'
 				                      .JHTML::_('link', 
-				                                JRoute::_('index.php?option=com_redevent&view=signup&task=signup&subtype=email&xref='.$this->_xref.'&id='.$this->_data->id), 
+                                        JRoute::_(RedeventHelperRoute::getSignupRoute('email', $this->_data->id, $this->_xref)), 
 				                                JHTML::_('image', $imagepath.$elsettings->signup_email_img,  
 				                                JText::_($elsettings->signup_email_text), 
 				                                'width="24px" height="24px"'))
@@ -283,7 +283,7 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
 				      $replace[] = '<span class="vlink formaloffer">'
 				                    .JHTML::_('link', 
-				                              JRoute::_('index.php?option=com_redevent&view=signup&subtype=formaloffer&task=signup&xref='.$this->_xref.'&id='.$this->_data->id), 
+                                      JRoute::_(RedeventHelperRoute::getSignupRoute('formaloffer', $this->_data->id, $this->_xref)), 
 				                              JHTML::_('image', $imagepath.$elsettings->signup_formal_offer_img,  
 				                              JText::_($elsettings->signup_formal_offer_text), 
 				                              'width="24px" height="24px"'))
@@ -305,7 +305,7 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
 				      $replace[] = '<span class="vlink phone">'
 				                     .JHTML::_('link', 
-				                               JRoute::_('index.php?option=com_redevent&view=signup&task=signup&subtype=phone&xref='.$this->_xref.'&id='.$this->_data->id), 
+                                       JRoute::_(RedeventHelperRoute::getSignupRoute('phone', $this->_data->id, $this->_xref)), 
 				                               JHTML::_('image', $imagepath.$elsettings->signup_phone_img,  
 				                               JText::_($elsettings->signup_phone_text), 
 				                               'width="24px" height="24px"'))
@@ -364,7 +364,7 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
       				$venueimage = redEVENTImage::flyercreator($this->_data->locimage);
       				$venueimage = JHTML::image(JURI::root().'/'.$venueimage['original'], $this->_data->venue, array('title' => $this->_data->venue));
-      				$venueimage = JHTML::link(JRoute::_('index.php?option=com_redevent&view=venueevents&id=' . $this->_data->venueslug), $venueimage);
+      				$venueimage = JHTML::link(JRoute::_(RedeventHelperRoute::getVenueEventsRoute($this->_data->venueslug)), $venueimage);
       				$replace[] = $venueimage;
       				break;
       				
@@ -405,7 +405,7 @@ class redEVENT_tags {
               // categories
               $cats = array();
               foreach ($this->_data->categories as $c){
-              	$cats[] = JHTML::link(JRoute::_('index.php?option=com_redevent&view=categoryevents&id=' . $c->slug), $c->catname);
+              	$cats[] = JHTML::link(JRoute::_(RedeventHelperRoute::getCategoryEvents($c->slug)), $c->catname);
               }
               $replace[] = '<span class="details-categories">'.implode(', ', $cats).'</span>';
       				break;
@@ -437,7 +437,7 @@ class redEVENT_tags {
       				      				
 				    case 'permanentlink':
 				      $search[]  = '['.$tag.']';
-              $replace[] = JHTML::link(JRoute::_('index.php?option=com_redevent&view=details&id='. $this->_data->slug, false), JText::_('Permanent link'), 'class="permalink"');
+              $replace[] = JHTML::link(JRoute::_(RedeventHelperRoute::getDetailsRoute($this->_data->slug), false), JText::_('Permanent link'), 'class="permalink"');
       				break;
 				  }
 				    
