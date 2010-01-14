@@ -582,6 +582,24 @@ $q = "INSERT IGNORE INTO `#__redevent_settings` SET "
 $db->setQuery($q);
 $db->query();
 
+// remove eventvenue key
+$query = 'SHOW KEYS FROM #__redevent_event_venue_xref';
+$db->setQuery($query);
+$keys = $db->loadObjectList();
+
+foreach ($keys as $key) 
+{
+	if ($key->Key_name == 'eventvenue') 
+	{
+		$query = 'ALTER TABLE `#__redevent_event_venue_xref` DROP INDEX `eventvenue`';
+    $db->setQuery($query);
+    $db->query();   
+    break; 	
+	}
+}
+
+
+
 if ($upgrade) {
 	/* Database is fully setup, commence conversion */
 	/* 1. Make backup copies */
