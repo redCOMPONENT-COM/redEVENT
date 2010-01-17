@@ -120,13 +120,13 @@ class RedeventModelConfirmation extends JModel
 		$eventsettings = $db->loadObject();
 		
 		/* Get a list of fields that are of type email/username/fullname */
-		$q = "SELECT f.id, f.field, v.fieldtype 
+		$q = "SELECT f.id, f.field, f.fieldtype 
 			FROM #__rwf_fields f, #__rwf_values v
 			WHERE f.id = v.field_id
 			AND f.published = 1
 			AND f.form_id = ".$eventsettings->redform_id."
-			AND fieldtype in ('email', 'username', 'fullname')
-			GROUP BY fieldtype";
+			AND f.fieldtype in ('email', 'username', 'fullname')
+			GROUP BY f.fieldtype";
 		$db->setQuery($q);
 		$selectfields = $db->loadObjectList('fieldtype');
 
@@ -294,7 +294,7 @@ class RedeventModelConfirmation extends JModel
 			$this->Mailer();
       
 			$tags = new redEVENT_tags;
-			dump($attendees, '$attendees');
+			
 			/* Now send some mail to the attendants */
 			foreach ($attendees as $attendee) {
 				if ($attendee->getEmail()) {
