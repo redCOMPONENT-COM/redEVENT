@@ -444,7 +444,7 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
 				      $submit_key = JRequest::getVar('submit_key');
 				      if (!empty($submit_key)) {
-              	$replace[] = JHTML::link(JRoute::_('index.php?option=com_redform&controller=payment&key='.$submit_key, false), JText::_('Checkout'), '');
+              	$replace[] = JHTML::link(JRoute::_('index.php?option=com_redform&controller=payment&task=select&source=redevent&key='.$submit_key, false), JText::_('Checkout'), '');
 				      }
 				      else {
 				      	$replace[] = '';
