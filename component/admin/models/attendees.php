@@ -186,12 +186,13 @@ class RedEventModelAttendees extends JModel
 		$orderby	= $this->_buildContentOrderBy();
 		$where		= $this->_buildContentWhere();
 
-		$query = 'SELECT r.*, u.username, u.name, a.id AS eventid, u.gid, u.email, s.answer_id, s.waitinglist, s.confirmdate, s.confirmed, s.id AS submitter_id'
+		$query = 'SELECT r.*, u.username, u.name, a.id AS eventid, u.gid, u.email, s.answer_id, s.waitinglist, s.confirmdate, s.confirmed, s.id AS submitter_id, p.status '
 		. ' FROM #__redevent_register AS r'
 		. ' LEFT JOIN #__redevent_event_venue_xref AS x ON r.xref = x.id'
 		. ' LEFT JOIN #__redevent_events AS a ON x.eventid = a.id '
 		. ' LEFT JOIN #__users AS u ON r.uid = u.id'
 		. ' INNER JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key'
+		. ' LEFT JOIN #__rwf_payment AS p ON p.submit_key = s.submit_key'
 		. $where
 		. $orderby;
 		return $query;

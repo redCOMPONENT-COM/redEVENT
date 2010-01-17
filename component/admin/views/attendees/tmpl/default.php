@@ -63,6 +63,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<th class="title"><?php echo JText::_( 'CONFIRMED' ); ?></th>
 				<th class="title"><?php echo JText::_( 'WAITINGLIST' ); ?></th>
         <th class="title"><?php echo JText::_( 'ANSWERS' ); ?></th>
+        <th class="title"><?php echo JText::_( 'PAYMENT' ); ?></th>
 			</tr>
 		</thead>
 
@@ -112,6 +113,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
           }
           ?></td>
           <td><a href="<?php echo JRoute::_('index.php?option=com_redevent&view=attendeeanswers&tmpl=component&submitter_id='. $row->submitter_id); ?>" class="answersmodal"><?php echo JText::_('view')?></a></td>
+					<td><?php echo $row->status; ?></td>
 			</tr>
 			<?php $k = 1 - $k; $i++; } ?>
 		</tbody>
