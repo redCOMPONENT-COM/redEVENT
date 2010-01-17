@@ -439,6 +439,17 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
               $replace[] = JHTML::link(JRoute::_(RedeventHelperRoute::getDetailsRoute($this->_data->slug), false), JText::_('Permanent link'), 'class="permalink"');
       				break;
+      				
+				    case 'paymentrequest':
+				      $search[]  = '['.$tag.']';
+				      $submit_key = JRequest::getVar('submit_key');
+				      if (!empty($submit_key)) {
+              	$replace[] = JHTML::link(JRoute::_('index.php?option=com_redform&controller=payment&key='.$submit_key, false), JText::_('Checkout'), '');
+				      }
+				      else {
+				      	$replace[] = '';
+				      }
+				    	break;
 				  }
 				    
 				}

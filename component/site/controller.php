@@ -584,7 +584,7 @@ class RedeventController extends JController
 					WHERE f.id = v.field_id
 					AND f.published = 1
 					AND f.form_id = ".$id_details->form_id."
-					AND fieldtype = 'email'
+					AND f.fieldtype = 'email'
 					LIMIT 1";
 				$db->setQuery($q);
 				$selectfield = $db->loadResult();

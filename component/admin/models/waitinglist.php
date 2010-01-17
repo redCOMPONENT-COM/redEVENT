@@ -246,12 +246,12 @@ class RedEventModelWaitinglist extends JModel {
 		$db = JFactory::getDBO();
 		
 		/* Find out what the fieldname is for the email field */
-		$q = "SELECT f.id, f.field, v.fieldtype 
+		$q = "SELECT f.id, f.field, f.fieldtype 
 			FROM #__rwf_fields f, #__rwf_values v
 			WHERE f.id = v.field_id
 			AND f.published = 1
 			AND f.form_id = ".$this->event_data->redform_id."
-			AND fieldtype in ('email')
+			AND f.fieldtype in ('email')
 			LIMIT 1";
 		$db->setQuery($q);
 		$selectfield = $db->loadResult();
