@@ -479,7 +479,8 @@ class redEVENT_tags {
   					}
   					// params for plugin
   					$params = array();
-  					$params['show_submission_type_webform_formal_offer'] = $this->_data->show_submission_type_webform_formal_offer;		
+  					$params['show_submission_type_webform_formal_offer'] = $this->_data->show_submission_type_webform_formal_offer;	
+  					$params['eventdetails'] = $this->_data;		
   									
   					$results = $dispatcher->trigger('onPrepareEvent', array(& $form, $params, 0));
             $redform = $form->text;
