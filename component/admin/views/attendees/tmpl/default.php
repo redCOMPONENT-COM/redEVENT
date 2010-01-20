@@ -62,6 +62,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<th class="title"><?php echo JText::_( 'REMOVE USER' ); ?></th>
 				<th class="title"><?php echo JText::_( 'CONFIRMED' ); ?></th>
 				<th class="title"><?php echo JText::_( 'WAITINGLIST' ); ?></th>
+				<?php foreach ($this->rf_fields as $f):?>
+				<th class="title"><?php echo $f->field; ?></th>
+				<?php endforeach;?>
         <th class="title"><?php echo JText::_( 'ANSWERS' ); ?></th>
         <th class="title"><?php echo JText::_( 'PAYMENT' ); ?></th>
 			</tr>
@@ -69,7 +72,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 		<tfoot>
 			<tr>
-				<td colspan="13"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="<?php echo (13+count($this->rf_fields)); ?>"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 
@@ -112,6 +115,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
                               array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'offwaiting\');', 'title' => JText::_('PUT OFF WAITING LIST')));
           }
           ?></td>
+					<?php foreach ($this->rf_fields as $f):?>
+					<?php $fname = 'field_'.$f->id; ?>
+					<td><?php echo $row->$fname; ?></th>
+					<?php endforeach;?>
           <td><a href="<?php echo JRoute::_('index.php?option=com_redevent&view=attendeeanswers&tmpl=component&submitter_id='. $row->submitter_id); ?>" class="answersmodal"><?php echo JText::_('view')?></a></td>
 					<td><?php echo $row->status; ?></td>
 			</tr>

@@ -182,20 +182,64 @@ class RedEventModelAttendees extends JModel
 	 */
 	function _buildQuery()
 	{
+		// get redform form and fields to show
+		$q = ' SELECT e.redform_id, e.showfields '
+		   . ' FROM #__redevent_events AS e '
+		   . ' WHERE e.id = '. $this->_db->Quote($this->_eventid)
+		   ;
+		$this->_db->setQuery($q, 0, 1);
+		$res = $this->_db->loadObject();
+		
+		if ($res) {
+			$fields = explode(',', $res->showfields);
+			$rfields = array();
+			foreach ($fields as $f) {
+				$rfields[] = 'f.field_'.trim($f);
+			}
+			$rfields = ', '.implode(',', $rfields);
+			$join_rwftable  = ' LEFT JOIN #__rwf_forms_'.$res->redform_id.' AS f ON s.answer_id = f.id ';
+		}
+		
 		// Get the ORDER BY clause for the query
 		$orderby	= $this->_buildContentOrderBy();
 		$where		= $this->_buildContentWhere();
 
 		$query = 'SELECT r.*, u.username, u.name, a.id AS eventid, u.gid, u.email, s.answer_id, s.waitinglist, s.confirmdate, s.confirmed, s.id AS submitter_id, p.status '
-		. ' FROM #__redevent_register AS r'
-		. ' LEFT JOIN #__redevent_event_venue_xref AS x ON r.xref = x.id'
-		. ' LEFT JOIN #__redevent_events AS a ON x.eventid = a.id '
-		. ' LEFT JOIN #__users AS u ON r.uid = u.id'
-		. ' INNER JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key'
-		. ' LEFT JOIN #__rwf_payment AS p ON p.submit_key = s.submit_key'
-		. $where
-		. $orderby;
+		       . $rfields
+		       . ' FROM #__redevent_register AS r '
+		       . ' LEFT JOIN #__redevent_event_venue_xref AS x ON r.xref = x.id '
+		       . ' LEFT JOIN #__redevent_events AS a ON x.eventid = a.id '
+		       . ' LEFT JOIN #__users AS u ON r.uid = u.id '
+		       . ' INNER JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key '
+		       . ' LEFT JOIN #__rwf_payment AS p ON p.submit_key = s.submit_key '
+		       . $join_rwftable
+		       . $where
+		       . $orderby;
 		return $query;
+	}
+	
+	function getRedFormFrontFields()
+	{
+		// get redform form and fields to show
+		$q = ' SELECT e.showfields '
+		   . ' FROM #__redevent_events AS e '
+		   . ' WHERE e.id = '. $this->_db->Quote($this->_eventid)
+		   ;
+		$this->_db->setQuery($q, 0, 1);
+		$res = $this->_db->loadResult();
+		
+		if (empty($res)) {
+			return null;
+		}
+				
+		// get redform form and fields to show
+		$q = ' SELECT f.id, f.field '
+		   . ' FROM #__rwf_fields AS f '
+		   . ' WHERE f.id IN ('. $this->_db->Quote($res).')'
+		   ;
+		$this->_db->setQuery($q);
+		$res = $this->_db->loadObjectList();
+		return $res;
 	}
 	
 	/**
