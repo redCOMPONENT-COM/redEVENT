@@ -252,7 +252,12 @@ class RedEvent_events extends JTable
       $this->_error = JText::_( 'WARNING REDFORM TAG MUST BE INCLUDED IN REVIEW SCREEN IF NOT EMPTY');
       JError::raiseWarning(0, $this->_error);
     }
-          
+	
+    // prevent people from using {redform}x{/redform} inside the wysiwyg => replace with [redform]
+    $this->datdescription = preg_replace('#(\{redform\}.*\{/redform\})#i', '[redform]', $this->datdescription);
+    $this->review_message = preg_replace('#(\{redform\}.*\{/redform\})#i', '[redform]', $this->review_message);
+    $this->datdescription = preg_replace('#(\{redform\}.*\{/redform\})#i', '[redform]', $this->datdescription);
+    
 		return true;
 	}
 	
