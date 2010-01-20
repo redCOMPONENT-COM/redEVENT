@@ -21,7 +21,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
  
-defined('_JEXEC') or die('Restricted access'); ?>
+defined('_JEXEC') or die('Restricted access'); 
+JHTML::_('behavior.tooltip');
+$colspan = 13;
+?>
 
 <form action="index.php" method="post" name="adminForm">
 
@@ -63,16 +66,21 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<th class="title"><?php echo JText::_( 'CONFIRMED' ); ?></th>
 				<th class="title"><?php echo JText::_( 'WAITINGLIST' ); ?></th>
 				<?php foreach ($this->rf_fields as $f):?>
-				<th class="title"><?php echo $f->field; ?></th>
+					<?php $colspan++; ?>
+					<th class="title"><?php echo $f->field; ?></th>
 				<?php endforeach;?>
         <th class="title"><?php echo JText::_( 'ANSWERS' ); ?></th>
-        <th class="title"><?php echo JText::_( 'PAYMENT' ); ?></th>
+				<?php if ($this->form->activatepayment): ?>
+	        <th class="title"><?php echo JText::_( 'PRICE' ); ?></th>
+	        <th class="title"><?php echo JText::_( 'PAYMENT' ); ?></th>
+					<?php $colspan += 2; ?>
+        <?php endif; ?>
 			</tr>
 		</thead>
 
 		<tfoot>
 			<tr>
-				<td colspan="<?php echo (13+count($this->rf_fields)); ?>"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="<?php echo $colspan; ?>"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 
@@ -114,13 +122,29 @@ defined('_JEXEC') or die('Restricted access'); ?>
                               JHTML::_('image.administrator', 'tick.png'), 
                               array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'offwaiting\');', 'title' => JText::_('PUT OFF WAITING LIST')));
           }
-          ?></td>
-					<?php foreach ($this->rf_fields as $f):?>
+          ?>
+        </td>
+				
+        <?php foreach ($this->rf_fields as $f):?>
 					<?php $fname = 'field_'.$f->id; ?>
-					<td><?php echo $row->$fname; ?></th>
-					<?php endforeach;?>
-          <td><a href="<?php echo JRoute::_('index.php?option=com_redevent&view=attendeeanswers&tmpl=component&submitter_id='. $row->submitter_id); ?>" class="answersmodal"><?php echo JText::_('view')?></a></td>
-					<td><?php echo $row->status; ?></td>
+					<td><?php echo $row->$fname; ?></td>
+				<?php endforeach;?>
+        
+        <td><a href="<?php echo JRoute::_('index.php?option=com_redevent&view=attendeeanswers&tmpl=component&submitter_id='. $row->submitter_id); ?>" class="answersmodal"><?php echo JText::_('view')?></a></td>
+				
+				<?php if ($this->form->activatepayment): ?>
+					<td>
+						<?php echo $row->price; ?>
+					</td>
+					<td class="price <?php echo ($row->paid ? 'paid' : 'unpaid'); ?>">
+						<?php if (!$row->paid): ?>
+						<span class="hasTip" title="<?php echo JText::_('REGISTRATION_NOT_PAID').'::'.$row->status; ?>"><?php echo JHTML::_('image.administrator', 'publish_x.png'); ?></span>
+						<?php echo ' '.JHTML::link(JURI::root().'/index.php?option=com_redform&controller=payment&task=select&key='.$row->submit_key, JText::_('link')); ?>
+						<?php else: ?>
+						<span class="hasTip" title="<?php echo JText::_('REGISTRATION_PAID').'::'.$row->status; ?>"><?php echo JHTML::_('image.administrator', 'tick.png'); ?></span>
+						<?php endif; ?>						
+					</td>
+				<?php endif; ?>
 			</tr>
 			<?php $k = 1 - $k; $i++; } ?>
 		</tbody>

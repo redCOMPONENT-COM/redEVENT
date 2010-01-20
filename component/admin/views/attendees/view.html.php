@@ -85,9 +85,10 @@ class RedEventViewAttendees extends JView {
 		JToolBarHelper::help( 'el.registereduser', true );
 
 		// Get data from the model
-		$rows =  $this->get( 'Data');
-		$pageNav = $this->get( 'Pagination' );
-		$event = $this->get( 'Event' );
+		$rows      = $this->get( 'Data');
+		$pageNav   = $this->get( 'Pagination' );
+		$event     = $this->get( 'Event' );
+		$form      = $this->get( 'Form' );
 		$rf_fields = $this->get( 'RedFormFrontFields' );
 		
 		$event->dates = strftime($elsettings->formatdate, strtotime( $event->dates ));
@@ -127,6 +128,7 @@ class RedEventViewAttendees extends JView {
 		$this->assignRef('pageNav',   $pageNav);
 		$this->assignRef('event',     $event);
 		$this->assignRef('rf_fields', $rf_fields);
+		$this->assignRef('form',      $form);
 
 		parent::display($tpl);
 	}

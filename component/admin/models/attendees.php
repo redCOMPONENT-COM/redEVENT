@@ -204,13 +204,15 @@ class RedEventModelAttendees extends JModel
 		$orderby	= $this->_buildContentOrderBy();
 		$where		= $this->_buildContentWhere();
 
-		$query = 'SELECT r.*, u.username, u.name, a.id AS eventid, u.gid, u.email, s.answer_id, s.waitinglist, s.confirmdate, s.confirmed, s.id AS submitter_id, p.status '
+		$query = ' SELECT r.*, u.username, u.name, a.id AS eventid, u.gid, u.email '
+		       . ', s.answer_id, s.waitinglist, s.confirmdate, s.confirmed, s.id AS submitter_id, s.price, fo.activatepayment, p.paid, p.status '
 		       . $rfields
 		       . ' FROM #__redevent_register AS r '
 		       . ' LEFT JOIN #__redevent_event_venue_xref AS x ON r.xref = x.id '
 		       . ' LEFT JOIN #__redevent_events AS a ON x.eventid = a.id '
 		       . ' LEFT JOIN #__users AS u ON r.uid = u.id '
 		       . ' INNER JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key '
+		       . ' INNER JOIN #__rwf_forms AS fo ON fo.id = s.form_id '
 		       . ' LEFT JOIN #__rwf_payment AS p ON p.submit_key = s.submit_key '
 		       . $join_rwftable
 		       . $where
@@ -447,6 +449,19 @@ class RedEventModelAttendees extends JModel
       }
     }
     return true;
+  }
+  
+  function getForm()
+  {
+  	$query = ' SELECT f.* '
+  	       . ' FROM #__redevent_events AS e '
+  	       . ' INNER JOIN #__rwf_forms AS f ON e.redform_id = f.id '
+  	       . ' WHERE e.id = '. $this->_db->Quote($this->_eventid)
+  	       ;
+  	$this->_db->setQuery($query, 0, 1);
+  	$res = $this->_db->loadObject();
+//  	echo '<pre>';print_r($this->_db->getQuery()); echo '</pre>';exit;
+		return $res;
   }
 }
 ?>
