@@ -179,73 +179,22 @@ class RedEvent_events extends JTable
 
 		if(empty($this->alias) || $this->alias === $alias ) {
 			$this->alias = $alias;
-		}
-		/**
-		if (!preg_match("/^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$/", $this->dates)) {
-	      	$this->_error = JText::_( 'DATE WRONG' );
-	      	JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
-	      	return false;
-		}
-
-		if (isset($this->enddates)) {
-			if (!preg_match("/^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$/", $this->enddates)) {
-				$this->_error = JText::_( 'ENDDATE WRONG FORMAT');
-				JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
-				return false;
-			}
-		}
-
-		if (isset($this->recurrence_counter)) {
-			if (!preg_match("/^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$/", $this->recurrence_counter)) {
-	 		     	$this->_error = JText::_( 'DATE WRONG' );
-	 		     	JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
-	 		     	return false;
-			}
-		}
-
-		if (isset($this->times)) {
-   			if (!preg_match("/^[0-2][0-9]:[0-5][0-9]$/", $this->times)) {
-      			$this->_error = JText::_( 'TIME WRONG' );
-      			JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
-      			return false;
-	  		}
-		}
-
-		if (isset($this->endtimes)) {
-   			if (!preg_match("/^[0-2][0-9]:[0-5][0-9]$/", $this->endtimes)) {
-      			$this->_error = JText::_( 'TIME WRONG' );
-      			JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
-      			return false;
-	  		}
-		}
-		
-		//No venue or category choosen?
-		if($this->locid == '') {
-			$this->_error = JText::_( 'VENUE EMPTY');
-			JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
-			return false;
-		}
-		*/
-
-		
+		}		
           
 		// check that there is no loop with the tag inclusion
 		if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_email) > 0) {
       $this->_error = JText::_( 'ERROR TAG LOOP XXXXSIGNUPPAGE');
       JError::raiseWarning(0, $this->_error);
-//			return false;
 		}
 	
     if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_phone) > 0) {
       $this->_error = JText::_( 'ERROR TAG LOOP XXXXSIGNUPPAGE');
       JError::raiseWarning(0, $this->_error);
-//      return false;
     }
 	
     if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_webform) > 0) {
       $this->_error = JText::_( 'ERROR TAG LOOP XXXXSIGNUPPAGE');
       JError::raiseWarning(0, $this->_error);
-//      return false;
     }
 	
     if (!empty($this->review_message) && !strstr($this->review_message, '[redform]')) {
@@ -256,7 +205,6 @@ class RedEvent_events extends JTable
     // prevent people from using {redform}x{/redform} inside the wysiwyg => replace with [redform]
     $this->datdescription = preg_replace('#(\{redform\}.*\{/redform\})#i', '[redform]', $this->datdescription);
     $this->review_message = preg_replace('#(\{redform\}.*\{/redform\})#i', '[redform]', $this->review_message);
-    $this->datdescription = preg_replace('#(\{redform\}.*\{/redform\})#i', '[redform]', $this->datdescription);
     
 		return true;
 	}
