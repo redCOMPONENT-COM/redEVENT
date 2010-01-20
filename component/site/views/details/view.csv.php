@@ -57,8 +57,12 @@ class RedeventViewDetails extends JView
 	{
 		$model = $this->getModel();
 		
+		if (!$this->get('ManageAttendees')) {
+			JError::raiseError(403, 'Not authorized');
+		}
+		
 		$event     = $this->get('Details');		
-		$registers = $model->getRegisters(true);
+		$registers = $model->getRegisters(true, true);
 		
 		$text = "";
 		if (count($registers))
@@ -68,18 +72,22 @@ class RedeventViewDetails extends JView
 				$fields[] = $f;
 			}
 			$text .= $this->writecsvrow($fields);
-		}
-		foreach((array) $registers as $r) 
-		{
-			$data = array();
-			foreach ($r->answers as $val)
+
+			foreach((array) $registers as $r) 
 			{
-				if (stristr($val, '~~~')) {
-					$val = str_replace('~~~', '\n', $val);
+				$data = array();
+				foreach ($r->answers as $val)
+				{
+					if (stristr($val, '~~~')) {
+						$val = str_replace('~~~', '\n', $val);
+					}
+					$data[] = $val;
 				}
-				$data[] = $val;
+				$text .= $this->writecsvrow($data);
 			}
-			$text .= $this->writecsvrow($data);
+		}
+		else {
+			//$text = "no attendees";
 		}
 		$title = JFile::makeSafe($event->title .'_'. $event->dates .'_'. $event->venue .'.csv');
 		header('Content-type: application/excel');

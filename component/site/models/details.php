@@ -257,12 +257,12 @@ class RedeventModelDetails extends JModel
 	 * @since	0.9
 	 * @todo Complete CB integration
 	 */
-	function getRegisters($all_fields = false) 
+	function getRegisters($all_fields = false, $admin = false) 
 	{
 		// make sure the init is done
 		$this->getDetails();
 		
-	  if (!$this->_details->registra) {
+	  if (!$this->_details->registra && !$admin) {
 	    return null;
 	  }
 	  
@@ -284,15 +284,15 @@ class RedeventModelDetails extends JModel
 			$msg = JText::_('ERROR GETTING ATTENDEES');
 			$this->setError($msg);
 			RedeventError::raiseWarning(5, $msg);
-			return false;
+			return null;
 		}
 		else if (empty($submitters)) {
 			// no submitters
-			return false;
+			return null;
 		}
 		
 		/* At least 1 redFORM field must be selected to show the user data from */
-		if (!empty($this->_details->showfields) && $this->_details->redform_id > 0) 
+		if ((!empty($this->_details->showfields) || $admin) && $this->_details->redform_id > 0) 
 		{
 			// load form fields
 			$q = ' SELECT id, field, form_id '
@@ -306,35 +306,41 @@ class RedeventModelDetails extends JModel
       $q .= ' ORDER BY ordering ';
 			$db->setQuery($q);
 			
-			if (!$db->query()) 
+			$fields = $db->loadObjectList();
+			
+			if (!$fields) 
 			{
 				RedeventError::raiseWarning('error', JText::_('Cannot load fields').$db->getErrorMsg());
-				return false;
-			}
-			
-			
-			$fields = $db->loadObjectList();
-			$table_fields = array();
-			$fields_names = array();
-			foreach ($fields as $key => $field) {
-				$table_fields[] = 'a.field_'. $field->id;
-				$fields_names['field_'. $field->id] = $field->field;
-			}
-			
-			$query  = ' SELECT ' . implode(', ', $table_fields)
-			        . ' , s.submit_key, s.id '
-			        . ' FROM #__redevent_register AS r '
-			        . ' INNER JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key '
-			        . ' INNER JOIN #__rwf_forms_' . $fields[0]->form_id . ' AS a ON s.answer_id = a.id '
-			        . ' WHERE s.xref = ' . $this->_xref
-			        . ' AND s.confirmed = 1'
-			        ;
-			$db->setQuery($query);
-			if (!$db->query()) {
-				RedeventError::raiseWarning('error', JText::_('Cannot load registered users').' '.$db->getErrorMsg());
-				return false;
+				return null;
 			}			
-			$answers = $db->loadObjectList();
+			
+			if (count($fields)) 
+			{
+				$table_fields = array();
+				$fields_names = array();
+				foreach ($fields as $key => $field) {
+					$table_fields[] = 'a.field_'. $field->id;
+					$fields_names['field_'. $field->id] = $field->field;
+				}
+				
+				$query  = ' SELECT ' . implode(', ', $table_fields)
+				        . ' , s.submit_key, s.id '
+				        . ' FROM #__redevent_register AS r '
+				        . ' INNER JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key '
+				        . ' INNER JOIN #__rwf_forms_' . $fields[0]->form_id . ' AS a ON s.answer_id = a.id '
+				        . ' WHERE s.xref = ' . $this->_xref
+				        . ' AND s.confirmed = 1'
+				        ;
+				$db->setQuery($query);
+				if (!$db->query()) {
+					RedeventError::raiseWarning('error', JText::_('Cannot load registered users').' '.$db->getErrorMsg());
+					return null;
+				}			
+				$answers = $db->loadObjectList();
+			}
+			else {
+				$answers = array();
+			}
 			
 		  // add the answers to submitters list
 		  $registers = array();
@@ -345,7 +351,7 @@ class RedeventModelDetails extends JModel
         	$msg = JText::_('ERROR REGISTRATION WITHOUT SUBMITTER') . ': ' . $answer->id;
         	$this->setError($msg);
         	RedeventError::raiseWarning(10, $msg);
-        	return false;
+        	return null;
         }
         // build the object
         $register = new stdclass();
@@ -359,7 +365,7 @@ class RedeventModelDetails extends JModel
       }
       return $registers;
 		}
-		return false;
+		return null;
 	}
 	
 	
@@ -370,7 +376,8 @@ class RedeventModelDetails extends JModel
 	 * If logged in, this is the contact person used for multiple signups
 	 * If not logged in, the e-mail address of the submitted form is used
 	 */
-	public function userregister() {
+	public function userregister() 
+	{
 		global $mainframe;
 		
 		/* Get the global settings */
@@ -426,7 +433,8 @@ class RedeventModelDetails extends JModel
 	 * @since 0.7
 	 * @todo Fix as it is broken now
 	 */
-	function delreguser() {
+	function delreguser() 
+	{
 		$db = & JFactory::getDBO();
 		$user =  & JFactory::getUser();
 		$userid = $user->get('id');
@@ -548,8 +556,17 @@ class RedeventModelDetails extends JModel
   
   function getManageAttendees()
   {
+  	$auth =& JFactory::getACL();
+        
+    $auth->addACL('com_redevent', 'manageattendees', 'users', 'super administrator');
+    $auth->addACL('com_redevent', 'manageattendees', 'users', 'administrator');
+    $auth->addACL('com_redevent', 'manageattendees', 'users', 'manager');  	
+    
   	$user = & JFactory::getUser();
   	
+  	if ($user->authorize('com_redevent', 'manageattendees')) {
+  		return true;
+  	}
   	$query = ' SELECT gm.id '
   	       . ' FROM #__redevent_event_venue_xref AS x '
   	       . ' INNER JOIN #__redevent_groups AS g ON x.groupid = g.id '
@@ -560,7 +577,7 @@ class RedeventModelDetails extends JModel
   	       ;
   	$this->_db->setQuery($query);
   	$res = $this->_db->loadObjectList();
-  	return count($res);
+  	return (count($res) > 0);
   }
 }
 ?>
