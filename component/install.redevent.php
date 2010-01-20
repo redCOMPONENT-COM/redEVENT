@@ -763,36 +763,36 @@ if (JFile::exists(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'views'.DS.'ca
 </table>
 
 </center>
-<?php
-/* Install the sh404SEF router files */
-jimport('joomla.filesystem.file');
-jimport('joomla.filesystem.folder');
-$sh404sefext = JPATH_SITE.DS.'components'.DS.'com_sh404sef'.DS.'sef_ext';
-$sh404sefmeta = JPATH_SITE.DS.'components'.DS.'com_sh404sef'.DS.'meta_ext';
-$sh404sefadmin = JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_sh404sef';
-$redadmin = JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'extras';
-/* Check if sh404SEF is installed */
-if (JFolder::exists(JPATH_SITE.DS.'components'.DS.'com_sh404sef')) {
-	/* Copy the plugin */
-	if(!JFile::copy($redadmin.DS.'sh404sef'.DS.'sef_ext'.DS.'com_redevent.php', $sh404sefext.DS.'com_redevent.php')) {
-		echo JText::_('<b>Failed</b> to copy sh404SEF extension plugin file<br />');
+	<?php
+	/* Install the sh404SEF router files */
+	jimport('joomla.filesystem.file');
+	jimport('joomla.filesystem.folder');
+	$sh404sefext = JPATH_SITE.DS.'components'.DS.'com_sh404sef'.DS.'sef_ext';
+	$sh404sefmeta = JPATH_SITE.DS.'components'.DS.'com_sh404sef'.DS.'meta_ext';
+	$sh404sefadmin = JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_sh404sef';
+	$redadmin = JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'extras';
+	/* Check if sh404SEF is installed */
+	if (JFolder::exists(JPATH_SITE.DS.'components'.DS.'com_sh404sef')) {
+		/* Copy the plugin */
+		if(!JFile::copy($redadmin.DS.'sh404sef'.DS.'sef_ext'.DS.'com_redevent.php', $sh404sefext.DS.'com_redevent.php')) {
+			echo JText::_('<b>Failed</b> to copy sh404SEF extension plugin file<br />');
+		}
+		if(!JFile::copy($redadmin.DS.'sh404sef'.DS.'meta_ext'.DS.'com_redevent.php', $sh404sefmeta.DS.'com_redevent.php')) {
+			echo JText::_('<b>Failed</b> to copy sh404SEF meta plugin file<br />');
+		}
+		if(!JFile::copy($redadmin.DS.'sh404sef'.DS.'language'.DS.'com_redevent.php', $sh404sefadmin.DS.'language'.DS.'plugins'.DS.'com_redevent.php')) {
+			echo JText::_('<b>Failed</b> to copy sh404SEF plugin language file<br />');
+		}
+		
+		?>
+		<h3>Note for sh404sef</h3>
+		<p>If you want your modules to avoid disappearing while you browse pages on redevent, you should set "Insert menu Itemid if none", "Insert menu title if no Itemid"
+		and "Always insert menu title" to "yes" in sh404sef configuration > advanced tab > category "itemid management"</p>
+		<?php
 	}
-	if(!JFile::copy($redadmin.DS.'sh404sef'.DS.'meta_ext'.DS.'com_redevent.php', $sh404sefmeta.DS.'com_redevent.php')) {
-		echo JText::_('<b>Failed</b> to copy sh404SEF meta plugin file<br />');
-	}
-	if(!JFile::copy($redadmin.DS.'sh404sef'.DS.'language'.DS.'com_redevent.php', $sh404sefadmin.DS.'language'.DS.'plugins'.DS.'com_redevent.php')) {
-		echo JText::_('<b>Failed</b> to copy sh404SEF plugin language file<br />');
-	}
-	
 	?>
-	<h3>Note for sh404sef</h3>
-	<p>If you want your modules to avoid disappearing while you browse pages on redevent, you should set "Insert menu Itemid if none", "Insert menu title if no Itemid"
-	and "Always insert menu title" to "yes" in sh404sef configuration > advanced tab > category "itemid management"</p>
 	<p>Remember to check for updates on: 
 	<a href="http://redcomponent.com/" target="_new"><img src="http://images.redcomponent.com/redcomponent.jpg" alt=""></a></p>	
-	<?php
-	
-}
-
-}
+	<?php 
+} // end com_install
 ?>
