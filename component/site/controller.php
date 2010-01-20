@@ -427,7 +427,7 @@ class RedeventController extends JController
 		if ($task == 'managedelreguser')
 		{
 			$msg = JText::_( 'REGISTRATION REMOVAL SUCCESSFULL' );			
-	    $this->setRedirect( JRoute::_('index.php?option=com_redevent&view=details&id='.$id.'&tpl=manage_attendees&xref=' . $xref, false), $msg );
+	    $this->setRedirect( JRoute::_('index.php?option=com_redevent&view=details&id='.$id.'&layout=manageattendees&xref=' . $xref, false), $msg );
 		}
 		else
 		{

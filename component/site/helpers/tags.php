@@ -101,6 +101,8 @@ class redEVENT_tags {
 	 * [waitinglistplaces]
 	 * [eventplacesleft]
 	 * [waitinglistplacesleft] 
+	 * [paymentrequest]
+	 * [paymentrequestlink]
 	 */
 	public function ReplaceTags($page) 
 	{
@@ -445,6 +447,17 @@ class redEVENT_tags {
 				      $submit_key = JRequest::getVar('submit_key');
 				      if (!empty($submit_key)) {
               	$replace[] = JHTML::link(JRoute::_('index.php?option=com_redform&controller=payment&task=select&source=redevent&key='.$submit_key, false), JText::_('Checkout'), '');
+				      }
+				      else {
+				      	$replace[] = '';
+				      }
+				    	break;
+				    	
+				    case 'paymentrequestlink':
+				      $search[]  = '['.$tag.']';
+				      $submit_key = JRequest::getVar('submit_key');
+				      if (!empty($submit_key)) {
+              	$replace[] = JRoute::_('index.php?option=com_redform&controller=payment&task=select&source=redevent&key='.$submit_key, false);
 				      }
 				      else {
 				      	$replace[] = '';

@@ -42,8 +42,12 @@ class RedeventViewDetails extends JView
 	 */
 	function display($tpl = null)
 	{
-		global $mainframe;
+		if ($this->getLayout() == 'manageattendees')
+		{
+			return $this->_displayManageAttendees($tpl);
+		}
 		
+		global $mainframe;
 		/* Set which page to show */
 		$tpl = JRequest::getVar('page', null);
 		
@@ -70,7 +74,7 @@ class RedeventViewDetails extends JView
 		
 		/* This loads the tags replacer */
 		JView::loadHelper('tags');
-		$tags = new redEVENT_tags;
+		$tags = new redEVENT_tags();
 		$this->assignRef('tags', $tags);
 		
 		//get menu information
@@ -117,7 +121,6 @@ class RedeventViewDetails extends JView
 		
 		//Check user if he can edit
 		$allowedtoeditevent = ELUser::editaccess($elsettings->eventowner, $row->created_by, $elsettings->eventeditrec, $elsettings->eventedit);
-		$manage_attendees  = $this->get('ManageAttendees');
 		// $allowedtoeditvenue = ELUser::editaccess($elsettings->venueowner, $row->venueowner, $elsettings->venueeditrec, $elsettings->venueedit);
 		
 		//Timecheck for registration
@@ -127,7 +130,7 @@ class RedeventViewDetails extends JView
 		$timecheck = $now - $date;
 				
 		//is the user allready registered at the event
-		if ( $regcheck || $manage_attendees ) {
+		if ( $regcheck ) {
 			// add javascript code for cancel button on attendees layout.
 			JHTML::_('behavior.mootools');
 			$js = " window.addEvent('domready', function(){
@@ -240,13 +243,105 @@ class RedeventViewDetails extends JView
 		$this->assignRef('redform_install'	, $redform_install);
 		$this->assignRef('venuedates'	, $venuedates);
     $this->assignRef('unreg_check' , $unreg_check);
-    $this->assignRef('manage_attendees' , $manage_attendees);
 		
 		$tpl = JRequest::getVar('tpl', $tpl);
 		
 		parent::display($tpl);
 	}
 
+/**
+	 * Creates the output for the manage attendees layout
+	 *
+ 	 * @since 2.0
+	 */
+	function _displayManageAttendees($tpl = null)
+	{	
+		$mainframe = &JFactory::getApplication();			
+		$document 	= JFactory::getDocument();
+		$user		= JFactory::getUser();
+		$elsettings = redEVENTHelper::config();
+		
+		$row		= $this->get('Details');
+		$registers	= $this->get('Registers');
+		$regcheck	= $this->get('ManageAttendees');
+		$model_event = $this->getModel('Event', 'RedEventModel');
+				
+		/* Check if redFORM is installed */
+		$redform_install = $model_event->getCheckredFORM();
+				
+		//get menu information
+		$menu		= & JSite::getMenu();
+		$item    	= $menu->getActive();
+		if (!$item) $item = $menu->getDefault();
+		
+		$params 	= & $mainframe->getParams('com_redevent');
+
+		//Check if the id exists
+		if ($row->did == 0)
+		{
+			return JError::raiseError( 404, JText::sprintf( 'Event #%d not found', $row->did ) );
+		}
+
+		//Check if user has access to the attendees management
+		if (!$regcheck) {
+			return JError::raiseError( 403, JText::_( 'NO ACCESS' ) );
+		}
+
+		//add css file
+    if (!$params->get('custom_css')) {
+      $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
+    }
+    else {
+      $document->addStyleSheet($params->get('custom_css'));     
+    }
+		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
+
+		$params->def( 'page_title', JText::_( 'Manage attendees' ));
+
+		//pathway
+		$pathway 	= & $mainframe->getPathWay();
+		$pathway->addItem( JText::_( 'Manage attendees' ). ' - '.$row->title, JRoute::_('index.php?option=com_redevent&view=details&layout=manageattendees&id='.$row->slug));
+		
+		//Check user if he can edit
+		$manage_attendees  = $this->get('ManageAttendees');
+		
+			// add javascript code for cancel button on attendees layout.
+			JHTML::_('behavior.mootools');
+			$js = " window.addEvent('domready', function(){
+		            $$('.unreglink').addEvent('click', function(event){
+		                  if (confirm('".JText::_('CONFIRM CANCEL REGISTRATION')."')) {
+                      	return true;
+	                    }
+	                    else {
+	                    	if (event.preventDefault) {
+	                    		event.preventDefault();
+												} else {
+													event.returnValue = false;
+												}
+												return false;
+                    	}
+		            });		            
+		        }); ";
+      $document->addScriptDeclaration($js);
+		
+		//set page title and meta stuff
+		$document->setTitle( $item->name.' - '.$row->title );				    
+		
+		//assign vars to jview
+		$this->assignRef('row', 					$row);
+		$this->assignRef('params' , 				$params);
+    $this->assignRef('user' ,         $user);
+		$this->assignRef('registers' , 				$registers);
+		$this->assignRef('elsettings' , 			$elsettings);
+		$this->assignRef('item' , 					$item);
+		$this->assignRef('formcheck' ,				$formcheck); // TODO: still used ?
+		$this->assignRef('messages' ,				$messages);
+		$this->assignRef('redform_install'	, $redform_install);
+    $this->assignRef('manage_attendees' , $manage_attendees);
+				
+		parent::display($tpl);
+	}
+	
 	/**
 	 * structures the keywords
 	 *
