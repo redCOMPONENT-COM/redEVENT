@@ -478,6 +478,11 @@ class redEVENT_tags {
               $replace[] = $this->_data->plz;
       				break;
       				
+				    case 'venue_state':
+				      $search[]  = '['.$tag.']';
+              $replace[] = $this->_data->state;
+      				break;
+      				
 				    case 'venue_link':
 				      $search[]  = '['.$tag.']';
       				$replace[] = JHTML::link(JRoute::_(RedeventHelperRoute::getVenueEventsRoute($this->_data->venueslug)), $this->_data->venue);

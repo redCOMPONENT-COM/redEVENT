@@ -329,6 +329,7 @@ class RedEventViewEvent extends JView {
 		$tags['venue_city'] = JText::_('SUBMISSION_EVENT_CITY');
 		$tags['venue_street'] = JText::_('SUBMISSION_EVENT_STREET');
 		$tags['venue_zip'] = JText::_('SUBMISSION_EVENT_ZIP');
+		$tags['venue_state'] = JText::_('SUBMISSION_EVENT_STATE');
 		$tags['venue_website'] = JText::_('SUBMISSION_EVENT_VENUE_WEBSITE');
 		$tags['webformsignup'] = JText::_('SUBMISSION_WEBFORM_SIGNUP_LINK');
 		$tags['emailsignup'] = JText::_('SUBMISSION_EMAIL_SIGNUP_LINK');
