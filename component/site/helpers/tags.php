@@ -502,6 +502,11 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
               $replace[] = JHTML::link(JRoute::_(RedeventHelperRoute::getDetailsRoute($this->_data->slug), false), JText::_('Permanent link'), 'class="permalink"');
       				break;
+      				      				
+				    case 'datelink':
+				      $search[]  = '['.$tag.']';
+              $replace[] = JHTML::link(JRoute::_(RedeventHelperRoute::getDetailsRoute($this->_data->slug, $this->_xref), false), JText::_('Event details'), 'class="datelink"');
+      				break;
       				
 				    case 'paymentrequest':
 				      $search[]  = '['.$tag.']';

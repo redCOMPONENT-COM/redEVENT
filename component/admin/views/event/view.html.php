@@ -351,6 +351,7 @@ class RedEventViewEvent extends JView {
 		$tags['waitinglistplacesleft'] = JText::_('SUBMISSION_WAITINGLISTPLACES_LEFT');
 		$tags['info'] = JText::_('SUBMISSION_XREF_INFO');
 		$tags['permanentlink'] = JText::_('SUBMISSION_PERMANENT_LINK');
+		$tags['datelink'] = JText::_('SUBMISSION_DATE_LINK');
 		$tags['redform'] = JText::_('SUBMISSION_EVENT_REDFORM');
 		$tags['paymentrequest'] = JText::_('SUBMISSION_EVENT_PAYMENTREQUEST');
 		$tags['paymentrequestlink'] = JText::_('SUBMISSION_EVENT_PAYMENTREQUESTLINK');
