@@ -320,8 +320,11 @@ class RedEventViewEvent extends JView {
 		$tags['event_title'] = JText::_('SUBMISSION_EVENT_TITLE');
 		$tags['time'] = JText::_('SUBMISSION_EVENT_TIME');
 		$tags['date'] = JText::_('SUBMISSION_EVENT_DATE');
+		$tags['enddate'] = JText::_('SUBMISSION_EVENT_ENDDATE');
+		$tags['startenddatetime'] = JText::_('SUBMISSION_EVENT_STARTENDDATETIME');
 		$tags['duration'] = JText::_('SUBMISSION_EVENT_DURATION');
 		$tags['venue_title'] = JText::_('SUBMISSION_EVENT_VENUE');
+		$tags['venue_link'] = JText::_('SUBMISSION_EVENT_VENUELINK');
 		$tags['venue_city'] = JText::_('SUBMISSION_EVENT_CITY');
 		$tags['venue_street'] = JText::_('SUBMISSION_EVENT_STREET');
 		$tags['venue_zip'] = JText::_('SUBMISSION_EVENT_ZIP');

@@ -196,12 +196,42 @@ class redEVENT_tags {
       				
 				    case 'time':
 				      $search[]  = '['.$tag.']';
-      				$replace[] = ELOutput::formattime($this->_data->dates, $this->_data->times).' - '.ELOutput::formattime($this->_data->enddates, $this->_data->endtimes);
+				  		$text = "";
+				      if (!empty($this->_data->times) && strcasecmp('00:00:00', $this->_data->times)) 
+				  		{
+				      	$text = ELOutput::formattime($this->_data->dates, $this->_data->times);
+				      					  		
+					      if (!empty($this->_data->endtimes) && strcasecmp('00:00:00', $this->_data->endtimes)) {
+					      	$text .= ' - ' .ELOutput::formattime($this->_data->enddates, $this->_data->endtimes);				      	
+				      	}
+				      }
+      				$replace[] = $text;
       				break;
       				
 				    case 'date':
 				      $search[]  = '['.$tag.']';
       				$replace[] = ELOutput::formatdate($this->_data->dates, $this->_data->times);
+      				break;
+      				
+				    case 'enddate':
+				      $search[]  = '['.$tag.']';
+      				$replace[] = ELOutput::formatdate($this->_data->enddates, $this->_data->endtimes);
+      				break;
+      				
+				    case 'startenddatetime':
+				      $search[]  = '['.$tag.']';
+				      $text = ELOutput::formatdate($this->_data->dates, $this->_data->times);
+				      if (!empty($this->_data->times) && strcasecmp('00:00:00', $this->_data->times)) {
+				      	$text .= ' ' .ELOutput::formattime($this->_data->dates, $this->_data->times);	
+				      }
+				      if (!empty($this->_data->enddates) && $this->_data->enddates != $this->_data->dates)
+				      {
+				      	$text .= ' - ' .ELOutput::formatdate($this->_data->enddates, $this->_data->endtimes);
+				      }
+				      if (!empty($this->_data->endtimes) && strcasecmp('00:00:00', $this->_data->endtimes)) {
+				      	$text .= ' ' .ELOutput::formattime($this->_data->dates, $this->_data->endtimes);				      	
+				      }
+      				$replace[] = $text;
       				break;
       				
 				    case 'duration':
@@ -212,6 +242,11 @@ class redEVENT_tags {
 				    case 'venue':
 				      $search[]  = '['.$tag.']';
       				$replace[] = $this->_data->venue;
+      				break;
+      				
+				    case 'venue_link':
+				      $search[]  = '['.$tag.']';
+      				$replace[] = JHTML::link(JRoute::_(RedeventHelperRoute::getVenueEventsRoute($this->_data->venueslug)), $this->_data->venue);
       				break;
       				
 				    case 'city':
