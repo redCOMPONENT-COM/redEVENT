@@ -239,14 +239,20 @@ class redEVENT_tags {
       				$replace[] = redEVENTHelper::getEventDuration($this->_data);
       				break;
       				
+				    case 'registrationend':
+				      $search[]  = '['.$tag.']';
+				      if (strtotime($this->_data->registrationend)) 
+				      {
+				      	$replace[] = strftime( $elsettings->formatdate . ' '. $elsettings->formattime, strtotime($this->_data->registrationend));
+				  		}
+				  		else {
+				  			$replace[] = '';
+				  		}
+      				break;
+      				
 				    case 'venue':
 				      $search[]  = '['.$tag.']';
       				$replace[] = $this->_data->venue;
-      				break;
-      				
-				    case 'venue_link':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = JHTML::link(JRoute::_(RedeventHelperRoute::getVenueEventsRoute($this->_data->venueslug)), $this->_data->venue);
       				break;
       				
 				    case 'city':
@@ -471,6 +477,21 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
               $replace[] = $this->_data->plz;
       				break;
+      				
+				    case 'venue_link':
+				      $search[]  = '['.$tag.']';
+      				$replace[] = JHTML::link(JRoute::_(RedeventHelperRoute::getVenueEventsRoute($this->_data->venueslug)), $this->_data->venue);
+      				break;
+      				
+				    case 'venue_website':
+				      $search[]  = '['.$tag.']';
+				      if (!empty($this->_data->venueurl)) {
+      					$replace[] = JHTML::link(JRoute::_(($this->_data->venueurl)), JText::_('Venue website'));		      	
+				      }
+				      else {
+				      	$replace[] = '';
+				      }
+      				break;
       				      				
 				    case 'permanentlink':
 				      $search[]  = '['.$tag.']';
@@ -626,7 +647,7 @@ class redEVENT_tags {
 		$db = JFactory::getDBO();
 		$query = ' SELECT e.*, IF (x.course_credit = 0, "", x.course_credit) AS course_credit, x.course_price, '
 		   . ' x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees, x.maxwaitinglist, v.venue, x.venueid, x.details, x.registrationend, '
-		   . ' v.city AS location, v.state, '
+		   . ' v.city AS location, v.state, v.url as venueurl, '
 		   . ' v.country, v.locimage, v.street, v.plz, '
 		   . ' UNIX_TIMESTAMP(x.dates) AS unixdates, '
 		   . ' CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(":", e.id, e.alias) ELSE e.id END as slug, '
