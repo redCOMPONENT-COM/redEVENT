@@ -217,6 +217,16 @@ if (is_array($cols)) {
     $db->setQuery($q);
     $db->query();
   }	
+	
+  /* Check if we have the paymentaccepted column */
+  if (!array_key_exists('paymentaccepted', $cols)) {
+    $q = "ALTER IGNORE TABLE `#__redevent_events` ADD `paymentaccepted` text DEFAULT NULL`";
+    $db->setQuery($q);
+    $db->query();
+    $q = "ALTER IGNORE TABLE `#__redevent_events` ADD `paymentprocessing` text DEFAULT NULL`";
+    $db->setQuery($q);
+    $db->query();
+  }	
 }
 
 

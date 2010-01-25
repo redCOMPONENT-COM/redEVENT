@@ -137,6 +137,10 @@ class RedEvent_events extends JTable
 	var $send_pdf_form			= null;
 	/** @var int */
 	var $pdf_form_data			= null;
+	/** @var string */
+	var $paymentaccepted	= null;
+	/** @var string */
+	var $paymentprocessing	= null;
 	
 	
 	function redevent_events(& $db) {

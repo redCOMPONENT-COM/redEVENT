@@ -133,6 +133,12 @@ echo $this->pane->startPane("det-pane");
  	echo $this->loadTemplate('registration');
 	echo $this->pane->endPanel();
 	
+	$title = JText::_( 'PAYMENT' );
+  $k = 0;
+	echo $this->pane->startPanel( $title, 'payment' );
+ 	echo $this->loadTemplate('payment');
+	echo $this->pane->endPanel();
+	
 	$title = JText::_( 'IMAGE' );
 	echo $this->pane->startPanel( $title, 'image' );
 	$k = 0;

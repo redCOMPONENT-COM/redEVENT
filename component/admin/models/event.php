@@ -253,6 +253,8 @@ class RedEventModelEvent extends JModel
 			$event->show_submission_type_webform_formal_offer = 0;
 			$event->send_pdf_form = 0;
 			$event->pdf_form_data = 0;
+			$event->paymentaccepted = null;
+			$event->paymentprocessing = null;
 			$this->_data						= $event;
 			return (boolean) $this->_data;
 		}
