@@ -220,10 +220,10 @@ if (is_array($cols)) {
 	
   /* Check if we have the paymentaccepted column */
   if (!array_key_exists('paymentaccepted', $cols)) {
-    $q = "ALTER IGNORE TABLE `#__redevent_events` ADD `paymentaccepted` text DEFAULT NULL`";
+    $q = "ALTER IGNORE TABLE `#__redevent_events` ADD `paymentaccepted` text DEFAULT NULL";
     $db->setQuery($q);
     $db->query();
-    $q = "ALTER IGNORE TABLE `#__redevent_events` ADD `paymentprocessing` text DEFAULT NULL`";
+    $q = "ALTER IGNORE TABLE `#__redevent_events` ADD `paymentprocessing` text DEFAULT NULL";
     $db->setQuery($q);
     $db->query();
   }	
@@ -801,6 +801,7 @@ if (JFile::exists(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'views'.DS.'ca
 		<?php
 	}
 	?>
+	<p><a href="index.php?option=com_redevent&task=sampledata">click here</a> to <span style="color:red;font-weight:bold;">install sample data</span></p>
 	<p>Remember to check for updates on: 
 	<a href="http://redcomponent.com/" target="_new"><img src="http://images.redcomponent.com/redcomponent.jpg" alt=""></a></p>	
 	<?php 
