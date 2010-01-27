@@ -353,8 +353,17 @@ class RedEventModelEvents extends JModel
 				return false;
 			}
 			else {
+				// delete corresponding event_venue
 				$query = 'DELETE FROM #__redevent_event_venue_xref'
 					. ' WHERE eventid IN ('. $cids .')';
+					$this->_db->setQuery( $query );
+				if(!$this->_db->query()) {
+					$this->setError($this->_db->getErrorMsg());
+					return false;
+				}
+				// delete corresponding event_category
+				$query = 'DELETE FROM #__redevent_event_category_xref'
+					. ' WHERE event_id IN ('. $cids .')';
 					$this->_db->setQuery( $query );
 				if(!$this->_db->query()) {
 					$this->setError($this->_db->getErrorMsg());

@@ -177,5 +177,12 @@ class RedEventController extends JController
 
 		parent::display();  	
   }
+  
+  function sampledata()
+  {
+  	$model = &JModel::getInstance('sample',  'RedEventModel');
+  	$model->create();
+    $this->setRedirect( 'index.php?option=com_redevent', JText::_('Sample data created') );
+  }
 }
 ?>
