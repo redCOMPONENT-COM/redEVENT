@@ -193,6 +193,32 @@ class RedEventModelEvent extends JModel
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_data))
 		{
+			$params = &JComponentHelper::getParams( 'com_redevent' );
+			
+			if ($params->get('default_content', 0))
+			{
+				$id = (int) $params->get('default_content', 0);
+				$query = 'SELECT e.* '
+						. ' FROM #__redevent_events AS e'
+						. ' WHERE e.id = '.$id
+						;
+				$this->_db->setQuery($query);
+				$event = $this->_db->loadObject();
+				if (!empty($event)) 
+				{
+					$event->id              = 0;
+					$event->title						= null;
+					$event->alias						= null;
+					$event->categories			= null;
+		      $event->categories_ids  = null;
+					$event->created						= null;
+					$event->author_ip					= null;
+					$event->created_by					= null;
+		      $this->_data = $event;
+					return (boolean) $this->_data;					
+				}
+			}
+			
 			$event = new stdClass();
 			$event->id							= 0;
 			$event->locid						= 0;

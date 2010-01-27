@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-	<params>
+	<params addpath="/administrator/components/com_redevent/elements">
 		<param name="display_num" type="list" default="15" label="EVENT NUMBER" description="EVENT NUMBER TIP">
 			<option value="5">5</option>
 			<option value="10">10</option>
@@ -40,6 +40,7 @@
       <option value="MO">MONDAY</option>
     </param>
     <param name="recurrence_limit" type="text" default="30" label="RECURRENCE ANTICIPATION WINDOW" description="RECURRENCE ANTICIPATION WINDOW DESC" />
+		<param name="default_content" type="event" default="0" label="SELECT EVENT DEFAULT CONTENT" description="SELECT EVENT DEFAULT CONTENT DESC" />
  	</params>
  	<params group="Layout">
     <param name="details_attendees_layout" type="list" default="0" label="DETAILS ATTENDEES LAYOUT" description="DETAILS ATTENDEES LAYOUT TIP">
