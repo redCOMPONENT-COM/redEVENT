@@ -73,5 +73,25 @@ defined('_JEXEC') or die('Restricted access');
       <?php echo JText::_( 'TRIGGER AUTOARCHIVE DESC' ); ?>
     </td>	
 	</tr>
+	<tr>
+    <td width="10%">
+      <div class="linkicon">
+        <a href="index.php?option=com_redevent&amp;task=sampledata">
+          <?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/icon-48-cleaneventimg.png',  JText::_( 'ADD SAMPLE DATA' ) ); ?>
+          <span><?php echo JText::_( 'ADD SAMPLE DATA' ); ?></span>
+        </a>
+      </div>
+    </td>
+    <td width="40%" valign="middle">
+      <?php echo JText::_( 'ADD SAMPLE DATA DESC' ); ?>
+    </td>	
+    
+    <td width="10%">
+      <div class="linkicon">
+      </div>
+    </td>
+    <td width="40%" valign="middle">
+    </td>	
+	</tr>
 	
 </table>

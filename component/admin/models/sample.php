@@ -39,11 +39,32 @@ class RedEventModelSample extends JModel
 	 */
 	function create()
 	{
-		$category = $this->_createCategory();
-		$venue    = $this->_createVenue();
+		$category = $this->_getCategory();
+		$venue    = $this->_getVenue();
 		$event    = $this->_createEvent($category);
 		$xref     = $this->_createXref($event, $venue);
 		return true;
+	}
+	
+	/**
+	 * return a category id
+	 * @return int
+	 */
+	function _getCategory()
+	{
+		$query = ' SELECT id '
+		       . ' FROM #__redevent_categories '
+		       . ' WHERE published = 1 '
+		       ;
+		$this->_db->setQuery($query, 0, 1);
+		$res = $this->_db->loadResult();
+		
+		if (!$res) {
+			return $this->_createCategory();
+		}
+		else {
+			return $res;
+		}
 	}
 	
 	/**
@@ -65,6 +86,28 @@ class RedEventModelSample extends JModel
 		else {
 			$this->setError(JText::_('Error creating sample category'));
 			return false;
+		}
+	}
+
+	
+	/**
+	 * return a venue id
+	 * @return int
+	 */
+	function _getvenue()
+	{
+		$query = ' SELECT id '
+		       . ' FROM #__redevent_venues '
+		       . ' WHERE published = 1 '
+		       ;
+		$this->_db->setQuery($query, 0, 1);
+		$res = $this->_db->loadResult();
+		
+		if (!$res) {
+			return $this->_createVenue();
+		}
+		else {
+			return $res;
 		}
 	}
 	
@@ -96,21 +139,65 @@ class RedEventModelSample extends JModel
 	 */
 	function _createEvent($category)
 	{
-		$row = &JTable::getInstance('redevent_events', '');
-		$row->title          = 'Event S1';
-		$row->datdescription = '<b>Sample event</b><br/><br/>[venues]';
-		$row->published      = 1;
-		$row->redform_id     = 1;
+		$event = &JTable::getInstance('redevent_events', '');
+		$event->title          = JText::_('REDEVENT_SAMPLE_EVENT_TITLE');
+		$event->datdescription = JText::_('REDEVENT_SAMPLE_EVENT_DESCRIPTION');
+		$event->published      = 1;
+		$event->redform_id     = 1;
 		
-		if ($row->check() && $row->store()) 
+		$event->registra       = 1;
+		$event->unregistra     = 0;
+		$event->juser          = 0;
+		
+		$event->notify_on_list_subject    = JText::_('REDEVENT_SAMPLE_EVENT_NOTIFY_ON_LIST_SUBJECT');
+		$event->notify_on_list_body       = JText::_('REDEVENT_SAMPLE_EVENT_NOTIFY_ON_LIST_BODY');
+		$event->notify_off_list_subject   = JText::_('REDEVENT_SAMPLE_EVENT_NOTIFY_OFF_LIST_SUBJECT');
+		$event->notify_off_list_body      = JText::_('REDEVENT_SAMPLE_EVENT_NOTIFY_OFF_LIST_BODY');
+		
+		$event->notify                 = 1;
+		$event->activate               = 0;
+		$event->notify_subject         = JText::_('REDEVENT_SAMPLE_EVENT_NOTIFY_SUBJECT');
+		$event->notify_body            = JText::_('REDEVENT_SAMPLE_EVENT_NOTIFY_BODY');
+		$event->notify_confirm_subject = JText::_('REDEVENT_SAMPLE_EVENT_NOTIFY_CONFIRM_SUBJECT');
+		$event->notify_confirm_body    = JText::_('REDEVENT_SAMPLE_EVENT_NOTIFY_CONFIRM_BODY');
+		
+		$event->review_message       = JText::_('REDEVENT_SAMPLE_EVENT_REVIEW_MESSAGE');
+		$event->confirmation_message = JText::_('REDEVENT_SAMPLE_EVENT_CONFIRMATION_MESSAGE');
+		
+		$event->show_names           = 0;
+		$event->showfields           = '';
+		
+		$event->submission_types         = 'webform';
+		$event->submission_type_email    = null;
+		$event->submission_type_external = null;
+		$event->submission_type_phone    = null;
+		$event->max_multi_signup			   = 1;
+		$event->submission_type_formal_offer = null;
+		$event->submission_type_formal_offer_subject = null;
+		$event->submission_type_formal_offer_body    = null;
+		$event->submission_type_email_body           = null;
+		$event->submission_type_email_pdf            = null;
+		$event->submission_type_formal_offer_pdf     = null;
+		$event->submission_type_webform              = JText::_('REDEVENT_SAMPLE_EVENT_WEBFORM');
+		$event->submission_type_email_subject        = null;
+		$event->submission_type_webform_formal_offer = null;
+		$event->show_submission_type_webform_formal_offer = 0;
+		
+		$event->send_pdf_form = 0;
+		$event->pdf_form_data = 0;
+		
+		$event->paymentaccepted   = JText::_('REDEVENT_SAMPLE_EVENT_PAYMENTACCEPTED');
+		$event->paymentprocessing = JText::_('REDEVENT_SAMPLE_EVENT_PAYMENTPROCESSING');
+		
+		if ($event->check() && $event->store()) 
 		{
-		  $query = ' INSERT INTO #__redevent_event_category_xref (event_id, category_id) VALUES (' . $this->_db->Quote($row->id) . ', '. $this->_db->Quote($category) . ')';
+		  $query = ' INSERT INTO #__redevent_event_category_xref (event_id, category_id) VALUES (' . $this->_db->Quote($event->id) . ', '. $this->_db->Quote($category) . ')';
 		  $this->_db->setQuery($query);
 	    if (!$this->_db->query()) {
 	      $this->setError($this->_db->getErrorMsg());
 	      return false;     
 	    }		  
-			return $row->id;
+			return $event->id;
 		}
 		else {
 			$this->setError(JText::_('Error creating sample event'));
