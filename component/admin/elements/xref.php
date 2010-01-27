@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.0 $Id$
+ * @version 1.0 $Id: event.php 230 2009-06-10 09:17:42Z julien $
  * @package Joomla
  * @subpackage redEVENT
  * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
@@ -32,7 +32,7 @@ defined('_JEXEC') or die();
  * @since 0.9
  */
 
-class JElementEvent extends JElement
+class JElementXref extends JElement
 {
    /**
 	* Element name
@@ -40,7 +40,7 @@ class JElementEvent extends JElement
 	* @access	protected
 	* @var		string
 	*/
-	var	$_name = 'Title';
+	var	$_name = 'xref';
 
 	function fetchElement($name, $value, &$node, $control_name)
 	{
@@ -51,7 +51,7 @@ class JElementEvent extends JElement
 
 		$event =& JTable::getInstance('redevent_events', '');
 		if ($value) {
-			$event->load($value);
+			$event->xload($value);
 		} else {
 			$event->title = JText::_('SELECTEVENT');
 		}
@@ -63,7 +63,7 @@ class JElementEvent extends JElement
 			document.getElementById('sbox-window').close();
 		}";
 
-		$link = 'index.php?option=com_redevent&amp;view=eventelement&amp;tmpl=component';
+		$link = 'index.php?option=com_redevent&amp;view=eventelement&amp;layout=xref&amp;tmpl=component';
 		$doc->addScriptDeclaration($js);
 
 		JHTML::_('behavior.modal', 'a.modal');
