@@ -23,7 +23,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-
+<?php if (!count( $this->rows )):?>
+<p><?php echo JHTML::link('index.php?option=com_redevent&task=sampledata', JText::_('Add sample data')); ?></p>
+<?php endif;?>
 <form action="index.php" method="post" name="adminForm">
 
 	<table class="adminform">
