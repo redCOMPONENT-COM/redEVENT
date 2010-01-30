@@ -210,7 +210,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
           <td headers="el_category" align="left" valign="top">
           <?php foreach ($row->categories as $k => $cat): ?>
             <?php if ($this->elsettings->catlinklist == 1) : ?> 
-              <a href="<?php echo JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($cat->slug); ?>">
+              <a href="<?php echo JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($cat->slug)); ?>">
                 <?php echo $cat->catname ? $this->escape($cat->catname) : '-' ; ?>
               </a>
             <?php else: ?>
