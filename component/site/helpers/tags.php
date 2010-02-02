@@ -529,6 +529,17 @@ class redEVENT_tags {
 				      	$replace[] = '';
 				      }
 				    	break;
+				    	
+				    case 'registrationid':
+				      $search[]  = '['.$tag.']';
+				      $submit_key = JRequest::getVar('submit_key');
+				      if (!empty($submit_key)) {
+				      	$replace[] = $this->getAttendeeUniqueId($submit_key);
+				      }
+				      else {
+				      	$replace[] = '';
+				      }
+				    	break;
 				  }
 				    
 				}
@@ -991,5 +1002,26 @@ class redEVENT_tags {
   	}
   	return $this->_xrefcustomfields;
   }
+  
+  function getAttendeeUniqueId($submit_key)
+  {
+  	$db = & JFactory::getDBO();
+  	$query = ' SELECT e.title, e.alias, e.course_code, r.xref, r.id '
+  	       . ' FROM #__redevent_register AS r '
+  	       . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.id = r.xref '
+  	       . ' INNER JOIN #__redevent_events AS e ON e.id = x.eventid '
+  	       . ' WHERE r.submit_key = '. $db->Quote($submit_key)
+  	       ;
+  	$db->setQuery($query, 0, 1);
+  	$obj = $db->loadObject();
+  	if ($obj) {
+  		$code = $obj->course_code .'-'. $obj->xref .'-'. $obj->id;
+  	}
+  	else {
+  		$code = '';
+  	}
+  	return $code;
+  }
+  	
 }
 ?>
