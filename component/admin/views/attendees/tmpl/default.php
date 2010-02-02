@@ -23,7 +23,7 @@
  
 defined('_JEXEC') or die('Restricted access'); 
 JHTML::_('behavior.tooltip');
-$colspan = 13;
+$colspan = 14;
 ?>
 
 <form action="index.php" method="post" name="adminForm">
@@ -60,6 +60,7 @@ $colspan = 13;
 				<th class="title"><?php echo JText::_('REGDATE' ); ?></th>
 				<th class="title"><?php echo JText::_('CONFIRMDATE' ); ?></th>
 				<th class="title"><?php echo JText::_( 'IP ADDRESS' ); ?></th>
+				<th class="title"><?php echo JText::_( 'UNIQUE ID' ); ?></th>
 				<!-- <th class="title"><?php echo JHTML::_('grid.sort', 'USERNAME', 'r.uid', $this->lists['order_Dir'], $this->lists['order'] ); ?></th> -->
 				<th class="title"><?php echo JText::_( 'USERNAME' ); ?></th>
 				<th class="title"><?php echo JText::_( 'REMOVE USER' ); ?></th>
@@ -96,6 +97,7 @@ $colspan = 13;
 				<td><?php echo JHTML::Date( $row->uregdate, JText::_( 'DATE_FORMAT_LC2' ) ); ?></td>
 				<td><?php echo ($row->confirmdate) ? JHTML::Date( $row->confirmdate, JText::_( 'DATE_FORMAT_LC2' ) ) : '-'; ?></td>
 				<td><?php echo $row->uip == 'DISABLED' ? JText::_( 'DISABLED' ) : $row->uip; ?></td>
+				<td><?php echo $row->course_code .'-'. $row->xref .'-'. $row->attendee_id; ?></td>
 				<td><?php echo $row->name; ?></td>
 				<td style="text-align: center;"><a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i;?>','remove')"><img src="images/publish_x.png" width="16" height="16" border="0" alt="Delete" /></a></td>
 				<td>
