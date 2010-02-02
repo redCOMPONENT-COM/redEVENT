@@ -355,6 +355,7 @@ class RedEventViewEvent extends JView {
 		$tags['redform'] = JText::_('SUBMISSION_EVENT_REDFORM');
 		$tags['paymentrequest'] = JText::_('SUBMISSION_EVENT_PAYMENTREQUEST');
 		$tags['paymentrequestlink'] = JText::_('SUBMISSION_EVENT_PAYMENTREQUESTLINK');
+		$tags['registrationid'] = JText::_('SUBMISSION_EVENT_REGISTRATIONID');
     ?>	
 	  <div class="tagsdiv">
       <?php echo JHTML::_('link', '#', JText::_('TAGS'), 'class="tagstoggle"'); ?>
