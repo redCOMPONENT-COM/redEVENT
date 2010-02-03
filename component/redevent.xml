@@ -2,13 +2,13 @@
 <!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/component-install.dtd">
 <install type="component" version="1.5" method="upgrade">
 	<name>redEVENT</name>
-	<creationDate>Jan 29, 2010</creationDate>
+	<creationDate>Fev 3, 2010</creationDate>
 	<author>Redweb.dk</author>
 	<authorEmail>email@redweb.dk</authorEmail>
-   	<authorUrl>www.redweb.dk</authorUrl>
-   	<copyright>(c) 2008 - 2009 Redweb.dk</copyright>
-   	<license>GNU/GPL</license>
-   	<version>2.0 beta 8.1</version>
+	<authorUrl>www.redweb.dk</authorUrl>
+	<copyright>(c) 2008 - 2009 Redweb.dk</copyright>
+	<license>GNU/GPL</license>
+	<version>2.0 beta 8.2</version>
 	<description>redEVENT Event and Calendar Component for Joomla 1.5 by redCOMPONENT.com</description>
 	<installfile>install.redevent.php</installfile>
 	<uninstallfile>uninstall.redevent.php</uninstallfile>
