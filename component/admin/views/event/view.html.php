@@ -107,6 +107,11 @@ class RedEventViewEvent extends JView {
 		//get data from model
 		$model		= & $this->getModel();
 		$row     	= & $this->get('Data');
+		if ($task == 'copy') {
+			$row->id = null;
+			$row->title .= ' '.JText::_('copy');
+			$row->alias = '';
+		}
     $customfields =& $this->get('Customfields');
 		
 		/* Check if we have a redFORM id */
