@@ -448,7 +448,7 @@ class redEVENT_tags {
               // categories
               $cats = array();
               foreach ($this->_data->categories as $c){
-              	$cats[] = JHTML::link(JRoute::_(RedeventHelperRoute::getCategoryEvents($c->slug)), $c->catname);
+              	$cats[] = JHTML::link(JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($c->slug)), $c->catname);
               }
               $replace[] = '<span class="details-categories">'.implode(', ', $cats).'</span>';
       				break;
