@@ -190,14 +190,20 @@ class RedEventModelAttendees extends JModel
 		$this->_db->setQuery($q, 0, 1);
 		$res = $this->_db->loadObject();
 		
-		if ($res) {
+		$rfields = array();
+		if ($res && !empty($res->showfields)) 
+		{
 			$fields = explode(',', $res->showfields);
-			$rfields = array();
 			foreach ($fields as $f) {
 				$rfields[] = 'f.field_'.trim($f);
 			}
 			$rfields = ', '.implode(',', $rfields);
 			$join_rwftable  = ' LEFT JOIN #__rwf_forms_'.$res->redform_id.' AS f ON s.answer_id = f.id ';
+		}
+		else
+		{
+			$rfields       = '';
+			$join_rwftable = '';
 		}
 		
 		// Get the ORDER BY clause for the query

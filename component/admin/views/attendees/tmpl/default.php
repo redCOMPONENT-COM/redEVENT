@@ -66,7 +66,7 @@ $colspan = 14;
 				<th class="title"><?php echo JText::_( 'REMOVE USER' ); ?></th>
 				<th class="title"><?php echo JText::_( 'CONFIRMED' ); ?></th>
 				<th class="title"><?php echo JText::_( 'WAITINGLIST' ); ?></th>
-				<?php foreach ($this->rf_fields as $f):?>
+				<?php foreach ((array) $this->rf_fields as $f):?>
 					<?php $colspan++; ?>
 					<th class="title"><?php echo $f->field; ?></th>
 				<?php endforeach;?>
@@ -127,7 +127,7 @@ $colspan = 14;
           ?>
         </td>
 				
-        <?php foreach ($this->rf_fields as $f):?>
+        <?php foreach ((array) $this->rf_fields as $f):?>
 					<?php $fname = 'field_'.$f->id; ?>
 					<td><?php echo $row->$fname; ?></td>
 				<?php endforeach;?>
