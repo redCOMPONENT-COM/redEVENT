@@ -236,14 +236,6 @@ class RedeventHelperRoute
 					}
 				}
 			}
-			
-			//still no menuitem exists -> return first possible match (any link to the component)
-			foreach($items as $item)
-			{
-				if ($item->published == 1 && $item->access <= $access) {
-					return $item;
-				}
-			}
 		}
 
 		return false;
