@@ -9,18 +9,25 @@
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
 
 // ------------------  standard plugin initialize function - don't change ---------------------------
-global $sh_LANG, $sefConfig; 
-$shLangName = '';;
+global $sh_LANG;
+$sefConfig = & shRouter::shGetConfig();
+$shLangName = '';
 $shLangIso = '';
 $title = array();
 $shItemidString = '';
 $dosef = shInitializePlugin( $lang, $shLangName, $shLangIso, $option);
+if ($dosef == false) return;
 // ------------------  standard plugin initialize function - don't change ---------------------------
 
 // ------------------  load language file - adjust as needed ----------------------------------------
 $shLangIso = shLoadPluginLanguage( 'com_redevent', $shLangIso, '_COM_SEF_REDEVENT');
 // ------------------  load language file - adjust as needed ----------------------------------------                                           
+$shHomePageFlag = false;
 
+$shHomePageFlag = !$shHomePageFlag ? shIsHomepage ($string): $shHomePageFlag;
+
+if (!$shHomePageFlag) {  // we may have found that this is homepage, so we msut return an empty string
+	
 if (isset($task) && $task == 'createpdfemail') $dosef = false;
 else if (isset($page) && $page == 'print') $dosef = false;
 else {
@@ -39,42 +46,9 @@ else {
   }
     
   // do something about that Itemid thing
-  if (empty($Itemid)) 
+  if (!preg_match( '/Itemid=[0-9]+/i', $string)) 
   { // if no Itemid in non-sef URL
     // V 1.2.4.t moved back here
-    // try to find an item id that belongs to redevent fo default routing.
-    if (empty($shCurrentItemid)) 
-    {
-	    $component =& JComponentHelper::getComponent('com_redevent');
-	
-	    $menus  = & JSite::getMenu();
-	    $items  = $menus->getItems('componentid', $component->id);
-	    $access = 0;
-
-	    if (isset($view) && !empty($view))
-	    {
-	      foreach($items as $item)
-	      {
-	        if ((@$item->query['view'] == $view) && ($item->published == 1) && ($item->access <= $access)) {
-	          $shCurrentItemid = $item->id;
-	          break;
-	        }
-	      }
-	    }
-      if (empty($shCurrentItemid))
-      {
-	      //no menuitem exists -> return first possible match
-	      foreach($items as $item)
-	      {
-	        if ($item->published == 1 && $item->access <= $access) 
-	        {
-            $shCurrentItemid = $item->id;
-            break;
-	        }
-	      }
-      }
-    }
-    
     if ($sefConfig->shInsertGlobalItemidIfNone && !empty($shCurrentItemid)) 
     {
       $string .= '&Itemid='.$shCurrentItemid; ;  // append current Itemid
@@ -84,28 +58,31 @@ else {
 
     if ($sefConfig->shInsertTitleIfNoItemid)
     {
-    $title[] = $sefConfig->shDefaultMenuItemName ?
-      $sefConfig->shDefaultMenuItemName : getMenuTitle($option, (isset($view) ? @$view : null), $shCurrentItemid, null, $shLangName );  // V 1.2.4.q added forced language
+    	$title[] = $sefConfig->shDefaultMenuItemName ?
+  		           $sefConfig->shDefaultMenuItemName : 
+  		           getMenuTitle($option, (isset($view) ? @$view : null), $shCurrentItemid, null, $shLangName );  // V 1.2.4.q added forced language
     }
     
-    $shItemidString = '';    
-    if ($sefConfig->shAlwaysInsertItemid && (!empty($Itemid) || !empty($shCurrentItemid)))
-    {
-      $shItemidString = _COM_SEF_SH_ALWAYS_INSERT_ITEMID_PREFIX
-                      .$sefConfig->replacement
-                      .(empty($Itemid)? $shCurrentItemid :$Itemid);
-    }
+  	$shItemidString = '';
+  	if ($sefConfig->shAlwaysInsertItemid && (!empty($Itemid) || !empty($shCurrentItemid))) 
+  	{
+    	$shItemidString = _COM_SEF_SH_ALWAYS_INSERT_ITEMID_PREFIX.$sefConfig->replacement
+                        .(empty($Itemid)? $shCurrentItemid :$Itemid);
+  	}
   } 
   else 
   {  // if Itemid in non-sef URL
     $shItemidString = $sefConfig->shAlwaysInsertItemid ?
-    _COM_SEF_SH_ALWAYS_INSERT_ITEMID_PREFIX.$sefConfig->replacement.$Itemid
-    : '';
-    if ($sefConfig->shAlwaysInsertMenuTitle){
+                      _COM_SEF_SH_ALWAYS_INSERT_ITEMID_PREFIX.$sefConfig->replacement.$Itemid
+                     : '';
+    if ($sefConfig->shAlwaysInsertMenuTitle)
+    {
       //global $Itemid; V 1.2.4.g we want the string option, not current page !
-      if ($sefConfig->shDefaultMenuItemName)
-      $title[] = $sefConfig->shDefaultMenuItemName;// V 1.2.4.q added force language
-      elseif ($menuTitle = getMenuTitle($option, (isset($view) ? @$view : null), $Itemid, '',$shLangName )) {
+      if ($sefConfig->shDefaultMenuItemName) {
+      	$title[] = $sefConfig->shDefaultMenuItemName;// V 1.2.4.q added force language
+      }
+      else if ($menuTitle = getMenuTitle($option, (isset($view) ? @$view : null), $Itemid, '',$shLangName )) 
+      {
         //echo 'Menutitle = '.$menuTitle.'<br />';
         if ($menuTitle != '/') $title[] = $menuTitle;
       }
@@ -150,26 +127,29 @@ else {
     	shRemoveFromGETVarsList('layout');
     }
     
-    if (isset($xref) && $xref)
+    if ($view == 'details' || $view == 'signup')
     {
-	    $q = "SELECT e.title, v.city, DATE_FORMAT(x.dates, '%Y-%m-%d') AS dates, TIME_FORMAT(x.times, '%H-%i') AS times,
-              CASE WHEN CHAR_LENGTH(v.alias) THEN v.alias ELSE v.id END as venueslug
-	            FROM #__redevent_event_venue_xref x
-	            LEFT JOIN #__redevent_events e
-	            ON e.id = x.eventid
-	            LEFT JOIN #__redevent_venues v
-	            ON v.id = x.venueid
-	            WHERE x.id = ".$db->Quote((int) $xref);
-	    $db->setQuery($q);
-	    $details = $db->loadObject();
-    }
-    else if (isset($id))
-    {
-	    $q = "SELECT e.title
-	            FROM  #__redevent_events e
-	            WHERE e.id = ".(int)$id;
-	    $db->setQuery($q);
-	    $details = $db->loadObject();
+	    if (isset($xref) && $xref)
+	    {
+		    $q = "SELECT e.title, v.city, DATE_FORMAT(x.dates, '%Y-%m-%d') AS dates, TIME_FORMAT(x.times, '%H-%i') AS times,
+	              CASE WHEN CHAR_LENGTH(v.alias) THEN v.alias ELSE v.id END as venueslug
+		            FROM #__redevent_event_venue_xref x
+		            LEFT JOIN #__redevent_events e
+		            ON e.id = x.eventid
+		            LEFT JOIN #__redevent_venues v
+		            ON v.id = x.venueid
+		            WHERE x.id = ".$db->Quote((int) $xref);
+		    $db->setQuery($q);
+		    $details = $db->loadObject();
+	    }
+	    else if (isset($id))
+	    {
+		    $q = "SELECT e.title
+		            FROM  #__redevent_events e
+		            WHERE e.id = ".(int)$id;
+		    $db->setQuery($q);
+		    $details = $db->loadObject();
+	    }
     }
     
     switch ($view)
@@ -373,11 +353,17 @@ else {
     shRemoveFromGETVarsList('type');
   }
 }
-// ------------------  standard plugin finalize function - don't change ---------------------------  
-if ($dosef){
-   $string = shFinalizePlugin( $string, $title, $shAppendString, $shItemidString, 
-      (isset($limit) ? @$limit : null), (isset($limitstart) ? @$limitstart : null), 
-      (isset($shLangName) ? @$shLangName : null));
-}      
-// ------------------  standard plugin finalize function - don't change ---------------------------
+  // ------------------  standard plugin finalize function - don't change ---------------------------
+  if ($dosef){
+    $string = shFinalizePlugin( $string, $title, $shAppendString, $shItemidString,
+    (isset($limit) ? @$limit : null), (isset($limitstart) ? @$limitstart : null),
+    (isset($shLangName) ? @$shLangName : null), (isset($showall) ? @$showall : null));
+  }
+  // ------------------  standard plugin finalize function - don't change ---------------------------
+} else { // this is multipage homepage
+  $title[] = '/';
+  $string = sef_404::sefGetLocation( $string, $title, null, (isset($limit) ? @$limit : null),
+  (isset($limitstart) ? @$limitstart : null), (isset($shLangName) ? @$shLangName : null),
+  (isset($showall) ? @$showall : null));
+}
 ?>
