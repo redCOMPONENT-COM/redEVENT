@@ -224,7 +224,11 @@ function updateend(cal)
 <tbody>
   <tr>
     <td class="hasTip" title="<?php echo JText::_('REPEAT UNTIL TIP'); ?>">
+    <?php if ($this->xref->count):?>
+    	<?php echo $this->xref->rrules->until; ?>
+    <?php else: ?>
       <?php echo JHTML::calendar($this->xref->rrules->until, 'recurrence_repeat_until', 'recurrence_repeat_until'); ?>
+    <?php endif; ?>
     </td>
   </tr>
 </tbody>
