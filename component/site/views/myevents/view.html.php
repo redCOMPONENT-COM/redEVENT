@@ -44,6 +44,11 @@ class RedeventViewMyevents extends JView
     {
         global $mainframe;
 
+        $user = & JFactory::getUser();
+        if (!$user->get('id')) {
+        	JError::raiseError(403, JText::_('Only logged users can access this page'));
+        }
+        
         //initialize variables
         $document = & JFactory::getDocument();
         $elsettings = & redEVENTHelper::config();
