@@ -162,8 +162,9 @@ class RedeventModelEditevent extends JModel
       $this->_event->categories  = null;
 			$this->_event->dates			= '';
 			$this->_event->enddates			= null;
-			$this->_event->title			= '';
-			$this->_event->times			= null;
+			$this->_event->registrationend = null;
+			$this->_event->title			  = '';
+			$this->_event->times			  = null;
 			$this->_event->endtimes			= null;
 			$this->_event->created			= null;
 			$this->_event->author_ip		= null;
@@ -205,6 +206,7 @@ class RedeventModelEditevent extends JModel
 			$this->_event->max_multi_signup			= 1;
 			$this->_event->formal_offer		= null;
 			$this->_event->formal_offer_subject		= null;
+			$this->_event->published					= 1;
 		}
 
 		return $this->_event;
@@ -222,12 +224,30 @@ class RedeventModelEditevent extends JModel
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_event))
 		{
+			$customs = $this->_getCustomFields();
+			
 			$query = 'SELECT e.*, v.venue, x.id AS xref, x.eventid, x.venueid, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees,
 					x.maxwaitinglist, x.course_price, x.course_credit'
-					. ' FROM #__redevent_events AS e'
+					   ;
+		
+			// add the custom fields
+			foreach ((array) $customs as $c)
+			{
+				$query .= ', c'. $c->id .'.value AS custom'. $c->id;
+			}
+			
+			$query .= ' FROM #__redevent_events AS e'
 					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id'
 					. ' LEFT JOIN #__redevent_venues AS v ON v.id = x.venueid'
-					. ' WHERE e.id = '.(int)$this->_id
+					    ;
+			// add the custom fields tables
+			foreach ((array) $customs as $c)
+			{
+				$query .= ' LEFT JOIN #__redevent_fields_values AS c'. $c->id .' ON c'. $c->id .'.object_id = e.id';
+			}
+					    
+					    
+			$query .= ' WHERE e.id = '.(int)$this->_id
 					;
 			$this->_db->setQuery($query);
 			$this->_event = $this->_db->loadObject();
@@ -1211,6 +1231,36 @@ class RedeventModelEditevent extends JModel
            . ' FROM #__redevent_fields AS f '
            . ' LEFT JOIN #__redevent_fields_values AS fv ON fv.field_id = f.id AND fv.object_id = '.(int) $xref
            . ' WHERE f.object_key = '. $this->_db->Quote("redevent.xref")
+           . ' ORDER BY f.ordering '
+           ;
+    $this->_db->setQuery($query);
+    $result = $this->_db->loadObjectList();    
+  
+    if (!$result) {
+      return array();
+    }
+    $fields = array();
+    foreach ($result as $c)
+    {
+      $field =& redEVENTHelper::getCustomField($c->type);
+      $field->bind($c);
+      $fields[] = $field;
+    }
+    return $fields;     
+  }
+  
+  /**
+   * get custom fields
+   *
+   * @return objects array
+   */
+  function getCustomfields()
+  {
+  	$xref = $this->_id;  
+    $query = ' SELECT f.*, fv.value '
+           . ' FROM #__redevent_fields AS f '
+           . ' LEFT JOIN #__redevent_fields_values AS fv ON fv.field_id = f.id AND fv.object_id = '.(int) $xref
+           . ' WHERE f.object_key = '. $this->_db->Quote("redevent.event")
            . ' ORDER BY f.ordering '
            ;
     $this->_db->setQuery($query);

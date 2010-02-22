@@ -62,7 +62,9 @@ class RedeventViewEditevent extends JView
     $params     = & $mainframe->getParams();
 
 		//Get Data from the model
-		$row 		= $this->Get('Event');
+		$row 		  = $this->Get('Event');
+		$customs  = &$this->get('Customfields');
+		$xcustoms = &$this->get('XrefCustomfields');
 
 		//Get requests
 		$id					= JRequest::getInt('id');
@@ -133,7 +135,15 @@ class RedeventViewEditevent extends JView
 		$this->get('CategoryOptions');
 		$lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('CategoryOptions'), 'categories[]', 'class="inputbox required validate-categories" multiple="multiple" size="10"', 'value', 'text', $selected);
 				
+    // published state selector
+    $published = array( JHTML::_('select.option', '1', JText::_('PUBLISHED')),
+                         JHTML::_('select.option', '0', JText::_('UNPUBLISHED')),
+                       );
+    $lists['published'] = JHTML::_('select.radiolist', $published, 'published', '', 'value', 'text', $row->published);
+    
 		$this->assignRef('row',        $row);
+		$this->assignRef('customs',    $customs);
+		$this->assignRef('xcustoms',   $xcustoms);
 		$this->assignRef('categories', $categories);
 		$this->assignRef('editor',     $editor);
 		$this->assignRef('dimage',     $dimage);

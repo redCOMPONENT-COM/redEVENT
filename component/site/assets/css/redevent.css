@@ -270,6 +270,7 @@ border: 1px solid #ddd;
     font-weight: bold;
     }
 
+/*
     div.re_editevent form label,
     div.re_editvenue form label {
     width: 9em;
@@ -277,6 +278,7 @@ border: 1px solid #ddd;
     float: left; display: block;
     vertical-align: top;
     }
+*/
 
     div.re_editevent form input, /* event */
     div.re_editevent form button,
