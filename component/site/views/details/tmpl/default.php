@@ -24,7 +24,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
-<div id="eventlist" class="event_id<?php echo $this->row->did; ?> el_details">
+<div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
 	<p class="buttons">
 			<?php echo ELOutput::mailbutton( $this->row->slug, 'details', $this->params ); ?>
 			<?php echo ELOutput::printbutton( $this->print_link, $this->params ); ?>

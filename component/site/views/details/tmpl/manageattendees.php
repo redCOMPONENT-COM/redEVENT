@@ -31,7 +31,7 @@ $remove_image = JHTML::_('image.site', 'no.png', 'components/com_redevent/assets
 
 if ($this->manage_attendees) {
 	?>
-	<div id="eventlist" class="event_id<?php echo $this->row->did; ?> el_details">
+	<div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
 		<h2 class="register"><?php echo JText::_( 'REGISTERED USERS' ).': '.$this->row->title; ?></h2>
 		
 		<?php echo JHTML::link('index.php?option=com_redevent&view=details&task=exportattendees&format=csv&xref='. $this->row->xref, JText::_('CSV export'));?>

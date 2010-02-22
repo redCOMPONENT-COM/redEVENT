@@ -23,7 +23,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
-<div id="eventlist" class="el_eventlist">
+<div id="redevent" class="el_eventlist">
 
 <?php if ($this->params->def( 'show_page_title', 1 )) : ?>
 

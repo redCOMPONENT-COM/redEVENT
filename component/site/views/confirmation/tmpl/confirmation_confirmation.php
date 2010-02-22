@@ -25,7 +25,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 if ($this->registration) { 
 	?>
-	<div id="eventlist" class="event_id<?php echo $this->registration['event']->id; ?> el_details">
+	<div id="redevent" class="event_id<?php echo $this->registration['event']->id; ?> el_details">
 		<?php echo $this->tags->ReplaceTags($this->registration['event']->review_message); ?>
 	</div>	
 	<?php

@@ -26,7 +26,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 if ($this->row->show_names && $this->registers) {
 	?>
-	<div id="eventlist" class="event_id<?php echo $this->row->did; ?> el_details">
+	<div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
 		<h2 class="register"><?php echo JText::_( 'REGISTERED USERS' ).': '.$this->row->title; ?></h2>
 		
 		<div class="register">

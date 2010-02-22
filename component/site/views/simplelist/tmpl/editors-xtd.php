@@ -38,7 +38,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			}
 		</script>
 
-<div id="eventlist" class="el_eventlist">
+<div id="redevent" class="el_eventlist">
 
 <!--table-->
 

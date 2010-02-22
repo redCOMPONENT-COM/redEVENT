@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 	}
 </script>
 
-<div id="eventlist" class="el_selectvenue">
+<div id="redevent" class="el_selectvenue">
 
 <h1 class='componentheading'>
 	<?php

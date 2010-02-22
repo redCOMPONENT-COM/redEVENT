@@ -24,7 +24,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
-<div id="eventlist" class="el_categoriesview">
+<div id="redevent" class="el_categoriesview">
 <p class="buttons">
 	<?php
 		echo ELOutput::submitbutton( $this->dellink, $this->params );

@@ -24,7 +24,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 
-<div id="eventlist" class="el_categoriesdetailed">
+<div id="redevent" class="el_categoriesdetailed">
 <p class="buttons">
 	<?php
 		if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup

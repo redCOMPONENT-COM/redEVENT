@@ -25,7 +25,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <?php if (isset($this->fullpage)): ?>
-<div id="eventlist" class="el_webformsignup">
+<div id="redevent" class="el_webformsignup">
 	<p class="buttons">
 	  <?php
 	    echo ELOutput::printbutton( $this->print_link, $this->params );

@@ -156,7 +156,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 </script>
 
 
-<div id="eventlist" class="el_editvenue">
+<div id="redevent" class="el_editvenue">
 
     <?php if ($this->params->def( 'show_page_title', 1 )) : ?>
     <h1 class="componentheading">

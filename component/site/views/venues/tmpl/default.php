@@ -24,7 +24,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
-<div id="eventlist" class="el_venuesview">
+<div id="redevent" class="el_venuesview">
 	<p class="buttons">
 		<?php
 			if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup

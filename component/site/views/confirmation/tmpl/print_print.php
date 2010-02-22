@@ -28,7 +28,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 if ($this->registration) {
 		echo JHTML::_('link', 'index.php', JText::_('PRINT'), 'onClick="window.print(); return false;"');
 	?>
-	<div id="eventlist" class="event_id<?php echo $this->registration['event']->id; ?> el_details">
+	<div id="redevent" class="event_id<?php echo $this->registration['event']->id; ?> el_details">
 	<?php echo $this->tags->ReplaceTags($this->registration['event']->submission_type_webform_formal_offer); ?>
 	</div>
 	<?php
