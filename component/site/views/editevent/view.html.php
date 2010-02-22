@@ -56,14 +56,13 @@ class RedeventViewEditevent extends JView
 		
 
 		// Initialize variables
-		$editor 	= & JFactory::getEditor();
+		$editor 	  = & JFactory::getEditor();
 		$document 	= & JFactory::getDocument();
 		$elsettings = & redEVENTHelper::config();
-    $params   = & $mainframe->getParams();
+    $params     = & $mainframe->getParams();
 
 		//Get Data from the model
 		$row 		= $this->Get('Event');
-		$categories	= $this->Get('Categories');
 
 		//Get requests
 		$id					= JRequest::getInt('id');
@@ -83,21 +82,16 @@ class RedeventViewEditevent extends JView
       $document->addStyleSheet($params->get('custom_css'));     
     }
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
-		
-		/* Add jQuery */
-		$document->addCustomTag( '<script type="text/javascript" src="'.JURI::root().'administrator/components/com_redform/js/jquery.js"></script>' );
-		$document->addCustomTag( '<script type="text/javascript">jQuery.noConflict();</script>' );
-		$document->addCustomTag( '<script type="text/javascript" src="'.JURI::root().'administrator/components/com_redform/js/jquery.random.js"></script>');
-		
+				
 		//Set page title
 		$id ? $title = JText::_( 'EDIT EVENT' ) : $title = JText::_( 'ADD EVENT' );
 
 		$document->setTitle($title);
 
 		// Get the menu object of the active menu item
-		$menu		= & JSite::getMenu();
-		$item    	= $menu->getActive();
-		$params 	= & $mainframe->getParams('com_redevent');
+		$menu	  = & JSite::getMenu();
+		$item   = $menu->getActive();
+		$params = & $mainframe->getParams('com_redevent');
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
@@ -123,67 +117,14 @@ class RedeventViewEditevent extends JView
 		$url	= $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
 
 		$js = "
-		function elSelectVenue(id, venue) {
+		function reSelectVenue(id, venue) {
 			document.getElementById('a_id').value = id;
 			document.getElementById('a_name').value = venue;
 			document.getElementById('sbox-window').close();
 		}";
 
 		$document->addScriptDeclaration($js);
-		
-		/* Check if a redform ID exists, if so, get the fields */
-		if (isset($row->redform_id) && $row->redform_id > 0) {
-			$formfields = $this->get('formfields');
-			if (!$formfields) $formfields = array();
-		}
-		
-		/* Get a list of redforms */
-		$redforms = $this->get('RedForms');
-		if ($redforms) $lists['redforms'] = JHTML::_('select.genericlist', $redforms, 'redform_id', '', 'id', 'formname', $row->redform_id );
-		
-		/* Create venue selection tab */
-		$lists['venueselectbox'] = '';
-		$venueslist = $this->get('Venues');
-		$eventvenue = $this->get('EventVenue');
-		
-		$infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-hint.png', JText::_( 'NOTES' ) );
-		foreach ($venueslist as $key => $venue) {
-			if (isset($eventvenue[$venue->id])) {
-				$lists['venueselectbox'] .= '<div id="locid'.$venue->id.'"><input type="checkbox" name="locid[]" value="'.$venue->id.'"';
-				if (isset($eventvenue[$venue->id])) $lists['venueselectbox'] .= ' checked="checked" /> '.$venue->venue;
-				$lists['venueselectbox'] .= '<div class="adddatetime"><input type="button" name="adddatetime" value="'.JText::_('ADD_DATE_TIME').'" /></div>';
-				$lists['venueselectbox'] .= '<div class="showalldatetime"><input type="button" name="showalldatetime" value="'.JText::_('SHOW_ALL_DATE_TIME').'" /></div>';
-				foreach ($eventvenue[$venue->id] as $evkey => $ev) {
-					$random = $eventvenue[$venue->id][$evkey]->id;
-					$lists['venueselectbox'] .= '<div id="datetimecontainer'.$venue->id.$random.'" style="display: block;"><input type="button" name="removedatetime" value="'.JText::_('SHOW_HIDE_DATE_TIME').'" onClick=\'jQuery("#datetime'.$venue->id.'-'.$eventvenue[$venue->id][$evkey]->id.'").toggle("slideUp"); return false;\'/><input type="button" name="removedatetime" value="'.JText::_('REMOVE_DATE_TIME').'" onClick=\'removeDateTimeFields('.$venue->id.$eventvenue[$venue->id][$evkey]->id.');\'; return false;\'/>';
-					$lists['venueselectbox'] .= '<div id="datetime'.$venue->id.'-'.$eventvenue[$venue->id][$evkey]->id.'" style="display: none;">';
-					$lists['venueselectbox'] .= '<table class="adminform">';
-						/* start date and start time */
-						$lists['venueselectbox'] .= '<tr class="row0"><td class="redevent_settings_details">'.JText::_('DATE').'</td><td>'.JHTML::_('calendar', $eventvenue[$venue->id][$evkey]->dates, "locid$venue->id[$random][dates]", "dates$random").'</td>';
-						$lists['venueselectbox'] .= '<td>'.JText::_('TIME').'</td><td><input type="text" name="locid'.$venue->id.'['.$random.'][times]" value="'.$eventvenue[$venue->id][$evkey]->times.'" /></td></tr>';
-						/* End date and end time */
-						$lists['venueselectbox'] .= '<tr class="row1"><td>'.JText::_('ENDDATE').'</td><td>'.JHTML::_('calendar', $eventvenue[$venue->id][$evkey]->enddates, "locid$venue->id[$random][enddates]", "enddates$random").'</td>';
-						$lists['venueselectbox'] .= '<td>'.JText::_('ENDTIMES').'</td><td><input type="text" name="locid'.$venue->id.'['.$random.'][endtimes]" value="'.$eventvenue[$venue->id][$evkey]->endtimes.'" /></td></tr>';
-						/* Attendees and waitinglist */
-						$lists['venueselectbox'] .= '<tr class="row0"><td><span class="editlinktip hasTip" title="'.JText::_( 'MAXIMUM_ATTENDEES' ).'::'.JText::_('MAXIMUM_ATTENDEES_TIP').'"'.$infoimage.'</span>'.JText::_('MAXIMUM_ATTENDEES').'</td><td><input class="inputbox" name="locid'.$venue->id.'['.$random.'][maxattendees]" value="'.$eventvenue[$venue->id][$evkey]->maxattendees.'" size="15" maxlength="8" /></td>';
-						$lists['venueselectbox'] .= '<td><span class="editlinktip hasTip" title="'.JText::_( 'MAXIMUM_WAITINGLIST' ).'::'.JText::_('MAXIMUM_WAITINGLIST_TIP').'"'.$infoimage.'</span>'.JText::_('MAXIMUM_WAITINGLIST').'</td><td><input class="inputbox" name="locid'.$venue->id.'['.$random.'][maxwaitinglist]" value="'.$eventvenue[$venue->id][$evkey]->maxwaitinglist.'" size="15" maxlength="8" /></td></tr>';
-						/* Course price and credit */
-						$lists['venueselectbox'] .= '<tr class="row1"><td>'.JText::_('COURSE_PRICE').'</td><td><input class="inputbox" name="locid'.$venue->id.'['.$random.'][course_price]" value="'.$eventvenue[$venue->id][$evkey]->course_price.'" size="15" maxlength="8" /></td>';
-						$lists['venueselectbox'] .= '<td>'.JText::_('COURSE_CREDIT').'</td><td><input class="inputbox" name="locid'.$venue->id.'['.$random.'][course_credit]" value="'.$eventvenue[$venue->id][$evkey]->course_credit.'" size="15" maxlength="8" /></td></tr>';
-					$lists['venueselectbox'] .= '</table>';
-					$lists['venueselectbox'] .= '</div></div>';
-				}
-				$lists['venueselectbox'] .= '</div>';
-			}
-			else {
-				$lists['venueselectbox'] .= '<div id="locid'.$venue->id.'"><input type="checkbox" name="locid[]" value="'.$venue->id.'"';
-				$lists['venueselectbox'] .= ' />'.$venue->venue;   
-				$lists['venueselectbox'] .= '<div class="adddatetime" style="display: none;"><input type="button" name="adddatetime" value="'.JText::_('ADD_DATE_TIME').'" /></div>';
-				$lists['venueselectbox'] .= '<div class="showalldatetime" style="display: none;"><input type="button" name="showalldatetime" value="'.JText::_('SHOW_ALL_DATE_TIME').'" /></div>';
-				$lists['venueselectbox'] .= '</div>';
-			}
-		}
-		
+								
 		// categories selector
 		$selected = array();
 		foreach ((array)$row->categories as $cat) {
@@ -191,20 +132,18 @@ class RedeventViewEditevent extends JView
 		}
 		$this->get('CategoryOptions');
 		$lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('CategoryOptions'), 'categories[]', 'class="inputbox required validate-categories" multiple="multiple" size="10"', 'value', 'text', $selected);
-		
-		
-		$this->assignRef('row' , 					$row);
-		$this->assignRef('categories' , 			$categories);
-		$this->assignRef('editor' , 				$editor);
-		$this->assignRef('dimage' , 				$dimage);
-		$this->assignRef('infoimage' , 				$infoimage);
-		$this->assignRef('delloclink' , 			$delloclink);
-		$this->assignRef('editoruser' , 			$editoruser);
-		$this->assignRef('elsettings' , 			$elsettings);
-		$this->assignRef('item' , 					$item);
-		$this->assignRef('params' , 				$params);
-		$this->assignRef('formfields'	, $formfields);
-		$this->assignRef('lists'	, $lists);
+				
+		$this->assignRef('row',        $row);
+		$this->assignRef('categories', $categories);
+		$this->assignRef('editor',     $editor);
+		$this->assignRef('dimage',     $dimage);
+		$this->assignRef('infoimage',  $infoimage);
+		$this->assignRef('delloclink', $delloclink);
+		$this->assignRef('editoruser', $editoruser);
+		$this->assignRef('elsettings', $elsettings);
+		$this->assignRef('item',       $item);
+		$this->assignRef('params',     $params);
+		$this->assignRef('lists',      $lists);
 		
 		parent::display($tpl);
 

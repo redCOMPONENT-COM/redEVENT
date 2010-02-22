@@ -308,44 +308,40 @@ class RedeventModelEditevent extends JModel
 	 */
 	function getCategoryOptions( )
 	{
-		$user		= & JFactory::getUser();
-		$elsettings = & redEVENTHelper::config();
-		$userid		= (int) $user->get('id');
-		$gid		= (int) $user->get('aid');
+		$user = &JFactory::getUser();
+		$app = &JFactory::getApplication();
+		$params = $app->getParams();
 		$superuser	= ELUser::superuser();
-
-		$where = ' WHERE c.published = 1 AND c.access <= '.$gid;
-
-		//only check for maintainers if we don't have an edit action
-		if(!$this->_id) {
-			//get the ids of the categories the user maintaines
-			$query = 'SELECT g.group_id'
-					. ' FROM #__redevent_groupmembers AS g'
-					. ' WHERE g.member = '.$userid
-					;
-			$this->_db->setQuery( $query );
-			$catids = $this->_db->loadResultArray();
-
-			$categories = implode(' OR c.groupid = ', $catids);
-
-			//build ids query
-			if ($categories) {
-				//check if user is allowed to submit events in general, if yes allow to submit into categories
-				//which aren't assigned to a group. Otherwise restrict submission into maintained categories only 
-				if (ELUser::validate_user($elsettings->evdelrec, $elsettings->delivereventsyes)) {
-					$where .= ' AND c.groupid = 0 OR c.groupid = '.$categories;
-				} else {
-					$where .= ' AND c.groupid = '.$categories;
-				}
-			} else {
-				$where .= ' AND c.groupid = 0';
-			}
-
-		}
 
 		//administrators or superadministrators have access to all categories, also maintained ones
 		if($superuser) {
-			$where = ' WHERE c.published = 1';
+			$cwhere = ' WHERE c.published = 1';
+		}
+		else
+		{					
+			$query = ' SELECT c.id '
+			       . ' FROM #__redevent_categories AS c '
+			       . ' INNER JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id '
+			       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
+			       ;
+			       
+			$where = array();
+			
+			$where[] = ' c.published = 1 ';
+			$where[] = ' gc.accesslevel > 0 AND gm.member =' . $this->_db->Quote($user->get('id'));
+			
+			if (count($where)) {
+				$query .= ' WHERE '. implode(' AND ', $where);
+			}
+			        
+			$query .= ' GROUP BY c.id ';
+			
+			$this->_db->setQuery($query);
+			$res = $this->_db->loadResultArray();
+			if (!$res || !count($res)) {
+				return false;
+			}
+			$cwhere = ' WHERE c.id IN ('.implode(',', $res).') ';
 		}
 
 		//get the maintained categories and the categories whithout any group
@@ -353,7 +349,7 @@ class RedeventModelEditevent extends JModel
     $query = ' SELECT c.id, c.catname, (COUNT(parent.catname) - 1) AS depth '
            . ' FROM #__redevent_categories AS c, '
            . ' #__redevent_categories AS parent '
-           . $where
+           . $cwhere
            . ' AND c.lft BETWEEN parent.lft AND parent.rgt '
            . ' GROUP BY c.id '
            . ' ORDER BY c.lft;'

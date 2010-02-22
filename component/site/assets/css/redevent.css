@@ -307,7 +307,7 @@ border: 1px solid #ddd;
 
 /** venue select buttons */
 div.re_editevent div.re_buttons {
-float: left;  width: 45%;
+float: left; 
 }
 
     div.re_editevent div.re_buttons button {
