@@ -48,16 +48,18 @@ JHTML::_('behavior.calendar');
 
 			var form = document.getElementById('eventform');
 			var validator = document.formvalidator;
-			var title = $(form.title).getValue();
-			title.replace(/\s/g,'');
 
-			if ( title.length==0 ) {
+			if ( validator.validate(form.title) === false ) {
    				alert("<?php echo JText::_( 'ADD TITLE', true ); ?>");
    				validator.handleResponse(false,form.title);
    				return false;
 			} else if ( validator.validate(form.categories) === false ) {
     			alert("<?php echo JText::_( 'SELECT CATEGORY', true ); ?>");
     			validator.handleResponse(false,form.categories);
+    			return false;
+			} else if ( validator.validate(form.locid) === false ) {
+    			alert("<?php echo JText::_( 'SELECT VENUE', true ); ?>");
+    			validator.handleResponse(false,form.locid);
     			return false;
   			} else {
   			<?php
@@ -69,6 +71,7 @@ JHTML::_('behavior.calendar');
 
 				return false;
 			}
+			return false;
 		}
 		
 		//joomla submitform needs form name
@@ -155,9 +158,7 @@ JHTML::_('behavior.calendar');
               <input type="text" id="a_name" value="<?php echo $this->row->venue; ?>" disabled="disabled" />
 
               <div class='re_buttons floattext'>
-
-                	<button type="button" onclick="reSelectVenue(0,'<?php echo JText::_('NO VENUE'); ?>');"><?php  echo JText::_('NO VENUE'); ?></button>
-                  <a class="re_venue_select modal" title="<?php echo JText::_('SELECT'); ?>" href="<?php echo JRoute::_('index.php?view=editevent&layout=choosevenue&tmpl=component'); ?>" rel="{handler: 'iframe', size: {x: 650, y: 375}}">
+                  <a class="re_venue_select modal" title="<?php echo JText::_('SELECT'); ?>" href="<?php echo JRoute::_('index.php?view=editevent&layout=selectvenue&tmpl=component'); ?>" rel="{handler: 'iframe', size: {x: 650, y: 375}}">
                       <span><?php echo JText::_('SELECT')?></span>
                   </a>
                   <input class="inputbox required" type="hidden" id="a_id" name="locid" value="<?php echo $this->row->locid; ?>" />

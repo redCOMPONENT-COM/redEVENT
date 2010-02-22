@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	function tableOrdering( order, dir, view )
 	{
-		var form = document.getElementById("adminForm");
+		var form = document.getElementById("venueselectform");
 
 		form.filter_order.value 	= order;
 		form.filter_order_Dir.value	= dir;
@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 	}
 </script>
 
-<div id="redevent" class="el_selectvenue">
+<div id="redevent" class="re_selectvenue">
 
 <h1 class='componentheading'>
 	<?php
@@ -47,19 +47,19 @@ defined('_JEXEC') or die('Restricted access');
 
 <div class="clear"></div>
 
-<form action="index.php?option=com_redevent&amp;view=editevent&amp;layout=selectvenue&amp;tmpl=component" method="post" id="adminForm">
+<form action="index.php?option=com_redevent&amp;view=editevent&amp;layout=selectvenue&amp;tmpl=component" method="post" id="venueselectform">
 
-<div id="el_filter" class="floattext">
-		<div class="el_fleft">
+<div id="re_filter" class="floattext">
+		<div class="re_fleft">
 			<?php
 			echo '<label for="filter_type">'.JText::_('FILTER').'</label>&nbsp;';
 			echo $this->searchfilter.'&nbsp;';
 			?>
-			<input type="text" name="filter" id="filter" value="<?php echo $this->filter;?>" class="text_area" onchange="document.getElementById('adminForm').submit();" />
-			<button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_( 'Go' ); ?></button>
-			<button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_( 'Reset' ); ?></button>
+			<input type="text" name="filter" id="filter" value="<?php echo $this->filter;?>" class="text_area" onchange="document.getElementById('venueselectform').submit();" />
+			<button onclick="document.getElementById('venueselectform').submit();"><?php echo JText::_( 'Go' ); ?></button>
+			<button onclick="document.getElementById('filter').value='';document.getElementById('venueselectform').submit();"><?php echo JText::_( 'Reset' ); ?></button>
 		</div>
-		<div class="el_fright">
+		<div class="re_fright">
 			<?php
 			echo '<label for="limit">'.JText::_('DISPLAY NUM').'</label>&nbsp;';
 			echo $this->pageNav->getLimitBox();
@@ -87,7 +87,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr class="<?php echo "row$k"; ?>">
 			<td><?php echo $this->pageNav->getRowOffset( $i ); ?></td>
 			<td align="left">
-				<a style="cursor:pointer" onclick="window.parent.elSelectVenue('<?php echo $row->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $row->venue); ?>');">
+				<a style="cursor:pointer" onclick="window.parent.reSelectVenue('<?php echo $row->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $row->venue); ?>');">
 						<?php echo $this->escape($row->venue); ?>
 				</a>
 			</td>
