@@ -377,15 +377,14 @@ class RedeventModelEditevent extends JModel
 	 */
 	function getVenues( )
 	{
-		global $mainframe;
+		$app  = &JFactory::getApplication();
+		$params = $app->getParams();
 		
-		$params 	= & $mainframe->getParams();
-		
-		$where		= $this->_buildVenuesWhere(  );
-		$orderby	= $this->_buildVenuesOrderBy(  );
+		$where		= $this->_buildVenuesWhere();
+		$orderby	= $this->_buildVenuesOrderBy();
 
-		$limit			= $mainframe->getUserStateFromRequest('com_redevent.selectvenue.limit', 'limit', $params->def('display_num', 0), 'int');
-		$limitstart		= JRequest::getInt('limitstart');
+		$limit			= $app->getUserStateFromRequest('com_redevent.selectvenue.limit', 'limit', $params->def('display_num', 0), 'int');
+		$limitstart = JRequest::getInt('limitstart');
 
 		$query = 'SELECT l.id, l.venue, l.city, l.country, l.published'
 				.' FROM #__redevent_venues AS l'
@@ -407,7 +406,6 @@ class RedeventModelEditevent extends JModel
 	 */
 	function _buildVenuesOrderBy( )
 	{
-
 		$filter_order		= JRequest::getCmd('filter_order');
 		$filter_order_Dir	= JRequest::getCmd('filter_order_Dir');
 
@@ -431,12 +429,40 @@ class RedeventModelEditevent extends JModel
 	 */
 	function _buildVenuesWhere(  )
 	{
-
 		$filter_type		= JRequest::getInt('filter_type');
 		$filter 			= JRequest::getString('filter');
-		$filter 			= $this->_db->getEscaped( trim(JString::strtolower( $filter ) ) );
-
+		$filter 			= $this->_db->getEscaped( trim(JString::strtolower( $filter ) ) );		
+		
+		$user   = &JFactory::getUser();
+		$app    = &JFactory::getApplication();
+		$params = $app->getParams();
+		
+		// get managed venues
+		$query = ' SELECT v.id '
+		       . ' FROM #__redevent_venues AS v '
+		       . ' INNER JOIN #__redevent_groups_venues AS gv ON gv.venue_id = v.id '
+		       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = gv.group_id '
+		       ;
+		       
+		$where = array();		
+		$where[] = ' v.published = 1 ';
+		$where[] = ' gv.accesslevel > 0 AND gm.member =' . $this->_db->Quote($user->get('id'));		
+		if (count($where)) {
+			$query .= ' WHERE '. implode(' AND ', $where);
+		}		        
+		$query .= ' GROUP BY v.id ';
+		
+		$this->_db->setQuery($query);
+		$managed = $this->_db->loadResultArray();
+		
 		$where = array();
+		
+		if ($managed && count($managed)) {
+			$where[] = ' l.id IN ('.implode(',', $managed).')';
+		}
+		else {
+			$where[] = ' 0 ';
+		}
 		
 		$where[] = 'l.published = 1';
 
