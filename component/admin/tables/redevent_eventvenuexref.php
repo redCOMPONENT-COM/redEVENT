@@ -54,6 +54,8 @@ class RedEvent_eventvenuexref extends JTable
   /** @var string */
   var $registrationend  = null;
   /** @var string */
+  var $note    = null;
+  /** @var string */
   var $details    = '';
   /** @var int */
   var $maxattendees    = 0;

@@ -6,6 +6,7 @@
 			<th><?php echo JText::_('VENUE'); ?></th>
 			<th><?php echo JText::_('DATE'); ?></th>
 			<th><?php echo JText::_('TIME'); ?></th>
+			<th><?php echo JText::_('NOTE'); ?></th>
       <th><?php echo JText::_('PUBLISHED'); ?></th>
       <th>&nbsp;</th>
 		</tr>
@@ -34,6 +35,7 @@
 			  <td><?php echo $eventdetails->venue; ?></td>
 	      <td><?php echo $displaydate; ?></td>
 	      <td><?php echo $displaytime; ?></td>
+	      <td><?php echo $eventdetails->note; ?></td>
         <td><?php switch ($eventdetails->published):
                     case '-1':
                       echo JText::_('ARCHIVED');
@@ -51,12 +53,7 @@
 		}
 		?>
 		<tr id="add-xref">
-			<td><a href="<?php echo JRoute::_('index.php?option=com_redevent&controller=events&task=editxref&tmpl=component&eventid='. $this->row->id); ?>" class="xrefmodal"><?php echo JText::_('Add'); ?></a></td>
-      <td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-      <td>&nbsp;</td>
-			<td>&nbsp;</td>
+			<td colspan="7"><a href="<?php echo JRoute::_('index.php?option=com_redevent&controller=events&task=editxref&tmpl=component&eventid='. $this->row->id); ?>" class="xrefmodal"><?php echo JText::_('Add'); ?></a></td>
 		</tr>
 	</tbody>
 </table>

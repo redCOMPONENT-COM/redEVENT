@@ -90,6 +90,7 @@ defined('_JEXEC') or die('Restricted access');
 					   <th class="colcity"><?php echo JText::_('CITY'); ?></th>
 					   <th class="coldate"><?php echo JText::_('DATE'); ?></th>
 					   <th class="coltime"><?php echo JText::_('TIME'); ?></th>
+					   <th class="coltime"><?php echo JText::_('NOTE'); ?></th>
              <th class="coltime"><?php echo JText::_('ATTENDEES'); ?></th>
 					 </tr>
 				  </thead>
@@ -121,6 +122,7 @@ defined('_JEXEC') or die('Restricted access');
     						<td><?php echo $eventdetails->city; ?></td>
     						<td><?php echo $displaydate; ?></td>
     						<td><?php echo $displaytime; ?></td>
+    						<td><?php echo $eventdetails->note; ?></td>
     						<td>
     						  <?php	if ($row->registra == 1):
       						  $linkreg  = 'index.php?option=com_redevent&amp;view=attendees&amp;eventid='.$row->id.'&filter='.$eventdetails->id;

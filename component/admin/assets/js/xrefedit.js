@@ -47,15 +47,15 @@ function addremove(item)
   new Element('a', {'href': '#'}).addEvent('click', removexref.bind(item)).appendText(textremove).injectInside(cell);
 }
 
-function updatexref(id, venue, date, time, published)
+function updatexref(id, venue, date, time, published, note)
 {
   if ($('xref-'+id)) {
     var tr = $('xref-'+id);
-    var newtr = buildxreftr(id, venue, date, time, published);
+    var newtr = buildxreftr(id, venue, date, time, published, note);
     tr.replaceWith(newtr);
   }
   else {
-    var newtr = buildxreftr(id, venue, date, time, published);
+    var newtr = buildxreftr(id, venue, date, time, published, note);
     newtr.injectBefore($('add-xref'));
   }
   addremove(newtr);
@@ -81,7 +81,7 @@ function removexref(event)
   }
 }
 
-function buildxreftr(id, venue, date, time, published)
+function buildxreftr(id, venue, date, time, published, note)
 {
   var tr = new Element('tr', {'id': 'xref-'+id, 'class': 'xref-details'});
   var tdlink = new Element('td').injectInside(tr);
@@ -93,6 +93,7 @@ function buildxreftr(id, venue, date, time, published)
   new Element('td').appendText(venue).injectInside(tr);
   new Element('td').appendText(date).injectInside(tr);
   new Element('td').appendText(time).injectInside(tr);
+  new Element('td').appendText(note).injectInside(tr);
   if (published == 1) {
     new Element('td').appendText(textyes).injectInside(tr);
   }

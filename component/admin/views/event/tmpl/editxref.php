@@ -118,6 +118,14 @@ function updateend(cal)
     </td>
   </tr>
   <tr>
+    <td class="key hasTip" title="<?php echo JText::_('XREF NOTE TIP'); ?>">
+      <label for="note"><?php echo JText::_( 'XREF NOTE' ) .': '; ?></label>
+    </td>
+    <td>
+      <input type="text" size="50" maxlength="50" name="note" id="note" value="<?php echo $this->xref->note; ?>" /> 
+    </td>
+  </tr>
+  <tr>
     <td class="key">
       <label for="published"><?php echo JText::_('PUBLISHED') .': '; ?></label>
     </td>

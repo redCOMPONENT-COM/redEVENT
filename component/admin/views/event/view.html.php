@@ -305,7 +305,7 @@ class RedEventViewEvent extends JView {
     	}
     }
 		
-    $js = 'window.parent.updatexref("'.$xref->id.'", "'.addslashes($xref->venue).'", "'.$displaydate.'", "'.$displaytime.'", "'.$xref->published.'");';
+    $js = 'window.parent.updatexref("'.$xref->id.'", "'.addslashes($xref->venue).'", "'.$displaydate.'", "'.$displaytime.'", "'.$xref->published.'", "'.$xref->note.'");';
     $document->addScriptDeclaration($js);
 		return;
 	}
