@@ -232,111 +232,37 @@ class RedeventController extends JController
 		$file 		= JRequest::getVar( 'userfile', '', 'files', 'array' );
 		$post 		= JRequest::get( 'post', 4 );
 		$xref 		= JRequest::getInt('returnid');
-		
-		/* Get the form fields to display */
-		$showfields = '';
-		foreach ($post as $field => $value) {
-			if (substr($field, 0, 9) == 'showfield' && $value == "1") {
-				$showfields .= substr($field, 9).",";
-			}
-		}
-		$post['showfields'] = substr($showfields, 0, -1);
-		
+				
     $isNew = ($post['id']) ? false : true;
 		
 		$model = $this->getModel('editevent');
 		$this->addModelPath(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models');
 		$model_wait = $this->getModel('waitinglist');
 		
-		if ($returnid = $model->store($post, $file)) {
-
-			/* Get all the xref values for this particular event */
-			$db = JFactory::getDBO();
-			$q = "SELECT id
-				FROM #__redevent_event_venue_xref 
-				WHERE eventid = ".$returnid;
-			$db->setQuery($q);
-			$existing_xrefs = $db->loadObjectList('id');
-			
-			/* Compute the differences */
-			/* Now add all the xref values */
-			foreach ($post['locid'] as $key => $locid) {
-				foreach ($post['locid'.$locid] as $random => $datetimes) {
-					if (isset($datetimes['dates'])) $dates = $datetimes['dates'];
-					else $dates = 'NULL';
-					if (isset($datetimes['enddates'])) $enddates = $datetimes['enddates'];
-					else $enddates = 'NULL';
-					if (isset($datetimes['times'])) $times = $datetimes['times'];
-					else $times = 'NULL';
-					if (isset($datetimes['endtimes'])) $endtimes = $datetimes['endtimes'];
-					else $endtimes = 'NULL';
-					if (isset($datetimes['maxattendees'])) $maxattendees = $datetimes['maxattendees'];
-					else $maxattendees = 'NULL';
-					if (isset($datetimes['maxwaitinglist'])) $maxwaitinglist = $datetimes['maxwaitinglist'];
-					else $maxwaitinglist = 'NULL';
-					if (isset($datetimes['course_price'])) $course_price = $datetimes['course_price'];
-					else $course_price = 'NULL';
-					if (isset($datetimes['course_credit'])) $course_credit = $datetimes['course_credit'];
-					else $course_credit = 'NULL';
-					if (isset($existing_xrefs[$random])) {
-						$q = "UPDATE #__redevent_event_venue_xref 
-							SET dates = ".$db->Quote($dates).",
-							enddates = ".$db->Quote($enddates).", 
-							times = ".$db->Quote($times).", 
-							endtimes = ".$db->Quote($endtimes).",
-							maxattendees = ".$db->Quote($maxattendees).",
-							maxwaitinglist = ".$db->Quote($maxwaitinglist).",
-							course_price = ".$db->Quote($course_price).",
-							course_credit = ".$db->Quote($course_credit)."
-							WHERE id = ".$random;
-						$db->setQuery($q);
-						$db->query();
-						unset($existing_xrefs[$random]);
-					}
-					else {
-						$q = "INSERT INTO #__redevent_event_venue_xref (eventid, venueid, dates, enddates, times, endtimes, maxattendees, maxwaitinglist, course_price, course_credit) VALUES ";
-						$q .= "(".$returnid.", ".$locid.", ".$db->Quote($dates).", ".$db->Quote($enddates).", ".$db->Quote($times).", ".$db->Quote($endtimes)."
-								, ".$db->Quote($maxattendees).", ".$db->Quote($maxwaitinglist).", ".$db->Quote($course_price).", ".$db->Quote($course_credit).")";
-						$db->setQuery($q);
-						$db->query();
-						$xref = $db->insertid();
-					}
-				}
-				
-				$msg 	= JText::_( 'EVENT SAVED' );
-				$link 	= JRoute::_('index.php?option=com_redevent&view=details&xref='.$xref, false) ;
-			}
-			
-			if (count($existing_xrefs) > 0) {
-				$remove_xrefs = array();
-				foreach ($existing_xrefs as $xid => $xref) {
-					$remove_xrefs[] = $xid;
-				}
-				$q = "DELETE FROM #__redevent_event_venue_xref
-					WHERE id IN (".implode(',', $remove_xrefs).")";
-				$db->setQuery($q);
-				$db->query();
-			}
-
+		if ($returnid = $model->store($post, $file)) 
+		{		
       JPluginHelper::importPlugin( 'redevent' );
       $dispatcher =& JDispatcher::getInstance();
       $res = $dispatcher->trigger( 'onEventEdited', array( $returnid, $isNew ) );   
       
 			$cache = &JFactory::getCache('com_redevent');
 			$cache->clean();
+			$msg 		= 'saved';
+			$link = JRequest::getString('referer', RedeventHelperRoute::getMyeventsRoute(), 'post');
+		} 
+		else 
+		{
+			$msg 		= $model->getError();
+			$link = JRequest::getString('referer', RedeventHelperRoute::getMyeventsRoute(), 'post');
 
-		} else {
-
-			$msg 		= '';
-			$link = JRequest::getString('referer', JURI::base(), 'post');
-
-			RedeventError::raiseWarning('SOME_ERROR_CODE', $model->getError() );
+			RedeventError::raiseWarning(0, $model->getError() );
 		}
 
 		$model->checkin();
 		
 		/* Check if people need to be moved on or off the waitinglist */
-		if ($post['id'] > 0) {
+		if ($post['id'] > 0) 
+		{
 			$model_wait->setEventId($post['id']);
 			$model_wait->UpdateWaitingList();
 		}

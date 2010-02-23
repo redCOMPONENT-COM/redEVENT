@@ -69,9 +69,9 @@ JHTML::_('behavior.calendar');
     			alert("<?php echo JText::_( 'SELECT CATEGORY', true ); ?>");
     			validator.handleResponse(false,form.categories);
     			return false;
-			} else if ( validator.validate(form.locid) === false ) {
+			} else if ( validator.validate(form.venueid) === false ) {
     			alert("<?php echo JText::_( 'SELECT VENUE', true ); ?>");
-    			validator.handleResponse(false,form.locid);
+    			validator.handleResponse(false,form.venueid);
     			return false;
 			} else if ( validator.validate(form.dates) === false ) {
     			alert("<?php echo JText::_( 'SELECT DATE', true ); ?>");
@@ -80,7 +80,10 @@ JHTML::_('behavior.calendar');
   			} else {
   			<?php
 			// JavaScript for extracting editor text
-				echo $this->editor->save( 'datdescription' );
+				
+      		if ($this->editoruser) {
+						echo $this->editor->save( 'datdescription' );
+      		}
 			?>
 				// submit_unlimited();
 				elsubmitform(pressbutton);
@@ -168,6 +171,7 @@ JHTML::_('behavior.calendar');
 				</td>
 				<td><?php	echo $this->lists['categories']; ?></td>
 			</tr>
+			<?php if (!$this->row->id): // edit first xref only on initial event creation, afterwards use myevents ?>
 			<tr>
 				<td class="key hasTip" title="<?php echo JText::_(''); ?>">
 					<label for="a_id"><?php echo JText::_( 'VENUE' ).':'; ?></label>
@@ -180,7 +184,7 @@ JHTML::_('behavior.calendar');
 						   rel="{handler: 'iframe', size: {x: 650, y: 375}}">
 						   	<span><?php echo JText::_('SELECT')?></span>
 						</a> 
-						<input class="inputbox required" type="hidden" id="a_id" name="locid" value="<?php echo $this->row->locid; ?>" />
+						<input class="inputbox required" type="hidden" id="a_id" name="venueid" value="<?php echo $this->row->locid; ?>" />
 					</div>
 				</td>
 			</tr>
@@ -227,8 +231,8 @@ JHTML::_('behavior.calendar');
 			</tr>
 			<tr>
 				<td class="key hasTip"
-					title="<?php echo JText::_('XREF COURSE PRICE TIP'); ?>"><label
-					for="course_price"><?php echo JText::_( 'COURSE_PRICE' ) .': '; ?></label>
+					title="<?php echo JText::_('EDIT XREF COURSE PRICE TIP'); ?>"><label
+					for="course_price"><?php echo JText::_( 'EDIT XREF COURSE PRICE' ) .': '; ?></label>
 				</td>
 				<td><input type="text" size="8" maxlength="8" name="course_price"
 					id="course_price" value="<?php echo $this->row->course_price; ?>" />
@@ -236,19 +240,19 @@ JHTML::_('behavior.calendar');
 			</tr>
 			<tr>
 				<td class="key hasTip"
-					title="<?php echo JText::_('XREF COURSE CREDIT TIP'); ?>"><label
-					for="course_credit"><?php echo JText::_( 'COURSE_CREDIT' ) .': '; ?></label>
+					title="<?php echo JText::_('EDIT XREF COURSE CREDIT TIP'); ?>"><label
+					for="course_credit"><?php echo JText::_( 'EDIT XREF COURSE CREDIT' ) .': '; ?></label>
 				</td>
 				<td><input type="text" size="8" maxlength="8" name="course_credit"
 					id="course_credit" value="<?php echo $this->row->course_credit; ?>" />
 				</td>
 			</tr>
-	
-			<?php if (count($this->customs)): ?>
-	    <?php foreach ($this->customs as $field): ?>
+			
+			<?php if (count($this->xcustoms)): ?>
+	    <?php foreach ($this->xcustoms as $field): ?>
 	    <tr>
 	      <td class="key">
-	        <label for="custom" class="hasTip" title="<?php echo JText::_($field->get('name')).'::'.JText::_('USE TAG') .': ['. $field->get('tag') .']'; ?>">
+	        <label for="custom<?php echo $field->id; ?>" class="hasTip" title="<?php echo JText::_($field->get('name')).'::'. $field->get('tips'); ?>">
 	          <?php echo JText::_( $field->name ); ?>:
 	        </label>
 	      </td>
@@ -258,12 +262,14 @@ JHTML::_('behavior.calendar');
 	    </tr>
 	    <?php endforeach; ?>
 			<?php endif; ?>
+	
+			<?php endif; // xref details?>
 			
-			<?php if (count($this->xcustoms)): ?>
-	    <?php foreach ($this->xcustoms as $field): ?>
+			<?php if (count($this->customs)): ?>
+	    <?php foreach ($this->customs as $field): ?>
 	    <tr>
 	      <td class="key">
-	        <label for="custom" class="hasTip" title="<?php echo JText::_($field->get('name')).'::'.JText::_('USE TAG') .': ['. $field->get('tag') .']'; ?>">
+	        <label for="custom<?php echo $field->id; ?>" class="hasTip" title="<?php echo JText::_($field->get('name')).'::'. $field->get('tips'); ?>">
 	          <?php echo JText::_( $field->name ); ?>:
 	        </label>
 	      </td>

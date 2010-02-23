@@ -599,8 +599,9 @@ class RedeventModelEditevent extends JModel
 	{
 		global $mainframe;
 
-		$user 		= & JFactory::getUser();
+		$user 		  = & JFactory::getUser();
 		$elsettings = & redEVENTHelper::config();
+		$params     = $mainframe->getParams();
 
 		//Get mailinformation
 		$SiteName 		= $mainframe->getCfg('sitename');
@@ -609,19 +610,24 @@ class RedeventModelEditevent extends JModel
 		$tzoffset 		= $mainframe->getCfg('offset');
 
 		$row 	= & JTable::getInstance('redevent_events', '');
-
+		
+		if ($data['id'])
+		{
+			$row->load((int) $data['id']);
+		}
+		else 
+		{
+			$template_event = (int) $params->get('default_content');
+			if ($template_event) 
+			{
+				$row->load($template_event);
+				$row->id    = null;
+				$row->alias = null;
+			}
+		}
+		
 		//Sanitize
-		$data['datdescription'] = JRequest::getVar( 'datdescription', '', 'post','string', JREQUEST_ALLOWRAW );
-
-		//include the metatags
-		$data['meta_description'] = addslashes(htmlspecialchars(trim($elsettings->meta_description)));
-		if (strlen($data['meta_description']) > 255) {
-			$data['meta_description'] = substr($data['meta_description'],0,254);
-		}
-		$data['meta_keywords'] = addslashes(htmlspecialchars(trim($elsettings->meta_keywords)));
-		if (strlen($data['meta_keywords']) > 200) {
-			$data['meta_keywords'] = substr($data['meta_keywords'],0,199);
-		}
+		$data['datdescription'] = JRequest::getVar( 'datdescription', $row->datdescription, 'post','string', JREQUEST_ALLOWRAW );
 		
 		$curimage = JRequest::getVar( 'curimage', '', 'post','string' );
 
@@ -632,8 +638,8 @@ class RedeventModelEditevent extends JModel
 		}
 
 		//Are we saving from an item edit?
-		if ($row->id) {
-
+		if ($row->id) 
+		{
 			//check if user is allowed to edit events
 			$editaccess	= ELUser::editaccess($elsettings->eventowner, $row->created_by, $elsettings->eventeditrec, $elsettings->eventedit);
 			$maintainer = ELUser::ismaintainer();
@@ -657,9 +663,9 @@ class RedeventModelEditevent extends JModel
 			} else {
 				$owneredit = 0;
 			}
-
-		} else {
-
+		} 
+		else 
+		{
 			//check if user is allowed to submit new events
 			$maintainer = ELUser::ismaintainer();
 			$genaccess 	= ELUser::validate_user( $elsettings->evdelrec, $elsettings->delivereventsyes );
@@ -694,14 +700,14 @@ class RedeventModelEditevent extends JModel
 		//Image upload
 
 		//If image upload is required we will stop here if no file was attached
-		if ( empty($file['name']) && $elsettings->imageenabled == 2 ) {
-
+		if ( empty($file['name']) && $elsettings->imageenabled == 2 ) 
+		{
 			$this->setError( JText::_( 'IMAGE EMPTY' ) );
 			return false;
 		}
 
-		if ( ( $elsettings->imageenabled == 2 || $elsettings->imageenabled == 1 ) && ( !empty($file['name'])  ) )  {
-
+		if ( ( $elsettings->imageenabled == 2 || $elsettings->imageenabled == 1 ) && ( !empty($file['name'])  ) )  
+		{
 			jimport('joomla.filesystem.file');
 
 			$base_Dir 		= JPATH_SITE.'/images/redevent/events/';
@@ -723,14 +729,17 @@ class RedeventModelEditevent extends JModel
 			} else {
 				$row->datimage = $filename;
 			}
-		} else {
+		} 
+		else 
+		{
 			//keep image if edited and left blank
 			$row->datimage = $curimage;
 		}//end image if
 
 		$editoruser = ELUser::editoruser();
 
-		if (!$editoruser) {
+		if (!$editoruser) 
+		{
 			//check datdescription --> wipe out code
 			$row->datdescription = strip_tags($row->datdescription, '<br><br/>');
 
@@ -742,7 +751,8 @@ class RedeventModelEditevent extends JModel
 
 			//check length
 			$length = JString::strlen($row->datdescription);
-			if ($length > $elsettings->datdesclimit) {
+			if ($length > $elsettings->datdesclimit) 
+			{
 				//too long then shorten datdescription
 				$row->datdescription = JString::substr($row->datdescription, 0, $elsettings->datdesclimit);
 				//add ...
@@ -763,7 +773,6 @@ class RedeventModelEditevent extends JModel
 			break;
 
 			case 2:
-				$row->registra =  $row->registra ;
 			break;
 		}
 
@@ -803,22 +812,39 @@ class RedeventModelEditevent extends JModel
 		}
 				
     // update the event category xref
-    // first, delete current rows for this event
-    $query = ' DELETE FROM #__redevent_event_category_xref WHERE event_id = ' . $this->_db->Quote($row->id);
-    $this->_db->setQuery($query);
-    if (!$this->_db->query()) {
-      $this->setError($this->_db->getErrorMsg());
-      return false;     
-    }
-    // insert new ref
-    foreach ((array) $data['categories'] as $cat_id) {
-      $query = ' INSERT INTO #__redevent_event_category_xref (event_id, category_id) VALUES (' . $this->_db->Quote($row->id) . ', '. $this->_db->Quote($cat_id) . ')';
-      $this->_db->setQuery($query);
-      if (!$this->_db->query()) {
-        $this->setError($this->_db->getErrorMsg());
-        return false;     
-      }     
-    }
+		if (isset($data['categories']))
+		{
+	    // first, delete current rows for this event
+	    $query = ' DELETE FROM #__redevent_event_category_xref WHERE event_id = ' . $this->_db->Quote($row->id);
+	    $this->_db->setQuery($query);
+	    if (!$this->_db->query()) {
+	      $this->setError($this->_db->getErrorMsg());
+	      return false;     
+	    }
+	    // insert new ref
+	    foreach ((array) $data['categories'] as $cat_id) {
+	      $query = ' INSERT INTO #__redevent_event_category_xref (event_id, category_id) VALUES (' . $this->_db->Quote($row->id) . ', '. $this->_db->Quote($cat_id) . ')';
+	      $this->_db->setQuery($query);
+	      if (!$this->_db->query()) {
+	        $this->setError($this->_db->getErrorMsg());
+	        return false;     
+	      }     
+	    }
+		}
+		
+		// is there a date ?	
+		if (isset($data['dates']) && strlen($data['dates']))
+		{
+			$xref = & JTable::getInstance('redevent_eventvenuexref', '');
+			$xref->bind($data);
+			$xref->id      = null;
+			$xref->eventid = $row->id;
+			
+			if (!($xref->check() && $xref->store())) {
+				JError::raiseWarning(0, JTEXT::_('Saving event date failed').': '.$xref->getError());
+			}
+			echo '<pre>';print_r($xref); echo '</pre>';exit;
+		}
 		
 		$this->_db->setQuery('SELECT * FROM #__redevent_venues AS v LEFT JOIN #__redevent_event_venue_xref AS x ON x.venueid = v.id WHERE x.eventid = '.(int)$row->id);
 		$rowloc = $this->_db->loadObject();

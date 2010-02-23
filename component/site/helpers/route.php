@@ -170,6 +170,13 @@ class RedeventHelperRoute
 		return RedEventHelperRoute::buildUrl( $parts );
 	}
 	
+	function getMyeventsRoute()
+	{
+		$parts = array( "option" => "com_redevent",
+		                "view"   => "myevents" );
+		return RedEventHelperRoute::buildUrl( $parts );		
+	}
+	
 	function buildUrl($parts)
 	{		
 		if($item = RedEventHelperRoute::_findItem($parts)) {
