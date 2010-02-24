@@ -220,7 +220,7 @@ class RedeventHelperRoute
 							// needs a second round to check just for 'id'
 							break;
 						default:
-							if (isset($query['id']) && (int) @$item->query['id'] == (int) @$query['id']) {
+							if (!isset($query['id']) || (int) @$item->query['id'] == (int) @$query['id']) {
 								return $item;
 							}
 					}

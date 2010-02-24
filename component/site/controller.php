@@ -248,12 +248,12 @@ class RedeventController extends JController
 			$cache = &JFactory::getCache('com_redevent');
 			$cache->clean();
 			$msg 		= 'saved';
-			$link = JRequest::getString('referer', RedeventHelperRoute::getMyeventsRoute(), 'post');
+//			$link = JRequest::getString('referer', RedeventHelperRoute::getMyeventsRoute(), 'post');
 		} 
 		else 
 		{
 			$msg 		= $model->getError();
-			$link = JRequest::getString('referer', RedeventHelperRoute::getMyeventsRoute(), 'post');
+//			$link = JRequest::getString('referer', RedeventHelperRoute::getMyeventsRoute(), 'post');
 
 			RedeventError::raiseWarning(0, $model->getError() );
 		}
@@ -266,7 +266,7 @@ class RedeventController extends JController
 			$model_wait->setEventId($post['id']);
 			$model_wait->UpdateWaitingList();
 		}
-
+		$link = RedeventHelperRoute::getMyeventsRoute();
 		$this->setRedirect($link, $msg );
 	}
 

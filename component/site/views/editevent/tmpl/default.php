@@ -73,7 +73,7 @@ JHTML::_('behavior.calendar');
     			alert("<?php echo JText::_( 'SELECT VENUE', true ); ?>");
     			validator.handleResponse(false,form.venueid);
     			return false;
-			} else if ( validator.validate(form.dates) === false ) {
+			} else if ( $(form.dates) && validator.validate(form.dates) === false ) {
     			alert("<?php echo JText::_( 'SELECT DATE', true ); ?>");
     			validator.handleResponse(false,form.dates);
     			return false;

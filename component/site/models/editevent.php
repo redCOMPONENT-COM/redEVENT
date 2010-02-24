@@ -843,7 +843,6 @@ class RedeventModelEditevent extends JModel
 			if (!($xref->check() && $xref->store())) {
 				JError::raiseWarning(0, JTEXT::_('Saving event date failed').': '.$xref->getError());
 			}
-			echo '<pre>';print_r($xref); echo '</pre>';exit;
 		}
 		
 		$this->_db->setQuery('SELECT * FROM #__redevent_venues AS v LEFT JOIN #__redevent_event_venue_xref AS x ON x.venueid = v.id WHERE x.eventid = '.(int)$row->id);
