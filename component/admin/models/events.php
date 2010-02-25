@@ -147,6 +147,7 @@ class RedEventModelEvents extends JModel
           . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
 					. ' LEFT JOIN #__redevent_categories AS cat ON cat.id = xcat.category_id'
 					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
+					. ' LEFT JOIN #__redevent_venues AS loc ON loc.id = x.venueid'
 					. ' LEFT JOIN #__users AS u ON u.id = a.created_by'
           . ' LEFT JOIN #__users AS u2 ON u2.id = a.modified_by'
 					. $where
@@ -184,14 +185,15 @@ class RedEventModelEvents extends JModel
 	{
 		global $mainframe, $option;
 
-		$filter_state 		= $mainframe->getUserStateFromRequest( $option.'.filter_state', 'filter_state', '', 'word' );
-		$filter 			= $mainframe->getUserStateFromRequest( $option.'.filter', 'filter', '', 'int' );
-		$search 			= $mainframe->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
-		$search 			= $this->_db->getEscaped( trim(JString::strtolower( $search ) ) );
+		$filter_state = $mainframe->getUserStateFromRequest( $option.'.filter_state', 'filter_state', '', 'word' );
+		$filter       = $mainframe->getUserStateFromRequest( $option.'.filter', 'filter', '', 'int' );
+		$search       = $mainframe->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
+		$search       = $this->_db->getEscaped( trim(JString::strtolower( $search ) ) );
 
 		$where = array();
 
-		if ($filter_state) {
+		if ($filter_state) 
+		{
 			if ($filter_state == 'P') {
 				$where[] = 'a.published = 1';
 			} else if ($filter_state == 'U') {
