@@ -52,7 +52,7 @@ function tableOrdering( order, dir, view )
 <tbody>
 <?php
 $elsettings = redEVENTHelper::config();
-$imagepath = JURI::base() . '/administrator/components/com_redevent/assets/images/';
+$imagepath = JURI::base() . 'administrator/components/com_redevent/assets/images/';
 foreach ($this->_eventlinks as $key => $event) {
 	$event_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($event->id, $event->xref));
 	$venue_url = JRoute::_(RedeventHelperRoute::getUpcomingVenueEventsRoute($event->venueslug));
