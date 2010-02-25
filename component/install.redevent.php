@@ -507,6 +507,22 @@ if (is_array($cols))
   }	
 }
 
+/* Get the group members fields columns */
+$q = "SHOW COLUMNS FROM #__redevent_groups";
+$db->setQuery($q);
+$cols = $db->loadObjectList('Field');
+
+if (is_array($cols)) 
+{  
+	/* show in lists ? */
+  if (!array_key_exists('isdefault', $cols)) {
+    $q = ' ALTER TABLE `#__redevent_groups` '
+       . '   ADD `isdefault` TINYINT( 1 ) NOT NULL DEFAULT "0" AFTER `description` '
+       ;
+    $db->setQuery($q);
+    $db->query();    
+  }	
+}
 
 /* Add the basic configuration entry */
 $q = "INSERT IGNORE INTO `#__redevent_settings` SET "

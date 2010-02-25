@@ -44,6 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 			<th width="20"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
 			<th width="30%" class="title"><?php echo JHTML::_('grid.sort', 'GROUP NAME', 'name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th><?php echo JText::_( 'DESCRIPTION' ); ?></th>
+			<th width="5"><?php echo JText::_( 'Default' ); ?></th>
 			<th width="5"><?php echo JText::_( 'Members' ); ?></th>
 			<th width="5"><?php echo JText::_( 'Group ACL' ); ?></th>6
 		</tr>
@@ -51,7 +52,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	<tfoot>
 		<tr>
-			<td colspan="6">
+			<td colspan="7">
 				<?php echo $this->pageNav->getListFooter(); ?>
 			</td>
 		</tr>
@@ -82,6 +83,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php } ?>
 			</td>
 			<td><?php echo htmlspecialchars($row->description, ENT_QUOTES, 'UTF-8'); ?></td>
+			<td><?php echo ($row->isdefault ? 'yes' : 'no'); ?></td>
 			<td style="text-align:center;"><?php echo JHTML::link('index.php?option=com_redevent&amp;controller=groups&amp;task=editmembers&amp;group_id='.$row->id, 
 																	JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/groupmembers.png',
 																	         JText::_( 'Edit group members' ), 

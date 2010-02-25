@@ -42,6 +42,8 @@ class RedEvent_groups extends JTable
 	/** @var string */
 	var $description 		= null;
 	/** @var int */
+	var $isdefault 		    = 0;
+	/** @var int */
 	var $checked_out 		= 0;
 	/** @var date */
 	var $checked_out_time	= 0;
@@ -68,6 +70,20 @@ class RedEvent_groups extends JTable
 		if ($xid && $xid != intval($this->id)) {
 			JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('GROUP NAME ALREADY EXIST', $this->name));
 			return false;
+		}
+		
+		/** check it's the only with default set to 1 **/
+		if ($this->default)
+		{
+			/** check for existing name */
+		$query = 'SELECT id FROM #__redevent_groups WHERE default = 1';
+		$this->_db->setQuery($query);
+
+		$xid = intval($this->_db->loadResult());
+		if ($xid && $xid != intval($this->id)) {
+			JError::raiseWarning('SOME_ERROR_CODE', JText::_('THERE IS ALREADY A DEFAULT GROUP'));
+			return false;
+		}
 		}
 
 		return true;

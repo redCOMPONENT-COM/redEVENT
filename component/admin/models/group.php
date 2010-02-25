@@ -242,10 +242,11 @@ class RedEventModelGroup extends JModel
 		if (empty($this->_data))
 		{
 			$group = new stdClass();
-			$group->id					= 0;
-			$group->name				= null;
-			$group->description			= null;
-			$this->_data				= $group;
+			$group->id          = 0;
+			$group->name        = null;
+			$group->description = null;
+			$group->isdefault     = 0;
+			$this->_data        = $group;
 			return (boolean) $this->_data;
 		}
 		return true;

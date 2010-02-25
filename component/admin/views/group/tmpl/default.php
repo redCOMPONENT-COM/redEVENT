@@ -22,6 +22,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+JHTML::_('behavior.tooltip');
 ?>
 
 <script language="javascript" type="text/javascript">
@@ -55,6 +56,12 @@ defined('_JEXEC') or die('Restricted access');
 		</td>
 	</tr>
 	<tr>
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'GROUP IS DEFAULT' ).'::'.JText::_( 'GROUP IS DEFAULT TIP' ); ?>"><label for="isdefault"> <?php echo JText::_( 'GROUP IS DEFAULT' ); ?>:
+		</label></td>
+		<td><?php echo JHTML::_('select.booleanlist', 'isdefault', '', $this->row->isdefault); ?>
+		</td>
+	</tr>
+	<tr>
 		<td width="100" align="right" class="key"><label for="description"> <?php echo JText::_( 'DESCRIPTION' ); ?>:
 		</label></td>
 		<td>
@@ -64,7 +71,7 @@ defined('_JEXEC') or die('Restricted access');
 </table>
 	
 </fieldset>
-
+		
 <?php echo JHTML::_( 'form.token' ); ?>
 <input type="hidden" name="option" value="com_redevent" />
 <input type="hidden" name="controller" value="groups" />
