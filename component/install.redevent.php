@@ -522,6 +522,14 @@ if (is_array($cols))
     $db->setQuery($q);
     $db->query();    
   }	
+	/* show in lists ? */
+  if (!array_key_exists('parameters', $cols)) {
+    $q = ' ALTER TABLE `#__redevent_groups` '
+       . '   ADD `parameters` TEXT NULL DEFAULT NULL AFTER `description` '
+       ;
+    $db->setQuery($q);
+    $db->query();    
+  }	
 }
 
 /* Add the basic configuration entry */

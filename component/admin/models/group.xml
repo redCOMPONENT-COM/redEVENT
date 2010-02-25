@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+	<params group="Event edit">
+    <param name="show_description" type="radio" default="1" label="GROUP PARAMS SHOW DESCRIPTION" description="GROUP PARAMS SHOW DESCRIPTION DESC">
+       <option value="0">No</option>
+       <option value="1">Yes</option>
+     </param>		
+	</params>
+</model>

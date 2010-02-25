@@ -41,6 +41,8 @@ class RedEvent_groups extends JTable
 	var $name				= '';
 	/** @var string */
 	var $description 		= null;
+	/** @var string */
+	var $parameters 		= null;
 	/** @var int */
 	var $isdefault 		    = 0;
 	/** @var int */
@@ -52,6 +54,17 @@ class RedEvent_groups extends JTable
 		parent::__construct('#__redevent_groups', 'id', $db);
 	}
 
+	function bind($array, $ignore = '')
+	{
+		if (key_exists( 'parameters', $array ) && is_array( $array['parameters'] ))
+		{
+			$registry = new JRegistry();
+			$registry->loadArray($array['parameters']);
+			$array['parameters'] = $registry->toString();
+		}
+		return parent::bind($array, $ignore);
+	}
+	
 	// overloaded check function
 	function check()
 	{
@@ -73,17 +86,17 @@ class RedEvent_groups extends JTable
 		}
 		
 		/** check it's the only with default set to 1 **/
-		if ($this->default)
+		if ($this->isdefault)
 		{
 			/** check for existing name */
-		$query = 'SELECT id FROM #__redevent_groups WHERE default = 1';
-		$this->_db->setQuery($query);
-
-		$xid = intval($this->_db->loadResult());
-		if ($xid && $xid != intval($this->id)) {
-			JError::raiseWarning('SOME_ERROR_CODE', JText::_('THERE IS ALREADY A DEFAULT GROUP'));
-			return false;
-		}
+			$query = 'SELECT id FROM #__redevent_groups WHERE isdefault = 1';
+			$this->_db->setQuery($query);
+	
+			$xid = intval($this->_db->loadResult());
+			if ($xid && $xid != intval($this->id)) {
+				JError::raiseWarning('SOME_ERROR_CODE', JText::_('THERE IS ALREADY A DEFAULT GROUP'));
+				return false;
+			}
 		}
 
 		return true;

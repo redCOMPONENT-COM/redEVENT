@@ -72,6 +72,26 @@ JHTML::_('behavior.tooltip');
 	
 </fieldset>
 		
+	<?php
+	foreach ( $this->parameters->getGroups() as $key => $groups )
+	{
+		$gname = ( strtolower($key) == '_default' ) ? JText::_( 'General' ) : $key;
+		?>
+		<fieldset class="adminform">
+			<legend>
+				<?php
+				echo JText::_( $gname );
+				?>
+			</legend>
+			<?php
+			// render is defined in joomla\libraries\joomla\html\parameter.php
+			echo $this->parameters->render( 'parameters', $key );
+			?>
+		</fieldset>
+		<?php
+	}
+	?>
+	
 <?php echo JHTML::_( 'form.token' ); ?>
 <input type="hidden" name="option" value="com_redevent" />
 <input type="hidden" name="controller" value="groups" />
