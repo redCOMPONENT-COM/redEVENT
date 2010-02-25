@@ -65,7 +65,7 @@ JHTML::_('behavior.calendar');
    				alert("<?php echo JText::_( 'ADD TITLE', true ); ?>");
    				validator.handleResponse(false,form.title);
    				return false;
-			} else if ( validator.validate(form.categories) === false ) {
+			} else if ($(form.categories) && validator.validate(form.categories) === false ) {
     			alert("<?php echo JText::_( 'SELECT CATEGORY', true ); ?>");
     			validator.handleResponse(false,form.categories);
     			return false;
@@ -81,7 +81,7 @@ JHTML::_('behavior.calendar');
   			<?php
 			// JavaScript for extracting editor text
 				
-      		if ($this->editoruser) {
+      		if ($this->editoruser && $this->params->get('edit_description', 0)) {
 						echo $this->editor->save( 'datdescription' );
       		}
 			?>
@@ -165,12 +165,14 @@ JHTML::_('behavior.calendar');
 					name="title" value="<?php echo $this->escape($this->row->title); ?>" size="65" maxlength="60" />
 				</td>
 			</tr>
+			<?php if ($this->params->get('edit_categories', 0)): ?>
 			<tr>
 				<td class="key hasTip" title="<?php echo JText::_(''); ?>">
 					<label for="categories" class="catsid"> <?php echo JText::_( 'CATEGORY' ).':';?></label>
 				</td>
 				<td><?php	echo $this->lists['categories']; ?></td>
 			</tr>
+			<?php endif; ?>
 			<?php if (!$this->row->id): // edit first xref only on initial event creation, afterwards use myevents ?>
 			<tr>
 				<td class="key hasTip" title="<?php echo JText::_(''); ?>">
@@ -224,11 +226,14 @@ JHTML::_('behavior.calendar');
 				<td><?php echo JHTML::calendar($this->row->registrationend, 'registrationend', 'registrationend', '%Y-%m-%d %H:%M'); ?>
 				</td>
 			</tr>
+			<?php if ($this->params->get('edit_published', 0)): ?>
 			<tr>
 				<td class="key"><label for="published"><?php echo JText::_('PUBLISHED') .': '; ?></label>
 				</td>
 				<td><?php echo $this->lists['published']; ?></td>
 			</tr>
+			<?php endif; ?>
+			<?php if ($this->params->get('edit_price', 0)): ?>
 			<tr>
 				<td class="key hasTip"
 					title="<?php echo JText::_('EDIT XREF COURSE PRICE TIP'); ?>"><label
@@ -238,6 +243,8 @@ JHTML::_('behavior.calendar');
 					id="course_price" value="<?php echo $this->row->course_price; ?>" />
 				</td>
 			</tr>
+			<?php endif; ?>
+			<?php if ($this->params->get('edit_credits', 0)): ?>
 			<tr>
 				<td class="key hasTip"
 					title="<?php echo JText::_('EDIT XREF COURSE CREDIT TIP'); ?>"><label
@@ -247,8 +254,9 @@ JHTML::_('behavior.calendar');
 					id="course_credit" value="<?php echo $this->row->course_credit; ?>" />
 				</td>
 			</tr>
+			<?php endif; ?>
 			
-			<?php if (count($this->xcustoms)): ?>
+			<?php if ($this->params->get('edit_customs', 0) && count($this->xcustoms)): ?>
 	    <?php foreach ($this->xcustoms as $field): ?>
 	    <tr>
 	      <td class="key">
@@ -265,7 +273,7 @@ JHTML::_('behavior.calendar');
 	
 			<?php endif; // xref details?>
 			
-			<?php if (count($this->customs)): ?>
+			<?php if ($this->params->get('edit_customs', 0) && count($this->customs)): ?>
 	    <?php foreach ($this->customs as $field): ?>
 	    <tr>
 	      <td class="key">
@@ -305,6 +313,7 @@ JHTML::_('behavior.calendar');
 <?php endif; ?>
 
 
+<?php if ($this->params->get('edit_description', 0)): ?>
 <fieldset class="description"><legend><?php echo JText::_('DESCRIPTION'); ?></legend>
 
 <?php
@@ -319,7 +328,9 @@ JHTML::_('behavior.calendar');
 <input disabled value="<?php echo $this->elsettings->datdesclimit; ?>"
 	size="4" name="zeige" /><?php echo JText::_( 'AVAILABLE' ); ?><br />
 <a href="javascript:rechne(document.eventform);"><?php echo JText::_( 'REFRESH' ); ?></a>
-<?php endif; ?></fieldset>
+<?php endif; ?>
+</fieldset>
+<?php endif; ?>
 
 <div class="re_save_buttons floattext">
 <button type="submit" class="submit"

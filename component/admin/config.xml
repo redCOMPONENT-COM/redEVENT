@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
+
 	<params addpath="/administrator/components/com_redevent/elements">
 		<param name="display_num" type="list" default="15" label="EVENT NUMBER" description="EVENT NUMBER TIP">
 			<option value="5">5</option>
@@ -42,6 +43,7 @@
     <param name="recurrence_limit" type="text" default="30" label="RECURRENCE ANTICIPATION WINDOW" description="RECURRENCE ANTICIPATION WINDOW DESC" />
 		<param name="default_content" type="event" default="0" label="SELECT EVENT DEFAULT CONTENT" description="SELECT EVENT DEFAULT CONTENT DESC" />
  	</params>
+ 	
  	<params group="Layout">
     <param name="details_attendees_layout" type="list" default="0" label="DETAILS ATTENDEES LAYOUT" description="DETAILS ATTENDEES LAYOUT TIP">
       <option value="0">Table</option>
@@ -53,6 +55,7 @@
     </param>
     <param name="custom_css" type="text" default="" size="60" label="CUSTOM CSS PATH" description="CUSTOM CSS PATH DESC"/>
  	</params>
+ 	
  	<params group="pasteventssettings">
     <param name="pastevents_action" type="list" default="0" label="PAST EVENTS ACTION" description="PAST EVENTS ACTION TIP">
       <option value="0">DO NOTHING</option>
@@ -66,4 +69,32 @@
       <option value="registration">REGISTRATION DATE</option>
     </param>
  	</params>
+ 	
+ 	<params group="frontendeventsubmit">
+    <param name="edit_categories" type="radio" default="0" label="SETTINGS FRONTEND EDIT CATEGORY" description="SETTINGS FRONTEND EDIT CATEGORY TIP">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    <param name="edit_customs" type="radio" default="0" label="SETTINGS FRONTEND EDIT CUSTOM FIELDS" description="SETTINGS FRONTEND EDIT CUSTOM FIELDS TIP">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    <param name="edit_description" type="radio" default="0" label="SETTINGS FRONTEND EDIT DESCRIPTION" description="SETTINGS FRONTEND EDIT DESCRIPTION TIP">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    <param name="edit_published" type="radio" default="0" label="SETTINGS FRONTEND EDIT PUBLISHED STATE" description="SETTINGS FRONTEND EDIT PUBLISHED STATE TIP">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    <param name="edit_price" type="radio" default="0" label="SETTINGS FRONTEND EDIT PRICE" description="SETTINGS FRONTEND EDIT PRICE TIP">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    <param name="edit_credits" type="radio" default="0" label="SETTINGS FRONTEND EDIT CREDITS" description="SETTINGS FRONTEND EDIT CREDITS TIP">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+ 	</params>
+ 	
 </config>

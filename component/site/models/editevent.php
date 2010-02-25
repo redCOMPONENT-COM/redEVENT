@@ -831,6 +831,20 @@ class RedeventModelEditevent extends JModel
 	      }     
 	    }
 		}
+		else
+		{
+			// copy category from template event
+			$query = ' INSERT INTO #__redevent_event_category_xref (event_id, category_id) '
+			       . ' SELECT '. $this->_db->Quote($row->id).', category_id '
+			       . '       FROM #__redevent_event_category_xref '
+			       . '       WHERE event_id = '. $this->_db->Quote($template_event)
+			       ;
+			$this->_db->setQuery($query);
+	    if (!$this->_db->query()) {
+	    	$this->setError($this->_db->getErrorMsg());
+				JError::raiseWarning(0, JTEXT::_('copying categories failed').': '.$xref->getError());
+	    }     
+		}
 		
 		// is there a date ?	
 		if (isset($data['dates']) && strlen($data['dates']))
