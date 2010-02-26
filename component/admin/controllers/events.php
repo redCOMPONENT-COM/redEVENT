@@ -187,7 +187,7 @@ class RedEventControllerEvents extends RedEventController
 		$model 	= $this->getModel('event');
 		$task 	= JRequest::getVar('task');
 
-		if ($task == 'copy' || $task = 'add') {
+		if ($task == 'copy' || $task == 'add') {
 			JRequest::setVar( 'task', $task );
 		} else {
 			
