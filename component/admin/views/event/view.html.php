@@ -62,6 +62,7 @@ class RedEventViewEvent extends JView {
 		$pane 		= & JPane::getInstance('tabs');
 		$user 		= & JFactory::getUser();
 		$elsettings = ELAdmin::config();
+		$params   = JComponentHelper::getParams('com_redevent');
 
 		//get vars
 		$cid		= JRequest::getVar( 'cid' );
@@ -106,10 +107,20 @@ class RedEventViewEvent extends JView {
 
 		//get data from model
 		$model		= & $this->getModel();
+		if ($task == 'add') {
+			$model->setId($params->get('default_content'));
+		}
 		$row     	= & $this->get('Data');
-		if ($task == 'copy') {
+		if ($task == 'copy') 
+		{
 			$row->id = null;
 			$row->title .= ' '.JText::_('copy');
+			$row->alias = '';
+		}
+		if ($task == 'add') 
+		{
+			$row->id = null;
+			$row->title = '';
 			$row->alias = '';
 		}
     $customfields =& $this->get('Customfields');

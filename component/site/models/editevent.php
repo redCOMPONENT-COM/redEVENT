@@ -858,26 +858,16 @@ class RedeventModelEditevent extends JModel
 				JError::raiseWarning(0, JTEXT::_('Saving event date failed').': '.$xref->getError());
 			}
 		}	
-	
-  	// custom fields
-    // first delete records for this object
-    $query = ' DELETE fv FROM #__redevent_fields_values as fv '
-           . ' INNER JOIN #__redevent_fields as f ON f.id = fv.field_id '
-           . ' WHERE fv.object_id = ' . $this->_db->Quote($row->id)
-           . '   AND f.object_key = ' . $this->_db->Quote('redevent.xref')
-           ;
-    $this->_db->setQuery($query);
-    if (!$this->_db->query()) {
-      $this->setError($this->_db->getErrorMsg());
-      return false;     
-    }
-    
-    // input new values
+	    
+    // custom fields
     foreach ($data as $key => $value)
     {
       if (strstr($key, "custom"))
       {
         $fieldid = (int) substr($key, 6);
+        // get the field details
+        
+        
         $field = & $this->getTable('Redevent_customfieldvalue','');
         $field->object_id = $row->id;
         $field->field_id = $fieldid;

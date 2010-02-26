@@ -46,6 +46,7 @@ class RedEventControllerEvents extends RedEventController
 		// Register Extra task
 		$this->registerTask( 'apply', 		'save' );
 		$this->registerTask( 'copy',	 	'edit' );
+		$this->registerTask( 'add',	 	'edit' );
 	}
 
 	/**
@@ -172,20 +173,6 @@ class RedEventControllerEvents extends RedEventController
 	}
 
 	/**
-	 * logic to create the new event screen
-	 *
-	 * @access public
-	 * @return void
-	 * @since 0.9
-	 */
-	function add( )
-	{
-		global $option;
-
-		$this->setRedirect( 'index.php?option='. $option .'&view=event' );
-	}
-
-	/**
 	 * logic to create the edit event screen
 	 *
 	 * @access public
@@ -200,7 +187,7 @@ class RedEventControllerEvents extends RedEventController
 		$model 	= $this->getModel('event');
 		$task 	= JRequest::getVar('task');
 
-		if ($task == 'copy') {
+		if ($task == 'copy' || $task = 'add') {
 			JRequest::setVar( 'task', $task );
 		} else {
 			
