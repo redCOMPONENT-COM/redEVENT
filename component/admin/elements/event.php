@@ -57,20 +57,20 @@ class JElementEvent extends JElement
 		}
 
 		$js = "
-		function elSelectEvent(id, title) {
-			document.getElementById('a_id').value = id;
-			document.getElementById('a_name').value = title;
+		function elSelectEvent(id, title, field) {
+			document.getElementById(field+'_id').value = id;
+			document.getElementById(field+'_name').value = title;
 			document.getElementById('sbox-window').close();
 		}";
 
-		$link = 'index.php?option=com_redevent&amp;view=eventelement&amp;tmpl=component';
+		$link = 'index.php?option=com_redevent&amp;view=eventelement&amp;tmpl=component&amp;field='.$name;
 		$doc->addScriptDeclaration($js);
 
 		JHTML::_('behavior.modal', 'a.modal');
 
-		$html = "\n<div style=\"float: left;\"><input style=\"background: #ffffff;\" type=\"text\" id=\"a_name\" value=\"$event->title\" disabled=\"disabled\" /></div>";
+		$html = "\n<div style=\"float: left;\"><input style=\"background: #ffffff;\" type=\"text\" id=\"".$name."_name\" value=\"$event->title\" disabled=\"disabled\" /></div>";
 		$html .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('Select')."\"  href=\"$link\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('Select')."</a></div></div>\n";
-		$html .= "\n<input type=\"hidden\" id=\"a_id\" name=\"$fieldName\" value=\"$value\" />";
+		$html .= "\n<input type=\"hidden\" id=\"".$name."_id\" name=\"$fieldName\" value=\"$value\" />";
 
 		return $html;
 	}

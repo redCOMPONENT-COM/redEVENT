@@ -42,6 +42,7 @@ class RedEventViewEventelement extends JView {
 		$db			= & JFactory::getDBO();
 		$elsettings = ELAdmin::config();
 		$document	= & JFactory::getDocument();
+		$fieldname = JRequest::getVar('field');
 		
 		JHTML::_('behavior.tooltip');
 		JHTML::_('behavior.modal');
@@ -89,6 +90,7 @@ class RedEventViewEventelement extends JView {
 		$this->assignRef('rows'      	, $rows);
 		$this->assignRef('pageNav' 		, $pageNav);
 		$this->assignRef('elsettings'	, $elsettings);
+		$this->assign('field',          $fieldname);
 
 		parent::display($tpl);
 	}
