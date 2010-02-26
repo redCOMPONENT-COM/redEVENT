@@ -107,6 +107,7 @@ class RedEventViewEvent extends JView {
 
 		//get data from model
 		$model		= & $this->getModel();
+		
 		if ($task == 'add') {
 			$model->setId($params->get('default_content'));
 		}
