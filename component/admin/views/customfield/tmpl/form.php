@@ -56,31 +56,31 @@ JToolBarHelper::help( 'screen.tracks.edit' );
 
 <table class="admintable">
 	<tr>
-		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_( 'Name' ); ?>:
+		<td width="100" align="right" class="key"><label for="name"><?php echo JText::_( 'Name' ); ?>:
 		</label></td>
 		<td><input class="text_area required" type="text" name="name" id="name"
 			size="32" maxlength="250" value="<?php echo $this->object->name; ?>" />
 		</td>
 	</tr>
   <tr>
-    <td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'Tag' ).'::'.JText::_('SET TAG HINT'); ?>"><label for="tag"> <?php echo JText::_( 'Tag' ); ?>:
+    <td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'Custom field Tag' ).'::'.JText::_('Custom field Tag tip'); ?>"><label for="tag"> <?php echo JText::_( 'Custom field Tag' ); ?>:
     </label></td>
     <td><input class="text_area required" type="text" name="tag" id="tag"
       size="32" maxlength="250" value="<?php echo $this->object->tag; ?>" />
     </td>
   </tr>
   <tr>
-    <td valign="top" align="right" class="key"><label for="ordering"> <?php echo JText::_( 'Field for' ); ?>:
+    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'Field for' ).'::'.JText::_('field for tip'); ?>"><label for="object_key"><?php echo JText::_( 'Field for' ); ?>:
     </label></td>
     <td><?php echo $this->lists['objects']; ?></td>
   </tr>
   <tr>
-    <td valign="top" align="right" class="key"><label for="ordering"> <?php echo JText::_( 'Type' ); ?>:
+    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'custom field type' ).'::'.JText::_('custom field type tip'); ?>"><label for="type"><?php echo JText::_( 'custom field Type' ); ?>:
     </label></td>
     <td><?php echo $this->lists['types']; ?></td>
   </tr>
 	<tr>
-		<td valign="top" align="right" class="key"><?php echo JText::_( 'Published' ); ?>:
+		<td valign="top" align="right" class="key"><label for="published"><?php echo JText::_( 'Published' ); ?>:</label>
 		</td>
 		<td><?php echo $this->lists['published']; ?></td>
 	</tr>
@@ -90,32 +90,37 @@ JToolBarHelper::help( 'screen.tracks.edit' );
 		<td><?php echo $this->lists['ordering']; ?></td>
 	</tr>
   <tr id="row-tooltip">
-    <td valign="top" align="right" class="key"><label for="ordering"> <?php echo JText::_( 'Tooltip' ); ?>:
+    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'Custom field Tooltip' ).'::'.JText::_('Custom field Tooltip tip'); ?>"><label for="tips"><?php echo JText::_( 'Custom field Tooltip' ); ?>:
     </label></td>
     <td><textarea name="tips" id="tips" rows="6" cols="20"><?php echo $this->object->tips; ?></textarea></td>
   </tr>
   <tr>
-    <td valign="top" align="right" class="key"><?php echo JText::_( 'Searchable' ); ?>:
+    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'Custom field Searchable' ).'::'.JText::_('Custom field Searchable tip'); ?>"><label for="searchable"><?php echo JText::_( 'Custom field Searchable' ); ?>:</label>
     </td>
     <td><?php echo $this->lists['searchable']; ?></td>
   </tr>
   <tr>
-    <td valign="top" align="right" class="key"><?php echo JText::_( 'Show in lists' ); ?>:
+    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'Show in lists' ).'::'.JText::_('Show in lists tip'); ?>"><label for="in_lists"><?php echo JText::_( 'Show in lists' ); ?>:</label>
     </td>
     <td><?php echo $this->lists['in_lists']; ?></td>
   </tr>
+  <tr>
+    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'Frontend edit' ).'::'.JText::_('Frontend edit tip'); ?>"><label for="frontend_edit"><?php echo JText::_( 'Frontend edit' ); ?>:</label>
+    </td>
+    <td><?php echo $this->lists['frontend_edit']; ?></td>
+  </tr>
   <tr id="row-min">
-    <td valign="top" align="right" class="key"><label for="ordering"> <?php echo JText::_( 'Min. characters' ); ?>:
+    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'Min characters' ).'::'.JText::_('Min characters tip'); ?>"><label for="min"><?php echo JText::_( 'Min characters' ); ?>:
     </label></td>
     <td><input type="text" name="min" id="min" size="3" value="<?php echo $this->object->min; ?>"/></td>
   </tr>
   <tr id="row-max">
-    <td valign="top" align="right" class="key"><label for="ordering"> <?php echo JText::_( 'Max. characters' ); ?>:
+    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'Max characters' ).'::'.JText::_('Max characters tip'); ?>"><label for="max"><?php echo JText::_( 'Max characters' ); ?>:
     </label></td>
     <td><input type="text" name="max" id="max" size="3" value="<?php echo $this->object->max; ?>"/></td>
   </tr>
   <tr id="row-options">
-    <td valign="top" align="right" class="key"><label for="ordering"> <?php echo JText::_( 'Options, 1 per line' ); ?>:
+    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'custom field options' ).'::'.JText::_('custom field options tip'); ?>"><label for="options"><?php echo JText::_( 'custom field options' ); ?>:
     </label></td>
     <td><textarea name="options" id="options" rows="6" cols="20"><?php echo $this->object->options; ?></textarea></td>
   </tr>

@@ -62,6 +62,15 @@ JHTML::_('behavior.tooltip');
       <th class="title">
         <?php echo JHTML::_('grid.sort',  'Type', 'obj.type', $this->lists['order_Dir'], $this->lists['order'] ); ?>
       </th>
+      <th class="title">
+        <?php echo JHTML::_('grid.sort',  'Searchable', 'obj.searchable', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+      </th>
+      <th class="title">
+        <?php echo JHTML::_('grid.sort',  'In lists', 'obj.in_lists', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+      </th>
+      <th class="title">
+        <?php echo JHTML::_('grid.sort',  'Frontend edit', 'obj.frontend_edit', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+      </th>
       <th width="5%" nowrap="nowrap"><?php echo JHTML::_('grid.sort',  'Published', 'p.published', $this->lists['order_Dir'], $this->lists['order'] ); ?>
       </th>
       <th width="8%" nowrap="nowrap">
@@ -75,7 +84,7 @@ JHTML::_('behavior.tooltip');
 	</thead>
 	<tfoot>
 		<tr>
-			<td colspan="9">
+			<td colspan="12">
 				<?php echo $this->pagination->getListFooter(); ?>
 			</td>
 		</tr>
@@ -123,6 +132,9 @@ JHTML::_('behavior.tooltip');
 				?>
 			</td>
       <td align="center"><?php echo $row->type;?></td>
+      <td align="center"><?php echo ($row->searchable ? JText::_('Yes') : JText::_('No'));?></td>
+      <td align="center"><?php echo ($row->in_lists ? JText::_('Yes') : JText::_('No'));?></td>
+      <td align="center"><?php echo ($row->frontend_edit ? JText::_('Yes') : JText::_('No'));?></td>
       <td align="center"><?php echo $published;?></td>
       <td class="order">
         <span><?php echo $this->pagination->orderUpIcon( $i, $i > 0 , 'orderup', 'Move Up', $ordering ); ?></span>

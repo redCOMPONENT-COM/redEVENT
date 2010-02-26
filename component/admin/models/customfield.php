@@ -188,21 +188,22 @@ class RedeventModelCustomfield extends JModel
 		if (empty($this->_data))
 		{
 			$object = new stdClass();
-			$object->id					= 0;
-			$object->name				= null;
+			$object->id         = 0;
+			$object->name       = null;
       $object->type       = null;
-      $object->tag       = '';
-      $object->object_key  = 0;
-      $object->tips  = null;
-      $object->min  = 0;
-      $object->max  = 100;
-      $object->options  = null;
-			$object->checked_out			= 0;
+      $object->tag        = '';
+      $object->object_key = 0;
+      $object->tips       = null;
+      $object->min        = 0;
+      $object->max        = 100;
+      $object->options    = null;
+			$object->checked_out = 0;
 			$object->checked_out_time	= 0;
 			$object->ordering			= 0;
-      $object->published     = 0;
-      $object->searchable    = 0;
-      $object->in_lists      = 0;
+      $object->published    = 0;
+      $object->searchable   = 0;
+      $object->in_lists     = 0;
+      $object->frontend_edit = 1;
 			$this->_data					= $object;
 			return (boolean) $this->_data;
 		}

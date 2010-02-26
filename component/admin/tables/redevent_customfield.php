@@ -78,6 +78,12 @@ class Redevent_customfield extends JTable
    */
   var $in_lists;
   /**
+   * allow to edit in frontend
+   *
+   * @var boolean
+   */
+  var $frontend_edit;
+  /**
    * object key (individual / round / ...)
    *
    * @var string

@@ -857,8 +857,48 @@ class RedeventModelEditevent extends JModel
 			if (!($xref->check() && $xref->store())) {
 				JError::raiseWarning(0, JTEXT::_('Saving event date failed').': '.$xref->getError());
 			}
-		}
+		}	
+	
+  	// custom fields
+    // first delete records for this object
+    $query = ' DELETE fv FROM #__redevent_fields_values as fv '
+           . ' INNER JOIN #__redevent_fields as f ON f.id = fv.field_id '
+           . ' WHERE fv.object_id = ' . $this->_db->Quote($row->id)
+           . '   AND f.object_key = ' . $this->_db->Quote('redevent.xref')
+           ;
+    $this->_db->setQuery($query);
+    if (!$this->_db->query()) {
+      $this->setError($this->_db->getErrorMsg());
+      return false;     
+    }
+    
+    // input new values
+    foreach ($data as $key => $value)
+    {
+      if (strstr($key, "custom"))
+      {
+        $fieldid = (int) substr($key, 6);
+        $field = & $this->getTable('Redevent_customfieldvalue','');
+        $field->object_id = $row->id;
+        $field->field_id = $fieldid;
+        if (is_array($value)) {
+          $value = implode("\n", $value);
+        }
+        $field->value = $value;
+        
+        if (!$field->check()) {
+          $this->setError($field->getError());
+          return false;         
+        }
+        if (!$field->store()) {
+          $this->setError($field->getError());
+          return false;         
+        }       
+      }
+    }
 		
+		
+		// MAIL HANDLING
 		$this->_db->setQuery('SELECT * FROM #__redevent_venues AS v LEFT JOIN #__redevent_event_venue_xref AS x ON x.venueid = v.id WHERE x.eventid = '.(int)$row->id);
 		$rowloc = $this->_db->loadObject();
 
@@ -1270,6 +1310,7 @@ class RedeventModelEditevent extends JModel
            . ' FROM #__redevent_fields AS f '
            . ' LEFT JOIN #__redevent_fields_values AS fv ON fv.field_id = f.id AND fv.object_id = '.(int) $xref
            . ' WHERE f.object_key = '. $this->_db->Quote("redevent.xref")
+           . '   AND f.frontend_edit = 1 '
            . ' ORDER BY f.ordering '
            ;
     $this->_db->setQuery($query);
@@ -1300,6 +1341,7 @@ class RedeventModelEditevent extends JModel
            . ' FROM #__redevent_fields AS f '
            . ' LEFT JOIN #__redevent_fields_values AS fv ON fv.field_id = f.id AND fv.object_id = '.(int) $xref
            . ' WHERE f.object_key = '. $this->_db->Quote("redevent.event")
+           . '   AND f.frontend_edit = 1 '
            . ' ORDER BY f.ordering '
            ;
     $this->_db->setQuery($query);

@@ -481,6 +481,13 @@ if (is_array($cols))
     $db->setQuery($q);
     $db->query();    
   }	
+  
+	/* show in lists ? */
+  if (array_key_exists('visible', $cols)) {
+    $q = "ALTER IGNORE TABLE #__redevent_fields CHANGE `visible` `frontend_edit` TINYINT( 1 ) NULL DEFAULT '0'";
+    $db->setQuery($q);
+    $db->query();    
+  }	
 }
 
 /* Get the group members fields columns */
