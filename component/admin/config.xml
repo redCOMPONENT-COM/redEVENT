@@ -71,6 +71,7 @@
  	</params>
  	
  	<params group="frontendeventsubmit">
+ 	  <param type="spacer" default="SETTINGS FRONTEND TIP"/>
     <param name="edit_categories" type="radio" default="0" label="SETTINGS FRONTEND EDIT CATEGORY" description="SETTINGS FRONTEND EDIT CATEGORY TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
@@ -84,6 +85,10 @@
       <option value="1">Yes</option>
     </param>
     <param name="edit_published" type="radio" default="0" label="SETTINGS FRONTEND EDIT PUBLISHED STATE" description="SETTINGS FRONTEND EDIT PUBLISHED STATE TIP">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    <param name="edit_registration" type="radio" default="0" label="SETTINGS FRONTEND EDIT REGISTRATION" description="SETTINGS FRONTEND EDIT REGISTRATION TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>

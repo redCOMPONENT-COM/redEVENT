@@ -233,6 +233,24 @@ JHTML::_('behavior.calendar');
 				<td><?php echo $this->lists['published']; ?></td>
 			</tr>
 			<?php endif; ?>
+			<?php if ($this->params->get('edit_registration', 0)) :?>
+		  <tr>
+		    <td class="key hasTip" title="<?php echo JText::_('EDIT XREF MAXIMUM_ATTENDEES TIP'); ?>">
+		      <label for="maxattendees"><?php echo JText::_( 'EDIT XREF MAXIMUM_ATTENDEES' ) .': '; ?></label>
+		    </td>
+		    <td>
+		      <input type="text" size="8" maxlength="8" name="maxattendees" id="maxattendees" value="<?php echo $this->row->maxattendees; ?>" /> 
+		    </td>
+		  </tr>
+		  <tr>
+		    <td class="key hasTip" title="<?php echo JText::_('EDIT XREF MAXIMUM_WAITINGLIST TIP'); ?>">
+		      <label for="maxwaitinglist"><?php echo JText::_( 'EDIT XREF MAXIMUM_WAITINGLIST' ) .': '; ?></label>
+		    </td>
+		    <td>
+		      <input type="text" size="8" maxlength="8" name="maxwaitinglist" id="maxwaitinglist" value="<?php echo $this->row->maxwaitinglist; ?>" /> 
+		    </td>
+		  </tr>
+			<?php endif; ?>
 			<?php if ($this->params->get('edit_price', 0)): ?>
 			<tr>
 				<td class="key hasTip"
