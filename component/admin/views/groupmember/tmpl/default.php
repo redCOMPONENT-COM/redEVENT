@@ -67,7 +67,7 @@ JHTML::_('behavior.tooltip');
 			<label for="is_admin"> <?php echo JText::_( 'MEMBER MANAGES EVENTS' ); ?>:
 		</label></td>
 		<td>
-			<?php echo $this->lists['add_events']; ?>
+			<?php echo $this->lists['manage_events']; ?>
 		</td>
 	</tr>
 	<tr>
@@ -75,7 +75,7 @@ JHTML::_('behavior.tooltip');
 			<label for="is_admin"> <?php echo JText::_( 'MEMBER MANAGES XREFS' ); ?>:
 		</label></td>
 		<td>
-			<?php echo $this->lists['add_xrefs']; ?>
+			<?php echo $this->lists['manage_xrefs']; ?>
 		</td>
 	</tr>
 	<tr>

@@ -79,17 +79,34 @@ class UserAcl {
 		return $instances[$id];
 	}
 	
-	function checkAddEvent()
+	function canAddEvent()
 	{
 		$groups = $this->getUserGroups();
 		foreach ((array) $groups as $group)
 		{
-			if ($group->add_events == 1 || $group->params->get('add_event', 0)) {
+			if ($group->manage_events == 1 || $group->params->get('add_event', 0)) {
 				return true;
 			}
 		}
 		
 		return false;
+	}
+	
+	function canEditEvent($eventid)
+	{
+		$db = &JFactory::getDBO();
+
+		$query = ' SELECT e.id '
+		       . ' FROM #__redevent_events AS e '
+		       . ' INNER JOIN #__redevent_event_categories_xref AS xcat ON xcat.event_id = e.id '
+		       . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
+		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
+		       . ' WHERE e.id = '. $db->Quote($eventid)
+		       . '   AND ( e.created_by = '.$db->Quote($this->_userid)
+		       . '         OR (gm.member = '.$db->Quote($this->_userid).' AND gm.is_admin = 1 AND gc.accesslevel > 0 AND gm.edit) )'
+		       ;
+		$db->setQuery($query);
+		return $db->loadResult();
 	}
 		
 	function getUserGroups()
@@ -99,7 +116,7 @@ class UserAcl {
 			$db = &JFactory::getDBO();
 			
 			$query = ' SELECT g.id AS group_id, g.name AS group_name, g.parameters, g.isdefault, '
-			       . '   gm.member AS user_id, gm.add_events, gm.add_xrefs, gm.edit_venues '
+			       . '   gm.member AS user_id, gm.manage_events, gm.manage_xrefs, gm.edit_venues '
 			       . ' FROM #__redevent_groups AS g '
 			       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id ' 
 			       . ' WHERE isdefault = 1 '
@@ -159,5 +176,51 @@ class UserAcl {
 		       ;
 		$db->setQuery($query);
 		return $db->loadResultArray();
+	}
+	
+	/**
+	 * Checks if the user is a superuser
+	 * A superuser will allways have access if the feature is activated
+	 *
+	 * @since 0.9
+	 * 
+	 * @return boolean True on success
+	 */
+	function superuser()
+	{
+		$user 		= & JFactory::getUser();
+		
+		$group_ids = array(
+					24, //administrator
+					25 //super administrator
+					);
+		return in_array($user->get('gid'), $group_ids);
+	}
+	
+	/**
+	 * Checks if the user has the privileges to use the wysiwyg editor
+	 *
+	 * We could use the validate_user method instead of this to allow to set a groupid
+	 * Not sure if this is a good idea
+	 *
+	 * @since 0.9
+	 * 
+	 * @return boolean True on success
+	 */
+	function editoruser()
+	{
+		$user 		= & JFactory::getUser();
+		
+		$group_ids = array(
+		//			18, //registered
+		//			19, //author
+					20, //editor
+					21, //publisher
+					23, //manager
+					24, //administrator
+					25 //super administrator
+					);
+
+		return in_array($user->get('gid'), $group_ids);
 	}
 }

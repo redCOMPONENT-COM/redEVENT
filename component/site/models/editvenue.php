@@ -156,7 +156,7 @@ class RedeventModelEditvenue extends JModel
     $elsettings = & redEVENTHelper::config();
     $userid   = (int) $user->get('id');
     $gid    = (int) $user->get('aid');
-    $superuser  = ELUser::superuser();
+    $superuser  = UserAcl::superuser();
 
     $where = ' WHERE c.published = 1 AND c.access <= '.$gid;
 

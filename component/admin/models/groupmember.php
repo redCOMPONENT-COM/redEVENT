@@ -150,8 +150,8 @@ class RedEventModelGroupmember extends JModel
 			$group->group_id		= null;
 			$group->member			= null;
 			$group->is_admin		= 0;
-			$group->add_events	= 0;
-			$group->add_xrefs		= 0;
+			$group->manage_events	= 0;
+			$group->manage_xrefs		= 0;
 			$group->edit_venues	= 0;
 			$group->receive_registrations	= 0;
 			$this->_data				= $group;

@@ -102,14 +102,15 @@ class RedeventModelEditevent extends JModel
 		// Initialize variables
 		$user		= & JFactory::getUser();
 		$elsettings = & redEVENTHelper::config();
+		$acl = UserAcl::getInstance();
 
 		$view		= JRequest::getWord('view');
 
 		/*
 		* If Id exists we will do the edit stuff
 		*/
-		if ($this->_id) {
-
+		if ($this->_id) 
+		{
 			/*
 			* Load the Event data
 			*/
@@ -127,10 +128,7 @@ class RedeventModelEditevent extends JModel
 			/*
 			* access check
 			*/
-			$editaccess	= ELUser::editaccess($elsettings->eventowner, $this->_event->created_by, $elsettings->eventeditrec, $elsettings->eventedit);			
-			$maintainer = ELUser::ismaintainer();
-
-			if ($maintainer || $editaccess ) $allowedtoeditevent = 1;
+			$allowedtoeditevent = $acl->canEditEvent($this->_id);
 
 			if ($allowedtoeditevent == 0) {
 
@@ -141,15 +139,11 @@ class RedeventModelEditevent extends JModel
 			/*
 			* If no Id exists we will do the add event stuff
 			*/
-		} else {
-
+		} 
+		else 
+		{
 			//Check if the user has access to the form
-			$maintainer = ELUser::ismaintainer();
-			$genaccess 	= ELUser::validate_user( $elsettings->evdelrec, $elsettings->delivereventsyes );
-
-			if ($maintainer || $genaccess ) $dellink = 1;
-
-			if ($dellink == 0) {
+			if (!$acl->canAddEvent()) {
 
 				JError::raiseError( 403, JText::_( 'NO ACCESS' ) );
 
@@ -331,7 +325,7 @@ class RedeventModelEditevent extends JModel
 		$user = &JFactory::getUser();
 		$app = &JFactory::getApplication();
 		$params = $app->getParams();
-		$superuser	= ELUser::superuser();
+		$superuser	= UserAcl::superuser();
 
 		//administrators or superadministrators have access to all categories, also maintained ones
 		if($superuser) {
@@ -440,7 +434,7 @@ class RedeventModelEditevent extends JModel
 		$app    = &JFactory::getApplication();
 		$params = $app->getParams();
 		
-		$superuser	= ELUser::superuser();
+		$superuser	= UserAcl::superuser();
 
 		
 		$where = array();
@@ -576,6 +570,7 @@ class RedeventModelEditevent extends JModel
 		$user 		  = & JFactory::getUser();
 		$elsettings = & redEVENTHelper::config();
 		$params     = $mainframe->getParams();
+		$acl        = UserAcl::getInstance();
 
 		//Get mailinformation
 		$SiteName 		= $mainframe->getCfg('sitename');
@@ -614,12 +609,7 @@ class RedeventModelEditevent extends JModel
 		if ($row->id) 
 		{
 			//check if user is allowed to edit events
-			$editaccess	= ELUser::editaccess($elsettings->eventowner, $row->created_by, $elsettings->eventeditrec, $elsettings->eventedit);
-			$maintainer = ELUser::ismaintainer();
-
-			if ($maintainer || $editaccess ) $allowedtoeditevent = 1;
-
-			if ($allowedtoeditevent == 0) {
+			if (!$acl->canEditEvent($this->_id)) {
 				JError::raiseError( 403, JText::_( 'NO ACCESS' ) );
 			}
 
@@ -640,12 +630,7 @@ class RedeventModelEditevent extends JModel
 		else 
 		{
 			//check if user is allowed to submit new events
-			$maintainer = ELUser::ismaintainer();
-			$genaccess 	= ELUser::validate_user( $elsettings->evdelrec, $elsettings->delivereventsyes );
-
-			if ($maintainer || $genaccess ) $dellink = 1;
-
-			if ($dellink == 0){
+			if (!$acl->canAddEvent()){
 				JError::raiseError( 403, JText::_( 'NO ACCESS' ) );
 			}
 
@@ -657,17 +642,6 @@ class RedeventModelEditevent extends JModel
 
 			//Set owneredit to false
 			$owneredit = 0;
-		}
-
-		/*
-		* Autopublish
-		* check if the user has the required rank for autopublish
-		*/
-		$autopubev = ELUser::validate_user( $elsettings->evpubrec, $elsettings->autopubl );
-		if ($autopubev || $owneredit) {
-				$row->published = 1 ;
-			} else {
-				$row->published = 0 ;
 		}
 
 		//Image upload
@@ -709,7 +683,7 @@ class RedeventModelEditevent extends JModel
 			$row->datimage = $curimage;
 		}//end image if
 
-		$editoruser = ELUser::editoruser();
+		$editoruser = UserAcl::editoruser();
 
 		if (!$editoruser) 
 		{
@@ -734,39 +708,6 @@ class RedeventModelEditevent extends JModel
 		}
 
 		$row->title = trim( JFilterOutput::ampReplace( $row->title ) );
-
-		//set registration regarding the el settings
-		switch ($elsettings->showfroregistra) {
-			case 0:
-				$row->registra = 0;
-			break;
-
-			case 1:
-				$row->registra = 1;
-			break;
-
-			case 2:
-			break;
-		}
-
-		switch ($elsettings->showfrounregistra) {
-			case 0:
-				$row->unregistra = 0;
-			break;
-
-			case 1:
-				$row->unregistra = 1;
-			break;
-
-			case 2:
-				if ($elsettings->showfroregistra >= 1) {
-					$row->unregistra = $row->unregistra;
-				} else {
-					$row->unregistra = 0;
-				}
-			break;
-		}
-
 
 		//Make sure the table is valid
 		if (!$row->check($elsettings)) {
@@ -1071,7 +1012,7 @@ class RedeventModelEditevent extends JModel
 		$where = array();
 		
 		$where[] = ' e.published = 1 ';
-		$where[] = ' gc.accesslevel > 0 AND gm.add_xrefs = 1 AND gm.member =' . $this->_db->Quote($user->get('id'));
+		$where[] = ' gc.accesslevel > 0 AND gm.manage_xrefs = 1 AND gm.member =' . $this->_db->Quote($user->get('id'));
 		
 		if (count($where)) {
 			$query .= ' WHERE '. implode(' AND ', $where);
@@ -1243,7 +1184,7 @@ class RedeventModelEditevent extends JModel
   	       . ' INNER JOIN #__redevent_groups AS g ON x.groupid = g.id '
   	       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
   	       . ' WHERE gm.member = '. $this->_db->Quote($user->get('id'))
-  	       . '   AND (gm.add_xrefs > 0 OR gm.add_events > 0) '
+  	       . '   AND (gm.manage_xrefs > 0 OR gm.manage_events > 0) '
   	       . '   AND x.id = '. $this->_db->Quote($xref_id)
   	       ;
   	$this->_db->setQuery($query);
@@ -1263,7 +1204,7 @@ class RedeventModelEditevent extends JModel
   	       . ' FROM #__redevent_groups AS g '
   	       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
   	       . ' WHERE gm.member = '. $this->_db->Quote($user->get('id'))
-  	       . '   AND (gm.add_xrefs > 0 OR gm.add_events > 0) '
+  	       . '   AND (gm.manage_xrefs > 0 OR gm.manage_events > 0) '
   	       ;
   	$this->_db->setQuery($query);
   	$res = $this->_db->loadObjectList();

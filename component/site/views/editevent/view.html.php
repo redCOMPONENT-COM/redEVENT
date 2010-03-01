@@ -55,7 +55,8 @@ class RedeventViewEditevent extends JView
 		}
 
 		$useracl = &UserAcl::getInstance();
-		if (!$useracl->checkAddEvent()) {
+		if (!$useracl->canAddEvent()) 
+		{
 			echo JText::_('EDIT EVENT NOT ALLOWED');
 			return;
 		}
@@ -146,7 +147,6 @@ class RedeventViewEditevent extends JView
                          JHTML::_('select.option', '0', JText::_('UNPUBLISHED')),
                        );
     $lists['published'] = JHTML::_('select.radiolist', $published, 'published', '', 'value', 'text', $row->published);
-//		echo '<pre>';print_r($lists); echo '</pre>';exit;
     
 		$this->assignRef('row',        $row);
 		$this->assignRef('customs',    $customs);

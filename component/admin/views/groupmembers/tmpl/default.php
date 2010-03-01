@@ -97,7 +97,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php endif; ?>
 			</td>
 			<td style="text-align:center;">
-			<?php if ($row->add_events): ?>
+			<?php if ($row->manage_events): ?>
 				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/ok.png',
 																	         JText::_( 'Yes' ), 
 																	         'title= "'. JText::_( 'yes' ) . '"' ); ?>
@@ -108,7 +108,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php endif; ?>
 			</td>
 			<td style="text-align:center;">
-			<?php if ($row->add_xrefs): ?>
+			<?php if ($row->manage_xrefs): ?>
 				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/ok.png',
 																	         JText::_( 'Yes' ), 
 																	         'title= "'. JText::_( 'yes' ) . '"' ); ?>
