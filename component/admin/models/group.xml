@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model>
 	<params group="Event edit">
-    <param name="show_description" type="radio" default="1" label="GROUP PARAMS SHOW DESCRIPTION" description="GROUP PARAMS SHOW DESCRIPTION DESC">
+    <param name="add_event" type="radio" default="0" label="GROUP PARAMS ALLOW ADD EVENT" description="GROUP PARAMS ALLOW ADD EVENT DESC">
        <option value="0">No</option>
        <option value="1">Yes</option>
-     </param>		
+    </param>		
+    <param name="add_venue" type="radio" default="0" label="GROUP PARAMS ALLOW ADD VENUE" description="GROUP PARAMS ALLOW ADD VENUE DESC">
+       <option value="0">No</option>
+       <option value="1">Yes</option>
+    </param>			
 	</params>
 </model>

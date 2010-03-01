@@ -339,29 +339,12 @@ class RedeventModelEditevent extends JModel
 		}
 		else
 		{					
-			$query = ' SELECT c.id '
-			       . ' FROM #__redevent_categories AS c '
-			       . ' INNER JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id '
-			       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
-			       ;
-			       
-			$where = array();
-			
-			$where[] = ' c.published = 1 ';
-			$where[] = ' gc.accesslevel > 0 AND gm.member =' . $this->_db->Quote($user->get('id'));
-			
-			if (count($where)) {
-				$query .= ' WHERE '. implode(' AND ', $where);
-			}
-			        
-			$query .= ' GROUP BY c.id ';
-			
-			$this->_db->setQuery($query);
-			$res = $this->_db->loadResultArray();
-			if (!$res || !count($res)) {
+			$acl = UserACl::getInstance();
+			$managed = $acl->getManagedCategories();
+			if (!$managed || !count($managed)) {
 				return false;
 			}
-			$cwhere = ' WHERE c.id IN ('.implode(',', $res).') ';
+			$cwhere = ' WHERE c.id IN ('.implode(',', $managed).') ';
 		}
 
 		//get the maintained categories and the categories whithout any group
@@ -457,32 +440,23 @@ class RedeventModelEditevent extends JModel
 		$app    = &JFactory::getApplication();
 		$params = $app->getParams();
 		
-		// get managed venues
-		$query = ' SELECT v.id '
-		       . ' FROM #__redevent_venues AS v '
-		       . ' INNER JOIN #__redevent_groups_venues AS gv ON gv.venue_id = v.id '
-		       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = gv.group_id '
-		       ;
-		       
-		$where = array();		
-		$where[] = ' v.published = 1 ';
-		$where[] = ' gv.accesslevel > 0 AND gm.member =' . $this->_db->Quote($user->get('id'));		
-		if (count($where)) {
-			$query .= ' WHERE '. implode(' AND ', $where);
-		}		        
-		$query .= ' GROUP BY v.id ';
-		
-		$this->_db->setQuery($query);
-		$managed = $this->_db->loadResultArray();
+		$superuser	= ELUser::superuser();
+
 		
 		$where = array();
 		
-		if ($managed && count($managed)) {
-			$where[] = ' l.id IN ('.implode(',', $managed).')';
-		}
-		else {
-			$where[] = ' 0 ';
-		}
+		//administrators or superadministrators have access to all venues, also maintained ones
+		if (!$superuser) 
+		{					
+			$acl = UserACl::getInstance();
+			$managed = $acl->getManagedVenues();
+			if ($managed && count($managed)) {
+				$where[] = ' l.id IN ('.implode(',', $managed).')';
+			}
+			else {
+				$where[] = ' 0 ';
+			}
+		}		
 		
 		$where[] = 'l.published = 1';
 

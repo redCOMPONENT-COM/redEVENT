@@ -53,7 +53,12 @@ class RedeventViewEditevent extends JView
 			$this->_displayEventdate($tpl);
 			return;
 		}
-		
+
+		$useracl = &UserAcl::getInstance();
+		if (!$useracl->checkAddEvent()) {
+			echo JText::_('EDIT EVENT NOT ALLOWED');
+			return;
+		}
 
 		// Initialize variables
 		$editor 	  = & JFactory::getEditor();
@@ -132,14 +137,16 @@ class RedeventViewEditevent extends JView
 		foreach ((array)$row->categories as $cat) {
 			$selected[] = $cat->id;
 		}
-		$this->get('CategoryOptions');
-		$lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('CategoryOptions'), 'categories[]', 'class="inputbox required validate-categories" multiple="multiple" size="10"', 'value', 'text', $selected);
+		$catoptions = $this->get('CategoryOptions');
+		$lists['categories'] = JHTML::_('select.genericlist', $catoptions, 'categories[]', 'class="inputbox required validate-categories" multiple="multiple" size="10"', 'value', 'text', $selected);
+
 				
     // published state selector
     $published = array( JHTML::_('select.option', '1', JText::_('PUBLISHED')),
                          JHTML::_('select.option', '0', JText::_('UNPUBLISHED')),
                        );
     $lists['published'] = JHTML::_('select.radiolist', $published, 'published', '', 'value', 'text', $row->published);
+//		echo '<pre>';print_r($lists); echo '</pre>';exit;
     
 		$this->assignRef('row',        $row);
 		$this->assignRef('customs',    $customs);
