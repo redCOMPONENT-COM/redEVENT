@@ -351,7 +351,6 @@ function updateend(cal)
 </div>
 <?php endif; ?>
 
-</div>
 
 <?php echo JHTML::_( 'form.token' ); ?>
 <input type="hidden" name="option" value="com_redevent" />
