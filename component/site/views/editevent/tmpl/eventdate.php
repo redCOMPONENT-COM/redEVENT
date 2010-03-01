@@ -349,6 +349,7 @@ function updateend(cal)
 
 </fieldset>
 </div>
+</div>
 <?php endif; ?>
 
 
