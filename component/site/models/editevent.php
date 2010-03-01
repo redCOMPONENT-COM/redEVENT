@@ -57,6 +57,13 @@ class RedeventModelEditevent extends JModel
 	var $_xref = null;
 	
 	/**
+	 * event custom fields data array
+	 *
+	 * @var array
+	 */
+	var $_customfields = null;
+	
+	/**
 	 * Xrefs custom fields data array
 	 *
 	 * @var array
@@ -1210,6 +1217,27 @@ class RedeventModelEditevent extends JModel
   	$res = $this->_db->loadObjectList();
   	return count($res) > 0;
   } 
+
+  /**
+   * returns all custom fields for event
+   * 
+   * @return array
+   */
+  function _getCustomFields()
+  {
+  	if (empty($this->_customfields))
+  	{
+	  	$query = ' SELECT f.id, f.name, f.in_lists, f.searchable '
+	  	       . ' FROM #__redevent_fields AS f'
+	  	       . ' WHERE f.published = 1'
+	  	       . '   AND f.object_key = '. $this->_db->Quote('redevent.event')
+	  	       . ' ORDER BY f.ordering ASC '
+	  	       ;
+	  	$this->_db->setQuery($query);
+	  	$this->_customfields = $this->_db->loadObjectList();
+  	}
+  	return $this->_customfields;
+  }
 
   /**
    * returns all custom fields for xrefs

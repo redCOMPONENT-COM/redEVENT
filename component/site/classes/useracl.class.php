@@ -98,15 +98,15 @@ class UserAcl {
 
 		$query = ' SELECT e.id '
 		       . ' FROM #__redevent_events AS e '
-		       . ' INNER JOIN #__redevent_event_categories_xref AS xcat ON xcat.event_id = e.id '
+		       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
 		       . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
 		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
 		       . ' WHERE e.id = '. $db->Quote($eventid)
 		       . '   AND ( e.created_by = '.$db->Quote($this->_userid)
-		       . '         OR (gm.member = '.$db->Quote($this->_userid).' AND gm.is_admin = 1 AND gc.accesslevel > 0 AND gm.edit) )'
+		       . '         OR (gm.member = '.$db->Quote($this->_userid).' AND gc.accesslevel > 0 AND gm.manage_events > 0) )'
 		       ;
 		$db->setQuery($query);
-		return $db->loadResult();
+		return ($db->loadResult() ? true : false);
 	}
 		
 	function getUserGroups()

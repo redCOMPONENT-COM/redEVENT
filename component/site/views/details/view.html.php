@@ -55,6 +55,7 @@ class RedeventViewDetails extends JView
 		$user		= JFactory::getUser();
 		$dispatcher = JDispatcher::getInstance();
 		$elsettings = redEVENTHelper::config();
+		$acl        = UserAcl::getInstance();
 		
 		$row		= $this->get('Details');
 		$registers	= $this->get('Registers');
@@ -120,8 +121,7 @@ class RedeventViewDetails extends JView
 		$pathway->addItem( JText::_( 'DETAILS' ). ' - '.$row->title, JRoute::_('index.php?option=com_redevent&view=details&id='.$row->slug));
 		
 		//Check user if he can edit
-		$allowedtoeditevent = ELUser::editaccess($elsettings->eventowner, $row->created_by, $elsettings->eventeditrec, $elsettings->eventedit);
-		// $allowedtoeditvenue = ELUser::editaccess($elsettings->venueowner, $row->venueowner, $elsettings->venueeditrec, $elsettings->venueedit);
+		$allowedtoeditevent = $acl->canEditEvent($row->id);
 		
 		//Timecheck for registration
 		$jetzt = date("Y-m-d");

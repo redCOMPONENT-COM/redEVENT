@@ -42,15 +42,19 @@ JHTML::_('behavior.calendar');
     document.formvalidator.setHandler('startdate', function(value) {
     	return value.length > 0;
     });
-        
-    $('enddates').addEvent('click', 
-    	function(){
-    		if (this.value === "" || this.value === "0000-00-00") {
-      		this.value = $('dates').value;
-        }
-       });
-		});
 
+    if ($('enddates')) {
+	    $('enddates').addEvent('click', 
+	    	function(){
+	    		if (this.value === "" || this.value === "0000-00-00") {
+	      		this.value = $('dates').value;
+	        }
+	       });
+    }
+
+	});
+
+	
 		function submitbutton( pressbutton ) 
 		{
 			if (pressbutton == 'cancelevent' || pressbutton == 'addvenue') {
@@ -69,7 +73,7 @@ JHTML::_('behavior.calendar');
     			alert("<?php echo JText::_( 'SELECT CATEGORY', true ); ?>");
     			validator.handleResponse(false,form.categories);
     			return false;
-			} else if ( validator.validate(form.venueid) === false ) {
+			} else if ( $(form.venueid) && validator.validate(form.venueid) === false ) {
     			alert("<?php echo JText::_( 'SELECT VENUE', true ); ?>");
     			validator.handleResponse(false,form.venueid);
     			return false;
