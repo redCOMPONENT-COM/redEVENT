@@ -69,7 +69,7 @@ function updateend(cal)
 <form name="formxref" action="index.php" method="post" onSubmit="return validateForm(this);">
 
 <fieldset class="adminform">
-<legend><?php echo JText::_('Dates'); ?></legend>
+<legend><?php echo JText::_('Session'); ?></legend>
 
 <table class="admintable">
 <tbody>
