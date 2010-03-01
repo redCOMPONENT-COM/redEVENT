@@ -977,7 +977,7 @@ class RedeventModelEditevent extends JModel
 		$where = array();
 		
 		$where[] = ' v.published = 1 ';
-		$where[] = ' gv.accesslevel > 0 AND gm.edit_venues > 0 AND gm.member =' . $this->_db->Quote($user->get('id'));
+		$where[] = ' gm.member =' . $this->_db->Quote($user->get('id'));
 		
 		if (count($where)) {
 			$query .= ' WHERE '. implode(' AND ', $where);
@@ -1012,7 +1012,7 @@ class RedeventModelEditevent extends JModel
 		$where = array();
 		
 		$where[] = ' e.published = 1 ';
-		$where[] = ' gc.accesslevel > 0 AND gm.manage_xrefs = 1 AND gm.member =' . $this->_db->Quote($user->get('id'));
+		$where[] = ' gc.accesslevel > 0 AND (gm.manage_xrefs = 1 OR gm.manage_events > 0) AND gm.member =' . $this->_db->Quote($user->get('id'));
 		
 		if (count($where)) {
 			$query .= ' WHERE '. implode(' AND ', $where);
