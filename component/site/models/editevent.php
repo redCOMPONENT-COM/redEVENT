@@ -769,7 +769,7 @@ class RedeventModelEditevent extends JModel
 			$xref->eventid = $row->id;
 			
 			if (!($xref->check() && $xref->store())) {
-				JError::raiseWarning(0, JTEXT::_('Saving event date failed').': '.$xref->getError());
+				JError::raiseWarning(0, JTEXT::_('Saving event session failed').': '.$xref->getError());
 			}
 		}	
 	    

@@ -227,7 +227,7 @@ class RedEventModelSample extends JModel
 			return $row->id;
 		}
 		else {
-			$this->setError(JText::_('Error creating sample event date'));
+			$this->setError(JText::_('Error creating sample event session'));
 			return false;
 		}
 	}

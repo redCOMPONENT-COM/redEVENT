@@ -87,7 +87,7 @@ echo $this->pane->startPane("det-pane");
 	echo $this->loadTemplate('event');
 	echo $this->pane->endPanel();
 	
-	$title = JText::_( 'VENUES' );
+	$title = JText::_( 'Sessions' );
 	echo $this->pane->startPanel( $title, 'venues' );
 	echo $this->loadTemplate('venues');
 	echo $this->pane->endPanel();
