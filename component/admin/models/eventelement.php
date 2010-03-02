@@ -148,7 +148,7 @@ class RedEventModelEventelement extends JModel
           . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
 					. ' LEFT JOIN #__redevent_categories AS cat ON cat.id = xcat.category_id'
 					. $where
-					. ' GROUP BY x.id '
+					. ' GROUP BY a.id, x.id '
 					. $orderby
 					;
 		return $query;
@@ -191,12 +191,12 @@ class RedEventModelEventelement extends JModel
 
 		if ( $filter_state ) {
 			if ( $filter_state == 'P' ) {
-				$where[] = 'x.published = 1';
+				$where[] = 'a.published = 1';
 			} else if ($filter_state == 'U' ) {
-				$where[] = 'x.published = 0';
+				$where[] = 'a.published = 0';
 			}
 		} else {
-			$where[] = 'x.published >= 0';
+			$where[] = 'a.published >= 0';
 		}
 
 		if ($search && $filter == 1) {
