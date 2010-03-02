@@ -50,6 +50,12 @@ class TCustomfieldSelectmultiple extends TCustomfield {
    */
   function render($attributes = '')
   {    
+  	if ($this->required) {
+  		$attribs = 'class="required"';
+  	}
+  	else {
+  		$attribs = null;
+  	}
     $option_list = array();
     $options = explode("\n", $this->options);
     if ($options) 
@@ -59,7 +65,7 @@ class TCustomfieldSelectmultiple extends TCustomfield {
     		$option_list[] = JHTML::_('select.option', $opt, $opt);
     	}    	
     }
-    return JHTML::_('select.genericlist', $option_list, 'custom'.$this->id.'[]', 'multiple="multiple" size="'.min(10,count($options)).'" '.$attributes, 'value', 'text', explode("\n",$this->value));
+    return JHTML::_('select.genericlist', $option_list, 'custom'.$this->id.'[]', 'multiple="multiple" size="'.min(10,count($options)).'" '.$attribs, 'value', 'text', explode("\n",$this->value));
   }
 
   function renderFilter($attributes = '') 

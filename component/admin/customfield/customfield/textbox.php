@@ -50,6 +50,9 @@ class TCustomfieldTextbox extends TCustomfield {
    */
   function render($attributes = '')
   {
+  	if ($this->required) {
+  		$class = ' class="required"';
+  	}
         /*
          * Required to avoid a cycle of encoding &
          * html_entity_decode was used in place of htmlspecialchars_decode because
@@ -57,7 +60,7 @@ class TCustomfieldTextbox extends TCustomfield {
          */
     $value = htmlspecialchars(html_entity_decode($this->value, ENT_QUOTES), ENT_QUOTES);
 
-    return '<input type="text" name="custom'.$this->id.'" id="custom'.$this->id.'" value="'.$value.'" '.$attributes.'/>';
+    return '<input type="text" name="custom'.$this->id.'" id="custom'.$this->id.'" value="'.$value.'" '.$class.$attributes.'/>';
   }
 
   function renderFilter($attributes = '') 

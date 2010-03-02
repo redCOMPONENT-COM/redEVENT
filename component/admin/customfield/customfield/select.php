@@ -50,6 +50,12 @@ class TCustomfieldSelect extends TCustomfield {
    */
   function render($attributes = '')
   {    
+  	if ($this->required) {
+  		$attribs = array('class' => 'required');
+  	}
+  	else {
+  		$attribs = null;
+  	}
     $option_list = array();
     $options = explode("\n", $this->options);
     if ($options) 
@@ -59,7 +65,7 @@ class TCustomfieldSelect extends TCustomfield {
     		$option_list[] = JHTML::_('select.option', $opt, $opt);
     	}    	
     }
-    return JHTML::_('select.genericlist', $option_list, 'custom'.$this->id, $attributes, 'value', 'text', $this->value);
+    return JHTML::_('select.genericlist', $option_list, 'custom'.$this->id, $attribs, 'value', 'text', $this->value);
   }
   
   

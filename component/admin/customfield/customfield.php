@@ -72,6 +72,12 @@ class TCustomfield extends JObject {
    */
   var $tips;
   /**
+   * tooltip
+   *
+   * @var string
+   */
+  var $required;
+  /**
    * options
    *
    * @var string

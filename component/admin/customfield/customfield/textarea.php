@@ -50,6 +50,9 @@ class TCustomfieldTextarea extends TCustomfield {
    */
   function render($attributes = '')
   {
+  	if ($this->required) {
+  		$class = ' class="required"';
+  	}
         /*
          * Required to avoid a cycle of encoding &
          * html_entity_decode was used in place of htmlspecialchars_decode because
@@ -57,7 +60,7 @@ class TCustomfieldTextarea extends TCustomfield {
          */
     $value = htmlspecialchars(html_entity_decode($this->value, ENT_QUOTES), ENT_QUOTES);
 
-    return '<textarea name="custom'.$this->id.'" id="custom'.$this->id.'" '.$attributes.'>'.$value.'</textarea>';
+    return '<textarea name="custom'.$this->id.'" id="custom'.$this->id.'" '.$class.$attributes.'>'.$value.'</textarea>';
   }
 
   function renderFilter($attributes = '') 

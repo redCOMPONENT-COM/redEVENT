@@ -81,6 +81,9 @@ JHTML::_('behavior.calendar');
     			alert("<?php echo JText::_( 'SELECT DATE', true ); ?>");
     			validator.handleResponse(false,form.dates);
     			return false;
+			} else if (validator.isValid(form) === false ) {
+    			alert("<?php echo JText::_( 'Error: Please check required fields', true ); ?>");
+    			return false;
   			} else {
   			<?php
 			// JavaScript for extracting editor text
@@ -288,6 +291,7 @@ JHTML::_('behavior.calendar');
 	      </td>
 	      <td>
 	        <?php echo $field->render(); ?>
+	        <?php echo ($field->required? ' '.JText::_('Required') : '' ); ?>
 	      </td>   
 	    </tr>
 	    <?php endforeach; ?>
@@ -305,6 +309,7 @@ JHTML::_('behavior.calendar');
 	      </td>
 	      <td>
 	        <?php echo $field->render(); ?>
+	        <?php echo ($field->required? ' '.JText::_('Required') : '' ); ?>
 	      </td>   
 	    </tr>
 	    <?php endforeach; ?>

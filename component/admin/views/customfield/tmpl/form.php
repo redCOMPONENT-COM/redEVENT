@@ -109,6 +109,11 @@ JToolBarHelper::help( 'screen.tracks.edit' );
     </td>
     <td><?php echo $this->lists['frontend_edit']; ?></td>
   </tr>
+  <tr>
+    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'Custom field Required' ).'::'.JText::_('Custom field Required tip'); ?>"><label for="frontend_edit"><?php echo JText::_( 'Custom field required' ); ?>:</label>
+    </td>
+    <td><?php echo $this->lists['required']; ?></td>
+  </tr>
   <tr id="row-min">
     <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'Min characters' ).'::'.JText::_('Min characters tip'); ?>"><label for="min"><?php echo JText::_( 'Min characters' ); ?>:
     </label></td>

@@ -84,6 +84,12 @@ class Redevent_customfield extends JTable
    */
   var $frontend_edit;
   /**
+   * is the field required
+   *
+   * @var boolean
+   */
+  var $required;
+  /**
    * object key (individual / round / ...)
    *
    * @var string

@@ -796,7 +796,7 @@ class RedeventModelEditevent extends JModel
 	    if (!$this->_db->query()) {
 	    	$this->setError($this->_db->getErrorMsg());
 				JError::raiseWarning(0, JTEXT::_('copying custom fields failed').': '.$xref->getError());
-	    }         	
+	    }
     }
     
     foreach ($data as $key => $value)
@@ -808,16 +808,18 @@ class RedeventModelEditevent extends JModel
         $query = ' SELECT f.* FROM #__redevent_fields AS f WHERE f.id = '. $this->_db->Quote($fieldid);
         $this->_db->setQuery($query, 0 ,1);
         $field = $this->_db->loadObject();
-        
-        // delete previous value
-				$query = ' DELETE fv FROM #__redevent_fields_values as fv '
-               . ' WHERE fv.field_id = ' . $this->_db->Quote('fieldid')
-               . '   AND fv.object_id = ' . $this->_db->Quote(($field->object_key == 'redevent.xref' ? $xref->id : $row->id))
-               ;
-				$this->_db->setQuery($query);
-				if (!$this->_db->query()) {
-					JError::raiseWarning(0, JTEXT::_('Failed deleting previous custom value').': '.$this->_db->getErrorMsg());
-				}
+        if ($field->object_key == 'redevent.event')
+        {
+	        // delete previous value
+					$query = ' DELETE fv FROM #__redevent_fields_values as fv '
+	               . ' WHERE fv.field_id = ' . $this->_db->Quote($fieldid)
+	               . '   AND fv.object_id = ' . $this->_db->Quote($row->id)
+	               ;
+					$this->_db->setQuery($query);
+					if (!$this->_db->query()) {
+						JError::raiseWarning(0, JTEXT::_('Failed deleting previous custom value').': '.$this->_db->getErrorMsg());
+					}
+        }
         
         $fieldvalue = & $this->getTable('Redevent_customfieldvalue','');
         $fieldvalue->object_id = ($field->object_key == 'redevent.xref' ? $xref->id : $row->id);
