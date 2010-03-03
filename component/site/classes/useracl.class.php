@@ -108,6 +108,25 @@ class UserAcl {
 		$db->setQuery($query);
 		return ($db->loadResult() ? true : false);
 	}
+	
+	function canEditXref($xref)
+	{
+		$db = &JFactory::getDBO();
+
+		$query = ' SELECT e.id '
+		       . ' FROM #__redevent_events AS e '
+		       . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
+		       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
+		       . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
+		       . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = x.venueid AND gv.group_id = gc.group_id '
+		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
+		       . ' WHERE x.id = '. $db->Quote($xref)
+		       . '   AND ( e.created_by = '.$db->Quote($this->_userid)
+		       . '         OR (gm.member = '.$db->Quote($this->_userid).' AND gc.accesslevel > 0 AND gv.accesslevel > 0 AND (gm.manage_xrefs > 0 OR gm.manage_events > 0)) )'
+		       ;
+		$db->setQuery($query);
+		return ($db->loadResult() ? true : false);
+	}
 		
 	function getUserGroups()
 	{

@@ -591,11 +591,11 @@ class RedeventController extends JController
 		
 		if ($returnid = $model->storeXref($post)) {
 			$msg = JText::_('EVENT DATE SAVED');
-			$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=myevents', false), $msg);				
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg);				
 		}
 		else {
-			$msg = JText::_('SUBMIT XREF ERROR');
-			$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=myevents', false), $msg, 'error');			
+			$msg = JText::_('SUBMIT XREF ERROR').$model->getError();
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');			
 		}		
 	}
 	
@@ -620,11 +620,11 @@ class RedeventController extends JController
 		
 		if ($model->publishxref($xref, $newstate)) {
 			$msg = JText::_('PUBLISHED STATE UPDATED');
-			$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=myevents', false), $msg);				
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg);				
 		}
 		else {
 			$msg = JText::_('PUBLISHED STATE UPDATE ERROR').'<br>'.$model->getError();
-			$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=myevents', false), $msg, 'error');			
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');			
 		}		
 	}
 
@@ -636,11 +636,11 @@ class RedeventController extends JController
 		
 		if ($model->deletexref($xref)) {
 			$msg = JText::_('EVENT DATE DELETED');
-			$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=myevents', false), $msg);				
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg);				
 		}
 		else {
 			$msg = JText::_('EVENT DATE DELETION ERROR').'<br>'.$model->getError();
-			$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=myevents', false), $msg, 'error');			
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');			
 		}		
 	}
 	

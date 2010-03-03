@@ -1186,19 +1186,9 @@ class RedeventModelEditevent extends JModel
   	if (!$xref_id) {
   		return false;
   	}
-  	$user = & JFactory::getUser();
+		$acl = UserAcl::getInstance();
   	
-  	$query = ' SELECT gm.id '
-  	       . ' FROM #__redevent_event_venue_xref AS x '
-  	       . ' INNER JOIN #__redevent_groups AS g ON x.groupid = g.id '
-  	       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
-  	       . ' WHERE gm.member = '. $this->_db->Quote($user->get('id'))
-  	       . '   AND (gm.manage_xrefs > 0 OR gm.manage_events > 0) '
-  	       . '   AND x.id = '. $this->_db->Quote($xref_id)
-  	       ;
-  	$this->_db->setQuery($query);
-  	$res = $this->_db->loadObjectList();
-  	return count($res) > 0;
+  	return $acl->canEditXref($xref_id);
   }
 	
   /**
