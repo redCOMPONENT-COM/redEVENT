@@ -234,6 +234,18 @@ class RedEventControllerEvents extends RedEventController
 		$model_wait = $this->getModel('waitinglist');
 		if ($returnid = $model->store($post)) {
 
+			$msg	= JText::_( 'EVENT SAVED');
+
+			//If the AutoTweet NG Component is installed 
+			if (JComponentHelper::getComponent('com_autotweet', true)->enabled) {
+				//If the redEVENT twitter plugin is installed
+				if (JPluginHelper::isEnabled("system", "autotweetredevent"))
+				{
+					//Add twitter redirect
+					$twitter_redirect = '&twit_id='.$returnid.'&message='.$msg;
+				}
+			}
+
 			switch ($task)
 			{
 				case 'apply' :
@@ -241,10 +253,9 @@ class RedEventControllerEvents extends RedEventController
 					break;
 
 				default :
-					$link = 'index.php?option=com_redevent&view=events';
+					$link = 'index.php?option=com_redevent&view=events'.$twitter_redirect;
 					break;
 			}
-			$msg	= JText::_( 'EVENT SAVED');
 						
 			$cache = &JFactory::getCache('com_redevent');
 			$cache->clean();
@@ -263,6 +274,10 @@ class RedEventControllerEvents extends RedEventController
 		
 		$this->setRedirect( $link, $msg );
  	}
+
+	function twitRedirect() {
+		$this->setRedirect('index.php?option='.JRequest::getVar('option').'&view=events&id='.JRequest::getVar('twit_id'), JRequest::getVar('message'));
+	}
 
 	/**
 	 * logic to remove an event

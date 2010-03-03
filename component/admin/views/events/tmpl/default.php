@@ -45,6 +45,28 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 	</table>
 
+	<?php
+	//Twit redirect will only be used if the twit_id is set (when the autotweetredevent plugin is installed)
+	if (JRequest::getVar('twit_id'))
+	{
+	?>
+	<table class="adminlist">
+		<tr>
+			<td>
+				<script>
+				<?php
+				echo "window.location.href='index.php?option=".JRequest::getVar('option')."&view=events&controller=events&task=twitRedirect&message=".JRequest::getVar('message')."';";
+				?>
+				</script>
+			</td>
+		</tr>
+	</table>
+	<?php
+	}
+	else
+	{
+	?>
+
 	<table class="adminlist" cellspacing="1">
 		<thead>
 			<tr>
@@ -224,4 +246,7 @@ defined('_JEXEC') or die('Restricted access');
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="" />
+	<?php
+	}
+	?>
 </form>
