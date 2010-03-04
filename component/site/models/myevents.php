@@ -479,7 +479,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         // then if the user is the owner of the event or member of admin group
         $where .= ' AND (a.created_by = '. $this->_db->Quote($user->id)
                 . '      OR (gm.member = '. $this->_db->Quote($user->id) 
-                . '          AND (gm.manage_events > 0 OR (gm.manage_xrefs > 0 AND gv.accesslevel > 0)) AND gc.accesslevel > 0)) ';
+                . '          AND (gm.manage_events > 0 OR gm.manage_xrefs > 0) AND gv.accesslevel > 0 AND gc.accesslevel > 0)) ';
 
         // Second is to only select events assigned to category the user has access to
         $where .= ' AND c.access <= '.$gid;
