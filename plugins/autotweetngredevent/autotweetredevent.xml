@@ -2,13 +2,13 @@
 <install version="1.5.4" type="plugin" group="system">
 	<name>AutoTweet NG redEVENT</name>
 	<author>Redweb.dk</author>
-	<creationDate>03-03-2010</creationDate>
+	<creationDate>04-03-2010</creationDate>
 	<copyright>Redweb.dk</copyright>
-	<license>GPL 2.0</license>
-	<authorEmail></authorEmail>
+	<license>GNU/GPL</license>
+	<authorEmail>email@redweb.dk</authorEmail>
 	<authorUrl>http://www.redcomponent.com</authorUrl>
 	<version>1.0</version>
-	<description>Extension plugin for AutoTweet. The plugin extends AutoTweet for redEVENT - latest published events. Needs AutoTweet NG Component to work!</description>
+	<description>Extension plugin for AutoTweet. The plugin extends AutoTweet for redEVENT. Tweet when creating/editing events. Needs AutoTweet NG Component to work!</description>
 	<files>
 		<filename plugin="autotweetredevent">autotweetredevent.php</filename>
 	</files>
