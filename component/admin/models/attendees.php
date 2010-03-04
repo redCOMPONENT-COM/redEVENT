@@ -118,6 +118,11 @@ class RedEventModelAttendees extends JModel
 		// Set id and wipe data
 		$this->_xref	    = $xref;
 		$this->_data 	= null;
+		
+		// set eventid
+		$query = ' SELECT eventid FROM #__redevent_event_venue_xref WHERE id = '. $this->_db->Quote($xref);
+		$this->_db->setQuery($query);
+		$this->setId($this->_db->loadResult());
 	}
 
 	/**
@@ -236,18 +241,22 @@ class RedEventModelAttendees extends JModel
 		   ;
 		$this->_db->setQuery($q, 0, 1);
 		$res = $this->_db->loadResult();
-		
 		if (empty($res)) {
 			return null;
 		}
-				
+		$list = array();
+	  foreach (explode(',', $res) as $f) {
+	  	$list[] = $this->_db->Quote($f);
+	  }
 		// get redform form and fields to show
 		$q = ' SELECT f.id, f.field '
 		   . ' FROM #__rwf_fields AS f '
-		   . ' WHERE f.id IN ('. $this->_db->Quote($res).')'
+		   . ' WHERE f.id IN ('.implode(',', $list) .')'
+		   . ' ORDER BY f.ordering '
 		   ;
 		$this->_db->setQuery($q);
 		$res = $this->_db->loadObjectList();
+		//echo '<pre>';print_r($res); echo '</pre>';exit;
 		return $res;
 	}
 	
@@ -460,11 +469,29 @@ class RedEventModelAttendees extends JModel
   
   function getForm()
   {
-  	$query = ' SELECT f.* '
-  	       . ' FROM #__redevent_events AS e '
-  	       . ' INNER JOIN #__rwf_forms AS f ON e.redform_id = f.id '
-  	       . ' WHERE e.id = '. $this->_db->Quote($this->_eventid)
-  	       ;
+  	if ($this->_eventid)
+  	{
+	  	$query = ' SELECT f.* '
+	  	       . ' FROM #__redevent_events AS e '
+	  	       . ' INNER JOIN #__rwf_forms AS f ON e.redform_id = f.id '
+	  	       . ' WHERE e.id = '. $this->_db->Quote($this->_eventid)
+	  	       ;
+  	}
+  	else if ($this->_xref)
+  	{
+	  	$query = ' SELECT f.* '
+	  	       . ' FROM #__redevent_events AS e '
+	  	       . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
+	  	       . ' INNER JOIN #__rwf_forms AS f ON e.redform_id = f.id '
+	  	       . ' WHERE x.id = '. $this->_db->Quote($this->_xref)
+	  	       ;
+  		
+  	}
+  	else
+  	{
+  		JError::raisewarning(0, 'No event or session id !');
+  		return false;
+  	}
   	$this->_db->setQuery($query, 0, 1);
   	$res = $this->_db->loadObject();
 //  	echo '<pre>';print_r($this->_db->getQuery()); echo '</pre>';exit;
