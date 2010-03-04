@@ -34,6 +34,8 @@ jimport('joomla.application.component.controller');
  */
 class RedEventControllerEvents extends RedEventController
 {
+	private $twit;
+	
 	/**
 	 * Constructor
 	 *
@@ -47,6 +49,8 @@ class RedEventControllerEvents extends RedEventController
 		$this->registerTask( 'apply', 		'save' );
 		$this->registerTask( 'copy',	 	'edit' );
 		$this->registerTask( 'add',	 	'edit' );
+		
+		$this->twit = false;
 	}
 
 	/**
@@ -236,13 +240,16 @@ class RedEventControllerEvents extends RedEventController
 
 			$msg	= JText::_( 'EVENT SAVED');
 
-			//If the AutoTweet NG Component is installed 
-			if (JComponentHelper::getComponent('com_autotweet', true)->enabled) {
-				//If the redEVENT twitter plugin is installed
-				if (JPluginHelper::isEnabled("system", "autotweetredevent"))
-				{
-					//Add twitter redirect
-					$twitter_redirect = '&twit_id='.$returnid.'&message='.$msg;
+			if ($this->twit == true)
+			{
+				//If the AutoTweet NG Component is installed 
+				if (JComponentHelper::getComponent('com_autotweet', true)->enabled) {
+					//If the redEVENT twitter plugin is installed
+					if (JPluginHelper::isEnabled("system", "autotweetredevent"))
+					{
+						//Add twitter redirect
+						$twitter_redirect = '&twit_id='.$returnid.'&message='.$msg;
+					}
 				}
 			}
 
@@ -274,6 +281,12 @@ class RedEventControllerEvents extends RedEventController
 		
 		$this->setRedirect( $link, $msg );
  	}
+
+	function saveAndTwit()
+	{
+		$this->twit = true;
+		$this->save();
+	}
 
 	function twitRedirect() {
 		$this->setRedirect('index.php?option='.JRequest::getVar('option').'&view=events&id='.JRequest::getVar('twit_id'), JRequest::getVar('message'));
