@@ -408,7 +408,7 @@ if (is_array($cols)) {
   }
   
   if (!array_key_exists('note', $cols)) {
-    $q ="ALTER IGNORE TABLE `#__redevent_event_venue_xref` ADD COLUMN `note` NULL DEFAULT NULL AFTER `registrationend`";
+    $q ="ALTER IGNORE TABLE `#__redevent_event_venue_xref` ADD COLUMN `note` VARCHAR(50) NULL DEFAULT NULL AFTER `registrationend`";
     $db->setQuery($q);
     $db->query();
   }
