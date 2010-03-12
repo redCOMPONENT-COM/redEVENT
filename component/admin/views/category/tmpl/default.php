@@ -152,8 +152,8 @@ function submitbutton(pressbutton)
 			<table>
 				<tr>
 					<td>
-						<label for="event_template">
-							<?php echo JText::_( 'Event template' ).':'; ?>
+						<label for="event_template" class="hasTip" title="<?php echo JText::_( 'Category Event template' ).'::'.JText::_( 'Category Event template tip' ); ?>">
+							<?php echo JText::_( 'Category Event template' ).':'; ?>
 						</label>
 					</td>
 					<td>

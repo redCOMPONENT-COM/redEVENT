@@ -143,6 +143,8 @@ class RedEventViewCategory extends JView {
 		$this->assignRef('row'      	, $row);
 		$this->assignRef('editor'		, $editor);
 		$this->assignRef('pane'			, $pane);
+		
+		JHTML::_('behavior.tooltip');
 
 		parent::display($tpl);
 	}
