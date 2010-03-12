@@ -147,7 +147,7 @@ function submitbutton(pressbutton)
 			</table>
 			<?php
 			echo $this->pane->endPanel();
-			echo $this->pane->startPanel( JText::_('Frontend'), 'access' );
+			echo $this->pane->startPanel( JText::_('Frontend event submission'), 'access' );
 			?>
 			<table>
 				<tr>
