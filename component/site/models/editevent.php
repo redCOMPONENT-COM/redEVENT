@@ -350,7 +350,7 @@ class RedeventModelEditevent extends JModel
 
 		//get the maintained categories and the categories whithout any group
 		//or just get all if somebody have edit rights	
-    $query = ' SELECT c.id, c.catname, (COUNT(parent.catname) - 1) AS depth '
+    $query = ' SELECT c.id, c.catname, (COUNT(parent.catname) - 1) AS depth, c.event_template, c.ordering '
            . ' FROM #__redevent_categories AS c, '
            . ' #__redevent_categories AS parent '
            . $cwhere
@@ -572,7 +572,7 @@ class RedeventModelEditevent extends JModel
 	 */
 	function store($data, $file)
 	{
-		global $mainframe;
+		$mainframe =& JFactory::getApplication();
 
 		$user 		  = & JFactory::getUser();
 		$elsettings = & redEVENTHelper::config();
@@ -593,7 +593,9 @@ class RedeventModelEditevent extends JModel
 		}
 		else 
 		{
-			$template_event = (int) $params->get('event_template');
+			$category_ids = (isset($data['categories']) ? $data['categories'] : array());
+			$template_event = $this->_getEventTemplate($category_ids);
+			
 			if ($template_event) 
 			{
 				$row->load($template_event);
@@ -1312,6 +1314,81 @@ class RedeventModelEditevent extends JModel
       $fields[] = $field;
     }
     return $fields;     
+  }
+  
+  /**
+   * returns id of event to use as template for the submission
+   * 
+   * @param array categories ids submitted for the event
+   * @return int event id
+   */
+  function _getEventTemplate($categories)
+  {
+		$mainframe = &JFactory::getApplication();
+		$params    = $mainframe->getParams('com_redevent');
+		
+  	if (!is_array($categories) || !count($categories)) {
+			$template_event = (int) $params->get('event_template');  		
+  	}
+  	
+  	// get all categories
+    $query = ' SELECT c.id, c.catname, (COUNT(parent.catname) - 1) AS depth, c.event_template, c.ordering '
+           . ' FROM #__redevent_categories AS c, '
+           . ' #__redevent_categories AS parent '
+           . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
+           . '   AND c.id IN ('.implode(',', $categories).')'
+           . ' GROUP BY c.id '
+           . ' ORDER BY c.lft;'
+           ;
+    $this->_db->setQuery($query);
+    
+    $cats = $this->_db->loadObjectList();
+  	// try to find an event template in the categories of the event, or their parents.
+  	// try first with deepest category with smallest ordering value
+  	uasort($cats, array($this, "_cmpCatEventTemplate"));
+  	foreach ($cats as $cat)
+  	{
+  		$event = $this->_getCategoryEventTemplate($cat->id);
+  		if ($event) {
+  			return $event;
+  		}
+  	}
+  	return 0;
+  }
+  
+  /**
+   * returns the event id of the event template for this category
+   * 
+   * if no event template defined, it looks up in parent categories
+   * @param int category $id
+   * @param int event id
+   */
+  function _getCategoryEventTemplate($id)
+  {
+  	$query = ' SELECT c.event_template '
+		       . ' FROM #__redevent_categories AS c, #__redevent_categories AS ci '
+		       . ' WHERE ci.id = '. $this->_db->Quote($id)
+		       . '   AND c.lft <= ci.lft AND c.rgt >= ci.lft '
+		       . '   AND c.event_template > 0 '
+		       . ' ORDER BY c.lft DESC '
+		       ;
+  	$this->_db->setQuery($query);
+  	$res = $this->_db->loadResult();
+  	
+  	return $res;
+  }
+  
+  function _cmpCatEventTemplate($a, $b)
+  {
+  	if ($a->depth != $b->depth) {
+  		return ($a->depth > $b->depth ? -1 : 1);
+  	}
+  	
+  	if ($a->ordering != $b->ordering) {
+  		return ($a->ordering > $b->ordering ? 1 : -1);
+  	}
+  	
+  	return 0;
   }
 }
 ?>
