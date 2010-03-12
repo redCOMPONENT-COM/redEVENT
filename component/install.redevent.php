@@ -466,6 +466,13 @@ if (is_array($cols)) {
     $db->setQuery($q);
     $db->query();    
   }
+  
+  /* category event template */
+  if (!array_key_exists('event_template', $cols)) {
+    $q = "ALTER IGNORE TABLE #__redevent_categories ADD COLUMN `event_template` INT(11) NOT NULL DEFAULT 0";
+    $db->setQuery($q);
+    $db->query();    
+  }
 }
 
 /* Get the custom fields columns */

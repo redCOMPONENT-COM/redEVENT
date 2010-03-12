@@ -69,6 +69,8 @@ class RedEvent_categories extends JTable
 	/** @var string */
 	var $maintainers		= null;
 	/** @var int */
+	var $event_template	= 0;
+	/** @var int */
 	var $ordering 			= null;
 
 	/**

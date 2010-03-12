@@ -120,6 +120,16 @@ class RedEventViewCategory extends JView {
 		$grouplist 		= array_merge( $grouplist, $groups );
 
 		$Lists['groups']	= JHTML::_('select.genericlist', $grouplist, 'groupid', 'size="1" class="inputbox"', 'value', 'text', $row->groupid );
+		
+		// event 
+		JHTML::_('behavior.modal', 'a.modal');
+		$js = "
+		function elSelectEvent(id, title, field) {
+			document.getElementById(field).value = id;
+			document.getElementById(field+'_name').value = title;
+			document.getElementById('sbox-window').close();
+		}";
+		$document->addScriptDeclaration($js);
 
 		//assign data to template
 		$this->assignRef('Lists'      	, $Lists);

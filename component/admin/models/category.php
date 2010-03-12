@@ -132,10 +132,11 @@ class RedEventModelCategory extends JModel
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_data))
 		{
-			$query = 'SELECT *'
-					. ' FROM #__redevent_categories'
-					. ' WHERE id = '.$this->_id
-					;
+			$query = ' SELECT c.*, e.title AS event_template_name '
+			       . ' FROM #__redevent_categories AS c '
+			       . ' LEFT JOIN #__redevent_events AS e ON e.id = c.event_template '
+			       . ' WHERE c.id = '.$this->_id
+			       ;
 			$this->_db->setQuery($query);
 			$this->_data = $this->_db->loadObject();
 
@@ -169,6 +170,8 @@ class RedEventModelCategory extends JModel
 			$category->image				= JText::_('SELECTIMAGE');
       $category->color        = '';
 			$category->access				= 0;
+			$category->event_template = 0;
+			$category->event_template_name = '';
 			$this->_data					= $category;
 			return (boolean) $this->_data;
 		}

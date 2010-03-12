@@ -146,8 +146,32 @@ function submitbutton(pressbutton)
 				</tr>
 			</table>
 			<?php
-			$title = JText::_( 'GROUP' );
 			echo $this->pane->endPanel();
+			echo $this->pane->startPanel( JText::_('Frontend'), 'access' );
+			?>
+			<table>
+				<tr>
+					<td>
+						<label for="event_template">
+							<?php echo JText::_( 'Event template' ).':'; ?>
+						</label>
+					</td>
+					<td>
+						<?php	$link = 'index.php?option=com_redevent&amp;view=eventelement&amp;tmpl=component&amp;field=event_template'; ?>
+						<div style="float: left;"><input style="background: #ffffff;" type="text" id="event_template_name" value="<?php echo $this->row->event_template_name; ?>" disabled="disabled" /></div>
+						<div class="button2-left"><div class="blank">
+							<a class="modal" title="<?php JText::_('Select'); ?>"  href="<?php echo $link; ?>" rel="{handler: 'iframe', size: {x: 650, y: 375}}"><?php echo JText::_('Select'); ?></a>
+						</div></div>
+						<div class="button2-left"><div class="blank">
+							<a title="<?php JText::_('Reset'); ?>"><?php echo JText::_('Reset'); ?></a>
+						</div></div>
+						<input type="hidden" id="event_template" name="event_template" value="<?php echo $this->row->event_template; ?>" />
+					</td>
+				</tr>
+			</table>
+			<?php
+			echo $this->pane->endPanel();
+			$title = JText::_( 'GROUP' );
 			echo $this->pane->startPanel( $title, 'group' );
 			?>
 			<table>

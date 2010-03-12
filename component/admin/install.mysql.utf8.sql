@@ -103,6 +103,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_categories` (
 `ordering` int(11) NOT NULL default '0',
 `lft` int(11) NOT NULL default '0',
 `rgt` int(11) NOT NULL default '0',
+`event_template` int(11) NOT NULL default '0',
 PRIMARY KEY  (`id`)
 ) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
