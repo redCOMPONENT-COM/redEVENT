@@ -124,6 +124,13 @@ class RedEventViewCategory extends JView {
 		// event 
 		JHTML::_('behavior.modal', 'a.modal');
 		$js = "
+		window.addEvent('domready', function(){
+			$('ev-reset-button').addEvent('click', function(){
+				$('event_template').value = 0;
+				$('event_template_name').value = '".JText::_('Default')."';
+			});
+		});
+		
 		function elSelectEvent(id, title, field) {
 			document.getElementById(field).value = id;
 			document.getElementById(field+'_name').value = title;
