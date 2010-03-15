@@ -44,7 +44,13 @@ class RedeventViewEditevent extends JView
 	function display( $tpl=null )
 	{
 		$mainframe = & JFactory::getApplication();
+		$user      = & JFactory::getUser();
 
+		if (!$user->get('id')) {
+			echo JText::_('REDEVENT_LOGIN_TO_SUBMIT_EVENT');
+			return;			
+		}
+		
 		if ($this->getLayout() == 'selectvenue') {
 			$this->_displayselectvenue($tpl);
 			return;
