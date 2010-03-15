@@ -504,21 +504,6 @@ $cols = $db->loadObjectList('Field');
 
 if (is_array($cols)) 
 {  
-	/* show in lists ? */
-  if (!array_key_exists('id', $cols)) {
-    $q = ' ALTER TABLE `#__redevent_groupmembers` '
-       . '   ADD `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST, '
-       . '   ADD `is_admin` TINYINT( 4 ) NOT NULL AFTER `member` ,'
-       . '   ADD `manage_events` TINYINT( 4 ) NOT NULL AFTER `is_admin` ,'
-       . '   ADD `manage_xrefs` TINYINT( 4 ) NOT NULL AFTER `manage_events` ,'
-       . '   ADD `edit_venues` TINYINT( 4 ) NOT NULL AFTER `add_xrefs` ,'
-       . '   ADD `receive_registrations` TINYINT( 1 ) NOT NULL AFTER `edit_venues` ,'
-       . '   ADD `checked_out` int(11) NOT NULL default "0" ,'
-       . '   ADD `checked_out_time` datetime NOT NULL default "0000-00-00 00:00:00"'
-       ;
-    $db->setQuery($q);
-    $db->query();    
-  }
   
   if (array_key_exists('add_events', $cols)){
     $q = ' ALTER TABLE `#__redevent_groupmembers` '
@@ -528,6 +513,63 @@ if (is_array($cols))
     $db->setQuery($q);
     $db->query();    
   }	
+  
+  if (!array_key_exists('id', $cols)) {
+    $q = ' ALTER TABLE `#__redevent_groupmembers` '
+       . '   ADD `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST '
+       ;
+    $db->setQuery($q);
+    $db->query();    
+  }
+  
+  if (!array_key_exists('is_admin', $cols)) {
+    $q = ' ALTER TABLE `#__redevent_groupmembers` '
+       . '   ADD `is_admin` TINYINT( 4 ) NOT NULL '
+       ;
+    $db->setQuery($q);
+    $db->query();    
+  }
+  
+  if (!array_key_exists('manage_events', $cols)) {
+    $q = ' ALTER TABLE `#__redevent_groupmembers` '
+       . '   ADD `manage_events` TINYINT( 4 ) NOT NULL '
+       ;
+    $db->setQuery($q);
+    $db->query();    
+  }
+  
+  if (!array_key_exists('manage_xrefs', $cols)) {
+    $q = ' ALTER TABLE `#__redevent_groupmembers` '
+       . '   ADD `manage_xrefs` TINYINT( 4 ) NOT NULL '
+       ;
+    $db->setQuery($q);
+    $db->query();    
+  }
+  
+  if (!array_key_exists('edit_venues', $cols)) {
+    $q = ' ALTER TABLE `#__redevent_groupmembers` '
+       . '   ADD `edit_venues` TINYINT( 4 ) NOT NULL '
+       ;
+    $db->setQuery($q);
+    $db->query();    
+  }
+  
+  if (!array_key_exists('receive_registrations', $cols)) {
+    $q = ' ALTER TABLE `#__redevent_groupmembers` '
+       . '   ADD `receive_registrations` TINYINT( 1 ) NOT NULL '
+       ;
+    $db->setQuery($q);
+    $db->query();    
+  }
+  
+  if (!array_key_exists('checked_out', $cols)) {
+    $q = ' ALTER TABLE `#__redevent_groupmembers` '
+       . '   ADD `checked_out` int(11) NOT NULL default "0" ,'
+       . '   ADD `checked_out_time` datetime NOT NULL default "0000-00-00 00:00:00"'
+       ;
+    $db->setQuery($q);
+    $db->query();    
+  }
 }
 
 /* Get the group members fields columns */
