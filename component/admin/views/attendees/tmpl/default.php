@@ -89,7 +89,7 @@ $colspan = 14;
 			<?php
 			$k = 0;
 			$i = 0;
-			foreach ($this->rows as $subid => $row) {
+			foreach ((array) $this->rows as $subid => $row) {
    			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo $this->pageNav->getRowOffset( $i ); ?></td>
