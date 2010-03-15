@@ -109,7 +109,6 @@ class RedeventViewEditevent extends JView
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
-		if ($item) $pathway->setItemName(1, $item->name);
 		$pathway->addItem($title, '');
 
 		//Has the user access to the editor and the add venue screen

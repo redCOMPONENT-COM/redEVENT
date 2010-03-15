@@ -98,7 +98,7 @@ class RedeventViewDay extends JView
 		$print_link = JRoute::_('index.php?view=day&tmpl=component&pop=1');
 
 		//pathway
-		if ($item) $pathway->setItemName( 1, $item->name );
+		$pathway->addItem($daydate, '');
 
 		//Set Page title
 		if ($item && !$item->name) {

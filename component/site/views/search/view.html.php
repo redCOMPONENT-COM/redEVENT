@@ -92,9 +92,6 @@ class RedeventViewSearch extends JView
 		if ( $pop ) {//If printpopup set true
 			$params->set( 'popup', 1 );
 		}
-
-		//pathway
-		$pathway->setItemName( 1, $item->name );
 		
 		if ( $task == 'archive' ) {
 			$pathway->addItem(JText::_( 'ARCHIVE' ), JRoute::_('index.php?option=com_redevent&view=search&task=archive') );

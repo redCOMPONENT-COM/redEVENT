@@ -116,9 +116,6 @@ class RedeventViewCategoryevents extends JView
 		$document->addHeadLink(JRoute::_($link.'&type=rss'), 'alternate', 'rel', $attribs);
 		$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
 		$document->addHeadLink(JRoute::_($link.'&type=atom', 'alternate', 'rel'), $attribs);
-
-		//create the pathway
-		if ($item->name) $pathway->setItemName(1, $item->name);
 		
 		if ($task == 'archive') {
 			$link = RedeventHelperRoute::getCategoryEventsRoute($category->slug, 'archive');

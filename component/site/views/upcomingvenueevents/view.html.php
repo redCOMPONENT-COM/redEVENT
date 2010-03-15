@@ -90,7 +90,6 @@ class RedeventViewUpcomingVenueevents extends JView
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
-		if ($item) $pathway->setItemName(1, $item->name);
 		
 		$task = JRequest::getVar('task');
 		

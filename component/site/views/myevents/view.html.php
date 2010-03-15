@@ -111,11 +111,7 @@ class RedeventViewMyevents extends JView
             $params->set('popup', 1);
         }
 
-        //pathway
-        $pathway->setItemName(1, $item->name);
-
         //Set Page title
-
         $pagetitle = $params->get('page_title', JText::_('MY EVENTS'));
         $mainframe->setPageTitle($pagetitle);
         $mainframe->addMetaTag('title', $pagetitle);

@@ -69,7 +69,6 @@ class RedeventViewCategories extends JView
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
-		$pathway->setItemName(1, $item->name);
 
 		if ( $task == 'archive' ) {
 			$pathway->addItem(JText::_( 'ARCHIVE' ), JRoute::_(RedeventHelperRoute::getCategoriesRoute(null, 'archive')) );

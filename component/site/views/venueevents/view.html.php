@@ -108,7 +108,6 @@ class RedeventViewVenueevents extends JView
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
-		if ($item) $pathway->setItemName(1, $item->name);
 		
 		//create the pathway
 		if ($task == 'archive') {

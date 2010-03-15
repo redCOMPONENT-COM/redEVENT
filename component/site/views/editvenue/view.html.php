@@ -78,7 +78,6 @@ class RedeventViewEditvenue extends JView
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
-		$pathway->setItemName(1, $item->name);
 		$pathway->addItem($title, '');
 
 		//Set Title

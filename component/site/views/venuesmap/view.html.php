@@ -92,7 +92,6 @@ class RedeventViewVenuesmap extends JView
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
-		$pathway->setItemName(1, $title);
 		
 	  if ( $task == 'archive' ) {
       $pathway->addItem(JText::_( 'ARCHIVE' ), JRoute::_('index.php?view=venues&task=archive') );
