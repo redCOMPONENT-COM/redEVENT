@@ -85,6 +85,10 @@
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>
+    <param name="edit_description_allow_editor" type="radio" default="1" label="SETTINGS FRONTEND EDIT DESCRIPTION ALLOW EDITOR" description="SETTINGS FRONTEND EDIT DESCRIPTION ALLOW EDITOR TIP">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
     <param name="edit_published" type="radio" default="0" label="SETTINGS FRONTEND EDIT PUBLISHED STATE" description="SETTINGS FRONTEND EDIT PUBLISHED STATE TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>

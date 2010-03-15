@@ -113,8 +113,7 @@ class RedeventViewEditevent extends JView
 		$pathway->addItem($title, '');
 
 		//Has the user access to the editor and the add venue screen
-		$editoruser = ELUser::editoruser();
-		$delloclink = ELUser::validate_user( $elsettings->locdelrec, $elsettings->deliverlocsyes );
+		$editoruser = $params->get('edit_description_allow_editor', 0) || ELUser::editoruser();
 		
 		//transform <br /> and <br> back to \r\n for non editorusers
 		if (!$editoruser) {
@@ -161,7 +160,6 @@ class RedeventViewEditevent extends JView
 		$this->assignRef('editor',     $editor);
 		$this->assignRef('dimage',     $dimage);
 		$this->assignRef('infoimage',  $infoimage);
-		$this->assignRef('delloclink', $delloclink);
 		$this->assignRef('editoruser', $editoruser);
 		$this->assignRef('elsettings', $elsettings);
 		$this->assignRef('item',       $item);
