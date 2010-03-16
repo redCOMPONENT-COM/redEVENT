@@ -595,6 +595,7 @@ class RedeventModelEditevent extends JModel
 		{
 			$category_ids = (isset($data['categories']) ? $data['categories'] : array());
 			$template_event = $this->_getEventTemplate($category_ids);
+			$template_event = ($template_event ? $template_event : $params->get('event_template', 0));
 			
 			if ($template_event) 
 			{
@@ -774,8 +775,9 @@ class RedeventModelEditevent extends JModel
 		{
 			$xref = & JTable::getInstance('redevent_eventvenuexref', '');
 			$xref->bind($data);
-			$xref->id      = null;
-			$xref->eventid = $row->id;
+			$xref->id        = null;
+			$xref->eventid   = $row->id;
+			$xref->published = 1;
 			
 			if (!($xref->check() && $xref->store())) {
 				JError::raiseWarning(0, JTEXT::_('Saving event session failed').': '.$xref->getError());
