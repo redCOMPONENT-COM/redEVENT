@@ -97,6 +97,10 @@
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>
+    <param name="edit_registration_end" type="radio" default="1" label="SETTINGS FRONTEND EDIT REGISTRATION END" description="SETTINGS FRONTEND EDIT REGISTRATION END TIP">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
     <param name="edit_price" type="radio" default="0" label="SETTINGS FRONTEND EDIT PRICE" description="SETTINGS FRONTEND EDIT PRICE TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>

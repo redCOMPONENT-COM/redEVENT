@@ -225,6 +225,7 @@ JHTML::_('behavior.calendar');
 				<td><input type="text" size="8" maxlength="8" name="endtimes"
 					id="endtimes" value="<?php echo $this->row->endtimes; ?>" /></td>
 			</tr>
+			<?php if ($this->params->get('edit_registration_end')): ?>
 			<tr>
 				<td class="key hasTip"
 					title="<?php echo JText::_('EDIT XREF REGISTRATION END TIP'); ?>"><label
@@ -233,6 +234,7 @@ JHTML::_('behavior.calendar');
 				<td><?php echo JHTML::calendar($this->row->registrationend, 'registrationend', 'registrationend', '%Y-%m-%d %H:%M'); ?>
 				</td>
 			</tr>
+			<?php endif; ?>
 			<?php if ($this->params->get('edit_published', 0)): ?>
 			<tr>
 				<td class="key"><label for="published"><?php echo JText::_('PUBLISHED') .': '; ?></label>
