@@ -7,10 +7,7 @@
 			</span><label for="confirmation_message"><?php echo JText::_('ENTER_CONFIRMATION_MESSAGE'); ?></label>
 			
 			<div id="confirmation_screen">
-				<?php echo JHTML::_('link', '#', JText::_('TAGS'), "onClick='jQuery(\"div#confirmation_tags\").toggle(\"slideUp\"); return false;'"); ?>
-				<div id="confirmation_tags" style="display: none;">
-					<?php echo $this->printTags(); ?>
-				</div>
+				<?php echo $this->printTags(); ?>
 				<?php echo $this->editor->display( 'confirmation_message',  $this->row->confirmation_message, '100%;', '350', '75', '20', array('pagebreak', 'readmore', 'image') ) ; ?>
 			</div>
 		</td>
