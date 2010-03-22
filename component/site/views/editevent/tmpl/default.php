@@ -114,24 +114,25 @@ JHTML::_('behavior.calendar');
 		}
 
 
-		var tastendruck = false
+		var tastendruck = false;
+		
 		function rechne(restzeichen)
 		{
-			maximum = <?php echo $this->elsettings->datdesclimit; ?>
+			maximum = <?php echo $this->elsettings->datdesclimit; ?>;
 
 			if (restzeichen.datdescription.value.length > maximum) {
-				restzeichen.datdescription.value = restzeichen.datdescription.value.substring(0, maximum)
-				links = 0
+				restzeichen.datdescription.value = restzeichen.datdescription.value.substring(0, maximum);
+				links = 0;
 			} else {
-				links = maximum - restzeichen.datdescription.value.length
+				links = maximum - restzeichen.datdescription.value.length;
 			}
-			restzeichen.zeige.value = links
+			restzeichen.zeige.value = links;
 		}
 
 		function berechne(restzeichen)
    		{
-  			tastendruck = true
-  			rechne(restzeichen)
+  			tastendruck = true;
+  			rechne(restzeichen);
    		}
    		
 		function updateend(cal)
@@ -146,7 +147,7 @@ JHTML::_('behavior.calendar');
 	<h1 class="componentheading"><?php echo $this->params->get('page_title'); ?></h1>
 	<?php endif; ?>
 
-	<form enctype="multipart/form-data" id="eventform" action="<?php echo JRoute::_('index.php') ?>" method="post" class="form-validate">
+	<form enctype="multipart/form-data" id="eventform" action="<?php echo JRoute::_('index.php?option=com_redevent'); ?>" method="post" class="form-validate">
 
 		<div class="re_save_buttons floattext">
 			<button type="submit" class="submit"
@@ -370,7 +371,8 @@ JHTML::_('behavior.calendar');
 </button>
 </div>
 
-<p class="clear"><input type="hidden" name="id"
+<p class="clear">
+<input type="hidden" name="id"
 	value="<?php echo $this->row->id; ?>" /> <input type="hidden"
 	name="returnid" value="<?php echo JRequest::getInt('returnid'); ?>" />
 <input type="hidden" name="referer"
@@ -381,7 +383,9 @@ JHTML::_('behavior.calendar');
 	name="created_by" value="<?php echo $this->row->created_by; ?>" /> <input
 	type="hidden" name="curimage"
 	value="<?php echo $this->row->datimage; ?>" /> <?php echo JHTML::_( 'form.token' ); ?>
-<input type="hidden" name="task" value="" /></p>
+<input type="hidden" name="task" value="" />
+<input type="hidden" name="option" value="com_redevent" />
+</p>
 </form>
 
 <p class="copyright">
