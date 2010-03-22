@@ -864,13 +864,13 @@ class RedeventModelEditevent extends JModel
 
 				$modified_ip 	= getenv('REMOTE_ADDR');
 				$edited 		= JHTML::Date( $row->modified, JText::_( 'DATE_FORMAT_LC2' ) );
-				$mailbody 		= JText::sprintf('MAIL EDIT EVENT', $user->name, $user->username, $user->email, $modified_ip, $edited, $row->title, $row->dates, $row->times, $rowloc->venue, $rowloc->city, $row->datdescription, $state);
+				$mailbody 		= JText::sprintf('MAIL EDIT EVENT', $user->name, $user->username, $user->email, $modified_ip, $edited, $row->title, $xref->dates, $xref->times, $rowloc->venue, $rowloc->city, $row->datdescription, $state);
 				$mail->setSubject( $SiteName.JText::_( 'EDIT EVENT MAIL' ) );
 
 			} else {
 
 				$created 	= JHTML::Date( $row->created, JText::_( 'DATE_FORMAT_LC2' ) );
-				$mailbody 	= JText::sprintf('MAIL NEW EVENT', $user->name, $user->username, $user->email, $row->author_ip, $created, $row->title, $row->dates, $row->times, $rowloc->venue, $rowloc->city, $row->datdescription, $state);
+				$mailbody 	= JText::sprintf('MAIL NEW EVENT', $user->name, $user->username, $user->email, $row->author_ip, $created, $row->title, $xref->dates, $xref->times, $rowloc->venue, $rowloc->city, $row->datdescription, $state);
 				$mail->setSubject( $SiteName.JText::_( 'NEW EVENT MAIL' ) );
 
 			}
@@ -898,13 +898,13 @@ class RedeventModelEditevent extends JModel
 			if ($edited) {
 
 				$edited 		= JHTML::Date( $row->modified, JText::_( 'DATE_FORMAT_LC2' ) );
-				$mailbody 		= JText::sprintf('USER MAIL EDIT EVENT', $user->name, $user->username, $edited, $row->title, $row->dates, $row->times, $rowloc->venue, $rowloc->city, $row->datdescription, $state);
+				$mailbody 		= JText::sprintf('USER MAIL EDIT EVENT', $user->name, $user->username, $edited, $row->title, $xref->dates, $xref->times, $rowloc->venue, $rowloc->city, $row->datdescription, $state);
 				$usermail->setSubject( $SiteName.JText::_( 'EDIT USER EVENT MAIL' ) );
 
 			} else {
 
 				$created 	= JHTML::Date( $row->created, JText::_( 'DATE_FORMAT_LC2' ) );
-				$mailbody 	= JText::sprintf('USER MAIL NEW EVENT', $user->name, $user->username, $created, $row->title, $row->dates, $row->times, $rowloc->venue, $rowloc->city, $row->datdescription, $state);
+				$mailbody 	= JText::sprintf('USER MAIL NEW EVENT', $user->name, $user->username, $created, $row->title, $xref->dates, $xref->times, $rowloc->venue, $rowloc->city, $row->datdescription, $state);
 				$usermail->setSubject( $SiteName.JText::_( 'NEW USER EVENT MAIL' ) );
 
 			}
