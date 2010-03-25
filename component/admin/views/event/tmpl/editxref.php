@@ -204,6 +204,7 @@ function updateend(cal)
 
 <fieldset class="adminform">
 <legend><?php echo JText::_('Details'); ?></legend>
+<?php echo JText::_('REDEVENT_XREF_DETAILS_INFO'); ?>
 <?php echo $this->editor->display('details', $this->xref->details, '100%;', '300', '100', '20', array('pagebreak', 'readmore')); ?>
 </fieldset>
 
