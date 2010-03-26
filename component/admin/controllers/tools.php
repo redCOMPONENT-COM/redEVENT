@@ -75,5 +75,45 @@ class RedEventControllerTools extends RedEventController
 
 		$this->setRedirect( $link, $msg );
  	}
+ 	
+ 	function checkdb()
+ 	{
+		$model = $this->getModel('tools');
+		
+		$res = $model->checkdb();
+		
+		$link = 'index.php?option=com_redevent&view=tools';
+		
+		if ($res) {
+			$msg  = JText::_('DB TEST OK');
+			$type = 'message';
+		}
+		else {
+			$msg  = JText::_('DB TEST KO').': '.$model->getError();
+			$type = 'error';
+		}
+		
+		$this->setRedirect( $link, $msg, $type ); 		
+ 	}
+ 	
+ 	function fixdb()
+ 	{
+		$model = $this->getModel('tools');
+		
+		$res = $model->fixdb();
+		
+		$link = 'index.php?option=com_redevent&view=tools';
+		
+		if ($res) {
+			$msg  = JText::_('DB FIX OK');
+			$type = 'message';
+		}
+		else {
+			$msg  = JText::_('DB FIX KO').': '.$model->getError();
+			$type = 'error';
+		}
+		
+		$this->setRedirect( $link, $msg, $type ); 		
+ 	}
 }
 ?>

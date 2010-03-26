@@ -141,6 +141,71 @@ class RedEventModelTools extends JModel
 
 		return $deleted;
 	}
+	
+	/**
+	 * perform integrity check on db
+	 * 
+	 * @return bool true if no problem 
+	 */
+	function checkdb()
+	{
+		$errors = array();
+		$dbok   = true;
+		
+		/** check for registers without corresponding records in redform **/
+		
+		$query = ' SELECT r.id, r.xref, x.eventid '
+		       . ' FROM #__redevent_register AS r '
+		       . ' LEFT JOIN #__redevent_event_venue_xref AS x ON r.xref = x.id '
+		       . ' LEFT JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key '
+		       . ' WHERE s.id IS NULL '
+		       ;
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadobjectList();
+
+		if (count($res)) {
+			$dbok = false;
+			$error = array();
+			$error[] = JText::sprintf('%s attendees records without matching redform submitters', count($res));
+			foreach ($res as $r)
+			{
+				$error[] = JText::sprintf('event %s session %s / register id %s', ($r->eventid ? $r->eventid : '?'), $r->xref, $r->id);
+			}
+			$errors[] = implode('<br/>', $error);
+		}
+				
+		if (!$dbok) {
+			$this->setError(implode('<br/>', $errors));
+		}
+		return $dbok;
+	}
+	
+	/**
+	 * perform integrity fix on db
+	 * 
+	 * @return bool true if no problem 
+	 */
+	function fixdb()
+	{		
+		// all the redevent_register records in redevent without an associated record in redform submitters can be deleted
+		$q =  ' SELECT r.id FROM #__redevent_register AS r '
+        . ' LEFT JOIN #__rwf_submitters AS s ON s.submit_key = r.submit_key '
+        . ' WHERE s.id IS NULL '
+        ;
+    $this->_db->setQuery($q);
+    $register_ids = $this->_db->loadResultArray();		
+    if (!empty($register_ids))
+    {
+			$model = &JModel::getInstance('attendees', 'RedeventModel');
+			if(!$model->remove($register_ids)) {
+	      RedeventError::raiseWarning(0, JText::_( "CANT DELETE REGISTRATIONS" ) . ': ' . $model->getError() );
+				$this->setError(JText::_( "CANT DELETE REGISTRATIONS" ) . ': '. $model->getError());
+				return false;
+			}
+    }
+    
+		return true;
+	}
 
 	/**
 	 * Method to determine the images to delete

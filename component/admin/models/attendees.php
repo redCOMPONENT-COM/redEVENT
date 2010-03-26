@@ -223,8 +223,8 @@ class RedEventModelAttendees extends JModel
 		       . ' LEFT JOIN #__redevent_event_venue_xref AS x ON r.xref = x.id '
 		       . ' LEFT JOIN #__redevent_events AS a ON x.eventid = a.id '
 		       . ' LEFT JOIN #__users AS u ON r.uid = u.id '
-		       . ' INNER JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key '
-		       . ' INNER JOIN #__rwf_forms AS fo ON fo.id = s.form_id '
+		       . ' LEFT JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key '
+		       . ' LEFT JOIN #__rwf_forms AS fo ON fo.id = s.form_id '
 		       . ' LEFT JOIN #__rwf_payment AS p ON p.submit_key = s.submit_key '
 		       . $join_rwftable
 		       . $where

@@ -93,7 +93,11 @@ $colspan = 14;
    			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo $this->pageNav->getRowOffset( $i ); ?></td>
-				<td><input type="checkbox" id="cb<?php echo $i;?>" name="cid[]" value="<?php echo $row->answer_id; ?>" onclick="isChecked(this.checked);" /></td>
+				<td>			
+					<?php if ($row->answer_id): ?>
+					<input type="checkbox" id="cb<?php echo $i;?>" name="cid[]" value="<?php echo $row->answer_id; ?>" onclick="isChecked(this.checked);" />
+					<?php endif;?>
+				</td>
 				<td><?php echo JHTML::Date( $row->uregdate, JText::_( 'DATE_FORMAT_LC2' ) ); ?></td>
 				<td><?php echo ($row->confirmdate) ? JHTML::Date( $row->confirmdate, JText::_( 'DATE_FORMAT_LC2' ) ) : '-'; ?></td>
 				<td><?php echo $row->uip == 'DISABLED' ? JText::_( 'DISABLED' ) : $row->uip; ?></td>

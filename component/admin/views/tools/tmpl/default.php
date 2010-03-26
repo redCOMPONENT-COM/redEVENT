@@ -73,6 +73,31 @@ defined('_JEXEC') or die('Restricted access');
       <?php echo JText::_( 'TRIGGER AUTOARCHIVE DESC' ); ?>
     </td>	
 	</tr>
+	<tr>    
+    <td width="10%">
+      <div class="linkicon">
+        <a href="index.php?option=com_redevent&controller=tools&task=checkdb">
+          <?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/icon-48-cleaneventimg.png',  JText::_( 'CHECK DATABASE' ) ); ?>
+          <span><?php echo JText::_( 'CHECK DATABASE' ); ?></span>
+        </a>
+      </div>
+    </td>
+    <td width="40%" valign="middle">
+      <?php echo JText::_( 'CHECK DATABASE DESC' ); ?>
+    </td>	
+    
+    <td width="10%">
+      <div class="linkicon">
+        <a href="index.php?option=com_redevent&controller=tools&task=fixdb">
+          <?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/icon-48-cleaneventimg.png',  JText::_( 'FIX DATABASE' ) ); ?>
+          <span><?php echo JText::_( 'FIX DATABASE' ); ?></span>
+        </a>
+      </div>
+    </td>
+    <td width="40%" valign="middle">
+      <?php echo JText::_( 'FIX DATABASE DESC' ); ?>
+    </td>	
+	</tr>
 	<tr>
     <td width="10%">
       <div class="linkicon">
@@ -88,9 +113,11 @@ defined('_JEXEC') or die('Restricted access');
     
     <td width="10%">
       <div class="linkicon">
+        
       </div>
     </td>
     <td width="40%" valign="middle">
+      
     </td>	
 	</tr>
 	
