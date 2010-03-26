@@ -29,13 +29,13 @@ jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 
 /**
- * EventList Component Cleanup Model
+ * EventList Component Tools Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redevent
  * @since		0.9
  */
-class RedEventModelCleanup extends JModel
+class RedEventModelTools extends JModel
 {
 	/**
 	 * target

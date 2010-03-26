@@ -145,7 +145,7 @@ class RedEventController extends JController
     
     $result = $model->importeventlist();
     
-    $link = 'index.php?option=com_redevent&view=cleanup';
+    $link = 'index.php?option=com_redevent&view=tools';
 
     if (!$result) {
       $msg = $model->getError();
@@ -165,7 +165,7 @@ class RedEventController extends JController
   {
   	$res = redEVENTHelper::cleanup(1);
     $msg = JText::_('AUTOARCHIVE DONE');
-    $link = 'index.php?option=com_redevent&view=cleanup';
+    $link = 'index.php?option=com_redevent&view=tools';
     $this->setRedirect( $link, $msg );    
   }
   

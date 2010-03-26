@@ -71,7 +71,7 @@ defined('_JEXEC') or die('Restricted access');
 							$link = 'index.php?option='.$option.'&amp;view=editcss';
 							RedEventViewRedEvent::quickiconButton( $link, 'icon-48-cssedit.png', JText::_( 'EDIT CSS' ) );
 
-							$link = 'index.php?option='.$option.'&amp;view=cleanup';
+							$link = 'index.php?option='.$option.'&amp;view=tools';
 							RedEventViewRedEvent::quickiconButton( $link, 'icon-48-housekeeping.png', JText::_( 'TOOLS' ) );
 						}
 

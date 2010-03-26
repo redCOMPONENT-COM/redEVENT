@@ -26,13 +26,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport('joomla.application.component.controller');
 
 /**
- * EventList Component Cleanup Controller
+ * EventList Component Tools Controller
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redevent
  * @since 0.9
  */
-class RedEventControllerCleanup extends RedEventController
+class RedEventControllerTools extends RedEventController
 {
 	/**
 	 * Constructor
@@ -65,11 +65,11 @@ class RedEventControllerCleanup extends RedEventController
 			$type = JText::_('VENUE');
 		}
 
-		$model = $this->getModel('cleanup');
+		$model = $this->getModel('tools');
 
 		$total = $model->delete();
 
-		$link = 'index.php?option=com_redevent&view=cleanup';
+		$link = 'index.php?option=com_redevent&view=tools';
 
 		$msg = $total.' '.$type.' '.JText::_( 'IMAGES DELETED');
 

@@ -32,7 +32,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage EventList
  * @since 0.9
  */
-class RedEventViewCleanup extends JView {
+class RedEventViewTools extends JView {
 
 	function display($tpl = null) {
 
@@ -55,8 +55,8 @@ class RedEventViewCleanup extends JView {
     ELAdmin::setMenu();
 
 		//create the toolbar
-		JToolBarHelper::title( JText::_( 'CLEANUP' ), 'housekeeping' );
-		JToolBarHelper::help( 'el.cleanup', true );
+		JToolBarHelper::title( JText::_( 'Tools' ), 'tools' );
+		JToolBarHelper::help( 'redevent.tools', true );
 
 		parent::display($tpl);
 	}
