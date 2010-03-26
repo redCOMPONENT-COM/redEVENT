@@ -105,6 +105,7 @@ class RedEventModelWaitinglist extends JModel {
 	 private function ProcessWaitingList() {
 		/* Get attendee total first */
 		$this->getWaitingList();
+//		RedeventHelperLog::simplelog('waiting list: '. $this->waitinglist[0]->total.'/'.$this->waitinglist[1]->total . '('.$this->xref.')');
 		
 		/* Check if there are too many ppl going to the event */
 		if (isset($this->waitinglist[0])) {
@@ -140,7 +141,8 @@ class RedEventModelWaitinglist extends JModel {
 	/**
 	 * Get the xref IDs for an event
 	 */
-	private function getXrefIds() {
+	private function getXrefIds() 
+	{
 		$db = JFactory::getDBO();
 		$q = "SELECT id FROM #__redevent_event_venue_xref WHERE eventid = ".$this->eventid;
 		$db->setQuery($q);
@@ -151,13 +153,18 @@ class RedEventModelWaitinglist extends JModel {
 	 * Load the number of people that are confirmed and if they are on or off
 	 * the waitinglist
 	 */
-	public function getWaitingList() {
+	public function getWaitingList() 
+	{
 		$db = JFactory::getDBO();
-		$q = "SELECT waitinglist, COUNT(id) AS total
-			FROM #__rwf_submitters
-			WHERE xref = ".$this->xref."
-			AND confirmed = 1
-			GROUP BY waitinglist";
+		$q = ' SELECT s.waitinglist, COUNT(s.id) AS total '
+		   . ' FROM #__rwf_submitters AS s '
+		   . ' INNER JOIN #__redevent_register AS r ON r.submit_key = s.submit_key '
+		   . ' WHERE s.xref = '.$this->xref
+		   . '   AND r.xref = '.$this->xref
+		   . '   AND s.confirmed = 1 '
+		   //TODO: we should make sure all redform tags have the integration value properly set
+//		   . '   AND s.integration = "redevent" '
+		   . ' GROUP BY s.waitinglist ';
 		$db->setQuery($q);
 		$this->waitinglist = $db->loadObjectList('waitinglist');
 	}
