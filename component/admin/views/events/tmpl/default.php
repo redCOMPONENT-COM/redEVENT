@@ -147,7 +147,7 @@ defined('_JEXEC') or die('Restricted access');
     						<td><?php echo $eventdetails->note; ?></td>
     						<td>
     						  <?php	if ($row->registra == 1):
-      						  $linkreg  = 'index.php?option=com_redevent&amp;view=attendees&amp;xref='.$row->xref;
+      						  $linkreg  = 'index.php?option=com_redevent&amp;view=attendees&eventid='.$row->id.'&filter='.$eventdetails->id;
       						  ?>
       						  <a href="<?php echo $linkreg; ?>" title="Edit Users"><?php echo $eventdetails->regcount; ?></a>
       						<?php else: ?> 

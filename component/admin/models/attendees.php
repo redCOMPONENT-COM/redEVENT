@@ -95,9 +95,9 @@ class RedEventModelAttendees extends JModel
 		$this->setId($eventid);
 		
 		$xref = JRequest::getInt('xref');
-		$this->setXref($xref);
-
-
+		if ($xref) {
+			$this->setXref($xref);
+		}
 	}
 
 	/**
