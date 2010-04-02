@@ -29,33 +29,34 @@ defined('_JEXEC') or die('Restricted access');
 	{
 		var form = document.adminForm;
 		var locdescription = <?php echo $this->editor->getContent( 'locdescription' ); ?>
+		var needaddress = false; // if map is set in global configuration and user did not entrer coordinates
 
     // check if map is set to yes
     var map = $$('input[name=map]');
-    var mapset = false;
-    for (var i = 0; i < map.length ; i++) {
-      if (map[i].checked) {
-        mapset = true;
-        break;
-      }
-    }
+		if (map.length) {
+			var longitude = $('longitude').getValue();
+			var latitude  = $('latitude').getValue();
+			if (!longitude || longitude == 0 || !latitude || latitude == 0) {
+				needaddress = true;
+			}
+		}
 
 		if (task == 'cancel') {
 			submitform( task );
 		} else if (form.venue.value == ""){
 			alert( "<?php echo JText::_( 'ADD VENUE' ); ?>" );
 			form.venue.focus();
-		} else if (form.city.value == "" && mapset){
-			alert( "<?php echo JText::_( 'ADD CITY' ); ?>" );
+		} else if (form.city.value == "" && needaddress){
+			alert( "<?php echo JText::_( 'VENUE_MAP_NEED_DETAILS' ) .'\n'. JText::_( 'ADD CITY' ); ?>" );
 			form.city.focus();
-		} else if (form.street.value == "" && mapset){
-			alert( "<?php echo JText::_( 'ADD STREET' ); ?>" );
+		} else if (form.street.value == "" && needaddress){
+			alert( "<?php echo JText::_( 'VENUE_MAP_NEED_DETAILS' ) .'\n'. JText::_( 'ADD STREET' ); ?>" );
 			form.street.focus();
-		} else if (form.plz.value == "" && mapset){
-			alert( "<?php echo JText::_( 'ADD ZIP' ); ?>" );
+		} else if (form.plz.value == "" && needaddress){
+			alert( "<?php echo JText::_( 'VENUE_MAP_NEED_DETAILS' ) .'\n'. JText::_( 'ADD ZIP' ); ?>" );
 			form.plz.focus();
-		} else if (form.country.value == "" && mapset){
-			alert( "<?php echo JText::_( 'ADD COUNTRY' ); ?>" );
+		} else if (form.country.value == "" && needaddress){
+			alert( "<?php echo JText::_( 'VENUE_MAP_NEED_DETAILS' ) .'\n'. JText::_( 'ADD COUNTRY' ); ?>" );
 			form.country.focus();
 		} else {
 			<?php
