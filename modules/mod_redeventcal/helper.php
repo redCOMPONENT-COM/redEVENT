@@ -26,6 +26,9 @@ class modredeventcalhelper
 		$catid 				= trim( $params->get('catid') );
 		$venid 				= trim( $params->get('venid') );
 		
+		$monthstart = date('Y-m-d', mktime(0,0,0, $greq_month, 1, $greq_year));
+		$monthend = date('Y-m-d', mktime(0,0,0, $greq_month+1, 1, $greq_year));
+		
 		//Get eventdates
 		if ($catid)
 		{
@@ -47,7 +50,9 @@ class modredeventcalhelper
         . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
 				. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
 				. ' WHERE x.published = 1'
-				. ' AND c.access <= '.(int)$user->aid
+				. '   AND c.access <= '.(int)$user->aid
+  	    . '   AND ( x.dates BETWEEN ' .$db->Quote($monthstart). ' AND ' .$db->Quote($monthend)
+  	    . '         OR (x.enddates IS NOT NULL and x.enddates > "0000-00-00" AND x.enddates BETWEEN ' .$db->Quote($monthstart). ' AND ' .$db->Quote($monthend).') ) '
 				.($catid ? $categories : '')
 				.($venid ? $venues : '')
 				. ' GROUP BY x.id '
