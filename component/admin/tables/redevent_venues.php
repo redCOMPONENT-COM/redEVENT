@@ -96,7 +96,7 @@ class RedEvent_venues extends JTable
 		// not typed in a venue name
 		if(!trim($this->venue)) {
 	      	$this->_error = JText::_( 'ADD VENUE');
-	      	JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
+	      	JError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
 	       	return false;
 		}
 
@@ -109,14 +109,14 @@ class RedEvent_venues extends JTable
 		if ( $this->map ){
 			if ((!trim($this->street)) || (!trim($this->plz)) || (!trim($this->city)) || (!trim($this->country))) {
 				$this->_error = JText::_( 'ADD ADDRESS');
-				JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
+				JError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
 				return false;
 			}
 		}
 		
 		if (JFilterInput::checkAttribute(array ('href', $this->url))) {
 			$this->_error = JText::_( 'ERROR URL WRONG FORMAT' );
-			JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
+			JError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
 			return false;
 		}
 
@@ -126,13 +126,13 @@ class RedEvent_venues extends JTable
 
 			if ($urllength > 199) {
       			$this->_error = JText::_( 'ERROR URL LONG' );
-      			JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
+      			JError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
       			return false;
 			}
 			if (!preg_match( '/^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}'
        		.'((:[0-9]{1,5})?\/.*)?$/i' , $this->url)) {
 				$this->_error = JText::_( 'ERROR URL WRONG FORMAT' );
-				JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
+				JError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
 				return false;
 			}
 		}
@@ -141,7 +141,7 @@ class RedEvent_venues extends JTable
 		$streetlength = JString::strlen($this->street);
 		if ($streetlength > 50) {
      	 	$this->_error = JText::_( 'ERROR STREET LONG' );
-     	 	JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
+     	 	JError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
      	 	return false;
 		}
 
@@ -149,7 +149,7 @@ class RedEvent_venues extends JTable
 		$plzlength = JString::strlen($this->plz);
 		if ($plzlength > 10) {
       		$this->_error = JText::_( 'ERROR ZIP LONG' );
-      		JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
+      		JError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
       		return false;
 		}
 
@@ -157,7 +157,7 @@ class RedEvent_venues extends JTable
 		$citylength = JString::strlen($this->city);
 		if ($citylength > 50) {
     	  	$this->_error = JText::_( 'ERROR CITY LONG' );
-    	  	JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
+    	  	JError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
     	  	return false;
 		}
 
@@ -165,7 +165,7 @@ class RedEvent_venues extends JTable
 		$statelength = JString::strlen($this->state);
 		if ($statelength > 50) {
     	  	$this->_error = JText::_( 'ERROR STATE LONG' );
-    	  	JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
+    	  	JError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
     	  	return false;
 		}
 
@@ -173,7 +173,7 @@ class RedEvent_venues extends JTable
 		$countrylength = JString::strlen($this->country);
 		if ($countrylength > 2) {
      	 	$this->_error = JText::_( 'ERROR COUNTRY LONG' );
-     	 	JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
+     	 	JError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
      	 	return false;
 		}
 		
@@ -187,7 +187,7 @@ class RedEvent_venues extends JTable
 
 		$xid = intval($this->_db->loadResult());
 		if ($xid && $xid != intval($this->id)) {
-			JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('VENUE ALREADY EXIST', $this->venue));
+			JError::raiseWarning('REDEVENT_GENERIC_ERROR', JText::sprintf('VENUE ALREADY EXIST', $this->venue));
 			return false;
 		}
 

@@ -50,13 +50,13 @@ class RedEventViewSettings extends JView {
 
 		//only admins have access to this view
 		if ($user->get('gid') < 24) {
-			JError::raiseWarning( 'SOME_ERROR_CODE', JText::_( 'ALERTNOTAUTH'));
+			JError::raiseWarning( 'REDEVENT_GENERIC_ERROR', JText::_( 'ALERTNOTAUTH'));
 			$mainframe->redirect( 'index.php?option=com_redevent&view=redevent' );
 		}
 
 		// fail if checked out not by 'me'
 		if ($model->isCheckedOut( $user->get('id') )) {
-			JError::raiseWarning( 'SOME_ERROR_CODE', JText::_( 'EDITED BY ANOTHER ADMIN' ));
+			JError::raiseWarning( 'REDEVENT_GENERIC_ERROR', JText::_( 'EDITED BY ANOTHER ADMIN' ));
 			$mainframe->redirect( 'index.php?option=com_redevent&view=redevent' );
 		}
 

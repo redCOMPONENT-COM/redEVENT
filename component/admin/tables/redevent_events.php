@@ -169,13 +169,13 @@ class RedEvent_events extends JTable
 
 		if ( $this->title == '' ) {
 			$this->_error = JText::_( 'ADD TITLE' );
-      		JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
+      		JError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
       		return false;
 		}
 
 		if ( $titlelength > 100 ) {
       		$this->_error = JText::_( 'ERROR TITLE LONG' );
-      		JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
+      		JError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
       		return false;
 		}
 

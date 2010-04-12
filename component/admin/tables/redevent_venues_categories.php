@@ -82,7 +82,7 @@ class RedEvent_venues_categories extends JTable
 		// Not typed in a category name?
 		if (trim( $this->name ) == '') {
 			$this->_error = JText::_( 'ADD NAME CATEGORY' );
-			JError::raiseWarning('SOME_ERROR_CODE', $this->_error );
+			JError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
 			return false;
 		}
 
@@ -98,7 +98,7 @@ class RedEvent_venues_categories extends JTable
 
 		$xid = intval($this->_db->loadResult());
 		if ($xid && $xid != intval($this->id)) {
-			JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('CATEGORY NAME ALREADY EXIST', $this->name));
+			JError::raiseWarning('REDEVENT_GENERIC_ERROR', JText::sprintf('CATEGORY NAME ALREADY EXIST', $this->name));
 			return false;
 		}
 

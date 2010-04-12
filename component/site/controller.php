@@ -208,7 +208,7 @@ class RedeventController extends JController
 			$msg 		= '';
 			$link = JRequest::getString('referer', JURI::base(), 'post');
 
-			RedeventError::raiseWarning('SOME_ERROR_CODE', $model->getError() );
+			RedeventError::raiseWarning('REDEVENT_GENERIC_ERROR', $model->getError() );
 		}
 
 		$model->checkin();

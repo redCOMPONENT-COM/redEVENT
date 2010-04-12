@@ -62,7 +62,7 @@ class RedEventViewGroup extends JView {
 		{
 			if ($model->isCheckedOut( $user->get('id') )) 
 			{
-				JError::raiseWarning( 'SOME_ERROR_CODE', $row->name.' '.JText::_( 'EDITED BY ANOTHER ADMIN' ));
+				JError::raiseWarning( 'REDEVENT_GENERIC_ERROR', $row->name.' '.JText::_( 'EDITED BY ANOTHER ADMIN' ));
 				$mainframe->redirect( 'index.php?option=com_redevent&view=groups' );
 			}
 		}

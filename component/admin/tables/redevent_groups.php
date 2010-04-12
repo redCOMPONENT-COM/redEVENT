@@ -71,7 +71,7 @@ class RedEvent_groups extends JTable
 		// Not typed in a category name?
 		if (trim( $this->name ) == '') {
 			$this->_error = JText::_( 'ADD GROUP NAME' );
-			RedeventError::raiseWarning('SOME_ERROR_CODE', $this->_error );
+			RedeventError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
 			return false;
 		}
 		
@@ -81,7 +81,7 @@ class RedEvent_groups extends JTable
 
 		$xid = intval($this->_db->loadResult());
 		if ($xid && $xid != intval($this->id)) {
-			JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('GROUP NAME ALREADY EXIST', $this->name));
+			JError::raiseWarning('REDEVENT_GENERIC_ERROR', JText::sprintf('GROUP NAME ALREADY EXIST', $this->name));
 			return false;
 		}
 		
@@ -94,7 +94,7 @@ class RedEvent_groups extends JTable
 	
 			$xid = intval($this->_db->loadResult());
 			if ($xid && $xid != intval($this->id)) {
-				JError::raiseWarning('SOME_ERROR_CODE', JText::_('THERE IS ALREADY A DEFAULT GROUP'));
+				JError::raiseWarning('REDEVENT_GENERIC_ERROR', JText::_('THERE IS ALREADY A DEFAULT GROUP'));
 				return false;
 			}
 		}

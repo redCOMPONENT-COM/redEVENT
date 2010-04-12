@@ -87,14 +87,14 @@ class RedeventModelDay extends RedeventModelBaseEventList
 				
 				//date isn't valid raise notice and use current date
 				$date = date('Ymd');
-				JError::raiseNotice( 'SOME_ERROR_CODE', JText::_('INVALID DATE REQUESTED USING CURRENT') );
+				JError::raiseNotice( 'REDEVENT_GENERIC_ERROR', JText::_('INVALID DATE REQUESTED USING CURRENT') );
 				
 			}
 			
 		} else {
 			//date isn't valid raise notice and use current date
 			$date = date('Ymd');
-			JError::raiseNotice( 'SOME_ERROR_CODE', JText::_('INVALID DATE REQUESTED USING CURRENT') );
+			JError::raiseNotice( 'REDEVENT_GENERIC_ERROR', JText::_('INVALID DATE REQUESTED USING CURRENT') );
 			
 		}
 
