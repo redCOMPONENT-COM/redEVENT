@@ -48,16 +48,6 @@
 		<language tag="sv-SE">sv-SE.com_redevent.ini</language>
 	</languages>
 
-	<params>
-		<param name="display_num" default="15" label="display_num" />
-		<param name="cat_num" default="4" label="cat_num" />
-		<param name="filter" default="1" label="filter" />
-		<param name="display" default="1" label="display" />
-		<param name="icons" default="1" label="icons" />
-		<param name="show_print_icon" default="1" label="show_print_icon" />
-		<param name="show_email_icon" default="1" label="show_email_icon" />
-	</params>
-
 	<administration>
 
 	<menu img="../administrator/components/com_redevent/assets/images/redevent.png">redEVENT</menu>
