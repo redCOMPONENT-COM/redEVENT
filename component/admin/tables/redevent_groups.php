@@ -42,9 +42,13 @@ class RedEvent_groups extends JTable
 	/** @var string */
 	var $description 		= null;
 	/** @var string */
-	var $parameters 		= null;
+	var $parameters     = null;
 	/** @var int */
-	var $isdefault 		    = 0;
+	var $isdefault      = 0;
+	/** @var int */
+	var $edit_events    = 0;
+	/** @var int */
+	var $edit_venues	  = 0;
 	/** @var int */
 	var $checked_out 		= 0;
 	/** @var date */

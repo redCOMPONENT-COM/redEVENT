@@ -55,12 +55,30 @@ JHTML::_('behavior.tooltip');
 			size="32" maxlength="250" value="<?php echo $this->row->name; ?>" />
 		</td>
 	</tr>
+	
 	<tr>
 		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'GROUP IS DEFAULT' ).'::'.JText::_( 'GROUP IS DEFAULT TIP' ); ?>"><label for="isdefault"> <?php echo JText::_( 'GROUP IS DEFAULT' ); ?>:
 		</label></td>
 		<td><?php echo JHTML::_('select.booleanlist', 'isdefault', '', $this->row->isdefault); ?>
 		</td>
 	</tr>
+	
+	<tr>
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'GROUP_EDIT_EVENTS' ).'::'.JText::_( 'GROUP_EDIT_EVENTS_TIP' ); ?>">
+			<label for="edit_events"> <?php echo JText::_( 'GROUP_EDIT_EVENTS' ); ?>:</label>
+		</td>
+		<td><?php echo $this->lists['edit_events']; ?>
+		</td>
+	</tr>
+	
+	<tr>
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'GROUP_EDIT_VENUES' ).'::'.JText::_( 'GROUP_EDIT_VENUES_TIP' ); ?>">
+			<label for="edit_venues"> <?php echo JText::_( 'GROUP_EDIT_VENUES' ); ?>:</label>
+		</td>
+		<td><?php echo $this->lists['edit_venues']; ?>
+		</td>
+	</tr>
+	
 	<tr>
 		<td width="100" align="right" class="key"><label for="description"> <?php echo JText::_( 'DESCRIPTION' ); ?>:
 		</label></td>

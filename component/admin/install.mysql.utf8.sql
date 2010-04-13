@@ -123,6 +123,8 @@ CREATE TABLE IF NOT EXISTS `#__redevent_groups` (
 `description` mediumtext NOT NULL,
 `parameters` text NULL DEFAULT NULL,
 `isdefault` tinyint(1) NOT NULL default '0',
+`edit_events` tinyint(4) NOT NULL default '0',
+`edit_venues` tinyint(4) NOT NULL default '0',
 `checked_out` int(11) NOT NULL default '0',
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
 PRIMARY KEY  (`id`)
