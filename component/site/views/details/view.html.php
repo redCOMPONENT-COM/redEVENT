@@ -121,7 +121,7 @@ class RedeventViewDetails extends JView
 		$pathway->addItem( JText::_( 'DETAILS' ). ' - '.$row->title, JRoute::_('index.php?option=com_redevent&view=details&id='.$row->slug));
 		
 		//Check user if he can edit
-		$allowedtoeditevent = $acl->canEditEvent($row->id);
+		$allowedtoeditevent = $acl->canEditEvent($row->did);
 		
 		//Timecheck for registration
 		$jetzt = date("Y-m-d");

@@ -579,7 +579,6 @@ $cols = $db->loadObjectList('Field');
 
 if (is_array($cols)) 
 {  
-	/* show in lists ? */
   if (!array_key_exists('isdefault', $cols)) {
     $q = ' ALTER TABLE `#__redevent_groups` '
        . '   ADD `isdefault` TINYINT( 1 ) NOT NULL DEFAULT "0" AFTER `description` '
@@ -587,7 +586,16 @@ if (is_array($cols))
     $db->setQuery($q);
     $db->query();    
   }	
-	/* show in lists ? */
+  
+  if (!array_key_exists('edit_event', $cols)) {
+    $q = ' ALTER TABLE `#__redevent_groups` '
+       . '   ADD `edit_events` tinyint(4) NOT NULL default "0", '
+       . '   ADD `edit_venues` tinyint(4) NOT NULL default "0" '
+       ;
+    $db->setQuery($q);
+    $db->query();    
+  }	
+  
   if (!array_key_exists('parameters', $cols)) {
     $q = ' ALTER TABLE `#__redevent_groups` '
        . '   ADD `parameters` TEXT NULL DEFAULT NULL AFTER `description` '

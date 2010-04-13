@@ -79,6 +79,11 @@ class UserAcl {
 		return $instances[$id];
 	}
 	
+	/**
+	 * returns true if the user can add events
+	 * 
+	 * @return boolean
+	 */
 	function canAddEvent()
 	{
 		$groups = $this->getUserGroups();
@@ -92,23 +97,37 @@ class UserAcl {
 		return false;
 	}
 	
+	/**
+	 * return true if the user can edit specified event
+	 * @param int $eventid
+	 * @return boolean
+	 */
 	function canEditEvent($eventid)
 	{
 		$db = &JFactory::getDBO();
-
+		
 		$query = ' SELECT e.id '
 		       . ' FROM #__redevent_events AS e '
 		       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
-		       . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
+		       . ' INNER JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
+		       . ' LEFT JOIN #__redevent_groups AS g ON g.id = gc.group_id '
 		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
 		       . ' WHERE e.id = '. $db->Quote($eventid)
-		       . '   AND ( e.created_by = '.$db->Quote($this->_userid)
-		       . '         OR (gm.member = '.$db->Quote($this->_userid).' AND gc.accesslevel > 0 AND gm.manage_events > 0) )'
+		       . '   AND (gm.member = '.$db->Quote($this->_userid).' OR g.isdefault = 1) '
+		       . '   AND gc.accesslevel > 0 '
+		       . '   AND ( gm.manage_events > 0 OR g.edit_events = 2 '
+		       . '         OR (g.edit_events = 1 AND e.created_by = '.$db->Quote($this->_userid).') )'
 		       ;
 		$db->setQuery($query);
+//		echo($db->getQuery());
 		return ($db->loadResult() ? true : false);
 	}
 	
+	/**
+	 * return true if the user can edit specified xref
+	 * @param int xref
+	 * @return boolean
+	 */
 	function canEditXref($xref)
 	{
 		$db = &JFactory::getDBO();
@@ -117,17 +136,25 @@ class UserAcl {
 		       . ' FROM #__redevent_events AS e '
 		       . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
 		       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
-		       . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
+		       . ' INNER JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
 		       . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = x.venueid AND gv.group_id = gc.group_id '
+		       . ' LEFT JOIN #__redevent_groups AS g ON g.id = gc.group_id '
 		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
 		       . ' WHERE x.id = '. $db->Quote($xref)
-		       . '   AND ( e.created_by = '.$db->Quote($this->_userid)
-		       . '         OR (gm.member = '.$db->Quote($this->_userid).' AND gc.accesslevel > 0 AND gv.accesslevel > 0 AND (gm.manage_xrefs > 0 OR gm.manage_events > 0)) )'
+		       . '   AND (gm.member = '.$db->Quote($this->_userid).' OR g.isdefault = 1) '
+		       . '   AND gc.accesslevel > 0 AND gv.accesslevel > 0 '
+		       . '   AND ( gm.manage_xrefs > 0 OR gm.manage_events > 0 OR g.edit_events = 2 '
+		       . '         OR (g.edit_events = 1 AND e.created_by = '.$db->Quote($this->_userid).') )'
 		       ;
 		$db->setQuery($query);
 		return ($db->loadResult() ? true : false);
 	}
-		
+	
+	/**
+	 * get user groups
+	 * 
+	 * @return array
+	 */	
 	function getUserGroups()
 	{
 		if (empty($this->_groups))
@@ -153,6 +180,27 @@ class UserAcl {
 		return $this->_groups;
 	}
 	
+	/**
+	 * returns default group if set
+	 * 
+	 * return object or false
+	 */
+	function getDefaultGroup()
+	{
+		foreach ($this->getUserGroups AS $g)
+		{
+			if ($g->isdefault) {
+				return $g;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * get categories managed by user
+	 * 
+	 * @return array
+	 */
 	function getManagedCategories()
 	{
 		$db = &JFactory::getDBO();
@@ -175,6 +223,11 @@ class UserAcl {
 		return $db->loadResultArray();
 	}
 	
+	/**
+	 * get venues manages by the user
+	 * 
+	 * @return array
+	 */
 	function getManagedVenues()
 	{
 		$db = &JFactory::getDBO();
