@@ -98,6 +98,24 @@ class UserAcl {
 	}
 	
 	/**
+	 * returns true if the user can add venues
+	 * 
+	 * @return boolean
+	 */
+	function canAddVenue()
+	{
+		$groups = $this->getUserGroups();
+		foreach ((array) $groups as $group)
+		{
+			if ($group->edit_venues == 1 || $group->params->get('add_venue', 0)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
 	 * return true if the user can edit specified event
 	 * @param int $eventid
 	 * @return boolean
@@ -147,6 +165,31 @@ class UserAcl {
 		       . '         OR (g.edit_events = 1 AND e.created_by = '.$db->Quote($this->_userid).') )'
 		       ;
 		$db->setQuery($query);
+		return ($db->loadResult() ? true : false);
+	}
+	
+	/**
+	 * return true if the user can edit specified event
+	 * @param int $eventid
+	 * @return boolean
+	 */
+	function canEditVenue($id)
+	{
+		$db = &JFactory::getDBO();
+		
+		$query = ' SELECT v.id '
+		       . ' FROM #__redevent_venues AS v '
+		       . ' INNER JOIN #__redevent_groups_venues AS gv ON gv.venue_id = v.id '
+		       . ' LEFT JOIN #__redevent_groups AS g ON g.id = gv.group_id '
+		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gv.group_id '
+		       . ' WHERE v.id = '. $db->Quote($id)
+		       . '   AND (gm.member = '.$db->Quote($this->_userid).' OR g.isdefault = 1) '
+		       . '   AND gv.accesslevel > 0 '
+		       . '   AND ( gm.edit_venues > 0 OR g.edit_venues = 2 '
+		       . '         OR (g.edit_venues = 1 AND v.created_by = '.$db->Quote($this->_userid).') )'
+		       ;
+		$db->setQuery($query);
+//		echo($db->getQuery());
 		return ($db->loadResult() ? true : false);
 	}
 	

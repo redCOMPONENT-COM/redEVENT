@@ -79,13 +79,13 @@ class RedeventModelEditvenue extends JModel
 		global $mainframe;
 
 		// Initialize variables
-		$user		= & JFactory::getUser();
+		$user       = & JFactory::getUser();
 		$elsettings = & redEVENTHelper::config();
 
 		$view		= JRequest::getWord('view');
 
-		if ($this->_id) {
-
+		if ($this->_id) 
+		{
 			// Load the Event data
 			$this->_loadVenue();
 
@@ -98,27 +98,9 @@ class RedeventModelEditvenue extends JModel
 				$this->_venue->checkout( $user->get('id') );
 			}
 
-			//access check
-			$allowedtoeditvenue = ELUser::editaccess($elsettings->venueowner, $this->_venue->created_by, $elsettings->venueeditrec, $elsettings->venueedit);
-			
-			if ($allowedtoeditvenue == 0 && $this->_inAdminGroup() == 0) {
-
-				JError::raiseError( 403, JText::_( 'NO ACCESS' ) );
-
-			}
-
-
-		} else {
-
-			//access checks
-			$delloclink = ELUser::validate_user( $elsettings->locdelrec, $elsettings->deliverlocsyes );
-
-			if ($delloclink == 0) {
-
-				JError::raiseError( 403, JText::_( 'NO ACCESS' ) );
-
-			}
-
+		} 
+		else 
+		{			
 			//prepare output
 			$this->_venue->id				= '';
 			$this->_venue->venue			= '';
@@ -160,37 +142,37 @@ class RedeventModelEditvenue extends JModel
 
     $where = ' WHERE c.published = 1 AND c.access <= '.$gid;
 
-    //only check for maintainers if we don't have an edit action
-    if(!$this->_id) {
-      //get the ids of the categories the user maintaines
-      $query = 'SELECT g.group_id'
-          . ' FROM #__redevent_groupmembers AS g'
-          . ' WHERE g.member = '.$userid
-          ;
-      $this->_db->setQuery( $query );
-      $catids = $this->_db->loadResultArray();
-
-      $categories = implode(' OR c.groupid = ', $catids);
-
-      //build ids query
-      if ($categories) {
-        //check if user is allowed to submit events in general, if yes allow to submit into categories
-        //which aren't assigned to a group. Otherwise restrict submission into maintained categories only 
-        if (ELUser::validate_user($elsettings->evdelrec, $elsettings->delivereventsyes)) {
-          $where .= ' AND c.groupid = 0 OR c.groupid = '.$categories;
-        } else {
-          $where .= ' AND c.groupid = '.$categories;
-        }
-      } else {
-        $where .= ' AND c.groupid = 0';
-      }
-
-    }
-
-    //administrators or superadministrators have access to all categories, also maintained ones
-    if($superuser) {
-      $where = ' WHERE c.published = 1';
-    }
+//    //only check for maintainers if we don't have an edit action
+//    if(!$this->_id) {
+//      //get the ids of the categories the user maintaines
+//      $query = 'SELECT g.group_id'
+//          . ' FROM #__redevent_groupmembers AS g'
+//          . ' WHERE g.member = '.$userid
+//          ;
+//      $this->_db->setQuery( $query );
+//      $catids = $this->_db->loadResultArray();
+//
+//      $categories = implode(' OR c.groupid = ', $catids);
+//
+//      //build ids query
+//      if ($categories) {
+//        //check if user is allowed to submit events in general, if yes allow to submit into categories
+//        //which aren't assigned to a group. Otherwise restrict submission into maintained categories only 
+//        if (ELUser::validate_user($elsettings->evdelrec, $elsettings->delivereventsyes)) {
+//          $where .= ' AND c.groupid = 0 OR c.groupid = '.$categories;
+//        } else {
+//          $where .= ' AND c.groupid = '.$categories;
+//        }
+//      } else {
+//        $where .= ' AND c.groupid = 0';
+//      }
+//
+//    }
+//
+//    //administrators or superadministrators have access to all categories, also maintained ones
+//    if($superuser) {
+//      $where = ' WHERE c.published = 1';
+//    }
 
     //get the maintained categories and the categories whithout any group
     //or just get all if somebody have edit rights  
@@ -296,15 +278,6 @@ class RedeventModelEditvenue extends JModel
 
 		//Are we saving from an item edit?
 		if ($row->id) {
-			
-			//check if user is allowed to edit venues
-			$allowedtoeditvenue = ELUser::editaccess($elsettings->venueowner, $row->created_by, $elsettings->venueeditrec, $elsettings->venueedit);
-
-			if ($allowedtoeditvenue == 0 && $this->_inAdminGroup() == 0) {
-				$row->checkin();
-				$mainframe->enqueueMessage( JText::_( 'NO ACCESS' ) );
-				return false;
-			}
 
 			$row->modified 		= gmdate('Y-m-d H:i:s');
 
@@ -320,14 +293,6 @@ class RedeventModelEditvenue extends JModel
 			}
 
 		} else {
-
-			//check if user is allowed to submit new venues
-			$delloclink = ELUser::validate_user( $elsettings->locdelrec, $elsettings->deliverlocsyes );
-
-			if ($delloclink == 0){
-				$mainframe->enqueueMessage( JText::_( 'NO ACCESS' ) );
-				return false;
-			}
 
 			//get IP, time and userid
 			$row->created 			= gmdate('Y-m-d H:i:s');

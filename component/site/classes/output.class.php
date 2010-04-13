@@ -73,6 +73,20 @@ class ELOutput {
 
 		return;
 	}
+	
+	/**
+	 * returns html code for edit venue button
+	 * 
+	 * @param $id venue id/slug
+	 * @return html
+	 */
+	function editVenueButton($id)
+	{
+		$txt   =  ($id ? JText::_( 'EDIT VENUE' ) : JText::_( 'ADD VENUE' ));
+		$link  = JRoute::_(RedeventHelperRoute::getEditVenueRoute($id));
+		$image = JHTML::image('components/com_redevent/assets/images/calendar_edit.png', $txt);
+		return JHTML::link($link, $image, array( 'class' => "editlinktip hasTip", 'title' => $txt.'::'));
+	}
 
 	/**
 	* Writes Archivebutton
@@ -148,7 +162,8 @@ class ELOutput {
 	function editbutton( $Itemid, $id, &$params, $allowedtoedit, $view)
 	{
 
-		if ( $allowedtoedit ) {
+		if ( $allowedtoedit ) 
+		{
 
 			JHTML::_('behavior.tooltip');
 
@@ -162,6 +177,7 @@ class ELOutput {
 					}
 					$overlib = JText::_( 'EDIT EVENT TIP' );
 					$text = JText::_( 'EDIT EVENT' );
+					$link  = JRoute::_(RedeventHelperRoute::getEditEventRoute($id, JRequest::getInt('xref')));
 					break;
 
 				case 'editvenue':
@@ -172,10 +188,10 @@ class ELOutput {
 					}
 					$overlib = JText::_( 'EDIT VENUE TIP' );
 					$text = JText::_( 'EDIT VENUE' );
+					$link  = JRoute::_(RedeventHelperRoute::getEditVenueRoute($id));
 					break;
 			}
 
-			$link 	= 'index.php?option=com_redevent&view='.$view.'&id='.$id.'&returnid='.JRequest::getInt('xref');
 			$output	= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
 
 			return $output;

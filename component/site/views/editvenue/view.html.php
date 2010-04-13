@@ -48,11 +48,21 @@ class RedeventViewEditvenue extends JView
 		$editor 	  = & JFactory::getEditor();
 		$document 	= & JFactory::getDocument();
 		$elsettings = & redEVENTHelper::config();
-		$params 	= & $mainframe->getParams();
+		$params 	  = & $mainframe->getParams();
+		$acl        = UserAcl::getInstance();
 
 		// Get requests
 		$id				= JRequest::getInt('id');
 
+		if ($id && !$acl->canEditVenue($id)) {
+			echo JText::_('REDEVENT_USER_NOT_ALLOWED_TO_EDIT_THIS_VENUE');
+			return;
+		}
+		else if (!$id && !$acl->canAddVenue()) {
+			echo JText::_('REDEVENT_USER_NOT_ALLOWED_TO_ADD_VENUE');
+			return;			
+		}
+		
 		//Get Data from the model
 		$row 		= $this->Get('Venue');
 		JFilterOutput::objectHTMLSafe( $row, ENT_QUOTES, 'locdescription' );
@@ -106,7 +116,7 @@ class RedeventViewEditvenue extends JView
     }
     $this->get('CategoryOptions');
     $lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('CategoryOptions'), 'categories[]', 'class="inputbox validate-categories" multiple="multiple" size="10"', 'value', 'text', $selected);
-    
+        
 		$this->assignRef('row' , 					$row);
 		$this->assignRef('editor' , 				$editor);
 		$this->assignRef('editoruser' , 			$editoruser);

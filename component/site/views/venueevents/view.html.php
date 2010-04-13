@@ -46,11 +46,12 @@ class RedeventViewVenueevents extends JView
 
 		//initialize variables
 		$document 	= & JFactory::getDocument();
-		$menu		= & JSite::getMenu();
+		$menu		    = & JSite::getMenu();
 		$elsettings = & redEVENTHelper::config();
-		$item    	= $menu->getActive();
-		$params 	= & $mainframe->getParams('com_redevent');
-		$uri 		= & JFactory::getURI();
+		$item    	  = $menu->getActive();
+		$params 	  = & $mainframe->getParams('com_redevent');
+		$uri 		    = & JFactory::getURI();
+		$acl        = UserAcl::getInstance();
 
 		//add css file
     if (!$params->get('custom_css')) {
@@ -137,10 +138,7 @@ class RedeventViewVenueevents extends JView
 		}
 
 		//Check if the user has access to the form
-		$maintainer = ELUser::ismaintainer();
-		$genaccess 	= ELUser::validate_user( $elsettings->evdelrec, $elsettings->delivereventsyes );
-
-		if ($maintainer || $genaccess ) $dellink = 1;
+		$maintainer = $acl->canEditVenue($venue->id);
 
 		//Generate Venuedescription
 		if (empty ($venue->locdescription)) {
@@ -186,7 +184,7 @@ class RedeventViewVenueevents extends JView
 		$this->assignRef('venue' , 					$venue);
 		$this->assignRef('print_link' , 			$print_link);
 		$this->assignRef('params' , 				$params);
-		$this->assignRef('dellink' , 				$dellink);
+		$this->assignRef('editlink', 				$maintainer);
 		$this->assignRef('limage' , 				$limage);
 		$this->assignRef('venuedescription' , 		$venuedescription);
 		$this->assignRef('pageNav' , 				$pageNav);

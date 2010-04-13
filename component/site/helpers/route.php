@@ -177,6 +177,39 @@ class RedeventHelperRoute
 		return RedEventHelperRoute::buildUrl( $parts );		
 	}
 	
+	function getEditEventRoute($id = null, $returnxref = 0)
+	{
+		$parts = array( "option" => "com_redevent",
+		                "view"   => "editevent" );
+		if ($id) {
+			$parts['id'] = $id;
+		}
+		if ($returnxref) {
+			$parts['returnid'] = $returnxref;
+		}
+		return RedEventHelperRoute::buildUrl( $parts );			
+	}
+	
+	function getEditXrefRoute($id = null)
+	{
+		$parts = array( "option" => "com_redevent",
+		                "view"   => "editxref" );
+		if (!empty($id)) {
+			$parts['id'] = $id;
+		}
+		return RedEventHelperRoute::buildUrl( $parts );			
+	}
+	
+	function getEditVenueRoute($id = null)
+	{
+		$parts = array( "option" => "com_redevent",
+		                "view"   => "editvenue" );
+		if (!empty($id)) {
+			$parts['id'] = $id;
+		}
+		return RedEventHelperRoute::buildUrl( $parts );			
+	}
+	
 	function buildUrl($parts)
 	{		
 		if($item = RedEventHelperRoute::_findItem($parts)) {

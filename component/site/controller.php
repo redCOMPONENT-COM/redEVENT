@@ -179,12 +179,25 @@ class RedeventController extends JController
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or die( 'Invalid Token' );
+		$acl        = UserAcl::getInstance();
 
 		//Sanitize
 		$post = JRequest::get( 'post' );
 		$post['locdescription'] = JRequest::getVar( 'locdescription', '', 'post', 'string', JREQUEST_ALLOWRAW );
 
-    $isNew = ($post['id']) ? false : true;
+    $isNew = ($post['id']) ? false : true;    
+	
+		if (!$isNew && !$acl->canEditVenue($post['id'])) {
+			$msg = JText::_('REDEVENT_USER_NOT_ALLOWED_TO_EDIT_THIS_VENUE');
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getVenueEventsRoute($post['id'])), $msg, 'error' );
+			return;
+		}
+		else if ($isNew && !$acl->canAddVenue()) {
+			$msg =  JText::_('REDEVENT_USER_NOT_ALLOWED_TO_ADD_VENUE');
+			$link = JRequest::getString('referer', JURI::base(), 'post');
+			$this->setRedirect($link, $msg, 'error' );
+			return;			
+		}
     
 		$file 		= JRequest::getVar( 'userfile', '', 'files', 'array' );
 
