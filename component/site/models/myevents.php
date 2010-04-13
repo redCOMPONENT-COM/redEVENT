@@ -331,21 +331,22 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 
         //Get Events from Database        
         $query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published, '
-        . ' a.id, a.title, a.created, a.datdescription, a.registra, '
+        . ' e.id, e.title, e.created, e.datdescription, e.registra, '
         . ' l.venue, l.city, l.state, l.url, l.id as locid, '
         . ' c.catname, c.id AS catid,'
-        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
+        . ' CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(\':\', e.id, e.alias) ELSE e.id END as slug, '
         . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
         . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
         . ' FROM #__redevent_event_venue_xref AS x'
-        . ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
+        . ' LEFT JOIN #__redevent_events AS e ON e.id = x.eventid'
         . ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id'
         . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
 //        . ' LEFT JOIN #__redevent_groups AS g ON g.id = x.groupid '
 //        . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
        	. ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
        	. ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = x.venueid AND gv.group_id = gc.group_id '
+        . ' LEFT JOIN #__redevent_groups AS g ON g.id = gc.group_id '
        	. ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
         . $where
         . ' GROUP BY (x.id) '
@@ -400,15 +401,18 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         $user = & JFactory::getUser();
         //Get Events from Database
         $query = 'SELECT l.id, l.venue, l.city, l.state, l.url, l.published, '
-        . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug'
-        . ' FROM #__redevent_venues AS l '
-        . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = l.id '
-        . ' LEFT JOIN #__redevent_groups AS g ON g.id = gv.group_id '
-        . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
-        . ' WHERE (l.created_by = '.$this->_db->Quote($user->id) .' OR (gm.member = '. $this->_db->Quote($user->id) .' AND gv.accesslevel > 0 AND gm.edit_venues = 1))'
-        . ' GROUP BY (l.id) '
-        .' ORDER BY l.venue ASC '
-        ;
+               . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug'
+               . ' FROM #__redevent_venues AS l '
+               . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = l.id '
+               . ' LEFT JOIN #__redevent_groups AS g ON g.id = gv.group_id '
+               . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
+               . ' WHERE (gm.member = '.$this->_db->Quote($user->id).' OR g.isdefault = 1) '
+               . '   AND gv.accesslevel > 0 '
+               . '   AND ( gm.edit_venues > 0 OR g.edit_venues = 2 '
+               . '         OR (g.edit_venues = 1 AND l.created_by = '.$this->_db->Quote($user->id).') )'
+               . ' GROUP BY (l.id) '
+               .' ORDER BY l.venue ASC '
+               ;
 
         return $query;
     }
@@ -477,9 +481,10 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         }
 
         // then if the user is the owner of the event or member of admin group
-        $where .= ' AND (a.created_by = '. $this->_db->Quote($user->id)
-                . '      OR (gm.member = '. $this->_db->Quote($user->id) 
-                . '          AND (gm.manage_events > 0 OR gm.manage_xrefs > 0) AND gv.accesslevel > 0 AND gc.accesslevel > 0)) ';
+        $where .= '   AND (gm.member = '.$this->_db->Quote($user->id).' OR g.isdefault = 1) ' // is a member of the group, or it's the default group
+                . '   AND gc.accesslevel > 0 AND gv.accesslevel > 0 ' // groups maintains category and venue
+                . '   AND ( gm.manage_events > 0 OR gm.manage_xrefs > 0 OR g.edit_events = 2 '
+                . '         OR (g.edit_events = 1 AND e.created_by = '.$this->_db->Quote($user->id).') )';
 
         // Second is to only select events assigned to category the user has access to
         $where .= ' AND c.access <= '.$gid;
