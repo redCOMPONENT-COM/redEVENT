@@ -733,11 +733,13 @@ class redEVENT_tags {
     $db = JFactory::getDBO();
     foreach ($rows as $k => $r) 
     {
-	    $q = "SELECT waitinglist, COUNT(id) AS total
-	      FROM #__rwf_submitters
-	      WHERE xref = ".$r->xref."
-	      AND confirmed = 1
-	      GROUP BY waitinglist";
+			$q = ' SELECT s.waitinglist, COUNT(s.id) AS total '
+			   . ' FROM #__redevent_register AS r '
+			   . ' INNER JOIN #__rwf_submitters AS s ON s.submit_key = r.submit_key '
+			   . ' WHERE r.xref = '. $db->Quote($r->xref)
+			   . ' AND s.confirmed = 1 '
+			   . ' GROUP BY s.waitinglist '
+			   ;
 	    $db->setQuery($q);
 	    $res = $db->loadObjectList('waitinglist');
       $rows[$k]->registered = (isset($res[0]) ? $res[0]->total : 0) ;

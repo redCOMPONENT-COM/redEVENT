@@ -338,23 +338,24 @@ class RedeventModelBaseEventList extends JModel
    * 
    * @return array 
    */
-  function _getPlacesLeft($rows) 
-  {
-    $db = JFactory::getDBO();
-    foreach ((array) $rows as $k => $r) 
-    {
-      $q = "SELECT waitinglist, COUNT(id) AS total
-        FROM #__rwf_submitters
-        WHERE xref = ".$r->xref."
-        AND confirmed = 1
-        GROUP BY waitinglist";
-      $db->setQuery($q);
-      $res = $db->loadObjectList('waitinglist');
-      $rows[$k]->registered = (isset($res[0]) ? $res[0]->total : 0) ;
-      $rows[$k]->waiting = (isset($res[1]) ? $res[1]->total : 0) ;
-    }
-    return $rows;
-  }
+	function _getPlacesLeft($rows)
+	{
+		foreach ((array) $rows as $k => $r)
+  	{
+			$q = ' SELECT s.waitinglist, COUNT(s.id) AS total '
+			   . ' FROM #__redevent_register AS r '
+			   . ' INNER JOIN #__rwf_submitters AS s ON s.submit_key = r.submit_key '
+			   . ' WHERE r.xref = '. $this->_db->Quote($r->xref)
+			   . ' AND s.confirmed = 1 '
+			   . ' GROUP BY s.waitinglist '
+			   ;
+			$this->_db->setQuery($q);
+			$res = $this->_db->loadObjectList('waitinglist');
+			$rows[$k]->registered = (isset($res[0]) ? $res[0]->total : 0) ;
+			$rows[$k]->waiting = (isset($res[1]) ? $res[1]->total : 0) ;
+		}
+		return $rows;
+	}
   
   /**
    * adds custom fields to rows.
