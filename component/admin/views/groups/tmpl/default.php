@@ -46,7 +46,7 @@ defined('_JEXEC') or die('Restricted access');
 			<th><?php echo JText::_( 'DESCRIPTION' ); ?></th>
 			<th width="5"><?php echo JText::_( 'Default' ); ?></th>
 			<th width="5"><?php echo JText::_( 'Members' ); ?></th>
-			<th width="5"><?php echo JText::_( 'Group ACL' ); ?></th>6
+			<th width="5"><?php echo JText::_( 'Group ACL' ); ?></th>
 		</tr>
 	</thead>
 
