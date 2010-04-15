@@ -114,6 +114,8 @@ class RedeventViewEditevent extends JView
 		//Has the user access to the editor and the add venue screen
 		$editoruser = $params->get('edit_description_allow_editor', 0) || ELUser::editoruser();
 		
+		$canpublish = $useracl->canPublishEvent($id);
+		
 		//transform <br /> and <br> back to \r\n for non editorusers
 		if (!$editoruser) {
 			$row->datdescription = redEVENTHelper::br2break($row->datdescription);
@@ -164,6 +166,7 @@ class RedeventViewEditevent extends JView
 		$this->assignRef('item',       $item);
 		$this->assignRef('params',     $params);
 		$this->assignRef('lists',      $lists);
+		$this->assignRef('canpublish', $canpublish);
 		
 		parent::display($tpl);
 

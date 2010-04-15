@@ -181,6 +181,13 @@ JHTML::_('behavior.calendar');
 				<td><?php	echo $this->lists['categories']; ?></td>
 			</tr>
 			<?php endif; ?>
+			<?php if ($this->canpublish): ?>
+			<tr>
+				<td class="key"><label for="published"><?php echo JText::_('PUBLISHED') .': '; ?></label>
+				</td>
+				<td><?php echo $this->lists['published']; ?></td>
+			</tr>
+			<?php endif; ?>
 			<?php if (!$this->row->id): // edit first xref only on initial event creation, afterwards use myevents ?>
 			<tr>
 				<td class="key hasTip" title="<?php echo JText::_(''); ?>">
@@ -234,13 +241,6 @@ JHTML::_('behavior.calendar');
 				</td>
 				<td><?php echo JHTML::calendar($this->row->registrationend, 'registrationend', 'registrationend', '%Y-%m-%d %H:%M'); ?>
 				</td>
-			</tr>
-			<?php endif; ?>
-			<?php if ($this->params->get('edit_published', 0)): ?>
-			<tr>
-				<td class="key"><label for="published"><?php echo JText::_('PUBLISHED') .': '; ?></label>
-				</td>
-				<td><?php echo $this->lists['published']; ?></td>
 			</tr>
 			<?php endif; ?>
 			<?php if ($this->params->get('edit_registration', 0)) :?>

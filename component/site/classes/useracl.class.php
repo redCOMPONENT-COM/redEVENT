@@ -35,8 +35,12 @@ class UserAcl {
 	
 	var $_userid = 0;
 	
+	var $_db = null;
+	
 	function __construct($userid = 0)
 	{
+		$this->_db = &JFactory::getDBO();
+		
 		if (!$userid) {
 			$user = &Jfactory::getUser();
 			$userid = $user->get('id');
@@ -139,6 +143,35 @@ class UserAcl {
 		$db->setQuery($query);
 //		echo($db->getQuery());
 		return ($db->loadResult() ? true : false);
+	}
+	
+	function canPublishEvent($eventid = 0)
+	{
+		if (!$eventid) // this is a new event
+		{		
+			$query = ' SELECT g.id '
+			       . ' FROM #__redevent_groups AS g '
+			       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
+			       . ' WHERE ( gm.member = '.$this->_db->Quote($this->_userid).' AND gm.publish_events > 0 ) '
+			       . '   OR ( g.isdefault = 1 AND g.publish_events > 0 ) '
+			       ;		
+		}
+		else
+		{
+			$query = ' SELECT e.id '
+			       . ' FROM #__redevent_events AS e '
+			       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
+			       . ' INNER JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
+			       . ' LEFT JOIN #__redevent_groups AS g ON g.id = gc.group_id '
+			       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
+			       . ' WHERE e.id = '. $this->_db->Quote($eventid)
+			       . '   AND ( ( g.isdefault = 1 AND (g.publish_events = 2 OR (g.publish_events = 1 AND e.created_by = '.$this->_db->Quote($this->_userid).') ) ) '
+			       . '      OR ( gm.publish_events = 2 OR (gm.publish_events = 1 AND e.created_by = '.$this->_db->Quote($this->_userid).') ) ) '
+			       ;			
+		}
+		$this->_db->setQuery($query);
+//		echo($db->getQuery());
+		return ($this->_db->loadResult() ? true : false);	
 	}
 	
 	/**
