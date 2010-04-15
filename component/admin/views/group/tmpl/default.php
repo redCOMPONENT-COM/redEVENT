@@ -80,8 +80,8 @@ JHTML::_('behavior.tooltip');
 	</tr>
 	
 	<tr>
-		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'GROUP PUBLISH EVENTS' ).'::'.JText::_( 'GROUP PUBLISH EVENTS TIP' ); ?>">
-			<label for="publish_events"> <?php echo JText::_( 'GROUP PUBLISH EVENTS' ); ?>:
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'GROUP_PUBLISH_EVENTS' ).'::'.JText::_( 'GROUP_PUBLISH_EVENTS_TIP' ); ?>">
+			<label for="publish_events"> <?php echo JText::_( 'GROUP_PUBLISH_EVENTS' ); ?>:
 		</label></td>
 		<td>
 			<?php echo $this->lists['publish_events']; ?>
@@ -89,8 +89,8 @@ JHTML::_('behavior.tooltip');
 	</tr>
 	
 	<tr>
-		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'GROUP PUBLISH VENUES' ).'::'.JText::_( 'GROUP PUBLISH VENUES TIP' ); ?>">
-			<label for="publish_venues"> <?php echo JText::_( 'GROUP PUBLISH VENUES' ); ?>:
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'GROUP_PUBLISH_VENUES' ).'::'.JText::_( 'GROUP_PUBLISH_VENUES_TIP' ); ?>">
+			<label for="publish_venues"> <?php echo JText::_( 'GROUP_PUBLISH_VENUES' ); ?>:
 		</label></td>
 		<td>
 			<?php echo $this->lists['publish_venues']; ?>

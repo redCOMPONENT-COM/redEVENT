@@ -87,16 +87,16 @@ JHTML::_('behavior.tooltip');
 		</td>
 	</tr>
 	<tr>
-		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'MEMBER PUBLISH EVENTS' ).'::'.JText::_( 'MEMBER PUBLISH EVENTS TIP' ); ?>">
-			<label for="publish_events"> <?php echo JText::_( 'MEMBER PUBLISH EVENTS' ); ?>:
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'MEMBER_PUBLISH_EVENTS' ).'::'.JText::_( 'MEMBER_PUBLISH_EVENTS_TIP' ); ?>">
+			<label for="publish_events"> <?php echo JText::_( 'MEMBER_PUBLISH_EVENTS' ); ?>:
 		</label></td>
 		<td>
 			<?php echo $this->lists['publish_events']; ?>
 		</td>
 	</tr>
 	<tr>
-		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'MEMBER PUBLISH VENUES' ).'::'.JText::_( 'MEMBER PUBLISH VENUES TIP' ); ?>">
-			<label for="publish_venues"> <?php echo JText::_( 'MEMBER PUBLISH VENUES' ); ?>:
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'MEMBER_PUBLISH_VENUES' ).'::'.JText::_( 'MEMBER_PUBLISH_VENUES_TIP' ); ?>">
+			<label for="publish_venues"> <?php echo JText::_( 'MEMBER_PUBLISH_VENUES' ); ?>:
 		</label></td>
 		<td>
 			<?php echo $this->lists['publish_venues']; ?>

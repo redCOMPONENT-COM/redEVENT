@@ -117,6 +117,14 @@ class RedeventViewEditvenue extends JView
     $this->get('CategoryOptions');
     $lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('CategoryOptions'), 'categories[]', 'class="inputbox validate-categories" multiple="multiple" size="10"', 'value', 'text', $selected);
         
+    // published state selector
+    $canpublish = $acl->canPublishVenue($id);
+    $published = array( JHTML::_('select.option', '1', JText::_('PUBLISHED')),
+                         JHTML::_('select.option', '0', JText::_('UNPUBLISHED')),
+                       );
+    $lists['published'] = JHTML::_('select.radiolist', $published, 'published', '', 'value', 'text', $row->published);
+    
+    
 		$this->assignRef('row' , 					$row);
 		$this->assignRef('editor' , 				$editor);
 		$this->assignRef('editoruser' , 			$editoruser);
@@ -125,7 +133,8 @@ class RedeventViewEditvenue extends JView
 		$this->assignRef('elsettings' , 			$elsettings);
     $this->assignRef('lists' ,           $lists);
 		$this->assignRef('item' , 					$item);
-		$this->assignRef('params' , 				$params);
+		$this->assignRef('params',      $params);
+		$this->assignRef('canpublish',  $canpublish);
 
 		parent::display($tpl);
 

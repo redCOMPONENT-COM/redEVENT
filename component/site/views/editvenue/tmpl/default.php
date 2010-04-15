@@ -185,6 +185,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 <label for="venue"><?php echo JText::_( 'VENUE' ).':'; ?></label>
                 <input class="inputbox required" type="text" name="venue" id="venue" value="<?php echo $this->escape($this->row->venue); ?>" size="55" maxlength="50" />
             </div>
+                        
+						<?php if ($this->canpublish): ?>
+            <div class="el_published floattext">
+                <label for="published"><?php echo JText::_( 'Published' ).':'; ?></label>
+								<?php echo $this->lists['published'] ?>
+            </div>						
+						<?php endif; ?>
 
             <div class="el_street floattext">
                 <label for="street"><?php echo JText::_( 'STREET' ).':'; ?></label>

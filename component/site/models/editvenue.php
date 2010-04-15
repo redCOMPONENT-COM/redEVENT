@@ -104,6 +104,7 @@ class RedeventModelEditvenue extends JModel
 			//prepare output
 			$this->_venue->id				= '';
 			$this->_venue->venue			= '';
+			$this->_venue->published	= 0;
       $this->_venue->categories = null;
 			$this->_venue->url				= '';
 			$this->_venue->street			= '';
@@ -365,18 +366,6 @@ class RedeventModelEditvenue extends JModel
 		}
 
 		$row->venue = trim( JFilterOutput::ampReplace( $row->venue ) );
-
-		//Autopublish
-		//check if the user has the required rank for autopublish
-		$autopublloc = ELUser::validate_user( $elsettings->locpubrec, $elsettings->autopublocate );
-
-		//Check if user is the owner of the venue
-		//If yes enable autopublish
-		if ($autopublloc || $owneredit) {
-			$row->published = 1 ;
-		} else {
-			$row->published = 0 ;
-		}
 
 		//Make sure the data is valid
 		if (!$row->check($elsettings)) {

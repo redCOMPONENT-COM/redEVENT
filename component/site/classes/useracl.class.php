@@ -145,6 +145,11 @@ class UserAcl {
 		return ($db->loadResult() ? true : false);
 	}
 	
+	/**
+	 * returns true if user can publish specified event
+	 * @param int event id, or 0 for a new event
+	 * @return boolean
+	 */
 	function canPublishEvent($eventid = 0)
 	{
 		if (!$eventid) // this is a new event
@@ -224,6 +229,40 @@ class UserAcl {
 		$db->setQuery($query);
 //		echo($db->getQuery());
 		return ($db->loadResult() ? true : false);
+	}
+
+	
+	/**
+	 * returns true if user can publish specified venue
+	 * @param int venue id, or 0 for a new venue
+	 * @return boolean
+	 */
+	function canPublishVenue($id = 0)
+	{
+		if (!$id) // this is a new event
+		{		
+			$query = ' SELECT g.id '
+			       . ' FROM #__redevent_groups AS g '
+			       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
+			       . ' WHERE ( gm.member = '.$this->_db->Quote($this->_userid).' AND gm.publish_venues > 0 ) '
+			       . '   OR ( g.isdefault = 1 AND g.publish_venues > 0 ) '
+			       ;		
+		}
+		else
+		{
+			$query = ' SELECT v.id '
+			       . ' FROM #__redevent_venues AS v '
+			       . ' INNER JOIN #__redevent_groups_venues AS gv ON gv.venue_id = v.id '
+			       . ' LEFT JOIN #__redevent_groups AS g ON g.id = gv.group_id '
+			       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gv.group_id '
+			       . ' WHERE v.id = '. $this->_db->Quote($id)
+			       . '   AND ( ( g.isdefault = 1 AND (g.publish_venues = 2 OR (g.publish_venues = 1 AND v.created_by = '.$this->_db->Quote($this->_userid).') ) ) '
+			       . '      OR ( gm.publish_venues = 2 OR (gm.publish_venues = 1 AND v.created_by = '.$this->_db->Quote($this->_userid).') ) ) '
+			       ;	
+		}
+		$this->_db->setQuery($query);
+//		echo($db->getQuery());
+		return ($this->_db->loadResult() ? true : false);	
 	}
 	
 	/**
