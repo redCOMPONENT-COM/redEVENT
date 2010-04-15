@@ -109,7 +109,15 @@ class RedEventViewGroup extends JView {
 		                 JHTML::_('select.option', 1, JText::_('GROUP_OWN_VENUES')),
 		                 JHTML::_('select.option', 2, JText::_('GROUP_GROUP_VENUES')),
 		                );
-		$lists['edit_venues'] = JHTML::_('select.genericlist', $options, 'edit_venues', '', 'value', 'text', $row->edit_venues);
+		$lists['edit_venues'] = JHTML::_('select.genericlist', $options, 'edit_venues', '', 'value', 'text', $row->edit_venues);		
+		
+		$options = array(
+		                  JHTML::_('select.option', 0, JText::_('No')),
+		                  JHTML::_('select.option', 1, JText::_('Own')),
+		                  JHTML::_('select.option', 2, JText::_('Group')),
+		                );
+		$lists['publish_events'] = JHTML::_('select.genericlist', $options, 'publish_events', '', 'value', 'text', $row->publish_events);
+		$lists['publish_venues'] = JHTML::_('select.genericlist', $options, 'publish_venues', '', 'value', 'text', $row->publish_venues);
 		
 		//assign data to template
 		$this->assignRef('row'      	, $row);

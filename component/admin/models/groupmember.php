@@ -146,15 +146,17 @@ class RedEventModelGroupmember extends JModel
 		if (empty($this->_data))
 		{
 			$group = new stdClass();
-			$group->id					= 0;
-			$group->group_id		= null;
-			$group->member			= null;
-			$group->is_admin		= 0;
-			$group->manage_events	= 0;
-			$group->manage_xrefs		= 0;
-			$group->edit_venues	= 0;
+			$group->id					          = 0;
+			$group->group_id		          = null;
+			$group->member			          = null;
+			$group->is_admin		          = 0;
+			$group->manage_events	        = 0;
+			$group->manage_xrefs		      = 0;
+			$group->edit_venues	          = 0;
+			$group->publish_events	      = 0;
+			$group->publish_venues	      = 0;
 			$group->receive_registrations	= 0;
-			$this->_data				= $group;
+			$this->_data				          = $group;
 			return (boolean) $this->_data;
 		}
 		return true;

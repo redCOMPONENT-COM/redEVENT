@@ -50,6 +50,10 @@ class RedEvent_groups extends JTable
 	/** @var int */
 	var $edit_venues	  = 0;
 	/** @var int */
+	var $publish_events    = 0;
+	/** @var int */
+	var $publish_venues	  = 0;
+	/** @var int */
 	var $checked_out 		= 0;
 	/** @var date */
 	var $checked_out_time	= 0;

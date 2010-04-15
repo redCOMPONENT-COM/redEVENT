@@ -554,6 +554,22 @@ if (is_array($cols))
     $db->query();    
   }
   
+  if (!array_key_exists('publish_events', $cols)) {
+    $q = ' ALTER TABLE `#__redevent_groupmembers` '
+       . '   ADD `publish_events` TINYINT( 4 ) NOT NULL '
+       ;
+    $db->setQuery($q);
+    $db->query();    
+  }
+  
+  if (!array_key_exists('publish_venues', $cols)) {
+    $q = ' ALTER TABLE `#__redevent_groupmembers` '
+       . '   ADD `publish_venues` TINYINT( 4 ) NOT NULL '
+       ;
+    $db->setQuery($q);
+    $db->query();    
+  }
+  
   if (!array_key_exists('receive_registrations', $cols)) {
     $q = ' ALTER TABLE `#__redevent_groupmembers` '
        . '   ADD `receive_registrations` TINYINT( 1 ) NOT NULL '
@@ -603,6 +619,23 @@ if (is_array($cols))
     $db->setQuery($q);
     $db->query();    
   }	
+
+  
+  if (!array_key_exists('publish_events', $cols)) {
+    $q = ' ALTER TABLE `#__redevent_groups` '
+       . '   ADD `publish_events` TINYINT( 4 ) NOT NULL '
+       ;
+    $db->setQuery($q);
+    $db->query();    
+  }
+  
+  if (!array_key_exists('publish_venues', $cols)) {
+    $q = ' ALTER TABLE `#__redevent_groups` '
+       . '   ADD `publish_venues` TINYINT( 4 ) NOT NULL '
+       ;
+    $db->setQuery($q);
+    $db->query();    
+  }
 }
 
 /* Add the basic configuration entry */

@@ -67,6 +67,10 @@ class RedEvent_groupmembers extends JTable
 	 * @var int
 	 */
 	var $edit_venues = 0;
+	/** @var int */
+	var $publish_events    = 0;
+	/** @var int */
+	var $publish_venues	  = 0;
 	/**
 	 * receive registrations to events
 	 * @var int

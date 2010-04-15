@@ -80,6 +80,24 @@ JHTML::_('behavior.tooltip');
 	</tr>
 	
 	<tr>
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'GROUP PUBLISH EVENTS' ).'::'.JText::_( 'GROUP PUBLISH EVENTS TIP' ); ?>">
+			<label for="publish_events"> <?php echo JText::_( 'GROUP PUBLISH EVENTS' ); ?>:
+		</label></td>
+		<td>
+			<?php echo $this->lists['publish_events']; ?>
+		</td>
+	</tr>
+	
+	<tr>
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'GROUP PUBLISH VENUES' ).'::'.JText::_( 'GROUP PUBLISH VENUES TIP' ); ?>">
+			<label for="publish_venues"> <?php echo JText::_( 'GROUP PUBLISH VENUES' ); ?>:
+		</label></td>
+		<td>
+			<?php echo $this->lists['publish_venues']; ?>
+		</td>
+	</tr>
+	
+	<tr>
 		<td width="100" align="right" class="key"><label for="description"> <?php echo JText::_( 'DESCRIPTION' ); ?>:
 		</label></td>
 		<td>
