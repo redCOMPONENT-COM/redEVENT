@@ -933,7 +933,7 @@ if (JFile::exists(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'views'.DS.'ca
 		?>
 		<h3>Note for sh404sef</h3>
 		<p>If you want your modules to avoid disappearing while you browse pages on redevent, you should set "Insert menu Itemid if none", "Insert menu title if no Itemid"
-		and "Always insert menu title" to "yes" in sh404sef configuration > advanced tab > category "itemid management"</p>
+		and "Always insert menu title" to "yes" in sh404sef configuration &gt; advanced tab &gt; category "itemid management"</p>
 		<?php
 	}
 	?>
