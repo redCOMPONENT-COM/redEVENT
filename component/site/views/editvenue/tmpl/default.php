@@ -26,8 +26,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 
 <script type="text/javascript">
-	Window.onDomReady(function(){
-		var form = document.getElementById('adminForm');
+	Window.onDomReady(function() {
+		var form = document.getElementById('venueForm');
 		var map = form.getElementById('map1');
 		
 		if(map.checked) {
@@ -35,9 +35,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		}
 	});
 	
-	function addrequired() {
-		
-		var form = document.getElementById('adminForm');
+	function addrequired() 
+	{		
+		var form = document.getElementById('venueForm');
 		
 		$(form.street).addClass('required');
 		$(form.plz).addClass('required');
@@ -45,9 +45,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		$(form.country).addClass('required');
 	}
 	
-	function removerequired() {
-		
-		var form = document.getElementById('adminForm');
+	function removerequired() 
+	{		
+		var form = document.getElementById('venueForm');
 		
 		$(form.street).removeClass('required');
 		$(form.plz).removeClass('required');
@@ -55,14 +55,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		$(form.country).removeClass('required');
 	}
 
-	function submitbutton( pressbutton ) {
-
+	function submitbutton( pressbutton ) 
+	{
 		if (pressbutton == 'cancelvenue') {
 			elsubmitform( pressbutton );
 			return;
 		}
 
-		var form = document.getElementById('adminForm');
+		var form = document.getElementById('venueForm');
 		var validator = document.formvalidator;
 		var venue = $(form.venue).getValue();
 		venue.replace(/\s/g,'');
@@ -121,38 +121,39 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	}
 	
 	//joomla submitform needs form name
-	function elsubmitform(pressbutton){
-			
-			var form = document.getElementById('adminForm');
-			if (pressbutton) {
-				form.task.value=pressbutton;
-			}
-			if (typeof form.onsubmit == "function") {
-				form.onsubmit();
-			}
-			form.submit();
+	function elsubmitform(pressbutton)
+	{			
+		var form = document.getElementById('venueForm');
+		if (pressbutton) {
+			form.task.value=pressbutton;
 		}
+		if (typeof form.onsubmit == "function") {
+			form.onsubmit();
+		}
+		form.submit();
+	}
 
-
-	var tastendruck = false
+	var tastendruck = false;
+	
 	function rechne(restzeichen)
 	{
-		maximum = <?php echo $this->elsettings->datdesclimit; ?>
+		maximum = <?php echo $this->elsettings->datdesclimit; ?>;
 
 		if (restzeichen.locdescription.value.length > maximum) {
-          	restzeichen.locdescription.value = restzeichen.locdescription.value.substring(0, maximum)
-          	links = 0
+			restzeichen.locdescription.value = restzeichen.locdescription.value.substring(0, maximum);
+			links = 0;
 		} else {
-        	links = maximum - restzeichen.locdescription.value.length
-        }
- 		restzeichen.zeige.value = links
-  	}
+    	links = maximum - restzeichen.locdescription.value.length;
+    }
+	    
+ 		restzeichen.zeige.value = links;
+  }
 
-  	function berechne(restzeichen)
-   	{
-  		tastendruck = true
-  		rechne(restzeichen)
-  	}
+  function berechne(restzeichen)
+  {
+  	tastendruck = true;
+  	rechne(restzeichen);
+	}
 </script>
 
 
@@ -164,7 +165,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     </h1>
     <?php endif; ?>
 
-    <form enctype="multipart/form-data" id="adminForm" action="<?php echo JRoute::_('index.php') ?>" method="post" class="form-validate">
+    <form enctype="multipart/form-data" id="venueForm" action="<?php echo JRoute::_('index.php') ?>" method="post" class="form-validate">
 
         <div class="el_save_buttons floattext">
   			<button type="button" onclick="return submitbutton('savevenue')">
@@ -181,70 +182,116 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
             <legend><?php echo JText::_('ADDRESS'); ?></legend>
 
-            <div class="el_venue floattext">
-                <label for="venue"><?php echo JText::_( 'VENUE' ).':'; ?></label>
-                <input class="inputbox required" type="text" name="venue" id="venue" value="<?php echo $this->escape($this->row->venue); ?>" size="55" maxlength="50" />
-            </div>
-                        
+						<table class="fieldstable">
+							<tbody>
+								<tr>
+									<td class="key hasTip" title="<?php echo JText::_('VENUE'); ?>">
+                		<label for="venue"><?php echo JText::_( 'VENUE' ).':'; ?></label>
+                	</td>
+                	<td>
+                		<input class="inputbox required" type="text" name="venue" id="venue" value="<?php echo $this->escape($this->row->venue); ?>" size="55" maxlength="50" />
+                	</td>
+                </tr>     
+                  
+								<tr>
+									<td class="key hasTip" title="<?php echo JText::_('Category'); ?>">
+                		<label for="categories"><?php echo JText::_( 'Category' ).':'; ?></label>
+                	</td>
+                	<td>
+                		<?php echo $this->lists['categories']; ?>
+                	</td>
+                </tr>    
+                                   
 						<?php if ($this->canpublish): ?>
-            <div class="el_published floattext">
-                <label for="published"><?php echo JText::_( 'Published' ).':'; ?></label>
-								<?php echo $this->lists['published'] ?>
-            </div>						
+								<tr>
+									<td class="key hasTip" title="<?php echo JText::_('Published'); ?>">
+                		<label for="published"><?php echo JText::_( 'Published' ).':'; ?></label>
+                	</td>
+                	<td>
+										<?php echo $this->lists['published'] ?>
+                	</td>
+                </tr>                        
 						<?php endif; ?>
 
-            <div class="el_street floattext">
-                <label for="street"><?php echo JText::_( 'STREET' ).':'; ?></label>
-                <input class="inputbox" type="text" name="street" id="street" value="<?php echo $this->escape($this->row->street); ?>" size="55" maxlength="50" />
-            </div>
+								<tr>
+									<td class="key hasTip" title="<?php echo JText::_('STREET'); ?>">
+                		<label for="street"><?php echo JText::_( 'STREET' ).':'; ?></label>
+                	</td>
+                	<td>
+                		<input class="inputbox" type="text" name="street" id="street" value="<?php echo $this->escape($this->row->street); ?>" size="55" maxlength="50" />
+                	</td>
+                </tr>
 
-            <div class="el_plz floattext">
-                <label for="plz"><?php echo JText::_( 'ZIP' ).':'; ?></label>
-                <input class="inputbox" type="text" name="plz" id="plz" value="<?php echo $this->escape($this->row->plz); ?>" size="15" maxlength="10" />
-            </div>
+								<tr>
+									<td class="key hasTip" title="<?php echo JText::_('ZIP'); ?>">
+										<label for="plz"><?php echo JText::_( 'ZIP' ).':'; ?></label>
+                	</td>
+                	<td>
+                		<input class="inputbox" type="text" name="plz" id="plz" value="<?php echo $this->escape($this->row->plz); ?>" size="15" maxlength="10" />
+                	</td>
+                </tr>
 
-            <div class="el_city floattext">
-                <label for="city"><?php echo JText::_( 'CITY' ).':'; ?></label>
-                <input class="inputbox" type="text" name="city" id="city" value="<?php echo $this->escape($this->row->city); ?>" size="55" maxlength="50" />
-            </div>
+								<tr>
+									<td class="key hasTip" title="<?php echo JText::_('CITY'); ?>">
+										<label for="city"><?php echo JText::_( 'CITY' ).':'; ?></label>
+                	</td>
+                	<td>
+                		<input class="inputbox" type="text" name="city" id="city" value="<?php echo $this->escape($this->row->city); ?>" size="55" maxlength="50" />
+                	</td>
+                </tr>
 
-            <div class="el_state floattext">
-                <label for="state"><?php echo JText::_( 'STATE' ).':'; ?></label>
-                <input class="inputbox" type="text" name="state" id="state" value="<?php echo $this->escape($this->row->state); ?>" size="55" maxlength="50" />
-            </div>
+								<tr>
+									<td class="key hasTip" title="<?php echo JText::_('STATE'); ?>">
+										<label for="state"><?php echo JText::_( 'STATE' ).':'; ?></label>
+                	</td>
+                	<td>
+                		<input class="inputbox" type="text" name="state" id="state" value="<?php echo $this->escape($this->row->state); ?>" size="55" maxlength="50" />
+                	</td>
+                </tr>
 
-            <div class="el_country floattext">
-                <label for="country"><?php echo JText::_( 'COUNTRY' ).':'; ?></label>
-                <input class="inputbox" type="text" name="country" id="country" value="<?php echo $this->row->country; ?>" size="3" maxlength="2" />
-                <span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('COUNTRY HINT'); ?>">
+								<tr>
+									<td class="key hasTip" title="<?php echo JText::_('COUNTRY'); ?>">
+										<label for="country"><?php echo JText::_( 'COUNTRY' ).':'; ?></label>
+                	</td>
+                	<td>
+                		<input class="inputbox" type="text" name="country" id="country" value="<?php echo $this->row->country; ?>" size="3" maxlength="2" />
+                		<span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('COUNTRY HINT'); ?>">
                 		<?php echo $this->infoimage; ?>
-                </span>
-            </div>
+                		</span>
+                	</td>
+                </tr>
 
-            <div class="el_url floattext">
-                <label for="url"><?php echo JText::_( 'WEBSITE' ).':'; ?></label>
-                <input class="inputbox" name="url" id="url" type="text" value="<?php echo $this->escape($this->row->url); ?>" size="55" maxlength="199" />&nbsp;
-                <span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('WEBSITE HINT'); ?>">
-                		<?php echo $this->infoimage; ?>
-                </span>
-            </div>
+								<tr>
+									<td class="key hasTip" title="<?php echo JText::_('WEBSITE'); ?>">
+										<label for="url"><?php echo JText::_( 'WEBSITE' ).':'; ?></label>
+                	</td>
+                	<td>
+                		<input class="inputbox" name="url" id="url" type="text" value="<?php echo $this->escape($this->row->url); ?>" size="55" maxlength="199" />&nbsp;
+		                <span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('WEBSITE HINT'); ?>">
+		                		<?php echo $this->infoimage; ?>
+		                </span>
+                	</td>
+                </tr>
 
-            <?php if ( $this->elsettings->showmapserv != 0 ) : ?>
-            <div class="el_map floattext">
-                <p>
-                    <br /><strong><?php echo JText::_( 'ENABLE MAP' ).':'; ?></strong>
+		            <?php if ( $this->elsettings->showmapserv != 0 ) : ?>
+								<tr>
+									<td class="key hasTip" title="<?php echo JText::_('ENABLE MAP'); ?>">
+										<label for="map"><?php echo JText::_( 'ENABLE MAP' ).':'; ?></label>
+                	</td>
+                	<td>
+                		<label for="map0"><?php echo JText::_( 'no' ); ?></label>
+		                <input type="radio" name="map" id="map0" onchange="removerequired();" value="0" <?php echo $this->row->map == 0 ? 'checked="checked"' : ''; ?> class="inputbox" />
+		                <br class="clear" />
+		              	<label for="map1"><?php echo JText::_( 'yes' ); ?></label>
+		              	<input type="radio" name="map" id="map1" onchange="addrequired();" value="1" <?php echo $this->row->map == 1 ? 'checked="checked"' : ''; ?> class="inputbox" />
                     <span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('ADDRESS NOTICE'); ?>">
                         <?php echo $this->infoimage; ?>
                     </span>
-                </p>
-
-                <label for="map0"><?php echo JText::_( 'no' ); ?></label>
-                <input type="radio" name="map" id="map0" onchange="removerequired();" value="0" <?php echo $this->row->map == 0 ? 'checked="checked"' : ''; ?> class="inputbox" />
-                <br class="clear" />
-              	<label for="map1"><?php echo JText::_( 'yes' ); ?></label>
-              	<input type="radio" name="map" id="map1" onchange="addrequired();" value="1" <?php echo $this->row->map == 1 ? 'checked="checked"' : ''; ?> class="inputbox" />
-            </div>
-            <?php endif; ?>
+                	</td>
+                </tr>
+            		<?php endif; ?>
+            	</tbody>
+            </table>
 
         </fieldset>
 
@@ -272,18 +319,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
       	</fieldset>
       	<?php endif; ?>
-
-        <fieldset class="el_fldst_category">
-
-            <legend><?php echo JText::_('DESCRIPTION'); ?></legend>
-
-          <div class="el_category floattext">
-              <label for="categories" class="catsid">
-                  <?php echo JText::_( 'CATEGORY' ).':';?>
-              </label>
-              <?php echo $this->lists['categories']; ?>
-          </div>
-        </fieldset>
           
       	<fieldset class="el_fldst_description">
 
@@ -298,7 +333,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
       			<textarea style="width:100%;" rows="10" name="locdescription" class="inputbox" wrap="virtual" onkeyup="berechne(this.form)"></textarea><br />
       			<?php echo JText::_('NO HTML'); ?><br />
       			<input disabled="disabled" value="<?php echo $this->elsettings->datdesclimit; ?>" size="4" name="zeige" /><?php echo JText::_('AVAILABLE')." "; ?><br />
-      			<a href="javascript:rechne(document.adminForm);"><?php echo JText::_('REFRESH'); ?></a>
+      			<a href="javascript:rechne(document.venueForm);"><?php echo JText::_('REFRESH'); ?></a>
 
         		<?php	endif; ?>
 
@@ -308,19 +343,28 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
           	<legend><?php echo JText::_('METADATA INFORMATION'); ?></legend>
 
-            <div class="el_box_left">
-              	<label for="metadesc"><?php echo JText::_( 'META DESCRIPTION' ); ?></label>
-          		<textarea class="inputbox" cols="40" rows="5" name="meta_description" id="metadesc" style="width:250px;"><?php echo  $this->row->meta_description; ?></textarea>
-            </div>
-
-            <div class="el_box_right">
-        		<label for="metakey"><?php echo JText::_( 'META KEYWORDS' ); ?></label>
-        		<textarea class="inputbox" cols="40" rows="5" name="meta_keywords" id="metakey" style="width:250px;"><?php echo  $this->row->meta_keywords; ?></textarea>
-            </div>
-
-            <br class="clear" />
+						<table class="fieldstable">
+							<tbody>
+								<tr>
+									<td class="key hasTip" title="<?php echo JText::_('META DESCRIPTION'); ?>">
+              			<label for="metadesc"><?php echo JText::_( 'META DESCRIPTION' ); ?></label>
+                	</td>
+                	<td>
+                		<textarea class="inputbox" cols="40" rows="5" name="meta_description" id="metadesc" style="width:250px;"><?php echo  $this->row->meta_description; ?></textarea>
+                	</td>
+                </tr>
+                
+								<tr>
+									<td class="key hasTip" title="<?php echo JText::_('META DESCRIPTION'); ?>">
+              			<label for="metakey"><?php echo JText::_( 'META KEYWORDS' ); ?></label>
+                	</td>
+                	<td>
+                		<textarea class="inputbox" cols="40" rows="5" name="meta_keywords" id="metakey" style="width:250px;"><?php echo  $this->row->meta_keywords; ?></textarea>
+                </tr>
+							</tbody>
+						</table>
             
-    		<input type="button" class="button el_fright" value="<?php echo JText::_( 'ADD VENUE CITY' ); ?>" onclick="f=document.getElementById('adminForm');f.metakey.value=f.venue.value+', '+f.city.value+f.metakey.value;" />
+    		<input type="button" class="button el_fright" value="<?php echo JText::_( 'ADD VENUE CITY' ); ?>" onclick="f=document.getElementById('venueForm');f.metakey.value=f.venue.value+', '+f.city.value+f.metakey.value;" />
 
       	</fieldset>
 

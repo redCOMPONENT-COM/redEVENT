@@ -114,8 +114,12 @@ class RedeventViewEditvenue extends JView
     foreach ((array)$row->categories as $cat) {
       $selected[] = $cat;
     }
-    $this->get('CategoryOptions');
-    $lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('CategoryOptions'), 'categories[]', 'class="inputbox validate-categories" multiple="multiple" size="10"', 'value', 'text', $selected);
+    $options = (array) $this->get('CategoryOptions');
+    $lists['categories'] = JHTML::_('select.genericlist', 
+                                    $options, 
+                                    'categories[]', 
+                                    'class="inputbox validate-categories" multiple="multiple" size="'.min(3, max(10, count($options))).'"', 
+                                    'value', 'text', $selected);
         
     // published state selector
     $canpublish = $acl->canPublishVenue($id);
