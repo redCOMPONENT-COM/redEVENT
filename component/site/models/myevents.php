@@ -400,18 +400,18 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
     {
         $user = & JFactory::getUser();
         //Get Events from Database
-        $query = 'SELECT l.id, l.venue, l.city, l.state, l.url, l.published, '
+        $query = ' SELECT l.id, l.venue, l.city, l.state, l.url, l.published, '
                . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug'
                . ' FROM #__redevent_venues AS l '
                . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = l.id '
                . ' LEFT JOIN #__redevent_groups AS g ON g.id = gv.group_id '
                . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
-               . ' WHERE (gm.member = '.$this->_db->Quote($user->id).' OR g.isdefault = 1) '
-               . '   AND gv.accesslevel > 0 '
-               . '   AND ( gm.edit_venues > 0 OR g.edit_venues = 2 '
-               . '         OR (g.edit_venues = 1 AND l.created_by = '.$this->_db->Quote($user->id).') )'
+               . ' WHERE l.created_by = '.$this->_db->Quote($user->id)
+               . '    OR ( gv.accesslevel > 0 '
+               . '       AND (  ( g.isdefault = 1 AND g.edit_venues = 2 ) '
+               . '           OR ( gm.member = '.$this->_db->Quote($user->id).' AND (g.edit_venues = 2 OR gm.edit_venues = 2) ) ) ) '
                . ' GROUP BY (l.id) '
-               .' ORDER BY l.venue ASC '
+               . ' ORDER BY l.venue ASC '
                ;
 
         return $query;
@@ -481,10 +481,14 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         }
 
         // then if the user is the owner of the event or member of admin group
-        $where .= '   AND (gm.member = '.$this->_db->Quote($user->id).' OR g.isdefault = 1) ' // is a member of the group, or it's the default group
-                . '   AND gc.accesslevel > 0 AND gv.accesslevel > 0 ' // groups maintains category and venue
-                . '   AND ( gm.manage_events > 0 OR gm.manage_xrefs > 0 OR g.edit_events = 2 '
-                . '         OR (g.edit_events = 1 AND e.created_by = '.$this->_db->Quote($user->id).') )';
+        $where .= '   AND gc.accesslevel > 0  AND gv.accesslevel > 0 ' // group maintains category and venue
+		            . '   AND ( ( g.isdefault = 1 ' // default group
+		            . '         AND (g.edit_events = 2 '
+		            . '             OR (g.edit_events = 1 AND e.created_by = '.$this->_db->Quote($user->id).') ) ) '
+		            . '      OR ( gm.member = '.$this->_db->Quote($user->id) // user is member of this group
+		            . '         AND ( gm.manage_events = 2 OR gm.manage_xrefs > 0 '
+		            . '             OR (gm.manage_events = 1 AND e.created_by = '.$this->_db->Quote($user->id).') ) ) )'
+		            ;
 
         // Second is to only select events assigned to category the user has access to
         $where .= ' AND c.access <= '.$gid;

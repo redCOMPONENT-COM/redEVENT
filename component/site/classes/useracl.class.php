@@ -93,7 +93,7 @@ class UserAcl {
 		$groups = $this->getUserGroups();
 		foreach ((array) $groups as $group)
 		{
-			if ($group->manage_events == 1 || $group->params->get('add_event', 0)) {
+			if ($group->manage_events > 0 || $group->gedit_events > 0) {
 				return true;
 			}
 		}
@@ -111,7 +111,7 @@ class UserAcl {
 		$groups = $this->getUserGroups();
 		foreach ((array) $groups as $group)
 		{
-			if ($group->edit_venues == 1 || $group->params->get('add_venue', 0)) {
+			if ($group->edit_venues > 0 || $group->gedit_venues > 0) {
 				return true;
 			}
 		}
@@ -135,10 +135,13 @@ class UserAcl {
 		       . ' LEFT JOIN #__redevent_groups AS g ON g.id = gc.group_id '
 		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
 		       . ' WHERE e.id = '. $db->Quote($eventid)
-		       . '   AND (gm.member = '.$db->Quote($this->_userid).' OR g.isdefault = 1) '
 		       . '   AND gc.accesslevel > 0 '
-		       . '   AND ( gm.manage_events > 0 OR g.edit_events = 2 '
-		       . '         OR (g.edit_events = 1 AND e.created_by = '.$db->Quote($this->_userid).') )'
+		       . '   AND ( ( g.isdefault = 1 ' // default group
+		       . '         AND (g.edit_events = 2 '
+		       . '             OR (g.edit_events = 1 AND e.created_by = '.$db->Quote($this->_userid).') ) ) '
+		       . '      OR ( gm.member = '.$db->Quote($this->_userid) // user is member of this group
+		       . '         AND ( gm.manage_events = 2 '
+		       . '             OR (gm.manage_events = 1 AND e.created_by = '.$db->Quote($this->_userid).') ) ) )'
 		       ;
 		$db->setQuery($query);
 //		echo($db->getQuery());
@@ -197,10 +200,11 @@ class UserAcl {
 		       . ' LEFT JOIN #__redevent_groups AS g ON g.id = gc.group_id '
 		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
 		       . ' WHERE x.id = '. $db->Quote($xref)
-		       . '   AND (gm.member = '.$db->Quote($this->_userid).' OR g.isdefault = 1) '
 		       . '   AND gc.accesslevel > 0 AND gv.accesslevel > 0 '
-		       . '   AND ( gm.manage_xrefs > 0 OR gm.manage_events > 0 OR g.edit_events = 2 '
-		       . '         OR (g.edit_events = 1 AND e.created_by = '.$db->Quote($this->_userid).') )'
+		       . '   AND ( ( g.isdefault = 1 AND ( g.edit_events = 2 OR (g.edit_events = 1 AND e.created_by = '.$db->Quote($this->_userid).')) ) '
+		       . '      OR ( gm.member = '.$db->Quote($this->_userid)
+		       . '        AND (gm.manage_xrefs > 0 OR gm.manage_events > 1 '
+		       . '           OR (gm.manage_events = 1 AND e.created_by = '.$db->Quote($this->_userid).') ) ) )'
 		       ;
 		$db->setQuery($query);
 		return ($db->loadResult() ? true : false);
@@ -221,10 +225,10 @@ class UserAcl {
 		       . ' LEFT JOIN #__redevent_groups AS g ON g.id = gv.group_id '
 		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gv.group_id '
 		       . ' WHERE v.id = '. $db->Quote($id)
-		       . '   AND (gm.member = '.$db->Quote($this->_userid).' OR g.isdefault = 1) '
-		       . '   AND gv.accesslevel > 0 '
-		       . '   AND ( gm.edit_venues > 0 OR g.edit_venues = 2 '
-		       . '         OR (g.edit_venues = 1 AND v.created_by = '.$db->Quote($this->_userid).') )'
+		       . '   AND ( v.created_by = '.$db->Quote($this->_userid)
+           . '       OR ( gv.accesslevel > 0 '
+           . '          AND (  ( g.isdefault = 1 AND g.edit_venues = 2 ) '
+           . '              OR ( gm.member = '.$this->_db->Quote($this->_userid).' AND (g.edit_venues = 2 OR gm.edit_venues = 2) ) ) ) ) '
 		       ;
 		$db->setQuery($query);
 //		echo($db->getQuery());
@@ -276,7 +280,7 @@ class UserAcl {
 		{
 			$db = &JFactory::getDBO();
 			
-			$query = ' SELECT g.id AS group_id, g.name AS group_name, g.parameters, g.isdefault, '
+			$query = ' SELECT g.id AS group_id, g.name AS group_name, g.parameters, g.isdefault, g.edit_events AS gedit_events, g.edit_venues AS gedit_venues, '
 			       . '   gm.member AS user_id, gm.manage_events, gm.manage_xrefs, gm.edit_venues '
 			       . ' FROM #__redevent_groups AS g '
 			       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id ' 
@@ -339,7 +343,7 @@ class UserAcl {
 	}
 	
 	/**
-	 * get venues manages by the user
+	 * get venues managed by the user
 	 * 
 	 * @return array
 	 */

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model>
-	<params group="Event edit">
+<!--
+	<params>
     <param name="add_event" type="radio" default="0" label="GROUP PARAMS ALLOW ADD EVENT" description="GROUP PARAMS ALLOW ADD EVENT DESC">
        <option value="0">No</option>
        <option value="1">Yes</option>
@@ -10,4 +11,5 @@
        <option value="1">Yes</option>
     </param>			
 	</params>
+	  -->
 </model>

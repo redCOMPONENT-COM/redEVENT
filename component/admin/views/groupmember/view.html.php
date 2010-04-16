@@ -94,9 +94,25 @@ class RedEventViewGroupmember extends JView {
 		$lists['user'] = JHTML::_('list.users', 'member', $row->member, 0, NULL, 'name', 0);
 		
 		$lists['is_admin'] = JHTML::_('select.booleanlist', 'is_admin', '', $row->is_admin);
-		$lists['manage_events'] = JHTML::_('select.booleanlist', 'manage_events', '', $row->manage_events);
+		
+		// add/edit events
+		$options = array(
+		                  JHTML::_('select.option', 0, JText::_('No')),
+		                  JHTML::_('select.option', 1, JText::_('MEMBER_MANAGE_OWN_EVENTS')),
+		                  JHTML::_('select.option', 2, JText::_('MEMBER_MANAGE_GROUP_EVENTS')),
+		                );
+		$lists['manage_events'] = JHTML::_('select.genericlist', $options, 'manage_events', '', 'value', 'text', $row->manage_events);
+		
 		$lists['manage_xrefs'] = JHTML::_('select.booleanlist', 'manage_xrefs', '', $row->manage_xrefs);
-		$lists['edit_venues'] = JHTML::_('select.booleanlist', 'edit_venues', '', $row->edit_venues);
+		
+		// add/edit venues
+		$options = array(
+		                  JHTML::_('select.option', 0, JText::_('No')),
+		                  JHTML::_('select.option', 1, JText::_('MEMBER_MANAGE_OWN_VENUES')),
+		                  JHTML::_('select.option', 2, JText::_('MEMBER_MANAGE_GROUP_VENUES')),
+		                );
+		$lists['edit_venues'] = JHTML::_('select.genericlist', $options, 'edit_venues', '', 'value', 'text', $row->edit_venues);
+		
 		$lists['receive_registrations'] = JHTML::_('select.booleanlist', 'receive_registrations', '', $row->receive_registrations);
 		
 		$options = array(
