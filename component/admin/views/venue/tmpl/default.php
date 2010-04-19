@@ -33,7 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 
     // check if map is set to yes
     var map = $$('input[name=map]');
-		if (map.length) {
+
+		if (map.length > 1 && map[1].checked == true) {			
 			var longitude = $('longitude').getValue();
 			var latitude  = $('latitude').getValue();
 			if (!longitude || longitude == 0 || !latitude || latitude == 0) {
