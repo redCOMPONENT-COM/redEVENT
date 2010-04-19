@@ -421,7 +421,7 @@ $db->setQuery($q);
 $cols = $db->loadObjectList('Field');
 
 if (is_array($cols)) {
-  if (!stristr($cols['submit_key']->Type, 'varchar')) {
+  if (isset($cols['submit_key']) && !stristr($cols['submit_key']->Type, 'varchar')) {
   	$q = "ALTER TABLE `#__redevent_register` CHANGE `submit_key` `submit_key` VARCHAR( 45 ) NULL DEFAULT NULL";
   	$db->setQuery($q);
   	$db->query();
@@ -603,7 +603,7 @@ if (is_array($cols))
     $db->query();    
   }	
   
-  if (!array_key_exists('edit_event', $cols)) {
+  if (!array_key_exists('edit_events', $cols)) {
     $q = ' ALTER TABLE `#__redevent_groups` '
        . '   ADD `edit_events` tinyint(4) NOT NULL default "0", '
        . '   ADD `edit_venues` tinyint(4) NOT NULL default "0" '
@@ -749,16 +749,17 @@ foreach ($keys as $key)
 if ($upgrade) {
 	/* Database is fully setup, commence conversion */
 	/* 1. Make backup copies */
-	$q = "CREATE TABLE #__redevent_events_bak SELECT * FROM #__redevent_events";
+	$q = "CREATE TABLE IF NOT EXISTS #__redevent_events_bak_v1 SELECT * FROM #__redevent_events";
 	$db->setQuery($q);
 	$db->query();
 	
-	$q = "CREATE TABLE #__redevent_register_bak SELECT * FROM #__redevent_events";
+	$q = "CREATE TABLE IF NOT EXISTS #__redevent_register_bak_v1 SELECT * FROM #__redevent_events";
 	$db->setQuery($q);
 	$db->query();
 	
 	/* 2. Copy events to the xref table */
-	$q = "INSERT INTO #__redevent_event_venue_xref (SELECT 0, id, locid, dates, enddates, times, endtimes, maxattendees, maxwaitinglist FROM #__redevent_events)";
+	$q = "INSERT INTO #__redevent_event_venue_xref (eventid, venueid, dates, enddates, times, endtimes, maxattendees, maxwaitinglist, published) "
+	   . "            SELECT id, locid, dates, enddates, times, endtimes, maxattendees, maxwaitinglist, published FROM #__redevent_events";
 	$db->setQuery($q);
 	$db->query();
 	
