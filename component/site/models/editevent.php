@@ -604,6 +604,7 @@ class RedeventModelEditevent extends JModel
 				$row->alias = null;
 			}
 		}
+		
 		//Sanitize
 		$data['datdescription'] = JRequest::getVar( 'datdescription', $row->datdescription, 'post','string', JREQUEST_ALLOWRAW );
 		
@@ -614,6 +615,7 @@ class RedeventModelEditevent extends JModel
 			RedeventError::raiseError( 500, $this->_db->stderr() );
 			return false;
 		}
+		
 
 		//Are we saving from an item edit?
 		if ($row->id) 
@@ -777,7 +779,7 @@ class RedeventModelEditevent extends JModel
 			$xref->bind($data);
 			$xref->id        = null;
 			$xref->eventid   = $row->id;
-			$xref->published = 1;
+			$xref->published = $row->published;
 			
 			if (!($xref->check() && $xref->store())) {
 				JError::raiseWarning(0, JTEXT::_('Saving event session failed').': '.$xref->getError());

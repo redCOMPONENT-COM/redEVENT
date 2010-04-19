@@ -250,6 +250,8 @@ class RedEventModelGroup extends JModel
 			$group->edit_venue     = 0;
 			$group->publish_events = 0;
 			$group->publish_venues = 0;
+			$group->edit_events    = 0;
+			$group->edit_venues    = 0;
 			$group->parameters     = 0;
 			$this->_data           = $group;
 			return (boolean) $this->_data;

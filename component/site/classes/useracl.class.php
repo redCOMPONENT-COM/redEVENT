@@ -183,6 +183,36 @@ class UserAcl {
 	}
 	
 	/**
+	 * returns true if user can publish specified event
+	 * @param int event id, or 0 for a new event
+	 * @return boolean
+	 */
+	function canPublishXref($xref = 0)
+	{
+		if (!$xref) // this is a new event
+		{		
+			return false;
+		}
+		else
+		{
+			$query = ' SELECT x.id '
+			       . ' FROM #__redevent_event_venue_xref AS x '
+			       . ' INNER JOIN #__redevent_events AS e ON e.id = x.eventid '
+			       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = x.eventid '
+			       . ' INNER JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
+			       . ' LEFT JOIN #__redevent_groups AS g ON g.id = gc.group_id '
+			       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
+			       . ' WHERE x.id = '. $this->_db->Quote($xref)
+			       . '   AND ( ( g.isdefault = 1 AND (g.publish_events = 2 OR (g.publish_events = 1 AND e.created_by = '.$this->_db->Quote($this->_userid).') ) ) '
+			       . '      OR ( gm.publish_events = 2 OR (gm.publish_events = 1 AND e.created_by = '.$this->_db->Quote($this->_userid).') ) ) '
+			       ;			
+		}
+		$this->_db->setQuery($query);
+//		echo($db->getQuery());
+		return ($this->_db->loadResult() ? true : false);	
+	}
+	
+	/**
 	 * return true if the user can edit specified xref
 	 * @param int xref
 	 * @return boolean

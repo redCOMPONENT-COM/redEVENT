@@ -613,9 +613,16 @@ class RedeventController extends JController
 	}
 	
 	function publishxref()
-	{		
+	{
+		$acl = new UserAcl();
 		$xref = JRequest::getInt('xref');
 				
+		if (!$acl->canPublishXref($xref)) {
+			$msg = JText::_('MYEVENTS_CHANGE_PUBLISHED_STATE_NOTE_ALLOWED');
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');		
+			return;
+		}
+		
 		$model = $this->getModel('editevent');
 		$task = JRequest::getVar('task');
 		switch (JRequest::getVar('task'))
@@ -643,8 +650,15 @@ class RedeventController extends JController
 
 	function deletexref()
 	{		
+		$acl = new UserAcl();
 		$xref = JRequest::getInt('xref');
-				
+	
+		if (!$acl->canEditXref($xref)) {
+			$msg = JText::_('MYEVENTS_DELETE_XREF_NOTE_ALLOWED');
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');		
+			return;
+		}
+		
 		$model = $this->getModel('editevent');
 		
 		if ($model->deletexref($xref)) {
