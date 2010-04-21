@@ -1,5 +1,6 @@
+<?php
 /**
- * @version 1.0 $Id: settings.js 30 2009-05-08 10:22:21Z roland $
+ * @version 2.0
  * @package Joomla
  * @subpackage redEVENT
  * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
@@ -19,11 +20,34 @@
  * along with redEVENT; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
- 
-window.addEvent('domready', function() {
 
-	 $$( '.tagsdiv' ).each(function(item){
-		 // could put better init for modal
-	 } );
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
-});
+jimport( 'joomla.application.component.view');
+
+/**
+ * View class for the EventList Settings screen
+ *
+ * @package Joomla
+ * @subpackage redEVENT
+ * @since 2.0
+ */
+class RedEventViewTags extends JView {
+
+	function display($tpl = null) 
+	{
+		$document	= & JFactory::getDocument();
+		
+		jimport('joomla.html.pane');
+		$tabs =& JPane::getInstance('tabs', array('startOffset'=> 0));
+		
+		$document->addStyleSheet('administrator/components/com_redevent/assets/css/redeventbackend.css');
+		
+		$tags = $this->get('Data');
+		
+		$this->assignRef('tags',   $tags);
+		$this->assignRef('tabs',   $tabs);
+		
+		parent::display();
+	}
+}

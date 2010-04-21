@@ -50,6 +50,6 @@
 			?>
 			</table>
 	</td>
-<tr>
+</tr>
 <?php } ?>
 </table>

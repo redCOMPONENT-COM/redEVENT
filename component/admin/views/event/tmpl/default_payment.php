@@ -7,7 +7,7 @@
 			</span><label for="paymentprocessing"><?php echo JText::_('PAYMENTPROCESSING'); ?></label>
 			
 			<div id="paymentprocessing_screen">
-				<?php echo $this->printTags(); ?>
+				<?php echo $this->printTags('paymentprocessing'); ?>
 				<?php echo $this->editor->display( 'paymentprocessing',  $this->row->paymentprocessing, '100%;', '350', '75', '20', array('pagebreak', 'readmore', 'image') ) ; ?>
 			</div>
 		</td>
@@ -20,7 +20,7 @@
 			</span><label for="paymentaccepted"><?php echo JText::_('PAYMENTACCEPTED'); ?></label>
 			
 			<div id="paymentaccepted_screen">
-				<?php echo $this->printTags(); ?>
+				<?php echo $this->printTags('paymentaccepted'); ?>
 				<?php echo $this->editor->display( 'paymentaccepted',  $this->row->paymentaccepted, '100%;', '350', '75', '20', array('pagebreak', 'readmore', 'image') ) ; ?>
 			</div>
 		</td>

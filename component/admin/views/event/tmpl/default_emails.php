@@ -9,7 +9,7 @@
 		?>
 	<?php echo JText::_('Submission email');	?>
 	<div id="submission_type_email_body_input" style="display: <?php echo $display;?>">
-    <?php echo $this->printTags(); ?>
+    <?php echo $this->printTags('submission_type_email_body'); ?>
 		<div>
 		<table class="adminform">
 			<tr>

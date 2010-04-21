@@ -47,7 +47,7 @@
 			</span>
 		</td>
 		<td>
-        <?php echo $this->printTags(); ?>
+        <?php echo $this->printTags('notify_body'); ?>
 			<?php echo $this->editor->display( 'notify_body',  $this->row->notify_body, '100%;', '550', '75', '20', array('pagebreak', 'readmore', 'image') ) ; ?>
 		</td>
 	</tr>
@@ -60,6 +60,7 @@
 		<td>
 			<input class="inputbox" name="notify_confirm_subject" value="<?php echo $this->row->notify_confirm_subject; ?>" size="45" id="notify_confirm_subject" />
 		</td>
+	</tr>
 	<tr class="row<?php echo $k = 1 - $k; ?>">
 		<td>
 			<label for="notify_confirm_body">
@@ -67,8 +68,8 @@
 			</label>
 		</td>
 		<td>
-        <?php echo $this->printTags(); ?>
+        <?php echo $this->printTags('notify_confirm_body'); ?>
 			<?php echo $this->editor->display( 'notify_confirm_body',  $this->row->notify_confirm_body, '100%;', '550', '75', '20', array('pagebreak', 'readmore', 'image') ) ; ?>
 		</td>
-	<tr>
+	</tr>
 </table>

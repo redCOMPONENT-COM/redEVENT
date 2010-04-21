@@ -69,7 +69,7 @@
 <table class="adminform">
 <tr>
 	<td>
-	<?php echo $this->printTags(); ?>
+	<?php echo $this->printTags('datdescription'); ?>
 	</td>
 </tr>
 <tr>

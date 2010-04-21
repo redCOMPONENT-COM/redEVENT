@@ -1,0 +1,163 @@
+<?php
+/**
+ * @version 2.0
+ * @package Joomla
+ * @subpackage redEVENT
+ * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license GNU/GPL, see LICENSE.php
+ * redEVENT is based on EventList made by Christoph Lukes from schlu.net
+ * redEVENT can be downloaded from www.redcomponent.com
+ * redEVENT is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License 2
+ * as published by the Free Software Foundation.
+
+ * redEVENT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with redEVENT; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+// no direct access
+defined('_JEXEC') or die('Restricted access');
+
+jimport('joomla.application.component.model');
+
+/**
+ * redEVENT Component tags Model
+ *
+ * @package Joomla
+ * @subpackage redEVENT
+ * @since		2.0
+ */
+class RedEventModelTags extends JModel
+{	
+	var $field = null;
+	
+	/**
+	 * Constructor
+	 *
+	 * @since 2.0
+	 */
+	function __construct()
+	{
+		parent::__construct();
+
+		$this->field = JRequest::getVar('field',  null, '', 'string');
+	}
+	
+	function getData()
+	{
+		$tags = array_merge($this->_getStandardTags(), $this->_getLibraryTags(), $this->_getCustomTags());		
+		
+		return $this->_tagsBySection($tags);
+	}
+	
+	function _getStandardTags()
+	{
+		// tags
+		$tags = array();	
+		$tags[] = new TagsModelTag('event_title', JText::_('SUBMISSION_EVENT_TITLE'));
+		$tags[] = new TagsModelTag('code', JText::_('SUBMISSION_EVENT_CODE'));
+		$tags[] = new TagsModelTag('category', JText::_('SUBMISSION_CATEGORY'));
+		$tags[] = new TagsModelTag('date', JText::_('SUBMISSION_EVENT_DATE'));
+		$tags[] = new TagsModelTag('enddate', JText::_('SUBMISSION_EVENT_ENDDATE'));
+		$tags[] = new TagsModelTag('time', JText::_('SUBMISSION_EVENT_TIME'));
+		$tags[] = new TagsModelTag('startenddatetime', JText::_('SUBMISSION_EVENT_STARTENDDATETIME'));
+		$tags[] = new TagsModelTag('duration', JText::_('SUBMISSION_EVENT_DURATION'));
+		$tags[] = new TagsModelTag('venues', JText::_('SUBMISSION_VENUES'));
+		$tags[] = new TagsModelTag('price', JText::_('SUBMISSION_EVENT_PRICE'));
+		$tags[] = new TagsModelTag('credits', JText::_('SUBMISSION_EVENT_CREDITS'));
+		$tags[] = new TagsModelTag('eventimage', JText::_('SUBMISSION_EVENT_IMAGE'));
+		$tags[] = new TagsModelTag('categoryimage', JText::_('SUBMISSION_CATEGORY_IMAGE'));
+		$tags[] = new TagsModelTag('eventcomments', JText::_('SUBMISSION_EVENT_COMMENTS'));
+		$tags[] = new TagsModelTag('info', JText::_('SUBMISSION_XREF_INFO'));
+		$tags[] = new TagsModelTag('permanentlink', JText::_('SUBMISSION_PERMANENT_LINK'));
+		$tags[] = new TagsModelTag('datelink', JText::_('SUBMISSION_DATE_LINK'));
+		
+		$tags[] = new TagsModelTag('venue_title', JText::_('SUBMISSION_EVENT_VENUE'), 'venue');
+		$tags[] = new TagsModelTag('venue_link', JText::_('SUBMISSION_EVENT_VENUELINK'), 'venue');
+		$tags[] = new TagsModelTag('venue_city', JText::_('SUBMISSION_EVENT_CITY'), 'venue');
+		$tags[] = new TagsModelTag('venue_street', JText::_('SUBMISSION_EVENT_STREET'), 'venue');
+		$tags[] = new TagsModelTag('venue_zip', JText::_('SUBMISSION_EVENT_ZIP'), 'venue');
+		$tags[] = new TagsModelTag('venue_state', JText::_('SUBMISSION_EVENT_STATE'), 'venue');
+		$tags[] = new TagsModelTag('venue_website', JText::_('SUBMISSION_EVENT_VENUE_WEBSITE'), 'venue');
+		$tags[] = new TagsModelTag('venueimage', JText::_('SUBMISSION_VENUE_IMAGE'), 'venue');
+		
+		$tags[] = new TagsModelTag('redform', JText::_('SUBMISSION_EVENT_REDFORM'), 'registration');
+		$tags[] = new TagsModelTag('registrationend', JText::_('SUBMISSION_EVENT_REGISTRATIONEND'));
+		$tags[] = new TagsModelTag('webformsignup', JText::_('SUBMISSION_WEBFORM_SIGNUP_LINK'), 'registration');
+		$tags[] = new TagsModelTag('emailsignup', JText::_('SUBMISSION_EMAIL_SIGNUP_LINK'), 'registration');
+		$tags[] = new TagsModelTag('formalsignup', JText::_('SUBMISSION_FORMAL_SIGNUP_LINK'), 'registration');
+		$tags[] = new TagsModelTag('externalsignup', JText::_('SUBMISSION_EXTERNAL_SIGNUP_LINK'), 'registration');
+		$tags[] = new TagsModelTag('phonesignup', JText::_('SUBMISSION_PHONE_SIGNUP_LINK'), 'registration');
+		$tags[] = new TagsModelTag('webformsignuppage', JText::_('SUBMISSION_WEBFORM_SIGNUP_PAGE'), 'registration');
+		$tags[] = new TagsModelTag('emailsignuppage', JText::_('SUBMISSION_EMAIL_SIGNUP_PAGE'), 'registration');
+		$tags[] = new TagsModelTag('formalsignuppage', JText::_('SUBMISSION_FORMAL_SIGNUP_PAGE'), 'registration');
+		$tags[] = new TagsModelTag('phonesignuppage', JText::_('SUBMISSION_PHONE_SIGNUP_PAGE'), 'registration');
+		$tags[] = new TagsModelTag('eventplaces', JText::_('SUBMISSION_EVENTPLACES'), 'registration');
+		$tags[] = new TagsModelTag('waitinglistplaces', JText::_('SUBMISSION_WAITINGLISTPLACES'), 'registration');
+		$tags[] = new TagsModelTag('eventplacesleft', JText::_('SUBMISSION_EVENTPLACES_LEFT'), 'registration');
+		$tags[] = new TagsModelTag('waitinglistplacesleft', JText::_('SUBMISSION_WAITINGLISTPLACES_LEFT'), 'registration');
+		
+		$tags[] = new TagsModelTag('paymentrequest', JText::_('SUBMISSION_EVENT_PAYMENTREQUEST'), 'payment');
+		$tags[] = new TagsModelTag('paymentrequestlink', JText::_('SUBMISSION_EVENT_PAYMENTREQUESTLINK'), 'payment');
+		$tags[] = new TagsModelTag('registrationid', JText::_('SUBMISSION_EVENT_REGISTRATIONID'), 'payment');
+		return $tags;
+	}
+	
+	function _getLibraryTags()
+	{
+		$query = ' SELECT text_description, text_name FROM #__redevent_textlibrary ';
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadObjectList();
+		
+		$tags = array();
+		foreach ((array) $res as $r)
+		{
+			$tags[] = new TagsModelTag($r->text_name, $r->text_description, 'library');			
+		}
+		return $tags;
+	}
+	
+	function _getCustomTags()
+	{
+		$query = ' SELECT tag, name FROM #__redevent_fields ';
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadObjectList();
+		
+		$tags = array();
+		foreach ((array) $res as $r)
+		{
+			$tags[] = new TagsModelTag($r->tag, $r->name, 'custom');			
+		}
+		return $tags;
+	}
+	
+	function _tagsBySection($tags)
+	{
+		$res = array();
+		foreach ($tags as $tag)
+		{
+			@$res[$tag->section][] = $tag;
+		}
+		return $res;
+	}
+}
+
+class TagsModelTag {
+	var $name;
+	var $description;
+	var $section;
+	
+	function __construct($name, $desc, $section = 'General')
+	{
+		$this->name        = trim($name);
+		$this->description = trim($desc);
+		$this->section     = trim($section);
+		return $this;
+	}
+}

@@ -7,7 +7,7 @@
 			</span><label for="confirmation_message"><?php echo JText::_('ENTER_CONFIRMATION_MESSAGE'); ?></label>
 			
 			<div id="confirmation_screen">
-				<?php echo $this->printTags(); ?>
+				<?php echo $this->printTags('confirmation_message'); ?>
 				<?php echo $this->editor->display( 'confirmation_message',  $this->row->confirmation_message, '100%;', '350', '75', '20', array('pagebreak', 'readmore', 'image') ) ; ?>
 			</div>
 		</td>
@@ -18,7 +18,7 @@
 				<?php echo $infoimage; ?>
 			</span><label for="review_message"><?php echo JText::_('REVIEW_SCREEN'); ?></label>
 			<div id="review_screen">
-        <?php echo $this->printTags(); ?>
+        <?php echo $this->printTags('review_message'); ?>
 				<?php echo $this->editor->display( 'review_message',  $this->row->review_message, '100%;', '350', '75', '20', array('pagebreak', 'readmore', 'image') ) ; ?>
 			</div>
 		</td>
@@ -30,7 +30,7 @@
 			<div id="submission_type_webform_input" style="display: block">
 				<?php echo JHTML::_('link', '#', JText::_('TAGS'), "onClick='jQuery(\"div#webform_formal_offer_tags\").toggle(\"slideUp\"); return false;'"); ?>
 				<div id="webform_formal_offer_tags" style="display: none;">
-					<?php echo $this->printTags(); ?>
+					<?php echo $this->printTags('submission_type_webform_formal_offer'); ?>
 				</div>
 				<?php echo $this->editor->display( 'submission_type_webform_formal_offer',  $this->row->submission_type_webform_formal_offer, '100%;', '350', '75', '20', array('pagebreak', 'readmore', 'image') ) ; ?>
 			</div>

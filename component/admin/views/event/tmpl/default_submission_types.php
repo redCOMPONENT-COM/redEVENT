@@ -31,7 +31,7 @@
 			?>
 			/><label for="submission_type_phone"><?php echo JText::_('PHONE'); ?></label>
 			<div id="submission_type_phone_input" style="display: <?php echo $display;?>">
-        <?php echo $this->printTags(); ?>
+        <?php echo $this->printTags('submission_type_phone'); ?>
 				<?php echo $this->editor->display( 'submission_type_phone',  $this->row->submission_type_phone, '100%;', '350', '75', '20', array('pagebreak', 'readmore', 'image') ) ; ?>
 			</div>
 		</td>
@@ -48,7 +48,7 @@
 			?>
 			/><label for="submission_type_webform"><?php echo JText::_('WEBFORM'); ?></label>
 			<div id="submission_type_webform_input" style="display: <?php echo $display;?>">
-        <?php echo $this->printTags(); ?>
+        <?php echo $this->printTags('submission_type_webform'); ?>
 				<?php echo $this->editor->display( 'submission_type_webform',  $this->row->submission_type_webform, '100%;', '350', '75', '20', array('pagebreak', 'readmore', 'image') ) ; ?>
 			</div>
 		</td>
