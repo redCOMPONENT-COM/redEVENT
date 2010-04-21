@@ -44,9 +44,10 @@ if ($this->row->show_names && $this->registers) {
   			<?php 
     			//loop through attendees
     			$waiting_count = 0;
+    			$n = 0;
     			foreach ($this->registers as $key => $register):
     				if ($register->submitter->waitinglist == 0): ?>
-    				  <tr <?php echo ($this->unreg_check && $register->submitter->uid == $this->user->get('id')) ? 'class="myreg"': ''; ?>>
+    				  <tr class="<?php echo ($n ? 'd1' : 'd0'); ?><?php echo ($this->unreg_check && $register->submitter->uid == $this->user->get('id')) ? ' myreg': ''; ?>">
      				    <?php	foreach ($register->answers as $k => $name): ?>
       				  <td class='userfield <?php echo strtolower($k); ?>'>
       				    <?php 
@@ -67,6 +68,7 @@ if ($this->row->show_names && $this->registers) {
               </tr>
     				<?php else:	$waiting_count++; ?>
             <?php endif;?>
+            <?php $n = 1 - $n; ?>
           <?php endforeach; ?>
 			</tbody>
 			</table>
@@ -89,9 +91,10 @@ if ($this->row->show_names && $this->registers) {
       <tbody>
         <?php 
           //loop through attendees
+    			$n = 0;
           foreach ($this->registers as $key => $register):
             if ($register->submitter->waitinglist == 1): ?>
-              <tr <?php echo ($this->unreg_check && $register->submitter->uid == $this->user->get('id')) ? 'class="myreg"': ''; ?>>
+              <tr class="<?php echo ($n ? 'd1' : 'd0'); ?><?php echo ($this->unreg_check && $register->submitter->uid == $this->user->get('id')) ? 'myreg': ''; ?>">
                 <?php foreach ($register->answers as $k => $name): ?>
                 <td class='userfield <?php echo strtolower($k); ?>'>
                   <?php 
@@ -111,6 +114,7 @@ if ($this->row->show_names && $this->registers) {
                 <?php endif;?>
               </tr>
             <?php endif;?>
+            <?php $n = 1 - $n; ?>
           <?php endforeach; ?>
       </tbody>
       </table>
