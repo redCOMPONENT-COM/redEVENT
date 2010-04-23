@@ -48,15 +48,17 @@ class TCustomfieldDate extends TCustomfield {
    * @param array $attributes
    * @return string
    */
-  function render($attributes = '')
+  function render($attributes = array())
   {
-  	if ($this->required) {
-  		$attribs = array('class' => 'required');
+  	if ($this->required) 
+  	{
+  		if (isset($attributes['class'])) {
+  			$attributes['class'] .= ' required';
+  		}
+  		else {
+  			$attributes['class'] = 'required';
+  		}
   	}
-  	else {
-  		$attribs = null;
-  	}
-    return JHTML::calendar( $this->value, 'custom'.$this->id, 'custom'.$this->id, '%Y-%m-%d', $attribs );
+    return JHTML::calendar( $this->value, 'custom'.$this->id, 'custom'.$this->id, '%Y-%m-%d', $this->attributesToString($attributes) );
   }
 }
-?>

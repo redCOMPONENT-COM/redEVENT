@@ -116,7 +116,7 @@ class TCustomfield extends JObject {
    *
    * @param array $attributes
    */
-  function render($attributes = '') {
+  function render($attributes = array()) {
 		return;
 	}
 	
@@ -148,7 +148,7 @@ class TCustomfield extends JObject {
 	 *
 	 * @param unknown_type $attributes
 	 */
-	function renderFilter($attributes = '') {
+	function renderFilter($attributes = array()) {
 		return 'no filter';
 	}
 	
@@ -160,5 +160,18 @@ class TCustomfield extends JObject {
 	{
 		return $this->value;
 	}
+	
+	/**
+	 * return the attributes array as a html tag property string
+	 * @param $attributes
+	 * @return string
+	 */
+	function attributesToString($attributes)
+	{
+		$res = array();
+		foreach ($attributes as $k => $v) {
+			$res[] = $k.'="'.$v.'"';
+		}
+		return implode(' ', $res);
+	}
 }
-?>

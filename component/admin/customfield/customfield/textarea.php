@@ -48,22 +48,28 @@ class TCustomfieldTextarea extends TCustomfield {
    * @param array $attributes
    * @return string
    */
-  function render($attributes = '')
+  function render($attributes = array())
   {
-  	if ($this->required) {
-  		$class = ' class="required"';
+  	if ($this->required) 
+  	{
+  		if (isset($attributes['class'])) {
+  			$attributes['class'] .= ' required';
+  		}
+  		else {
+  			$attributes['class'] = 'required';
+  		}
   	}
-        /*
-         * Required to avoid a cycle of encoding &
-         * html_entity_decode was used in place of htmlspecialchars_decode because
-         * htmlspecialchars_decode is not compatible with PHP 4
-         */
+  	/*
+  	 * Required to avoid a cycle of encoding &
+  	 * html_entity_decode was used in place of htmlspecialchars_decode because
+  	 * htmlspecialchars_decode is not compatible with PHP 4
+  	 */
     $value = htmlspecialchars(html_entity_decode($this->value, ENT_QUOTES), ENT_QUOTES);
 
-    return '<textarea name="custom'.$this->id.'" id="custom'.$this->id.'" '.$class.$attributes.'>'.$value.'</textarea>';
+    return '<textarea name="custom'.$this->id.'" id="custom'.$this->id.'" '.$this->attributesToString($attributes).'>'.$value.'</textarea>';
   }
 
-  function renderFilter($attributes = '') 
+  function renderFilter($attributes = array()) 
   {
     $app = & JFactory::getApplication();
     
@@ -78,7 +84,6 @@ class TCustomfieldTextarea extends TCustomfield {
     
     $value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-    return '<input type="text" name="filtercustom['.$this->id.']" id="filtercustom['.$this->id.']" value="'.$value.'" '.$attributes.'/>'; 
+    return '<input type="text" name="filtercustom['.$this->id.']" id="filtercustom['.$this->id.']" value="'.$value.'" '.$this->attributesToString($attributes).'/>'; 
   }
 }
-?>

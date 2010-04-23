@@ -48,7 +48,7 @@ class TCustomfieldCheckbox extends TCustomfield {
    * @param array $attributes
    * @return string
    */
-  function render($attributes = '')
+  function render($attributes = array())
   {
   	$html = '';    
     $option_list = array();
@@ -58,13 +58,13 @@ class TCustomfieldCheckbox extends TCustomfield {
     {
     	foreach ($options as $opt) {
     		$opt = trim($opt);
-    		$html .= '<input type="checkbox" name="custom'.$this->id.'[]" value="'.$opt.'"'.(in_array($opt, $values) ? ' checked="checked"':'')." $attributes " .'/>'.$opt;
+    		$html .= '<input type="checkbox" name="custom'.$this->id.'[]" value="'.$opt.'"'.(in_array($opt, $values) ? ' checked="checked"':'').' '.$this->attributesToString($attributes) .'/>'.$opt;
     	}
     }
     return $html;
   }
   
-  function renderFilter($attributes = '') 
+  function renderFilter($attributes = array()) 
   {
     $app = & JFactory::getApplication();
     
@@ -84,10 +84,10 @@ class TCustomfieldCheckbox extends TCustomfield {
     {
       foreach ($options as $opt) {
         $opt = trim($opt);
-        $html .= '<input type="checkbox" name="filtercustom['.$this->id.'][]" value="'.$opt.'"'.(in_array($opt, $value) ? ' checked="checked"':'')." $attributes " .'/>'.$opt;
+        $html .= '<input type="checkbox" name="filtercustom['.$this->id.'][]" value="'.$opt.'"'.(in_array($opt, $value) ? ' checked="checked"':'')
+               .' '.$this->attributesToString($attributes) .'/>'.$opt;
       }
     }
     return $html;
   }
 }
-?>

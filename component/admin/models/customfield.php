@@ -196,6 +196,7 @@ class RedeventModelCustomfield extends JModel
       $object->tips       = null;
       $object->min        = 0;
       $object->max        = 100;
+      $object->required   = 0;
       $object->options    = null;
 			$object->checked_out = 0;
 			$object->checked_out_time	= 0;

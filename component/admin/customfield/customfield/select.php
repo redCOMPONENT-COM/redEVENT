@@ -48,14 +48,18 @@ class TCustomfieldSelect extends TCustomfield {
    * @param array $attributes
    * @return string
    */
-  function render($attributes = '')
+  function render($attributes = array())
   {    
-  	if ($this->required) {
-  		$attribs = array('class' => 'required');
+  	if ($this->required) 
+  	{
+  		if (isset($attributes['class'])) {
+  			$attributes['class'] .= ' required';
+  		}
+  		else {
+  			$attributes['class'] = 'required';
+  		}
   	}
-  	else {
-  		$attribs = null;
-  	}
+  	
     $option_list = array();
     $options = explode("\n", $this->options);
     if ($options) 
@@ -65,11 +69,11 @@ class TCustomfieldSelect extends TCustomfield {
     		$option_list[] = JHTML::_('select.option', $opt, $opt);
     	}    	
     }
-    return JHTML::_('select.genericlist', $option_list, 'custom'.$this->id, $attribs, 'value', 'text', $this->value);
+    return JHTML::_('select.genericlist', $option_list, 'custom'.$this->id, $this->attributesToString($attributes), 'value', 'text', $this->value);
   }
   
   
-  function renderFilter($attributes = '') 
+  function renderFilter($attributes = array()) 
   {
   	$app = & JFactory::getApplication();
   	
@@ -92,7 +96,6 @@ class TCustomfieldSelect extends TCustomfield {
         $option_list[] = JHTML::_('select.option', $opt, $opt);
       }     
     }
-    return JHTML::_('select.genericlist', $option_list, 'filtercustom['.$this->id.']', $attributes, 'value', 'text', $value);  
+    return JHTML::_('select.genericlist', $option_list, 'filtercustom['.$this->id.']', $this->attributesToString($attributes), 'value', 'text', $value);  
   }
 }
-?>
