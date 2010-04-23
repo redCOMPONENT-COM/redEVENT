@@ -137,7 +137,11 @@ class redEVENT_tags {
 				{
 				  switch($tag)
 				  {
-				    case 'event_description':
+				  	/**************  event general tags ******************/
+				  	
+				  	//TODO: still used ?
+				    case 'event_description': 
+				    case 'event_info_text':
 				      $search[] = '['.$tag.']';
       				/* Fix the tags of the event description */
       				$findcourse = array('[venues]','[price]','[credits]', '[code]');
@@ -168,30 +172,14 @@ class redEVENT_tags {
       				$replace[] = $this->_data->course_code;
       				break;
       				
-				    case 'inputname':
+				    case 'date':
 				      $search[]  = '['.$tag.']';
-      				$replace[] = '<div id="divsubemailname"><div class="divsubemailnametext">'.JText::_('NAME').'</div><div class="divsubemailnameinput"><input type="text" name="subemailname" /></div></div>';
+      				$replace[] = ELOutput::formatdate($this->_data->dates, $this->_data->times);
       				break;
       				
-				    case 'inputemail':
+				    case 'enddate':
 				      $search[]  = '['.$tag.']';
-      				$replace[] = '<div id="divsubemailaddress"><div class="divsubemailaddresstext">'.JText::_('EMAIL').'</div><div class="divsubemailaddressinput"><input type="text" name="subemailaddress" /></div></div>';
-      				break;
-      				
-				    case 'submit':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = '<div id="disubemailsubmit"><input type="submit" value="'.JText::_('SUBMIT').'" /></div>';
-      				break;
-      				
-				    case 'event_info_text':
-				      $search[]  = '['.$tag.']';
-      				/* Create event description without venue links */
-      				$findcourse = array('[venues]','[price]','[credits]', '[code]');
-      				$replacecourse = array('', 
-      								ELOutput::formatprice($this->_data->course_price), 
-      								$this->_data->course_credit,
-      								$this->_data->course_code);
-      				$replace[] = str_replace($findcourse, $replacecourse, $this->_data->datdescription);
+      				$replace[] = ELOutput::formatdate($this->_data->enddates, $this->_data->endtimes);
       				break;
       				
 				    case 'time':
@@ -206,17 +194,7 @@ class redEVENT_tags {
 				      	}
 				      }
       				$replace[] = $text;
-      				break;
-      				
-				    case 'date':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = ELOutput::formatdate($this->_data->dates, $this->_data->times);
-      				break;
-      				
-				    case 'enddate':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = ELOutput::formatdate($this->_data->enddates, $this->_data->endtimes);
-      				break;
+      				break;      				
       				
 				    case 'startenddatetime':
 				      $search[]  = '['.$tag.']';
@@ -239,17 +217,64 @@ class redEVENT_tags {
       				$replace[] = redEVENTHelper::getEventDuration($this->_data);
       				break;
       				
-				    case 'registrationend':
+				    case 'eventimage':
 				      $search[]  = '['.$tag.']';
-				      if (strtotime($this->_data->registrationend)) 
-				      {
-				      	$replace[] = strftime( $elsettings->formatdate . ' '. $elsettings->formattime, strtotime($this->_data->registrationend));
-				  		}
-				  		else {
-				  			$replace[] = '';
-				  		}
+              $eventimage = redEVENTImage::flyercreator($this->_data->datimage, 'event');
+              $eventimage = JHTML::image(JURI::root().'/'.$eventimage['original'], $this->_data->title, array('title' => $this->_data->title));
+      				$replace[] = $eventimage;
       				break;
       				
+				    case 'categoryimage':
+				      $search[]  = '['.$tag.']';
+				      
+      				$cats_images = array();
+      				foreach ($this->_data->categories as $c){
+      				  $cats_images[] = redEVENTImage::getCategoryImage($c);
+      				}
+      				$categoryimage = '<span class="details-categories-images"><span class="details-categories-image">'.implode('</span><span class="details-categories-image">', $cats_images).'</span></span>';
+
+      				$replace[] = $categoryimage;
+      				break;
+      				
+				    case 'info':
+				      $search[]  = '['.$tag.']';
+				      // check that there is no loop with the tag inclusion
+              if (strpos($this->_data->details, '[info]') === false) {
+                $info = $this->ReplaceTags($this->_data->details);
+              }
+              else {
+                JError::raiseNotice(0, JText::_('ERROR TAG LOOP XREF DETAILS'));
+                $info = '';
+              }
+              $replace[] = $info;
+      				break;
+      				
+				    case 'category':
+				      $search[]  = '['.$tag.']';
+              // categories
+              $cats = array();
+              foreach ($this->_data->categories as $c){
+              	$cats[] = JHTML::link(JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($c->slug)), $c->catname);
+              }
+              $replace[] = '<span class="details-categories">'.implode(', ', $cats).'</span>';
+      				break;
+      				
+				    case 'eventcomments':
+				      $search[]  = '['.$tag.']';
+              $replace[] = $this->_getComments($this->_data);
+      				break;      
+      				      				
+				    case 'permanentlink':
+				      $search[]  = '['.$tag.']';
+              $replace[] = JHTML::link(JRoute::_(RedeventHelperRoute::getDetailsRoute($this->_data->slug), false), JText::_('Permanent link'), 'class="permalink"');
+      				break;
+      				      				
+				    case 'datelink':
+				      $search[]  = '['.$tag.']';
+              $replace[] = JHTML::link(JRoute::_(RedeventHelperRoute::getDetailsRoute($this->_data->slug, $this->_xref), false), JText::_('Event details'), 'class="datelink"');
+      				break;				
+      				
+				  	/**************  venue tags ******************/	
 				    case 'venue':
 				      $search[]  = '['.$tag.']';
       				$replace[] = $this->_data->venue;
@@ -260,6 +285,92 @@ class redEVENT_tags {
       				$replace[] = $this->_data->location;
       				break;
       				
+				    case 'venues':
+				      $search[]  = '['.$tag.']';
+      				$replace[] = $venues_html;
+      				break;
+      				
+				    case 'venue_title':
+				      $search[]  = '['.$tag.']';
+              $replace[] = $this->_data->venue;
+      				break;
+      				
+				    case 'venue_city':
+				      $search[]  = '['.$tag.']';
+              $replace[] = $this->_data->location;
+      				break;
+      				
+				    case 'venue_street':
+				      $search[]  = '['.$tag.']';
+              $replace[] = $this->_data->street;
+      				break;
+      				
+				    case 'venue_zip':
+				      $search[]  = '['.$tag.']';
+              $replace[] = $this->_data->plz;
+      				break;
+      				
+				    case 'venue_state':
+				      $search[]  = '['.$tag.']';
+              $replace[] = $this->_data->state;
+      				break;
+      				
+				    case 'venue_link':
+				      $search[]  = '['.$tag.']';
+      				$replace[] = JHTML::link(JRoute::_(RedeventHelperRoute::getVenueEventsRoute($this->_data->venueslug)), $this->_data->venue);
+      				break;
+      				
+				    case 'venue_website':
+				      $search[]  = '['.$tag.']';
+				      if (!empty($this->_data->venueurl)) {
+      					$replace[] = JHTML::link(JRoute::_(($this->_data->venueurl)), JText::_('Venue website'));		      	
+				      }
+				      else {
+				      	$replace[] = '';
+				      }
+      				break;
+      				
+				    case 'venueimage':
+				    case 'venue_image':
+				      $search[]  = '['.$tag.']';
+      				$venueimage = redEVENTImage::flyercreator($this->_data->locimage);
+      				$venueimage = JHTML::image(JURI::root().'/'.$venueimage['original'], $this->_data->venue, array('title' => $this->_data->venue));
+      				$venueimage = JHTML::link(JRoute::_(RedeventHelperRoute::getVenueEventsRoute($this->_data->venueslug)), $venueimage);
+      				$replace[] = $venueimage;
+      				break;
+      				
+				    case 'venue_description':
+				      $search[]  = '['.$tag.']';
+      				$replace[] = $this->_data->venue_description;
+      				break;
+      				
+				  	/**************  registration tags ******************/
+				    case 'inputname': // for mail signup
+				      $search[]  = '['.$tag.']';
+      				$replace[] = '<div id="divsubemailname"><div class="divsubemailnametext">'.JText::_('NAME').'</div><div class="divsubemailnameinput"><input type="text" name="subemailname" /></div></div>';
+      				break;
+      				
+				    case 'inputemail':
+				      $search[]  = '['.$tag.']';
+      				$replace[] = '<div id="divsubemailaddress"><div class="divsubemailaddresstext">'.JText::_('EMAIL').'</div><div class="divsubemailaddressinput"><input type="text" name="subemailaddress" /></div></div>';
+      				break;
+      				
+				    case 'submit':
+				      $search[]  = '['.$tag.']';
+      				$replace[] = '<div id="disubemailsubmit"><input type="submit" value="'.JText::_('SUBMIT').'" /></div>';
+      				break;      				
+      				
+				    case 'registrationend':
+				      $search[]  = '['.$tag.']';
+				      if (strtotime($this->_data->registrationend)) 
+				      {
+				      	$replace[] = strftime( $elsettings->formatdate . ' '. $elsettings->formattime, strtotime($this->_data->registrationend));
+				  		}
+				  		else {
+				  			$replace[] = '';
+				  		}
+      				break;      	      			
+      				
 				    case 'username':
 				      $search[]  = '['.$tag.']';
       				$replace[] = JRequest::getVar('subemailname', '');
@@ -268,11 +379,6 @@ class redEVENT_tags {
 				    case 'useremail':
 				      $search[]  = '['.$tag.']';
       				$replace[] = JRequest::getVar('subemailaddress', '');
-      				break;
-      				
-				    case 'venues':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = $venues_html;
       				break;
       				
 				    case 'regurl':
@@ -403,110 +509,6 @@ class redEVENT_tags {
               }
       				break;
       				
-				    case 'venueimage':
-				      $search[]  = '['.$tag.']';
-      				$venueimage = redEVENTImage::flyercreator($this->_data->locimage);
-      				$venueimage = JHTML::image(JURI::root().'/'.$venueimage['original'], $this->_data->venue, array('title' => $this->_data->venue));
-      				$venueimage = JHTML::link(JRoute::_(RedeventHelperRoute::getVenueEventsRoute($this->_data->venueslug)), $venueimage);
-      				$replace[] = $venueimage;
-      				break;
-      				
-				    case 'eventimage':
-				      $search[]  = '['.$tag.']';
-              $eventimage = redEVENTImage::flyercreator($this->_data->datimage, 'event');
-              $eventimage = JHTML::image(JURI::root().'/'.$eventimage['original'], $this->_data->title, array('title' => $this->_data->title));
-      				$replace[] = $eventimage;
-      				break;
-      				
-				    case 'categoryimage':
-				      $search[]  = '['.$tag.']';
-				      
-      				$cats_images = array();
-      				foreach ($this->_data->categories as $c){
-      				  $cats_images[] = redEVENTImage::getCategoryImage($c);
-      				}
-      				$categoryimage = '<span class="details-categories-images"><span class="details-categories-image">'.implode('</span><span class="details-categories-image">', $cats_images).'</span></span>';
-
-      				$replace[] = $categoryimage;
-      				break;
-      				
-				    case 'info':
-				      $search[]  = '['.$tag.']';
-				      // check that there is no loop with the tag inclusion
-              if (strpos($this->_data->details, '[info]') === false) {
-                $info = $this->ReplaceTags($this->_data->details);
-              }
-              else {
-                JError::raiseNotice(0, JText::_('ERROR TAG LOOP XREF DETAILS'));
-                $info = '';
-              }
-              $replace[] = $info;
-      				break;
-      				
-				    case 'category':
-				      $search[]  = '['.$tag.']';
-              // categories
-              $cats = array();
-              foreach ($this->_data->categories as $c){
-              	$cats[] = JHTML::link(JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($c->slug)), $c->catname);
-              }
-              $replace[] = '<span class="details-categories">'.implode(', ', $cats).'</span>';
-      				break;
-      				
-				    case 'eventcomments':
-				      $search[]  = '['.$tag.']';
-              $replace[] = $this->_getComments($this->_data);
-      				break;
-      				
-				    case 'venue_title':
-				      $search[]  = '['.$tag.']';
-              $replace[] = $this->_data->venue;
-      				break;
-      				
-				    case 'venue_city':
-				      $search[]  = '['.$tag.']';
-              $replace[] = $this->_data->location;
-      				break;
-      				
-				    case 'venue_street':
-				      $search[]  = '['.$tag.']';
-              $replace[] = $this->_data->street;
-      				break;
-      				
-				    case 'venue_zip':
-				      $search[]  = '['.$tag.']';
-              $replace[] = $this->_data->plz;
-      				break;
-      				
-				    case 'venue_state':
-				      $search[]  = '['.$tag.']';
-              $replace[] = $this->_data->state;
-      				break;
-      				
-				    case 'venue_link':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = JHTML::link(JRoute::_(RedeventHelperRoute::getVenueEventsRoute($this->_data->venueslug)), $this->_data->venue);
-      				break;
-      				
-				    case 'venue_website':
-				      $search[]  = '['.$tag.']';
-				      if (!empty($this->_data->venueurl)) {
-      					$replace[] = JHTML::link(JRoute::_(($this->_data->venueurl)), JText::_('Venue website'));		      	
-				      }
-				      else {
-				      	$replace[] = '';
-				      }
-      				break;
-      				      				
-				    case 'permanentlink':
-				      $search[]  = '['.$tag.']';
-              $replace[] = JHTML::link(JRoute::_(RedeventHelperRoute::getDetailsRoute($this->_data->slug), false), JText::_('Permanent link'), 'class="permalink"');
-      				break;
-      				      				
-				    case 'datelink':
-				      $search[]  = '['.$tag.']';
-              $replace[] = JHTML::link(JRoute::_(RedeventHelperRoute::getDetailsRoute($this->_data->slug, $this->_xref), false), JText::_('Event details'), 'class="datelink"');
-      				break;
       				
 				    case 'paymentrequest':
 				      $search[]  = '['.$tag.']';
@@ -668,7 +670,7 @@ class redEVENT_tags {
 		$db = JFactory::getDBO();
 		$query = ' SELECT e.*, IF (x.course_credit = 0, "", x.course_credit) AS course_credit, x.course_price, '
 		   . ' x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees, x.maxwaitinglist, v.venue, x.venueid, x.details, x.registrationend, '
-		   . ' v.city AS location, v.state, v.url as venueurl, '
+		   . ' v.city AS location, v.state, v.url as venueurl, v.locdescription as venue_description, '
 		   . ' v.country, v.locimage, v.street, v.plz, '
 		   . ' UNIX_TIMESTAMP(x.dates) AS unixdates, '
 		   . ' CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(":", e.id, e.alias) ELSE e.id END as slug, '

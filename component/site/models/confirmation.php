@@ -286,26 +286,37 @@ class RedeventModelConfirmation extends JModel
 		}
 		
 		/**
-		 * Send a submission mail to the attendantee and/or contactperson 
-		 * This will only work if the contactperson has an e-mail address
+		 * Send a submission mail to the attendee and/or contact person 
+		 * This will only work if the contact person has an e-mail address
 		 **/		
-		if (isset($eventsettings->notify) && $eventsettings->notify) {
+		if (isset($eventsettings->notify) && $eventsettings->notify) 
+		{
 			/* Load the mailer */
 			$this->Mailer();
       
-			$tags = new redEVENT_tags;
+			$tags = new redEVENT_tags();
 			
 			/* Now send some mail to the attendants */
-			foreach ($attendees as $attendee) {
-				if ($attendee->getEmail()) {
+			foreach ($attendees as $attendee) 
+			{
+				if ($attendee->getEmail()) 
+				{
 					/* Check if we have all the fields */
 					if (!$attendee->getUsername()) $attendee->setUsername($attendee->getEmail());
 					if (!$attendee->getFullname()) $attendee->setFullname($attendee->getUsername());
 		
 					/* Add the email address */
 					$this->mailer->AddAddress($attendee->getEmail(), $attendee->getFullname());
-					  
-					$activatelink = '<a href="'.JRoute::_(JURI::root().'index.php?task=confirm&option=com_redevent&confirmid='.str_replace(".", "_", $registration->uip).'x'.$registration->xref.'x'.$registration->uid.'x'.$attendee->getAnswerId().'x'.JRequest::getVar('submit_key')).'">'.JText::_('Activate').'</a>';
+					
+					/* build activation link */
+					// TODO: use the route helper !
+					$url = JRoute::_( JURI::root().'index.php?option=com_redevent&task=confirm&'
+					     . '&confirmid='.str_replace(".", "_", $registration->uip)
+					     .              'x'.$registration->xref
+					     .              'x'.$registration->uid
+					     .              'x'.$attendee->getAnswerId()
+					     .              'x'.JRequest::getVar('submit_key') );
+					$activatelink = '<a href="'.$url.'">'.JText::_('Activate').'</a>';
 					
 					/* Mail attendee */
 					$htmlmsg = '<html><head><title></title></title></head><body>';
