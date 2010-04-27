@@ -139,7 +139,7 @@ class modRedEventHelper
 		$time		= ($row->times && $row->times != '00:00:00') ? modRedEventHelper::_format_date($row->dates, $row->times, $params->get('formattime', '%H:%M')) : null;
 		$dateinfo	= $date;
 
-		if ( isset($enddate) && $params->get('show_enddate', 1)) {
+		if ( isset($enddate) && $params->get('show_enddate', 1) && $enddate != $date) {
 			$dateinfo .= ' - '.$enddate;
 		}
 
