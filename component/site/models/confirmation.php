@@ -131,16 +131,17 @@ class RedeventModelConfirmation extends JModel
 		$selectfields = $db->loadObjectList('fieldtype');
 
 		/* Get the username and e-mail from the redFORM database */
-		$getfields = array($db->nameQuote('id'));
+		$getfields = array($db->nameQuote('f.id'));
 		foreach ((array) $selectfields as $selectfield) {
-			$getfields[] = $db->nameQuote('field_'. $selectfield->id);
+			$getfields[] = $db->nameQuote('f.field_'. $selectfield->id);
 		}
 		
 		
 		/* Get list of attendees */
 		$q = ' SELECT '. implode(', ', $getfields)
-		   . ' FROM '. $db->nameQuote('#__rwf_forms_'.$eventsettings->redform_id)
-		   . ' WHERE id IN (SELECT answer_id FROM #__rwf_submitters WHERE submit_key = '.$db->Quote($registration->submit_key).')'
+		   . ' FROM '. $db->nameQuote('#__rwf_forms_'.$eventsettings->redform_id).' AS f '
+		   . ' INNER JOIN #__rwf_submitters AS s ON s.answer_id = f.id '
+		   . ' WHERE s.submit_key = '.$db->Quote($registration->submit_key)
 		   ;
 		$db->setQuery($q);
 		$useremails = $db->loadObjectList();
