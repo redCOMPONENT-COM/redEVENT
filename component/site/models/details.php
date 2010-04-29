@@ -274,7 +274,7 @@ class RedeventModelDetails extends JModel
 						. ' INNER JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key '
 						. ' LEFT JOIN #__users AS u ON r.uid = u.id '
 						. ' WHERE s.xref = ' . $this->_xref
-            			. ' AND s.confirmed = 1'
+            . ' AND s.confirmed = 1'
 						;
 		$db->setQuery($query);
 		$submitters = $db->loadObjectList('submit_key');
@@ -318,6 +318,7 @@ class RedeventModelDetails extends JModel
 				        . ' INNER JOIN #__rwf_forms_' . $fields[0]->form_id . ' AS a ON s.answer_id = a.id '
 				        . ' WHERE s.xref = ' . $this->_xref
 				        . ' AND s.confirmed = 1'
+				        . ' ORDER BY s.confirmdate';
 				        ;
 				$db->setQuery($query);
 				if (!$db->query()) {
