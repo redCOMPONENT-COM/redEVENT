@@ -58,8 +58,9 @@ class RedeventViewDetails extends JView
 		$acl        = UserAcl::getInstance();
 		
 		$row		= $this->get('Details');
-		$registers	= $this->get('Registers');
-		$regcheck	= $this->get('Usercheck');
+		$registers	      = $this->get('Registers');
+		$register_fields	= $this->get('FormFields');
+		$regcheck	        = $this->get('Usercheck');
 		$formcheck	= $this->get('FormDependencies'); // TODO: still used ?
 		$model_event = $this->getModel('Event', 'RedEventModel');
 		
@@ -235,7 +236,8 @@ class RedeventViewDetails extends JView
     $this->assignRef('user' ,         $user);
 		$this->assignRef('allowedtoeditevent' , 	$allowedtoeditevent);
 		$this->assignRef('print_link' , 			$print_link);
-		$this->assignRef('registers' , 				$registers);
+		$this->assignRef('registers',         $registers);
+		$this->assignRef('registersfields',   $register_fields);
 		$this->assignRef('elsettings' , 			$elsettings);
 		$this->assignRef('item' , 					$item);
 		$this->assignRef('formcheck' ,				$formcheck); // TODO: still used ?

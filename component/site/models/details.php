@@ -294,19 +294,7 @@ class RedeventModelDetails extends JModel
 		/* At least 1 redFORM field must be selected to show the user data from */
 		if ((!empty($this->_details->showfields) || $admin) && $this->_details->redform_id > 0) 
 		{
-			// load form fields
-			$q = ' SELECT id, field, form_id '
-				 . ' FROM #__rwf_fields j '
-				 . ' WHERE form_id = '. $this->_db->Quote($this->_details->redform_id)
-				 ;
-			if (!$all_fields)
-			{
-				$q .= ' AND j.id in ('.$this->_details->showfields. ')';
-			}
-      $q .= ' ORDER BY ordering ';
-			$db->setQuery($q);
-			
-			$fields = $db->loadObjectList();
+			$fields = $this->getFormFields($all_fields);
 			
 			if (!$fields) 
 			{
@@ -368,6 +356,27 @@ class RedeventModelDetails extends JModel
 		return null;
 	}
 	
+	/**
+	 * returns the fields to be shown in attendees list
+	 * 
+	 * @param boolean get all fields
+	 * @return array;
+	 */
+	function getFormFields($all_fields = false)
+	{
+		// make sure the init is done
+		$this->getDetails();
+		// load form fields
+		$q = ' SELECT id, field, form_id '
+			 . ' FROM #__rwf_fields j '
+			 . ' WHERE form_id = '. $this->_db->Quote($this->_details->redform_id)
+			 . ($all_fields ? '' : '   AND j.id in ('.$this->_details->showfields. ')')
+			 . '   AND j.published = 1 '
+			 . ' ORDER BY ordering ';
+		$this->_db->setQuery($q);
+		
+		return $this->_db->loadObjectList();
+	}	
 	
 	/**
 	 * Saves the registration to the database

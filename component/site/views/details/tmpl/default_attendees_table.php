@@ -24,18 +24,17 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-if ($this->row->show_names && $this->registers) {
+if ($this->row->show_names) {
 	?>
 	<div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
 		<h2 class="register"><?php echo JText::_( 'REGISTERED USERS' ).': '.$this->row->title; ?></h2>
 		
 		<div class="register">
-			<?php	if (count($this->registers)):	?>
 			<table class="registered">
 			<thead>
   			<tr>
-          <?php foreach ($this->registers[0]->fields as $f): ?>
-  			  <th><?php echo $f; ?></th>
+          <?php foreach ((array) $this->registersfields as $f): ?>
+  			  <th><?php echo $f->field; ?></th>
           <?php endforeach; ?>
           <th>&nbsp;</th>
   			</tr>
@@ -45,34 +44,35 @@ if ($this->row->show_names && $this->registers) {
     			//loop through attendees
     			$waiting_count = 0;
     			$n = 0;
-    			foreach ($this->registers as $key => $register):
-    				if ($register->submitter->waitinglist == 0): ?>
-    				  <tr class="<?php echo ($n ? 'd1' : 'd0'); ?><?php echo ($this->unreg_check && $register->submitter->uid == $this->user->get('id')) ? ' myreg': ''; ?>">
-     				    <?php	foreach ($register->answers as $k => $name): ?>
-      				  <td class='userfield <?php echo strtolower($k); ?>'>
-      				    <?php 
-      						if (stristr($name, '~~~')) $name = str_replace('~~~', '<br />', $name).'<br />';
-        						echo $name;
-      				  ?>
-      				  </td>
-      				  <?php endforeach; ?>
-      				  
-      				  <?php if ($this->unreg_check && $register->submitter->uid == $this->user->get('id')): ?>
-      				  <?php $unreg_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xref) .'&task=delreguser&sid=' .$register->id); ?>
-                <td class="attendee">
-                  <?php echo JHTML::link($unreg_url, JText::_('cancel'), array('class' => 'unreglink')); ?>
-                </td>
-                <?php else: ?>
-                <td class="attendee"></td>
-                <?php endif;?>
-              </tr>
-    				<?php else:	$waiting_count++; ?>
-            <?php endif;?>
-            <?php $n = 1 - $n; ?>
-          <?php endforeach; ?>
+    			if ($this->registers):
+	    			foreach ($this->registers as $key => $register):
+	    				if ($register->submitter->waitinglist == 0): ?>
+	    				  <tr class="<?php echo ($n ? 'd1' : 'd0'); ?><?php echo ($this->unreg_check && $register->submitter->uid == $this->user->get('id')) ? ' myreg': ''; ?>">
+	     				    <?php	foreach ($register->answers as $k => $name): ?>
+	      				  <td class='userfield <?php echo strtolower($k); ?>'>
+	      				    <?php 
+	      						if (stristr($name, '~~~')) $name = str_replace('~~~', '<br />', $name).'<br />';
+	        						echo $name;
+	      				  ?>
+	      				  </td>
+	      				  <?php endforeach; ?>
+	      				  
+	      				  <?php if ($this->unreg_check && $register->submitter->uid == $this->user->get('id')): ?>
+	      				  <?php $unreg_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xref) .'&task=delreguser&sid=' .$register->id); ?>
+	                <td class="attendee">
+	                  <?php echo JHTML::link($unreg_url, JText::_('cancel'), array('class' => 'unreglink')); ?>
+	                </td>
+	                <?php else: ?>
+	                <td class="attendee"></td>
+	                <?php endif;?>
+	              </tr>
+	    				<?php else:	$waiting_count++; ?>
+	            <?php endif;?>
+	            <?php $n = 1 - $n; ?>
+	          <?php endforeach; ?>
+          <?php endif;?>
 			</tbody>
 			</table>
-			<?php endif; ?>
 		</div>
 		
 		<?php if ($waiting_count): ?>
@@ -82,10 +82,10 @@ if ($this->row->show_names && $this->registers) {
       <table class="registered">
       <thead>
         <tr>
-          <?php foreach ($this->registers[0]->fields as $f): ?>
-          <td><?php echo $f; ?></td>
+          <?php foreach ((array) $this->registersfields as $f): ?>
+  			  <th><?php echo $f->field; ?></th>
           <?php endforeach; ?>
-          <td>&nbsp;</td>
+          <th>&nbsp;</th>
         </tr>
       </thead>
       <tbody>
