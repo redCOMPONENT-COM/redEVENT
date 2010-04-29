@@ -39,38 +39,12 @@ class RedEventControllerSignup extends RedEventController
 	 *
 	 * @since 0.9
 	 */
-	function __construct() {
+	function __construct() 
+	{
 		parent::__construct();
 		$this->registerTask( 'signup', 'display' );
 		$this->registerTask( 'sendsignupemail', 'display' );
 		$this->registerTask( 'manageredit', 'edit' );
-	}
-
-	/**
-	 * Display the view
-	 * 
-	 * @since 0.9
-	 */
-	function display() 
-	{	  
-		if (JRequest::getVar('format', 'html') == 'html')
-		{
-  		/* Create the view object */
-  		$view = $this->getView('signup', 'html');
-  		$this->addModelPath(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models');
-  		
-  		/* Standard model */
-  		$view->setModel( $this->getModel( 'signup', 'RedeventModel' ), true );
-  		$view->setModel( $this->getModel( 'details', 'RedeventModel' ) );
-  		$view->setLayout('default');
-  		
-  		/* Now display the view. */
-  		$view->display();
-		}
-		else
-		{
-		  parent::display();
-		}
 	}
 	
 	function Createpdfemail() 

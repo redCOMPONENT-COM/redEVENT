@@ -41,34 +41,6 @@ class RedEventControllerDetails extends RedEventController
 	 */
 	function __construct() {
 		parent::__construct();
-		$this->registerTask( 'details', 'display' );
-	}
-
-	/**
-	 * Display the view
-	 * 
-	 * @since 0.9
-	 */
-	function display() 
-	{		
-		if (JRequest::getVar('format', 'html') == 'html')
-		{
-			/* Create the view object */
-			$view = $this->getView('details', 'html');
-			$this->addModelPath(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models');
-			
-			/* Standard model */
-			$view->setModel( $this->getModel( 'details', 'RedeventModel' ), true );
-			$view->setModel( $this->getModel( 'waitinglist', 'RedeventModel' ));
-			$view->setModel( $this->getModel( 'event', 'RedeventModel' ));
-			$view->setLayout( JRequest::getCmd( 'layout', 'default' ));
-			
-			/* Now display the view. */
-			$view->display();
-		}
-		else {
-			parent::display();
-		}
 	}
 	
 	function exportattendees()

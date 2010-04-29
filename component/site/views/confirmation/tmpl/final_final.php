@@ -23,6 +23,8 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+//TODO: not used any more since refactoring ?
 ?>
 <div id="confirmation_message">
 	<?php echo $this->tags->ReplaceTags($this->message); ?>

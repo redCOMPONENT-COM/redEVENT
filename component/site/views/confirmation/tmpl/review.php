@@ -23,20 +23,14 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-if ($this->registration) { 
+if ($this->event) { 
 	?>
-	<div id="redevent" class="event_id<?php echo $this->registration['event']->id; ?> el_details">
-		<?php echo $this->tags->ReplaceTags($this->registration['event']->review_message); ?>
+	<div id="redevent" class="event_id<?php echo $this->event->id; ?> el_details">
+		<?php echo $this->tags->ReplaceTags($this->event->review_message); ?>
 	</div>	
 	<?php
-	echo JHTML::_('link', JRoute::_(RedeventHelperRoute::getDetailsRoute($this->registration['event']->eventid, JRequest::getInt('xref'))), JText::_('RETURN_EVENT_DETAILS'));
+	echo JHTML::_('link', JRoute::_(RedeventHelperRoute::getDetailsRoute($this->event->id, JRequest::getInt('xref'))), JText::_('RETURN_EVENT_DETAILS'));
 }
 else {
 	echo $this->message;
 }
-if ($this->action == 'print') {
-?>
-<script type="text/javascript">
-	window.open( window.location.protocol+"//"+window.location.host+'/index.php?view=confirmation&tmpl=component&page=print&xref=<?php echo JRequest::getVar('xref'); ?>&submit_key=<?php echo JRequest::getVar('submit_key'); ?>&option=com_redevent' );
-</script>
-<?php } ?>

@@ -46,12 +46,55 @@ class RedeventViewConfirmation extends JView
 	{
 		global $mainframe;
 		
-		/* Set which page to show */
-		$tpl = JRequest::getVar('page', null);
+		switch ($this->getLayout())
+		{
+			case 'confirmed':
+				return $this->_displayConfirmed($tpl);
+				
+			case 'review':
+				return $this->_displayReview($tpl);
+		}
 		
-		/* Check submission key */
-		$key_ok = $this->get('CheckSubmitKey');
+		/* Display page */
+		parent::display($tpl);
+	}
+	
+	/**
+	 * creates output for confirm page
+	 * 
+	 * @param $tpl
+	 */
+	function _displayConfirmed($tpl = null)
+	{
+		/* This loads the tags replacer */
+		JView::loadHelper('tags');
+		$tags = new redEVENT_tags;
 		
+		$model_details = $this->getModel('Details', 'RedEventModel');
+		$model_details->setXref(JRequest::getVar('xref'));
+		$event = $model_details->getDetails();
+//		echo '<pre>';print_r($event); echo '</pre>';exit;
+		
+		/* Check if we have and clean up confirmation message */
+		if (strlen($event->confirmation_message) > 0) {
+			/* Assign to jview */
+			$this->assignRef('message', $event->confirmation_message);
+		}		
+		
+		$this->assignRef('tags',   $tags);
+		$this->assignRef('event',  $event);
+		$this->assignRef('action', JRequest::getVar('action'));
+		
+		parent::display($tpl);
+	}
+
+	/**
+	 * creates output for review page
+	 * 
+	 * @param $tpl
+	 */
+	function _displayReview($tpl = null)
+	{
 		/* This loads the tags replacer */
 		JView::loadHelper('tags');
 		
@@ -62,98 +105,26 @@ class RedeventViewConfirmation extends JView
 		$tags = new redEVENT_tags;
 		$this->assignRef('tags', $tags);
 		
-		if ($key_ok) {
-			switch ($tpl) {
-				case 'confirmation':
-				case 'print':				
-					/* Collect registration details */
-					$registration	= $this->get('Details');
-					
-					/* No review so need to bypass it */
-					if (empty($registration['event']->review_message)) {					
-						/** 
-						 * Check if redFORM wants control again
-						 * in case of a VirtueMart redirect
-						 */
-						if (JRequest::getBool('redformback', false)) {
-						  $mainframe->redirect('index.php?option=com_redform&task=redeventvm&controller=redform&form_id='.JRequest::getInt('form_id'));
-						  return;     
-						}
-            
-						$redirect = 'index.php?option=com_redevent&task='.JRequest::getVar('event_task')
-						           .'&xref='.JRequest::getInt('xref')
-						           .'&submit_key='.JRequest::getVar('submit_key')
-						           .'&view=confirmation&page=final'
-						           .'&action=confirmreg'
-						           .'&redformback='.JRequest::getInt('redformback', 0)
-						           .'&form_id='.JRequest::getInt('form_id')
-						           ;
-						$mainframe->redirect(JRoute::_($redirect, false));
-						return;			
-					}
-					JRequest::setVar('answers', $registration['answers']);
-					JRequest::setVar('xref', $registration['event']->xref);
-					
-					/* Assign to jview */
-					$this->assignRef('registration', $registration);
-					$this->assignRef('action', $action);
-					break;
-				case 'final':
-					if ($action == 'confirmreg') {
-						/* Save the confirmation */
-						$result = $this->get('MailConfirmation');
-						if ($result) {
-							$model_details = $this->getModel('Details', 'RedEventModel');
-							$model_details->setXref($result->xref);
-							$row = $model_details->getDetails();
-							/* Check if we have and clean up confirmation message */
-							if (strlen($row->confirmation_message) > 0) {
-								/* Assign to jview */
-								$this->assignRef('message', $row->confirmation_message);
-							}
-							/* No confirmation message, default back to event page */
-							else {
-								/* Assign to jview */
-								$this->assignRef('message', JText::_('CONFIRM_REGISTRATION'));
-							}
-							$this->assignRef('event', $row);
-							
-							  /** 
-							   * Check if redFORM wants control again
-							   * in case of a VirtueMart redirect
-							   */
-							  if (JRequest::getBool('redformback', false)) {
-								$mainframe->redirect('index.php?option=com_redform&task=redeventvm&controller=redform&form_id='.JRequest::getInt('form_id'));
-								return;     
-							  }
-						}
-					}
-					else if ($action == 'cancelreg') {
-						$this->get('CancelConfirmation');
-						$this->assignRef('message', JText::_('CANCEL_CONFIRMATION'));
-						/* Get some details for the link */
-						$model_details = $this->getModel('Details', 'RedEventModel');
-						$model_details->setXref(JRequest::getInt('xref'));
-						$row = $model_details->getDetails();
-						$this->assignRef('event', $row);
-					}
-					break;
-			}
-		}
-		else {
-			$registration = false;
-			$this->assignRef('registration', $registration);
-			$this->assignRef('message', JText::_('NO_VALID_REGISTRATION'));
-		}
+		/* Collect registration details */
+		$registration	= $this->get('Details');
+			
+		JRequest::setVar('answers', $registration['answers']);
+		JRequest::setVar('xref', $registration['event']->xref);
 		
+		/* Assign to jview */
+		$this->assignRef('registration', $registration);
+		$this->assignRef('action', $action);	
+		$this->assignRef('event',  $registration['event']);		
+			
 		/* Display page */
 		parent::display($tpl);
 	}
-
+	
 	/**
 	 * structures the keywords
 	 *
  	 * @since 0.9
+ 	 * @todo: not used ?
 	 */
 	function keyword_switcher($keyword, $row, $formattime, $formatdate) {
 		switch ($keyword) {

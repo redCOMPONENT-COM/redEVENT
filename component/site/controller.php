@@ -51,6 +51,14 @@ class RedeventController extends JController
 		if ($this->_checkfilter()) { // a redirect was set in the filter function
 			return;
 		}
+		
+		$view = JRequest::getVar('view', '');
+		
+		$method = '_display'.ucfirst($view);
+		if (method_exists($this, $method)) {
+			return $this->$method();
+		}
+		
 		parent::display();
 	}
 
@@ -281,46 +289,6 @@ class RedeventController extends JController
 		}
 		$link = RedeventHelperRoute::getMyeventsRoute();
 		$this->setRedirect($link, $msg );
-	}
-
-	/**
-	 * Saves the registration to the database
-	 *
-	 * @since 0.7
-	 */
-	function userregister()
-	{
-		$xref 	= JRequest::getInt( 'xref', 0 );
-		$venueid = JRequest::getInt( 'venueid', 0 );
-
-		// Get the model
-		$model = $this->getModel('Details', 'RedeventModel');
-
-		$model->setXref($xref);
-		/* Store the user registration */
-		$result = $model->userregister();
-		if (!$result) {
-      RedeventHelperLog::simpleLog("Error registering new user for xref $xref" . $model->getError());			
-		}
-		
-		$this->addModelPath( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_redevent' . DS . 'models' );
-		$model_wait = $this->getModel('Waitinglist', 'RedEventModel');
-		$model_wait->setXrefId($xref);
-		$model_wait->UpdateWaitingList();
-		
-		JPluginHelper::importPlugin( 'redevent' );
-		$dispatcher =& JDispatcher::getInstance();
-		$res = $dispatcher->trigger( 'onEventUserRegistered', array( $xref ) );
-      
-		$cache = JFactory::getCache('com_redevent');
-		$cache->clean();
-		
-		$link = 'index.php?option=com_redevent&view=confirmation&page=confirmation&xref='.$xref.'&submit_key='.JRequest::getVar('submit_key').'&action='.JRequest::getVar('action');
-		if (JRequest::getBool('redformback', 0)) {
-		  $link .= '&redformback=1&form_id='. JRequest::getInt('form_id');
-		}
-		/* Go to the confirmation page */
-		$this->setRedirect(JRoute::_($link, false));
 	}
 
 	/**
@@ -679,5 +647,84 @@ class RedeventController extends JController
 
 		parent::display();  	
   }
+  
+
+
+	/**
+	 * Display the details view
+	 * 
+	 * @since 2.0
+	 */
+	function _displayDetails() 
+	{		
+		if (JRequest::getVar('format', 'html') == 'html')
+		{
+			/* Create the view object */
+			$view = $this->getView('details', 'html');
+			$this->addModelPath(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models');
+			
+			/* Standard model */
+			$view->setModel( $this->getModel( 'details', 'RedeventModel' ), true );
+			$view->setModel( $this->getModel( 'waitinglist', 'RedeventModel' ));
+			$view->setModel( $this->getModel( 'event', 'RedeventModel' ));
+			$view->setLayout( JRequest::getCmd( 'layout', 'default' ));
+			
+			/* Now display the view. */
+			$view->display();
+		}
+		else {
+			parent::display();
+		}
+	}
+	
+	/**
+	 * Load custom models for venue upcoming events view
+	 */
+	function _displayUpcomingvenueevents() 
+	{
+		/* Create the view object */
+		if (JRequest::getVar('format') == 'feed') {
+			$view = $this->getView('upcomingvenueevents', 'feed');
+		}
+		else {
+			$view = $this->getView('upcomingvenueevents', 'html');
+		}
+		
+		/* Standard model */
+		$view->setModel( $this->getModel( 'upcomingvenueevents', 'RedeventModel' ), true );
+		$view->setModel( $this->getModel( 'venueevents', 'RedeventModel' ));
+		
+		/* Now display the view. */
+		$view->display();
+	}
+	
+
+
+	/**
+	 * Display the signup view
+	 * 
+	 * @since 2.0
+	 */
+	function _displaySignup() 
+	{	  
+		if (JRequest::getVar('format', 'html') == 'html')
+		{
+  		/* Create the view object */
+  		$view = $this->getView('signup', 'html');
+  		$this->addModelPath(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models');
+  		
+  		/* Standard model */
+  		$view->setModel( $this->getModel( 'signup', 'RedeventModel' ), true );
+  		$view->setModel( $this->getModel( 'details', 'RedeventModel' ) );
+  		$view->setLayout('default');
+  		
+  		/* Now display the view. */
+  		$view->display();
+		}
+		else
+		{
+		  parent::display();
+		}
+	}
 }
 ?>

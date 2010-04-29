@@ -560,14 +560,20 @@ class redEVENT_tags {
   					$form = new stdClass();
   					$form->text = '{redform}'.$this->_data->redform_id.','.($this->_data->max_multi_signup ? $this->_data->max_multi_signup : 1).'{/redform}';
   					$form->eventid = $this->_eventid;
-  					$tpl = JRequest::getVar('page', false);
-  					switch ($tpl) {
-  						case 'confirmation':
-  							$form->task = 'review';
-  							break;
-  						default:
-  							$form->task = 'userregister';
-  							break;
+  					if (empty($this->_data->review_message)) {
+  						$form->task = 'userregister_noreview';
+  					}
+  					else 
+  					{
+	  					switch (JRequest::getVar('step')) 
+	  					{
+	  						case 'review':
+	  							$form->task = 'finalize';
+	  							break;
+	  						default:
+	  							$form->task = 'userregister';
+	  							break;
+	  					}
   					}
   					// params for plugin
   					$params = array();

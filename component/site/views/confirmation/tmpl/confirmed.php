@@ -21,31 +21,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+// no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport('joomla.application.component.controller');
-
-/**
- * EventList Component Events Controller
- *
- * @package Joomla
- * @subpackage EventList
- * @since 0.9
- */
-class RedEventControllerCalendar extends RedEventController
-{
-	/**
-	 * Constructor
-	 *
-	 * @since 0.9
-	 */
-	function __construct() {
-		parent::__construct();
-		// $this->registerTask( 'calendar', 'display' );
-	}
-
-	function display() {
-		parent::display();
-	}
+if ($this->event) { 
+	?>
+	<div id="confirmation_message" class="event_id<?php echo $this->event->id; ?> el_details">
+		<?php echo $this->tags->ReplaceTags($this->event->confirmation_message); ?>
+	</div>	
+	<?php
+	echo JHTML::_('link', JRoute::_(RedeventHelperRoute::getDetailsRoute($this->event->id, JRequest::getInt('xref'))), JText::_('RETURN_EVENT_DETAILS'));
 }
+else {
+	echo $this->message;
+}
+if ($this->action == 'print') {
 ?>
+<script type="text/javascript">
+	window.open( window.location.protocol+"//"+window.location.host+'/index.php?view=confirmation&tmpl=component&page=print&xref=<?php echo JRequest::getVar('xref'); ?>&submit_key=<?php echo JRequest::getVar('submit_key'); ?>&option=com_redevent' );
+</script>
+<?php } ?>

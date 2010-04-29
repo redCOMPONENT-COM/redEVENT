@@ -23,6 +23,7 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
+//TODO: not used any more since refactoring ?
 ?>
 <?php 
 if ($this->registration) {

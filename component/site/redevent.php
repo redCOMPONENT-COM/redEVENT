@@ -17,6 +17,7 @@ require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'log.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'route.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'recurrence.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'customfields.php');
+require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'tags.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'user.class.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'useracl.class.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'image.class.php');
@@ -30,26 +31,47 @@ redEVENTHelper::cleanup();
 // Require the controller
 require_once (JPATH_COMPONENT.DS.'controller.php');
 
+// Require specific controller if requested
+if($controller = JRequest::getWord('controller')) {
+    $path = JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php';
+    if (file_exists($path)) {
+        require_once $path;
+    } else {
+        $controller = '';
+    }
+}
+
 // Create the controller
-$controller = JRequest::getWord('view', '');
-if ($controller == 'redevent') {
-	$controller = 'details';
-}
-
-/* Custom redirect */
-if (in_array($controller, array('details', 'signup', 'confirmation', 'upcomingevents', 'upcomingvenueevents', 'calendar'))) {
-	/* Require specific controller if requested */
-	require_once (JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php');
-	
-}
-else $controller = '';
-
-$classname  = 'RedeventController'.$controller;
+$classname	= 'RedeventController'.ucfirst($controller);
 $controller = new $classname( );
 
 // Perform the Request task
-$controller->execute( JRequest::getVar('task', JRequest::getWord('view', null), 'default', 'cmd') );
+$controller->execute( JRequest::getVar('task') );
 
 // Redirect if set by the controller
 $controller->redirect();
+
+//--------------------------------
+//// Create the controller
+//$controller = JRequest::getWord('view', '');
+//if ($controller == 'redevent') {
+//	$controller = 'details';
+//}
+//
+///* Custom redirect */
+//if (in_array($controller, array('details', 'signup', 'confirmation', 'upcomingevents', 'upcomingvenueevents', 'calendar'))) {
+//	/* Require specific controller if requested */
+//	require_once (JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php');
+//	
+//}
+//else $controller = '';
+//
+//$classname  = 'RedeventController'.$controller;
+//$controller = new $classname( );
+//
+//// Perform the Request task
+//$controller->execute( JRequest::getVar('task', JRequest::getWord('view', null), 'default', 'cmd') );
+//
+//// Redirect if set by the controller
+//$controller->redirect();
 ?>

@@ -401,7 +401,8 @@ class RedeventModelConfirmation extends JModel
 	/**
 	 * Check the submit key
 	 */
-	public function getCheckSubmitKey() {
+	public function getCheckSubmitKey() 
+	{
 		$db = JFactory::getDBO();
 		$submit_key = JRequest::getVar('submit_key');
 		
@@ -411,11 +412,13 @@ class RedeventModelConfirmation extends JModel
 			WHERE submit_key = ".$db->Quote($submit_key);
 		$db->setQuery($q);
 		$result = $db->loadResult();
+		
 		if ($result == $submit_key) {
 			return true;
 		}
     if ($result == null) {
-      RedeventHelperLog::simpleLog('Confirm submit_key Query error: ' . $db->getErrorMsg());    
+      RedeventHelperLog::simpleLog('Confirm submit_key Query error: ' . $db->getErrorMsg());  
+      return false;  
     }
 		else {
 			RedeventHelperLog::simpleLog('No registration found for key ' . $submit_key);
