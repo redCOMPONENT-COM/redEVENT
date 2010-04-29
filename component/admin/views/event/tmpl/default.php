@@ -23,6 +23,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.calendar');
+JHTML::_('behavior.tooltip');
 ?>
 <script language="javascript" type="text/javascript">
 

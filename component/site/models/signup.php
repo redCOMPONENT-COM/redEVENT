@@ -219,7 +219,8 @@ class RedeventModelSignup extends JModel
 	 * object $tags
 	 * boolean $send_attachment
 	 */
-	public function getSendSignupEmail($tags, $send_attachment) {
+	public function getSendSignupEmail($tags, $send_attachment) 
+	{
 		/* Initialise the mailer */
 		$this->Mailer();
 		
