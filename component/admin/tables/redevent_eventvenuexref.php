@@ -62,7 +62,7 @@ class RedEvent_eventvenuexref extends JTable
   /** @var int */
   var $maxwaitinglist    = 0;
   /** @var int */
-  var $course_credit    = 0;
+  var $course_credit    = null;
   /** @var int */
   var $course_price    = null;
   /** @var int */
@@ -71,6 +71,18 @@ class RedEvent_eventvenuexref extends JTable
 
 	function RedEvent_eventvenuexref(& $db) {
 		parent::__construct('#__redevent_event_venue_xref', 'id', $db);
+	}
+	
+	function check()
+	{
+		// allow price to be null
+		if (empty($this->course_price)) {
+			$this->course_price = null;
+		}
+		if (empty($this->course_credit)) {
+			$this->course_price = null;
+		}
+		return true;
 	}
 	
 	/**

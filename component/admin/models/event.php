@@ -740,7 +740,7 @@ class RedEventModelEvent extends JModel
       return false;
     }
   
-    if (!$object->store()) {
+    if (!$object->store(true)) {
       $this->setError($object->getError());
       return false;
     }
