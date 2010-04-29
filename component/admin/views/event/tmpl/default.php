@@ -24,6 +24,9 @@
 defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.calendar');
 JHTML::_('behavior.tooltip');
+ 
+// for tooltips
+$this->infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-hint.png', JText::_( 'NOTES' ) );
 ?>
 <script language="javascript" type="text/javascript">
 
