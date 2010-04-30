@@ -73,7 +73,7 @@ class RedeventViewSimpleList extends JView
 
 			//Format date
 			$date = strftime( $elsettings->formatdate, strtotime( $row->dates ));
-			if (!$row->enddates) {
+			if (!$row->enddates || $row->enddates == $row->dates) {
 				$displaydate = $date;
 			} else {
 				$enddate 	= strftime( $elsettings->formatdate, strtotime( $row->enddates ));
