@@ -267,8 +267,13 @@ class RedEventModelAttendees extends JModel
 	 * @return integer
 	 * @since 0.9
 	 */
-	function _buildContentOrderBy() {
-		return ' ORDER BY s.confirmed DESC, s.confirmdate, r.uregdate, s.waitinglist';
+	function _buildContentOrderBy() 
+	{
+		global $mainframe, $option;
+		
+		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.attendees.filter_order', 'filter_order', 's.confirmdate', 'cmd' );
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.attendees.filter_order_Dir',	'filter_order_Dir',	'', 'word' );
+		return ' ORDER BY '.$filter_order.' '.$filter_order_Dir.', s.confirmdate';
 	}
 	
 	/**

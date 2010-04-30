@@ -57,23 +57,22 @@ $colspan = 14;
 			<tr>
 				<th width="5"><?php echo JText::_( 'Num' ); ?></th>
 				<th width="5"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
-				<th class="title"><?php echo JText::_('REGDATE' ); ?></th>
-				<th class="title"><?php echo JText::_('CONFIRMDATE' ); ?></th>
-				<th class="title"><?php echo JText::_( 'IP ADDRESS' ); ?></th>
-				<th class="title"><?php echo JText::_( 'UNIQUE ID' ); ?></th>
-				<!-- <th class="title"><?php echo JHTML::_('grid.sort', 'USERNAME', 'r.uid', $this->lists['order_Dir'], $this->lists['order'] ); ?></th> -->
-				<th class="title"><?php echo JText::_( 'USERNAME' ); ?></th>
+				<th class="title"><?php echo JHTML::_('grid.sort', 'REGDATE', 'r.uregdate', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th class="title"><?php echo JHTML::_('grid.sort', 'CONFIRMDATE', 's.confirmdate', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th class="title"><?php echo JHTML::_('grid.sort', 'IP ADDRESS', 'r.uip', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th class="title"><?php echo JHTML::_('grid.sort', 'UNIQUE ID', 'r.uid', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th class="title"><?php echo JHTML::_('grid.sort', 'USERNAME', 'u.username', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<th class="title"><?php echo JText::_( 'REMOVE USER' ); ?></th>
-				<th class="title"><?php echo JText::_( 'CONFIRMED' ); ?></th>
-				<th class="title"><?php echo JText::_( 'WAITINGLIST' ); ?></th>
+				<th class="title"><?php echo JHTML::_('grid.sort', 'CONFIRMED', 's.confirmed', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th class="title"><?php echo JHTML::_('grid.sort', 'WAITINGLIST', 's.waitinglist', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php foreach ((array) $this->rf_fields as $f):?>
 					<?php $colspan++; ?>
-					<th class="title"><?php echo $f->field; ?></th>
+					<th class="title"><?php echo JHTML::_('grid.sort',  $f->field, 'f.field_'.$f->id, $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php endforeach;?>
         <th class="title"><?php echo JText::_( 'ANSWERS' ); ?></th>
 				<?php if ($this->form->activatepayment): ?>
 	        <th class="title"><?php echo JText::_( 'PRICE' ); ?></th>
-	        <th class="title"><?php echo JText::_( 'PAYMENT' ); ?></th>
+					<th class="title"><?php echo JHTML::_('grid.sort', 'PAYMENT', 'p.paid', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 					<?php $colspan += 2; ?>
         <?php endif; ?>
 			</tr>
