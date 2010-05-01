@@ -71,8 +71,10 @@ class RedEventModelTags extends JModel
 		$tags[] = new TagsModelTag('venues', JText::_('SUBMISSION_VENUES'));
 		$tags[] = new TagsModelTag('price', JText::_('SUBMISSION_EVENT_PRICE'));
 		$tags[] = new TagsModelTag('credits', JText::_('SUBMISSION_EVENT_CREDITS'));
-		$tags[] = new TagsModelTag('eventimage', JText::_('SUBMISSION_EVENT_IMAGE'));
-		$tags[] = new TagsModelTag('categoryimage', JText::_('SUBMISSION_CATEGORY_IMAGE'));
+		$tags[] = new TagsModelTag('event_image', JText::_('SUBMISSION_EVENT_IMAGE'));
+		$tags[] = new TagsModelTag('event_thumb', JText::_('REDEVENT_SUBMISSION_TAG_EVENT_THUMB'));
+		$tags[] = new TagsModelTag('category_image', JText::_('SUBMISSION_CATEGORY_IMAGE'));
+		$tags[] = new TagsModelTag('category_thumb', JText::_('REDEVENT_SUBMISSION_TAG_CATEGORY_THUMB'));
 		$tags[] = new TagsModelTag('eventcomments', JText::_('SUBMISSION_EVENT_COMMENTS'));
 		$tags[] = new TagsModelTag('info', JText::_('SUBMISSION_XREF_INFO'));
 		$tags[] = new TagsModelTag('permanentlink', JText::_('SUBMISSION_PERMANENT_LINK'));
@@ -86,6 +88,7 @@ class RedEventModelTags extends JModel
 		$tags[] = new TagsModelTag('venue_state', JText::_('SUBMISSION_EVENT_STATE'), 'venue');
 		$tags[] = new TagsModelTag('venue_website', JText::_('SUBMISSION_EVENT_VENUE_WEBSITE'), 'venue');
 		$tags[] = new TagsModelTag('venue_image', JText::_('SUBMISSION_VENUE_IMAGE'), 'venue');
+		$tags[] = new TagsModelTag('venue_thumb', JText::_('REDEVENT_SUBMISSION_TAG_VENUE_THUMB'), 'venue');
 		$tags[] = new TagsModelTag('venue_description', JText::_('REDEVENT_TAGS_VENUE_DESCRIPTION_DESC'), 'venue');
 		
 		$tags[] = new TagsModelTag('redform', JText::_('SUBMISSION_EVENT_REDFORM'), 'registration');

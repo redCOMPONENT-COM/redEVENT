@@ -283,7 +283,6 @@ class redEVENTImage {
 		if (empty($image) || !file_exists(JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.$image)) {
 			return false;			
 		}
-
 		
 		$base = $app->isAdmin() ? $app->getSiteURL() : JURI::base();
 		
@@ -397,17 +396,19 @@ class redEVENTImage {
 	 * returns html code for category image, or just the category name if image is not set
 	 *
 	 * @param object $category
+	 * @param boolean lightbox effect
 	 * @param array attribs
 	 * @return html
 	 */
-	function getCategoryImage($category, $attribs = null)
+	function getCategoryImage($category, $modal = true, $attribs = null)
 	{
 		$image_attribs = array('title' => $category->catname);
+		
 		if ($attribs && is_array($attribs)) {
 			$image_attribs = array_merge( $image_attribs, $attribs);
 		}
 		if ($category->image) {
-		  return JHTML::image(JURI::root().'images/stories/'.$category->image, $category->catname, $image_attribs);	
+		  return self::modalimage('categories', basename($category->image), $image_attribs);	
 		}
 		else return $category->catname; 
 	}

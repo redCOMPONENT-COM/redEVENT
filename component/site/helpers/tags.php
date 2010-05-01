@@ -218,12 +218,33 @@ class redEVENT_tags {
       				break;
       				
 				    case 'eventimage':
+				    case 'event_image':
+				      $search[]  = '['.$tag.']';
+              $eventimage = redEVENTImage::flyercreator($this->_data->datimage, 'event');
+              $eventimage = JHTML::image(JURI::root().'/'.$eventimage['original'], $this->_data->title, array('title' => $this->_data->title));
+      				$replace[] = $eventimage;
+      				break;
+      				
+				    case 'event_thumb':
 				      $search[]  = '['.$tag.']';
               $eventimage = redEVENTImage::modalimage('events', basename($this->_data->datimage), $this->_data->title);
       				$replace[] = $eventimage;
       				break;
       				
 				    case 'categoryimage':
+				    case 'category_image':
+				      $search[]  = '['.$tag.']';
+				      
+      				$cats_images = array();
+      				foreach ($this->_data->categories as $c){
+      				  $cats_images[] = redEVENTImage::getCategoryImage($c, false);
+      				}
+      				$categoryimage = '<span class="details-categories-images"><span class="details-categories-image">'.implode('</span><span class="details-categories-image">', $cats_images).'</span></span>';
+
+      				$replace[] = $categoryimage;
+      				break;
+      				
+				    case 'category_thumb':
 				      $search[]  = '['.$tag.']';
 				      
       				$cats_images = array();
@@ -335,6 +356,12 @@ class redEVENT_tags {
       				$venueimage = redEVENTImage::flyercreator($this->_data->locimage);
       				$venueimage = JHTML::image(JURI::root().'/'.$venueimage['original'], $this->_data->venue, array('title' => $this->_data->venue));
       				$venueimage = JHTML::link(JRoute::_(RedeventHelperRoute::getVenueEventsRoute($this->_data->venueslug)), $venueimage);
+      				$replace[] = $venueimage;
+      				break;
+      				
+				    case 'venue_thumb':
+				      $search[]  = '['.$tag.']';
+              $venueimage = redEVENTImage::modalimage('venues', basename($this->_data->locimage), $this->_data->venue);
       				$replace[] = $venueimage;
       				break;
       				
