@@ -219,8 +219,7 @@ class redEVENT_tags {
       				
 				    case 'eventimage':
 				      $search[]  = '['.$tag.']';
-              $eventimage = redEVENTImage::flyercreator($this->_data->datimage, 'event');
-              $eventimage = JHTML::image(JURI::root().'/'.$eventimage['original'], $this->_data->title, array('title' => $this->_data->title));
+              $eventimage = redEVENTImage::modalimage('events', basename($this->_data->datimage), $this->_data->title);
       				$replace[] = $eventimage;
       				break;
       				

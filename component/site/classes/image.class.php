@@ -257,6 +257,54 @@ class redEVENTImage {
 		}
 		return false;
 	}
+	
+	/**
+	 * returns the hml code for modal display of image
+	 * If thumbnails exits, display the thumbnail with a modal link,
+	 * otherwise, just display the full size picture
+	 * 
+	 * @param string type, must be one of 'events', 'venues', etc...
+	 * @param string image name
+	 * @param string alt attribute
+	 * @param array other attributes
+	 */
+	function modalimage($type, $image, $alt, $attribs = array())
+	{
+		jimport('joomla.filesystem.file');
+		$app = &JFactory::getApplication();
+		
+		$types = array('events', 'venues', 'categories');
+		if (!in_array($type, $types)) {
+			Jerror::raiseWarning(0, JText::_('REDEVENT_WARNING_UNKOWN_IMAGE_CATEGORY'));
+			return false;
+		}
+		$folder = $type;
+		
+		if (empty($image) || !file_exists(JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.$image)) {
+			return false;			
+		}
+
+		
+		$base = $app->isAdmin() ? $app->getSiteURL() : JURI::base();
+		
+		if (JFile::exists(JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.'small'.DS.$image)) 
+		{
+			JHTML::_('behavior.modal', 'a.imodal');
+			if (isset($attribs['class'])) {
+				$attribs['class'] .= ' imodal';
+			}
+			else {
+				$attribs['class'] = 'imodal';
+			}
+			$thumb = JHTML::image($base.'images/redevent/'.$folder.'/small/'.$image, $alt, $attribs);
+			$html = JHTML::link(JRoute::_($base.'images/redevent/'.$folder.'/'.$image), $thumb, $attribs);
+		}
+		else
+		{
+			$html = JHTML::image($base.'images/redevent/'.$folder.'/'.$image, $alt, $attribs);
+		}
+		return $html;
+	}
 
 	function check($file, $elsettings)
 	{
