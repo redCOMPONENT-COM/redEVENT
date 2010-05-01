@@ -526,3 +526,11 @@ div.courseinfo_formaloffer img {
 input.blur {
   color:#999999;
 }
+
+div.el_venuesview a.imodal img {
+	float:right;
+	margin:0.3em;
+	position: relative;
+	border: 1px solid #ddd;
+	padding:1px;
+}
