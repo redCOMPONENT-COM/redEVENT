@@ -40,19 +40,23 @@ if ($this->manage_attendees) {
 			<table class="registered">
 			<thead>
   			<tr>
+  				<th>#</th>
           <?php foreach ($this->registers[0]->fields as $f): ?>
   			  <th><?php echo $f; ?></th>
           <?php endforeach; ?>
           <th>&nbsp;</th>
           <th>&nbsp;</th>
+  				<th><?php echo JText::_('Registration id')?></th>
   			</tr>
 			</thead>
 			<tbody>
   			<?php 
     			//loop through attendees
+   				$n = 1;
     			foreach ($this->registers as $key => $register):
     				if ($register->submitter->waitinglist == 0): ?>
     				  <tr>
+    				  	<td><?php echo $n++; ?></td>
      				    <?php	foreach ($register->answers as $k => $name): ?>
       				  <td class='userfield <?php echo strtolower($k); ?>'>
       				    <?php 
@@ -70,6 +74,7 @@ if ($this->manage_attendees) {
                 <td class="attendee">
                   <?php echo JHTML::link($unreg_url, $remove_image, array('class' => 'unreglink')); ?>
                 </td>
+                <td><?php echo $this->row->course_code .'-'. $this->row->xref .'-'. $register->id; ?></td>
               </tr>
     				<?php else:	$waiting_count++; ?>
             <?php endif;?>
@@ -86,18 +91,23 @@ if ($this->manage_attendees) {
       <table class="registered">
       <thead>
         <tr>
+  				<th>#</th>
           <?php foreach ($this->registers[0]->fields as $f): ?>
-          <td><?php echo $f; ?></td>
+          <th><?php echo $f; ?></th>
           <?php endforeach; ?>
-          <td>&nbsp;</td>
+          <th>&nbsp;</th>
+          <th>&nbsp;</th>
+  				<th><?php echo JText::_('Registration id')?></th>
         </tr>
       </thead>
       <tbody>
         <?php 
           //loop through attendees
+   				$n = 1;
           foreach ($this->registers as $key => $register):
             if ($register->submitter->waitinglist == 1): ?>
               <tr>
+    				  	<td><?php echo $n++; ?></td>
                 <?php foreach ($register->answers as $k => $name): ?>
                 <td class='userfield <?php echo strtolower($k); ?>'>
                   <?php 
@@ -115,6 +125,7 @@ if ($this->manage_attendees) {
                 <td class="attendee">
                   <?php echo JHTML::link($unreg_url, $remove_image, array('class' => 'unreglink')); ?>
                 </td>
+                <td><?php echo $this->row->course_code .'-'. $this->row->xref .'-'. $register->id; ?></td>
               </tr>
             <?php endif;?>
           <?php endforeach; ?>
