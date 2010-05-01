@@ -53,7 +53,13 @@ foreach($this->categories as $category) :
 
 	<div class="catimg">
 	  	<?php
-	  		echo JHTML::_('link', JRoute::_($category->linktarget), $category->image);
+	  	if ($category->image) {
+	  		$img = JHTML::image(redEVENTImage::getThumbUrl('categories', $category->image), $category->catname);
+	  	}
+	  	else {
+	  		$img = JHTML::image('components/com_redevent/assets/images/noimage.png', $category->catname);
+	  	}
+	  	echo JHTML::_('link', JRoute::_($category->linktarget), $img);
 		?>
 		<p>
 			<?php
