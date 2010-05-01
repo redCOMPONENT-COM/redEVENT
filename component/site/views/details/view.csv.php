@@ -55,6 +55,8 @@ class RedeventViewDetails extends JView
 	 */
 	function _displayAttendees($tpl = null)
 	{
+		jimport('joomla.filesystem.file');
+		
 		$model = $this->getModel();
 		
 		if (!$this->get('ManageAttendees')) {
