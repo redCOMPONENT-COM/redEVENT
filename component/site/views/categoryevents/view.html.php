@@ -149,16 +149,6 @@ class RedeventViewCategoryevents extends JView
 			$catdescription = $category->text;
 		}
 
-		if ($category->image != '') {
-
-			$imgattribs['width'] = $elsettings->imagewidth;
-			$imgattribs['height'] = $elsettings->imagehight;
-
-			$category->image = JHTML::image('images/stories/'.$category->image, $category->catname, $imgattribs);
-		} else {
-			$category->image = JHTML::image('components/com_redevent/assets/images/noimage.png', $category->catname);
-		}
-
 		//create select lists
 		$lists	= $this->_buildSortLists($elsettings);
 		$this->assign('lists', 						$lists);
