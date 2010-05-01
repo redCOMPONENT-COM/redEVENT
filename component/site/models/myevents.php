@@ -512,7 +512,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
                 switch($filter_type)
                 {
                     case 'title':
-                        $where .= ' AND LOWER( a.title ) LIKE '.$filter;
+                        $where .= ' AND LOWER( e.title ) LIKE '.$filter;
                         break;
 
                     case 'venue':
