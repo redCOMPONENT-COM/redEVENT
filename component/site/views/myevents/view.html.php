@@ -249,10 +249,10 @@ class RedeventViewMyevents extends JView
 	{
 		JHTML::_('behavior.tooltip');
 
-		$image = JHTML::_('image.site', 'attendees.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'VIEW ATTENDEES' ));
+		$image = JHTML::_('image.site', 'attendees.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'REDEVENT_EDIT_ATTENDEES' ));
 
-		$overlib = JText::_( 'VIEW ATTENDEES TIP' );
-		$text = JText::_( 'VIEW ATTENDEES' );
+		$overlib = JText::_( 'REDEVENT_EDIT_ATTENDEES_TIP' );
+		$text = JText::_( 'REDEVENT_EDIT_ATTENDEES' );
 		$link 	= 'index.php?option=com_redevent&view=details&layout=manageattendees&xref='. $id;
 		$output	= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
 

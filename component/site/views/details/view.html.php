@@ -229,22 +229,26 @@ class RedeventViewDetails extends JView
     
     // check unregistration rights
     $unreg_check = redEVENTHelper::canUnregister($row->xref);
+    
+    //manages attendees
+    $manage_attendees  = $this->get('ManageAttendees');
 		
 		//assign vars to jview
-		$this->assignRef('row', 					$row);
-		$this->assignRef('params' , 				$params);
-    $this->assignRef('user' ,         $user);
-		$this->assignRef('allowedtoeditevent' , 	$allowedtoeditevent);
-		$this->assignRef('print_link' , 			$print_link);
-		$this->assignRef('registers',         $registers);
-		$this->assignRef('registersfields',   $register_fields);
-		$this->assignRef('elsettings' , 			$elsettings);
-		$this->assignRef('item' , 					$item);
-		$this->assignRef('formcheck' ,				$formcheck); // TODO: still used ?
-		$this->assignRef('messages' ,				$messages);
-		$this->assignRef('redform_install'	, $redform_install);
-		$this->assignRef('venuedates'	, $venuedates);
-    $this->assignRef('unreg_check' , $unreg_check);
+		$this->assignRef('row',              $row);
+		$this->assignRef('params',           $params);
+    $this->assignRef('user',             $user);
+		$this->assignRef('allowedtoeditevent', 	$allowedtoeditevent);
+		$this->assignRef('manage_attendees',    $manage_attendees);
+		$this->assignRef('print_link',       $print_link);
+		$this->assignRef('registers',        $registers);
+		$this->assignRef('registersfields',  $register_fields);
+		$this->assignRef('elsettings', 			 $elsettings);
+		$this->assignRef('item', 					   $item);
+		$this->assignRef('formcheck',				 $formcheck); // TODO: still used ?
+		$this->assignRef('messages',				 $messages);
+		$this->assignRef('redform_install',  $redform_install);
+		$this->assignRef('venuedates'	,      $venuedates);
+    $this->assignRef('unreg_check' ,     $unreg_check);
 		
 		$tpl = JRequest::getVar('tpl', $tpl);
 		

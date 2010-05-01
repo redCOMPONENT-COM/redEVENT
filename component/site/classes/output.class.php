@@ -201,6 +201,26 @@ class ELOutput {
 	}
 
 	/**
+	 * Creates the attendees edit button
+	 *
+	 * @param int xref id
+	 * @since 2.0
+	 */
+	function xrefattendeesbutton($id)
+	{
+		JHTML::_('behavior.tooltip');
+
+		$image = JHTML::_('image.site', 'attendees.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'REDEVENT_EDIT_ATTENDEES' ));
+
+		$overlib = JText::_( 'REDEVENT_EDIT_ATTENDEES_TIP' );
+		$text = JText::_( 'REDEVENT_EDIT_ATTENDEES' );
+		$link 	= 'index.php?option=com_redevent&view=details&layout=manageattendees&xref='. $id;
+		$output	= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
+
+		return $output;
+	}
+	
+	/**
 	 * Creates the print button
 	 *
 	 * @param string $print_link
