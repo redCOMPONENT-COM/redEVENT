@@ -527,7 +527,8 @@ input.blur {
   color:#999999;
 }
 
-div.el_venuesview a.imodal img {
+div.el_venuesview a.imodal img,
+div.el_venueevents a.imodal img {
 	float:right;
 	margin:0.3em;
 	position: relative;
