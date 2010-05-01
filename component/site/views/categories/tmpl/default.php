@@ -46,16 +46,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	</h2>
 
 	<div class="catimg">
-	  	<?php
-		if ($row->image != '') {
-			echo JHTML::_('link', JRoute::_($row->linktarget), $row->image);
-		?>
-		<p>
-		<?php }
+	  	<?php	if (!empty($row->image)): ?>
+	  	<span>
+	  	<?php $img = JHTML::image(redEVENTImage::getThumbUrl('categories', $row->image), $row->catname);
+				echo JHTML::_('link', JRoute::_($row->linktarget), $img); ?>
+			</span>
+			<?php endif; ?>
+		<?php
 			echo JText::_( 'EVENTS' ).': ';
 			echo JHTML::_('link', JRoute::_($row->linktarget), $row->assignedevents);
-			
-			if ($row->image != '') {?> </p> <?php }?>
+		?>
 	</div>
 
 	<div class="catdescription cat<?php echo $row->id; ?>"><?php echo $row->catdescription ; ?>

@@ -131,17 +131,7 @@ class RedeventModelCategories extends JModel
 			for($i = 0; $i < $count; $i++)
 			{
 				$category =& $this->_data[$i];
-
-				if ($category->image != '') {
-
-					$attribs['width'] = $elsettings->imagewidth;
-					$attribs['height'] = $elsettings->imagehight;
-
-					$category->image = JHTML::image('images/stories/'.$category->image, $category->catname, $attribs);
-				} else {
-					// $category->image = JHTML::image('components/com_redevent/assets/images/noimage.png', $category->catname);
-				}
-				
+		
 				//create target link
 				$task 	= JRequest::getWord('task');
 				

@@ -535,3 +535,8 @@ div.el_venueevents a.imodal img {
 	border: 1px solid #ddd;
 	padding:1px;
 }
+
+div.el_categoriesview div.catimg span {
+	display:block;
+	clear: both;
+}

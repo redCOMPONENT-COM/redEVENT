@@ -304,6 +304,34 @@ class redEVENTImage {
 		}
 		return $html;
 	}
+	
+	/**
+	 * return full url to thumbnail
+	 * 
+	 * @param string type, must be one of 'events', 'venues', etc...
+	 * @param string image name
+	 * @return url or false if it doesn't exists
+	 */
+	function getThumbUrl($type, $image)
+	{		
+		jimport('joomla.filesystem.file');
+		$app = &JFactory::getApplication();
+		
+		$types = array('events', 'venues', 'categories');
+		if (!in_array($type, $types)) {
+			Jerror::raiseWarning(0, JText::_('REDEVENT_WARNING_UNKOWN_IMAGE_CATEGORY'));
+			return false;
+		}
+		$folder = $type;
+				
+		$base = $app->isAdmin() ? $app->getSiteURL() : JURI::base();
+		
+		if (JFile::exists(JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.'small'.DS.$image)) 
+		{
+			return $base.'images/redevent/'.$folder.'/small/'.$image;
+		}
+		return false;
+	}
 
 	function check($file, $elsettings)
 	{
