@@ -56,14 +56,25 @@ class RedEventViewImagehandler extends JView  {
 		$search 	= trim(JString::strtolower( $search ) );
 
 		//set variables
-		if ($task == 'selecteventimg') {
-			$folder = 'events';
-			$task 	= 'eventimg';
-			$redi	= 'selecteventimg';
-		} else {
-			$folder	= 'venues';
-			$task	= 'venueimg';
-			$redi 	= 'selectvenueimg';
+		switch ($task)
+		{
+			case 'selecteventimg':
+				$folder = 'events';
+				$task 	= 'eventimg';
+				$redi	= 'selecteventimg';
+				break;
+				
+			case 'selectvenueimg':
+				$folder	= 'venues';
+				$task	= 'venueimg';
+				$redi 	= 'selectvenueimg';
+				break;
+				
+			case 'selectcategoryimg':
+				$folder	= 'categories';
+				$task	= 'categoryimg';
+				$redi 	= 'selectcategoryimg';
+				break;
 		}
 		JRequest::setVar( 'folder', $folder );
 

@@ -47,6 +47,7 @@ class RedEventControllerImagehandler extends RedEventController
 		// Register Extra task
 		$this->registerTask( 'eventimgup', 	'uploadimage' );
 		$this->registerTask( 'venueimgup', 	'uploadimage' );
+		$this->registerTask( 'categoryimgup', 'uploadimage' );
 	}
 
 	/**
@@ -74,10 +75,17 @@ class RedEventControllerImagehandler extends RedEventController
 		//$ftp = JClientHelper::getCredentials('ftp');
 
 		//set the target directory
-		if ($task == 'venueimgup') {
-			$base_Dir = JPATH_SITE.DS.'images'.DS.'redevent'.DS.'venues'.DS;
-		} else {
-			$base_Dir = JPATH_SITE.DS.'images'.DS.'redevent'.DS.'events'.DS;
+		switch ($task)
+		{
+			case 'venueimgup':
+				$base_Dir = JPATH_SITE.DS.'images'.DS.'redevent'.DS.'venues'.DS;
+				break;
+			case 'eventimgup':
+				$base_Dir = JPATH_SITE.DS.'images'.DS.'redevent'.DS.'events'.DS;
+				break;
+			case 'categoryimgup':
+				$base_Dir = JPATH_SITE.DS.'images'.DS.'redevent'.DS.'categories'.DS;
+				break;
 		}
 
 		//do we have an upload?
@@ -150,10 +158,17 @@ class RedEventControllerImagehandler extends RedEventController
 			}
 		}
 
-		if ($folder == 'events') {
-			$task = 'selecteventimg';
-		} else {
-			$task = 'selectvenueimg';
+		switch ($folder)
+		{
+			case 'events':
+				$task = 'selecteventimg';
+				break;
+			case 'venues':
+				$task = 'selectvenueimg';
+				break;
+			case 'categories':
+				$task = 'selectcategoryimg';
+				break;
 		}
 
 		$mainframe->redirect('index.php?option=com_redevent&view=imagehandler&task='.$task.'&tmpl=component');

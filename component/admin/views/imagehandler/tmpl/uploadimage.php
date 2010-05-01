@@ -90,12 +90,19 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  							<b><?php
  							echo JText::_( 'TARGET DIRECTORY' ).':'; ?></b>
 							<?php
-							if ($this->task == 'venueimg') {
-								echo "/images/redevent/venues/";
-								$this->task = 'venueimgup';
-							} else {
-								echo "/images/redevent/events/";
-								$this->task = 'eventimgup';
+							switch ($this->task) 
+							{
+								case 'venueimg':
+									echo "/images/redevent/venues/";
+									$this->task = 'venueimgup';
+									break;
+								case 'eventimg':
+									echo "/images/redevent/events/";
+									$this->task = 'eventimgup';
+									break;
+								case 'categoryimg':
+									echo "/images/redevent/categories/";
+									$this->task = 'categoryimgup';
 							}
 
 							?><br />
