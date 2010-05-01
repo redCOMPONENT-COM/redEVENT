@@ -212,7 +212,8 @@ class RedEventControllerEvents extends RedEventController
 	 * @return void
 	 * @since 0.9
 	 */
-	function save() {
+	function save() 
+	{
 		// Check for request forgeries
 		JRequest::checkToken() or die( 'Invalid Token' );
 		$db = JFactory::getDBO();
@@ -236,8 +237,9 @@ class RedEventControllerEvents extends RedEventController
 		
 		$model = $this->getModel('event');
 		$model_wait = $this->getModel('waitinglist');
-		if ($returnid = $model->store($post)) {
-
+		
+		if ($returnid = $model->store($post)) 
+		{
 			$msg	= JText::_( 'EVENT SAVED');
 
 			if ($this->twit == true)

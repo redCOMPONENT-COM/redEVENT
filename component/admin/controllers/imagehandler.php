@@ -96,13 +96,16 @@ class RedEventControllerImagehandler extends RedEventController
 		//sanitize the image filename
 		$filename = redEVENTImage::sanitize($base_Dir, $file['name']);
 		$filepath = $base_Dir . $filename;
-
+		
 		//upload the image
 		if (!JFile::upload($file['tmp_name'], $filepath)) {
 			echo "<script> alert('".JText::_( 'UPLOAD FAILED' )."'); window.history.go(-1); </script>\n";
 			$mainframe->close();
 
 		} else {
+			// create thumbnail
+			redEVENTImage::thumb($filepath, dirname($filepath).DS.'small'.DS.$filename, $elsettings->imagewidth, $elsettings->imagehight);
+			
 			echo "<script> alert('".JText::_( 'UPLOAD COMPLETE' )."'); window.history.go(-1); window.parent.elSelectImage('$filename', '$filename'); </script>\n";
 			$mainframe->close();
 		}
