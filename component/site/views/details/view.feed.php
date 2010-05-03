@@ -55,23 +55,17 @@ class RedeventViewDetails extends JView
     $document->setDescription('');
     
     ob_start();
-    $this->setLayout('courseinfo');
+    $this->setLayout('courseinfo_rss');
     parent::display();
     $contents = ob_get_contents();
     ob_end_clean();
     
-    $link    = 'index.php?option=com_redevent&view=details';
-    if (!empty($row->slug)) {
-      $link .= '&id='.$row->slug;
-    }
-    if (!empty($row->xref)) {
-      $link .= '&xref='.$row->xref;
-    }
+    $link = JRoute::_(RedeventHelperRoute::getDetailsRoute($row->slug, $row->xref));
     
 		// load individual item creator class
 		$item = new JFeedItem();
 		$item->title    = $row->title;
-		$item->link     = JRoute::_($link, true);
+		$item->link     = JRoute::_($link);
 		$item->description  = $contents;
 		$item->date     = '';
 		$item->category     = '';

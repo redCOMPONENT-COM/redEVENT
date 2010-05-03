@@ -190,6 +190,7 @@ class RedeventModelDetails extends JModel
 	      WHERE x.published = 1
 	      AND e.id = ".$this->_db->Quote($this->_id) ."
 	      GROUP BY x.id
+	      ORDER BY x.dates ASC, x.times ASC
 	      ";
 	    $this->_db->setQuery($q);
 	    $rows = $this->_db->loadObjectList();
