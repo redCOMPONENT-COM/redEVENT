@@ -43,6 +43,7 @@ class RedEventModelWaitinglist extends JModel {
 	private $move_on_ids = array();
 	private $move_off_ids = array();
 	private $mailer = null;
+	private $taghelper = null;
 	
 	/**
 	 * Constructor
@@ -224,7 +225,8 @@ class RedEventModelWaitinglist extends JModel {
 	/**
 	 * Initialise the mailer object to start sending mails
 	 */
-	private function Mailer() {
+	private function Mailer() 
+	{
 		global $mainframe;
 		jimport('joomla.mail.helper');
 		/* Start the mailer object */
@@ -235,18 +237,23 @@ class RedEventModelWaitinglist extends JModel {
 		$this->mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
 	}
 	
-	private function SendMail($type) {
+	private function SendMail($type) 
+	{
 		global $mainframe;
+		
+		if (empty($this->taghelper)) {
+			$this->taghelper = new redEVENT_tags();
+		}
 		
 		if ($type == 'off') {
 			$update_ids = $this->move_off_ids;
-			$body = nl2br($this->event_data->notify_off_list_body);
-			$subject = $this->event_data->notify_off_list_subject;
+			$body = nl2br($this->taghelper->ReplaceTags($this->event_data->notify_off_list_body));
+			$subject = $this->taghelper->ReplaceTags($this->event_data->notify_off_list_subject);
 		}
 		else if ($type == 'on') {
 			$update_ids = $this->move_on_ids;
-			$body = nl2br($this->event_data->notify_on_list_body);
-			$subject = $this->event_data->notify_on_list_subject;
+			$body = nl2br($this->taghelper->ReplaceTags($this->event_data->notify_on_list_body));
+			$subject = $this->taghelper->ReplaceTags($this->event_data->notify_on_list_subject);
 		}
 		
 		/* Get the DB */

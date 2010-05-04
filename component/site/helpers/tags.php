@@ -111,6 +111,7 @@ class redEVENT_tags {
 		if ($this->_xref) 
 		{
       $elsettings = redEVENTHelper::config();
+			$submit_key = JRequest::getVar('submit_key');
 
       /* Load the event links */
 			if (is_null($this->_eventlinks)) $this->getEventLinks();
@@ -544,7 +545,6 @@ class redEVENT_tags {
       				
 				    case 'paymentrequest':
 				      $search[]  = '['.$tag.']';
-				      $submit_key = JRequest::getVar('submit_key');
 				      if (!empty($submit_key)) {
               	$replace[] = JHTML::link(JRoute::_('index.php?option=com_redform&controller=payment&task=select&source=redevent&key='.$submit_key, false), JText::_('Checkout'), '');
 				      }

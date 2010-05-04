@@ -355,7 +355,6 @@ class RedEventModelAttendees extends JModel
 		if (count( $cid ))
 		{
 			$ids = implode(',', $cid);
-			$xref = (int)$xref;
 			
 			if (substr($ids, -1) == ',') $ids = substr($ids, 0, -1);
 			
