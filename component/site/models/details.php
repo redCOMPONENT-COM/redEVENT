@@ -148,6 +148,7 @@ class RedeventModelDetails extends JModel
 					. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
 					. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone,'
 					. ' v.venue,'
+					. ' u.name AS creator_name, u.email AS creator_email, '
 					. " a.confirmation_message, x.course_price, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.catname, c.published, c.access,"
 	        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
 	        . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
@@ -156,6 +157,7 @@ class RedeventModelDetails extends JModel
 					. ' LEFT JOIN #__redevent_venues AS v ON x.venueid = v.id'
 	        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
 	        . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+					. ' LEFT JOIN #__users AS u ON a.created_by = u.id '
 					. $where
 					;
     		$this->_db->setQuery($query);
@@ -428,10 +430,7 @@ class RedeventModelDetails extends JModel
 			$this->setError(JText::_('Error in registration') . ': ' . $this->_db->getErrorMsg());
 			return false;
 		}
-		
-		/* Set the message all is good */
-		// $mainframe->enqueueMessage(JText::_('REGISTERED SUCCESSFULL'));
-				
+						
 		/* All is good */
 		return true;
 	}
@@ -580,6 +579,73 @@ class RedeventModelDetails extends JModel
   	}
   	$acl = UserAcl::getInstance();
   	return $acl->canEditXref($this->_xref);
+  }
+  
+  function notifyManagers()
+  {
+  	$app    = &JFactory::getApplication();
+  	$params = $app->getParams('com_redevent');
+		$tags   = new redEVENT_tags();
+  	
+  	$event = $this->getDetails();
+  	
+  	$recipients = array();
+  	
+  	// default recipients
+  	$default = $params->get('registration_default_recipients');
+  	if (!empty($default)) {
+  		$recipients[] = array('email' => $default, 'name' => '');
+  	}
+  	
+  	// creator
+  	if ($params->get('registration_notify_creator', 1)) {
+  		$recipients[] = array('email' => $event->creator_email, 'name' => $event->creator_name);
+  	}
+  	
+  	// group recipients
+  	$gprecipients = $this->_getXrefRegistrationRecipients();
+  	foreach ($gprecipients AS $r)
+  	{
+  		$recipients[] =  array('email' => $r->email, 'name' => $r->name);	
+  	}
+  	
+  	if (!count($recipients)) {
+  		return true;
+  	}
+  	
+  	$mailer = & JFactory::getMailer();
+  	
+  	foreach ($recipients as $r)
+  	{
+  		$mailer->addAddress($r['email'], $r['name']);
+  	}
+  	
+  	$mailer->setSubject($tags->ReplaceTags($params->get('registration_notification_subject')));
+  	$mailer->MsgHTML($tags->ReplaceTags($params->get('registration_notification_body')));
+  	if (!$mailer->send())
+  	{
+  		RedeventHelperLog::simplelog(JText::_('REDEVENT_ERROR_REGISTRATION_MANAGERS_NOTIFICATION_FAILED'));
+  		$this->setError(JText::_('REDEVENT_ERROR_REGISTRATION_MANAGERS_NOTIFICATION_FAILED'));
+  		return false;
+  	}
+  	return true;
+  }
+  
+  function _getXrefRegistrationRecipients()
+  {
+  	$event = $this->getDetails();
+  	
+		$query = ' SELECT u.name, u.email '
+					 . ' FROM #__redevent_event_venue_xref AS x '
+					 . ' INNER JOIN #__redevent_groups AS g ON x.groupid = g.id '
+					 . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
+					 . ' INNER JOIN #__users AS u ON gm.member = u.id '
+					 . ' WHERE x.id = '. $this->_db->Quote($event->xref)
+					 . '   AND gm.receive_registrations = 1 '
+					 ;
+		$this->_db->setQuery($query);
+		$xref_group_recipients = $this->_db->loadObjectList();
+		return $xref_group_recipients;
   }
 }
 ?>

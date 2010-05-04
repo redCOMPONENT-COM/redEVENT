@@ -142,6 +142,8 @@ class RedEventControllerRegistration extends RedEventController
       RedeventHelperLog::simpleLog("Error registering new user for xref $xref" . $model->getError());			
 		}
 		
+		$mail = $model->notifyManagers();
+		
 		$this->addModelPath( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_redevent' . DS . 'models' );
 		$model_wait = $this->getModel('Waitinglist', 'RedEventModel');
 		$model_wait->setXrefId($xref);
