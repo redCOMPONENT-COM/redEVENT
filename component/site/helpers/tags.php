@@ -37,6 +37,7 @@ class redEVENT_tags {
 	private $_data = false;
 	private $_libraryTags = null;
 	private $_xrefcustomfields = null;
+	private $_answers = null;
 	
 	
 	public function __construct() {
@@ -292,7 +293,12 @@ class redEVENT_tags {
 				    case 'datelink':
 				      $search[]  = '['.$tag.']';
               $replace[] = JHTML::link(JRoute::_(RedeventHelperRoute::getDetailsRoute($this->_data->slug, $this->_xref), false), JText::_('Event details'), 'class="datelink"');
-      				break;				
+      				break;		
+
+				    case 'answers':				    	
+				      $search[]  = '['.$tag.']';
+              $replace[] = $this->_answersToHtml($submit_key);
+				    	break;
       				
 				  	/**************  venue tags ******************/	
 				    case 'venue':
@@ -1059,5 +1065,67 @@ class redEVENT_tags {
   	return $code;
   }
   	
+  /**
+   * return answers as html text
+   * 
+   * @param string $submit_key
+   * @return string html
+   */
+  private function _answersToHtml($submit_key)
+  {
+  	$answers = $this->_getAnswers($submit_key);
+  	$res = '';
+  	
+  	foreach ($answers as $a)
+  	{
+  		$res .= '<table>';
+			foreach ($a as $field)
+			{
+				$res .= '<tr>';
+				$res .= '<th>'.$field->field.'</th>';
+				$res .= '<td>'.str_replace('~~~','<br/>', $field->answer).'</td>';
+				$res .= '</tr>';
+			}
+  		$res .= '</table>';  		
+  	}
+  	return $res;
+  }
+  
+  /**
+   * returns answers as array of row arrays
+   * 
+   * @param string $submit_key
+   * @return array
+   */
+  private function _getAnswers($submit_key)
+  { 
+  	require_once (JPATH_SITE.DS.'components'.DS.'com_redform'.DS.'classes'.DS.'answers.php');
+  	if (empty($this->_answers))
+  	{
+	  	if (!$this->_data) {
+	  		JError::raiseWarning(0, JText::_('Error: missing data'));
+	  		return false;
+	  	}
+	  	if (!$submit_key) {
+	  		JError::raiseWarning(0, JText::_('Error: missing key'));
+	  		return false;
+	  	}
+	  	
+	  	$db = & JFactory::getDBO();
+	  	$query = ' SELECT s.id '
+	  	       . ' FROM #__rwf_submitters AS s '
+	  	       . ' WHERE s.submit_key = '.$db->quote($submit_key);
+			$db->setQuery($query);
+			$submitters = $db->loadObjectList();
+			
+			$answers = array();
+			foreach ($submitters as $s)
+			{
+				$answers[] = rfanswers::getSubmitterAnswers($s->id);
+			}
+			$this->_answers = $answers;
+  	}
+  	return $this->_answers;
+  }
 }
 ?>

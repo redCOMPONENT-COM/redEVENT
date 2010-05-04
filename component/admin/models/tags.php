@@ -92,6 +92,7 @@ class RedEventModelTags extends JModel
 		$tags[] = new TagsModelTag('venue_description', JText::_('REDEVENT_TAGS_VENUE_DESCRIPTION_DESC'), 'venue');
 		
 		$tags[] = new TagsModelTag('redform', JText::_('SUBMISSION_EVENT_REDFORM'), 'registration');
+		$tags[] = new TagsModelTag('answers', JText::_('REDEVENT_SUBMISSION_TAG_ANSWERS_DESC'), 'registration');
 		$tags[] = new TagsModelTag('registrationend', JText::_('SUBMISSION_EVENT_REGISTRATIONEND'));
 		$tags[] = new TagsModelTag('webformsignup', JText::_('SUBMISSION_WEBFORM_SIGNUP_LINK'), 'registration');
 		$tags[] = new TagsModelTag('emailsignup', JText::_('SUBMISSION_EMAIL_SIGNUP_LINK'), 'registration');
