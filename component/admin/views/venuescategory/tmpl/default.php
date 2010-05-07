@@ -168,27 +168,30 @@ function submitbutton(pressbutton)
 			<table>
 				<tr>
 					<td>
-						<label for="catimage">
+						<label for="image">
 							<?php echo JText::_( 'CHOOSE IMAGE' ).':'; ?>
 						</label>
 					</td>
 					<td>
-						<?php echo $this->Lists['imagelist']; ?>
+						<?php
+							echo $this->imageselect;
+						?>
 					</td>
 				</tr>
 				<tr>
 					<td>
 					</td>
 					<td>
+						<img src="../images/M_images/blank.png" name="imagelib" id="imagelib" width="80" height="80" border="2" alt="Preview" />
 						<script language="javascript" type="text/javascript">
-						if (document.forms[0].image.options.value!=''){
-							jsimg='../images/stories/' + getSelectedValue( 'adminForm', 'image' );
-						} else {
-							jsimg='../images/M_images/blank.png';
+						if (document.forms[0].a_imagename.value!=''){
+							var imname = document.forms[0].a_imagename.value;
+							jsimg='../images/redevent/categories/' + imname;
+							document.getElementById('imagelib').src= jsimg;
 						}
-						document.write('<img src=' + jsimg + ' name="imagelib" width="80" height="80" border="2" alt="Preview" />');
 						</script>
-						<br /><br />
+						<br />
+						<br />
 					</td>
 				</tr>
 			</table>

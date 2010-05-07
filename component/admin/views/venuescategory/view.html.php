@@ -95,11 +95,31 @@ class RedEventViewVenuesCategory extends JView {
 		/* Build a select list for categories */
     $Lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('Categories'), 'parent_id', 'class="inputbox" size="10"', 'value', 'text', $row->parent_id); 
     		
-		//build selectlists
+		//build selectlists		//build selectlists
 		$javascript = "onchange=\"javascript:if (document.forms[0].image.options[selectedIndex].value!='') {document.imagelib.src='../images/stories/' + document.forms[0].image.options[selectedIndex].value} else {document.imagelib.src='../images/blank.png'}\"";
-		$Lists['imagelist'] 		= JHTML::_('list.images', 'image', $row->image, $javascript, '/images/stories/' );
+//		$Lists['imageelist'] 		= JHTML::_('list.images', 'image', $row->image, $javascript, '/images/stories/' );
 		$Lists['access'] 			= JHTML::_('list.accesslevel', $row );
 
+		//Build the image select functionality
+		$js = "
+		function elSelectImage(image, imagename) {
+			document.getElementById('a_image').value = image;
+			document.getElementById('a_imagename').value = imagename;
+			document.getElementById('imagelib').src = '../images/redevent/categories/' + image;
+			document.getElementById('sbox-window').close();
+		}";
+
+		$link = 'index.php?option=com_redevent&amp;view=imagehandler&amp;layout=uploadimage&amp;task=categoryimg&amp;tmpl=component';
+		$link2 = 'index.php?option=com_redevent&amp;view=imagehandler&amp;task=selectcategoryimg&amp;tmpl=component';
+		$document->addScriptDeclaration($js);
+
+		JHTML::_('behavior.modal', 'a.modal');
+
+		$imageselect = "\n<input style=\"background: #ffffff;\" type=\"text\" id=\"a_imagename\" value=\"$row->image\" disabled=\"disabled\" onchange=\"javascript:if (document.forms[0].a_imagename.value!='') {document.imagelib.src='../images/redevent/categories/' + document.forms[0].a_imagename.value} else {document.imagelib.src='../images/blank.png'}\"; /><br />";
+		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('Upload')."\" href=\"$link\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('Upload')."</a></div></div>\n";
+		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('SELECTIMAGE')."\" href=\"$link2\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('SELECTIMAGE')."</a></div></div>\n";
+		$imageselect .= "\n&nbsp;<input class=\"inputbox\" type=\"button\" onclick=\"elSelectImage('', '".JText::_('SELECTIMAGE')."' );\" value=\"".JText::_('Reset')."\" />";
+		$imageselect .= "\n<input type=\"hidden\" id=\"a_image\" name=\"image\" value=\"$row->image\" />";
 
 		//build grouplist
 		$grouplist		= array();
@@ -113,6 +133,7 @@ class RedEventViewVenuesCategory extends JView {
 		$this->assignRef('row'      	, $row);
 		$this->assignRef('editor'		, $editor);
 		$this->assignRef('pane'			, $pane);
+		$this->assign('imageselect', $imageselect);
 
 		parent::display($tpl);
 	}
