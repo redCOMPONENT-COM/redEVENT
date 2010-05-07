@@ -838,6 +838,7 @@ if (JFile::exists(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'views'.DS.'ca
 		<td colspan="2">
 			<h2>Installation Status:</h2>
 			<?php
+			$error = false;;
 			// Check for existing /images/redevent directory
 			if (!$direxists = JFolder::exists( JPATH_SITE.DS.'images'.DS.'redevent' )) {
 				echo "<font color='orange'>Note:</font> The Directory /images/redevent does NOT exist. redEVENT will try to create them.<br />";
@@ -847,6 +848,7 @@ if (JFile::exists(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'views'.DS.'ca
 					echo "<font color='green'>FINISHED:</font> Directory /images/redevent created.<br />";
 				} else {
 					echo "<font color='red'>ERROR:</font> Directory /images/redevent NOT created.<br />";
+					$error = true;
 				}
 			} 
 			
@@ -857,11 +859,13 @@ if (JFile::exists(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'views'.DS.'ca
 					echo "<font color='green'>FINISHED:</font> Directory /images/redevent/events created.<br />";
 				} else {
 					echo "<font color='red'>ERROR:</font> Directory /images/redevent/events NOT created.<br />";
+					$error = true;
 				}
 				if (JFolder::create( JPATH_SITE.DS.'images'.DS.'redevent'.DS.'events'.DS.'small' )) {
 					echo "<font color='green'>FINISHED:</font> Directory /images/redevent/events/small created.<br />";
 				} else {
 					echo "<font color='red'>ERROR:</font> Directory /images/redevent/events/small NOT created.<br />";
+					$error = true;
 				}
 			}
 			
@@ -872,11 +876,13 @@ if (JFile::exists(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'views'.DS.'ca
 					echo "<font color='green'>FINISHED:</font> Directory /images/redevent/venues created.<br />";
 				} else {
 					echo "<font color='red'>ERROR:</font> Directory /images/redevent/venues NOT created.<br />";
+					$error = true;
 				}
 				if (JFolder::create( JPATH_SITE.DS.'images'.DS.'redevent'.DS.'venues'.DS.'small' )) {
 					echo "<font color='green'>FINISHED:</font> Directory /images/redevent/venues/small created.<br />";
 				} else {
 					echo "<font color='red'>ERROR:</font> Directory /images/redevent/venues/small NOT created.<br />";
+					$error = true;
 				}
 			}
 			
@@ -887,11 +893,13 @@ if (JFile::exists(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'views'.DS.'ca
 					echo "<font color='green'>FINISHED:</font> Directory /images/redevent/categories created.<br />";
 				} else {
 					echo "<font color='red'>ERROR:</font> Directory /images/redevent/categories NOT created.<br />";
+					$error = true;
 				}
 				if (JFolder::create( JPATH_SITE.DS.'images'.DS.'redevent'.DS.'categories'.DS.'small' )) {
 					echo "<font color='green'>FINISHED:</font> Directory /images/redevent/categories/small created.<br />";
 				} else {
 					echo "<font color='red'>ERROR:</font> Directory /images/redevent/categories/small NOT created.<br />";
+					$error = true;
 				}
 			}
         	?>
@@ -899,7 +907,7 @@ if (JFile::exists(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'views'.DS.'ca
 			<br />
 
 			<?php
-			if (($direxists) || ($makedir)) {
+			if (!$error) {
 			?>
 				<font color="green"><b>redEVENT 2.0 beta Installed Successfully!</b></font><br />
 				Ensure that redEVENT has write access to the directories shown above! Have Fun.
@@ -917,6 +925,8 @@ if (JFile::exists(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'views'.DS.'ca
 					<li>/images/redevent/events/small</li>
 					<li>/images/redevent/venues</li>
 					<li>/images/redevent/venues/small</li>
+					<li>/images/redevent/categories</li>
+					<li>/images/redevent/categories/small</li>
 				</ul>
 				<br />
 
