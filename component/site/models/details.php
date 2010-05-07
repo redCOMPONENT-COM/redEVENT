@@ -370,6 +370,10 @@ class RedeventModelDetails extends JModel
 	{
 		// make sure the init is done
 		$this->getDetails();
+		
+		if (empty($this->_details->showfields)) {
+			return false;
+		}
 		// load form fields
 		$q = ' SELECT id, field, form_id '
 			 . ' FROM #__rwf_fields j '
