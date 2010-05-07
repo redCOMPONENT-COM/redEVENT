@@ -587,6 +587,7 @@ class RedeventModelDetails extends JModel
   
   function notifyManagers()
   {
+  	jimport('joomla.mail.helper');
   	$app    = &JFactory::getApplication();
   	$params = $app->getParams('com_redevent');
 		$tags   = new redEVENT_tags();
@@ -597,13 +598,28 @@ class RedeventModelDetails extends JModel
   	
   	// default recipients
   	$default = $params->get('registration_default_recipients');
-  	if (!empty($default)) {
-  		$recipients[] = array('email' => $default, 'name' => '');
+  	if (!empty($default)) 
+  	{
+  		if (strstr($default, ';')) {
+  			$addresses = explode(";", $default);
+  		}
+  		else {
+  			$addresses = explode(",", $default);
+  		}
+  		foreach ($addresses as $a) 
+  		{
+  			$a = trim($a);
+	  		if (JMailHelper::isEmailAddress($a)) {
+	  			$recipients[] = array('email' => $a, 'name' => '');
+	  		}  			
+  		}
   	}
   	
   	// creator
   	if ($params->get('registration_notify_creator', 1)) {
-  		$recipients[] = array('email' => $event->creator_email, 'name' => $event->creator_name);
+  		if (JMailHelper::isEmailAddress($event->creator_email)) {
+  			$recipients[] = array('email' => $event->creator_email, 'name' => $event->creator_name);
+  		}
   	}
   	
   	// group recipients
