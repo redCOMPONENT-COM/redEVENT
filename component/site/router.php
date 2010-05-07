@@ -19,12 +19,44 @@ function RedEventBuildRoute(&$query)
 	  $view = '';
 	}
 
+//	if (isset($query['controller']))
+//	{
+//	  $controller = $query['controller'];
+//		$segments[] = 'c'.$query['controller'];
+//		unset($query['controller']);
+//    
+//    if(isset($query['task']))
+//    {
+//    	$segments[] = $query['task'];
+//    	unset($query['task']);
+//    };
+//	}
+	
 	switch ($view) {
 	  
 	  case 'confirmation':
 	    break;
-	  
-	  default:
+	  case 'calendar':
+	  case 'categoryevents':
+	  case 'details':
+	  case 'search':
+	  case 'upcomingevents':
+	  case 'venuecategory':
+	  case 'venuesmap':
+	  case 'categories':
+	  case 'confirmation':
+	  case 'editevent':
+	  case 'myevents':
+	  case 'signup':
+	  case 'upcomingvenueevents':
+	  case 'venueevents':
+	  case 'categoriesdetailed':
+	  case 'day':
+	  case 'editvenue':
+	  case 'payment':
+	  case 'simplelist':
+	  case 'venue':
+	  case 'venues':
     	if(isset($query['id']))
     	{
     		$segments[] = $query['id'];
@@ -184,14 +216,26 @@ function RedEventParseRoute($segments)
     } break;
     
     case 'confirmation':
-      $vars['view'] = $segments[0];
-      
+    case 'signup':
+    case 'calendar':
+    case 'payment':
+    case 'search':
+    case 'upcomingevents':
+    case 'venue':
+    case 'venuecategory':
+    case 'venuesmap':
+    case 'myevents':
+      $vars['view'] = $segments[0];      
       break;
       
-		default:
-      $vars['view'] = $segments[0];
-			
-			break;
+//    case 'cregistration':
+//    	$vars['controller'] = $segments[0];
+//    	break;
+    	
+//		default:
+//      $vars['view'] = $segments[0];
+//			
+//			break;
 	}
 
 	return $vars;
