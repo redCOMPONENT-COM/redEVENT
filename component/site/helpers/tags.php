@@ -1078,7 +1078,7 @@ class redEVENT_tags {
   	
   	foreach ($answers as $a)
   	{
-  		$res .= '<table>';
+  		$res .= '<table class="formanswers">';
 			foreach ($a as $field)
 			{
 				$res .= '<tr>';
