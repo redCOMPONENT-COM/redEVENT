@@ -121,9 +121,8 @@ class RedeventModelConfirmation extends JModel
 		
 		/* Get a list of fields that are of type email/username/fullname */
 		$q = "SELECT f.id, f.field, f.fieldtype 
-			FROM #__rwf_fields f, #__rwf_values v
-			WHERE f.id = v.field_id
-			AND f.published = 1
+			FROM #__rwf_fields f
+			WHERE f.published = 1
 			AND f.form_id = ".$eventsettings->redform_id."
 			AND f.fieldtype in ('email', 'username', 'fullname')
 			GROUP BY f.fieldtype";
@@ -145,7 +144,7 @@ class RedeventModelConfirmation extends JModel
 		   ;
 		$db->setQuery($q);
 		$useremails = $db->loadObjectList();
-		
+				
 		$attendees = array();
 		foreach ($useremails as $attendeeinfo)
 		{
@@ -176,6 +175,7 @@ class RedeventModelConfirmation extends JModel
 			{
 				// use info from first attendee to create a new user
 				$attendee = $attendees[0];
+				
 				if (strlen($attendee->getUsername()) > 0 && strlen($attendee->getEmail()) > 0) 
 				{
 					/* Check if the user already exists in Joomla with this e-mail address */
@@ -185,6 +185,7 @@ class RedeventModelConfirmation extends JModel
 							LIMIT 1";
 					$db->setQuery($query);
 					$found_id = $db->loadResult();
+					
 					if ($found_id) {
 						$uid = $found_id;
 					}
@@ -237,6 +238,13 @@ class RedeventModelConfirmation extends JModel
 						}
 						else
 						{
+							/** update registration with user id **/
+							$q = ' UPDATE #__redevent_register '
+							   . ' SET uid = '. $db->Quote($user->id)
+							   . ' WHERE submit_key = '.$db->Quote(JRequest::getVar('submit_key'));
+							$db->setQuery($q);
+							$db->query();							
+							
 							// send mail with account details
 							/* Load the mailer */
 				      $this->Mailer();
