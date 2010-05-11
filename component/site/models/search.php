@@ -132,7 +132,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
     // filter date
     if ($filter_date) {
     	if (strtotime($filter_date)) {
-    		$where[] = ' (\''.$filter_date.'\' BETWEEN (a.dates) AND (a.enddates) OR \''.$filter_date.'\' = a.dates)';
+    		$where[] = ' (\''.$filter_date.'\' BETWEEN (x.dates) AND (x.enddates) OR \''.$filter_date.'\' = x.dates)';
     	}
     }
     // filter country
