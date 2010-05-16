@@ -107,6 +107,10 @@ class redEVENT_tags {
 	 */
 	public function ReplaceTags($page) 
 	{
+		$mainframe = &JFactory::getApplication();
+		$base_url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
+		
 		//exit($page);
 		if ($this->_xref) 
 		{
@@ -444,7 +448,7 @@ class redEVENT_tags {
               $replace[] = '<span class="vlink webform">'
                            . JHTML::_('link', 
                                       JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->_data->id, $this->_xref)), 
-                                      JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  
+                                      JHTML::_('image', $iconspath.$elsettings->signup_webform_img,  
                                       JText::_($elsettings->signup_webform_text), 
                                       'width="24px" height="24px"'))
                            .'</span> ';
@@ -455,7 +459,7 @@ class redEVENT_tags {
 				      $replace[] = '<span class="vlink email">'
 				                      .JHTML::_('link', 
                                         JRoute::_(RedeventHelperRoute::getSignupRoute('email', $this->_data->id, $this->_xref)), 
-				                                JHTML::_('image', $imagepath.$elsettings->signup_email_img,  
+				                                JHTML::_('image', $iconspath.$elsettings->signup_email_img,  
 				                                JText::_($elsettings->signup_email_text), 
 				                                'width="24px" height="24px"'))
 				                      .'</span> ';
@@ -466,7 +470,7 @@ class redEVENT_tags {
 				      $replace[] = '<span class="vlink formaloffer">'
 				                    .JHTML::_('link', 
                                       JRoute::_(RedeventHelperRoute::getSignupRoute('formaloffer', $this->_data->id, $this->_xref)), 
-				                              JHTML::_('image', $imagepath.$elsettings->signup_formal_offer_img,  
+				                              JHTML::_('image', $iconspath.$elsettings->signup_formal_offer_img,  
 				                              JText::_($elsettings->signup_formal_offer_text), 
 				                              'width="24px" height="24px"'))
 				                   .'</span> ';
@@ -477,7 +481,7 @@ class redEVENT_tags {
 				      $replace[] = '<span class="vlink external">'
 				                    .JHTML::_('link', 
 				                              $this->_data->submission_type_external, 
-				                              JHTML::_('image', $imagepath.$elsettings->signup_external_img,  
+				                              JHTML::_('image', $iconspath.$elsettings->signup_external_img,  
 				                              $elsettings->signup_external_text), 
 				                              'target="_blank"')
 				                    .'</span> ';				      
@@ -488,7 +492,7 @@ class redEVENT_tags {
 				      $replace[] = '<span class="vlink phone">'
 				                     .JHTML::_('link', 
                                        JRoute::_(RedeventHelperRoute::getSignupRoute('phone', $this->_data->id, $this->_xref)), 
-				                               JHTML::_('image', $imagepath.$elsettings->signup_phone_img,  
+				                               JHTML::_('image', $iconspath.$elsettings->signup_phone_img,  
 				                               JText::_($elsettings->signup_phone_text), 
 				                               'width="24px" height="24px"'))
 				                     .'</span> ';
