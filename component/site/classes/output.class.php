@@ -603,7 +603,7 @@ class ELOutput {
 		$settings = & redEVENTHelper::config();
 		
 		if(!$price) {
-			return;
+			return JText::_('REDEVENT_EVENT_PRICE_FREE');
 		}
 		
 		switch ($settings->currency_decimals) {
