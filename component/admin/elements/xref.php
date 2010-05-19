@@ -57,7 +57,7 @@ class JElementXref extends JElement
 		}
 
 		$js = "
-		function elSelectEvent(id, title) {
+		function selectXref(id, title) {
 			document.getElementById('a_id').value = id;
 			document.getElementById('a_name').value = title;
 			document.getElementById('sbox-window').close();
