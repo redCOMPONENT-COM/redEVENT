@@ -63,7 +63,7 @@ class JElementXref extends JElement
 			document.getElementById('sbox-window').close();
 		}";
 
-		$link = 'index.php?option=com_redevent&amp;view=eventelement&amp;layout=xref&amp;tmpl=component';
+		$link = 'index.php?option=com_redevent&amp;view=xrefelement&amp;tmpl=component';
 		$doc->addScriptDeclaration($js);
 
 		JHTML::_('behavior.modal', 'a.modal');

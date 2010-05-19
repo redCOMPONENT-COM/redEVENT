@@ -24,7 +24,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<form action="index.php?option=com_redevent&amp;view=eventelement&amp;tmpl=component" method="post" name="adminForm">
+<form action="index.php?option=com_redevent&amp;view=xrefelement&amp;tmpl=component" method="post" name="adminForm">
 
 <table class="adminform">
 	<tr>
@@ -106,7 +106,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td><?php echo $row->city ? htmlspecialchars($row->city, ENT_QUOTES, 'UTF-8') : '-'; ?></td>
 			<td><?php echo $row->catname ? htmlspecialchars($row->catname, ENT_QUOTES, 'UTF-8') : '-'; ?></td>
 			<td align="center">
-				<?php $img = $row->published ? 'tick.png' : 'publish_x.png'; ?>
+				<?php $img = $row->session_published ? 'tick.png' : 'publish_x.png'; ?>
 				<img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="" />
 			</td>
 		</tr>
