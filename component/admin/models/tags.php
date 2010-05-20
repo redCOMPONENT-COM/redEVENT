@@ -93,6 +93,7 @@ class RedEventModelTags extends JModel
 		
 		$tags[] = new TagsModelTag('redform', JText::_('SUBMISSION_EVENT_REDFORM'), 'registration');
 		$tags[] = new TagsModelTag('answers', JText::_('REDEVENT_SUBMISSION_TAG_ANSWERS_DESC'), 'registration');
+		$tags[] = new TagsModelTag('activatelink', JText::_('REDEVENT_SUBMISSION_TAG_ACTIVATELINK_DESC'), 'registration');
 		$tags[] = new TagsModelTag('registrationend', JText::_('SUBMISSION_EVENT_REGISTRATIONEND'));
 		$tags[] = new TagsModelTag('webformsignup', JText::_('SUBMISSION_WEBFORM_SIGNUP_LINK'), 'registration');
 		$tags[] = new TagsModelTag('emailsignup', JText::_('SUBMISSION_EMAIL_SIGNUP_LINK'), 'registration');
@@ -110,6 +111,9 @@ class RedEventModelTags extends JModel
 		$tags[] = new TagsModelTag('inputname', JText::_('REDEVENT_SUBMISSION_TAG_INPUTENAME_DESC'), 'registration');
 		$tags[] = new TagsModelTag('inputemail', JText::_('REDEVENT_SUBMISSION_TAG_INPUTEMAIL_DESC'), 'registration');
 		$tags[] = new TagsModelTag('submit', JText::_('REDEVENT_SUBMISSION_TAG_SUBMIT_DESC'), 'registration');
+		$tags[] = new TagsModelTag('fullname', JText::_('REDEVENT_SUBMISSION_TAG_FULLNAME_DESC'), 'registration');
+		$tags[] = new TagsModelTag('username', JText::_('REDEVENT_SUBMISSION_TAG_USERNAME_DESC'), 'registration');
+		$tags[] = new TagsModelTag('password', JText::_('REDEVENT_SUBMISSION_TAG_PASSWORD_DESC'), 'registration');
 		
 		$tags[] = new TagsModelTag('paymentrequest', JText::_('SUBMISSION_EVENT_PAYMENTREQUEST'), 'payment');
 		$tags[] = new TagsModelTag('paymentrequestlink', JText::_('SUBMISSION_EVENT_PAYMENTREQUESTLINK'), 'payment');
