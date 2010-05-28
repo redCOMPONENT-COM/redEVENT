@@ -31,7 +31,10 @@ if (!$shHomePageFlag) {  // we may have found that this is homepage, so we msut 
 if (isset($task) && $task == 'createpdfemail') $dosef = false;
 else if (isset($page) && $page == 'print') $dosef = false;
 else {
-	  
+
+	$app = &JFactory::getApplication();
+	$reParams = $app->getParams('com_redevent');
+		
   /* Get the DB connection */
   $db = JFactory::getDBO();
   
@@ -45,10 +48,8 @@ else {
     $menuparams = null;     
   }
     
-  // do something about that Itemid thing
-  if (!preg_match( '/Itemid=[0-9]+/i', $string)) 
-  { // if no Itemid in non-sef URL
-    // V 1.2.4.t moved back here
+  if (empty($Itemid))
+  {
     if ($sefConfig->shInsertGlobalItemidIfNone && !empty($shCurrentItemid)) 
     {
       $string .= '&Itemid='.$shCurrentItemid; ;  // append current Itemid
@@ -56,26 +57,23 @@ else {
       shAddToGETVarsList('Itemid', $Itemid); // V 1.2.4.m
     }
 
-    if ($sefConfig->shInsertTitleIfNoItemid)
+    if ($sefConfig->shInsertTitleIfNoItemid || $sefConfig->shAlwaysInsertMenuTitle || $reParams->get('sh404sef_always_include_menu_title', 0))
     {
     	$title[] = $sefConfig->shDefaultMenuItemName ?
   		           $sefConfig->shDefaultMenuItemName : 
   		           getMenuTitle($option, (isset($view) ? @$view : null), $shCurrentItemid, null, $shLangName );  // V 1.2.4.q added forced language
     }
+  }
     
-  	$shItemidString = '';
-  	if ($sefConfig->shAlwaysInsertItemid && (!empty($Itemid) || !empty($shCurrentItemid))) 
-  	{
-    	$shItemidString = _COM_SEF_SH_ALWAYS_INSERT_ITEMID_PREFIX.$sefConfig->replacement
+  if ($sefConfig->shAlwaysInsertItemid && (!empty($Itemid) || !empty($shCurrentItemid))) 
+  {
+    $shItemidString = _COM_SEF_SH_ALWAYS_INSERT_ITEMID_PREFIX.$sefConfig->replacement
                         .(empty($Itemid)? $shCurrentItemid :$Itemid);
-  	}
-  } 
-  else 
-  {  // if Itemid in non-sef URL
-    $shItemidString = $sefConfig->shAlwaysInsertItemid ?
-                      _COM_SEF_SH_ALWAYS_INSERT_ITEMID_PREFIX.$sefConfig->replacement.$Itemid
-                     : '';
-    if ($sefConfig->shAlwaysInsertMenuTitle)
+  }
+  
+  if (!empty($Itemid)) 
+  {  
+    if ($sefConfig->shAlwaysInsertMenuTitle || $reParams->get('sh404sef_always_include_menu_title', 0))
     {
       //global $Itemid; V 1.2.4.g we want the string option, not current page !
       if ($sefConfig->shDefaultMenuItemName) {
@@ -140,6 +138,7 @@ else {
 		            ON v.id = x.venueid
 		            WHERE x.id = ".$db->Quote((int) $xref);
 		    $db->setQuery($q);
+		    $storeq = $db->getQuery();
 		    $details = $db->loadObject();
 	    }
 	    else if (isset($id))
@@ -148,7 +147,13 @@ else {
 		            FROM  #__redevent_events e
 		            WHERE e.id = ".(int)$id;
 		    $db->setQuery($q);
+		    $storeq = $db->getQuery();
 		    $details = $db->loadObject();
+	    }
+	    else {
+	    	Jerror::raiseWarning(0, 'sh404sef redevent missing event id/xref');
+	    	$dosef = false;
+	    	return;
 	    }
     }
     
@@ -247,6 +252,10 @@ else {
 	   case 'details':
 	      if (isset($xref) && $xref)
 	      {
+	      	if (!$details) { // link to a non existing event
+	      		$dosef = false;
+	      		return;
+	      	}
 		      $title[] = $xref.'-'.$details->title;
 		      $title[] = $details->city;
 		      $title[] = $details->dates;
