@@ -478,9 +478,15 @@ class redEVENT_tags {
       				
 				    case 'externalsignup':
 				      $search[]  = '['.$tag.']';
+				      if (!empty($this->_data->external_registration_url)) {
+				      	$link = $this->_data->external_registration_url;
+				      }
+				      else {
+				      	$link = $this->_data->submission_type_external;
+				      }
 				      $replace[] = '<span class="vlink external">'
 				                    .JHTML::_('link', 
-				                              $this->_data->submission_type_external, 
+				                              $link, 
 				                              JHTML::_('image', $iconspath.$elsettings->signup_external_img,  
 				                              $elsettings->signup_external_text), 
 				                              'target="_blank"')
@@ -712,6 +718,7 @@ class redEVENT_tags {
 		$db = JFactory::getDBO();
 		$query = ' SELECT e.*, IF (x.course_credit = 0, "", x.course_credit) AS course_credit, x.course_price, '
 		   . ' x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees, x.maxwaitinglist, v.venue, x.venueid, x.details, x.registrationend, '
+		   . ' x.external_registration_url, '
 		   . ' v.city AS location, v.state, v.url as venueurl, v.locdescription as venue_description, '
 		   . ' v.country, v.locimage, v.street, v.plz, '
 		   . ' UNIX_TIMESTAMP(x.dates) AS unixdates, '

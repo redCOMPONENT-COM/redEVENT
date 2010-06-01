@@ -309,6 +309,7 @@ class RedeventModelEditevent extends JModel
 				$obj->times             = null;
 				$obj->endtimes          = null;
 				$obj->registrationend   = null;
+				$obj->external_registration_url   = null;
 				$obj->details           = null;
 				$obj->maxattendees      = 0;
 				$obj->maxwaitinglist    = 0;

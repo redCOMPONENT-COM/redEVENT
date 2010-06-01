@@ -412,6 +412,12 @@ if (is_array($cols)) {
     $db->setQuery($q);
     $db->query();
   }
+  
+  if (!array_key_exists('external_registration_url', $cols)) {
+    $q ="ALTER IGNORE TABLE `#__redevent_event_venue_xref` ADD COLUMN `external_registration_url` VARCHAR(255) NULL DEFAULT NULL";
+    $db->setQuery($q);
+    $db->query();
+  }  
 }
 
 /* register table */

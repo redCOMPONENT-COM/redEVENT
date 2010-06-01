@@ -89,7 +89,13 @@ foreach ($this->_eventlinks as $key => $event) {
 						$venues_html .= '<div class="courseinfo_vlink courseinfo_phone">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('phone', $event->id, $event->xref)), JHTML::_('image', $imagepath.$elsettings->signup_phone_img,  JText::_($elsettings->signup_phone_text), 'width="24px" height="24px"')).'</div> ';
 						break;
 					case 'external':
-						$venues_html .= '<div class="courseinfo_vlink courseinfo_external">'.JHTML::_('link', $event->submission_type_external, JHTML::_('image', $imagepath.$elsettings->signup_external_img,  $elsettings->signup_external_text), 'target="_blank"').'</div> ';
+			      if (!empty($event->external_registration_url)) {
+			      	$link = $event->external_registration_url;
+			      }
+			      else {
+			      	$link = $event->submission_type_external;
+			      }
+						$venues_html .= '<div class="courseinfo_vlink courseinfo_external">'.JHTML::_('link', $link, JHTML::_('image', $imagepath.$elsettings->signup_external_img,  $elsettings->signup_external_text), 'target="_blank"').'</div> ';
 						break;
 					case 'webform':
 						$venues_html .= '<div class="courseinfo_vlink courseinfo_webform">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text), 'width="24px" height="24px"')).'</div> ';

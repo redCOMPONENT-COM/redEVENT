@@ -138,6 +138,14 @@ function updateend(cal)
     </td>
   </tr>
   <tr>
+    <td class="key hasTip" title="<?php echo JText::_('REDEVENT_XREF_EXTERNAL_REGISTRATION_TIP'); ?>">
+      <label for="external_registration_url"><?php echo JText::_( 'REDEVENT_XREF_EXTERNAL_REGISTRATION' ) .': '; ?></label>
+    </td>
+    <td>
+      <input type="text" size="50" maxlength="255" name="external_registration_url" id="external_registration_url" value="<?php echo $this->xref->external_registration_url; ?>" /> 
+    </td>
+  </tr>
+  <tr>
     <td class="key">
       <label for="published"><?php echo JText::_('PUBLISHED') .': '; ?></label>
     </td>
