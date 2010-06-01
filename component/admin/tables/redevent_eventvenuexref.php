@@ -79,7 +79,7 @@ class RedEvent_eventvenuexref extends JTable
 		if (empty($this->course_price)) {
 			$this->course_price = null;
 		}
-		if (empty($this->course_credit)) {
+		if ($this->course_credit == '') {
 			$this->course_price = null;
 		}
 		return true;
