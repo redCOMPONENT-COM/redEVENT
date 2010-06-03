@@ -432,6 +432,59 @@ if (is_array($cols)) {
   	$db->setQuery($q);
   	$db->query();
   }
+  
+  if (!array_key_exists('sid', $cols)) 
+  {
+    	//TODO: we must convert existing registrations !
+    	//first, backup the table
+    	$query = ' RENAME TABLE `#__redevent_register`  TO `#__redevent_register_back` ';
+    	$db->setQuery($query);
+	    if ($db->query())
+	    {	    	
+	    	// recreate table register
+	    	$query = ' CREATE TABLE #__redevent_register LIKE #__redevent_register_back ';
+	    	$db->setQuery($query);
+		    if ($db->query())
+		    {		    	
+			  	$query = "ALTER IGNORE TABLE #__redevent_register "
+			  	   . "      ADD COLUMN `sid` int(11) NOT NULL default '0',"
+			  	   . "      ADD COLUMN `waitinglist` tinyint(2) NOT NULL default '0',"
+			  	   . "      ADD COLUMN `confirmed` tinyint(2) NOT NULL default '0',"
+			  	   . "      ADD COLUMN `confirmdate` datetime NULL default NULL";
+			    $db->setQuery($query);
+			    if ($db->query())
+			    {
+			    	// insert records
+			    	$query = ' INSERT INTO #__redevent_register (xref, uid, sid, waitinglist, confirmed, confirmdate, uregdate, uip, submit_key) '
+			    	       . ' SELECT rb.xref, rb.uid, s.id AS sid, s.waitinglist, s.confirmed, s.confirmdate, rb.uregdate, rb.uip, rb.submit_key '
+			    	       . ' FROM #__redevent_register_back AS rb '
+			    	       . ' INNER JOIN #__rwf_submitters AS s ON rb.submit_key = s.submit_key '
+			    	       ;
+				    $db->setQuery($query);
+				    if (!$db->query())
+				    {
+			    		echo JText::_('converted attendees table to new structure');				    	
+				    }
+				    else {
+				    	echo JText::_('failed importing attendees to new structure');
+				    	$error = true;
+				    }			    	 
+			    }
+			    else {
+			    	echo JText::_('failed inserting new fields in register table');
+			    	$error = true;
+			    }
+		    }
+		    else {
+		    	echo JText::_('failed recreating register table');
+		    	$error = true;
+		    }
+	    }
+	    else {
+	    	echo JText::_('register table backup failed');
+	    	$error = true;
+	    }
+   }
 }
 
 /* Get the categories columns */
