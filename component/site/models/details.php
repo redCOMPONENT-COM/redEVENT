@@ -178,22 +178,23 @@ class RedeventModelDetails extends JModel
   {
   	if (empty($this->_xreflinks))
   	{
-	    $q = " SELECT e.*, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, x.course_price, "
-	        . " x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, v.venue, x.venueid, x.details, x.registrationend, 
-	          v.city AS location,
-	          v.country, v.locimage,
-	          UNIX_TIMESTAMP(x.dates) AS unixdates,
-	          CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(':', v.id, v.alias) ELSE v.id END as venueslug
-	      FROM #__redevent_events AS e
-	      INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id
-	      INNER JOIN #__redevent_venues AS v ON x.venueid = v.id
-	      LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id
-	      LEFT JOIN #__redevent_categories AS c ON xcat.category_id = c.id
-	      WHERE x.published = 1
-	      AND e.id = ".$this->_db->Quote($this->_id) ."
-	      GROUP BY x.id
-	      ORDER BY x.dates ASC, x.times ASC
-	      ";
+	    $q = ' SELECT e.*, IF (x.course_credit = 0, "", x.course_credit) AS course_credit, x.course_price, '
+	       . ' x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, v.venue, x.venueid, x.details, x.registrationend, '
+	       . ' x.external_registration_url, '
+	       . ' v.city AS location, '
+	       . ' v.country, v.locimage, '
+	       . ' UNIX_TIMESTAMP(x.dates) AS unixdates, '
+	       . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(":", v.id, v.alias) ELSE v.id END as venueslug '
+	       . ' FROM #__redevent_events AS e '
+	       . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
+	       . ' INNER JOIN #__redevent_venues AS v ON x.venueid = v.id '
+	       . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
+	       . ' LEFT JOIN #__redevent_categories AS c ON xcat.category_id = c.id '
+	       . ' WHERE x.published = 1 '
+	       . ' AND e.id = '.$this->_db->Quote($this->_id)
+	       . ' GROUP BY x.id '
+	       . ' ORDER BY x.dates ASC, x.times ASC '
+	       ;
 	    $this->_db->setQuery($q);
 	    $rows = $this->_db->loadObjectList();
 	    	  	
