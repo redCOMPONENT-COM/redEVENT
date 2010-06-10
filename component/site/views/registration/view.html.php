@@ -42,8 +42,6 @@ class RedeventViewRegistration extends JView
 	 */
 	function display($tpl = null)
 	{
-		$mainframe;		
-		
 		$mainframe  = &Jfactory::getApplication();
 		$document 	= &JFactory::getDocument();
 		$user		    = &JFactory::getUser();
@@ -68,16 +66,15 @@ class RedeventViewRegistration extends JView
 			echo 'layout not defined';
 			return;
 		}		
-				
 		/* This loads the tags replacer */
 		JView::loadHelper('tags');
-		
 		/* Start the tag replacer */
-		$tags = new redEVENT_tags;
+		$tags = new redEVENT_tags();
+		$message = $tags->ReplaceTags($message);
+		
 		$this->assignRef('tags',    $tags);
 		$this->assignRef('message', $message);
 		$this->assignRef('event',   $event);
-				
 		parent::display($tpl);
 	}
 }

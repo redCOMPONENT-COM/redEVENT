@@ -515,7 +515,7 @@ class RedEventModelAttendees extends JModel
 		}
 		$event = $this->getEvent();
 		$rfcore = new RedFormCore();
-		$answers = $rfcore->getSidsAnswers($event->redform_id, $sids);
+		$answers = $rfcore->getSidsAnswers($sids);
 		
 		// add answers to registers
 		foreach ($submitters as $k => $s)

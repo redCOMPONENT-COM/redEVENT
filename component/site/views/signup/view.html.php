@@ -127,11 +127,14 @@ class RedeventViewSignup extends JView
 				break;
 			case 'webform':
 			default:
-          $this->tmp_xref = JRequest::getInt('xref');
-          $this->tmp_id = JRequest::getInt('id');
-				$this->assignRef('page', $course->submission_type_webform);
+				$this->tmp_xref = JRequest::getInt('xref');
+				$this->tmp_id = JRequest::getInt('id');
+				
+				$page = $tags->ReplaceTags($course->submission_type_webform, array('hasreview' => !empty($course->review_message)));
     		$print_link = JRoute::_( 'index.php?option=com_redevent&view=signup&subtype=webform&task=signup&xref='.$this->tmp_xref.'&id='.$this->tmp_id.'&pop=1&tmpl=component' );
-        $this->assignRef('print_link', $print_link);
+				
+    		$this->assign('page', $page);
+        $this->assign('print_link', $print_link);
 				break;
 		}
 		

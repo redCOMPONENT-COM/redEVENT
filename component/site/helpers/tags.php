@@ -38,10 +38,16 @@ class redEVENT_tags {
 	private $_libraryTags = null;
 	private $_xrefcustomfields = null;
 	private $_answers = null;
+	private $_options = null;
 	
 	
-	public function __construct() {
-				
+	public function __construct($options = null) 
+	{
+		if (is_array($options))
+		{
+			$this->_addOptions($options);
+		}		
+		
 		$this->_xref = JRequest::getVar('xref', false);
 		
 		// if no xref specified. try to get one associated to the event id
@@ -76,6 +82,29 @@ class redEVENT_tags {
 		}
 	}
 	
+	function _addOptions($options)
+	{
+		if (is_array($options)) 
+		{
+			if (!empty($this->_options)) {
+				$this->_options = array_merge($this->_options, $options);
+			}
+			else {
+				$this->_options = $options;
+			}
+		}
+	}
+	
+	function getOption($name, $default = null)
+	{		
+		if (isset($this->_options) && isset($this->_options[$name])) {
+			return $this->_options[$name];
+		}
+		else {
+			return $default;
+		}
+	}
+	
 	/**
 	 * Substitute tags with the correct info
 	 *
@@ -105,11 +134,14 @@ class redEVENT_tags {
 	 * [paymentrequest]
 	 * [paymentrequestlink]
 	 */
-	public function ReplaceTags($page) 
+	public function ReplaceTags($page, $options = null) 
 	{
 		$mainframe = &JFactory::getApplication();
 		$base_url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
 		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
+		if ($options) {
+			$this->_addOptions($options);
+		}
 		
 		//exit($page);
 		if ($this->_xref) 
@@ -689,7 +721,7 @@ class redEVENT_tags {
 		$xcustoms = $this->getXrefCustomFields();
 		
 		$order_Dir = JRequest::getWord('filter_order_Dir', 'ASC');
-		$order 		  = JRequest::getCmd('filter_order', 'x.dates');
+		$order 		 = JRequest::getCmd('filter_order', 'x.dates');
 		
 		$db = JFactory::getDBO();
 		$query = ' SELECT e.*, IF (x.course_credit = 0, "", x.course_credit) AS course_credit, x.course_price, '
@@ -713,6 +745,7 @@ class redEVENT_tags {
 		   . ' INNER JOIN #__redevent_venues AS v ON x.venueid = v.id '
 		   . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
 		   . ' LEFT JOIN #__redevent_categories AS c ON xcat.category_id = c.id '
+		   . ' LEFT JOIN #__users AS u ON u.id = e.created_by '
 		   ;		   
 	
 		// add the custom fields tables
@@ -1123,14 +1156,14 @@ class redEVENT_tags {
   	$submit_key = JRequest::getVar('submit_key');
   	$options = array('booking' => $this->_data);  	
  		$rfcore = new RedFormCore();
-  	if (!empty($submit_key)) {
-			$options['answers'] = $rfcore->getSubmitKeyAnswers($submit_key);
-  	}
   	$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute('register'));
   	
 		$html = '<form action="'.$action.'" method="post" name="redform" enctype="multipart/form-data" onsubmit="return CheckSubmit(this);">';
   	$html .= $rfcore->getFormFields($this->_data->redform_id, $submit_key, ($this->_data->max_multi_signup ? $this->_data->max_multi_signup : 1), $options);
   	$html .= '<input type="hidden" name="xref" value="'.$this->_xref.'"/>';
+  	if ($this->getOption('hasreview')) {
+  		$html .= '<input type="hidden" name="hasreview" value="1"/>';
+  	}
 		$html .= '<div id="submit_button" style="display: block;">';
 		if (empty($submit_key)) {
 			$html .= '<input type="submit" id="regularsubmit" name="submit" value="'.JText::_('Submit').'" />';
@@ -1161,7 +1194,7 @@ class redEVENT_tags {
   	// params for plugin
   	$params = array();
   	$params['show_submission_type_webform_formal_offer'] = $this->_data->show_submission_type_webform_formal_offer;	
-  	$params['acdetails'] = $this->_data;		
+  	$params['eventdetails'] = $this->_data;		
   					
   	$results = $dispatcher->trigger('onPrepareEvent', array(& $form, $params, 0));
     $redform = $form->text;
