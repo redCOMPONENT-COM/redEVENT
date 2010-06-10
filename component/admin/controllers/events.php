@@ -340,6 +340,7 @@ class RedEventControllerEvents extends RedEventController
     if ($returnid = $model->savexref($post)) 
     {
 			/* Check if people need to be moved on or off the waitinglist */
+			$model_wait = $this->getModel('waitinglist');
 			$model_wait->setXrefId($returnid);
 			$model_wait->UpdateWaitingList();
 			

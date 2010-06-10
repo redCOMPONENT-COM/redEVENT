@@ -430,7 +430,7 @@ class RedeventController extends JController
 		 $confirmid = JRequest::getVar('confirmid', '', 'get');
 		 
 		 /* Get the details out of the confirmid */
-		 list($uip, $xref, $uid, $submit_id, $submit_key) = split("x", $confirmid);
+		 list($uip, $xref, $uid, $register_id, $submit_key) = split("x", $confirmid);
 		 
 		 /* This loads the tags replacer */
 		 JRequest::setVar('xref', $xref);
@@ -439,25 +439,27 @@ class RedeventController extends JController
 		 
 		 /* Check the db if this entry exists */
 		 $db = JFactory::getDBO();
-		 $q = "SELECT r.confirmed
-		 	FROM #__redevent_register r
-			LEFT JOIN #__rwf_submitters s
-			ON r.sid = s.id
-			WHERE uid = ".$uid."
-			AND s.submit_key = ".$db->Quote($submit_key)."
-			AND r.xref = ".$xref."
-			AND s.id = ".$submit_id;
+		 $q = ' SELECT r.confirmed '
+		    . ' FROM #__redevent_register r '
+		    . ' WHERE r.uid = '.$db->Quote($uid)
+		    . ' AND r.submit_key = '.$db->Quote($submit_key)
+		    . ' AND r.xref = '.$db->Quote($xref)
+		    . ' AND r.id = '.$db->Quote($register_id)
+		    ;
 		$db->setQuery($q);
 		$regdata = $db->loadObject();
 		
-		if ($regdata && $regdata->confirmed == 0) {
+		if ($regdata && $regdata->confirmed == 0) 
+		{
 			/* User exists, confirm the entry */
 			$q = "UPDATE #__redevent_register
 				SET confirmed = 1,
 				confirmdate = NOW()
-				WHERE sid = ".$submit_id;
+				WHERE id = ".$register_id;
 			$db->setQuery($q);
-			if ($db->query()) $this->setMessage(JText::_('YOUR SUBMISSION HAS BEEN CONFIRMED'));
+			if ($db->query()) {
+				$this->setMessage(JText::_('YOUR SUBMISSION HAS BEEN CONFIRMED'));
+			}
 			
 			/* Update the waitinglist */
 			$this->addModelPath( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_redevent' . DS . 'models' );

@@ -244,17 +244,18 @@ class RedEventModelRegistration extends JModel
 		$selectfields = $db->loadObjectList('fieldtype');
 
 		/* Get the username and e-mail from the redFORM database */
-		$getfields = array($db->nameQuote('f.id'));
+		$getfields = array($db->nameQuote('s.id'));
 		foreach ((array) $selectfields as $selectfield) {
 			$getfields[] = $db->nameQuote('f.field_'. $selectfield->id);
 		}
 		
 		
 		/* Get list of attendees */
-		$q = ' SELECT '. implode(', ', $getfields)
-		   . ' FROM '. $db->nameQuote('#__rwf_forms_'.$eventsettings->redform_id).' AS f '
-		   . ' INNER JOIN #__rwf_submitters AS s ON s.answer_id = f.id '
-		   . ' WHERE s.submit_key = '.$db->Quote($registration->submit_key)
+		$q = ' SELECT r.id as rid, '. implode(', ', $getfields)
+		   . ' FROM #__redevent_register as r '
+		   . ' INNER JOIN #__rwf_submitters AS s ON s.id = r.sid '
+		   . ' INNER JOIN '. $db->nameQuote('#__rwf_forms_'.$eventsettings->redform_id).' AS f ON s.answer_id = f.id '
+		   . ' WHERE r.submit_key = '.$db->Quote($registration->submit_key)
 		   ;
 		$db->setQuery($q);
 		$useremails = $db->loadObjectList();
@@ -262,7 +263,7 @@ class RedEventModelRegistration extends JModel
 		$attendees = array();
 		foreach ($useremails as $attendeeinfo)
 		{
-			$attendee = new REattendee($attendeeinfo->id);
+			$attendee = new REattendee($attendeeinfo->rid);
 			if (isset($selectfields['fullname'])) {
 				$property = 'field_'. $selectfields['fullname']->id;
 				$attendee->setFullname($attendeeinfo->$property);
@@ -433,11 +434,12 @@ class RedEventModelRegistration extends JModel
 					
 					/* build activation link */
 					// TODO: use the route helper !
+					$rid = $attendee->getId();
 					$url = JRoute::_( JURI::root().'index.php?option=com_redevent&task=confirm&'
 					     . '&confirmid='.str_replace(".", "_", $registration->uip)
 					     .              'x'.$registration->xref
 					     .              'x'.$registration->uid
-					     .              'x'.$registration->sid
+					     .              'x'.$rid
 					     .              'x'.JRequest::getVar('submit_key') );
 					$activatelink = '<a href="'.$url.'">'.JText::_('Activate').'</a>';
 					

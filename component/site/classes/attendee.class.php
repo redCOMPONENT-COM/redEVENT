@@ -31,12 +31,12 @@ class REattendee {
 	
 	protected $_email;
 	
-	protected $_answer_id;
+	protected $_id;
 	
-	public function __construct($answer_id = null)
+	public function __construct($id = null)
 	{
-		if ($answer_id) {
-			$this->setAnswerId($answer_id);
+		if ($id) {
+			$this->setId($id);
 		}
 	}
 	
@@ -70,14 +70,14 @@ class REattendee {
     return $this->_email; 
   }
 
-  public function setAnswerId($answer_id)
+  public function setId($id)
   {
-    $this->_answer_id = (int) $answer_id; 
+    $this->_id = (int) $id; 
   }
   
-  public function getAnswerId()
+  public function getId()
   {
-    return $this->_answer_id; 
+    return $this->_id; 
   }
 }
 ?>

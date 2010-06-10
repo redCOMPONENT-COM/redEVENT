@@ -528,7 +528,7 @@ class RedeventHelperRecurrence
         break;
     }
 
-    if (!$next_start) {
+    if (!isset($next_start) || !$next_start) {
       return false;
     }
     
