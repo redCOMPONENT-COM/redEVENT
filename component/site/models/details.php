@@ -385,62 +385,9 @@ class RedeventModelDetails extends JModel
 		
 		return $this->_db->loadObjectList();
 	}	
-	
+		
 	/**
-	 * Saves the registration to the database
-	 *
-	 * Contact person is defined as:
-	 * If logged in, this is the contact person used for multiple signups
-	 * If not logged in, the e-mail address of the submitted form is used
-	 */
-	public function userregister() 
-	{
-		global $mainframe;
-		
-		/* Get the global settings */
-		$elsettings = redEVENTHelper::config();
-		
-		/* Get the event unique ID */
-		$event 		= (int) $this->_id;
-		$xref 		= (int) $this->_xref;
-		
-		/* Get the submitter key */
-		$submit_key = JRequest::getVar('submit_key');
-		
-		/* Get the event settings */
-		$eventsettings = $this->getDetails();
-		
-		/* Load redEVENT setttings */
-		$elsettings = redEVENTHelper::config();
-		$tzoffset	= $mainframe->getCfg('offset');
-		
-		/* Determine contact person */
-		$user = JFactory::getUser();
-		
-		/* Set a user ID for validating */
-		$uid = (int) $user->get('id');
-		
-		/* Create the object to store the data in redEVENT */
-		$obj = new stdClass();
-		$obj->xref 		= $xref;
-		$obj->uid   	= (int)$uid;
-		$obj->uregdate 	= gmdate('Y-m-d H:i:s');
-		$obj->uip   	= $elsettings->storeip ? getenv('REMOTE_ADDR') : 'DISABLED';
-		/* Submit key for identifying submissions */
-		$obj->submit_key = $submit_key;
-		
-		/* Store the user registration */
-		if (!$this->_db->insertObject('#__redevent_register', $obj)) {
-			$this->setError(JText::_('Error in registration') . ': ' . $this->_db->getErrorMsg());
-			return false;
-		}
-						
-		/* All is good */
-		return true;
-	}
-	
-	/**
-	 * Deletes a registered user
+	 * Deletes a registered user 
 	 *
 	 * @access public
 	 * @return true on success
@@ -483,9 +430,10 @@ class RedeventModelDetails extends JModel
 		// Now that we made sure, we can delete the submitter and corresponding form values
     /* Delete the redFORM entry first */
     /* Submitter answers first*/
-    $q =  ' DELETE s, f '
-        . ' FROM #__rwf_submitters AS s '
-        . ' INNER JOIN #__rwf_forms_'.$submitterinfo->form_id .' AS f ON f.id = s.answer_id '
+    $q =  ' DELETE r, s, f '
+        . ' FROM #__redevent_register AS r '
+        . ' LEFT JOIN #__rwf_submitters AS s ON s.id = r.sid '
+        . ' LEFT JOIN #__rwf_forms_'.$submitterinfo->form_id .' AS f ON f.id = s.answer_id '
         . ' WHERE s.id = ' . $db->Quote($submitter_id)
         ;
     $db->setQuery($q);
@@ -493,32 +441,14 @@ class RedeventModelDetails extends JModel
       RedeventError::raiseWarning('2', JText::_('Error deleting redform registration').' '.$db->getErrorMsg());
       return false;     
     }
-        
-    /* Now remove the redevent registration */
-    /* if there is no more submitter associated to register submit_key, we can delete the record */
-    $q = ' SELECT COUNT(*) FROM #__rwf_submitters WHERE submit_key = ' . $db->Quote($submitterinfo->submit_key);
-    $db->setQuery($q);
-    $res = $db->loadResult();
-		if ($res === null) {
-      RedeventError::raiseWarning('3', JText::_('Error counting remaining associated submission').' '.$db->getErrorMsg());
-      return false;     			
-		}
-		
-		if ($res == 0) { // no more records associated in redform
-			$q = "DELETE FROM #__redevent_register WHERE submit_key = " . $db->Quote($submitterinfo->submit_key);
-			$db->setQuery($q);
-			if (!$db->query()) {
-				RedeventError::raiseWarning('error', JText::_('Cannot delete registration in redevent').' '.$db->getErrorMsg());
-				return false;
-			}
-		}
 		return true;
 	}
 	
 	/**
 	 * Get a list of venues
 	 */
-	public function getVenues() {
+	public function getVenues() 
+	{
 		$db = JFactory::getDBO();
 		$q = "SELECT *
 			FROM #__redevent_venues v

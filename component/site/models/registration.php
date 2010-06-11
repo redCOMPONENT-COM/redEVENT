@@ -50,9 +50,12 @@ class RedEventModelRegistration extends JModel
 	function __contruct($xref = 0, $config = array())
 	{
 		parent::__construct($config);
-		
+		exit('test');
 		if ($xref) {
 			$this->setXref($xref);
+		}
+		else {
+			$this->setXref(JRequest::getInt('xref', 0));
 		}
 	}
 	
@@ -311,7 +314,7 @@ class RedEventModelRegistration extends JModel
 						
             if (!$attendee->getFullname()) {
             	$attendee->setFullname($attendee->getUsername());
-            }						
+            }
 						
 						// Get required system objects
 						$user 		= JFactory::getUser(0);
@@ -368,8 +371,7 @@ class RedEventModelRegistration extends JModel
 				      $this->mailer->AddAddress($user->email, $user->name);
 
 				      /* Get the activation link */
-				      $activatelink = '<a href="'.JRoute::_(JURI::root().'index.php?task=confirm&option=com_redevent&confirmid='.str_replace(".", "_", $registration->uip).'x'.$registration->xref.'x'.$registration->uid.'x'.$registration->sid.'x'.JRequest::getVar('submit_key')).'">'.JText::_('Activate').'</a>';
-							echo '<pre>';print_r($activatelink);print_r($registration); echo '</pre>';exit;
+				      $activatelink = '<a href="'.JRoute::_(JURI::root().'index.php?task=confirm&option=com_redevent&confirmid='.str_replace(".", "_", $registration->uip).'x'.$registration->xref.'x'.$registration->uid.'x'.$registration->rid.'x'.JRequest::getVar('submit_key')).'">'.JText::_('Activate').'</a>';
 				      /* Mail attendee */
 				      $htmlmsg = '<html><head><title></title></title></head><body>';
 				      $htmlmsg .= str_replace('[activatelink]', $activatelink, $eventsettings->notify_body);
@@ -571,4 +573,30 @@ class RedEventModelRegistration extends JModel
 		}
 		return $this->mailer;
 	}
-}
+	
+	function getRegistration($submitter_id)
+	{
+		$query =' SELECT s.*, r.uid, e.unregistra '
+        . ' FROM #__rwf_submitters AS s '
+        . ' INNER JOIN #__redevent_register AS r ON r.sid = s.id '
+        . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.id = r.xref '
+        . ' INNER JOIN #__redevent_events AS e ON x.eventid = e.id '
+        . ' WHERE s.id = ' . $this->_db->Quote($submitter_id)
+		    ;
+		$this->_db->setQuery($query);
+		$registration = $this->_db->loadObject();
+		
+		if (!$registration) {
+			$this->setError(JText::_('REGISTRATION NOT VALID'));
+			return false;
+		}
+		  
+		$query = ' SELECT * '
+		       . ' FROM #__rwf_forms_'. $registration->form_id
+		       . ' WHERE id = '. $registration->answer_id
+		            ;
+		$this->_db->setQuery($query);
+		$registration->answers = $this->_db->loadObject();
+		return $registration;
+	}
+	}

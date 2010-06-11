@@ -117,6 +117,7 @@ class RedEventViewAttendees extends JView {
 		$this->assignRef('event',     $event);
 		$this->assignRef('rf_fields', $rf_fields);
 		$this->assignRef('form',      $form);
+		$this->assignRef('user',      $user);
 		
 		parent::display($tpl);
 	}

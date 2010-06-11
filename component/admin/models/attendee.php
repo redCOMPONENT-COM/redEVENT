@@ -160,9 +160,6 @@ class RedEventModelAttendee extends JModel
 					;
 			$this->_db->setQuery($query);
 			$this->_data = $this->_db->loadObject();
-      
-			$rfcore = new redFormCore();
-			$this->_data->answers = $rfcore->getAnswers($this->_data->sid);
 			
 			if (!$this->_data) {
 			  echo $this->_db->getErrorMsg();
@@ -261,7 +258,7 @@ class RedEventModelAttendee extends JModel
 		
 		// first save redform data	
 		$rfcore = new redFormCore();
-		$result = $rfcore->saveAnswers('redevent', array('baseprice' => $details->course_price));	
+		$result = $rfcore->saveAnswers('redevent', array('baseprice' => $details->course_price, 'edit' => 1));	
   	if (!$result) {
   		$msg = JTEXT::_('REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED');
   		$this->setError($msg.' - '.$rfcore->getError());

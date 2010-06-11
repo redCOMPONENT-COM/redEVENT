@@ -364,8 +364,8 @@ class RedEventModelAttendees extends JModel
 						
 			$query = ' DELETE s, f, r '
         . ' FROM #__redevent_register AS r '
-        . ' INNER JOIN #__rwf_submitters AS s ON r.sid = s.id '
-        . ' INNER JOIN #__rwf_forms_'.$form->id .' AS f ON f.id = s.answer_id '
+        . ' LEFT JOIN #__rwf_submitters AS s ON r.sid = s.id '
+        . ' LEFT JOIN #__rwf_forms_'.$form->id .' AS f ON f.id = s.answer_id '
         . ' WHERE r.id IN ('.implode(', ', $cid).')';
         ;
 			$this->_db->setQuery( $query );

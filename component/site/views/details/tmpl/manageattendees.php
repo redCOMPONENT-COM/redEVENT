@@ -66,7 +66,7 @@ if ($this->manage_attendees) {
       				  </td>
       				  <?php endforeach; ?>
       				  
-      				  <?php $edit_url = JRoute::_('index.php?option=com_redevent&view=signup&task=manageredit&xref='. $this->row->xref .'&submitter_id='. $register->id); ?>
+      				  <?php $edit_url = JRoute::_('index.php?option=com_redevent&controller=registration&task=manageredit&xref='. $this->row->xref .'&submitter_id='. $register->id); ?>
                 <td class="edit">
                   <?php echo JHTML::link($edit_url, $edit_image, array('class' => 'editlink')); ?>
                 </td>

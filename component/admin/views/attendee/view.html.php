@@ -40,7 +40,6 @@ class RedEventViewAttendee extends JView {
 
 		//Load pane behavior
 		jimport('joomla.html.pane');
-
 		//initialise variables
 		$editor 	= & JFactory::getEditor();
 		$document	= & JFactory::getDocument();

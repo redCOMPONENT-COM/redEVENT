@@ -90,6 +90,10 @@ class UserAcl {
 	 */
 	function canAddEvent()
 	{
+  	if ($this->superuser()) {
+  		return true;
+  	}
+  	
 		$groups = $this->getUserGroups();
 		foreach ((array) $groups as $group)
 		{
@@ -108,6 +112,10 @@ class UserAcl {
 	 */
 	function canAddVenue()
 	{
+  	if ($this->superuser()) {
+  		return true;
+  	}
+  	
 		$groups = $this->getUserGroups();
 		foreach ((array) $groups as $group)
 		{
@@ -126,6 +134,10 @@ class UserAcl {
 	 */
 	function canEditEvent($eventid)
 	{
+  	if ($this->superuser()) {
+  		return true;
+  	}
+  	
 		$db = &JFactory::getDBO();
 		
 		$query = ' SELECT e.id '
@@ -155,6 +167,10 @@ class UserAcl {
 	 */
 	function canPublishEvent($eventid = 0)
 	{
+  	if ($this->superuser()) {
+  		return true;
+  	}
+  	
 		if (!$eventid) // this is a new event
 		{		
 			$query = ' SELECT g.id '
@@ -189,6 +205,10 @@ class UserAcl {
 	 */
 	function canPublishXref($xref = 0)
 	{
+  	if ($this->superuser()) {
+  		return true;
+  	}
+  	
 		if (!$xref) // this is a new event
 		{		
 			return false;
@@ -219,6 +239,9 @@ class UserAcl {
 	 */
 	function canEditXref($xref)
 	{
+  	if ($this->superuser()) {
+  		return true;
+  	}
 		$db = &JFactory::getDBO();
 
 		$query = ' SELECT e.id '
@@ -241,12 +264,42 @@ class UserAcl {
 	}
 	
 	/**
+	 * return true if current user can manage attendees
+	 * @param int xref_id
+	 */
+  function canManageAttendees($xref_id)
+  {
+  	if ($this->superuser()) {
+  		return true;
+  	}
+  	
+		$db = &JFactory::getDBO();
+  	
+  	$query = ' SELECT gm.id '
+  	       . ' FROM #__redevent_event_venue_xref AS x '
+  	       . ' INNER JOIN #__redevent_groups AS g ON x.groupid = g.id '
+  	       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
+  	       . ' WHERE gm.member = '. $db->Quote($this->_userid)
+  	       . '   AND (gm.manage_xrefs > 0 OR gm.manage_events > 0) '
+  	       . '   AND x.id = '. $db->Quote($xref_id)
+  	       ;
+  	$db->setQuery($query);
+  	$res = $db->loadObjectList();
+  	
+  	return count($res);
+  }
+	
+	/**
 	 * return true if the user can edit specified event
 	 * @param int $eventid
 	 * @return boolean
 	 */
 	function canEditVenue($id)
 	{
+  	if ($this->superuser()) {
+  		return true;
+  	}
+  	
 		$db = &JFactory::getDBO();
 		
 		$query = ' SELECT v.id '
@@ -273,6 +326,10 @@ class UserAcl {
 	 */
 	function canPublishVenue($id = 0)
 	{
+  	if ($this->superuser()) {
+  		return true;
+  	}
+  	
 		if (!$id) // this is a new event
 		{		
 			$query = ' SELECT g.id '

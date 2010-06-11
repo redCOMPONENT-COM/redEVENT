@@ -24,4 +24,13 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
-<?php echo $this->rfields; ?>
+<div id="redevent">
+	<form action="<?php echo $this->action; ?>" method="post" name="redform" enctype="multipart/form-data" onsubmit="return CheckSubmit(this);">
+		<?php echo $this->rfields; ?>
+		<input type="hidden" name="xref" value="<?php echo $this->xref; ?>"/>
+		<div id="submit_button" style="display: block;">
+		<input type="submit" id="redformsubmit" name="submit" value="<?php echo JText::_('Update'); ?>" />
+		<input type="submit" id="redformcancel" name="cancel" value="<?php echo JText::_('Cancel'); ?>" />
+		</div>
+	</form>
+</div>

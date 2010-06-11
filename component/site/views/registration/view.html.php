@@ -62,6 +62,10 @@ class RedeventViewRegistration extends JView
 			$message = $event->review_message;
 			$document->setTitle($event->title.' - '.JText::_('REDEVENT_REGISTRATION_REVIEW_PAGE_TITLE'));
 		}
+		else if ($this->getLayout() == 'edit')
+		{
+			return $this->_displayEdit($tpl);
+		}
 		else {
 			echo 'layout not defined';
 			return;
@@ -75,6 +79,46 @@ class RedeventViewRegistration extends JView
 		$this->assignRef('tags',    $tags);
 		$this->assignRef('message', $message);
 		$this->assignRef('event',   $event);
+		parent::display($tpl);
+	}
+
+	function _displayEdit($tpl = null)
+	{
+		$user = &JFactory::getUser();
+		$acl  = new UserAcl();
+		$xref = JRequest::getInt('xref');
+		$submitter_id = JRequest::getInt('submitter_id');
+		if (!$submitter_id) {
+			JError::raise(0,'Registration id required');
+			return false;
+		}
+		$model  = $this->getModel();
+		$model->setXref($xref);
+		$course = $this->get('SessionDetails');
+		
+		$registration = $model->getRegistration($submitter_id);
+		if (!$registration) {
+			JError::raise(0,$model->getError);
+			return false;
+		}
+		
+		if ($acl->canManageAttendees($registration->xref) && JRequest::getVar('task') == 'manageredit') {
+			$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute('managerupdate'));
+		}
+		else if ($registration->uid == $user->get('id')) {
+			$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute('update'));
+		}
+		else {
+			JError::raiseError(403,'NOT AUTHORIZED');
+			return false;
+		}
+		$rfcore = new RedformCore();
+		$rfields = $rfcore->getFormFields($course->redform_id, array($submitter_id), 1);		
+		
+		
+		$this->assign('action' ,  $action);
+		$this->assign('rfields',  $rfields);	
+		$this->assign('xref',     $xref);		
 		parent::display($tpl);
 	}
 }

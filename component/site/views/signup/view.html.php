@@ -153,6 +153,7 @@ class RedeventViewSignup extends JView
 	
 	function _displayEdit($tpl = null)
 	{
+		exit('test');
 		$user = &JFactory::getUser();
 		$submitter_id = JRequest::getInt('submitter_id', 0);
 		if (!$submitter_id) {
@@ -168,33 +169,22 @@ class RedeventViewSignup extends JView
 			return false;
 		}		
 		
-		JPluginHelper::importPlugin('content', 'redform');
-		$dispatcher = JDispatcher::getInstance();
-		$form = new stdClass();
-		$form->text = '{redform}'.$course->redform_id.', 1'.'{/redform}';
-		$form->eventid = $course->did;
+		$rfcore = new RedformCore();
+		$rfields = $rfcore->getFormFields($course->redform_id, array($submitter_id), 1);
+				
+		$this->assign('rfields',  $rfields);
 		
 		if ($model->getManageAttendees($registration->xref) && JRequest::getVar('task') == 'manageredit') {
-			$form->task = 'manageredit';			
+			$this->assign('edittask',  'manageredit');
 		}
 		else if ($registration->uid == $user->get('id')) {
-			$form->task = 'edit';
+			$this->assign('edittask',  'edit');
 		}
 		else {
 			JError::raiseError(403,'NOT AUTHORIZED');
 			return false;
 		}
-		
-		// params for plugin
-		$params = array();
-		$params['answers'] = array($registration->answers);
-		$params['submitter_id'] = $submitter_id;
-			
-		$results = $dispatcher->trigger('onPrepareEvent', array(& $form, $params, 0));
-		$redform = $form->text;
-		
-		echo $form->text;
-//		parent::display($tpl);
+		parent::display($tpl);
 	}
 }
 ?>
