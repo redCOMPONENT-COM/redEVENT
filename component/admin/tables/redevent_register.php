@@ -39,18 +39,80 @@ class RedEvent_register extends JTable
 	var $id 		= null;
 	/** @var int */
 	var $xref 		= null;
-	/** @var int */
+	/**
+	 * submitter id from redform
+	 * @var int
+	 */
+	var $sid 		= null;
+	/** @var int user id */
 	var $uid 		= null;
 	/** @var date */
 	var $uregdate 	= null;
-	/** @var string */
+	/** @var string ip address */
 	var $uip 		= null;
-	/** @var integer */
+	/** @var string */
 	var $submit_key = null;
+	/**
+	 * on waiting list ?
+	 * @var int
+	 */
+	var $waitinglist = null;
+	/**
+	 * confirmed booking ?
+	 * @var int
+	 */
+	var $confirmed   = null;
+	/**
+	 * confirm timestamp
+	 * @var string (sql date)
+	 */
+	var $confirmdate = null;	
 	
+	var $checked_out = null;
+	var $checked_out_time = null;
 
 	function redevent_register(& $db) {
 		parent::__construct('#__redevent_register', 'id', $db);
+	}
+	
+	function loadBySid($sid)
+	{	
+		$db =& $this->getDBO();
+
+		$query = 'SELECT *'
+		. ' FROM '.$this->_tbl
+		. ' WHERE sid = '.$db->Quote($sid);
+		$db->setQuery( $query );
+
+		if ($result = $db->loadAssoc( )) {
+			return $this->bind($result);
+		}
+		else
+		{
+			$this->setError( $db->getErrorMsg() );
+			return false;
+		} 
+	}
+	
+	function check()
+	{
+		if (!$this->sid) {
+			$this->setError(JText::_('missing sid'));
+			return false;
+		}
+		if (!$this->xref) {
+			$this->setError(JText::_('missing xref'));
+			return false;
+		}
+		if (!$this->submit_key) {
+			$this->setError(JText::_('missing submit_key'));
+			return false;
+		}
+		
+		if (!$this->uregdate) {
+			$this->uregdate = gmdate('Y-m-d H:i:s');
+		}
+		return true;
 	}
 }
 ?>

@@ -77,7 +77,9 @@ class RedEventModelWaitinglist extends JModel {
 	}
 	
 	public function UpdateWaitingList() 
-	{
+	{		
+    $this->getEventData();
+    
 		// nothing to do if there is no max
 		if (empty($this->event_data->maxattendees)) {
 			return true;
@@ -157,15 +159,11 @@ class RedEventModelWaitinglist extends JModel {
 	public function getWaitingList() 
 	{
 		$db = JFactory::getDBO();
-		$q = ' SELECT s.waitinglist, COUNT(s.id) AS total '
-		   . ' FROM #__rwf_submitters AS s '
-		   . ' INNER JOIN #__redevent_register AS r ON r.submit_key = s.submit_key '
-		   . ' WHERE s.xref = '.$this->xref
-		   . '   AND r.xref = '.$this->xref
-		   . '   AND s.confirmed = 1 '
-		   //TODO: we should make sure all redform tags have the integration value properly set
-//		   . '   AND s.integration = "redevent" '
-		   . ' GROUP BY s.waitinglist ';
+		$q = ' SELECT r.waitinglist, COUNT(r.id) AS total '
+		   . ' FROM #__redevent_register AS r '
+		   . ' WHERE r.xref = '.$this->xref
+		   . '   AND r.confirmed = 1 '
+		   . ' GROUP BY r.waitinglist ';
 		$db->setQuery($q);
 		$this->waitinglist = $db->loadObjectList('waitinglist');
 	}
@@ -173,10 +171,11 @@ class RedEventModelWaitinglist extends JModel {
 	/**
 	 * Move people off the waitinglist
 	 */
-	private function MoveOffWaitingList() {
+	private function MoveOffWaitingList() 
+	{
 		$db = JFactory::getDBO();
-		$q = "SELECT answer_id
-			FROM #__rwf_submitters
+		$q = "SELECT sid
+			FROM #__redevent_register
 			WHERE xref = ".$this->xref."
 			AND waitinglist = 1
 			AND confirmed = 1
@@ -185,7 +184,7 @@ class RedEventModelWaitinglist extends JModel {
 		$db->setQuery($q);
 		$this->move_off_ids = $db->loadResultArray();
 		
-		$q = "UPDATE #__rwf_submitters
+		$q = "UPDATE #__redevent_register
 			SET waitinglist = 0
 			WHERE xref = ".$this->xref."
 			AND waitinglist = 1
@@ -199,10 +198,11 @@ class RedEventModelWaitinglist extends JModel {
 	/**
 	 * Move people on the waiting list
 	 */
-	private function MoveOnWaitingList() {
+	private function MoveOnWaitingList() 
+	{
 		$db = JFactory::getDBO();
-		$q = "SELECT answer_id
-			FROM #__rwf_submitters s
+		$q = "SELECT sid
+			FROM #__redevent_register
 			WHERE xref = ".$this->xref."
 			AND waitinglist = 0
 			AND confirmed = 1
@@ -211,7 +211,7 @@ class RedEventModelWaitinglist extends JModel {
 		$db->setQuery($q);
 		$this->move_on_ids = $db->loadResultArray();
 		
-		$q = "UPDATE #__rwf_submitters
+		$q = "UPDATE #__redevent_register
 			SET waitinglist = 1
 			WHERE xref = ".$this->xref."
 			AND waitinglist = 0
@@ -272,11 +272,12 @@ class RedEventModelWaitinglist extends JModel {
 		
 		if ($selectfield) 
 		{
-			/* Inform the ids that they can attend the event */
-			$subids = "id = ".implode(" OR id = ", $update_ids);
-			$fieldname = 'field_'. $selectfield;
+			/* Inform the ids that they can attend the ac */
+			$subids = "s.id IN (".implode(', ', $update_ids).')';
+			$fieldname = 'f.field_'. $selectfield;
 			$query = "SELECT ".$fieldname."
-					FROM #__rwf_forms_".$this->event_data->redform_id."
+					FROM #__rwf_submitters as s 
+					INNER JOIN #__rwf_forms_".$this->event_data->redform_id." as f ON f.id = s.answer_id
 					WHERE ".$subids;
 			$db->setQuery($query);
 			$addresses = $db->loadResultArray();
@@ -315,14 +316,19 @@ class RedEventModelWaitinglist extends JModel {
 	{
 	  if (empty($this->event_data))
 	  {
+	  	if (!$this->xref) {
+	  		$error = JText::_('xref not set in waitinglist model');
+	  		JError::raiseWarning(0, $error);
+	  		$this->setError($error);
+	  		return false;
+	  	}
   		$db = JFactory::getDBO();
-  		$q = "SELECT x.maxattendees, x.maxwaitinglist, e.notify_off_list_body,
-  			e.notify_on_list_body, e.notify_off_list_subject, e.notify_on_list_subject,
-  			e.redform_id
-  			FROM #__redevent_event_venue_xref x
-  			LEFT JOIN #__redevent_events e
-  			ON x.eventid = e.id
-  			WHERE x.id = ".$this->xref;
+  		$q = ' SELECT x.maxattendees, x.maxwaitinglist, '
+  		   . ' e.notify_off_list_body, e.notify_on_list_body, e.notify_off_list_subject, e.notify_on_list_subject, '
+  		   . ' e.redform_id '
+  		   . ' FROM #__redevent_event_venue_xref x  '
+  		   . ' LEFT JOIN #__redevent_events e ON x.eventid = e.id  '
+  		   . ' WHERE x.id = '.$this->xref;
   		$db->setQuery($q);
   		$this->event_data = $db->loadObject();
 	  }
@@ -359,7 +365,7 @@ class RedEventModelWaitinglist extends JModel {
         $this->move_off_ids = $answer_ids;
       }
       
-      $query = ' UPDATE #__rwf_submitters SET waitinglist = 0 WHERE answer_id IN ('.implode(',', $this->move_off_ids).')';
+      $query = ' UPDATE #__redevent_register SET waitinglist = 0 WHERE sid IN ('.implode(',', $this->move_off_ids).')';
       $this->_db->setQuery($query);
 
       if (!$this->_db->query($query)) {
@@ -392,7 +398,7 @@ class RedEventModelWaitinglist extends JModel {
     if (count($answer_ids)) {
       $this->move_on_ids = $answer_ids;
       /* Need to move people on the waitinglist */      
-      $query = ' UPDATE #__rwf_submitters SET waitinglist = 1 WHERE answer_id IN ('.implode(',', $this->move_on_ids).')';
+      $query = ' UPDATE #__redevent_register SET waitinglist = 1 WHERE sid IN ('.implode(',', $this->move_on_ids).')';
       $this->_db->setQuery($query);
     
       if (!$this->_db->query($query)) {

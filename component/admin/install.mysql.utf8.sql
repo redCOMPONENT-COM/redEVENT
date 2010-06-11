@@ -118,6 +118,8 @@ CREATE TABLE IF NOT EXISTS `#__redevent_register` (
 `uregdate` varchar(50) NOT NULL default '',
 `uip` varchar(15) NOT NULL default '',
 `submit_key` varchar(45) NOT NULL,
+`checked_out` int(11) NOT NULL default '0',
+`checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
 PRIMARY KEY  (`id`)
 ) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 

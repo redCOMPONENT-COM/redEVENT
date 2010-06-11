@@ -22,7 +22,11 @@ require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'user.class.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'useracl.class.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'image.class.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'output.class.php');
+require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'attendee.class.php');
 require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'error.class.php');
+
+// redform
+include_once(JPATH_SITE.DS.'components'.DS.'com_redform'.DS.'redform.core.php');
 
 //perform cleanup if it wasn't done today (archive, delete, recurrence)
 redEVENTHelper::cleanup();
@@ -50,28 +54,4 @@ $controller->execute( JRequest::getVar('task') );
 
 // Redirect if set by the controller
 $controller->redirect();
-
-//--------------------------------
-//// Create the controller
-//$controller = JRequest::getWord('view', '');
-//if ($controller == 'redevent') {
-//	$controller = 'details';
-//}
-//
-///* Custom redirect */
-//if (in_array($controller, array('details', 'signup', 'confirmation', 'upcomingevents', 'upcomingvenueevents', 'calendar'))) {
-//	/* Require specific controller if requested */
-//	require_once (JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php');
-//	
-//}
-//else $controller = '';
-//
-//$classname  = 'RedeventController'.$controller;
-//$controller = new $classname( );
-//
-//// Perform the Request task
-//$controller->execute( JRequest::getVar('task', JRequest::getWord('view', null), 'default', 'cmd') );
-//
-//// Redirect if set by the controller
-//$controller->redirect();
 ?>

@@ -36,7 +36,7 @@ $colspan = 14;
 			</td>
 			<td width="20%">
 				<div class="button2-left"><div class="blank"><a title="<?php echo JText::_('PRINT'); ?>" onclick="window.open('index.php?option=com_redevent&amp;view=attendees&amp;layout=print&amp;task=print&amp;tmpl=component&amp;xref=<?php echo $this->event->xref; ?>', 'popup', 'width=750,height=400,scrollbars=yes,toolbar=no,status=no,resizable=yes,menubar=no,location=no,directories=no,top=10,left=10')"><?php echo JText::_('PRINT'); ?></a></div></div>
-				<div class="button2-left"><div class="blank"><a title="<?php echo JText::_('CSV EXPORT'); ?>" onclick="window.open('index.php?option=com_redform&controller=submitters&task=export&integration=redevent&xref=<?php echo $this->event->xref; ?>&form_id=<?php echo $this->event->redform_id;?>&format=raw')"><?php echo JText::_('CSV EXPORT'); ?></a></div></div>
+				<div class="button2-left"><div class="blank"><a title="<?php echo JText::_('CSV EXPORT'); ?>" onclick="window.open('index.php?option=com_redevent&view=attendees&xref=<?php echo $this->event->xref; ?>&form_id=<?php echo $this->event->redform_id;?>&format=csv')"><?php echo JText::_('CSV EXPORT'); ?></a></div></div>
 			</td>
 		  </tr>
 	</table>
@@ -58,13 +58,13 @@ $colspan = 14;
 				<th width="5"><?php echo JText::_( 'Num' ); ?></th>
 				<th width="5"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'REGDATE', 'r.uregdate', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<th class="title"><?php echo JHTML::_('grid.sort', 'CONFIRMDATE', 's.confirmdate', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th class="title"><?php echo JHTML::_('grid.sort', 'CONFIRMDATE', 'r.confirmdate', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'IP ADDRESS', 'r.uip', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'UNIQUE ID', 'r.uid', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'USERNAME', 'u.username', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<th class="title"><?php echo JText::_( 'REMOVE USER' ); ?></th>
-				<th class="title"><?php echo JHTML::_('grid.sort', 'CONFIRMED', 's.confirmed', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<th class="title"><?php echo JHTML::_('grid.sort', 'WAITINGLIST', 's.waitinglist', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th class="title"><?php echo JHTML::_('grid.sort', 'CONFIRMED', 'r.confirmed', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th class="title"><?php echo JHTML::_('grid.sort', 'WAITINGLIST', 'r.waitinglist', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php foreach ((array) $this->rf_fields as $f):?>
 					<?php $colspan++; ?>
 					<th class="title"><?php echo JHTML::_('grid.sort',  $f->field, 'f.field_'.$f->id, $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
@@ -87,17 +87,28 @@ $colspan = 14;
 		<tbody>
 			<?php
 			$k = 0;
-			$i = 0;
-			foreach ((array) $this->rows as $subid => $row) {
+			for($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+			{
+				$row = &$this->rows[$i];
+	
+				$link 		= 'index.php?option=com_redeventg&amp;controller=attendees&amp;task=edit&amp;xref='. $row->xref.'&amp;cid[]='.$row->id;
+				$checked 	= JHTML::_('grid.checkedout', $row, $i );
    			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo $this->pageNav->getRowOffset( $i ); ?></td>
-				<td>			
-					<?php if ($row->answer_id): ?>
-					<input type="checkbox" id="cb<?php echo $i;?>" name="cid[]" value="<?php echo $row->answer_id; ?>" onclick="isChecked(this.checked);" />
-					<?php endif;?>
+				<td><?php echo $checked; ?></td>
+				<td>
+					<?php
+						if ( $row->checked_out && ( $row->checked_out != $this->user->get('id') ) ) {
+							echo JHTML::Date( $row->uregdate, JText::_( 'DATE_FORMAT_LC2' ) );
+						} else {
+					?>
+					<span class="editlinktip hasTip" title="<?php echo JText::_( 'EDIT MEMBER' );?>::<?php echo $row->name; ?>">
+					<a href="<?php echo $link; ?>">
+					<?php echo JHTML::Date( $row->uregdate, JText::_( 'DATE_FORMAT_LC2' ) ); ?>
+					</a></span>
+					<?php } ?>
 				</td>
-				<td><?php echo JHTML::Date( $row->uregdate, JText::_( 'DATE_FORMAT_LC2' ) ); ?></td>
 				<td><?php echo ($row->confirmdate) ? JHTML::Date( $row->confirmdate, JText::_( 'DATE_FORMAT_LC2' ) ) : '-'; ?></td>
 				<td><?php echo $row->uip == 'DISABLED' ? JText::_( 'DISABLED' ) : $row->uip; ?></td>
 				<td><?php echo $row->course_code .'-'. $row->xref .'-'. $row->attendee_id; ?></td>
@@ -151,7 +162,7 @@ $colspan = 14;
 					</td>
 				<?php endif; ?>
 			</tr>
-			<?php $k = 1 - $k; $i++; } ?>
+			<?php $k = 1 - $k; } ?>
 		</tbody>
 
 	</table>

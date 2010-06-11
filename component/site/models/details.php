@@ -273,12 +273,11 @@ class RedeventModelDetails extends JModel
 		$db = JFactory::getDBO();
 
 		// first, get all submissions			
-		$query = ' SELECT r.*, s.waitinglist, s.confirmed, s.confirmdate, s.submit_key '
+		$query = ' SELECT r.*, r.waitinglist, r.confirmed, r.confirmdate, r.submit_key '
 						. ' FROM #__redevent_register AS r '
-						. ' INNER JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key '
 						. ' LEFT JOIN #__users AS u ON r.uid = u.id '
-						. ' WHERE s.xref = ' . $this->_xref
-            . ' AND s.confirmed = 1'
+						. ' WHERE r.xref = ' . $this->_xref
+            . ' AND r.confirmed = 1'
 						;
 		$db->setQuery($query);
 		$submitters = $db->loadObjectList('submit_key');
@@ -318,11 +317,11 @@ class RedeventModelDetails extends JModel
 				$query  = ' SELECT ' . implode(', ', $table_fields)
 				        . ' , s.submit_key, s.id '
 				        . ' FROM #__redevent_register AS r '
-				        . ' INNER JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key '
+				        . ' INNER JOIN #__rwf_submitters AS s ON r.sid = s.id '
 				        . ' INNER JOIN #__rwf_forms_' . $fields[0]->form_id . ' AS a ON s.answer_id = a.id '
-				        . ' WHERE s.xref = ' . $this->_xref
-				        . ' AND s.confirmed = 1'
-				        . ' ORDER BY s.confirmdate';
+				        . ' WHERE r.xref = ' . $this->_xref
+				        . ' AND r.confirmed = 1'
+				        . ' ORDER BY r.confirmdate';
 				        ;
 				$db->setQuery($query);
 				if (!$db->query()) {
@@ -465,7 +464,7 @@ class RedeventModelDetails extends JModel
 		// he must be the one that submitted the form, plus the unregistration must be allowed
 		$q = ' SELECT s.*, r.uid, e.unregistra '
         . ' FROM #__rwf_submitters AS s '
-        . ' INNER JOIN #__redevent_register AS r ON r.submit_key = s.submit_key '
+        . ' INNER JOIN #__redevent_register AS r ON r.sid = s.id '
         . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.id = r.xref '
         . ' INNER JOIN #__redevent_events AS e ON x.eventid = e.id '
         . ' WHERE s.id = ' . $db->Quote($submitter_id)

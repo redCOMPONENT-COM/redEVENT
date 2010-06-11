@@ -157,7 +157,7 @@ class RedEventModelTools extends JModel
 		$query = ' SELECT r.id, r.xref, x.eventid '
 		       . ' FROM #__redevent_register AS r '
 		       . ' LEFT JOIN #__redevent_event_venue_xref AS x ON r.xref = x.id '
-		       . ' LEFT JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key '
+		       . ' LEFT JOIN #__rwf_submitters AS s ON r.sid = s.id '
 		       . ' WHERE s.id IS NULL '
 		       ;
 		$this->_db->setQuery($query);
@@ -189,7 +189,7 @@ class RedEventModelTools extends JModel
 	{		
 		// all the redevent_register records in redevent without an associated record in redform submitters can be deleted
 		$q =  ' SELECT r.id FROM #__redevent_register AS r '
-        . ' LEFT JOIN #__rwf_submitters AS s ON s.submit_key = r.submit_key '
+        . ' LEFT JOIN #__rwf_submitters AS s ON s.id = r.sid '
         . ' WHERE s.id IS NULL '
         ;
     $this->_db->setQuery($q);

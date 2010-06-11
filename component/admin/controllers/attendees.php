@@ -39,12 +39,16 @@ class RedEventControllerAttendees extends RedEventController
 	 *
 	 *@since 0.9
 	 */
-	function __construct() {
+	function __construct() 
+	{
 		parent::__construct();
 		$this->registerTask( 'addattendee', 'attendees' );
+		$this->registerTask( 'add',   'edit' );
+		$this->registerTask( 'apply', 'save' );
 	}
 	
-	public function Attendees() {
+	public function Attendees() 
+	{
 		/* Create the view object */
 		$view = $this->getView('attendees', 'html');
 		
@@ -57,7 +61,8 @@ class RedEventControllerAttendees extends RedEventController
 		$view->display();
 	}
 	
-	public function Submitters() {
+	public function Submitters() 
+	{
 		global $mainframe;
 		$mainframe->redirect('index.php?option=com_redform&controller=submitters&task=submitters&integration=redevent&xref='.JRequest::getInt('xref').'&form_id='.JRequest::getInt('form_id').'&filter='.JRequest::getInt('filter'));
 		
@@ -81,12 +86,11 @@ class RedEventControllerAttendees extends RedEventController
 	 * @access private
 	 * @since 0.9
 	 */
-	function remove()
-	{
+	function remove($cid = array())
+	{		
 		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
 		$xref 	= JRequest::getInt('xref');
 		$total 	= count( $cid );
-		$db = JFactory::getDBO();
 		$formid = JRequest::getInt('form_id');
 		
 		/* Check if anything is selected */
@@ -97,35 +101,10 @@ class RedEventControllerAttendees extends RedEventController
 		/* Get all submitter ID's */
 		$model = $this->getModel('attendees');
 				
-		/* Delete the redFORM entry first */
-		/* Submitter answers first*/
-		//TODO: put this in the model !
-		$q = "DELETE FROM #__rwf_forms_".JRequest::getInt('form_id')."
-			WHERE id IN (".implode(', ', $cid).")";
-		$db->setQuery($q);
-		$db->query();
-		
-		/* Submitter second */
-		$q = "DELETE FROM #__rwf_submitters
-      WHERE answer_id IN (".implode(', ', $cid).")
-			AND form_id = ".$formid;
-		$db->setQuery($q);
-		$db->query();
-		
-		// all the redevent_register records in redevent without an associated record in redform submitters can be deleted
-		$q =  ' SELECT r.id FROM #__redevent_register AS r '
-        . ' LEFT JOIN #__rwf_submitters AS s ON s.submit_key = r.submit_key '
-        . ' WHERE s.id IS NULL '
-        ;
-    $db->setQuery($q);
-    $register_ids = $db->loadResultArray();		
-    if (!empty($register_ids))
-    {
-			if(!$model->remove($register_ids)) {
-	      RedeventError::raiseWarning(0, JText::_( "CANT DELETE REGISTRATIONS" ) . ': ' . $model->getError() );
-				echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
-			}
-    }
+		if(!$model->remove($cid)) {
+      RedEventError::raiseWarning(0, JText::_( "CANT DELETE REGISTRATIONS" ) . ': ' . $model->getError() );
+			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
+		}
 		
 		/* Check if we have space on the waiting list */
 		$model_wait = $this->getModel('waitinglist');
@@ -278,5 +257,110 @@ class RedEventControllerAttendees extends RedEventController
 
 		$mainframe->close();
 	}
+	
+	/**
+	 * logic to create the edit screen
+	 *
+	 * @access public
+	 * @return void
+	 * @since 0.9
+	 */
+	function edit( )
+	{
+		JRequest::setVar( 'view', 'attendee' );
+		JRequest::setVar( 'hidemainmenu', 1 );
+
+		$model 	= $this->getModel('attendee');
+		$task 	= JRequest::getVar('task');
+
+		if ($task == 'copy' || $task == 'add') {
+			JRequest::setVar( 'task', $task );
+		} 
+		else 
+		{			
+			$user	=& JFactory::getUser();
+			// Error if checkedout by another administrator
+			if ($model->isCheckedOut( $user->get('id') )) {
+				$this->setRedirect( 'index.php?option=com_redevent&view=attendees', JText::_( 'EDITED BY ANOTHER ADMIN' ) );
+			}
+			$model->checkout();
+		}
+		parent::display();
+	}
+
+	/**
+	 * logic for cancel an action
+	 *
+	 * @access public
+	 * @return void
+	 * @since 0.9
+	 */
+	function cancel()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or die( 'Invalid Token' );
+		
+		$xref = JRequest::getVar('xref', 0, '', 'int') or die( 'Missing xref' );
+		
+		$row = & JTable::getInstance('redevent_register', '');
+		$row->bind(JRequest::get('post'));
+		$row->checkin();
+
+		$this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='. $xref );
+	}
+
+	/**
+	 * logic to save an attendee
+	 *
+	 * @access public
+	 * @return void
+	 * @since 0.9
+	 */
+	function save()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or die( 'Invalid Token' );
+		$xref = JRequest::getVar('xref', 0, '', 'int') or die( 'Missing xref' );
+		$task		= JRequest::getVar('task');
+
+		$post 	= JRequest::get( 'post' );
+		
+		$model = $this->getModel('attendee');
+		
+		$msg = '';
+		$mtype= 'message';
+
+		if ($returnid = $model->store($post)) 
+		{		
+			$model_wait = $this->getModel('Waitinglist');
+			$model_wait->setXrefId($xref);
+			$model_wait->UpdateWaitingList();
+	      
+			$cache = JFactory::getCache('com_redevent');
+			$cache->clean();
+			
+			switch ($task)
+			{
+				case 'apply' :
+					$link = 'index.php?option=com_redevent&controller=attendees&view=attendee&xref='. $xref.'&hidemainmenu=1&cid[]='.$returnid;
+					break;
+
+				default :
+					$link 	= 'index.php?option=com_redevent&view=attendees&xref='. $xref;
+					break;
+			}
+			$msg	= JText::_( 'REGISTRATION SAVED');
+			
+		} else {
+
+			$link 	= 'index.php?option=com_redevent&view=attendees&xref='. $xref;
+			$msg	= $model->getError();
+			$mtype= 'error';				
+		}
+
+		$model->checkin();
+
+		$this->setRedirect( $link, $msg, $mtype );
+ 	}
 }
 ?>

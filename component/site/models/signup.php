@@ -315,9 +315,9 @@ class RedeventModelSignup extends JModel
 		$query = ' SELECT COUNT(*) as total '
 		        . ' FROM #__redevent_event_venue_xref AS x'
             . ' INNER JOIN #__redevent_register AS r on r.xref = x.id ' 
-		        . ' INNER JOIN #__rwf_submitters AS s ON s.submit_key = r.submit_key'
+		        . ' INNER JOIN #__rwf_submitters AS s ON s.id = r.id'
 		        . ' WHERE x.id = ' . $this->_db->Quote($this->_xref)
-		        . '   AND s.confirmed = 1'
+		        . '   AND r.confirmed = 1'
 		        ;
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadResult();
@@ -341,7 +341,7 @@ class RedeventModelSignup extends JModel
 	{
 		$query =' SELECT s.*, r.uid, e.unregistra '
         . ' FROM #__rwf_submitters AS s '
-        . ' INNER JOIN #__redevent_register AS r ON r.submit_key = s.submit_key '
+        . ' INNER JOIN #__redevent_register AS r ON r.sid = s.id '
         . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.id = r.xref '
         . ' INNER JOIN #__redevent_events AS e ON x.eventid = e.id '
         . ' WHERE s.id = ' . $this->_db->Quote($submitter_id)

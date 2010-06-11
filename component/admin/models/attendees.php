@@ -138,10 +138,10 @@ class RedEventModelAttendees extends JModel
 
 		if ($this->getState('unlimited') == '') {
 			$db->setQuery($query, $this->getState('limitstart'), $this->getState('limit'));
-			$this->_data = $db->loadObjectList('answer_id');
+			$this->_data = $db->loadObjectList();
 		} else {
 			$db->setQuery($query);
-			$this->_data = $db->loadObjectList('answer_id');
+			$this->_data = $db->loadObjectList();
 		}
 		return $this->_data;
 	}
@@ -216,14 +216,14 @@ class RedEventModelAttendees extends JModel
 		$where		= $this->_buildContentWhere();
 
 		$query = ' SELECT r.*, r.id as attendee_id, u.username, u.name, a.id AS eventid, u.gid, u.email '
-		       . ', s.answer_id, s.waitinglist, s.confirmdate, s.confirmed, s.id AS submitter_id, s.price, fo.activatepayment, p.paid, p.status '
+		       . ', s.answer_id, r.waitinglist, r.confirmdate, r.confirmed, s.id AS submitter_id, s.price, fo.activatepayment, p.paid, p.status '
 		       . ', a.course_code '
 		       . $rfields
 		       . ' FROM #__redevent_register AS r '
 		       . ' LEFT JOIN #__redevent_event_venue_xref AS x ON r.xref = x.id '
 		       . ' LEFT JOIN #__redevent_events AS a ON x.eventid = a.id '
 		       . ' LEFT JOIN #__users AS u ON r.uid = u.id '
-		       . ' LEFT JOIN #__rwf_submitters AS s ON r.submit_key = s.submit_key '
+		       . ' LEFT JOIN #__rwf_submitters AS s ON r.sid = s.id '
 		       . ' LEFT JOIN #__rwf_forms AS fo ON fo.id = s.form_id '
 		       . ' LEFT JOIN #__rwf_payment AS p ON p.submit_key = s.submit_key '
 		       . $join_rwftable
@@ -271,9 +271,10 @@ class RedEventModelAttendees extends JModel
 	{
 		global $mainframe, $option;
 		
-		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.attendees.filter_order', 'filter_order', 's.confirmdate', 'cmd' );
+		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.attendees.filter_order', 'filter_order', 'r.confirmdate', 'cmd' );
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.attendees.filter_order_Dir',	'filter_order_Dir',	'', 'word' );
-		return ' ORDER BY '.$filter_order.' '.$filter_order_Dir.', s.confirmdate';
+		return ' ORDER BY '.$filter_order.' '.$filter_order_Dir.', r.confirmdate DESC';
+		
 	}
 	
 	/**
@@ -328,19 +329,23 @@ class RedEventModelAttendees extends JModel
 	 */
 	function getEvent()
 	{
-		$query = 'SELECT eventid, title, x.dates, redform_id , x.id AS xref
-				FROM #__redevent_events e
-				LEFT JOIN #__redevent_event_venue_xref x
-				ON x.eventid = e.id';
-		if (JRequest::getInt('filter', false) && JRequest::getInt('filter', 0) > 0) $query .= ' WHERE x.id = '.JRequest::getInt('filter');
-		else if (!is_null($this->_eventid) && $this->_eventid > 0) $query .= ' WHERE e.id = '.$this->_eventid;
-		else if (!is_null($this->_xref) && $this->_xref > 0) $query .= ' WHERE x.id = '.$this->_xref;
+		if (empty($this->_event))
+		{
+			$query = ' SELECT x.eventid, e.title, x.dates, e.redform_id , x.id AS xref, e.showfields, e.course_code  '
+			       . ' , v.venue '
+			       . ' FROM #__redevent_events e '
+			       . ' LEFT JOIN #__redevent_event_venue_xref x	ON x.eventid = e.id '
+			       . ' LEFT JOIN #__redevent_venues AS v ON x.venueid = v.id '
+			       ;
+			if (!is_null($this->_xref) && $this->_xref > 0) {
+				$query .= ' WHERE x.id = '.$this->_xref;
+			}		
+	
+			$this->_db->setQuery( $query );
+			$this->_event = $this->_db->loadObject();
+		}
 		
-
-		$this->_db->setQuery( $query );
-		$_event = $this->_db->loadObject();
-
-		return $_event;
+		return $this->_event;
 	}
 
 	/**
@@ -355,10 +360,14 @@ class RedEventModelAttendees extends JModel
 		if (count( $cid ))
 		{
 			$ids = implode(',', $cid);
-			
-			if (substr($ids, -1) == ',') $ids = substr($ids, 0, -1);
-			
-			$query = 'DELETE FROM #__redevent_register WHERE id IN ('. $ids .') ';
+			$form = $this->getForm();
+						
+			$query = ' DELETE s, f, r '
+        . ' FROM #__redevent_register AS r '
+        . ' INNER JOIN #__rwf_submitters AS s ON r.sid = s.id '
+        . ' INNER JOIN #__rwf_forms_'.$form->id .' AS f ON f.id = s.answer_id '
+        . ' WHERE r.id IN ('.implode(', ', $cid).')';
+        ;
 			$this->_db->setQuery( $query );
 			
 			if (!$this->_db->query()) {
@@ -368,62 +377,7 @@ class RedEventModelAttendees extends JModel
 		}
 		return true;
 	}
-	
-	/**
-	 * Get form ID belonging to a submitter
-	 *
-	 * @access public
-	 * @return true on success
-	 * @since 0.9
-	 */
-	function getSubmitterFormId($cid = array(), $event)
-	{
-		if (count( $cid ))
-		{
-			$ids = implode(',', $cid);
-			$event = (int)$event;
-			
-			$query = 'SELECT s.form_id 
-					FROM #__redevent_register r, #__rwf_submitters s
-					WHERE r.submitter_id = s.answer_id
-					AND r.id IN ('. $ids .') AND event = '.$event." LIMIT 1";
-
-			$this->_db->setQuery( $query );
-			JRequest::setVar('form_id', $this->_db->loadResult());
-			if ($this->_db->getErrorNum() > 0) {
-				RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
-			}
-		}
-	}
-	
-	function getDateTimeLocation() {
-		$db = JFactory::getDBO();
-		$q = 'SELECT x.*, v.venue
-			FROM #__redevent_event_venue_xref x
-			LEFT JOIN #__redevent_venues v
-			ON v.id = x.venueid ';
-		if (!is_null($this->_eventid) && $this->_eventid > 0) $q .= ' WHERE x.eventid = '.$this->_eventid;
-		else if (!is_null($this->_xref) && $this->_xref > 0) $q .= ' WHERE x.id = '.$this->_xref;
-		$q .= '	ORDER BY v.venue, x.dates';
-		$db->setQuery($q);
-		return $db->loadObjectList();
-	}
-	
-	/**
-	 * Add an attendee
-	 */
-	function getAddAttendee() {
-		$row = $this->getTable('redevent_register', '');
-		$store = array();
-		$store['submit_key'] = JRequest::getVar('submit_key');
-		$store['xref'] = JRequest::getInt('xref');
-		$store['uregdate'] = gmdate('Y-m-d H:i:s');
-		$store['uid'] = JRequest::getInt('user_id', 0);
-		$row->bind($store);
-		$row->check();
-		$row->store();
-	}
-	
+				
 	/**
 	 * confirm attendees
 	 * 
@@ -436,7 +390,7 @@ class RedEventModelAttendees extends JModel
     {
       $ids = implode(',', $cid);
             
-      $query = 'UPDATE #__rwf_submitters SET confirmed = 1 WHERE answer_id IN ('. $ids .') AND xref = '. $this->_db->Quote($this->_xref);
+      $query = 'UPDATE #__redevent_register SET confirmed = 1 WHERE id IN ('. $ids .') ';
       $this->_db->setQuery( $query );
       
       if (!$this->_db->query()) {
@@ -460,7 +414,7 @@ class RedEventModelAttendees extends JModel
     {
       $ids = implode(',', $cid);
             
-      $query = 'UPDATE #__rwf_submitters SET confirmed = 0 WHERE answer_id IN ('. $ids .') AND xref = '. $this->_db->Quote($this->_xref);
+      $query = 'UPDATE #__redevent_register SET confirmed = 0 WHERE id IN ('. $ids .') ';
       $this->_db->setQuery( $query );
       
       if (!$this->_db->query()) {
@@ -501,5 +455,79 @@ class RedEventModelAttendees extends JModel
 //  	echo '<pre>';print_r($this->_db->getQuery()); echo '</pre>';exit;
 		return $res;
   }
+
+	function getDateTimeLocation() 
+	{
+		$q = ' SELECT x.*, v.venue '
+		   . ' FROM #__redevent_event_venue_xref x '
+		   . ' LEFT JOIN #__redevent_venues v ON v.id = x.venueid '
+		   ;
+		if (!is_null($this->_eventid) && $this->_eventid > 0) {
+			$q .= ' WHERE x.eventid = '.$this->_eventid;
+		}
+		else if (!is_null($this->_xref) && $this->_xref > 0) {
+			$q .= ' WHERE x.id = '.$this->_xref;
+		}
+		$q .= '	ORDER BY v.venue, x.dates';
+		$this->_db->setQuery($q);
+		return $this->_db->loadObjectList();
+	}
+	
+	function getFields($select = array())
+	{
+		$event = $this->getEvent();
+		$rfcore = new RedFormCore();
+		return $rfcore->getFields($event->redform_id); 
+	}
+	
+/**
+	 * Method to get the registered users
+	 *
+	 * @access	public
+	 * @return	object
+	 * @since	0.9
+	 * @todo Complete CB integration
+	 */
+	function getRegisters($all_fields = false, $admin = false) 
+	{
+		// make sure the init is done
+		$this->getEvent();
+	  
+		// first, get all submissions			
+		$query = ' SELECT r.*, r.waitinglist, r.confirmed, r.confirmdate, r.submit_key, u.name '
+						. ' FROM #__redevent_register AS r '
+						. ' INNER JOIN #__rwf_submitters AS s ON s.id = r.sid '
+						. ' LEFT JOIN #__users AS u ON r.uid = u.id '
+						. ' WHERE r.xref = ' . $this->_xref
+            . ' AND r.confirmed = 1'
+						;
+		$this->_db->setQuery($query);
+		$submitters = $this->_db->loadObjectList();
+		
+		// get answers
+		$sids = array();
+		if (count($submitters)) 
+		{
+			foreach ($submitters as $s) 
+			{
+				$sids[] = $s->sid;
+			}
+		}
+		$event = $this->getEvent();
+		$rfcore = new RedFormCore();
+		$answers = $rfcore->getSidsAnswers($event->redform_id, $sids);
+		
+		// add answers to registers
+		foreach ($submitters as $k => $s)
+		{
+			if (isset($answers[$s->sid])) {
+				$submitters[$k]->answers = $answers[$s->sid];
+			}
+			else {
+				$submitters[$k]->answers = null;
+			}
+		}
+		return $submitters;
+	}
 }
 ?>

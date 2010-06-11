@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.0 $Id$
+ * @version 1.0 $Id: details.php 3056 2010-01-20 11:50:16Z julien $
  * @package Joomla
  * @subpackage redEVENT
  * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
@@ -26,68 +26,182 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-require_once JPATH_COMPONENT.DS.'classes'.DS.'attendee.class.php';
-
 /**
- * EventList Component Details Model
+ * redEvent Component registration Model
  *
  * @package Joomla
- * @subpackage EventList
- * @since		0.9
+ * @subpackage redevent
+ * @since		2.0
  */
-class RedeventModelConfirmation extends JModel
+class RedEventModelRegistration extends JModel
 {
-	public function getDetails() {
-		$db = JFactory::getDBO();
+	/**
+	 * event session id
+	 * @var int
+	 */
+	var $_xref = 0;
+	
+	/**
+	 * data
+	 * @var object
+	 */
+	var $_xrefdata = null;
+	
+	function __contruct($xref = 0, $config = array())
+	{
+		parent::__construct($config);
 		
-		/* Load registration details */
-		$q = "SELECT *
-			FROM #__redevent_register r
-			LEFT JOIN #__redevent_event_venue_xref x
-			ON r.xref = x.id
-			LEFT JOIN #__redevent_events e
-			ON e.id = x.eventid
-			WHERE submit_key = ".$db->Quote(JRequest::getVar('submit_key'));
-		$db->setQuery($q);
-		$details['event'] = $db->loadObject();
-		
-		/* Load venue details */
-		$q = "SELECT *
-			FROM #__redevent_venues
-			WHERE id = (SELECT venueid FROM #__redevent_event_venue_xref WHERE id = ".$details['event']->xref.")";
-		$db->setQuery($q);
-		$details['venue'] = $db->loadObject();
-		
-		/* Load all subscribers */
-		$q = "SELECT *
-			FROM #__rwf_submitters
-			WHERE submit_key = ".$db->Quote(JRequest::getVar('submit_key'));
-		$db->setQuery($q);
-		$details['submitters'] = $db->loadObjectList();
-		
-		/* Load the fields */
-		$q = "SELECT field, REPLACE(LOWER(field), ' ', '') AS rawfield
-			FROM #__rwf_fields
-			WHERE form_id = ".$details['event']->redform_id;
-		$db->setQuery($q);
-		$details['fields'] = $db->loadObjectList('rawfield');
-		
-		/* Load all the answers */
-		foreach ($details['submitters'] AS $key => $submitter) {
-			$q = "SELECT *
-				FROM #__rwf_forms_".$submitter->form_id."
-				WHERE id = ".$submitter->answer_id;
-			$db->setQuery($q);
-			$details['answers'][$key] = $db->loadObject();
+		if ($xref) {
+			$this->setXref($xref);
 		}
-		
-		return $details;
 	}
 	
+	function setXref($xref_id)
+	{
+		$this->_xref = (int) $xref_id;
+	}
+	
+	function register($sid, $submit_key, $data = array())
+	{
+		$user    = &JFactory::getUser();
+		$config  = redEventHelper::config();
+		$session = $this->getSessionDetails();
+		
+		if ($sid)
+		{
+			$obj = $this->getTable('Redevent_register', '');
+			$obj->loadBySid($sid);
+			$obj->sid        = $sid;
+			$obj->xref       = $this->_xref;
+			$obj->submit_key = $submit_key;
+			$obj->uid        = $user->get('id');
+			$obj->uregdate 	 = gmdate('Y-m-d H:i:s');
+			$obj->uip        = $config->storeip ? getenv('REMOTE_ADDR') : 'DISABLED';
+			if ($session->activate == 0) // no activation 
+			{
+				$obj->confirmed = 1;
+				$obj->confirmdate = gmdate('Y-m-d H:i:s');
+			}
+			
+			if (!$obj->check()) {
+				$this->setError($obj->getError());
+				return false;
+			}
+			
+			if (!$obj->store()) {
+				$this->setError($obj->getError());
+				return false;
+			}
+			
+			return true;
+		}
+	}
+	
+	function getSessionDetails()
+	{
+		if (empty($this->_xrefdata))
+		{
+			if (empty($this->_xref)) {
+				$this->setError(JText::_('missing xref for session'));
+				return false;
+			}
+			$query = 'SELECT a.id AS did, x.id AS xref, a.title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, a.registra, a.unregistra, a.activate, ' 
+					. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
+					. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone,'
+					. ' v.venue,'
+					. ' u.name AS creator_name, u.email AS creator_email, '
+					. ' a.confirmation_message, a.review_message, '
+					. " x.course_price, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.catname, c.published, c.access,"
+	        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
+	        . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
+					. ' FROM #__redevent_events AS a'
+					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
+					. ' LEFT JOIN #__redevent_venues AS v ON x.venueid = v.id'
+	        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+	        . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+					. ' LEFT JOIN #__users AS u ON a.created_by = u.id '
+					. ' WHERE x.id = '.$this->_xref
+					;
+    	$this->_db->setQuery($query);
+			$this->_xrefdata = $this->_db->loadObject();
+			if ($this->_xrefdata) {
+        $this->_xrefdata = $this->_getEventCategories($this->_xrefdata);				
+			}
+		}
+		return $this->_xrefdata;
+	}
+	
+  /**
+   * adds categories property to event row
+   *
+   * @param object event
+   * @return object
+   */
+  function _getEventCategories($row)
+  {
+  	$query =  ' SELECT c.id, c.catname, c.access, '
+			  	. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
+			  	. ' FROM #__redevent_categories as c '
+			  	. ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
+			  	. ' WHERE c.published = 1 '
+			  	. '   AND x.event_id = ' . $this->_db->Quote($row->did)
+			  	. ' ORDER BY c.ordering'
+			  	;
+  	$this->_db->setQuery( $query );
+
+  	$row->categories = $this->_db->loadObjectList();
+
+    return $row;   
+  }
+  
+  /**
+   * adds registered (int) and waiting (int) properties to rows.
+   * 
+   * @return array 
+   */
+  function getRegistrationsCount() 
+  {
+  	$session = &$this->getSessionDetails();
+  	
+		$query = ' SELECT waitinglist, COUNT(id) AS total '
+		       . ' FROM #__redevent_register '
+		       . ' WHERE xref = '.$session->xref
+		       . ' AND confirmed = 1 '
+		       . ' GROUP BY waitinglist'
+		       ;
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadObjectList('waitinglist');
+    return array('attending' => (isset($res[0]) ? $res[0]->total : 0), 'waiting' => (isset($res[1]) ? $res[1]->total : 0));
+  }
+  
+  function cancel($submit_key)
+  {
+  	$session = &$this->getSessionDetails();
+  	
+		if (!empty( $submit_key ))
+		{						
+			$query = ' DELETE s, f, r '
+        . ' FROM #__redevent_register AS r '
+        . ' INNER JOIN #__rwf_submitters AS s ON r.sid = s.id '
+        . ' INNER JOIN #__rwf_forms_'.$session->redform_id .' AS f ON f.id = s.answer_id '
+        . ' WHERE r.submit_key = '.$this->_db->Quote($submit_key);
+        ;
+			$this->_db->setQuery( $query );
+			
+			if (!$this->_db->query()) {
+				redeventError::raiseError( 1001, $this->_db->getErrorMsg() );
+				return false;
+			}
+		}
+		return true;
+  	
+  }
+  
+
 	/**
 	 * Send e-mail confirmations
 	 */
-	public function getMailConfirmation() 
+	public function sendNotificationEmail() 
 	{
 		$mainframe = & JFactory::getApplication();
 		
@@ -254,7 +368,7 @@ class RedeventModelConfirmation extends JModel
 
 				      /* Get the activation link */
 				      $activatelink = '<a href="'.JRoute::_(JURI::root().'index.php?task=confirm&option=com_redevent&confirmid='.str_replace(".", "_", $registration->uip).'x'.$registration->xref.'x'.$registration->uid.'x'.$registration->sid.'x'.JRequest::getVar('submit_key')).'">'.JText::_('Activate').'</a>';
-
+							echo '<pre>';print_r($activatelink);print_r($registration); echo '</pre>';exit;
 				      /* Mail attendee */
 				      $htmlmsg = '<html><head><title></title></title></head><body>';
 				      $htmlmsg .= str_replace('[activatelink]', $activatelink, $eventsettings->notify_body);
@@ -353,9 +467,93 @@ class RedeventModelConfirmation extends JModel
 		return $registration;
 	}
 	
+
+  function notifyManagers()
+  {
+  	jimport('joomla.mail.helper');
+  	$app    = &JFactory::getApplication();
+  	$params = $app->getParams('com_redevent');
+		$tags   = new redEVENT_tags();
+  	
+  	$event = $this->getSessionDetails();
+  	
+  	$recipients = array();
+  	
+  	// default recipients
+  	$default = $params->get('registration_default_recipients');
+  	if (!empty($default)) 
+  	{
+  		if (strstr($default, ';')) {
+  			$addresses = explode(";", $default);
+  		}
+  		else {
+  			$addresses = explode(",", $default);
+  		}
+  		foreach ($addresses as $a) 
+  		{
+  			$a = trim($a);
+	  		if (JMailHelper::isEmailAddress($a)) {
+	  			$recipients[] = array('email' => $a, 'name' => '');
+	  		}  			
+  		}
+  	}
+  	
+  	// creator
+  	if ($params->get('registration_notify_creator', 1)) {
+  		if (JMailHelper::isEmailAddress($event->creator_email)) {
+  			$recipients[] = array('email' => $event->creator_email, 'name' => $event->creator_name);
+  		}
+  	}
+  	
+  	// group recipients
+  	$gprecipients = $this->_getXrefRegistrationRecipients();
+  	foreach ($gprecipients AS $r)
+  	{
+  		$recipients[] =  array('email' => $r->email, 'name' => $r->name);	
+  	}
+  	
+  	if (!count($recipients)) {
+  		return true;
+  	}
+  	
+  	$mailer = & JFactory::getMailer();
+  	
+  	foreach ($recipients as $r)
+  	{
+  		$mailer->addAddress($r['email'], $r['name']);
+  	}
+  	
+  	$mailer->setSubject($tags->ReplaceTags($params->get('registration_notification_subject')));
+  	$mailer->MsgHTML($tags->ReplaceTags($params->get('registration_notification_body')));
+  	if (!$mailer->send())
+  	{
+  		RedeventHelperLog::simplelog(JText::_('REDEVENT_ERROR_REGISTRATION_MANAGERS_NOTIFICATION_FAILED'));
+  		$this->setError(JText::_('REDEVENT_ERROR_REGISTRATION_MANAGERS_NOTIFICATION_FAILED'));
+  		return false;
+  	}
+  	return true;
+  }
+  
+  function _getXrefRegistrationRecipients()
+  {
+  	$event = $this->getSessionDetails();
+  	
+		$query = ' SELECT u.name, u.email '
+					 . ' FROM #__redevent_event_venue_xref AS x '
+					 . ' INNER JOIN #__redevent_groups AS g ON x.groupid = g.id '
+					 . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
+					 . ' INNER JOIN #__users AS u ON gm.member = u.id '
+					 . ' WHERE x.id = '. $this->_db->Quote($event->xref)
+					 . '   AND gm.receive_registrations = 1 '
+					 ;
+		$this->_db->setQuery($query);
+		$xref_group_recipients = $this->_db->loadObjectList();
+		return $xref_group_recipients;
+  }
+  
 	/**
-     * Initialise the mailer object to start sending mails
-     */
+	 * Initialise the mailer object to start sending mails
+	 */
 	private function Mailer() 
 	{
 		if (empty($this->mailer))
@@ -371,68 +569,4 @@ class RedeventModelConfirmation extends JModel
 		}
 		return $this->mailer;
 	}
-	
-	/**
-	 * Cancel confirmation
-	 */
-	public function getCancelConfirmation() {
-		$db = JFactory::getDBO();
-		$submit_key = JRequest::getVar('submit_key');
-		
-		/* Get the answer ID's to delete */
-		$q = "SELECT id, answer_id, form_id
-			FROM #__rwf_submitters
-			WHERE submit_key = ".$db->Quote($submit_key);
-		$db->setQuery($q);
-		$attendees_ids = $db->loadObjectList();
-		
-		/* Remove the answers */
-		foreach ($attendees_ids as $key => $attendee) {
-			$q = "DELETE FROM #__rwf_forms_".$attendee->form_id."
-				WHERE id = ".$attendee->answer_id;
-			$db->setQuery($q);
-			$db->query();
-		}
-		
-		/* Delete redFORM entry */
-		$q = "DELETE FROM #__rwf_submitters
-			WHERE submit_key = ".$db->Quote($submit_key);
-		$db->setQuery($q);
-		$db->query();
-		
-		/* Delete redEVENT entry */
-		$q = "DELETE FROM #__redevent_register
-			WHERE submit_key = ".$db->Quote($submit_key);
-		$db->setQuery($q);
-		$db->query();
-	}
-	
-	/**
-	 * Check the submit key
-	 */
-	public function getCheckSubmitKey() 
-	{
-		$db = JFactory::getDBO();
-		$submit_key = JRequest::getVar('submit_key');
-		
-		/* Load registration details */
-		$q = "SELECT submit_key
-			FROM #__redevent_register
-			WHERE submit_key = ".$db->Quote($submit_key);
-		$db->setQuery($q);
-		$result = $db->loadResult();
-		
-		if ($result == $submit_key) {
-			return true;
-		}
-    if ($result == null) {
-      RedeventHelperLog::simpleLog('Confirm submit_key Query error: ' . $db->getErrorMsg());  
-      return false;  
-    }
-		else {
-			RedeventHelperLog::simpleLog('No registration found for key ' . $submit_key);
-			return false;
-		}
-	}
 }
-?>

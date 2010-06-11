@@ -556,7 +556,8 @@ class redEVENT_tags {
 				    case 'paymentrequest':
 				      $search[]  = '['.$tag.']';
 				      if (!empty($submit_key)) {
-              	$replace[] = JHTML::link(JRoute::_('index.php?option=com_redform&controller=payment&task=select&source=redevent&key='.$submit_key, false), JText::_('Checkout'), '');
+				      	$title = urlencode($this->_data->title.' '.$this->_data->dates);				      
+              	$replace[] = JHTML::link(JRoute::_('index.php?option=com_redform&controller=payment&task=select&source=redevent&key='.$submit_key.'&paymenttitle='.$title, false), JText::_('Checkout'), '');
 				      }
 				      else {
 				      	$replace[] = '';
@@ -567,7 +568,8 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
 				      $submit_key = JRequest::getVar('submit_key');
 				      if (!empty($submit_key)) {
-              	$replace[] = JRoute::_('index.php?option=com_redform&controller=payment&task=select&source=redevent&key='.$submit_key, false);
+				      	$title = urlencode($this->_data->title.' '.$this->_data->dates);				      
+              	$replace[] = JRoute::_('index.php?option=com_redform&controller=payment&task=select&source=redevent&key='.$submit_key.'&paymenttitle='.$title, false);
 				      }
 				      else {
 				      	$replace[] = '';
@@ -597,33 +599,7 @@ class redEVENT_tags {
 				  $status = redEVENTHelper::canRegister($this->_xref);
 				  if ($status->canregister) 
 				  {
-  					JPluginHelper::importPlugin( 'content' );
-  					$dispatcher = JDispatcher::getInstance();
-  					$form = new stdClass();
-  					$form->text = '{redform}'.$this->_data->redform_id.','.($this->_data->max_multi_signup ? $this->_data->max_multi_signup : 1).'{/redform}';
-  					$form->eventid = $this->_eventid;
-  					if (empty($this->_data->review_message)) {
-  						$form->task = 'userregister_noreview';
-  					}
-  					else 
-  					{
-	  					switch (JRequest::getVar('step')) 
-	  					{
-	  						case 'review':
-	  							$form->task = 'finalize';
-	  							break;
-	  						default:
-	  							$form->task = 'userregister';
-	  							break;
-	  					}
-  					}
-  					// params for plugin
-  					$params = array();
-  					$params['show_submission_type_webform_formal_offer'] = $this->_data->show_submission_type_webform_formal_offer;	
-  					$params['eventdetails'] = $this->_data;		
-  									
-  					$results = $dispatcher->trigger('onPrepareEvent', array(& $form, $params, 0));
-            $redform = $form->text;
+            $redform = $this->getForm($this->_data->redform_id);
 				  }
 				  else {
 				    $redform = $status->status;
@@ -784,12 +760,11 @@ class redEVENT_tags {
     $db = JFactory::getDBO();
     foreach ($rows as $k => $r) 
     {
-			$q = ' SELECT s.waitinglist, COUNT(s.id) AS total '
+			$q = ' SELECT r.waitinglist, COUNT(r.id) AS total '
 			   . ' FROM #__redevent_register AS r '
-			   . ' INNER JOIN #__rwf_submitters AS s ON s.submit_key = r.submit_key '
 			   . ' WHERE r.xref = '. $db->Quote($r->xref)
-			   . ' AND s.confirmed = 1 '
-			   . ' GROUP BY s.waitinglist '
+			   . ' AND r.confirmed = 1 '
+			   . ' GROUP BY r.waitinglist '
 			   ;
 	    $db->setQuery($q);
 	    $res = $db->loadObjectList('waitinglist');
@@ -813,11 +788,10 @@ class redEVENT_tags {
     {
 	    if ($user->get('id'))
 	    {
-	      $q = "SELECT COUNT(s.id) AS total
-	        FROM #__rwf_submitters AS s
-	        INNER JOIN #__redevent_register AS r USING(submit_key)
-	        WHERE s.xref = ". $db->Quote($r->xref) ."
-	        AND s.confirmed = 1
+	      $q = "SELECT COUNT(r.id) AS total
+	        FROM #__redevent_register AS r 
+	        WHERE r.xref = ". $db->Quote($r->xref) ."
+	        AND r.confirmed = 1
 	        AND r.uid = ". $db->Quote($user->get('id')) ."
 	        ";
 	      $db->setQuery($q);
@@ -1137,6 +1111,60 @@ class redEVENT_tags {
 			$this->_answers = $answers;
   	}
   	return $this->_answers;
+  }
+
+  /**
+   * returns form
+   * 
+   * @return string
+   */
+  function getForm()
+  {
+  	$submit_key = JRequest::getVar('submit_key');
+  	$options = array('booking' => $this->_data);  	
+ 		$rfcore = new RedFormCore();
+  	if (!empty($submit_key)) {
+			$options['answers'] = $rfcore->getSubmitKeyAnswers($submit_key);
+  	}
+  	$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute('register'));
+  	
+		$html = '<form action="'.$action.'" method="post" name="redform" enctype="multipart/form-data" onsubmit="return CheckSubmit(this);">';
+  	$html .= $rfcore->getFormFields($this->_data->redform_id, $submit_key, ($this->_data->max_multi_signup ? $this->_data->max_multi_signup : 1), $options);
+  	$html .= '<input type="hidden" name="xref" value="'.$this->_xref.'"/>';
+		$html .= '<div id="submit_button" style="display: block;">';
+		if (empty($submit_key)) {
+			$html .= '<input type="submit" id="regularsubmit" name="submit" value="'.JText::_('Submit').'" />';
+		}
+		else {
+			$html .= '<input type="submit" id="redformsubmit" name="submit" value="'.JText::_('Confirm').'" />';
+			$html .= '<input type="submit" id="redformcancel" name="cancel" value="'.JText::_('Cancel').'" />';
+		}			
+		$html .= '</div>';
+  	$html .= '</form>';
+  	return $html;
+  	
+  	// TODO: remove this part of code, kept for debugging
+  	JPluginHelper::importPlugin( 'content' );
+  	$dispatcher = JDispatcher::getInstance();
+  	$form = new stdClass();
+  	$form->text = '{redform}'.$this->_data->redform_id.','.($this->_data->max_multi_signup ? $this->_data->max_multi_signup : 1).'{/redform}';
+  	$form->eventid = $this->_eventid;
+  	$tpl = JRequest::getVar('page', false);
+  	switch ($tpl) {
+  		case 'confirmation':
+  			$form->task = 'review';
+  			break;
+  		default:
+  			$form->task = 'userregister';
+  			break;
+  	}
+  	// params for plugin
+  	$params = array();
+  	$params['show_submission_type_webform_formal_offer'] = $this->_data->show_submission_type_webform_formal_offer;	
+  	$params['acdetails'] = $this->_data;		
+  					
+  	$results = $dispatcher->trigger('onPrepareEvent', array(& $form, $params, 0));
+    $redform = $form->text;
   }
 }
 ?>

@@ -277,10 +277,6 @@ class RedEventControllerEvents extends RedEventController
 
 		$model->checkin();
 		
-		/* Check if people need to be moved on or off the waitinglist */
-		$model_wait->setEventId($post['id']);
-		$model_wait->UpdateWaitingList();
-		
 		$this->setRedirect( $link, $msg );
  	}
 
@@ -341,7 +337,15 @@ class RedEventControllerEvents extends RedEventController
     $post['details'] = JRequest::getVar('details', '', 'post', 'string', JREQUEST_ALLOWRAW);
     
     $model = $this->getModel('event');
-    if ($returnid = $model->savexref($post)) {
+    if ($returnid = $model->savexref($post)) 
+    {
+			/* Check if people need to be moved on or off the waitinglist */
+			$model_wait->setXrefId($returnid);
+			$model_wait->UpdateWaitingList();
+			
+			$cache = &JFactory::getCache('com_redevent');
+			$cache->clean();
+			
       $msg = 'saved event';
       $this->setRedirect('index.php?option=com_redevent&controller=events&task=closexref&tmpl=component&xref='. $returnid, $msg);      
     }

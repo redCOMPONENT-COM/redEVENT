@@ -42,6 +42,9 @@ require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'output.class.php');
 require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'admin.class.php');
 require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'error.class.php');
 
+// redform
+include_once(JPATH_SITE.DS.'components'.DS.'com_redform'.DS.'redform.core.php');
+
 // Set the table directory
 JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
 

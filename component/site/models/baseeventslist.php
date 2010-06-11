@@ -342,12 +342,11 @@ class RedeventModelBaseEventList extends JModel
 	{
 		foreach ((array) $rows as $k => $r)
   	{
-			$q = ' SELECT s.waitinglist, COUNT(s.id) AS total '
+			$q = ' SELECT r.waitinglist, COUNT(r.id) AS total '
 			   . ' FROM #__redevent_register AS r '
-			   . ' INNER JOIN #__rwf_submitters AS s ON s.submit_key = r.submit_key '
 			   . ' WHERE r.xref = '. $this->_db->Quote($r->xref)
-			   . ' AND s.confirmed = 1 '
-			   . ' GROUP BY s.waitinglist '
+			   . ' AND r.confirmed = 1 '
+			   . ' GROUP BY r.waitinglist '
 			   ;
 			$this->_db->setQuery($q);
 			$res = $this->_db->loadObjectList('waitinglist');

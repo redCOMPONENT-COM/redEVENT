@@ -177,4 +177,90 @@ class RedEventControllerRegistration extends RedEventController
 			}
 		}
 	}
+	
+	
+	/***************** NEW LIB **********************/
+	function register()
+	{
+		if (JRequest::getVar('cancel', '', 'post')) {
+			return $this->cancelreg();
+		}
+  	$msg = 'OK';
+  	
+  	$xref = JRequest::getInt('xref');
+	  $model = $this->getModel('registration');
+	  $model->setXref(JRequest::getInt('xref'));  	
+  	$details = $model->getSessionDetails();
+  	
+  	$submit_key = JRequest::getVar('submit_key');
+  	$isnew      = empty($submit_key);
+  	
+  	if (!$xref) {
+  		$msg = JText::_('REDEVENT_REGISTRATION_MISSING_XREF');
+  		$this->setRedirect('index.php', $msg, 'error');
+  		return;
+  	}
+  	
+  	
+  	// first, ask redform to save it's fields, and return the corresponding sids.
+		$rfcore = new redFormCore();
+  	$result = $rfcore->saveAnswers('redevent', array('baseprice' => $details->course_price));
+  	if (!$result) {
+  		$msg = JTEXT::_('REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED').' - '.$rfcore->getError();
+  		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute(null, $xref)), $msg, 'error');
+  		return;
+  	}
+  	JRequest::setVar('submit_key', $result->submit_key);
+
+  	if ($isnew)
+  	{
+	  	// redform save fine, now save corresponding bookings
+	  	foreach ($result->posts as $rfpost)
+	  	{
+	  		if (!$res = $model->register($rfpost['sid'], $result->submit_key)) {
+	  			$msg = JTEXT::_('REDEVENT_REGISTRATION_REGISTRATION_FAILED');
+		  		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute(null, $xref)), $msg, 'error');
+		  		return;
+	  		}
+	  	}
+			JPluginHelper::importPlugin( 'redevent' );
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger( 'onEventUserRegistered', array( $xref ) );
+									
+			$mail = $model->sendNotificationEmail();
+			$mail = $model->notifyManagers();
+  	}
+  	  	
+		$this->addModelPath( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_redevent' . DS . 'models' );
+		$model_wait = $this->getModel('Waitinglist', 'RedEventModel');
+		$model_wait->setXrefId($xref);
+		$model_wait->UpdateWaitingList();
+		
+		$cache = JFactory::getCache('com_redevent');
+		$cache->clean();
+  	
+  	// push models to the view
+  	$view = $this->getView('registration', 'html');
+  	$view->setModel($model, true);
+		if ($isnew && !empty($details->review_message)) {
+			$view->setLayout('review');
+		}
+		else {
+			$view->setLayout('confirmed');			
+		}
+  	$view->display();
+	}
+	
+	function cancelreg()
+	{
+  	$submit_key = JRequest::getVar('submit_key');
+  	$xref = JRequest::getInt('xref');
+
+  	$model = $this->getModel('registration');
+  	$model->setXref($xref);
+	  $model->cancel($submit_key);
+	  
+  	$msg = JText::_('Registration cancelled');
+		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute(null, $xref)), $msg);
+	}
 }

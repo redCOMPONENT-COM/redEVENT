@@ -483,8 +483,17 @@ if (is_array($cols)) {
 	    else {
 	    	echo JText::_('register table backup failed');
 	    	$error = true;
-	    }
-   }
+		}
+	}
+  
+  if (!array_key_exists('checked_out', $cols)) {
+    $q = ' ALTER TABLE `#__redevent_register` '
+       . '   ADD `checked_out` int(11) NOT NULL default "0" ,'
+       . '   ADD `checked_out_time` datetime NOT NULL default "0000-00-00 00:00:00"'
+       ;
+    $db->setQuery($q);
+    $db->query();    
+  }
 }
 
 /* Get the categories columns */

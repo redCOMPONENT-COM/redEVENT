@@ -848,7 +848,7 @@ class redEVENTHelper {
     {
       // get places taken
       $q = "SELECT waitinglist, COUNT(id) AS total
-          FROM #__rwf_submitters
+          FROM #__redevent_register
           WHERE xref = ". $db->Quote($xref_id)."
           AND confirmed = 1
           GROUP BY waitinglist";
@@ -868,16 +868,15 @@ class redEVENTHelper {
     // then the max registration per user
     if ($user->get('id'))
     {
-      $q = "SELECT COUNT(s.id) AS total
-          FROM #__rwf_submitters AS s
-          INNER JOIN #__redevent_register AS r USING(submit_key)
-          WHERE s.xref = ". $db->Quote($xref_id) ."
-          AND s.confirmed = 1
+      $q = "SELECT COUNT(r.id) AS total
+          FROM #__redevent_register AS r
+          WHERE r.xref = ". $db->Quote($xref_id) ."
+          AND r.confirmed = 1
           AND r.uid = ". $db->Quote($user->get('id')) ."
           ";
       // if there is a submit key set, it means we are reviewing, so we need to discard this submit_key from the count.
       if (JRequest::getVar('submit_key')) {
-        $q .= '  AND s.submit_key <> '. $db->Quote(JRequest::getVar('submit_key', ''));
+        $q .= '  AND r.submit_key <> '. $db->Quote(JRequest::getVar('submit_key', ''));
       }
       $db->setQuery($q);
       $event->userregistered = $db->loadResult();

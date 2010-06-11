@@ -422,7 +422,8 @@ class RedeventController extends JController
 	/**
 	 * Confirms the users request
 	 */
-	 function Confirm() {
+	 function Confirm() 
+	 {
 		 global $mainframe;
 		 
 		 /* Get the confirm ID */
@@ -438,24 +439,23 @@ class RedeventController extends JController
 		 
 		 /* Check the db if this entry exists */
 		 $db = JFactory::getDBO();
-		 $q = "SELECT s.confirmed
+		 $q = "SELECT r.confirmed
 		 	FROM #__redevent_register r
 			LEFT JOIN #__rwf_submitters s
-			ON r.submit_key = s.submit_key
-			WHERE uip = '".str_replace('_', '.', $uip)."'
-			AND uid = ".$uid."
+			ON r.sid = s.id
+			WHERE uid = ".$uid."
 			AND s.submit_key = ".$db->Quote($submit_key)."
-			AND s.xref = ".$xref."
-			AND s.answer_id = ".$submit_id;
+			AND r.xref = ".$xref."
+			AND s.id = ".$submit_id;
 		$db->setQuery($q);
 		$regdata = $db->loadObject();
 		
 		if ($regdata && $regdata->confirmed == 0) {
 			/* User exists, confirm the entry */
-			$q = "UPDATE #__rwf_submitters
+			$q = "UPDATE #__redevent_register
 				SET confirmed = 1,
 				confirmdate = NOW()
-				WHERE answer_id = ".$submit_id;
+				WHERE sid = ".$submit_id;
 			$db->setQuery($q);
 			if ($db->query()) $this->setMessage(JText::_('YOUR SUBMISSION HAS BEEN CONFIRMED'));
 			
@@ -470,27 +470,20 @@ class RedeventController extends JController
 			$model_wait->UpdateWaitingList();
 			
 			/* Confirm sign up via mail */
-			$model_event = $this->getModel('Event', 'RedEventModel');
-			$model_event->setId($eventid);
-			$eventdata = $model_event->getData();
+			$model_event = $this->getModel('Registration', 'RedEventModel');
+			$model_event->setXref($xref);
+			$eventdata = $model_event->getSessionDetails();
 			
-			if ($eventdata->notify) {
+			if ($eventdata->notify) 
+			{
 				$this->Mailer();
-				/* Get the details per submitter */
-				$query = "SELECT form_id, answer_id
-						FROM #__rwf_submitters
-						WHERE submit_key = ".$db->Quote($submit_key)." 
-						AND xref = ".$xref."
-						LIMIT 1";
-				$db->setQuery($query);
-				$id_details = $db->loadObject();
 				
 				/* Find out what the fieldname is for the email field */
 				$q = "SELECT f.id
 					FROM #__rwf_fields f, #__rwf_values v
 					WHERE f.id = v.field_id
 					AND f.published = 1
-					AND f.form_id = ".$id_details->form_id."
+					AND f.form_id = ".$eventdata->form_id."
 					AND f.fieldtype = 'email'
 					LIMIT 1";
 				$db->setQuery($q);
@@ -498,10 +491,11 @@ class RedeventController extends JController
 				
 				if (!empty($selectfield)) 
 				{					
-					/* Inform the ids that they can attend the event */
-					$query = "SELECT ". $db->nameQuote('field_'. $selectfield) . "
-							FROM #__rwf_forms_".$id_details->form_id."
-							WHERE ID = ".$id_details->answer_id;
+					/* get all submission emails associated to submit_key */
+					$query = "SELECT ". $db->nameQuote('f.field_'. $selectfield) . "
+							FROM #__rwf_forms_".$eventdata->form_id." AS f
+							INNER JOIN #__rwf_submitters AS s ON s.answer_id = f.id
+							WHERE s.submit_key = ".$db->Quote($submit_key);
 					$db->setQuery($query);
 					$addresses = $db->loadResultArray();
 					

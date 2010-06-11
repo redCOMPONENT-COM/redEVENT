@@ -56,7 +56,7 @@ class RedeventHelperRoute
 		if ($task) {
 			$parts['task'] = $task;
 		}
-		return RedEventHelperRoute::buildUrl( $parts );
+		return self::buildUrl( $parts );
 	}
 	
 	/**
@@ -69,7 +69,7 @@ class RedeventHelperRoute
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "day",
 		                "id"     => $id );
-		return RedEventHelperRoute::buildUrl( $parts );
+		return self::buildUrl( $parts );
 	}
 	
 	
@@ -81,7 +81,7 @@ class RedeventHelperRoute
 		if ($task) {
 			$parts['task'] = $task;
 		}
-		return RedEventHelperRoute::buildUrl( $parts );
+		return self::buildUrl( $parts );
 	}
 
 	function getUpcomingVenueEventsRoute($id, $task = null)
@@ -92,7 +92,7 @@ class RedeventHelperRoute
 		if ($task) {
 			$parts['task'] = $task;
 		}
-		return RedEventHelperRoute::buildUrl( $parts );
+		return self::buildUrl( $parts );
 	}
 	
 	function getCategoryEventsRoute($id, $task = null)
@@ -103,7 +103,7 @@ class RedeventHelperRoute
 		if ($task) {
 			$parts['task'] = $task;
 		}
-		return RedEventHelperRoute::buildUrl( $parts );
+		return self::buildUrl( $parts );
 	}
 	
 	/**
@@ -122,7 +122,7 @@ class RedeventHelperRoute
 		if ($task) {
 			$parts['task'] = $task;
 		}
-		return RedEventHelperRoute::buildUrl( $parts );
+		return self::buildUrl( $parts );
 	}
 
 	/**
@@ -141,7 +141,7 @@ class RedeventHelperRoute
 		if ($task) {
 			$parts['task'] = $task;
 		}
-		return RedEventHelperRoute::buildUrl( $parts );
+		return self::buildUrl( $parts );
 	}
 	
 	/**
@@ -156,7 +156,7 @@ class RedeventHelperRoute
 		if ($task) {
 			$parts['task'] = $task;
 		}
-		return RedEventHelperRoute::buildUrl( $parts );
+		return self::buildUrl( $parts );
 	}
 	
 	function getSignupRoute($type, $id, $xref)
@@ -167,14 +167,14 @@ class RedeventHelperRoute
 		                "task"   => "signup",
 		                "id"   => $id,
 		                "xref"   => $xref);
-		return RedEventHelperRoute::buildUrl( $parts );
+		return self::buildUrl( $parts );
 	}
 	
 	function getMyeventsRoute()
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "myevents" );
-		return RedEventHelperRoute::buildUrl( $parts );		
+		return self::buildUrl( $parts );		
 	}
 	
 	function getEditEventRoute($id = null, $returnxref = 0)
@@ -187,7 +187,7 @@ class RedeventHelperRoute
 		if ($returnxref) {
 			$parts['returnid'] = $returnxref;
 		}
-		return RedEventHelperRoute::buildUrl( $parts );			
+		return self::buildUrl( $parts );			
 	}
 	
 	function getEditXrefRoute($id = null)
@@ -197,7 +197,7 @@ class RedeventHelperRoute
 		if (!empty($id)) {
 			$parts['id'] = $id;
 		}
-		return RedEventHelperRoute::buildUrl( $parts );			
+		return self::buildUrl( $parts );			
 	}
 	
 	function getEditVenueRoute($id = null)
@@ -207,12 +207,20 @@ class RedeventHelperRoute
 		if (!empty($id)) {
 			$parts['id'] = $id;
 		}
-		return RedEventHelperRoute::buildUrl( $parts );			
+		return self::buildUrl( $parts );			
+	}
+	
+	function getRegistrationRoute($task)
+	{
+		$parts = array( "option" => "com_redevent",
+		                "controller" => "registration",
+		                "task"   => $task, );
+		return self::buildUrl( $parts );			
 	}
 	
 	function buildUrl($parts)
 	{		
-		if($item = RedEventHelperRoute::_findItem($parts)) {
+		if($item = self::_findItem($parts)) {
 			$parts['Itemid'] = $item->id;
 		};
 		
@@ -242,7 +250,7 @@ class RedeventHelperRoute
 		{
 			foreach($items as $item)
 			{	
-				if ((@$item->query['view'] == $query['view']) && ($item->published == 1) && ($item->access <= $access)) 
+				if (isset($query['view']) && (@$item->query['view'] == $query['view']) && ($item->published == 1) && ($item->access <= $access)) 
 				{					
 					switch ($query['view'])
 					{
@@ -263,7 +271,7 @@ class RedeventHelperRoute
 			// second round for view with optional params
 			foreach($items as $item)
 			{	
-				if ((@$item->query['view'] == $query['view']) && ($item->published == 1) && ($item->access <= $access)) 
+				if (isset($query['view']) && (@$item->query['view'] == $query['view']) && ($item->published == 1) && ($item->access <= $access)) 
 				{					
 					switch ($query['view'])
 					{

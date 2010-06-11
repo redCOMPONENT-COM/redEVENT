@@ -43,16 +43,6 @@ class RedEventViewAttendees extends JView {
 			return;
 		}
 		
-		/* See if we need to add a new attendee */
-		if (JRequest::getVar('action') == 'addattendee') {
-			/* Add the attendee */
-			$this->get('AddAttendee');
-			/* Run the waitinglist */
-			$model_wait = $this->getModel('Waitinglist', 'RedEventModel');
-			$model_wait->setXrefId(JRequest::getInt('xref'));
-			$model_wait->UpdateWaitingList();
-		}
-		
 		//initialise variables
 		$db = JFactory::getDBO();
 		$elsettings = ELAdmin::config();
@@ -62,7 +52,7 @@ class RedEventViewAttendees extends JView {
 		//get vars
 		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.attendees.filter_order', 'filter_order', 'u.username', 'cmd' );
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.attendees.filter_order_Dir',	'filter_order_Dir',	'', 'word' );
-		$filter 			= $mainframe->getUserStateFromRequest( $option.'.attendees.filter', 'filter', '1', 'int' );
+		$xref = JRequest::getInt('xref');
 		// $search 			= $mainframe->getUserStateFromRequest( $option.'.attendees.search', 'search', '', 'string' );
 		// $search 			= $db->getEscaped( trim(JString::strtolower( $search ) ) );
 
@@ -77,7 +67,9 @@ class RedEventViewAttendees extends JView {
 
 		//add toolbar
 		JToolBarHelper::title( JText::_( 'REGISTRATIONS' ), 'users' );
-		JToolBarHelper::custom('submitters', 'redevent_submitters', 'redevent_submitters', JText::_('Attendees'), false);
+//		JToolBarHelper::custom('submitters', 'redevent_submitters', 'redevent_submitters', JText::_('Attendees'), false);
+		JToolBarHelper::addNew();
+		JToolBarHelper::editList();
 		JToolBarHelper::deleteList();
 		JToolBarHelper::spacer();
 		JToolBarHelper::back();
@@ -94,14 +86,10 @@ class RedEventViewAttendees extends JView {
 		$event->dates = strftime($elsettings->formatdate, strtotime( $event->dates ));
 		
 		//build filter selectlist
-		$filters = array();
-		$filters[] = JHTML::_('select.option', '1', JText::_( 'NAME' ) );
-		$filters[] = JHTML::_('select.option', '2', JText::_( 'USERNAME' ) );
-		//$lists['filter'] = JHTML::_('select.genericlist', $filters, 'filter', 'size="1" class="inputbox"', 'value', 'text', $filter );
 		$datetimelocation = $this->get('DateTimeLocation');
 		$filters = array();
-		$filters[] = JHTML::_('select.option', 0, JText::_('ALL') );
-		foreach ($datetimelocation as $key => $value) {
+		foreach ($datetimelocation as $key => $value) 
+		{
 			/* Get the date */
 			$date = strftime( $elsettings->formatdate, strtotime( $value->dates )); 
 			$enddate 	= strftime( $elsettings->formatdate, strtotime( $value->enddates ));
@@ -113,7 +101,7 @@ class RedEventViewAttendees extends JView {
 			$displaytime = $time.' '.$elsettings->timename.' - '.$endtimes. ' '.$elsettings->timename;
 			$filters[] = JHTML::_('select.option', $value->id, $value->venue.' '.$displaydate.' '.$displaytime );
 		}
-		$lists['filter'] = JHTML::_('select.genericlist', $filters, 'filter', 'size="1" class="inputbox"', 'value', 'text', $filter );
+		$lists['filter'] = JHTML::_('select.genericlist', $filters, 'xref', 'class="inputbox"', 'value', 'text', $event->xref );
 		
 		// search filter
 		// $lists['search'] = $search;
@@ -129,7 +117,7 @@ class RedEventViewAttendees extends JView {
 		$this->assignRef('event',     $event);
 		$this->assignRef('rf_fields', $rf_fields);
 		$this->assignRef('form',      $form);
-
+		
 		parent::display($tpl);
 	}
 
