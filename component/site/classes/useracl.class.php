@@ -447,10 +447,11 @@ class UserAcl {
 			$quoted[] = $db->Quote($g);
 		}		
 		
-		$query = ' SELECT DISTINCT gv.venue_id  '
-		       . ' FROM #__redevent_groups_venues as gv '
-		       . ' WHERE gv.group_id IN ('. implode(', ', $quoted) .')'
-		       . '   AND gv.accesslevel > 0'
+		$query = ' SELECT DISTINCT v.id AS venue_id  '
+		       . ' FROM #__redevent_venues AS v '
+		       . ' LEFT JOIN #__redevent_groups_venues as gv ON gv.venue_id = v.id '
+		       . ' WHERE (gv.group_id IN ('. implode(', ', $quoted) .') AND gv.accesslevel > 0) '
+		       . '    OR v.created_by = '.$db->Quote($this->_userid);
 		       ;
 		$db->setQuery($query);
 		return $db->loadResultArray();
