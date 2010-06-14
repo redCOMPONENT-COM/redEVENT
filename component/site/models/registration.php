@@ -527,8 +527,38 @@ class RedEventModelRegistration extends JModel
   		$mailer->addAddress($r['email'], $r['name']);
   	}
   	
+  	$mail = '<HTML><HEAD>
+		<STYLE TYPE="text/css">
+		<!--
+		  table.formanswers , table.formanswers td, table.formanswers th
+			{
+			    border-color: darkgrey;
+			    border-style: solid;
+			    text-align:left;
+			}			
+			table.formanswers
+			{
+			    border-width: 0 0 1px 1px;
+			    border-spacing: 0;
+			    border-collapse: collapse;
+			    padding: 5px;
+			}			
+			table.formanswers td, table.formanswers th
+			{
+			    margin: 0;
+			    padding: 4px;
+			    border-width: 1px 1px 0 0;
+			}		  
+		-->
+		</STYLE>
+		</head>
+		<BODY bgcolor="#FFFFFF">
+		'.$tags->ReplaceTags($params->get('registration_notification_body')).'
+		</body>
+		</html>';
+  	
   	$mailer->setSubject($tags->ReplaceTags($params->get('registration_notification_subject')));
-  	$mailer->MsgHTML($tags->ReplaceTags($params->get('registration_notification_body')));
+  	$mailer->MsgHTML($mail);
   	if (!$mailer->send())
   	{
   		RedeventHelperLog::simplelog(JText::_('REDEVENT_ERROR_REGISTRATION_MANAGERS_NOTIFICATION_FAILED'));
