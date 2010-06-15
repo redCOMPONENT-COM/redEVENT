@@ -97,8 +97,8 @@ class RedEventControllerRegistration extends RedEventController
 			$dispatcher =& JDispatcher::getInstance();
 			$res = $dispatcher->trigger( 'onEventUserRegistered', array( $xref ) );
 									
-			$mail = $model->sendNotificationEmail();
-			$mail = $model->notifyManagers();
+			$mail = $model->sendNotificationEmail($submit_key);
+			$mail = $model->notifyManagers($submit_key);
   	}
   	
   	if (!$review)

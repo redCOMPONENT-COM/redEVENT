@@ -204,7 +204,7 @@ class RedEventModelRegistration extends JModel
 	/**
 	 * Send e-mail confirmations
 	 */
-	public function sendNotificationEmail() 
+	public function sendNotificationEmail($submit_key) 
 	{
 		$mainframe = & JFactory::getApplication();
 		
@@ -220,7 +220,7 @@ class RedEventModelRegistration extends JModel
 		/* Get registration settings */
 		$q = "SELECT *
 			FROM #__redevent_register r
-			WHERE submit_key = ".$db->Quote(JRequest::getVar('submit_key'));
+			WHERE submit_key = ".$db->Quote($submit_key);
 		$db->setQuery($q);
 		$registration = $db->loadObject();
 		
@@ -347,7 +347,7 @@ class RedEventModelRegistration extends JModel
 							/* Delete the redFORM entry first */
 							/* Submitter records */
 							$q = "DELETE FROM #__rwf_submitters
-								WHERE submit_key = ".$db->Quote(JRequest::getVar('submit_key'));
+								WHERE submit_key = ".$db->Quote($submit_key);
 							$db->setQuery($q);
 							$db->query();
 							
@@ -359,7 +359,7 @@ class RedEventModelRegistration extends JModel
 							/** update registration with user id **/
 							$q = ' UPDATE #__redevent_register '
 							   . ' SET uid = '. $db->Quote($user->id)
-							   . ' WHERE submit_key = '.$db->Quote(JRequest::getVar('submit_key'));
+							   . ' WHERE submit_key = '.$db->Quote($submit_key);
 							$db->setQuery($q);
 							$db->query();							
 							
@@ -371,7 +371,7 @@ class RedEventModelRegistration extends JModel
 				      $this->mailer->AddAddress($user->email, $user->name);
 
 				      /* Get the activation link */
-				      $activatelink = '<a href="'.JRoute::_(JURI::root().'index.php?task=confirm&option=com_redevent&confirmid='.str_replace(".", "_", $registration->uip).'x'.$registration->xref.'x'.$registration->uid.'x'.$registration->rid.'x'.JRequest::getVar('submit_key')).'">'.JText::_('Activate').'</a>';
+				      $activatelink = '<a href="'.JRoute::_(JURI::root().'index.php?task=confirm&option=com_redevent&confirmid='.str_replace(".", "_", $registration->uip).'x'.$registration->xref.'x'.$registration->uid.'x'.$registration->rid.'x'.$submit_key).'">'.JText::_('Activate').'</a>';
 				      /* Mail attendee */
 				      $htmlmsg = '<html><head><title></title></title></head><body>';
 				      $htmlmsg .= str_replace('[activatelink]', $activatelink, $eventsettings->notify_body);
@@ -442,7 +442,7 @@ class RedEventModelRegistration extends JModel
 					     .              'x'.$registration->xref
 					     .              'x'.$registration->uid
 					     .              'x'.$rid
-					     .              'x'.JRequest::getVar('submit_key') );
+					     .              'x'.$submit_key );
 					$activatelink = '<a href="'.$url.'">'.JText::_('Activate').'</a>';
 					
 					/* Mail attendee */
@@ -472,14 +472,19 @@ class RedEventModelRegistration extends JModel
 	}
 	
 
-  function notifyManagers()
+  function notifyManagers($submit_key)
   {
+  	$session = &$this->getSessionDetails();
+  	
   	jimport('joomla.mail.helper');
   	$app    = &JFactory::getApplication();
   	$params = $app->getParams('com_redevent');
 		$tags   = new redEVENT_tags();
   	
   	$event = $this->getSessionDetails();
+  	
+  	// we will use attendee details for 'from' field
+  	$contact = $this->getRegistrationContactPerson($submit_key);
   	
   	$recipients = array();
   	
@@ -521,14 +526,52 @@ class RedEventModelRegistration extends JModel
   	}
   	
   	$mailer = & JFactory::getMailer();
+  	if ($contact) {
+	  	$sender = array($contact->getEmail(), $contact->getFullname());
+		}
+		else { // default to site settings
+			$sender = array($app->getCfg('mailfrom'), $app->getCfg('sitename'));
+		}
+		$mailer->setSender($sender);
+		$mailer->addReplyTo($sender);
   	
   	foreach ($recipients as $r)
   	{
   		$mailer->addAddress($r['email'], $r['name']);
   	}
   	
+  	$mail = '<HTML><HEAD>
+		<STYLE TYPE="text/css">
+		<!--
+		  table.formanswers , table.formanswers td, table.formanswers th
+			{
+			    border-color: darkgrey;
+			    border-style: solid;
+			    text-align:left;
+			}			
+			table.formanswers
+			{
+			    border-width: 0 0 1px 1px;
+			    border-spacing: 0;
+			    border-collapse: collapse;
+			    padding: 5px;
+			}			
+			table.formanswers td, table.formanswers th
+			{
+			    margin: 0;
+			    padding: 4px;
+			    border-width: 1px 1px 0 0;
+			}		  
+		-->
+		</STYLE>
+		</head>
+		<BODY bgcolor="#FFFFFF">
+		'.$tags->ReplaceTags($params->get('registration_notification_body')).'
+		</body>
+		</html>';
+  	
   	$mailer->setSubject($tags->ReplaceTags($params->get('registration_notification_subject')));
-  	$mailer->MsgHTML($tags->ReplaceTags($params->get('registration_notification_body')));
+  	$mailer->MsgHTML($mail);
   	if (!$mailer->send())
   	{
   		RedeventHelperLog::simplelog(JText::_('REDEVENT_ERROR_REGISTRATION_MANAGERS_NOTIFICATION_FAILED'));
@@ -599,4 +642,60 @@ class RedEventModelRegistration extends JModel
 		$registration->answers = $this->_db->loadObject();
 		return $registration;
 	}
+	
+	/**
+	 * returns contact person for submitted registration
+	 * first, looks for a user id, otherwise looks into redform fields
+	 * 
+	 * @param string $submit_key
+	 * @return object REAttendee
+	 */
+	function getRegistrationContactPerson($submit_key)
+	{		
+		$attendee = new REattendee();
+		
+		// first, take info from joomla user is a uid is set
+		$query = ' SELECT u.name, u.email '
+		       . ' FROM #__redevent_register AS r '
+		       . ' LEFT JOIN #__users AS u on r.uid = u.id '
+		       . ' WHERE r.submit_key = '. $this->_db->Quote($submit_key)
+		       . '   AND uid > 0 '
+		       ;
+		$this->_db->setQuery($query, 0, 1);
+		$res = $this->_db->loadObject();
+		
+		if ($res)
+		{
+			$attendee->setEmail($res->email);
+			$attendee->setFullname($res->name);			dump($attendee, 'uid attendee');
+		}
+		else // uid not set, so get the info from submission directly
+		{
+  		$event = $this->getSessionDetails();
+	  	$rfcore  = new redformcore();
+	  	$fields  = $rfcore->getFields($event->redform_id);
+	  	$answers = $rfcore->getAnswers($submit_key);
+			foreach ($fields as $f)
+			{
+				$property = 'field_'.$f->id;
+				switch($f->fieldtype)
+				{
+					case 'email':
+						$attendee->setEmail($answers[0]->fields->$property);
+						break;
+					case 'fullname':
+						$attendee->setFullname($answers[0]->fields->$property);
+						break;
+					case 'username':
+						$attendee->setUsername($answers[0]->fields->$property);
+						break;
+				}
+			}
+		}
+		$email = $attendee->getEmail();
+		if (empty($email)) {
+			return false;
+		}
+		return $attendee;
 	}
+}
