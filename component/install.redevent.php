@@ -461,12 +461,12 @@ if (is_array($cols)) {
 			    	       . ' INNER JOIN #__rwf_submitters AS s ON rb.submit_key = s.submit_key '
 			    	       ;
 				    $db->setQuery($query);
-				    if (!$db->query())
+				    if ($db->query())
 				    {
 			    		echo JText::_('converted attendees table to new structure');				    	
 				    }
 				    else {
-				    	echo JText::_('failed importing attendees to new structure');
+				    	echo JText::_('failed importing attendees to new structure').$db->getErrorMsg();
 				    	$error = true;
 				    }			    	 
 			    }
