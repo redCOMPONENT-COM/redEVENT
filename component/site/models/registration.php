@@ -47,6 +47,22 @@ class RedEventModelRegistration extends JModel
 	 */
 	var $_xrefdata = null;
 	
+	/**
+	 * registration submit_key
+	 * @var string
+	 */
+	var $_submit_key;
+	/**
+	 * caching redform fields for this submit_key
+	 * @var array
+	 */
+	var $_rf_fields;
+	/**
+	 * caching registration answers from redform
+	 * @var array
+	 */
+	var $_rf_answers;
+	
 	function __contruct($xref = 0, $config = array())
 	{
 		parent::__construct($config);
@@ -62,6 +78,16 @@ class RedEventModelRegistration extends JModel
 	function setXref($xref_id)
 	{
 		$this->_xref = (int) $xref_id;
+	}
+	
+	function setSubmitKey($submit_key)
+	{
+		if ($submit_key && $this->_submit_key != $submit_key) 
+		{
+			$this->_submit_key = $submit_key;
+			$this->_rf_answers = null;
+			$this->_rf_fields  = null;
+		}
 	}
 	
 	function register($sid, $submit_key, $data = array())
@@ -474,6 +500,7 @@ class RedEventModelRegistration extends JModel
 
   function notifyManagers($submit_key)
   {
+  	$this->setSubmitKey($submit_key);
   	$session = &$this->getSessionDetails();
   	
   	jimport('joomla.mail.helper');
@@ -519,6 +546,13 @@ class RedEventModelRegistration extends JModel
   	foreach ($gprecipients AS $r)
   	{
   		$recipients[] =  array('email' => $r->email, 'name' => $r->name);	
+  	}
+  	
+  	// redform recipients
+  	$rfrecipients = $this->getRFRecipients();
+  	foreach ((array) $rfrecipients as $r)
+  	{
+  		$recipients[] =  array('email' => $r, 'name' => '');	
   	}
   	
   	if (!count($recipients)) {
@@ -652,6 +686,7 @@ class RedEventModelRegistration extends JModel
 	 */
 	function getRegistrationContactPerson($submit_key)
 	{		
+		$this->setSubmitKey($submit_key);
 		$attendee = new REattendee();
 		
 		// first, take info from joomla user is a uid is set
@@ -671,10 +706,8 @@ class RedEventModelRegistration extends JModel
 		}
 		else // uid not set, so get the info from submission directly
 		{
-  		$event = $this->getSessionDetails();
-	  	$rfcore  = new redformcore();
-	  	$fields  = $rfcore->getFields($event->redform_id);
-	  	$answers = $rfcore->getAnswers($submit_key);
+	  	$fields  = $this->getRFFields();
+	  	$answers = $this->getRFAnswers();
 			foreach ($fields as $f)
 			{
 				$property = 'field_'.$f->id;
@@ -697,5 +730,58 @@ class RedEventModelRegistration extends JModel
 			return false;
 		}
 		return $attendee;
+	}
+	
+	/**
+	 * return redform fields for this event
+	 * 
+	 * @return array
+	 */
+	function getRFFields()
+	{
+		if (empty($this->_rf_fields)) 
+		{
+			$event = $this->getSessionDetails();
+			$rfcore  = new redformcore();
+	  	$this->_rf_fields  = $rfcore->getFields($event->redform_id);			
+		}
+		return $this->_rf_fields;
+	}
+	
+	/**
+	 * returns answers array for current submit_key
+	 * 
+	 * @return array
+	 */
+	function getRFAnswers()
+	{
+		if (empty($this->_rf_answers)) 
+		{
+			$rfcore  = new redformcore();
+	  	$this->_rf_answers  = $rfcore->getAnswers($this->_submit_key);			
+		}
+		return $this->_rf_answers;		
+	}
+	
+	/**
+	 * return selected redform recipients emails if any
+	 * 
+	 * @return string
+	 */
+	function getRFRecipients()
+	{
+		$fields  = $this->getRFFields();
+	
+		foreach ($fields as $f)
+		{
+			$property = 'field_'.$f->id;
+			if ($f->fieldtype == 'recipients')
+			{
+				$answers = $this->getRFAnswers();
+				$email = explode('~~~', $answers[0]->fields->$property);
+				return $email;
+			}
+		}
+		return false;
 	}
 }
