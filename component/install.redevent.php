@@ -31,12 +31,26 @@ function com_install() {
 
 jimport( 'joomla.filesystem.folder' );
 
+/**
+ * get tables details
+ */
 $db = JFactory::getDBO();
-$cols = false;
-/* Get the current columns */
-$q = "SHOW COLUMNS FROM #__redevent_events";
-$db->setQuery($q);
-$cols = $db->loadObjectList('Field');
+$tables = array( '#__redevent_events', 
+                 '#__redevent_venues',
+                 '#__redevent_settings',
+                 '#__redevent_event_venue_xref',
+                 '#__redevent_register',
+                 '#__redevent_categories',
+                 '#__redevent_fields',
+                 '#__redevent_groupmembers',
+                 '#__redevent_groups',
+               );
+$tables = $db->getTableFields($tables, false);
+
+/** 
+ * event table
+ */
+$cols = $tables['#__redevent_events'];
 
 if (is_array($cols)) {
 	/* Check if an upgrade is needed */
@@ -230,11 +244,8 @@ if (is_array($cols)) {
 }
 
 
-$cols = false;
 /* Get the venues table columns */
-$q = "SHOW COLUMNS FROM #__redevent_venues";
-$db->setQuery($q);
-$cols = $db->loadObjectList('Field');
+$cols = $tables['#__redevent_venues'];
 
 if (is_array($cols)) 
 {
@@ -248,10 +259,7 @@ if (is_array($cols))
 }
 
 /* Get the current columns */
-$cols = false;
-$q = "SHOW COLUMNS FROM #__redevent_settings";
-$db->setQuery($q);
-$cols = $db->loadObjectList('Field');
+$cols = $tables['#__redevent_settings'];
 
 if (is_array($cols)) {
 	/* Check if we have the defaultredformid column */
@@ -352,11 +360,9 @@ if (is_array($cols)) {
 		$db->query();
 	}
 }
+
 /* Get the current columns */
-$cols = false;
-$q = "SHOW COLUMNS FROM #__redevent_event_venue_xref";
-$db->setQuery($q);
-$cols = $db->loadObjectList('Field');
+$cols = $tables['#__redevent_event_venue_xref'];
 
 if (is_array($cols)) {
 	/* Check if we have the published column */
@@ -421,10 +427,7 @@ if (is_array($cols)) {
 }
 
 /* register table */
-$cols = false;
-$q = "SHOW COLUMNS FROM #__redevent_register";
-$db->setQuery($q);
-$cols = $db->loadObjectList('Field');
+$cols = $tables['#__redevent_register'];
 
 if (is_array($cols)) {
   if (isset($cols['submit_key']) && !stristr($cols['submit_key']->Type, 'varchar')) {
@@ -497,10 +500,7 @@ if (is_array($cols)) {
 }
 
 /* Get the categories columns */
-$cols = false;
-$q = "SHOW COLUMNS FROM #__redevent_categories";
-$db->setQuery($q);
-$cols = $db->loadObjectList('Field');
+$cols = $tables['#__redevent_categories'];
 
 if (is_array($cols)) {
   
@@ -544,9 +544,7 @@ if (is_array($cols)) {
 }
 
 /* Get the custom fields columns */
-$q = "SHOW COLUMNS FROM #__redevent_fields";
-$db->setQuery($q);
-$cols = $db->loadObjectList('Field');
+$cols = $tables['#__redevent_fields'];
 
 if (is_array($cols)) 
 {  
@@ -566,9 +564,7 @@ if (is_array($cols))
 }
 
 /* Get the group members fields columns */
-$q = "SHOW COLUMNS FROM #__redevent_groupmembers";
-$db->setQuery($q);
-$cols = $db->loadObjectList('Field');
+$cols = $tables['#__redevent_groupmembers'];
 
 if (is_array($cols)) 
 {  
@@ -657,9 +653,7 @@ if (is_array($cols))
 }
 
 /* Get the group members fields columns */
-$q = "SHOW COLUMNS FROM #__redevent_groups";
-$db->setQuery($q);
-$cols = $db->loadObjectList('Field');
+$cols = $tables['#__redevent_groups'];
 
 if (is_array($cols)) 
 {  
