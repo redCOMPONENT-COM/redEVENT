@@ -150,7 +150,9 @@ CREATE TABLE IF NOT EXISTS `#__redevent_groupmembers` (
   `receive_registrations` tinyint(4) NOT NULL,
   `checked_out` int(11) NOT NULL default '0',
   `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `group_id` (`group_id`),
+  KEY `member` (`member`)
 ) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_groups_categories` (
@@ -158,7 +160,9 @@ CREATE TABLE IF NOT EXISTS `#__redevent_groups_categories` (
   `group_id` int(11) NOT NULL DEFAULT '0',
   `category_id` int(11) NOT NULL DEFAULT '0',
   `accesslevel` tinyint(4) NOT NULL DEFAULT '0',
-PRIMARY KEY  (`id`)
+PRIMARY KEY  (`id`),
+  KEY `group_id` (`group_id`),
+  KEY `category_id` (`category_id`)
 ) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_groups_venues` (
@@ -166,7 +170,19 @@ CREATE TABLE IF NOT EXISTS `#__redevent_groups_venues` (
   `group_id` int(11) NOT NULL DEFAULT '0',
   `venue_id` int(11) NOT NULL DEFAULT '0',
   `accesslevel` tinyint(4) NOT NULL DEFAULT '0',
-PRIMARY KEY  (`id`)
+PRIMARY KEY  (`id`),
+  KEY `group_id` (`group_id`),
+  KEY `venue_id` (`venue_id`)
+) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_groups_venues_categories` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `group_id` int(11) NOT NULL DEFAULT '0',
+  `category_id` int(11) NOT NULL DEFAULT '0',
+  `accesslevel` tinyint(4) NOT NULL DEFAULT '0',
+PRIMARY KEY  (`id`),
+  KEY `group_id` (`group_id`),
+  KEY `category_id` (`category_id`)
 ) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_settings` (

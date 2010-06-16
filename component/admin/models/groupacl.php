@@ -119,6 +119,21 @@ class RedEventModelGroupacl extends JModel
 		$res = $this->_db->loadResultArray();
 		return $res;
 	} 
+
+	/**
+	 * get venues categories where the group has admin access
+	 * @return array
+	 */
+	function getMaintainedVenuesCategories()
+	{
+		$query = ' SELECT category_id FROM #__redevent_groups_venues_categories '
+		       . ' WHERE group_id ='. $this->_db->Quote($this->_id)
+		       . '   AND accesslevel >= 1'
+		       ;
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadResultArray();
+		return $res;
+	} 
 	
 	/**
 	 * Method to store the group
@@ -132,6 +147,7 @@ class RedEventModelGroupacl extends JModel
 		$group_id = $data['group_id'];
 		$cats = $data['maintaincategories'];
 		$venues = $data['maintainvenues'];
+		$vcats = $data['maintainvenuescategories'];
 				
 		// wipe previous records
 		$query = 'DELETE FROM #__redevent_groups_categories WHERE group_id = '. $this->_db->Quote((int) $group_id);
@@ -178,6 +194,29 @@ class RedEventModelGroupacl extends JModel
 				return false;
 			}			
 		}
+		
+	  // wipe previous records
+		$query = 'DELETE FROM #__redevent_groups_venues_categories WHERE group_id = '. $this->_db->Quote((int) $group_id);
+		$this->_db->setQuery($query);
+		if (!$this->_db->query())
+		{
+			$this->setError('ERROR DELETING PREVIOUS RECORDS');
+			return false;
+		}
+		// add new records
+		foreach ((array) $vcats as $v)
+		{
+			$obj = &JTable::getInstance('redevent_groupsvenuescategories', '');
+			$obj->set('group_id', $group_id);
+			$obj->set('category_id', $v);
+			$obj->set('accesslevel', 1);
+			
+			if (!($obj->check() && $obj->store()))
+			{
+				$this->setError(JText::_('Error saving group venue category acl') .': '. $obj->getError());
+				return false;
+			}			
+		}
 		return true;
 	}
 	
@@ -201,6 +240,30 @@ class RedEventModelGroupacl extends JModel
     foreach((array) $results as $cat)
     {
       $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->catname);
+    }
+		return $options;
+	}
+	
+	/**
+	 * Get a option list of all categories
+	 */
+	public function getVenuesCategoriesOptions() 
+	{
+	 $query = ' SELECT c.id, c.name, (COUNT(parent.name) - 1) AS depth '
+           . ' FROM #__redevent_venues_categories AS c, '
+           . ' #__redevent_venues_categories AS parent '
+           . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
+           . ' GROUP BY c.id '
+           . ' ORDER BY c.lft;'
+           ;
+    $this->_db->setQuery($query);
+    
+    $results = $this->_db->loadObjectList();
+    
+    $options = array();
+    foreach((array) $results as $cat)
+    {
+      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->name);
     }
 		return $options;
 	}

@@ -55,6 +55,7 @@ class RedEventViewGroupacl extends JView {
 		$group        = & $this->get('group');
 		$gcategories	= & $this->get('MaintainedCategories');
 		$gvenues	    = & $this->get('MaintainedVenues');
+		$gvcategories = & $this->get('MaintainedVenuesCategories');
 
 		//build toolbar
 		JToolBarHelper::title( JText::_( 'EDIT GROUP ACL' ) .' - '. $group->name, 'groupedit' );
@@ -71,6 +72,8 @@ class RedEventViewGroupacl extends JView {
 		
 		$lists['maintaincategories'] = JHTML::_('select.genericlist', $this->get('CategoriesOptions'), 'maintaincategories[]'
 		                                        , 'size="15" multiple="multiple"', 'value', 'text', $gcategories);
+		$lists['maintainvenuescategories'] = JHTML::_('select.genericlist', $this->get('VenuesCategoriesOptions'), 'maintainvenuescategories[]'
+		                                        , 'size="15" multiple="multiple"', 'value', 'text', $gvcategories);
 		$lists['maintainvenues'] = JHTML::_('select.genericlist', $this->get('VenuesOptions'), 'maintainvenues[]'
 		                                        , 'size="15" multiple="multiple"', 'value', 'text', $gvenues);
 		
