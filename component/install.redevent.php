@@ -423,7 +423,26 @@ if (is_array($cols)) {
     $q ="ALTER IGNORE TABLE `#__redevent_event_venue_xref` ADD COLUMN `external_registration_url` VARCHAR(255) NULL DEFAULT NULL";
     $db->setQuery($q);
     $db->query();
-  }  
+  }
+  
+  /** add indexes **/
+  if (empty($cols['eventid']->Key)) {
+    $q = "ALTER TABLE `#__redevent_event_venue_xref` ADD INDEX (`eventid`)";
+    $db->setQuery($q);
+    $db->query();  	
+  }
+  
+  if (empty($cols['venueid']->Key)) {
+    $q = "ALTER TABLE `#__redevent_event_venue_xref` ADD INDEX (`venueid`)";
+    $db->setQuery($q);
+    $db->query();  	
+  }
+  
+  if (empty($cols['groupid']->Key)) {
+    $q = "ALTER TABLE `#__redevent_event_venue_xref` ADD INDEX (`groupid`)";
+    $db->setQuery($q);
+    $db->query();  	
+  }
 }
 
 /* register table */

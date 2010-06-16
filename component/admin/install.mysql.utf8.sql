@@ -273,7 +273,10 @@ CREATE TABLE IF NOT EXISTS `#__redevent_event_venue_xref` (
   `course_credit` int(11) NOT NULL,
   `course_price` decimal(12,2) default '0.00',
   `published` tinyint(1) NOT NULL default '0',
-  PRIMARY KEY  (`id`)
+  PRIMARY KEY  (`id`),
+  KEY `eventid` (`eventid`),
+  KEY `venueid` (`venueid`),
+  KEY `groupid` (`groupid`)
 ) COMMENT='Event Venue Cross reference' CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_event_category_xref` (
