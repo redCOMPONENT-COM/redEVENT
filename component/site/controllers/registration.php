@@ -60,9 +60,10 @@ class RedEventControllerRegistration extends RedEventController
 	  $model->setXref(JRequest::getInt('xref'));  	
   	$details = $model->getSessionDetails();
   	
-  	$submit_key = JRequest::getVar('submit_key');
   	
-  	if (!$xref) {
+  	
+  	if (!$xref) 
+  	{
   		$msg = JText::_('REDEVENT_REGISTRATION_MISSING_XREF');
   		$this->setRedirect('index.php', $msg, 'error');
   		return;
@@ -75,12 +76,14 @@ class RedEventControllerRegistration extends RedEventController
   	}
 		$rfcore = new redFormCore();
   	$result = $rfcore->saveAnswers('redevent', $options);
-  	if (!$result) {
+  	if (!$result) 
+  	{
   		$msg = JTEXT::_('REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED').' - '.$rfcore->getError();
   		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute(null, $xref)), $msg, 'error');
   		return;
   	}
-  	JRequest::setVar('submit_key', $result->submit_key);
+  	$submit_key = $result->submit_key;
+  	JRequest::setVar('submit_key', $submit_key);
   	
   	if (!$isedit && !$review)
   	{

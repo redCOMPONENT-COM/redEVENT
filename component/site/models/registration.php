@@ -250,6 +250,11 @@ class RedEventModelRegistration extends JModel
 		$db->setQuery($q);
 		$registration = $db->loadObject();
 		
+		if (!$registration) {
+			JError::raiseError(0, JText::sprintf('notification: registration not found for key %s', $submit_key));
+			return false;
+		}
+		
 		/* Get settings for event */
 		$q = "SELECT title, notify_subject, notify_body, notify, maxattendees, activate,
 					juser, confirmation_message, redform_id, submission_type_formal_offer, submission_type_formal_offer_subject,
