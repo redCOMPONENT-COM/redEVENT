@@ -126,61 +126,41 @@ class RedeventModelEditvenue extends JModel
 		return $this->_venue;
 
 	}
-	
- /**
-   * logic to get the categories options
-   *
-   * @access public
-   * @return void
-   */
-  function getCategoryOptions( )
-  {
-    $user   = & JFactory::getUser();
-    $elsettings = & redEVENTHelper::config();
-    $userid   = (int) $user->get('id');
-    $gid    = (int) $user->get('aid');
-    $superuser  = UserAcl::superuser();
 
-    $where = ' WHERE c.published = 1 AND c.access <= '.$gid;
 
-//    //only check for maintainers if we don't have an edit action
-//    if(!$this->_id) {
-//      //get the ids of the categories the user maintaines
-//      $query = 'SELECT g.group_id'
-//          . ' FROM #__redevent_groupmembers AS g'
-//          . ' WHERE g.member = '.$userid
-//          ;
-//      $this->_db->setQuery( $query );
-//      $catids = $this->_db->loadResultArray();
-//
-//      $categories = implode(' OR c.groupid = ', $catids);
-//
-//      //build ids query
-//      if ($categories) {
-//        //check if user is allowed to submit events in general, if yes allow to submit into categories
-//        //which aren't assigned to a group. Otherwise restrict submission into maintained categories only 
-//        if (ELUser::validate_user($elsettings->evdelrec, $elsettings->delivereventsyes)) {
-//          $where .= ' AND c.groupid = 0 OR c.groupid = '.$categories;
-//        } else {
-//          $where .= ' AND c.groupid = '.$categories;
-//        }
-//      } else {
-//        $where .= ' AND c.groupid = 0';
-//      }
-//
-//    }
-//
-//    //administrators or superadministrators have access to all categories, also maintained ones
-//    if($superuser) {
-//      $where = ' WHERE c.published = 1';
-//    }
+	/**
+	 * logic to get the categories options
+	 *
+	 * @access public
+	 * @return void
+	 */
+	function getCategoryOptions( )
+	{
+		$user = &JFactory::getUser();
+		$app = &JFactory::getApplication();
+		$params = $app->getParams();
+		$superuser	= UserAcl::superuser();
 
-    //get the maintained categories and the categories whithout any group
-    //or just get all if somebody have edit rights  
-    $query = ' SELECT c.id, c.name, (COUNT(parent.name) - 1) AS depth '
+		//administrators or superadministrators have access to all categories, also maintained ones
+		if($superuser) {
+			$cwhere = ' WHERE c.published = 1';
+		}
+		else
+		{					
+			$acl = UserACl::getInstance();
+			$managed = $acl->getManagedVenuesCategories();
+			if (!$managed || !count($managed)) {
+				return false;
+			}
+			$cwhere = ' WHERE c.id IN ('.implode(',', $managed).') ';
+		}
+
+		//get the maintained categories and the categories whithout any group
+		//or just get all if somebody have edit rights	
+    $query = ' SELECT c.id, c.name, (COUNT(parent.name) - 1) AS depth, c.ordering '
            . ' FROM #__redevent_venues_categories AS c, '
            . ' #__redevent_venues_categories AS parent '
-           . $where
+           . $cwhere
            . ' AND c.lft BETWEEN parent.lft AND parent.rgt '
            . ' GROUP BY c.id '
            . ' ORDER BY c.lft;'
@@ -197,8 +177,8 @@ class RedeventModelEditvenue extends JModel
 
     $this->_categories = $options;
 
-    return $this->_categories;
-  }
+		return $this->_categories;
+	}
 
 	/**
 	 * logic to get the venue

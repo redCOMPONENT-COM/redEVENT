@@ -982,18 +982,29 @@ class RedeventModelEditevent extends JModel
 		$user = &JFactory::getUser();
 		$app  = &JFactory::getApplication();
 		$params = $app->getParams();
+			
+		$superuser	= UserAcl::superuser();		
 		
 		$query = ' SELECT v.id AS value, '
 		       . ' CASE WHEN CHAR_LENGTH(v.city) THEN CONCAT_WS(\' - \', v.venue, v.city) ELSE v.venue END as text '
 		       . ' FROM #__redevent_venues AS v '
-		       . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = v.id '
-		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gv.group_id '
-		       ;
-		       
+		       ;		       		
+		
 		$where = array();
 		
+		//administrators or superadministrators have access to all venues, also maintained ones
+		if (!$superuser) 
+		{					
+			$acl = UserACl::getInstance();
+			$managed = $acl->getManagedVenues();
+			if ($managed && count($managed)) {
+				$where[] = ' v.id IN ('.implode(',', $managed).')';
+			}
+			else {
+				$where[] = ' 0 ';
+			}
+		}		
 		$where[] = ' v.published = 1 ';
-		$where[] = ' (gm.member =' . $this->_db->Quote($user->get('id')) . ' OR v.created_by = '. $this->_db->Quote($user->get('id')).') ';
 		
 		if (count($where)) {
 			$query .= ' WHERE '. implode(' AND ', $where);

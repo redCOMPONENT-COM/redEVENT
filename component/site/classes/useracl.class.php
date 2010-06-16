@@ -450,8 +450,39 @@ class UserAcl {
 		$query = ' SELECT DISTINCT v.id AS venue_id  '
 		       . ' FROM #__redevent_venues AS v '
 		       . ' LEFT JOIN #__redevent_groups_venues as gv ON gv.venue_id = v.id '
+		       . ' LEFT JOIN #__redevent_venue_category_xref as xvcat ON xvcat.venue_id = v.id '
+		       . ' LEFT JOIN #__redevent_venues_categories as vcat ON vcat.id = xvcat.category_id '
+		       . ' LEFT JOIN #__redevent_groups_venues_categories as gvc ON gvc.category_id = vcat.id '
 		       . ' WHERE (gv.group_id IN ('. implode(', ', $quoted) .') AND gv.accesslevel > 0) '
+		       . '    OR (gvc.group_id IN ('. implode(', ', $quoted) .') AND gvc.accesslevel > 0) '
 		       . '    OR v.created_by = '.$db->Quote($this->_userid);
+		       ;
+		$db->setQuery($query);
+		return $db->loadResultArray();
+	}
+	
+	/**
+	 * get venues categories managed by user
+	 * 
+	 * @return array
+	 */
+	function getManagedVenuesCategories()
+	{
+		$db = &JFactory::getDBO();
+
+		$groups = $this->getUserGroups();
+		if ($groups) {
+			$group_ids = array_keys($groups);
+		}
+		$quoted = array();
+		foreach ($group_ids as $g) {
+			$quoted[] = $db->Quote($g);
+		}		
+		
+		$query = ' SELECT DISTINCT gc.category_id  '
+		       . ' FROM #__redevent_groups_venues_categories as gc '
+		       . ' WHERE gc.group_id IN ('. implode(', ', $quoted) .')'
+		       . '   AND gc.accesslevel > 0'
 		       ;
 		$db->setQuery($query);
 		return $db->loadResultArray();
