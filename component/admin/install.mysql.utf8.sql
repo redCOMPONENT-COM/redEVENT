@@ -120,7 +120,10 @@ CREATE TABLE IF NOT EXISTS `#__redevent_register` (
 `submit_key` varchar(45) NOT NULL,
 `checked_out` int(11) NOT NULL default '0',
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
-PRIMARY KEY  (`id`)
+PRIMARY KEY  (`id`),
+KEY `xref` (`xref`),
+KEY `submit_key` (`submit_key`),
+KEY `sid` (`sid`)
 ) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_groups` (

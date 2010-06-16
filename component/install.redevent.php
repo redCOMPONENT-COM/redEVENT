@@ -516,6 +516,25 @@ if (is_array($cols)) {
     $db->setQuery($q);
     $db->query();    
   }
+  
+  /** add indexes **/
+  if (empty($cols['xref']->Key)) {
+    $q = "ALTER TABLE `#__redevent_register` ADD INDEX (`xref`)";
+    $db->setQuery($q);
+    $db->query();  	
+  }
+  
+  if (empty($cols['submit_key']->Key)) {
+    $q = "ALTER TABLE `#__redevent_register` ADD INDEX (`submit_key`)";
+    $db->setQuery($q);
+    $db->query();  	
+  }
+  
+  if (empty($cols['sid']->Key)) {
+    $q = "ALTER TABLE `#__redevent_register` ADD INDEX (`sid`)";
+    $db->setQuery($q);
+    $db->query();  	
+  }
 }
 
 /* Get the categories columns */
