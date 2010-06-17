@@ -36,6 +36,16 @@ jimport('joomla.application.component.model');
 class RedeventModelEditevent extends JModel
 {
 	/**
+	 * event id
+	 * @var int
+	 */
+	var $_id;
+	/**
+	 * xref id
+	 * @var int
+	 */
+	var $_xref;
+	/**
 	 * Event data in Event array
 	 *
 	 * @var array
@@ -54,7 +64,7 @@ class RedeventModelEditevent extends JModel
 	 *
 	 * @var array
 	 */
-	var $_xref = null;
+	var $_xrefdata = null;
 	
 	/**
 	 * event custom fields data array
@@ -81,6 +91,8 @@ class RedeventModelEditevent extends JModel
 
 		$id = JRequest::getInt('id');
 		$this->setId($id);
+		$xref = JRequest::getInt('xref');
+		$this->setXref($xref);
 	}
 
 	/**
@@ -91,7 +103,23 @@ class RedeventModelEditevent extends JModel
 	function setId($id)
 	{
 		// Set new event ID
-		$this->_id = $id;
+		if ($this->_id != $id) {
+			$this->_id = intval($id);
+			$this->_event = null;
+		}
+	}
+	/**
+	 * Method to set the event session xref
+	 *
+	 * @access	public Event
+	 */
+	function setXref($xref)
+	{
+		// Set new xref ID
+		if ($this->_xref != $xref) {
+			$this->_xref = intval($xref);
+			$this->_xrefdata = null;
+		}
 	}
 
 	/**
@@ -272,30 +300,31 @@ class RedeventModelEditevent extends JModel
 		return true;
 	}
 	
-	function getXref()
+	function getSessionDetails()
 	{
-		if (empty($this->_xref))
+		if (empty($this->_xrefdata))
 		{
-			if ($this->_id)
+			if ($this->_xref)
 			{
 				$customs = $this->_getXCustomFields();
 				
-				$query = ' SELECT x.* ';
+				$query = ' SELECT x.*, e.title ';
 				// add the custom fields
 				foreach ((array) $customs as $c)
 				{
 					$query .= ', c'. $c->id .'.value AS custom'. $c->id;
 				}
 				$query .= ' FROM #__redevent_event_venue_xref AS x ';
+				$query .= ' INNER JOIN #__redevent_events AS e ON x.eventid = e.id ';
 				// add the custom fields tables
 				foreach ((array) $customs as $c)
 				{
 					$query .= ' LEFT JOIN #__redevent_fields_values AS c'. $c->id .' ON c'. $c->id .'.object_id = x.id';
 				}
-				$query .= ' WHERE x.id = '. $this->_db->Quote($this->_id)
+				$query .= ' WHERE x.id = '. $this->_db->Quote($this->_xref)
 				       ;
 	      $this->_db->setQuery( $query );
-				$this->_xref = $this->_db->loadObject();
+				$this->_xrefdata = $this->_db->loadObject();
 			}
 			else
 			{
@@ -316,10 +345,10 @@ class RedeventModelEditevent extends JModel
 				$obj->course_credit     = 0;
 				$obj->course_price      = 0;
 				$obj->published         = 1;
-				$this->_xref = $obj;
+				$this->_xrefdata = $obj;
 			}
 		}
-		return $this->_xref;
+		return $this->_xrefdata;
 	}
 
 	/**

@@ -202,7 +202,7 @@ class RedeventViewMyevents extends JView
 	 * @param int xref id
 	 * @since 2.0
 	 */
-	function xrefeditbutton($id)
+	function xrefeditbutton($id, $xref)
 	{
 		JHTML::_('behavior.tooltip');
 
@@ -211,7 +211,7 @@ class RedeventViewMyevents extends JView
 		$overlib = JText::_( 'EDIT XREF TIP' );
 		$text = JText::_( 'EDIT XREF' );
 
-		$link 	= 'index.php?option=com_redevent&view=editevent&layout=eventdate&id='.$id;
+		$link 	= 'index.php?option=com_redevent&view=editevent&layout=eventdate&id='.$id.'&xref='.$xref;
 		$output	= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
 
 		return $output;

@@ -237,20 +237,27 @@ class RedeventViewEditevent extends JView
 		$params 	= & $mainframe->getParams();
 		
 		$editor 	= & JFactory::getEditor();
+//		echo '<pre>';print_r($this); echo '</pre>';exit;
 
 		// get xref data
-		$xref     = $this->get('Xref');
+		$xref     = $this->get('SessionDetails');
 		$customs  = &$this->get('XrefCustomfields');
 		
 		// form elements
 		$lists = array();
 
 		// events
-		$events = array();
-		$events[] = JHTML::_('select.option', '0', JText::_( 'SELECT EVENT' ) );
-		$events= array_merge($events, $this->get('EventOptions'));
-		$lists['event'] = JHTML::_('select.genericlist', $events, 'eventid', 'size="1" class="inputbox validate-event"', 'value', 'text', $xref->eventid );
-		unset($events);
+		if (!empty($xref->title)) {
+			$lists['event'] = $xref->title;
+		}
+		else 
+		{
+			$events = array();
+			$events[] = JHTML::_('select.option', '0', JText::_( 'SELECT EVENT' ) );
+			$events= array_merge($events, $this->get('EventOptions'));
+			$lists['event'] = JHTML::_('select.genericlist', $events, 'eventid', 'size="1" class="inputbox validate-event"', 'value', 'text', $xref->eventid );
+			unset($events);
+		}
 		
 		// venues
 		$venues = array();

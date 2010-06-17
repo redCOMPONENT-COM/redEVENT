@@ -230,7 +230,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         <?php endif; ?>
 
 				<td headers="el_edit" align="left" valign="top"><?php echo $this->xrefattendeesbutton($row->xref); ?></td>
-				<td headers="el_edit" align="left" valign="top"><?php echo $this->xrefeditbutton($row->xref); ?></td>
+				<td headers="el_edit" align="left" valign="top"><?php echo $this->xrefeditbutton($row->slug, $row->xref); ?></td>
 				<td headers="el_edit" align="left" valign="top">
 					<?php if ($row->published == '1'): ?>
 						<?php echo JHTML::link('index.php?option=com_redevent&task=unpublishxref&xref='. $row->xref, JHTML::_('image.site', 'ok.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Published' ))); ?>
