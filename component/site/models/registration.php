@@ -63,10 +63,9 @@ class RedEventModelRegistration extends JModel
 	 */
 	var $_rf_answers;
 	
-	function __contruct($xref = 0, $config = array())
+	function __construct($xref = 0, $config = array())
 	{
 		parent::__construct($config);
-		exit('test');
 		if ($xref) {
 			$this->setXref($xref);
 		}

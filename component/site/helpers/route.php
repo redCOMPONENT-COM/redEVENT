@@ -210,11 +210,15 @@ class RedeventHelperRoute
 		return self::buildUrl( $parts );			
 	}
 	
-	function getRegistrationRoute($task)
+	function getRegistrationRoute($xref, $task, $submit_key = null)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "controller" => "registration",
+		                "xref" => $xref,
 		                "task"   => $task, );
+		if (!empty($submit_key)) {
+			$parts['submit_key'] = $submit_key;
+		}
 		return self::buildUrl( $parts );			
 	}
 	

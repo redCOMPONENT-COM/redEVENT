@@ -1156,7 +1156,7 @@ class redEVENT_tags {
   	$submit_key = JRequest::getVar('submit_key');
   	$options = array('booking' => $this->_data);  	
  		$rfcore = new RedFormCore();
-  	$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute('register'));
+  	$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute($this->_xref, 'register'));
   	
 		$html = '<form action="'.$action.'" method="post" name="redform" enctype="multipart/form-data" onsubmit="return CheckSubmit(this);">';
   	$html .= $rfcore->getFormFields($this->_data->redform_id, $submit_key, ($this->_data->max_multi_signup ? $this->_data->max_multi_signup : 1), $options);

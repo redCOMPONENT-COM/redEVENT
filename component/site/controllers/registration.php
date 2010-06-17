@@ -43,6 +43,7 @@ class RedEventControllerRegistration extends RedEventController
 		parent::__construct();
 		$this->registerTask( 'manageredit',   'edit' );
 		$this->registerTask( 'managerupdate', 'update' );
+		$this->registerTask( 'review', 'confirm' );
 	}
 	
 		
@@ -113,18 +114,15 @@ class RedEventControllerRegistration extends RedEventController
 			
 			$cache = JFactory::getCache('com_redevent');
 			$cache->clean();
-			$layout = 'confirmed';
+			$link = RedeventHelperRoute::getRegistrationRoute($xref, 'confirm', $submit_key);
   	}
   	else
   	{
-  		$layout = 'review';
+			$link = RedeventHelperRoute::getRegistrationRoute($xref, 'review', $submit_key);
   	}
   	
-  	// push models to the view
-  	$view = $this->getView('registration', 'html');
-  	$view->setModel($model, true);
-		$view->setLayout($layout);
-  	$view->display();
+  	// redirect to prevent resending the form on refresh
+  	$this->setRedirect(JRoute::_($link, false));
 	}
 	
 	function cancelreg()
@@ -222,10 +220,22 @@ class RedEventControllerRegistration extends RedEventController
 		
   	$msg = JTEXT::_('REDEVENT_REGISTRATION_UPDATED').' - '.$rfcore->getError();
   	if ($task == 'managerupdate') {
-  		$this->setRedirect(JRoute::_(RedeventHelperRoute::getManageAttendees($xref)), $msg);  			
+  		$this->setRedirect(RedeventHelperRoute::getManageAttendees($xref), $msg);  			
   	}
   	else {
-  		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute(null, $xref)), $msg);
+  		$this->setRedirect(RedeventHelperRoute::getDetailsRoute(null, $xref), $msg);
   	}
+	}
+	
+	function confirm()
+	{
+		if (JRequest::getVar('task') == 'review') {
+			JRequest::setVar('layout', 'review');
+		}
+		else {
+			JRequest::setVar('layout', 'confirmed');			
+		}
+		JRequest::setVar('view', 'registration');
+		parent::display();
 	}
 }

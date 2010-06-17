@@ -49,7 +49,7 @@ class RedeventViewRegistration extends JView
 		
 		$config     = redEVENTHelper::config();
 		$acl        = UserAcl::getInstance();
-		
+				
 		$event = $this->get('SessionDetails');	
 	
 		if ($this->getLayout() == 'confirmed')
@@ -103,10 +103,10 @@ class RedeventViewRegistration extends JView
 		}
 		
 		if ($acl->canManageAttendees($registration->xref) && JRequest::getVar('task') == 'manageredit') {
-			$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute('managerupdate'));
+			$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute($xref, 'managerupdate'));
 		}
 		else if ($registration->uid == $user->get('id')) {
-			$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute('update'));
+			$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute($xref, 'update'));
 		}
 		else {
 			JError::raiseError(403,'NOT AUTHORIZED');
