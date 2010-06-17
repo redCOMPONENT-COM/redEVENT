@@ -342,12 +342,6 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         . ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
         . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id'
         . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-//        . ' LEFT JOIN #__redevent_groups AS g ON g.id = x.groupid '
-//        . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
-       	. ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
-       	. ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = x.venueid AND gv.group_id = gc.group_id '
-        . ' LEFT JOIN #__redevent_groups AS g ON g.id = gc.group_id '
-       	. ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
         . $where
         . ' GROUP BY (x.id) '
         . $orderby
@@ -470,28 +464,29 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         $params = & $mainframe->getParams();
 
         $task = JRequest::getWord('task');
+        
+        $where = array();
 
         // First thing we need to do is to select only needed events
         if ($task == 'archive')
         {
-            $where = ' WHERE x.published = -1';
+            $where[] = ' x.published = -1 ';
         } else
         {
-            $where = ' WHERE x.published > -1';
+            $where[] = ' x.published > -1 ';
         }
 
-        // then if the user is the owner of the event or member of admin group
-        $where .= '   AND gc.accesslevel > 0  AND gv.accesslevel > 0 ' // group maintains category and venue
-		            . '   AND ( ( g.isdefault = 1 ' // default group
-		            . '         AND (g.edit_events = 2 '
-		            . '             OR (g.edit_events = 1 AND e.created_by = '.$this->_db->Quote($user->id).') ) ) '
-		            . '      OR ( gm.member = '.$this->_db->Quote($user->id) // user is member of this group
-		            . '         AND ( gm.manage_events = 2 OR gm.manage_xrefs > 0 '
-		            . '             OR (gm.manage_events = 1 AND e.created_by = '.$this->_db->Quote($user->id).') ) ) )'
-		            ;
-
-        // Second is to only select events assigned to category the user has access to
-        $where .= ' AND c.access <= '.$gid;
+        $acl = UserAcl::getInstance();
+        
+        $cats   = $acl->getManagedCategories();
+        $venues = $acl->getManagedVenues();
+        
+        if (!empty($cats)) {
+        	$where[] = ' xcat.category_id IN ('.implode(', ', $cats).')';
+        }
+        if (!empty($venues)) {
+        	$where[] = ' x.venueid IN ('.implode(', ', $venues).')';
+        }
 
         /*
          * If we have a filter, and this is enabled... lets tack the AND clause
@@ -512,23 +507,25 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
                 switch($filter_type)
                 {
                     case 'title':
-                        $where .= ' AND LOWER( e.title ) LIKE '.$filter;
+                        $where[] = ' LOWER( e.title ) LIKE '.$filter;
                         break;
 
                     case 'venue':
-                        $where .= ' AND LOWER( l.venue ) LIKE '.$filter;
+                        $where[] = ' LOWER( l.venue ) LIKE '.$filter;
                         break;
 
                     case 'city':
-                        $where .= ' AND LOWER( l.city ) LIKE '.$filter;
+                        $where[] = ' LOWER( l.city ) LIKE '.$filter;
                         break;
 
                     case 'type':
-                        $where .= ' AND LOWER( c.catname ) LIKE '.$filter;
+                        $where[] = ' LOWER( c.catname ) LIKE '.$filter;
                         break;
                 }
             }
         }
+        
+        $where = ' WHERE '. implode(' AND ', $where);
         return $where;
     }
 
