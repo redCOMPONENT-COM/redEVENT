@@ -550,7 +550,7 @@ class ELOutput {
 	{
 		$settings = & redEVENTHelper::config();
 		
-		if(!$date) {
+		if(!strtotime($date)) {
 			return;
 		}
 		
