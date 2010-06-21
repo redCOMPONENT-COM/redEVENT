@@ -706,7 +706,7 @@ class RedEventModelRegistration extends JModel
 		if ($res)
 		{
 			$attendee->setEmail($res->email);
-			$attendee->setFullname($res->name);			dump($attendee, 'uid attendee');
+			$attendee->setFullname($res->name);
 		}
 		else // uid not set, so get the info from submission directly
 		{
