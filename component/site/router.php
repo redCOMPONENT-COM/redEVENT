@@ -101,13 +101,16 @@ function RedEventParseRoute($segments)
 
 		case 'details':
 		{
-			$id = explode(':', $segments[1]);
-			$vars['id'] = $id[0];
-      $count = count($segments);
-      if($count > 2) {
-        $vars['task'] = $segments[2];
-      }
 			$vars['view'] = 'details';
+      $count = count($segments);
+			if ($count > 1) 
+			{
+				$id = explode(':', $segments[1]);
+				$vars['id'] = $id[0];
+	      if($count > 2) {
+	        $vars['task'] = $segments[2];
+	      }
+			}
 
 		} break;
 		

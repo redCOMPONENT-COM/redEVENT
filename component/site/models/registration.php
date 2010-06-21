@@ -401,7 +401,7 @@ class RedEventModelRegistration extends JModel
 				      $this->mailer->AddAddress($user->email, $user->name);
 
 				      /* Get the activation link */
-				      $activatelink = '<a href="'.JRoute::_(JURI::root().'index.php?task=confirm&option=com_redevent&confirmid='.str_replace(".", "_", $registration->uip).'x'.$registration->xref.'x'.$user->id.'x'.$registration->id.'x'.$submit_key).'">'.JText::_('Activate').'</a>';
+				      $activatelink = '<a href="'.JRoute::_(JURI::root().'index.php?option=com_redevent&controller=registration&task=activate&confirmid='.str_replace(".", "_", $registration->uip).'x'.$registration->xref.'x'.$user->id.'x'.$registration->id.'x'.$submit_key).'">'.JText::_('Activate').'</a>';
 				      /* Mail attendee */
 				      $htmlmsg = '<html><head><title></title></title></head><body>';
 				      $htmlmsg .= str_replace('[activatelink]', $activatelink, $eventsettings->notify_body);
@@ -467,7 +467,7 @@ class RedEventModelRegistration extends JModel
 					/* build activation link */
 					// TODO: use the route helper !
 					$rid = $attendee->getId();
-					$url = JRoute::_( JURI::root().'index.php?option=com_redevent&task=confirm&'
+					$url = JRoute::_( JURI::root().'index.php?option=com_redevent&controller=registration&task=activate'
 					     . '&confirmid='.str_replace(".", "_", $registration->uip)
 					     .              'x'.$registration->xref
 					     .              'x'.$registration->uid
