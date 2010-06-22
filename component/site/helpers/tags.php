@@ -414,6 +414,12 @@ class redEVENT_tags {
       				break;
       				
 				  	/**************  registration tags ******************/
+      				
+				    case 'redform_title':
+				      $search[]  = '['.$tag.']';
+      				$replace[] = $this->_data->formname;
+      				break;      				
+      				
 				    case 'inputname': // for mail signup
 				      $search[]  = '['.$tag.']';
       				$replace[] = '<div id="divsubemailname"><div class="divsubemailnametext">'.JText::_('NAME').'</div><div class="divsubemailnameinput"><input type="text" name="subemailname" /></div></div>';
@@ -729,6 +735,7 @@ class redEVENT_tags {
 		   . ' x.external_registration_url, '
 		   . ' v.city AS location, v.state, v.url as venueurl, v.locdescription as venue_description, '
 		   . ' v.country, v.locimage, v.street, v.plz, '
+		   . ' f.formname, '
 		   . ' UNIX_TIMESTAMP(x.dates) AS unixdates, '
 		   . ' CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(":", e.id, e.alias) ELSE e.id END as slug, '
 		   . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(":", v.id, v.alias) ELSE v.id END as venueslug '
@@ -743,6 +750,7 @@ class redEVENT_tags {
 		$query .= ' FROM #__redevent_events AS e '
 		   . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
 		   . ' INNER JOIN #__redevent_venues AS v ON x.venueid = v.id '
+		   . ' INNER JOIN #__rwf_forms AS f ON f.id = e.redform_id '
 		   . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
 		   . ' LEFT JOIN #__redevent_categories AS c ON xcat.category_id = c.id '
 		   . ' LEFT JOIN #__users AS u ON u.id = e.created_by '
