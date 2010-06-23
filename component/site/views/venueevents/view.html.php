@@ -112,20 +112,22 @@ class RedeventViewVenueevents extends JView
 		
 		//create the pathway
 		if ($task == 'archive') {
-			$pathway->addItem( JText::_( 'ARCHIVE' ).' - '.$venue->venue, JRoute::_('index.php?option='.$option.'&view=venueevents&task=archive&id='.$venue->slug));
-			$link = JRoute::_( 'index.php?option=com_redevent&view=venueevents&id='.$venue->slug.'&task=archive' );
+			$link = JRoute::_( RedeventHelperRoute::getVenueEventsRoute($venue->slug, 'archive') );
+			$pathway->addItem( JText::_( 'ARCHIVE' ).' - '.$venue->venue, $link);
 			$print_link = JRoute::_('index.php?option=com_redevent&view=venueevents&id='. $venue->slug .'&task=archive&pop=1&tmpl=component');
 			$pagetitle = $venue->venue.' - '.JText::_( 'ARCHIVE' );
 		} else {
-			$pathway->addItem( $venue->venue, JRoute::_('index.php?option='.$option.'&view=venueevents&id='.$venue->slug));
-			$link = JRoute::_( 'index.php?option=com_redevent&view=venueevents&id='.$venue->slug );
+			$link = JRoute::_( RedeventHelperRoute::getVenueEventsRoute($venue->slug) );
+			$pathway->addItem( $venue->venue, $link);
 			$print_link = JRoute::_('index.php?option=com_redevent&view=venueevents&id='. $venue->slug .'&pop=1&tmpl=component');
 			$pagetitle = $venue->venue;
 		}
+		$thumb_link = RedeventHelperRoute::getVenueEventsRoute($venue->slug, null, 'thumb');
+		$list_link  = RedeventHelperRoute::getVenueEventsRoute($venue->slug);
 		
 		//set Page title
 		$mainframe->setPageTitle( $pagetitle );
-   		$mainframe->addMetaTag( 'title' , $pagetitle );
+   	$mainframe->addMetaTag( 'title' , $pagetitle );
 		$document->setMetadata('keywords', $venue->meta_keywords );
 		$document->setDescription( strip_tags($venue->meta_description) );
 
@@ -192,6 +194,9 @@ class RedeventViewVenueevents extends JView
 		$this->assignRef('item' , 					$item);
 		$this->assignRef('pagetitle' , 				$pagetitle);
 		$this->assignRef('task' , 					$task);
+		$this->assignRef('config',      $elsettings);
+		$this->assignRef('thumb_link',  $thumb_link);
+		$this->assignRef('list_link',   $list_link);
 
 		parent::display($tpl);
 	}

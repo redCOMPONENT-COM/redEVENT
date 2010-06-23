@@ -98,6 +98,8 @@ class RedeventViewSimpleList extends JView
 			$print_link = JRoute::_('index.php?option=com_redevent&view=simplelist&tmpl=component&pop=1');
 			$pagetitle = $params->get('page_title');
 		}
+		$thumb_link = RedeventHelperRoute::getSimpleListRoute(null, 'thumb');
+		$list_link = RedeventHelperRoute::getSimpleListRoute();
 		
 		//Set Page title
 		$mainframe->setPageTitle( $pagetitle );
@@ -142,6 +144,9 @@ class RedeventViewSimpleList extends JView
 		$this->assignRef('pageNav',     $pagination);
 		$this->assignRef('elsettings',  $elsettings);
 		$this->assignRef('pagetitle',   $pagetitle);
+		$this->assignRef('config',      $elsettings);
+		$this->assignRef('thumb_link',  $thumb_link);
+		$this->assignRef('list_link',   $list_link);
 
 		parent::display($tpl);
 
@@ -210,4 +215,3 @@ class RedeventViewSimpleList extends JView
 		return $lists;
 	}
 }
-?>

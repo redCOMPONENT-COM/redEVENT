@@ -23,12 +23,15 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
-<div id="redevent" class="el_eventlist">
+<style type="text/css">
+.rf_img {min-height:<?php echo $this->config->imagehight;?>px;}
+</style>
+<div id="redevent" class="rf_thumb">
 <p class="buttons">
 	<?php
 		if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup
+			echo ELOutput::listbutton( $this->list_link, $this->params );
 			echo ELOutput::submitbutton( $this->dellink, $this->params );
-			echo ELOutput::thumbbutton( $this->thumb_link, $this->params );
 			echo ELOutput::archivebutton( $this->params, $this->task );
 		endif;
 
@@ -51,18 +54,39 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	</div>
 <?php endif; ?>
 
-<!--table-->
-
-<?php echo $this->loadTemplate('table'); ?>
-
-<p>
+<!-- filter -->
+<form action="<?php echo $this->action; ?>" method="post" id="adminForm">
+<?php if ($this->params->get('filter') || $this->params->get('display')) : ?>
+<div id="el_filter" class="floattext">
+		<?php if ($this->params->get('filter')) : ?>
+		<div class="el_fleft">
+			<?php
+			echo '<label for="filter_type">'.JText::_('FILTER').'</label>&nbsp;';
+			echo $this->lists['filter_types'].'&nbsp;';
+			?>
+			<input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" title="<?php echo JText::_('EVENTS_FILTER_HINT'); ?>"/>
+			<button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_( 'GO' ); ?></button>
+			<button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_( 'RESET' ); ?></button>
+		</div>
+		<?php endif; ?>
+		<?php if ($this->params->get('display')) : ?>
+		<div class="el_fright">
+			<?php
+			echo '<label for="limit">'.JText::_('DISPLAY NUM').'</label>&nbsp;';
+			echo $this->pageNav->getLimitBox();
+			?>
+		</div>
+		<?php endif; ?>
+</div>
+<?php endif; ?>
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="" />
-</p>
 </form>
+<!-- filter end -->
+
+<?php echo $this->loadTemplate('items'); ?>
 
 <!--footer-->
-
 <div class="pageslinks">
 	<?php echo $this->pageNav->getPagesLinks(); ?>
 </div>
@@ -74,5 +98,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <p class="copyright">
 	<?php echo ELOutput::footer( ); ?>
 </p>
+<!--footer end-->
 
 </div>

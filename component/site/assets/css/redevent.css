@@ -540,3 +540,17 @@ div.el_categoriesview div.catimg span {
 	display:block;
 	clear: both;
 }
+
+ul.rf_thumbevents {	
+	overflow: hidden;
+	width: 100%; 
+}
+
+ul.rf_thumbevents li {  
+	list-style: none outside;
+  float: left;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  max-width: 180px;
+}

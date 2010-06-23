@@ -24,11 +24,14 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
+<style type="text/css">
+.rf_img {min-height:<?php echo $this->config->imagehight;?>px;}
+</style>
 <div id="redevent" class="el_categoryevents">
 <p class="buttons">
 	<?php
 		if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup
-			echo ELOutput::thumbbutton( $this->thumb_link, $this->params );
+			echo ELOutput::listbutton( $this->list_link, $this->params );
 			echo ELOutput::submitbutton( $this->dellink, $this->params );
 			echo ELOutput::archivebutton( $this->params, $this->task, $this->category->slug );
 		endif;
@@ -58,10 +61,36 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<?php echo $this->catdescription; ?>
 </div>
 </div>
-<!--table-->
 
-<?php echo $this->loadTemplate('table'); ?>
-<p>
+
+<form action="<?php echo $this->action; ?>" method="post" id="adminForm">
+
+<?php if ($this->params->get('filter') || $this->params->get('display')) : ?>
+<div id="el_filter" class="floattext">
+		<?php if ($this->params->get('filter')) : ?>
+		<div class="el_fleft">
+			<?php
+			echo '<label for="filter_type">'.JText::_('FILTER').'</label>&nbsp;';
+			echo $this->lists['filter_type'].'&nbsp;';
+			?>
+			<input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="text_area" onchange="document.getElementById('adminForm').submit();" title="<?php echo JText::_('EVENTS_FILTER_HINT'); ?>"/>
+			<button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_( 'GO' ); ?></button>
+			<button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_( 'RESET' ); ?></button>
+		</div>
+		<?php endif; ?>
+		<?php if ($this->params->get('display')) : ?>
+		<div class="el_fright">
+			<?php
+			echo '<label for="limit">'.JText::_('DISPLAY NUM').'</label>&nbsp;';
+			echo $this->pageNav->getLimitBox();
+			?>
+		</div>
+		<?php endif; ?>
+</div>
+<?php endif; ?>
+
+<?php echo $this->loadTemplate('items'); ?>
+
 <input type="hidden" name="option" value="com_redevent" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="" />
@@ -69,7 +98,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 <input type="hidden" name="id" value="<?php echo $this->category->id; ?>" />
 <input type="hidden" name="Itemid" value="<?php echo (isset($this->item->id) ? $this->item->id:""); ?>" />
-</p>
 </form>
 
 <!--pagination-->

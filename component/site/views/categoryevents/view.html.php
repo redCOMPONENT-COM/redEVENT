@@ -40,7 +40,8 @@ class RedeventViewCategoryevents extends JView
 	 *
 	 * @since 0.9
 	 */
-	function display( $tpl=null ) {
+	function display( $tpl=null ) 
+	{
 		global $mainframe, $option;
 
 		//initialize variables
@@ -126,6 +127,8 @@ class RedeventViewCategoryevents extends JView
 			$pathway->addItem( $category->catname, JRoute::_($link));
 			$print_link = JRoute::_( $link.'&pop=1&tmpl=component');
 		}
+		$thumb_link = RedeventHelperRoute::getCategoryEventsRoute($category->slug, null, 'thumb');
+		$list_link  = RedeventHelperRoute::getCategoryEventsRoute($category->slug);
 
 		//Check if the user has access to the form
 		$maintainer = ELUser::ismaintainer();
@@ -166,6 +169,9 @@ class RedeventViewCategoryevents extends JView
 		$this->assignRef('pageNav' , 				$pageNav);
 		$this->assignRef('elsettings' , 			$elsettings);
 		$this->assignRef('item' , 					$item);
+		$this->assignRef('config',      $elsettings);
+		$this->assignRef('thumb_link',  $thumb_link);
+		$this->assignRef('list_link',   $list_link);
 		
 		parent::display($tpl);
 	}

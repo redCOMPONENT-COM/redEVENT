@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Categoryevents thumb Layout">
+		<message>
+			<![CDATA[CATEGORYEVENTS THUMB LAYOUT DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>CATEGORYEVENTS THUMB LAYOUT</name>
+		<description>CATEGORYEVENTS THUMB LAYOUT DESC</description>
+		<url addpath="/administrator/components/com_redevent/elements">
+			<param name="id" type="categories" default="0" label="SELECT CATEGORY" description="SELECT CATEGORY DESC" />
+		</url>
+	</state>
+</metadata>

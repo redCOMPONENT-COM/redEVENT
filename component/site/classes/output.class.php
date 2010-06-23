@@ -73,6 +73,56 @@ class ELOutput {
 
 		return;
 	}
+
+	/**
+	* Writes Event submission button
+	*
+	* @author Christoph Lukes
+	* @since 0.9
+	*
+	* @param int $dellink Access of user
+	* @param array $params needed params
+	* @param string $view the view the user will redirected to
+	**/
+	function thumbbutton( $link, &$params )
+	{
+		JHTML::_('behavior.tooltip');
+
+		if ( $params->get('icons') ) {
+			$image = JHTML::_('image.site', 'thumbnail.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'REDEVENT_EVENTS_THUMBNAILS_LAYOUT' ));
+		} else {
+			$image = JText::_( 'REDEVENT_EVENTS_THUMBNAILS_LAYOUT' );
+		}
+		$overlib 	= JText::_( 'SUBMIT REDEVENT_EVENTS_THUMBNAILS_LAYOUT' );
+		$output		= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.JText::_( 'REDEVENT_EVENTS_THUMBNAILS_LAYOUT' ).'::">'.$image.'</a>';
+
+		return $output;
+	}
+
+	/**
+	* Writes Event submission button
+	*
+	* @author Christoph Lukes
+	* @since 0.9
+	*
+	* @param int $dellink Access of user
+	* @param array $params needed params
+	* @param string $view the view the user will redirected to
+	**/
+	function listbutton( $link, &$params )
+	{
+		JHTML::_('behavior.tooltip');
+
+		if ( $params->get('icons') ) {
+			$image = JHTML::_('image.site', 'list.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'REDEVENT_EVENTS_LIST_LAYOUT' ));
+		} else {
+			$image = JText::_( 'REDEVENT_EVENTS_LIST_LAYOUT' );
+		}
+		$overlib 	= JText::_( 'REDEVENT_EVENTS_LIST_LAYOUT' );
+		$output		= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.JText::_( 'REDEVENT_EVENTS_LIST_LAYOUT' ).'::">'.$image.'</a>';
+
+		return $output;
+	}
 	
 	/**
 	 * returns html code for edit venue button

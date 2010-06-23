@@ -73,13 +73,16 @@ class RedeventHelperRoute
 	}
 	
 	
-	function getVenueEventsRoute($id, $task = null)
+	function getVenueEventsRoute($id, $task = null, $layout = null)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "venueevents",
 		                "id"     => $id );
 		if ($task) {
 			$parts['task'] = $task;
+		}
+		if ($layout) {
+			$parts['layout'] = $layout;
 		}
 		return self::buildUrl( $parts );
 	}
@@ -95,13 +98,16 @@ class RedeventHelperRoute
 		return self::buildUrl( $parts );
 	}
 	
-	function getCategoryEventsRoute($id, $task = null)
+	function getCategoryEventsRoute($id, $task = null, $layout = null)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "categoryevents",
 		                "id"     => $id );
 		if ($task) {
 			$parts['task'] = $task;
+		}
+		if ($layout) {
+			$parts['layout'] = $layout;
 		}
 		return self::buildUrl( $parts );
 	}
@@ -149,12 +155,15 @@ class RedeventHelperRoute
 	 * @param string $task
 	 * @return string
 	 */
-	function getSimpleListRoute($task = null)
+	function getSimpleListRoute($task = null, $layout = null)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "simplelist" );
 		if ($task) {
 			$parts['task'] = $task;
+		}
+		if ($layout) {
+			$parts['layout'] = $layout;
 		}
 		return self::buildUrl( $parts );
 	}

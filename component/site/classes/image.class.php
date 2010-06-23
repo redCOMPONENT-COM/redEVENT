@@ -52,13 +52,13 @@ class redEVENTImage {
 		if (!$infos = @getimagesize($file)) {
 			return false;
 		}
-
+		
 		// keep proportions
 		$iWidth = $infos[0];
 		$iHeight = $infos[1];
 		$iRatioW = $width / $iWidth;
 		$iRatioH = $height / $iHeight;
-
+		
 		if ($iRatioW < $iRatioH) {
 			$iNewW = $iWidth * $iRatioW;
 			$iNewH = $iHeight * $iRatioW;
@@ -316,6 +316,7 @@ class redEVENTImage {
 	{		
 		jimport('joomla.filesystem.file');
 		$app = &JFactory::getApplication();
+		$elsettings = redEVENTHelper::config();
 		
 		$types = array('events', 'venues', 'categories');
 		if (!in_array($type, $types)) {
@@ -326,9 +327,18 @@ class redEVENTImage {
 				
 		$base = $app->isAdmin() ? $app->getSiteURL() : JURI::base();
 		
+//		echo JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.'small'.DS.$image;
 		if (JFile::exists(JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.'small'.DS.$image)) 
 		{
 			return $base.'images/redevent/'.$folder.'/small/'.$image;
+		}
+		else if (JFile::exists(JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.$image))
+		{
+			//try to generate the thumb
+			$path = JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.'small'.DS.$image;
+			if (redEVENTImage::thumb(JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.$image, $path, $elsettings->imagewidth, $elsettings->imagehight)) {
+				return $base.'images/redevent/'.$folder.'/small/'.$image;
+			}			
 		}
 		return false;
 	}
