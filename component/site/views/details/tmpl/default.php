@@ -44,7 +44,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     	?>
 	</h2>
 	<?php //flyer
-		echo $this->tags->ReplaceTags($this->row->datdescription);
+		echo $this->tags->ReplaceTags($this->row->datdescription, array('hasreview' => (!empty($this->row->review_message) && strstr($this->row->review_message, '[redform]') !== false)));
 /* If registration is enabled */
 if ($this->row->show_names) : ?>
 		<!-- Registration -->

@@ -146,7 +146,7 @@ class RedeventModelDetails extends JModel
 
 			$query = 'SELECT a.id AS did, x.id AS xref, a.title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, a.registra, a.unregistra,' 
 					. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
-					. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone,'
+					. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone, a.review_message, '
 					. ' v.venue,'
 					. ' u.name AS creator_name, u.email AS creator_email, '
 					. " a.confirmation_message, x.course_price, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.catname, c.published, c.access,"
