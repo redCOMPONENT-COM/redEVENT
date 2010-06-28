@@ -105,8 +105,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		else :
 
 		foreach ($this->rows as $row) :
-		?>
-  			<tr class="sectiontableentry<?php echo ($row->odd +1 ) . $this->params->get( 'pageclass_sfx' ); ?>" >
+			$isover = (redEVENTHelper::isOver($row) ? ' isover' : '');
+			?>
+  			<tr class="sectiontableentry<?php echo ($row->odd +1 ) . $this->params->get( 'pageclass_sfx' ); ?><?php echo $isover; ?>" >
     			<td headers="el_date_cat<?php echo $this->categoryid; ?>" align="left">
     			    <strong>
     					<?php echo ELOutput::formatdate($row->dates, $row->times); ?>

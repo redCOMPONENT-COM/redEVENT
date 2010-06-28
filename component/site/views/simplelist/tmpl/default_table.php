@@ -130,8 +130,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	$this->rows =& $this->getRows();
 
 	foreach ($this->rows as $row) :
+		$isover = (redEVENTHelper::isOver($row) ? ' isover' : '');
 		?>
-  			<tr class="sectiontableentry<?php echo ($row->odd +1 ) . $this->params->get( 'pageclass_sfx' ); ?>" >
+  			<tr class="sectiontableentry<?php echo ($row->odd +1 ) . $this->params->get( 'pageclass_sfx' ); ?><?php echo $isover; ?>" >
 
     			<td headers="el_date" align="left">
     				<strong>

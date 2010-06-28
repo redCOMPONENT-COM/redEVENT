@@ -969,5 +969,26 @@ class redEVENTHelper {
     }
     return $xref->maxattendees - $xref->registered;
   }
+  
+  /**
+   * returns true if the event is over.
+   * object in parameters must include properties 
+   * 
+   * @param object $event
+   */
+  function isOver($event)
+  {
+  	if (! (property_exists($event, 'dates') && property_exists($event, 'times') 
+  	      && property_exists($event, 'enddates') && property_exists($event, 'endtimes') ) ) {
+  		throw new Exception('Missing object properties');
+  	}
+  	
+  	if (strtotime($event->enddates.' '.$event->endtimes)) {
+  		return strtotime($event->enddates.' '.$event->endtimes) < time();
+  	}
+  	else {
+  		return strtotime($event->dates.' '.$event->times) < time();  		
+  	}
+  }
 }
 ?>
