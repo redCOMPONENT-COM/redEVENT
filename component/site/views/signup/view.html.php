@@ -75,7 +75,7 @@ class RedeventViewSignup extends JView
 		
     $canRegister = $this->get('RegistrationStatus');
     if ($canRegister->canregister == 0) {
-      echo $canRegister->status;
+      echo '<span class="registration_error">'.$canRegister->status.'</span>';
       echo '<br/>';
       echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id')), JText::_('RETURN_EVENT_DETAILS'));
       return;    	

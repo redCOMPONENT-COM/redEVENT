@@ -640,7 +640,7 @@ class redEVENT_tags {
             $redform = $this->getForm($this->_data->redform_id);
 				  }
 				  else {
-				    $redform = $status->status;
+				    $redform = '<span class="registration_error">'.$status->status.'</span>';
 				  }
 				  
 				  /* second replacement, add the form */
