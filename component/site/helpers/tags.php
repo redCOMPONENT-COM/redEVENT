@@ -750,7 +750,7 @@ class redEVENT_tags {
 		$query .= ' FROM #__redevent_events AS e '
 		   . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
 		   . ' INNER JOIN #__redevent_venues AS v ON x.venueid = v.id '
-		   . ' INNER JOIN #__rwf_forms AS f ON f.id = e.redform_id '
+		   . ' LEFT JOIN #__rwf_forms AS f ON f.id = e.redform_id '
 		   . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
 		   . ' LEFT JOIN #__redevent_categories AS c ON xcat.category_id = c.id '
 		   . ' LEFT JOIN #__users AS u ON u.id = e.created_by '
