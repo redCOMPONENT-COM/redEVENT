@@ -35,6 +35,12 @@ Window.onDomReady(function() {
         		  this.value = $('dates').value;
          	 }
         });
+
+        $('times').addEvent('change', function(){
+					if ($('dates').value !== "" && $('dates').value !== "0000-00-00" && $('dates').value !== $('enddates').value) {						
+						 $('endtimes').value = this.value;
+					}
+        });
 });
 
 function validateForm(f) {
