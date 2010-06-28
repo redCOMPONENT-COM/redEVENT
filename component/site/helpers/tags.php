@@ -1164,6 +1164,10 @@ class redEVENT_tags {
   	$submit_key = JRequest::getVar('submit_key');
   	$options = array('booking' => $this->_data);  	
  		$rfcore = new RedFormCore();
+ 		if (!$rfcore->getFormStatus($this->_data->redform_id)) {
+			$error = $rfcore->getError();
+			return '<span class="redform_error">'.$error.'</span>';
+ 		}
   	$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute($this->_xref, 'register'));
   	
 		$html = '<form action="'.$action.'" method="post" name="redform" enctype="multipart/form-data" onsubmit="return CheckSubmit(this);">';
