@@ -594,7 +594,7 @@ class redEVENT_tags {
 				    case 'paymentrequest':
 				      $search[]  = '['.$tag.']';
 				      if (!empty($submit_key)) {
-				      	$title = urlencode($this->_data->title.' '.$this->_data->dates);				      
+				      	$title = urlencode($this->_data->title.' '.ELOutput::formatdate($this->_data->dates));				      
               	$replace[] = JHTML::link(JRoute::_('index.php?option=com_redform&controller=payment&task=select&source=redevent&key='.$submit_key.'&paymenttitle='.$title, false), JText::_('Checkout'), '');
 				      }
 				      else {
@@ -606,7 +606,7 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
 				      $submit_key = JRequest::getVar('submit_key');
 				      if (!empty($submit_key)) {
-				      	$title = urlencode($this->_data->title.' '.$this->_data->dates);				      
+				      	$title = urlencode($this->_data->title.' '.ELOutput::formatdate($this->_data->dates));				      
               	$replace[] = JRoute::_('index.php?option=com_redform&controller=payment&task=select&source=redevent&key='.$submit_key.'&paymenttitle='.$title, false);
 				      }
 				      else {
