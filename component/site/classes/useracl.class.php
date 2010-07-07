@@ -412,9 +412,10 @@ class UserAcl {
 		$db = &JFactory::getDBO();
 
 		$groups = $this->getUserGroups();
-		if ($groups) {
-			$group_ids = array_keys($groups);
+		if (!$groups) {
+			return false;
 		}
+		$group_ids = array_keys($groups);
 		$quoted = array();
 		foreach ($group_ids as $g) {
 			$quoted[] = $db->Quote($g);
@@ -439,9 +440,11 @@ class UserAcl {
 		$db = &JFactory::getDBO();
 
 		$groups = $this->getUserGroups();
-		if ($groups) {
-			$group_ids = array_keys($groups);
+		if (!$groups) {
+			return false;
 		}
+		
+		$group_ids = array_keys($groups);
 		$quoted = array();
 		foreach ($group_ids as $g) {
 			$quoted[] = $db->Quote($g);

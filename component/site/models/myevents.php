@@ -484,8 +484,14 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         if (!empty($cats)) {
         	$where[] = ' xcat.category_id IN ('.implode(', ', $cats).')';
         }
+        else {
+        	$where[] = ' 0 ';
+        }
         if (!empty($venues)) {
         	$where[] = ' x.venueid IN ('.implode(', ', $venues).')';
+        }
+        else {
+        	$where[] = ' 0 ';
         }
 
         /*
