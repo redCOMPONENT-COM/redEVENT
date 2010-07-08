@@ -955,26 +955,7 @@ class redEVENT_tags {
       <input type="hidden" name="xref" value="<?php echo $event->xref; ?>" />
       <input type="hidden" name="id" value="<?php echo $event->id; ?>" />
 		</form>
-    <?php  /**
-   * returns all custom fields for xrefs
-   * 
-   * @return array
-   */
-  function getXrefCustomFields()
-  {
-  	if (empty($this->_xrefcustomfields))
-  	{
-	  	$query = ' SELECT f.id, f.name, f.in_lists, f.searchable, f.ordering '
-	  	       . ' FROM #__redevent_fields AS f'
-	  	       . ' WHERE f.published = 1'
-	  	       . '   AND f.object_key = '. $this->_db->Quote('redevent.xref')
-	  	       . ' ORDER BY f.ordering ASC '
-	  	       ;
-	  	$this->_db->setQuery($query);
-	  	$this->_xrefcustomfields = $this->_db->loadObjectList();
-  	}
-  	return $this->_xrefcustomfields;
-  }
+    <?php  
     $contents = ob_get_contents();
     ob_end_clean();
     return $contents;    
