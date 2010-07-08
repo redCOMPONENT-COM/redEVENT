@@ -51,6 +51,16 @@
 	<administration>
 
 	<menu img="../administrator/components/com_redevent/assets/images/redevent.png">redEVENT</menu>
+	<submenu>
+		<menu img="../administrator/components/com_redevent/assets/images/icon-16-events.png" view="events">REDEVENT_MENU_EVENTS</menu>
+		<menu img="../administrator/components/com_redevent/assets/images/icon-16-venues.png" view="venues">REDEVENT_MENU_VENUES</menu>
+		<menu img="../administrator/components/com_redevent/assets/images/icon-16-categories.png" view="categories">REDEVENT_MENU_CATEGORIES</menu>
+		<menu img="../administrator/components/com_redevent/assets/images/icon-16-venuescategories.png" view="venuescategories">REDEVENT_MENU_VENUES_CATEGORIES</menu>
+		<menu img="../administrator/components/com_redevent/assets/images/icon-16-groups.png" view="groups">REDEVENT_MENU_GROUPS</menu>
+		<menu img="../administrator/components/com_redevent/assets/images/icon-16-library.png" view="textlibrary">REDEVENT_MENU_TAGS_LIBRARY</menu>
+		<menu img="../administrator/components/com_redevent/assets/images/icon-16-customfields.png" view="customfields">REDEVENT_MENU_CUSTOMFIELDS</menu>
+		<menu img="../administrator/components/com_redevent/assets/images/icon-16-settings.png" view="settings">REDEVENT_MENU_SETTINGS</menu>
+	</submenu>
 
 	<files folder="admin">
 		<filename>changelog.txt</filename>
@@ -74,11 +84,17 @@
 
 	<languages folder="admin/languages">
 		<language tag="en-GB">en-GB.com_redevent.ini</language>
+		<language tag="en-GB">en-GB.com_redevent.menu.ini</language>
 		<language tag="de-DE">de-DE.com_redevent.ini</language>
+		<language tag="de-DE">de-DE.com_redevent.menu.ini</language>
 		<language tag="da-DK">da-DK.com_redevent.ini</language>
+		<language tag="da-DK">da-DK.com_redevent.menu.ini</language>
 		<language tag="fr-FR">fr-FR.com_redevent.ini</language>
+		<language tag="fr-FR">fr-FR.com_redevent.menu.ini</language>
 		<language tag="nl-NL">nl-NL.com_redevent.ini</language>
-		<language tag="sv-SE">sv-SE.com_redevent.ini</language>		
+		<language tag="nl-NL">nl-NL.com_redevent.menu.ini</language>
+		<language tag="sv-SE">sv-SE.com_redevent.ini</language>	
+		<language tag="sv-SE">sv-SE.com_redevent.menu.ini</language>		
 	</languages>
 
 </administration>
