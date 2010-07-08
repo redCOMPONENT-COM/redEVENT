@@ -348,6 +348,7 @@ class RedeventModelDetails extends JModel
         // build the object
         $register = new stdclass();
         $register->id = $answer->id;
+        $register->attendee_id = $submitters[$answer->submit_key]->id;
         $register->submitter = $submitters[$answer->submit_key];
         $register->answers = $answer;
         $register->fields = $fields_names;
