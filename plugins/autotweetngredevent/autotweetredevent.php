@@ -37,6 +37,8 @@ if (!JComponentHelper::getComponent('com_redevent', true)->enabled) {
 
 require_once (JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_autotweet' . DS . 'helpers' . DS . 'autotweetbase.php');
 
+// redform
+require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'route.php');
 
 /**
  * redEVENT extension plugin for AutoTweet.
@@ -56,25 +58,66 @@ class plgSystemAutotweetRedevent extends plgAutotweetBase
 	// handles normal forum post
 	function onAfterDispatch()
 	{
-		$db = &JFactory::getDBO();
-		
-		$query = " SELECT ".$db->NameQuote('id').", ".$db->NameQuote('title').
-			 " FROM ".$db->NameQuote('#__redevent_events').
-			 " WHERE ".$db->NameQuote('id')." = '".JRequest::getVar('twit_id')."'";
-		$db->setQuery($query);
-		$row = $db->loadObjectList();	
-		
-		$url = 'index.php?option=com_redevent&view=simplelist';
-			
 		// Only post if data doesent already exist in the database
 		if (JRequest::getVar('option') == "com_redevent"
 		    && JRequest::getVar('view') == "events"
 		    && JRequest::getVar('twit_id') != "")
 		{
-			$this->postTwitterStatusMessage ($row[0]->id, JFactory::getDate()->toFormat(), $row[0]->title, $url);
+			$db = &JFactory::getDBO();
+			
+			$query = " SELECT ".$db->NameQuote('id').", ".$db->NameQuote('title').
+				 " FROM ".$db->NameQuote('#__redevent_events').
+				 " WHERE ".$db->NameQuote('id')." = '".JRequest::getVar('twit_id')."'";
+			$db->setQuery($query);
+			$row = $db->loadObjectList();	
+			
+			$this->postStatusMessage($row[0]->id, JFactory::getDate()->toFormat(), $row[0]->title, 'event');
 		}
 	
 		return true;
+	}
+	
+	/**
+	 * returns data to be inserted on tweeter
+	 * 
+	 * @param int $id
+	 * @param string $typeinfo
+	 * @return array title, text, hash, url
+	 */
+	public function getData($id, $typeinfo)
+	{
+//		if ($typeinfo != 'event') {
+//			return false;
+//		}
+		
+		// $typeinfo not used
+		$db = & JFactory::getDBO();
+    $user = & JFactory::getUser();
+		
+    $query = ' SELECT a.id, a.title, '
+           . ' x.id as xref, '
+           . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug '
+           . ' FROM #__redevent_events AS a '
+           . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id '
+           . ' WHERE a.id = ' . $id;
+    $db->setQuery($query);
+    
+    if (!$event = $db->loadObject()) {
+      if ($db->getErrorNum()) {
+        RedeventError::raiseWarning('0', $db->getErrorMsg());
+      }
+    	return false;
+    }
+    
+		// return values
+		$data = array (
+			'title'		=> $event->title,
+			'text'		=> $event->title,
+			'hashtags'	=> '',
+			'url'		=> RedeventHelperRoute::getDetailsRoute($event->slug, $event->xref),
+		);	
+		
+		return $data;
 	}
 }	
 ?>
