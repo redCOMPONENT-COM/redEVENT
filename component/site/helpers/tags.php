@@ -1105,7 +1105,6 @@ class redEVENT_tags {
    */
   private function _getAnswers($submit_key)
   { 
-  	require_once (JPATH_SITE.DS.'components'.DS.'com_redform'.DS.'classes'.DS.'answers.php');
   	if (empty($this->_answers))
   	{
 	  	if (!$this->_data) {
@@ -1118,18 +1117,14 @@ class redEVENT_tags {
 	  	}
 	  	
 	  	$db = & JFactory::getDBO();
-	  	$query = ' SELECT s.id '
-	  	       . ' FROM #__rwf_submitters AS s '
-	  	       . ' WHERE s.submit_key = '.$db->quote($submit_key);
+	  	$query = ' SELECT r.sid '
+	  	       . ' FROM #__redevent_register AS r '
+	  	       . ' WHERE r.submit_key = '.$db->quote($submit_key);
 			$db->setQuery($query);
-			$submitters = $db->loadObjectList();
-			
-			$answers = array();
-			foreach ($submitters as $s)
-			{
-				$answers[] = rfanswers::getSubmitterAnswers($s->id);
-			}
-			$this->_answers = $answers;
+			$sids = $db->loadResultArray();
+						
+			$rfcore = new RedFormCore();
+			$this->_answers = $rfcore->getSidsFieldsAnswers($sids);
   	}
   	return $this->_answers;
   }
