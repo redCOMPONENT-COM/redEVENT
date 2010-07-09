@@ -43,8 +43,12 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'admin.class.php');
 require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'error.class.php');
 
 // redform
-include_once(JPATH_SITE.DS.'components'.DS.'com_redform'.DS.'redform.core.php');
-
+if (!file_exists(JPATH_SITE.DS.'components'.DS.'com_redform'.DS.'redform.core.php')) {
+	JError::raiseWarning(0,JTExt::_('REDEVENT_ERROR_REDFORMCORE_NOT_FOUND'));
+}
+else {
+	include_once(JPATH_SITE.DS.'components'.DS.'com_redform'.DS.'redform.core.php');
+}
 // Set the table directory
 JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
 
