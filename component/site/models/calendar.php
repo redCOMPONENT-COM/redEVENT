@@ -103,11 +103,11 @@ class RedeventModelCalendar extends JModel
         foreach($this->_data AS $item)
         {
           $item->categories = $this->getCategories($item->id);
-
+          
           if(!is_null($item->enddates) ) 
           {
-            if( $item->enddates != $item->dates) {
-              	
+            if( $item->enddates != $item->dates) 
+            {              	
               $day = $item->start_day;
 
               for ($counter = 0; $counter <= $item->datediff-1; $counter++)
@@ -134,6 +134,7 @@ class RedeventModelCalendar extends JModel
           //remove events without categories (users have no access to them)
           if (empty($item->categories)) {
             unset($item);
+            continue;
           }
 
           //remove event with a start date from previous months
@@ -158,18 +159,20 @@ class RedeventModelCalendar extends JModel
         $where = $this->_buildWhere();
 
         //Get Events from Database
-        $query = 'SELECT DATEDIFF(x.enddates, x.dates) AS datediff, a.id, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, a.title, x.venueid as locid, a.datdescription, a.created, l.venue, l.city, l.state, l.url,'
-                .' DAYOFMONTH(x.dates) AS start_day, YEAR(x.dates) AS start_year, MONTH(x.dates) AS start_month,'
-                .' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug,'
-                .' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug'
-                .' FROM #__redevent_events AS a'
-                .' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id '
-                .' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-                .' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-                .$where
-                . ' GROUP BY x.id '
-        		    .' ORDER BY x.dates, x.times'
-                ;
+        $query = ' SELECT DATEDIFF(x.enddates, x.dates) AS datediff, a.id, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, '
+               . ' a.title, x.venueid as locid, a.datdescription, a.created, l.venue, l.city, l.state, l.url,'
+               . ' DAYOFMONTH(x.dates) AS start_day, YEAR(x.dates) AS start_year, MONTH(x.dates) AS start_month,'
+               . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug,'
+               . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug'
+               . ' FROM #__redevent_events AS a'
+               . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id '
+               . ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
+               . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+               . ' INNER JOIN #__redevent_categories AS cat ON cat.id = xcat.category_id'
+               . $where
+               . ' GROUP BY x.id '
+        		   . ' ORDER BY x.dates, x.times'
+               ;
 
         return $query;
     }
@@ -189,21 +192,26 @@ class RedeventModelCalendar extends JModel
         
         $task = JRequest::getWord('task');
 
+        $where = array();
         // First thing we need to do is to select only the published events
         if ($task == 'archive')
         {
-            $where = ' WHERE x.published = -1 ';
+            $where[] = ' x.published = -1 ';
         } else
         {
-            $where = ' WHERE x.published = 1 ';
+            $where[] = ' x.published = 1 ';
         }
+        
+        // category must be published too
+        $where[] = ' cat.published = 1 ';
+        
 
         // only select events within specified dates. (chosen month)
         $monthstart = mktime(0, 0, 1, strftime('%m', $this->_date), 1, strftime('%Y', $this->_date));
         $monthend = mktime(0, 0, -1, strftime('%m', $this->_date)+1, 1, strftime('%Y', $this->_date));
         
-        $where .= ' AND (x.dates BETWEEN (\''.strftime('%Y-%m-%d', $monthstart).'\') AND (\''.strftime('%Y-%m-%d', $monthend).'\'))';
-        $where .= ' OR (x.enddates BETWEEN (\''.strftime('%Y-%m-%d', $monthstart).'\') AND (\''.strftime('%Y-%m-%d', $monthend).'\'))';
+        $where[] = ' ((x.dates BETWEEN (\''.strftime('%Y-%m-%d', $monthstart).'\') AND (\''.strftime('%Y-%m-%d', $monthend).'\'))'
+                 . ' OR (x.enddates BETWEEN (\''.strftime('%Y-%m-%d', $monthstart).'\') AND (\''.strftime('%Y-%m-%d', $monthend).'\')))';
     
         // check if a category is specified
         $topcat = $params->get('topcat', '');
@@ -221,7 +229,7 @@ class RedeventModelCalendar extends JModel
             $this->_db->setQuery($query);
             $cats = $this->_db->loadResultArray();
             if ($cats) {
-               $where .= ' AND xcat.category_id IN ('. implode(', ', $cats) .')';
+               $where[] = ' xcat.category_id IN ('. implode(', ', $cats) .')';
             }            
           }
           else {
@@ -229,7 +237,7 @@ class RedeventModelCalendar extends JModel
           }
         }
 
-        return $where;
+        return ' WHERE '.implode(' AND ', $where);
     }
 
     /**
