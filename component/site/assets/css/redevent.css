@@ -554,3 +554,10 @@ ul.rf_thumbevents li {
   text-align: center;
   max-width: 180px;
 }
+
+span.event-date span.event-day {
+ font-weight:bold;
+}
+span.event-date span.event-end {
+ display:block;
+}

@@ -109,28 +109,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			?>
   			<tr class="sectiontableentry<?php echo ($row->odd +1 ) . $this->params->get( 'pageclass_sfx' ); ?><?php echo $isover; ?>" >
     			<td headers="el_date_cat<?php echo $this->categoryid; ?>" align="left">
-    			    <strong>
-    					<?php echo ELOutput::formatdate($row->dates, $row->times); ?>
-    					
-    					<?php
-              if ($row->enddates && $row->enddates != '0000-00-00' && $row->enddates != $row->dates) :
-    						echo ' - '.ELOutput::formatdate($row->enddates, $row->endtimes);
-    					endif;
-    					?>
-    				</strong>
-    				
-					<?php
-					if ($this->elsettings->showtime == 1) :
-					?>
-						<br />
-						<?php
-						echo ELOutput::formattime($row->dates, $row->times);
-						
-						if ($row->endtimes) :
-							echo ' - '.ELOutput::formattime($row->enddates, $row->endtimes);
-						endif;
-					endif;
-					?>
+    					<?php echo ELOutput::formatEventDateTime($row);	?>
 				</td>
 				<?php
 				//Link to details

@@ -139,28 +139,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   			<tr class="sectiontableentry<?php echo $i +1 . $this->params->get( 'pageclass_sfx' ); ?>" >
 
     			<td headers="el_date" align="left">
-    				<strong>
-    					<?php echo ELOutput::formatdate($row->dates, $row->times); ?>
-    					
-    					<?php
-    					if ($row->enddates) :
-    						echo ' - '.ELOutput::formatdate($row->enddates, $row->endtimes);
-    					endif;
-    					?>
-    				</strong>
-    				
-					<?php
-					if ($this->elsettings->showtime == 1) :
-					?>
-						<br />
-						<?php
-						echo ELOutput::formattime($row->dates, $row->times);
-						
-						if ($row->endtimes) :
-							echo ' - '.ELOutput::formattime($row->enddates, $row->endtimes);
-						endif;
-					endif;
-					?>
+    					<?php echo ELOutput::formatEventDateTime($row);	?>
 				</td>
 
 				<?php

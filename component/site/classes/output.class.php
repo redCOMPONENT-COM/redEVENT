@@ -639,6 +639,48 @@ class ELOutput {
 		return $formattime;
 	}
 	
+	function formatEventDateTime($event)
+	{
+		$settings = & redEVENTHelper::config();
+		// is this a full day(s) event ?
+		$allday = '00:00:00' == $event->times && '00:00:00' == $event->endtimes;
+
+		$date = '<span class="event-date">';
+		$date .= '<span class="event-start">';
+		$date .= '<span class="event-day">'.self::formatdate($event->dates, $event->times).'</span>';
+		if (!$allday && $settings->showtime == 1) {
+			$date .= ' <span class="event-time">'.self::formattime($event->dates, $event->times).'</span>';
+		}
+		$date .= '</span';
+		
+		if ($allday) 
+		{
+			if (strtotime($event->enddates))
+			{
+				if ( strtotime($event->enddates. ' -1 day') != strtotime($event->dates)
+				    && strtotime($event->enddates) != strtotime($event->dates) ) // all day is written as midnight to midnight, so remove last day
+				{
+					$date .= ' <span class="event-end"><span class="event-day">'.self::formatdate(strftime('%Y-%m-%d', strtotime($event->enddates. ' -1 day')), $event->endtimes).'</span></span>';
+				}
+			}
+		}
+		else 
+		{
+			if (strtotime($event->enddates) && strtotime($event->enddates) != strtotime($event->dates)) 
+			{
+				$date .= ' <span class="event-end"><span class="event-day">'.self::formatdate($event->enddates, $event->endtimes).'</span>';
+				$date .= ' <span class="event-time">'.self::formattime($event->dates, $event->endtimes).'</span></span>';
+			}
+			else
+			{
+				$date .= ' <span class="event-time">'.self::formattime($event->dates, $event->endtimes).'</span>';				
+			}
+		}
+		$date .= '</span>';
+		
+		return $date;
+	}
+	
 	/**
 	 * Formats time
 	 *
