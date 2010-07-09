@@ -25,5 +25,5 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <div id="confirmation_message">
-	<?php echo $this->tags->ReplaceTags($this->message); ?>
+	<?php echo $this->message; ?>
 </div>
