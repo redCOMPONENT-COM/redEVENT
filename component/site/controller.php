@@ -603,5 +603,81 @@ class RedeventController extends JController
 		  parent::display();
 		}
 	}
+	
+
+	/**
+	 * send reminder emails
+	 */
+	function reminder()
+	{
+		jimport('joomla.filesystem.file');
+		$app = &JFactory::getApplication();
+		$params = $app->getParams('com_redevent');
+		
+		$file = JPATH_COMPONENT_SITE.DS.'reminder.txt';
+		if (JFile::exists($file))
+		{
+			$date = (int) JFile::read($file);
+		}
+		else
+		{
+			$date = 0;
+		}
+		
+		// only run this once a day
+		echo sprintf("last update on %s<br/>", strftime('%Y-%m-%d %H:%M', $date));
+		if (time() - $date < 3600*23.9 && !JRequest::getVar('force', 0)) {
+			echo "reminder sent less the 24 hours ago<br/>";
+			return;
+		}
+		
+		$model = $this->getModel('attendees');
+		
+		$events = $model->getReminderEvents($params->get('reminder_days', 14));
+		if ($events && count($events))
+		{
+			$mailer   = &JFactory::getMailer();
+			$MailFrom = $app->getCfg('mailfrom');
+			$FromName = $app->getCfg('fromname');
+			$mailer->setSender( array( $MailFrom, $FromName ) );
+			$mailer->IsHTML(true);
+			
+			$subject = $params->get('reminder_subject');
+			$body = $params->get('reminder_body');
+									
+			foreach ($events as $event)
+			{
+				echo "sending reminder for event: ".$event->title."<br>";				
+				
+				$tags = new redEVENT_tags();
+				$tags->setXref($event->id);
+				
+				$msubject = $tags->ReplaceTags($subject);
+				$mbody    = $tags->ReplaceTags($body);
+				$mailer->setSubject($msubject);
+				$mailer->setBody($mbody);
+				                
+				// get attendees
+				$attendees = $model->getAttendeesEmails($event->id);
+				if (!$attendees) {
+					break;
+				}
+				foreach ($attendees as $a)
+				{
+					$mailer->clearAllRecipients();
+					$mailer->addRecipient( $a );
+//					echo '<pre>';print_r($mailer); echo '</pre>';
+					$sent = $mailer->Send();
+				}
+			}
+		}
+		else
+		{
+			echo 'No events for this reminder interval<br/>';
+		}
+		
+		// update file
+		JFile::write($file, time());
+	}
 }
 ?>
