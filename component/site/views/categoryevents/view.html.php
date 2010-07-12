@@ -72,7 +72,6 @@ class RedeventViewCategoryevents extends JView
     JHTML::_('behavior.mootools');
     // for filter hint
     $document->addScript($this->baseurl.'/components/com_redevent/assets/js/eventslist.js');
-		
 		// Request variables
 		$limitstart		= JRequest::getInt('limitstart');
 		$limit       	= $mainframe->getUserStateFromRequest('com_redevent.categoryevents.limit', 'limit', $params->def('display_num', 0), 'int');
