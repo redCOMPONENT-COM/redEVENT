@@ -89,7 +89,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         	<?php echo JHTML::_('grid.sort', $this->escape($c->name), 'field'. $c->id, $this->lists['order_Dir'], $this->lists['order'] ); ?>
         	</th>
 		    <?php endforeach;?>
-				<th id="el_image" class="sectiontableheader" align="left"><?php echo JText::_('IMAGE'); ?></th>
 			</tr>
 	</thead>
 	<tbody>
@@ -190,9 +189,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
           <td headers="el_customs" align="left" valign="top"><?php echo $row->$property; ?></td>
 		    <?php endforeach;?>
         <!-- custom fields end-->
-		    
-				<?php $dimage = redEVENTImage::flyercreator($row->datimage, 'event');	?>				
-				<td headers="el_title" align="left" valign="top"><?php echo  ELOutput::flyer( $row, $dimage, 'event' ); ?></td>
 			</tr>
 
   		<?php
