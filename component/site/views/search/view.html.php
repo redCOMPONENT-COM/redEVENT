@@ -62,23 +62,26 @@ class RedeventViewSearch extends JView
     $document->addScript( $this->baseurl.'/components/com_redevent/assets/js/search.js' );
 
 		// get variables
-		$limitstart	      = JRequest::getVar('limitstart', 0, '', 'int');
-		$limit		        = $mainframe->getUserStateFromRequest('com_redevent.search.limit', 'limit', $params->def('display_num', 0), 'int');
-		$filter_country   = JRequest::getVar('filter_country', '', 'string');
-    $filter_city      = JRequest::getVar('filter_city', '', 'string');
-    $filter_venue     = JRequest::getVar('filter_venue', 0, 'int');
-    $filter_date      = JRequest::getVar('filter_date', '', 'string');
-    $filter_venuecategory = JRequest::getVar('filter_venuecategory', 0, 'int');
-    $filter_category  = JRequest::getVar('filter_category', 0, 'int');
-    $filter_event     = JRequest::getVar('filter_event', 0, 'int');
 		$task 		= JRequest::getWord('task');
 		$pop		= JRequest::getBool('pop');
 
 		//get data from model
 		$rows 	= & $this->get('Data');
 		$customs 	= & $this->get('ListCustomFields');
-		$total 	= & $this->get('Total');
+		$total 	= & $this->get('Total');    
+		// Create the pagination object
+		$pageNav = $this->get('Pagination');
 
+		$limitstart	      = $pageNav->limitstart;
+		$limit		        = $pageNav->limit;
+		$filter_country   = $mainframe->getUserStateFromRequest('com_redevent.filter_country.limit', 'filter_country', '', 'string');
+    $filter_city      = $mainframe->getUserStateFromRequest('com_redevent.filter_city.limit', 'filter_city', '', 'string');
+    $filter_venue     = $mainframe->getUserStateFromRequest('com_redevent.filter_venue.limit', 'filter_venue', 0, 'int');
+    $filter_date      = $mainframe->getUserStateFromRequest('com_redevent.filter_date.limit', 'filter_date', '', 'string');
+    $filter_venuecategory = $mainframe->getUserStateFromRequest('com_redevent.filter_venuecategory.limit', 'filter_venuecategory', 0, 'int');
+    $filter_category  = $mainframe->getUserStateFromRequest('com_redevent.filter_category.limit', 'filter_category', 0, 'int');
+    $filter_event     = $mainframe->getUserStateFromRequest('com_redevent.filter_event.limit', 'filter_event', 0, 'int');
+    
 		//are events available?
 		if (!$rows) {
 			$noevents = 1;
@@ -132,9 +135,6 @@ class RedeventViewSearch extends JView
     //build select
     $lists['vcategories'] =  JHTML::_('select.genericlist', $vcatoptions, 'filter_venuecategory', 'size="1" class="inputbox dynfilter"', 'value', 'text', $selectedcats);
     unset($catoptions);
-    
-		// Create the pagination object
-		$pageNav = $this->get('Pagination');
     
 		// country filter
     $countries = array();

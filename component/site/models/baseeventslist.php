@@ -116,7 +116,8 @@ class RedeventModelBaseEventList extends JModel
 			if ($pop) {
 				$this->_data = $this->_getList( $query );
 			} else {
-				$this->_data = $this->_getList( $query, $this->getState('limitstart'), $this->getState('limit') );
+				$pagination = $this->getPagination();
+				$this->_data = $this->_getList( $query, $pagination->limitstart, $pagination->limitstart );
 			}
 			$this->_data = $this->_categories($this->_data);
       $this->_data = $this->_getPlacesLeft($this->_data);
@@ -155,7 +156,14 @@ class RedeventModelBaseEventList extends JModel
 		if (empty($this->_pagination))
 		{
 			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
+			$total = $this->getTotal();
+			$limit = $this->getState('limit');
+			$limitstart = $this->getState('limitstart');
+			if ($limitstart > $total) {
+				$limitstart = floor($total / $limit) * $limit;
+				$this->setState('limitstart', $limitstart);
+			}
+			$this->_pagination = new JPagination( $total, $limitstart, $limit );
 		}
 
 		return $this->_pagination;

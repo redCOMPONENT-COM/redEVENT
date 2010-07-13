@@ -92,15 +92,16 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		}
 
 		$filter 		      = JRequest::getString('filter', '', 'request');
+		$filter_country   = $mainframe->getUserStateFromRequest('com_redevent.filter_country.limit', 'filter_country', '', 'string');
+    $filter_city      = $mainframe->getUserStateFromRequest('com_redevent.filter_city.limit', 'filter_city', '', 'string');
+    $filter_venue     = $mainframe->getUserStateFromRequest('com_redevent.filter_venue.limit', 'filter_venue', 0, 'int');
+    $filter_date      = $mainframe->getUserStateFromRequest('com_redevent.filter_date.limit', 'filter_date', '', 'string');
+    $filter_venuecategory = $mainframe->getUserStateFromRequest('com_redevent.filter_venuecategory.limit', 'filter_venuecategory', 0, 'int');
+    $filter_category  = $mainframe->getUserStateFromRequest('com_redevent.filter_category.limit', 'filter_category', 0, 'int');
+    $filter_event     = $mainframe->getUserStateFromRequest('com_redevent.filter_event.limit', 'filter_event', 0, 'int');
+    
 		$filter_type 	    = JRequest::getWord('filter_type', '', 'request');
     $filter_continent = JRequest::getVar('filter_continent', '', 'string');
-    $filter_country   = JRequest::getVar('filter_country', '', 'string');
-    $filter_city      = JRequest::getVar('filter_city', '', 'string');
-		$filter_venue     = JRequest::getVar('filter_venue', 0, '', 'int');
-    $filter_date      = JRequest::getVar('filter_date', '', 'string');
-    $filter_venuecategory = JRequest::getVar('filter_venuecategory', 0, 'int');
-    $filter_category  = JRequest::getVar('filter_category', 0, 'int');
-    $filter_event     = JRequest::getVar('filter_event', 0, 'int');
     
     // no result if no filter:
     if ( !($filter || $filter_continent || $filter_country || $filter_city || $filter_date || $filter_category || $filter_venuecategory || $filter_venue || $filter_event) ) {
