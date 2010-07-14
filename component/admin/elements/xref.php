@@ -45,6 +45,7 @@ class JElementXref extends JElement
 	function fetchElement($name, $value, &$node, $control_name)
 	{
 		$doc 		=& JFactory::getDocument();
+		JHTML::_('behavior.mootools');
 		$fieldName	= $control_name.'['.$name.']';
 
 		JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_redevent'.DS.'tables');
@@ -57,10 +58,14 @@ class JElementXref extends JElement
 		}
 
 		$js = "
-		function selectXref(id, title) {
-			document.getElementById('a_id').value = id;
-			document.getElementById('a_name').value = title;
-			document.getElementById('sbox-window').close();
+		function selectXref(xref, title, id) {
+			$('a_id').value = xref;
+			$('a_name').value = title;
+			$('sbox-window').close();
+			var els = $$('.event-id');
+			if (els) {
+				els[0].value = id;
+			}
 		}";
 
 		$link = 'index.php?option=com_redevent&amp;view=xrefelement&amp;tmpl=component';
