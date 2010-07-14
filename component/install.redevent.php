@@ -459,12 +459,13 @@ if (is_array($cols)) {
   {
     	//TODO: we must convert existing registrations !
     	//first, backup the table
-    	$query = ' RENAME TABLE `#__redevent_register`  TO `#__redevent_register_back` ';
+    	$back_post = strftime('%Y%m%d%H%M');
+    	$query = ' RENAME TABLE `#__redevent_register`  TO `#__redevent_register_back_'.$back_post.'` ';
     	$db->setQuery($query);
 	    if ($db->query())
 	    {	    	
 	    	// recreate table register
-	    	$query = ' CREATE TABLE #__redevent_register LIKE #__redevent_register_back ';
+	    	$query = ' CREATE TABLE #__redevent_register LIKE #__redevent_register_back_'.$back_post.' ';
 	    	$db->setQuery($query);
 		    if ($db->query())
 		    {		    	
@@ -614,6 +615,24 @@ if (is_array($cols))
        ;
     $db->setQuery($q);
     $db->query();    
+  }
+  else
+  {  
+	  if (!array_key_exists('manage_events', $cols)) {
+	    $q = ' ALTER TABLE `#__redevent_groupmembers` '
+	       . '   ADD `manage_events` TINYINT( 4 ) NOT NULL '
+	       ;
+	    $db->setQuery($q);
+	    $db->query();    
+	  }
+	  
+	  if (!array_key_exists('manage_xrefs', $cols)) {
+	    $q = ' ALTER TABLE `#__redevent_groupmembers` '
+	       . '   ADD `manage_xrefs` TINYINT( 4 ) NOT NULL '
+	       ;
+	    $db->setQuery($q);
+	    $db->query();    
+	  }  	
   }	
   
   if (!array_key_exists('id', $cols)) {
@@ -627,22 +646,6 @@ if (is_array($cols))
   if (!array_key_exists('is_admin', $cols)) {
     $q = ' ALTER TABLE `#__redevent_groupmembers` '
        . '   ADD `is_admin` TINYINT( 4 ) NOT NULL '
-       ;
-    $db->setQuery($q);
-    $db->query();    
-  }
-  
-  if (!array_key_exists('manage_events', $cols)) {
-    $q = ' ALTER TABLE `#__redevent_groupmembers` '
-       . '   ADD `manage_events` TINYINT( 4 ) NOT NULL '
-       ;
-    $db->setQuery($q);
-    $db->query();    
-  }
-  
-  if (!array_key_exists('manage_xrefs', $cols)) {
-    $q = ' ALTER TABLE `#__redevent_groupmembers` '
-       . '   ADD `manage_xrefs` TINYINT( 4 ) NOT NULL '
        ;
     $db->setQuery($q);
     $db->query();    
