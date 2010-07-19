@@ -745,33 +745,18 @@ class redEVENTHelper {
   function getCustomField($type)
   {
     require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield.php');
+    
+    if (class_exists('TCustomfield'.ucfirst($type))) {
+    	$class = 'TCustomfield'.ucfirst($type);
+    	return new $class();
+    }
+    
     switch ($type)
-    {
-      case 'select':
-        return new TCustomfieldSelect();
-        break;
-        
+    {        
       case 'select_multiple':
         return new TCustomfieldSelectmultiple();
         break;
         
-      case 'date':
-        return new TCustomfieldDate();
-        break;
-        
-      case 'radio':
-        return new TCustomfieldRadio();
-        break;
-        
-      case 'checkbox':
-        return new TCustomfieldCheckbox();
-        break;
-        
-      case 'textarea':
-        return new TCustomfieldTextarea();
-        break;
-        
-      case 'textbox':
       default:
         return new TCustomfieldTextbox();
         break;
@@ -789,6 +774,8 @@ class redEVENTHelper {
         return str_replace("\n", "<br/>", htmlspecialchars($field->value));
       case 'date':
         return strftime(($field->options ? $field->options : '%Y-%m-%d'), strtotime($field->value));
+      case 'wysiwyg':
+      	return $field->value;
       case 'textbox':
       default:
         return htmlspecialchars($field->value);

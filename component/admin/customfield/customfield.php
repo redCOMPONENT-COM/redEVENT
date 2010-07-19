@@ -39,6 +39,7 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS
 require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'checkbox.php');
 require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'select.php');
 require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'selectmultiple.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'wysiwyg.php');
 
 class TCustomfield extends JObject {
 	/**

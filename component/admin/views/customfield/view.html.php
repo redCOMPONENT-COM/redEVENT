@@ -116,6 +116,7 @@ class RedeventViewCustomfield extends JView
     $types[] = JHTML::_('select.option', 'radio', 'Radio');     
     $types[] = JHTML::_('select.option', 'checkbox', 'Checkbox');  
     $types[] = JHTML::_('select.option', 'date', 'Date');  
+    $types[] = JHTML::_('select.option', 'wysiwyg', 'Wysiwyg');  
     $lists['types'] = JHTML::_('select.genericlist', $types, 'type', 'class="inputbox"', 'value', 'text', $object->type );
 
 		$this->assignRef('lists',		$lists);
