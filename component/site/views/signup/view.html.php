@@ -83,7 +83,8 @@ class RedeventViewSignup extends JView
     
 		/* This loads the tags replacer */
 		JView::loadHelper('tags');
-		$tags = new redEVENT_tags;
+		$tags = new redEVENT_tags();
+		$tags->setXref(JRequest::getInt('xref'));
 		$this->assignRef('tags', $tags);
 		
 		switch (JRequest::getCmd('subtype', 'webform')) {

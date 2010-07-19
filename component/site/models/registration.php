@@ -415,7 +415,10 @@ class RedEventModelRegistration extends JModel
 				      $htmlmsg .= $reginfo;
 
 				      $htmlmsg .= '</body></html>';
-				      $tags = new redEVENT_tags;
+				      $tags = new redEVENT_tags();
+				      $tags->setXref($registration->xref);
+				      $tags->setSubmitkey($submit_key);
+				      
 				      $this->mailer->setBody($tags->ReplaceTags($htmlmsg));
 				      $this->mailer->setSubject($tags->ReplaceTags($eventsettings->notify_subject));
 
@@ -451,6 +454,8 @@ class RedEventModelRegistration extends JModel
 			$this->Mailer();
       
 			$tags = new redEVENT_tags();
+			$tags->setXref($registration->xref);
+			$tags->setSubmitkey($submit_key);
 			
 			/* Now send some mail to the attendants */
 			foreach ($attendees as $attendee) 
@@ -511,6 +516,8 @@ class RedEventModelRegistration extends JModel
   	$app    = &JFactory::getApplication();
   	$params = $app->getParams('com_redevent');
 		$tags   = new redEVENT_tags();
+		$tags->setXref($this->_xref);
+		$tags->setSubmitkey($submit_key);
   	
   	$event = $this->getSessionDetails();
   	

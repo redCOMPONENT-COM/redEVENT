@@ -63,6 +63,7 @@ class RedeventViewSignup extends JView
     /* This loads the tags replacer */
 		JView::loadHelper('tags');
 		$tags = new redEVENT_tags();
+		$tags->setXref(JRequest::getInt('xref'));
 		
     $message = $tags->ReplaceTags($course->submission_type_email_pdf);
     $pdf->WriteHTML($message, true);

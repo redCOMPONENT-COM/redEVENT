@@ -77,6 +77,8 @@ class RedeventViewDetails extends JView
 		/* This loads the tags replacer */
 		JView::loadHelper('tags');
 		$tags = new redEVENT_tags();
+		$tags->setEventId(JRequest::getInt('id'));
+		$tags->setXref(JRequest::getInt('xref'));
 		$this->assignRef('tags', $tags);
 		
 		//get menu information

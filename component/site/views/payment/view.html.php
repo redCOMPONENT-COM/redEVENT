@@ -57,6 +57,8 @@ class RedeventViewPayment extends JView
 		JView::loadHelper('tags');
 		JRequest::setVar('xref', $row->xref); // neede for tag constructor
 		$tags = new redEVENT_tags();
+		$tags->setXref($row->xref);
+		$tags->setSubmitkey($submit_key);
 		$this->assignRef('tags', $tags);
 		
 		//get menu information

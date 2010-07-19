@@ -268,7 +268,11 @@ class RedeventModelConfirmation extends JModel
 				      $htmlmsg .= $reginfo;
 
 				      $htmlmsg .= '</body></html>';
-				      $tags = new redEVENT_tags;
+				      
+				      $tags = new redEVENT_tags();
+				      $tags->setXref($registration->xref);
+				      $tags->setSubmitkey(JRequest::getVar('submit_key'));
+				      
 				      $this->mailer->setBody($tags->ReplaceTags($htmlmsg));
 				      $this->mailer->setSubject($tags->ReplaceTags($eventsettings->notify_subject));
 
@@ -304,6 +308,8 @@ class RedeventModelConfirmation extends JModel
 			$this->Mailer();
       
 			$tags = new redEVENT_tags();
+			$tags->setXref($registration->xref);
+			$tags->setSubmitkey(JRequest::getVar('submit_key'));
 			
 			/* Now send some mail to the attendants */
 			foreach ($attendees as $attendee) 

@@ -521,9 +521,12 @@ class RedeventModelDetails extends JModel
   	jimport('joomla.mail.helper');
   	$app    = &JFactory::getApplication();
   	$params = $app->getParams('com_redevent');
-		$tags   = new redEVENT_tags();
   	
   	$event = $this->getDetails();
+  	
+		$tags   = new redEVENT_tags();
+		$tags->setXref($this->_xref);
+		$tags->setSubmitkey(JRequest::getVar('submit_key'));
   	
   	$recipients = array();
   	

@@ -68,7 +68,8 @@ class RedeventViewConfirmation extends JView
 	{
 		/* This loads the tags replacer */
 		JView::loadHelper('tags');
-		$tags = new redEVENT_tags;
+		$tags = new redEVENT_tags();
+		$tags->setXref(JRequest::getVar('xref'));
 		
 		$model_details = $this->getModel('Details', 'RedEventModel');
 		$model_details->setXref(JRequest::getVar('xref'));
@@ -101,12 +102,13 @@ class RedeventViewConfirmation extends JView
 		/* Get the action */
 		$action = JRequest::getVar('action');
 		
-		/* Start the tag replacer */
-		$tags = new redEVENT_tags;
-		$this->assignRef('tags', $tags);
 		
 		/* Collect registration details */
 		$registration	= $this->get('Details');
+		/* Start the tag replacer */
+		$tags = new redEVENT_tags();
+		$tags->setXref($registration['event']->xref);
+		$this->assignRef('tags', $tags);
 			
 		JRequest::setVar('answers', $registration['answers']);
 		JRequest::setVar('xref', $registration['event']->xref);
