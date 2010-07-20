@@ -177,7 +177,6 @@ $colspan = 14;
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="form_id" value="<?php echo $this->event->redform_id; ?>" />
 		<input type="hidden" name="eventid" value="<?php echo $this->event->eventid; ?>" />
-		<input type="hidden" name="xref" value="<?php echo $this->event->xref; ?>" />
 		<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 		<input type="hidden" name="filter_order_Dir" value="" />
 	</p>

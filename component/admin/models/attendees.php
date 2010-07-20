@@ -288,35 +288,22 @@ class RedEventModelAttendees extends JModel
 	{
 		global $mainframe, $option;
 
-		$filter 			= $mainframe->getUserStateFromRequest( $option.'.attendees.filter', 'filter', '', 'int' );
-		// $search 			= $mainframe->getUserStateFromRequest( $option.'.attendees.search', 'search', '', 'string' );
-		// $search 			= $this->_db->getEscaped( trim(JString::strtolower( $search ) ) );
+		$xref = JRequest::getInt('xref');
 
 		$where = array();
 
-		// $where[] = 'r.event = '.$this->_eventid;
-         
-		if (0) {
-			/*
-			* Search name
-			*/
-			if ($search && $filter == 1) {
-				$where[] = ' LOWER(u.name) LIKE \'%'.$search.'%\' ';
-			}
-	
-			/*
-			* Search username
-			*/
-			if ($search && $filter == 2) {
-				$where[] = ' LOWER(u.username) LIKE \'%'.$search.'%\' ';
-			}
+		if ($xref) {
+			$where[] = ' x.id = '. $xref;
 		}
-		if (JRequest::getInt('filter', false) && JRequest::getInt('filter', 0) > 0) $where[] = ' x.id = '.JRequest::getInt('filter');
-		else if (!is_null($this->_eventid) && $this->_eventid > 0) $where[] = ' x.eventid = '.$this->_eventid;
-		else if (!is_null($this->_xref) && $this->_xref > 0) $where[] = 'x.id = '.$this->_xref;
+		else if (!is_null($this->_xref) && $this->_xref > 0) {
+			$where[] = 'x.id = '.$this->_xref;
+		}
+		else if (!is_null($this->_eventid) && $this->_eventid > 0) {
+			$where[] = ' x.eventid = '.$this->_eventid;
+		}
 
 		$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
-
+		
 		return $where;
 	}
 
