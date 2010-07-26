@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <install type="module" version="1.5.0" method="upgrade">
-	<name>redEVENT Calendar module</name>
+	<name>REDEVENT_MODULE_CALENDAR</name>
 	<creationDate>Apr 16, 2010</creationDate>
 	<author>Redweb.dk</author>
 	<authorEmail>email@redweb.dk</authorEmail>
 	<authorUrl>www.redweb.dk</authorUrl>
-	<copyright>(c) 2008 - 2009 Redweb.dk</copyright>
+	<copyright>(c) 2008 - 2010 Redweb.dk</copyright>
 	<license>GNU/GPL</license>
 	<version>2.0 beta 9.1</version>
-	<description><![CDATA[<h2>Calendar Module for redEVENT 2.0</h2>]]></description>
+	
+	<description><![CDATA[REDEVENT_MODULE_CALENDAR_DESC]]></description>
+	
 	<files>
 		<filename module="mod_redeventcal">mod_redeventcal.php</filename>
 		<filename>mod_redeventcal.css</filename>
@@ -17,40 +19,46 @@
     <filename>tmpl/default.php</filename>
     <filename>tmpl/index.html</filename>
 	</files>
+	
+	
+	<languages>
+		<language tag="en-GB">languages/en-GB.mod_redeventcal.ini</language>
+	</languages>
+	
 	<params>
-		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
-		<param name="locale_override" type="text" default="" label="Locale Override" description="Define the locale you want the calendar to use to override the default" />
-		<param name="charset_override" type="text" default="" label="Charset" description="Define the override charset you want the calendar to use e.g. UTF-8 or ISO8859-15" />
-		<param name="recal_tooltips_title" type="text" default="Events" label="ToolTips Title" description="Define the tooltips title" />			
-    <param name="day_name_length" type="list" default="2" label="Length of the Day name" description="Select if you want to display the full dayname or a short version">
-			<option value="0">Don't display days</option>
-			<option value="1">One letter</option>
-			<option value="2">Two letters</option>
-			<option value="3">Three letters</option>
-			<option value="4">Full name</option>
+		<param name="moduleclass_sfx" type="text" default="" label="REDEVENT_MODULE_CALENDAR_MODULE_CLASS_SUFFIX" description="REDEVENT_MODULE_CALENDAR_MODULE_CLASS_SUFFIX_DESC" />
+		<param name="locale_override" type="text" default="" label="REDEVENT_MODULE_CALENDAR_LOCAL_OVERRIDE" description="REDEVENT_MODULE_CALENDAR_LOCAL_OVERRIDE_DESC" />
+		<param name="charset_override" type="text" default="" label="REDEVENT_MODULE_CALENDAR_CHARSET" description="REDEVENT_MODULE_CALENDAR_CHARSET_DESC" />
+		<param name="recal_tooltips_title" type="text" default="Events" label="REDEVENT_MODULE_CALENDAR_TOOLTIP_TITLE" description="REDEVENT_MODULE_CALENDAR_TOOLTIP_TITLE_DESC" />			
+    <param name="day_name_length" type="list" default="2" label="REDEVENT_MODULE_CALENDAR_DAY_NAME_LENGTH" description="REDEVENT_MODULE_CALENDAR_DAY_NAME_LENGTH_DESC">
+			<option value="0">REDEVENT_MODULE_CALENDAR_DAY_NAME_LENGTH_NO</option>
+			<option value="1">REDEVENT_MODULE_CALENDAR_DAY_NAME_LENGTH_ONE</option>
+			<option value="2">REDEVENT_MODULE_CALENDAR_DAY_NAME_LENGTH_TWO</option>
+			<option value="3">REDEVENT_MODULE_CALENDAR_DAY_NAME_LENGTH_THREE</option>
+			<option value="4">REDEVENT_MODULE_CALENDAR_DAY_NAME_LENGTH_FULL</option>
 		</param>
-		<param name="first_day" type="list" default="1" label="Start week" description="Start the week at sunday or monday">
+		<param name="first_day" type="list" default="1" label="REDEVENT_MODULE_CALENDAR_FIRST_DAY" description="REDEVENT_MODULE_CALENDAR_FIRST_DAY_DESC">
 			<option value="0">Sunday</option>
 			<option value="1">Monday</option>
 		</param>
-		<param name="Year_length" type="radio" default="1" label="Year Length" description="Select to show 2 or 4 letters">
+		<param name="Year_length" type="radio" default="1" label="REDEVENT_MODULE_CALENDAR_YEAR_LENGTH" description="REDEVENT_MODULE_CALENDAR_YEAR_LENGTH_DESC">
 			<option value="0">Two</option>
 			<option value="1">Four</option>
 		</param>
-		<param name="Month_length" type="radio" default="0" label="Short month name?" description="Select if you wish to display the full month name or not.">
+		<param name="Month_length" type="radio" default="0" label="REDEVENT_MODULE_CALENDAR_SHORT_MONTH_NAME" description="REDEVENT_MODULE_CALENDAR_SHORT_MONTH_NAME_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
-		<param name="Month_offset" type="text" default="0" label="Month Offset" description="Offset the month so enter 1 for a month ahear, -1 for a month behind etc" />
-		<param name="Show_Tooltips" type="radio" default="1" label="Show Tooltips?" description="Choose to show tooltips on mouse rollover on calendar dates.">
+		<param name="Month_offset" type="text" default="0" label="REDEVENT_MODULE_CALENDAR_MONTH_OFFSET" description="REDEVENT_MODULE_CALENDAR_MONTH_OFFSET_DESC" />
+		<param name="Show_Tooltips" type="radio" default="1" label="REDEVENT_MODULE_CALENDAR_SHOW_TOOLTIP" description="REDEVENT_MODULE_CALENDAR_SHOW_TOOLTIP_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
-		<param name="Remember" type="radio" default="1" label="Remember?" description="Remember which month/year is selected on page change, no jumping back to current day.">
+		<param name="Remember" type="radio" default="1" label="REDEVENT_MODULE_CALENDAR_REMEMBER" description="REDEVENT_MODULE_CALENDAR_REMEMBER_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
-		<param name="catid" type="text" default="" label="CATEGORY ID" description="Category ID" />
-		<param name="venid" type="text" default="" label="VENUE ID" description="Venue ID" />
+		<param name="catid" type="text" default="" label="REDEVENT_MODULE_CALENDAR_CATEGORY_ID" description="REDEVENT_MODULE_CALENDAR_CATEGORY_ID_DESC" />
+		<param name="venid" type="text" default="" label="REDEVENT_MODULE_CALENDAR_VENUE_ID" description="REDEVENT_MODULE_CALENDAR_VENUE_ID_DESC" />
 	</params>
 </install>

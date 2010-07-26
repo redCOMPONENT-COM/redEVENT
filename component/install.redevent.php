@@ -1,9 +1,9 @@
 <?php
 /**
- * @version 1.0 $Id$
+ * @version 2.0
  * @package Joomla
  * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @copyright redEVENT (C) 2008 - 2010 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
  * @license GNU/GPL, see LICENSE.php
  * redEVENT is based on EventList made by Christoph Lukes from schlu.net
  * redEVENT can be downloaded from www.redcomponent.com

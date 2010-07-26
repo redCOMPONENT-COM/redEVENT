@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 defined('_JEXEC') or die('Restricted access');
+echo JHTML::_('date', strftime('%Y-%m-%d'), '%B');
 ?>
 
 <ul class="redeventmod<?php echo $params->get('moduleclass_sfx'); ?>">

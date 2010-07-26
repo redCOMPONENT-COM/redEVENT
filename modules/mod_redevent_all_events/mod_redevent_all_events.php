@@ -1,9 +1,9 @@
 <?php
 /**
- * @version 0.9 $Id$
+ * @version 2.0
  * @package Joomla
  * @subpackage RedEvent
- * @copyright (C) 2005 - 2008 Christoph Lukes
+ * @copyright (C) 2008 -2010 redCOMPONENT.com
  * @license GNU/GPL, see LICENCE.php
  * RedEvent is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License 2
