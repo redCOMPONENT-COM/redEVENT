@@ -89,7 +89,7 @@ class RedeventModelBaseEventList extends JModel
 			        
 		// In case limit has been changed, adjust it
     $limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
-		
+    
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
 
@@ -117,7 +117,7 @@ class RedeventModelBaseEventList extends JModel
 				$this->_data = $this->_getList( $query );
 			} else {
 				$pagination = $this->getPagination();
-				$this->_data = $this->_getList( $query, $pagination->limitstart, $pagination->limitstart );
+				$this->_data = $this->_getList( $query, $pagination->limitstart, $pagination->limit );
 			}
 			$this->_data = $this->_categories($this->_data);
       $this->_data = $this->_getPlacesLeft($this->_data);
