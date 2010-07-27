@@ -19,12 +19,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 defined('_JEXEC') or die('Restricted access');
-echo JHTML::_('date', strftime('%Y-%m-%d'), '%B');
 ?>
 
 <ul class="redeventmod<?php echo $params->get('moduleclass_sfx'); ?>">
 <?php foreach ($list as $item) :  ?>
-	<li class="redeventmod<?php echo $params->get('moduleclass_sfx'); ?>">
+	<?php $isover = (redEVENTHelper::isOver($item) ? ' isover' : ''); ?>
+	<li class="redeventmod<?php echo $params->get('moduleclass_sfx'); ?><?php echo $isover; ?>">
 		<?php if ($params->get('linkdet') == 1) : ?>
 		<a href="<?php echo $item->link; ?>" class="redeventmod<?php echo $params->get('moduleclass_sfx'); ?>">
 			<?php echo $item->dateinfo; ?>
