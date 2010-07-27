@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/module-install.dtd">
 <install type="module" version="1.5.0" method="upgrade">
-	<name>redEVENT Latests</name>
+	<name>redEVENT Events</name>
 	<creationDate>Apr 16, 2010</creationDate>
 	<author>Redweb.dk</author>
 	<authorEmail>email@redweb.dk</authorEmail>
 	<authorUrl>www.redweb.dk</authorUrl>
-	<copyright>(c) 2008 - 2009 Redweb.dk</copyright>
+	<copyright>(c) 2008 - 2010 Redweb.dk</copyright>
 	<license>GNU/GPL</license>
 	<version>2.0 beta 9.1</version>
-	<description>redEVENT Latest module</description>
+	<description>REDEVENT_MODULE_REDEVENT_DESCRIPTION</description>
 
 	<files>
 		<filename module="mod_redevent">mod_redevent.php</filename>
 		<filename>index.html</filename>
-        <filename>helper.php</filename>
-        <filename>tmpl/default.php</filename>
-        <filename>tmpl/index.html</filename>
+    <filename>helper.php</filename>
+    <filename>tmpl/default.php</filename>
+    <filename>tmpl/index.html</filename>
 	</files>
 
 	<languages>
@@ -29,9 +29,18 @@
 
 	<params>
 		<param name="count" type="text" default="5" label="EVENTS IN MODULE" description="EVENTS IN MODULE DESC" />
-		<param name="type" type="list" default="0" label="UPCOMING OR ARCHIVED" description="UPCOMING OR ARCHIVED DESC">
-			<option value="0">UPCOMING EVENTS</option>
-			<option value="1">ARCHIVED EVENTS</option>
+		<param name="type" type="list" default="0" label="REDEVENT_MODULE_REDEVENT_EVENT_STATE" description="REDEVENT_MODULE_REDEVENT_EVENT_STATE_DESC">
+			<option value="0">REDEVENT_MODULE_REDEVENT_EVENT_STATE_PUBLISHED</option>
+			<option value="1">REDEVENT_MODULE_REDEVENT_EVENT_STATE_UPCOMING</option>
+			<option value="2">REDEVENT_MODULE_REDEVENT_EVENT_STATE_ARCHIVED</option>
+		</param>
+		<param name="showsessions" type="list" default="1" label="REDEVENT_MODULE_REDEVENT_SHOW_SESSIONS" description="REDEVENT_MODULE_REDEVENT_SHOW_SESSIONS_DESC">		_
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="showrecurring" type="list" default="1" label="REDEVENT_MODULE_REDEVENT_SHOW_RECURRING" description="REDEVENT_MODULE_REDEVENT_SHOW_RECURRING_DESC">		_
+			<option value="0">No</option>
+			<option value="1">Yes</option>
 		</param>
 		<param name="showtitloc" type="list" default="0" label="TITLE OR VENUE" description="TITLE OR VENUE DESC">
 			<option value="0">VENUE</option>

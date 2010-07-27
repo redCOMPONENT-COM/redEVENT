@@ -47,12 +47,25 @@ class modRedEventHelper
 		$db			=& JFactory::getDBO();
 		$user		=& JFactory::getUser();
 		$user_gid	= (int) $user->get('aid');
+				
+		$where = array();
+		
+		$where[] = 'c.access <= '.$user_gid;
 
-		if ($params->get( 'type', '0' ) == 0) {
-			$where = ' WHERE x.published = 1';
+		$type = $params->get( 'type', '0' );
+		if ($type == 0) 
+		{
+			$where[] = 'x.published = 1';
 			$order = ' ORDER BY x.dates, x.times';
-		} else {
-			$where = ' WHERE x.published = -1';
+		} 
+		else if ($type == 1)
+		{
+			$now = strftime('%Y-%m-%d');
+			$where[] = 'x.published = 1 AND CONCAT(x.dates," ",x.times) > '.$db->Quote($now);
+			$order = ' ORDER BY x.dates, x.times ';
+		} 
+		else {
+			$where[] = 'x.published = -1';
 			$order = ' ORDER BY x.dates DESC, x.times DESC';
 		}
 
@@ -63,13 +76,24 @@ class modRedEventHelper
 		{
 			$ids = explode( ',', $catid );
 			JArrayHelper::toInteger( $ids );
-			$categories = ' AND c.id IN (' . implode( ',', $ids ) . ')';
+			$where[] = ' c.id IN (' . implode( ',', $ids ) . ')';
 		}
 		if ($venid)
 		{
 			$ids = explode( ',', $venid );
 			JArrayHelper::toInteger( $ids );
-			$venues = ' AND l.id IN (' . implode( ',', $ids ) . ')';
+			$where[] = ' l.id IN (' . implode( ',', $ids ) . ')';
+		}
+		
+		if ($params->get('showrecurring', 1) == 0) {
+			$where[] = ' r.count = 0 ';			
+		}
+		
+		if ($params->get('showsessions', 1) == 0) {
+			$groupby = ' GROUP BY a.id ';		
+		}
+		else {
+			$groupby = ' GROUP BY x.id ';		
 		}
 
 		//get $params->get( 'count', '2' ) nr of datasets
@@ -81,11 +105,9 @@ class modRedEventHelper
 				. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
         . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
         . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-				. $where
-				.' AND c.access <= '.$user_gid
-				.($catid ? $categories : '')
-				.($venid ? $venues : '')
-				. ' GROUP BY x.id '
+        . ' LEFT JOIN #__redevent_repeats AS r ON r.xref_id = x.id '
+				. ' WHERE '.implode(' AND ', $where)
+				. $groupby
 				. $order
 				.' LIMIT '.(int)$params->get( 'count', '2' )
 				;
