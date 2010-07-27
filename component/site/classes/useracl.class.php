@@ -90,6 +90,9 @@ class UserAcl {
 	 */
 	function canAddEvent()
 	{
+		if (!$this->_userid) {
+			return false;
+		}
   	if ($this->superuser()) {
   		return true;
   	}
@@ -112,6 +115,9 @@ class UserAcl {
 	 */
 	function canAddVenue()
 	{
+		if (!$this->_userid) {
+			return false;
+		}
   	if ($this->superuser()) {
   		return true;
   	}
@@ -134,6 +140,9 @@ class UserAcl {
 	 */
 	function canEditEvent($eventid)
 	{
+		if (!$this->_userid) {
+			return false;
+		}
   	if ($this->superuser()) {
   		return true;
   	}
@@ -167,6 +176,9 @@ class UserAcl {
 	 */
 	function canPublishEvent($eventid = 0)
 	{
+		if (!$this->_userid) {
+			return false;
+		}
   	if ($this->superuser()) {
   		return true;
   	}
@@ -205,6 +217,9 @@ class UserAcl {
 	 */
 	function canPublishXref($xref = 0)
 	{
+		if (!$this->_userid) {
+			return false;
+		}
   	if ($this->superuser()) {
   		return true;
   	}
@@ -239,6 +254,9 @@ class UserAcl {
 	 */
 	function canEditXref($xref)
 	{
+		if (!$this->_userid) {
+			return false;
+		}
   	if ($this->superuser()) {
   		return true;
   	}
@@ -269,6 +287,9 @@ class UserAcl {
 	 */
   function canManageAttendees($xref_id)
   {
+		if (!$this->_userid) {
+			return false;
+		}
   	if ($this->superuser()) {
   		return true;
   	}
@@ -326,6 +347,9 @@ class UserAcl {
 	 */
 	function canPublishVenue($id = 0)
 	{
+		if (!$this->_userid) {
+			return false;
+		}
   	if ($this->superuser()) {
   		return true;
   	}
