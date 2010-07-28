@@ -74,21 +74,29 @@ class RedeventViewSearch extends JView
 
 		$limitstart	      = $pageNav->limitstart;
 		$limit		        = $pageNav->limit;
-		$filter_country   = $mainframe->getUserStateFromRequest('com_redevent.filter_country.limit', 'filter_country', '', 'string');
-    $filter_city      = $mainframe->getUserStateFromRequest('com_redevent.filter_city.limit', 'filter_city', '', 'string');
-    $filter_venue     = $mainframe->getUserStateFromRequest('com_redevent.filter_venue.limit', 'filter_venue', 0, 'int');
-    $filter_date      = $mainframe->getUserStateFromRequest('com_redevent.filter_date.limit', 'filter_date', '', 'string');
-    $filter_venuecategory = $mainframe->getUserStateFromRequest('com_redevent.filter_venuecategory.limit', 'filter_venuecategory', 0, 'int');
-    $filter_category  = $mainframe->getUserStateFromRequest('com_redevent.filter_category.limit', 'filter_category', 0, 'int');
-    $filter_event     = $mainframe->getUserStateFromRequest('com_redevent.filter_event.limit', 'filter_event', 0, 'int');
+		
+		// set in the model
+		$filter_country   = $mainframe->getUserState('com_redevent.search.filter_country');
+    $filter_city      = $mainframe->getUserState('com_redevent.search.filter_city');
+    $filter_venue     = $mainframe->getUserState('com_redevent.search.filter_venue');
+    $filter_date      = $mainframe->getUserState('com_redevent.search.filter_date');
+    $filter_venuecategory = $mainframe->getUserState('com_redevent.search.filter_venuecategory');
+    $filter_category  = $mainframe->getUserState('com_redevent.search.filter_category');
+    $filter_event     = $mainframe->getUserState('com_redevent.search.filter_event');
     
 		//are events available?
-		if (!$rows) {
+		if (!$rows) 
+		{			
 			$noevents = 1;
+			$filter = $this->get('Filter');
+			if (!$filter) {
+				$nofilter = 1;
+			}
 		} else {
 			$noevents = 0;
+			$nofilter = 0;
 		}
-
+		
 		//params
 		$params->def( 'page_title', $item->name);
 
@@ -138,28 +146,28 @@ class RedeventViewSearch extends JView
     
 		// country filter
     $countries = array();
-    $countries[] = JHTML::_('select.option', '', JText::_('Select country'));
+    $countries[] = JHTML::_('select.option', '0', JText::_('Select country'));
     $countries = array_merge($countries, $this->get('CountryOptions'));
     $lists['countries'] = JHTML::_('select.genericlist', $countries, 'filter_country', 'class="inputbox dynfilter"', 'value', 'text', $filter_country);
     unset($countries);
     
     // city filter
     $cities = array();
-    $cities[] = JHTML::_('select.option', '', JText::_('Select city'));
+    $cities[] = JHTML::_('select.option', '0', JText::_('Select city'));
     $cities = array_merge($cities, $this->get('CityOptions'));
     $lists['cities'] = JHTML::_('select.genericlist', $cities, 'filter_city', 'class="inputbox dynfilter"', 'value', 'text', $filter_city);
     unset($cities);    
 	
     // venues filter
     $venues = array();
-    $venues[] = JHTML::_('select.option', '', JText::_('Select venue'));
+    $venues[] = JHTML::_('select.option', '0', JText::_('Select venue'));
     $venues = array_merge($venues, $this->get('VenuesOptions'));
     $lists['venues'] = JHTML::_('select.genericlist', $venues, 'filter_venue', 'class="inputbox dynfilter"', 'value', 'text', $filter_venue);
     unset($venues); 
     
     // events filter
     $options = array();
-    $options[] = JHTML::_('select.option', '', JText::_('Search select event'));
+    $options[] = JHTML::_('select.option', '0', JText::_('Search select event'));
     $options = array_merge($options, $this->get('EventsOptions'));
     $lists['events'] = JHTML::_('select.genericlist', $options, 'filter_event', 'class="inputbox dynfilter"', 'value', 'text', $filter_event);
     unset($venues); 
@@ -172,6 +180,7 @@ class RedeventViewSearch extends JView
 		$this->assignRef('customs',     $customs);
 		$this->assignRef('task' , 					$task);
 		$this->assignRef('noevents' , 				$noevents);
+		$this->assignRef('nofilter' , 				$nofilter);
 		$this->assignRef('print_link' , 			$print_link);
 		$this->assignRef('params' , 				$params);
 		$this->assignRef('dellink' , 				$dellink);

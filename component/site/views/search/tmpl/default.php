@@ -158,8 +158,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	</div>
 </div>
 
+<?php if ($this->nofilter): ?>
+<div class="redevent-search-warning"><?php echo JText::_('REDEVENT_SEARCH_NO_FILTER'); ?></div>
+<?php elseif ($this->noevents): ?>
+<div class="redevent-search-warning"><?php echo JText::_('REDEVENT_SEARCH_NO_RESULT'); ?></div>
+<?php else: ?>
 <?php echo $this->loadTemplate('table'); ?>
-
+<?php endif; ?>
 <p>
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="" />

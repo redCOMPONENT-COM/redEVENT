@@ -41,6 +41,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	 */
 	var $_query = null;
 
+	var $_filter = null;
 	/**
 	 * Constructor
 	 *
@@ -91,81 +92,12 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 			$where[] = ' x.published = 1';
 		}
 
-		$filter 		      = JRequest::getString('filter', '', 'request');
-		$filter_country   = $mainframe->getUserStateFromRequest('com_redevent.filter_country.limit', 'filter_country', '', 'string');
-    $filter_city      = $mainframe->getUserStateFromRequest('com_redevent.filter_city.limit', 'filter_city', '', 'string');
-    $filter_venue     = $mainframe->getUserStateFromRequest('com_redevent.filter_venue.limit', 'filter_venue', 0, 'int');
-    $filter_date      = $mainframe->getUserStateFromRequest('com_redevent.filter_date.limit', 'filter_date', '', 'string');
-    $filter_venuecategory = $mainframe->getUserStateFromRequest('com_redevent.filter_venuecategory.limit', 'filter_venuecategory', 0, 'int');
-    $filter_category  = $mainframe->getUserStateFromRequest('com_redevent.filter_category.limit', 'filter_category', 0, 'int');
-    $filter_event     = $mainframe->getUserStateFromRequest('com_redevent.filter_event.limit', 'filter_event', 0, 'int');
-    
-		$filter_type 	    = JRequest::getWord('filter_type', '', 'request');
-    $filter_continent = JRequest::getVar('filter_continent', '', 'string');
-    
-    // no result if no filter:
-    if ( !($filter || $filter_continent || $filter_country || $filter_city || $filter_date || $filter_category || $filter_venuecategory || $filter_venue || $filter_event) ) {
-    	return ' WHERE 0 ';
-    }
-
-    if ($filter)
-    {
-    	// clean filter variables
-    	$filter 		= JString::strtolower($filter);
-    	$filter			= $this->_db->Quote( '%'.$this->_db->getEscaped( $filter, true ).'%', false );
-    	$filter_type 	= JString::strtolower($filter_type);
-
-    	switch ($filter_type)
-    	{
-    		case 'title' :
-    			$where[] = ' LOWER( a.title ) LIKE '.$filter;
-    			break;
-
-    		case 'venue' :
-    			$where[] = ' LOWER( l.venue ) LIKE '.$filter;
-    			break;
-
-    		case 'city' :
-    			$where[] = ' LOWER( l.city ) LIKE '.$filter;
-    			break;
-    	}
-    }
-    // filter date
-    if ($filter_date) {
-    	if (strtotime($filter_date)) {
-    		$where[] = ' (\''.$filter_date.'\' BETWEEN (x.dates) AND (x.enddates) OR \''.$filter_date.'\' = x.dates)';
-    	}
-    }
-    // filter country
-    if ($filter_continent) {
-      $where[] = ' c.continent = ' . $this->_db->Quote($filter_continent);
-    }
-    // filter country
-    if ($filter_country) {
-    	$where[] = ' l.country = ' . $this->_db->Quote($filter_country);
-    }
-    // filter city
-    if ($filter_city) {
-    	$where[] = ' l.city = ' . $this->_db->Quote($filter_city);
-    }
-    // filter category
-    if ($filter_category) {
-    	$category = $this->getCategory((int) $filter_category);
-			$where[] = '(c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
-    }
-    // filter category
-    if ($filter_venuecategory) {
-    	$category = $this->getVenueCategory((int) $filter_venuecategory);
-			$where[] = '(vc.id = '.$this->_db->Quote($category->id) . ' OR (vc.lft > ' . $this->_db->Quote($category->lft) . ' AND vc.rgt < ' . $this->_db->Quote($category->rgt) . '))';
-    }
-    if ($filter_venue)
-    {
-    	$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);    	
-    }
-    if ($filter_event)
-    {
-    	$where[] = ' a.id = ' . $this->_db->Quote($filter_event);    	
-    }
+		$filter = $this->getFilter();
+		if (!$filter) {
+			$filter = array('0');
+		}
+		$where = array_merge($where, $filter);
+		
     if (count($where)) {
     	$where = ' WHERE '. implode(' AND ', $where);
     }
@@ -173,6 +105,132 @@ class RedeventModelSearch extends RedeventModelBaseEventList
     	$where = '';
     }
 		return $where;
+	}
+	
+	/**
+	 * return array of filters for where part of sql query
+	 * 
+	 * @return array
+	 */
+	function getFilter()
+	{
+		if (empty($this->_filter))
+		{
+			$mainframe = &Jfactory::getApplication();
+			$post = JRequest::get('request');
+					
+	    $filter_continent = $mainframe->getUserStateFromRequest('com_redevent.search.filter_continent', 'filter_continent', '', 'string');
+	    
+	    // country (depends on continent)
+	    if (isset($post['filter_continent']) && empty($filter_continent))
+	    {
+	    	$filter_country = '0';
+	    	$mainframe->setUserState('com_redevent.search.filter_country', $filter_country);
+	    }
+	    else {
+	    	$filter_country = $mainframe->getUserStateFromRequest('com_redevent.search.filter_country', 'filter_country', '', 'string');
+	    }
+
+	    // city (depends on country)
+	    if ((isset($post['filter_country']) || isset($post['filter_continent'])) && empty($filter_country))
+	    {
+	    	$filter_city = '0';
+	    	$mainframe->setUserState('com_redevent.search.filter_city', $filter_city);
+	    }
+	    else {
+	    	$filter_city = $mainframe->getUserStateFromRequest('com_redevent.search.filter_city', 'filter_city', '', 'string');
+	    }
+		  
+	    // venue (depends on city)
+	    if ((isset($post['filter_country']) || isset($post['filter_continent']) || isset($post['filter_city'])) && empty($filter_city))
+	    {
+	    	$filter_venue = 0;
+	    	$mainframe->setUserState('com_redevent.search.filter_venue', $filter_venue);
+	    }
+	    else {
+	    	$filter_venue = $mainframe->getUserStateFromRequest('com_redevent.search.filter_venue', 'filter_venue', 0, 'int');
+	    }
+	    
+	    $filter_date          = $mainframe->getUserStateFromRequest('com_redevent.search.filter_date',          'filter_date',          '', 'string');
+	    $filter_venuecategory = $mainframe->getUserStateFromRequest('com_redevent.search.filter_venuecategory', 'filter_venuecategory', 0, 'int');
+	    $filter_category      = $mainframe->getUserStateFromRequest('com_redevent.search.filter_category',      'filter_category',      0, 'int');
+	    $filter_event         = $mainframe->getUserStateFromRequest('com_redevent.search.filter_event',         'filter_event',         0, 'int');
+	        
+			$filter 		      = JRequest::getString('filter', '', 'request');
+			$filter_type 	    = JRequest::getWord('filter_type', '', 'request');
+	    
+	    // no result if no filter:
+	    if ( !($filter || $filter_continent || $filter_country || $filter_city != "0" || $filter_date || $filter_category || $filter_venuecategory || $filter_venue || $filter_event) ) {
+	    	return false;
+	    }
+	
+	    $where = array();
+	    if ($filter)
+	    {
+	    	// clean filter variables
+	    	$filter 		= JString::strtolower($filter);
+	    	$filter			= $this->_db->Quote( '%'.$this->_db->getEscaped( $filter, true ).'%', false );
+	    	$filter_type 	= JString::strtolower($filter_type);
+	
+	    	switch ($filter_type)
+	    	{
+	    		case 'title' :
+	    			$where[] = ' LOWER( a.title ) LIKE '.$filter;
+	    			break;
+	
+	    		case 'venue' :
+	    			$where[] = ' LOWER( l.venue ) LIKE '.$filter;
+	    			break;
+	
+	    		case 'city' :
+	    			$where[] = ' LOWER( l.city ) LIKE '.$filter;
+	    			break;
+	    	}
+	    }
+	    // filter date
+	    if ($filter_date) {
+	    	if (strtotime($filter_date)) {
+	    		$where[] = ' (\''.$filter_date.'\' BETWEEN (x.dates) AND (x.enddates) OR \''.$filter_date.'\' = x.dates)';
+	    	}
+	    }
+	    // filter country
+	    if ($filter_continent) {
+	      $where[] = ' c.continent = ' . $this->_db->Quote($filter_continent);
+	    }
+	    // filter country
+	    if ($filter_country) {
+	    	$where[] = ' l.country = ' . $this->_db->Quote($filter_country);
+	    }	    
+	    // filter city
+	    if ($filter_city != "0") {
+	    	$where[] = ' l.city = ' . $this->_db->Quote($filter_city);
+	    }
+	    // filter category
+	    if ($filter_category) {
+	    	$category = $this->getCategory((int) $filter_category);
+	    	if ($category) {
+					$where[] = '(c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
+	    	}
+	    }
+	    // filter category
+	    if ($filter_venuecategory) {
+	    	$category = $this->getVenueCategory((int) $filter_venuecategory);
+	    	if ($category) {
+					$where[] = '(vc.id = '.$this->_db->Quote($category->id) . ' OR (vc.lft > ' . $this->_db->Quote($category->lft) . ' AND vc.rgt < ' . $this->_db->Quote($category->rgt) . '))';
+	    	}
+	    }
+	    if ($filter_venue)
+	    {
+	    	$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);    	
+	    }
+	    if ($filter_event)
+	    {
+	    	$where[] = ' a.id = ' . $this->_db->Quote($filter_event);    	
+	    }
+	    
+	    $this->_filter = $where;
+		}
+    return $this->_filter;
 	}
 	  
   function getCountryOptions()

@@ -561,3 +561,9 @@ span.event-date span.event-day {
 span.event-date span.event-end {
  display:block;
 }
+
+.redevent-search-warning {
+	text-align:center;
+	padding: 10px;
+	font-weight:bold;
+}
