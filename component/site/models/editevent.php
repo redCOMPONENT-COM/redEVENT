@@ -1306,10 +1306,9 @@ class RedeventModelEditevent extends JModel
    */
   function getXrefCustomfields()
   {
-  	$xref = $this->_id;  
     $query = ' SELECT f.*, fv.value '
            . ' FROM #__redevent_fields AS f '
-           . ' LEFT JOIN #__redevent_fields_values AS fv ON fv.field_id = f.id AND fv.object_id = '.(int) $xref
+           . ' LEFT JOIN #__redevent_fields_values AS fv ON fv.field_id = f.id AND fv.object_id = '.(int) $this->_xref
            . ' WHERE f.object_key = '. $this->_db->Quote("redevent.xref")
            . '   AND f.frontend_edit = 1 '
            . ' ORDER BY f.ordering '
@@ -1337,10 +1336,9 @@ class RedeventModelEditevent extends JModel
    */
   function getCustomfields()
   {
-  	$xref = $this->_id;  
     $query = ' SELECT f.*, fv.value '
            . ' FROM #__redevent_fields AS f '
-           . ' LEFT JOIN #__redevent_fields_values AS fv ON fv.field_id = f.id AND fv.object_id = '.(int) $xref
+           . ' LEFT JOIN #__redevent_fields_values AS fv ON fv.field_id = f.id AND fv.object_id = '.(int) $this->_id
            . ' WHERE f.object_key = '. $this->_db->Quote("redevent.event")
            . '   AND f.frontend_edit = 1 '
            . ' ORDER BY f.ordering '
