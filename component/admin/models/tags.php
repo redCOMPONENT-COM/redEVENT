@@ -79,6 +79,7 @@ class RedEventModelTags extends JModel
 		$tags[] = new TagsModelTag('info', JText::_('SUBMISSION_XREF_INFO'));
 		$tags[] = new TagsModelTag('permanentlink', JText::_('SUBMISSION_PERMANENT_LINK'));
 		$tags[] = new TagsModelTag('datelink', JText::_('SUBMISSION_DATE_LINK'));
+		$tags[] = new TagsModelTag('ical', JText::_('COM_REDEVENT_TAG_ICAL'));
 		
 		$tags[] = new TagsModelTag('venue_title', JText::_('SUBMISSION_EVENT_VENUE'), 'venue');
 		$tags[] = new TagsModelTag('venue_link', JText::_('SUBMISSION_EVENT_VENUELINK'), 'venue');
@@ -95,7 +96,7 @@ class RedEventModelTags extends JModel
 		$tags[] = new TagsModelTag('redform_title', JText::_('SUBMISSION_EVENT_REDFORM_TITLE'), 'registration');
 		$tags[] = new TagsModelTag('answers', JText::_('REDEVENT_SUBMISSION_TAG_ANSWERS_DESC'), 'registration');
 		$tags[] = new TagsModelTag('activatelink', JText::_('REDEVENT_SUBMISSION_TAG_ACTIVATELINK_DESC'), 'registration');
-		$tags[] = new TagsModelTag('registrationend', JText::_('SUBMISSION_EVENT_REGISTRATIONEND'));
+		$tags[] = new TagsModelTag('registrationend', JText::_('SUBMISSION_EVENT_REGISTRATIONEND'), 'registration');
 		$tags[] = new TagsModelTag('webformsignup', JText::_('SUBMISSION_WEBFORM_SIGNUP_LINK'), 'registration');
 		$tags[] = new TagsModelTag('emailsignup', JText::_('SUBMISSION_EMAIL_SIGNUP_LINK'), 'registration');
 		$tags[] = new TagsModelTag('formalsignup', JText::_('SUBMISSION_FORMAL_SIGNUP_LINK'), 'registration');

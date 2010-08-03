@@ -567,3 +567,11 @@ span.event-date span.event-end {
 	padding: 10px;
 	font-weight:bold;
 }
+
+.event-ics {
+	display:inline-block;
+	text-indent: -9999px;
+	width:16px; height:16px;
+	background:url("../images/submitevent.png") top left no-repeat;
+}
+

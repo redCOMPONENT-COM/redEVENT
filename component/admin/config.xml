@@ -54,6 +54,10 @@
       <option value="1">Yes</option>
     </param>
     <param name="custom_css" type="text" default="" size="60" label="CUSTOM CSS PATH" description="CUSTOM CSS PATH DESC"/>
+    <param name="event_ics" type="radio" default="1" label="COM_REDEVENT_SETTINGS_SHOW_EVENT_ICAL" description="COM_REDEVENT_SETTINGS_SHOW_EVENT_ICAL_DESC">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
  	</params>
  	
  	<params group="pasteventssettings">
