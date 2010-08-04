@@ -29,13 +29,13 @@ require_once JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'classes'.DS.'iCalc
 jimport( 'joomla.application.component.view');
 
 /**
- * ICS CategoryEvents View class of the redEVENT component
+ * ICS simple events list View class of the redEVENT component
  *
  * @package Joomla
  * @subpackage redEVENT
  * @since 2.0
  */
-class RedeventViewVenueEvents extends JView
+class RedeventViewSimpleList extends JView
 {
 	/**
 	 * Creates the output for the details view
@@ -59,17 +59,15 @@ class RedeventViewVenueEvents extends JView
 		$model->setLimit($settings->params->get('ical_max_items', 100));
 		$model->setLimitstart(0);
 		$rows = & $model->getData();
-		
-		$id = JRequest::getInt('id');
-		
+				
 		$vcal = new vcalendar();                          // initiate new CALENDAR
-		$vcal->setProperty('unique_id', "venue".$id.'@'.$mainframe->getCfg('sitename'));
+		$vcal->setProperty('unique_id', 'allevents@'.$mainframe->getCfg('sitename'));
 		$vcal->setProperty( "calscale", "GREGORIAN" ); 
     $vcal->setProperty( 'method', 'PUBLISH' );
     if ($timezone_name) {
     	$vcal->setProperty( "X-WR-TIMEZONE", $timezone_name ); 
     }
-		$vcal->setConfig( "filename", "venue".$id.".ics" );
+		$vcal->setConfig( "filename", "events.ics" );
 		
 		foreach ( $rows as $row )
 		{					
@@ -134,7 +132,7 @@ class RedeventViewVenueEvents extends JView
 				
 			$e = new vevent();              // initiate a new EVENT
 			$e->setProperty( 'summary', utf8_encode($row->title) );           // title
-			$e->setProperty( 'categories', utf8_encode(implode(', ', $categories)) );           // categorize
+			$e->setProperty( 'categories', utf8_encode( implode(', ', $categories)) );           // categorize
 			$e->setProperty( 'dtstart', $date, $dateparam );
 			if (count($date_end)) {
 				$e->setProperty( 'dtend', $date_end, $dateendparam );

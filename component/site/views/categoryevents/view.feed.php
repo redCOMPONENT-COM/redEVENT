@@ -143,7 +143,9 @@ class RedeventViewCategoryevents extends JView
 		$feed = new rsscalCreator( 'redEVENT feed', JURI::base(), 'Test feed' );
 		$feed->setFilename( CACHE, 'category'.$catid.'.rss' ); 
 		
-		JRequest::setVar('limit', $mainframe->getCfg('feed_limit'));
+		$model = $this->getModel();
+		$model->setLimit($elsettings->params->get('ical_max_items', 100));
+		$model->setLimitstart(0);
 		$rows = & $this->get('Data');
 		
 		foreach ( $rows as $row )
@@ -193,7 +195,7 @@ class RedeventViewCategoryevents extends JView
 			}
 
 			// url link to event
-			$link = RedeventHelperRoute::getDetailsRoute($row->id);
+			$link = JURI::base().RedeventHelperRoute::getDetailsRoute($row->id);
 			$link = JRoute::_( $link );
 			
 			$item = new rsscalItem($row->title, $link);

@@ -134,17 +134,19 @@ class RedeventViewVenueevents extends JView
 		$mainframe  = &JFactory::getApplication();		
 		$elsettings = redEVENTHelper::config();
 		
-		$catid = JRequest::getInt('id');
+		$id = JRequest::getInt('id');
 		
 		$offset = (float) $mainframe->getCfg('offset');
 		$hours = ($offset >= 0) ? floor($offset) : ceil($offset);
 		$mins = abs($offset - $hours) * 60;
 		$utcoffset = sprintf('%+03d:%02d', $hours, $mins);
 		
-		$feed = new rsscalCreator( 'redEVENT feed', JURI::base(), 'Test feed' );
-		$feed->setFilename( CACHE, 'category'.$catid.'.rss' ); 
+		$feed = new rsscalCreator( 'redEVENT feed', JURI::base(), '' );
+		$feed->setFilename( CACHE, 'venue'.$id.'.rss' ); 
 		
-		JRequest::setVar('limit', $mainframe->getCfg('feed_limit'));
+		$model = $this->getModel();
+		$model->setLimit($elsettings->params->get('ical_max_items', 100));
+		$model->setLimitstart(0);
 		$rows = & $this->get('Data');
 		foreach ( $rows as $row )
 		{			
@@ -193,7 +195,7 @@ class RedeventViewVenueevents extends JView
 			}
 
 			// url link to event
-			$link = RedeventHelperRoute::getDetailsRoute($row->id);
+			$link = JURI::base().RedeventHelperRoute::getDetailsRoute($row->id);
 			$link = JRoute::_( $link );
 			
 			$item = new rsscalItem($row->title, $link);

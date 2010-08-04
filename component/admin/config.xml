@@ -66,6 +66,7 @@
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>
+    <param name="ical_max_items" type="text" default="100" label="COM_REDEVENT_SETTINGS_ICAL_MAX_ITEMS" description="COM_REDEVENT_SETTINGS_ICAL_MAX_ITEMS_DESC" />
  	</params>
  	
  	<params group="pasteventssettings">
