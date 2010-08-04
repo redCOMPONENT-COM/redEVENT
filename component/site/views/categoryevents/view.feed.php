@@ -145,6 +145,7 @@ class RedeventViewCategoryevents extends JView
 		
 		JRequest::setVar('limit', $mainframe->getCfg('feed_limit'));
 		$rows = & $this->get('Data');
+		
 		foreach ( $rows as $row )
 		{			
 			// strip html from feed item title

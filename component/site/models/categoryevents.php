@@ -89,30 +89,6 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
 		$this->_data		= null;
 	}
 	
-	function setXref($xref)
-	{
-		// Set new category ID and wipe data
-		$this->_xref			= $xref;
-	}
-
-	/**
-	 * set limit
-	 * @param int value
-	 */
-	function setLimit($value)
-	{
-		$this->setState('limit', (int) $value);
-	}
-
-	/**
-	 * set limitstart
-	 * @param int value
-	 */
-	function setLimitStart($value)
-	{
-		$this->setState('limitstart', (int) $value);
-	}
-	
  /**
    * Build the query
    *

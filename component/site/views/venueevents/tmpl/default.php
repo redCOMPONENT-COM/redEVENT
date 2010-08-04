@@ -131,6 +131,29 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<?php echo $this->pageNav->getPagesCounter(); ?>
 </p>
 <?php endif; ?>
+
+<?php if ($this->params->get('events_rsscal', 0) || $this->params->get('events_ical', 1)): ?>
+<!-- start: exports -->
+<div class="events-exports">
+<?php if ($this->params->get('events_rsscal', 0)): ?>
+<span class="events-rsscal">
+	<?php echo JHTML::link( JRoute::_(RedeventHelperRoute::getVenueEventsRoute($this->venue->id, null, 'rsscal').'&format=feed'),
+                          JHTML::image('components/com_redevent/assets/images/rsscal2.0.png', JText::_('COM_REDEVENT_EXPORT_RSSCAL'))
+	                        ); ?>
+</span>
+<?php endif; ?>
+
+<?php if ($this->params->get('events_ical', 1)): ?>
+<span class="events-ical">
+	<?php echo JHTML::link( JRoute::_(RedeventHelperRoute::getVenueEventsRoute($this->venue->id, null).'&format=ics'),
+                          JHTML::image('components/com_redevent/assets/images/iCal2.0.png', JText::_('COM_REDEVENT_EXPORT_ICS'))
+	                        ); ?>
+</span>
+<?php endif; ?>
+</div>
+<!-- end: exports -->
+<?php endif; ?>
+
 <!--copyright-->
 
 <p class="copyright">

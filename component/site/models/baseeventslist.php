@@ -98,6 +98,25 @@ class RedeventModelBaseEventList extends JModel
 		$this->setState('filter_order_dir', JRequest::getCmd('filter_order_Dir', 'ASC'));
 	}
 
+
+	/**
+	 * set limit
+	 * @param int value
+	 */
+	function setLimit($value)
+	{
+		$this->setState('limit', (int) $value);
+	}
+
+	/**
+	 * set limitstart
+	 * @param int value
+	 */
+	function setLimitStart($value)
+	{
+		$this->setState('limitstart', (int) $value);
+	}
+		
 	/**
 	 * Method to get the Events
 	 *

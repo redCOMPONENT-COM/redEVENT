@@ -128,14 +128,14 @@ class RedeventViewDetails extends JView
 		$description .= JText::_( 'COM_REDEVENT_ICS_LINK' ).': '.$link.'\\n';
 			
 		$e = new vevent();              // initiate a new EVENT
-		$e->setProperty( 'summary', $row->title );           // title
-		$e->setProperty( 'categories', implode(', ', $categories) );           // categorize
+		$e->setProperty( 'summary', utf8_encode($row->title) );           // title
+		$e->setProperty( 'categories', utf8_encode(implode(', ', $categories)) );           // categorize
 		$e->setProperty( 'dtstart', $date, $dateparam );
 		if (count($date_end)) {
 			$e->setProperty( 'dtend', $date_end, $dateendparam );
 		}
-		$e->setProperty( 'description', $description );    // describe the event
-		$e->setProperty( 'location', $row->venue.' / '.$row->city ); // locate the event
+		$e->setProperty( 'description', utf8_encode($description) );    // describe the event
+		$e->setProperty( 'location', utf8_encode($row->venue.' / '.$row->city) ); // locate the event
 		$e->setProperty( 'url', $link );
 		$e->setProperty( 'uid', 'session'.$row->xref.'@'.$mainframe->getCfg('sitename') );
 		$vcal->addComponent( $e );                    // add component to calendar
