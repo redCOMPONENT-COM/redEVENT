@@ -613,9 +613,9 @@ class redEVENT_tags {
       				
 				    case 'paymentrequest':
 				      $search[]  = '['.$tag.']';
-				      if (!empty($submit_key)) {
+				      if (!empty($this->_submitkey)) {
 				      	$title = urlencode($this->getEvent()->getData()->title.' '.ELOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times));				      
-              	$replace[] = JHTML::link(JRoute::_('index.php?option=com_redform&controller=payment&task=select&source=redevent&key='.$submit_key.'&paymenttitle='.$title, false), JText::_('Checkout'), '');
+              	$replace[] = JHTML::link(JRoute::_('index.php?option=com_redform&controller=payment&task=select&source=redevent&key='.$this->_submitkey.'&paymenttitle='.$title, false), JText::_('Checkout'), '');
 				      }
 				      else {
 				      	$replace[] = '';
@@ -624,10 +624,9 @@ class redEVENT_tags {
 				    	
 				    case 'paymentrequestlink':
 				      $search[]  = '['.$tag.']';
-				      $submit_key = JRequest::getVar('submit_key');
-				      if (!empty($submit_key)) {
+				      if (!empty($this->_submitkey)) {
 				      	$title = urlencode($this->getEvent()->getData()->title.' '.ELOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times));				      
-              	$replace[] = JRoute::_('index.php?option=com_redform&controller=payment&task=select&source=redevent&key='.$submit_key.'&paymenttitle='.$title, false);
+              	$replace[] = JRoute::_('index.php?option=com_redform&controller=payment&task=select&source=redevent&key='.$this->_submitkey.'&paymenttitle='.$title, false);
 				      }
 				      else {
 				      	$replace[] = '';
@@ -636,9 +635,8 @@ class redEVENT_tags {
 				    	
 				    case 'registrationid':
 				      $search[]  = '['.$tag.']';
-				      $submit_key = JRequest::getVar('submit_key');
-				      if (!empty($submit_key)) {
-				      	$replace[] = $this->getAttendeeUniqueId($submit_key);
+				      if (!empty($this->_submitkey)) {
+				      	$replace[] = $this->getAttendeeUniqueId($this->_submitkey);
 				      }
 				      else {
 				      	$replace[] = '';
