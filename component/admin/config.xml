@@ -62,6 +62,10 @@
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>
+    <param name="events_ical" type="radio" default="1" label="COM_REDEVENT_SETTINGS_SHOW_EVENTS_ICAL" description="COM_REDEVENT_SETTINGS_SHOW_EVENTS_ICAL_DESC">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
  	</params>
  	
  	<params group="pasteventssettings">

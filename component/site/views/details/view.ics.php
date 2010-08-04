@@ -137,6 +137,7 @@ class RedeventViewDetails extends JView
 		$e->setProperty( 'description', $description );    // describe the event
 		$e->setProperty( 'location', $row->venue.' / '.$row->city ); // locate the event
 		$e->setProperty( 'url', $link );
+		$e->setProperty( 'uid', 'session'.$row->xref.'@'.$mainframe->getCfg('sitename') );
 		$vcal->addComponent( $e );                    // add component to calendar
 
 		$vcal->returnCalendar();                       // generate and redirect output to user browser
