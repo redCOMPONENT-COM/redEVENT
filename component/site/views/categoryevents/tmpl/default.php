@@ -111,6 +111,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 </p>
 <?php endif; ?>
 
+<?php if ($this->params->get('events_rsscal', 0)): ?>
+<!-- start: exports -->
+<div class="events-exports">
+<span class="events-rsscal">
+	<?php echo JHTML::link( JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($this->category->id, null, 'rsscal').'&format=feed'),
+                          JHTML::image('components/com_redevent/assets/images/rsscal2.0.png', JText::_('COM_REDEVENT_EXPORT_ICS'))
+	                        ); ?>
+</span>
+</div>
+<!-- end: exports -->
+<?php endif; ?>
+
 <!--copyright-->
 
 <p class="copyright">

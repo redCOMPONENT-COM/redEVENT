@@ -58,6 +58,10 @@
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>
+    <param name="events_rsscal" type="radio" default="0" label="COM_REDEVENT_SETTINGS_SHOW_EVENTS_RSSCAL" description="COM_REDEVENT_SETTINGS_SHOW_EVENTS_RSSCAL_DESC">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
  	</params>
  	
  	<params group="pasteventssettings">

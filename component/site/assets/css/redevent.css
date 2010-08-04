@@ -575,3 +575,6 @@ span.event-date span.event-end {
 	background:url("../images/submitevent.png") top left no-repeat;
 }
 
+.events-exports {
+	text-align:center;
+}
