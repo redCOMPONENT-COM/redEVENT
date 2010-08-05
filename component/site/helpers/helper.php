@@ -49,8 +49,7 @@ class redEVENTHelper {
 			$db->setQuery($sql);
 			$config = $db->loadObject();
 			
-			$app = &JFactory::getApplication();
-			$config->params = $app->getParams('com_redevent');
+			$config->params = JComponentHelper::getParams('com_redevent');
 		}
 
 		return $config;
