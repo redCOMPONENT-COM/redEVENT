@@ -58,9 +58,6 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
 		$id = JRequest::getInt('id');
 		$this->setId((int)$id);
 		
-		$xref = JRequest::getInt('xref');
-		$this->setXref((int)$xref);
-
 		// Get the paramaters of the active menu item
 		$params 	= & $mainframe->getParams();
 

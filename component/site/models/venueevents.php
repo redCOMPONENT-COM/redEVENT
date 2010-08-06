@@ -58,9 +58,6 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 		$id = JRequest::getInt('id');
 		$this->setId((int)$id);
 		
-		$xref = JRequest::getInt('xref');
-		$this->setXref((int)$xref);
-
 		// Get the paramaters of the active menu item
 		$params 	= & $mainframe->getParams('com_redevent');
 
@@ -87,12 +84,6 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 		// Set new venue ID and wipe data
 		$this->_id			= $id;
 		$this->_data		= null;
-	}
-	
-	function setXref($xref)
-	{
-		// Set new venue ID and wipe data
-		$this->_xref		= $xref;
 	}
 
 	/**
@@ -167,15 +158,10 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 	function getVenue( )
 	{
 		//Location holen
-		$query = 'SELECT *, v.id AS id, x.id AS xref, '
+		$query = 'SELECT *, v.id AS id, '
         . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as slug '
-				.' FROM #__redevent_venues v'
-				.' LEFT JOIN #__redevent_event_venue_xref AS x'
-				.' ON v.id = x.venueid';
-		if ($this->_xref) {
-				$query .= ' WHERE x.id ='. $this->_xref;
-		}
-		else $query .= ' WHERE v.id = '.$this->_id;
+				. ' FROM #__redevent_venues v'
+				. ' WHERE v.id = '.$this->_id;
 
 		$this->_db->setQuery( $query );
 		$_venue = $this->_db->loadObject();
