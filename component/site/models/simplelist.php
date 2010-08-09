@@ -53,16 +53,18 @@ class RedeventModelSimpleList extends RedeventModelBaseEventList
 		$params 	= & $mainframe->getParams();
 
 		$task 		= JRequest::getWord('task');
+		
+		$where = array();
 				
 		// First thing we need to do is to select only needed events
 		if ($task == 'archive') {
-			$where = ' WHERE x.published = -1';
+			$where[] = ' x.published = -1';
 		} else {
-			$where = ' WHERE x.published = 1';
+			$where[] = ' x.published = 1';
 		}
 				
 		// Second is to only select events assigned to category the user has access to
-		$where .= ' AND c.access <= '.$gid;
+		$where[] = ' c.access <= '.$gid;
 
 		/*
 		 * If we have a filter, and this is enabled... lets tack the AND clause
@@ -83,24 +85,32 @@ class RedeventModelSimpleList extends RedeventModelBaseEventList
 				switch ($filter_type)
 				{
 					case 'title' :
-						$where .= ' AND LOWER( a.title ) LIKE '.$filter;
+						$where[] = ' LOWER( a.title ) LIKE '.$filter;
 						break;
 
 					case 'venue' :
-						$where .= ' AND LOWER( l.venue ) LIKE '.$filter;
+						$where[] = ' LOWER( l.venue ) LIKE '.$filter;
 						break;
 
 					case 'city' :
-						$where .= ' AND LOWER( l.city ) LIKE '.$filter;
+						$where[] = ' LOWER( l.city ) LIKE '.$filter;
 						break;
 						
 					case 'type' :
-						$where .= ' AND LOWER( c.catname ) LIKE '.$filter;
+						$where[] = ' LOWER( c.catname ) LIKE '.$filter;
 						break;
 				}
 			}
 		}
-		return $where;
+		// more filters
+		if ($state = JRequest::getVar('state', '', 'request', 'string')) {
+			$where[] = ' STRCMP(l.state, '.$this->_db->Quote($state).') = 0 ';
+		}		
+		if ($country = JRequest::getVar('country', '', 'request', 'string')) {
+			$where[] = ' STRCMP(l.country, '.$this->_db->Quote($country).') = 0 ';
+		}
+		
+		return ' WHERE '.implode(' AND ', $where);
 	}
 	
 }
