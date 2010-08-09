@@ -89,6 +89,12 @@ class RedEvent_eventvenuexref extends JTable
 		if ($this->course_credit === '') {
 			$this->course_credit = null;
 		}
+		if ($this->times === '') {
+			$this->times = null;
+		}
+		if ($this->endtimes === '') {
+			$this->endtimes = null;
+		}
 		return true;
 	}
 	
