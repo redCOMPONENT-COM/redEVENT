@@ -34,6 +34,10 @@
 				<option value="0">Hide</option>
 				<option value="1">Show</option>
 			</param>
+			<param name="show_filter_state" type="radio" default="1" label="COM_REDEVENT_VIEW_SEARCH_SHOW_FILTER_STATE" description="COM_REDEVENT_VIEW_SEARCH_SHOW_FILTER_STATE_TIP">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
 			<param name="show_filter_city" type="radio" default="1" label="SHOW FILTER CITY" description="SHOW FILTER CITY TIP">
 				<option value="0">Hide</option>
 				<option value="1">Show</option>

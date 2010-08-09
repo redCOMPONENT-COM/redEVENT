@@ -87,7 +87,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         </td>
       </tr>
     	<?php endif; ?>
-	    <?php if ($this->params->get('show_filter_city') && (!$this->params->get('show_filter_country') || $this->filter_country)): ?>
+	    <?php if ($this->params->get('show_filter_state') && (!$this->params->get('show_filter_country') || $this->filter_country)): ?>
+      <tr>
+        <td>
+          <?php echo '<label for="filter_state">'.JText::_('State').'</label>&nbsp;';?>
+        </td>
+        <td>
+          <?php echo $this->lists['states'];?>
+        </td>
+      </tr>
+  		<?php endif; ?>
+	    <?php if ($this->params->get('show_filter_city') && (!$this->params->get('show_filter_country') || $this->filter_country)
+	    																								 && (!$this->params->get('show_filter_state')   || $this->filter_state)): ?>
       <tr>
         <td>
           <?php echo '<label for="city">'.JText::_('City').'</label>&nbsp;';?>
@@ -140,7 +151,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	    <?php if ($this->params->get('show_filter_event')): ?>
       <tr>
         <td>
-          <?php echo '<label for="filter_event">'.JText::_('Date').'</label>&nbsp;'; ?>
+          <?php echo '<label for="filter_event">'.JText::_('Event').'</label>&nbsp;'; ?>
         </td>
         <td>
           <?php echo $this->lists['events']; ?>

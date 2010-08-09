@@ -121,31 +121,46 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 					
 	    $filter_continent = $mainframe->getUserStateFromRequest('com_redevent.search.filter_continent', 'filter_continent', '', 'string');
 	    
+	    $reset_filters = 0;
 	    // country (depends on continent)
 	    if (isset($post['filter_continent']) && empty($filter_continent))
 	    {
 	    	$filter_country = '0';
 	    	$mainframe->setUserState('com_redevent.search.filter_country', $filter_country);
+	    	$reset_filters  = 1;
 	    }
 	    else {
 	    	$filter_country = $mainframe->getUserStateFromRequest('com_redevent.search.filter_country', 'filter_country', '', 'string');
 	    }
+	    
+	    // state (depends on country)
+	    if ((isset($post['filter_country']) && empty($filter_country) || $reset_filters))
+	    {
+	    	$filter_state = '0';
+	    	$mainframe->setUserState('com_redevent.search.filter_state', $filter_city);
+	    	$reset_filters  = 1;
+	    }
+	    else {
+	    	$filter_state = $mainframe->getUserStateFromRequest('com_redevent.search.filter_state', 'filter_state', '', 'string');
+	    }
 
 	    // city (depends on country)
-	    if ((isset($post['filter_country']) || isset($post['filter_continent'])) && empty($filter_country))
+	    if ((isset($post['filter_state']) && empty($filter_state) || $reset_filters))
 	    {
 	    	$filter_city = '0';
 	    	$mainframe->setUserState('com_redevent.search.filter_city', $filter_city);
+	    	$reset_filters  = 1;
 	    }
 	    else {
 	    	$filter_city = $mainframe->getUserStateFromRequest('com_redevent.search.filter_city', 'filter_city', '', 'string');
 	    }
 		  
 	    // venue (depends on city)
-	    if ((isset($post['filter_country']) || isset($post['filter_continent']) || isset($post['filter_city'])) && empty($filter_city))
+	    if ((isset($post['filter_city']) && empty($filter_city) || $reset_filters))
 	    {
 	    	$filter_venue = 0;
 	    	$mainframe->setUserState('com_redevent.search.filter_venue', $filter_venue);
+	    	$reset_filters  = 1;
 	    }
 	    else {
 	    	$filter_venue = $mainframe->getUserStateFromRequest('com_redevent.search.filter_venue', 'filter_venue', 0, 'int');
@@ -160,7 +175,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 			$filter_type 	    = JRequest::getWord('filter_type', '', 'request');
 	    
 	    // no result if no filter:
-	    if ( !($filter || $filter_continent || $filter_country || $filter_city != "0" || $filter_date || $filter_category || $filter_venuecategory || $filter_venue || $filter_event) ) {
+	    if ( !($filter || $filter_continent || $filter_country || $filter_state || $filter_city != "0" || $filter_date || $filter_category || $filter_venuecategory || $filter_venue || $filter_event) ) {
 	    	return false;
 	    }
 	
@@ -201,6 +216,10 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	    if ($filter_country) {
 	    	$where[] = ' l.country = ' . $this->_db->Quote($filter_country);
 	    }	    
+	    // filter country
+	    if ($filter_state != "0") {
+	    	$where[] = ' l.state = ' . $this->_db->Quote($filter_state);
+	    }	    
 	    // filter city
 	    if ($filter_city != "0") {
 	    	$where[] = ' l.city = ' . $this->_db->Quote($filter_city);
@@ -235,8 +254,8 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	  
   function getCountryOptions()
   {
-    global $mainframe;
-  	$filter_continent = JRequest::getVar('filter_continent', '', 'string');
+    $mainframe = &JFactory::getApplication();
+  	$filter_continent = $mainframe->getUserState('com_redevent.search.filter_continent');
   	
     $query = ' SELECT DISTINCT c.iso2 as value, c.name as text '
            . ' FROM #__redevent_event_venue_xref AS x'
@@ -251,16 +270,44 @@ class RedeventModelSearch extends RedeventModelBaseEventList
     return $this->_db->loadObjectList();
   }
 	
-	function getCityOptions()
+	function getStateOptions()
 	{
-		$country = JRequest::getString('filter_country', '', 'request');
-		$query = ' SELECT DISTINCT v.city as value, v.city as text '
+    $mainframe = &JFactory::getApplication();
+  	$filter_country = $mainframe->getUserState('com_redevent.search.filter_country');
+  	
+		$query = ' SELECT DISTINCT v.state as value, v.state as text '
            . ' FROM #__redevent_event_venue_xref AS x'
            . ' INNER JOIN #__redevent_venues AS v ON v.id = x.venueid'
            . ' LEFT JOIN #__redevent_countries as c ON c.iso2 = v.country '
            ;
     if (!empty($country)) {
-    	$query .= ' WHERE v.country = ' . $this->_db->Quote($country);
+    	$query .= ' WHERE v.country = ' . $this->_db->Quote($filter_country);
+    }
+    $query .= ' ORDER BY v.state ';           
+    $this->_db->setQuery($query);
+    return $this->_db->loadObjectList();
+	}
+	
+	function getCityOptions()
+	{
+    $mainframe = &JFactory::getApplication();
+  	$country = $mainframe->getUserState('com_redevent.search.filter_country');
+		$state =   $mainframe->getUserState('com_redevent.search.filter_state');
+		
+		$query = ' SELECT DISTINCT v.city as value, v.city as text '
+           . ' FROM #__redevent_event_venue_xref AS x'
+           . ' INNER JOIN #__redevent_venues AS v ON v.id = x.venueid'
+           . ' LEFT JOIN #__redevent_countries as c ON c.iso2 = v.country '
+           ;
+    $where = array();
+    if (!empty($country)) {
+    	$where[] = ' v.country = ' . $this->_db->Quote($country);
+    }
+    if (!empty($state)) {
+    	$where[] = ' v.state = ' . $this->_db->Quote($state);
+    }
+    if (count($where)) {
+    	$query .= ' WHERE '. implode(' AND ', $where);
     }
     $query .= ' ORDER BY v.city ';           
     $this->_db->setQuery($query);

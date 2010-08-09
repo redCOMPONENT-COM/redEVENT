@@ -78,6 +78,7 @@ class RedeventViewSearch extends JView
 		// set in the model
 		$filter_country   = $mainframe->getUserState('com_redevent.search.filter_country');
     $filter_city      = $mainframe->getUserState('com_redevent.search.filter_city');
+    $filter_state     = $mainframe->getUserState('com_redevent.search.filter_state');
     $filter_venue     = $mainframe->getUserState('com_redevent.search.filter_venue');
     $filter_date      = $mainframe->getUserState('com_redevent.search.filter_date');
     $filter_venuecategory = $mainframe->getUserState('com_redevent.search.filter_venuecategory');
@@ -151,6 +152,13 @@ class RedeventViewSearch extends JView
     $lists['countries'] = JHTML::_('select.genericlist', $countries, 'filter_country', 'class="inputbox dynfilter"', 'value', 'text', $filter_country);
     unset($countries);
     
+    // state filter
+    $states = array();
+    $states[] = JHTML::_('select.option', '0', JText::_('Select state'));
+    $states = array_merge($states, $this->get('StateOptions'));
+    $lists['states'] = JHTML::_('select.genericlist', $states, 'filter_state', 'class="inputbox dynfilter"', 'value', 'text', $filter_state);
+    unset($states);    
+    
     // city filter
     $cities = array();
     $cities[] = JHTML::_('select.option', '0', JText::_('Select city'));
@@ -188,6 +196,7 @@ class RedeventViewSearch extends JView
 		$this->assignRef('elsettings' , 			$elsettings);
 		$this->assignRef('pagetitle' , 				$pagetitle);
     $this->assign('filter_country',        $filter_country);
+    $this->assign('filter_state',        $filter_state);
 		$this->assign('filter_date', 			$filter_date);
 
 		parent::display($tpl);
