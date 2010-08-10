@@ -651,7 +651,7 @@ class ELOutput {
 		if (!$allday && $settings->showtime == 1) {
 			$date .= ' <span class="event-time">'.self::formattime($event->dates, $event->times).'</span>';
 		}
-		$date .= '</span';
+		$date .= '</span>';
 		
 		if ($allday) 
 		{
