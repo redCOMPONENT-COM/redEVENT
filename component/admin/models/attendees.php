@@ -516,5 +516,94 @@ class RedEventModelAttendees extends JModel
 		}
 		return $submitters;
 	}
+	
+	function getEmails($cids = null)
+	{				
+		$where = array( 'r.xref = ' . $this->_xref);		
+		if (is_array($cids) && !empty($cids)) {
+			$where[] = ' r.id IN ('.implode(',', $cids).')';
+		}
+		else {
+			$where[] = ' r.confirmed = 1 ';
+		}
+		
+		// need to get sids for redform core
+		$query = ' SELECT r.sid '
+						. ' FROM #__redevent_register AS r '
+						. ' INNER JOIN #__rwf_submitters AS s ON s.id = r.sid '
+            . ' WHERE '.implode(' AND ', $where)
+						;
+		$this->_db->setQuery($query);
+		$sids = $this->_db->loadResultArray();
+		
+		if (empty($sids)) {
+			return false;
+		}
+		$rfcore = new RedFormCore();
+		$answers = $rfcore->getSidsFieldsAnswers($sids);
+				
+		$emails = array();
+		foreach ($answers as $fields) 
+		{
+			$res = array();
+			foreach ($fields as $field)
+			{
+				switch ($field->fieldtype)
+				{
+					case 'username':
+						$res['username'] = $field->answer;
+						break;
+						
+					case 'fullname':
+						$res['fullname'] = $field->answer;
+						break;
+						
+					case 'email':
+						$res['email'] = $field->answer;
+						break;
+				}
+			}
+			if (!isset($res['email'])) {
+				JError::raiseWarning(0, JText::_('COM_REDEVENT_EMAIL_ATTENDEES_NO_EMAIL_FIELD'));
+				return false;
+			}
+			if ( (!isset($res['fullname']) || empty($res['fullname'])) && isset($res['username'])) {
+				$res['fullname'] = $res['username'];
+			}
+			$emails[] = $res;
+		}
+//		echo '<pre>';print_r($emails); echo '</pre>';exit;
+		return $emails;
+	}
+	
+	function sendMail($cid, $subject, $body)
+	{
+		$emails = $this->getEmails($cid);
+		
+		$mailer = & JFactory::getMailer();
+  	$mailer->setSubject($subject);
+  	$mailer->MsgHTML($body);
+  	
+  	$res = true;
+  	
+  	foreach ($emails as $e)
+  	{
+//  		$mailer->addAddress($r['email'], $r['name']);
+			$mailer->clearAllRecipients();
+			if (isset($e['fullname'])) {
+				$mailer->addAddress( $e['email'], $e['fullname'] );
+			}
+			else {
+				$mailer->addAddress( $e['email'] );
+			}
+			
+	  	if (!$mailer->send())
+	  	{
+	  		JError::raiseWarning(JText::sprintf('COM_REDEVENT_EMAIL_ATTENDEES_ERROR_SENDING_EMAIL_TO'), $e['email']);
+	  		$res = false;
+	  	}
+  	}
+  	return true;  	
+	}
 }
 ?>

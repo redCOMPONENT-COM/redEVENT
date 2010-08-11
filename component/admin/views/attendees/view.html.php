@@ -68,6 +68,9 @@ class RedEventViewAttendees extends JView {
 		//add toolbar
 		JToolBarHelper::title( JText::_( 'REGISTRATIONS' ), 'users' );
 //		JToolBarHelper::custom('submitters', 'redevent_submitters', 'redevent_submitters', JText::_('Attendees'), false);
+		JToolBarHelper::custom('emailall', 'send.png', 'send.png', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_ALL', false, true);
+		JToolBarHelper::custom('email', 'send.png', 'send.png', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_SELECTED', true, true);
+		JToolBarHelper::spacer();
 		JToolBarHelper::addNew();
 		JToolBarHelper::editList();
 		JToolBarHelper::deleteList();

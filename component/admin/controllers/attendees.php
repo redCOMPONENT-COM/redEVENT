@@ -45,6 +45,7 @@ class RedEventControllerAttendees extends RedEventController
 		$this->registerTask( 'addattendee', 'attendees' );
 		$this->registerTask( 'add',   'edit' );
 		$this->registerTask( 'apply', 'save' );
+		$this->registerTask( 'emailall', 'email' );
 	}
 	
 	public function Attendees() 
@@ -362,6 +363,61 @@ class RedEventControllerAttendees extends RedEventController
 		$model->checkin();
 
 		$this->setRedirect( $link, $msg, $mtype );
+ 	}
+ 	
+ 	function email()
+ 	{
+		$task = JRequest::getVar('task');
+		
+		if ($task == 'email') {
+			$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
+		}
+		else {
+			$cid = null;
+		}
+		$xref 	= JRequest::getInt('xref');
+		
+		JRequest::setVar('view', 'emailattendees');
+		
+		parent::display();
+ 	}
+ 	
+ 	function sendemail()
+ 	{
+		// Check for request forgeries
+		JRequest::checkToken() or die( 'Invalid Token' );
+		$xref = JRequest::getVar('xref', 0, '', 'int') or die( 'Missing xref' );
+		$task		= JRequest::getVar('task');
+
+		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
+		JArrayHelper::toInteger($cid);
+		
+		$subject = JRequest::getVar('subject', '', 'post', 'string');
+		$body    = JRequest::getVar('body', '', 'post', 'string',  JREQUEST_ALLOWRAW );
+		
+		$model = $this->getModel('attendees');
+		
+		$msg = '';
+		$mtype= 'message';
+		
+		if ($model->sendMail($cid, $subject, $body))
+		{
+			$msg = JText::_('COM_REDEVENT_EMAIL_ATTENDEES_SENT');
+		}
+		else
+		{
+			$msg = $model->getError();
+			$mtype = 'error';
+		}
+		
+		$this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='. $xref, $msg, $mtype );
+		$this->redirect();
+ 	}
+ 	
+ 	function cancelemail()
+ 	{
+		$xref = JRequest::getVar('xref', 0, '', 'int') or die( 'Missing xref' );
+		$this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='. $xref );
  	}
 }
 ?>
