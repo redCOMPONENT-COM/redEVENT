@@ -260,7 +260,7 @@ class RedeventModelBaseEventList extends JModel
 		$filter_order		= $this->getState('filter_order');
 		$filter_order_dir	= $this->getState('filter_order_dir');
 			
-		if (ereg("field([0-9]+)", $filter_order, $regs)) {
+		if (preg_match("/field([0-9]+)/", $filter_order, $regs)) {
 			$filter_order = 'c'. $regs[1] .'.value';
 		}
 		$orderby 	= ' ORDER BY '.$filter_order.' '.$filter_order_dir.', x.dates, x.times';

@@ -246,7 +246,7 @@ class RedeventHelperRecurrence
           $days = explode(',', $value);
           foreach ($days as $d) 
           {
-            ereg('([-]*)([0-9]*)([A-Z]*)', $d, $res);
+            preg_match('/([-]*)([0-9]*)([A-Z]*)/', $d, $res);
             $revert = ($res[1] == '-');
             if ($res[2] && $res[3]) {
               if ($revert) {
@@ -305,7 +305,7 @@ class RedeventHelperRecurrence
   
   function icalDatetotime($date)
   {
-    if (ereg('([0-9]{4})([0-9]{2})([0-9]{2})T([0-9]{2})([0-9]{2})([0-9]{2})(Z?)', $date, $res))
+    if (preg_match('/([0-9]{4})([0-9]{2})([0-9]{2})T([0-9]{2})([0-9]{2})([0-9]{2})(Z?)/', $date, $res))
     {
       $res = mktime($res[4], $res[5], $res[6], $res[2], $res[3], $res[1]);
       return strftime('%Y-%m-%d %H:%M:%S', $res);

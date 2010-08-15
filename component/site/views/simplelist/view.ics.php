@@ -78,14 +78,14 @@ class RedeventViewSimpleList extends JView
 			}
 			      
 			//Format date
-			if (!ereg('([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})',$row->dates, $start_date)) {
+			if (!preg_match('/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/',$row->dates, $start_date)) {
 				continue;
 			}
 			$date = array('year' => (int) $start_date[1], 'month' => (int) $start_date[2], 'day' => (int) $start_date[3]);
 			$dateparam = array();
 				
 			//Format time
-			if ($row->times && ereg('([0-9]{2}):([0-9]{2}):([0-9]{2})',$row->times, $start_time)) {
+			if ($row->times && preg_match('/([0-9]{2}):([0-9]{2}):([0-9]{2})/',$row->times, $start_time)) {
 				$date['hour'] = $start_time[1];
 				$date['min'] = $start_time[2];
 				$date['sec'] = $start_time[3];
@@ -101,10 +101,10 @@ class RedeventViewSimpleList extends JView
 			$date_end = array();
 			$dateendparam = array();
 			// end date
-			if ($row->enddates && ereg('([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})',$row->enddates, $end_date)) {
+			if ($row->enddates && preg_match('/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/',$row->enddates, $end_date)) {
 				$date_end = array('year' => $end_date[1], 'month' => $end_date[2], 'day' => $end_date[3]);
 			}
-			if ($row->endtimes && ereg('([0-9]{2}):([0-9]{2}):([0-9]{2})',$row->endtimes, $end_time))
+			if ($row->endtimes && preg_match('/([0-9]{2}):([0-9]{2}):([0-9]{2})/',$row->endtimes, $end_time))
 			{
 				if (!count($date_end)) {
 					// no end date, so it must be the same day...
