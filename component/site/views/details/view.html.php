@@ -174,7 +174,7 @@ class RedeventViewDetails extends JView
 				if ($meta_keywords_content != "") {
 					$meta_keywords_content .= ", ";
 				}
-				if (preg_match("/[/[/]/",$keyword)) {
+				if (preg_match("/[\/[\/]/",$keyword)) {
 					$keyword = trim(str_replace("[","",str_replace("]","",$keyword)));
 					$buffer = $this->keyword_switcher($keyword, $row, $elsettings->formattime, $elsettings->formatdate);
 					if ($buffer != "") {
