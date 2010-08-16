@@ -669,9 +669,12 @@ class ELOutput {
 			if (strtotime($event->enddates) && strtotime($event->enddates) != strtotime($event->dates)) 
 			{
 				$date .= ' <span class="event-end"><span class="event-day">'.self::formatdate($event->enddates, $event->endtimes).'</span>';
-				$date .= ' <span class="event-time">'.self::formattime($event->dates, $event->endtimes).'</span></span>';
+				if ($settings->showtime == 1) {
+					$date .= ' <span class="event-time">'.self::formattime($event->dates, $event->endtimes).'</span>';
+				}
+				$date .= '</span>';
 			}
-			else
+			else if ($settings->showtime == 1)
 			{
 				$date .= ' <span class="event-time">'.self::formattime($event->dates, $event->endtimes).'</span>';				
 			}
@@ -679,6 +682,41 @@ class ELOutput {
 		$date .= '</span>';
 		
 		return $date;
+	}
+	
+	/**
+	 * Returns an array for ical formatting
+	 * @param string date
+	 * @param string time
+	 * @return array
+	 */
+	function getIcalDateArray($date, $time = null)
+	{
+		if ($time) {
+			$sec = strtotime($date. ' ' .$time);
+		}
+		else {
+			$sec = strtotime($date);			
+		}
+		if (!$sec) {
+			return false;
+		}
+		
+		//Format date
+		$parsed = strftime('%Y-%m-%d %H:%M:%S', $sec);
+
+		$date = array( 'year'  => (int) substr($parsed, 0, 4), 
+		               'month' => (int) substr($parsed, 5, 2), 
+		               'day'   => (int) substr($parsed, 8, 2) );
+			
+		//Format time
+		if (substr($parsed, 11, 8) != '00:00:00') 
+		{
+			$date['hour'] = substr($parsed, 11, 2);
+			$date['min'] = substr($parsed, 14, 2);
+			$date['sec'] = substr($parsed, 17, 2);
+		}
+		return array();
 	}
 	
 	/**
