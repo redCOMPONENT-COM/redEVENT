@@ -109,6 +109,16 @@ class RedeventModelSimpleList extends RedeventModelBaseEventList
 		if ($country = JRequest::getVar('country', '', 'request', 'string')) {
 			$where[] = ' STRCMP(l.country, '.$this->_db->Quote($country).') = 0 ';
 		}
+	
+		$sstate = $params->get( 'session_state', '0' );
+		if ($sstate == 1)
+		{
+			$now = strftime('%Y-%m-%d %H:%M');
+			$where[] = '(CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > '.$this->_db->Quote($now);
+		} 
+		else if ($sstate == 2) {
+			$where[] = 'x.dates = 0';
+		}
 		
 		return ' WHERE '.implode(' AND ', $where);
 	}

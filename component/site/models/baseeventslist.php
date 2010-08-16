@@ -286,15 +286,17 @@ class RedeventModelBaseEventList extends JModel
 
 		$task 		= JRequest::getWord('task');
 		
+		$where = array();
+		
 		// First thing we need to do is to select only needed events
 		if ($task == 'archive') {
-			$where = ' WHERE x.published = -1';
+			$where[] = ' x.published = -1 ';
 		} else {
-			$where = ' WHERE x.published = 1';
+			$where[] = ' x.published = 1 ';
 		}
 				
 		// Second is to only select events assigned to category the user has access to
-		$where .= ' AND c.access <= '.$gid;
+		$where[] = ' c.access <= '.$gid;
 		
 		/*
 		 * If we have a filter, and this is enabled... lets tack the AND clause
@@ -315,24 +317,35 @@ class RedeventModelBaseEventList extends JModel
 				switch ($filter_type)
 				{
 					case 'title' :
-						$where .= ' AND LOWER( a.title ) LIKE '.$filter;
+						$where[] = ' LOWER( a.title ) LIKE '.$filter;
 						break;
 
 					case 'venue' :
-						$where .= ' AND LOWER( l.venue ) LIKE '.$filter;
+						$where[] = ' LOWER( l.venue ) LIKE '.$filter;
 						break;
 
 					case 'city' :
-						$where .= ' AND LOWER( l.city ) LIKE '.$filter;
+						$where[] = ' LOWER( l.city ) LIKE '.$filter;
 						break;
 						
 					case 'type' :
-						$where .= ' AND LOWER( c.catname ) LIKE '.$filter;
+						$where[] = '  LOWER( c.catname ) LIKE '.$filter;
 						break;
 				}
 			}
 		}
-		return $where;
+	
+		$sstate = $params->get( 'session_state', '0' );
+		if ($sstate == 1)
+		{
+			$now = strftime('%Y-%m-%d %H:%M');
+			$where[] = '(CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > '.$this->_db->Quote($now);
+		} 
+		else if ($sstate == 2) {
+			$where[] = 'x.dates = 0';
+		}
+		
+		return ' WHERE '.implode(' AND ', $where);
 	}
 	
 	/**

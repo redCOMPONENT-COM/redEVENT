@@ -14,6 +14,11 @@
 				<option value="0">Hide</option>
 				<option value="1">Show</option>
 			</param>
+			<param name="session_state" type="list" default="0" label="REDEVENT_VIEW_FILTER_SESSION_STATE" description="REDEVENT_VIEW_FILTER_SESSION_STATE_DESC">
+				<option value="0">REDEVENT_VIEW_FILTER_EVENT_STATE_ALL</option>
+				<option value="1">REDEVENT_VIEW_FILTER_EVENT_STATE_UPCOMINGS</option>
+				<option value="2">REDEVENT_VIEW_FILTER_EVENT_STATE_OPENDATE</option>
+			</param>
 		</params>
 	</state>
 </metadata>

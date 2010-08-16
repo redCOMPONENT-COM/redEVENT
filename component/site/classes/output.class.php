@@ -639,8 +639,18 @@ class ELOutput {
 		return $formattime;
 	}
 	
+	/**
+	 * return formatted event date and time (start and end), or false if open date
+	 * 
+	 * @param object $event
+	 * @return string or false for open date
+	 */
 	function formatEventDateTime($event)
 	{
+		if (!strtotime($event->dates)) { // open dates
+			$date = '<span class="event-date open-date">'.JText::_('OPEN DATE').'</span>';
+			return $date;
+		}
 		$settings = & redEVENTHelper::config();
 		// is this a full day(s) event ?
 		$allday = '00:00:00' == $event->times && '00:00:00' == $event->endtimes;

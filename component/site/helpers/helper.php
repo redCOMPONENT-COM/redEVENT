@@ -971,6 +971,9 @@ class redEVENTHelper {
   	      && property_exists($event, 'enddates') && property_exists($event, 'endtimes') ) ) {
   		throw new Exception('Missing object properties');
   	}
+  	if (!strtotime($event->dates)) { // open dates
+  		return false;
+  	}
   	
   	if (strtotime($event->enddates.' '.$event->endtimes)) {
   		return strtotime($event->enddates.' '.$event->endtimes) < time();
