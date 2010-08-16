@@ -716,7 +716,7 @@ class ELOutput {
 			$date['min'] = substr($parsed, 14, 2);
 			$date['sec'] = substr($parsed, 17, 2);
 		}
-		return array();
+		return $date;
 	}
 	
 	/**

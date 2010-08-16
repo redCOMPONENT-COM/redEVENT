@@ -72,50 +72,27 @@ class RedeventViewDetails extends JView
     	$vcal->setProperty( "X-WR-TIMEZONE", $timezone_name ); 
     }
 		$vcal->setConfig( "filename", "event".$row->xref.".ics" );
-                
-          
-		//Format date
-		if (!preg_match('/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/',$row->dates, $start_date)) {
-			continue;
-		}
-		$date = array('year' => (int) $start_date[1], 'month' => (int) $start_date[2], 'day' => (int) $start_date[3]);
+	
+		// format date
+		$date = ELOutput::getIcalDateArray($row->dates, $row->times);
 		$dateparam = array();
-			
-		//Format time
-		if ($row->times && preg_match('/([0-9]{2}):([0-9]{2}):([0-9]{2})/',$row->times, $start_time)) {
-			$date['hour'] = $start_time[1];
-			$date['min'] = $start_time[2];
-			$date['sec'] = $start_time[3];
+		if (isset($date['hour'])) {
 			$date['tz'] = $utcoffset;
 			$dateparam['VALUE'] = 'DATE-TIME';
 		}
 		else {
-			// all day event
-			$dateparam['VALUE'] = 'DATE';
+			$dateparam['VALUE'] = 'DATE';				
 		}
 			
 		// end date
-		$date_end = array();
+		$date_end = ELOutput::getIcalDateArray($row->enddates, $row->endtimes);
 		$dateendparam = array();
-		// end date
-		if ($row->enddates && preg_match('/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/',$row->enddates, $end_date)) {
-			$date_end = array('year' => $end_date[1], 'month' => $end_date[2], 'day' => $end_date[3]);
-		}
-		if ($row->endtimes && preg_match('/([0-9]{2}):([0-9]{2}):([0-9]{2})/',$row->endtimes, $end_time))
-		{
-			if (!count($date_end)) {
-				// no end date, so it must be the same day...
-				$date_end = array('year' => $date['year'], 'month' => $date['month'], 'day' => $date['day']);
-			}
-			$date_end['hour'] = $end_time[1];
-			$date_end['min'] = $end_time[2];
-			$date_end['sec'] = $end_time[3];
-			$dateendparam['VALUE'] = 'DATE-TIME';
+		if (isset($date_end['hour'])) {
 			$date_end['tz'] = $utcoffset;
+			$dateendparam['VALUE'] = 'DATE-TIME';
 		}
-		if ($row->enddates && !$row->endtimes) {
-			// all day event
-			$dateendparam['VALUE'] = 'DATE';
+		else {
+			$dateendparam['VALUE'] = 'DATE';				
 		}
 
 		// item description text
