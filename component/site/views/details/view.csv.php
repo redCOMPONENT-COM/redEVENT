@@ -92,8 +92,10 @@ class RedeventViewDetails extends JView
 			//$text = "no attendees";
 		}
 		$title = JFile::makeSafe($event->title .'_'. $event->dates .'_'. $event->venue .'.csv');
-		header('Content-type: application/excel');
+		header('Content-Type: text/csv');
+		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 		header('Content-Disposition: attachment; filename="'.$title.'"');
+		header('Pragma: no-cache');
 		echo $text;
 	}
 		
