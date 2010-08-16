@@ -33,6 +33,7 @@
 			<option value="0">REDEVENT_MODULE_REDEVENT_EVENT_STATE_PUBLISHED</option>
 			<option value="1">REDEVENT_MODULE_REDEVENT_EVENT_STATE_UPCOMING</option>
 			<option value="2">REDEVENT_MODULE_REDEVENT_EVENT_STATE_ARCHIVED</option>
+			<option value="3">REDEVENT_MODULE_REDEVENT_EVENT_STATE_OPENDATE</option>
 		</param>
 		<param name="showsessions" type="list" default="1" label="REDEVENT_MODULE_REDEVENT_SHOW_SESSIONS" description="REDEVENT_MODULE_REDEVENT_SHOW_SESSIONS_DESC">		_
 			<option value="0">No</option>

@@ -64,9 +64,15 @@ class modRedEventHelper
 			$where[] = 'x.published = 1 AND (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > '.$db->Quote($now);
 			$order = ' ORDER BY x.dates, x.times ';
 		} 
-		else {
+		else if ($type == 2)
+		{
 			$where[] = 'x.published = -1';
 			$order = ' ORDER BY x.dates DESC, x.times DESC';
+		} 
+		else if ($type == 3) 
+		{
+			$where[] = 'x.dates = 0';
+			$order = ' ORDER BY a.title ASC';
 		}
 
 		$catid 	= trim( $params->get('catid') );
@@ -156,6 +162,9 @@ class modRedEventHelper
 	 */
 	function _builddateinfo($row, &$params)
 	{
+		if (!strtotime($row->dates)) {
+			return JText::_('REDEVENT_MODULE_REDEVENT_OPEN_DATE');
+		}
 		$date 		= modRedEventHelper::_format_date($row->dates, $row->times, $params->get('formatdate', '%d.%m.%Y'));
 		$enddate 	= ($row->enddates && $row->enddates != '0000-00-00') ? modRedEventHelper::_format_date($row->enddates, $row->endtimes, $params->get('formatdate', '%d.%m.%Y')) : null;
 		$time		= ($row->times && $row->times != '00:00:00') ? modRedEventHelper::_format_date($row->dates, $row->times, $params->get('formattime', '%H:%M')) : null;
