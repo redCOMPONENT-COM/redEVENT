@@ -40,9 +40,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   </h1>
 
 
-    <?php if ($this->params->get('search_showintrotext')) : ?>
+    <?php if ($this->params->get('showintrotext')) : ?>
       <div class="description no_space floattext">
-        <?php echo $this->params->get('search_introtext'); ?>
+        <?php echo $this->params->get('introtext'); ?>
       </div>
     <?php endif; ?>
 
