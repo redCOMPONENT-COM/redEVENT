@@ -62,6 +62,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <form action="<?php echo $this->action; ?>" method="post" id="adminForm">
 
 <div id="el_filter" class="floattext">
+
   <div class="el_fleft">
 		<table>
 			<?php if ($this->params->get('show_filter')) : ?>
@@ -80,7 +81,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	    <?php if ($this->params->get('show_filter_country')): ?>
       <tr>
         <td>
-          <?php echo '<label for="country">'.JText::_('Country').'</label>&nbsp;'; ?>
+          <?php echo '<label for="filter_country">'.JText::_('Country').'</label>&nbsp;'; ?>
         </td>
         <td>
           <?php echo $this->lists['countries'];?>
@@ -101,7 +102,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	    																								 && (!$this->params->get('show_filter_state')   || $this->filter_state)): ?>
       <tr>
         <td>
-          <?php echo '<label for="city">'.JText::_('City').'</label>&nbsp;';?>
+          <?php echo '<label for="filter_city">'.JText::_('City').'</label>&nbsp;';?>
         </td>
         <td>
           <?php echo $this->lists['cities'];?>
@@ -160,13 +161,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     	<?php endif; ?>
     </table>	
   </div>
+  
   <?php if ($this->params->get('display')) : ?>
 	<div class="el_fright">
-	<?php	echo '<label for="limit">'.JText::_('DISPLAY NUM').'</label>&nbsp;';
-	echo $this->pageNav->getLimitBox();
-	?>
-  <?php endif; ?>
+		<?php	echo '<label for="limit">'.JText::_('DISPLAY NUM').'</label>&nbsp;';
+		echo $this->pageNav->getLimitBox();
+		?>
 	</div>
+  <?php endif; ?>
+  
 </div>
 
 <?php if ($this->nofilter): ?>
