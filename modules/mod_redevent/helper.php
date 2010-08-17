@@ -168,14 +168,14 @@ class modRedEventHelper
 		$date 		= modRedEventHelper::_format_date($row->dates, $row->times, $params->get('formatdate', '%d.%m.%Y'));
 		$enddate 	= ($row->enddates && $row->enddates != '0000-00-00') ? modRedEventHelper::_format_date($row->enddates, $row->endtimes, $params->get('formatdate', '%d.%m.%Y')) : null;
 		$time		= ($row->times && $row->times != '00:00:00') ? modRedEventHelper::_format_date($row->dates, $row->times, $params->get('formattime', '%H:%M')) : null;
-		$dateinfo	= $date;
+		$dateinfo	= '<span class="event-start">'.$date.'</span>';
 
 		if ( isset($enddate) && $params->get('show_enddate', 1) && $row->dates != $row->enddates) {
-			$dateinfo .= ' - '.$enddate;
+			$dateinfo .= ' - <span class="event-end">'.$enddate.'</span>';
 		}
 
 		if ( isset($time) && $params->get('show_time', 1) ) {
-			$dateinfo .= ' | '.$time;
+			$dateinfo .= ' <span class="event-time">'.$time.'</span>';
 		}
 
 		return $dateinfo;
