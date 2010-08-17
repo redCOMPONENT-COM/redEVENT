@@ -220,7 +220,8 @@ class RedEventControllerAttendees extends RedEventController
 
 		$datas = $model->getData();
 
-		header('Content-Type: text/x-csv');
+		$doc =& JFactory::getDocument();
+		$doc->setMimeEncoding('text/csv');
 		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 		header('Content-Disposition: attachment; filename=attendees.csv');
 		header('Pragma: no-cache');

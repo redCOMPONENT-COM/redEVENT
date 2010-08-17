@@ -94,7 +94,8 @@ class RedEventViewAttendees extends JView {
 			//$text = "no attendees";
 		}
 		$title = JFile::makeSafe($event->title .'_'. $event->dates .'_'. $event->venue .'.csv');
-		header('Content-type: application/excel');
+		$doc =& JFactory::getDocument();
+		$doc->setMimeEncoding('text/csv');
 		header('Content-Disposition: attachment; filename="'.$title.'"');
 		echo $text;
 	}
