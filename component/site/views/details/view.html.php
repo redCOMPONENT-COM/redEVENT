@@ -61,15 +61,6 @@ class RedeventViewDetails extends JView
 		$registers	      = $this->get('Registers');
 		$register_fields	= $this->get('FormFields');
 		$regcheck	        = $this->get('Usercheck');
-		$formcheck	= $this->get('FormDependencies'); // TODO: still used ?
-		$model_event = $this->getModel('Event', 'RedEventModel');
-		
-		/* Get the message queue */
-//		$messages = $mainframe->getMessageQueue();
-//		$mainframe->_messageQueue = array();
-		
-		/* Check if redFORM is installed */
-		$redform_install = $model_event->getCheckredFORM();
 
 		/* Get the venues information */
 		$this->_venues = $this->get('Venues');
@@ -246,9 +237,7 @@ class RedeventViewDetails extends JView
 		$this->assignRef('registersfields',  $register_fields);
 		$this->assignRef('elsettings', 			 $elsettings);
 		$this->assignRef('item', 					   $item);
-		$this->assignRef('formcheck',				 $formcheck); // TODO: still used ?
 		$this->assignRef('messages',				 $messages);
-		$this->assignRef('redform_install',  $redform_install);
 		$this->assignRef('venuedates'	,      $venuedates);
     $this->assignRef('unreg_check' ,     $unreg_check);
 		
@@ -272,10 +261,6 @@ class RedeventViewDetails extends JView
 		$row		= $this->get('Details');
 		$registers	= $this->get('Registers');
 		$regcheck	= $this->get('ManageAttendees');
-		$model_event = $this->getModel('Event', 'RedEventModel');
-				
-		/* Check if redFORM is installed */
-		$redform_install = $model_event->getCheckredFORM();
 				
 		//get menu information
 		$menu		= & JSite::getMenu();
@@ -342,9 +327,7 @@ class RedeventViewDetails extends JView
 		$this->assignRef('registers' , 				$registers);
 		$this->assignRef('elsettings' , 			$elsettings);
 		$this->assignRef('item' , 					$item);
-		$this->assignRef('formcheck' ,				$formcheck); // TODO: still used ?
 		$this->assignRef('messages' ,				$messages);
-		$this->assignRef('redform_install'	, $redform_install);
     $this->assignRef('manage_attendees' , $manage_attendees);
 				
 		parent::display($tpl);
