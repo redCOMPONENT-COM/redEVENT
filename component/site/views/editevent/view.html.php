@@ -86,7 +86,7 @@ class RedeventViewEditevent extends JView
 
 		JHTML::_('behavior.formvalidation');
 		JHTML::_('behavior.tooltip');
-		JHTML::_('behavior.modal', 'a.modal');
+		JHTML::_('behavior.modal', 'a.vmodal');
 
 		//add css file
     if (!$params->get('custom_css')) {

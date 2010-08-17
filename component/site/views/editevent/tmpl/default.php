@@ -24,10 +24,11 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.calendar');
+JHTML::_('behavior.calendar');
 ?>
 
 <script type="text/javascript">
-	Window.onDomReady(function()
+	window.addEvent('domready', function()
 	{
 		document.formvalidator.setHandler('categories',
 			function (value) {
@@ -196,7 +197,7 @@ JHTML::_('behavior.calendar');
 				<td>
 					<input type="text" id="a_name" value="<?php echo $this->row->venue; ?>" disabled="disabled" />
 					<div class='re_buttons floattext'>
-						<a class="re_venue_select modal" title="<?php echo JText::_('SELECT'); ?>" 
+						<a class="re_venue_select vmodal" title="<?php echo JText::_('SELECT'); ?>" 
 						   href="<?php echo JRoute::_('index.php?view=editevent&layout=selectvenue&tmpl=component'); ?>"
 						   rel="{handler: 'iframe', size: {x: 650, y: 375}}">
 						   	<span><?php echo JText::_('SELECT')?></span>
