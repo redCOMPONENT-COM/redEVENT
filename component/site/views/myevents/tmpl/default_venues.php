@@ -63,3 +63,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   <?php echo $this->venues_pageNav->getPagesCounter(); ?>
 </p>
 <?php endif; ?>
+
+<?php if ($this->canAddVenue): ?>
+<div><?php echo JHTML::link(RedeventHelperRoute::getEditVenueRoute(), JText::_('Add new venue')); ?></div>
+<?php endif; ?>

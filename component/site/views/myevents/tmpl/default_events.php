@@ -245,3 +245,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php if ($this->canAddXref): ?>
 <div><?php echo JHTML::link(JRoute::_('index.php?option=com_redevent&view=editevent&layout=eventdate', false), JText::_('Add new event session')); ?></div>
 <?php endif; ?>
+<?php if ($this->canAddEvent): ?>
+<div><?php echo JHTML::link(RedeventHelperRoute::getEditEventRoute(), JText::_('Add new event')); ?></div>
+<?php endif; ?>

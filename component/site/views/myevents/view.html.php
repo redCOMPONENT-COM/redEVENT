@@ -42,21 +42,24 @@ class RedeventViewMyevents extends JView
      */
     function display($tpl = null)
     {
-        global $mainframe;
-
+        $mainframe = &JFactory::getApplication();
+			
         $user = & JFactory::getUser();
         if (!$user->get('id')) {
         	JError::raiseError(403, JText::_('Only logged users can access this page'));
         }
         
         //initialize variables
-        $document = & JFactory::getDocument();
+        $document   = & JFactory::getDocument();
         $elsettings = & redEVENTHelper::config();
+        $pathway    = & $mainframe->getPathWay();
+        $params     = & $mainframe->getParams();
+        $uri        = & JFactory::getURI();
+				$acl        = & UserACl::getInstance();
+
         $menu = & JSite::getMenu();
         $item = $menu->getActive();
-        $params = & $mainframe->getParams();
-        $uri = & JFactory::getURI();
-        $pathway = & $mainframe->getPathWay();
+
 
         //add css file
 		    if (!$params->get('custom_css')) {
@@ -143,9 +146,11 @@ class RedeventViewMyevents extends JView
         $this->assignRef('venues_pageNav', $venues_pageNav);
         $this->assignRef('attending_pageNav', $attending_pageNav);
         $this->assignRef('elsettings', $elsettings);
-        $this->assignRef('pagetitle', $pagetitle);
-        $this->assignRef('lists', $lists);
-        $this->assignRef('canAddXref', $this->get('CanAddXref'));
+        $this->assignRef('pagetitle',  $pagetitle);
+        $this->assignRef('lists',      $lists);
+        $this->assignRef('canAddXref',  $acl->canAddXref());
+        $this->assignRef('canAddEvent', $acl->canAddEvent());
+        $this->assignRef('canAddVenue', $acl->canAddVenue());
 
         parent::display($tpl);
 
