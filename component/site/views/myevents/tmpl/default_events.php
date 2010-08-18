@@ -91,11 +91,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 	<thead>
 			<tr>
-				<th id="el_date" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', $this->escape($this->elsettings->datename), 'a.dates', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th id="el_date" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', $this->escape($this->elsettings->datename), 'x.dates', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php
 				if ($this->elsettings->showtitle == 1) :
 				?>
-				<th id="el_title" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', $this->escape($this->elsettings->titlename), 'a.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th id="el_title" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', $this->escape($this->elsettings->titlename), 'e.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php
 				endif;
 				if ($this->elsettings->showlocate == 1) :

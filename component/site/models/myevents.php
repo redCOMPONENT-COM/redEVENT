@@ -364,17 +364,17 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 
         //Get Events from Database
         $query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, '
-        . ' a.id, a.title, a.created, a.datdescription, a.registra, '
+        . ' e.id, e.title, e.created, e.datdescription, e.registra, '
         . ' l.venue, l.city, l.state, l.url, l.id as locid, '
         . ' c.catname, c.id AS catid,'
-        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
+        . ' CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(\':\', e.id, e.alias) ELSE e.id END as slug, '
         . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
         . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
         . ' FROM #__redevent_event_venue_xref AS x'
         . ' INNER JOIN #__redevent_register AS r ON r.xref = x.id '
-        . ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
+        . ' LEFT JOIN #__redevent_events AS e ON e.id = x.eventid'
         . ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id'
         . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
         . $where
         . ' GROUP BY (x.id) '
