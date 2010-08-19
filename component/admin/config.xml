@@ -118,6 +118,10 @@
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>
+    <param name="create_session" type="radio" default="1" label="SETTINGS FRONTEND CREATE SESSION" description="SETTINGS FRONTEND CREATE SESSION TIP">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
  	</params>
  	
  	<params group="registration">

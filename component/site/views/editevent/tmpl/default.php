@@ -189,7 +189,7 @@ JHTML::_('behavior.calendar');
 				<td><?php echo $this->lists['published']; ?></td>
 			</tr>
 			<?php endif; ?>
-			<?php if (!$this->row->id): // edit first xref only on initial event creation, afterwards use myevents ?>
+			<?php if (!$this->row->id  && $this->params->get('create_session', 1)): // edit first xref only on initial event creation, afterwards use myevents ?>
 			<tr>
 				<td class="key hasTip" title="<?php echo JText::_(''); ?>">
 					<label for="a_id"><?php echo JText::_( 'VENUE' ).':'; ?></label>
