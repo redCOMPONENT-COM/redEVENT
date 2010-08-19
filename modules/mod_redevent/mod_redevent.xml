@@ -13,6 +13,7 @@
 
 	<files>
 		<filename module="mod_redevent">mod_redevent.php</filename>
+		<filename>mod_redevent.css</filename>
 		<filename>index.html</filename>
     <filename>helper.php</filename>
     <filename>tmpl/default.php</filename>
@@ -35,17 +36,17 @@
 			<option value="2">REDEVENT_MODULE_REDEVENT_EVENT_STATE_ARCHIVED</option>
 			<option value="3">REDEVENT_MODULE_REDEVENT_EVENT_STATE_OPENDATE</option>
 		</param>
-		<param name="showsessions" type="list" default="1" label="REDEVENT_MODULE_REDEVENT_SHOW_SESSIONS" description="REDEVENT_MODULE_REDEVENT_SHOW_SESSIONS_DESC">		_
+		<param name="showsessions" type="list" default="1" label="REDEVENT_MODULE_REDEVENT_SHOW_SESSIONS" description="REDEVENT_MODULE_REDEVENT_SHOW_SESSIONS_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
-		<param name="showrecurring" type="list" default="1" label="REDEVENT_MODULE_REDEVENT_SHOW_RECURRING" description="REDEVENT_MODULE_REDEVENT_SHOW_RECURRING_DESC">		_
+		<param name="showrecurring" type="list" default="1" label="REDEVENT_MODULE_REDEVENT_SHOW_RECURRING" description="REDEVENT_MODULE_REDEVENT_SHOW_RECURRING_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
-		<param name="showtitloc" type="list" default="0" label="TITLE OR VENUE" description="TITLE OR VENUE DESC">
-			<option value="0">VENUE</option>
-			<option value="1">TITLE</option>
+		<param name="showvenue" type="list" default="1" label="MOD_REDEVENT_SHOW_VENUE" description="MOD_REDEVENT_SHOW_VENUE_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
 		</param>
 		<param name="cuttitle" type="text" default="18" label="MAX TITLE LENGTH" description="MAX TITLE LENGTH DESC" />
 		<param name="linkloc" type="radio" default="1" label="LINK TO VENUE" description="LINK TO VENUE DESC">
@@ -65,6 +66,11 @@
       <option value="0">NO</option>
       <option value="1">YES</option>
     </param>
+    <param name="show_picture" type="list" default="1" label="MOD_REDEVENT_SHOW_PICTURE" description="MOD_REDEVENT_SHOW_PICTURE_DESC">
+      <option value="0">NO</option>
+      <option value="1">YES</option>
+    </param>
+		<param name="picture_size" type="text" default="30" label="MOD_REDEVENT_PICTURE_SIZE" description="MOD_REDEVENT_PICTURE_SIZE_DESC" />
 		<param name="catid" type="text" default="" label="CATEGORY ID" description="CATEGORY ID DESC" />
 		<param name="venid" type="text" default="" label="VENUE ID" description="VENUE ID DESC" />
 		<param name="formatdate" type="text" default="%d.%m.%Y" label="DATE FORMAT" description="DATE FORMAT DESC" />

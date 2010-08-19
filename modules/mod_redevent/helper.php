@@ -146,9 +146,8 @@ class modRedEventHelper
 			$rows[$k]->link		= JRoute::_(RedeventHelperRoute::getDetailsRoute($row->slug, $row->xref));
 //			$rows[$k]->link		= JRoute::_('index.php?option=com_redevent&view=details&id='. $row->slug .'&xref='.$row->xref);
 			$rows[$k]->dateinfo 	= modRedEventHelper::_builddateinfo($row, $params);
-			$rows[$k]->text		= ($params->get('showtitloc', 0 )) ? $rows[$k]->title_short : $rows[$k]->venue_short;
 			$rows[$k]->city		= htmlspecialchars( $row->city, ENT_COMPAT, 'UTF-8' );
-			$rows[$k]->venueurl 	= !empty( $row->url ) ? modRedEventHelper::_format_url($row->url) : JRoute::_('index.php?option=com_redevent&view=venueevents&id='. $row->venueslug , false);
+			$rows[$k]->venueurl 	= !empty( $row->url ) ? modRedEventHelper::_format_url($row->url) : JRoute::_(RedeventHelperRoute::getVenueEventsRoute($row->venueslug) , false);
 		}
 
 		return $rows;

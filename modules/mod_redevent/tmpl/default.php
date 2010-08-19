@@ -20,35 +20,48 @@
  */
 defined('_JEXEC') or die('Restricted access');
 ?>
-
-<ul class="redeventmod<?php echo $params->get('moduleclass_sfx'); ?>">
+<ul class="redeventmod">
 <?php foreach ($list as $item) :  ?>
 	<?php $isover = (redEVENTHelper::isOver($item) ? ' isover' : ''); ?>
-	<li class="redeventmod<?php echo $params->get('moduleclass_sfx'); ?><?php echo $isover; ?>">
-		<?php if ($params->get('linkdet') == 1) : ?>
-		<a href="<?php echo $item->link; ?>" class="redeventmod<?php echo $params->get('moduleclass_sfx'); ?>">
-			<?php echo $item->dateinfo; ?>
-		</a>
-		<?php else :
-			echo $item->dateinfo;
-		endif;
-		?>
-
-		<br />
-
-		<?php if ($params->get('showtitloc') == 0 && $params->get('linkloc') == 1) : ?>
-			<a href="<?php echo $item->venueurl; ?>" class="redeventmod<?php echo $params->get('moduleclass_sfx'); ?>">
-				<?php echo $item->text; ?>
-			</a>
-		<?php elseif ($params->get('showtitloc') == 1 && $params->get('linkdet') == 2) : ?>
+	<li class="<?php echo $isover; ?>">
+		<span class="event-title">
+			<?php if ($params->get('linkdet', 2) == 2) : ?>
 			<a href="<?php echo $item->link; ?>" class="redeventmod<?php echo $params->get('moduleclass_sfx'); ?>">
-				<?php echo $item->text; ?>
+				<?php echo $item->title_short; ?>
 			</a>
-		<?php
-			else :
-				echo $item->text;
-			endif;
-		?>
+			<?php else : ?>
+				<?php echo $item->title_short; ?>
+			<?php endif; ?>
+		</span>
+		<div class="event-box">
+			<?php if ($params->get('show_picture', 1)):?>
+			<div class="event-thumb">
+				<?php $img = redEVENTImage::modalimage('events', $item->datimage, $item->title_short, intval($params->get('picture_size', 30)));
+							echo $img; ?>
+			</div>
+			<?php endif;?>
+			<div class="event-details">
+				<span class="event-dateinfo">
+					<?php if ($params->get('linkdet', 2) == 1) : ?>
+					<a href="<?php echo $item->link; ?>">
+						<?php echo $item->dateinfo; ?>
+					</a>
+					<?php else :
+						echo $item->dateinfo;
+					endif; ?>
+				</span><br/>
+				<span class="event-venue">
+					<?php if ($params->get('showvenue', 1) == 1 && $params->get('linkloc', 1) == 1) : ?>
+						<a href="<?php echo $item->venueurl; ?>" class="redeventmod<?php echo $params->get('moduleclass_sfx'); ?>">
+							<?php echo $item->venue_short; ?>
+						</a>
+					<?php elseif ($params->get('showvenue', 1) == 1) : ?>
+							<?php echo $item->venue_short; ?>
+					<?php	endif; ?>
+				</span>
+			</div>
+		</div>
+
 	</li>
 <?php endforeach; ?>
 </ul>

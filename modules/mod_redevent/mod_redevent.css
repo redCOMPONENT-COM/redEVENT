@@ -1,0 +1,23 @@
+@CHARSET "UTF-8";
+
+ul.redeventmod
+{
+	list-style-type: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+ul.redeventmod div div.event-thumb {
+	float:left;
+	padding-right: 5px;
+}
+
+ul.redeventmod li {
+	padding: 5px 0;
+	clear:both;
+}
+
+ul.redeventmod li div.event-box {
+	padding-top: 2px;
+	/** border: 1px solid lightgrey; **/
+}
