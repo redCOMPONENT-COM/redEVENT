@@ -170,7 +170,7 @@ class TCustomfield extends JObject {
 	function attributesToString($attributes)
 	{
 		$res = array();
-		foreach ($attributes as $k => $v) {
+		foreach ((array) $attributes as $k => $v) {
 			$res[] = $k.'="'.$v.'"';
 		}
 		return implode(' ', $res);
