@@ -268,7 +268,7 @@ class redEVENTImage {
 	 * @param string alt attribute
 	 * @param array other attributes
 	 */
-	function modalimage($type, $image, $alt, $attribs = array())
+	function modalimage($type, $image, $alt, $maxdim = null, $attribs = array())
 	{
 		jimport('joomla.filesystem.file');
 		$app = &JFactory::getApplication();
@@ -286,22 +286,18 @@ class redEVENTImage {
 		
 		$base = $app->isAdmin() ? $app->getSiteURL() : JURI::base();
 		
-		if (JFile::exists(JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.'small'.DS.$image)) 
-		{
-			JHTML::_('behavior.modal', 'a.imodal');
-			if (isset($attribs['class'])) {
-				$attribs['class'] .= ' imodal';
-			}
-			else {
-				$attribs['class'] = 'imodal';
-			}
-			$thumb = JHTML::image($base.'images/redevent/'.$folder.'/small/'.$image, $alt, $attribs);
-			$html = JHTML::link(JRoute::_($base.'images/redevent/'.$folder.'/'.$image), $thumb, $attribs);
+		$thumb_path = self::getThumbUrl($type, $image, $maxdim);
+				
+		JHTML::_('behavior.modal', 'a.imodal');
+		if (isset($attribs['class'])) {
+			$attribs['class'] .= ' imodal';
 		}
-		else
-		{
-			$html = JHTML::image($base.'images/redevent/'.$folder.'/'.$image, $alt, $attribs);
+		else {
+			$attribs['class'] = 'imodal';
 		}
+		$thumb = JHTML::image($thumb_path, $alt, $attribs);
+		$html = JHTML::link(JRoute::_($base.'images/redevent/'.$folder.'/'.$image), $thumb, $attribs);
+			
 		return $html;
 	}
 	
@@ -312,11 +308,22 @@ class redEVENTImage {
 	 * @param string image name
 	 * @return url or false if it doesn't exists
 	 */
-	function getThumbUrl($type, $image)
+	function getThumbUrl($type, $image, $maxdim = null)
 	{		
 		jimport('joomla.filesystem.file');
 		$app = &JFactory::getApplication();
-		$elsettings = redEVENTHelper::config();
+		$settings = redEVENTHelper::config();
+		
+		if ($maxdim) 
+		{
+			$width  = $maxdim;
+			$height = $maxdim;
+		}
+		else
+		{
+			$width  = $settings->imagewidth;
+			$height = $settings->imagehight;
+		}
 		
 		$types = array('events', 'venues', 'categories');
 		if (!in_array($type, $types)) {
@@ -327,17 +334,19 @@ class redEVENTImage {
 				
 		$base = $app->isAdmin() ? $app->getSiteURL() : JURI::base();
 		
+		$thumb_name = md5($image).$width.'.png';
+		
 //		echo JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.'small'.DS.$image;
-		if (JFile::exists(JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.'small'.DS.$image)) 
+		if (JFile::exists(JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.'small'.DS.$thumb_name)) 
 		{
-			return $base.'images/redevent/'.$folder.'/small/'.$image;
+			return $base.'images/redevent/'.$folder.'/small/'.$thumb_name;
 		}
 		else if (JFile::exists(JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.$image))
 		{
 			//try to generate the thumb
-			$path = JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.'small'.DS.$image;
-			if (redEVENTImage::thumb(JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.$image, $path, $elsettings->imagewidth, $elsettings->imagehight)) {
-				return $base.'images/redevent/'.$folder.'/small/'.$image;
+			$path = JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.'small'.DS.$thumb_name;
+			if (redEVENTImage::thumb(JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.$image, $path, $width, $height)) {
+				return $base.'images/redevent/'.$folder.'/small/'.$thumb_name;
 			}			
 		}
 		return false;
@@ -446,7 +455,7 @@ class redEVENTImage {
 			$image_attribs = array_merge( $image_attribs, $attribs);
 		}
 		if ($category->image) {
-		  return self::modalimage('categories', basename($category->image), $image_attribs);	
+		  return self::modalimage('categories', basename($category->image), $category->catname, null, $image_attribs);	
 		}
 		else return $category->catname; 
 	}
