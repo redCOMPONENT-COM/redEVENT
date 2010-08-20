@@ -179,22 +179,41 @@ class RedeventModelEditevent extends JModel
 		{
 			//Check if the user has access to the form
 			if (!$acl->canAddEvent()) {
-
 				JError::raiseError( 403, JText::_( 'NO ACCESS' ) );
-
 			}
-
-			//prepare output
+			
+			$this->_initData();
+		}
+		
+		return $this->_event;
+	}
+	
+	/**
+	 * prefill data for new events - get it from event template if set
+	 * 
+	 * 
+	 */
+	function _initData()
+	{
+		$app = &JFactory::getApplication();
+		
+		$template_id = $app->getParams()->get('event_template', 0);
+		
+		if ($template_id)
+		{
+			if (!$this->_loadEvent($template_id)) {
+				$this->setError(JText::_('COM_REDEVENT_SUMBIT_EVENT_ERROR_LOADING_TEMPLATE'));
+				return false;
+			}
+			// reset event id...
+			$this->_event->id = null;
+		}
+		else
+		{
 			$this->_event->id				= 0;
-			$this->_event->xref				= 0;
 			$this->_event->locid			= '';
       $this->_event->categories  = null;
-			$this->_event->dates			= '';
-			$this->_event->enddates			= null;
-			$this->_event->registrationend = null;
 			$this->_event->title			  = '';
-			$this->_event->times			  = null;
-			$this->_event->endtimes			= null;
 			$this->_event->created			= null;
 			$this->_event->author_ip		= null;
 			$this->_event->created_by		= null;
@@ -225,8 +244,6 @@ class RedeventModelEditevent extends JModel
 			$this->_event->activate					= null;
 			$this->_event->show_names					= 0;
 			$this->_event->showfields					= '';
-			$this->_event->course_credit				= 0;
-			$this->_event->course_price				= 0;
 			$this->_event->course_code					= 0;
 			$this->_event->submission_types			= null;
 			$this->_event->submission_type_email		= null;
@@ -237,9 +254,17 @@ class RedeventModelEditevent extends JModel
 			$this->_event->formal_offer_subject		= null;
 			$this->_event->published					= 1;
 		}
-
-		return $this->_event;
-
+		
+		$this->_event->xref			= 0;
+		$this->_event->venue		= JText::_('SELECTVENUE');
+		$this->_event->dates    = null;
+		$this->_event->enddates = null;
+		$this->_event->times    = null;
+		$this->_event->endtimes = null;
+		$this->_event->registrationend = null;
+		$this->_event->course_credit   = 0;
+		$this->_event->course_price    = 0;
+		return (boolean) $this->_event;
 	}
 
 	/**
@@ -248,15 +273,18 @@ class RedeventModelEditevent extends JModel
 	 * @access private
 	 * @return object
 	 */
-	function _loadEvent(  )
+	function _loadEvent($id = null)
 	{
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_event))
 		{
+			if (!$id) {
+				$id = $this->_id;
+			}
 			$customs = $this->_getCustomFields();
 			
 			$query = 'SELECT e.*, v.venue, x.id AS xref, x.eventid, x.venueid, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees,
-					x.maxwaitinglist, x.course_price, x.course_credit'
+					x.maxwaitinglist, x.course_price, x.course_credit, x.registrationend '
 					   ;
 		
 			// add the custom fields
@@ -276,12 +304,13 @@ class RedeventModelEditevent extends JModel
 			}
 					    
 					    
-			$query .= ' WHERE e.id = '.(int)$this->_id
+			$query .= ' WHERE e.id = '.(int)$id
 					;
 			$this->_db->setQuery($query);
 			$this->_event = $this->_db->loadObject();
 			
-			if ($this->_event->id) {
+			if ($this->_event->id) 
+			{
 				$query =  ' SELECT c.id, c.catname, '
               . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
               . ' FROM #__redevent_categories as c '
@@ -1336,9 +1365,24 @@ class RedeventModelEditevent extends JModel
    */
   function getCustomfields()
   {
+  	if (!$this->_id) 
+  	{		
+			$template_id = JFactory::getApplication()->getParams()->get('event_template', 0);
+			if ($template_id) {
+				$id = $template_id;
+			}
+			else {
+				$id = 0;
+			}
+  	}
+  	else
+  	{
+  		$id = 0;
+  	}
+  	
     $query = ' SELECT f.*, fv.value '
            . ' FROM #__redevent_fields AS f '
-           . ' LEFT JOIN #__redevent_fields_values AS fv ON fv.field_id = f.id AND fv.object_id = '.(int) $this->_id
+           . ' LEFT JOIN #__redevent_fields_values AS fv ON fv.field_id = f.id AND fv.object_id = '.(int) $id
            . ' WHERE f.object_key = '. $this->_db->Quote("redevent.event")
            . '   AND f.frontend_edit = 1 '
            . ' ORDER BY f.ordering '
