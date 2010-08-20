@@ -154,16 +154,16 @@ function updateend(cal)
     </td>
   </tr>
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF COURSE PRICE TIP'); ?>">
-      <label for="course_price"><?php echo JText::_( 'COURSE_PRICE' ) .': '; ?></label>
+    <td class="key hasTip" title="<?php echo JText::_('EDIT XREF COURSE PRICE TIP'); ?>">
+      <label for="course_price"><?php echo JText::_( 'EDIT XREF COURSE PRICE' ) .': '; ?></label>
     </td>
     <td>
       <input type="text" size="8" maxlength="8" name="course_price" id="course_price" value="<?php echo $this->xref->course_price; ?>" /> 
     </td>
   </tr>
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF COURSE CREDIT TIP'); ?>">
-      <label for="course_credit"><?php echo JText::_( 'COURSE_CREDIT' ) .': '; ?></label>
+    <td class="key hasTip" title="<?php echo JText::_('EDIT XREF COURSE CREDIT TIP'); ?>">
+      <label for="course_credit"><?php echo JText::_( 'EDIT XREF COURSE CREDIT' ) .': '; ?></label>
     </td>
     <td>
       <input type="text" size="8" maxlength="8" name="course_credit" id="course_credit" value="<?php echo $this->xref->course_credit; ?>" /> 
