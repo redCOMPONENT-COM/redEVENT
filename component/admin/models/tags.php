@@ -139,7 +139,7 @@ class RedEventModelTags extends JModel
 	
 	function _getCustomTags()
 	{
-		$query = ' SELECT tag, name FROM #__redevent_fields ';
+		$query = ' SELECT tag, name FROM #__redevent_fields ORDER BY ordering ';
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
 		
