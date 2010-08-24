@@ -355,16 +355,15 @@ class ELOutput {
 	 *
 	 * @since 0.9
 	 */
-	function mapicon($data)
+	function mapicon($data, $attributes = null)
 	{
 		$settings = & redEVENTHelper::config();
 		
 		//Link to map
-		$mapimage = JHTML::_('image.site', 'mapsicon.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'MAP' ));
+		$mapimage = JHTML::image(JURI::root().'/components/com_redevent/assets/images/mapsicon.png', JText::_( 'MAP' ) );
 
 		//set var
 		$output 	= null;
-		$attributes = null;
 
 		//stop if disabled
 		if (!$data->map) {
@@ -416,13 +415,13 @@ class ELOutput {
           $address = str_replace(" ", "+", $address);
 
 					$url		= 'http://maps.google.com/maps?q='. $address .'&venue='. $data->venue;
-					$attributes = ' rel="gmapsoverlay" latitude="'.(($data->latitude) ? $data->latitude : '') .'" longitude="'.(($data->longitude) ? $data->longitude : '').'"';
+					$attributes .= ' rel="gmapsoverlay" latitude="'.(($data->latitude) ? $data->latitude : '') .'" longitude="'.(($data->longitude) ? $data->longitude : '').'"';
 					
 				} else {
 					$url		= 'http://maps.google.com/maps?q='.str_replace(" ", "+", $data->street).', '.$data->plz.' '.str_replace(" ", "+", $data->city).', '.$data->country;
 				}
 
-				$output		= '<a class="map" title="'.JText::_( 'MAP' ).'" href="'.$url.'"'.$attributes.'>'.$mapimage.'</a>';
+				$output		= '<a title="'.JText::_( 'MAP' ).'" href="'.$url.'"'.$attributes.'>'.$mapimage.'</a>';
 
 			} break;
 		}

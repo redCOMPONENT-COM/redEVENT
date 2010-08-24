@@ -48,7 +48,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<!--Venue-->
 	<?php //flyer
 	echo redEVENTImage::modalimage('venues', $this->venue->locimage, $this->venue->venue);
-	echo ELOutput::mapicon( $this->venue );
+	echo ELOutput::mapicon( $this->venue , 'class="map"' );
 	?>
 
 	<dl class="location floattext">

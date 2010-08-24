@@ -443,6 +443,12 @@ class redEVENT_tags {
       				$replace[] = redEVENTHelperCountries::getCountryFlag($this->getEvent()->getData()->country);
       				break;
       				
+				    case 'venue_mapicon':
+				      $search[]  = '['.$tag.']';
+      				$replace[] = ELOutput::mapicon($this->getEvent()->getData(), 'class="event-map"');
+      				break;
+				    	
+      				
 				  	/**************  registration tags ******************/
       				
 				    case 'redform_title':
@@ -768,7 +774,7 @@ class redEVENT_tags {
 			   . ' x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees, x.maxwaitinglist, v.venue, x.venueid, x.details, x.registrationend, '
 			   . ' x.external_registration_url, '
 			   . ' v.city AS location, v.state, v.url as venueurl, v.locdescription as venue_description, '
-			   . ' v.country, v.locimage, v.street, v.plz, '
+			   . ' v.country, v.locimage, v.street, v.plz, v.map, '
 			   . ' f.formname, '
 			   . ' UNIX_TIMESTAMP(x.dates) AS unixdates, '
 			   . ' CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(":", e.id, e.alias) ELSE e.id END as slug, '
