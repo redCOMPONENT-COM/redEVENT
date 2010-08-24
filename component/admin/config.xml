@@ -36,6 +36,10 @@
       <option value="0">Hide</option>
       <option value="1">Show</option>
     </param>
+    <param name="show_thumb_icon" type="radio" default="1" label="COM_REDEVENT_SHOW_THUMBNAIL_ICON" description="COM_REDEVENT_SHOW_THUMBNAIL_ICON_DESC">
+      <option value="0">Hide</option>
+      <option value="1">Show</option>
+    </param>
     <param name="week_start" type="radio" default="MO" label="WEEK START" description="WEEK START DESC">
       <option value="SU">SUNDAY</option>
       <option value="MO">MONDAY</option>

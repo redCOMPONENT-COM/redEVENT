@@ -86,6 +86,10 @@ class ELOutput {
 	**/
 	function thumbbutton( $link, &$params )
 	{
+    if (!$params->get( 'show_thumb_icon', 1)) {
+      return '';
+    }
+    
 		JHTML::_('behavior.tooltip');
 
 		if ( $params->get('icons') ) {

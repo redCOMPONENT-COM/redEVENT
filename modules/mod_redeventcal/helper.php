@@ -106,23 +106,22 @@ class modredeventcalhelper
 				}	
 			
 				for ($count = $event->created_day; $count <= $eday; $count++)
-				{
-		
-				$uxdate = mktime(0,0,0,$event->created_month,$count,$event->created_year); // Toni change
-				$tdate = strftime('%Y%m%d',$uxdate);// Toni change Joomla 1.5
-				$created_day = $count;
-		
-				if (empty($days[$count][1]))
-				{
-					$title = htmlspecialchars($event->title);
-				}
-				else
-				{
-					$tt = $days[$count][1];
-					$title = $tt . '&#013 +' . htmlspecialchars($event->title);
-				}			
-				$link			= RedeventHelperRoute::getDayRoute( $tdate, 'day') ;		
-				$days[$count] = array($link,$title);
+				{		
+					$uxdate = mktime(0,0,0,$event->created_month,$count,$event->created_year); // Toni change
+					$tdate = strftime('%Y%m%d',$uxdate);// Toni change Joomla 1.5
+					$created_day = $count;
+			
+					if (empty($days[$count][1]))
+					{
+						$title = htmlspecialchars($event->title);
+					}
+					else
+					{
+						$tt = $days[$count][1];
+						$title = $tt . '&#013 +' . htmlspecialchars($event->title);
+					}			
+					$link			= RedeventHelperRoute::getDayRoute( $tdate, 'day') ;		
+					$days[$count] = array($link,$title);
 				}
 		}
 	}
