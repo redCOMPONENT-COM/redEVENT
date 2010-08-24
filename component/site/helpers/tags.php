@@ -445,7 +445,12 @@ class redEVENT_tags {
       				
 				    case 'venue_mapicon':
 				      $search[]  = '['.$tag.']';
-      				$replace[] = ELOutput::mapicon($this->getEvent()->getData(), 'class="event-map"');
+      				$replace[] = ELOutput::mapicon($this->getEvent()->getData(), array('class' => 'event-map'));
+      				break;
+      				
+				    case 'venue_map':
+				      $search[]  = '['.$tag.']';
+      				$replace[] = ELOutput::map($this->getEvent()->getData(), array('class' => 'event-full-map'));
       				break;
 				    	
       				

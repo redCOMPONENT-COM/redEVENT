@@ -355,7 +355,7 @@ class ELOutput {
 	 *
 	 * @since 0.9
 	 */
-	function mapicon($data, $attributes = null)
+	function mapicon($data, $attributes = array())
 	{
 		$settings = & redEVENTHelper::config();
 		
@@ -386,49 +386,68 @@ class ELOutput {
 			} break;
 
 			case 2:
-			{
-				if($settings->gmapkey) {
-
-					$document 	= & JFactory::getDocument();
-					JHTML::_('behavior.mootools');
-
-					//TODO: move map into squeezebox
-					//TODO: temporary fix (v=2.115) for the gmaps issue caused by a bug in the gmaps api..set back when google finaly was able to fix this
-					$document->addScript(JURI::root().'/components/com_redevent/assets/js/gmapsoverlay.js');
-					$document->addScript('http://maps.google.com/maps?file=api&amp;v=2&amp;key='.trim($settings->gmapkey));
-  				$document->addStyleSheet(JURI::root().'/components/com_redevent/assets/css/gmapsoverlay.css', 'text/css');
-          $document->addScriptDeclaration(
-            'var gkey="'.trim($settings->gmapkey).'";'
-          . 'var sGetDirections="'.JText::_( 'GETDIRECTIONS' ).'";'  
-          );
-          $address = array();
-          if (!empty($data->street)) {
-            $address[] = $data->street;
-          }
-          if (!empty($data->plz) || !empty($data->city)) {
-            $address[] = (!empty($data->plz) ? $data->plz.' ': '') . trim($data->city);
-          }
-          if (!empty($data->country)) {
-            $address[] = $data->country;
-          }
-          $address = implode(',', $address);
-          $address = str_replace(" ", "+", $address);
-
-					$url		= 'http://maps.google.com/maps?q='. $address .'&venue='. $data->venue;
-					$attributes .= ' rel="gmapsoverlay" latitude="'.(($data->latitude) ? $data->latitude : '') .'" longitude="'.(($data->longitude) ? $data->longitude : '').'"';
-					
-				} else {
-					$url		= 'http://maps.google.com/maps?q='.str_replace(" ", "+", $data->street).', '.$data->plz.' '.str_replace(" ", "+", $data->city).', '.$data->country;
+			{					
+				if (isset($attributes['class'])) {
+					$attributes['class'] .= ' venuemap';
 				}
+				else {
+					$attributes['class'] = 'venuemap';
+				}
+				$attributes['handler'] = 'iframe';
 
-				$output		= '<a title="'.JText::_( 'MAP' ).'" href="'.$url.'"'.$attributes.'>'.$mapimage.'</a>';
-
-			} break;
+				$document 	= & JFactory::getDocument();
+				$document->addScriptDeclaration('
+					window.addEvent("domready", function(){
+						SqueezeBox.initialize({handler: \'iframe\', size: {x: 600, y: 500}});
+				
+				    $$(\'a.venuemap\').each(function(el) {
+				      el.addEvent(\'click\', function(e) {
+				        new Event(e).stop();
+				        SqueezeBox.fromElement(el);
+				      });
+				    });
+				   });
+				  ');
+				foreach ($attributes as $k => $v) {
+					$attributes[$k] = $k.'="'.$v.'"';
+				}
+				$attributes = implode(' ', $attributes);
+				$output = '<a title="'.JText::_( 'MAP' ).'" href="'.JRoute::_('index.php?option=com_redevent&view=venue&layout=gmap&tmpl=component&id='.$data->id).'"'.$attributes.'>'.$mapimage.'</a>';
+				break;
+			}
 		}
 
 		return $output;
 	}
 	
+	function map($data, $attributes = array())
+	{
+		$output = '';
+		$document 	= & JFactory::getDocument();
+		JHTML::_('behavior.mootools');
+
+		$document->addScript('http://maps.google.com/maps/api/js?sensor=false');
+		$document->addScript(JURI::root().'/components/com_redevent/assets/js/venuemap.js');
+		$document->addScriptDeclaration('
+			var directiontext="'.JText::_( 'COM_REDEVENT_GET_DIRECTIONS' ).'";
+			window.addEvent(\'domready\', function() {
+				mymap.initajax('.$data->id.', "venue-location");
+			});
+		');
+		
+		if (isset($attributes['class'])) {
+			$attributes['class'] .= ' venuemap';
+		}
+		else {
+			$attributes['class'] = 'venuemap';
+		}
+		foreach ($attributes as $k => $v) {
+			$attributes[$k] = $k.'="'.$v.'"';
+		}
+		$attributes = implode(' ', $attributes);
+		$output		= '<div id="venue-location" '.$attributes.'></div>';
+		return $output;
+	}
 
   /**
    * Creates the map button

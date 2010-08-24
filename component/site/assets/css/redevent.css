@@ -578,3 +578,7 @@ span.event-date span.event-end {
 .events-exports {
 	text-align:center;
 }
+
+/** google map div size **/
+.venue-full-map { height: 400px; width: 100% }
+.event-full-map { height: 300px; width: 300px }

@@ -51,7 +51,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 			<?php
 				echo redEVENTImage::modalimage('venues', $row->locimage, $row->venue);
-				echo ELOutput::mapicon( $row , 'class="map"' );
+				echo ELOutput::mapicon( $row , array('class' => 'map'));
 			?>
 
 			<dl class="location floattext">
