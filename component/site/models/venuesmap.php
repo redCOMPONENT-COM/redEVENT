@@ -247,7 +247,7 @@ class RedEventModelVenuesmap extends JModel
 		$rows = $this->_db->loadObjectList();
 		
 		
-	  $countrycoords = redEVENTHelper::getCountrycoordArray();
+	  $countrycoords = redEVENTHelperCountries::getCountrycoordArray();
       
 	  for($i = 0; $i <  count($rows); $i++)
 	  {

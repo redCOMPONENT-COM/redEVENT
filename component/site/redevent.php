@@ -18,6 +18,7 @@ require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'route.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'recurrence.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'customfields.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'tags.php');
+require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'countries.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'user.class.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'useracl.class.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'image.class.php');
