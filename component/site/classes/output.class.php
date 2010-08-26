@@ -395,31 +395,20 @@ class ELOutput {
 				}
 				$attributes['handler'] = 'iframe';
 
-				$document 	= & JFactory::getDocument();
-				$document->addScriptDeclaration('
-					window.addEvent("domready", function(){
-						SqueezeBox.initialize({handler: \'iframe\', size: {x: 600, y: 500}});
+				JHTML::_('behavior.modal', 'a.venuemap');
 				
-				    $$(\'a.venuemap\').each(function(el) {
-				      el.addEvent(\'click\', function(e) {
-				        new Event(e).stop();
-				        SqueezeBox.fromElement(el);
-				      });
-				    });
-				   });
-				  ');
 				foreach ($attributes as $k => $v) {
 					$attributes[$k] = $k.'="'.$v.'"';
 				}
 				$attributes = implode(' ', $attributes);
-				$output = '<a title="'.JText::_( 'MAP' ).'" href="'.JRoute::_('index.php?option=com_redevent&view=venue&layout=gmap&tmpl=component&id='.$data->id).'"'.$attributes.'>'.$mapimage.'</a>';
+				$output = '<a title="'.JText::_( 'MAP' ).'" rel="{handler:\'iframe\'}" href="'.JRoute::_('index.php?option=com_redevent&view=venue&layout=gmap&tmpl=component&id='.$data->id).'"'.$attributes.'>'.$mapimage.'</a>';
 				break;
 			}
 		}
 
 		return $output;
 	}
-	
+		
 	function map($data, $attributes = array())
 	{
 		$output = '';
@@ -429,6 +418,7 @@ class ELOutput {
 		$document->addScript('http://maps.google.com/maps/api/js?sensor=false');
 		$document->addScript(JURI::root().'/components/com_redevent/assets/js/venuemap.js');
 		$document->addScriptDeclaration('
+			var basepath = "'.JURI::root().'";
 			var directiontext="'.JText::_( 'COM_REDEVENT_GET_DIRECTIONS' ).'";
 			window.addEvent(\'domready\', function() {
 				mymap.initajax('.$data->id.', "venue-location");

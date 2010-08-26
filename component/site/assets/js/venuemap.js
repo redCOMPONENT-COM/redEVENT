@@ -45,7 +45,7 @@ var mymap = {
 	},
 	
 	initajax : function(venueid, elementid) {
-		var url = 'index.php?option=com_redevent&view=venue&format=raw&id='+venueid;
+		var url = basepath + 'index.php?option=com_redevent&view=venue&format=raw&id='+venueid;
 		var theAjax = new Ajax(url, {
 			method: 'post',
 			postBody : ''
@@ -99,7 +99,7 @@ var mymap = {
     		infowindow.open(this.map, marker);
     	}.bind(this));
     	// only open on map display if map is big enough
-        var size = this.map.getDiv().getSize().size;
+        var size = $(this.map.getDiv()).getSize().size;
         if (size.x >= 350 && size.y >= 350) {
         	infowindow.open(this.map, marker);
         }
