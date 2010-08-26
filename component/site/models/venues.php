@@ -252,7 +252,7 @@ class RedeventModelVenues extends JModel
     }
 		
 		//get venues
-		$query = 'SELECT v.*, COUNT( x.eventid ) AS assignedevents,'
+		$query = 'SELECT v.*, v.id as venueid, COUNT( x.eventid ) AS assignedevents,'
         . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as slug '
 				. ' FROM #__redevent_venues as v'
 				. ' LEFT JOIN #__redevent_event_venue_xref AS x ON v.id = x.venueid '. $eventstate

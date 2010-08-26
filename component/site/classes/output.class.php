@@ -401,7 +401,7 @@ class ELOutput {
 					$attributes[$k] = $k.'="'.$v.'"';
 				}
 				$attributes = implode(' ', $attributes);
-				$output = '<a title="'.JText::_( 'MAP' ).'" rel="{handler:\'iframe\'}" href="'.JRoute::_('index.php?option=com_redevent&view=venue&layout=gmap&tmpl=component&id='.$data->id).'"'.$attributes.'>'.$mapimage.'</a>';
+				$output = '<a title="'.JText::_( 'MAP' ).'" rel="{handler:\'iframe\'}" href="'.JRoute::_('index.php?option=com_redevent&view=venue&layout=gmap&tmpl=component&id='.$data->venueid).'"'.$attributes.'>'.$mapimage.'</a>';
 				break;
 			}
 		}
@@ -421,7 +421,7 @@ class ELOutput {
 			var basepath = "'.JURI::root().'";
 			var directiontext="'.JText::_( 'COM_REDEVENT_GET_DIRECTIONS' ).'";
 			window.addEvent(\'domready\', function() {
-				mymap.initajax('.$data->id.', "venue-location");
+				mymap.initajax('.$data->venueid.', "venue-location");
 			});
 		');
 		
