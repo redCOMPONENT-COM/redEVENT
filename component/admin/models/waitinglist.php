@@ -105,19 +105,23 @@ class RedEventModelWaitinglist extends JModel {
 	/**
 	 * Process waitinglist
 	 */
-	 private function ProcessWaitingList() {
+	 private function ProcessWaitingList() 
+	 {
 		/* Get attendee total first */
 		$this->getWaitingList();
 //		RedeventHelperLog::simplelog('waiting list: '. $this->waitinglist[0]->total.'/'.$this->waitinglist[1]->total . '('.$this->xref.')');
 		
 		/* Check if there are too many ppl going to the event */
-		if (isset($this->waitinglist[0])) {
-			if ($this->event_data->maxattendees < $this->waitinglist[0]->total) {
+		if (isset($this->waitinglist[0])) 
+		{
+			if ($this->event_data->maxattendees < $this->waitinglist[0]->total) 
+			{
 				/* Need to move people on the waitinglist */
 				$this->move_on = $this->waitinglist[0]->total - $this->event_data->maxattendees;
 				$this->MoveOnWaitingList();
 			}
-			else if ($this->event_data->maxattendees > $this->waitinglist[0]->total) {
+			else if ($this->event_data->maxattendees > $this->waitinglist[0]->total) 
+			{
 				/* Need to move people off the waitinglist */
 				$this->move_off = $this->event_data->maxattendees - $this->waitinglist[0]->total;
 				$this->MoveOffWaitingList();
@@ -243,6 +247,7 @@ class RedEventModelWaitinglist extends JModel {
 		
 		if (empty($this->taghelper)) {
 			$this->taghelper = new redEVENT_tags();
+		  $this->taghelper->setXref($this->xref);
 		}
 		
 		if ($type == 'off') {
@@ -261,9 +266,8 @@ class RedEventModelWaitinglist extends JModel {
 		
 		/* Find out what the fieldname is for the email field */
 		$q = "SELECT f.id, f.field, f.fieldtype 
-			FROM #__rwf_fields f, #__rwf_values v
-			WHERE f.id = v.field_id
-			AND f.published = 1
+			FROM #__rwf_fields f
+			WHERE f.published = 1
 			AND f.form_id = ".$this->event_data->redform_id."
 			AND f.fieldtype in ('email')
 			LIMIT 1";
@@ -271,7 +275,7 @@ class RedEventModelWaitinglist extends JModel {
 		$selectfield = $db->loadResult();
 		
 		if ($selectfield) 
-		{
+		{		
 			/* Inform the ids that they can attend the ac */
 			$subids = "s.id IN (".implode(', ', $update_ids).')';
 			$fieldname = 'f.field_'. $selectfield;
@@ -283,10 +287,12 @@ class RedEventModelWaitinglist extends JModel {
 			$addresses = $db->loadResultArray();
 			
 			/* Check if there are any addresses to be mailed */
-			if (count($addresses) > 0) {
+			if (count($addresses) > 0) 
+			{
 				/* Start mailing */
 				$this->Mailer();
-				foreach ($addresses as $key => $email) {
+				foreach ($addresses as $key => $email) 
+				{
 					/* Send a off mailinglist mail to the submitter if set */
 					/* Add the email address */
 					$this->mailer->AddAddress($email);
