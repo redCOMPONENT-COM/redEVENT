@@ -145,7 +145,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <?php if ($this->params->get('events_ical', 1)): ?>
 <span class="events-ical">
-	<?php echo JHTML::link( JRoute::_(RedeventHelperRoute::getVenueEventsRoute($this->venue->id, null).'&format=ics'),
+	<?php echo JHTML::link( JRoute::_(RedeventHelperRoute::getVenueEventsRoute($this->venue->id, null).'&format=raw&layout=ics'),
                           JHTML::image('components/com_redevent/assets/images/iCal2.0.png', JText::_('COM_REDEVENT_EXPORT_ICS'))
 	                        ); ?>
 </span>

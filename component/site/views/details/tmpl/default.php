@@ -30,7 +30,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<?php echo ELOutput::printbutton( $this->print_link, $this->params ); ?>
 		<?php if ($this->params->get('event_ics', 1)): ?>
 			<?php $img = JHTML::image(JURI::base().'components/com_redevent/assets/images/iCal2.0.png', JText::_('COM_REDEVENT_EXPORT_ICS')); ?>
-			<?php echo JHTML::link( JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xref).'&format=ics', false), 
+			<?php echo JHTML::link( JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xref).'&format=raw&layout=ics', false), 
 			                        $img ); ?>
 		<?php endif; ?>
 	</p>

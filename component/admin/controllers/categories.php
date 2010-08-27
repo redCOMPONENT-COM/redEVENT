@@ -94,7 +94,7 @@ class RedEventControllerCategories extends RedEventController
 			$msg 	= '';
 			$link 	= 'index.php?option=com_redevent&view=category';
 		}
-
+		
 		$model->checkin();
 
 		$this->setRedirect($link, $msg);
