@@ -480,7 +480,7 @@ if (is_array($cols)) {
 			    	// insert records
 			    	$query = ' INSERT INTO #__redevent_register (xref, uid, sid, waitinglist, confirmed, confirmdate, uregdate, uip, submit_key) '
 			    	       . ' SELECT rb.xref, rb.uid, s.id AS sid, s.waitinglist, s.confirmed, s.confirmdate, rb.uregdate, rb.uip, rb.submit_key '
-			    	       . ' FROM #__redevent_register_back AS rb '
+			    	       . ' FROM #__redevent_register_back_'.$back_post.' AS rb '
 			    	       . ' INNER JOIN #__rwf_submitters AS s ON rb.submit_key = s.submit_key '
 			    	       ;
 				    $db->setQuery($query);
