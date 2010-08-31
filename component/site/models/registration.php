@@ -63,6 +63,8 @@ class RedEventModelRegistration extends JModel
 	 */
 	var $_rf_answers;
 	
+	var $mailer = null;
+	
 	function __construct($xref = 0, $config = array())
 	{
 		parent::__construct($config);
@@ -133,7 +135,9 @@ class RedEventModelRegistration extends JModel
 				$this->setError(JText::_('missing xref for session'));
 				return false;
 			}
-			$query = 'SELECT a.id AS did, x.id AS xref, a.title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, a.registra, a.unregistra, a.activate, ' 
+			$query = 'SELECT a.id AS did, x.id AS xref, a.title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, '
+			    . ' a.registra, a.unregistra, a.activate, a.notify, a.redform_id as form_id, '
+			    . ' a.notify_confirm_body, a.notify_confirm_subject, ' 
 					. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
 					. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone,'
 					. ' v.venue,'
@@ -794,5 +798,5 @@ class RedEventModelRegistration extends JModel
 			}
 		}
 		return false;
-	}
+	}	
 }

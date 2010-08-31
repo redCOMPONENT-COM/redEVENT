@@ -308,52 +308,34 @@ class RedEventControllerRegistration extends RedEventController
 			
 			if ($eventdata->notify) 
 			{
-				$this->Mailer();
+				$this->_Mailer();				
 				
-				/* Find out what the fieldname is for the email field */
-				$q = "SELECT f.id
-					FROM #__rwf_fields f, #__rwf_values v
-					WHERE f.id = v.field_id
-					AND f.published = 1
-					AND f.form_id = ".$eventdata->form_id."
-					AND f.fieldtype = 'email'
-					LIMIT 1";
-				$db->setQuery($q);
-				$selectfield = $db->loadResult();
+				$rfcore = new RedFormCore();
+				$addresses = $rfcore->getSubmissionContactEmail($submit_key);
 				
-				if (!empty($selectfield)) 
-				{					
-					/* get all submission emails associated to submit_key */
-					$query = "SELECT ". $db->nameQuote('f.field_'. $selectfield) . "
-							FROM #__rwf_forms_".$eventdata->form_id." AS f
-							INNER JOIN #__rwf_submitters AS s ON s.answer_id = f.id
-							WHERE s.submit_key = ".$db->Quote($submit_key);
-					$db->setQuery($query);
-					$addresses = $db->loadResultArray();
-					
-					/* Check if there are any addresses to be mailed */
-					if (count($addresses) > 0) {
-						/* Start mailing */
-						$this->Mailer();
-						foreach ($addresses as $key => $email) {
-							/* Send a off mailinglist mail to the submitter if set */
-							/* Add the email address */
-							$this->mailer->AddAddress($email);
-							
-							/* Mail submitter */
-							$htmlmsg = '<html><head><title></title></title></head><body>'.$tags->ReplaceTags($eventdata->notify_confirm_body).'</body></html>';
-							$this->mailer->setBody($htmlmsg);
-							$this->mailer->setSubject($tags->ReplaceTags($eventdata->notify_confirm_subject));
-							
-							/* Send the mail */
-							if (!$this->mailer->Send()) {
-								$mainframe->enqueueMessage(JText::_('THERE WAS A PROBLEM SENDING MAIL'));
-	              RedeventHelperLog::simpleLog('Error sending confirm email'.': '.$this->mailer->error);
-							}
-							
-							/* Clear the mail details */
-							$this->mailer->ClearAddresses();
+				/* Check if there are any addresses to be mailed */
+				if (count($addresses) > 0) 
+				{
+					/* Start mailing */
+					foreach ($addresses as $key => $email) 
+					{
+						/* Send a off mailinglist mail to the submitter if set */
+						/* Add the email address */
+						$this->mailer->AddAddress($email['email']);
+						
+						/* Mail submitter */
+						$htmlmsg = '<html><head><title></title></title></head><body>'.$tags->ReplaceTags($eventdata->notify_confirm_body).'</body></html>';
+						$this->mailer->setBody($htmlmsg);
+						$this->mailer->setSubject($tags->ReplaceTags($eventdata->notify_confirm_subject));
+						
+						/* Send the mail */
+						if (!$this->mailer->Send()) {
+							$mainframe->enqueueMessage(JText::_('THERE WAS A PROBLEM SENDING MAIL'));
+              RedeventHelperLog::simpleLog('Error sending confirm email'.': '.$this->mailer->error);
 						}
+						
+						/* Clear the mail details */
+						$this->mailer->ClearAddresses();
 					}
 				}
 			}
@@ -367,4 +349,24 @@ class RedEventControllerRegistration extends RedEventController
 		
 		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute(null, $xref)), $msg);
 	 }
+	 
+
+	/**
+	 * Initialise the mailer object to start sending mails
+	 */
+	private function _Mailer() 
+	{
+		if (empty($this->mailer))
+		{
+			$mainframe = & JFactory::getApplication();
+			jimport('joomla.mail.helper');
+			/* Start the mailer object */
+			$this->mailer = JFactory::getMailer();
+			$this->mailer->isHTML(true);
+			$this->mailer->From = $mainframe->getCfg('mailfrom');
+			$this->mailer->FromName = $mainframe->getCfg('sitename');
+			$this->mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
+		}
+		return $this->mailer;
+	}
 }
