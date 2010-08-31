@@ -560,14 +560,18 @@ class RedEventModelRegistration extends JModel
   	$gprecipients = $this->_getXrefRegistrationRecipients();
   	foreach ($gprecipients AS $r)
   	{
-  		$recipients[] =  array('email' => $r->email, 'name' => $r->name);	
+  		if (JMailHelper::isEmailAddress($r->email)) {
+  			$recipients[] =  array('email' => $r->email, 'name' => $r->name);	
+  		}
   	}
   	
   	// redform recipients
   	$rfrecipients = $this->getRFRecipients();
   	foreach ((array) $rfrecipients as $r)
   	{
-  		$recipients[] =  array('email' => $r, 'name' => '');	
+  		if (JMailHelper::isEmailAddress($r)) {
+  			$recipients[] =  array('email' => $r, 'name' => '');	
+  		}
   	}
   	
   	if (!count($recipients)) {
@@ -583,7 +587,7 @@ class RedEventModelRegistration extends JModel
 		}
 		$mailer->setSender($sender);
 		$mailer->addReplyTo($sender);
-  	
+		
   	foreach ($recipients as $r)
   	{
   		$mailer->addAddress($r['email'], $r['name']);

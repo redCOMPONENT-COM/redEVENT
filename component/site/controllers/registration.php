@@ -60,9 +60,7 @@ class RedEventControllerRegistration extends RedEventController
 	  $model = $this->getModel('registration');
 	  $model->setXref(JRequest::getInt('xref'));  	
   	$details = $model->getSessionDetails();
-  	
-  	
-  	
+  	  	
   	if (!$xref) 
   	{
   		$msg = JText::_('REDEVENT_REGISTRATION_MISSING_XREF');
