@@ -98,6 +98,13 @@ function RedEventParseRoute($segments)
 			}
 
 		} break;
+		
+		case 'venue':
+		{
+			$id = explode(':', $segments[1]);
+			$vars['id'] = $id[0];
+			$vars['view'] = 'venue';
+		} break;
 
 		case 'details':
 		{
