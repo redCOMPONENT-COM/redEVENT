@@ -66,7 +66,7 @@ class redEVENTImage {
 			$iNewW = $iWidth * $iRatioH;
 			$iNewH = $iHeight * $iRatioH;
 		}
-
+		
 		//Don't resize images which are smaller than thumbs
 		if ($infos[0] < $width && $infos[1] < $height) {
 			$iNewW = $infos[0];
@@ -334,7 +334,7 @@ class redEVENTImage {
 				
 		$base = $app->isAdmin() ? $app->getSiteURL() : JURI::base();
 		
-		$thumb_name = md5($image).$width.'.png';
+		$thumb_name = md5($image).$width.'_'.$height.'.png';
 		
 //		echo JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.'small'.DS.$image;
 		if (JFile::exists(JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.'small'.DS.$thumb_name)) 

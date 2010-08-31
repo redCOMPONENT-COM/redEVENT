@@ -149,16 +149,6 @@ class RedeventViewVenuecategory extends JView
 			$description = $category->text;
 		}
 
-		if ($category->image != '') {
-
-			$imgattribs['width'] = $elsettings->imagewidth;
-			$imgattribs['height'] = $elsettings->imagehight;
-
-			$category->image = JHTML::image('images/stories/'.$category->image, $category->name, $imgattribs);
-		} else {
-			$category->image = JHTML::image('components/com_redevent/assets/images/noimage.png', $category->name);
-		}
-
 		//create select lists
 		$lists	= $this->_buildSortLists($elsettings);
 		$this->assign('lists', 						$lists);
