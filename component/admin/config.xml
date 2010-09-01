@@ -129,6 +129,7 @@
  	</params>
  	
  	<params group="registration">
+ 	  <param type="spacer" default="COM_REDEVENT_SETTINGS_TAGS_LINK"/>
     <param name="registration_default_recipients" type="text" default="" size="80" label="REDEVENT_SETTINGS_REGISTRATION_DEFAULT_RECIPIENTS" description="REDEVENT_SETTINGS_REGISTRATION_DEFAULT_RECIPIENTS_TIP"/>
     <param name="registration_notify_creator" type="radio" default="1" label="REDEVENT_SETTINGS_REGISTRATION_NOTIFY_CREATOR" description="REDEVENT_SETTINGS_REGISTRATION_NOTIFY_CREATOR_TIP">
       <option value="0">No</option>
@@ -139,6 +140,7 @@
  	</params>
  	
  	<params group="REDEVENT_SETTINGS_REMINDER">
+ 	  <param type="spacer" default="COM_REDEVENT_SETTINGS_TAGS_LINK"/>
 		<param name="reminder_status" type="list" default="1" label="REDEVENT_SETTINGS_REMINDER_STATUS_LABEL" description="REDEVENT_SETTINGS_REMINDER_STATUS_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
