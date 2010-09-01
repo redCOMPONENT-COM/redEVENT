@@ -42,9 +42,10 @@ class RedEventControllerTextLibrary extends RedEventController {
 		parent::__construct();
 
 		// Register Extra task
-		$this->registerTask( 'save', 'textlibrary' );
-		$this->registerTask( 'apply', 'textlibrary' );
+		$this->registerTask( 'save',   'textlibrary' );
+		$this->registerTask( 'apply',  'textlibrary' );
 		$this->registerTask( 'delete', 'textlibrary' );
+		$this->registerTask( 'edit',   'textlibrary' );
 	}
 
 	function TextLibrary() {

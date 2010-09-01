@@ -47,6 +47,7 @@ defined('_JEXEC') or die('Restricted access');
 	for ($i=0, $n=count( $this->rows ); $i < $n; $i++) {
 		$row = $this->rows[$i]; 
 		$checked = JHTML::_('grid.checkedout',  $row, $i);
+		$link 		= 'index.php?option=com_redevent&amp;controller=textlibrary&amp;task=edit&amp;cid[]='. $row->id;
 		?>
 		<tr>
 		<td>
@@ -56,7 +57,18 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo $checked; ?>
 		</td>
 		<td>
-			[<?php echo $row->text_name; ?>]
+				[<?php
+				if ( $row->checked_out && ( $row->checked_out != $this->user->get('id') ) ) {
+					echo htmlspecialchars($row->text_name, ENT_QUOTES, 'UTF-8');
+				} else {
+					?>
+					<span class="editlinktip hasTip" title="<?php echo JText::_( 'EDIT TAG' );?>::<?php echo $row->text_name; ?>">
+					<a href="<?php echo $link; ?>">
+					<?php echo htmlspecialchars($row->text_name, ENT_QUOTES, 'UTF-8'); ?>
+					</a></span>
+				<?php
+				}
+				?>]
 		</td>
 			<td><?php echo $row->text_description; ?>
 		</td>
