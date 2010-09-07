@@ -327,7 +327,7 @@ class redEVENT_tags {
               // categories
               $cats = array();
               foreach ($this->getEvent()->getData()->categories as $c){
-              	$cats[] = JHTML::link(JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($c->slug)), $c->catname);
+              	$cats[] = JHTML::link($this->absoluteUrls(RedeventHelperRoute::getCategoryEventsRoute($c->slug)), $c->catname);
               }
               $replace[] = '<span class="details-categories">'.implode(', ', $cats).'</span>';
       				break;
@@ -339,12 +339,12 @@ class redEVENT_tags {
       				      				
 				    case 'permanentlink':
 				      $search[]  = '['.$tag.']';
-              $replace[] = JHTML::link(JRoute::_(RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug), false), JText::_('Permanent link'), 'class="permalink"');
+              $replace[] = JHTML::link($this->absoluteUrls(RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug), false), JText::_('Permanent link'), 'class="permalink"');
       				break;
       				      				
 				    case 'datelink':
 				      $search[]  = '['.$tag.']';
-              $replace[] = JHTML::link(JRoute::_(RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug, $this->_xref), false), JText::_('Event details'), 'class="datelink"');
+              $replace[] = JHTML::link($this->absoluteUrls(RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug, $this->_xref), false), JText::_('Event details'), 'class="datelink"');
       				break;		
 
 				    case 'answers':				    	
@@ -355,7 +355,7 @@ class redEVENT_tags {
 				    case 'ical':
 				      $search[]  = '['.$tag.']';
 				      $ttext = JText::_('COM_REDEVENT_EXPORT_ICS');
-				      $replace[] = JHTML::link(JRoute::_(RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug, $this->_xref).'&format=raw&layout=ics', false), $ttext, array('class' => 'event-ics'));
+				      $replace[] = JHTML::link($this->absoluteUrls(RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug, $this->_xref).'&format=raw&layout=ics', false), $ttext, array('class' => 'event-ics'));
 				    	break;
 				  	/**************  venue tags ******************/	
 				    case 'venue':
@@ -400,13 +400,13 @@ class redEVENT_tags {
       				
 				    case 'venue_link':
 				      $search[]  = '['.$tag.']';
-      				$replace[] = JHTML::link(JRoute::_(RedeventHelperRoute::getVenueEventsRoute($this->getEvent()->getData()->venueslug)), $this->getEvent()->getData()->venue);
+      				$replace[] = JHTML::link($this->absoluteUrls(RedeventHelperRoute::getVenueEventsRoute($this->getEvent()->getData()->venueslug)), $this->getEvent()->getData()->venue);
       				break;
       				
 				    case 'venue_website':
 				      $search[]  = '['.$tag.']';
 				      if (!empty($this->getEvent()->getData()->venueurl)) {
-      					$replace[] = JHTML::link(JRoute::_(($this->getEvent()->getData()->venueurl)), JText::_('Venue website'));		      	
+      					$replace[] = JHTML::link($this->absoluteUrls(($this->getEvent()->getData()->venueurl)), JText::_('Venue website'));		      	
 				      }
 				      else {
 				      	$replace[] = '';
@@ -418,7 +418,7 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
       				$venueimage = redEVENTImage::flyercreator($this->getEvent()->getData()->locimage);
       				$venueimage = JHTML::image(JURI::root().'/'.$venueimage['original'], $this->getEvent()->getData()->venue, array('title' => $this->getEvent()->getData()->venue));
-      				$venueimage = JHTML::link(JRoute::_(RedeventHelperRoute::getVenueEventsRoute($this->getEvent()->getData()->venueslug)), $venueimage);
+      				$venueimage = JHTML::link($this->absoluteUrls(RedeventHelperRoute::getVenueEventsRoute($this->getEvent()->getData()->venueslug)), $venueimage);
       				$replace[] = $venueimage;
       				break;
       				
@@ -499,7 +499,7 @@ class redEVENT_tags {
       				
 				    case 'regurl':
 				      $search[]  = '['.$tag.']';
-      				$replace[] = JRoute::_($uri->toString());
+      				$replace[] = $this->absoluteUrls($uri->toString());
       				break;
       				
 				    case 'eventplaces':
@@ -526,7 +526,7 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
               $replace[] = '<span class="vlink webform">'
                            . JHTML::_('link', 
-                                      JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->getEvent()->getData()->id, $this->_xref)), 
+                                      $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('webform', $this->getEvent()->getData()->id, $this->_xref)), 
                                       JHTML::_('image', $iconspath.$elsettings->signup_webform_img,  
                                       JText::_($elsettings->signup_webform_text), 
                                       'width="24px" height="24px"'))
@@ -537,7 +537,7 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
 				      $replace[] = '<span class="vlink email">'
 				                      .JHTML::_('link', 
-                                        JRoute::_(RedeventHelperRoute::getSignupRoute('email', $this->getEvent()->getData()->id, $this->_xref)), 
+                                        $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('email', $this->getEvent()->getData()->id, $this->_xref)), 
 				                                JHTML::_('image', $iconspath.$elsettings->signup_email_img,  
 				                                JText::_($elsettings->signup_email_text), 
 				                                'width="24px" height="24px"'))
@@ -548,7 +548,7 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
 				      $replace[] = '<span class="vlink formaloffer">'
 				                    .JHTML::_('link', 
-                                      JRoute::_(RedeventHelperRoute::getSignupRoute('formaloffer', $this->getEvent()->getData()->id, $this->_xref)), 
+                                      $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('formaloffer', $this->getEvent()->getData()->id, $this->_xref)), 
 				                              JHTML::_('image', $iconspath.$elsettings->signup_formal_offer_img,  
 				                              JText::_($elsettings->signup_formal_offer_text), 
 				                              'width="24px" height="24px"'))
@@ -576,7 +576,7 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
 				      $replace[] = '<span class="vlink phone">'
 				                     .JHTML::_('link', 
-                                       JRoute::_(RedeventHelperRoute::getSignupRoute('phone', $this->getEvent()->getData()->id, $this->_xref)), 
+                                       $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('phone', $this->getEvent()->getData()->id, $this->_xref)), 
 				                               JHTML::_('image', $iconspath.$elsettings->signup_phone_img,  
 				                               JText::_($elsettings->signup_phone_text), 
 				                               'width="24px" height="24px"'))
@@ -636,7 +636,7 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
 				      if (!empty($this->_submitkey)) {
 				      	$title = urlencode($this->getEvent()->getData()->title.' '.ELOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times));				      
-              	$replace[] = JHTML::link(JRoute::_('index.php?option=com_redform&controller=payment&task=select&source=redevent&key='.$this->_submitkey.'&paymenttitle='.$title, false), JText::_('Checkout'), '');
+              	$replace[] = JHTML::link($this->absoluteUrls('index.php?option=com_redform&controller=payment&task=select&source=redevent&key='.$this->_submitkey.'&paymenttitle='.$title, false), JText::_('Checkout'), '');
 				      }
 				      else {
 				      	$replace[] = '';
@@ -647,7 +647,7 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
 				      if (!empty($this->_submitkey)) {
 				      	$title = urlencode($this->getEvent()->getData()->title.' '.ELOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times));				      
-              	$replace[] = JRoute::_('index.php?option=com_redform&controller=payment&task=select&source=redevent&key='.$this->_submitkey.'&paymenttitle='.$title, false);
+              	$replace[] = $this->absoluteUrls('index.php?option=com_redform&controller=payment&task=select&source=redevent&key='.$this->_submitkey.'&paymenttitle='.$title, false);
 				      }
 				      else {
 				      	$replace[] = '';
@@ -1239,5 +1239,64 @@ class redEVENT_tags {
     $redform = $form->text;
   }
     	
+  function absoluteUrls($url, $xhtml = true, $ssl = null)
+	{
+		// Get the router
+		$app	= &JFactory::getApplication();
+		$router = &$app->getRouter();
+
+		// Make sure that we have our router
+		if (! $router) {
+			return null;
+		}
+
+		if ( (strpos($url, '&') !== 0 ) && (strpos($url, 'index.php') !== 0) ) {
+            return $url;
+ 		}
+
+		// Build route
+		$uri = &$router->build($url);
+		$url = $uri->toString(array('path', 'query', 'fragment'));
+
+		// Replace spaces
+		$url = preg_replace('/\s/u', '%20', $url);
+
+		/*
+		 * Get the secure/unsecure URLs.
+
+		 * If the first 5 characters of the BASE are 'https', then we are on an ssl connection over
+		 * https and need to set our secure URL to the current request URL, if not, and the scheme is
+		 * 'http', then we need to do a quick string manipulation to switch schemes.
+		 */
+		$ssl	= (int) $ssl;
+		if ( $ssl || 1 )
+		{
+			$uri	         =& JURI::getInstance();
+
+			// Get additional parts
+			static $prefix;
+			if ( ! $prefix ) {
+				$prefix = $uri->toString( array('host', 'port'));
+				//$prefix .= JURI::base(true);
+			}
+
+			// Determine which scheme we want
+			$scheme	= ( $ssl === 1 ) ? 'https' : 'http';
+
+			// Make sure our url path begins with a slash
+			if ( ! preg_match('#^/#', $url) ) {
+				$url	= '/' . $url;
+			}
+
+			// Build the URL
+			$url	= $scheme . '://' . $prefix . $url;
+		}
+
+		if($xhtml) {
+			$url = str_replace( '&', '&amp;', $url );
+		}
+
+		return $url;
+	}
 }
 ?>
