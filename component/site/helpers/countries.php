@@ -1058,6 +1058,11 @@ class redEVENTHelperCountries
 		}
 	}
 
+	/**
+	 * return flag url from iso code
+	 * 
+	 * @param $iso_code
+	 */
 	function getIsoFlag($iso_code)
 	{
 		if (strlen($iso_code) == 3) {
