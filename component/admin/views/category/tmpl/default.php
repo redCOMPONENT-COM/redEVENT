@@ -210,10 +210,10 @@ function submitbutton(pressbutton)
 					<td>
 						<img src="../images/M_images/blank.png" name="imagelib" id="imagelib" width="80" height="80" border="2" alt="Preview" />
 						<script language="javascript" type="text/javascript">
-						if (document.forms[0].a_imagename.value!=''){
-							var imname = document.forms[0].a_imagename.value;
+						if ($('a_imagename').value !=''){
+							var imname = $('a_imagename').value;
 							jsimg='../images/redevent/categories/' + imname;
-							document.getElementById('imagelib').src= jsimg;
+							$('imagelib').src= jsimg;
 						}
 						</script>
 						<br />
