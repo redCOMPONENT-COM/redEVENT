@@ -147,6 +147,14 @@ function updateend(cal)
       <?php echo $this->lists['published']; ?>
     </td>
   </tr>
+  <tr>
+    <td class="key">
+      <label for="featured"><?php echo JText::_('COM_REDEVENT_SESSION_FEATURED') .': '; ?></label>
+    </td>
+    <td>
+      <?php echo $this->lists['featured']; ?>
+    </td>
+  </tr>
 </tbody>
 </table>
 

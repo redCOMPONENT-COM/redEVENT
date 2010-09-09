@@ -582,3 +582,11 @@ span.event-date span.event-end {
 /** google map div size **/
 .venue-full-map { height: 400px; width: 100% }
 .event-full-map { height: 300px; width: 300px }
+
+tr.isover td {
+	text-decoration:line-through;
+}
+
+tr.featured {
+	border: 2px solid red;
+}

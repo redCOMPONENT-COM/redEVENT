@@ -65,6 +65,8 @@ class RedEvent_eventvenuexref extends JTable
   var $course_credit    = null;
   /** @var int */
   var $course_price    = null;
+  /** @var int */
+  var $featured    = 0;
   /**
    * Url for external registration. 
    * Overrides event external registration

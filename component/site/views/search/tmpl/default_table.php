@@ -116,7 +116,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 	foreach ($this->rows as $row) :
 		?>
-  			<tr class="sectiontableentry<?php echo ($row->odd +1 ) . $this->params->get( 'pageclass_sfx' ); ?>" >
+  			<tr class="sectiontableentry<?php echo ($row->odd +1 ) . $this->params->get( 'pageclass_sfx' ). ($row->featured ? ' featured' : ''); ?>" >
 
     			<td headers="el_date" align="left">
     					<?php echo ELOutput::formatEventDateTime($row);	?>

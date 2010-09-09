@@ -67,7 +67,7 @@ defined('_JEXEC') or die('Restricted access');
 	{
 	?>
 
-	<table class="adminlist" cellspacing="1">
+		<table class="adminlist" cellspacing="1">
 		<thead>
 			<tr>
 				<th width="5"><?php echo JText::_( 'Num' ); ?></th>
@@ -103,22 +103,33 @@ defined('_JEXEC') or die('Restricted access');
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo $this->pageNav->getRowOffset( $i ); ?></td>
 				<td><?php echo $checked; ?></td>
-				<td><div id="timedetails">
+				<td><div class="timedetails">
 				<?php if (isset($this->eventvenues[$row->id])) { ?>
 					<table class="adminlist">
+					<colgroup class="colfeatured" width="5%"></colgroup>
+					<colgroup class="colvenue" width="20%"></colgroup>
+					<colgroup class="colcity" width="20%"></colgroup>
+					<colgroup class="coldate" width="20%"></colgroup>
+					<colgroup class="coltime" width="10%"></colgroup>
+					<colgroup class="colnote" width="20%"></colgroup>
+					<colgroup class="colpublished" width="5px"></colgroup>
+					<colgroup class="colattendees" width="5px"></colgroup>
 					<thead>
 					 <tr>
-					   <th class="colvenue"><?php echo JText::_('VENUE'); ?></th>
-					   <th class="colcity"><?php echo JText::_('CITY'); ?></th>
-					   <th class="coldate"><?php echo JText::_('DATE'); ?></th>
-					   <th class="coltime"><?php echo JText::_('TIME'); ?></th>
-					   <th class="coltime"><?php echo JText::_('NOTE'); ?></th>
-             <th class="coltime"><?php echo JText::_('ATTENDEES'); ?></th>
+					   <th>&nbsp;</th>
+					   <th><?php echo JText::_('VENUE'); ?></th>
+					   <th><?php echo JText::_('CITY'); ?></th>
+					   <th><?php echo JText::_('DATE'); ?></th>
+					   <th><?php echo JText::_('TIME'); ?></th>
+					   <th><?php echo JText::_('NOTE'); ?></th>
+					   <th><?php echo JText::_('STATE'); ?></th>
+             <th><?php echo JText::_('ATTENDEES'); ?></th>
 					 </tr>
 				  </thead>
 					<tbody>
 					<?php
-						foreach ($this->eventvenues[$row->id] as $key => $eventdetails) {
+						foreach ($this->eventvenues[$row->id] as $key => $eventdetails) 
+						{				
 							/* Get the date */
 							$date = (!isset($eventdetails->dates) ? Jtext::_('Open date') : strftime( $this->elsettings->formatdate, strtotime( $eventdetails->dates )));
 							if ($eventdetails->enddates && $eventdetails->enddates != $eventdetails->dates && strtotime( $eventdetails->enddates )) {
@@ -131,20 +142,39 @@ defined('_JEXEC') or die('Restricted access');
 							
               $displaytime = '';
 							/* Get the time */
-							if (isset($eventdetails->times)) {
+							if (isset($eventdetails->times)) 
+							{
 							 $displaytime = strftime( $this->elsettings->formattime, strtotime( $eventdetails->times )).' '.$this->elsettings->timename;
 							 
                 if (isset($eventdetails->endtimes)) {
                   $displaytime .= ' - '.strftime( $this->elsettings->formattime, strtotime( $eventdetails->endtimes )). ' '.$this->elsettings->timename;
                 }
 							}
+							// published state
+							if ($eventdetails->published == 1) {
+								$img_published = JHTML::image('administrator/images/tick.png', JText::_('PUBLISHED'));
+							}
+							else if ($eventdetails->published == 0) {
+								$img_published = JHTML::image('administrator/images/publish_x.png', JText::_('UNPUBLISHED'));
+							}
+							else {
+								$img_published = JHTML::image('administrator/images/publish_y.png', JText::_('ARCHIVED'));
+							}
+							if ($eventdetails->featured == 1) {
+								$img_featured = JHTML::image('administrator/components/com_redevent/assets/images/icon-16-featured.png', JText::_('COM_REDEVENT_SESSION_FEATURED'));
+							}
+							else {
+								$img_featured = '&nbsp;';
+							}
 							?>
-    					<tr class="eventdatetime">
+    					<tr class="eventdatetime<?php echo ($eventdetails->featured ? ' featured' : ''); ?>">
+    						<td><?php echo $img_featured; ?></td>
     						<td><?php echo $eventdetails->venue; ?></td>
     						<td><?php echo $eventdetails->city; ?></td>
     						<td><?php echo $displaydate; ?></td>
     						<td><?php echo $displaytime; ?></td>
     						<td><?php echo $eventdetails->note; ?></td>
+    						<td><?php echo $img_published; ?></td>
     						<td>
     						  <?php	if ($row->registra == 1):
       						  $linkreg  = 'index.php?option=com_redevent&amp;view=attendees&eventid='.$row->id.'&xref='.$eventdetails->id;

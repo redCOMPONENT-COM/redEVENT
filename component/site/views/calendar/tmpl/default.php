@@ -86,7 +86,7 @@ foreach ($this->rows as $row)
 		}
 	}
 	//wrap a div for each category around the event for show hide toggler
-	$content    .= '<div class="'.implode(' ', $cat_classes).'">';
+	$content    .= '<div class="'.implode(' ', $cat_classes).($row->featured ? ' featured' : '').'">';
 	$contentend   .= '</div>';
 
 	$catname = '<div class="catname">'.implode(', ', $cat_names).'</div>';

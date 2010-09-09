@@ -30,7 +30,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				$detaillink = JRoute::_( RedeventHelperRoute::getDetailsRoute($row->slug, $row->xref) );
 				$venuelink  = JRoute::_( RedeventHelperRoute::getVenueEventsRoute($row->venueslug) );
 	?>
-	<li class="rf_thumbevent vevent">
+	<li class="rf_thumbevent vevent<?php echo ($row->featured ? ' featured' : ''); ?>">
 		<?php if ($img): ?>
 		<?php echo JHTML::_('link', JRoute::_($detaillink), $img, array('class' => 'rf_img')); ?>
 		<?php else: ?>

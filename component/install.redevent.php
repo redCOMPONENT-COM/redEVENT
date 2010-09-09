@@ -443,6 +443,12 @@ if (is_array($cols)) {
     $db->setQuery($q);
     $db->query();  	
   }
+  
+  if (!array_key_exists('featured', $cols)) {
+    $q ="ALTER IGNORE TABLE `#__redevent_event_venue_xref` ADD COLUMN `featured` tinyint(1) NOT NULL default '0'";
+    $db->setQuery($q);
+    $db->query();
+  }
 }
 
 /* register table */

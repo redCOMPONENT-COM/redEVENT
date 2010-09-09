@@ -47,15 +47,15 @@ function addremove(item)
   new Element('a', {'href': '#'}).addEvent('click', removexref.bind(item)).appendText(textremove).injectInside(cell);
 }
 
-function updatexref(id, venue, date, time, published, note)
+function updatexref(object)
 {
-  if ($('xref-'+id)) {
-    var tr = $('xref-'+id);
-    var newtr = buildxreftr(id, venue, date, time, published, note);
+  if ($('xref-'+object.id)) {
+    var tr = $('xref-'+object.id);
+    var newtr = buildxreftr(object);
     tr.replaceWith(newtr);
   }
   else {
-    var newtr = buildxreftr(id, venue, date, time, published, note);
+    var newtr = buildxreftr(object);
     newtr.injectBefore($('add-xref'));
   }
   addremove(newtr);
@@ -81,24 +81,35 @@ function removexref(event)
   }
 }
 
-function buildxreftr(id, venue, date, time, published, note)
+function buildxreftr(object)
 {
-  var tr = new Element('tr', {'id': 'xref-'+id, 'class': 'xref-details'});
+  var tr = new Element('tr', {'id': 'xref-'+object.id, 'class': 'xref-details'});
   var tdlink = new Element('td').injectInside(tr);
-  var link = new Element('a', {'href': 'index.php?option=com_redevent&controller=events&task=editxref&tmpl=component&xref='+id})
+  var link = new Element('a', {'href': 'index.php?option=com_redevent&controller=events&task=editxref&tmpl=component&xref='+object.id})
                  .appendText(edittext).injectInside(tdlink).addEvent('click', function(e) {
           new Event(e).stop();
           SqueezeBox.fromElement(this);
         });;
-  new Element('td').appendText(venue).injectInside(tr);
-  new Element('td').appendText(date).injectInside(tr);
-  new Element('td').appendText(time).injectInside(tr);
-  new Element('td').appendText(note).injectInside(tr);
-  if (published == 1) {
-    new Element('td').appendText(textyes).injectInside(tr);
+  new Element('td').appendText(object.venue).injectInside(tr);
+  new Element('td').appendText(object.date).injectInside(tr);
+  new Element('td').appendText(object.time).injectInside(tr);
+  new Element('td').appendText(object.note).injectInside(tr);
+  
+  if (object.published == 1) {
+	  new Element('img', {src: 'images/tick.png', alt: textyes}).injectInside(new Element('td').injectInside(tr));
+  }
+  else if (object.published == 0) {
+	  new Element('img', {src: 'images/publish_x.png', alt: textno}).injectInside(new Element('td').injectInside(tr));
   }
   else {
-    new Element('td').appendText(textno).injectInside(tr);
+	  new Element('img', {src: 'images/publish_y.png', alt: textno}).injectInside(new Element('td').injectInside(tr));
+  }
+  
+  if (object.featured == 1) {
+	  new Element('img', {src: 'components/com_redevent/assets/images/icon-16-featured.png', alt: textyes}).injectInside(new Element('td').injectInside(tr));
+  }
+  else {
+	  new Element('td').injectInside(tr);
   }  
   new Element('td', {'class': 'cell-delxref'}).injectInside(tr);
   return tr;

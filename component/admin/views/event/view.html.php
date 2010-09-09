@@ -292,6 +292,12 @@ class RedEventViewEvent extends JView {
                          JHTML::_('select.option', '-1', JText::_('ARCHIVED'))
                        );
     $lists['published'] = JHTML::_('select.radiolist', $published, 'published', '', 'value', 'text', $xref->published);
+    
+    // featured state selector
+    $options = array( JHTML::_('select.option', '0', JText::_('COM_REDEVENT_SESSION_NOT_FEATURED')),
+                         JHTML::_('select.option', '1', JText::_('COM_REDEVENT_SESSION_IS_FEATURED'))
+                       );
+    $lists['featured'] = JHTML::_('select.booleanlist', 'featured', '', $xref->featured);
 		
 		//assign to template
     $this->assignRef('xref'         , $xref);
@@ -325,8 +331,16 @@ class RedEventViewEvent extends JView {
     		$displaytime .= ' - '.strftime( $elsettings->formattime, strtotime( $xref->endtimes )). ' '.$elsettings->timename;
     	}
     }
+    $json_data = array( 'id'        => $xref->id,
+                        'venue'     => $xref->venue,
+                        'date'      => $displaydate,
+                        'time'      => $displaytime,
+                        'published' => $xref->published,
+                        'note'      => $xref->note,
+                        'featured'  => $xref->featured,
+                      );
 		
-    $js = 'window.parent.updatexref("'.$xref->id.'", "'.addslashes($xref->venue).'", "'.$displaydate.'", "'.$displaytime.'", "'.$xref->published.'", "'.$xref->note.'");';
+    $js = 'window.parent.updatexref('.json_encode($json_data).');';
     $document->addScriptDeclaration($js);
 		return;
 	}

@@ -8,6 +8,7 @@
 			<th><?php echo JText::_('TIME'); ?></th>
 			<th><?php echo JText::_('NOTE'); ?></th>
       <th><?php echo JText::_('PUBLISHED'); ?></th>
+      <th><?php echo JText::_('COM_REDEVENT_SESSION_FEATURED'); ?></th>
       <th>&nbsp;</th>
 		</tr>
 	</thead>
@@ -38,22 +39,23 @@
 	      <td><?php echo $eventdetails->note; ?></td>
         <td><?php switch ($eventdetails->published):
                     case '-1':
-                      echo JText::_('ARCHIVED');
+                      echo JHTML::image('administrator/images/publish_y.png', JText::_('ARCHIVED'));
                       break;
                     case '0': 
-                      echo JText::_('UNPUBLISHED');
+                      echo JHTML::image('administrator/images/publish_x.png', JText::_('UNPUBLISHED'));
                       break; 
                     case '1': 
-                      echo JText::_('PUBLISHED');
+                      echo JHTML::image('administrator/images/tick.png', JText::_('PUBLISHED'));
                       break; 
                     endswitch; ?></td>
+	      <td><?php echo ($eventdetails->featured ? JHTML::image('administrator/components/com_redevent/assets/images/icon-16-featured.png', JText::_('COM_REDEVENT_SESSION_FEATURED')) : ''); ?></td>
 	      <td class="cell-delxref"><?php echo ''; ?></td>
 	    </tr>
 	    <?php
 		}
 		?>
 		<tr id="add-xref">
-			<td colspan="7"><a href="<?php echo JRoute::_('index.php?option=com_redevent&controller=events&task=editxref&tmpl=component&eventid='. $this->row->id); ?>" class="xrefmodal"><?php echo JText::_('Add'); ?></a></td>
+			<td colspan="8"><a href="<?php echo JRoute::_('index.php?option=com_redevent&controller=events&task=editxref&tmpl=component&eventid='. $this->row->id); ?>" class="xrefmodal"><?php echo JText::_('Add'); ?></a></td>
 		</tr>
 	</tbody>
 </table>
