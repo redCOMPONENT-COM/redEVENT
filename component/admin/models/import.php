@@ -92,10 +92,13 @@ class RedEventModelImport extends JModel
       return false;
     }
     $nb_cats = $this->_db->getAffectedRows();
+    // we need to rebuild the category tree
+    $table = JTable::getInstance('RedEvent_categories', '');
+    $table->rebuildTree();
     
-    // then import events....
+    // then import events.... We add a [eventlist_import] tag to the description, so that people don't have to manually edit each description
     $query = ' INSERT IGNORE INTO #__redevent_events (id, title, alias, published, datdescription, datimage, meta_description, meta_keywords) '
-           . ' SELECT id, title, alias, published, datdescription, datimage, meta_description, meta_keywords FROM #__eventlist_events '
+           . ' SELECT id, title, alias, published, CONCAT("[eventlist_import]",datdescription), datimage, meta_description, meta_keywords FROM #__eventlist_events '
            ;
     $this->_db->setQuery($query);
     if (!$this->_db->query()) {
@@ -103,7 +106,8 @@ class RedEventModelImport extends JModel
       return false;
     }
     $nb_events = $this->_db->getAffectedRows();
-    
+    $this->addLibraryTag();
+        
     // corresponding xrefs
     $query = ' INSERT IGNORE INTO #__redevent_event_venue_xref (eventid, venueid, dates, enddates, times, endtimes, published) '
            . ' SELECT id AS eventid, locid AS venueid, dates, enddates, times, endtimes, published FROM #__eventlist_events '
@@ -127,6 +131,30 @@ class RedEventModelImport extends JModel
 	  $result = array('events' => $nb_events, 'venues' => $nb_venues, 'categories' => $nb_cats,);
 	         
 	  return $result;
+	}
+	
+	function addLibraryTag()
+	{
+		$query = ' SELECT id ' 
+		       . ' FROM #__redevent_textlibrary ' 
+		       . ' WHERE text_name = ' . $this->_db->Quote(eventlist_import);
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadResult();
+		
+		if ($res) { // already present
+			return true;
+		}
+    $table = JTable::getInstance('TextLibrary', 'Table');
+    $table->text_name        = 'eventlist_import';
+    $table->text_description = JText::_('COM_REDEVENT_IMPORT_EVENTLIST_ADDED_TAG');
+    $table->text_field = JText::_('COM_REDEVENT_IMPORT_EVENTLIST_ADDED_TAG_VALUE');
+    if ($table->check() && $table->store()) {
+	    return true;
+    }
+    else {
+    	JError::raiseWarning(0, Jtext::_('COM_REDEVENT_IMPORT_EVENTLIST_ADDED_TAG_FAILED'));
+    	return false;
+    }
 	}
 }
 ?>

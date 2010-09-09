@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS
 	`#__redevent_venues`,
 	`#__redevent_categories`,
 	`#__redevent_register`,
+	`#__redevent_register_back`,
 	`#__redevent_groups` ,
 	`#__redevent_groupmembers`,
 	`#__redevent_groups_categories` ,
