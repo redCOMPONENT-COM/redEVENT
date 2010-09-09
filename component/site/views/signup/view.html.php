@@ -131,7 +131,9 @@ class RedeventViewSignup extends JView
 				$this->tmp_xref = JRequest::getInt('xref');
 				$this->tmp_id = JRequest::getInt('id');
 				
-				$page = $tags->ReplaceTags($course->submission_type_webform, array('hasreview' => (!empty($course->review_message) && strstr($course->review_message, '[redform]') !== false)));
+				$review_txt =  trim(strip_tags($course->review_message));
+				
+				$page = $tags->ReplaceTags($course->submission_type_webform, array('hasreview' => (!empty($review_txt))) );
     		$print_link = JRoute::_( 'index.php?option=com_redevent&view=signup&subtype=webform&task=signup&xref='.$this->tmp_xref.'&id='.$this->tmp_id.'&pop=1&tmpl=component' );
 				
     		$this->assign('page', $page);
