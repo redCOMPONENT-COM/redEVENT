@@ -95,6 +95,8 @@ class RedEventViewTextLibrary extends JView {
 		//set the submenu
     ELAdmin::setMenu();
 			
+		$this->assignRef('user', $user);
+		
 		parent::display($tpl);
 	}
 }
