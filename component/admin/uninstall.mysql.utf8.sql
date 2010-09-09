@@ -1,0 +1,22 @@
+DROP TABLE IF EXISTS  
+	`#__redevent_events`,
+	`#__redevent_venues`,
+	`#__redevent_categories`,
+	`#__redevent_register`,
+	`#__redevent_groups` ,
+	`#__redevent_groupmembers`,
+	`#__redevent_groups_categories` ,
+	`#__redevent_groups_venues` ,
+	`#__redevent_groups_venues_categories` ,
+	`#__redevent_settings` ,
+	`#__redevent_event_venue_xref`,
+	`#__redevent_event_category_xref`,
+	`#__redevent_textlibrary` ,
+	`#__redevent_venues_categories` ,
+	`#__redevent_venue_category_xref` ,
+	`#__redevent_fields` ,
+	`#__redevent_fields_values`,
+	`#__redevent_countries` ,
+	`#__redevent_recurrences`,
+	`#__redevent_repeats`
+	;
