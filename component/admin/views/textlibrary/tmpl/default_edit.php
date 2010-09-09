@@ -22,6 +22,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+JHTML::_('behavior.modal');
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -39,7 +40,12 @@ defined('_JEXEC') or die('Restricted access');
 		<td colspan="2"><?php echo JText::_('TEXT_FIELD'); ?></td>
 	</tr>
 	<tr>
-		<td colspan="2"><?php echo $this->editor->display( 'text_field',  $this->row->text_field, '100%;', '550', '75', '20', array('pagebreak', 'readmore') ) ;?></td>
+		<td colspan="2">
+		  <div class="tagsdiv">
+		  	<?php echo JHTML::link('index.php?option=com_redevent&view=tags&tmpl=component', JText::_('TAGS'), 'class="modal" rel="{handler: \'iframe\'}"'); ?>
+	    </div>  
+	    <?php echo $this->editor->display( 'text_field',  $this->row->text_field, '100%;', '550', '75', '20', array('pagebreak', 'readmore') ) ;?>
+    </td>
 	</tr>
 	</tbody>
 	</table>
