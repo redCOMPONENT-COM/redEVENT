@@ -101,7 +101,7 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
 		$xcustoms = $this->getXrefCustomFields();
 
     //Get Events from Database
-    $query = 'SELECT a.id, a.datimage, x.dates, x.enddates, x.times, x.endtimes, x.id AS xref, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, '
+    $query = 'SELECT a.id, a.datimage, x.dates, x.enddates, x.times, x.endtimes, x.id AS xref, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.featured, '
         . ' a.title, a.datdescription, a.created, a.registra, l.venue, l.city, l.state, l.url, c.catname, c.id AS catid, '
         . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
         . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
