@@ -68,18 +68,8 @@ JHTML::_('behavior.tooltip');
 	$Month_offset		= $params->get( 'Month_offset', '0' );	
 	$Show_Tooltips		= $params->get( 'Show_Tooltips', '1' );	
 	$Remember			= $params->get( 'Remember', '1' );
-	$LocaleOverride		= $params->get( 'locale_override', '' );
 	$CalTooltipsTitle		= $params->get( 'recal_tooltips_title', 'Events' );	
-	$CharsetOverride		= $params->get( 'charset_override', '' );
 	
-	if (empty($LocaleOverride))
-	{
-	}
-	else
-	{		 
-		$my_loc = setlocale(LC_TIME, $LocaleOverride ) ;
-	}
-
 	//get switch trigger
 	$req_month 		= JRequest::getVar( 're_mcal_month', '', 'request', 'int' );
 	$req_year       = JRequest::getVar( 're_mcal_year', '', 'request', 'int' );	
@@ -153,7 +143,4 @@ JHTML::_('behavior.tooltip');
 	$days = modredeventcalHelper::getdays($req_year, $offset_month, $params);
 	
 	require( JModuleHelper::getLayoutPath( 'mod_redeventcal' ) );	
-	
-	// reset the local
-	setlocale(LC_TIME, NULL) ;
 ?> 

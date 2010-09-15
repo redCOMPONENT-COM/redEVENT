@@ -27,8 +27,6 @@
 	
 	<params>
 		<param name="moduleclass_sfx" type="text" default="" label="REDEVENT_MODULE_CALENDAR_MODULE_CLASS_SUFFIX" description="REDEVENT_MODULE_CALENDAR_MODULE_CLASS_SUFFIX_DESC" />
-		<param name="locale_override" type="text" default="" label="REDEVENT_MODULE_CALENDAR_LOCAL_OVERRIDE" description="REDEVENT_MODULE_CALENDAR_LOCAL_OVERRIDE_DESC" />
-		<param name="charset_override" type="text" default="" label="REDEVENT_MODULE_CALENDAR_CHARSET" description="REDEVENT_MODULE_CALENDAR_CHARSET_DESC" />
 		<param name="recal_tooltips_title" type="text" default="Events" label="REDEVENT_MODULE_CALENDAR_TOOLTIP_TITLE" description="REDEVENT_MODULE_CALENDAR_TOOLTIP_TITLE_DESC" />			
     <param name="day_name_length" type="list" default="2" label="REDEVENT_MODULE_CALENDAR_DAY_NAME_LENGTH" description="REDEVENT_MODULE_CALENDAR_DAY_NAME_LENGTH_DESC">
 			<option value="0">REDEVENT_MODULE_CALENDAR_DAY_NAME_LENGTH_NO</option>
