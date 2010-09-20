@@ -526,7 +526,7 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
               $replace[] = '<span class="vlink webform">'
                            . JHTML::_('link', 
-                                      $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('webform', $this->getEvent()->getData()->id, $this->_xref)), 
+                                      $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('webform', $this->getEvent()->getData()->slug, $this->_xref)), 
                                       JHTML::_('image', $iconspath.$elsettings->signup_webform_img,  
                                       JText::_($elsettings->signup_webform_text), 
                                       'width="24px" height="24px"'))
@@ -537,7 +537,7 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
 				      $replace[] = '<span class="vlink email">'
 				                      .JHTML::_('link', 
-                                        $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('email', $this->getEvent()->getData()->id, $this->_xref)), 
+                                        $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('email', $this->getEvent()->getData()->slug, $this->_xref)), 
 				                                JHTML::_('image', $iconspath.$elsettings->signup_email_img,  
 				                                JText::_($elsettings->signup_email_text), 
 				                                'width="24px" height="24px"'))
@@ -548,7 +548,7 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
 				      $replace[] = '<span class="vlink formaloffer">'
 				                    .JHTML::_('link', 
-                                      $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('formaloffer', $this->getEvent()->getData()->id, $this->_xref)), 
+                                      $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('formaloffer', $this->getEvent()->getData()->slug, $this->_xref)), 
 				                              JHTML::_('image', $iconspath.$elsettings->signup_formal_offer_img,  
 				                              JText::_($elsettings->signup_formal_offer_text), 
 				                              'width="24px" height="24px"'))
@@ -576,7 +576,7 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
 				      $replace[] = '<span class="vlink phone">'
 				                     .JHTML::_('link', 
-                                       $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('phone', $this->getEvent()->getData()->id, $this->_xref)), 
+                                       $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('phone', $this->getEvent()->getData()->slug, $this->_xref)), 
 				                               JHTML::_('image', $iconspath.$elsettings->signup_phone_img,  
 				                               JText::_($elsettings->signup_phone_text), 
 				                               'width="24px" height="24px"'))
