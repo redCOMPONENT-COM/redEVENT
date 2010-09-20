@@ -544,7 +544,6 @@ class redEVENTHelper {
             ;
     $db->setQuery($query);
     $event = & $db->loadObject();
-    
     // first, let's check the thing that don't need database queries
     if (!$event->registra)
     {
@@ -561,7 +560,7 @@ class redEVENTHelper {
         return $result;
       }
     }
-    else if (!empty($event->dates) && strtotime($event->dates .' '. $event->times) < time())
+    else if (strtotime($event->dates) && strtotime($event->dates .' '. $event->times) < time())
     {
       // it's separated from previous case so that it is not checked if a registration end was set
       $result->canregister = 0;
