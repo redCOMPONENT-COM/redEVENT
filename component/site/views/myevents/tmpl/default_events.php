@@ -24,6 +24,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
+<?php	if (count((array)$this->events) == 0) :	?>
 
 <h2><?php echo JText::_('Manage Events'); ?></h2>
 
@@ -241,6 +242,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <p class="pagescounter">
   <?php echo $this->events_pageNav->getPagesCounter(); ?>
 </p>
+
+<?php endif; ?>
 
 <?php if ($this->canAddXref): ?>
 <div><?php echo JHTML::link(JRoute::_('index.php?option=com_redevent&view=editevent&layout=eventdate', false), JText::_('Add new event session')); ?></div>
