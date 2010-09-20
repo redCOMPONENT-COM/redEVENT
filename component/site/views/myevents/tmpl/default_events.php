@@ -24,7 +24,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
-<?php	if (count((array)$this->events) == 0) :	?>
+<?php	if (count((array)$this->events)) :	?>
 
 <h2><?php echo JText::_('Manage Events'); ?></h2>
 
