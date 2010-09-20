@@ -223,7 +223,7 @@ class RedEventControllerRegistration extends RedEventController
 		$cache = JFactory::getCache('com_redevent');
 		$cache->clean();
 		
-  	$msg = JTEXT::_('REDEVENT_REGISTRATION_UPDATED').' - '.$rfcore->getError();
+  	$msg = JTEXT::_('COM_REDEVENT_REGISTRATION_UPDATED');
   	if ($task == 'managerupdate') {
   		$this->setRedirect(RedeventHelperRoute::getManageAttendees($xref), $msg);  			
   	}
