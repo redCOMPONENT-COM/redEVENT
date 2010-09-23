@@ -24,7 +24,6 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.calendar');
-JHTML::_('behavior.calendar');
 ?>
 
 <script type="text/javascript">
