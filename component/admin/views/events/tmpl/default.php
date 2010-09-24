@@ -131,8 +131,8 @@ defined('_JEXEC') or die('Restricted access');
 						foreach ($this->eventvenues[$row->id] as $key => $eventdetails) 
 						{				
 							/* Get the date */
-							$date = (!isset($eventdetails->dates) ? Jtext::_('Open date') : strftime( $this->elsettings->formatdate, strtotime( $eventdetails->dates )));
-							if ($eventdetails->enddates && $eventdetails->enddates != $eventdetails->dates && strtotime( $eventdetails->enddates )) {
+							$date = (!ELOutput::isValidDate($eventdetails->dates) ? Jtext::_('Open date') : strftime( $this->elsettings->formatdate, strtotime( $eventdetails->dates )));
+							if ($eventdetails->enddates && $eventdetails->enddates != $eventdetails->dates && ELOutput::isValidDate($eventdetails->enddates)) {
 							  $enddate   = strftime( $this->elsettings->formatdate, strtotime( $eventdetails->enddates ));
 							}
 							else {
