@@ -24,37 +24,62 @@ window.addEvent('domready', function(){
 
   $$('.dynfilter').addEvent('change', function() {
     this.form.submit();
+    return true;
   });
  
-  if (continent = $('filter_continent')) {
+  if ($('filter_continent')) {
 	  $('filter_continent').addEvent('change', function() {
-	    if (country = $('filter_country')) {
-	      country.selectedIndex = 0;
-	    }
-	    if (city = $('filter_city')) {
-	      city.selectedIndex = 0;
-	    }
+		resetCountry();
 	    this.form.submit();
+	    return true;
 	  });
   }
 
-  if (country = $('filter_country')) {  
-    country.addEvent('change', function() {
-	    if (city = $('filter_city')) {
-	      city.selectedIndex = 0;
-	    }
+  if ($('filter_country')) {  
+	  $('filter_country').addEvent('change', function() {
+    	resetCity();
 	    this.form.submit();
+	    return true;
 	  });
   }
   
-  if (city = $('filter_city')) {  
-	  city.addEvent('change', function() {
+  if ($('filter_city')) {  
+	  $('filter_city').addEvent('change', function() {
+		resetVenue();
 	    this.form.submit();
+	    return true;
 	  });
   }
     
   $('filter_category').addEvent('change', function() {
     this.form.submit();
+    return true;
   });
-  
+
+
+  function resetCountry()
+  {
+      if ($('filter_country')) {
+    	  $('filter_country').selectedIndex = 0;
+      }
+      resetCity();
+      return true;
+  }
+
+  function resetCity()
+  {
+      if ($('filter_city')) {
+    	  $('filter_city').selectedIndex = 0;
+      }
+      resetVenue();
+      return true;
+  }
+
+  function resetVenue()
+  {
+  	if ($('filter_venue')) {
+  		$('filter_venue').selectedIndex = 0;
+  	}	
+    return true;
+  }
 });

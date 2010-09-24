@@ -149,21 +149,21 @@ class RedeventViewSearch extends JView
     $countries = array();
     $countries[] = JHTML::_('select.option', '0', JText::_('Select country'));
     $countries = array_merge($countries, $this->get('CountryOptions'));
-    $lists['countries'] = JHTML::_('select.genericlist', $countries, 'filter_country', 'class="inputbox dynfilter"', 'value', 'text', $filter_country);
+    $lists['countries'] = JHTML::_('select.genericlist', $countries, 'filter_country', 'class="inputbox"', 'value', 'text', $filter_country);
     unset($countries);
     
     // state filter
     $states = array();
     $states[] = JHTML::_('select.option', '0', JText::_('Select state'));
     $states = array_merge($states, $this->get('StateOptions'));
-    $lists['states'] = JHTML::_('select.genericlist', $states, 'filter_state', 'class="inputbox dynfilter"', 'value', 'text', $filter_state);
+    $lists['states'] = JHTML::_('select.genericlist', $states, 'filter_state', 'class="inputbox"', 'value', 'text', $filter_state);
     unset($states);    
     
     // city filter
     $cities = array();
     $cities[] = JHTML::_('select.option', '0', JText::_('Select city'));
     $cities = array_merge($cities, $this->get('CityOptions'));
-    $lists['cities'] = JHTML::_('select.genericlist', $cities, 'filter_city', 'class="inputbox dynfilter"', 'value', 'text', $filter_city);
+    $lists['cities'] = JHTML::_('select.genericlist', $cities, 'filter_city', 'class="inputbox"', 'value', 'text', $filter_city);
     unset($cities);    
 	
     // venues filter
