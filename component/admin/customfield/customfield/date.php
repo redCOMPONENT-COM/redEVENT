@@ -26,10 +26,8 @@ defined('JPATH_BASE') or die();
 
 /**
 * Renders a Textbox Custom field
-*
-* @author Julien Vonthron <jlv@jlv-solutions.com>
-* @package Tracks
-* @since 0.5
+ * @package		redEVENT
+ * @since 2.0
 */
 
 class TCustomfieldDate extends TCustomfield {

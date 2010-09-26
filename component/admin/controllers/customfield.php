@@ -27,10 +27,10 @@ defined('_JEXEC') or die();
 jimport('joomla.application.component.controller');
 
 /**
- * Joomla Tracks Component Controller
+ * Joomla redEVENT Component Controller
  *
- * @package		Tracks
- * @since 0.1
+ * @package		redEVENT
+ * @since 2.0
  */
 class RedeventControllerCustomfield extends JController
 {

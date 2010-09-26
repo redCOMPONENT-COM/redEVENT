@@ -27,11 +27,11 @@ defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view');
 
 /**
- * HTML View class for the Tracks component
+ * HTML View class for the redevent component
  *
  * @static
- * @package		Tracks
- * @since 0.1
+ * @package		redevent
+ * @since 2.0
  */
 class RedeventViewCustomfield extends JView
 {
