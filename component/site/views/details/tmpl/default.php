@@ -58,8 +58,8 @@ if ($this->row->show_names) : ?>
 		<?php
 			foreach ($this->venuedates AS $key => $venuedate) {			
         /* Get the date */
-        $date = (!isset($venuedate->dates) || $venuedate->dates == '0000-00-00' ? Jtext::_('Open date') : strftime( $this->elsettings->formatdate, strtotime( $venuedate->dates )));
-        $enddate  = (!isset($venuedate->enddates) || $venuedate->enddates == '0000-00-00' || $venuedate->enddates == $venuedate->dates) ? '' : strftime( $this->elsettings->formatdate, strtotime( $venuedate->enddates ));
+        $date = (!redEVENTHelper::isValidDate($venuedate->dates)  ? Jtext::_('Open date') : strftime( $this->elsettings->formatdate, strtotime( $venuedate->dates )));
+        $enddate  = (!redEVENTHelper::isValidDate($venuedate->enddates) || $venuedate->enddates == '0000-00-00' || $venuedate->enddates == $venuedate->dates) ? '' : strftime( $this->elsettings->formatdate, strtotime( $venuedate->enddates ));
         $displaydate = $date. ($enddate ? ' - '.$enddate: '');
     
         $displaytime = '';

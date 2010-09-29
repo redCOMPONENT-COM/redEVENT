@@ -80,10 +80,16 @@ defined('_JEXEC') or die('Restricted access');
 						<?php
 							foreach ($this->eventvenues[$row->id] as $key => $eventdetails) {
 								/* Get the date */
-								$date = strftime( $this->elsettings->formatdate, strtotime( $eventdetails->dates )); 
-								$enddate 	= strftime( $this->elsettings->formatdate, strtotime( $eventdetails->enddates ));
-								$displaydate = $date.' - '.$enddate;
-								
+								if (redEVENTHelper::isValidDate($eventdetails->dates)) 
+								{
+									$date = strftime( $this->elsettings->formatdate, strtotime( $eventdetails->dates )); 
+									$enddate 	= strftime( $this->elsettings->formatdate, strtotime( $eventdetails->enddates ));
+									$displaydate = $date.' - '.$enddate;
+								}
+								else {
+									$displaydate = Jtext::_('OPEN DATE');
+								}
+									
 								/* Get the time */
 								$time = strftime( $this->elsettings->formattime, strtotime( $eventdetails->times ));
 								$endtimes = strftime( $this->elsettings->formattime, strtotime( $eventdetails->endtimes ));

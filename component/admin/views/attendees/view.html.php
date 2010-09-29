@@ -86,7 +86,7 @@ class RedEventViewAttendees extends JView {
 		$form      = $this->get( 'Form' );
 		$rf_fields = $this->get( 'RedFormFrontFields' );
 		
-		$event->dates = strftime($elsettings->formatdate, strtotime( $event->dates ));
+		$event->dates = redEVENTHelper::isValidDate($event->dates) ? strftime($elsettings->formatdate, strtotime( $event->dates )) : JText::_('OPEN DATE');
 		
 		//build filter selectlist
 		$datetimelocation = $this->get('DateTimeLocation');
@@ -94,15 +94,27 @@ class RedEventViewAttendees extends JView {
 		foreach ($datetimelocation as $key => $value) 
 		{
 			/* Get the date */
-			$date = strftime( $elsettings->formatdate, strtotime( $value->dates )); 
-			$enddate 	= strftime( $elsettings->formatdate, strtotime( $value->enddates ));
-			$displaydate = $date.' - '.$enddate;
+			if (redEVENTHelper::isValidDate($value->dates))
+			{
+				$date = strftime( $elsettings->formatdate, strtotime( $value->dates ));
+				$enddate 	= strftime( $elsettings->formatdate, strtotime( $value->enddates ));
+				$displaydate = $date.' - '.$enddate;
+			}
+			else {
+				$displaydate = JText::_('OPEN DATE');
+			}
 			
 			/* Get the time */
-			$time = strftime( $elsettings->formattime, strtotime( $value->times ));
-			$endtimes = strftime( $elsettings->formattime, strtotime( $value->endtimes ));
-			$displaytime = $time.' '.$elsettings->timename.' - '.$endtimes. ' '.$elsettings->timename;
-			$filters[] = JHTML::_('select.option', $value->id, $value->venue.' '.$displaydate.' '.$displaytime );
+			if ($value->times) 
+			{
+				$time = strftime( $elsettings->formattime, strtotime( $value->times ));	
+				$displaydate .= ' '. $time.$elsettings->timename;
+				if ($value->endtimes) {
+					$endtimes = strftime( $elsettings->formattime, strtotime( $value->endtimes ));
+					$displaydate .= ' - '.$endtimes.$elsettings->timename;
+				}
+			}
+			$filters[] = JHTML::_('select.option', $value->id, $value->venue.' '.$displaydate );
 		}
 		$lists['filter'] = JHTML::_('select.genericlist', $filters, 'xref', 'class="inputbox"', 'value', 'text', $event->xref );
 		
@@ -141,7 +153,7 @@ class RedEventViewAttendees extends JView {
 		$rows      	= & $this->get( 'Data');
 		$event 		= & $this->get( 'Event' );
 
-		$event->dates = strftime($elsettings->formatdate, strtotime( $event->dates ));
+		$event->dates = redEVENTHelper::isValidDate($event->dates) ? strftime($elsettings->formatdate, strtotime( $event->dates )) : JText::_('OPEN DATE');
 
 		//assign data to template
 		$this->assignRef('rows'      	, $rows);

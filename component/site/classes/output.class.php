@@ -612,8 +612,8 @@ class ELOutput {
 	{
 		$settings = & redEVENTHelper::config();
 		
-		if(!strtotime($date)) {
-			return;
+		if(!redEVENTHelper::isValidDate($date)) {
+			return JText::_('OPEN DATE');
 		}
 		
 		if(!$time) {
@@ -659,7 +659,7 @@ class ELOutput {
 	 */
 	function formatEventDateTime($event)
 	{
-		if (!self::isValidDate($event->dates)) { // open dates
+		if (!redEVENTHelper::isValidDate($event->dates)) { // open dates
 			$date = '<span class="event-date open-date">'.JText::_('OPEN DATE').'</span>';
 			return $date;
 		}
@@ -677,7 +677,7 @@ class ELOutput {
 		
 		if ($allday) 
 		{
-			if (self::isValidDate($event->enddates))
+			if (redEVENTHelper::isValidDate($event->enddates))
 			{
 				if ( strtotime($event->enddates. ' -1 day') != strtotime($event->dates)
 				    && strtotime($event->enddates) != strtotime($event->dates) ) // all day is written as midnight to midnight, so remove last day
@@ -688,7 +688,7 @@ class ELOutput {
 		}
 		else 
 		{
-			if (self::isValidDate($event->enddates) && strtotime($event->enddates) != strtotime($event->dates)) 
+			if (redEVENTHelper::isValidDate($event->enddates) && strtotime($event->enddates) != strtotime($event->dates)) 
 			{
 				$date .= ' <span class="event-end"><span class="event-day">'.self::formatdate($event->enddates, $event->endtimes).'</span>';
 				if ($settings->showtime == 1) {
@@ -704,26 +704,6 @@ class ELOutput {
 		$date .= '</span>';
 		
 		return $date;
-	}
-	
-	/**
-	 * return true is a date is valid (not null, or 0000-00...)
-	 * 
-	 * @param string $date
-	 * @return boolean
-	 */
-	function isValidDate($date)
-	{
-		if (is_null($date)) {
-			return false;
-		}
-		if ($date == '0000-00-00' || $date == '0000-00-00 00:00:00') {
-			return false;
-		}
-		if (!strtotime($date)) {
-			return false;
-		}
-		return true;		
 	}
 	
 	/**

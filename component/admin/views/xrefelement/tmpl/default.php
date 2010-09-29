@@ -79,8 +79,8 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 					//Format date
-					$date = strftime( $this->elsettings->formatdate, strtotime( $row->dates ));
-					if ( !$row->enddates ) {
+					$date = redEVENTHelper::isValidDate($row->dates) ? strftime( $this->elsettings->formatdate, strtotime( $row->dates )) : Jtext::_('OPEN DATE');
+					if ( !redEVENTHelper::isValidDate($row->enddates) ) {
 						$displaydate = $date;
 					} else {
 						$enddate 	= strftime( $this->elsettings->formatdate, strtotime( $row->enddates ));

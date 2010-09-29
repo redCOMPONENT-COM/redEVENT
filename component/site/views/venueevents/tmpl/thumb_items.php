@@ -42,7 +42,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<p class="rf_thumbevent_date">
     	<span class="dtstart"><?php echo ELOutput::formatdate($row->dates, $row->times); ?></span>    	
     	<?php
-    	if ($row->enddates && $row->enddates != '0000-00-00' && $row->enddates != $row->dates) :
+    	if (redEVENTHelper::isValidDate($row->enddates) && $row->enddates != $row->dates) :
     		echo ' - <span class="dtend">'.ELOutput::formatdate($row->enddates, $row->endtimes).'</span>';
     	endif;
     	?>

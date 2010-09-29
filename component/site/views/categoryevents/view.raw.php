@@ -73,6 +73,9 @@ class RedeventViewCategoryEvents extends JView
 		
 		foreach ( $rows as $row )
 		{					
+			if (!redEVENTHelper::isValidDate($row->dates)) { // can't put open dates in ical...
+				continue;
+			}
 			// get categories names
 			$categories = array();
 			foreach ($row->categories as $c) {

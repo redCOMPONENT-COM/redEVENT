@@ -59,7 +59,7 @@ foreach ($this->_eventlinks as $key => $event) {
 	?>
 	<tr>
 			<td class="courseinfo_name"><?php echo JHTML::_('link', $event_url, $event->title); ?></td>
-			<td class="courseinfo_date"><?php echo (empty($event->dates) ? JText::_('Open date'): ELOutput::formatdate($event->dates, $event->times)); ?></td>
+			<td class="courseinfo_date"><?php echo ELOutput::formatdate($event->dates, $event->times); ?></td>
 			<td class="courseinfo_duration"><?php echo redEVENTHelper::getEventDuration($event); ?></td>
 			<td class="courseinfo_venue"><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
 			<td class="courseinfo_country"><?php echo ELOutput::getFlag( $event->country ); ?></td>

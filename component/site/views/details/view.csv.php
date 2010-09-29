@@ -91,6 +91,9 @@ class RedeventViewDetails extends JView
 		else {
 			//$text = "no attendees";
 		}
+		if (!redEVENTHelper::isValidDate($event->dates)) {
+			$event->dates = JText::_('OPEN DATE');
+		}
 		$title = JFile::makeSafe($event->title .'_'. $event->dates .'_'. $event->venue .'.csv');
 				
 		$doc =& JFactory::getDocument();

@@ -307,7 +307,7 @@ class redEVENTHelper {
 	 */
 	function getEventDuration($event)
 	{
-		if (!$event->dates || $event->dates == '0000-00-00') {
+		if (!redEVENTHelper::isValidDate($event->dates)) {
 			return '-';
 		}
 		
@@ -551,7 +551,7 @@ class redEVENTHelper {
       $result->status = JTEXT::_('NO REGISTRATION FOR THIS EVENT');
       return $result;
     }
-    else if (!empty($event->registrationend) && $event->registrationend != '0000-00-00 00:00:00')
+    else if (redEVENTHelper::isValidDate($event->registrationend))
     {
       if ( strtotime($event->registrationend) < time() )
       {
@@ -560,7 +560,7 @@ class redEVENTHelper {
         return $result;
       }
     }
-    else if (strtotime($event->dates) && strtotime($event->dates .' '. $event->times) < time())
+    else if (redEVENTHelper::isValidDate($event->dates) && strtotime($event->dates .' '. $event->times) < time())
     {
       // it's separated from previous case so that it is not checked if a registration end was set
       $result->canregister = 0;
@@ -657,7 +657,7 @@ class redEVENTHelper {
         return false;
       }
     }
-    else if (!empty($event->dates) && strtotime($event->dates .' '. $event->times) < time())
+    else if (redEVENTHelper::isValidDate($event->dates) && strtotime($event->dates .' '. $event->times) < time())
     {
       // it's separated from previous case so that it is not checked if a registration end was set
       // REGISTRATION IS OVER
@@ -681,7 +681,7 @@ class redEVENTHelper {
     if (!$xref->registra) {
       return '-';      
     }
-    if (    (strtotime($xref->registrationend) && strtotime($xref->registrationend) < time())
+    if (    (redEVENTHelper::isValidDate($xref->registrationend) && strtotime($xref->registrationend) < time())
          || strtotime($xref->dates . ' ' . $xref->times) < time() ) 
     {
       return '-';
@@ -707,11 +707,11 @@ class redEVENTHelper {
   	      && property_exists($event, 'enddates') && property_exists($event, 'endtimes') ) ) {
   		throw new Exception('Missing object properties');
   	}
-  	if (!strtotime($event->dates)) { // open dates
+  	if (!redEVENTHelper::isValidDate($event->dates)) { // open dates
   		return false;
   	}
   	
-  	if (strtotime($event->enddates.' '.$event->endtimes)) {
+  	if (redEVENTHelper::isValidDate($event->enddates.' '.$event->endtimes)) {
   		return strtotime($event->enddates.' '.$event->endtimes) < time();
   	}
   	else {
@@ -774,5 +774,25 @@ class redEVENTHelper {
   	}
   	return false;
   }
+  	
+	/**
+	 * return true is a date is valid (not null, or 0000-00...)
+	 * 
+	 * @param string $date
+	 * @return boolean
+	 */
+	function isValidDate($date)
+	{
+		if (is_null($date)) {
+			return false;
+		}
+		if ($date == '0000-00-00' || $date == '0000-00-00 00:00:00') {
+			return false;
+		}
+		if (!strtotime($date)) {
+			return false;
+		}
+		return true;		
+	}
 }
 ?>

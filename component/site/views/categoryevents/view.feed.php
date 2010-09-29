@@ -78,12 +78,18 @@ class RedeventViewCategoryevents extends JView
 			}
 
 			//Format date
-			$date = strftime( $elsettings->formatdate, strtotime( $row->dates ));
-			if (!$row->enddates) {
-				$displaydate = $date;
-			} else {
-				$enddate 	= strftime( $elsettings->formatdate, strtotime( $row->enddates ));
-				$displaydate = $date.' - '.$enddate;
+			if (redEVENTHelper::isValidDate($row->dates))
+			{
+				$date = strftime( $elsettings->formatdate, strtotime( $row->dates ));
+				if (!redEVENTHelper::isValidDate($row->enddates)) {
+					$displaydate = $date;
+				} else {
+					$enddate 	= strftime( $elsettings->formatdate, strtotime( $row->enddates ));
+					$displaydate = $date.' - '.$enddate;
+				}
+			}
+			else {
+				$displaydate = Jtext::_('OPEN DATE');
 			}
 
 			//Format time
@@ -169,15 +175,21 @@ class RedeventViewCategoryevents extends JView
 			}
 
 			//Format date
-			$date = strftime( $elsettings->formatdate, strtotime( $row->dates ));
-			$rssstartdate = $row->dates;
-			if (!$row->enddates) {
-				$displaydate = $date;
-				$rssenddate = $row->dates;
-			} else {
-				$enddate 	= strftime( $elsettings->formatdate, strtotime( $row->enddates ));
-				$rssenddate = $row->enddates;
-				$displaydate = $date.' - '.$enddate;
+			if (redEVENTHelper::isValidDate($row->dates))
+			{
+				$date = strftime( $elsettings->formatdate, strtotime( $row->dates ));
+				$rssstartdate = $row->dates;
+				if (!redEVENTHelper::isValidDate($row->enddates)) {
+					$displaydate = $date;
+					$rssenddate = $row->dates;
+				} else {
+					$enddate 	= strftime( $elsettings->formatdate, strtotime( $row->enddates ));
+					$rssenddate = $row->enddates;
+					$displaydate = $date.' - '.$enddate;
+				}
+			}
+			else {
+				$displaydate = JText::_('OPEN DATE');
 			}
 
 			//Format time

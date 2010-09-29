@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<table class="adminlist" cellspacing="1">
 		<tr>
 		  	<td align="left">
-				<b><?php echo JText::_( 'DATE' ).':'; ?></b>&nbsp;<?php echo $this->event->dates; ?><br />
+				<b><?php echo JText::_( 'DATE' ).':'; ?></b>&nbsp;<?php echo (redEVENTHelper::isValidDate($this->event->dates) ? $this->event->dates : Jtext::_('OPEN DATE')); ?><br />
 				<b><?php echo JText::_( 'EVENT TITLE' ).':'; ?></b>&nbsp;<?php echo htmlspecialchars($this->event->title, ENT_QUOTES, 'UTF-8'); ?>
 			</td>
 		  </tr>

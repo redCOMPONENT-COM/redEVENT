@@ -72,7 +72,10 @@ class RedeventViewVenueEvents extends JView
 		$vcal->setConfig( "filename", "venue".$id.".ics" );
 		
 		foreach ( $rows as $row )
-		{					
+		{				
+			if (!redEVENTHelper::isValidDate($row->dates)) {
+				continue;
+			}	
 			// get categories names
 			$categories = array();
 			foreach ($row->categories as $c) {
