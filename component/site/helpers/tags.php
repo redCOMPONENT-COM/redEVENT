@@ -180,7 +180,8 @@ class redEVENT_tags {
 
 		// now get the list of all remaining tags
 		preg_match_all("/\[(.+?)\]/", $text, $alltags);
-				
+
+		$rfcore = new RedFormCore();
 				
 				$search = array();
 				$replace = array();
@@ -489,12 +490,38 @@ class redEVENT_tags {
       				
 				    case 'username':
 				      $search[]  = '['.$tag.']';
-      				$replace[] = JRequest::getVar('subemailname', '');
+				      $emails = $rfcore->getSubmissionContactEmail($this->_submitkey, false);
+				      if (is_array($emails) && count($emails)) {
+				      	$contact = current($emails);
+      					$replace[] = isset($contact['username']) ? $contact['username'] : '';
+				      }
+				      else {
+				  			$replace[] = '';				      	
+				      }
       				break;
       				
 				    case 'useremail':
 				      $search[]  = '['.$tag.']';
-      				$replace[] = JRequest::getVar('subemailaddress', '');
+				      $emails = $rfcore->getSubmissionContactEmail($this->_submitkey, true);
+				      if (is_array($emails) && count($emails)) {
+				      	$contact = current($emails);
+      					$replace[] = isset($contact['email']) ? $contact['email'] : '';
+				      }
+				      else {
+				  			$replace[] = '';				      	
+				      }
+      				break;
+      				
+				    case 'userfullname':
+				      $search[]  = '['.$tag.']';
+				      $emails = $rfcore->getSubmissionContactEmail($this->_submitkey, false);
+				      if (is_array($emails) && count($emails)) {
+				      	$contact = current($emails);
+      					$replace[] = isset($contact['fullname']) ? $contact['fullname'] : '';
+				      }
+				      else {
+				  			$replace[] = '';				      	
+				      }
       				break;
       				
 				    case 'regurl':
