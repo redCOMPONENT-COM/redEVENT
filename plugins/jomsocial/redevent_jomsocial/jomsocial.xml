@@ -18,6 +18,7 @@
     
   <languages>
     <language tag="en-GB">languages/en-GB.plg_redevent_jomsocial.ini</language>
+    <language tag="sv-SE">languages/sv-SE.plg_redevent_jomsocial.ini</language>
   </languages>
   
   <params>
