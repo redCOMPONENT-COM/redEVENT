@@ -201,6 +201,15 @@ class RedeventModelBaseEventList extends JModel
 		$orderby	= $this->_buildOrderBy();
 		$customs = $this->getCustomFields();
 		$xcustoms = $this->getXrefCustomFields();
+		$acl = &UserAcl::getInstance();
+		
+		$gids = $acl->getUserGroupsIds();
+		if (!is_array($gids) || !count($gids)) {
+			$gids = array(0);
+		}
+		$gids = implode(',', $gids);
+		
+		
 
 		//Get Events from Database
 		$query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, ' 
@@ -229,7 +238,10 @@ class RedeventModelBaseEventList extends JModel
 		        . ' LEFT JOIN #__redevent_venue_category_xref AS xvcat ON l.id = xvcat.venue_id'
 		        . ' LEFT JOIN #__redevent_venues_categories AS vc ON xvcat.category_id = vc.id'
             . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-	          . ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+	          . ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id '
+	          . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = l.id AND gv.group_id IN ('.$gids.')'
+	          . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = vc.id AND gvc.group_id IN ('.$gids.')'
+	          . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN ('.$gids.')'
 		        ;
 		
 		// add the custom fields tables
@@ -244,6 +256,9 @@ class RedeventModelBaseEventList extends JModel
 		}
 		
 		$query .= $where
+		       . ' AND (l.private = 0 OR gv.id IS NOT NULL) '
+		       . ' AND (c.private = 0 OR gc.id IS NOT NULL) '
+		       . ' AND (vc.private = 0 OR vc.private IS NULL OR gvc.id IS NOT NULL) '
 		       . ' GROUP BY (x.id) '
 				   . $orderby
 				   ;
@@ -357,13 +372,23 @@ class RedeventModelBaseEventList extends JModel
    */
   function _categories($rows)
   {
-    for ($i=0, $n=count($rows); $i < $n; $i++) {
+		$acl = &UserAcl::getInstance();		
+		$gids = $acl->getUserGroupsIds();
+		if (!is_array($gids) || !count($gids)) {
+			$gids = array(0);
+		}
+		$gids = implode(',', $gids);
+		
+    for ($i=0, $n=count($rows); $i < $n; $i++) 
+    {
       $query =  ' SELECT c.id, c.catname, '
               . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
               . ' FROM #__redevent_categories as c '
               . ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
+	            . '  LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id '
               . ' WHERE c.published = 1 '
               . '   AND x.event_id = ' . $this->_db->Quote($rows[$i]->id)
+              . '   AND (c.private = 0 OR gc.group_id IN ('.$gids.')) '
               . ' ORDER BY c.ordering'
               ;
       $this->_db->setQuery( $query );

@@ -155,26 +155,39 @@ class RedeventModelCalendar extends JModel
      */
     function _buildQuery()
     {
-        // Get the WHERE clauses for the query
-        $where = $this->_buildWhere();
+			$acl = UserAcl::getInstance();
+			
+			$gids = $acl->getUserGroupsIds();
+			if (!is_array($gids) || !count($gids)) {
+				$gids = array(0);
+			}
+			$gids = implode(',', $gids);
+		
+			// Get the WHERE clauses for the query
+			$where = $this->_buildWhere();
 
-        //Get Events from Database
-        $query = ' SELECT DATEDIFF(x.enddates, x.dates) AS datediff, a.id, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, '
-               . ' a.title, x.venueid as locid, a.datdescription, a.created, l.venue, l.city, l.state, l.url, x.featured, '
-               . ' DAYOFMONTH(x.dates) AS start_day, YEAR(x.dates) AS start_year, MONTH(x.dates) AS start_month,'
-               . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug,'
-               . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug'
-               . ' FROM #__redevent_events AS a'
-               . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id '
-               . ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
-               . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-               . ' INNER JOIN #__redevent_categories AS cat ON cat.id = xcat.category_id'
-               . $where
-               . ' GROUP BY x.id '
-        		   . ' ORDER BY x.dates, x.times'
-               ;
+			//Get Events from Database
+			$query = ' SELECT DATEDIFF(x.enddates, x.dates) AS datediff, a.id, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, '
+			       . ' a.title, x.venueid as locid, a.datdescription, a.created, l.venue, l.city, l.state, l.url, x.featured, '
+			       . ' DAYOFMONTH(x.dates) AS start_day, YEAR(x.dates) AS start_year, MONTH(x.dates) AS start_month,'
+			       . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug,'
+			       . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug'
+			       . ' FROM #__redevent_events AS a'
+			       . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id '
+			       . ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
+		         . ' LEFT JOIN #__redevent_venue_category_xref AS xvcat ON l.id = xvcat.venue_id'
+		         . ' LEFT JOIN #__redevent_venues_categories AS vc ON xvcat.category_id = vc.id'
+			       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+			       . ' INNER JOIN #__redevent_categories AS cat ON cat.id = xcat.category_id'
+			       . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = l.id AND gv.group_id IN ('.$gids.')'
+			       . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = vc.id AND gvc.group_id IN ('.$gids.')'
+			       . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = cat.id AND gc.group_id IN ('.$gids.')'
+			       . $where
+			       . ' GROUP BY x.id '
+			       . ' ORDER BY x.dates, x.times'
+			;
 
-        return $query;
+			return $query;
     }
 
     /**
@@ -236,6 +249,11 @@ class RedeventModelCalendar extends JModel
             JError::raiseWarning(0, JText::_('CATEGORY NOT FOUND'));
           }
         }
+        
+        // acl
+				$where[] = ' (l.private = 0 OR gv.id IS NOT NULL) ';
+		    $where[] = ' (cat.private = 0 OR gc.id IS NOT NULL) ';
+		    $where[] = ' (vc.private = 0 OR vc.private IS NULL OR gvc.id IS NOT NULL) ';
 
         return ' WHERE '.implode(' AND ', $where);
     }

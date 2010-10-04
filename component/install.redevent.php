@@ -37,6 +37,7 @@ jimport( 'joomla.filesystem.folder' );
 $db = JFactory::getDBO();
 $tables = array( '#__redevent_events', 
                  '#__redevent_venues',
+                 '#__redevent_venues_categories',
                  '#__redevent_settings',
                  '#__redevent_event_venue_xref',
                  '#__redevent_register',
@@ -256,6 +257,26 @@ if (is_array($cols))
     $db->setQuery($q);
     $db->query();
   }  
+  
+  /* category event template */
+  if (!array_key_exists('private', $cols)) {
+    $q = "ALTER IGNORE TABLE #__redevent_venues ADD COLUMN `private` TINYINT(1) NOT NULL DEFAULT 0";
+    $db->setQuery($q);
+    $db->query();    
+  }
+}
+
+/* Get the venues categories table columns */
+$cols = $tables['#__redevent_venues_categories'];
+
+if (is_array($cols)) 
+{  
+  /* category event template */
+  if (!array_key_exists('private', $cols)) {
+    $q = "ALTER IGNORE TABLE #__redevent_venues_categories ADD COLUMN `private` TINYINT(1) NOT NULL DEFAULT 0";
+    $db->setQuery($q);
+    $db->query();    
+  }
 }
 
 /* Get the current columns */
@@ -583,6 +604,13 @@ if (is_array($cols)) {
   /* category event template */
   if (!array_key_exists('event_template', $cols)) {
     $q = "ALTER IGNORE TABLE #__redevent_categories ADD COLUMN `event_template` INT(11) NOT NULL DEFAULT 0";
+    $db->setQuery($q);
+    $db->query();    
+  }
+  
+  /* category event template */
+  if (!array_key_exists('private', $cols)) {
+    $q = "ALTER IGNORE TABLE #__redevent_categories ADD COLUMN `private` TINYINT(1) NOT NULL DEFAULT 0";
     $db->setQuery($q);
     $db->query();    
   }

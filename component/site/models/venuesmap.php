@@ -145,6 +145,13 @@ class RedEventModelVenuesmap extends JModel
     $customs = $app->getUserState('com_redevent.venuesmap.customs');
     $params = $app->getParams();
         
+		$acl = &UserAcl::getInstance();		
+		$gids = $acl->getUserGroupsIds();
+		if (!is_array($gids) || !count($gids)) {
+			$gids = array(0);
+		}
+		$gids = implode(',', $gids);
+		
 		//check archive task
 		$task 	= JRequest::getVar('task', '', '', 'string');
 		if($task == 'archive') {
@@ -157,6 +164,10 @@ class RedEventModelVenuesmap extends JModel
 		$query = 'SELECT v.*, COUNT(x.id) AS assignedevents,'
 						. ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as slug'
 						. ' FROM #__redevent_venues as v'
+						. ' LEFT JOIN #__redevent_venue_category_xref AS xvcat ON xvcat.venue_id = v.id '
+            . ' LEFT JOIN #__redevent_venues_categories AS vcat ON vcat.id = xvcat.category_id '        
+            . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = v.id '
+            . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = vcat.id '
 						;
 		if ($params->get('show_empty_venues', 0)) {
 		  $query .= ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.venueid = v.id'. $eventstate;
@@ -174,9 +185,7 @@ class RedEventModelVenuesmap extends JModel
     }
 		if ($vcat)
 		{
-			$query .= ' INNER JOIN #__redevent_venue_category_xref AS xvcat ON xvcat.venue_id = v.id '
-              . ' INNER JOIN #__redevent_venues_categories AS vcat ON vcat.id = xvcat.category_id '
-							. ' INNER JOIN #__redevent_venues_categories AS top ON vcat.lft BETWEEN top.lft AND top.rgt '
+			$query .= ' INNER JOIN #__redevent_venues_categories AS top ON vcat.lft BETWEEN top.lft AND top.rgt '
 							;
 		}
 		foreach ((array) $customs as $key => $custom)
@@ -187,7 +196,10 @@ class RedEventModelVenuesmap extends JModel
 		}
 		// where
 		$query .= ' WHERE v.published = 1 '
-				;
+		        . '   AND (v.private = 0 OR gv.group_id IN ('.$gids.')) '
+		        . '   AND (vcat.private = 0 OR vcat.private IS NULL OR gvc.group_id IN ('.$gids.')) '
+		        ;
+		        
     if ($cat)
     {
       $query .= ' AND topcat.id = ' . $this->_db->Quote($cat);

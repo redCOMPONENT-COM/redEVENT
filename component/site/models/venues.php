@@ -251,6 +251,13 @@ class RedeventModelVenues extends JModel
       $filter .= ' AND c.lft BETWEEN '. $this->_db->Quote($this->_category->lft) .' AND '. $this->_db->Quote($this->_category->rgt);
     }
 		
+		$acl = &UserAcl::getInstance();		
+		$gids = $acl->getUserGroupsIds();
+		if (!is_array($gids) || !count($gids)) {
+			$gids = array(0);
+		}
+		$gids = implode(',', $gids);
+		
 		//get venues
 		$query = 'SELECT v.*, v.id as venueid, COUNT( x.eventid ) AS assignedevents,'
         . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as slug '
@@ -258,7 +265,13 @@ class RedeventModelVenues extends JModel
 				. ' LEFT JOIN #__redevent_event_venue_xref AS x ON v.id = x.venueid '. $eventstate
 				. ' LEFT JOIN #__redevent_venue_category_xref AS xc ON xc.venue_id = v.id '
         . ' LEFT JOIN #__redevent_venues_categories AS c ON c.id = xc.category_id '
+        
+        . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = v.id '
+        . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = c.id '
+        
 				. ' WHERE v.published = 1'
+        . '   AND (v.private = 0 OR gv.group_id IN ('.$gids.')) '
+        . '   AND (c.private = 0 OR c.private IS NULL OR gvc.group_id IN ('.$gids.')) '
 				. $filter
 				. ' GROUP BY v.id'
 				. ' ORDER BY v.venue'

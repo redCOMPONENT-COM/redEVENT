@@ -286,11 +286,21 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		$vcat = JRequest::getVar('filter_venuecategory');
 		$city =   $app->getUserState('com_redevent.search.filter_city');
 		
+		$acl = &UserAcl::getInstance();		
+		$gids = $acl->getUserGroupsIds();
+		if (!is_array($gids) || !count($gids)) {
+			$gids = array(0);
+		}
+		$gids = implode(',', $gids);
+		
 		$query = ' SELECT v.id AS value, '
            . ' CASE WHEN CHAR_LENGTH(v.city) THEN CONCAT_WS(\' - \', v.venue, v.city) ELSE v.venue END as text '
 		       . ' FROM #__redevent_venues AS v '
 		       . ' LEFT JOIN #__redevent_venue_category_xref AS xcat ON xcat.venue_id = v.id '
 		       . ' LEFT JOIN #__redevent_venues_categories AS vcat ON vcat.id = xcat.category_id '
+		       
+		       . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = v.id AND gv.group_id IN ('.$gids.')'
+		       . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = vcat.id AND gvc.group_id IN ('.$gids.')'
 		       ;
 		$where = array();
     if ($vcat) {
@@ -300,6 +310,10 @@ class RedeventModelSearch extends RedeventModelBaseEventList
     if ($city) {
     	$where[] = ' v.city = '.$this->_db->Quote($city);
     }
+    //acl
+		$where[] = ' (v.private = 0 OR gv.id IS NOT NULL) ';
+		$where[] = ' (vcat.private = 0 OR gvc.id IS NOT NULL) ';
+		
     if (count($where)) {
     	$query .= ' WHERE '. implode(' AND ', $where);
     }
@@ -375,6 +389,13 @@ class RedeventModelSearch extends RedeventModelBaseEventList
     $filter_venuecategory = JRequest::getVar('filter_venuecategory');
 		$filter_venue = JRequest::getVar('filter_venue');
 		$task 		= JRequest::getWord('task');
+		
+		$acl = &UserAcl::getInstance();		
+		$gids = $acl->getUserGroupsIds();
+		if (!is_array($gids) || !count($gids)) {
+			$gids = array(0);
+		}
+		$gids = implode(',', $gids);
 			
 		//Get Events from Database
 		$query  = ' SELECT c.id '
@@ -385,6 +406,10 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		        . ' LEFT JOIN #__redevent_venues_categories AS vc ON xvcat.category_id = vc.id'
             . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
 	          . ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+	          
+	          . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = l.id AND gv.group_id IN ('.$gids.')'
+	          . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = vc.id AND gvc.group_id IN ('.$gids.')'
+	          . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN ('.$gids.')'
 		        ;	
 		
 		$where = array();		
@@ -404,6 +429,10 @@ class RedeventModelSearch extends RedeventModelBaseEventList
     {
     	$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);    	
     }
+    //acl
+		$where[] = ' (l.private = 0 OR gv.id IS NOT NULL) ';
+		$where[] = ' (c.private = 0 OR gc.id IS NOT NULL) ';
+		$where[] = ' (vc.private = 0 OR vc.private IS NULL OR gvc.id IS NOT NULL) ';
     
     if (count($where)) {
     	$query .= ' WHERE '. implode(' AND ', $where);
@@ -426,9 +455,18 @@ class RedeventModelSearch extends RedeventModelBaseEventList
     $filter_venuecategory = JRequest::getVar('filter_venuecategory');
     $filter_category = JRequest::getVar('filter_category');
     
+		$acl = &UserAcl::getInstance();		
+		$gids = $acl->getUserGroupsIds();
+		if (!is_array($gids) || !count($gids)) {
+			$gids = array(0);
+		}
+		$gids = implode(',', $gids);
+		
 		$query = ' SELECT id, catname, lft, rgt '
 		       . ' FROM #__redevent_categories '
+		       . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN ('.$gids.')'
 		       . ' WHERE id = '. $this->_db->Quote($id)
+		       . '   AND (c.private = 0 OR gc.id IS NOT NULL) '
 		            ;
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObject();
@@ -442,9 +480,11 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	 */
 	function getVenueCategory($id)
 	{
-		$query = ' SELECT id, name, lft, rgt '
-		       . ' FROM #__redevent_venues_categories '
+		$query = ' SELECT vc.id, vc.name, vc.lft, vc.rgt '
+		       . ' FROM #__redevent_venues_categories as vc '
+		       . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = vc.id AND gvc.group_id IN ('.$gids.')'
 		       . ' WHERE id = '. $this->_db->Quote($id)
+		       . '   AND (vc.private = 0 OR vc.private IS NULL OR gvc.id IS NOT NULL) '
 		            ;
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObject();

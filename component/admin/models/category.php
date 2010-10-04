@@ -172,6 +172,7 @@ class RedEventModelCategory extends JModel
 			$category->access				= 0;
 			$category->event_template = 0;
 			$category->event_template_name = '';
+			$category->private			= 0;
 			$this->_data					= $category;
 			return (boolean) $this->_data;
 		}

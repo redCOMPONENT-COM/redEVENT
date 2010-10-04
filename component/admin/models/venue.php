@@ -180,6 +180,7 @@ class RedEventModelVenue extends JModel
 			$venue->times 				= null;
 			$venue->endtimes			= null;
       $venue->categories    = null;
+			$venue->private			= 0;
 			$this->_data				= $venue;
 			return (boolean) $this->_data;
 		}

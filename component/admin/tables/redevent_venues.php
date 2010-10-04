@@ -66,6 +66,8 @@ class RedEvent_venues extends JTable
 	/** @var string */
 	var $locimage 			= null;
 	/** @var int */
+	var $private			= 0;
+	/** @var int */
 	var $map		 		= null;
 	/** @var int */
 	var $created_by			= null;

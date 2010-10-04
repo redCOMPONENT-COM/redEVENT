@@ -182,6 +182,13 @@ class RedeventModelCategories extends JModel
     $params   = & $mainframe->getParams('com_redevent');
 		$user		= & JFactory::getUser();
 		$gid		= (int) $user->get('aid');
+		
+		$acl = &UserAcl::getInstance();		
+		$gids = $acl->getUserGroupsIds();
+		if (!is_array($gids) || !count($gids)) {
+			$gids = array(0);
+		}
+		$gids = implode(',', $gids);
 
 		//check archive task and ensure that only categories get selected if they contain a published/archived event
 		$task 	= JRequest::getVar('task', '', '', 'string');
@@ -204,6 +211,9 @@ class RedeventModelCategories extends JModel
           . ' LEFT JOIN #__redevent_categories AS child ON child.lft BETWEEN c.lft AND c.rgt '
           . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = child.id '
           . ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = xcat.event_id '
+          
+	        . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN ('.$gids.')'
+	        
           . ' WHERE child.published = 1 '
           . '   AND child.access <= '.$gid
           .     $eventstate
@@ -212,6 +222,7 @@ class RedeventModelCategories extends JModel
       if ($this->_parent) {
         $query .= ' AND c.parent_id = '. $this->_db->Quote($this->_parent->id);      
       }
+      $query .= ' AND (c.private = 0 OR gc.id IS NOT NULL) ';
       
       $query .= '   GROUP BY c.id '; 
       

@@ -435,6 +435,21 @@ class UserAcl {
 	}
 	
 	/**
+	 * return user group ids
+	 * 
+	 * @return array
+	 */
+	function getUserGroupsIds()
+	{
+		$res = array();
+		$groups = $this->getUserGroups();
+		foreach ($groups as $g) {
+			$res[] = $g->group_id;
+		}
+		return $res;
+	}
+	
+	/**
 	 * returns default group if set
 	 * 
 	 * return object or false

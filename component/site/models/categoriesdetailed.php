@@ -199,6 +199,13 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 		$user		= & JFactory::getUser();
 		$aid		= (int) $user->get('aid');
 		
+		$acl = &UserAcl::getInstance();
+		$gids = $acl->getUserGroupsIds();
+		if (!is_array($gids) || !count($gids)) {
+			$gids = array(0);
+		}
+		$gids = implode(',', $gids);
+		
 		$task 		= JRequest::getWord('task');
 		$customs = $this->getCustomFields();
 		$xcustoms = $this->getXrefCustomFields();
@@ -210,6 +217,10 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 		} else {
 			$where .= ' AND x.published = 1 ';
 		}
+		$where .= ' AND (l.private = 0 OR gv.id IS NOT NULL) '
+		        . ' AND (c.private = 0 OR gc.id IS NOT NULL) '
+		        . ' AND (vc.private = 0 OR vc.private IS NULL OR gvc.id IS NOT NULL) '
+		        ;
 
 		//Get Events from Category				
     $query = 'SELECT a.id, a.datimage, x.venueid, x.dates, x.enddates, x.times, x.endtimes, x.id AS xref, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, '
@@ -231,8 +242,13 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
     $query .= ' FROM #__redevent_events AS a'
         . ' INNER JOIN #__redevent_event_venue_xref AS x on x.eventid = a.id'
         . ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
+		    . ' LEFT  JOIN #__redevent_venue_category_xref AS xvcat ON l.id = xvcat.venue_id'
+		    . ' LEFT  JOIN #__redevent_venues_categories AS vc ON xvcat.category_id = vc.id'
         . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
         . ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+        . ' LEFT  JOIN #__redevent_groups_venues AS gv ON gv.venue_id = l.id AND gv.group_id IN ('.$gids.')'
+        . ' LEFT  JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = vc.id AND gvc.group_id IN ('.$gids.')'
+        . ' LEFT  JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN ('.$gids.')'
         ;
 		// add the custom fields tables
 		foreach ((array) $customs as $c)
@@ -264,6 +280,13 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
     $params   = & $mainframe->getParams('com_redevent');
 		$user		= & JFactory::getUser();
 		$gid 		= (int) $user->get('aid');
+		
+		$acl = &UserAcl::getInstance();		
+		$gids = $acl->getUserGroupsIds();
+		if (!is_array($gids) || !count($gids)) {
+			$gids = array(0);
+		}
+		$gids = implode(',', $gids);
 
     //get categories
     if ($params->get('display_all_categories', 1)) 
@@ -271,7 +294,9 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
       $query = ' SELECT c.*, '
             . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug'
             . ' FROM #__redevent_categories AS c '
+	          . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN ('.$gids.')'
             . ' WHERE c.published = 1 '
+            . ' AND (c.private = 0 OR gc.id IS NOT NULL) '
             ;        
       if ($this->_parent) {
         $query .= ' AND c.parent_id = '. $this->_db->Quote($this->_parent->id);     
@@ -293,8 +318,10 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
           . ' INNER JOIN #__redevent_categories AS child ON child.lft BETWEEN c.lft AND c.rgt '
           . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = child.id '
           . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = xcat.event_id '
+	        . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN ('.$gids.')'
           . ' WHERE child.published = 1 '
           . '   AND child.access <= '.$gid
+          . '   AND (c.private = 0 OR gc.id IS NOT NULL) '
           .     $eventstate
           ;  
       

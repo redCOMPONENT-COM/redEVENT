@@ -144,6 +144,18 @@ function submitbutton(pressbutton)
 						?>
 					</td>
 				</tr>
+				<tr>
+					<td>
+						<label for="private" class="hasTip" title="<?php echo JText::_('COM_REDEVENT_CATEGORY_PRIVATE_LABEL').'::'.JText::_('COM_REDEVENT_CATEGORY_PRIVATE_TIP'); ?>">
+							<?php echo JText::_( 'COM_REDEVENT_CATEGORY_PRIVATE_LABEL' ).':'; ?>
+						</label>
+					</td>
+					<td>
+						<?php
+						echo JHTML::_('select.booleanlist', 'private', '', $this->row->private);
+						?>
+					</td>
+				</tr>
 			</table>
 			<?php
 			echo $this->pane->endPanel();

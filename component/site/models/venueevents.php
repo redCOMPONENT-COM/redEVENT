@@ -165,6 +165,15 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 
 		$this->_db->setQuery( $query );
 		$_venue = $this->_db->loadObject();
+			
+		if ($_venue->private)
+		{
+			$acl = &UserAcl::getInstance();
+			$cats = $acl->getManagedVenues();
+			if (!is_array($cats) || !in_array($_venue->id, $cats)) {
+				JError::raiseError(403, JText::_('COM_REDEVENT_ACCESS_NOT_ALLOWED'));
+			}
+		}			
 
 		return $_venue;
 	}

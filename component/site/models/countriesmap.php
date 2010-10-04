@@ -116,6 +116,13 @@ class RedeventModelCountriesmap extends JModel
 	 */
 	function _buildQuery()
 	{
+		$acl = &UserAcl::getInstance();
+		$gids = $acl->getUserGroupsIds();
+		if (!is_array($gids) || !count($gids)) {
+			$gids = array(0);
+		}
+		$gids = implode(',', $gids);
+		
 		//check archive task
 		$task 	= JRequest::getVar('task', '', '', 'string');
 		if($task == 'archive') {
@@ -129,9 +136,19 @@ class RedeventModelCountriesmap extends JModel
 				. ' CONCAT_WS(\':\', c.id, c.iso2) as slug'
 				. ' FROM #__redevent_countries as c'
 				. ' INNER JOIN #__redevent_venues as v ON v.country = c.iso2'
+				. '  LEFT JOIN #__redevent_venue_category_xref AS xvcat ON v.id = xvcat.venue_id'
+				. '  LEFT JOIN #__redevent_venues_categories AS vc ON xvcat.category_id = vc.id'
 				. ' INNER JOIN #__redevent_event_venue_xref AS x ON x.venueid = v.id'
+				
+				. ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = v.id AND gv.group_id IN ('.$gids.')'
+				. ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = vc.id AND gvc.group_id IN ('.$gids.')'
+				. ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN ('.$gids.')'
+				
 				. ' WHERE v.published = 1'
         . '   AND v.latitude <> 0 AND v.longitude <> 0 '
+        . '   AND (l.private = 0 OR gv.id IS NOT NULL) '
+        . '   AND (c.private = 0 OR gc.id IS NOT NULL) '
+        . '   AND (vc.private = 0 OR vc.private IS NULL OR gvc.id IS NOT NULL) '
 				. $eventstate
 				. ' GROUP BY c.id'
         . ' ORDER BY c.name'

@@ -54,6 +54,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<th width="1%" nowrap="nowrap"><?php echo JText::_( 'EVENTS' ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JText::_( 'PUBLISHED' ); ?></th>
 			<th width="7%"><?php echo JHTML::_('grid.sort', 'ACCESS', 'c.access', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th width="7%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_LABEL_PRIVATE', 'c.private', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="80"><?php echo JHTML::_('grid.sort', 'REORDER', 'c.ordering', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="1%"><?php echo JHTML::_('grid.order', $this->rows, 'filesave.png', 'saveordercat' ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'ID', 'c.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
@@ -62,7 +63,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 	<tfoot>
 		<tr>
-			<td colspan="13">
+			<td colspan="14">
 				<?php echo $this->pageNav->getListFooter(); ?>
 			</td>
 		</tr>
@@ -137,6 +138,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</td>
 			<td align="center">
 				<?php echo $access; ?>
+			</td>
+			<td align="center">
+				<?php echo $row->private ? JHTML::image('administrator/images/tick.png', JText::_('COM_REDEVENT_LABEL_PRIVATE')) : ''; ?>
 			</td>
 			<td class="order" colspan="2">
 				<span><?php echo $this->pageNav->orderUpIcon( $i, true, 'orderup', 'Move Up', $this->ordering ); ?></span>

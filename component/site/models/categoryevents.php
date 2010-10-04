@@ -99,6 +99,13 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
     $orderby  = $this->_buildCategoryOrderBy();
 		$customs  = $this->getCustomFields();
 		$xcustoms = $this->getXrefCustomFields();
+		
+		$acl = &UserAcl::getInstance();
+		$gids = $acl->getUserGroupsIds();
+		if (!is_array($gids) || !count($gids)) {
+			$gids = array(0);
+		}
+		$gids = implode(',', $gids);
 
     //Get Events from Database
     $query = 'SELECT a.id, a.datimage, x.dates, x.enddates, x.times, x.endtimes, x.id AS xref, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.featured, '
@@ -120,8 +127,14 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
     $query .= ' FROM #__redevent_events AS a'
         . ' INNER JOIN #__redevent_event_venue_xref AS x on x.eventid = a.id'
         . ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
+        . '  LEFT JOIN #__redevent_venue_category_xref AS xvcat ON l.id = xvcat.venue_id'
+        . '  LEFT JOIN #__redevent_venues_categories AS vc ON xvcat.category_id = vc.id'
         . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
         . ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+        // acl
+        . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = l.id AND gv.group_id IN ('.$gids.')'
+        . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = vc.id AND gvc.group_id IN ('.$gids.')'
+        . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN ('.$gids.')'
 		    ;
   
 		// add the custom fields tables
@@ -223,6 +236,9 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
 				}
 			}
 		}
+		$where[] = ' (l.private = 0 OR gv.id IS NOT NULL) ';
+		$where[] = ' (c.private = 0 OR gc.id IS NOT NULL) ';
+		$where[] = ' (vc.private = 0 OR vc.private IS NULL OR gvc.id IS NOT NULL) ';
 		return ' WHERE ' . implode(' AND ', $where);
 	}
 
@@ -234,14 +250,24 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
 	 */
 	function getCategory( ) 
 	{
-		if (!$this->_category) {
-		$query = 'SELECT *,'
-				.' CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\', id, alias) ELSE id END as slug'
-				.' FROM #__redevent_categories'
-				.' WHERE id = '.$this->_id;
-
-		$this->_db->setQuery( $query );
-		$this->_category = $this->_db->loadObject();
+		if (!$this->_category) 
+		{
+			$query = 'SELECT *,'
+					.' CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\', id, alias) ELSE id END as slug'
+					.' FROM #__redevent_categories'
+					.' WHERE id = '.$this->_id;
+	
+			$this->_db->setQuery( $query );
+			$this->_category = $this->_db->loadObject();
+		
+			if ($this->_category->private)
+			{
+				$acl = &UserAcl::getInstance();
+				$cats = $acl->getManagedCategories();
+				if (!is_array($cats) || !in_array($this->_category->id, $cats)) {
+					JError::raiseError(403, JText::_('COM_REDEVENT_ACCESS_NOT_ALLOWED'));
+				}
+			}		
 		}
 		
 		return $this->_category;

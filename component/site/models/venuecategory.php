@@ -110,10 +110,16 @@ class RedeventModelVenuecategory extends RedeventModelBaseEventList {
         . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
         . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug '
         . ' FROM #__redevent_events AS a'
+        . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+        . ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id '
         . ' INNER JOIN #__redevent_event_venue_xref AS x on x.eventid = a.id'
         . ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
         . ' INNER JOIN #__redevent_venue_category_xref AS vref ON vref.venue_id = l.id'
         . ' INNER JOIN #__redevent_venues_categories AS vcat ON vref.category_id = vcat.id'
+        
+        . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = l.id '
+        . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = vcat.id '
+        . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id '
         . $where
         . ' GROUP BY (x.id) '
         . $orderby
@@ -154,6 +160,13 @@ class RedeventModelVenuecategory extends RedeventModelBaseEventList {
 
 		// Get the paramaters of the active menu item
 		$params 	= & $mainframe->getParams();
+		
+		$acl = &UserAcl::getInstance();		
+		$gids = $acl->getUserGroupsIds();
+		if (!is_array($gids) || !count($gids)) {
+			$gids = array(0);
+		}
+		$gids = implode(',', $gids);
 
 		$task 		= JRequest::getWord('task');
 
@@ -170,7 +183,12 @@ class RedeventModelVenuecategory extends RedeventModelBaseEventList {
 
 		// Second is to only select events assigned to category the user has access to
 		$where[] = ' vcat.access <= '.$gid;
-
+		
+    //acl
+		$where[] = ' (c.private = 0 OR gc.group_id IN ('.$gids.')) ';
+		$where[] = ' (l.private = 0 OR gv.group_id IN ('.$gids.')) ';
+		$where[] = ' (vcat.private = 0 OR vcat.private IS NULL OR gvc.group_id IN ('.$gids.')) ';
+		
 		/*
 		 * If we have a filter, and this is enabled... lets tack the AND clause
 		 * for the filter onto the WHERE clause of the content item query.
@@ -214,14 +232,24 @@ class RedeventModelVenuecategory extends RedeventModelBaseEventList {
 	 */
 	function getCategory( ) 
 	{
-		if (!$this->_category) {
-		$query = 'SELECT *,'
-				.' CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\', id, alias) ELSE id END as slug'
-				.' FROM #__redevent_venues_categories'
-				.' WHERE id = '.$this->_id;
-
-		$this->_db->setQuery( $query );
-		$this->_category = $this->_db->loadObject();
+		if (!$this->_category) 
+		{
+			$query = 'SELECT *,'
+					.' CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\', id, alias) ELSE id END as slug'
+					.' FROM #__redevent_venues_categories'
+					.' WHERE id = '.$this->_id;
+	
+			$this->_db->setQuery( $query );
+			$this->_category = $this->_db->loadObject();
+			
+			if ($this->_category->private)
+			{
+				$acl = &UserAcl::getInstance();
+				$cats = $acl->getManagedVenuesCategories();
+				if (!is_array($cats) || !in_array($this->_category->id, $cats)) {
+					JError::raiseError(403, JText::_('COM_REDEVENT_ACCESS_NOT_ALLOWED'));
+				}
+			}			
 		}
 		
 		return $this->_category;

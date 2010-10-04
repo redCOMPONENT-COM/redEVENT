@@ -49,6 +49,7 @@ defined('_JEXEC') or die('Restricted access');
 			<th><?php echo JHTML::_('grid.sort', 'CITY', 'l.city', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
       <th><?php echo JText::_( 'CATEGORY' ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JText::_( 'PUBLISHED' ); ?></th>
+			<th><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_LABEL_PRIVATE', 'l.private', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th><?php echo JText::_( 'CREATION' ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JText::_( 'EVENTS' ); ?></th>
 		    <th width="80" colspan="2"><?php echo JHTML::_('grid.sort', 'REORDER', 'l.ordering', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
@@ -58,7 +59,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	<tfoot>
 		<tr>
-			<td colspan="13">
+			<td colspan="14">
 				<?php echo $this->pageNav->getListFooter(); ?>
 			</td>
 		</tr>
@@ -142,6 +143,9 @@ defined('_JEXEC') or die('Restricted access');
           ?>
         </td>
 			<td align="center"><?php echo $published; ?></td>
+			<td align="center">
+				<?php echo $row->private ? JHTML::image('administrator/images/tick.png', JText::_('COM_REDEVENT_LABEL_PRIVATE')) : ''; ?>
+			</td>
 			<td>
 				<?php echo JText::_( 'AUTHOR' ).': '; ?><a href="<?php echo 'index.php?option=com_users&amp;task=edit&amp;hidemainmenu=1&amp;cid[]='.$row->created_by; ?>"><?php echo $row->author; ?></a><br />
 				<?php echo JText::_( 'EMAIL' ).': '; ?><a href="mailto:<?php echo $row->email; ?>"><?php echo $row->email; ?></a><br />

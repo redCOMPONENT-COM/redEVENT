@@ -303,8 +303,28 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 	</table>
 	<?php
-	$title = JText::_( 'METADATA INFORMATION' );
 	echo $this->pane->endPanel();
+	$title = JText::_( 'ACCESS' );
+	echo $this->pane->startPanel( $title, 'access' );
+	?>
+	<table>
+		<tr>
+			<td>
+				<label for="private" class="hasTip" title="<?php echo JText::_('COM_REDEVENT_VENUE_PRIVATE_LABEL').'::'.JText::_('COM_REDEVENT_VENUE_PRIVATE_TIP'); ?>">
+					<?php echo JText::_( 'COM_REDEVENT_VENUE_PRIVATE_LABEL' ).':'; ?>
+				</label>
+			</td>
+			<td>
+				<?php
+				echo JHTML::_('select.booleanlist', 'private', '', $this->row->private);
+				?>
+			</td>
+		</tr>
+	</table>
+	<?php
+	echo $this->pane->endPanel();
+	
+	$title = JText::_( 'METADATA INFORMATION' );
 	echo $this->pane->startPanel( $title, 'metadata' );
 	?>
 	<table>

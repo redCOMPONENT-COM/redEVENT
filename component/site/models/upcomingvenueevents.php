@@ -43,24 +43,44 @@ class RedeventModelUpcomingVenueevents extends JModel {
 		parent::__construct();
 	}
 	
-	public function getUpcomingVenueEvents() {
+	public function getUpcomingVenueEvents() 
+	{
 		global $mainframe;
 		
 		$db = JFactory::getDBO();
 		$params = $mainframe->getParams();
 		
-		$q = "SELECT e.*, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, x.course_price, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, v.venue, x.venueid,
-					v.city AS location, v.id AS venueid, v.country,
-          CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(':', e.id, e.alias) ELSE e.id END as slug, 
-          CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(':', v.id, v.alias) ELSE v.id END as venueslug 
-			FROM #__redevent_venues v
-			LEFT JOIN #__redevent_event_venue_xref x
-			ON x.venueid = v.id
-			LEFT JOIN #__redevent_events e
-			ON x.eventid = e.id
-			WHERE x.published = 1
-			AND x.venueid = ".JRequest::getInt('id')." 
-			ORDER BY x.dates ";
+		$acl = &UserAcl::getInstance();
+		$gids = $acl->getUserGroupsIds();
+		if (!is_array($gids) || !count($gids)) {
+			$gids = array(0);
+		}
+		$gids = implode(',', $gids);
+		
+		$q = ' SELECT e.*, IF (x.course_credit = 0, "", x.course_credit) AS course_credit, '
+		   . '        x.course_price, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, v.venue, x.venueid, '
+		   . '        v.city AS location, v.id AS venueid, v.country, '
+		   . '        CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(":", e.id, e.alias) ELSE e.id END as slug, '
+		   . '        CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(":", v.id, v.alias) ELSE v.id END as venueslug '
+		   . ' FROM #__redevent_venues v '
+		   . ' LEFT JOIN #__redevent_venue_category_xref AS xvcat ON v.id = xvcat.venue_id'
+		   . ' LEFT JOIN #__redevent_venues_categories AS vc ON xvcat.category_id = vc.id'
+		   
+		   . ' LEFT JOIN #__redevent_event_venue_xref x ON x.venueid = v.id '
+		   . ' LEFT JOIN #__redevent_events e ON x.eventid = e.id '
+		   . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id'
+		   . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id '
+		   
+		   . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = v.id AND gv.group_id IN ('.$gids.')'
+		   . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = vc.id AND gvc.group_id IN ('.$gids.')'
+		   . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN ('.$gids.')'
+		   
+		   . ' WHERE x.published = 1 '
+		   . '   AND x.venueid = '.JRequest::getInt('id')
+		   . '   AND (v.private = 0 OR gv.id IS NOT NULL) '
+		   . '   AND (c.private = 0 OR gc.id IS NOT NULL) '
+		   . '   AND (vc.private = 0 OR vc.private IS NULL OR gvc.id IS NOT NULL) '
+		   . ' ORDER BY x.dates ';
 		$db->setQuery($q);
 		return $db->loadObjectList();
 	}
