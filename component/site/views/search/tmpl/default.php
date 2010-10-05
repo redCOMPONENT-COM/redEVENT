@@ -159,6 +159,17 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         </td>
       </tr>
     	<?php endif; ?>
+    	
+    	<?php foreach ($this->customsfilters as $custom): ?>
+      <tr>
+        <td>
+          <?php echo '<label for="filtercustom'.$custom->id.'">'.JText::_($custom->name).'</label>&nbsp;'; ?>
+        </td>
+        <td>
+          <?php echo $custom->renderFilter(array('class' => "inputbox dynfilter")); ?>
+        </td>
+      </tr>    	
+    	<?php endforeach; ?>
     </table>	
   </div>
   

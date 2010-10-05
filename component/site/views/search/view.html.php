@@ -68,6 +68,7 @@ class RedeventViewSearch extends JView
 		//get data from model
 		$rows 	= & $this->get('Data');
 		$customs 	= & $this->get('ListCustomFields');
+		$customsfilters 	= & $this->get('CustomFilters');
 		$total 	= & $this->get('Total');    
 		// Create the pagination object
 		$pageNav = $this->get('Pagination');
@@ -185,7 +186,8 @@ class RedeventViewSearch extends JView
 		$this->assign('action', 					$uri->toString());
 
 		$this->assignRef('rows' , 					$rows);
-		$this->assignRef('customs',     $customs);
+		$this->assignRef('customs',         $customs);
+		$this->assignRef('customsfilters',  $customsfilters);
 		$this->assignRef('task' , 					$task);
 		$this->assignRef('noevents' , 				$noevents);
 		$this->assignRef('nofilter' , 				$nofilter);

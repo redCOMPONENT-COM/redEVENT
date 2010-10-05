@@ -76,15 +76,26 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	 */
 	function _buildWhere()
 	{
-		global $mainframe;
+		$app = &JFactory::getApplication();
 
 		// Get the paramaters of the active menu item
-		$params 	= & $mainframe->getParams();
-
+		$params 	= & $app->getParams();
 		$task 		= JRequest::getWord('task');
-		
+    $customs = $app->getUserStateFromRequest('com_redevent.filter.customs', 'filtercustom', array(), 'array');
+    
 		$where = array();
-		
+	
+    foreach ((array) $customs as $key => $custom)
+    {
+      if ($custom != '') 
+      {
+      	if (is_array($custom)) {
+      		$custom = implode("/n", $custom);
+      	}
+        $where[] = ' c'.$key.'.value LIKE ' . $this->_db->Quote('%'.$custom.'%');
+      }
+    }
+    
 		// First thing we need to do is to select only needed events
 		if ($task == 'archive') {
 			$where[] = ' x.published = -1';

@@ -142,7 +142,7 @@ class RedEventModelVenuesmap extends JModel
 		$app = & JFactory::getApplication();
     $vcat = $app->getUserState('com_redevent.venuesmap.vcat');
     $cat = $app->getUserState('com_redevent.venuesmap.cat');
-    $customs = $app->getUserState('com_redevent.venuesmap.customs');
+    $customs = $app->getUserState('com_redevent.filter.customs');
     $params = $app->getParams();
         
 		$acl = &UserAcl::getInstance();		

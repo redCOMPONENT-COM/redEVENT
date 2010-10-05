@@ -77,7 +77,7 @@ class TCustomfieldSelect extends TCustomfield {
   	$app = & JFactory::getApplication();
   	
   	// the filtered value should be stored in session
-  	$customs = $app->getUserState('com_redevent.venuesmap.customs');
+  	$customs = $app->getUserState('com_redevent.filter.customs');
   	if (is_array($customs) && isset($customs[$this->id])) {
   		$value = $customs[$this->id];
   	}

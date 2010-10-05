@@ -83,7 +83,7 @@ class RedeventController extends JController
         if (!empty($vcat)) {
           $url .= '&vcat=' . $vcat;
         }        
-        $customs = $app->getUserStateFromRequest('com_redevent.venuesmap.customs', 'filtercustom', array(), 'array');
+        $customs = $app->getUserStateFromRequest('com_redevent.filter.customs', 'filtercustom', array(), 'array');
 				$this->setRedirect(JRoute::_($url, false));
 				break;
 		}

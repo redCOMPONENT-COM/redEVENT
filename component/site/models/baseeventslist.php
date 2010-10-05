@@ -536,5 +536,28 @@ class RedeventModelBaseEventList extends JModel
   	}
   	return $res;
   }
+  
+	/**
+	 * return filter for event custom fields
+	 */
+	function getCustomFilters()
+	{
+		$query = ' SELECT f.* FROM #__redevent_fields AS f '
+           . ' WHERE f.published = 1 '
+           . '   AND f.searchable = 1 '
+//           . '   AND f.object_key = '. $this->_db->Quote("redevent.event")
+           . ' ORDER BY f.ordering ASC '
+           ;
+    $this->_db->setQuery($query);
+    $rows = $this->_db->loadObjectList();
+    
+    $filters = array();
+    foreach ($rows as $r) {
+    	$field = redEVENTcustomHelper::getCustomField($r->type);
+    	$field->bind($r);
+    	$filters[] = $field;
+    }
+    return $filters;
+	}
 }
 ?>
