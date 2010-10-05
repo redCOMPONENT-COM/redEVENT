@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install PUBLIC 
+  "-//Joomla! 1.5//DTD plugin 1.0//EN" "http://dev.joomla.org/xml/1.5/plugin-install.dtd">
+<install version="1.5" type="plugin" group="redevent" method="upgrade">
+	<name>redEVENT - Redmember sync Plugin</name>
+	<creationDate>07/07/2009</creationDate>
+	<author>Redweb.dk</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redweb.dk</authorUrl>
+	<copyright>(c) 2008 - 2009 Redweb.dk</copyright>
+	<license>GNU/GPL</license>
+	<version>1.0</version>
+  <description>PLUGIN_DESC</description>
+  
+  <files>
+    <filename plugin="redmember">redmember.php</filename>
+  </files>
+    
+  <languages>
+    <language tag="en-GB">languages/en-GB.plg_redevent_redmember.ini</language>
+  </languages>
+  
+  <params>
+		<param name="default_usertype" type="sql" default="1" label="PLG_REDEVENT_REDMEMBER_DEFAULT_USERTYPE" description="PLG_REDEVENT_REDMEMBER_DEFAULT_USERTYPE_DESC" 
+		       query="SELECT usertype_id AS value, usertype_name AS default_usertype FROM #__redmember_usertype" />
+  </params>
+
+</install>

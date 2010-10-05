@@ -119,6 +119,7 @@ class RedEventControllerGroups extends RedEventController
 		$task		= JRequest::getVar('task');
 
 		$post 	= JRequest::get( 'post' );
+		$isNew = intval($post['id']) ? false : true;
 				
 		$model = $this->getModel('group');
 
@@ -135,7 +136,11 @@ class RedEventControllerGroups extends RedEventController
 					break;
 			}
 			$msg	= JText::_( 'GROUP SAVED');
-			
+						
+			JPluginHelper::importPlugin( 'redevent' );
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger( 'onGroupSaved', array( $returnid, $isNew ) );
+					
 		} else {
 
 			$link 	= 'index.php?option=com_redevent&view=group';
@@ -171,6 +176,10 @@ class RedEventControllerGroups extends RedEventController
 			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
 		}
 
+		JPluginHelper::importPlugin( 'redevent' );
+		$dispatcher =& JDispatcher::getInstance();
+		$res = $dispatcher->trigger( 'onGroupsRemoved', array( $cid ) );
+			
 		$msg = $total.' '.JText::_( 'GROUPS DELETED');
 
 		$this->setRedirect( 'index.php?option=com_redevent&view=groups', $msg );
@@ -225,6 +234,17 @@ class RedEventControllerGroups extends RedEventController
 		$link 	= 'index.php?option=com_redevent&view=groups';
 		$msg	= JText::_( 'OPERATION CANCELLED');				
 		$this->setRedirect( $link, $msg );		
+	}
+	
+	function sync()
+	{		
+		JPluginHelper::importPlugin( 'redevent' );
+		$dispatcher =& JDispatcher::getInstance();
+		$res = $dispatcher->trigger( 'onSync' );
+		
+		$link 	= 'index.php?option=com_redevent&view=groups';
+		$msg	= JText::_( 'COM_REDEVENT_GROUPS_SYNCED');				
+		$this->setRedirect( $link, $msg );
 	}
 }
 ?>

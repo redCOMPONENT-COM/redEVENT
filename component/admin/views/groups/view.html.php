@@ -71,6 +71,7 @@ class RedEventViewGroups extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::deleteList();
 		JToolBarHelper::spacer();
+		JToolBarHelper::custom('sync', 'redevent_sync', 'redevent_sync', JText::_('COM_REDEVENT_TOOLBAR_GROUP_SYNC'), false, false);
 		JToolBarHelper::help( 'el.listgroups', true );
 
 		// table ordering

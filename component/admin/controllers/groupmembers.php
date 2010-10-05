@@ -124,6 +124,8 @@ class RedEventControllerGroupmembers extends RedEventController
 
 		$post 	= JRequest::get( 'post' );
 				
+		$isNew = intval($post['id']) ? false : true;
+		
 		$model = $this->getModel('groupmember');
 
 		if ($returnid = $model->store($post)) 
@@ -139,6 +141,10 @@ class RedEventControllerGroupmembers extends RedEventController
 					break;
 			}
 			$msg	= JText::_( 'GROUP MEMBER SAVED');
+			
+			JPluginHelper::importPlugin( 'redevent' );
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger( 'onGroupMemberSaved', array( $returnid, $isNew ) );
 			
 		} else {
 
@@ -172,10 +178,16 @@ class RedEventControllerGroupmembers extends RedEventController
 
 		$model = $this->getModel('groupmembers');
 
+		// do the sync first, as we will delete the rows...
+		JPluginHelper::importPlugin( 'redevent' );
+		$dispatcher =& JDispatcher::getInstance();
+		$res = $dispatcher->trigger( 'onGroupMembersRemoved', array( $cid ) );
+
 		if(!$model->delete($cid)) {
 			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
 		}
 
+			
 		$msg = $total.' '.JText::_( 'GROUP MEMBERS DELETED');
 
 		$this->setRedirect( 'index.php?option=com_redevent&view=groupmembers&group_id='. $group_id, $msg );
