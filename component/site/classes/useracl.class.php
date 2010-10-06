@@ -443,7 +443,7 @@ class UserAcl {
 	{
 		$res = array();
 		$groups = $this->getUserGroups();
-		foreach ($groups as $g) {
+		foreach ((array)$groups as $g) {
 			$res[] = $g->group_id;
 		}
 		return $res;
