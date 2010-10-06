@@ -797,5 +797,15 @@ class redEVENTHelper {
 		}
 		return true;		
 	}
+	
+	/**
+	 * return session code from object
+	 * @param object $session must contain xref, course_code
+	 * @return string
+	 */
+	function getSessioncode($session)
+	{
+		return $session->course_code.'-'.$session->xref;
+	}
 }
 ?>

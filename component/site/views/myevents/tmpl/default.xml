@@ -9,6 +9,10 @@
 		<name>MY EVENTS LAYOUT</name>
 		<description>MY EVENTS LAYOUT DESC</description>
 		<params>
+			<param name="showcode" type="radio" default="0" label="COM_REDEVENT_VIEW_MYEVENTS_SHOW_CODE" description="COM_REDEVENT_VIEW_MYEVENTS_SHOW_CODE_DESC">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
 		</params>
 	</state>
 </metadata>

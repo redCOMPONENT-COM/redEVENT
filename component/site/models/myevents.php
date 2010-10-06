@@ -130,6 +130,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
                 $this->_events = $this->_getList($query, $pagination->limitstart, $pagination->limit);
             }
             $this->_events = $this->_categories($this->_events);
+            $this->_events = $this->_getPlacesLeft($this->_events);
         }
 
         return $this->_events;
@@ -331,7 +332,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 
         //Get Events from Database        
         $query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published, '
-        . ' e.id, e.title, e.created, e.datdescription, e.registra, '
+        . ' e.id, e.title, e.created, e.datdescription, e.registra, e.course_code,'
         . ' l.venue, l.city, l.state, l.url, l.id as locid, '
         . ' c.catname, c.id AS catid,'
         . ' CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(\':\', e.id, e.alias) ELSE e.id END as slug, '

@@ -84,6 +84,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<?php if ($this->elsettings->showcat == 1) :	?>
 			<col width="<?php echo $this->elsettings->catfrowidth; ?>" class="el_col_category" />
 		<?php endif; ?>
+		<?php if ($this->params->get('showcode', 1)): ?>
+			<col width="10" class="el_col_code" />
+		<?php endif; ?>
 			<col width="5" class="el_col_attendees" />
 			<col width="5" class="el_col_edit" />
 			<col width="5" class="el_col_published" />
@@ -99,6 +102,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<th id="el_title" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', $this->escape($this->elsettings->titlename), 'e.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php
 				endif;
+		
 				if ($this->elsettings->showlocate == 1) :
 				?>
 				<th id="el_location" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', $this->escape($this->elsettings->locationname), 'l.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
@@ -120,6 +124,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<?php
 				endif;
 				?>				
+				
+				<?php if ($this->params->get('showcode', 1)): ?>
+				<th id="el_code" class="sectiontableheader" align="left"><?php echo JText::_('Code'); ?></th>
+				<?php endif; ?> 
 				<th id="el_attendees" class="sectiontableheader" align="left"><?php echo JText::_('Attendees'); ?></th>
 				<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('Edit'); ?></th>
 				<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('Published'); ?></th>
@@ -162,6 +170,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 				<?php
 				endif;
+				
 				if ($this->elsettings->showlocate == 1) :
 				?>
 
@@ -209,7 +218,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
           </td> 
         <?php endif; ?>
 
-				<td headers="el_edit" align="left" valign="top"><?php echo $this->xrefattendeesbutton($row->xref); ?></td>
+				
+				<?php if ($this->params->get('showcode', 1)): ?>
+				<td headers="el_code" align="left" valign="top"><?php echo $this->escape(redEVENTHelper::getSessionCode($row)); ?></td>
+				<?php endif; ?> 
+				<td headers="el_edit" align="left" valign="top"><?php echo $row->registered; ?><?php echo $this->xrefattendeesbutton($row->xref); ?></td>
 				<td headers="el_edit" align="left" valign="top"><?php echo $this->xrefeditbutton($row->slug, $row->xref); ?></td>
 				<td headers="el_edit" align="left" valign="top">
 					<?php if ($row->published == '1'): ?>
