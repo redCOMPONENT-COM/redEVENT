@@ -243,7 +243,17 @@ class RedEventControllerGroups extends RedEventController
 		$res = $dispatcher->trigger( 'onSync' );
 		
 		$link 	= 'index.php?option=com_redevent&view=groups';
-		$msg	= JText::_( 'COM_REDEVENT_GROUPS_SYNCED');				
+		$plugins = array();
+		foreach ((array) $res as $r) 
+		{
+			$plugins[] = $r['plugin'].': '.($r['result'] ? Jtext::_('OK') : Jtext::_('KO')); 
+		}				
+		if (count($plugins)) {
+			$msg	= JText::_('COM_REDEVENT_GROUPS_SYNCED')."<br/>".implode('<br/>', $plugins); 
+		}
+		else {
+			$msg	= JText::_('COM_REDEVENT_GROUPS_SYNC_NO_PLUGIN');
+		}
 		$this->setRedirect( $link, $msg );
 	}
 }
