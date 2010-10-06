@@ -301,7 +301,7 @@ class plgRedeventredmember extends JPlugin {
 		
 		foreach ((array) $res as $group) 
 		{
-			// create new access group in redmember
+			// create new access group in redevent
 			$gp = new stdclass();
 			$gp->name = $group->name;
 			$gp->isdefault = 0;
