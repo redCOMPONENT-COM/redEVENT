@@ -105,7 +105,7 @@ class RedEvent_categories extends JTable
 		$xid = intval($this->_db->loadResult());
 		if ($xid && $xid != intval($this->id)) {
 			JError::raiseWarning('REDEVENT_GENERIC_ERROR', JText::sprintf('CATEGORY NAME ALREADY EXIST', $this->catname));
-			return false;
+			return true;
 		}
 
 		return true;
