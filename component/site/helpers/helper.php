@@ -700,8 +700,9 @@ class redEVENTHelper {
    * object in parameters must include properties 
    * 
    * @param object $event
+   * @param boolean daycheck: if true, events are over only the next day, otherwise, use time too.
    */
-  function isOver($event)
+  function isOver($event, $day_check = true)
   {
   	if (! (property_exists($event, 'dates') && property_exists($event, 'times') 
   	      && property_exists($event, 'enddates') && property_exists($event, 'endtimes') ) ) {
@@ -711,11 +712,13 @@ class redEVENTHelper {
   		return false;
   	}
   	
+  	$cmp = $day_check ? strtotime('today') : now();
+  	
   	if (redEVENTHelper::isValidDate($event->enddates.' '.$event->endtimes)) {
-  		return strtotime($event->enddates.' '.$event->endtimes) < time();
+  		return strtotime($event->enddates.' '.$event->endtimes) < $cmp;
   	}
   	else {
-  		return strtotime($event->dates.' '.$event->times) < time();  		
+  		return strtotime($event->dates.' '.$event->times) < $cmp;  		
   	}
   }
   
