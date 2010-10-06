@@ -260,7 +260,7 @@ class UserAcl {
   	if ($this->superuser()) {
   		return true;
   	}
-	  	
+  	
 		$db = &JFactory::getDBO();
 
 		$query = ' SELECT e.id '

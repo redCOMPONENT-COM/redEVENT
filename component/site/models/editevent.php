@@ -333,8 +333,12 @@ class RedeventModelEditevent extends JModel
 	{
 		if (empty($this->_xrefdata))
 		{
+			$acl = &UserAcl::getInstance();
 			if ($this->_xref)
 			{
+				if (!$acl->canEditXref($this->_xref)) {
+					JError::raiseError(403, Jtext::_('NOT ALLOWED'));
+				}
 				$customs = $this->_getXCustomFields();
 				
 				$query = ' SELECT x.*, e.title ';
@@ -357,6 +361,9 @@ class RedeventModelEditevent extends JModel
 			}
 			else
 			{
+				if (!$acl->canAddXref()) {
+					JError::raiseError(403, Jtext::_('NOT ALLOWED'));
+				}
 				$obj = new stdclass();
 				$obj->id                = null;
 				$obj->eventid           = 0;
@@ -1273,17 +1280,8 @@ class RedeventModelEditevent extends JModel
    */
 	function getCanAddXref()
   {
-  	$user = & JFactory::getUser();
-  	
-  	$query = ' SELECT gm.id '
-  	       . ' FROM #__redevent_groups AS g '
-  	       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
-  	       . ' WHERE gm.member = '. $this->_db->Quote($user->get('id'))
-  	       . '   AND (gm.manage_xrefs > 0 OR gm.manage_events > 0) '
-  	       ;
-  	$this->_db->setQuery($query);
-  	$res = $this->_db->loadObjectList();
-  	return count($res) > 0;
+		$acl = UserAcl::getInstance();
+  	return $acl->canAddXref();
   } 
 
   /**

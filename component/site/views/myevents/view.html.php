@@ -209,6 +209,10 @@ class RedeventViewMyevents extends JView
 	 */
 	function xrefeditbutton($id, $xref)
 	{
+		$acl = &UserAcl::getInstance();
+		if (!$acl->canEditXref($xref)) {
+			return '';
+		}
 		JHTML::_('behavior.tooltip');
 
 		$image = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'EDIT XREF' ));
