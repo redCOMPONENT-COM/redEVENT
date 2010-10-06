@@ -222,7 +222,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<?php if ($this->params->get('showcode', 1)): ?>
 				<td headers="el_code" align="left" valign="top"><?php echo $this->escape(redEVENTHelper::getSessionCode($row)); ?></td>
 				<?php endif; ?> 
-				<td headers="el_edit" align="left" valign="top"><?php echo $row->registered; ?><?php echo $this->xrefattendeesbutton($row->xref); ?></td>
+				<td headers="el_edit" align="left" valign="top"><?php echo $row->registered; ?> <?php echo $this->xrefattendeesbutton($row->xref); ?></td>
 				<td headers="el_edit" align="left" valign="top"><?php echo $this->xrefeditbutton($row->slug, $row->xref); ?></td>
 				<td headers="el_edit" align="left" valign="top">
 					<?php if ($row->published == '1'): ?>

@@ -31,10 +31,10 @@ $remove_image = JHTML::_('image.site', 'no.png', 'components/com_redevent/assets
 
 if ($this->manage_attendees) {
 	?>
-	<div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
+	<div id="redevent" class="event_id<?php echo $this->row->eventid; ?> el_details">
 		<h2 class="register"><?php echo JText::_( 'REGISTERED USERS' ).': '.$this->row->title; ?></h2>
 		
-		<?php echo JHTML::link('index.php?option=com_redevent&controller=details&task=exportattendees&format=csv&xref='. $this->row->xref, JText::_('CSV export'));?>
+		<?php echo JHTML::link('index.php?option=com_redevent&controller=attendees&task=exportattendees&format=csv&xref='. $this->row->xref, JText::_('CSV export'));?>
 		<div class="register">
 			<?php	if (!empty($this->registers)):	?>
 			<table class="registered">
@@ -70,7 +70,7 @@ if ($this->manage_attendees) {
                 <td class="edit">
                   <?php echo JHTML::link($edit_url, $edit_image, array('class' => 'editlink')); ?>
                 </td>
-      				  <?php $unreg_url = JRoute::_('index.php?option=com_redevent&view=details&id='. $this->row->slug .'&task=managedelreguser&xref='. $this->row->xref .'&sid=' .$register->id); ?>
+      				  <?php $unreg_url = JRoute::_(RedeventHelperRoute::getManageAttendees($this->row->xref, 'managedelreguser').'&sid=' .$register->id); ?>
                 <td class="attendee">
                   <?php echo JHTML::link($unreg_url, $remove_image, array('class' => 'unreglink')); ?>
                 </td>

@@ -231,13 +231,16 @@ class RedeventHelperRoute
 		return self::buildUrl( $parts );			
 	}
 	
-	function getManageAttendees($xref)
+	function getManageAttendees($xref, $task = 'manageattendees')
 	{		
 		$parts = array( "option" => "com_redevent",
 		                "controller" => "registration",
-		                "task"   => 'manageattendees', 
+		                "view"   => 'attendees', 
 		                "xref"   => $xref, 
 									);
+		if (!empty($task)) {
+			$parts['task'] = $task;
+		}
 		return self::buildUrl( $parts );	
 	}
 	

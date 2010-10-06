@@ -260,6 +260,7 @@ class UserAcl {
   	if ($this->superuser()) {
   		return true;
   	}
+	  	
 		$db = &JFactory::getDBO();
 
 		$query = ' SELECT e.id '
@@ -331,6 +332,36 @@ class UserAcl {
   	$db->setQuery($query);
   	$res = $db->loadObjectList();
   	
+  	return count($res);
+  }
+	
+	/**
+	 * return true if current user can view attendees
+	 * @param int xref_id
+	 */
+  function canViewAttendees($xref_id)
+  {
+		if (!$this->_userid) {
+			return false;
+		}
+  	if ($this->superuser()) {
+  		return true;
+  	}
+  	
+		$db = &JFactory::getDBO();
+  	
+  	$query = ' SELECT gm.id '
+  	       . ' FROM #__redevent_event_venue_xref AS x '
+           . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = x.eventid'
+  	       . ' INNER JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
+  	       . ' INNER JOIN #__redevent_groups AS g ON gc.group_id = g.id '
+  	       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
+  	       . ' WHERE gm.member = '. $db->Quote($this->_userid)
+  	       . '   AND (gm.manage_xrefs > 0 OR gm.manage_events > 0 OR gm.receive_registrations > 0) '
+  	       . '   AND x.id = '. $db->Quote($xref_id)
+  	       ;
+  	$db->setQuery($query);
+  	$res = $db->loadObjectList();
   	return count($res);
   }
 	
@@ -564,13 +595,18 @@ class UserAcl {
 	 */
 	function superuser()
 	{
-		$user 		= & JFactory::getUser();
-		
-		$group_ids = array(
-					24, //administrator
-					25 //super administrator
-					);
-		return in_array($user->get('gid'), $group_ids);
+  	$auth =& JFactory::getACL();
+        
+    $auth->addACL('com_redevent', 'manageattendees', 'users', 'super administrator');
+    $auth->addACL('com_redevent', 'manageattendees', 'users', 'administrator');
+    $auth->addACL('com_redevent', 'manageattendees', 'users', 'manager');  	
+    
+  	$user = & JFactory::getUser();
+  	
+  	if ($user->authorize('com_redevent', 'manageattendees')) {
+  		return true;
+  	}
+  	return false;
 	}
 	
 	/**

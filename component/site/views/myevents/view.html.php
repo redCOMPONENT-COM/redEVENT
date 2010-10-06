@@ -258,7 +258,7 @@ class RedeventViewMyevents extends JView
 
 		$overlib = JText::_( 'REDEVENT_EDIT_ATTENDEES_TIP' );
 		$text = JText::_( 'REDEVENT_EDIT_ATTENDEES' );
-		$link 	= 'index.php?option=com_redevent&view=details&layout=manageattendees&xref='. $id;
+		$link 	= RedeventHelperRoute::getManageAttendees($id, 'manageattendees');
 		$output	= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
 
 		return $output;

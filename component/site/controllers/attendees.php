@@ -26,13 +26,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport('joomla.application.component.controller');
 
 /**
- * EventList Component Events Controller
+ * redEVENT Component attendees Controller
  *
  * @package Joomla
- * @subpackage EventList
- * @since 0.9
+ * @subpackage redEVENT
+ * @since 2.0
  */
-class RedEventControllerDetails extends RedEventController
+class RedEventControllerAttendees extends RedEventController
 {
 	/**
 	 * Constructor
@@ -45,7 +45,7 @@ class RedEventControllerDetails extends RedEventController
 	
 	function exportattendees()
 	{
-		JRequest::setVar('view', 'details');
+		JRequest::setVar('view', 'attendees');
 		JRequest::setVar('layout', 'exportattendees');
 		
 		parent::display();

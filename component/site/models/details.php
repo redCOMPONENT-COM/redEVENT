@@ -501,17 +501,6 @@ class RedeventModelDetails extends JModel
   
   function getManageAttendees()
   {
-  	$auth =& JFactory::getACL();
-        
-    $auth->addACL('com_redevent', 'manageattendees', 'users', 'super administrator');
-    $auth->addACL('com_redevent', 'manageattendees', 'users', 'administrator');
-    $auth->addACL('com_redevent', 'manageattendees', 'users', 'manager');  	
-    
-  	$user = & JFactory::getUser();
-  	
-  	if ($user->authorize('com_redevent', 'manageattendees')) {
-  		return true;
-  	}
   	$acl = UserAcl::getInstance();
   	return $acl->canEditXref($this->_xref);
   }

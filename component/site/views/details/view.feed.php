@@ -27,10 +27,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.application.component.view');
 
 /**
- * HTML Details View class of the EventList component
+ * HTML Details View class of the redEVENT component
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedeventViewDetails extends JView

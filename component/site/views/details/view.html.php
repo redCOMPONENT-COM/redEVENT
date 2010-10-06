@@ -27,10 +27,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.application.component.view');
 
 /**
- * HTML Details View class of the EventList component
+ * HTML Details View class of the redEVENT component
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedeventViewDetails extends JView
@@ -41,12 +41,7 @@ class RedeventViewDetails extends JView
  	 * @since 0.9
 	 */
 	function display($tpl = null)
-	{
-		if ($this->getLayout() == 'manageattendees')
-		{
-			return $this->_displayManageAttendees($tpl);
-		}
-		
+	{		
 		global $mainframe;
 		/* Set which page to show */
 		$tpl = JRequest::getVar('page', null);
@@ -243,93 +238,6 @@ class RedeventViewDetails extends JView
 		
 		$tpl = JRequest::getVar('tpl', $tpl);
 		
-		parent::display($tpl);
-	}
-
-/**
-	 * Creates the output for the manage attendees layout
-	 *
- 	 * @since 2.0
-	 */
-	function _displayManageAttendees($tpl = null)
-	{	
-		$mainframe = &JFactory::getApplication();			
-		$document 	= JFactory::getDocument();
-		$user		= JFactory::getUser();
-		$elsettings = redEVENTHelper::config();
-		
-		$row		= $this->get('Details');
-		$registers	= $this->get('Registers');
-		$regcheck	= $this->get('ManageAttendees');
-				
-		//get menu information
-		$menu		= & JSite::getMenu();
-		$item    	= $menu->getActive();
-		if (!$item) $item = $menu->getDefault();
-		
-		$params 	= & $mainframe->getParams('com_redevent');
-
-		//Check if the id exists
-		if ($row->did == 0)
-		{
-			return JError::raiseError( 404, JText::sprintf( 'Event #%d not found', $row->did ) );
-		}
-
-		//Check if user has access to the attendees management
-		if (!$regcheck) {
-			return JError::raiseError( 403, JText::_( 'NO ACCESS' ) );
-		}
-
-		//add css file
-    if (!$params->get('custom_css')) {
-      $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
-    }
-    else {
-      $document->addStyleSheet($params->get('custom_css'));     
-    }
-		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
-
-		$params->def( 'page_title', JText::_( 'Manage attendees' ));
-
-		//pathway
-		$pathway 	= & $mainframe->getPathWay();
-		$pathway->addItem( JText::_( 'Manage attendees' ). ' - '.$row->title, JRoute::_('index.php?option=com_redevent&view=details&layout=manageattendees&id='.$row->slug));
-		
-		//Check user if he can edit
-		$manage_attendees  = $this->get('ManageAttendees');
-		
-			// add javascript code for cancel button on attendees layout.
-			JHTML::_('behavior.mootools');
-			$js = " window.addEvent('domready', function(){
-		            $$('.unreglink').addEvent('click', function(event){
-		                  if (confirm('".JText::_('CONFIRM CANCEL REGISTRATION')."')) {
-                      	return true;
-	                    }
-	                    else {
-	                    	if (event.preventDefault) {
-	                    		event.preventDefault();
-												} else {
-													event.returnValue = false;
-												}
-												return false;
-                    	}
-		            });		            
-		        }); ";
-      $document->addScriptDeclaration($js);
-		
-		//set page title and meta stuff
-		$document->setTitle( $item->name.' - '.$row->title );				    
-		
-		//assign vars to jview
-		$this->assignRef('row', 					$row);
-		$this->assignRef('params' , 				$params);
-    $this->assignRef('user' ,         $user);
-		$this->assignRef('registers' , 				$registers);
-		$this->assignRef('elsettings' , 			$elsettings);
-		$this->assignRef('item' , 					$item);
-		$this->assignRef('messages' ,				$messages);
-    $this->assignRef('manage_attendees' , $manage_attendees);
-				
 		parent::display($tpl);
 	}
 	

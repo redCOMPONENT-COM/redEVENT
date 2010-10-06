@@ -43,7 +43,7 @@ class RedEventControllerRegistration extends RedEventController
 		parent::__construct();
 		$this->registerTask( 'manageredit',   'edit' );
 		$this->registerTask( 'managerupdate', 'update' );
-		$this->registerTask( 'review', 'confirm' );
+		$this->registerTask( 'review', 'confirm' );		
 	}
 	
 		
@@ -152,8 +152,20 @@ class RedEventControllerRegistration extends RedEventController
 	
 	function manageattendees()
 	{
-		JRequest::setvar('view', 'details');
-		JRequest::setvar('layout', 'manageattendees');
+		$acl = UserAcl::getInstance();
+		$xref = JRequest::getInt('xref');
+		if ($acl->canManageAttendees($xref)) {
+			$layout = 'manageattendees';			
+		}
+		else if ($acl->canViewAttendees($xref)){
+			$layout = 'default';
+		}
+		else {
+			$this->setRedirect(RedeventHelperRoute::getMyEventsRoute(), JText::_('ACCESS NOT ALLOWED'), 'error');
+			$this->redirect();
+		}
+		JRequest::setvar('view', 'attendees');
+		JRequest::setvar('layout', $layout);
 		parent::display();		
 	}
 	
@@ -168,9 +180,9 @@ class RedEventControllerRegistration extends RedEventController
   			$this->setRedirect(JRoute::_(RedeventHelperRoute::getManageAttendees($xref)), $msg);  			
   		}
   		else {
-  			$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute(null, $xref)), $msg);
+  			$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute(null, $xref), false), $msg);
   		}
-			return;
+			$this->redirect();
 		}
 		
 		$xref = JRequest::getInt('xref');

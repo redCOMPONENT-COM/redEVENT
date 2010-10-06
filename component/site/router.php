@@ -75,6 +75,24 @@ function RedEventBuildRoute(&$query)
     		unset($query['returnid']);
     	};
     	break;
+    	
+	  case 'attendees':	  	
+    	if(isset($query['controller']))
+    	{
+    		$segments[] = $query['controller'];
+    		unset($query['controller']);
+    	};	
+    	if(isset($query['task']))
+    	{
+    		$segments[] = $query['task'];
+    		unset($query['task']);
+    	};
+    	if(isset($query['xref']))
+    	{
+    		$segments[] = $query['xref'];
+    		unset($query['xref']);
+    	};
+    	break;
 	}
 
 	return $segments;
@@ -221,6 +239,23 @@ function RedEventParseRoute($segments)
       $count = count($segments);
       if($count == 2) {
         $vars['id'] = $segments[1];
+      }
+
+    } break;
+		
+    case 'attendees':
+    {
+      $vars['view'] = 'attendees';
+      
+      $count = count($segments);
+      if($count > 1) {
+        $vars['controller'] = $segments[1];
+      }
+      if($count > 2) {
+        $vars['task'] = $segments[2];
+      }
+      if($count > 3) {
+        $vars['xref'] = $segments[3];
       }
 
     } break;
