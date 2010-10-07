@@ -1167,7 +1167,7 @@ class redEVENT_tags {
 			foreach ($a as $field)
 			{
 				$res .= '<tr>';
-				$res .= '<th>'.$field->field.'</th>';
+				$res .= '<th align="left">'.$field->field.'</th>';
 				$res .= '<td>'.str_replace('~~~','<br/>', $field->answer).'</td>';
 				$res .= '</tr>';
 			}
