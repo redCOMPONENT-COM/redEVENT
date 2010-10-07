@@ -389,6 +389,7 @@ class RedeventModelBaseEventList extends JModel
               . ' WHERE c.published = 1 '
               . '   AND x.event_id = ' . $this->_db->Quote($rows[$i]->id)
               . '   AND (c.private = 0 OR gc.group_id IN ('.$gids.')) '
+              . ' GROUP BY c.id '
               . ' ORDER BY c.ordering'
               ;
       $this->_db->setQuery( $query );
