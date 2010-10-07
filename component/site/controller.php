@@ -281,12 +281,6 @@ class RedeventController extends JController
 
 		$model->checkin();
 		
-		/* Check if people need to be moved on or off the waitinglist */
-		if ($post['id'] > 0) 
-		{
-			$model_wait->setEventId($post['id']);
-			$model_wait->UpdateWaitingList();
-		}
 		$link = RedeventHelperRoute::getMyeventsRoute();
 		$this->setRedirect($link, $msg );
 	}
@@ -446,8 +440,18 @@ class RedeventController extends JController
 		$post['details'] = JRequest::getVar( 'details', '', 'post', 'string', JREQUEST_ALLOWRAW );
 		
 		$model = $this->getModel('editevent');
+		$this->addModelPath(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models');
+		$model_wait = $this->getModel('waitinglist');
 		
-		if ($returnid = $model->storeXref($post)) {
+		if ($returnid = $model->storeXref($post)) 
+		{
+			/* Check if people need to be moved on or off the waitinglist */
+			if ($xref) 
+			{
+				$model_wait->setXrefId($xref);
+				$model_wait->UpdateWaitingList();
+			}
+		
 			$msg = JText::_('EVENT DATE SAVED');
 			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg);				
 		}
