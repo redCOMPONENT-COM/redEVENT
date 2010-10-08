@@ -120,6 +120,7 @@ class RedEventModelTags extends JModel
 		$tags[] = new TagsModelTag('userfullname', JText::_('REDEVENT_SUBMISSION_TAG_FULLNAME_DESC'), 'registration');
 		$tags[] = new TagsModelTag('username', JText::_('REDEVENT_SUBMISSION_TAG_USERNAME_DESC'), 'registration');
 		$tags[] = new TagsModelTag('useremail', JText::_('REDEVENT_SUBMISSION_TAG_USEREMAIL_DESC'), 'registration');
+		$tags[] = new TagsModelTag('answer_<field id>', JText::_('REDEVENT_SUBMISSION_TAG_REDFORM_FIELD_DESC'), 'registration');
 		
 		$tags[] = new TagsModelTag('paymentrequest', JText::_('SUBMISSION_EVENT_PAYMENTREQUEST'), 'payment');
 		$tags[] = new TagsModelTag('paymentrequestlink', JText::_('SUBMISSION_EVENT_PAYMENTREQUESTLINK'), 'payment');
@@ -173,7 +174,7 @@ class TagsModelTag {
 	
 	function __construct($name, $desc, $section = 'General')
 	{
-		$this->name        = trim($name);
+		$this->name        = htmlentities(trim($name));
 		$this->description = trim($desc);
 		$this->section     = trim($section);
 		return $this;

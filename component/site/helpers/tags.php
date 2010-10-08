@@ -350,7 +350,7 @@ class redEVENT_tags {
 
 				    case 'answers':				    	
 				      $search[]  = '['.$tag.']';
-              $replace[] = $this->_answersToHtml($this->_submitkey);
+              $replace[] = $this->_answersToHtml();
 				    	break;
       				
 				    case 'ical':
@@ -708,6 +708,21 @@ class redEVENT_tags {
           $replace[] = $data->text_field;
         }
         $message = str_ireplace($search, $replace, $message);
+				
+				/* Load redform fields */
+				$redformfields = $this->_getFieldsTags();
+				if ($redformfields && count($redformfields))
+				{
+	        foreach ($alltags[1] as $tag) 
+	        {
+	        	if (stripos($tag, 'answer_') === 0)
+	        	{
+		          $search[] = '['.$tag.']';
+		          $replace[] = $this->_getFieldAnswer(substr($tag, 7));
+	        	}
+	        }
+	        $message = str_ireplace($search, $replace, $message);
+				}
 				
 				
 				/* Include redFORM */
@@ -1153,12 +1168,15 @@ class redEVENT_tags {
    * @param string $submit_key
    * @return string html
    */
-  private function _answersToHtml($submit_key)
+  private function _answersToHtml()
   {
-  	if (empty($submit_key)) {
+  	if (empty($this->_submitkey)) {
   		return '';
   	}
-  	$answers = $this->_getAnswers($submit_key);
+  	$answers = $this->_getAnswers();
+  	if (!$answers) {
+  		return '';
+  	}
   	$res = '';
   	
   	foreach ($answers as $a)
@@ -1179,10 +1197,9 @@ class redEVENT_tags {
   /**
    * returns answers as array of row arrays
    * 
-   * @param string $submit_key
    * @return array
    */
-  private function _getAnswers($submit_key)
+  private function _getAnswers()
   { 
   	if (empty($this->_answers))
   	{
@@ -1190,15 +1207,14 @@ class redEVENT_tags {
 	  		JError::raiseWarning(0, JText::_('Error: missing data'));
 	  		return false;
 	  	}
-	  	if (!$submit_key) {
-	  		JError::raiseWarning(0, JText::_('Error: missing key'));
+	  	if (!$this->_submitkey) {
 	  		return false;
 	  	}
 	  	
 	  	$db = & JFactory::getDBO();
 	  	$query = ' SELECT r.sid '
 	  	       . ' FROM #__redevent_register AS r '
-	  	       . ' WHERE r.submit_key = '.$db->quote($submit_key);
+	  	       . ' WHERE r.submit_key = '.$db->quote($this->_submitkey);
 			$db->setQuery($query);
 			$sids = $db->loadResultArray();
 						
@@ -1208,6 +1224,43 @@ class redEVENT_tags {
   	return $this->_answers;
   }
 
+  private function _getFieldsTags()
+  {
+  	if (!$this->_submitkey) { // we won't be able to display the values anyway...
+  		return false;
+  	}
+  	
+  	if (!$this->getEvent()->getData()) {
+  		JError::raiseWarning(0, JText::_('Error: missing data'));
+  		return false;
+  	}
+		$rfcore = new RedFormCore();
+  	$fields = $rfcore->getFields($this->getEvent()->getData()->redform_id);
+  	
+  	$tags = array();
+  	foreach ($fields as $f) {
+  		$tags[$f->id] = 'answer_'.$f->id;
+  	}
+  	return $tags;
+  }
+
+  private function _getFieldAnswer($id)
+  {
+  	$answers = $this->_getAnswers();
+  	if (!$answers) {
+  		return '';
+  	}
+  	// only take first answer...
+  	$fields = reset($answers);
+  	foreach ($fields as $f)
+  	{
+  		if ($f->id == $id) {
+  			return $f->answer;
+  		}
+  	}
+  	return '';
+  }
+  
   /**
    * returns form
    * 
