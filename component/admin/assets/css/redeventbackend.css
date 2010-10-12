@@ -167,8 +167,13 @@ div.clear
 	width: 15em;
 }
 
+
 label.invalid {
   color: red;
+}
+
+.invalid {
+  background-color:pink;
 }
 
 /* venue pinpoint */

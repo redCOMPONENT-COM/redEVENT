@@ -63,7 +63,11 @@ $this->infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-h
           alert("<?php echo JText::_( 'SELECT CATEGORY', true ); ?>");
           validator.handleResponse(false,form.categories);
           return false;
-      } else {
+      } else if (document.formvalidator.isValid(form) === false) {
+          var msg = '<?php echo JText::_('COM_REDEVENT_EVENT_FORM_INVALID'); ?>';
+     
+          alert(msg);
+       } else {
       <?php
       echo $this->editor->save('datdescription');
       ?>
