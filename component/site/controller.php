@@ -657,7 +657,7 @@ class RedeventController extends JController
 				$tags->setXref($event->id);
 				
 				$msubject = $tags->ReplaceTags($subject);
-				$mbody    = $tags->ReplaceTags($body);
+				$mbody    = '<html><body>'.$tags->ReplaceTags($body).'</body></html>';
 				$mailer->setSubject($msubject);
 				$mailer->setBody($mbody);
 				                

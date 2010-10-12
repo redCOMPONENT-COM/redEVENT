@@ -582,7 +582,7 @@ class RedEventModelAttendees extends JModel
 		
 		$mailer = & JFactory::getMailer();
   	$mailer->setSubject($subject);
-  	$mailer->MsgHTML($body);
+  	$mailer->MsgHTML('<html><body>'.$body.'</body></html>');
   	
   	$res = true;
   	

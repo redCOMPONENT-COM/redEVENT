@@ -564,7 +564,7 @@ class RedeventModelDetails extends JModel
   	}
   	
   	$mailer->setSubject($tags->ReplaceTags($params->get('registration_notification_subject')));
-  	$mailer->MsgHTML($tags->ReplaceTags($params->get('registration_notification_body')));
+  	$mailer->MsgHTML('<html><body>'.$tags->ReplaceTags($params->get('registration_notification_body')).'</body></html>');
   	if (!$mailer->send())
   	{
   		RedeventHelperLog::simplelog(JText::_('REDEVENT_ERROR_REGISTRATION_MANAGERS_NOTIFICATION_FAILED'));
