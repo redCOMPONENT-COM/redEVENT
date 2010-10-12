@@ -429,6 +429,13 @@ class redEVENTHelper {
   {
     $db   = & JFactory::getDBO();
   
+		$acl = &UserAcl::getInstance();		
+		$gids = $acl->getUserGroupsIds();
+		if (!is_array($gids) || !count($gids)) {
+			$gids = array(0);
+		}
+		$gids = implode(',', $gids);
+		
     if ($show_empty == false)
     {
       // select only categories with published venues
@@ -437,33 +444,51 @@ class redEVENTHelper {
              . ' INNER JOIN #__redevent_venues_categories AS child ON child.lft BETWEEN c.lft AND c.rgt '
              . ' INNER JOIN #__redevent_venue_category_xref AS xcat ON xcat.category_id = child.id '
              . ' INNER JOIN #__redevent_venues AS v ON v.id = xcat.venue_id '
-             . ' WHERE v.published = 1 '
+             . '  LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = c.id '
+             . ' WHERE c.published = 1 '
+             . '   AND (c.private = 0 OR gvc.group_id IN ('.$gids.') ) '
              . ' GROUP BY c.id '
              ;
       $db->setQuery($query);
   
-      $notempty = $db->loadResultArray();
-      if (empty($notempty)) {
+      $cats = $db->loadResultArray();
+      if (empty($cats)) {
         return array();
       }
     }
+    else
+    {
+      // select only categories with published venues
+      $query = ' SELECT c.id '
+             . ' FROM #__redevent_venues_categories AS c '
+             . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = c.id '
+             . ' WHERE c.published = 1 '
+             . '   AND (c.private = 0 OR gvc.group_id IN ('.$gids.') ) '
+             . ' GROUP BY c.id '
+             ;
+      $db->setQuery($query);
+  
+      $cats = $db->loadResultArray();
+      if (empty($cats)) {
+        return array();
+      }    	
+    }
     
-    $query =  ' SELECT c.id, c.name, (COUNT(parent.name) - 1) AS depth '
-				    . ' FROM #__redevent_venues_categories AS c, '
-				    . ' #__redevent_venues_categories AS parent '
-				    . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
+    $query =  ' SELECT c.id, c.name, (COUNT(parent.id) - 1) AS depth '
+				    . ' FROM #__redevent_venues_categories AS c '
+				    . ' INNER JOIN #__redevent_venues_categories AS parent ON c.lft BETWEEN parent.lft AND parent.rgt '
 				    ;
 
     $where = array();    
-    if ($show_empty == false)
-    {
-      $where[] = ' c.id IN (' . implode(', ', $notempty) . ')';
-    }            
+    $where[] = ' c.id IN (' . implode(', ', $cats) . ')';
+    
     if (!$show_unpublished) {
       $where[] = ' c.published = 1 ';
     }
+//    $where[] = ' (c.private = 0 OR gvc.group_id IN ('.$gids.') ) ';
+    
     if (count($where)) {
-      $query .= 'AND ' . implode(' AND ', $where);
+      $query .= ' WHERE ' . implode(' AND ', $where);
     }
     
     $query .= ' GROUP BY c.id '
@@ -472,7 +497,7 @@ class redEVENTHelper {
     $db->setQuery($query);
 
     $results = $db->loadObjectList();
-
+    
     $options = array();
     foreach((array) $results as $cat)
     {

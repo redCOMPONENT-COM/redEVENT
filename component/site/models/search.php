@@ -461,23 +461,10 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	 * @return object
 	 */
 	function getCategory($id)
-	{
-		$app = &JFactory::getApplication();
-    $filter_venuecategory = JRequest::getVar('filter_venuecategory');
-    $filter_category = JRequest::getVar('filter_category');
-    
-		$acl = &UserAcl::getInstance();		
-		$gids = $acl->getUserGroupsIds();
-		if (!is_array($gids) || !count($gids)) {
-			$gids = array(0);
-		}
-		$gids = implode(',', $gids);
-		
-		$query = ' SELECT id, catname, lft, rgt '
-		       . ' FROM #__redevent_categories '
-		       . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN ('.$gids.')'
-		       . ' WHERE id = '. $this->_db->Quote($id)
-		       . '   AND (c.private = 0 OR gc.id IS NOT NULL) '
+	{		
+		$query = ' SELECT c.id, c.catname, c.lft, c.rgt '
+		       . ' FROM #__redevent_categories AS c '
+		       . ' WHERE c.id = '. $this->_db->Quote($id)
 		            ;
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObject();
@@ -490,12 +477,10 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	 * @return object
 	 */
 	function getVenueCategory($id)
-	{
+	{		
 		$query = ' SELECT vc.id, vc.name, vc.lft, vc.rgt '
 		       . ' FROM #__redevent_venues_categories as vc '
-		       . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = vc.id AND gvc.group_id IN ('.$gids.')'
-		       . ' WHERE id = '. $this->_db->Quote($id)
-		       . '   AND (vc.private = 0 OR vc.private IS NULL OR gvc.id IS NOT NULL) '
+		       . ' WHERE vc.id = '. $this->_db->Quote($id)
 		            ;
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObject();
