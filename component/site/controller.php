@@ -638,6 +638,7 @@ class RedeventController extends JController
 		$model = $this->getModel('attendees');
 		
 		$events = $model->getReminderEvents($params->get('reminder_days', 14));
+		
 		if ($events && count($events))
 		{
 			$mailer   = &JFactory::getMailer();
@@ -655,22 +656,23 @@ class RedeventController extends JController
 				
 				$tags = new redEVENT_tags();
 				$tags->setXref($event->id);
-				
-				$msubject = $tags->ReplaceTags($subject);
-				$mbody    = '<html><body>'.$tags->ReplaceTags($body).'</body></html>';
-				$mailer->setSubject($msubject);
-				$mailer->setBody($mbody);
-				                
+								                
 				// get attendees
 				$attendees = $model->getAttendeesEmails($event->id);
 				if (!$attendees) {
 					break;
 				}
-				foreach ($attendees as $a)
+				foreach ($attendees as $sid => $a)
 				{
+					$msubject = $tags->ReplaceTags($subject, array('sids' => array($sid)));
+					$mbody    = '<html><body>'.$tags->ReplaceTags($body).'</body></html>';
+					$mailer->setSubject($msubject);
+					$mailer->setBody($mbody);
+					
 					$mailer->clearAllRecipients();
 					$mailer->addRecipient( $a );
 //					echo '<pre>';print_r($mailer); echo '</pre>';
+//					dump($mailer);
 					$sent = $mailer->Send();
 				}
 			}

@@ -81,6 +81,12 @@ class RedEventModelAttendees extends JModel
 		return $res;			
 	}
 	
+	/**
+	 * return array of attendees emails indexed by sid
+	 * 
+	 * @param int $xref
+	 * @return array
+	 */
 	function getAttendeesEmails($xref)
 	{		
 		$query = ' SELECT r.sid '
@@ -97,13 +103,13 @@ class RedEventModelAttendees extends JModel
 		$emails = array();
 		$rfcore = new RedFormCore();
 		$answers = $rfcore->getSidsFieldsAnswers($res);
-		foreach ($answers as $a)
+		foreach ($answers as $sid => $a)
 		{
 			foreach ($a as $field)
 			{
 				if ($field->fieldtype == 'email')
 				{
-					$emails[] = $field->answer;
+					$emails[$sid] = $field->answer;
 					break;
 				}
 			}

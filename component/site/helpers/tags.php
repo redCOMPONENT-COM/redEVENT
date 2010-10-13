@@ -36,6 +36,7 @@ class redEVENT_tags {
   private $_published;
 	protected $_eventlinks = null;
 	private $_libraryTags = null;
+	private $_customfields = null;
 	private $_xrefcustomfields = null;
 	private $_answers = null;
 	private $_options = null;
@@ -45,6 +46,11 @@ class redEVENT_tags {
 	 * @var object
 	 */
 	private $_event = null;
+	/**
+	 * instance of rfcore
+	 * @var object
+	 */
+	private $_rfcore = null;
 	
 	
 	public function __construct($options = null) 
@@ -100,7 +106,11 @@ class redEVENT_tags {
 	
 	function setXref($xref)
 	{
-		$this->_xref = intval($xref);
+		if ($this->_xref !== $xref) {
+			$this->_xref = intval($xref);
+			$this->_customfields = null;
+			$this->_xrefcustomfields = null;
+		}
 	}
 	
 	function setSubmitkey($string)
@@ -181,7 +191,7 @@ class redEVENT_tags {
 		// now get the list of all remaining tags
 		preg_match_all("/\[(.+?)\]/", $text, $alltags);
 
-		$rfcore = new RedFormCore();
+		$rfcore = $this->_getRFCore();
 				
 				$search = array();
 				$replace = array();
@@ -1057,66 +1067,69 @@ class redEVENT_tags {
    */
   function getCustomfields()
   {
-  	$xref = $this->_xref;
-  	$db = & JFactory::getDBO();
-    $query = ' SELECT f.*, fv.value '
-           . ' FROM #__redevent_event_venue_xref AS xref '
-           . ' INNER JOIN #__redevent_fields_values AS fv ON fv.object_id = xref.eventid '
-           . ' INNER JOIN #__redevent_fields AS f ON fv.field_id = f.id '
-           . ' WHERE f.published = 1 '
-           . ' AND CHAR_LENGTH(f.tag) > 0 '
-           . ' AND f.object_key = '. $db->Quote("redevent.event")
-           . ' AND xref.id = '. $db->Quote($xref)
-           ;
-    $db->setQuery($query);
-    $fields = $db->loadObjectList();
-    
-    $query = ' SELECT f.*, fv.value '
-           . ' FROM #__redevent_event_venue_xref AS xref '
-           . ' INNER JOIN #__redevent_fields_values AS fv ON fv.object_id = xref.id '
-           . ' INNER JOIN #__redevent_fields AS f ON fv.field_id = f.id '
-           . ' WHERE f.published = 1 '
-           . ' AND CHAR_LENGTH(f.tag) > 0 '
-           . ' AND f.object_key = '. $db->Quote("redevent.xref")
-           . ' AND xref.id = '. $db->Quote($xref)
-           ;
-    $db->setQuery($query);
-    $fields = array_merge($fields, $db->loadObjectList());
-        
-    $have_values = array();
-    $replace = array();
-    foreach ((array) $fields as $field)
-    {
-    	$have_values[] = $field->id;
-    	$obj = new stdclass();
-    	$obj->text_name = $field->tag;
-      $obj->text_field = redEVENTHelper::renderFieldValue($field);
-      $replace[$field->tag] = $obj;
-    }
-    
-    //there might be some empty ones if the tag were added after event/xref creations    
-    $query = ' SELECT f.*, null '
-           . ' FROM #__redevent_fields_values AS fv '
-           . ' INNER JOIN #__redevent_fields AS f ON fv.field_id = f.id '
-           . ' WHERE f.published = 1 '
-           . ' AND CHAR_LENGTH(f.tag) > 0 '
-           . ' AND (f.object_key = '. $db->Quote("redevent.xref"). ' OR f.object_key = '. $db->Quote("redevent.event"). ')'
-           ;
-    if (count($have_values)) {
-    	$query .= ' AND f.id NOT IN ('.implode(',', $have_values).')';
-    }
-    $db->setQuery($query);
-    $empty = $db->loadObjectList();
-    
-    foreach ((array) $empty as $field)
-    {
-    	$obj = new stdclass();
-    	$obj->text_name = $field->tag;
-      $obj->text_field = null;
-      $replace[$field->tag] = $obj;
-    }
-    
-    return $replace;
+  	if (empty($this->_customfields))
+  	{
+	  	$xref = $this->_xref;
+	  	$db = & JFactory::getDBO();
+	    $query = ' SELECT f.*, fv.value '
+	           . ' FROM #__redevent_event_venue_xref AS xref '
+	           . ' INNER JOIN #__redevent_fields_values AS fv ON fv.object_id = xref.eventid '
+	           . ' INNER JOIN #__redevent_fields AS f ON fv.field_id = f.id '
+	           . ' WHERE f.published = 1 '
+	           . ' AND CHAR_LENGTH(f.tag) > 0 '
+	           . ' AND f.object_key = '. $db->Quote("redevent.event")
+	           . ' AND xref.id = '. $db->Quote($xref)
+	           ;
+	    $db->setQuery($query);
+	    $fields = $db->loadObjectList();
+	    
+	    $query = ' SELECT f.*, fv.value '
+	           . ' FROM #__redevent_event_venue_xref AS xref '
+	           . ' INNER JOIN #__redevent_fields_values AS fv ON fv.object_id = xref.id '
+	           . ' INNER JOIN #__redevent_fields AS f ON fv.field_id = f.id '
+	           . ' WHERE f.published = 1 '
+	           . ' AND CHAR_LENGTH(f.tag) > 0 '
+	           . ' AND f.object_key = '. $db->Quote("redevent.xref")
+	           . ' AND xref.id = '. $db->Quote($xref)
+	           ;
+	    $db->setQuery($query);
+	    $fields = array_merge($fields, $db->loadObjectList());
+	        
+	    $have_values = array();
+	    $replace = array();
+	    foreach ((array) $fields as $field)
+	    {
+	    	$have_values[] = $field->id;
+	    	$obj = new stdclass();
+	    	$obj->text_name = $field->tag;
+	      $obj->text_field = redEVENTHelper::renderFieldValue($field);
+	      $replace[$field->tag] = $obj;
+	    }
+	    
+	    //there might be some empty ones if the tag were added after event/xref creations    
+	    $query = ' SELECT f.*, null '
+	           . ' FROM #__redevent_fields_values AS fv '
+	           . ' INNER JOIN #__redevent_fields AS f ON fv.field_id = f.id '
+	           . ' WHERE f.published = 1 '
+	           . ' AND CHAR_LENGTH(f.tag) > 0 '
+	           . ' AND (f.object_key = '. $db->Quote("redevent.xref"). ' OR f.object_key = '. $db->Quote("redevent.event"). ')'
+	           ;
+	    if (count($have_values)) {
+	    	$query .= ' AND f.id NOT IN ('.implode(',', $have_values).')';
+	    }
+	    $db->setQuery($query);
+	    $empty = $db->loadObjectList();
+	    
+	    foreach ((array) $empty as $field)
+	    {
+	    	$obj = new stdclass();
+	    	$obj->text_name = $field->tag;
+	      $obj->text_field = null;
+	      $replace[$field->tag] = $obj;
+	    }
+     $this->_customfields = $replace;
+  	}
+    return $this->_customfields;
   }
   
   /**
@@ -1201,40 +1214,36 @@ class redEVENT_tags {
    */
   private function _getAnswers()
   { 
-  	if (empty($this->_answers))
-  	{
 	  	if (!$this->getEvent()->getData()) {
 	  		JError::raiseWarning(0, JText::_('Error: missing data'));
 	  		return false;
 	  	}
-	  	if (!$this->_submitkey) {
-	  		return false;
-	  	}
 	  	
-	  	$db = & JFactory::getDBO();
-	  	$query = ' SELECT r.sid '
-	  	       . ' FROM #__redevent_register AS r '
-	  	       . ' WHERE r.submit_key = '.$db->quote($this->_submitkey);
-			$db->setQuery($query);
-			$sids = $db->loadResultArray();
-						
-			$rfcore = new RedFormCore();
-			$this->_answers = $rfcore->getSidsFieldsAnswers($sids);
-  	}
-  	return $this->_answers;
+	  	if (!$sids = $this->getOption('sids'))
+	  	{
+		  	if (!$this->_submitkey) {
+		  		return false;
+		  	}
+		  	
+		  	$db = & JFactory::getDBO();
+		  	$query = ' SELECT r.sid '
+		  	       . ' FROM #__redevent_register AS r '
+		  	       . ' WHERE r.submit_key = '.$db->quote($this->_submitkey);
+				$db->setQuery($query);
+				$sids = $db->loadResultArray();
+		  }
+		  							
+			$rfcore = $this->_getRFCore();
+			return $rfcore->getSidsFieldsAnswers($sids);
   }
 
   private function _getFieldsTags()
-  {
-  	if (!$this->_submitkey) { // we won't be able to display the values anyway...
-  		return false;
-  	}
-  	
+  {  	
   	if (!$this->getEvent()->getData()) {
   		JError::raiseWarning(0, JText::_('Error: missing data'));
   		return false;
   	}
-		$rfcore = new RedFormCore();
+		$rfcore = $this->_getRFCore();
   	$fields = $rfcore->getFields($this->getEvent()->getData()->redform_id);
   	
   	$tags = array();
@@ -1250,6 +1259,7 @@ class redEVENT_tags {
   	if (!$answers) {
   		return '';
   	}
+  	
   	// only take first answer...
   	$fields = reset($answers);
   	foreach ($fields as $f)
@@ -1261,6 +1271,15 @@ class redEVENT_tags {
   	return '';
   }
   
+  private function _getRFCore()
+  {
+  	if (empty($this->_rfcore))
+  	{
+  		$this->_rfcore = new RedFormCore();
+  	}
+  	return $this->_rfcore;
+  }
+  
   /**
    * returns form
    * 
@@ -1270,7 +1289,7 @@ class redEVENT_tags {
   {
   	$submit_key = JRequest::getVar('submit_key');
   	$options = array('booking' => $this->getEvent()->getData());  	
- 		$rfcore = new RedFormCore();
+ 		$rfcore = $this->_getRFCore();
  		if (!$rfcore->getFormStatus($this->getEvent()->getData()->redform_id)) {
 			$error = $rfcore->getError();
 			return '<span class="redform_error">'.$error.'</span>';
