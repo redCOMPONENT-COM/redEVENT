@@ -332,9 +332,9 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 
         //Get Events from Database        
         $query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published, '
-        . ' e.id, e.title, e.created, e.datdescription, e.registra, e.course_code,'
+        . ' e.id, e.title, e.created, e.datdescription, e.registra, e.course_code, '
         . ' l.venue, l.city, l.state, l.url, l.id as locid, '
-        . ' c.catname, c.id AS catid,'
+        . ' c.catname, c.id AS catid, '
         . ' CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(\':\', e.id, e.alias) ELSE e.id END as slug, '
         . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
         . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
@@ -482,18 +482,21 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         $cats   = $acl->getManagedCategories();
         $venues = $acl->getManagedVenues();
         
+        $acl_where = array();        
         if (!empty($cats)) {
-        	$where[] = ' xcat.category_id IN ('.implode(', ', $cats).')';
+        	$acl_where[] = ' xcat.category_id IN ('.implode(', ', $cats).')';
         }
         else {
-        	$where[] = ' 0 ';
+        	$acl_where[] = ' 0 ';
         }
         if (!empty($venues)) {
-        	$where[] = ' x.venueid IN ('.implode(', ', $venues).')';
+        	$acl_where[] = ' x.venueid IN ('.implode(', ', $venues).')';
         }
         else {
-        	$where[] = ' 0 ';
+        	$acl_where[] = ' 0 ';
         }
+        $where[] = ' ( e.created_by = '.$user->get('id')
+                   . '   OR ('.implode(' AND ', $acl_where).') ) ';
 
         /*
          * If we have a filter, and this is enabled... lets tack the AND clause
