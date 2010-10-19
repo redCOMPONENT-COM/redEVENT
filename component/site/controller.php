@@ -660,7 +660,7 @@ class RedeventController extends JController
 				// get attendees
 				$attendees = $model->getAttendeesEmails($event->id);
 				if (!$attendees) {
-					break;
+					continue;
 				}
 				foreach ($attendees as $sid => $a)
 				{
