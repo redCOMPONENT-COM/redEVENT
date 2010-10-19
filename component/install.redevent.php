@@ -45,6 +45,7 @@ $tables = array( '#__redevent_events',
                  '#__redevent_fields',
                  '#__redevent_groupmembers',
                  '#__redevent_groups',
+                 '#__redevent_fields_values',
                );
 $tables = $db->getTableFields($tables, false);
 
@@ -775,6 +776,27 @@ if (is_array($cols))
   }
 }
 
+
+/** 
+ * field values table
+ */
+$cols = $tables['#__redevent_fields_values'];
+
+if (is_array($cols)) 
+{    
+  /** add indexes **/
+  if (empty($cols['object_id']->Key)) {
+    $q = "ALTER TABLE `#__redevent_fields_values` ADD INDEX (`object_id`)";
+    $db->setQuery($q);
+    $db->query();  	
+  }
+  if (empty($cols['field_id']->Key)) {
+    $q = "ALTER TABLE `#__redevent_fields_values` ADD INDEX (`field_id`)";
+    $db->setQuery($q);
+    $db->query();  	
+  }
+}
+  
 /* Add the basic configuration entry */
 $q = "INSERT IGNORE INTO `#__redevent_settings` SET "
    . " id = 1, "
