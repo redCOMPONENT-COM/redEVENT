@@ -83,6 +83,7 @@ class RedeventModelUpcomingevents extends JModel {
 		   ;
 		if ($params->getValue('show_days_no_date', 0) == 1) $q .= "OR x.dates = '0000-00-00' ";
 		$q .= ") ORDER BY x.dates ";
+		$q .= ' GROUP BY x.id ';
 		$q .= "LIMIT ".$params->getValue('show_number_courses', 10);
 		$db->setQuery($q);
 		return $db->loadObjectList();

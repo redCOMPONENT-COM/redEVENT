@@ -80,6 +80,7 @@ class RedeventModelUpcomingVenueevents extends JModel {
 		   . '   AND (v.private = 0 OR gv.id IS NOT NULL) '
 		   . '   AND (c.private = 0 OR gc.id IS NOT NULL) '
 		   . '   AND (vc.private = 0 OR vc.private IS NULL OR gvc.id IS NOT NULL) '
+		   . ' GROUP BY x.id '
 		   . ' ORDER BY x.dates ';
 		$db->setQuery($q);
 		return $db->loadObjectList();
