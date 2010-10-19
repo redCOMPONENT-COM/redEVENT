@@ -205,8 +205,9 @@ class RedeventModelEditevent extends JModel
 				$this->setError(JText::_('COM_REDEVENT_SUMBIT_EVENT_ERROR_LOADING_TEMPLATE'));
 				return false;
 			}
-			// reset event id...
+			// reset event id and title
 			$this->_event->id = null;
+			$this->_event->title = '';
 		}
 		else
 		{
@@ -668,6 +669,11 @@ class RedeventModelEditevent extends JModel
 				$row->load($template_event);
 				$row->id    = null;
 				$row->alias = null;
+			}
+			else
+			{
+				JError::raiseWarning(0, JText::_('COM_REDEVENT_MISSING_FRONTEND_SUBMISSION_EVENT_TEMPLATE'));
+				return false;
 			}
 		}
 		
@@ -1412,33 +1418,38 @@ class RedeventModelEditevent extends JModel
 		$mainframe = &JFactory::getApplication();
 		$params    = $mainframe->getParams('com_redevent');
 		
-  	if (!is_array($categories) || !count($categories)) {
-			$template_event = (int) $params->get('event_template');  		
+  	if (is_array($categories) && count($categories)) 
+  	{  	
+	  	// get all categories
+	    $query = ' SELECT c.id, c.catname, (COUNT(parent.catname) - 1) AS depth, c.event_template, c.ordering '
+	           . ' FROM #__redevent_categories AS c, '
+	           . ' #__redevent_categories AS parent '
+	           . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
+	           . '   AND c.id IN ('.implode(',', $categories).')'
+	           . ' GROUP BY c.id '
+	           . ' ORDER BY c.lft;'
+	           ;
+	    $this->_db->setQuery($query);
+	    
+	    $cats = $this->_db->loadObjectList();
+	  	// try to find an event template in the categories of the event, or their parents.
+	  	// try first with deepest category with smallest ordering value
+	  	uasort($cats, array($this, "_cmpCatEventTemplate"));
+	  	foreach ($cats as $cat)
+	  	{
+	  		$event = $this->_getCategoryEventTemplate($cat->id);
+	  		if ($event) {
+	  			return $event;
+	  		}
+	  	}
   	}
-  	
-  	// get all categories
-    $query = ' SELECT c.id, c.catname, (COUNT(parent.catname) - 1) AS depth, c.event_template, c.ordering '
-           . ' FROM #__redevent_categories AS c, '
-           . ' #__redevent_categories AS parent '
-           . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
-           . '   AND c.id IN ('.implode(',', $categories).')'
-           . ' GROUP BY c.id '
-           . ' ORDER BY c.lft;'
-           ;
-    $this->_db->setQuery($query);
-    
-    $cats = $this->_db->loadObjectList();
-  	// try to find an event template in the categories of the event, or their parents.
-  	// try first with deepest category with smallest ordering value
-  	uasort($cats, array($this, "_cmpCatEventTemplate"));
-  	foreach ($cats as $cat)
-  	{
-  		$event = $this->_getCategoryEventTemplate($cat->id);
-  		if ($event) {
-  			return $event;
-  		}
-  	}
-  	return 0;
+		// didn't find any event template in categories...
+		$template_event = (int) $params->get('event_template');
+		if (!$template_event) {
+			JError::raiseWarning(0, JText::_('COM_REDEVENT_MISSING_FRONTEND_SUBMISSION_EVENT_TEMPLATE'));
+			return false;
+		}
+		return $template_event;  	
   }
   
   /**
