@@ -287,22 +287,11 @@ class RedeventModelEditevent extends JModel
 			$query = 'SELECT e.*, v.venue, x.id AS xref, x.eventid, x.venueid, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees,
 					x.maxwaitinglist, x.course_price, x.course_credit, x.registrationend '
 					   ;
-		
-			// add the custom fields
-			foreach ((array) $customs as $c)
-			{
-				$query .= ', c'. $c->id .'.value AS custom'. $c->id;
-			}
 			
 			$query .= ' FROM #__redevent_events AS e'
 					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id'
 					. ' LEFT JOIN #__redevent_venues AS v ON v.id = x.venueid'
 					    ;
-			// add the custom fields tables
-			foreach ((array) $customs as $c)
-			{
-				$query .= ' LEFT JOIN #__redevent_fields_values AS c'. $c->id .' ON c'. $c->id .'.object_id = e.id';
-			}
 					    
 					    
 			$query .= ' WHERE e.id = '.(int)$id
