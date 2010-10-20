@@ -104,7 +104,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		}
 
 		$filter = $this->getFilter();
-		if (!$filter) {
+		if (!$filter || empty($filter)) {
 			$filter = array('0');
 		}
 		$where = array_merge($where, $filter);
@@ -142,15 +142,15 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	    $filter_category      = $mainframe->getUserStateFromRequest('com_redevent.search.filter_category',      'filter_category',      0, 'int');
 	    $filter_event         = $mainframe->getUserStateFromRequest('com_redevent.search.filter_event',         'filter_event',         0, 'int');
 	        
-			$filter 		      = JRequest::getString('filter', '', 'request');
+	    $customs              = $mainframe->getUserStateFromRequest('com_redevent.filter.customs', 'filtercustom', array(), 'array');
+
+	    $filter 		      = JRequest::getString('filter', '', 'request');
 			$filter_type 	    = JRequest::getWord('filter_type', '', 'request');
-	    
-	    // no result if no filter:
-	    if ( !($filter || $filter_continent || $filter_country || $filter_state || $filter_city != "0" || $filter_date || $filter_category || $filter_venuecategory || $filter_venue || $filter_event) ) {
-	    	return false;
-	    }
-	
+			
+		
+	    	
 	    $where = array();
+	    
 	    if ($filter)
 	    {
 	    	// clean filter variables
@@ -216,6 +216,18 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	    if ($filter_event)
 	    {
 	    	$where[] = ' a.id = ' . $this->_db->Quote($filter_event);    	
+	    }
+	    
+	    //custom fields
+	    foreach ((array) $customs as $key => $custom)
+	    {
+	      if ($custom != '') 
+	      {
+	      	if (is_array($custom)) {
+	      		$custom = implode("/n", $custom);
+	      	}
+	        $where[] = ' c'.$key.'.value LIKE ' . $this->_db->Quote('%'.$custom.'%');
+	      }
 	    }
 	    
 	    $this->_filter = $where;
