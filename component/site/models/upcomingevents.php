@@ -76,14 +76,17 @@ class RedeventModelUpcomingevents extends JModel {
 		   . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN ('.$gids.')'
 		   
 		   . ' WHERE x.published = 1 '
-		   . '   AND ((CASE WHEN x.times THEN CONCAT(x.dates, " ", x.times) ELSE x.dates END) > NOW() AND x.dates < DATE_ADD(NOW(), INTERVAL '.$params->getValue('upcoming_days_ahead', 30).' DAY) '
 		   . '   AND (v.private = 0 OR gv.id IS NOT NULL) '
 		   . '   AND (c.private = 0 OR gc.id IS NOT NULL) '
 		   . '   AND (vc.private = 0 OR vc.private IS NULL OR gvc.id IS NOT NULL) '
+		   . '   AND ( ( (CASE WHEN x.times THEN CONCAT(x.dates, " ", x.times) ELSE x.dates END) > NOW() AND x.dates < DATE_ADD(NOW(), INTERVAL '.$params->getValue('upcoming_days_ahead', 30).' DAY) ) '
 		   ;
-		if ($params->getValue('show_days_no_date', 0) == 1) $q .= "OR x.dates = '0000-00-00' ";
-		$q .= ") ORDER BY x.dates ";
+		if ($params->getValue('show_days_no_date', 0) == 1) {
+			$q .= "       OR x.dates = '0000-00-00' ";
+		}
+		$q .= " ) ";
 		$q .= ' GROUP BY x.id ';
+		$q .= " ORDER BY x.dates ";
 		$q .= "LIMIT ".$params->getValue('show_number_courses', 10);
 		$db->setQuery($q);
 		return $db->loadObjectList();
