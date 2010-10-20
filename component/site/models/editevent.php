@@ -1381,7 +1381,7 @@ class RedeventModelEditevent extends JModel
   	}
   	else
   	{
-  		$id = 0;
+  		$id = $this->_id;
   	}
   	
     $query = ' SELECT f.*, fv.value '
@@ -1392,8 +1392,8 @@ class RedeventModelEditevent extends JModel
            . ' ORDER BY f.ordering '
            ;
     $this->_db->setQuery($query);
-    $result = $this->_db->loadObjectList();    
-  
+    $result = $this->_db->loadObjectList();   
+    
     if (!$result) {
       return array();
     }
