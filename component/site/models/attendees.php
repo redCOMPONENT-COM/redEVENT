@@ -91,7 +91,8 @@ class RedEventModelAttendees extends JModel
 	{		
 		$query = ' SELECT r.sid '
 		       . ' FROM #__redevent_register AS r '
-		       . ' WHERE r.xref = '.$xref;
+		       . ' WHERE r.xref = '.$xref
+		       . '   AND r.confirmed = 1 '
 		       ;
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadResultArray();
