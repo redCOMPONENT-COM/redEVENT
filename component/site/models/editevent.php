@@ -1179,7 +1179,7 @@ class RedeventModelEditevent extends JModel
 			return false;
 		}
 			
-		if (!$row->store()) {
+		if (!$row->store(true)) {
 			$this->setError('SUBMIT XREF ERROR STORE DATA');
 			RedeventHelperLog::simplelog('SUBMIT XREF ERROR STORE DATA');
 			return false;

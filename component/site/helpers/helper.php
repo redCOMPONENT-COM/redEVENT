@@ -311,47 +311,33 @@ class redEVENTHelper {
 			return '-';
 		}
 		
-		// start time in seconds
-		if (empty($event->times) || $event->times == '00:00:00') {
-      $start = strtotime($event->dates);			
+		// all day events if start or end time is null or 00:00:00
+		if (empty($event->times) || $event->times == '00:00:00' || empty($event->endtimes) || $event->endtimes == '00:00:00')
+		{
+			if (empty($event->enddates) || $event->enddates == '0000-00-00' || $event->enddates == $event->dates) // same day
+	    {
+      	return '1' . ' ' . JText::_('Day');
+      }
+      else
+      {
+      	$days = floor((strtotime($event->enddates) - strtotime($event->dates)) / (3600 * 24)) + 1;
+      	return $days . ' ' . JText::_('Days');
+      }
 		}
-		else {
+		else // there is start and end times
+		{
 			$start = strtotime($event->dates. ' ' . $event->times);
-		}
-		
-		// end time in seconds
-    if (empty($event->enddates) || $event->enddates == '0000-00-00') {
-    	// same day
-      if (empty($event->endtimes) || $event->endtimes == '00:00:00') {
-        // we set it to end of the day, user should set it anyway
-        $end = strtotime($event->dates. ' 00:00:00') + 3600 * 24;         
+			if (empty($event->enddates) || $event->enddates == '0000-00-00' || $event->enddates == $event->dates) // same day, return hours and minutes
+	    {
+      	$end = strtotime($event->dates. ' ' . $event->endtimes);
+      	$duration = $end - $start;
+      	return floor($duration / 3600) . JText::_('LOC_H') . sprintf('%02d', floor(($duration % 3600) / 60));
       }
-      else {
-        $end = strtotime($event->dates . ' ' . $event->endtimes);      	
+      else // not same day, display in days
+      {
+      	$days = floor((strtotime($event->enddates) - strtotime($event->dates)) / (3600 * 24)) + 1;
+      	return $days . ' ' . JText::_('Days');  	
       }
-    }
-    else {
-      if (empty($event->endtimes) || $event->endtimes == '00:00:00') {
-        // we set it to end of the day
-        $end = strtotime($event->enddates. ' 00:00:00') + 3600 * 24;
-      }
-      else {
-        $end = strtotime($event->enddates .' '. $event->endtimes);
-      }
-    }
-    
-    $duration = $end - $start;
-    
-		if ($duration > 3600 * 24) {
-			$day = floor($duration / (3600 * 24)) + 1 ;
-			if ($day == 1) return $day . ' ' . JText::_('Day');
-			else return $day . ' ' . JText::_('Days');
-		}
-		else if ($duration == 3600 * 24) {
-			return '1' . ' ' . JText::_('Day');			
-		}
-		else {
-			return floor($duration / 3600) . JText::_('LOC_H') . sprintf('%02d', floor(($duration % 3600) / 60));
 		}
 	}
 	  
