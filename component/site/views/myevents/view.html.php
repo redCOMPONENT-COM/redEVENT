@@ -148,6 +148,7 @@ class RedeventViewMyevents extends JView
         $this->assignRef('elsettings', $elsettings);
         $this->assignRef('pagetitle',  $pagetitle);
         $this->assignRef('lists',      $lists);
+        $this->assignRef('acl',         $acl);
         $this->assignRef('canAddXref',  $acl->canAddXref());
         $this->assignRef('canAddEvent', $acl->canAddEvent());
         $this->assignRef('canAddVenue', $acl->canAddVenue());
@@ -221,6 +222,31 @@ class RedeventViewMyevents extends JView
 		$text = JText::_( 'EDIT XREF' );
 
 		$link 	= 'index.php?option=com_redevent&view=editevent&layout=eventdate&id='.$id.'&xref='.$xref;
+		$output	= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
+
+		return $output;
+	}
+    
+	/**
+	 * Creates the event edit button
+	 *
+	 * @param int xref id
+	 * @since 2.0
+	 */
+	function eventeditbutton($id, $xref)
+	{
+		$acl = &UserAcl::getInstance();
+		if (!$acl->canEditEvent($id)) {
+			return '';
+		}
+		JHTML::_('behavior.tooltip');
+
+		$image = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'EDIT EVENT' ));
+
+		$overlib = JText::_( 'EDIT EVENT TIP' );
+		$text = JText::_( 'EDIT EVENT' );
+
+		$link 	= 'index.php?option=com_redevent&view=editevent&id='.$id;
 		$output	= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
 
 		return $output;

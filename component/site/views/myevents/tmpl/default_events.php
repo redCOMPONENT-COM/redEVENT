@@ -148,31 +148,26 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   			<tr class="sectiontableentry<?php echo $i +1 . $this->params->get( 'pageclass_sfx' ); ?>" >
 
     			<td headers="el_date" align="left">
-    					<?php echo ELOutput::formatEventDateTime($row);	?>
-				</td>
+    				<?php if ($this->acl->canEditXref($row->xref)): ?>
+   					<?php echo JHTML::link('index.php?option=com_redevent&view=editevent&layout=eventdate&id='.$row->slug.'&xref='.$row->xref, 
+   					                       ELOutput::formatEventDateTime($row),
+   					                       array('class' => 'hasTip', 
+   					                             'title' => JText::_( 'EDIT XREF' ).'::'.JText::_( 'EDIT XREF TIP' )));	?>
+    				<?php else: ?>
+   					<?php echo ELOutput::formatEventDateTime($row);	?>
+   					<?php endif; ?>
+					</td>
 
 				<?php
 				//Link to details
 				$detaillink = JRoute::_( 'index.php?option=com_redevent&view=details&id='. $row->slug .'&xref=' . $row->xref);
 				//title
-				if (($this->elsettings->showtitle == 1 ) && ($this->elsettings->showdetails == 1) ) :
 				?>
+				<td headers="el_title" align="left" valign="top">
+					<a href="<?php echo $detaillink ; ?>"> <?php echo $this->escape($row->title); ?></a>
+				</td>
 
-				<td headers="el_title" align="left" valign="top"><a href="<?php echo $detaillink ; ?>"> <?php echo $this->escape($row->title); ?></a></td>
-
-				<?php
-				endif;
-
-				if (( $this->elsettings->showtitle == 1 ) && ($this->elsettings->showdetails == 0) ) :
-				?>
-
-				<td headers="el_title" align="left" valign="top"><?php echo $this->escape($row->title); ?></td>
-
-				<?php
-				endif;
-				
-				if ($this->elsettings->showlocate == 1) :
-				?>
+				<?php if ($this->elsettings->showlocate == 1) :	?>
 
 					<td headers="el_location" align="left" valign="top">
 						<?php
@@ -223,7 +218,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<td headers="el_code" align="left" valign="top"><?php echo $this->escape(redEVENTHelper::getSessionCode($row)); ?></td>
 				<?php endif; ?> 
 				<td headers="el_edit" align="left" valign="top"><?php echo $row->registered; ?> <?php echo $this->xrefattendeesbutton($row->xref); ?></td>
-				<td headers="el_edit" align="left" valign="top"><?php echo $this->xrefeditbutton($row->slug, $row->xref); ?></td>
+				<td headers="el_edit" align="left" valign="top"><?php echo $this->eventeditbutton($row->slug, $row->xref); ?></td>
 				<td headers="el_edit" align="left" valign="top">
 					<?php if ($row->published == '1'): ?>
 						<?php echo JHTML::link('index.php?option=com_redevent&task=unpublishxref&xref='. $row->xref, JHTML::_('image.site', 'ok.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Published' ))); ?>

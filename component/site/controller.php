@@ -112,10 +112,11 @@ class RedeventController extends JController
 			$row->load($id);
 			$row->checkin();
 
-			$this->setRedirect( JRoute::_('index.php?option=com_redevent&view=details&xref='.JRequest::getInt('returnid'), false ) );
+			$link = JRequest::getString('referer', RedeventHelperRoute::getMyeventsRoute());
+			$this->setRedirect( $link, false );
 
 		} else {
-			$link = JRequest::getString('referer', JURI::base(), 'post');
+			$link = JRequest::getString('referer', RedeventHelperRoute::getMyeventsRoute());
 			$this->setRedirect($link);
 		}
 	}
@@ -214,8 +215,6 @@ class RedeventController extends JController
 		if ($returnid = $model->store($post, $file)) {
 
 			$msg 	= JText::_( 'VENUE SAVED' );
-			$link 	= JRoute::_('index.php?option=com_redevent&view=venueevents&id='.$returnid, false) ;
-
 				
 			JPluginHelper::importPlugin( 'redevent' );
 			$dispatcher =& JDispatcher::getInstance();
@@ -227,12 +226,12 @@ class RedeventController extends JController
 		} else {
 
 			$msg 		= '';
-			$link = JRequest::getString('referer', JURI::base(), 'post');
 
 			RedeventError::raiseWarning('REDEVENT_GENERIC_ERROR', $model->getError() );
 		}
 
 		$model->checkin();
+		$link = JRequest::getString('referer', RedeventHelperRoute::getMyeventsRoute());
 
 		$this->setRedirect($link, $msg );
 	}
@@ -281,7 +280,7 @@ class RedeventController extends JController
 
 		$model->checkin();
 		
-		$link = RedeventHelperRoute::getMyeventsRoute();
+		$link = JRequest::getString('referer', RedeventHelperRoute::getMyeventsRoute());
 		$this->setRedirect($link, $msg );
 	}
 

@@ -155,7 +155,7 @@ class RedeventModelEditevent extends JModel
 			* Error if allready checked out otherwise check event out
 			*/
 			if ($this->isCheckedOut( $user->get('id') )) {
-				$mainframe->redirect( 'index.php?view='.$view, JText::_( 'THE EVENT' ).': '.$this->_event->title.' '.JText::_( 'EDITED BY ANOTHER ADMIN' ) );
+				$mainframe->redirect($_SERVER['HTTP_REFERER'], JText::_( 'THE EVENT' ).': '.$this->_event->title.' '.JText::_( 'EDITED BY ANOTHER ADMIN' ) );
 			} else {
 				$this->checkout( $user->get('id') );
 			}
@@ -735,19 +735,21 @@ class RedeventModelEditevent extends JModel
 			//check the image
 			$check = redEVENTImage::check($file, $elsettings);
 
-			if ($check === false) {
-				$mainframe->redirect($_SERVER['HTTP_REFERER']);
+			if ($check === false) 
+			{
+				JError::raiseWarning(0, JText::_('COM_REDEVENT_EDITEVENT_IMAGE_CHECKFAILED'));
 			}
-
-			//sanitize the image filename
-			$filename = redEVENTImage::sanitize($base_Dir, $file['name']);
-			$filepath = $base_Dir . $filename;
-
-			if (!JFile::upload($file['tmp_name'], $filepath)) {
-				$this->setError( JText::_( 'UPLOAD FAILED' ) );
-				return false;
-			} else {
-				$row->datimage = $filename;
+			else
+			{
+				//sanitize the image filename
+				$filename = redEVENTImage::sanitize($base_Dir, $file['name']);
+				$filepath = $base_Dir . $filename;
+	
+				if (!JFile::upload($file['tmp_name'], $filepath)) {
+					JError::raiseWarning(0, JText::_( 'UPLOAD FAILED' ));
+				} else {
+					$row->datimage = $filename;
+				}
 			}
 		} 
 		else 

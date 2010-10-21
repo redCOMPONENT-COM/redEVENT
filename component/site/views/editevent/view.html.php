@@ -74,7 +74,7 @@ class RedeventViewEditevent extends JView
     $params     = & $mainframe->getParams();
 
 		//Get Data from the model
-		$row 		  = $this->Get('Event');
+		$row 		  = &$this->get('Event');
 		$customs  = &$this->get('Customfields');
 		$xcustoms = &$this->get('XrefCustomfields');
 
