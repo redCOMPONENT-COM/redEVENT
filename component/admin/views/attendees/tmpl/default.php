@@ -36,7 +36,7 @@ $colspan = 14;
 			</td>
 			<td width="20%">
 				<div class="button2-left"><div class="blank"><a title="<?php echo JText::_('PRINT'); ?>" onclick="window.open('index.php?option=com_redevent&amp;view=attendees&amp;layout=print&amp;task=print&amp;tmpl=component&amp;xref=<?php echo $this->event->xref; ?>', 'popup', 'width=750,height=400,scrollbars=yes,toolbar=no,status=no,resizable=yes,menubar=no,location=no,directories=no,top=10,left=10')"><?php echo JText::_('PRINT'); ?></a></div></div>
-				<div class="button2-left"><div class="blank"><a title="<?php echo JText::_('CSV EXPORT'); ?>" onclick="window.open('index.php?option=com_redevent&view=attendees&xref=<?php echo $this->event->xref; ?>&form_id=<?php echo $this->event->redform_id;?>&format=csv')"><?php echo JText::_('CSV EXPORT'); ?></a></div></div>
+				<div class="button2-left"><div class="blank"><?php echo JHTML::link('index.php?option=com_redevent&view=attendees&xref='.$this->event->xref.'&form_id='.$this->event->redform_id.'&format=csv' ,JText::_('CSV EXPORT')); ?></div></div>
 			</td>
 		  </tr>
 	</table>
