@@ -98,6 +98,23 @@ class RedeventController extends JController
 	{
 		$user	= & JFactory::getUser();
 		$id		= JRequest::getInt( 'id');
+		$xref		= JRequest::getInt( 'xref');
+		
+		$msg = JText::_('COM_REDEVENT_ACTION_CANCELLED');
+		
+		switch (JRequest::getWord('referer'))
+		{
+			case 'myevents':
+				$link = JRoute::_(RedeventHelperRoute::getMyeventsRoute(), false);
+				break;
+			default:
+				if ($id) {
+					$link = JRoute::_(RedeventHelperRoute::getDetailsRoute($id, $xref), false);
+				}
+				else {
+					$link = JRoute::_(RedeventHelperRoute::getMyeventsRoute(), false);					
+				}
+		}
 
 		// Must be logged in
 		if ($user->get('id') < 1) {
@@ -112,12 +129,10 @@ class RedeventController extends JController
 			$row->load($id);
 			$row->checkin();
 
-			$link = JRequest::getString('referer', RedeventHelperRoute::getMyeventsRoute());
-			$this->setRedirect( $link, false );
+			$this->setRedirect($link, $msg);
 
 		} else {
-			$link = JRequest::getString('referer', RedeventHelperRoute::getMyeventsRoute());
-			$this->setRedirect($link);
+			$this->setRedirect($link, $msg);
 		}
 	}
 
@@ -251,7 +266,7 @@ class RedeventController extends JController
 		//get image
 		$file 		= JRequest::getVar( 'userfile', '', 'files', 'array' );
 		$post 		= JRequest::get( 'post', 4 );
-		$xref 		= JRequest::getInt('returnid');
+		$xref 		= JRequest::getInt('xref');
 				
     $isNew = ($post['id']) ? false : true;
 		
@@ -279,8 +294,20 @@ class RedeventController extends JController
 		}
 
 		$model->checkin();
-		
-		$link = JRequest::getString('referer', RedeventHelperRoute::getMyeventsRoute());
+	
+		switch (JRequest::getWord('referer'))
+		{
+			case 'myevents':
+				$link = JRoute::_(RedeventHelperRoute::getMyeventsRoute(), false);
+				break;
+			default:
+				if ($returnid) {
+					$link = JRoute::_(RedeventHelperRoute::getDetailsRoute($returnid, $xref), false);
+				}
+				else {
+					$link = JRoute::_(RedeventHelperRoute::getMyeventsRoute(), false);					
+				}
+		}
 		$this->setRedirect($link, $msg );
 	}
 

@@ -167,6 +167,7 @@ class RedeventViewEditevent extends JView
 		$this->assignRef('params',     $params);
 		$this->assignRef('lists',      $lists);
 		$this->assignRef('canpublish', $canpublish);
+		$this->assignRef('referer',    JRequest::getWord('referer'));
 		
 		parent::display($tpl);
 

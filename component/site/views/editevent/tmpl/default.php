@@ -376,7 +376,7 @@ JHTML::_('behavior.calendar');
 <input type="hidden" name="id" value="<?php echo $this->row->id; ?>" /> 
 <input type="hidden" name="xref" value="<?php echo $this->row->xref; ?>" /> 
 <input type="hidden" name="returnid" value="<?php echo JRequest::getInt('returnid'); ?>" />
-<input type="hidden" name="referer"	value="<?php echo @$_SERVER['HTTP_REFERER']; ?>" /> 
+<input type="hidden" name="referer"	value="<?php echo $this->referer; ?>" /> 
 <input type="hidden" name="created" value="<?php echo $this->row->created; ?>" />
 <input type="hidden" name="author_ip"	value="<?php echo $this->row->author_ip; ?>" /> 
 <input type="hidden" name="created_by" value="<?php echo $this->row->created_by; ?>" /> 
