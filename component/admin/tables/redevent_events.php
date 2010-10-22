@@ -150,20 +150,8 @@ class RedEvent_events extends JTable
 	// overloaded check function
 	function check($elsettings)
 	{
+		$app = &JFactory::getApplication();
 		// Check fields
-		/**
-		if (empty($this->enddates)) {
-			$this->enddates = NULL;
-		}
-
-		if (empty($this->times)) {
-			$this->times = NULL;
-		}
-
-		if (empty($this->endtimes)) {
-			$this->endtimes = NULL;
-		}
-		*/
 		$this->title = strip_tags(trim($this->title));
 		$titlelength = JString::strlen($this->title);
 
@@ -201,7 +189,7 @@ class RedEvent_events extends JTable
       JError::raiseWarning(0, $this->_error);
     }
 	
-    if (!empty($this->review_message) && !strstr($this->review_message, '[redform]')) {
+    if ($app->isAdmin() && !empty($this->review_message) && !strstr($this->review_message, '[redform]')) {
       $this->_error = JText::_( 'WARNING REDFORM TAG MUST BE INCLUDED IN REVIEW SCREEN IF NOT EMPTY');
       JError::raiseWarning(0, $this->_error);
     }
