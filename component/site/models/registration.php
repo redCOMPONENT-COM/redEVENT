@@ -579,7 +579,7 @@ class RedEventModelRegistration extends JModel
   	}
   	
   	$mailer = & JFactory::getMailer();
-  	if ($contact) {
+  	if ($contact && $params->get('allow_email_aliasing', 1)) {
 	  	$sender = array($contact->getEmail(), $contact->getFullname());
 		}
 		else { // default to site settings

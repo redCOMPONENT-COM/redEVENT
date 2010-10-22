@@ -160,4 +160,11 @@
       <option value="1">Yes</option>
     </param>
  	</params>
+ 	
+ 	<params group="COM_REDEVENT_SETTINGS_MISC">
+    <param name="allow_email_aliasing" type="radio" default="1" label="COM_REDEVENT_SETTINGS_MISC_ALLOW_EMAIL_ALIASING" description="COM_REDEVENT_SETTINGS_MISC_ALLOW_EMAIL_ALIASING_TIP">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param> 	
+ 	</params>
 </config>
