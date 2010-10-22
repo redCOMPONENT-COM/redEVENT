@@ -98,8 +98,7 @@ class RedeventViewEditevent extends JView
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 				
 		//Set page title
-		$id ? $title = JText::_( 'EDIT EVENT' ) : $title = JText::_( 'ADD EVENT' );
-
+		$id ? $title = $row->title.' - '.JText::_( 'EDIT EVENT' ) : $title = JText::_( 'ADD EVENT' );
 		$document->setTitle($title);
 
 		// Get the menu object of the active menu item
@@ -168,6 +167,7 @@ class RedeventViewEditevent extends JView
 		$this->assignRef('lists',      $lists);
 		$this->assignRef('canpublish', $canpublish);
 		$this->assignRef('referer',    JRequest::getWord('referer'));
+		$this->assign('title',         $title);
 		
 		parent::display($tpl);
 

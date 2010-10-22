@@ -144,7 +144,7 @@ JHTML::_('behavior.calendar');
 <div id="redevent" class="re_editevent">
 
 	<?php if ($this->params->def( 'show_page_title', 1 )) : ?>
-	<h1 class="componentheading"><?php echo $this->params->get('page_title'); ?></h1>
+	<h1 class="componentheading"><?php echo $this->title; ?></h1>
 	<?php endif; ?>
 
 	<form enctype="multipart/form-data" id="eventform" action="<?php echo JRoute::_('index.php?option=com_redevent'); ?>" method="post" class="form-validate">

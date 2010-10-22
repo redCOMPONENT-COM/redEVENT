@@ -294,7 +294,7 @@ class RedeventController extends JController
 		}
 
 		$model->checkin();
-	
+
 		switch (JRequest::getWord('referer'))
 		{
 			case 'myevents':

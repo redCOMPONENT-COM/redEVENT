@@ -64,7 +64,7 @@ class ELOutput {
 				$image = JText::_( 'DELIVER NEW EVENT' );
 			}
 
-			$link 		= 'index.php?option=com_redevent&view=editevent';
+			$link 		= RedeventHelperRoute::getEditEventRoute();
 			$overlib 	= JText::_( 'SUBMIT EVENT TIP' );
 			$output		= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.JText::_( 'DELIVER NEW EVENT' ).'::'.$overlib.'">'.$image.'</a>';
 

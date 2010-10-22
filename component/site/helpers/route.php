@@ -186,15 +186,15 @@ class RedeventHelperRoute
 		return self::buildUrl( $parts );		
 	}
 	
-	function getEditEventRoute($id = null, $returnxref = 0)
+	function getEditEventRoute($id = null, $xref = 0)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "editevent" );
 		if ($id) {
 			$parts['id'] = $id;
 		}
-		if ($returnxref) {
-			$parts['returnid'] = $returnxref;
+		if ($xref) {
+			$parts['xref'] = $xref;
 		}
 		return self::buildUrl( $parts );			
 	}

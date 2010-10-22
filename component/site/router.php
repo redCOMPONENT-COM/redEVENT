@@ -36,6 +36,18 @@ function RedEventBuildRoute(&$query)
 	  
 	  case 'confirmation':
 	    break;
+	  case 'editevent':
+    	if(isset($query['id']))
+    	{
+    		$segments[] = $query['id'];
+    		unset($query['id']);
+    	};
+    	if(isset($query['xref']))
+    	{
+    		$segments[] = $query['xref'];
+    		unset($query['xref']);
+    	};
+	  	break;
 	  case 'calendar':
 	  case 'categoryevents':
 	  case 'details':
@@ -45,7 +57,6 @@ function RedEventBuildRoute(&$query)
 	  case 'venuesmap':
 	  case 'categories':
 	  case 'confirmation':
-	  case 'editevent':
 	  case 'myevents':
 	  case 'signup':
 	  case 'upcomingvenueevents':
@@ -157,9 +168,12 @@ function RedEventParseRoute($segments)
 			
 			$vars['view'] = 'editevent';
 
-			if($count == 3) {
+			if ($count > 1) {
 				$vars['id'] = $segments[1];
-				$vars['returnid'] = $segments[2];
+			}
+
+			if($count > 2) {
+				$vars['xref'] = $segments[2];
 			}
 
 		} break;
