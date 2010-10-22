@@ -293,9 +293,12 @@ class RedeventModelEditevent extends JModel
 					. ' LEFT JOIN #__redevent_venues AS v ON v.id = x.venueid'
 					    ;
 					    
-					    
-			$query .= ' WHERE e.id = '.(int)$id
-					;
+			if ($this->_xref) {		    
+				$query .= ' WHERE x.id = '.(int) $this->_xref;
+			}
+			else {		    
+				$query .= ' WHERE e.id = '.(int) $id;
+			}
 			$this->_db->setQuery($query);
 			$this->_event = $this->_db->loadObject();
 			
@@ -840,7 +843,7 @@ class RedeventModelEditevent extends JModel
 		{
 			$xref = & JTable::getInstance('redevent_eventvenuexref', '');
 			$xref->bind($data);
-			$xref->id        = null;
+			$xref->id        = isset($data['xref']) ? $data['xref'] : null;
 			$xref->eventid   = $row->id;
 			$xref->published = $row->published;
 			

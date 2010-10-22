@@ -188,7 +188,7 @@ JHTML::_('behavior.calendar');
 				<td><?php echo $this->lists['published']; ?></td>
 			</tr>
 			<?php endif; ?>
-			<?php if (!$this->row->id  && $this->params->get('create_session', 1)): // edit first xref only on initial event creation, afterwards use myevents ?>
+			<?php if ($this->params->get('create_session', 1)): // edit/create xref ?>
 			<tr>
 				<td class="key hasTip" title="<?php echo JText::_(''); ?>">
 					<label for="a_id"><?php echo JText::_( 'VENUE' ).':'; ?></label>
@@ -201,7 +201,7 @@ JHTML::_('behavior.calendar');
 						   rel="{handler: 'iframe', size: {x: 650, y: 375}}">
 						   	<span><?php echo JText::_('SELECT')?></span>
 						</a> 
-						<input class="inputbox required" type="hidden" id="a_id" name="venueid" value="<?php echo $this->row->locid; ?>" />
+						<input class="inputbox required" type="hidden" id="a_id" name="venueid" value="<?php echo $this->row->venueid; ?>" />
 					</div>
 				</td>
 			</tr>
@@ -372,17 +372,15 @@ JHTML::_('behavior.calendar');
 </div>
 
 <p class="clear">
-<input type="hidden" name="id"
-	value="<?php echo $this->row->id; ?>" /> <input type="hidden"
-	name="returnid" value="<?php echo JRequest::getInt('returnid'); ?>" />
-<input type="hidden" name="referer"
-	value="<?php echo @$_SERVER['HTTP_REFERER']; ?>" /> <input
-	type="hidden" name="created" value="<?php echo $this->row->created; ?>" />
-<input type="hidden" name="author_ip"
-	value="<?php echo $this->row->author_ip; ?>" /> <input type="hidden"
-	name="created_by" value="<?php echo $this->row->created_by; ?>" /> <input
-	type="hidden" name="curimage"
-	value="<?php echo $this->row->datimage; ?>" /> <?php echo JHTML::_( 'form.token' ); ?>
+<?php echo JHTML::_( 'form.token' ); ?>
+<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" /> 
+<input type="hidden" name="xref" value="<?php echo $this->row->xref; ?>" /> 
+<input type="hidden" name="returnid" value="<?php echo JRequest::getInt('returnid'); ?>" />
+<input type="hidden" name="referer"	value="<?php echo @$_SERVER['HTTP_REFERER']; ?>" /> 
+<input type="hidden" name="created" value="<?php echo $this->row->created; ?>" />
+<input type="hidden" name="author_ip"	value="<?php echo $this->row->author_ip; ?>" /> 
+<input type="hidden" name="created_by" value="<?php echo $this->row->created_by; ?>" /> 
+<input type="hidden" name="curimage" value="<?php echo $this->row->datimage; ?>" /> 
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="option" value="com_redevent" />
 </p>

@@ -246,7 +246,7 @@ class RedeventViewMyevents extends JView
 		$overlib = JText::_( 'EDIT EVENT TIP' );
 		$text = JText::_( 'EDIT EVENT' );
 
-		$link 	= 'index.php?option=com_redevent&view=editevent&id='.$id;
+		$link 	= 'index.php?option=com_redevent&view=editevent&id='.$id.'&xref='.$xref;
 		$output	= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
 
 		return $output;
