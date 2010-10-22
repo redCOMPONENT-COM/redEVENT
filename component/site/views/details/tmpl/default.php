@@ -37,14 +37,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <?php if ($this->params->def( 'show_page_title', 1 )) : ?>
 	<h1 class="componentheading">
-		<?php echo $this->params->get('page_title'); ?>
+		<?php echo $this->row->title; ?>
 	</h1>
 <?php endif; ?>
 
 <!-- Details EVENT -->
 	<h2 class="eventlist">
 		<?php
-    	echo JText::_( 'EVENT' );
+    	echo $this->row->title;
     	echo '&nbsp;'.ELOutput::editbutton($this->item->id, $this->row->did, $this->params, $this->allowedtoeditevent, 'editevent' );
     	?>
 	</h2>
