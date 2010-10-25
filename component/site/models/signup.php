@@ -141,7 +141,7 @@ class RedeventModelSignup extends JModel
 					. ' a.max_multi_signup, a.confirmation_message, a.review_message, x.course_price, x.course_credit, a.course_code, c.catname, c.published, c.access, a.submission_type_phone,'
 					. ' a.submission_type_webform, a.submission_type_formal_offer, a.submission_type_email, v.venue, v.city AS location, '
 					. ' a.submission_type_email_pdf, a.submission_type_formal_offer_pdf, a.send_pdf_form, a.pdf_form_data, '
-					. ' x.registrationend, '
+					. ' x.registrationend, x.id as xref, '
 	        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
 	        . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
 					. ' FROM #__redevent_events AS a'

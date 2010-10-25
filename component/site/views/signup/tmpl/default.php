@@ -42,8 +42,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php endif; ?>
 <?php
 echo $this->page;
-
-echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&id='.JRequest::getInt('id').'&xref='.JRequest::getInt('xref')), JText::_('RETURN_EVENT_DETAILS'));
+echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&id='.$this->course->did.'&xref='.$this->course->xref), JText::_('RETURN_EVENT_DETAILS'));
 ?>
 <?php if (isset($this->fullpage)): ?>
 </div>
