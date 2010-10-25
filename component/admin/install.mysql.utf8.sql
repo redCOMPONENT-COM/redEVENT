@@ -386,7 +386,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_countries` (
   `iso2` varchar(2) NOT NULL DEFAULT '',
   `iso3` varchar(3) NOT NULL DEFAULT '',
   `un` int(11) NOT NULL DEFAULT '0',
-  `name` varchar(30) NOT NULL DEFAULT '',
+  `name` varchar(50) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `iso2` (`iso2`)
 ) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
