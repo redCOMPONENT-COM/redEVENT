@@ -1069,31 +1069,54 @@ class redEVENT_tags {
   {
   	if (empty($this->_customfields))
   	{
-	  	$xref = $this->_xref;
-	  	$db = & JFactory::getDBO();
-	    $query = ' SELECT f.*, fv.value '
-	           . ' FROM #__redevent_event_venue_xref AS xref '
-	           . ' INNER JOIN #__redevent_fields_values AS fv ON fv.object_id = xref.eventid '
-	           . ' INNER JOIN #__redevent_fields AS f ON fv.field_id = f.id '
-	           . ' WHERE f.published = 1 '
-	           . ' AND CHAR_LENGTH(f.tag) > 0 '
-	           . ' AND f.object_key = '. $db->Quote("redevent.event")
-	           . ' AND xref.id = '. $db->Quote($xref)
-	           ;
-	    $db->setQuery($query);
-	    $fields = $db->loadObjectList();
+  		if ($this->_eventid)
+  		{
+		  	$db = & JFactory::getDBO();
+		    $query = ' SELECT f.*, fv.value '
+		           . ' FROM #__redevent_fields_values AS fv '
+		           . ' INNER JOIN #__redevent_fields AS f ON fv.field_id = f.id '
+		           . ' WHERE f.published = 1 '
+		           . ' AND CHAR_LENGTH(f.tag) > 0 '
+		           . ' AND f.object_key = '. $db->Quote("redevent.event")
+		           . ' AND fv.object_id = '. $db->Quote($this->_eventid)
+		           ;
+		    $db->setQuery($query);
+		    $fields = $db->loadObjectList();
+  		}
+  		else if ($this->_xref)
+  		{
+		  	$xref = $this->_xref;
+		  	$db = & JFactory::getDBO();
+		    $query = ' SELECT f.*, fv.value '
+		           . ' FROM #__redevent_event_venue_xref AS xref '
+		           . ' INNER JOIN #__redevent_fields_values AS fv ON fv.object_id = xref.eventid '
+		           . ' INNER JOIN #__redevent_fields AS f ON fv.field_id = f.id '
+		           . ' WHERE f.published = 1 '
+		           . ' AND CHAR_LENGTH(f.tag) > 0 '
+		           . ' AND f.object_key = '. $db->Quote("redevent.event")
+		           . ' AND xref.id = '. $db->Quote($this->_xref)
+		           ;
+		    $db->setQuery($query);
+		    $fields = $db->loadObjectList();
+  		}
+  		else {
+  			$fields = array();
+  		}
 	    
-	    $query = ' SELECT f.*, fv.value '
-	           . ' FROM #__redevent_event_venue_xref AS xref '
-	           . ' INNER JOIN #__redevent_fields_values AS fv ON fv.object_id = xref.id '
-	           . ' INNER JOIN #__redevent_fields AS f ON fv.field_id = f.id '
-	           . ' WHERE f.published = 1 '
-	           . ' AND CHAR_LENGTH(f.tag) > 0 '
-	           . ' AND f.object_key = '. $db->Quote("redevent.xref")
-	           . ' AND xref.id = '. $db->Quote($xref)
-	           ;
-	    $db->setQuery($query);
-	    $fields = array_merge($fields, $db->loadObjectList());
+  		if ($this->_xref)
+  		{
+		    $query = ' SELECT f.*, fv.value '
+		           . ' FROM #__redevent_event_venue_xref AS xref '
+		           . ' INNER JOIN #__redevent_fields_values AS fv ON fv.object_id = xref.id '
+		           . ' INNER JOIN #__redevent_fields AS f ON fv.field_id = f.id '
+		           . ' WHERE f.published = 1 '
+		           . ' AND CHAR_LENGTH(f.tag) > 0 '
+		           . ' AND f.object_key = '. $db->Quote("redevent.xref")
+		           . ' AND xref.id = '. $db->Quote($this->_xref)
+		           ;
+		    $db->setQuery($query);
+		    $fields = array_merge($fields, $db->loadObjectList());
+  		}
 	        
 	    $have_values = array();
 	    $replace = array();
