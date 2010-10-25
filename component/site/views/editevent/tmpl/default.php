@@ -165,7 +165,7 @@ JHTML::_('behavior.calendar');
 	<table class="fieldstable">
 		<tbody>
 			<tr>
-				<td class="key hasTip" title="<?php echo JText::_(''); ?>">
+				<td class="key">
 					<label for="title"><?php echo JText::_( 'TITLE' ).':'; ?></label>
 				</td>
 				<td>
@@ -175,7 +175,7 @@ JHTML::_('behavior.calendar');
 			</tr>
 			<?php if ($this->params->get('edit_categories', 0)): ?>
 			<tr>
-				<td class="key hasTip" title="<?php echo JText::_(''); ?>">
+				<td class="key">
 					<label for="categories" class="catsid"> <?php echo JText::_( 'CATEGORY' ).':';?></label>
 				</td>
 				<td><?php	echo $this->lists['categories']; ?></td>
@@ -190,7 +190,7 @@ JHTML::_('behavior.calendar');
 			<?php endif; ?>
 			<?php if ($this->params->get('create_session', 1)): // edit/create xref ?>
 			<tr>
-				<td class="key hasTip" title="<?php echo JText::_(''); ?>">
+				<td class="key">
 					<label for="a_id"><?php echo JText::_( 'VENUE' ).':'; ?></label>
 				</td>
 				<td>
