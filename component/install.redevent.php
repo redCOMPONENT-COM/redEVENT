@@ -46,6 +46,7 @@ $tables = array( '#__redevent_events',
                  '#__redevent_groupmembers',
                  '#__redevent_groups',
                  '#__redevent_fields_values',
+                 '#__redevent_repeats',
                );
 $tables = $db->getTableFields($tables, false);
 
@@ -796,6 +797,35 @@ if (is_array($cols))
     $db->query();  	
   }
 }
+
+/** 
+ * events repeat table
+ */
+$cols = $tables['#__redevent_repeats'];
+
+if (is_array($cols)) 
+{      
+  if (!array_key_exists('id', $cols)) {
+    $q = ' ALTER TABLE `#__redevent_repeats` '
+       . '   ADD `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY '
+       ;
+    $db->setQuery($q);
+    $db->query();    
+  }
+	
+  /** add indexes **/
+  if (empty($cols['xref_id']->Key)) {
+    $q = "ALTER TABLE `#__redevent_repeats` ADD INDEX (`xref_id`)";
+    $db->setQuery($q);
+    $db->query();  	
+  }
+  if (empty($cols['recurrence_id']->Key)) {
+    $q = "ALTER TABLE `#__redevent_repeats` ADD INDEX (`recurrence_id`)";
+    $db->setQuery($q);
+    $db->query();  	
+  }
+}
+  
   
 /* Add the basic configuration entry */
 $q = "INSERT IGNORE INTO `#__redevent_settings` SET "

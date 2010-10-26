@@ -36,6 +36,12 @@ jimport('joomla.filter.input');
 class Redevent_repeats extends JTable
 {
 	/**
+	 * primary Key
+	 *
+	 * @var int
+	 */
+	var $id = null;
+	/**
 	 * Foreign Key
 	 *
 	 * @var int

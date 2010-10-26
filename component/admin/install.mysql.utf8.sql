@@ -399,10 +399,14 @@ CREATE TABLE IF NOT EXISTS `#__redevent_recurrences` (
 ) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_repeats` (
+  `id` int(11) NOT NULL,
   `xref_id` int(11) NOT NULL,
   `recurrence_id` int(11) NOT NULL,
   `count` int(11) NOT NULL,
-  UNIQUE KEY `recurrence_repeat` (`xref_id`,`recurrence_id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `recurrence_repeat` (`xref_id`,`recurrence_id`),
+  KEY `xref_id` (`xref_id`),
+  KEY `recurrence_id` (`recurrence_id`)
 ) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 INSERT IGNORE INTO `#__redevent_countries` (`id`, `continent`, `iso2`, `iso3`, `un`, `name`) VALUES
