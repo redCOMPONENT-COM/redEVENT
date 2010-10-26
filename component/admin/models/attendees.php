@@ -225,9 +225,11 @@ class RedEventModelAttendees extends JModel
 		       . ' LEFT JOIN #__users AS u ON r.uid = u.id '
 		       . ' LEFT JOIN #__rwf_submitters AS s ON r.sid = s.id '
 		       . ' LEFT JOIN #__rwf_forms AS fo ON fo.id = s.form_id '
-		       . ' LEFT JOIN #__rwf_payment AS p ON p.submit_key = s.submit_key '
+		       . ' LEFT JOIN (SELECT MAX(id) as id, submit_key FROM #__rwf_payment GROUP BY submit_key) AS latest_payment ON latest_payment.submit_key = s.submit_key'
+		       . ' LEFT JOIN #__rwf_payment AS p ON p.id = latest_payment.id '
 		       . $join_rwftable
 		       . $where
+		       . ' GROUP BY r.id '
 		       . $orderby;
 		return $query;
 	}
