@@ -50,6 +50,7 @@ class RedeventViewPayment extends JView
 		$document 	= JFactory::getDocument();
 		$dispatcher = JDispatcher::getInstance();
 		$elsettings = redEVENTHelper::config();
+    $uri 		= & JFactory::getURI();
 		
 		$row		= $this->get('Event');
 		
@@ -59,7 +60,6 @@ class RedeventViewPayment extends JView
 		$tags = new redEVENT_tags();
 		$tags->setXref($row->xref);
 		$tags->setSubmitkey($submit_key);
-		$this->assignRef('tags', $tags);
 		
 		//get menu information
 		$menu		= & JSite::getMenu();
@@ -92,7 +92,7 @@ class RedeventViewPayment extends JView
 			$params->set( 'popup', 1 );
 		}
 
-		$print_link = JRoute::_('index.php?option=com_redevent&view=payment&step='.$state.'&submit_key='.$submit_key.'&pop=1&tmpl=component');
+		$print_link = JRoute::_($uri->toString().'&pop=1&tmpl=component');
 
 		//set page title and meta stuff
 		$document->setTitle( $row->title. ' - '. JText::_('Payment') );
@@ -101,15 +101,19 @@ class RedeventViewPayment extends JView
 		switch ($state)
 		{
 			case 'processing':
-				$text = $row->paymentprocessing;
+				$text = $tags->ReplaceTags($row->paymentprocessing);
 				break;
 				
 			case 'accepted':
-				$text = $row->paymentaccepted;
+				$text = $tags->ReplaceTags($row->paymentaccepted);
+				break;
+				
+			case 'refused':
+				$text = JText::_('COM_REDEVENT_PAYMENT_PAYMENT_REFUSED');
 				break;
 
 			default:
-				$text = JText::_('Unknow payment status');
+				$text = JText::_('COM_REDEVENT_PAYMENT_UNKNOWN_PAYMENT_STATUS');
 				break;
 		}
 		
@@ -120,6 +124,7 @@ class RedeventViewPayment extends JView
 		$this->assignRef('print_link',    $print_link);
 		$this->assignRef('elsettings',    $elsettings);
 		$this->assignRef('item',          $item);
+		$this->assignRef('tags', $tags);
 		
 		$tpl = JRequest::getVar('tpl', $tpl);
 		

@@ -24,14 +24,12 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
-<div id="redevent" class="event_id<?php echo $this->row->did; ?> el_payment">
+<div id="redevent" class="event_id<?php echo $this->row->eventid; ?> el_payment">
 	<p class="buttons">
 			<?php echo ELOutput::printbutton( $this->print_link, $this->params ); ?>
 	</p>
-
-<?php echo $this->tags->ReplaceTags($this->text); ?>
-
-<p class="copyright">
-	<?php echo ELOutput::footer( ); ?>
-</p>
+<div class="payment-result">
+<?php echo $this->text; ?>
+</div>
+<?php echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&id='.$this->row->eventid.'&xref='.$this->row->xref), JText::_('RETURN_EVENT_DETAILS')); ?>
 </div>
