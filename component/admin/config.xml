@@ -40,15 +40,6 @@
       <option value="0">Hide</option>
       <option value="1">Show</option>
     </param>
-    <param name="week_start" type="radio" default="MO" label="WEEK START" description="WEEK START DESC">
-      <option value="SU">SUNDAY</option>
-      <option value="MO">MONDAY</option>
-    </param>
-    <param name="recurrence_limit" type="text" default="30" label="RECURRENCE ANTICIPATION WINDOW" description="RECURRENCE ANTICIPATION WINDOW DESC" />
-		<param name="default_content" type="event" default="0" label="SELECT EVENT DEFAULT CONTENT" description="SELECT EVENT DEFAULT CONTENT DESC" />
- 	</params>
- 	
- 	<params group="Layout">
     <param name="details_attendees_layout" type="list" default="0" label="DETAILS ATTENDEES LAYOUT" description="DETAILS ATTENDEES LAYOUT TIP">
       <option value="0">Table</option>
       <option value="1">List</option>
@@ -162,6 +153,12 @@
  	</params>
  	
  	<params group="COM_REDEVENT_SETTINGS_MISC">
+    <param name="week_start" type="radio" default="MO" label="WEEK START" description="WEEK START DESC">
+      <option value="SU">SUNDAY</option>
+      <option value="MO">MONDAY</option>
+    </param>
+    <param name="recurrence_limit" type="text" default="30" label="RECURRENCE ANTICIPATION WINDOW" description="RECURRENCE ANTICIPATION WINDOW DESC" />
+		<param name="default_content" type="event" default="0" label="SELECT EVENT DEFAULT CONTENT" description="SELECT EVENT DEFAULT CONTENT DESC" />
     <param name="allow_email_aliasing" type="radio" default="1" label="COM_REDEVENT_SETTINGS_MISC_ALLOW_EMAIL_ALIASING" description="COM_REDEVENT_SETTINGS_MISC_ALLOW_EMAIL_ALIASING_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
