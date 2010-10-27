@@ -1318,9 +1318,18 @@ class redEVENT_tags {
 			return '<span class="redform_error">'.$error.'</span>';
  		}
   	$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute($this->_xref, 'register'));
+  	// multiple signup ?
+  	$single = JRequest::getInt('single', 0);
+  	$max = $this->getEvent()->getData()->max_multi_signup;
+  	if ($max && ! $single) {
+  		$multi = $max;
+  	}
+  	else {
+  		$multi = 1;
+  	}  	
   	
 		$html = '<form action="'.$action.'" method="post" name="redform" enctype="multipart/form-data" onsubmit="return CheckSubmit(this);">';
-  	$html .= $rfcore->getFormFields($this->getEvent()->getData()->redform_id, $submit_key, ($this->getEvent()->getData()->max_multi_signup ? $this->getEvent()->getData()->max_multi_signup : 1), $options);
+  	$html .= $rfcore->getFormFields($this->getEvent()->getData()->redform_id, $submit_key, $multi, $options);
   	$html .= '<input type="hidden" name="xref" value="'.$this->_xref.'"/>';
   	if ($this->getOption('hasreview')) {
   		$html .= '<input type="hidden" name="hasreview" value="1"/>';
