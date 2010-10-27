@@ -13,6 +13,14 @@
 				<option value="0">Hide</option>
 				<option value="1">Show</option>
 			</param>
+			<param name="showopendates" type="radio" default="1" label="COM_REDEVENT_VIEW_MYEVENTS_SHOW_OPENDATES" description="COM_REDEVENT_VIEW_MYEVENTS_SHOW_OPENDATES_DESC">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="shownonbookable" type="radio" default="1" label="COM_REDEVENT_VIEW_MYEVENTS_SHOW_NONBOOKABLE" description="COM_REDEVENT_VIEW_MYEVENTS_SHOW_NONBOOKABLE_DESC">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
 		</params>
 	</state>
 </metadata>

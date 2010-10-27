@@ -497,7 +497,15 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         }
         $where[] = ' ( e.created_by = '.$user->get('id')
                    . '   OR ('.implode(' AND ', $acl_where).') ) ';
-
+                   
+        if ($params->get('showopendates', 1) == 0) {
+        	$where[] = ' x.dates IS NOT NULL AND x.dates > 0 ';
+        }
+    
+        if ($params->get('shownonbookable', 1) == 0) {
+        	$where[] = ' e.registra > 0 ';
+        }
+        
         /*
          * If we have a filter, and this is enabled... lets tack the AND clause
          * for the filter onto the WHERE clause of the item query.
