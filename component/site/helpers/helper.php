@@ -224,7 +224,7 @@ class redEVENTHelper {
      if ($recurrence_id) {
        $query .= ' AND r.id = '. $db->Quote($recurrence_id);
      }
-     $query .= ' GROUP BY recurrence_id ';
+     $query .= ' GROUP BY rp.recurrence_id ';
 	   $db->setQuery($query);
 	   $recurrences = $db->loadObjectList();
 
@@ -240,7 +240,7 @@ class redEVENTHelper {
 	   $query = ' SELECT x.*, rp.count '
         	   . ' FROM #__redevent_event_venue_xref AS x '
              . ' INNER JOIN #__redevent_repeats AS rp ON rp.xref_id = x.id '
-        	   . ' WHERE id IN ('. implode(",", $rids) .')'
+        	   . ' WHERE x.id IN ('. implode(",", $rids) .')'
   	         ;
 	   $db->setQuery($query);
 	   $xrefs = $db->loadObjectList('id');
