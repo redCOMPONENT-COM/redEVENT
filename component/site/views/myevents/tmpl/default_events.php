@@ -132,7 +132,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<?php if ($this->params->get('showcode', 1)): ?>
 				<th id="el_code" class="sectiontableheader" align="left"><?php echo JText::_('Code'); ?></th>
 				<?php endif; ?> 
-				<th id="el_attendees" class="sectiontableheader" align="left"><?php echo JText::_('Attendees'); ?></th>
+				<th id="el_attendees" class="sectiontableheader" align="left"><?php echo JText::_('Booked'); ?></th>
 				<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('Edit'); ?></th>
 				<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('Published'); ?></th>
 				<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('Delete'); ?></th>
@@ -221,7 +221,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<?php if ($this->params->get('showcode', 1)): ?>
 				<td headers="el_code" align="left" valign="top"><?php echo $this->escape(redEVENTHelper::getSessionCode($row)); ?></td>
 				<?php endif; ?> 
-				<td headers="el_edit" align="left" valign="top"><?php echo $row->registered; ?> <?php echo $this->xrefattendeesbutton($row->xref); ?></td>
+				<td headers="el_edit" align="left" valign="top"><?php echo $row->registered.($row->maxattendees ? '/'.$row->maxattendees : ''); ?> <?php echo $this->xrefattendeesbutton($row->xref); ?></td>
 				<td headers="el_edit" align="left" valign="top"><?php echo $this->eventeditbutton($row->slug, $row->xref); ?></td>
 				<td headers="el_edit" align="left" valign="top">
 					<?php if ($row->published == '1'): ?>
