@@ -21,6 +21,10 @@
 				<option value="0">Hide</option>
 				<option value="1">Show</option>
 			</param>
+			<param name="showeventfilter" type="radio" default="1" label="COM_REDEVENT_VIEW_MYEVENTS_SHOW_EVENTFILTER" description="COM_REDEVENT_VIEW_MYEVENTS_SHOW_EVENTFILTER_DESC">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
 		</params>
 	</state>
 </metadata>

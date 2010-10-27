@@ -42,12 +42,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <form action="<?php echo $this->action; ?>" method="post" id="adminForm">
 
-<?php if ($this->params->get('filter') || $this->params->get('display')) : ?>
+<?php if ($this->params->get('filter') || $this->params->get('display') || $this->params->get('showeventfilter')) : ?>
 <div id="el_filter" class="floattext">
+    <?php if ($this->params->get('showeventfilter', 1)) : ?>
+    <div>
+    	<label for="filter_event"><?php echo JText::_('Event'); ?></label> <?php echo $this->lists['filter_event']; ?>
+    </div>
+    <?php endif; ?>
     <?php if ($this->params->get('filter')) : ?>
-    <div class="el_fleft">
-      <?php
-      echo '<label for="filter_type">'.JText::_('FILTER').'</label>&nbsp;';
+    <div>
+      <label for="filter_type"><?php echo JText::_('FILTER'); ?></label> <?php
       echo $this->lists['filter_types'].'&nbsp;';
       ?>
       <input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" />
@@ -56,7 +60,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     </div>
     <?php endif; ?>
     <?php if ($this->params->get('display')) : ?>
-    <div class="el_fright">
+    <div>
       <?php
       echo '<label for="limit">'.JText::_('DISPLAY NUM').'</label>&nbsp;';
       echo $this->events_pageNav->getLimitBox();

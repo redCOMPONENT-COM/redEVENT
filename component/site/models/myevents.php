@@ -542,6 +542,107 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
                 }
             }
         }
+        if (JRequest::getInt('filter_event')) {
+        	$where[] = ' e.id = '.JRequest::getInt('filter_event');
+        }
+        
+        $where = ' WHERE '. implode(' AND ', $where);
+        return $where;
+    }
+/**
+     * Build the where clause
+     *
+     * @access private
+     * @return string
+     */
+    function _buildEventsOptionsWhere()
+    {
+        global $mainframe;
+
+        $user = & JFactory::getUser();
+        $gid = (int)$user->get('aid');
+
+        // Get the paramaters of the active menu item
+        $params = & $mainframe->getParams();
+
+        $task = JRequest::getWord('task');
+        
+        $where = array();
+
+        // First thing we need to do is to select only needed events
+        if ($task == 'archive')
+        {
+            $where[] = ' x.published = -1 ';
+        } else
+        {
+            $where[] = ' x.published > -1 ';
+        }
+
+        $acl = UserAcl::getInstance();
+        
+        $cats   = $acl->getManagedCategories();
+        $venues = $acl->getManagedVenues();
+        
+        $acl_where = array();        
+        if (!empty($cats)) {
+        	$acl_where[] = ' xcat.category_id IN ('.implode(', ', $cats).')';
+        }
+        else {
+        	$acl_where[] = ' 0 ';
+        }
+        if (!empty($venues)) {
+        	$acl_where[] = ' x.venueid IN ('.implode(', ', $venues).')';
+        }
+        else {
+        	$acl_where[] = ' 0 ';
+        }
+        $where[] = ' ( e.created_by = '.$user->get('id')
+                   . '   OR ('.implode(' AND ', $acl_where).') ) ';
+                   
+        if ($params->get('showopendates', 1) == 0) {
+        	$where[] = ' x.dates IS NOT NULL AND x.dates > 0 ';
+        }
+    
+        if ($params->get('shownonbookable', 1) == 0) {
+        	$where[] = ' e.registra > 0 ';
+        }
+        
+        /*
+         * If we have a filter, and this is enabled... lets tack the AND clause
+         * for the filter onto the WHERE clause of the item query.
+         */
+        if ($params->get('filter'))
+        {
+            $filter = JRequest::getString('filter', '', 'request');
+            $filter_type = JRequest::getWord('filter_type', '', 'request');
+
+            if ($filter)
+            {
+                // clean filter variables
+                $filter = JString::strtolower($filter);
+                $filter = $this->_db->Quote('%'.$this->_db->getEscaped($filter, true).'%', false);
+                $filter_type = JString::strtolower($filter_type);
+
+                switch($filter_type)
+                {
+                    case 'title':
+                        $where[] = ' LOWER( e.title ) LIKE '.$filter;
+                        break;
+
+                    case 'venue':
+                        $where[] = ' LOWER( l.venue ) LIKE '.$filter;
+                        break;
+
+                    case 'city':
+                        $where[] = ' LOWER( l.city ) LIKE '.$filter;
+                        break;
+
+                    case 'type':
+                        $where[] = ' LOWER( c.catname ) LIKE '.$filter;
+                        break;
+                }
+            }
+        }
         
         $where = ' WHERE '. implode(' AND ', $where);
         return $where;
@@ -581,7 +682,30 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         $where .= ' AND c.access <= '.$gid;
 
         return $where;
-    }    
+    }
+
+
+    
+	function getEventsOptions()
+	{
+		// Get the WHERE and ORDER BY clauses for the query
+		$where = $this->_buildEventsOptionsWhere();
+		
+		//Get Events from Database
+		$query = ' SELECT e.id AS value, e.title as text '
+		       . ' FROM #__redevent_event_venue_xref AS x'
+		       . ' LEFT JOIN #__redevent_events AS e ON e.id = x.eventid'
+		       . ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
+		       . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id'
+		       . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+		       . $where
+		       . ' GROUP BY (e.id) '
+		       . ' ORDER BY e.title '
+		       ;
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadObjectList();
+		return $res;
+	}
 }
 
 class MyEventsPagination extends JPagination

@@ -90,8 +90,9 @@ class RedeventViewMyevents extends JView
 				$document->addScriptDeclaration( $js );
 				
         // get variables
-        $limitstart = JRequest::getVar('limitstart', 0, '', 'int');
-        $limit = $mainframe->getUserStateFromRequest('com_redevent.myevents.limit', 'limit', $params->def('display_num', 5), 'int');
+        $limitstart   = JRequest::getVar('limitstart', 0, '', 'int');
+        $limit        = $mainframe->getUserStateFromRequest('com_redevent.myevents.limit', 'limit', $params->def('display_num', 5), 'int');
+        $filter_event = $mainframe->getUserStateFromRequest('com_redevent.myevents.filter_event', 'filter_event', 0, 'int');
         $task = JRequest::getWord('task');
         $pop = JRequest::getBool('pop');
 
@@ -131,6 +132,13 @@ class RedeventViewMyevents extends JView
             $uri->delVar('filter');
             $uri->delVar('filter_type');
         }
+        // events filter
+        $options = array(JHTML::_('select.option', 0, JText::_('select event')));
+        if ($ev = $this->get('EventsOptions')) {
+        	$options = array_merge($options, $ev);
+        }
+        $lists['filter_event'] = JHTML::_('select.genericlist', $options, 'filter_event', 'onchange="document.getElementById(\'adminForm\').submit();"', 'value', 'text', $filter_event);
+        
 
         $this->assign('action', $uri->toString());
 
