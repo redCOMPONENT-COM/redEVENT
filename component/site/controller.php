@@ -118,7 +118,8 @@ class RedeventController extends JController
 
 		// Must be logged in
 		if ($user->get('id') < 1) {
-			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+			$this->setRedirect('index.php',JText::_('Only logged users can access this page'), 'error');
+			$this->redirect();
 			return;
 		}
 
@@ -148,7 +149,8 @@ class RedeventController extends JController
 
 		// Must be logged in
 		if ($user->get('id') < 1) {
-			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+			$this->setRedirect('index.php',JText::_('Only logged users can access this page'), 'error');
+			$this->redirect();
 			return;
 		}
 
@@ -175,7 +177,8 @@ class RedeventController extends JController
 
 		// Must be logged in
 		if ($user->get('id') < 1) {
-			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+			$this->setRedirect('index.php',JText::_('Only logged users can access this page'), 'error');
+			$this->redirect();
 			return;
 		}
 

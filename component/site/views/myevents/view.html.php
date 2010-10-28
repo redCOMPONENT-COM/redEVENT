@@ -46,7 +46,7 @@ class RedeventViewMyevents extends JView
 			
         $user = & JFactory::getUser();
         if (!$user->get('id')) {
-        	JError::raiseError(403, JText::_('Only logged users can access this page'));
+        	$mainframe->redirect('index.php',JText::_('Only logged users can access this page'), 'error');
         }
         
         //initialize variables

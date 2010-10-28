@@ -142,7 +142,7 @@ class RedeventViewAttendees extends JView
 
 		//Check if user has access to the attendees management
 		if (!$regcheck) {
-			return JError::raiseError( 403, JText::_( 'NO ACCESS' ) );
+			$mainframe->redirect('index.php',JText::_('Only logged users can access this page'), 'error');
 		}
 
 		//add css file

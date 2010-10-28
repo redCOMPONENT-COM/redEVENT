@@ -42,7 +42,7 @@ class RedeventViewDetails extends JView
 	 */
 	function display($tpl = null)
 	{		
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 		/* Set which page to show */
 		$tpl = JRequest::getVar('page', null);
 		
@@ -82,7 +82,7 @@ class RedeventViewDetails extends JView
 
 		//Check if user has access to the details
 		if ($elsettings->showdetails == 0) {
-			return JError::raiseError( 403, JText::_( 'NO ACCESS' ) );
+			$mainframe->redirect('index.php',JText::_('Only logged users can access this page'), 'error');
 		}
 
 		//add css file
