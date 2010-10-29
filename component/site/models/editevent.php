@@ -761,30 +761,6 @@ class RedeventModelEditevent extends JModel
 			$row->datimage = $curimage;
 		}//end image if
 
-		$editoruser = UserAcl::editoruser();
-
-		if (!$editoruser) 
-		{
-			//check datdescription --> wipe out code
-			$row->datdescription = strip_tags($row->datdescription, '<br><br/>');
-
-			//convert the linux \n (Mac \r, Win \r\n) to <br /> linebreaks
-			$row->datdescription = str_replace(array("\r\n", "\r", "\n"), "<br />", $row->datdescription);
-
-			// cut too long words
-			$row->datdescription = wordwrap($row->datdescription, 75, ' ', 1);
-
-			//check length
-			$length = JString::strlen($row->datdescription);
-			if ($length > $elsettings->datdesclimit) 
-			{
-				//too long then shorten datdescription
-				$row->datdescription = JString::substr($row->datdescription, 0, $elsettings->datdesclimit);
-				//add ...
-				$row->datdescription = $row->datdescription.'...';
-			}
-		}
-
 		$row->title = trim( JFilterOutput::ampReplace( $row->title ) );
 
 		//Make sure the table is valid
