@@ -103,7 +103,7 @@ class RedeventViewDetails extends JView
 			$params->set( 'popup', 1 );
 		}
 
-		$print_link = JRoute::_('index.php?option=com_redevent&view=details&id='.$row->slug.'&pop=1&tmpl=component');
+		$print_link = JRoute::_('index.php?option=com_redevent&view=details&id='.$row->slug.'&xref='.JRequest::getInt('xref').'&pop=1&tmpl=component');
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
