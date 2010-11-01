@@ -69,7 +69,7 @@ class TCustomfieldTextbox extends TCustomfield {
     return '<input type="text" name="custom'.$this->id.'" id="custom'.$this->id.'" value="'.$value.'" '.$this->attributesToString($attributes).'/>';
   }
 
-  function renderFilter($attributes = '') 
+  function renderFilter($attributes = array()) 
   {
     $app = & JFactory::getApplication();
     
@@ -81,9 +81,9 @@ class TCustomfieldTextbox extends TCustomfield {
     else {
       $value = '';
     }
-    
+  	
     $value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-    return '<input type="text" name="filtercustom['.$this->id.']" id="filtercustom['.$this->id.']" value="'.$value.'" '.$attributes.'/>'; 
+    return '<input type="text" name="filtercustom['.$this->id.']" id="filtercustom['.$this->id.']" value="'.$value.'" '.$this->attributesToString($attributes).'/>'; 
   }
 }
