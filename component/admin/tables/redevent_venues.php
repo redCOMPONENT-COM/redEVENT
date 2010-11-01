@@ -108,7 +108,8 @@ class RedEvent_venues extends JTable
 			$this->alias = $alias;
 		}
 
-		if ( $this->map ){
+		if ( $this->map && !($this->latitude || $this->longitude)) 
+		{
 			if ((!trim($this->street)) || (!trim($this->plz)) || (!trim($this->city)) || (!trim($this->country))) {
 				$this->_error = JText::_( 'ADD ADDRESS');
 				JError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
