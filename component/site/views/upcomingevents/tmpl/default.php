@@ -25,6 +25,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <div id="upcomingevents">
 
+<?php if ($this->params->def( 'show_page_title', 1 )) : ?>
+	<h1 class="componentheading"><?php echo $this->escape($this->params->get( 'page_title')); ?></h1>
+<?php endif; ?>
+
 <?php if ($this->params->get('showintrotext')) : ?>
   <div class="description no_space floattext">
     <?php echo $this->params->get('introtext'); ?>

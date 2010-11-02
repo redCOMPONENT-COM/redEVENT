@@ -100,7 +100,7 @@ class RedeventViewUpcomingVenueevents extends JView
 			$pathway->addItem( $venue->venue, JRoute::_('index.php?option='.$option.'&view=upcomingvenueevents&id='.$venue->slug));
 			$link = JRoute::_( 'index.php?option=com_redevent&view=upcomingvenueevents&id='.$venue->slug );
 			$print_link = JRoute::_('index.php?option=com_redevent&view=upcomingvenueevents&id='. $venue->slug .'&pop=1&tmpl=component');
-			$pagetitle = $venue->venue;
+			$pagetitle = $venue->venue.' - '.JText::_( 'COM_REDEVENT_UPCOMING_EVENTS_TITLE' );
 		}
 		
 		//set Page title

@@ -62,6 +62,9 @@ class RedeventViewUpcomingevents extends JView
     }
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 		
+		//params
+		$params->def( 'page_title', JText::_('COM_REDEVENT_UPCOMING_EVENTS_TITLE'));
+		
 		/* Add rss link */
 		$link	= '&format=feed';
 		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
