@@ -408,8 +408,7 @@ class RedEventModelRegistration extends JModel
 				      $activatelink = '<a href="'.JRoute::_(JURI::root().'index.php?option=com_redevent&controller=registration&task=activate&confirmid='.str_replace(".", "_", $registration->uip).'x'.$registration->xref.'x'.$user->id.'x'.$registration->id.'x'.$submit_key).'">'.JText::_('Activate').'</a>';
 				      /* Mail attendee */
 				      $htmlmsg = '<html><head><title></title></title></head><body>';
-				      $htmlmsg .= str_replace('[activatelink]', $activatelink, $eventsettings->notify_body);
-				      $htmlmsg = str_replace('[fullname]', $user->name, $htmlmsg);
+				      $htmlmsg .= $eventsettings->notify_body;
 
 				      $htmlmsg .= '<br /><br />';
 				      $reginfo = nl2br(JText::_('INFORM_USERNAME'));
@@ -419,11 +418,16 @@ class RedEventModelRegistration extends JModel
 				      $htmlmsg .= $reginfo;
 
 				      $htmlmsg .= '</body></html>';
+				      
 				      $tags = new redEVENT_tags();
 				      $tags->setXref($registration->xref);
 				      $tags->setSubmitkey($submit_key);
 				      
-				      $this->mailer->setBody($tags->ReplaceTags($htmlmsg));
+				      $htmlmsg = $tags->ReplaceTags($htmlmsg);
+				      $htmlmsg = str_replace('[activatelink]', $activatelink, $htmlmsg);
+				      $htmlmsg = str_replace('[fullname]', $user->name, $htmlmsg);
+				      
+				      $this->mailer->setBody($htmlmsg);
 				      $this->mailer->setSubject($tags->ReplaceTags($eventsettings->notify_subject));
 
 				      /* Count number of messages sent */
@@ -486,12 +490,14 @@ class RedEventModelRegistration extends JModel
 					
 					/* Mail attendee */
 					$htmlmsg = '<html><head><title></title></title></head><body>';
-					$body = str_replace('[activatelink]', $activatelink, $eventsettings->notify_body);
-					$body = str_replace('[fullname]', $attendee->getFullname(), $body);
-					$htmlmsg .= $body;
+					$htmlmsg .= $eventsettings->notify_body;
 					$htmlmsg .= '</body></html>';
-		
-					$this->mailer->setBody($tags->ReplaceTags($htmlmsg));
+					
+					$htmlmsg = $tags->ReplaceTags($htmlmsg);
+					$htmlmsg = str_replace('[activatelink]', $activatelink, $htmlmsg);
+					$htmlmsg = str_replace('[fullname]', $attendee->getFullname(), $htmlmsg);
+					
+					$this->mailer->setBody($htmlmsg);
 					$this->mailer->setSubject($tags->ReplaceTags($eventsettings->notify_subject));
 		
 					/* Count number of messages sent */

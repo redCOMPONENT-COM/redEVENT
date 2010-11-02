@@ -26,6 +26,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
+// FIXME: this view is probably not used any more
 /**
  * HTML Details View class of the EventList component
  *

@@ -24,6 +24,8 @@
 /* no direct access */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+//FIXME: not used ?
+
 /* Group the type of messages together */
 $messagetypes = array();
 foreach ($this->messages as $key => $message) {
