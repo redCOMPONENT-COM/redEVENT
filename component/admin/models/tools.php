@@ -196,10 +196,15 @@ class RedEventModelTools extends JModel
     $register_ids = $this->_db->loadResultArray();		
     if (!empty($register_ids))
     {
-			$model = &JModel::getInstance('attendees', 'RedeventModel');
-			if(!$model->remove($register_ids)) {
-	      RedeventError::raiseWarning(0, JText::_( "CANT DELETE REGISTRATIONS" ) . ': ' . $model->getError() );
-				$this->setError(JText::_( "CANT DELETE REGISTRATIONS" ) . ': '. $model->getError());
+			$q =  ' DELETE r.* FROM #__redevent_register AS r '
+	        . ' LEFT JOIN #__rwf_submitters AS s ON s.id = r.sid '
+	        . ' WHERE s.id IS NULL '
+	        ;
+			$this->_db->setQuery($q);
+			if(!$this->_db->query()) 
+			{
+	      RedeventError::raiseWarning(0, JText::_( "CANT DELETE REGISTRATIONS" ) . ': ' . $this->_db->getErrorMsg() );
+				$this->setError(JText::_( "CANT DELETE REGISTRATIONS" ) . ': '. $this->_db->getErrorMsg());
 				return false;
 			}
     }
