@@ -156,7 +156,6 @@ class RedeventViewSignup extends JView
 	
 	function _displayEdit($tpl = null)
 	{
-		exit('test');
 		$user = &JFactory::getUser();
 		$submitter_id = JRequest::getInt('submitter_id', 0);
 		if (!$submitter_id) {
