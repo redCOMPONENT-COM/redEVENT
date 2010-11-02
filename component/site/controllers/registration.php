@@ -138,9 +138,10 @@ class RedEventControllerRegistration extends RedEventController
   	$model = $this->getModel('registration');
   	$model->setXref($xref);
 	  $model->cancel($submit_key);
+		$eventdata = $model->getSessionDetails();
 	  
   	$msg = JText::_('Registration cancelled');
-		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute(null, $xref)), $msg);
+		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($eventdata->did, $xref)), $msg);
 	}
 	
 	function edit()
