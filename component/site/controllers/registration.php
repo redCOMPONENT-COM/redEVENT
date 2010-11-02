@@ -263,13 +263,19 @@ class RedEventControllerRegistration extends RedEventController
 	 function activate() 
 	 {
 		 global $mainframe;
-		 
+		 	
 		 /* Get the confirm ID */
 		 $confirmid = JRequest::getVar('confirmid', '', 'get');
-		 
+		 	
 		 /* Get the details out of the confirmid */
 		 list($uip, $xref, $uid, $register_id, $submit_key) = split("x", $confirmid);
-		 
+		 	
+		 	
+		 /* Confirm sign up via mail */
+		 $model_event = $this->getModel('Registration', 'RedEventModel');
+		 $model_event->setXref($xref);
+		 $eventdata = $model_event->getSessionDetails();
+		 	
 		 /* This loads the tags replacer */
 		 JRequest::setVar('xref', $xref);
 		 require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'tags.php');
@@ -310,11 +316,6 @@ class RedEventControllerRegistration extends RedEventController
 			$eventid = $db->loadResult();
 			$model_wait->setXrefId($xref);
 			$model_wait->UpdateWaitingList();
-			
-			/* Confirm sign up via mail */
-			$model_event = $this->getModel('Registration', 'RedEventModel');
-			$model_event->setXref($xref);
-			$eventdata = $model_event->getSessionDetails();
 			
 			if ($eventdata->notify) 
 			{
@@ -357,8 +358,8 @@ class RedEventControllerRegistration extends RedEventController
 			$msg = JText::_('YOUR SUBMISSION CANNOT BE CONFIRMED');
 		}
 		
-		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute(null, $xref)), $msg);
-	 }
+		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($eventdata->did, $xref)), $msg);
+	}
 	 
 
 	/**
