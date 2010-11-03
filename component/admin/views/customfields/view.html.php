@@ -63,6 +63,8 @@ class RedeventViewCustomfields extends JView
 		
 		ELAdmin::setMenu();
 		
+		$lists = array();
+		
 		// search filter
 		$lists['search']= $search;
 

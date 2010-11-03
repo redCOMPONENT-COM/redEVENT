@@ -81,10 +81,25 @@ class RedEventModelTextLibrary extends JModel
 	 * @access	public
 	 * @return	array
 	 */
-	function getData() {
+	function getData() 
+	{
+		$mainframe = &JFactory::getApplication();
+		$option = 'com_redevent';
+		
+		$filter_order		  = $mainframe->getUserStateFromRequest( $option.'.textlibrary.filter_order',		'filter_order',		'obj.text_name',	'cmd' );
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.textlibrary.filter_order_Dir',	'filter_order_Dir',	'',				'word' );
+
+		if ($filter_order == 'obj.text_name'){
+			$orderby 	= ' ORDER BY obj.text_name '.$filter_order_Dir;
+		} else {
+			$orderby 	= ' ORDER BY '.$filter_order.' '.$filter_order_Dir.' , obj.text_name ';
+		}
+		
 		$db = JFactory::getDBO();
-		$query = 'SELECT *'
-				. ' FROM #__redevent_textlibrary';
+		$query = 'SELECT obj.* '
+				. ' FROM #__redevent_textlibrary AS obj '
+				. $orderby
+				;
 		$db->setQuery($query);
 		return $db->loadObjectList();
 	}

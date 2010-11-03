@@ -36,7 +36,7 @@ class RedEventViewTextLibrary extends JView {
 
 	function display($tpl = null)
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		//Load pane behavior
 		jimport('joomla.html.pane');
@@ -49,48 +49,81 @@ class RedEventViewTextLibrary extends JView {
 		switch ($task) {
 			case 'edit':
 			case 'add':
-				/* Set up toolbar */
-				if ($task == 'edit') JToolBarHelper::title( JText::_( 'EDIT_TEXT_LIBRARY' ), 'libraryedit' );
-				else JToolBarHelper::title( JText::_( 'ADD_TEXT_LIBRARY' ), 'libraryedit' );
-				JToolBarHelper::save();
-				JToolBarHelper::spacer();
-				JToolBarHelper::cancel();
-				JToolBarHelper::spacer();
-				
-				/* Load the editor */
-				$editor = JFactory::getEditor();
-				$this->assignRef('editor' , $editor);
-				
-				/* Get the data */
-				$row = $this->get('Text');
-				$this->assignRef('row', $row);
-				
-				/* Set the template */
-				$tpl = 'edit';
-				break;
-			default:
-				if ($task == 'save') {
-					$this->get('Save');
-				}
-				JToolBarHelper::title( JText::_( 'TEXT_LIBRARY' ), 'library' );
-				JToolBarHelper::addNew();
-				JToolBarHelper::spacer();
-				JToolBarHelper::editListX();
-				JToolBarHelper::spacer();
-				JToolBarHelper::deleteList();
-				//Get data from the model
-				$rows = $this->get('Data');
-				$this->assignRef('rows', $rows);
-				
-				break;
+				return $this->_displayEdit($tpl);
 		}
 		
-		//get vars
-		$cid = JRequest::getVar( 'cid' );
+		if ($task == 'save') {
+			$this->get('Save');
+		}
+		
+		JToolBarHelper::title( JText::_( 'TEXT_LIBRARY' ), 'library' );
+		JToolBarHelper::addNew();
+		JToolBarHelper::spacer();
+		JToolBarHelper::editListX();
+		JToolBarHelper::spacer();
+		JToolBarHelper::deleteList();
+		
+		// Get data from the model
+		$rows = $this->get('Data');
+		
+		//add css to document
+		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		
+		//set the submenu
+    ELAdmin::setMenu();
+    
+    $option = 'com_redevent';
+		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.textlibrary.filter_order',		'filter_order',		'obj.text_name',	'cmd' );
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.textlibrary.filter_order_Dir',	'filter_order_Dir',	'ASC',				'word' );
+    
+		// lists
+		$lists = array();
+		
+		// table ordering
+		$lists['order_Dir'] = $filter_order_Dir;
+		$lists['order'] = $filter_order;
+		
+		$this->assignRef('user', $user);
+		$this->assignRef('rows', $rows);
+		$this->assignRef('lists',		$lists);
+		
+		parent::display($tpl);
+	}
+	
+	function _displayEdit($tpl = null)
+	{
+		$mainframe = &JFactory::getApplication();
+
+		//Load pane behavior
+		jimport('joomla.html.pane');
+
+		//initialise variables
+		$document	= JFactory::getDocument();
+		$user = JFactory::getUser();
+		
+		$task = JRequest::getVar('task');
+		
+		/* Set up toolbar */
+		if ($task == 'edit') JToolBarHelper::title( JText::_( 'EDIT_TEXT_LIBRARY' ), 'libraryedit' );
+		else JToolBarHelper::title( JText::_( 'ADD_TEXT_LIBRARY' ), 'libraryedit' );
+		JToolBarHelper::save();
+		JToolBarHelper::spacer();
+		JToolBarHelper::cancel();
+		JToolBarHelper::spacer();
+
+		/* Load the editor */
+		$editor = JFactory::getEditor();
+		$this->assignRef('editor' , $editor);
+
+		/* Get the data */
+		$row = $this->get('Text');
+		$this->assignRef('row', $row);
+
+		/* Set the template */
+		$tpl = 'edit';
 
 		//add css to document
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
-
 		
 		//set the submenu
     ELAdmin::setMenu();
@@ -98,6 +131,7 @@ class RedEventViewTextLibrary extends JView {
 		$this->assignRef('user', $user);
 		
 		parent::display($tpl);
+		
 	}
 }
 ?>

@@ -28,16 +28,14 @@ defined('_JEXEC') or die('Restricted access');
 	<table id="textlibrary" class="adminlist" cellspacing="0" cellpadding="0" border="0" width="100%">
 	<thead>
 	<tr>
-		<th width="20">
-			<?php echo JText::_('ID'); ?>
-		</th>
+		<th width="20">#</th>
 		<th width="20">
 			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows ); ?>);" />
 		</th> 
-		<th>
-			<?php echo JText::_('TEXT_TAG'); ?>
+		<th class="title">
+			<?php echo JHTML::_('grid.sort',  JText::_('TEXT_TAG'), 'obj.text_name', $this->lists['order_Dir'], $this->lists['order'] ); ?>
 		</th>
-		<th>
+		<th class="title">
 			<?php echo JText::_('TEXT_DESCRIPTION'); ?>
 		</th>
 	</tr>
@@ -82,6 +80,8 @@ defined('_JEXEC') or die('Restricted access');
 <input type="hidden" name="view" value="textlibrary" />
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="" />
+<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
+<input type="hidden" name="filter_order_Dir" value="" />
 </form>
 
 <p class="copyright">
