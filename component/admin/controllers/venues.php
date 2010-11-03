@@ -46,8 +46,9 @@ class RedEventControllerVenues extends RedEventController
 		parent::__construct();
 
 		// Register Extra task
-		$this->registerTask( 'add', 		'edit' );
-		$this->registerTask( 'apply', 		'save' );
+		$this->registerTask( 'add',    'edit' );
+		$this->registerTask( 'copy',   'edit' );
+		$this->registerTask( 'apply',  'save' );
 	}
 
 	/**

@@ -67,8 +67,8 @@ class RedEventViewVenues extends JView {
 		JToolBarHelper::unpublishList();
 		JToolBarHelper::spacer();
 		JToolBarHelper::addNew();
-		JToolBarHelper::spacer();
 		JToolBarHelper::editList();
+		JToolBarHelper::custom( 'copy', 'copy.png', 'copy_f2.png', 'Copy' );
 		JToolBarHelper::spacer();
 		JToolBarHelper::deleteList();
 		JToolBarHelper::spacer();

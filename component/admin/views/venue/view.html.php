@@ -69,8 +69,12 @@ class RedEventViewVenue extends JView {
 			}
 		}
 
+		$task = JRequest::getVar('task');
+		
 		//create the toolbar
-		if ( $cid ) {
+		if ($task == 'copy') {
+		  	JToolBarHelper::title( JText::_( 'COPY VENUE'), 'venuesedit');		
+		} elseif ( $cid ) {
 			JToolBarHelper::title( JText::_( 'EDIT VENUE' ), 'venuesedit' );
 
 			//makes data safe
@@ -135,7 +139,14 @@ class RedEventViewVenue extends JView {
     unset($countries);    
     
     $pinpointicon = ELOutput::pinpointicon( $row );
-    
+	
+		if ($task == 'copy') 
+		{
+			$row->id = null;
+			$row->venue .= ' '.JText::_('copy');
+			$row->alias = '';
+		}
+		
 		//assign data to template
 		$this->assignRef('row'      	, $row);
 		$this->assignRef('pane'      	, $pane);
