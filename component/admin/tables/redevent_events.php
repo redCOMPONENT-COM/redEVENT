@@ -47,6 +47,8 @@ class RedEvent_events extends JTable
 	var $modified 					= 0;
 	/** @var int */         		
 	var $modified_by 				= null;
+	/** @var string */         		
+	var $summary 				= null;
 	/** @var string */      		
 	var $datdescription 			= null;
 	/** @var string */      		

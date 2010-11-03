@@ -244,6 +244,13 @@ if (is_array($cols)) {
     $db->setQuery($q);
     $db->query();
   }	
+	
+  /* Check if we have the summary column */
+  if (!array_key_exists('summary', $cols)) {
+    $q = "ALTER IGNORE TABLE `#__redevent_events` ADD `summary` MEDIUMTEXT NOT NULL AFTER `created`";
+    $db->setQuery($q);
+    $db->query();
+  }	
 }
 
 

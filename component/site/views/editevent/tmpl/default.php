@@ -317,6 +317,18 @@ JHTML::_('behavior.calendar');
 	    </tr>
 	    <?php endforeach; ?>
 			<?php endif; ?>
+			
+			<?php if ($this->params->get('edit_summary', 1)) :?>
+		  <tr>
+		    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_EVENT_SUMMARY'); ?>::<?php echo JText::_('COM_REDEVENT_EVENT_SUMMARY_DESC'); ?>">
+		      <label for="summary"><?php echo JText::_( 'COM_REDEVENT_EVENT_SUMMARY' ) .': '; ?></label>
+		    </td>
+		    <td>
+		      <?php echo $this->editor->display('summary', $this->row->summary, '100%', '100', '70', '5', array('pagebreak', 'readmore') ); ?>
+		    </td>
+		  </tr>
+			<?php endif; ?>
+			
 		</tbody>
 	</table>
 

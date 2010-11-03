@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_events` (
   `modified_by` int(11) unsigned NOT NULL default '0',
   `author_ip` varchar(15) NOT NULL default '',
   `created` datetime NOT NULL,
+  `summary` mediumtext NOT NULL,
   `datdescription` mediumtext NOT NULL,
   `meta_keywords` varchar(200) NOT NULL default '',
   `meta_description` varchar(255) NOT NULL default '',

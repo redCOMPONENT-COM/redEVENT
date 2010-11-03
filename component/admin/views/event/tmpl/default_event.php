@@ -69,6 +69,8 @@
 <table class="adminform">
 <tr>
 	<td>
+	<strong><?php echo JText::_('COM_REDEVENT_EVENT_DESCRIPTION'); ?></strong><br/>
+	<span class="event-description-desc"><?php echo JText::_('COM_REDEVENT_EVENT_DESCRIPTION_DESC'); ?></span><br/>
 	<?php echo $this->printTags('datdescription'); ?>
 	</td>
 </tr>
@@ -77,6 +79,21 @@
 		<?php
 		// parameters : areaname, content, hidden field, width, height, rows, cols, buttons
 		echo $this->editor->display( 'datdescription',  $this->row->datdescription, '100%;', '550', '75', '20', array('pagebreak', 'readmore') ) ;
+		?>
+	</td>
+</tr>
+
+<tr>
+	<td>
+	<strong><?php echo JText::_('COM_REDEVENT_EVENT_SUMMARY'); ?></strong><br/>
+	<span class="event-summary-desc"><?php echo JText::_('COM_REDEVENT_EVENT_SUMMARY_DESC'); ?></span>
+	</td>
+</tr>
+<tr>
+	<td>
+		<?php
+		// parameters : areaname, content, hidden field, width, height, rows, cols, buttons
+		echo $this->editor->display( 'summary',  $this->row->summary, '100%;', '100', '75', '5', null ) ;
 		?>
 	</td>
 </tr>

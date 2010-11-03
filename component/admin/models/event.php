@@ -236,7 +236,8 @@ class RedEventModelEvent extends JModel
 			$event->published					= 1;
 			$event->registra					= 1;
 			$event->unregistra					= 0;
-			$event->datdescription				= null;
+			$event->summary           = null;
+			$event->datdescription    = null;
 			$event->meta_keywords				= null;
 			$event->meta_description			= null;
 			$event->datimage					= JText::_('SELECTIMAGE');

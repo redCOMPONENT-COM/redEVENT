@@ -89,6 +89,10 @@
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>
+    <param name="edit_summary" type="radio" default="1" label="SETTINGS FRONTEND EDIT SUMMARY" description="SETTINGS FRONTEND EDIT SUMMARY TIP">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
     <param name="edit_description" type="radio" default="0" label="SETTINGS FRONTEND EDIT DESCRIPTION" description="SETTINGS FRONTEND EDIT DESCRIPTION TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
