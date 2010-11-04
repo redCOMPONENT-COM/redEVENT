@@ -78,7 +78,7 @@ class RedEventControllerRegistration extends RedEventController
   	if (!$result) 
   	{
   		$msg = JTEXT::_('REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED').' - '.$rfcore->getError();
-  		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute(null, $xref)), $msg, 'error');
+  		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($details->did, $xref)), $msg, 'error');
   		return;
   	}
   	$submit_key = $result->submit_key;
@@ -91,7 +91,7 @@ class RedEventControllerRegistration extends RedEventController
 	  	{
 	  		if (!$res = $model->register($rfpost['sid'], $result->submit_key)) {
 	  			$msg = JTEXT::_('REDEVENT_REGISTRATION_REGISTRATION_FAILED');
-		  		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute(null, $xref)), $msg, 'error');
+		  		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($details->did, $xref)), $msg, 'error');
 		  		return;
 	  		}
 	  	}
@@ -337,6 +337,9 @@ class RedEventControllerRegistration extends RedEventController
 						
 						/* Mail submitter */
 						$htmlmsg = '<html><head><title></title></title></head><body>'.$tags->ReplaceTags($eventdata->notify_confirm_body).'</body></html>';
+						// convert urls
+						$htmlmsg = ELOutput::ImgRelAbs($htmlmsg);
+						
 						$this->mailer->setBody($htmlmsg);
 						$this->mailer->setSubject($tags->ReplaceTags($eventdata->notify_confirm_subject));
 						

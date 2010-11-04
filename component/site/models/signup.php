@@ -241,6 +241,10 @@ class RedeventModelSignup extends JModel
 		$db->setQuery($q);
 		$email_settings = $db->loadObject();
 		$message = $tags->ReplaceTags($email_settings->submission_type_email_body);
+		
+		// convert urls
+		$message = ELOutput::ImgRelAbs($message);
+						
 		$this->mailer->setBody($message);
 		
 		/* Set the subject */
@@ -289,6 +293,8 @@ class RedeventModelSignup extends JModel
 		/* Add the body to the mail */
 		/* Read the template */
 		$message = $tags->ReplaceTags($details->submission_type_formal_offer_body);
+		// convert urls
+		$message = ELOutput::ImgRelAbs($message);
 		$this->mailer->setBody($message);
 		
 		/* Sent out the mail */

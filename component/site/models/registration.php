@@ -427,6 +427,9 @@ class RedEventModelRegistration extends JModel
 				      $htmlmsg = str_replace('[activatelink]', $activatelink, $htmlmsg);
 				      $htmlmsg = str_replace('[fullname]', $user->name, $htmlmsg);
 				      
+							// convert urls
+							$htmlmsg = ELOutput::ImgRelAbs($htmlmsg);
+							
 				      $this->mailer->setBody($htmlmsg);
 				      $this->mailer->setSubject($tags->ReplaceTags($eventsettings->notify_subject));
 
@@ -496,6 +499,9 @@ class RedEventModelRegistration extends JModel
 					$htmlmsg = $tags->ReplaceTags($htmlmsg);
 					$htmlmsg = str_replace('[activatelink]', $activatelink, $htmlmsg);
 					$htmlmsg = str_replace('[fullname]', $attendee->getFullname(), $htmlmsg);
+					
+					// convert urls
+					$htmlmsg = ELOutput::ImgRelAbs($htmlmsg);
 					
 					$this->mailer->setBody($htmlmsg);
 					$this->mailer->setSubject($tags->ReplaceTags($eventsettings->notify_subject));
@@ -629,6 +635,9 @@ class RedEventModelRegistration extends JModel
 		</body>
 		</html>';
   	
+		// convert urls
+		$mail = ELOutput::ImgRelAbs($mail);
+						
   	$mailer->setSubject($tags->ReplaceTags($params->get('registration_notification_subject')));
   	$mailer->MsgHTML($mail);
   	if (!$mailer->send())

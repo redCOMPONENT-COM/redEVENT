@@ -261,6 +261,9 @@ class RedEventModelWaitinglist extends JModel {
 			$subject = $this->taghelper->ReplaceTags($this->event_data->notify_on_list_subject);
 		}
 		
+		// update image paths in body
+		$body = ELOutput::ImgRelAbs($body);
+		
 		/* Get the DB */
 		$db = JFactory::getDBO();
 		

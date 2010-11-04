@@ -695,6 +695,10 @@ class RedeventController extends JController
 				{
 					$msubject = $tags->ReplaceTags($subject, array('sids' => array($sid)));
 					$mbody    = '<html><body>'.$tags->ReplaceTags($body).'</body></html>';
+					
+					// convert urls
+					$mbody = ELOutput::ImgRelAbs($mbody);
+						
 					$mailer->setSubject($msubject);
 					$mailer->setBody($mbody);
 					
@@ -713,6 +717,13 @@ class RedeventController extends JController
 		
 		// update file
 		JFile::write($file, time());
+	}
+	
+	function debugrel()
+	{
+		$image = JHTML::image('components/com_redevent/assets/images/calendar_edit.png', 'blabla');
+		echo ELoutput::ImgRelAbs($image);
+		exit;
 	}
 }
 ?>

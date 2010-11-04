@@ -758,10 +758,7 @@ class redEVENT_tags {
 				  $message = str_replace('[redform]', $redform, $message); 
 				}	 				
 				
-				// FIXME: I don't see the point of this relative to abs for pictures, only causing problems... I'll comment it for now.
-				// FEEDBACK: relative to absolute images is necessary for e-mail messages that contain relative image links. The images won't show up in the e-mail.
-				// FIXME: this function doesn't work when website is not at domain root... So it has to be fixed !
-				return ELOutput::ImgRelAbs($message);
+				return $message;
 	}
 	
 	/**
