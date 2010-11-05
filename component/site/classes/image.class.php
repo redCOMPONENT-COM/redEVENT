@@ -366,7 +366,7 @@ class redEVENTImage {
 		}
 
 		//check if the imagefiletype is valid
-		$fileext 	= JFile::getExt($file['name']);
+		$fileext 	= strtolower(JFile::getExt($file['name']));
 
 		$allowable 	= array ('gif', 'jpg', 'png');
 		if (!in_array($fileext, $allowable)) {
