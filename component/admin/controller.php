@@ -184,5 +184,29 @@ class RedEventController extends JController
   	$model->create();
     $this->setRedirect( 'index.php?option=com_redevent', JText::_('Sample data created') );
   }
+
+	/**
+	 * Delete attachment
+	 *
+	 * @return true on sucess
+	 * @access private
+	 * @since 1.1
+	 */
+	function ajaxattachremove()
+	{
+		$id     = JRequest::getVar( 'id', 0, 'request', 'int' );
+
+		$res = REAttach::remove($id);
+		if (!$res) {
+			echo 0;
+			exit();
+		}
+
+		$cache = &JFactory::getCache('com_redevent');
+		$cache->clean();
+
+		echo 1;
+		exit();
+	}
 }
 ?>

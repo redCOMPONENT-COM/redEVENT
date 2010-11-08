@@ -75,11 +75,14 @@ defined('_JEXEC') or die('Restricted access');
     var sTitle = "<?php echo JText::_('PINPOINTTITLE'); ?>";
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" >
 
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 	<tr>
 		<td valign="top">
+			<?php echo $this->tabs->startPane("det-pane"); ?>
+			
+			<?php	echo $this->tabs->startPanel( JText::_('COM_REDEVENT_EVENT_INFO_TAB'), 'info' ); ?>
 
 	<table  class="adminform">
 		<tr>
@@ -134,7 +137,16 @@ defined('_JEXEC') or die('Restricted access');
 						?>
 					</td>
 				</tr>
-				</table>
+				</table>				
+				
+				<?php echo $this->tabs->endPanel(); ?>
+				
+				<?php echo $this->tabs->startPanel( JText::_('COM_REDEVENT_EVENT_ATTACHMENTS_TAB'), 'attachments' ); ?>
+				<?php echo $this->loadTemplate('attachments'); ?>
+				<?php echo $this->tabs->endPanel(); ?>
+				
+				<?php echo $this->tabs->endPane(); ?>
+				
 			</td>
 			<td valign="top" width="320px" style="padding: 7px 0 0 5px">
 		<?php

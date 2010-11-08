@@ -372,7 +372,12 @@ class redEVENT_tags {
 				    case 'summary':
 				      $search[]  = '['.$tag.']';
               $replace[] = $this->getEvent()->getData()->summary;
-      				break;				    	
+      				break;			
+				    	
+				    case 'attachments':
+				      $search[]  = '['.$tag.']';
+              $replace[] = $this->_attachmentsHTML();
+      				break;					    	
 				    	
 				  	/**************  venue tags ******************/	
 				    case 'venue':
@@ -810,6 +815,34 @@ class redEVENT_tags {
       }
       else {
         include(JPATH_COMPONENT.DS.'views'.DS.'details'.DS.'tmpl'.DS.'courseinfo.php');         
+      }
+		}
+		$contents = ob_get_contents();
+		ob_end_clean();
+		return $contents;
+	}
+	
+	
+	/**
+	 * Load the HTML table with signup links
+	 */
+	private function _attachmentsHTML() 
+	{
+		$app = & JFactory::getApplication();
+		$template_path = JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'com_redevent';
+				    
+    $this->row = $this->getEvent()->getData();
+    
+		ob_start();
+		if (JRequest::getVar('format') == 'pdf') {
+			
+		}
+		else {
+      if (file_exists($template_path.DS.'details'.DS.'default_attachments.php')) {
+        include($template_path.DS.'details'.DS.'default_attachments.php');       
+      }
+      else {
+        include(JPATH_COMPONENT.DS.'views'.DS.'details'.DS.'tmpl'.DS.'default_attachments.php');         
       }
 		}
 		$contents = ob_get_contents();

@@ -410,6 +410,21 @@ CREATE TABLE IF NOT EXISTS `#__redevent_repeats` (
   KEY `recurrence_id` (`recurrence_id`)
 ) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
+CREATE TABLE IF NOT EXISTS `#__redevent_attachments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `object` varchar(255) NOT NULL,
+  `file` varchar(255) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `icon` varchar(255) DEFAULT NULL,
+  `frontend` tinyint(1) NOT NULL default '1',
+  `access` tinyint(3) NOT NULL,
+  `ordering` int(11) NOT NULL default '0',
+  `added` datetime NOT NULL default '0000-00-00 00:00:00',
+  `added_by` int(11) NOT NULL default '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
 INSERT IGNORE INTO `#__redevent_countries` (`id`, `continent`, `iso2`, `iso3`, `un`, `name`) VALUES
 (1, 'AS', 'AF', 'AFG', 4, 'Afghanistan, Islamic Republic '),
 (2, 'EU', 'AX', 'ALA', 248, 'Åland Islands'),

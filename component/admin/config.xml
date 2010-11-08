@@ -145,6 +145,12 @@
 		<param name="reminder_body" type="textarea" cols="80" rows="5" default="You are registered to [event_title]@[venue_title] on [date]" label="REDEVENT_SETTINGS_REMINDER_BODY_LABEL" description="REDEVENT_SETTINGS_REMINDER_BODY_DESC" />
  	</params>
  	
+ 	<params group="COM_REDEVENT_SETTINGS_ATTACHMENTS">
+    <param name="attachments_path" type="text" size="100" default="media/com_redevent/attachments" label="COM_REDEVENT_SETTINGS_ATTACHEMENT_PATH" description="COM_REDEVENT_SETTINGS_ATTACHEMENT_PATH_DESC" />
+    <param name="attachments_maxsize" type="text" size="15" default="1000" label="COM_REDEVENT_SETTINGS_ATTACHEMENT_MAXSIZE" description="COM_REDEVENT_SETTINGS_ATTACHEMENT_MAXSIZE_DESC" />
+    <param name="attachments_types" type="text" size="100" default="txt,csv,htm,html,xml,css,doc,xls,rtf,ppt,pdf,swf,flv,avi,wmv,mov,jpg,jpeg,gif,png,zip,tar.gz" label="COM_REDEVENT_SETTINGS_ATTACHEMENT_TYPES" description="COM_REDEVENT_SETTINGS_ATTACHEMENT_TYPES_DESC" />
+ 	</params>
+ 	
  	<params group="sh404sef">
     <param name="sh404sef_always_include_menu_title" type="radio" default="0" label="REDEVENT_SH404SEF_ALWAYS_INSERT_MENU_TITLE" description="REDEVENT_SH404SEF_ALWAYS_INSERT_MENU_TITLE_TIP">
       <option value="0">No</option>

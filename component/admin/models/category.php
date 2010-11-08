@@ -139,6 +139,10 @@ class RedEventModelCategory extends JModel
 			       ;
 			$this->_db->setQuery($query);
 			$this->_data = $this->_db->loadObject();
+			if ($this->_data) {
+				$files = REAttach::getAttachments('category'.$this->_data->id);
+				$this->_data->attachments = $files;
+			}
 
 			return (boolean) $this->_data;
 		}
@@ -173,6 +177,7 @@ class RedEventModelCategory extends JModel
 			$category->event_template = 0;
 			$category->event_template_name = '';
 			$category->private			= 0;
+			$category->attachments	= array();
 			$this->_data					= $category;
 			return (boolean) $this->_data;
 		}
@@ -277,7 +282,10 @@ class RedEventModelCategory extends JModel
 			RedeventError::raiseError(500, $this->_db->getErrorMsg() );
 			return false;
 		}
-
+	
+		// attachments
+		REAttach::store('category'.$row->id);
+		
 		return $row->id;
 	}
 

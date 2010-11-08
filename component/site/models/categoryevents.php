@@ -256,6 +256,7 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
 	{
 		if (!$this->_category) 
 		{
+			$user		= & JFactory::getUser();
 			$query = 'SELECT *,'
 					.' CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\', id, alias) ELSE id END as slug'
 					.' FROM #__redevent_categories'
@@ -271,7 +272,8 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
 				if (!is_array($cats) || !in_array($this->_category->id, $cats)) {
 					JError::raiseError(403, JText::_('COM_REDEVENT_ACCESS_NOT_ALLOWED'));
 				}
-			}		
+			}
+			$this->_category->attachments = REAttach::getAttachments('category'.$this->_category->id, $user->get('aid'));		
 		}
 		
 		return $this->_category;

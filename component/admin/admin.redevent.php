@@ -41,6 +41,7 @@ require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'countries.php');
 require_once (JPATH_COMPONENT_SITE.DS.'models'.DS.'eventhelper.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'image.class.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'output.class.php');
+require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'attachment.class.php');
 require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'admin.class.php');
 require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'error.class.php');
 

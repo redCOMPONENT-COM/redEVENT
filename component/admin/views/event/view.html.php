@@ -75,6 +75,7 @@ class RedEventViewEvent extends JView {
 		
     $document->addScript($url.'administrator/components/com_redevent/assets/js/xrefedit.js');
     $document->addScript($url.'administrator/components/com_redevent/assets/js/editevent.js');
+    $document->addScript($url.'components/com_redevent/assets/js/attachments.js');
 
 		//build toolbar
 		
@@ -224,6 +225,7 @@ class RedEventViewEvent extends JView {
 		$this->assignRef('venueslist'	, $venueslist);
     $this->assignRef('redform_install'	, $redform_install);
     $this->assignRef('customfields'  , $customfields);
+		$this->assignRef('access'	, redEVENTHelper::getAccesslevelOptions());
     $this->assignRef('xrefs'  , $xrefs);
 
 		parent::display($tpl);

@@ -45,18 +45,22 @@ class RedEventViewVenue extends JView {
 		//initialise variables
 		$editor 	= & JFactory::getEditor();
 		$document	= & JFactory::getDocument();
-		$pane		= & JPane::getInstance('sliders');
+		$pane		  = & JPane::getInstance('sliders');
+		$tabs 		= & JPane::getInstance('tabs');
 		$user 		= & JFactory::getUser();
 		$settings	= ELAdmin::config();
 
 		//get vars
 		$cid 			= JRequest::getInt( 'cid' );
+    $url    = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
 
 		//add css and js to document
 		$document->addScript('../includes/js/joomla/popup.js');
 		$document->addStyleSheet('../includes/js/joomla/popup.css');
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 
+    $document->addScript($url.'/components/com_redevent/assets/js/attachments.js');
+    
 		// Get data from the model
 		$model		= & $this->getModel();
 		$row      	= & $this->get( 'Data');
@@ -150,11 +154,13 @@ class RedEventViewVenue extends JView {
 		//assign data to template
 		$this->assignRef('row'      	, $row);
 		$this->assignRef('pane'      	, $pane);
+		$this->assignRef('tabs'      	, $tabs);
 		$this->assignRef('editor'      	, $editor);
 		$this->assignRef('settings'     , $settings);
     $this->assignRef('lists'      , $lists);
 		$this->assignRef('imageselect' 	, $imageselect);
     $this->assignRef('pinpointicon', $pinpointicon);
+		$this->assignRef('access'	, redEVENTHelper::getAccesslevelOptions());
 
 		parent::display($tpl);
 	}

@@ -157,6 +157,7 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 	 */
 	function getVenue( )
 	{
+		$user		= & JFactory::getUser();
 		//Location holen
 		$query = 'SELECT *, v.id AS venueid, '
         . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as slug '
@@ -174,6 +175,7 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 				JError::raiseError(403, JText::_('COM_REDEVENT_ACCESS_NOT_ALLOWED'));
 			}
 		}			
+		$_venue->attachments = REAttach::getAttachments('venue'.$_venue->id, $user->get('aid'));		
 
 		return $_venue;
 	}

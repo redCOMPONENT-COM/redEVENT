@@ -124,7 +124,6 @@ class RedeventModelDetails extends JModel
 					JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
 				}
 			}
-
 		}
 
 		return $this->_details;
@@ -141,6 +140,7 @@ class RedeventModelDetails extends JModel
 	{
 		if (empty($this->_details))
 		{
+			$user	= & JFactory::getUser();
 			// Get the WHERE clause
 			$where	= $this->_buildDetailsWhere();
 
@@ -160,10 +160,11 @@ class RedeventModelDetails extends JModel
 					. ' LEFT JOIN #__users AS u ON a.created_by = u.id '
 					. $where
 					;
-    		$this->_db->setQuery($query);
+    	$this->_db->setQuery($query);
 			$this->_details = $this->_db->loadObject();
 			if ($this->_details) {
-        $this->_details = $this->_getEventCategories($this->_details);				
+        $this->_details = $this->_getEventCategories($this->_details);	
+				$this->_details->attachments = REAttach::getAttachments('event'.$this->_details->did, $user->get('aid'));			
 			}
 			return (boolean) $this->_details;
 		}

@@ -58,6 +58,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<?php echo $this->catdescription; ?>
 </div>
 </div>
+
+<?php echo $this->loadTemplate('attachments'); ?>
+
 <!--table-->
 
 <form action="<?php echo $this->action; ?>" method="post" id="adminForm">

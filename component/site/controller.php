@@ -719,6 +719,37 @@ class RedeventController extends JController
 		JFile::write($file, time());
 	}
 	
+
+	
+	/**
+	 * for attachement downloads
+	 * 
+	 */
+	function getfile()
+	{
+		$id = JRequest::getInt('file');
+		$user = &JFactory::getUser();
+		$path = REAttach::getAttachmentPath($id, $user->get('aid'));
+				
+		$mime = redEVENTHelper::getMimeType($path);
+		
+		$doc =& JFactory::getDocument();
+		$doc->setMimeEncoding($mime);
+		header('Content-Disposition: attachment; filename="'.basename($path).'"');
+		if ($fd = fopen ($path, "r")) 
+		{
+	    $fsize = filesize($path);
+	    header("Content-length: $fsize");
+	    header("Cache-control: private"); //use this to open files directly
+	    while(!feof($fd)) {
+	        $buffer = fread($fd, 2048);
+	        echo $buffer;
+	    }
+		}
+		fclose ($fd);
+		return;
+	}
+	
 	function debugrel()
 	{
 		$image = JHTML::image('components/com_redevent/assets/images/calendar_edit.png', 'blabla');

@@ -106,6 +106,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		</div>
 
 	<?php endif; ?>
+	
+	<?php echo $this->loadTemplate('attachments'); ?>
 
 	<!--table-->
 

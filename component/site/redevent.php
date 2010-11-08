@@ -24,6 +24,7 @@ require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'useracl.class.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'image.class.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'output.class.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'attendee.class.php');
+require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'attachment.class.php');
 require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'error.class.php');
 
 // redform

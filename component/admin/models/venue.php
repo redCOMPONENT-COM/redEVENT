@@ -114,6 +114,7 @@ class RedEventModelVenue extends JModel
 		
       if ($this->_data) {
         $this->_data->categories = $this->getVenueCategories();
+				$this->_data->attachments = REAttach::getAttachments('venue'.$this->_data->id);
       }
       
 			return (boolean) $this->_data;
@@ -181,6 +182,7 @@ class RedEventModelVenue extends JModel
 			$venue->endtimes			= null;
       $venue->categories    = null;
 			$venue->private			= 0;
+			$venue->attachements = array();
 			$this->_data				= $venue;
 			return (boolean) $this->_data;
 		}
@@ -346,6 +348,9 @@ class RedEventModelVenue extends JModel
         return false;     
       }     
     }  
+    
+		// attachments
+		REAttach::store('venue'.$row->id);
 
 		return $row->id;
 	}

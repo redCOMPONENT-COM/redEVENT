@@ -46,6 +46,7 @@ class RedEventViewCategory extends JView {
 		$document	= & JFactory::getDocument();
 		$user 		= & JFactory::getUser();
 		$pane 		= & JPane::getInstance('sliders');
+		$tabs 		= & JPane::getInstance('tabs');
 
 		//get vars
 		$cid 		= JRequest::getVar( 'cid' );
@@ -53,6 +54,8 @@ class RedEventViewCategory extends JView {
 
 		//add css to document
 		$document->addStyleSheet($url.'/administrator/components/com_redevent/assets/css/redeventbackend.css');
+		
+    $document->addScript($url.'/components/com_redevent/assets/js/attachments.js');
     // js color picker
     $document->addStyleSheet($url.'/administrator/components/com_redevent/assets/css/colorpicker.css');
     $document->addScript($url.'/administrator/components/com_redevent/assets/js/colorpicker.js');
@@ -141,6 +144,8 @@ class RedEventViewCategory extends JView {
 
 		$Lists['groups']	= JHTML::_('select.genericlist', $grouplist, 'groupid', 'size="1" class="inputbox"', 'value', 'text', $row->groupid );
 		
+		$Lists['access'] 			= JHTML::_('list.accesslevel', $row );
+		
 		// event 
 		JHTML::_('behavior.modal', 'a.modal');
 		$js = "
@@ -163,6 +168,8 @@ class RedEventViewCategory extends JView {
 		$this->assignRef('row'      	, $row);
 		$this->assignRef('editor'		, $editor);
 		$this->assignRef('pane'			, $pane);
+		$this->assignRef('tabs'			, $tabs);
+		$this->assignRef('access'	, redEVENTHelper::getAccesslevelOptions());
 		$this->assign('imageselect', $imageselect);
 		
 		JHTML::_('behavior.tooltip');

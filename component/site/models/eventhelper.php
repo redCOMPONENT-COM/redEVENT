@@ -130,6 +130,7 @@ class RedeventModelEventhelper extends JModel
 	{
 		if (empty($this->_event))
 		{
+			$user	= & JFactory::getUser();
 			// Get the WHERE clause
 			$where	= $this->_buildDetailsWhere();
 
@@ -156,7 +157,8 @@ class RedeventModelEventhelper extends JModel
     	$this->_db->setQuery($query);
 			$this->_event = $this->_db->loadObject();
 			if ($this->_event) {
-        $this->_det_eventails = $this->_getEventCategories($this->_event);				
+        $this->_details = $this->_getEventCategories($this->_event);			
+				$this->_details->attachments = REAttach::getAttachments('event'.$this->_details->did, $user->get('aid'));		
 			}
 			return (boolean) $this->_event;
 		}

@@ -87,7 +87,7 @@ $this->infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-h
   var textno = "<?php echo JText::_('NO'); ?>";
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" >
 <?php
 echo $this->pane->startPane("det-pane");
 
@@ -120,13 +120,11 @@ echo $this->pane->startPane("det-pane");
 	
 	$title = JText::_( 'SUBMISSION' );
 	echo $this->pane->startPanel( $title, 'submission' );
-	$k = 0;
 	echo $this->loadTemplate('submission');
 	echo $this->pane->endPanel();
 	
 	$title = JText::_( 'WAITINGLIST' );
 	echo $this->pane->startPanel( $title, 'waitinglist' );
-	$k = 0;
 	echo $this->loadTemplate('waitinglist');
 	echo $this->pane->endPanel();
 
@@ -137,12 +135,10 @@ echo $this->pane->startPane("det-pane");
 	
 	$title = JText::_( 'REGISTRATION' );
 	echo $this->pane->startPanel( $title, 'registra' );
-  $k = 0;
  	echo $this->loadTemplate('registration');
 	echo $this->pane->endPanel();
 	
 	$title = JText::_( 'PAYMENT' );
-  $k = 0;
 	echo $this->pane->startPanel( $title, 'payment' );
  	echo $this->loadTemplate('payment');
 	echo $this->pane->endPanel();
@@ -183,13 +179,16 @@ echo $this->pane->startPane("det-pane");
 	
   $title = JText::_( 'CUSTOM FIELDS' );
   echo $this->pane->startPanel( $title, 'customfields' );
-  $k = 0;
   echo $this->loadTemplate('customfields');
+  echo $this->pane->endPanel();
+	
+  $title = JText::_( 'COM_REDEVENT_EVENT_ATTACHMENTS_TAB' );
+  echo $this->pane->startPanel( $title, 'attachments' );
+  echo $this->loadTemplate('attachments');
   echo $this->pane->endPanel();
   
 	$title = JText::_( 'METADATA INFORMATION' );
 	echo $this->pane->startPanel( $title, 'meta' );
-	$k = 0;
 	echo $this->loadTemplate('metadata');
 	echo $this->pane->endPanel();
 

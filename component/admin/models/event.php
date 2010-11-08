@@ -130,6 +130,7 @@ class RedEventModelEvent extends JModel
 			if ($this->_data) {
 			  $categories = & $this->getEventCategories();
 			  $this->_data->categories_ids = array_keys($categories);
+			  $this->_data->attachments = REAttach::getAttachments('event'.$this->_data->id);
 			}
 			return (boolean) $this->_data;
 		}
@@ -282,6 +283,7 @@ class RedEventModelEvent extends JModel
 			$event->pdf_form_data = 0;
 			$event->paymentaccepted = null;
 			$event->paymentprocessing = null;
+			$event->attachements = array();
 			$this->_data						= $event;
 			return (boolean) $this->_data;
 		}
@@ -485,6 +487,9 @@ class RedEventModelEvent extends JModel
         }       
       }
     }
+		
+		// attachments
+		REAttach::store('event'.$row->id);
     
 		return $row->id;
 	}
