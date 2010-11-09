@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Details fixed Layout">
+		<message>
+			<![CDATA[DETAILS FIXED LAYOUT DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>DETAILS FIXED LAYOUT</name>
+		<description>DETAILS FIXED LAYOUT DESC</description>
+		<url addpath="/administrator/components/com_redevent/elements">
+			<param name="id" type="hidden" default="0" class="event-id"/>
+			<param name="xref" type="xref" default="0" label="SELECT EVENT" description="SELECT EVENT DESC" />
+		</url>
+	</state>
+</metadata>

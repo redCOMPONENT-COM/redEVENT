@@ -235,9 +235,26 @@ class RedeventViewDetails extends JView
 		$this->assignRef('messages',				 $messages);
 		$this->assignRef('venuedates'	,      $venuedates);
     $this->assignRef('unreg_check' ,     $unreg_check);
-		
+	
 		$tpl = JRequest::getVar('tpl', $tpl);
-		
+    if ($tpl == '')
+    { 
+    	switch ($row->details_layout)
+    	{
+    		case 2:
+    			$this->setLayout('fixed');
+    			break;
+    			
+    		case 1:
+    			$this->setLayout('default');
+    			break;
+    			
+    		case 0:
+    			$this->setLayout($params->get('details_layout', 'fixed'));
+    			break;
+    	}
+    }
+    
 		parent::display($tpl);
 	}
 	

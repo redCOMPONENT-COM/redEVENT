@@ -75,6 +75,9 @@
 	</td>
 </tr>
 <tr>
+	<td><label for="layout" class="hasTip" title="<?php echo JText::_('COM_REDEVENT_EVENT_LAYOUT').'::'.JText::_('COM_REDEVENT_EVENT_LAYOUT_TIP'); ?>"><?php echo JText::_('COM_REDEVENT_EVENT_LAYOUT'); ?>:</label><?php echo $this->Lists['details_layout']; ?></td>
+</tr>
+<tr>
 	<td>
 		<?php
 		// parameters : areaname, content, hidden field, width, height, rows, cols, buttons

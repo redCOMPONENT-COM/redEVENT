@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_events` (
   `created` datetime NOT NULL,
   `summary` mediumtext NOT NULL,
   `datdescription` mediumtext NOT NULL,
+  `details_layout` tinyint(2) NOT NULL,
   `meta_keywords` varchar(200) NOT NULL default '',
   `meta_description` varchar(255) NOT NULL default '',
   `datimage` varchar(100) NOT NULL default '',

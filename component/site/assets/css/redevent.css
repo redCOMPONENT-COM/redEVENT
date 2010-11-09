@@ -135,6 +135,8 @@ color: #aaa;
  * flyer, locations, maps, ...
  */
 div#redevent .modal,
+div#redevent .imodal,
+div#redevent .venuemap,
 div#redevent .map {
 float:right;
 margin:0.3em;
@@ -142,8 +144,10 @@ position: relative;
 }
 
 div#redevent a.modal img,
+div#redevent a.imodal img,
 div#redevent img.modal,
 div#redevent .catimg img,
+div#redevent .venuemap,
 div#redevent .map {
 border: 1px solid #ddd;
 padding:1px;

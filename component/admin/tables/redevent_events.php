@@ -51,6 +51,8 @@ class RedEvent_events extends JTable
 	var $summary 				= null;
 	/** @var string */      		
 	var $datdescription 			= null;
+	/** @var int */         		
+	var $details_layout 					= 0;
 	/** @var string */      		
 	var $meta_description 			= null;
 	/** @var string */      		

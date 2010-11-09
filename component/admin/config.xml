@@ -20,6 +20,10 @@
 			<option value="0">Hide</option>
 			<option value="1">Show</option>
 		</param>
+		<param name="details_layout" type="radio" default="fixed" label="COM_REDEVENT_SETTINGS_DETAILS_LAYOUT" description="COM_REDEVENT_SETTINGS_DETAILS_LAYOUT_DESC">
+			<option value="default">COM_REDEVENT_SETTINGS_DETAILS_LAYOUT_TAGS</option>
+			<option value="fixed">COM_REDEVENT_SETTINGS_DETAILS_LAYOUT_FIXED</option>
+		</param>
 		<param name="icons" type="radio" default="1" label="SHOW ICONS" description="SHOW ICONS DESC">
 			<option value="0">Hide</option>
 			<option value="1">Show</option>

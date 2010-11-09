@@ -165,6 +165,14 @@ class RedEventViewEvent extends JView {
     }
     $Lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('Categories'), 'categories[]', 'class="inputbox required validate-categories" multiple="multiple" size="10"', 'value', 'text', $selected); 
 		    
+    // event layout
+    $options = array(
+                 JHTML::_('select.option', 0, JText::_('COM_REDEVENT_DEFAULT')),
+                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_EVENT_LAYOUT_TAGS')),
+                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_EVENT_LAYOUT_FIXED')),
+                 );
+		$Lists['details_layout'] = JHTML::_('select.genericlist', $options, 'details_layout', '', 'value', 'text', $row->details_layout);
+    
 		/* Create submission types */
 		$submission_types = explode(',', $row->submission_types);
 		

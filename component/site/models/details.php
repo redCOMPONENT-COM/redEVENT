@@ -144,14 +144,15 @@ class RedeventModelDetails extends JModel
 			// Get the WHERE clause
 			$where	= $this->_buildDetailsWhere();
 
-			$query = 'SELECT a.id AS did, x.id AS xref, a.title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, a.registra, a.unregistra, a.summary, ' 
+			$query = 'SELECT a.id AS did, x.id AS xref, a.title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, a.registra, a.unregistra, a.summary, a.details_layout, ' 
 					. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
 					. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone, a.review_message, '
-					. ' v.venue, v.city, '
+					. ' v.venue, v.city, v.locimage, v.map, v.country, v.street, v.plz, v.state, v.locdescription, '
 					. ' u.name AS creator_name, u.email AS creator_email, '
 					. " a.confirmation_message, x.course_price, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.catname, c.published, c.access,"
 	        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
-	        . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
+	        . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug, '
+	        . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as venueslug '
 					. ' FROM #__redevent_events AS a'
 					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
 					. ' LEFT JOIN #__redevent_venues AS v ON x.venueid = v.id'
