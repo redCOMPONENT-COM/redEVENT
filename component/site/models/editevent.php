@@ -254,6 +254,7 @@ class RedeventModelEditevent extends JModel
 			$this->_event->formal_offer		= null;
 			$this->_event->formal_offer_subject		= null;
 			$this->_event->published					= 1;
+			$this->_event->attachments				= array();
 		}
 		
 		$this->_event->xref			= 0;
@@ -279,6 +280,8 @@ class RedeventModelEditevent extends JModel
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_event))
 		{
+			$user	= & JFactory::getUser();
+			
 			if (!$id) {
 				$id = $this->_id;
 			}
@@ -315,6 +318,7 @@ class RedeventModelEditevent extends JModel
 	      $this->_db->setQuery( $query );
 	
 	      $this->_event->categories = $this->_db->loadObjectList();
+				$this->_event->attachments = REAttach::getAttachments('event'.$this->_event->id, $user->get('aid'));		
 			}
 
 			return (boolean) $this->_event;
@@ -887,6 +891,9 @@ class RedeventModelEditevent extends JModel
         }       
       }
     }
+	
+		// attachments
+		REAttach::store('event'.$row->id);
 		
 		
 		// MAIL HANDLING

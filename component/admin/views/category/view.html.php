@@ -56,6 +56,8 @@ class RedEventViewCategory extends JView {
 		$document->addStyleSheet($url.'/administrator/components/com_redevent/assets/css/redeventbackend.css');
 		
     $document->addScript($url.'/components/com_redevent/assets/js/attachments.js');
+		$document->addScriptDeclaration('var removemsg = "'.JText::_('COM_REDEVENT_ATTACHMENT_CONFIRM_MSG').'";' );
+		
     // js color picker
     $document->addStyleSheet($url.'/administrator/components/com_redevent/assets/css/colorpicker.css');
     $document->addScript($url.'/administrator/components/com_redevent/assets/js/colorpicker.js');

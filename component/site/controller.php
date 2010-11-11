@@ -749,6 +749,31 @@ class RedeventController extends JController
 		fclose ($fd);
 		return;
 	}
+
+	/**
+	 * Delete attachment
+	 *
+	 * @return true on sucess
+	 * @access private
+	 * @since 1.1
+	 */
+	function ajaxattachremove()
+	{
+		$mainframe = & JFactory::getApplication();
+		$id     = JRequest::getVar( 'id', 0, 'request', 'int' );
+
+		$res = REAttach::remove($id);
+		if (!$res) {
+			echo 0;
+			$mainframe->close();
+		}
+
+		$cache = &JFactory::getCache('com_redevent');
+		$cache->clean();
+
+		echo 1;
+		$mainframe->close();
+	}
 	
 	function debugrel()
 	{

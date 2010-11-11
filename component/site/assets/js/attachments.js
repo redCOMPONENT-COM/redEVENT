@@ -28,6 +28,11 @@ window.addEvent('domready', function() {
 	$$('.attach-field').addEvent('change', addattach);
 	
 	$$('.attach-remove').addEvent('click', function(event){
+		if (removemsg) {
+			if (!confirm(removemsg)) {
+				return false;
+			}
+		}
 		id = event.target.id.substr(13);
 		var url = 'index.php?option=com_redevent&task=ajaxattachremove&format=raw&id='+id;
 		var theAjax = new Ajax(url, {

@@ -76,6 +76,7 @@ class RedEventViewEvent extends JView {
     $document->addScript($url.'administrator/components/com_redevent/assets/js/xrefedit.js');
     $document->addScript($url.'administrator/components/com_redevent/assets/js/editevent.js');
     $document->addScript($url.'components/com_redevent/assets/js/attachments.js');
+		$document->addScriptDeclaration('var removemsg = "'.JText::_('COM_REDEVENT_ATTACHMENT_CONFIRM_MSG').'";' );
 
 		//build toolbar
 		

@@ -60,6 +60,7 @@ class RedEventViewVenue extends JView {
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 
     $document->addScript($url.'/components/com_redevent/assets/js/attachments.js');
+		$document->addScriptDeclaration('var removemsg = "'.JText::_('COM_REDEVENT_ATTACHMENT_CONFIRM_MSG').'";' );
     
 		// Get data from the model
 		$model		= & $this->getModel();

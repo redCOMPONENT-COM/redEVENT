@@ -79,6 +79,9 @@ class RedeventViewEditvenue extends JView
     }
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
+		$document->addScript('components/com_redevent/assets/js/attachments.js' );
+		$document->addScriptDeclaration('var removemsg = "'.JText::_('COM_REDEVENT_ATTACHMENT_CONFIRM_MSG').'";' );
+		
 		// Get the menu object of the active menu item
 		$menu		= & JSite::getMenu();
 		$item    	= $menu->getActive();
@@ -139,6 +142,7 @@ class RedeventViewEditvenue extends JView
 		$this->assignRef('item' , 					$item);
 		$this->assignRef('params',      $params);
 		$this->assignRef('canpublish',  $canpublish);
+		$this->assignRef('access'	, redEVENTHelper::getAccesslevelOptions());
 
 		parent::display($tpl);
 

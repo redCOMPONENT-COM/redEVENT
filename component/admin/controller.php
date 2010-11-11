@@ -194,6 +194,7 @@ class RedEventController extends JController
 	 */
 	function ajaxattachremove()
 	{
+		$mainframe = & JFactory::getApplication();
 		$id     = JRequest::getVar( 'id', 0, 'request', 'int' );
 
 		$res = REAttach::remove($id);
@@ -206,7 +207,7 @@ class RedEventController extends JController
 		$cache->clean();
 
 		echo 1;
-		exit();
+		$mainframe->close();
 	}
 }
 ?>

@@ -339,6 +339,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
       	</fieldset>
 
+				<?php echo $this->loadTemplate('attachments'); ?>
+
       	<fieldset class="el_fldst_meta">
 
           	<legend><?php echo JText::_('METADATA INFORMATION'); ?></legend>

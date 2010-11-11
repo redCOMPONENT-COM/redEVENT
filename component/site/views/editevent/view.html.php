@@ -96,6 +96,9 @@ class RedeventViewEditevent extends JView
       $document->addStyleSheet($params->get('custom_css'));     
     }
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
+		
+		$document->addScript('components/com_redevent/assets/js/attachments.js' );
+		$document->addScriptDeclaration('var removemsg = "'.JText::_('COM_REDEVENT_ATTACHMENT_CONFIRM_MSG').'";' );
 				
 		//Set page title
 		$id ? $title = $row->title.' - '.JText::_( 'EDIT EVENT' ) : $title = JText::_( 'ADD EVENT' );
@@ -168,6 +171,7 @@ class RedeventViewEditevent extends JView
 		$this->assignRef('canpublish', $canpublish);
 		$this->assignRef('referer',    JRequest::getWord('referer'));
 		$this->assign('title',         $title);
+		$this->assignRef('access'	, redEVENTHelper::getAccesslevelOptions());
 		
 		parent::display($tpl);
 

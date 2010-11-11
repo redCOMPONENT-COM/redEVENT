@@ -374,6 +374,8 @@ JHTML::_('behavior.calendar');
 </fieldset>
 <?php endif; ?>
 
+<?php echo $this->loadTemplate('attachments'); ?>
+
 <div class="re_save_buttons floattext">
 <button type="submit" class="submit"
 	onclick="return submitbutton('saveevent')"><?php echo JText::_('SAVE') ?>

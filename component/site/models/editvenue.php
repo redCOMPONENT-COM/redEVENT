@@ -120,6 +120,7 @@ class RedeventModelEditvenue extends JModel
 			$this->_venue->locimage			= '';
 			$this->_venue->meta_keywords	= '';
 			$this->_venue->meta_description	= '';
+			$this->_venue->attachments	= array();
 
 		}
 
@@ -190,6 +191,7 @@ class RedeventModelEditvenue extends JModel
 	{
 		if (empty($this->_venue)) 
 		{
+			$user	= & JFactory::getUser();
 			$this->_venue =& JTable::getInstance('redevent_venues', '');
 			$this->_venue->load( $this->_id );			
 		
@@ -204,6 +206,7 @@ class RedeventModelEditvenue extends JModel
         $this->_db->setQuery( $query );
   
         $this->_venue->categories = $this->_db->loadResultArray();
+				$this->_venue->attachments = REAttach::getAttachments('venue'.$this->_venue->id, $user->get('aid'));	
       }
 		}
 	  return $this->_venue;
@@ -381,6 +384,9 @@ class RedeventModelEditvenue extends JModel
       }     
     }
 
+		// attachments
+		REAttach::store('venue'.$row->id);
+		
 		jimport('joomla.utilities.mail');
 
 		$link 	= JRoute::_(RedeventHelperRoute::getVenueEventsRoute($row->id), false);
