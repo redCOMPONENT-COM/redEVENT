@@ -269,7 +269,6 @@ class RedeventController extends JController
 		//get image
 		$file 		= JRequest::getVar( 'userfile', '', 'files', 'array' );
 		$post 		= JRequest::get( 'post', 4 );
-		$xref 		= JRequest::getInt('xref');
 				
     $isNew = ($post['id']) ? false : true;
 		
@@ -277,11 +276,11 @@ class RedeventController extends JController
 		$this->addModelPath(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models');
 		$model_wait = $this->getModel('waitinglist');
 		
-		if ($returnid = $model->store($post, $file)) 
+		if ($row = $model->store($post, $file)) 
 		{		
       JPluginHelper::importPlugin( 'redevent' );
       $dispatcher =& JDispatcher::getInstance();
-      $res = $dispatcher->trigger( 'onEventEdited', array( $returnid, $isNew ) );   
+      $res = $dispatcher->trigger( 'onEventEdited', array( $row->id, $isNew ) );   
       
 			$cache = &JFactory::getCache('com_redevent');
 			$cache->clean();
@@ -304,8 +303,8 @@ class RedeventController extends JController
 				$link = JRoute::_(RedeventHelperRoute::getMyeventsRoute(), false);
 				break;
 			default:
-				if ($returnid) {
-					$link = JRoute::_(RedeventHelperRoute::getDetailsRoute($returnid, $xref), false);
+				if ($row) {
+					$link = JRoute::_(RedeventHelperRoute::getDetailsRoute($row->id, ($row->xref ? $row->xref : null) ), false);
 				}
 				else {
 					$link = JRoute::_(RedeventHelperRoute::getMyeventsRoute(), false);					

@@ -830,6 +830,7 @@ class RedeventModelEditevent extends JModel
 			if (!($xref->check() && $xref->store())) {
 				JError::raiseWarning(0, JTEXT::_('Saving event session failed').': '.$xref->getError());
 			}
+			$row->xref = $xref->id;
 		}	
 	    
     // custom fields
@@ -970,7 +971,7 @@ class RedeventModelEditevent extends JModel
       }
 		}
 
-		return $row->id;
+		return $row;
 	}
 	
 	/**
