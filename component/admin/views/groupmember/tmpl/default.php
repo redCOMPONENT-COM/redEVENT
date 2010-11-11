@@ -114,6 +114,26 @@ JHTML::_('behavior.tooltip');
 	
 </fieldset>
 
+<?php if ($this->row->groups): ?>
+<fieldset class="adminform">
+<legend><?php echo JText::_('COM_REDEVENT_GROUPMEMBER_CURRENT_GROUPS'); ?></legend>
+<table class="adminlist">
+<thead>
+	<tr>
+		<th><?php echo JText::_('COM_REDEVENT_GROUP_NAME'); ?></th>
+	</tr>
+</thead>
+<tbody>
+	<?php foreach ($this->row->groups as $group): ?>
+	<tr>
+		<td><?php echo $group->name; ?></td>
+	</tr>
+	<?php endforeach; ?>
+</tbody>
+</table>
+</fieldset>
+<?php endif; ?>
+
 <?php echo JHTML::_( 'form.token' ); ?>
 <input type="hidden" name="option" value="com_redevent" />
 <input type="hidden" name="controller" value="groupmembers" />

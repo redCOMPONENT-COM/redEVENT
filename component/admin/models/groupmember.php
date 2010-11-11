@@ -127,6 +127,15 @@ class RedEventModelGroupmember extends JModel
 					;
 			$this->_db->setQuery($query);
 			$this->_data = $this->_db->loadObject();
+			if ($this->_data) {
+				$query = 'SELECT g.id, g.name, gm.* '
+						. ' FROM #__redevent_groupmembers AS gm '
+						. ' INNER JOIN #__redevent_groups AS g on g.id = gm.group_id'
+						. ' WHERE gm.id = '.$this->_id
+						;
+				$this->_db->setQuery($query);
+				$this->_data->groups = $this->_db->loadObjectList();				
+			}
 			
 			return (boolean) $this->_data;
 		}
@@ -145,18 +154,19 @@ class RedEventModelGroupmember extends JModel
 		//Lets load the content if it doesn't already exist
 		if (empty($this->_data))
 		{
-			$group = new stdClass();
-			$group->id					          = 0;
-			$group->group_id		          = null;
-			$group->member			          = null;
-			$group->is_admin		          = 0;
-			$group->manage_events	        = 0;
-			$group->manage_xrefs		      = 0;
-			$group->edit_venues	          = 0;
-			$group->publish_events	      = 0;
-			$group->publish_venues	      = 0;
-			$group->receive_registrations	= 0;
-			$this->_data				          = $group;
+			$object = new stdClass();
+			$object->id					          = 0;
+			$object->group_id		          = null;
+			$object->member			          = null;
+			$object->is_admin		          = 0;
+			$object->manage_events	      = 0;
+			$object->manage_xrefs		      = 0;
+			$object->edit_venues	        = 0;
+			$object->publish_events	      = 0;
+			$object->publish_venues	      = 0;
+			$object->receive_registrations	= 0;
+			$object->groups               = null;
+			$this->_data				          = $object;
 			return (boolean) $this->_data;
 		}
 		return true;

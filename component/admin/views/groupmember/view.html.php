@@ -74,10 +74,10 @@ class RedEventViewGroupmember extends JView {
 
 		//build toolbar
 		if ( $cid ) {
-			JToolBarHelper::title( $group->name .' - '. JText::_( 'EDIT GROUP MEMBER' ), 'groupedit' );
+			JToolBarHelper::title( $group->name .' - '. JText::_( 'COM_REDEVENT_GROUPMEMBER_EDIT_MEMBERR' ), 'groupedit' );
 			JToolBarHelper::spacer();
 		} else {
-			JToolBarHelper::title( $group->name .' - '. JText::_( 'ADD GROUP MEMBER' ), 'groupedit' );
+			JToolBarHelper::title( $group->name .' - '. JText::_( 'COM_REDEVENT_GROUPMEMBER_ADD_MEMBER' ), 'groupedit' );
 			JToolBarHelper::spacer();
 		}
 		JToolBarHelper::apply();
