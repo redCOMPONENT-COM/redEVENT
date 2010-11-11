@@ -343,6 +343,9 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         . ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
         . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id'
         . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+        . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id '
+        . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
+		    . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = x.venueid AND gv.group_id = gc.group_id '
         . $where
         . ' GROUP BY (x.id) '
         . $orderby
@@ -476,27 +479,18 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         {
             $where[] = ' x.published > -1 ';
         }
-
+        
         $acl = UserAcl::getInstance();
-        
-        $cats   = $acl->getManagedCategories();
-        $venues = $acl->getManagedVenues();
-        
-        $acl_where = array();        
-        if (!empty($cats)) {
-        	$acl_where[] = ' xcat.category_id IN ('.implode(', ', $cats).')';
+        if (!$acl->superuser()) 
+        {
+        	$xrefs = $acl->getCanEditXrefs();
+        	if ($xrefs && count($xrefs)) {
+        		$where[] = ' x.id IN ('.implode(",", $xrefs).')';
+        	}
+        	else {
+        		$where[] = '0';
+        	}
         }
-        else {
-        	$acl_where[] = ' 0 ';
-        }
-        if (!empty($venues)) {
-        	$acl_where[] = ' x.venueid IN ('.implode(', ', $venues).')';
-        }
-        else {
-        	$acl_where[] = ' 0 ';
-        }
-        $where[] = ' ( e.created_by = '.$user->get('id')
-                   . '   OR ('.implode(' AND ', $acl_where).') ) ';
                    
         if ($params->get('showopendates', 1) == 0) {
         	$where[] = ' x.dates IS NOT NULL AND x.dates > 0 ';
