@@ -125,7 +125,7 @@ if ($this->manage_attendees) {
                 <td class="attendee">
                   <?php echo JHTML::link($unreg_url, $remove_image, array('class' => 'unreglink')); ?>
                 </td>
-                <td><?php echo $this->row->course_code .'-'. $this->row->xref .'-'. $register->id; ?></td>
+                <td><?php echo $this->row->course_code .'-'. $this->row->xref .'-'. $register->attendee_id; ?></td>
               </tr>
             <?php endif;?>
           <?php endforeach; ?>
