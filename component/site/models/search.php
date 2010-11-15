@@ -308,6 +308,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		$app = &JFactory::getApplication();
 		$vcat = JRequest::getVar('filter_venuecategory');
 		$city =   $app->getUserState('com_redevent.search.filter_city');
+		$country =   $app->getUserState('com_redevent.search.filter_country');
 		
 		$acl = &UserAcl::getInstance();		
 		$gids = $acl->getUserGroupsIds();
@@ -332,6 +333,9 @@ class RedeventModelSearch extends RedeventModelBaseEventList
     }
     if ($city) {
     	$where[] = ' v.city = '.$this->_db->Quote($city);
+    }
+    if ($country) {
+    	$where[] = ' v.country = '.$this->_db->Quote($country);
     }
     //acl
 		$where[] = ' (v.private = 0 OR gv.id IS NOT NULL) ';
