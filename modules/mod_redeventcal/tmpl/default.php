@@ -49,14 +49,9 @@ echo "<div class='redeventcal' align='center'>";
     list($month, $year, $month_name_long, $month_name_short, $weekday) = explode(',', gmstrftime('%m,%Y,%B,%b,%w', $uxtime_first_of_month));
     $weekday = ($weekday + 7 - $first_day) % 7; #adjust for $first_day
 	$year_length = $Year_length ? $year : substr($year, 2, 3);
-	if (!function_exists('mb_convert_case'))
-	{
+	
 		$the_month = ucfirst($Month_length ?  $month_name_short : $month_name_long);	
-	}
-	else
-	{
-		$the_month = mb_convert_case($Month_length ?  $month_name_short : $month_name_long ,MB_CASE_TITLE);
-	}
+		
     $title   = $the_month.'&nbsp;'.$year_length;    #note that some locales don't capitalize month and day names
 	
     #Begin calendar. Uses a real <caption>. See http://diveintomark.org/archives/2002/07/03
@@ -69,7 +64,7 @@ echo "<div class='redeventcal' align='center'>";
     if($n) $n = '&nbsp;'.($nl ? '<a href="'.htmlspecialchars($nl).'"> &gt;&gt;</a>' : $n); //Modified by Toni	
 	
 	$month_href = NULL;
-    
+	
     $calendar .= '<table class="mod_redeventcal_calendar" cellspacing="0" cellpadding="0">'."\n".	  
        '<caption class="mod_redeventcal_calendar-month">'.$p.($month_href ? '<a href="'.htmlspecialchars($month_href).'">'.$title.'</a>' : $title).$n."</caption>\n<tr>";
 
