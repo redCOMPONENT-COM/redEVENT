@@ -145,11 +145,7 @@ class RedeventViewDetails extends JView
 			$row->datdescription = JText::_( 'NO DESCRIPTION' ) ;
 		} else {
 			//Execute Plugins
-			$row->text	= $row->datdescription;
-
-			JPluginHelper::importPlugin('content');
-			$results = $dispatcher->trigger('onPrepareContent', array (& $row, array(), 0));
-			$row->datdescription = $row->text;
+			$row->datdescription = JHTML::_('content.prepare', $row->datdescription);
 		}
 
 		// generate Metatags

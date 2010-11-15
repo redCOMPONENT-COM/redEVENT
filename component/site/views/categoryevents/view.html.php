@@ -144,11 +144,7 @@ class RedeventViewCategoryevents extends JView
 			$catdescription = JText::_( 'NO DESCRIPTION' );
 		} else {
 			//execute plugins
-			$category->text	= $category->catdescription;
-			$category->title 	= $category->catname;
-			JPluginHelper::importPlugin('content');
-			$results = $mainframe->triggerEvent( 'onPrepareContent', array( &$category, array(), 0 ));
-			$catdescription = $category->text;
+			$catdescription = JHTML::_('content.prepare', $category->catdescription);
 		}
 
 		//create select lists

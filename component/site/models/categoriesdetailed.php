@@ -129,11 +129,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 					$category->catdescription = JText::_( 'NO DESCRIPTION' );
 				} else {
 					//execute plugins
-					$category->text		= $category->catdescription;
-					$category->title 	= $category->catname;
-					JPluginHelper::importPlugin('content');
-					$results = $mainframe->triggerEvent( 'onPrepareContent', array( &$category, array(), 0 ));
-					$category->catdescription = $category->text;
+					$category->catdescription = JHTML::_('content.prepare', $category->catdescription);
 				}
 				
 				//create target link

@@ -147,11 +147,7 @@ class RedeventViewVenueevents extends JView
 			$venuedescription = JText::_( 'NO DESCRIPTION' );
 		} else {
 			//execute plugins
-			$venue->text	= $venue->locdescription;
-			$venue->title 	= $venue->venue;
-			JPluginHelper::importPlugin('content');
-			$results = $mainframe->triggerEvent( 'onPrepareContent', array( &$venue, array(), 0 ));
-			$venuedescription = $venue->text;
+			$venuedescription = JHTML::_('content.prepare', $venue->locdescription);
 		}
 
 		//build the url

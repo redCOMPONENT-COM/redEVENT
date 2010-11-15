@@ -142,11 +142,7 @@ class RedeventViewVenuecategory extends JView
 			$description = JText::_( 'NO DESCRIPTION' );
 		} else {
 			//execute plugins
-			$category->text	= $category->description;
-			$category->title 	= $category->name;
-			JPluginHelper::importPlugin('content');
-			$results = $mainframe->triggerEvent( 'onPrepareContent', array( &$category, array(), 0 ));
-			$description = $category->text;
+			$description = JHTML::_('content.prepare', $category->description);
 		}
 
 		//create select lists
