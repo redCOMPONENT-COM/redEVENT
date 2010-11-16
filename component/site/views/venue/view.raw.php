@@ -68,7 +68,12 @@ class RedeventViewVenue extends JView
 		$resp->address = $address;
 		$resp->latitude = ($row->latitude || $row->longitude ? $row->latitude : 'null');
 		$resp->longitude = ($row->latitude || $row->longitude ? $row->longitude : 'null');
-		echo json_encode($resp);
+		if (function_exists('json_encode')) {
+			echo json_encode($resp);
+		}
+		else {
+			echo JText::_('ERROR: JSON IS NOT ENABLED');
+		}
 		exit;
 	}
 }

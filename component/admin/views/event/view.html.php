@@ -350,9 +350,13 @@ class RedEventViewEvent extends JView {
                         'note'      => $xref->note,
                         'featured'  => $xref->featured,
                       );
-		
-    $js = 'window.parent.updatexref('.json_encode($json_data).');';
-    $document->addScriptDeclaration($js);
+		if (function_exists('json_encode')) {
+  	  $js = 'window.parent.updatexref('.json_encode($json_data).');';
+	    $document->addScriptDeclaration($js);		
+		}
+		else {
+			echo JText::_('ERROR: JSON IS NOT ENABLED');
+		}
 		return;
 	}
 	
