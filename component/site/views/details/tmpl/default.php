@@ -33,6 +33,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			<?php echo JHTML::link( JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xref).'&format=raw&layout=ics', false), 
 			                        $img ); ?>
 		<?php endif; ?>
+    <?php echo ELOutput::editbutton($this->item->id, $this->row->did, $this->params, $this->allowedtoeditevent, 'editevent' ); ?>
 	</p>
 
 <?php if ($this->params->def( 'show_page_title', 1 )) : ?>
@@ -42,12 +43,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php endif; ?>
 
 <!-- Details EVENT -->
-	<h2 class="eventlist">
-		<?php
-    	echo $this->row->title;
-    	echo '&nbsp;'.ELOutput::editbutton($this->item->id, $this->row->did, $this->params, $this->allowedtoeditevent, 'editevent' );
-    	?>
-	</h2>
 	<?php //flyer
 		$review_txt =  trim(strip_tags($this->row->review_message));
 		echo $this->tags->ReplaceTags($this->row->datdescription, array('hasreview' => (!empty($review_txt))) );
