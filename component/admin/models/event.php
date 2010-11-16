@@ -795,21 +795,25 @@ class RedEventModelEvent extends JModel
     if (!$data['recurrenceid'])
     {
       $rrule = RedeventHelperRecurrence::parsePost($data);
-      // new recurrence
-      $recurrence->rrule = $rrule;
-      if (!$recurrence->store()) {
-        $this->setError($recurrence->getError());
-        return false;        
-      }
-      
-      // add repeat record
-      $repeat = & JTable::getInstance('RedEvent_repeats', '');
-      $repeat->set('xref_id', $object->id);
-      $repeat->set('recurrence_id', $recurrence->id);
-      $repeat->set('count', 0);      
-      if (!$repeat->store()) {
-        $this->setError($repeat->getError());
-        return false;        
+      if (!empty($rrule))
+      {
+	      // new recurrence
+	      $recurrence->rrule = $rrule;
+	      if (!$recurrence->store()) 
+	      {
+	        $this->setError($recurrence->getError());
+	        return false;        
+	      }
+	      
+	      // add repeat record
+	      $repeat = & JTable::getInstance('RedEvent_repeats', '');
+	      $repeat->set('xref_id', $object->id);
+	      $repeat->set('recurrence_id', $recurrence->id);
+	      $repeat->set('count', 0);      
+	      if (!$repeat->store()) {
+	        $this->setError($repeat->getError());
+	        return false;        
+	      }
       }
     }
     else 
@@ -828,7 +832,9 @@ class RedEventModelEvent extends JModel
         }
       }
     }
-    redEVENTHelper::generaterecurrences($recurrence->id);
+    if ($recurrence->id) {
+    	redEVENTHelper::generaterecurrences($recurrence->id);
+    }
     
     return $object->id;
   }
