@@ -107,7 +107,7 @@ window.addEvent('domready', function() {
 		      <label for="filter_type"><?php echo $filter->name; ?></label>
 	        </td>
 	        <td>
-		      <?php echo $filter->renderFilter(array('class' =>"customfilter")); ?>
+		      <?php echo $filter->renderFilter(array('class' =>"customfilter"), isset($this->filter_customs[$filter->id]) ? $this->filter_customs[$filter->id] : null); ?>
 	        </td>
 	      </tr>
 	      <?php endforeach; ?>

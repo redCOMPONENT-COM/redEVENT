@@ -81,7 +81,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		// Get the paramaters of the active menu item
 		$params 	= & $app->getParams();
 		$task 		= JRequest::getWord('task');
-    $customs = $app->getUserStateFromRequest('com_redevent.filter.customs', 'filtercustom', array(), 'array');
+    $customs = $app->getUserStateFromRequest('com_redevent.search.filter_customs', 'filtercustom', array(), 'array');
     
 		$where = array();
 	
@@ -92,7 +92,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
       	if (is_array($custom)) {
       		$custom = implode("/n", $custom);
       	}
-        $where[] = ' c'.$key.'.value LIKE ' . $this->_db->Quote('%'.$custom.'%');
+        $where[] = ' custom'.$key.' LIKE ' . $this->_db->Quote('%'.$custom.'%');
       }
     }
     
@@ -142,7 +142,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	    $filter_category      = $mainframe->getUserStateFromRequest('com_redevent.search.filter_category',      'filter_category',      0, 'int');
 	    $filter_event         = $mainframe->getUserStateFromRequest('com_redevent.search.filter_event',         'filter_event',         0, 'int');
 	        
-	    $customs              = $mainframe->getUserStateFromRequest('com_redevent.filter.customs', 'filtercustom', array(), 'array');
+	    $customs              = $mainframe->getUserStateFromRequest('com_redevent.search.filter_customs', 'filtercustom', array(), 'array');
 
 	    $filter 		      = JRequest::getString('filter', '', 'request');
 			$filter_type 	    = JRequest::getWord('filter_type', '', 'request');
@@ -226,7 +226,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	      	if (is_array($custom)) {
 	      		$custom = implode("/n", $custom);
 	      	}
-	        $where[] = ' c'.$key.'.value LIKE ' . $this->_db->Quote('%'.$custom.'%');
+	        $where[] = ' custom'.$key.' LIKE ' . $this->_db->Quote('%'.$custom.'%');
 	      }
 	    }
 	    

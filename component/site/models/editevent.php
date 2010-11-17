@@ -285,7 +285,6 @@ class RedeventModelEditevent extends JModel
 			if (!$id) {
 				$id = $this->_id;
 			}
-			$customs = $this->_getCustomFields();
 			
 			$query = 'SELECT e.*, v.venue, x.id AS xref, x.eventid, x.venueid, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees,
 					x.maxwaitinglist, x.course_price, x.course_credit, x.registrationend '
@@ -336,21 +335,11 @@ class RedeventModelEditevent extends JModel
 				if (!$acl->canEditXref($this->_xref)) {
 					JError::raiseError(403, Jtext::_('NOT ALLOWED'));
 				}
-				$customs = $this->_getXCustomFields();
 				
 				$query = ' SELECT x.*, e.title ';
 				// add the custom fields
-				foreach ((array) $customs as $c)
-				{
-					$query .= ', c'. $c->id .'.value AS custom'. $c->id;
-				}
 				$query .= ' FROM #__redevent_event_venue_xref AS x ';
 				$query .= ' INNER JOIN #__redevent_events AS e ON x.eventid = e.id ';
-				// add the custom fields tables
-				foreach ((array) $customs as $c)
-				{
-					$query .= ' LEFT JOIN #__redevent_fields_values AS c'. $c->id .' ON c'. $c->id .'.object_id = x.id';
-				}
 				$query .= ' WHERE x.id = '. $this->_db->Quote($this->_xref)
 				       ;
 	      $this->_db->setQuery( $query );
@@ -832,67 +821,7 @@ class RedeventModelEditevent extends JModel
 			}
 			$row->xref = $xref->id;
 		}	
-	    
-    // custom fields
-    // first copy those from event template
-    if (!$data['id'] && $template_event)
-    {
-			// copy category from template event
-			$query = ' INSERT INTO #__redevent_fields_values (object_id, field_id, value) '
-			       . ' SELECT '. $this->_db->Quote($row->id).', fv.field_id, fv.value '
-			       . '       FROM #__redevent_fields_values AS fv '
-			       . '       INNER JOIN #__redevent_fields AS f ON f.id = fv.field_id '
-			       . '       WHERE fv.object_id = '. $this->_db->Quote($template_event)
-			       . '         AND f.object_key = '. $this->_db->Quote('redevent.event')
-			       ;
-			$this->_db->setQuery($query);
-	    if (!$this->_db->query()) {
-	    	$this->setError($this->_db->getErrorMsg());
-				JError::raiseWarning(0, JTEXT::_('copying custom fields failed').': '.$xref->getError());
-	    }
-    }
-    
-    foreach ($data as $key => $value)
-    {
-      if (strstr($key, "custom"))
-      {
-        $fieldid = (int) substr($key, 6);
-        // get the field details
-        $query = ' SELECT f.* FROM #__redevent_fields AS f WHERE f.id = '. $this->_db->Quote($fieldid);
-        $this->_db->setQuery($query, 0 ,1);
-        $field = $this->_db->loadObject();
-        if ($field->object_key == 'redevent.event')
-        {
-	        // delete previous value
-					$query = ' DELETE fv FROM #__redevent_fields_values as fv '
-	               . ' WHERE fv.field_id = ' . $this->_db->Quote($fieldid)
-	               . '   AND fv.object_id = ' . $this->_db->Quote($row->id)
-	               ;
-					$this->_db->setQuery($query);
-					if (!$this->_db->query()) {
-						JError::raiseWarning(0, JTEXT::_('Failed deleting previous custom value').': '.$this->_db->getErrorMsg());
-					}
-        }
-        
-        $fieldvalue = & $this->getTable('Redevent_customfieldvalue','');
-        $fieldvalue->object_id = ($field->object_key == 'redevent.xref' ? $xref->id : $row->id);
-        $fieldvalue->field_id = $fieldid;
-        if (is_array($value)) {
-          $value = implode("\n", $value);
-        }
-        $fieldvalue->value = $value;
-        
-        if (!$fieldvalue->check()) {
-          $this->setError($fieldvalue->getError());
-          return false;         
-        }
-        if (!$fieldvalue->store()) {
-          $this->setError($fieldvalue->getError());
-          return false;         
-        }       
-      }
-    }
-	
+    	
 		// attachments
 		REAttach::store('event'.$row->id);
 		
@@ -1173,45 +1102,7 @@ class RedeventModelEditevent extends JModel
 			RedeventHelperLog::simplelog('SUBMIT XREF ERROR STORE DATA');
 			return false;
 		}
-	
-  	// custom fields
-    // first delete records for this object
-    $query = ' DELETE fv FROM #__redevent_fields_values as fv '
-           . ' INNER JOIN #__redevent_fields as f ON f.id = fv.field_id '
-           . ' WHERE fv.object_id = ' . $this->_db->Quote($row->id)
-           . '   AND f.object_key = ' . $this->_db->Quote('redevent.xref')
-           ;
-    $this->_db->setQuery($query);
-    if (!$this->_db->query()) {
-      $this->setError($this->_db->getErrorMsg());
-      return false;     
-    }
-    
-    // input new values
-    foreach ($data as $key => $value)
-    {
-      if (strstr($key, "custom"))
-      {
-        $fieldid = (int) substr($key, 6);
-        $field = & $this->getTable('Redevent_customfieldvalue','');
-        $field->object_id = $row->id;
-        $field->field_id = $fieldid;
-        if (is_array($value)) {
-          $value = implode("\n", $value);
-        }
-        $field->value = $value;
-        
-        if (!$field->check()) {
-          $this->setError($field->getError());
-          return false;         
-        }
-        if (!$field->store()) {
-          $this->setError($field->getError());
-          return false;         
-        }       
-      }
-    }
-    
+	    
 		return true;
 	}
 	
@@ -1317,9 +1208,8 @@ class RedeventModelEditevent extends JModel
    */
   function getXrefCustomfields()
   {
-    $query = ' SELECT f.*, fv.value '
+    $query = ' SELECT f.* '
            . ' FROM #__redevent_fields AS f '
-           . ' LEFT JOIN #__redevent_fields_values AS fv ON fv.field_id = f.id AND fv.object_id = '.(int) $this->_xref
            . ' WHERE f.object_key = '. $this->_db->Quote("redevent.xref")
            . '   AND f.frontend_edit = 1 '
            . ' ORDER BY f.ordering '
@@ -1331,10 +1221,15 @@ class RedeventModelEditevent extends JModel
       return array();
     }
     $fields = array();
+    $data = $this->getSessionDetails();
     foreach ($result as $c)
     {
       $field =& redEVENTHelper::getCustomField($c->type);
       $field->bind($c);
+      $prop = 'custom'.$c->id;
+      if (isset($data->$prop)) {
+      	$field->value = $data->$prop;
+      }
       $fields[] = $field;
     }
     return $fields;     
@@ -1346,25 +1241,9 @@ class RedeventModelEditevent extends JModel
    * @return objects array
    */
   function getCustomfields()
-  {
-  	if (!$this->_id) 
-  	{		
-			$template_id = JFactory::getApplication()->getParams()->get('event_template', 0);
-			if ($template_id) {
-				$id = $template_id;
-			}
-			else {
-				$id = 0;
-			}
-  	}
-  	else
-  	{
-  		$id = $this->_id;
-  	}
-  	
-    $query = ' SELECT f.*, fv.value '
+  {  	
+    $query = ' SELECT f.* '
            . ' FROM #__redevent_fields AS f '
-           . ' LEFT JOIN #__redevent_fields_values AS fv ON fv.field_id = f.id AND fv.object_id = '.(int) $id
            . ' WHERE f.object_key = '. $this->_db->Quote("redevent.event")
            . '   AND f.frontend_edit = 1 '
            . ' ORDER BY f.ordering '
@@ -1376,10 +1255,15 @@ class RedeventModelEditevent extends JModel
       return array();
     }
     $fields = array();
+    $data = $this->getEvent();
     foreach ($result as $c)
     {
       $field =& redEVENTHelper::getCustomField($c->type);
       $field->bind($c);
+      $prop = 'custom'.$c->id;
+      if (isset($data->$prop)) {
+      	$field->value = $data->$prop;
+      }
       $fields[] = $field;
     }
     return $fields;     

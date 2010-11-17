@@ -16,7 +16,6 @@ DROP TABLE IF EXISTS
 	`#__redevent_venues_categories` ,
 	`#__redevent_venue_category_xref` ,
 	`#__redevent_fields` ,
-	`#__redevent_fields_values`,
 	`#__redevent_countries` ,
 	`#__redevent_recurrences`,
 	`#__redevent_repeats`,

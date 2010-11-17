@@ -372,16 +372,6 @@ CREATE TABLE IF NOT EXISTS `#__redevent_fields` (
   KEY `object_key` (`object_key`)
 ) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-CREATE TABLE IF NOT EXISTS `#__redevent_fields_values` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `object_id` int(11) NOT NULL,
-  `field_id` int(10) NOT NULL,
-  `value` text NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `object_id` (`object_id`),
-  KEY `field_id` (`field_id`)
-) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
-
 CREATE TABLE IF NOT EXISTS `#__redevent_countries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `continent` varchar(2) NOT NULL DEFAULT '',

@@ -224,12 +224,12 @@ class RedeventModelBaseEventList extends JModel
 		// add the custom fields
 		foreach ((array) $customs as $c)
 		{
-			$query .= ', c'. $c->id .'.value AS custom'. $c->id;
+			$query .= ', a.custom'. $c->id;
 		}
 		// add the custom fields
 		foreach ((array) $xcustoms as $c)
 		{
-			$query .= ', c'. $c->id .'.value AS custom'. $c->id;
+			$query .= ', x.custom'. $c->id;
 		}
 		
     $query .= ' FROM #__redevent_event_venue_xref AS x'
@@ -243,17 +243,6 @@ class RedeventModelBaseEventList extends JModel
 	          . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = vc.id AND gvc.group_id IN ('.$gids.')'
 	          . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN ('.$gids.')'
 		        ;
-		
-		// add the custom fields tables
-		foreach ((array) $customs as $c)
-		{
-			$query .= ' LEFT JOIN #__redevent_fields_values AS c'. $c->id .' ON c'. $c->id .'.object_id = a.id AND c'. $c->id .'.field_id = '. $c->id;
-		}
-		// add the custom fields tables
-		foreach ((array) $xcustoms as $c)
-		{
-			$query .= ' LEFT JOIN #__redevent_fields_values AS c'. $c->id .' ON c'. $c->id .'.object_id = x.id AND c'. $c->id .'.field_id = '. $c->id;
-		}
 		
 		$query .= $where
 		       . ' AND (l.private = 0 OR gv.id IS NOT NULL) '
@@ -422,32 +411,6 @@ class RedeventModelBaseEventList extends JModel
 		}
 		return $rows;
 	}
-  
-  /**
-   * adds custom fields to rows.
-   * 
-   * @return array 
-   */
-  function _getEventsCustoms($rows) 
-  {
-    foreach ((array) $rows as $k => $r) 
-    {
-    	$query = ' SELECT f.name, custom.value '
-    	       . ' FROM #__redevent_fields_values AS custom'
-						 . ' INNER JOIN #__redevent_fields AS f ON custom.field_id = f.id'
-						 . ' WHERE custom.object_id = '. $this->_db->Quote($r->id)
-						 . '   AND f.in_lists = 1'
-						 . '   AND f.published = 1'
-						 . '   AND f.object_key = '. $this->_db->Quote('redevent.event')
-  	         . ' ORDER BY f.ordering ASC '
-    	       ;
-    	$this->_db->setQuery($query);
-    	$res = $this->_db->loadObjectList();
-    	
-   		$rows[$k]->customs = $res;
-    }
-    return $rows;
-  }
   
   /**
    * returns all custom fields for events

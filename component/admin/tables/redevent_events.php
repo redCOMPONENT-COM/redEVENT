@@ -144,8 +144,7 @@ class RedEvent_events extends JTable
 	/** @var string */
 	var $paymentaccepted	= null;
 	/** @var string */
-	var $paymentprocessing	= null;
-	
+	var $paymentprocessing	= null;	
 	
 	function redevent_events(& $db) {
 		parent::__construct('#__redevent_events', 'id', $db);
@@ -225,6 +224,56 @@ class RedEvent_events extends JTable
       $this->setError( $db->getErrorMsg() );
       return false;
     }
+	}
+
+	/**
+	 * override for custom fields
+	 */
+	function bind( $from, $ignore=array() )
+	{
+		$fromArray	= is_array( $from );
+		$fromObject	= is_object( $from );
+
+		if (!$fromArray && !$fromObject)
+		{
+			$this->setError( get_class( $this ).'::bind failed. Invalid from argument' );
+			return false;
+		}
+		if (!is_array( $ignore )) {
+			$ignore = explode( ' ', $ignore );
+		}
+		foreach ($this->getProperties() as $k => $v)
+		{
+			// internal attributes of an object are ignored
+			if (!in_array( $k, $ignore ))
+			{
+				if ($fromArray && isset( $from[$k] )) {
+					$this->$k = $from[$k];
+				} else if ($fromObject && isset( $from->$k )) {
+					$this->$k = $from->$k;
+				}
+			}
+		}
+		$customs = $this->_getCustomFieldsColumns();
+		foreach ($customs as $c)
+		{
+			if ($fromArray && isset( $from[$c] )) {
+				$this->$c = $from[$c];
+			} else if ($fromObject && isset( $from->$k )) {
+				$this->$c = $from->$c;
+			}
+		}
+		return true;
+	}
+	
+	function _getCustomFieldsColumns()
+	{
+		$query = ' SELECT CONCAT("custom", id) ' 
+		       . ' FROM #__redevent_fields ' 
+		       . ' WHERE object_key = ' . $this->_db->Quote('redevent.event');
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadResultArray();
+		return $res;
 	}
 }
 ?>

@@ -86,7 +86,7 @@ if (!$edit)  {
   <tr>
     <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'custom field type' ).'::'.JText::_('custom field type tip'); ?>"><label for="type"><?php echo JText::_( 'custom field Type' ); ?>:
     </label></td>
-    <td><?php echo $this->lists['types']; ?></td>
+    <td><?php echo ($this->object->id ? $this->object->type : $this->lists['types']); ?></td>
   </tr>
 	<tr>
 		<td valign="top" align="right" class="key"><label for="published"><?php echo JText::_( 'Published' ); ?>:</label>

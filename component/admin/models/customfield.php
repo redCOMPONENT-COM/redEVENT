@@ -106,6 +106,29 @@ class RedeventModelCustomfield extends JModel
 
 		if (count( $cid ))
 		{
+			foreach ($cid as $field_id)
+			{
+				$query = ' SELECT object_key ' 
+				       . ' FROM #__redevent_fields ' 
+				       . ' WHERE id = ' . $this->_db->Quote($field_id);
+				$this->_db->setQuery($query);
+				$res = $this->_db->loadResult();
+				
+				switch($res)
+				{
+		    	case 'redevent.event':
+		    		$table = '#__redevent_events';
+		    		break;
+		    	case 'redevent.xref':
+		    		$table = '#__redevent_event_venue_xref';
+		    		break;
+		    	default:
+		    		continue;
+				}
+				$query = ' ALTER TABLE '.$table.' DROP custom'.$field_id;
+				$this->_db->setQuery($query);
+				$res = $this->_db->query();
+			}
 			JArrayHelper::toInteger($cid);
 			$cids = implode( ',', $cid );
 			$query = 'DELETE FROM #__redevent_fields'
@@ -315,6 +338,36 @@ class RedeventModelCustomfield extends JModel
     if (!$row->store()) {
       $this->setError($this->_db->getErrorMsg());
       return false;
+    }
+    
+    // add the field to the object table
+    switch ($row->object_key)
+    {
+    	case 'redevent.event':
+    		$table = '#__redevent_events';
+    		break;
+    	case 'redevent.xref':
+    		$table = '#__redevent_event_venue_xref';
+    		break;
+    	default:
+    		JError::raiseWarning(0, 'undefined custom field object_key');
+    		break;
+    }
+    $tables = $this->_db->getTableFields(array($table), false);
+    $cols = $tables[$table];
+    
+    if (!array_key_exists('custom'.$row->id, $cols))
+    {
+    	switch ($row->type)
+    	{
+    		default: // for now, let's not restrict the type...
+    			$columntype = 'TEXT';
+    	}
+    	$q = 'ALTER IGNORE TABLE '.$table.' ADD COLUMN custom'.$row->id.' '.$columntype;
+			$this->_db->setQuery($q);
+			if (!$this->_db->query()) {
+    		JError::raiseWarning(0, 'failed adding custom field to table');
+			}
     }
 
     return $row->id;

@@ -81,6 +81,7 @@ class RedeventViewVenuesmap extends JView
     $vcat = $mainframe->getUserStateFromRequest('com_redevent.venuesmap.vcat', 'vcat', $params->def('vcat', 0), 'int');
     $cat = $mainframe->getUserStateFromRequest('com_redevent.venuesmap.cat', 'cat', $params->def('cat', 0), 'int');
     $custom = $this->get('CustomFilters'); 
+    $filter_customs   = $mainframe->getUserStateFromRequest('com_redevent.venuesmap.filter_customs', 'filtercustom', array(), 'array');
 
 		$rows 		= & $this->get('Data');
     $countries = $this->get('Countries');
@@ -139,6 +140,7 @@ class RedeventViewVenuesmap extends JView
     $this->assignRef('lists' ,        $lists);
     $this->assign('action',           $uri->toString());
     $this->assign('ajaxurl',          $ajaxurl);
+		$this->assign('filter_customs', 			$filter_customs);
 
 		parent::display($tpl);
 	}

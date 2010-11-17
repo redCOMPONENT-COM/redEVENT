@@ -85,6 +85,7 @@ class RedeventViewSearch extends JView
     $filter_venuecategory = $mainframe->getUserState('com_redevent.search.filter_venuecategory');
     $filter_category  = $mainframe->getUserState('com_redevent.search.filter_category');
     $filter_event     = $mainframe->getUserState('com_redevent.search.filter_event');
+    $filter_customs   = $mainframe->getUserState('com_redevent.search.filter_customs');
     
 		//are events available?
 		if (!$rows) 
@@ -200,6 +201,7 @@ class RedeventViewSearch extends JView
     $this->assign('filter_country',        $filter_country);
     $this->assign('filter_state',        $filter_state);
 		$this->assign('filter_date', 			$filter_date);
+		$this->assign('filter_customs', 			$filter_customs);
 
 		parent::display($tpl);
 
@@ -258,7 +260,7 @@ class RedeventViewSearch extends JView
 		$lists['order'] 		= $filter_order;
 		$lists['filter'] 		= $filter;
 		$lists['filter_types'] 	= $sortselect;
-
+		
 		return $lists;
 	}
 }

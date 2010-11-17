@@ -166,7 +166,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
           <?php echo '<label for="filtercustom'.$custom->id.'">'.JText::_($custom->name).'</label>&nbsp;'; ?>
         </td>
         <td>
-          <?php echo $custom->renderFilter(array('class' => "inputbox dynfilter")); ?>
+          <?php echo $custom->renderFilter(array('class' => "inputbox dynfilter"), isset($this->filter_customs[$custom->id]) ? $this->filter_customs[$custom->id] : null); ?>
         </td>
       </tr>    	
     	<?php endforeach; ?>

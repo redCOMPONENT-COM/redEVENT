@@ -45,7 +45,6 @@ $tables = array( '#__redevent_events',
                  '#__redevent_fields',
                  '#__redevent_groupmembers',
                  '#__redevent_groups',
-                 '#__redevent_fields_values',
                  '#__redevent_repeats',
                );
 $tables = $db->getTableFields($tables, false);
@@ -791,27 +790,6 @@ if (is_array($cols))
   }
 }
 
-
-/** 
- * field values table
- */
-$cols = $tables['#__redevent_fields_values'];
-
-if (is_array($cols)) 
-{    
-  /** add indexes **/
-  if (empty($cols['object_id']->Key)) {
-    $q = "ALTER TABLE `#__redevent_fields_values` ADD INDEX (`object_id`)";
-    $db->setQuery($q);
-    $db->query();  	
-  }
-  if (empty($cols['field_id']->Key)) {
-    $q = "ALTER TABLE `#__redevent_fields_values` ADD INDEX (`field_id`)";
-    $db->setQuery($q);
-    $db->query();  	
-  }
-}
-
 /** 
  * events repeat table
  */
@@ -947,8 +925,6 @@ foreach ($keys as $key)
 	}
 }
 
-
-
 if ($upgrade) {
 	/* Database is fully setup, commence conversion */
 	/* 1. Make backup copies */
@@ -1013,6 +989,77 @@ if ($upgrade) {
 		$db->setQuery($q);
 		$db->query();
 	}
+}
+
+// check if we still have the field_values table
+$query = ' show tables like '.$db->Quote('%redevent_fields_values');
+$db->setQuery($query);
+if ($db->loadObject())
+{
+	// table exists, let's migrate all custom fields into corresponding tables
+	
+	// first event table
+	$query = ' SELECT f.id ' 
+	       . ' FROM #__redevent_fields AS f ' 
+	       . ' WHERE object_key = ' . $db->Quote('redevent.event');
+	$db->setQuery($query);
+	$res = $db->loadResultArray();
+	foreach ($res as $field_id)
+	{
+		// create the field
+		$query = ' ALTER TABLE `#__redevent_events` ADD `custom'.$field_id.'` TEXT ';
+		$db->setQuery($query);
+		if ($db->query())
+		{
+			// update the values in event table
+			$query = ' UPDATE #__redevent_events AS e '
+			       . ' INNER JOIN #__redevent_fields_values AS v ON v.object_id = e.id '
+			       . ' SET e.custom'.$field_id.' = v.value '
+			       . ' WHERE v.field_id = '.$field_id
+			       ;
+			$db->setQuery($query);
+			if (!$db->query()) {
+				JError::raiseWarning(0, JText::_('COM_REDEVENT_INSTALL_ERROR_COPY_CUSTOM_TO_EVENT_TABLE'.' '.$field_id));
+			}
+		}
+		else {
+			JError::raiseWarning(0, JText::_('COM_REDEVENT_INSTALL_ERROR_ADD_CUSTOM_TO_EVENT_TABLE'.' '.$field_id));
+		}
+	}
+	
+	// then xref table
+	$query = ' SELECT f.id ' 
+	       . ' FROM #__redevent_fields AS f ' 
+	       . ' WHERE object_key = ' . $db->Quote('redevent.xref');
+	$db->setQuery($query);
+	$res = $db->loadResultArray();
+	foreach ($res as $field_id)
+	{
+		// create the field
+		$query = ' ALTER TABLE `#__redevent_event_venue_xref` ADD `custom'.$field_id.'` TEXT ';
+		$db->setQuery($query);
+		if ($db->query())
+		{
+			// update the values in event table
+			$query = ' UPDATE #__redevent_event_venue_xref AS e '
+			       . ' INNER JOIN #__redevent_fields_values AS v ON v.object_id = e.id '
+			       . ' SET e.custom'.$field_id.' = v.value '
+			       . ' WHERE v.field_id = '.$field_id
+			       ;
+			$db->setQuery($query);
+			if (!$db->query()) {
+				JError::raiseWarning(0, JText::_('COM_REDEVENT_INSTALL_ERROR_COPY_CUSTOM_TO_XREF_TABLE'.' '.$field_id));
+			}
+		}
+		else {
+			JError::raiseWarning(0, JText::_('COM_REDEVENT_INSTALL_ERROR_ADD_CUSTOM_TO_XREF_TABLE'.' '.$field_id));
+		}
+	}
+	
+	// done, rename the values table to _bak
+	$query = 'RENAME TABLE `#__redevent_fields_values` TO `#__redevent_fields_values_bak` ;';
+	$db->setQuery($query);
+	$db->query();
 }
 
 // remove old calendar layout

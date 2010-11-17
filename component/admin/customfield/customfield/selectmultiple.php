@@ -71,14 +71,12 @@ class TCustomfieldSelectmultiple extends TCustomfield {
     return JHTML::_('select.genericlist', $option_list, 'custom'.$this->id.'[]', 'multiple="multiple" size="'.min(10,count($options)).'" '.$this->attributesToString($attributes), 'value', 'text', explode("\n",$this->value));
   }
 
-  function renderFilter($attributes = array()) 
+  function renderFilter($attributes = array(), $selected = null) 
   {
     $app = & JFactory::getApplication();
-    
-    // the filtered value should be stored in session
-    $customs = $app->getUserState('com_redevent.filter.customs');
-    if (is_array($customs) && isset($customs[$this->id])) {
-      $value = $customs[$this->id];
+  
+    if ($selected) {
+      $value = $selected;
     }
     else {
       $value = '';

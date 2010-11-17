@@ -117,12 +117,12 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
 		// add the custom fields
 		foreach ((array) $customs as $c)
 		{
-			$query .= ', c'. $c->id .'.value AS custom'. $c->id;
+			$query .= ', a.custom'. $c->id;
 		}
 		// add the custom fields
 		foreach ((array) $xcustoms as $c)
 		{
-			$query .= ', c'. $c->id .'.value AS custom'. $c->id;
+			$query .= ', x.custom'. $c->id;
 		}
     $query .= ' FROM #__redevent_events AS a'
         . ' INNER JOIN #__redevent_event_venue_xref AS x on x.eventid = a.id'
@@ -136,17 +136,6 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
         . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = vc.id AND gvc.group_id IN ('.$gids.')'
         . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN ('.$gids.')'
 		    ;
-  
-		// add the custom fields tables
-		foreach ((array) $customs as $c)
-		{
-			$query .= ' LEFT JOIN #__redevent_fields_values AS c'. $c->id .' ON c'. $c->id .'.object_id = a.id AND c'. $c->id .'.field_id = '. $c->id;
-		}
-		// add the custom fields tables
-		foreach ((array) $xcustoms as $c)
-		{
-			$query .= ' LEFT JOIN #__redevent_fields_values AS c'. $c->id .' ON c'. $c->id .'.object_id = x.id AND c'. $c->id .'.field_id = '. $c->id;
-		}
     $query .= $where
         . ' GROUP BY (x.id) '
         . $orderby

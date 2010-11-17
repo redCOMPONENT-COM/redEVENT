@@ -149,7 +149,7 @@ class TCustomfield extends JObject {
 	 *
 	 * @param unknown_type $attributes
 	 */
-	function renderFilter($attributes = array()) {
+	function renderFilter($attributes = array(), $selected = null) {
 		return 'no filter';
 	}
 	
