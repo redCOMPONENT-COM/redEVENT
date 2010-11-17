@@ -45,7 +45,7 @@ class REAttach extends JObject {
 		$user = &JFactory::getUser();
 		$params = JComponentHelper::getParams('com_redevent');
 
-		$path = JFolder::makesafe(JPATH_SITE.DS.$params->get('attachments_path', 'media'.DS.'com_redevent'.DS.'attachments').DS.$object);
+		$path = self::getBasePath().DS.$object;
 		
 		if (!(is_array($post_files) && count($post_files))) {
 			return false;
@@ -139,7 +139,7 @@ class REAttach extends JObject {
 		$app = &JFactory::getApplication();
 		$params = JComponentHelper::getParams('com_redevent');
 		
-		$path = JFolder::makesafe(JPATH_SITE.DS.$params->get('attachments_path', 'media'.DS.'com_redevent'.DS.'attachments').DS.$object);
+		$path = self::getBasePath().DS.$object;
 		
 		if (!file_exists($path)) {
 			return array();
@@ -195,7 +195,7 @@ class REAttach extends JObject {
 			JError::raiseError(403, JText::_('YOU DONT HAVE ACCESS TO THIS FILE'));			
 		}
 		
-		$path = JPATH_SITE.DS.$params->get('attachments_path', 'media'.DS.'com_redevent'.DS.'attachments').DS.$res->object.DS.$res->file;		
+		$path = self::getBasePath().DS.$res->object.DS.$res->file;		
 		if (!file_exists($path)) {
 			JError::raiseError(404, JText::_('FILE NOT FOUND'));
 		}
@@ -232,7 +232,7 @@ class REAttach extends JObject {
 			return false;
 		}
 				
-		$path = JPATH_SITE.DS.$params->get('attachments_path', 'media'.DS.'com_redevent'.DS.'attachments').DS.$res->object.DS.$res->file;
+		$path = self::getBasePath().DS.$res->object.DS.$res->file;
 		if (file_exists($path)) {
 			JFile::delete($path);
 		}
@@ -283,5 +283,25 @@ class REAttach extends JObject {
 			}
 		}
 		return true;		
+	}
+	
+	/**
+	 * return base path for attachments storage
+	 * 
+	 * @return string path
+	 */
+	function getBasePath()
+	{
+		$params = JComponentHelper::getParams('com_redevent');
+
+		$path = JPATH_SITE.DS.$params->get('attachments_path', 'media'.DS.'com_redevent'.DS.'attachments');
+		if (!file_exists($path)) {
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::create($path)) {
+				JError::raiseWarning(0, Jtext::_('COM_REDEVENT_ATTACHMENTS_ERROR_CANNOT_CREATE_BASE_FOLDER'));
+				return false;
+			}
+		}
+		return $path;
 	}
 }
