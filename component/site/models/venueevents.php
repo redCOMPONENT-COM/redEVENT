@@ -161,7 +161,7 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 		//Location holen
 		$query = 'SELECT *, v.id AS venueid, '
         . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as slug '
-				. ' FROM #__redevent_venues v'
+				. ' FROM #__redevent_venues AS v'
 				. ' WHERE v.id = '.$this->_id;
 
 		$this->_db->setQuery( $query );
