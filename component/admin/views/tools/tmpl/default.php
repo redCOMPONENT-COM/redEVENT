@@ -113,9 +113,15 @@ defined('_JEXEC') or die('Restricted access');
     
     <td width="10%">
       <div class="linkicon">
-        
+        <a href="index.php?option=com_redevent&amp;view=csvtool">
+          <?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/icon-48-cleaneventimg.png',  JText::_( 'COM_REDEVENT_TOOLS_CSV' ) ); ?>
+          <span><?php echo JText::_( 'COM_REDEVENT_TOOLS_CSV' ); ?></span>
+        </a>
       </div>
     </td>
+    <td width="40%" valign="middle">
+      <?php echo JText::_( 'COM_REDEVENT_TOOLS_CSV_DESC' ); ?>
+    </td>	
     <td width="40%" valign="middle">
       
     </td>	

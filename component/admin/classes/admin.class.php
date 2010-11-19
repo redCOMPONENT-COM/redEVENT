@@ -76,6 +76,78 @@ class ELAdmin {
       JSubMenuHelper::addEntry( JText::_( 'SETTINGS' ), 'index.php?option=com_redevent&controller=settings&task=edit', $controller == 'settings');
     }
 	}
+
+	/**
+	 * Get a option list of all categories
+	 */
+	public function getCategoriesOptions() 
+	{
+		$db =& JFactory::getDBO();
+	 $query = ' SELECT c.id, c.catname, (COUNT(parent.catname) - 1) AS depth '
+           . ' FROM #__redevent_categories AS c, '
+           . ' #__redevent_categories AS parent '
+           . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
+           . ' GROUP BY c.id '
+           . ' ORDER BY c.lft;'
+           ;
+    $db->setQuery($query);
+    
+    $results = $db->loadObjectList();
+    
+    $options = array();
+    foreach((array) $results as $cat)
+    {
+      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->catname);
+    }
+		return $options;
+	}
+	
+	/**
+	 * Get a option list of all categories
+	 */
+	public function getVenuesCategoriesOptions() 
+	{
+		$db =& JFactory::getDBO();
+	 $query = ' SELECT c.id, c.name, (COUNT(parent.name) - 1) AS depth '
+           . ' FROM #__redevent_venues_categories AS c, '
+           . ' #__redevent_venues_categories AS parent '
+           . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
+           . ' GROUP BY c.id '
+           . ' ORDER BY c.lft;'
+           ;
+    $db->setQuery($query);
+    
+    $results = $db->loadObjectList();
+    
+    $options = array();
+    foreach((array) $results as $cat)
+    {
+      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->name);
+    }
+		return $options;
+	}
+
+	/**
+	 * Get a option list of all categories
+	 */
+	public function getVenuesOptions() 
+	{
+		$db =& JFactory::getDBO();
+	 $query = ' SELECT v.id, v.venue '
+           . ' FROM #__redevent_venues AS v '
+           . ' ORDER BY v.venue'
+           ;
+    $db->setQuery($query);
+    
+    $results = $db->loadObjectList();
+    
+    $options = array();
+    foreach((array) $results as $r)
+    {
+      $options[] = JHTML::_('select.option', $r->id, $r->venue);
+    }
+		return $options;
+	}
 }
 
 ?>
