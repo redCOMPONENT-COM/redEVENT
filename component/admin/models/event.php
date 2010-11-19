@@ -407,6 +407,7 @@ class RedEventModelEvent extends JModel
 		if ($row->id) {
 			$row->modified 		= gmdate('Y-m-d H:i:s');
 			$row->modified_by 	= $user->get('id');
+			$row->created_by		= $row->created_by ? $row->created_by : $user->get('id');
 		} else {
 			$row->modified 		= $nullDate;
 			$row->modified_by 	= '';
@@ -415,7 +416,7 @@ class RedEventModelEvent extends JModel
 			$row->created 			= gmdate('Y-m-d H:i:s');
 
 			$row->author_ip 		= $elsettings->storeip ? getenv('REMOTE_ADDR') : 'DISABLED';
-			$row->created_by		= $user->get('id');
+			$row->created_by		= $row->created_by ? $row->created_by : $user->get('id');
 		}
 
 		// Make sure the data is valid

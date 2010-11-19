@@ -203,12 +203,10 @@ echo $this->pane->endPane(); ?>
 	<input type="hidden" name="id" value="" />
 	<input type="hidden" name="created" value="" />
 	<input type="hidden" name="author_ip" value="" />
-	<input type="hidden" name="created_by" value="" />
 <?php } else { ?>
 	<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="created" value="<?php echo $this->row->created; ?>" />
 	<input type="hidden" name="author_ip" value="<?php echo $this->row->author_ip; ?>" />
-	<input type="hidden" name="created_by" value="<?php echo $this->row->created_by; ?>" />
 <?php } ?>
 </form>
 <?php echo $this->loadTemplate('jsscript'); ?>

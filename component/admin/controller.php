@@ -209,5 +209,12 @@ class RedEventController extends JController
 		echo 1;
 		$mainframe->close();
 	}
+	
+	function selectuser()
+	{
+		JRequest::setVar( 'view', 'selectuser' );
+
+		parent::display();
+	}
 }
 ?>

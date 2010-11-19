@@ -55,6 +55,16 @@
 					?>
 				</td>
 			</tr>
+			<tr>
+				<td>
+					<label for="creator">
+						<?php echo JText::_( 'CREATOR' ).':'; ?>
+					</label>
+				</td>
+				<td>
+					<?php echo redEVENTHelper::getUserSelector('created_by',$this->row->created_by); ?>
+				</td>
+			</tr>
 		</table>
 	</td>
 	<td>
