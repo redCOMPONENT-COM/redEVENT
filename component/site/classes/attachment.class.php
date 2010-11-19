@@ -51,7 +51,7 @@ class REAttach extends JObject {
 			return false;
 		}
 		
-		$allowed = explode(",", $params->get('attachments_types'));
+		$allowed = explode(",", $params->get('attachments_types', 'txt,csv,htm,html,xml,css,doc,xls,rtf,ppt,pdf,swf,flv,avi,wmv,mov,jpg,jpeg,gif,png,zip,tar.gz'));
 		foreach ($allowed as $k => $v) {
 			$allowed[$k] = trim($v);
 		}
