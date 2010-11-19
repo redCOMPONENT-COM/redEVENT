@@ -252,7 +252,7 @@ if (is_array($cols)) {
   }	
 	
 	/* Check if we have the course_credit column */
-	if (!array_key_exists('layout', $cols)) {
+	if (!array_key_exists('details_layout', $cols)) {
 		$q = "ALTER IGNORE TABLE #__redevent_events ADD COLUMN `details_layout` tinyint(2) NOT NULL";
 		$db->setQuery($q);
 		$db->query();
