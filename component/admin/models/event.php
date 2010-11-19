@@ -564,7 +564,7 @@ class RedEventModelEvent extends JModel
       return array();
     }
     $fields = array();
-    $event = $this->getData();
+    $data = $this->getData();
     foreach ($result as $c)
     {
       $field =& redEVENTHelper::getCustomField($c->type);
