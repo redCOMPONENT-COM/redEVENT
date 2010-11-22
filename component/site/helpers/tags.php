@@ -874,6 +874,13 @@ class redEVENT_tags {
 			   . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(":", v.id, v.alias) ELSE v.id END as venueslug '
 			   ;
 			
+			// add the custom fields
+			foreach ((array) $xcustoms as $c)
+			{
+				$query .= ', x.custom'. $c->id;
+			}
+			   
+			
 			$query .= ' FROM #__redevent_events AS e '
 			   . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
 			   . ' INNER JOIN #__redevent_venues AS v ON x.venueid = v.id '
@@ -1138,7 +1145,6 @@ class redEVENT_tags {
 	  	       . ' FROM #__redevent_fields AS f'
 	  	       . ' WHERE f.published = 1'
 	  	       . '   AND f.object_key = '. $db->Quote('redevent.xref')
-	  	       . '   AND f.in_lists = 1 '
 	  	       . ' ORDER BY f.ordering ASC '
 	  	       ;
 	  	$db->setQuery($query);
