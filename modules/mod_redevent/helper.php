@@ -104,6 +104,7 @@ class modRedEventHelper
 
 		//get $params->get( 'count', '2' ) nr of datasets
 		$query = 'SELECT a.*, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, l.venue, l.city, l.url ,'
+		    . ' CONCAT_WS(",", c.image) AS categories_images,'
         . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
 		    . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug '
 				. ' FROM #__redevent_event_venue_xref AS x'
@@ -120,7 +121,7 @@ class modRedEventHelper
 
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
-
+		
 		$i		= 0;
 		$lists	= array();
 		$title_length = $params->get('cuttitle', '18');
