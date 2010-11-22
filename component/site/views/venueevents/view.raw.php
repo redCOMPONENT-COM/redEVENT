@@ -45,13 +45,8 @@ class RedeventViewVenueEvents extends JView
 	function display($tpl = null)
 	{		
 		$mainframe = &JFactory::getApplication();
-    
-		$offset = (float) $mainframe->getCfg('offset');
-		$timezone_name = redEVENTHelper::getTimeZone($offset);
-		$hours = ($offset >= 0) ? floor($offset) : ceil($offset);
-		$mins = abs($offset - $hours) * 60;
-		$utcoffset = sprintf('%+03d%02d00', $hours, $mins);
-		
+		$id = JRequest::getInt('id');
+    		
 		$settings = redEVENTHelper::config();
 		
 		// Get data from the model
@@ -59,74 +54,20 @@ class RedeventViewVenueEvents extends JView
 		$model->setLimit($settings->params->get('ical_max_items', 100));
 		$model->setLimitstart(0);
 		$rows = & $model->getData();
-		
-		$id = JRequest::getInt('id');
-		
-		$vcal = new vcalendar();                          // initiate new CALENDAR
+				
+    // initiate new CALENDAR
+		$vcal = redEVENTHelper::getCalendarTool();
+		$catid = JRequest::getInt('id');
 		$vcal->setProperty('unique_id', "venue".$id.'@'.$mainframe->getCfg('sitename'));
-		$vcal->setProperty( "calscale", "GREGORIAN" ); 
-    $vcal->setProperty( 'method', 'PUBLISH' );
-    if ($timezone_name) {
-    	$vcal->setProperty( "X-WR-TIMEZONE", $timezone_name ); 
-    }
 		$vcal->setConfig( "filename", "venue".$id.".ics" );
 		
 		foreach ( $rows as $row )
-		{				
-			if (!redEVENTHelper::isValidDate($row->dates)) {
-				continue;
-			}	
-			// get categories names
-			$categories = array();
-			foreach ($row->categories as $c) {
-				$categories[] = $c->catname;
-			}
-			
-			$date = ELOutput::getIcalDateArray($row->dates, $row->times);
-			$dateparam = array();
-			if (isset($date['hour'])) {
-				$date['tz'] = $utcoffset;
-				$dateparam['VALUE'] = 'DATE-TIME';
-			}
-			else {
-				$dateparam['VALUE'] = 'DATE';				
-			}
-				
-			// end date
-			$date_end = ELOutput::getIcalDateArray($row->enddates, $row->endtimes);
-			$dateendparam = array();
-			if (isset($date_end['hour'])) {
-				$date_end['tz'] = $utcoffset;
-				$dateendparam['VALUE'] = 'DATE-TIME';
-			}
-			else {
-				$dateendparam['VALUE'] = 'DATE';				
-			}
-				
-			// item description text
-			$description = $row->title.'\\n';
-			$description .= JText::_( 'CATEGORY' ).': '.implode(', ', $categories).'\\n';
-	
-			// url link to event
-			$link = JURI::base().RedeventHelperRoute::getDetailsRoute($row->slug, $row->xref);
-			$link = JRoute::_( $link );
-			$description .= JText::_( 'COM_REDEVENT_ICS_LINK' ).': '.$link.'\\n';
-				
-			$e = new vevent();              // initiate a new EVENT
-			$e->setProperty( 'summary', utf8_encode($row->title) );           // title
-			$e->setProperty( 'categories', utf8_encode(implode(', ', $categories)) );           // categorize
-			$e->setProperty( 'dtstart', $date, $dateparam );
-			if ($date_end) {
-				$e->setProperty( 'dtend', $date_end, $dateendparam );
-			}
-			$e->setProperty( 'description', utf8_encode($description) );    // describe the event
-			$e->setProperty( 'location', utf8_encode($row->venue.' / '.$row->city) ); // locate the event
-			$e->setProperty( 'url', $link );
-			$e->setProperty( 'uid', 'session'.$row->xref.'@'.$mainframe->getCfg('sitename') );
-			$vcal->addComponent( $e );                    // add component to calendar
+		{
+			redEVENTHelper::icalAddEvent($vcal, $row);
 		}
 		$vcal->returnCalendar();                       // generate and redirect output to user browser
-		echo $vcal->createCalendar(); // debug
+//		echo $vcal->createCalendar(); // debug
+		$mainframe->close();
 	}
 }
 ?>

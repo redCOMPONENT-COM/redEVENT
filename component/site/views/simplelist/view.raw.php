@@ -38,20 +38,14 @@ jimport( 'joomla.application.component.view');
 class RedeventViewSimpleList extends JView
 {
 	/**
-	 * Creates the output for the details view
+	 * Creates the raw output for the simplelist view
 	 *
  	 * @since 2.0
 	 */
 	function display($tpl = null)
-	{		
+	{
 		$mainframe = &JFactory::getApplication();
-    
-		$offset = (float) $mainframe->getCfg('offset');
-		$timezone_name = redEVENTHelper::getTimeZone($offset);
-		$hours = ($offset >= 0) ? floor($offset) : ceil($offset);
-		$mins = abs($offset - $hours) * 60;
-		$utcoffset = sprintf('%+03d%02d00', $hours, $mins);
-		
+    		
 		$settings = redEVENTHelper::config();
 		
 		// Get data from the model
@@ -60,91 +54,18 @@ class RedeventViewSimpleList extends JView
 		$model->setLimitstart(0);
 		$rows = & $model->getData();
 				
-		$vcal = new vcalendar();                          // initiate new CALENDAR
+    // initiate new CALENDAR
+		$vcal = redEVENTHelper::getCalendarTool();
 		$vcal->setProperty('unique_id', 'allevents@'.$mainframe->getCfg('sitename'));
-		$vcal->setProperty( "calscale", "GREGORIAN" ); 
-    $vcal->setProperty( 'method', 'PUBLISH' );
-    if ($timezone_name) {
-    	$vcal->setProperty( "X-WR-TIMEZONE", $timezone_name ); 
-    }
 		$vcal->setConfig( "filename", "events.ics" );
 		
 		foreach ( $rows as $row )
-		{					
-			// get categories names
-			$categories = array();
-			foreach ($row->categories as $c) {
-				$categories[] = $c->catname;
-			}
-			      
-			//Format date
-			if (!preg_match('/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/',$row->dates, $start_date)) {
-				continue;
-			}
-			$date = array('year' => (int) $start_date[1], 'month' => (int) $start_date[2], 'day' => (int) $start_date[3]);
-			$dateparam = array();
-				
-			//Format time
-			if ($row->times && preg_match('/([0-9]{2}):([0-9]{2}):([0-9]{2})/',$row->times, $start_time)) {
-				$date['hour'] = $start_time[1];
-				$date['min'] = $start_time[2];
-				$date['sec'] = $start_time[3];
-				$date['tz'] = $utcoffset;
-				$dateparam['VALUE'] = 'DATE-TIME';
-			}
-			else {
-				// all day event
-				$dateparam['VALUE'] = 'DATE';
-			}
-				
-			// end date
-			$date_end = array();
-			$dateendparam = array();
-			// end date
-			if ($row->enddates && preg_match('/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/',$row->enddates, $end_date)) {
-				$date_end = array('year' => $end_date[1], 'month' => $end_date[2], 'day' => $end_date[3]);
-			}
-			if ($row->endtimes && preg_match('/([0-9]{2}):([0-9]{2}):([0-9]{2})/',$row->endtimes, $end_time))
-			{
-				if (!count($date_end)) {
-					// no end date, so it must be the same day...
-					$date_end = array('year' => $date['year'], 'month' => $date['month'], 'day' => $date['day']);
-				}
-				$date_end['hour'] = $end_time[1];
-				$date_end['min'] = $end_time[2];
-				$date_end['sec'] = $end_time[3];
-				$dateendparam['VALUE'] = 'DATE-TIME';
-				$date_end['tz'] = $utcoffset;
-			}
-			if ($row->enddates && !$row->endtimes) {
-				// all day event
-				$dateendparam['VALUE'] = 'DATE';
-			}
-	
-			// item description text
-			$description = $row->title.'\\n';
-			$description .= JText::_( 'CATEGORY' ).': '.implode(', ', $categories).'\\n';
-	
-			// url link to event
-			$link = JURI::base().RedeventHelperRoute::getDetailsRoute($row->slug, $row->xref);
-			$link = JRoute::_( $link );
-			$description .= JText::_( 'COM_REDEVENT_ICS_LINK' ).': '.$link.'\\n';
-				
-			$e = new vevent();              // initiate a new EVENT
-			$e->setProperty( 'summary', utf8_encode($row->title) );           // title
-			$e->setProperty( 'categories', utf8_encode( implode(', ', $categories)) );           // categorize
-			$e->setProperty( 'dtstart', $date, $dateparam );
-			if (count($date_end)) {
-				$e->setProperty( 'dtend', $date_end, $dateendparam );
-			}
-			$e->setProperty( 'description', utf8_encode($description) );    // describe the event
-			$e->setProperty( 'location', utf8_encode($row->venue.' / '.$row->city) ); // locate the event
-			$e->setProperty( 'url', $link );
-			$e->setProperty( 'uid', 'session'.$row->xref.'@'.$mainframe->getCfg('sitename') );
-			$vcal->addComponent( $e );                    // add component to calendar
+		{				
+			redEVENTHelper::icalAddEvent($vcal, $row);	
 		}
 		$vcal->returnCalendar();                       // generate and redirect output to user browser
-		echo $vcal->createCalendar(); // debug
+//		echo $vcal->createCalendar(); // debug
+		$mainframe->close();		
 	}
 }
 ?>

@@ -921,5 +921,159 @@ class redEVENTHelper {
 			}
 		}
 	}
+	
+
+	/**
+	 * return initialized calendar tool class for ics export
+	 * 
+	 * @return object
+	 */
+	function getCalendarTool()
+	{
+		require_once JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'classes'.DS.'iCalcreator.class.php';
+		$mainframe = &JFactory::getApplication();
+    
+		$offset = (float) $mainframe->getCfg('offset');
+		$timezone_name = self::getTimeZone($offset);
+								
+		$vcal = new vcalendar();                          // initiate new CALENDAR
+		if (!file_exists(JPATH_SITE.DS.'cache'.DS.'com_redevent')) {
+			jimport('joomla.filesystem.folder');
+			JFolder::create(JPATH_SITE.DS.'cache'.DS.'com_redevent');
+		}
+		$vcal->setConfig('directory', JPATH_SITE.DS.'cache'.DS.'com_redevent');
+		$vcal->setProperty('unique_id', 'events@'.$mainframe->getCfg('sitename'));
+		$vcal->setProperty( "calscale", "GREGORIAN" ); 
+    $vcal->setProperty( 'method', 'PUBLISH' );
+    if ($timezone_name) {
+    	$vcal->setProperty( "X-WR-TIMEZONE", $timezone_name ); 
+    }
+    return $vcal;
+	}
+	
+	function icalAddEvent(&$calendartool, $event)
+	{
+		require_once JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'classes'.DS.'iCalcreator.class.php';
+		$mainframe = &JFactory::getApplication();
+		$params = $mainframe->getParams('com_redevent');
+		
+		$offset = (float) $mainframe->getCfg('offset');
+		$timezone_name = self::getTimeZone($offset);
+		
+		// get categories names
+		$categories = array();
+		foreach ($event->categories as $c) {
+			$categories[] = $c->catname;
+		}
+		
+		if (!$event->dates || $event->dates == '0000-00-00') {
+			// no start date...
+			return false;
+		}		
+		// make end date same as start date if not set
+		if (!$event->enddates || $event->enddates == '0000-00-00') {
+			$event->enddates = $event->dates;
+		}
+		
+		// start
+		if (!preg_match('/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/',$event->dates, $start_date)) {
+			JError::raiseError(0, JText::_('COM_REDEVENT_ICAL_EXPORT_WRONG_STARTDATE_FORMAT'));
+		}
+		$date = array('year' => (int) $start_date[1], 'month' => (int) $start_date[2], 'day' => (int) $start_date[3]);
+			
+		// all day event if start time is not set
+		if ( !$event->times || $event->times == '00:00:00' ) // all day !
+		{
+			$dateparam = array('VALUE' => 'DATE');
+					
+			// for ical all day events, dtend must be send to the next day
+			$event->enddates = strftime('%Y-%m-%d', strtotime($event->enddates.' +1 day'));
+			
+			if (!preg_match('/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/',$event->enddates, $end_date)) {
+				JError::raiseError(0, JText::_('COM_REDEVENT_ICAL_EXPORT_WRONG_ENDDATE_FORMAT'));
+			}
+			$date_end = array('year' => $end_date[1], 'month' => $end_date[2], 'day' => $end_date[3]);
+			$dateendparam = array('VALUE' => 'DATE');			
+		} 
+		else // not all day events, there is a start time
+		{		
+			if (!preg_match('/([0-9]{2}):([0-9]{2}):([0-9]{2})/',$event->times, $start_time)) {
+				JError::raiseError(0, JText::_('COM_REDEVENT_ICAL_EXPORT_WRONG_STARTTIME_FORMAT'));
+			}
+			$date['hour'] = $start_time[1];
+			$date['min']  = $start_time[2];
+			$date['sec']  = $start_time[3];
+			$dateparam = array('VALUE' => 'DATE-TIME');
+			if ($params->get('ical_tz', 1)) {
+				$dateparam['TZID'] = $timezone_name;
+			}
+			
+			if ( !$event->endtimes || $event->endtimes == '00:00:00' )
+			{
+				$event->endtimes = $event->times;
+			}
+			
+			// if same day but end time < start time, change end date to +1 day
+			if ($event->enddates == $event->dates && strtotime($event->dates.' '.$event->endtimes) < strtotime($event->dates.' '.$event->times)) {
+				$event->enddates = strftime('%Y-%m-%d', strtotime($event->enddates.' +1 day'));
+			}
+
+			if (!preg_match('/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/',$event->enddates, $end_date)) {
+				JError::raiseError(0, JText::_('COM_REDEVENT_ICAL_EXPORT_WRONG_ENDDATE_FORMAT'));
+			}
+			$date_end = array('year' => $end_date[1], 'month' => $end_date[2], 'day' => $end_date[3]);
+						
+			if (!preg_match('/([0-9]{2}):([0-9]{2}):([0-9]{2})/',$event->endtimes, $end_time)) {
+				JError::raiseError(0, JText::_('COM_REDEVENT_ICAL_EXPORT_WRONG_STARTTIME_FORMAT'));
+			}
+			$date_end['hour'] = $end_time[1];
+			$date_end['min']  = $end_time[2];
+			$date_end['sec']  = $end_time[3];
+			$dateendparam = array('VALUE' => 'DATE-TIME');	
+			if ($params->get('ical_tz', 1)) {
+				$dateendparam['TZID'] = $timezone_name;
+			}	
+		}
+
+		// item description text
+		$description = $event->title.'\\n';
+		$description .= JText::_( 'CATEGORY' ).': '.implode(', ', $categories).'\\n';
+//		if (isset($event->summary) && $event->summary) {
+//			$description .= $event->summary.'\\n';
+//		}
+		
+		// url link to event
+		$link = JURI::base().RedeventHelperRoute::getDetailsRoute($event->slug, $event->xref);
+		$link = JRoute::_( $link );
+		$description .= JText::_( 'COM_REDEVENT_ICS_LINK' ).': '.$link.'\\n';
+		
+		// location
+		$location = array($event->venue);
+		if (isset($event->street) && !empty($event->street)) {
+			$location[] = $event->street;
+		}
+		if (isset($event->city) && !empty($event->city)) {
+			$location[] = $event->city;
+		}
+		if (isset($event->countryname) && !empty($event->countryname)) {
+			$exp = explode(",",$event->countryname);
+			$location[] = $exp[0];
+		}
+		$location = implode(",", $location);
+			
+		$e = new vevent();              // initiate a new EVENT
+		$e->setProperty( 'summary', $event->title );           // title
+		$e->setProperty( 'categories', implode(', ', $categories) );           // categorize
+		$e->setProperty( 'dtstart', $date, $dateparam );
+		if (count($date_end)) {
+			$e->setProperty( 'dtend', $date_end, $dateendparam );
+		}
+		$e->setProperty( 'description', $description );    // describe the event
+		$e->setProperty( 'location', $location ); // locate the event
+		$e->setProperty( 'url', $link );
+		$e->setProperty( 'uid', 'event'.$event->id.'-'.$event->xref.'@'.$mainframe->getCfg('sitename') );
+		$calendartool->addComponent( $e );                    // add component to calendar
+		return true;
+	}
 }
 ?>
