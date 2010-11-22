@@ -90,7 +90,6 @@ class RedeventModelVenue extends JModel
 	        . ' GROUP BY v.id '
 	        ;
 				$this->_db->setQuery($query);
-				$this->_venue = $this->_db->loadObject();
 				
 				$venue = $this->_db->loadObject();
 	
