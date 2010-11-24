@@ -28,6 +28,7 @@ window.addEvent('domready', function() {
 	$$('.attach-field').addEvent('change', addattach);
 	
 	$$('.attach-remove').addEvent('click', function(event){
+		event = new Event(event); // for IE !
 		if (removemsg) {
 			if (!confirm(removemsg)) {
 				return false;
