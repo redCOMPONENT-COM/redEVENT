@@ -78,44 +78,6 @@ class RedEventViewEvent extends JView {
     $document->addScript($url.'components/com_redevent/assets/js/attachments.js');
 		$document->addScriptDeclaration('var removemsg = "'.JText::_('COM_REDEVENT_ATTACHMENT_CONFIRM_MSG').'";' );
 
-		//build toolbar
-		
-		if ($task == 'copy') {
-		  	JToolBarHelper::title( JText::_( 'COPY EVENT'), 'eventedit');		
-		} elseif ( $cid ) {
-			JToolBarHelper::title( JText::_( 'EDIT EVENT' ), 'eventedit' );
-		} else {
-			JToolBarHelper::title( JText::_( 'ADD EVENT' ), 'eventedit' );
-
-			//set the submenu
-			JSubMenuHelper::addEntry( JText::_( 'REDEVENT' ), 'index.php?option=com_redevent');
-			JSubMenuHelper::addEntry( JText::_( 'EVENTS' ), 'index.php?option=com_redevent&view=events');
-			JSubMenuHelper::addEntry( JText::_( 'VENUES' ), 'index.php?option=com_redevent&view=venues');
-			JSubMenuHelper::addEntry( JText::_( 'CATEGORIES' ), 'index.php?option=com_redevent&view=categories');
-			JSubMenuHelper::addEntry( JText::_( 'ARCHIVESCREEN' ), 'index.php?option=com_redevent&view=archive');
-			JSubMenuHelper::addEntry( JText::_( 'GROUPS' ), 'index.php?option=com_redevent&view=groups');
-			JSubMenuHelper::addEntry( JText::_( 'HELP' ), 'index.php?option=com_redevent&view=help');
-			if ($user->get('gid') > 24) {
-				JSubMenuHelper::addEntry( JText::_( 'SETTINGS' ), 'index.php?option=com_redevent&controller=settings&task=edit');
-			}
-		}
-		JToolBarHelper::apply();
-		JToolBarHelper::spacer();
-		JToolBarHelper::save();
-		//If the AutoTweet NG Component is installed 
-		if (JComponentHelper::getComponent('com_autotweet', true)->enabled)
-		{
-			//If the redEVENT twitter plugin is installed
-			if (JPluginHelper::isEnabled("system", "autotweetredevent"))
-			{
-				JToolBarHelper::save('saveAndTwit', 'Save & twit');
-			}
-		}
-		JToolBarHelper::spacer();
-		JToolBarHelper::cancel();
-		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.editevents', true );
-
 		//get data from model
 		$model		= & $this->getModel();
 		
@@ -216,10 +178,47 @@ class RedEventViewEvent extends JView {
 			$Lists['redforms'] = '';
 			$formfields = '';
 		}
-		
+				
 		JHTML::script('modal.js');
 		JHTML::stylesheet('modal.css');
-      		
+
+		//build toolbar		
+		if ($task == 'copy') {
+		  	JToolBarHelper::title( JText::_( 'COPY EVENT'), 'eventedit');		
+		} elseif ( $cid ) {
+			JToolBarHelper::title( JText::_( 'EDIT EVENT' ).' - '.$row->title, 'eventedit' );
+		} else {
+			JToolBarHelper::title( JText::_( 'ADD EVENT' ), 'eventedit' );
+
+			//set the submenu
+			JSubMenuHelper::addEntry( JText::_( 'REDEVENT' ), 'index.php?option=com_redevent');
+			JSubMenuHelper::addEntry( JText::_( 'EVENTS' ), 'index.php?option=com_redevent&view=events');
+			JSubMenuHelper::addEntry( JText::_( 'VENUES' ), 'index.php?option=com_redevent&view=venues');
+			JSubMenuHelper::addEntry( JText::_( 'CATEGORIES' ), 'index.php?option=com_redevent&view=categories');
+			JSubMenuHelper::addEntry( JText::_( 'ARCHIVESCREEN' ), 'index.php?option=com_redevent&view=archive');
+			JSubMenuHelper::addEntry( JText::_( 'GROUPS' ), 'index.php?option=com_redevent&view=groups');
+			JSubMenuHelper::addEntry( JText::_( 'HELP' ), 'index.php?option=com_redevent&view=help');
+			if ($user->get('gid') > 24) {
+				JSubMenuHelper::addEntry( JText::_( 'SETTINGS' ), 'index.php?option=com_redevent&controller=settings&task=edit');
+			}
+		}
+		JToolBarHelper::apply();
+		JToolBarHelper::spacer();
+		JToolBarHelper::save();
+		//If the AutoTweet NG Component is installed 
+		if (JComponentHelper::getComponent('com_autotweet', true)->enabled)
+		{
+			//If the redEVENT twitter plugin is installed
+			if (JPluginHelper::isEnabled("system", "autotweetredevent"))
+			{
+				JToolBarHelper::save('saveAndTwit', 'Save & twit');
+			}
+		}
+		JToolBarHelper::spacer();
+		JToolBarHelper::cancel();
+		JToolBarHelper::spacer();
+		JToolBarHelper::help( 'el.editevents', true );
+		      		
 		//assign vars to the template
 		$this->assignRef('Lists'      	, $Lists);
 		$this->assignRef('row'      	, $row);
