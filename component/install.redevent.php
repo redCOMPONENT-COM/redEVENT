@@ -22,6 +22,89 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+function upgrade1_2()
+{
+	$db = JFactory::getDBO();
+	
+	$tables = array( '#__redevent_events', );
+	$tables = $db->getTableFields($tables, false);
+	
+	/** 
+	 * event table
+	 */
+	$cols = $tables['#__redevent_events'];
+	
+	/* Check if an upgrade is needed */
+	if (!array_key_exists('locid', $cols)) {
+		return true;
+	}
+		
+	/* 1. Make backup copies */
+	$q = "CREATE TABLE IF NOT EXISTS #__redevent_events_bak_v1 SELECT * FROM #__redevent_events";
+	$db->setQuery($q);
+	$db->query();
+	
+	$q = "CREATE TABLE IF NOT EXISTS #__redevent_register_bak_v1 SELECT * FROM #__redevent_events";
+	$db->setQuery($q);
+	$db->query();
+	
+	/* 2. Copy events to the xref table */
+	$q = "INSERT INTO #__redevent_event_venue_xref (eventid, venueid, dates, enddates, times, endtimes, maxattendees, maxwaitinglist, published) "
+	   . "            SELECT id, locid, dates, enddates, times, endtimes, maxattendees, maxwaitinglist, published FROM #__redevent_events";
+	$db->setQuery($q);
+	$db->query();
+	
+	/* 3. Remove the columns from the events table */
+	$q = "ALTER TABLE `#__redevent_events`
+	  DROP `locid`,
+	  DROP `dates`,
+	  DROP `enddates`,
+	  DROP `times`,
+	  DROP `endtimes`,
+	  DROP `maxattendees`,
+	  DROP `maxwaitinglist`;";
+	$db->setQuery($q);
+	$db->query();
+	
+	/* 4. Register table */
+	/* The submitter_id becomes sid */
+	$q = "ALTER TABLE `#__redevent_register` CHANGE `submitter_id` `sid` INT NOT NULL";
+	$db->setQuery($q);
+	$db->query();
+	
+	/* waiting becomes waitinglist */
+	$q = "ALTER TABLE `#__redevent_register` CHANGE `waiting` `waitinglist` TINYINT NOT NULL";
+	$db->setQuery($q);
+	$db->query();
+	
+	/* new column submit_key */
+	$q = "ALTER TABLE `#__redevent_register` ADD `submit_key` VARCHAR(45) NOT NULL";
+	$db->setQuery($q);
+	$db->query();
+	
+	$q = ' UPDATE `#__redevent_register` AS r '
+	   . ' INNER JOIN `#__rwf_submitters` AS s ON s.id = r.sid '
+	   . ' SET r.submit_key = s.submit_key ' 
+	   ;
+	$db->setQuery($q);
+	$db->query();
+	
+	/* event becomes xref */
+	$q = "ALTER TABLE `#__redevent_register` CHANGE `event` `xref` INT( 11 ) NULL DEFAULT NULL";
+	$db->setQuery($q);
+	$db->query();
+			
+	/* Update the register table */
+	$q = " UPDATE #__redevent_register AS r "
+	   . " INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = r.xref "
+	   . " SET r.xref = x.id "
+	   ;
+	$db->setQuery($q);
+	$db->query();
+	
+	return true;
+}
+
 /**
  * Executes additional installation processes
  *
@@ -30,6 +113,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 function com_install() {
 
 jimport( 'joomla.filesystem.folder' );
+
+// check upgrade from 1.0 to 2.0
+upgrade1_2();
 
 /**
  * get tables details
@@ -55,10 +141,7 @@ $tables = $db->getTableFields($tables, false);
 $cols = $tables['#__redevent_events'];
 
 if (is_array($cols)) {
-	/* Check if an upgrade is needed */
-	if (array_key_exists('locid', $cols)) $upgrade = true;
-	else $upgrade = false;
-	
+		
 	/* Check if we have the showfields column */
 	if (!array_key_exists('showfields', $cols)) {
 		$q = "ALTER IGNORE TABLE #__redevent_events ADD COLUMN showfields TEXT";
@@ -510,14 +593,48 @@ if (is_array($cols)) {
 	    	$query = ' CREATE TABLE #__redevent_register LIKE #__redevent_register_back_'.$back_post.' ';
 	    	$db->setQuery($query);
 		    if ($db->query())
-		    {		    	
-			  	$query = "ALTER IGNORE TABLE #__redevent_register "
-			  	   . "      ADD COLUMN `sid` int(11) NOT NULL default '0',"
-			  	   . "      ADD COLUMN `waitinglist` tinyint(2) NOT NULL default '0',"
-			  	   . "      ADD COLUMN `confirmed` tinyint(2) NOT NULL default '0',"
-			  	   . "      ADD COLUMN `confirmdate` datetime NULL default NULL";
-			    $db->setQuery($query);
-			    if ($db->query())
+		    {
+		    	$res = true;
+			  	$query = " ALTER IGNORE TABLE #__redevent_register "
+			  	       . "      ADD COLUMN `sid` int(11) NOT NULL default '0' ";
+		    	$db->setQuery($query);
+			    
+			    if (!$db->query()) {
+			    	$res = false;
+			    }
+			    
+			  	if (!array_key_exists('waitinglist', $cols)) 
+			  	{
+				  	$query = " ALTER IGNORE TABLE #__redevent_register "
+				  	   . "      ADD COLUMN `waitinglist` tinyint(2) NOT NULL default '0' ";
+			    	$db->setQuery($query);
+				    if (!$db->query()) {
+				    	$res = false;
+				    }
+			    }
+			    
+			    
+			  	if (!array_key_exists('confirmed', $cols)) 
+			  	{		  	
+				  	$query = " ALTER IGNORE TABLE #__redevent_register "
+				  	   . "      ADD COLUMN `confirmed` tinyint(2) NOT NULL default '0' ";
+			    	$db->setQuery($query);
+				    if (!$db->query()) {
+				    	$res = false;
+				    }
+			    }			    
+			    
+			  	if (!array_key_exists('confirmdate', $cols)) 
+			  	{
+				  	$query = " ALTER IGNORE TABLE #__redevent_register "
+				  	   . "      ADD COLUMN `confirmdate` datetime NULL default NULL ";
+			    	$db->setQuery($query);
+				    if (!$db->query()) {
+				    	$res = false;
+				    }
+			    }
+			  	
+			    if ($res)
 			    {
 			    	// insert records
 			    	$query = ' INSERT INTO #__redevent_register (xref, uid, sid, waitinglist, confirmed, confirmdate, uregdate, uip, submit_key) '
@@ -922,72 +1039,6 @@ foreach ($keys as $key)
     $db->setQuery($query);
     $db->query();   
     break; 	
-	}
-}
-
-if ($upgrade) {
-	/* Database is fully setup, commence conversion */
-	/* 1. Make backup copies */
-	$q = "CREATE TABLE IF NOT EXISTS #__redevent_events_bak_v1 SELECT * FROM #__redevent_events";
-	$db->setQuery($q);
-	$db->query();
-	
-	$q = "CREATE TABLE IF NOT EXISTS #__redevent_register_bak_v1 SELECT * FROM #__redevent_events";
-	$db->setQuery($q);
-	$db->query();
-	
-	/* 2. Copy events to the xref table */
-	$q = "INSERT INTO #__redevent_event_venue_xref (eventid, venueid, dates, enddates, times, endtimes, maxattendees, maxwaitinglist, published) "
-	   . "            SELECT id, locid, dates, enddates, times, endtimes, maxattendees, maxwaitinglist, published FROM #__redevent_events";
-	$db->setQuery($q);
-	$db->query();
-	
-	/* 3. Remove the columns from the events table */
-	$q = "ALTER TABLE `#__redevent_events`
-	  DROP `locid`,
-	  DROP `dates`,
-	  DROP `enddates`,
-	  DROP `times`,
-	  DROP `endtimes`,
-	  DROP `maxattendees`,
-	  DROP `maxwaitinglist`;";
-	$db->setQuery($q);
-	$db->query();
-	
-	/* 4. Register table */
-	/* The submitter_id becomes the submit_key */
-	$q = "ALTER TABLE `#__redevent_register` CHANGE `submitter_id` `submit_key` VARCHAR( 45 ) NULL DEFAULT NULL";
-	$db->setQuery($q);
-	$db->query();
-	
-	/* The event becomes xref */
-	$q = "ALTER TABLE `#__redevent_register` CHANGE `event` `xref` INT( 11 ) NULL DEFAULT NULL";
-	$db->setQuery($q);
-	$db->query();
-	
-	/* waiting, confirmed, confirmdate move to redFORM */
-	$q = "ALTER TABLE `#__redevent_register`
-	  DROP `waiting`,
-	  DROP `confirmed`,
-	  DROP `confirmdate`;";
-	$db->setQuery($q);
-	$db->query();
-	
-	/* The event values need to be updated with the equivalent xref */
-	$q = "SELECT id, xref FROM #__redevent_register";
-	$db->setQuery($q);
-	$events = $db->loadObjectList();
-	
-	foreach ($events as $key => $event) {
-		/* Get the xref value */
-		$q = "SELECT id FROM #__redevent_event_venue_xref WHERE eventid = ".$event->xref;
-		$db->setQuery($q);
-		$xref = $db->loadResult();
-		
-		/* Update the register table */
-		$q = "UPDATE #__redevent_register SET xref = ".$xref." WHERE id = ".$event->id;
-		$db->setQuery($q);
-		$db->query();
 	}
 }
 
