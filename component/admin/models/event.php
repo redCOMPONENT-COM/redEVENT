@@ -283,7 +283,7 @@ class RedEventModelEvent extends JModel
 			$event->pdf_form_data = 0;
 			$event->paymentaccepted = null;
 			$event->paymentprocessing = null;
-			$event->attachements = array();
+			$event->attachments = array();
 			$event->details_layout = 0;
 			$this->_data						= $event;
 			return (boolean) $this->_data;

@@ -150,9 +150,9 @@
  	</params>
  	
  	<params group="COM_REDEVENT_SETTINGS_ATTACHMENTS">
-    <param name="attachments_path" type="text" size="100" default="media/com_redevent/attachments" label="COM_REDEVENT_SETTINGS_ATTACHEMENT_PATH" description="COM_REDEVENT_SETTINGS_ATTACHEMENT_PATH_DESC" />
-    <param name="attachments_maxsize" type="text" size="15" default="1000" label="COM_REDEVENT_SETTINGS_ATTACHEMENT_MAXSIZE" description="COM_REDEVENT_SETTINGS_ATTACHEMENT_MAXSIZE_DESC" />
-    <param name="attachments_types" type="text" size="100" default="txt,csv,htm,html,xml,css,doc,xls,rtf,ppt,pdf,swf,flv,avi,wmv,mov,jpg,jpeg,gif,png,zip,tar.gz" label="COM_REDEVENT_SETTINGS_ATTACHEMENT_TYPES" description="COM_REDEVENT_SETTINGS_ATTACHEMENT_TYPES_DESC" />
+    <param name="attachments_path" type="text" size="100" default="media/com_redevent/attachments" label="COM_REDEVENT_SETTINGS_ATTACHMENT_PATH" description="COM_REDEVENT_SETTINGS_ATTACHMENT_PATH_DESC" />
+    <param name="attachments_maxsize" type="text" size="15" default="1000" label="COM_REDEVENT_SETTINGS_ATTACHMENT_MAXSIZE" description="COM_REDEVENT_SETTINGS_ATTACHMENT_MAXSIZE_DESC" />
+    <param name="attachments_types" type="text" size="100" default="txt,csv,htm,html,xml,css,doc,xls,rtf,ppt,pdf,swf,flv,avi,wmv,mov,jpg,jpeg,gif,png,zip,tar.gz" label="COM_REDEVENT_SETTINGS_ATTACHMENT_TYPES" description="COM_REDEVENT_SETTINGS_ATTACHMENT_TYPES_DESC" />
  	</params>
  	
  	<params group="sh404sef">

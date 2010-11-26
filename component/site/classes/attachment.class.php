@@ -64,12 +64,12 @@ class REAttach extends JObject {
 			}
 			// check extension
 			if (!in_array(end(explode(".", strtolower($file))), $allowed)) {
-				JError::raiseWarning(0, JText::_('COM_REDEVENT_ERROR_ATTACHEMENT_EXTENSION_NOT_ALLOWED').': '.$file);
+				JError::raiseWarning(0, JText::_('COM_REDEVENT_ERROR_ATTACHMENT_EXTENSION_NOT_ALLOWED').': '.$file);
 				continue;
 			}
 			// check size
 			if ($post_files['size'][$k] > $maxsize) {
-				JError::raiseWarning(0, JText::sprintf('COM_REDEVENT_ERROR_ATTACHEMENT_FILE_TOO_BIG', $file, $post_files['size'][$k], $maxsize));
+				JError::raiseWarning(0, JText::sprintf('COM_REDEVENT_ERROR_ATTACHMENT_FILE_TOO_BIG', $file, $post_files['size'][$k], $maxsize));
 				continue;
 			}
 			
