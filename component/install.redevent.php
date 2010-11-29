@@ -1118,6 +1118,27 @@ if (JFile::exists(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'views'.DS.'ca
   JFile::delete(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'views'.DS.'calendar'.DS.'tmpl'.DS.'calendar.php');
   JFile::delete(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'views'.DS.'calendar'.DS.'tmpl'.DS.'calendar.xml');
 }
+
+	/* Install redform plugin */
+	jimport('joomla.filesystem.file');
+	jimport('joomla.filesystem.folder');	
+	JFolder::copy(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'extras'.DS.'redform', JPATH_SITE.DS.'tmp'.DS.'redform_redevent', '', true);
+	$installer = new JInstaller();
+	$installer->setAdapter('plugin');
+	if (!$installer->install(JPATH_SITE.DS.'tmp'.DS.'redform_redevent')) {
+	  echo JText::_('Plugin install failed: ') . $installer->getError().'<br />';
+	}
+	else {
+	  // autopublish the plugin
+	  $query = ' UPDATE #__plugins SET published = 1 WHERE folder = '. $db->Quote('redform_integration') . ' AND element = '.$db->Quote('redevent');
+    $db->setQuery($query);
+    if ($db->query()) {
+	    echo JText::_('Succesfully installed redform integration plugin').'<br />';
+    }
+    else {
+      echo JText::_('Error publishing redform integration plugin').'<br />';      
+    }	  
+	}
 ?>
 
 <center>
