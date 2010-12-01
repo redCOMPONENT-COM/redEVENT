@@ -44,7 +44,11 @@ class RedEventViewCsvtool extends JView {
 		$events = JRequest::getVar('events_filter', array(), 'post', 'array');
 		JArrayHelper::toInteger($events);
 
-		$attendees = $model->getRegisters(JRequest::getInt('form_filter'), $events, JRequest::getInt('category_filter'), JRequest::getInt('venue_filter'));
+		$attendees = $model->getRegisters(JRequest::getInt('form_filter'), 
+		                                  $events, 
+		                                  JRequest::getInt('category_filter'), 
+		                                  JRequest::getInt('venue_filter'), 
+		                                  JRequest::getInt('state_filter'));
 		
 		$fields    = $model->getFields(JRequest::getInt('form_filter'));
 		

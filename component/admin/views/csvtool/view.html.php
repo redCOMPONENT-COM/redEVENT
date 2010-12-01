@@ -79,6 +79,11 @@ class RedEventViewCsvtool extends JView {
 		$options = array_merge($options, $forms);
 		$lists['venue_filter'] = JHTML::_('select.genericlist', $options, 'venue_filter');
 		
+		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_TOOLS_CSV_SELECT_STATE_PUBLISHED')),
+		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_TOOLS_CSV_SELECT_STATE_ARCHIVED')),
+		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_TOOLS_CSV_SELECT_STATE_ALL')),);
+		$lists['state_filter'] = JHTML::_('select.genericlist', $options, 'state_filter');
+		
 		$this->assignRef('lists', $lists);
 		
 		parent::display($tpl);

@@ -34,6 +34,7 @@ window.addEvent('domready', function(){
 		{
 			$('export-category-row').addClass('hide-row');
 			$('export-venue-row').addClass('hide-row');
+			$('export-state-row').addClass('hide-row');
 			$('export-event-row').addClass('hide-row');
 			$('export-button-row').addClass('hide-row');
 		}
@@ -41,6 +42,7 @@ window.addEvent('domready', function(){
 		{
 			$('export-category-row').removeClass('hide-row');
 			$('export-venue-row').removeClass('hide-row');
+			$('export-state-row').removeClass('hide-row');
 			$('export-event-row').removeClass('hide-row');
 			$('export-button-row').removeClass('hide-row');
 			

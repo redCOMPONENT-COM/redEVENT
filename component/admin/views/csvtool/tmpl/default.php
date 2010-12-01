@@ -40,9 +40,13 @@ defined('_JEXEC') or die('Restricted access');
 		<td class="label" width="150px"><?php echo JText::_('COM_REDEVENT_TOOLS_CSV_SELECT_VENUE'); ?></td>
 		<td><?php echo $this->lists['venue_filter']; ?></td>
 	</tr>
+	<tr id="export-state-row">
+		<td class="label" width="150px"><?php echo JText::_('COM_REDEVENT_TOOLS_CSV_SELECT_STATE'); ?></td>
+		<td><?php echo $this->lists['state_filter']; ?></td>
+	</tr>
 	<tr id="export-event-row">
 		<td class="label" width="150px"><?php echo JText::_('COM_REDEVENT_TOOLS_CSV_SELECT_EVENTS'); ?></td>
-		<td><span id="events-select">blalbalbal alal</span></td>
+		<td><span id="events-select"></span></td>
 	</tr>
 	<tr id="export-button-row">
 		<td colspan="2"><button id="csv-export-button" type="button"><?php echo JText::_('COM_REDEVENT_TOOLS_CSV_BUTTON_EXPORT_LABEL'); ?></button></td>
