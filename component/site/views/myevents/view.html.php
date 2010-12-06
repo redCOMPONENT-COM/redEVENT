@@ -133,8 +133,10 @@ class RedeventViewMyevents extends JView
             $uri->delVar('filter_type');
         }
         // events filter
+        $hasManagedEvents = false;
         $options = array(JHTML::_('select.option', 0, JText::_('select event')));
         if ($ev = $this->get('EventsOptions')) {
+        	$hasManagedEvents = count($ev);
         	$options = array_merge($options, $ev);
         }
         $lists['filter_event'] = JHTML::_('select.genericlist', $options, 'filter_event', 'onchange="document.getElementById(\'adminForm\').submit();"', 'value', 'text', $filter_event);
@@ -157,6 +159,7 @@ class RedeventViewMyevents extends JView
         $this->assignRef('pagetitle',  $pagetitle);
         $this->assignRef('lists',      $lists);
         $this->assignRef('acl',         $acl);
+        $this->assignRef('hasManagedEvents', $hasManagedEvents);
         $this->assignRef('canAddXref',  $acl->canAddXref());
         $this->assignRef('canAddEvent', $acl->canAddEvent());
         $this->assignRef('canAddVenue', $acl->canAddVenue());

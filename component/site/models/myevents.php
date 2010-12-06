@@ -459,7 +459,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
      */
     function _buildEventListWhere()
     {
-        global $mainframe;
+        $mainframe = &JFactory::getApplication();
 
         $user = & JFactory::getUser();
         $gid = (int)$user->get('aid');
@@ -551,7 +551,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
      */
     function _buildEventsOptionsWhere()
     {
-        global $mainframe;
+        $mainframe = &JFactory::getApplication();
 
         $user = & JFactory::getUser();
         $gid = (int)$user->get('aid');
@@ -570,28 +570,19 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         } else
         {
             $where[] = ' x.published > -1 ';
-        }
-
+        }    
+        
         $acl = UserAcl::getInstance();
-        
-        $cats   = $acl->getManagedCategories();
-        $venues = $acl->getManagedVenues();
-        
-        $acl_where = array();        
-        if (!empty($cats)) {
-        	$acl_where[] = ' xcat.category_id IN ('.implode(', ', $cats).')';
+        if (!$acl->superuser()) 
+        {
+        	$xrefs = $acl->getCanEditXrefs();
+        	if ($xrefs && count($xrefs)) {
+        		$where[] = ' x.id IN ('.implode(",", $xrefs).')';
+        	}
+        	else {
+        		$where[] = '0';
+        	}
         }
-        else {
-        	$acl_where[] = ' 0 ';
-        }
-        if (!empty($venues)) {
-        	$acl_where[] = ' x.venueid IN ('.implode(', ', $venues).')';
-        }
-        else {
-        	$acl_where[] = ' 0 ';
-        }
-        $where[] = ' ( e.created_by = '.$user->get('id')
-                   . '   OR ('.implode(' AND ', $acl_where).') ) ';
                    
         if ($params->get('showopendates', 1) == 0) {
         	$where[] = ' x.dates IS NOT NULL AND x.dates > 0 ';
