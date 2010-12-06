@@ -128,20 +128,20 @@ class modRedEventHelper
 		foreach ( $rows as $k => $row )
 		{
 			//cut title
-			$length = strlen(htmlspecialchars( $row->title ));
+			$length = mb_strlen( $row->title, 'UTF-8' );
 			if ($title_length && $length > $title_length) {
-				$rows[$k]->title_short = htmlspecialchars(substr($row->title, 0, $title_length).'...', ENT_COMPAT, 'UTF-8');
+				$rows[$k]->title_short = mb_substr($row->title, 0, $title_length, 'UTF-8').'...';
 			}
 			else {
-				$rows[$k]->title_short = htmlspecialchars($row->title, ENT_COMPAT, 'UTF-8');
+				$rows[$k]->title_short = $row->title;
 			}
 			// cut venue name
-      $length = strlen(htmlspecialchars( $row->venue ));
+      $length = mb_strlen($row->venue, 'UTF-8');
       if ($title_length && $length > $title_length) {
-        $rows[$k]->venue_short = htmlspecialchars(substr($row->venue, 0, $title_length).'...', ENT_COMPAT, 'UTF-8');
+        $rows[$k]->venue_short = mb_substr($row->venue, 0, $title_length, 'UTF-8').'...';
       }
       else {
-        $rows[$k]->venue_short = htmlspecialchars($row->venue, ENT_COMPAT, 'UTF-8');
+        $rows[$k]->venue_short = $row->venue;
       }
       
 			$rows[$k]->link		= JRoute::_(RedeventHelperRoute::getDetailsRoute($row->slug, $row->xref));
