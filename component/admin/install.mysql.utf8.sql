@@ -391,7 +391,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_recurrences` (
 ) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_repeats` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `xref_id` int(11) NOT NULL,
   `recurrence_id` int(11) NOT NULL,
   `count` int(11) NOT NULL,

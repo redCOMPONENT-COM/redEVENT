@@ -921,6 +921,14 @@ if (is_array($cols))
     $db->setQuery($q);
     $db->query();    
   }
+  else {
+  	if (empty($cols['xref_id']->Extra)) 
+  	{
+  		$q = "ALTER TABLE `jos_redevent_repeats` CHANGE `id` `id` INT( 11 ) NOT NULL AUTO_INCREMENT ";
+	    $db->setQuery($q);
+	    $db->query();    
+  	}
+  }
 	
   /** add indexes **/
   if (empty($cols['xref_id']->Key)) {
