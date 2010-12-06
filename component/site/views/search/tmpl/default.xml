@@ -8,7 +8,7 @@
 	<state>
 		<name>SEARCH DEFAULT LAYOUT</name>
 		<description>SEARCH DEFAULT LAYOUT TIP</description>
-		<params>
+    <params addpath="/administrator/components/com_redevent/elements">
 			<param name="introtext" type="textarea" default="" label="INTROTEXT FIELD" rows="8" cols="30" description="INTROTEXT FIELD TIP"/>
 			<param name="showintrotext" type="radio" default="0" label="DISPLAY INTROTEXT" description="DISPLAY INTROTEXT TIP">
 				<option value="0">Hide</option>
@@ -50,6 +50,9 @@
 				<option value="0">Hide</option>
 				<option value="1">Show</option>
 			</param>
+			
+			<param type="spacer" default="0" label="" description="" />
+			<param name="category" type="categories" default="0" label="COM_REDEVENT_VIEW_SEARCH_SELECT_CATEGORY" description="COM_REDEVENT_VIEW_SEARCH_SELECT_CATEGORY_DESC" />
 		</params>
 	</state>
 </metadata>

@@ -129,6 +129,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		{
 			// Get the paramaters of the active menu item		
 			$mainframe = &Jfactory::getApplication();
+			$params    = & $mainframe->getParams();
 			$post = JRequest::get('request');
 					
 	    $filter_continent = $mainframe->getUserStateFromRequest('com_redevent.search.filter_continent', 'filter_continent', null, 'string');
@@ -139,7 +140,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	   
 	    $filter_date          = $mainframe->getUserStateFromRequest('com_redevent.search.filter_date',          'filter_date',          '', 'string');
 	    $filter_venuecategory = $mainframe->getUserStateFromRequest('com_redevent.search.filter_venuecategory', 'filter_venuecategory', 0, 'int');
-	    $filter_category      = $mainframe->getUserStateFromRequest('com_redevent.search.filter_category',      'filter_category',      0, 'int');
+	    $filter_category      = $mainframe->getUserStateFromRequest('com_redevent.search.filter_category',      'filter_category',      $params->get('category', 0), 'int');
 	    $filter_event         = $mainframe->getUserStateFromRequest('com_redevent.search.filter_event',         'filter_event',         0, 'int');
 	        
 	    $customs              = $mainframe->getUserStateFromRequest('com_redevent.search.filter_customs', 'filtercustom', array(), 'array');

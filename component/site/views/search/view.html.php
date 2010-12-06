@@ -83,7 +83,7 @@ class RedeventViewSearch extends JView
     $filter_venue     = $mainframe->getUserState('com_redevent.search.filter_venue');
     $filter_date      = $mainframe->getUserState('com_redevent.search.filter_date');
     $filter_venuecategory = $mainframe->getUserState('com_redevent.search.filter_venuecategory');
-    $filter_category  = $mainframe->getUserState('com_redevent.search.filter_category');
+    $filter_category  = $mainframe->getUserStateFromRequest('com_redevent.search.filter_category',      'filter_category',      $params->get('category', 0), 'int');
     $filter_event     = $mainframe->getUserState('com_redevent.search.filter_event');
     $filter_customs   = $mainframe->getUserState('com_redevent.search.filter_customs');
     
@@ -131,13 +131,16 @@ class RedeventViewSearch extends JView
 			$uri->delVar('filter_type');
 		}
 				
-    $catoptions = array();
-    $catoptions[] = JHTML::_('select.option', '0', JText::_('Select category'));
-    $catoptions = array_merge($catoptions, $this->get('CategoriesOptions'));
-    $selectedcats = ($filter_category) ? array($filter_category) : array();
-    //build select
-    $lists['categories'] =  JHTML::_('select.genericlist', $catoptions, 'filter_category', 'size="1" class="inputbox dynfilter"', 'value', 'text', $selectedcats);
-    unset($catoptions);
+		if ($params->get('category', 0) == 0) // do not display the filter if set in view params
+		{
+	    $catoptions = array();
+	    $catoptions[] = JHTML::_('select.option', '0', JText::_('Select category'));
+	    $catoptions = array_merge($catoptions, $this->get('CategoriesOptions'));
+	    $selectedcats = ($filter_category) ? array($filter_category) : array();
+	    //build select
+	    $lists['categories'] =  JHTML::_('select.genericlist', $catoptions, 'filter_category', 'size="1" class="inputbox dynfilter"', 'value', 'text', $selectedcats);
+	    unset($catoptions);
+		}
 				
     $vcatoptions = array();
     $vcatoptions[] = JHTML::_('select.option', '0', JText::_('Select venue category'));

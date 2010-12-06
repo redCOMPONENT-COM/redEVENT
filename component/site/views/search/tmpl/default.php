@@ -129,7 +129,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	      </td>
 	    </tr>
     	<?php endif; ?>
-	    <?php if ($this->params->get('show_filter_category')): ?>
+	    <?php if (isset($this->lists['categories']) && $this->params->get('show_filter_category')): ?>
 			<tr>
         <td>
 	        <?php echo '<label for="filter_category">'.JText::_('Category').'</label>&nbsp;'; ?>
