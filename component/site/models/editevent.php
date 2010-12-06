@@ -1102,7 +1102,7 @@ class RedeventModelEditevent extends JModel
 			RedeventHelperLog::simplelog('SUBMIT XREF ERROR STORE DATA');
 			return false;
 		}
-	    
+		
 		return true;
 	}
 	

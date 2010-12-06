@@ -37,11 +37,7 @@ Window.onDomReady(function() {
         document.formvalidator.setHandler('venue', function(value) {
                 return value != 0;
         });
-        
-        document.formvalidator.setHandler('startdate', function(value) {
-            return strlen(value) > 0;
-        });
-        
+                
         $('enddates').addEvent('click', function(){
         	 if (this.value === "" || this.value === "0000-00-00") {
         		  this.value = $('dates').value;
@@ -102,7 +98,7 @@ function updateend(cal)
       <label for="dates"><?php echo JText::_('DATE') .': '; ?></label>
     </td>
     <td>
-      <?php echo $this->calendar($this->xref->dates, 'dates', 'dates', '%Y-%m-%d', 'updateend', 'class="inputbox validate-startdate"'); ?>
+      <?php echo $this->calendar($this->xref->dates, 'dates', 'dates', '%Y-%m-%d', 'updateend', 'class="inputbox"'); ?>
     </td>
 	</tr>
   <tr>

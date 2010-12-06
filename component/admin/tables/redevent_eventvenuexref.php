@@ -84,6 +84,10 @@ class RedEvent_eventvenuexref extends JTable
 	
 	function check()
 	{
+		if (!$this->eventid) {
+			$this->setError(JText::_('COM_REDEVENT_SESSION_EVENTID_IS_REQUIRED'));
+			return false;
+		}
 		// allow price to be null
 		if ($this->course_price === '') {
 			$this->course_price = null;
