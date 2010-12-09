@@ -254,6 +254,7 @@ class RedeventModelEditevent extends JModel
 			$this->_event->formal_offer		= null;
 			$this->_event->formal_offer_subject		= null;
 			$this->_event->published					= 1;
+			$this->_event->summary					= null;
 			$this->_event->attachments				= array();
 		}
 		
