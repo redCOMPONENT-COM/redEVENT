@@ -320,10 +320,14 @@ class UserAcl {
    */
 	function canAddXref()
   {
+  	$params = JComponentHelper::getParams('com_redevent');
 		if (!$this->_userid) {
 			return false;
 		}
   	if ($this->superuser()) {
+  		return true;
+  	}
+  	if ($this->canAddEvent() && $params->get('create_session', 1)) {
   		return true;
   	}
   	

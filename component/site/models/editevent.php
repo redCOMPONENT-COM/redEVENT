@@ -1011,12 +1011,19 @@ class RedeventModelEditevent extends JModel
 		       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
 		       . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
 		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
+		       . ' LEFT JOIN #__redevent_groups AS g ON gc.group_id = g.id '
 		       ;
 		       
 		$where = array();
 		
 		$where[] = ' e.published = 1 ';
-		$where[] = ' gc.accesslevel > 0 AND (gm.manage_xrefs = 1 OR gm.manage_events > 1 OR (e.created_by = gm.member)) AND gm.member =' . $this->_db->Quote($user->get('id'));
+		$where[] = ' gc.accesslevel > 0 ';
+		$where[] = ' (g.isdefault = 1 '
+		         . '      AND (g.edit_events > 1 '
+		         . '             OR (g.edit_events = 1 AND e.created_by = ' . $this->_db->Quote($user->get('id')) .'))) '
+		         . ' OR (gm.member = ' . $this->_db->Quote($user->get('id'))
+		         . '      AND (gm.manage_xrefs = 1 '
+		         . '           OR gm.manage_events > 1 OR (gm.manage_events = 1 AND e.created_by = gm.member))) ';
 		
 		if (count($where)) {
 			$query .= ' WHERE '. implode(' AND ', $where);
