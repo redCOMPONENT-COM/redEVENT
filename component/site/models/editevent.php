@@ -755,8 +755,6 @@ class RedeventModelEditevent extends JModel
 			$row->datimage = $curimage;
 		}//end image if
 
-		$row->title = trim( JFilterOutput::ampReplace( $row->title ) );
-
 		//Make sure the table is valid
 		if (!$row->check($elsettings)) {
 			$this->setError($row->getError());

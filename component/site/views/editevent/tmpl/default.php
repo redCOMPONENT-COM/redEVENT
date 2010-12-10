@@ -170,7 +170,7 @@ JHTML::_('behavior.calendar');
 				</td>
 				<td>
 					<input class="inputbox required" type="text" id="title"
-					name="title" value="<?php echo $this->escape($this->row->title); ?>" size="65" maxlength="60" />
+					name="title" value="<?php echo $this->row->title; ?>" size="65" maxlength="60" />
 				</td>
 			</tr>
 			<?php if ($this->params->get('edit_categories', 0)): ?>
