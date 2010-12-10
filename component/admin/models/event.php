@@ -118,6 +118,9 @@ class RedEventModelEvent extends JModel
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_data))
 		{
+			if (!$this->_id) {
+				return false;
+			}
 			$query = 'SELECT e.*, v.venue'
 					. ' FROM #__redevent_events AS e'
 					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id'
@@ -535,6 +538,9 @@ class RedEventModelEvent extends JModel
    */
   public function getXrefs() 
   {
+  	if (!$this->_id) {
+  		return false;
+  	}
     $db = & $this->_db;
     $q = ' SELECT x.*, v.venue '
        . ' FROM #__redevent_event_venue_xref AS x '
