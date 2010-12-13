@@ -91,7 +91,7 @@ var mymap = {
         }
         div.setHTML(txt);
         if (this.venue.address) {
-        	new Element('a', {href: 'http://maps.google.com/maps?daddr='+encodeURI(this.venue.address)+'&sll='+this.venue.latitude+','+this.venue.longitude, target: '_blank'}).setText(directiontext).injectInside(div);
+        	new Element('a', {href: 'http://maps.google.com/maps?daddr='+encodeURI(this.venue.address)+'@'+this.venue.latitude+','+this.venue.longitude, target: '_blank'}).setText(directiontext).injectInside(div);
         }
         var infowindow = new google.maps.InfoWindow();
         infowindow.setContent(div);
