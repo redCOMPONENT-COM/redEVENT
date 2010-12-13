@@ -18,47 +18,46 @@ window.addEvent('domready', function(){
    });
 
    /* categories filtering */
-   $$('.eventCat').each( 
-     function(item, index) {
-	     item.addEvent( 'click', function() {
-		  $$('.jlcalendar .cat'+item.getProperty('catid')).each(
-          function(eventcat) {
-            if ( eventcat.getStyle('display') == 'none' ) {
-              eventcat.setStyle('display', 'block');
-              item.removeClass('catoff');
-            }
-            else {
-              eventcat.setStyle('display', 'none');
-              item.addClass('catoff');
-            }
-          });
-       });
-     }
-   );
+   $$('.eventCat').addEvent( 'click', function(event) {
+	   $(event.target).toggleClass('catoff');
+	   toggleEvents();
+   });
    
-   $('buttonshowall').addEvent( 'click', function() {
-	   $$('.jlcalendar .eventcontent').each(
-			   function(eventcat) {
-				   el = eventcat.getElement('div[class^=cat]');
-				   el.setStyle('display', 'block');
-			   });
-	   $$('#jlcalendarlegend .eventCat').each(
-			   function(eventcat) {
-				   eventcat.removeClass('catoff');
-			   });
+   $('buttonshowall').addEvent( 'click', function(event) {
+	   $$('.eventCat').removeClass('catoff');
+	   toggleEvents();
    }); 
    
-   $('buttonhideall').addEvent( 'click', function() {
-	   $$('.jlcalendar .eventcontent').each(
-			   function(eventcat) {
-				   el = eventcat.getElement('div[class^=cat]');
-				   el.setStyle('display', 'none');
-			   });
-	   $$('#jlcalendarlegend .eventCat').each(
-			   function(eventcat) {
-				   eventcat.addClass('catoff');
-			   });
+   $('buttonhideall').addEvent( 'click', function(event) {
+	   $$('.eventCat').addClass('catoff');
+	   toggleEvents();
    }); 
 
 });
 
+function toggleEvents()
+{
+	var visible = new Array();
+	var i = 0;
+	$$('.eventCat').each(function(item, index) {
+		if (!item.hasClass('catoff')) {
+			visible[i++] = 'cat'+item.getProperty('catid');
+		}
+	});
+	
+	$$('div.eventcontent div').each(function(item, index){
+		var show = false;
+		for ( i in visible ) {
+			if (item.hasClass(visible[i])) {
+				show = true;
+				break;
+			}
+		}
+		if (show == true) {
+			item.setStyle('display', 'block');
+		}
+		else {
+			item.setStyle('display', 'none');
+		}			
+	});
+}
