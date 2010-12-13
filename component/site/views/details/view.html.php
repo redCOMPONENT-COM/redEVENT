@@ -82,7 +82,7 @@ class RedeventViewDetails extends JView
 
 		//Check if user has access to the details
 		if ($elsettings->showdetails == 0) {
-			$mainframe->redirect('index.php',JText::_('Only logged users can access this page'), 'error');
+			$mainframe->redirect('index.php',JText::_('COM_REDEVENT_EVENT_DETAILS_NOT_AVAILABLE'), 'error');
 		}
 
 		//add css file
