@@ -66,6 +66,11 @@
       <option value="1">Yes</option>
     </param>
     <param name="ical_max_items" type="text" default="100" label="COM_REDEVENT_SETTINGS_ICAL_MAX_ITEMS" description="COM_REDEVENT_SETTINGS_ICAL_MAX_ITEMS_DESC" />
+    
+    <param name="use_default_picture" type="radio" default="1" label="COM_REDEVENT_SETTINGS_USE_DEFAULT_PICTURE" description="COM_REDEVENT_SETTINGS_USE_DEFAULT_PICTURE_DESC">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
  	</params>
  	
  	<params group="pasteventssettings">

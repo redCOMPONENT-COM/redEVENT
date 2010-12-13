@@ -51,6 +51,7 @@ foreach($this->categories as $category) :
 
 <div class="cat<?php echo $category->id; ?> floattext">
 
+	<?php if (!empty($category->image) || $this->params->get('use_default_picture', 1)):?>
 	<div class="catimg">
 	  	<?php
 	  	if ($category->image) {
@@ -68,6 +69,7 @@ foreach($this->categories as $category) :
 			?>
 		</p>
 	</div>
+	<?php endif; ?>
 
 	<div class="catdescription"><?php echo $category->catdescription; ?>
 		<p>

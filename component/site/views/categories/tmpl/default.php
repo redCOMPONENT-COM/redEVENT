@@ -45,6 +45,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<?php echo $this->escape($row->catname); ?>
 	</h2>
 
+	<?php if (!empty($row->image) || $this->params->get('use_default_picture', 1)):?>
 	<div class="catimg">
 	  	<?php	if (!empty($row->image)): ?>
 	  	<span>
@@ -57,6 +58,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			echo JHTML::_('link', JRoute::_($row->linktarget), $row->assignedevents);
 		?>
 	</div>
+	<?php endif; ?>
 
 	<div class="catdescription cat<?php echo $row->id; ?>"><?php echo $row->catdescription ; ?>
 	<p>

@@ -46,6 +46,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php endif; ?>
 
 <div class="floattext">
+<?php if (!empty($this->category->image) || $this->params->get('use_default_picture', 1)): ?>
 <div class="catimg">
 	<?php if ($this->category->image): ?>
 	<?php echo redEVENTImage::modalimage('categories', $this->category->image, $this->category->catname); ?>
@@ -53,6 +54,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<?php echo JHTML::image('components/com_redevent/assets/images/noimage.png', $this->category->catname); ?>
 	<?php endif; ?>
 </div>
+<?php endif; ?>
 
 <div class="catdescription">
 	<?php echo $this->catdescription; ?>
