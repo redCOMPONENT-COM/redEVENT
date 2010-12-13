@@ -33,7 +33,7 @@ foreach ($this->rows as $row)
 	//for time printing
 	$timehtml = '';
 
-	if ($this->elsettings->showtime == 1)
+	if ($this->settings->showtime == 1)
 	{
 		$start = ELOutput::formattime($row->dates, $row->times);
 		$end = ELOutput::formattime($row->dates, $row->endtimes);
@@ -55,8 +55,12 @@ foreach ($this->rows as $row)
 	$colorpic = '';
 	$content = '';
 	$contentend = '';
-	$detaillink   = 'index.php?option=com_redevent&view=details&id='.$row->slug.'&xref='.$row->xref;
-
+	if ($this->settings->showdetails) {
+		$detaillink = RedeventHelperRoute::getDetailsRoute($row->slug, $row->xref);
+	}
+	else {
+		$detaillink = null;
+	}
 	$cat_classes = array();
 	$cat_names = array();
 	//walk through categories assigned to an event
@@ -94,11 +98,11 @@ foreach ($this->rows as $row)
 	$eventdate = ELOutput::formatdate($row->dates, $row->times);
 
 	//venue
-	if ($this->elsettings->showlocate == 1)
+	if ($this->settings->showlocate == 1)
 	{
 		$venue = '<div class="location"><span class="label">'.JText::_('VENUE').': </span>';
 
-		if ($this->elsettings->showlinkvenue == 1 && 0) {
+		if ($this->settings->showlinkvenue == 1 && 0) {
 			$venue .= $row->locid ? "<a href='".'index.php?option=com_redevent&view=venueevents&id='.$row->venueslug."'>".$this->escape($row->venue)."</a>" : '-';
 		}
 		else {

@@ -52,7 +52,7 @@ class RedeventViewCalendar extends JView
         //initialize variables
         $document 	= & JFactory::getDocument();
         $menu 		= & JSite::getMenu();
-        $elsettings = & redEVENTHelper::config();
+        $settings = & redEVENTHelper::config();
         $item 		= $menu->getActive();
         $params 	= & $app->getParams();
         $uri 		= & JFactory::getURI();
@@ -91,7 +91,7 @@ class RedeventViewCalendar extends JView
     		
         $this->assignRef('rows', 		$rows);
         $this->assignRef('params', 		$params);
-        $this->assignRef('elsettings', 	$elsettings);
+        $this->assignRef('settings', 	$settings);
         $this->assignRef('cal', 		$cal);
         
         parent::display($tpl);
