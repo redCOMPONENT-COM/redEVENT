@@ -208,6 +208,7 @@ class RedeventModelEditevent extends JModel
 			// reset event id and title
 			$this->_event->id = null;
 			$this->_event->title = '';
+			$this->_event->attachments = array();
 		}
 		else
 		{
