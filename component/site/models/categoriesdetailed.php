@@ -313,11 +313,9 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
       
       if ($this->_parent) {
         $query .= ' AND c.parent_id = '. $this->_db->Quote($this->_parent->id);      
-      }
-      
-      $query .= '   GROUP BY c.id ';      
+      }      
     }		     
-		
+    $query .= ' GROUP BY c.id ';		
 		$query .= ' ORDER BY c.ordering ASC ';
 		
 		return $query;
