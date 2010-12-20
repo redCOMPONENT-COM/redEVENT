@@ -358,8 +358,9 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	function getEventsOptions()
 	{
 		$app = &JFactory::getApplication();
+		$params = & $app->getParams();
     $filter_venuecategory = JRequest::getVar('filter_venuecategory');
-    $filter_category = JRequest::getVar('filter_category');
+    $filter_category = JRequest::getVar('filter_category', $params->get('category', 0));
 		$filter_venue = JRequest::getVar('filter_venue');
 		$task 		= JRequest::getWord('task');
 			
