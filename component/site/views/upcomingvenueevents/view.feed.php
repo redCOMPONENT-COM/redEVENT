@@ -49,7 +49,7 @@ class RedeventViewUpcomingVenueevents extends JView
 		$elsettings = redEVENTHelper::config();
 		$imagepath = JURI::root().'administrator/components/com_redevent/assets/images/';
 		
-		foreach ($upcomingevents as $key => $event) {
+		foreach ((array) $upcomingevents as $key => $event) {
 			$event_url = JRoute::_('index.php?option=com_redevent&view=details&xref='.$event->xref);
 			$venue_url = JRoute::_('index.php?option=com_redevent&view=venueevents&id='.$event->venueid);
 			$description = '<table>
