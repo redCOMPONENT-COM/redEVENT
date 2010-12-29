@@ -50,11 +50,13 @@ window.addEvent('domready', function(){
 	    return true;
 	  });
   }
-    
-  $('filter_category').addEvent('change', function() {
-    this.form.submit();
-    return true;
-  });
+  
+  if ($('filter_category')) {  
+	  $('filter_category').addEvent('change', function() {
+	    this.form.submit();
+	    return true;
+	  });
+  }
 
 
   function resetCountry()
