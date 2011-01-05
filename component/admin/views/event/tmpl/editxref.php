@@ -245,7 +245,7 @@ function updateend(cal)
 
 <fieldset class="adminform">
 <legend><input id="rcount" type="radio" name="rutype" value="count" <?php echo ($this->xref->rrules->until_type == 'count') ? ' checked="checked"' : ''; ?>/><?php echo JText::_('REPEAT COUNT'); ?></legend>
-<input type="text" name="recurrence_repeat_count" value="<?php echo $this->xref->rrules->count; ?>" class="hasTip" title="<?php echo JText::_('REPEAT COUNT TIP'); ?>"/>
+<input type="text" id="recurrence_repeat_count" name="recurrence_repeat_count" value="<?php echo $this->xref->rrules->count; ?>" class="hasTip" title="<?php echo JText::_('REPEAT COUNT TIP'); ?>"/>
 </fieldset>
 
 <fieldset class="adminform">

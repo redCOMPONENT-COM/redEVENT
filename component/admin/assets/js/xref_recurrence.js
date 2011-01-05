@@ -25,6 +25,21 @@ window.addEvent('domready', function() {
   $$('input[name="recurrence_type"]').each(function(el) {
 	  el.addEvent('change', toggleRtype.bind(el));
   });
+  
+  $('recurrence_repeat_until').addEvent('click', function(){
+	  $('rcount').removeProperty('checked');
+	  $('runtil').setProperty('checked', 'checked');
+  });
+  
+  $('recurrence_repeat_until_img').addEvent('click', function(){
+	  $('rcount').removeProperty('checked');
+	  $('runtil').setProperty('checked', 'checked');
+  });
+  
+  $('recurrence_repeat_count').addEvent('click', function(){
+	  $('runtil').removeProperty('checked');
+	  $('rcount').setProperty('checked', 'checked');
+  });
 
   if ($('repeat').value > 0) {
 	  $('recurrence').getElements('input').each(function(el){
