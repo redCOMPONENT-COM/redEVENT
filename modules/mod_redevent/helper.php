@@ -60,8 +60,10 @@ class modRedEventHelper
 		} 
 		else if ($type == 1)
 		{
-			$now = strftime('%Y-%m-%d %H:%M');
-			$where[] = 'x.published = 1 AND (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > '.$db->Quote($now);
+			$offset = (int) $params->get( 'dayoffset', '0' );
+			$date = $offset ? 'now +'.$offset.' days' : 'now';
+			$ref = strftime('%Y-%m-%d %H:%M', strtotime($date));
+			$where[] = 'x.published = 1 AND (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > '.$db->Quote($ref);
 			$order = ' ORDER BY x.dates, x.times ';
 		} 
 		else if ($type == 2)
