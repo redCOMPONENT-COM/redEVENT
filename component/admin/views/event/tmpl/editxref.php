@@ -231,6 +231,7 @@ function updateend(cal)
 </fieldset>
 
 <div id="recurrence">
+<?php $disabled = $this->xref->count ? ' disabled="disabled"' : ''; ?>
 <fieldset class="adminform">
 <legend><?php echo JText::_('RECURRENCE TYPE'); ?></legend>
 <?php echo $this->lists['recurrence_type']; ?>
@@ -244,19 +245,19 @@ function updateend(cal)
 </fieldset>
 
 <fieldset class="adminform">
-<legend><input id="rcount" type="radio" name="rutype" value="count" <?php echo ($this->xref->rrules->until_type == 'count') ? ' checked="checked"' : ''; ?>/><?php echo JText::_('REPEAT COUNT'); ?></legend>
-<input type="text" id="recurrence_repeat_count" name="recurrence_repeat_count" value="<?php echo $this->xref->rrules->count; ?>" class="hasTip" title="<?php echo JText::_('REPEAT COUNT TIP'); ?>"/>
+<legend><input id="rcount" type="radio" name="rutype" value="count" <?php echo ($this->xref->rrules->until_type == 'count') ? ' checked="checked"' : ''; ?><?php echo $disabled; ?>/><?php echo JText::_('REPEAT COUNT'); ?></legend>
+<input type="text" id="recurrence_repeat_count" name="recurrence_repeat_count" value="<?php echo $this->xref->rrules->count; ?>" class="hasTip" title="<?php echo JText::_('REPEAT COUNT TIP'); ?>"<?php echo $disabled; ?> />
 </fieldset>
 
 <fieldset class="adminform">
-<legend><input id="runtil" type="radio" name="rutype" value="until" <?php echo ($this->xref->rrules->until_type == 'until') ? ' checked="checked"' : ''; ?>/><?php echo JText::_('REPEAT UNTIL'); ?></legend>
+<legend><input id="runtil" type="radio" name="rutype" value="until" <?php echo ($this->xref->rrules->until_type == 'until') ? ' checked="checked"' : ''; ?><?php echo $disabled; ?>/><?php echo JText::_('REPEAT UNTIL'); ?></legend>
 
 <table class="admintable">
 <tbody>
   <tr>
     <td class="hasTip" title="<?php echo JText::_('REPEAT UNTIL TIP'); ?>">
     <?php if ($this->xref->count):?>
-    	<?php echo $this->xref->rrules->until; ?>
+    	<input type="text" id="recurrence_repeat_until" name="recurrence_repeat_until" value="<?php echo $this->xref->rrules->until; ?>" disabled="disabled" />    	
     <?php else: ?>
       <?php echo JHTML::calendar($this->xref->rrules->until, 'recurrence_repeat_until', 'recurrence_repeat_until'); ?>
     <?php endif; ?>
