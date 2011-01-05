@@ -53,6 +53,7 @@ class RedeventViewAttendees extends JView
 		$user		= JFactory::getUser();
 		$elsettings = redEVENTHelper::config();
 		$acl        = UserAcl::getInstance();
+		$uri        = & JFactory::getURI();
 		
 		$row		= $this->get('Session');
 		$registers	      = $this->get('Registers');
@@ -93,6 +94,16 @@ class RedeventViewAttendees extends JView
     $manage_attendees  = $this->get('ManageAttendees');
     
     $unreg_check = redEVENTHelper::canUnregister($row->xref);
+    
+    // lists
+    $lists = array();
+
+    /* Call the state object */
+    $state =& $this->get( 'state' );
+
+    /* Get the values from the state object that were inserted in the model's construct function */
+    $lists['order_Dir'] = $state->get( 'filter_order_Dir' );
+    $lists['order']     = $state->get( 'filter_order' );            
 		
 		//assign vars to jview
 		$this->assignRef('row',              $row);
@@ -105,6 +116,8 @@ class RedeventViewAttendees extends JView
 		$this->assignRef('elsettings', 			 $elsettings);
 		$this->assignRef('item', 					   $item);
 		$this->assignRef('unreg_check',      $unreg_check);
+		$this->assignRef('action',           $uri->toString());
+		$this->assignRef('lists',            $lists);
 		
 		$tpl = JRequest::getVar('tpl', $tpl);
 		
@@ -122,6 +135,7 @@ class RedeventViewAttendees extends JView
 		$document 	= JFactory::getDocument();
 		$user		= JFactory::getUser();
 		$elsettings = redEVENTHelper::config();
+		$uri        = & JFactory::getURI();
 		
 		$row		= $this->get('Session');
 		$registers	= $this->get('Registers');
@@ -185,6 +199,16 @@ class RedeventViewAttendees extends JView
 		//set page title and meta stuff
 		$document->setTitle( JText::_( 'Manage attendees' ). ' - '.$row->title );				    
 		
+    // lists
+    $lists = array();
+
+    /* Call the state object */
+    $state =& $this->get( 'state' );
+
+    /* Get the values from the state object that were inserted in the model's construct function */
+    $lists['order_Dir'] = $state->get( 'filter_order_Dir' );
+    $lists['order']     = $state->get( 'filter_order' );    
+        
 		//assign vars to jview
 		$this->assignRef('row', 					$row);
 		$this->assignRef('params' , 				$params);
@@ -193,6 +217,8 @@ class RedeventViewAttendees extends JView
 		$this->assignRef('elsettings' , 			$elsettings);
 		$this->assignRef('item' , 					$item);
     $this->assignRef('manage_attendees' , $manage_attendees);
+		$this->assignRef('action',           $uri->toString());
+		$this->assignRef('lists',            $lists);
 				
 		parent::display($tpl);
 	}

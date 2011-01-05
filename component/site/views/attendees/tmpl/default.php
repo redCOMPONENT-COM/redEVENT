@@ -25,6 +25,19 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 	?>
+	<script language="javascript" type="text/javascript">
+	function tableOrdering( order, dir, task )
+	{
+	        var form = document.manageform;
+	 
+	        form.filter_order.value = order;
+	        form.filter_order_Dir.value = dir;
+	        form.submit( task );
+	}
+	</script>
+	
+	
+	<form action="<?php echo $this->action; ?>" method="post" name="manageform">
 	<div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
 		<h2 class="register"><?php echo JText::_( 'REGISTERED USERS' ).': '.$this->row->title; ?>
 		<?php if ($this->manage_attendees): ?>
@@ -36,8 +49,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			<table class="registered">
 			<thead>
   			<tr>
-          <?php foreach ((array) $this->registersfields as $f): ?>
-  			  <th><?php echo $f->field; ?></th>
+          <?php foreach ((array) $this->registersfields as $k => $f): ?>
+  			  <th><?php echo JHTML::_('grid.sort', $this->escape($f), 'a.'.$k, $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
           <?php endforeach; ?>
           <th>&nbsp;</th>
   			</tr>
@@ -85,8 +98,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
       <table class="registered">
       <thead>
         <tr>
-          <?php foreach ((array) $this->registersfields as $f): ?>
-  			  <th><?php echo $f->field; ?></th>
+          <?php foreach ((array) $this->registersfields as $k => $f): ?>
+  			  <th><?php echo JHTML::_('grid.sort', $this->escape($f), 'a.'.$k, $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
           <?php endforeach; ?>
           <th>&nbsp;</th>
         </tr>
@@ -124,6 +137,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     </div>    
     <?php endif; ?>
 	</div>
+	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="" />
+	</form>
 	<?php
 	
 echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=myevents'), JText::_('RETURN TO MY EVENTS'));

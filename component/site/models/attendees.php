@@ -47,9 +47,18 @@ class RedEventModelAttendees extends JModel
 	function __construct()
 	{
 		parent::__construct();
-
+		
+		$mainframe = & JFactory::getApplication();
+		
 		$xref = JRequest::getInt('xref');
 		$this->setXref((int)$xref);
+		
+		$filter_order     = $mainframe->getUserStateFromRequest( 'com_redevent.attendees.filter_order', 'filter_order', 'default_column_name', 'cmd' );
+		$filter_order_Dir = $mainframe->getUserStateFromRequest( 'com_redevent.attendees.filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
+
+		$this->setState('filter_order', $filter_order);
+		$this->setState('filter_order_Dir', $filter_order_Dir);
+		
 	}
 	
 	/**
@@ -206,8 +215,17 @@ class RedEventModelAttendees extends JModel
 				        . ' INNER JOIN #__rwf_forms_' . $fields[0]->form_id . ' AS a ON s.answer_id = a.id '
 				        . ' WHERE r.xref = ' . $this->_xref
 				        . ' AND r.confirmed = 1'
-				        . ' ORDER BY r.confirmdate';
 				        ;
+        $filter_order     = $this->getState('filter_order');
+        $filter_order_Dir = $this->getState('filter_order_Dir');
+        	
+        if(!empty($filter_order) && !empty($filter_order_Dir) ){
+        	$query .= ' ORDER BY '.$filter_order.' '.$filter_order_Dir;
+        }
+        else {
+        	$query .= ' ORDER BY r.id ASC';
+        }				        
+				        
 				$db->setQuery($query);
 				if (!$db->query()) {
 					RedeventError::raiseWarning('error', JText::_('Cannot load registered users').' '.$db->getErrorMsg());

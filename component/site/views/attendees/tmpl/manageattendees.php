@@ -30,7 +30,20 @@ $edit_image   = JHTML::_('image.site', 'calendar_edit.png', 'components/com_rede
 $remove_image = JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Delete' ), 'class="hasTip" title="'.JText::_( 'Delete' ).'::"');
 
 if ($this->manage_attendees) {
-	?>
+	?>	
+	<script language="javascript" type="text/javascript">
+	function tableOrdering( order, dir, task )
+	{
+	        var form = document.manageform;
+	 
+	        form.filter_order.value = order;
+	        form.filter_order_Dir.value = dir;
+	        form.submit( task );
+	}
+	</script>
+	
+	
+	<form action="<?php echo $this->action; ?>" method="post" name="manageform">
 	<div id="redevent" class="event_id<?php echo $this->row->eventid; ?> el_details">
 		<h2 class="register"><?php echo JText::_( 'REGISTERED USERS' ).': '.$this->row->title; ?></h2>
 		
@@ -41,12 +54,12 @@ if ($this->manage_attendees) {
 			<thead>
   			<tr>
   				<th>#</th>
-          <?php foreach ($this->registers[0]->fields as $f): ?>
-  			  <th><?php echo $f; ?></th>
+          <?php foreach ($this->registers[0]->fields as $k => $f): ?>
+  			  <th><?php echo JHTML::_('grid.sort', $this->escape($f), 'a.'.$k, $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
           <?php endforeach; ?>
           <th>&nbsp;</th>
           <th>&nbsp;</th>
-  				<th><?php echo JText::_('Registration id')?></th>
+  			  <th><?php echo JHTML::_('grid.sort', JText::_('Registration id'), 'r.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
   			</tr>
 			</thead>
 			<tbody>
@@ -92,12 +105,12 @@ if ($this->manage_attendees) {
       <thead>
         <tr>
   				<th>#</th>
-          <?php foreach ($this->registers[0]->fields as $f): ?>
-          <th><?php echo $f; ?></th>
+          <?php foreach ($this->registers[0]->fields as $k => $f): ?>
+  			  <th><?php echo JHTML::_('grid.sort', $this->escape($f), 'a.'.$k, $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
           <?php endforeach; ?>
           <th>&nbsp;</th>
           <th>&nbsp;</th>
-  				<th><?php echo JText::_('Registration id')?></th>
+  			  <th><?php echo JHTML::_('grid.sort', JText::_('Registration id'), 'r.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
         </tr>
       </thead>
       <tbody>
@@ -134,6 +147,9 @@ if ($this->manage_attendees) {
     </div>    
     <?php endif; ?>
 	</div>
+	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="" />
+	</form>
 	<?php
 }
 echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=myevents'), JText::_('RETURN TO MY EVENTS'));
