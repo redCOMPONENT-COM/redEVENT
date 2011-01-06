@@ -90,11 +90,15 @@ border: none;
  *
  * Event Details
  */
-div#redevent dl {
+div#redevent.el_details dl
+div#redevent.el_venueevents dl,
+div#redevent.el_venuesview dl {
 margin: 0 5px;
 }
 
-div#redevent dt { /* definition term */
+div#redevent.el_details dt,
+div#redevent.el_venueevents dt,
+div#redevent.el_venuesview dt { /* definition term */
 margin: 0; padding: 0.3em 0;
 float:left;
 font-size: 1em; font-weight: bold;
@@ -103,7 +107,10 @@ background: transparent;
 border-bottom: 1px solid #ddd;
 }
 
-div#redevent dd { /* definition description */
+div#redevent.el_details dd,
+div#redevent.el_venueevents dd,
+div#redevent.el_venuesview dd
+{ /* definition description */
 display: block;
 margin: 0 0 5px 12em; padding: 0.3em 0;
 font-size: 1em;

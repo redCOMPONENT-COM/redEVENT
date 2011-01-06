@@ -56,8 +56,9 @@ class RedeventViewAttendees extends JView
 		$uri        = & JFactory::getURI();
 		
 		$row		= $this->get('Session');
-		$registers	      = $this->get('Registers');
-		$register_fields	= $this->get('FormFields');
+		$registers        = $this->get('Registers');
+		$register_fields  = $this->get('FormFields');
+		$roles            = $this->get('Roles');
 				
 		//get menu information
 		$menu		= & JSite::getMenu();
@@ -113,6 +114,7 @@ class RedeventViewAttendees extends JView
 		$this->assignRef('print_link',       $print_link);
 		$this->assignRef('registers',        $registers);
 		$this->assignRef('registersfields',  $register_fields);
+		$this->assignRef('roles',            $roles);
 		$this->assignRef('elsettings', 			 $elsettings);
 		$this->assignRef('item', 					   $item);
 		$this->assignRef('unreg_check',      $unreg_check);
@@ -140,6 +142,7 @@ class RedeventViewAttendees extends JView
 		$row		= $this->get('Session');
 		$registers	= $this->get('Registers');
 		$regcheck	= $this->get('ManageAttendees');
+		$roles            = $this->get('Roles');
 				
 		//get menu information
 		$menu		= & JSite::getMenu();
@@ -214,6 +217,7 @@ class RedeventViewAttendees extends JView
 		$this->assignRef('params' , 				$params);
     $this->assignRef('user' ,         $user);
 		$this->assignRef('registers' , 				$registers);
+		$this->assignRef('roles',            $roles);
 		$this->assignRef('elsettings' , 			$elsettings);
 		$this->assignRef('item' , 					$item);
     $this->assignRef('manage_attendees' , $manage_attendees);

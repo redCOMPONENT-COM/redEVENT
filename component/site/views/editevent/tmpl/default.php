@@ -24,6 +24,9 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.calendar');
+
+jimport('joomla.html.pane');
+$pane =& JPane::getInstance('tabs'); 
 ?>
 
 <script type="text/javascript">
@@ -159,8 +162,9 @@ JHTML::_('behavior.calendar');
 		</div>
 
 		<p class="clear"></p>
-
-		<fieldset class="re_fldst_details"><legend><?php echo JText::_('DETAILS'); ?></legend>
+		
+<?php echo $pane->startPane( 'pane' ); ?>
+<?php echo $pane->startPanel( JText::_('DETAILS'), 'ev1' ); ?>
 
 	<table class="fieldstable">
 		<tbody>
@@ -188,119 +192,6 @@ JHTML::_('behavior.calendar');
 				<td><?php echo $this->lists['published']; ?></td>
 			</tr>
 			<?php endif; ?>
-			<?php if ($this->params->get('create_session', 1)): // edit/create xref ?>
-			<tr>
-				<td class="key">
-					<label for="a_id"><?php echo JText::_( 'VENUE' ).':'; ?></label>
-				</td>
-				<td>
-					<input type="text" id="a_name" value="<?php echo $this->row->venue; ?>" disabled="disabled" />
-					<div class='re_buttons floattext'>
-						<a class="re_venue_select vmodal" title="<?php echo JText::_('SELECT'); ?>" 
-						   href="<?php echo JRoute::_('index.php?view=editevent&layout=selectvenue&tmpl=component'); ?>"
-						   rel="{handler: 'iframe', size: {x: 650, y: 375}}">
-						   	<span><?php echo JText::_('SELECT')?></span>
-						</a> 
-						<input class="inputbox required" type="hidden" id="a_id" name="venueid" value="<?php echo $this->row->venueid; ?>" />
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td class="key hasTip"
-					title="<?php echo JText::_('EDIT XREF START DATE TIP'); ?>"><label
-					for="dates"><?php echo JText::_('DATE') .': '; ?></label></td>
-				<td><?php echo $this->calendar($this->row->dates, 'dates', 'dates', '%Y-%m-%d', 'updateend', 'class="inputbox validate-startdate required"'); ?>
-				</td>
-			</tr>
-			<tr>
-				<td class="key hasTip"
-					title="<?php echo JText::_('EDIT XREF START TIME TIP'); ?>"><label
-					for="times"><?php echo JText::_('TIME') .': '; ?></label></td>
-				<td><input type="text" size="8" maxlength="8" name="times" id="times"
-					value="<?php echo $this->row->times; ?>" /></td>
-			</tr>
-			<tr>
-				<td class="key hasTip"
-					title="<?php echo JText::_('EDIT XREF END DATE TIP'); ?>"><label
-					for="enddates"><?php echo JText::_('ENDDATE') .': '; ?></label></td>
-				<td><?php echo $this->calendar($this->row->enddates, 'enddates', 'enddates'); ?>
-				</td>
-			</tr>
-			<tr>
-				<td class="key hasTip"
-					title="<?php echo JText::_('EDIT XREF END TIME TIP'); ?>"><label
-					for="endtimes"><?php echo JText::_('ENDTIMES') .': '; ?></label></td>
-				<td><input type="text" size="8" maxlength="8" name="endtimes"
-					id="endtimes" value="<?php echo $this->row->endtimes; ?>" /></td>
-			</tr>
-			<?php if ($this->params->get('edit_registration_end')): ?>
-			<tr>
-				<td class="key hasTip"
-					title="<?php echo JText::_('EDIT XREF REGISTRATION END TIP'); ?>"><label
-					for="registrationend"><?php echo JText::_('EDIT XREF REGISTRATION END') .': '; ?></label>
-				</td>
-				<td><?php echo JHTML::calendar($this->row->registrationend, 'registrationend', 'registrationend', '%Y-%m-%d %H:%M'); ?>
-				</td>
-			</tr>
-			<?php endif; ?>
-			<?php if ($this->params->get('edit_registration', 0)) :?>
-		  <tr>
-		    <td class="key hasTip" title="<?php echo JText::_('EDIT XREF MAXIMUM_ATTENDEES TIP'); ?>">
-		      <label for="maxattendees"><?php echo JText::_( 'EDIT XREF MAXIMUM_ATTENDEES' ) .': '; ?></label>
-		    </td>
-		    <td>
-		      <input type="text" size="8" maxlength="8" name="maxattendees" id="maxattendees" value="<?php echo $this->row->maxattendees; ?>" /> 
-		    </td>
-		  </tr>
-		  <tr>
-		    <td class="key hasTip" title="<?php echo JText::_('EDIT XREF MAXIMUM_WAITINGLIST TIP'); ?>">
-		      <label for="maxwaitinglist"><?php echo JText::_( 'EDIT XREF MAXIMUM_WAITINGLIST' ) .': '; ?></label>
-		    </td>
-		    <td>
-		      <input type="text" size="8" maxlength="8" name="maxwaitinglist" id="maxwaitinglist" value="<?php echo $this->row->maxwaitinglist; ?>" /> 
-		    </td>
-		  </tr>
-			<?php endif; ?>
-			<?php if ($this->params->get('edit_price', 0)): ?>
-			<tr>
-				<td class="key hasTip"
-					title="<?php echo JText::_('EDIT XREF COURSE PRICE TIP'); ?>"><label
-					for="course_price"><?php echo JText::_( 'EDIT XREF COURSE PRICE' ) .': '; ?></label>
-				</td>
-				<td><input type="text" size="8" maxlength="8" name="course_price"
-					id="course_price" value="<?php echo $this->row->course_price; ?>" />
-				</td>
-			</tr>
-			<?php endif; ?>
-			<?php if ($this->params->get('edit_credits', 0)): ?>
-			<tr>
-				<td class="key hasTip"
-					title="<?php echo JText::_('EDIT XREF COURSE CREDIT TIP'); ?>"><label
-					for="course_credit"><?php echo JText::_( 'EDIT XREF COURSE CREDIT' ) .': '; ?></label>
-				</td>
-				<td><input type="text" size="8" maxlength="8" name="course_credit"
-					id="course_credit" value="<?php echo $this->row->course_credit; ?>" />
-				</td>
-			</tr>
-			<?php endif; ?>
-			
-			<?php if ($this->params->get('edit_customs', 0) && count($this->xcustoms)): ?>
-	    <?php foreach ($this->xcustoms as $field): ?>
-	    <tr>
-	      <td class="key">
-	        <label for="custom<?php echo $field->id; ?>" class="hasTip" title="<?php echo JText::_($field->get('name')).'::'. $field->get('tips'); ?>">
-	          <?php echo JText::_( $field->name ); ?>:
-	        </label>
-	      </td>
-	      <td>
-	        <?php echo $field->render(); ?>
-	        <?php echo ($field->required? ' '.JText::_('Required') : '' ); ?>
-	      </td>   
-	    </tr>
-	    <?php endforeach; ?>
-			<?php endif; ?>
-	
-			<?php endif; // xref details?>
 			
 			<?php if ($this->params->get('edit_customs', 0) && count($this->customs)): ?>
 	    <?php foreach ($this->customs as $field): ?>
@@ -331,31 +222,32 @@ JHTML::_('behavior.calendar');
 			
 		</tbody>
 	</table>
+<?php echo $pane->endPanel(); ?>
 
-</fieldset>
+<?php if ($this->params->get('create_session', 1)): // edit/create xref ?>
+<?php echo $pane->startPanel( JText::_('COM_REDEVENT_SESSION'), 'ev-session' ); ?>
+<?php echo $this->loadTemplate('session'); ?>
+<?php echo $pane->endPanel(); ?>
 
+<?php endif; ?>
 
 <?php if (( $this->elsettings->imageenabled == 2 ) || ($this->elsettings->imageenabled == 1)) : ?>
-<fieldset class="re_fldst_image"><legend><?php echo JText::_('IMAGE'); ?></legend>
-<?php
-          if ($this->row->datimage) :
-      		    echo ELOutput::flyer( $this->row, $this->dimage, 'event' );
-      		else :
-      		    echo JHTML::_('image', 'components/com_redevent/assets/images/noimage.png', JText::_('NO IMAGE'), array('class' => 'modal'));
-      		endif;
-        	?> <label for="userfile"><?php echo JText::_('IMAGE'); ?></label>
-<input
-	class="inputbox <?php echo $this->elsettings->imageenabled == 2 ? 'required' : ''; ?>"
-	name="userfile" id="userfile" type="file" /> <small
-	class="editlinktip hasTip"
-	title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('MAX IMAGE FILE SIZE').' '.$this->elsettings->sizelimit.' kb'; ?>">
-<?php echo $this->infoimage; ?> </small> <!--<div class="re_cur_image"><?php echo JText::_( 'CURRENT IMAGE' ); ?></div>
-      		<div class="re_sre_image"><?php echo JText::_( 'SELECTED IMAGE' ); ?></div>-->
-</fieldset>
+<?php echo $pane->startPanel( JText::_('IMAGE'), 'ev-image' ); ?>
+<div class="editevent-image">
+<?php if ($this->row->datimage) :
+				echo ELOutput::flyer( $this->row, $this->dimage, 'event' );
+			else :
+				echo JHTML::_('image', 'components/com_redevent/assets/images/noimage.png', JText::_('NO IMAGE'), array('class' => 'modal'));
+			endif;?> <label for="userfile"><?php echo JText::_('IMAGE'); ?></label>
+<input class="inputbox <?php echo $this->elsettings->imageenabled == 2 ? 'required' : ''; ?>"	name="userfile" id="userfile" type="file" /> 
+<small class="editlinktip hasTip"	title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('MAX IMAGE FILE SIZE').' '.$this->elsettings->sizelimit.' kb'; ?>"><?php echo $this->infoimage; ?> </small>
+</div>
+<?php echo $pane->endPanel(); ?>
 <?php endif; ?>
 
 
 <?php if ($this->params->get('edit_description', 0)): ?>
+<?php echo $pane->startPanel( JText::_('DESCRIPTION'), 'ev3' ); ?>
 <fieldset class="description"><legend><?php echo JText::_('DESCRIPTION'); ?></legend>
 
 <?php
@@ -372,9 +264,14 @@ JHTML::_('behavior.calendar');
 <a href="javascript:rechne(document.eventform);"><?php echo JText::_( 'REFRESH' ); ?></a>
 <?php endif; ?>
 </fieldset>
+<?php echo $pane->endPanel(); ?>
 <?php endif; ?>
 
+<?php echo $pane->startPanel( JText::_('COM_REDEVENT_EVENT_ATTACHMENTS_TAB'), 'ev4' ); ?>
 <?php echo $this->loadTemplate('attachments'); ?>
+<?php echo $pane->endPanel(); ?>
+
+<?php echo $pane->endPane(); ?>
 
 <div class="re_save_buttons floattext">
 <button type="submit" class="submit"

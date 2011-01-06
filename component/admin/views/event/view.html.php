@@ -257,6 +257,8 @@ class RedEventViewEvent extends JView {
 		//JHTML::_('behavior.modal', 'a.modal');
 		JHTML::_('behavior.tooltip');
 		JHTML::_('behavior.formvalidation');
+		
+		jimport('joomla.html.pane');
 
     $document->addScript('components/com_redevent/assets/js/xref_recurrence.js');
     
@@ -309,6 +311,8 @@ class RedEventViewEvent extends JView {
                        );
     $lists['featured'] = JHTML::_('select.booleanlist', 'featured', '', $xref->featured);
 		
+		$pane 		= & JPane::getInstance('tabs');
+		
 		//assign to template
     $this->assignRef('xref'         , $xref);
 		$this->assignRef('editor'      	, $editor);
@@ -316,6 +320,7 @@ class RedEventViewEvent extends JView {
 		$this->assignRef('request_url'	, $uri->toString());
 		$this->assignRef('elsettings'	  , $elsettings);
     $this->assignRef('customfields' , $customfields);
+		$this->assignRef('pane'			    , $pane);
 
 		parent::display($tpl);
 	}

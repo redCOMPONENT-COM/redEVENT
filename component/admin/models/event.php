@@ -57,13 +57,6 @@ class RedEventModelEvent extends JModel
 	var $_categories = null;
 	
 	/**
-	 * Xrefs custom fields data array
-	 *
-	 * @var array
-	 */
-	var $_xrefcustomfields = null;
-
-	/**
 	 * Constructor
 	 *
 	 * @since 0.9
@@ -464,7 +457,8 @@ class RedEventModelEvent extends JModel
 	/**
 	 * Check if redFORM is installed
 	 */
-	public function getCheckredFORM() {
+	public function getCheckredFORM() 
+	{
 		$db = JFactory::getDBO();
 		$q = "SELECT id FROM #__components
 			WHERE link = 'option=com_redform'";
@@ -477,7 +471,8 @@ class RedEventModelEvent extends JModel
 	/**
 	 * Function to retrieve the form fields
 	 */
-	function getFormFields() {
+	function getFormFields() 
+	{
 		$db = JFactory::getDBO();
 		$q = "SELECT id, field
 			FROM #__rwf_fields
@@ -492,7 +487,8 @@ class RedEventModelEvent extends JModel
 	/**
 	 * Function to retrieve the redFORM forms
 	 */
-	function getRedForms() {
+	function getRedForms() 
+	{
 		$db = JFactory::getDBO();
 		$q = "SELECT id, formname
 			FROM #__rwf_forms
@@ -506,7 +502,8 @@ class RedEventModelEvent extends JModel
 	/**
 	 * Retrieve a list of venues
 	 */
-	public function getVenues() {
+	public function getVenues() 
+	{
 		$db = JFactory::getDBO();
 		$q = "SELECT id, venue
 			FROM #__redevent_venues
@@ -518,7 +515,8 @@ class RedEventModelEvent extends JModel
 	/**
 	 * Retrieve a list of events, venues and times
 	 */
-	public function getEventVenue() {
+	public function getEventVenue() 
+	{
 		$db = JFactory::getDBO();
 		$q = "SELECT x.*
 			FROM #__redevent_event_venue_xref x
@@ -582,251 +580,6 @@ class RedEventModelEvent extends JModel
       $fields[] = $field;
     }
     return $fields;     
-  }
-
-  /**
-   * get custom fields
-   *
-   * @return objects array
-   */
-  function getXrefCustomfields()
-  {
-  	$xref = JRequest::getVar('xref', 0, 'request', 'int');  
-    $query = ' SELECT f.* '
-           . ' FROM #__redevent_fields AS f '
-           . ' WHERE f.object_key = '. $this->_db->Quote("redevent.xref")
-           . ' ORDER BY f.ordering '
-           ;
-    $this->_db->setQuery($query);
-    $result = $this->_db->loadObjectList();    
-  
-    if (!$result) {
-      return array();
-    }
-    $fields = array();
-    $data = $this->getXref();
-    foreach ($result as $c)
-    {
-      $field =& redEVENTHelper::getCustomField($c->type);
-      $field->bind($c);
-      $prop = 'custom'.$c->id;
-      if (isset($data->$prop)) {
-      	$field->value = $data->$prop;
-      } 
-      $fields[] = $field;
-    }
-    return $fields;     
-  }
-  /**
-   * return xref from request
-   *
-   * @return unknown
-   */
-  function getXref()
-  {
-  	$xref = JRequest::getVar('xref', 0, 'request', 'int');  	
-  	
-  	if ($xref) 
-  	{  		
-			$customs = $this->_getXCustomFields();
-		
-    	$query = ' SELECT x.*, v.venue, r.id as recurrence_id, r.rrule, rp.count ';
-			// add the custom fields
-			foreach ((array) $customs as $c)
-			{
-				$query .= ', x.custom'. $c->id;
-			}
-			
-  	  $query .= ' FROM #__redevent_event_venue_xref AS x '
-  	       . ' LEFT JOIN #__redevent_venues AS v on v.id = x.venueid '
-           . ' LEFT JOIN #__redevent_repeats AS rp on rp.xref_id = x.id '
-           . ' LEFT JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
-           ;
-			
-  	  $query .= ' WHERE x.id = '. $this->_db->Quote($xref);
-  	  
-      $this->_db->setQuery($query);
-  		$object = $this->_db->loadObject();
-  		$object->rrules = RedeventHelperRecurrence::getRule($object->rrule);
-  	}
-  	else {
-      $object = JTable::getInstance('RedEvent_eventvenuexref', '');
-  		$object->id    = null;
-  		$object->venue = 0;
-      $object->recurrence_id = 0;
-      $object->rrule = '';
-      $object->count = 0;
-  		$object->rrules = RedeventHelperRecurrence::getRule();
-  	}
-  	return $object;
-  }
-  
-  /**
-   * return list of venues as options
-   *
-   * @return array
-   */
-  function getVenuesOptions()
-  {
-		$query = ' SELECT id AS value, '
-		       . ' CASE WHEN CHAR_LENGTH(city) THEN CONCAT_WS(\' - \', venue, city) ELSE venue END as text '
-  	       . ' FROM #__redevent_venues AS v'
-  	       . ' ORDER BY venue, city '
-  	       ;
-    $this->_db->setQuery($query);
-    return $this->_db->loadObjectList();    
-  }
-
-  /**
-   * return list of groups as options
-   *
-   * @return array
-   */
-  function getGroupsOptions()
-  {
-		$query = ' SELECT id AS value, '
-		       . ' name as text '
-  	       . ' FROM #__redevent_groups '
-  	       . ' ORDER BY name '
-  	       ;
-    $this->_db->setQuery($query);
-    return $this->_db->loadObjectList();    
-  }
-  
-  /**
-   * save xref data
-   *
-   * @param array $data
-   * @return boolean true on success
-   */
-  function savexref($data)
-  {
-  	$id = (int) $data['id'];
-
-  	$object = & JTable::getInstance('RedEvent_eventvenuexref', '');
-  	
-  	if ($id) {
-  		$object->load($id);
-  	}
-  	
-  	if (!$object->bind($data)) {
-  		$this->setError($object->getError());
-  		return false;
-  	}  	
-  
-    if (!$object->check()) {
-      $this->setError($object->getError());
-      return false;
-    }
-    
-    if (!$object->store(true)) {
-      $this->setError($object->getError());
-      return false;
-    }
-        
-    // we need to save the recurrence too
-    $recurrence = & JTable::getInstance('RedEvent_recurrences', '');
-    if (!$data['recurrenceid'])
-    {
-      $rrule = RedeventHelperRecurrence::parsePost($data);
-      if (!empty($rrule))
-      {
-	      // new recurrence
-	      $recurrence->rrule = $rrule;
-	      if (!$recurrence->store()) 
-	      {
-	        $this->setError($recurrence->getError());
-	        return false;        
-	      }
-	      
-	      // add repeat record
-	      $repeat = & JTable::getInstance('RedEvent_repeats', '');
-	      $repeat->set('xref_id', $object->id);
-	      $repeat->set('recurrence_id', $recurrence->id);
-	      $repeat->set('count', 0);      
-	      if (!$repeat->store()) {
-	        $this->setError($repeat->getError());
-	        return false;        
-	      }
-      }
-    }
-    else 
-    {
-      if ($data['repeat'] == 0) // only update if it's the first xref.
-      {
-        $recurrence->load($data['recurrenceid']);
-        // reset the status
-        $recurrence->ended = 0;
-        // TODO: maybe add a check to have a choice between updating rrule or not...
-        $rrule = RedeventHelperRecurrence::parsePost($data);
-        $recurrence->rrule = $rrule;
-        if (!$recurrence->store()) {
-          $this->setError($recurrence->getError());
-          return false;        
-        }
-      }
-    }
-    if ($recurrence->id) {
-    	redEVENTHelper::generaterecurrences($recurrence->id);
-    }
-    
-    return $object->id;
-  }
-  
-  /**
-   * remove xref if there is no attendees
-   *
-   * @param int xref_id
-   * @return boolean result true on success
-   */
-  function removexref($id)
-  {
-  	// do not delete xref if there are attendees
-  	$query = ' SELECT COUNT(*) FROM #__redevent_register WHERE xref = '. $this->_db->Quote((int)$id);
-  	$this->_db->setQuery($query);
-  	if ($this->_db->loadResult()) {
-  		$this->setError(JText::_('CANNOT DELETE XREF HAS REGISTRATIONS'));
-  		return false;
-  	}
-  	
-  	
-  	$q = "DELETE FROM #__redevent_event_venue_xref WHERE id =". $this->_db->Quote((int)$id);
-    $this->_db->setQuery($q);
-    if (!$this->_db->query()) {
-      $this->setError(JText::_('DB ERROR DELETING XREF'));
-      return false;
-    }
-    
-    // delete corresponding record in repeats table in case of recurrences
-    $q = "DELETE FROM #__redevent_repeats WHERE xref_id =". $this->_db->Quote((int)$id);
-    $this->_db->setQuery($q);
-    if (!$this->_db->query()) {
-      $this->setError(JText::_('DB ERROR DELETING XREF REPEAT'));
-      return false;
-    }
-    
-    return true;
-  }
-  
-  /**
-   * returns all custom fields for xrefs
-   * 
-   * @return array
-   */
-  function _getXCustomFields()
-  {
-  	if (empty($this->_xrefcustomfields))
-  	{
-	  	$query = ' SELECT f.id, f.name, f.in_lists, f.searchable '
-	  	       . ' FROM #__redevent_fields AS f'
-	  	       . ' WHERE f.published = 1'
-	  	       . '   AND f.object_key = '. $this->_db->Quote('redevent.xref')
-	  	       . ' ORDER BY f.ordering ASC '
-	  	       ;
-	  	$this->_db->setQuery($query);
-	  	$this->_xrefcustomfields = $this->_db->loadObjectList();
-  	}
-  	return $this->_xrefcustomfields;
   }
 }
 ?>

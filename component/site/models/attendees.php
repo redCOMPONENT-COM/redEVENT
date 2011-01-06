@@ -311,4 +311,25 @@ class RedEventModelAttendees extends JModel
   	$acl = UserAcl::getInstance();
   	return $acl->canViewAttendees($this->_xref);
   }
+
+  
+  /**
+   * return roles for the session
+   * 
+   * @return array
+   */
+  function getRoles()
+  {
+  	$query = ' SELECT u.name, u.username, '
+  	       . '  r.name AS role, sr.role_id, sr.user_id ' 
+  	       . ' FROM #__redevent_sessions_roles AS sr '
+  	       . ' INNER JOIN #__users AS u ON u.id = sr.user_id '
+  	       . ' INNER JOIN #__redevent_roles AS r on r.id = sr.role_id ' 
+  	       . ' WHERE sr.xref = ' . $this->_db->Quote($this->_xref)
+  	       . ' ORDER BY r.ordering ASC, u.name ASC'
+  	       ;
+  	$this->_db->setQuery($query);
+  	$res = $this->_db->loadObjectList();
+  	return $res;
+  }
 }

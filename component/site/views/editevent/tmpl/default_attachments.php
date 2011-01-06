@@ -23,8 +23,6 @@
 
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 ?>
-<fieldset class="re_fldst_attachments">
-<legend><?php echo JText::_('COM_REDEVENT_EVENT_ATTACHMENTS_TAB'); ?></legend>
 <table class="adminform" id="re-attachments">
 	<thead>
 		<tr>
@@ -63,4 +61,3 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 		</tr>
 	</tbody>
 </table>
-</fieldset>

@@ -32,7 +32,7 @@
 			}
 			?>
 			<tr id="xref-<?php echo $eventdetails->id; ?>" class="xref-details">
-        <td><a href="<?php echo JRoute::_('index.php?option=com_redevent&controller=events&task=editxref&tmpl=component&xref=' .$eventdetails->id .'&eventid='. $this->row->id); ?>" class="xrefmodal"><?php echo JText::_('Edit'); ?></a></td>
+        <td><a href="<?php echo JRoute::_('index.php?option=com_redevent&controller=sessions&task=editxref&tmpl=component&xref=' .$eventdetails->id .'&eventid='. $this->row->id); ?>" class="xrefmodal"><?php echo JText::_('Edit'); ?></a></td>
 			  <td><?php echo $eventdetails->venue; ?></td>
 	      <td><?php echo $displaydate; ?></td>
 	      <td><?php echo $displaytime; ?></td>

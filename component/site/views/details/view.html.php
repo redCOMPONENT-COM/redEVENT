@@ -52,8 +52,9 @@ class RedeventViewDetails extends JView
 		$elsettings = redEVENTHelper::config();
 		$acl        = UserAcl::getInstance();
 		
-		$row		= $this->get('Details');
-		$registers	      = $this->get('Registers');
+		$row         = $this->get('Details');
+		$registers   = $this->get('Registers');
+		$roles       = $this->get('Roles');
 		$register_fields	= $this->get('FormFields');
 		$regcheck	        = $this->get('Usercheck');
 
@@ -231,6 +232,7 @@ class RedeventViewDetails extends JView
 		$this->assignRef('messages',				 $messages);
 		$this->assignRef('venuedates'	,      $venuedates);
     $this->assignRef('unreg_check' ,     $unreg_check);
+    $this->assignRef('roles' ,           $roles);
 	
 		$tpl = JRequest::getVar('tpl', $tpl);
     if ($tpl == '')

@@ -819,7 +819,36 @@ class RedeventModelEditevent extends JModel
 			if (!($xref->check() && $xref->store())) {
 				JError::raiseWarning(0, JTEXT::_('Saving event session failed').': '.$xref->getError());
 			}
-			$row->xref = $xref->id;
+			$row->xref = $xref->id;		
+		
+			if ($params->get('edit_roles', 0))
+			{
+		    /** roles **/
+		    // first remove current rows
+		    $query = ' DELETE FROM #__redevent_sessions_roles ' 
+		           . ' WHERE xref = ' . $this->_db->Quote($xref->id);
+		    $this->_db->setQuery($query);     
+		    if (!$this->_db->query()) {
+		    	$this->setError($this->_db->getErrorMsg());
+		    	return false;
+		    }
+		    
+		    // then recreate them if any
+		    foreach ((array) $data['rrole'] as $k => $r)
+		    {    	
+		    	if (!($data['rrole'][$k] && $data['urole'][$k])) {
+		    		continue;
+		    	}
+		      $new = & JTable::getInstance('RedEvent_sessions_roles', '');
+		      $new->set('xref',    $xref->id);
+		      $new->set('role_id', $r);
+		      $new->set('user_id', $data['urole'][$k]);
+		      if (!($new->check() && $new->store())) {
+		      	$this->setError($recurrence->getError());
+		      	return false;
+		      }
+		    }
+			}
 		}	
     	
 		// attachments
@@ -1110,6 +1139,32 @@ class RedeventModelEditevent extends JModel
 			return false;
 		}
 		
+    /** roles **/
+    // first remove current rows
+    $query = ' DELETE FROM #__redevent_sessions_roles ' 
+           . ' WHERE xref = ' . $this->_db->Quote($row->id);
+    $this->_db->setQuery($query);     
+    if (!$this->_db->query()) {
+    	$this->setError($this->_db->getErrorMsg());
+    	return false;
+    }
+    
+    // then recreate them if any
+    foreach ((array) $data['rrole'] as $k => $r)
+    {    	
+    	if (!($data['rrole'][$k] && $data['urole'][$k])) {
+    		continue;
+    	}
+      $new = & JTable::getInstance('RedEvent_sessions_roles', '');
+      $new->set('xref',    $row->id);
+      $new->set('role_id', $r);
+      $new->set('user_id', $data['urole'][$k]);
+      if (!($new->check() && $new->store())) {
+      	$this->setError($recurrence->getError());
+      	return false;
+      }
+    }
+		
 		return true;
 	}
 	
@@ -1354,6 +1409,31 @@ class RedeventModelEditevent extends JModel
   	}
   	
   	return 0;
+  }
+  
+  
+  function getRolesOptions()
+  {
+  	$query = ' SELECT id AS value, name AS text ' 
+  	       . ' FROM #__redevent_roles ' 
+  	       . ' ORDER BY ordering ASC ';
+  	$this->_db->setQuery($query);
+  	$res = $this->_db->loadObjectList();
+  	return $res;
+  }
+  
+  function getSessionRoles()
+  {
+  	if ($this->_xref)
+  	{
+	  	$query = ' SELECT r.* ' 
+	  	       . ' FROM #__redevent_sessions_roles AS r ' 
+	  	       . ' WHERE xref = ' . $this->_db->Quote($this->_xref);
+	  	$this->_db->setQuery($query);
+	  	$res = $this->_db->loadObjectList();
+	  	return $res;
+  	}
+  	return array();
   }
 }
 ?>

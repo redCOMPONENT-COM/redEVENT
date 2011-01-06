@@ -596,5 +596,26 @@ class RedeventModelDetails extends JModel
 		$xref_group_recipients = $this->_db->loadObjectList();
 		return $xref_group_recipients;
   }
+  
+  /**
+   * return roles for the session
+   * 
+   * @return array
+   */
+  function getRoles()
+  {
+  	$event = $this->getDetails();
+  	$query = ' SELECT u.name, u.username, '
+  	       . '  r.name AS role, sr.role_id, sr.user_id ' 
+  	       . ' FROM #__redevent_sessions_roles AS sr '
+  	       . ' INNER JOIN #__users AS u ON u.id = sr.user_id '
+  	       . ' INNER JOIN #__redevent_roles AS r on r.id = sr.role_id ' 
+  	       . ' WHERE sr.xref = ' . $this->_db->Quote($event->xref)
+  	       . ' ORDER BY r.ordering ASC, u.name ASC'
+  	       ;
+  	$this->_db->setQuery($query);
+  	$res = $this->_db->loadObjectList();
+  	return $res;
+  }
 }
 ?>

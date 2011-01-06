@@ -85,7 +85,7 @@ function buildxreftr(object)
 {
   var tr = new Element('tr', {'id': 'xref-'+object.id, 'class': 'xref-details'});
   var tdlink = new Element('td').injectInside(tr);
-  var link = new Element('a', {'href': 'index.php?option=com_redevent&controller=events&task=editxref&tmpl=component&xref='+object.id})
+  var link = new Element('a', {'href': 'index.php?option=com_redevent&controller=sessions&task=editxref&tmpl=component&xref='+object.id+'&eventid='+object.eventid})
                  .appendText(edittext).injectInside(tdlink).addEvent('click', function(e) {
           new Event(e).stop();
           SqueezeBox.fromElement(this);

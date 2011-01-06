@@ -77,7 +77,8 @@ class RedeventViewEditevent extends JView
 		$row 		  = &$this->get('Event');
 		$customs  = &$this->get('Customfields');
 		$xcustoms = &$this->get('XrefCustomfields');
-
+    $roles    = &$this->get('SessionRoles');
+    
 		//Get requests
 		$id					= JRequest::getInt('id');
 
@@ -91,6 +92,7 @@ class RedeventViewEditevent extends JView
 		//add css file
     if (!$params->get('custom_css')) {
       $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
+      $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/editevent.css');
     }
     else {
       $document->addStyleSheet($params->get('custom_css'));     
@@ -100,6 +102,9 @@ class RedeventViewEditevent extends JView
 		$document->addScript('components/com_redevent/assets/js/attachments.js' );
 		$document->addScriptDeclaration('var removemsg = "'.JText::_('COM_REDEVENT_ATTACHMENT_CONFIRM_MSG').'";' );
 				
+    $document->addScript('administrator/components/com_redevent/assets/js/xref_roles.js');
+    $document->addScriptDeclaration('var txt_remove = "'.JText::_('COM_REDEVENT_REMOVE').'";');
+    
 		//Set page title
 		$id ? $title = $row->title.' - '.JText::_( 'EDIT EVENT' ) : $title = JText::_( 'ADD EVENT' );
 		$document->setTitle($title);
@@ -156,6 +161,9 @@ class RedeventViewEditevent extends JView
                        );
     $lists['published'] = JHTML::_('select.radiolist', $published, 'published', '', 'value', 'text', $row->published);
     
+		$rolesoptions = array(JHTML::_('select.option', 0, JText::_('Select role')));
+		$rolesoptions = array_merge($rolesoptions, $this->get('RolesOptions'));
+		
 		$this->assignRef('row',        $row);
 		$this->assignRef('customs',    $customs);
 		$this->assignRef('xcustoms',   $xcustoms);
@@ -172,6 +180,8 @@ class RedeventViewEditevent extends JView
 		$this->assignRef('referer',    JRequest::getWord('referer'));
 		$this->assign('title',         $title);
 		$this->assignRef('access'	, redEVENTHelper::getAccesslevelOptions());
+		$this->assignRef('roles'        , $roles);
+		$this->assignRef('rolesoptions' , $rolesoptions);
 		
 		parent::display($tpl);
 
@@ -243,10 +253,16 @@ class RedeventViewEditevent extends JView
 		
 		$editor 	= & JFactory::getEditor();
 //		echo '<pre>';print_r($this); echo '</pre>';exit;
+				
+		JHTML::_('behavior.mootools');
 
+    $document->addScript('administrator/components/com_redevent/assets/js/xref_roles.js');
+    $document->addScriptDeclaration('var txt_remove = "'.JText::_('COM_REDEVENT_REMOVE').'";');
+    
 		// get xref data
-		$xref     = $this->get('SessionDetails');
+		$xref     = &$this->get('SessionDetails');
 		$customs  = &$this->get('XrefCustomfields');
+    $roles    = &$this->get('SessionRoles');
 		
 		// form elements
 		$lists = array();
@@ -284,11 +300,17 @@ class RedeventViewEditevent extends JView
                        );
     $lists['published'] = JHTML::_('select.radiolist', $published, 'published', '', 'value', 'text', $xref->published);
 		
+		$rolesoptions = array(JHTML::_('select.option', 0, JText::_('Select role')));
+		$rolesoptions = array_merge($rolesoptions, $this->get('RolesOptions'));
+		
 		$this->assignRef('params',       $params);
 		$this->assignRef('editor',       $editor);
 		$this->assignRef('xref',         $xref);
 		$this->assignRef('lists',        $lists);
 		$this->assignRef('customfields', $customs);
+		$this->assignRef('roles'        , $roles);
+		$this->assignRef('rolesoptions' , $rolesoptions);
+		
 		parent::display($tpl);
 	}
 	

@@ -320,42 +320,6 @@ class RedEventControllerEvents extends RedEventController
 		$this->setRedirect( 'index.php?option=com_redevent&view=events', $msg );
 	}
 	
-	function editxref()
-	{
-    JRequest::setVar( 'view', 'event' );
-    JRequest::setVar( 'layout', 'editxref' );
-		
-    parent::display();
-	}
-	
-	function savexref()
-	{		
-    // Check for request forgeries
-    JRequest::checkToken() or die( 'Invalid Token' );
-        
-    $post = JRequest::get( 'post' );
-    $post['details'] = JRequest::getVar('details', '', 'post', 'string', JREQUEST_ALLOWRAW);
-    
-    $model = $this->getModel('event');
-    if ($returnid = $model->savexref($post)) 
-    {
-			/* Check if people need to be moved on or off the waitinglist */
-			$model_wait = $this->getModel('waitinglist');
-			$model_wait->setXrefId($returnid);
-			$model_wait->UpdateWaitingList();
-			
-			$cache = &JFactory::getCache('com_redevent');
-			$cache->clean();
-			
-      $msg = 'saved event';
-      $this->setRedirect('index.php?option=com_redevent&controller=events&task=closexref&tmpl=component&xref='. $returnid, $msg);      
-    }
-    else {
-    	$msg = 'error saving: '. $model->getError() ;
-      $this->setRedirect('index.php?option=com_redevent&controller=events&task=editxref&tmpl=component&xref='. $returnid,  $msg, 'error');
-    }
-	}
-	
 	function removexref()
 	{
 		$id = JRequest::getVar('xref', 0, 'request', 'int');
@@ -365,7 +329,7 @@ class RedEventControllerEvents extends RedEventController
       return true;
 		}
 		else { 
-			$model = $this->getModel('event');
+			$model = $this->getModel('session');
 			if ($model->removexref($id)) {
 				echo '1' .':'. JText::_('DATE DELETED');
         return true;
@@ -376,13 +340,5 @@ class RedEventControllerEvents extends RedEventController
 			}
 		}
 	}
-	
-  function closexref()
-  {
-    JRequest::setVar( 'view', 'event' );
-    JRequest::setVar( 'layout', 'closexref' );
-    
-    parent::display();
-  }
 }
 ?>

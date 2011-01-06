@@ -131,6 +131,10 @@
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>
+    <param name="edit_roles" type="radio" default="0" label="SETTINGS FRONTEND EDIT ROLES" description="SETTINGS FRONTEND EDIT ROLES TIP">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
     <param name="create_session" type="radio" default="1" label="SETTINGS FRONTEND CREATE SESSION" description="SETTINGS FRONTEND CREATE SESSION TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>

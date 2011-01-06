@@ -44,6 +44,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     <?php echo ELOutput::xrefattendeesbutton($this->row->xref); ?>
 		<?php endif; ?></h2>
 		<?php echo JHTML::link('index.php?option=com_redevent&controller=attendees&task=exportattendees&format=csv&xref='. $this->row->xref, JText::_('CSV export'));?>
+						
+		<?php if (count($this->roles)): ?>
+		<ul class="event_roles">
+			<?php foreach ($this->roles as $r): ?>
+			<li><span class="role-name"><?php echo $r->role; ?>:</span> <?php echo $r->name; ?></li>
+			<?php endforeach;?>
+		</ul>
+		<?php endif; ?>
 		
 		<div class="register">
 			<table class="registered">

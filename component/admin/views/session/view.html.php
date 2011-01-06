@@ -1,0 +1,217 @@
+<?php
+/**
+ * @version 1.0 $Id$
+ * @package Joomla
+ * @subpackage redEVENT
+ * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license GNU/GPL, see LICENSE.php
+ * redEVENT is based on EventList made by Christoph Lukes from schlu.net
+ * redEVENT can be downloaded from www.redcomponent.com
+ * redEVENT is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License 2
+ * as published by the Free Software Foundation.
+
+ * redEVENT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with redEVENT; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
+jimport( 'joomla.application.component.view');
+
+/**
+ * View class for the EventList event screen
+ *
+ * @package Joomla
+ * @subpackage EventList
+ * @since 0.9
+ */
+class RedEventViewSession extends JView {
+
+	function display($tpl = null)
+	{
+		global $mainframe;
+
+		if($this->getLayout() == 'closexref') {
+      $this->_displayclosexref($tpl);
+      return;
+    }
+
+		//initialise variables
+		$editor 	= & JFactory::getEditor();
+		$document	= & JFactory::getDocument();
+		$uri 		= & JFactory::getURI();
+		$elsettings = ELAdmin::config();
+
+		//add css and js to document
+		//JHTML::_('behavior.modal', 'a.modal');
+		JHTML::_('behavior.tooltip');
+		JHTML::_('behavior.formvalidation');
+		
+		jimport('joomla.html.pane');
+
+    $document->addScript('components/com_redevent/assets/js/xref_recurrence.js');
+    $document->addScript('components/com_redevent/assets/js/xref_roles.js');
+    $document->addScriptDeclaration('var txt_remove = "'.JText::_('COM_REDEVENT_REMOVE').'";');
+    
+		//Build the image select functionality
+		$js = "
+		function elSelectImage(image, imagename) {
+			document.getElementById('a_image').value = image;
+			document.getElementById('a_imagename').value = imagename;
+			document.getElementById('sbox-window').close();
+		}";
+
+		$xref = $this->get('xref');
+		$xref->eventid = ($xref->eventid) ? $xref->eventid : JRequest::getVar('eventid', 0, 'request', 'int'); 		
+    $customfields =& $this->get('XrefCustomfields');
+    
+    $roles =& $this->get('SessionRoles');
+    
+		$lists = array();
+		
+		// venues selector
+    $venues = array(JHTML::_('select.option', 0, JText::_('Select Venue')));
+		$venues = array_merge($venues, $this->get('VenuesOptions'));
+		$lists['venue'] = JHTML::_('select.genericlist', $venues, 'venueid', 'class="validate-venue"', 'value', 'text', $xref->venueid);
+		
+		// group selector
+    $options = array(JHTML::_('select.option', 0, JText::_('Select group')));
+		$options = array_merge($options, $this->get('GroupsOptions'));
+		$lists['group'] = JHTML::_('select.genericlist', $options, 'groupid', '', 'value', 'text', $xref->groupid);
+		
+    // if this is not the first xref of the recurrence, we shouldn't modify it
+    $lockedrecurrence = ($xref->count > 0); 
+
+    // Recurrence selector
+    $recur_type = array( JHTML::_('select.option', 'NONE', JText::_('NO REPEAT')),
+                         JHTML::_('select.option', 'DAILY', JText::_('DAILY')),
+                         JHTML::_('select.option', 'WEEKLY', JText::_('WEEKLY')),
+                         JHTML::_('select.option', 'MONTHLY', JText::_('MONTHLY')),
+                         JHTML::_('select.option', 'YEARLY', JText::_('YEARLY'))
+                       );
+    $lists['recurrence_type'] = JHTML::_('select.radiolist', $recur_type, 'recurrence_type', '', 'value', 'text', $xref->rrules->type);
+    
+    // published state selector
+    $published = array( JHTML::_('select.option', '1', JText::_('PUBLISHED')),
+                         JHTML::_('select.option', '0', JText::_('UNPUBLISHED')),
+                         JHTML::_('select.option', '-1', JText::_('ARCHIVED'))
+                       );
+    $lists['published'] = JHTML::_('select.radiolist', $published, 'published', '', 'value', 'text', $xref->published);
+    
+    // featured state selector
+    $options = array( JHTML::_('select.option', '0', JText::_('COM_REDEVENT_SESSION_NOT_FEATURED')),
+                         JHTML::_('select.option', '1', JText::_('COM_REDEVENT_SESSION_IS_FEATURED'))
+                       );
+    $lists['featured'] = JHTML::_('select.booleanlist', 'featured', '', $xref->featured);
+		
+		$pane 		= & JPane::getInstance('tabs');
+		
+		$rolesoptions = array(JHTML::_('select.option', 0, JText::_('Select role')));
+		$rolesoptions = array_merge($rolesoptions, $this->get('RolesOptions'));
+		
+		//assign to template
+    $this->assignRef('xref'         , $xref);
+		$this->assignRef('editor'      	, $editor);
+    $this->assignRef('lists'        , $lists);
+		$this->assignRef('request_url'	, $uri->toString());
+		$this->assignRef('elsettings'	  , $elsettings);
+    $this->assignRef('customfields' , $customfields);
+		$this->assignRef('pane'			    , $pane);
+		$this->assignRef('roles'        , $roles);
+		$this->assignRef('rolesoptions' , $rolesoptions);
+
+		parent::display($tpl);
+	}
+	
+	function _displayclosexref($tpl)
+	{	
+    $document = & JFactory::getDocument();
+    $elsettings = ELAdmin::config();
+    
+    $xref = $this->get('xref');
+    
+    /* Get the date */
+    $date = (!redEVENTHelper::isValidDate($xref->dates) ? Jtext::_('Open date') : strftime( $elsettings->formatdate, strtotime( $xref->dates )));
+    $enddate  = (!redEVENTHelper::isValidDate($xref->enddates) || $xref->enddates == $xref->dates) ? '' : strftime( $elsettings->formatdate, strtotime( $xref->enddates ));
+    $displaydate = $date. ($enddate ? ' - '.$enddate: '');
+
+    $displaytime = '';
+    /* Get the time */
+    if (isset($xref->times) && $xref->times != '00:00:00') {
+    	$displaytime = strftime( $elsettings->formattime, strtotime( $xref->times )).' '.$elsettings->timename;
+
+    	if (isset($xref->endtimes) && $xref->endtimes != '00:00:00') {
+    		$displaytime .= ' - '.strftime( $elsettings->formattime, strtotime( $xref->endtimes )). ' '.$elsettings->timename;
+    	}
+    }
+    $json_data = array( 'id'        => $xref->id,
+                        'venue'     => $xref->venue,
+                        'date'      => $displaydate,
+                        'time'      => $displaytime,
+                        'published' => $xref->published,
+                        'note'      => $xref->note,
+                        'featured'  => $xref->featured,
+                        'eventid'   => $xref->eventid,
+                      );
+		if (function_exists('json_encode')) {
+  	  $js = 'window.parent.updatexref('.json_encode($json_data).');';
+	    $document->addScriptDeclaration($js);		
+		}
+		else {
+			echo JText::_('ERROR: JSON IS NOT ENABLED');
+		}
+		return;
+	}
+	
+	/**
+	 * prints the code for tags display
+	 * 
+	 * @param array tags to exclude from printing 
+	 */
+	function printTags($field = '')
+	{ 
+    ?>	
+	  <div class="tagsdiv">
+	  	<?php echo JHTML::link('index.php?option=com_redevent&view=tags&tmpl=component&field='.$field, JText::_('TAGS'), 'class="modal"'); ?>
+    </div>  
+	  <?php 
+	}
+	
+  /**
+   * Displays a calendar control field
+   *
+   * @param string  The date value
+   * @param string  The name of the text field
+   * @param string  The id of the text field
+   * @param string  The date format
+   * @param array Additional html attributes
+   */
+  function calendar($value, $name, $id, $format = '%Y-%m-%d', $onUpdate = null, $attribs = null)
+  {
+    JHTML::_('behavior.calendar'); //load the calendar behavior
+
+    if (is_array($attribs)) {
+      $attribs = JArrayHelper::toString( $attribs );
+    }
+    $document =& JFactory::getDocument();
+    $document->addScriptDeclaration('window.addEvent(\'domready\', function() {Calendar.setup({
+        inputField     :    "'.$id.'",     // id of the input field
+        ifFormat       :    "'.$format.'",      // format of the input field
+        button         :    "'.$id.'_img",  // trigger for the calendar (button ID)
+        align          :    "Tl",           // alignment (defaults to "Bl")
+        onUpdate       :    '.($onUpdate ? $onUpdate : 'null').',
+        singleClick    :    true
+    });});');
+
+    return '<input type="text" name="'.$name.'" id="'.$id.'" value="'.htmlspecialchars($value, ENT_COMPAT, 'UTF-8').'" '.$attribs.' />'.
+         '<img class="calendar" src="'.JURI::root(true).'/templates/system/images/calendar.png" alt="calendar" id="'.$id.'_img" />';
+  }
+}
+?>

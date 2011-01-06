@@ -19,5 +19,7 @@ DROP TABLE IF EXISTS
 	`#__redevent_countries` ,
 	`#__redevent_recurrences`,
 	`#__redevent_repeats`,
+	`#__redevent_roles`,
+	`#__redevent_sessions_roles`,
 	`#__redevent_attachments`
 	;

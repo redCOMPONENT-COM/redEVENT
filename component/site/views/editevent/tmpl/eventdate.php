@@ -29,7 +29,7 @@ JHTML::_('behavior.keepalive');
 JHTML::_('behavior.formvalidation');
 ?>
 <script language="javascript" type="text/javascript">
-Window.onDomReady(function() {
+window.addEvent('domready', function() {
         document.formvalidator.setHandler('event', function(value) {
                 return value != 0;
         });
@@ -224,6 +224,26 @@ function updateend(cal)
 <fieldset class="adminform">
 <legend><?php echo JText::_('Details'); ?></legend>
 <?php echo $this->editor->display('details', $this->xref->details, '100%;', '300', '100', '20', array('pagebreak', 'readmore')); ?>
+</fieldset>
+
+<fieldset class="adminform">
+<legend><?php echo JText::_('Roles'); ?></legend>
+
+<table class="admintable">
+<tbody>
+	<?php foreach ((array)$this->roles as $k => $r): ?>
+  <tr>
+  	<td><?php echo JHTML::_('select.genericlist', $this->rolesoptions, 'rrole[]', '', 'value', 'text', $r->role_id); ?></td>
+  	<td><?php echo JHTML::_('list.users', 'urole[]', $r->user_id, 0, NULL, 'name', 0); ?> <button type="button" class="role-button remove-role"><?php echo Jtext::_('COM_REDEVENT_REMOVE'); ?></button></td>
+  </tr>
+  <?php endforeach; ?>
+  <tr id="trnewrole">
+  	<td><?php echo JHTML::_('select.genericlist', $this->rolesoptions, 'rrole[]', array('id' => 'newrolerole', 'class' => 'rrole')); ?></td>
+  	<td><?php echo JHTML::_('list.users', 'urole[]', 0, 1, 'id="newroleuser"', 'name', 0); ?> <button type="button" class="role-button" id="add-role"><?php echo Jtext::_('add'); ?></button></td>  	
+  </tr>
+</tbody>
+</table>
+
 </fieldset>
 
 <?php if ($this->params->get('allow_edit_recurrence', 0)) :?>
