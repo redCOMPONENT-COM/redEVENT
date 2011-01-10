@@ -257,10 +257,11 @@ class RedEvent_events extends JTable
 		$customs = $this->_getCustomFieldsColumns();
 		foreach ($customs as $c)
 		{
-			if ($fromArray && isset( $from[$c] )) {
-				$this->$c = $from[$c];
-			} else if ($fromObject && isset( $from->$k )) {
-				$this->$c = $from->$c;
+			if ($fromArray && isset( $from[$c] )) 
+			{				
+				$this->$c = is_array($from[$c]) ? implode("\n", $from[$c]) : $from[$c];
+			} else if ($fromObject && isset( $from->$c )) {
+				$this->$c = is_array($from->$c) ? implode("\n", $from->$c) : $from->$c;
 			}
 		}
 		return true;
