@@ -250,6 +250,9 @@ class RedEvent_eventvenuexref extends JTable
 			} else if ($fromObject && isset( $from->$c )) {
 				$this->$c = is_array($from->$c) ? implode("\n", $from->$c) : $from->$c;
 			}
+			else {
+				$this->$c = '';
+			}
 		}
 		return true;
 	}
