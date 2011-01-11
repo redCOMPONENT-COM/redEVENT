@@ -138,17 +138,31 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	    $filter_city      = $mainframe->getUserStateFromRequest('com_redevent.search.filter_city',      'filter_city', null, 'string');
 	    $filter_venue     = $mainframe->getUserStateFromRequest('com_redevent.search.filter_venue',     'filter_venue', null, 'int');
 	   
-	    $filter_date          = $mainframe->getUserStateFromRequest('com_redevent.search.filter_date',          'filter_date',          '', 'string');
+	    $filter_date_from     = $mainframe->getUserStateFromRequest('com_redevent.search.filter_date_from',          'filter_date_from',          '', 'string');
+	    $filter_date_to       = $mainframe->getUserStateFromRequest('com_redevent.search.filter_date_to',          'filter_date_to',          '', 'string');
 	    $filter_venuecategory = $mainframe->getUserStateFromRequest('com_redevent.search.filter_venuecategory', 'filter_venuecategory', 0, 'int');
 	    $filter_category      = $mainframe->getUserStateFromRequest('com_redevent.search.filter_category',      'filter_category',      $params->get('category', 0), 'int');
 	    $filter_event         = $mainframe->getUserStateFromRequest('com_redevent.search.filter_event',         'filter_event',         0, 'int');
 	        
 	    $customs              = $mainframe->getUserStateFromRequest('com_redevent.search.filter_customs', 'filtercustom', array(), 'array');
-
+	    
 	    $filter 		      = JRequest::getString('filter', '', 'request');
 			$filter_type 	    = JRequest::getWord('filter_type', '', 'request');
 			
-		
+			// saving state
+			$this->setState('filter_continent', $filter_continent);
+			$this->setState('filter_country', $filter_country);
+			$this->setState('filter_state', $filter_state);
+			$this->setState('filter_city', $filter_city);
+			$this->setState('filter_venue', $filter_venue);
+			$this->setState('filter_date_from', $filter_date_from);
+			$this->setState('filter_date_to', $filter_date_to);
+			$this->setState('filter_venuecategory', $filter_venuecategory);
+			$this->setState('filter_category', $filter_category);
+			$this->setState('filter_event', $filter_event);
+			$this->setState('customs', $customs);
+			$this->setState('filter', $filter);
+			$this->setState('filter_type', $filter_type);
 	    	
 	    $where = array();
 	    
@@ -175,10 +189,13 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	    	}
 	    }
 	    // filter date
-	    if ($filter_date) {
-	    	if (strtotime($filter_date)) {
-	    		$where[] = ' (\''.$filter_date.'\' BETWEEN (x.dates) AND (x.enddates) OR \''.$filter_date.'\' = x.dates)';
-	    	}
+	    if (strtotime($filter_date_from)) {
+	    	$date = $this->_db->Quote(strftime('%F', strtotime($filter_date_from)));
+	    	$where[] = " CASE WHEN (x.enddates) THEN $date <= x.enddates ELSE $date <= x.dates END ";
+	    }
+	    if (strtotime($filter_date_to)) {
+	    	$date = $this->_db->Quote(strftime('%F', strtotime($filter_date_to)));
+	    	$where[] = " $date >= x.dates ";
 	    }
 		
 	    if ($filter_venue)

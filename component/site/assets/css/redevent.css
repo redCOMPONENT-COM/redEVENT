@@ -601,3 +601,10 @@ tr.isover td {
 tr.featured {
 	border: 2px solid red;
 }
+
+input#filter_date_from {
+	width:35%;
+}
+input#filter_date_to {
+	width:35%;
+}

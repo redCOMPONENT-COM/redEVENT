@@ -76,16 +76,19 @@ class RedeventViewSearch extends JView
 		$limitstart	      = $pageNav->limitstart;
 		$limit		        = $pageNav->limit;
 		
+		$state =& $this->get( 'state' );
+		
 		// set in the model
-		$filter_country   = $mainframe->getUserState('com_redevent.search.filter_country');
-    $filter_city      = $mainframe->getUserState('com_redevent.search.filter_city');
-    $filter_state     = $mainframe->getUserState('com_redevent.search.filter_state');
-    $filter_venue     = $mainframe->getUserState('com_redevent.search.filter_venue');
-    $filter_date      = $mainframe->getUserState('com_redevent.search.filter_date');
-    $filter_venuecategory = $mainframe->getUserState('com_redevent.search.filter_venuecategory');
+		$filter_country   = $state->get('filter_country');
+    $filter_city      = $state->get('filter_city');
+    $filter_state     = $state->get('filter_state');
+    $filter_venue     = $state->get('filter_venue');
+    $filter_date_from = $state->get('filter_date_from');
+    $filter_date_to   = $state->get('filter_date_to');
+    $filter_venuecategory = $state->get('filter_venuecategory');
     $filter_category  = $mainframe->getUserStateFromRequest('com_redevent.search.filter_category',      'filter_category',      $params->get('category', 0), 'int');
-    $filter_event     = $mainframe->getUserState('com_redevent.search.filter_event');
-    $filter_customs   = $mainframe->getUserState('com_redevent.search.filter_customs');
+    $filter_event     = $state->get('filter_event');
+    $filter_customs   = $state->get('filter_customs');
     
 		//are events available?
 		if (!$rows) 
@@ -203,8 +206,9 @@ class RedeventViewSearch extends JView
 		$this->assignRef('pagetitle' , 				$pagetitle);
     $this->assign('filter_country',        $filter_country);
     $this->assign('filter_state',        $filter_state);
-		$this->assign('filter_date', 			$filter_date);
-		$this->assign('filter_customs', 			$filter_customs);
+		$this->assign('filter_date_from',    $filter_date_from);
+		$this->assign('filter_date_to',      $filter_date_to);
+		$this->assign('filter_customs',      $filter_customs);
 
 		parent::display($tpl);
 
