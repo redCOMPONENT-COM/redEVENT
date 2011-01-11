@@ -146,9 +146,10 @@ class RedeventModelRole extends JModel
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_data))
 		{
-			$query = 'SELECT *'.
-					' FROM #__redevent_roles' .
-          ' WHERE id = '.(int) $this->_id;
+			$query = ' SELECT r.*, rm.usertype, rm.fields '.
+			         ' FROM #__redevent_roles AS r ' .
+			         ' LEFT JOIN #__redevent_roles_redmember AS rm ON rm.role_id = r.id ' .
+			         ' WHERE r.id = '.(int) $this->_id;
 			$this->_db->setQuery($query);
 			$this->_data = $this->_db->loadObject();
 			return (boolean) $this->_data;
@@ -287,6 +288,27 @@ class RedeventModelRole extends JModel
       return false;
     }
     
+    // redmember integration
+    if (isset($data['usertype'])) 
+    {
+    	$query = ' DELETE FROM #__redevent_roles_redmember WHERE role_id = ' . $this->_db->Quote($row->id);
+    	$this->_db->setQuery($query);
+    	if (!$this->_db->query()) {
+    		$this->setError($this->_db->getErrorMsg());
+      	return false;
+    	}
+    	
+    	$query = sprintf(' INSERT INTO #__redevent_roles_redmember (role_id, usertype, fields) ' 
+    	               . ' VALUES (%d, %d, %s) ',
+    	               $row->id, $data['usertype'], $this->_db->Quote(implode(",", $data['fields'])) 
+    	               );
+    	$this->_db->setQuery($query);
+    	if (!$this->_db->query()) {
+    		$this->setError($this->_db->getErrorMsg());
+      	return false;
+    	}
+    }
+    
     return $row->id;
   }
 
@@ -340,6 +362,39 @@ class RedeventModelRole extends JModel
     }
     
     return true;
+  }
+  
+  function getRmUserTypesOptions()
+  {
+  	if (JComponentHelper::isEnabled('com_redmember'))
+  	{
+  		$query = ' SELECT usertype_id AS value, usertype_name AS text ' 
+  		       . ' FROM #__redmember_usertype ' 
+  		       . ' ORDER BY usertype_name' ;
+  		$this->_db->setQuery($query);
+  		$res = $this->_db->loadObjectList();
+  		return $res;
+  	}
+  	return false;
+  }
+  
+  function getUsertypeFieldsOptions($usertype = null)
+  {
+  	if ($this->_id)
+  	{
+  		$data = $this->getData();
+  		if ($data->usertype)
+  		{
+	  		$query = ' SELECT field_id AS value, field_name AS text ' 
+	  		       . ' FROM #__redmember_fields '
+	  		       . ' WHERE enable_all_usertype = 1 OR '.$data->usertype.' IN (field_usertypeid)'
+	  		       . ' ORDER BY field_name' ;
+	  		$this->_db->setQuery($query);
+	  		$res = $this->_db->loadObjectList();
+	  		return $res;
+  		}
+  	}
+  	return false;
   }
 }
 ?>

@@ -151,6 +151,16 @@ KEY `role_id` (`role_id`),
 KEY `user_id` (`user_id`)
 ) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
+CREATE TABLE IF NOT EXISTS `#__redevent_roles_redmember` (
+`id` int(11) unsigned NOT NULL auto_increment,
+`role_id` int(11) NOT NULL default '0',
+`usertype` int(11) NOT NULL default '0',
+`fields` mediumtext NULL,
+PRIMARY KEY  (`id`),
+KEY  (`role_id`),
+KEY  (`usertype`)
+) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+
 CREATE TABLE IF NOT EXISTS `#__redevent_groups` (
 `id` int(11) unsigned NOT NULL auto_increment,
 `name` varchar(150) NOT NULL default '',

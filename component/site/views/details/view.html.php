@@ -252,7 +252,6 @@ class RedeventViewDetails extends JView
     			break;
     	}
     }
-    
 		parent::display($tpl);
 	}
 	
@@ -293,6 +292,24 @@ class RedeventViewDetails extends JView
 				break;
 		}
 		return $content;
+	}
+	
+	function showRoles()
+	{
+		if (JComponentHelper::isEnabled('com_redmember'))
+		{
+			$layout = $this->getLayout();
+			$this->setLayout('default');
+			echo $this->loadTemplate('rmroles');
+			$this->setLayout($layout);
+		}
+		else 
+		{
+			$layout = $this->getLayout();
+			$this->setLayout('default');
+			echo $this->loadTemplate('roles');
+			$this->setLayout($layout);			
+		}
 	}
 }
 ?>

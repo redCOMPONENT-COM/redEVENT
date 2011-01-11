@@ -34,11 +34,7 @@ if ($this->row->show_names) {
 		<?php endif; ?></h2>
 				
 		<?php if (count($this->roles)): ?>
-		<ul class="event_roles">
-			<?php foreach ($this->roles as $r): ?>
-			<li><span class="role-name"><?php echo $r->role; ?>:</span> <?php echo $r->name; ?></li>
-			<?php endforeach;?>
-		</ul>
+		<?php $this->showRoles(); ?>
 		<?php endif; ?>
 		
 		<div class="register">

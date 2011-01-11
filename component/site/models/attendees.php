@@ -320,16 +320,65 @@ class RedEventModelAttendees extends JModel
    */
   function getRoles()
   {
-  	$query = ' SELECT u.name, u.username, '
+  	$query = ' SELECT u.name, u.username, rr.usertype, rr.fields, '
   	       . '  r.name AS role, sr.role_id, sr.user_id ' 
   	       . ' FROM #__redevent_sessions_roles AS sr '
   	       . ' INNER JOIN #__users AS u ON u.id = sr.user_id '
   	       . ' INNER JOIN #__redevent_roles AS r on r.id = sr.role_id ' 
+  	       . ' LEFT JOIN #__redevent_roles_redmember AS rr ON rr.role_id = r.id '
   	       . ' WHERE sr.xref = ' . $this->_db->Quote($this->_xref)
   	       . ' ORDER BY r.ordering ASC, u.name ASC'
   	       ;
   	$this->_db->setQuery($query);
   	$res = $this->_db->loadObjectList();
+  	
+  	if ($res && JComponentHelper::isEnabled('com_redmember'))
+  	{
+  		$uids = array();
+  		$types = array();
+  		foreach ($res as $r)
+  		{
+  			$uids[] = $r->user_id;
+  			if ($r->usertype) {
+  				$types[] = $r->usertype;
+  			}
+  		}
+  		
+  		// user data from redmember
+  		$query = ' SELECT *, user_id ' 
+  		       . ' FROM #__redmember_users ' 
+  		       . ' WHERE user_id IN (' . implode(',', $uids).')'
+  		       ;
+  		$this->_db->setQuery($query);
+  		$rm_users = $this->_db->loadObjectList('user_id');
+  		  		  		
+  		// all fields from redmember
+  		$query = ' SELECT *, field_id ' 
+  		       . ' FROM #__redmember_fields ' 
+  		       . ' ORDER by ordering '
+  		       ;
+  		$this->_db->setQuery($query);
+  		$rm_fields = $this->_db->loadObjectList('field_id');
+  		
+  		foreach ($res as $k => $r)
+  		{
+ 				$info = array();
+  			if (isset($rm_users[$r->user_id])) 
+  			{
+  				$ufields = explode(',', $r->fields);
+  				foreach ($ufields as $f)
+  				{
+  					if (isset($rm_fields[$f])) 
+  					{
+  						$fdb_name = $rm_fields[$f]->field_dbname;
+  						$info[$rm_fields[$f]->field_name] = $rm_users[$r->user_id]->$fdb_name;
+  					}
+  				}
+  			}
+  			$res[$k]->rminfo = $info;
+  		}
+  	}  	
+  	
   	return $res;
   }
 }

@@ -58,9 +58,12 @@ class RedeventViewRole extends JView
 		$uri 	=& JFactory::getURI();
 		$user 	=& JFactory::getUser();
 		$model	=& $this->getModel();
+		$url 		= $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
 		
     $document = & JFactory::getDocument();
     $document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+    
+    $document->addScript($url.'administrator/components/com_redevent/assets/js/role.js');
 
 		$lists = array();
 		//get the project
@@ -91,6 +94,19 @@ class RedeventViewRole extends JView
 			. ' ORDER BY ordering';
 
 		$lists['ordering'] 			= JHTML::_('list.specificordering',  $object, $object->id, $query, 1 );
+		
+		// redmember integration
+		$options = $this->get('RmUserTypesOptions');
+		if ($options)
+		{
+			$options = array_merge( array(JHTML::_('select.option', 0, Jtext::_('COM_REDEVENT_REDMEMBER_SELECT_USERTYPE'))), $options);
+			$lists['usertype'] = JHTML::_('select.genericlist', $options, 'usertype', '', 'value', 'text', $object->usertype);
+		
+			$options = $this->get('UsertypeFieldsOptions');
+			if ($options) {
+				$lists['fields'] = JHTML::_('select.genericlist', $options, 'fields[]', 'multiple="multiple"', 'value', 'text', explode(",", $object->fields));
+			}
+		}
 		
 		$this->assignRef('lists',		$lists);
 		$this->assignRef('object',		$object);

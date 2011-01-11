@@ -76,6 +76,18 @@ if (!$edit)  {
 		</label></td>
 		<td><?php echo $this->lists['ordering']; ?></td>
 	</tr>
+	<?php if (isset($this->lists['usertype'])): ?>
+	<tr>
+		<td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'COM_REDEVENT_REDMEMBER_USERTYPE_LABEL' ).'::'.JText::_( 'COM_REDEVENT_REDMEMBER_USERTYPE_DESC' ); ?>"><label for="usertype"> <?php echo JText::_( 'COM_REDEVENT_REDMEMBER_USERTYPE_LABEL' ); ?>:
+		</label></td>
+		<td><?php echo $this->lists['usertype']; ?></td>
+	</tr>
+	<tr <?php echo $this->object->usertype ? '' : 'style="display:none;"' ; ?>>
+		<td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'COM_REDEVENT_REDMEMBER_USERTYPE_FIELDS_LABEL' ).'::'.JText::_( 'COM_REDEVENT_REDMEMBER_USERTYPE_FIELDS_DESC' ); ?>"><label for="fields"> <?php echo JText::_( 'COM_REDEVENT_REDMEMBER_USERTYPE_FIELDS_LABEL' ); ?>:
+		</label></td>
+		<td><?php echo $this->lists['fields']; ?></td>
+	</tr>
+	<?php endif; ?>
 	<tr>
 		<td valign="top" align="right" class="key"><label for="description"> <?php echo JText::_( 'Description' ); ?>:
 		</label></td>
