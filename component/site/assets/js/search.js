@@ -85,3 +85,10 @@ window.addEvent('domready', function(){
     return true;
   }
 });
+
+
+function OnUpdateDate(cal)
+{
+	cal.hide();
+	$('adminForm').submit();
+}

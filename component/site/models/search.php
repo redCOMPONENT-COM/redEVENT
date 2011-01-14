@@ -101,12 +101,23 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 			$where[] = ' x.published = -1';
 		} else {
 			$where[] = ' x.published = 1';
+		}	
+		
+		$sstate = $params->get( 'session_state', '0' );
+		if ($sstate == 1)
+		{
+			$now = strftime('%Y-%m-%d %H:%M');
+			$where[] = '(CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > '.$this->_db->Quote($now);
+		} 
+		else if ($sstate == 2) {
+			$where[] = 'x.dates = 0';
 		}
 
 		$filter = $this->getFilter();
 		if ( $params->get('requires_filter', 0) && (!$filter || empty($filter)) ) {
 			$filter = array('0');
 		}
+		
 		$where = array_merge($where, $filter);
 		
     if (count($where)) {

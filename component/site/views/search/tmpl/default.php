@@ -145,9 +145,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
           <?php echo '<label for="filter_date">'.JText::_('Date').'</label>&nbsp;'; ?>
         </td>
         <td>
-          <?php echo JHTML::_('calendar', $this->filter_date_from, 'filter_date_from', 'filter_date_from', '%Y-%m-%d', 'class="inputbox dynfilter"');?>
+          <?php echo redEVENTHelper::calendar($this->filter_date_from, 'filter_date_from', 'filter_date_from', '%Y-%m-%d', 'OnUpdateDate', 'class="inputbox dynfilter"');?>
            <?php echo JText::_('COM_REDEVENT_DATE_TO'); ?> 
-          <?php echo JHTML::_('calendar', $this->filter_date_to, 'filter_date_to', 'filter_date_to', '%Y-%m-%d', 'class="inputbox dynfilter"');?>
+          <?php echo redEVENTHelper::calendar($this->filter_date_to, 'filter_date_to', 'filter_date_to', '%Y-%m-%d', 'OnUpdateDate', 'class="inputbox dynfilter"');?>
         </td>
       </tr>
     	<?php endif; ?>
