@@ -104,7 +104,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		}
 
 		$filter = $this->getFilter();
-		if (!$filter || empty($filter)) {
+		if ( $params->get('requires_filter', 0) && (!$filter || empty($filter)) ) {
 			$filter = array('0');
 		}
 		$where = array_merge($where, $filter);
