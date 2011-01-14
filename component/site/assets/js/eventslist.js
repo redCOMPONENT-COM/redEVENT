@@ -61,6 +61,35 @@ window.addEvent('domready', function(){
 	};
 	redhint.init();
 
+	$$('.dynfilter').addEvent('change', function() {
+		redhint.removehint();
+		this.form.submit();
+		return true;
+	});
+	
+	
+	// show/hide filters in views
+	if ($('el-events-filters'))
+	{
+		if ($('f-showfilters') && $('f-showfilters').value > 0) {
+			$('el-events-filters').setStyle('display', 'block');
+		}
+		else {
+			$('el-events-filters').setStyle('display', 'none');
+		}
+		$('filters-toggle').addEvent('click', function(){
+			if ($('el-events-filters').getStyle('display') == 'none')
+			{
+				$('el-events-filters').setStyle('display', 'block');
+				$('f-showfilters').value = 1;
+			}
+			else
+			{
+				$('el-events-filters').setStyle('display', 'none');
+				$('f-showfilters').value = 0;
+			}
+		});			
+	}
 });
 
 function tableOrdering( order, dir, view )

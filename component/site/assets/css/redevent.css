@@ -637,3 +637,12 @@ div.event_roles table td {
 	border-right: 1px solid #E5E5E5; 
 	vertical-align: top;
 }
+
+div#filters-toggle {
+	padding: 3px;
+	margin-left:3px;
+}
+div#filters-toggle:hover {
+	margin-left:0px;
+	border-left: 3px solid lightgrey;
+}

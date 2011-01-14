@@ -78,6 +78,7 @@ class RedeventViewVenueevents extends JView
 		$venue	 	= & $this->get('Venue');
 		$total 		= & $this->get('Total');
 		$customs 	= & $this->get('ListCustomFields');
+		$customsfilters 	= & $this->get('CustomFilters');
 
 		//does the venue exist?
 		if ($venue->id == 0)
@@ -173,6 +174,10 @@ class RedeventViewVenueevents extends JView
 
 		//create select lists
 		$lists	= $this->_buildSortLists($elsettings);
+		
+		$state    =& $this->get( 'state' );
+    $filter_customs   = $state->get('filter_customs');
+    
 		$this->assign('lists', 						$lists);
     $this->assign('action',   str_replace('&', '&amp;', $uri->toString()));
 
@@ -193,6 +198,8 @@ class RedeventViewVenueevents extends JView
 		$this->assignRef('config',      $elsettings);
 		$this->assignRef('thumb_link',  $thumb_link);
 		$this->assignRef('list_link',   $list_link);
+		$this->assignRef('customsfilters',     $customsfilters);
+		$this->assign('filter_customs',      $filter_customs);
 
 		parent::display($tpl);
 	}

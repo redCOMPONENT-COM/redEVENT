@@ -71,6 +71,9 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 		// Get the filter request variables
 		$this->setState('filter_order', JRequest::getCmd('filter_order', 'x.dates'));
 		$this->setState('filter_order_dir', JRequest::getCmd('filter_order_Dir', 'ASC'));
+		
+    $customs      = $mainframe->getUserStateFromRequest('com_redevent.categoryevents.filter_customs', 'filtercustom', array(), 'array');
+		$this->setState('filter_customs', $customs);
 	}
 
 	/**
@@ -104,18 +107,20 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 		
 		$task 		= JRequest::getWord('task');
 
+		$where = array();
+		
 		// First thing we need to do is to select only the requested events
 		if ($task == 'archive') {
-			$where = ' WHERE x.published = -1';
+			$where[] = ' x.published = -1';
 		} else {
-			$where = ' WHERE x.published = 1';
+			$where[] = ' x.published = 1';
 		}
 		
 		/* Check if a venue ID is set */
-		if ($this->_id > 0) $where .= ' AND x.venueid = '.$this->_id;
+		if ($this->_id > 0) $where[] = ' x.venueid = '.$this->_id;
 		
 		// Second is to only select events assigned to category the user has access to
-		$where .= ' AND c.access <= '.$gid;
+		$where[] = ' c.access <= '.$gid;
 
 		/*
 		 * If we have a filter, and this is enabled... lets tack the AND clause
@@ -136,17 +141,30 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 				switch ($filter_type)
 				{
 					case 'title' :
-						$where .= ' AND LOWER( a.title ) LIKE '.$filter;
+						$where[] = ' LOWER( a.title ) LIKE '.$filter;
 						break;
 					
 					case 'type' :
-						$where .= ' AND LOWER( c.catname ) LIKE '.$filter;
+						$where[] = ' LOWER( c.catname ) LIKE '.$filter;
 						break;
 				}
 
 			}
 		}
-		return $where;
+		
+    $customs = $this->getState('filter_customs');	
+    foreach ((array) $customs as $key => $custom)
+    {
+      if ($custom != '') 
+      {
+      	if (is_array($custom)) {
+      		$custom = implode("/n", $custom);
+      	}
+        $where[] = ' custom'.$key.' LIKE ' . $this->_db->Quote('%'.$custom.'%');
+      }
+    }
+    
+		return ' WHERE ' . implode(' AND ', $where);
 	}
 
 	/**

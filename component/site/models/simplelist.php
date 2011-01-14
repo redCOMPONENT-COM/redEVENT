@@ -36,6 +36,21 @@ require_once('baseeventslist.php');
 class RedeventModelSimpleList extends RedeventModelBaseEventList
 {
 	
+	function __construct()
+	{		
+		parent::__construct();
+		
+		$mainframe = & JFactory::getApplication();
+		
+		$filter 		  = $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter', 'filter', '', 'string');
+		$filter_type 	= $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter_type', 'filter_type', '', 'string');
+    $customs      = $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter_customs', 'filtercustom', array(), 'array');
+		
+		$this->setState('filter',         $filter);
+		$this->setState('filter_type',    $filter_type);
+		$this->setState('filter_customs', $customs);
+	}
+	
 	/**
 	 * Build the where clause
 	 *
@@ -72,8 +87,8 @@ class RedeventModelSimpleList extends RedeventModelBaseEventList
 		 */
 		if ($params->get('filter'))
 		{
-			$filter 		= $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter', 'filter', '', 'string');
-			$filter_type 	= $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter_type', 'filter_type', '', 'string');
+			$filter 		  = $this->getState('filter');
+			$filter_type 	= $this->getState('filter_type');
 
 			if ($filter)
 			{
@@ -119,6 +134,19 @@ class RedeventModelSimpleList extends RedeventModelBaseEventList
 		else if ($sstate == 2) {
 			$where[] = 'x.dates = 0';
 		}
+		
+    $customs = $this->getState('filter_customs');	
+    foreach ((array) $customs as $key => $custom)
+    {
+      if ($custom != '') 
+      {
+      	if (is_array($custom)) {
+      		$custom = implode("/n", $custom);
+      	}
+        $where[] = ' custom'.$key.' LIKE ' . $this->_db->Quote('%'.$custom.'%');
+      }
+    }
+    
 		
 		return ' WHERE '.implode(' AND ', $where);
 	}

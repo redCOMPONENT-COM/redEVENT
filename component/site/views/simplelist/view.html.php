@@ -47,11 +47,12 @@ class RedeventViewSimpleList extends JView
 		//initialize variables
 		$document 	= & JFactory::getDocument();
 		$elsettings = & redEVENTHelper::config();
-		$menu		= & JSite::getMenu();
+		$menu		  = & JSite::getMenu();
 		$item    	= $menu->getActive();
 		$params 	= & $mainframe->getParams();
-		$uri 		= & JFactory::getURI();
+		$uri 		  = & JFactory::getURI();
 		$pathway 	= & $mainframe->getPathWay();
+		$state    =& $this->get( 'state' );
 
 		//add css file
     if (!$params->get('custom_css')) {
@@ -74,6 +75,7 @@ class RedeventViewSimpleList extends JView
 		//get data from model
 		$rows 	= & $this->get('Data');
 		$customs 	= & $this->get('ListCustomFields');
+		$customsfilters 	= & $this->get('CustomFilters');
 		$pagination =& $this->get('Pagination');
 
 		//are events available?
@@ -121,6 +123,8 @@ class RedeventViewSimpleList extends JView
 		//create select lists
 		$lists	= $this->_buildSortLists();
 		
+    $filter_customs   = $state->get('filter_customs');
+		
 		if ($lists['filter']) {
 //			//$uri->setVar('filter', JRequest::getString('filter'));
 //			//$filter		= $mainframe->getUserStateFromRequest('com_redevent.eventlist.filter', 'filter', '', 'string');
@@ -136,6 +140,7 @@ class RedeventViewSimpleList extends JView
 
 		$this->assignRef('rows',        $rows);
 		$this->assignRef('customs',     $customs);
+		$this->assignRef('customsfilters',     $customsfilters);
 		$this->assignRef('task',        $task);
 		$this->assignRef('noevents',    $noevents);
 		$this->assignRef('print_link',  $print_link);
@@ -147,6 +152,7 @@ class RedeventViewSimpleList extends JView
 		$this->assignRef('config',      $elsettings);
 		$this->assignRef('thumb_link',  $thumb_link);
 		$this->assignRef('list_link',   $list_link);
+		$this->assign('filter_customs',      $filter_customs);
 
 		parent::display($tpl);
 
@@ -195,8 +201,10 @@ class RedeventViewSimpleList extends JView
 		$filter_order		= JRequest::getCmd('filter_order', 'x.dates');
 		$filter_order_Dir	= JRequest::getWord('filter_order_Dir', 'ASC');
 
-    $filter     = $app->getUserState('com_redevent.simplelist.filter');
-    $filter_type  = $app->getUserState('com_redevent.simplelist.filter_type');
+		$state = $this->get('state');
+		
+    $filter      = $state->get('filter');
+    $filter_type = $state->get('filter_type');
       
 		$sortselects = array();
 		$sortselects[]	= JHTML::_('select.option', 'title', $elsettings->titlename );

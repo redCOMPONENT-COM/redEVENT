@@ -81,6 +81,7 @@ class RedeventViewCategoryevents extends JView
 		//get data from model
 		$rows 		= & $this->get('Data');
 		$customs 	= & $this->get('ListCustomFields');
+		$customsfilters 	= & $this->get('CustomFilters');
 		$category 	= & $this->get('Category');
 		$total 		= & $this->get('Total');
 
@@ -149,6 +150,10 @@ class RedeventViewCategoryevents extends JView
 
 		//create select lists
 		$lists	= $this->_buildSortLists($elsettings);
+				
+		$state    =& $this->get( 'state' );
+    $filter_customs   = $state->get('filter_customs');
+		
 		$this->assign('lists', 						$lists);
     $this->assign('action',   str_replace('&', '&amp;', $uri->toString()));
 
@@ -167,6 +172,8 @@ class RedeventViewCategoryevents extends JView
 		$this->assignRef('config',      $elsettings);
 		$this->assignRef('thumb_link',  $thumb_link);
 		$this->assignRef('list_link',   $list_link);
+		$this->assignRef('customsfilters',     $customsfilters);
+		$this->assign('filter_customs',      $filter_customs);
 		
 		parent::display($tpl);
 	}

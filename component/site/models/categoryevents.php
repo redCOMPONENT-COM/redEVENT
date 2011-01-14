@@ -71,6 +71,9 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
 		// Get the filter request variables
 		$this->setState('filter_order', JRequest::getCmd('filter_order', 'x.dates'));
 		$this->setState('filter_order_dir', JRequest::getCmd('filter_order_Dir', 'ASC'));
+		
+    $customs      = $mainframe->getUserStateFromRequest('com_redevent.categoryevents.filter_customs', 'filtercustom', array(), 'array');
+		$this->setState('filter_customs', $customs);
 	}
 
 	/**
@@ -232,6 +235,19 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
 		$where[] = ' (l.private = 0 OR gv.id IS NOT NULL) ';
 		$where[] = ' (c.private = 0 OR gc.id IS NOT NULL) ';
 		$where[] = ' (vc.private = 0 OR vc.private IS NULL OR gvc.id IS NOT NULL) ';
+		
+    $customs = $this->getState('filter_customs');	
+    foreach ((array) $customs as $key => $custom)
+    {
+      if ($custom != '') 
+      {
+      	if (is_array($custom)) {
+      		$custom = implode("/n", $custom);
+      	}
+        $where[] = ' custom'.$key.' LIKE ' . $this->_db->Quote('%'.$custom.'%');
+      }
+    }
+    
 		return ' WHERE ' . implode(' AND ', $where);
 	}
 
