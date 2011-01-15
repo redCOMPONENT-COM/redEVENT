@@ -52,15 +52,31 @@ class RedEventControllerRegistration extends RedEventController
 		if (JRequest::getVar('cancel', '', 'post')) {
 			return $this->cancelreg();
 		}
+		$app = &JFactory::getApplication();
   	$msg = 'OK';
   	
   	$xref = JRequest::getInt('xref');
+  	$pricegroups = JRequest::getVar('pricegroup_id', array(), 'post', 'array');
+  	JArrayHelper::toInteger($pricegroups);
   	$review = JRequest::getVar('hasreview', 0);
   	$isedit = JRequest::getVar('isedit', 0);
 	  $model = $this->getModel('registration');
 	  $model->setXref(JRequest::getInt('xref'));  	
   	$details = $model->getSessionDetails();
-  	  	
+  	
+  	$prices = array();
+  	foreach ($pricegroups as $p)
+  	{
+  		$price = $model->getRegistrationPrice($p);
+	  	if ($price === false) 
+	  	{
+	  		$msg = JText::_('REDEVENT_REGISTRATION_MISSING_PRICE');
+	  		$this->setRedirect('index.php', $msg, 'error');
+	  		return;  		
+	  	}
+  		$prices[] = $price;
+  	}  	
+  	
   	if (!$xref) 
   	{
   		$msg = JText::_('REDEVENT_REGISTRATION_MISSING_XREF');
@@ -69,7 +85,7 @@ class RedEventControllerRegistration extends RedEventController
   	}  	
   	
   	// first, ask redform to save it's fields, and return the corresponding sids.
-  	$options = array('baseprice' => $details->course_price);
+  	$options = array('baseprice' => $prices);
   	if ($review) {
   		$options['savetosession'] = 1;
   	}
@@ -84,12 +100,20 @@ class RedEventControllerRegistration extends RedEventController
   	$submit_key = $result->submit_key;
   	JRequest::setVar('submit_key', $submit_key);
   	
+  	if ($review) {
+			$app->setUserState('pgids'.$submit_key, $pricegroups);
+  	}
+  	else {
+  		$app->setUserState('pgids'.$submit_key, null);
+  	}
+  	
   	if (!$isedit && !$review)
   	{
 	  	// redform save fine, now save corresponding bookings
+	  	$k = 0;
 	  	foreach ($result->posts as $rfpost)
 	  	{
-	  		if (!$res = $model->register($rfpost['sid'], $result->submit_key)) {
+	  		if (!$res = $model->register($rfpost['sid'], $result->submit_key, $pricegroups[$k++])) {
 	  			$msg = JTEXT::_('REDEVENT_REGISTRATION_REGISTRATION_FAILED');
 		  		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($details->did, $xref)), $msg, 'error');
 		  		return;
@@ -187,11 +211,27 @@ class RedEventControllerRegistration extends RedEventController
 		}
 		
 		$xref = JRequest::getInt('xref');
-	  $model = $this->getModel('registration');
+  	$pricegroups = JRequest::getVar('pricegroup_id', array(), 'post', 'array');
+  	JArrayHelper::toInteger($pricegroups);
+  	
+  	$model = $this->getModel('registration');
 	  $model->setXref(JRequest::getInt('xref'));  	
   	$details = $model->getSessionDetails();
   	
   	$submit_key = JRequest::getVar('submit_key');
+  		
+  	$prices = array();
+  	foreach ($pricegroups as $p)
+  	{
+  		$price = $model->getRegistrationPrice($p);
+	  	if ($price === false) 
+	  	{
+	  		$msg = JText::_('REDEVENT_REGISTRATION_MISSING_PRICE');
+	  		$this->setRedirect('index.php', $msg, 'error');
+	  		return;  		
+	  	}
+  		$prices[] = $price;
+  	}  	
   	
   	if (!$xref) {
   		$msg = JText::_('REDEVENT_REGISTRATION_MISSING_XREF');
@@ -200,7 +240,7 @@ class RedEventControllerRegistration extends RedEventController
   	}
   	
   	// first, ask redform to save it's fields, and return the corresponding sids.
-  	$options = array('baseprice' => $details->course_price);
+  	$options = array('baseprice' => $prices);
 		$rfcore = new redFormCore();
   	$result = $rfcore->saveAnswers('redevent', $options);
   	if (!$result) {
@@ -218,7 +258,8 @@ class RedEventControllerRegistration extends RedEventController
   	// redform save fine, now save corresponding bookings
   	foreach ($result->posts as $rfpost)
   	{
-  		if (!$res = $model->register($rfpost['sid'], $result->submit_key)) {
+  		$k = 0;
+  		if (!$res = $model->register($rfpost['sid'], $result->submit_key, $pricegroups[$k++])) {
   			$msg = JTEXT::_('REDEVENT_REGISTRATION_REGISTRATION_FAILED');
 	  		if ($task == 'managerupdate') {
 	  			$this->setRedirect(JRoute::_(RedeventHelperRoute::getManageAttendees($xref)), $msg, 'error');  			

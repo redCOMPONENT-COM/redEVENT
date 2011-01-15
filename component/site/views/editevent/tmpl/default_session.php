@@ -105,8 +105,19 @@ JHTML::_('behavior.calendar');
 				title="<?php echo JText::_('EDIT XREF COURSE PRICE TIP'); ?>"><label
 				for="course_price"><?php echo JText::_( 'EDIT XREF COURSE PRICE' ) .': '; ?></label>
 			</td>
-			<td><input type="text" size="8" maxlength="8" name="course_price"
-				id="course_price" value="<?php echo $this->row->course_price; ?>" />
+			<td>
+		    <table>
+					<?php foreach ((array)$this->prices as $k => $r): ?>
+				  <tr>
+				  	<td><?php echo JHTML::_('select.genericlist', $this->pricegroupsoptions, 'pricegroup[]', '', 'value', 'text', $r->pricegroup_id); ?></td>
+				  	<td><input type="text" name="price[]" class="price-val" value="<?php echo $r->price; ?>" size="10" /> <button type="button" class="price-button remove-price"><?php echo Jtext::_('COM_REDEVENT_REMOVE'); ?></button></td>
+				  </tr>
+				  <?php endforeach; ?>
+				  <tr id="trnewprice">
+				  	<td><?php echo JHTML::_('select.genericlist', $this->pricegroupsoptions, 'pricegroup[]', array('id' => 'newprice', 'class' => 'newprice')); ?></td>
+				  	<td><input type="text" name="price[]" class="price-val" value="0.00" size="10" /> <button type="button" class="price-button" id="add-price"><?php echo Jtext::_('add'); ?></button></td>  	
+				  </tr>
+		    </table>
 			</td>
 		</tr>
 		<?php endif; ?>

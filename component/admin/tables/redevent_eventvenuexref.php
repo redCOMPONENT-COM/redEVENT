@@ -64,8 +64,6 @@ class RedEvent_eventvenuexref extends JTable
   /** @var int */
   var $course_credit    = null;
   /** @var int */
-  var $course_price    = null;
-  /** @var int */
   var $featured    = 0;
   /**
    * Url for external registration. 
@@ -88,10 +86,7 @@ class RedEvent_eventvenuexref extends JTable
 			$this->setError(JText::_('COM_REDEVENT_SESSION_EVENTID_IS_REQUIRED'));
 			return false;
 		}
-		// allow price to be null
-		if ($this->course_price === '') {
-			$this->course_price = null;
-		}
+		// allow credit to be null
 		if ($this->course_credit === '') {
 			$this->course_credit = null;
 		}

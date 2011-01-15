@@ -18,20 +18,7 @@ function RedEventBuildRoute(&$query)
 	else {
 	  $view = '';
 	}
-
-//	if (isset($query['controller']))
-//	{
-//	  $controller = $query['controller'];
-//		$segments[] = 'c'.$query['controller'];
-//		unset($query['controller']);
-//    
-//    if(isset($query['task']))
-//    {
-//    	$segments[] = $query['task'];
-//    	unset($query['task']);
-//    };
-//	}
-	
+		
 	switch ($view) {
 	  
 	  case 'confirmation':
@@ -48,6 +35,7 @@ function RedEventBuildRoute(&$query)
     		unset($query['xref']);
     	};
 	  	break;
+	  	
 	  case 'calendar':
 	  case 'categoryevents':
 	  case 'details':
@@ -58,7 +46,6 @@ function RedEventBuildRoute(&$query)
 	  case 'categories':
 	  case 'confirmation':
 	  case 'myevents':
-	  case 'signup':
 	  case 'upcomingvenueevents':
 	  case 'venueevents':
 	  case 'categoriesdetailed':
@@ -84,6 +71,38 @@ function RedEventBuildRoute(&$query)
     	{
     		$segments[] = $query['returnid'];
     		unset($query['returnid']);
+    	};
+    	break;
+    	    	
+	  case 'signup':
+    	if(isset($query['subtype']))
+    	{
+    		$segments[] = $query['subtype'];
+    		unset($query['subtype']);
+    	};
+    
+    	if(isset($query['task']))
+    	{
+    		$segments[] = $query['task'];
+    		unset($query['task']);
+    	};
+    
+    	if(isset($query['id']))
+    	{
+    		$segments[] = $query['id'];
+    		unset($query['id']);
+    	};
+    
+    	if(isset($query['xref']))
+    	{
+    		$segments[] = $query['xref'];
+    		unset($query['xref']);
+    	};
+    	
+    	if(isset($query['pg']))
+    	{
+    		$segments[] = $query['pg'];
+    		unset($query['pg']);
     	};
     	break;
     	
@@ -274,8 +293,28 @@ function RedEventParseRoute($segments)
 
     } break;
     
-    case 'confirmation':
     case 'signup':
+      $vars['view'] = 'signup';
+      
+      $count = count($segments);
+      if($count > 1) {
+        $vars['subtype'] = $segments[1];
+      }
+      if($count > 2) {
+        $vars['task'] = $segments[2];
+      }
+      if($count > 3) {
+        $vars['id'] = $segments[3];
+      }
+      if($count > 4) {
+        $vars['xref'] = $segments[4];
+      }
+      if($count > 5) {
+        $vars['pg'] = $segments[5];
+      }
+    	break;
+    
+    case 'confirmation':
     case 'calendar':
     case 'payment':
     case 'search':

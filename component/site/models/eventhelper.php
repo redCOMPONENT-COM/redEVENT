@@ -141,7 +141,7 @@ class RedeventModelEventhelper extends JModel
 					. ' v.city, v.latitude, v.longitude, '
 					. ' u.name AS creator_name, u.email AS creator_email, '
 					. ' f.formname, '
-					. " a.confirmation_message, x.course_price, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.catname, c.published, c.access,"
+					. " a.confirmation_message, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.catname, c.published, c.access,"
 	        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
 	        . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug, '
 	        . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(":", v.id, v.alias) ELSE v.id END as venueslug '
@@ -234,6 +234,25 @@ class RedeventModelEventhelper extends JModel
     $res = $this->_db->loadResult();
     $left = $session->maxwaitinglist - $res;
     return ($left > 0 ? $left : 0);  	
+  }
+
+  /**
+   * get current session prices
+   * 
+   * @return array
+   */
+  function getPrices()
+  {
+  	$query = ' SELECT sp.*, p.name, p.alias, '
+	         . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug ' 
+  	       . ' FROM #__redevent_sessions_pricegroups AS sp '
+  	       . ' INNER JOIN #__redevent_pricegroups AS p on p.id = sp.pricegroup_id '
+  	       . ' WHERE sp.xref = ' . $this->_db->Quote($this->_xref)
+  	       . ' ORDER BY p.ordering ASC '
+  	       ;
+  	$this->_db->setQuery($query);
+  	$res = $this->_db->loadObjectList();   	
+  	return $res;
   }
 }
 ?>

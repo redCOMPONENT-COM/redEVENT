@@ -267,7 +267,6 @@ class RedeventModelEditevent extends JModel
 		$this->_event->endtimes = null;
 		$this->_event->registrationend = null;
 		$this->_event->course_credit   = 0;
-		$this->_event->course_price    = 0;
 		return (boolean) $this->_event;
 	}
 
@@ -289,7 +288,7 @@ class RedeventModelEditevent extends JModel
 			}
 			
 			$query = 'SELECT e.*, v.venue, x.id AS xref, x.eventid, x.venueid, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees,
-					x.maxwaitinglist, x.course_price, x.course_credit, x.registrationend '
+					x.maxwaitinglist, x.course_credit, x.registrationend '
 					   ;
 			
 			$query .= ' FROM #__redevent_events AS e'
@@ -367,7 +366,6 @@ class RedeventModelEditevent extends JModel
 				$obj->maxattendees      = 0;
 				$obj->maxwaitinglist    = 0;
 				$obj->course_credit     = 0;
-				$obj->course_price      = 0;
 				$obj->published         = 1;
 				$this->_xrefdata = $obj;
 			}
@@ -849,6 +847,36 @@ class RedeventModelEditevent extends JModel
 		      }
 		    }
 			}
+		
+    	/** prices **/
+			if ($params->get('edit_price', 0))
+			{    
+		    // first remove current rows
+		    $query = ' DELETE FROM #__redevent_sessions_pricegroups ' 
+		           . ' WHERE xref = ' . $this->_db->Quote($xref->id);
+		    $this->_db->setQuery($query);     
+		    if (!$this->_db->query()) {
+		    	$this->setError($this->_db->getErrorMsg());
+		    	return false;
+		    }
+		    
+		    // then recreate them if any
+		    foreach ((array) $data['pricegroup'] as $k => $r)
+		    {    	
+		    	if (!($data['pricegroup'][$k] && $data['price'][$k])) {
+		    		continue;
+		    	}
+		      $new = & JTable::getInstance('RedEvent_sessions_pricegroups', '');
+		      $new->set('xref',    $xref->id);
+		      $new->set('pricegroup_id', $r);
+		      $new->set('price', $data['price'][$k]);
+		      if (!($new->check() && $new->store())) {
+		      	$this->setError($new->getError());
+		      	return false;
+		      }
+		    }
+			}
+    /** prices END **/
 		}	
     	
 		// attachments
@@ -1160,10 +1188,38 @@ class RedeventModelEditevent extends JModel
       $new->set('role_id', $r);
       $new->set('user_id', $data['urole'][$k]);
       if (!($new->check() && $new->store())) {
-      	$this->setError($recurrence->getError());
+      	$this->setError($new->getError());
       	return false;
       }
     }
+    /** roles END **/
+    
+    /** prices **/
+    // first remove current rows
+    $query = ' DELETE FROM #__redevent_sessions_pricegroups ' 
+           . ' WHERE xref = ' . $this->_db->Quote($row->id);
+    $this->_db->setQuery($query);     
+    if (!$this->_db->query()) {
+    	$this->setError($this->_db->getErrorMsg());
+    	return false;
+    }
+    
+    // then recreate them if any
+    foreach ((array) $data['pricegroup'] as $k => $r)
+    {    	
+    	if (!($data['pricegroup'][$k] && $data['price'][$k])) {
+    		continue;
+    	}
+      $new = & JTable::getInstance('RedEvent_sessions_pricegroups', '');
+      $new->set('xref',    $row->id);
+      $new->set('pricegroup_id', $r);
+      $new->set('price', $data['price'][$k]);
+      if (!($new->check() && $new->store())) {
+      	$this->setError($new->getError());
+      	return false;
+      }
+    }
+    /** prices END **/
 		
 		return true;
 	}
@@ -1436,6 +1492,28 @@ class RedeventModelEditevent extends JModel
 	  	return $res;
   	}
   	return array();
+  }
+  
+  function getPricegroupsOptions()
+  {
+  	$query = ' SELECT id AS value, name AS text ' 
+  	       . ' FROM #__redevent_pricegroups ' 
+  	       . ' ORDER BY ordering ASC ';
+  	$this->_db->setQuery($query);
+  	$res = $this->_db->loadObjectList();
+  	return $res;
+  }
+  
+  function getSessionPrices()
+  {
+  	$query = ' SELECT r.* ' 
+  	       . ' FROM #__redevent_sessions_pricegroups AS r ' 
+  	       . ' INNER JOIN #__redevent_pricegroups AS pg ON pg.id = r.pricegroup_id '
+  	       . ' WHERE xref = ' . $this->_db->Quote($this->_xref)
+  	       . ' ORDER BY pg.ordering ';
+  	$this->_db->setQuery($query);
+  	$res = $this->_db->loadObjectList();
+  	return $res;
   }
 }
 ?>

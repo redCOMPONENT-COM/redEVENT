@@ -116,6 +116,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_register` (
 `xref` int(11) NOT NULL default '0',
 `uid` int(11) NOT NULL default '0',
 `sid` int(11) NOT NULL default '0',
+`pricegroup_id` int(11) NOT NULL default '0',
 `waitinglist` tinyint(2) NOT NULL default '0',
 `confirmed` tinyint(2) NOT NULL default '0',
 `confirmdate` datetime NULL default NULL,
@@ -126,6 +127,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_register` (
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
 PRIMARY KEY  (`id`),
 KEY `xref` (`xref`),
+KEY `pricegroup_id` (`pricegroup_id`),
 KEY `submit_key` (`submit_key`),
 KEY `sid` (`sid`)
 ) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
@@ -159,6 +161,24 @@ CREATE TABLE IF NOT EXISTS `#__redevent_roles_redmember` (
 PRIMARY KEY  (`id`),
 KEY  (`role_id`),
 KEY  (`usertype`)
+) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_pricegroups` (
+`id` int(11) unsigned NOT NULL auto_increment,
+`name` varchar(150) NOT NULL default '',
+`alias` varchar(150) NOT NULL default '',
+`ordering` int(11) NOT NULL default '0',
+`checked_out` int(11) NOT NULL default '0',
+`checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
+PRIMARY KEY  (`id`)
+) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_sessions_pricegroups` (
+`id` int(11) unsigned NOT NULL auto_increment,
+`xref` int(11) NOT NULL default '0',
+`pricegroup_id` int(11) NOT NULL default '0',
+`price` float NOT NULL,
+PRIMARY KEY  (`id`)
 ) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_groups` (

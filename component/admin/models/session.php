@@ -376,10 +376,38 @@ class RedEventModelSession extends JModel
       $new->set('role_id', $r);
       $new->set('user_id', $data['urole'][$k]);
       if (!($new->check() && $new->store())) {
-      	$this->setError($recurrence->getError());
+      	$this->setError($new->getError());
       	return false;
       }
     }
+    /** roles END **/
+    
+    /** prices **/
+    // first remove current rows
+    $query = ' DELETE FROM #__redevent_sessions_pricegroups ' 
+           . ' WHERE xref = ' . $this->_db->Quote($object->id);
+    $this->_db->setQuery($query);     
+    if (!$this->_db->query()) {
+    	$this->setError($this->_db->getErrorMsg());
+    	return false;
+    }
+    
+    // then recreate them if any
+    foreach ((array) $data['pricegroup'] as $k => $r)
+    {    	
+    	if (!($data['pricegroup'][$k] && $data['price'][$k])) {
+    		continue;
+    	}
+      $new = & JTable::getInstance('RedEvent_sessions_pricegroups', '');
+      $new->set('xref',    $object->id);
+      $new->set('pricegroup_id', $r);
+      $new->set('price', $data['price'][$k]);
+      if (!($new->check() && $new->store())) {
+      	$this->setError($new->getError());
+      	return false;
+      }
+    }
+    /** prices END **/
     
     return $object->id;
   }
@@ -458,11 +486,36 @@ class RedEventModelSession extends JModel
   	return $res;
   }
   
+  function getPricegroupsOptions()
+  {
+  	$query = ' SELECT id AS value, name AS text ' 
+  	       . ' FROM #__redevent_pricegroups ' 
+  	       . ' ORDER BY ordering ASC ';
+  	$this->_db->setQuery($query);
+  	$res = $this->_db->loadObjectList();
+  	return $res;
+  }
+  
   function getSessionRoles()
   {
+  	$query = ' SELECT sr.* ' 
+  	       . ' FROM #__redevent_sessions_roles AS sr ' 
+  	       . ' INNER JOIN #__redevent_roles AS r ON r.id = sr.role_id '
+  	       . ' WHERE sr.xref = ' . $this->_db->Quote($this->_id)
+  	       . ' ORDER BY r.ordering '
+  	       ;
+  	$this->_db->setQuery($query);
+  	$res = $this->_db->loadObjectList();
+  	return $res;
+  }
+  
+  function getSessionPrices()
+  {
   	$query = ' SELECT r.* ' 
-  	       . ' FROM #__redevent_sessions_roles AS r ' 
-  	       . ' WHERE xref = ' . $this->_db->Quote($this->_id);
+  	       . ' FROM #__redevent_sessions_pricegroups AS r ' 
+  	       . ' INNER JOIN #__redevent_pricegroups AS pg ON pg.id = r.pricegroup_id '
+  	       . ' WHERE xref = ' . $this->_db->Quote($this->_id)
+  	       . ' ORDER BY pg.ordering ';
   	$this->_db->setQuery($query);
   	$res = $this->_db->loadObjectList();
   	return $res;

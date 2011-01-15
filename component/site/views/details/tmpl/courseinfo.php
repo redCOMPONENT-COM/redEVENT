@@ -44,7 +44,7 @@ function tableOrdering( order, dir, view )
 			<th class="courseinfo_titledate"><?php echo JHTML::_('grid.sort', 'EVENT_DATE', 'x.dates', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th class="courseinfo_titleduration"><?php echo JText::_('EVENT_DURATION'); ?></th>
 			<th class="courseinfo_titlevenue" colspan="2"><?php echo JHTML::_('grid.sort', 'EVENT_VENUE', 'v.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			<th class="courseinfo_titleprice"><?php echo JHTML::_('grid.sort', 'EVENT_PRICE', 'x.course_price', $this->lists['order_Dir'], $this->lists['order'] );JText::_('EVENT_PRICE'); ?></th>
+			<th class="courseinfo_titleprice"><?php echo JText::_('EVENT_PRICE'); ?></th>
 			<th class="courseinfo_titlecredit"><?php echo JHTML::_('grid.sort', 'EVENT_CREDITS', 'x.course_credit', $this->lists['order_Dir'], $this->lists['order'] );JText::_('EVENT_CREDITS'); ?></th>
 			<th class="courseinfo_titlesignup"><?php echo JText::_('EVENT_SIGNUP'); ?></th>
 	</tr>
@@ -63,7 +63,7 @@ foreach ($this->_eventlinks as $key => $event) {
 			<td class="courseinfo_duration"><?php echo redEVENTHelper::getEventDuration($event); ?></td>
 			<td class="courseinfo_venue"><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
 			<td class="courseinfo_country"><?php echo ELOutput::getFlag( $event->country ); ?></td>
-			<td class="courseinfo_prices"><?php echo ELOutput::formatprice($event->course_price) ?></td>
+			<td class="courseinfo_prices"><?php echo ELOutput::formatPrices($event->prices) ?></td>
 			<td class="courseinfo_credit"><?php echo $event->course_credit ?></td>
 		<td class="courseinfo_signup" width="*"><div class="courseinfo_signupwrapper">
 		<?php
@@ -98,7 +98,15 @@ foreach ($this->_eventlinks as $key => $event) {
 						$venues_html .= '<div class="courseinfo_vlink courseinfo_external">'.JHTML::_('link', $link, JHTML::_('image', $imagepath.$elsettings->signup_external_img,  $elsettings->signup_external_text), 'target="_blank"').'</div> ';
 						break;
 					case 'webform':
-						$venues_html .= '<div class="courseinfo_vlink courseinfo_webform">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text), 'width="24px" height="24px"')).'</div> ';
+						if ($event->prices && count($event->prices))
+						{
+							foreach ($event->prices as $p) {
+								$venues_html .= '<div class="courseinfo_vlink courseinfo_webform '.$p->alias.'">'.$p->name.' '.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref, $p->slug)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text), 'width="24px" height="24px"')).'</div> ';
+							}
+						}
+						else {
+							$venues_html .= '<div class="courseinfo_vlink courseinfo_webform">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text), 'width="24px" height="24px"')).'</div> ';
+						}
 						break;
 					case 'formaloffer':
 						$venues_html .= '<div class="courseinfo_vlink courseinfo_formaloffer">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('formaloffer', $event->id, $event->xref)), JHTML::_('image', $imagepath.$elsettings->signup_formal_offer_img,  JText::_($elsettings->signup_formal_offer_text), 'width="24px" height="24px"')).'</div> ';

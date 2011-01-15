@@ -214,14 +214,7 @@ function updateend(cal)
       <input type="text" size="8" maxlength="8" name="maxwaitinglist" id="maxwaitinglist" value="<?php echo $this->xref->maxwaitinglist; ?>" /> 
     </td>
   </tr>
-  <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF COURSE PRICE TIP'); ?>">
-      <label for="course_price"><?php echo JText::_( 'COURSE_PRICE' ) .': '; ?></label>
-    </td>
-    <td>
-      <input type="text" size="8" maxlength="8" name="course_price" id="course_price" value="<?php echo $this->xref->course_price; ?>" /> 
-    </td>
-  </tr>
+
   <tr>
     <td class="key hasTip" title="<?php echo JText::_('XREF COURSE CREDIT TIP'); ?>">
       <label for="course_credit"><?php echo JText::_( 'COURSE_CREDIT' ) .': '; ?></label>
@@ -230,6 +223,27 @@ function updateend(cal)
       <input type="text" size="8" maxlength="8" name="course_credit" id="course_credit" value="<?php echo $this->xref->course_credit; ?>" /> 
     </td>
   </tr>
+    
+  <tr>
+    <td class="key hasTip" title="<?php echo JText::_('XREF COURSE PRICE TIP'); ?>">
+      <label for="course_price"><?php echo JText::_( 'COURSE_PRICE' ) .': '; ?></label>
+    </td>
+    <td>
+	    <table>
+				<?php foreach ((array)$this->prices as $k => $r): ?>
+			  <tr>
+			  	<td><?php echo JHTML::_('select.genericlist', $this->pricegroupsoptions, 'pricegroup[]', '', 'value', 'text', $r->pricegroup_id); ?></td>
+			  	<td><input type="text" name="price[]" class="price-val" value="<?php echo $r->price; ?>"/> <button type="button" class="price-button remove-price"><?php echo Jtext::_('COM_REDEVENT_REMOVE'); ?></button></td>
+			  </tr>
+			  <?php endforeach; ?>
+			  <tr id="trnewprice">
+			  	<td><?php echo JHTML::_('select.genericlist', $this->pricegroupsoptions, 'pricegroup[]', array('id' => 'newprice', 'class' => 'newprice')); ?></td>
+			  	<td><input type="text" name="price[]" class="price-val" value="0.00" size="10" /> <button type="button" class="price-button" id="add-price"><?php echo Jtext::_('add'); ?></button></td>  	
+			  </tr>
+	    </table>
+    </td>
+  </tr>
+  
 </tbody>
 </table>
 

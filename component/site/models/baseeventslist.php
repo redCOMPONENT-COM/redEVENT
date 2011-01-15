@@ -213,7 +213,7 @@ class RedeventModelBaseEventList extends JModel
 
 		//Get Events from Database
 		$query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, ' 
-		    . ' x.maxattendees, x.maxwaitinglist, x.course_credit, x.course_price, x.featured, '
+		    . ' x.maxattendees, x.maxwaitinglist, x.course_credit, x.featured, '
 		    . ' a.id, a.title, a.created, a.datdescription, a.registra, a.datimage, a.summary, '
 				. ' l.venue, l.city, l.state, l.url,'
 				. ' c.catname, c.id AS catid,'
@@ -411,6 +411,55 @@ class RedeventModelBaseEventList extends JModel
 		}
 		return $rows;
 	}
+  
+  /**
+   * adds registered (int) and waiting (int) properties to rows.
+   * 
+   * @return array 
+   */
+  function _getPrices($rows) 
+  {
+    $db = JFactory::getDBO();
+    $ids = array();
+    foreach ($rows as $k => $r) 
+    {
+    	$ids[$r->xref] = $k;
+    }
+  	$query = ' SELECT sp.*, p.name, p.alias, '
+	         . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug ' 
+  	       . ' FROM #__redevent_sessions_pricegroups AS sp '
+  	       . ' INNER JOIN #__redevent_pricegroups AS p on p.id = sp.pricegroup_id '
+  	       . ' WHERE sp.xref IN (' . implode(",", array_keys($ids)).')'
+  	       . ' ORDER BY p.ordering ASC '
+  	       ;
+  	$db->setQuery($query);
+  	$res = $db->loadObjectList();
+  	
+  	// sort this out
+  	$prices = array();
+  	foreach ($res as $p)
+  	{
+  		if (!isset($prices[$p->xref])) {
+  			$prices[$p->xref] = array($p);
+  		}
+  		else {
+  			$prices[$p->xref][] = $p;
+  		}
+  	}
+  	
+  	// add to rows
+    foreach ($rows as $k => $r) 
+    {
+    	if (isset($prices[$r->xref])) {
+    		$rows[$k]->prices = $prices[$r->xref];
+    	}
+    	else {
+    		$rows[$k]->prices = null;
+    	}
+    }
+  	
+    return $rows;
+  }
   
   /**
    * returns all custom fields for events

@@ -21,30 +21,29 @@
  */
 
 window.addEvent('domready', function() {
-	if ($('add-role'))
+	if ($('add-price'))
 	{
-		$('add-role').addEvent('click', function(){
-			var sel = $('trnewrole').getElements('select');
-			var rrole = sel[0];
-			var urole = sel[1];
-			if (! (rrole.value > 0 && urole.value > 0)) {
+		$('add-price').addEvent('click', function(){
+			var sel = $('trnewprice').getElement('select');
+			if (! (sel.value > 0)) {
 				return true;
 			}
+			var price = $('trnewprice').getElement('.price-val');
 			// value ok, add new row
-			var newrow = $('trnewrole').clone().removeProperty('id');
-			newrow.getElement('select.rrole').removeProperty('id').value = rrole.value;
-			newrow.getElement('select[name^=urole]').removeProperty('id').value = urole.value;
-			newrow.getElement('button').removeProperty('name').setText(txt_remove).addEvent('click', removeRole);
-			newrow.injectBefore($('trnewrole'));
-			rrole.value = 0;
-			urole.value = 0;
+			var newrow = $('trnewprice').clone().removeProperty('id');
+			newrow.getElement('select').removeProperty('id').value = sel.value;
+			newrow.getElement('.price-val').removeProperty('id').value = price.value;
+			newrow.getElement('button').removeProperty('name').setText(txt_remove).addEvent('click', removePrice);
+			newrow.injectBefore($('trnewprice'));
+			sel.value = 0;
+			price.value = 0;
 		});
 
-		$$('button.remove-role').addEvent('click', removeRole);
+		$$('button.remove-price').addEvent('click', removePrice);
 	}
 });
 
-function removeRole()
+function removePrice()
 {
 	this.getParent().getParent().remove();
 }

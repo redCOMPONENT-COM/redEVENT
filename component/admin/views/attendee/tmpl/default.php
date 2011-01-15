@@ -92,7 +92,7 @@ defined('_JEXEC') or die('Restricted access');
 </fieldset>
 
 <fieldset class="adminform"><legend><?php echo JText::_( 'Answers' ); ?></legend>
-<?php $options = array('booking' => $this->row); ?>
+<?php $options = array('extrafields' => array(array('label' => JText::_('COM_REDEVENT_REGISTRATION_PRICE'), 'field' => $this->lists['pricegroup_id']))); ?>
 <?php
 	$rfcore = new redFormCore(); 
 	echo $rfcore->getFormFields($this->row->form_id, ($this->row->sid ? array($this->row->sid) : null), 1, $options); 

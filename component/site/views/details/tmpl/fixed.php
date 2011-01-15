@@ -245,10 +245,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		{
 			switch ($subtype) {
 				case 'email':
-					$venues_html .= '<div class="registration_method">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('email', $this->row->id, $this->row->xref)), JHTML::_('image', $imagepath.$this->elsettings->signup_email_img,  JText::_($this->elsettings->signup_email_text), 'width="24px" height="24px"')).'</div> ';
+					$venues_html .= '<div class="registration_method">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('email', $this->row->slug, $this->row->xref)), JHTML::_('image', $imagepath.$this->elsettings->signup_email_img,  JText::_($this->elsettings->signup_email_text), 'width="24px" height="24px"')).'</div> ';
 					break;
 				case 'phone':
-					$venues_html .= '<div class="registration_method">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('phone', $this->row->id, $this->row->xref)), JHTML::_('image', $imagepath.$this->elsettings->signup_phone_img,  JText::_($this->elsettings->signup_phone_text), 'width="24px" height="24px"')).'</div> ';
+					$venues_html .= '<div class="registration_method">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('phone', $this->row->slug, $this->row->xref)), JHTML::_('image', $imagepath.$this->elsettings->signup_phone_img,  JText::_($this->elsettings->signup_phone_text), 'width="24px" height="24px"')).'</div> ';
 					break;
 				case 'external':
 		      if (!empty($this->row->external_registration_url)) {
@@ -260,10 +260,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					$venues_html .= '<div class="registration_method">'.JHTML::_('link', $link, JHTML::_('image', $imagepath.$this->elsettings->signup_external_img,  $this->elsettings->signup_external_text), 'target="_blank"').'</div> ';
 					break;
 				case 'webform':
-					$venues_html .= '<div class="registration_method">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->row->id, $this->row->xref)), JHTML::_('image', $imagepath.$this->elsettings->signup_webform_img,  JText::_($this->elsettings->signup_webform_text), 'width="24px" height="24px"')).'</div> ';
+					if ($this->prices && count($this->prices))
+					{
+						foreach ($this->prices as $p) {
+							$venues_html .= '<div class="registration_method webform '.$p->alias.'">'.$p->name.' '.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->row->slug, $this->row->xref, $p->slug)), JHTML::_('image', $imagepath.$this->elsettings->signup_webform_img,  JText::_($this->elsettings->signup_webform_text), 'width="24px" height="24px"')).'</div> ';
+						}
+					}
+					else {
+						$venues_html .= '<div class="registration_method webform">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->row->slug, $this->row->xref)), JHTML::_('image', $imagepath.$this->elsettings->signup_webform_img,  JText::_($this->elsettings->signup_webform_text), 'width="24px" height="24px"')).'</div> ';
+					}
 					break;
 				case 'formaloffer':
-					$venues_html .= '<div class="registration_methodr">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('formaloffer', $this->row->id, $this->row->xref)), JHTML::_('image', $imagepath.$this->elsettings->signup_formal_offer_img,  JText::_($this->elsettings->signup_formal_offer_text), 'width="24px" height="24px"')).'</div> ';
+					$venues_html .= '<div class="registration_methodr">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('formaloffer', $this->row->slug, $this->row->xref)), JHTML::_('image', $imagepath.$this->elsettings->signup_formal_offer_img,  JText::_($this->elsettings->signup_formal_offer_text), 'width="24px" height="24px"')).'</div> ';
 					break;
 			}
 		}

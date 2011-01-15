@@ -46,6 +46,8 @@ class RedEvent_register extends JTable
 	var $sid 		= null;
 	/** @var int user id */
 	var $uid 		= null;
+	/** @var int pricegroup_id */
+	var $pricegroup_id = null;
 	/** @var date */
 	var $uregdate 	= null;
 	/** @var string ip address */

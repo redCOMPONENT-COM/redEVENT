@@ -26,6 +26,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
+require_once('baseeventslist.php');
 /**
  * EventList Component Details Model
  *
@@ -33,7 +34,7 @@ jimport('joomla.application.component.model');
  * @subpackage EventList
  * @since		0.9
  */
-class RedeventModelUpcomingevents extends JModel {
+class RedeventModelUpcomingevents extends RedeventModelBaseEventList {
 	/**
 	 * Constructor
 	 *
@@ -57,7 +58,7 @@ class RedeventModelUpcomingevents extends JModel {
 		}
 		$gids = implode(',', $gids);
 		
-		$q = ' SELECT e.*, IF (x.course_credit = 0, "", x.course_credit) AS course_credit, x.course_price, x.id AS xref, '
+		$q = ' SELECT e.*, IF (x.course_credit = 0, "", x.course_credit) AS course_credit, x.id AS xref, '
 		   . ' x.dates, x.enddates, x.times, x.endtimes, '
 		   . ' v.venue, x.venueid, v.city AS location, v.id AS venueid,	v.country, '
        . ' CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(\':\', e.id, e.alias) ELSE e.id END as slug, '
@@ -89,7 +90,10 @@ class RedeventModelUpcomingevents extends JModel {
 		$q .= " ORDER BY x.dates ";
 		$q .= "LIMIT ".$params->getValue('show_number_courses', 10);
 		$db->setQuery($q);
-		return $db->loadObjectList();
+		$rows = $db->loadObjectList();
+		
+		$rows = $this->_getPrices($rows);
+		return $rows;
 	}
 }
 ?>

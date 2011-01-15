@@ -58,6 +58,7 @@ class RedEventViewSession extends JView {
 
     $document->addScript('components/com_redevent/assets/js/xref_recurrence.js');
     $document->addScript('components/com_redevent/assets/js/xref_roles.js');
+    $document->addScript('components/com_redevent/assets/js/xref_prices.js');
     $document->addScriptDeclaration('var txt_remove = "'.JText::_('COM_REDEVENT_REMOVE').'";');
     
 		//Build the image select functionality
@@ -72,7 +73,8 @@ class RedEventViewSession extends JView {
 		$xref->eventid = ($xref->eventid) ? $xref->eventid : JRequest::getVar('eventid', 0, 'request', 'int'); 		
     $customfields =& $this->get('XrefCustomfields');
     
-    $roles =& $this->get('SessionRoles');
+    $roles  =& $this->get('SessionRoles');
+    $prices =& $this->get('SessionPrices');
     
 		$lists = array();
 		
@@ -116,6 +118,9 @@ class RedEventViewSession extends JView {
 		$rolesoptions = array(JHTML::_('select.option', 0, JText::_('Select role')));
 		$rolesoptions = array_merge($rolesoptions, $this->get('RolesOptions'));
 		
+		$pricegroupsoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_PRICEGROUP')));
+		$pricegroupsoptions = array_merge($pricegroupsoptions, $this->get('PricegroupsOptions'));
+		
 		//assign to template
     $this->assignRef('xref'         , $xref);
 		$this->assignRef('editor'      	, $editor);
@@ -126,6 +131,8 @@ class RedEventViewSession extends JView {
 		$this->assignRef('pane'			    , $pane);
 		$this->assignRef('roles'        , $roles);
 		$this->assignRef('rolesoptions' , $rolesoptions);
+		$this->assignRef('prices'       , $prices);
+		$this->assignRef('pricegroupsoptions' , $pricegroupsoptions);
 
 		parent::display($tpl);
 	}

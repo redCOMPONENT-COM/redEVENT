@@ -776,6 +776,23 @@ class ELOutput {
 				break;
 		}
 		return $formatprice;
+	}	
+
+	function formatPrices($prices)
+	{
+		if (!is_array($prices)) {
+			return;
+		}
+		
+		if (count($prices) == 1) {
+			return self::formatprice($prices[0]->price);
+		}
+		$res = array();
+		foreach ($prices as $p) 
+		{
+			$res[] = self::formatprice($p->price). '('.$p->name.')';
+		}
+		return implode(' / ', $res);
 	}
 	
 	/**

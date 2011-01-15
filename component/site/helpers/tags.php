@@ -209,8 +209,9 @@ class redEVENT_tags {
       				/* Fix the tags of the event description */
       				$findcourse = array('[venues]','[price]','[credits]', '[code]');
       				$venues_html = $this->SignUpLinks();
+      				
       				$replacecourse = array($venues_html, 
-      								ELOutput::formatprice($this->getEvent()->getData()->course_price), 
+      								$this->formatPrices($this->getEvent()->getPrices()), 
       								$this->getEvent()->getData()->course_credit,
       								$this->getEvent()->getData()->course_code);
       				$replace[] = str_replace($findcourse, $replacecourse, $this->getEvent()->getData()->datdescription);
@@ -223,7 +224,7 @@ class redEVENT_tags {
 
 				    case 'price':
 				      $search[]  = '['.$tag.']';
-      				$replace[] = ELOutput::formatprice($this->getEvent()->getData()->course_price);
+      				$replace[] = $this->formatPrices($this->getEvent()->getPrices());
       				break;
       				
 				    case 'credits':
@@ -863,7 +864,7 @@ class redEVENT_tags {
 			$order 		 = JRequest::getCmd('filter_order', 'x.dates');
 			
 			$db = JFactory::getDBO();
-			$query = ' SELECT e.*, IF (x.course_credit = 0, "", x.course_credit) AS course_credit, x.course_price, '
+			$query = ' SELECT e.*, IF (x.course_credit = 0, "", x.course_credit) AS course_credit, '
 			   . ' x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees, x.maxwaitinglist, v.venue, x.venueid, x.details, x.registrationend, '
 			   . ' x.external_registration_url, '
 			   . ' v.city AS location, v.state, v.url as venueurl, v.locdescription as venue_description, '
@@ -900,6 +901,7 @@ class redEVENT_tags {
 	    $this->_eventlinks = $this->_getPlacesLeft($this->_eventlinks);
 			$this->_eventlinks = $this->_getCategories($this->_eventlinks);
 	    $this->_eventlinks = $this->_getUserRegistrations($this->_eventlinks);
+	    $this->_eventlinks = $this->_getPrices($this->_eventlinks);
 		}
 		return $this->_eventlinks;
 	}
@@ -975,7 +977,56 @@ class redEVENT_tags {
     }
     return $rows;
   }
-  		
+    
+  /**
+   * adds registered (int) and waiting (int) properties to rows.
+   * 
+   * @return array 
+   */
+  private function _getPrices($rows) 
+  {
+    $db = JFactory::getDBO();
+    $ids = array();
+    foreach ($rows as $k => $r) 
+    {
+    	$ids[$r->xref] = $k;
+    }
+  	$query = ' SELECT sp.*, p.name, p.alias, '
+	         . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug ' 
+  	       . ' FROM #__redevent_sessions_pricegroups AS sp '
+  	       . ' INNER JOIN #__redevent_pricegroups AS p on p.id = sp.pricegroup_id '
+  	       . ' WHERE sp.xref IN (' . implode(",", array_keys($ids)).')'
+  	       . ' ORDER BY p.ordering ASC '
+  	       ;
+  	$db->setQuery($query);
+  	$res = $db->loadObjectList();
+  	
+  	// sort this out
+  	$prices = array();
+  	foreach ($res as $p)
+  	{
+  		if (!isset($prices[$p->xref])) {
+  			$prices[$p->xref] = array($p);
+  		}
+  		else {
+  			$prices[$p->xref][] = $p;
+  		}
+  	}
+  	
+  	// add to rows
+    foreach ($rows as $k => $r) 
+    {
+    	if (isset($prices[$r->xref])) {
+    		$rows[$k]->prices = $prices[$r->xref];
+    	}
+    	else {
+    		$rows[$k]->prices = null;
+    	}
+    }
+  	
+    return $rows;
+  }
+  
 	/**
 	 * recursively replaces all the library tags from the text
 	 * 
@@ -1285,25 +1336,80 @@ class redEVENT_tags {
    */
   function getForm()
   {
+		$app = &JFactory::getApplication();
   	$submit_key = JRequest::getVar('submit_key');
-  	$options = array('booking' => $this->getEvent()->getData());  	
+  	
+  	$details = $this->getEvent()->getData();
+  	$prices  = $this->getEvent()->getPrices();
+  	$options = array('extrafields' => array());
+  	
  		$rfcore = $this->_getRFCore();
  		if (!$rfcore->getFormStatus($this->getEvent()->getData()->redform_id)) {
 			$error = $rfcore->getError();
 			return '<span class="redform_error">'.$error.'</span>';
  		}
+ 		
   	$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute($this->_xref, 'register'));
+  	
   	// multiple signup ?
   	$single = JRequest::getInt('single', 0);
   	$max = $this->getEvent()->getData()->max_multi_signup;
   	if ($max && ! $single) {
   		$multi = $max;
   	}
-  	else {
+  	else { // single signup 
   		$multi = 1;
-  	}  	
+  	}
   	
-		$html = '<form action="'.$action.'" method="post" name="redform" enctype="multipart/form-data" onsubmit="return CheckSubmit(this);">';
+  	// multiple pricegroup handling  
+  	$selpg = null;
+  	if (count($prices))
+  	{
+	  	// is pricegroup already selected ?
+	  	// if a review, we already have pricegroup_id in session
+	  	$pgids = $app->getUserState('pgids'.$submit_key);	  	
+	  	if (!empty($pgids)) {
+	  		$pg = intval($pgids[0]);
+	  	}
+	  	else {
+	  		$pg = JRequest::getInt('pg');
+	  	}
+	  	
+	  	if (count($prices) == 1) {
+	  		$selpg = current($prices);
+	  	}
+	  	else if ($pg)
+	  	{
+	  		foreach ($prices as $p)
+	  		{
+	  			if ($p->pricegroup_id == $pg)
+	  			{
+	  				$selpg = $p;
+	  				break;
+	  			}
+	  		}
+	  	}
+  	
+  		if (($multi > 1 && count($prices) > 1) || !$selpg) // multiple selection
+  		{
+  			$field = array();
+  			$field['label'] = '<label for="pricegroup_id">'.JText::_('COM_REDEVENT_REGISTRATION_PRICE').'</label>';
+  			$field['field'] = redEVENTHelper::getRfPricesSelect($prices);
+	  		$options['extrafields'][] = $field;
+  		}
+  		else // single selection => hidden field
+  		{
+  			$field = array();
+  			$field['label'] = '<label for="pricegroup_id">'.JText::_('COM_REDEVENT_REGISTRATION_PRICE').'</label>';
+  			$field['field'] = $selpg->price.(count($prices) > 1 ? ' ('.$selpg->name.')' : '') . '<input type="hidden" name="pricegroup_id[]" class="fixedprice" value="'.$selpg->pricegroup_id.'" price="'.$selpg->price.'" />';
+	  		$options['extrafields'][] = $field;
+  		}
+  	}
+  	  	
+  	$details->course_price = null;
+  	$options['booking'] = $details;
+
+  	$html = '<form action="'.$action.'" method="post" name="redform" enctype="multipart/form-data" onsubmit="return CheckSubmit(this);">';
   	$html .= $rfcore->getFormFields($this->getEvent()->getData()->redform_id, $submit_key, $multi, $options);
   	$html .= '<input type="hidden" name="xref" value="'.$this->_xref.'"/>';
   	if ($this->getOption('hasreview')) {
@@ -1380,6 +1486,22 @@ class redEVENT_tags {
 		}
 
 		return $url;
+	}
+	
+	function formatPrices($prices)
+	{
+		if (!is_array($prices)) {
+			return;
+		}
+		if (count($prices) == 1) {
+			return ELOutput::formatprice($prices[0]);
+		}
+		$res = array();
+		foreach ($prices as $p) 
+		{
+			$res[] = ELOutput::formatprice($p->price). '('.$p->name.')';
+		}
+		return implode(' / ', $res);
 	}
 }
 ?>

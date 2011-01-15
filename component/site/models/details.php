@@ -149,7 +149,7 @@ class RedeventModelDetails extends JModel
 					. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone, a.review_message, '
 					. ' v.venue, v.city, v.locimage, v.map, v.country, v.street, v.plz, v.state, v.locdescription, '
 					. ' u.name AS creator_name, u.email AS creator_email, '
-					. " a.confirmation_message, x.course_price, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.catname, c.published, c.access,"
+					. " a.confirmation_message, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.catname, c.published, c.access,"
 	        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
 	        . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug, '
 	        . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as venueslug '
@@ -165,7 +165,7 @@ class RedeventModelDetails extends JModel
 			$this->_details = $this->_db->loadObject();
 			if ($this->_details) {
         $this->_details = $this->_getEventCategories($this->_details);	
-				$this->_details->attachments = REAttach::getAttachments('event'.$this->_details->did, $user->get('aid'));			
+				$this->_details->attachments = REAttach::getAttachments('event'.$this->_details->did, $user->get('aid'));
 			}
 			return (boolean) $this->_details;
 		}
@@ -180,7 +180,7 @@ class RedeventModelDetails extends JModel
   {
   	if (empty($this->_xreflinks))
   	{
-	    $q = ' SELECT e.*, IF (x.course_credit = 0, "", x.course_credit) AS course_credit, x.course_price, '
+	    $q = ' SELECT e.*, IF (x.course_credit = 0, "", x.course_credit) AS course_credit, '
 	       . ' x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, v.venue, x.venueid, x.details, x.registrationend, '
 	       . ' x.external_registration_url, '
 	       . ' v.city AS location, '
@@ -200,7 +200,8 @@ class RedeventModelDetails extends JModel
 	    $this->_db->setQuery($q);
 	    $rows = $this->_db->loadObjectList();
 	    	  	
-	    foreach ((array)$rows as $k => $r) {
+	    foreach ((array)$rows as $k => $r) 
+	    {
 	      $query = ' SELECT c.id, c.catname, c.image, '
 	             . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(":", c.id, c.alias) ELSE c.id END as slug '
 	             . ' FROM #__redevent_categories AS c '
@@ -598,7 +599,7 @@ class RedeventModelDetails extends JModel
   }
   
   /**
-   * return roles for the session
+   * return roles for the current session
    * 
    * @return array
    */
@@ -665,6 +666,27 @@ class RedeventModelDetails extends JModel
   		}
   	}  	
   	
+  	return $res;
+  }
+  
+  /**
+   * get current session prices
+   * 
+   * @return array
+   */
+  function getPrices()
+  {
+  	$event = $this->getDetails();
+
+  	$query = ' SELECT sp.*, p.name, p.alias, '
+	         . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug ' 
+  	       . ' FROM #__redevent_sessions_pricegroups AS sp '
+  	       . ' INNER JOIN #__redevent_pricegroups AS p on p.id = sp.pricegroup_id '
+  	       . ' WHERE sp.xref = ' . $this->_db->Quote($event->xref)
+  	       . ' ORDER BY p.ordering ASC '
+  	       ;
+  	$this->_db->setQuery($query);
+  	$res = $this->_db->loadObjectList();   	
   	return $res;
   }
 }

@@ -118,7 +118,7 @@ class RedEventModelAttendee extends JModel
 		$obj = & JTable::getInstance('redevent_register', '');
 		
 	  // get form id and answer id
-		$query = ' SELECT a.redform_id as form_id, a.course_code, x.course_price, x.id as xref '
+		$query = ' SELECT a.redform_id as form_id, a.course_code, x.id as xref '
 		       . ' FROM #__redevent_event_venue_xref AS x '
 		       . ' INNER JOIN #__redevent_events AS a ON a.id =  x.eventid '
 		       . ' WHERE x.id = '.$this->_xref
@@ -127,7 +127,6 @@ class RedEventModelAttendee extends JModel
 		$ac = $this->_db->loadObject();
 		$obj->form_id      = $ac->form_id;
 		$obj->course_code  = $ac->course_code;
-		$obj->course_price = $ac->course_price;
 		$obj->xref         = $this->_xref;
 		$obj->answers = null;
 
@@ -151,11 +150,12 @@ class RedEventModelAttendee extends JModel
 		if (empty($this->_data))
 		{
 		  // get form id and answer id
-			$query = ' SELECT r.*, s.form_id, a.course_code, x.course_price '
+			$query = ' SELECT r.*, s.form_id, a.course_code, sp.price, sp.pricegroup_id '
 			       . ' FROM #__redevent_register AS r '
 			       . ' INNER JOIN #__rwf_submitters AS s ON s.id =  r.sid '
 			       . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.id =  r.xref '
 			       . ' INNER JOIN #__redevent_events AS a ON a.id =  x.eventid '
+			       . ' LEFT JOIN #__redevent_sessions_pricegroups AS sp ON sp.xref =  x.id AND sp.pricegroup_id = r.pricegroup_id'
 			       . ' WHERE r.id = '.$this->_id
 					;
 			$this->_db->setQuery($query);
@@ -247,18 +247,22 @@ class RedEventModelAttendee extends JModel
 	function store($data)
 	{	
 		$xref = intval($data['xref']);
+		$pricegroup = intval($data['pricegroup_id']);
+		$id = JRequest::getInt('id');
+		
 	  // get price
-		$query = ' SELECT x.course_price, a.activate '
+		$query = ' SELECT pg.price, a.activate '
 		       . ' FROM #__redevent_event_venue_xref AS x '
 		       . ' INNER JOIN #__redevent_events AS a ON a.id =  x.eventid '
+		       . ' LEFT JOIN #__redevent_sessions_pricegroups AS pg ON pg.xref =  x.id AND pg.pricegroup_id = '.$pricegroup
 		       . ' WHERE x.id = '.$xref
 				   ;
 		$this->_db->setQuery($query);
 		$details = $this->_db->loadObject();
-		
+				
 		// first save redform data	
 		$rfcore = new redFormCore();
-		$result = $rfcore->saveAnswers('redevent', array('baseprice' => $details->course_price, 'edit' => 1));	
+		$result = $rfcore->saveAnswers('redevent', array('baseprice' => $details->price, 'edit' => 1));	
   	if (!$result) {
   		$msg = JTEXT::_('REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED');
   		$this->setError($msg.' - '.$rfcore->getError());
@@ -275,6 +279,9 @@ class RedEventModelAttendee extends JModel
 		}
   	
 		$row =& JTable::getInstance('redevent_register', '');
+		if ($id) {
+			$row->load($id);
+		}
 				
 		//Bind the form fields to the table
 		if (!$row->bind($data)) {
@@ -295,6 +302,19 @@ class RedEventModelAttendee extends JModel
 		}
 		
 		return $row->id;
+	}
+	
+	function getPricegroups()
+	{
+		$query = ' SELECT sp.*, p.name ' 
+		       . ' FROM #__redevent_sessions_pricegroups AS sp '
+		       . ' INNER JOIN #__redevent_pricegroups AS p ON p.id = sp.pricegroup_id ' 
+		       . ' WHERE sp.xref = ' . $this->_db->Quote($this->_xref)
+		       . ' ORDER BY p.ordering '
+		       ;
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadObjectList();
+		return $res;
 	}
 }
 ?>

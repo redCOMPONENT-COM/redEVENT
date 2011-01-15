@@ -78,6 +78,7 @@ class RedeventViewEditevent extends JView
 		$customs  = &$this->get('Customfields');
 		$xcustoms = &$this->get('XrefCustomfields');
     $roles    = &$this->get('SessionRoles');
+    $prices   = &$this->get('SessionPrices');
     
 		//Get requests
 		$id					= JRequest::getInt('id');
@@ -104,6 +105,7 @@ class RedeventViewEditevent extends JView
 				
     $document->addScript('administrator/components/com_redevent/assets/js/xref_roles.js');
     $document->addScriptDeclaration('var txt_remove = "'.JText::_('COM_REDEVENT_REMOVE').'";');
+    $document->addScript('administrator/components/com_redevent/assets/js/xref_prices.js');
     
 		//Set page title
 		$id ? $title = $row->title.' - '.JText::_( 'EDIT EVENT' ) : $title = JText::_( 'ADD EVENT' );
@@ -164,6 +166,9 @@ class RedeventViewEditevent extends JView
 		$rolesoptions = array(JHTML::_('select.option', 0, JText::_('Select role')));
 		$rolesoptions = array_merge($rolesoptions, $this->get('RolesOptions'));
 		
+		$pricegroupsoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_PRICEGROUP')));
+		$pricegroupsoptions = array_merge($pricegroupsoptions, $this->get('PricegroupsOptions'));
+		
 		$this->assignRef('row',        $row);
 		$this->assignRef('customs',    $customs);
 		$this->assignRef('xcustoms',   $xcustoms);
@@ -182,6 +187,8 @@ class RedeventViewEditevent extends JView
 		$this->assignRef('access'	, redEVENTHelper::getAccesslevelOptions());
 		$this->assignRef('roles'        , $roles);
 		$this->assignRef('rolesoptions' , $rolesoptions);
+		$this->assignRef('prices'       , $prices);
+		$this->assignRef('pricegroupsoptions' , $pricegroupsoptions);
 		
 		parent::display($tpl);
 
@@ -258,11 +265,13 @@ class RedeventViewEditevent extends JView
 
     $document->addScript('administrator/components/com_redevent/assets/js/xref_roles.js');
     $document->addScriptDeclaration('var txt_remove = "'.JText::_('COM_REDEVENT_REMOVE').'";');
+    $document->addScript('administrator/components/com_redevent/assets/js/xref_prices.js');
     
 		// get xref data
 		$xref     = &$this->get('SessionDetails');
 		$customs  = &$this->get('XrefCustomfields');
     $roles    = &$this->get('SessionRoles');
+    $prices   = &$this->get('SessionPrices');
 		
 		// form elements
 		$lists = array();
@@ -303,6 +312,9 @@ class RedeventViewEditevent extends JView
 		$rolesoptions = array(JHTML::_('select.option', 0, JText::_('Select role')));
 		$rolesoptions = array_merge($rolesoptions, $this->get('RolesOptions'));
 		
+		$pricegroupsoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_PRICEGROUP')));
+		$pricegroupsoptions = array_merge($pricegroupsoptions, $this->get('PricegroupsOptions'));
+		
 		$this->assignRef('params',       $params);
 		$this->assignRef('editor',       $editor);
 		$this->assignRef('xref',         $xref);
@@ -310,6 +322,8 @@ class RedeventViewEditevent extends JView
 		$this->assignRef('customfields', $customs);
 		$this->assignRef('roles'        , $roles);
 		$this->assignRef('rolesoptions' , $rolesoptions);
+		$this->assignRef('prices'       , $prices);
+		$this->assignRef('pricegroupsoptions' , $pricegroupsoptions);
 		
 		parent::display($tpl);
 	}

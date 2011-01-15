@@ -113,8 +113,17 @@ class RedeventViewRegistration extends JView
 			JError::raiseError(403,'NOT AUTHORIZED');
 			return false;
 		}
+		
+		$rfoptions = array();
+		
+		$prices = $this->get('Pricegroups');
+		$field = array();
+		$field['label'] = '<label for="pricegroup_id">'.JText::_('COM_REDEVENT_REGISTRATION_PRICE').'</label>';
+		$field['field'] = redEVENTHelper::getRfPricesSelect($prices, $registration->pricegroup_id);
+		$rfoptions['extrafields'][] = $field;
+	  		
 		$rfcore = new RedformCore();
-		$rfields = $rfcore->getFormFields($course->redform_id, array($submitter_id), 1);		
+		$rfields = $rfcore->getFormFields($course->redform_id, array($submitter_id), 1, $rfoptions);		
 		
 		
 		$this->assign('action' ,  $action);

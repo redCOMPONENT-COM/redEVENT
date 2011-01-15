@@ -65,6 +65,8 @@ class RedEventModelRegistration extends JModel
 	
 	var $mailer = null;
 	
+	var $_prices = null;
+	
 	function __construct($xref = 0, $config = array())
 	{
 		parent::__construct($config);
@@ -91,7 +93,7 @@ class RedEventModelRegistration extends JModel
 		}
 	}
 	
-	function register($sid, $submit_key, $data = array())
+	function register($sid, $submit_key, $pricegroup_id)
 	{
 		$user    = &JFactory::getUser();
 		$config  = redEventHelper::config();
@@ -103,6 +105,7 @@ class RedEventModelRegistration extends JModel
 			$obj->loadBySid($sid);
 			$obj->sid        = $sid;
 			$obj->xref       = $this->_xref;
+			$obj->pricegroup_id = $pricegroup_id;
 			$obj->submit_key = $submit_key;
 			$obj->uid        = $user->get('id');
 			$obj->uregdate 	 = gmdate('Y-m-d H:i:s');
@@ -143,7 +146,7 @@ class RedEventModelRegistration extends JModel
 					. ' v.venue,'
 					. ' u.name AS creator_name, u.email AS creator_email, '
 					. ' a.confirmation_message, a.review_message, '
-					. " x.course_price, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.catname, c.published, c.access,"
+					. " IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.catname, c.published, c.access,"
 	        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
 	        . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
 					. ' FROM #__redevent_events AS a'
@@ -687,7 +690,7 @@ class RedEventModelRegistration extends JModel
 	
 	function getRegistration($submitter_id)
 	{
-		$query =' SELECT s.*, r.uid, e.unregistra '
+		$query =' SELECT s.*, r.uid, r.pricegroup_id, e.unregistra '
         . ' FROM #__rwf_submitters AS s '
         . ' INNER JOIN #__redevent_register AS r ON r.sid = s.id '
         . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.id = r.xref '
@@ -818,4 +821,60 @@ class RedEventModelRegistration extends JModel
 		}
 		return false;
 	}	
+	
+	/**
+	 * get price according to pricegroup
+	 * 
+	 * @param unknown_type $pricegroup
+	 */
+	function getRegistrationPrice($pricegroup)
+	{
+		if (is_null($this->_prices))
+		{
+			$event = $this->getSessionDetails();
+			$query = ' SELECT * ' 
+			       . ' FROM #__redevent_sessions_pricegroups ' 
+			       . ' WHERE xref = ' . $event->xref
+			       . ' ORDER BY price DESC '
+			       ;
+			$this->_db->setQuery($query);
+			$res = $this->_db->loadObjectList();
+			$this->_prices = $res ? $res : array();
+		}
+		
+		if (!count($this->_prices)) {
+			return 0;
+		}
+		foreach ($this->_prices as $p)
+		{
+			if ($p->pricegroup_id == $pricegroup)
+			{
+				return $p->price;
+				break;
+			}
+		}
+		//pricegroup not found... not good at all ! 
+		$this->setError(JText::_('Pricegroup not found'));
+		return false;
+	}
+
+  /**
+   * get current session prices
+   * 
+   * @return array
+   */
+  function getPricegroups()
+  {
+		$event = $this->getSessionDetails();
+  	$query = ' SELECT sp.*, p.name, p.alias, '
+	         . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug ' 
+  	       . ' FROM #__redevent_sessions_pricegroups AS sp '
+  	       . ' INNER JOIN #__redevent_pricegroups AS p on p.id = sp.pricegroup_id '
+  	       . ' WHERE sp.xref = ' . $this->_db->Quote($event->xref)
+  	       . ' ORDER BY p.ordering ASC '
+  	       ;
+  	$this->_db->setQuery($query);
+  	$res = $this->_db->loadObjectList();   	
+  	return $res;
+  }
 }

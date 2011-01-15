@@ -21,5 +21,8 @@ DROP TABLE IF EXISTS
 	`#__redevent_repeats`,
 	`#__redevent_roles`,
 	`#__redevent_sessions_roles`,
-	`#__redevent_attachments`
+	`#__redevent_attachments`,
+	`#__redevent_roles_redmember`,
+	`#__redevent_pricegroups`,
+	`#__redevent_sessions_pricegroups`
 	;

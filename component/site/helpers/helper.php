@@ -1115,5 +1115,23 @@ class redEVENTHelper {
     return '<input type="text" name="'.$name.'" id="'.$id.'" value="'.htmlspecialchars($value, ENT_COMPAT, 'UTF-8').'" '.$attribs.' />'.
          '<img class="calendar" src="'.JURI::root(true).'/templates/system/images/calendar.png" alt="calendar" id="'.$id.'_img" />';
   }
+  
+  /**
+   * generates the html for price group selection for redform
+   * 
+   * @param array session pricegroups objects
+   * @param int selected pricegroup id
+   * @return string html
+   */
+  function getRfPricesSelect($sessionpricegroups, $selected = null)
+  {
+  	$sel = '<select name="pricegroup_id">';
+  	foreach ((array)$sessionpricegroups as $p)
+  	{
+  		$sel .= '<option value="'.$p->pricegroup_id.'" price="'.$p->price.'"'.($p->pricegroup_id == $selected ? ' selected="selected"' : '').'>'.$p->price.' ('.$p->name.')'.'</option>';
+  	}
+  	$sel .= '</select>';
+  	return $sel;
+  }
 }
 ?>

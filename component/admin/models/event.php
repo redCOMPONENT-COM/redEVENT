@@ -258,7 +258,6 @@ class RedEventModelEvent extends JModel
 			$event->show_names					= 0;
 			$event->showfields					= '';
 			$event->course_credit				= 0;
-			$event->course_price				= 0;
 			$event->course_code					= 0;
 			$event->submission_types			= null;
 			$event->submission_type_email		= null;

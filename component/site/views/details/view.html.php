@@ -55,9 +55,10 @@ class RedeventViewDetails extends JView
 		$row         = $this->get('Details');
 		$registers   = $this->get('Registers');
 		$roles       = $this->get('Roles');
+		$prices      = $this->get('Prices');
 		$register_fields	= $this->get('FormFields');
 		$regcheck	        = $this->get('Usercheck');
-
+		
 		/* Get the venues information */
 		$this->_venues = $this->get('Venues');
 		
@@ -233,6 +234,7 @@ class RedeventViewDetails extends JView
 		$this->assignRef('venuedates'	,      $venuedates);
     $this->assignRef('unreg_check' ,     $unreg_check);
     $this->assignRef('roles' ,           $roles);
+    $this->assignRef('prices',           $prices);
 	
 		$tpl = JRequest::getVar('tpl', $tpl);
     if ($tpl == '')

@@ -212,13 +212,6 @@ if (is_array($cols)) {
 		$db->query();
 	}
 	
-	/* Check if we have the course_price column */
-	if (!array_key_exists('course_price', $cols)) {
-		$q = "ALTER IGNORE TABLE #__redevent_events ADD COLUMN `course_price` decimal(12,2) default '0.00'";
-		$db->setQuery($q);
-		$db->query();
-	}
-	
 	/* Check if we have the max_multi_signup column */
 	if (!array_key_exists('max_multi_signup', $cols)) {
 		$q = "ALTER IGNORE TABLE #__redevent_events ADD COLUMN `max_multi_signup` int(2) unsigned NOT NULL default '1'";
@@ -501,12 +494,6 @@ if (is_array($cols)) {
 		$db->setQuery($q);
 		$db->query();
 	}
-	
-	if (!array_key_exists('course_price', $cols)) {
-		$q = "ALTER IGNORE TABLE #__redevent_event_venue_xref ADD COLUMN `course_price` DECIMAL(12,2) default '0.00'";
-		$db->setQuery($q);
-		$db->query();
-	}
 		
   if (!array_key_exists('details', $cols)) {
     $q ="ALTER IGNORE TABLE `#__redevent_event_venue_xref` ADD COLUMN `details` TEXT NOT NULL AFTER `endtimes`";
@@ -573,7 +560,8 @@ if (is_array($cols)) {
 /* register table */
 $cols = $tables['#__redevent_register'];
 
-if (is_array($cols)) {
+if (is_array($cols)) 
+{
   if (isset($cols['submit_key']) && !stristr($cols['submit_key']->Type, 'varchar')) {
   	$q = "ALTER TABLE `#__redevent_register` CHANGE `submit_key` `submit_key` VARCHAR( 45 ) NULL DEFAULT NULL";
   	$db->setQuery($q);
@@ -694,6 +682,33 @@ if (is_array($cols)) {
     $q = "ALTER TABLE `#__redevent_register` ADD INDEX (`sid`)";
     $db->setQuery($q);
     $db->query();  	
+  }
+  
+  if (!array_key_exists('pricegroup_id', $cols)) 
+  {
+    $q = ' ALTER TABLE `#__redevent_register` '
+       . '   ADD `pricegroup_id` int(11) NOT NULL default "0" '
+       ;
+    $db->setQuery($q);
+    $db->query();    
+    
+    $q = "ALTER TABLE `#__redevent_register` ADD INDEX (`pricegroup_id`)";
+    $db->setQuery($q);
+    $db->query(); 
+
+    // need to convert course_price to use pricegroups and sessions_pricegroups
+    // create first a dummy pricegroup
+    $q = ' INSERT INTO `#__redevent_pricegroups` (name, alias) VALUES ('.$db->Quote('unique').', '.$db->Quote('unique').') ';
+    $db->setQuery($q);
+    $db->query();    
+    $id = $db->insertid();
+    
+    $q = ' INSERT INTO `#__redevent_sessions_pricegroups` (xref, price, pricegroup_id) '
+       . ' SELECT id, course_price, '.$id
+       . ' FROM `#__redevent_event_venue_xref` WHERE course_price > 0 '
+       ;
+    $db->setQuery($q);
+    $db->query();    
   }
 }
 

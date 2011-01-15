@@ -49,7 +49,7 @@ foreach ($this->upcomingvenueevents as $key => $event) {
 		<td><?php echo ELOutput::formatdate($event->dates, $event->times); ?></td>
 		<td><?php echo redEVENTHelper::getEventDuration($event); ?></td>
 		<td><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
-		<td><?php echo ELOutput::formatprice($event->course_price).'/'.$event->course_credit ?></td>
+		<td><?php echo ELOutput::formatprices($event->prices); ?></td>
 		<td>
 		<?php
 		/* Get the different submission types */
@@ -67,7 +67,15 @@ foreach ($this->upcomingvenueevents as $key => $event) {
 					$venues_html .= '<div class="vlink external">'.JHTML::_('link', $event->submission_type_external, JHTML::_('image', $imagepath.$elsettings->signup_external_img,  $elsettings->signup_external_text), 'target="_blank"').'</div> ';
 					break;
 				case 'webform':
-					$venues_html .= '<div class="vlink webform">'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&subtype=webform&task=signup&xref='.$event->xref.'&id='.$event->id), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  $elsettings->signup_webform_text, 'width="24px" height="24px"')).'</div> ';
+					if ($event->prices && count($event->prices))
+					{
+						foreach ($event->prices as $p) {
+							$venues_html .= '<div class="vlink webform '.$p->alias.'">'.$p->name.' '.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref, $p->slug)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text), 'width="24px" height="24px"')).'</div> ';
+						}
+					}
+					else {
+						$venues_html .= '<div class="vlink webform">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text), 'width="24px" height="24px"')).'</div> ';
+					}
 					break;
 				case 'formaloffer':
 					$venues_html .= '<div class="vlink formaloffer">'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&subtype=formaloffer&task=signup&xref='.$event->xref.'&id='.$event->id), JHTML::_('image', $imagepath.$elsettings->signup_formal_offer_img,  $elsettings->signup_formal_offer_text, 'width="24px" height="24px"')).'</div> ';
