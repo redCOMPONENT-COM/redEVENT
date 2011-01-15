@@ -121,7 +121,7 @@ class RedeventModelRole extends JModel
 				
 			JArrayHelper::toInteger($cid);
 			$cids = implode( ',', $cid );
-			$query = 'DELETE FROM #__redevent_sessions_roles'
+			$query = 'DELETE FROM #__redevent_roles'
 				. ' WHERE id IN ( '.$cids.' )';
 			
 			$this->_db->setQuery( $query );
