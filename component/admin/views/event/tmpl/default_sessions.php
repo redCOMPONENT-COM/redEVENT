@@ -55,7 +55,7 @@
 		}
 		?>
 		<tr id="add-xref">
-			<td colspan="8"><a href="<?php echo JRoute::_('index.php?option=com_redevent&controller=events&task=editxref&tmpl=component&eventid='. $this->row->id); ?>" class="xrefmodal"><?php echo JText::_('Add'); ?></a></td>
+			<td colspan="8"><a href="<?php echo JRoute::_('index.php?option=com_redevent&controller=sessions&task=editxref&tmpl=component&eventid='. $this->row->id); ?>" class="xrefmodal"><?php echo JText::_('Add'); ?></a></td>
 		</tr>
 	</tbody>
 </table>
