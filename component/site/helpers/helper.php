@@ -264,9 +264,9 @@ class redEVENTHelper {
 					$query = ' INSERT INTO #__redevent_sessions_roles (xref, role_id, user_id) ' 
 					       . ' SELECT '.$object->id.', role_id, user_id '
 					       . ' FROM #__redevent_sessions_roles '
-					       . ' WHERE xref = ' . $this->_db->Quote($r->xref_id);
-					$this->_db->setQuery($query);
-					if (!$this->_db->query()) {
+					       . ' WHERE xref = ' . $db->Quote($r->xref_id);
+					$db->setQuery($query);
+					if (!$db->query()) {
 						RedeventHelperLog::simpleLog('recurrence copying roles error: '.$db->getErrorMsg());
 					}
 
