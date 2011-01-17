@@ -53,7 +53,7 @@ class RedEventModelAttendees extends JModel
 		$xref = JRequest::getInt('xref');
 		$this->setXref((int)$xref);
 		
-		$filter_order     = $mainframe->getUserStateFromRequest( 'com_redevent.attendees.filter_order', 'filter_order', 'default_column_name', 'cmd' );
+		$filter_order     = $mainframe->getUserStateFromRequest( 'com_redevent.attendees.filter_order', 'filter_order', 'r.id', 'cmd' );
 		$filter_order_Dir = $mainframe->getUserStateFromRequest( 'com_redevent.attendees.filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
 
 		$this->setState('filter_order', $filter_order);
