@@ -225,6 +225,7 @@ class RedeventModelCategories extends JModel
       $query .= ' AND (c.private = 0 OR gc.id IS NOT NULL) ';
       
       $query .= '   GROUP BY c.id '; 
+      $query .= '  ORDER BY c.ordering ASC ';
       
 		return $query;
 	}
