@@ -1274,6 +1274,7 @@ class RedeventModelEditevent extends JModel
            . ' FROM #__redevent_fields AS f '
            . ' WHERE f.object_key = '. $this->_db->Quote("redevent.xref")
            . '   AND f.frontend_edit = 1 '
+           . '   AND f.published = 1 '
            . ' ORDER BY f.ordering '
            ;
     $this->_db->setQuery($query);
@@ -1308,6 +1309,7 @@ class RedeventModelEditevent extends JModel
            . ' FROM #__redevent_fields AS f '
            . ' WHERE f.object_key = '. $this->_db->Quote("redevent.event")
            . '   AND f.frontend_edit = 1 '
+           . '   AND f.published = 1 '
            . ' ORDER BY f.ordering '
            ;
     $this->_db->setQuery($query);
