@@ -117,6 +117,20 @@ class RedeventModelSimpleList extends RedeventModelBaseEventList
 				}
 			}
 		}
+			
+    if ($filter_venue = $this->getState('filter_venue'))
+    {
+    	$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);    	
+    }
+	    
+		if ($cat = $this->getState('filter_category')) 
+		{		
+    	$category = $this->getCategory((int) $cat);
+    	if ($category) {
+				$where[] = '(c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
+    	}
+		}
+		
 		// more filters
 		if ($state = JRequest::getVar('state', '', 'request', 'string')) {
 			$where[] = ' STRCMP(l.state, '.$this->_db->Quote($state).') = 0 ';

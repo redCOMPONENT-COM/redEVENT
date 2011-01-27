@@ -128,9 +128,9 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 		 */
 		if ($params->get('filter'))
 		{
-      $filter     = $mainframe->getUserStateFromRequest('com_redevent.venueevents.filter', 'filter', '', 'string');
-      $filter_type  = $mainframe->getUserStateFromRequest('com_redevent.venueevents.filter_type', 'filter_type', '', 'string');
-
+			$filter 		  = $this->getState('filter');
+			$filter_type 	= $this->getState('filter_type');
+			
 			if ($filter)
 			{
 				// clean filter variables
@@ -148,8 +148,20 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 						$where[] = ' LOWER( c.catname ) LIKE '.$filter;
 						break;
 				}
-
 			}
+		}
+	
+    if ($filter_venue = $this->getState('filter_venue'))
+    {
+    	$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);    	
+    }
+	    
+		if ($cat = $this->getState('filter_category')) 
+		{		
+    	$category = $this->getCategory((int) $cat);
+    	if ($category) {
+				$where[] = '(c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
+    	}
 		}
 		
     $customs = $this->getState('filter_customs');	

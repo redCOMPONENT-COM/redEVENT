@@ -24,46 +24,6 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
-<form action="<?php echo $this->action; ?>" method="post" id="adminForm">
-
-<?php if ($this->params->get('filter') || $this->params->get('display')) : ?>
-<div id="el_filter" class="floattext">
-		<?php if ($this->params->get('filter')) : ?>
-		<div id="filters-toggle"><?php echo JTExt::_('COM_REDEVENT_TOGGLE_FILTERS'); ?></div>
-		<div class="el_fleft" id="el-events-filters">
-			<?php
-			echo '<label for="filter_type">'.JText::_('FILTER').'</label>&nbsp;';
-			echo $this->lists['filter_types'].'&nbsp;';
-			?>
-			<input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="text_area" onchange="document.getElementById('adminForm').submit();" title="<?php echo JText::_('EVENTS_FILTER_HINT'); ?>"/>
-			<button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_( 'GO' ); ?></button>
-			<button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_( 'RESET' ); ?></button>
-			
-			<?php if ($this->customsfilters && count($this->customsfilters)): ?>
-			<div class="custom-filters">
-    	<?php foreach ($this->customsfilters as $custom): ?>
-      <div class="a-filter">
-      	<?php echo '<label for="filtercustom'.$custom->id.'">'.JText::_($custom->name).'</label>&nbsp;'; ?>
-      	<?php echo $custom->renderFilter(array('class' => "inputbox dynfilter"), isset($this->filter_customs[$custom->id]) ? $this->filter_customs[$custom->id] : null); ?>
-      </div>
-    	<?php endforeach; ?>
-    	</div>
-    	<?php endif; ?>
-    	<input type="hidden" id="f-showfilters" name="showfilters" value="<?php echo JRequest::getInt('showfilters', 0); ?>"/>
-		</div>
-		<?php endif; ?>
-		
-		<?php if ($this->params->get('display')) : ?>
-		<div class="el_fright">
-			<?php
-			echo '<label for="limit">'.JText::_('DISPLAY NUM').'</label>&nbsp;';
-			echo $this->pageNav->getLimitBox();
-			?>
-		</div>
-		<?php endif; ?>
-</div>
-<?php endif; ?>
-
 <table class="eventtable" width="<?php echo $this->elsettings->tablewidth; ?>" border="0" cellspacing="0" cellpadding="0" summary="eventlist">
 	
 	<colgroup>

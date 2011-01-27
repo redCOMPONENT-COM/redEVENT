@@ -205,21 +205,41 @@ class RedeventViewCategoryevents extends JView
 
 	function _buildSortLists($elsettings)
 	{
-    $app = & JFactory::getApplication();
+    $app    = & JFactory::getApplication();
+		$params = $app->getParams();
     
 		// Table ordering values
 		$filter_order		= JRequest::getCmd('filter_order', 'x.dates');
 		$filter_order_Dir	= JRequest::getCmd('filter_order_Dir', 'ASC');
 
-    $filter     = $app->getUserState('com_redevent.categoryevents.filter');
-    $filter_type  = $app->getUserState('com_redevent.categoryevents.filter_type');
+		$state = $this->get('state');
+		
+    $filter          = $state->get('filter');
+    $filter_type     = $state->get('filter_type');
+    $filter_category = $state->get('filter_category');
+    $filter_venue    = $state->get('filter_venue');
+      
 
 		$sortselects = array();
-		$sortselects[]	= JHTML::_('select.option', 'title', $elsettings->titlename );
-		$sortselects[] 	= JHTML::_('select.option', 'venue', $elsettings->locationname );
-		$sortselects[] 	= JHTML::_('select.option', 'city', $elsettings->cityname );
-		$sortselect 	= JHTML::_('select.genericlist', $sortselects, 'filter_type', 'size="1" class="inputbox"', 'value', 'text', $filter_type );
-
+		if ($params->get('filter_type_event', 1))	$sortselects[]	= JHTML::_('select.option', 'title', $elsettings->titlename );
+		if ($params->get('filter_type_venue', 1))	$sortselects[] 	= JHTML::_('select.option', 'venue', $elsettings->locationname );
+		if ($params->get('filter_type_city', 1))	$sortselects[] 	= JHTML::_('select.option', 'city', $elsettings->cityname );
+		
+		if (count($sortselects) == 0) {
+			$sortselect = false;
+		}
+		else if (count($sortselects) == 1) {
+			$sortselect = '<input type="hidden" name="filter_type" value="'.$sortselects[0]->value.'" />';
+		}
+		else {
+			$sortselect 	= JHTML::_('select.genericlist', $sortselects, 'filter_type', 'size="1" class="inputbox"', 'value', 'text', $filter_type );
+		}
+		
+		// venue filter
+		$options = array(JHTML::_('select.option', '0', JText::_('COM_REDEVENT_FILTER_SELECT_VENUE') ));
+		$options = array_merge($options, $this->get('VenuesOptions'));
+		$lists['venuefilter'] = JHTML::_('select.genericlist', $options, 'filter_venue', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_venue );
+		
 		$lists['order_Dir'] 	= $filter_order_Dir;
 		$lists['order'] 		= $filter_order;
 		$lists['filter'] 		= $filter;

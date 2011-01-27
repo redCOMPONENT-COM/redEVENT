@@ -326,59 +326,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
     return $this->_db->loadObjectList();
 	}
 	
-	
-	/**
-	 * get a venue category
-	 * @param int id
-	 * @return object
-	 */
-	function getVenuesOptions()
-	{
-		$app = &JFactory::getApplication();
-		$vcat = JRequest::getVar('filter_venuecategory');
-		$city =   $app->getUserState('com_redevent.search.filter_city');
-		$country =   $app->getUserState('com_redevent.search.filter_country');
 		
-		$acl = &UserAcl::getInstance();		
-		$gids = $acl->getUserGroupsIds();
-		if (!is_array($gids) || !count($gids)) {
-			$gids = array(0);
-		}
-		$gids = implode(',', $gids);
-		
-		$query = ' SELECT v.id AS value, '
-           . ' CASE WHEN CHAR_LENGTH(v.city) THEN CONCAT_WS(\' - \', v.venue, v.city) ELSE v.venue END as text '
-		       . ' FROM #__redevent_venues AS v '
-		       . ' LEFT JOIN #__redevent_venue_category_xref AS xcat ON xcat.venue_id = v.id '
-		       . ' LEFT JOIN #__redevent_venues_categories AS vcat ON vcat.id = xcat.category_id '
-		       
-		       . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = v.id AND gv.group_id IN ('.$gids.')'
-		       . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = vcat.id AND gvc.group_id IN ('.$gids.')'
-		       ;
-		$where = array();
-    if ($vcat) {
-    	$category = $this->getCategory($vcat);
-			$where[] = ' (vcat.id = '.$this->_db->Quote($category->id) . ' OR (vcat.lft > ' . $this->_db->Quote($category->lft) . ' AND vcat.rgt < ' . $this->_db->Quote($category->rgt) . '))';
-    }
-    if ($city) {
-    	$where[] = ' v.city = '.$this->_db->Quote($city);
-    }
-    if ($country) {
-    	$where[] = ' v.country = '.$this->_db->Quote($country);
-    }
-    //acl
-		$where[] = ' (v.private = 0 OR gv.id IS NOT NULL) ';
-		$where[] = ' (vcat.private = 0 OR gvc.id IS NOT NULL) ';
-		
-    if (count($where)) {
-    	$query .= ' WHERE '. implode(' AND ', $where);
-    }
-    $query .= ' ORDER BY v.venue ';
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadObjectList();
-		return $res;
-	}
-	
 	/**
 	 * get list of events as options, according to category, venue, and venue category criteria
 	 * @return unknown_type
@@ -436,71 +384,6 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		return $res;
 	}
 
-	/**
-	 * get list of events as options, according to category, venue, and venue category criteria
-	 * @return unknown_type
-	 */
-	function getCategoriesOptions()
-	{
-		$app = &JFactory::getApplication();
-    $filter_venuecategory = JRequest::getVar('filter_venuecategory');
-		$filter_venue = JRequest::getVar('filter_venue');
-		$task 		= JRequest::getWord('task');
-		
-		$acl = &UserAcl::getInstance();		
-		$gids = $acl->getUserGroupsIds();
-		if (!is_array($gids) || !count($gids)) {
-			$gids = array(0);
-		}
-		$gids = implode(',', $gids);
-			
-		//Get Events from Database
-		$query  = ' SELECT c.id '
-		        . ' FROM #__redevent_event_venue_xref AS x'
-		        . ' INNER JOIN #__redevent_events AS a ON a.id = x.eventid'
-		        . ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
-		        . ' LEFT JOIN #__redevent_venue_category_xref AS xvcat ON l.id = xvcat.venue_id'
-		        . ' LEFT JOIN #__redevent_venues_categories AS vc ON xvcat.category_id = vc.id'
-            . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-	          . ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-	          
-	          . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = l.id AND gv.group_id IN ('.$gids.')'
-	          . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = vc.id AND gvc.group_id IN ('.$gids.')'
-	          . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN ('.$gids.')'
-		        ;	
-		
-		$where = array();		
-		// First thing we need to do is to select only needed events
-		if ($task == 'archive') {
-			$where[] = ' x.published = -1';
-		} else {
-			$where[] = ' x.published = 1';
-		}
-		
-    // filter category
-    if ($filter_venuecategory) {
-    	$category = $this->getVenueCategory((int) $filter_venuecategory);
-			$where[] = '(vc.id = '.$this->_db->Quote($category->id) . ' OR (vc.lft > ' . $this->_db->Quote($category->lft) . ' AND vc.rgt < ' . $this->_db->Quote($category->rgt) . '))';
-    }
-    if ($filter_venue)
-    {
-    	$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);    	
-    }
-    //acl
-		$where[] = ' (l.private = 0 OR gv.id IS NOT NULL) ';
-		$where[] = ' (c.private = 0 OR gc.id IS NOT NULL) ';
-		$where[] = ' (vc.private = 0 OR vc.private IS NULL OR gvc.id IS NOT NULL) ';
-    
-    if (count($where)) {
-    	$query .= ' WHERE '. implode(' AND ', $where);
-    }
-    $query .= ' GROUP BY c.id ';
-    
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadResultArray();
-		
-		return redEVENTHelper::getEventsCatOptions(true, false, $res);
-	}
 	/**
 	 * get a category
 	 * @param int id

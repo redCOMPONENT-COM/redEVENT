@@ -94,8 +94,14 @@ class RedeventModelBaseEventList extends JModel
 		$this->setState('limitstart', $limitstart);
 
 		// Get the filter request variables
-		$this->setState('filter_order', JRequest::getCmd('filter_order', 'x.dates'));
+		$this->setState('filter_order',     JRequest::getCmd('filter_order', 'x.dates'));
 		$this->setState('filter_order_dir', JRequest::getCmd('filter_order_Dir', 'ASC'));
+		
+		$this->setState('filter',      $mainframe->getUserStateFromRequest('com_redevent.'.$this->getName().'.filter',      'filter', '', 'string'));
+		$this->setState('filter_type', $mainframe->getUserStateFromRequest('com_redevent.'.$this->getName().'.filter_type', 'filter_type', '', 'string'));
+			
+		$this->setState('filter_category', $mainframe->getUserStateFromRequest('com_redevent.'.$this->getName().'.filter_category', 'filter_category', 0, 'int'));
+		$this->setState('filter_venue',    $mainframe->getUserStateFromRequest('com_redevent.'.$this->getName().'.filter_venue',    'filter_venue',    0, 'int'));
 	}
 
 
@@ -262,7 +268,7 @@ class RedeventModelBaseEventList extends JModel
 	 */
 	function _buildOrderBy()
 	{
-		$filter_order		= $this->getState('filter_order');
+		$filter_order		  = $this->getState('filter_order');
 		$filter_order_dir	= $this->getState('filter_order_dir');
 			
 		if (preg_match("/field([0-9]+)/", $filter_order, $regs)) {
@@ -281,7 +287,7 @@ class RedeventModelBaseEventList extends JModel
 	 */
 	function _buildWhere()
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		$user		= & JFactory::getUser();
 		$gid		= (int) $user->get('aid');
@@ -309,8 +315,8 @@ class RedeventModelBaseEventList extends JModel
 		 */
 		if ($params->get('filter'))
 		{
-			$filter 		= $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter', 'filter', '', 'string');
-			$filter_type 	= $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter_type', 'filter_type', '', 'string');
+			$filter 		  = $this->getState('filter');
+			$filter_type 	= $this->getState('filter_type');
 
 			if ($filter)
 			{
@@ -338,6 +344,19 @@ class RedeventModelBaseEventList extends JModel
 						break;
 				}
 			}
+		}
+		
+    if ($filter_venue = $this->getState('filter_venue'))
+    {
+    	$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);    	
+    }
+	    
+		if ($cat = $this->getState('filter_category')) 
+		{		
+    	$category = $this->getCategory((int) $cat);
+    	if ($category) {
+				$where[] = '(c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
+    	}
 		}
 	
 		$sstate = $params->get( 'session_state', '0' );
@@ -571,6 +590,142 @@ class RedeventModelBaseEventList extends JModel
     	$filters[] = $field;
     }
     return $filters;
+	}
+
+	/**
+	 * get list of categories as options, according to acl
+	 * 
+	 * @return array
+	 */
+	function getCategoriesOptions()
+	{
+		$app = &JFactory::getApplication();
+    $filter_venuecategory = JRequest::getVar('filter_venuecategory');
+		$filter_venue         = JRequest::getVar('filter_venue');
+		$task 		            = JRequest::getWord('task');
+		
+		$acl = &UserAcl::getInstance();		
+		$gids = $acl->getUserGroupsIds();
+		if (!is_array($gids) || !count($gids)) {
+			$gids = array(0);
+		}
+		$gids = implode(',', $gids);
+			
+		//Get Events from Database
+		$query  = ' SELECT c.id '
+		        . ' FROM #__redevent_event_venue_xref AS x'
+		        . ' INNER JOIN #__redevent_events AS a ON a.id = x.eventid'
+		        . ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
+		        . ' LEFT JOIN #__redevent_venue_category_xref AS xvcat ON l.id = xvcat.venue_id'
+		        . ' LEFT JOIN #__redevent_venues_categories AS vc ON xvcat.category_id = vc.id'
+            . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+	          . ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+	          
+	          . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = l.id AND gv.group_id IN ('.$gids.')'
+	          . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = vc.id AND gvc.group_id IN ('.$gids.')'
+	          . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN ('.$gids.')'
+		        ;	
+		
+		$where = array();		
+		// First thing we need to do is to select only needed events
+		if ($task == 'archive') {
+			$where[] = ' x.published = -1';
+		} else {
+			$where[] = ' x.published = 1';
+		}
+		
+    // filter category
+    if ($filter_venuecategory) {
+    	$category = $this->getVenueCategory((int) $filter_venuecategory);
+			$where[] = '(vc.id = '.$this->_db->Quote($category->id) . ' OR (vc.lft > ' . $this->_db->Quote($category->lft) . ' AND vc.rgt < ' . $this->_db->Quote($category->rgt) . '))';
+    }
+    if ($filter_venue)
+    {
+    	$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);    	
+    }
+    //acl
+		$where[] = ' (l.private = 0 OR gv.id IS NOT NULL) ';
+		$where[] = ' (c.private = 0 OR gc.id IS NOT NULL) ';
+		$where[] = ' (vc.private = 0 OR vc.private IS NULL OR gvc.id IS NOT NULL) ';
+    
+    if (count($where)) {
+    	$query .= ' WHERE '. implode(' AND ', $where);
+    }
+    $query .= ' GROUP BY c.id ';
+    
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadResultArray();
+		
+		return redEVENTHelper::getEventsCatOptions(true, false, $res);
+	}
+	
+
+	/**
+	 * get venues options
+
+	 * @return array
+	 */
+	function getVenuesOptions()
+	{
+		$app = &JFactory::getApplication();
+		$vcat    = JRequest::getVar('filter_venuecategory');
+		$city    = JRequest::getVar('filter_city');
+		$country = JRequest::getVar('filter_country');
+		
+		$acl = &UserAcl::getInstance();		
+		$gids = $acl->getUserGroupsIds();
+		if (!is_array($gids) || !count($gids)) {
+			$gids = array(0);
+		}
+		$gids = implode(',', $gids);
+		
+		$query = ' SELECT DISTINCT v.id AS value, '
+           . ' CASE WHEN CHAR_LENGTH(v.city) THEN CONCAT_WS(\' - \', v.venue, v.city) ELSE v.venue END as text '
+		       . ' FROM #__redevent_venues AS v '
+		       . ' LEFT JOIN #__redevent_venue_category_xref AS xcat ON xcat.venue_id = v.id '
+		       . ' LEFT JOIN #__redevent_venues_categories AS vcat ON vcat.id = xcat.category_id '
+		       
+		       . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = v.id AND gv.group_id IN ('.$gids.')'
+		       . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = vcat.id AND gvc.group_id IN ('.$gids.')'
+		       ;
+		$where = array();
+    if ($vcat) {
+    	$category = $this->getCategory($vcat);
+			$where[] = ' (vcat.id = '.$this->_db->Quote($category->id) . ' OR (vcat.lft > ' . $this->_db->Quote($category->lft) . ' AND vcat.rgt < ' . $this->_db->Quote($category->rgt) . '))';
+    }
+    if ($city) {
+    	$where[] = ' v.city = '.$this->_db->Quote($city);
+    }
+    if ($country) {
+    	$where[] = ' v.country = '.$this->_db->Quote($country);
+    }
+    //acl
+		$where[] = ' (v.private = 0 OR gv.id IS NOT NULL) ';
+		$where[] = ' (vcat.private = 0 OR gvc.id IS NOT NULL) ';
+		
+    if (count($where)) {
+    	$query .= ' WHERE '. implode(' AND ', $where);
+    }
+    $query .= ' ORDER BY v.venue ';
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadObjectList();
+		return $res;
+	}
+	
+	/**
+	 * get a category
+	 * @param int id
+	 * @return object
+	 */
+	function getCategory($id)
+	{		
+		$query = ' SELECT c.id, c.catname, c.lft, c.rgt '
+		       . ' FROM #__redevent_categories AS c '
+		       . ' WHERE c.id = '. $this->_db->Quote($id)
+		            ;
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadObject();
+		return $res;
 	}
 }
 ?>

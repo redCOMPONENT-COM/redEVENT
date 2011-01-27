@@ -69,7 +69,7 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
 		$this->setState('limitstart', $limitstart);
 
 		// Get the filter request variables
-		$this->setState('filter_order', JRequest::getCmd('filter_order', 'x.dates'));
+		$this->setState('filter_order',     JRequest::getCmd('filter_order', 'x.dates'));
 		$this->setState('filter_order_dir', JRequest::getCmd('filter_order_Dir', 'ASC'));
 		
     $customs      = $mainframe->getUserStateFromRequest('com_redevent.categoryevents.filter_customs', 'filtercustom', array(), 'array');
@@ -206,8 +206,8 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
 		 */
 		if ($params->get('filter'))
 		{
-      $filter     = $mainframe->getUserStateFromRequest('com_redevent.categoryevents.filter', 'filter', '', 'string');
-      $filter_type  = $mainframe->getUserStateFromRequest('com_redevent.categoryevents.filter_type', 'filter_type', '', 'string');
+			$filter 		  = $this->getState('filter');
+			$filter_type 	= $this->getState('filter_type');
 
 			if ($filter)
 			{
@@ -235,6 +235,19 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
 		$where[] = ' (l.private = 0 OR gv.id IS NOT NULL) ';
 		$where[] = ' (c.private = 0 OR gc.id IS NOT NULL) ';
 		$where[] = ' (vc.private = 0 OR vc.private IS NULL OR gvc.id IS NOT NULL) ';
+	
+    if ($filter_venue = $this->getState('filter_venue'))
+    {
+    	$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);    	
+    }
+	    
+		if ($cat = $this->getState('filter_category')) 
+		{		
+    	$category = $this->getCategory((int) $cat);
+    	if ($category) {
+				$where[] = '(c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
+    	}
+		}
 		
     $customs = $this->getState('filter_customs');	
     foreach ((array) $customs as $key => $custom)

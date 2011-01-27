@@ -42,8 +42,8 @@ class RedeventViewSimpleList extends JView
 	 */
 	function display( $tpl = null )
 	{
-		global $mainframe;
-
+		$mainframe = &JFactory::getApplication();
+		
 		//initialize variables
 		$document 	= & JFactory::getDocument();
 		$elsettings = & redEVENTHelper::config();
@@ -197,28 +197,48 @@ class RedeventViewSimpleList extends JView
 	  $app = & JFactory::getApplication();
 	  
 		$elsettings = & redEVENTHelper::config();
+		$params     = $app->getParams();
 		
 		$filter_order		= JRequest::getCmd('filter_order', 'x.dates');
 		$filter_order_Dir	= JRequest::getWord('filter_order_Dir', 'ASC');
 
 		$state = $this->get('state');
 		
-    $filter      = $state->get('filter');
-    $filter_type = $state->get('filter_type');
+    $filter          = $state->get('filter');
+    $filter_type     = $state->get('filter_type');
+    $filter_category = $state->get('filter_category');
+    $filter_venue    = $state->get('filter_venue');
       
 		$sortselects = array();
-		$sortselects[]	= JHTML::_('select.option', 'title', $elsettings->titlename );
-		$sortselects[] 	= JHTML::_('select.option', 'venue', $elsettings->locationname );
-		$sortselects[] 	= JHTML::_('select.option', 'city', $elsettings->cityname );
-		if ($elsettings->showcat) {
-			$sortselects[] 	= JHTML::_('select.option', 'type', $elsettings->catfroname );
+		if ($params->get('filter_type_event', 1))	$sortselects[]	= JHTML::_('select.option', 'title', $elsettings->titlename );
+		if ($params->get('filter_type_venue', 1))	$sortselects[] 	= JHTML::_('select.option', 'venue', $elsettings->locationname );
+		if ($params->get('filter_type_city', 1))	$sortselects[] 	= JHTML::_('select.option', 'city', $elsettings->cityname );
+		if ($params->get('filter_type_category', 1))	$sortselects[] 	= JHTML::_('select.option', 'type', $elsettings->catfroname );
+		
+		if (count($sortselects) == 0) {
+			$sortselect = false;
 		}
-		$sortselect 	= JHTML::_('select.genericlist', $sortselects, 'filter_type', 'size="1" class="inputbox"', 'value', 'text', $filter_type );
-
-		$lists['order_Dir'] 	= $filter_order_Dir;
-		$lists['order'] 		= $filter_order;
-		$lists['filter'] 		= $filter;
-		$lists['filter_types'] 	= $sortselect;
+		else if (count($sortselects) == 1) {
+			$sortselect = '<input type="hidden" name="filter_type" value="'.$sortselects[0]->value.'" />';
+		}
+		else {
+			$sortselect 	= JHTML::_('select.genericlist', $sortselects, 'filter_type', 'size="1" class="inputbox"', 'value', 'text', $filter_type );
+		}
+		// category filter
+		$options = array(JHTML::_('select.option', '0', JText::_('COM_REDEVENT_FILTER_SELECT_CATEGORY') ));
+		$options = array_merge($options, $this->get('CategoriesOptions'));
+		$lists['categoryfilter'] = JHTML::_('select.genericlist', $options, 'filter_category', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_category );
+		
+		// venue filter
+		$options = array(JHTML::_('select.option', '0', JText::_('COM_REDEVENT_FILTER_SELECT_VENUE') ));
+		$options = array_merge($options, $this->get('VenuesOptions'));
+		$lists['venuefilter'] = JHTML::_('select.genericlist', $options, 'filter_venue', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_venue );
+		
+		
+		$lists['order_Dir']   = $filter_order_Dir;
+		$lists['order']       = $filter_order;
+		$lists['filter']      = $filter;
+		$lists['filter_type'] = $sortselect;
 
 		return $lists;
 	}

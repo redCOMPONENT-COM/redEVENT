@@ -111,36 +111,43 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 	<?php endif; ?>
 
-<form action="<?php echo $this->action; ?>" method="post" id="adminForm">
-
+	<!-- use form for filters and pagination -->
+	<form action="<?php echo $this->action; ?>" method="post" id="adminForm">
+	
+	<!-- filters  -->
 	<?php if ($this->params->get('filter') || $this->params->get('display')) : ?>
 	<div id="el_filter" class="floattext">
+			<?php if ($this->params->get('filter')) : ?>
+			<div id="filters-toggle"><?php echo JTExt::_('COM_REDEVENT_TOGGLE_FILTERS'); ?></div>
+			<div class="el_fleft" id="el-events-filters">
+				<?php if ($this->lists['filter_type']): ?>
+				<div id="main-filter">
+					<?php
+					echo '<label for="filter_type">'.JText::_('FILTER').'</label>&nbsp;';
+					echo $this->lists['filter_type'].'&nbsp;';
+					?>
+					<input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" title="<?php echo JText::_('EVENTS_FILTER_HINT'); ?>"/>
+					<button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_( 'GO' ); ?></button>
+					<button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_( 'RESET' ); ?></button>
+				</div>
+				<?php endif; ?>
+				
+				<?php if ($this->params->get('lists_filter_category', 1)): ?>
+				<div id="category-filter"><?php echo $this->lists['categoryfilter']; ?></div>
+	    	<?php endif; ?>
+				
+				<?php if ($this->customsfilters && count($this->customsfilters)): ?>
+	    	<?php foreach ($this->customsfilters as $custom): ?>
+	      <div class="custom-filter" id="filter<?php echo $custom->id; ?>">
+	      	<?php echo '<label for="filtercustom'.$custom->id.'">'.JText::_($custom->name).'</label>&nbsp;'; ?>
+	      	<?php echo $custom->renderFilter(array('class' => "inputbox dynfilter"), isset($this->filter_customs[$custom->id]) ? $this->filter_customs[$custom->id] : null); ?>
+	      </div>
+	    	<?php endforeach; ?>
+	    	<?php endif; ?>
+	    	<input type="hidden" id="f-showfilters" name="showfilters" value="<?php echo JRequest::getInt('showfilters', 0); ?>"/>
+			</div>
+			<?php endif; ?>
 			
-		<?php if ($this->params->get('filter')) : ?>
-		<div id="filters-toggle"><?php echo JTExt::_('COM_REDEVENT_TOGGLE_FILTERS'); ?></div>
-		<div class="el_fleft" id="el-events-filters">
-			<?php
-			echo '<label for="filter_type">'.JText::_('FILTER').'</label>&nbsp;';
-			echo $this->lists['filter_types'].'&nbsp;';
-			?>
-			<input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="text_area" onchange="document.getElementById('adminForm').submit();" title="<?php echo JText::_('EVENTS_FILTER_HINT'); ?>"/>
-			<button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_( 'GO' ); ?></button>
-			<button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_( 'RESET' ); ?></button>
-
-			<?php if ($this->customsfilters && count($this->customsfilters)): ?>
-			<div class="custom-filters">
-    	<?php foreach ($this->customsfilters as $custom): ?>
-      <div class="a-filter">
-      	<?php echo '<label for="filtercustom'.$custom->id.'">'.JText::_($custom->name).'</label>&nbsp;'; ?>
-      	<?php echo $custom->renderFilter(array('class' => "inputbox dynfilter"), isset($this->filter_customs[$custom->id]) ? $this->filter_customs[$custom->id] : null); ?>
-      </div>
-    	<?php endforeach; ?>
-    	</div>
-    	<?php endif; ?>
-    	<input type="hidden" id="f-showfilters" name="showfilters" value="<?php echo JRequest::getInt('showfilters', 0); ?>"/>
-		</div>
-		<?php endif; ?>
-		
 			<?php if ($this->params->get('display')) : ?>
 			<div class="el_fright">
 				<?php
@@ -151,7 +158,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			<?php endif; ?>
 	</div>
 	<?php endif; ?>
-
+	<!-- end filters -->
+	
+	<!--table-->
 	<?php echo $this->loadTemplate('items'); ?>
 
 	<p>

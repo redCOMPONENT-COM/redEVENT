@@ -61,24 +61,33 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<?php if ($this->params->get('filter')) : ?>
 		<div id="filters-toggle"><?php echo JTExt::_('COM_REDEVENT_TOGGLE_FILTERS'); ?></div>
 		<div class="el_fleft" id="el-events-filters">
-			<?php
-			echo '<label for="filter_type">'.JText::_('FILTER').'</label>&nbsp;';
-			echo $this->lists['filter_types'].'&nbsp;';
-			?>
-			<input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" title="<?php echo JText::_('EVENTS_FILTER_HINT'); ?>"/>
-			<button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_( 'GO' ); ?></button>
-			<button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_( 'RESET' ); ?></button>
+			<?php if ($this->lists['filter_types']): ?>
+			<div id="main-filter">
+				<?php
+				echo '<label for="filter_type">'.JText::_('FILTER').'</label>&nbsp;';
+				echo $this->lists['filter_types'].'&nbsp;';
+				?>
+				<input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" title="<?php echo JText::_('EVENTS_FILTER_HINT'); ?>"/>
+				<button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_( 'GO' ); ?></button>
+				<button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_( 'RESET' ); ?></button>
+			</div>
+			<?php endif; ?>
+						
+			<?php if ($this->params->get('lists_filter_category', 1)): ?>
+			<div id="category-filter"><?php echo $this->lists['categoryfilter']; ?></div>
+    	<?php endif; ?>
+    	
+			<?php if ($this->params->get('lists_filter_venue', 1)): ?>
+			<div id="venue-filter"><?php echo $this->lists['venuefilter']; ?></div>
+    	<?php endif; ?>
 			
-
 			<?php if ($this->customsfilters && count($this->customsfilters)): ?>
-			<div class="custom-filters">
     	<?php foreach ($this->customsfilters as $custom): ?>
-      <div class="a-filter">
+      <div class="custom-filter" id="filter<?php echo $custom->id; ?>">
       	<?php echo '<label for="filtercustom'.$custom->id.'">'.JText::_($custom->name).'</label>&nbsp;'; ?>
       	<?php echo $custom->renderFilter(array('class' => "inputbox dynfilter"), isset($this->filter_customs[$custom->id]) ? $this->filter_customs[$custom->id] : null); ?>
       </div>
     	<?php endforeach; ?>
-    	</div>
     	<?php endif; ?>
     	<input type="hidden" id="f-showfilters" name="showfilters" value="<?php echo JRequest::getInt('showfilters', 0); ?>"/>
 		</div>
