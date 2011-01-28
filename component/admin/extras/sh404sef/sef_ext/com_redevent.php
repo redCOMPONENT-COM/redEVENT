@@ -8,6 +8,21 @@
  */
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
 
+if (!function_exists('getPg'))
+{
+	function getPg($id)
+	{
+		$db= &JFactory::getDBO();
+		$query = ' SELECT alias ' 
+		       . ' FROM #__redevent_pricegroups ' 
+		       . ' WHERE id = ' . $db->Quote(intval($id));
+		$db->setQuery($query);
+		$res = $db->loadResult();
+		
+		return ($res ? $res : $id);
+	}
+}
+
 // ------------------  standard plugin initialize function - don't change ---------------------------
 global $sh_LANG;
 $sefConfig = & shRouter::shGetConfig();
@@ -258,7 +273,12 @@ else {
 	      	}
 		      $title[] = $xref.'-'.$details->title;
 		      $title[] = $details->city;
-		      $title[] = $details->dates;
+		      if ($details->dates == '0000-00-00') {
+	       		$title[] = $sh_LANG[$shLangIso]['open-date'];
+		      }
+		      else {
+	       		$title[] = $details->dates;
+		      }
 		      if ($details->times != '00-00') $title[] = $details->times;
             shRemoveFromGETVarsList('xref');
 				  if (!empty($id)) 
@@ -273,9 +293,18 @@ else {
 	      
 	   case 'signup':
 	     $title[] = $details->venueslug;
-       $title[] = $details->dates;
-       $title[] = $details->times;
+	     if ($details->dates == '0000-00-00') {
+       	$title[] = $sh_LANG[$shLangIso]['open-date'];
+	     }
+	     else {
+       	$title[] = $details->dates;
+	     }
+       if ($details->times != '00-00') $title[] = $details->times;
        $title[] = $xref;
+       if (isset($pg)) {
+       	$title[] = getPg($pg);
+        shRemoveFromGETVarsList('pg');
+       }
        shRemoveFromGETVarsList('xref');
        shRemoveFromGETVarsList('id');
 	     break;

@@ -28,6 +28,7 @@
   $sh_LANG['en']['simplelist'] = 'event-list';
   $sh_LANG['en']['search'] = 'event-search';
   $sh_LANG['en']['myevents'] = 'my-events';
+  $sh_LANG['en']['open-date'] = 'open-date';
   
   // dutch
   $sh_LANG['nl']['_COM_SEF_REDEVENT'] = 'redEVENT';
@@ -47,6 +48,7 @@
   $sh_LANG['nl']['simplelist'] = 'eventlist';
   $sh_LANG['nl']['search'] = 'event-search';
   $sh_LANG['nl']['myevents'] = 'my-events';
+  $sh_LANG['en']['open-date'] = 'open-date';
   // danish
   $sh_LANG['dk']['_COM_SEF_REDEVENT'] = 'redEVENT';
   $sh_LANG['dk']['_COM_SEF_TITLE_REDEVENT'] = 'redEVENT';
@@ -65,4 +67,5 @@
   $sh_LANG['dk']['simplelist'] = 'eventlist';
   $sh_LANG['dk']['search'] = 'event-search';
   $sh_LANG['dk']['myevents'] = 'my-events';
+  $sh_LANG['en']['open-date'] = 'open-date';
 ?>
