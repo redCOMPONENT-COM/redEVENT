@@ -56,16 +56,20 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <!-- filter -->
 <form action="<?php echo $this->action; ?>" method="post" id="adminForm">
-<?php if ($this->params->get('filter') || $this->params->get('display')) : ?>
+
+<?php $toggle = $this->params->get('filter_toggle', 3); ?>
+<?php if ($toggle != 1 || $this->params->get('display')) : ?>
 <div id="el_filter" class="floattext">
-		<?php if ($this->params->get('filter')) : ?>
-		<div id="filters-toggle"><?php echo JTExt::_('COM_REDEVENT_TOGGLE_FILTERS'); ?></div>
-		<div class="el_fleft" id="el-events-filters">
-			<?php if ($this->lists['filter_types']): ?>
+		<?php if ($toggle != 1 || 1) : ?>
+			<?php if ($toggle > 1) : ?>
+			<div id="filters-toggle"><?php echo JTExt::_('COM_REDEVENT_TOGGLE_FILTERS'); ?></div>
+			<?php endif; ?>
+			<div class="el_fleft" id="el-events-filters">
+				<?php if ($this->params->get('filter_text', 1) && $this->lists['filter_type']): ?>
 			<div id="main-filter">
 				<?php
 				echo '<label for="filter_type">'.JText::_('FILTER').'</label>&nbsp;';
-				echo $this->lists['filter_types'].'&nbsp;';
+				echo $this->lists['filter_type'].'&nbsp;';
 				?>
 				<input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" title="<?php echo JText::_('EVENTS_FILTER_HINT'); ?>"/>
 				<button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_( 'GO' ); ?></button>
@@ -89,7 +93,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
       </div>
     	<?php endforeach; ?>
     	<?php endif; ?>
-    	<input type="hidden" id="f-showfilters" name="showfilters" value="<?php echo JRequest::getInt('showfilters', 0); ?>"/>
+    	<input type="hidden" id="f-showfilters" name="showfilters" value="<?php echo JRequest::getInt('showfilters', $toggle != 3 ? 1 : 0); ?>"/>
 		</div>
 		<?php endif; ?>
 		

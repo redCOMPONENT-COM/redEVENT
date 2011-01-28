@@ -13,7 +13,13 @@
 		</param>
 		<param name="cat_num" type="text" size="2" default="4" label="CAT DISPLAY" description="CAT DISPLAY DESC" />
 		
-  	<param name="filter" type="radio" default="1" label="FILTER" description="FILTER DESC">
+  	<param name="filter_toggle" type="radio" default="3" label="COM_REDEVENT_SETTINGS_FILTER_TOGGLE" description="COM_REDEVENT_SETTINGS_FILTER_TOGGLE_DESC">
+			<option value="0">COM_REDEVENT_SETTINGS_FILTER_TOGGLE_OPTION_OFF_SHOW_FILTERS</option>
+			<option value="1">COM_REDEVENT_SETTINGS_FILTER_TOGGLE_OPTION_OFF_HIDE_FILTERS</option>
+			<option value="2">COM_REDEVENT_SETTINGS_FILTER_TOGGLE_OPTION_ON_SHOW_FILTERS</option>
+			<option value="3">COM_REDEVENT_SETTINGS_FILTER_TOGGLE_OPTION_ON_HIDE_FILTERS</option>
+		</param>
+  	<param name="filter_text" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FILTER_TEXT" description="COM_REDEVENT_SETTINGS_FILTER_TEXT_DESC">
 			<option value="0">Hide</option>
 			<option value="1">Show</option>
 		</param>
