@@ -985,12 +985,16 @@ class redEVENT_tags {
    */
   private function _getPrices($rows) 
   {
+  	if (!count($rows)) {
+  		return $rows;
+  	}
     $db = JFactory::getDBO();
     $ids = array();
     foreach ($rows as $k => $r) 
     {
     	$ids[$r->xref] = $k;
     }
+    
   	$query = ' SELECT sp.*, p.name, p.alias, '
 	         . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug ' 
   	       . ' FROM #__redevent_sessions_pricegroups AS sp '
