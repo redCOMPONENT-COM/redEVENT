@@ -701,7 +701,7 @@ class RedeventModelBaseEventList extends JModel
     }
     //acl
 		$where[] = ' (v.private = 0 OR gv.id IS NOT NULL) ';
-		$where[] = ' (vcat.private = 0 OR gvc.id IS NOT NULL) ';
+		$where[] = ' (vcat.id IS NULL OR vcat.private = 0 OR gvc.id IS NOT NULL) ';
 		
     if (count($where)) {
     	$query .= ' WHERE '. implode(' AND ', $where);
