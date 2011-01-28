@@ -1003,7 +1003,7 @@ class redEVENT_tags {
   	
   	// sort this out
   	$prices = array();
-  	foreach ($res as $p)
+  	foreach ((array)$res as $p)
   	{
   		if (!isset($prices[$p->xref])) {
   			$prices[$p->xref] = array($p);
@@ -1494,7 +1494,7 @@ class redEVENT_tags {
 			return;
 		}
 		if (count($prices) == 1) {
-			return ELOutput::formatprice($prices[0]);
+			return ELOutput::formatprice($prices[0]->price);
 		}
 		$res = array();
 		foreach ($prices as $p) 
