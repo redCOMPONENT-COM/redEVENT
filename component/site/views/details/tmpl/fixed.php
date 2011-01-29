@@ -262,8 +262,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				case 'webform':
 					if ($this->prices && count($this->prices))
 					{
-						foreach ($this->prices as $p) {
-							$venues_html .= '<div class="registration_method webform '.$p->alias.'">'.$p->name.' '.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->row->slug, $this->row->xref, $p->slug)), JHTML::_('image', $imagepath.$this->elsettings->signup_webform_img,  JText::_($this->elsettings->signup_webform_text), 'width="24px" height="24px"')).'</div> ';
+						foreach ($this->prices as $p) 
+						{
+							if (empty($p->image)) {
+								$venues_html .= '<div class="registration_method webform '.$p->alias.'">'.$p->name.' '.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->row->slug, $this->row->xref, $p->slug)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text), 'width="24px" height="24px"')).'</div> ';
+							}
+							else {
+								$venues_html .= '<div class="registration_method webform '.$p->alias.'">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->row->slug, $this->row->xref, $p->slug)), JHTML::_('image', $imagepath.$p->image,  JText::_($p->name), 'width="24px" height="24px"')).'</div> ';
+							}
 						}
 					}
 					else {

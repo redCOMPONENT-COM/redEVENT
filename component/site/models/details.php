@@ -679,7 +679,7 @@ class RedeventModelDetails extends JModel
   {
   	$event = $this->getDetails();
 
-  	$query = ' SELECT sp.*, p.name, p.alias, '
+  	$query = ' SELECT sp.*, p.name, p.alias, p.image, '
 	         . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug ' 
   	       . ' FROM #__redevent_sessions_pricegroups AS sp '
   	       . ' INNER JOIN #__redevent_pricegroups AS p on p.id = sp.pricegroup_id '
@@ -708,7 +708,7 @@ class RedeventModelDetails extends JModel
     	$ids[$r->xref] = $k;
     }
     
-  	$query = ' SELECT sp.*, p.name, p.alias, '
+  	$query = ' SELECT sp.*, p.name, p.alias, p.image, '
 	         . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug ' 
   	       . ' FROM #__redevent_sessions_pricegroups AS sp '
   	       . ' INNER JOIN #__redevent_pricegroups AS p on p.id = sp.pricegroup_id '

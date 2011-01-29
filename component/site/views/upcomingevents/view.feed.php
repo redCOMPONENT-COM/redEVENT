@@ -87,7 +87,21 @@ class RedeventViewUpcomingevents extends JView
 							$venues_html .= '&nbsp;'.JHTML::_('link', $event->submission_type_external, JHTML::_('image', $imagepath.$elsettings->signup_external_img,  $elsettings->signup_external_text, 'width="24px" height="24px" border="0"'), 'target="_blank"').'&nbsp; ';
 							break;
 						case 'webform':
-							$venues_html .= '&nbsp;'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&subtype=webform&task=signup&xref='.$event->xref.'&id='.$event->id), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text), 'width="24px" height="24px" border="0"'), 'target="_blank"').'&nbsp; ';
+							if ($event->prices && count($event->prices))
+							{
+								foreach ($event->prices as $p) 
+								{
+									if (empty($p->image)) {
+										$venues_html .= $p->name.' '.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref, $p->slug)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text), 'width="24px" height="24px"')).'&nbsp; ';
+									}
+									else {
+										$venues_html .= '&nbsp;'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref, $p->slug)), JHTML::_('image', $imagepath.$p->image,  JText::_($p->name), 'width="24px" height="24px"')).'&nbsp; ';
+									}
+								}
+							}
+							else {
+								$venues_html .= '&nbsp;'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text), 'width="24px" height="24px"')).'&nbsp; ';
+							}
 							break;
 						case 'formaloffer':
 							$venues_html .= '&nbsp;'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&subtype=formaloffer&task=signup&xref='.$event->xref.'&id='.$event->id), JHTML::_('image', $imagepath.$elsettings->signup_formal_offer_img,  JText::_($elsettings->signup_formal_offer_text), 'width="24px" height="24px" border="0"'), 'target="_blank"').'&nbsp; ';

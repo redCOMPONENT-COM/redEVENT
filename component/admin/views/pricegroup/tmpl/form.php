@@ -39,9 +39,24 @@ if (!$edit)  {
 	// for existing items the button is renamed `close`
 	JToolBarHelper::cancel( 'cancel', 'Close' );
 }
+
+$imagepath = '/administrator/components/com_redevent/assets/images/';
 ?>
 
 <script language="javascript" type="text/javascript">
+	window.addEvent('domready', function(){
+		$('image').addEvent('change', function(){
+			if ($('image').value != "") {
+				$('img-preview').setStyle('visibility', 'visible');
+				$('img-preview').src = imgpath+$('image').value;
+			}
+			else {
+				$('img-preview').setStyle('visibility', 'hidden');
+				$('img-preview').src = '';				
+			}
+		});
+	});
+
 	function submitbutton(pressbutton) {
 		var form = document.adminForm;
 		if (pressbutton == 'cancel') {
@@ -57,6 +72,8 @@ if (!$edit)  {
       submitform( pressbutton );
     }
 	}
+
+	var imgpath = "<?php echo JURI::root().$imagepath; ?>";
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -76,6 +93,13 @@ if (!$edit)  {
 		</label></td>
 		<td><input class="text_area" type="text" name="alias" id="alias"
 			size="32" maxlength="250" value="<?php echo $this->object->alias; ?>" />
+		</td>
+	</tr>
+	<tr>
+		<td width="100" align="right" class="key"><label for="alias"><?php echo JText::_( 'Image' ); ?>:</label></td>
+		<td>
+			<?php	echo JHTML::_('list.images', 'image', $this->object->image, 'id="image"', $imagepath); ?>
+			<img src="<?php echo JURI::root().$imagepath.$this->object->image; ?>" id="img-preview" width="24" height="24" border="0" alt="<?php echo JText::_( 'Preview' ); ?>" />
 		</td>
 	</tr>
 	<tr>
