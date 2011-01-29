@@ -131,7 +131,7 @@ class RedeventModelDay extends RedeventModelBaseEventList
 		 * If we have a filter, and this is enabled... lets tack the AND clause
 		 * for the filter onto the WHERE clause of the content item query.
 		 */
-		if ($params->get('filter'))
+		if ($params->get('filter_text'))
 		{
       $filter     = $mainframe->getUserStateFromRequest('com_redevent.day.filter', 'filter', '', 'string');
       $filter_type  = $mainframe->getUserStateFromRequest('com_redevent.day.filter_type', 'filter_type', '', 'string');

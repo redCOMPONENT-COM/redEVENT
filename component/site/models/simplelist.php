@@ -85,11 +85,11 @@ class RedeventModelSimpleList extends RedeventModelBaseEventList
 		 * If we have a filter, and this is enabled... lets tack the AND clause
 		 * for the filter onto the WHERE clause of the item query.
 		 */
-		if ($params->get('filter'))
+		if ($params->get('filter_text'))
 		{
 			$filter 		  = $this->getState('filter');
 			$filter_type 	= $this->getState('filter_type');
-
+			
 			if ($filter)
 			{
 				// clean filter variables

@@ -61,9 +61,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <form action="<?php echo $this->action; ?>" method="post" id="adminForm">
 
-<?php if ($this->params->get('filter') || $this->params->get('display')) : ?>
+<?php if ($this->params->get('filter_text',1) || $this->params->get('display')) : ?>
 <div id="el_filter" class="floattext">
-		<?php if ($this->params->get('filter')) : ?>
+		<?php if ($this->params->get('filter_text',1)) : ?>
 		<div class="el_fleft">
 			<?php
 			echo '<label for="filter_type">'.JText::_('FILTER').'</label>&nbsp;';

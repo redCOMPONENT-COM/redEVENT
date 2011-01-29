@@ -42,14 +42,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <form action="<?php echo $this->action; ?>" method="post" id="adminForm">
 
-<?php if ($this->params->get('filter') || $this->params->get('display') || $this->params->get('showeventfilter')) : ?>
+<?php if ($this->params->get('filter_text',1) || $this->params->get('display') || $this->params->get('showeventfilter')) : ?>
 <div id="el_filter" class="floattext">
     <?php if ($this->params->get('showeventfilter', 1)) : ?>
     <div>
     	<label for="filter_event"><?php echo JText::_('Event'); ?></label> <?php echo $this->lists['filter_event']; ?>
     </div>
     <?php endif; ?>
-    <?php if ($this->params->get('filter')) : ?>
+    <?php if ($this->params->get('filter_text',1)) : ?>
     <div>
       <label for="filter_type"><?php echo JText::_('FILTER'); ?></label> <?php
       echo $this->lists['filter_types'].'&nbsp;';
