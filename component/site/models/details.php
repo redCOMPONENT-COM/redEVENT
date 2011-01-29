@@ -213,6 +213,7 @@ class RedeventModelDetails extends JModel
 	      $rows[$k]->categories = $this->_db->loadObjectList();
 	    }
 	    $this->_xreflinks = $rows;
+	    $this->_xreflinks = $this->_getPrices($this->_xreflinks);
   	}
   	return $this->_xreflinks;
   }
@@ -688,6 +689,59 @@ class RedeventModelDetails extends JModel
   	$this->_db->setQuery($query);
   	$res = $this->_db->loadObjectList();   	
   	return $res;
+  }
+  
+	/**
+   * adds registered (int) and waiting (int) properties to rows.
+   * 
+   * @return array 
+   */
+  private function _getPrices($rows) 
+  {
+  	if (!count($rows)) {
+  		return $rows;
+  	}
+    $db = JFactory::getDBO();
+    $ids = array();
+    foreach ($rows as $k => $r) 
+    {
+    	$ids[$r->xref] = $k;
+    }
+    
+  	$query = ' SELECT sp.*, p.name, p.alias, '
+	         . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug ' 
+  	       . ' FROM #__redevent_sessions_pricegroups AS sp '
+  	       . ' INNER JOIN #__redevent_pricegroups AS p on p.id = sp.pricegroup_id '
+  	       . ' WHERE sp.xref IN (' . implode(",", array_keys($ids)).')'
+  	       . ' ORDER BY p.ordering ASC '
+  	       ;
+  	$db->setQuery($query);
+  	$res = $db->loadObjectList();
+  	
+  	// sort this out
+  	$prices = array();
+  	foreach ((array)$res as $p)
+  	{
+  		if (!isset($prices[$p->xref])) {
+  			$prices[$p->xref] = array($p);
+  		}
+  		else {
+  			$prices[$p->xref][] = $p;
+  		}
+  	}
+  	
+  	// add to rows
+    foreach ($rows as $k => $r) 
+    {
+    	if (isset($prices[$r->xref])) {
+    		$rows[$k]->prices = $prices[$r->xref];
+    	}
+    	else {
+    		$rows[$k]->prices = null;
+    	}
+    }
+  	
+    return $rows;
   }
 }
 ?>
