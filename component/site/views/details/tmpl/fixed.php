@@ -265,15 +265,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						foreach ($this->prices as $p) 
 						{
 							if (empty($p->image)) {
-								$venues_html .= '<div class="registration_method webform '.$p->alias.'">'.$p->name.' '.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->row->slug, $this->row->xref, $p->slug)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text), 'width="24px" height="24px"')).'</div> ';
+								$venues_html .= '<div class="registration_method webform '.$p->alias.'">'.$p->name.' '.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->row->slug, $this->row->xref, $p->slug)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text))).'</div> ';
 							}
 							else {
-								$venues_html .= '<div class="registration_method webform '.$p->alias.'">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->row->slug, $this->row->xref, $p->slug)), JHTML::_('image', $imagepath.$p->image,  JText::_($p->name), 'width="24px" height="24px"')).'</div> ';
+								$venues_html .= '<div class="registration_method webform '.$p->alias.'">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->row->slug, $this->row->xref, $p->slug)), JHTML::_('image', $imagepath.$p->image,  JText::_($p->name))).'</div> ';
 							}
 						}
 					}
 					else {
-						$venues_html .= '<div class="registration_method webform">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->row->slug, $this->row->xref)), JHTML::_('image', $imagepath.$this->elsettings->signup_webform_img,  JText::_($this->elsettings->signup_webform_text), 'width="24px" height="24px"')).'</div> ';
+						$venues_html .= '<div class="registration_method webform">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->row->slug, $this->row->xref)), JHTML::_('image', $imagepath.$this->elsettings->signup_webform_img,  JText::_($this->elsettings->signup_webform_text))).'</div> ';
 					}
 					break;
 				case 'formaloffer':

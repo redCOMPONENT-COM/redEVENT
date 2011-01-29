@@ -92,15 +92,15 @@ class RedeventViewUpcomingevents extends JView
 								foreach ($event->prices as $p) 
 								{
 									if (empty($p->image)) {
-										$venues_html .= $p->name.' '.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref, $p->slug)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text), 'width="24px" height="24px"')).'&nbsp; ';
+										$venues_html .= $p->name.' '.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref, $p->slug)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text))).'&nbsp; ';
 									}
 									else {
-										$venues_html .= '&nbsp;'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref, $p->slug)), JHTML::_('image', $imagepath.$p->image,  JText::_($p->name), 'width="24px" height="24px"')).'&nbsp; ';
+										$venues_html .= '&nbsp;'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref, $p->slug)), JHTML::_('image', $imagepath.$p->image,  JText::_($p->name))).'&nbsp; ';
 									}
 								}
 							}
 							else {
-								$venues_html .= '&nbsp;'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text), 'width="24px" height="24px"')).'&nbsp; ';
+								$venues_html .= '&nbsp;'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text))).'&nbsp; ';
 							}
 							break;
 						case 'formaloffer':

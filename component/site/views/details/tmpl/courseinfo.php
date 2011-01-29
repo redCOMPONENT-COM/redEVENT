@@ -103,15 +103,15 @@ foreach ($this->_eventlinks as $key => $event) {
 							foreach ($event->prices as $p) 
 							{
 								if (empty($p->image)) {
-									$venues_html .= '<div class="courseinfo_vlink courseinfo_webform '.$p->alias.'">'.$p->name.' '.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref, $p->slug)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text), 'width="24px" height="24px"')).'</div> ';
+									$venues_html .= '<div class="courseinfo_vlink courseinfo_webform '.$p->alias.'">'.$p->name.' '.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref, $p->slug)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text))).'</div> ';
 								}
 								else {
-									$venues_html .= '<div class="courseinfo_vlink courseinfo_webform '.$p->alias.'">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref, $p->slug)), JHTML::_('image', $imagepath.$p->image,  JText::_($p->name), 'width="24px" height="24px"')).'</div> ';
+									$venues_html .= '<div class="courseinfo_vlink courseinfo_webform '.$p->alias.'">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref, $p->slug)), JHTML::_('image', $imagepath.$p->image,  JText::_($p->name))).'</div> ';
 								}
 							}
 						}
 						else {
-							$venues_html .= '<div class="courseinfo_vlink courseinfo_webform">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text), 'width="24px" height="24px"')).'</div> ';
+							$venues_html .= '<div class="courseinfo_vlink courseinfo_webform">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text))).'</div> ';
 						}
 						break;
 					case 'formaloffer':

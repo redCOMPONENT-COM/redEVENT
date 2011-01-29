@@ -99,7 +99,7 @@ $imagepath = '/administrator/components/com_redevent/assets/images/';
 		<td width="100" align="right" class="key"><label for="alias"><?php echo JText::_( 'Image' ); ?>:</label></td>
 		<td>
 			<?php	echo JHTML::_('list.images', 'image', $this->object->image, 'id="image"', $imagepath); ?>
-			<img src="<?php echo JURI::root().$imagepath.$this->object->image; ?>" id="img-preview" width="24" height="24" border="0" alt="<?php echo JText::_( 'Preview' ); ?>" />
+			<img src="<?php echo JURI::root().$imagepath.$this->object->image; ?>" id="img-preview" border="0" alt="<?php echo JText::_( 'Preview' ); ?>" />
 		</td>
 	</tr>
 	<tr>
