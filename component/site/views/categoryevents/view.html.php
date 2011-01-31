@@ -236,7 +236,7 @@ class RedeventViewCategoryevents extends JView
 		}
 		
 		// venue filter
-		$options = array(JHTML::_('select.option', '0', JText::_('COM_REDEVENT_FILTER_SELECT_VENUE') ));
+		$options = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_FILTER_SELECT_VENUE') ));
 		$options = array_merge($options, $this->get('VenuesOptions'));
 		$lists['venuefilter'] = JHTML::_('select.genericlist', $options, 'filter_venue', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_venue );
 		

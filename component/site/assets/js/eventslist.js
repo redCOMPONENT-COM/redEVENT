@@ -93,6 +93,21 @@ window.addEvent('domready', function(){
 			});	
 		}
 	}
+	
+	if ($('filters-reset'))
+	{
+		$('filters-reset').addEvent('click', function(){
+			$('el-events-filters').getElements('input').each(function(el){
+				el.value = ''; 
+			});
+			$('el-events-filters').getElements('select').each(function(el){
+				el.value = ''; 
+			});						
+			redhint.removehint();
+			this.form.submit();
+			return true;
+		});
+	}
 });
 
 function tableOrdering( order, dir, view )

@@ -73,7 +73,7 @@ $toggle = $this->params->get('filter_toggle', 3);
 					?>
 					<input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" title="<?php echo JText::_('EVENTS_FILTER_HINT'); ?>"/>
 					<button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_( 'GO' ); ?></button>
-					<button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_( 'RESET' ); ?></button>
+					<button type="button" id="filters-reset"><?php echo JText::_( 'RESET' ); ?></button>
 				</div>
 				<?php endif; ?>
 				
