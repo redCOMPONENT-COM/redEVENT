@@ -54,8 +54,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<?php if ($this->elsettings->showcat == 1) :	?>
 			<col width="<?php echo $this->elsettings->catfrowidth; ?>" class="el_col_category" />
 		<?php endif; ?>
-    <?php if ($this->params->get('display_placesleft', 0 == 1)) :  ?>
+    <?php if ($this->params->get('display_placesleft', 0)) :  ?>
       <col width="<?php echo $this->elsettings->catfrowidth; ?>" class="el_col_places" />
+    <?php endif; ?>
+    <?php if ($this->params->get('lists_show_price', 0)) :  ?>
+      <col width="<?php echo $this->elsettings->catfrowidth; ?>" class="el_col_price" />
+    <?php endif; ?>
+    <?php if ($this->params->get('lists_show_credits', 0)) :  ?>
+      <col width="<?php echo $this->elsettings->catfrowidth; ?>" class="el_col_credits" />
     <?php endif; ?>
     <?php foreach ($this->customs AS $c): ?>
       <col width="<?php echo $this->elsettings->catfrowidth; ?>" class="el_col_customs" />
@@ -65,38 +71,30 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<thead>
 			<tr>
 				<th id="el_date" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', $this->escape($this->elsettings->datename), 'x.dates', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<?php
-				if ($this->elsettings->showtitle == 1) :
-				?>
+				<?php	if ($this->elsettings->showtitle == 1) : ?>
 				<th id="el_title" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', $this->escape($this->elsettings->titlename), 'a.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<?php
-				endif;
-				if ($this->elsettings->showlocate == 1) :
-				?>
+				<?php endif; ?>
+				<?php if ($this->elsettings->showlocate == 1) :	?>
 				<th id="el_location" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', $this->escape($this->elsettings->locationname), 'l.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<?php
-				endif;
-				if ($this->elsettings->showcity == 1) :
-				?>
+				<?php endif; ?>
+				<?php if ($this->elsettings->showcity == 1) :	?>
 				<th id="el_city" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', $this->escape($this->elsettings->cityname), 'l.city', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<?php
-				endif;
-				if ($this->elsettings->showstate == 1) :
-				?>
+				<?php endif; ?>
+				<?php if ($this->elsettings->showstate == 1) : ?>
 				<th id="el_state" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', $this->escape($this->elsettings->statename), 'l.state', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<?php
-				endif;
-				if ($this->elsettings->showcat == 1) :
-				?>
+				<?php endif; ?>
+				<?php if ($this->elsettings->showcat == 1) : ?>
 				<th id="el_category" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', $this->escape($this->elsettings->catfroname), 'c.catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<?php
-				endif;
-        if ($this->params->get('display_placesleft', 0 == 1)) :
-        ?>
+				<?php endif; ?>
+				<?php if ($this->params->get('display_placesleft', 0)) : ?>
         <th id="el_places" class="sectiontableheader" align="left"><?php echo JText::_('Places'); ?></th>
-        <?php
-        endif;
-				?>
+        <?php endif; ?>
+				<?php if ($this->params->get('lists_show_prices', 0)): ?>        
+				<th id="el_prices" class="sectiontableheader" align="left"><?php echo $this->params->get('lists_show_prices_label', 'Price'); ?></th>
+				<?php endif; ?>
+				<?php if ($this->params->get('lists_show_credits', 0)): ?>        
+				<th id="el_credits" class="sectiontableheader" align="left"><?php echo $this->params->get('lists_show_credits_label', 'Credits'); ?></th>
+				<?php endif; ?>
 		    <?php foreach ($this->customs AS $c): ?>
         	<th id="el_places_<?php echo $c->id; ?>" class="sectiontableheader" align="left">
         	<?php echo JHTML::_('grid.sort', $this->escape($c->name), 'custom'. $c->id, $this->lists['order_Dir'], $this->lists['order'] ); ?>
@@ -186,14 +184,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						<?php echo ($k < count($row->categories)) ? '<br/>' : '' ; ?>
 				  <?php endforeach; ?>
 					</td>	
-				<?php endif; 
-
-        if ($this->params->get('display_placesleft', 0 == 1)) :
-        ?>
-
+				<?php endif; ?>				
+				
+        <?php if ($this->params->get('display_placesleft', 0)) : ?>
           <td headers="el_places" align="left" valign="top"><?php echo redEVENTHelper::getRemainingPlaces($row); ?></td>
-
         <?php endif; ?>
+        
+				<?php if ($this->params->get('lists_show_prices', 0)): ?>        
+					<td headers="el_prices" align="left"><?php echo ELOutput::formatPrices($row->prices); ?></td>
+				<?php endif; ?>
+				<?php if ($this->params->get('lists_show_credits', 0)): ?>        
+					<td headers="el_credits" align="left"><?php echo $row->course_credit ? $row->course_credit : '-'; ?></td>
+				<?php endif; ?>
         
         <!-- custom fields -->
 		    <?php foreach ($this->customs AS $c): ?>

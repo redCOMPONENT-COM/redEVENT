@@ -83,6 +83,7 @@ class RedeventViewVenuecategory extends JView
 		$rows 		= & $this->get('Data');
 		$category 	= & $this->get('Category');
 		$total 		= & $this->get('Total');
+		$customs 	= & $this->get('ListCustomFields');
 
 		//are events available?
 		if (!$rows) {
@@ -151,7 +152,8 @@ class RedeventViewVenuecategory extends JView
     $this->assign('action',   str_replace('&', '&amp;', $uri->toString()));
 
 		$this->assignRef('rows' , 					$rows);
-		$this->assignRef('noevents' , 				$noevents);
+		$this->assignRef('customs',         $customs);
+		$this->assignRef('noevents' ,       $noevents);
 		$this->assignRef('category' , 				$category);
 		$this->assignRef('print_link' , 			$print_link);
 		$this->assignRef('params' , 				$params);

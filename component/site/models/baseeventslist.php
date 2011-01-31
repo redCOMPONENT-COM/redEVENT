@@ -146,6 +146,7 @@ class RedeventModelBaseEventList extends JModel
 			}
 			$this->_data = $this->_categories($this->_data);
       $this->_data = $this->_getPlacesLeft($this->_data);
+      $this->_data = $this->_getPrices($this->_data);
 		}
 
 		return $this->_data;
@@ -438,6 +439,9 @@ class RedeventModelBaseEventList extends JModel
    */
   function _getPrices($rows) 
   {
+  	if (!$rows) {
+  		return $rows;
+  	}
     $db = JFactory::getDBO();
     $ids = array();
     foreach ($rows as $k => $r) 

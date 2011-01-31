@@ -293,7 +293,7 @@
        					<td valign="top">
 							<input type="text" name="catfroname" value="<?php echo $this->elsettings->catfroname; ?>" size="30" maxlength="25" />
        	 				</td>
-      				</tr>
+      		</tr>
 					<tr id="cat3"<?php if (!$mode) echo ' style="display:none"'; ?>>
 	          			<td width="300" class="key">
 							<span class="editlinktip hasTip" title="<?php echo JText::_( 'DISPLAY LINK TO CATEGORY VIEW' ); ?>::<?php echo JText::_('DISPLAY LINK TO CATEGORY VIEW TIP'); ?>">
@@ -305,10 +305,69 @@
         						echo JHTML::_('select.booleanlist', 'catlinklist', 'class="inputbox"', $this->elsettings->catlinklist );
         					?>
        	 				</td>
-      				</tr>
+      		</tr>
+      		
 				</tbody>
 				</table>
 			  </fieldset>
+			  
+			  
+			<fieldset class="adminform">
+			<legend><?php echo JText::_( 'COM_REDEVENT_SETTINGS_PRICE_COLUMN' ); ?></legend>
+				<table class="admintable" cellspacing="1">
+				<tbody>
+					<tr>
+	          <td width="300" class="key">
+							<span class="editlinktip hasTip" title="<?php echo JText::_( 'COM_REDEVENT_SETTINGS_LISTS_SHOW_PRICE' ); ?>::<?php echo JText::_('COM_REDEVENT_SETTINGS_LISTS_SHOW_PRICE_DESC'); ?>">
+								<?php echo JText::_( 'COM_REDEVENT_SETTINGS_LISTS_SHOW_PRICE' ); ?>
+							</span>
+						</td>
+       			<td valign="top">
+							<?php	echo JHTML::_('select.booleanlist', 'globalparams[lists_show_prices]', 'class="inputbox"', $this->params->get('lists_show_prices', 0) ); ?>
+						</td>
+      		</tr>
+					<tr>
+	          <td width="300" class="key">
+							<span class="editlinktip hasTip" title="<?php echo JText::_( 'COM_REDEVENT_SETTINGS_LISTS_PRICE_LABEL' ); ?>::<?php echo JText::_('COM_REDEVENT_SETTINGS_LISTS_PRICE_LABEL_DESC'); ?>">
+								<?php echo JText::_( 'COM_REDEVENT_SETTINGS_LISTS_PRICE_LABEL' ); ?>
+							</span>
+						</td>
+       			<td valign="top">
+							<input type="text" name="globalparams[lists_show_prices_label]" size="30" maxlength="25" value="<?php echo $this->params->get('lists_show_prices_label', JText::_( 'COM_REDEVENT_SETTINGS_LISTS_PRICE_LABEL_DEFAULT' )); ?>"/>
+						</td>
+      		</tr>
+				</tbody>
+				</table>
+			</fieldset>
+			  
+			<fieldset class="adminform">
+			<legend><?php echo JText::_( 'COM_REDEVENT_SETTINGS_CREDIT_COLUMN' ); ?></legend>
+				<table class="admintable" cellspacing="1">
+				<tbody>
+					<tr>
+	          <td width="300" class="key">
+							<span class="editlinktip hasTip" title="<?php echo JText::_( 'COM_REDEVENT_SETTINGS_LISTS_SHOW_CREDIT' ); ?>::<?php echo JText::_('COM_REDEVENT_SETTINGS_LISTS_SHOW_CREDIT_DESC'); ?>">
+								<?php echo JText::_( 'COM_REDEVENT_SETTINGS_LISTS_SHOW_CREDIT' ); ?>
+							</span>
+						</td>
+       			<td valign="top">
+							<?php	echo JHTML::_('select.booleanlist', 'globalparams[lists_show_credits]', 'class="inputbox"', $this->params->get('lists_show_credits', 0) ); ?>
+						</td>
+      		</tr>
+					<tr>
+	          <td width="300" class="key">
+							<span class="editlinktip hasTip" title="<?php echo JText::_( 'COM_REDEVENT_SETTINGS_LISTS_CREDIT_LABEL' ); ?>::<?php echo JText::_('COM_REDEVENT_SETTINGS_LISTS_PRICE_CREDIT_DESC'); ?>">
+								<?php echo JText::_( 'COM_REDEVENT_SETTINGS_LISTS_CREDIT_LABEL' ); ?>
+							</span>
+						</td>
+       			<td valign="top">
+							<input type="text" name="globalparams[lists_show_credits_label]" size="30" maxlength="25" value="<?php echo $this->params->get('lists_show_credits_label', JText::_( 'COM_REDEVENT_SETTINGS_LISTS_CREDIT_LABEL_DEFAULT' )); ?>"/>
+						</td>
+      		</tr>
+				</tbody>
+				</table>
+			</fieldset>
+			
 		</td>
       </tr>
     </table>

@@ -114,7 +114,8 @@ class RedEventViewSettings extends JView {
 		$this->assignRef('WarningIcon'	, $this->WarningIcon());
 		$this->assignRef('request_url'	, $uri->toString());
 		$this->assignRef('globalparams'	, $globalparams);
-
+		$this->assignRef('params',        JComponentHelper::getParams('com_redevent'));
+		
 		parent::display($tpl);
 
 	}

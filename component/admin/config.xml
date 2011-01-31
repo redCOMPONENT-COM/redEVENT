@@ -110,6 +110,20 @@
     </param>
  	</params>
  	
+ 	<params group="listslayout">
+    <param name="lists_show_prices" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_SHOW_PRICE" description="COM_REDEVENT_SETTINGS_LISTS_SHOW_PRICE_DESC">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    <param name="lists_show_prices_label" type="text" default="Price" label="COM_REDEVENT_SETTINGS_LISTS_PRICE_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_PRICE_LABEL_DESC"/>
+    
+    <param name="lists_show_credits" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_SHOW_CREDIT" description="COM_REDEVENT_SETTINGS_LISTS_SHOW_CREDIT_DESC">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    <param name="lists_show_credits_label" type="text" default="Credit" label="COM_REDEVENT_SETTINGS_LISTS_CREDIT_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_CREDIT_LABEL_DESC"/>
+ 	</params>
+ 	
  	<params group="pasteventssettings">
     <param name="pastevents_action" type="list" default="0" label="PAST EVENTS ACTION" description="PAST EVENTS ACTION TIP">
       <option value="0">DO NOTHING</option>

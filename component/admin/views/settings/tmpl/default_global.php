@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
     <?php echo $this->globalparams->render('globalparams'); ?></fieldset>
     
     <?php foreach ($this->globalparams->getGroups() as $key => $groups): ?>
-      <?php if (strtolower($key) != '_default'): ?>
+      <?php if (strtolower($key) != '_default' && strtolower($key) != 'listslayout'): ?>
         <fieldset class="adminform"><legend><?php echo JText::_( strtoupper($key) ); ?></legend>
         <?php echo $this->globalparams->render('globalparams', $key); ?></fieldset>
       <?php endif; ?>

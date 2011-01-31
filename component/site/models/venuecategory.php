@@ -104,12 +104,27 @@ class RedeventModelVenuecategory extends RedeventModelBaseEventList {
     $where    = $this->_buildCategoryWhere();
     $orderby  = $this->_buildCategoryOrderBy();
 
+		$customs = $this->getCustomFields();
+		$xcustoms = $this->getXrefCustomFields();
+		
     //Get Events from Database
     $query = 'SELECT a.id, a.datimage, x.dates, x.enddates, x.times, x.endtimes, x.id AS xref, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, '
-        . ' a.title, a.datdescription, a.created, a.registra, l.venue, l.city, l.state, l.url, '
+        . ' a.title, a.datdescription, a.created, a.registra, l.venue, l.city, l.state, l.url, x.course_credit, '
         . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
         . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug '
-        . ' FROM #__redevent_events AS a'
+        ;
+		// add the custom fields
+		foreach ((array) $customs as $c)
+		{
+			$query .= ', a.custom'. $c->id;
+		}
+		// add the custom fields
+		foreach ((array) $xcustoms as $c)
+		{
+			$query .= ', x.custom'. $c->id;
+		}
+        
+		$query .= ' FROM #__redevent_events AS a'
         . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
         . ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id '
         . ' INNER JOIN #__redevent_event_venue_xref AS x on x.eventid = a.id'

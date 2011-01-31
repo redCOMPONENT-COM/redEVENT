@@ -167,6 +167,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 		$this->_data = $this->_getList( $query, 0, $params->get('detcat_nr') );
     $this->_data = $this->_categories($this->_data);
     $this->_data = $this->_getPlacesLeft($this->_data);
+    $this->_data = $this->_getPrices($this->_data);
 
 		return $this->_data;
 	}
@@ -220,7 +221,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 
 		//Get Events from Category				
     $query = 'SELECT a.id, a.datimage, x.venueid, x.dates, x.enddates, x.times, x.endtimes, x.id AS xref, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, '
-        . ' a.title, a.registra, l.venue, l.city, l.state, l.url, c.catname, c.id AS catid, a.summary, '
+        . ' a.title, a.registra, l.venue, l.city, l.state, l.url, c.catname, c.id AS catid, a.summary, x.course_credit, '
         . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
         . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
         . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '

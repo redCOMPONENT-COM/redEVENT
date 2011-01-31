@@ -790,7 +790,7 @@ class ELOutput {
 		$res = array();
 		foreach ($prices as $p) 
 		{
-			$res[] = self::formatprice($p->price). '('.$p->name.')';
+			$res[] = self::formatprice($p->price);
 		}
 		return implode(' / ', $res);
 	}
