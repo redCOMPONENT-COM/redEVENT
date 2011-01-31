@@ -93,8 +93,8 @@ $toggle = $this->params->get('filter_toggle', 3);
 	      </div>
 	    	<?php endforeach; ?>
 	    	<?php endif; ?>
-	    	<input type="hidden" id="f-showfilters" name="showfilters" value="<?php echo JRequest::getInt('showfilters', $toggle != 3 ? 1 : 0); ?>"/>
 			</div>
+   	<input type="hidden" id="f-showfilters" name="showfilters" value="<?php echo $toggle == 0 ? '1' : JRequest::getInt('showfilters', $toggle != 3 ? 1 : 0); ?>"/>
 		<?php endif; ?>
 		
 		<?php if ($this->params->get('display')) : ?>
