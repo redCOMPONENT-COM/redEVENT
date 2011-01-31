@@ -93,12 +93,11 @@ class RedeventViewUpcomingVenueevents extends JView
 							{
 								foreach ($event->prices as $p) 
 								{
-									if (empty($p->image)) {
-										$venues_html .= $p->name.' '.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref, $p->slug)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text))).'&nbsp; ';
-									}
-									else {
-										$venues_html .= '&nbsp;'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref, $p->slug)), JHTML::_('image', $imagepath.$p->image,  JText::_($p->name))).'&nbsp; ';
-									}
+									$img = empty($p->image) ? JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text))
+									                        : JHTML::_('image', $imagepath.$p->image,  JText::_($p->name));
+									$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->slug, $event->xref, $p->slug));
+									
+									$venues_html .= '&nbsp;'.JHTML::_('link', $link, $img).'&nbsp; ';
 								}
 							}
 							else {

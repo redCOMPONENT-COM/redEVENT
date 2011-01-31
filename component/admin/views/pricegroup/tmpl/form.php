@@ -96,6 +96,13 @@ $imagepath = '/administrator/components/com_redevent/assets/images/';
 		</td>
 	</tr>
 	<tr>
+		<td width="100" align="right" class="hasTip key" title="<?php echo JText::_( 'COM_REDEVENT_PRICEGROUPS_TOOLTIP' ).'::'.JText::_( 'COM_REDEVENT_PRICEGROUPS_TOOLTIP_TIP' ); ?>">
+			<label for="tooltip"><?php echo JText::_( 'COM_REDEVENT_PRICEGROUPS_TOOLTIP' ); ?>:</label>
+		</td>
+		<td><textarea name="tooltip" id="tooltip"	cols="32" rows="4"><?php echo $this->object->tooltip; ?></textarea>
+		</td>
+	</tr>
+	<tr>
 		<td width="100" align="right" class="key"><label for="alias"><?php echo JText::_( 'Image' ); ?>:</label></td>
 		<td>
 			<?php	echo JHTML::_('list.images', 'image', $this->object->image, 'id="image"', $imagepath); ?>

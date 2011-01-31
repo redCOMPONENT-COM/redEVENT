@@ -41,12 +41,21 @@ class Redevent_pricegroups extends JTable
 	 * @var int
 	 */
 	var $id = null;
+	
 	/**
 	 * field name
 	 *
 	 * @var string
 	 */
   var $name;
+	
+	/**
+	 * field tooltip
+	 *
+	 * @var string
+	 */
+  var $tooltip;
+  
 	/** @var string */
 	var $image 				= '';
   

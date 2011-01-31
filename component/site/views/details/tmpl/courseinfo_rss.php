@@ -89,13 +89,13 @@ foreach ($this->_eventlinks as $key => $event) {
 						if ($event->prices && count($event->prices))
 						{
 							foreach ($event->prices as $p) 
-							{							
-								if (empty($p->image)) {
-									$venues_html .= '<div class="courseinfo_vlink courseinfo_webform '.$p->alias.'">'.$p->name.' '.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref, $p->slug)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text))).'</div> ';
-								}
-								else {
-									$venues_html .= '<div class="courseinfo_vlink courseinfo_webform '.$p->alias.'">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref, $p->slug)), JHTML::_('image', $imagepath.$p->image,  JText::_($p->name))).'</div> ';
-								}							
+							{					
+								$img = empty($p->image) ? JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text))
+								                        : JHTML::_('image', $imagepath.$p->image,  JText::_($p->name));
+								$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->slug, $event->xref, $p->slug));
+								
+								$venues_html .= '<div class="courseinfo_vlink courseinfo_webform hasTip '.$p->alias.'">'
+									             .JHTML::_('link', $link, $img).'</div> ';
 							}
 						}
 						else {

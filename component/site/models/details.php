@@ -186,6 +186,7 @@ class RedeventModelDetails extends JModel
 	       . ' v.city AS location, '
 	       . ' v.country, v.locimage, '
 	       . ' UNIX_TIMESTAMP(x.dates) AS unixdates, '
+	       . ' CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(":", e.id, e.alias) ELSE e.id END as slug, '
 	       . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(":", v.id, v.alias) ELSE v.id END as venueslug '
 	       . ' FROM #__redevent_events AS e '
 	       . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
@@ -679,7 +680,7 @@ class RedeventModelDetails extends JModel
   {
   	$event = $this->getDetails();
 
-  	$query = ' SELECT sp.*, p.name, p.alias, p.image, '
+  	$query = ' SELECT sp.*, p.name, p.alias, p.image, p.tooltip, '
 	         . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug ' 
   	       . ' FROM #__redevent_sessions_pricegroups AS sp '
   	       . ' INNER JOIN #__redevent_pricegroups AS p on p.id = sp.pricegroup_id '
@@ -708,7 +709,7 @@ class RedeventModelDetails extends JModel
     	$ids[$r->xref] = $k;
     }
     
-  	$query = ' SELECT sp.*, p.name, p.alias, p.image, '
+  	$query = ' SELECT sp.*, p.name, p.alias, p.image, p.tooltip, '
 	         . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug ' 
   	       . ' FROM #__redevent_sessions_pricegroups AS sp '
   	       . ' INNER JOIN #__redevent_pricegroups AS p on p.id = sp.pricegroup_id '
@@ -740,7 +741,6 @@ class RedeventModelDetails extends JModel
     		$rows[$k]->prices = null;
     	}
     }
-  	
     return $rows;
   }
 }
