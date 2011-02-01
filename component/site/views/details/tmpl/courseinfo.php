@@ -95,7 +95,7 @@ foreach ($this->_eventlinks as $key => $event) {
 			      else {
 			      	$link = $event->submission_type_external;
 			      }
-						$venues_html .= '<div class="courseinfo_vlink courseinfo_external">'.JHTML::_('link', $link, JHTML::_('image', $imagepath.$elsettings->signup_external_img,  $elsettings->signup_external_text), 'target="_blank"').'</div> ';
+						$venues_html .= '<div class="courseinfo_vlink courseinfo_external hasTip" title="::'.$elsettings->signup_external_text.'">'.JHTML::_('link', $link, JHTML::_('image', $imagepath.$elsettings->signup_external_img,  $elsettings->signup_external_text), 'target="_blank"').'</div> ';
 						break;
 					case 'webform':
 						if ($event->prices && count($event->prices))

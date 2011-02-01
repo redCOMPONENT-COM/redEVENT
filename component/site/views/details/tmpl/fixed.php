@@ -257,7 +257,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		      else {
 		      	$link = $this->row->submission_type_external;
 		      }
-					$venues_html .= '<div class="registration_method">'.JHTML::_('link', $link, JHTML::_('image', $imagepath.$this->elsettings->signup_external_img,  $this->elsettings->signup_external_text), 'target="_blank"').'</div> ';
+					$venues_html .= '<div class="registration_method hasTip" title="::'.$this->elsettings->signup_external_text.'">'.JHTML::_('link', $link, JHTML::_('image', $imagepath.$this->elsettings->signup_external_img,  $this->elsettings->signup_external_text), 'target="_blank"').'</div> ';
 					break;
 				case 'webform':
 					if ($this->prices && count($this->prices))

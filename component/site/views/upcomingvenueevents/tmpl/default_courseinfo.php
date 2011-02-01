@@ -64,7 +64,7 @@ foreach ($this->upcomingvenueevents as $key => $event) {
 					$venues_html .= '<div class="vlink phone">'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&task=signup&subtype=phone&xref='.$event->xref.'&id='.$event->id), JHTML::_('image', $imagepath.$elsettings->signup_phone_img,  $elsettings->signup_phone_text, 'width="24px" height="24px"')).'</div> ';
 					break;
 				case 'external':
-					$venues_html .= '<div class="vlink external">'.JHTML::_('link', $event->submission_type_external, JHTML::_('image', $imagepath.$elsettings->signup_external_img,  $elsettings->signup_external_text), 'target="_blank"').'</div> ';
+					$venues_html .= '<div class="vlink external hasTip" title="::'.$elsettings->signup_external_text.'">'.JHTML::_('link', $event->submission_type_external, JHTML::_('image', $imagepath.$elsettings->signup_external_img,  $elsettings->signup_external_text), 'target="_blank"').'</div> ';
 					break;
 				case 'webform':
 					if ($event->prices && count($event->prices))
