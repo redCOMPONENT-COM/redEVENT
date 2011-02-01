@@ -493,7 +493,7 @@ class RedeventModelBaseEventList extends JModel
   {
   	if (empty($this->_customfields))
   	{
-	  	$query = ' SELECT f.id, f.name, f.in_lists, f.searchable, f.ordering '
+	  	$query = ' SELECT f.id, f.name, f.in_lists, f.searchable, f.ordering, f.tips '
 	  	       . ' FROM #__redevent_fields AS f'
 	  	       . ' WHERE f.published = 1'
 	  	       . '   AND f.object_key = '. $this->_db->Quote('redevent.event')
@@ -514,7 +514,7 @@ class RedeventModelBaseEventList extends JModel
   {
   	if (empty($this->_xrefcustomfields))
   	{
-	  	$query = ' SELECT f.id, f.name, f.in_lists, f.searchable, f.ordering '
+	  	$query = ' SELECT f.id, f.name, f.in_lists, f.searchable, f.ordering, f.tips '
 	  	       . ' FROM #__redevent_fields AS f'
 	  	       . ' WHERE f.published = 1'
 	  	       . '   AND f.object_key = '. $this->_db->Quote('redevent.xref')
