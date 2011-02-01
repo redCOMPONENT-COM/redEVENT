@@ -684,7 +684,7 @@ class RedeventModelBaseEventList extends JModel
 		$gids = implode(',', $gids);
 		
 		$query = ' SELECT DISTINCT v.id AS value, '
-           . ' CASE WHEN CHAR_LENGTH(v.city) THEN CONCAT_WS(\' - \', v.venue, v.city) ELSE v.venue END as text '
+           . ' CASE WHEN CHAR_LENGTH(v.city) AND v.city <> v.venue THEN CONCAT_WS(\' - \', v.venue, v.city) ELSE v.venue END as text '
 		       . ' FROM #__redevent_venues AS v '
 		       . ' LEFT JOIN #__redevent_venue_category_xref AS xcat ON xcat.venue_id = v.id '
 		       . ' LEFT JOIN #__redevent_venues_categories AS vcat ON vcat.id = xcat.category_id '
