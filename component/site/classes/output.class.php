@@ -753,7 +753,7 @@ class ELOutput {
 	 *
 	 * @since 0.9
 	 */
-	function formatprice($price)
+	function formatprice($price, $currency = null)
 	{
 		$settings = & redEVENTHelper::config();
 		
@@ -775,7 +775,12 @@ class ELOutput {
 				$formatprice = number_format($price, 0, $settings->currency_decimal_separator, $settings->currency_thousand_separator);
 				break;
 		}
-		return $formatprice;
+		if ($currency) {
+			return $currency. ' ' .$formatprice;
+		}
+		else {
+			return $formatprice;
+		}
 	}	
 
 	function formatPrices($prices)
@@ -785,14 +790,31 @@ class ELOutput {
 		}
 		
 		if (count($prices) == 1) {
-			return self::formatprice($prices[0]->price);
+			return self::formatprice($prices[0]->price, $prices[0]->currency);
 		}
 		$res = array();
 		foreach ($prices as $p) 
 		{
-			$res[] = self::formatprice($p->price);
+			$res[] = self::formatprice($p->price, $p->currency);
 		}
 		return implode(' / ', $res);
+	}
+
+	function formatListPrices($prices)
+	{
+		if (!is_array($prices)) {
+			return;
+		}
+		
+		if (count($prices) == 1) {
+			return self::formatprice($prices[0]->price, $prices[0]->currency);
+		}
+		$res = array();
+		foreach ($prices as $p) 
+		{
+			$res[] = $p->name.' '.self::formatprice($p->price, $p->currency);
+		}
+		return implode('<br/>', $res);
 	}
 	
 	/**

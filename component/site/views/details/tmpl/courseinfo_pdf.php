@@ -44,7 +44,7 @@ foreach ($this->_eventlinks as $key => $event) {
 		<td><?php echo ELOutput::formatdate($event->dates, $event->times); ?> 
 		<?php echo redEVENTHelper::getEventDuration($event); ?> 
 		<?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
-		<td><?php echo ELOutput::formatprices($event->prices); ?></td>
+		<td class="re-price"><?php echo ELOutput::formatListPrices($event->prices); ?></td>
 	</tr>
 <?php }
 ?>

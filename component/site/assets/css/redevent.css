@@ -244,6 +244,9 @@ div#redevent table.eventtable tr.sectiontableentry2 td
 div#redevent table.eventtable tr:hover td
 { background: #F8F8F8 }
 
+div#redevent td.re-price {
+	white-space:nowrap;
+}
 
 /**
  * @section Eventlist Table Filter Form

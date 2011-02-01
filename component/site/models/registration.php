@@ -866,10 +866,13 @@ class RedEventModelRegistration extends JModel
   function getPricegroups()
   {
 		$event = $this->getSessionDetails();
-  	$query = ' SELECT sp.*, p.name, p.alias, p.tooltip, '
+  	$query = ' SELECT sp.*, p.name, p.alias, p.tooltip, f.currency, '
 	         . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug ' 
   	       . ' FROM #__redevent_sessions_pricegroups AS sp '
   	       . ' INNER JOIN #__redevent_pricegroups AS p on p.id = sp.pricegroup_id '
+  	       . ' INNER JOIN #__redevent_event_venue_xref AS x on x.id = sp.xref '
+  	       . ' INNER JOIN #__redevent_events AS e on e.id = x.eventid '
+  	       . ' LEFT JOIN #__rwf_forms AS f on e.redform_id = f.id '
   	       . ' WHERE sp.xref = ' . $this->_db->Quote($event->xref)
   	       . ' ORDER BY p.ordering ASC '
   	       ;

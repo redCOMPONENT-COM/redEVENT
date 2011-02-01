@@ -185,7 +185,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         <?php endif; ?>
         
 				<?php if ($this->params->get('lists_show_prices', 0)): ?>        
-					<td headers="el_prices" align="left"><?php echo ELOutput::formatPrices($row->prices); ?></td>
+					<td headers="el_prices" align="left" class="re-price"><?php echo ELOutput::formatListPrices($row->prices); ?></td>
 				<?php endif; ?>
 				<?php if ($this->params->get('lists_show_credits', 0)): ?>        
 					<td headers="el_credits" align="left"><?php echo $row->course_credit ? $row->course_credit : '-'; ?></td>

@@ -68,7 +68,7 @@ class RedeventViewUpcomingVenueevents extends JView
 			</tr><tr>			
 				<td>Venue:</td><td>'.JHTML::_('link', $venue_url, $event->venue, 'target="_blank"').'</td>
 			</tr><tr>				
-				<td>Price:</td><td>'.ELOutput::formatprices($event->prices).'</td>
+				<td>Price:</td><td class="re-price">'.ELOutput::formatListPrices($event->prices).'</td>
 			</tr><tr>
 				<td>Credits:</td><td>'.$event->course_credit.'</td>
 			</tr><tr>			

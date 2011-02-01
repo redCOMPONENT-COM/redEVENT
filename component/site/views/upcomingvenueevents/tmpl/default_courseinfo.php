@@ -49,7 +49,7 @@ foreach ($this->upcomingvenueevents as $key => $event) {
 		<td><?php echo ELOutput::formatdate($event->dates, $event->times); ?></td>
 		<td><?php echo redEVENTHelper::getEventDuration($event); ?></td>
 		<td><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
-		<td><?php echo ELOutput::formatprices($event->prices); ?></td>
+		<td class="re-price"><?php echo ELOutput::formatListPrices($event->prices); ?></td>
 		<td>
 		<?php
 		/* Get the different submission types */
