@@ -219,7 +219,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         <!-- custom fields -->
 		    <?php foreach ($this->customs AS $c): ?>
 		    <?php $property = 'custom'.$c->id; ?>
-          <td headers="el_customs" align="left" valign="top"><?php echo $row->$property; ?></td>
+          <td headers="el_customs" align="left" valign="top"><?php echo str_replace("\n", "<br/>", $row->$property); ?></td>
 		    <?php endforeach;?>
         <!-- custom fields end-->
 
