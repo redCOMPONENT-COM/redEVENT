@@ -1372,6 +1372,8 @@ class redEVENT_tags {
   	$selpg = null;
   	if (count($prices))
   	{
+  		$currency = current($prices)->currency ? current($prices)->currency : null;
+  		
 	  	// is pricegroup already selected ?
 	  	// if a review, we already have pricegroup_id in session
 	  	$pgids = $app->getUserState('pgids'.$submit_key);	  	
@@ -1401,14 +1403,16 @@ class redEVENT_tags {
   		{
   			$field = array();
   			$field['label'] = '<label for="pricegroup_id">'.JText::_('COM_REDEVENT_REGISTRATION_PRICE').'</label>';
-  			$field['field'] = redEVENTHelper::getRfPricesSelect($prices);
+  			$field['field'] = ($currency ? $currency.' ' : '').redEVENTHelper::getRfPricesSelect($prices);
+  			$field['class'] = 'reg-price';
 	  		$options['extrafields'][] = $field;
   		}
   		else // single selection => hidden field
   		{
   			$field = array();
   			$field['label'] = '<label for="pricegroup_id">'.JText::_('COM_REDEVENT_REGISTRATION_PRICE').'</label>';
-  			$field['field'] = $selpg->price.(count($prices) > 1 ? ' ('.$selpg->name.')' : '') . '<input type="hidden" name="pricegroup_id[]" class="fixedprice" value="'.$selpg->pricegroup_id.'" price="'.$selpg->price.'" />';
+  			$field['field'] = ELOutput::formatprice($selpg->price, $currency).(count($prices) > 1 ? ' ('.$selpg->name.')' : '') . '<input type="hidden" name="pricegroup_id[]" class="fixedprice" value="'.$selpg->pricegroup_id.'" price="'.$selpg->price.'" />';
+  			$field['class'] = 'reg-price pg'.$selpg->id;
 	  		$options['extrafields'][] = $field;
   		}
   	}
@@ -1506,7 +1510,7 @@ class redEVENT_tags {
 		$res = array();
 		foreach ($prices as $p) 
 		{
-			$res[] = ELOutput::formatprice($p->price). '('.$p->name.')';
+			$res[] = ELOutput::formatprice($p->price). ' ('.$p->name.')';
 		}
 		return implode(' / ', $res);
 	}
