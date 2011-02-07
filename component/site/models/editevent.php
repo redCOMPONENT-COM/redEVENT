@@ -408,7 +408,7 @@ class RedeventModelEditevent extends JModel
            . $cwhere
            . ' AND c.lft BETWEEN parent.lft AND parent.rgt '
            . ' GROUP BY c.id '
-           . ' ORDER BY c.lft;'
+           . ' ORDER BY c.ordering'
            ;
     $this->_db->setQuery($query);
     
