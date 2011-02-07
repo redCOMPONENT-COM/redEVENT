@@ -400,12 +400,12 @@ class redEVENTHelper {
     }
     
     $query .= ' GROUP BY c.id ';       
-    $query .= ' ORDER BY c.lft ';
+    $query .= ' ORDER BY c.ordering, c.lft ';
     
     $db->setQuery($query);
 
     $results = $db->loadObjectList();
-
+    
     $options = array();
     foreach((array) $results as $cat)
     {
