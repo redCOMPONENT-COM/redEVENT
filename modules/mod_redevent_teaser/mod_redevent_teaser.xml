@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install PUBLIC "-//Joomla! 1.5//DTD module 1.0//EN" "http://www.joomla.org/xml/dtd/1.5/module-install.dtd">
+<install type="module" version="1.5.0" method="upgrade">
+	<name>Latest Events Teaser</name>
+	<author>Redweb.dk</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redweb.dk</authorUrl>
+	<copyright>(c) 2008 - 2010 Redweb.dk</copyright>
+	<license>GNU/GPL</license>
+	<version>2.0 beta 9.1</version>
+	<description>MOD_REDEVENT_TEASER_MODULE_DESC</description>
+
+	<files>
+		<filename module="mod_redevent_teaser">mod_redevent_teaser.php</filename>
+		<filename>index.html</filename>
+    <filename>helper.php</filename>
+        <folder>tmpl</folder>
+        <filename>tmpl/index.html</filename>
+        <filename>tmpl/default.php</filename>
+        <filename>tmpl/mod_redevent_teaser.css</filename>
+        <filename>tmpl/red.css</filename>
+        <filename>tmpl/blue.css</filename>
+        <filename>tmpl/green.css</filename>
+        <folder>tmpl/img</folder>
+        <filename>tmpl/img/index.html</filename>
+        <filename>tmpl/img/calendar_red.png</filename>
+        <filename>tmpl/img/calendar_blue.png</filename>
+        <filename>tmpl/img/calendar_green.png</filename>        
+        <filename>tmpl/img/calendar_green2.png</filename>
+        <filename>tmpl/img/facebook.png</filename>
+        <filename>tmpl/img/twitter.png</filename>
+        <filename>tmpl/img/digg.png</filename>
+	</files>
+
+	<languages>
+		<language tag="en-GB">languages/en-GB.mod_redevent_teaser.ini</language>
+	</languages>
+
+	<params>	
+		<param name="layout" type="list" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_LAYOUT" description="MOD_REDEVENT_TEASER_SETTINGS_LAYOUT_DESC">
+			<option value="1">MOD_REDEVENT_TEASER_SETTINGS_LAYOUT_1</option>
+			<option value="2">MOD_REDEVENT_TEASER_SETTINGS_LAYOUT_2</option>
+		</param>
+		<param name="type" type="list" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_EVENTS_STATE" description="MOD_REDEVENT_TEASER_SETTINGS_EVENTS_STATE_DESC">
+			<option value="1">MOD_REDEVENT_TEASER_SETTINGS_EVENTS_STATE_UPCOMING</option>
+			<option value="2">MOD_REDEVENT_TEASER_SETTINGS_EVENTS_STATE_ARCHIVED</option>
+			<option value="3">MOD_REDEVENT_TEASER_SETTINGS_EVENTS_STATE_CURRENT</option>
+		</param>
+		<param name="color" type="list" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_COLOR" description="MOD_REDEVENT_TEASER_SETTINGS_COLOR_DESC">
+			<option value="1">MOD_REDEVENT_TEASER_SETTINGS_COLOR_RED</option>
+			<option value="2">MOD_REDEVENT_TEASER_SETTINGS_COLOR_BLUE</option>
+			<option value="3">MOD_REDEVENT_TEASER_SETTINGS_COLOR_GREEN</option>
+		</param>				
+		<param name="count" type="text" default="5" label="MOD_REDEVENT_TEASER_SETTINGS_EVENTS_IN_MODULE" description="MOD_REDEVENT_TEASER_SETTINGS_EVENTS_IN_MODULE_DESC" />				
+		<param name="cuttitle" type="text" default="35" label="MOD_REDEVENT_TEASER_SETTINGS_MAX_TITLE_LENGTH" description="MOD_REDEVENT_TEASER_SETTINGS_MAX_TITLE_LENGTH_DESC" />
+		<param name="descriptionlength" type="text" default="300" label="MOD_REDEVENT_TEASER_SETTINGS_MAX_DESCRIPTION_LENGTH" description="MOD_REDEVENT_TEASER_SETTINGS_MAX_DESCRIPTION_LENGTH_DESC" />		
+		<param name="br" type="radio" default="0" label="MOD_REDEVENT_TEASER_SETTINGS_ALLOW_LINEBREAK" description="MOD_REDEVENT_TEASER_SETTINGS_ALLOW_LINEBREAK_DESC">
+			<option value="0">NO</option>
+			<option value="1">YES</option>
+		</param>		
+		<param name="ainfo" type="radio" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_ADDITIONAL_INFORMATION" description="MOD_REDEVENT_TEASER_SETTINGS_ADDITIONAL_INFORMATION_DESC">
+			<option value="0">NO</option>
+			<option value="1">YES</option>
+		</param>
+		<param name="linkfb" type="radio" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_LINK_TO_FB" description="MOD_REDEVENT_TEASER_SETTINGS_LINK_TO_FB_DESC">
+			<option value="0">NO</option>
+			<option value="1">YES</option>
+		</param>
+		<param name="linktw" type="radio" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_LINK_TO_TWITTER" description="MOD_REDEVENT_TEASER_SETTINGS_LINK_TO_TWITTER_DESC">
+			<option value="0">NO</option>
+			<option value="1">YES</option>
+		</param>		
+		<param name="linkdi" type="radio" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_LINK_TO_DIGG" description="MOD_REDEVENT_TEASER_SETTINGS_LINK_TO_DIGG_DESC">
+			<option value="0">NO</option>
+			<option value="1">YES</option>
+		</param>	        		
+		<param name="catid" type="text" default="" label="MOD_REDEVENT_TEASER_SETTINGS_CATEGORY_ID" description="MOD_REDEVENT_TEASER_SETTINGS_CATEGORY_ID_DESC" />
+		<param name="venid" type="text" default="" label="MOD_REDEVENT_TEASER_SETTINGS_VENUE_ID" description="MOD_REDEVENT_TEASER_SETTINGS_VENUE_ID_DESC" />
+
+		<param name="stateloc" type="text" default="" label="MOD_REDEVENT_TEASER_SETTINGS_STATE" description="MOD_REDEVENT_TEASER_SETTINGS_STATE_DESC" />
+		<param name="picture_size" type="text" default="30" label="MOD_REDEVENT_TEASER_PICTURE_SIZE" description="MOD_REDEVENT_TEASER_PICTURE_SIZE_DESC" />		
+	</params>
+	
+	
+	<params group="advanced">
+		<param name="moduleclass_sfx" type="text" default="" label="MODULE CLASS SUFFIX" description="MODULE CLASS SUFFIX DESC" />
+		<param name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
+			<option value="1">Use global</option>
+			<option value="0">No caching</option>
+		</param>
+	</params>
+
+</install>

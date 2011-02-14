@@ -1,0 +1,86 @@
+ /**
+ * THIS FILE IS BASED ON MOD_EVENTLIST_WIDE FROM SCHLU.NET
+ * @version 0.9 $Id$
+ * @package Joomla
+ * @subpackage RedEvent
+ * @copyright (C) 2008 - 2011 redComponent
+ * @license GNU/GPL, see LICENCE.php
+ * RedEvent is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License 2
+ * as published by the Free Software Foundation.
+
+ * RedEvent is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with RedEvent; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+ 
+#redeventteaser .calendar {
+background-repeat: no-repeat;
+width: 84px;
+height: 82px;
+font-family: 'Lucida Grande',Geneva,Arial,Verdana,sans-serif;
+text-align:center;
+padding: 2px 0 0 0;
+float:left;
+margin-right:10px;
+} 
+#redeventteaser span.share{
+margin-left:15px;
+}
+
+#redeventteaser .calendar .year{
+font-size: 6px;
+height:9px;
+color: #e1e1e1;
+}
+
+#redeventteaser .calendar .month {
+font-size: 8px;
+color: white;
+text-transform:uppercase;
+font-weight:bold;
+text-shadow: #666 1px 1px 1px;
+}
+
+#redeventteaser .calendar .day{
+font-weight:bold;
+padding-top:3px;
+}
+
+#redeventteaser .calendar .daynum{
+font-size: 29px;
+font-weight:bold;
+text-shadow: #fff 1px 1px 1px;
+}
+
+#redeventteaser .clear {clear:both;}
+
+
+div#elmodulewide .image-preview {
+	height: 60px;
+	border: 1px solid #CCCCCC;
+	padding: 3px;
+	background-color: white;
+	margin:3px 5px 0 0;
+}
+
+#redeventteaser .float_right {
+float:right;
+}
+#redeventteaser .image-preview {
+border:5px solid #fefefe;
+}
+
+#redeventteaser .sidetitle a
+{
+	color: #FFA31A;
+	font-size: 14px;
+	}
+	
+	#redeventteaser .calendar {background-image: url(img/calendar_red.png);} 
+	
