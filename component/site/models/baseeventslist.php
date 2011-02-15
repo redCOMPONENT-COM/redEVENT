@@ -463,7 +463,7 @@ class RedeventModelBaseEventList extends JModel
   	
   	// sort this out
   	$prices = array();
-  	foreach ($res as $p)
+  	foreach ((array)$res as $p)
   	{
   		if (!isset($prices[$p->xref])) {
   			$prices[$p->xref] = array($p);
