@@ -66,26 +66,59 @@ class RedeventController extends JController
 	{
 		$app = & JFactory::getApplication();
 		
-		if (!JRequest::getVar('filter', 0, 'post'))
+//		if (!JRequest::getVar('filter', 0, 'post'))
+//		{
+//			return false;
+//		}
+		
+		$post = JRequest::get('post');
+		$uri = &Jfactory::getUri();
+		
+		$myuri = clone($uri); // do not modify it if not proper view...
+		$vars = 0;
+		foreach ($post as $filter => $v)
 		{
-			return false;
+			switch ($filter)
+			{
+				case 'filter_category':
+				case 'limit':
+				case 'limitstart':
+				case 'filter_order':
+				case 'filter_order_dir':
+				case 'filter':
+				case 'filter_type':
+				case 'filter_venue':
+					if ($v)
+					{
+						$myuri->setVar($filter, $v);
+						$vars++;
+					}
+					break;
+				case 'filtercustom':
+					$filt = array();
+					foreach ((array) $v as $n => $val)
+					{
+						if ($val) $filt[$n] = $val;
+					}
+					if (count($filt)) {
+						$myuri->setVar($filter, $filt);
+						$vars++;						
+					}
+					break;
+			}
 		}
 		
-		switch (JRequest::getVar('view', ''))
+		if ($vars)
 		{
-			case 'venuesmap':
-				$url = 'index.php?option=com_redevent&view=venuesmap';
-				$cat = JRequest::getVar('cat', '');
-				if (!empty($cat)) {
-					$url .= '&cat=' . $cat;
-				}
-        $vcat = JRequest::getVar('vcat', '');
-        if (!empty($vcat)) {
-          $url .= '&vcat=' . $vcat;
-        }        
-        $customs = $app->getUserStateFromRequest('com_redevent.filter_customs', 'filtercustom', array(), 'array');
-				$this->setRedirect(JRoute::_($url, false));
-				break;
+			switch (JRequest::getVar('view', ''))
+			{
+				case 'categoryevents':
+				case 'venueevents':
+				case 'simplelist':
+				case 'venuesmap':
+					$this->setRedirect(JRoute::_($myuri->toString(), false));
+					break;
+			}
 		}
 	}
 	
