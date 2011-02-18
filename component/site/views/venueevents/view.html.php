@@ -243,7 +243,8 @@ class RedeventViewVenueevents extends JView
     $filter          = $state->get('filter');
     $filter_type     = $state->get('filter_type');
     $filter_category = $state->get('filter_category');
-    $filter_venue    = $state->get('filter_venue');      
+    $filter_venue    = $state->get('filter_venue');  
+    $filter_event    = $state->get('filter_event');    
 
 		$sortselects = array();
 		if ($params->get('filter_type_event',    1))	$sortselects[]	= JHTML::_('select.option', 'title', $elsettings->titlename );
@@ -258,6 +259,14 @@ class RedeventViewVenueevents extends JView
 		}
 		else {
 			$sortselect 	= JHTML::_('select.genericlist', $sortselects, 'filter_type', 'size="1" class="inputbox"', 'value', 'text', $filter_type );
+		}
+	
+		// events filter
+		if ($params->get('lists_filter_event', 0))
+		{
+			$options = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_FILTER_SELECT_EVENT') ));
+			$options = array_merge($options, $this->get('EventsOptions'));
+			$lists['eventfilter'] = JHTML::_('select.genericlist', $options, 'filter_event', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_event );			
 		}
 		
 		// category filter

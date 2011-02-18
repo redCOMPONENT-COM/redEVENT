@@ -218,12 +218,14 @@ class RedeventViewCategoryevents extends JView
     $filter_type     = $state->get('filter_type');
     $filter_category = $state->get('filter_category');
     $filter_venue    = $state->get('filter_venue');
+    $filter_event    = $state->get('filter_event');
       
 
 		$sortselects = array();
 		if ($params->get('filter_type_event', 1))	$sortselects[]	= JHTML::_('select.option', 'title', $elsettings->titlename );
 		if ($params->get('filter_type_venue', 1))	$sortselects[] 	= JHTML::_('select.option', 'venue', $elsettings->locationname );
 		if ($params->get('filter_type_city', 1))	$sortselects[] 	= JHTML::_('select.option', 'city', $elsettings->cityname );
+		if ($params->get('filter_type_category', 1))	$sortselects[] 	= JHTML::_('select.option', 'type', $elsettings->catfroname );
 		
 		if (count($sortselects) == 0) {
 			$sortselect = false;
@@ -239,6 +241,14 @@ class RedeventViewCategoryevents extends JView
 		$options = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_FILTER_SELECT_VENUE') ));
 		$options = array_merge($options, $this->get('VenuesOptions'));
 		$lists['venuefilter'] = JHTML::_('select.genericlist', $options, 'filter_venue', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_venue );
+	
+		// events filter
+		if ($params->get('lists_filter_event', 0))
+		{
+			$options = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_FILTER_SELECT_EVENT') ));
+			$options = array_merge($options, $this->get('EventsOptions'));
+			$lists['eventfilter'] = JHTML::_('select.genericlist', $options, 'filter_event', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_event );			
+		}
 		
 		$lists['order_Dir'] 	= $filter_order_Dir;
 		$lists['order'] 		= $filter_order;

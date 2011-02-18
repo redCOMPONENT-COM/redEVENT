@@ -81,10 +81,10 @@ class RedeventController extends JController
 			switch ($filter)
 			{
 				case 'filter_category':
-				case 'limit':
-				case 'limitstart':
+//				case 'limit':
+//				case 'limitstart':
 				case 'filter_order':
-				case 'filter_order_dir':
+				case 'filter_order_Dir':
 				case 'filter':
 				case 'filter_type':
 				case 'filter_venue':

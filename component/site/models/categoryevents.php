@@ -248,6 +248,11 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
 				$where[] = '(c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
     	}
 		}
+    
+		if ($ev = $this->getState('filter_event')) 
+		{
+			$where[] = 'a.id = '.$this->_db->Quote($ev);
+		}
 		
     $customs = $this->getState('filter_customs');	
     foreach ((array) $customs as $key => $custom)

@@ -117,7 +117,12 @@ class RedeventModelSimpleList extends RedeventModelBaseEventList
 				}
 			}
 		}
-			
+	    
+		if ($ev = $this->getState('filter_event')) 
+		{		
+			$where[] = 'a.id = '.$this->_db->Quote($ev);
+		}
+		
     if ($filter_venue = $this->getState('filter_venue'))
     {
     	$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);    	

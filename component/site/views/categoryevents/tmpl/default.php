@@ -86,6 +86,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_( 'RESET' ); ?></button>
 			</div>
 			<?php endif; ?>
+				
+			<?php if ($this->params->get('lists_filter_event', 0)): ?>
+			<div id="event-filter"><?php echo $this->lists['eventfilter']; ?></div>
+    	<?php endif; ?>
     	
 			<?php if ($this->params->get('lists_filter_venue', 1)): ?>
 			<div id="venue-filter"><?php echo $this->lists['venuefilter']; ?></div>

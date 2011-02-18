@@ -39,6 +39,10 @@
 			<option value="0">Hide</option>
 			<option value="1">Show</option>
 		</param>
+  	<param name="lists_filter_event" type="radio" default="0" label="COM_REDEVENT_SETTINGS_LISTS_FILTER_EVENT" description="COM_REDEVENT_SETTINGS_LISTS_FILTER_EVENT_DESC">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
   	<param name="lists_filter_category" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_FILTER_CATEGORY" description="COM_REDEVENT_SETTINGS_LISTS_FILTER_CATEGORY_DESC">
 			<option value="0">Hide</option>
 			<option value="1">Show</option>

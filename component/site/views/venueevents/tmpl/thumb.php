@@ -135,6 +135,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				</div>
 				<?php endif; ?>
 				
+			<?php if ($this->params->get('lists_filter_event', 0)): ?>
+			<div id="event-filter"><?php echo $this->lists['eventfilter']; ?></div>
+    	<?php endif; ?>
+				
 				<?php if ($this->params->get('lists_filter_category', 1)): ?>
 				<div id="category-filter"><?php echo $this->lists['categoryfilter']; ?></div>
 	    	<?php endif; ?>
