@@ -217,7 +217,7 @@ class RedeventViewDetails extends JView
     $unreg_check = redEVENTHelper::canUnregister($row->xref);
     
     //manages attendees
-    $manage_attendees  = $this->get('ManageAttendees');
+    $manage_attendees  = $this->get('ManageAttendees') || $this->get('ViewFullAttendees');
 		
 		//assign vars to jview
 		$this->assignRef('row',              $row);

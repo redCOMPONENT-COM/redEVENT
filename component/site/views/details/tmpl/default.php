@@ -34,6 +34,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			                        $img ); ?>
 		<?php endif; ?>
     <?php echo ELOutput::editbutton($this->item->id, $this->row->did, $this->params, $this->allowedtoeditevent, 'editevent' ); ?>
+    <?php if ($this->manage_attendees): ?>
+    <?php echo ELOutput::xrefattendeesbutton($this->row->xref); ?>
+		<?php endif; ?>
 	</p>
 
 <?php if ($this->params->def( 'show_page_title', 1 )) : ?>

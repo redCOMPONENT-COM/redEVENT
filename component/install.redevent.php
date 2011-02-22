@@ -872,6 +872,14 @@ if (is_array($cols))
     $db->setQuery($q);
     $db->query();    
   }
+  
+  if (!array_key_exists('manage_attendees', $cols)) {
+    $q = ' ALTER TABLE `#__redevent_groupmembers` '
+       . '   ADD `manage_attendees` TINYINT( 4 ) NOT NULL '
+       ;
+    $db->setQuery($q);
+    $db->query();    
+  }
 }
 
 /* Get the group members fields columns */

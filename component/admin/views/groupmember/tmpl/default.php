@@ -79,6 +79,14 @@ JHTML::_('behavior.tooltip');
 		</td>
 	</tr>
 	<tr>
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'COM_REDEVENT_GROUPMEMBERS_MANAGE_ATTENDEES' ).'::'.JText::_( 'COM_REDEVENT_GROUPMEMBERS_MANAGE_ATTENDEES_TIP' ); ?>">
+			<label for="is_admin"> <?php echo JText::_( 'COM_REDEVENT_GROUPMEMBERS_MANAGE_ATTENDEES' ); ?>:
+		</label></td>
+		<td>
+			<?php echo $this->lists['manage_attendees']; ?>
+		</td>
+	</tr>
+	<tr>
 		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'MEMBER MANAGES VENUES' ).'::'.JText::_( 'MEMBER MANAGES VENUES TIP' ); ?>">
 			<label for="edit_venues"> <?php echo JText::_( 'MEMBER MANAGES VENUES' ); ?>:
 		</label></td>

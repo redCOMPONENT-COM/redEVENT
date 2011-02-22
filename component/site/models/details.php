@@ -507,7 +507,13 @@ class RedeventModelDetails extends JModel
   function getManageAttendees()
   {
   	$acl = UserAcl::getInstance();
-  	return $acl->canEditXref($this->_xref);
+  	return $acl->canManageAttendees($this->_xref);
+  }
+  
+  function getViewFullAttendees()
+  {
+  	$acl = UserAcl::getInstance();
+  	return $acl->canViewAttendees($this->_xref);
   }
   
   function notifyManagers()

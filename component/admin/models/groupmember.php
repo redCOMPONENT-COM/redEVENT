@@ -161,6 +161,7 @@ class RedEventModelGroupmember extends JModel
 			$object->is_admin		          = 0;
 			$object->manage_events	      = 0;
 			$object->manage_xrefs		      = 0;
+			$object->manage_attendees     = 0;
 			$object->edit_venues	        = 0;
 			$object->publish_events	      = 0;
 			$object->publish_venues	      = 0;

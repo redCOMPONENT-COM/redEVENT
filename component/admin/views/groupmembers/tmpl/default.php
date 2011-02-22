@@ -48,13 +48,14 @@ defined('_JEXEC') or die('Restricted access');
 			<th width="30"><?php echo JText::_( 'Manage events' ); ?></th>
 			<th width="30"><?php echo JText::_( 'Manage events dates' ); ?></th>
 			<th width="30"><?php echo JText::_( 'Manage Venues' ); ?></th>
+			<th width="30"><?php echo JText::_( 'COM_REDEVENT_GROUPMEMBERS_MANAGE_ATTENDEES' ); ?></th>
 			<th width="30"><?php echo JText::_( 'Get registrations' ); ?></th>
 		</tr>
 	</thead>
 
 	<tfoot>
 		<tr>
-			<td colspan="9">
+			<td colspan="10">
 				<?php echo $this->pageNav->getListFooter(); ?>
 			</td>
 		</tr>
@@ -127,6 +128,17 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/no.png',
 																	         JText::_( 'No' ), 
 																	         'title= "'. JText::_( 'No' ) . '"' ); ?>
+			<?php endif; ?>
+			</td>
+			<td style="text-align:center;">
+			<?php if ($row->manage_attendees == 0): ?>
+				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/no.png',
+																	         JText::_( 'No' ), 
+																	         'title= "'. JText::_( 'No' ) . '"' ); ?>
+			<?php elseif ($row->manage_attendees == 1): ?>
+				<?php echo JText::_( 'COM_REDEVENT_GROUPMEMBERS_MANAGE_ATTENDEES_VIEW' ); ?>
+			<?php elseif ($row->manage_attendees == 2): ?>
+				<?php echo JText::_( 'COM_REDEVENT_GROUPMEMBERS_MANAGE_ATTENDEES_EDIT' ); ?>
 			<?php endif; ?>
 			</td>
 			<td style="text-align:center;">

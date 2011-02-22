@@ -54,10 +54,15 @@ class RedeventViewAttendees extends JView
 		$elsettings = redEVENTHelper::config();
 		$acl        = UserAcl::getInstance();
 		$uri        = & JFactory::getURI();
+		$model      = &$this->getModel();
 		
+    //manages attendees
+    $manage_attendees     = $this->get('ManageAttendees');
+    $view_full_attendees  = $this->get('ViewAttendees');
+    
 		$row		= $this->get('Session');
-		$registers        = $this->get('Registers');
-		$register_fields  = $this->get('FormFields');
+		$registers        = $model->getRegisters();
+		$register_fields  = $model->getFormFields();
 		$roles            = $this->get('Roles');
 				
 		//get menu information
@@ -90,10 +95,7 @@ class RedeventViewAttendees extends JView
 		
 		//set page title and meta stuff
 		$document->setTitle( $item->name.' - '.$row->title );
-		        
-    //manages attendees
-    $manage_attendees  = $this->get('ManageAttendees');
-    
+		            
     $unreg_check = redEVENTHelper::canUnregister($row->xref);
     
     // lists
@@ -111,6 +113,7 @@ class RedeventViewAttendees extends JView
 		$this->assignRef('params',           $params);
     $this->assignRef('user',             $user);
 		$this->assignRef('manage_attendees', $manage_attendees);
+		$this->assignRef('view_full_attendees', $view_full_attendees);
 		$this->assignRef('print_link',       $print_link);
 		$this->assignRef('registers',        $registers);
 		$this->assignRef('registersfields',  $register_fields);
@@ -179,6 +182,7 @@ class RedeventViewAttendees extends JView
 		
 		//Check user if he can edit
 		$manage_attendees  = $this->get('ManageAttendees');
+		$view_full_attendees = $this->get('ViewAttendees');
 		
 			// add javascript code for cancel button on attendees layout.
 			JHTML::_('behavior.mootools');
@@ -221,6 +225,7 @@ class RedeventViewAttendees extends JView
 		$this->assignRef('elsettings' , 			$elsettings);
 		$this->assignRef('item' , 					$item);
     $this->assignRef('manage_attendees' , $manage_attendees);
+    $this->assignRef('view_full_attendees' , $view_full_attendees);
 		$this->assignRef('action',           $uri->toString());
 		$this->assignRef('lists',            $lists);
 				

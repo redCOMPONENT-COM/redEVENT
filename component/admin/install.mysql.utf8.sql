@@ -203,6 +203,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_groupmembers` (
   `is_admin` tinyint(4) NOT NULL,
   `manage_events` tinyint(4) NOT NULL,
   `manage_xrefs` tinyint(4) NOT NULL,
+  `manage_attendees` tinyint(4) NOT NULL,
   `edit_venues` tinyint(4) NOT NULL,
   `receive_registrations` tinyint(4) NOT NULL,
   `checked_out` int(11) NOT NULL default '0',

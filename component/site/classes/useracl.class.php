@@ -366,9 +366,22 @@ class UserAcl {
   	       . '   AND x.id = '. $db->Quote($xref_id)
   	       ;
   	$db->setQuery($query);
-  	$res = $db->loadObjectList();
+  	$res1 = $db->loadObjectList();
   	
-  	return count($res);
+  	$query = ' SELECT gm.id '
+  	       . ' FROM #__redevent_event_venue_xref AS x '
+           . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = x.eventid'
+  	       . ' INNER JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
+  	       . ' INNER JOIN #__redevent_groups AS g ON gc.group_id = g.id '
+  	       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
+  	       . ' WHERE gm.member = '. $db->Quote($this->_userid)
+  	       . '   AND (gm.manage_xrefs > 0 OR gm.manage_events > 0 OR gm.manage_attendees > 1 OR gm.receive_registrations > 0) '
+  	       . '   AND x.id = '. $db->Quote($xref_id)
+  	       ;
+  	$db->setQuery($query);
+  	$res2 = $db->loadObjectList();
+  	
+  	return count($res1) + count($res2);
   }
 	
 	/**
@@ -393,7 +406,7 @@ class UserAcl {
   	       . ' INNER JOIN #__redevent_groups AS g ON gc.group_id = g.id '
   	       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
   	       . ' WHERE gm.member = '. $db->Quote($this->_userid)
-  	       . '   AND (gm.manage_xrefs > 0 OR gm.manage_events > 0 OR gm.receive_registrations > 0) '
+  	       . '   AND (gm.manage_xrefs > 0 OR gm.manage_events > 0 OR gm.manage_attendees > 0 OR gm.receive_registrations > 0) '
   	       . '   AND x.id = '. $db->Quote($xref_id)
   	       ;
   	$db->setQuery($query);
