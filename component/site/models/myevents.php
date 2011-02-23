@@ -484,6 +484,8 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         if (!$acl->superuser()) 
         {
         	$xrefs = $acl->getCanEditXrefs();
+        	$xrefs = array_merge($acl->getCanViewAttendees(), $xrefs);
+        	$xrefs = array_unique($xrefs);
         	if ($xrefs && count($xrefs)) {
         		$where[] = ' x.id IN ('.implode(",", $xrefs).')';
         	}
@@ -576,6 +578,8 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         if (!$acl->superuser()) 
         {
         	$xrefs = $acl->getCanEditXrefs();
+        	$xrefs = array_merge($acl->getCanViewAttendees(), $xrefs);
+        	$xrefs = array_unique($xrefs);
         	if ($xrefs && count($xrefs)) {
         		$where[] = ' x.id IN ('.implode(",", $xrefs).')';
         	}

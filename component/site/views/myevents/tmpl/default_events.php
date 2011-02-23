@@ -225,12 +225,24 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<td headers="el_edit" align="left" valign="top"><?php echo $this->eventeditbutton($row->slug, $row->xref); ?></td>
 				<td headers="el_edit" align="left" valign="top">
 					<?php if ($row->published == '1'): ?>
-						<?php echo JHTML::link('index.php?option=com_redevent&task=unpublishxref&xref='. $row->xref, JHTML::_('image.site', 'ok.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Published' ))); ?>
+						<?php if ($this->acl->canEditXref($row->xref)): ?>
+							<?php echo JHTML::link('index.php?option=com_redevent&task=unpublishxref&xref='. $row->xref, JHTML::_('image.site', 'ok.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Published' ))); ?>
+						<?php else: ?>
+							<?php echo JHTML::_('image.site', 'ok.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Published' )); ?>						
+						<?php endif; ?>
 					<?php elseif ($row->published == '0'):?>
-						<?php echo JHTML::link('index.php?option=com_redevent&task=publishxref&xref='. $row->xref, JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Unpublished' ))); ?>
+						<?php if ($this->acl->canEditXref($row->xref)): ?>
+							<?php echo JHTML::link('index.php?option=com_redevent&task=publishxref&xref='. $row->xref, JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Unpublished' ))); ?>
+						<?php else: ?>
+							<?php echo JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Unpublished' )); ?>
+						<?php endif; ?>
 					<?php endif;?>
 				</td>
-				<td headers="el_delete" align="left" valign="top"><?php echo $this->xrefdeletebutton($row->xref); ?></td>
+				<td headers="el_delete" align="left" valign="top">
+					<?php if ($this->acl->canEditXref($row->xref)): ?>
+						<?php echo $this->xrefdeletebutton($row->xref); ?>
+					<?php endif; ?>
+				</td>
 			</tr>
 
   		<?php
