@@ -84,8 +84,8 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td><?php echo htmlspecialchars($row->description, ENT_QUOTES, 'UTF-8'); ?></td>
 			<td><?php echo ($row->isdefault ? 'yes' : 'no'); ?></td>
-			<td style="text-align:center;"><?php echo JHTML::link('index.php?option=com_redevent&amp;controller=groups&amp;task=editmembers&amp;group_id='.$row->id, 
-																	JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/groupmembers.png',
+			<td style="text-align:center;"><?php echo JHTML::link('index.php?option=com_redevent&amp;controller=groups&amp;task=editmembers&amp;group_id='.$row->id,
+			                            $row->members . ' ' .	JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/groupmembers.png',
 																	         JText::_( 'Edit group members' ), 
 																	         'title= "'. JText::_( 'Edit group members' ) . '"' )); ?>
 			</td>

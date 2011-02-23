@@ -155,9 +155,11 @@ class RedEventModelGroups extends JModel
 		$where		= $this->_buildContentWhere();
 		$orderby	= $this->_buildContentOrderBy();
 
-		$query = 'SELECT *'
-					. ' FROM #__redevent_groups'
+		$query = 'SELECT g.*, COUNT(gm.id) AS members '
+					. ' FROM #__redevent_groups AS g '
+					. ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
 					. $where
+					. ' GROUP BY g.id '
 					. $orderby
 					;
 
