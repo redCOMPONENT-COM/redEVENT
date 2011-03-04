@@ -24,6 +24,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'countries.php');
 
 class redEVENT_tags {
 	
