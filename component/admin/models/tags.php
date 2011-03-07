@@ -127,6 +127,7 @@ class RedEventModelTags extends JModel
 		$tags[] = new TagsModelTag('paymentrequest', JText::_('SUBMISSION_EVENT_PAYMENTREQUEST'), 'payment');
 		$tags[] = new TagsModelTag('paymentrequestlink', JText::_('SUBMISSION_EVENT_PAYMENTREQUESTLINK'), 'payment');
 		$tags[] = new TagsModelTag('registrationid', JText::_('SUBMISSION_EVENT_REGISTRATIONID'), 'payment');
+		$tags[] = new TagsModelTag('total_price', JText::_('REDEVENT_SUBMISSION_TAG_REDFORM_TOTAL_PRICE_DESC'), 'payment');
 		return $tags;
 	}
 	

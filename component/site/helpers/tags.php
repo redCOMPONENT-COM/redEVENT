@@ -713,6 +713,11 @@ class redEVENT_tags {
 				      	$replace[] = '';
 				      }
 				    	break;
+				    	
+				    case 'total_price': // total price for registration, including redform fields
+				      $search[]  = '['.$tag.']';
+				    	$replace[] = $this->_getSubmissionTotalPrice();
+				    	break;
 				  }
 				    
 				}
@@ -1292,6 +1297,24 @@ class redEVENT_tags {
 		  							
 			$rfcore = $this->_getRFCore();
 			return $rfcore->getSidsFieldsAnswers($sids);
+  }
+  
+  private function _getSubmissionTotalPrice()
+  {
+  	if (!$this->_submitkey) {
+			return false;
+		}
+		  	
+		$db = & JFactory::getDBO();
+		$query =  ' SELECT SUM(s.price) '
+		        . ' FROM #__redevent_register AS r '
+		        . ' INNER JOIN #__rwf_submitters AS s ON s.submit_key = r.submit_key '
+		        . ' WHERE r.submit_key = '.$db->quote($this->_submitkey)
+		        . ' GROUP BY r.id '
+		        ;
+		$db->setQuery($query);
+		$res = $db->loadResult();
+		return $res;		
   }
 
   private function _getFieldsTags()
