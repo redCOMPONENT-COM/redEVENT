@@ -216,10 +216,11 @@ class RedEventModelAttendees extends JModel
 		$where		= $this->_buildContentWhere();
 
 		$query = ' SELECT r.*, r.id as attendee_id, u.username, u.name, a.id AS eventid, u.gid, u.email '
-		       . ', s.answer_id, r.waitinglist, r.confirmdate, r.confirmed, s.id AS submitter_id, s.price, fo.activatepayment, p.paid, p.status '
+		       . ', s.answer_id, r.waitinglist, r.confirmdate, r.confirmed, s.id AS submitter_id, s.price, pg.name as pricegroup, fo.activatepayment, p.paid, p.status '
 		       . ', a.course_code '
 		       . $rfields
 		       . ' FROM #__redevent_register AS r '
+		       . ' LEFT JOIN #__redevent_pricegroups AS pg ON pg.id = r.pricegroup_id '
 		       . ' LEFT JOIN #__redevent_event_venue_xref AS x ON r.xref = x.id '
 		       . ' LEFT JOIN #__redevent_events AS a ON x.eventid = a.id '
 		       . ' LEFT JOIN #__users AS u ON r.uid = u.id '
@@ -483,9 +484,10 @@ class RedEventModelAttendees extends JModel
 		$this->getEvent();
 	  
 		// first, get all submissions			
-		$query = ' SELECT r.*, r.waitinglist, r.confirmed, r.confirmdate, r.submit_key, u.name '
+		$query = ' SELECT r.*, r.waitinglist, r.confirmed, r.confirmdate, r.submit_key, u.name, pg.name as pricegroup '
 						. ' FROM #__redevent_register AS r '
 						. ' INNER JOIN #__rwf_submitters AS s ON s.id = r.sid '
+		        . ' LEFT JOIN #__redevent_pricegroups AS pg ON pg.id = r.pricegroup_id '
 						. ' LEFT JOIN #__users AS u ON r.uid = u.id '
 						. ' WHERE r.xref = ' . $this->_xref
             . ' AND r.confirmed = 1'

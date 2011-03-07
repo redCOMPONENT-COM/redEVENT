@@ -54,6 +54,7 @@ class RedEventViewAttendees extends JView {
 		               JText::_('CONFIRMED'),
 		               JText::_('WAITINGLIST'),
 		               JText::_('PRICE'),
+		               JText::_('COM_REDEVENT_PRICEGROUP'),
 		               JText::_('PAYMENT'),
 		               );
 		$cols = array_merge($cols, $stdcols);
@@ -75,6 +76,9 @@ class RedEventViewAttendees extends JView {
 						}
 						$data[] = $val;
 					}
+					else {
+						$data[] = '';
+					}
 				}
 				
 				$svals = array( $r->uregdate,
@@ -84,6 +88,7 @@ class RedEventViewAttendees extends JView {
 				               $r->confirmed,
 				               $r->waitinglist,
 				               $r->answers->price,
+				               $r->pricegroup,
 				               ($r->answers->paid ? JText::_('REGISTRATION_PAID').' / '.$r->answers->status : JText::_('REGISTRATION_NOT_PAID').' / '.$r->answers->status),
 				             );
 				$data = array_merge($data, $svals);

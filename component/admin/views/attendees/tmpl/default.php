@@ -72,8 +72,9 @@ $colspan = 14;
         <th class="title"><?php echo JText::_( 'ANSWERS' ); ?></th>
 				<?php if ($this->form->activatepayment): ?>
 	        <th class="title"><?php echo JText::_( 'PRICE' ); ?></th>
+	        <th class="title"><?php echo JText::_( 'COM_REDEVENT_PRICEGROUP' ); ?></th>
 					<th class="title"><?php echo JHTML::_('grid.sort', 'PAYMENT', 'p.paid', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-					<?php $colspan += 2; ?>
+					<?php $colspan += 3; ?>
         <?php endif; ?>
 			</tr>
 		</thead>
@@ -151,6 +152,9 @@ $colspan = 14;
 				<?php if ($this->form->activatepayment): ?>
 					<td>
 						<?php echo $row->price; ?>
+					</td>
+					<td>
+						<?php echo $row->pricegroup; ?>
 					</td>
 					<td class="price <?php echo ($row->paid ? 'paid' : 'unpaid'); ?>">
 						<?php $link = JHTML::link(JRoute::_('index.php?option=com_redform&view=payments&submit_key='.$row->submit_key), JText::_('history')); ?>
