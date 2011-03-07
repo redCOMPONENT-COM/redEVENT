@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_events` (
   `submission_type_webform_formal_offer` text,
   `paymentaccepted` text NOT NULL,
   `paymentprocessing` text NOT NULL,
+  `enable_ical` tinyint(2) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 

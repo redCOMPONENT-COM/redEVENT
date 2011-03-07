@@ -333,6 +333,13 @@ if (is_array($cols)) {
 		$db->setQuery($q);
 		$db->query();
 	}
+	
+	/* Check if we have the enable_ical */
+	if (!array_key_exists('enable_ical', $cols)) {
+		$q = "ALTER IGNORE TABLE #__redevent_events ADD COLUMN `enable_ical` tinyint(2) NOT NULL default '0'";
+		$db->setQuery($q);
+		$db->query();
+	}
 }
 
 

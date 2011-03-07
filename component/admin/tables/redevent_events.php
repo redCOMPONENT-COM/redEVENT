@@ -145,6 +145,8 @@ class RedEvent_events extends JTable
 	var $paymentaccepted	= null;
 	/** @var string */
 	var $paymentprocessing	= null;	
+	/** @var int */
+	var $enable_ical			= null;
 	
 	function redevent_events(& $db) {
 		parent::__construct('#__redevent_events', 'id', $db);

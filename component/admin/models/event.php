@@ -280,6 +280,7 @@ class RedEventModelEvent extends JModel
 			$event->paymentprocessing = null;
 			$event->attachments = array();
 			$event->details_layout = 0;
+			$event->enable_ical = 0;
 			$this->_data						= $event;
 			return (boolean) $this->_data;
 		}

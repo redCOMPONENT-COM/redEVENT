@@ -145,7 +145,7 @@ class RedeventModelDetails extends JModel
 			$where	= $this->_buildDetailsWhere();
 
 			$query = 'SELECT a.id AS did, x.id AS xref, a.title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, a.registra, a.unregistra, a.summary, a.details_layout, ' 
-					. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
+					. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, a.enable_ical, '
 					. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone, a.review_message, '
 					. ' v.venue, v.city, v.locimage, v.map, v.country, v.street, v.plz, v.state, v.locdescription, '
 					. ' u.name AS creator_name, u.email AS creator_email, '

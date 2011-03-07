@@ -34,6 +34,16 @@
 			</tr>
 			<tr>
 				<td>
+					<label for="enable_ical">
+						<?php echo JText::_( 'COM_REDEVENT_EVENT_ENABLE_ICAL_LABEL' ).':'; ?>
+					</label>
+				</td>
+				<td>
+					<?php	echo $this->Lists['enable_ical'];	?>
+				</td>
+			</tr>
+			<tr>
+				<td>
 					<label for="published">
 						<?php echo JText::_( 'PUBLISHED' ).':'; ?>
 					</label>

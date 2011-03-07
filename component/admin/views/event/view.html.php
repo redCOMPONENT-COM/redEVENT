@@ -136,6 +136,14 @@ class RedEventViewEvent extends JView {
                  );
 		$Lists['details_layout'] = JHTML::_('select.genericlist', $options, 'details_layout', '', 'value', 'text', $row->details_layout);
     
+    // enable ical button
+    $options = array(
+                 JHTML::_('select.option', 0, JText::_('COM_REDEVENT_DEFAULT')),
+                 JHTML::_('select.option', 1, JText::_('Yes')),
+                 JHTML::_('select.option', 2, JText::_('No')),
+                 );
+		$Lists['enable_ical'] = JHTML::_('select.genericlist', $options, 'enable_ical', '', 'value', 'text', $row->enable_ical);
+		
 		/* Create submission types */
 		$submission_types = explode(',', $row->submission_types);
 		
