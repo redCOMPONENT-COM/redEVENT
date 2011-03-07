@@ -119,7 +119,7 @@ class RedEventModelcsvtool extends JModel
 						;
 		$where = array();
 		$where[] = ' r.confirmed = 1 ';
-		$where[] = ' e.redform_id = '.$form_id;
+		$where[] = ' s.form_id = '.$form_id;
 		
 		if ($events && count($events)) {
 			$where[] = 'e.id in ('.implode(',', $events).')';
