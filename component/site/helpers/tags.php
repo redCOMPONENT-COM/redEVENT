@@ -370,6 +370,12 @@ class redEVENT_tags {
 				      $ttext = JText::_('COM_REDEVENT_EXPORT_ICS');
 				      $replace[] = JHTML::link($this->absoluteUrls(RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug, $this->_xref).'&format=raw&layout=ics', false), $ttext, array('class' => 'event-ics'));
 				    	break;
+      				
+				    case 'ical_url':
+				      $search[]  = '['.$tag.']';
+				      $ttext = JText::_('COM_REDEVENT_EXPORT_ICS_URL');
+				      $replace[] = $this->absoluteUrls(RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug, $this->_xref).'&format=raw&layout=ics', false);
+				    	break;
 				    	
 				    case 'summary':
 				      $search[]  = '['.$tag.']';
