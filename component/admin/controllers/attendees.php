@@ -43,9 +43,10 @@ class RedEventControllerAttendees extends RedEventController
 	{
 		parent::__construct();
 		$this->registerTask( 'addattendee', 'attendees' );
-		$this->registerTask( 'add',   'edit' );
-		$this->registerTask( 'apply', 'save' );
-		$this->registerTask( 'emailall', 'email' );
+		$this->registerTask( 'add',       'edit' );
+		$this->registerTask( 'apply',     'save' );
+		$this->registerTask( 'emailall',  'email' );
+		$this->registerTask( 'applymove', 'move' );
 	}
 	
 	public function Attendees() 
@@ -118,6 +119,72 @@ class RedEventControllerAttendees extends RedEventController
 		$msg = $total.' '.JText::_( 'REGISTERED USERS DELETED');
 
 		$this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg );
+	}
+
+	/**
+	 * Delete attendees
+	 *
+	 * @return true on sucess
+	 * @access private
+	 * @since 0.9
+	 */
+	function move($cid = array())
+	{		
+		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
+		$xref 	= JRequest::getInt('xref');
+		$dest 	= JRequest::getInt('dest');
+		$total 	= count( $cid );
+		$formid = JRequest::getInt('form_id');
+		
+		/* Check if anything is selected */
+		if (!is_array( $cid ) || count( $cid ) < 1) {
+			JError::raiseError(500, JText::_( 'Select an attendee to move' ) );
+		}
+		
+		
+		if (!$dest) // display the form to chose destination 
+		{			
+			/* Create the view object */
+			$view = $this->getView('attendees', 'html');
+			
+			/* Standard model */
+			$view->setModel( $this->getModel( 'attendees', 'RedeventModel' ), true );
+			/* set layout */
+			$view->setLayout('move');
+			
+			/* Now display the view */
+			$view->display();
+			return;
+		}
+		
+		/* Get all submitter ID's */
+		$model = $this->getModel('attendees');
+				
+		if(!$model->move($cid, $dest)) {
+      RedEventError::raiseWarning(0, JText::_( "COM_REDEVENT_ATTENDEES_CANT_MOVE_REGISTRATIONS" ) . ': ' . $model->getError() );
+			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
+		}
+		/* Check if we have space on the waiting list */
+		$model_wait = $this->getModel('waitinglist');
+		$model_wait->setXrefId($xref);
+		$model_wait->UpdateWaitingList();
+		
+		$model_wait->setXrefId($dest);
+		$model_wait->UpdateWaitingList();
+		
+		$cache = JFactory::getCache('com_redevent');
+		$cache->clean();
+
+		$msg = $total.' '.JText::_( 'COM_REDEVENT_ATTENDEES_MOVED');
+
+		$this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$dest, $msg );
+	}
+	
+	function selectXref()
+	{
+		JRequest::setVar('view', 'xrefelement');
+		JRequest::setVar('form_id', JRequest::getVar('form_id'));
+		parent::display();
 	}
 	
 	/**

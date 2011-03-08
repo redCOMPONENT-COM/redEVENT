@@ -367,6 +367,35 @@ class RedEventModelAttendees extends JModel
 		}
 		return true;
 	}
+
+	/**
+	 * Delete registered users
+	 *
+	 * @access public
+	 * @param array int attendee ids
+	 * @param int id of xref destination
+	 * @return true on success
+	 * @since 2.0
+	 */
+	function move($cid, $dest)
+	{
+		if (count( $cid ))
+		{
+			$ids = implode(',', $cid);
+			$form = $this->getForm();
+						
+			$query = ' UPDATE #__redevent_register SET xref = '.$dest
+			       . ' WHERE id IN ('.implode(', ', $cid).')'
+			       ;
+			$this->_db->setQuery( $query );
+			
+			if (!$this->_db->query()) {
+				RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
+				return false;
+			}
+		}
+		return true;
+	}
 				
 	/**
 	 * confirm attendees

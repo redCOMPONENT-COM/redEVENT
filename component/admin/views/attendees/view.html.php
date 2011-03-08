@@ -42,6 +42,10 @@ class RedEventViewAttendees extends JView {
 			$this->_displayprint($tpl);
 			return;
 		}
+		if($this->getLayout() == 'move') {
+			$this->_displaymove($tpl);
+			return;
+		}
 		
 		//initialise variables
 		$db = JFactory::getDBO();
@@ -73,6 +77,7 @@ class RedEventViewAttendees extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::addNew();
 		JToolBarHelper::editList();
+		JToolBarHelper::custom('move', 'move', 'move', 'COM_REDEVENT_ATTENDEES_TOOLBAR_MOVE', true, true);
 		JToolBarHelper::deleteList();
 		JToolBarHelper::spacer();
 		JToolBarHelper::back();
@@ -159,6 +164,36 @@ class RedEventViewAttendees extends JView {
 		$this->assignRef('rows'      	, $rows);
 		$this->assignRef('event'		, $event);
 
+		parent::display($tpl);
+	}
+
+	/**
+	 * Prepares the print screen
+	 *
+	 * @param $tpl
+	 *
+	 * @since 0.9
+	 */
+	function _displaymove($tpl = null)
+	{
+		$elsettings = ELAdmin::config();
+		$document	= & JFactory::getDocument();
+		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		
+		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
+		
+		$event 		= & $this->get( 'Event' );		
+		
+		//add toolbar
+		JToolBarHelper::title( JText::_( 'REGISTRATIONS' ), 'users' );
+		JToolBarHelper::apply('applymove');
+		JToolBarHelper::cancel('cancelmove');
+		
+		//assign data to template
+		$this->assignRef('form_id',  JRequest::getInt('form_id'));
+		$this->assignRef('cid',      $cid);
+		$this->assignRef('session',  $event);
+		
 		parent::display($tpl);
 	}
 }

@@ -187,6 +187,8 @@ class RedEventModelXrefelement extends JModel
 		$search 			= $mainframe->getUserStateFromRequest( $option.'.xrefelement.search', 'search', '', 'string' );
 		$search 			= $this->_db->getEscaped( trim(JString::strtolower( $search ) ) );
 
+		$form_id = JRequest::getInt('form_id');
+		
 		$where = array();
 
 		if ( $filter_state ) {
@@ -213,6 +215,10 @@ class RedEventModelXrefelement extends JModel
 
 		if ($search && $filter == 4) {
 			$where[] = ' LOWER(cat.catname) LIKE \'%'.$search.'%\' ';
+		}
+		
+		if ($form_id) {
+			$where[] = ' a.redform_id = '.$form_id;
 		}
 
 
