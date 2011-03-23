@@ -39,6 +39,10 @@ class RedeventViewPricegroups extends JView
 	{
 		global $mainframe, $option;
     
+		$document	= & JFactory::getDocument();
+		
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_PRICEGROUPS'));
+		
 		// Set toolbar items for the page
 		JToolBarHelper::title(   JText::_( 'COM_REDEVENT_MENU_PRICEGROUPS' ), 'generic.png' );
 		JToolBarHelper::deleteList();

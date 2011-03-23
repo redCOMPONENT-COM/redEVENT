@@ -51,6 +51,7 @@ class RedEventViewGroupmember extends JView {
 		$template		= $mainframe->getTemplate();
 		$cid 			= JRequest::getInt( 'cid' );
 
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITGROUPMEMBER'));
 		//add css
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 

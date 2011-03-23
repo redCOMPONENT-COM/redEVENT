@@ -69,6 +69,7 @@ class RedEventViewEvent extends JView {
 		$task		= JRequest::getVar('task');
 		$url 		= $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
 
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITEVENT'));
 		//add the custom stylesheet and the seo javascript
 		$document->addStyleSheet($url.'administrator/components/com_redevent/assets/css/redeventbackend.css');
 		$document->addScript($url.'administrator/components/com_redevent/assets/js/seo.js');

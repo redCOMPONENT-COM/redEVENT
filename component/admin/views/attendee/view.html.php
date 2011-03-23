@@ -46,6 +46,7 @@ class RedEventViewAttendee extends JView {
 		$user 		= & JFactory::getUser();
 		$cid 			= JRequest::getVar( 'cid' );
 		
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITATTENDEE'));
     //add css to document
     $document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 		

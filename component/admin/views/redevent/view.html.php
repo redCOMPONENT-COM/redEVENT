@@ -53,6 +53,7 @@ class RedEventViewRedEvent extends JView {
 		$venue       = & $this->get( 'Venuesdata');
 		$category	 = & $this->get( 'Categoriesdata' );
 
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_REDEVENT'));
 		//add css and submenu to document
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 

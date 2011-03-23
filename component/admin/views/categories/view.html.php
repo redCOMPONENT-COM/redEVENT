@@ -52,6 +52,7 @@ class RedEventViewCategories extends JView {
 		$search 			= $mainframe->getUserStateFromRequest( $option.'.categories.search', 			'search', 			'', 'string' );
 		$search 			= $db->getEscaped( trim(JString::strtolower( $search ) ) );
 
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_CATEGORIES'));
 		//add css and submenu to document
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 

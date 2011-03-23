@@ -54,6 +54,7 @@ class RedEventViewVenue extends JView {
 		$cid 			= JRequest::getInt( 'cid' );
     $url    = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
 
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITVENUE'));
 		//add css and js to document
 		$document->addScript('../includes/js/joomla/popup.js');
 		$document->addStyleSheet('../includes/js/joomla/popup.css');

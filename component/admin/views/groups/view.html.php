@@ -50,6 +50,7 @@ class RedEventViewGroups extends JView {
 		$search 			= $db->getEscaped( trim(JString::strtolower( $search ) ) );
 		$template			= $mainframe->getTemplate();
 
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_GROUPS'));
 		//add css and submenu to document
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 

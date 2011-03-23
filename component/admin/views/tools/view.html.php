@@ -48,6 +48,7 @@ class RedEventViewTools extends JView {
 			$mainframe->redirect( 'index.php?option=com_redevent&view=redevent' );
 		}
 
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_TOOLS'));
 		//add css and submenu to document
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 

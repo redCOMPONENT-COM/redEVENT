@@ -50,6 +50,7 @@ class RedEventViewVenuesCategory extends JView {
 		//get vars
 		$cid 		= JRequest::getVar( 'cid' );
 
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITVENUECATEGORY'));
 		//add css to document
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 

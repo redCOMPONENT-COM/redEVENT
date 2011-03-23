@@ -48,6 +48,7 @@ class RedEventViewGroupacl extends JView {
 		//get vars
 		$group_id 			= JRequest::getInt( 'group_id' );
 
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITGROUPACL'));
 		//add css
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 

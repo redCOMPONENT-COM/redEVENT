@@ -70,6 +70,7 @@ class RedEventViewSettings extends JView {
 		$contents = ob_get_contents();
 		ob_end_clean();
 
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_SETTINGS'));
 		//add css, js and submenu to document
 		$document->setBuffer($contents, 'modules', 'submenu');
 		$document->addScript( JURI::base().'components/com_redevent/assets/js/settings.js' );

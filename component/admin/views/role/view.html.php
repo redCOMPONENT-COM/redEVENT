@@ -61,6 +61,7 @@ class RedeventViewRole extends JView
 		$url 		= $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
 		
     $document = & JFactory::getDocument();
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITROLE'));
     $document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
     
     $document->addScript($url.'administrator/components/com_redevent/assets/js/role.js');

@@ -46,6 +46,8 @@ class RedEventViewTextLibrary extends JView {
 		$user = JFactory::getUser();
 		$task = JRequest::getVar('task');
 		                  
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_LIBRARY'));
+		
 		switch ($task) {
 			case 'edit':
 			case 'add':

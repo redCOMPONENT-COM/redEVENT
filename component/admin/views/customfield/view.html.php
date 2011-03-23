@@ -60,6 +60,7 @@ class RedeventViewCustomfield extends JView
 		$model	=& $this->getModel();
 		
     $document = & JFactory::getDocument();
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITCUSTOMFIELD'));
     $document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 
 		$lists = array();

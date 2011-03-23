@@ -49,6 +49,7 @@ class RedEventViewLog extends JView {
 		// Get data from the model
 		$log      = & $this->get( 'Data');
 
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_LOG'));
 		//add css and submenu to document
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 

@@ -52,6 +52,7 @@ class RedEventViewCategory extends JView {
 		$cid 		= JRequest::getVar( 'cid' );
     $url    = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
 
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITCATEGORY'));
 		//add css to document
 		$document->addStyleSheet($url.'/administrator/components/com_redevent/assets/css/redeventbackend.css');
 		
