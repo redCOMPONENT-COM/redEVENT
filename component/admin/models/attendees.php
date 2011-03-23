@@ -609,19 +609,25 @@ class RedEventModelAttendees extends JModel
 		return $emails;
 	}
 	
-	function sendMail($cid, $subject, $body)
+	function sendMail($cid, $subject, $body, $from = null, $fromname = null, $replyto = null)
 	{
+		$app = &JFactory::getApplication();
 		$emails = $this->getEmails($cid);
 		
 		$mailer = & JFactory::getMailer();
   	$mailer->setSubject($subject);
   	$mailer->MsgHTML('<html><body>'.$body.'</body></html>');
   	
+  	if (!empty($from) && JMailHelper::isEmailAddress($from)) 
+  	{
+  		$fromname = !empty($fromname) ? $fromname : $app->getCfg('sitename');
+  		$mailer->setSender(array($from, $fromname));
+  	}
+  	
   	$res = true;
   	
   	foreach ($emails as $e)
   	{
-//  		$mailer->addAddress($r['email'], $r['name']);
 			$mailer->clearAllRecipients();
 			if (isset($e['fullname'])) {
 				$mailer->addAddress( $e['email'], $e['fullname'] );

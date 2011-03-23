@@ -459,15 +459,18 @@ class RedEventControllerAttendees extends RedEventController
 		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
 		JArrayHelper::toInteger($cid);
 		
-		$subject = JRequest::getVar('subject', '', 'post', 'string');
-		$body    = JRequest::getVar('body', '', 'post', 'string',  JREQUEST_ALLOWRAW );
+		$subject  = JRequest::getVar('subject', '', 'post', 'string');
+		$from     = JRequest::getVar('from', '', 'post', 'string');
+		$fromname = JRequest::getVar('fromname', '', 'post', 'string');
+		$replyto  = JRequest::getVar('replyto', '', 'post', 'string');
+		$body     = JRequest::getVar('body', '', 'post', 'string',  JREQUEST_ALLOWRAW );
 		
 		$model = $this->getModel('attendees');
 		
 		$msg = '';
 		$mtype= 'message';
 		
-		if ($model->sendMail($cid, $subject, $body))
+		if ($model->sendMail($cid, $subject, $body, $from, $fromname, $replyto))
 		{
 			$msg = JText::_('COM_REDEVENT_EMAIL_ATTENDEES_SENT');
 		}

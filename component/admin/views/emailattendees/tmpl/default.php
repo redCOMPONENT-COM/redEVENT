@@ -24,7 +24,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.formvalidation');
-
+$app = &JFactory::getApplication();
 ?>
 <script language="javascript" type="text/javascript">
 function submitbutton(pressbutton)
@@ -69,6 +69,26 @@ function submitbutton(pressbutton)
 							<?php foreach ($this->emails as $email): ?>
 							<?php echo (isset($email['fullname']) ? $email['fullname']. ' ' : '').htmlspecialchars('<').$email['email'].htmlspecialchars('>').'<br/>'; ?>
 							<?php endforeach; ?>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="from">
+								<?php echo JText::_( 'COM_REDEVENT_EMAIL_ATTENDEES_FROM' ).':'; ?>
+							</label>
+						</td>
+						<td>
+							<input name="from" id="from" value="<?php echo $app->getCfg('mailfrom'); ?>" class="validate-email" size="50" maxlength="100" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="fromname">
+								<?php echo JText::_( 'COM_REDEVENT_EMAIL_ATTENDEES_FROMNAME' ).':'; ?>
+							</label>
+						</td>
+						<td>
+							<input name="fromname" id="fromname" value="<?php echo $app->getCfg('sitename'); ?>" size="50" maxlength="100" />
 						</td>
 					</tr>
 					<tr>
