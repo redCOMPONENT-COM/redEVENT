@@ -15,7 +15,6 @@
         <option value="1">Yes</option>
       </param>
 			<param name="detcat_nr" type="text" size="1" default="3" label="DET CATEGORIES PREVIEW" description="DET CATEGORIES PREVIEW DESC" />
-			<param name="cat_num" type="text" size="2" default="4" label="CAT DISPLAY" description="CAT DISPLAY DESC" />
 		</params>
 	</state>
 </metadata>
