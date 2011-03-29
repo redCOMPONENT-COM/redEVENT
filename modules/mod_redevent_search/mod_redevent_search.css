@@ -1,0 +1,15 @@
+@CHARSET "UTF-8";
+
+div.mod_redevent_search .text_filter {
+	 width: 100px;
+}
+
+div.mod_redevent_search .date-field {
+	 width: 100px;
+}
+
+div.mod_redevent_search label {
+	float: left;
+	width: 7em;
+	margin-right: 0.5em;
+}

@@ -189,6 +189,13 @@ class RedeventHelperRoute
 		return self::buildUrl( $parts );		
 	}
 	
+	function getSearchRoute()
+	{
+		$parts = array( "option" => "com_redevent",
+		                "view"   => "search" );
+		return self::buildUrl( $parts );		
+	}
+	
 	function getEditEventRoute($id = null, $xref = 0)
 	{
 		$parts = array( "option" => "com_redevent",

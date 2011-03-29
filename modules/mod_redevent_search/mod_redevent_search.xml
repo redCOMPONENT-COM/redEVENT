@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/module-install.dtd">
+<install type="module" version="1.5.0" method="upgrade">
+	<name>redEVENT Search</name>
+	<creationDate>Apr 16, 2011</creationDate>
+	<author>Redweb.dk</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redweb.dk</authorUrl>
+	<copyright>(c) 2008 - 2010 Redweb.dk</copyright>
+	<license>GNU/GPL</license>
+	<version>2.0 beta 9.1</version>
+	<description>MOD_REDEVENT_SEARCH_DESCRIPTION</description>
+
+	<files>
+		<filename module="mod_redevent_search">mod_redevent_search.php</filename>
+		<filename>mod_redevent_search.css</filename>
+		<filename>index.html</filename>
+    <filename>helper.php</filename>
+    <filename>tmpl/default.php</filename>
+    <filename>tmpl/index.html</filename>
+	</files>
+
+	<languages>
+		<language tag="en-GB">languages/en-GB.mod_redevent_search.ini</language>
+	</languages>
+
+	<params>
+  	<param name="filter_text" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TEXT" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TEXT_DESC">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+  	<param name="filter_type_event" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_EVENT" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_EVENT_DESC">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+  	<param name="filter_type_category" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_CATEGORY" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_CATEGORY_DESC">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+  	<param name="filter_type_venue" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_VENUE" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_VENUE_DESC">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+  	<param name="filter_type_city" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_CITY" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_CITY_DESC">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		
+		<param name="show_filter_category" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_CATEGORY" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_CATEGORY_DESC">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_filter_date" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_DATE" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_DATE_DESC">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_filter_venue" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_VENUE" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_DATE_DESC">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		
+		<param name="moduleclass_sfx" type="text" default="" label="MODULE CLASS SUFFIX" description="MODULE CLASS SUFFIX DESC" />
+	</params>
+
+	<params group="advanced">
+		<param name="cache" type="list" default="1" label="CACHING" description="CACHING DESC">
+			<option value="1">USE GLOBAL</option>
+			<option value="0">NO CACHING</option>
+		</param>
+		<param name="cache_time" type="text" default="900" label="CACHE TIME" description="CACHE TIME DESC" />
+	</params>
+
+</install>
