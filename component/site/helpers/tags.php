@@ -483,6 +483,15 @@ class redEVENT_tags {
       				$replace[] = ELOutput::map($this->getEvent()->getData(), array('class' => 'event-full-map'));
       				break;
 				    	
+				    case 'moreinfo': // generates a contact form in a lightbox
+				    	JHTML::_('behavior.modal', 'a.moreinfo');
+				      $search[]  = '['.$tag.']';
+				      $link = JRoute::_(RedeventHelperRoute::getMoreInfoRoute($this->_xref, array('tmpl' =>'component')));
+							$replace[] = '<a class="moreinfo" title="'.JText::_('COM_REDEVENT_DETAILS_MOREINFO_BUTTON_LABEL').'" href="'.$link.'" rel="{handler: \'iframe\', size: {x: 400, y: 500}}">'
+							           . JText::_('COM_REDEVENT_DETAILS_MOREINFO_BUTTON_LABEL')
+							           . ' </a>'
+							           ;
+      				break;
       				
 				  	/**************  registration tags ******************/
       				

@@ -59,6 +59,25 @@ class RedeventHelperRoute
 		return self::buildUrl( $parts );
 	}
 	
+	
+	/**
+	 * returns link to moreinfo view
+	 *
+	 * @param int or slug $xref
+	 * @return string url
+	 */
+	function getMoreInfoRoute($xref, $options = null)
+	{
+		$parts = array( "option" => "com_redevent",
+		                "view"   => "moreinfo",
+		                "xref"   => $xref,
+		              );
+		if ($options) {
+			$parts = array_merge($parts, $options);
+		}
+		return self::buildUrl( $parts );		
+	}
+	
 	/**
 	 * return link to day view
 	 * @param mixed date
