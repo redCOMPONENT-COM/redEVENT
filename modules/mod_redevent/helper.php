@@ -165,7 +165,7 @@ class modRedEventHelper
 	function _builddateinfo($row, &$params)
 	{
 		if (!redEVENTHelper::isValidDate($row->dates)) {
-			return JText::_('REDEVENT_MODULE_REDEVENT_OPEN_DATE');
+			return JText::_('MOD_REDEVENT_REDEVENT_OPEN_DATE');
 		}
 		$date 		= modRedEventHelper::_format_date($row->dates, $row->times, $params->get('formatdate', '%d.%m.%Y'));
 		$enddate 	= redEVENTHelper::isValidDate($row->enddates) ? modRedEventHelper::_format_date($row->enddates, $row->endtimes, $params->get('formatdate', '%d.%m.%Y')) : null;

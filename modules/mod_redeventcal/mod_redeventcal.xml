@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <install type="module" version="1.5.0" method="upgrade">
-	<name>REDEVENT_MODULE_CALENDAR</name>
+	<name>MOD_REDEVENT_CALENDAR</name>
 	<creationDate>Apr 16, 2010</creationDate>
 	<author>Redweb.dk</author>
 	<authorEmail>email@redweb.dk</authorEmail>
@@ -9,7 +9,7 @@
 	<license>GNU/GPL</license>
 	<version>2.0 beta 9.1</version>
 	
-	<description><![CDATA[REDEVENT_MODULE_CALENDAR_DESC]]></description>
+	<description><![CDATA[MOD_REDEVENT_CALENDAR_DESC]]></description>
 	
 	<files>
 		<filename module="mod_redeventcal">mod_redeventcal.php</filename>
@@ -27,37 +27,37 @@
 	</languages>
 	
 	<params>
-		<param name="moduleclass_sfx" type="text" default="" label="REDEVENT_MODULE_CALENDAR_MODULE_CLASS_SUFFIX" description="REDEVENT_MODULE_CALENDAR_MODULE_CLASS_SUFFIX_DESC" />
-		<param name="recal_tooltips_title" type="text" default="Events" label="REDEVENT_MODULE_CALENDAR_TOOLTIP_TITLE" description="REDEVENT_MODULE_CALENDAR_TOOLTIP_TITLE_DESC" />			
-    <param name="day_name_length" type="list" default="2" label="REDEVENT_MODULE_CALENDAR_DAY_NAME_LENGTH" description="REDEVENT_MODULE_CALENDAR_DAY_NAME_LENGTH_DESC">
-			<option value="0">REDEVENT_MODULE_CALENDAR_DAY_NAME_LENGTH_NO</option>
-			<option value="1">REDEVENT_MODULE_CALENDAR_DAY_NAME_LENGTH_ONE</option>
-			<option value="2">REDEVENT_MODULE_CALENDAR_DAY_NAME_LENGTH_TWO</option>
-			<option value="3">REDEVENT_MODULE_CALENDAR_DAY_NAME_LENGTH_THREE</option>
-			<option value="4">REDEVENT_MODULE_CALENDAR_DAY_NAME_LENGTH_FULL</option>
+		<param name="moduleclass_sfx" type="text" default="" label="MOD_REDEVENT_CALENDAR_MODULE_CLASS_SUFFIX" description="MOD_REDEVENT_CALENDAR_MODULE_CLASS_SUFFIX_DESC" />
+		<param name="recal_tooltips_title" type="text" default="Events" label="MOD_REDEVENT_CALENDAR_TOOLTIP_TITLE" description="MOD_REDEVENT_CALENDAR_TOOLTIP_TITLE_DESC" />			
+    <param name="day_name_length" type="list" default="2" label="MOD_REDEVENT_CALENDAR_DAY_NAME_LENGTH" description="MOD_REDEVENT_CALENDAR_DAY_NAME_LENGTH_DESC">
+			<option value="0">MOD_REDEVENT_CALENDAR_DAY_NAME_LENGTH_NO</option>
+			<option value="1">MOD_REDEVENT_CALENDAR_DAY_NAME_LENGTH_ONE</option>
+			<option value="2">MOD_REDEVENT_CALENDAR_DAY_NAME_LENGTH_TWO</option>
+			<option value="3">MOD_REDEVENT_CALENDAR_DAY_NAME_LENGTH_THREE</option>
+			<option value="4">MOD_REDEVENT_CALENDAR_DAY_NAME_LENGTH_FULL</option>
 		</param>
-		<param name="first_day" type="list" default="1" label="REDEVENT_MODULE_CALENDAR_FIRST_DAY" description="REDEVENT_MODULE_CALENDAR_FIRST_DAY_DESC">
+		<param name="first_day" type="list" default="1" label="MOD_REDEVENT_CALENDAR_FIRST_DAY" description="MOD_REDEVENT_CALENDAR_FIRST_DAY_DESC">
 			<option value="0">Sunday</option>
 			<option value="1">Monday</option>
 		</param>
-		<param name="Year_length" type="radio" default="1" label="REDEVENT_MODULE_CALENDAR_YEAR_LENGTH" description="REDEVENT_MODULE_CALENDAR_YEAR_LENGTH_DESC">
+		<param name="Year_length" type="radio" default="1" label="MOD_REDEVENT_CALENDAR_YEAR_LENGTH" description="MOD_REDEVENT_CALENDAR_YEAR_LENGTH_DESC">
 			<option value="0">Two</option>
 			<option value="1">Four</option>
 		</param>
-		<param name="Month_length" type="radio" default="0" label="REDEVENT_MODULE_CALENDAR_SHORT_MONTH_NAME" description="REDEVENT_MODULE_CALENDAR_SHORT_MONTH_NAME_DESC">
+		<param name="Month_length" type="radio" default="0" label="MOD_REDEVENT_CALENDAR_SHORT_MONTH_NAME" description="MOD_REDEVENT_CALENDAR_SHORT_MONTH_NAME_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
-		<param name="Month_offset" type="text" default="0" label="REDEVENT_MODULE_CALENDAR_MONTH_OFFSET" description="REDEVENT_MODULE_CALENDAR_MONTH_OFFSET_DESC" />
-		<param name="Show_Tooltips" type="radio" default="1" label="REDEVENT_MODULE_CALENDAR_SHOW_TOOLTIP" description="REDEVENT_MODULE_CALENDAR_SHOW_TOOLTIP_DESC">
+		<param name="Month_offset" type="text" default="0" label="MOD_REDEVENT_CALENDAR_MONTH_OFFSET" description="MOD_REDEVENT_CALENDAR_MONTH_OFFSET_DESC" />
+		<param name="Show_Tooltips" type="radio" default="1" label="MOD_REDEVENT_CALENDAR_SHOW_TOOLTIP" description="MOD_REDEVENT_CALENDAR_SHOW_TOOLTIP_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
-		<param name="Remember" type="radio" default="1" label="REDEVENT_MODULE_CALENDAR_REMEMBER" description="REDEVENT_MODULE_CALENDAR_REMEMBER_DESC">
+		<param name="Remember" type="radio" default="1" label="MOD_REDEVENT_CALENDAR_REMEMBER" description="MOD_REDEVENT_CALENDAR_REMEMBER_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
-		<param name="catid" type="text" default="" label="REDEVENT_MODULE_CALENDAR_CATEGORY_ID" description="REDEVENT_MODULE_CALENDAR_CATEGORY_ID_DESC" />
-		<param name="venid" type="text" default="" label="REDEVENT_MODULE_CALENDAR_VENUE_ID" description="REDEVENT_MODULE_CALENDAR_VENUE_ID_DESC" />
+		<param name="catid" type="text" default="" label="MOD_REDEVENT_CALENDAR_CATEGORY_ID" description="MOD_REDEVENT_CALENDAR_CATEGORY_ID_DESC" />
+		<param name="venid" type="text" default="" label="MOD_REDEVENT_CALENDAR_VENUE_ID" description="MOD_REDEVENT_CALENDAR_VENUE_ID_DESC" />
 	</params>
 </install>
