@@ -189,6 +189,12 @@ function updateend(cal)
 <?php echo $this->editor->display('details', $this->xref->details, '100%;', '300', '100', '20', array('pagebreak', 'readmore')); ?>
 </fieldset>
 
+<fieldset class="adminform">
+<legend><?php echo JText::_('REDEVENT_XREF_ICALDETAILS_FIELDSET'); ?></legend>
+<?php echo JText::_('REDEVENT_XREF_ICALDETAILS_INFO'); ?>
+<textarea name="icaldetails" rows="10" cols="50"><?php echo $this->xref->icaldetails; ?></textarea>
+</fieldset>
+
 <?php echo $this->pane->endPanel();
 
 			echo $this->pane->startPanel(JText::_('Registration'), 'registration');

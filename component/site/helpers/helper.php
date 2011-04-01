@@ -1056,6 +1056,9 @@ class redEVENTHelper {
 		$link = JURI::base().RedeventHelperRoute::getDetailsRoute($event->slug, $event->xref);
 		$link = JRoute::_( $link );
 		$description .= JText::_( 'COM_REDEVENT_ICS_LINK' ).': '.$link.'\\n';
+		if (!empty($event->icaldetails)) {
+			$description .= $event->icaldetails;
+		}
 		
 		// location
 		$location = array($event->venue);

@@ -64,6 +64,7 @@ class RedEventControllerSessions extends RedEventController
         
     $post = JRequest::get( 'post' );
     $post['details'] = JRequest::getVar('details', '', 'post', 'string', JREQUEST_ALLOWRAW);
+    $post['icaldetails'] = JRequest::getVar('icaldetails', '', 'post', 'string', JREQUEST_ALLOWRAW);
     
     $model = $this->getModel('session');
     if ($returnid = $model->savexref($post)) 
