@@ -16,6 +16,7 @@
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
 		<filename>mod_redevent_venues_events.css</filename>
+		<filename>mod_redevent_venues_events.js</filename>
 		<filename>tmpl/default.php</filename>
 		<filename>tmpl/index.html</filename>
 	</files>
