@@ -260,7 +260,7 @@ class modRedeventTeaserHelper
   function _getCatLinks($item)
   {
  		$links = array();
-  	foreach ($item->categories as $c)
+  	foreach ((array) $item->categories as $c)
   	{
 			$link = JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($c->slug));
 			$links[] = JHTML::link($link, $c->catname);
