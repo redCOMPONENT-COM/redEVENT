@@ -170,6 +170,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_pricegroups` (
 `alias` varchar(150) NOT NULL default '',
 `tooltip` varchar(255) NOT NULL default '',
 `image` varchar(100) NOT NULL default '',
+`adminonly` tinyint(1) NOT NULL default '0',
 `ordering` int(11) NOT NULL default '0',
 `checked_out` int(11) NOT NULL default '0',
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',

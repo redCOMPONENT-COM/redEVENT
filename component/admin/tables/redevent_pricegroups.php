@@ -59,6 +59,9 @@ class Redevent_pricegroups extends JTable
 	/** @var string */
 	var $image 				= '';
   
+	/** @var int */
+	var $adminonly	= 0;
+  
   var $checked_out;
   var $checked_out_time;    
   var $ordering;

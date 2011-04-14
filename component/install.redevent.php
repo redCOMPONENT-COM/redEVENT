@@ -132,6 +132,7 @@ $tables = array( '#__redevent_events',
                  '#__redevent_groupmembers',
                  '#__redevent_groups',
                  '#__redevent_repeats',
+                 '#__redevent_pricegroups',
                );
 $tables = $db->getTableFields($tables, false);
 
@@ -978,7 +979,19 @@ if (is_array($cols))
     $db->query();  	
   }
 }
-  
+
+/** 
+ * pricegroups table
+ */
+$cols = $tables['#__redevent_pricegroups'];
+
+if (!array_key_exists('adminonly', $cols)) {
+	$q = ' ALTER TABLE `#__redevent_pricegroups` '
+	   . '  ADD `adminonly` tinyint(1) NOT NULL default "0" '
+	   ;
+	$db->setQuery($q);
+	$db->query();
+}
   
 /* Add the basic configuration entry */
 $q = "INSERT IGNORE INTO `#__redevent_settings` SET "

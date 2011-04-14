@@ -1498,6 +1498,7 @@ class RedeventModelEditevent extends JModel
   {
   	$query = ' SELECT id AS value, name AS text ' 
   	       . ' FROM #__redevent_pricegroups ' 
+  	       . ' WHERE adminonly = 0 '
   	       . ' ORDER BY ordering ASC ';
   	$this->_db->setQuery($query);
   	$res = $this->_db->loadObjectList();
