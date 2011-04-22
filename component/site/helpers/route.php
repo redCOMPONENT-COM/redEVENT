@@ -296,7 +296,7 @@ class RedeventHelperRoute
 	function _findItem($query)
 	{
 		$component =& JComponentHelper::getComponent('com_redevent');
-		$menus	= & JSite::getMenu();
+		$menus	= & JApplication::getMenu('site');
 		$items	= $menus->getItems('componentid', $component->id);
 		$user 	= & JFactory::getUser();
 		$access = (int)$user->get('aid');
