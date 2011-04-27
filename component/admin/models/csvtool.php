@@ -104,7 +104,7 @@ class RedEventModelcsvtool extends JModel
 	 * @since	0.9
 	 * @todo Complete CB integration
 	 */
-	function getRegisters($form_id, $events = null, $category_id = 0, $venue_id = 0, $state_filter = 0)
+	function getRegisters($form_id, $events = null, $category_id = 0, $venue_id = 0, $state_filter = 0, $filter_attending = 0)
 	{	  
 		// first, get all submissions			
 		$query = ' SELECT e.title, e.course_code, x.id as xref, x.dates, v.venue, '
@@ -141,6 +141,15 @@ class RedEventModelcsvtool extends JModel
 				break;
 			case 2:
 				$where[] = ' x.published <> 0 ';				
+				break;
+		}
+		switch ($filter_attending)
+		{
+			case 1:
+				$where[] = ' r.waitinglist = 0 ';				
+				break;
+			case 2:
+				$where[] = ' r.waitinglist = 1 ';				
 				break;
 		}
 		$query .= ' WHERE '.implode(' AND ', $where);

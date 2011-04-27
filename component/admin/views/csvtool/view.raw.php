@@ -48,7 +48,8 @@ class RedEventViewCsvtool extends JView {
 		                                  $events, 
 		                                  JRequest::getInt('category_filter'), 
 		                                  JRequest::getInt('venue_filter'), 
-		                                  JRequest::getInt('state_filter'));
+		                                  JRequest::getInt('state_filter'), 
+		                                  JRequest::getInt('filter_attending'));
 		
 		$fields    = $model->getFields(JRequest::getInt('form_filter'));
 		
