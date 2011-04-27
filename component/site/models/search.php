@@ -59,6 +59,8 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		//get the number of events from database
 		$limit       	= $mainframe->getUserStateFromRequest('com_redevent.search.limit', 'limit', $params->def('display_num', 0), 'int');
 		$limitstart		= JRequest::getVar('limitstart', 0, '', 'int');
+		
+    $customs = $mainframe->getUserStateFromRequest('com_redevent.search.filter_customs', 'filtercustom', array(), 'array');
 			
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
@@ -66,6 +68,8 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		// Get the filter request variables
 		$this->setState('filter_order', JRequest::getCmd('filter_order', 'x.dates'));
 		$this->setState('filter_order_dir', JRequest::getCmd('filter_order_Dir', 'ASC'));
+		
+		$this->setState('filter_customs', $customs);
 	}
 
 	/**
@@ -81,7 +85,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		// Get the paramaters of the active menu item
 		$params 	= & $app->getParams();
 		$task 		= JRequest::getWord('task');
-    $customs = $app->getUserStateFromRequest('com_redevent.search.filter_customs', 'filtercustom', array(), 'array');
+    $customs = $this->getState('filter_customs');
     
 		$where = array();
 	
