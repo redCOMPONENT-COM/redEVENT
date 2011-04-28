@@ -91,7 +91,7 @@ $colspan = 14;
 			for($i=0, $n=count( $this->rows ); $i < $n; $i++) 
 			{
 				$row = &$this->rows[$i];
-	
+				
 				$link 		= 'index.php?option=com_redevent&controller=attendees&task=edit&xref='. $row->xref.'&cid[]='.$row->id;
 				$checked 	= JHTML::_('grid.checkedout', $row, $i );
    			?>

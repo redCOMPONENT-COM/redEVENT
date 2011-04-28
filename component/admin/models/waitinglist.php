@@ -349,11 +349,12 @@ class RedEventModelWaitinglist extends JModel {
 	 * 
 	 * @param array $answer_ids to put off waiting
 	 */
-	public function putOffWaitingList($answer_ids)
+	public function putOffWaitingList($register_ids)
 	{
-	  if (!count($answer_ids)) {
+	  if (!count($register_ids)) {
 	    return true;
 	  }
+	  $sids = $this->_getAttendeesSids($register_ids);
 	  
 	  /* Get attendee total first */
     $this->getEventData();
@@ -368,10 +369,10 @@ class RedEventModelWaitinglist extends JModel {
       /* Need to move people on the waitinglist */
       // we can only take as many new people off the list as there are remaining places
       if ($this->event_data->maxattendees) {
-        $this->move_off_ids = array_slice($answer_ids, 0, $remaining);
+        $this->move_off_ids = array_slice($sids, 0, $remaining);
       }
       else {
-        $this->move_off_ids = $answer_ids;
+        $this->move_off_ids = $sids;
       }
       
       $query = ' UPDATE #__redevent_register SET waitinglist = 0 WHERE sid IN ('.implode(',', $this->move_off_ids).')';
@@ -401,11 +402,13 @@ class RedEventModelWaitinglist extends JModel {
    * 
    * @param array $answer_ids to put on waiting list
    */
-  public function putOnWaitingList($answer_ids)
+  public function putOnWaitingList($register_ids)
   {    
+	  $sids = $this->_getAttendeesSids($register_ids);
+	  
     /* Check if there are too many ppl going to the event */
-    if (count($answer_ids)) {
-      $this->move_on_ids = $answer_ids;
+    if (count($sids)) {
+      $this->move_on_ids = $sids;
       /* Need to move people on the waitinglist */      
       $query = ' UPDATE #__redevent_register SET waitinglist = 1 WHERE sid IN ('.implode(',', $this->move_on_ids).')';
       $this->_db->setQuery($query);
@@ -426,6 +429,26 @@ class RedEventModelWaitinglist extends JModel {
       $this->SendMail('on');
     }   
     return true;
+  }
+  
+  /**
+   * return array of sids corresponding to register_ids
+   * 
+   * @param array $register_ids
+   * @return array sids
+   */
+  function _getAttendeesSids($register_ids)
+  {
+  	if (!count($register_ids)) {
+  		return false;
+  	}
+  	$query = ' SELECT sid ' 
+  	       . ' FROM #__redevent_register ' 
+  	       . ' WHERE id IN (' . implode(", ", $register_ids) .')'
+  	       ;
+  	$this->_db->setQuery($query);
+  	$res = $this->_db->loadResultArray();
+  	return $res;
   }
 }
 ?>
