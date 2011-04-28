@@ -125,15 +125,7 @@ class RedeventViewSearch extends JView
 		
 		//create select lists
 		$lists	= $this->_buildSortLists();
-		
-		if ($lists['filter']) {
-			$uri->setVar('filter', $lists['filter']);
-			$uri->setVar('filter_type', JRequest::getString('filter_type'));
-		} else {
-			$uri->delVar('filter');
-			$uri->delVar('filter_type');
-		}
-				
+						
 		if ($params->get('category', 0) == 0) // do not display the filter if set in view params
 		{
 	    $catoptions = array();
@@ -187,7 +179,22 @@ class RedeventViewSearch extends JView
     $options = array_merge($options, $this->get('EventsOptions'));
     $lists['events'] = JHTML::_('select.genericlist', $options, 'filter_event', 'class="inputbox dynfilter"', 'value', 'text', $filter_event);
     unset($venues); 
-    
+        
+		// remove previously set filter in get
+		$uri->delVar('filter');
+		$uri->delVar('filter_type');
+		$uri->delVar('filter_category');
+		$uri->delVar('filter_venuecategory');
+		$uri->delVar('filter_venue');
+		$uri->delVar('filter_event');
+		$uri->delVar('filter_continent');
+		$uri->delVar('filter_country');
+		$uri->delVar('filter_state');
+		$uri->delVar('filter_city');
+		$uri->delVar('filter_date_from');
+		$uri->delVar('filter_date_to');
+		$uri->delVar('filtercustom');
+		
 		$this->assign('lists' , 					$lists);
 		$this->assign('total',						$total);
 		$this->assign('action', 					$uri->toString());

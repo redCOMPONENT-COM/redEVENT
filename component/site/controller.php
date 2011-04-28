@@ -81,6 +81,7 @@ class RedeventController extends JController
 			switch ($filter)
 			{
 				case 'filter_category':
+				case 'filter_venuecategory':
 //				case 'limit':
 //				case 'limitstart':
 				case 'filter_order':
@@ -116,6 +117,7 @@ class RedeventController extends JController
 				case 'venueevents':
 				case 'simplelist':
 				case 'venuesmap':
+				case 'search':
 					$this->setRedirect(JRoute::_($myuri->toString(), false));
 					break;
 			}

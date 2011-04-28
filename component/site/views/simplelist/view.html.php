@@ -190,6 +190,7 @@ class RedeventViewSimpleList extends JView
 		$uri->delVar('filter');
 		$uri->delVar('filter_type');
 		$uri->delVar('filter_category');
+		$uri->delVar('filter_venuecategory');
 		$uri->delVar('filter_venue');
 		$uri->delVar('filter_event');	  
 		$uri->delVar('filtercustom');
