@@ -137,7 +137,7 @@ class RedeventModelEventhelper extends JModel
 			$query = 'SELECT a.*, a.id AS did, x.id AS xref, a.title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, a.registra, a.unregistra, a.summary, ' 
 					. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
 					. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone, a.review_message, '
-					. ' v.venue, v.city AS location, v.country, v.locimage, v.street, v.plz, v.state, v.locdescription as venue_description, v.map, '
+					. ' v.venue, v.city AS location, v.country, v.locimage, v.street, v.plz, v.state, v.locdescription as venue_description, v.map, v.url as venueurl,'
 					. ' v.city, v.latitude, v.longitude, '
 					. ' u.name AS creator_name, u.email AS creator_email, '
 					. ' f.formname, '
