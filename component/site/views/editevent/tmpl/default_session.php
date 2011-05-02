@@ -45,6 +45,13 @@ JHTML::_('behavior.calendar');
 		</tr>
 		<tr>
 			<td class="key hasTip"
+				title="<?php echo JText::_('COM_REDEVENT_SESSION_TITLE_TIP'); ?>"><label
+				for="session_title"><?php echo JText::_('COM_REDEVENT_SESSION_TITLE_LABEL') .': '; ?></label></td>
+			<td><input class="inputbox" type="text" id="session_title" name="session_title" value="<?php echo $this->row->session_title; ?>" />
+			</td>
+		</tr>
+		<tr>
+			<td class="key hasTip"
 				title="<?php echo JText::_('EDIT XREF START DATE TIP'); ?>"><label
 				for="dates"><?php echo JText::_('DATE') .': '; ?></label></td>
 			<td><?php echo $this->calendar($this->row->dates, 'dates', 'dates', '%Y-%m-%d', 'updateend', 'class="inputbox validate-startdate required"'); ?>

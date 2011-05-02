@@ -37,6 +37,10 @@ class RedEvent_eventvenuexref extends JTable
 	 * @var int
 	 */
 	var $id 		= null;
+  /** @var string */
+  var $title    = null;
+  /** @var string */
+  var $alias    = null;
 	/** @var int */
 	var $eventid 		= null;
   /** @var int */
@@ -98,6 +102,12 @@ class RedEvent_eventvenuexref extends JTable
 		if ($this->endtimes === '') {
 			$this->endtimes = null;
 		}
+				
+		$alias = JFilterOutput::stringURLSafe($this->title);
+
+		if (empty($this->alias) && $alias) {
+			$this->alias = $alias;
+		}		
 		return true;
 	}
 	

@@ -336,6 +336,8 @@ CREATE TABLE IF NOT EXISTS `#__redevent_settings` (
 
 CREATE TABLE IF NOT EXISTS `#__redevent_event_venue_xref` (
   `id` int(11) unsigned NOT NULL auto_increment,
+  `title` varchar(255) default NULL,
+  `alias` varchar(255) default NULL,
   `eventid` int(11) unsigned NOT NULL,
   `venueid` int(11) unsigned NOT NULL,
   `groupid` int(11) unsigned NOT NULL default '0',

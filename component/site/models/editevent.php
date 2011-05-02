@@ -288,7 +288,7 @@ class RedeventModelEditevent extends JModel
 			}
 			
 			$query = 'SELECT e.*, v.venue, x.id AS xref, x.eventid, x.venueid, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees,
-					x.maxwaitinglist, x.course_credit, x.registrationend '
+					x.maxwaitinglist, x.course_credit, x.registrationend, x.title as session_title '
 					   ;
 			
 			$query .= ' FROM #__redevent_events AS e'
@@ -337,7 +337,7 @@ class RedeventModelEditevent extends JModel
 					JError::raiseError(403, Jtext::_('NOT ALLOWED'));
 				}
 				
-				$query = ' SELECT x.*, e.title ';
+				$query = ' SELECT x.*, e.title as event_title ';
 				// add the custom fields
 				$query .= ' FROM #__redevent_event_venue_xref AS x ';
 				$query .= ' INNER JOIN #__redevent_events AS e ON x.eventid = e.id ';
@@ -353,6 +353,7 @@ class RedeventModelEditevent extends JModel
 				}
 				$obj = new stdclass();
 				$obj->id                = null;
+				$obj->title             = null;
 				$obj->eventid           = 0;
 				$obj->venueid           = 0;
 				$obj->groupid           = 0;
@@ -813,6 +814,9 @@ class RedeventModelEditevent extends JModel
 			$xref->id        = isset($data['xref']) ? $data['xref'] : null;
 			$xref->eventid   = $row->id;
 			$xref->published = $row->published;
+			if (isset($data['session_title'])) {
+				$xref->title = $data['session_title'];
+			}
 			
 			if (!($xref->check() && $xref->store())) {
 				JError::raiseWarning(0, JTEXT::_('Saving event session failed').': '.$xref->getError());

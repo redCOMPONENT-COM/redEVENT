@@ -569,6 +569,18 @@ if (is_array($cols)) {
     $db->setQuery($q);
     $db->query();
   }
+  
+  if (!array_key_exists('title', $cols)) {
+    $q ="ALTER IGNORE TABLE `#__redevent_event_venue_xref` ADD COLUMN `title` VARCHAR(255) NOT NULL";
+    $db->setQuery($q);
+    $db->query();
+  }
+  
+  if (!array_key_exists('alias', $cols)) {
+    $q ="ALTER IGNORE TABLE `#__redevent_event_venue_xref` ADD COLUMN `alias` VARCHAR(255) NOT NULL";
+    $db->setQuery($q);
+    $db->query();
+  }
 }
 
 /* register table */
