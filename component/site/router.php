@@ -203,8 +203,10 @@ function RedEventParseRoute($segments)
 
 			$vars['view'] = 'editvenue';
 			
-			if($count == 3) {
+			if($count > 1) {
 				$vars['id'] = $segments[1];
+			}
+			if($count > 2) {
 				$vars['returnid'] = $segments[2];
 			}
 
