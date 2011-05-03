@@ -95,17 +95,17 @@ class RedeventViewUpcomingVenueevents extends JView
 								{
 									$img = empty($p->image) ? JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text))
 									                        : JHTML::_('image', $imagepath.$p->image,  JText::_($p->name));
-									$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->slug, $event->xref, $p->slug));
+									$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->slug, $event->xslug, $p->slug));
 									
 									$venues_html .= '&nbsp;'.JHTML::_('link', $link, $img).'&nbsp; ';
 								}
 							}
 							else {
-								$venues_html .= '&nbsp;'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text))).'&nbsp; ';
+								$venues_html .= '&nbsp;'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->slug, $event->xslug)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text))).'&nbsp; ';
 							}
 							break;
 						case 'formaloffer':
-							$venues_html .= '&nbsp;'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&subtype=formaloffer&task=signup&xref='.$event->xref.'&id='.$event->id), JHTML::_('image', $imagepath.$elsettings->signup_formal_offer_img,  JText::_($elsettings->signup_formal_offer_text), 'width="24px" height="24px" border="0"'), 'target="_blank"').'&nbsp; ';
+							$venues_html .= '&nbsp;'.JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=signup&subtype=formaloffer&task=signup&xref='.$event->xslug.'&id='.$event->slug), JHTML::_('image', $imagepath.$elsettings->signup_formal_offer_img,  JText::_($elsettings->signup_formal_offer_text), 'width="24px" height="24px" border="0"'), 'target="_blank"').'&nbsp; ';
 							break;
 					}
 				}

@@ -27,7 +27,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<?php foreach ($this->rows as $row): ?>
 	<?php $img = redEVENTImage::getThumbUrl('events', $row->datimage);
 				$img = ($img ? JHTML::image($img, $row->full_title) : false);
-				$detaillink = JRoute::_( RedeventHelperRoute::getDetailsRoute($row->slug, $row->xref) );
+				$detaillink = JRoute::_( RedeventHelperRoute::getDetailsRoute($row->slug, $row->xslug) );
 				$venuelink  = JRoute::_( RedeventHelperRoute::getVenueEventsRoute($row->venueslug) );
 	?>
 	<li class="rf_thumbevent vevent<?php echo ($row->featured ? ' featured' : ''); ?>">

@@ -60,7 +60,7 @@ class RedeventViewDetails extends JView
     $contents = ob_get_contents();
     ob_end_clean();
     
-    $link = JRoute::_(RedeventHelperRoute::getDetailsRoute($row->slug, $row->xref));
+    $link = JRoute::_(RedeventHelperRoute::getDetailsRoute($row->slug, $row->xslug));
     
 		// load individual item creator class
 		$item = new JFeedItem();

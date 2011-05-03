@@ -56,7 +56,7 @@ if ($this->row->show_names && $this->registers) {
 						echo "<li class='userfield ".strtolower($k)."'>".$name."</li>";
 					}
 					if ($this->unreg_check && $register->submitter->uid == $this->user->get('id')) {
-					  $unreg_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xref). '&task=delreguser&sid=' .$register->id);
+					  $unreg_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug). '&task=delreguser&sid=' .$register->id);
             echo '<li>'. JHTML::link($unreg_url, JText::_('cancel'), array('class' => 'unreglink')) .'</li>';
           }
 					echo '</ul></li>';
@@ -89,7 +89,7 @@ if ($this->row->show_names && $this->registers) {
             echo "<li class='userfield ".strtolower($k)."'>".$name."</li>";
           }
           if ($this->unreg_check && $register->submitter->uid == $this->user->get('id')) {
-            $unreg_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xref).'&task=delreguser&sid=' .$register->id);
+            $unreg_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug).'&task=delreguser&sid=' .$register->id);
             echo '<li>'. JHTML::link($unreg_url, JText::_('cancel'), array('class' => 'unreglink')) .'</li>';
           }
           echo '</ul></li>';

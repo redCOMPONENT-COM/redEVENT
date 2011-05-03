@@ -61,7 +61,8 @@ class redEVENT_tags {
 			$this->_addOptions($options);
 		}		
 		
-		$this->_xref = JRequest::getVar('xref', false);
+		$xref = JRequest::getVar('xref', false);
+		$this->setXref($xref);
 		
 		// if no xref specified. try to get one associated to the event id
 		if (!$this->_xref)
@@ -373,13 +374,13 @@ class redEVENT_tags {
 				    case 'ical':
 				      $search[]  = '['.$tag.']';
 				      $ttext = JText::_('COM_REDEVENT_EXPORT_ICS');
-				      $replace[] = JHTML::link($this->absoluteUrls(RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug, $this->_xref).'&format=raw&layout=ics', false), $ttext, array('class' => 'event-ics'));
+				      $replace[] = JHTML::link($this->absoluteUrls(RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug).'&format=raw&layout=ics', false), $ttext, array('class' => 'event-ics'));
 				    	break;
       				
 				    case 'ical_url':
 				      $search[]  = '['.$tag.']';
 				      $ttext = JText::_('COM_REDEVENT_EXPORT_ICS_URL');
-				      $replace[] = $this->absoluteUrls(RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug, $this->_xref).'&format=raw&layout=ics', false);
+				      $replace[] = $this->absoluteUrls(RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug).'&format=raw&layout=ics', false);
 				    	break;
 				    	
 				    case 'summary':
@@ -491,7 +492,7 @@ class redEVENT_tags {
 				    case 'moreinfo': // generates a contact form in a lightbox
 				    	JHTML::_('behavior.modal', 'a.moreinfo');
 				      $search[]  = '['.$tag.']';
-				      $link = JRoute::_(RedeventHelperRoute::getMoreInfoRoute($this->_xref, array('tmpl' =>'component')));
+				      $link = JRoute::_(RedeventHelperRoute::getMoreInfoRoute($this->getEvent()->getData()->xslug, array('tmpl' =>'component')));
 							$replace[] = '<a class="moreinfo" title="'.JText::_('COM_REDEVENT_DETAILS_MOREINFO_BUTTON_LABEL').'" href="'.$link.'" rel="{handler: \'iframe\', size: {x: 400, y: 500}}">'
 							           . JText::_('COM_REDEVENT_DETAILS_MOREINFO_BUTTON_LABEL')
 							           . ' </a>'
@@ -596,7 +597,7 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
               $replace[] = '<span class="vlink webform">'
                            . JHTML::_('link', 
-                                      $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('webform', $this->getEvent()->getData()->slug, $this->_xref)), 
+                                      $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('webform', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)), 
                                       JHTML::_('image', $iconspath.$elsettings->signup_webform_img,  
                                       JText::_($elsettings->signup_webform_text), 
                                       'width="24px" height="24px"'))
@@ -607,7 +608,7 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
 				      $replace[] = '<span class="vlink email">'
 				                      .JHTML::_('link', 
-                                        $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('email', $this->getEvent()->getData()->slug, $this->_xref)), 
+                                        $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('email', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)), 
 				                                JHTML::_('image', $iconspath.$elsettings->signup_email_img,  
 				                                JText::_($elsettings->signup_email_text), 
 				                                'width="24px" height="24px"'))
@@ -618,7 +619,7 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
 				      $replace[] = '<span class="vlink formaloffer">'
 				                    .JHTML::_('link', 
-                                      $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('formaloffer', $this->getEvent()->getData()->slug, $this->_xref)), 
+                                      $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('formaloffer', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)), 
 				                              JHTML::_('image', $iconspath.$elsettings->signup_formal_offer_img,  
 				                              JText::_($elsettings->signup_formal_offer_text), 
 				                              'width="24px" height="24px"'))
@@ -646,7 +647,7 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
 				      $replace[] = '<span class="vlink phone">'
 				                     .JHTML::_('link', 
-                                       $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('phone', $this->getEvent()->getData()->slug, $this->_xref)), 
+                                       $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('phone', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)), 
 				                               JHTML::_('image', $iconspath.$elsettings->signup_phone_img,  
 				                               JText::_($elsettings->signup_phone_text), 
 				                               'width="24px" height="24px"'))
@@ -1402,7 +1403,7 @@ class redEVENT_tags {
 			return '<span class="redform_error">'.$error.'</span>';
  		}
  		
-  	$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute($this->_xref, 'register'));
+  	$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute($this->getEvent()->getData()->xslug, 'register'));
   	
   	// multiple signup ?
   	$single = JRequest::getInt('single', 0);

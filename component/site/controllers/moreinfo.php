@@ -89,7 +89,7 @@ class RedEventControllerMoreinfo extends RedEventController
 			}
 			$table .= '</table>';
 			
-			$link = JRoute::_(JURI::base().RedeventHelperRoute::getDetailsRoute($details->did, $details->xref));
+			$link = JRoute::_(JURI::base().RedeventHelperRoute::getDetailsRoute($details->did, $details->xslug));
 			$link = JHTML::link($link, $details->full_title);
 			
 			$body = JText::sprintf('COM_REDEVENT_MOREINFO_MAIL_BODY', $link, $table);

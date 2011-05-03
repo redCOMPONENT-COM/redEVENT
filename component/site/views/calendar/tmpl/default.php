@@ -56,7 +56,7 @@ foreach ($this->rows as $row)
 	$content = '';
 	$contentend = '';
 	if ($this->settings->showdetails) {
-		$detaillink = RedeventHelperRoute::getDetailsRoute($row->slug, $row->xref);
+		$detaillink = RedeventHelperRoute::getDetailsRoute($row->slug, $row->xslug);
 	}
 	else {
 		$detaillink = null;

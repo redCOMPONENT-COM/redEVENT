@@ -42,7 +42,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 $elsettings = redEVENTHelper::config();
 $imagepath = JURI::base() . 'administrator/components/com_redevent/assets/images/';
 foreach ($this->_eventlinks as $key => $event) {
-	$event_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($event->id, $event->xref));
+	$event_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($event->slug, $event->xslug));
 	$venue_url = JRoute::_(RedeventHelperRoute::getUpcomingVenueEventsRoute($event->venueslug));
 	?>
 	<tr>
@@ -71,10 +71,10 @@ foreach ($this->_eventlinks as $key => $event) {
 			{
 				switch ($subtype) {
 					case 'email':
-						$venues_html .= '<div class="courseinfo_vlink courseinfo_email">'.JHTML::_('link', JRoute::_(JURI::root().RedeventHelperRoute::getSignupRoute('email', $event->id, $event->xref)), JHTML::_('image', $imagepath.$elsettings->signup_email_img,  JText::_($elsettings->signup_email_text), 'width="24px" height="24px"')).'</div> ';
+						$venues_html .= '<div class="courseinfo_vlink courseinfo_email">'.JHTML::_('link', JRoute::_(JURI::root().RedeventHelperRoute::getSignupRoute('email', $event->slug, $event->xslug)), JHTML::_('image', $imagepath.$elsettings->signup_email_img,  JText::_($elsettings->signup_email_text), 'width="24px" height="24px"')).'</div> ';
 						break;
 					case 'phone':
-						$venues_html .= '<div class="courseinfo_vlink courseinfo_phone">'.JHTML::_('link', JRoute::_(JURI::root().RedeventHelperRoute::getSignupRoute('phone', $event->id, $event->xref)), JHTML::_('image', $imagepath.$elsettings->signup_phone_img,  JText::_($elsettings->signup_phone_text), 'width="24px" height="24px"')).'</div> ';
+						$venues_html .= '<div class="courseinfo_vlink courseinfo_phone">'.JHTML::_('link', JRoute::_(JURI::root().RedeventHelperRoute::getSignupRoute('phone', $event->slug, $event->xslug)), JHTML::_('image', $imagepath.$elsettings->signup_phone_img,  JText::_($elsettings->signup_phone_text), 'width="24px" height="24px"')).'</div> ';
 						break;
 					case 'external':
 			      if (!empty($event->external_registration_url)) {
@@ -92,18 +92,18 @@ foreach ($this->_eventlinks as $key => $event) {
 							{					
 								$img = empty($p->image) ? JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text))
 								                        : JHTML::_('image', $imagepath.$p->image,  JText::_($p->name));
-								$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->slug, $event->xref, $p->slug));
+								$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->slug, $event->xslug, $p->slug));
 								
 								$venues_html .= '<div class="courseinfo_vlink courseinfo_webform hasTip '.$p->alias.'">'
 									             .JHTML::_('link', $link, $img).'</div> ';
 							}
 						}
 						else {
-							$venues_html .= '<div class="courseinfo_vlink courseinfo_webform">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->id, $event->xref)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text))).'</div> ';
+							$venues_html .= '<div class="courseinfo_vlink courseinfo_webform">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->slug, $event->xslug)), JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($elsettings->signup_webform_text))).'</div> ';
 						}
 						break;
 					case 'formaloffer':
-						$venues_html .= '<div class="courseinfo_vlink courseinfo_formaloffer">'.JHTML::_('link', JRoute::_(JURI::root().RedeventHelperRoute::getSignupRoute('formaloffer', $event->id, $event->xref)), JHTML::_('image', $imagepath.$elsettings->signup_formal_offer_img,  JText::_($elsettings->signup_formal_offer_text), 'width="24px" height="24px"')).'</div> ';
+						$venues_html .= '<div class="courseinfo_vlink courseinfo_formaloffer">'.JHTML::_('link', JRoute::_(JURI::root().RedeventHelperRoute::getSignupRoute('formaloffer', $event->slug, $event->xslug)), JHTML::_('image', $imagepath.$elsettings->signup_formal_offer_img,  JText::_($elsettings->signup_formal_offer_text), 'width="24px" height="24px"')).'</div> ';
 						break;
 				}
 			}
