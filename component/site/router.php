@@ -123,6 +123,17 @@ function RedEventBuildRoute(&$query)
     		unset($query['xref']);
     	};
     	break;
+	  case 'moreinfo':
+    	if(isset($query['xref']))
+    	{
+    		$segments[] = $query['xref'];
+    		unset($query['xref']);
+    	}
+    	if(isset($query['tmpl']))
+    	{
+    		unset($query['tmpl']);
+    	}
+	  	break;
 	}
 
 	return $segments;
@@ -314,6 +325,12 @@ function RedEventParseRoute($segments)
       if($count > 5) {
         $vars['pg'] = $segments[5];
       }
+    	break;
+    	
+    case 'moreinfo':
+      $vars['view'] = $segments[0];
+			$vars['xref'] = $segments[1]; 
+			$vars['tmpl'] = 'component'; 
     	break;
     
     case 'confirmation':
