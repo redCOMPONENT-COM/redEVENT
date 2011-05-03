@@ -33,7 +33,7 @@ switch ($this->elsettings->commentsystem) {
 	case 1:
 		if (file_exists(JPATH_SITE.DS.'components'.DS.'com_jcomments'.DS.'jcomments.php')) :
 			require_once(JPATH_SITE.DS.'components'.DS.'com_jcomments'.DS.'jcomments.php');
-			echo JComments::showComments($this->row->did, 'com_redevent', $this->row->title);
+			echo JComments::showComments($this->row->did, 'com_redevent', $this->row->full_title);
 		endif;
 	break;
 

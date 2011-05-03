@@ -54,7 +54,7 @@ class RedeventViewVenuecategory extends JView
 		foreach ( $rows as $row )
 		{
 			// strip html from feed item title
-			$title = $this->escape( $row->title );
+			$title = $this->escape( $row->full_title );
 			$title = html_entity_decode( $title );
 
 			// strip html from feed item category

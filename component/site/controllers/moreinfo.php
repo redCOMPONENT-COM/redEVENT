@@ -60,7 +60,7 @@ class RedEventControllerMoreinfo extends RedEventController
 			$mailer = &JFactory::getMailer();
 			$mailer->IsHTML(true);
 			
-			$mailer->setSubject(JText::sprintf('COM_REDEVENT_MOREINFO_MAIL_SUBJECT', $details->title));
+			$mailer->setSubject(JText::sprintf('COM_REDEVENT_MOREINFO_MAIL_SUBJECT', $details->full_title));
 			$mailer->AddAddress($app->getCfg('mailfrom'), $app->getCfg('sitename'));
 			
 			$mailer->AddReplyTo(array($email, JRequest::getVar('name')));
@@ -90,7 +90,7 @@ class RedEventControllerMoreinfo extends RedEventController
 			$table .= '</table>';
 			
 			$link = JRoute::_(JURI::base().RedeventHelperRoute::getDetailsRoute($details->did, $details->xref));
-			$link = JHTML::link($link, $details->title);
+			$link = JHTML::link($link, $details->full_title);
 			
 			$body = JText::sprintf('COM_REDEVENT_MOREINFO_MAIL_BODY', $link, $table);
 			

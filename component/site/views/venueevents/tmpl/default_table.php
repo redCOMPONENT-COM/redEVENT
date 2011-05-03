@@ -102,7 +102,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				if (($this->elsettings->showtitle == 1 ) && ($this->elsettings->showdetails == 1) ) :
 				?>
 
-				<td headers="el_title" align="left" valign="top"><a href="<?php echo $detaillink ; ?>"> <?php echo $this->escape($row->title); ?></a></td>
+				<td headers="el_title" align="left" valign="top"><a href="<?php echo $detaillink ; ?>"> <?php echo $this->escape($row->full_title); ?></a></td>
 
 				<?php
 				endif;
@@ -110,7 +110,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				if (( $this->elsettings->showtitle == 1 ) && ($this->elsettings->showdetails == 0) ) :
 				?>
 
-				<td headers="el_title" align="left" valign="top"><?php echo $this->escape($row->title); ?></td>
+				<td headers="el_title" align="left" valign="top"><?php echo $this->escape($row->full_title); ?></td>
 
 				<?php
 				endif;

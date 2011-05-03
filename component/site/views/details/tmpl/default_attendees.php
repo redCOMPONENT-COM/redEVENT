@@ -27,7 +27,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 if ($this->row->show_names && $this->registers) {
 	?>
 	<div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
-		<h2 class="register"><?php echo JText::_( 'REGISTERED USERS' ).': '.$this->row->title; ?>
+		<h2 class="register"><?php echo JText::_( 'REGISTERED USERS' ).': '.$this->row->full_title; ?>
 		<?php if ($this->manage_attendees): ?>
     <?php echo ELOutput::xrefattendeesbutton($this->row->xref); ?>
 		<?php endif; ?></h2>

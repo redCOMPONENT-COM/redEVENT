@@ -133,8 +133,10 @@ class RedEventModelAttendees extends JModel
 		{
 			$query = ' SELECT e.title, e.registra, e.showfields, e.redform_id, e.id as eventid, e.course_code, e.show_names, '
 			       . '      x.dates, x.enddates, x.times, x.endtimes, x.id as xref, '
+             . ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', e.title, x.title) ELSE e.title END as full_title, '
 			       . '      v.venue, '
-			       . ' CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(\':\', x.id, e.alias) ELSE x.id END as slug '		
+			       . ' CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(\':\', x.id, e.alias) ELSE x.id END as slug, '	
+             . ' CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug '	
 			       . ' FROM #__redevent_event_venue_xref AS x ' 
 			       . ' INNER JOIN #__redevent_events AS e ON x.eventid = e.id '
 			       . ' INNER JOIN #__redevent_venues AS v ON x.venueid = v.id '

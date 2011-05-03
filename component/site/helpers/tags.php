@@ -222,6 +222,11 @@ class redEVENT_tags {
 				      $search[]  = '['.$tag.']';
       				$replace[] = $this->getEvent()->getData()->title;
       				break;
+      				
+				    case 'event_full_title':
+				      $search[]  = '['.$tag.']';
+      				$replace[] = $this->getEvent()->getData()->full_title;
+      				break;
 
 				    case 'price':
 				      $search[]  = '['.$tag.']';
@@ -887,12 +892,14 @@ class redEVENT_tags {
 			$db = JFactory::getDBO();
 			$query = ' SELECT e.*, IF (x.course_credit = 0, "", x.course_credit) AS course_credit, '
 			   . ' x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees, x.maxwaitinglist, v.venue, x.venueid, x.details, x.registrationend, '
+         . ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', e.title, x.title) ELSE e.title END as full_title, '
 			   . ' x.external_registration_url, '
 			   . ' v.city AS location, v.state, v.url as venueurl, v.locdescription as venue_description, '
 			   . ' v.country, v.locimage, v.street, v.plz, v.map, '
 			   . ' f.formname, '
 			   . ' UNIX_TIMESTAMP(x.dates) AS unixdates, '
 			   . ' CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(":", e.id, e.alias) ELSE e.id END as slug, '
+         . ' CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug, '
 			   . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(":", v.id, v.alias) ELSE v.id END as venueslug '
 			   ;
 			

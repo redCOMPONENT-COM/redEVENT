@@ -99,7 +99,7 @@ class RedeventViewDetails extends JView
 		//Print
 		$pop	= JRequest::getBool('pop');
 
-		$params->def( 'page_title', $row->title);
+		$params->def( 'page_title', $row->full_title);
 
 		if ( $pop ) {
 			$params->set( 'popup', 1 );
@@ -109,7 +109,7 @@ class RedeventViewDetails extends JView
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
-		$pathway->addItem( $row->title, JRoute::_('index.php?option=com_redevent&view=details&id='.$row->slug));
+		$pathway->addItem( $row->full_title, JRoute::_('index.php?option=com_redevent&view=details&id='.$row->slug));
 		
 		//Check user if he can edit
 		$allowedtoeditevent = $acl->canEditEvent($row->did);
@@ -190,7 +190,7 @@ class RedeventViewDetails extends JView
 		}
 
 		//set page title and meta stuff
-		$document->setTitle( $row->title );
+		$document->setTitle( $row->full_title );
 		$document->setMetadata('keywords', $meta_keywords_content );
 		$document->setDescription( strip_tags($description_content) );
 

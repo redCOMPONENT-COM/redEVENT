@@ -1044,9 +1044,9 @@ class redEVENTHelper {
 				$dateendparam['TZID'] = $timezone_name;
 			}	
 		}
-
+		$title = (isset($event->full_title) ? $event->full_title : $event->title);
 		// item description text
-		$description = $event->title.'\\n';
+		$description = $title.'\\n';
 		$description .= JText::_( 'CATEGORY' ).': '.implode(', ', $categories).'\\n';
 //		if (isset($event->summary) && $event->summary) {
 //			$description .= $event->summary.'\\n';
@@ -1075,7 +1075,7 @@ class redEVENTHelper {
 		$location = implode(",", $location);
 			
 		$e = new vevent();              // initiate a new EVENT
-		$e->setProperty( 'summary', $event->title );           // title
+		$e->setProperty( 'summary', $title );           // title
 		$e->setProperty( 'categories', implode(', ', $categories) );           // categorize
 		$e->setProperty( 'dtstart', $date, $dateparam );
 		if (count($date_end)) {

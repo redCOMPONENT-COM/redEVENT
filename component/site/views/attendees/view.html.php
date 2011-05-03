@@ -81,7 +81,7 @@ class RedeventViewAttendees extends JView
 		//Print
 		$pop	= JRequest::getBool('pop');
 
-		$params->def( 'page_title', $row->title. ' - '. JText::_( 'ATTENDEES' ));
+		$params->def( 'page_title', $row->full_title. ' - '. JText::_( 'ATTENDEES' ));
 
 		if ( $pop ) {
 			$params->set( 'popup', 1 );
@@ -94,7 +94,7 @@ class RedeventViewAttendees extends JView
 		$pathway->addItem( JText::_( 'ATTENDEES' ), JRoute::_('index.php?option=com_redevent&view=attendees&xref='.$row->slug));
 		
 		//set page title and meta stuff
-		$document->setTitle( $item->name.' - '.$row->title );
+		$document->setTitle( $item->name.' - '.$row->full_title );
 		            
     $unreg_check = redEVENTHelper::canUnregister($row->xref);
     
@@ -178,7 +178,7 @@ class RedeventViewAttendees extends JView
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
-		$pathway->addItem( JText::_( 'Manage attendees' ). ' - '.$row->title, JRoute::_('index.php?option=com_redevent&view=attendees&layout=manageattendees&id='.$row->slug));
+		$pathway->addItem( JText::_( 'Manage attendees' ). ' - '.$row->full_title, JRoute::_('index.php?option=com_redevent&view=attendees&layout=manageattendees&id='.$row->slug));
 		
 		//Check user if he can edit
 		$manage_attendees  = $this->get('ManageAttendees');
@@ -204,7 +204,7 @@ class RedeventViewAttendees extends JView
       $document->addScriptDeclaration($js);
 		
 		//set page title and meta stuff
-		$document->setTitle( JText::_( 'Manage attendees' ). ' - '.$row->title );				    
+		$document->setTitle( JText::_( 'Manage attendees' ). ' - '.$row->full_title );				    
 		
     // lists
     $lists = array();

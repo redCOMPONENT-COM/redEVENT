@@ -60,7 +60,7 @@ class RedeventViewSimpleList extends JView
 		foreach ( $rows as $row )
 		{
 			// strip html from feed item title
-			$title = $this->escape( $row->title );
+			$title = $this->escape( $row->full_title );
 			$title = html_entity_decode( $title );
 
 		  // handle categories
@@ -155,7 +155,7 @@ class RedeventViewSimpleList extends JView
 		foreach ( $rows as $row )
 		{			
 			// strip html from feed item title
-			$title = $this->escape( $row->title );
+			$title = $this->escape( $row->full_title );
 			$title = html_entity_decode( $title );
 
 			// strip html from feed item category
@@ -210,13 +210,13 @@ class RedeventViewSimpleList extends JView
 			$link = JURI::base().RedeventHelperRoute::getDetailsRoute($row->id);
 			$link = JRoute::_( $link );
 			
-			$item = new rsscalItem($row->title, $link);
+			$item = new rsscalItem($row->full_title, $link);
 			$item->addElement( 'ev:type',      $category );
 //			$item->addElement( 'ev:organizer', "" );
 			$item->addElement( 'ev:location',  $row->venue );
 			$item->addElement( 'ev:startdate', $rssstartdate );
 			$item->addElement( 'ev:enddate',   $rssenddate );
-			$item->addElement( 'dc:subject',   $row->title );
+			$item->addElement( 'dc:subject',   $row->full_title );
 			
 			$feed->addItem( $item );
 		}		

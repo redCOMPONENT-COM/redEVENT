@@ -49,7 +49,7 @@ foreach ($this->rows as $row)
 		}
 	}
 
-	$eventname = '<div class="eventName">'.$this->escape($row->title).'</div>';
+	$eventname = '<div class="eventName">'.$this->escape($row->full_title).'</div>';
 
 	//initialize variables
 	$colorpic = '';
@@ -116,7 +116,7 @@ foreach ($this->rows as $row)
 
 	//generate the output
 	$content .= $colorpic;
-	$content .= $this->caltooltip($catname.$eventname.$timehtml.$venue, $eventdate, $row->title, $detaillink, 'eventTip');
+	$content .= $this->caltooltip($catname.$eventname.$timehtml.$venue, $eventdate, $row->full_title, $detaillink, 'eventTip');
 	$content .= $contentend;
 	// add the event to the calendar
 	$this->cal->setEventContent($year, $month, $day, $content);

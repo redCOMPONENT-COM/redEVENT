@@ -221,11 +221,13 @@ class RedeventModelBaseEventList extends JModel
 
 		//Get Events from Database
 		$query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, ' 
-		    . ' x.maxattendees, x.maxwaitinglist, x.course_credit, x.featured, x.icaldetails, '
+		    . ' x.maxattendees, x.maxwaitinglist, x.course_credit, x.featured, x.icaldetails, x.title as session_title, '
+        . ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
 		    . ' a.id, a.title, a.created, a.datdescription, a.registra, a.datimage, a.summary, '
 				. ' l.venue, l.city, l.state, l.url,'
 				. ' c.catname, c.id AS catid,'
         . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
+        . ' CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug, '
         . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
         . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
         ;

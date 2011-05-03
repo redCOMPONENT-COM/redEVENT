@@ -461,7 +461,7 @@ class RedeventController extends JController
 		$v = new vCal();
 
 		$v->setTimeZone($user_offset);
-		$v->setSummary($row->venue.'-'.$row->catname.'-'.$row->title);
+		$v->setSummary($row->venue.'-'.$row->catname.'-'.$row->full_title);
 		$v->setDescription($row->datdescription);
 		$v->setStartDate($Start);
 		$v->setEndDate($End);
@@ -715,7 +715,7 @@ class RedeventController extends JController
 									
 			foreach ($events as $event)
 			{
-				echo "sending reminder for event: ".$event->title."<br>";				
+				echo "sending reminder for event: ".$event->full_title."<br>";				
 				
 				$tags = new redEVENT_tags();
 				$tags->setXref($event->id);

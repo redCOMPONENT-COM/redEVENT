@@ -39,7 +39,7 @@ foreach ($this->_eventlinks as $key => $event) {
 	$venue_url = JURI::current().JRoute::_('index.php?option=com_redevent&view=venueevents&id='.$event->venueid);
 	?>
 	<tr>
-		<td><?php echo JHTML::_('link', $event_url, $event->title); ?></td>
+		<td><?php echo JHTML::_('link', $event_url, $event->full_title); ?></td>
 		<td><?php echo $event->location; ?></td>
 		<td><?php echo ELOutput::formatdate($event->dates, $event->times); ?> 
 		<?php echo redEVENTHelper::getEventDuration($event); ?> 

@@ -45,7 +45,7 @@ if ($this->manage_attendees) {
 	
 	<form action="<?php echo $this->action; ?>" method="post" name="manageform">
 	<div id="redevent" class="event_id<?php echo $this->row->eventid; ?> el_details">
-		<h2 class="register"><?php echo JText::_( 'REGISTERED USERS' ).': '.$this->row->title; ?></h2>
+		<h2 class="register"><?php echo JText::_( 'REGISTERED USERS' ).': '.$this->row->full_title; ?></h2>
 		
 		<?php echo JHTML::link('index.php?option=com_redevent&controller=attendees&task=exportattendees&format=csv&xref='. $this->row->xref, JText::_('CSV export'));?>
 						

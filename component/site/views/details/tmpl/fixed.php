@@ -37,14 +37,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <?php if ($this->params->def( 'show_page_title', 1 )) : ?>
 	<h1 class="componentheading">
-		<?php echo $this->row->title; ?>
+		<?php echo $this->row->full_title; ?>
 	</h1>
 <?php endif; ?>
 
 <!-- Details EVENT -->
 	<h2 class="redevent">
 		<?php
-    	echo $this->row->title;
+    	echo $this->row->full_title;
     	echo '&nbsp;'.ELOutput::editbutton($this->item->id, $this->row->did, $this->params, $this->allowedtoeditevent, 'editevent' );
     	?>
 	</h2>
@@ -59,7 +59,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 		<?php if ($this->elsettings->showdetailstitle == 1) : ?>
 			<dt class="title"><?php echo JText::_( 'TITLE' ).':'; ?></dt>
-    		<dd class="title"><?php echo $this->escape($this->row->title); ?></dd>
+    		<dd class="title"><?php echo $this->escape($this->row->full_title); ?></dd>
 		<?php
   		endif;
   		?>

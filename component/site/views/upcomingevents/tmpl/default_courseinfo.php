@@ -43,7 +43,7 @@ foreach ($this->upcomingevents as $key => $event) {
 	$venue_url = JRoute::_('index.php?option=com_redevent&view=venueevents&id='.$event->venueslug);
 	?>
 	<tr>
-		<td><?php echo JHTML::_('link', $event_url, $event->title); ?></td>
+		<td><?php echo JHTML::_('link', $event_url, $event->full_title); ?></td>
 		<td><?php echo $event->location; ?></td>
 		<td><?php echo ELOutput::getFlag( $event->country ); ?></td>
 		<td><?php echo ELOutput::formatdate($event->dates, $event->times); ?></td>

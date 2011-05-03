@@ -51,7 +51,7 @@ class RedeventViewDetails extends JView
     $xreflinks = $this->get('XrefLinks');
     $this->_eventlinks = $xreflinks;
         
-    $document->setTitle($this->escape($row->title));
+    $document->setTitle($this->escape($row->full_title));
     $document->setDescription('');
     
     ob_start();
@@ -64,7 +64,7 @@ class RedeventViewDetails extends JView
     
 		// load individual item creator class
 		$item = new JFeedItem();
-		$item->title    = $row->title;
+		$item->title    = $row->full_title;
 		$item->link     = JRoute::_($link);
 		$item->description  = $contents;
 		$item->date     = '';
