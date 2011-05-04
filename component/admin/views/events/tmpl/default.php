@@ -22,6 +22,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+$app = &JFactory::getApplication();
 ?>
 <?php if (!count( $this->rows )):?>
 <p><?php echo JHTML::link('index.php?option=com_redevent&task=sampledata', JText::_('Add sample data')); ?></p>
@@ -193,6 +194,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php } ?>
 				</div></td>
 				<td>
+					<div>
 					<?php
 					if ( $row->checked_out && ( $row->checked_out != $this->user->get('id') ) ) {
 						echo htmlspecialchars($row->title, ENT_QUOTES, 'UTF-8');
@@ -204,7 +206,7 @@ defined('_JEXEC') or die('Restricted access');
 						</a></span>
 						<?php
 					}
-					?>
+					?>	 
 
 					<br />
 
@@ -215,6 +217,11 @@ defined('_JEXEC') or die('Restricted access');
 						echo htmlspecialchars($row->alias, ENT_QUOTES, 'UTF-8');
 					}
 					?>
+					</div>
+					<div class="linkfront"><?php echo JHTML::link($app->getSiteUrl().RedeventHelperRoute::getDetailsRoute($row->id), 
+					                        JHTML::image('administrator/components/com_redevent/assets/images/linkfront.png', 
+					                                     JText::_('COM_REDEVENT_EVENT_FRONTEND_LINK'))); ?>
+					</div>
 				</td>
 				<td>
 					<?php
