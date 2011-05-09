@@ -94,14 +94,16 @@ class RedEventModelAttendees extends JModel
 	 * return array of attendees emails indexed by sid
 	 * 
 	 * @param int $xref
+	 * @param int $include_wl include waiting list
 	 * @return array
 	 */
-	function getAttendeesEmails($xref)
+	function getAttendeesEmails($xref, $include_wl)
 	{		
 		$query = ' SELECT r.sid '
 		       . ' FROM #__redevent_register AS r '
 		       . ' WHERE r.xref = '.$xref
 		       . '   AND r.confirmed = 1 '
+		       . ($include_wl == 0 ? ' AND r.waitinglist = 1 ' : '')
 		       ;
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadResultArray();

@@ -721,7 +721,7 @@ class RedeventController extends JController
 				$tags->setXref($event->id);
 								                
 				// get attendees
-				$attendees = $model->getAttendeesEmails($event->id);
+				$attendees = $model->getAttendeesEmails($event->id, $params->get('reminder_include_waiting', 1));
 				if (!$attendees) {
 					continue;
 				}

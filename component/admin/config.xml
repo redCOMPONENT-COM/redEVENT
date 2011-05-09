@@ -208,6 +208,10 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
+		<param name="reminder_include_waiting" type="list" default="0" label="REDEVENT_SETTINGS_REMINDER_INCLUDE_WAITING_LABEL" description="REDEVENT_SETTINGS_REMINDER_INCLUDE_WAITING_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
 		<param name="reminder_days" type="text" size="2" default="14" label="REDEVENT_SETTINGS_REMINDER_DAYS_LABEL" description="REDEVENT_SETTINGS_REMINDER_DAYS_DESC" />
 		<param name="reminder_subject" type="text" size="80" default="Reminder: you are registered to [event_title]@[venue_title] on [date]" label="REDEVENT_SETTINGS_REMINDER_SUBJECT_LABEL" description="REDEVENT_SETTINGS_REMINDER_SUBJECT_DESC" />
 		<param name="reminder_body" type="textarea" cols="80" rows="5" default="You are registered to [event_title]@[venue_title] on [date]" label="REDEVENT_SETTINGS_REMINDER_BODY_LABEL" description="REDEVENT_SETTINGS_REMINDER_BODY_DESC" />
