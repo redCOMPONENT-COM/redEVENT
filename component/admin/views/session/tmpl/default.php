@@ -95,7 +95,7 @@ function updateend(cal)
   </tr>
   <tr>
     <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_SESSION_ALIAS_TIP'); ?>">
-      <label for="alias"><?php echo JText::_( 'COM_REDEVENT_SESSION_ALIAS_TIP' ) .': '; ?></label>
+      <label for="alias"><?php echo JText::_( 'COM_REDEVENT_SESSION_ALIAS_LABEL' ) .': '; ?></label>
     </td>
     <td>
       <input type="text" size="20" maxlength="255" name="alias" id="alias" value="<?php echo $this->xref->alias; ?>" /> 
