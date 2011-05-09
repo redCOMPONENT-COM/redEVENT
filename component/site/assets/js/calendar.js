@@ -19,7 +19,7 @@ window.addEvent('domready', function(){
 
    /* categories filtering */
    $$('.eventCat').addEvent( 'click', function(event) {
-	   $(event.target).toggleClass('catoff');
+	   this.toggleClass('catoff');
 	   toggleEvents();
    });
    
