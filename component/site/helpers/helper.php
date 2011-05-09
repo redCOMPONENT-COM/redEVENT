@@ -555,7 +555,9 @@ class redEVENTHelper {
   {
   	if (!file_exists(JPATH_SITE.DS.'components'.DS.'com_redform'.DS.'redform.core.php')) {
 			JError::raiseWarning(0,JTExt::_('REDEVENT_REGISTRATION_NOT_ALLOWED_REDFORMCORE_NOT_FOUND'));
-			return false;
+      $result->canregister = 0;
+      $result->status = JTEXT::_('USER REDEVENT_REGISTRATION_NOT_ALLOWED_REDFORMCORE_NOT_FOUND REGISTRATION REACHED');
+      return $result;
 		}
 
     $db = & JFactory::getDBO();
@@ -616,6 +618,26 @@ class redEVENTHelper {
       }
     }
     
+    // check if the user has pending unconfirm registration for the session
+    if ($user->get('id'))
+    {
+      $q = "SELECT COUNT(r.id) AS total
+          FROM #__redevent_register AS r
+          WHERE r.xref = ". $db->Quote($xref_id) ."
+          AND r.confirmed = 0
+          AND r.uid = ". $db->Quote($user->get('id'))
+          ;
+      $db->setQuery($q);
+      $res = $db->loadResult();
+      if ($res)
+      {
+      	$result->canregister = 0;
+      	$result->status = JTEXT::_('COM_REDEVENT_REGISTRATION_NOT_ALLOWED_PENDING_UNCONFIRM_REGISTRATION');
+      	return $result;
+      }
+    }
+    
+    
     // then the max registration per user
     if ($user->get('id'))
     {
@@ -623,8 +645,8 @@ class redEVENTHelper {
           FROM #__redevent_register AS r
           WHERE r.xref = ". $db->Quote($xref_id) ."
           AND r.confirmed = 1
-          AND r.uid = ". $db->Quote($user->get('id')) ."
-          ";
+          AND r.uid = ". $db->Quote($user->get('id'))
+          ;
       // if there is a submit key set, it means we are reviewing, so we need to discard this submit_key from the count.
       if (JRequest::getVar('submit_key')) {
         $q .= '  AND r.submit_key <> '. $db->Quote(JRequest::getVar('submit_key', ''));

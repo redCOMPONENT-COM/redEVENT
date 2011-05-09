@@ -262,9 +262,9 @@ class RedEventModelRegistration extends JModel
 		}
 		
 		/* Get settings for event */
-		$q = "SELECT title, notify_subject, notify_body, notify, maxattendees, activate,
-					juser, confirmation_message, redform_id, submission_type_formal_offer, submission_type_formal_offer_subject,
-					datdescription, redform_id, e.id AS eventid
+		$q = "SELECT e.title, e.notify_subject, e.notify_body, e.notify, x.maxattendees, e.activate,
+					e.confirmation_message, e.redform_id, e.submission_type_formal_offer, e.submission_type_formal_offer_subject,
+					e.datdescription, e.id AS eventid
 			FROM #__redevent_events e
 			LEFT JOIN #__redevent_event_venue_xref x
 			ON x.eventid = e.id
