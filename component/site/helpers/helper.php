@@ -553,6 +553,11 @@ class redEVENTHelper {
    */
   function canRegister($xref_id, $user_id = null)
   {
+  	if (!file_exists(JPATH_SITE.DS.'components'.DS.'com_redform'.DS.'redform.core.php')) {
+			JError::raiseWarning(0,JTExt::_('REDEVENT_REGISTRATION_NOT_ALLOWED_REDFORMCORE_NOT_FOUND'));
+			return false;
+		}
+
     $db = & JFactory::getDBO();
     $user = & JFactory::getUser($user_id);
     $result = new stdclass();
