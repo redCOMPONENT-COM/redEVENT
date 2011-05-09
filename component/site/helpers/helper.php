@@ -220,6 +220,7 @@ class redEVENTHelper {
 		     	 . ' INNER JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
 		       . ' INNER JOIN #__redevent_event_venue_xref AS x on x.id = rp.xref_id ' // make sure there are still events associated...
 		   	   . ' WHERE r.ended = 0 '
+		   	   . '   AND x.dates > 0 '
 		   	   ;
 		if ($recurrence_id) {
 			$query .= ' AND r.id = '. $db->Quote($recurrence_id);
