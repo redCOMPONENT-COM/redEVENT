@@ -113,8 +113,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<?php
 	else :
 
-	$this->rows =& $this->getRows();
-
 	foreach ($this->rows as $row) :
 		?>
   			<tr class="sectiontableentry<?php echo ($row->odd +1 ) . $this->params->get( 'pageclass_sfx' ). ($row->featured ? ' featured' : ''); ?>" >
