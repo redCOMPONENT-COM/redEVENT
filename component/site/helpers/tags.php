@@ -41,7 +41,7 @@ class redEVENT_tags {
 	private $_xrefcustomfields = null;
 	private $_answers = null;
 	private $_options = null;
-	
+		
 	/**
 	 * event model
 	 * @var object
@@ -195,603 +195,69 @@ class redEVENT_tags {
 
 		$rfcore = $this->_getRFCore();
 				
-				$search = array();
-				$replace = array();
-				// now, lets get the tags replacements
-				foreach ($alltags[1] as $tag)
+		$search = array();
+		$replace = array();
+		// now, lets get the tags replacements
+		foreach ($alltags[1] as $tag)
+		{
+			$func = '_getTag_'.strtolower($tag);
+			if (method_exists($this, $func))
+			{
+				$search[] = '['.$tag.']';
+				$replace[] = $this->$func();
+				continue;
+			}
+		}
+		// do the replace
+		$message = str_replace($search, $replace, $text);
+
+		// then the custom tags
+		$search = array();
+		$replace = array();
+
+		/* Load custom fields */
+		$customfields = $this->getCustomFields();
+		foreach ($customfields as $tag => $data)
+		{
+			$search[] = '['.$data->text_name.']';
+			$replace[] = $data->text_field;
+		}
+		$message = str_ireplace($search, $replace, $message);
+
+		/* Load redform fields */
+		$redformfields = $this->_getFieldsTags();
+		if ($redformfields && count($redformfields))
+		{
+			foreach ($alltags[1] as $tag)
+			{
+				if (stripos($tag, 'answer_') === 0)
 				{
-				  switch($tag)
-				  {
-				  	/**************  event general tags ******************/
-				  	
-				  	//TODO: still used ?
-				    case 'event_description': 
-				    case 'event_info_text':
-				      $search[] = '['.$tag.']';
-      				/* Fix the tags of the event description */
-      				$findcourse = array('[venues]','[price]','[credits]', '[code]');
-      				$venues_html = $this->SignUpLinks();
-      				
-      				$replacecourse = array($venues_html, 
-      								$this->formatPrices($this->getEvent()->getPrices()), 
-      								$this->getEvent()->getData()->course_credit,
-      								$this->getEvent()->getData()->course_code);
-      				$replace[] = str_replace($findcourse, $replacecourse, $this->getEvent()->getData()->datdescription);
-      				break;
-      				
-				    case 'event_title':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = $this->getEvent()->getData()->title;
-      				break;
-      				
-				    case 'event_full_title':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = $this->getEvent()->getData()->full_title;
-      				break;
-
-				    case 'price':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = $this->formatPrices($this->getEvent()->getPrices());
-      				break;
-      				
-				    case 'credits':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = $this->getEvent()->getData()->course_credit;
-      				break;
-      				
-				    case 'code':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = $this->getEvent()->getData()->course_code;
-      				break;
-      				
-				    case 'date':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = ELOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
-      				break;
-      				
-				    case 'enddate':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = ELOutput::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
-      				break;
-      				
-				    case 'time':
-				      $search[]  = '['.$tag.']';
-				  		$tmp = "";
-				      if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times)) 
-				  		{
-				      	$tmp = ELOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
-				      					  		
-					      if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes)) {
-					      	$tmp .= ' - ' .ELOutput::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);				      	
-				      	}
-				      }
-      				$replace[] = $tmp;
-      				break;      				
-      				
-				    case 'startenddatetime':
-				      $search[]  = '['.$tag.']';
-				      $tmp = ELOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
-				      if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times)) {
-				      	$tmp .= ' ' .ELOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);	
-				      }
-				      if (!empty($this->getEvent()->getData()->enddates) && $this->getEvent()->getData()->enddates != $this->getEvent()->getData()->dates)
-				      {
-				      	$tmp .= ' - ' .ELOutput::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
-				      }
-				      if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes)) {
-				      	$tmp .= ' ' .ELOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->endtimes);				      	
-				      }
-      				$replace[] = $tmp;
-      				break;
-      				
-				    case 'duration':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = redEVENTHelper::getEventDuration($this->getEvent()->getData());
-      				break;
-      				
-				    case 'eventimage':
-				    case 'event_image':
-				      $search[]  = '['.$tag.']';
-              $eventimage = redEVENTImage::flyercreator($this->getEvent()->getData()->datimage, 'event');
-              $eventimage = JHTML::image(JURI::root().'/'.$eventimage['original'], $this->getEvent()->getData()->title, array('title' => $this->getEvent()->getData()->title));
-      				$replace[] = $eventimage;
-      				break;
-      				
-				    case 'event_thumb':
-				      $search[]  = '['.$tag.']';
-              $eventimage = redEVENTImage::modalimage('events', basename($this->getEvent()->getData()->datimage), $this->getEvent()->getData()->title);
-      				$replace[] = $eventimage;
-      				break;
-      				
-				    case 'categoryimage':
-				    case 'category_image':
-				      $search[]  = '['.$tag.']';
-				      
-      				$cats_images = array();
-      				foreach ($this->getEvent()->getData()->categories as $c){
-      				  $cats_images[] = redEVENTImage::getCategoryImage($c, false);
-      				}
-      				$categoryimage = '<span class="details-categories-images"><span class="details-categories-image">'.implode('</span><span class="details-categories-image">', $cats_images).'</span></span>';
-
-      				$replace[] = $categoryimage;
-      				break;
-      				
-				    case 'category_thumb':
-				      $search[]  = '['.$tag.']';
-				      
-      				$cats_images = array();
-      				foreach ($this->getEvent()->getData()->categories as $c){
-      				  $cats_images[] = redEVENTImage::getCategoryImage($c);
-      				}
-      				$categoryimage = '<span class="details-categories-images"><span class="details-categories-image">'.implode('</span><span class="details-categories-image">', $cats_images).'</span></span>';
-
-      				$replace[] = $categoryimage;
-      				break;
-      				
-				    case 'info':
-				      $search[]  = '['.$tag.']';
-				      // check that there is no loop with the tag inclusion
-              if (strpos($this->getEvent()->getData()->details, '[info]') === false) {
-                $info = $this->ReplaceTags($this->getEvent()->getData()->details);
-              }
-              else {
-                JError::raiseNotice(0, JText::_('ERROR TAG LOOP XREF DETAILS'));
-                $info = '';
-              }
-              $replace[] = $info;
-      				break;
-      				
-				    case 'category':
-				      $search[]  = '['.$tag.']';
-              // categories
-              $cats = array();
-              foreach ($this->getEvent()->getData()->categories as $c){
-              	$cats[] = JHTML::link($this->absoluteUrls(RedeventHelperRoute::getCategoryEventsRoute($c->slug)), $c->catname);
-              }
-              $replace[] = '<span class="details-categories">'.implode(', ', $cats).'</span>';
-      				break;
-      				
-				    case 'eventcomments':
-				      $search[]  = '['.$tag.']';
-              $replace[] = $this->_getComments($this->getEvent()->getData());
-      				break;      
-      				      				
-				    case 'permanentlink':
-				      $search[]  = '['.$tag.']';
-              $replace[] = JHTML::link($this->absoluteUrls(RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug), false), JText::_('Permanent link'), 'class="permalink"');
-      				break;
-      				      				
-				    case 'datelink':
-				      $search[]  = '['.$tag.']';
-              $replace[] = JHTML::link($this->absoluteUrls(RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug, $this->_xref), false), JText::_('Event details'), 'class="datelink"');
-      				break;		
-
-				    case 'answers':				    	
-				      $search[]  = '['.$tag.']';
-              $replace[] = $this->_answersToHtml();
-				    	break;
-      				
-				    case 'ical':
-				      $search[]  = '['.$tag.']';
-				      $ttext = JText::_('COM_REDEVENT_EXPORT_ICS');
-				      $replace[] = JHTML::link($this->absoluteUrls(RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug).'&format=raw&layout=ics', false), $ttext, array('class' => 'event-ics'));
-				    	break;
-      				
-				    case 'ical_url':
-				      $search[]  = '['.$tag.']';
-				      $ttext = JText::_('COM_REDEVENT_EXPORT_ICS_URL');
-				      $replace[] = $this->absoluteUrls(RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug).'&format=raw&layout=ics', false);
-				    	break;
-				    	
-				    case 'summary':
-				      $search[]  = '['.$tag.']';
-              $replace[] = $this->getEvent()->getData()->summary;
-      				break;			
-				    	
-				    case 'attachments':
-				      $search[]  = '['.$tag.']';
-              $replace[] = $this->_attachmentsHTML();
-      				break;					    	
-				    	
-				  	/**************  venue tags ******************/	
-				    case 'venue':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = $this->getEvent()->getData()->venue;
-      				break;
-      				
-				    case 'city':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = $this->getEvent()->getData()->location;
-      				break;
-      				
-				    case 'venues':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = $this->SignUpLinks();
-      				break;
-      				
-				    case 'venue_title':
-				      $search[]  = '['.$tag.']';
-              $replace[] = $this->getEvent()->getData()->venue;
-      				break;
-      				
-				    case 'venue_city':
-				      $search[]  = '['.$tag.']';
-              $replace[] = $this->getEvent()->getData()->location;
-      				break;
-      				
-				    case 'venue_street':
-				      $search[]  = '['.$tag.']';
-              $replace[] = $this->getEvent()->getData()->street;
-      				break;
-      				
-				    case 'venue_zip':
-				      $search[]  = '['.$tag.']';
-              $replace[] = $this->getEvent()->getData()->plz;
-      				break;
-      				
-				    case 'venue_state':
-				      $search[]  = '['.$tag.']';
-              $replace[] = $this->getEvent()->getData()->state;
-      				break;
-      				
-				    case 'venue_link':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = JHTML::link($this->absoluteUrls(RedeventHelperRoute::getVenueEventsRoute($this->getEvent()->getData()->venueslug)), $this->getEvent()->getData()->venue);
-      				break;
-      				
-				    case 'venue_website':
-				      $search[]  = '['.$tag.']';
-				      if (!empty($this->getEvent()->getData()->venueurl)) {
-      					$replace[] = JHTML::link($this->absoluteUrls(($this->getEvent()->getData()->venueurl)), JText::_('Venue website'));		      	
-				      }
-				      else {
-				      	$replace[] = '';
-				      }
-      				break;
-      				
-				    case 'venueimage':
-				    case 'venue_image':
-				      $search[]  = '['.$tag.']';
-      				$venueimage = redEVENTImage::flyercreator($this->getEvent()->getData()->locimage);
-      				$venueimage = JHTML::image(JURI::root().'/'.$venueimage['original'], $this->getEvent()->getData()->venue, array('title' => $this->getEvent()->getData()->venue));
-      				$venueimage = JHTML::link($this->absoluteUrls(RedeventHelperRoute::getVenueEventsRoute($this->getEvent()->getData()->venueslug)), $venueimage);
-      				$replace[] = $venueimage;
-      				break;
-      				
-				    case 'venue_thumb':
-				      $search[]  = '['.$tag.']';
-              $venueimage = redEVENTImage::modalimage('venues', basename($this->getEvent()->getData()->locimage), $this->getEvent()->getData()->venue);
-      				$replace[] = $venueimage;
-      				break;
-      				
-				    case 'venue_description':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = $this->getEvent()->getData()->venue_description;
-      				break;
-      				
-				    case 'venue_country':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = redEVENTHelperCountries::getCountryName($this->getEvent()->getData()->country);
-      				break;
-      				
-				    case 'venue_countryflag':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = redEVENTHelperCountries::getCountryFlag($this->getEvent()->getData()->country);
-      				break;
-      				
-				    case 'venue_mapicon':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = ELOutput::mapicon($this->getEvent()->getData(), array('class' => 'event-map'));
-      				break;
-      				
-				    case 'venue_map':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = ELOutput::map($this->getEvent()->getData(), array('class' => 'event-full-map'));
-      				break;
-				    	
-				    case 'moreinfo': // generates a contact form in a lightbox
-				    	JHTML::_('behavior.modal', 'a.moreinfo');
-				      $search[]  = '['.$tag.']';
-				      $link = JRoute::_(RedeventHelperRoute::getMoreInfoRoute($this->getEvent()->getData()->xslug, array('tmpl' =>'component')));
-							$replace[] = '<a class="moreinfo" title="'.JText::_('COM_REDEVENT_DETAILS_MOREINFO_BUTTON_LABEL').'" href="'.$link.'" rel="{handler: \'iframe\', size: {x: 400, y: 500}}">'
-							           . JText::_('COM_REDEVENT_DETAILS_MOREINFO_BUTTON_LABEL')
-							           . ' </a>'
-							           ;
-      				break;
-      				
-				  	/**************  registration tags ******************/
-      				
-				    case 'redform_title':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = $this->getEvent()->getData()->formname;
-      				break;      				
-      				
-				    case 'inputname': // for mail signup
-				      $search[]  = '['.$tag.']';
-      				$replace[] = '<div id="divsubemailname"><div class="divsubemailnametext">'.JText::_('NAME').'</div><div class="divsubemailnameinput"><input type="text" name="subemailname" /></div></div>';
-      				break;
-      				
-				    case 'inputemail':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = '<div id="divsubemailaddress"><div class="divsubemailaddresstext">'.JText::_('EMAIL').'</div><div class="divsubemailaddressinput"><input type="text" name="subemailaddress" /></div></div>';
-      				break;
-      				
-				    case 'submit':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = '<div id="disubemailsubmit"><input type="submit" value="'.JText::_('SUBMIT').'" /></div>';
-      				break;      				
-      				
-				    case 'registrationend':
-				      $search[]  = '['.$tag.']';
-				      if (strtotime($this->getEvent()->getData()->registrationend)) 
-				      {
-				      	$replace[] = strftime( $elsettings->formatdate . ' '. $elsettings->formattime, strtotime($this->getEvent()->getData()->registrationend));
-				  		}
-				  		else {
-				  			$replace[] = '';
-				  		}
-      				break;      	      			
-      				
-				    case 'username':
-				      $search[]  = '['.$tag.']';
-				      $emails = $rfcore->getSubmissionContactEmail($this->_submitkey, false);
-				      if (is_array($emails) && count($emails)) {
-				      	$contact = current($emails);
-      					$replace[] = isset($contact['username']) ? $contact['username'] : '';
-				      }
-				      else {
-				  			$replace[] = '';				      	
-				      }
-      				break;
-      				
-				    case 'useremail':
-				      $search[]  = '['.$tag.']';
-				      $emails = $rfcore->getSubmissionContactEmail($this->_submitkey, true);
-				      if (is_array($emails) && count($emails)) {
-				      	$contact = current($emails);
-      					$replace[] = isset($contact['email']) ? $contact['email'] : '';
-				      }
-				      else {
-				  			$replace[] = '';				      	
-				      }
-      				break;
-      				
-				    case 'userfullname':
-				      $search[]  = '['.$tag.']';
-				      $emails = $rfcore->getSubmissionContactEmail($this->_submitkey, false);
-				      if (is_array($emails) && count($emails)) {
-				      	$contact = current($emails);
-      					$replace[] = isset($contact['fullname']) ? $contact['fullname'] : '';
-				      }
-				      else {
-				  			$replace[] = '';				      	
-				      }
-      				break;
-      				
-				    case 'regurl':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = $this->absoluteUrls($uri->toString());
-      				break;
-      				
-				    case 'eventplaces':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = $this->_maxattendees;
-      				break;
-      				
-				    case 'waitinglistplaces':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = $this->_maxwaitinglist;
-      				break;
-      				
-				    case 'eventplacesleft':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = $this->getEvent()->getPlacesLeft();
-      				break;
-      				
-				    case 'waitinglistplacesleft':
-				      $search[]  = '['.$tag.']';
-      				$replace[] = $this->getEvent()->getWaitingPlacesLeft();
-      				break;
-      				
-				    case 'webformsignup':
-				      $search[]  = '['.$tag.']';
-              $replace[] = '<span class="vlink webform">'
-                           . JHTML::_('link', 
-                                      $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('webform', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)), 
-                                      JHTML::_('image', $iconspath.$elsettings->signup_webform_img,  
-                                      JText::_($elsettings->signup_webform_text), 
-                                      'width="24px" height="24px"'))
-                           .'</span> ';
-              break;      				
-      				
-				    case 'emailsignup':
-				      $search[]  = '['.$tag.']';
-				      $replace[] = '<span class="vlink email">'
-				                      .JHTML::_('link', 
-                                        $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('email', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)), 
-				                                JHTML::_('image', $iconspath.$elsettings->signup_email_img,  
-				                                JText::_($elsettings->signup_email_text), 
-				                                'width="24px" height="24px"'))
-				                      .'</span> ';
-              break;
-      				
-				    case 'formalsignup':
-				      $search[]  = '['.$tag.']';
-				      $replace[] = '<span class="vlink formaloffer">'
-				                    .JHTML::_('link', 
-                                      $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('formaloffer', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)), 
-				                              JHTML::_('image', $iconspath.$elsettings->signup_formal_offer_img,  
-				                              JText::_($elsettings->signup_formal_offer_text), 
-				                              'width="24px" height="24px"'))
-				                   .'</span> ';
-              break;
-      				
-				    case 'externalsignup':
-				      $search[]  = '['.$tag.']';
-				      if (!empty($this->getEvent()->getData()->external_registration_url)) {
-				      	$link = $this->getEvent()->getData()->external_registration_url;
-				      }
-				      else {
-				      	$link = $this->getEvent()->getData()->submission_type_external;
-				      }
-				      $replace[] = '<span class="vlink external">'
-				                    .JHTML::_('link', 
-				                              $link, 
-				                              JHTML::_('image', $iconspath.$elsettings->signup_external_img,  
-				                              $elsettings->signup_external_text), 
-				                              'target="_blank"')
-				                    .'</span> ';				      
-              break;
-      				
-				    case 'phonesignup':
-				      $search[]  = '['.$tag.']';
-				      $replace[] = '<span class="vlink phone">'
-				                     .JHTML::_('link', 
-                                       $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('phone', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)), 
-				                               JHTML::_('image', $iconspath.$elsettings->signup_phone_img,  
-				                               JText::_($elsettings->signup_phone_text), 
-				                               'width="24px" height="24px"'))
-				                     .'</span> ';
-				      break;
-              
-				    case 'webformsignuppage':
-				      $search[]  = '['.$tag.']';
-              // check that there is no loop with the tag inclusion
-              if (preg_match('/\[[a-z]*signuppage\]/', $this->getEvent()->getData()->submission_type_webform) == 0) {
-                $replace[] = $this->ReplaceTags($this->getEvent()->getData()->submission_type_webform);
-              }
-              else {
-                JError::raiseNotice(0, JText::_('ERROR TAG LOOP XXXXSIGNUPPAGE'));
-                $replace[] = '';
-              }
-      				break;
-      				
-				    case 'formalsignuppage':
-				      $search[]  = '['.$tag.']';
-              // check that there is no loop with the tag inclusion
-              if (preg_match('/\[[a-z]*signuppage\]/', $this->getEvent()->getData()->submission_type_formal_offer) == 0) {
-                $replace[] = $this->_getFormalOffer($this->getEvent()->getData());
-              }
-              else {
-                JError::raiseNotice(0, JText::_('ERROR TAG LOOP XXXXSIGNUPPAGE'));
-                $replace[] = '';
-              }
-      				break;
-      				
-				    case 'phonesignuppage':
-				      $search[]  = '['.$tag.']';
-    					// check that there is no loop with the tag inclusion
-    					if (preg_match('/\[[a-z]*signuppage\]/', $this->getEvent()->getData()->submission_type_phone) == 0) {
-    					  $replace[] = $this->ReplaceTags($this->getEvent()->getData()->submission_type_phone);
-    					}
-    					else {
-    						JError::raiseNotice(0, JText::_('ERROR TAG LOOP XXXXSIGNUPPAGE'));
-    						$replace[] = '';
-    					}
-      				break;
-      				
-				    case 'emailsignuppage':
-				      $search[]  = '['.$tag.']';
-              // check that there is no loop with the tag inclusion
-              if (preg_match('/\[[a-z]*signuppage\]/', $this->getEvent()->getData()->submission_type_email) == 0) {
-                $replace[] = $this->_getEmailSubmission($this->getEvent()->getData());
-              }
-              else {
-                JError::raiseNotice(0, JText::_('ERROR TAG LOOP XXXXSIGNUPPAGE'));
-                $replace[] = '';
-              }
-      				break;
-      				
-      				
-				    case 'paymentrequest':
-				      $search[]  = '['.$tag.']';
-				      if (!empty($this->_submitkey)) {
-				      	$title = urlencode($this->getEvent()->getData()->title.' '.ELOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times));				      
-              	$replace[] = JHTML::link($this->absoluteUrls('index.php?option=com_redform&controller=payment&task=select&source=redevent&key='.$this->_submitkey.'&paymenttitle='.$title, false), JText::_('Checkout'), '');
-				      }
-				      else {
-				      	$replace[] = '';
-				      }
-				    	break;
-				    	
-				    case 'paymentrequestlink':
-				      $search[]  = '['.$tag.']';
-				      if (!empty($this->_submitkey)) {
-				      	$title = urlencode($this->getEvent()->getData()->title.' '.ELOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times));				      
-              	$replace[] = $this->absoluteUrls('index.php?option=com_redform&controller=payment&task=select&source=redevent&key='.$this->_submitkey.'&paymenttitle='.$title, false);
-				      }
-				      else {
-				      	$replace[] = '';
-				      }
-				    	break;
-				    	
-				    case 'registrationid':
-				      $search[]  = '['.$tag.']';
-				      if (!empty($this->_submitkey)) {
-				      	$replace[] = $this->getAttendeeUniqueId($this->_submitkey);
-				      }
-				      else {
-				      	$replace[] = '';
-				      }
-				    	break;
-				    	
-				    case 'total_price': // total price for registration, including redform fields
-				      $search[]  = '['.$tag.']';
-				    	$replace[] = $this->_getSubmissionTotalPrice();
-				    	break;
-				  }
-				    
+					$search[] = '['.$tag.']';
+					$replace[] = $this->_getFieldAnswer(substr($tag, 7));
 				}
-				// do the replace
-				$message = str_replace($search, $replace, $text);
-								
-				// then the custom tags
-				$search = array();
-				$replace = array();
-				
-				/* Load custom fields */
-				$customfields = $this->getCustomFields();
-        foreach ($customfields as $tag => $data) 
-        {
-          $search[] = '['.$data->text_name.']';
-          $replace[] = $data->text_field;
-        }
-        $message = str_ireplace($search, $replace, $message);
-				
-				/* Load redform fields */
-				$redformfields = $this->_getFieldsTags();
-				if ($redformfields && count($redformfields))
-				{
-	        foreach ($alltags[1] as $tag) 
-	        {
-	        	if (stripos($tag, 'answer_') === 0)
-	        	{
-		          $search[] = '['.$tag.']';
-		          $replace[] = $this->_getFieldAnswer(substr($tag, 7));
-	        	}
-	        }
-	        $message = str_ireplace($search, $replace, $message);
-				}
-				
-				
-				/* Include redFORM */
-				if (in_array('[redform]', $alltags[0]) && $this->getEvent()->getData()->redform_id > 0) 
-				{
-				  $status = redEVENTHelper::canRegister($this->_xref);
-				  if ($status->canregister) 
-				  {
-            $redform = $this->getForm($this->getEvent()->getData()->redform_id);
-				  }
-				  else {
-				    $redform = '<span class="registration_error">'.$status->status.'</span>';
-				  }
-				  
-				  /* second replacement, add the form */
-					/* if done in first one, username in the form javascript is replaced too... */
-				  $message = str_replace('[redform]', $redform, $message); 
-				}	 				
-				
-				return $message;
+			}
+			$message = str_ireplace($search, $replace, $message);
+		}
+
+
+		/* Include redFORM */
+		if (in_array('[redform]', $alltags[0]) && $this->getEvent()->getData()->redform_id > 0)
+		{
+			$status = redEVENTHelper::canRegister($this->_xref);
+			if ($status->canregister)
+			{
+				$redform = $this->getForm($this->getEvent()->getData()->redform_id);
+			}
+			else {
+				$redform = '<span class="registration_error">'.$status->status.'</span>';
+			}
+
+			/* second replacement, add the form */
+			/* if done in first one, username in the form javascript is replaced too... */
+			$message = str_replace('[redform]', $redform, $message);
+		}
+
+		return $message;
 	}
 	
 	/**
@@ -1560,6 +1026,677 @@ class redEVENT_tags {
 			$res[] = ELOutput::formatprice($p->price). ' ('.$p->name.')';
 		}
 		return implode(' / ', $res);
+	}
+	
+	/*************************************************************************
+	 * tags functions
+	 * 
+	 * name must be _getTag_xxxxx_yyy
+	 * 
+	 */
+	
+	/************ event tags **************************/
+	
+	/**
+	 * Parses event_description tag
+	 *
+	 * @return string
+	 */
+	function _getTag_event_description()
+	{
+		/* Fix the tags of the event description */
+		$findcourse = array('[venues]','[price]','[credits]', '[code]');
+		$venues_html = $this->SignUpLinks();
+
+		$replacecourse = array($venues_html,
+		$this->formatPrices($this->getEvent()->getPrices()),
+		$this->getEvent()->getData()->course_credit,
+		$this->getEvent()->getData()->course_code);
+		$res = str_replace($findcourse, $replacecourse, $this->getEvent()->getData()->datdescription);
+		return $res;
+	}
+	
+	function _getTag_event_info_text()
+	{
+		return $this->_getTag_event_description();
+	}
+	
+	function _getTag_event_title()
+	{
+		return $this->getEvent()->getData()->title;
+	}
+	
+	function _getTag_event_full_title()
+	{
+		return $this->getEvent()->getData()->full_title;
+	}
+	
+	function _getTag_price()
+	{
+		return $this->formatPrices($this->getEvent()->getPrices());
+	}
+	
+	function _getTag_credits()
+	{
+		return $this->getEvent()->getData()->course_credit;
+	}
+	
+	function _getTag_code()
+	{
+		return $this->getEvent()->getData()->course_code;
+	}
+	
+	function _getTag_date()
+	{
+		return ELOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+	}
+	
+	function _getTag_enddate()
+	{
+		return ELOutput::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+	}
+	
+	function _getTag_time()
+	{
+		$tmp = "";
+		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
+		{
+			$tmp = ELOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+			 
+			if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes)) {
+				$tmp .= ' - ' .ELOutput::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+			}
+		}
+		return $tmp;
+	}
+	
+	function _getTag_startenddatetime()
+	{
+		$tmp = ELOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times)) {
+			$tmp .= ' ' .ELOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+		}
+		if (!empty($this->getEvent()->getData()->enddates) && $this->getEvent()->getData()->enddates != $this->getEvent()->getData()->dates)
+		{
+			$tmp .= ' - ' .ELOutput::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+		}
+		if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes)) {
+			$tmp .= ' ' .ELOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->endtimes);
+		}
+		return $tmp;
+	}
+	
+	function _getTag_duration()
+	{
+		return redEVENTHelper::getEventDuration($this->getEvent()->getData());
+	}
+	
+	function _getTag_eventimage()
+	{
+		$eventimage = redEVENTImage::flyercreator($this->getEvent()->getData()->datimage, 'event');
+		$eventimage = JHTML::image(JURI::root().'/'.$eventimage['original'], $this->getEvent()->getData()->title, array('title' => $this->getEvent()->getData()->title));
+		return $eventimage;
+	}
+	
+	function _getTag_event_image()
+	{
+		return _getTag_eventimage();
+	}
+	
+	function _getTag_event_thumb()
+	{
+		$eventimage = redEVENTImage::modalimage('events', basename($this->getEvent()->getData()->datimage), $this->getEvent()->getData()->title);
+		return $eventimage;
+	}
+	
+	function _getTag_category_image()
+	{
+		$cats_images = array();
+		foreach ($this->getEvent()->getData()->categories as $c){
+			$cats_images[] = redEVENTImage::getCategoryImage($c, false);
+		}
+		$categoryimage = '<span class="details-categories-images"><span class="details-categories-image">'.implode('</span><span class="details-categories-image">', $cats_images).'</span></span>';
+
+		return $categoryimage;
+	}
+	
+	function _getTag_categoryimage()
+	{
+		return _getTag_category_image;
+	}
+	
+	function _getTag_category_thumb()
+	{
+		$cats_images = array();
+		foreach ($this->getEvent()->getData()->categories as $c){
+			$cats_images[] = redEVENTImage::getCategoryImage($c);
+		}
+		$categoryimage = '<span class="details-categories-images"><span class="details-categories-image">'.implode('</span><span class="details-categories-image">', $cats_images).'</span></span>';
+
+		return $categoryimage;
+	}
+	
+	function _getTag_info()
+	{
+		// check that there is no loop with the tag inclusion
+		if (strpos($this->getEvent()->getData()->details, '[info]') === false) {
+			$info = $this->ReplaceTags($this->getEvent()->getData()->details);
+		}
+		else {
+			JError::raiseNotice(0, JText::_('ERROR TAG LOOP XREF DETAILS'));
+			$info = '';
+		}
+		return $info;
+	}
+	
+	function _getTag_category()
+	{
+		// categories
+		$cats = array();
+		foreach ($this->getEvent()->getData()->categories as $c){
+			$cats[] = JHTML::link($this->absoluteUrls(RedeventHelperRoute::getCategoryEventsRoute($c->slug)), $c->catname);
+		}
+		return '<span class="details-categories">'.implode(', ', $cats).'</span>';
+	}
+	
+	function _getTag_eventcomments()
+	{
+		return $this->_getComments($this->getEvent()->getData());
+	}
+	
+	function _getTag_permanentlink()
+	{
+		$link = JHTML::link($this->absoluteUrls(
+		                        RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug), 
+		                        false)
+		                    , JText::_('Permanent link'), 'class="permalink"');
+		return $link;
+	}
+	
+	function _getTag_datelink()
+	{
+		$link = JHTML::link($this->absoluteUrls(
+		                                  RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug, 
+		                                       $this->_xref), false), 
+		                    JText::_('Event details'), 'class="datelink"');
+		
+		return $link;
+	}
+		
+	/**
+	 * Parses tag ical_url
+	 * returns link to session ical export
+	 * @return string
+	 */
+	function _getTag_ical()
+	{
+		$ttext = JText::_('COM_REDEVENT_EXPORT_ICS');
+	  $res = JHTML::link( $this->_getTag_ical_url(), 
+	                      $ttext, array('class' => 'event-ics'));
+		return $res;
+	}
+	
+	/**
+	 * Parses tag ical_url
+	 * returns url to session ical export
+	 * @return string
+	 */
+	function _getTag_ical_url()
+	{
+		$res = $this->absoluteUrls(
+		                RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug, 
+		                         $this->getEvent()->getData()->xslug).'&format=raw&layout=ics', 
+		                false);
+		return $res;
+	}
+	
+	/**
+	 * Parses tag summary
+	 * returns event summary
+	 * @return string
+	 */
+	function _getTag_summary()
+	{
+		return $this->getEvent()->getData()->summary;
+	}
+	
+	/**
+	 * Parses tag moreinfo
+	 * returns list of attachments
+	 * @return string
+	 */
+	function _getTag_attachments()
+	{
+		return $this->_attachmentsHTML();
+	}
+
+	/**
+	 * Parses tag moreinfo
+	 * generates a modal link to a more info form for the session
+	 * @return string
+	 */
+	function _getTag_moreinfo()
+	{
+		JHTML::_('behavior.modal', 'a.moreinfo');
+		$link = JRoute::_(RedeventHelperRoute::getMoreInfoRoute($this->getEvent()->getData()->xslug, 
+		                                                        array('tmpl' =>'component')));
+		$text = '<a class="moreinfo" title="'.JText::_('COM_REDEVENT_DETAILS_MOREINFO_BUTTON_LABEL')
+		      .  '" href="'.$link.'" rel="{handler: \'iframe\', size: {x: 400, y: 500}}">'
+		      . JText::_('COM_REDEVENT_DETAILS_MOREINFO_BUTTON_LABEL')
+		      . ' </a>'
+		      ;
+		return $text;
+	}
+	
+	/**************  venue tags ******************/
+	
+	function _getTag_venue()
+	{
+		return $this->getEvent()->getData()->venue;
+	}
+	
+	function _getTag_venue_title()
+	{
+		return $this->_getTag_venue();
+	}
+
+	function _getTag_city()
+	{
+		return $this->getEvent()->getData()->location;
+	}
+	
+	function _getTag_venue_city()
+	{
+		return $this->_getTag_city();
+	}
+	
+	function _getTag_venues()
+	{
+		return $this->SignUpLinks();
+	}	
+	
+	function _getTag_venue_street()
+	{
+		return $this->getEvent()->getData()->street;
+	}
+	
+	function _getTag_venue_zip()
+	{
+		return $this->getEvent()->getData()->plz;
+	}
+	
+	function _getTag_venue_state()
+	{
+		return $this->getEvent()->getData()->state;
+	}
+	
+	function _getTag_venue_link()
+	{
+		$link = JHTML::link(
+		          $this->absoluteUrls(RedeventHelperRoute::getVenueEventsRoute($this->getEvent()->getData()->venueslug)), 
+		          $this->getEvent()->getData()->venue);
+		return $link;
+	}
+	
+	function _getTag_venue_website()
+	{
+		$res = '';
+		if (!empty($this->getEvent()->getData()->venueurl)) {
+			$res = JHTML::link($this->absoluteUrls(($this->getEvent()->getData()->venueurl)), 
+			                   JText::_('Venue website'));
+		}
+		return $res;
+	}
+	
+	function _getTag_venueimage()
+	{
+		$venueimage = redEVENTImage::flyercreator($this->getEvent()->getData()->locimage);
+		$venueimage = JHTML::image(JURI::root().'/'.$venueimage['original'], 
+		                           $this->getEvent()->getData()->venue, 
+		                           array('title' => $this->getEvent()->getData()->venue));
+		$venueimage = JHTML::link($this->absoluteUrls(
+		                            RedeventHelperRoute::getVenueEventsRoute($this->getEvent()->getData()->venueslug)), 
+		                          $venueimage);
+		return $venueimage;
+	}
+	
+	function _getTag_venue_image()
+	{
+		return $this->_getTag_venueimage();
+	}
+	
+	function _getTag_venue_thumb()
+	{              
+		$venueimage = redEVENTImage::modalimage('venues', 
+		                                        basename($this->getEvent()->getData()->locimage), 
+		                                        $this->getEvent()->getData()->venue);
+		return $venueimage;
+	}
+	
+	function _getTag_venue_description()
+	{
+		return $this->getEvent()->getData()->venue_description;
+	}
+	
+	function _getTag_venue_country()
+	{
+		return redEVENTHelperCountries::getCountryName($this->getEvent()->getData()->country);
+	}
+	
+	function _getTag_venue_countryflag()
+	{
+		return redEVENTHelperCountries::getCountryFlag($this->getEvent()->getData()->country);
+	}
+	
+	function _getTag_venue_mapicon()
+	{
+		return ELOutput::mapicon($this->getEvent()->getData(), array('class' => 'event-map'));
+	}
+	
+	function _getTag_venue_map()
+	{
+		return ELOutput::map($this->getEvent()->getData(), array('class' => 'event-full-map'));
+	}
+	
+	/**************  registration tags ******************/
+	
+	function _getTag_redform_title()
+	{
+		return $this->getEvent()->getData()->formname;
+	}
+	
+	function _getTag_inputname()
+	{
+		$text = '<div id="divsubemailname">'
+		      .   '<div class="divsubemailnametext">'.JText::_('NAME').'</div>'
+		      .   '<div class="divsubemailnameinput"><input type="text" name="subemailname" /></div>'
+		      . '</div>';
+		return $text;
+	}
+	
+	function _getTag_inputemail()
+	{
+		$text = '<div id="divsubemailaddress">'
+		      .   '<div class="divsubemailaddresstext">'.JText::_('EMAIL').'</div>'
+		      .   '<div class="divsubemailaddressinput"><input type="text" name="subemailaddress" /></div>'
+		      . '</div>';
+		return $text;
+	}
+	
+	function _getTag_submit()
+	{
+		$text = '<div id="disubemailsubmit"><input type="submit" value="'.JText::_('SUBMIT').'" /></div>';
+		return $text;
+	}
+	
+	function _getTag_registrationend()
+	{
+		$res = '';
+		if (strtotime($this->getEvent()->getData()->registrationend))
+		{
+			$res = strftime( $elsettings->formatdate . ' '. $elsettings->formattime, 
+			                 strtotime($this->getEvent()->getData()->registrationend));
+		}
+		return $res;
+	}
+	
+	function _getTag_username()
+	{
+		$res = '';
+		$emails = $this->_getRFCore()->getSubmissionContactEmail($this->_submitkey, false);
+		if (is_array($emails) && count($emails)) {
+			$contact = current($emails);
+			$res = isset($contact['username']) ? $contact['username'] : '';
+		}
+		return $res;
+	}
+	
+	function _getTag_useremail()
+	{
+		$res = '';
+		$emails = $this->_getRFCore()->getSubmissionContactEmail($this->_submitkey, true);
+		if (is_array($emails) && count($emails)) {
+			$contact = current($emails);
+			$res = isset($contact['email']) ? $contact['email'] : '';
+		}
+		return $res;
+	}
+	
+	function _getTag_userfullname()
+	{
+		$res = '';
+		$emails = $this->_getRFCore()->getSubmissionContactEmail($this->_submitkey, true);
+		if (is_array($emails) && count($emails)) {
+			$contact = current($emails);
+			$res = isset($contact['fullname']) ? $contact['fullname'] : '';
+		}
+		return $res;
+	}
+	
+	/**
+	 * Parses tag answers
+	 * returns attendee answers to registration form
+	 * @return string
+	 */
+	function _getTag_answers()
+	{
+		return $this->_answersToHtml();
+	}
+	
+	function _getTag_regurl()
+	{
+		return $this->absoluteUrls($uri->toString());
+	}
+	
+	function _getTag_eventplaces()
+	{
+		return $this->_maxattendees;
+	}
+	
+	function _getTag_waitinglistplaces()
+	{
+		return $this->_maxwaitinglist;
+	}
+	
+	function _getTag_eventplacesleft()
+	{
+		return $this->getEvent()->getPlacesLeft();
+	}
+	
+	function _getTag_waitinglistplacesleft()
+	{
+		return $this->getEvent()->getWaitingPlacesLeft();
+	}
+	
+	function _getTag_webformsignup()
+	{		
+		$mainframe = &JFactory::getApplication();
+		$base_url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
+		$elsettings = redEVENTHelper::config();
+		$text = '<span class="vlink webform">'
+               . JHTML::_('link', 
+                          $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('webform', 
+                                 $this->getEvent()->getData()->slug, 
+                                 $this->getEvent()->getData()->xslug)), 
+                          JHTML::_('image', $iconspath.$elsettings->signup_webform_img,  
+                          JText::_($elsettings->signup_webform_text), 
+                          'width="24px" height="24px"'))
+               .'</span> ';
+		return $text;
+	}
+	
+	function _getTag_emailsignup()
+	{
+		$mainframe = &JFactory::getApplication();
+		$base_url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
+		$elsettings = redEVENTHelper::config();
+		$text = '<span class="vlink email">'
+		      . JHTML::_('link',
+		                 $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('email', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)),
+		                 JHTML::_('image', $iconspath.$elsettings->signup_email_img,
+		                 JText::_($elsettings->signup_email_text),
+				             'width="24px" height="24px"'))
+		      .'</span> ';
+		return $text;
+	}
+	
+	function _getTag_formalsignup()
+	{
+		$mainframe = &JFactory::getApplication();
+		$base_url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
+		$elsettings = redEVENTHelper::config();
+		$text = '<span class="vlink formaloffer">'
+		      . JHTML::_('link',
+		                 $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('formaloffer', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)),
+		                 JHTML::_('image', $iconspath.$elsettings->signup_formal_offer_img,
+		                 JText::_($elsettings->signup_formal_offer_text),
+		                 'width="24px" height="24px"'))
+		       .'</span> ';
+		return $text;
+	}
+	
+	function _getTag_externalsignup()
+	{
+		$mainframe = &JFactory::getApplication();
+		$base_url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
+		$elsettings = redEVENTHelper::config();
+		if (!empty($this->getEvent()->getData()->external_registration_url)) {
+			$link = $this->getEvent()->getData()->external_registration_url;
+		}
+		else {
+			$link = $this->getEvent()->getData()->submission_type_external;
+		}
+		$text = '<span class="vlink external">'
+		      . JHTML::_('link',
+		                 $link,
+		                 JHTML::_('image', $iconspath.$elsettings->signup_external_img,
+		                 $elsettings->signup_external_text),
+				             'target="_blank"')
+		       .'</span> ';
+		return $text;
+	}
+	
+	function _getTag_phonesignup()
+	{
+		$mainframe = &JFactory::getApplication();
+		$base_url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
+		$elsettings = redEVENTHelper::config();
+		$text = '<span class="vlink phone">'
+		      . JHTML::_('link',
+		                 $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('phone', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)),
+		                 JHTML::_('image', $iconspath.$elsettings->signup_phone_img,
+		                 JText::_($elsettings->signup_phone_text),
+		                 'width="24px" height="24px"'))
+		      .'</span> ';
+		return $text;
+	}
+	
+	function _getTag_webformsignuppage()
+	{
+		// check that there is no loop with the tag inclusion
+		if (preg_match('/\[[a-z]*signuppage\]/', $this->getEvent()->getData()->submission_type_webform) == 0) {
+			$text = $this->ReplaceTags($this->getEvent()->getData()->submission_type_webform);
+		}
+		else {
+			JError::raiseNotice(0, JText::_('ERROR TAG LOOP XXXXSIGNUPPAGE'));
+			$text = '';
+		}
+		return $text;
+	}
+	
+	function _getTag_formalsignuppage()
+	{
+		// check that there is no loop with the tag inclusion
+		if (preg_match('/\[[a-z]*signuppage\]/', $this->getEvent()->getData()->submission_type_formal_offer) == 0) {
+			$text = $this->_getFormalOffer($this->getEvent()->getData());
+		}
+		else {
+			JError::raiseNotice(0, JText::_('ERROR TAG LOOP XXXXSIGNUPPAGE'));
+			$text = '';
+		}
+		return $text;
+	}
+	
+	function _getTag_phonesignuppage()
+	{
+		// check that there is no loop with the tag inclusion
+		if (preg_match('/\[[a-z]*signuppage\]/', $this->getEvent()->getData()->submission_type_phone) == 0) {
+			$text = $this->ReplaceTags($this->getEvent()->getData()->submission_type_phone);
+		}
+		else {
+			JError::raiseNotice(0, JText::_('ERROR TAG LOOP XXXXSIGNUPPAGE'));
+			$text = '';
+		}
+		return $text;
+	}
+	
+	function _getTag_emailsignuppage()
+	{
+		// check that there is no loop with the tag inclusion
+		if (preg_match('/\[[a-z]*signuppage\]/', $this->getEvent()->getData()->submission_type_email) == 0) {
+			$text = $this->_getEmailSubmission($this->getEvent()->getData());
+		}
+		else {
+			JError::raiseNotice(0, JText::_('ERROR TAG LOOP XXXXSIGNUPPAGE'));
+			$text = '';
+		}
+		return $text;
+	}
+	
+	function _getTag_paymentrequest()
+	{
+		$text = '';
+		$link = $this->_getTag_paymentrequestlink();
+		if (!empty($link)) {
+			$text = JHTML::link($link, JText::_('Checkout'), '');
+		}
+		return $text;
+	}
+	
+	function _getTag_paymentrequestlink()
+	{
+		$link = '';
+		if (!empty($this->_submitkey)) 
+		{
+			$title = urlencode($this->getEvent()->getData()->title
+			               .' '
+			               .ELOutput::formatdate($this->getEvent()->getData()->dates, 
+			                                     $this->getEvent()->getData()->times));
+			$link = $this->absoluteUrls(
+			             'index.php?option=com_redform&controller=payment&task=select&source=redevent&key='
+			                .$this->_submitkey.'&paymenttitle='.$title, 
+			             false);
+		}
+		return $link;
+	}
+		
+	/**
+	 * Parses registrationid tag
+	 * returns unique registration id
+	 * @return string
+	 */
+	function _getTag_registrationid()
+	{
+		$text = '';
+		if (!empty($this->_submitkey)) {
+			$text = $this->getAttendeeUniqueId($this->_submitkey);
+		}
+		return ;
+	}
+	
+	/**
+	 * Parses total_price tag
+	 * total price for registration, including redform fields
+	 * @return string
+	 */
+	function _getTag_total_price()
+	{
+		return $this->_getSubmissionTotalPrice();
 	}
 }
 ?>
