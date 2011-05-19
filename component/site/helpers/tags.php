@@ -61,28 +61,16 @@ class redEVENT_tags {
 			$this->_addOptions($options);
 		}		
 		
-		$xref = JRequest::getVar('xref', false);
+		$eventid = JRequest::getVar('id', 0, 'request', 'int');
+		$this->setEventId($eventid);
+		
+		$xref = JRequest::getInt('xref');
 		$this->setXref($xref);
 		
-		// if no xref specified. try to get one associated to the event id
+		// if no xref specified. try to get one associated to the event id, published if possible !
 		if (!$this->_xref)
 		{
-			$eventid = JRequest::getVar('id', 0, 'request', 'int');
-			if ($eventid)
-			{
-  			$db = & JFactory::getDBO();
-				$query = ' SELECT x.id FROM #__redevent_event_venue_xref AS x '
-				       . ' INNER JOIN #__redevent_events AS e ON e.id = x.eventid '
-				       . ' WHERE x.published = 1 '
-				       . '   AND x.eventid = '. $db->Quote($eventid)
-				       . ' ORDER BY x.dates ASC '
-				       ;
-				$db->setQuery($query);
-				$res = $db->loadResult();
-				if ($res) {
-					$this->_xref = $res;
-				}
-			}
+			$this->_initXref();
 		}
 		
 		if ($this->_xref) {
@@ -106,13 +94,46 @@ class redEVENT_tags {
 		$this->_event = $object;
 	}
 	
-	function setXref($xref)
+	public function setXref($xref)
 	{
-		if ($this->_xref !== $xref) {
+		if (($this->_xref !== $xref) && intval($xref)) {
 			$this->_xref = intval($xref);
 			$this->_customfields = null;
 			$this->_xrefcustomfields = null;
 		}
+	}
+	
+	public function getXref()
+	{
+		if (!$this->_xref) {
+			$this->_initXref();
+		}
+		return $this->_xref;
+	}
+	
+	/**
+	 * tries to pull a xref from the eventid
+	 * return object
+	 */
+	private function _initXref()
+	{
+		$eventid = $this->_eventid;
+		if ($eventid)
+		{
+			$db = & JFactory::getDBO();
+			$query = ' SELECT x.id FROM #__redevent_event_venue_xref AS x '
+			. ' INNER JOIN #__redevent_events AS e ON e.id = x.eventid '
+			. ' WHERE x.published = 1 '
+			. '   AND x.eventid = '. $db->Quote($eventid)
+			. ' ORDER BY x.dates ASC '
+			;
+			$db->setQuery($query);
+			$res = $db->loadResult();
+			if ($res) {
+				$this->setXref($res);
+			}
+		}
+		return $this;
 	}
 	
 	function setSubmitkey($string)
@@ -281,6 +302,10 @@ class redEVENT_tags {
 	 */
 	private function SignUpLinks() 
 	{
+		if (!$this->_xref) {
+			return false;
+		}
+		
 		$app = & JFactory::getApplication();
 		$this->getEventLinks();
 		$template_path = JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'com_redevent';
