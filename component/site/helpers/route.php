@@ -277,7 +277,13 @@ class RedeventHelperRoute
 	{		
 		if($item = self::_findItem($parts)) {
 			$parts['Itemid'] = $item->id;
-		};
+		}
+		else {
+			$params = JComponentHelper::getParams('com_redevent');
+			if ($params->get('default_itemid')) {
+				$parts['Itemid'] = intval($params->get('default_itemid'));				
+			}
+		}
 		
 		return 'index.php?'.JURI::buildQuery( $parts );
 	}
