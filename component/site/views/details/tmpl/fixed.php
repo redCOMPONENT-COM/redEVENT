@@ -265,7 +265,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						foreach ($this->prices as $p) 
 						{
 							$title = ' title="'.$p->name.'::'.addslashes(str_replace("\n", "<br/>", $p->tooltip)).'"';
-							$img = empty($p->image) ? JHTML::_('image', $imagepath.$elsettings->signup_webform_img,  JText::_($p->name)) 
+							$img = empty($p->image) ? JHTML::_('image', $imagepath.$this->elsettings->signup_webform_img,  JText::_($p->name)) 
 							                        : JHTML::_('image', $imagepath.$p->image,  JText::_($p->name));
 							$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->row->slug, $this->row->xslug, $p->slug));
 							
