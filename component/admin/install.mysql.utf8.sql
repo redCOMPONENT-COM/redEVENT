@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_events` (
   `paymentprocessing` text NOT NULL,
   `enable_ical` tinyint(2) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+) ENGINE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_venues` (
 `id` int(11) unsigned NOT NULL auto_increment,
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues` (
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
 `ordering` int(11) NOT NULL default '0',
 PRIMARY KEY  (`id`)
-) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+) ENGINE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_categories` (
 `id` int(11) unsigned NOT NULL auto_increment,
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_categories` (
 `rgt` int(11) NOT NULL default '0',
 `event_template` int(11) NOT NULL default '0',
 PRIMARY KEY  (`id`)
-) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+) ENGINE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_register` (
 `id` int(11) unsigned NOT NULL auto_increment,
@@ -131,7 +131,7 @@ KEY `xref` (`xref`),
 KEY `pricegroup_id` (`pricegroup_id`),
 KEY `submit_key` (`submit_key`),
 KEY `sid` (`sid`)
-) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+) ENGINE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_roles` (
 `id` int(11) unsigned NOT NULL auto_increment,
@@ -141,7 +141,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_roles` (
 `checked_out` int(11) NOT NULL default '0',
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
 PRIMARY KEY  (`id`)
-) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+) ENGINE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_sessions_roles` (
 `id` int(11) unsigned NOT NULL auto_increment,
@@ -152,7 +152,7 @@ PRIMARY KEY  (`id`),
 KEY `xref` (`xref`),
 KEY `role_id` (`role_id`),
 KEY `user_id` (`user_id`)
-) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+) ENGINE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_roles_redmember` (
 `id` int(11) unsigned NOT NULL auto_increment,
@@ -162,7 +162,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_roles_redmember` (
 PRIMARY KEY  (`id`),
 KEY  (`role_id`),
 KEY  (`usertype`)
-) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+) ENGINE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_pricegroups` (
 `id` int(11) unsigned NOT NULL auto_increment,
@@ -175,7 +175,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_pricegroups` (
 `checked_out` int(11) NOT NULL default '0',
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
 PRIMARY KEY  (`id`)
-) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+) ENGINE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_sessions_pricegroups` (
 `id` int(11) unsigned NOT NULL auto_increment,
@@ -183,7 +183,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_sessions_pricegroups` (
 `pricegroup_id` int(11) NOT NULL default '0',
 `price` float NOT NULL,
 PRIMARY KEY  (`id`)
-) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+) ENGINE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_groups` (
 `id` int(11) unsigned NOT NULL auto_increment,
@@ -196,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_groups` (
 `checked_out` int(11) NOT NULL default '0',
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
 PRIMARY KEY  (`id`)
-) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+) ENGINE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_groupmembers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -213,7 +213,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_groupmembers` (
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`),
   KEY `member` (`member`)
-) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_groups_categories` (
   `id` int(11) unsigned NOT NULL auto_increment,
@@ -223,7 +223,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_groups_categories` (
 PRIMARY KEY  (`id`),
   KEY `group_id` (`group_id`),
   KEY `category_id` (`category_id`)
-) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+) ENGINE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_groups_venues` (
   `id` int(11) unsigned NOT NULL auto_increment,
@@ -233,7 +233,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_groups_venues` (
 PRIMARY KEY  (`id`),
   KEY `group_id` (`group_id`),
   KEY `venue_id` (`venue_id`)
-) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+) ENGINE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_groups_venues_categories` (
   `id` int(11) unsigned NOT NULL auto_increment,
@@ -243,7 +243,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_groups_venues_categories` (
 PRIMARY KEY  (`id`),
   KEY `group_id` (`group_id`),
   KEY `category_id` (`category_id`)
-) TYPE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+) ENGINE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_settings` (
   `id` int(11) NOT NULL,
@@ -332,7 +332,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_settings` (
   `signup_phone_text` VARCHAR( 50 ) NOT NULL DEFAULT 'SIGNUP_PHONE',
   `signup_phone_img` VARCHAR( 50 ) NOT NULL DEFAULT 'phone_icon.gif',
   UNIQUE KEY `id` (`id`)
-) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_event_venue_xref` (
   `id` int(11) unsigned NOT NULL auto_increment,
@@ -378,7 +378,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_textlibrary` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `id` (`id`),
   UNIQUE KEY `text_name` (`text_name`)
-) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 
 CREATE TABLE IF NOT EXISTS `#__redevent_venues_categories` (
@@ -400,13 +400,13 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues_categories` (
   `lft` int(11) NOT NULL default '0',
   `rgt` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_venue_category_xref` (
   `venue_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
   UNIQUE KEY `venue_category` (`venue_id`,`category_id`)
-) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_fields` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -429,7 +429,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_fields` (
   `checked_out_time` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `object_key` (`object_key`)
-) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_countries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -440,14 +440,14 @@ CREATE TABLE IF NOT EXISTS `#__redevent_countries` (
   `name` varchar(50) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `iso2` (`iso2`)
-) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_recurrences` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `rrule` text NOT NULL DEFAULT '',
   `ended` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_repeats` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -458,7 +458,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_repeats` (
   UNIQUE KEY `recurrence_repeat` (`xref_id`,`recurrence_id`),
   KEY `xref_id` (`xref_id`),
   KEY `recurrence_id` (`recurrence_id`)
-) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_attachments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
