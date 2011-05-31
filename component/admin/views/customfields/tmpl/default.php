@@ -35,6 +35,12 @@ JHTML::_('behavior.tooltip');
   * Overrides default function.
   */
   function submitbutton(pressbutton) {
+	  if (pressbutton == 'remove') {
+		  if (confirm('<?php echo JText::_('COM_REDEVENT_CONFIRM_CUSTOM_FIELD_DELETE'); ?>')) {
+				submitform( pressbutton );
+		  }
+			return;
+		} 
     submitform(pressbutton);
   }
 </script>

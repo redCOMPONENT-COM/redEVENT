@@ -101,12 +101,27 @@ class RedeventViewCustomfield extends JView
     $lists['required'] = JHTML::_('select.booleanlist',  'required', 'class="inputbox"', $object->required );
 		
     // build the html select list for object key
-    $object_keys = array();
-    $object_keys[] = JHTML::_('select.option', 'redevent.event', 'Event');
-    $object_keys[] = JHTML::_('select.option', 'redevent.xref', 'Event date');
-    //$object_keys[] = JHTML::_('select.option', 'redevent.venue', 'Venue');   
-    $lists['objects'] = JHTML::_('select.genericlist', $object_keys, 'object_key', 'class="inputbox"', 'value', 'text', $object->object_key );
-    
+    if ($object->id)
+    {
+    	switch ($object->object_key)
+    	{
+    		case 'redevent.event':
+    			$f = JText::_('Event').'<input type="hidden" name="object_key" value="'.$object->object_key.'"/>';
+    			break;
+    		case 'redevent.xref':
+    			$f = JText::_('Event session').'<input type="hidden" name="object_key" value="'.$object->object_key.'"/>';
+    			break;
+    	}
+    	$lists['objects'] = $f;
+    }
+    else
+    {
+	    $object_keys = array();
+	    $object_keys[] = JHTML::_('select.option', 'redevent.event', 'Event');
+	    $object_keys[] = JHTML::_('select.option', 'redevent.xref', 'Event session');
+	    //$object_keys[] = JHTML::_('select.option', 'redevent.venue', 'Venue');   
+	    $lists['objects'] = JHTML::_('select.genericlist', $object_keys, 'object_key', 'class="inputbox"', 'value', 'text', $object->object_key );
+    }
     // build the html select list for object key
     $types = array();
     //$types[] = JHTML::_('select.option', 'group', 'Group');
