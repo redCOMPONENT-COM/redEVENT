@@ -176,6 +176,8 @@ function updateend(cal)
 	    </table>
     </td>
   </tr>
+  <?php endif; ?>
+	<?php if ($this->params->get('edit_credits', 0)): ?>
   <tr>
     <td class="key hasTip" title="<?php echo JText::_('EDIT XREF COURSE CREDIT TIP'); ?>">
       <label for="course_credit"><?php echo JText::_( 'EDIT XREF COURSE CREDIT' ) .': '; ?></label>
