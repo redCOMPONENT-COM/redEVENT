@@ -64,6 +64,20 @@ defined('_JEXEC') or die('Restricted access');
 				</span>
 			</div>
     	<?php endif; ?>
+    	
+	    <?php if ($params->get('show_filter_custom', 0)): ?>
+				<?php if ($customsfilters && count($customsfilters)): ?>
+	    	<?php foreach ($customsfilters as $custom): ?>
+	      <div class="rssm_filter_row">
+	      	<?php echo '<label for="filtercustom'.$custom->id.'">'.JText::_($custom->name).'</label>&nbsp;'; ?>
+		  		<span class="rssm_filter">
+	      		<?php echo $custom->renderFilter(array('class' => "inputbox"), isset($filter_customs[$custom->id]) ? $filter_customs[$custom->id] : null); ?>
+					</span>
+	      </div>
+	    	<?php endforeach; ?>
+	    	<?php endif; ?>
+	    <?php endif; ?>	    	
+	    	
   </div>
 	<button onclick="document.getElementById('redeventsearchform').submit();"><?php echo JText::_( 'MOD_REDEVENT_SEARCH_SEARCH_LABEL' ); ?></button>
 </form>

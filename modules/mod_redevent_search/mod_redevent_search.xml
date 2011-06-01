@@ -58,6 +58,10 @@
 			<option value="0">Hide</option>
 			<option value="1">Show</option>
 		</param>
+		<param name="show_filter_custom" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_CUSTOM" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_CUSTOM_DESC">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
 		
 		<param name="moduleclass_sfx" type="text" default="" label="MODULE CLASS SUFFIX" description="MODULE CLASS SUFFIX DESC" />
 	</params>

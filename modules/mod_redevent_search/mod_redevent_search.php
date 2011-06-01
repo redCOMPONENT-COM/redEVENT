@@ -74,5 +74,7 @@ $lists['venues'] = JHTML::_('select.genericlist', $options, 'filter_venue', 'siz
 $filter_date_from = JRequest::getVar('filter_date_from');
 $filter_date_to   = JRequest::getVar('filter_date_to');
 
+$customsfilters = $helper->getCustomFilters(); 
+
 // DISPLAY
 require(JModuleHelper::getLayoutPath('mod_redevent_search'));

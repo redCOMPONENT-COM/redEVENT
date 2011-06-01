@@ -23,6 +23,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once (JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'route.php');
+require_once (JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'customfields.php');
 
 /**
  * RedEvent Module Search helper
@@ -128,5 +129,25 @@ class modRedEventSearchHelper
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
 		return $res;
+	}
+	
+	function getCustomFilters()
+	{		
+		$query = ' SELECT f.* FROM #__redevent_fields AS f '
+           . ' WHERE f.published = 1 '
+           . '   AND f.searchable = 1 '
+//           . '   AND f.object_key = '. $this->_db->Quote("redevent.event")
+           . ' ORDER BY f.ordering ASC '
+           ;
+    $this->_db->setQuery($query);
+    $rows = $this->_db->loadObjectList();
+    
+    $filters = array();
+    foreach ($rows as $r) {
+    	$field = redEVENTcustomHelper::getCustomField($r->type);
+    	$field->bind($r);
+    	$filters[] = $field;
+    }
+    return $filters;
 	}
 }

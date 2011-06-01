@@ -32,14 +32,14 @@ defined('JPATH_BASE') or die();
 * @since 2.0
 */
 
-require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'textbox.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'textarea.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'date.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'radio.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'checkbox.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'select.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'selectmultiple.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'wysiwyg.php');
+require_once ('customfield'.DS.'textbox.php');
+require_once ('customfield'.DS.'textarea.php');
+require_once ('customfield'.DS.'date.php');
+require_once ('customfield'.DS.'radio.php');
+require_once ('customfield'.DS.'checkbox.php');
+require_once ('customfield'.DS.'select.php');
+require_once ('customfield'.DS.'selectmultiple.php');
+require_once ('customfield'.DS.'wysiwyg.php');
 
 class TCustomfield extends JObject {
 	/**
