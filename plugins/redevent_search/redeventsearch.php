@@ -74,10 +74,9 @@ function plgSearchRedeventSearch( $text, $phrase='', $ordering='', $areas=null )
 	
 	$search = $db->Quote(JText::_( 'EVENTS' ));
 
-	if (!$areas || in_array('redeventevents', $areas))
+	if (!$areas || in_aarray('redeventevents', $areas))
 	{
 		$where = array();
-		$where[] = 'x.published = 1';
 		switch ($phrase) {
 
 			//search exact
@@ -102,7 +101,10 @@ function plgSearchRedeventSearch( $text, $phrase='', $ordering='', $areas=null )
 				$where[] = '(' . implode( ($phrase == 'all' ? ') AND (' : ') OR ('), $wheres ) . ')';
 				break;
 		}
-
+		if ($customs = _buildCustomFieldsQuery($text, $phrase)) {
+			$where[] = $customs;
+		}
+		
 		//ordering of the results
 		switch ( $ordering ) {
 
@@ -128,14 +130,15 @@ function plgSearchRedeventSearch( $text, $phrase='', $ordering='', $areas=null )
 		}
 
 		//the database query; 
-		$query = 'SELECT title, x.id AS xref, '
+		$query = 'SELECT e.title, x.id AS xref, '
 		. ' CONCAT_WS( " / ", '. $search .', '.$db->Quote(JText::_( 'EVENTS' )).' ) AS section,'
     . ' CASE WHEN CHAR_LENGTH( e.alias ) THEN CONCAT_WS( \':\', x.id, e.alias ) ELSE x.id END AS slug, '
     . ' NULL AS created, '
 		. ' "2" AS browsernav'
 		. ' FROM #__redevent_events AS e'
     . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
-		. ' WHERE ( '. implode(' AND ', $where) .' )'
+		. ' WHERE ( '. implode(' OR ', $where) .' )'
+		. '   AND x.published = 1 '
 		. ' ORDER BY '. $order
 		;
 
@@ -227,8 +230,8 @@ function plgSearchRedeventSearch( $text, $phrase='', $ordering='', $areas=null )
   if (!$areas || in_array('redeventvenues', $areas))
   {
     $where = array();
-    switch ($phrase) {
-
+    switch ($phrase) 
+    {
       //search exact
       case 'exact':
         $string          = $db->Quote( '%'.$db->getEscaped( $text, true ).'%', false );
@@ -300,4 +303,62 @@ function plgSearchRedeventSearch( $text, $phrase='', $ordering='', $areas=null )
 	return $rows;
 }
 
+/**
+ * build the query parts for custom fields
+ * 
+ * @param string $text to search
+ * @param string $phrase type of search
+ */
+function _buildCustomFieldsQuery($text, $phrase)
+{
+	$db = &JFactory::getDBO();
+	// get the fields
+	$query = ' SELECT f.id, f.object_key FROM #__redevent_fields AS f '
+           . ' WHERE f.published = 1 '
+           . '   AND f.searchable = 1 '
+           . ' ORDER BY f.ordering ASC '
+           ;
+	$db->setQuery($query);
+	$rows = $db->loadObjectList();
+	
+	$where = array();
+	foreach ($rows as $field)
+	{
+		if ($field->object_key == 'redevent.event') {
+			$fieldname = 'e.custom'.$field->id;
+		}
+		else if ($field->object_key == 'redevent.xref') {
+			$fieldname = 'x.custom'.$field->id;
+		}
+		else {
+			continue;
+		}
+		
+    switch ($phrase) 
+    {
+      //search exact
+      case 'exact':
+        $string  = $db->Quote( '%'.$db->getEscaped( $text, true ).'%', false );
+        $where[] = 'LOWER('.$fieldname.') LIKE '.$string;
+        break;
+
+        //search all or any
+      case 'all':
+      case 'any':
+
+        //set default
+      default:
+        $words         = explode( ' ', $text );
+        $wheres = array();
+        foreach ($words as $word)
+        {
+          $word          = $db->Quote( '%'.$db->getEscaped( $word, true ).'%', false );
+          $wheres[]   = 'LOWER('.$fieldname.') LIKE '.$word;
+        }
+        $where[] = '(' . implode( ($phrase == 'all' ? ') AND (' : ') OR ('), $wheres ) . ')';
+        break;
+    }
+	}
+	return count($where) ? implode(" OR ", $where) : false;	
+}
 ?>
