@@ -50,7 +50,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<div class="el_fleft">
 			<?php
 			echo '<label for="filter_type">'.JText::_('FILTER').'</label>&nbsp;';
-			echo $this->lists['filter_types'].'&nbsp;';
+			echo $this->lists['filter_type'].'&nbsp;';
 			?>
 			<input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" title="<?php echo JText::_('EVENTS_FILTER_HINT'); ?>"/>
 			<button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_( 'GO' ); ?></button>
@@ -128,8 +128,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<tr align="center"><td><?php echo JText::_( 'NO EVENTS' ); ?></td></tr>
 		<?php
 	else :
-
-	$this->rows =& $this->getRows();
 
 	$k = 0;
 	foreach ($this->rows as $row) :
