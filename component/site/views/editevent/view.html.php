@@ -154,6 +154,10 @@ class RedeventViewEditevent extends JView
 			$selected[] = $cat->id;
 		}
 		$catoptions = $this->get('CategoryOptions');
+		if (!$catoptions) {
+			echo JText::_('COM_REDEVENT_EDITEVENT_FORBIDDEN_NO_CATEGORY_AVAILABLE');
+			return;
+		}
 		$lists['categories'] = JHTML::_('select.genericlist', $catoptions, 'categories[]', 'class="inputbox required validate-categories" multiple="multiple" size="10"', 'value', 'text', $selected);
 
 				
