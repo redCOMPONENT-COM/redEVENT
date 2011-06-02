@@ -133,6 +133,9 @@ $tables = array( '#__redevent_events',
                  '#__redevent_groups',
                  '#__redevent_repeats',
                  '#__redevent_pricegroups',
+                 '#__redevent_groups_venues',
+                 '#__redevent_groups_categories',
+                 '#__redevent_groups_venues_categories',
                );
 $tables = $db->getTableFields($tables, false);
 
@@ -906,6 +909,18 @@ if (is_array($cols))
     $db->setQuery($q);
     $db->query();    
   }
+  
+  if (empty($cols['group_id']->Key)) {
+    $q = "ALTER TABLE `#__redevent_groupmembers` ADD INDEX (`group_id`)";
+    $db->setQuery($q);
+    $db->query();  	
+  }
+  
+  if (empty($cols['member']->Key)) {
+    $q = "ALTER TABLE `#__redevent_groupmembers` ADD INDEX (`member`)";
+    $db->setQuery($q);
+    $db->query();  	
+  }
 }
 
 /* Get the group members fields columns */
@@ -1005,6 +1020,57 @@ if (!array_key_exists('adminonly', $cols)) {
 	$db->query();
 }
   
+/** 
+ * groups venues table
+ */
+$cols = $tables['#__redevent_groups_venues'];
+  
+if (empty($cols['group_id']->Key)) {
+	$q = "ALTER TABLE `#__redevent_groups_venues` ADD INDEX (`group_id`)";
+	$db->setQuery($q);
+	$db->query();
+}
+
+if (empty($cols['venue_id']->Key)) {
+	$q = "ALTER TABLE `#__redevent_groups_venues` ADD INDEX (`venue_id`)";
+	$db->setQuery($q);
+	$db->query();
+}
+  
+/** 
+ * groups venues table
+ */
+$cols = $tables['#__redevent_groups_venues_categories'];
+  
+if (empty($cols['group_id']->Key)) {
+	$q = "ALTER TABLE `#__redevent_groups_venues_categories` ADD INDEX (`group_id`)";
+	$db->setQuery($q);
+	$db->query();
+}
+
+if (empty($cols['category_id']->Key)) {
+	$q = "ALTER TABLE `#__redevent_groups_venues_categories` ADD INDEX (`category_id`)";
+	$db->setQuery($q);
+	$db->query();
+}
+  
+/** 
+ * groups venues table
+ */
+$cols = $tables['#__redevent_groups_categories'];
+  
+if (empty($cols['group_id']->Key)) {
+	$q = "ALTER TABLE `#__redevent_groups_categories` ADD INDEX (`group_id`)";
+	$db->setQuery($q);
+	$db->query();
+}
+
+if (empty($cols['category_id']->Key)) {
+	$q = "ALTER TABLE `#__redevent_groups_categories` ADD INDEX (`category_id`)";
+	$db->setQuery($q);
+	$db->query();
+}
+ 
 /* Add the basic configuration entry */
 $q = "INSERT IGNORE INTO `#__redevent_settings` SET "
    . " id = 1, "
@@ -1118,66 +1184,82 @@ if ($db->loadObject())
 {
 	// table exists, let's migrate all custom fields into corresponding tables
 	
-	// first event table
-	$query = ' SELECT f.id ' 
-	       . ' FROM #__redevent_fields AS f ' 
-	       . ' WHERE object_key = ' . $db->Quote('redevent.event');
+	// still, make sure the _bak table doesn't already exists, there could have been an unfortunate db restore...
+	$query = ' show tables like '.$db->Quote('%redevent_fields_values_bak');
 	$db->setQuery($query);
-	$res = $db->loadResultArray();
-	foreach ($res as $field_id)
+	if (!$db->loadObject())
 	{
-		// create the field
-		$query = ' ALTER TABLE `#__redevent_events` ADD `custom'.$field_id.'` TEXT ';
+		// first event table
+		$query = ' SELECT f.id ' 
+		       . ' FROM #__redevent_fields AS f ' 
+		       . ' WHERE object_key = ' . $db->Quote('redevent.event');
 		$db->setQuery($query);
-		if ($db->query())
+		$res = $db->loadResultArray();
+		
+		$cols = $tables['#__redevent_events'];
+		foreach ($res as $field_id)
 		{
-			// update the values in event table
-			$query = ' UPDATE #__redevent_events AS e '
-			       . ' INNER JOIN #__redevent_fields_values AS v ON v.object_id = e.id '
-			       . ' SET e.custom'.$field_id.' = v.value '
-			       . ' WHERE v.field_id = '.$field_id
-			       ;
+			if (array_key_exists('custom'.$field_id, $cols)) {
+				continue;
+			}
+			// create the field
+			$query = ' ALTER TABLE `#__redevent_events` ADD `custom'.$field_id.'` TEXT ';
 			$db->setQuery($query);
-			if (!$db->query()) {
-				JError::raiseWarning(0, JText::_('COM_REDEVENT_INSTALL_ERROR_COPY_CUSTOM_TO_EVENT_TABLE'.' '.$field_id));
+			if ($db->query())
+			{
+				// update the values in event table
+				$query = ' UPDATE #__redevent_events AS e '
+				       . ' INNER JOIN #__redevent_fields_values AS v ON v.object_id = e.id '
+				       . ' SET e.custom'.$field_id.' = v.value '
+				       . ' WHERE v.field_id = '.$field_id
+				       ;
+				$db->setQuery($query);
+				if (!$db->query()) {
+					JError::raiseWarning(0, JText::_('COM_REDEVENT_INSTALL_ERROR_COPY_CUSTOM_TO_EVENT_TABLE'.' '.$field_id));
+				}
+			}
+			else {
+				JError::raiseWarning(0, JText::_('COM_REDEVENT_INSTALL_ERROR_ADD_CUSTOM_TO_EVENT_TABLE'.' '.$field_id));
 			}
 		}
-		else {
-			JError::raiseWarning(0, JText::_('COM_REDEVENT_INSTALL_ERROR_ADD_CUSTOM_TO_EVENT_TABLE'.' '.$field_id));
-		}
-	}
-	
-	// then xref table
-	$query = ' SELECT f.id ' 
-	       . ' FROM #__redevent_fields AS f ' 
-	       . ' WHERE object_key = ' . $db->Quote('redevent.xref');
-	$db->setQuery($query);
-	$res = $db->loadResultArray();
-	foreach ($res as $field_id)
-	{
-		// create the field
-		$query = ' ALTER TABLE `#__redevent_event_venue_xref` ADD `custom'.$field_id.'` TEXT ';
+		
+		// then xref table
+		$query = ' SELECT f.id ' 
+		       . ' FROM #__redevent_fields AS f ' 
+		       . ' WHERE object_key = ' . $db->Quote('redevent.xref');
 		$db->setQuery($query);
-		if ($db->query())
+		$res = $db->loadResultArray();
+		
+		$cols = $tables['#__redevent_event_venue_xref'];
+		foreach ($res as $field_id)
 		{
-			// update the values in event table
-			$query = ' UPDATE #__redevent_event_venue_xref AS e '
-			       . ' INNER JOIN #__redevent_fields_values AS v ON v.object_id = e.id '
-			       . ' SET e.custom'.$field_id.' = v.value '
-			       . ' WHERE v.field_id = '.$field_id
-			       ;
-			$db->setQuery($query);
-			if (!$db->query()) {
-				JError::raiseWarning(0, JText::_('COM_REDEVENT_INSTALL_ERROR_COPY_CUSTOM_TO_XREF_TABLE'.' '.$field_id));
+			if (array_key_exists('custom'.$field_id, $cols)) {
+				continue;
 			}
-		}
-		else {
-			JError::raiseWarning(0, JText::_('COM_REDEVENT_INSTALL_ERROR_ADD_CUSTOM_TO_XREF_TABLE'.' '.$field_id));
+			// create the field
+			$query = ' ALTER TABLE `#__redevent_event_venue_xref` ADD `custom'.$field_id.'` TEXT ';
+			$db->setQuery($query);
+			if ($db->query())
+			{
+				// update the values in event table
+				$query = ' UPDATE #__redevent_event_venue_xref AS e '
+				       . ' INNER JOIN #__redevent_fields_values AS v ON v.object_id = e.id '
+				       . ' SET e.custom'.$field_id.' = v.value '
+				       . ' WHERE v.field_id = '.$field_id
+				       ;
+				$db->setQuery($query);
+				if (!$db->query()) {
+					JError::raiseWarning(0, JText::_('COM_REDEVENT_INSTALL_ERROR_COPY_CUSTOM_TO_XREF_TABLE'.' '.$field_id));
+				}
+			}
+			else {
+				JError::raiseWarning(0, JText::_('COM_REDEVENT_INSTALL_ERROR_ADD_CUSTOM_TO_XREF_TABLE'.' '.$field_id));
+			}
 		}
 	}
 	
 	// done, rename the values table to _bak
-	$query = 'RENAME TABLE `#__redevent_fields_values` TO `#__redevent_fields_values_bak` ;';
+	$query = 'RENAME TABLE `#__redevent_fields_values` TO `#__redevent_fields_values_bak'.time().'` ;';
 	$db->setQuery($query);
 	$db->query();
 }

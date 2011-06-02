@@ -182,7 +182,9 @@ CREATE TABLE IF NOT EXISTS `#__redevent_sessions_pricegroups` (
 `xref` int(11) NOT NULL default '0',
 `pricegroup_id` int(11) NOT NULL default '0',
 `price` float NOT NULL,
-PRIMARY KEY  (`id`)
+PRIMARY KEY  (`id`),
+KEY  (`xref`),
+KEY  (`pricegroup_id`)
 ) ENGINE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_groups` (
