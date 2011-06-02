@@ -220,7 +220,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 		        ;
 
 		//Get Events from Category				
-    $query = 'SELECT a.id, a.datimage, x.venueid, x.dates, x.enddates, x.times, x.title as session_title, '
+    $query = 'SELECT a.id, a.datimage, x.venueid, x.dates, x.enddates, x.times, x.title as session_title, x.featured, '
         . ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
         . ' x.endtimes, x.id AS xref, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.icaldetails, '
         . ' a.title, a.registra, l.venue, l.city, l.state, l.url, c.catname, c.id AS catid, a.summary, x.course_credit, '

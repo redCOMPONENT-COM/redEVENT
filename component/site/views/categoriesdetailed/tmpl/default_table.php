@@ -114,17 +114,17 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 	<tbody>
 		<?php
-		$this->rows = $this->getRows();
 		if (!$this->rows) :
 		?>
 		<tr class="no_events"><td><?php echo JText::_( 'NO EVENTS' ); ?></td></tr>
 		<?php
 		else :
 
+		$k = 0;
 		foreach ($this->rows as $row) :
 			$isover = (redEVENTHelper::isOver($row) ? ' isover' : '');
 			?>
-  			<tr class="sectiontableentry<?php echo ($row->odd +1 ) . $this->params->get( 'pageclass_sfx' ) . ($row->featured ? ' featured' : ''); ?><?php echo $isover; ?>" >
+  			<tr class="sectiontableentry<?php echo ($k + 1) . $this->params->get( 'pageclass_sfx' ) . ($row->featured ? ' featured' : ''); ?><?php echo $isover; ?>" >
     			<td headers="el_date_cat<?php echo $this->categoryid; ?>" align="left">
     					<?php echo ELOutput::formatEventDateTime($row);	?>
 				</td>
@@ -171,16 +171,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				
         if ($this->elsettings->showcat == 1) : ?>
           <td headers="el_category" align="left" valign="top">
-          <?php foreach ($row->categories as $k => $cat): ?>
-            <?php if ($this->elsettings->catlinklist == 1) : ?> 
-              <a href="<?php echo JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($cat->slug)); ?>">
-                <?php echo $cat->catname ? $this->escape($cat->catname) : '-' ; ?>
-              </a>
-            <?php else: ?>
-              <?php echo $cat->catname ? $this->escape($cat->catname) : '-'; ?>
-            <?php endif; ?>
-            <?php echo ($k < count($row->categories)) ? '<br/>' : '' ; ?>
-          <?php endforeach; ?>
+				  <?php $cats = array();
+					      foreach ($row->categories as $cat)
+					      {
+					      	if ($this->elsettings->catlinklist == 1) {
+					      		$cats[] = JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($cat->slug), $cat->catname);
+					      	}
+					      	else {
+					      		$cats[] = $this->escape($cat->catname);
+					      	}
+					      }
+					      echo implode("<br/>", $cats);
+					?>
           </td> 
         <?php endif; 
 
@@ -206,6 +208,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         <!-- custom fields end-->
 			</tr>
   			<?php
+				$k = 1 - $k;
 			endforeach;
 			endif;
 			?>

@@ -127,30 +127,5 @@ class RedeventViewCategoriesdetailed extends JView
 		parent::display($tpl);
 
 	}//function end
-
-	/**
-	 * Manipulate Data
-	 *
-	 * @since 0.9
-	 */
-	function getRows()
-	{
-		$count = count($this->rows);
-
-		if (!$count) {
-			return;
-		}
-		
-		$k = 0;
-		foreach($this->rows as $key => $row)
-		{
-			$row->odd   = $k;
-			
-			$this->rows[$key] = $row;
-			$k = 1 - $k;
-		}
-
-		return $this->rows;
-	}
 }
 ?>

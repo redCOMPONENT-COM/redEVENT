@@ -112,10 +112,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<tr align="center"><td><?php echo JText::_( 'NO EVENTS' ); ?></td></tr>
 		<?php
 	else :
-
+	$k = 0;
 	foreach ($this->rows as $row) :
 		?>
-  			<tr class="sectiontableentry<?php echo ($row->odd +1 ) . $this->params->get( 'pageclass_sfx' ). ($row->featured ? ' featured' : ''); ?>" >
+  			<tr class="sectiontableentry<?php echo ($k +1 ) . $this->params->get( 'pageclass_sfx' ). ($row->featured ? ' featured' : ''); ?>" >
 
     			<td headers="el_date" align="left">
     					<?php echo ELOutput::formatEventDateTime($row);	?>
@@ -174,16 +174,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 				if ($this->elsettings->showcat == 1) : ?>
 				  <td headers="el_category" align="left" valign="top">
-					<?php	foreach ($row->categories as $k => $cat): ?>
-					  <?php	if ($this->elsettings->catlinklist == 1) : ?>	
-							<a href="<?php echo JRoute::_('index.php?option=com_redevent&view=categoryevents&id='.$cat->slug); ?>">
-								<?php echo $cat->catname ? $this->escape($cat->catname) : '-' ; ?>
-							</a>
-						<?php else: ?>
-              <?php echo $cat->catname ? $this->escape($cat->catname) : '-'; ?>
-						<?php endif; ?>
-						<?php echo ($k < count($row->categories)) ? '<br/>' : '' ; ?>
-				  <?php endforeach; ?>
+				  <?php $cats = array();
+					      foreach ($row->categories as $cat)
+					      {
+					      	if ($this->elsettings->catlinklist == 1) {
+					      		$cats[] = JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($cat->slug), $cat->catname);
+					      	}
+					      	else {
+					      		$cats[] = $this->escape($cat->catname);
+					      	}
+					      }
+					      echo implode("<br/>", $cats);
+					?>
 					</td>	
 				<?php endif; ?>				
 				
@@ -207,6 +209,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			</tr>
 
   		<?php
+			$k = 1 - $k;
 		endforeach;
 		endif;
 		?>
