@@ -168,13 +168,15 @@ class RedeventModelPricegroup extends JModel
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_data))
 		{
-			$object = new stdClass();
-			$object->id          = 0;
-			$object->name        = null;
-			$object->alias       = null;
-			$object->checked_out = 0;
-			$object->checked_out_time	= 0;
-			$object->ordering    = 0;
+			$object = JTable::getInstance('Redevent_pricegroups', '');
+//			echo '<pre>';print_r($object); echo '</pre>';exit;
+//			$object = new stdClass();
+//			$object->id          = 0;
+//			$object->name        = null;
+//			$object->alias       = null;
+//			$object->checked_out = 0;
+//			$object->checked_out_time	= 0;
+//			$object->ordering    = 0;
 			$this->_data         =  $object;
 			return (boolean) $this->_data;
 		}
