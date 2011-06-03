@@ -327,16 +327,27 @@ class RedEventModelArchive extends JModel
 	/**
 	 * Retrieve a list of events, venues and times
 	 */
-	public function getArchiveEventVenues() {
-		$db = JFactory::getDBO();
-		$q = "SELECT x.*, v.venue, v.city
-			FROM #__redevent_event_venue_xref x
-			LEFT JOIN #__redevent_venues v
-			ON x.venueid = v.id
-			WHERE x.published = -1
-			ORDER BY v.venue, x.dates";
-		$db->setQuery($q);
-		$datetimes = $db->loadObjectList();
+	public function getArchiveEventVenues() 
+	{
+	  $events_id = array();
+	  foreach ((array) $this->getData() as $e) {
+	    $events_id[] = $e->id;
+	  }
+	  if (empty($events_id)) {
+	    return false;
+	  }
+	  
+		$q = ' SELECT count(r.id) AS regcount, x.*, v.venue, v.city '
+		   . ' FROM #__redevent_event_venue_xref AS x '
+       . ' LEFT JOIN #__redevent_venues AS v ON x.venueid = v.id '
+       . ' LEFT JOIN #__redevent_register AS r ON r.xref = x.id'
+       . ' WHERE x.published = -1 '
+       . '   AND x.eventid IN ('. implode(', ', $events_id) .')'
+       . ' GROUP BY x.id '
+       . ' ORDER BY x.dates, v.venue '
+       ;
+		$this->_db->setQuery($q);
+		$datetimes = $this->_db->loadObjectList();
 		$ardatetimes = array();
 		foreach ($datetimes as $key => $datetime) {
 			$ardatetimes[$datetime->eventid][] = $datetime;

@@ -75,7 +75,15 @@ defined('_JEXEC') or die('Restricted access');
 					<td><div id="timedetails">
 					<?php if (isset($this->eventvenues[$row->id])) { ?>
 						<table class="adminlist">
-						<thead><tr><th><?php echo JText::_('VENUE'); ?></th><th><?php echo JText::_('CITY'); ?></th><th><?php echo JText::_('DATE'); ?></th><th><?php echo JText::_('TIME'); ?></th></tr></thead>
+						<thead>
+							<tr>
+								<th><?php echo JText::_('VENUE'); ?></th>
+								<th><?php echo JText::_('CITY'); ?></th>
+								<th><?php echo JText::_('DATE'); ?></th>
+								<th><?php echo JText::_('TIME'); ?></th>
+             		<th><?php echo JText::_('ATTENDEES'); ?></th>
+							</tr>
+						</thead>
 						<tbody>
 						<?php
 							foreach ($this->eventvenues[$row->id] as $key => $eventdetails) {
@@ -94,7 +102,23 @@ defined('_JEXEC') or die('Restricted access');
 								$time = strftime( $this->elsettings->formattime, strtotime( $eventdetails->times ));
 								$endtimes = strftime( $this->elsettings->formattime, strtotime( $eventdetails->endtimes ));
 								$displaytime = $time.' '.$this->elsettings->timename.' - '.$endtimes. ' '.$this->elsettings->timename;
-								echo '<tr class="eventdatetime"><td>'.$eventdetails->venue.'</td><td>'.$eventdetails->city.'</td><td>'.$displaydate.'</td><td>'.$displaytime.'</td></tr>';
+								?>
+								<tr class="eventdatetime">
+									<td><?php echo $eventdetails->venue; ?></td>
+									<td><?php echo $eventdetails->city; ?></td>
+									<td><?php echo $displaydate; ?></td>
+									<td><?php echo $displaytime; ?></td>
+	    						<td>
+	    						  <?php	if ($row->registra == 1):
+	      						  $linkreg  = 'index.php?option=com_redevent&amp;view=attendees&eventid='.$row->id.'&xref='.$eventdetails->id;
+	      						  ?>
+	      						  <a href="<?php echo $linkreg; ?>" title="Edit Users"><?php echo $eventdetails->regcount; ?></a>
+	      						<?php else: ?> 
+	      						  -
+	      						<?php endif; ?>
+	    						</td>
+								</tr>
+								<?php 
 							}
 							?>
 						</tbody>

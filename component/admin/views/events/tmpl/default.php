@@ -182,7 +182,7 @@ $app = &JFactory::getApplication();
       						  ?>
       						  <a href="<?php echo $linkreg; ?>" title="Edit Users"><?php echo $eventdetails->regcount; ?></a>
       						<?php else: ?> 
-      						  <img src="images/publish_x.png" width="16" height="16" border="0" alt="Registration disabled" />
+      						  -
       						<?php endif; ?>
     						</td>
     					</tr>
