@@ -136,6 +136,7 @@ $tables = array( '#__redevent_events',
                  '#__redevent_groups_venues',
                  '#__redevent_groups_categories',
                  '#__redevent_groups_venues_categories',
+                 '#__redevent_textlibrary',
                );
 $tables = $db->getTableFields($tables, false);
 
@@ -1070,7 +1071,20 @@ if (empty($cols['category_id']->Key)) {
 	$db->setQuery($q);
 	$db->query();
 }
- 
+
+  
+/** 
+ * text library table
+ */
+$cols = $tables['#__redevent_textlibrary'];
+  
+if (strstr($cols['id']->Type, 'tiny')) {	
+	/* change to int(11) */
+	$q = "ALTER TABLE `#__redevent_textlibrary` CHANGE `id` `id` INT( 11 ) NOT NULL AUTO_INCREMENT";
+	$db->setQuery($q);
+	$db->query();
+}
+
 /* Add the basic configuration entry */
 $q = "INSERT IGNORE INTO `#__redevent_settings` SET "
    . " id = 1, "

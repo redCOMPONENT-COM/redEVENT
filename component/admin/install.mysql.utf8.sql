@@ -371,14 +371,13 @@ CREATE TABLE IF NOT EXISTS `#__redevent_event_category_xref` (
 ) COMMENT='Event Category Cross reference' CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_textlibrary` (
-  `id` tinyint(4) NOT NULL auto_increment,
+  `id` int(11) unsigned NOT NULL auto_increment,
   `text_name` varchar(255) default NULL,
   `text_description` varchar(255) default NULL,
   `text_field` text,
   `checked_out` int(11) NOT NULL default '0',
   `checked_out_time` datetime default '0000-00-00 00:00:00',
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `id` (`id`),
   UNIQUE KEY `text_name` (`text_name`)
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
