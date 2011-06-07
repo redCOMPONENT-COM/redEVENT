@@ -1156,16 +1156,16 @@ class redEVENT_tags {
 		return redEVENTHelper::getEventDuration($this->getEvent()->getData());
 	}
 	
-	function _getTag_eventimage()
+	function _getTag_event_image()
 	{
 		$eventimage = redEVENTImage::flyercreator($this->getEvent()->getData()->datimage, 'event');
 		$eventimage = JHTML::image(JURI::root().'/'.$eventimage['original'], $this->getEvent()->getData()->title, array('title' => $this->getEvent()->getData()->title));
 		return $eventimage;
 	}
 	
-	function _getTag_event_image()
+	function _getTag_eventimage()
 	{
-		return _getTag_eventimage();
+		return $this->_getTag_event_image();
 	}
 	
 	function _getTag_event_thumb()
@@ -1187,7 +1187,7 @@ class redEVENT_tags {
 	
 	function _getTag_categoryimage()
 	{
-		return _getTag_category_image;
+		return $this->_getTag_category_image;
 	}
 	
 	function _getTag_category_thumb()
