@@ -28,10 +28,7 @@
 			<label><?php echo JText::_('WEBFORM_PRINT_FORMAL_OFFER'); ?></label><br/>
 			<?php echo JText::_('SHOW SUBMIT AND PRINT BUTTON') . ': ' . JHTML::_('select.booleanlist', 'show_submission_type_webform_formal_offer', '', $this->row->show_submission_type_webform_formal_offer); ?>
 			<div id="submission_type_webform_input" style="display: block">
-				<?php echo JHTML::_('link', '#', JText::_('TAGS'), "onClick='jQuery(\"div#webform_formal_offer_tags\").toggle(\"slideUp\"); return false;'"); ?>
-				<div id="webform_formal_offer_tags" style="display: none;">
-					<?php echo $this->printTags('submission_type_webform_formal_offer'); ?>
-				</div>
+        <?php echo $this->printTags('submission_type_webform_input'); ?>
 				<?php echo $this->editor->display( 'submission_type_webform_formal_offer',  $this->row->submission_type_webform_formal_offer, '100%;', '350', '75', '20', array('pagebreak', 'readmore', 'image') ) ; ?>
 			</div>
 		</td>
