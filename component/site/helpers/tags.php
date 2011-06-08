@@ -207,9 +207,8 @@ class redEVENT_tags {
 		$this->_submitkey = $this->_submitkey ? $this->_submitkey : JRequest::getVar('submit_key');
 
 		$text = $this->_replace($text);
-			
 		/* Include redFORM */
-		if (strstr('[redform]', $text) && $this->getEvent()->getData()->redform_id > 0)
+		if (strstr($text, '[redform]') && $this->getEvent()->getData()->redform_id > 0)
 		{
 			$status = redEVENTHelper::canRegister($this->_xref);
 			if ($status->canregister)
