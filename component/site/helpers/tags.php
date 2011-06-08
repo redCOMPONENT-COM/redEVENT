@@ -196,7 +196,8 @@ class redEVENT_tags {
 	public function ReplaceTags($text, $options = null) 
 	{
 		$mainframe = &JFactory::getApplication();
-		$base_url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+		$base_url  = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+		$rfcore    = $this->_getRFCore();
 		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
 		if ($options) {
 			$this->_addOptions($options);
@@ -205,64 +206,10 @@ class redEVENT_tags {
 		$elsettings = redEVENTHelper::config();
 		$this->_submitkey = $this->_submitkey ? $this->_submitkey : JRequest::getVar('submit_key');
 
-				/* Load the signup links */
-//				$venues_html = $this->SignUpLinks();
-				
-		// first, let's do the library tags replacement
-		$text = $this->_replaceLibraryTags($text);
-
-		// now get the list of all remaining tags
-		preg_match_all("/\[(.+?)\]/", $text, $alltags);
-
-		$rfcore = $this->_getRFCore();
-				
-		$search = array();
-		$replace = array();
-		// now, lets get the tags replacements
-		foreach ($alltags[1] as $tag)
-		{
-			$func = '_getTag_'.strtolower($tag);
-			if (method_exists($this, $func))
-			{
-				$search[] = '['.$tag.']';
-				$replace[] = $this->$func();
-				continue;
-			}
-		}
-		// do the replace
-		$message = str_replace($search, $replace, $text);
-
-		// then the custom tags
-		$search = array();
-		$replace = array();
-
-		/* Load custom fields */
-		$customfields = $this->getCustomFields();
-		foreach ($customfields as $tag => $data)
-		{
-			$search[] = '['.$data->text_name.']';
-			$replace[] = $data->text_field;
-		}
-		$message = str_ireplace($search, $replace, $message);
-
-		/* Load redform fields */
-		$redformfields = $this->_getFieldsTags();
-		if ($redformfields && count($redformfields))
-		{
-			foreach ($alltags[1] as $tag)
-			{
-				if (stripos($tag, 'answer_') === 0)
-				{
-					$search[] = '['.$tag.']';
-					$replace[] = $this->_getFieldAnswer(substr($tag, 7));
-				}
-			}
-			$message = str_ireplace($search, $replace, $message);
-		}
-
-
+		$text = $this->_replace($text);
+			
 		/* Include redFORM */
-		if (in_array('[redform]', $alltags[0]) && $this->getEvent()->getData()->redform_id > 0)
+		if (strstr('[redform]', $text) && $this->getEvent()->getData()->redform_id > 0)
 		{
 			$status = redEVENTHelper::canRegister($this->_xref);
 			if ($status->canregister)
@@ -275,10 +222,110 @@ class redEVENT_tags {
 
 			/* second replacement, add the form */
 			/* if done in first one, username in the form javascript is replaced too... */
-			$message = str_replace('[redform]', $redform, $message);
+			$text = str_replace('[redform]', $redform, $text);
 		}
 
-		return $message;
+		return $text;
+	}
+	
+	/**
+	 * recursively replace tags
+	 * 
+	 * @param string $text
+	 * @return $text
+	 */
+	function _replace($text)
+	{
+		$replaced = false; // check if tags where replaced, in which case we sshould run it again
+			
+		// first, let's do the library tags replacement
+		$text = $this->_replaceLibraryTags($text);
+
+		// now get the list of all remaining tags
+		preg_match_all("/\[(.+?)\]/", $text, $alltags);
+				
+		$search = array();
+		$replace = array();
+		// now, lets get the tags replacements
+		foreach ($alltags[1] as $tag)
+		{
+			if ($this->_submitkey && strpos($tag, 'attending_') === 0) // replace with rest of tag if attending
+			{
+				$search[] = '['.$tag.']';
+				if ($this->_hasAttending()) {
+					$replace[] = '['.substr($tag, 10).']';
+					$replaced = true;
+				}
+				else {
+					$replace[] = '';
+				}
+			}
+			else if ($this->_submitkey && strpos($tag, 'waiting_') === 0) // replace with rest of tag if not attending
+			{
+				$search[] = '['.$tag.']';
+				if ($this->_hasAttending()) {
+					$replace[] = '';
+				}
+				else {
+					$replace[] = '['.substr($tag, 8).']';
+					$replaced = true;
+				}
+			}
+			else 
+			{
+				$func = '_getTag_'.strtolower($tag);
+				if (method_exists($this, $func))
+				{
+					$search[] = '['.$tag.']';
+					$replace[] = $this->$func();
+					$replaced = true;
+				}
+			}
+		}
+		// do the replace
+		$text = str_replace($search, $replace, $text);
+
+		// then the custom tags
+		$search = array();
+		$replace = array();
+
+		/* Load custom fields */
+		$customfields = $this->getCustomFields();
+		foreach ($customfields as $tag => $data)
+		{
+			$search[] = '['.$data->text_name.']';
+			$replace[] = $data->text_field;
+		}
+		$text = str_ireplace($search, $replace, $text, $count);
+
+		if ($count) {
+			$replaced = true;			
+		}
+		
+		/* Load redform fields */
+		$redformfields = $this->_getFieldsTags();
+		if ($redformfields && count($redformfields))
+		{
+			foreach ($alltags[1] as $tag)
+			{
+				if (stripos($tag, 'answer_') === 0)
+				{
+					$search[] = '['.$tag.']';
+					$replace[] = $this->_getFieldAnswer(substr($tag, 7));
+				}
+			}
+			$text = str_ireplace($search, $replace, $text, $count);
+		}
+
+		if ($count) {
+			$replaced = true;			
+		}
+		
+		if ($replaced) {
+			$text = $this->_replace($text);
+		}
+
+		return $text;
 	}
 	
 	/**
@@ -1053,6 +1100,36 @@ class redEVENT_tags {
 		return implode(' / ', $res);
 	}
 	
+	/**
+	 * returns true if at least one attendee associated to current submit_key is attending
+	 * 
+	 * @return boolean
+	 */
+	private function _hasAttending()
+	{
+		$db = &JFactory::getDBO();
+		// get how many registrations are associated to submit key, and how manyn on waiting list
+		$query = ' SELECT COUNT(*) as total, SUM(r.waitinglist) as waiting '
+		       . ' FROM #__redevent_register AS r ' 
+		       . ' WHERE r.submit_key = '. $db->Quote($this->_submitkey)
+		       . ' GROUP BY r.submit_key '
+		       ;
+		$db->setQuery($query);
+		$res = $db->loadObject();
+				
+		if (!$res || !$res->total) {
+			// no attendee at all for submit key... no display...
+			return false;
+		}
+		
+		if ($res->total != $res->waiting) {
+			// not all registrations are on wl
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 	/*************************************************************************
 	 * tags functions
 	 * 
