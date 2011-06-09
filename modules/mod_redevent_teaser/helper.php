@@ -64,7 +64,7 @@ class modRedeventTeaserHelper
 		
 		//currently running events only
 		if ($params->get( 'type', 1 ) == 3) {
-			$where[]  = ' WHERE x.published = 1';			
+			$where[]  = ' x.published = 1 ';			
 			$where[]  = ' ( x.dates = CURDATE() OR ( x.enddates >= CURDATE() AND x.dates <= CURDATE() ))';
 			$order  = ' ORDER BY x.dates, x.times';
 		}
