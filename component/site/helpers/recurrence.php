@@ -537,11 +537,16 @@ class RedeventHelperRecurrence
       return false;
     }
     
+    $delta = $next_start - strtotime($last_xref->dates);
+    if (!$delta) { // no delta, so same session...
+    	return false;
+    }
+
     // return the new occurence
     $new = clone $last_xref;
     
     unset($new->id);
-    $delta = $next_start - strtotime($last_xref->dates);
+    
     $new->dates = strftime('%Y-%m-%d', $next_start);
     if (strtotime($last_xref->enddates)) {
       $new->enddates = strftime('%Y-%m-%d', strtotime($last_xref->enddates) + $delta);
