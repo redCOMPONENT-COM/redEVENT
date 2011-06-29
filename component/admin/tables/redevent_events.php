@@ -153,7 +153,7 @@ class RedEvent_events extends JTable
 	}
 
 	// overloaded check function
-	function check($elsettings)
+	function check($elsettings = null)
 	{
 		$app = &JFactory::getApplication();
 		// Check fields
@@ -280,6 +280,36 @@ class RedEvent_events extends JTable
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadResultArray();
 		return $res;
+	}
+	
+	/**
+	 * Sets categories of event
+	 * Enter description here ...
+	 * @param unknown_type $catids
+	 */
+	function setCats($catids = array())
+	{		
+		if (!$this->id) {
+			$this->setError('COM_REDEVENT_EVENT_TABLE_NOT_INITIALIZED');
+			return false;
+		}
+		// update the event category xref
+		// first, delete current rows for this event
+    $query = ' DELETE FROM #__redevent_event_category_xref WHERE event_id = ' . $this->_db->Quote($this->id);
+    $this->_db->setQuery($query);
+    if (!$this->_db->query()) {
+      $this->setError($this->_db->getErrorMsg());
+      return false;    	
+    }
+		// insert new ref
+		foreach ((array) $catids as $cat_id) {
+		  $query = ' INSERT INTO #__redevent_event_category_xref (event_id, category_id) VALUES (' . $this->_db->Quote($this->id) . ', '. $this->_db->Quote($cat_id) . ')';
+		  $this->_db->setQuery($query);
+	    if (!$this->_db->query()) {
+	      $this->setError($this->_db->getErrorMsg());
+	      return false;     
+	    }		  
+		}  
 	}
 }
 ?>

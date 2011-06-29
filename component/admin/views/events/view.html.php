@@ -37,6 +37,10 @@ class RedEventViewEvents extends JView {
 	function display($tpl = null)
 	{
 		global $mainframe, $option;
+		
+		if ($this->getLayout() == 'export') {
+			return $this->_displayExport($tpl);
+		}
 
 		//initialise variables
 		$user 		= & JFactory::getUser();
@@ -78,6 +82,7 @@ class RedEventViewEvents extends JView {
 		JToolBarHelper::deleteList(JText::_( 'COM_REDEVENT_EVENTS_REMOVE_CONFIRM_MESSAGE'));
 		JToolBarHelper::spacer();
 		JToolBarHelper::custom( 'copy', 'copy.png', 'copy_f2.png', 'Copy' );
+		JToolBarHelper::custom('export', 'exportevents', 'exportevents', JText::_('COM_REDEVENT_BUTTON_EXPORT_EVENTS'), false);
 		JToolBarHelper::spacer();
 		JToolBarHelper::help( 'el.listevents', true );
 
@@ -116,6 +121,37 @@ class RedEventViewEvents extends JView {
 		$this->assignRef('elsettings'	, $elsettings);
 		$this->assignRef('eventvenues'	, $eventvenues);
 
+		parent::display($tpl);
+	}
+		
+	function _displayExport($tpl = null)
+	{
+		$document	= & JFactory::getDocument();
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EVENTS_EXPORT'));
+		//add css and submenu to document
+		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+
+		//Create Submenu
+    ELAdmin::setMenu();
+
+		JHTML::_('behavior.tooltip');
+
+		//create the toolbar
+		JToolBarHelper::title( JText::_( 'COM_REDEVENT_PAGETITLE_EVENTS_EXPORT' ), 'events' );
+		
+		JToolBarHelper::back();
+		JToolBarHelper::custom('doexport', 'exportevents', 'exportevents', JText::_('COM_REDEVENT_BUTTON_EXPORT_EVENTS'), false);
+		
+		$lists = array();
+		
+		$lists['categories'] = JHTML::_('select.genericlist', $this->get('CategoriesOptions'), 'categories[]'
+		                                        , 'size="15" multiple="multiple"', 'value', 'text');
+		$lists['venues'] = JHTML::_('select.genericlist', $this->get('VenuesOptions'), 'venues[]'
+		                                        , 'size="15" multiple="multiple"', 'value', 'text');
+		
+		//assign data to template
+		$this->assignRef('lists'      	, $lists);
+		
 		parent::display($tpl);
 	}
 }
