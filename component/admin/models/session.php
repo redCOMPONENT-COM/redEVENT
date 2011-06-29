@@ -72,7 +72,14 @@ class RedEventModelSession extends JModel
 	{
 		parent::__construct();
 		
-		$xref = JRequest::getVar('xref', 0, 'request', 'int');  
+		
+    $array = JRequest::getVar('cid', array(), '', 'array');
+    if (count($array)) {
+    	$xref = $array[0];
+    }
+    else {
+			$xref = JRequest::getVar('xref', 0, 'request', 'int');     	
+    }      
 		$this->setId($xref);
 	}
 
@@ -209,7 +216,7 @@ class RedEventModelSession extends JModel
    */
   function getXref()
   {
-  	$xref = JRequest::getVar('xref', 0, 'request', 'int');  	
+  	$xref = $this->_id;  	
   	
   	if ($xref) 
   	{  		

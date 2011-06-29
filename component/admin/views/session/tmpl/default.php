@@ -43,9 +43,16 @@ Window.onDomReady(function() {
         });
 });
 
-function validateForm(f) {
-        if (document.formvalidator.isValid(f)) {
+function submitbutton(pressbutton) {
+
+	var form = document.adminForm;
+	if (pressbutton == 'cancel') {
+		submitform( pressbutton );
+		return;
+	}
+        if (document.formvalidator.isValid(form)) {
                 //f.check.value='<?php echo JUtility::getToken(); ?>';//send token
+						submitform( pressbutton );
                 return true; 
         }
         else {
@@ -60,7 +67,7 @@ function updateend(cal)
 }
 </script>
 
-<form name="formxref" action="index.php" method="post" onSubmit="return validateForm(this);">
+<form name="adminForm" action="index.php" method="post">
 <?php echo $this->pane->startPane("det-pane");
 			echo $this->pane->startPanel( JText::_('Details'), 'tdetails' );
 ?>
@@ -294,5 +301,7 @@ function updateend(cal)
 <input type="hidden" name="recurrenceid" value="<?php echo (isset($this->xref->recurrence_id) ? $this->xref->recurrence_id : ''); ?>"/>
 <input type="hidden" name="repeat" id="repeat" value="<?php echo (isset($this->xref->recurrence_id) ? $this->xref->count : ''); ?>"/>
 
-<input type="submit" name="submitbutton" value="submit"/> 
+<?php if (!$this->standalone): ?>
+<input type="submit" name="submitbutton" value="submit"/>
+<?php endif; ?> 
 </form>

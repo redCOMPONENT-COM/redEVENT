@@ -1,0 +1,355 @@
+<?php
+/**
+ * @version 2.0
+ * @package Joomla
+ * @subpackage redEVENT
+ * @copyright redEVENT (C) 2008,2009,2010,2011 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license GNU/GPL, see LICENSE.php
+ * redEVENT is based on EventList made by Christoph Lukes from schlu.net
+ * redEVENT can be downloaded from www.redcomponent.com
+ * redEVENT is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License 2
+ * as published by the Free Software Foundation.
+
+ * redEVENT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with redEVENT; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die();
+
+jimport('joomla.application.component.model');
+
+/**
+ * Joomla Redevent Component Model
+ *
+ * @package		Redevent
+ * @since 2.0
+ */
+class RedeventModelSessions extends JModel 
+{
+	/**
+	 * event id
+	 * @var int
+	 */
+	var $_eventid = 0;
+   /**
+   * list data array
+   *
+   * @var array
+   */
+  var $_data = null;
+
+  /**
+   * total
+   *
+   * @var integer
+   */
+  var $_total = null;
+
+  /**
+   * Pagination object
+   *
+   * @var object
+   */
+  var $_pagination = null;
+  
+  /**
+   * Constructor
+   *
+   * @since 0.1
+   */
+  function __construct()
+  {
+    parent::__construct();
+    global $mainframe, $option;
+
+    // Get the pagination request variables
+    $limit      = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
+    $limitstart = $mainframe->getUserStateFromRequest( $option.'limitstart', 'limitstart', 0, 'int' );
+
+    $this->setState('limit', $limit);
+    $this->setState('limitstart', $limitstart);
+    
+    // filters and ordering
+    $filter_order     = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.filter_order', 'filter_order', 'obj.dates', 'cmd' );
+    $filter_order_Dir = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
+    $search           = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.search', 'search', '', 'string' );
+
+    $filter_state     = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.filter_state', 'filter_state', 'notarchived', 'cmd' );
+    $filter_featured  = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.filter_featured', 'filter_featured', '', 'cmd' );
+    
+    $this->setState('filter_order',      $filter_order);
+    $this->setState('filter_order_Dir',  $filter_order_Dir);
+    $this->setState('filter_state',      $filter_state);
+    $this->setState('filter_featured',   $filter_featured);
+    $this->setState('search',            strtolower($search));
+    
+    $this->setEventId(JRequest::getInt('eventid'));
+  }
+  
+  function setEventId($id)
+  {
+  	$this->_eventid = (int) $id;
+  	$this->_data = null;
+  }
+  
+  /**
+   * Method to get List data
+   *
+   * @access public
+   * @return array
+   */
+  function getData()
+  {
+    // Lets load the content if it doesn't already exist
+    if (empty($this->_data))
+    {
+      $query = $this->_buildQuery();
+      $pagination = $this->getPagination();
+      $res = $this->_getList($query, $pagination->limitstart, $pagination->limit);
+      
+      if (!$res) {
+   	  	echo $this->_db->getErrorMsg();
+   	  	return false;
+  		}
+  		
+  		$this->_data = $res;
+  		$this->_addAttendeesStats();
+    }
+    return $this->_data;
+  }
+  
+	function _buildQuery()
+	{
+		// Get the WHERE and ORDER BY clauses for the query
+		$where		= $this->_buildContentWhere();
+		$orderby	= $this->_buildContentOrderBy();
+
+		$query = ' SELECT obj.*, v.venue, 0 AS checked_out '
+			. ' FROM #__redevent_event_venue_xref AS obj '
+		  . ' LEFT JOIN #__redevent_venues AS v ON v.id = obj.venueid '
+			. $where
+			. $orderby
+		;
+
+		return $query;
+	}
+
+	function _buildContentOrderBy()
+	{
+		global $mainframe, $option;
+
+		$filter_order		  = $this->getState('filter_order');
+		$filter_order_Dir	= $this->getState('filter_order_Dir');
+
+		if ($filter_order == 'obj.dates'){
+			$orderby 	= ' ORDER BY obj.dates '.$filter_order_Dir;
+		} else {
+			$orderby 	= ' ORDER BY '.$filter_order.' '.$filter_order_Dir.' , obj.dates ';
+		}
+
+		return $orderby;
+	}
+
+	function _buildContentWhere()
+	{
+		global $mainframe, $option;
+
+		$search				= $this->getState('search');
+
+		$where = array();
+
+		$where[] = ' obj.eventid = '. $this->_eventid;
+		
+		if ($search) {
+			$where[] = 'LOWER(obj.details) LIKE '.$this->_db->Quote('%'.$search.'%');
+		}
+		
+		switch ($this->getState('filter_state'))
+		{
+			case 'unpublished':
+				$where[] = ' obj.published = 0 ';
+				break;
+				
+			case 'published':
+				$where[] = ' obj.published = 1 ';
+				break;
+				
+			case 'archived':
+				$where[] = ' obj.published = -1 ';
+				break;
+				
+			case 'notarchived':
+				$where[] = ' obj.published >= 0 ';
+				break;
+		}
+		
+		switch ($this->getState('filter_featured'))
+		{
+			case 'featured':
+				$where[] = ' obj.featured = 1 ';
+				break;
+				
+			case 'unfeatured':
+				$where[] = ' obj.featured = 0 ';
+				break;
+		}
+
+		$where 		= ( count( $where ) ? ' WHERE '. implode( ' AND ', $where ) : '' );
+
+		return $where;
+	}
+	
+  /**
+   * Method to get a pagination object
+   *
+   * @access public
+   * @return integer
+   */
+  function getPagination()
+  {
+    // Lets load the content if it doesn't already exist
+    if (empty($this->_pagination))
+    {
+      jimport('joomla.html.pagination');
+      $this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
+    }
+
+    return $this->_pagination;
+  }
+  
+
+  /**
+   * Total nr of items
+   *
+   * @access public
+   * @return integer
+   */
+  function getTotal()
+  {
+    // Lets load the total nr if it doesn't already exist
+    if (empty($this->_total))
+    {
+      $query = $this->_buildQuery();
+      $this->_total = $this->_getListCount($query);
+    }
+
+    return $this->_total;
+  }
+  
+  /**
+   * returns event data
+   * 
+   * @return object event
+   */
+  function getEvent()
+  {
+  	$query = ' SELECT e.id, e.title, e.registra ' 
+  	       . ' FROM #__redevent_events AS e '
+  	       . ' WHERE id = ' . $this->_db->Quote($this->_eventid);
+  	$this->_db->setQuery($query);
+  	$res = $this->_db->loadObject();
+  	return $res;
+  }
+  
+  /**
+   * adds attendees stats to session
+   * 
+   * @return boolean true on success
+   */
+  private function _addAttendeesStats()
+  {
+  	if (!$this->_eventid || !count($this->_data)) {
+  		return false;
+  	}
+  	
+  	$ids = array();
+		foreach ($this->_data as $session)
+		{
+			$ids[] = $session->id;
+		}
+		
+		$query = ' SELECT x.id, COUNT(*) AS total, SUM(r.waitinglist) AS waiting, SUM(1-r.waitinglist) AS attending ' 
+		       . ' FROM #__redevent_event_venue_xref AS x'
+		       . ' LEFT JOIN #__redevent_register AS r ON x.id = r.xref ' 
+		       . ' WHERE x.eventid = ' . $this->_db->Quote($this->_eventid)
+		       . '   AND x.id IN ('.implode(', ', $ids).')'
+		       . ' GROUP BY r.xref ';
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadObjectList('id');
+
+		foreach ($this->_data as &$session)
+		{
+			if (isset($res[$session->id])) 
+			{
+				$session->attendees = $res[$session->id];
+			}
+		}
+		return true;
+  }
+
+	/**
+	 * Method to (un)publish/archive
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 * @since	0.9
+	 */
+	function publish($cid = array(), $publish = 1)
+	{
+		$user 	=& JFactory::getUser();
+
+		if (count( $cid ))
+		{
+			$cids = implode( ',', $cid );
+
+			$query = 'UPDATE #__redevent_event_venue_xref'
+				. ' SET published = ' . (int) $publish
+				. ' WHERE id IN ('. $cids .')'
+//				. ' AND ( checked_out = 0 OR ( checked_out = ' . (int) $user->get('id'). ' ) )'
+			;
+			$this->_db->setQuery( $query );
+			if (!$this->_db->query()) {
+				$this->setError($this->_db->getErrorMsg());
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Method to (un)feature
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 * @since	0.9
+	 */
+	function featured($cid = array(), $featured = 1)
+	{
+		$user 	=& JFactory::getUser();
+
+		if (count( $cid ))
+		{
+			$cids = implode( ',', $cid );
+
+			$query = 'UPDATE #__redevent_event_venue_xref'
+				. ' SET featured = ' . (int) $featured
+				. ' WHERE id IN ('. $cids .')'
+			;
+			$this->_db->setQuery( $query );
+			if (!$this->_db->query()) {
+				$this->setError($this->_db->getErrorMsg());
+				return false;
+			}
+		}
+		return true;
+	}
+}
+?>

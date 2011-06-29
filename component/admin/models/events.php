@@ -391,22 +391,21 @@ class RedEventModelEvents extends JModel
 	  }
 	  
 		$db = JFactory::getDBO();
-		$q = ' SELECT count(r.id) AS regcount, x.*, v.venue, v.city '
+		$q = ' SELECT x.eventid, COUNT(*) AS total, SUM(CASE WHEN x.published = 1 THEN 1 ELSE 0 END) as published,   '
+		   . ' SUM(CASE WHEN x.published = 0 THEN 1 ELSE 0 END) as unpublished,'
+		   . ' SUM(CASE WHEN x.published = -1 THEN 1 ELSE 0 END) as archived,'
+		   . ' SUM(CASE WHEN x.featured = 1 THEN 1 ELSE 0 END) as featured'
 		   . ' FROM #__redevent_event_venue_xref AS x '
-       . ' LEFT JOIN #__redevent_venues AS v ON x.venueid = v.id '
-       . ' LEFT JOIN #__redevent_register AS r ON r.xref = x.id'
-       . ' WHERE x.published > -1 '
-       . '   AND x.eventid IN ('. implode(', ', $events_id) .')'
-       . ' GROUP BY x.id '
-       . ' ORDER BY x.dates, v.venue '
+       . ' WHERE x.eventid IN ('. implode(', ', $events_id) .')'
+       . ' GROUP BY x.eventid '
        ;
 		$db->setQuery($q);
 		$datetimes = $db->loadObjectList();
-		
 		$ardatetimes = array();
 		foreach ((array) $datetimes as $key => $datetime) {
-			$ardatetimes[$datetime->eventid][] = $datetime;
+			$ardatetimes[$datetime->eventid] = $datetime;
 		}
+		
 		return $ardatetimes;
 	}
 }//Class end

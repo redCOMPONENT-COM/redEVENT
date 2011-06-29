@@ -95,10 +95,10 @@ echo $this->pane->startPane("det-pane");
 	echo $this->loadTemplate('event');
 	echo $this->pane->endPanel();
 	
-	$title = JText::_( 'Sessions' );
-	echo $this->pane->startPanel( $title, 'venues' );
-	echo $this->loadTemplate('sessions');
-	echo $this->pane->endPanel();
+//	$title = JText::_( 'Sessions' );
+//	echo $this->pane->startPanel( $title, 'venues' );
+//	echo $this->loadTemplate('sessions');
+//	echo $this->pane->endPanel();
 	
 	$title = JText::_( 'SUBMIT_TYPES' );
 	echo $this->pane->startPanel( $title, 'submit_types' );

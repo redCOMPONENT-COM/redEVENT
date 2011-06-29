@@ -73,10 +73,10 @@ $app = &JFactory::getApplication();
 			<tr>
 				<th width="5"><?php echo JText::_( 'Num' ); ?></th>
 				<th width="5"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
-				<th class="title"><?php echo JHTML::_('grid.sort', 'TIMEDETAILS', 'x.dates', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'EVENT TITLE', 'a.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<th><?php echo JHTML::_('grid.sort', 'CATEGORY', 'cat.catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			    <th width="1%" nowrap="nowrap"><?php echo JText::_( 'PUBLISHED' ); ?></th>
+				<th class="title"><?php echo JText::_( 'COM_REDEVENT_SESSIONS' ); ?></th>
+				<th width="1%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'PUBLISHED', 'a.published', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<th class="title"><?php echo JText::_( 'CREATION' ); ?></th>
 				<th width="1%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'ID', 'a.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			</tr>
@@ -104,95 +104,6 @@ $app = &JFactory::getApplication();
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo $this->pageNav->getRowOffset( $i ); ?></td>
 				<td><?php echo $checked; ?></td>
-				<td><div class="timedetails">
-				<?php if (isset($this->eventvenues[$row->id])) { ?>
-					<table class="adminlist">
-					<colgroup class="colfeatured" width="5%"></colgroup>
-					<colgroup class="colvenue" width="20%"></colgroup>
-					<colgroup class="colcity" width="20%"></colgroup>
-					<colgroup class="coldate" width="20%"></colgroup>
-					<colgroup class="coltime" width="10%"></colgroup>
-					<colgroup class="colnote" width="20%"></colgroup>
-					<colgroup class="colpublished" width="5px"></colgroup>
-					<colgroup class="colattendees" width="5px"></colgroup>
-					<thead>
-					 <tr>
-					   <th>&nbsp;</th>
-					   <th><?php echo JText::_('VENUE'); ?></th>
-					   <th><?php echo JText::_('CITY'); ?></th>
-					   <th><?php echo JText::_('DATE'); ?></th>
-					   <th><?php echo JText::_('TIME'); ?></th>
-					   <th><?php echo JText::_('NOTE'); ?></th>
-					   <th><?php echo JText::_('STATE'); ?></th>
-             <th><?php echo JText::_('ATTENDEES'); ?></th>
-					 </tr>
-				  </thead>
-					<tbody>
-					<?php
-						foreach ($this->eventvenues[$row->id] as $key => $eventdetails) 
-						{				
-							/* Get the date */
-							$date = (!redEVENTHelper::isValidDate($eventdetails->dates) ? Jtext::_('Open date') : strftime( $this->elsettings->formatdate, strtotime( $eventdetails->dates )));
-							if (redEVENTHelper::isValidDate($eventdetails->enddates) && $eventdetails->enddates != $eventdetails->dates ) {
-							  $enddate   = strftime( $this->elsettings->formatdate, strtotime( $eventdetails->enddates ));
-							}
-							else {
-							 $enddate = null;
-							}
-							$displaydate = $date. ($enddate ? ' - '.$enddate: '');
-							
-              $displaytime = '';
-							/* Get the time */
-							if (isset($eventdetails->times)) 
-							{
-							 $displaytime = strftime( $this->elsettings->formattime, strtotime( $eventdetails->times )).' '.$this->elsettings->timename;
-							 
-                if (isset($eventdetails->endtimes)) {
-                  $displaytime .= ' - '.strftime( $this->elsettings->formattime, strtotime( $eventdetails->endtimes )). ' '.$this->elsettings->timename;
-                }
-							}
-							// published state
-							if ($eventdetails->published == 1) {
-								$img_published = JHTML::image('administrator/images/tick.png', JText::_('PUBLISHED'));
-							}
-							else if ($eventdetails->published == 0) {
-								$img_published = JHTML::image('administrator/images/publish_x.png', JText::_('UNPUBLISHED'));
-							}
-							else {
-								$img_published = JHTML::image('administrator/images/publish_y.png', JText::_('ARCHIVED'));
-							}
-							if ($eventdetails->featured == 1) {
-								$img_featured = JHTML::image('administrator/components/com_redevent/assets/images/icon-16-featured.png', JText::_('COM_REDEVENT_SESSION_FEATURED'));
-							}
-							else {
-								$img_featured = '&nbsp;';
-							}
-							?>
-    					<tr class="eventdatetime<?php echo ($eventdetails->featured ? ' featured' : ''); ?>">
-    						<td><?php echo $img_featured; ?></td>
-    						<td><?php echo $eventdetails->venue; ?></td>
-    						<td><?php echo $eventdetails->city; ?></td>
-    						<td><?php echo $displaydate; ?></td>
-    						<td><?php echo $displaytime; ?></td>
-    						<td><?php echo $eventdetails->note; ?></td>
-    						<td><?php echo $img_published; ?></td>
-    						<td>
-    						  <?php	if ($row->registra == 1):
-      						  $linkreg  = 'index.php?option=com_redevent&amp;view=attendees&eventid='.$row->id.'&xref='.$eventdetails->id;
-      						  ?>
-      						  <a href="<?php echo $linkreg; ?>" title="Edit Users"><?php echo $eventdetails->regcount; ?></a>
-      						<?php else: ?> 
-      						  -
-      						<?php endif; ?>
-    						</td>
-    					</tr>
-    					<?php
-						  }
-						?>
-					</tbody>
-					</table>
-				<?php } ?>
-				</div></td>
 				<td>
 					<div>
 					<?php
@@ -244,6 +155,24 @@ $app = &JFactory::getApplication();
             }
 					}
 					?>
+				</td>
+				<td>
+					<?php if (isset($this->eventvenues[$row->id])): ?>
+						<?php echo JHTML::link('index.php?option=com_redevent&view=sessions&eventid='.$row->id, 
+				                           Jtext::sprintf('COM_REDEVENT_SESSIONS_LINK', $this->eventvenues[$row->id]->total
+				                                                                      , $this->eventvenues[$row->id]->unpublished
+				                                                                      , $this->eventvenues[$row->id]->published
+				                                                                      , $this->eventvenues[$row->id]->archived
+				                                                                      , $this->eventvenues[$row->id]->featured),
+				                           array('class' => 'hasTip', 
+				                                 'title' => Jtext::_('COM_REDEVENT_SESSIONS_LINK_TIP_TITLE').'::'.Jtext::sprintf('COM_REDEVENT_SESSIONS_LINK_TIP' 
+				                                                                                                                 , $this->eventvenues[$row->id]->unpublished
+				                                                                                                                 , $this->eventvenues[$row->id]->published
+				                                                                                                                 , $this->eventvenues[$row->id]->archived
+				                                                                                                                 , $this->eventvenues[$row->id]->featured))); ?>
+					<?php else: ?>
+						<?php echo JHTML::link('index.php?option=com_redevent&view=sessions&eventid='.$row->id, Jtext::sprintf('COM_REDEVENT_0_SESSION_LINK')); ?>
+					<?php endif; ?>
 				</td>
 				<td align="center"><?php echo $published; ?></td>
 				<td>

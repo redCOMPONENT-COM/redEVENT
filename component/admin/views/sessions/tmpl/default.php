@@ -1,0 +1,157 @@
+<?php
+/**
+ * @version 1.0 $Id$
+ * @package Joomla
+ * @subpackage redEVENT
+ * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license GNU/GPL, see LICENSE.php
+ * redEVENT is based on EventList made by Christoph Lukes from schlu.net
+ * redEVENT can be downloaded from www.redcomponent.com
+ * redEVENT is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License 2
+ * as published by the Free Software Foundation.
+
+ * redEVENT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with redEVENT; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+defined('_JEXEC') or die('Restricted access');
+
+$colspan = 9;
+if ($this->event->registra) $colspan += 2;
+?>
+<script type="text/javascript">
+ /**
+  * Overrides default function.
+  */
+  function submitbutton(pressbutton) {
+    submitform(pressbutton);
+  }
+</script>
+
+<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm">
+<table>
+<tr>
+	<td align="left" width="100%">
+		<?php echo JText::_( 'Filter' ); ?>:
+		<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
+		<button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
+		<button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
+	</td>
+		<td nowrap="nowrap">
+			<?php echo $this->lists['state'];	?>
+			<?php echo $this->lists['featured'];	?>
+		</td>
+</tr>
+</table>
+<div id="editcell">
+	<table class="adminlist">
+	<thead>
+		<tr>
+			<th width="5">
+				<?php echo JText::_( 'NUM' ); ?>
+			</th>
+			<th width="20">
+				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->items ); ?>);" />
+			</th>
+			<th><?php echo JText::_('VENUE'); ?></th>
+			<th><?php echo JText::_('TITLE'); ?></th>
+			<th><?php echo JText::_('DATE'); ?></th>
+			<th><?php echo JText::_('TIME'); ?></th>
+			<th><?php echo JText::_('NOTE'); ?></th>
+      <th width="5"><?php echo JText::_('PUBLISHED'); ?></th>
+      <th width="5"><?php echo JText::_('COM_REDEVENT_SESSION_FEATURED'); ?></th>
+      <?php if ($this->event->registra): ?>
+			<th><?php echo JText::_('COM_REDEVENT_REGISTRATION_END'); ?></th>
+      <th width="5"><?php echo JText::_('COM_REDEVENT_SESSION_TABLE_HEADER_ATTENDEES'); ?></th>
+      <?php endif; ?>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<td colspan="<?php echo $colspan; ?>">
+				<?php echo $this->pagination->getListFooter(); ?>
+			</td>
+		</tr>
+	</tfoot>
+	<tbody>
+		<?php
+		$k = 0;
+		foreach ($this->items as $i => $row) 
+		{
+			/* Get the date */
+			$date = (!redEVENTHelper::isValidDate($row->dates) ? Jtext::_('Open date') : strftime( $this->settings->formatdate, strtotime( $row->dates )));
+			$enddate  = (!redEVENTHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) ? '' : strftime( $this->settings->formatdate, strtotime( $row->enddates ));
+			$displaydate = $date. ($enddate ? ' - '.$enddate: '');
+			$endreg = (!redEVENTHelper::isValidDate($row->registrationend) ? '-' : strftime( $this->settings->formatdate, strtotime( $row->registrationend )));
+	
+			$displaytime = '';
+			/* Get the time */
+			if (isset($row->times) && $row->times != '00:00:00') {
+				$displaytime = strftime( $this->settings->formattime, strtotime( $row->times )).' '.$this->settings->timename;
+	
+				if (isset($row->endtimes) && $row->endtimes != '00:00:00') {
+					$displaytime .= ' - '.strftime( $this->settings->formattime, strtotime( $row->endtimes )). ' '.$this->settings->timename;
+				}
+			}
+			$checked 	= JHTML::_('grid.checkedout',   $row, $i );
+			$published 	= JHTML::_('grid.published',   $row, $i );
+			$featured = $this->featured($row, $i);
+			
+			$link = JRoute::_( 'index.php?option=com_redevent&controller=sessions&task=edit&cid[]='. $row->id );
+			?>
+			<tr class="<?php echo "row$k"; ?>">
+				<td><?php echo $this->pagination->getRowOffset( $i ); ?></td>
+				<td><?php echo $checked; ?></td>
+			  <td>
+					<?php
+					if (  JTable::isCheckedOut($this->user->get ('id'), $row->checked_out ) ) {
+						echo $row->venue;
+					} else {
+					?>
+						<a href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_REDEVENT_SESSIONS_EDIT_SESSION' ); ?>">
+							<?php echo $row->venue; ?></a>
+					<?php
+					}
+					?>
+				</td>
+	      <td><?php echo $row->title; ?></td>
+	      <td><?php echo $displaydate; ?></td>
+	      <td><?php echo $displaytime; ?></td>
+	      <td><?php echo $row->note; ?></td>
+        <td align="center">
+        	<?php if ($row->published >= 0): ?>
+	        <?php echo $published; ?>
+	        <?php else: ?>
+	        <?php echo JHTML::image('administrator/images/publish_y.png', JText::_('ARCHIVED')); ?>
+	        <?php endif; ?>
+				</td>
+	      <td align="center"><?php echo $featured ?></td>
+	      
+	      <?php if ($this->event->registra): ?>
+	      <td><?php echo $endreg; ?></td>
+	      <td><?php echo (isset($row->attendees) ? 
+	                      JHTML::link('index.php?option=com_redevent&view=attendees&xref='.$row->id, intval($row->attendees->attending). ' / '. intval($row->attendees->waiting)) : '-'); ?></td>
+	      <?php endif; ?>
+	    </tr>
+	    <?php
+	    $k = 1 - $k;
+		}
+		?>
+	</tbody>
+	</table>
+</div>
+
+<input type="hidden" name="controller" value="sessions" />
+<input type="hidden" name="task" value="" />
+<input type="hidden" name="boxchecked" value="0" />
+<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
+<input type="hidden" name="filter_order_Dir" value="" />
+<input type="hidden" name="eventid" value="<?php echo $this->event->id; ?>" />
+</form>

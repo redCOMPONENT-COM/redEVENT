@@ -44,6 +44,8 @@
 .icon-32-redevent_archive			{ background-image: url(../images/redevent_archive_32.png); }
 .icon-32-redevent_unarchive			{ background-image: url(../images/redevent_unarchive_32.png); }
 .icon-32-redevent_sync			{ background-image: url(../images/redevent_sync_32.png); }
+.icon-32-featured	{ background-image: url(../images/icon-32-featured.png); }
+.icon-32-unfeatured	{ background-image: url(../images/icon-32-unfeatured.png); }
 
 /** linkicons **/
 div.linkicon {

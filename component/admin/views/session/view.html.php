@@ -37,10 +37,33 @@ class RedEventViewSession extends JView {
 	function display($tpl = null)
 	{
 		global $mainframe;
+		
+		// ajax in event form, or standalone ?
+		$standalone = Jrequest::getVar('standalone', 0);
 
-		if($this->getLayout() == 'closexref') {
+		if (!$standalone && $this->getLayout() == 'closexref') {
       $this->_displayclosexref($tpl);
       return;
+    }
+    
+    if ($standalone) 
+    {    	
+	    $document = & JFactory::getDocument();
+			$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITROLE'));
+	    $document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+    
+			// Set toolbar items for the page
+			$edit		= JRequest::getVar('edit',true);
+			$text = !$edit ? JText::_( 'New' ) : JText::_( 'Edit' );
+			JToolBarHelper::title(   JText::_( 'COM_REDEVENT_SESSION' ).': <small><small>[ ' . $text.' ]</small></small>' );
+			JToolBarHelper::save();
+			JToolBarHelper::apply();
+			if (!$edit)  {
+				JToolBarHelper::cancel();
+			} else {
+				// for existing items the button is renamed `close`
+				JToolBarHelper::cancel( 'cancel', 'Close' );
+			}
     }
 
 		//initialise variables
@@ -121,6 +144,12 @@ class RedEventViewSession extends JView {
 		$pricegroupsoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_PRICEGROUP')));
 		$pricegroupsoptions = array_merge($pricegroupsoptions, $this->get('PricegroupsOptions'));
 		
+		if (JRequest::getVar('task') == 'copy') 
+		{
+			$xref->id = null;
+			$xref->recurrence_id = null;
+		}
+		
 		//assign to template
     $this->assignRef('xref'         , $xref);
 		$this->assignRef('editor'      	, $editor);
@@ -133,6 +162,7 @@ class RedEventViewSession extends JView {
 		$this->assignRef('rolesoptions' , $rolesoptions);
 		$this->assignRef('prices'       , $prices);
 		$this->assignRef('pricegroupsoptions' , $pricegroupsoptions);
+		$this->assign('standalone' , $standalone);
 
 		parent::display($tpl);
 	}
