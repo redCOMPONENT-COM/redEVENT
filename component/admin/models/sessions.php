@@ -114,7 +114,7 @@ class RedeventModelSessions extends JModel
       $query = $this->_buildQuery();
       $pagination = $this->getPagination();
       $res = $this->_getList($query, $pagination->limitstart, $pagination->limit);
-      
+
       if (!$res) {
    	  	echo $this->_db->getErrorMsg();
    	  	return false;

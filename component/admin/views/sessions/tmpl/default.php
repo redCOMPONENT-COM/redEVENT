@@ -82,8 +82,9 @@ if ($this->event->registra) $colspan += 2;
 	</tfoot>
 	<tbody>
 		<?php
-		$k = 0;
-		foreach ($this->items as $i => $row) 
+		$k = 0;		
+		if ($this->items && count($this->items)):
+		foreach ((array) $this->items as $i => $row) 
 		{
 			/* Get the date */
 			$date = (!redEVENTHelper::isValidDate($row->dates) ? Jtext::_('Open date') : strftime( $this->settings->formatdate, strtotime( $row->dates )));
@@ -144,6 +145,7 @@ if ($this->event->registra) $colspan += 2;
 	    $k = 1 - $k;
 		}
 		?>
+		<?php endif; ?>
 	</tbody>
 	</table>
 </div>
