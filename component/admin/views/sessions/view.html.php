@@ -92,7 +92,7 @@ class RedeventViewSessions extends JView
 		JToolBarHelper::addNewX();
 		JToolBarHelper::custom('copy', 'copy', 'copy', 'copy', true);
 		JToolBarHelper::editListX();
-		JToolBarHelper::deleteList();
+		JToolBarHelper::deleteList(JText::_('COM_REDEVENT_SESSIONS_REMOVE_CONFIRM_MESSAGE'));
 		JToolBarHelper::spacer();
 		JToolBarHelper::publish();
 		JToolBarHelper::unpublish();

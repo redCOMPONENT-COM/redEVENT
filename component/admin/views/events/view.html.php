@@ -75,7 +75,7 @@ class RedEventViewEvents extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::editList();
 		JToolBarHelper::spacer();
-		JToolBarHelper::deleteList();
+		JToolBarHelper::deleteList(JText::_( 'COM_REDEVENT_EVENTS_REMOVE_CONFIRM_MESSAGE'));
 		JToolBarHelper::spacer();
 		JToolBarHelper::custom( 'copy', 'copy.png', 'copy_f2.png', 'Copy' );
 		JToolBarHelper::spacer();
