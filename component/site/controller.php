@@ -99,9 +99,21 @@ class RedeventController extends JController
 					$filt = array();
 					foreach ((array) $v as $n => $val)
 					{
-						if ($val) $filt[$n] = $val;
+						if (is_array($val)) 
+						{							
+//							echo '<pre>';print_r($val); echo '</pre>';exit;
+							$r = array();
+							foreach ($val as $sub) {
+								if ($sub) $r[] = $sub;
+							}
+							$myuri->setVar("filtercustom[$n]", $r);
+						}
+						else {
+							if ($val) $filt[$n] = $val;
+						}
 					}
 					if (count($filt)) {
+//						echo '<pre>';print_r($filt); echo '</pre>';exit;
 						$myuri->setVar($filter, $filt);
 						$vars++;						
 					}
