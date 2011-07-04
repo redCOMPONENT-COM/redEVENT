@@ -148,7 +148,7 @@ class plgSearchRedeventSearch extends JPlugin {
 			}
 	
 			//the database query; 
-			$query = 'SELECT e.title, x.id AS xref, '
+			$query = 'SELECT e.title, e.summary AS text, x.id AS xref, '
 			. ' CONCAT_WS( " / ", '. $search .', '.$db->Quote(JText::_( 'EVENTS' )).' ) AS section,'
 	    . ' CASE WHEN CHAR_LENGTH( e.alias ) THEN CONCAT_WS( \':\', x.id, e.alias ) ELSE x.id END AS slug, '
 	    . ' NULL AS created, '
@@ -159,7 +159,7 @@ class plgSearchRedeventSearch extends JPlugin {
 			. '   AND x.published = 1 '
 			. ' ORDER BY '. $order
 			;
-	
+			
 			//Set query
 			$db->setQuery( $query, 0, $limit );
 			$results = $db->loadObjectList();
