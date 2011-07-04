@@ -41,6 +41,8 @@
 .icon-48-libraryedit			{ background-image: url(../images/icon-48-libraryedit.png); }
 .icon-32-redevent_import		{ background-image: url(../images/redevent_import_32.png); }
 .icon-32-exportevents		{ background-image: url(../images/icon-32-export.png); }
+.icon-32-csvexport		{ background-image: url(../images/icon-32-export.png); }
+.icon-32-csvimport		{ background-image: url(../images/icon-32-import.png); }
 .icon-32-redevent_submitters	{ background-image: url(../images/redevent_submitters_32.png); }
 .icon-32-redevent_archive			{ background-image: url(../images/redevent_archive_32.png); }
 .icon-32-redevent_unarchive			{ background-image: url(../images/redevent_unarchive_32.png); }

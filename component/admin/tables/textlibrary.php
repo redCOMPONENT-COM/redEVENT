@@ -55,5 +55,26 @@ class TableTextlibrary extends JTable {
 	function __construct($db) {
 		parent::__construct('#__redevent_textlibrary', 'id', $db);
 	}
+		
+	function check()
+	{
+		if (!$this->text_name) 
+		{
+			$this->setError(JText::_( 'COM_REDEVENT_NAME_IS_REQUIRED'));
+	    return false;
+		}
+		
+		$query = ' SELECT id ' . ' FROM #__redevent_textlibrary ' . ' WHERE text_name = ' . $this->_db->Quote($this->text_name);
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadObjectList();
+		
+		if ($res) 
+		{
+			$this->setError( JText::_( 'COM_REDEVENT_NAME_ALREADY_EXISTS').': '.$this->text_name );
+	    return false;			
+		}
+		
+		return true;
+	}
 }
 ?>

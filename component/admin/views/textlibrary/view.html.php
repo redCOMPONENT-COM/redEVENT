@@ -37,7 +37,11 @@ class RedEventViewTextLibrary extends JView {
 	function display($tpl = null)
 	{
 		$mainframe = &JFactory::getApplication();
-
+	
+		if ($this->getLayout() == 'import') {
+			return $this->_displayImport($tpl);
+		}
+		
 		//Load pane behavior
 		jimport('joomla.html.pane');
 
@@ -60,10 +64,12 @@ class RedEventViewTextLibrary extends JView {
 		
 		JToolBarHelper::title( JText::_( 'TEXT_LIBRARY' ), 'library' );
 		JToolBarHelper::addNew();
-		JToolBarHelper::spacer();
 		JToolBarHelper::editListX();
 		JToolBarHelper::spacer();
 		JToolBarHelper::deleteList();
+		JToolBarHelper::spacer();
+		JToolBarHelper::custom('export', 'csvexport', 'csvexport', JText::_('COM_REDEVENT_BUTTON_EXPORT'), false);
+		JToolBarHelper::custom('import', 'csvimport', 'csvimport', JText::_('COM_REDEVENT_BUTTON_IMPORT'), false);
 		
 		// Get data from the model
 		$rows = $this->get('Data');
@@ -134,6 +140,32 @@ class RedEventViewTextLibrary extends JView {
 		
 		parent::display($tpl);
 		
+	}
+	
+
+	function _displayImport($tpl = null)
+	{
+		$document	= & JFactory::getDocument();
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_TEXTLIBRARY_IMPORT'));
+		//add css and submenu to document
+		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+
+		//Create Submenu
+    ELAdmin::setMenu();
+
+		JHTML::_('behavior.tooltip');
+
+		//create the toolbar
+		JToolBarHelper::title( JText::_( 'COM_REDEVENT_PAGETITLE_TEXTLIBRARY_IMPORT' ), 'events' );
+		
+		JToolBarHelper::back();
+		
+		$lists = array();
+				
+		//assign data to template
+		$this->assignRef('lists'      	, $lists);
+		
+		parent::display($tpl);
 	}
 }
 ?>

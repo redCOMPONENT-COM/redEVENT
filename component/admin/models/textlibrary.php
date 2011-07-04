@@ -186,5 +186,59 @@ class RedEventModelTextLibrary extends JModel
     }
     return true;
   }
+  
+
+	/**
+	 * export 
+   *
+	 * @return array
+	 */
+	public function export()
+	{				
+		$query = ' SELECT t.id, t.text_name, t.text_description, t.text_field  '
+		       . ' FROM #__redevent_textlibrary AS t '
+		       ;
+    $this->_db->setQuery($query);
+    
+    $results = $this->_db->loadAssocList();
+    
+    return $results;
+	}
+	
+  /**
+	 * import in database
+	 * 
+	 * @param array $records
+	 * @param boolean $replace existing events with same id
+	 * @return boolean true on success
+	 */
+	public function import($records, $replace = 0)
+	{
+		$count = array('added' => 0, 'updated' => 0);
+		
+		$current = null; // current event for sessions
+		foreach ($records as $r)
+		{			
+			$v = Jtable::getInstance('Textlibrary', 'Table');	
+			$v->bind($r);
+			if (!$replace) {
+				$v->id = null;
+				$update = 0;
+			}
+			else if ($v->id) {
+				$update = 1;
+			}
+			// store !
+			if (!$v->check()) {
+				JError::raiseWarning(0, JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$v->getError());
+				continue;
+			}
+			if (!$v->store()) {
+				JError::raiseWarning(0, JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$v->getError());
+				continue;
+			}
+		}
+		return $count;
+	}
 }
 ?>
