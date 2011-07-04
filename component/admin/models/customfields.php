@@ -186,5 +186,92 @@ class RedeventModelCustomfields extends JModel
 
     return $this->_total;
   }
+  
+
+	/**
+	 * export 
+   *
+	 * @return array
+	 */
+	public function export()
+	{				
+		$query = ' SELECT t.id, t.name, t.tag, t.type, t.tips, t.searchable, '
+		       . ' t.in_lists, t.frontend_edit, t.required, t.object_key, '
+		       . ' t.options, t.min, t.max, t.ordering, t.published  '
+		       . ' FROM #__redevent_fields AS t '
+		       ;
+    $this->_db->setQuery($query);
+    
+    $results = $this->_db->loadAssocList();
+    
+    return $results;
+	}
+	
+  /**
+	 * import in database
+	 * 
+	 * @param array $records
+	 * @param boolean $replace existing events with same id
+	 * @return boolean true on success
+	 */
+	public function import($records, $replace = 0)
+	{
+		$count = array('added' => 0, 'updated' => 0);
+		
+	  $tables = $this->_db->getTableFields(array('#__redevent_events', '#__redevent_event_venue_xref'), false);
+	    
+		$current = null; // current event for sessions
+		foreach ($records as $r)
+		{			
+			$row = Jtable::getInstance('Redevent_customfield', '');	
+			$row->bind($r);
+			if (!$replace) {
+				$row->id = null;
+				$update = 0;
+			}
+			else if ($row->id) {
+				$update = 1;
+			}
+			// store !
+			if (!$row->check()) {
+				JError::raiseWarning(0, JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$row->getError());
+				continue;
+			}
+			if (!$row->store()) {
+				JError::raiseWarning(0, JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$row->getError());
+				continue;
+			}
+		
+	    // add the field to the object table
+	    switch ($row->object_key)
+	    {
+	    	case 'redevent.event':
+	    		$table = '#__redevent_events';
+	    		break;
+	    	case 'redevent.xref':
+	    		$table = '#__redevent_event_venue_xref';
+	    		break;
+	    	default:
+	    		JError::raiseWarning(0, 'undefined custom field object_key');
+	    		break;
+	    }
+	    $cols = $tables[$table];
+	    
+	    if (!array_key_exists('custom'.$row->id, $cols))
+	    {
+	    	switch ($row->type)
+	    	{
+	    		default: // for now, let's not restrict the type...
+	    			$columntype = 'TEXT';
+	    	}
+	    	$q = 'ALTER IGNORE TABLE '.$table.' ADD COLUMN custom'.$row->id.' '.$columntype;
+				$this->_db->setQuery($q);
+				if (!$this->_db->query()) {
+	    		JError::raiseWarning(0, 'failed adding custom field to table');
+				}
+	    }
+		}
+		return $count;
+	}
 }
 ?>

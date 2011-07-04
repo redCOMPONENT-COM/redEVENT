@@ -89,7 +89,7 @@ class RedEventControllerTextLibrary extends RedEventController {
   }
   
 	/**
-	 * start venues export screens
+	 * start export screens
 	 * 
 	 */
 	function import()

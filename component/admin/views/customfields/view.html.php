@@ -38,8 +38,16 @@ class RedeventViewCustomfields extends JView
 	function display($tpl = null)
 	{
 		global $mainframe, $option;
-    
+	
+		if ($this->getLayout() == 'import') {
+			return $this->_displayImport($tpl);
+		}
+		
     $document = & JFactory::getDocument();
+    
+		//add css to document
+		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_CUSTOMFIELDS'));
 		
 		// Set toolbar items for the page
@@ -47,6 +55,8 @@ class RedeventViewCustomfields extends JView
 		JToolBarHelper::deleteList();
 		JToolBarHelper::editListX();
 		JToolBarHelper::addNewX();
+		JToolBarHelper::custom('export', 'csvexport', 'csvexport', JText::_('COM_REDEVENT_BUTTON_EXPORT'), false);
+		JToolBarHelper::custom('import', 'csvimport', 'csvimport', JText::_('COM_REDEVENT_BUTTON_IMPORT'), false);
     JToolBarHelper::help( 'screen.redevent', true );
         
 		$db		=& JFactory::getDBO();
@@ -81,6 +91,31 @@ class RedeventViewCustomfields extends JView
 		$this->assignRef('pagination',	$pagination);
 		$this->assignRef('request_url',	$uri->toString());
 
+		parent::display($tpl);
+	}
+
+	function _displayImport($tpl = null)
+	{
+		$document	= & JFactory::getDocument();
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_CUSTOMFIELDS_IMPORT'));
+		//add css and submenu to document
+		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+
+		//Create Submenu
+    ELAdmin::setMenu();
+
+		JHTML::_('behavior.tooltip');
+
+		//create the toolbar
+		JToolBarHelper::title( JText::_( 'COM_REDEVENT_PAGETITLE_CUSTOMFIELDS_IMPORT' ), 'events' );
+		
+		JToolBarHelper::back();
+		
+		$lists = array();
+				
+		//assign data to template
+		$this->assignRef('lists'      	, $lists);
+		
 		parent::display($tpl);
 	}
 }
