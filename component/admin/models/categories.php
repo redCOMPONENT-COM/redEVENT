@@ -410,5 +410,71 @@ class RedEventModelCategories extends JModel
 			return $msg;
 		}
 	}
+	
+  /**
+	 * export venues
+   *
+	 * @param array $categories filter
+	 * @return array
+	 */
+	public function export($categories = null)
+	{
+		$where = array();
+		
+		if (count($where)) {
+			$where = ' WHERE '.implode(' AND ', $where);
+		}
+		else {
+			$where = '';
+		}
+				
+		$query = ' SELECT c.id, c.catname, c.alias, c.catdescription, c.meta_description, c.meta_keywords,  '
+		       . ' c.color, c.image, c.private, c.published, c.access,  '
+		       . ' c.groupid, c.event_template, c.ordering  '
+		       . ' FROM #__redevent_categories AS c '
+		       . $where
+		       ;
+    $this->_db->setQuery($query);
+    
+    $results = $this->_db->loadAssocList();
+    
+    return $results;
+	}
+	
+  /**
+	 * import categories in database
+	 * 
+	 * @param array $records
+	 * @param boolean $replace existing categories with same id
+	 * @return boolean true on success
+	 */
+	public function import($records, $replace = 0)
+	{
+		$count = array('added' => 0, 'updated' => 0);
+		
+		$current = null; // current event for sessions
+		foreach ($records as $r)
+		{			
+			$v = Jtable::getInstance('RedEvent_categories', '');	
+			$v->bind($r);
+			if (!$replace) {
+				$v->id = null;
+				$update = 0;
+			}
+			else if ($v->id) {
+				$update = 1;
+			}
+			// store !
+			if (!$v->check()) {
+				JError::raiseWarning(0, JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$v->getError());
+				continue;
+			}
+			if (!$v->store()) {
+				JError::raiseWarning(0, JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$v->getError());
+				continue;
+			}
+		}
+		return $count;
+	}
 }
 ?>

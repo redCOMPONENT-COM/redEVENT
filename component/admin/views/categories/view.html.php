@@ -37,7 +37,11 @@ class RedEventViewCategories extends JView {
 	function display($tpl = null)
 	{
 		global $mainframe, $option;
-
+	
+		if ($this->getLayout() == 'importexport') {
+			return $this->_displayExport($tpl);
+		}
+		
 		//initialise variables
 		$user 		= & JFactory::getUser();
 		$db  		= & JFactory::getDBO();
@@ -62,14 +66,14 @@ class RedEventViewCategories extends JView {
 		//create the toolbar
 		JToolBarHelper::title( JText::_( 'CATEGORIES' ), 'elcategories' );
 		JToolBarHelper::publishList();
-		JToolBarHelper::spacer();
 		JToolBarHelper::unpublishList();
 		JToolBarHelper::spacer();
 		JToolBarHelper::addNew();
-		JToolBarHelper::spacer();
 		JToolBarHelper::editList();
 		JToolBarHelper::spacer();
 		JToolBarHelper::deleteList();
+		JToolBarHelper::spacer();
+		JToolBarHelper::custom('importexport', 'exportevents', 'exportevents', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), false);
 		JToolBarHelper::spacer();
 		JToolBarHelper::help( 'el.listcategories', true );
 
@@ -97,6 +101,32 @@ class RedEventViewCategories extends JView {
 		$this->assignRef('user'			, $user);
     $this->assignRef('filter_order'     , $filter_order);
 
+		parent::display($tpl);
+	}
+	
+	function _displayExport($tpl = null)
+	{
+		$document	= & JFactory::getDocument();
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_CATEGORIES_EXPORT'));
+		//add css and submenu to document
+		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+
+		//Create Submenu
+    ELAdmin::setMenu();
+
+		JHTML::_('behavior.tooltip');
+
+		//create the toolbar
+		JToolBarHelper::title( JText::_( 'COM_REDEVENT_PAGETITLE_CATEGORIES_EXPORT' ), 'events' );
+		
+		JToolBarHelper::back();
+		JToolBarHelper::custom('doexport', 'exportevents', 'exportevents', JText::_('COM_REDEVENT_BUTTON_EXPORT'), false);
+		
+		$lists = array();
+				
+		//assign data to template
+		$this->assignRef('lists'      	, $lists);
+		
 		parent::display($tpl);
 	}
 }

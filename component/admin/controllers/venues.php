@@ -282,7 +282,7 @@ class RedEventControllerVenues extends RedEventController
 
 	
 	/**
-	 * start events export screens
+	 * start venues export screens
 	 * 
 	 */
 	function importexport()
@@ -329,11 +329,7 @@ class RedEventControllerVenues extends RedEventController
 	}
 	
 	function import()
-	{
-//		$tab = Jtable::getInstance('RedEvent_venues', '');
-//		$f = array_keys(get_object_vars($tab));
-//		exit("array('v.".implode(", v.", $f)."')");
-		
+	{		
     $replace = JRequest::getVar('replace', 0, 'post', 'int');
     
     $msg = '';
