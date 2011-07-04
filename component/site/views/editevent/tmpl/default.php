@@ -267,10 +267,11 @@ $pane =& JPane::getInstance('tabs');
 <?php echo $pane->endPanel(); ?>
 <?php endif; ?>
 
+<?php if ($this->params->get('allow_attachments', 1)): ?>
 <?php echo $pane->startPanel( JText::_('COM_REDEVENT_EVENT_ATTACHMENTS_TAB'), 'ev4' ); ?>
 <?php echo $this->loadTemplate('attachments'); ?>
 <?php echo $pane->endPanel(); ?>
-
+<?php endif; ?>
 <?php echo $pane->endPane(); ?>
 
 <div class="re_save_buttons floattext">

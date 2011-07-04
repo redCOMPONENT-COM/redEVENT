@@ -384,8 +384,10 @@ class RedeventModelEditvenue extends JModel
       }     
     }
 
-		// attachments
-		REAttach::store('venue'.$row->id);
+		// attachments    
+		if ($params->get('allow_attachments', 1)) {
+			REAttach::store('venue'.$row->id);
+		}
 		
 		jimport('joomla.utilities.mail');
 

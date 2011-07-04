@@ -884,7 +884,9 @@ class RedeventModelEditevent extends JModel
 		}	
     	
 		// attachments
-		REAttach::store('event'.$row->id);
+		if ($params->get('allow_attachments', 1)) {
+			REAttach::store('event'.$row->id);
+		}
 		
 		
 		// MAIL HANDLING
