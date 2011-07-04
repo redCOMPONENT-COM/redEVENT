@@ -37,7 +37,11 @@ class RedEventViewVenues extends JView {
 	function display($tpl = null)
 	{
 		global $mainframe, $option;
-
+	
+		if ($this->getLayout() == 'importexport') {
+			return $this->_displayExport($tpl);
+		}
+		
 		//initialise variables
 		$user 		= & JFactory::getUser();
 		$db 		= & JFactory::getDBO();
@@ -64,7 +68,6 @@ class RedEventViewVenues extends JView {
 		//create the toolbar
 		JToolBarHelper::title( JText::_( 'VENUES' ), 'venues' );
 		JToolBarHelper::publishList();
-		JToolBarHelper::spacer();
 		JToolBarHelper::unpublishList();
 		JToolBarHelper::spacer();
 		JToolBarHelper::addNew();
@@ -72,6 +75,8 @@ class RedEventViewVenues extends JView {
 		JToolBarHelper::custom( 'copy', 'copy.png', 'copy_f2.png', 'Copy' );
 		JToolBarHelper::spacer();
 		JToolBarHelper::deleteList();
+		JToolBarHelper::spacer();
+		JToolBarHelper::custom('importexport', 'exportevents', 'exportevents', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), false);
 		JToolBarHelper::spacer();
 		JToolBarHelper::help( 'el.listvenues', true );
 
@@ -105,6 +110,35 @@ class RedEventViewVenues extends JView {
 		$this->assignRef('user'			, $user);
 		$this->assignRef('template'		, $template);
 
+		parent::display($tpl);
+	}
+	
+	function _displayExport($tpl = null)
+	{
+		$document	= & JFactory::getDocument();
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_VENUES_EXPORT'));
+		//add css and submenu to document
+		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+
+		//Create Submenu
+    ELAdmin::setMenu();
+
+		JHTML::_('behavior.tooltip');
+
+		//create the toolbar
+		JToolBarHelper::title( JText::_( 'COM_REDEVENT_PAGETITLE_VENUES_EXPORT' ), 'events' );
+		
+		JToolBarHelper::back();
+		JToolBarHelper::custom('doexport', 'exportevents', 'exportevents', JText::_('COM_REDEVENT_BUTTON_EXPORT'), false);
+		
+		$lists = array();
+		
+		$lists['categories'] = JHTML::_('select.genericlist', $this->get('CategoriesOptions'), 'categories[]'
+		                                        , 'size="15" multiple="multiple"', 'value', 'text');
+		
+		//assign data to template
+		$this->assignRef('lists'      	, $lists);
+		
 		parent::display($tpl);
 	}
 }

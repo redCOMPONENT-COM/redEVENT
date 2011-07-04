@@ -409,5 +409,102 @@ class RedEventModelVenues extends JModel
 			return $msg;
 		}
 	}
+	
+
+
+	/**
+	 * Get a option list of all categories
+	 */
+	public function getCategoriesOptions() 
+	{
+	 $query = ' SELECT c.id, c.name, (COUNT(parent.name) - 1) AS depth '
+           . ' FROM #__redevent_venues_categories AS c, '
+           . ' #__redevent_venues_categories AS parent '
+           . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
+           . ' GROUP BY c.id '
+           . ' ORDER BY c.lft;'
+           ;
+    $this->_db->setQuery($query);
+    
+    $results = $this->_db->loadObjectList();
+    
+    $options = array();
+    foreach((array) $results as $cat)
+    {
+      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->name);
+    }
+		return $options;
+	}
+	
+	/**
+	 * export venues
+   *
+	 * @param array $categories filter
+	 * @return array
+	 */
+	public function export($categories = null)
+	{
+		$where = array();
+		
+		if ($categories) {
+			$where[] = " (xc.category_id = ". implode(" OR xc.category_id = ", $categories).') ';
+		}
+		
+		if (count($where)) {
+			$where = ' WHERE '.implode(' AND ', $where);
+		}
+		else {
+			$where = '';
+		}
+				
+		$query = ' SELECT v.id, v.venue, v.alias, v.url, v.street, v.plz, v.city, v.state, v.country, v.latitude, v.longitude, '
+		       . ' v.locdescription, v.meta_description, v.meta_keywords, v.locimage, v.private, v.map, v.published  '
+		       . ' FROM #__redevent_venues AS v '
+		       . ' LEFT JOIN #__redevent_venue_category_xref AS xc ON xc.venue_id = v.id '
+		       . $where
+		       . ' GROUP BY v.id '
+		       ;
+    $this->_db->setQuery($query);
+    
+    $results = $this->_db->loadAssocList();
+    
+    return $results;
+	}
+	
+  /**
+	 * insert venues database
+	 * 
+	 * @param array $records
+	 * @param boolean $replace existing events with same id
+	 * @return boolean true on success
+	 */
+	public function import($records, $replace = 0)
+	{
+		$count = array('added' => 0, 'updated' => 0);
+		
+		$current = null; // current event for sessions
+		foreach ($records as $r)
+		{			
+			$v = Jtable::getInstance('RedEvent_venues', '');	
+			$v->bind($r);
+			if (!$replace) {
+				$v->id = null;
+				$update = 0;
+			}
+			else if ($v->id) {
+				$update = 1;
+			}
+			// store !
+			if (!$v->check()) {
+				JError::raiseWarning(0, JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$v->getError());
+				continue;
+			}
+			if (!$v->store()) {
+				JError::raiseWarning(0, JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$v->getError());
+				continue;
+			}
+		}
+		return $count;
+	}
 }
 ?>

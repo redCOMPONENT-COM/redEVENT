@@ -82,7 +82,7 @@ class RedEventViewEvents extends JView {
 		JToolBarHelper::deleteList(JText::_( 'COM_REDEVENT_EVENTS_REMOVE_CONFIRM_MESSAGE'));
 		JToolBarHelper::spacer();
 		JToolBarHelper::custom( 'copy', 'copy.png', 'copy_f2.png', 'Copy' );
-		JToolBarHelper::custom('export', 'exportevents', 'exportevents', JText::_('COM_REDEVENT_BUTTON_EXPORT_EVENTS'), false);
+		JToolBarHelper::custom('export', 'exportevents', 'exportevents', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), false);
 		JToolBarHelper::spacer();
 		JToolBarHelper::help( 'el.listevents', true );
 
@@ -140,7 +140,7 @@ class RedEventViewEvents extends JView {
 		JToolBarHelper::title( JText::_( 'COM_REDEVENT_PAGETITLE_EVENTS_EXPORT' ), 'events' );
 		
 		JToolBarHelper::back();
-		JToolBarHelper::custom('doexport', 'exportevents', 'exportevents', JText::_('COM_REDEVENT_BUTTON_EXPORT_EVENTS'), false);
+		JToolBarHelper::custom('doexport', 'exportevents', 'exportevents', JText::_('COM_REDEVENT_BUTTON_EXPORT'), false);
 		
 		$lists = array();
 		
