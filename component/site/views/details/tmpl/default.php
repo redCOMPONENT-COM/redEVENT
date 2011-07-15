@@ -37,6 +37,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     <?php if ($this->manage_attendees): ?>
     <?php echo ELOutput::xrefattendeesbutton($this->row->xref); ?>
 		<?php endif; ?>
+		<?php if ($this->params->get('gplusone', 1) || 1): ?>
+			<g:plusone size="small"></g:plusone>
+		<?php endif;?>
 	</p>
 
 <?php if ($this->params->def( 'show_page_title', 1 )) : ?>

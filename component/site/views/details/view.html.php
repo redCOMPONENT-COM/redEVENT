@@ -45,12 +45,17 @@ class RedeventViewDetails extends JView
 		$mainframe = &JFactory::getApplication();
 		/* Set which page to show */
 		$tpl = JRequest::getVar('page', null);
+		$params 	= & $mainframe->getParams('com_redevent');
 		
 		$document 	= JFactory::getDocument();
 		$user		= JFactory::getUser();
 		$dispatcher = JDispatcher::getInstance();
 		$elsettings = redEVENTHelper::config();
 		$acl        = UserAcl::getInstance();
+		
+		if ($params->get('gplusone', 1)) {
+			$document->addScript('https://apis.google.com/js/plusone.js');
+		}
 		
 		$row         = $this->get('Details');
 		$registers   = $this->get('Registers');
@@ -74,8 +79,6 @@ class RedeventViewDetails extends JView
 		$item    	= $menu->getActive();
 		if (!$item) $item = $menu->getDefault();
 		
-		$params 	= & $mainframe->getParams('com_redevent');
-
 		//Check if the id exists
 		if ($row->did == 0)
 		{

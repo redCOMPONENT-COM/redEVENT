@@ -27,12 +27,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
 	<p class="buttons">
 		<?php echo ELOutput::mailbutton( $this->row->slug, 'details', $this->params ); ?>
+		
 		<?php echo ELOutput::printbutton( $this->print_link, $this->params ); ?>
+		
 		<?php if ($this->params->get('event_ics', 1)): ?>
 			<?php $img = JHTML::image(JURI::base().'components/com_redevent/assets/images/iCal2.0.png', JText::_('COM_REDEVENT_EXPORT_ICS')); ?>
 			<?php echo JHTML::link( JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug).'&format=raw&layout=ics', false), 
 			                        $img ); ?>
 		<?php endif; ?>
+		
+		<?php if ($this->params->get('gplusone', 1) || 1): ?>
+			<g:plusone size="small"></g:plusone>
+		<?php endif;?>
 	</p>
 
 <?php if ($this->params->def( 'show_page_title', 1 )) : ?>
