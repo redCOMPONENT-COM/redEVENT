@@ -258,5 +258,10 @@
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>
+    <param name="fbopengraph" type="radio" default="1" label="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_DESC">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>    
+    <param name="fbadmin" type="text" default="" label="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_ADMIN_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_ADMIN_DESC"/>
  	</params>
 </config>

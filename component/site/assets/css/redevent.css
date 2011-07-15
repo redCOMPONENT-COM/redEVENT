@@ -649,3 +649,17 @@ div#filters-toggle:hover {
 	margin-left:0px;
 	border-left: 3px solid lightgrey;
 }
+
+ul.redevent-social {
+	margin: 0;
+	padding: 0;
+  list-style: none;
+}
+
+ul.redevent-social li {
+  padding: 0 0 5px;
+}
+
+ul.redevent-social li div {
+	height:25px;
+}

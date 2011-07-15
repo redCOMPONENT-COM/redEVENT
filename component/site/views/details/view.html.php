@@ -43,6 +43,7 @@ class RedeventViewDetails extends JView
 	function display($tpl = null)
 	{		
 		$mainframe = &JFactory::getApplication();
+		$uri       = &JFactory::getUri();
 		/* Set which page to show */
 		$tpl = JRequest::getVar('page', null);
 		$params 	= & $mainframe->getParams('com_redevent');
@@ -196,6 +197,16 @@ class RedeventViewDetails extends JView
 		$document->setTitle( $row->full_title );
 		$document->setMetadata('keywords', $meta_keywords_content );
 		$document->setDescription( strip_tags($description_content) );
+		
+		// more metadata		
+		$document->addCustomTag('<meta property="og:title" content="'.$row->full_title.'"/>');
+		$document->addCustomTag('<meta property="og:type" content="activity"/>');
+		$document->addCustomTag('<meta property="og:url" content="'.$uri->toString().'"/>');
+		if ($row->datimage) {
+			$document->addCustomTag('<meta property="og:image" content="'.JURI::base().'images/redevent/events/'.$row->datimage.'"/>');
+		}
+		$document->addCustomTag('<meta property="og:site_name" content="'.$mainframe->getCfg('sitename').'"/>');
+		$document->addCustomTag('<meta property="og:description" content="'.JFilterOutput::cleanText($row->summary).'"/>');
 
 		//build the url
 		if(!empty($row->url) && strtolower(substr($row->url, 0, 7)) != "http://") {
@@ -238,7 +249,12 @@ class RedeventViewDetails extends JView
     $this->assignRef('unreg_check' ,     $unreg_check);
     $this->assignRef('roles' ,           $roles);
     $this->assignRef('prices',           $prices);
+    $this->assignRef('uri',              $uri);
 	
+    if ($params->get('fbopengraph', 1)) {
+    	$this->_opengraph();
+    }
+    
 		$tpl = JRequest::getVar('tpl', $tpl);
     if ($tpl == '')
     { 
@@ -315,6 +331,21 @@ class RedeventViewDetails extends JView
 			echo $this->loadTemplate('roles');
 			$this->setLayout($layout);			
 		}
+	}
+	
+	protected function _opengraph()
+	{
+		$app      = &JFactory::getApplication();
+		$document = &Jfactory::getDocument();
+		$uri      = &JFactory::getUri();
+		$params   = $app->getParams('com_redevent');
+		
+		$row = $this->row;		
+	
+		if ($params->get('fbadmin')) {
+			$document->addCustomTag('<meta property="fb:admins" content="'.$params->get('fbadmin').'"/>');
+		}
+		$document->addScript('http://connect.facebook.net/en_US/all.js#xfbml=1');
 	}
 }
 ?>

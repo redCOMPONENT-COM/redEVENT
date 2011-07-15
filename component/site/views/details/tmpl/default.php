@@ -25,7 +25,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
-	<p class="buttons">
+<div class="event-header">
+	<div class="buttons">
 		<?php echo ELOutput::mailbutton( $this->row->slug, 'details', $this->params ); ?>
 		<?php echo ELOutput::printbutton( $this->print_link, $this->params ); ?>
 		<?php if ($this->row->enable_ical == 1 || ($this->row->enable_ical == 0 && $this->params->get('event_ics', 1))): ?>
@@ -37,16 +38,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     <?php if ($this->manage_attendees): ?>
     <?php echo ELOutput::xrefattendeesbutton($this->row->xref); ?>
 		<?php endif; ?>
-		<?php if ($this->params->get('gplusone', 1) || 1): ?>
-			<g:plusone size="small"></g:plusone>
-		<?php endif;?>
-	</p>
+	</div>	
+      
 
 <?php if ($this->params->def( 'show_page_title', 1 )) : ?>
 	<h1 class="componentheading">
 		<?php echo $this->row->full_title; ?>
 	</h1>
 <?php endif; ?>
+
+</div>
 
 <!-- Details EVENT -->
 	<?php //flyer
@@ -88,6 +89,16 @@ if ($this->row->show_names) : ?>
 		<?php echo $this->loadTemplate('comments'); ?>
 		
   	<?php endif; ?>
+  	  	
+	<ul class="redevent-social">
+			<?php if ($this->params->get('fbopengraph', 1)):?>
+			<li class="fb-like"><div><fb:like href="<?php $this->uri->toString(); ?>" send="false" width="450" show_faces="false" font=""></fb:like></div></li>
+		  <?php endif; ?>
+			<?php if ($this->params->get('gplusone', 1) || 1): ?>
+			<li class="plusonebutton"><div><g:plusone size="small"></g:plusone></div></li>
+			<?php endif;?>
+	</ul>
+	
 <p class="copyright">
 	<?php echo ELOutput::footer( ); ?>
 </p>

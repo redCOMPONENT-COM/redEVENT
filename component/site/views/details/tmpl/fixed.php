@@ -24,6 +24,10 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
+<?php if ($this->params->get('fbopengraph', 1)):?>
+	<div id="fb-root"></div>
+<?php endif; ?>
+
 <div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
 	<p class="buttons">
 		<?php echo ELOutput::mailbutton( $this->row->slug, 'details', $this->params ); ?>
@@ -35,10 +39,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			<?php echo JHTML::link( JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug).'&format=raw&layout=ics', false), 
 			                        $img ); ?>
 		<?php endif; ?>
-		
-		<?php if ($this->params->get('gplusone', 1) || 1): ?>
-			<g:plusone size="small"></g:plusone>
-		<?php endif;?>
 	</p>
 
 <?php if ($this->params->def( 'show_page_title', 1 )) : ?>
@@ -305,6 +305,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		
   	<?php endif; ?>
 
+	<ul class="redevent-social">
+			<?php if ($this->params->get('fbopengraph', 1)):?>
+			<li class="fb-like"><div><fb:like href="<?php $this->uri->toString(); ?>" send="false" width="450" show_faces="false" font=""></fb:like></div></li>
+		  <?php endif; ?>
+			<?php if ($this->params->get('gplusone', 1) || 1): ?>
+			<li class="plusonebutton"><div><g:plusone size="small"></g:plusone></div></li>
+			<?php endif;?>
+	</ul>
+	
 <p class="copyright">
 	<?php echo ELOutput::footer( ); ?>
 </p>
