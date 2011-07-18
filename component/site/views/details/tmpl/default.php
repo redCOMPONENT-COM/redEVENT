@@ -94,7 +94,28 @@ if ($this->row->show_names) : ?>
 			<?php if ($this->params->get('fbopengraph', 1)):?>
 			<li class="fb-like"><div><fb:like href="<?php $this->uri->toString(); ?>" send="false" width="450" show_faces="false" font=""></fb:like></div></li>
 		  <?php endif; ?>
-			<?php if ($this->params->get('gplusone', 1) || 1): ?>
+			<?php if ($this->params->get('tweet', 1)):?>
+			<li class="tweetevent">
+				<div>
+					<a href="http://twitter.com/share" 
+					   class="twitter-share-button" 
+					   data-text="<?php echo $this->row->full_title; ?>" 
+					   data-count="horizontal" 
+					   <?php echo ($this->params->get('tweet_recommend') ? 'data-via="'.$this->params->get('tweet_recommend').'"' : ''); ?> 
+					   <?php if ($this->params->get('tweet_recommend2')) {
+					   	if ($this->params->get('tweet_recommend2_text')) {
+					   		$text = 'data-related="'.$this->params->get('tweet_recommend2').':'.htmlspecialchars($this->params->get('tweet_recommend2_text')).'"';
+					   	}
+					   	else {
+					   		$text = 'data-related="'.$this->params->get('tweet_recommend2').'"';
+					   	}
+					   	echo $text;
+					   } 
+					   ?>
+					   data-lang="<?php echo substr($this->lang->getTag(), 0, 2); ?>">Tweet</a>
+				</div></li>
+		  <?php endif; ?>
+			<?php if ($this->params->get('gplusone', 1)): ?>
 			<li class="plusonebutton"><div><g:plusone size="small"></g:plusone></div></li>
 			<?php endif;?>
 	</ul>

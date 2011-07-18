@@ -57,6 +57,9 @@ class RedeventViewDetails extends JView
 		if ($params->get('gplusone', 1)) {
 			$document->addScript('https://apis.google.com/js/plusone.js');
 		}
+		if ($params->get('tweet', 1)) {
+			$document->addScript('http://platform.twitter.com/widgets.js');
+		}
 		
 		$row         = $this->get('Details');
 		$registers   = $this->get('Registers');
@@ -200,7 +203,7 @@ class RedeventViewDetails extends JView
 		
 		// more metadata		
 		$document->addCustomTag('<meta property="og:title" content="'.$row->full_title.'"/>');
-		$document->addCustomTag('<meta property="og:type" content="activity"/>');
+		$document->addCustomTag('<meta property="og:type" content="event"/>');
 		$document->addCustomTag('<meta property="og:url" content="'.$uri->toString().'"/>');
 		if ($row->datimage) {
 			$document->addCustomTag('<meta property="og:image" content="'.JURI::base().'images/redevent/events/'.$row->datimage.'"/>');
@@ -250,6 +253,7 @@ class RedeventViewDetails extends JView
     $this->assignRef('roles' ,           $roles);
     $this->assignRef('prices',           $prices);
     $this->assignRef('uri',              $uri);
+    $this->assignRef('lang',             JFactory::getLanguage());
 	
     if ($params->get('fbopengraph', 1)) {
     	$this->_opengraph();
