@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/module-install.dtd">
+<install type="module" version="1.5.0" method="upgrade">
+	<name>redEVENT Attending Events</name>
+	<creationDate>Jul 18, 2011</creationDate>
+	<author>Redweb.dk</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redweb.dk</authorUrl>
+	<copyright>(c) 2008 - 2011 Redweb.dk</copyright>
+	<license>GNU/GPL</license>
+	<version>2.0</version>
+	<description>MOD_REDEVENT_attending_DESCRIPTION</description>
+
+	<files>
+		<filename module="mod_redevent_attending">mod_redevent_attending.php</filename>
+		<filename>mod_redevent_attending.css</filename>
+		<filename>index.html</filename>
+    <filename>helper.php</filename>
+    <filename>tmpl/default.php</filename>
+    <filename>tmpl/index.html</filename>
+	</files>
+
+	<languages>
+		<language tag="en-GB">languages/en-GB.mod_redevent_attending.ini</language>
+	</languages>
+
+	<params>
+    <param name="layout" type="list" default="table" label="MOD_REDEVENT_attending_LAYOUT_LABEL" description="MOD_REDEVENT_attending_LAYOUT_DESC">
+      <option value="list">MOD_REDEVENT_attending_LAYOUT_UL_LIST</option>
+      <option value="table">MOD_REDEVENT_attending_LAYOUT_TABLE</option>
+    </param>
+		<param name="type" type="list" default="0" label="MOD_REDEVENT_attending_WINDOW_LABEL" description="MOD_REDEVENT_attending_WINDOW_DESC">
+			<option value="0">MOD_REDEVENT_attending_WINDOW_UPCOMING</option>
+			<option value="1">MOD_REDEVENT_attending_WINDOW_DAY</option>
+			<option value="2">MOD_REDEVENT_attending_WINDOW_WEEK</option>
+			<option value="3">MOD_REDEVENT_attending_WINDOW_MONTH</option>
+		</param>
+		<param name="includeopen" type="list" default="0" label="MOD_REDEVENT_attending_INCLUDE_OPEN_LABEL" description="MOD_REDEVENT_attending_INCLUDE_OPEN_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>		
+		<param name="offset" type="text" default="0" label="MOD_REDEVENT_attending_OFFSET_LABEL" description="MOD_REDEVENT_attending_OFFSET_DESC"/>		
+		<param name="showvenue" type="list" default="1" label="MOD_REDEVENT_attending_SHOW_VENUE_LABEL" description="MOD_REDEVENT_attending_SHOW_VENUE_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>		
+    <param name="show_enddate" type="list" default="1" label="MOD_REDEVENT_attending_SHOW_END_DATE_LABEL" description="MOD_REDEVENT_attending_SHOW_END_DATE_LABEL_DESC">
+      <option value="0">NO</option>
+      <option value="1">YES</option>
+    </param>
+    <param name="show_time" type="list" default="1" label="MOD_REDEVENT_attending_SHOW_TIME_LABEL" description="MOD_REDEVENT_attending_SHOW_TIME_DESC">
+      <option value="0">NO</option>
+      <option value="1">YES</option>
+    </param>
+    <param name="show_picture" type="list" default="1" label="MOD_REDEVENT_attending_SHOW_PICTURE_LABEL" description="MOD_REDEVENT_attending_SHOW_PICTURE_DESC">
+      <option value="0">NO</option>
+      <option value="1">YES</option>
+    </param>
+    <param name="show_price_column" type="list" default="0" label="MOD_REDEVENT_attending_SHOW_PRICE_COLUMN_LABEL" description="MOD_REDEVENT_attending_SHOW_PRICE_COLUMN_DESC">
+      <option value="0">NO</option>
+      <option value="1">YES</option>
+    </param>
+    <param name="show_price_total" type="list" default="0" label="MOD_REDEVENT_attending_SHOW_PRICE_TOTAL_LABEL" description="MOD_REDEVENT_attending_SHOW_PRICE_TOTAL_DESC">
+      <option value="0">NO</option>
+      <option value="1">YES</option>
+    </param>
+		<param name="picture_size" type="text" default="30" label="MOD_REDEVENT_attending_PICTURE_SIZE_LABEL" description="MOD_REDEVENT_attending_PICTURE_SIZE_DESC" />
+		<param name="formatdate" type="text" default="%d.%m.%Y" label="MOD_REDEVENT_attending_DATE_FORMAT_LABEL" description="MOD_REDEVENT_attending_DATE_FORMAT_DESC" />
+		<param name="formattime" type="text" default="%H.%M" label="MOD_REDEVENT_attending_TIME_FORMAT_LABEL" description="MOD_REDEVENT_attending_TIME_FORMAT_DESC" />
+		<param name="moduleclass_sfx" type="text" default="" label="MODULE CLASS SUFFIX" description="MODULE CLASS SUFFIX DESC" />
+	</params>
+
+	<params group="advanced">
+		<param name="cache" type="list" default="1" label="CACHING" description="CACHING DESC">
+			<option value="1">USE GLOBAL</option>
+			<option value="0">NO CACHING</option>
+		</param>
+		<param name="cache_time" type="text" default="900" label="CACHE TIME" description="CACHE TIME DESC" />
+	</params>
+
+</install>
