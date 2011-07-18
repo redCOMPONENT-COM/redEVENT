@@ -306,13 +306,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   	<?php endif; ?>
 
 	<ul class="redevent-social">
-			<?php if ($this->params->get('fbopengraph', 1)):?>
-			<li class="fb-like"><div><fb:like href="<?php $this->uri->toString(); ?>" send="false" width="450" show_faces="false" font=""></fb:like></div></li>
+			<?php if ($this->params->get('fbopengraph', 0)):?>
+			<li class="fb-like"><div><fb:like send="true" layout="button_count" width="90" show_faces="false" font=""></fb:like></div></li>
 		  <?php endif; ?>
-			<?php if ($this->params->get('gplusone', 1) || 1): ?>
+			<?php if ($this->params->get('gplusone', 0)): ?>
 			<li class="plusonebutton"><div><g:plusone size="small"></g:plusone></div></li>
 			<?php endif;?>
-			<?php if ($this->params->get('tweet', 1)):?>
+			<?php if ($this->params->get('tweet', 0)):?>
 			<li class="tweetevent">
 				<div>
 					<a href="http://twitter.com/share" 

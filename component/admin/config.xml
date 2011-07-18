@@ -254,23 +254,23 @@
  	</params>
  	
  	<params group="COM_REDEVENT_SETTINGS_SOCIAL">
-    <param name="gplusone" type="radio" default="1" label="COM_REDEVENT_SETTINGS_SOCIAL_GOOGLEPLUSONE_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_GOOGLEPLUSONE_DESC">
+    <param name="gplusone" type="radio" default="0" label="COM_REDEVENT_SETTINGS_SOCIAL_GOOGLEPLUSONE_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_GOOGLEPLUSONE_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>
     <param type="spacer" />
-    <param name="fbopengraph" type="radio" default="1" label="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_DESC">
+    <param name="fbopengraph" type="radio" default="0" label="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>    
     <param name="fbadmin" type="text" default="" label="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_ADMIN_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_ADMIN_DESC"/>
     <param type="spacer" />
-    <param name="tweet" type="radio" default="1" label="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_BUTTON_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_BUTTON_DESC">
+    <param name="tweet" type="radio" default="0" label="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_BUTTON_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_BUTTON_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>
     <param name="tweet_recommend" type="text" default="" label="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND_DESC"/>
     <param name="tweet_recommend2" type="text" default="" label="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_DESC"/>
-    <param name="tweet_recommend2_text" type="text" default="" label="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_DESC"/>
+    <param name="tweet_recommend2_text" type="text" default="" label="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_TEXT_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_TEXT_DESC"/>
  	</params>
 </config>
