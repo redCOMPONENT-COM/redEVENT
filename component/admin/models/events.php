@@ -282,6 +282,7 @@ class RedEventModelEvents extends JModel
 				$query = 'UPDATE #__redevent_event_venue_xref'
 					. ' SET published = '. (int) $publish
 					. ' WHERE eventid IN ('. $cids .')'
+					. '   AND published > -1 ' // do not change state of archived session
 				;
 				$this->_db->setQuery( $query );
 
