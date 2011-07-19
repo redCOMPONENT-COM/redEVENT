@@ -417,9 +417,14 @@ class RedeventModelDetails extends JModel
 			return;
 		}
 		
+		if (!redEVENTHelper::canUnregister($xref)) {
+			$this->setError(JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED'));
+			return false;			
+		}
+		
 		// first, check if the user is allowed to unregister from this
 		// he must be the one that submitted the form, plus the unregistration must be allowed
-		$q = ' SELECT s.*, r.uid, e.unregistra '
+		$q = ' SELECT s.*, r.uid, e.unregistra, x.dates, x.times, x.registrationend  '
         . ' FROM #__rwf_submitters AS s '
         . ' INNER JOIN #__redevent_register AS r ON r.sid = s.id '
         . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.id = r.xref '
@@ -432,10 +437,12 @@ class RedeventModelDetails extends JModel
 		// or be allowed to manage attendees
 		$manager = $this->getManageAttendees();
 		
-		if (($submitterinfo->uid <> $userid || $submitterinfo->unregistra == 0) && !$manager) {
-      RedeventError::raiseWarning('1', JText::_('Cannot delete registration').' '.$db->getErrorMsg());
+		if (($submitterinfo->uid <> $userid || $submitterinfo->unregistra == 0) && !$manager) 
+		{
+			$this->setError(JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED'));
       return false;			
 		}
+		
 		
 		// Now that we made sure, we can delete the submitter and corresponding form values
     /* Delete the redFORM entry first */
@@ -448,7 +455,7 @@ class RedeventModelDetails extends JModel
         ;
     $db->setQuery($q);
     if ( !$db->query() ) {
-      RedeventError::raiseWarning('2', JText::_('Error deleting redform registration').' '.$db->getErrorMsg());
+			$this->setError(JText::_('COM_REDEVENT_ERROR_CANNOT_DELETE_REGISTRATION'));
       return false;     
     }
 		return true;
