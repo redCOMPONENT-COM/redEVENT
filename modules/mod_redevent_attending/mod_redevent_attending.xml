@@ -16,7 +16,8 @@
 		<filename>mod_redevent_attending.css</filename>
 		<filename>index.html</filename>
     <filename>helper.php</filename>
-    <filename>tmpl/default.php</filename>
+    <filename>tmpl/list.php</filename>
+    <filename>tmpl/table.php</filename>
     <filename>tmpl/index.html</filename>
 	</files>
 
