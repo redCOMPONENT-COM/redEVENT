@@ -138,9 +138,9 @@ class RedeventModelCategories extends JModel
 				$category->linktext = $task == 'archive' ? JText::_( 'SHOW ARCHIVE' ) : JText::_( 'SHOW EVENTS' );
 
 				if ($task == 'archive') {
-					$category->linktarget = JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($category->slug, 'archive'));
+					$category->linktarget = RedeventHelperRoute::getCategoryEventsRoute($category->slug, 'archive');
 				} else {
-					$category->linktarget = JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($category->slug));
+					$category->linktarget = RedeventHelperRoute::getCategoryEventsRoute($category->slug);
 				}
 
 				$k = 1 - $k;
