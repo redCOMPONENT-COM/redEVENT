@@ -1184,7 +1184,8 @@ class redEVENTHelper {
     foreach ($fields as $field) 
     {
     	if ($params->get('csv_export_strip_linebreaks', 0)) {
-    		$field = str_replace(array("\n", "\r\n"), "", $field);
+    		$field = str_replace(array("\r\n"), "", $field);
+    		$field = str_replace(array("\n"), "", $field);
     	}
 			$output[] = preg_match("/(?:${delimiter_esc}|${enclosure_esc}|\s)/", $field) ? (
             $enclosure . str_replace($enclosure, $enclosure . $enclosure, $field) . $enclosure
