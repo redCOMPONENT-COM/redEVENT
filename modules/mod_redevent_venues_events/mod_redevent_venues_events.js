@@ -22,6 +22,8 @@
 
 window.addEvent('domready', function(){
 	$$('.mod-ve-select').addEvent('click', function(){
-		window.location = this.options[this.selectedIndex].value;
+		if (this.options[this.selectedIndex].value != "") {
+			window.location = this.options[this.selectedIndex].value;
+		}
 	});
 });

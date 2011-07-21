@@ -139,7 +139,7 @@ class modRedEventVenuesEventsHelper
 	 */
 	function getVenuesEventsOptions($sessions)
 	{
-		$options = array(JHTML::_('select.option', '#', JText::_('MOD_REDEVENT_VENUES_EVENTS_SELECT_EVENT')));
+		$options = array(JHTML::_('select.option', '', JText::_('MOD_REDEVENT_VENUES_EVENTS_SELECT_EVENT')));
 		foreach ($sessions as $s)
 		{
 			$link = RedeventHelperRoute::getDetailsRoute($s->id, $s->xref);
