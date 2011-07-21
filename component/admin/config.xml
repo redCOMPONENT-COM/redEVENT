@@ -251,6 +251,10 @@
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param> 	
+    <param name="csv_export_strip_linebreaks" type="radio" default="0" label="COM_REDEVENT_SETTINGS_CSV_EXPORT_STRIP_LINEBREAKS_LABEL" description="COM_REDEVENT_SETTINGS_CSV_EXPORT_STRIP_LINEBREAKS_DESC">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param> 
  	</params>
  	
  	<params group="COM_REDEVENT_SETTINGS_SOCIAL">

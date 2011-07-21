@@ -1175,12 +1175,18 @@ class redEVENTHelper {
    */
 	function writecsvrow($fields, $delimiter = ',', $enclosure = '"') 
 	{
+		$params = &JComponentHelper::getParams('com_redevent');
+		
     $delimiter_esc = preg_quote($delimiter, '/');
     $enclosure_esc = preg_quote($enclosure, '/');
 
     $output = array();
-    foreach ($fields as $field) {
-        $output[] = preg_match("/(?:${delimiter_esc}|${enclosure_esc}|\s)/", $field) ? (
+    foreach ($fields as $field) 
+    {
+    	if ($params->get('csv_export_strip_linebreaks', 0)) {
+    		$field = str_replace(array("\n", "\r\n"), "", $field);
+    	}
+			$output[] = preg_match("/(?:${delimiter_esc}|${enclosure_esc}|\s)/", $field) ? (
             $enclosure . str_replace($enclosure, $enclosure . $enclosure, $field) . $enclosure
         ) : $field;
     }
