@@ -263,7 +263,7 @@ class RedEventModelRegistration extends JModel
 		
 		/* Get settings for event */
 		$q = "SELECT e.title, e.notify_subject, e.notify_body, e.notify, x.maxattendees, e.activate,
-					e.confirmation_message, e.redform_id, e.submission_type_formal_offer, e.submission_type_formal_offer_subject,
+					e.juser, e.confirmation_message, e.redform_id, e.submission_type_formal_offer, e.submission_type_formal_offer_subject,
 					e.datdescription, e.id AS eventid
 			FROM #__redevent_events e
 			LEFT JOIN #__redevent_event_venue_xref x
@@ -640,6 +640,24 @@ class RedEventModelRegistration extends JModel
   	
 		// convert urls
 		$mail = ELOutput::ImgRelAbs($mail);
+		
+		if ($params->get('registration_notification_attach_rfuploads', 1))
+		{
+			// files submitted through redform
+			$files = $this->getRFFiles();
+			$filessize = 0;
+			foreach ($files as $f)
+			{
+				$filessize += filesize($f);
+			}
+			
+			if ($filessize < $params->get('registration_notification_attach_rfuploads_maxsize', 1500) * 1000) 
+			{
+				foreach ($files as $f) {
+					$mailer->addAttachment($f);
+				}
+			}
+		}
 						
   	$mailer->setSubject($tags->ReplaceTags($params->get('registration_notification_subject')));
   	$mailer->MsgHTML($mail);
@@ -821,6 +839,34 @@ class RedEventModelRegistration extends JModel
 		}
 		return false;
 	}	
+	
+	/**
+	 * return redform submitted files path if any
+	 * 
+	 * @return array
+	 */
+	protected function getRFFiles()
+	{
+		$files = array();
+		$fields  = $this->getRFFields();
+		$answers = $this->getRFAnswers();
+		
+		foreach ($fields as $f)
+		{
+			$property = 'field_'.$f->id;
+			if ($f->fieldtype == 'fileupload')
+			{
+				foreach ($answers as $a)
+				{
+					$path = $a->fields->$property;
+					if (!empty($path) && file_exists($path)) {
+						$files[] = $path;
+					}
+				}
+			}
+		}
+		return $files;
+	}
 	
 	/**
 	 * get price according to pricegroup
