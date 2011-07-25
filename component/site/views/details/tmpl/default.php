@@ -91,10 +91,10 @@ if ($this->row->show_names) : ?>
   	<?php endif; ?>
   	  	
 	<ul class="redevent-social">
-			<?php if ($this->params->get('fbopengraph', 1)):?>
+			<?php if ($this->params->get('fbopengraph', 0)):?>
 			<li class="fb-like"><div><fb:like send="true" layout="button_count" width="90" show_faces="false" font=""></fb:like></div></li>
 		  <?php endif; ?>
-			<?php if ($this->params->get('tweet', 1)):?>
+			<?php if ($this->params->get('tweet', 0)):?>
 			<li class="tweetevent">
 				<div>
 					<a href="http://twitter.com/share" 
@@ -115,7 +115,7 @@ if ($this->row->show_names) : ?>
 					   data-lang="<?php echo substr($this->lang->getTag(), 0, 2); ?>">Tweet</a>
 				</div></li>
 		  <?php endif; ?>
-			<?php if ($this->params->get('gplusone', 1)): ?>
+			<?php if ($this->params->get('gplusone', 0)): ?>
 			<li class="plusonebutton"><div><g:plusone size="small"></g:plusone></div></li>
 			<?php endif;?>
 	</ul>

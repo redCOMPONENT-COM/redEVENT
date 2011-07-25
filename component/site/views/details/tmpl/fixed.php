@@ -24,10 +24,6 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
-<?php if ($this->params->get('fbopengraph', 1)):?>
-	<div id="fb-root"></div>
-<?php endif; ?>
-
 <div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
 	<p class="buttons">
 		<?php echo ELOutput::mailbutton( $this->row->slug, 'details', $this->params ); ?>
