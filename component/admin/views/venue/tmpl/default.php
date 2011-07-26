@@ -22,6 +22,9 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+JHTML::_('behavior.mootools');
+JHTML::_('behavior.tooltip');
 ?>
 
 <script language="javascript" type="text/javascript">
@@ -66,13 +69,13 @@ defined('_JEXEC') or die('Restricted access');
 			submitform( task );
 		}
 	}
-	
-    var sApply = "<?php echo JText::_('APPLY'); ?>";
-    var sClose = "<?php echo JText::_('CLOSE'); ?>";
-    var sMove = "<?php echo JText::_('MOVEMARKERHERE'); ?>";
-    var sLatitude = "<?php echo JText::_('LATITUDE'); ?>";
-    var sLongitude = "<?php echo JText::_('LONGITUDE'); ?>";
-    var sTitle = "<?php echo JText::_('PINPOINTTITLE'); ?>";
+
+    var sApply = "<?php echo JText::_('COM_REDEVENT_APPLY'); ?>";
+    var sClose = "<?php echo JText::_('COM_REDEVENT_CLOSE'); ?>";
+    var sMove = "<?php echo JText::_('COM_REDEVENT_MOVEMARKERHERE'); ?>";
+    var sLatitude = "<?php echo JText::_('COM_REDEVENT_LATITUDE'); ?>";
+    var sLongitude = "<?php echo JText::_('COM_REDEVENT_LONGITUDE'); ?>";
+    var sTitle = "<?php echo JText::_('COM_REDEVENT_PINPOINTTITLE'); ?>";
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" >
@@ -250,12 +253,12 @@ defined('_JEXEC') or die('Restricted access');
     <tr>
       <td>
         <label for="latitude">
-          <?php echo JText::_( 'LATITUDE' ).':'; ?>
+          <?php echo JText::_( 'COM_REDEVENT_LATITUDE' ).':'; ?>
         </label>
       </td>
       <td>
         <input class="inputbox" name="latitude" id="latitude" value="<?php echo $this->row->latitude; ?>" size="14" maxlength="25" />
-              <span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('LATITUDE HINT'); ?>">
+              <span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_LATITUDE_TIP'); ?>">
           <?php echo $infoimage; ?>
         </span>
       </td>
@@ -263,12 +266,12 @@ defined('_JEXEC') or die('Restricted access');
     <tr>
       <td>
         <label for="longitude">
-          <?php echo JText::_( 'LONGITUDE' ).':'; ?>
+          <?php echo JText::_( 'COM_REDEVENT_LONGITUDE' ).':'; ?>
         </label>
       </td>
       <td>
         <input class="inputbox" name="longitude" id="longitude" value="<?php echo $this->row->longitude; ?>" size="14" maxlength="25" />
-              <span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('LONGITUDE HINT'); ?>">
+              <span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_LONGITUDE_TIP'); ?>">
           <?php echo $infoimage; ?>
         </span>
       </td>

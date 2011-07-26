@@ -69,6 +69,7 @@ class RedeventViewEditvenue extends JView
 
 		JHTML::_('behavior.formvalidation');
 		JHTML::_('behavior.tooltip');
+		JHTML::_('behavior.mootools');
 
 		//add css file
     if (!$params->get('custom_css')) {
@@ -131,6 +132,10 @@ class RedeventViewEditvenue extends JView
                        );
     $lists['published'] = JHTML::_('select.radiolist', $published, 'published', '', 'value', 'text', $row->published);
     
+    // gmap pinpoint    
+		$document->addScript('http://maps.google.com/maps/api/js?sensor=false');
+    $document->addStyleSheet(JURI::root().'/components/com_redevent/assets/css/gmapsoverlay.css', 'text/css');
+		$document->addScript(JURI::root().'/components/com_redevent/assets/js/gmapspinpoint.js');
     
 		$this->assignRef('row' , 					$row);
 		$this->assignRef('editor' , 				$editor);

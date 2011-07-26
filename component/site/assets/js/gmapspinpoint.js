@@ -1,8 +1,8 @@
 /**
- * @version 1.0 $Id: recurrence.js 30 2009-05-08 10:22:21Z roland $
+ * @version 1.0 $Id: ggmapspinpoint.js 30 2009-05-08 10:22:21Z roland $
  * @package Joomla
  * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @copyright redEVENT (C) 2008-2011 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
  * @license GNU/GPL, see LICENSE.php
  * redEVENT is based on EventList made by Christoph Lukes from schlu.net
  * redEVENT can be downloaded from www.redcomponent.com
@@ -19,401 +19,392 @@
  * along with redEVENT; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
- 
 
+window.addEvent('domready', function (){
+	GMapsOverlay.init();
+});
+	
+//nothing yet
 var GMapsOverlay = {
+		
+		marker:  null,
+		address: '',
+		venue:   '',
+		options: null,
+		geocoder: null,
+		
+		init: function(options){
+		    
+		    this.options = Object.extend({
+		      resizeDuration: 400,
+		      resizeTransition: Fx.Transitions.sineInOut,
+		      width: 250,
+		      height: 250,
+		      animateCaption: true
+		    }, options || {});
 
-  init: function(options){
+		    this.geocoder = new google.maps.Geocoder();
 
-    this.marker = null;
-    this.address = '';
-    this.venue = '';
-    
-    this.options = Object.extend({
+		    $$('.pinpoint').addEvent('click', this.click.bind(this));
 
-      resizeDuration: 400,
+		    this.eventKeyDown = this.keyboardListener.bindAsEventListener(this);
 
-      resizeTransition: Fx.Transitions.sineInOut,
+		    this.eventPosition = this.position.bind(this);
 
-      width: 250,
+		    this.overlay = new Element('div').setProperty('id', 'gmOverlay').injectInside(document.body);
 
-      height: 250,
+		    this.center = new Element('div').setProperty('id', 'gmCenter').setStyles({
 
-      animateCaption: true
+		      width: this.options.width+'px',
+		      height: this.options.height+'px',
+		      marginLeft: '-'+(this.options.width/2)+'px'
 
-    }, options || {});
+		    }).injectInside(document.body);
+		    
+		    this.top = new Element('div').setProperty('id', 'gmTop').setHTML(sTitle).injectInside(this.center);
+		    
+		    this.maplayer = new Element('div').setProperty('id', 'gmMap').injectInside(this.center);
 
-    if(!GBrowserIsCompatible()) return false;
+		    var myLatlng = new google.maps.LatLng(43, 7);
+		    var mapOptions = {
+		    		  panControl: true,
+		    		  zoomControl: true,
+		    		  mapTypeControl: true,
+		    		  scaleControl: true,
+		    		  streetViewControl: false,
+		    		  overviewMapControl: true,
+		    		  zoom: 8,
+		    		  center: myLatlng,
+		    		  mapTypeId: google.maps.MapTypeId.ROADMAP
+		    		};
 
-    this.geocoder = new GClientGeocoder();
+		    this.map = new google.maps.Map(this.maplayer, mapOptions);  
+		    
+		    google.maps.event.addListener(this.map, "rightclick", function(point) {
+		      this.marker.setMap(); // removes overlay from map
+		      this.showMarker(point.latLng);
+		    }.bind(this));
 
-    $('pinpointicon').addEvent('click', this.click.bind(this));
-    //$('latitude').addEvent('click', this.click.bind(this));
-    //$('longitude').addEvent('click', this.click.bind(this));
+		    this.bottomContainer = new Element('div').setProperty('id', 'gmBottomContainer').setStyle('display', 'none').injectInside(document.body);
 
-    this.eventKeyDown = this.keyboardListener.bindAsEventListener(this);
+		    this.bottom = new Element('div').setProperty('id', 'gmBottom').injectInside(this.bottomContainer);
 
-    this.eventPosition = this.position.bind(this);
+		    new Element('a').setProperties({id: 'gmCloseLink', href: '#'}).injectInside(this.bottom).onclick = this.overlay.onclick = this.close.bind(this);
 
-    this.overlay = new Element('div').setProperty('id', 'gmOverlay').injectInside(document.body);
+		    this.caption = new Element('div').setProperty('id', 'gmCaption').injectInside(this.bottom);
 
-    this.center = new Element('div').setProperty('id', 'gmCenter').setStyles({
+		    new Element('div').setStyle('clear', 'both').injectInside(this.bottom);
 
-      width: this.options.width+'px',
-      height: this.options.height+'px',
-      marginLeft: '-'+(this.options.width/2)+'px'
+		    this.center.style.display = 'none';
 
-    }).injectInside(document.body);
-    
-    this.top = new Element('div').setProperty('id', 'gmTop').setHTML(sTitle).injectInside(this.center);
-    
-    this.maplayer = new Element('div').setProperty('id', 'gmMap').injectInside(this.center);
+		    var nextEffect = this.nextEffect.bind(this);
 
-    this.map = new GMap2(this.maplayer);
+		    this.fx = {
 
-    this.map.addControl(new GLargeMapControl());
+		      overlay: this.overlay.effect('opacity', {duration: 500, fps:100}).hide(),
 
-    this.map.addControl(new GMapTypeControl());
+		      resize: this.center.effects({duration: this.options.resizeDuration, transition: this.options.resizeTransition, onComplete: nextEffect}),
 
-    this.map.addControl(new GOverviewMapControl());   
-    
-    GEvent.addListener(this.map, "singlerightclick", function(point) {
-      var target = this.map.fromContainerPixelToLatLng(point);
-      this.map.removeOverlay(this.marker);
-      this.showMarker(target);
-    }.bind(this));
+		      maplayer: this.maplayer.effect('opacity', {duration: 500, onComplete: nextEffect}),
 
-    this.bottomContainer = new Element('div').setProperty('id', 'gmBottomContainer').setStyle('display', 'none').injectInside(document.body);
+		      bottom: this.bottom.effect('margin-top', {duration: 400, onComplete: nextEffect})
 
-    this.bottom = new Element('div').setProperty('id', 'gmBottom').injectInside(this.bottomContainer);
+		    };
 
-    new Element('a').setProperties({id: 'gmCloseLink', href: '#'}).injectInside(this.bottom).onclick = this.overlay.onclick = this.close.bind(this);
+		  },
 
-    this.caption = new Element('div').setProperty('id', 'gmCaption').injectInside(this.bottom);
+		  click: function(){
+		      
+		    this.clearOverlays();
+		    return this.show();
 
-    new Element('div').setStyle('clear', 'both').injectInside(this.bottom);
+		  },
+		  
+		  clearOverlays : function(){
+			if (this.infowindow) {
+				this.infowindow.close();
+			}
+			if (this.marker) {
+				this.marker.setMap();
+			}
+		  },
 
-    this.center.style.display = 'none';
+		  show: function(){
+		    
+		    this.position();
 
-    var nextEffect = this.nextEffect.bind(this);
+		    this.setup(true);
 
-    this.fx = {
+		    this.top = window.getScrollTop() + (window.getHeight() / 15);
 
-      overlay: this.overlay.effect('opacity', {duration: 500, fps:100}).hide(),
+		    this.center.setStyles({top: this.top+'px', display: ''});
 
-      resize: this.center.effects({duration: this.options.resizeDuration, transition: this.options.resizeTransition, onComplete: nextEffect}),
+		    this.fx.overlay.start(0.8);
 
-      maplayer: this.maplayer.effect('opacity', {duration: 500, onComplete: nextEffect}),
+		    return this.changeLink();
 
-      bottom: this.bottom.effect('margin-top', {duration: 400, onComplete: nextEffect})
+		  },
 
-    };
+		  position: function(){
 
-  },
+		    this.overlay.setStyles({top: window.getScrollTop()+'px', height: window.getHeight()+'px'});
 
-  click: function(){
-      
-    this.map.clearOverlays();
+		  },
 
-    return this.show();
+		  setup: function(open){
 
-  },
+		    var elements = $A(document.getElementsByTagName('object'));
 
-  show: function(){
-    
-    this.position();
+		    if (window.ie) elements.extend(document.getElementsByTagName('select'));
 
-    this.setup(true);
+		    elements.each(function(el){ el.style.visibility = open ? 'hidden' : ''; });
 
-    this.top = window.getScrollTop() + (window.getHeight() / 15);
+		    var fn = open ? 'addEvent' : 'removeEvent';
 
-    this.center.setStyles({top: this.top+'px', display: ''});
+		    window[fn]('scroll', this.eventPosition)[fn]('resize', this.eventPosition);
 
-    this.fx.overlay.start(0.8);
+		    document[fn]('keydown', this.eventKeyDown);
 
-    return this.changeLink();
+		    this.step = 0;
 
-  },
+		  },
 
-  position: function(){
+		  keyboardListener: function(event){
 
-    this.overlay.setStyles({top: window.getScrollTop()+'px', height: window.getHeight()+'px'});
+		    this.close();
 
-  },
+		  },
 
-  setup: function(open){
+		  changeLink: function(){
 
-    var elements = $A(document.getElementsByTagName('object'));
+		    this.step = 1;
 
-    if (window.ie) elements.extend(document.getElementsByTagName('select'));
+		    this.bottomContainer.style.display = 'none';
 
-    elements.each(function(el){ el.style.visibility = open ? 'hidden' : ''; });
+		    this.fx.maplayer.hide();
 
-    var fn = open ? 'addEvent' : 'removeEvent';
+		    this.center.className = 'gmLoading';
 
-    window[fn]('scroll', this.eventPosition)[fn]('resize', this.eventPosition);
+		    this.venue = $('venue').value;
 
-    document[fn]('keydown', this.eventKeyDown);
+		    var address = null;
+		    if ($('street').value) address = $('street').value;
+		    
+		    if ($('plz').value || $('city').value) {
+		      if (address) {
+		        address += ',' + $('plz').value + ' ' + $('city').value;
+		      }
+		      else {
+		        address = $('plz').value + ' ' + $('city').value;
+		      }
+		    }
+		    
+		    if ($('country').value) {
+		      var countryselect = $('country');
+		      if (parseInt(countryselect.selectedIndex) > 0) {
+		        var country = countryselect.options[countryselect.selectedIndex].text;
+		        if (address) {
+		          address += ',' + country.substring(0, country.indexOf(','));
+		        }
+		        else {
+		          address = country.substring(0, country.indexOf(','));  
+		        }
+		      }
+		    }
+		    this.address = address;
+		    
+		    var latitude = $('latitude').value;
+		    var longitude= $('longitude').value;
+		    
+		    if (latitude != 0 && longitude != 0 && latitude != "" && longitude != "") {
+		      venuepos = new google.maps.LatLng(latitude, longitude);
+		      this.showPoint(venuepos, this.address);
+		    }
+		    else if (this.address) {
+		      this.showAddress(this.address);
+		    }
+		    else {
+		      this.showMarker(null);
+		    }
+		    this.nextEffect();
 
-    this.step = 0;
+		    return false;
 
-  },
+		  },
 
-  keyboardListener: function(event){
+		  nextEffect: function(){
 
-    this.close();
+		    switch (this.step++){
 
-  },
+		      case 1:
 
-  changeLink: function(){
+		      this.center.className = '';
 
-    this.step = 1;
+		      this.caption.setHTML("Google-Maps");
 
-    this.bottomContainer.style.display = 'none';
+		      if (this.center.clientHeight != this.maplayer.offsetHeight){
 
-    this.fx.maplayer.hide();
+		        this.fx.resize.start({height: this.maplayer.offsetHeight, width: this.maplayer.offsetWidth, marginLeft: -this.maplayer.offsetWidth/2});
 
-    this.center.className = 'gmLoading';
+		        break;
 
-    this.venue = $('venue').value;
+		      }
 
-    var address = null;
-    if ($('street').value) address = $('street').value;
-    
-    if ($('plz').value || $('city').value) {
-      if (address) {
-        address += ',' + $('plz').value + ' ' + $('city').value;
-      }
-      else {
-        address = $('plz').value + ' ' + $('city').value;
-      }
-    }
-    
-    if ($('country').value) {
-      var countryselect = $('country');
-      if (parseInt(countryselect.selectedIndex) > 0) {
-        var country = countryselect.options[countryselect.selectedIndex].text;
-        if (address) {
-          address += ',' + country.substring(0, country.indexOf(','));
-        }
-        else {
-          address = country.substring(0, country.indexOf(','));  
-        }
-      }
-    }
-    this.address = address;
-    
-    var latitude = $('latitude').value;
-    var longitude= $('longitude').value;
-    
-    if (latitude != 0 && longitude != 0 && latitude != "" && longitude != "") {
-      venuepos = new GLatLng(latitude, longitude);
-      this.showPoint(venuepos, this.address);
-    }
-    else if (this.address) {
-      this.showAddress(this.address);
-    }
-    else {
-      this.showMarker(null);
-    }
-    this.nextEffect();
+		      this.step++;
 
-    return false;
+		      case 2:
 
-  },
+		      this.bottomContainer.setStyles({top: (this.top + this.center.clientHeight)+'px', height: '0px', marginLeft: this.center.style.marginLeft, width: this.center.clientWidth+'px', display: ''});
 
-  nextEffect: function(){
+		      this.fx.maplayer.start(1);
 
-    switch (this.step++){
+		      break;
 
-      case 1:
+		      case 3:
 
-      this.center.className = '';
+		      if (this.options.animateCaption){
 
-      this.caption.setHTML("Google-Maps");
+		        this.fx.bottom.set(-this.bottom.offsetHeight);
 
-      if (this.center.clientHeight != this.maplayer.offsetHeight){
+		        this.bottomContainer.style.height = '';
 
-        this.fx.resize.start({height: this.maplayer.offsetHeight, width: this.maplayer.offsetWidth, marginLeft: -this.maplayer.offsetWidth/2});
+		        this.fx.bottom.start(0);
 
-        break;
+		        break;
 
-      }
+		      }
 
-      this.step++;
+		      this.bottomContainer.style.height = '';
 
-      case 2:
+		      case 4:
 
-      this.bottomContainer.setStyles({top: (this.top + this.center.clientHeight)+'px', height: '0px', marginLeft: this.center.style.marginLeft, width: this.center.clientWidth+'px', display: ''});
+		      this.step = 0;
 
-      this.fx.maplayer.start(1);
+		    }
+		    google.maps.event.trigger(this.map, "resize");
+		  },
 
-      break;
+		  close: function(){
 
-      case 3:
+		    if (this.step < 0) return;
 
-      if (this.options.animateCaption){
+		    this.step = -1;
 
-        this.fx.bottom.set(-this.bottom.offsetHeight);
+		    for (var f in this.fx) this.fx[f].stop();
 
-        this.bottomContainer.style.height = '';
+		    this.center.style.display = this.bottomContainer.style.display = 'none';
 
-        this.fx.bottom.start(0);
+		    this.fx.overlay.chain(this.setup.pass(false, this)).start(0);
+		    
+		    var lat = $('latitude').value;
+		    var lng = $('longitude').value;
+		    if (lat == '' || lat == 0 || lng == '' || lng == 0) {
+		      $('latitude').value = this.marker.getPosition().lat();
+		      $('longitude').value = this.marker.getPosition().lng();
+		    }
 
-        break;
-
-      }
-
-      this.bottomContainer.style.height = '';
-
-      case 4:
-
-      this.step = 0;
-
-    }
-
-  },
-
-  close: function(){
-
-    if (this.step < 0) return;
-
-    this.step = -1;
-
-    for (var f in this.fx) this.fx[f].stop();
-
-    this.center.style.display = this.bottomContainer.style.display = 'none';
-
-    this.fx.overlay.chain(this.setup.pass(false, this)).start(0);
-    
-    var lat = $('latitude').value;
-    var lng = $('longitude').value;
-    if (lat == '' || lat == 0 || lng == '' || lng == 0) {
-      $('latitude').value = this.marker.getLatLng().lat();
-      $('longitude').value = this.marker.getLatLng().lng();
-    }
-
-    return false;
-
-  },
-
-  showAddress: function(address){
-
-    //get geocoded location
-    this.geocoder.getLocations(
-
-    address,
-
-    function(point){
-    
-      if(point && point.Status.code == 200){
-
-        //get placemark object
-        place = point.Placemark[0];
-        
-        
-        // Retrieve the latitude and longitude
-        target = new GLatLng(place.Point.coordinates[1], place.Point.coordinates[0]);
-
-        //html window
-    //    marker.openInfoWindowHtml('<strong>' + venue + '</strong><br />' + streetAddress + '<br />' + country + '-' + zip + ' ' + city + '<br />' + state);
-        
-        this.address = place.address;
-        
-        this.showMarker(target);
-
-      }
-
-      else
-
-      {
-        // Retrieve the latitude and longitude
-        target = null;
-        
-        this.showMarker(target);
-      }
-
-    }.bind(this));
-
-  },
-  
-  showPoint: function(target, address){
-    
-      if(target){
-        this.showMarker(target); 
-      }
-  },
-  
-  showMarker: function(target)
-  {
-    var isNull = false;
-    if(!target)
-    {
-      target = new GLatLng(0, 0);
-      isNull = true;      
-    }
-    
-        //set center
-        this.map.setCenter(target, 15);
-
-        //scroll == zoom
-        this.map.enableScrollWheelZoom();
-
-        //zoom only when mous in map area
-        GEvent.addDomListener(this.map.getContainer(), "DOMMouseScroll",
-        function(oEvent) { if (oEvent.preventDefault)
-        oEvent.preventDefault(); });
-
-        //set marker
-        this.marker = new GMarker(target, {draggable: true});
-
-        GEvent.addListener(this.marker, "dragstart", function() {
-          this.map.closeInfoWindow();
-        }.bind(this));
-
-        GEvent.addListener(this.marker, "dragend", this.markerShowInfo.bind(this));
-        
-        this.map.addOverlay(this.marker);
-        
-        this.markerShowInfo();
-        
-        if (isNull) this.map.setZoom(1);
-  },
-  
-  updateclose: function()
-  {
-    $('latitude').value = this.marker.getLatLng().lat();
-    $('longitude').value = this.marker.getLatLng().lng();
-    this.close();
-  },
-  
-  markerShowInfo: function()
-  {
-     var info = new Element('div').setProperty('id', 'markerInfo');
-     info.setHTML('<strong>' + this.venue + '</strong><br />' + this.address);
-     new Element('br').injectInside(info);
-     var lat = '' + this.marker.getLatLng().lat();
-     var lng = '' + this.marker.getLatLng().lng();
-     info.appendText(sLatitude + ': ' + lat.substr(0,8) + '...');
-     new Element('br').injectInside(info);
-     info.appendText(sLongitude + ': ' + lng.substr(0,8) + '...');
-     new Element('br').injectInside(info);
-     var apply = new Element('a');
-     apply.appendText(sApply).addEvent('click', this.updateclose.bind(this));
-     apply.setProperties({
-       'class': 'gmaplink',
-       'href': '#'
-     });
-     apply.injectInside(info);
-     
-     info.appendText(' - ');
-     
-     var close = new Element('a').setProperties({'class':'gmaplink', 'href': '#'});
-     close.appendText(sClose).addEvent('click', this.close.bind(this));
-     close.injectInside(info);
-     
-     this.marker.openInfoWindow(info);  
-  }
-  
-};
-window.addEvent('domready', GMapsOverlay.init.bind(GMapsOverlay));
+		    return false;
+
+		  },
+
+		  showAddress: function(address) {
+			  this.geocoder.geocode( { 'address': address}, function(results, status) {
+				  if (status == google.maps.GeocoderStatus.OK) {
+					  place = results[0];
+					  this.address = place.formatted_address;
+					  this.showMarker(place.geometry.location);
+				  } else {
+				        target = null;				        
+				        this.showMarker(target);
+				  }
+			  }.bind(this));
+		  },
+		  
+		  showPoint: function(target, address){
+		    
+		      if(target){
+		        this.showMarker(target); 
+		      }
+		  },
+		  
+		  showMarker: function(target)
+		  {
+		    var isNull = false;
+		    if(!target)
+		    {
+		      target = new google.maps.LatLng(0, 0);
+		      isNull = true;      
+		    }
+		    
+	        //set center
+	        this.map.setCenter(target);
+	        this.map.setZoom(4);
+
+	        //set marker
+	        this.marker = new google.maps.Marker({position: target, draggable: true});
+
+	        google.maps.event.addListener(this.marker, "dragstart", function() {
+	        	if (this.infowindow) {
+	        		this.infowindow.close();
+	        	}
+	        }.bind(this));
+
+	        google.maps.event.addListener(this.marker, "dragend", this.markerShowInfo.bind(this));
+	        
+	        this.marker.setMap(this.map);
+	        
+	        this.markerShowInfo();
+	        
+	        if (!isNull) {
+		        this.map.setZoom(15);
+	        }
+		  },
+		  
+		  updateclose: function()
+		  {
+		    $('latitude').value = this.marker.getPosition().lat();
+		    $('longitude').value = this.marker.getPosition().lng();
+		    this.close();
+		  },
+		  
+		  markerShowInfo: function()
+		  {
+		     var info = new Element('div').setProperty('id', 'markerInfo');
+		     info.setHTML('<strong>' + (this.venue ? this.venue : '') + '</strong><br />' + (this.address ? this.address : ''));
+		     new Element('br').injectInside(info);
+
+		     var pos = this.marker.getPosition();
+		     if (pos) {
+			     var lat = pos.lat()+'';
+			     var lng = pos.lng()+'';
+			 }
+		     else {
+			     var lat = '';
+			     var lng = '';
+			 }
+		     
+		     info.appendText(sLatitude + ': ' + lat.substr(0,8) + '...');
+		     new Element('br').injectInside(info);
+		     info.appendText(sLongitude + ': ' + lng.substr(0,8) + '...');
+		     new Element('br').injectInside(info);
+		     var apply = new Element('a');
+		     apply.appendText(sApply).addEvent('click', this.updateclose.bind(this));
+		     apply.setProperties({
+		       'class': 'gmaplink',
+		       'href': '#'
+		     });
+		     apply.injectInside(info);
+		     
+		     info.appendText(' - ');
+		     
+		     var close = new Element('a').setProperties({'class':'gmaplink', 'href': '#'});
+		     close.appendText(sClose).addEvent('click', this.close.bind(this));
+		     close.injectInside(info);
+		     
+		     this.infowindow = new google.maps.InfoWindow({  
+		    	  content: info  
+		    	});
+		     this.infowindow.open(this.map, this.marker);
+		  }
+		  
+		};

@@ -118,6 +118,8 @@ class RedeventModelEditvenue extends JModel
 			$this->_venue->created_by		= '';
 			$this->_venue->author_ip		= '';
 			$this->_venue->locimage			= '';
+			$this->_venue->latitude			= '';
+			$this->_venue->longitude		= '';
 			$this->_venue->meta_keywords	= '';
 			$this->_venue->meta_description	= '';
 			$this->_venue->attachments	= array();

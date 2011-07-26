@@ -154,6 +154,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   	tastendruck = true;
   	rechne(restzeichen);
 	}
+
+	// for pinpoint map
+	
+    var sApply = "<?php echo JText::_('COM_REDEVENT_APPLY'); ?>";
+    var sClose = "<?php echo JText::_('COM_REDEVENT_CLOSE'); ?>";
+    var sMove = "<?php echo JText::_('COM_REDEVENT_MOVEMARKERHERE'); ?>";
+    var sLatitude = "<?php echo JText::_('COM_REDEVENT_LATITUDE'); ?>";
+    var sLongitude = "<?php echo JText::_('COM_REDEVENT_LONGITUDE'); ?>";
+    var sTitle = "<?php echo JText::_('COM_REDEVENT_PINPOINTTITLE'); ?>";
 </script>
 
 
@@ -289,6 +298,34 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                     </span>
                 	</td>
                 </tr>
+						    <tr>
+						      <td>
+						        <label for="latitude">
+						          <?php echo JText::_( 'COM_REDEVENT_LATITUDE' ).':'; ?>
+						        </label>
+						      </td>
+						      <td>
+						        <input class="inputbox" name="latitude" id="latitude" value="<?php echo $this->row->latitude; ?>" size="14" maxlength="25" />
+						              <span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_LATITUDE_TIP'); ?>">
+						          <?php echo JHTML::image('components/com_redevent/assets/images/marker_16.png', 'pinpoint', array('class' => 'pinpoint')); ?>
+						          <?php echo $this->infoimage; ?>
+						        </span>
+						      </td>
+						    </tr>
+						    <tr>
+						      <td>
+						        <label for="longitude">
+						          <?php echo JText::_( 'COM_REDEVENT_LONGITUDE' ).':'; ?>
+						        </label>
+						      </td>
+						      <td>
+						        <input class="inputbox" name="longitude" id="longitude" value="<?php echo $this->row->longitude; ?>" size="14" maxlength="25" />
+						              <span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_LONGITUDE_TIP'); ?>">
+						          <?php echo JHTML::image('components/com_redevent/assets/images/marker_16.png', 'pinpoint', array('class' => 'pinpoint')); ?>
+						          <?php echo $this->infoimage; ?>
+						        </span>
+						      </td>
+						    </tr>
             		<?php endif; ?>
             	</tbody>
             </table>

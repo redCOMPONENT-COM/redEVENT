@@ -449,14 +449,14 @@ class ELOutput {
    */
   function pinpointicon($data)
   {
-    global $mainframe;
+    $mainframe = &JFactory::getApplication();
     
     $settings = & redEVENTHelper::config();
         
     $url    = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
     
     //Link to map
-    $mapimage = '<img src="'.$url.'/components/com_redevent/assets/images/marker.png" alt="'.JText::_( 'PINPOINTLOCATION' ).'" />';
+    $mapimage = JHTML::image($url.'components/com_redevent/assets/images/marker.png', JText::_( 'COM_REDEVENT_PINPOINTLOCATION_ALT' ), array('class' => 'pinpoint'));
 
     //set var
     $output   = null;
@@ -464,28 +464,13 @@ class ELOutput {
     
     $data->country = JString::strtoupper($data->country);
 
-    //google or map24
-    switch ($settings->showmapserv)
-    {
-      case 1:
-      {
-          $output = "";
-      } break;
+    $document   = & JFactory::getDocument();
+    JHTML::_('behavior.mootools');
 
-      case 2:
-      {
-        if($settings->gmapkey) {
-
-          $document   = & JFactory::getDocument();
-          JHTML::_('behavior.mootools');
-          
-          $document->addScript('http://maps.google.com/maps?file=api&amp;v=2&sensor=false&amp;key='.trim($settings->gmapkey));
-          $document->addScript($url.'/components/com_redevent/assets/js/gmapspinpoint.js');
-          $document->addStyleSheet($url.'/components/com_redevent/assets/css/gmapsoverlay.css', 'text/css');
-          $output   = $mapimage;
-        }
-      } break;
-    }
+		$document->addScript('http://maps.google.com/maps/api/js?sensor=false');
+    $document->addScript($url.'/components/com_redevent/assets/js/gmapspinpoint.js');
+    $document->addStyleSheet($url.'/components/com_redevent/assets/css/gmapsoverlay.css', 'text/css');
+    $output   = $mapimage;
 
     return $output;
   }
