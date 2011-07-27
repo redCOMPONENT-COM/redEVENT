@@ -36,12 +36,26 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 var venueurl = '<?php echo JRoute::_($this->ajaxurl, false); ?>';
 var countries = new Array;
 <?php foreach ((array) $this->countries AS $row) : ?>
-countries.push({'name':'<?php echo addslashes($row->name); ?>','lat':'<?php echo $row->latitude; ?>','lng':'<?php echo $row->longitude; ?>','flag':'<?php echo $row->flagurl; ?>'});
+<?php 
+$obj = new stdclass();
+$obj->name = $row->name;
+$obj->lat  = $row->latitude;
+$obj->lng  = $row->longitude;
+$obj->flag = $row->flagurl;
+?>
+countries.push(<?php echo json_encode($obj); ?>);
 <?php endforeach; ?>
 
 var venues = new Array;
 <?php foreach ($this->rows AS $row) : ?>
-venues.push({'id':'<?php echo $row->id; ?>','name':'<?php echo addslashes($row->venue); ?>','lat':'<?php echo $row->latitude; ?>','lng':'<?php echo $row->longitude; ?>'});
+<?php 
+$obj = new stdclass();
+$obj->id = $row->id;
+$obj->name = $row->venue;
+$obj->lat  = $row->latitude;
+$obj->lng  = $row->longitude;
+?>
+venues.push(<?php echo json_encode($obj); ?>);
 <?php endforeach; ?>
 
 window.addEvent('domready', function() {

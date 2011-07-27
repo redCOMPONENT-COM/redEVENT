@@ -233,37 +233,37 @@ class RedEventModelVenuesmap extends JModel
     return ($db->loadObjectList());
   }
 	
+  /**
+   * get venues countries
+   * @return array
+   */
 	function getCountries()
 	{
 		$venues = $this->getData();
 		$countries = array();
 		foreach ((array)$venues AS $v)
-		{
-			if (!in_array($v->country, $countries)) {
-				$countries[] = $this->_db->Quote($v->country);
-			}
+		{			
+			$countries[] = $v->country;
 		}
 		if (!count($countries)) {
 			return array();
 		}
-		
-		$query = ' SELECT * FROM #__redevent_countries WHERE iso2 IN (' . implode(', ', $countries) . ') ';
-		$this->_db->setQuery($query);
-		$rows = $this->_db->loadObjectList();
-		
+		$countries = array_unique($countries);
 		
 	  $countrycoords = redEVENTHelperCountries::getCountrycoordArray();
-      
-	  for($i = 0; $i <  count($rows); $i++)
-	  {
-	  	$country =& $rows[$i];
 
-	  	$country->flag = ELOutput::getFlag( $country->iso2 );
-	  	$country->flagurl = ELOutput::getFlagUrl( $country->iso2 );
-	  	$country->latitude = $countrycoords[$country->iso2][0];
-	  	$country->longitude = $countrycoords[$country->iso2][1];
+	  $res = array();
+	  foreach ($countries as $c)
+	  {
+	  	$country = new stdclass();
+	  	$country->name      = redEVENTHelperCountries::getCountryName($c);
+	  	$country->flag      = redEVENTHelperCountries::getCountryFlag($c);
+	  	$country->flagurl   = redEVENTHelperCountries::getIsoFlag($c);
+	  	$country->latitude  = redEVENTHelperCountries::getLatitude($c);
+	  	$country->longitude = redEVENTHelperCountries::getLongitude($c);
+	  	$res[] = $country;
 	  }
-		return $rows;
+		return $res;
 	}
 	
 	function getCustomFilters()

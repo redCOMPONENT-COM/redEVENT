@@ -1143,5 +1143,47 @@ class redEVENTHelperCountries
 		$parts = explode(',', $full);
 		return JText::_($parts[0]);
 	}
+	
+	/**
+	 * get country latitude
+	 * 
+	 * @param string $iso code (iso2 or iso3)
+	 * @return float or false
+	 */
+	function getLatitude($iso)
+	{
+		if (strlen($iso) == 3) {
+			$iso = self::convertIso3to2($iso);
+		}
+		$coords = self::getCountrycoordArray();
+		if (isset($coords[$iso])) {
+			return $coords[$iso][0];
+		}
+		else {
+			JError::raiseWarning(500, JText::_('COM_REDEVENT_COUNTRIES_ERROR_COUNTRY_NOT_FOUND'));
+			return false;
+		}
+	}
+	
+	/**
+	 * get country longitude
+	 * 
+	 * @param string $iso code (iso2 or iso3)
+	 * @return float or false
+	 */
+	function getLongitude($iso)
+	{
+		if (strlen($iso) == 3) {
+			$iso = self::convertIso3to2($iso);
+		}
+		$coords = self::getCountrycoordArray();
+		if (isset($coords[$iso])) {
+			return $coords[$iso][1];
+		}
+		else {
+			JError::raiseWarning(500, JText::_('COM_REDEVENT_COUNTRIES_ERROR_COUNTRY_NOT_FOUND'));
+			return false;
+		}
+	}
 }
 ?>
