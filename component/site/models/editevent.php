@@ -104,7 +104,7 @@ class RedeventModelEditevent extends JModel
 	{
 		// Set new event ID
 		if ($this->_id != $id) {
-			$this->_id = intval($id);
+			$this->_id = (int) $id;
 			$this->_event = null;
 		}
 	}
@@ -132,7 +132,7 @@ class RedeventModelEditevent extends JModel
 	 */
 	function &getEvent(  )
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		// Initialize variables
 		$user		= & JFactory::getUser();
@@ -286,6 +286,9 @@ class RedeventModelEditevent extends JModel
 			if (!$id) {
 				$id = $this->_id;
 			}
+			if (!$id) {
+				return false;
+			}
 			
 			$query = 'SELECT e.*, v.venue, x.id AS xref, x.eventid, x.venueid, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees,
 					x.maxwaitinglist, x.course_credit, x.registrationend, x.title as session_title '
@@ -304,6 +307,10 @@ class RedeventModelEditevent extends JModel
 			}
 			$this->_db->setQuery($query);
 			$this->_event = $this->_db->loadObject();
+			
+			if (!$this->_event) {
+				return false;
+			}
 			
 			if ($this->_event->id) 
 			{
