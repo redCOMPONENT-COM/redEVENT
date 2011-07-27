@@ -74,9 +74,9 @@ class RedeventModelSelectUser extends JModel
     $this->setState('limitstart', $limitstart);
     
     // filters and ordering
-    $filter_order     = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.filter_order', 'filter_order', 'a.name', 'cmd' );
-    $filter_order_Dir = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
-    $search           = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.search', 'search', '', 'string' );
+    $filter_order     = $mainframe->getUserStateFromRequest( 'com_redevent.selectuser.filter_order', 'filter_order', 'a.name', 'cmd' );
+    $filter_order_Dir = $mainframe->getUserStateFromRequest( 'com_redevent.selectuser.filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
+    $search           = $mainframe->getUserStateFromRequest( 'com_redevent.selectuser.search', 'search', '', 'string' );
     
     $this->setState('filter_order',      $filter_order);
     $this->setState('filter_order_Dir',  $filter_order_Dir);
