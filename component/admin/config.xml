@@ -113,6 +113,11 @@
       <option value="1">Yes</option>
     </param>
     
+    <param name="showmapserv" type="radio" default="1" label="COM_REDEVENT_SETTINGS_ACTIVATE_VENUE_MAP_LABEL" description="COM_REDEVENT_SETTINGS_ACTIVATE_VENUE_MAP_DESC">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    
     <param name="default_itemid" type="text" default="" label="COM_REDEVENT_SETTINGS_DEFAULT_ITEMID" description="COM_REDEVENT_SETTINGS_DEFAULT_ITEMID_DESC"/>
  	</params>
  	

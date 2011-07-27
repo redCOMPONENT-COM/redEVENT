@@ -36,7 +36,8 @@ class RedEventViewVenue extends JView {
 
 	function display($tpl = null)
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
+		$params = JComponentHelper::getParams('com_redevent');
 
 		// Load pane behavior
 		jimport('joomla.html.pane');
@@ -159,6 +160,7 @@ class RedEventViewVenue extends JView {
 		$this->assignRef('tabs'      	, $tabs);
 		$this->assignRef('editor'      	, $editor);
 		$this->assignRef('settings'     , $settings);
+		$this->assignRef('params'     , $params);
     $this->assignRef('lists'      , $lists);
 		$this->assignRef('imageselect' 	, $imageselect);
     $this->assignRef('pinpointicon', $pinpointicon);

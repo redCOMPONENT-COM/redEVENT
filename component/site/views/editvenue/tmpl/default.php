@@ -282,7 +282,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 	</td>
                 </tr>
 
-		            <?php if ( $this->elsettings->showmapserv != 0 ) : ?>
+		            <?php if ( $this->params->get('showmapserv', 1) ) : ?>
 								<tr>
 									<td class="key hasTip" title="<?php echo JText::_('ENABLE MAP'); ?>">
 										<label for="map"><?php echo JText::_( 'ENABLE MAP' ).':'; ?></label>

@@ -73,7 +73,6 @@ class RedeventViewVenuesmap extends JView
     JHTML::_('behavior.mootools');
 		$document->addScript('http://maps.google.com/maps/api/js?sensor=false');
     $document->addScript($this->baseurl.'/components/com_redevent/assets/js/markermanager.js');
-//    $document->addScript($this->baseurl.'/components/com_redevent/assets/js/labeled_marker.js');
     $document->addScript($this->baseurl.'/components/com_redevent/assets/js/venuesmap.js');
     
     // filters

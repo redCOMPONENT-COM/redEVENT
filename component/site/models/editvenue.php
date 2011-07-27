@@ -76,7 +76,8 @@ class RedeventModelEditvenue extends JModel
 	 */
 	function &getVenue(  )
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
+		$params = JComponentHelper::getParams('com_redevent');
 
 		// Initialize variables
 		$user       = & JFactory::getUser();
@@ -113,7 +114,7 @@ class RedeventModelEditvenue extends JModel
 			$this->_venue->city				= '';
 			$this->_venue->state			= '';
 			$this->_venue->country			= '';
-			$this->_venue->map				= $elsettings->showmapserv ? 1 : 0;
+			$this->_venue->map				= $params->get('showmapserv', 1);
 			$this->_venue->created			= '';
 			$this->_venue->created_by		= '';
 			$this->_venue->author_ip		= '';

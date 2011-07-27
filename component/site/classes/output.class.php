@@ -371,40 +371,22 @@ class ELOutput {
 		}
 		
 		$data->country = JString::strtoupper($data->country);
-
-		//google or map24
-		switch ($settings->showmapserv)
-		{
-			case 1:
-			{
-  				if ($settings->map24id) {
-
-				$url		= 'http://link2.map24.com/?lid='.$settings->map24id.'&amp;maptype=JAVA&amp;width0=2000&amp;street0='.$data->street.'&amp;zip0='.$data->plz.'&amp;city0='.$data->city.'&amp;country0='.$data->country.'&amp;sym0=10280&amp;description0='.$data->venue;
-				$output		= '<a class="map" title="'.JText::_( 'MAP' ).'" href="'.$url.'" target="_blank">'.$mapimage.'</a>';
-
-  				}
-			} break;
-
-			case 2:
-			{					
-				if (isset($attributes['class'])) {
-					$attributes['class'] .= ' venuemap';
-				}
-				else {
-					$attributes['class'] = 'venuemap';
-				}
-				$attributes['handler'] = 'iframe';
-
-				JHTML::_('behavior.modal', 'a.venuemap');
-				
-				foreach ($attributes as $k => $v) {
-					$attributes[$k] = $k.'="'.$v.'"';
-				}
-				$attributes = implode(' ', $attributes);
-				$output = '<a title="'.JText::_( 'MAP' ).'" rel="{handler:\'iframe\'}" href="'.JRoute::_('index.php?option=com_redevent&view=venue&layout=gmap&tmpl=component&id='.$data->venueid).'"'.$attributes.'>'.$mapimage.'</a>';
-				break;
-			}
+	
+		if (isset($attributes['class'])) {
+			$attributes['class'] .= ' venuemap';
 		}
+		else {
+			$attributes['class'] = 'venuemap';
+		}
+		$attributes['handler'] = 'iframe';
+
+		JHTML::_('behavior.modal', 'a.venuemap');
+		
+		foreach ($attributes as $k => $v) {
+			$attributes[$k] = $k.'="'.$v.'"';
+		}
+		$attributes = implode(' ', $attributes);
+		$output = '<a title="'.JText::_( 'MAP' ).'" rel="{handler:\'iframe\'}" href="'.JRoute::_('index.php?option=com_redevent&view=venue&layout=gmap&tmpl=component&id='.$data->venueid).'"'.$attributes.'>'.$mapimage.'</a>';
 
 		return $output;
 	}

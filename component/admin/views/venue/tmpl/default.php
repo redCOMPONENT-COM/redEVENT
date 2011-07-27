@@ -231,7 +231,7 @@ JHTML::_('behavior.tooltip');
 			</td>
 		</tr>
   </table>
-  <?php if ( $this->settings->showmapserv != 0 ) { ?>
+  <?php if ( $this->params->get('showmapserv',1)) { ?>
   <div id="setmap">
   <table>
     <tr>
@@ -377,7 +377,7 @@ JHTML::_('behavior.tooltip');
 </table>
 
 <?php
-if ( $this->settings->showmapserv == 0 ) { ?>
+if ( $this->params->get('showmapserv', 1) == 0 ) { ?>
 	<input type="hidden" name="map" value="0" />
 <?php
 }

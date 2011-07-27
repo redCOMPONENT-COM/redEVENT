@@ -253,7 +253,6 @@ CREATE TABLE IF NOT EXISTS `#__redevent_settings` (
   `showtitle` tinyint(4) NOT NULL,
   `showlocate` tinyint(4) NOT NULL,
   `showcity` tinyint(4) NOT NULL,
-  `showmapserv` tinyint(4) NOT NULL,
   `map24id` varchar(20) NOT NULL,
   `gmapkey` varchar(255) NOT NULL,
   `tablewidth` varchar(20) NOT NULL,
