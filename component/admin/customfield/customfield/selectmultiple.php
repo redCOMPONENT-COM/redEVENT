@@ -68,7 +68,29 @@ class TCustomfieldSelectmultiple extends TCustomfield {
     		$option_list[] = JHTML::_('select.option', $opt, $opt);
     	}    	
     }
-    return JHTML::_('select.genericlist', $option_list, 'custom'.$this->id.'[]', 'multiple="multiple" size="'.min(10,count($options)).'" '.$this->attributesToString($attributes), 'value', 'text', explode("\n",$this->value));
+  
+    // selected options
+    $values = explode("\n", $this->value);    
+    $default_values = explode("\n", $this->default_value);
+    
+    $default = array();
+    foreach ($default_values as $d)
+    {
+    	$d = trim($d);
+    	if (!empty($d)) {
+    		$default[] = $d;
+    	}
+    }
+    if (!is_null($this->value))
+    {
+    	$selected = $values;
+    }
+    else
+    {
+    	$selected = $default;
+    }
+    
+    return JHTML::_('select.genericlist', $option_list, 'custom'.$this->id.'[]', 'multiple="multiple" size="'.min(10,count($options)).'" '.$this->attributesToString($attributes), 'value', 'text', $selected);
   }
 
   function renderFilter($attributes = array(), $selected = null) 

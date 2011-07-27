@@ -58,7 +58,17 @@ class TCustomfieldRadio extends TCustomfield {
     		$option_list[] = JHTML::_('select.option', $opt, $opt);
     	}    	
     }
-    return JHTML::_('select.radiolist', $option_list, 'custom'.$this->id, $this->attributesToString($attributes), 'value', 'text', $this->value);
+  
+    // selected option
+    if (!empty($this->value))
+    {
+    	$selected = trim($this->value);
+    }
+    else
+    {
+    	$selected = trim($this->default_value);
+    }
+    return JHTML::_('select.radiolist', $option_list, 'custom'.$this->id, $this->attributesToString($attributes), 'value', 'text', $selected);
   }
 
   function renderFilter($attributes = array(), $selected = null) 

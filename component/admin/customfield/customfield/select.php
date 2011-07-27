@@ -68,7 +68,17 @@ class TCustomfieldSelect extends TCustomfield {
     		$option_list[] = JHTML::_('select.option', $opt, $opt);
     	}    	
     }
-    return JHTML::_('select.genericlist', $option_list, 'custom'.$this->id, $this->attributesToString($attributes), 'value', 'text', $this->value);
+  
+    // selected option
+    if (!is_null($this->value))
+    {
+    	$selected = $this->value;
+    }
+    else
+    {
+    	$selected = $this->default_value;
+    }
+    return JHTML::_('select.genericlist', $option_list, 'custom'.$this->id, $this->attributesToString($attributes), 'value', 'text', $selected);
   }
   
   

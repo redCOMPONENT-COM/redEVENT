@@ -64,7 +64,13 @@ class TCustomfieldTextbox extends TCustomfield {
   	 * html_entity_decode was used in place of htmlspecialchars_decode because
   	 * htmlspecialchars_decode is not compatible with PHP 4
   	 */
-    $value = htmlspecialchars(html_entity_decode($this->value, ENT_QUOTES), ENT_QUOTES);
+  	if (!is_null($this->value)) {
+  		$value = $this->value;
+  	}
+  	else {
+  		$value = $this->default_value;
+  	}
+    $value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
     return '<input type="text" name="custom'.$this->id.'" id="custom'.$this->id.'" value="'.$value.'" '.$this->attributesToString($attributes).'/>';
   }

@@ -425,6 +425,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_fields` (
   `in_lists` tinyint(1) DEFAULT '0',
   `options` text,
   `fieldcode` varchar(255) NOT NULL,
+  `default_value` varchar(255) NOT NULL,
   `checked_out` int(11) NOT NULL,
   `checked_out_time` datetime NOT NULL,
   PRIMARY KEY (`id`),

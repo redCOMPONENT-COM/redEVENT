@@ -811,6 +811,13 @@ if (is_array($cols))
     $db->setQuery($q);
     $db->query();    
   }	
+  
+	/* show in lists ? */
+  if (!array_key_exists('default_value', $cols)) {
+    $q = "ALTER IGNORE TABLE #__redevent_fields ADD COLUMN `default_value` varchar(255) NOT NULL";
+    $db->setQuery($q);
+    $db->query();    
+  }	
 }
 
 /* Get the group members fields columns */

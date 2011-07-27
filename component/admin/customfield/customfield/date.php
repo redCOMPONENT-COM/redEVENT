@@ -57,6 +57,15 @@ class TCustomfieldDate extends TCustomfield {
   			$attributes['class'] = 'required';
   		}
   	}
-    return JHTML::calendar( $this->value, 'custom'.$this->id, 'custom'.$this->id, '%Y-%m-%d', $this->attributesToString($attributes) );
+  
+    if (!is_null($this->value))
+    {
+    	$selected = $this->value;
+    }
+    else
+    {
+    	$selected = $this->default_value;
+    }
+    return JHTML::calendar( $selected, 'custom'.$this->id, 'custom'.$this->id, '%Y-%m-%d', $this->attributesToString($attributes) );
   }
 }

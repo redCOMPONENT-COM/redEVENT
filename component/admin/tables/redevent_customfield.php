@@ -113,6 +113,12 @@ class Redevent_customfield extends JTable
    * @var int
    */
   var $max = 100;
+  /**
+   * field default value
+   * 
+   * @var string
+   */
+  var $default_value;
   
   
   var $checked_out;

@@ -101,7 +101,13 @@ class TCustomfield extends JObject {
    *
    * @var string
    */
-  var $value;
+  var $value = null;
+  /**
+   * value
+   *
+   * @var string
+   */
+  var $default_value;
   
  /**
    * Constructor
