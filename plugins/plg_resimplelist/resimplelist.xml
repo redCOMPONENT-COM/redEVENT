@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install PUBLIC 
+  "-//Joomla! 1.5//DTD plugin 1.0//EN" "http://dev.joomla.org/xml/1.5/plugin-install.dtd">
+<install version="1.5" type="plugin" group="content" method="upgrade">
+  <name>Content - redEVENT simple event list</name>
+  <creationDate>July 2011</creationDate>
+  <author>Redweb.dk</author>
+  <authorEmail>email@redweb.dk</authorEmail>
+  <authorUrl>www.redweb.dk</authorUrl>
+  <copyright>(c) 2008 - 2011 Redweb.dk</copyright>
+  <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
+  <version>2.0</version>
+  <description>PLG_RESIMPLELIST_PLUGIN_DESC</description>
+  
+  <files>
+    <filename plugin="resimplelist">resimplelist.php</filename>
+    <filename>resimplelist.css</filename>
+  </files>
+    
+  <languages>
+    <language tag="en-GB">languages/en-GB.plg_content_resimplelist.ini</language>
+  </languages>
+
+	<params>
+		<param name="max_events" type="text" default="20" label="PLG_RESIMPLELIST_MAX_EVENTS_LABEL" description="PLG_RESIMPLELIST_MAX_EVENTS_DESC" />
+		<param name="date_format" type="text" default="%b %d, %Y" label="PLG_RESIMPLELIST_DATEFORMAT_LABEL" description="PLG_RESIMPLELIST_DATEFORMAT_DESC" /> 
+  	<param name="show_end" type="radio" default="1" label="PLG_RESIMPLELIST_SHOWEND_LABEL" description="PLG_RESIMPLELIST_SHOWEND_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+  	<param name="show_time" type="radio" default="1" label="PLG_RESIMPLELIST_SHOWTIME_LABEL" description="PLG_RESIMPLELIST_SHOWTIME_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="time_format" type="text" default="%l:%M%P" label="PLG_RESIMPLELIST_TIMEFORMAT_LABEL" description="PLG_RESIMPLELIST_TIMEFORMAT_DESC" />
+		 
+	</params>
+</install>
