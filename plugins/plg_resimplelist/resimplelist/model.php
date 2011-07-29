@@ -77,6 +77,9 @@ class plgReSimplistModel extends RedeventModelBaseEventList {
 		} else {
 			$where[] = ' x.published = 1 ';
 		}
+		if ($this->getState('featured')) {
+			$where[] = ' x.featured = 1 ';
+		}
     
 		if ($ev = $this->getState('eventid')) 
 		{

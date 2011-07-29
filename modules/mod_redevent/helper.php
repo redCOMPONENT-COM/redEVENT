@@ -100,6 +100,10 @@ class modRedEventHelper
 			$where[] = ' l.id IN (' . implode( ',', $ids ) . ')';
 		}
 		
+		if ($params->get('featuredonly', 0) == 1) {
+			$where[] = ' x.featured = 1 ';			
+		}
+		
 		if ($params->get('showrecurring', 1) == 0) {
 			$where[] = ' r.count = 0 ';			
 		}

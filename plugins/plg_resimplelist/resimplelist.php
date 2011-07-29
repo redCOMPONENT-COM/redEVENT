@@ -103,6 +103,9 @@ class plgContentRESimplelist extends JPlugin {
 				case 'archived':
 					$this->_model->setState($key, 1);
 					break;
+				case 'featured':
+					$this->_model->setState($key, 1);
+					break;
 				case 'type':
 					$this->_model->setState($key, $val[0]);
 					break;

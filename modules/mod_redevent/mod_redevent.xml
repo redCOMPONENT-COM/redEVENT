@@ -38,6 +38,10 @@
 			<option value="4">MOD_REDEVENT_REDEVENT_EVENT_STATE_JUSTPASSED</option>
 		</param>
 		<param name="dayoffset" type="text" default="0" label="MOD_REDEVENT_REDEVENT_DATE_OFFSET" description="MOD_REDEVENT_REDEVENT_DATE_OFFSET_DESC"/>
+		<param name="featuredonly" type="list" default="0" label="MOD_REDEVENT_REDEVENT_SHOW_FEATURED_ONLY" description="MOD_REDEVENT_REDEVENT_SHOW_FEATURED_ONLY_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
 		<param name="showsessions" type="list" default="1" label="MOD_REDEVENT_REDEVENT_SHOW_SESSIONS" description="MOD_REDEVENT_REDEVENT_SHOW_SESSIONS_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
