@@ -64,8 +64,8 @@ class TCustomfieldSelectmultiple extends TCustomfield {
     if ($options) 
     {
     	foreach ($options as $opt) {
-    		$opt = trim($opt);
-    		$option_list[] = JHTML::_('select.option', $opt, $opt);
+    		$option = $this->getOptionLabelValue($opt);
+    		$option_list[] = JHTML::_('select.option', $option->value, $option->label);
     	}    	
     }
   
@@ -110,8 +110,8 @@ class TCustomfieldSelectmultiple extends TCustomfield {
     if ($options) 
     {
       foreach ($options as $opt) {
-        $opt = trim($opt);
-        $option_list[] = JHTML::_('select.option', $opt, $opt);
+    		$option = $this->getOptionLabelValue($opt);
+    		$option_list[] = JHTML::_('select.option', $option->value, $option->label);
       }     
     }
     return JHTML::_('select.genericlist', $option_list, 'filtercustom['.$this->id.']', $this->attributesToString($attributes), 'value', 'text', $value);  

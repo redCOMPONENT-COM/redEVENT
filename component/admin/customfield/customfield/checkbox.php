@@ -74,8 +74,8 @@ class TCustomfieldCheckbox extends TCustomfield {
     if ($options) 
     {
     	foreach ($options as $opt) {
-    		$opt = trim($opt);
-    		$html .= '<input type="checkbox" name="custom'.$this->id.'[]" value="'.$opt.'"'.(in_array($opt, $selected) ? ' checked="checked"':'').' '.$this->attributesToString($attributes) .'/>'.$opt;
+    		$option = $this->getOptionLabelValue($opt);
+    		$html .= '<input type="checkbox" name="custom'.$this->id.'[]" value="'.$option->value.'"'.(in_array($option->value, $selected) ? ' checked="checked"':'').' '.$this->attributesToString($attributes) .'/>'.$option->label;
     	}
     }
     return $html;
@@ -98,9 +98,9 @@ class TCustomfieldCheckbox extends TCustomfield {
     if ($options) 
     {
       foreach ($options as $opt) {
-        $opt = trim($opt);
-        $html .= '<input type="checkbox" name="filtercustom['.$this->id.'][]" value="'.$opt.'"'.(in_array($opt, $value) ? ' checked="checked"':'')
-               .' '.$this->attributesToString($attributes) .'/>'.$opt;
+    		$option = $this->getOptionLabelValue($opt);
+        $html .= '<input type="checkbox" name="filtercustom['.$this->id.'][]" value="'.$option->value.'"'.(in_array($option->value, $value) ? ' checked="checked"':'')
+               .' '.$this->attributesToString($attributes) .'/>'.$option->label;
       }
     }
     return $html;

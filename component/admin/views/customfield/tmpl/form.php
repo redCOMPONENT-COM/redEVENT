@@ -134,7 +134,7 @@ if (!$edit)  {
     <td><input type="text" name="max" id="max" size="3" value="<?php echo $this->object->max; ?>"/></td>
   </tr>
   <tr id="row-options">
-    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'custom field options' ).'::'.JText::_('custom field options tip'); ?>"><label for="options"><?php echo JText::_( 'custom field options' ); ?>:
+    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'COM_REDEVENT_CUSTOM_FIELD_OPTIONS_LABEL' ).'::'.JText::_('COM_REDEVENT_CUSTOM_FIELD_OPTIONS_DESC'); ?>"><label for="options"><?php echo JText::_( 'COM_REDEVENT_CUSTOM_FIELD_OPTIONS_LABEL' ); ?>:
     </label></td>
     <td><textarea name="options" id="options" rows="6" cols="20"><?php echo $this->object->options; ?></textarea></td>
   </tr>

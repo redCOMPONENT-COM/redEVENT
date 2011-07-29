@@ -181,4 +181,26 @@ class TCustomfield extends JObject {
 		}
 		return implode(' ', $res);
 	}
+	
+	/**
+	 * return an object with label and value property for an option (value;label)
+	 * 
+	 * @param string $option
+	 * @return object
+	 */
+	function getOptionLabelValue($option)
+	{		
+		$res = new stdClass();
+		$opt = trim($option);
+		$parts = explode(";", $opt);
+		if (count($parts) == 2) {
+			$res->label = trim($parts[1]);
+			$res->value = trim($parts[0]);
+		}
+		else {
+			$res->label = trim($parts[0]);
+			$res->value = trim($parts[0]);			
+		}
+		return $res;
+	}
 }
