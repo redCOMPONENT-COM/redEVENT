@@ -1535,6 +1535,7 @@ class redEVENT_tags {
 		$res = '';
 		if (strtotime($this->getEvent()->getData()->registrationend))
 		{
+			$elsettings = redEVENTHelper::config();
 			$res = strftime( $elsettings->formatdate . ' '. $elsettings->formattime, 
 			                 strtotime($this->getEvent()->getData()->registrationend));
 		}
