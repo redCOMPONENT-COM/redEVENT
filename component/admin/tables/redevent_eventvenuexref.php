@@ -63,6 +63,8 @@ class RedEvent_eventvenuexref extends JTable
   var $details    = '';
   /** @var string */
   var $icaldetails    = '';
+  /** @var string override venue name in ical view */
+  var $icalvenue    = '';
   /** @var int */
   var $maxattendees    = 0;
   /** @var int */

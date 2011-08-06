@@ -216,6 +216,21 @@ function updateend(cal)
 <legend><?php echo JText::_('REDEVENT_XREF_ICALDETAILS_FIELDSET'); ?></legend>
 <?php echo JText::_('REDEVENT_XREF_ICALDETAILS_INFO'); ?>
 <textarea name="icaldetails" rows="10" cols="50"><?php echo $this->xref->icaldetails; ?></textarea>
+
+<table class="admintable">
+	<tbody>
+    <tr>
+      <td class="key">
+        <label for="icalvenue" class="hasTip" title="<?php echo JText::_('REDEVENT_XREF_ICALDETAILS_VENUE').'::'.JText::_('REDEVENT_XREF_ICALDETAILS_VENUE_TIP'); ?>">
+          <?php echo JText::_('REDEVENT_XREF_ICALDETAILS_VENUE'); ?>:
+        </label>
+      </td>
+      <td>
+      	<input type="text" size="50" maxlength="50" name="icalvenue" id="icalvenue" value="<?php echo $this->xref->icalvenue; ?>" /> 
+      </td>   
+    </tr>
+	</tbody>
+</table>
 </fieldset>
 
 <?php echo $this->pane->endPanel();

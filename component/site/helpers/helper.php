@@ -1089,16 +1089,22 @@ class redEVENTHelper {
 		}
 		
 		// location
-		$location = array($event->venue);
-		if (isset($event->street) && !empty($event->street)) {
-			$location[] = $event->street;
+		$location = array();
+		if (isset($event->icalvenue) && !empty($event->icalvenue)) {
+			$location[] = $event->icalvenue;
 		}
-		if (isset($event->city) && !empty($event->city)) {
-			$location[] = $event->city;
-		}
-		if (isset($event->countryname) && !empty($event->countryname)) {
-			$exp = explode(",",$event->countryname);
-			$location[] = $exp[0];
+		else {
+			$location[] = $event->venue;			
+			if (isset($event->street) && !empty($event->street)) {
+				$location[] = $event->street;
+			}
+			if (isset($event->city) && !empty($event->city)) {
+				$location[] = $event->city;
+			}
+			if (isset($event->countryname) && !empty($event->countryname)) {
+				$exp = explode(",",$event->countryname);
+				$location[] = $exp[0];
+			}
 		}
 		$location = implode(",", $location);
 			

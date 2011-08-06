@@ -59,7 +59,7 @@ class RedeventModelUpcomingevents extends RedeventModelBaseEventList {
 		$gids = implode(',', $gids);
 		
 		$q = ' SELECT e.*, IF (x.course_credit = 0, "", x.course_credit) AS course_credit, x.id AS xref, '
-		   . ' x.dates, x.enddates, x.times, x.endtimes, x.icaldetails, '
+		   . ' x.dates, x.enddates, x.times, x.endtimes, x.icaldetails, x.icalvenue, '
 		   . ' v.venue, x.venueid, v.city AS location, v.id AS venueid,	v.country, '
 		   . ' x.title as session_title, '
        . ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', e.title, x.title) ELSE e.title END as full_title, '
