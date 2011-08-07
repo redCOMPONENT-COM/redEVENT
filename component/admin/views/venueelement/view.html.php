@@ -41,6 +41,7 @@ class RedEventViewVenueelement extends JView {
 		//initialise variables
 		$db			= & JFactory::getDBO();
 		$document	= & JFactory::getDocument();
+		$fieldname = JRequest::getVar('field');
 		
 		JHTML::_('behavior.tooltip');
 		JHTML::_('behavior.modal');
@@ -83,6 +84,7 @@ class RedEventViewVenueelement extends JView {
 		$this->assignRef('lists'      	, $lists);
 		$this->assignRef('rows'      	, $rows);
 		$this->assignRef('pageNav' 		, $pageNav);
+		$this->assign('field',          $fieldname);
 
 		parent::display($tpl);
 	}

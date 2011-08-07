@@ -24,7 +24,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<form action="index.php?option=com_redevent&amp;view=venueelement&amp;tmpl=component" method="post" name="adminForm">
+<form action="index.php?option=com_redevent&amp;view=venueelement&amp;tmpl=component&field=<?php echo $this->field; ?>" method="post" name="adminForm">
 
 <table class="adminform">
 	<tr>
@@ -69,7 +69,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td><?php echo $this->pageNav->getRowOffset( $i ); ?></td>
 			<td align="left">
 				<span class="editlinktip hasTip" title="<?php echo JText::_( 'SELECT' );?>::<?php echo $row->venue; ?>">
-				<a style="cursor:pointer" onclick="window.parent.elSelectVenue('<?php echo $row->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $row->venue ); ?>');">
+				<a style="cursor:pointer" onclick="window.parent.elSelectVenue('<?php echo $row->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $row->venue ); ?>', '<?php echo $this->field; ?>');">
 				<?php echo htmlspecialchars($row->venue, ENT_QUOTES, 'UTF-8'); ?>
 				</a></span>
 			</td>

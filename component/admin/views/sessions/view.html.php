@@ -55,10 +55,12 @@ class RedeventViewSessions extends JView
 		$filter_state    = $state->get('filter_state');
 		$filter_featured = $state->get('filter_featured');
 		$eventid         = $state->get('eventid');
+		$venueid         = $state->get('venueid');
 
 		// Get data from the model
 		$items		= & $this->get( 'Data' );
 		$event		= & $this->get( 'Event' );
+		$venue		= & $this->get( 'Venue' );
 		$total		= & $this->get( 'Total' );
 		$pagination = & $this->get( 'Pagination' );
 		
@@ -114,14 +116,29 @@ class RedeventViewSessions extends JView
 		JHTML::_('behavior.modal', 'a.modal');
 		$js = "
 		window.addEvent('domready', function(){
+		
 			$('ev-reset-button').addEvent('click', function(){
 				$('eventid').value = 0;
 				$('eventid_name').value = '".JText::_('COM_REDEVENT_SESSIONS_EVENT_FILTER_ALL')."';
 				$('adminForm').submit();
 			});
+			
+			$('venue-reset-button').addEvent('click', function(){
+				$('venueid').value = 0;
+				$('venueid_name').value = '".JText::_('COM_REDEVENT_SESSIONS_VENUE_FILTER_ALL')."';
+				$('adminForm').submit();
+			});
+			
 		});
 		
 		function elSelectEvent(id, title, field) {
+			document.getElementById(field).value = id;
+			document.getElementById(field+'_name').value = title;
+			document.getElementById('sbox-window').close();
+			$('adminForm').submit();
+		}
+		
+		function elSelectVenue(id, title, field) {
 			document.getElementById(field).value = id;
 			document.getElementById(field+'_name').value = title;
 			document.getElementById('sbox-window').close();
@@ -134,7 +151,9 @@ class RedeventViewSessions extends JView
 		$this->assignRef('lists',		$lists);
 		$this->assignRef('items',		$items);
 		$this->assignRef('event',		$event);
+		$this->assignRef('venue',		$venue);
 		$this->assignRef('eventid',		$eventid);
+		$this->assignRef('venueid',		$venueid);
 		$this->assignRef('settings',    $settings);
 		$this->assignRef('pagination',	$pagination);
 		$this->assignRef('request_url',	$uri->toString());

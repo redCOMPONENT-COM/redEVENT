@@ -82,6 +82,7 @@ class RedeventModelSessions extends JModel
     $filter_order_Dir = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
     $search           = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.search', 'search', '', 'string' );
     $eventid          = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.eventid', 'eventid', 0, 'int' );
+    $venueid          = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.venueid', 'venueid', 0, 'int' );
 
     $filter_state     = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.filter_state', 'filter_state', 'notarchived', 'cmd' );
     $filter_featured  = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.filter_featured', 'filter_featured', '', 'cmd' );
@@ -92,6 +93,7 @@ class RedeventModelSessions extends JModel
     $this->setState('filter_featured',   $filter_featured);
     $this->setState('search',            strtolower($search));
     $this->setState('eventid',           $eventid);
+    $this->setState('venueid',           $venueid);
     
     $this->setEventId($eventid);
   }
@@ -208,6 +210,11 @@ class RedeventModelSessions extends JModel
 				$where[] = ' obj.featured = 0 ';
 				break;
 		}
+		
+		if ($this->getState('venueid'))
+		{
+			$where[] = ' obj.venueid = '.$this->getState('venueid');
+		}
 
 		$where 		= ( count( $where ) ? ' WHERE '. implode( ' AND ', $where ) : '' );
 
@@ -264,6 +271,24 @@ class RedeventModelSessions extends JModel
   	$query = ' SELECT e.id, e.title, e.registra ' 
   	       . ' FROM #__redevent_events AS e '
   	       . ' WHERE id = ' . $this->_db->Quote($this->_eventid);
+  	$this->_db->setQuery($query);
+  	$res = $this->_db->loadObject();
+  	return $res;
+  }
+  
+  /**
+   * returns venue data
+   * 
+   * @return object event
+   */
+  function getVenue()
+  {
+  	if (!$this->getState('venueid')) {
+  		return false;
+  	}
+  	$query = ' SELECT v.id, v.venue ' 
+  	       . ' FROM #__redevent_venues AS v '
+  	       . ' WHERE id = ' . $this->getState('venueid');
   	$this->_db->setQuery($query);
   	$res = $this->_db->loadObject();
   	return $res;

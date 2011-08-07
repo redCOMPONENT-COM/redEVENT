@@ -222,11 +222,11 @@ div.tagsdiv table.tag_list td, div.tagsdiv table.tag_list th {
   height:10px
 }
 
-div.sessions-event-filter {
+div.sessions-filter {
 	margin: 5px 0;
 }
 
-div.sessions-event-filter a.modal, div.sessions-event-filter #ev-reset-button{
+div.sessions-filter a {
 	border: 1px solid darkgrey;
 	background-color: lightgrey;
 	padding: 2px;

@@ -46,7 +46,7 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 			<button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
 			<button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
 		</div>
-		<div class="sessions-event-filter">		
+		<div class="sessions-filter">		
 			<label for="eventid" class="hasTip" title="<?php echo JText::_( 'COM_REDEVENT_SESSIONS_EVENT_FILTER' ).'::'.JText::_( 'COM_REDEVENT_SESSIONS_EVENT_FILTER_TIP' ); ?>">
 				<?php echo JText::_( 'COM_REDEVENT_SESSIONS_EVENT_FILTER' ).':'; ?>
 			</label>
@@ -55,6 +55,16 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 			<a class="modal" title="<?php JText::_('Select'); ?>"  href="<?php echo $link; ?>" rel="{handler: 'iframe', size: {x: 650, y: 375}}"><?php echo JText::_('Select'); ?></a>
 			<a title="<?php JText::_('Reset'); ?>" id="ev-reset-button"><?php echo JText::_('Reset'); ?></a>
 			<input type="hidden" id="eventid" name="eventid" value="<?php echo $this->eventid; ?>" />
+		</div>
+		<div class="sessions-filter">
+			<label for="venueid" class="hasTip" title="<?php echo JText::_( 'COM_REDEVENT_SESSIONS_VENUE_FILTER' ).'::'.JText::_( 'COM_REDEVENT_SESSIONS_VENUE_FILTER_TIP' ); ?>">
+				<?php echo JText::_( 'COM_REDEVENT_SESSIONS_VENUE_FILTER' ).':'; ?>
+			</label>
+			<?php	$link = 'index.php?option=com_redevent&amp;view=venueelement&amp;tmpl=component&amp;field=venueid'; ?>
+			<input style="background: #ffffff;" type="text" id="venueid_name" value="<?php echo ($this->venue ? $this->venue->venue : JText::_('COM_REDEVENT_SESSIONS_VENUE_FILTER_ALL')); ?>" disabled="disabled" />
+			<a class="modal" title="<?php JText::_('Select'); ?>"  href="<?php echo $link; ?>" rel="{handler: 'iframe', size: {x: 650, y: 375}}"><?php echo JText::_('Select'); ?></a>
+			<a title="<?php JText::_('Reset'); ?>" id="venue-reset-button"><?php echo JText::_('Reset'); ?></a>
+			<input type="hidden" id="venueid" name="venueid" value="<?php echo $this->venueid; ?>" />
 		</div>
 	</td>
 		<td nowrap="nowrap">
