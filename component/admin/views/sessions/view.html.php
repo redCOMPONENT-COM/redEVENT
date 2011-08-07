@@ -98,7 +98,9 @@ class RedeventViewSessions extends JView
 			$document->setTitle(JText::sprintf('COM_REDEVENT_PAGETITLE_SESSIONS'));
 			JToolBarHelper::title(   JText::sprintf( 'COM_REDEVENT_TITLE_SESSIONS'), 're-sessions' );			
 		}
-		JToolBarHelper::addNewX();
+		if ($event && $event->id) {
+			JToolBarHelper::addNewX();
+		}
 		JToolBarHelper::custom('copy', 'copy', 'copy', 'copy', true);
 		JToolBarHelper::editListX();
 		JToolBarHelper::deleteList(JText::_('COM_REDEVENT_SESSIONS_REMOVE_CONFIRM_MESSAGE'));
