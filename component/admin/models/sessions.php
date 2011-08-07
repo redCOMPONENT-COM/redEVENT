@@ -81,6 +81,7 @@ class RedeventModelSessions extends JModel
     $filter_order     = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.filter_order', 'filter_order', 'obj.dates', 'cmd' );
     $filter_order_Dir = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
     $search           = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.search', 'search', '', 'string' );
+    $eventid          = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.eventid', 'eventid', 0, 'int' );
 
     $filter_state     = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.filter_state', 'filter_state', 'notarchived', 'cmd' );
     $filter_featured  = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.filter_featured', 'filter_featured', '', 'cmd' );
@@ -90,8 +91,9 @@ class RedeventModelSessions extends JModel
     $this->setState('filter_state',      $filter_state);
     $this->setState('filter_featured',   $filter_featured);
     $this->setState('search',            strtolower($search));
+    $this->setState('eventid',           $eventid);
     
-    $this->setEventId(JRequest::getInt('eventid'));
+    $this->setEventId($eventid);
   }
   
   function setEventId($id)
@@ -132,8 +134,11 @@ class RedeventModelSessions extends JModel
 		$where		= $this->_buildContentWhere();
 		$orderby	= $this->_buildContentOrderBy();
 
-		$query = ' SELECT obj.*, v.venue, 0 AS checked_out '
+		$query = ' SELECT obj.*, 0 AS checked_out, '
+		  . ' e.title AS event_title, e.checked_out as event_checked_out, '
+		  . ' v.venue, v.checked_out as venue_checked_out '
 			. ' FROM #__redevent_event_venue_xref AS obj '
+			. ' INNER JOIN #__redevent_events AS e ON obj.eventid = e.id '
 		  . ' LEFT JOIN #__redevent_venues AS v ON v.id = obj.venueid '
 			. $where
 			. $orderby
@@ -166,7 +171,9 @@ class RedeventModelSessions extends JModel
 
 		$where = array();
 
-		$where[] = ' obj.eventid = '. $this->_eventid;
+		if ($this->_eventid) {
+			$where[] = ' obj.eventid = '. $this->_eventid;
+		}
 		
 		if ($search) {
 			$where[] = 'LOWER(obj.details) LIKE '.$this->_db->Quote('%'.$search.'%');
@@ -251,6 +258,9 @@ class RedeventModelSessions extends JModel
    */
   function getEvent()
   {
+  	if (!$this->_eventid) {
+  		return false;
+  	}
   	$query = ' SELECT e.id, e.title, e.registra ' 
   	       . ' FROM #__redevent_events AS e '
   	       . ' WHERE id = ' . $this->_db->Quote($this->_eventid);
@@ -266,7 +276,7 @@ class RedeventModelSessions extends JModel
    */
   private function _addAttendeesStats()
   {
-  	if (!$this->_eventid || !count($this->_data)) {
+  	if (!count($this->_data)) {
   		return false;
   	}
   	
@@ -279,8 +289,7 @@ class RedeventModelSessions extends JModel
 		$query = ' SELECT x.id, COUNT(*) AS total, SUM(r.waitinglist) AS waiting, SUM(1-r.waitinglist) AS attending ' 
 		       . ' FROM #__redevent_event_venue_xref AS x'
 		       . ' LEFT JOIN #__redevent_register AS r ON x.id = r.xref ' 
-		       . ' WHERE x.eventid = ' . $this->_db->Quote($this->_eventid)
-		       . '   AND x.id IN ('.implode(', ', $ids).')'
+		       . ' WHERE x.id IN ('.implode(', ', $ids).')'
 		       . ' GROUP BY r.xref ';
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList('id');

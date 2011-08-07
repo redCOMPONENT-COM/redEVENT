@@ -221,3 +221,14 @@ div.tagsdiv table.tag_list td, div.tagsdiv table.tag_list th {
   padding:0px;
   height:10px
 }
+
+div.sessions-event-filter {
+	margin: 5px 0;
+}
+
+div.sessions-event-filter a.modal, div.sessions-event-filter #ev-reset-button{
+	border: 1px solid darkgrey;
+	background-color: lightgrey;
+	padding: 2px;
+	color:black;
+}

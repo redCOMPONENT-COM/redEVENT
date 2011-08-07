@@ -51,9 +51,10 @@ class RedeventViewSessions extends JView
 
 		$filter_order		= $state->get('filter_order');
 		$filter_order_Dir	= $state->get('filter_order_Dir');
-		$search				  = $state->get('search');
-		$filter_state		= $state->get('filter_state');
-		$filter_featured		= $state->get('filter_featured');
+		$search          = $state->get('search');
+		$filter_state    = $state->get('filter_state');
+		$filter_featured = $state->get('filter_featured');
+		$eventid         = $state->get('eventid');
 
 		// Get data from the model
 		$items		= & $this->get( 'Data' );
@@ -85,10 +86,16 @@ class RedeventViewSessions extends JView
 		$lists['featured']	= JHTML::_('select.genericlist', $options, 'filter_featured', 'class="inputbox" onchange="submitform();" size="1"', 'value', 'text', $filter_featured );
 		
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
-		$document->setTitle(JText::sprintf('COM_REDEVENT_PAGETITLE_SESSIONS', $event->title));
 		
 		// Set toolbar items for the page
-		JToolBarHelper::title(   JText::sprintf( 'COM_REDEVENT_TITLE_SESSIONS', $event->title ), 're-sessions' );
+		if ($eventid) {
+			$document->setTitle(JText::sprintf('COM_REDEVENT_PAGETITLE_SESSIONS_EVENT', $event->title));
+			JToolBarHelper::title(   JText::sprintf( 'COM_REDEVENT_TITLE_SESSIONS_EVENT', $event->title ), 're-sessions' );
+		}
+		else {
+			$document->setTitle(JText::sprintf('COM_REDEVENT_PAGETITLE_SESSIONS'));
+			JToolBarHelper::title(   JText::sprintf( 'COM_REDEVENT_TITLE_SESSIONS'), 're-sessions' );			
+		}
 		JToolBarHelper::addNewX();
 		JToolBarHelper::custom('copy', 'copy', 'copy', 'copy', true);
 		JToolBarHelper::editListX();
@@ -103,10 +110,31 @@ class RedeventViewSessions extends JView
 		JToolBarHelper::spacer();
 		JToolBarHelper::custom('back', 'back', 'back', 'COM_REDEVENT_BACK', false);
 		
+		// event 
+		JHTML::_('behavior.modal', 'a.modal');
+		$js = "
+		window.addEvent('domready', function(){
+			$('ev-reset-button').addEvent('click', function(){
+				$('eventid').value = 0;
+				$('eventid_name').value = '".JText::_('COM_REDEVENT_SESSIONS_EVENT_FILTER_ALL')."';
+				$('adminForm').submit();
+			});
+		});
+		
+		function elSelectEvent(id, title, field) {
+			document.getElementById(field).value = id;
+			document.getElementById(field+'_name').value = title;
+			document.getElementById('sbox-window').close();
+			$('adminForm').submit();
+		}";
+		$document->addScriptDeclaration($js);
+		
+		$uri->delVar('eventid');
 		$this->assignRef('user',		JFactory::getUser());
 		$this->assignRef('lists',		$lists);
 		$this->assignRef('items',		$items);
 		$this->assignRef('event',		$event);
+		$this->assignRef('eventid',		$eventid);
 		$this->assignRef('settings',    $settings);
 		$this->assignRef('pagination',	$pagination);
 		$this->assignRef('request_url',	$uri->toString());

@@ -24,7 +24,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 $colspan = 9;
-if ($this->event->registra) $colspan += 2;
+if (!$this->event) $colspan++;
+if (!$this->event || $this->event->registra) $colspan += 2;
 ?>
 <script type="text/javascript">
  /**
@@ -35,14 +36,26 @@ if ($this->event->registra) $colspan += 2;
   }
 </script>
 
-<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm">
+<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
 <table>
 <tr>
 	<td align="left" width="100%">
-		<?php echo JText::_( 'Filter' ); ?>:
-		<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
-		<button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
-		<button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
+		<div>
+			<?php echo JText::_( 'Filter' ); ?>:
+			<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
+			<button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
+			<button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
+		</div>
+		<div class="sessions-event-filter">		
+			<label for="eventid" class="hasTip" title="<?php echo JText::_( 'COM_REDEVENT_SESSIONS_EVENT_FILTER' ).'::'.JText::_( 'COM_REDEVENT_SESSIONS_EVENT_FILTER_TIP' ); ?>">
+				<?php echo JText::_( 'COM_REDEVENT_SESSIONS_EVENT_FILTER' ).':'; ?>
+			</label>
+			<?php	$link = 'index.php?option=com_redevent&amp;view=eventelement&amp;tmpl=component&amp;field=eventid'; ?>
+			<input style="background: #ffffff;" type="text" id="eventid_name" value="<?php echo ($this->eventid ? $this->event->title : JText::_('COM_REDEVENT_SESSIONS_EVENT_FILTER_ALL')); ?>" disabled="disabled" />
+			<a class="modal" title="<?php JText::_('Select'); ?>"  href="<?php echo $link; ?>" rel="{handler: 'iframe', size: {x: 650, y: 375}}"><?php echo JText::_('Select'); ?></a>
+			<a title="<?php JText::_('Reset'); ?>" id="ev-reset-button"><?php echo JText::_('Reset'); ?></a>
+			<input type="hidden" id="eventid" name="eventid" value="<?php echo $this->eventid; ?>" />
+		</div>
 	</td>
 		<td nowrap="nowrap">
 			<?php echo $this->lists['state'];	?>
@@ -60,6 +73,9 @@ if ($this->event->registra) $colspan += 2;
 			<th width="20">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->items ); ?>);" />
 			</th>
+			<?php if (!$this->event): ?>
+			<th><?php echo JText::_('COM_REDEVENT_EVENT'); ?></th>
+			<?php endif; ?>
 			<th><?php echo JText::_('VENUE'); ?></th>
 			<th><?php echo JText::_('TITLE'); ?></th>
 			<th><?php echo JText::_('DATE'); ?></th>
@@ -67,7 +83,7 @@ if ($this->event->registra) $colspan += 2;
 			<th><?php echo JText::_('NOTE'); ?></th>
       <th width="5"><?php echo JText::_('PUBLISHED'); ?></th>
       <th width="5"><?php echo JText::_('COM_REDEVENT_SESSION_FEATURED'); ?></th>
-      <?php if ($this->event->registra): ?>
+      <?php if (!$this->event || $this->event->registra): ?>
 			<th><?php echo JText::_('COM_REDEVENT_REGISTRATION_END'); ?></th>
       <th width="5"><?php echo JText::_('COM_REDEVENT_SESSION_TABLE_HEADER_ATTENDEES'); ?></th>
       <?php endif; ?>
@@ -105,25 +121,55 @@ if ($this->event->registra) $colspan += 2;
 			$published 	= JHTML::_('grid.published',   $row, $i );
 			$featured = $this->featured($row, $i);
 			
-			$link = JRoute::_( 'index.php?option=com_redevent&controller=sessions&task=edit&cid[]='. $row->id );
+			$sessionlink = JRoute::_( 'index.php?option=com_redevent&controller=sessions&task=edit&cid[]='. $row->id );
+			$venuelink = JRoute::_( 'index.php?option=com_redevent&controller=venues&task=edit&cid[]='. $row->venueid );
+			$eventlink = JRoute::_( 'index.php?option=com_redevent&controller=events&task=edit&cid[]='. $row->eventid );
+			
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo $this->pagination->getRowOffset( $i ); ?></td>
 				<td><?php echo $checked; ?></td>
+				
+			<?php if (!$this->event): ?>
+				<td>
+					<?php
+					if (  JTable::isCheckedOut($this->user->get ('id'), $row->event_checked_out ) ) {
+						echo $row->event_title;
+					} else {
+					?>
+						<a href="<?php echo $eventlink; ?>" title="<?php echo JText::_( 'EDIT EVENT' ); ?>">
+							<?php echo $row->event_title; ?></a>
+					<?php
+					}
+					?>
+				</td>
+				<?php endif; ?>
+			  
 			  <td>
 					<?php
-					if (  JTable::isCheckedOut($this->user->get ('id'), $row->checked_out ) ) {
+					if (  JTable::isCheckedOut($this->user->get ('id'), $row->venue_checked_out ) ) {
 						echo $row->venue;
 					} else {
 					?>
-						<a href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_REDEVENT_SESSIONS_EDIT_SESSION' ); ?>">
+						<a href="<?php echo $venuelink; ?>" title="<?php echo JText::_( 'EDIT VENUE' ); ?>">
 							<?php echo $row->venue; ?></a>
 					<?php
 					}
 					?>
 				</td>
 	      <td><?php echo $row->title; ?></td>
-	      <td><?php echo $displaydate; ?></td>
+	      <td>
+					<?php
+					if (  JTable::isCheckedOut($this->user->get ('id'), $row->checked_out ) ) {
+						echo $displaydate;
+					} else {
+					?>
+						<a href="<?php echo $sessionlink; ?>" title="<?php echo JText::_( 'COM_REDEVENT_SESSIONS_EDIT_SESSION' ); ?>">
+							<?php echo $displaydate; ?></a>
+					<?php
+					}
+					?>
+				</td>
 	      <td><?php echo $displaytime; ?></td>
 	      <td><?php echo $row->note; ?></td>
         <td align="center">
@@ -135,7 +181,7 @@ if ($this->event->registra) $colspan += 2;
 				</td>
 	      <td align="center"><?php echo $featured ?></td>
 	      
-	      <?php if ($this->event->registra): ?>
+	      <?php if (!$this->event || $this->event->registra): ?>
 	      <td><?php echo $endreg; ?></td>
 	      <td><?php echo (isset($row->attendees) ? 
 	                      JHTML::link('index.php?option=com_redevent&view=attendees&xref='.$row->id, intval($row->attendees->attending). ' / '. intval($row->attendees->waiting)) : '-'); ?></td>
@@ -155,5 +201,4 @@ if ($this->event->registra) $colspan += 2;
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="" />
-<input type="hidden" name="eventid" value="<?php echo $this->event->id; ?>" />
 </form>
