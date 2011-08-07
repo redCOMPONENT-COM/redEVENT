@@ -51,7 +51,7 @@ defined('_JEXEC') or die('Restricted access');
 			<th width="1%" nowrap="nowrap"><?php echo JText::_( 'PUBLISHED' ); ?></th>
 			<th><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_LABEL_PRIVATE', 'l.private', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th><?php echo JText::_( 'CREATION' ); ?></th>
-			<th width="1%" nowrap="nowrap"><?php echo JText::_( 'EVENTS' ); ?></th>
+			<th width="1%" nowrap="nowrap"><?php echo JText::_( 'SESSIONS' ); ?></th>
 		    <th width="80" colspan="2"><?php echo JHTML::_('grid.sort', 'REORDER', 'l.ordering', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 		    <th width="1%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'ID', 'l.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 		</tr>
@@ -71,6 +71,7 @@ defined('_JEXEC') or die('Restricted access');
 		for ($i=0, $n=count( $this->rows ); $i < $n; $i++) {
 			$row = &$this->rows[$i];
 			$link 		= 'index.php?option=com_redevent&amp;controller=venues&amp;task=edit&amp;cid[]='. $row->id;
+			$sessionslink = 'index.php?option=com_redevent&view=sessions&venueid='. $row->id;
 			$checked 	= JHTML::_('grid.checkedout', $row, $i );
 			$published 	= JHTML::_('grid.published', $row, $i );
    		?>
@@ -165,7 +166,7 @@ defined('_JEXEC') or die('Restricted access');
 					<?php echo $image; ?>
 				</span>
 			</td>
-			<td align="center"><?php echo $row->assignedevents; ?></td>
+			<td align="center"><?php echo JHTML::link($sessionslink, $row->assignedevents); ?></td>
 			<td align="right">
 				<?php
 				echo $this->pageNav->orderUpIcon( $i, true, 'orderup', 'Move Up', $this->ordering );

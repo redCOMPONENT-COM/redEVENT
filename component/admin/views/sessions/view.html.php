@@ -147,6 +147,7 @@ class RedeventViewSessions extends JView
 		$document->addScriptDeclaration($js);
 		
 		$uri->delVar('eventid');
+		$uri->delVar('venueid');
 		$this->assignRef('user',		JFactory::getUser());
 		$this->assignRef('lists',		$lists);
 		$this->assignRef('items',		$items);
