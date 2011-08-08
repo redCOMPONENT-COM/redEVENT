@@ -243,48 +243,50 @@ class redEVENT_tags {
 		$text = $this->_replaceLibraryTags($text);
 
 		// now get the list of all remaining tags
-		preg_match_all("/\[(.+?)\]/", $text, $alltags);
-				
-		$search = array();
-		$replace = array();
-		// now, lets get the tags replacements
-		foreach ($alltags[1] as $tag)
+		if (preg_match_all('/\[([^\]\s]+)(?:\s*)([^\]]*)\]/i', $text, $alltags, PREG_SET_ORDER))
 		{
-			if ($this->_submitkey && strpos($tag, 'attending_') === 0) // replace with rest of tag if attending
+			$search = array();
+			$replace = array();
+			foreach ($alltags as $tag)
 			{
-				$search[] = '['.$tag.']';
-				if ($this->_hasAttending()) {
-					$replace[] = '['.substr($tag, 10).']';
-					$replaced = true;
-				}
-				else {
-					$replace[] = '';
-				}
-			}
-			else if ($this->_submitkey && strpos($tag, 'waiting_') === 0) // replace with rest of tag if not attending
-			{
-				$search[] = '['.$tag.']';
-				if ($this->_hasAttending()) {
-					$replace[] = '';
-				}
-				else {
-					$replace[] = '['.substr($tag, 8).']';
-					$replaced = true;
-				}
-			}
-			else 
-			{
-				$func = '_getTag_'.strtolower($tag);
-				if (method_exists($this, $func))
+				$tag_obj = new RedeventParsedTag($tag[0]);
+				
+				if ($this->_submitkey && strpos($tag_obj->getName(), 'attending_') === 0) // replace with rest of tag if attending
 				{
-					$search[] = '['.$tag.']';
-					$replace[] = $this->$func();
-					$replaced = true;
+					$search[] = $tag_obj->getFull();
+					if ($this->_hasAttending()) {
+						$replace[] = '['.substr($tag, 10).']';
+						$replaced = true;
+					}
+					else {
+						$replace[] = '';
+					}
+				}
+				else if ($this->_submitkey && strpos($tag_obj->getName(), 'waiting_') === 0) // replace with rest of tag if not attending
+				{
+					$search[] = $tag_obj->getFull();
+					if ($this->_hasAttending()) {
+						$replace[] = '';
+					}
+					else {
+						$replace[] = '['.substr($tag_obj->getName(), 8).']';
+						$replaced = true;
+					}
+				}
+				else 
+				{
+					$func = '_getTag_'.strtolower($tag_obj->getName());
+					if (method_exists($this, $func))
+					{
+						$search[] = $tag_obj->getFull();
+						$replace[] = $this->$func($tag_obj);
+						$replaced = true;
+					}
 				}
 			}
+			// do the replace
+			$text = str_replace($search, $replace, $text);
 		}
-		// do the replace
-		$text = str_replace($search, $replace, $text);
 
 		// then the custom tags
 		$search = array();
@@ -304,18 +306,21 @@ class redEVENT_tags {
 		}
 		
 		/* Load redform fields */
-		$redformfields = $this->_getFieldsTags();
-		if ($redformfields && count($redformfields))
+		if ($alltags)
 		{
-			foreach ($alltags[1] as $tag)
+			$redformfields = $this->_getFieldsTags();
+			if ($redformfields && count($redformfields))
 			{
-				if (stripos($tag, 'answer_') === 0)
+				foreach ($alltags as $tag)
 				{
-					$search[] = '['.$tag.']';
-					$replace[] = $this->_getFieldAnswer(substr($tag, 7));
+					if (stripos($tag[1], 'answer_') === 0)
+					{
+						$search[] = '['.$tag[1].']';
+						$replace[] = $this->_getFieldAnswer(substr($tag, 7));
+					}
 				}
+				$text = str_ireplace($search, $replace, $text, $count);
 			}
-			$text = str_ireplace($search, $replace, $text, $count);
 		}
 
 		if ($count) {
@@ -327,6 +332,17 @@ class redEVENT_tags {
 		}
 
 		return $text;
+	}
+	
+	/**
+	 * returns array of tags and their parameters
+	 * 
+	 * @param string $text
+	 * @return array
+	 */
+	protected function _getTextTags($text)
+	{
+		
 	}
 	
 	/**
@@ -1422,7 +1438,7 @@ class redEVENT_tags {
 		return $this->_getTag_city();
 	}
 	
-	function _getTag_venues()
+	function _getTag_venues($tag)
 	{
 		return $this->SignUpLinks();
 	}	
@@ -1883,5 +1899,95 @@ class redEVENT_tags {
 	{
 		return $this->_getSubmissionTotalPrice();
 	}
+	
+	function _getTag_attendees()
+	{
+		$event = $this->getEvent();
+		
+	}
+}
+
+class RedeventParsedTag {
+	
+	/**
+	 * full tag, including delimiters and parameters
+	 * 
+	 * @var string
+	 */
+	protected $full_tag;
+	/**
+	 * tag name
+	 * 
+	 * @var string
+	 */
+	protected $tag;
+	/**
+	 * array of parameters
+	 * 
+	 * @var array
+	 */
+	protected $params = array();
+	
+	/**
+	 * constructor
+	 * 
+	 * @param string $full_tag full tag, including delimiters and parameters
+	 * @throws Exception
+	 */
+	public function __construct($full_tag)
+	{
+		$this->full_tag = $full_tag;
+		
+		if (!preg_match('/\[([^\]\s]+)([^\]]*)\]/u', $this->full_tag, $matches)) {
+			throw new Exception(JText::_('COM_REDEVENT_TAGS_WRONG_TAG_SYNTAX').':'. $this->full_tag);
+		}
+		$this->tag = trim($matches[1]);
+		
+		if (count($matches) > 2)
+		{
+			preg_match_all('/([^=\s]+)="([^"]*)"/u', $matches[2], $match_params_array, PREG_SET_ORDER);
+			foreach ($match_params_array as $m) 
+			{
+				$property = strtolower($m[1]);
+				$this->params[$property] = $m[2];
+			}		
+		}
+	}
+
+	/**
+	 * returns full tag text, including delimiters and parameters
+	 * @return string
+	 */
+	public function getFull()
+	{
+		return $this->full_tag;
+	}
+	
+	/**
+	 * returns tag name
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->tag;
+	}
+	
+	/**
+	 * return tag paramter value
+	 * 
+	 * @param string $name parameter name
+	 * @param mixed $default default value if tag not founc
+	 * @return mixed value
+	 */
+	public function getParam($name, $default = null)
+	{
+		if (isset($this->params[$name])) {
+			return $this->params[$name];
+		}
+		else {
+			return $default;
+		}
+	}
+	
 }
 ?>
