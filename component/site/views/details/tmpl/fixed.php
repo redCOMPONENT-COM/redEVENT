@@ -238,7 +238,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	
 	<?php if ($this->row->registra): ?>	
 		<h2 class="location_desc"><?php echo JText::_( 'Registration' ); ?></h2>
+		<?php $registration_status = redEVENTHelper::canRegister($this->row->xref); ?>
 		<div class="event-registration">
+		<?php 
+		if (!$registration_status->canregister):
+		  $img = JHTML::_('image', JURI::base() . 'components/com_redevent/assets/images/agt_action_fail.png', 
+		                          $registration_status->status, 
+		                          array('class' => 'hasTip', 'title' => $registration_status->status));
+			echo $img;
+		else : ?>
 		<?php $venues_html = '';	
 		/* Get the different submission types */
 		$submissiontypes = explode(',', $this->row->submission_types);
@@ -285,6 +293,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			}
 		}
 		echo $venues_html; ?>
+		<?php endif; ?>
 		</div>
 	<?php endif; ?>
 

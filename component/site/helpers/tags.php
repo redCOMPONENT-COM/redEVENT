@@ -41,6 +41,8 @@ class redEVENT_tags {
 	private $_xrefcustomfields = null;
 	private $_answers = null;
 	private $_options = null;
+	
+	private $_canregister = null;
 		
 	/**
 	 * event model
@@ -1129,6 +1131,15 @@ class redEVENT_tags {
 			return false;
 		}
 	}
+	
+	private function _canRegister()
+	{
+		if ($this->_canregister === null) {
+			$this->_canregister = redEVENTHelper::canRegister($this->getXref());
+		}
+		return $this->_canregister;
+	}
+	
 	/*************************************************************************
 	 * tags functions
 	 * 
@@ -1611,7 +1622,15 @@ class redEVENT_tags {
 	}
 	
 	function _getTag_webformsignup()
-	{		
+	{
+		$registration_status = $this->_canRegister();
+		if (!$registration_status->canregister)
+		{
+			$img = JHTML::_('image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png', 
+		                          $registration_status->status, 
+		                          array('class' => 'hasTip', 'title' => $registration_status->status));
+		  return $img;
+		}
 		$mainframe = &JFactory::getApplication();
 		$base_url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
 		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
@@ -1630,6 +1649,14 @@ class redEVENT_tags {
 	
 	function _getTag_emailsignup()
 	{
+		$registration_status = $this->_canRegister();
+		if (!$registration_status->canregister)
+		{
+			$img = JHTML::_('image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png', 
+		                          $registration_status->status, 
+		                          array('class' => 'hasTip', 'title' => $registration_status->status));
+		  return $img;
+		}
 		$mainframe = &JFactory::getApplication();
 		$base_url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
 		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
@@ -1646,6 +1673,14 @@ class redEVENT_tags {
 	
 	function _getTag_formalsignup()
 	{
+		$registration_status = $this->_canRegister();
+		if (!$registration_status->canregister)
+		{
+			$img = JHTML::_('image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png', 
+		                          $registration_status->status, 
+		                          array('class' => 'hasTip', 'title' => $registration_status->status));
+		  return $img;
+		}
 		$mainframe = &JFactory::getApplication();
 		$base_url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
 		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
@@ -1662,6 +1697,14 @@ class redEVENT_tags {
 	
 	function _getTag_externalsignup()
 	{
+		$registration_status = $this->_canRegister();
+		if (!$registration_status->canregister)
+		{
+			$img = JHTML::_('image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png', 
+		                          $registration_status->status, 
+		                          array('class' => 'hasTip', 'title' => $registration_status->status));
+		  return $img;
+		}
 		$mainframe = &JFactory::getApplication();
 		$base_url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
 		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
@@ -1684,6 +1727,14 @@ class redEVENT_tags {
 	
 	function _getTag_phonesignup()
 	{
+		$registration_status = $this->_canRegister();
+		if (!$registration_status->canregister)
+		{
+			$img = JHTML::_('image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png', 
+		                          $registration_status->status, 
+		                          array('class' => 'hasTip', 'title' => $registration_status->status));
+		  return $img;
+		}
 		$mainframe = &JFactory::getApplication();
 		$base_url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
 		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
@@ -1700,6 +1751,14 @@ class redEVENT_tags {
 	
 	function _getTag_webformsignuppage()
 	{
+		$registration_status = $this->_canRegister();
+		if (!$registration_status->canregister)
+		{
+			$img = JHTML::_('image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png', 
+		                          $registration_status->status, 
+		                          array('class' => 'hasTip', 'title' => $registration_status->status));
+		  return $img;
+		}
 		// check that there is no loop with the tag inclusion
 		if (preg_match('/\[[a-z]*signuppage\]/', $this->getEvent()->getData()->submission_type_webform) == 0) {
 			$text = $this->ReplaceTags($this->getEvent()->getData()->submission_type_webform);
@@ -1713,6 +1772,14 @@ class redEVENT_tags {
 	
 	function _getTag_formalsignuppage()
 	{
+		$registration_status = $this->_canRegister();
+		if (!$registration_status->canregister)
+		{
+			$img = JHTML::_('image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png', 
+		                          $registration_status->status, 
+		                          array('class' => 'hasTip', 'title' => $registration_status->status));
+		  return $img;
+		}
 		// check that there is no loop with the tag inclusion
 		if (preg_match('/\[[a-z]*signuppage\]/', $this->getEvent()->getData()->submission_type_formal_offer) == 0) {
 			$text = $this->_getFormalOffer($this->getEvent()->getData());
@@ -1726,6 +1793,14 @@ class redEVENT_tags {
 	
 	function _getTag_phonesignuppage()
 	{
+		$registration_status = $this->_canRegister();
+		if (!$registration_status->canregister)
+		{
+			$img = JHTML::_('image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png', 
+		                          $registration_status->status, 
+		                          array('class' => 'hasTip', 'title' => $registration_status->status));
+		  return $img;
+		}
 		// check that there is no loop with the tag inclusion
 		if (preg_match('/\[[a-z]*signuppage\]/', $this->getEvent()->getData()->submission_type_phone) == 0) {
 			$text = $this->ReplaceTags($this->getEvent()->getData()->submission_type_phone);
@@ -1739,6 +1814,14 @@ class redEVENT_tags {
 	
 	function _getTag_emailsignuppage()
 	{
+		$registration_status = $this->_canRegister();
+		if (!$registration_status->canregister)
+		{
+			$img = JHTML::_('image', JURI::root() . 'components/com_redevent/assets/images/agt_action_fail.png', 
+		                          $registration_status->status, 
+		                          array('class' => 'hasTip', 'title' => $registration_status->status));
+		  return $img;
+		}
 		// check that there is no loop with the tag inclusion
 		if (preg_match('/\[[a-z]*signuppage\]/', $this->getEvent()->getData()->submission_type_email) == 0) {
 			$text = $this->_getEmailSubmission($this->getEvent()->getData());
