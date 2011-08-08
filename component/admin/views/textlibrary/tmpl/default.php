@@ -40,6 +40,15 @@ defined('_JEXEC') or die('Restricted access');
 		</th>
 	</tr>
 	</thead>
+	
+	<tfoot>
+		<tr>
+			<td colspan="4">
+				<?php echo $this->pagination->getListFooter(); ?>
+			</td>
+		</tr>
+	</tfoot>
+	
 	<tbody>
 	<?php
 	for ($i=0, $n=count( $this->rows ); $i < $n; $i++) {
@@ -81,7 +90,7 @@ defined('_JEXEC') or die('Restricted access');
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
-<input type="hidden" name="filter_order_Dir" value="" />
+<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
 </form>
 
 <p class="copyright">
@@ -92,7 +101,3 @@ defined('_JEXEC') or die('Restricted access');
 //keep session alive while editing
 JHTML::_('behavior.keepalive');
 ?>
-<script type="text/javascript">
-	jQuery("table#textlibrary tr:even").addClass("row0");
-	jQuery("table#textlibrary tr:odd").addClass("row1");
-</script>

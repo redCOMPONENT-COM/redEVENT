@@ -72,8 +72,11 @@ class RedeventModelSessions extends JModel
 
     // Get the pagination request variables
     $limit      = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-    $limitstart = $mainframe->getUserStateFromRequest( $option.'limitstart', 'limitstart', 0, 'int' );
-
+    $limitstart = JRequest::getVar('limitstart', 0, '', 'int');
+ 
+		// In case limit has been changed, adjust it
+		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
+		
     $this->setState('limit', $limit);
     $this->setState('limitstart', $limitstart);
     

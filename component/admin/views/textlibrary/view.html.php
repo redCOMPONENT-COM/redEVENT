@@ -73,6 +73,7 @@ class RedEventViewTextLibrary extends JView {
 		
 		// Get data from the model
 		$rows = $this->get('Data');
+		$pagination = $this->get('Pagination');
 		
 		//add css to document
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
@@ -93,6 +94,7 @@ class RedEventViewTextLibrary extends JView {
 		
 		$this->assignRef('user', $user);
 		$this->assignRef('rows', $rows);
+		$this->assignRef('pagination', $pagination);
 		$this->assignRef('lists',		$lists);
 		
 		parent::display($tpl);

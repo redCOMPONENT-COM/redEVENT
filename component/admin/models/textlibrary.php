@@ -49,6 +49,20 @@ class RedEventModelTextLibrary extends JModel
 	 */
 	var $_data = null;
 
+  /**
+   * total
+   *
+   * @var integer
+   */
+  var $_total = null;
+
+  /**
+   * Pagination object
+   *
+   * @var object
+   */
+  var $_pagination = null;
+
 	/**
 	 * Constructor
 	 *
@@ -57,9 +71,29 @@ class RedEventModelTextLibrary extends JModel
 	function __construct()
 	{
 		parent::__construct();
-
+		$mainframe = &JFactory::getApplication();
+		$option = JRequest::getCmd('option');
+		
+		// Get the pagination request variables
+    $limit      = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
+    $limitstart = JRequest::getVar('limitstart', 0, '', 'int');
+ 
+		// In case limit has been changed, adjust it
+		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
+		
+    $this->setState('limit', $limit);
+    $this->setState('limitstart', $limitstart);
+    
+    // filters and ordering
+    $filter_order     = $mainframe->getUserStateFromRequest( 'com_redevent.textlibrary.filter_order', 'filter_order', 'obj.dates', 'cmd' );
+    $filter_order_Dir = $mainframe->getUserStateFromRequest( 'com_redevent.textlibrary.filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );    
+        
+    $this->setState('filter_order',      $filter_order);
+    $this->setState('filter_order_Dir',  $filter_order_Dir);
+    
 		$array = JRequest::getVar('cid',  0, '', 'array');
 		$this->setId((int)$array[0]);
+		
 	}
 
 	/**
@@ -83,11 +117,19 @@ class RedEventModelTextLibrary extends JModel
 	 */
 	function getData() 
 	{
-		$mainframe = &JFactory::getApplication();
-		$option = 'com_redevent';
-		
-		$filter_order		  = $mainframe->getUserStateFromRequest( $option.'.textlibrary.filter_order',		'filter_order',		'obj.text_name',	'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.textlibrary.filter_order_Dir',	'filter_order_Dir',	'',				'word' );
+		if (empty($this->_data))
+		{			
+      $query = $this->_buildQuery();
+      $pagination = $this->getPagination();
+      $this->_data = $this->_getList($query, $pagination->limitstart, $pagination->limit);
+		}
+		return $this->_data;
+	}
+	
+	protected function _buildQuery()
+	{
+		$filter_order		  = $this->getState('filter_order');
+		$filter_order_Dir	= $this->getState('filter_order_Dir');
 
 		if ($filter_order == 'obj.text_name'){
 			$orderby 	= ' ORDER BY obj.text_name '.$filter_order_Dir;
@@ -95,15 +137,49 @@ class RedEventModelTextLibrary extends JModel
 			$orderby 	= ' ORDER BY '.$filter_order.' '.$filter_order_Dir.' , obj.text_name ';
 		}
 		
-		$db = JFactory::getDBO();
 		$query = 'SELECT obj.* '
 				. ' FROM #__redevent_textlibrary AS obj '
 				. $orderby
 				;
-		$db->setQuery($query);
-		return $db->loadObjectList();
+		return $query;
 	}
-	
+
+  /**
+   * Method to get a pagination object
+   *
+   * @access public
+   * @return integer
+   */
+  function getPagination()
+  {
+    // Lets load the content if it doesn't already exist
+    if (empty($this->_pagination))
+    {
+      jimport('joomla.html.pagination');
+      $this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
+    }
+
+    return $this->_pagination;
+  }
+  
+  /**
+   * Total nr of items
+   *
+   * @access public
+   * @return integer
+   */
+  function getTotal()
+  {
+    // Lets load the total nr if it doesn't already exist
+    if (empty($this->_total))
+    {
+      $query = $this->_buildQuery();
+      $this->_total = $this->_getListCount($query);
+    }
+
+    return $this->_total;
+  }
+  
 	/**
     * Retrieve a field to edit
     */
