@@ -39,7 +39,7 @@
 					</label>
 				</td>
 				<td>
-					<?php	echo $this->Lists['enable_ical'];	?>
+					<?php	echo $this->lists['enable_ical'];	?>
 				</td>
 			</tr>
 			<tr>
@@ -77,7 +77,7 @@
 			</td>
 			<td>
 				<?php
-				echo $this->Lists['categories']
+				echo $this->lists['categories']
 				?>
 			</td>
 		</tr>
@@ -95,7 +95,7 @@
 	</td>
 </tr>
 <tr>
-	<td><label for="layout" class="hasTip" title="<?php echo JText::_('COM_REDEVENT_EVENT_LAYOUT').'::'.JText::_('COM_REDEVENT_EVENT_LAYOUT_TIP'); ?>"><?php echo JText::_('COM_REDEVENT_EVENT_LAYOUT'); ?>:</label><?php echo $this->Lists['details_layout']; ?></td>
+	<td><label for="layout" class="hasTip" title="<?php echo JText::_('COM_REDEVENT_EVENT_LAYOUT').'::'.JText::_('COM_REDEVENT_EVENT_LAYOUT_TIP'); ?>"><?php echo JText::_('COM_REDEVENT_EVENT_LAYOUT'); ?>:</label><?php echo $this->lists['details_layout']; ?></td>
 </tr>
 <tr>
 	<td>

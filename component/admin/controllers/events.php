@@ -242,6 +242,10 @@ class RedEventControllerEvents extends RedEventController
 		{
 			$msg	= JText::_( 'EVENT SAVED');
 
+			if (!$this->_saveInitialSession($returnid)) {
+				$msg .= "\n".JTExt::_('COM_REDEVENT_EVENT_FAILED_SAVING_INITIAL_SESSION').': '.$this->getError();
+			} 
+			
 			if ($this->twit == true)
 			{
 				//If the AutoTweet NG Component is installed 
@@ -359,16 +363,10 @@ class RedEventControllerEvents extends RedEventController
 		$cats = JRequest::getVar('categories', null, 'request', 'array');
 		JArrayHelper::toInteger($cats);
 		$venues = JRequest::getVar('venues', null, 'request', 'array');
-		JArrayHelper::toInteger($venues);
-		
-//		$tab = Jtable::getInstance('RedEvent_events', '');
-//		$f = array_keys(get_object_vars($tab));
-//		exit("array('".implode("', '", $f)."')");
+		JArrayHelper::toInteger($venues);		
 
 		$model = $this->getModel('events');
 		$events = $model->exportEvents($cats, $venues);
-
-//echo '<pre>';print_r($events); echo '</pre>';exit;
 
 		header('Content-Type: text/x-csv');
 		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
@@ -426,9 +424,6 @@ class RedEventControllerEvents extends RedEventController
 	function import()
 	{
     $replace = JRequest::getVar('replace_events', 0, 'post', 'int');
-//    $object = & JTable::getInstance('redevent_events', '');
-//    $object_fields = get_object_vars($object);
-//    $object_fields['categories'] = '';
     
     $msg = '';
     if ( $file = JRequest::getVar( 'import', null, 'files', 'array' ) )
@@ -529,6 +524,37 @@ class RedEventControllerEvents extends RedEventController
         break;
     }
     return $field;
+  }
+  
+  /**
+   * save data of first session associated to newly created event
+   * 
+   * @param int $eventid
+   * @return true on success
+   */
+  protected function _saveInitialSession($eventid)
+  {
+  	$model = $this->getModel('Session', 'RedeventModel');
+  	
+  	$post = JRequest::get( 'post' );
+  	$post['eventid'] = $eventid;
+    $post['details'] = JRequest::getVar('session_details', '', 'post', 'string', JREQUEST_ALLOWRAW);
+    $post['icaldetails'] = JRequest::getVar('icaldetails', '', 'post', 'string', JREQUEST_ALLOWRAW);
+    foreach ($post as $key => $val)
+    {
+    	if (strpos($key, 'session_') === 0) {
+    		$post[substr($key, 8)] = $val;
+    	}
+    }
+        
+    $model = $this->getModel('session');
+    if (!$returnid = $model->savexref($post)) 
+    {
+    	$this->setError($model->getError());
+    	return false;
+    }
+    return true;
+  	
   }
 }
 ?>

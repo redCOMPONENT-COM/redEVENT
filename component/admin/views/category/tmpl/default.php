@@ -132,7 +132,7 @@ function submitbutton(pressbutton)
 					</td>
 					<td>
 						<?php
-						echo $this->Lists['categories'];
+						echo $this->lists['categories'];
 						?>
 					</td>
 				</tr>
@@ -151,7 +151,7 @@ function submitbutton(pressbutton)
 					</td>
 					<td>
 						<?php
-						echo $this->Lists['access'];
+						echo $this->lists['access'];
 						?>
 					</td>
 				</tr>
@@ -205,7 +205,7 @@ function submitbutton(pressbutton)
 						</label>
 					</td>
 					<td>
-						<?php echo $this->Lists['groups']; ?>
+						<?php echo $this->lists['groups']; ?>
 					</td>
 				</tr>
 			</table>

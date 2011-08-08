@@ -30,7 +30,7 @@ $this->infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-h
 ?>
 <script language="javascript" type="text/javascript">
 
-    Window.onDomReady(function(){
+    window.addEvent('domready', function(){
       document.formvalidator.setHandler('categories',
         function (value) {
           if(value=="") {
@@ -94,11 +94,14 @@ echo $this->pane->startPane("det-pane");
 	echo $this->pane->startPanel( JText::_('EVENT'), 'event' );
 	echo $this->loadTemplate('event');
 	echo $this->pane->endPanel();
-	
-//	$title = JText::_( 'Sessions' );
-//	echo $this->pane->startPanel( $title, 'venues' );
-//	echo $this->loadTemplate('sessions');
-//	echo $this->pane->endPanel();
+
+	if (!$this->row->id)
+	{
+		$title = JText::_( 'COM_REDEVENT_SESSION' );
+		echo $this->pane->startPanel( $title, 'session' );
+		echo $this->loadTemplate('session');
+		echo $this->pane->endPanel();
+	}
 	
 	$title = JText::_( 'SUBMIT_TYPES' );
 	echo $this->pane->startPanel( $title, 'submit_types' );

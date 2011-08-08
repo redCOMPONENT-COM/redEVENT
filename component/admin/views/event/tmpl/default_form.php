@@ -8,7 +8,7 @@
 			</label>
 		</td>
 		<td>
-			<?php echo $this->Lists['redforms']; ?>
+			<?php echo $this->lists['redforms']; ?>
 	</td>
 </tr>
 <tr class="row<?php echo $k = 1 - $k; ?>">

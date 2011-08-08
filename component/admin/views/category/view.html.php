@@ -109,15 +109,15 @@ class RedEventViewCategory extends JView {
 		JFilterOutput::objectHTMLSafe( $row, ENT_QUOTES, 'catdescription' );
 		
 		/* Initiate the Lists array */
-		$Lists = array();
+		$lists = array();
 		
 		/* Build a select list for categories */
-		$Lists['categories'] = $this->get('Categories');
+		$lists['categories'] = $this->get('Categories');
 		
 		//build selectlists
 		$javascript = "onchange=\"javascript:if (document.forms[0].image.options[selectedIndex].value!='') {document.imagelib.src='../images/stories/' + document.forms[0].image.options[selectedIndex].value} else {document.imagelib.src='../images/blank.png'}\"";
-//		$Lists['imageelist'] 		= JHTML::_('list.images', 'image', $row->image, $javascript, '/images/stories/' );
-		$Lists['access'] 			= JHTML::_('list.accesslevel', $row );
+//		$lists['imageelist'] 		= JHTML::_('list.images', 'image', $row->image, $javascript, '/images/stories/' );
+		$lists['access'] 			= JHTML::_('list.accesslevel', $row );
 
 		//Build the image select functionality
 		$js = "
@@ -145,9 +145,9 @@ class RedEventViewCategory extends JView {
 		$grouplist[] 	= JHTML::_('select.option', '0', JText::_( 'NO GROUP' ) );
 		$grouplist 		= array_merge( $grouplist, $groups );
 
-		$Lists['groups']	= JHTML::_('select.genericlist', $grouplist, 'groupid', 'size="1" class="inputbox"', 'value', 'text', $row->groupid );
+		$lists['groups']	= JHTML::_('select.genericlist', $grouplist, 'groupid', 'size="1" class="inputbox"', 'value', 'text', $row->groupid );
 		
-		$Lists['access'] 			= JHTML::_('list.accesslevel', $row );
+		$lists['access'] 			= JHTML::_('list.accesslevel', $row );
 		
 		// event 
 		JHTML::_('behavior.modal', 'a.modal');
@@ -167,7 +167,7 @@ class RedEventViewCategory extends JView {
 		$document->addScriptDeclaration($js);
 
 		//assign data to template
-		$this->assignRef('Lists'      	, $Lists);
+		$this->assignRef('lists'      	, $lists);
 		$this->assignRef('row'      	, $row);
 		$this->assignRef('editor'		, $editor);
 		$this->assignRef('pane'			, $pane);
