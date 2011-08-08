@@ -79,13 +79,14 @@ class RedeventModelSessions extends JModel
     
     // filters and ordering
     $filter_order     = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.filter_order', 'filter_order', 'obj.dates', 'cmd' );
-    $filter_order_Dir = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
-    $search           = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.search', 'search', '', 'string' );
-    $eventid          = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.eventid', 'eventid', 0, 'int' );
-    $venueid          = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.venueid', 'venueid', 0, 'int' );
-
-    $filter_state     = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.filter_state', 'filter_state', 'notarchived', 'cmd' );
-    $filter_featured  = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.filter_featured', 'filter_featured', '', 'cmd' );
+    $filter_order_Dir = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );    
+    
+    $search  = JRequest::getVar('search', '', 'string');
+    $eventid = JRequest::getInt('eventid');
+    $venueid = JRequest::getInt('venueid');
+    
+    $filter_state     = JRequest::getVar('filter_state', 'notarchived', 'cmd' );
+    $filter_featured  = JRequest::getVar('filter_featured', '', 'cmd' );
     
     $this->setState('filter_order',      $filter_order);
     $this->setState('filter_order_Dir',  $filter_order_Dir);

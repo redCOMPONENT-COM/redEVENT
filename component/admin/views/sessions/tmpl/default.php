@@ -83,18 +83,18 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 			<th width="20">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->items ); ?>);" />
 			</th>
-			<?php if (!$this->event): ?>
-			<th><?php echo JText::_('COM_REDEVENT_EVENT'); ?></th>
-			<?php endif; ?>
-			<th><?php echo JText::_('VENUE'); ?></th>
-			<th><?php echo JText::_('TITLE'); ?></th>
-			<th><?php echo JText::_('DATE'); ?></th>
+			<th><?php echo JHTML::_('grid.sort',  JText::_('DATE'), 'obj.dates', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th><?php echo JText::_('TIME'); ?></th>
-			<th><?php echo JText::_('NOTE'); ?></th>
-      <th width="5"><?php echo JText::_('PUBLISHED'); ?></th>
-      <th width="5"><?php echo JText::_('COM_REDEVENT_SESSION_FEATURED'); ?></th>
+			<?php if (!$this->event): ?>
+			<th><?php echo JHTML::_('grid.sort',  JText::_('COM_REDEVENT_EVENT'), 'e.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<?php endif; ?>
+			<th><?php echo JHTML::_('grid.sort',  JText::_('VENUE'), 'v.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th><?php echo JHTML::_('grid.sort',  JText::_('TITLE'), 'obj.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th><?php echo JHTML::_('grid.sort',  JText::_('NOTE'), 'obj.note', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+      <th width="5"><?php echo JHTML::_('grid.sort',  JText::_('PUBLISHED'), 'obj.published', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+      <th width="5"><?php echo JHTML::_('grid.sort',  JText::_('COM_REDEVENT_SESSION_FEATURED'), 'obj.featured', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
       <?php if (!$this->event || $this->event->registra): ?>
-			<th><?php echo JText::_('COM_REDEVENT_REGISTRATION_END'); ?></th>
+			<th><?php echo JHTML::_('grid.sort',  JText::_('COM_REDEVENT_REGISTRATION_END'), 'obj.registrationend', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
       <th width="5"><?php echo JText::_('COM_REDEVENT_SESSION_TABLE_HEADER_ATTENDEES'); ?></th>
       <?php endif; ?>
 		</tr>
@@ -139,6 +139,19 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo $this->pagination->getRowOffset( $i ); ?></td>
 				<td><?php echo $checked; ?></td>
+	      <td>
+					<?php
+					if (  JTable::isCheckedOut($this->user->get ('id'), $row->checked_out ) ) {
+						echo $displaydate;
+					} else {
+					?>
+						<a href="<?php echo $sessionlink; ?>" title="<?php echo JText::_( 'COM_REDEVENT_SESSIONS_EDIT_SESSION' ); ?>">
+							<?php echo $displaydate; ?></a>
+					<?php
+					}
+					?>
+				</td>
+	      <td><?php echo $displaytime; ?></td>
 				
 			<?php if (!$this->event): ?>
 				<td>
@@ -167,20 +180,8 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 					}
 					?>
 				</td>
+				
 	      <td><?php echo $row->title; ?></td>
-	      <td>
-					<?php
-					if (  JTable::isCheckedOut($this->user->get ('id'), $row->checked_out ) ) {
-						echo $displaydate;
-					} else {
-					?>
-						<a href="<?php echo $sessionlink; ?>" title="<?php echo JText::_( 'COM_REDEVENT_SESSIONS_EDIT_SESSION' ); ?>">
-							<?php echo $displaydate; ?></a>
-					<?php
-					}
-					?>
-				</td>
-	      <td><?php echo $displaytime; ?></td>
 	      <td><?php echo $row->note; ?></td>
         <td align="center">
         	<?php if ($row->published >= 0): ?>
@@ -210,5 +211,5 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
-<input type="hidden" name="filter_order_Dir" value="" />
+<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
 </form>
