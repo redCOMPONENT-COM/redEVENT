@@ -553,14 +553,15 @@ class redEVENTHelper {
    * @return object (canregister, status)
    */
   function canRegister($xref_id, $user_id = null)
-  {
+  {  	
   	if (!file_exists(JPATH_SITE.DS.'components'.DS.'com_redform'.DS.'redform.core.php')) {
 			JError::raiseWarning(0,JTExt::_('REDEVENT_REGISTRATION_NOT_ALLOWED_REDFORMCORE_NOT_FOUND'));
       $result->canregister = 0;
       $result->status = JTEXT::_('USER REDEVENT_REGISTRATION_NOT_ALLOWED_REDFORMCORE_NOT_FOUND REGISTRATION REACHED');
       return $result;
 		}
-
+		
+		$app =& JFactory::getApplication();
     $db = & JFactory::getDBO();
     $user = & JFactory::getUser($user_id);
     $result = new stdclass();
@@ -573,6 +574,12 @@ class redEVENTHelper {
             ;
     $db->setQuery($query);
     $event = & $db->loadObject();
+    
+    // we need to take into account the server offset into account for the registration dates
+    $now = JFactory::getDate();
+		$now->setOffset($app->getCfg('offset'));
+		$now_unix = $now->toUnix('true');
+    
     // first, let's check the thing that don't need database queries
     if (!$event->registra)
     {
@@ -582,14 +589,14 @@ class redEVENTHelper {
     }
     else if (redEVENTHelper::isValidDate($event->registrationend))
     {
-      if ( strtotime($event->registrationend) < time() )
+      if ( strtotime($event->registrationend) < $now_unix )
       {
         $result->canregister = 0;
         $result->status = JTEXT::_('REGISTRATION IS OVER');
         return $result;
       }
     }
-    else if (redEVENTHelper::isValidDate($event->dates) && strtotime($event->dates .' '. $event->times) < time())
+    else if (redEVENTHelper::isValidDate($event->dates) && strtotime($event->dates .' '. $event->times) < $now_unix)
     {
       // it's separated from previous case so that it is not checked if a registration end was set
       $result->canregister = 0;
