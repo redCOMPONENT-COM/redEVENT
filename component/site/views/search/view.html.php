@@ -217,6 +217,10 @@ class RedeventViewSearch extends JView
 		$this->assign('filter_date_to',      $filter_date_to);
 		$this->assign('filter_customs',      $filter_customs);
 
+		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
+		$cols = redEVENTHelper::validateColumns($cols);
+		$this->assign('columns',        $cols);
+		
 		parent::display($tpl);
 
 	}

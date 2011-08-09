@@ -78,6 +78,7 @@ class RedeventViewSimpleList extends JView
 		$customsfilters 	= & $this->get('CustomFilters');
 		$pagination =& $this->get('Pagination');
 
+		
 		//are events available?
 		if (!$rows) {
 			$noevents = 1;
@@ -142,6 +143,10 @@ class RedeventViewSimpleList extends JView
 		$this->assignRef('thumb_link',  $thumb_link);
 		$this->assignRef('list_link',   $list_link);
 		$this->assign('filter_customs',      $filter_customs);
+		
+		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
+		$cols = redEVENTHelper::validateColumns($cols);
+		$this->assign('columns',        $cols);
 
 		parent::display($tpl);
 

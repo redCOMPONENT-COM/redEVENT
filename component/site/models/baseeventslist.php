@@ -647,7 +647,7 @@ class RedeventModelBaseEventList extends JModel
 	  	foreach ((array)$fields as $f)
 	  	{
 	  		if ($f->in_lists) {
-	  			$res[] = $f;
+	  			$res[$f->id] = $f;
 	  		}
 	  	}
   	}

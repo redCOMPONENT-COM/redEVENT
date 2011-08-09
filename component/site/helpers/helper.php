@@ -1234,5 +1234,39 @@ class redEVENTHelper {
 		
 		return $field;
 	}
+	
+	/**
+	 * return the valid columns for frontend display
+	 * 
+	 * @param array $columns
+	 * @return array $columns
+	 */
+	function validateColumns($columns)
+	{
+		$db = &JFactory::getDBO();
+
+		$columns = array_map('strtolower', $columns);
+		$columns = array_map('trim', $columns);
+				
+		$allowed = array('date', 
+		                 'title', 
+		                 'venue', 
+		                 'state', 
+		                 'city', 
+		                 'category', 
+		                 'picture', 
+		                 'registrationend', 
+		                 'places', 
+		                 'placesleft', 
+		);
+		
+		$query = 'SELECT CONCAT("custom", f.id) FROM #__redevent_fields AS f WHERE f.published = 1';
+		$db->setQuery($query);
+		if ($res = $db->loadResultArray()) {
+			$allowed = array_merge($allowed, $res);
+		}
+					
+		return array_intersect($columns, $allowed);
+	}
 }
 ?>

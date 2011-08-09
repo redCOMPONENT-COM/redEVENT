@@ -122,7 +122,10 @@ class RedeventViewCategoriesdetailed extends JView
 		$this->assignRef('elsettings' , 			$elsettings);
 		$this->assignRef('task' , 					$task);
 		$this->assignRef('pagetitle' , 				$pagetitle);
-		
+				
+		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
+		$cols = redEVENTHelper::validateColumns($cols);
+		$this->assign('columns',        $cols);
 
 		parent::display($tpl);
 

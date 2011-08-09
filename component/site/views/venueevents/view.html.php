@@ -201,6 +201,10 @@ class RedeventViewVenueevents extends JView
 		$this->assignRef('customsfilters',     $customsfilters);
 		$this->assign('filter_customs',      $filter_customs);
 
+		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
+		$cols = redEVENTHelper::validateColumns($cols);
+		$this->assign('columns',        $cols);
+		
 		parent::display($tpl);
 	}
 

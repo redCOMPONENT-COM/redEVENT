@@ -116,7 +116,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 		{
 			$query = $this->_buildQuery();
 			$this->_categories = $this->_getList( $query, $this->getState('limitstart'), $this->getState('limit') );
-
+			
 			$count = count($this->_categories);
 			for($i = 0; $i < $count; $i++)
 			{

@@ -143,6 +143,10 @@ class RedeventViewDay extends JView
 		$this->assignRef('daydate' , 				$daydate);
     $this->assign('action',   str_replace('&', '&amp;', $uri->toString()));
 
+		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
+		$cols = redEVENTHelper::validateColumns($cols);
+		$this->assign('columns',        $cols);
+		
 		parent::display($tpl);
 
 	}//function ListEvents end
