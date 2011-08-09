@@ -113,7 +113,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		    <?php foreach ($this->customs AS $c): ?>
         	<th id="el_places_<?php echo $c->id; ?>" class="sectiontableheader" align="left">
         	<?php echo JHTML::_('grid.sort', $this->escape($c->name), 'custom'. $c->id, $this->lists['order_Dir'], $this->lists['order'] ); ?>
-        	<?php if ($c->tips):?>
+        	<?php if ($c->tips && $this->params->get('lists_show_custom_tip', 1)):?>
         	<?php echo JHTML::tooltip(str_replace("\n", "<br/>", $c->tips), '', 'tooltip.png', '', '', false); ?>
         	<?php endif; ?>
         	</th>

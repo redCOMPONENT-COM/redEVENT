@@ -2,6 +2,57 @@
 <config>
 
 	<params addpath="/administrator/components/com_redevent/elements">
+		
+		<param name="cat_num" type="text" size="2" default="4" label="CAT DISPLAY" description="CAT DISPLAY DESC" />	
+		<param name="details_layout" type="radio" default="fixed" label="COM_REDEVENT_SETTINGS_DETAILS_LAYOUT" description="COM_REDEVENT_SETTINGS_DETAILS_LAYOUT_DESC">
+			<option value="default">COM_REDEVENT_SETTINGS_DETAILS_LAYOUT_TAGS</option>
+			<option value="fixed">COM_REDEVENT_SETTINGS_DETAILS_LAYOUT_FIXED</option>
+		</param>
+		<param name="icons" type="radio" default="1" label="SHOW ICONS" description="SHOW ICONS DESC">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_print_icon" type="radio" default="1" label="PRINT ICON" description="PRINT ICON DESC">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_email_icon" type="radio" default="1" label="EMAIL ICON" description="EMAIL ICON DESC">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+    <param name="show_gotoarchive_icon" type="radio" default="1" label="GO TO ARCHIVE ICON" description="GO TO ARCHIVE ICON DESC">
+      <option value="0">Hide</option>
+      <option value="1">Show</option>
+    </param>
+    <param name="show_thumb_icon" type="radio" default="1" label="COM_REDEVENT_SHOW_THUMBNAIL_ICON" description="COM_REDEVENT_SHOW_THUMBNAIL_ICON_DESC">
+      <option value="0">Hide</option>
+      <option value="1">Show</option>
+    </param>
+    <param name="details_attendees_layout" type="list" default="0" label="DETAILS ATTENDEES LAYOUT" description="DETAILS ATTENDEES LAYOUT TIP">
+      <option value="0">Table</option>
+      <option value="1">List</option>
+    </param> 	  
+    <param name="custom_css" type="text" default="" size="60" label="CUSTOM CSS PATH" description="CUSTOM CSS PATH DESC"/>
+    <param name="event_ics" type="radio" default="1" label="COM_REDEVENT_SETTINGS_SHOW_EVENT_ICAL" description="COM_REDEVENT_SETTINGS_SHOW_EVENT_ICAL_DESC">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    
+    <param name="use_default_picture" type="radio" default="1" label="COM_REDEVENT_SETTINGS_USE_DEFAULT_PICTURE" description="COM_REDEVENT_SETTINGS_USE_DEFAULT_PICTURE_DESC">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    
+    <param name="showmapserv" type="radio" default="1" label="COM_REDEVENT_SETTINGS_ACTIVATE_VENUE_MAP_LABEL" description="COM_REDEVENT_SETTINGS_ACTIVATE_VENUE_MAP_DESC">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+
+		<param type="spacer" default="COM_REDEVENT_SETTINGS_SEPARATOR_LISTS_LAYOUT"/>
+		<param name="display" type="radio" default="1" label="DISPLAY SELECT" description="DISPLAY SELECT DESC">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
 		<param name="display_num" type="list" default="15" label="EVENT NUMBER" description="EVENT NUMBER TIP">
 			<option value="5">5</option>
 			<option value="10">10</option>
@@ -10,9 +61,7 @@
 			<option value="25">25</option>
 			<option value="30">30</option>
 			<option value="50">50</option>
-		</param>
-		<param name="cat_num" type="text" size="2" default="4" label="CAT DISPLAY" description="CAT DISPLAY DESC" />
-		
+		</param>	
   	<param name="filter_toggle" type="list" default="3" label="COM_REDEVENT_SETTINGS_FILTER_TOGGLE" description="COM_REDEVENT_SETTINGS_FILTER_TOGGLE_DESC">
 			<option value="0">COM_REDEVENT_SETTINGS_FILTER_TOGGLE_OPTION_OFF_SHOW_FILTERS</option>
 			<option value="1">COM_REDEVENT_SETTINGS_FILTER_TOGGLE_OPTION_OFF_HIDE_FILTERS</option>
@@ -52,76 +101,11 @@
 			<option value="1">Show</option>
 		</param>
 		
-		<param name="display" type="radio" default="1" label="DISPLAY SELECT" description="DISPLAY SELECT DESC">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="details_layout" type="radio" default="fixed" label="COM_REDEVENT_SETTINGS_DETAILS_LAYOUT" description="COM_REDEVENT_SETTINGS_DETAILS_LAYOUT_DESC">
-			<option value="default">COM_REDEVENT_SETTINGS_DETAILS_LAYOUT_TAGS</option>
-			<option value="fixed">COM_REDEVENT_SETTINGS_DETAILS_LAYOUT_FIXED</option>
-		</param>
-		<param name="icons" type="radio" default="1" label="SHOW ICONS" description="SHOW ICONS DESC">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="show_print_icon" type="radio" default="1" label="PRINT ICON" description="PRINT ICON DESC">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="show_email_icon" type="radio" default="1" label="EMAIL ICON" description="EMAIL ICON DESC">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-    <param name="show_gotoarchive_icon" type="radio" default="1" label="GO TO ARCHIVE ICON" description="GO TO ARCHIVE ICON DESC">
-      <option value="0">Hide</option>
-      <option value="1">Show</option>
-    </param>
-    <param name="show_thumb_icon" type="radio" default="1" label="COM_REDEVENT_SHOW_THUMBNAIL_ICON" description="COM_REDEVENT_SHOW_THUMBNAIL_ICON_DESC">
-      <option value="0">Hide</option>
-      <option value="1">Show</option>
-    </param>
-    <param name="details_attendees_layout" type="list" default="0" label="DETAILS ATTENDEES LAYOUT" description="DETAILS ATTENDEES LAYOUT TIP">
-      <option value="0">Table</option>
-      <option value="1">List</option>
-    </param> 	  
     <param name="display_placesleft" type="radio" default="0" label="DISPLAY PLACES LEFT" description="DISPLAY PLACES LEFT DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>
-    <param name="custom_css" type="text" default="" size="60" label="CUSTOM CSS PATH" description="CUSTOM CSS PATH DESC"/>
-    <param name="event_ics" type="radio" default="1" label="COM_REDEVENT_SETTINGS_SHOW_EVENT_ICAL" description="COM_REDEVENT_SETTINGS_SHOW_EVENT_ICAL_DESC">
-      <option value="0">No</option>
-      <option value="1">Yes</option>
-    </param>
-    <param name="events_rsscal" type="radio" default="0" label="COM_REDEVENT_SETTINGS_SHOW_EVENTS_RSSCAL" description="COM_REDEVENT_SETTINGS_SHOW_EVENTS_RSSCAL_DESC">
-      <option value="0">No</option>
-      <option value="1">Yes</option>
-    </param>
-    <param name="events_ical" type="radio" default="1" label="COM_REDEVENT_SETTINGS_SHOW_EVENTS_ICAL" description="COM_REDEVENT_SETTINGS_SHOW_EVENTS_ICAL_DESC">
-      <option value="0">No</option>
-      <option value="1">Yes</option>
-    </param>
-    <param name="ical_max_items" type="text" default="100" label="COM_REDEVENT_SETTINGS_ICAL_MAX_ITEMS" description="COM_REDEVENT_SETTINGS_ICAL_MAX_ITEMS_DESC" />
     
-    <param name="use_default_picture" type="radio" default="1" label="COM_REDEVENT_SETTINGS_USE_DEFAULT_PICTURE" description="COM_REDEVENT_SETTINGS_USE_DEFAULT_PICTURE_DESC">
-      <option value="0">No</option>
-      <option value="1">Yes</option>
-    </param>
-    
-    <param name="lists_showend" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_SHOW_END" description="COM_REDEVENT_SETTINGS_LISTS_SHOW_END_DESC">
-      <option value="0">No</option>
-      <option value="1">Yes</option>
-    </param>
-    
-    <param name="showmapserv" type="radio" default="1" label="COM_REDEVENT_SETTINGS_ACTIVATE_VENUE_MAP_LABEL" description="COM_REDEVENT_SETTINGS_ACTIVATE_VENUE_MAP_DESC">
-      <option value="0">No</option>
-      <option value="1">Yes</option>
-    </param>
-    
-    <param name="default_itemid" type="text" default="" label="COM_REDEVENT_SETTINGS_DEFAULT_ITEMID" description="COM_REDEVENT_SETTINGS_DEFAULT_ITEMID_DESC"/>
- 	</params>
- 	
- 	<params group="listslayout">
     <param name="lists_show_prices" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_SHOW_PRICE" description="COM_REDEVENT_SETTINGS_LISTS_SHOW_PRICE_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
@@ -133,6 +117,29 @@
       <option value="1">Yes</option>
     </param>
     <param name="lists_show_credits_label" type="text" default="Credit" label="COM_REDEVENT_SETTINGS_LISTS_CREDIT_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_CREDIT_LABEL_DESC"/>
+    
+    <param name="lists_show_custom_tip" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_SHOW_CUSTOM_TIP_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_SHOW_CUSTOM_TIP_DESC">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    
+    <param name="lists_showend" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_SHOW_END" description="COM_REDEVENT_SETTINGS_LISTS_SHOW_END_DESC">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    
+    <param name="events_rsscal" type="radio" default="0" label="COM_REDEVENT_SETTINGS_SHOW_EVENTS_RSSCAL" description="COM_REDEVENT_SETTINGS_SHOW_EVENTS_RSSCAL_DESC">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    <param name="events_ical" type="radio" default="1" label="COM_REDEVENT_SETTINGS_SHOW_EVENTS_ICAL" description="COM_REDEVENT_SETTINGS_SHOW_EVENTS_ICAL_DESC">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    <param name="ical_max_items" type="text" default="100" label="COM_REDEVENT_SETTINGS_ICAL_MAX_ITEMS" description="COM_REDEVENT_SETTINGS_ICAL_MAX_ITEMS_DESC" />
+    
+		<param type="spacer" default="COM_REDEVENT_SETTINGS_SEPARATOR_SEO"/>    
+    <param name="default_itemid" type="text" default="" label="COM_REDEVENT_SETTINGS_DEFAULT_ITEMID" description="COM_REDEVENT_SETTINGS_DEFAULT_ITEMID_DESC"/>
  	</params>
  	
  	<params group="pasteventssettings">
