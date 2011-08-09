@@ -41,6 +41,9 @@ $i = 0;
 			case 'venue':
 				echo Jtext::_('MOD_REDEVENT_TABLE_HEADER_Venue');
 				break;
+			case 'state':
+				echo Jtext::_('MOD_REDEVENT_TABLE_HEADER_state');
+				break;
 			case 'city':
 				echo Jtext::_('MOD_REDEVENT_TABLE_HEADER_City');
 				break;
