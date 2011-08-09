@@ -40,4 +40,13 @@ if (!$items) {
 $document = &JFactory::getDocument(); 
 $document->addStyleSheet( JURI::base() . '/modules/mod_redevent/mod_redevent.css' );
 
-require(JModuleHelper::getLayoutPath('mod_redevent'));
+$layout = $params->get('layout', 'default');
+if ($layout == 'table')
+{
+	$cols = explode(",", $params->get('table_cols', 'date, title'));
+	$cols = array_map('trim', $cols);
+	$cols = array_map('strtolower', $cols);
+	
+	$customfields = modRedEventHelper::getCustomFields();
+}
+require(JModuleHelper::getLayoutPath('mod_redevent', $layout));

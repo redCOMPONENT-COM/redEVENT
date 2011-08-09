@@ -40,7 +40,7 @@ class modRedEventHelper
 	 * @access public
 	 * @return array
 	 */
-	function getList(&$params)
+	public function getList(&$params)
 	{
 		global $mainframe;
 
@@ -134,6 +134,7 @@ class modRedEventHelper
 
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
+		$rows = self::_categories($rows);
 		
 		$i		= 0;
 		$lists	= array();
@@ -173,10 +174,10 @@ class modRedEventHelper
 	 * @access public
 	 * @return string
 	 */
-	function _builddateinfo($row, &$params)
+	protected function _builddateinfo($row, &$params)
 	{
 		if (!redEVENTHelper::isValidDate($row->dates)) {
-			return JText::_('MOD_REDEVENT_REDEVENT_OPEN_DATE');
+			return JText::_('MOD_REDEVENT_OPEN_DATE');
 		}
 		$date 		= modRedEventHelper::_format_date($row->dates, $row->times, $params->get('formatdate', '%d.%m.%Y'));
 		$enddate 	= redEVENTHelper::isValidDate($row->enddates) ? modRedEventHelper::_format_date($row->enddates, $row->endtimes, $params->get('formatdate', '%d.%m.%Y')) : null;
@@ -221,4 +222,70 @@ class modRedEventHelper
 
 		return $date;
 	}
+	
+
+	/**
+   * adds categories property to event rows
+   *
+   * @param array $rows of events
+   * @return array
+   */
+  function _categories($rows)
+  {
+  	$db = &Jfactory::getDBO();
+		$acl = &UserAcl::getInstance();		
+		$gids = $acl->getUserGroupsIds();
+		if (!is_array($gids) || !count($gids)) {
+			$gids = array(0);
+		}
+		$gids = implode(',', $gids);
+		
+    for ($i=0, $n=count($rows); $i < $n; $i++) 
+    {
+      $query =  ' SELECT c.id, c.catname, c.color, '
+              . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
+              . ' FROM #__redevent_categories as c '
+              . ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
+	            . '  LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id '
+              . ' WHERE c.published = 1 '
+              . '   AND x.event_id = ' . $db->Quote($rows[$i]->id)
+              . '   AND (c.private = 0 OR gc.group_id IN ('.$gids.')) '
+              . ' GROUP BY c.id '
+              . ' ORDER BY c.ordering'
+              ;
+      $db->setQuery( $query );
+
+      $rows[$i]->categories = $db->loadObjectList();
+    }
+
+    return $rows;   
+  }
+  
+  /**
+   * returns code for list of cats separated by comma
+   * 
+   * @param array $categories
+   * @return string html
+   */
+  public function displayCats($categories)
+  {
+  	$res = array();
+  	foreach ($categories as $c) {
+  		$res[] = $c->catname;
+  	}
+  	return implode(", ", $res);
+  }
+  
+  /**
+   * return custom fields indexed by id
+   * 
+   * @return array
+   */
+  public function getCustomFields()
+  {
+  	$db = &Jfactory::getDBO();
+  	$query = ' SELECT f.id, f.* FROM #__redevent_fields AS f';
+  	$db->setQuery($query);
+  	return $db->loadObjectList('id');
+  }
 }
