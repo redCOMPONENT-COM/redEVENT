@@ -32,7 +32,7 @@ table.redeventmod th img
 { margin: 0 0 5px 5px; vertical-align: middle; border: none; }
 
 table.redeventmod td
-{ padding: 0.4em; border-bottom: 1px solid #e5e5e5; border-right: 1px solid #E5E5E5; vertical-align: top; }
+{ padding: 0.4em; border-bottom: 1px solid #e5e5e5; border-right: 1px solid #E5E5E5; vertical-align: top; text-align: left;}
 
 table.redeventmod tr.sectiontableentry2 td
 { background: #F4F4F4; }

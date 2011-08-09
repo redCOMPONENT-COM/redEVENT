@@ -116,7 +116,7 @@ class modRedEventHelper
 		}
 
 		//get $params->get( 'count', '2' ) nr of datasets
-		$query = 'SELECT a.*, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, l.venue, l.city, l.url ,'
+		$query = 'SELECT x.*, x.id AS xref, a.*, l.venue, l.city, l.url, l.state, '
 		    . ' CONCAT_WS(",", c.image) AS categories_images,'
         . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
 		    . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug '

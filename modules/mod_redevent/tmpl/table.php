@@ -105,6 +105,10 @@ $i = 0;
 					echo $item->city;
 					break;
 					
+				case 'state':
+					echo $item->state;
+					break;
+					
 				case 'picture':
 					echo redEVENTImage::modalimage('events', $item->datimage, $item->title_short, intval($params->get('picture_size', 30)));
 					break;
