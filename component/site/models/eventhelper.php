@@ -41,8 +41,15 @@ class RedeventModelEventhelper extends JModel
 	 * @var array
 	 */
 	protected $_event = null;
-	
+	/**
+	 * event id
+	 * @var int
+	 */
 	protected $_id   = null;
+	/**
+	 * session id xref
+	 * @var int
+	 */
 	protected $_xref = null;
 
 	/**
@@ -50,7 +57,7 @@ class RedeventModelEventhelper extends JModel
 	 *
 	 * @since 0.9
 	 */
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 	}
@@ -62,7 +69,7 @@ class RedeventModelEventhelper extends JModel
 	 * @param	int	details ID number
 	 */
 
-	function setId($id)
+	public function setId($id)
 	{
 		// Set new details ID and wipe data
 		$this->_id			= $id;
@@ -75,8 +82,7 @@ class RedeventModelEventhelper extends JModel
 	 * @access	public
 	 * @param	int	details ID number
 	 */
-
-	function setXref($xref)
+	public function setXref($xref)
 	{
 		// Set new details ID and wipe data
 		$this->_xref  = $xref;
@@ -90,7 +96,7 @@ class RedeventModelEventhelper extends JModel
 	 * @return array
 	 * @since 0.9
 	 */
-	function getData()
+	public function getData()
 	{
 		/*
 		 * Load the Category data
@@ -126,7 +132,7 @@ class RedeventModelEventhelper extends JModel
 	 * @return	array
 	 * @since	0.9
 	 */
-	function _loadDetails()
+	protected function _loadDetails()
 	{
 		if (empty($this->_event))
 		{
@@ -176,7 +182,7 @@ class RedeventModelEventhelper extends JModel
 	 * @return	string	WHERE clause
 	 * @since	0.9
 	 */
-	function _buildDetailsWhere()
+	protected function _buildDetailsWhere()
 	{
 		$where = '';
 		if ($this->_xref) $where = ' WHERE x.id = '.$this->_xref;
@@ -191,7 +197,7 @@ class RedeventModelEventhelper extends JModel
    * @param object event
    * @return object
    */
-  function _getEventCategories($row)
+  protected function _getEventCategories($row)
   {
   	$query =  ' SELECT c.id, c.catname, c.access, c.image, '
 			  	. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
@@ -208,7 +214,7 @@ class RedeventModelEventhelper extends JModel
     return $row;   
   }
   
-  function getPlacesLeft()
+  public function getPlacesLeft()
   {
   	$session = &$this->getData();
 		$q = ' SELECT COUNT(r.id) AS total '
@@ -224,7 +230,7 @@ class RedeventModelEventhelper extends JModel
     return ($left > 0 ? $left : 0);
   }
   
-  function getWaitingPlacesLeft()
+  public function getWaitingPlacesLeft()
   {
   	$session = &$this->getData();
 		$q = ' SELECT COUNT(r.id) AS total '
@@ -245,7 +251,7 @@ class RedeventModelEventhelper extends JModel
    * 
    * @return array
    */
-  function getPrices()
+  public function getPrices()
   {
   	$query = ' SELECT sp.*, p.name, p.alias, p.image, p.tooltip, f.currency, '
 	         . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug ' 

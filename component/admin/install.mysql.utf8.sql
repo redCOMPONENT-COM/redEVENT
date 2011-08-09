@@ -351,7 +351,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_event_venue_xref` (
   `note` VARCHAR(50) NULL default NULL,
   `details` text NOT NULL,
   `icaldetails` text NOT NULL,
-  `icalvenue` text NOT NULL;
+  `icalvenue` text NOT NULL,
   `maxattendees` int(11) NOT NULL default '0',
   `maxwaitinglist` int(11) NOT NULL default '0',
   `course_credit` int(11) NOT NULL,
