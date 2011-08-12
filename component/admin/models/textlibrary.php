@@ -85,7 +85,7 @@ class RedEventModelTextLibrary extends JModel
     $this->setState('limitstart', $limitstart);
     
     // filters and ordering
-    $filter_order     = $mainframe->getUserStateFromRequest( 'com_redevent.textlibrary.filter_order', 'filter_order', 'obj.dates', 'cmd' );
+    $filter_order     = $mainframe->getUserStateFromRequest( 'com_redevent.textlibrary.filter_order', 'filter_order', 'obj.text_name', 'cmd' );
     $filter_order_Dir = $mainframe->getUserStateFromRequest( 'com_redevent.textlibrary.filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );    
         
     $this->setState('filter_order',      $filter_order);
