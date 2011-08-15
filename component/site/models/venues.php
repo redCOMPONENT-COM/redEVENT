@@ -140,9 +140,7 @@ class RedeventModelVenues extends JModel
 				$venue->limage = redEVENTImage::flyercreator($venue->locimage);
 
 				//Generate Venuedescription
-				if (empty ($venue->locdescription)) {
-					$venue->locdescription = JText::_( 'NO DESCRIPTION' );
-				} else {
+				if (!empty ($venue->locdescription)) {
 					//execute plugins
 					$venue->locdescription = JHTML::_('content.prepare', $venue->locdescription);
 				}

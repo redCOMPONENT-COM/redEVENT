@@ -104,7 +104,7 @@ $row = & $this->row;
 
     </dl>
   </div>
-    <?php if ($this->elsettings->showlocdescription == 1) : ?>
+    <?php if ($this->elsettings->showlocdescription == 1 && !empty($row->locdescription)) : ?>
     <div class="description">
       <h2 class="description"><?php echo JText::_( 'DESCRIPTION' ).':'; ?></h2>
         <?php echo $row->locdescription; ?>

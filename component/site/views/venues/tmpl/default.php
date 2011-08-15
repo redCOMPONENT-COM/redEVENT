@@ -111,7 +111,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 		</dl>
 
-	    <?php if ($this->elsettings->showlocdescription == 1) :	?>
+	    <?php if ($this->elsettings->showlocdescription == 1 && $row->locdescription) :	?>
 		<h2 class="description"><?php echo JText::_( 'DESCRIPTION' ).':'; ?></h2>
 		<div class="description">
 	    	<?php echo $row->locdescription; ?>

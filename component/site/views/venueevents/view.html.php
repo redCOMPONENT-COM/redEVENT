@@ -144,9 +144,7 @@ class RedeventViewVenueevents extends JView
 		$maintainer = $acl->canEditVenue($venue->id);
 
 		//Generate Venuedescription
-		if (empty ($venue->locdescription)) {
-			$venuedescription = JText::_( 'NO DESCRIPTION' );
-		} else {
+		if (!empty ($venue->locdescription)) {
 			//execute plugins
 			$venuedescription = JHTML::_('content.prepare', $venue->locdescription);
 		}
