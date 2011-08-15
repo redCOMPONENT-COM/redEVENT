@@ -1416,6 +1416,24 @@ class redEVENT_tags {
 		return $text;
 	}
 	
+	/**
+	 * returns event creator name
+	 * @return string
+	 */
+	function _getTag_author_name()
+	{
+		return $this->getEvent()->getData()->creator_name;
+	}
+		
+	/**
+	* returns event creator email
+	* @return string
+	*/
+	function _getTag_author_email()
+	{
+		return $this->getEvent()->getData()->creator_email;
+	}
+	
 	/**************  venue tags ******************/
 	
 	function _getTag_venue()

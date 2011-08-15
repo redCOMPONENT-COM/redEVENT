@@ -84,6 +84,8 @@ class RedEventModelTags extends JModel
 		$tags[] = new TagsModelTag('ical_url', JText::_('COM_REDEVENT_TAG_ICAL_URL'));
 		$tags[] = new TagsModelTag('summary', JText::_('COM_REDEVENT_TAG_SUMMARY'));
 		$tags[] = new TagsModelTag('attachments', JText::_('COM_REDEVENT_TAG_ATTACHMENTS'));
+		$tags[] = new TagsModelTag('author_name', JText::_('COM_REDEVENT_TAG_AUTHOR_NAME'));
+		$tags[] = new TagsModelTag('author_email', JText::_('COM_REDEVENT_TAG_AUTHOR_EMAIL'));
 		
 		$tags[] = new TagsModelTag('venue_title', JText::_('SUBMISSION_EVENT_VENUE'), 'venue');
 		$tags[] = new TagsModelTag('venue_link', JText::_('SUBMISSION_EVENT_VENUELINK'), 'venue');
