@@ -146,5 +146,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	</form>
 	<?php
 	
-echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=myevents'), JText::_('RETURN TO MY EVENTS'));
+echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=myevents'), JText::_('RETURN TO MY EVENTS'), array('class' => 're-back'));
 ?>

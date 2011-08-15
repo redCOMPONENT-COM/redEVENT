@@ -27,4 +27,4 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div id="confirmation_message">
 	<?php echo $this->message; ?>
 </div>
-<div><?php echo JHTML::_('link', JRoute::_(RedEventHelperRoute::getDetailsRoute($this->event->slug, JRequest::getInt('xref'))), JText::_('RETURN_EVENT_DETAILS')); ?></div>
+<div><?php echo JHTML::_('link', JRoute::_(RedEventHelperRoute::getDetailsRoute($this->event->slug, JRequest::getInt('xref'))), JText::_('RETURN_EVENT_DETAILS'), array('class' => 're-back')); ?></div>
