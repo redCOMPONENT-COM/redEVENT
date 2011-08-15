@@ -48,7 +48,12 @@
 		<param name="showrecurring" type="list" default="1" label="MOD_REDEVENT_SHOW_RECURRING" description="MOD_REDEVENT_SHOW_RECURRING_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
-		</param>
+		</param>	
+		<param name="title_type" type="list" default="0" label="MOD_REDEVENT_TITLE_TYPE_LABEL" description="MOD_REDEVENT_TITLE_TYPE_DESC">
+			<option value="0">MOD_REDEVENT_TITLE_TYPE_EVENT</option>
+			<option value="1">MOD_REDEVENT_TITLE_TYPE_SESSION</option>
+			<option value="2">MOD_REDEVENT_TITLE_TYPE_FULL</option>
+		</param>	
 		<param name="cuttitle" type="text" default="18" label="MAX TITLE LENGTH" description="MAX TITLE LENGTH DESC" />
 		<param name="picture_size" type="text" default="30" label="MOD_REDEVENT_PICTURE_SIZE" description="MOD_REDEVENT_PICTURE_SIZE_DESC" />
 		<param name="catid" type="text" default="" label="CATEGORY ID" description="CATEGORY ID DESC" />

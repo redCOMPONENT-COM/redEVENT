@@ -118,6 +118,8 @@ class modRedEventHelper
 		//get $params->get( 'count', '2' ) nr of datasets
 		$query = 'SELECT x.*, x.id AS xref, a.*, l.venue, l.city, l.url, l.state, '
 		    . ' CONCAT_WS(",", c.image) AS categories_images,'
+		    . ' CASE WHEN CHAR_LENGTH(x.title) THEN x.title ELSE a.title END as session_title, '
+		    . ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
         . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
 		    . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug '
 				. ' FROM #__redevent_event_venue_xref AS x'
@@ -139,15 +141,30 @@ class modRedEventHelper
 		$i		= 0;
 		$lists	= array();
 		$title_length = $params->get('cuttitle', '18');
+		switch ($params->get('title_type', 0))
+		{
+			case 1:
+				$title_type = 'session_title';
+				break;
+			case 2:
+				$title_type = 'full_title';
+				break;
+			case 0:
+			default:
+				$title_type = 'title';
+				break;
+		}
+		
 		foreach ( $rows as $k => $row )
 		{
+			$rowtitle = $row->$title_type;
 			//cut title
-			$length = mb_strlen( $row->title, 'UTF-8' );
+			$length = mb_strlen( $rowtitle, 'UTF-8' );
 			if ($title_length && $length > $title_length) {
-				$rows[$k]->title_short = mb_substr($row->title, 0, $title_length, 'UTF-8').'...';
+				$rows[$k]->title_short = mb_substr($rowtitle, 0, $title_length, 'UTF-8').'...';
 			}
 			else {
-				$rows[$k]->title_short = $row->title;
+				$rows[$k]->title_short = $rowtitle;
 			}
 			// cut venue name
       $length = mb_strlen($row->venue, 'UTF-8');
