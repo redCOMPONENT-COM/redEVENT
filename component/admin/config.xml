@@ -103,22 +103,9 @@
 		
 		
 		<param name="lists_columns" type="text" size="80" default="date, title, venue, city, category" label="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_DESC" />
-		
-    <param name="display_placesleft" type="radio" default="0" label="DISPLAY PLACES LEFT" description="DISPLAY PLACES LEFT DESC">
-      <option value="0">No</option>
-      <option value="1">Yes</option>
-    </param>
-    
-    <param name="lists_show_prices" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_SHOW_PRICE" description="COM_REDEVENT_SETTINGS_LISTS_SHOW_PRICE_DESC">
-      <option value="0">No</option>
-      <option value="1">Yes</option>
-    </param>
+		    
     <param name="lists_show_prices_label" type="text" default="Price" label="COM_REDEVENT_SETTINGS_LISTS_PRICE_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_PRICE_LABEL_DESC"/>
     
-    <param name="lists_show_credits" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_SHOW_CREDIT" description="COM_REDEVENT_SETTINGS_LISTS_SHOW_CREDIT_DESC">
-      <option value="0">No</option>
-      <option value="1">Yes</option>
-    </param>
     <param name="lists_show_credits_label" type="text" default="Credit" label="COM_REDEVENT_SETTINGS_LISTS_CREDIT_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_CREDIT_LABEL_DESC"/>
     
     <param name="lists_show_custom_tip" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_SHOW_CUSTOM_TIP_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_SHOW_CUSTOM_TIP_DESC">
