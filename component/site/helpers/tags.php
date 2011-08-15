@@ -255,7 +255,7 @@ class redEVENT_tags {
 				{
 					$search[] = $tag_obj->getFull();
 					if ($this->_hasAttending()) {
-						$replace[] = '['.substr($tag, 10).']';
+						$replace[] = '['.substr($tag_obj->getName(), 10).']';
 						$replaced = true;
 					}
 					else {
@@ -316,7 +316,7 @@ class redEVENT_tags {
 					if (stripos($tag[1], 'answer_') === 0)
 					{
 						$search[] = '['.$tag[1].']';
-						$replace[] = $this->_getFieldAnswer(substr($tag, 7));
+						$replace[] = $this->_getFieldAnswer(substr($tag[1], 7));
 					}
 				}
 				$text = str_ireplace($search, $replace, $text, $count);
@@ -1887,7 +1887,7 @@ class redEVENT_tags {
 		if (!empty($this->_submitkey)) {
 			$text = $this->getAttendeeUniqueId($this->_submitkey);
 		}
-		return ;
+		return $text;
 	}
 	
 	/**
