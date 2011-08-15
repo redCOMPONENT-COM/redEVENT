@@ -40,7 +40,12 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>		
-		<param name="offset" type="text" default="0" label="MOD_REDEVENT_attending_OFFSET_LABEL" description="MOD_REDEVENT_attending_OFFSET_DESC"/>		
+		<param name="offset" type="text" default="0" label="MOD_REDEVENT_ATTENDING_OFFSET_LABEL" description="MOD_REDEVENT_ATTENDING_OFFSET_DESC"/>		
+		<param name="title_type" type="list" default="0" label="MOD_REDEVENT_ATTENDING_TITLE_TYPE_LABEL" description="MOD_REDEVENT_ATTENDING_TITLE_TYPE_DESC">
+			<option value="0">MOD_REDEVENT_ATTENDING_TITLE_TYPE_EVENT</option>
+			<option value="1">MOD_REDEVENT_ATTENDING_TITLE_TYPE_SESSION</option>
+			<option value="2">MOD_REDEVENT_ATTENDING_TITLE_TYPE_FULL</option>
+		</param>	
 		<param name="showvenue" type="list" default="1" label="MOD_REDEVENT_attending_SHOW_VENUE_LABEL" description="MOD_REDEVENT_attending_SHOW_VENUE_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
