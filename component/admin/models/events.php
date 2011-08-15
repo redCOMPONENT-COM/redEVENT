@@ -68,8 +68,8 @@ class RedEventModelEvents extends JModel
 		global $mainframe, $option;
 
     $limit      = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-		$limitstart = JRequest::getVar('limitstart', 0, '', 'int');
- 
+		$limitstart = $mainframe->getUserStateFromRequest( $option.'.events.limitstart', 'limitstart', 0, '', 'int' );
+		
 		// In case limit has been changed, adjust it
 		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
 		
@@ -90,7 +90,8 @@ class RedEventModelEvents extends JModel
 		if (empty($this->_data))
 		{
 			$query = $this->_buildQuery();
-			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+			$pagination = $this->getPagination();
+			$this->_data = $this->_getList($query, $pagination->limitstart, $pagination->limit);
       $this->_data = $this->_categories($this->_data);
 		}
 
