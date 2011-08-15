@@ -28,6 +28,10 @@
       <option value="0">Hide</option>
       <option value="1">Show</option>
     </param>
+    <param name="details_attendees_links" type="list" default="0" label="COM_REDEVENT_SETTINGS_DETAILS_SHOW_ATTENDEES_LINKS_LABEL" description="COM_REDEVENT_SETTINGS_DETAILS_SHOW_ATTENDEES_LINKS_DESC">
+      <option value="0">COM_REDEVENT_SETTINGS_DETAILS_SHOW_ATTENDEES_LINKS_CURRENT_SESSION</option>
+      <option value="1">COM_REDEVENT_SETTINGS_DETAILS_SHOW_ATTENDEES_LINKS_ALL_SESSIONS</option>
+    </param> 	 
     <param name="details_attendees_layout" type="list" default="0" label="DETAILS ATTENDEES LAYOUT" description="DETAILS ATTENDEES LAYOUT TIP">
       <option value="0">Table</option>
       <option value="1">List</option>

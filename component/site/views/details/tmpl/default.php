@@ -58,7 +58,8 @@ if ($this->row->show_names) : ?>
 		<!-- Registration -->
 		<h2 class="register"><?php echo JText::_( 'REGISTERED USERS' ).':'; ?></h2>
 		<?php
-			foreach ($this->venuedates AS $key => $venuedate) {			
+			foreach ($this->venuedates AS $key => $venuedate) 
+			{			
         /* Get the date */
         $date = (!redEVENTHelper::isValidDate($venuedate->dates)  ? Jtext::_('Open date') : strftime( $this->elsettings->formatdate, strtotime( $venuedate->dates )));
         $enddate  = (!redEVENTHelper::isValidDate($venuedate->enddates) || $venuedate->enddates == '0000-00-00' || $venuedate->enddates == $venuedate->dates) ? '' : strftime( $this->elsettings->formatdate, strtotime( $venuedate->enddates ));
@@ -79,6 +80,9 @@ if ($this->row->show_names) : ?>
         
 				echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&id='.$this->row->slug.'&tpl='. $attendees_layout .'&xref='.$venuedate->id), JText::_('SHOW_REGISTERED_USERS').' '.$displaydate.' '.$displaytime);
 				echo '<br />';
+				if ($this->params->get('details_attendees_links', 0) == 0) { // only current session
+					break;
+				}
 			}
 		?>
 	<?php endif; ?>
