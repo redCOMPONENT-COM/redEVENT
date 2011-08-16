@@ -241,10 +241,13 @@ class RedEventControllerEvents extends RedEventController
 		if ($returnid = $model->store($post)) 
 		{
 			$msg	= JText::_( 'EVENT SAVED');
-
-			if (!$this->_saveInitialSession($returnid)) {
-				$msg .= "\n".JTExt::_('COM_REDEVENT_EVENT_FAILED_SAVING_INITIAL_SESSION').': '.$this->getError();
-			} 
+			
+			if (isset($post['venueid']) && $post['venueid'])
+			{
+				if (!$this->_saveInitialSession($returnid)) {
+					$msg .= "\n".JTExt::_('COM_REDEVENT_EVENT_FAILED_SAVING_INITIAL_SESSION').': '.$this->getError();
+				} 
+			}
 			
 			if ($this->twit == true)
 			{

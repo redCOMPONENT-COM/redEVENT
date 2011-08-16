@@ -292,7 +292,7 @@ class RedEventViewEvent extends JView {
 		// venues selector
     $venues = array(JHTML::_('select.option', 0, JText::_('Select Venue')));
 		$venues = array_merge($venues, $this->get('VenuesOptions'));
-		$lists['venue'] = JHTML::_('select.genericlist', $venues, 'venueid', 'class="validate-venue"', 'value', 'text', $xref->venueid);
+		$lists['venue'] = JHTML::_('select.genericlist', $venues, 'venueid', '', 'value', 'text', $xref->venueid);
 		
 		// group selector
     $options = array(JHTML::_('select.option', 0, JText::_('Select group')));
@@ -437,7 +437,7 @@ class RedEventViewEvent extends JView {
 		// venues selector
     $venues = array(JHTML::_('select.option', 0, JText::_('Select Venue')));
 		$venues = array_merge($venues, $model->getVenuesOptions());
-		$this->lists['venue'] = JHTML::_('select.genericlist', $venues, 'venueid', 'class="validate-venue"', 'value', 'text');
+		$this->lists['venue'] = JHTML::_('select.genericlist', $venues, 'venueid', '', 'value', 'text');
 		
 		// group selector
     $options = array(JHTML::_('select.option', 0, JText::_('Select group')));

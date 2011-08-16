@@ -26,11 +26,8 @@ defined('_JEXEC') or die('Restricted access');
 
 <script language="javascript" type="text/javascript">
 window.addEvent('domready', function() {
-        document.formvalidator.setHandler('venue', function(value) {
-                return value != 0;
-        });
 
-        $('enddates').addEvent('click', function(){
+        $('enddates').addEvent('click', function(){           
         	 if (this.value === "" || this.value === "0000-00-00") {
         		  this.value = $('dates').value;
          	 }
