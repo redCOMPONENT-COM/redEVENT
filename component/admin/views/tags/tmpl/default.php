@@ -40,8 +40,8 @@ defined('_JEXEC') or die('Restricted access');
 			<?php $k = 0; ?>
 			<?php foreach ($tags as $tag): ?>
 			<tr class="<?php echo ($k ? 'row1' : 'row0'); ?>">
-				<td>[<?php echo $tag->name ?>]</td>
-				<td><?php echo $tag->description ?></td>
+				<td>[<?php echo $tag->name; ?>]</td>
+				<td><?php echo $tag->description; ?></td>
 			</tr>
 			<?php $k = 1 - $k; ?>
 			<?php endforeach; ?>
