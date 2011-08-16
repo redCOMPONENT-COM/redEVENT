@@ -121,6 +121,17 @@ class RedEventControllerSessions extends RedEventController
     JRequest::checkToken() or die( 'Invalid Token' );
         
     $post = JRequest::get( 'post' );
+    
+    $model = $this->getModel('session');
+    
+    $customs = $model->getXrefCustomfields();
+    foreach ($customs as $c) 
+    {
+    	if ($c->type == 'wysiwyg') {
+    		$post['custom'.$c->id] = JRequest::getVar('custom'.$c->id, '', 'post', 'string', JREQUEST_ALLOWRAW);   		
+    	}
+    }
+    
     $post['details'] = JRequest::getVar('details', '', 'post', 'string', JREQUEST_ALLOWRAW);
     $post['icaldetails'] = JRequest::getVar('icaldetails', '', 'post', 'string', JREQUEST_ALLOWRAW);
     

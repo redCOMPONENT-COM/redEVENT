@@ -201,7 +201,7 @@ class RedEventModelSession extends JModel
       $field =& redEVENTHelper::getCustomField($c->type);
       $field->bind($c);
       $prop = 'custom'.$c->id;
-      if (isset($data->$prop)) {
+      if ($data && isset($data->$prop)) {
       	$field->value = $data->$prop;
       } 
       $fields[] = $field;
