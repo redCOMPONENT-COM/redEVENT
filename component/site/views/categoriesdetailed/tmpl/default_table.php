@@ -23,115 +23,67 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-?>
-<table class="eventtable" width="<?php echo $this->elsettings->tablewidth; ?>" border="0" cellspacing="0" cellpadding="0" summary="eventlist">
 
-	<colgroup>
-		<?php foreach ($this->columns as $col): ?>
-			<?php switch ($col): 
-				case 'date': ?>
-				<col width="<?php echo $this->elsettings->datewidth; ?>" class="el_col_date" />
-				<?php break;?>
-				
-				<?php case 'title': ?>
-				<col width="<?php echo $this->elsettings->titlewidth; ?>" class="el_col_title" />				
-				<?php break;?>
-				
-				<?php case 'venue': ?>
-				<col width="<?php echo $this->elsettings->locationwidth; ?>" class="el_col_venue" />				
-				<?php break;?>
-				
-				<?php case 'city': ?>
-				<col width="<?php echo $this->elsettings->citywidth; ?>" class="el_col_city" />
-				<?php break;?>
-				
-				<?php case 'state': ?>
-				<col width="<?php echo $this->elsettings->statewidth; ?>" class="el_col_state" />
-				<?php break;?>
-				
-				<?php case 'category': ?>
-				<col width="<?php echo $this->elsettings->catfrowidth; ?>" class="el_col_category" />
-				<?php break;?>
-				
-				<?php case 'picture': ?>
-				<col width="<?php echo $this->params->get('picture_col_with', 30); ?>" class="el_col_picture" />
-				<?php break;?>
-				
-				<?php case 'places': ?>
-				<col width="<?php echo $this->elsettings->catfrowidth; ?>" class="el_col_places" />
-				<?php break;?>
-				
-				<?php case 'price': ?>
-      	<col width="<?php echo $this->elsettings->catfrowidth; ?>" class="el_col_price" />
-				<?php break;?>
-				
-				<?php case 'credits': ?>
-      	<col width="<?php echo $this->elsettings->catfrowidth; ?>" class="el_col_credits" />
-				<?php break;?>
-				
-				<?php default: ?>
-    	  	<col width="<?php echo $this->elsettings->catfrowidth; ?>" class="el_col_customs" />
-				<?php break;?>
-				
-				<?php endswitch;?>
-    <?php endforeach;?>
-	</colgroup>
+$colnames = explode(",", $this->params->get('lists_columns_names', 'date, title, venue, city, category'));
+$colnames = array_map('trim', $colnames);
+?>
+<table class="eventtable" summary="eventlist">
 
 	<thead>
 			<tr>
-		<?php foreach ($this->columns as $col): ?>
+		<?php foreach ($this->columns as $k => $col): ?>
 			<?php switch ($col): 
 				case 'date': ?>
-				<th id="el_date" class="sectiontableheader" align="left"><?php echo $this->escape($this->elsettings->datename); ?></th>
+				<th id="el_date" class="sectiontableheader"><?php echo isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_DATE'); ?></th>
 				<?php break;?>
 				
 				<?php case 'title': ?>
-				<th id="el_title" class="sectiontableheader" align="left"><?php echo $this->escape($this->elsettings->titlename); ?></th>		
+				<th id="el_title" class="sectiontableheader"><?php echo isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_TITLE'); ?></th>		
 				<?php break;?>
 				
 				<?php case 'venue': ?>
-				<th id="el_location" class="sectiontableheader" align="left"><?php echo $this->escape($this->elsettings->locationname); ?></th>			
+				<th id="el_location" class="sectiontableheader"><?php isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_VENUE'); ?></th>			
 				<?php break;?>
 				
 				<?php case 'city': ?>
-				<th id="el_city" class="sectiontableheader" align="left"><?php echo $this->escape($this->elsettings->cityname); ?></th>
+				<th id="el_city" class="sectiontableheader"><?php isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_CITY'); ?></th>
 				<?php break;?>
 				
 				<?php case 'state': ?>
-				<th id="el_state" class="sectiontableheader" align="left"><?php echo $this->escape($this->elsettings->statename); ?></th>
+				<th id="el_state" class="sectiontableheader"><?php isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_STATE'); ?></th>
 				<?php break;?>
 				
 				<?php case 'category': ?>
-				<th id="el_category" class="sectiontableheader" align="left"><?php echo $this->escape($this->elsettings->catfroname); ?></th>
+				<th id="el_category" class="sectiontableheader"><?php isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_CATEGORY'); ?></th>
 				<?php break;?>
 				
 				<?php case 'picture': ?>
-				<th id="el_picture" class="sectiontableheader" align="left"><?php echo JText::_('COM_REDEVENT_TABLE_HEADER_PICTURE'); ?></th>
+				<th id="el_picture" class="sectiontableheader"><?php echo isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_TABLE_HEADER_PICTURE'); ?></th>
 				<?php break;?>
 				
 				<?php case 'places': ?>
-        <th id="el_places" class="sectiontableheader" align="left"><?php echo JText::_('Places'); ?></th>
+        <th id="el_places" class="sectiontableheader"><?php echo isset($colnames[$k]) ? $colnames[$k] : JText::_('Places'); ?></th>
 				<?php break;?>
 				
 				<?php case 'price': ?>
-				<th id="el_prices" class="sectiontableheader" align="left"><?php echo $this->params->get('lists_show_prices_label', 'Price'); ?></th>
+				<th id="el_prices" class="sectiontableheader"><?php echo isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_PRICE'); ?></th>
 				<?php break;?>
 				
 				<?php case 'credits': ?>
-				<th id="el_credits" class="sectiontableheader" align="left"><?php echo $this->params->get('lists_show_credits_label', 'Credits'); ?></th>
+				<th id="el_credits" class="sectiontableheader"><?php echo isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_CREDITS'); ?></th>
 				<?php break;?>
 				
 				<?php default: ?>
 					<?php if (strpos($col, 'custom') === 0): ?>	
 						<?php $c = $this->customs[intval(substr($col, 6))]; ?>			
-	        	<th id="el_custom_<?php echo $c->id; ?>" class="sectiontableheader" align="left">
-	        	<?php echo $this->escape($c->name); ?>
+	        	<th id="el_custom_<?php echo $c->id; ?>" class="sectiontableheader re_custom">
+	        	<?php echo isset($colnames[$k]) ? $colnames[$k] : $this->escape($c->name); ?>
 	        	<?php if ($c->tips && $this->params->get('lists_show_custom_tip', 1)):?>
 	        	<?php echo JHTML::tooltip(str_replace("\n", "<br/>", $c->tips), '', 'tooltip.png', '', '', false); ?>
 	        	<?php endif; ?>
 	        	</th>
 					<?php else: ?>		
-	        	<th id="el_custom_<?php echo $c->id; ?>" class="sectiontableheader" align="left">
+	        	<th id="el_custom_<?php echo $c->id; ?>" class="sectiontableheader re_custom">
 	        	<?php echo $col; ?>
 	        	</th>
 					<?php endif; ?>
@@ -162,17 +114,17 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<?php foreach ($this->columns as $col): ?>
 			<?php switch ($col): 
 				case 'date': ?>
-	    		<td headers="el_date" align="left">
+	    		<td class="re_date">
 	    			<?php echo ELOutput::formatEventDateTime($row);	?>
 					</td>
 				<?php break;?>
 				
 				<?php case 'title': ?>
-					<td headers="el_title" align="left" valign="top"><a href="<?php echo $detaillink ; ?>"> <?php echo $this->escape($row->full_title); ?></a></td>			
+					<td class="re_title"><a href="<?php echo $detaillink ; ?>"> <?php echo $this->escape($row->full_title); ?></a></td>			
 				<?php break;?>
 				
 				<?php case 'venue': ?>
-					<td headers="el_location" align="left" valign="top">
+					<td class="re_location">
 						<?php
 						if ($this->elsettings->showlinkvenue == 1 ) :
 							echo $row->xref != 0 ? "<a href='".JRoute::_( RedeventHelperRoute::getVenueEventsRoute($row->venueslug) )."'>".$this->escape($row->venue)."</a>" : '-';
@@ -184,15 +136,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<?php break;?>
 				
 				<?php case 'city': ?>
-					<td headers="el_city" align="left" valign="top"><?php echo $row->city ? $this->escape($row->city) : '-'; ?></td>
+					<td class="re_city"><?php echo $row->city ? $this->escape($row->city) : '-'; ?></td>
 				<?php break;?>
 				
 				<?php case 'state': ?>
-					<td headers="el_state" align="left" valign="top"><?php echo $row->state ? $this->escape($row->state) : '-'; ?></td>
+					<td class="re_state"><?php echo $row->state ? $this->escape($row->state) : '-'; ?></td>
 				<?php break;?>
 				
 				<?php case 'category': ?>
-				  <td headers="el_category" align="left" valign="top">
+				  <td class="re_category">
 				  <?php $cats = array();
 					      foreach ($row->categories as $cat)
 					      {
@@ -209,26 +161,26 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<?php break;?>
 				
 				<?php case 'picture': ?>
-          <td headers="el_places" align="left" valign="top"><?php echo redEVENTImage::modalimage('events', $row->datimage, $row->title, intval($this->params->get('lists_picture_size', 30))); ?></td>
+          <td class="re_places"><?php echo redEVENTImage::modalimage('events', $row->datimage, $row->title, intval($this->params->get('lists_picture_size', 30))); ?></td>
 				<?php break;?>
 				
 				<?php case 'places': ?>
-          <td headers="el_places" align="left" valign="top"><?php echo redEVENTHelper::getRemainingPlaces($row); ?></td>
+          <td class="re_places"><?php echo redEVENTHelper::getRemainingPlaces($row); ?></td>
 				<?php break;?>
 				
 				<?php case 'price': ?>
-					<td headers="el_prices" align="left" class="re-price"><?php echo ELOutput::formatListPrices($row->prices); ?></td>
+					<td class="re_prices" class="re-price"><?php echo ELOutput::formatListPrices($row->prices); ?></td>
 				<?php break;?>
 				
 				<?php case 'credits': ?>
-					<td headers="el_credits" align="left"><?php echo $row->course_credit ? $row->course_credit : '-'; ?></td>
+					<td class="re_credits"><?php echo $row->course_credit ? $row->course_credit : '-'; ?></td>
 				<?php break;?>
 				
 				<?php default: ?>
 					<?php if (isset($row->$col)):?>
-          	<td headers="el_customs" align="left" valign="top"><?php echo str_replace("\n", "<br/>", $row->$col); ?></td>
+          	<td class="re_customs"><?php echo str_replace("\n", "<br/>", $row->$col); ?></td>
           <?php else: ?>
-          	<td headers="el_customs" align="left" valign="top"></td>
+          	<td class="re_customs"></td>
           <?php endif;?>
 				<?php break;?>
 				

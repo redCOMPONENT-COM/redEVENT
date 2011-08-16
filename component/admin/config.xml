@@ -52,7 +52,7 @@
       <option value="1">Yes</option>
     </param>
 
-		<param type="spacer" default="COM_REDEVENT_SETTINGS_SEPARATOR_LISTS_LAYOUT"/>
+		<param type="respacer" default="COM_REDEVENT_SETTINGS_SEPARATOR_LISTS_LAYOUT"/>
 		<param name="display" type="radio" default="1" label="DISPLAY SELECT" description="DISPLAY SELECT DESC">
 			<option value="0">Hide</option>
 			<option value="1">Show</option>
@@ -107,10 +107,12 @@
 		
 		
 		<param name="lists_columns" type="text" size="80" default="date, title, venue, city, category" label="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_DESC" />
-		    
-    <param name="lists_show_prices_label" type="text" default="Price" label="COM_REDEVENT_SETTINGS_LISTS_PRICE_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_PRICE_LABEL_DESC"/>
-    
-    <param name="lists_show_credits_label" type="text" default="Credit" label="COM_REDEVENT_SETTINGS_LISTS_CREDIT_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_CREDIT_LABEL_DESC"/>
+		<param name="lists_columns_names" type="text" size="80" default="date, title, venue, city, category" label="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_NAMES_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_NAMES_DESC" />
+
+  	<param name="lists_show_time" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_SHOW_TIME_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_SHOW_TIME_DESC">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
     
     <param name="lists_show_custom_tip" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_SHOW_CUSTOM_TIP_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_SHOW_CUSTOM_TIP_DESC">
       <option value="0">No</option>
@@ -132,7 +134,7 @@
     </param>
     <param name="ical_max_items" type="text" default="100" label="COM_REDEVENT_SETTINGS_ICAL_MAX_ITEMS" description="COM_REDEVENT_SETTINGS_ICAL_MAX_ITEMS_DESC" />
     
-		<param type="spacer" default="COM_REDEVENT_SETTINGS_SEPARATOR_SEO"/>    
+		<param type="respacer" default="COM_REDEVENT_SETTINGS_SEPARATOR_SEO"/>    
     <param name="default_itemid" type="text" default="" label="COM_REDEVENT_SETTINGS_DEFAULT_ITEMID" description="COM_REDEVENT_SETTINGS_DEFAULT_ITEMID_DESC"/>
  	</params>
  	
@@ -151,7 +153,7 @@
  	</params>
  	
  	<params group="frontendeventsubmit">
- 	  <param type="spacer" default="SETTINGS FRONTEND TIP"/>
+ 	  <param type="respacer" default="SETTINGS FRONTEND TIP"/>
 		<param name="event_template" type="event" default="0" label="SETTINGS FRONTEND EVENT TEMPLATE" description="SETTINGS FRONTEND EVENT TEMPLATE TIP" />
     <param name="edit_categories" type="radio" default="0" label="SETTINGS FRONTEND EDIT CATEGORY" description="SETTINGS FRONTEND EDIT CATEGORY TIP">
       <option value="0">No</option>
@@ -204,7 +206,7 @@
  	</params>
  	
  	<params group="registration">
- 	  <param type="spacer" default="COM_REDEVENT_SETTINGS_TAGS_LINK"/>
+ 	  <param type="respacer" default="COM_REDEVENT_SETTINGS_TAGS_LINK"/>
     <param name="registration_default_recipients" type="text" default="" size="80" label="REDEVENT_SETTINGS_REGISTRATION_DEFAULT_RECIPIENTS" description="REDEVENT_SETTINGS_REGISTRATION_DEFAULT_RECIPIENTS_TIP"/>
     <param name="registration_notify_creator" type="radio" default="1" label="REDEVENT_SETTINGS_REGISTRATION_NOTIFY_CREATOR" description="REDEVENT_SETTINGS_REGISTRATION_NOTIFY_CREATOR_TIP">
       <option value="0">No</option>
@@ -222,7 +224,7 @@
  	</params>
  	
  	<params group="REDEVENT_SETTINGS_REMINDER">
- 	  <param type="spacer" default="COM_REDEVENT_SETTINGS_TAGS_LINK"/>
+ 	  <param type="respacer" default="COM_REDEVENT_SETTINGS_TAGS_LINK"/>
 		<param name="reminder_status" type="list" default="1" label="REDEVENT_SETTINGS_REMINDER_STATUS_LABEL" description="REDEVENT_SETTINGS_REMINDER_STATUS_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
@@ -275,13 +277,13 @@
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>
-    <param type="spacer" />
+    <param type="respacer" />
     <param name="fbopengraph" type="radio" default="0" label="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>    
     <param name="fbadmin" type="text" default="" label="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_ADMIN_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_ADMIN_DESC"/>
-    <param type="spacer" />
+    <param type="respacer" />
     <param name="tweet" type="radio" default="0" label="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_BUTTON_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_BUTTON_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>

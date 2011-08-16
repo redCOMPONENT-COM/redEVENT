@@ -4,7 +4,6 @@
 			<li><a id="basic" class="active"><?php echo JText::_( 'BASIC SETTINGS' ); ?></a></li>
 			<li><a id="usercontrol"><?php echo JText::_( 'USER CONTROL' ); ?></a></li>
 			<li><a id="details"><?php echo JText::_( 'DETAILS PAGE' ); ?></a></li>
-			<li><a id="layout"><?php echo JText::_( 'LAYOUT' ); ?></a></li>
 			<li><a id="parameters"><?php echo JText::_( 'GLOBAL PARAMETERS' ); ?></a></li>
 			<li><a id="signup"><?php echo JText::_( 'SIGNUP LINKS' ); ?></a></li>
 		</ul>

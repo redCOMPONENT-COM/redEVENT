@@ -38,10 +38,6 @@ defined('_JEXEC') or die('Restricted access');
       <div id="page-details">
         <?php echo $this->loadTemplate('detailspage'); ?>
       </div>
-
-      <div id="page-layout">
-        <?php echo $this->loadTemplate('layout'); ?>
-      </div>
       
       <div id="page-parameters">
         <?php echo $this->loadTemplate('global'); ?>
