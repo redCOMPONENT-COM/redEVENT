@@ -142,19 +142,19 @@ class RedEventControllerSessions extends RedEventController
       	$this->setRedirect('index.php?option=com_redevent&controller=sessions&task=edit&cid[]='. $returnid, $msg);
       } 
       else {
-      	$this->setRedirect('index.php?option=com_redevent&view=sessions&eventid='. $eventid, $msg);
+      	$this->setRedirect('index.php?option=com_redevent&view=sessions', $msg);
       }    
     }
     else {
     	$msg = 'error saving: '. $model->getError() ;
-      $this->setRedirect('index.php?option=com_redevent&view=sessions&eventid='. $eventid,  $msg, 'error');
+      $this->setRedirect('index.php?option=com_redevent&view=sessions',  $msg, 'error');
     }
 	}
 	
 	function cancel()
 	{
     $eventid = JRequest::getInt('eventid');
-    $this->setRedirect('index.php?option=com_redevent&view=sessions&eventid='. $eventid);
+    $this->setRedirect('index.php?option=com_redevent&view=sessions');
 	}
 
 	/**
@@ -182,7 +182,7 @@ class RedEventControllerSessions extends RedEventController
 		$msg 	= $total.' '.JText::_( 'SESSIONS PUBLISHED');
 
     $eventid = JRequest::getInt('eventid');
-		$this->setRedirect('index.php?option=com_redevent&view=sessions&eventid='. $eventid, $msg);
+		$this->setRedirect('index.php?option=com_redevent&view=sessions', $msg);
 	}
 
 	/**
@@ -210,7 +210,7 @@ class RedEventControllerSessions extends RedEventController
 		$msg 	= $total.' '.JText::_( 'SESSIONS UNPUBLISHED');
 
     $eventid = JRequest::getInt('eventid');
-		$this->setRedirect('index.php?option=com_redevent&view=sessions&eventid='. $eventid, $msg);
+		$this->setRedirect('index.php?option=com_redevent&view=sessions', $msg);
 	}
 
 	/**
@@ -238,7 +238,7 @@ class RedEventControllerSessions extends RedEventController
 		$msg 	= $total.' '.JText::_( 'SESSIONS ARCHIVED');
 
     $eventid = JRequest::getInt('eventid');
-		$this->setRedirect('index.php?option=com_redevent&view=sessions&eventid='. $eventid, $msg);
+		$this->setRedirect('index.php?option=com_redevent&view=sessions', $msg);
 	}
 
 	/**
@@ -272,7 +272,7 @@ class RedEventControllerSessions extends RedEventController
 		$cache->clean();
 
     $eventid = JRequest::getInt('eventid');
-		$this->setRedirect('index.php?option=com_redevent&view=sessions&eventid='. $eventid, $msg);
+		$this->setRedirect('index.php?option=com_redevent&view=sessions', $msg);
 	}
 	
 
@@ -302,7 +302,7 @@ class RedEventControllerSessions extends RedEventController
 		$msg 	= JText::sprintf( 'COM_REDEVENT_SESSIONS_SET_AS_FEATURED', $total);
 
     $eventid = JRequest::getInt('eventid');
-		$this->setRedirect('index.php?option=com_redevent&view=sessions&eventid='. $eventid, $msg);
+		$this->setRedirect('index.php?option=com_redevent&view=sessions', $msg);
 	}
 
 	/**
@@ -330,7 +330,7 @@ class RedEventControllerSessions extends RedEventController
 		$msg 	= JText::sprintf( 'COM_REDEVENT_SESSIONS_SET_AS_NOT_FEATURED', $total);
 
     $eventid = JRequest::getInt('eventid');
-		$this->setRedirect('index.php?option=com_redevent&view=sessions&eventid='. $eventid, $msg);
+		$this->setRedirect('index.php?option=com_redevent&view=sessions', $msg);
 	}
 }
 ?>

@@ -68,10 +68,12 @@ class RedeventModelSessions extends JModel
   function __construct()
   {
     parent::__construct();
-    global $mainframe, $option;
+    
+    $app    = &JFactory::getApplication();
+    $option = Jrequest::getCmd('option');
 
     // Get the pagination request variables
-    $limit      = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
+    $limit      = $app->getUserStateFromRequest( 'global.list.limit', 'limit', $app->getCfg('list_limit'), 'int' );
     $limitstart = JRequest::getVar('limitstart', 0, '', 'int');
  
 		// In case limit has been changed, adjust it
@@ -81,15 +83,15 @@ class RedeventModelSessions extends JModel
     $this->setState('limitstart', $limitstart);
     
     // filters and ordering
-    $filter_order     = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.filter_order', 'filter_order', 'obj.dates', 'cmd' );
-    $filter_order_Dir = $mainframe->getUserStateFromRequest( 'com_redevent.sessions.filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );    
+    $filter_order     = $app->getUserStateFromRequest( 'com_redevent.sessions.filter_order', 'filter_order', 'obj.dates', 'cmd' );
+    $filter_order_Dir = $app->getUserStateFromRequest( 'com_redevent.sessions.filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );    
     
-    $search  = JRequest::getVar('search', '', 'string');
-    $eventid = JRequest::getInt('eventid');
-    $venueid = JRequest::getInt('venueid');
+    $search  = $app->getUserStateFromRequest( 'com_redevent.sessions.search', 'search', '', 'string' );
+    $eventid = $app->getUserStateFromRequest( 'com_redevent.sessions.eventid', 'eventid', 0, 'int');
+    $venueid = $app->getUserStateFromRequest( 'com_redevent.sessions.venueid', 'venueid', 0, 'int');
     
-    $filter_state     = JRequest::getVar('filter_state', 'notarchived', 'cmd' );
-    $filter_featured  = JRequest::getVar('filter_featured', '', 'cmd' );
+    $filter_state     = $app->getUserStateFromRequest( 'com_redevent.sessions.filter_state', 'filter_state', 'notarchived', 'cmd' );
+    $filter_featured  = $app->getUserStateFromRequest( 'com_redevent.sessions.filter_featured', 'filter_featured', '', 'cmd' );
     
     $this->setState('filter_order',      $filter_order);
     $this->setState('filter_order_Dir',  $filter_order_Dir);

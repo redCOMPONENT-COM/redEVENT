@@ -63,7 +63,7 @@ class ELAdmin {
 	  //Create Submenu
     JSubMenuHelper::addEntry( JText::_( 'REDEVENT' ), 'index.php?option=com_redevent', $view == '');
     JSubMenuHelper::addEntry( JText::_( 'EVENTS' ), 'index.php?option=com_redevent&view=events', $view == 'events');
-    JSubMenuHelper::addEntry( JText::_( 'SESSIONS' ), 'index.php?option=com_redevent&view=sessions', $view == 'sessions');
+    JSubMenuHelper::addEntry( JText::_( 'SESSIONS' ), 'index.php?option=com_redevent&view=sessions&eventid=0&venueid=0', $view == 'sessions');
     JSubMenuHelper::addEntry( JText::_( 'VENUES' ), 'index.php?option=com_redevent&view=venues', $view == 'venues');
     JSubMenuHelper::addEntry( JText::_( 'CATEGORIES' ), 'index.php?option=com_redevent&view=categories', $view == 'categories');
     JSubMenuHelper::addEntry( JText::_( 'VENUES CATEGORIES' ), 'index.php?option=com_redevent&view=venuescategories', $view == 'venuescategories');
