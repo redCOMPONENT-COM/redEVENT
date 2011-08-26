@@ -66,9 +66,9 @@ class TableTextlibrary extends JTable {
 		
 		$query = ' SELECT id ' . ' FROM #__redevent_textlibrary ' . ' WHERE text_name = ' . $this->_db->Quote($this->text_name);
 		$this->_db->setQuery($query);
-		$res = $this->_db->loadObjectList();
+		$res = $this->_db->loadResult();
 		
-		if ($res) 
+		if ($res && $res != $this->id) 
 		{
 			$this->setError( JText::_( 'COM_REDEVENT_NAME_ALREADY_EXISTS').': '.$this->text_name );
 	    return false;			

@@ -202,21 +202,19 @@ class RedEventModelTextLibrary extends JModel
    }
 	
 	/**
-	 * Method to store the category
+	 * Method to store the tag
 	 *
 	 * @access	public
 	 * @return	boolean	True on success
 	 * @since	1.5
 	 */
-	function getSave() {
-		global $mainframe;
-		
+	function store($data) 
+	{
 		$row  = $this->getTable();
-		$data = JRequest::get('post', 4);
-		
+
 		// bind it to the table
 		if (!$row->bind($data)) {
-			RedeventError::raiseError(500, $this->_db->getErrorMsg() );
+			$this->setError($row->getError());
 			return false;
 		}
 
@@ -228,10 +226,9 @@ class RedEventModelTextLibrary extends JModel
 
 		// Store it in the db
 		if (!$row->store()) {
-			RedeventError::raiseError(500, $this->_db->getErrorMsg() );
+			$this->setError($row->getError());
 			return false;
 		}
-		else $mainframe->enqueueMessage(JText::_('TEXT_ADDED'));
 
 		return $row->id;
 	}

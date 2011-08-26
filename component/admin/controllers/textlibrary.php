@@ -42,9 +42,8 @@ class RedEventControllerTextLibrary extends RedEventController {
 		parent::__construct();
 
 		// Register Extra task
-		$this->registerTask( 'save',   'textlibrary' );
-		$this->registerTask( 'apply',  'textlibrary' );
-		$this->registerTask( 'delete', 'textlibrary' );
+		$this->registerTask( 'apply',  'save' );
+		$this->registerTask( 'delete', 'remove' );
 		$this->registerTask( 'edit',   'textlibrary' );
 	}
 
@@ -53,6 +52,29 @@ class RedEventControllerTextLibrary extends RedEventController {
 		JRequest::setVar('layout', 'default');
 		
 		parent::display();
+	}
+	
+	
+	function save()
+	{
+		$post	= JRequest::get('post');
+		$post['text_field'] = JREquest::getVar('text_field', '', 'post', 'string', JREQUEST_ALLOWRAW );
+
+		$model = $this->getModel('textlibrary');
+
+		if ($returnid = $model->store($post)) {
+			$msg = JText::_( 'COM_REDEVENT_TAG_SAVED' );
+		} else {
+			$msg = JText::_( 'COM_REDEVENT_TAG_SAVING_ERROR' ).$model->getError();
+		}
+
+		if ( !$returnid || $this->getTask() == 'save' ) {
+			$link = 'index.php?option=com_redevent&view=textlibrary';
+		}
+		else {
+			$link = 'index.php?option=com_redevent&controller=textlibrary&task=edit&cid[]='.$returnid;
+		}
+		$this->setRedirect($link, $msg);
 	}
 	
   /**
