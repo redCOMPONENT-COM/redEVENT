@@ -57,6 +57,8 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
 
 		$id = JRequest::getInt('id');
 		$this->setId((int)$id);
+		// for the toggles
+		$this->setState('filter_category', $this->_id);
 		
 		// Get the paramaters of the active menu item
 		$params 	= & $mainframe->getParams();
