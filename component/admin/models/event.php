@@ -159,23 +159,7 @@ class RedEventModelEvent extends JModel
 	 */
 	public function getCategories() 
 	{
-	 $query = ' SELECT c.id, c.catname, (COUNT(parent.catname) - 1) AS depth '
-           . ' FROM #__redevent_categories AS c, '
-           . ' #__redevent_categories AS parent '
-           . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
-           . ' GROUP BY c.id '
-           . ' ORDER BY c.lft;'
-           ;
-    $this->_db->setQuery($query);
-    
-    $results = $this->_db->loadObjectList();
-    
-    $options = array();
-    foreach((array) $results as $cat)
-    {
-      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->catname);
-    }
-		return $options;
+		return ELAdmin::getCategoriesOptions();
 	}
 	
 	/**

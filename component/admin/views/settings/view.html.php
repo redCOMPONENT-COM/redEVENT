@@ -109,6 +109,10 @@ class RedEventViewSettings extends JView {
 		$table->loadByOption( 'com_redevent' );
 		$globalparams = new JParameter( $table->params, JPATH_ADMINISTRATOR.DS.'components'.DS.'com_redevent'.DS.'config.xml' );
 
+		// tabs for global params
+		jimport('joomla.html.pane');
+		$tabs = & JPane::getInstance('tabs');
+		
 		//assign data to template
 		$this->assignRef('accessLists'	, $accessLists);
 		$this->assignRef('elsettings'	, $elsettings);
@@ -116,6 +120,7 @@ class RedEventViewSettings extends JView {
 		$this->assignRef('request_url'	, $uri->toString());
 		$this->assignRef('globalparams'	, $globalparams);
 		$this->assignRef('params',        JComponentHelper::getParams('com_redevent'));
+		$this->assignRef('tabs',          $tabs);
 		
 		parent::display($tpl);
 

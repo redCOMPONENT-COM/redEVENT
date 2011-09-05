@@ -86,12 +86,15 @@ class ELAdmin {
 	public function getCategoriesOptions() 
 	{
 		$db =& JFactory::getDBO();
-	 $query = ' SELECT c.id, c.catname, (COUNT(parent.catname) - 1) AS depth '
+		$params = JComponentHelper::getParams('com_redevent');
+		$ordering = $params->get('cat_select_ordering');
+		
+		$query = ' SELECT c.id, c.catname, (COUNT(parent.catname) - 1) AS depth '
            . ' FROM #__redevent_categories AS c, '
            . ' #__redevent_categories AS parent '
            . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
            . ' GROUP BY c.id '
-           . ' ORDER BY c.lft;'
+           . ($ordering ? ' ORDER BY c.catname': ' ORDER BY c.lft')
            ;
     $db->setQuery($query);
     
@@ -100,7 +103,7 @@ class ELAdmin {
     $options = array();
     foreach((array) $results as $cat)
     {
-      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->catname);
+      $options[] = JHTML::_('select.option', $cat->id, ($ordering == 0 ? str_repeat('>', $cat->depth) : '') . ' ' . $cat->catname);
     }
 		return $options;
 	}

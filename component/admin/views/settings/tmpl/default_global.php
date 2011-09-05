@@ -38,16 +38,23 @@ defined('_JEXEC') or die('Restricted access');
     </td>
   </tr>
   <tr>
-    <td>    
-    <fieldset class="adminform"><legend><?php echo JText::_( 'GLOBAL PARAMETERS' ); ?></legend>
+    <td>
+    <?php echo $this->tabs->startPane('globalparams'); ?>
+		<?php $j = 0; ?>
+    <?php echo $this->tabs->startPanel(JText::_( 'GLOBAL PARAMETERS' ), 'global'.$j); ?>
     <?php echo $this->globalparams->render('globalparams'); ?></fieldset>
+    <?php echo $this->tabs->endPanel(); ?>
     
     <?php foreach ($this->globalparams->getGroups() as $key => $groups): ?>
-      <?php if (strtolower($key) != '_default' && strtolower($key) != 'listslayout'): ?>
-        <fieldset class="adminform"><legend><?php echo JText::_( strtoupper($key) ); ?></legend>
+		<?php if (strtolower($key) != '_default' && strtolower($key) != 'listslayout'): ?>
+    <?php echo $this->tabs->startPanel(JText::_( strtoupper($key) ), 'global'.$j); ?>
         <?php echo $this->globalparams->render('globalparams', $key); ?></fieldset>
-      <?php endif; ?>
+        
+        <?php echo $this->tabs->endPanel(); ?>
+		<?php endif; ?>
     <?php endforeach; ?>
+    
+    <?php echo $this->tabs->endPane(); ?>
     </td>
   </tr>
 </table>
