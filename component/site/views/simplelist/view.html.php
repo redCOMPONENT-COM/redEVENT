@@ -149,7 +149,6 @@ class RedeventViewSimpleList extends JView
 		$this->assign('columns',        $cols);
 
 		parent::display($tpl);
-
 	}
 
 	/**

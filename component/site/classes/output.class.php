@@ -676,6 +676,28 @@ class ELOutput {
 	}
 	
 	/**
+	 * returns iso date
+	 * 
+	 * @param string $date
+	 * @param string $time
+	 * @return string
+	 */
+	function getISODate($date, $time)
+	{
+		$txt = '';
+		if ($date && strtotime($date)) {
+			$txt = $date;
+		}
+		else {
+			return false;
+		}
+		if ($time) {
+			$txt .= 'T'.$time;
+		}
+		return $txt;
+	}
+	
+	/**
 	 * Returns an array for ical formatting
 	 * @param string date
 	 * @param string time

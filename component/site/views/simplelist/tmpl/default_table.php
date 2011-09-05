@@ -108,29 +108,47 @@ $colnames = array_map('trim', $colnames);
 		$detaillink = JRoute::_( RedeventHelperRoute::getDetailsRoute($row->slug, $row->xslug) );
 		
 		?>
-  	<tr class="sectiontableentry<?php echo ($k + 1) . $this->params->get( 'pageclass_sfx' ). ($row->featured ? ' featured' : ''); ?><?php echo $isover; ?>" >
+  	<tr class="sectiontableentry<?php echo ($k + 1) . $this->params->get( 'pageclass_sfx' ). ($row->featured ? ' featured' : ''); ?><?php echo $isover; ?>" 
+  	    itemscope itemtype="http://schema.org/Event">
 
 		<?php foreach ($this->columns as $col): ?>
 			<?php switch ($col): 
 				case 'date': ?>
 	    		<td class="re_date">
+	    			<?php if ($row->dates && strtotime($row->dates)): ?>
+	    			<meta itemprop="startDate" content="<?php echo ELOutput::getIsoDate($row->dates, $row->times); ?>">
+	    			<?php endif; ?>
+	    			<?php if ($row->enddates && strtotime($row->enddates)): ?>
+	    			<meta itemprop="startDate" content="<?php echo ELOutput::getIsoDate($row->enddates, $row->endtimes); ?>">
+	    			<?php endif; ?>
+	    			
 	    			<?php echo ELOutput::formatEventDateTime($row);	?>
 					</td>
 				<?php break;?>
 				
 				<?php case 'title': ?>
-					<td class="re_title"><a href="<?php echo $detaillink ; ?>"> <?php echo $this->escape($row->full_title); ?></a></td>			
+					<td class="re_title" itemprop="name"><a href="<?php echo $detaillink ; ?>" itemprop="url"><?php echo $this->escape($row->full_title); ?></a></td>			
 				<?php break;?>
 				
 				<?php case 'venue': ?>
-					<td class="re_location">
+					<td class="re_location" 
+					    itemprop="location" itemscope itemtype="http://schema.org/Place">
 						<?php
 						if ($this->params->get('showlinkvenue',1) == 1 ) :
-							echo $row->xref != 0 ? "<a href='".JRoute::_( RedeventHelperRoute::getVenueEventsRoute($row->venueslug) )."'>".$this->escape($row->venue)."</a>" : '-';
+							echo $row->xref != 0 ? JHTML::link(JRoute::_( RedeventHelperRoute::getVenueEventsRoute($row->venueslug) ), $this->escape($row->venue), 'itemprop="url"') : '-';
 						else :
 							echo $row->xref ? $this->escape($row->venue) : '-';
 						endif;
 						?>
+						<?php if ($row->street):?>
+						<meta itemprop="streetAddress" content="<?php echo $row->street; ?>" />
+						<?php endif; ?>
+						<?php if ($row->city):?>
+						<meta itemprop="addressLocality" content="<?php echo $row->city; ?>" />
+						<?php endif; ?>
+						<?php if ($row->country):?>
+						<meta itemprop="addressCountry" content="<?php echo $row->country; ?>" />
+						<?php endif; ?>
 					</td>			
 				<?php break;?>
 				
@@ -160,7 +178,7 @@ $colnames = array_map('trim', $colnames);
 				<?php break;?>
 				
 				<?php case 'picture': ?>
-          <td class="re_places"><?php echo redEVENTImage::modalimage('events', $row->datimage, $row->title, intval($this->params->get('lists_picture_size', 30))); ?></td>
+          <td class="re_places" itemprop="image"><?php echo redEVENTImage::modalimage('events', $row->datimage, $row->title, intval($this->params->get('lists_picture_size', 30))); ?></td>
 				<?php break;?>
 				
 				<?php case 'places': ?>

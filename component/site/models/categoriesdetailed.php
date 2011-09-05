@@ -224,6 +224,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
         . ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
         . ' x.endtimes, x.id AS xref, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.icaldetails, x.icalvenue, '
         . ' a.title, a.registra, l.venue, l.city, l.state, l.url, c.catname, c.id AS catid, a.summary, x.course_credit, '
+        . ' l.street, l.country, '
         . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
         . ' CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug, '
         . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
