@@ -203,12 +203,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				  <?php $cats = array();
 					      foreach ($row->categories as $cat)
 					      {
-					      	if ($this->elsettings->catlinklist == 1) {
-					      		$cats[] = JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($cat->slug), $cat->catname);
-					      	}
-					      	else {
-					      		$cats[] = $this->escape($cat->catname);
-					      	}
+					      	$cats[] = $this->escape($cat->catname);
 					      }
 					      echo implode("<br/>", $cats);
 					?>

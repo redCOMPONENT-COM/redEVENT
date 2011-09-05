@@ -109,6 +109,15 @@
 		<param name="lists_columns" type="text" size="80" default="date, title, venue, city, category" label="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_DESC" />
 		<param name="lists_columns_names" type="text" size="80" default="date, title, venue, city, category" label="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_NAMES_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_NAMES_DESC" />
 
+  	<param name="catlinklist" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_CATEGORY_LINK_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_CATEGORY_LINK_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+  	<param name="showlinkvenue" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_VENUE_LINK_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_VENUE_LINK_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		
   	<param name="lists_show_time" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_SHOW_TIME_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_SHOW_TIME_DESC">
 			<option value="0">Hide</option>
 			<option value="1">Show</option>

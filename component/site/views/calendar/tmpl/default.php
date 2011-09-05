@@ -102,7 +102,7 @@ foreach ($this->rows as $row)
 	{
 		$venue = '<div class="location"><span class="label">'.JText::_('VENUE').': </span>';
 
-		if ($this->settings->showlinkvenue == 1 && 0) {
+		if ($this->params->get('showlinkvenue',1) == 1 && 0) {
 			$venue .= $row->locid ? "<a href='".'index.php?option=com_redevent&view=venueevents&id='.$row->venueslug."'>".$this->escape($row->venue)."</a>" : '-';
 		}
 		else {

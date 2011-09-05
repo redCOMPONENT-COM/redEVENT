@@ -126,7 +126,7 @@ $colnames = array_map('trim', $colnames);
 				<?php case 'venue': ?>
 					<td class="re_location">
 						<?php
-						if ($this->elsettings->showlinkvenue == 1 ) :
+						if ($this->params->get('showlinkvenue',1) == 1 ) :
 							echo $row->xref != 0 ? "<a href='".JRoute::_( RedeventHelperRoute::getVenueEventsRoute($row->venueslug) )."'>".$this->escape($row->venue)."</a>" : '-';
 						else :
 							echo $row->xref ? $this->escape($row->venue) : '-';
@@ -148,7 +148,7 @@ $colnames = array_map('trim', $colnames);
 				  <?php $cats = array();
 					      foreach ($row->categories as $cat)
 					      {
-					      	if ($this->elsettings->catlinklist == 1) {
+					      	if ($this->params->get('catlinklist', 1) == 1) {
 					      		$cats[] = JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($cat->slug), $cat->catname);
 					      	}
 					      	else {
