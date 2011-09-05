@@ -867,6 +867,7 @@ class RedeventModelBaseEventList extends JModel
 		       . ' AND (c.private = 0 OR gc.id IS NOT NULL) '
 		       . ' AND (vc.private = 0 OR vc.private IS NULL OR gvc.id IS NOT NULL) '
 		       . ' GROUP BY (a.id) '
+		       . ' ORDER BY a.title, x.title ASC '
 				   ;
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
