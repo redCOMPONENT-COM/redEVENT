@@ -350,7 +350,7 @@ class RedeventController extends JController
 				$link = JRoute::_(RedeventHelperRoute::getMyeventsRoute(), false);
 				break;
 			default:
-				if ($row) {
+				if ($row && $row->published) {
 					$link = JRoute::_(RedeventHelperRoute::getDetailsRoute($row->id, ($row->xref ? $row->xref : null) ), false);
 				}
 				else {

@@ -208,12 +208,13 @@ class RedeventModelEditevent extends JModel
 			// reset event id and title
 			$this->_event->id = null;
 			$this->_event->title = '';
+			$this->_event->session_title = '';
 			$this->_event->attachments = array();
 		}
 		else
 		{
 			$this->_event->id				= 0;
-			$this->_event->locid			= '';
+			$this->_event->venueid			= '';
       $this->_event->categories  = null;
 			$this->_event->title			  = '';
 			$this->_event->created			= null;
@@ -229,6 +230,7 @@ class RedeventModelEditevent extends JModel
 			$this->_event->sendermail		= '';
 			$this->_event->datimage			= '';
 			$this->_event->venue			= JText::_('SELECTVENUE');
+			$this->_event->session_title = '';
 			$this->_event->maxattendees				= 0;
 			$this->_event->maxwaitinglist				= 0;
 			$this->_event->notify_on_list_subject 		= null;
