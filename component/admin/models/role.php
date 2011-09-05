@@ -173,6 +173,7 @@ class RedeventModelRole extends JModel
 			$object->id          = 0;
 			$object->name        = null;
 			$object->description = null;
+			$object->usertype = null;
 			$object->checked_out = 0;
 			$object->checked_out_time	= 0;
 			$object->ordering    = 0;
