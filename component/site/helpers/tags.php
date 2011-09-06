@@ -1917,12 +1917,6 @@ class redEVENT_tags {
 	{
 		return $this->_getSubmissionTotalPrice();
 	}
-	
-	function _getTag_attendees()
-	{
-		$event = $this->getEvent();
-		
-	}
 }
 
 class RedeventParsedTag {
