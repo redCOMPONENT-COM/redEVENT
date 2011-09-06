@@ -248,6 +248,8 @@ function updateend(cal)
 <?php echo $this->editor->display('details', $this->xref->details, '100%;', '300', '100', '20', array('pagebreak', 'readmore')); ?>
 </fieldset>
 
+
+<?php if ($this->params->get('edit_roles', 0)): ?>
 <fieldset class="adminform">
 <legend><?php echo JText::_('Roles'); ?></legend>
 
@@ -267,6 +269,7 @@ function updateend(cal)
 </table>
 
 </fieldset>
+<?php endif; ?>
 
 <?php if ($this->params->get('allow_edit_recurrence', 0)) :?>
 <div id="recurrence">
