@@ -168,7 +168,7 @@ class RedeventModelCalendar extends JModel
 
 			//Get Events from Database
 			$query = ' SELECT DATEDIFF(x.enddates, x.dates) AS datediff, a.id, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, '
-			       . ' a.title, x.venueid as locid, a.datdescription, a.created, l.venue, l.city, l.state, l.url, x.featured, '
+			       . ' a.title, x.venueid as locid, a.datdescription, a.created, l.venue, l.city, l.state, l.url, l.street, l.country, x.featured, '
 			       . ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
 			       . ' DAYOFMONTH(x.dates) AS start_day, YEAR(x.dates) AS start_year, MONTH(x.dates) AS start_month,'
 			       . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug,'
