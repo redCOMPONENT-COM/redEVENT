@@ -58,7 +58,7 @@ class RedeventViewVenues extends JView
 
 			// url link to article
 			// & used instead of &amp; as this is converted by feed creator
-			$link = 'index.php?option=com_redevent&view=venueevents&id='. $row->id;
+			$link = RedeventHelperRoute::getVenueEventsRoute($row->slug);
 			$link = JRoute::_( $link );
 
 			// strip html from feed item description text

@@ -86,10 +86,10 @@ class RedeventViewCategories extends JView
 
 		//add alternate feed link
 		$link    = RedeventHelperRoute::getSimpleListRoute();
-		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
-		$document->addHeadLink(JRoute::_($link.'&format=feed&type=rss'), 'alternate', 'rel', $attribs);
-		$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
-		$document->addHeadLink(JRoute::_($link.'&format=feed&type=atom'), 'alternate', 'rel', $attribs);
+// 		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
+// 		$document->addHeadLink(JRoute::_($link.'&format=feed&type=rss'), 'alternate', 'rel', $attribs);
+// 		$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
+// 		$document->addHeadLink(JRoute::_($link.'&format=feed&type=atom'), 'alternate', 'rel', $attribs);
 
 		//Check if the user has access to the form
 		$maintainer = ELUser::ismaintainer();
