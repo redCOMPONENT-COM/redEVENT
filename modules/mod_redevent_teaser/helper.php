@@ -107,7 +107,7 @@ class modRedeventTeaserHelper
 		}
 		
 		//query
-		$query = 'SELECT a.*, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, l.venue, l.city, l.url , l.locimage, l.state, '
+		$query = 'SELECT a.*, x.eventid, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, l.venue, l.city, l.url , l.locimage, l.state, '
 		    . ' CONCAT_WS(",", c.image) AS categories_images,'
         . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
 		    . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug '
@@ -221,8 +221,9 @@ class modRedeventTeaserHelper
 		
 		$events = array();
 		foreach ($rows as $k => $r) {
-			$events[$r->id] = $k;
+			$events[] = $r->eventid;
 		}
+		$events = array_unique($events);
 		
 		if (!count($events)) {
 			return $rows;
@@ -234,20 +235,30 @@ class modRedeventTeaserHelper
 		       . ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
 		       . '  LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id '
 		       . ' WHERE c.published = 1 '
-		       . '   AND x.event_id IN (' . implode(", ", array_keys($events)) .')'
+		       . '   AND x.event_id IN (' . implode(", ", $events) .')'
 		       . '   AND (c.private = 0 OR gc.group_id IN ('.$gids.')) '
-		       . ' GROUP BY c.id '
 		       . ' ORDER BY c.ordering'
 		       ;
 		$db->setQuery( $query );
 		$res = $db->loadObjectList();
 		
+		// get categories per events
+		$evcats = array();
 		foreach ($res as $r)
 		{
-			if (!isset($rows[$events[$r->event_id]]->categories)) {
-				$rows[$events[$r->event_id]]->categories = array();
+			if (!isset($evcats[$r->event_id])) {
+				$evcats[$r->event_id] = array();
 			}
-			$rows[$events[$r->event_id]]->categories[] = $r;
+			$evcats[$r->event_id][] = $r;
+		}
+		
+		foreach ($rows as $k => $r) {
+			if (isset($evcats[$r->id])) {
+				$rows[$k]->categories = $evcats[$r->id];
+			}
+			else {
+				$rows[$k]->categories = array();
+			}
 		}
 
     return $rows;   
