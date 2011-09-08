@@ -23,6 +23,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+$app = &JFactory::getApplication();
 $colspan = 9;
 if (!$this->event) $colspan++;
 if (!$this->event || $this->event->registra) $colspan += 2;
@@ -150,6 +151,11 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 					<?php
 					}
 					?>
+					<span class="linkfront hasTip" title="<?php echo JText::_('COM_REDEVENT_EVENT_FRONTEND_LINK')?>">
+						<?php echo JHTML::link($app->getSiteUrl().RedeventHelperRoute::getDetailsRoute($row->eventid, $row->id), 
+					                         JHTML::image('administrator/components/com_redevent/assets/images/linkfront.png', 
+					                         JText::_('COM_REDEVENT_EVENT_FRONTEND_LINK'))); ?>
+					</span>
 				</td>
 	      <td><?php echo $displaytime; ?></td>
 				
