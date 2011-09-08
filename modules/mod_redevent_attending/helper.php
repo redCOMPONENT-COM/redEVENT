@@ -52,6 +52,7 @@ class modRedEventAttendingHelper
 		$weekstart = ($reparams->get('week_start', "MO") == "SU" ? 0 : 1);
 				
 		$where = array();		
+		$where[] = 'reg.uid = '.$user->get('id');
 		$where[] = 'x.published = 1';
 		
 		$offset = JRequest::getInt('reattoffset', (int) $params->get( 'offset', '0' ));
