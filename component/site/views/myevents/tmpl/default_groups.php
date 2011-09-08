@@ -29,7 +29,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <h2><?php echo JText::_('My groups'); ?></h2>
 
-<table class="eventtable" width="<?php echo $this->elsettings->tablewidth; ?>" border="0" cellspacing="0" cellpadding="0" summary="venues list">
+<table class="eventtable" summary="venues list">
 	<thead>
 		<tr>
 			<th id="el_title" class="sectiontableheader" align="left"><?php echo JText::_('Name'); ?></th>

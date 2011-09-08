@@ -94,7 +94,7 @@ $colnames = array_map('trim', $colnames);
 	</thead>
 	<tbody>
 	<?php
-	if ($this->noevents == 1) :
+	if (!count($this->rows)) :
 		?>
 		<tr align="center"><td><?php echo JText::_( 'NO EVENTS' ); ?></td></tr>
 		<?php

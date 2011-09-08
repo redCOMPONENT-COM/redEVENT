@@ -45,10 +45,10 @@ $lists = array();
 $lists['filter'] = JRequest::getVar('filter');
 
 $sortselects = array();
-if ($params->get('filter_type_event', 1))	$sortselects[]	= JHTML::_('select.option', 'title', $elsettings->titlename );
-if ($params->get('filter_type_venue', 0))	$sortselects[] 	= JHTML::_('select.option', 'venue', $elsettings->locationname );
-if ($params->get('filter_type_city', 0))	$sortselects[] 	= JHTML::_('select.option', 'city', $elsettings->cityname );
-if ($params->get('filter_type_category', 0))	$sortselects[] 	= JHTML::_('select.option', 'type', $elsettings->catfroname );
+if ($params->get('filter_type_event', 1))	$sortselects[]	= JHTML::_('select.option', 'title', JText::_('MOD_REDEVENT_SEARCH_SELECT_EVENT') );
+if ($params->get('filter_type_venue', 0))	$sortselects[] 	= JHTML::_('select.option', 'venue', JText::_('MOD_REDEVENT_SEARCH_SELECT_VENUE') );
+if ($params->get('filter_type_city', 0))	$sortselects[] 	= JHTML::_('select.option', 'city', JText::_('MOD_REDEVENT_SEARCH_SELECT_CITY') );
+if ($params->get('filter_type_category', 0))	$sortselects[] 	= JHTML::_('select.option', 'type', JText::_('MOD_REDEVENT_SEARCH_SELECT_CATEGORY') );
 
 if (count($sortselects) == 0) {
 	$sortselect = false;

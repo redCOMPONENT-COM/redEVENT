@@ -332,16 +332,16 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 
         //Get Events from Database        
         $query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published, '
-        . ' e.id, e.title, e.created, e.datdescription, e.registra, e.course_code, '
+        . ' a.id, a.title, a.created, a.datdescription, a.registra, a.course_code, '
         . ' l.venue, l.city, l.state, l.url, l.id as locid, '
         . ' c.catname, c.id AS catid, '
-        . ' CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(\':\', e.id, e.alias) ELSE e.id END as slug, '
+        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
         . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
         . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
         . ' FROM #__redevent_event_venue_xref AS x'
-        . ' LEFT JOIN #__redevent_events AS e ON e.id = x.eventid'
+        . ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
         . ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id'
+        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
         . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
         . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id '
         . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
@@ -368,17 +368,20 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 
         //Get Events from Database
         $query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, '
-        . ' e.id, e.title, e.created, e.datdescription, e.registra, '
-        . ' l.venue, l.city, l.state, l.url, l.id as locid, '
+        . ' a.id, a.title, a.created, a.datdescription, a.registra, '
+        . ' l.venue, l.city, l.state, l.url, l.id as locid, l.street, l.country, '
         . ' c.catname, c.id AS catid,'
-        . ' CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(\':\', e.id, e.alias) ELSE e.id END as slug, '
+        . ' x.featured, '
+        . ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
+        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
+        . ' CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug, '
         . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
         . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
         . ' FROM #__redevent_event_venue_xref AS x'
         . ' INNER JOIN #__redevent_register AS r ON r.xref = x.id '
-        . ' LEFT JOIN #__redevent_events AS e ON e.id = x.eventid'
+        . ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
         . ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id'
+        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
         . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
         . $where
         . ' GROUP BY (x.id) '
@@ -499,7 +502,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         }
     
         if ($params->get('shownonbookable', 1) == 0) {
-        	$where[] = ' e.registra > 0 ';
+        	$where[] = ' a.registra > 0 ';
         }
         
         /*
@@ -521,7 +524,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
                 switch($filter_type)
                 {
                     case 'title':
-                        $where[] = ' LOWER( e.title ) LIKE '.$filter;
+                        $where[] = ' LOWER( a.title ) LIKE '.$filter;
                         break;
 
                     case 'venue':
@@ -539,7 +542,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
             }
         }
         if (JRequest::getInt('filter_event')) {
-        	$where[] = ' e.id = '.JRequest::getInt('filter_event');
+        	$where[] = ' a.id = '.JRequest::getInt('filter_event');
         }
         
         $where = ' WHERE '. implode(' AND ', $where);
@@ -593,7 +596,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         }
     
         if ($params->get('shownonbookable', 1) == 0) {
-        	$where[] = ' e.registra > 0 ';
+        	$where[] = ' a.registra > 0 ';
         }
         
         /*
@@ -615,7 +618,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
                 switch($filter_type)
                 {
                     case 'title':
-                        $where[] = ' LOWER( e.title ) LIKE '.$filter;
+                        $where[] = ' LOWER( a.title ) LIKE '.$filter;
                         break;
 
                     case 'venue':
@@ -681,15 +684,15 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 		$where = $this->_buildEventsOptionsWhere();
 		
 		//Get Events from Database
-		$query = ' SELECT e.id AS value, e.title as text '
+		$query = ' SELECT a.id AS value, a.title as text '
 		       . ' FROM #__redevent_event_venue_xref AS x'
-		       . ' LEFT JOIN #__redevent_events AS e ON e.id = x.eventid'
+		       . ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
 		       . ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-		       . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id'
+		       . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
 		       . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
 		       . $where
-		       . ' GROUP BY (e.id) '
-		       . ' ORDER BY e.title '
+		       . ' GROUP BY (a.id) '
+		       . ' ORDER BY a.title '
 		       ;
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();

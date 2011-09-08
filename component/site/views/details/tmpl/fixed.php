@@ -170,7 +170,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		?>
 
 		<dl class="location floattext">
-			 <dt class="venue"><?php echo $this->elsettings->locationname.':'; ?></dt>
+			 <dt class="venue"><?php echo JText::_('COM_REDEVENT_VENUE').':'; ?></dt>
 				<dd class="venue">
 				<?php echo "<a href='".JRoute::_( 'index.php?view=venueevents&id='.$this->row->venueslug )."'>".$this->escape($this->row->venue)."</a>"; ?>
 

@@ -183,9 +183,10 @@ class RedeventViewVenuecategory extends JView
     $filter_type  = $app->getUserState('com_redevent.venuecategory.filter_type');
 
 		$sortselects = array();
-		$sortselects[]	= JHTML::_('select.option', 'title', $elsettings->titlename );
-		$sortselects[] 	= JHTML::_('select.option', 'venue', $elsettings->locationname );
-		$sortselects[] 	= JHTML::_('select.option', 'city', $elsettings->cityname );
+		$sortselects[]	= JHTML::_('select.option', 'title', JText::_('COM_REDEVENT_FILTER_SELECT_EVENT') );
+		$sortselects[] 	= JHTML::_('select.option', 'venue', JText::_('COM_REDEVENT_FILTER_SELECT_VENUE') );
+		$sortselects[] 	= JHTML::_('select.option', 'city', JText::_('COM_REDEVENT_FILTER_SELECT_CITY') );
+		$sortselects[] 	= JHTML::_('select.option', 'type', JText::_('COM_REDEVENT_FILTER_SELECT_CATEGORY') );
 		$sortselect 	= JHTML::_('select.genericlist', $sortselects, 'filter_type', 'size="1" class="inputbox"', 'value', 'text', $filter_type );
 
 		$lists['order_Dir'] 	= $filter_order_Dir;

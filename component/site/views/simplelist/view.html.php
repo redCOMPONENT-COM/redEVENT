@@ -189,10 +189,10 @@ class RedeventViewSimpleList extends JView
     $this->assign('action', $uri->toString());
       
 		$sortselects = array();
-		if ($params->get('filter_type_event', 1))	$sortselects[]	= JHTML::_('select.option', 'title', $elsettings->titlename );
-		if ($params->get('filter_type_venue', 1))	$sortselects[] 	= JHTML::_('select.option', 'venue', $elsettings->locationname );
-		if ($params->get('filter_type_city', 1))	$sortselects[] 	= JHTML::_('select.option', 'city', $elsettings->cityname );
-		if ($params->get('filter_type_category', 1))	$sortselects[] 	= JHTML::_('select.option', 'type', $elsettings->catfroname );
+		if ($params->get('filter_type_event', 1))	$sortselects[]	= JHTML::_('select.option', 'title', JText::_('COM_REDEVENT_FILTER_SELECT_EVENT') );
+		if ($params->get('filter_type_venue', 1))	$sortselects[] 	= JHTML::_('select.option', 'venue', JText::_('COM_REDEVENT_FILTER_SELECT_VENUE') );
+		if ($params->get('filter_type_city', 1))	$sortselects[] 	= JHTML::_('select.option', 'city', JText::_('COM_REDEVENT_FILTER_SELECT_CITY') );
+		if ($params->get('filter_type_category', 1))	$sortselects[] 	= JHTML::_('select.option', 'type', JText::_('COM_REDEVENT_FILTER_SELECT_CATEGORY') );
 		
 		if (count($sortselects) == 0) {
 			$sortselect = false;
