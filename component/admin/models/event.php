@@ -566,5 +566,25 @@ class RedEventModelEvent extends JModel
     }
     return $fields;     
   }
+  
+  /**
+   * check whether there are attendees registered to any session of this event
+   * 
+   * @return boolean
+   */
+  function hasAttendees()
+  {
+  	if (!$this->_id) {
+  		return false;
+  	}
+  	$query = ' SELECT r.id ' 
+  	       . ' FROM #__redevent_register AS r '
+  	       . ' INNER JOIN #__redevent_event_venue_xref AS x ON r.xref = x.id ' 
+  	       . ' INNER JOIN #__redevent_events AS e ON e.id = x.eventid '
+  	       . ' WHERE e.id = ' . $this->_db->Quote($this->_id);
+  	$this->_db->setQuery($query);
+  	$res = $this->_db->loadResult();
+  	return $res ? true : false;
+  }
 }
 ?>

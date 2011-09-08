@@ -171,11 +171,32 @@ class RedEventViewEvent extends JView {
 		/* Check if redFORM is installed */
 		$redform_install = $this->get('CheckredFORM');
 		
-		if ($redform_install) {
+		$hasattendees = $model->hasAttendees();
+		
+		if ($redform_install) 
+		{
 			/* Get a list of redFORM forms */
 			$redforms = $this->get('RedForms');
-			if ($redforms) $lists['redforms'] = JHTML::_('select.genericlist', $redforms, 'redform_id', '', 'id', 'formname', $row->redform_id );
-			else $lists['redforms'] = '';
+			
+			if ($redforms) 
+			{
+				if ($hasattendees) 
+				{ // can't reassign the form in that case !
+					foreach ($redforms as $form) 
+					{
+						if ($form->id == $row->redform_id) {
+							$lists['redforms'] = $form->formname.'<input type="hidden" name="redform_id" value="'.$row->redform_id.'"/>';
+							break;
+						}
+					} 
+				}
+				else {
+					$lists['redforms'] = JHTML::_('select.genericlist', $redforms, 'redform_id', '', 'id', 'formname', $row->redform_id );
+				}
+			}
+			else {
+				$lists['redforms'] = '';
+			}
 			
 			/* Check if a redform ID exists, if so, get the fields */
 			if (isset($row->redform_id) && $row->redform_id > 0) {
