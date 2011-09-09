@@ -33,7 +33,7 @@ foreach ($this->rows as $row)
 	//for time printing
 	$timehtml = '';
 
-	if ($this->settings->showtime == 1)
+	if ($this->params->get('show_tip_time', 0))
 	{
 		$start = ELOutput::formattime($row->dates, $row->times);
 		$end = ELOutput::formattime($row->dates, $row->endtimes);
@@ -116,6 +116,9 @@ foreach ($this->rows as $row)
 
 	//generate the output
 	$content .= $colorpic;
+	if ($this->params->get('show_start_time', 0)) {
+		$content .= ELOutput::formattime($row->dates, $row->times).' ';
+	}
 	$content .= $this->caltooltip($catname.$eventname.$timehtml.$venue, $eventdate, $row->full_title, $detaillink, 'eventTip');
 	$content .= $contentend;
 	// add the event to the calendar

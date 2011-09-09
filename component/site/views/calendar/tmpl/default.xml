@@ -9,6 +9,14 @@
 		<name>CALENDAR_LAYOUT</name>
 		<description>CALENDAR_DESC</description>
     <params addpath="/administrator/components/com_redevent/elements">
+	    <param name="show_start_time" type="radio" default="0" label="COM_REDEVENT_VIEW_CALENDAR_SHOW_START_TIME_LABEL" description="COM_REDEVENT_VIEW_CALENDAR_SHOW_START_TIME_DESC">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </param>
+	    <param name="show_tip_time" type="radio" default="0" label="COM_REDEVENT_VIEW_CALENDAR_SHOW_TIP_TIME_LABEL" description="COM_REDEVENT_VIEW_CALENDAR_SHOW_TIP_TIME_DESC">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </param>
 	    <param name="displayLegend" type="radio" default="1" label="DISPLAY LEGEND" description="DISPLAY LEGEND DESC">
         <option value="0">No</option>
         <option value="1">Yes</option>
