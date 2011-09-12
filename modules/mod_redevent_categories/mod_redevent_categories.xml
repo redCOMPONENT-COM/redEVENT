@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/module-install.dtd">
+<install type="module" version="1.5.0" method="upgrade">
+	<name>mod_redevent_categories</name>
+	<creationDate>Apr 16, 2010</creationDate>
+	<author>Redweb.dk</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redweb.dk</authorUrl>
+	<copyright>(c) 2011 Redweb.dk</copyright>
+	<license>GNU/GPL</license>
+	<version>2.0 beta 9.1</version>
+	<description>MOD_REDEVENT_CATEGORIES_XML_DESCRIPTION</description>
+
+	<files>
+		<filename module="mod_redevent_categories">mod_redevent_categories.php</filename>
+		<filename>mod_redevent_categories.css</filename>
+		<filename>mod_redevent_categories.js</filename>
+		<filename>index.html</filename>
+		<filename>helper.php</filename>
+    <folder>tmpl</folder>
+	</files>
+
+	<languages>
+		<language tag="en-GB">languages/en-GB.mod_redevent_categories.ini</language>
+	</languages>
+
+	<params>
+		<param name="mode" type="list" default="1" label="MOD_REDEVENT_CATEGORIES_MODE_LABEL" description="MOD_REDEVENT_CATEGORIES_MODE_DESC">
+			<option value="0">MOD_REDEVENT_CATEGORIES_MODE_FLAT</option>
+			<option value="1">MOD_REDEVENT_CATEGORIES_MODE_TREE</option>
+		</param>
+		<param name="show_count" type="radio" default="1" label="MOD_REDEVENT_CATEGORIES_SHOW_COUNT_LABEL" description="MOD_REDEVENT_CATEGORIES_SHOW_COUNT_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		
+		<param name="moduleclass_sfx" type="text" default="" label="MODULE CLASS SUFFIX" description="MODULE CLASS SUFFIX DESC" />
+	</params>
+	
+	<params group="advanced">
+		<param name="cache" type="list" default="1" label="CACHING" description="CACHING DESC">
+			<option value="1">USE GLOBAL</option>
+			<option value="0">NO CACHING</option>
+		</param>
+		<param name="cache_time" type="text" default="900" label="CACHE TIME" description="CACHE TIME DESC" />
+	</params>
+
+</install>
