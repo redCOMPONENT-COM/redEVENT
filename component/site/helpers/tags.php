@@ -60,7 +60,7 @@ class redEVENT_tags {
 	{
 		if (is_array($options))
 		{
-			$this->_addOptions($options);
+			$this->addOptions($options);
 		}		
 		
 		$eventid = JRequest::getVar('id', 0, 'request', 'int');
@@ -143,7 +143,12 @@ class redEVENT_tags {
 		$this->_submitkey = $string;
 	}
 	
-	function _addOptions($options)
+	/**
+	 * add options (key, value) to object
+	 * 
+	 * @param array $options
+	 */
+	function addOptions($options)
 	{
 		if (is_array($options)) 
 		{
@@ -202,7 +207,7 @@ class redEVENT_tags {
 		$rfcore    = $this->_getRFCore();
 		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
 		if ($options) {
-			$this->_addOptions($options);
+			$this->addOptions($options);
 		}
 		
 		$elsettings = redEVENTHelper::config();
@@ -870,8 +875,8 @@ class redEVENT_tags {
 		  	$db = & JFactory::getDBO();
 		  	$query = ' SELECT r.sid '
 		  	       . ' FROM #__redevent_register AS r '
-		  	       . ' AND r.cancelled = 0 '
-		  	       . ' WHERE r.submit_key = '.$db->quote($this->_submitkey);
+		  	       . ' WHERE r.submit_key = '.$db->quote($this->_submitkey)
+		  	       ;
 				$db->setQuery($query);
 				$sids = $db->loadResultArray();
 		  }

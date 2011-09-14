@@ -236,6 +236,8 @@
     </param>
     <param name="registration_notification_attach_rfuploads_maxsize" type="text" size="20" default="2000" label="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_MAXSIZE_LABEL" description="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_MAXSIZE_DESC" />
     
+ 		<param name="unregistration_notification_subject" type="text" size="80" default="Cancelled registration for event [event_title] on [date]" label="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_SUBJECT" description="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_SUBJECT_DESC" />
+ 		<param name="unregistration_notification_body" type="textarea" cols="80" rows="5" default="registration details were &lt;br /&gt;&lt;br /&gt;[answers]" label="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_BODY" description="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_BODY_DESC" />
  	</params>
  	
  	<params group="REDEVENT_SETTINGS_REMINDER">

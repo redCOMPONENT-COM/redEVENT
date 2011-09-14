@@ -413,6 +413,11 @@ class RedeventController extends JController
 			{
 				$msg = JText::_( 'UNREGISTERED SUCCESSFULL' );
 			}
+			
+			// send unreg notification email
+			$key = redEVENTHelper::getAttendeeSubmitKey($rid);
+			$sid = redEVENTHelper::getAttendeeSid($rid);
+			$model->notifyManagers($key, true, $sid);
 		}
 		
 		if ($task == 'managedelreguser')

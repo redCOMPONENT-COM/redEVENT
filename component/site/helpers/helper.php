@@ -1273,5 +1273,41 @@ class redEVENTHelper {
 					
 		return array_intersect($columns, $allowed);
 	}
+	
+	/**
+	 * returns submit_key associated to attendee id
+	 * 
+	 * @param int $attendee_id
+	 * @return string key
+	 */
+	function getAttendeeSubmitKey($attendee_id)
+	{
+		$db = &JFactory::getDBO();
+		
+		$query = ' SELECT submit_key ' 
+		       . ' FROM #__redevent_register ' 
+		       . ' WHERE id = ' . $db->Quote($attendee_id);
+		$db->setQuery($query);
+		$res = $db->loadResult();
+		return $res;
+	}
+	
+	/**
+	 * returns sid associated to attendee id
+	 * 
+	 * @param int $attendee_id
+	 * @return int sid
+	 */
+	function getAttendeeSid($attendee_id)
+	{
+		$db = &JFactory::getDBO();
+		
+		$query = ' SELECT sid ' 
+		       . ' FROM #__redevent_register ' 
+		       . ' WHERE id = ' . $db->Quote($attendee_id);
+		$db->setQuery($query);
+		$res = $db->loadResult();
+		return $res;
+	}
 }
 ?>

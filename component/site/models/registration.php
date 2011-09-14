@@ -527,7 +527,7 @@ class RedEventModelRegistration extends JModel
 	}
 	
 
-  function notifyManagers($submit_key)
+  function notifyManagers($submit_key, $unreg = false, $reg_sid = 0)
   {
   	$this->setSubmitKey($submit_key);
   	$session = &$this->getSessionDetails();
@@ -538,6 +538,9 @@ class RedEventModelRegistration extends JModel
 		$tags   = new redEVENT_tags();
 		$tags->setXref($this->_xref);
 		$tags->setSubmitkey($submit_key);
+		if ($reg_sid) {
+			$tags->addOptions(array('sids' => array($reg_sid)));
+		}
   	
   	$event = $this->getSessionDetails();
   	
@@ -635,14 +638,14 @@ class RedEventModelRegistration extends JModel
 		</STYLE>
 		</head>
 		<BODY bgcolor="#FFFFFF">
-		'.$tags->ReplaceTags($params->get('registration_notification_body')).'
+		'.$tags->ReplaceTags($unreg ? $params->get('unregistration_notification_body') : $params->get('registration_notification_body')).'
 		</body>
 		</html>';
   	
 		// convert urls
 		$mail = ELOutput::ImgRelAbs($mail);
 		
-		if ($params->get('registration_notification_attach_rfuploads', 1))
+		if (!$unreg && $params->get('registration_notification_attach_rfuploads', 1))
 		{
 			// files submitted through redform
 			$files = $this->getRFFiles();
@@ -660,7 +663,7 @@ class RedEventModelRegistration extends JModel
 			}
 		}
 						
-  	$mailer->setSubject($tags->ReplaceTags($params->get('registration_notification_subject')));
+  	$mailer->setSubject($tags->ReplaceTags($unreg ? $params->get('unregistration_notification_subject') : $params->get('registration_notification_subject')));
   	$mailer->MsgHTML($mail);
   	if (!$mailer->send())
   	{
