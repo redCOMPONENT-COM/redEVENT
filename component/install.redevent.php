@@ -699,6 +699,16 @@ if (is_array($cols))
        ;
     $db->setQuery($q);
     $db->query();    
+  }   
+			    
+  if (!array_key_exists('cancelled', $cols))
+  {
+  	$query = " ALTER IGNORE TABLE #__redevent_register "
+  	       . "   ADD COLUMN `cancelled` tinyint(1) NOT NULL default '0' ";
+  	$db->setQuery($query);
+  	if (!$db->query()) {
+  		$res = false;
+  	}
   }
   
   /** add indexes **/

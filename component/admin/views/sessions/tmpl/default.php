@@ -198,9 +198,9 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 				</td>
 	      <td align="center"><?php echo $featured ?></td>
 	      
-	      <?php if (!$this->event || $this->event->registra): ?>
+	      <?php if (!$this->event || $row->registra): ?>
 	      <td><?php echo $endreg; ?></td>
-	      <td><?php echo (isset($row->attendees) ? 
+	      <td><?php echo ($row->registra ? 
 	                      JHTML::link('index.php?option=com_redevent&view=attendees&xref='.$row->id, intval($row->attendees->attending). ' / '. intval($row->attendees->waiting)) : '-'); ?></td>
 	      <?php endif; ?>
 	    </tr>

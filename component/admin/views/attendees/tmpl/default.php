@@ -23,7 +23,7 @@
  
 defined('_JEXEC') or die('Restricted access'); 
 JHTML::_('behavior.tooltip');
-$colspan = 14;
+$colspan = 13;
 ?>
 
 <form action="index.php" method="post" name="adminForm">
@@ -50,6 +50,9 @@ $colspan = 14;
 				<button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
 				<button onclick="this.form.getElementById('filter').value='0';this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
 			</td>
+			<td style="text-align:right;">
+				<?php echo $this->lists['filter_confirmed']; ?> <?php echo $this->lists['filter_waiting']; ?> <?php echo $this->lists['filter_cancelled']; ?>
+			</td>
 		</tr>
 	</table>
 	<table class="adminlist" cellspacing="1">
@@ -62,7 +65,6 @@ $colspan = 14;
 				<th class="title"><?php echo JHTML::_('grid.sort', 'IP ADDRESS', 'r.uip', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'UNIQUE ID', 'r.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'USERNAME', 'u.username', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<th class="title"><?php echo JText::_( 'REMOVE USER' ); ?></th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'CONFIRMED', 'r.confirmed', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'WAITINGLIST', 'r.waitinglist', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php foreach ((array) $this->rf_fields as $f):?>
@@ -114,7 +116,6 @@ $colspan = 14;
 				<td><?php echo $row->uip == 'DISABLED' ? JText::_( 'DISABLED' ) : $row->uip; ?></td>
 				<td><?php echo $row->course_code .'-'. $row->xref .'-'. $row->attendee_id; ?></td>
 				<td><?php echo $row->name; ?></td>
-				<td style="text-align: center;"><a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i;?>','remove')"><img src="images/publish_x.png" width="16" height="16" border="0" alt="Delete" /></a></td>
 				<td>
 				  <?php 
 				  //echo $row->confirmed == 0 ? JText::_('NO') : JText::_('YES'); 

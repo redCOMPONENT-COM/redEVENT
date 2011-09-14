@@ -52,6 +52,7 @@ class RedEventViewAttendees extends JView {
 		$elsettings = ELAdmin::config();
 		$document	= JFactory::getDocument();
 		$user = JFactory::getUser();
+		$state = &$this->get('State');
 
 		//get vars
 		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.attendees.filter_order', 'filter_order', 'u.username', 'cmd' );
@@ -79,7 +80,13 @@ class RedEventViewAttendees extends JView {
 		JToolBarHelper::addNew();
 		JToolBarHelper::editList();
 		JToolBarHelper::custom('move', 'move', 'move', 'COM_REDEVENT_ATTENDEES_TOOLBAR_MOVE', true, true);
-		JToolBarHelper::deleteList();
+		if ($state->get('filter_cancelled', 0) == 0) {
+			JToolBarHelper::custom('cancelreg', 'cancel', 'cancel', 'COM_REDEVENT_ATTENDEES_TOOLBAR_CANCEL', true, true);
+		}
+		if ($state->get('filter_cancelled', 0) == 1) {
+			JToolBarHelper::custom('uncancelreg', 'redrestore', 'redrestore', 'COM_REDEVENT_ATTENDEES_TOOLBAR_RESTORE', true, true);
+			JToolBarHelper::deleteList(JText::_('COM_REDEVENT_ATTENDEES_DELETE_WARNING'));
+		}
 		JToolBarHelper::spacer();
 		JToolBarHelper::back();
 		JToolBarHelper::spacer();
@@ -126,6 +133,27 @@ class RedEventViewAttendees extends JView {
 		
 		// search filter
 		// $lists['search'] = $search;
+		
+		// confirmed filter
+		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CONFIRMED_ALL')),
+		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CONFIRMED_CONFIRMED')), 
+		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CONFIRMED_UNCONFIRMED')), 
+		                 );
+		$lists['filter_confirmed'] =  JHTML::_('select.genericlist', $options, 'filter_confirmed', 'class="inputbox" onchange="this.form.submit();"', 'value', 'text', $state->get('filter_confirmed') );
+		
+		// waiting list filter
+		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_ATTENDEES_FILTER_WAITING_ALL')),
+		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_ATTENDEES_FILTER_WAITING_ATTENDING')), 
+		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_ATTENDEES_FILTER_WAITING_WAITING')), 
+		                 );
+		$lists['filter_waiting'] =  JHTML::_('select.genericlist', $options, 'filter_waiting', 'class="inputbox" onchange="this.form.submit();"', 'value', 'text', $state->get('filter_waiting') );
+		
+		// cancelled filter
+		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CANCELLED_NOT_CANCELLED')),
+		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CANCELLED_CANCELLED')), 
+		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CANCELLED_ALL')), 
+		                 );
+		$lists['filter_cancelled'] =  JHTML::_('select.genericlist', $options, 'filter_cancelled', 'class="inputbox" onchange="this.form.submit();"', 'value', 'text', $state->get('filter_cancelled') );
 
 		// table ordering
 		$lists['order_Dir'] = $filter_order_Dir;

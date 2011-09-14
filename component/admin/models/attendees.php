@@ -84,9 +84,16 @@ class RedEventModelAttendees extends JModel
 
 		$limit		= $mainframe->getUserStateFromRequest( $option.'limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
 		$limitstart = $mainframe->getUserStateFromRequest( $option.'limitstart', 'limitstart', 0, 'int' );
+		
+		$filter_confirmed = $mainframe->getUserStateFromRequest( $option.'.attendees.filter_confirmed', 'filter_confirmed', 0, 'int' );
+		$filter_waiting   = $mainframe->getUserStateFromRequest( $option.'.attendees.filter_waiting',   'filter_waiting'  , 0, 'int' );
+		$filter_cancelled = $mainframe->getUserStateFromRequest( $option.'.attendees.filter_cancelled', 'filter_cancelled', 0, 'int' );
 
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
+		$this->setState('filter_confirmed', $filter_confirmed);
+		$this->setState('filter_waiting',   $filter_waiting);
+		$this->setState('filter_cancelled', $filter_cancelled);
 
 		//set unlimited if export or print action | task=export or task=print
 		$this->setState('unlimited', JRequest::getString('task'));
@@ -304,6 +311,34 @@ class RedEventModelAttendees extends JModel
 		else if (!is_null($this->_eventid) && $this->_eventid > 0) {
 			$where[] = ' x.eventid = '.$this->_eventid;
 		}
+	
+		switch ($this->getState('filter_confirmed', 0))
+		{
+			case 1:
+				$where[] = ' r.confirmed = 1 ';
+				break;
+			case 2:
+				$where[] = ' r.confirmed = 0 ';
+				break;
+		}
+		switch ($this->getState('filter_waiting', 0))
+		{
+			case 1:
+				$where[] = ' r.waitinglist = 0 ';
+				break;
+			case 2:
+				$where[] = ' r.waitinglist = 1 ';
+				break;
+		}
+		switch ($this->getState('filter_cancelled', 0))
+		{
+			case 0:
+				$where[] = ' r.cancelled = 0 ';
+				break;
+			case 1:
+				$where[] = ' r.cancelled = 1 ';
+				break;
+		}
 
 		$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
 		
@@ -339,6 +374,62 @@ class RedEventModelAttendees extends JModel
 	}
 
 	/**
+	 * Cancel registrations
+	 *
+	 * @access public
+	 * @return true on success
+	 * @since 0.9
+	 */
+	function cancelreg($cid = array())
+	{
+		if (count( $cid ))
+		{
+			$ids = implode(',', $cid);
+			$form = $this->getForm();
+						
+			$query = ' UPDATE #__redevent_register AS r '
+             . '   SET r.cancelled = 1 '
+             . ' WHERE r.id IN ('.implode(', ', $cid).')'
+             ;
+			$this->_db->setQuery( $query );
+			
+			if (!$this->_db->query()) {
+				RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Un-cancel registration
+	 *
+	 * @access public
+	 * @return true on success
+	 * @since 0.9
+	 */
+	function uncancelreg($cid = array())
+	{
+		if (count( $cid ))
+		{
+			$ids = implode(',', $cid);
+			$form = $this->getForm();
+						
+			$query = ' UPDATE #__redevent_register AS r '
+             . '   SET r.cancelled = 0 '
+             . ' WHERE r.id IN ('.implode(', ', $cid).')'
+             ;
+			$this->_db->setQuery( $query );
+			
+			if (!$this->_db->query()) {
+				RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * Delete registered users
 	 *
 	 * @access public
@@ -356,7 +447,8 @@ class RedEventModelAttendees extends JModel
         . ' FROM #__redevent_register AS r '
         . ' LEFT JOIN #__rwf_submitters AS s ON r.sid = s.id '
         . ' LEFT JOIN #__rwf_forms_'.$form->id .' AS f ON f.id = s.answer_id '
-        . ' WHERE r.id IN ('.implode(', ', $cid).')';
+        . ' WHERE r.id IN ('.implode(', ', $cid).')'
+        . '   AND r.cancelled = 1 ';
         ;
 			$this->_db->setQuery( $query );
 			

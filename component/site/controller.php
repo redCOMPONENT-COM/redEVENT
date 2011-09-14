@@ -377,16 +377,15 @@ class RedeventController extends JController
 		// Check for request forgeries
 		//JRequest::checkToken() or die( 'Invalid Token' );
 
-		// TODO: is $id still usefull ? xref seems to be used in delreguser...
 		$id 	= JRequest::getInt( 'id', 0 );
+		$rid 	= JRequest::getInt( 'rid' );
 		
     $xref   = JRequest::getInt( 'xref', 0 );
     
 		// Get/Create the model
-		$model = $this->getModel('Details', 'RedeventModel');
+		$model = $this->getModel('Registration', 'RedeventModel');
 
-		$model->setId($id);
-		if (!$model->delreguser()) 
+		if (!$model->cancelregistration($rid, $xref)) 
 		{
 			$msg = $model->getError();
 			$msgtype = 'error';

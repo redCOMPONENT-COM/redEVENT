@@ -88,7 +88,7 @@ if ($this->manage_attendees) {
                 <td class="edit">
                   <?php echo JHTML::link($edit_url, $edit_image, array('class' => 'editlink')); ?>
                 </td>
-      				  <?php $unreg_url = JRoute::_(RedeventHelperRoute::getManageAttendees($this->row->xref, 'managedelreguser').'&sid=' .$register->id); ?>
+      				  <?php $unreg_url = JRoute::_(RedeventHelperRoute::getManageAttendees($this->row->xref, 'managedelreguser').'&rid=' .$register->attendee_id); ?>
                 <td class="attendee">
                   <?php echo JHTML::link($unreg_url, $remove_image, array('class' => 'unreglink')); ?>
                 </td>
@@ -139,7 +139,7 @@ if ($this->manage_attendees) {
                 <td class="edit">
                   <?php echo JHTML::link($edit_url, $edit_image, array('class' => 'editlink')); ?>
                 </td>
-      				  <?php $unreg_url = JRoute::_('index.php?option=com_redevent&view=details&id='. $this->row->slug .'&task=managedelreguser&xref='. $this->row->xref .'&sid=' .$register->id); ?>
+      				  <?php $unreg_url = JRoute::_('index.php?option=com_redevent&view=details&id='. $this->row->slug .'&task=managedelreguser&xref='. $this->row->xref .'&rid=' .$register->attendee_id); ?>
                 <td class="attendee">
                   <?php echo JHTML::link($unreg_url, $remove_image, array('class' => 'unreglink')); ?>
                 </td>

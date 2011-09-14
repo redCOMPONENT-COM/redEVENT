@@ -523,6 +523,7 @@ class RedeventModelBaseEventList extends JModel
 			   . ' FROM #__redevent_register AS r '
 			   . ' WHERE r.xref = '. $this->_db->Quote($r->xref)
 			   . ' AND r.confirmed = 1 '
+			   . ' AND r.cancelled = 0 '
 			   . ' GROUP BY r.waitinglist '
 			   ;
 			$this->_db->setQuery($q);

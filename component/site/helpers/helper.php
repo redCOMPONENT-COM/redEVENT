@@ -612,6 +612,7 @@ class redEVENTHelper {
           FROM #__redevent_register
           WHERE xref = ". $db->Quote($xref_id)."
           AND confirmed = 1
+		      AND cancelled = 0
           GROUP BY waitinglist";
       $db->setQuery($q);
       $res = $db->loadObjectList('waitinglist');
@@ -653,8 +654,10 @@ class redEVENTHelper {
           FROM #__redevent_register AS r
           WHERE r.xref = ". $db->Quote($xref_id) ."
           AND r.confirmed = 1
-          AND r.uid = ". $db->Quote($user->get('id'))
-          ;
+		      AND r.cancelled = 0
+          AND r.uid = ". $db->Quote($user->get('id')) ."
+          ";
+      
       // if there is a submit key set, it means we are reviewing, so we need to discard this submit_key from the count.
       if (JRequest::getVar('submit_key')) {
         $q .= '  AND r.submit_key <> '. $db->Quote(JRequest::getVar('submit_key', ''));

@@ -521,6 +521,7 @@ class redEVENT_tags {
 			   . ' FROM #__redevent_register AS r '
 			   . ' WHERE r.xref = '. $db->Quote($r->xref)
 			   . ' AND r.confirmed = 1 '
+		     . ' AND r.cancelled = 0 '
 			   . ' GROUP BY r.waitinglist '
 			   ;
 	    $db->setQuery($q);
@@ -548,7 +549,8 @@ class redEVENT_tags {
 	      $q = "SELECT COUNT(r.id) AS total
 	        FROM #__redevent_register AS r 
 	        WHERE r.xref = ". $db->Quote($r->xref) ."
-	        AND r.confirmed = 1
+	        AND r.confirmed = 1 
+	        AND r.cancelled = 0
 	        AND r.uid = ". $db->Quote($user->get('id')) ."
 	        ";
 	      $db->setQuery($q);
@@ -868,6 +870,7 @@ class redEVENT_tags {
 		  	$db = & JFactory::getDBO();
 		  	$query = ' SELECT r.sid '
 		  	       . ' FROM #__redevent_register AS r '
+		  	       . ' AND r.cancelled = 0 '
 		  	       . ' WHERE r.submit_key = '.$db->quote($this->_submitkey);
 				$db->setQuery($query);
 				$sids = $db->loadResultArray();
@@ -884,15 +887,14 @@ class redEVENT_tags {
 		}
 		  	
 		$db = & JFactory::getDBO();
-		$query =  ' SELECT SUM(s.price) '
-		        . ' FROM #__redevent_register AS r '
-		        . ' INNER JOIN #__rwf_submitters AS s ON s.submit_key = r.submit_key '
-		        . ' WHERE r.submit_key = '.$db->quote($this->_submitkey)
-		        . ' GROUP BY r.id '
+		$query =  ' SELECT SUM(pr.price + pr.vat) '
+		        . ' FROM #__rwf_payments_requests AS pr '
+		        . ' WHERE pr.submit_key = '.$db->quote($this->_submitkey)
+		        . ' GROUP BY pr.submit_key '
 		        ;
 		$db->setQuery($query);
 		$res = $db->loadResult();
-		return $res;		
+		return $res;
   }
 
   private function _getFieldsTags()

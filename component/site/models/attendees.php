@@ -104,6 +104,7 @@ class RedEventModelAttendees extends JModel
 		       . ' WHERE r.xref = '.$xref
 		       . '   AND r.confirmed = 1 '
 		       . ($include_wl == 0 ? ' AND r.waitinglist = 1 ' : '')
+		       . '   AND r.cancelled = 0 '
 		       ;
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadResultArray();
@@ -176,6 +177,7 @@ class RedEventModelAttendees extends JModel
 						. ' LEFT JOIN #__users AS u ON r.uid = u.id '
 						. ' WHERE r.xref = ' . $this->_xref
             . ' AND r.confirmed = 1'
+            . ' AND r.cancelled = 0 '
 						;
 		$db->setQuery($query);
 		$submitters = $db->loadObjectList('submit_key');
@@ -219,6 +221,7 @@ class RedEventModelAttendees extends JModel
 				        . ' INNER JOIN #__rwf_forms_' . $fields[0]->form_id . ' AS a ON s.answer_id = a.id '
 				        . ' WHERE r.xref = ' . $this->_xref
 				        . ' AND r.confirmed = 1'
+				        . ' AND r.cancelled = 0 '
 				        ;
         $filter_order     = $this->getState('filter_order');
         $filter_order_Dir = $this->getState('filter_order_Dir');

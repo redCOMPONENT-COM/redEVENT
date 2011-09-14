@@ -70,6 +70,9 @@ class RedEvent_register extends JTable
 	 */
 	var $confirmdate = null;	
 	
+	/** @var boolean cancelled registration */
+	var $cancelled = null;
+	
 	var $checked_out = null;
 	var $checked_out_time = null;
 

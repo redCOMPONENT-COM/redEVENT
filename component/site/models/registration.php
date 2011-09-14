@@ -202,6 +202,7 @@ class RedEventModelRegistration extends JModel
 		       . ' FROM #__redevent_register '
 		       . ' WHERE xref = '.$session->xref
 		       . ' AND confirmed = 1 '
+		       . '   AND r.cancelled = 0 '
 		       . ' GROUP BY waitinglist'
 		       ;
 		$this->_db->setQuery($query);
@@ -925,5 +926,67 @@ class RedEventModelRegistration extends JModel
   	$this->_db->setQuery($query);
   	$res = $this->_db->loadObjectList();   	
   	return $res;
+  }
+  
+  
+  /**
+  * Cancel a registration
+  *
+  * @access public
+  * @param int $register_id
+  * @return boolean true on success
+  * @since 2.0
+  */
+  function cancelregistration($register_id, $xref)
+  {
+	  $user =  & JFactory::getUser();
+	  $userid = $user->get('id');
+  	$acl = UserAcl::getInstance();
+	  
+	  if ($userid < 1) {
+			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+			return;
+	  }
+	  
+	  if (!redEVENTHelper::canUnregister($xref)) {
+	  	$this->setError(JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED'));
+	  	return false;
+	  }
+	  		
+	  		// first, check if the user is allowed to unregister from this
+	  // he must be the one that submitted the form, plus the unregistration must be allowed
+	  $q = ' SELECT s.*, r.uid, e.unregistra, x.dates, x.times, x.registrationend  '
+	          . ' FROM #__rwf_submitters AS s '
+	          . ' INNER JOIN #__redevent_register AS r ON r.sid = s.id '
+	          . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.id = r.xref '
+	          . ' INNER JOIN #__redevent_events AS e ON x.eventid = e.id '
+	          . ' WHERE r.id = ' . $this->_db->Quote($register_id)
+	  		    ;
+		$this->_db->setQuery($q);
+	  $submitterinfo = $this->_db->loadObject();
+	  
+	  // or be allowed to manage attendees
+	  $manager = $acl->canManageAttendees($xref);
+	  
+	  if (($submitterinfo->uid <> $userid || $submitterinfo->unregistra == 0) && !$manager)
+	  {
+			$this->setError(JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED'));
+			return false;
+	  }
+	  
+	  
+	  // Now that we made sure, we can delete the submitter and corresponding form values
+	  /* Delete the redFORM entry first */
+	  /* Submitter answers first*/
+	  $q = ' UPDATE #__redevent_register AS r '
+	     . ' SET r.cancelled = 1 '
+	     . ' WHERE r.id = ' . $this->_db->Quote($register_id)
+	  ;
+	  $this->_db->setQuery($q);
+	  if ( !$this->_db->query() ) {
+	  	$this->setError(JText::_('COM_REDEVENT_ERROR_CANNOT_DELETE_REGISTRATION'));
+	  	return false;
+	  }
+	  return true;
   }
 }

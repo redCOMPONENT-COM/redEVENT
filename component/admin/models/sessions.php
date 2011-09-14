@@ -143,7 +143,7 @@ class RedeventModelSessions extends JModel
 		$orderby	= $this->_buildContentOrderBy();
 
 		$query = ' SELECT obj.*, 0 AS checked_out, '
-		  . ' e.title AS event_title, e.checked_out as event_checked_out, '
+		  . ' e.title AS event_title, e.checked_out as event_checked_out, e.registra, '
 		  . ' v.venue, v.checked_out as venue_checked_out '
 			. ' FROM #__redevent_event_venue_xref AS obj '
 			. ' INNER JOIN #__redevent_events AS e ON obj.eventid = e.id '
@@ -321,15 +321,25 @@ class RedeventModelSessions extends JModel
 		       . ' FROM #__redevent_event_venue_xref AS x'
 		       . ' LEFT JOIN #__redevent_register AS r ON x.id = r.xref ' 
 		       . ' WHERE x.id IN ('.implode(', ', $ids).')'
+		       . ' AND r.confirmed = 1 '
+		       . ' AND r.cancelled = 0 '
 		       . ' GROUP BY r.xref ';
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList('id');
 
+		$noreg = new stdclass();
+		$noreg->total = 0;
+		$noreg->waiting = 0;
+		$noreg->attending = 0;
+		
 		foreach ($this->_data as &$session)
 		{
 			if (isset($res[$session->id])) 
 			{
 				$session->attendees = $res[$session->id];
+			}
+			else {
+				$session->attendees = $noreg;
 			}
 		}
 		return true;

@@ -78,7 +78,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	      				  <?php endforeach; ?>
 	      				  
 	      				  <?php if ($this->unreg_check && $register->submitter->uid == $this->user->get('id')): ?>
-	      				  <?php $unreg_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug) .'&task=delreguser&sid=' .$register->id); ?>
+	      				  <?php $unreg_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug) .'&task=delreguser&rid=' .$register->attendee_id); ?>
 	                <td class="attendee">
 	                  <?php echo JHTML::link($unreg_url, JText::_('cancel'), array('class' => 'unreglink')); ?>
 	                </td>
@@ -125,7 +125,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 <?php endforeach; ?>
                 
                 <?php if ($this->unreg_check && $register->submitter->uid == $this->user->get('id')): ?>
-                <?php $unreg_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug).'&task=delreguser&sid=' .$register->id); ?>
+                <?php $unreg_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug).'&task=delreguser&rid=' .$register->attendee_id); ?>
                 <td class="attendee">
                   <?php echo JHTML::link($unreg_url, JText::_('cancel'), array('class' => 'unreglink')); ?>
                 </td>

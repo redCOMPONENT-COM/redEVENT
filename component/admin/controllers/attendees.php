@@ -236,6 +236,56 @@ class RedEventControllerAttendees extends RedEventController
     }
     return true;
   }
+	
+  /**
+   * set cancelled status to an attendee registration
+   * 
+   * @return boolean true on success
+   */
+  function cancelreg()
+  {
+    $cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
+    $xref   = JRequest::getInt('xref');
+    
+    $model = $this->getModel('attendees');
+    
+    if ($model->cancelreg($cid))
+    {
+      $msg = JText::_( 'COM_REDEVENT_ATTENDEES_REGISTRATION_CANCELLED');
+      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&filter_cancelled=1&xref='.$xref, $msg );
+    }
+    else
+    {
+      $msg = JText::_( 'COM_REDEVENT_ATTENDEES_REGISTRATION_CANCELLED_ERROR') . ': ' . $model->getError();
+      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg, 'error' );      
+    }
+    return true;
+  }
+	
+  /**
+   * remove cancelled status from an attendee registration
+   * 
+   * @return boolean true on success
+   */
+  function uncancelreg()
+  {
+    $cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
+    $xref   = JRequest::getInt('xref');
+    
+    $model = $this->getModel('attendees');
+    
+    if ($model->uncancelreg($cid))
+    {
+      $msg = JText::_( 'COM_REDEVENT_ATTENDEES_REGISTRATION_UNCANCELLED');
+      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&filter_cancelled=0&xref='.$xref, $msg );
+    }
+    else
+    {
+      $msg = JText::_( 'COM_REDEVENT_ATTENDEES_REGISTRATION_UNCANCELLED_ERROR') . ': ' . $model->getError();
+      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg, 'error' );      
+    }
+    return true;
+  }
   
   function onwaiting()
   {

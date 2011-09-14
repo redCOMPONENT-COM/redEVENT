@@ -324,6 +324,7 @@ class RedeventModelSignup extends JModel
 		        . ' INNER JOIN #__rwf_submitters AS s ON s.id = r.id'
 		        . ' WHERE x.id = ' . $this->_db->Quote($this->_xref)
 		        . '   AND r.confirmed = 1'
+		        . '   AND r.cancelled = 0'
 		        ;
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadResult();

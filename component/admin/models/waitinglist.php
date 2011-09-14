@@ -167,6 +167,7 @@ class RedEventModelWaitinglist extends JModel {
 		   . ' FROM #__redevent_register AS r '
 		   . ' WHERE r.xref = '.$this->xref
 		   . '   AND r.confirmed = 1 '
+		   . '   AND r.cancelled = 0 '
 		   . ' GROUP BY r.waitinglist ';
 		$db->setQuery($q);
 		$this->waitinglist = $db->loadObjectList('waitinglist');
@@ -183,6 +184,7 @@ class RedEventModelWaitinglist extends JModel {
 			WHERE xref = ".$this->xref."
 			AND waitinglist = 1
 			AND confirmed = 1
+		  AND cancelled = 0
 			ORDER BY confirmdate
 			LIMIT ".$this->move_off;
 		$db->setQuery($q);
@@ -193,6 +195,7 @@ class RedEventModelWaitinglist extends JModel {
 			WHERE xref = ".$this->xref."
 			AND waitinglist = 1
 			AND confirmed = 1
+		  AND cancelled = 0
 			ORDER BY confirmdate
 			LIMIT ".$this->move_off;
 		$db->setQuery($q);
@@ -210,6 +213,7 @@ class RedEventModelWaitinglist extends JModel {
 			WHERE xref = ".$this->xref."
 			AND waitinglist = 0
 			AND confirmed = 1
+		  AND cancelled = 0
 			ORDER BY confirmdate DESC
 			LIMIT ".$this->move_on;
 		$db->setQuery($q);
@@ -220,6 +224,7 @@ class RedEventModelWaitinglist extends JModel {
 			WHERE xref = ".$this->xref."
 			AND waitinglist = 0
 			AND confirmed = 1
+		  AND cancelled = 0
 			ORDER BY confirmdate DESC
 			LIMIT ".$this->move_on;
 		$db->setQuery($q);

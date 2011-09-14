@@ -221,6 +221,7 @@ class RedeventModelEventhelper extends JModel
 		   . ' FROM #__redevent_register AS r '
 		   . ' WHERE r.xref = '. $this->_db->Quote($this->_xref)
 		   . '   AND r.confirmed = 1 '
+		   . '   AND r.cancelled = 0 '
 		   . '   AND r.waitinglist = 0 '
 		   . ' GROUP BY r.waitinglist '
 		   ;
@@ -237,6 +238,7 @@ class RedeventModelEventhelper extends JModel
 		   . ' FROM #__redevent_register AS r '
 		   . ' WHERE r.xref = '. $this->_db->Quote($this->_xref)
 		   . '   AND r.confirmed = 1 '
+		   . '   AND r.cancelled = 0 '
 		   . '   AND r.waitinglist = 1 '
 		   . ' GROUP BY r.waitinglist '
 		   ;
