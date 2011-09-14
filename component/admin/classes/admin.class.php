@@ -154,6 +154,30 @@ class ELAdmin {
     }
 		return $options;
 	}
+	
+	/**
+	 * checks wether a tag already exists
+	 * 
+	 * @param string $tag tag name
+	 * @return mixed boolean false if doesn't exists, tag object if it does
+	 */
+	function checkTagExists($tag)
+	{
+		$db = &JFactory::getDBO();
+		$model = JModel::getInstance('tags', 'redeventModel');
+		$core = $model->getData();
+		foreach ($core as $cat)
+		{
+			foreach ($cat as $t)
+			{
+				if (strcasecmp($t->name, $tag) == 0) 
+				{
+					return $t;
+				}
+			}
+		}
+		return false;
+	}
 }
 
 ?>

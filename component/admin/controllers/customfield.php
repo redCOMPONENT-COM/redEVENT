@@ -81,13 +81,15 @@ class RedeventControllerCustomfield extends JController
 		$post	= JRequest::get('post');
 		$cid	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 		$post['id'] = (int) $cid[0];
+		$msgtype = 'message';
 
 		$model = $this->getModel('customfield');
 
 		if ($returnid = $model->store($post)) {
 			$msg = JText::_( 'Custom field Saved' );
 		} else {
-			$msg = JText::_( 'Error Saving Custom field' ).$model->getError();
+			$msg = JText::_( 'Error Saving Custom field' ).'<br/>'.$model->getError();
+			$msgtype = 'error';
 		}
 
 		// Check the table in so it can be edited.... we are done with it anyway
@@ -99,7 +101,7 @@ class RedeventControllerCustomfield extends JController
 		else {
 			$link = 'index.php?option=com_redevent&controller=customfield&task=edit&cid[]='.$returnid;
 		}
-		$this->setRedirect($link, $msg);
+		$this->setRedirect($link, $msg, $msgtype);
 	}
 
 	function remove()

@@ -64,14 +64,13 @@ class TableTextlibrary extends JTable {
 	    return false;
 		}
 		
-		$query = ' SELECT id ' . ' FROM #__redevent_textlibrary ' . ' WHERE text_name = ' . $this->_db->Quote($this->text_name);
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadResult();
+		// check tag unicity
+		$exists = ELAdmin::checkTagExists($this->text_name);
 		
-		if ($res && $res != $this->id) 
+		if ($exists && !($exists->section == 'library' && $exists->id == $this->id)) 
 		{
-			$this->setError( JText::_( 'COM_REDEVENT_NAME_ALREADY_EXISTS').': '.$this->text_name );
-	    return false;			
+			$this->setError(JText::sprintf('COM_REDEVENT_ERROR_TAG_ALREADY_EXISTS', $exists->section));
+			return false;
 		}
 		
 		return true;

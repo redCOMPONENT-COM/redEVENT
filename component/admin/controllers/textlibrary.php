@@ -59,13 +59,15 @@ class RedEventControllerTextLibrary extends RedEventController {
 	{
 		$post	= JRequest::get('post');
 		$post['text_field'] = JREquest::getVar('text_field', '', 'post', 'string', JREQUEST_ALLOWRAW );
+		$msgtype = 'message';
 
 		$model = $this->getModel('textlibrary');
 
 		if ($returnid = $model->store($post)) {
 			$msg = JText::_( 'COM_REDEVENT_TAG_SAVED' );
 		} else {
-			$msg = JText::_( 'COM_REDEVENT_TAG_SAVING_ERROR' ).$model->getError();
+			$msg = JText::_( 'COM_REDEVENT_TAG_SAVING_ERROR' ).'<br/>'.$model->getError();
+			$msgtype = 'error';
 		}
 
 		if ( !$returnid || $this->getTask() == 'save' ) {
@@ -74,7 +76,7 @@ class RedEventControllerTextLibrary extends RedEventController {
 		else {
 			$link = 'index.php?option=com_redevent&controller=textlibrary&task=edit&cid[]='.$returnid;
 		}
-		$this->setRedirect($link, $msg);
+		$this->setRedirect($link, $msg, $msgtype);
 	}
 	
   /**

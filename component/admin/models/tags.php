@@ -137,28 +137,28 @@ class RedEventModelTags extends JModel
 	
 	function _getLibraryTags()
 	{
-		$query = ' SELECT text_description, text_name FROM #__redevent_textlibrary ';
+		$query = ' SELECT id, text_description, text_name FROM #__redevent_textlibrary ';
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
 		
 		$tags = array();
 		foreach ((array) $res as $r)
 		{
-			$tags[] = new TagsModelTag($r->text_name, $r->text_description, 'library');			
+			$tags[] = new TagsModelTag($r->text_name, $r->text_description, 'library', $r->id);			
 		}
 		return $tags;
 	}
 	
 	function _getCustomTags()
 	{
-		$query = ' SELECT tag, name FROM #__redevent_fields ORDER BY ordering ';
+		$query = ' SELECT id, tag, name FROM #__redevent_fields ORDER BY ordering ';
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
 		
 		$tags = array();
 		foreach ((array) $res as $r)
 		{
-			$tags[] = new TagsModelTag($r->tag, $r->name, 'custom');			
+			$tags[] = new TagsModelTag($r->tag, $r->name, 'custom', $r->id);			
 		}
 		return $tags;
 	}
@@ -178,13 +178,15 @@ class TagsModelTag {
 	var $name;
 	var $description;
 	var $section;
+	var $id = 0; // for custom and text library
 	
-	function __construct($name, $desc, $section = 'General')
+	function __construct($name, $desc, $section = 'General', $id = 0)
 	{
 		$name = trim($name);
 		$this->name        = JFilterOutput::cleanText($name);
 		$this->description = trim($desc);
 		$this->section     = trim($section);
+		$this->id          = $id;
 		return $this;
 	}
 }

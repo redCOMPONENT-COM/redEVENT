@@ -147,6 +147,15 @@ class Redevent_customfield extends JTable
 	function check()
 	{
 		// check that there is only alphanumerics in tag ?
+		
+		// check tag unicity
+		$exists = ELAdmin::checkTagExists($this->tag);
+		
+		if ($exists && !($exists->section == 'custom' && $exists->id == $this->id)) {
+			$this->setError(JText::sprintf('COM_REDEVENT_ERROR_TAG_ALREADY_EXISTS', $exists->section));
+			return false;
+		}
+		
 		return true;
 	}
 }
