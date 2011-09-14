@@ -121,7 +121,7 @@ $pane =& JPane::getInstance('tabs');
 		
 		function rechne(restzeichen)
 		{
-			maximum = <?php echo $this->elsettings->datdesclimit; ?>;
+			maximum = <?php echo $this->params->get('max_description', 1000); ?>;
 
 			if (restzeichen.datdescription.value.length > maximum) {
 				restzeichen.datdescription.value = restzeichen.datdescription.value.substring(0, maximum);
@@ -231,7 +231,7 @@ $pane =& JPane::getInstance('tabs');
 
 <?php endif; ?>
 
-<?php if (( $this->elsettings->imageenabled == 2 ) || ($this->elsettings->imageenabled == 1)) : ?>
+<?php if (( $this->params->get('edit_image', 1) == 2 ) || ($this->params->get('edit_image', 1) == 1)) : ?>
 <?php echo $pane->startPanel( JText::_('IMAGE'), 'ev-image' ); ?>
 <div class="editevent-image">
 <?php if ($this->row->datimage) :
@@ -239,7 +239,7 @@ $pane =& JPane::getInstance('tabs');
 			else :
 				echo JHTML::_('image', 'components/com_redevent/assets/images/noimage.png', JText::_('NO IMAGE'), array('class' => 'modal'));
 			endif;?> <label for="userfile"><?php echo JText::_('IMAGE'); ?></label>
-<input class="inputbox <?php echo $this->elsettings->imageenabled == 2 ? 'required' : ''; ?>"	name="userfile" id="userfile" type="file" /> 
+<input class="inputbox <?php echo $this->params->get('edit_image', 1) == 2 ? 'required' : ''; ?>"	name="userfile" id="userfile" type="file" /> 
 <small class="editlinktip hasTip"	title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('MAX IMAGE FILE SIZE').' '.$this->elsettings->sizelimit.' kb'; ?>"><?php echo $this->infoimage; ?> </small>
 </div>
 <?php echo $pane->endPanel(); ?>
@@ -259,7 +259,7 @@ $pane =& JPane::getInstance('tabs');
 	name="datdescription" class="inputbox" wrap="virtual"
 	onkeyup="berechne(this.form)"><?php echo $this->row->datdescription; ?></textarea><br />
 <?php echo JText::_( 'NO HTML' ); ?><br />
-<input disabled value="<?php echo $this->elsettings->datdesclimit; ?>"
+<input disabled value="<?php echo $this->params->get('max_description', 1000); ?>"
 	size="4" name="zeige" /><?php echo JText::_( 'AVAILABLE' ); ?><br />
 <a href="javascript:rechne(document.eventform);"><?php echo JText::_( 'REFRESH' ); ?></a>
 <?php endif; ?>

@@ -137,7 +137,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	
 	function rechne(restzeichen)
 	{
-		maximum = <?php echo $this->elsettings->datdesclimit; ?>;
+		maximum = <?php echo $this->params->get('max_description', 1000); ?>;
 
 		if (restzeichen.locdescription.value.length > maximum) {
 			restzeichen.locdescription.value = restzeichen.locdescription.value.substring(0, maximum);
@@ -332,7 +332,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         </fieldset>
 
-      	<?php	if (( $this->elsettings->imageenabled == 2 ) || ($this->elsettings->imageenabled == 1)) :	?>
+      	<?php	if (( $this->params->get('edit_image', 1) == 2 ) || ($this->params->get('edit_image', 1) == 1)) :	?>
       	<fieldset class="el_fldst_image">
 
             <legend><?php echo JText::_('IMAGE'); ?></legend>
@@ -346,7 +346,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
       		?>
 
             <label for="userfile"><?php echo JText::_('IMAGE'); ?></label>
-      			<input class="inputbox <?php echo $this->elsettings->imageenabled == 2 ? 'required' : ''; ?>" name="userfile" id="userfile" type="file" />
+      			<input class="inputbox <?php echo $this->params->get('edit_image', 1) == 2 ? 'required' : ''; ?>" name="userfile" id="userfile" type="file" />
       			<span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('MAX IMAGE FILE SIZE').' '.$this->elsettings->sizelimit.' kb'; ?>">
       				<?php echo $this->infoimage; ?>
       			</span>
@@ -369,7 +369,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         		?>
       			<textarea style="width:100%;" rows="10" name="locdescription" class="inputbox" wrap="virtual" onkeyup="berechne(this.form)"></textarea><br />
       			<?php echo JText::_('NO HTML'); ?><br />
-      			<input disabled="disabled" value="<?php echo $this->elsettings->datdesclimit; ?>" size="4" name="zeige" /><?php echo JText::_('AVAILABLE')." "; ?><br />
+      			<input disabled="disabled" value="<?php echo $this->params->get('max_description', 1000); ?>" size="4" name="zeige" /><?php echo JText::_('AVAILABLE')." "; ?><br />
       			<a href="javascript:rechne(document.venueForm);"><?php echo JText::_('REFRESH'); ?></a>
 
         		<?php	endif; ?>

@@ -726,13 +726,13 @@ class RedeventModelEditevent extends JModel
 		//Image upload
 
 		//If image upload is required we will stop here if no file was attached
-		if ( empty($file['name']) && $elsettings->imageenabled == 2 ) 
+		if ( empty($file['name']) && $params->get('edit_image', 1) == 2 ) 
 		{
 			$this->setError( JText::_( 'IMAGE EMPTY' ) );
 			return false;
 		}
 
-		if ( ( $elsettings->imageenabled == 2 || $elsettings->imageenabled == 1 ) && ( !empty($file['name'])  ) )  
+		if ( ( $params->get('edit_image', 1) == 2 || $params->get('edit_image', 1) == 1 ) && ( !empty($file['name'])  ) )  
 		{
 			jimport('joomla.filesystem.file');
 

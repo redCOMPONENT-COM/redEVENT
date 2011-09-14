@@ -278,12 +278,12 @@ class RedeventModelEditvenue extends JModel
 		//Image upload
 
 		//If image upload is required we will stop here if no file was attached
-		if ( empty($file['name']) && $elsettings->imageenabled == 2 ) {
+		if ( empty($file['name']) && $params->get('edit_image', 1) == 2 ) {
 			$this->setError( JText::_( 'IMAGE EMPTY' ) );
 			return false;
 		}
 
-		if ( ( $elsettings->imageenabled == 2 || $elsettings->imageenabled == 1 ) && ( !empty($file['name'])  ) )  {
+		if ( ( $params->get('edit_image', 1) == 2 || $params->get('edit_image', 1) == 1 ) && ( !empty($file['name'])  ) )  {
 
 			jimport('joomla.filesystem.file');
 
@@ -326,10 +326,10 @@ class RedeventModelEditvenue extends JModel
 
 			//check length
 			$length = JString::strlen($row->locdescription);
-			if ($length > $elsettings->datdesclimit) {
+			if ($length > $params->get('max_description', 1000)) {
 
 				// if required shorten it
-				$row->locdescription = JString::substr($row->locdescription, 0, $elsettings->datdesclimit);
+				$row->locdescription = JString::substr($row->locdescription, 0, $params->get('max_description', 1000));
 				//if shortened add ...
 				$row->locdescription = $row->locdescription.'...';
 			}

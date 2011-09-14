@@ -172,6 +172,11 @@
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>
+    <param name="edit_image" type="list" default="1" label="COM_REDEVENT_SETTINGS_FRONTEND_SUBMIT_IMAGE_LABEL" description="COM_REDEVENT_SETTINGS_FRONTEND_S_IMAGE_DESC">
+      <option value="0">COM_REDEVENT_SETTINGS_FRONTEND_SUBMIT_IMAGE_DISABLED</option>
+      <option value="1">COM_REDEVENT_SETTINGS_FRONTEND_SUBMIT_IMAGE_OPTIONAL</option>
+      <option value="2">COM_REDEVENT_SETTINGS_FRONTEND_SUBMIT_IMAGE_REQUIRED</option>
+    </param>
     <param name="edit_summary" type="radio" default="1" label="SETTINGS FRONTEND EDIT SUMMARY" description="SETTINGS FRONTEND EDIT SUMMARY TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
@@ -184,6 +189,7 @@
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>
+    <param name="max_description" type="text" default="1000" label="COM_REDEVENT_SETTINGS_FRONTEND_MAX_DESCRIPTION_LABEL" description="COM_REDEVENT_SETTINGS_FRONTEND_MAX_DESCRIPTION_DESC" />
     <param name="edit_registration" type="radio" default="0" label="SETTINGS FRONTEND EDIT REGISTRATION" description="SETTINGS FRONTEND EDIT REGISTRATION TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>

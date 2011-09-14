@@ -31,10 +31,6 @@ defined('_JEXEC') or die('Restricted access');
         <?php echo $this->loadTemplate('basic'); ?>
       </div>
 
-      <div id="page-usercontrol">
-        <?php echo $this->loadTemplate('usercontrol'); ?>
-      </div>
-
       <div id="page-details">
         <?php echo $this->loadTemplate('detailspage'); ?>
       </div>
