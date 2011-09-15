@@ -1005,7 +1005,7 @@ class redEVENTHelper {
 		$mainframe = &JFactory::getApplication();
 		$params = $mainframe->getParams('com_redevent');
 		
-		$offset = (float) $mainframe->getCfg('offset');
+		$offset = $params->get('ical_timezone', 1);
 		$timezone_name = self::getTimeZone($offset);
 		
 		// get categories names
