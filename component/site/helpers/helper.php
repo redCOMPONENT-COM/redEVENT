@@ -1052,7 +1052,7 @@ class redEVENTHelper {
 			$date['min']  = $start_time[2];
 			$date['sec']  = $start_time[3];
 			$dateparam = array('VALUE' => 'DATE-TIME');
-			if ($params->get('ical_tz', 1)) {
+			if (!$params->get('ical_no_timezone', 0)) {
 				$dateparam['TZID'] = $timezone_name;
 			}
 			
@@ -1078,7 +1078,7 @@ class redEVENTHelper {
 			$date_end['min']  = $end_time[2];
 			$date_end['sec']  = $end_time[3];
 			$dateendparam = array('VALUE' => 'DATE-TIME');	
-			if ($params->get('ical_tz', 1)) {
+			if (!$params->get('ical_no_timezone', 0)) {
 				$dateendparam['TZID'] = $timezone_name;
 			}	
 		}

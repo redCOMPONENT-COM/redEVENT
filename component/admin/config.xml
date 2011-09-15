@@ -274,6 +274,10 @@
  	
  	<params group="COM_REDEVENT_SETTINGS_MISC">
  		<param name="ical_timezone" type="timezones" default="0" label="COM_REDEVENT_SETTINGS_MISC_TIMEZONE_LABEL" description="COM_REDEVENT_SETTINGS_MISC_TIMEZONE_DESC" />
+    <param name="ical_no_timezone" type="radio" default="0" label="COM_REDEVENT_SETTINGS_MISC_NOTIMEZONE_LABEL" description="COM_REDEVENT_SETTINGS_MISC_NOTIMEZONE_DESC">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
     <param name="week_start" type="radio" default="MO" label="WEEK START" description="WEEK START DESC">
       <option value="SU">SUNDAY</option>
       <option value="MO">MONDAY</option>
