@@ -147,6 +147,7 @@ class RedEventModelRegistration extends JModel
 					. ' u.name AS creator_name, u.email AS creator_email, '
 					. ' a.confirmation_message, a.review_message, '
 					. " IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.catname, c.published, c.access,"
+			    . ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
 	        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
 	        . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
 					. ' FROM #__redevent_events AS a'
@@ -494,6 +495,8 @@ class RedEventModelRegistration extends JModel
 					     .              'x'.$rid
 					     .              'x'.$submit_key );
 					$activatelink = '<a href="'.$url.'">'.JText::_('Activate').'</a>';
+					$cancellink = JRoute::_(JURI::root().'index.php?option=com_redevent&task=cancelreg'
+					                        .'&rid='.$rid.'&xref='.$registration->xref.'&submit_key='.$submit_key);
 					
 					/* Mail attendee */
 					$htmlmsg = '<html><head><title></title></title></head><body>';
@@ -502,6 +505,7 @@ class RedEventModelRegistration extends JModel
 					
 					$htmlmsg = $tags->ReplaceTags($htmlmsg);
 					$htmlmsg = str_replace('[activatelink]', $activatelink, $htmlmsg);
+					$htmlmsg = str_replace('[cancellink]', $cancellink, $htmlmsg);
 					$htmlmsg = str_replace('[fullname]', $attendee->getFullname(), $htmlmsg);
 					
 					// convert urls

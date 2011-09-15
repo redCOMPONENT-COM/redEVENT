@@ -66,6 +66,10 @@ class RedeventViewRegistration extends JView
 		{
 			return $this->_displayEdit($tpl);
 		}
+		else if ($this->getLayout() == 'cancel')
+		{
+			return $this->_displayCancel($tpl);
+		}
 		else {
 			echo 'layout not defined';
 			return;
@@ -129,6 +133,37 @@ class RedeventViewRegistration extends JView
 		$this->assign('action' ,  $action);
 		$this->assign('rfields',  $rfields);	
 		$this->assign('xref',     $xref);		
+		parent::display($tpl);
+	}
+	
+	function _displayCancel($tpl)
+	{
+		$user = &JFactory::getUser();
+		$uri  = &JFactory::getURI();
+		
+		$xref = JRequest::getInt('xref');
+		$rid  = JRequest::getInt('rid');
+		$key  = JRequest::getVar('submit_key', '', 'request', 'string');
+		
+		$document 	= &JFactory::getDocument();
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_CANCEL_REGISTRATION'));
+		
+		$model  = $this->getModel();
+		$model->setXref($xref);
+		$course = $this->get('SessionDetails');
+		$course->dateinfo = ELOutput::formatdate($course->dates, $course->times);
+		
+		$cancellink = JRoute::_(RedeventHelperRoute::getDetailsRoute($course->slug, $course->xref) .'&task=delreguser&rid=' .$rid);
+
+		$uri->delVar('task');
+		$action = JRoute::_($uri->toString());
+		
+		$this->assignRef('course',     $course);
+		$this->assignRef('xref',       $xref);
+		$this->assignRef('rid',        $rid);
+		$this->assignRef('cancellink', $cancellink);
+		$this->assignRef('action',     $action);
+				
 		parent::display($tpl);
 	}
 }

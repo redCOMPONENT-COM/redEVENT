@@ -436,6 +436,24 @@ class RedeventController extends JController
 	}
 
 	/**
+	 * first step in unreg process by email
+	 * 
+	 */
+	function cancelreg()
+	{
+		$xref = JRequest::getInt('xref');
+		if (!redEVENTHelper::canUnregister($xref)) {
+			echo JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED');
+			return;
+		}
+		
+		// display the unreg form confirmation
+		JRequest::setVar('view', 'registration');
+		JRequest::setVar('layout', 'cancel');		
+		parent::display();
+	}
+	
+	/**
 	 * Display the select venue modal popup
 	 *
 	 * @since 0.9
