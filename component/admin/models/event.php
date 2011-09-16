@@ -460,6 +460,7 @@ class RedEventModelEvent extends JModel
 	{
 		$db = JFactory::getDBO();
 		$q = "SELECT id, field
+		           , CASE WHEN (CHAR_LENGTH(field_header) > 0) THEN field_header ELSE field END AS field_header 
 			FROM #__rwf_fields
 			WHERE form_id = ".$this->_data->redform_id."
 			AND published = 1

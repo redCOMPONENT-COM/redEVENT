@@ -45,7 +45,7 @@ class RedEventViewAttendees extends JView {
 //		echo '<pre>';print_r($registers); echo '</pre>';exit;
 		$text = "";
 		foreach ($fields AS $f) {
-			$cols[] = $f->field;
+			$cols[] = $f->field_header;
 		}
 		$stdcols = array( JText::_('REGDATE'),  
 		               JText::_('IP ADDRESS'), 

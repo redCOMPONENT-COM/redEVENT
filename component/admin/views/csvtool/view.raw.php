@@ -60,7 +60,7 @@ class RedEventViewCsvtool extends JView {
 		               );
 		$text = "";
 		foreach ($fields AS $f) {
-			$cols[] = $f->field;
+			$cols[] = $f->field_header;
 		}
 		$stdcols = array( 
 		               JText::_('REGDATE'),  

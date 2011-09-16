@@ -41,7 +41,7 @@
 			<?php
 				$showfields = explode(",", $this->row->showfields);
 				foreach ($this->formfields as $id => $field) {
-					echo '<tr><td>'.$field->field.'</td>';
+					echo '<tr><td>'.$field->field_header.'</td>';
 					if (in_array($field->id, $showfields)) {
 						echo '<td>'.JHTML::_('select.booleanlist', 'showfield'.$field->id, '', 1).'</td></tr>';
 					}

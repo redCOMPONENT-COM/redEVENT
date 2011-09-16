@@ -61,7 +61,7 @@ $colspan = 13;
 				<th width="5"><?php echo JText::_( 'Num' ); ?></th>
 				<th width="5"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'REGDATE', 'r.uregdate', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<th class="title"><?php echo JHTML::_('grid.sort', 'CONFIRMDATE', 'r.confirmdate', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_CONFIRMDATE', 'r.confirmdate', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'IP ADDRESS', 'r.uip', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'UNIQUE ID', 'r.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'USERNAME', 'u.username', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
@@ -69,9 +69,9 @@ $colspan = 13;
 				<th class="title"><?php echo JHTML::_('grid.sort', 'WAITINGLIST', 'r.waitinglist', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php foreach ((array) $this->rf_fields as $f):?>
 					<?php $colspan++; ?>
-					<th class="title"><?php echo JHTML::_('grid.sort',  $f->field, 'f.field_'.$f->id, $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+					<th class="title"><?php echo JHTML::_('grid.sort',  $f->field_header, 'f.field_'.$f->id, $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php endforeach;?>
-        <th class="title"><?php echo JText::_( 'ANSWERS' ); ?></th>
+        <th class="title"><?php echo JText::_( 'COM_REDEVENT_ANSWERS' ); ?></th>
 				<?php if ($this->form->activatepayment): ?>
 	        <th class="title"><?php echo JText::_( 'PRICE' ); ?></th>
 	        <th class="title"><?php echo JText::_( 'COM_REDEVENT_PRICEGROUP' ); ?></th>

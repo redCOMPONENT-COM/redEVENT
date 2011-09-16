@@ -321,7 +321,7 @@ class RedeventModelDetails extends JModel
 				$fields_names = array();
 				foreach ($fields as $key => $field) {
 					$table_fields[] = 'a.field_'. $field->id;
-					$fields_names['field_'. $field->id] = $field->field;
+					$fields_names['field_'. $field->id] = $field->field_header;
 				}
 				
 				$query  = ' SELECT ' . implode(', ', $table_fields)
@@ -387,12 +387,13 @@ class RedeventModelDetails extends JModel
 			return false;
 		}
 		// load form fields
-		$q = ' SELECT id, field, form_id '
-			 . ' FROM #__rwf_fields j '
-			 . ' WHERE form_id = '. $this->_db->Quote($this->_details->redform_id)
-			 . ($all_fields ? '' : '   AND j.id in ('.$this->_details->showfields. ')')
-			 . '   AND j.published = 1 '
-			 . ' ORDER BY ordering ';
+		$q = ' SELECT f.id, f.field, f.form_id '
+		   . '      , CASE WHEN (CHAR_LENGTH(f.field_header) > 0) THEN f.field_header ELSE f.field END AS field_header '
+			 . ' FROM #__rwf_fields AS f '
+			 . ' WHERE f.form_id = '. $this->_db->Quote($this->_details->redform_id)
+			 . ($all_fields ? '' : '   AND f.id in ('.$this->_details->showfields. ')')
+			 . '   AND f.published = 1 '
+			 . ' ORDER BY f.ordering ';
 		$this->_db->setQuery($q);
 		
 		return $this->_db->loadObjectList();

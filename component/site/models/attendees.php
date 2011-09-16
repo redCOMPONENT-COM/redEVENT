@@ -211,7 +211,7 @@ class RedEventModelAttendees extends JModel
 				$fields_names = array();
 				foreach ($fields as $key => $field) {
 					$table_fields[] = 'a.field_'. $field->id;
-					$fields_names['field_'. $field->id] = $field->field;
+					$fields_names['field_'. $field->id] = $field->field_header;
 				}
 				
 				$query  = ' SELECT ' . implode(', ', $table_fields)
@@ -287,10 +287,11 @@ class RedEventModelAttendees extends JModel
 		}
 		// load form fields
 		$q = ' SELECT id, field, form_id '
-			 . ' FROM #__rwf_fields j '
+		   . '      , CASE WHEN (CHAR_LENGTH(field_header) > 0) THEN field_header ELSE field END AS field_header '
+			 . ' FROM #__rwf_fields '
 			 . ' WHERE form_id = '. $this->_db->Quote($session->redform_id)
-			 . ($all_fields ? '' : '   AND j.id in ('.$session->showfields. ')')
-			 . '   AND j.published = 1 '
+			 . ($all_fields ? '' : '   AND id in ('.$session->showfields. ')')
+			 . '   AND published = 1 '
 			 . ' ORDER BY ordering ';
 		$this->_db->setQuery($q);
 		

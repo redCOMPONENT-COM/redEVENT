@@ -54,7 +54,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			<thead>
   			<tr>
           <?php foreach ((array) $this->registersfields as $k => $f): ?>
-  			  <th><?php echo JHTML::_('grid.sort', $this->escape($f->field), 'a.field_'.$f->id, $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+  			  <th><?php echo JHTML::_('grid.sort', $this->escape($f->field_header), 'a.field_'.$f->id, $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
           <?php endforeach; ?>
           <th>&nbsp;</th>
   			</tr>

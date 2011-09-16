@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<tr>
 				<th class="title"><?php echo JText::_( 'IP ADDRESS' ); ?></th>
 				<th class="title"><?php echo JText::_( 'REGDATE' ); ?></th>
-				<th class="title"><?php echo JText::_( 'CONFIRMDATE' ); ?></th>
+				<th class="title"><?php echo JText::_( 'COM_REDEVENT_CONFIRMDATE' ); ?></th>
 				<th class="title"><?php echo JText::_( 'USER ID'); ?></th>
 				<th class="title"><?php echo JText::_( 'CONFIRMED' ); ?></th>
 				<th class="title"><?php echo JText::_( 'WAITINGLIST' ); ?></th>

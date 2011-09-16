@@ -161,6 +161,8 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
             }
         }
         $this->_attending = $this->_categories($this->_attending);
+        $this->_attending = $this->_getPlacesLeft($this->_attending);
+        $this->_attending = $this->_getPrices($this->_attending);
         return $this->_attending;
     }
 

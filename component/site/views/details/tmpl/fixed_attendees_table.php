@@ -41,7 +41,7 @@ if ($this->row->show_names) {
 			<thead>
   			<tr>
           <?php foreach ((array) $this->registersfields as $f): ?>
-  			  <th><?php echo $f->field; ?></th>
+  			  <th><?php echo $f->field_header; ?></th>
           <?php endforeach; ?>
           <th>&nbsp;</th>
   			</tr>
