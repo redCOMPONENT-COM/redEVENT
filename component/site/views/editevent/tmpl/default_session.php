@@ -29,7 +29,7 @@ JHTML::_('behavior.calendar');
 	<tbody>
 		<tr>
 			<td class="key">
-				<label for="a_id"><?php echo JText::_( 'VENUE' ).':'; ?></label>
+				<label for="a_id"><?php echo JText::_( 'COM_REDEVENT_VENUE' ).':'; ?></label>
 			</td>
 			<td>
 				<input type="text" id="a_name" value="<?php echo $this->row->venue; ?>" disabled="disabled" />
@@ -160,4 +160,8 @@ JHTML::_('behavior.calendar');
 
 <?php if ($this->params->get('edit_roles', 0)): ?>
 <?php echo $this->loadTemplate('roles'); ?>
+<?php endif;?>
+
+<?php if ($this->params->get('edit_recurrence', 0)): ?>
+<?php echo $this->loadTemplate('recurrence'); ?>
 <?php endif;?>

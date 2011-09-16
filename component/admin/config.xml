@@ -218,6 +218,10 @@
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>
+    <param name="edit_recurrence" type="radio" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EDITRECURRENCE_LABEL" description="COM_REDEVENT_SETTINGS_FRONTEND_EDITRECURRENCE_DESC">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
  	</params>
  	
  	<params group="registration">

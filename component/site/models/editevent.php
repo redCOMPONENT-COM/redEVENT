@@ -292,13 +292,17 @@ class RedeventModelEditevent extends JModel
 				return false;
 			}
 			
-			$query = 'SELECT e.*, v.venue, x.id AS xref, x.eventid, x.venueid, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees,
-					x.maxwaitinglist, x.course_credit, x.registrationend, x.title as session_title '
+			$query = ' SELECT e.*, v.venue, x.id AS xref, x.eventid, x.venueid, '
+			       . ' x.dates, x.enddates, x.times, x.endtimes, x.maxattendees, '
+			       . ' x.maxwaitinglist, x.course_credit, x.registrationend, x.title as session_title, '
+			       . ' r.id as recurrence_id, r.rrule, rp.count '
 					   ;
 			
 			$query .= ' FROM #__redevent_events AS e'
-					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id'
-					. ' LEFT JOIN #__redevent_venues AS v ON v.id = x.venueid'
+			        . ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id'
+			        . ' LEFT JOIN #__redevent_venues AS v ON v.id = x.venueid'
+			        . ' LEFT JOIN #__redevent_repeats AS rp on rp.xref_id = x.id '
+			        . ' LEFT JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
 					    ;
 					    
 			if ($this->_xref) {		    
@@ -328,6 +332,7 @@ class RedeventModelEditevent extends JModel
 	
 	      $this->_event->categories = $this->_db->loadObjectList();
 				$this->_event->attachments = REAttach::getAttachments('event'.$this->_event->id, $user->get('aid'));		
+  			$this->_event->rrules = RedeventHelperRecurrence::getRule($this->_event->rrule);
 			}
 
 			return (boolean) $this->_event;
@@ -346,10 +351,15 @@ class RedeventModelEditevent extends JModel
 					JError::raiseError(403, Jtext::_('NOT ALLOWED'));
 				}
 				
-				$query = ' SELECT x.*, e.title as event_title ';
+				$query = ' SELECT x.*, e.title as event_title '
+				       . '      , r.id as recurrence_id, r.rrule, rp.count '
+				       ;
 				// add the custom fields
 				$query .= ' FROM #__redevent_event_venue_xref AS x ';
-				$query .= ' INNER JOIN #__redevent_events AS e ON x.eventid = e.id ';
+				$query .= ' INNER JOIN #__redevent_events AS e ON x.eventid = e.id '
+				        . ' LEFT JOIN #__redevent_repeats AS rp on rp.xref_id = x.id '
+				        . ' LEFT JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
+			        ;
 				$query .= ' WHERE x.id = '. $this->_db->Quote($this->_xref)
 				       ;
 	      $this->_db->setQuery( $query );
@@ -377,9 +387,13 @@ class RedeventModelEditevent extends JModel
 				$obj->maxwaitinglist    = 0;
 				$obj->course_credit     = 0;
 				$obj->published         = 1;
+				$obj->recurrence_id     = 0;
+				$obj->count             = 0;
+				$obj->rrule         = null;
 				$this->_xrefdata = $obj;
 			}
-		}
+		}	
+  	$this->_xrefdata->rrules = RedeventHelperRecurrence::getRule($this->_xrefdata->rrule);
 		return $this->_xrefdata;
 	}
 
@@ -800,7 +814,7 @@ class RedeventModelEditevent extends JModel
 	      }     
 	    }
 		}
-		else
+		else if (!$edited)
 		{
 			// copy category from template event
 			$query = ' INSERT INTO #__redevent_event_category_xref (event_id, category_id) '
@@ -889,8 +903,55 @@ class RedeventModelEditevent extends JModel
 		      }
 		    }
 			}
-    /** prices END **/
-		}	
+    	/** prices END **/
+			
+			// we need to save the recurrence too
+			$recurrence = & JTable::getInstance('RedEvent_recurrences', '');
+			if (!isset($data['recurrenceid']) || !$data['recurrenceid'])
+			{
+				$rrule = RedeventHelperRecurrence::parsePost($data);
+				if (!empty($rrule))
+				{
+					// new recurrence
+					$recurrence->rrule = $rrule;
+					if (!$recurrence->store())
+					{
+						$this->setError($recurrence->getError());
+						return false;
+					}
+					 
+					// add repeat record
+					$repeat = & JTable::getInstance('RedEvent_repeats', '');
+					$repeat->set('xref_id', $xref->id);
+					$repeat->set('recurrence_id', $recurrence->id);
+					$repeat->set('count', 0);
+					if (!$repeat->store()) {
+						$this->setError($repeat->getError());
+						return false;
+					}
+				}
+			}
+			else
+			{
+				if ($data['repeat'] == 0) // only update if it's the first xref.
+				{
+					$recurrence->load($data['recurrenceid']);
+					// reset the status
+					$recurrence->ended = 0;
+					// TODO: maybe add a check to have a choice between updating rrule or not...
+					$rrule = RedeventHelperRecurrence::parsePost($data);
+					$recurrence->rrule = $rrule;
+					if (!$recurrence->store()) {
+						$this->setError($recurrence->getError());
+						return false;
+					}
+				}
+			}
+			if ($recurrence->id) {
+				redEVENTHelper::generaterecurrences($recurrence->id);
+			}
+			
+		}	/** session end **/
     	
 		// attachments
 		if ($params->get('allow_attachments', 1)) {
@@ -1235,7 +1296,53 @@ class RedeventModelEditevent extends JModel
       }
     }
     /** prices END **/
-		
+    
+    // we need to save the recurrence too
+    $recurrence = & JTable::getInstance('RedEvent_recurrences', '');
+    if (!isset($data['recurrenceid']) || !$data['recurrenceid'])
+    {
+    	$rrule = RedeventHelperRecurrence::parsePost($data);
+    	if (!empty($rrule))
+    	{
+    		// new recurrence
+    		$recurrence->rrule = $rrule;
+    		if (!$recurrence->store())
+    		{
+    			$this->setError($recurrence->getError());
+    			return false;
+    		}
+
+    		// add repeat record
+    		$repeat = & JTable::getInstance('RedEvent_repeats', '');
+    		$repeat->set('xref_id', $row->id);
+    		$repeat->set('recurrence_id', $recurrence->id);
+    		$repeat->set('count', 0);
+    		if (!$repeat->store()) {
+    			$this->setError($repeat->getError());
+    			return false;
+    		}
+    	}
+    }
+    else
+    {
+    	if ($data['repeat'] == 0) // only update if it's the first xref.
+    	{
+    		$recurrence->load($data['recurrenceid']);
+    		// reset the status
+    		$recurrence->ended = 0;
+    		// TODO: maybe add a check to have a choice between updating rrule or not...
+    		$rrule = RedeventHelperRecurrence::parsePost($data);
+    		$recurrence->rrule = $rrule;
+    		if (!$recurrence->store()) {
+    			$this->setError($recurrence->getError());
+    			return false;
+    		}
+    	}
+    }
+    if ($recurrence->id) {
+    	redEVENTHelper::generaterecurrences($recurrence->id);
+    }
+    
 		return true;
 	}
 	

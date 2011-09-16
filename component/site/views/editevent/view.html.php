@@ -103,9 +103,9 @@ class RedeventViewEditevent extends JView
 		$document->addScript('components/com_redevent/assets/js/attachments.js' );
 		$document->addScriptDeclaration('var removemsg = "'.JText::_('COM_REDEVENT_ATTACHMENT_CONFIRM_MSG').'";' );
 				
-    $document->addScript('administrator/components/com_redevent/assets/js/xref_roles.js');
+    $document->addScript('components/com_redevent/assets/js/xref_roles.js');
     $document->addScriptDeclaration('var txt_remove = "'.JText::_('COM_REDEVENT_REMOVE').'";');
-    $document->addScript('administrator/components/com_redevent/assets/js/xref_prices.js');
+    $document->addScript('components/com_redevent/assets/js/xref_prices.js');
     
 		//Set page title
 		$id ? $title = $row->title.' - '.JText::_( 'EDIT EVENT' ) : $title = JText::_( 'ADD EVENT' );
@@ -159,8 +159,21 @@ class RedeventViewEditevent extends JView
 			return;
 		}
 		$lists['categories'] = JHTML::_('select.genericlist', $catoptions, 'categories[]', 'class="inputbox required validate-categories" multiple="multiple" size="10"', 'value', 'text', $selected);
-
-				
+		
+		if ($params->get('edit_recurrence', 0))
+		{
+			$document->addScript('components/com_redevent/assets/js/xref_recurrence.js' );
+			
+			// Recurrence selector
+			$recur_type = array( JHTML::_('select.option', 'NONE', JText::_('COM_REDEVENT_NO_REPEAT')),
+			JHTML::_('select.option', 'DAILY', JText::_('COM_REDEVENT_DAILY')),
+			                         JHTML::_('select.option', 'WEEKLY', JText::_('COM_REDEVENT_WEEKLY')),
+			                         JHTML::_('select.option', 'MONTHLY', JText::_('COM_REDEVENT_MONTHLY')),
+			                         JHTML::_('select.option', 'YEARLY', JText::_('COM_REDEVENT_YEARLY'))
+			                       );
+			$lists['recurrence_type'] = JHTML::_('select.radiolist', $recur_type, 'recurrence_type', '', 'value', 'text', $row->rrules->type ? : 'NONE');
+		}
+		
     // published state selector
     $published = array( JHTML::_('select.option', '1', JText::_('PUBLISHED')),
                          JHTML::_('select.option', '0', JText::_('UNPUBLISHED')),
@@ -267,9 +280,10 @@ class RedeventViewEditevent extends JView
 				
 		JHTML::_('behavior.mootools');
 
-    $document->addScript('administrator/components/com_redevent/assets/js/xref_roles.js');
+    $document->addScript('components/com_redevent/assets/js/xref_roles.js');
     $document->addScriptDeclaration('var txt_remove = "'.JText::_('COM_REDEVENT_REMOVE').'";');
-    $document->addScript('administrator/components/com_redevent/assets/js/xref_prices.js');
+    $document->addScript('components/com_redevent/assets/js/xref_prices.js');
+    $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/editevent.css');
     
 		// get xref data
 		$xref     = &$this->get('SessionDetails');
@@ -318,6 +332,19 @@ class RedeventViewEditevent extends JView
 		
 		$pricegroupsoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_PRICEGROUP')));
 		$pricegroupsoptions = array_merge($pricegroupsoptions, $this->get('PricegroupsOptions'));
+		
+		if ($params->get('edit_recurrence', 0))
+		{ 
+			$document->addScript('components/com_redevent/assets/js/xref_recurrence.js' );
+			// Recurrence selector
+			$recur_type = array( JHTML::_('select.option', 'NONE', JText::_('COM_REDEVENT_NO_REPEAT')),
+			JHTML::_('select.option', 'DAILY', JText::_('COM_REDEVENT_DAILY')),
+			JHTML::_('select.option', 'WEEKLY', JText::_('COM_REDEVENT_WEEKLY')),
+					                         JHTML::_('select.option', 'MONTHLY', JText::_('COM_REDEVENT_MONTHLY')),
+					                         JHTML::_('select.option', 'YEARLY', JText::_('COM_REDEVENT_YEARLY'))
+					                       );
+			$lists['recurrence_type'] = JHTML::_('select.radiolist', $recur_type, 'recurrence_type', '', 'value', 'text', $xref->rrules->type ? : 'NONE');
+		}
 		
 		$this->assignRef('params',       $params);
 		$this->assignRef('editor',       $editor);

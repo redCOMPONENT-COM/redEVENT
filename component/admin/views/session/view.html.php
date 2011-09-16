@@ -79,9 +79,9 @@ class RedEventViewSession extends JView {
 		
 		jimport('joomla.html.pane');
 
-    $document->addScript('components/com_redevent/assets/js/xref_recurrence.js');
-    $document->addScript('components/com_redevent/assets/js/xref_roles.js');
-    $document->addScript('components/com_redevent/assets/js/xref_prices.js');
+    $document->addScript(JURI::root().'components/com_redevent/assets/js/xref_recurrence.js');
+    $document->addScript(JURI::root().'components/com_redevent/assets/js/xref_roles.js');
+    $document->addScript(JURI::root().'components/com_redevent/assets/js/xref_prices.js');
     $document->addScriptDeclaration('var txt_remove = "'.JText::_('COM_REDEVENT_REMOVE').'";');
     
 		//Build the image select functionality
