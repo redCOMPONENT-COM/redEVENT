@@ -310,21 +310,25 @@ class RedEventControllerEvents extends RedEventController
 
 		$total = count( $cid );
 
+		$msgtype = "message";
+		
 		if (!is_array( $cid ) || count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to delete' ) );
+			$msg = JText::_( 'Select an item to delete' );
+			$msgtype = 'error';
 		}
 
 		$model = $this->getModel('events');
-		if(!$model->delete($cid)) {
-			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
+		if (!$model->delete($cid)) {
+			$msg = $model->getError();
+			$msgtype = 'error';
 		}
-
-		$msg = $total.' '.JText::_( 'EVENTS DELETED');
-
-		$cache = &JFactory::getCache('com_redevent');
-		$cache->clean();
-
-		$this->setRedirect( 'index.php?option=com_redevent&view=events', $msg );
+		else {
+			$msg = $total.' '.JText::_( 'EVENTS DELETED');
+			$cache = &JFactory::getCache('com_redevent');
+			$cache->clean();
+		}
+		
+		$this->setRedirect( 'index.php?option=com_redevent&view=events', $msg, $msgtype);
 	}
 	
 	function removexref()

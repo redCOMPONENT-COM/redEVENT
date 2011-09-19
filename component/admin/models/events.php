@@ -348,34 +348,40 @@ class RedEventModelEvents extends JModel
 
 		if (count( $cid ))
 		{
+			// first, we don't delete events that have attendees, to preserve records integrity. admin should delete attendees separately first
 			$cids = implode( ',', $cid );
-			$query = 'DELETE FROM #__redevent_events'
-					. ' WHERE id IN ('. $cids .')'
-					;
+			
+			$query = ' SELECT e.id, e.title ' 
+			       . ' FROM #__redevent_events AS e '
+			       . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
+			       . ' INNER JOIN #__redevent_register AS r ON r.xref = x.id ' 
+			       . ' WHERE e.id IN ('. $cids .')'
+			       ;
+			$this->_db->setQuery($query);
+			$res = $this->_db->loadObjectList();
+			if ($res || count($res)) 
+			{
+				// can't delete
+				$this->setError(Jtext::_('COM_REDEVENT_ERROR_EVENT_REMOVE_EVENT_HAS_ATTENDEES'));
+				return false;
+			}
+			
+			$query = ' DELETE e.*, xcat.*, x.*, rp.*, r.*, sr.*, spg.* '
+			       . ' FROM #__redevent_events AS e '
+			       . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
+			       . ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
+			       . ' LEFT JOIN #__redevent_repeats AS rp on rp.xref_id = x.id '
+			       . ' LEFT JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
+			       . ' LEFT JOIN #__redevent_sessions_roles AS sr on sr.xref = x.id '
+			       . ' LEFT JOIN #__redevent_sessions_pricegroups AS spg on spg.xref = x.id '
+					   . ' WHERE e.id IN ('. $cids .')'
+					   ;
 
 			$this->_db->setQuery( $query );
 
 			if(!$this->_db->query()) {
 				$this->setError($this->_db->getErrorMsg());
 				return false;
-			}
-			else {
-				// delete corresponding event_venue
-				$query = 'DELETE FROM #__redevent_event_venue_xref'
-					. ' WHERE eventid IN ('. $cids .')';
-					$this->_db->setQuery( $query );
-				if(!$this->_db->query()) {
-					$this->setError($this->_db->getErrorMsg());
-					return false;
-				}
-				// delete corresponding event_category
-				$query = 'DELETE FROM #__redevent_event_category_xref'
-					. ' WHERE event_id IN ('. $cids .')';
-					$this->_db->setQuery( $query );
-				if(!$this->_db->query()) {
-					$this->setError($this->_db->getErrorMsg());
-					return false;
-				}
 			}
 		}
 
