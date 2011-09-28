@@ -100,7 +100,7 @@ class plgSearchRedeventSearch extends JPlugin {
 				//search exact
 				case 'exact':
 					$string        = $db->Quote( '%'.$db->getEscaped( $text, true ).'%', false );
-					$where[]   = 'LOWER(e.title) LIKE '.$string;
+					$where[]   = 'LOWER(e.title) LIKE '.$string. ' OR LOWER(x.title) LIKE '.$string;
 					break;
 	
 					//search all or any
@@ -115,6 +115,7 @@ class plgSearchRedeventSearch extends JPlugin {
 					{
 						$word          = $db->Quote( '%'.$db->getEscaped( $word, true ).'%', false );
 		        $wheres[]   = 'LOWER(e.title) LIKE '.$word;
+						$wheres[]   = 'LOWER(x.title) LIKE '.$word;
 					}
 					$where[] = '(' . implode( ($phrase == 'all' ? ') AND (' : ') OR ('), $wheres ) . ')';
 					break;
@@ -148,7 +149,8 @@ class plgSearchRedeventSearch extends JPlugin {
 			}
 	
 			//the database query; 
-			$query = 'SELECT e.title, e.summary AS text, x.id AS xref, '
+			$query = 'SELECT e.summary AS text, x.id AS xref, '
+			. ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', e.title, x.title) ELSE e.title END as title, '
 			. ' CONCAT_WS( " / ", '. $search .', '.$db->Quote(JText::_( 'EVENTS' )).' ) AS section,'
 	    . ' CASE WHEN CHAR_LENGTH( e.alias ) THEN CONCAT_WS( \':\', x.id, e.alias ) ELSE x.id END AS slug, '
 	    . ' NULL AS created, '
