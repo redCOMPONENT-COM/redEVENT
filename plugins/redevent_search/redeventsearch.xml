@@ -18,6 +18,12 @@
 	
   <params>
     <param name="search_limit" type="text" size="5" default="50" label="Search Limit" description="Number of Search items to return"/>
+		<param name="include_date" type="list" default="1" label="PLG_REDEVENT_SEARCH_INCLUDE_DATE" description="PLG_REDEVENT_SEARCH_INCLUDE_DATE_DESC">
+			<option value="0">No</option>
+			<option value="1">PLG_REDEVENT_SEARCH_INCLUDE_DATE_DATE</option>
+			<option value="1">PLG_REDEVENT_SEARCH_INCLUDE_DATE_DATE_TIME</option>
+		</param>
+    <param name="date_format" type="text" size="15" default="%x" label="PLG_REDEVENT_SEARCH_DATE_FORMAT" description="PLG_REDEVENT_SEARCH_DATE_FORMAT_DESC"/>
   </params>
   
 	<languages>

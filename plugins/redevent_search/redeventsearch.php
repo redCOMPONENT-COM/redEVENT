@@ -114,8 +114,7 @@ class plgSearchRedeventSearch extends JPlugin {
 					foreach ($words as $word)
 					{
 						$word          = $db->Quote( '%'.$db->getEscaped( $word, true ).'%', false );
-		        $wheres[]   = 'LOWER(e.title) LIKE '.$word;
-						$wheres[]   = 'LOWER(x.title) LIKE '.$word;
+		        $wheres[]   = 'LOWER(e.title) LIKE '.$word. ' OR LOWER(x.title) LIKE '.$word;
 					}
 					$where[] = '(' . implode( ($phrase == 'all' ? ') AND (' : ') OR ('), $wheres ) . ')';
 					break;
@@ -149,7 +148,7 @@ class plgSearchRedeventSearch extends JPlugin {
 			}
 	
 			//the database query; 
-			$query = 'SELECT e.summary AS text, x.id AS xref, '
+			$query = 'SELECT e.summary AS text, x.id AS xref, x.dates, x.times, '
 			. ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', e.title, x.title) ELSE e.title END as title, '
 			. ' CONCAT_WS( " / ", '. $search .', '.$db->Quote(JText::_( 'EVENTS' )).' ) AS section,'
 	    . ' CASE WHEN CHAR_LENGTH( e.alias ) THEN CONCAT_WS( \':\', x.id, e.alias ) ELSE x.id END AS slug, '
@@ -166,9 +165,29 @@ class plgSearchRedeventSearch extends JPlugin {
 			$db->setQuery( $query, 0, $limit );
 			$results = $db->loadObjectList();
 	
-			//The 'output' of the displayed link
-			foreach($results as $key => $row) {
+			foreach($results as $key => $row) 
+			{
+				// The 'output' of the displayed link
 				$results[$key]->href = 'index.php?option=com_redevent&view=details&id='.$row->slug.'&xref='.$row->xref;
+
+				//date
+				if ($this->params->get('include_date', 1))
+				{
+					if (strtotime($row->dates))
+					{
+						if ($this->params->get('include_date', 1) == 2 && $row->times <> '00:00:00') 
+						{
+							$results[$key]->title .= ' - ' . strftime($this->params->get('date_format', '%x'), strtotime($row->dates.' '.$row->times));
+						}
+						else
+						{
+							$results[$key]->title .= ' - ' . strftime($this->params->get('date_format', '%x'), strtotime($row->dates));
+						}
+					}
+					else {
+						$results[$key]->title .= ' - ' . JText::_('PLG_REDEVENT_SEARCH_OPEN_DATE');
+					}
+				}
 			}
 			
 			$rows = array_merge($rows, $results);
