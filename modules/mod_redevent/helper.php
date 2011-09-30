@@ -46,17 +46,40 @@ class modRedEventHelper
 
 		$db			=& JFactory::getDBO();
 		$user		=& JFactory::getUser();
-		$user_gid	= (int) $user->get('aid');
-				
-		$where = array();
+		$user_gid	= (int) $user->get('aid');	
 		
-		$where[] = 'c.access <= '.$user_gid;
+		switch ($params->get('ordering', 0))
+		{
+			case 5:
+				$order = ' ORDER BY a.title DESC, x.title DESC';
+				break;
+			case 4:
+				$order = ' ORDER BY a.title ASC, x.title ASC';
+				break;
+			case 3:
+				$order = ' ORDER BY x.id DESC';
+				break;
+			case 2:
+				$order = ' ORDER BY x.id ASC';
+				break;
+			case 1:
+				$order = ' ORDER BY x.dates DESC, x.times DESC ';
+				break;
+			default:
+			case 0:
+				$order = ' ORDER BY x.dates ASC, x.times ASC ';
+			break;
+		}
 
+
+		$where = array();
+
+		$where[] = 'c.access <= '.$user_gid;
+		
 		$type = $params->get( 'type', '0' );
 		if ($type == 0) // published
 		{
 			$where[] = 'x.published = 1';
-			$order = ' ORDER BY x.dates, x.times';
 		} 
 		else if ($type == 1) // upcoming
 		{
@@ -64,24 +87,20 @@ class modRedEventHelper
 			$date = $offset ? 'now +'.$offset.' days' : 'now';
 			$ref = strftime('%Y-%m-%d %H:%M', strtotime($date));
 			$where[] = 'x.published = 1 AND (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > '.$db->Quote($ref);
-			$order = ' ORDER BY x.dates, x.times ';
 		} 
 		else if ($type == 2) // archived
 		{
 			$where[] = 'x.published = -1';
-			$order = ' ORDER BY x.dates DESC, x.times DESC';
 		} 
 		else if ($type == 3) // open dates
 		{
 			$where[] = 'x.dates = 0';
-			$order = ' ORDER BY a.title ASC';
 		}
 		else if ($type == 4) // just passed dates
 		{
 			$date = $offset ? 'now -'.$offset.' days' : 'now';
 			$ref = strftime('%Y-%m-%d %H:%M', strtotime($date));
 			$where[] = 'x.published = 1 AND (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) < '.$db->Quote($ref);
-			$order = ' ORDER BY x.dates DESC, x.times DESC ';
 		}
 
 		$catid 	= trim( $params->get('catid') );

@@ -37,6 +37,14 @@
 			<option value="4">MOD_REDEVENT_EVENT_STATE_JUSTPASSED</option>
 		</param>
 		<param name="dayoffset" type="text" default="0" label="MOD_REDEVENT_DATE_OFFSET" description="MOD_REDEVENT_DATE_OFFSET_DESC"/>
+		<param name="ordering" type="list" default="0" label="MOD_REDEVENT_ORDERING_LABEL" description="MOD_REDEVENT_ORDERING_DESC">
+			<option value="0">MOD_REDEVENT_ORDERING_DATE_ASC</option>
+			<option value="1">MOD_REDEVENT_ORDERING_DATE_DESC</option>
+			<option value="2">MOD_REDEVENT_ORDERING_CREATED_ASC</option>
+			<option value="3">MOD_REDEVENT_ORDERING_CREATED_DESC</option>
+			<option value="4">MOD_REDEVENT_ORDERING_TITLE_ASC</option>
+			<option value="5">MOD_REDEVENT_ORDERING_TITLE_DESC</option>
+		</param>	
 		<param name="featuredonly" type="list" default="0" label="MOD_REDEVENT_SHOW_FEATURED_ONLY" description="MOD_REDEVENT_SHOW_FEATURED_ONLY_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
