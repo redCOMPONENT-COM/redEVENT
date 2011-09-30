@@ -117,6 +117,10 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
+  	<param name="link_date" type="radio" default="0" label="COM_REDEVENT_SETTINGS_LISTS_DATE_LINK_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_DATE_LINK_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
 		
   	<param name="lists_show_time" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_SHOW_TIME_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_SHOW_TIME_DESC">
 			<option value="0">Hide</option>

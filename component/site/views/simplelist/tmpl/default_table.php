@@ -122,7 +122,11 @@ $colnames = array_map('trim', $colnames);
 	    			<meta itemprop="startDate" content="<?php echo ELOutput::getIsoDate($row->enddates, $row->endtimes); ?>">
 	    			<?php endif; ?>
 	    			
-	    			<?php echo ELOutput::formatEventDateTime($row);	?>
+						<?php if ($this->params->get('link_date', 0)): ?>
+			    			<?php echo JHTML::link($detaillink, ELOutput::formatEventDateTime($row));	?>
+						<?php else: ?>
+			    			<?php echo ELOutput::formatEventDateTime($row);	?>
+						<?php endif; ?>
 					</td>
 				<?php break;?>
 				
