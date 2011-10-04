@@ -25,6 +25,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <h2><?php echo JText::_('REDEVENT_TAGS_TITLE'); ?></h2>
 
+<p><?php echo JText::_('COM_REDEVENT_TAGS_LIST_DESCRIPTION'); ?></p>
 <?php echo $this->tabs->startPane( 'tagstabs' ); ?>
 <?php foreach ($this->tags as $section => $tags): ?>
 
