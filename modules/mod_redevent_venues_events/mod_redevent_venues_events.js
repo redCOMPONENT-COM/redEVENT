@@ -21,7 +21,7 @@
  */
 
 window.addEvent('domready', function(){
-	$$('.mod-ve-select').addEvent('click', function(){
+	$$('.mod-ve-select').addEvent('change', function(){
 		if (this.options[this.selectedIndex].value != "") {
 			window.location = this.options[this.selectedIndex].value;
 		}
