@@ -128,7 +128,9 @@ foreach ($this->_eventlinks as $key => $event) {
 	<?php if ($event->details): ?>
 	<tr>
 	 <td colspan="7">
-	   <?php echo $event->details; ?>
+			<?php $tagsHelper = new redEVENT_tags(); ?>
+			<?php $tagsHelper->setXref($event->xref); ?>
+	   <?php echo $tagsHelper->ReplaceTags($event->details); ?>
 	 </td>
 	</tr>
 	<?php endif; ?>

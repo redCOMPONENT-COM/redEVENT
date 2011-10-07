@@ -217,6 +217,9 @@ class RedeventModelEventhelper extends JModel
   public function getPlacesLeft()
   {
   	$session = &$this->getData();
+  	if ($session->maxattendees == 0) {
+  		return '-';
+  	}
 		$q = ' SELECT COUNT(r.id) AS total '
 		   . ' FROM #__redevent_register AS r '
 		   . ' WHERE r.xref = '. $this->_db->Quote($this->_xref)

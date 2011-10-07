@@ -256,6 +256,20 @@ class redEVENT_tags {
 			{
 				$tag_obj = new RedeventParsedTag($tag[0]);
 				
+				// check for conditions tags
+				if ($tag_obj->getParam('condition_hasplacesleft') === "0" && $this->getEvent()->getPlacesLeft()) 
+				{
+					$search[] = $tag_obj->getFull();
+					$replace[] = '';
+					continue;
+				}
+				if ($tag_obj->getParam('condition_hasplacesleft') === "1" && $this->getEvent()->getData()->maxattendees > 0 && !$this->getEvent()->getPlacesLeft()) 
+				{
+					$search[] = $tag_obj->getFull();
+					$replace[] = '';
+					continue;
+				}
+				
 				if ($this->_submitkey && strpos($tag_obj->getName(), 'attending_') === 0) // replace with rest of tag if attending
 				{
 					$search[] = $tag_obj->getFull();
@@ -277,6 +291,11 @@ class redEVENT_tags {
 						$replace[] = '['.substr($tag_obj->getName(), 8).']';
 						$replaced = true;
 					}
+				}
+				else if ($this->_replaceLibraryTag($tag_obj->getName()) !== false)
+				{
+					$search[]  = $tag_obj->getFull();
+					$replace[] = $this->_replaceLibraryTag($tag_obj->getName());					
 				}
 				else 
 				{
@@ -650,6 +669,22 @@ class redEVENT_tags {
 	    $text = $this->_replaceLibraryTags($text);
 	  }
 	  return $text;
+	}
+  
+	/**
+	 * recursively replaces all the library tags from the text
+	 * 
+	 * @param string
+	 * @return string
+	 */
+	private function _replaceLibraryTag($tag) 
+	{
+	  $tags = &$this->_getLibraryTags();
+	  	  
+	  if (isset($tags[$tag])) {
+	  	return $tags[$tag]->text_field;
+	  }
+	  return false;
 	}
 
 	/**
@@ -1652,7 +1687,7 @@ class redEVENT_tags {
 		return $this->_maxwaitinglist;
 	}
 	
-	function _getTag_eventplacesleft()
+	function _getTag_eventplacesleft($params)
 	{
 		return $this->getEvent()->getPlacesLeft();
 	}
