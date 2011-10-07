@@ -784,8 +784,7 @@ class RedeventController extends JController
 					
 					$mailer->clearAllRecipients();
 					$mailer->addRecipient( $a );
-//					echo '<pre>';print_r($mailer); echo '</pre>';
-//					dump($mailer);
+					
 					$sent = $mailer->Send();
 				}
 			}

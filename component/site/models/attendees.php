@@ -80,6 +80,7 @@ class RedEventModelAttendees extends JModel
 		$params = $app->getParams('com_redevent');
 		
 		$query = ' SELECT x.id, e.title '
+		       . ' , CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', e.title, x.title) ELSE e.title END as full_title '
 		       . ' FROM #__redevent_events AS e '
 		       . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
 		       . ' WHERE DATEDIFF(x.dates, NOW()) = '.$days
@@ -103,7 +104,7 @@ class RedEventModelAttendees extends JModel
 		       . ' FROM #__redevent_register AS r '
 		       . ' WHERE r.xref = '.$xref
 		       . '   AND r.confirmed = 1 '
-		       . ($include_wl == 0 ? ' AND r.waitinglist = 1 ' : '')
+		       . ($include_wl == 0 ? ' AND r.waitinglist = 0 ' : '')
 		       . '   AND r.cancelled = 0 '
 		       ;
 		$this->_db->setQuery($query);

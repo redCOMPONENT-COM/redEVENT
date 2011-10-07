@@ -250,6 +250,7 @@
  	
  	<params group="REDEVENT_SETTINGS_REMINDER">
  	  <param type="respacer" default="COM_REDEVENT_SETTINGS_TAGS_LINK"/>
+ 	  <param type="spacer" default="REDEVENT_SETTINGS_REMINDER_STATUS_DESC"/>
 		<param name="reminder_status" type="list" default="1" label="REDEVENT_SETTINGS_REMINDER_STATUS_LABEL" description="REDEVENT_SETTINGS_REMINDER_STATUS_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
