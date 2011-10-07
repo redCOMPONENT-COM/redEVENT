@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<joomfish type="contentelement">
+  <name>redEVENT - Events</name>
+  <author>redCOMPONENT</author>
+  <version>1.0</version>
+  <description>Definition for redEVENT component, "Events" section</description>
+  <reference>
+  	<table name="redevent_events">
+  		<field type="referenceid" name="id" translate="0">ID</field>
+  		<field type="titletext" name="title" translate="1">Event</field>
+  		<field type="htmltext" name="datdescription" translate="1">Description</field>
+  		<field type="created_date" name="created" translate="0">Published</field>
+  		<field type="checked_out_by" name="checked_out" translate="0">Checked out by</field>
+  		<field type="checked_out_time" name="checked_out_time" translate="0">Checked out time</field>
+  	</table>
+  	
+    <component>
+        !<form>com_redevent#redevent_events#cid#view#product#task#!edit</form>
+  	</component>
+    
+  </reference>
+</joomfish>
