@@ -999,6 +999,7 @@ class redEVENT_tags {
 			$error = $rfcore->getError();
 			return '<span class="redform_error">'.$error.'</span>';
  		}
+ 		$form = $rfcore->getForm($this->getEvent()->getData()->redform_id);
  		
   	$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute($this->getEvent()->getData()->xslug, 'register'));
   	
@@ -1070,7 +1071,7 @@ class redEVENT_tags {
   	if ($this->getOption('hasreview')) {
   		$html .= '<input type="hidden" name="hasreview" value="1"/>';
   	}
-		$html .= '<div id="submit_button" style="display: block;">';
+		$html .= '<div id="submit_button" style="display: block;" class="submitform'.$form->classname.'">';
 		if (empty($submit_key)) {
 			$html .= '<input type="submit" id="regularsubmit" name="submit" value="'.JText::_('Submit').'" />';
 		}
