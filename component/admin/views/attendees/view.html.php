@@ -186,12 +186,16 @@ class RedEventViewAttendees extends JView {
 
 		$rows      	= & $this->get( 'Data');
 		$event 		= & $this->get( 'Event' );
+		$rf_fields = $this->get( 'RedFormFrontFields' );
+		$form      = $this->get( 'Form' );
 
 		$event->dates = redEVENTHelper::isValidDate($event->dates) ? strftime($elsettings->formatdate, strtotime( $event->dates )) : JText::_('OPEN DATE');
 
 		//assign data to template
 		$this->assignRef('rows'      	, $rows);
 		$this->assignRef('event'		, $event);
+		$this->assignRef('rf_fields', $rf_fields);
+		$this->assignRef('form',      $form);
 
 		parent::display($tpl);
 	}
@@ -210,7 +214,7 @@ class RedEventViewAttendees extends JView {
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 		
 		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
-		
+
 		$event 		= & $this->get( 'Event' );		
 		
 		//add toolbar

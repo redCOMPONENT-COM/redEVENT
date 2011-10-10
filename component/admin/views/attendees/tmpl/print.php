@@ -20,56 +20,105 @@
  * along with redEVENT; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+ 
+defined('_JEXEC') or die('Restricted access'); 
+JHTML::_('behavior.tooltip');
+$colspan = 10;
+?>
 
-defined('_JEXEC') or die('Restricted access'); ?>
-
-	<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist">
+	<table class="adminlist">
 		<tr>
-		  	<td class="sectionname" width="100%"><font style="color: #C24733; font-size : 18px; font-weight: bold;"><?php echo JText::_( 'REGISTERED USER' ); ?></font></td>
-		  	<td><div class="button2-left"><div class="blank"><a href="#" onclick="window.print();return false;"><?php echo JText::_('PRINT'); ?></a></div></div></td>
-		</tr>
-	</table>
-
-	<br />
-
-	<table class="adminlist" cellspacing="1">
-		<tr>
-		  	<td align="left">
+		  	<td width="80%">
 				<b><?php echo JText::_( 'DATE' ).':'; ?></b>&nbsp;<?php echo (redEVENTHelper::isValidDate($this->event->dates) ? $this->event->dates : Jtext::_('OPEN DATE')); ?><br />
 				<b><?php echo JText::_( 'EVENT TITLE' ).':'; ?></b>&nbsp;<?php echo htmlspecialchars($this->event->title, ENT_QUOTES, 'UTF-8'); ?>
 			</td>
 		  </tr>
 	</table>
-
 	<br />
-
-	<table class="adminlist" cellspacing="1">
+	
+	<table class="adminlist">
 		<thead>
 			<tr>
-				<th class="title"><?php echo JText::_( 'IP ADDRESS' ); ?></th>
-				<th class="title"><?php echo JText::_( 'REGDATE' ); ?></th>
-				<th class="title"><?php echo JText::_( 'COM_REDEVENT_CONFIRMDATE' ); ?></th>
-				<th class="title"><?php echo JText::_( 'USER ID'); ?></th>
-				<th class="title"><?php echo JText::_( 'CONFIRMED' ); ?></th>
-				<th class="title"><?php echo JText::_( 'WAITINGLIST' ); ?></th>
+				<th width="5"><?php echo JText::_( 'Num' ); ?></th>
+				<th class="title"><?php echo JText::_('REGDATE'); ?></th>
+				<th class="title"><?php echo JText::_('COM_REDEVENT_CONFIRMDATE'); ?></th>
+				<th class="title"><?php echo JText::_('UNIQUE ID'); ?></th>
+				<th class="title"><?php echo JText::_('USERNAME'); ?></th>
+				<th class="title"><?php echo JText::_('CONFIRMED'); ?></th>
+				<th class="title"><?php echo JText::_('WAITINGLIST'); ?></th>
+				<?php foreach ((array) $this->rf_fields as $f):?>
+					<?php $colspan++; ?>
+					<th class="title"><?php echo $f->field_header; ?></th>
+				<?php endforeach;?>
+				<?php if ($this->form->activatepayment): ?>
+	        <th class="title"><?php echo JText::_( 'PRICE' ); ?></th>
+	        <th class="title"><?php echo JText::_( 'COM_REDEVENT_PRICEGROUP' ); ?></th>
+					<th class="title"><?php echo JText::_( 'PAYMENT'); ?></th>
+					<?php $colspan += 3; ?>
+        <?php endif; ?>
 			</tr>
 		</thead>
 
 		<tbody>
 			<?php
 			$k = 0;
-			$i = 0;
-			foreach ($this->rows as $subid => $row) {
+			for($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+			{
+				$row = &$this->rows[$i];
    			?>
 			<tr class="<?php echo "row$k"; ?>">
-				<td><?php echo $row->uip; ?></td>
-				<td><?php echo JHTML::Date( $row->uregdate, JText::_( 'DATE_FORMAT_LC2' ) ); ?></td>
-				<td><?php echo JHTML::Date( $row->confirmdate, JText::_( 'DATE_FORMAT_LC2' ) ); ?></td>
-				<td><?php echo $row->uid; ?></td>
-				<td><?php echo $row->confirmed == 0 ? JText::_('NO') : JText::_('YES'); ?></td>
-				<td><?php echo $row->waitinglist == 0 ? JText::_('NO') : JText::_('YES'); ?></td>
+				<td><?php echo $i+1; ?></td>
+				<td>
+					<?php echo JHTML::Date( $row->uregdate, JText::_( 'DATE_FORMAT_LC2' ) ); ?>
+				</td>
+				<td><?php echo ($row->confirmdate) ? JHTML::Date( $row->confirmdate, JText::_( 'DATE_FORMAT_LC2' ) ) : '-'; ?></td>
+				<td><?php echo $row->course_code .'-'. $row->xref .'-'. $row->attendee_id; ?></td>
+				<td><?php echo $row->name; ?></td>
+				<td>
+				  <?php 
+				  //echo $row->confirmed == 0 ? JText::_('NO') : JText::_('YES'); 
+				  if (!$row->confirmed) {
+            echo JText::_('Yes');
+				  }
+          else {
+            echo JText::_('No');
+          }
+				  ?>
+				</td>
+				<td><?php // echo $row->waitinglist == 0 ? JText::_('NO') : JText::_('YES'); ?>
+          <?php 
+          //echo $row->confirmed == 0 ? JText::_('NO') : JText::_('YES'); 
+          if (!$row->waitinglist) {
+            echo JText::_('Yes');
+          }
+          else {
+            echo JText::_('No');
+          }
+          ?>
+        </td>
+				
+        <?php foreach ((array) $this->rf_fields as $f):?>
+					<?php $fname = 'field_'.$f->id; ?>
+					<td><?php echo $row->$fname; ?></td>
+				<?php endforeach;?>
+        
+				<?php if ($this->form->activatepayment): ?>
+					<td>
+						<?php echo $row->price; ?>
+					</td>
+					<td>
+						<?php echo $row->pricegroup; ?>
+					</td>
+					<td class="price <?php echo ($row->paid ? 'paid' : 'unpaid'); ?>">
+						<?php if (!$row->paid): ?>
+            <?php echo JText::_('No'); ?>
+						<?php else: ?>
+            <?php echo JText::_('Yes'); ?>
+						<?php endif; ?>						
+					</td>
+				<?php endif; ?>
 			</tr>
-			<?php $k = 1 - $k; $i++; } ?>
+			<?php $k = 1 - $k; } ?>
 		</tbody>
 
 	</table>
