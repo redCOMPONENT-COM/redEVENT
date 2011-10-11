@@ -67,6 +67,11 @@ class RedEventModelRegistration extends JModel
 	
 	var $_prices = null;
 	
+	/**
+	 * array of attending register id
+	 */
+	private $_attendees = null;
+	
 	function __construct($xref = 0, $config = array())
 	{
 		parent::__construct($config);
@@ -93,11 +98,19 @@ class RedEventModelRegistration extends JModel
 		}
 	}
 	
+	/**
+	 * create a new attendee
+	 * 
+	 * @param int $sid associated redform submitter id
+	 * @param string $submit_key associated redform submit key
+	 * @param int $pricegroup_id
+	 * @return boolean|object attendee row or false if failed
+	 */
 	function register($sid, $submit_key, $pricegroup_id)
 	{
 		$user    = &JFactory::getUser();
 		$config  = redEventHelper::config();
-		$session = $this->getSessionDetails();
+		$session = &$this->getSessionDetails();
 		
 		if ($sid)
 		{
@@ -126,8 +139,147 @@ class RedEventModelRegistration extends JModel
 				return false;
 			}
 			
+			if ($session->activate == 0) // no activation 
+			{
+				$this->confirm($obj->id);
+			}
+			
+			return $obj;
+		}
+	}
+	
+	/**
+	 * confirm a registration
+	 * 
+	 * @param int $rid register id
+	 * @return boolean true on success
+	 */
+	function confirm($rid)
+	{
+		// first, changed status to confirmed
+		$query = ' UPDATE #__redevent_register '
+		       . ' SET confirmed = 1, confirmdate = ' .$this->_db->Quote(gmdate('Y-m-d H:i:s'))
+		       . ' WHERE id = ' . $rid;
+		$this->_db->setQuery($query);
+		$res = $this->_db->query();
+		
+		if (!$res) {
+			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_FAILED_CONFIRM_REGISTRATION'));
+			return false;
+		}
+		
+		// now, handle waiting list
+		$session = &$this->getSessionDetails();
+		if ($session->maxattendees == 0) { // no waiting list
 			return true;
 		}
+		
+		$attendees = $this->_getAttendees();
+		if (count($attendees) > $session->maxattendees) 
+		{
+			// put this attendee on WL
+			$query = ' UPDATE #__redevent_register '
+			       . ' SET waitinglist = 1'
+		  	     . ' WHERE id = ' . $rid;
+			$this->_db->setQuery($query);
+			$res = $this->_db->query();
+			
+			if (!$res) {
+				$this->setError(JText::_('COM_REDEVENT_REGISTRATION_FAILED_ADDING_TO_WAITING_LIST'));
+				return false;
+			}
+			
+			// send waiting list email
+			$this->_sendWaitinglistStatusEmail($rid, 1);
+		}
+		else {
+			$this->_attendees[] = $rid;
+			
+			// send attending email
+			$this->_sendWaitinglistStatusEmail($rid, 0);
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * returns array of ids of currently attending (confirmed, not on wl, not cancelled) register_id
+	 * 
+	 * @return array;
+	 */
+	private function _getAttendees()
+	{
+		if (is_null($this->_attendees))
+		{
+			$query = ' SELECT r.id ' 
+			       . ' FROM #__redevent_register AS r ' 
+			       . ' WHERE r.xref = ' . $this->_xref
+			       . '   AND r.confirmed = 1 '
+			       . '   AND r.cancelled = 0 '
+			       . '   AND r.waitinglist = 0 '
+			       ;
+			$this->_db->setQuery($query);
+			$this->_attendees = $this->_db->loadObjectList();
+		}
+		return $this->_attendees;
+	}
+	
+	/**
+	 * send waiting list status emails
+	 * 
+	 * @param int $rid register id
+	 * @param int $waiting status: 0 for attending, 1 for waiting
+	 * @return boolean true on success
+	 */
+	function _sendWaitinglistStatusEmail($rid, $waiting = 0)
+	{
+		$session = &$this->getSessionDetails();
+		
+		$query = ' SELECT sid ' 
+		       . ' FROM #__redevent_register AS r ' 
+		       . ' WHERE id = ' . $rid;
+		$this->_db->setQuery($query);
+		$sid = $this->_db->loadResult();
+		
+		if (empty($this->taghelper)) {
+			$this->taghelper = new redEVENT_tags();
+			$this->taghelper->setXref($this->_xref);
+		}
+				
+		if ($waiting == 1) {
+			$body    = nl2br($this->taghelper->ReplaceTags($session->notify_off_list_body));
+			$subject = $this->taghelper->ReplaceTags($session->notify_off_list_subject);
+		}
+		else {
+			$body = nl2br($this->taghelper->ReplaceTags($session->notify_on_list_body));
+			$subject = $this->taghelper->ReplaceTags($session->notify_on_list_subject);
+		}
+		
+		// update image paths in body
+		$body = ELOutput::ImgRelAbs($body);
+		
+		$mailer = JFactory::getMailer();
+		
+		$rfcore = new RedFormCore();
+		$emails = $rfcore->getSubmissionContactEmail(array($sid));
+		$email = current($emails);
+		
+		/* Add the email address */
+		$mailer->AddAddress($email['email'], $email['fullname']);
+			
+		/* Mail submitter */
+		$htmlmsg = '<html><head><title></title></title></head><body>'.$body.'</body></html>';
+		$mailer->setBody($htmlmsg);
+		$mailer->setSubject($subject);
+		$mailer->IsHTML(true);
+			
+		/* Send the mail */
+		if (!$mailer->Send()) {
+			RedeventHelperLog::simpleLog(JText::_('COM_REDEVENT_REGISTRATION_FAILED_SENDING_WAITING_LIST_STATUS_EMAIL'));
+			return false;
+		}
+		
+		return true;
 	}
 	
 	function getSessionDetails()
@@ -141,6 +293,7 @@ class RedEventModelRegistration extends JModel
 			$query = 'SELECT a.id AS did, x.id AS xref, a.title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, '
 			    . ' a.registra, a.unregistra, a.activate, a.notify, a.redform_id as form_id, '
 			    . ' a.notify_confirm_body, a.notify_confirm_subject, ' 
+			    . ' a.notify_off_list_subject, a.notify_off_list_body, a.notify_on_list_subject, a.notify_on_list_body, '
 					. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
 					. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone,'
 					. ' v.venue,'

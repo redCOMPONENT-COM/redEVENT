@@ -55,15 +55,25 @@ class RedEventControllerRegistration extends RedEventController
 		$app = &JFactory::getApplication();
   	$msg = 'OK';
   	
-  	$xref = JRequest::getInt('xref');
+  	$xref        = JRequest::getInt('xref');
   	$pricegroups = JRequest::getVar('pricegroup_id', array(), 'post', 'array');
+  	$review      = JRequest::getVar('hasreview', 0);
+  	$isedit      = JRequest::getVar('isedit', 0);
   	JArrayHelper::toInteger($pricegroups);
-  	$review = JRequest::getVar('hasreview', 0);
-  	$isedit = JRequest::getVar('isedit', 0);
-	  $model = $this->getModel('registration');
-	  $model->setXref(JRequest::getInt('xref'));  	
-  	$details = $model->getSessionDetails();
+	  
+  	if (!$xref) 
+  	{
+  		$msg = JText::_('REDEVENT_REGISTRATION_MISSING_XREF');
+  		$this->setRedirect('index.php', $msg, 'error');
+  		return;
+  	}  	
+
+  	$model       = $this->getModel('registration');
+	  $model->setXref($xref);  	
   	
+	  $details = $model->getSessionDetails();
+  	
+	  // get prices associated to pricegroups
   	$prices = array();
   	foreach ($pricegroups as $p)
   	{
@@ -77,12 +87,6 @@ class RedEventControllerRegistration extends RedEventController
   		$prices[] = $price;
   	}  	
   	
-  	if (!$xref) 
-  	{
-  		$msg = JText::_('REDEVENT_REGISTRATION_MISSING_XREF');
-  		$this->setRedirect('index.php', $msg, 'error');
-  		return;
-  	}  	
   	
   	// first, ask redform to save it's fields, and return the corresponding sids.
   	$options = array('baseprice' => $prices);
@@ -91,7 +95,7 @@ class RedEventControllerRegistration extends RedEventController
   	}
 		$rfcore = new redFormCore();
   	$result = $rfcore->saveAnswers('redevent', $options);
-  	if (!$result) 
+  	if (!$result)  // redform saving failed
   	{
   		$msg = JTEXT::_('REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED').' - '.$rfcore->getError();
   		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($details->did, $xref)), $msg, 'error');
@@ -100,7 +104,7 @@ class RedEventControllerRegistration extends RedEventController
   	$submit_key = $result->submit_key;
   	JRequest::setVar('submit_key', $submit_key);
   	
-  	if ($review) {
+  	if ($review) { // remember set prices groups
 			$app->setUserState('pgids'.$submit_key, $pricegroups);
   	}
   	else {
@@ -109,7 +113,8 @@ class RedEventControllerRegistration extends RedEventController
   	
   	if (!$isedit && !$review)
   	{
-	  	// redform save fine, now save corresponding bookings
+	  	// redform save fine, now add the attendees
+	  	$attendees = array();
 	  	$k = 0;
 	  	foreach ($result->posts as $rfpost)
 	  	{
@@ -118,6 +123,7 @@ class RedEventControllerRegistration extends RedEventController
 		  		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($details->did, $xref)), $msg, 'error');
 		  		return;
 	  		}
+	  		$attendees[] = $res;
 	  	}
 			JPluginHelper::importPlugin( 'redevent' );
 			$dispatcher =& JDispatcher::getInstance();
@@ -304,19 +310,20 @@ class RedEventControllerRegistration extends RedEventController
 	 */
 	 function activate() 
 	 {
-		 global $mainframe;
-		 	
+		 $mainframe = &JFactory::getApplication();
+		 $msgtype = 'message';	
+		 
 		 /* Get the confirm ID */
 		 $confirmid = JRequest::getVar('confirmid', '', 'get');
 		 	
 		 /* Get the details out of the confirmid */
-		 list($uip, $xref, $uid, $register_id, $submit_key) = split("x", $confirmid);
+		 list($uip, $xref, $uid, $register_id, $submit_key) = explode("x", $confirmid);
 		 	
 		 	
 		 /* Confirm sign up via mail */
-		 $model_event = $this->getModel('Registration', 'RedEventModel');
-		 $model_event->setXref($xref);
-		 $eventdata = $model_event->getSessionDetails();
+		 $model = $this->getModel('Registration', 'RedEventModel');
+		 $model->setXref($xref);
+		 $eventdata = $model->getSessionDetails();
 		 	
 		 /* This loads the tags replacer */
 		 JRequest::setVar('xref', $xref);
@@ -339,25 +346,7 @@ class RedEventControllerRegistration extends RedEventController
 		
 		if ($regdata && $regdata->confirmed == 0) 
 		{
-			/* User exists, confirm the entry */
-			$q = "UPDATE #__redevent_register
-				SET confirmed = 1,
-				confirmdate = NOW()
-				WHERE id = ".$register_id;
-			$db->setQuery($q);
-			if ($db->query()) {
-				$this->setMessage(JText::_('YOUR SUBMISSION HAS BEEN CONFIRMED'));
-			}
-			
-			/* Update the waitinglist */
-			$this->addModelPath( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_redevent' . DS . 'models' );
-			$model_wait = $this->getModel('Waitinglist', 'RedEventModel');
-			/* Get the event id */
-			$q = "SELECT eventid FROM #__redevent_event_venue_xref WHERE id = ".$xref;
-			$db->setQuery($q);
-			$eventid = $db->loadResult();
-			$model_wait->setXrefId($xref);
-			$model_wait->UpdateWaitingList();
+			$model->confirm($register_id);
 			
 			if ($eventdata->notify) 
 			{
@@ -395,15 +384,18 @@ class RedEventControllerRegistration extends RedEventController
 					}
 				}
 			}
+			$msg = JText::_('COM_REDEVENT_REGISTRATION_ACTIVATION_SUCCESSFULL');
 		}
 		else if ($regdata && $regdata->confirmed == 1) {
 			$msg = JText::_('YOUR SUBMISSION HAS ALREADY BEEN CONFIRMED');
+			$msgtype = 'error';
 		}
 		else {
 			$msg = JText::_('YOUR SUBMISSION CANNOT BE CONFIRMED');
+			$msgtype = 'error';
 		}
 		
-		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($eventdata->did, $xref)), $msg);
+		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($eventdata->did, $xref)), $msg, $msgtype);
 	}
 	 
 

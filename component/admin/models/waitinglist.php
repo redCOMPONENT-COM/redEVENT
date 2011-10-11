@@ -269,56 +269,33 @@ class RedEventModelWaitinglist extends JModel {
 		// update image paths in body
 		$body = ELOutput::ImgRelAbs($body);
 		
-		/* Get the DB */
-		$db = JFactory::getDBO();
+		$rfcore = new RedFormCore();
+		$emails = $rfcore->getSubmissionContactEmail($update_ids);
 		
-		/* Find out what the fieldname is for the email field */
-		$q = "SELECT f.id, f.field, f.fieldtype 
-			FROM #__rwf_fields f
-			WHERE f.published = 1
-			AND f.form_id = ".$this->event_data->redform_id."
-			AND f.fieldtype in ('email')
-			LIMIT 1";
-		$db->setQuery($q);
-		$selectfield = $db->loadResult();
-		
-		if ($selectfield) 
-		{		
-			/* Inform the ids that they can attend the ac */
-			$subids = "s.id IN (".implode(', ', $update_ids).')';
-			$fieldname = 'f.field_'. $selectfield;
-			$query = "SELECT ".$fieldname."
-					FROM #__rwf_submitters as s 
-					INNER JOIN #__rwf_forms_".$this->event_data->redform_id." as f ON f.id = s.answer_id
-					WHERE ".$subids;
-			$db->setQuery($query);
-			$addresses = $db->loadResultArray();
-			
-			/* Check if there are any addresses to be mailed */
-			if (count($addresses) > 0) 
+		/* Check if there are any addresses to be mailed */
+		if (count($emails) > 0) 
+		{
+			/* Start mailing */
+			$this->Mailer();
+			foreach ($emails as $key => $email) 
 			{
-				/* Start mailing */
-				$this->Mailer();
-				foreach ($addresses as $key => $email) 
-				{
-					/* Send a off mailinglist mail to the submitter if set */
-					/* Add the email address */
-					$this->mailer->AddAddress($email);
-					
-					/* Mail submitter */
-					$htmlmsg = '<html><head><title></title></title></head><body>'.$body.'</body></html>';
-					$this->mailer->setBody($htmlmsg);
-					$this->mailer->setSubject($subject);
-					
-					/* Send the mail */
-					if (!$this->mailer->Send()) {
-						$mainframe->enqueueMessage(JText::_('THERE WAS A PROBLEM SENDING MAIL'));
-						RedeventHelperLog::simpleLog('Error sending mail on/off waiting list');
-					}
-					
-					/* Clear the mail details */
-					$this->mailer->ClearAddresses();
+				/* Send a off mailinglist mail to the submitter if set */
+				/* Add the email address */
+				$this->mailer->AddAddress($email['email'], $email['fullname']);
+				
+				/* Mail submitter */
+				$htmlmsg = '<html><head><title></title></title></head><body>'.$body.'</body></html>';
+				$this->mailer->setBody($htmlmsg);
+				$this->mailer->setSubject($subject);
+				
+				/* Send the mail */
+				if (!$this->mailer->Send()) {
+					$mainframe->enqueueMessage(JText::_('THERE WAS A PROBLEM SENDING MAIL'));
+					RedeventHelperLog::simpleLog('Error sending mail on/off waiting list');
 				}
+				
+				/* Clear the mail details */
+				$this->mailer->ClearAddresses();
 			}
 		}
 	}
