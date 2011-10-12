@@ -89,6 +89,7 @@ class RedEventModelTags extends JModel
 		
 		$tags[] = new TagsModelTag('venue_title', JText::_('SUBMISSION_EVENT_VENUE'), 'venue');
 		$tags[] = new TagsModelTag('venue_link', JText::_('SUBMISSION_EVENT_VENUELINK'), 'venue');
+		$tags[] = new TagsModelTag('venue_company', JText::_('COM_REDEVENT_TAGS_VENUE_COMPANY_DESC'), 'venue');
 		$tags[] = new TagsModelTag('venue_city', JText::_('SUBMISSION_EVENT_CITY'), 'venue');
 		$tags[] = new TagsModelTag('venue_street', JText::_('SUBMISSION_EVENT_STREET'), 'venue');
 		$tags[] = new TagsModelTag('venue_zip', JText::_('SUBMISSION_EVENT_ZIP'), 'venue');

@@ -119,6 +119,16 @@ JHTML::_('behavior.tooltip');
 				<input class="inputbox" type="text" name="alias" id="alias" size="40" maxlength="100" value="<?php echo $this->row->alias; ?>" />
 			</td>
 		</tr>
+		<tr>
+			<td>
+				<label for="company" class="hasTip" title="<?php echo JText::_( 'COM_REDEVENT_VENUE_EDIT_COMPANY_LABEL' ).'::'.JText::_( 'COM_REDEVENT_VENUE_EDIT_COMPANY_TIP' ); ?>">
+					<?php echo JText::_( 'COM_REDEVENT_VENUE_EDIT_COMPANY_LABEL' ).':'; ?>
+				</label>
+			</td>
+			<td>
+				<input class="inputbox" type="text" name="company" id="alias" size="40" maxlength="200" value="<?php echo $this->row->company; ?>" />
+			</td>
+		</tr>
     <tr>
       <td>
         <label for="categories">

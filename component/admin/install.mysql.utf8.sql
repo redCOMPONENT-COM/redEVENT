@@ -64,6 +64,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues` (
 `venue` varchar(50) NOT NULL default '',
 `alias` varchar(100) NOT NULL default '',
 `url` varchar(200)  NOT NULL default '',
+`company` varchar(200) default NULL,
 `street` varchar(50) default NULL,
 `plz` varchar(20) default NULL,
 `city` varchar(50) default NULL,

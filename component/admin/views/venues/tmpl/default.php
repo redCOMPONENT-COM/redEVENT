@@ -38,13 +38,14 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 </table>
 
-<table class="adminlist" cellspacing="1">
+<table class="adminlist">
 	<thead>
 		<tr>
 			<th width="5"><?php echo JText::_( 'Num' ); ?></th>
 			<th width="5"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
 			<th class="title"><?php echo JHTML::_('grid.sort', 'VENUE', 'l.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="20%"><?php echo JHTML::_('grid.sort', 'ALIAS', 'l.alias', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th width="20%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_COMPANY', 'l.company', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th><?php echo JText::_( 'WEBSITE' ); ?></th>
 			<th><?php echo JHTML::_('grid.sort', 'CITY', 'l.city', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
       <th><?php echo JText::_( 'CATEGORY' ); ?></th>
@@ -59,7 +60,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	<tfoot>
 		<tr>
-			<td colspan="14">
+			<td colspan="15">
 				<?php echo $this->pageNav->getListFooter(); ?>
 			</td>
 		</tr>
@@ -101,6 +102,7 @@ defined('_JEXEC') or die('Restricted access');
 				}
 				?>
 			</td>
+			<td><?php echo $row->company; ?></td>
 			<td align="left">
 				<?php
 				if ($row->url) {

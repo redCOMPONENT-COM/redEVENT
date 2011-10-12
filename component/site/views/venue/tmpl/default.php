@@ -47,6 +47,13 @@ $row = & $this->row;
           ?>
           </dd>
         <?php endif; ?>
+
+        <?php if ( $row->company ) : ?>
+          <dt class="venue_company"><?php echo JText::_( 'COM_REDEVENT_COMPANY' ).':'; ?></dt>
+        <dd class="venue_company">
+            <?php echo $this->escape($row->company); ?>
+        </dd>
+        <?php endif; ?>
         
         <?php if (($this->elsettings->showdetlinkvenue == 1) && (!empty($row->url))) : ?>
         <dt class="venue_website"><?php echo JText::_( 'WEBSITE' ).':'; ?></dt>

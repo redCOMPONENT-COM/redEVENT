@@ -223,6 +223,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						<?php endif; ?>
 
 								<tr>
+									<td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_VENUE_EDIT_COMPANY_LABEL').'::'.JText::_('COM_REDEVENT_VENUE_EDIT_COMPANY_TIP'); ?>">
+                		<label for="company"><?php echo JText::_( 'COM_REDEVENT_VENUE_EDIT_COMPANY_LABEL' ).':'; ?></label>
+                	</td>
+                	<td>
+                		<input class="inputbox" type="text" name="company" id="company" value="<?php echo $this->escape($this->row->company); ?>" size="55" maxlength="200" />
+                	</td>
+                </tr>
+
+								<tr>
 									<td class="key hasTip" title="<?php echo JText::_('STREET'); ?>">
                 		<label for="street"><?php echo JText::_( 'STREET' ).':'; ?></label>
                 	</td>

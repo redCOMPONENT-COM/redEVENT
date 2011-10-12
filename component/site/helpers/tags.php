@@ -1489,6 +1489,11 @@ class redEVENT_tags {
 		return $this->_getTag_venue();
 	}
 
+	function _getTag_venue_company()
+	{
+		return $this->getEvent()->getData()->venue_company;
+	}
+
 	function _getTag_city()
 	{
 		return $this->getEvent()->getData()->location;

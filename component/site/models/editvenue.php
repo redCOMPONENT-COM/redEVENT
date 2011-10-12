@@ -108,9 +108,10 @@ class RedeventModelEditvenue extends JModel
 			$this->_venue->published	= 0;
       $this->_venue->categories = null;
 			$this->_venue->url				= '';
+			$this->_venue->company        = '';
 			$this->_venue->street			= '';
 			$this->_venue->plz				= '';
-			$this->_venue->locdescription	= '';
+			$this->_venue->locdescription = '';
 			$this->_venue->city				= '';
 			$this->_venue->state			= '';
 			$this->_venue->country			= '';
@@ -244,7 +245,7 @@ class RedeventModelEditvenue extends JModel
 	 */
 	function store($data, $file)
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 		
 		$user 		= & JFactory::getUser();
 		$elsettings = & redEVENTHelper::config();
@@ -254,6 +255,8 @@ class RedeventModelEditvenue extends JModel
 		$MailFrom	 	= $mainframe->getCfg('mailfrom');
 		$FromName 		= $mainframe->getCfg('fromname');
 		$tzoffset 		= $mainframe->getCfg('offset');
+		
+		$params = $mainframe->getParams('com_redevent');
 
 		$row 		= & JTable::getInstance('redevent_venues', '');
 

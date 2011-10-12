@@ -44,6 +44,8 @@ class RedEvent_venues extends JTable
 	/** @var string */
 	var $url 				= null;
 	/** @var string */
+	var $company		= null;
+	/** @var string */
 	var $street 			= null;
 	/** @var string */
 	var $plz 				= null;

@@ -367,6 +367,13 @@ if (is_array($cols))
     $db->setQuery($q);
     $db->query();    
   }
+  
+  /* category event template */
+  if (!array_key_exists('company', $cols)) {
+    $q = "ALTER IGNORE TABLE #__redevent_venues ADD COLUMN `company` VARCHAR(200) NOT NULL";
+    $db->setQuery($q);
+    $db->query();    
+  }
 }
 
 /* Get the venues categories table columns */

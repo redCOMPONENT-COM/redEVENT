@@ -48,6 +48,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	?>
 
 	<dl class="location floattext">
+	
+		<?php if ( $this->venue->company ) : ?>
+			<dt class="venue_company"><?php echo JText::_( 'COM_REDEVENT_COMPANY' ).':'; ?></dt>
+			<dd class="venue_company"><?php echo $this->escape($this->venue->company); ?></dd>
+		<?php endif; ?>
+			
 		<?php if (($this->elsettings->showdetlinkvenue == 1) && (!empty($this->venue->url))) : ?>
 		<dt class="venue"><?php echo JText::_( 'WEBSITE' ).':'; ?></dt>
 			<dd class="venue">
