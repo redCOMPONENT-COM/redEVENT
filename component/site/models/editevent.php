@@ -361,6 +361,7 @@ class RedeventModelEditevent extends JModel
 	
 	function getSessionDetails()
 	{
+		$app = &JFactory::getApplication();
 		if (empty($this->_xrefdata))
 		{
 			$acl = &UserAcl::getInstance();
@@ -369,43 +370,38 @@ class RedeventModelEditevent extends JModel
 				if (!$acl->canEditXref($this->_xref)) {
 					JError::raiseError(403, Jtext::_('NOT ALLOWED'));
 				}
-				
-				$query = ' SELECT x.*, e.title as event_title '
-				       . '      , r.id as recurrence_id, r.rrule, rp.count '
-				       ;
-				// add the custom fields
-				$query .= ' FROM #__redevent_event_venue_xref AS x ';
-				$query .= ' INNER JOIN #__redevent_events AS e ON x.eventid = e.id '
-				        . ' LEFT JOIN #__redevent_repeats AS rp on rp.xref_id = x.id '
-				        . ' LEFT JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
-			        ;
-				$query .= ' WHERE x.id = '. $this->_db->Quote($this->_xref)
-				       ;
-	      $this->_db->setQuery( $query );
-				$this->_xrefdata = $this->_db->loadObject();
+				$this->_xrefdata = $this->_getXrefData($this->_xref);
 			}
 			else
 			{
 				if (!$acl->canAddXref()) {
 					JError::raiseError(403, Jtext::_('NOT ALLOWED'));
 				}
-				$obj = new stdclass();
+				
+				$template_xref = $app->getParams()->get('event_template', 0);
+				if ($template_xref) {
+					$obj = $this->_getXrefData($template_xref);
+				}
+				else 
+				{				
+					$obj = new stdclass();
+					$obj->groupid           = 0;
+					$obj->external_registration_url   = null;
+					$obj->details           = null;
+					$obj->maxattendees      = 0;
+					$obj->maxwaitinglist    = 0;
+					$obj->course_credit     = 0;
+					$obj->published         = 1;
+				}
 				$obj->id                = null;
-				$obj->title             = null;
 				$obj->eventid           = 0;
+				$obj->title             = null;
 				$obj->venueid           = 0;
-				$obj->groupid           = 0;
 				$obj->dates             = null;
 				$obj->enddates          = null;
 				$obj->times             = null;
 				$obj->endtimes          = null;
 				$obj->registrationend   = null;
-				$obj->external_registration_url   = null;
-				$obj->details           = null;
-				$obj->maxattendees      = 0;
-				$obj->maxwaitinglist    = 0;
-				$obj->course_credit     = 0;
-				$obj->published         = 1;
 				$obj->recurrence_id     = 0;
 				$obj->count             = 0;
 				$obj->rrule         = null;
@@ -414,6 +410,29 @@ class RedeventModelEditevent extends JModel
 		}	
   	$this->_xrefdata->rrules = RedeventHelperRecurrence::getRule($this->_xrefdata->rrule);
 		return $this->_xrefdata;
+	}
+	
+	/**
+	 * returns xref data
+	 * 
+	 * @param int $xref
+	 * @return object xref data
+	 */
+	private function _getXrefData($xref)
+	{
+		$query = ' SELECT x.*, e.title as event_title '
+		       . '      , r.id as recurrence_id, r.rrule, rp.count '
+		       ;
+		// add the recurrence fields
+		$query .= ' FROM #__redevent_event_venue_xref AS x ';
+		$query .= ' INNER JOIN #__redevent_events AS e ON x.eventid = e.id '
+		        . ' LEFT JOIN #__redevent_repeats AS rp on rp.xref_id = x.id '
+		        . ' LEFT JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
+		        ;
+		$query .= ' WHERE x.id = '. $this->_db->Quote($xref)
+		;
+		$this->_db->setQuery( $query );
+		return $this->_db->loadObject();
 	}
 
 	/**
