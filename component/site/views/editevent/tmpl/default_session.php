@@ -90,7 +90,7 @@ JHTML::_('behavior.calendar');
 		<?php endif; ?>
 		<?php if ($this->params->get('edit_registration', 0)) :?>
 	  <tr>
-	    <td class="key hasTip" title="<?php echo JText::_('EDIT XREF MAXIMUM_ATTENDEES TIP'); ?>">
+	    <td class="key hasTip" title="<?php echo JText::_( 'EDIT XREF MAXIMUM_ATTENDEES' ).'::'.JText::_('EDIT XREF MAXIMUM_ATTENDEES TIP'); ?>">
 	      <label for="maxattendees"><?php echo JText::_( 'EDIT XREF MAXIMUM_ATTENDEES' ) .': '; ?></label>
 	    </td>
 	    <td>
@@ -98,7 +98,7 @@ JHTML::_('behavior.calendar');
 	    </td>
 	  </tr>
 	  <tr>
-	    <td class="key hasTip" title="<?php echo JText::_('EDIT XREF MAXIMUM_WAITINGLIST TIP'); ?>">
+	    <td class="key hasTip" title="<?php echo JText::_( 'EDIT XREF MAXIMUM_WAITINGLIST' ) .'::'.JText::_('EDIT XREF MAXIMUM_WAITINGLIST TIP'); ?>">
 	      <label for="maxwaitinglist"><?php echo JText::_( 'EDIT XREF MAXIMUM_WAITINGLIST' ) .': '; ?></label>
 	    </td>
 	    <td>

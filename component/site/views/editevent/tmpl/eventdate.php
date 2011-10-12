@@ -215,22 +215,22 @@ function updateend(cal)
 
 <?php echo $pane->endPanel(); ?>
 
-<?php if ($this->params->get('allow_edit_registration', 0)) :?>
+<?php if ($this->params->get('edit_registration', 0)) :?>
 <?php echo $pane->startPanel( JText::_('Registration'), 'ev2' ); ?>
 
 <table class="admintable">
 <tbody>
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF MAX ATTENDEES TIP'); ?>">
-      <label for="maxattendees"><?php echo JText::_( 'MAXIMUM_ATTENDEES' ) .': '; ?></label>
+    <td class="key hasTip" title="<?php echo JText::_('EDIT XREF MAXIMUM_ATTENDEES TIP'); ?>">
+      <label for="maxattendees"><?php echo JText::_( 'EDIT XREF MAXIMUM_ATTENDEES' ) .': '; ?></label>
     </td>
     <td>
       <input type="text" size="8" maxlength="8" name="maxattendees" id="maxattendees" value="<?php echo $this->xref->maxattendees; ?>" /> 
     </td>
   </tr>
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF MAX WAITING TIP'); ?>">
-      <label for="maxwaitinglist"><?php echo JText::_( 'MAXIMUM_WAITINGLIST' ) .': '; ?></label>
+    <td class="key hasTip" title="<?php echo JText::_('EDIT XREF MAXIMUM_WAITINGLIST TIP'); ?>">
+      <label for="maxwaitinglist"><?php echo JText::_( 'EDIT XREF MAXIMUM_WAITINGLIST' ) .': '; ?></label>
     </td>
     <td>
       <input type="text" size="8" maxlength="8" name="maxwaitinglist" id="maxwaitinglist" value="<?php echo $this->xref->maxwaitinglist; ?>" /> 
