@@ -197,14 +197,26 @@ class RedeventModelEditevent extends JModel
 	{
 		$app = &JFactory::getApplication();
 		
-		$template_id = $app->getParams()->get('event_template', 0);
+		$template_xref = $app->getParams()->get('event_template', 0);
 		
-		if ($template_id)
+		if ($template_xref)
 		{
+			$this->_xref = $template_xref;
+			// get associated event id
+			$query = ' SELECT eventid ' 
+			       . ' FROM #__redevent_event_venue_xref ' 
+			       . ' WHERE id = ' . $this->_db->Quote($template_xref);
+			$this->_db->setQuery($query);
+			$template_id = $this->_db->loadResult();
+			
 			if (!$this->_loadEvent($template_id)) {
 				$this->setError(JText::_('COM_REDEVENT_SUMBIT_EVENT_ERROR_LOADING_TEMPLATE'));
 				return false;
 			}
+			// init session data too
+			$this->getSessionDetails(); 
+			$this->_xref = null;
+			
 			// reset event id and title
 			$this->_event->id = null;
 			$this->_event->title = '';
@@ -292,10 +304,17 @@ class RedeventModelEditevent extends JModel
 				return false;
 			}
 			
+			$xfields = array();			
+			foreach ($this->_getXCustomFields() as $f)
+			{
+				$xfields[] = 'x.custom'.$f->id;
+			}
+			
 			$query = ' SELECT e.*, v.venue, x.id AS xref, x.eventid, x.venueid, '
 			       . ' x.dates, x.enddates, x.times, x.endtimes, x.maxattendees, '
 			       . ' x.maxwaitinglist, x.course_credit, x.registrationend, x.title as session_title, '
 			       . ' r.id as recurrence_id, r.rrule, rp.count '
+			       . (count($xfields) ? ', '.implode(', ', $xfields) : '')
 					   ;
 			
 			$query .= ' FROM #__redevent_events AS e'

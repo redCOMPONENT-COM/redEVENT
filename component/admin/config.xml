@@ -167,7 +167,7 @@
  	
  	<params group="frontendeventsubmit">
  	  <param type="respacer" default="SETTINGS FRONTEND TIP"/>
-		<param name="event_template" type="event" default="0" label="SETTINGS FRONTEND EVENT TEMPLATE" description="SETTINGS FRONTEND EVENT TEMPLATE TIP" />
+		<param name="event_template" type="xref" default="0" label="SETTINGS FRONTEND EVENT TEMPLATE" description="SETTINGS FRONTEND EVENT TEMPLATE TIP" />
     <param name="edit_categories" type="radio" default="0" label="SETTINGS FRONTEND EDIT CATEGORY" description="SETTINGS FRONTEND EDIT CATEGORY TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>

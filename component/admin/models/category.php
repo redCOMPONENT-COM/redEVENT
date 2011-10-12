@@ -134,7 +134,8 @@ class RedEventModelCategory extends JModel
 		{
 			$query = ' SELECT c.*, e.title AS event_template_name '
 			       . ' FROM #__redevent_categories AS c '
-			       . ' LEFT JOIN #__redevent_events AS e ON e.id = c.event_template '
+			       . ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.id = c.event_template '
+			       . ' LEFT JOIN #__redevent_events AS e ON e.id = x.eventid '
 			       . ' WHERE c.id = '.$this->_id
 			       ;
 			$this->_db->setQuery($query);

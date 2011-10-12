@@ -180,7 +180,7 @@ function submitbutton(pressbutton)
 						</label>
 					</td>
 					<td>
-						<?php	$link = 'index.php?option=com_redevent&amp;view=eventelement&amp;tmpl=component&amp;field=event_template'; ?>
+						<?php	$link = 'index.php?option=com_redevent&amp;view=xrefelement&amp;tmpl=component&amp;field=event_template'; ?>
 						<div style="float: left;"><input style="background: #ffffff;" type="text" id="event_template_name" value="<?php echo ($this->row->event_template_name ? $this->row->event_template_name : JText::_('Default')); ?>" disabled="disabled" /></div>
 						<div class="button2-left"><div class="blank">
 							<a class="modal" title="<?php JText::_('Select'); ?>"  href="<?php echo $link; ?>" rel="{handler: 'iframe', size: {x: 650, y: 375}}"><?php echo JText::_('Select'); ?></a>

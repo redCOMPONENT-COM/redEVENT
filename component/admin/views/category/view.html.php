@@ -159,7 +159,7 @@ class RedEventViewCategory extends JView {
 			});
 		});
 		
-		function elSelectEvent(id, title, field) {
+		function selectXref(id, title, field) {
 			document.getElementById(field).value = id;
 			document.getElementById(field+'_name').value = title;
 			document.getElementById('sbox-window').close();
