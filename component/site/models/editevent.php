@@ -1003,7 +1003,7 @@ class RedeventModelEditevent extends JModel
 
 		jimport('joomla.utilities.mail');
 
-		$link 	= JRoute::_(JURI::base().RedeventHelperRoute::getDetailsRoute($row->id), false);
+		$link 	= JRoute::_(JURI::base().RedeventHelperRoute::getDetailsRoute($row->id), isset($xref) ? $xref->id : false);
 
 		//create the mail for the site owner
 		if (($elsettings->mailinform == 1) || ($elsettings->mailinform == 3)) {

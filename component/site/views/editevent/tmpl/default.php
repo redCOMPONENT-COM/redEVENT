@@ -224,7 +224,7 @@ $pane =& JPane::getInstance('tabs');
 	</table>
 <?php echo $pane->endPanel(); ?>
 
-<?php if ($this->params->get('create_session', 1)): // edit/create xref ?>
+<?php if ($this->params->get('create_session', 1) && !($this->row->id && !JRequest::getInt('xref'))): // edit/create xref ?>
 <?php echo $pane->startPanel( JText::_('COM_REDEVENT_SESSION'), 'ev-session' ); ?>
 <?php echo $this->loadTemplate('session'); ?>
 <?php echo $pane->endPanel(); ?>
