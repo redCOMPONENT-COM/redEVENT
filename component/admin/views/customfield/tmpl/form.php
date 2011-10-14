@@ -139,7 +139,7 @@ if (!$edit)  {
     <td><textarea name="options" id="options" rows="6" cols="20"><?php echo $this->object->options; ?></textarea></td>
   </tr>
   <tr id="row-default">
-    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'COM_REDEVENT_CUSTOM_FIELD_DEFAULT_LABEL' ).'::'.JText::_('COM_REDEVENT_CUSTOM_FIELD_DEFAULT_TIP'); ?>"><label for="options"><?php echo JText::_( 'COM_REDEVENT_CUSTOM_FIELD_DEFAULT_LABEL' ); ?>:
+    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'COM_REDEVENT_CUSTOM_FIELD_DEFAULT_LABEL' ).'::'.JText::_('COM_REDEVENT_CUSTOM_FIELD_DEFAULT_DESC'); ?>"><label for="options"><?php echo JText::_( 'COM_REDEVENT_CUSTOM_FIELD_DEFAULT_LABEL' ); ?>:
     </label></td>
     <td><textarea name="default_value" id="default_value" rows="6" cols="20"><?php echo $this->object->default_value; ?></textarea></td>
   </tr>
