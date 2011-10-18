@@ -171,7 +171,7 @@ class RedeventViewEditevent extends JView
 			                         JHTML::_('select.option', 'MONTHLY', JText::_('COM_REDEVENT_MONTHLY')),
 			                         JHTML::_('select.option', 'YEARLY', JText::_('COM_REDEVENT_YEARLY'))
 			                       );
-			$lists['recurrence_type'] = JHTML::_('select.radiolist', $recur_type, 'recurrence_type', '', 'value', 'text', $row->rrules->type ? : 'NONE');
+			$lists['recurrence_type'] = JHTML::_('select.radiolist', $recur_type, 'recurrence_type', '', 'value', 'text', ($row->rrules->type ? $row->rrules->type : 'NONE'));
 		}
 		
     // published state selector
@@ -343,7 +343,7 @@ class RedeventViewEditevent extends JView
 					                         JHTML::_('select.option', 'MONTHLY', JText::_('COM_REDEVENT_MONTHLY')),
 					                         JHTML::_('select.option', 'YEARLY', JText::_('COM_REDEVENT_YEARLY'))
 					                       );
-			$lists['recurrence_type'] = JHTML::_('select.radiolist', $recur_type, 'recurrence_type', '', 'value', 'text', $xref->rrules->type ? : 'NONE');
+			$lists['recurrence_type'] = JHTML::_('select.radiolist', $recur_type, 'recurrence_type', '', 'value', 'text', ($xref->rrules->type ? $xref->rrules->type : 'NONE'));
 		}
 		
 		$this->assignRef('params',       $params);
