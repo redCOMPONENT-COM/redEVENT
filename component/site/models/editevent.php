@@ -1553,12 +1553,14 @@ class RedeventModelEditevent extends JModel
    * returns id of event to use as template for the submission
    * 
    * @param array categories ids submitted for the event
-   * @return int event id
+   * @return int session id
    */
   function _getEventTemplate($categories)
   {
 		$mainframe = &JFactory::getApplication();
 		$params    = $mainframe->getParams('com_redevent');
+		
+		$xref_template = false;
 		
   	if (is_array($categories) && count($categories)) 
   	{  	
@@ -1579,19 +1581,34 @@ class RedeventModelEditevent extends JModel
 	  	uasort($cats, array($this, "_cmpCatEventTemplate"));
 	  	foreach ($cats as $cat)
 	  	{
-	  		$event = $this->_getCategoryEventTemplate($cat->id);
-	  		if ($event) {
-	  			return $event;
+	  		$xref_template = $this->_getCategoryEventTemplate($cat->id);
+	  		if ($xref_template) {
+	  			break;
 	  		}
 	  	}
   	}
-		// didn't find any event template in categories...
-		$template_event = (int) $params->get('event_template');
-		if (!$template_event) {
-			JError::raiseWarning(0, JText::_('COM_REDEVENT_MISSING_FRONTEND_SUBMISSION_EVENT_TEMPLATE'));
+  	
+  	if (!$xref_template)
+  	{
+			// didn't find any event template in categories...
+			$xref_template = (int) $params->get('event_template');
+			if (!$xref_template) {
+				JError::raiseWarning(0, JText::_('COM_REDEVENT_MISSING_FRONTEND_SUBMISSION_EVENT_TEMPLATE'));
+				return false;
+			}
+  	}
+  	
+  	// find corresponding event id
+  	$query = ' SELECT x.eventid ' 
+  	       . ' FROM #__redevent_event_venue_xref AS x ' 
+  	       . ' WHERE id = ' . $this->_db->Quote($xref_template);
+  	$this->_db->setQuery($query);
+  	$res = $this->_db->loadResult();
+		if (!$res) {
+			JError::raiseWarning(0, JText::_('COM_REDEVENT_INVALID_FRONTEND_SUBMISSION_EVENT_TEMPLATE'));
 			return false;
 		}
-		return $template_event;  	
+		return $res;  	
   }
   
   /**
