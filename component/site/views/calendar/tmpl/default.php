@@ -135,6 +135,9 @@ foreach ($this->rows as $row)
 	
 <?php  
   // print the calendar
+  if ($this->params->get('show_week_num', 1)) {
+  	$this->cal->enableWeekNum($this->params->get('week_column_name'));
+  }
   print ($this->cal->showMonth());
   //return; 
 ?>

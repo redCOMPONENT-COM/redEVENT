@@ -58,6 +58,15 @@ table.month {
   vertical-align:top;
 }
 
+tr.daysRow td.weeknum, tr.daynamesRow td.weeknumtitle {
+	vertical-align:middle;
+	width: 20px;
+  text-align:right;
+}
+td.monthweek {
+	width: 20px;
+}
+
 .daynum {
   background-color:#A2A3AE;
   color:#FBFCEF;

@@ -21,6 +21,11 @@
         <option value="0">No</option>
         <option value="1">Yes</option>
       </param>
+	    <param name="show_week_num" type="radio" default="1" label="COM_REDEVENT_VIEW_CALENDAR_SHOW_WEEK_NUM_LABEL" description="COM_REDEVENT_VIEW_CALENDAR_SHOW_WEEK_NUM_DESC">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </param>
+      <param name="week_column_name" type="text" default="" label="COM_REDEVENT_VIEW_CALENDAR_WEEK_COLUMN_NAME_LABEL" description="COM_REDEVENT_VIEW_CALENDAR_WEEK_COLUMN_NAME_DESC" />
       <param name="topcat" type="categories" default="0" label="SELECT CATEGORY" description="SELECT CATEGORY DESC" />
     </params>
 	</state>

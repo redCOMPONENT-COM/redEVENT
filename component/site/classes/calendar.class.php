@@ -266,7 +266,8 @@ function enableWeekNum($title="",$link=false,$javaScript=false){
 	if (is_integer($this->getWeekNum($this->actday))){
 		$this->weekNum=true;
 		$this->weekNumTitle=$title;
-		$this->monthSpan++;
+// 		$this->monthSpan++;
+		$this->weekUrl = null;
 		if ($link) $this->weekUrl=$link;
 		elseif ($javaScript) $this->javaScriptWeek=$javaScript;
 	}
@@ -497,12 +498,22 @@ PRIVATE mkMonthTitle() -> creates the tile and navigation tr tag of the month ta
 */
 function mkMonthTitle(){
 	if (!$this->monthNav){
-		$out="<tr><td class=\"".$this->cssMonthTitle."\" colspan=\"".$this->monthSpan."\">";
+		$out="<tr>";
+		if ($this->weekNum)
+		{
+			$out.="<td class=\"monthweek\" ></td>";
+		}
+		$out.="<td class=\"".$this->cssMonthTitle."\" colspan=\"".$this->monthSpan."\">";
 		$out.=$this->getMonthName().$this->monthYearDivider.$this->actyear;
 		$out.="</td></tr>\n";
 	}
 	else{
-		$out = "<tr><td class=\"".$this->cssMonthNav."\" colspan=\"2\" style=\"text-align:right;\">";
+		$out="<tr>";
+		if ($this->weekNum)
+		{
+			$out.="<td class=\"monthweek\" ></td>";
+		}
+		$out.="<td class=\"".$this->cssMonthNav."\" colspan=\"2\" style=\"text-align:right;\">";
 		if ($this->actmonth==1) { // january
 			$out.=$this->mkUrl($this->actyear-1,"12");
 		}
