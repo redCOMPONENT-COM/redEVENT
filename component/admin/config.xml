@@ -65,6 +65,8 @@
 			<option value="25">25</option>
 			<option value="30">30</option>
 			<option value="50">50</option>
+			<option value="100">100</option>
+			<option value="200">200</option>
 		</param>	
   	<param name="filter_toggle" type="list" default="3" label="COM_REDEVENT_SETTINGS_FILTER_TOGGLE" description="COM_REDEVENT_SETTINGS_FILTER_TOGGLE_DESC">
 			<option value="0">COM_REDEVENT_SETTINGS_FILTER_TOGGLE_OPTION_OFF_SHOW_FILTERS</option>
