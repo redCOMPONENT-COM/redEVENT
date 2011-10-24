@@ -295,7 +295,7 @@ class RedeventViewEditevent extends JView
 		$lists = array();
 
 		// events
-		if (!empty($xref->event_title)) {
+		if ($xref->eventid) {
 			$lists['event'] = $xref->event_title;
 		}
 		else 
