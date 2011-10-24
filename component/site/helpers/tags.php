@@ -981,6 +981,29 @@ class redEVENT_tags {
   }
   
   /**
+   * return current number of registrations for current user to this event
+   * @return int
+   */
+  private function _getCurrentRegs()
+  {
+  	$user = &JFactory::getUser();
+  	if (!$user) {
+  		JError::raiseError(403, 'NO_AUTH');
+  	}
+  		
+  	$db = &JFactory::getDBO();
+  	$query = ' SELECT COUNT(id) ' 
+  	       . ' FROM #__redevent_register AS r ' 
+  	       . ' WHERE r.uid = ' . $user->get('id')
+		       . '   AND r.cancelled = 0 '
+  	       . '   AND r.xref = ' . $this->_xref
+  	       ;
+  	$db->setQuery($query);
+  	$res = $db->loadResult();
+  	return $res;
+  }
+  
+  /**
    * returns form
    * 
    * @return string
@@ -1008,6 +1031,13 @@ class redEVENT_tags {
   	$max = $this->getEvent()->getData()->max_multi_signup;
   	if ($max && ! $single) {
   		$multi = $max;
+  		// we must deduce current registrations of this user !
+  		$nbregs = $this->_getCurrentRegs();
+  		$multi = $max - $nbregs;
+  		
+  		if ($multi < 1) {
+  			return JText::_('COM_REDEVENT_USER_MAX_REGISTRATION_REACHED');
+  		}
   	}
   	else { // single signup 
   		$multi = 1;

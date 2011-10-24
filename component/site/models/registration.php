@@ -112,6 +112,12 @@ class RedEventModelRegistration extends JModel
 		$config  = redEventHelper::config();
 		$session = &$this->getSessionDetails();
 		
+		$status = redEVENTHelper::canRegister($session->xref);
+		if (!$status->canregister) {
+			$this->setError($status->status);
+			return false;			
+		}
+		
 		if ($sid)
 		{
 			$obj = $this->getTable('Redevent_register', '');
