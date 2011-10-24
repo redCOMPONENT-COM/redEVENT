@@ -123,11 +123,6 @@ class RedEventModelRegistration extends JModel
 			$obj->uid        = $user->get('id');
 			$obj->uregdate 	 = gmdate('Y-m-d H:i:s');
 			$obj->uip        = $config->storeip ? getenv('REMOTE_ADDR') : 'DISABLED';
-			if ($session->activate == 0) // no activation 
-			{
-				$obj->confirmed = 1;
-				$obj->confirmdate = gmdate('Y-m-d H:i:s');
-			}
 			
 			if (!$obj->check()) {
 				$this->setError($obj->getError());
@@ -143,7 +138,6 @@ class RedEventModelRegistration extends JModel
 			{
 				$this->confirm($obj->id);
 			}
-			
 			return $obj;
 		}
 	}
@@ -173,7 +167,6 @@ class RedEventModelRegistration extends JModel
 		if ($session->maxattendees == 0) { // no waiting list
 			return true;
 		}
-		
 		$attendees = $this->_getAttendees();
 		if (count($attendees) > $session->maxattendees) 
 		{
@@ -219,7 +212,7 @@ class RedEventModelRegistration extends JModel
 			       . '   AND r.waitinglist = 0 '
 			       ;
 			$this->_db->setQuery($query);
-			$this->_attendees = $this->_db->loadObjectList();
+			$this->_attendees = $this->_db->loadResultArray();
 		}
 		return $this->_attendees;
 	}
@@ -246,7 +239,7 @@ class RedEventModelRegistration extends JModel
 			$this->taghelper->setXref($this->_xref);
 		}
 				
-		if ($waiting == 1) {
+		if ($waiting == 0) {
 			$body    = nl2br($this->taghelper->ReplaceTags($session->notify_off_list_body));
 			$subject = $this->taghelper->ReplaceTags($session->notify_off_list_subject);
 		}
