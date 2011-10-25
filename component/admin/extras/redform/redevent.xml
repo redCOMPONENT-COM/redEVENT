@@ -10,7 +10,7 @@
 	<copyright>(c) 2010 Redweb.dk</copyright>
 	<license>GNU/GPL</license>
 	<version>2.0 beta 8.2</version>
-  <description>PLUGIN DESC</description>
+  <description>PLG_REDFORM_PLUGIN_DESC</description>
   
   <files>
     <filename plugin="redevent">redevent.php</filename>

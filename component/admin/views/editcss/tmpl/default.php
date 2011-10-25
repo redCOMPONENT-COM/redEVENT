@@ -28,9 +28,9 @@ defined('_JEXEC') or die('Restricted access');
 
 		<?php if($this->ftp): ?>
 				<fieldset class="adminform">
-					<legend><?php echo JText::_('FTP TITLE'); ?></legend>
+					<legend><?php echo JText::_('COM_REDEVENT_FTP_TITLE'); ?></legend>
 
-					<?php echo JText::_('FTP DESC'); ?>
+					<?php echo JText::_('COM_REDEVENT_FTP_DESC'); ?>
 					
 					<?php if(JError::isError($this->ftp)): ?>
 						<p><?php echo JText::_($this->ftp->message); ?></p>
@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 						<tbody>
 							<tr>
 								<td width="120">
-									<label for="username"><?php echo JText::_('USERNAME'); ?>:</label>
+									<label for="username"><?php echo JText::_('COM_REDEVENT_USERNAME'); ?>:</label>
 								</td>
 								<td>
 									<input type="text" id="username" name="username" class="input_box" size="70" value="" />
@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
 							</tr>
 							<tr>
 								<td width="120">
-									<label for="password"><?php echo JText::_('PASSWORD'); ?>:</label>
+									<label for="password"><?php echo JText::_('COM_REDEVENT_PASSWORD'); ?>:</label>
 								</td>
 								<td>
 									<input type="password" id="password" name="password" class="input_box" size="70" value="" />

@@ -44,10 +44,10 @@ defined('_JEXEC') or die('Restricted access');
 <table class="adminform">
 	<tr>
 		<td width="100%">
-			<?php echo JText::_( 'SEARCH' ).' '.$this->lists['filter']; ?>
+			<?php echo JText::_('COM_REDEVENT_SEARCH' ).' '.$this->lists['filter']; ?>
 			<input type="text" name="search" id="search" value="<?php echo $this->lists['search']; ?>" class="text_area" onChange="document.adminForm.submit();" />
-			<button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
-			<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
+			<button onclick="this.form.submit();"><?php echo JText::_('COM_REDEVENT_Go' ); ?></button>
+			<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo JText::_('COM_REDEVENT_Reset' ); ?></button>
 		</td>
 		<td nowrap="nowrap">
 			<?php echo $this->lists['state'];	?>
@@ -58,14 +58,14 @@ defined('_JEXEC') or die('Restricted access');
 <table class="adminlist" cellspacing="1">
 	<thead>
 		<tr>
-			<th width="5"><?php echo JText::_( 'Num' ); ?></th>
-			<th class="title"><?php echo JHTML::_('grid.sort', 'EVENT TITLE', 'a.title', $this->lists['order_Dir'], $this->lists['order'], 'insertevent' ); ?></th>
-			<th class="title"><?php echo JHTML::_('grid.sort', 'DATE', 'x.dates', $this->lists['order_Dir'], $this->lists['order'], 'insertevent' ); ?></th>
-			<th class="title"><?php echo JHTML::_('grid.sort', 'Start', 'x.times', $this->lists['order_Dir'], $this->lists['order'], 'insertevent' ); ?></th>
-			<th class="title"><?php echo JHTML::_('grid.sort', 'VENUE', 'loc.venue', $this->lists['order_Dir'], $this->lists['order'], 'insertevent' ); ?></th>
-			<th class="title"><?php echo JHTML::_('grid.sort', 'CITY', 'loc.city', $this->lists['order_Dir'], $this->lists['order'], 'insertevent' ); ?></th>
-			<th class="title"><?php echo JHTML::_('grid.sort', 'CATEGORY', 'cat.catname', $this->lists['order_Dir'], $this->lists['order'], 'insertevent' ); ?></th>
-		    <th width="1%" nowrap="nowrap"><?php echo JText::_( 'PUBLISHED' ); ?></th>
+			<th width="5">#</th>
+			<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_EVENT_TITLE', 'a.title', $this->lists['order_Dir'], $this->lists['order'], 'insertevent' ); ?></th>
+			<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_DATE', 'x.dates', $this->lists['order_Dir'], $this->lists['order'], 'insertevent' ); ?></th>
+			<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_Start', 'x.times', $this->lists['order_Dir'], $this->lists['order'], 'insertevent' ); ?></th>
+			<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_VENUE', 'loc.venue', $this->lists['order_Dir'], $this->lists['order'], 'insertevent' ); ?></th>
+			<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_CITY', 'loc.city', $this->lists['order_Dir'], $this->lists['order'], 'insertevent' ); ?></th>
+			<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_CATEGORY', 'cat.catname', $this->lists['order_Dir'], $this->lists['order'], 'insertevent' ); ?></th>
+		    <th width="1%" nowrap="nowrap"><?php echo JText::_('COM_REDEVENT_PUBLISHED' ); ?></th>
 		</tr>
 	</thead>
 
@@ -86,7 +86,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr class="<?php echo "row$k"; ?>">
 			<td><?php echo $this->pageNav->getRowOffset( $i ); ?></td>
 			<td>
-				<span class="editlinktip hasTip" title="<?php echo JText::_( 'SELECT' );?>::<?php echo $row->title; ?>">
+				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_SELECT' );?>::<?php echo $row->title; ?>">
 				<a style="cursor:pointer" 
 					 onclick="insertEvent('<?php echo $row->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $row->title ); ?>', '<?php echo JRoute::_('index.php?option=com_redevent&view=details&id='. $row->slug, true); ?>');">
 					<?php echo htmlspecialchars($row->title, ENT_QUOTES, 'UTF-8'); ?>
@@ -95,7 +95,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 					//Format date
-					$date = redEVENTHelper::isValidDate($row->dates) ? strftime( $this->elsettings->formatdate, strtotime( $row->dates )) : Jtext::_('OPEN DATE');
+					$date = redEVENTHelper::isValidDate($row->dates) ? strftime( $this->elsettings->formatdate, strtotime( $row->dates )) : JText::_('COM_REDEVENT_OPEN_DATE');
 					if ( !redEVENTHelper::isValidDate($row->enddates) ) {
 						$displaydate = $date;
 					} else {

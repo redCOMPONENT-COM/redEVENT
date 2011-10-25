@@ -76,7 +76,7 @@ class plgButtonRedevent extends JPlugin
 		$button = new JObject();
 		$button->set('modal', true);
 		$button->set('link', $link);
-		$button->set('text', JText::_('Event'));
+		$button->set('text', JText::_('PLG_REDEVENT_EDITORXTD_Event'));
 		$button->set('name', 'redevent');
 		$button->set('options', "{handler: 'iframe', size: {x: 600, y: 500}}");
 

@@ -26,11 +26,11 @@ defined('_JEXEC') or die('Restricted access');
 <table class="noshow">
   <tr>
     <td>
-    <fieldset class="adminform"><legend><?php echo JText::_( 'ATTENTION' ); ?></legend>
+    <fieldset class="adminform"><legend><?php echo JText::_('COM_REDEVENT_ATTENTION' ); ?></legend>
     <table class="admintable" cellspacing="1">
       <tbody>
         <tr>
-          <td><?php echo JText::_( 'GLOBAL PARAM DESC' ); ?></td>
+          <td><?php echo JText::_('COM_REDEVENT_GLOBAL_PARAM_DESC' ); ?></td>
         </tr>
       </tbody>
     </table>
@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
     <td>
     <?php echo $this->tabs->startPane('globalparams'); ?>
 		<?php $j = 0; ?>
-    <?php echo $this->tabs->startPanel(JText::_( 'GLOBAL PARAMETERS' ), 'global'.$j); ?>
+    <?php echo $this->tabs->startPanel(JText::_('COM_REDEVENT_GLOBAL_PARAMETERS' ), 'global'.$j); ?>
     <?php echo $this->globalparams->render('globalparams'); ?></fieldset>
     <?php echo $this->tabs->endPanel(); ?>
     

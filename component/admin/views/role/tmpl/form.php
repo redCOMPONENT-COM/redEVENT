@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <?php
 // Set toolbar items for the page
 $edit		= JRequest::getVar('edit',true);
-$text = !$edit ? JText::_( 'New' ) : JText::_( 'Edit' );
+$text = !$edit ? JText::_('COM_REDEVENT_New' ) : JText::_('COM_REDEVENT_Edit' );
 JToolBarHelper::title(   JText::_( 'COM_REDEVENT_ROLE' ).': <small><small>[ ' . $text.' ]</small></small>' );
 JToolBarHelper::save();
 JToolBarHelper::apply();
@@ -52,7 +52,7 @@ if (!$edit)  {
     // do field validation
     var validator = document.formvalidator;
     if ( validator.validate(form.name) === false ){
-      alert( "<?php echo JText::_( 'NAME IS REQUIRED', true ); ?>" );
+      alert( "<?php echo JText::_('COM_REDEVENT_NAME_IS_REQUIRED', true ); ?>" );
     } else {
       submitform( pressbutton );
     }
@@ -65,14 +65,14 @@ if (!$edit)  {
 
 <table class="admintable">
 	<tr>
-		<td width="100" align="right" class="key"><label for="name"><?php echo JText::_( 'Name' ); ?>:
+		<td width="100" align="right" class="key"><label for="name"><?php echo JText::_('COM_REDEVENT_Name' ); ?>:
 		</label></td>
 		<td><input class="text_area required" type="text" name="name" id="name"
 			size="32" maxlength="250" value="<?php echo $this->object->name; ?>" />
 		</td>
 	</tr>
 	<tr>
-		<td valign="top" align="right" class="key"><label for="ordering"> <?php echo JText::_( 'Ordering' ); ?>:
+		<td valign="top" align="right" class="key"><label for="ordering"> <?php echo JText::_('COM_REDEVENT_Ordering' ); ?>:
 		</label></td>
 		<td><?php echo $this->lists['ordering']; ?></td>
 	</tr>
@@ -89,7 +89,7 @@ if (!$edit)  {
 	</tr>
 	<?php endif; ?>
 	<tr>
-		<td valign="top" align="right" class="key"><label for="description"> <?php echo JText::_( 'Description' ); ?>:
+		<td valign="top" align="right" class="key"><label for="description"> <?php echo JText::_('COM_REDEVENT_Description' ); ?>:
 		</label></td>
 		<td><textarea cols="80" rows="5" name="description"><?php echo $this->object->description; ?></textarea></td>
 	</tr>

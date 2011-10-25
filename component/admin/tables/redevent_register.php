@@ -102,15 +102,15 @@ class RedEvent_register extends JTable
 	function check()
 	{
 		if (!$this->sid) {
-			$this->setError(JText::_('missing sid'));
+			$this->setError(JText::_('COM_REDEVENT_missing_sid'));
 			return false;
 		}
 		if (!$this->xref) {
-			$this->setError(JText::_('missing xref'));
+			$this->setError(JText::_('COM_REDEVENT_missing_xref'));
 			return false;
 		}
 		if (!$this->submit_key) {
-			$this->setError(JText::_('missing submit_key'));
+			$this->setError(JText::_('COM_REDEVENT_missing_submit_key'));
 			return false;
 		}
 		

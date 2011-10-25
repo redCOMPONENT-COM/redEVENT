@@ -54,7 +54,7 @@ class JElementVenuecategories extends JElement
 		if ($value) {
 			$category->load($value);
 		} else {
-			$category->name = JText::_('SELECT CATEGORY');
+			$category->name = JText::_('COM_REDEVENT_SELECT_CATEGORY');
 		}
 
 		$js = "
@@ -70,8 +70,8 @@ class JElementVenuecategories extends JElement
 		JHTML::_('behavior.modal', 'a.modal');
 
 		$html = "\n<div style=\"float: left;\"><input style=\"background: #ffffff;\" type=\"text\" id=\"a_name\" value=\"$category->name\" disabled=\"disabled\" /></div>";
-		$html .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('Select')."\"  href=\"$link\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('Select')."</a></div></div>\n";
-    $html .= "<div class=\"button2-left\"><div class=\"blank\"><a title=\"".JText::_('Reset')."\"  href=\"#\" onClick=\"elSelectCategory('', '".JText::_('SELECT CATEGORY')."');\">".JText::_('Reset')."</a></div></div>\n";
+		$html .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('COM_REDEVENT_Select')."\"  href=\"$link\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('COM_REDEVENT_Select')."</a></div></div>\n";
+    $html .= "<div class=\"button2-left\"><div class=\"blank\"><a title=\"".JText::_('COM_REDEVENT_Reset')."\"  href=\"#\" onClick=\"elSelectCategory('', '".JText::_('COM_REDEVENT_SELECT_CATEGORY')."');\">".JText::_('COM_REDEVENT_Reset')."</a></div></div>\n";
 		$html .= "\n<input type=\"hidden\" id=\"a_id\" name=\"$fieldName\" value=\"$value\" />";
 
 		return $html;

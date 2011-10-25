@@ -68,12 +68,12 @@ $toggle = $this->params->get('filter_toggle', 3);
 				<?php if ($this->params->get('filter_text', 1) && $this->lists['filter_type']): ?>
 				<div id="main-filter">
 					<?php
-					echo '<label for="filter_type">'.JText::_('FILTER').'</label>&nbsp;';
+					echo '<label for="filter_type">'.JText::_('COM_REDEVENT_FILTER').'</label>&nbsp;';
 					echo $this->lists['filter_type'].'&nbsp;';
 					?>
-					<input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" title="<?php echo JText::_('EVENTS_FILTER_HINT'); ?>"/>
-					<button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_( 'GO' ); ?></button>
-					<button type="button" id="filters-reset"><?php echo JText::_( 'RESET' ); ?></button>
+					<input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" title="<?php echo JText::_('COM_REDEVENT_EVENTS_FILTER_HINT'); ?>"/>
+					<button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_('COM_REDEVENT_GO' ); ?></button>
+					<button type="button" id="filters-reset"><?php echo JText::_('COM_REDEVENT_RESET' ); ?></button>
 				</div>
 				<?php endif; ?>
 				
@@ -104,7 +104,7 @@ $toggle = $this->params->get('filter_toggle', 3);
 		<?php if ($this->params->get('display')) : ?>
 		<div class="el_fright">
 			<?php
-			echo '<label for="limit">'.JText::_('DISPLAY NUM').'</label>&nbsp;';
+			echo '<label for="limit">'.JText::_('COM_REDEVENT_DISPLAY_NUM').'</label>&nbsp;';
 			echo $this->pageNav->getLimitBox();
 			?>
 		</div>

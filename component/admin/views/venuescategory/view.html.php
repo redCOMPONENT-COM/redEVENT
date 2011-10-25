@@ -56,10 +56,10 @@ class RedEventViewVenuesCategory extends JView {
 
 		//create the toolbar
 		if ( $cid ) {
-			JToolBarHelper::title( JText::_( 'EDIT VENUES CATEGORY' ), 'categoriesedit' );
+			JToolBarHelper::title( JText::_('COM_REDEVENT_EDIT_VENUES_CATEGORY' ), 'categoriesedit' );
 
 		} else {
-			JToolBarHelper::title( JText::_( 'ADD VENUES CATEGORY' ), 'categoriesedit' );
+			JToolBarHelper::title( JText::_('COM_REDEVENT_ADD_VENUES_CATEGORY' ), 'categoriesedit' );
 
 			//set the submenu
       ELAdmin::setMenu();
@@ -82,7 +82,7 @@ class RedEventViewVenuesCategory extends JView {
 		// fail if checked out not by 'me'
 		if ($row->id) {
 			if ($model->isCheckedOut( $user->get('id') )) {
-				JError::raiseWarning( 'REDEVENT_GENERIC_ERROR', $row->catname.' '.JText::_( 'EDITED BY ANOTHER ADMIN' ));
+				JError::raiseWarning( 'REDEVENT_GENERIC_ERROR', $row->catname.' '.JText::_('COM_REDEVENT_EDITED_BY_ANOTHER_ADMIN' ));
 				$mainframe->redirect( 'index.php?option=com_redevent&view=venuescategories' );
 			}
 		}
@@ -117,14 +117,14 @@ class RedEventViewVenuesCategory extends JView {
 		JHTML::_('behavior.modal', 'a.modal');
 
 		$imageselect = "\n<input style=\"background: #ffffff;\" type=\"text\" id=\"a_imagename\" value=\"$row->image\" disabled=\"disabled\" /><br />";
-		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('Upload')."\" href=\"$link\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('Upload')."</a></div></div>\n";
-		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('SELECTIMAGE')."\" href=\"$link2\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('SELECTIMAGE')."</a></div></div>\n";
-		$imageselect .= "\n&nbsp;<input class=\"inputbox\" type=\"button\" onclick=\"elSelectImage('', '".JText::_('SELECTIMAGE')."' );\" value=\"".JText::_('Reset')."\" />";
+		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('COM_REDEVENT_Upload')."\" href=\"$link\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('COM_REDEVENT_Upload')."</a></div></div>\n";
+		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('COM_REDEVENT_SELECTIMAGE')."\" href=\"$link2\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('COM_REDEVENT_SELECTIMAGE')."</a></div></div>\n";
+		$imageselect .= "\n&nbsp;<input class=\"inputbox\" type=\"button\" onclick=\"elSelectImage('', '".JText::_('COM_REDEVENT_SELECTIMAGE')."' );\" value=\"".JText::_('COM_REDEVENT_Reset')."\" />";
 		$imageselect .= "\n<input type=\"hidden\" id=\"a_image\" name=\"image\" value=\"$row->image\" />";
 
 		//build grouplist
 		$grouplist		= array();
-		$grouplist[] 	= JHTML::_('select.option', '0', JText::_( 'NO GROUP' ) );
+		$grouplist[] 	= JHTML::_('select.option', '0', JText::_('COM_REDEVENT_NO_GROUP' ) );
 		$grouplist 		= array_merge( $grouplist, $groups );
 
 		$lists['groups']	= JHTML::_('select.genericlist', $grouplist, 'groupid', 'size="1" class="inputbox"', 'value', 'text', $row->groupid );

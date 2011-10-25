@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="VENUEEVENTS THUMB LAYOUT">
+	<layout title="COM_REDEVENT_VENUEEVENTS_THUMB_LAYOUT">
 		<message>
-			<![CDATA[VENUEEVENTS THUMB LAYOUT DESC]]>
+			<![CDATA[COM_REDEVENT_VENUEEVENTS_THUMB_LAYOUT_DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>VENUEEVENTS THUMB LAYOUT</name>
-		<description>VENUEEVENTS THUMB LAYOUT DESC</description>
+		<name>COM_REDEVENT_VENUEEVENTS_THUMB_LAYOUT</name>
+		<description>COM_REDEVENT_VENUEEVENTS_THUMB_LAYOUT_DESC</description>
 		<url addpath="/administrator/components/com_redevent/elements">
-			<param name="id" type="categories" default="0" label="SELECT CATEGORY" description="SELECT CATEGORY DESC" />
+			<param name="id" type="categories" default="0" label="COM_REDEVENT_SELECT_CATEGORY" description="COM_REDEVENT_SELECT_CATEGORY_DESC" />
 		</url>
 	</state>
 </metadata>

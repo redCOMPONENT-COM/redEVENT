@@ -71,7 +71,7 @@ class RedeventViewPayment extends JView
 		//Check if the id exists
 		if ($row->eventid == 0)
 		{
-			return JError::raiseError( 404, JText::sprintf( 'Event #%d not found', $row->eventid ) );
+			return JError::raiseError( 404, JText::sprintf( 'COM_REDEVENT_Event_d_not_found', $row->eventid ) );
 		}
 
 		//add css file
@@ -86,7 +86,7 @@ class RedeventViewPayment extends JView
 		//Print
 		$pop	= JRequest::getBool('pop');
 
-		$params->def( 'page_title', JText::_( 'DETAILS' ));
+		$params->def( 'page_title', JText::_('COM_REDEVENT_DETAILS' ));
 
 		if ( $pop ) {
 			$params->set( 'popup', 1 );
@@ -95,7 +95,7 @@ class RedeventViewPayment extends JView
 		$print_link = JRoute::_($uri->toString().'&pop=1&tmpl=component');
 
 		//set page title and meta stuff
-		$document->setTitle( $row->title. ' - '. JText::_('Payment') );
+		$document->setTitle( $row->title. ' - '. JText::_('COM_REDEVENT_Payment') );
 
 		$text = '';
 		switch ($state)

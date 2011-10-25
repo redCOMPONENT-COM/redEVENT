@@ -86,8 +86,8 @@ class RedeventViewVenues extends JView
 		$pathway 	= & $mainframe->getPathWay();
 		
 		if ( $task == 'archive' ) {
-			$pathway->addItem(JText::_( 'ARCHIVE' ), JRoute::_('index.php?option=com_redevent&view=venues&task=archive') );
-			$pagetitle = $params->get('page_title').' - '.JText::_( 'ARCHIVE' );
+			$pathway->addItem(JText::_('COM_REDEVENT_ARCHIVE' ), JRoute::_('index.php?option=com_redevent&view=venues&task=archive') );
+			$pagetitle = $params->get('page_title').' - '.JText::_('COM_REDEVENT_ARCHIVE' );
 			$print_link = JRoute::_('index.php?option=com_redevent&view=venues&task=archive&pop=1&tmpl=component');
 		} else {
 			$pagetitle = $params->get('page_title');

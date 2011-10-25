@@ -28,10 +28,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<table class="adminform">
 		<tr>
 			<td width="100%">
-			  	<?php echo JText::_( 'SEARCH' ); ?>
+			  	<?php echo JText::_('COM_REDEVENT_SEARCH' ); ?>
 				<input type="text" name="search" id="search" value="<?php echo $this->lists['search']; ?>" class="text_area" onChange="document.adminForm.submit();" />
-				<button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
-				<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
+				<button onclick="this.form.submit();"><?php echo JText::_('COM_REDEVENT_Go' ); ?></button>
+				<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo JText::_('COM_REDEVENT_Reset' ); ?></button>
 			</td>
 			<td nowrap="nowrap">
 			  <?php
@@ -44,20 +44,20 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<table class="adminlist" cellspacing="1">
 	<thead>
 		<tr>
-			<th width="5"><?php echo JText::_( 'Num' ); ?></th>
+			<th width="5">#</th>
 			<th width="5"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
-			<th class="title"><?php echo JHTML::_('grid.sort', 'CATEGORY', 'catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			<th width="20%"><?php echo JHTML::_('grid.sort', 'ALIAS', 'c.alias', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-      <th width="10px" nowrap="nowrap"><?php echo JText::_( 'COLOR' ); ?></th>
-      <th width="20%"><?php echo JHTML::_('grid.sort', 'PARENT CATEGORY', 'c.lft', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			<th width="15%"><?php echo JHTML::_('grid.sort', 'GROUP', 'gr.name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			<th width="1%" nowrap="nowrap"><?php echo JText::_( 'EVENTS' ); ?></th>
-			<th width="1%" nowrap="nowrap"><?php echo JText::_( 'PUBLISHED' ); ?></th>
-			<th width="7%"><?php echo JHTML::_('grid.sort', 'ACCESS', 'c.access', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_CATEGORY', 'catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th width="20%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ALIAS', 'c.alias', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+      <th width="10px" nowrap="nowrap"><?php echo JText::_('COM_REDEVENT_COLOR' ); ?></th>
+      <th width="20%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_PARENT_CATEGORY', 'c.lft', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th width="15%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_GROUP', 'gr.name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th width="1%" nowrap="nowrap"><?php echo JText::_('COM_REDEVENT_EVENTS' ); ?></th>
+			<th width="1%" nowrap="nowrap"><?php echo JText::_('COM_REDEVENT_PUBLISHED' ); ?></th>
+			<th width="7%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ACCESS', 'c.access', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="7%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_LABEL_PRIVATE', 'c.private', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			<th width="80"><?php echo JHTML::_('grid.sort', 'REORDER', 'c.ordering', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th width="80"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_REORDER', 'c.ordering', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="1%"><?php echo JHTML::_('grid.order', $this->rows, 'filesave.png', 'saveordercat' ); ?></th>
-			<th width="1%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'ID', 'c.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th width="1%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ID', 'c.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 		</tr>
 	</thead>
 
@@ -93,7 +93,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					echo htmlspecialchars($row->catname, ENT_QUOTES, 'UTF-8');
 				} else {
 				?>
-					<span class="editlinktip hasTip" title="<?php echo JText::_( 'EDIT CATEGORY' );?>::<?php echo $row->catname; ?>">
+					<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_EDIT_CATEGORY' );?>::<?php echo $row->catname; ?>">
 					<a href="<?php echo $link; ?>">
 					<?php echo htmlspecialchars($row->catname, ENT_QUOTES, 'UTF-8'); ?>
 					</a></span>
@@ -120,7 +120,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
       </td>
 			<td align="center">
 				<?php if ($row->catgroup) {	?>
-					<span class="editlinktip hasTip" title="<?php echo JText::_( 'EDIT GROUP' );?>::<?php echo $row->catgroup; ?>">
+					<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_EDIT_GROUP' );?>::<?php echo $row->catgroup; ?>">
 					<a href="<?php echo $grouplink; ?>">
 						<?php echo htmlspecialchars($row->catgroup, ENT_QUOTES, 'UTF-8'); ?>
 					</a></span>

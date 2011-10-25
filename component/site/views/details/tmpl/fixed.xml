@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="Details fixed Layout">
+	<layout title="COM_REDEVENT_Details_fixed_Layout">
 		<message>
-			<![CDATA[DETAILS FIXED LAYOUT DESC]]>
+			<![CDATA[COM_REDEVENT_DETAILS_FIXED_LAYOUT_DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>DETAILS FIXED LAYOUT</name>
-		<description>DETAILS FIXED LAYOUT DESC</description>
+		<name>COM_REDEVENT_DETAILS_FIXED_LAYOUT</name>
+		<description>COM_REDEVENT_DETAILS_FIXED_LAYOUT_DESC</description>
 		<url addpath="/administrator/components/com_redevent/elements">
 			<param name="id" type="hidden" default="0" class="event-id"/>
-			<param name="xref" type="xref" default="0" label="SELECT EVENT" description="SELECT EVENT DESC" />
+			<param name="xref" type="xref" default="0" label="COM_REDEVENT_SELECT_EVENT" description="COM_REDEVENT_SELECT_EVENT_DESC" />
 		</url>
 	</state>
 </metadata>

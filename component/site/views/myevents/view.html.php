@@ -46,7 +46,7 @@ class RedeventViewMyevents extends JView
 			
         $user = & JFactory::getUser();
         if (!$user->get('id')) {
-        	$mainframe->redirect('index.php',JText::_('Only logged users can access this page'), 'error');
+        	$mainframe->redirect('index.php',JText::_('COM_REDEVENT_Only_logged_users_can_access_this_page'), 'error');
         }
         
         //initialize variables
@@ -74,7 +74,7 @@ class RedeventViewMyevents extends JView
 				JHTML::_('behavior.mootools');
 				$js = " window.addEvent('domready', function(){
 			            $$('.deletelink').addEvent('click', function(event){
-			                  if (confirm('".JText::_('CONFIRM DELETE DATE')."')) {
+			                  if (confirm('".JText::_('COM_REDEVENT_CONFIRM_DELETE_DATE')."')) {
 	                      	return true;
 		                    }
 		                    else {
@@ -116,7 +116,7 @@ class RedeventViewMyevents extends JView
         }
 
         //Set Page title
-        $pagetitle = $params->get('page_title', JText::_('MY EVENTS'));
+        $pagetitle = $params->get('page_title', JText::_('COM_REDEVENT_MY_EVENTS'));
         $mainframe->setPageTitle($pagetitle);
         $mainframe->addMetaTag('title', $pagetitle);
 
@@ -134,7 +134,7 @@ class RedeventViewMyevents extends JView
         }
         // events filter
         $hasManagedEvents = false;
-        $options = array(JHTML::_('select.option', 0, JText::_('select event')));
+        $options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_select_event')));
         if ($ev = $this->get('EventsOptions')) {
         	$hasManagedEvents = count($ev);
         	$options = array_merge($options, $ev);
@@ -220,10 +220,10 @@ class RedeventViewMyevents extends JView
 		}
 		JHTML::_('behavior.tooltip');
 
-		$image = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'EDIT XREF' ));
+		$image = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EDIT_XREF' ));
 
-		$overlib = JText::_( 'EDIT XREF TIP' );
-		$text = JText::_( 'EDIT XREF' );
+		$overlib = JText::_('COM_REDEVENT_EDIT_XREF_TIP' );
+		$text = JText::_('COM_REDEVENT_EDIT_XREF' );
 
 		$link 	= 'index.php?option=com_redevent&view=editevent&layout=eventdate&id='.$id.'&xref='.$xref;
 		$output	= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
@@ -245,10 +245,10 @@ class RedeventViewMyevents extends JView
 		}
 		JHTML::_('behavior.tooltip');
 
-		$image = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'EDIT EVENT' ));
+		$image = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EDIT_EVENT' ));
 
-		$overlib = JText::_( 'EDIT EVENT TIP' );
-		$text = JText::_( 'EDIT EVENT' );
+		$overlib = JText::_('COM_REDEVENT_EDIT_EVENT_TIP' );
+		$text = JText::_('COM_REDEVENT_EDIT_EVENT' );
 
 		$link 	= RedeventHelperRoute::getEditEventRoute($id, $xref).'&referer=myevents';
 		$output	= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
@@ -267,10 +267,10 @@ class RedeventViewMyevents extends JView
 		JHTML::_('behavior.tooltip');
     $document = & JFactory::getDocument();
 
-		$image = JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'EDIT XREF' ));
+		$image = JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EDIT_XREF' ));
 
-		$overlib = JText::_( 'EDIT XREF TIP' );
-		$text = JText::_( 'EDIT XREF' );
+		$overlib = JText::_('COM_REDEVENT_EDIT_XREF_TIP' );
+		$text = JText::_('COM_REDEVENT_EDIT_XREF' );
 
 		$link 	= 'index.php?option=com_redevent&task=deletexref&xref='.$id;
 		$output	= '<a href="'.JRoute::_($link).'" class="deletelink hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
@@ -288,10 +288,10 @@ class RedeventViewMyevents extends JView
 	{
 		JHTML::_('behavior.tooltip');
 
-		$image = JHTML::_('image.site', 'attendees.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'REDEVENT_EDIT_ATTENDEES' ));
+		$image = JHTML::_('image.site', 'attendees.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EDIT_ATTENDEES' ));
 
-		$overlib = JText::_( 'REDEVENT_EDIT_ATTENDEES_TIP' );
-		$text = JText::_( 'REDEVENT_EDIT_ATTENDEES' );
+		$overlib = JText::_('COM_REDEVENT_EDIT_ATTENDEES_TIP' );
+		$text = JText::_('COM_REDEVENT_EDIT_ATTENDEES' );
 		$link 	= RedeventHelperRoute::getManageAttendees($id, 'manageattendees');
 		$output	= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
 
@@ -312,10 +312,10 @@ class RedeventViewMyevents extends JView
 	{
 		JHTML::_('behavior.tooltip');
 
-		$image = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'EDIT VENUE' ));
+		$image = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EDIT_VENUE' ));
 
-		$overlib = JText::_( 'EDIT VENUE TIP' );
-		$text = JText::_( 'EDIT VENUE' );
+		$overlib = JText::_('COM_REDEVENT_EDIT_VENUE_TIP' );
+		$text = JText::_('COM_REDEVENT_EDIT_VENUE' );
 
 		$link 	= 'index.php?option=com_redevent&view=editvenue&id='.$id;
 		$output	= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';

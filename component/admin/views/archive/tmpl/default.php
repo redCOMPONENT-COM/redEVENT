@@ -30,12 +30,12 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td width="100%">
 				<?php
-				echo JText::_( 'SEARCH' );
+				echo JText::_('COM_REDEVENT_SEARCH' );
 				echo $this->lists['filter'];
 				?>
 				<input type="text" name="search" id="search" value="<?php echo $this->lists['search']; ?>" class="text_area" onChange="document.adminForm.submit();" />
-				<button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
-				<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
+				<button onclick="this.form.submit();"><?php echo JText::_('COM_REDEVENT_Go' ); ?></button>
+				<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo JText::_('COM_REDEVENT_Reset' ); ?></button>
 			</td>
 		</tr>
 	</table>
@@ -43,12 +43,12 @@ defined('_JEXEC') or die('Restricted access');
 	<table class="adminlist" cellspacing="1">
 		<thead>
 			<tr>
-				<th width="5"><?php echo JText::_( 'Num' ); ?></th>
+				<th width="5">#</th>
 				<th width="5"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
-				<th class="title"><?php echo JText::_( 'TIMEDETAILS' ); ?></th>
-				<th class="title"><?php echo JHTML::_('grid.sort', 'EVENT TITLE', 'a.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<th><?php echo JHTML::_('grid.sort', 'CATEGORY', 'cat.catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<th class="title"><?php echo JText::_( 'CREATION' ); ?></th>
+				<th class="title"><?php echo JText::_('COM_REDEVENT_TIMEDETAILS' ); ?></th>
+				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_EVENT_TITLE', 'a.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_CATEGORY', 'cat.catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th class="title"><?php echo JText::_('COM_REDEVENT_CREATION' ); ?></th>
 			</tr>
 		</thead>
 
@@ -77,11 +77,11 @@ defined('_JEXEC') or die('Restricted access');
 						<table class="adminlist">
 						<thead>
 							<tr>
-								<th><?php echo JText::_('VENUE'); ?></th>
-								<th><?php echo JText::_('CITY'); ?></th>
-								<th><?php echo JText::_('DATE'); ?></th>
-								<th><?php echo JText::_('TIME'); ?></th>
-             		<th><?php echo JText::_('ATTENDEES'); ?></th>
+								<th><?php echo JText::_('COM_REDEVENT_VENUE'); ?></th>
+								<th><?php echo JText::_('COM_REDEVENT_CITY'); ?></th>
+								<th><?php echo JText::_('COM_REDEVENT_DATE'); ?></th>
+								<th><?php echo JText::_('COM_REDEVENT_TIME'); ?></th>
+             		<th><?php echo JText::_('COM_REDEVENT_ATTENDEES'); ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -95,7 +95,7 @@ defined('_JEXEC') or die('Restricted access');
 									$displaydate = $date.' - '.$enddate;
 								}
 								else {
-									$displaydate = Jtext::_('OPEN DATE');
+									$displaydate = JText::_('COM_REDEVENT_OPEN_DATE');
 								}
 									
 								/* Get the time */
@@ -131,7 +131,7 @@ defined('_JEXEC') or die('Restricted access');
 							echo htmlspecialchars($row->title, ENT_QUOTES, 'UTF-8');
 						} else {
 							?>
-							<span class="editlinktip hasTip" title="<?php echo JText::_( 'EDIT EVENT' );?>::<?php echo $row->title; ?>">
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_EDIT_EVENT' );?>::<?php echo $row->title; ?>">
 							<a href="<?php echo $link; ?>">
 								<?php echo htmlspecialchars($row->title, ENT_QUOTES, 'UTF-8'); ?>
 							</a></span>
@@ -160,21 +160,21 @@ defined('_JEXEC') or die('Restricted access');
 						?>
 					</td>
 					<td>
-						<?php echo JText::_( 'AUTHOR' ).': '; ?><a href="<?php echo 'index.php?option=com_users&amp;task=edit&amp;hidemainmenu=1&amp;cid[]='.$row->created_by; ?>"><?php echo $row->author; ?></a><br />
-						<?php echo JText::_( 'EMAIL' ).': '; ?><a href="mailto:<?php echo $row->email; ?>"><?php echo $row->email; ?></a><br />
+						<?php echo JText::_('COM_REDEVENT_AUTHOR' ).': '; ?><a href="<?php echo 'index.php?option=com_users&amp;task=edit&amp;hidemainmenu=1&amp;cid[]='.$row->created_by; ?>"><?php echo $row->author; ?></a><br />
+						<?php echo JText::_('COM_REDEVENT_EMAIL' ).': '; ?><a href="mailto:<?php echo $row->email; ?>"><?php echo $row->email; ?></a><br />
 						<?php
-						$created	 	= JHTML::Date( $row->created, JText::_( 'DATE_FORMAT_LC2' ) );
-						$edited 		= JHTML::Date( $row->modified, JText::_( 'DATE_FORMAT_LC2' ) );
-						$ip				= $row->author_ip == 'DISABLED' ? JText::_( 'DISABLED' ) : $row->author_ip;
-						$image 			= JHTML::_('image', 'administrator/templates/'. $this->template .'/images/menu/icon-16-info.png', JText::_('NOTES') );
-						$overlib 		= JText::_( 'CREATED AT' ).': '.$created.'<br />';
-						$overlib		.= JText::_( 'WITH IP' ).': '.$ip.'<br />';
+						$created	 	= JHTML::Date( $row->created, JText::_('DATE_FORMAT_LC2' ) );
+						$edited 		= JHTML::Date( $row->modified, JText::_('DATE_FORMAT_LC2' ) );
+						$ip				= $row->author_ip == 'DISABLED' ? JText::_('COM_REDEVENT_DISABLED' ) : $row->author_ip;
+						$image 			= JHTML::_('image', 'administrator/templates/'. $this->template .'/images/menu/icon-16-info.png', JText::_('COM_REDEVENT_NOTES') );
+						$overlib 		= JText::_('COM_REDEVENT_CREATED_AT' ).': '.$created.'<br />';
+						$overlib		.= JText::_('COM_REDEVENT_WITH_IP' ).': '.$ip.'<br />';
 						if ($row->modified != '0000-00-00 00:00:00') {
-							$overlib 	.= JText::_( 'EDITED AT' ).': '.$edited.'<br />';
-							$overlib 	.= JText::_( 'EDITED FROM' ).': '.$row->editor.'<br />';
+							$overlib 	.= JText::_('COM_REDEVENT_EDITED_AT' ).': '.$edited.'<br />';
+							$overlib 	.= JText::_('COM_REDEVENT_EDITED_FROM' ).': '.$row->editor.'<br />';
 						}
 						?>
-						<span class="editlinktip hasTip" title="<?php echo JText::_('EVENT STATS'); ?>::<?php echo $overlib; ?>">
+						<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_EVENT_STATS'); ?>::<?php echo $overlib; ?>">
 							<?php echo $image; ?>
 						</span>
 					</td>

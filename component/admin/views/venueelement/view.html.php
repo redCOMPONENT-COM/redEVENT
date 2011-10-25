@@ -56,7 +56,7 @@ class RedEventViewVenueelement extends JView {
 		$template 			= $mainframe->getTemplate();
 
 		//prepare document
-		$document->setTitle(JText::_( 'SELECTVENUE' ));
+		$document->setTitle(JText::_('COM_REDEVENT_SELECTVENUE' ));
 		$document->addStyleSheet("templates/$template/css/general.css");
 
 		// Get data from the model
@@ -73,8 +73,8 @@ class RedEventViewVenueelement extends JView {
 
 		//Build search filter
 		$filters = array();
-		$filters[] = JHTML::_('select.option', '1', JText::_( 'VENUE' ) );
-		$filters[] = JHTML::_('select.option', '2', JText::_( 'CITY' ) );
+		$filters[] = JHTML::_('select.option', '1', JText::_('COM_REDEVENT_VENUE' ) );
+		$filters[] = JHTML::_('select.option', '2', JText::_('COM_REDEVENT_CITY' ) );
 		$lists['filter'] = JHTML::_('select.genericlist', $filters, 'filter', 'size="1" class="inputbox"', 'value', 'text', $filter );
 
 		// search filter

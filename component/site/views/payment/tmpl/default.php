@@ -31,5 +31,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div class="payment-result">
 <?php echo $this->text; ?>
 </div>
-<?php echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&id='.$this->row->eventid.'&xref='.$this->row->xref), JText::_('RETURN_EVENT_DETAILS')); ?>
+<?php echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&id='.$this->row->eventid.'&xref='.$this->row->xref), JText::_('COM_REDEVENT_RETURN_EVENT_DETAILS')); ?>
 </div>

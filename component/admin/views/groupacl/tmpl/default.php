@@ -42,21 +42,21 @@ JHTML::_('behavior.tooltip');
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
-<fieldset class="adminform"><legend><?php echo JText::_( 'Group ACL' ); ?></legend>
+<fieldset class="adminform"><legend><?php echo JText::_('COM_REDEVENT_Group_ACL' ); ?></legend>
 
 <table class="admintable">
 	<tr>
-		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'REDEVENT_ACL_MAINTAINED_CATEGORIES' ).'::'.JText::_( 'REDEVENT_ACL_MAINTAINED_CATEGORIES_TIP' ); ?>"><label for="maintaincategories"> <?php echo JText::_( 'REDEVENT_ACL_MAINTAINED_CATEGORIES' ); ?>:
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_ACL_MAINTAINED_CATEGORIES' ).'::'.JText::_('COM_REDEVENT_ACL_MAINTAINED_CATEGORIES_TIP' ); ?>"><label for="maintaincategories"> <?php echo JText::_('COM_REDEVENT_ACL_MAINTAINED_CATEGORIES' ); ?>:
 		</label></td>
 		<td><?php echo $this->lists['maintaincategories']; ?>"</td>
 	</tr>
 	<tr>
-		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'REDEVENT_ACL_MAINTAINED_VENUES_CATEGORIES' ).'::'.JText::_( 'REDEVENT_ACL_MAINTAINED_VENUES_CATEGORIES_TIP' ); ?>"><label for="maintainvenues"> <?php echo JText::_( 'REDEVENT_ACL_MAINTAINED_VENUES_CATEGORIES' ); ?>:
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_ACL_MAINTAINED_VENUES_CATEGORIES' ).'::'.JText::_('COM_REDEVENT_ACL_MAINTAINED_VENUES_CATEGORIES_TIP' ); ?>"><label for="maintainvenues"> <?php echo JText::_('COM_REDEVENT_ACL_MAINTAINED_VENUES_CATEGORIES' ); ?>:
 		</label></td>
 		<td><?php echo $this->lists['maintainvenuescategories']; ?>"</td>
 	</tr>
 	<tr>
-		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'REDEVENT_ACL_MAINTAINED_VENUES' ).'::'.JText::_( 'REDEVENT_ACL_MAINTAINED_VENUES_TIP' ); ?>"><label for="maintainvenues"> <?php echo JText::_( 'REDEVENT_ACL_MAINTAINED_VENUES' ); ?>:
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_ACL_MAINTAINED_VENUES' ).'::'.JText::_('COM_REDEVENT_ACL_MAINTAINED_VENUES_TIP' ); ?>"><label for="maintainvenues"> <?php echo JText::_('COM_REDEVENT_ACL_MAINTAINED_VENUES' ); ?>:
 		</label></td>
 		<td><?php echo $this->lists['maintainvenues']; ?>"</td>
 	</tr>

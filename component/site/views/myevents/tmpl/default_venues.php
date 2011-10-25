@@ -27,14 +27,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <?php if (count((array)$this->venues)) : ?>
 
-<h2><?php echo JText::_('Manage Venues'); ?></h2>
+<h2><?php echo JText::_('COM_REDEVENT_Manage_Venues'); ?></h2>
 
 <table class="eventtable" summary="venues list">
 	<thead>
 		<tr>
-			<th id="el_title" class="sectiontableheader" align="left"><?php echo JText::_('VENUE'); ?></th>
-			<th id="el_city" class="sectiontableheader" align="left"><?php echo JText::_('CITY'); ?></th>
-			<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('EDIT'); ?></th>
+			<th id="el_title" class="sectiontableheader" align="left"><?php echo JText::_('COM_REDEVENT_VENUE'); ?></th>
+			<th id="el_city" class="sectiontableheader" align="left"><?php echo JText::_('COM_REDEVENT_CITY'); ?></th>
+			<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('COM_REDEVENT_EDIT'); ?></th>
 		</tr>
 	</thead>
 	<tbody>

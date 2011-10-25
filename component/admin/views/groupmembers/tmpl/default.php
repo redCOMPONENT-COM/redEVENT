@@ -29,10 +29,10 @@ defined('_JEXEC') or die('Restricted access');
 <table class="adminform">
 	<tr>
 		<td width="100%">
-			<?php echo JText::_( 'SEARCH' );?>
+			<?php echo JText::_('COM_REDEVENT_SEARCH' );?>
 			<input type="text" name="search" id="search" value="<?php echo $this->lists['search']; ?>" class="text_area" onChange="document.adminForm.submit();" />
-			<button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
-			<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
+			<button onclick="this.form.submit();"><?php echo JText::_('COM_REDEVENT_Go' ); ?></button>
+			<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo JText::_('COM_REDEVENT_Reset' ); ?></button>
 		</td>
 	</tr>
 </table>
@@ -40,16 +40,16 @@ defined('_JEXEC') or die('Restricted access');
 <table class="adminlist" cellspacing="1">
 	<thead>
 		<tr>
-			<th width="20"><?php echo JText::_( 'Num' ); ?></th>
+			<th width="20">#</th>
 			<th width="20"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
-			<th class="title"><?php echo JHTML::_('grid.sort', 'NAME', 'name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			<th><?php echo JHTML::_('grid.sort', 'USERNAME', 'username', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			<th width="30"><?php echo JText::_( 'Admin' ); ?></th>
-			<th width="30"><?php echo JText::_( 'Manage events' ); ?></th>
-			<th width="30"><?php echo JText::_( 'Manage events dates' ); ?></th>
-			<th width="30"><?php echo JText::_( 'Manage Venues' ); ?></th>
+			<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_NAME', 'name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_USERNAME', 'username', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th width="30"><?php echo JText::_('COM_REDEVENT_Admin' ); ?></th>
+			<th width="30"><?php echo JText::_('COM_REDEVENT_Manage_events' ); ?></th>
+			<th width="30"><?php echo JText::_('COM_REDEVENT_Manage_events_dates' ); ?></th>
+			<th width="30"><?php echo JText::_('COM_REDEVENT_Manage_Venues' ); ?></th>
 			<th width="30"><?php echo JText::_( 'COM_REDEVENT_GROUPMEMBERS_MANAGE_ATTENDEES' ); ?></th>
-			<th width="30"><?php echo JText::_( 'Get registrations' ); ?></th>
+			<th width="30"><?php echo JText::_('COM_REDEVENT_Get_registrations' ); ?></th>
 		</tr>
 	</thead>
 
@@ -79,7 +79,7 @@ defined('_JEXEC') or die('Restricted access');
 						echo htmlspecialchars($row->name, ENT_QUOTES, 'UTF-8');
 					} else {
 				?>
-				<span class="editlinktip hasTip" title="<?php echo JText::_( 'EDIT MEMBER' );?>::<?php echo $row->name; ?>">
+				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_EDIT_MEMBER' );?>::<?php echo $row->name; ?>">
 				<a href="<?php echo $link; ?>">
 				<?php echo htmlspecialchars($row->name, ENT_QUOTES, 'UTF-8'); ?>
 				</a></span>
@@ -89,52 +89,52 @@ defined('_JEXEC') or die('Restricted access');
 			<td style="text-align:center;">
 			<?php if ($row->is_admin): ?>
 				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/ok.png',
-																	         JText::_( 'Yes' ), 
-																	         'title= "'. JText::_( 'yes' ) . '"' ); ?>
+																	         JText::_('COM_REDEVENT_Yes' ), 
+																	         'title= "'. JText::_('COM_REDEVENT_yes' ) . '"' ); ?>
 			<?php else: ?>
 				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/no.png',
-																	         JText::_( 'No' ), 
-																	         'title= "'. JText::_( 'No' ) . '"' ); ?>
+																	         JText::_('COM_REDEVENT_No' ), 
+																	         'title= "'. JText::_('COM_REDEVENT_No' ) . '"' ); ?>
 			<?php endif; ?>
 			</td>
 			<td style="text-align:center;">
 			<?php if ($row->manage_events): ?>
 				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/ok.png',
-																	         JText::_( 'Yes' ), 
-																	         'title= "'. JText::_( 'yes' ) . '"' ); ?>
+																	         JText::_('COM_REDEVENT_Yes' ), 
+																	         'title= "'. JText::_('COM_REDEVENT_yes' ) . '"' ); ?>
 			<?php else: ?>
 				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/no.png',
-																	         JText::_( 'No' ), 
-																	         'title= "'. JText::_( 'No' ) . '"' ); ?>
+																	         JText::_('COM_REDEVENT_No' ), 
+																	         'title= "'. JText::_('COM_REDEVENT_No' ) . '"' ); ?>
 			<?php endif; ?>
 			</td>
 			<td style="text-align:center;">
 			<?php if ($row->manage_xrefs): ?>
 				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/ok.png',
-																	         JText::_( 'Yes' ), 
-																	         'title= "'. JText::_( 'yes' ) . '"' ); ?>
+																	         JText::_('COM_REDEVENT_Yes' ), 
+																	         'title= "'. JText::_('COM_REDEVENT_yes' ) . '"' ); ?>
 			<?php else: ?>
 				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/no.png',
-																	         JText::_( 'No' ), 
-																	         'title= "'. JText::_( 'No' ) . '"' ); ?>
+																	         JText::_('COM_REDEVENT_No' ), 
+																	         'title= "'. JText::_('COM_REDEVENT_No' ) . '"' ); ?>
 			<?php endif; ?>
 			</td>
 			<td style="text-align:center;">
 			<?php if ($row->edit_venues): ?>
 				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/ok.png',
-																	         JText::_( 'Yes' ), 
-																	         'title= "'. JText::_( 'yes' ) . '"' ); ?>
+																	         JText::_('COM_REDEVENT_Yes' ), 
+																	         'title= "'. JText::_('COM_REDEVENT_yes' ) . '"' ); ?>
 			<?php else: ?>
 				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/no.png',
-																	         JText::_( 'No' ), 
-																	         'title= "'. JText::_( 'No' ) . '"' ); ?>
+																	         JText::_('COM_REDEVENT_No' ), 
+																	         'title= "'. JText::_('COM_REDEVENT_No' ) . '"' ); ?>
 			<?php endif; ?>
 			</td>
 			<td style="text-align:center;">
 			<?php if ($row->manage_attendees == 0): ?>
 				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/no.png',
-																	         JText::_( 'No' ), 
-																	         'title= "'. JText::_( 'No' ) . '"' ); ?>
+																	         JText::_('COM_REDEVENT_No' ), 
+																	         'title= "'. JText::_('COM_REDEVENT_No' ) . '"' ); ?>
 			<?php elseif ($row->manage_attendees == 1): ?>
 				<?php echo JText::_( 'COM_REDEVENT_GROUPMEMBERS_MANAGE_ATTENDEES_VIEW' ); ?>
 			<?php elseif ($row->manage_attendees == 2): ?>
@@ -144,12 +144,12 @@ defined('_JEXEC') or die('Restricted access');
 			<td style="text-align:center;">
 			<?php if ($row->receive_registrations): ?>
 				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/ok.png',
-																	         JText::_( 'Yes' ), 
-																	         'title= "'. JText::_( 'yes' ) . '"' ); ?>
+																	         JText::_('COM_REDEVENT_Yes' ), 
+																	         'title= "'. JText::_('COM_REDEVENT_yes' ) . '"' ); ?>
 			<?php else: ?>
 				<?php echo JHTML::_(	'image', 'administrator/components/com_redevent/assets/images/no.png',
-																	         JText::_( 'No' ), 
-																	         'title= "'. JText::_( 'No' ) . '"' ); ?>
+																	         JText::_('COM_REDEVENT_No' ), 
+																	         'title= "'. JText::_('COM_REDEVENT_No' ) . '"' ); ?>
 			<?php endif; ?>
 			</td>
 		</tr>

@@ -94,11 +94,11 @@ class RedEvent_groupmembers extends JTable
 	function check()
 	{
 		if (!($this->member)) {
-			$this->setError(JText::_('USER ID REQUIRED'));
+			$this->setError(JText::_('COM_REDEVENT_USER_ID_REQUIRED'));
 			return false;
 		}
 		if (!($this->group_id)) {
-			$this->setError(JText::_('GROUP ID REQUIRED'));
+			$this->setError(JText::_('COM_REDEVENT_GROUP_ID_REQUIRED'));
 			return false;
 		}
 		return true;

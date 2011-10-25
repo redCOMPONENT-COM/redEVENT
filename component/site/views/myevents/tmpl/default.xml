@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="Default Layout">
+	<layout title="COM_REDEVENT_Default_Layout">
 		<message>
-			<![CDATA[MY EVENTS LAYOUT DESC]]>
+			<![CDATA[COM_REDEVENT_MY_EVENTS_LAYOUT_DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>MY EVENTS LAYOUT</name>
-		<description>MY EVENTS LAYOUT DESC</description>
+		<name>COM_REDEVENT_MY_EVENTS_LAYOUT</name>
+		<description>COM_REDEVENT_MY_EVENTS_LAYOUT_DESC</description>
 		<params>
 			<param name="showcode" type="radio" default="0" label="COM_REDEVENT_VIEW_MYEVENTS_SHOW_CODE" description="COM_REDEVENT_VIEW_MYEVENTS_SHOW_CODE_DESC">
-				<option value="0">Hide</option>
-				<option value="1">Show</option>
+				<option value="0">COM_REDEVENT_Hide</option>
+				<option value="1">COM_REDEVENT_Show</option>
 			</param>
 			<param name="showopendates" type="radio" default="1" label="COM_REDEVENT_VIEW_MYEVENTS_SHOW_OPENDATES" description="COM_REDEVENT_VIEW_MYEVENTS_SHOW_OPENDATES_DESC">
-				<option value="0">Hide</option>
-				<option value="1">Show</option>
+				<option value="0">COM_REDEVENT_Hide</option>
+				<option value="1">COM_REDEVENT_Show</option>
 			</param>
 			<param name="shownonbookable" type="radio" default="1" label="COM_REDEVENT_VIEW_MYEVENTS_SHOW_NONBOOKABLE" description="COM_REDEVENT_VIEW_MYEVENTS_SHOW_NONBOOKABLE_DESC">
-				<option value="0">Hide</option>
-				<option value="1">Show</option>
+				<option value="0">COM_REDEVENT_Hide</option>
+				<option value="1">COM_REDEVENT_Show</option>
 			</param>
 			<param name="showeventfilter" type="radio" default="1" label="COM_REDEVENT_VIEW_MYEVENTS_SHOW_EVENTFILTER" description="COM_REDEVENT_VIEW_MYEVENTS_SHOW_EVENTFILTER_DESC">
-				<option value="0">Hide</option>
-				<option value="1">Show</option>
+				<option value="0">COM_REDEVENT_Hide</option>
+				<option value="1">COM_REDEVENT_Show</option>
 			</param>
 		</params>
 	</state>

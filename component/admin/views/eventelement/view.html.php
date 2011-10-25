@@ -57,7 +57,7 @@ class RedEventViewEventelement extends JView {
 		$template 			= $mainframe->getTemplate();
 
 		//prepare the document
-		$document->setTitle(JText::_( 'SELECTEVENT' ));
+		$document->setTitle(JText::_('COM_REDEVENT_SELECTEVENT' ));
 		$document->addStyleSheet('templates/'.$template.'/css/general.css');
 
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
@@ -76,10 +76,10 @@ class RedEventViewEventelement extends JView {
 
 		//Create the filter selectlist
 		$filters = array();
-		$filters[] = JHTML::_('select.option', '1', JText::_( 'EVENT TITLE' ) );
-		$filters[] = JHTML::_('select.option', '2', JText::_( 'VENUE' ) );
-		$filters[] = JHTML::_('select.option', '3', JText::_( 'CITY' ) );
-		$filters[] = JHTML::_('select.option', '4', JText::_( 'CATEGORY' ) );
+		$filters[] = JHTML::_('select.option', '1', JText::_('COM_REDEVENT_EVENT_TITLE' ) );
+		$filters[] = JHTML::_('select.option', '2', JText::_('COM_REDEVENT_VENUE' ) );
+		$filters[] = JHTML::_('select.option', '3', JText::_('COM_REDEVENT_CITY' ) );
+		$filters[] = JHTML::_('select.option', '4', JText::_('COM_REDEVENT_CATEGORY' ) );
 		$lists['filter'] = JHTML::_('select.genericlist', $filters, 'filter', 'size="1" class="inputbox"', 'value', 'text', $filter );
 
 		// search filter
@@ -133,7 +133,7 @@ class RedEventViewEventelement extends JView {
 			<tr width="40%">
 				<td class="key" align="right">
 					<label for="title">
-						<?php echo JText::_( 'PGB PAGE TITLE' ); ?>
+						<?php echo JText::_('COM_REDEVENT_PGB_PAGE_TITLE' ); ?>
 					</label>
 				</td>
 				<td>
@@ -143,7 +143,7 @@ class RedEventViewEventelement extends JView {
 			<tr width="60%">
 				<td class="key" align="right">
 					<label for="alias">
-						<?php echo JText::_( 'PGB TOC ALIAS PROMPT' ); ?>
+						<?php echo JText::_('COM_REDEVENT_PGB_TOC_ALIAS_PROMPT' ); ?>
 					</label>
 				</td>
 				<td>
@@ -152,7 +152,7 @@ class RedEventViewEventelement extends JView {
 			</tr>
 		</table>
 		</form>
-		<button onclick="insertPagebreak();"><?php echo JText::_( 'PGB INS PAGEBRK' ); ?></button>
+		<button onclick="insertPagebreak();"><?php echo JText::_('COM_REDEVENT_PGB_INS_PAGEBRK' ); ?></button>
 		<?php
 	}
 

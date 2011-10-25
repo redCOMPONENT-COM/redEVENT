@@ -62,8 +62,8 @@ class RedeventViewUpcomingVenueevents extends JView
 				<td>Date:</td><td>'.ELOutput::formatdate($event->dates, $event->times).'</td>
 			</tr><tr>				
 				<td>Duration:</td><td>'.$event->duration;
-				if ($event->duration == 1) $description .= JText::_('DAY');
-				else if ($event->duration > 1) $description .= JText::_('DAYS');
+				if ($event->duration == 1) $description .= JText::_('COM_REDEVENT_DAY');
+				else if ($event->duration > 1) $description .= JText::_('COM_REDEVENT_DAYS');
 			$description .= '</td>
 			</tr><tr>			
 				<td>Venue:</td><td>'.JHTML::_('link', $venue_url, $event->venue, 'target="_blank"').'</td>

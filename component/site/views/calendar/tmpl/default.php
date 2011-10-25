@@ -40,7 +40,7 @@ foreach ($this->rows as $row)
 
 		if ($start != '')
 		{
-			$timehtml = '<div class="time"><span class="label">'.JText::_('TIME').': </span>';
+			$timehtml = '<div class="time"><span class="label">'.JText::_('COM_REDEVENT_TIME').': </span>';
 			$timehtml .= $start;
 			if ($end != '') {
 				$timehtml .= ' - '.$end;
@@ -100,7 +100,7 @@ foreach ($this->rows as $row)
 	//venue
 	if ($this->settings->showlocate == 1)
 	{
-		$venue = '<div class="location"><span class="label">'.JText::_('VENUE').': </span>';
+		$venue = '<div class="location"><span class="label">'.JText::_('COM_REDEVENT_VENUE').': </span>';
 
 		if ($this->params->get('showlinkvenue',1) == 1 && 0) {
 			$venue .= $row->locid ? "<a href='".'index.php?option=com_redevent&view=venueevents&id='.$row->venueslug."'>".$this->escape($row->venue)."</a>" : '-';
@@ -146,11 +146,11 @@ foreach ($this->rows as $row)
 <div id="jlcalendarlegend">
 	
     <div id="buttonshowall">
-        <?php echo JText::_('SHOWALL'); ?>
+        <?php echo JText::_('COM_REDEVENT_SHOWALL'); ?>
     </div>
 	
     <div id="buttonhideall">
-        <?php echo JText::_('HIDEALL'); ?>
+        <?php echo JText::_('COM_REDEVENT_HIDEALL'); ?>
     </div>
 	
     <?php

@@ -65,7 +65,7 @@ class RedEventControllerEvents extends RedEventController
 		$cid 	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
 		if (!is_array( $cid ) || count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to publish' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_publish' ) );
 		}
 
 		$model = $this->getModel('events');
@@ -74,7 +74,7 @@ class RedEventControllerEvents extends RedEventController
 		}
 
 		$total = count( $cid );
-		$msg 	= $total.' '.JText::_('EVENT PUBLISHED');
+		$msg 	= $total.' '.JText::_('COM_REDEVENT_EVENT_PUBLISHED');
 
 		$this->setRedirect( 'index.php?option=com_redevent&view=events', $msg );
 	}
@@ -91,7 +91,7 @@ class RedEventControllerEvents extends RedEventController
 		$cid 	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
 		if (!is_array( $cid ) || count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to unpublish' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_unpublish' ) );
 		}
 
 		$model = $this->getModel('events');
@@ -100,7 +100,7 @@ class RedEventControllerEvents extends RedEventController
 		}
 
 		$total = count( $cid );
-		$msg 	= $total.' '.JText::_('EVENT UNPUBLISHED');
+		$msg 	= $total.' '.JText::_('COM_REDEVENT_EVENT_UNPUBLISHED');
 
 		$this->setRedirect( 'index.php?option=com_redevent&view=events', $msg );
 	}
@@ -117,7 +117,7 @@ class RedEventControllerEvents extends RedEventController
 		$cid 	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
 		if (!is_array( $cid ) || count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to archive' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_archive' ) );
 		}
 
 		$model = $this->getModel('events');
@@ -126,7 +126,7 @@ class RedEventControllerEvents extends RedEventController
 		}
 
 		$total = count( $cid );
-		$msg 	= $total.' '.JText::_('OLD EVENT DATE ARCHIVED');
+		$msg 	= $total.' '.JText::_('COM_REDEVENT_OLD_EVENT_DATE_ARCHIVED');
 
 		$this->setRedirect( 'index.php?option=com_redevent&view=events', $msg );
 	}
@@ -143,7 +143,7 @@ class RedEventControllerEvents extends RedEventController
     $cid  = JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
     if (!is_array( $cid ) || count( $cid ) < 1) {
-      JError::raiseError(500, JText::_( 'Select an item to archive' ) );
+      JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_archive' ) );
     }
 
     $model = $this->getModel('events');
@@ -152,7 +152,7 @@ class RedEventControllerEvents extends RedEventController
     }
 
     $total = count( $cid );
-    $msg  = $total.' '.JText::_('OLD EVENT DATE ARCHIVED');
+    $msg  = $total.' '.JText::_('COM_REDEVENT_OLD_EVENT_DATE_ARCHIVED');
 
     $this->setRedirect( 'index.php?option=com_redevent&view=events', $msg );
   }
@@ -198,7 +198,7 @@ class RedEventControllerEvents extends RedEventController
 			$user	=& JFactory::getUser();
 			// Error if checkedout by another administrator
 			if ($model->isCheckedOut( $user->get('id') )) {
-				$this->setRedirect( 'index.php?option=com_redevent&view=events', JText::_( 'EDITED BY ANOTHER ADMIN' ) );
+				$this->setRedirect( 'index.php?option=com_redevent&view=events', JText::_('COM_REDEVENT_EDITED_BY_ANOTHER_ADMIN' ) );
 			}
 			$model->checkout();
 		}
@@ -240,7 +240,7 @@ class RedEventControllerEvents extends RedEventController
 		
 		if ($returnid = $model->store($post)) 
 		{
-			$msg	= JText::_( 'EVENT SAVED');
+			$msg	= JText::_('COM_REDEVENT_EVENT_SAVED');
 			
 			if (isset($post['venueid']) && $post['venueid'])
 			{
@@ -313,7 +313,7 @@ class RedEventControllerEvents extends RedEventController
 		$msgtype = "message";
 		
 		if (!is_array( $cid ) || count( $cid ) < 1) {
-			$msg = JText::_( 'Select an item to delete' );
+			$msg = JText::_('COM_REDEVENT_Select_an_item_to_delete' );
 			$msgtype = 'error';
 		}
 
@@ -323,7 +323,7 @@ class RedEventControllerEvents extends RedEventController
 			$msgtype = 'error';
 		}
 		else {
-			$msg = $total.' '.JText::_( 'EVENTS DELETED');
+			$msg = $total.' '.JText::_('COM_REDEVENT_EVENTS_DELETED');
 			$cache = &JFactory::getCache('com_redevent');
 			$cache->clean();
 		}
@@ -336,17 +336,17 @@ class RedEventControllerEvents extends RedEventController
 		$id = JRequest::getVar('xref', 0, 'request', 'int');
 		
 		if (!$id) {
-			echo '0' .':'. JText::_('NO XREF ID');
+			echo '0' .':'. JText::_('COM_REDEVENT_NO_XREF_ID');
       return true;
 		}
 		else { 
 			$model = $this->getModel('session');
 			if ($model->removexref($id)) {
-				echo '1' .':'. JText::_('DATE DELETED');
+				echo '1' .':'. JText::_('COM_REDEVENT_DATE_DELETED');
         return true;
 			}
 			else {
-        echo '0' .':'. JText::_('COULDNT DELETE DATE') .' - '. $model->getError() ;
+        echo '0' .':'. JText::_('COM_REDEVENT_COULDNT_DELETE_DATE') .' - '. $model->getError() ;
         return true;				
 			}
 		}
@@ -438,7 +438,7 @@ class RedEventControllerEvents extends RedEventController
       $handle = fopen($file['tmp_name'],'r');
       if(!$handle) 
       {
-        $msg = JText::_('Cannot open uploaded file.');  
+        $msg = JText::_('COM_REDEVENT_Cannot_open_uploaded_file.');  
         $this->setRedirect( 'index.php?option=com_redevent&controller=events&task=export', $msg, 'error' ); 
         return;   
       }

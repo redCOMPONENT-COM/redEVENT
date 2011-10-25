@@ -94,7 +94,7 @@ class RedeventViewCategoryevents extends JView
 
 		//does the category exist
 		if ($category->id == 0) {
-			return JError::raiseError( 404, JText::sprintf( 'Category #%d not found', $category->id ) );
+			return JError::raiseError( 404, JText::sprintf( 'COM_REDEVENT_Category_d_not_found', $category->id ) );
 		}
 
 		//Set Meta data
@@ -120,7 +120,7 @@ class RedeventViewCategoryevents extends JView
 		
 		if ($task == 'archive') {
 			$link = RedeventHelperRoute::getCategoryEventsRoute($category->slug, 'archive');
-			$pathway->addItem( JText::_( 'ARCHIVE' ).' - '.$category->catname, JRoute::_($link));
+			$pathway->addItem( JText::_('COM_REDEVENT_ARCHIVE' ).' - '.$category->catname, JRoute::_($link));
 			$print_link = JRoute::_( $link.'&pop=1&tmpl=component');
 		} else {
 			$link = RedeventHelperRoute::getCategoryEventsRoute($category->slug);
@@ -142,7 +142,7 @@ class RedeventViewCategoryevents extends JView
 
 		//Generate Categorydescription
 		if (empty ($category->catdescription)) {
-			$catdescription = JText::_( 'NO DESCRIPTION' );
+			$catdescription = JText::_('COM_REDEVENT_NO_DESCRIPTION' );
 		} else {
 			//execute plugins
 			$catdescription = JHTML::_('content.prepare', $category->catdescription);

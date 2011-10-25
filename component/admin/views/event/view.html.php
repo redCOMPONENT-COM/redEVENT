@@ -89,7 +89,7 @@ class RedEventViewEvent extends JView {
 		if ($task == 'copy') 
 		{
 			$row->id = null;
-			$row->title .= ' '.JText::_('copy');
+			$row->title .= ' '.JText::_('COM_REDEVENT_copy');
 			$row->alias = '';
 		}
 		if ($task == 'add') 
@@ -106,7 +106,7 @@ class RedEventViewEvent extends JView {
 		// fail if checked out not by 'me'
 		if ($row->id) {
 			if ($model->isCheckedOut( $user->get('id') )) {
-				JError::raiseWarning( 'REDEVENT_GENERIC_ERROR', $row->titel.' '.JText::_( 'EDITED BY ANOTHER ADMIN' ));
+				JError::raiseWarning( 'REDEVENT_GENERIC_ERROR', $row->titel.' '.JText::_('COM_REDEVENT_EDITED_BY_ANOTHER_ADMIN' ));
 				$mainframe->redirect( 'index.php?option=com_redevent&view=events' );
 			}
 		}
@@ -140,8 +140,8 @@ class RedEventViewEvent extends JView {
     // enable ical button
     $options = array(
                  JHTML::_('select.option', 0, JText::_('COM_REDEVENT_DEFAULT')),
-                 JHTML::_('select.option', 1, JText::_('Yes')),
-                 JHTML::_('select.option', 2, JText::_('No')),
+                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_Yes')),
+                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_No')),
                  );
 		$lists['enable_ical'] = JHTML::_('select.genericlist', $options, 'enable_ical', '', 'value', 'text', $row->enable_ical);
 		
@@ -162,10 +162,10 @@ class RedEventViewEvent extends JView {
 		$document->addScriptDeclaration($js);
 		$imageselect = "\n<input style=\"background: #ffffff;\" type=\"text\" id=\"a_imagename\" value=\"$row->datimage\" disabled=\"disabled\" /><br />";
 
-		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('Upload')."\" href=\"$link\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('Upload')."</a></div></div>\n";
-		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('SELECTIMAGE')."\" href=\"$link2\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('SELECTIMAGE')."</a></div></div>\n";
+		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('COM_REDEVENT_Upload')."\" href=\"$link\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('COM_REDEVENT_Upload')."</a></div></div>\n";
+		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('COM_REDEVENT_SELECTIMAGE')."\" href=\"$link2\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('COM_REDEVENT_SELECTIMAGE')."</a></div></div>\n";
 
-		$imageselect .= "\n&nbsp;<input class=\"inputbox\" type=\"button\" onclick=\"elSelectImage('', '".JText::_('SELECTIMAGE')."' );\" value=\"".JText::_('Reset')."\" />";
+		$imageselect .= "\n&nbsp;<input class=\"inputbox\" type=\"button\" onclick=\"elSelectImage('', '".JText::_('COM_REDEVENT_SELECTIMAGE')."' );\" value=\"".JText::_('COM_REDEVENT_Reset')."\" />";
 		$imageselect .= "\n<input type=\"hidden\" id=\"a_image\" name=\"datimage\" value=\"$row->datimage\" />";
 		
 		/* Check if redFORM is installed */
@@ -214,22 +214,22 @@ class RedEventViewEvent extends JView {
 
 		//build toolbar		
 		if ($task == 'copy') {
-		  	JToolBarHelper::title( JText::_( 'COPY EVENT'), 'eventedit');		
+		  	JToolBarHelper::title( JText::_('COM_REDEVENT_COPY_EVENT'), 'eventedit');		
 		} elseif ( $cid ) {
-			JToolBarHelper::title( JText::_( 'EDIT EVENT' ).' - '.$row->title, 'eventedit' );
+			JToolBarHelper::title( JText::_('COM_REDEVENT_EDIT_EVENT' ).' - '.$row->title, 'eventedit' );
 		} else {
-			JToolBarHelper::title( JText::_( 'ADD EVENT' ), 'eventedit' );
+			JToolBarHelper::title( JText::_('COM_REDEVENT_ADD_EVENT' ), 'eventedit' );
 
 			//set the submenu
-			JSubMenuHelper::addEntry( JText::_( 'REDEVENT' ), 'index.php?option=com_redevent');
-			JSubMenuHelper::addEntry( JText::_( 'EVENTS' ), 'index.php?option=com_redevent&view=events');
-			JSubMenuHelper::addEntry( JText::_( 'VENUES' ), 'index.php?option=com_redevent&view=venues');
-			JSubMenuHelper::addEntry( JText::_( 'CATEGORIES' ), 'index.php?option=com_redevent&view=categories');
-			JSubMenuHelper::addEntry( JText::_( 'ARCHIVESCREEN' ), 'index.php?option=com_redevent&view=archive');
-			JSubMenuHelper::addEntry( JText::_( 'GROUPS' ), 'index.php?option=com_redevent&view=groups');
-			JSubMenuHelper::addEntry( JText::_( 'HELP' ), 'index.php?option=com_redevent&view=help');
+			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT' ), 'index.php?option=com_redevent');
+			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_EVENTS' ), 'index.php?option=com_redevent&view=events');
+			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_VENUES' ), 'index.php?option=com_redevent&view=venues');
+			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_CATEGORIES' ), 'index.php?option=com_redevent&view=categories');
+			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_ARCHIVESCREEN' ), 'index.php?option=com_redevent&view=archive');
+			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_GROUPS' ), 'index.php?option=com_redevent&view=groups');
+			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_HELP' ), 'index.php?option=com_redevent&view=help');
 			if ($user->get('gid') > 24) {
-				JSubMenuHelper::addEntry( JText::_( 'SETTINGS' ), 'index.php?option=com_redevent&controller=settings&task=edit');
+				JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_SETTINGS' ), 'index.php?option=com_redevent&controller=settings&task=edit');
 			}
 		}
 		JToolBarHelper::apply();
@@ -311,12 +311,12 @@ class RedEventViewEvent extends JView {
 		$lists = array();
 		
 		// venues selector
-    $venues = array(JHTML::_('select.option', 0, JText::_('Select Venue')));
+    $venues = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_Select_Venue')));
 		$venues = array_merge($venues, $this->get('VenuesOptions'));
 		$lists['venue'] = JHTML::_('select.genericlist', $venues, 'venueid', '', 'value', 'text', $xref->venueid);
 		
 		// group selector
-    $options = array(JHTML::_('select.option', 0, JText::_('Select group')));
+    $options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_Select_group')));
 		$options = array_merge($options, $this->get('GroupsOptions'));
 		$lists['group'] = JHTML::_('select.genericlist', $options, 'groupid', '', 'value', 'text', $xref->groupid);
 		
@@ -324,18 +324,18 @@ class RedEventViewEvent extends JView {
     $lockedrecurrence = ($xref->count > 0); 
 
     // Recurrence selector
-    $recur_type = array( JHTML::_('select.option', 'NONE', JText::_('NO REPEAT')),
-                         JHTML::_('select.option', 'DAILY', JText::_('DAILY')),
-                         JHTML::_('select.option', 'WEEKLY', JText::_('WEEKLY')),
-                         JHTML::_('select.option', 'MONTHLY', JText::_('MONTHLY')),
-                         JHTML::_('select.option', 'YEARLY', JText::_('YEARLY'))
+    $recur_type = array( JHTML::_('select.option', 'NONE', JText::_('COM_REDEVENT_NO_REPEAT')),
+                         JHTML::_('select.option', 'DAILY', JText::_('COM_REDEVENT_DAILY')),
+                         JHTML::_('select.option', 'WEEKLY', JText::_('COM_REDEVENT_WEEKLY')),
+                         JHTML::_('select.option', 'MONTHLY', JText::_('COM_REDEVENT_MONTHLY')),
+                         JHTML::_('select.option', 'YEARLY', JText::_('COM_REDEVENT_YEARLY'))
                        );
     $lists['recurrence_type'] = JHTML::_('select.radiolist', $recur_type, 'recurrence_type', '', 'value', 'text', $xref->rrules->type);
     
     // published state selector
-    $published = array( JHTML::_('select.option', '1', JText::_('PUBLISHED')),
-                         JHTML::_('select.option', '0', JText::_('UNPUBLISHED')),
-                         JHTML::_('select.option', '-1', JText::_('ARCHIVED'))
+    $published = array( JHTML::_('select.option', '1', JText::_('COM_REDEVENT_PUBLISHED')),
+                         JHTML::_('select.option', '0', JText::_('COM_REDEVENT_UNPUBLISHED')),
+                         JHTML::_('select.option', '-1', JText::_('COM_REDEVENT_ARCHIVED'))
                        );
     $lists['published'] = JHTML::_('select.radiolist', $published, 'published', '', 'value', 'text', $xref->published);
     
@@ -367,7 +367,7 @@ class RedEventViewEvent extends JView {
     $xref = $this->get('xref');
     
     /* Get the date */
-    $date = (!redEVENTHelper::isValidDate($xref->dates) ? Jtext::_('Open date') : strftime( $elsettings->formatdate, strtotime( $xref->dates )));
+    $date = (!redEVENTHelper::isValidDate($xref->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $elsettings->formatdate, strtotime( $xref->dates )));
     $enddate  = (!redEVENTHelper::isValidDate($xref->enddates) || $xref->enddates == $xref->dates) ? '' : strftime( $elsettings->formatdate, strtotime( $xref->enddates ));
     $displaydate = $date. ($enddate ? ' - '.$enddate: '');
 
@@ -393,7 +393,7 @@ class RedEventViewEvent extends JView {
 	    $document->addScriptDeclaration($js);		
 		}
 		else {
-			echo JText::_('ERROR: JSON IS NOT ENABLED');
+			echo JText::_('COM_REDEVENT_ERROR_JSON_IS_NOT_ENABLED');
 		}
 		return;
 	}
@@ -407,7 +407,7 @@ class RedEventViewEvent extends JView {
 	{ 
     ?>	
 	  <div class="tagsdiv">
-	  	<?php echo JHTML::link('index.php?option=com_redevent&view=tags&tmpl=component&field='.$field, JText::_('TAGS'), 'class="modal"'); ?>
+	  	<?php echo JHTML::link('index.php?option=com_redevent&view=tags&tmpl=component&field='.$field, JText::_('COM_REDEVENT_TAGS'), 'class="modal"'); ?>
     </div>  
 	  <?php 
 	}
@@ -456,12 +456,12 @@ class RedEventViewEvent extends JView {
     $customfields =& $model->getXrefCustomfields();
     
 		// venues selector
-    $venues = array(JHTML::_('select.option', 0, JText::_('Select Venue')));
+    $venues = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_Select_Venue')));
 		$venues = array_merge($venues, $model->getVenuesOptions());
 		$this->lists['venue'] = JHTML::_('select.genericlist', $venues, 'venueid', '', 'value', 'text');
 		
 		// group selector
-    $options = array(JHTML::_('select.option', 0, JText::_('Select group')));
+    $options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_Select_group')));
 		$options = array_merge($options, $model->getGroupsOptions());
 		$this->lists['group'] = JHTML::_('select.genericlist', $options, 'groupid', '', 'value', 'text');
 		
@@ -469,18 +469,18 @@ class RedEventViewEvent extends JView {
     $lockedrecurrence = false; 
 
     // Recurrence selector
-    $recur_type = array( JHTML::_('select.option', 'NONE', JText::_('NO REPEAT')),
-                         JHTML::_('select.option', 'DAILY', JText::_('DAILY')),
-                         JHTML::_('select.option', 'WEEKLY', JText::_('WEEKLY')),
-                         JHTML::_('select.option', 'MONTHLY', JText::_('MONTHLY')),
-                         JHTML::_('select.option', 'YEARLY', JText::_('YEARLY'))
+    $recur_type = array( JHTML::_('select.option', 'NONE', JText::_('COM_REDEVENT_NO_REPEAT')),
+                         JHTML::_('select.option', 'DAILY', JText::_('COM_REDEVENT_DAILY')),
+                         JHTML::_('select.option', 'WEEKLY', JText::_('COM_REDEVENT_WEEKLY')),
+                         JHTML::_('select.option', 'MONTHLY', JText::_('COM_REDEVENT_MONTHLY')),
+                         JHTML::_('select.option', 'YEARLY', JText::_('COM_REDEVENT_YEARLY'))
                        );
     $this->lists['recurrence_type'] = JHTML::_('select.radiolist', $recur_type, 'recurrence_type', '', 'value', 'text');
     
     // published state selector
-    $published = array( JHTML::_('select.option', '1', JText::_('PUBLISHED')),
-                         JHTML::_('select.option', '0', JText::_('UNPUBLISHED')),
-                         JHTML::_('select.option', '-1', JText::_('ARCHIVED'))
+    $published = array( JHTML::_('select.option', '1', JText::_('COM_REDEVENT_PUBLISHED')),
+                         JHTML::_('select.option', '0', JText::_('COM_REDEVENT_UNPUBLISHED')),
+                         JHTML::_('select.option', '-1', JText::_('COM_REDEVENT_ARCHIVED'))
                        );
     $this->lists['session_published'] = JHTML::_('select.radiolist', $published, 'session_published', '', 'value', 'text', 1);
     
@@ -490,7 +490,7 @@ class RedEventViewEvent extends JView {
                        );
     $this->lists['featured'] = JHTML::_('select.booleanlist', 'featured');
 				
-		$rolesoptions = array(JHTML::_('select.option', 0, JText::_('Select role')));
+		$rolesoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_Select_role')));
 		$rolesoptions = array_merge($rolesoptions, $model->getRolesOptions());
 		
 		$pricegroupsoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_PRICEGROUP')));

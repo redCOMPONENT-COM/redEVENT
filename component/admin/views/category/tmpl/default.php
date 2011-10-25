@@ -37,7 +37,7 @@ function submitbutton(pressbutton)
 
 	// do field validation
 	if (form.catname.value == ""){
-		alert( "<?php echo JText::_( 'ADD NAME CATEGORY' ); ?>" );
+		alert( "<?php echo JText::_('COM_REDEVENT_ADD_NAME_CATEGORY' ); ?>" );
 	} else {
 		<?php echo $this->editor->save( 'catdescription' ); ?>
 		submitform( pressbutton );
@@ -58,7 +58,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<td>
 							<label for="catname">
-								<?php echo JText::_( 'CATEGORY' ).':'; ?>
+								<?php echo JText::_('COM_REDEVENT_CATEGORY' ).':'; ?>
 							</label>
 						</td>
 						<td>
@@ -66,7 +66,7 @@ function submitbutton(pressbutton)
 						</td>
 						<td>
 							<label for="published">
-								<?php echo JText::_( 'PUBLISHED' ).':'; ?>
+								<?php echo JText::_('COM_REDEVENT_PUBLISHED' ).':'; ?>
 							</label>
 						</td>
 						<td>
@@ -79,7 +79,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<td>
 							<label for="alias">
-								<?php echo JText::_( 'Alias' ).':'; ?>
+								<?php echo JText::_('COM_REDEVENT_Alias' ).':'; ?>
 							</label>
 						</td>
 						<td>
@@ -87,13 +87,13 @@ function submitbutton(pressbutton)
 						</td>
             <td>
               <label for="color">
-                <?php echo JText::_( 'COLOR' ).':'; ?>
+                <?php echo JText::_('COM_REDEVENT_COLOR' ).':'; ?>
               </label>
             </td>
             <td>
               <input class="inputbox" type="text" style="background: <?php echo ( $this->row->color == '' )?"transparent":$this->row->color; ?>;"
                      name="color" id="color" size="10" maxlength="20" value="<?php echo $this->row->color; ?>" />                   
-              <input type="button" class="button" value="<?php echo JText::_( 'PICK' ); ?>" onclick="openPicker('color', -200, 20);" /> 
+              <input type="button" class="button" value="<?php echo JText::_('COM_REDEVENT_PICK' ); ?>" onclick="openPicker('color', -200, 20);" /> 
             </td>
 					</tr>
 				</table>
@@ -120,14 +120,14 @@ function submitbutton(pressbutton)
 			<td valign="top" width="320px" style="padding: 7px 0 0 5px">
 			<?php
 			echo $this->pane->startPane( 'det-pane' );
-			$title = JText::_( 'CATEGORIES' );
+			$title = JText::_('COM_REDEVENT_CATEGORIES' );
 			echo $this->pane->startPanel( $title, 'categories' );
 			?>
 			<table>
 				<tr>
 					<td>
 						<label for="categories">
-							<?php echo JText::_( 'PARENT CATEGORY' ).':'; ?>
+							<?php echo JText::_('COM_REDEVENT_PARENT_CATEGORY' ).':'; ?>
 						</label>
 					</td>
 					<td>
@@ -139,14 +139,14 @@ function submitbutton(pressbutton)
 			</table>
 			<?php
 			echo $this->pane->endPanel();
-			$title = JText::_( 'ACCESS' );
+			$title = JText::_('COM_REDEVENT_ACCESS' );
 			echo $this->pane->startPanel( $title, 'access' );
 			?>
 			<table>
 				<tr>
 					<td>
 						<label for="access">
-							<?php echo JText::_( 'ACCESS' ).':'; ?>
+							<?php echo JText::_('COM_REDEVENT_ACCESS' ).':'; ?>
 						</label>
 					</td>
 					<td>
@@ -170,23 +170,23 @@ function submitbutton(pressbutton)
 			</table>
 			<?php
 			echo $this->pane->endPanel();
-			echo $this->pane->startPanel( JText::_('Frontend event submission'), 'access' );
+			echo $this->pane->startPanel( JText::_('COM_REDEVENT_Frontend_event_submission'), 'access' );
 			?>
 			<table>
 				<tr>
 					<td>
-						<label for="event_template" class="hasTip" title="<?php echo JText::_( 'Category Event template' ).'::'.JText::_( 'Category Event template tip' ); ?>">
-							<?php echo JText::_( 'Category Event template' ).':'; ?>
+						<label for="event_template" class="hasTip" title="<?php echo JText::_('COM_REDEVENT_Category_Event_template' ).'::'.JText::_('COM_REDEVENT_Category_Event_template_tip' ); ?>">
+							<?php echo JText::_('COM_REDEVENT_Category_Event_template' ).':'; ?>
 						</label>
 					</td>
 					<td>
 						<?php	$link = 'index.php?option=com_redevent&amp;view=xrefelement&amp;tmpl=component&amp;field=event_template'; ?>
-						<div style="float: left;"><input style="background: #ffffff;" type="text" id="event_template_name" value="<?php echo ($this->row->event_template_name ? $this->row->event_template_name : JText::_('Default')); ?>" disabled="disabled" /></div>
+						<div style="float: left;"><input style="background: #ffffff;" type="text" id="event_template_name" value="<?php echo ($this->row->event_template_name ? $this->row->event_template_name : JText::_('COM_REDEVENT_Default')); ?>" disabled="disabled" /></div>
 						<div class="button2-left"><div class="blank">
-							<a class="modal" title="<?php JText::_('Select'); ?>"  href="<?php echo $link; ?>" rel="{handler: 'iframe', size: {x: 650, y: 375}}"><?php echo JText::_('Select'); ?></a>
+							<a class="modal" title="<?php JText::_('COM_REDEVENT_Select'); ?>"  href="<?php echo $link; ?>" rel="{handler: 'iframe', size: {x: 650, y: 375}}"><?php echo JText::_('COM_REDEVENT_Select'); ?></a>
 						</div></div>
 						<div class="button2-left"><div class="blank">
-							<a title="<?php JText::_('Reset'); ?>" id="ev-reset-button"><?php echo JText::_('Reset'); ?></a>
+							<a title="<?php JText::_('COM_REDEVENT_Reset'); ?>" id="ev-reset-button"><?php echo JText::_('COM_REDEVENT_Reset'); ?></a>
 						</div></div>
 						<input type="hidden" id="event_template" name="event_template" value="<?php echo $this->row->event_template; ?>" />
 					</td>
@@ -194,14 +194,14 @@ function submitbutton(pressbutton)
 			</table>
 			<?php
 			echo $this->pane->endPanel();
-			$title = JText::_( 'GROUP' );
+			$title = JText::_('COM_REDEVENT_GROUP' );
 			echo $this->pane->startPanel( $title, 'group' );
 			?>
 			<table>
 				<tr>
 					<td>
 						<label for="groups">
-							<?php echo JText::_( 'GROUP' ).':'; ?>
+							<?php echo JText::_('COM_REDEVENT_GROUP' ).':'; ?>
 						</label>
 					</td>
 					<td>
@@ -210,7 +210,7 @@ function submitbutton(pressbutton)
 				</tr>
 			</table>
 			<?php
-			$title = JText::_( 'IMAGE' );
+			$title = JText::_('COM_REDEVENT_IMAGE' );
 			echo $this->pane->endPanel();
 			echo $this->pane->startPanel( $title, 'catimage' );
 			?>
@@ -218,7 +218,7 @@ function submitbutton(pressbutton)
 				<tr>
 					<td>
 						<label for="image">
-							<?php echo JText::_( 'CHOOSE IMAGE' ).':'; ?>
+							<?php echo JText::_('COM_REDEVENT_CHOOSE_IMAGE' ).':'; ?>
 						</label>
 					</td>
 					<td>
@@ -245,7 +245,7 @@ function submitbutton(pressbutton)
 				</tr>
 			</table>
 			<?php
-			$title = JText::_( 'METADATA INFORMATION' );
+			$title = JText::_('COM_REDEVENT_METADATA_INFORMATION' );
 			echo $this->pane->endPanel();
 			echo $this->pane->startPanel( $title, 'metadata' );
 			?>
@@ -253,7 +253,7 @@ function submitbutton(pressbutton)
 		<tr>
 			<td>
 				<label for="metadesc">
-					<?php echo JText::_( 'META DESCRIPTION' ); ?>:
+					<?php echo JText::_('COM_REDEVENT_META_DESCRIPTION' ); ?>:
 				</label>
 				<br />
 				<textarea class="inputbox" cols="40" rows="5" name="meta_description" id="metadesc" style="width:300px;"><?php echo str_replace('&','&amp;',$this->row->meta_description); ?></textarea>
@@ -262,7 +262,7 @@ function submitbutton(pressbutton)
 		<tr>
 			<td>
 				<label for="metakey">
-					<?php echo JText::_( 'META KEYWORDS' ); ?>:
+					<?php echo JText::_('COM_REDEVENT_META_KEYWORDS' ); ?>:
 				</label>
 				<br />
 				<textarea class="inputbox" cols="40" rows="5" name="meta_keywords" id="metakey" style="width:300px;"><?php echo str_replace('&','&amp;',$this->row->meta_keywords); ?></textarea>
@@ -270,7 +270,7 @@ function submitbutton(pressbutton)
 		</tr>
 		<tr>
 			<td>
-				<input type="button" class="button" value="<?php echo JText::_( 'ADD CATNAME' ); ?>" onclick="f=document.adminForm;f.metakey.value=f.catname.value;" />
+				<input type="button" class="button" value="<?php echo JText::_('COM_REDEVENT_ADD_CATNAME' ); ?>" onclick="f=document.adminForm;f.metakey.value=f.catname.value;" />
 			</td>
 		</tr>
 		</table>

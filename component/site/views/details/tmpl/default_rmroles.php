@@ -41,7 +41,7 @@ foreach ($this->roles as $r)
 	<table>
 		<thead>
 			<tr>
-			<th><?php echo JText::_('Name'); ?></th>
+			<th><?php echo JText::_('COM_REDEVENT_Name'); ?></th>
 			<?php foreach ($r[0]->rminfo as $field => $val): ?>
 			<th><?php echo $field; ?></th>
 			<?php endforeach;?>

@@ -75,13 +75,13 @@ class RedeventViewAttendees extends JView
 		//Check if the id exists
 		if (!$row)
 		{
-			return JError::raiseError( 404, JText::sprintf( 'Session not found' ) );
+			return JError::raiseError( 404, JText::sprintf( 'COM_REDEVENT_Session_not_found' ) );
 		}
 
 		//Print
 		$pop	= JRequest::getBool('pop');
 
-		$params->def( 'page_title', $row->full_title. ' - '. JText::_( 'ATTENDEES' ));
+		$params->def( 'page_title', $row->full_title. ' - '. JText::_('COM_REDEVENT_ATTENDEES' ));
 
 		if ( $pop ) {
 			$params->set( 'popup', 1 );
@@ -91,7 +91,7 @@ class RedeventViewAttendees extends JView
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
-		$pathway->addItem( JText::_( 'ATTENDEES' ), JRoute::_('index.php?option=com_redevent&view=attendees&xref='.$row->slug));
+		$pathway->addItem( JText::_('COM_REDEVENT_ATTENDEES' ), JRoute::_('index.php?option=com_redevent&view=attendees&xref='.$row->slug));
 		
 		//set page title and meta stuff
 		$document->setTitle( $item->name.' - '.$row->full_title );
@@ -157,12 +157,12 @@ class RedeventViewAttendees extends JView
 		//Check if the session exists
 		if (!$row)
 		{
-			return JError::raiseError( 404, JText::sprintf( 'Session not found' ) );
+			return JError::raiseError( 404, JText::sprintf( 'COM_REDEVENT_Session_not_found' ) );
 		}
 
 		//Check if user has access to the attendees management
 		if (!$regcheck) {
-			$mainframe->redirect('index.php',JText::_('Only logged users can access this page'), 'error');
+			$mainframe->redirect('index.php',JText::_('COM_REDEVENT_Only_logged_users_can_access_this_page'), 'error');
 		}
 
 		//add css file
@@ -174,11 +174,11 @@ class RedeventViewAttendees extends JView
     }
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
-		$params->def( 'page_title', JText::_( 'Manage attendees' ));
+		$params->def( 'page_title', JText::_('COM_REDEVENT_Manage_attendees' ));
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
-		$pathway->addItem( JText::_( 'Manage attendees' ). ' - '.$row->full_title, JRoute::_('index.php?option=com_redevent&view=attendees&layout=manageattendees&id='.$row->slug));
+		$pathway->addItem( JText::_('COM_REDEVENT_Manage_attendees' ). ' - '.$row->full_title, JRoute::_('index.php?option=com_redevent&view=attendees&layout=manageattendees&id='.$row->slug));
 		
 		//Check user if he can edit
 		$manage_attendees  = $this->get('ManageAttendees');
@@ -188,7 +188,7 @@ class RedeventViewAttendees extends JView
 			JHTML::_('behavior.mootools');
 			$js = " window.addEvent('domready', function(){
 		            $$('.unreglink').addEvent('click', function(event){
-		                  if (confirm('".JText::_('CONFIRM CANCEL REGISTRATION')."')) {
+		                  if (confirm('".JText::_('COM_REDEVENT_CONFIRM_CANCEL_REGISTRATION')."')) {
                       	return true;
 	                    }
 	                    else {
@@ -204,7 +204,7 @@ class RedeventViewAttendees extends JView
       $document->addScriptDeclaration($js);
 		
 		//set page title and meta stuff
-		$document->setTitle( JText::_( 'Manage attendees' ). ' - '.$row->full_title );				    
+		$document->setTitle( JText::_('COM_REDEVENT_Manage_attendees' ). ' - '.$row->full_title );				    
 		
     // lists
     $lists = array();

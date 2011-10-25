@@ -26,12 +26,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <table>
 <thead>
 	<tr>
-		<th><?php echo JText::_('EVENT_NAME'); ?></th>
-		<th colspan="2"><?php echo JText::_('EVENT_WHERE'); ?></th>
-		<th><?php echo JText::_('EVENT_DATE'); ?></th>
+		<th><?php echo JText::_('COM_REDEVENT_EVENT_NAME'); ?></th>
+		<th colspan="2"><?php echo JText::_('COM_REDEVENT_EVENT_WHERE'); ?></th>
+		<th><?php echo JText::_('COM_REDEVENT_EVENT_DATE'); ?></th>
 		<th></th>
-		<th><?php echo JText::_('EVENT_VENUE'); ?></th>
-		<th><?php echo JText::_('EVENT_PRICE'); ?></th>  
+		<th><?php echo JText::_('COM_REDEVENT_EVENT_VENUE'); ?></th>
+		<th><?php echo JText::_('COM_REDEVENT_EVENT_PRICE'); ?></th>  
 	</tr>
 </thead>
 <tbody>

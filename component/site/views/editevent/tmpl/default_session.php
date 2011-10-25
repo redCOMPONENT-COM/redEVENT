@@ -34,10 +34,10 @@ JHTML::_('behavior.calendar');
 			<td>
 				<input type="text" id="a_name" value="<?php echo $this->row->venue; ?>" disabled="disabled" />
 				<div class='re_buttons floattext'>
-					<a class="re_venue_select vmodal" title="<?php echo JText::_('SELECT'); ?>" 
+					<a class="re_venue_select vmodal" title="<?php echo JText::_('COM_REDEVENT_SELECT'); ?>" 
 					   href="<?php echo JRoute::_('index.php?view=editevent&layout=selectvenue&tmpl=component'); ?>"
 					   rel="{handler: 'iframe', size: {x: 650, y: 375}}">
-					   	<span><?php echo JText::_('SELECT')?></span>
+					   	<span><?php echo JText::_('COM_REDEVENT_SELECT')?></span>
 					</a> 
 					<input class="inputbox required" type="hidden" id="a_id" name="venueid" value="<?php echo $this->row->venueid; ?>" />
 				</div>
@@ -52,37 +52,37 @@ JHTML::_('behavior.calendar');
 		</tr>
 		<tr>
 			<td class="key hasTip"
-				title="<?php echo JText::_('EDIT XREF START DATE TIP'); ?>"><label
-				for="dates"><?php echo JText::_('DATE') .': '; ?></label></td>
+				title="<?php echo JText::_('COM_REDEVENT_EDIT_XREF_START_DATE_TIP'); ?>"><label
+				for="dates"><?php echo JText::_('COM_REDEVENT_DATE') .': '; ?></label></td>
 			<td><?php echo $this->calendar($this->row->dates, 'dates', 'dates', '%Y-%m-%d', 'updateend', 'class="inputbox validate-startdate required"'); ?>
 			</td>
 		</tr>
 		<tr>
 			<td class="key hasTip"
-				title="<?php echo JText::_('EDIT XREF START TIME TIP'); ?>"><label
-				for="times"><?php echo JText::_('TIME') .': '; ?></label></td>
+				title="<?php echo JText::_('COM_REDEVENT_EDIT_XREF_START_TIME_TIP'); ?>"><label
+				for="times"><?php echo JText::_('COM_REDEVENT_TIME') .': '; ?></label></td>
 			<td><input type="text" size="8" maxlength="8" name="times" id="times"
 				value="<?php echo $this->row->times; ?>" /></td>
 		</tr>
 		<tr>
 			<td class="key hasTip"
-				title="<?php echo JText::_('EDIT XREF END DATE TIP'); ?>"><label
-				for="enddates"><?php echo JText::_('ENDDATE') .': '; ?></label></td>
+				title="<?php echo JText::_('COM_REDEVENT_EDIT_XREF_END_DATE_TIP'); ?>"><label
+				for="enddates"><?php echo JText::_('COM_REDEVENT_ENDDATE') .': '; ?></label></td>
 			<td><?php echo $this->calendar($this->row->enddates, 'enddates', 'enddates'); ?>
 			</td>
 		</tr>
 		<tr>
 			<td class="key hasTip"
-				title="<?php echo JText::_('EDIT XREF END TIME TIP'); ?>"><label
-				for="endtimes"><?php echo JText::_('ENDTIMES') .': '; ?></label></td>
+				title="<?php echo JText::_('COM_REDEVENT_EDIT_XREF_END_TIME_TIP'); ?>"><label
+				for="endtimes"><?php echo JText::_('COM_REDEVENT_ENDTIMES') .': '; ?></label></td>
 			<td><input type="text" size="8" maxlength="8" name="endtimes"
 				id="endtimes" value="<?php echo $this->row->endtimes; ?>" /></td>
 		</tr>
 		<?php if ($this->params->get('edit_registration_end')): ?>
 		<tr>
 			<td class="key hasTip"
-				title="<?php echo JText::_('EDIT XREF REGISTRATION END TIP'); ?>"><label
-				for="registrationend"><?php echo JText::_('EDIT XREF REGISTRATION END') .': '; ?></label>
+				title="<?php echo JText::_('COM_REDEVENT_EDIT_XREF_REGISTRATION_END_TIP'); ?>"><label
+				for="registrationend"><?php echo JText::_('COM_REDEVENT_EDIT_XREF_REGISTRATION_END') .': '; ?></label>
 			</td>
 			<td><?php echo JHTML::calendar($this->row->registrationend, 'registrationend', 'registrationend', '%Y-%m-%d %H:%M'); ?>
 			</td>
@@ -90,16 +90,16 @@ JHTML::_('behavior.calendar');
 		<?php endif; ?>
 		<?php if ($this->params->get('edit_registration', 0)) :?>
 	  <tr>
-	    <td class="key hasTip" title="<?php echo JText::_( 'EDIT XREF MAXIMUM_ATTENDEES' ).'::'.JText::_('EDIT XREF MAXIMUM_ATTENDEES TIP'); ?>">
-	      <label for="maxattendees"><?php echo JText::_( 'EDIT XREF MAXIMUM_ATTENDEES' ) .': '; ?></label>
+	    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_EDIT_XREF_MAXIMUM_ATTENDEES' ).'::'.JText::_('COM_REDEVENT_EDIT_XREF_MAXIMUM_ATTENDEES_TIP'); ?>">
+	      <label for="maxattendees"><?php echo JText::_('COM_REDEVENT_EDIT_XREF_MAXIMUM_ATTENDEES' ) .': '; ?></label>
 	    </td>
 	    <td>
 	      <input type="text" size="8" maxlength="8" name="maxattendees" id="maxattendees" value="<?php echo $this->row->maxattendees; ?>" /> 
 	    </td>
 	  </tr>
 	  <tr>
-	    <td class="key hasTip" title="<?php echo JText::_( 'EDIT XREF MAXIMUM_WAITINGLIST' ) .'::'.JText::_('EDIT XREF MAXIMUM_WAITINGLIST TIP'); ?>">
-	      <label for="maxwaitinglist"><?php echo JText::_( 'EDIT XREF MAXIMUM_WAITINGLIST' ) .': '; ?></label>
+	    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_EDIT_XREF_MAXIMUM_WAITINGLIST' ) .'::'.JText::_('COM_REDEVENT_EDIT_XREF_MAXIMUM_WAITINGLIST_TIP'); ?>">
+	      <label for="maxwaitinglist"><?php echo JText::_('COM_REDEVENT_EDIT_XREF_MAXIMUM_WAITINGLIST' ) .': '; ?></label>
 	    </td>
 	    <td>
 	      <input type="text" size="8" maxlength="8" name="maxwaitinglist" id="maxwaitinglist" value="<?php echo $this->row->maxwaitinglist; ?>" /> 
@@ -109,8 +109,8 @@ JHTML::_('behavior.calendar');
 		<?php if ($this->params->get('edit_price', 0)): ?>
 		<tr>
 			<td class="key hasTip"
-				title="<?php echo JText::_('EDIT XREF COURSE PRICE TIP'); ?>"><label
-				for="course_price"><?php echo JText::_( 'EDIT XREF COURSE PRICE' ) .': '; ?></label>
+				title="<?php echo JText::_('COM_REDEVENT_EDIT_XREF_COURSE_PRICE_TIP'); ?>"><label
+				for="course_price"><?php echo JText::_('COM_REDEVENT_EDIT_XREF_COURSE_PRICE' ) .': '; ?></label>
 			</td>
 			<td>
 		    <table>
@@ -122,7 +122,7 @@ JHTML::_('behavior.calendar');
 				  <?php endforeach; ?>
 				  <tr id="trnewprice">
 				  	<td><?php echo JHTML::_('select.genericlist', $this->pricegroupsoptions, 'pricegroup[]', array('id' => 'newprice', 'class' => 'newprice')); ?></td>
-				  	<td><input type="text" name="price[]" class="price-val" value="0.00" size="10" /> <button type="button" class="price-button" id="add-price"><?php echo Jtext::_('add'); ?></button></td>  	
+				  	<td><input type="text" name="price[]" class="price-val" value="0.00" size="10" /> <button type="button" class="price-button" id="add-price"><?php echo JText::_('COM_REDEVENT_add'); ?></button></td>  	
 				  </tr>
 		    </table>
 			</td>
@@ -131,8 +131,8 @@ JHTML::_('behavior.calendar');
 		<?php if ($this->params->get('edit_credits', 0)): ?>
 		<tr>
 			<td class="key hasTip"
-				title="<?php echo JText::_('EDIT XREF COURSE CREDIT TIP'); ?>"><label
-				for="course_credit"><?php echo JText::_( 'EDIT XREF COURSE CREDIT' ) .': '; ?></label>
+				title="<?php echo JText::_('COM_REDEVENT_EDIT_XREF_COURSE_CREDIT_TIP'); ?>"><label
+				for="course_credit"><?php echo JText::_('COM_REDEVENT_EDIT_XREF_COURSE_CREDIT' ) .': '; ?></label>
 			</td>
 			<td><input type="text" size="8" maxlength="8" name="course_credit"
 				id="course_credit" value="<?php echo $this->row->course_credit; ?>" />
@@ -150,7 +150,7 @@ JHTML::_('behavior.calendar');
       </td>
       <td>
         <?php echo $field->render(); ?>
-        <?php echo ($field->required? ' '.JText::_('Required') : '' ); ?>
+        <?php echo ($field->required? ' '.JText::_('COM_REDEVENT_Required') : '' ); ?>
       </td>   
     </tr>
     <?php endforeach; ?>

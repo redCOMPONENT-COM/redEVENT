@@ -71,7 +71,7 @@ class RedEventViewVenue extends JView {
 		// fail if checked out not by 'me'
 		if ($row->id) {
 			if ($model->isCheckedOut( $user->get('id') )) {
-				JError::raiseWarning( 'REDEVENT_GENERIC_ERROR', $row->venue.' '.JText::_( 'EDITED BY ANOTHER ADMIN' ));
+				JError::raiseWarning( 'REDEVENT_GENERIC_ERROR', $row->venue.' '.JText::_('COM_REDEVENT_EDITED_BY_ANOTHER_ADMIN' ));
 				$mainframe->redirect( 'index.php?option=com_redevent&view=venues' );
 			}
 		}
@@ -80,26 +80,26 @@ class RedEventViewVenue extends JView {
 		
 		//create the toolbar
 		if ($task == 'copy') {
-		  	JToolBarHelper::title( JText::_( 'COPY VENUE'), 'venuesedit');		
+		  	JToolBarHelper::title( JText::_('COM_REDEVENT_COPY_VENUE'), 'venuesedit');		
 		} elseif ( $cid ) {
-			JToolBarHelper::title( JText::_( 'EDIT VENUE' ), 'venuesedit' );
+			JToolBarHelper::title( JText::_('COM_REDEVENT_EDIT_VENUE' ), 'venuesedit' );
 
 			//makes data safe
 			JFilterOutput::objectHTMLSafe( $row, ENT_QUOTES, 'locdescription' );
 
 		} else {
-			JToolBarHelper::title( JText::_( 'ADD VENUE' ), 'venuesedit' );
+			JToolBarHelper::title( JText::_('COM_REDEVENT_ADD_VENUE' ), 'venuesedit' );
 
 			//set the submenu
-			JSubMenuHelper::addEntry( JText::_( 'REDEVENT' ), 'index.php?option=com_redevent');
-			JSubMenuHelper::addEntry( JText::_( 'EVENTS' ), 'index.php?option=com_redevent&view=events');
-			JSubMenuHelper::addEntry( JText::_( 'VENUES' ), 'index.php?option=com_redevent&view=venues');
-			JSubMenuHelper::addEntry( JText::_( 'CATEGORIES' ), 'index.php?option=com_redevent&view=categories');
-			JSubMenuHelper::addEntry( JText::_( 'ARCHIVESCREEN' ), 'index.php?option=com_redevent&view=archive');
-			JSubMenuHelper::addEntry( JText::_( 'GROUPS' ), 'index.php?option=com_redevent&view=groups');
-			JSubMenuHelper::addEntry( JText::_( 'HELP' ), 'index.php?option=com_redevent&view=help');
+			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT' ), 'index.php?option=com_redevent');
+			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_EVENTS' ), 'index.php?option=com_redevent&view=events');
+			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_VENUES' ), 'index.php?option=com_redevent&view=venues');
+			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_CATEGORIES' ), 'index.php?option=com_redevent&view=categories');
+			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_ARCHIVESCREEN' ), 'index.php?option=com_redevent&view=archive');
+			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_GROUPS' ), 'index.php?option=com_redevent&view=groups');
+			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_HELP' ), 'index.php?option=com_redevent&view=help');
 			if ($user->get('gid') > 24) {
-				JSubMenuHelper::addEntry( JText::_( 'SETTINGS' ), 'index.php?option=com_redevent&controller=settings&task=edit');
+				JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_SETTINGS' ), 'index.php?option=com_redevent&controller=settings&task=edit');
 			}
 		}
 		JToolBarHelper::apply();
@@ -126,9 +126,9 @@ class RedEventViewVenue extends JView {
 		JHTML::_('behavior.modal', 'a.modal');
 
 		$imageselect = "\n<input style=\"background: #ffffff;\" type=\"text\" id=\"a_imagename\" value=\"$row->locimage\" disabled=\"disabled\" /><br />";
-		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('Upload')."\" href=\"$link\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('Upload')."</a></div></div>\n";
-		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('SELECTIMAGE')."\" href=\"$link2\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('SELECTIMAGE')."</a></div></div>\n";
-		$imageselect .= "\n&nbsp;<input class=\"inputbox\" type=\"button\" onclick=\"elSelectImage('', '".JText::_('SELECTIMAGE')."' );\" value=\"".JText::_('Reset')."\" />";
+		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('COM_REDEVENT_Upload')."\" href=\"$link\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('COM_REDEVENT_Upload')."</a></div></div>\n";
+		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('COM_REDEVENT_SELECTIMAGE')."\" href=\"$link2\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('COM_REDEVENT_SELECTIMAGE')."</a></div></div>\n";
+		$imageselect .= "\n&nbsp;<input class=\"inputbox\" type=\"button\" onclick=\"elSelectImage('', '".JText::_('COM_REDEVENT_SELECTIMAGE')."' );\" value=\"".JText::_('COM_REDEVENT_Reset')."\" />";
 		$imageselect .= "\n<input type=\"hidden\" id=\"a_image\" name=\"locimage\" value=\"$row->locimage\" />";
 
 		$lists = array();
@@ -140,7 +140,7 @@ class RedEventViewVenue extends JView {
     $lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('Categories'), 'categories[]', 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $selected); 
         
     $countries = array();
-    $countries[] = JHTML::_('select.option', '', JText::_('Select country'));
+    $countries[] = JHTML::_('select.option', '', JText::_('COM_REDEVENT_Select_country'));
     $countries = array_merge($countries, redEVENTHelperCountries::getCountryOptions());
     $lists['countries'] = JHTML::_('select.genericlist', $countries, 'country', 'class="inputbox"', 'value', 'text', $row->country );
     unset($countries);    
@@ -150,7 +150,7 @@ class RedEventViewVenue extends JView {
 		if ($task == 'copy') 
 		{
 			$row->id = null;
-			$row->venue .= ' '.JText::_('copy');
+			$row->venue .= ' '.JText::_('COM_REDEVENT_copy');
 			$row->alias = '';
 		}
 		

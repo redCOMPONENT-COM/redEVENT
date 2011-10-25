@@ -248,7 +248,7 @@ class RedeventModelCalendar extends JModel
             }            
           }
           else {
-            JError::raiseWarning(0, JText::_('CATEGORY NOT FOUND'));
+            JError::raiseWarning(0, JText::_('COM_REDEVENT_CATEGORY_NOT_FOUND'));
           }
         }
         

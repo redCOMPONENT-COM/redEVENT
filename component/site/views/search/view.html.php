@@ -111,9 +111,9 @@ class RedeventViewSearch extends JView
 		}
 		
 		if ( $task == 'archive' ) {
-			$pathway->addItem(JText::_( 'ARCHIVE' ), JRoute::_('index.php?option=com_redevent&view=search&task=archive') );
+			$pathway->addItem(JText::_('COM_REDEVENT_ARCHIVE' ), JRoute::_('index.php?option=com_redevent&view=search&task=archive') );
 			$print_link = JRoute::_('index.php?option=com_redevent&view=search&task=archive&tmpl=component&pop=1');
-			$pagetitle = $params->get('page_title').' - '.JText::_( 'ARCHIVE' );
+			$pagetitle = $params->get('page_title').' - '.JText::_('COM_REDEVENT_ARCHIVE' );
 		} else {
 			$print_link = JRoute::_('index.php?option=com_redevent&view=search&tmpl=component&pop=1');
 			$pagetitle = $params->get('page_title');
@@ -129,7 +129,7 @@ class RedeventViewSearch extends JView
 		if ($params->get('category', 0) == 0) // do not display the filter if set in view params
 		{
 	    $catoptions = array();
-	    $catoptions[] = JHTML::_('select.option', '0', JText::_('Select category'));
+	    $catoptions[] = JHTML::_('select.option', '0', JText::_('COM_REDEVENT_Select_category'));
 	    $catoptions = array_merge($catoptions, $this->get('CategoriesOptions'));
 	    $selectedcats = ($filter_category) ? array($filter_category) : array();
 	    //build select
@@ -138,7 +138,7 @@ class RedeventViewSearch extends JView
 		}
 				
     $vcatoptions = array();
-    $vcatoptions[] = JHTML::_('select.option', '0', JText::_('Select venue category'));
+    $vcatoptions[] = JHTML::_('select.option', '0', JText::_('COM_REDEVENT_Select_venue_category'));
     $vcatoptions = array_merge($vcatoptions, redEVENTHelper::getVenuesCatOptions());
     $selectedcats = ($filter_venuecategory) ? array($filter_venuecategory) : array();    
     //build select
@@ -147,35 +147,35 @@ class RedeventViewSearch extends JView
     
 		// country filter
     $countries = array();
-    $countries[] = JHTML::_('select.option', '0', JText::_('Select country'));
+    $countries[] = JHTML::_('select.option', '0', JText::_('COM_REDEVENT_Select_country'));
     $countries = array_merge($countries, $this->get('CountryOptions'));
     $lists['countries'] = JHTML::_('select.genericlist', $countries, 'filter_country', 'class="inputbox"', 'value', 'text', $filter_country);
     unset($countries);
     
     // state filter
     $states = array();
-    $states[] = JHTML::_('select.option', '0', JText::_('Select state'));
+    $states[] = JHTML::_('select.option', '0', JText::_('COM_REDEVENT_Select_state'));
     $states = array_merge($states, $this->get('StateOptions'));
     $lists['states'] = JHTML::_('select.genericlist', $states, 'filter_state', 'class="inputbox"', 'value', 'text', $filter_state);
     unset($states);    
     
     // city filter
     $cities = array();
-    $cities[] = JHTML::_('select.option', '0', JText::_('Select city'));
+    $cities[] = JHTML::_('select.option', '0', JText::_('COM_REDEVENT_Select_city'));
     $cities = array_merge($cities, $this->get('CityOptions'));
     $lists['cities'] = JHTML::_('select.genericlist', $cities, 'filter_city', 'class="inputbox"', 'value', 'text', $filter_city);
     unset($cities);    
 	
     // venues filter
     $venues = array();
-    $venues[] = JHTML::_('select.option', '0', JText::_('Select venue'));
+    $venues[] = JHTML::_('select.option', '0', JText::_('COM_REDEVENT_Select_venue'));
     $venues = array_merge($venues, $this->get('VenuesOptions'));
     $lists['venues'] = JHTML::_('select.genericlist', $venues, 'filter_venue', 'class="inputbox dynfilter"', 'value', 'text', $filter_venue);
     unset($venues); 
     
     // events filter
     $options = array();
-    $options[] = JHTML::_('select.option', '0', JText::_('Search select event'));
+    $options[] = JHTML::_('select.option', '0', JText::_('COM_REDEVENT_Search_select_event'));
     $options = array_merge($options, $this->get('EventsOptions'));
     $lists['events'] = JHTML::_('select.genericlist', $options, 'filter_event', 'class="inputbox dynfilter"', 'value', 'text', $filter_event);
     unset($venues); 

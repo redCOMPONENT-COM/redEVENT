@@ -188,16 +188,16 @@ class REAttach extends JObject {
 		$db->setQuery($query);
 		$res = $db->loadObject();
 		if (!$res) {
-			JError::raiseError(404, JText::_('FILE UNKNOWN'));
+			JError::raiseError(404, JText::_('COM_REDEVENT_FILE_UNKNOWN'));
 		}		
 		
 		if (!is_null($aid) && $res->access > $aid) {
-			JError::raiseError(403, JText::_('YOU DONT HAVE ACCESS TO THIS FILE'));			
+			JError::raiseError(403, JText::_('COM_REDEVENT_YOU_DONT_HAVE_ACCESS_TO_THIS_FILE'));			
 		}
 		
 		$path = self::getBasePath().DS.$res->object.DS.$res->file;		
 		if (!file_exists($path)) {
-			JError::raiseError(404, JText::_('FILE NOT FOUND'));
+			JError::raiseError(404, JText::_('COM_REDEVENT_FILE_NOT_FOUND'));
 		}
 		
 		return $path;

@@ -55,11 +55,11 @@ class RedeventViewEditvenue extends JView
 		$id				= JRequest::getInt('id');
 
 		if ($id && !$acl->canEditVenue($id)) {
-			echo JText::_('REDEVENT_USER_NOT_ALLOWED_TO_EDIT_THIS_VENUE');
+			echo JText::_('COM_REDEVENT_USER_NOT_ALLOWED_TO_EDIT_THIS_VENUE');
 			return;
 		}
 		else if (!$id && !$acl->canAddVenue()) {
-			echo JText::_('REDEVENT_USER_NOT_ALLOWED_TO_ADD_VENUE');
+			echo JText::_('COM_REDEVENT_USER_NOT_ALLOWED_TO_ADD_VENUE');
 			return;			
 		}
 		
@@ -88,7 +88,7 @@ class RedeventViewEditvenue extends JView
 		$item    	= $menu->getActive();
 		$params 	= & $mainframe->getParams('com_redevent');
 
-		$id ? $title = JText::_( 'EDIT VENUE' ) : $title = JText::_( 'ADD VENUE' );
+		$id ? $title = JText::_('COM_REDEVENT_EDIT_VENUE' ) : $title = JText::_('COM_REDEVENT_ADD_VENUE' );
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
@@ -110,7 +110,7 @@ class RedeventViewEditvenue extends JView
 		$limage = redEVENTImage::flyercreator($row->locimage);
 
 		//Set the info image
-		$infoimage = JHTML::_('image', 'components/com_redevent/assets/images/icon-16-hint.png', JText::_( 'NOTES' ) );
+		$infoimage = JHTML::_('image', 'components/com_redevent/assets/images/icon-16-hint.png', JText::_('COM_REDEVENT_NOTES' ) );
 
 		$lists = array();
     // categories selector
@@ -127,8 +127,8 @@ class RedeventViewEditvenue extends JView
         
     // published state selector
     $canpublish = $acl->canPublishVenue($id);
-    $published = array( JHTML::_('select.option', '1', JText::_('PUBLISHED')),
-                         JHTML::_('select.option', '0', JText::_('UNPUBLISHED')),
+    $published = array( JHTML::_('select.option', '1', JText::_('COM_REDEVENT_PUBLISHED')),
+                         JHTML::_('select.option', '0', JText::_('COM_REDEVENT_UNPUBLISHED')),
                        );
     $lists['published'] = JHTML::_('select.radiolist', $published, 'published', '', 'value', 'text', $row->published);
     

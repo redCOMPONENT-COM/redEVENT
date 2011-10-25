@@ -29,8 +29,8 @@ $colspan = 10;
 	<table class="adminlist">
 		<tr>
 		  	<td width="80%">
-				<b><?php echo JText::_( 'DATE' ).':'; ?></b>&nbsp;<?php echo (redEVENTHelper::isValidDate($this->event->dates) ? $this->event->dates : Jtext::_('OPEN DATE')); ?><br />
-				<b><?php echo JText::_( 'EVENT TITLE' ).':'; ?></b>&nbsp;<?php echo htmlspecialchars($this->event->title, ENT_QUOTES, 'UTF-8'); ?>
+				<b><?php echo JText::_('COM_REDEVENT_DATE' ).':'; ?></b>&nbsp;<?php echo (redEVENTHelper::isValidDate($this->event->dates) ? $this->event->dates : JText::_('COM_REDEVENT_OPEN_DATE')); ?><br />
+				<b><?php echo JText::_('COM_REDEVENT_EVENT_TITLE' ).':'; ?></b>&nbsp;<?php echo htmlspecialchars($this->event->title, ENT_QUOTES, 'UTF-8'); ?>
 			</td>
 		  </tr>
 	</table>
@@ -39,21 +39,21 @@ $colspan = 10;
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th width="5"><?php echo JText::_( 'Num' ); ?></th>
-				<th class="title"><?php echo JText::_('REGDATE'); ?></th>
+				<th width="5">#</th>
+				<th class="title"><?php echo JText::_('COM_REDEVENT_REGDATE'); ?></th>
 				<th class="title"><?php echo JText::_('COM_REDEVENT_CONFIRMDATE'); ?></th>
-				<th class="title"><?php echo JText::_('UNIQUE ID'); ?></th>
-				<th class="title"><?php echo JText::_('USERNAME'); ?></th>
-				<th class="title"><?php echo JText::_('CONFIRMED'); ?></th>
-				<th class="title"><?php echo JText::_('WAITINGLIST'); ?></th>
+				<th class="title"><?php echo JText::_('COM_REDEVENT_UNIQUE_ID'); ?></th>
+				<th class="title"><?php echo JText::_('COM_REDEVENT_USERNAME'); ?></th>
+				<th class="title"><?php echo JText::_('COM_REDEVENT_CONFIRMED'); ?></th>
+				<th class="title"><?php echo JText::_('COM_REDEVENT_WAITINGLIST'); ?></th>
 				<?php foreach ((array) $this->rf_fields as $f):?>
 					<?php $colspan++; ?>
 					<th class="title"><?php echo $f->field_header; ?></th>
 				<?php endforeach;?>
 				<?php if ($this->form->activatepayment): ?>
-	        <th class="title"><?php echo JText::_( 'PRICE' ); ?></th>
+	        <th class="title"><?php echo JText::_('COM_REDEVENT_PRICE' ); ?></th>
 	        <th class="title"><?php echo JText::_( 'COM_REDEVENT_PRICEGROUP' ); ?></th>
-					<th class="title"><?php echo JText::_( 'PAYMENT'); ?></th>
+					<th class="title"><?php echo JText::_('COM_REDEVENT_PAYMENT'); ?></th>
 					<?php $colspan += 3; ?>
         <?php endif; ?>
 			</tr>
@@ -69,30 +69,30 @@ $colspan = 10;
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo $i+1; ?></td>
 				<td>
-					<?php echo JHTML::Date( $row->uregdate, JText::_( 'DATE_FORMAT_LC2' ) ); ?>
+					<?php echo JHTML::Date( $row->uregdate, JText::_('DATE_FORMAT_LC2' ) ); ?>
 				</td>
-				<td><?php echo ($row->confirmdate) ? JHTML::Date( $row->confirmdate, JText::_( 'DATE_FORMAT_LC2' ) ) : '-'; ?></td>
+				<td><?php echo ($row->confirmdate) ? JHTML::Date( $row->confirmdate, JText::_('DATE_FORMAT_LC2' ) ) : '-'; ?></td>
 				<td><?php echo $row->course_code .'-'. $row->xref .'-'. $row->attendee_id; ?></td>
 				<td><?php echo $row->name; ?></td>
 				<td>
 				  <?php 
-				  //echo $row->confirmed == 0 ? JText::_('NO') : JText::_('YES'); 
+				  //echo $row->confirmed == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES'); 
 				  if (!$row->confirmed) {
-            echo JText::_('Yes');
+            echo JText::_('COM_REDEVENT_Yes');
 				  }
           else {
-            echo JText::_('No');
+            echo JText::_('COM_REDEVENT_No');
           }
 				  ?>
 				</td>
-				<td><?php // echo $row->waitinglist == 0 ? JText::_('NO') : JText::_('YES'); ?>
+				<td><?php // echo $row->waitinglist == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES'); ?>
           <?php 
-          //echo $row->confirmed == 0 ? JText::_('NO') : JText::_('YES'); 
+          //echo $row->confirmed == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES'); 
           if (!$row->waitinglist) {
-            echo JText::_('Yes');
+            echo JText::_('COM_REDEVENT_Yes');
           }
           else {
-            echo JText::_('No');
+            echo JText::_('COM_REDEVENT_No');
           }
           ?>
         </td>
@@ -111,9 +111,9 @@ $colspan = 10;
 					</td>
 					<td class="price <?php echo ($row->paid ? 'paid' : 'unpaid'); ?>">
 						<?php if (!$row->paid): ?>
-            <?php echo JText::_('No'); ?>
+            <?php echo JText::_('COM_REDEVENT_No'); ?>
 						<?php else: ?>
-            <?php echo JText::_('Yes'); ?>
+            <?php echo JText::_('COM_REDEVENT_Yes'); ?>
 						<?php endif; ?>						
 					</td>
 				<?php endif; ?>

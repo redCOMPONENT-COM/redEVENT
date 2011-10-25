@@ -676,25 +676,25 @@ if (is_array($cols))
 				    $db->setQuery($query);
 				    if ($db->query())
 				    {
-			    		echo JText::_('converted attendees table to new structure');				    	
+			    		echo JText::_('COM_REDEVENT_converted_attendees_table_to_new_structure');				    	
 				    }
 				    else {
-				    	echo JText::_('failed importing attendees to new structure').$db->getErrorMsg();
+				    	echo JText::_('COM_REDEVENT_failed_importing_attendees_to_new_structure').$db->getErrorMsg();
 				    	$error = true;
 				    }			    	 
 			    }
 			    else {
-			    	echo JText::_('failed inserting new fields in register table');
+			    	echo JText::_('COM_REDEVENT_failed_inserting_new_fields_in_register_table');
 			    	$error = true;
 			    }
 		    }
 		    else {
-		    	echo JText::_('failed recreating register table');
+		    	echo JText::_('COM_REDEVENT_failed_recreating_register_table');
 		    	$error = true;
 		    }
 	    }
 	    else {
-	    	echo JText::_('register table backup failed');
+	    	echo JText::_('COM_REDEVENT_register_table_backup_failed');
 	    	$error = true;
 		}
 	}
@@ -1320,17 +1320,17 @@ if (JFile::exists(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'views'.DS.'ca
 	$installer = new JInstaller();
 	$installer->setAdapter('plugin');
 	if (!$installer->install(JPATH_SITE.DS.'tmp'.DS.'redform_redevent')) {
-	  echo JText::_('Plugin install failed: ') . $installer->getError().'<br />';
+	  echo JText::_('COM_REDEVENT_Plugin_install_failed:_') . $installer->getError().'<br />';
 	}
 	else {
 	  // autopublish the plugin
 	  $query = ' UPDATE #__plugins SET published = 1 WHERE folder = '. $db->Quote('redform_integration') . ' AND element = '.$db->Quote('redevent');
     $db->setQuery($query);
     if ($db->query()) {
-	    echo JText::_('Succesfully installed redform integration plugin').'<br />';
+	    echo JText::_('COM_REDEVENT_Succesfully_installed_redform_integration_plugin').'<br />';
     }
     else {
-      echo JText::_('Error publishing redform integration plugin').'<br />';      
+      echo JText::_('COM_REDEVENT_Error_publishing_redform_integration_plugin').'<br />';      
     }	  
 	}
 ?>
@@ -1470,13 +1470,13 @@ if (JFile::exists(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'views'.DS.'ca
 	if (JFolder::exists(JPATH_SITE.DS.'components'.DS.'com_sh404sef')) {
 		/* Copy the plugin */
 		if(!JFile::copy($redadmin.DS.'sh404sef'.DS.'sef_ext'.DS.'com_redevent.php', $sh404sefext.DS.'com_redevent.php')) {
-			echo JText::_('<b>Failed</b> to copy sh404SEF extension plugin file<br />');
+			echo JText::_('COM_REDEVENT_<b>Failed</b>_to_copy_sh404SEF_extension_plugin_file<br_/>');
 		}
 		if(!JFile::copy($redadmin.DS.'sh404sef'.DS.'meta_ext'.DS.'com_redevent.php', $sh404sefmeta.DS.'com_redevent.php')) {
-			echo JText::_('<b>Failed</b> to copy sh404SEF meta plugin file<br />');
+			echo JText::_('COM_REDEVENT_<b>Failed</b>_to_copy_sh404SEF_meta_plugin_file<br_/>');
 		}
 		if(!JFile::copy($redadmin.DS.'sh404sef'.DS.'language'.DS.'com_redevent.php', $sh404sefadmin.DS.'language'.DS.'plugins'.DS.'com_redevent.php')) {
-			echo JText::_('<b>Failed</b> to copy sh404SEF plugin language file<br />');
+			echo JText::_('COM_REDEVENT_<b>Failed</b>_to_copy_sh404SEF_plugin_language_file<br_/>');
 		}
 		
 		?>

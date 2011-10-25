@@ -29,8 +29,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <?php
 // Set toolbar items for the page
 $edit		= JRequest::getVar('edit',true);
-$text = !$edit ? JText::_( 'New' ) : JText::_( 'Edit' );
-JToolBarHelper::title(   JText::_( 'Custom field' ).': <small><small>[ ' . $text.' ]</small></small>' );
+$text = !$edit ? JText::_('COM_REDEVENT_New' ) : JText::_('COM_REDEVENT_Edit' );
+JToolBarHelper::title(   JText::_('COM_REDEVENT_Custom_field' ).': <small><small>[ ' . $text.' ]</small></small>' );
 JToolBarHelper::save();
 JToolBarHelper::apply();
 if (!$edit)  {
@@ -52,7 +52,7 @@ if (!$edit)  {
     // do field validation
     var validator = document.formvalidator;
     if ( validator.validate(form.name) === false ){
-      alert( "<?php echo JText::_( 'NAME IS REQUIRED', true ); ?>" );
+      alert( "<?php echo JText::_('COM_REDEVENT_NAME_IS_REQUIRED', true ); ?>" );
     } else {
       submitform( pressbutton );
     }
@@ -61,75 +61,75 @@ if (!$edit)  {
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <div class="col50">
-<fieldset class="adminform"><legend><?php echo JText::_( 'Custom field' ); ?></legend>
+<fieldset class="adminform"><legend><?php echo JText::_('COM_REDEVENT_Custom_field' ); ?></legend>
 
 <table class="admintable">
 	<tr>
-		<td width="100" align="right" class="key"><label for="name"><?php echo JText::_( 'Name' ); ?>:
+		<td width="100" align="right" class="key"><label for="name"><?php echo JText::_('COM_REDEVENT_Name' ); ?>:
 		</label></td>
 		<td><input class="text_area required" type="text" name="name" id="name"
 			size="32" maxlength="250" value="<?php echo $this->object->name; ?>" />
 		</td>
 	</tr>
   <tr>
-    <td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'Custom field Tag' ).'::'.JText::_('Custom field Tag tip'); ?>"><label for="tag"> <?php echo JText::_( 'Custom field Tag' ); ?>:
+    <td width="100" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_Custom_field_Tag' ).'::'.JText::_('COM_REDEVENT_Custom_field_Tag_tip'); ?>"><label for="tag"> <?php echo JText::_('COM_REDEVENT_Custom_field_Tag' ); ?>:
     </label></td>
     <td><input class="text_area required" type="text" name="tag" id="tag"
       size="32" maxlength="250" value="<?php echo $this->object->tag; ?>" />
     </td>
   </tr>
   <tr>
-    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'Field for' ).'::'.JText::_('field for tip'); ?>"><label for="object_key"><?php echo JText::_( 'Field for' ); ?>:
+    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_Field_for' ).'::'.JText::_('COM_REDEVENT_field_for_tip'); ?>"><label for="object_key"><?php echo JText::_('COM_REDEVENT_Field_for' ); ?>:
     </label></td>
     <td><?php echo $this->lists['objects']; ?></td>
   </tr>
   <tr>
-    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'custom field type' ).'::'.JText::_('custom field type tip'); ?>"><label for="type"><?php echo JText::_( 'custom field Type' ); ?>:
+    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_custom_field_type' ).'::'.JText::_('COM_REDEVENT_custom_field_type_tip'); ?>"><label for="type"><?php echo JText::_('COM_REDEVENT_custom_field_Type' ); ?>:
     </label></td>
     <td><?php echo ($this->object->id ? $this->object->type : $this->lists['types']); ?></td>
   </tr>
 	<tr>
-		<td valign="top" align="right" class="key"><label for="published"><?php echo JText::_( 'Published' ); ?>:</label>
+		<td valign="top" align="right" class="key"><label for="published"><?php echo JText::_('COM_REDEVENT_Published' ); ?>:</label>
 		</td>
 		<td><?php echo $this->lists['published']; ?></td>
 	</tr>
 	<tr>
-		<td valign="top" align="right" class="key"><label for="ordering"> <?php echo JText::_( 'Ordering' ); ?>:
+		<td valign="top" align="right" class="key"><label for="ordering"> <?php echo JText::_('COM_REDEVENT_Ordering' ); ?>:
 		</label></td>
 		<td><?php echo $this->lists['ordering']; ?></td>
 	</tr>
   <tr id="row-tooltip">
-    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'Custom field Tooltip' ).'::'.JText::_('Custom field Tooltip tip'); ?>"><label for="tips"><?php echo JText::_( 'Custom field Tooltip' ); ?>:
+    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_Custom_field_Tooltip' ).'::'.JText::_('COM_REDEVENT_Custom_field_Tooltip_tip'); ?>"><label for="tips"><?php echo JText::_('COM_REDEVENT_Custom_field_Tooltip' ); ?>:
     </label></td>
     <td><textarea name="tips" id="tips" rows="6" cols="20"><?php echo $this->object->tips; ?></textarea></td>
   </tr>
   <tr>
-    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'Custom field Searchable' ).'::'.JText::_('Custom field Searchable tip'); ?>"><label for="searchable"><?php echo JText::_( 'Custom field Searchable' ); ?>:</label>
+    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_Custom_field_Searchable' ).'::'.JText::_('COM_REDEVENT_Custom_field_Searchable_tip'); ?>"><label for="searchable"><?php echo JText::_('COM_REDEVENT_Custom_field_Searchable' ); ?>:</label>
     </td>
     <td><?php echo $this->lists['searchable']; ?></td>
   </tr>
   <tr>
-    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'Show in lists' ).'::'.JText::_('Show in lists tip'); ?>"><label for="in_lists"><?php echo JText::_( 'Show in lists' ); ?>:</label>
+    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_Show_in_lists' ).'::'.JText::_('COM_REDEVENT_Show_in_lists_tip'); ?>"><label for="in_lists"><?php echo JText::_('COM_REDEVENT_Show_in_lists' ); ?>:</label>
     </td>
     <td><?php echo $this->lists['in_lists']; ?></td>
   </tr>
   <tr>
-    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'Frontend edit' ).'::'.JText::_('Frontend edit tip'); ?>"><label for="frontend_edit"><?php echo JText::_( 'Frontend edit' ); ?>:</label>
+    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_Frontend_edit' ).'::'.JText::_('COM_REDEVENT_Frontend_edit_tip'); ?>"><label for="frontend_edit"><?php echo JText::_('COM_REDEVENT_Frontend_edit' ); ?>:</label>
     </td>
     <td><?php echo $this->lists['frontend_edit']; ?></td>
   </tr>
   <tr>
-    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'Custom field Required' ).'::'.JText::_('Custom field Required tip'); ?>"><label for="frontend_edit"><?php echo JText::_( 'Custom field required' ); ?>:</label>
+    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_Custom_field_Required' ).'::'.JText::_('COM_REDEVENT_Custom_field_Required_tip'); ?>"><label for="frontend_edit"><?php echo JText::_('COM_REDEVENT_Custom_field_required' ); ?>:</label>
     </td>
     <td><?php echo $this->lists['required']; ?></td>
   </tr>
   <tr id="row-min">
-    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'Min characters' ).'::'.JText::_('Min characters tip'); ?>"><label for="min"><?php echo JText::_( 'Min characters' ); ?>:
+    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_Min_characters' ).'::'.JText::_('COM_REDEVENT_Min_characters_tip'); ?>"><label for="min"><?php echo JText::_('COM_REDEVENT_Min_characters' ); ?>:
     </label></td>
     <td><input type="text" name="min" id="min" size="3" value="<?php echo $this->object->min; ?>"/></td>
   </tr>
   <tr id="row-max">
-    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_( 'Max characters' ).'::'.JText::_('Max characters tip'); ?>"><label for="max"><?php echo JText::_( 'Max characters' ); ?>:
+    <td valign="top" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_Max_characters' ).'::'.JText::_('COM_REDEVENT_Max_characters_tip'); ?>"><label for="max"><?php echo JText::_('COM_REDEVENT_Max_characters' ); ?>:
     </label></td>
     <td><input type="text" name="max" id="max" size="3" value="<?php echo $this->object->max; ?>"/></td>
   </tr>

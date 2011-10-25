@@ -180,7 +180,7 @@ class RedEventControllerSessions extends RedEventController
 		$cid 	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
 		if (!is_array( $cid ) || count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to publish' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_publish' ) );
 		}
 
 		$model = $this->getModel('sessions');
@@ -190,7 +190,7 @@ class RedEventControllerSessions extends RedEventController
 		}
 
 		$total = count( $cid );
-		$msg 	= $total.' '.JText::_( 'SESSIONS PUBLISHED');
+		$msg 	= $total.' '.JText::_('COM_REDEVENT_SESSIONS_PUBLISHED');
 
     $eventid = JRequest::getInt('eventid');
 		$this->setRedirect('index.php?option=com_redevent&view=sessions', $msg);
@@ -208,7 +208,7 @@ class RedEventControllerSessions extends RedEventController
 		$cid 	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
 		if (!is_array( $cid ) || count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to unpublish' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_unpublish' ) );
 		}
 
 		$model = $this->getModel('sessions');
@@ -218,7 +218,7 @@ class RedEventControllerSessions extends RedEventController
 		}
 
 		$total = count( $cid );
-		$msg 	= $total.' '.JText::_( 'SESSIONS UNPUBLISHED');
+		$msg 	= $total.' '.JText::_('COM_REDEVENT_SESSIONS_UNPUBLISHED');
 
     $eventid = JRequest::getInt('eventid');
 		$this->setRedirect('index.php?option=com_redevent&view=sessions', $msg);
@@ -236,7 +236,7 @@ class RedEventControllerSessions extends RedEventController
 		$cid 	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
 		if (!is_array( $cid ) || count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to archive' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_archive' ) );
 		}
 
 		$model = $this->getModel('sessions');
@@ -246,7 +246,7 @@ class RedEventControllerSessions extends RedEventController
 		}
 
 		$total = count( $cid );
-		$msg 	= $total.' '.JText::_( 'SESSIONS ARCHIVED');
+		$msg 	= $total.' '.JText::_('COM_REDEVENT_SESSIONS_ARCHIVED');
 
     $eventid = JRequest::getInt('eventid');
 		$this->setRedirect('index.php?option=com_redevent&view=sessions', $msg);
@@ -266,7 +266,7 @@ class RedEventControllerSessions extends RedEventController
 		$total = count( $cid );
 
 		if (!is_array( $cid ) || count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to delete' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_delete' ) );
 		}
 
 		$model = $this->getModel('session');
@@ -277,7 +277,7 @@ class RedEventControllerSessions extends RedEventController
 			}
 		}
 
-		$msg = $total.' '.JText::_( 'SESSIONS DELETED');
+		$msg = $total.' '.JText::_('COM_REDEVENT_SESSIONS_DELETED');
 
 		$cache = &JFactory::getCache('com_redevent');
 		$cache->clean();
@@ -300,7 +300,7 @@ class RedEventControllerSessions extends RedEventController
 		$cid 	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
 		if (!is_array( $cid ) || count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to publish' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_publish' ) );
 		}
 
 		$model = $this->getModel('sessions');
@@ -328,7 +328,7 @@ class RedEventControllerSessions extends RedEventController
 		$cid 	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
 		if (!is_array( $cid ) || count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to publish' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_publish' ) );
 		}
 
 		$model = $this->getModel('sessions');

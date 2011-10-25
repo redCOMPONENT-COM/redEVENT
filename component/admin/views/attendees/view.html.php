@@ -72,8 +72,8 @@ class RedEventViewAttendees extends JView {
     ELAdmin::setMenu();
 
 		//add toolbar
-		JToolBarHelper::title( JText::_( 'REGISTRATIONS' ), 'users' );
-//		JToolBarHelper::custom('submitters', 'redevent_submitters', 'redevent_submitters', JText::_('Attendees'), false);
+		JToolBarHelper::title( JText::_('COM_REDEVENT_REGISTRATIONS' ), 'users' );
+//		JToolBarHelper::custom('submitters', 'redevent_submitters', 'redevent_submitters', JText::_('COM_REDEVENT_Attendees'), false);
 		JToolBarHelper::custom('emailall', 'send.png', 'send.png', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_ALL', false, true);
 		JToolBarHelper::custom('email', 'send.png', 'send.png', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_SELECTED', true, true);
 		JToolBarHelper::spacer();
@@ -99,7 +99,7 @@ class RedEventViewAttendees extends JView {
 		$form      = $this->get( 'Form' );
 		$rf_fields = $this->get( 'RedFormFrontFields' );
 		
-		$event->dates = redEVENTHelper::isValidDate($event->dates) ? strftime($elsettings->formatdate, strtotime( $event->dates )) : JText::_('OPEN DATE');
+		$event->dates = redEVENTHelper::isValidDate($event->dates) ? strftime($elsettings->formatdate, strtotime( $event->dates )) : JText::_('COM_REDEVENT_OPEN_DATE');
 		
 		//build filter selectlist
 		$datetimelocation = $this->get('DateTimeLocation');
@@ -114,7 +114,7 @@ class RedEventViewAttendees extends JView {
 				$displaydate = $date.' - '.$enddate;
 			}
 			else {
-				$displaydate = JText::_('OPEN DATE');
+				$displaydate = JText::_('COM_REDEVENT_OPEN_DATE');
 			}
 			
 			/* Get the time */
@@ -189,7 +189,7 @@ class RedEventViewAttendees extends JView {
 		$rf_fields = $this->get( 'RedFormFrontFields' );
 		$form      = $this->get( 'Form' );
 
-		$event->dates = redEVENTHelper::isValidDate($event->dates) ? strftime($elsettings->formatdate, strtotime( $event->dates )) : JText::_('OPEN DATE');
+		$event->dates = redEVENTHelper::isValidDate($event->dates) ? strftime($elsettings->formatdate, strtotime( $event->dates )) : JText::_('COM_REDEVENT_OPEN_DATE');
 
 		//assign data to template
 		$this->assignRef('rows'      	, $rows);
@@ -218,7 +218,7 @@ class RedEventViewAttendees extends JView {
 		$event 		= & $this->get( 'Event' );		
 		
 		//add toolbar
-		JToolBarHelper::title( JText::_( 'REGISTRATIONS' ), 'users' );
+		JToolBarHelper::title( JText::_('COM_REDEVENT_REGISTRATIONS' ), 'users' );
 		JToolBarHelper::apply('applymove');
 		JToolBarHelper::cancel('cancelmove');
 		

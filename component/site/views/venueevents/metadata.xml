@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<view title="VENUEEVENTS VIEW">
+	<view title="COM_REDEVENT_VENUEEVENTS_VIEW">
 		<message>
-			<![CDATA[VENUEEVENTS VIEW TIP]]>
+			<![CDATA[COM_REDEVENT_VENUEEVENTS_VIEW_TIP]]>
 		</message>
 	</view>
 </metadata>

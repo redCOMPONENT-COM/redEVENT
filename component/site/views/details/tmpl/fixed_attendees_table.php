@@ -27,7 +27,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 if ($this->row->show_names) {
 	?>
 	<div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
-		<h2 class="register"><?php echo JText::_( 'REGISTERED USERS' ); ?>
+		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ); ?>
 		<?php if ($this->manage_attendees): ?>
     <?php echo ELOutput::xrefattendeesbutton($this->row->xref); ?>
 		<?php endif; ?></h2>
@@ -67,7 +67,7 @@ if ($this->row->show_names) {
 	      				  <?php if ($this->unreg_check && $register->submitter->uid == $this->user->get('id')): ?>
 	      				  <?php $unreg_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug) .'&task=delreguser&rid=' .$register->attendee_id); ?>
 	                <td class="attendee">
-	                  <?php echo JHTML::link($unreg_url, JText::_('cancel'), array('class' => 'unreglink')); ?>
+	                  <?php echo JHTML::link($unreg_url, JText::_('COM_REDEVENT_cancel'), array('class' => 'unreglink')); ?>
 	                </td>
 	                <?php else: ?>
 	                <td class="attendee"></td>
@@ -83,7 +83,7 @@ if ($this->row->show_names) {
 		</div>
 		
 		<?php if ($waiting_count): ?>
-		<h2 class="register"><?php echo JText::_( 'WAITING LIST' ); ?></h2>
+		<h2 class="register"><?php echo JText::_('COM_REDEVENT_WAITING_LIST' ); ?></h2>
     
     <div class="register">
       <table class="registered">
@@ -114,7 +114,7 @@ if ($this->row->show_names) {
                 <?php if ($this->unreg_check && $register->submitter->uid == $this->user->get('id')): ?>
                 <?php $unreg_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug).'&task=delreguser&rid=' .$register->attendee_id); ?>
                 <td class="attendee">
-                  <?php echo JHTML::link($unreg_url, JText::_('cancel'), array('class' => 'unreglink')); ?>
+                  <?php echo JHTML::link($unreg_url, JText::_('COM_REDEVENT_cancel'), array('class' => 'unreglink')); ?>
                 </td>
                 <?php else: ?>
                 <td class="attendee"></td>

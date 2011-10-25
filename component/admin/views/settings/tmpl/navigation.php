@@ -1,10 +1,10 @@
 <div class="submenu-box">
 	<div class="submenu-pad">
 		<ul id="submenu">
-			<li><a id="basic" class="active"><?php echo JText::_( 'BASIC SETTINGS' ); ?></a></li>
-			<li><a id="details"><?php echo JText::_( 'DETAILS PAGE' ); ?></a></li>
-			<li><a id="parameters"><?php echo JText::_( 'GLOBAL PARAMETERS' ); ?></a></li>
-			<li><a id="signup"><?php echo JText::_( 'SIGNUP LINKS' ); ?></a></li>
+			<li><a id="basic" class="active"><?php echo JText::_('COM_REDEVENT_BASIC_SETTINGS' ); ?></a></li>
+			<li><a id="details"><?php echo JText::_('COM_REDEVENT_DETAILS_PAGE' ); ?></a></li>
+			<li><a id="parameters"><?php echo JText::_('COM_REDEVENT_GLOBAL_PARAMETERS' ); ?></a></li>
+			<li><a id="signup"><?php echo JText::_('COM_REDEVENT_SIGNUP_LINKS' ); ?></a></li>
 		</ul>
 		<div class="clr"></div>
 	</div>

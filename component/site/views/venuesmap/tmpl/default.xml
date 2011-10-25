@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="Venues map Layout">
+	<layout title="COM_REDEVENT_Venues_map_Layout">
 		<message>
-			<![CDATA[VENUESMAP LAYOUT DESC]]>
+			<![CDATA[COM_REDEVENT_VENUESMAP_LAYOUT_DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>VENUESMAP LAYOUT</name>
-		<description>VENUESMAP LAYOUT DESC</description>
+		<name>COM_REDEVENT_VENUESMAP_LAYOUT</name>
+		<description>COM_REDEVENT_VENUESMAP_LAYOUT_DESC</description>
     <params>
-      <param name="introtext" type="textarea" default="" label="INTROTEXT FIELD" rows="8" cols="30" description="INTROTEXT FIELD TIP"/>
-      <param name="showintrotext" type="radio" default="0" label="DISPLAY INTROTEXT" description="DISPLAY INTROTEXT TIP">
-        <option value="0">Hide</option>
-        <option value="1">Show</option>
+      <param name="introtext" type="textarea" default="" label="COM_REDEVENT_INTROTEXT_FIELD" rows="8" cols="30" description="COM_REDEVENT_INTROTEXT_FIELD_TIP"/>
+      <param name="showintrotext" type="radio" default="0" label="COM_REDEVENT_DISPLAY_INTROTEXT" description="COM_REDEVENT_DISPLAY_INTROTEXT_TIP">
+        <option value="0">COM_REDEVENT_Hide</option>
+        <option value="1">COM_REDEVENT_Show</option>
       </param>
-      <param name="show_cat_filter" type="radio" default="1" label="DISPLAY CATEGORY FILTER" description="DISPLAY CATEGORY FILTER DESC">
+      <param name="show_cat_filter" type="radio" default="1" label="COM_REDEVENT_DISPLAY_CATEGORY_FILTER" description="COM_REDEVENT_DISPLAY_CATEGORY_FILTER_DESC">
         <option value="0">No</option>
         <option value="1">Yes</option>
       </param>
-      <param name="show_vcat_filter" type="radio" default="1" label="DISPLAY VENUE CATEGORY FILTER" description="DISPLAY CATEGORY FILTER DESC">
+      <param name="show_vcat_filter" type="radio" default="1" label="COM_REDEVENT_DISPLAY_VENUE_CATEGORY_FILTER" description="COM_REDEVENT_DISPLAY_CATEGORY_FILTER_DESC">
         <option value="0">No</option>
         <option value="1">Yes</option>
       </param>
-      <param name="show_custom_filters" type="radio" default="1" label="DISPLAY CUSTOM FIELDS FILTER" description="DISPLAY CUSTOM FIELDS FILTER DESC">
+      <param name="show_custom_filters" type="radio" default="1" label="COM_REDEVENT_DISPLAY_CUSTOM_FIELDS_FILTER" description="COM_REDEVENT_DISPLAY_CUSTOM_FIELDS_FILTER_DESC">
         <option value="0">No</option>
         <option value="1">Yes</option>
       </param>
-      <param name="show_empty_venues" type="radio" default="0" label="DISPLAY EMPTY VENUES" description="DISPLAY EMPTY VENUES DESC">
+      <param name="show_empty_venues" type="radio" default="0" label="COM_REDEVENT_DISPLAY_EMPTY_VENUES" description="COM_REDEVENT_DISPLAY_EMPTY_VENUES_DESC">
         <option value="0">No</option>
         <option value="1">Yes</option>
       </param>

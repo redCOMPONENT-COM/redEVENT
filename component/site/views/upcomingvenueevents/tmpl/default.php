@@ -54,7 +54,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<?php endif; ?>
 				
 		<?php if (($this->elsettings->showdetlinkvenue == 1) && (!empty($this->venue->url))) : ?>
-		<dt class="venue"><?php echo JText::_( 'WEBSITE' ).':'; ?></dt>
+		<dt class="venue"><?php echo JText::_('COM_REDEVENT_WEBSITE' ).':'; ?></dt>
 			<dd class="venue">
 					<a href="<?php echo $this->venue->url; ?>" target="_blank"> <?php echo $this->venue->urlclean; ?></a>
 			</dd>
@@ -63,35 +63,35 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<?php if ( $this->elsettings->showdetailsadress == 1 ) : ?>
 
   			<?php if ( $this->venue->street ) : ?>
-  			<dt class="venue_street"><?php echo JText::_( 'STREET' ).':'; ?></dt>
+  			<dt class="venue_street"><?php echo JText::_('COM_REDEVENT_STREET' ).':'; ?></dt>
 			<dd class="venue_street">
     			<?php echo $this->escape($this->venue->street); ?>
 			</dd>
 			<?php endif; ?>
 
 			<?php if ( $this->venue->plz ) : ?>
-  			<dt class="venue_plz"><?php echo JText::_( 'ZIP' ).':'; ?></dt>
+  			<dt class="venue_plz"><?php echo JText::_('COM_REDEVENT_ZIP' ).':'; ?></dt>
 			<dd class="venue_plz">
     			<?php echo $this->escape($this->venue->plz); ?>
 			</dd>
 			<?php endif; ?>
 
 			<?php if ( $this->venue->city ) : ?>
-    		<dt class="venue_city"><?php echo JText::_( 'CITY' ).':'; ?></dt>
+    		<dt class="venue_city"><?php echo JText::_('COM_REDEVENT_CITY' ).':'; ?></dt>
     		<dd class="venue_city">
     			<?php echo $this->escape($this->venue->city); ?>
     		</dd>
     		<?php endif; ?>
 
     		<?php if ( $this->venue->state ) : ?>
-			<dt class="venue_state"><?php echo JText::_( 'STATE' ).':'; ?></dt>
+			<dt class="venue_state"><?php echo JText::_('COM_REDEVENT_STATE' ).':'; ?></dt>
 			<dd class="venue_state">
     			<?php echo $this->escape($this->venue->state); ?>
 			</dd>
 			<?php endif; ?>
 
 			<?php if ( $this->venue->country ) : ?>
-			<dt class="venue_country"><?php echo JText::_( 'COUNTRY' ).':'; ?></dt>
+			<dt class="venue_country"><?php echo JText::_('COM_REDEVENT_COUNTRY' ).':'; ?></dt>
     		<dd class="venue_country">
     			<?php echo $this->venue->countryimg ? $this->venue->countryimg : $this->venue->country; ?>
     		</dd>
@@ -105,7 +105,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   	if ($this->elsettings->showlocdescription == 1) :
 	?>
 
-		<h2 class="description"><?php echo JText::_( 'DESCRIPTION' ); ?></h2>
+		<h2 class="description"><?php echo JText::_('COM_REDEVENT_DESCRIPTION' ); ?></h2>
 	  	<div class="description no_space floattext">
 	  		<?php echo $this->venuedescription;	?>
 		</div>
@@ -116,7 +116,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 	<?php
 	if (count($this->upcomingvenueevents) == 0) {
-		echo JText::_('NO_UPCOMING_EVENTS');
+		echo JText::_('COM_REDEVENT_NO_UPCOMING_EVENTS');
 	}
 	else {
 		echo $this->loadTemplate('courseinfo');

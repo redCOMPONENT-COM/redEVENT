@@ -26,7 +26,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <?php	if ($this->hasManagedEvents) :	?>
 
-<h2><?php echo JText::_('Manage Events'); ?></h2>
+<h2><?php echo JText::_('COM_REDEVENT_Manage_Events'); ?></h2>
 
 <script type="text/javascript">
 
@@ -46,23 +46,23 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div id="el_filter" class="floattext">
     <?php if ($this->params->get('showeventfilter', 1)) : ?>
     <div>
-    	<label for="filter_event"><?php echo JText::_('Event'); ?></label> <?php echo $this->lists['filter_event']; ?>
+    	<label for="filter_event"><?php echo JText::_('COM_REDEVENT_Event'); ?></label> <?php echo $this->lists['filter_event']; ?>
     </div>
     <?php endif; ?>
     <?php if ($this->params->get('filter_text',1)) : ?>
     <div>
-      <label for="filter_type"><?php echo JText::_('FILTER'); ?></label> <?php
+      <label for="filter_type"><?php echo JText::_('COM_REDEVENT_FILTER'); ?></label> <?php
       echo $this->lists['filter_types'].'&nbsp;';
       ?>
       <input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" />
-      <button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_( 'GO' ); ?></button>
-      <button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_( 'RESET' ); ?></button>
+      <button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_('COM_REDEVENT_GO' ); ?></button>
+      <button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_('COM_REDEVENT_RESET' ); ?></button>
     </div>
     <?php endif; ?>
     <?php if ($this->params->get('display')) : ?>
     <div>
       <?php
-      echo '<label for="limit">'.JText::_('DISPLAY NUM').'</label>&nbsp;';
+      echo '<label for="limit">'.JText::_('COM_REDEVENT_DISPLAY_NUM').'</label>&nbsp;';
       echo $this->events_pageNav->getLimitBox();
       ?>
     </div>
@@ -130,19 +130,19 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				?>				
 				
 				<?php if ($this->params->get('showcode', 1)): ?>
-				<th id="el_code" class="sectiontableheader" align="left"><?php echo JText::_('Code'); ?></th>
+				<th id="el_code" class="sectiontableheader" align="left"><?php echo JText::_('COM_REDEVENT_Code'); ?></th>
 				<?php endif; ?> 
-				<th id="el_attendees" class="sectiontableheader" align="left"><?php echo JText::_('Booked'); ?></th>
-				<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('Edit'); ?></th>
-				<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('Published'); ?></th>
-				<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('Delete'); ?></th>
+				<th id="el_attendees" class="sectiontableheader" align="left"><?php echo JText::_('COM_REDEVENT_Booked'); ?></th>
+				<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('COM_REDEVENT_Edit'); ?></th>
+				<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('COM_REDEVENT_Published'); ?></th>
+				<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('COM_REDEVENT_Delete'); ?></th>
 			</tr>
 	</thead>
 	<tbody>
 	<?php
 	if (count((array)$this->events) == 0) :
 		?>
-		<tr align="center"><td><?php echo JText::_( 'NO EVENTS' ); ?></td></tr>
+		<tr align="center"><td><?php echo JText::_('COM_REDEVENT_NO_EVENTS' ); ?></td></tr>
 		<?php
 	else :
 	
@@ -156,7 +156,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
    					<?php echo JHTML::link('index.php?option=com_redevent&view=editevent&layout=eventdate&id='.$row->slug.'&xref='.$row->xref, 
    					                       ELOutput::formatEventDateTime($row),
    					                       array('class' => 'hasTip', 
-   					                             'title' => JText::_( 'EDIT XREF' ).'::'.JText::_( 'EDIT XREF TIP' )));	?>
+   					                             'title' => JText::_('COM_REDEVENT_EDIT_XREF' ).'::'.JText::_('COM_REDEVENT_EDIT_XREF_TIP' )));	?>
     				<?php else: ?>
    					<?php echo ELOutput::formatEventDateTime($row);	?>
    					<?php endif; ?>
@@ -226,15 +226,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<td headers="el_edit" align="left" valign="top">
 					<?php if ($row->published == '1'): ?>
 						<?php if ($this->acl->canEditXref($row->xref)): ?>
-							<?php echo JHTML::link('index.php?option=com_redevent&task=unpublishxref&xref='. $row->xref, JHTML::_('image.site', 'ok.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Published' ))); ?>
+							<?php echo JHTML::link('index.php?option=com_redevent&task=unpublishxref&xref='. $row->xref, JHTML::_('image.site', 'ok.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_Published' ))); ?>
 						<?php else: ?>
-							<?php echo JHTML::_('image.site', 'ok.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Published' )); ?>						
+							<?php echo JHTML::_('image.site', 'ok.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_Published' )); ?>						
 						<?php endif; ?>
 					<?php elseif ($row->published == '0'):?>
 						<?php if ($this->acl->canEditXref($row->xref)): ?>
-							<?php echo JHTML::link('index.php?option=com_redevent&task=publishxref&xref='. $row->xref, JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Unpublished' ))); ?>
+							<?php echo JHTML::link('index.php?option=com_redevent&task=publishxref&xref='. $row->xref, JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_Unpublished' ))); ?>
 						<?php else: ?>
-							<?php echo JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Unpublished' )); ?>
+							<?php echo JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_Unpublished' )); ?>
 						<?php endif; ?>
 					<?php endif;?>
 				</td>

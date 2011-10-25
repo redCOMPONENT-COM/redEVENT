@@ -40,18 +40,18 @@ defined('_JEXEC') or die('Restricted access');
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
-<fieldset class="adminform"><legend><?php echo JText::_( 'Booking' ); ?></legend>
+<fieldset class="adminform"><legend><?php echo JText::_('COM_REDEVENT_Booking' ); ?></legend>
 
 <table class="admintable">
 <?php if ($this->row->id): ?>
 	<tr>
-		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_( 'UNIQUE ID' ); ?>:
+		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_('COM_REDEVENT_UNIQUE_ID' ); ?>:
 		</label></td>
 		<td><?php echo $this->row->course_code .'-'. $this->row->xref .'-'. $this->row->id; ?></td>
 	</tr>
 <?php endif; ?>
 	<tr>
-		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_( 'USER' ); ?>:
+		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_('COM_REDEVENT_USER' ); ?>:
 		</label></td>
 		<td>
 			<?php echo $this->lists['user']; ?>
@@ -59,31 +59,31 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 <?php if ($this->row->id): ?>
 	<tr>
-		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_( 'REGDATE' ); ?>:
+		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_('COM_REDEVENT_REGDATE' ); ?>:
 		</label></td>
 		<td>
 			<?php echo $this->row->uregdate; ?>
 		</td>
 	</tr>
 	<tr>
-		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_( 'IP ADDRESS' ); ?>:
+		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_('COM_REDEVENT_IP_ADDRESS' ); ?>:
 		</label></td>
 		<td>
 			<?php echo $this->row->uip; ?>
 		</td>
 	</tr>
 	<tr>
-		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_( 'CONFIRMED' ); ?>:
+		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_('COM_REDEVENT_CONFIRMED' ); ?>:
 		</label></td>
 		<td>
 			<?php echo ($this->row->confirmed ? $this->row->confirmdate : ''); ?>
 		</td>
 	</tr>
 	<tr>
-		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_( 'WAITINGLIST' ); ?>:
+		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_('COM_REDEVENT_WAITINGLIST' ); ?>:
 		</label></td>
 		<td>
-			<?php echo ($this->row->waitinglist ? JText::_('yes') : JText::_('no')); ?>
+			<?php echo ($this->row->waitinglist ? JText::_('COM_REDEVENT_yes') : JText::_('COM_REDEVENT_no')); ?>
 		</td>
 	</tr>
 <?php endif; ?>
@@ -91,7 +91,7 @@ defined('_JEXEC') or die('Restricted access');
 				
 </fieldset>
 
-<fieldset class="adminform"><legend><?php echo JText::_( 'Answers' ); ?></legend>
+<fieldset class="adminform"><legend><?php echo JText::_('COM_REDEVENT_Answers' ); ?></legend>
 <?php $options = array('extrafields' => array(array('label' => JText::_('COM_REDEVENT_REGISTRATION_PRICE'), 'field' => $this->lists['pricegroup_id']))); ?>
 <?php
 	$rfcore = new redFormCore(); 

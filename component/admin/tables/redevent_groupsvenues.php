@@ -53,14 +53,14 @@ class RedEvent_groupsvenues extends JTable
 	{
 		if (!$this->group_id) 
 		{
-			$this->_error = JText::_( 'GROUP REQUIRED' );
+			$this->_error = JText::_('COM_REDEVENT_GROUP_REQUIRED' );
 			RedeventError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
 			return false;
 		}
 		
 		if (!$this->venue_id) 
 		{
-			$this->_error = JText::_( 'VENUE REQUIRED' );
+			$this->_error = JText::_('COM_REDEVENT_VENUE_REQUIRED' );
 			RedeventError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
 			return false;
 		}
@@ -74,7 +74,7 @@ class RedEvent_groupsvenues extends JTable
 
 		$xid = intval($this->_db->loadResult());
 		if ($xid && $xid != intval($this->id)) {
-			JError::raiseWarning('REDEVENT_GENERIC_ERROR', JText::_('GROUP VENUE RELATIONSHIP ALREADY EXISTS'));
+			JError::raiseWarning('REDEVENT_GENERIC_ERROR', JText::_('COM_REDEVENT_GROUP_VENUE_RELATIONSHIP_ALREADY_EXISTS'));
 			return false;
 		}
 

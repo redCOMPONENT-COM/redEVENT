@@ -716,7 +716,7 @@ class MyEventsPagination extends JPagination
         // Initialize variables
         $data = new stdClass ();
 
-        $data->all = new JPaginationObject(JText::_('View All'));
+        $data->all = new JPaginationObject(JText::_('COM_REDEVENT_View_All'));
         if (!$this->_viewall)
         {
             $data->all->base = '0';
@@ -724,8 +724,8 @@ class MyEventsPagination extends JPagination
         }
 
         // Set the start and previous data objects
-        $data->start = new JPaginationObject(JText::_('Start'));
-        $data->previous = new JPaginationObject(JText::_('Prev'));
+        $data->start = new JPaginationObject(JText::_('COM_REDEVENT_Start'));
+        $data->previous = new JPaginationObject(JText::_('COM_REDEVENT_Prev'));
 
         if ($this->get('pages.current') > 1)
         {
@@ -740,8 +740,8 @@ class MyEventsPagination extends JPagination
         }
 
         // Set the next and end data objects
-        $data->next = new JPaginationObject(JText::_('Next'));
-        $data->end = new JPaginationObject(JText::_('End'));
+        $data->next = new JPaginationObject(JText::_('COM_REDEVENT_Next'));
+        $data->end = new JPaginationObject(JText::_('COM_REDEVENT_End'));
 
         if ($this->get('pages.current') < $this->get('pages.total'))
         {
@@ -777,7 +777,7 @@ class MyEventsPagination extends JPagination
         // Initialize variables
         $html = "<div class=\"list-footer\">\n";
 
-        $html .= "\n<div class=\"limit\">".JText::_('Display Num').$list['limitfield']."</div>";
+        $html .= "\n<div class=\"limit\">".JText::_('COM_REDEVENT_Display_Num').$list['limitfield']."</div>";
         $html .= $list['pageslinks'];
         $html .= "\n<div class=\"counter\">".$list['pagescounter']."</div>";
 
@@ -805,7 +805,7 @@ class MyAttendingPagination extends JPagination
         // Initialize variables
         $data = new stdClass ();
 
-        $data->all = new JPaginationObject(JText::_('View All'));
+        $data->all = new JPaginationObject(JText::_('COM_REDEVENT_View_All'));
         if (!$this->_viewall)
         {
             $data->all->base = '0';
@@ -813,8 +813,8 @@ class MyAttendingPagination extends JPagination
         }
 
         // Set the start and previous data objects
-        $data->start = new JPaginationObject(JText::_('Start'));
-        $data->previous = new JPaginationObject(JText::_('Prev'));
+        $data->start = new JPaginationObject(JText::_('COM_REDEVENT_Start'));
+        $data->previous = new JPaginationObject(JText::_('COM_REDEVENT_Prev'));
 
         if ($this->get('pages.current') > 1)
         {
@@ -829,8 +829,8 @@ class MyAttendingPagination extends JPagination
         }
 
         // Set the next and end data objects
-        $data->next = new JPaginationObject(JText::_('Next'));
-        $data->end = new JPaginationObject(JText::_('End'));
+        $data->next = new JPaginationObject(JText::_('COM_REDEVENT_Next'));
+        $data->end = new JPaginationObject(JText::_('COM_REDEVENT_End'));
 
         if ($this->get('pages.current') < $this->get('pages.total'))
         {
@@ -866,7 +866,7 @@ class MyAttendingPagination extends JPagination
         // Initialize variables
         $html = "<div class=\"list-footer\">\n";
 
-        $html .= "\n<div class=\"limit\">".JText::_('Display Num').$list['limitfield']."</div>";
+        $html .= "\n<div class=\"limit\">".JText::_('COM_REDEVENT_Display_Num').$list['limitfield']."</div>";
         $html .= $list['pageslinks'];
         $html .= "\n<div class=\"counter\">".$list['pagescounter']."</div>";
 
@@ -893,7 +893,7 @@ class MyVenuesPagination extends JPagination
         // Initialize variables
         $data = new stdClass ();
 
-        $data->all = new JPaginationObject(JText::_('View All'));
+        $data->all = new JPaginationObject(JText::_('COM_REDEVENT_View_All'));
         if (!$this->_viewall)
         {
             $data->all->base = '0';
@@ -901,8 +901,8 @@ class MyVenuesPagination extends JPagination
         }
 
         // Set the start and previous data objects
-        $data->start = new JPaginationObject(JText::_('Start'));
-        $data->previous = new JPaginationObject(JText::_('Prev'));
+        $data->start = new JPaginationObject(JText::_('COM_REDEVENT_Start'));
+        $data->previous = new JPaginationObject(JText::_('COM_REDEVENT_Prev'));
 
         if ($this->get('pages.current') > 1)
         {
@@ -917,8 +917,8 @@ class MyVenuesPagination extends JPagination
         }
 
         // Set the next and end data objects
-        $data->next = new JPaginationObject(JText::_('Next'));
-        $data->end = new JPaginationObject(JText::_('End'));
+        $data->next = new JPaginationObject(JText::_('COM_REDEVENT_Next'));
+        $data->end = new JPaginationObject(JText::_('COM_REDEVENT_End'));
 
         if ($this->get('pages.current') < $this->get('pages.total'))
         {
@@ -954,7 +954,7 @@ class MyVenuesPagination extends JPagination
         // Initialize variables
         $html = "<div class=\"list-footer\">\n";
 
-        $html .= "\n<div class=\"limit\">".JText::_('Display Num').$list['limitfield']."</div>";
+        $html .= "\n<div class=\"limit\">".JText::_('COM_REDEVENT_Display_Num').$list['limitfield']."</div>";
         $html .= $list['pageslinks'];
         $html .= "\n<div class=\"counter\">".$list['pagescounter']."</div>";
 

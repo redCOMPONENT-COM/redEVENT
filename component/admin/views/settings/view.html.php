@@ -50,13 +50,13 @@ class RedEventViewSettings extends JView {
 
 		//only admins have access to this view
 		if ($user->get('gid') < 24) {
-			JError::raiseWarning( 'REDEVENT_GENERIC_ERROR', JText::_( 'ALERTNOTAUTH'));
+			JError::raiseWarning( 'REDEVENT_GENERIC_ERROR', JText::_('COM_REDEVENT_ALERTNOTAUTH'));
 			$mainframe->redirect( 'index.php?option=com_redevent&view=redevent' );
 		}
 
 		// fail if checked out not by 'me'
 		if ($model->isCheckedOut( $user->get('id') )) {
-			JError::raiseWarning( 'REDEVENT_GENERIC_ERROR', JText::_( 'EDITED BY ANOTHER ADMIN' ));
+			JError::raiseWarning( 'REDEVENT_GENERIC_ERROR', JText::_('COM_REDEVENT_EDITED_BY_ANOTHER_ADMIN' ));
 			$mainframe->redirect( 'index.php?option=com_redevent&view=redevent' );
 		}
 
@@ -77,7 +77,7 @@ class RedEventViewSettings extends JView {
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 
 		//create the toolbar
-		JToolBarHelper::title( JText::_( 'SETTINGS' ), 'settings' );
+		JToolBarHelper::title( JText::_('COM_REDEVENT_SETTINGS' ), 'settings' );
 		JToolBarHelper::apply();
 		JToolBarHelper::spacer();
 		JToolBarHelper::save('save');

@@ -81,7 +81,7 @@ class redEVENT_tags {
 			$db->setQuery($q);
 			list($this->_eventid, $this->_venueid, $this->_maxattendees, $this->_maxwaitinglist, $this->_published) = $db->loadRow();
       if (!$this->_published) {
-        JError::raiseError(404, JText::_('This event is not published'), 'this xref is not published, can\'t be displayed in venues');
+        JError::raiseError(404, JText::_('COM_REDEVENT_This_event_is_not_published'), 'this xref is not published, can\'t be displayed in venues');
       }
 		}
 	}
@@ -897,7 +897,7 @@ class redEVENT_tags {
   private function _getAnswers()
   { 
 	  	if (!$this->getEvent()->getData()) {
-	  		JError::raiseWarning(0, JText::_('Error: missing data'));
+	  		JError::raiseWarning(0, JText::_('COM_REDEVENT_Error_missing_data'));
 	  		return false;
 	  	}
 	  	
@@ -940,7 +940,7 @@ class redEVENT_tags {
   private function _getFieldsTags()
   {  	
   	if (!$this->getEvent()->getData()) {
-  		JError::raiseWarning(0, JText::_('Error: missing data'));
+  		JError::raiseWarning(0, JText::_('COM_REDEVENT_Error_missing_data'));
   		return false;
   	}
 		$rfcore = $this->_getRFCore();
@@ -1103,11 +1103,11 @@ class redEVENT_tags {
   	}
 		$html .= '<div id="submit_button" style="display: block;" class="submitform'.$form->classname.'">';
 		if (empty($submit_key)) {
-			$html .= '<input type="submit" id="regularsubmit" name="submit" value="'.JText::_('Submit').'" />';
+			$html .= '<input type="submit" id="regularsubmit" name="submit" value="'.JText::_('COM_REDEVENT_Submit').'" />';
 		}
 		else {
-			$html .= '<input type="submit" id="redformsubmit" name="submit" value="'.JText::_('Confirm').'" />';
-			$html .= '<input type="submit" id="redformcancel" name="cancel" value="'.JText::_('Cancel').'" />';
+			$html .= '<input type="submit" id="redformsubmit" name="submit" value="'.JText::_('COM_REDEVENT_Confirm').'" />';
+			$html .= '<input type="submit" id="redformcancel" name="cancel" value="'.JText::_('COM_REDEVENT_Cancel').'" />';
 		}			
 		$html .= '</div>';
   	$html .= '</form>';
@@ -1384,7 +1384,7 @@ class redEVENT_tags {
 			$info = $this->ReplaceTags($this->getEvent()->getData()->details);
 		}
 		else {
-			JError::raiseNotice(0, JText::_('ERROR TAG LOOP XREF DETAILS'));
+			JError::raiseNotice(0, JText::_('COM_REDEVENT_ERROR_TAG_LOOP_XREF_DETAILS'));
 			$info = '';
 		}
 		return $info;
@@ -1410,7 +1410,7 @@ class redEVENT_tags {
 		$link = JHTML::link($this->absoluteUrls(
 		                        RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug), 
 		                        false)
-		                    , JText::_('Permanent link'), 'class="permalink"');
+		                    , JText::_('COM_REDEVENT_Permanent_link'), 'class="permalink"');
 		return $link;
 	}
 	
@@ -1419,7 +1419,7 @@ class redEVENT_tags {
 		$link = JHTML::link($this->absoluteUrls(
 		                                  RedeventHelperRoute::getDetailsRoute($this->getEvent()->getData()->slug, 
 		                                       $this->_xref), false), 
-		                    JText::_('Event details'), 'class="datelink"');
+		                    JText::_('COM_REDEVENT_Event_details'), 'class="datelink"');
 		
 		return $link;
 	}
@@ -1567,7 +1567,7 @@ class redEVENT_tags {
 		$res = '';
 		if (!empty($this->getEvent()->getData()->venueurl)) {
 			$res = JHTML::link($this->absoluteUrls(($this->getEvent()->getData()->venueurl)), 
-			                   JText::_('Venue website'));
+			                   JText::_('COM_REDEVENT_Venue_website'));
 		}
 		return $res;
 	}
@@ -1632,7 +1632,7 @@ class redEVENT_tags {
 	function _getTag_inputname()
 	{
 		$text = '<div id="divsubemailname">'
-		      .   '<div class="divsubemailnametext">'.JText::_('NAME').'</div>'
+		      .   '<div class="divsubemailnametext">'.JText::_('COM_REDEVENT_NAME').'</div>'
 		      .   '<div class="divsubemailnameinput"><input type="text" name="subemailname" /></div>'
 		      . '</div>';
 		return $text;
@@ -1641,7 +1641,7 @@ class redEVENT_tags {
 	function _getTag_inputemail()
 	{
 		$text = '<div id="divsubemailaddress">'
-		      .   '<div class="divsubemailaddresstext">'.JText::_('EMAIL').'</div>'
+		      .   '<div class="divsubemailaddresstext">'.JText::_('COM_REDEVENT_EMAIL').'</div>'
 		      .   '<div class="divsubemailaddressinput"><input type="text" name="subemailaddress" /></div>'
 		      . '</div>';
 		return $text;
@@ -1649,7 +1649,7 @@ class redEVENT_tags {
 	
 	function _getTag_submit()
 	{
-		$text = '<div id="disubemailsubmit"><input type="submit" value="'.JText::_('SUBMIT').'" /></div>';
+		$text = '<div id="disubemailsubmit"><input type="submit" value="'.JText::_('COM_REDEVENT_SUBMIT').'" /></div>';
 		return $text;
 	}
 	
@@ -1876,7 +1876,7 @@ class redEVENT_tags {
 			$text = $this->ReplaceTags($this->getEvent()->getData()->submission_type_webform);
 		}
 		else {
-			JError::raiseNotice(0, JText::_('ERROR TAG LOOP XXXXSIGNUPPAGE'));
+			JError::raiseNotice(0, JText::_('COM_REDEVENT_ERROR_TAG_LOOP_XXXXSIGNUPPAGE'));
 			$text = '';
 		}
 		return $text;
@@ -1897,7 +1897,7 @@ class redEVENT_tags {
 			$text = $this->_getFormalOffer($this->getEvent()->getData());
 		}
 		else {
-			JError::raiseNotice(0, JText::_('ERROR TAG LOOP XXXXSIGNUPPAGE'));
+			JError::raiseNotice(0, JText::_('COM_REDEVENT_ERROR_TAG_LOOP_XXXXSIGNUPPAGE'));
 			$text = '';
 		}
 		return $text;
@@ -1918,7 +1918,7 @@ class redEVENT_tags {
 			$text = $this->ReplaceTags($this->getEvent()->getData()->submission_type_phone);
 		}
 		else {
-			JError::raiseNotice(0, JText::_('ERROR TAG LOOP XXXXSIGNUPPAGE'));
+			JError::raiseNotice(0, JText::_('COM_REDEVENT_ERROR_TAG_LOOP_XXXXSIGNUPPAGE'));
 			$text = '';
 		}
 		return $text;
@@ -1939,7 +1939,7 @@ class redEVENT_tags {
 			$text = $this->_getEmailSubmission($this->getEvent()->getData());
 		}
 		else {
-			JError::raiseNotice(0, JText::_('ERROR TAG LOOP XXXXSIGNUPPAGE'));
+			JError::raiseNotice(0, JText::_('COM_REDEVENT_ERROR_TAG_LOOP_XXXXSIGNUPPAGE'));
 			$text = '';
 		}
 		return $text;
@@ -1950,7 +1950,7 @@ class redEVENT_tags {
 		$text = '';
 		$link = $this->_getTag_paymentrequestlink();
 		if (!empty($link)) {
-			$text = JHTML::link($link, JText::_('Checkout'), '');
+			$text = JHTML::link($link, JText::_('COM_REDEVENT_Checkout'), '');
 		}
 		return $text;
 	}

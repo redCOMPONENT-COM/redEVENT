@@ -27,7 +27,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 if ($this->row->show_names && $this->registers) {
 	?>
 	
-	<h2 class="register"><?php echo JText::_( 'REGISTERED USERS' ).':'; ?></h2>
+	<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).':'; ?></h2>
 	
 	<div class="register">
 		<ul class="user floattext">
@@ -73,14 +73,14 @@ if ($this->row->show_names && $this->registers) {
 switch ($this->formhandler) {
 
 	case 1:
-		echo JText::_( 'TOO LATE REGISTER' );
+		echo JText::_('COM_REDEVENT_TOO_LATE_REGISTER' );
 	break;
 	case 4:
 	case 2:
 		?>
-		<h2 class="register"><?php echo JText::_( 'REGISTER FORM' ).':'; ?></h2>
+		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTER_FORM' ).':'; ?></h2>
 		<p>
-			<?php echo JText::_( 'I WILL GO' ).': '; ?>
+			<?php echo JText::_('COM_REDEVENT_I_WILL_GO' ).': '; ?>
 		</p>
 		<?php
 		JPluginHelper::importPlugin( 'content' );
@@ -91,7 +91,7 @@ switch ($this->formhandler) {
 		$form->task = 'userregister';
 		$results = $dispatcher->trigger('PrepareEvent', array($form));
 		if (!isset($results[0])) {
-			echo JText::_('REGISTRATION_NOT_POSSIBLE');
+			echo JText::_('COM_REDEVENT_REGISTRATION_NOT_POSSIBLE');
 		}
 		else echo $results[0];
 	break;
@@ -101,7 +101,7 @@ switch ($this->formhandler) {
 		if ($this->row->unregistra == 0) :
 
 			//no he is not allowed to unregister
-			echo JText::_( 'ALLREADY REGISTERED' );
+			echo JText::_('COM_REDEVENT_ALLREADY_REGISTERED' );
 
 		else:
 
@@ -109,11 +109,11 @@ switch ($this->formhandler) {
 			?>
 			<form id="Eventlist" action="<?php echo JRoute::_('index.php'); ?>" method="post">
 				<p>
-					<?php echo JText::_( 'UNREGISTER BOX' ).': '; ?>
+					<?php echo JText::_('COM_REDEVENT_UNREGISTER_BOX' ).': '; ?>
 					<input type="checkbox" name="reg_check" onclick="check(this, document.getElementById('el_send_attend'))" />
 				</p>
 				<p>
-					<input type="submit" id="el_send_attend" name="el_send_attend" value="<?php echo JText::_( 'UNREGISTER' ); ?>" disabled="disabled" />
+					<input type="submit" id="el_send_attend" name="el_send_attend" value="<?php echo JText::_('COM_REDEVENT_UNREGISTER' ); ?>" disabled="disabled" />
 				</p>
 				<p>
 					<input type="hidden" name="rdid" value="<?php echo $this->row->did; ?>" />
@@ -126,7 +126,7 @@ switch ($this->formhandler) {
 		
 	break;
 	case 5:
-		echo JText::_( 'THE EVENT HAS BEEN FILLED' );
+		echo JText::_('COM_REDEVENT_THE_EVENT_HAS_BEEN_FILLED' );
 		break;
 }
 ?>

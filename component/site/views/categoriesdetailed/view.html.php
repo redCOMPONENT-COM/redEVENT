@@ -74,9 +74,9 @@ class RedeventViewCategoriesdetailed extends JView
 		$params->def( 'page_title', $item->name);
 		
 		if ( $task == 'archive' ) {
-			$pathway->addItem(JText::_( 'ARCHIVE' ), JRoute::_(RedeventHelperRoute::getCategoriesDetailedRoute(null, 'archive')));
+			$pathway->addItem(JText::_('COM_REDEVENT_ARCHIVE' ), JRoute::_(RedeventHelperRoute::getCategoriesDetailedRoute(null, 'archive')));
 			$print_link = JRoute::_( RedeventHelperRoute::getCategoriesDetailedRoute(null, 'archive').'&pop=1&tmpl=component' );
-			$pagetitle = $params->get('page_title').' - '.JText::_( 'ARCHIVE' );
+			$pagetitle = $params->get('page_title').' - '.JText::_('COM_REDEVENT_ARCHIVE' );
 		} else {
 			$print_link = JRoute::_( RedeventHelperRoute::getCategoriesDetailedRoute().'&pop=1&tmpl=component' );
 			$pagetitle = $params->get('page_title');

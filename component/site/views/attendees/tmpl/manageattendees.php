@@ -26,8 +26,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $waiting_count = 0;
 
-$edit_image   = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Edit' ), 'class="hasTip" title="'.JText::_( 'Edit' ).'::"');
-$remove_image = JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'Delete' ), 'class="hasTip" title="'.JText::_( 'Delete' ).'::"');
+$edit_image   = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_Edit' ), 'class="hasTip" title="'.JText::_('COM_REDEVENT_Edit' ).'::"');
+$remove_image = JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_Delete' ), 'class="hasTip" title="'.JText::_('COM_REDEVENT_Delete' ).'::"');
 
 if ($this->manage_attendees) {
 	?>	
@@ -45,9 +45,9 @@ if ($this->manage_attendees) {
 	
 	<form action="<?php echo $this->action; ?>" method="post" name="manageform">
 	<div id="redevent" class="event_id<?php echo $this->row->eventid; ?> el_details">
-		<h2 class="register"><?php echo JText::_( 'REGISTERED USERS' ).': '.$this->row->full_title; ?></h2>
+		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).': '.$this->row->full_title; ?></h2>
 		
-		<?php echo JHTML::link('index.php?option=com_redevent&controller=attendees&task=exportattendees&format=csv&xref='. $this->row->xref, JText::_('CSV export'));?>
+		<?php echo JHTML::link('index.php?option=com_redevent&controller=attendees&task=exportattendees&format=csv&xref='. $this->row->xref, JText::_('COM_REDEVENT_CSV_export'));?>
 						
 		<?php if (count($this->roles)): ?>
 		<?php $this->showRoles(); ?>
@@ -64,7 +64,7 @@ if ($this->manage_attendees) {
           <?php endforeach; ?>
           <th>&nbsp;</th>
           <th>&nbsp;</th>
-  			  <th><?php echo JHTML::_('grid.sort', JText::_('Registration id'), 'r.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+  			  <th><?php echo JHTML::_('grid.sort', JText::_('COM_REDEVENT_Registration_id'), 'r.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
   			</tr>
 			</thead>
 			<tbody>
@@ -103,7 +103,7 @@ if ($this->manage_attendees) {
 		</div>
 		
 		<?php if ($waiting_count): ?>
-		<h2 class="register"><?php echo JText::_( 'WAITING LIST' ); ?></h2>
+		<h2 class="register"><?php echo JText::_('COM_REDEVENT_WAITING_LIST' ); ?></h2>
     
     <div class="register">
       <table class="registered">
@@ -115,7 +115,7 @@ if ($this->manage_attendees) {
           <?php endforeach; ?>
           <th>&nbsp;</th>
           <th>&nbsp;</th>
-  			  <th><?php echo JHTML::_('grid.sort', JText::_('Registration id'), 'r.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+  			  <th><?php echo JHTML::_('grid.sort', JText::_('COM_REDEVENT_Registration_id'), 'r.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
         </tr>
       </thead>
       <tbody>
@@ -157,5 +157,5 @@ if ($this->manage_attendees) {
 	</form>
 	<?php
 }
-echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=myevents'), JText::_('RETURN TO MY EVENTS'));
+echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=myevents'), JText::_('COM_REDEVENT_RETURN_TO_MY_EVENTS'));
 ?>

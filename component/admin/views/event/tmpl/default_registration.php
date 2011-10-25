@@ -3,7 +3,7 @@
 	<tr class="row<?php echo $k = 1 - $k; ?>">
 		<td class="redevent_settings">
 			<label for="registra">
-				<?php echo JText::_( 'ENABLE REGISTRATION' ).':'; ?>
+				<?php echo JText::_('COM_REDEVENT_ENABLE_REGISTRATION' ).':'; ?>
 			</label>
 		</td>
 		<td>
@@ -16,7 +16,7 @@
 	<tr class="row<?php echo $k = 1 - $k; ?>">
 		<td>
 			<label for="registra">
-				<?php echo JText::_( 'CREATE JOOMLA USER' ).':'; ?>
+				<?php echo JText::_('COM_REDEVENT_CREATE_JOOMLA_USER' ).':'; ?>
 			</label>
 		</td>
 		<td>
@@ -28,7 +28,7 @@
 	<tr class="row<?php echo $k = 1 - $k; ?>">
 		<td>
 			<label for="unregistra">
-				<?php echo JText::_( 'ENABLE UNREGISTRATION' ).':'; ?>
+				<?php echo JText::_('COM_REDEVENT_ENABLE_UNREGISTRATION' ).':'; ?>
 			</label>
 		</td>
 		<td>
@@ -41,7 +41,7 @@
 	<tr class="row<?php echo $k = 1 - $k; ?>">
 		<td>
 			<label for="show_names">
-				<?php echo JText::_( 'SHOW REGISTERED FRONTEND' ).':'; ?>
+				<?php echo JText::_('COM_REDEVENT_SHOW_REGISTERED_FRONTEND' ).':'; ?>
 			</label>
 		</td>
 		<td>

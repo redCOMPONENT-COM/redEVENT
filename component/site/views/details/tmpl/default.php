@@ -56,7 +56,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 /* If registration is enabled */
 if ($this->row->show_names) : ?>
 		<!-- Registration -->
-		<h2 class="register"><?php echo JText::_( 'REGISTERED USERS' ).':'; ?></h2>
+		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).':'; ?></h2>
 		<?php
 			foreach ($this->venuedates AS $key => $venuedate) 
 			{			
@@ -64,7 +64,7 @@ if ($this->row->show_names) : ?>
 					continue;
 				}
         /* Get the date */
-        $date = (!redEVENTHelper::isValidDate($venuedate->dates)  ? Jtext::_('Open date') : strftime( $this->elsettings->formatdate, strtotime( $venuedate->dates )));
+        $date = (!redEVENTHelper::isValidDate($venuedate->dates)  ? JText::_('COM_REDEVENT_Open_date') : strftime( $this->elsettings->formatdate, strtotime( $venuedate->dates )));
         $enddate  = (!redEVENTHelper::isValidDate($venuedate->enddates) || $venuedate->enddates == '0000-00-00' || $venuedate->enddates == $venuedate->dates) ? '' : strftime( $this->elsettings->formatdate, strtotime( $venuedate->enddates ));
         $displaydate = $date. ($enddate ? ' - '.$enddate: '');
     
@@ -81,7 +81,7 @@ if ($this->row->show_names) : ?>
         
         $attendees_layout = ($this->params->get('details_attendees_layout', 0) ? 'attendees' : 'attendees_table');
         
-				echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&id='.$this->row->slug.'&tpl='. $attendees_layout .'&xref='.$venuedate->id), JText::_('SHOW_REGISTERED_USERS').' '.$displaydate.' '.$displaytime);
+				echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&id='.$this->row->slug.'&tpl='. $attendees_layout .'&xref='.$venuedate->id), JText::_('COM_REDEVENT_SHOW_REGISTERED_USERS').' '.$displaydate.' '.$displaytime);
 				echo '<br />';
 			}
 		?>

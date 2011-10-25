@@ -299,11 +299,11 @@ class modRedeventTeaserHelper
 
 			//check if today or tomorrow or yesterday and no current running multiday event
 			if($row->dates == $today && empty($enddates_stamp)) {
-				$result = JText::_( 'TODAY' );
+				$result = JText::_( 'MOD_REDEVENT_TEASER_TODAY' );
 			} elseif($row->dates == $tomorrow) {
-				$result = JText::_( 'TOMORROW' );
+				$result = JText::_( 'MOD_REDEVENT_TEASER_TOMORROW' );
 			} elseif($row->dates == $yesterday) {
-				$result = JText::_( 'YESTERDAY' );
+				$result = JText::_( 'MOD_REDEVENT_TEASER_YESTERDAY' );
 			}
 				else {
 				
@@ -312,19 +312,19 @@ class modRedeventTeaserHelper
 
 		     	//single day event
 		     	$date = strftime('%A', strtotime( $row->dates ));
-		     	$result = JText::sprintf('ON DATE', $date);
+		     	$result = JText::sprintf('MOD_REDEVENT_TEASER_ON_DATE', $date);
 			
 		    	//Upcoming multidayevent (From 16.10.2010 Until 18.10.2010)
 		    	if($dates_stamp > $tomorrow_stamp && $enddates_stamp) {
 		    	$startdate = strftime('%A', strtotime( $row->dates ));
-		  		$result = JText::sprintf('FROM', $startdate);
+		  		$result = JText::sprintf('MOD_REDEVENT_TEASER_FROM', $startdate);
 		    	}
 			
 		    	//current multidayevent (Until 18.08.2008)
 		    	if( $row->enddates && $enddates_stamp > $today_stamp && $dates_stamp <= $today_stamp ) {
 		  		//format date
 		  		$result = strftime('%A', strtotime( $row->enddates ));
-		  		$result = JText::sprintf('UNTIL', $result);
+		  		$result = JText::sprintf('MOD_REDEVENT_TEASER_UNTIL', $result);
 		    	}			 
 		    	
 	  		}	
@@ -334,23 +334,23 @@ class modRedeventTeaserHelper
 	     		//the event has an enddate and it's earlier than yesterday
 		  	  if ($row->enddates && $enddates_stamp < $yesterday_stamp) {
 	   			$days = round( ($today_stamp - $enddates_stamp) / 86400 );
-	   			$result = JText::sprintf( 'ENDED DAYS AGO', $days );
+	   			$result = JText::sprintf( 'MOD_REDEVENT_TEASER_ENDED_DAYS_AGO', $days );
 
       		//the event has an enddate and it's later than today but the startdate is today or earlier than today
 	     		//means a currently running event with startdate = today 
 		    	} elseif($row->enddates && $enddates_stamp > $today_stamp && $dates_stamp <= $today_stamp) {
 	   			$days = round( ($enddates_stamp - $today_stamp) / 86400 );
-	   			$result = JText::sprintf( 'DAYS LEFT', $days );
+	   			$result = JText::sprintf( 'MOD_REDEVENT_TEASER_DAYS_LEFT', $days );
            				
     			//the events date is earlier than yesterday
 	     		} elseif($dates_stamp < $yesterday_stamp) {
 	   			$days = round( ($today_stamp - $dates_stamp) / 86400 );
-	   			$result = JText::sprintf( 'DAYS AGO', $days );
+	   			$result = JText::sprintf( 'MOD_REDEVENT_TEASER_DAYS_AGO', $days );
 				
 	     		//the events date is later than tomorrow
 	     		} elseif($dates_stamp > $tomorrow_stamp) {
 	   			$days = round( ($dates_stamp - $today_stamp) / 86400 );
-	   			$result = JText::sprintf( 'DAYS AHEAD', $days );
+	   			$result = JText::sprintf( 'MOD_REDEVENT_TEASER_DAYS_AHEAD', $days );
 	     		}
          }
         }
@@ -369,13 +369,13 @@ class modRedeventTeaserHelper
 			//single day event
 			if (empty($enddates_stamp)) {
 			$date = strftime($params->get('formatdate', '%d.%m.%Y'), strtotime( $row->dates.' '.$row->times ));
-			$result = JText::sprintf('ON DATE', $date);
+			$result = JText::sprintf('MOD_REDEVENT_TEASER_ON_DATE', $date);
 			}
 		  	else {	
 		  	//multidayevent (From 16.10.2008 Until 18.08.2008)
 				$startdate = strftime($params->get('formatdate', '%d.%m.%Y'), strtotime( $row->dates ));
 				$enddate = strftime($params->get('formatdate', '%d.%m.%Y'), strtotime( $row->enddates ));
-				$result = JText::sprintf('FROM UNTIL', $startdate, $enddate);			
+				$result = JText::sprintf('MOD_REDEVENT_TEASER_FROM_UNTIL', $startdate, $enddate);			
 	     }
 				
 		return $result;

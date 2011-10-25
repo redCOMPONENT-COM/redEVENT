@@ -56,7 +56,7 @@ class RedeventViewSignup extends JView
 		$course = $this->get('Details');
 		$venue = $this->get('Venue');
 				
-    $pagetitle = $params->set('page_title', JText::_('SIGNUP_PAGE_TITLE'));
+    $pagetitle = $params->set('page_title', JText::_('COM_REDEVENT_SIGNUP_PAGE_TITLE'));
 		$document->setTitle($pagetitle);
     $mainframe->setPageTitle( $pagetitle );
     
@@ -77,7 +77,7 @@ class RedeventViewSignup extends JView
     if ($canRegister->canregister == 0) {
       echo '<span class="registration_error">'.$canRegister->status.'</span>';
       echo '<br/>';
-      echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id')), JText::_('RETURN_EVENT_DETAILS'));
+      echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id')), JText::_('COM_REDEVENT_RETURN_EVENT_DETAILS'));
       return;    	
     }
     

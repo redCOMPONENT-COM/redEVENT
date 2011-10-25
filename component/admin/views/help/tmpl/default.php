@@ -24,7 +24,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <?php
-echo JText::_('VISIT_REDCOMPONENT_COM');
+echo JText::_('COM_REDEVENT_VISIT_REDCOMPONENT_COM');
 ?>
 <p class="copyright">
 	<?php echo ELAdmin::footer( ); ?>

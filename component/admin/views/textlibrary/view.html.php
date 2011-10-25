@@ -58,7 +58,7 @@ class RedEventViewTextLibrary extends JView {
 				return $this->_displayEdit($tpl);
 		}
 		
-		JToolBarHelper::title( JText::_( 'TEXT_LIBRARY' ), 'library' );
+		JToolBarHelper::title( JText::_('COM_REDEVENT_TEXT_LIBRARY' ), 'library' );
 		JToolBarHelper::addNew();
 		JToolBarHelper::editListX();
 		JToolBarHelper::spacer();
@@ -110,8 +110,8 @@ class RedEventViewTextLibrary extends JView {
 		$task = JRequest::getVar('task');
 		
 		/* Set up toolbar */
-		if ($task == 'edit') JToolBarHelper::title( JText::_( 'EDIT_TEXT_LIBRARY' ), 'libraryedit' );
-		else JToolBarHelper::title( JText::_( 'ADD_TEXT_LIBRARY' ), 'libraryedit' );
+		if ($task == 'edit') JToolBarHelper::title( JText::_('COM_REDEVENT_EDIT_TEXT_LIBRARY' ), 'libraryedit' );
+		else JToolBarHelper::title( JText::_('COM_REDEVENT_ADD_TEXT_LIBRARY' ), 'libraryedit' );
 		JToolBarHelper::save();
 		JToolBarHelper::apply();
 		JToolBarHelper::spacer();

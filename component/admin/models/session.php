@@ -431,7 +431,7 @@ class RedEventModelSession extends JModel
   	$query = ' SELECT COUNT(*) FROM #__redevent_register WHERE xref = '. $this->_db->Quote((int)$id);
   	$this->_db->setQuery($query);
   	if ($this->_db->loadResult()) {
-  		$this->setError(JText::_('CANNOT DELETE XREF HAS REGISTRATIONS'));
+  		$this->setError(JText::_('COM_REDEVENT_CANNOT_DELETE_XREF_HAS_REGISTRATIONS'));
   		return false;
   	}
   	
@@ -439,7 +439,7 @@ class RedEventModelSession extends JModel
   	$q = "DELETE FROM #__redevent_event_venue_xref WHERE id =". $this->_db->Quote((int)$id);
     $this->_db->setQuery($q);
     if (!$this->_db->query()) {
-      $this->setError(JText::_('DB ERROR DELETING XREF'));
+      $this->setError(JText::_('COM_REDEVENT_DB_ERROR_DELETING_XREF'));
       return false;
     }
     
@@ -447,7 +447,7 @@ class RedEventModelSession extends JModel
     $q = "DELETE FROM #__redevent_sessions_roles WHERE xref =". $this->_db->Quote((int)$id);
     $this->_db->setQuery($q);
     if (!$this->_db->query()) {
-      $this->setError(JText::_('DB ERROR DELETING XREF ROLES'));
+      $this->setError(JText::_('COM_REDEVENT_DB_ERROR_DELETING_XREF_ROLES'));
       return false;
     }
     
@@ -455,7 +455,7 @@ class RedEventModelSession extends JModel
     $q = "DELETE FROM #__redevent_repeats WHERE xref_id =". $this->_db->Quote((int)$id);
     $this->_db->setQuery($q);
     if (!$this->_db->query()) {
-      $this->setError(JText::_('DB ERROR DELETING XREF REPEAT'));
+      $this->setError(JText::_('COM_REDEVENT_DB_ERROR_DELETING_XREF_REPEAT'));
       return false;
     }
     

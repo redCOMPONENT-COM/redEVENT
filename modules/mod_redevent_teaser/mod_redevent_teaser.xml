@@ -81,13 +81,12 @@
 		<param name="picture_size" type="text" default="30" label="MOD_REDEVENT_TEASER_PICTURE_SIZE" description="MOD_REDEVENT_TEASER_PICTURE_SIZE_DESC" />		
 	</params>
 	
-	
 	<params group="advanced">
-		<param name="moduleclass_sfx" type="text" default="" label="MODULE CLASS SUFFIX" description="MODULE CLASS SUFFIX DESC" />
-		<param name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
-			<option value="1">Use global</option>
-			<option value="0">No caching</option>
+		<param name="cache" type="list" default="1" label="MOD_REDEVENT_CACHING" description="MOD_REDEVENT_CACHING_DESC">
+			<option value="1">USE GLOBAL</option>
+			<option value="0">NO CACHING</option>
 		</param>
+		<param name="cache_time" type="text" default="900" label="MOD_REDEVENT_CACHE_TIME" description="MOD_REDEVENT_CACHE_TIME_DESC" />
 	</params>
 
 </install>

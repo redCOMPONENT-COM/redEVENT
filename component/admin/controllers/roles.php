@@ -85,9 +85,9 @@ class RedeventControllerRoles extends JController
 		$model = $this->getModel('role');
 
 		if ($returnid = $model->store($post)) {
-			$msg = JText::_( 'Role Saved' );
+			$msg = JText::_('COM_REDEVENT_Role_Saved' );
 		} else {
-			$msg = JText::_( 'Error Saving role' ).$model->getError();
+			$msg = JText::_('COM_REDEVENT_Error_Saving_role' ).$model->getError();
 		}
 
 		// Check the table in so it can be edited.... we are done with it anyway
@@ -108,7 +108,7 @@ class RedeventControllerRoles extends JController
 		JArrayHelper::toInteger($cid);
 
 		if (count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to delete' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_delete' ) );
 		}
 
 		$model = $this->getModel('role');

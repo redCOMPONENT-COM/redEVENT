@@ -27,12 +27,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <?php if (count((array)$this->groups)) : ?>
 
-<h2><?php echo JText::_('My groups'); ?></h2>
+<h2><?php echo JText::_('COM_REDEVENT_My_groups'); ?></h2>
 
 <table class="eventtable" summary="venues list">
 	<thead>
 		<tr>
-			<th id="el_title" class="sectiontableheader" align="left"><?php echo JText::_('Name'); ?></th>
+			<th id="el_title" class="sectiontableheader" align="left"><?php echo JText::_('COM_REDEVENT_Name'); ?></th>
 		</tr>
 	</thead>
 	<tbody>

@@ -59,7 +59,7 @@ class RedEventViewGroupacl extends JView {
 		$gvcategories = & $this->get('MaintainedVenuesCategories');
 
 		//build toolbar
-		JToolBarHelper::title( JText::_( 'EDIT GROUP ACL' ) .' - '. $group->name, 'groupedit' );
+		JToolBarHelper::title( JText::_('COM_REDEVENT_EDIT_GROUP_ACL' ) .' - '. $group->name, 'groupedit' );
 		JToolBarHelper::spacer();
 		JToolBarHelper::apply('applyacl');
 		JToolBarHelper::save('saveacl');

@@ -86,7 +86,7 @@ class RedeventViewDetails extends JView
 		//Check if the id exists
 		if ($row->did == 0)
 		{
-			return JError::raiseError( 404, JText::sprintf( 'Event #%d not found', $row->did ) );
+			return JError::raiseError( 404, JText::sprintf( 'COM_REDEVENT_Event_d_not_found', $row->did ) );
 		}
 
 		//Check if user has access to the details
@@ -133,7 +133,7 @@ class RedeventViewDetails extends JView
 			JHTML::_('behavior.mootools');
 			$js = " window.addEvent('domready', function(){
 		            $$('.unreglink').addEvent('click', function(event){
-		                  if (confirm('".JText::_('CONFIRM CANCEL REGISTRATION')."')) {
+		                  if (confirm('".JText::_('COM_REDEVENT_CONFIRM_CANCEL_REGISTRATION')."')) {
                       	return true;
 	                    }
 	                    else {
@@ -151,7 +151,7 @@ class RedeventViewDetails extends JView
 		
 		//Generate Eventdescription
 		if (($row->datdescription == '') || ($row->datdescription == '<br />')) {
-			$row->datdescription = JText::_( 'NO DESCRIPTION' ) ;
+			$row->datdescription = JText::_('COM_REDEVENT_NO_DESCRIPTION' ) ;
 		} else {
 			//Execute Plugins
 			$row->datdescription = JHTML::_('content.prepare', $row->datdescription);

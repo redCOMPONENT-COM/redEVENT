@@ -90,7 +90,7 @@ class RedEventControllerImagehandler extends RedEventController
 
 		//do we have an upload?
 		if (empty($file['name'])) {
-			echo "<script> alert('".JText::_( 'IMAGE EMPTY' )."'); window.history.go(-1); </script>\n";
+			echo "<script> alert('".JText::_('COM_REDEVENT_IMAGE_EMPTY' )."'); window.history.go(-1); </script>\n";
 			$mainframe->close();
 		}
 
@@ -107,14 +107,14 @@ class RedEventControllerImagehandler extends RedEventController
 		
 		//upload the image
 		if (!JFile::upload($file['tmp_name'], $filepath)) {
-			echo "<script> alert('".JText::_( 'UPLOAD FAILED' )."'); window.history.go(-1); </script>\n";
+			echo "<script> alert('".JText::_('COM_REDEVENT_UPLOAD_FAILED' )."'); window.history.go(-1); </script>\n";
 			$mainframe->close();
 
 		} else {
 			// create thumbnail
 			redEVENTImage::thumb($filepath, dirname($filepath).DS.'small'.DS.$filename, $elsettings->imagewidth, $elsettings->imagehight);
 			
-			echo "<script> alert('".JText::_( 'UPLOAD COMPLETE' )."'); window.history.go(-1); window.parent.elSelectImage('$filename', '$filename'); </script>\n";
+			echo "<script> alert('".JText::_('COM_REDEVENT_UPLOAD_COMPLETE' )."'); window.history.go(-1); window.parent.elSelectImage('$filename', '$filename'); </script>\n";
 			$mainframe->close();
 		}
 
@@ -143,7 +143,7 @@ class RedEventControllerImagehandler extends RedEventController
 			foreach ($images as $image)
 			{
 				if ($image !== JFilterInput::clean($image, 'path')) {
-					RedeventError::raiseWarning(100, JText::_('UNABLE TO DELETE').' '.htmlspecialchars($image, ENT_COMPAT, 'UTF-8'));
+					RedeventError::raiseWarning(100, JText::_('COM_REDEVENT_UNABLE_TO_DELETE').' '.htmlspecialchars($image, ENT_COMPAT, 'UTF-8'));
 					continue;
 				}
 

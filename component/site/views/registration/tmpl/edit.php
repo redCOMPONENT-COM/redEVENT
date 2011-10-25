@@ -29,8 +29,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<?php echo $this->rfields; ?>
 		<input type="hidden" name="xref" value="<?php echo $this->xref; ?>"/>
 		<div id="submit_button" style="display: block;">
-		<input type="submit" id="redformsubmit" name="submit" value="<?php echo JText::_('Update'); ?>" />
-		<input type="submit" id="redformcancel" name="cancel" value="<?php echo JText::_('Cancel'); ?>" />
+		<input type="submit" id="redformsubmit" name="submit" value="<?php echo JText::_('COM_REDEVENT_Update'); ?>" />
+		<input type="submit" id="redformcancel" name="cancel" value="<?php echo JText::_('COM_REDEVENT_Cancel'); ?>" />
 		</div>
 	</form>
 </div>

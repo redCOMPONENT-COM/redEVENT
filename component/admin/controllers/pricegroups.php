@@ -108,7 +108,7 @@ class RedeventControllerPricegroups extends JController
 		JArrayHelper::toInteger($cid);
 
 		if (count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to delete' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_delete' ) );
 		}
 
 		$model = $this->getModel('pricegroup');

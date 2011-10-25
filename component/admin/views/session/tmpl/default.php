@@ -69,24 +69,24 @@ function updateend(cal)
 
 <form name="adminForm" action="index.php" method="post">
 <?php echo $this->pane->startPane("det-pane");
-			echo $this->pane->startPanel( JText::_('Details'), 'tdetails' );
+			echo $this->pane->startPanel( JText::_('COM_REDEVENT_Details'), 'tdetails' );
 ?>
 <fieldset class="adminform">
-<legend><?php echo JText::_('Dates'); ?></legend>
+<legend><?php echo JText::_('COM_REDEVENT_Dates'); ?></legend>
 
 <table class="admintable">
 <tbody>
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF VENUE TIP'); ?>">
-      <label for="venueid"><?php echo JText::_('Venue') .': '; ?></label>
+    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_VENUE_TIP'); ?>">
+      <label for="venueid"><?php echo JText::_('COM_REDEVENT_Venue') .': '; ?></label>
     </td>
     <td>
       <?php echo $this->lists['venue']; ?>
     </td>
   </tr>
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF GROUP TIP'); ?>">
-      <label for="groupid"><?php echo JText::_('Group') .': '; ?></label>
+    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_GROUP_TIP'); ?>">
+      <label for="groupid"><?php echo JText::_('COM_REDEVENT_Group') .': '; ?></label>
     </td>
     <td>
       <?php echo $this->lists['group']; ?>
@@ -109,56 +109,56 @@ function updateend(cal)
     </td>
   </tr>
 	<tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF START DATE TIP'); ?>">
-      <label for="dates"><?php echo JText::_('DATE') .': '; ?></label>
+    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_START_DATE_TIP'); ?>">
+      <label for="dates"><?php echo JText::_('COM_REDEVENT_DATE') .': '; ?></label>
     </td>
     <td>
       <?php echo $this->calendar($this->xref->dates, 'dates', 'dates', '%Y-%m-%d', 'updateend'); ?>
     </td>
 	</tr>
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF START TIME TIP'); ?>">
-      <label for="times"><?php echo JText::_('TIME') .': '; ?></label>
+    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_START_TIME_TIP'); ?>">
+      <label for="times"><?php echo JText::_('COM_REDEVENT_TIME') .': '; ?></label>
     </td>
     <td>
       <input type="text" size="8" maxlength="8" name="times" id="times" value="<?php echo $this->xref->times; ?>" />      
     </td>
   </tr>
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF END DATE TIP'); ?>">
-      <label for="enddates"><?php echo JText::_('ENDDATE') .': '; ?></label>
+    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_END_DATE_TIP'); ?>">
+      <label for="enddates"><?php echo JText::_('COM_REDEVENT_ENDDATE') .': '; ?></label>
     </td>
     <td>
       <?php echo $this->calendar($this->xref->enddates, 'enddates', 'enddates'); ?>
     </td>
   </tr>
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF END TIME TIP'); ?>">
-      <label for="endtimes"><?php echo JText::_('ENDTIMES') .': '; ?></label>
+    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_END_TIME_TIP'); ?>">
+      <label for="endtimes"><?php echo JText::_('COM_REDEVENT_ENDTIMES') .': '; ?></label>
     </td>
     <td>
       <input type="text" size="8" maxlength="8" name="endtimes" id="endtimes" value="<?php echo $this->xref->endtimes; ?>" /> 
     </td>
   </tr>
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF REGISTRATION END TIP'); ?>">
-      <label for="registrationend"><?php echo JText::_('XREF REGISTRATION END') .': '; ?></label>
+    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_REGISTRATION_END_TIP'); ?>">
+      <label for="registrationend"><?php echo JText::_('COM_REDEVENT_XREF_REGISTRATION_END') .': '; ?></label>
     </td>
     <td>
       <?php echo JHTML::calendar($this->xref->registrationend, 'registrationend', 'registrationend', '%Y-%m-%d %H:%M'); ?>
     </td>
   </tr>
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF NOTE TIP'); ?>">
-      <label for="note"><?php echo JText::_( 'XREF NOTE' ) .': '; ?></label>
+    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_NOTE_TIP'); ?>">
+      <label for="note"><?php echo JText::_('COM_REDEVENT_XREF_NOTE' ) .': '; ?></label>
     </td>
     <td>
       <input type="text" size="50" maxlength="50" name="note" id="note" value="<?php echo $this->xref->note; ?>" /> 
     </td>
   </tr>
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('REDEVENT_XREF_EXTERNAL_REGISTRATION_TIP'); ?>">
-      <label for="external_registration_url"><?php echo JText::_( 'REDEVENT_XREF_EXTERNAL_REGISTRATION' ) .': '; ?></label>
+    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_EXTERNAL_REGISTRATION_TIP'); ?>">
+      <label for="external_registration_url"><?php echo JText::_('COM_REDEVENT_XREF_EXTERNAL_REGISTRATION' ) .': '; ?></label>
     </td>
     <td>
       <input type="text" size="50" maxlength="255" name="external_registration_url" id="external_registration_url" value="<?php echo $this->xref->external_registration_url; ?>" /> 
@@ -166,7 +166,7 @@ function updateend(cal)
   </tr>
   <tr>
     <td class="key">
-      <label for="published"><?php echo JText::_('PUBLISHED') .': '; ?></label>
+      <label for="published"><?php echo JText::_('COM_REDEVENT_PUBLISHED') .': '; ?></label>
     </td>
     <td>
       <?php echo $this->lists['published']; ?>
@@ -186,13 +186,13 @@ function updateend(cal)
 </fieldset>
 
 <fieldset class="adminform">
-<legend><?php echo JText::_('Custom fields'); ?></legend>
+<legend><?php echo JText::_('COM_REDEVENT_Custom_fields'); ?></legend>
 <table class="admintable">
 	<tbody>
     <?php foreach ($this->customfields as $field): ?>
     <tr>
       <td class="key">
-        <label for="custom" class="hasTip" title="<?php echo JText::_($field->get('name')).'::'.JText::_('USE TAG') .': ['. $field->get('tag') .']'; ?>">
+        <label for="custom" class="hasTip" title="<?php echo JText::_($field->get('name')).'::'.JText::_('COM_REDEVENT_USE_TAG') .': ['. $field->get('tag') .']'; ?>">
           <?php echo JText::_( $field->name ); ?>:
         </label>
       </td>
@@ -207,31 +207,31 @@ function updateend(cal)
 </fieldset>
 
 <fieldset class="adminform">
-<legend><?php echo JText::_('Details'); ?></legend>
-<?php echo JText::_('REDEVENT_XREF_DETAILS_INFO'); ?>
+<legend><?php echo JText::_('COM_REDEVENT_Details'); ?></legend>
+<?php echo JText::_('COM_REDEVENT_XREF_DETAILS_INFO'); ?>
 <?php echo $this->editor->display('details', $this->xref->details, '100%;', '300', '100', '20', array('pagebreak', 'readmore')); ?>
 </fieldset>
 
 <?php echo $this->pane->endPanel();
 
-			echo $this->pane->startPanel(JText::_('Registration'), 'registration');
+			echo $this->pane->startPanel(JText::_('COM_REDEVENT_Registration'), 'registration');
 ?>
 <fieldset class="adminform">
-<legend><?php echo JText::_('Registration'); ?></legend>
+<legend><?php echo JText::_('COM_REDEVENT_Registration'); ?></legend>
 
 <table class="admintable">
 <tbody>
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF MAX ATTENDEES TIP'); ?>">
-      <label for="maxattendees"><?php echo JText::_( 'MAXIMUM_ATTENDEES' ) .': '; ?></label>
+    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_MAX_ATTENDEES_TIP'); ?>">
+      <label for="maxattendees"><?php echo JText::_('COM_REDEVENT_MAXIMUM_ATTENDEES' ) .': '; ?></label>
     </td>
     <td>
       <input type="text" size="8" maxlength="8" name="maxattendees" id="maxattendees" value="<?php echo $this->xref->maxattendees; ?>" /> 
     </td>
   </tr>
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF MAX WAITING TIP'); ?>">
-      <label for="maxwaitinglist"><?php echo JText::_( 'MAXIMUM_WAITINGLIST' ) .': '; ?></label>
+    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_MAX_WAITING_TIP'); ?>">
+      <label for="maxwaitinglist"><?php echo JText::_('COM_REDEVENT_MAXIMUM_WAITINGLIST' ) .': '; ?></label>
     </td>
     <td>
       <input type="text" size="8" maxlength="8" name="maxwaitinglist" id="maxwaitinglist" value="<?php echo $this->xref->maxwaitinglist; ?>" /> 
@@ -239,8 +239,8 @@ function updateend(cal)
   </tr>
 
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF COURSE CREDIT TIP'); ?>">
-      <label for="course_credit"><?php echo JText::_( 'COURSE_CREDIT' ) .': '; ?></label>
+    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_COURSE_CREDIT_TIP'); ?>">
+      <label for="course_credit"><?php echo JText::_('COM_REDEVENT_COURSE_CREDIT' ) .': '; ?></label>
     </td>
     <td>
       <input type="text" size="8" maxlength="8" name="course_credit" id="course_credit" value="<?php echo $this->xref->course_credit; ?>" /> 
@@ -248,8 +248,8 @@ function updateend(cal)
   </tr>
     
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('XREF COURSE PRICE TIP'); ?>">
-      <label for="course_price"><?php echo JText::_( 'COURSE_PRICE' ) .': '; ?></label>
+    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_COURSE_PRICE_TIP'); ?>">
+      <label for="course_price"><?php echo JText::_('COM_REDEVENT_COURSE_PRICE' ) .': '; ?></label>
     </td>
     <td>
 	    <table>
@@ -261,7 +261,7 @@ function updateend(cal)
 			  <?php endforeach; ?>
 			  <tr id="trnewprice">
 			  	<td><?php echo JHTML::_('select.genericlist', $this->pricegroupsoptions, 'pricegroup[]', array('id' => 'newprice', 'class' => 'newprice')); ?></td>
-			  	<td><input type="text" name="price[]" class="price-val" value="0.00" size="10" /> <button type="button" class="price-button" id="add-price"><?php echo Jtext::_('add'); ?></button></td>  	
+			  	<td><input type="text" name="price[]" class="price-val" value="0.00" size="10" /> <button type="button" class="price-button" id="add-price"><?php echo JText::_('COM_REDEVENT_add'); ?></button></td>  	
 			  </tr>
 	    </table>
     </td>
@@ -275,7 +275,7 @@ function updateend(cal)
 
 <?php echo $this->pane->endPanel();
 
-			echo $this->pane->startPanel(JText::_('Recurrence'), 'recurrence');
+			echo $this->pane->startPanel(JText::_('COM_REDEVENT_Recurrence'), 'recurrence');
 			echo $this->loadTemplate('recurrence'); 
 			echo $this->pane->endPanel();
 

@@ -32,8 +32,8 @@ $colspan = 13;
 		<tr>
 			 <td width="100%">
 				<!-- <input type="text" name="search" id="search" value="<?php echo $this->lists['search']; ?>" class="text_area" onChange="document.adminForm.submit();" /> -->
-				<button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
-				<button onclick="this.form.getElementById('filter').value='0';this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
+				<button onclick="this.form.submit();"><?php echo JText::_('COM_REDEVENT_Go' ); ?></button>
+				<button onclick="this.form.getElementById('filter').value='0';this.form.submit();"><?php echo JText::_('COM_REDEVENT_Reset' ); ?></button>
 			</td>
 			<td style="text-align:right;">
 				<?php echo $this->lists['filter_confirmed']; ?> <?php echo $this->lists['filter_waiting']; ?> <?php echo $this->lists['filter_cancelled']; ?>
@@ -44,18 +44,18 @@ $colspan = 13;
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th width="5"><?php echo JText::_( 'Num' ); ?></th>
+				<th width="5">#</th>
 				<th width="5"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
-				<th class="title"><?php echo JHTML::_('grid.sort', 'REGDATE', 'r.uregdate', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_REGDATE', 'r.uregdate', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_SESSION', 'e.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<th class="title"><?php echo JHTML::_('grid.sort', 'UNIQUE ID', 'r.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<th class="title"><?php echo JHTML::_('grid.sort', 'USERNAME', 'u.username', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<th class="title"><?php echo JHTML::_('grid.sort', 'CONFIRMED', 'r.confirmed', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<th class="title"><?php echo JHTML::_('grid.sort', 'WAITINGLIST', 'r.waitinglist', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_UNIQUE_ID', 'r.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_USERNAME', 'u.username', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_CONFIRMED', 'r.confirmed', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_WAITINGLIST', 'r.waitinglist', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
         <th class="title"><?php echo JText::_( 'COM_REDEVENT_ANSWERS' ); ?></th>
-        <th class="title"><?php echo JText::_( 'PRICE' ); ?></th>
+        <th class="title"><?php echo JText::_('COM_REDEVENT_PRICE' ); ?></th>
         <th class="title"><?php echo JText::_( 'COM_REDEVENT_PRICEGROUP' ); ?></th>
-				<th class="title"><?php echo JHTML::_('grid.sort', 'PAYMENT', 'p.paid', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_PAYMENT', 'p.paid', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			</tr>
 		</thead>
 
@@ -75,7 +75,7 @@ $colspan = 13;
 				$link 		= 'index.php?option=com_redevent&controller=attendees&task=edit&xref='. $row->xref.'&cid[]='.$row->id;
 				$checked 	= JHTML::_('grid.checkedout', $row, $i );
 				
-				$eventdate = (!redEVENTHelper::isValidDate($row->dates) ? Jtext::_('Open date') : strftime( $this->settings->formatdate, strtotime( $row->dates )));
+				$eventdate = (!redEVENTHelper::isValidDate($row->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $this->settings->formatdate, strtotime( $row->dates )));
 				$sessionlink = JHTML::link('index.php?option=com_redevent&view=attendees&xref='.$row->xref, 
 				                           $row->title . '<br/>'.$eventdate, 
 				                           'class="hasTip" title="'.JText::_('COM_REDEVENT_VIEW_REGISTRATIONS_CLICK_TO_MANAGE').'::"').'<br/>@'.$row->venue.'</br>'.JText::_('COM_REDEVENT_AUTHOR').': '.$row->creator;
@@ -86,12 +86,12 @@ $colspan = 13;
 				<td>
 					<?php
 						if ( $row->checked_out && ( $row->checked_out != $this->user->get('id') ) ) {
-							echo JHTML::Date( $row->uregdate, JText::_( 'DATE_FORMAT_LC2' ) );
+							echo JHTML::Date( $row->uregdate, JText::_('DATE_FORMAT_LC2' ) );
 						} else {
 					?>
-					<span class="editlinktip hasTip" title="<?php echo JText::_( 'EDIT MEMBER' );?>::<?php echo $row->name; ?>">
+					<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_EDIT_MEMBER' );?>::<?php echo $row->name; ?>">
 					<a href="<?php echo $link; ?>">
-					<?php echo JHTML::Date( $row->uregdate, JText::_( 'DATE_FORMAT_LC2' ) ); ?>
+					<?php echo JHTML::Date( $row->uregdate, JText::_('DATE_FORMAT_LC2' ) ); ?>
 					</a></span>
 					<?php } ?>
 				</td>
@@ -100,12 +100,12 @@ $colspan = 13;
 				<td><?php echo $row->name; ?></td>
 				<td>
 				  <?php 
-				  //echo $row->confirmed == 0 ? JText::_('NO') : JText::_('YES'); 
+				  //echo $row->confirmed == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES'); 
 				  if (!$row->confirmed) {
             echo JHTML::_('image.administrator', 'publish_x.png');
 				  }
           else {?>
-            <span class="hasTip" title="<?php echo JHTML::Date( $row->confirmdate, JText::_( 'DATE_FORMAT_LC2' )); ?>">
+            <span class="hasTip" title="<?php echo JHTML::Date( $row->confirmdate, JText::_('DATE_FORMAT_LC2' )); ?>">
             <?php echo JHTML::_('image.administrator', 'tick.png'); ?>
             </span>
             <?php 
@@ -123,7 +123,7 @@ $colspan = 13;
           ?>
         </td>
         
-        <td><a href="<?php echo JRoute::_('index.php?option=com_redevent&view=attendeeanswers&tmpl=component&submitter_id='. $row->submitter_id); ?>" class="answersmodal"><?php echo JText::_('view')?></a></td>
+        <td><a href="<?php echo JRoute::_('index.php?option=com_redevent&view=attendeeanswers&tmpl=component&submitter_id='. $row->submitter_id); ?>" class="answersmodal"><?php echo JText::_('COM_REDEVENT_view')?></a></td>
 				
 					<td>
 						<?php echo $row->price; ?>
@@ -132,12 +132,12 @@ $colspan = 13;
 						<?php echo $row->pricegroup; ?>
 					</td>
 					<td class="price <?php echo ($row->paid ? 'paid' : 'unpaid'); ?>">
-						<?php $link = JHTML::link(JRoute::_('index.php?option=com_redform&view=payments&submit_key='.$row->submit_key), JText::_('history')); ?>
+						<?php $link = JHTML::link(JRoute::_('index.php?option=com_redform&view=payments&submit_key='.$row->submit_key), JText::_('COM_REDEVENT_history')); ?>
 						<?php if (!$row->paid): ?>
-						<span class="hasTip" title="<?php echo JText::_('REGISTRATION_NOT_PAID').'::'.$row->status; ?>"><?php echo JHTML::_('image.administrator', 'publish_x.png'); ?><?php echo $link; ?></span>
-						<?php echo ' '.JHTML::link(JURI::root().'/index.php?option=com_redform&controller=payment&task=select&key='.$row->submit_key, JText::_('link')); ?>
+						<span class="hasTip" title="<?php echo JText::_('COM_REDEVENT_REGISTRATION_NOT_PAID').'::'.$row->status; ?>"><?php echo JHTML::_('image.administrator', 'publish_x.png'); ?><?php echo $link; ?></span>
+						<?php echo ' '.JHTML::link(JURI::root().'/index.php?option=com_redform&controller=payment&task=select&key='.$row->submit_key, JText::_('COM_REDEVENT_link')); ?>
 						<?php else: ?>
-						<span class="hasTip" title="<?php echo JText::_('REGISTRATION_PAID').'::'.$row->status; ?>"><?php echo JHTML::_('image.administrator', 'tick.png'); ?><?php echo $link; ?></span>
+						<span class="hasTip" title="<?php echo JText::_('COM_REDEVENT_REGISTRATION_PAID').'::'.$row->status; ?>"><?php echo JHTML::_('image.administrator', 'tick.png'); ?><?php echo $link; ?></span>
 						<?php endif; ?>						
 					</td>
 			</tr>

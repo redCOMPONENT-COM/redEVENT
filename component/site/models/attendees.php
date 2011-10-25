@@ -185,7 +185,7 @@ class RedEventModelAttendees extends JModel
 		
 		if ($submitters === null)
 		{
-			$msg = JText::_('ERROR GETTING ATTENDEES');
+			$msg = JText::_('COM_REDEVENT_ERROR_GETTING_ATTENDEES');
 			$this->setError($msg);
 			RedeventError::raiseWarning(5, $msg);
 			return null;
@@ -202,7 +202,7 @@ class RedEventModelAttendees extends JModel
 			
 			if (!$fields) 
 			{
-				RedeventError::raiseWarning('error', JText::_('Cannot load fields').$db->getErrorMsg());
+				RedeventError::raiseWarning('error', JText::_('COM_REDEVENT_Cannot_load_fields').$db->getErrorMsg());
 				return null;
 			}			
 			
@@ -236,7 +236,7 @@ class RedEventModelAttendees extends JModel
 				        
 				$db->setQuery($query);
 				if (!$db->query()) {
-					RedeventError::raiseWarning('error', JText::_('Cannot load registered users').' '.$db->getErrorMsg());
+					RedeventError::raiseWarning('error', JText::_('COM_REDEVENT_Cannot_load_registered_users').' '.$db->getErrorMsg());
 					return null;
 				}			
 				$answers = $db->loadObjectList();
@@ -251,7 +251,7 @@ class RedEventModelAttendees extends JModel
       {
         if (!isset($submitters[$answer->submit_key])) 
         {
-        	$msg = JText::_('ERROR REGISTRATION WITHOUT SUBMITTER') . ': ' . $answer->id;
+        	$msg = JText::_('COM_REDEVENT_ERROR_REGISTRATION_WITHOUT_SUBMITTER') . ': ' . $answer->id;
         	$this->setError($msg);
         	RedeventError::raiseWarning(10, $msg);
         	return null;

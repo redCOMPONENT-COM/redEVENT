@@ -275,7 +275,7 @@ class redEVENTImage {
 		
 		$types = array('events', 'venues', 'categories');
 		if (!in_array($type, $types)) {
-			Jerror::raiseWarning(0, JText::_('REDEVENT_WARNING_UNKOWN_IMAGE_CATEGORY'));
+			Jerror::raiseWarning(0, JText::_('COM_REDEVENT_WARNING_UNKOWN_IMAGE_CATEGORY'));
 			return false;
 		}
 		$folder = $type;
@@ -327,7 +327,7 @@ class redEVENTImage {
 		
 		$types = array('events', 'venues', 'categories');
 		if (!in_array($type, $types)) {
-			Jerror::raiseWarning(0, JText::_('REDEVENT_WARNING_UNKOWN_IMAGE_CATEGORY'));
+			Jerror::raiseWarning(0, JText::_('COM_REDEVENT_WARNING_UNKOWN_IMAGE_CATEGORY'));
 			return false;
 		}
 		$folder = $type;
@@ -361,7 +361,7 @@ class redEVENTImage {
 
 		//check if the upload is an image...getimagesize will return false if not
 		if (!getimagesize($file['tmp_name'])) {
-			JError::raiseWarning(100, JText::_('UPLOAD FAILED NOT AN IMAGE').': '.htmlspecialchars($file['name'], ENT_COMPAT, 'UTF-8'));
+			JError::raiseWarning(100, JText::_('COM_REDEVENT_UPLOAD_FAILED_NOT_AN_IMAGE').': '.htmlspecialchars($file['name'], ENT_COMPAT, 'UTF-8'));
 			return false;
 		}
 
@@ -370,13 +370,13 @@ class redEVENTImage {
 
 		$allowable 	= array ('gif', 'jpg', 'png');
 		if (!in_array($fileext, $allowable)) {
-			JError::raiseWarning(100, JText::_('WRONG IMAGE FILE TYPE').': '.htmlspecialchars($file['name'], ENT_COMPAT, 'UTF-8'));
+			JError::raiseWarning(100, JText::_('COM_REDEVENT_WRONG_IMAGE_FILE_TYPE').': '.htmlspecialchars($file['name'], ENT_COMPAT, 'UTF-8'));
 			return false;
 		}
 
 		//Check filesize
 		if ($imagesize > $sizelimit) {
-			JError::raiseWarning(100, JText::_('IMAGE FILE SIZE').': '.htmlspecialchars($file['name'], ENT_COMPAT, 'UTF-8'));
+			JError::raiseWarning(100, JText::_('COM_REDEVENT_IMAGE_FILE_SIZE').': '.htmlspecialchars($file['name'], ENT_COMPAT, 'UTF-8'));
 			return false;
 		}
 
@@ -386,7 +386,7 @@ class redEVENTImage {
 		foreach($html_tags as $tag) {
 			// A tag is '<tagname ', so we need to add < and a space or '<tagname>'
 			if(stristr($xss_check, '<'.$tag.' ') || stristr($xss_check, '<'.$tag.'>')) {
-				RedeventError::raiseWarning(100, JText::_('WARN IE XSS'));
+				RedeventError::raiseWarning(100, JText::_('COM_REDEVENT_WARN_IE_XSS'));
 				return false;
 			}
 		}

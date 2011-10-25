@@ -67,7 +67,7 @@ class RedeventModelPayment extends JModel
 		if (empty($this->_event))
 		{
 			if (empty($this->_submit_key)) {
-				JError::raiseError(0, JText::_('Missing key'));
+				JError::raiseError(0, JText::_('COM_REDEVENT_Missing_key'));
 				return false;
 			}
 			

@@ -401,11 +401,11 @@ class RedEventModelVenues extends JModel
 
 		if (count( $err )) {
 			$cids 	= implode( ', ', $err );
-    		$msg 	= JText::sprintf( 'VENUE ASSIGNED EVENT', $cids );
+    		$msg 	= JText::sprintf( 'COM_REDEVENT_VENUE_ASSIGNED_EVENT_S', $cids );
     		return $msg;
 		} else {
 			$total 	= count( $cid );
-			$msg 	= $total.' '.JText::_('VENUES DELETED');
+			$msg 	= $total.' '.JText::_('COM_REDEVENT_VENUES_DELETED');
 			return $msg;
 		}
 	}

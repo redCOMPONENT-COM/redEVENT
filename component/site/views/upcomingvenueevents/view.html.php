@@ -92,10 +92,10 @@ class RedeventViewUpcomingVenueevents extends JView
 		
 		//create the pathway
 		if ($task == 'archive') {
-			$pathway->addItem( JText::_( 'ARCHIVE' ).' - '.$venue->venue, JRoute::_('index.php?option='.$option.'&view=upcomingvenueevents&task=archive&id='.$venue->slug));
+			$pathway->addItem( JText::_('COM_REDEVENT_ARCHIVE' ).' - '.$venue->venue, JRoute::_('index.php?option='.$option.'&view=upcomingvenueevents&task=archive&id='.$venue->slug));
 			$link = JRoute::_( 'index.php?option=com_redevent&view=upcomingvenueevents&id='.$venue->slug.'&task=archive' );
 			$print_link = JRoute::_('index.php?option=com_redevent&view=upcomingvenueevents&id='. $venue->slug .'&task=archive&pop=1&tmpl=component');
-			$pagetitle = $venue->venue.' - '.JText::_( 'ARCHIVE' );
+			$pagetitle = $venue->venue.' - '.JText::_('COM_REDEVENT_ARCHIVE' );
 		} else {
 			$pathway->addItem( $venue->venue, JRoute::_('index.php?option='.$option.'&view=upcomingvenueevents&id='.$venue->slug));
 			$link = JRoute::_( 'index.php?option=com_redevent&view=upcomingvenueevents&id='.$venue->slug );

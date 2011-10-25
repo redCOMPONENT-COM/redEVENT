@@ -26,7 +26,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 
 <?php if (count((array)$this->attending)) : ?>
-<h2><?php echo JText::_('ATTENDING'); ?></h2>
+<h2><?php echo JText::_('COM_REDEVENT_ATTENDING'); ?></h2>
 
 <script type="text/javascript">
 

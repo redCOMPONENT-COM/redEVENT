@@ -60,9 +60,9 @@ class RedEventControllerTools extends RedEventController
 		$task = JRequest::getCmd('task');
 
 		if ($task == 'cleaneventimg') {
-			$type = JText::_('EVENT');
+			$type = JText::_('COM_REDEVENT_EVENT');
 		} else {
-			$type = JText::_('VENUE');
+			$type = JText::_('COM_REDEVENT_VENUE');
 		}
 
 		$model = $this->getModel('tools');
@@ -71,7 +71,7 @@ class RedEventControllerTools extends RedEventController
 
 		$link = 'index.php?option=com_redevent&view=tools';
 
-		$msg = $total.' '.$type.' '.JText::_( 'IMAGES DELETED');
+		$msg = $total.' '.$type.' '.JText::_('COM_REDEVENT_IMAGES_DELETED');
 
 		$this->setRedirect( $link, $msg );
  	}
@@ -85,11 +85,11 @@ class RedEventControllerTools extends RedEventController
 		$link = 'index.php?option=com_redevent&view=tools';
 		
 		if ($res) {
-			$msg  = JText::_('DB TEST OK');
+			$msg  = JText::_('COM_REDEVENT_DB_TEST_OK');
 			$type = 'message';
 		}
 		else {
-			$msg  = JText::_('DB TEST KO').': '.$model->getError();
+			$msg  = JText::_('COM_REDEVENT_DB_TEST_KO').': '.$model->getError();
 			$type = 'error';
 		}
 		
@@ -105,11 +105,11 @@ class RedEventControllerTools extends RedEventController
 		$link = 'index.php?option=com_redevent&view=tools';
 		
 		if ($res) {
-			$msg  = JText::_('DB FIX OK');
+			$msg  = JText::_('COM_REDEVENT_DB_FIX_OK');
 			$type = 'message';
 		}
 		else {
-			$msg  = JText::_('DB FIX KO').': '.$model->getError();
+			$msg  = JText::_('COM_REDEVENT_DB_FIX_KO').': '.$model->getError();
 			$type = 'error';
 		}
 		

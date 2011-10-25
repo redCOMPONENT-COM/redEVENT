@@ -23,7 +23,7 @@
  
 defined('_JEXEC') or die('Restricted access');
 ?>
-<h2><?php echo JText::_('REDEVENT_TAGS_TITLE'); ?></h2>
+<h2><?php echo JText::_('COM_REDEVENT_TAGS_TITLE'); ?></h2>
 
 <p><?php echo JText::_('COM_REDEVENT_TAGS_LIST_DESCRIPTION'); ?></p>
 <?php echo $this->tabs->startPane( 'tagstabs' ); ?>
@@ -33,8 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 	<table class="tagstable adminlist">
 		<thead>
 			<tr>
-				<th><?php echo JText::_('REDEVENT_TAGS_NAME')?></th>
-				<th><?php echo JText::_('REDEVENT_TAGS_DESCRIPTION')?></th>
+				<th><?php echo JText::_('COM_REDEVENT_TAGS_NAME')?></th>
+				<th><?php echo JText::_('COM_REDEVENT_TAGS_DESCRIPTION')?></th>
 			</tr>
 		</thead>
 		<tbody>

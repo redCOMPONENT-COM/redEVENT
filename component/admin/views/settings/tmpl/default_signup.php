@@ -3,13 +3,13 @@
   <tr>
 	<td>
 		<fieldset class="adminform">
-		<legend><?php echo JText::_( 'SIGNUP LINKS'); ?></legend>
+		<legend><?php echo JText::_('COM_REDEVENT_SIGNUP_LINKS'); ?></legend>
 			<table class="admintable" cellspacing="1">
 			<tbody>
 				<tr>
 					<td width="300" class="key">
-						<span class="editlinktip hasTip" title="<?php echo JText::_( 'SIGNUP_EXTERNAL' ); ?>::<?php echo JText::_('SIGNUP_EXTERNAL_TIP'); ?>">
-							<?php echo JText::_( 'SIGNUP_EXTERNAL' ); ?>
+						<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_SIGNUP_EXTERNAL' ); ?>::<?php echo JText::_('COM_REDEVENT_SIGNUP_EXTERNAL_TIP'); ?>">
+							<?php echo JText::_('COM_REDEVENT_SIGNUP_EXTERNAL' ); ?>
 						</span>
 					</td>
 					<td valign="top">
@@ -21,13 +21,13 @@
 						echo JHTML::_('list.images', 'signup_external_img', $this->elsettings->signup_external_img, $customJS, $imagepath); ?>
 					</td>
 					<td>
-						<img src="<?php echo JURI::root().$imagepath.$this->elsettings->signup_external_img; ?>" name="signup_external_img_lib" width="24" height="24" border="0" alt="<?php echo JText::_( 'Preview' ); ?>" />
+						<img src="<?php echo JURI::root().$imagepath.$this->elsettings->signup_external_img; ?>" name="signup_external_img_lib" width="24" height="24" border="0" alt="<?php echo JText::_('COM_REDEVENT_Preview' ); ?>" />
 					</td>
 				</tr>
 				<tr>
 					<td width="300" class="key">
-						<span class="editlinktip hasTip" title="<?php echo JText::_( 'SIGNUP_WEBFORM' ); ?>::<?php echo JText::_('SIGNUP_WEBFORM_TIP'); ?>">
-							<?php echo JText::_( 'SIGNUP_WEBFORM' ); ?>
+						<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_SIGNUP_WEBFORM' ); ?>::<?php echo JText::_('COM_REDEVENT_SIGNUP_WEBFORM_TIP'); ?>">
+							<?php echo JText::_('COM_REDEVENT_SIGNUP_WEBFORM' ); ?>
 						</span>
 					</td>
 					<td valign="top">
@@ -39,13 +39,13 @@
 						echo JHTML::_('list.images', 'signup_webform_img', $this->elsettings->signup_webform_img, $customJS, $imagepath); ?>
 					</td>
 					<td>
-						<img src="<?php echo JURI::root().$imagepath.$this->elsettings->signup_webform_img; ?>" name="signup_webform_img_lib" width="24" height="24" border="0" alt="<?php echo JText::_( 'Preview' ); ?>" />
+						<img src="<?php echo JURI::root().$imagepath.$this->elsettings->signup_webform_img; ?>" name="signup_webform_img_lib" width="24" height="24" border="0" alt="<?php echo JText::_('COM_REDEVENT_Preview' ); ?>" />
 					</td>
 				</tr>
 				<tr>
 					<td width="300" class="key">
-						<span class="editlinktip hasTip" title="<?php echo JText::_( 'SIGNUP_EMAIL' ); ?>::<?php echo JText::_('SIGNUP_EMAIL_TIP'); ?>">
-							<?php echo JText::_( 'SIGNUP_EMAIL' ); ?>
+						<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_SIGNUP_EMAIL' ); ?>::<?php echo JText::_('COM_REDEVENT_SIGNUP_EMAIL_TIP'); ?>">
+							<?php echo JText::_('COM_REDEVENT_SIGNUP_EMAIL' ); ?>
 						</span>
 					</td>
 					<td valign="top">
@@ -57,13 +57,13 @@
 						echo JHTML::_('list.images', 'signup_email_img', $this->elsettings->signup_email_img, $customJS, $imagepath); ?>
 					</td>
 					<td>
-						<img src="<?php echo JURI::root().$imagepath.$this->elsettings->signup_email_img; ?>" name="signup_email_img_lib" width="24" height="24" border="0" alt="<?php echo JText::_( 'Preview' ); ?>" />
+						<img src="<?php echo JURI::root().$imagepath.$this->elsettings->signup_email_img; ?>" name="signup_email_img_lib" width="24" height="24" border="0" alt="<?php echo JText::_('COM_REDEVENT_Preview' ); ?>" />
 					</td>
 				</tr>
 				<tr>
 					<td width="300" class="key">
-						<span class="editlinktip hasTip" title="<?php echo JText::_( 'SIGNUP_FORMAL_OFFER' ); ?>::<?php echo JText::_('SIGNUP_FORMAL_OFFER_TIP'); ?>">
-							<?php echo JText::_( 'SIGNUP_FORMAL_OFFER' ); ?>
+						<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_SIGNUP_FORMAL_OFFER' ); ?>::<?php echo JText::_('COM_REDEVENT_SIGNUP_FORMAL_OFFER_TIP'); ?>">
+							<?php echo JText::_('COM_REDEVENT_SIGNUP_FORMAL_OFFER' ); ?>
 						</span>
 					</td>
 					<td valign="top">
@@ -75,13 +75,13 @@
 						echo JHTML::_('list.images', 'signup_formal_offer_img', $this->elsettings->signup_formal_offer_img, $customJS, $imagepath); ?>
 					</td>
 					<td>
-						<img src="<?php echo JURI::root().$imagepath.$this->elsettings->signup_formal_offer_img; ?>" name="signup_formal_offer_img_lib" width="24" height="24" border="0" alt="<?php echo JText::_( 'Preview' ); ?>" />
+						<img src="<?php echo JURI::root().$imagepath.$this->elsettings->signup_formal_offer_img; ?>" name="signup_formal_offer_img_lib" width="24" height="24" border="0" alt="<?php echo JText::_('COM_REDEVENT_Preview' ); ?>" />
 					</td>
 				</tr>
 				<tr>
 					<td width="300" class="key">
-						<span class="editlinktip hasTip" title="<?php echo JText::_( 'SIGNUP_PHONE' ); ?>::<?php echo JText::_('SIGNUP_PHONE_TIP'); ?>">
-							<?php echo JText::_( 'SIGNUP_PHONE' ); ?>
+						<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_SIGNUP_PHONE' ); ?>::<?php echo JText::_('COM_REDEVENT_SIGNUP_PHONE_TIP'); ?>">
+							<?php echo JText::_('COM_REDEVENT_SIGNUP_PHONE' ); ?>
 						</span>
 					</td>
 					<td valign="top">
@@ -93,7 +93,7 @@
 						echo JHTML::_('list.images', 'signup_phone_img', $this->elsettings->signup_phone_img, $customJS, $imagepath); ?>
 					</td>
 					<td>
-						<img src="<?php echo JURI::root().$imagepath.$this->elsettings->signup_phone_img; ?>" name="signup_phone_img_lib" width="24" height="24" border="0" alt="<?php echo JText::_( 'Preview' ); ?>" />
+						<img src="<?php echo JURI::root().$imagepath.$this->elsettings->signup_phone_img; ?>" name="signup_phone_img_lib" width="24" height="24" border="0" alt="<?php echo JText::_('COM_REDEVENT_Preview' ); ?>" />
 					</td>
 				</tr>
 			</tbody>

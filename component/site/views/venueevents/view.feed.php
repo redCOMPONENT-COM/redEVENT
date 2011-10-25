@@ -105,12 +105,12 @@ class RedeventViewVenueevents extends JView
 			$link = JRoute::_( $link );
 
 			// feed item description text
-			$description = JText::_( 'TITLE' ).': '.$title.'<br />';
-			$description .= JText::_( 'VENUE' ).': '.$row->venue.' / '.$row->city.'<br />';
-			$description .= JText::_( 'CATEGORY' ).': '.$category.'<br />';
-			$description .= JText::_( 'DATE' ).': '.$displaydate.'<br />';
-			$description .= JText::_( 'TIME' ).': '.$displaytime.'<br />';
-			//$description .= JText::_( 'DESCRIPTION' ).': '.$row->datdescription;
+			$description = JText::_('COM_REDEVENT_TITLE' ).': '.$title.'<br />';
+			$description .= JText::_('COM_REDEVENT_VENUE' ).': '.$row->venue.' / '.$row->city.'<br />';
+			$description .= JText::_('COM_REDEVENT_CATEGORY' ).': '.$category.'<br />';
+			$description .= JText::_('COM_REDEVENT_DATE' ).': '.$displaydate.'<br />';
+			$description .= JText::_('COM_REDEVENT_TIME' ).': '.$displaytime.'<br />';
+			//$description .= JText::_('COM_REDEVENT_DESCRIPTION' ).': '.$row->datdescription;
 
 			@$created = ( $row->created ? date( 'r', strtotime($row->created) ) : '' );
 

@@ -36,7 +36,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 </p>
 
   <h1 class="componentheading">
-    <?php echo JText::_('Search events'); ?>
+    <?php echo JText::_('COM_REDEVENT_Search_events'); ?>
   </h1>
 
 
@@ -68,20 +68,20 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			<?php if ($this->params->get('show_filter')) : ?>
 		  <tr>
 		    <td>
-			    <label for="filter_type"><?php echo JText::_('FILTER');  ?></label>
+			    <label for="filter_type"><?php echo JText::_('COM_REDEVENT_FILTER');  ?></label>
 			  </td>
 			  <td>			
 				<?php echo  $this->lists['filter_types']; ?>
 	      <input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" />
-	      <button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_( 'GO' ); ?></button>
-	      <button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_( 'RESET' ); ?></button>
+	      <button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_('COM_REDEVENT_GO' ); ?></button>
+	      <button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_('COM_REDEVENT_RESET' ); ?></button>
 				</td>
 			</tr>
     	<?php endif; ?>
 	    <?php if ($this->params->get('show_filter_country')): ?>
       <tr>
         <td>
-          <?php echo '<label for="filter_country">'.JText::_('Country').'</label>&nbsp;'; ?>
+          <?php echo '<label for="filter_country">'.JText::_('COM_REDEVENT_Country').'</label>&nbsp;'; ?>
         </td>
         <td>
           <?php echo $this->lists['countries'];?>
@@ -91,7 +91,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	    <?php if ($this->params->get('show_filter_state') && (!$this->params->get('show_filter_country') || $this->filter_country)): ?>
       <tr>
         <td>
-          <?php echo '<label for="filter_state">'.JText::_('State').'</label>&nbsp;';?>
+          <?php echo '<label for="filter_state">'.JText::_('COM_REDEVENT_State').'</label>&nbsp;';?>
         </td>
         <td>
           <?php echo $this->lists['states'];?>
@@ -102,7 +102,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	    																								 && (!$this->params->get('show_filter_state')   || $this->filter_state)): ?>
       <tr>
         <td>
-          <?php echo '<label for="filter_city">'.JText::_('City').'</label>&nbsp;';?>
+          <?php echo '<label for="filter_city">'.JText::_('COM_REDEVENT_City').'</label>&nbsp;';?>
         </td>
         <td>
           <?php echo $this->lists['cities'];?>
@@ -112,7 +112,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	    <?php if ($this->params->get('show_filter_venuecategory')): ?>
 			<tr>
         <td>
-	        <?php echo '<label for="filter_venuecategory">'.JText::_('Venue Category').'</label>&nbsp;'; ?>
+	        <?php echo '<label for="filter_venuecategory">'.JText::_('COM_REDEVENT_Venue_Category').'</label>&nbsp;'; ?>
 	      </td>
 	      <td>
 	        <?php echo $this->lists['vcategories']; ?>
@@ -122,7 +122,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	    <?php if ($this->params->get('show_filter_venue')): ?>
 			<tr>
         <td>
-	        <?php echo '<label for="filter_venue">'.JText::_('Venue').'</label>&nbsp;'; ?>
+	        <?php echo '<label for="filter_venue">'.JText::_('COM_REDEVENT_Venue').'</label>&nbsp;'; ?>
 	      </td>
 	      <td>
 	        <?php echo $this->lists['venues']; ?>
@@ -132,7 +132,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	    <?php if (isset($this->lists['categories']) && $this->params->get('show_filter_category')): ?>
 			<tr>
         <td>
-	        <?php echo '<label for="filter_category">'.JText::_('Category').'</label>&nbsp;'; ?>
+	        <?php echo '<label for="filter_category">'.JText::_('COM_REDEVENT_Category').'</label>&nbsp;'; ?>
 	      </td>
 	      <td>
 	        <?php echo $this->lists['categories']; ?>
@@ -142,7 +142,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	    <?php if ($this->params->get('show_filter_date')): ?>
       <tr>
         <td>
-          <?php echo '<label for="filter_date">'.JText::_('Date').'</label>&nbsp;'; ?>
+          <?php echo '<label for="filter_date">'.JText::_('COM_REDEVENT_Date').'</label>&nbsp;'; ?>
         </td>
         <td>
           <?php echo redEVENTHelper::calendar($this->filter_date_from, 'filter_date_from', 'filter_date_from', '%Y-%m-%d', 'OnUpdateDate', 'class="inputbox dynfilter"');?>
@@ -154,7 +154,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	    <?php if ($this->params->get('show_filter_event')): ?>
       <tr>
         <td>
-          <?php echo '<label for="filter_event">'.JText::_('Event').'</label>&nbsp;'; ?>
+          <?php echo '<label for="filter_event">'.JText::_('COM_REDEVENT_Event').'</label>&nbsp;'; ?>
         </td>
         <td>
           <?php echo $this->lists['events']; ?>
@@ -177,7 +177,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   
   <?php if ($this->params->get('display')) : ?>
 	<div class="el_fright">
-		<?php	echo '<label for="limit">'.JText::_('DISPLAY NUM').'</label>&nbsp;';
+		<?php	echo '<label for="limit">'.JText::_('COM_REDEVENT_DISPLAY_NUM').'</label>&nbsp;';
 		echo $this->pageNav->getLimitBox();
 		?>
 	</div>
@@ -186,9 +186,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 </div>
 
 <?php if ($this->nofilter): ?>
-<div class="redevent-search-warning"><?php echo JText::_('REDEVENT_SEARCH_NO_FILTER'); ?></div>
+<div class="redevent-search-warning"><?php echo JText::_('COM_REDEVENT_SEARCH_NO_FILTER'); ?></div>
 <?php elseif ($this->noevents): ?>
-<div class="redevent-search-warning"><?php echo JText::_('REDEVENT_SEARCH_NO_RESULT'); ?></div>
+<div class="redevent-search-warning"><?php echo JText::_('COM_REDEVENT_SEARCH_NO_RESULT'); ?></div>
 <?php else: ?>
 <?php echo $this->loadTemplate('table'); ?>
 <?php endif; ?>

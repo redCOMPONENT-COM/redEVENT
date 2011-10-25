@@ -155,7 +155,7 @@ class RedeventModelEditevent extends JModel
 			* Error if allready checked out otherwise check event out
 			*/
 			if ($this->isCheckedOut( $user->get('id') )) {
-				$mainframe->redirect($_SERVER['HTTP_REFERER'], JText::_( 'THE EVENT' ).': '.$this->_event->title.' '.JText::_( 'EDITED BY ANOTHER ADMIN' ) );
+				$mainframe->redirect($_SERVER['HTTP_REFERER'], JText::_('COM_REDEVENT_THE_EVENT' ).': '.$this->_event->title.' '.JText::_('COM_REDEVENT_EDITED_BY_ANOTHER_ADMIN' ) );
 			} else {
 				$this->checkout( $user->get('id') );
 			}
@@ -167,7 +167,7 @@ class RedeventModelEditevent extends JModel
 
 			if ($allowedtoeditevent == 0) {
 
-				JError::raiseError( 403, JText::_( 'NO ACCESS' ) );
+				JError::raiseError( 403, JText::_('COM_REDEVENT_NO_ACCESS' ) );
 
 			}
 
@@ -179,7 +179,7 @@ class RedeventModelEditevent extends JModel
 		{
 			//Check if the user has access to the form
 			if (!$acl->canAddEvent()) {
-				JError::raiseError( 403, JText::_( 'NO ACCESS' ) );
+				JError::raiseError( 403, JText::_('COM_REDEVENT_NO_ACCESS' ) );
 			}
 			
 			$this->_initData();
@@ -241,7 +241,7 @@ class RedeventModelEditevent extends JModel
 			$this->_event->sendername		= '';
 			$this->_event->sendermail		= '';
 			$this->_event->datimage			= '';
-			$this->_event->venue			= JText::_('SELECTVENUE');
+			$this->_event->venue			= JText::_('COM_REDEVENT_SELECTVENUE');
 			$this->_event->session_title = '';
 			$this->_event->maxattendees				= 0;
 			$this->_event->maxwaitinglist				= 0;
@@ -274,7 +274,7 @@ class RedeventModelEditevent extends JModel
 		}
 		
 		$this->_event->xref			= 0;
-		$this->_event->venue		= JText::_('SELECTVENUE');
+		$this->_event->venue		= JText::_('COM_REDEVENT_SELECTVENUE');
 		$this->_event->dates    = null;
 		$this->_event->enddates = null;
 		$this->_event->times    = null;
@@ -368,14 +368,14 @@ class RedeventModelEditevent extends JModel
 			if ($this->_xref)
 			{
 				if (!$acl->canEditXref($this->_xref)) {
-					JError::raiseError(403, Jtext::_('NOT ALLOWED'));
+					JError::raiseError(403, JText::_('COM_REDEVENT_NOT_ALLOWED'));
 				}
 				$this->_xrefdata = $this->_getXrefData($this->_xref);
 			}
 			else
 			{
 				if (!$acl->canAddXref()) {
-					JError::raiseError(403, Jtext::_('NOT ALLOWED'));
+					JError::raiseError(403, JText::_('COM_REDEVENT_NOT_ALLOWED'));
 				}
 				
 				$template_xref = $app->getParams()->get('event_template', 0);
@@ -741,7 +741,7 @@ class RedeventModelEditevent extends JModel
 		{
 			//check if user is allowed to edit events
 			if (!$acl->canEditEvent($this->_id)) {
-				JError::raiseError( 403, JText::_( 'NO ACCESS' ) );
+				JError::raiseError( 403, JText::_('COM_REDEVENT_NO_ACCESS' ) );
 			}
 
 			$row->modified 		= gmdate('Y-m-d H:i:s');
@@ -762,7 +762,7 @@ class RedeventModelEditevent extends JModel
 		{
 			//check if user is allowed to submit new events
 			if (!$acl->canAddEvent()){
-				JError::raiseError( 403, JText::_( 'NO ACCESS' ) );
+				JError::raiseError( 403, JText::_('COM_REDEVENT_NO_ACCESS' ) );
 			}
 
 			//get IP, time and userid
@@ -780,7 +780,7 @@ class RedeventModelEditevent extends JModel
 		//If image upload is required we will stop here if no file was attached
 		if ( empty($file['name']) && $params->get('edit_image', 1) == 2 ) 
 		{
-			$this->setError( JText::_( 'IMAGE EMPTY' ) );
+			$this->setError( JText::_('COM_REDEVENT_IMAGE_EMPTY' ) );
 			return false;
 		}
 
@@ -804,7 +804,7 @@ class RedeventModelEditevent extends JModel
 				$filepath = $base_Dir . $filename;
 	
 				if (!JFile::upload($file['tmp_name'], $filepath)) {
-					JError::raiseWarning(0, JText::_( 'UPLOAD FAILED' ));
+					JError::raiseWarning(0, JText::_('COM_REDEVENT_UPLOAD_FAILED' ));
 				} else {
 					$row->datimage = $filename;
 				}
@@ -863,7 +863,7 @@ class RedeventModelEditevent extends JModel
 			$this->_db->setQuery($query);
 	    if (!$this->_db->query()) {
 	    	$this->setError($this->_db->getErrorMsg());
-				JError::raiseWarning(0, JTEXT::_('copying categories failed').': '.$xref->getError());
+				JError::raiseWarning(0, JText::_('COM_REDEVENT_copying_categories_failed').': '.$xref->getError());
 	    }     
 		}
 		
@@ -880,7 +880,7 @@ class RedeventModelEditevent extends JModel
 			}
 			
 			if (!($xref->check() && $xref->store())) {
-				JError::raiseWarning(0, JTEXT::_('Saving event session failed').': '.$xref->getError());
+				JError::raiseWarning(0, JText::_('COM_REDEVENT_Saving_event_session_failed').': '.$xref->getError());
 			}
 			$row->xref = $xref->id;		
 		
@@ -1010,20 +1010,20 @@ class RedeventModelEditevent extends JModel
 
 			$mail = JFactory::getMailer();
 
-			$state 	= $row->published ? JText::sprintf('MAIL EVENT PUBLISHED', $link) : JText::_('MAIL EVENT UNPUBLISHED');
+			$state 	= $row->published ? JText::sprintf('COM_REDEVENT_MAIL_EVENT_PUBLISHED', $link) : JText::_('COM_REDEVENT_MAIL_EVENT_UNPUBLISHED');
 
 			if ($edited) {
 
 				$modified_ip 	= getenv('REMOTE_ADDR');
-				$edited 		= JHTML::Date( $row->modified, JText::_( 'DATE_FORMAT_LC2' ) );
-				$mailbody 		= JText::sprintf('MAIL EDIT EVENT', $user->name, $user->username, $user->email, $modified_ip, $edited, $row->title, $xref->dates, $xref->times, $rowloc->venue, $rowloc->city, $row->datdescription, $state);
-				$mail->setSubject( $SiteName.JText::_( 'EDIT EVENT MAIL' ) );
+				$edited 		= JHTML::Date( $row->modified, JText::_('DATE_FORMAT_LC2' ) );
+				$mailbody 		= JText::sprintf('COM_REDEVENT_MAIL_EDIT_EVENT', $user->name, $user->username, $user->email, $modified_ip, $edited, $row->title, $xref->dates, $xref->times, $rowloc->venue, $rowloc->city, $row->datdescription, $state);
+				$mail->setSubject( $SiteName.JText::_('COM_REDEVENT_EDIT_EVENT_MAIL' ) );
 
 			} else {
 
-				$created 	= JHTML::Date( $row->created, JText::_( 'DATE_FORMAT_LC2' ) );
-				$mailbody 	= JText::sprintf('MAIL NEW EVENT', $user->name, $user->username, $user->email, $row->author_ip, $created, $row->title, $xref->dates, $xref->times, $rowloc->venue, $rowloc->city, $row->datdescription, $state);
-				$mail->setSubject( $SiteName.JText::_( 'NEW EVENT MAIL' ) );
+				$created 	= JHTML::Date( $row->created, JText::_('DATE_FORMAT_LC2' ) );
+				$mailbody 	= JText::sprintf('COM_REDEVENT_MAIL_NEW_EVENT', $user->name, $user->username, $user->email, $row->author_ip, $created, $row->title, $xref->dates, $xref->times, $rowloc->venue, $rowloc->city, $row->datdescription, $state);
+				$mail->setSubject( $SiteName.JText::_('COM_REDEVENT_NEW_EVENT_MAIL' ) );
 
 			}
 
@@ -1045,19 +1045,19 @@ class RedeventModelEditevent extends JModel
 
 			$usermail = JFactory::getMailer();
 
-			$state 	= $row->published ? JText::sprintf('USER MAIL EVENT PUBLISHED', $link) : JText::_('USER MAIL EVENT UNPUBLISHED');
+			$state 	= $row->published ? JText::sprintf('COM_REDEVENT_USER_MAIL_EVENT_PUBLISHED', $link) : JText::_('COM_REDEVENT_USER_MAIL_EVENT_UNPUBLISHED');
 
 			if ($edited) {
 
-				$edited 		= JHTML::Date( $row->modified, JText::_( 'DATE_FORMAT_LC2' ) );
-				$mailbody 		= JText::sprintf('USER MAIL EDIT EVENT', $user->name, $user->username, $edited, $row->title, $xref->dates, $xref->times, $rowloc->venue, $rowloc->city, $row->datdescription, $state);
-				$usermail->setSubject( $SiteName.JText::_( 'EDIT USER EVENT MAIL' ) );
+				$edited 		= JHTML::Date( $row->modified, JText::_('DATE_FORMAT_LC2' ) );
+				$mailbody 		= JText::sprintf('COM_REDEVENT_USER_MAIL_EDIT_EVENT', $user->name, $user->username, $edited, $row->title, $xref->dates, $xref->times, $rowloc->venue, $rowloc->city, $row->datdescription, $state);
+				$usermail->setSubject( $SiteName.JText::_('COM_REDEVENT_EDIT_USER_EVENT_MAIL' ) );
 
 			} else {
 
-				$created 	= JHTML::Date( $row->created, JText::_( 'DATE_FORMAT_LC2' ) );
-				$mailbody 	= JText::sprintf('USER MAIL NEW EVENT', $user->name, $user->username, $created, $row->title, $xref->dates, $xref->times, $rowloc->venue, $rowloc->city, $row->datdescription, $state);
-				$usermail->setSubject( $SiteName.JText::_( 'NEW USER EVENT MAIL' ) );
+				$created 	= JHTML::Date( $row->created, JText::_('DATE_FORMAT_LC2' ) );
+				$mailbody 	= JText::sprintf('COM_REDEVENT_USER_MAIL_NEW_EVENT', $user->name, $user->username, $created, $row->title, $xref->dates, $xref->times, $rowloc->venue, $rowloc->city, $row->datdescription, $state);
+				$usermail->setSubject( $SiteName.JText::_('COM_REDEVENT_NEW_USER_EVENT_MAIL' ) );
 
 			}
 
@@ -1387,13 +1387,13 @@ class RedeventModelEditevent extends JModel
 	function publishxref($xref_id, $newstate)
 	{
 		if (!$this->canManageXref($xref_id)) {
-			$this->setError(JText::_('YOU ARE NOT ALLOWED TO EDIT THIS DATE'));
+			$this->setError(JText::_('COM_REDEVENT_YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_DATE'));
 			return false;				
 		}
   	$row = & JTable::getInstance('RedEvent_eventvenuexref', '');
   	
 		if (!$row->publish(array($xref_id), $newstate)) {
-			$this->setError(JText::_('ERROR CHANGING STATE')).'<br>'.$row->getError();
+			$this->setError(JText::_('COM_REDEVENT_ERROR_CHANGING_STATE')).'<br>'.$row->getError();
 			return false;
 		}
 		return true;
@@ -1402,13 +1402,13 @@ class RedeventModelEditevent extends JModel
 	function deletexref($xref_id)
 	{
 		if (!$this->canManageXref($xref_id)) {
-			$this->setError(JText::_('YOU ARE NOT ALLOWED TO DELETE THIS DATE'));
+			$this->setError(JText::_('COM_REDEVENT_YOU_ARE_NOT_ALLOWED_TO_DELETE_THIS_DATE'));
 			return false;				
 		}
   	$row = & JTable::getInstance('RedEvent_eventvenuexref', '');
   	
 		if (!$row->delete($xref_id)) {
-			$this->setError(JText::_('ERROR DELETING EVENT DATE').': '.$row->getError());
+			$this->setError(JText::_('COM_REDEVENT_ERROR_DELETING_EVENT_DATE').': '.$row->getError());
 			return false;
 		}
 		return true;

@@ -55,12 +55,12 @@ class RedeventViewRegistration extends JView
 		if ($this->getLayout() == 'confirmed')
 		{
 			$message = $event->confirmation_message;
-			$document->setTitle($event->title.' - '.JText::_('REDEVENT_REGISTRATION_CONFIRMED_PAGE_TITLE'));
+			$document->setTitle($event->title.' - '.JText::_('COM_REDEVENT_REGISTRATION_CONFIRMED_PAGE_TITLE'));
 		}
 		else if ($this->getLayout() == 'review')
 		{
 			$message = $event->review_message;
-			$document->setTitle($event->title.' - '.JText::_('REDEVENT_REGISTRATION_REVIEW_PAGE_TITLE'));
+			$document->setTitle($event->title.' - '.JText::_('COM_REDEVENT_REGISTRATION_REVIEW_PAGE_TITLE'));
 		}
 		else if ($this->getLayout() == 'edit')
 		{

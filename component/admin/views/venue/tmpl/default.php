@@ -48,19 +48,19 @@ JHTML::_('behavior.tooltip');
 		if (task == 'cancel') {
 			submitform( task );
 		} else if (form.venue.value == ""){
-			alert( "<?php echo JText::_( 'ADD VENUE' ); ?>" );
+			alert( "<?php echo JText::_('COM_REDEVENT_ADD_VENUE' ); ?>" );
 			form.venue.focus();
 		} else if (form.city.value == "" && needaddress){
-			alert( "<?php echo JText::_( 'VENUE_MAP_NEED_DETAILS' ) .'\n'. JText::_( 'ADD CITY' ); ?>" );
+			alert( "<?php echo JText::_('COM_REDEVENT_VENUE_MAP_NEED_DETAILS' ) .'\n'. JText::_('COM_REDEVENT_ADD_CITY' ); ?>" );
 			form.city.focus();
 		} else if (form.street.value == "" && needaddress){
-			alert( "<?php echo JText::_( 'VENUE_MAP_NEED_DETAILS' ) .'\n'. JText::_( 'ADD STREET' ); ?>" );
+			alert( "<?php echo JText::_('COM_REDEVENT_VENUE_MAP_NEED_DETAILS' ) .'\n'. JText::_('COM_REDEVENT_ADD_STREET' ); ?>" );
 			form.street.focus();
 		} else if (form.plz.value == "" && needaddress){
-			alert( "<?php echo JText::_( 'VENUE_MAP_NEED_DETAILS' ) .'\n'. JText::_( 'ADD ZIP' ); ?>" );
+			alert( "<?php echo JText::_('COM_REDEVENT_VENUE_MAP_NEED_DETAILS' ) .'\n'. JText::_('COM_REDEVENT_ADD_ZIP' ); ?>" );
 			form.plz.focus();
 		} else if (form.country.value == "" && needaddress){
-			alert( "<?php echo JText::_( 'VENUE_MAP_NEED_DETAILS' ) .'\n'. JText::_( 'ADD COUNTRY' ); ?>" );
+			alert( "<?php echo JText::_('COM_REDEVENT_VENUE_MAP_NEED_DETAILS' ) .'\n'. JText::_('COM_REDEVENT_ADD_COUNTRY' ); ?>" );
 			form.country.focus();
 		} else {
 			<?php
@@ -91,7 +91,7 @@ JHTML::_('behavior.tooltip');
 		<tr>
 			<td>
 				<label for="venue">
-					<?php echo JText::_( 'VENUE' ).':'; ?>
+					<?php echo JText::_('COM_REDEVENT_VENUE' ).':'; ?>
 				</label>
 			</td>
 			<td>
@@ -99,7 +99,7 @@ JHTML::_('behavior.tooltip');
 			</td>
 			<td>
 				<label for="published">
-					<?php echo JText::_( 'PUBLISHED' ).':'; ?>
+					<?php echo JText::_('COM_REDEVENT_PUBLISHED' ).':'; ?>
 				</label>
 			</td>
 			<td>
@@ -112,7 +112,7 @@ JHTML::_('behavior.tooltip');
 		<tr>
 			<td>
 				<label for="alias">
-					<?php echo JText::_( 'Alias' ).':'; ?>
+					<?php echo JText::_('COM_REDEVENT_Alias' ).':'; ?>
 				</label>
 			</td>
 			<td>
@@ -132,7 +132,7 @@ JHTML::_('behavior.tooltip');
     <tr>
       <td>
         <label for="categories">
-          <?php echo JText::_( 'CATEGORY' ).':'; ?>
+          <?php echo JText::_('COM_REDEVENT_CATEGORY' ).':'; ?>
         </label>
       </td>
       <td>
@@ -164,18 +164,18 @@ JHTML::_('behavior.tooltip');
 			<td valign="top" width="320px" style="padding: 7px 0 0 5px">
 		<?php
 		echo $this->pane->startPane('det-pane');
-		$infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-hint.png', JText::_( 'NOTES' ) );
-		$title = JText::_( 'ADDRESS' );
+		$infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-hint.png', JText::_('COM_REDEVENT_NOTES' ) );
+		$title = JText::_('COM_REDEVENT_ADDRESS' );
 		echo $this->pane->startPanel( $title, 'address' );
 
 		//Set the info image
-		$infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-hint.png', JText::_( 'NOTES' ) );
+		$infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-hint.png', JText::_('COM_REDEVENT_NOTES' ) );
 		?>
 	<table>
 		<tr>
 			<td>
 				<label for="street">
-					<?php echo JText::_( 'STREET' ).':'; ?>
+					<?php echo JText::_('COM_REDEVENT_STREET' ).':'; ?>
 				</label>
 			</td>
 			<td>
@@ -185,7 +185,7 @@ JHTML::_('behavior.tooltip');
 		<tr>
 			<td>
 				<label for="plz">
-					<?php echo JText::_( 'ZIP' ).':'; ?>
+					<?php echo JText::_('COM_REDEVENT_ZIP' ).':'; ?>
 				</label>
 			</td>
 			<td>
@@ -195,7 +195,7 @@ JHTML::_('behavior.tooltip');
 		<tr>
 			<td>
 				<label for="city">
-					<?php echo JText::_( 'CITY' ).':'; ?>
+					<?php echo JText::_('COM_REDEVENT_CITY' ).':'; ?>
 				</label>
 			</td>
 			<td>
@@ -205,7 +205,7 @@ JHTML::_('behavior.tooltip');
 		<tr>
 			<td>
 				<label for="state">
-					<?php echo JText::_( 'STATE' ).':'; ?>
+					<?php echo JText::_('COM_REDEVENT_STATE' ).':'; ?>
 				</label>
 			</td>
 			<td>
@@ -215,13 +215,13 @@ JHTML::_('behavior.tooltip');
 		<tr>
 			<td>
 				<label for="country">
-					<?php echo JText::_( 'COUNTRY' ).':'; ?>
+					<?php echo JText::_('COM_REDEVENT_COUNTRY' ).':'; ?>
 				</label>
 			</td>
 			<td>
 				<?php echo $this->lists['countries']; ?>
 
-				<span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('COUNTRY HINT'); ?>">
+				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_COUNTRY_HINT'); ?>">
 					<?php echo $infoimage; ?>
 				</span>
 			</td>
@@ -229,13 +229,13 @@ JHTML::_('behavior.tooltip');
 		<tr>
 			<td>
 				<label for="url">
-					<?php echo JText::_( 'WEBSITE' ).':'; ?>
+					<?php echo JText::_('COM_REDEVENT_WEBSITE' ).':'; ?>
 				</label>
 			</td>
 			<td>
 				<input class="inputbox" name="url" id="url" value="<?php echo $this->row->url; ?>" size="30" maxlength="199" />&nbsp;
 
-				<span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('WEBSITE HINT'); ?>">
+				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_WEBSITE_HINT'); ?>">
 					<?php echo $infoimage; ?>
 				</span>
 			</td>
@@ -247,7 +247,7 @@ JHTML::_('behavior.tooltip');
     <tr>
       <td>
         <label for="map">
-          <?php echo JText::_( 'ENABLE MAP' ).':'; ?>
+          <?php echo JText::_('COM_REDEVENT_ENABLE_MAP' ).':'; ?>
         </label>
       </td>
       <td>
@@ -255,7 +255,7 @@ JHTML::_('behavior.tooltip');
                 echo JHTML::_('select.booleanlist', 'map', 'class="inputbox"', $this->row->map );
               ?>
               &nbsp;
-              <span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('ADDRESS NOTICE'); ?>">
+              <span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_ADDRESS_NOTICE'); ?>">
           <?php echo $infoimage; ?>
         </span>
       </td>
@@ -268,7 +268,7 @@ JHTML::_('behavior.tooltip');
       </td>
       <td>
         <input class="inputbox" name="latitude" id="latitude" value="<?php echo $this->row->latitude; ?>" size="14" maxlength="25" />
-              <span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_LATITUDE_TIP'); ?>">
+              <span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_LATITUDE_TIP'); ?>">
           <?php echo $infoimage; ?>
         </span>
       </td>
@@ -281,7 +281,7 @@ JHTML::_('behavior.tooltip');
       </td>
       <td>
         <input class="inputbox" name="longitude" id="longitude" value="<?php echo $this->row->longitude; ?>" size="14" maxlength="25" />
-              <span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_LONGITUDE_TIP'); ?>">
+              <span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_LONGITUDE_TIP'); ?>">
           <?php echo $infoimage; ?>
         </span>
       </td>
@@ -294,14 +294,14 @@ JHTML::_('behavior.tooltip');
 		<?php } ?>
 	<?php
 	echo $this->pane->endPanel();
-	$title = JText::_( 'IMAGE' );
+	$title = JText::_('COM_REDEVENT_IMAGE' );
 	echo $this->pane->startPanel( $title, 'image' );
 	?>
 	<table>
 		<tr>
 			<td>
 				<label for="locimage">
-					<?php echo JText::_( 'CHOOSE IMAGE' ).':'; ?>
+					<?php echo JText::_('COM_REDEVENT_CHOOSE_IMAGE' ).':'; ?>
 				</label>
 			</td>
 			<td>
@@ -329,7 +329,7 @@ JHTML::_('behavior.tooltip');
 	</table>
 	<?php
 	echo $this->pane->endPanel();
-	$title = JText::_( 'ACCESS' );
+	$title = JText::_('COM_REDEVENT_ACCESS' );
 	echo $this->pane->startPanel( $title, 'access' );
 	?>
 	<table>
@@ -349,14 +349,14 @@ JHTML::_('behavior.tooltip');
 	<?php
 	echo $this->pane->endPanel();
 	
-	$title = JText::_( 'METADATA INFORMATION' );
+	$title = JText::_('COM_REDEVENT_METADATA_INFORMATION' );
 	echo $this->pane->startPanel( $title, 'metadata' );
 	?>
 	<table>
 		<tr>
 			<td>
 				<label for="metadesc">
-					<?php echo JText::_( 'META DESCRIPTION' ); ?>:
+					<?php echo JText::_('COM_REDEVENT_META_DESCRIPTION' ); ?>:
 				</label>
 				<br />
 				<textarea class="inputbox" cols="40" rows="5" name="meta_description" id="metadesc" style="width:300px;"><?php echo str_replace('&','&amp;',$this->row->meta_description); ?></textarea>
@@ -365,7 +365,7 @@ JHTML::_('behavior.tooltip');
 		<tr>
 			<td>
 				<label for="metakey">
-					<?php echo JText::_( 'META KEYWORDS' ); ?>:
+					<?php echo JText::_('COM_REDEVENT_META_KEYWORDS' ); ?>:
 				</label>
 				<br />
 				<textarea class="inputbox" cols="40" rows="5" name="meta_keywords" id="metakey" style="width:300px;"><?php echo str_replace('&','&amp;',$this->row->meta_keywords); ?></textarea>
@@ -373,7 +373,7 @@ JHTML::_('behavior.tooltip');
 		</tr>
 		<tr>
 			<td>
-				<input type="button" class="button" value="<?php echo JText::_( 'ADD VENUE CITY' ); ?>" onclick="f=document.adminForm;f.metakey.value=f.venue.value+', '+f.city.value+f.metakey.value;" />
+				<input type="button" class="button" value="<?php echo JText::_('COM_REDEVENT_ADD_VENUE_CITY' ); ?>" onclick="f=document.adminForm;f.metakey.value=f.venue.value+', '+f.city.value+f.metakey.value;" />
 			</td>
 		</tr>
 	</table>

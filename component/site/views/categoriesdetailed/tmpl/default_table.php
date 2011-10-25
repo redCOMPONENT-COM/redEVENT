@@ -62,7 +62,7 @@ $colnames = array_map('trim', $colnames);
 				<?php break;?>
 				
 				<?php case 'places': ?>
-        <th id="el_places" class="sectiontableheader"><?php echo isset($colnames[$k]) ? $colnames[$k] : JText::_('Places'); ?></th>
+        <th id="el_places" class="sectiontableheader"><?php echo isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_Places'); ?></th>
 				<?php break;?>
 				
 				<?php case 'price': ?>
@@ -97,7 +97,7 @@ $colnames = array_map('trim', $colnames);
 	<?php
 	if (!$this->rows) :
 		?>
-		<tr align="center"><td colspan="<?php echo count($this->columns); ?>"><?php echo JText::_( 'NO EVENTS' ); ?></td></tr>
+		<tr align="center"><td colspan="<?php echo count($this->columns); ?>"><?php echo JText::_('COM_REDEVENT_NO_EVENTS' ); ?></td></tr>
 		<?php
 	else :
 

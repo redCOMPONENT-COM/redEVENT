@@ -100,7 +100,7 @@ class RedEventControllerGroupmembers extends RedEventController
 
 		// Error if checkedout by another administrator
 		if ($model->isCheckedOut( $user->get('id') )) {
-			$this->setRedirect( 'index.php?option=com_redevent&view=groupmembers&group_id='. $group_id, JText::_( 'EDITED BY ANOTHER ADMIN' ) );
+			$this->setRedirect( 'index.php?option=com_redevent&view=groupmembers&group_id='. $group_id, JText::_('COM_REDEVENT_EDITED_BY_ANOTHER_ADMIN' ) );
 		}
 
 		$model->checkout();
@@ -140,7 +140,7 @@ class RedEventControllerGroupmembers extends RedEventController
 					$link 	= 'index.php?option=com_redevent&view=groupmembers&group_id='. $group_id;
 					break;
 			}
-			$msg	= JText::_( 'GROUP MEMBER SAVED');
+			$msg	= JText::_('COM_REDEVENT_GROUP_MEMBER_SAVED');
 			
 			JPluginHelper::importPlugin( 'redevent' );
 			$dispatcher =& JDispatcher::getInstance();
@@ -173,7 +173,7 @@ class RedEventControllerGroupmembers extends RedEventController
 		$total = count( $cid );
 
 		if (!is_array( $cid ) || count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to delete' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_delete' ) );
 		}
 
 		$model = $this->getModel('groupmembers');
@@ -188,7 +188,7 @@ class RedEventControllerGroupmembers extends RedEventController
 		}
 
 			
-		$msg = $total.' '.JText::_( 'GROUP MEMBERS DELETED');
+		$msg = $total.' '.JText::_('COM_REDEVENT_GROUP_MEMBERS_DELETED');
 
 		$this->setRedirect( 'index.php?option=com_redevent&view=groupmembers&group_id='. $group_id, $msg );
 	}	

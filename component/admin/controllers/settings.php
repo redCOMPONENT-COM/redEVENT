@@ -104,9 +104,9 @@ class RedEventControllerSettings extends RedEventController
 		$model 	= $this->getModel('settings');
 
 		if ($model->store($post)) {
-			$msg	= JText::_( 'SETTINGS SAVE');
+			$msg	= JText::_('COM_REDEVENT_SETTINGS_SAVE');
 		} else {
-			$msg	= JText::_( 'SAVE SETTINGS FAILED');
+			$msg	= JText::_('COM_REDEVENT_SAVE_SETTINGS_FAILED');
 		}
 
 		switch ($task)

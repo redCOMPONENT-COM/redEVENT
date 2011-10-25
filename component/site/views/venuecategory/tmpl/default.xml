@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="VENUECATEGORY DEFAULT LAYOUT">
+	<layout title="COM_REDEVENT_VENUECATEGORY_DEFAULT_LAYOUT">
 		<message>
-			<![CDATA[VENUECATEGORY DEFAULT LAYOUT DESC]]>
+			<![CDATA[COM_REDEVENT_VENUECATEGORY_DEFAULT_LAYOUT_DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>VENUECATEGORY DEFAULT LAYOUT</name>
-		<description>VENUECATEGORY DEFAULT LAYOUT DESC</description>
+		<name>COM_REDEVENT_VENUECATEGORY_DEFAULT_LAYOUT</name>
+		<description>COM_REDEVENT_VENUECATEGORY_DEFAULT_LAYOUT_DESC</description>
 		<url addpath="/administrator/components/com_redevent/elements">
-			<param name="id" type="venuecategories" default="0" label="SELECT VENUE CATEGORY" description="SELECT VENUE CATEGORY DESC" />
+			<param name="id" type="venuecategories" default="0" label="COM_REDEVENT_SELECT_VENUE_CATEGORY" description="COM_REDEVENT_SELECT_VENUE_CATEGORY_DESC" />
 		</url>
 	</state>
 </metadata>

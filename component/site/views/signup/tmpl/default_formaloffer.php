@@ -25,8 +25,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 if (isset($this->result)) { ?>
-	<?php if ($this->result) { ?><div id="result"><?php echo JText::_('SIGNUP_RESULT_OK'); ?></div><?php } ?>
-	<?php if (!$this->result) { ?><div id="result"><?php echo JText::_('SIGNUP_RESULT_NOK'); ?></div><?php } ?>
+	<?php if ($this->result) { ?><div id="result"><?php echo JText::_('COM_REDEVENT_SIGNUP_RESULT_OK'); ?></div><?php } ?>
+	<?php if (!$this->result) { ?><div id="result"><?php echo JText::_('COM_REDEVENT_SIGNUP_RESULT_NOK'); ?></div><?php } ?>
 <?php } ?>
 <form name="subemail" action="<?php echo JRoute::_('index.php'); ?>" method="post">
 	<?php echo $this->tags->ReplaceTags($this->page); ?>

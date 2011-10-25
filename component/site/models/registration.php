@@ -286,7 +286,7 @@ class RedEventModelRegistration extends JModel
 		if (empty($this->_xrefdata))
 		{
 			if (empty($this->_xref)) {
-				$this->setError(JText::_('missing xref for session'));
+				$this->setError(JText::_('COM_REDEVENT_missing_xref_for_session'));
 				return false;
 			}
 			$query = 'SELECT a.id AS did, x.id AS xref, a.title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, '
@@ -411,7 +411,7 @@ class RedEventModelRegistration extends JModel
 		$registration = $db->loadObject();
 		
 		if (!$registration) {
-			JError::raiseError(0, JText::sprintf('notification: registration not found for key %s', $submit_key));
+			JError::raiseError(0, JText::sprintf('COM_REDEVENT_notification_registration_not_found_for_key_s', $submit_key));
 			return false;
 		}
 		
@@ -562,13 +562,13 @@ class RedEventModelRegistration extends JModel
 				      $this->mailer->AddAddress($user->email, $user->name);
 
 				      /* Get the activation link */
-				      $activatelink = '<a href="'.JRoute::_(JURI::root().'index.php?option=com_redevent&controller=registration&task=activate&confirmid='.str_replace(".", "_", $registration->uip).'x'.$registration->xref.'x'.$user->id.'x'.$registration->id.'x'.$submit_key).'">'.JText::_('Activate').'</a>';
+				      $activatelink = '<a href="'.JRoute::_(JURI::root().'index.php?option=com_redevent&controller=registration&task=activate&confirmid='.str_replace(".", "_", $registration->uip).'x'.$registration->xref.'x'.$user->id.'x'.$registration->id.'x'.$submit_key).'">'.JText::_('COM_REDEVENT_Activate').'</a>';
 				      /* Mail attendee */
 				      $htmlmsg = '<html><head><title></title></title></head><body>';
 				      $htmlmsg .= $eventsettings->notify_body;
 
 				      $htmlmsg .= '<br /><br />';
-				      $reginfo = nl2br(JText::_('INFORM_USERNAME'));
+				      $reginfo = nl2br(JText::_('COM_REDEVENT_INFORM_USERNAME'));
 				      $reginfo = str_replace('[fullname]', $user->name, $reginfo);
 				      $reginfo = str_replace('[username]', $user->username, $reginfo);
 				      $reginfo = str_replace('[password]', $password, $reginfo);
@@ -646,7 +646,7 @@ class RedEventModelRegistration extends JModel
 					     .              'x'.$registration->uid
 					     .              'x'.$rid
 					     .              'x'.$submit_key );
-					$activatelink = '<a href="'.$url.'">'.JText::_('Activate').'</a>';
+					$activatelink = '<a href="'.$url.'">'.JText::_('COM_REDEVENT_Activate').'</a>';
 					$cancellink = JRoute::_(JURI::root().'index.php?option=com_redevent&task=cancelreg'
 					                        .'&rid='.$rid.'&xref='.$registration->xref.'&submit_key='.$submit_key);
 					
@@ -823,8 +823,8 @@ class RedEventModelRegistration extends JModel
   	$mailer->MsgHTML($mail);
   	if (!$mailer->send())
   	{
-  		RedeventHelperLog::simplelog(JText::_('REDEVENT_ERROR_REGISTRATION_MANAGERS_NOTIFICATION_FAILED'));
-  		$this->setError(JText::_('REDEVENT_ERROR_REGISTRATION_MANAGERS_NOTIFICATION_FAILED'));
+  		RedeventHelperLog::simplelog(JText::_('COM_REDEVENT_ERROR_REGISTRATION_MANAGERS_NOTIFICATION_FAILED'));
+  		$this->setError(JText::_('COM_REDEVENT_ERROR_REGISTRATION_MANAGERS_NOTIFICATION_FAILED'));
   		return false;
   	}
   	return true;
@@ -879,7 +879,7 @@ class RedEventModelRegistration extends JModel
 		$registration = $this->_db->loadObject();
 		
 		if (!$registration) {
-			$this->setError(JText::_('REGISTRATION NOT VALID'));
+			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_NOT_VALID'));
 			return false;
 		}
 		  
@@ -1060,7 +1060,7 @@ class RedEventModelRegistration extends JModel
 			}
 		}
 		//pricegroup not found... not good at all ! 
-		$this->setError(JText::_('Pricegroup not found'));
+		$this->setError(JText::_('COM_REDEVENT_Pricegroup_not_found'));
 		return false;
 	}
 
@@ -1103,7 +1103,7 @@ class RedEventModelRegistration extends JModel
   	$acl = UserAcl::getInstance();
 	  
 	  if ($userid < 1) {
-			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+			JError::raiseError( 403, JText::_('COM_REDEVENT_ALERTNOTAUTH') );
 			return;
 	  }
 	  

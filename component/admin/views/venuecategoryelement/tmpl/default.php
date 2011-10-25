@@ -29,10 +29,10 @@ defined('_JEXEC') or die('Restricted access');
 <table class="adminform">
 	<tr>
 		<td width="100%">
-			<?php echo JText::_( 'SEARCH' ); ?>
+			<?php echo JText::_('COM_REDEVENT_SEARCH' ); ?>
 			<input type="text" name="search" id="search" value="<?php echo $this->lists['search']; ?>" class="text_area" onChange="document.adminForm.submit();" />
-			<button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
-			<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
+			<button onclick="this.form.submit();"><?php echo JText::_('COM_REDEVENT_Go' ); ?></button>
+			<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo JText::_('COM_REDEVENT_Reset' ); ?></button>
 		</td>
 		<td nowrap="nowrap"><?php  echo $this->lists['state']; ?></td>
 	</tr>
@@ -41,10 +41,10 @@ defined('_JEXEC') or die('Restricted access');
 <table class="adminlist" cellspacing="1">
 	<thead>
 		<tr>
-			<th width="7"><?php echo JText::_( 'Num' ); ?></th>
-			<th align="left" class="title"><?php echo JHTML::_('grid.sort', 'CATEGORY', 'name', $this->lists['order_Dir'], $this->lists['order'], 'venuecategoryelement' ); ?></th>
-			<th width="1%" nowrap="nowrap"><?php echo JText::_( 'ACCESS' ); ?></th>
-			<th width="1%" nowrap="nowrap"><?php echo JText::_( 'PUBLISHED' ); ?></th>
+			<th width="7">#</th>
+			<th align="left" class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_CATEGORY', 'name', $this->lists['order_Dir'], $this->lists['order'], 'venuecategoryelement' ); ?></th>
+			<th width="1%" nowrap="nowrap"><?php echo JText::_('COM_REDEVENT_ACCESS' ); ?></th>
+			<th width="1%" nowrap="nowrap"><?php echo JText::_('COM_REDEVENT_PUBLISHED' ); ?></th>
 		</tr>
 	</thead>
 
@@ -73,7 +73,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr class="<?php echo "row$k"; ?>">
 			<td width="7"><?php echo $this->pageNav->getRowOffset( $i ); ?></td>
 			<td align="left">
-				<span class="editlinktip hasTip" title="<?php echo JText::_( 'SELECT' );?>::<?php echo $row->name; ?>">
+				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_SELECT' );?>::<?php echo $row->name; ?>">
 				<a style="cursor:pointer" onclick="window.parent.elSelectCategory('<?php echo $row->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $row->name ); ?>');">
 					<?php echo htmlspecialchars($row->name, ENT_QUOTES, 'UTF-8'); ?>
 				</a></span>

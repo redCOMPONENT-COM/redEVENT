@@ -72,16 +72,16 @@ class RedeventViewSessions extends JView
 		$lists['search']= $search;
 		
 		//publish unpublished filter
-		$options = array( JHTML::_('select.option', '', JText::_('- Select state -')),
-		                  JHTML::_('select.option', 'published', JText::_('Published')),
-		                  JHTML::_('select.option', 'unpublished', JText::_('Unpublished')),
-		                  JHTML::_('select.option', 'archived', JText::_('Archived')),
-		                  JHTML::_('select.option', 'notarchived', JText::_('Not archived')),
+		$options = array( JHTML::_('select.option', '', ' - '.JText::_('COM_REDEVENT_Select_state').' - '),
+		                  JHTML::_('select.option', 'published', JText::_('COM_REDEVENT_Published')),
+		                  JHTML::_('select.option', 'unpublished', JText::_('COM_REDEVENT_Unpublished')),
+		                  JHTML::_('select.option', 'archived', JText::_('COM_REDEVENT_Archived')),
+		                  JHTML::_('select.option', 'notarchived', JText::_('COM_REDEVENT_Not_archived')),
 		                  );
 		$lists['state']	= JHTML::_('select.genericlist', $options, 'filter_state', 'class="inputbox" onchange="submitform();" size="1"', 'value', 'text', $filter_state );
 		
 		//featured filter
-		$options = array( JHTML::_('select.option', '', JText::_('- Select featured -')),
+		$options = array( JHTML::_('select.option', '', ' - '.JText::_('COM_REDEVENT_Select_featured').' - '),
 		                  JHTML::_('select.option', 'featured', JText::_('Com_redevent_Featured')),
 		                  JHTML::_('select.option', 'unfeatured', JText::_('Com_redevent_not_Featured')),
 		                  );

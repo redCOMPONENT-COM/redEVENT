@@ -37,7 +37,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <?php
 if (count($this->upcomingevents) == 0) {
-	echo JText::_('NO_UPCOMING_EVENTS');
+	echo JText::_('COM_REDEVENT_NO_UPCOMING_EVENTS');
 }
 else {
 	echo $this->loadTemplate('courseinfo');

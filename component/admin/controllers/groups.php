@@ -97,7 +97,7 @@ class RedEventControllerGroups extends RedEventController
 
 		// Error if checkedout by another administrator
 		if ($model->isCheckedOut( $user->get('id') )) {
-			$this->setRedirect( 'index.php?option=com_redevent&view=groups', JText::_( 'EDITED BY ANOTHER ADMIN' ) );
+			$this->setRedirect( 'index.php?option=com_redevent&view=groups', JText::_('COM_REDEVENT_EDITED_BY_ANOTHER_ADMIN' ) );
 		}
 
 		$model->checkout();
@@ -135,7 +135,7 @@ class RedEventControllerGroups extends RedEventController
 					$link 	= 'index.php?option=com_redevent&view=groups';
 					break;
 			}
-			$msg	= JText::_( 'GROUP SAVED');
+			$msg	= JText::_('COM_REDEVENT_GROUP_SAVED');
 						
 			JPluginHelper::importPlugin( 'redevent' );
 			$dispatcher =& JDispatcher::getInstance();
@@ -167,7 +167,7 @@ class RedEventControllerGroups extends RedEventController
 		$total = count( $cid );
 
 		if (!is_array( $cid ) || count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to delete' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_delete' ) );
 		}
 
 		$model = $this->getModel('groups');
@@ -180,7 +180,7 @@ class RedEventControllerGroups extends RedEventController
 		$dispatcher =& JDispatcher::getInstance();
 		$res = $dispatcher->trigger( 'onGroupsRemoved', array( $cid ) );
 			
-		$msg = $total.' '.JText::_( 'GROUPS DELETED');
+		$msg = $total.' '.JText::_('COM_REDEVENT_GROUPS_DELETED');
 
 		$this->setRedirect( 'index.php?option=com_redevent&view=groups', $msg );
 	}
@@ -218,13 +218,13 @@ class RedEventControllerGroups extends RedEventController
 					$link 	= 'index.php?option=com_redevent&view=groups';
 					break;
 			}
-			$msg	= JText::_( 'GROUP ACL SAVED');			
+			$msg	= JText::_('COM_REDEVENT_GROUP_ACL_SAVED');			
 			$this->setRedirect( $link, $msg );			
 		} 
 		else 
 		{
 			$link 	= 'index.php?option=com_redevent&view=groups';
-			$msg	= JText::_( 'GROUP ACL SAVE ERROR'). ': ' .$model->getError();		
+			$msg	= JText::_('COM_REDEVENT_GROUP_ACL_SAVE_ERROR'). ': ' .$model->getError();		
 			$this->setRedirect( $link, $msg, 'error' );
 		}		
 	}
@@ -232,7 +232,7 @@ class RedEventControllerGroups extends RedEventController
 	function cancelacl()
 	{
 		$link 	= 'index.php?option=com_redevent&view=groups';
-		$msg	= JText::_( 'OPERATION CANCELLED');				
+		$msg	= JText::_('COM_REDEVENT_OPERATION_CANCELLED');				
 		$this->setRedirect( $link, $msg );		
 	}
 	
@@ -246,7 +246,7 @@ class RedEventControllerGroups extends RedEventController
 		$plugins = array();
 		foreach ((array) $res as $r) 
 		{
-			$plugins[] = $r['plugin'].': '.($r['result'] ? Jtext::_('OK') : Jtext::_('KO')); 
+			$plugins[] = $r['plugin'].': '.($r['result'] ? JText::_('COM_REDEVENT_OK') : JText::_('COM_REDEVENT_KO')); 
 		}				
 		if (count($plugins)) {
 			$msg	= JText::_('COM_REDEVENT_GROUPS_SYNCED')."<br/>".implode('<br/>', $plugins); 

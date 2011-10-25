@@ -29,20 +29,20 @@ JHTML::_('behavior.modal');
 	<table cellspacing="0" cellpadding="0" border="0" width="100%">
 	<tbody>
 	<tr>
-		<td><?php echo JText::_('TEXT_TAG'); ?></td>
+		<td><?php echo JText::_('COM_REDEVENT_TEXT_TAG'); ?></td>
 		<td><input type="text" name="text_name" size="150" value="<?php echo $this->row->text_name; ?>" /></td>
 	</tr>
 	<tr>
-		<td><?php echo JText::_('TEXT_DESCRIPTION'); ?></td>
+		<td><?php echo JText::_('COM_REDEVENT_TEXT_DESCRIPTION'); ?></td>
 		<td><input type="text" name="text_description" size="150" value="<?php echo $this->row->text_description; ?>" /></td>
 	</tr>
 	<tr>
-		<td colspan="2"><?php echo JText::_('TEXT_FIELD'); ?></td>
+		<td colspan="2"><?php echo JText::_('COM_REDEVENT_TEXT_FIELD'); ?></td>
 	</tr>
 	<tr>
 		<td colspan="2">
 		  <div class="tagsdiv">
-		  	<?php echo JHTML::link('index.php?option=com_redevent&view=tags&tmpl=component', JText::_('TAGS'), 'class="modal" rel="{handler: \'iframe\'}"'); ?>
+		  	<?php echo JHTML::link('index.php?option=com_redevent&view=tags&tmpl=component', JText::_('COM_REDEVENT_TAGS'), 'class="modal" rel="{handler: \'iframe\'}"'); ?>
 	    </div>  
 	    <?php echo $this->editor->display( 'text_field',  $this->row->text_field, '100%;', '550', '75', '20', array('pagebreak', 'readmore') ) ;?>
     </td>

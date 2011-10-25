@@ -57,21 +57,21 @@ class RedEventModelImport extends JModel
     $this->_db->setQuery($query);
 	  $count = $this->_db->loadResult();
     if ($count) {
-      $this->setError(JText::_('EVENTLIST IMPORT DB NOT EMPTY'));
+      $this->setError(JText::_('COM_REDEVENT_EVENTLIST_IMPORT_DB_NOT_EMPTY'));
       return false;
     }
     $query = ' SELECT COUNT(*) FROM #__redevent_categories ';
     $this->_db->setQuery($query);
     $count = $this->_db->loadResult();
     if ($count) {
-      $this->setError(JText::_('EVENTLIST IMPORT DB NOT EMPTY'));
+      $this->setError(JText::_('COM_REDEVENT_EVENTLIST_IMPORT_DB_NOT_EMPTY'));
       return false;
     }
     $query = ' SELECT COUNT(*) FROM #__redevent_venues ';
     $this->_db->setQuery($query);
     $count = $this->_db->loadResult();
     if ($count) {
-      $this->setError(JText::_('EVENTLIST IMPORT DB NOT EMPTY'));
+      $this->setError(JText::_('COM_REDEVENT_EVENTLIST_IMPORT_DB_NOT_EMPTY'));
       return false;
     }
 	  
@@ -81,7 +81,7 @@ class RedEventModelImport extends JModel
 	         ;
 	  $this->_db->setQuery($query);
 	  if (!$this->_db->query()) {
-	    $this->setError(JText::_('EVENTLIST ERROR IMPORTING VENUES'));
+	    $this->setError(JText::_('COM_REDEVENT_EVENTLIST_ERROR_IMPORTING_VENUES'));
 	    return false;
 	  }
 	  $nb_venues = $this->_db->getAffectedRows();
@@ -92,7 +92,7 @@ class RedEventModelImport extends JModel
            ;
     $this->_db->setQuery($query);
     if (!$this->_db->query()) {
-      $this->setError(JText::_('EVENTLIST ERROR IMPORTING CATEGORIES'));
+      $this->setError(JText::_('COM_REDEVENT_EVENTLIST_ERROR_IMPORTING_CATEGORIES'));
       return false;
     }
     $nb_cats = $this->_db->getAffectedRows();
@@ -106,7 +106,7 @@ class RedEventModelImport extends JModel
            ;
     $this->_db->setQuery($query);
     if (!$this->_db->query()) {
-      $this->setError(JText::_('EVENTLIST ERROR IMPORTING EVENTS'));
+      $this->setError(JText::_('COM_REDEVENT_EVENTLIST_ERROR_IMPORTING_EVENTS'));
       return false;
     }
     $nb_events = $this->_db->getAffectedRows();
@@ -118,7 +118,7 @@ class RedEventModelImport extends JModel
            ;
     $this->_db->setQuery($query);
     if (!$this->_db->query()) {
-      $this->setError(JText::_('EVENTLIST ERROR IMPORTING EVENTS VENUESDATES'));
+      $this->setError(JText::_('COM_REDEVENT_EVENTLIST_ERROR_IMPORTING_EVENTS_VENUESDATES'));
       return false;
     }
     
@@ -128,7 +128,7 @@ class RedEventModelImport extends JModel
            ;
     $this->_db->setQuery($query);
     if (!$this->_db->query()) {
-      $this->setError(JText::_('EVENTLIST ERROR IMPORTING EVENTS CATEGORIES'));
+      $this->setError(JText::_('COM_REDEVENT_EVENTLIST_ERROR_IMPORTING_EVENTS_CATEGORIES'));
       return false;
     }    
     

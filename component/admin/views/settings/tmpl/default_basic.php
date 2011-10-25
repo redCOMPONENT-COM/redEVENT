@@ -2,20 +2,20 @@
       <tr>
         <td width="50%" valign="top">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_( 'DISPLAY SETTINGS' ); ?></legend>
+			<legend><?php echo JText::_('COM_REDEVENT_DISPLAY_SETTINGS' ); ?></legend>
 				<table class="admintable" cellspacing="1">
 				<tbody>
 	 				<tr>
 	          			<td width="300" class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_( 'SHOW DETAILS' ); ?>::<?php echo JText::_('SHOW DETAILS TIP'); ?>">
-								<?php echo JText::_( 'SHOW DETAILS' ); ?>
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_SHOW_DETAILS' ); ?>::<?php echo JText::_('COM_REDEVENT_SHOW_DETAILS_TIP'); ?>">
+								<?php echo JText::_('COM_REDEVENT_SHOW_DETAILS' ); ?>
 							</span>
 						</td>
        					<td valign="top">
         					<?php
 		  						$showdets = array();
-								$showdets[] = JHTML::_('select.option', '0', JText::_( 'DETAILS OFF' ) );
-								$showdets[] = JHTML::_('select.option', '1', JText::_( 'LINK ON TITLE' ) );
+								$showdets[] = JHTML::_('select.option', '0', JText::_('COM_REDEVENT_DETAILS_OFF' ) );
+								$showdets[] = JHTML::_('select.option', '1', JText::_('COM_REDEVENT_LINK_ON_TITLE' ) );
 								$showdet = JHTML::_('select.genericlist', $showdets, 'showdetails', 'size="1" class="inputbox"', 'value', 'text', $this->elsettings->showdetails );
 								echo $showdet;
         					?>
@@ -23,30 +23,30 @@
       				</tr>
 					<tr>
 	          			<td width="300" class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_( 'DATE STRFTIME' ); ?>::<?php echo JText::_('DATE STRFTIME TIP'); ?>">
-								<?php echo JText::_( 'DATE STRFTIME' ); ?>
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_DATE_STRFTIME' ); ?>::<?php echo JText::_('COM_REDEVENT_DATE_STRFTIME_TIP'); ?>">
+								<?php echo JText::_('COM_REDEVENT_DATE_STRFTIME' ); ?>
 							</span>
 						</td>
        					<td valign="top">
 							<input type="text" name="formatdate" value="<?php echo $this->elsettings->formatdate; ?>" size="15" maxlength="15" />
-							&nbsp;<a href="http://www.php.net/strftime" target="_blank"><?php echo JText::_( 'PHP STRFTIME MANUAL' ); ?></a>
+							&nbsp;<a href="http://www.php.net/strftime" target="_blank"><?php echo JText::_('COM_REDEVENT_PHP_STRFTIME_MANUAL' ); ?></a>
        	 				</td>
       				</tr>
 					<tr>
 	          			<td width="300" class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_( 'TIME STRFTIME' ); ?>::<?php echo JText::_('TIME STRFTIME TIP'); ?>">
-								<?php echo JText::_( 'TIME STRFTIME' ); ?>
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_TIME_STRFTIME' ); ?>::<?php echo JText::_('COM_REDEVENT_TIME_STRFTIME_TIP'); ?>">
+								<?php echo JText::_('COM_REDEVENT_TIME_STRFTIME' ); ?>
 							</span>
 						</td>
        					<td valign="top">
 							<input type="text" name="formattime" value="<?php echo $this->elsettings->formattime; ?>" size="15" maxlength="15" />
-							&nbsp;<a href="http://www.php.net/strftime" target="_blank"><?php echo JText::_( 'PHP STRFTIME MANUAL' ); ?></a>
+							&nbsp;<a href="http://www.php.net/strftime" target="_blank"><?php echo JText::_('COM_REDEVENT_PHP_STRFTIME_MANUAL' ); ?></a>
        	 				</td>
       				</tr>
 					<tr>
 	          			<td width="300" class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_( 'TIME NAME' ); ?>::<?php echo JText::_('TIME NAME TIP'); ?>">
-								<?php echo JText::_( 'TIME NAME' ); ?>
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_TIME_NAME' ); ?>::<?php echo JText::_('COM_REDEVENT_TIME_NAME_TIP'); ?>">
+								<?php echo JText::_('COM_REDEVENT_TIME_NAME' ); ?>
 							</span>
 						</td>
        					<td valign="top">
@@ -55,8 +55,8 @@
       				</tr>
 					<tr>
 	          			<td width="300" class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_( 'CURRENCY_DECIMAL_SEPARATOR' ); ?>::<?php echo JText::_('CURRENCY_DECIMAL_SEPARATOR_TIP'); ?>">
-								<?php echo JText::_( 'CURRENCY_DECIMAL_SEPARATOR' ); ?>
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_CURRENCY_DECIMAL_SEPARATOR' ); ?>::<?php echo JText::_('COM_REDEVENT_CURRENCY_DECIMAL_SEPARATOR_TIP'); ?>">
+								<?php echo JText::_('COM_REDEVENT_CURRENCY_DECIMAL_SEPARATOR' ); ?>
 							</span>
 						</td>
        					<td valign="top">
@@ -65,8 +65,8 @@
       				</tr>
 					<tr>
 	          			<td width="300" class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_( 'CURRENCY_THOUSAND_SEPARATOR' ); ?>::<?php echo JText::_('CURRENCY_THOUSAND_SEPARATOR_TIP'); ?>">
-								<?php echo JText::_( 'CURRENCY_THOUSAND_SEPARATOR' ); ?>
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_CURRENCY_THOUSAND_SEPARATOR' ); ?>::<?php echo JText::_('COM_REDEVENT_CURRENCY_THOUSAND_SEPARATOR_TIP'); ?>">
+								<?php echo JText::_('COM_REDEVENT_CURRENCY_THOUSAND_SEPARATOR' ); ?>
 							</span>
 						</td>
        					<td valign="top">
@@ -75,16 +75,16 @@
       				</tr>
 					<tr>
 	          			<td width="300" class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_( 'CURRENCY_DECIMALS' ); ?>::<?php echo JText::_('CURRENCY_DECIMALS_TIP'); ?>">
-								<?php echo JText::_( 'CURRENCY_DECIMALS' ); ?>
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_CURRENCY_DECIMALS' ); ?>::<?php echo JText::_('COM_REDEVENT_CURRENCY_DECIMALS_TIP'); ?>">
+								<?php echo JText::_('COM_REDEVENT_CURRENCY_DECIMALS' ); ?>
 							</span>
 						</td>
        					<td valign="top">
         					<?php
 		  						$showdets = array();
-								$showdets[] = JHTML::_('select.option', 'decimals', JText::_( 'DECIMALS' ) );
-								$showdets[] = JHTML::_('select.option', 'comma', JText::_( ',-' ) );
-								$showdets[] = JHTML::_('select.option', 'none', JText::_( 'NONE' ) );
+								$showdets[] = JHTML::_('select.option', 'decimals', JText::_('COM_REDEVENT_DECIMALS' ) );
+								$showdets[] = JHTML::_('select.option', 'comma', ',-');
+								$showdets[] = JHTML::_('select.option', 'none', JText::_('COM_REDEVENT_NONE' ) );
 								$showdet = JHTML::_('select.genericlist', $showdets, 'currency_decimals', 'size="1" class="inputbox"', 'value', 'text', $this->elsettings->currency_decimals );
 								echo $showdet;
         					?>
@@ -92,8 +92,8 @@
       				</tr>
       				<tr>
 	          			<td width="300" class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_( 'STORE IP' ); ?>::<?php echo JText::_('STORE IP TIP'); ?>">
-								<?php echo JText::_( 'STORE IP' ); ?>
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_STORE_IP' ); ?>::<?php echo JText::_('COM_REDEVENT_STORE_IP_TIP'); ?>">
+								<?php echo JText::_('COM_REDEVENT_STORE_IP' ); ?>
 							</span>
 						</td>
        					<td valign="top">
@@ -107,13 +107,13 @@
 		  </fieldset>
 
 		  <fieldset class="adminform">
-			<legend><?php echo JText::_( 'MAIL HANDLING' ); ?></legend>
+			<legend><?php echo JText::_('COM_REDEVENT_MAIL_HANDLING' ); ?></legend>
 				<table class="admintable" cellspacing="1">
 				<tbody>
 	  				<tr>
 	          			<td width="300" class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_( 'MAIL NEW SUBMISSION' ); ?>::<?php echo JText::_('MAIL NEW SUBMISSION TIP'); ?>">
-								<?php echo JText::_( 'MAIL NEW SUBMISSION' ); ?>
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_MAIL_NEW_SUBMISSION' ); ?>::<?php echo JText::_('COM_REDEVENT_MAIL_NEW_SUBMISSION_TIP'); ?>">
+								<?php echo JText::_('COM_REDEVENT_MAIL_NEW_SUBMISSION' ); ?>
 							</span>
 						</td>
        					<td valign="top">
@@ -124,17 +124,17 @@
 							} // if
 							?>
 							<select name="mailinform" size="1" class="inputbox" onChange="changemailMode()">
-  								<option value="0"<?php if ($this->elsettings->mailinform == 0) { ?> selected="selected"<?php } ?>><?php echo JText::_( 'DISABLED' ); ?></option>
-  								<option value="1"<?php if ($this->elsettings->mailinform == 1) { ?> selected="selected"<?php } ?>><?php echo JText::_( 'ONLY NEW EVENT' ); ?></option>
-  								<option value="2"<?php if ($this->elsettings->mailinform == 2) { ?> selected="selected"<?php } ?>><?php echo JText::_( 'ONLY NEW VENUE' ); ?></option>
-		  						<option value="3"<?php if ($this->elsettings->mailinform == 3) { ?> selected="selected"<?php } ?>><?php echo JText::_( 'BOTH' ); ?></option>
+  								<option value="0"<?php if ($this->elsettings->mailinform == 0) { ?> selected="selected"<?php } ?>><?php echo JText::_('COM_REDEVENT_DISABLED' ); ?></option>
+  								<option value="1"<?php if ($this->elsettings->mailinform == 1) { ?> selected="selected"<?php } ?>><?php echo JText::_('COM_REDEVENT_ONLY_NEW_EVENT' ); ?></option>
+  								<option value="2"<?php if ($this->elsettings->mailinform == 2) { ?> selected="selected"<?php } ?>><?php echo JText::_('COM_REDEVENT_ONLY_NEW_VENUE' ); ?></option>
+		  						<option value="3"<?php if ($this->elsettings->mailinform == 3) { ?> selected="selected"<?php } ?>><?php echo JText::_('COM_REDEVENT_BOTH' ); ?></option>
 							</select>
        	 				</td>
       				</tr>
 					<tr id="mail1"<?php if (!$mode) echo ' style="display:none"'; ?>>
 	          			<td width="300" class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_( 'MAIL RECIPIENT' ); ?>::<?php echo JText::_('MAIL RECIPIENT TIP'); ?>">
-								<?php echo JText::_( 'MAIL RECIPIENT' ); ?>
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_MAIL_RECIPIENT' ); ?>::<?php echo JText::_('COM_REDEVENT_MAIL_RECIPIENT_TIP'); ?>">
+								<?php echo JText::_('COM_REDEVENT_MAIL_RECIPIENT' ); ?>
 							</span>
 						</td>
        					<td valign="top">
@@ -143,16 +143,16 @@
       				</tr>
       				<tr>
 	          			<td width="300" class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_( 'MAIL NEW USER SUBMISSION' ); ?>::<?php echo JText::_('MAIL NEW USER SUBMISSION TIP'); ?>">
-								<?php echo JText::_( 'MAIL NEW USER SUBMISSION' ); ?>
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_MAIL_NEW_USER_SUBMISSION' ); ?>::<?php echo JText::_('COM_REDEVENT_MAIL_NEW_USER_SUBMISSION_TIP'); ?>">
+								<?php echo JText::_('COM_REDEVENT_MAIL_NEW_USER_SUBMISSION' ); ?>
 							</span>
 						</td>
        					<td valign="top">
 							<select name="mailinformuser" size="1" class="inputbox">
-  								<option value="0"<?php if ($this->elsettings->mailinformuser == 0) { ?> selected="selected"<?php } ?>><?php echo JText::_( 'DISABLED' ); ?></option>
-  								<option value="1"<?php if ($this->elsettings->mailinformuser == 1) { ?> selected="selected"<?php } ?>><?php echo JText::_( 'ONLY NEW EVENT' ); ?></option>
-  								<option value="2"<?php if ($this->elsettings->mailinformuser == 2) { ?> selected="selected"<?php } ?>><?php echo JText::_( 'ONLY NEW VENUE' ); ?></option>
-		  						<option value="3"<?php if ($this->elsettings->mailinformuser == 3) { ?> selected="selected"<?php } ?>><?php echo JText::_( 'BOTH' ); ?></option>
+  								<option value="0"<?php if ($this->elsettings->mailinformuser == 0) { ?> selected="selected"<?php } ?>><?php echo JText::_('COM_REDEVENT_DISABLED' ); ?></option>
+  								<option value="1"<?php if ($this->elsettings->mailinformuser == 1) { ?> selected="selected"<?php } ?>><?php echo JText::_('COM_REDEVENT_ONLY_NEW_EVENT' ); ?></option>
+  								<option value="2"<?php if ($this->elsettings->mailinformuser == 2) { ?> selected="selected"<?php } ?>><?php echo JText::_('COM_REDEVENT_ONLY_NEW_VENUE' ); ?></option>
+		  						<option value="3"<?php if ($this->elsettings->mailinformuser == 3) { ?> selected="selected"<?php } ?>><?php echo JText::_('COM_REDEVENT_BOTH' ); ?></option>
 							</select>
        	 				</td>
       				</tr>
@@ -164,13 +164,13 @@
         <td width="50%" valign="top">
 
        	<fieldset class="adminform">
-			<legend><?php echo JText::_( 'IMAGE HANDLING' ); ?></legend>
+			<legend><?php echo JText::_('COM_REDEVENT_IMAGE_HANDLING' ); ?></legend>
 				<table class="admintable" cellspacing="1">
 				<tbody>
 					<tr>
 	          			<td width="300" class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_( 'IMAGE FILESIZE' ); ?>::<?php echo JText::_('IMAGE FILESIZE TIP'); ?>">
-								<?php echo JText::_( 'IMAGE FILESIZE' ); ?>
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_IMAGE_FILESIZE' ); ?>::<?php echo JText::_('COM_REDEVENT_IMAGE_FILESIZE_TIP'); ?>">
+								<?php echo JText::_('COM_REDEVENT_IMAGE_FILESIZE' ); ?>
 							</span>
 						</td>
        					<td valign="top">
@@ -179,8 +179,8 @@
       				</tr>
 					<tr>
 	          			<td width="300" class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_( 'IMAGE HEIGHT' ); ?>::<?php echo JText::_('IMAGE HEIGHT TIP'); ?>">
-								<?php echo JText::_( 'IMAGE HEIGHT' ); ?>
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_IMAGE_HEIGHT' ); ?>::<?php echo JText::_('COM_REDEVENT_IMAGE_HEIGHT_TIP'); ?>">
+								<?php echo JText::_('COM_REDEVENT_IMAGE_HEIGHT' ); ?>
 							</span>
 						</td>
        					<td valign="top">
@@ -189,21 +189,21 @@
       				</tr>
 					<tr>
 	          			<td width="300" class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_( 'IMAGE WIDTH' ); ?>::<?php echo JText::_('IMAGE WIDTH TIP'); ?>">
-								<?php echo JText::_( 'IMAGE WIDTH' ); ?>
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_IMAGE_WIDTH' ); ?>::<?php echo JText::_('COM_REDEVENT_IMAGE_WIDTH_TIP'); ?>">
+								<?php echo JText::_('COM_REDEVENT_IMAGE_WIDTH' ); ?>
 							</span>
 						</td>
        					<td valign="top">
          					<input type="text" name="imagewidth" value="<?php echo $this->elsettings->imagewidth; ?>" size="10" maxlength="10" />
-         					<span class="error hasTip" title="<?php echo JText::_( 'WARNING' );?>::<?php echo JText::_( 'WARNING MAX IMAGEWIDTH' ); ?>">
+         					<span class="error hasTip" title="<?php echo JText::_('COM_REDEVENT_WARNING' );?>::<?php echo JText::_('COM_REDEVENT_WARNING_MAX_IMAGEWIDTH' ); ?>">
 								<?php echo $this->WarningIcon(); ?>
 							</span>
        	 				</td>
       				</tr>
 					<tr>
 	          			<td width="300" class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_( 'GD LIBRARY' ); ?>::<?php echo JText::_('GD LIBRARY TIP'); ?>">
-								<?php echo JText::_( 'GD LIBRARY' ); ?>
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_GD_LIBRARY' ); ?>::<?php echo JText::_('COM_REDEVENT_GD_LIBRARY_TIP'); ?>">
+								<?php echo JText::_('COM_REDEVENT_GD_LIBRARY' ); ?>
 							</span>
 						</td>
        					<td valign="top">
@@ -219,10 +219,10 @@
 								//is it Version two or higher? If yes let the user the choice
    								if ($gdv >= 2) {
    								?>
-       								<input type="radio" id="gddisabled0" name="gddisabled" value="0" onclick="changegdMode(0)"<?php if (!$mode) echo ' checked="checked"'; ?>/><?php echo JText::_( 'NO' ); ?>
-									<input type="radio" id="gddisabled1" name="gddisabled" value="1" onclick="changegdMode(1)"<?php if ($mode) echo ' checked="checked"'; ?>/><?php echo JText::_( 'YES' ); ?>
+       								<input type="radio" id="gddisabled0" name="gddisabled" value="0" onclick="changegdMode(0)"<?php if (!$mode) echo ' checked="checked"'; ?>/><?php echo JText::_('COM_REDEVENT_NO' ); ?>
+									<input type="radio" id="gddisabled1" name="gddisabled" value="1" onclick="changegdMode(1)"<?php if ($mode) echo ' checked="checked"'; ?>/><?php echo JText::_('COM_REDEVENT_YES' ); ?>
        							<?php
-       								$note	= JText::_( 'GD VERSION TWO' );
+       								$note	= JText::_('COM_REDEVENT_GD_VERSION_TWO' );
        								$color	= 'green';
 
        							//No it is version one...disable thumbnailing
@@ -230,7 +230,7 @@
    								?>
    								<input type="hidden" name="gddisabled" value="0" />
    								<?php
-   								$note	= JText::_( 'GD VERSION ONE' );
+   								$note	= JText::_('COM_REDEVENT_GD_VERSION_ONE' );
    								$color	= 'red';
    								}
 
@@ -239,19 +239,19 @@
 							?>
 								<input type="hidden" name="gddisabled" value="0" />
    							<?php
-   								$note	= JText::_( 'NO GD LIBRARY' );
+   								$note	= JText::_('COM_REDEVENT_NO_GD_LIBRARY' );
    								$color	= 'red';
 							}
 							?>
 							<br />
-							<strong><?php echo JText::_( 'STATUS' ).':'; ?></strong>
+							<strong><?php echo JText::_('COM_REDEVENT_STATUS' ).':'; ?></strong>
 							<font color="<?php echo $color; ?>"><?php echo $note; ?></font>
 						</td>
       				</tr>
       				<tr id="gd1"<?php if (!$mode) echo ' style="display:none"'; ?>>
 	          			<td width="300" class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_( 'IMAGE LIGHTBOX' ); ?>::<?php echo JText::_('IMAGE LIGHTBOX TIP'); ?>">
-								<?php echo JText::_( 'IMAGE LIGHTBOX' ); ?>
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_IMAGE_LIGHTBOX' ); ?>::<?php echo JText::_('COM_REDEVENT_IMAGE_LIGHTBOX_TIP'); ?>">
+								<?php echo JText::_('COM_REDEVENT_IMAGE_LIGHTBOX' ); ?>
 							</span>
 						</td>
        					<td valign="top">
@@ -266,13 +266,13 @@
 		</fieldset>
 
 		<fieldset class="adminform">
-			<legend><?php echo JText::_( 'META HANDLING' ); ?></legend>
+			<legend><?php echo JText::_('COM_REDEVENT_META_HANDLING' ); ?></legend>
 				<table class="admintable" cellspacing="1">
 				<tbody>
 					<tr>
 	          			<td width="300" class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_( 'META KEYWORDS' ); ?>::<?php echo JText::_('META KEYWORDS TIP'); ?>">
-								<?php echo JText::_( 'META KEYWORDS' ); ?>
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_META_KEYWORDS' ); ?>::<?php echo JText::_('COM_REDEVENT_META_KEYWORDS_TIP'); ?>">
+								<?php echo JText::_('COM_REDEVENT_META_KEYWORDS' ); ?>
 							</span>
 						</td>
        					<td valign="top">
@@ -281,28 +281,28 @@
 							?>
 							<select name="meta_keywords[]" multiple="multiple" size="5" class="inputbox">
 								<option value="[title]" <?php if(in_array("[title]",$meta_key)) { echo "selected=\"selected\""; } ?>>
-								<?php echo JText::_( 'EVENT TITLE' ); ?></option>
+								<?php echo JText::_('COM_REDEVENT_EVENT_TITLE' ); ?></option>
 								<option value="[a_name]" <?php if(in_array("[a_name]",$meta_key)) { echo "selected=\"selected\""; } ?>>
-								<?php echo JText::_( 'VENUE' ); ?></option>
+								<?php echo JText::_('COM_REDEVENT_VENUE' ); ?></option>
 								<!-- <option value="[locid]" <?php if(in_array("[locid]",$meta_key)) { echo "selected=\"selected\""; } ?>>
-								<?php echo JText::_( 'CITY' ); ?></option> -->
+								<?php echo JText::_('COM_REDEVENT_CITY' ); ?></option> -->
 								<option value="[catsid]" <?php if(in_array("[catsid]",$meta_key)) { echo "selected=\"selected\""; } ?>>
-								<?php echo JText::_( 'CATEGORY' ); ?></option>
+								<?php echo JText::_('COM_REDEVENT_CATEGORY' ); ?></option>
 								<option value="[dates]" <?php if(in_array("[dates]",$meta_key)) { echo "selected=\"selected\""; } ?>>
-								<?php echo JText::_( 'DATE' ); ?></option>
+								<?php echo JText::_('COM_REDEVENT_DATE' ); ?></option>
 								<option value="[times]" <?php if(in_array("[times]",$meta_key)) { echo "selected=\"selected\""; } ?>>
-								<?php echo JText::_( 'EVENT TIME' ); ?></option>
+								<?php echo JText::_('COM_REDEVENT_EVENT_TIME' ); ?></option>
 								<option value="[enddates]" <?php if(in_array("[enddates]",$meta_key)) { echo "selected=\"selected\""; } ?>>
-								<?php echo JText::_( 'ENDDATE' ); ?></option>
+								<?php echo JText::_('COM_REDEVENT_ENDDATE' ); ?></option>
 								<option value="[endtimes]" <?php if(in_array("[endtimes]",$meta_key)) { echo "selected=\"selected\""; } ?>>
-								<?php echo JText::_( 'END TIME' ); ?></option>
+								<?php echo JText::_('COM_REDEVENT_END_TIME' ); ?></option>
 							</select>
        	 				</td>
       				</tr>
 					<tr>
 						<td width="300" class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_( 'META DESCRIPTION' ); ?>::<?php echo JText::_('META DESCRIPTION TIP'); ?>">
-								<?php echo JText::_( 'META DESCRIPTION' ); ?>
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_META_DESCRIPTION' ); ?>::<?php echo JText::_('COM_REDEVENT_META_DESCRIPTION_TIP'); ?>">
+								<?php echo JText::_('COM_REDEVENT_META_DESCRIPTION' ); ?>
 							</span>
 						</td>
 						<td>
@@ -315,25 +315,25 @@
 								}
 
 								function include_description() {
-									$("meta_description").value = "<?php echo JText::_( 'META DESCRIPTION STANDARD' ); ?>";
+									$("meta_description").value = "<?php echo JText::_('COM_REDEVENT_META_DESCRIPTION_STANDARD' ); ?>";
 								}
 							-->
 							</script>
 
-							<input class="inputbox" type="button" onclick="insert_keyword('[title]')" value="<?php echo JText::_( 'EVENT TITLE' ); ?>" />
-							<input class="inputbox" type="button" onclick="insert_keyword('[a_name]')" value="<?php echo JText::_( 'VENUE' ); ?>" />
-							<input class="inputbox" type="button" onclick="insert_keyword('[catsid]')" value="<?php echo JText::_( 'CATEGORY' ); ?>" />
-							<input class="inputbox" type="button" onclick="insert_keyword('[dates]')" value="<?php echo JText::_( 'DATE' ); ?>" />
+							<input class="inputbox" type="button" onclick="insert_keyword('[title]')" value="<?php echo JText::_('COM_REDEVENT_EVENT_TITLE' ); ?>" />
+							<input class="inputbox" type="button" onclick="insert_keyword('[a_name]')" value="<?php echo JText::_('COM_REDEVENT_VENUE' ); ?>" />
+							<input class="inputbox" type="button" onclick="insert_keyword('[catsid]')" value="<?php echo JText::_('COM_REDEVENT_CATEGORY' ); ?>" />
+							<input class="inputbox" type="button" onclick="insert_keyword('[dates]')" value="<?php echo JText::_('COM_REDEVENT_DATE' ); ?>" />
 							<p>
-								<input class="inputbox" type="button" onclick="insert_keyword('[times]')" value="<?php echo JText::_( 'EVENT TIME' ); ?>" />
-								<input class="inputbox" type="button" onclick="insert_keyword('[enddates]')" value="<?php echo JText::_( 'ENDDATE' ); ?>" />
-								<input class="inputbox" type="button" onclick="insert_keyword('[endtimes]')" value="<?php echo JText::_( 'END TIME' ); ?>" />
+								<input class="inputbox" type="button" onclick="insert_keyword('[times]')" value="<?php echo JText::_('COM_REDEVENT_EVENT_TIME' ); ?>" />
+								<input class="inputbox" type="button" onclick="insert_keyword('[enddates]')" value="<?php echo JText::_('COM_REDEVENT_ENDDATE' ); ?>" />
+								<input class="inputbox" type="button" onclick="insert_keyword('[endtimes]')" value="<?php echo JText::_('COM_REDEVENT_END_TIME' ); ?>" />
 							</p>
 							<textarea name="meta_description" id="meta_description" cols="35" rows="3" class="inputbox"><?php echo $this->elsettings->meta_description; ?></textarea>
 							<br/>
-							<input type="button" value="<?php echo JText::_( 'META DESCRIPTION BUTTON' ); ?>" onclick="include_description()" />
+							<input type="button" value="<?php echo JText::_('COM_REDEVENT_META_DESCRIPTION_BUTTON' ); ?>" onclick="include_description()" />
 							&nbsp;
-							<span class="error hasTip" title="<?php echo JText::_( 'WARNING' );?>::<?php echo JText::_( 'META DESCRIPTION WARN' ); ?>">
+							<span class="error hasTip" title="<?php echo JText::_('COM_REDEVENT_WARNING' );?>::<?php echo JText::_('COM_REDEVENT_META_DESCRIPTION_WARN' ); ?>">
 								<?php echo $this->WarningIcon(); ?>
 							</span>
 						</td>

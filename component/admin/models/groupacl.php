@@ -167,7 +167,7 @@ class RedEventModelGroupacl extends JModel
 			
 			if (!($obj->check() && $obj->store()))
 			{
-				$this->setError(JText::_('Error saving group category acl') .': '. $obj->getError());
+				$this->setError(JText::_('COM_REDEVENT_Error_saving_group_category_acl') .': '. $obj->getError());
 				return false;
 			}			
 		}
@@ -190,7 +190,7 @@ class RedEventModelGroupacl extends JModel
 			
 			if (!($obj->check() && $obj->store()))
 			{
-				$this->setError(JText::_('Error saving group venue acl') .': '. $obj->getError());
+				$this->setError(JText::_('COM_REDEVENT_Error_saving_group_venue_acl') .': '. $obj->getError());
 				return false;
 			}			
 		}
@@ -213,7 +213,7 @@ class RedEventModelGroupacl extends JModel
 			
 			if (!($obj->check() && $obj->store()))
 			{
-				$this->setError(JText::_('Error saving group venue category acl') .': '. $obj->getError());
+				$this->setError(JText::_('COM_REDEVENT_Error_saving_group_venue_category_acl') .': '. $obj->getError());
 				return false;
 			}			
 		}

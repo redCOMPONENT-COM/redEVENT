@@ -89,7 +89,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
     $this->_db->setQuery($sub);
     $obj = $this->_db->loadObject();
     if (!$obj) {
-      JError::raiseWarning(0, JText::_('PARENT CATEGORY NOT FOUND'));
+      JError::raiseWarning(0, JText::_('COM_REDEVENT_PARENT_CATEGORY_NOT_FOUND'));
     }
     else {
   	  $this->_parent = $obj;
@@ -126,7 +126,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
         
 				//Generate description
 				if (empty ($category->catdescription)) {
-					$category->catdescription = JText::_( 'NO DESCRIPTION' );
+					$category->catdescription = JText::_('COM_REDEVENT_NO_DESCRIPTION' );
 				} else {
 					//execute plugins
 					$category->catdescription = JHTML::_('content.prepare', $category->catdescription);
@@ -135,7 +135,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 				//create target link
 				$task 	= JRequest::getWord('task');
 				
-				$category->linktext = $task == 'archive' ? JText::_( 'SHOW ARCHIVE' ) : JText::_( 'SHOW EVENTS' );
+				$category->linktext = $task == 'archive' ? JText::_('COM_REDEVENT_SHOW_ARCHIVE' ) : JText::_('COM_REDEVENT_SHOW_EVENTS' );
 
 				if ($task == 'archive') {
 					$category->linktarget = JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($category->slug, 'archive'));

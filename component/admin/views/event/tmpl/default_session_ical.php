@@ -1,14 +1,14 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
 
 <fieldset class="adminform">
-<legend><?php echo JText::_('REDEVENT_XREF_ICALDETAILS_FIELDSET'); ?></legend>
+<legend><?php echo JText::_('COM_REDEVENT_XREF_ICALDETAILS_FIELDSET'); ?></legend>
 
 <table class="admintable">
 	<tbody>
     <tr>
       <td class="key">
-        <label for="icaldetails" class="hasTip" title="<?php echo JText::_('REDEVENT_XREF_ICALDETAILS_INFO').'::'.JText::_('REDEVENT_XREF_ICALDETAILS_INFO_TIP'); ?>">
-          <?php echo JText::_('REDEVENT_XREF_ICALDETAILS_INFO'); ?>:
+        <label for="icaldetails" class="hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_ICALDETAILS_INFO').'::'.JText::_('COM_REDEVENT_XREF_ICALDETAILS_INFO_TIP'); ?>">
+          <?php echo JText::_('COM_REDEVENT_XREF_ICALDETAILS_INFO'); ?>:
         </label>
       </td>
       <td>
@@ -17,8 +17,8 @@
     </tr>
     <tr>
       <td class="key">
-        <label for="icalvenue" class="hasTip" title="<?php echo JText::_('REDEVENT_XREF_ICALDETAILS_VENUE').'::'.JText::_('REDEVENT_XREF_ICALDETAILS_VENUE_TIP'); ?>">
-          <?php echo JText::_('REDEVENT_XREF_ICALDETAILS_VENUE'); ?>:
+        <label for="icalvenue" class="hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_ICALDETAILS_VENUE').'::'.JText::_('COM_REDEVENT_XREF_ICALDETAILS_VENUE_TIP'); ?>">
+          <?php echo JText::_('COM_REDEVENT_XREF_ICALDETAILS_VENUE'); ?>:
         </label>
       </td>
       <td>

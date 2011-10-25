@@ -97,14 +97,14 @@ class RedEventControllerAttendees extends RedEventController
 		
 		/* Check if anything is selected */
 		if (!is_array( $cid ) || count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to delete' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_delete' ) );
 		}
 		
 		/* Get all submitter ID's */
 		$model = $this->getModel('attendees');
 				
 		if(!$model->remove($cid)) {
-      RedEventError::raiseWarning(0, JText::_( "CANT DELETE REGISTRATIONS" ) . ': ' . $model->getError() );
+      RedEventError::raiseWarning(0, JText::_( "COM_REDEVENT_CANT_DELETE_REGISTRATIONS" ) . ': ' . $model->getError() );
 			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
 		}
 		
@@ -116,7 +116,7 @@ class RedEventControllerAttendees extends RedEventController
 		$cache = JFactory::getCache('com_redevent');
 		$cache->clean();
 
-		$msg = $total.' '.JText::_( 'REGISTERED USERS DELETED');
+		$msg = $total.' '.JText::_('COM_REDEVENT_REGISTERED_USERS_DELETED');
 
 		$this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg );
 	}
@@ -138,7 +138,7 @@ class RedEventControllerAttendees extends RedEventController
 		
 		/* Check if anything is selected */
 		if (!is_array( $cid ) || count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an attendee to move' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_attendee_to_move' ) );
 		}
 		
 		
@@ -201,12 +201,12 @@ class RedEventControllerAttendees extends RedEventController
     
     if ($model->confirmattendees($cid))
     {
-  	  $msg = JText::_( 'REGISTRATION CONFIRMED');
+  	  $msg = JText::_('COM_REDEVENT_REGISTRATION_CONFIRMED');
       $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg );
   	}
   	else
   	{
-      $msg = JText::_( 'ERROR REGISTRATION CONFIRM') . ': ' . $model->getError();
+      $msg = JText::_('COM_REDEVENT_ERROR_REGISTRATION_CONFIRM') . ': ' . $model->getError();
       $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg, 'error' );  	  
   	}
     return true;
@@ -226,12 +226,12 @@ class RedEventControllerAttendees extends RedEventController
     
     if ($model->unconfirmattendees($cid))
     {
-      $msg = JText::_( 'REGISTRATION UNCONFIRMED');
+      $msg = JText::_('COM_REDEVENT_REGISTRATION_UNCONFIRMED');
       $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg );
     }
     else
     {
-      $msg = JText::_( 'ERROR REGISTRATION UNCONFIRM') . ': ' . $model->getError();
+      $msg = JText::_('COM_REDEVENT_ERROR_REGISTRATION_UNCONFIRM') . ': ' . $model->getError();
       $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg, 'error' );      
     }
     return true;
@@ -297,12 +297,12 @@ class RedEventControllerAttendees extends RedEventController
     
     if ($model->putOnWaitingList($cid))
     {
-      $msg = JText::_( 'PUT ON WAITING SUCCESS');
+      $msg = JText::_('COM_REDEVENT_PUT_ON_WAITING_SUCCESS');
       $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg );
     }
     else
     {
-      $msg = JText::_( 'PUT ON WAITING FAILURE') . ': ' . $model->getError();
+      $msg = JText::_('COM_REDEVENT_PUT_ON_WAITING_FAILURE') . ': ' . $model->getError();
       $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg, 'error' );      
     }
     return true;    
@@ -318,12 +318,12 @@ class RedEventControllerAttendees extends RedEventController
     
     if ($model->putOffWaitingList($cid))
     {
-      $msg = JText::_( 'PUT OFF WAITING SUCCESS');
+      $msg = JText::_('COM_REDEVENT_PUT_OFF_WAITING_SUCCESS');
       $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg );
     }
     else
     {
-      $msg = JText::_( 'PUT OFF WAITING FAILURE') . ': ' . $model->getError();
+      $msg = JText::_('COM_REDEVENT_PUT_OFF_WAITING_FAILURE') . ': ' . $model->getError();
       $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg, 'error' );      
     }
     return true;    
@@ -355,7 +355,7 @@ class RedEventControllerAttendees extends RedEventController
     		$col[] = str_replace("\"", "\"\"", $data->name);
     		$col[] = str_replace("\"", "\"\"", $data->username);
     		$col[] = str_replace("\"", "\"\"", $data->email);
-    		$col[] = str_replace("\"", "\"\"", JHTML::Date( $data->uregdate, JText::_( 'DATE_FORMAT_LC2' ) ));
+    		$col[] = str_replace("\"", "\"\"", JHTML::Date( $data->uregdate, JText::_('DATE_FORMAT_LC2' ) ));
 			
    	 		for($j = 0; $j < count($col); $j++)
     		{
@@ -400,7 +400,7 @@ class RedEventControllerAttendees extends RedEventController
 			$user	=& JFactory::getUser();
 			// Error if checkedout by another administrator
 			if ($model->isCheckedOut( $user->get('id') )) {
-				$this->setRedirect( 'index.php?option=com_redevent&view=attendees', JText::_( 'EDITED BY ANOTHER ADMIN' ) );
+				$this->setRedirect( 'index.php?option=com_redevent&view=attendees', JText::_('COM_REDEVENT_EDITED_BY_ANOTHER_ADMIN' ) );
 			}
 			$model->checkout();
 		}
@@ -468,7 +468,7 @@ class RedEventControllerAttendees extends RedEventController
 					$link 	= 'index.php?option=com_redevent&view=attendees&xref='. $xref;
 					break;
 			}
-			$msg	= JText::_( 'REGISTRATION SAVED');
+			$msg	= JText::_('COM_REDEVENT_REGISTRATION_SAVED');
 			
 		} else {
 

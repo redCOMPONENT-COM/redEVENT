@@ -66,7 +66,7 @@ class RedEventViewVenues extends JView {
 		JHTML::_('behavior.tooltip');
 
 		//create the toolbar
-		JToolBarHelper::title( JText::_( 'VENUES' ), 'venues' );
+		JToolBarHelper::title( JText::_('COM_REDEVENT_VENUES' ), 'venues' );
 		JToolBarHelper::publishList();
 		JToolBarHelper::unpublishList();
 		JToolBarHelper::spacer();
@@ -89,8 +89,8 @@ class RedEventViewVenues extends JView {
 		$lists['state']	= JHTML::_('grid.state', $filter_state );
 
 		$filters = array();
-		$filters[] = JHTML::_('select.option', '1', JText::_( 'VENUE' ) );
-		$filters[] = JHTML::_('select.option', '2', JText::_( 'CITY' ) );
+		$filters[] = JHTML::_('select.option', '1', JText::_('COM_REDEVENT_VENUE' ) );
+		$filters[] = JHTML::_('select.option', '2', JText::_('COM_REDEVENT_CITY' ) );
 		$lists['filter'] = JHTML::_('select.genericlist', $filters, 'filter', 'size="1" class="inputbox"', 'value', 'text', $filter );
 
 		// search filter

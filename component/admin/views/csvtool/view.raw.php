@@ -54,24 +54,24 @@ class RedEventViewCsvtool extends JView {
 		$fields    = $model->getFields(JRequest::getInt('form_filter'));
 		
 		$cols = array(
-		               JText::_('EVENT'), 
-		               JText::_('DATE'), 
-		               JText::_('VENUE'), 
+		               JText::_('COM_REDEVENT_EVENT'), 
+		               JText::_('COM_REDEVENT_DATE'), 
+		               JText::_('COM_REDEVENT_VENUE'), 
 		               );
 		$text = "";
 		foreach ($fields AS $f) {
 			$cols[] = $f->field_header;
 		}
 		$stdcols = array( 
-		               JText::_('REGDATE'),  
-		               JText::_('IP ADDRESS'), 
-		               JText::_('UNIQUE ID'), 
-		               JText::_('USERNAME'),
-		               JText::_('CONFIRMED'),
-		               JText::_('WAITINGLIST'),
-		               JText::_('PRICE'),
+		               JText::_('COM_REDEVENT_REGDATE'),  
+		               JText::_('COM_REDEVENT_IP_ADDRESS'), 
+		               JText::_('COM_REDEVENT_UNIQUE_ID'), 
+		               JText::_('COM_REDEVENT_USERNAME'),
+		               JText::_('COM_REDEVENT_CONFIRMED'),
+		               JText::_('COM_REDEVENT_WAITINGLIST'),
+		               JText::_('COM_REDEVENT_PRICE'),
 		               JText::_('COM_REDEVENT_PRICEGROUP'),
-		               JText::_('PAYMENT'),
+		               JText::_('COM_REDEVENT_PAYMENT'),
 		               );
 		$cols = array_merge($cols, $stdcols);
 		$text .= $this->writecsvrow($cols);
@@ -110,7 +110,7 @@ class RedEventViewCsvtool extends JView {
 				               $r->waitinglist,
 				               $r->answers->price,
 				               $r->pricegroup,
-				               ($r->answers->paid ? JText::_('REGISTRATION_PAID').' / '.$r->answers->status : JText::_('REGISTRATION_NOT_PAID').' / '.$r->answers->status),
+				               ($r->answers->paid ? JText::_('COM_REDEVENT_REGISTRATION_PAID').' / '.$r->answers->status : JText::_('COM_REDEVENT_REGISTRATION_NOT_PAID').' / '.$r->answers->status),
 				             );
 				$data = array_merge($data, $svals);
 				$text .= $this->writecsvrow($data);

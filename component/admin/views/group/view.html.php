@@ -63,7 +63,7 @@ class RedEventViewGroup extends JView {
 		{
 			if ($model->isCheckedOut( $user->get('id') )) 
 			{
-				JError::raiseWarning( 'REDEVENT_GENERIC_ERROR', $row->name.' '.JText::_( 'EDITED BY ANOTHER ADMIN' ));
+				JError::raiseWarning( 'REDEVENT_GENERIC_ERROR', $row->name.' '.JText::_('COM_REDEVENT_EDITED_BY_ANOTHER_ADMIN' ));
 				$mainframe->redirect( 'index.php?option=com_redevent&view=groups' );
 			}
 		}
@@ -80,10 +80,10 @@ class RedEventViewGroup extends JView {
 		
 		//build toolbar
 		if ( $cid ) {
-			JToolBarHelper::title( JText::_( 'EDIT GROUP' ), 'groupedit' );
+			JToolBarHelper::title( JText::_('COM_REDEVENT_EDIT_GROUP' ), 'groupedit' );
 			JToolBarHelper::spacer();
 		} else {
-			JToolBarHelper::title( JText::_( 'ADD GROUP' ), 'groupedit' );
+			JToolBarHelper::title( JText::_('COM_REDEVENT_ADD_GROUP' ), 'groupedit' );
 			JToolBarHelper::spacer();
 		}
 		JToolBarHelper::apply();
@@ -98,24 +98,24 @@ class RedEventViewGroup extends JView {
 		
 		//edit event
 		$options = array(
-		                 JHTML::_('select.option', 0, JText::_('No')),
-		                 JHTML::_('select.option', 1, JText::_('GROUP_OWN_EVENTS')),
-		                 JHTML::_('select.option', 2, JText::_('GROUP_GROUP_EVENTS')),
+		                 JHTML::_('select.option', 0, JText::_('COM_REDEVENT_No')),
+		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_GROUP_OWN_EVENTS')),
+		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_GROUP_GROUP_EVENTS')),
 		                );
 		$lists['edit_events'] = JHTML::_('select.genericlist', $options, 'edit_events', '', 'value', 'text', $row->edit_events);
 		
 		//edit venue
 		$options = array(
-		                 JHTML::_('select.option', 0, JText::_('No')),
-		                 JHTML::_('select.option', 1, JText::_('GROUP_OWN_VENUES')),
-		                 JHTML::_('select.option', 2, JText::_('GROUP_GROUP_VENUES')),
+		                 JHTML::_('select.option', 0, JText::_('COM_REDEVENT_No')),
+		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_GROUP_OWN_VENUES')),
+		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_GROUP_GROUP_VENUES')),
 		                );
 		$lists['edit_venues'] = JHTML::_('select.genericlist', $options, 'edit_venues', '', 'value', 'text', $row->edit_venues);		
 		
 		$options = array(
-		                  JHTML::_('select.option', 0, JText::_('No')),
-		                  JHTML::_('select.option', 1, JText::_('Own')),
-		                  JHTML::_('select.option', 2, JText::_('Group')),
+		                  JHTML::_('select.option', 0, JText::_('COM_REDEVENT_No')),
+		                  JHTML::_('select.option', 1, JText::_('COM_REDEVENT_Own')),
+		                  JHTML::_('select.option', 2, JText::_('COM_REDEVENT_Group')),
 		                );
 		$lists['publish_events'] = JHTML::_('select.genericlist', $options, 'publish_events', '', 'value', 'text', $row->publish_events);
 		$lists['publish_venues'] = JHTML::_('select.genericlist', $options, 'publish_venues', '', 'value', 'text', $row->publish_venues);

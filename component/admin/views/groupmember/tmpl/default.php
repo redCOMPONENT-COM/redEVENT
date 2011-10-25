@@ -44,35 +44,35 @@ JHTML::_('behavior.tooltip');
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
-<fieldset class="adminform"><legend><?php echo JText::_( 'Group member' ); ?></legend>
+<fieldset class="adminform"><legend><?php echo JText::_('COM_REDEVENT_Group_member' ); ?></legend>
 
 <table class="admintable">
 	<tr>
-		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_( 'USER' ); ?>:
+		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_('COM_REDEVENT_USER' ); ?>:
 		</label></td>
 		<td>
 			<?php echo $this->lists['user']; ?>
 		</td>
 	</tr>
 	<tr>
-		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'MEMBER IS ADMIN' ).'::'.JText::_( 'MEMBER IS ADMIN TIP' ); ?>">
-			<label for="is_admin"> <?php echo JText::_( 'MEMBER IS ADMIN' ); ?>:
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_MEMBER_IS_ADMIN' ).'::'.JText::_('COM_REDEVENT_MEMBER_IS_ADMIN_TIP' ); ?>">
+			<label for="is_admin"> <?php echo JText::_('COM_REDEVENT_MEMBER_IS_ADMIN' ); ?>:
 		</label></td>
 		<td>
 			<?php echo $this->lists['is_admin']; ?>
 		</td>
 	</tr>
 	<tr>
-		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'MEMBER MANAGES EVENTS' ).'::'.JText::_( 'MEMBER MANAGES EVENTS TIP' ); ?>">
-			<label for="is_admin"> <?php echo JText::_( 'MEMBER MANAGES EVENTS' ); ?>:
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_MEMBER_MANAGES_EVENTS' ).'::'.JText::_('COM_REDEVENT_MEMBER_MANAGES_EVENTS_TIP' ); ?>">
+			<label for="is_admin"> <?php echo JText::_('COM_REDEVENT_MEMBER_MANAGES_EVENTS' ); ?>:
 		</label></td>
 		<td>
 			<?php echo $this->lists['manage_events']; ?>
 		</td>
 	</tr>
 	<tr>
-		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'MEMBER MANAGES XREFS' ).'::'.JText::_( 'MEMBER MANAGES XREFS TIP' ); ?>">
-			<label for="is_admin"> <?php echo JText::_( 'MEMBER MANAGES XREFS' ); ?>:
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_MEMBER_MANAGES_XREFS' ).'::'.JText::_('COM_REDEVENT_MEMBER_MANAGES_XREFS_TIP' ); ?>">
+			<label for="is_admin"> <?php echo JText::_('COM_REDEVENT_MEMBER_MANAGES_XREFS' ); ?>:
 		</label></td>
 		<td>
 			<?php echo $this->lists['manage_xrefs']; ?>
@@ -87,32 +87,32 @@ JHTML::_('behavior.tooltip');
 		</td>
 	</tr>
 	<tr>
-		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'MEMBER MANAGES VENUES' ).'::'.JText::_( 'MEMBER MANAGES VENUES TIP' ); ?>">
-			<label for="edit_venues"> <?php echo JText::_( 'MEMBER MANAGES VENUES' ); ?>:
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_MEMBER_MANAGES_VENUES' ).'::'.JText::_('COM_REDEVENT_MEMBER_MANAGES_VENUES_TIP' ); ?>">
+			<label for="edit_venues"> <?php echo JText::_('COM_REDEVENT_MEMBER_MANAGES_VENUES' ); ?>:
 		</label></td>
 		<td>
 			<?php echo $this->lists['edit_venues']; ?>
 		</td>
 	</tr>
 	<tr>
-		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'MEMBER_PUBLISH_EVENTS' ).'::'.JText::_( 'MEMBER_PUBLISH_EVENTS_TIP' ); ?>">
-			<label for="publish_events"> <?php echo JText::_( 'MEMBER_PUBLISH_EVENTS' ); ?>:
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_MEMBER_PUBLISH_EVENTS' ).'::'.JText::_('COM_REDEVENT_MEMBER_PUBLISH_EVENTS_TIP' ); ?>">
+			<label for="publish_events"> <?php echo JText::_('COM_REDEVENT_MEMBER_PUBLISH_EVENTS' ); ?>:
 		</label></td>
 		<td>
 			<?php echo $this->lists['publish_events']; ?>
 		</td>
 	</tr>
 	<tr>
-		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'MEMBER_PUBLISH_VENUES' ).'::'.JText::_( 'MEMBER_PUBLISH_VENUES_TIP' ); ?>">
-			<label for="publish_venues"> <?php echo JText::_( 'MEMBER_PUBLISH_VENUES' ); ?>:
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_MEMBER_PUBLISH_VENUES' ).'::'.JText::_('COM_REDEVENT_MEMBER_PUBLISH_VENUES_TIP' ); ?>">
+			<label for="publish_venues"> <?php echo JText::_('COM_REDEVENT_MEMBER_PUBLISH_VENUES' ); ?>:
 		</label></td>
 		<td>
 			<?php echo $this->lists['publish_venues']; ?>
 		</td>
 	</tr>
 	<tr>
-		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'MEMBER RECEIVE REGISTRATIONS' ).'::'.JText::_( 'MEMBER RECEIVE REGISTRATIONS TIP' ); ?>">
-			<label for="is_admin"> <?php echo JText::_( 'MEMBER RECEIVE REGISTRATIONS' ); ?>:
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_MEMBER_RECEIVE_REGISTRATIONS' ).'::'.JText::_('COM_REDEVENT_MEMBER_RECEIVE_REGISTRATIONS_TIP' ); ?>">
+			<label for="is_admin"> <?php echo JText::_('COM_REDEVENT_MEMBER_RECEIVE_REGISTRATIONS' ); ?>:
 		</label></td>
 		<td>
 			<?php echo $this->lists['receive_registrations']; ?>

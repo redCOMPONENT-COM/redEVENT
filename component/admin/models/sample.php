@@ -84,7 +84,7 @@ class RedEventModelSample extends JModel
 			return $row->id;
 		}
 		else {
-			$this->setError(JText::_('Error creating sample category'));
+			$this->setError(JText::_('COM_REDEVENT_Error_creating_sample_category'));
 			return false;
 		}
 	}
@@ -127,7 +127,7 @@ class RedEventModelSample extends JModel
 			return $row->id;
 		}
 		else {
-			$this->setError(JText::_('Error creating sample venue'));
+			$this->setError(JText::_('COM_REDEVENT_Error_creating_sample_venue'));
 			return false;
 		}
 	}
@@ -140,8 +140,8 @@ class RedEventModelSample extends JModel
 	function _createEvent($category)
 	{
 		$event = &JTable::getInstance('redevent_events', '');
-		$event->title          = JText::_('REDEVENT_SAMPLE_EVENT_TITLE');
-		$event->datdescription = JText::_('REDEVENT_SAMPLE_EVENT_DESCRIPTION');
+		$event->title          = JText::_('COM_REDEVENT_SAMPLE_EVENT_TITLE');
+		$event->datdescription = JText::_('COM_REDEVENT_SAMPLE_EVENT_DESCRIPTION');
 		$event->published      = 1;
 		$event->redform_id     = 1;
 		
@@ -149,20 +149,20 @@ class RedEventModelSample extends JModel
 		$event->unregistra     = 0;
 		$event->juser          = 0;
 		
-		$event->notify_on_list_subject    = JText::_('REDEVENT_SAMPLE_EVENT_NOTIFY_ON_LIST_SUBJECT');
-		$event->notify_on_list_body       = JText::_('REDEVENT_SAMPLE_EVENT_NOTIFY_ON_LIST_BODY');
-		$event->notify_off_list_subject   = JText::_('REDEVENT_SAMPLE_EVENT_NOTIFY_OFF_LIST_SUBJECT');
-		$event->notify_off_list_body      = JText::_('REDEVENT_SAMPLE_EVENT_NOTIFY_OFF_LIST_BODY');
+		$event->notify_on_list_subject    = JText::_('COM_REDEVENT_SAMPLE_EVENT_NOTIFY_ON_LIST_SUBJECT');
+		$event->notify_on_list_body       = JText::_('COM_REDEVENT_SAMPLE_EVENT_NOTIFY_ON_LIST_BODY');
+		$event->notify_off_list_subject   = JText::_('COM_REDEVENT_SAMPLE_EVENT_NOTIFY_OFF_LIST_SUBJECT');
+		$event->notify_off_list_body      = JText::_('COM_REDEVENT_SAMPLE_EVENT_NOTIFY_OFF_LIST_BODY');
 		
 		$event->notify                 = 1;
 		$event->activate               = 0;
-		$event->notify_subject         = JText::_('REDEVENT_SAMPLE_EVENT_NOTIFY_SUBJECT');
-		$event->notify_body            = JText::_('REDEVENT_SAMPLE_EVENT_NOTIFY_BODY');
-		$event->notify_confirm_subject = JText::_('REDEVENT_SAMPLE_EVENT_NOTIFY_CONFIRM_SUBJECT');
-		$event->notify_confirm_body    = JText::_('REDEVENT_SAMPLE_EVENT_NOTIFY_CONFIRM_BODY');
+		$event->notify_subject         = JText::_('COM_REDEVENT_SAMPLE_EVENT_NOTIFY_SUBJECT');
+		$event->notify_body            = JText::_('COM_REDEVENT_SAMPLE_EVENT_NOTIFY_BODY');
+		$event->notify_confirm_subject = JText::_('COM_REDEVENT_SAMPLE_EVENT_NOTIFY_CONFIRM_SUBJECT');
+		$event->notify_confirm_body    = JText::_('COM_REDEVENT_SAMPLE_EVENT_NOTIFY_CONFIRM_BODY');
 		
-		$event->review_message       = JText::_('REDEVENT_SAMPLE_EVENT_REVIEW_MESSAGE');
-		$event->confirmation_message = JText::_('REDEVENT_SAMPLE_EVENT_CONFIRMATION_MESSAGE');
+		$event->review_message       = JText::_('COM_REDEVENT_SAMPLE_EVENT_REVIEW_MESSAGE');
+		$event->confirmation_message = JText::_('COM_REDEVENT_SAMPLE_EVENT_CONFIRMATION_MESSAGE');
 		
 		$event->show_names           = 0;
 		$event->showfields           = '';
@@ -178,7 +178,7 @@ class RedEventModelSample extends JModel
 		$event->submission_type_email_body           = null;
 		$event->submission_type_email_pdf            = null;
 		$event->submission_type_formal_offer_pdf     = null;
-		$event->submission_type_webform              = JText::_('REDEVENT_SAMPLE_EVENT_WEBFORM');
+		$event->submission_type_webform              = JText::_('COM_REDEVENT_SAMPLE_EVENT_WEBFORM');
 		$event->submission_type_email_subject        = null;
 		$event->submission_type_webform_formal_offer = null;
 		$event->show_submission_type_webform_formal_offer = 0;
@@ -186,8 +186,8 @@ class RedEventModelSample extends JModel
 		$event->send_pdf_form = 0;
 		$event->pdf_form_data = 0;
 		
-		$event->paymentaccepted   = JText::_('REDEVENT_SAMPLE_EVENT_PAYMENTACCEPTED');
-		$event->paymentprocessing = JText::_('REDEVENT_SAMPLE_EVENT_PAYMENTPROCESSING');
+		$event->paymentaccepted   = JText::_('COM_REDEVENT_SAMPLE_EVENT_PAYMENTACCEPTED');
+		$event->paymentprocessing = JText::_('COM_REDEVENT_SAMPLE_EVENT_PAYMENTPROCESSING');
 		
 		if ($event->check() && $event->store()) 
 		{
@@ -200,7 +200,7 @@ class RedEventModelSample extends JModel
 			return $event->id;
 		}
 		else {
-			$this->setError(JText::_('Error creating sample event'));
+			$this->setError(JText::_('COM_REDEVENT_Error_creating_sample_event'));
 			return false;
 		}
 	}
@@ -227,7 +227,7 @@ class RedEventModelSample extends JModel
 			return $row->id;
 		}
 		else {
-			$this->setError(JText::_('Error creating sample event session'));
+			$this->setError(JText::_('COM_REDEVENT_Error_creating_sample_event_session'));
 			return false;
 		}
 	}

@@ -34,49 +34,49 @@ defined('_JEXEC') or die('Restricted access');
 						global $option;
 
 						$link = 'index.php?option='.$option.'&amp;view=events';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-events.png', JText::_( 'EVENTS' ) );
+						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-events.png', JText::_('COM_REDEVENT_EVENTS' ) );
 
 						$link = 'index.php?option='.$option.'&amp;view=event';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-eventedit.png', JText::_( 'ADD EVENT' ) );
+						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-eventedit.png', JText::_('COM_REDEVENT_ADD_EVENT' ) );
 
 						$link = 'index.php?option='.$option.'&amp;view=venues';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-venues.png', JText::_( 'VENUES' ) );
+						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-venues.png', JText::_('COM_REDEVENT_VENUES' ) );
 
 						$link = 'index.php?option='.$option.'&amp;view=venue';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-venuesedit.png', JText::_( 'ADD VENUE' ) );
+						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-venuesedit.png', JText::_('COM_REDEVENT_ADD_VENUE' ) );
 
 						$link = 'index.php?option='.$option.'&amp;view=categories';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-categories.png', JText::_( 'CATEGORIES' ) );
+						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-categories.png', JText::_('COM_REDEVENT_CATEGORIES' ) );
 
 						$link = 'index.php?option='.$option.'&amp;view=category';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-categoriesedit.png', JText::_( 'ADD CATEGORY' ) );
+						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-categoriesedit.png', JText::_('COM_REDEVENT_ADD_CATEGORY' ) );
 
 						$link = 'index.php?option='.$option.'&amp;view=groups';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-groups.png', JText::_( 'GROUPS' ) );
+						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-groups.png', JText::_('COM_REDEVENT_GROUPS' ) );
 
 						$link = 'index.php?option='.$option.'&amp;view=group';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-groupedit.png', JText::_( 'ADD GROUP' ) );
+						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-groupedit.png', JText::_('COM_REDEVENT_ADD_GROUP' ) );
 						
 						$link = 'index.php?option='.$option.'&amp;view=textlibrary';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-library.png', JText::_( 'TEXT_LIBRARY' ) );
+						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-library.png', JText::_('COM_REDEVENT_TEXT_LIBRARY' ) );
 
 						$link = 'index.php?option='.$option.'&amp;view=archive';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-archive.png', JText::_( 'ARCHIVESCREEN' ) );
+						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-archive.png', JText::_('COM_REDEVENT_ARCHIVESCREEN' ) );
 
 						//only admins should be able to see this items
 						if ($this->user->get('gid') > 24) {
 							$link = 'index.php?option='.$option.'&amp;controller=settings&amp;task=edit';
-							RedEventViewRedEvent::quickiconButton( $link, 'icon-48-settings.png', JText::_( 'SETTINGS' ) );
+							RedEventViewRedEvent::quickiconButton( $link, 'icon-48-settings.png', JText::_('COM_REDEVENT_SETTINGS' ) );
 
 							$link = 'index.php?option='.$option.'&amp;view=editcss';
-							RedEventViewRedEvent::quickiconButton( $link, 'icon-48-cssedit.png', JText::_( 'EDIT CSS' ) );
+							RedEventViewRedEvent::quickiconButton( $link, 'icon-48-cssedit.png', JText::_('COM_REDEVENT_EDIT_CSS' ) );
 
 							$link = 'index.php?option='.$option.'&amp;view=tools';
-							RedEventViewRedEvent::quickiconButton( $link, 'icon-48-housekeeping.png', JText::_( 'TOOLS' ) );
+							RedEventViewRedEvent::quickiconButton( $link, 'icon-48-housekeeping.png', JText::_('COM_REDEVENT_TOOLS' ) );
 						}
 
 						$link = 'index.php?option='.$option.'&amp;view=help';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-help.png', JText::_( 'HELP' ) );
+						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-help.png', JText::_('COM_REDEVENT_HELP' ) );
 						?>
 						</div>
 					</td>
@@ -85,7 +85,7 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td valign="top" width="320px" style="padding: 7px 0 0 5px">
 			<?php
-			$title = JText::_( 'EVENT STATS' );
+			$title = JText::_('COM_REDEVENT_EVENT_STATS' );
 			echo $this->pane->startPane( 'stat-pane' );
 			echo $this->pane->startPanel( $title, 'events' );
 
@@ -93,7 +93,7 @@ defined('_JEXEC') or die('Restricted access');
 				<table class="adminlist">
 					<tr>
 						<td>
-							<?php echo JText::_( 'EVENTS PUBLISHED' ).': '; ?>
+							<?php echo JText::_('COM_REDEVENT_EVENTS_PUBLISHED' ).': '; ?>
 						</td>
 						<td>
 							<b><?php echo $this->events[0]; ?></b>
@@ -101,7 +101,7 @@ defined('_JEXEC') or die('Restricted access');
 					</tr>
 					<tr>
 						<td>
-							<?php echo JText::_( 'EVENTS UNPUBLISHED' ).': '; ?>
+							<?php echo JText::_('COM_REDEVENT_EVENTS_UNPUBLISHED' ).': '; ?>
 						</td>
 						<td>
 							<b><?php echo $this->events[1]; ?></b>
@@ -109,7 +109,7 @@ defined('_JEXEC') or die('Restricted access');
 					</tr>
 					<tr>
 						<td>
-							<?php echo JText::_( 'EVENTS ARCHIVED' ).': '; ?>
+							<?php echo JText::_('COM_REDEVENT_EVENTS_ARCHIVED' ).': '; ?>
 						</td>
 						<td>
 							<b><?php echo $this->events[2]; ?></b>
@@ -117,7 +117,7 @@ defined('_JEXEC') or die('Restricted access');
 					</tr>
 					<tr>
 						<td>
-							<?php echo JText::_( 'EVENTS TOTAL' ).': '; ?>
+							<?php echo JText::_('COM_REDEVENT_EVENTS_TOTAL' ).': '; ?>
 						</td>
 						<td>
 							<b><?php echo $this->events[3]; ?></b>
@@ -126,7 +126,7 @@ defined('_JEXEC') or die('Restricted access');
 				</table>
 				<?php
 
-				$title = JText::_( 'VENUE STATS' );
+				$title = JText::_('COM_REDEVENT_VENUE_STATS' );
 				echo $this->pane->endPanel();
 				echo $this->pane->startPanel( $title, 'venues' );
 
@@ -134,7 +134,7 @@ defined('_JEXEC') or die('Restricted access');
 				<table class="adminlist">
 					<tr>
 						<td>
-							<?php echo JText::_( 'VENUES PUBLISHED' ).': '; ?>
+							<?php echo JText::_('COM_REDEVENT_VENUES_PUBLISHED' ).': '; ?>
 						</td>
 						<td>
 							<b><?php echo $this->venue[0]; ?></b>
@@ -142,7 +142,7 @@ defined('_JEXEC') or die('Restricted access');
 					</tr>
 					<tr>
 						<td>
-							<?php echo JText::_( 'VENUES UNPUBLISHED' ).': '; ?>
+							<?php echo JText::_('COM_REDEVENT_VENUES_UNPUBLISHED' ).': '; ?>
 						</td>
 						<td>
 							<b><?php echo $this->venue[1]; ?></b>
@@ -150,7 +150,7 @@ defined('_JEXEC') or die('Restricted access');
 					</tr>
 					<tr>
 						<td>
-							<?php echo JText::_( 'VENUES TOTAL' ).': '; ?>
+							<?php echo JText::_('COM_REDEVENT_VENUES_TOTAL' ).': '; ?>
 						</td>
 						<td>
 							<b><?php echo $this->venue[2]; ?></b>
@@ -159,7 +159,7 @@ defined('_JEXEC') or die('Restricted access');
 				</table>
 				<?php
 
-				$title = JText::_( 'CATEGORY STATS' );
+				$title = JText::_('COM_REDEVENT_CATEGORY_STATS' );
 				echo $this->pane->endPanel();
 				echo $this->pane->startPanel( $title, 'categories' );
 
@@ -167,7 +167,7 @@ defined('_JEXEC') or die('Restricted access');
 				<table class="adminlist">
 					<tr>
 						<td>
-							<?php echo JText::_( 'CATEGORIES PUBLISHED' ).': '; ?>
+							<?php echo JText::_('COM_REDEVENT_CATEGORIES_PUBLISHED' ).': '; ?>
 						</td>
 						<td>
 							<b><?php echo $this->category[0]; ?></b>
@@ -175,7 +175,7 @@ defined('_JEXEC') or die('Restricted access');
 					</tr>
 					<tr>
 						<td>
-							<?php echo JText::_( 'CATEGORIES UNPUBLISHED' ).': '; ?>
+							<?php echo JText::_('COM_REDEVENT_CATEGORIES_UNPUBLISHED' ).': '; ?>
 						</td>
 						<td>
 							<b><?php echo $this->category[1]; ?></b>
@@ -183,7 +183,7 @@ defined('_JEXEC') or die('Restricted access');
 					</tr>
 					<tr>
 						<td>
-							<?php echo JText::_( 'CATEGORIES TOTAL' ).': '; ?>
+							<?php echo JText::_('COM_REDEVENT_CATEGORIES_TOTAL' ).': '; ?>
 						</td>
 						<td>
 							<b><?php echo $this->category[2]; ?></b>

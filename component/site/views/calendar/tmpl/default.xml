@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="Calendar_Layout">
+	<layout title="COM_REDEVENT_Calendar_Layout">
 		<message>
-			<![CDATA[CALENDAR_DESC]]>
+			<![CDATA[COM_REDEVENT_CALENDAR_DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>CALENDAR_LAYOUT</name>
-		<description>CALENDAR_DESC</description>
+		<name>COM_REDEVENT_CALENDAR_LAYOUT</name>
+		<description>COM_REDEVENT_CALENDAR_DESC</description>
     <params addpath="/administrator/components/com_redevent/elements">
 	    <param name="show_start_time" type="radio" default="0" label="COM_REDEVENT_VIEW_CALENDAR_SHOW_START_TIME_LABEL" description="COM_REDEVENT_VIEW_CALENDAR_SHOW_START_TIME_DESC">
         <option value="0">No</option>
@@ -17,16 +17,18 @@
         <option value="0">No</option>
         <option value="1">Yes</option>
       </param>
-	    <param name="displayLegend" type="radio" default="1" label="DISPLAY LEGEND" description="DISPLAY LEGEND DESC">
+	    <param name="displayLegend" type="radio" default="1" label="COM_REDEVENT_DISPLAY_LEGEND" description="COM_REDEVENT_DISPLAY_LEGEND_DESC">
         <option value="0">No</option>
         <option value="1">Yes</option>
       </param>
+
 	    <param name="show_week_num" type="radio" default="1" label="COM_REDEVENT_VIEW_CALENDAR_SHOW_WEEK_NUM_LABEL" description="COM_REDEVENT_VIEW_CALENDAR_SHOW_WEEK_NUM_DESC">
         <option value="0">No</option>
         <option value="1">Yes</option>
       </param>
       <param name="week_column_name" type="text" default="" label="COM_REDEVENT_VIEW_CALENDAR_WEEK_COLUMN_NAME_LABEL" description="COM_REDEVENT_VIEW_CALENDAR_WEEK_COLUMN_NAME_DESC" />
-      <param name="topcat" type="categories" default="0" label="SELECT CATEGORY" description="SELECT CATEGORY DESC" />
+      
+      <param name="topcat" type="categories" default="0" label="COM_REDEVENT_SELECT_CATEGORY" description="COM_REDEVENT_SELECT_CATEGORY_DESC" />
     </params>
 	</state>
 </metadata>

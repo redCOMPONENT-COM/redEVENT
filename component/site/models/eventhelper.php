@@ -108,7 +108,7 @@ class RedeventModelEventhelper extends JModel
 			// Is the category published?
 			if (!count($this->_event->categories))
 			{
-				RedeventError::raiseError( 404, JText::_("CATEGORY NOT PUBLISHED") );
+				RedeventError::raiseError( 404, JText::_("COM_REDEVENT_CATEGORY_NOT_PUBLISHED") );
 			}
 
 			// Do we have access to each category ?
@@ -116,7 +116,7 @@ class RedeventModelEventhelper extends JModel
 			{
 				if ($cat->access > $user->get('aid'))
 				{
-					JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+					JError::raiseError( 403, JText::_("COM_REDEVENT_ALERTNOTAUTH") );
 				}
 			}
 

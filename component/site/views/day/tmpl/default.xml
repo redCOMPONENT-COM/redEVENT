@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="Day Layout">
+	<layout title="COM_REDEVENT_Day_Layout">
 		<message>
-			<![CDATA[DAY LAYOUT DESC]]>
+			<![CDATA[COM_REDEVENTDAY_LAYOUT_DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>DAY LAYOUT</name>
-		<description>DAY LAYOUT DESC</description>
+		<name>COM_REDEVENTDAY_LAYOUT</name>
+		<description>COM_REDEVENTDAY_LAYOUT_DESC</description>
 		<params>
-			<param name="days" type="text" size="2" default="0" label="DAYS FIELD" description="DAYS FIELD TIP" />
+			<param name="days" type="text" size="2" default="0" label="COM_REDEVENT_DAYS_FIELD" description="COM_REDEVENT_DAYS_FIELD_TIP" />
 		</params>
 	</state>
 </metadata>

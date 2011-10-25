@@ -165,7 +165,7 @@ class RedeventController extends JController
 
 		// Must be logged in
 		if ($user->get('id') < 1) {
-			$this->setRedirect('index.php',JText::_('Only logged users can access this page'), 'error');
+			$this->setRedirect('index.php',JText::_('COM_REDEVENT_Only_logged_users_can_access_this_page'), 'error');
 			$this->redirect();
 			return;
 		}
@@ -196,7 +196,7 @@ class RedeventController extends JController
 
 		// Must be logged in
 		if ($user->get('id') < 1) {
-			$this->setRedirect('index.php',JText::_('Only logged users can access this page'), 'error');
+			$this->setRedirect('index.php',JText::_('COM_REDEVENT_Only_logged_users_can_access_this_page'), 'error');
 			$this->redirect();
 			return;
 		}
@@ -224,7 +224,7 @@ class RedeventController extends JController
 
 		// Must be logged in
 		if ($user->get('id') < 1) {
-			$this->setRedirect('index.php',JText::_('Only logged users can access this page'), 'error');
+			$this->setRedirect('index.php',JText::_('COM_REDEVENT_Only_logged_users_can_access_this_page'), 'error');
 			$this->redirect();
 			return;
 		}
@@ -262,12 +262,12 @@ class RedeventController extends JController
     $isNew = ($post['id']) ? false : true;    
 	
 		if (!$isNew && !$acl->canEditVenue($post['id'])) {
-			$msg = JText::_('REDEVENT_USER_NOT_ALLOWED_TO_EDIT_THIS_VENUE');
+			$msg = JText::_('COM_REDEVENT_USER_NOT_ALLOWED_TO_EDIT_THIS_VENUE');
 			$this->setRedirect(JRoute::_(RedeventHelperRoute::getVenueEventsRoute($post['id'])), $msg, 'error' );
 			return;
 		}
 		else if ($isNew && !$acl->canAddVenue()) {
-			$msg =  JText::_('REDEVENT_USER_NOT_ALLOWED_TO_ADD_VENUE');
+			$msg =  JText::_('COM_REDEVENT_USER_NOT_ALLOWED_TO_ADD_VENUE');
 			$link = JRequest::getString('referer', JURI::base(), 'post');
 			$this->setRedirect($link, $msg, 'error' );
 			return;			
@@ -279,7 +279,7 @@ class RedeventController extends JController
 
 		if ($returnid = $model->store($post, $file)) {
 
-			$msg 	= JText::_( 'VENUE SAVED' );
+			$msg 	= JText::_('COM_REDEVENT_VENUE_SAVED' );
 				
 			JPluginHelper::importPlugin( 'redevent' );
 			$dispatcher =& JDispatcher::getInstance();
@@ -407,11 +407,11 @@ class RedeventController extends JController
 
 			if ($task == 'managedelreguser')
 			{
-				$msg = JText::_( 'REGISTRATION REMOVAL SUCCESSFULL' );			
+				$msg = JText::_('COM_REDEVENT_REGISTRATION_REMOVAL_SUCCESSFULL' );			
 			}
 			else
 			{
-				$msg = JText::_( 'UNREGISTERED SUCCESSFULL' );
+				$msg = JText::_('COM_REDEVENT_UNREGISTERED_SUCCESSFULL' );
 			}
 			
 			// send unreg notification email
@@ -561,11 +561,11 @@ class RedeventController extends JController
 				$model_wait->UpdateWaitingList();
 			}
 		
-			$msg = JText::_('EVENT DATE SAVED');
+			$msg = JText::_('COM_REDEVENT_EVENT_DATE_SAVED');
 			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg);				
 		}
 		else {
-			$msg = JText::_('SUBMIT XREF ERROR').$model->getError();
+			$msg = JText::_('COM_REDEVENT_SUBMIT_XREF_ERROR').$model->getError();
 			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');			
 		}		
 	}
@@ -576,7 +576,7 @@ class RedeventController extends JController
 		$xref = JRequest::getInt('xref');
 				
 		if (!$acl->canPublishXref($xref)) {
-			$msg = JText::_('MYEVENTS_CHANGE_PUBLISHED_STATE_NOTE_ALLOWED');
+			$msg = JText::_('COM_REDEVENT_MYEVENTS_CHANGE_PUBLISHED_STATE_NOTE_ALLOWED');
 			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');		
 			return;
 		}
@@ -597,11 +597,11 @@ class RedeventController extends JController
 		}
 		
 		if ($model->publishxref($xref, $newstate)) {
-			$msg = JText::_('PUBLISHED STATE UPDATED');
+			$msg = JText::_('COM_REDEVENT_PUBLISHED_STATE_UPDATED');
 			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg);				
 		}
 		else {
-			$msg = JText::_('PUBLISHED STATE UPDATE ERROR').'<br>'.$model->getError();
+			$msg = JText::_('COM_REDEVENT_PUBLISHED_STATE_UPDATE_ERROR').'<br>'.$model->getError();
 			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');			
 		}		
 	}
@@ -612,7 +612,7 @@ class RedeventController extends JController
 		$xref = JRequest::getInt('xref');
 	
 		if (!$acl->canEditXref($xref)) {
-			$msg = JText::_('MYEVENTS_DELETE_XREF_NOTE_ALLOWED');
+			$msg = JText::_('COM_REDEVENT_MYEVENTS_DELETE_XREF_NOTE_ALLOWED');
 			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');		
 			return;
 		}
@@ -620,11 +620,11 @@ class RedeventController extends JController
 		$model = $this->getModel('editevent');
 		
 		if ($model->deletexref($xref)) {
-			$msg = JText::_('EVENT DATE DELETED');
+			$msg = JText::_('COM_REDEVENT_EVENT_DATE_DELETED');
 			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg);				
 		}
 		else {
-			$msg = JText::_('EVENT DATE DELETION ERROR').'<br>'.$model->getError();
+			$msg = JText::_('COM_REDEVENT_EVENT_DATE_DELETION_ERROR').'<br>'.$model->getError();
 			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');			
 		}		
 	}

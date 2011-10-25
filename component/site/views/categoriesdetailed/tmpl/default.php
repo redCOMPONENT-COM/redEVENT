@@ -64,7 +64,7 @@ foreach($this->categories as $category) :
 		?>
 		<p>
 			<?php
-				echo JText::_( 'EVENTS' ).': ';
+				echo JText::_('COM_REDEVENT_EVENTS' ).': ';
 				echo JHTML::_('link', JRoute::_($category->linktarget), $category->assignedevents);
 			?>
 		</p>

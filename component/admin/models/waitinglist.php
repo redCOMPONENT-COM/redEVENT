@@ -290,7 +290,7 @@ class RedEventModelWaitinglist extends JModel {
 				
 				/* Send the mail */
 				if (!$this->mailer->Send()) {
-					$mainframe->enqueueMessage(JText::_('THERE WAS A PROBLEM SENDING MAIL'));
+					$mainframe->enqueueMessage(JText::_('COM_REDEVENT_THERE_WAS_A_PROBLEM_SENDING_MAIL'));
 					RedeventHelperLog::simpleLog('Error sending mail on/off waiting list');
 				}
 				
@@ -308,7 +308,7 @@ class RedEventModelWaitinglist extends JModel {
 	  if (empty($this->event_data))
 	  {
 	  	if (!$this->xref) {
-	  		$error = JText::_('xref not set in waitinglist model');
+	  		$error = JText::_('COM_REDEVENT_xref_not_set_in_waitinglist_model');
 	  		JError::raiseWarning(0, $error);
 	  		$this->setError($error);
 	  		return false;
@@ -366,7 +366,7 @@ class RedEventModelWaitinglist extends JModel {
       }
     }
     else {
-      $this->setError(JText::_('NOT ENOUGH PLACES LEFT'));
+      $this->setError(JText::_('COM_REDEVENT_NOT_ENOUGH_PLACES_LEFT'));
       return false;
       // event is full already
     }

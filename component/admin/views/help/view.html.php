@@ -56,7 +56,7 @@ class RedEventViewHelp extends JView {
     ELAdmin::setMenu();
 
 		//create the toolbar
-		JToolBarHelper::title( JText::_( 'HELP' ), 'help' );
+		JToolBarHelper::title( JText::_('COM_REDEVENT_HELP' ), 'help' );
 
 		// Check for files in the actual language
 		$langTag = $lang->getTag();

@@ -2,16 +2,16 @@
 <table class="adminform">
 	<tr class="row<?php echo $k = 1 - $k; ?>">
 		<td>
-			<input class="inputbox" type="button" onclick="insert_keyword('[title]')" value="<?php echo JText::_( 'EVENT TITLE' ); ?>" />
-			<input class="inputbox" type="button" onclick="insert_keyword('[a_name]')" value="<?php echo JText::_( 'VENUE' ); ?>" />
-			<input class="inputbox" type="button" onclick="insert_keyword('[catsid]')" value="<?php echo JText::_( 'CATEGORY' ); ?>" />
-			<input class="inputbox" type="button" onclick="insert_keyword('[dates]')" value="<?php echo JText::_( 'DATE' ); ?>" />
-			<p><input class="inputbox" type="button" onclick="insert_keyword('[times]')" value="<?php echo JText::_( 'EVENT TIME' ); ?>" />
-			<input class="inputbox" type="button" onclick="insert_keyword('[enddates]')" value="<?php echo JText::_( 'ENDDATE' ); ?>" />
-			<input class="inputbox" type="button" onclick="insert_keyword('[endtimes]')" value="<?php echo JText::_( 'END TIME' ); ?>" /></p>
+			<input class="inputbox" type="button" onclick="insert_keyword('[title]')" value="<?php echo JText::_('COM_REDEVENT_EVENT_TITLE' ); ?>" />
+			<input class="inputbox" type="button" onclick="insert_keyword('[a_name]')" value="<?php echo JText::_('COM_REDEVENT_VENUE' ); ?>" />
+			<input class="inputbox" type="button" onclick="insert_keyword('[catsid]')" value="<?php echo JText::_('COM_REDEVENT_CATEGORY' ); ?>" />
+			<input class="inputbox" type="button" onclick="insert_keyword('[dates]')" value="<?php echo JText::_('COM_REDEVENT_DATE' ); ?>" />
+			<p><input class="inputbox" type="button" onclick="insert_keyword('[times]')" value="<?php echo JText::_('COM_REDEVENT_EVENT_TIME' ); ?>" />
+			<input class="inputbox" type="button" onclick="insert_keyword('[enddates]')" value="<?php echo JText::_('COM_REDEVENT_ENDDATE' ); ?>" />
+			<input class="inputbox" type="button" onclick="insert_keyword('[endtimes]')" value="<?php echo JText::_('COM_REDEVENT_END_TIME' ); ?>" /></p>
 			<br/>
 			<label for="meta_keywords">
-				<?php echo JText::_( 'META KEYWORDS' ).':'; ?>
+				<?php echo JText::_('COM_REDEVENT_META_KEYWORDS' ).':'; ?>
 			</label>
 			<br />
 
@@ -29,7 +29,7 @@
 <tr class="row1">
 	<td>
 		<label for="meta_description">
-			<?php echo JText::_( 'META DESCRIPTION' ).':'; ?>
+			<?php echo JText::_('COM_REDEVENT_META_DESCRIPTION' ).':'; ?>
 		</label>
 		<br />
 		<?php
@@ -47,6 +47,6 @@
 </table>
 <script type="text/javascript">
 <!--
-starter("<?php echo JText::_( 'META ERROR' ); ?>");	// da window.onload schon belegt wurde, wird die Funktion 'manuell' aufgerufen
+starter("<?php echo JText::_('COM_REDEVENT_META_ERROR' ); ?>");	// da window.onload schon belegt wurde, wird die Funktion 'manuell' aufgerufen
 -->
 </script>

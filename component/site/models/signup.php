@@ -105,7 +105,7 @@ class RedeventModelSignup extends JModel
       // Is the category published?
       if (!count($this->_details->categories))
       {
-        JError::raiseError( 404, JText::_("CATEGORY NOT PUBLISHED") );
+        JError::raiseError( 404, JText::_("COM_REDEVENT_CATEGORY_NOT_PUBLISHED") );
       }
 
       // Do we have access to each category ?
@@ -113,7 +113,7 @@ class RedeventModelSignup extends JModel
       {
         if ($cat->access > $user->get('aid'))
         {
-          JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+          JError::raiseError( 403, JText::_("COM_REDEVENT_ALERTNOTAUTH") );
         }
       }
 
@@ -252,7 +252,7 @@ class RedeventModelSignup extends JModel
 		
 		/* Sent out the mail */
 		if (!$this->mailer->Send()) {
-			RedeventError::raiseWarning(0, JText::_('NO_MAIL_SEND').' '.$this->mailer->error);
+			RedeventError::raiseWarning(0, JText::_('COM_REDEVENT_NO_MAIL_SEND').' '.$this->mailer->error);
 			return false;
 		}
 		/* Clear the mail details */
@@ -299,7 +299,7 @@ class RedeventModelSignup extends JModel
 		
 		/* Sent out the mail */
 		if (!$this->mailer->Send()) {
-			RedeventError::raiseWarning(0, JText::_('NO_MAIL_SEND').' '.$this->mailer->error);
+			RedeventError::raiseWarning(0, JText::_('COM_REDEVENT_NO_MAIL_SEND').' '.$this->mailer->error);
 			return false;
 		}
 		
@@ -357,7 +357,7 @@ class RedeventModelSignup extends JModel
 		$registration = $this->_db->loadObject();
 		
 		if (!$registration) {
-			$this->setError(JText::_('REGISTRATION NOT VALID'));
+			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_NOT_VALID'));
 			return false;
 		}
 		  

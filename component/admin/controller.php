@@ -67,7 +67,7 @@ class RedEventController extends JController
 		$filecontent	= JRequest::getVar('filecontent', '', '', '', JREQUEST_ALLOWRAW);
 
 		if (!$filecontent) {
-			$mainframe->redirect('index.php?option='.$option, JText::_('OPERATION FAILED').': '.JText::_('CONTENT EMPTY'));
+			$mainframe->redirect('index.php?option='.$option, JText::_('COM_REDEVENT_OPERATION_FAILED').': '.JText::_('COM_REDEVENT_CONTENT_EMPTY'));
 		}	
 		
 		// Set FTP credentials, if given
@@ -96,16 +96,16 @@ class RedEventController extends JController
 			switch($task)
 			{
 				case 'applycss' :
-					$mainframe->redirect('index.php?option='.$option.'&view=editcss', JText::_('CSS FILE SUCCESSFULLY ALTERED'));
+					$mainframe->redirect('index.php?option='.$option.'&view=editcss', JText::_('COM_REDEVENT_CSS_FILE_SUCCESSFULLY_ALTERED'));
 					break;
 
 				case 'savecss'  :
 				default         :
-					$mainframe->redirect('index.php?option='.$option, JText::_('CSS FILE SUCCESSFULLY ALTERED') );
+					$mainframe->redirect('index.php?option='.$option, JText::_('COM_REDEVENT_CSS_FILE_SUCCESSFULLY_ALTERED') );
 					break;
 			}
 		} else {
-			$mainframe->redirect('index.php?option='.$option, JText::_('OPERATION FAILED').': '.JText::sprintf('FAILED TO OPEN FILE FOR WRITING', $file));
+			$mainframe->redirect('index.php?option='.$option, JText::_('COM_REDEVENT_OPERATION_FAILED').': '.JText::sprintf('COM_REDEVENT_FAILED_ TO_OPEN_FILE_FOR_WRITING_S', $file));
 		}
 	}
 
@@ -130,7 +130,7 @@ class RedEventController extends JController
 	function clearlog()
 	{
 		RedeventHelperLog::clear();
-		$msg = JText::_('LOG CLEARED');
+		$msg = JText::_('COM_REDEVENT_LOG_CLEARED');
 		$this->setRedirect('index.php?option=com_redevent&view=log', $msg);
 		$this->redirect();
 	}
@@ -152,7 +152,7 @@ class RedEventController extends JController
       $this->setRedirect( $link, $msg, 'error' );      
     }
     else {
-      $msg = JText::sprintf( 'EVENTLIST IMPORT SUCCESS', $result['events'], $result['categories'], $result['venues']);
+      $msg = JText::sprintf( 'COM_REDEVENT_EVENTLIST_IMPORT_SUCCESS_D_EVENTS_D_CATEGORIES_D_VENUES', $result['events'], $result['categories'], $result['venues']);
       $this->setRedirect( $link, $msg );
     }
   }
@@ -164,7 +164,7 @@ class RedEventController extends JController
   function autoarchive()
   {
   	$res = redEVENTHelper::cleanup(1);
-    $msg = JText::_('AUTOARCHIVE DONE');
+    $msg = JText::_('COM_REDEVENT_AUTOARCHIVE_DONE');
     $link = 'index.php?option=com_redevent&view=tools';
     $this->setRedirect( $link, $msg );    
   }
@@ -182,7 +182,7 @@ class RedEventController extends JController
   {
   	$model = &JModel::getInstance('sample',  'RedEventModel');
   	$model->create();
-    $this->setRedirect( 'index.php?option=com_redevent', JText::_('Sample data created') );
+    $this->setRedirect( 'index.php?option=com_redevent', JText::_('COM_REDEVENT_Sample_data_created') );
   }
 
 	/**

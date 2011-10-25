@@ -63,7 +63,7 @@ class RedEventControllerVenues extends RedEventController
 		$cid 	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
 		if (!is_array( $cid ) || count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to publish' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_publish' ) );
 		}
 
 		$model = $this->getModel('venues');
@@ -72,7 +72,7 @@ class RedEventControllerVenues extends RedEventController
 		}
 
 		$total = count( $cid );
-		$msg 	= $total.' '.JText::_('VENUE PUBLISHED');
+		$msg 	= $total.' '.JText::_('COM_REDEVENT_VENUE_PUBLISHED');
 
 		$this->setRedirect( 'index.php?option=com_redevent&view=venues', $msg );
 	}
@@ -89,7 +89,7 @@ class RedEventControllerVenues extends RedEventController
 		$cid 	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
 		if (!is_array( $cid ) || count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to unpublish' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_unpublish' ) );
 		}
 
 		$model = $this->getModel('venues');
@@ -98,7 +98,7 @@ class RedEventControllerVenues extends RedEventController
 		}
 
 		$total = count( $cid );
-		$msg 	= $total.' '.JText::_('VENUE UNPUBLISHED');
+		$msg 	= $total.' '.JText::_('COM_REDEVENT_VENUE_UNPUBLISHED');
 
 		$this->setRedirect( 'index.php?option=com_redevent&view=venues', $msg );
 	}
@@ -136,7 +136,7 @@ class RedEventControllerVenues extends RedEventController
 		$cid = JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
 		if (!is_array( $cid ) || count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to delete' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_delete' ) );
 		}
 
 		$model = $this->getModel('venues');
@@ -196,7 +196,7 @@ class RedEventControllerVenues extends RedEventController
 
 		// Error if checkedout by another administrator
 		if ($model->isCheckedOut( $user->get('id') )) {
-			$this->setRedirect( 'index.php?option=com_redevent&view=venues', JText::_( 'EDITED BY ANOTHER ADMIN' ) );
+			$this->setRedirect( 'index.php?option=com_redevent&view=venues', JText::_('COM_REDEVENT_EDITED_BY_ANOTHER_ADMIN' ) );
 		}
 
 		$model->checkout();
@@ -238,7 +238,7 @@ class RedEventControllerVenues extends RedEventController
 					$link = 'index.php?option=com_redevent&view=venues';
 					break;
 			}
-			$msg	= JText::_( 'VENUE SAVED');
+			$msg	= JText::_('COM_REDEVENT_VENUE_SAVED');
 
 			$cache = &JFactory::getCache('com_redevent');
 			$cache->clean();
@@ -273,7 +273,7 @@ class RedEventControllerVenues extends RedEventController
 		$model->store($post);
 		$model->checkin();
 
-		$msg	= JText::_( 'VENUE SAVED');
+		$msg	= JText::_('COM_REDEVENT_VENUE_SAVED');
 		$link 	= 'index.php?option=com_redevent&view=event&layout=addvenue&tmpl=component';
 
 		$this->setRedirect( $link, $msg );
@@ -338,7 +338,7 @@ class RedEventControllerVenues extends RedEventController
       $handle = fopen($file['tmp_name'],'r');
       if(!$handle) 
       {
-        $msg = JText::_('Cannot open uploaded file.');  
+        $msg = JText::_('COM_REDEVENT_Cannot_open_uploaded_file.');  
         $this->setRedirect( 'index.php?option=com_redevent&controller=venues&task=importexport', $msg, 'error' ); 
         return;   
       }

@@ -161,13 +161,13 @@ class RedEvent_events extends JTable
 		$titlelength = JString::strlen($this->title);
 
 		if ( $this->title == '' ) {
-			$this->_error = JText::_( 'ADD TITLE' );
+			$this->_error = JText::_('COM_REDEVENT_ADD_TITLE' );
       		JError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
       		return false;
 		}
 
 		if ( $titlelength > 100 ) {
-      		$this->_error = JText::_( 'ERROR TITLE LONG' );
+      		$this->_error = JText::_('COM_REDEVENT_ERROR_TITLE_LONG' );
       		JError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
       		return false;
 		}
@@ -180,22 +180,22 @@ class RedEvent_events extends JTable
           
 		// check that there is no loop with the tag inclusion
 		if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_email) > 0) {
-      $this->_error = JText::_( 'ERROR TAG LOOP XXXXSIGNUPPAGE');
+      $this->_error = JText::_('COM_REDEVENT_ERROR_TAG_LOOP_XXXXSIGNUPPAGE');
       JError::raiseWarning(0, $this->_error);
 		}
 	
     if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_phone) > 0) {
-      $this->_error = JText::_( 'ERROR TAG LOOP XXXXSIGNUPPAGE');
+      $this->_error = JText::_('COM_REDEVENT_ERROR_TAG_LOOP_XXXXSIGNUPPAGE');
       JError::raiseWarning(0, $this->_error);
     }
 	
     if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_webform) > 0) {
-      $this->_error = JText::_( 'ERROR TAG LOOP XXXXSIGNUPPAGE');
+      $this->_error = JText::_('COM_REDEVENT_ERROR_TAG_LOOP_XXXXSIGNUPPAGE');
       JError::raiseWarning(0, $this->_error);
     }
 	
     if ($app->isAdmin() && !empty($this->review_message) && !strstr($this->review_message, '[redform]')) {
-      $this->_error = JText::_( 'WARNING REDFORM TAG MUST BE INCLUDED IN REVIEW SCREEN IF NOT EMPTY');
+      $this->_error = JText::_('COM_REDEVENT_WARNING_REDFORM_TAG_MUST_BE_INCLUDED_IN_REVIEW_SCREEN_IF_NOT_EMPTY');
       JError::raiseWarning(0, $this->_error);
     }
 	

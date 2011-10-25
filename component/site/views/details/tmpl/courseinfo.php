@@ -40,13 +40,13 @@ function tableOrdering( order, dir, view )
 <table class="courseinfo_tabel">
 <thead>
 	<tr>
-			<th class="courseinfo_titlename"><?php echo JText::_('EVENT_NAME'); ?></th>
-			<th class="courseinfo_titledate"><?php echo JHTML::_('grid.sort', 'EVENT_DATE', 'x.dates', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			<th class="courseinfo_titleduration"><?php echo JText::_('EVENT_DURATION'); ?></th>
-			<th class="courseinfo_titlevenue" colspan="2"><?php echo JHTML::_('grid.sort', 'EVENT_VENUE', 'v.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			<th class="courseinfo_titleprice"><?php echo JText::_('EVENT_PRICE'); ?></th>
-			<th class="courseinfo_titlecredit"><?php echo JHTML::_('grid.sort', 'EVENT_CREDITS', 'x.course_credit', $this->lists['order_Dir'], $this->lists['order'] );JText::_('EVENT_CREDITS'); ?></th>
-			<th class="courseinfo_titlesignup"><?php echo JText::_('EVENT_SIGNUP'); ?></th>
+			<th class="courseinfo_titlename"><?php echo JText::_('COM_REDEVENT_EVENT_NAME'); ?></th>
+			<th class="courseinfo_titledate"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_EVENT_DATE', 'x.dates', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th class="courseinfo_titleduration"><?php echo JText::_('COM_REDEVENT_EVENT_DURATION'); ?></th>
+			<th class="courseinfo_titlevenue" colspan="2"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_EVENT_VENUE', 'v.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th class="courseinfo_titleprice"><?php echo JText::_('COM_REDEVENT_EVENT_PRICE'); ?></th>
+			<th class="courseinfo_titlecredit"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_EVENT_CREDITS', 'x.course_credit', $this->lists['order_Dir'], $this->lists['order'] );JText::_('COM_REDEVENT_EVENT_CREDITS'); ?></th>
+			<th class="courseinfo_titlesignup"><?php echo JText::_('COM_REDEVENT_EVENT_SIGNUP'); ?></th>
 	</tr>
 </thead>
 <tbody>

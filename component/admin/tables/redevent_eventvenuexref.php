@@ -215,7 +215,7 @@ class RedEvent_eventvenuexref extends JTable
 		$res = $this->_db->loadResult();
 		
 		if ($res) {
-			$this->setError(JText::_('EVENT DATE HAS ATTENDEES'));	
+			$this->setError(JText::_('COM_REDEVENT_EVENT_DATE_HAS_ATTENDEES'));	
 			return false;		
 		}
 		

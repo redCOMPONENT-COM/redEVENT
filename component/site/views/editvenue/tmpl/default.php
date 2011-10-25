@@ -85,27 +85,27 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		}
 
 		if ( venue.length==0 ) {
-   			alert("<?php echo JText::_( 'ERROR ADD VENUE', true ); ?>");
+   			alert("<?php echo JText::_('COM_REDEVENT_ERROR_ADD_VENUE', true ); ?>");
    			validator.handleResponse(false,form.venue);
    			form.venue.focus();
    			return false;
    		} else if ( validator.validate(form.street) === false) {
-   			alert("<?php echo JText::_( 'ERROR ADD STREET', true ); ?>");
+   			alert("<?php echo JText::_('COM_REDEVENT_ERROR_ADD_STREET', true ); ?>");
    			validator.handleResponse(false,form.street);
    			form.street.focus();
    			return false;
 		} else if ( validator.validate(form.plz) === false) {
-   			alert("<?php echo JText::_( 'ERROR ADD ZIP', true ); ?>");
+   			alert("<?php echo JText::_('COM_REDEVENT_ERROR_ADD_ZIP', true ); ?>");
    			validator.handleResponse(false,form.plz);
    			form.plz.focus();
    			return false;
   		} else if ( validator.validate(form.city) === false) {
-  			alert("<?php echo JText::_( 'ERROR ADD CITY', true ); ?>");
+  			alert("<?php echo JText::_('COM_REDEVENT_ERROR_ADD_CITY', true ); ?>");
   			validator.handleResponse(false,form.city);
   			form.city.focus();
   			return false;
 		} else if ( validator.validate(form.country) === false) {
-   			alert("<?php echo JText::_( 'ERROR ADD COUNTRY', true ); ?>");
+   			alert("<?php echo JText::_('COM_REDEVENT_ERROR_ADD_COUNTRY', true ); ?>");
    			validator.handleResponse(false,form.country);
    			form.country.focus();
    			return false;
@@ -178,10 +178,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
         <div class="el_save_buttons floattext">
   			<button type="button" onclick="return submitbutton('savevenue')">
-  				<?php echo JText::_('SAVE') ?>
+  				<?php echo JText::_('COM_REDEVENT_SAVE') ?>
   			</button>
   			<button type="reset" onclick="return submitbutton('cancelvenue')">
-  				<?php echo JText::_('CANCEL') ?>
+  				<?php echo JText::_('COM_REDEVENT_CANCEL') ?>
   			</button>
 		</div>
 
@@ -189,13 +189,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
       	<fieldset class="el_fldst_address">
 
-            <legend><?php echo JText::_('ADDRESS'); ?></legend>
+            <legend><?php echo JText::_('COM_REDEVENT_ADDRESS'); ?></legend>
 
 						<table class="fieldstable">
 							<tbody>
 								<tr>
-									<td class="key hasTip" title="<?php echo JText::_('VENUE'); ?>">
-                		<label for="venue"><?php echo JText::_( 'VENUE' ).':'; ?></label>
+									<td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_VENUE'); ?>">
+                		<label for="venue"><?php echo JText::_('COM_REDEVENT_VENUE' ).':'; ?></label>
                 	</td>
                 	<td>
                 		<input class="inputbox required" type="text" name="venue" id="venue" value="<?php echo $this->escape($this->row->venue); ?>" size="55" maxlength="50" />
@@ -203,8 +203,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 </tr>     
                   
 								<tr>
-									<td class="key hasTip" title="<?php echo JText::_('Category'); ?>">
-                		<label for="categories"><?php echo JText::_( 'Category' ).':'; ?></label>
+									<td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_Category'); ?>">
+                		<label for="categories"><?php echo JText::_('COM_REDEVENT_Category' ).':'; ?></label>
                 	</td>
                 	<td>
                 		<?php echo $this->lists['categories']; ?>
@@ -213,8 +213,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                                    
 						<?php if ($this->canpublish): ?>
 								<tr>
-									<td class="key hasTip" title="<?php echo JText::_('Published'); ?>">
-                		<label for="published"><?php echo JText::_( 'Published' ).':'; ?></label>
+									<td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_Published'); ?>">
+                		<label for="published"><?php echo JText::_('COM_REDEVENT_Published' ).':'; ?></label>
                 	</td>
                 	<td>
 										<?php echo $this->lists['published'] ?>
@@ -232,8 +232,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 </tr>
 
 								<tr>
-									<td class="key hasTip" title="<?php echo JText::_('STREET'); ?>">
-                		<label for="street"><?php echo JText::_( 'STREET' ).':'; ?></label>
+									<td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_STREET'); ?>">
+                		<label for="street"><?php echo JText::_('COM_REDEVENT_STREET' ).':'; ?></label>
                 	</td>
                 	<td>
                 		<input class="inputbox" type="text" name="street" id="street" value="<?php echo $this->escape($this->row->street); ?>" size="55" maxlength="50" />
@@ -241,8 +241,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 </tr>
 
 								<tr>
-									<td class="key hasTip" title="<?php echo JText::_('ZIP'); ?>">
-										<label for="plz"><?php echo JText::_( 'ZIP' ).':'; ?></label>
+									<td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_ZIP'); ?>">
+										<label for="plz"><?php echo JText::_('COM_REDEVENT_ZIP' ).':'; ?></label>
                 	</td>
                 	<td>
                 		<input class="inputbox" type="text" name="plz" id="plz" value="<?php echo $this->escape($this->row->plz); ?>" size="15" maxlength="10" />
@@ -250,8 +250,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 </tr>
 
 								<tr>
-									<td class="key hasTip" title="<?php echo JText::_('CITY'); ?>">
-										<label for="city"><?php echo JText::_( 'CITY' ).':'; ?></label>
+									<td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_CITY'); ?>">
+										<label for="city"><?php echo JText::_('COM_REDEVENT_CITY' ).':'; ?></label>
                 	</td>
                 	<td>
                 		<input class="inputbox" type="text" name="city" id="city" value="<?php echo $this->escape($this->row->city); ?>" size="55" maxlength="50" />
@@ -259,8 +259,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 </tr>
 
 								<tr>
-									<td class="key hasTip" title="<?php echo JText::_('STATE'); ?>">
-										<label for="state"><?php echo JText::_( 'STATE' ).':'; ?></label>
+									<td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_STATE'); ?>">
+										<label for="state"><?php echo JText::_('COM_REDEVENT_STATE' ).':'; ?></label>
                 	</td>
                 	<td>
                 		<input class="inputbox" type="text" name="state" id="state" value="<?php echo $this->escape($this->row->state); ?>" size="55" maxlength="50" />
@@ -268,24 +268,24 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 </tr>
 
 								<tr>
-									<td class="key hasTip" title="<?php echo JText::_('COUNTRY'); ?>">
-										<label for="country"><?php echo JText::_( 'COUNTRY' ).':'; ?></label>
+									<td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_COUNTRY'); ?>">
+										<label for="country"><?php echo JText::_('COM_REDEVENT_COUNTRY' ).':'; ?></label>
                 	</td>
                 	<td>
                 		<input class="inputbox" type="text" name="country" id="country" value="<?php echo $this->row->country; ?>" size="3" maxlength="2" />
-                		<span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('COUNTRY HINT'); ?>">
+                		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_COUNTRY_HINT'); ?>">
                 		<?php echo $this->infoimage; ?>
                 		</span>
                 	</td>
                 </tr>
 
 								<tr>
-									<td class="key hasTip" title="<?php echo JText::_('WEBSITE'); ?>">
-										<label for="url"><?php echo JText::_( 'WEBSITE' ).':'; ?></label>
+									<td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_WEBSITE'); ?>">
+										<label for="url"><?php echo JText::_('COM_REDEVENT_WEBSITE' ).':'; ?></label>
                 	</td>
                 	<td>
                 		<input class="inputbox" name="url" id="url" type="text" value="<?php echo $this->escape($this->row->url); ?>" size="55" maxlength="199" />&nbsp;
-		                <span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('WEBSITE HINT'); ?>">
+		                <span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_WEBSITE_HINT'); ?>">
 		                		<?php echo $this->infoimage; ?>
 		                </span>
                 	</td>
@@ -293,16 +293,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 		            <?php if ( $this->params->get('showmapserv', 1) ) : ?>
 								<tr>
-									<td class="key hasTip" title="<?php echo JText::_('ENABLE MAP'); ?>">
-										<label for="map"><?php echo JText::_( 'ENABLE MAP' ).':'; ?></label>
+									<td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_ENABLE_MAP'); ?>">
+										<label for="map"><?php echo JText::_('COM_REDEVENT_ENABLE_MAP' ).':'; ?></label>
                 	</td>
                 	<td>
-                		<label for="map0"><?php echo JText::_( 'no' ); ?></label>
+                		<label for="map0"><?php echo JText::_('COM_REDEVENT_no' ); ?></label>
 		                <input type="radio" name="map" id="map0" onchange="removerequired();" value="0" <?php echo $this->row->map == 0 ? 'checked="checked"' : ''; ?> class="inputbox" />
 		                <br class="clear" />
-		              	<label for="map1"><?php echo JText::_( 'yes' ); ?></label>
+		              	<label for="map1"><?php echo JText::_('COM_REDEVENT_yes' ); ?></label>
 		              	<input type="radio" name="map" id="map1" onchange="addrequired();" value="1" <?php echo $this->row->map == 1 ? 'checked="checked"' : ''; ?> class="inputbox" />
-                    <span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('ADDRESS NOTICE'); ?>">
+                    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_ADDRESS_NOTICE'); ?>">
                         <?php echo $this->infoimage; ?>
                     </span>
                 	</td>
@@ -315,7 +315,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						      </td>
 						      <td>
 						        <input class="inputbox" name="latitude" id="latitude" value="<?php echo $this->row->latitude; ?>" size="14" maxlength="25" />
-						              <span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_LATITUDE_TIP'); ?>">
+						              <span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_LATITUDE_TIP'); ?>">
 						          <?php echo JHTML::image('components/com_redevent/assets/images/marker_16.png', 'pinpoint', array('class' => 'pinpoint')); ?>
 						          <?php echo $this->infoimage; ?>
 						        </span>
@@ -329,7 +329,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						      </td>
 						      <td>
 						        <input class="inputbox" name="longitude" id="longitude" value="<?php echo $this->row->longitude; ?>" size="14" maxlength="25" />
-						              <span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_LONGITUDE_TIP'); ?>">
+						              <span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_LONGITUDE_TIP'); ?>">
 						          <?php echo JHTML::image('components/com_redevent/assets/images/marker_16.png', 'pinpoint', array('class' => 'pinpoint')); ?>
 						          <?php echo $this->infoimage; ?>
 						        </span>
@@ -344,31 +344,31 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
       	<?php	if (( $this->params->get('edit_image', 1) == 2 ) || ($this->params->get('edit_image', 1) == 1)) :	?>
       	<fieldset class="el_fldst_image">
 
-            <legend><?php echo JText::_('IMAGE'); ?></legend>
+            <legend><?php echo JText::_('COM_REDEVENT_IMAGE'); ?></legend>
 
     		<?php
             if ($this->row->locimage) :
     				echo ELOutput::flyer( $this->row, $this->limage );
     		else :
-      		    echo JHTML::_('image', 'components/com_redevent/assets/images/noimage.png', JText::_('NO IMAGE'), array('class' => 'modal'));
+      		    echo JHTML::_('image', 'components/com_redevent/assets/images/noimage.png', JText::_('COM_REDEVENT_NO_IMAGE'), array('class' => 'modal'));
     		endif;
       		?>
 
-            <label for="userfile"><?php echo JText::_('IMAGE'); ?></label>
+            <label for="userfile"><?php echo JText::_('COM_REDEVENT_IMAGE'); ?></label>
       			<input class="inputbox <?php echo $this->params->get('edit_image', 1) == 2 ? 'required' : ''; ?>" name="userfile" id="userfile" type="file" />
-      			<span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('MAX IMAGE FILE SIZE').' '.$this->elsettings->sizelimit.' kb'; ?>">
+      			<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_MAX_IMAGE_FILE_SIZE').' '.$this->elsettings->sizelimit.' kb'; ?>">
       				<?php echo $this->infoimage; ?>
       			</span>
 
-      			<!--<?php echo JText::_( 'CURRENT IMAGE' );	?>
-      			<?php echo JText::_( 'SELECTED IMAGE' ); ?>-->
+      			<!--<?php echo JText::_('COM_REDEVENT_CURRENT_IMAGE' );	?>
+      			<?php echo JText::_('COM_REDEVENT_SELECTED_IMAGE' ); ?>-->
 
       	</fieldset>
       	<?php endif; ?>
           
       	<fieldset class="el_fldst_description">
 
-          	<legend><?php echo JText::_('DESCRIPTION'); ?></legend>
+          	<legend><?php echo JText::_('COM_REDEVENT_DESCRIPTION'); ?></legend>
 
         		<?php
         		//wenn usertyp min editor wird editor ausgegeben ansonsten textfeld
@@ -377,9 +377,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         		else :
         		?>
       			<textarea style="width:100%;" rows="10" name="locdescription" class="inputbox" wrap="virtual" onkeyup="berechne(this.form)"></textarea><br />
-      			<?php echo JText::_('NO HTML'); ?><br />
-      			<input disabled="disabled" value="<?php echo $this->params->get('max_description', 1000); ?>" size="4" name="zeige" /><?php echo JText::_('AVAILABLE')." "; ?><br />
-      			<a href="javascript:rechne(document.venueForm);"><?php echo JText::_('REFRESH'); ?></a>
+      			<?php echo JText::_('COM_REDEVENT_NO_HTML'); ?><br />
+      			<input disabled="disabled" value="<?php echo $this->params->get('max_description', 1000); ?>" size="4" name="zeige" /><?php echo JText::_('COM_REDEVENT_AVAILABLE')." "; ?><br />
+      			<a href="javascript:rechne(document.venueForm);"><?php echo JText::_('COM_REDEVENT_REFRESH'); ?></a>
 
         		<?php	endif; ?>
 
@@ -391,13 +391,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				
       	<fieldset class="el_fldst_meta">
 
-          	<legend><?php echo JText::_('METADATA INFORMATION'); ?></legend>
+          	<legend><?php echo JText::_('COM_REDEVENT_METADATA_INFORMATION'); ?></legend>
 
 						<table class="fieldstable">
 							<tbody>
 								<tr>
-									<td class="key hasTip" title="<?php echo JText::_('META DESCRIPTION'); ?>">
-              			<label for="metadesc"><?php echo JText::_( 'META DESCRIPTION' ); ?></label>
+									<td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_META_DESCRIPTION'); ?>">
+              			<label for="metadesc"><?php echo JText::_('COM_REDEVENT_META_DESCRIPTION' ); ?></label>
                 	</td>
                 	<td>
                 		<textarea class="inputbox" cols="40" rows="5" name="meta_description" id="metadesc" style="width:250px;"><?php echo  $this->row->meta_description; ?></textarea>
@@ -405,8 +405,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 </tr>
                 
 								<tr>
-									<td class="key hasTip" title="<?php echo JText::_('META DESCRIPTION'); ?>">
-              			<label for="metakey"><?php echo JText::_( 'META KEYWORDS' ); ?></label>
+									<td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_META_DESCRIPTION'); ?>">
+              			<label for="metakey"><?php echo JText::_('COM_REDEVENT_META_KEYWORDS' ); ?></label>
                 	</td>
                 	<td>
                 		<textarea class="inputbox" cols="40" rows="5" name="meta_keywords" id="metakey" style="width:250px;"><?php echo  $this->row->meta_keywords; ?></textarea>
@@ -414,16 +414,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 							</tbody>
 						</table>
             
-    		<input type="button" class="button el_fright" value="<?php echo JText::_( 'ADD VENUE CITY' ); ?>" onclick="f=document.getElementById('venueForm');f.metakey.value=f.venue.value+', '+f.city.value+f.metakey.value;" />
+    		<input type="button" class="button el_fright" value="<?php echo JText::_('COM_REDEVENT_ADD_VENUE_CITY' ); ?>" onclick="f=document.getElementById('venueForm');f.metakey.value=f.venue.value+', '+f.city.value+f.metakey.value;" />
 
       	</fieldset>
 
       	<div class="el_save_buttons floattext">
     		<button type="button" onclick="return submitbutton('savevenue')">
-    			<?php echo JText::_('SAVE') ?>
+    			<?php echo JText::_('COM_REDEVENT_SAVE') ?>
     		</button>
     		<button type="reset" onclick="return submitbutton('cancelvenue')">
-    			<?php echo JText::_('CANCEL') ?>
+    			<?php echo JText::_('COM_REDEVENT_CANCEL') ?>
     		</button>
 		</div>
 		

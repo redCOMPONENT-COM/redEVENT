@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="VENUES LAYOUT">
+	<layout title="COM_REDEVENT_VENUES_LAYOUT">
 		<message>
-			<![CDATA[VENUES LAYOUT DESC]]>
+			<![CDATA[COM_REDEVENT_VENUES_LAYOUT_DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>VENUES LAYOUT</name>
-		<description>VENUES LAYOUT DESC</description>
+		<name>COM_REDEVENT_VENUES_LAYOUT</name>
+		<description>COM_REDEVENT_VENUES_LAYOUT_DESC</description>
 		<params addpath="/administrator/components/com_redevent/elements"> 
-      <param name="categoryid" type="venuecategories" default="0" label="SELECT VENUE CATEGORY" description="SELECT VENUE CATEGORY DESC" />
-			<param name="display_venues_num" type="text" size="2" default="5" label="VENUE NUMBER" description="VENUE NUMBER TIP" />
-      <param name="display_all_venues" type="radio" default="1" label="DISPLAY ALL VENUES" description="DISPLAY ALL VENUES TIP">
+      <param name="categoryid" type="venuecategories" default="0" label="COM_REDEVENT_SELECT_VENUE_CATEGORY" description="COM_REDEVENT_SELECT_VENUE_CATEGORY_DESC" />
+			<param name="display_venues_num" type="text" size="2" default="5" label="COM_REDEVENT_VENUE_NUMBER" description="COM_REDEVENT_VENUE_NUMBER_TIP" />
+      <param name="display_all_venues" type="radio" default="1" label="COM_REDEVENT_DISPLAY_ALL_VENUES" description="COM_REDEVENT_DISPLAY_ALL_VENUES_TIP">
         <option value="0">No</option>
         <option value="1">Yes</option>
       </param>

@@ -26,10 +26,10 @@ defined('_JEXEC') or die('Restricted access');
 <form action="index.php" method="post" name="adminForm">
 <div class="imghead">
 
-	<?php echo JText::_( 'SEARCH' ).' '; ?>
+	<?php echo JText::_('COM_REDEVENT_SEARCH' ).' '; ?>
 	<input type="text" name="search" id="search" value="<?php echo $this->search; ?>" class="text_area" onChange="document.adminForm.submit();" />
-	<button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
-	<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
+	<button onclick="this.form.submit();"><?php echo JText::_('COM_REDEVENT_Go' ); ?></button>
+	<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo JText::_('COM_REDEVENT_Reset' ); ?></button>
 
 </div>
 

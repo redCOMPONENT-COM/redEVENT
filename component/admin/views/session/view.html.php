@@ -54,7 +54,7 @@ class RedEventViewSession extends JView {
     
 			// Set toolbar items for the page
 			$edit		= JRequest::getVar('edit',true);
-			$text = !$edit ? JText::_( 'New' ) : JText::_( 'Edit' );
+			$text = !$edit ? JText::_('COM_REDEVENT_New' ) : JText::_('COM_REDEVENT_Edit' );
 			JToolBarHelper::title(   JText::_( 'COM_REDEVENT_SESSION' ).': <small><small>[ ' . $text.' ]</small></small>' );
 			JToolBarHelper::save();
 			JToolBarHelper::apply();
@@ -102,12 +102,12 @@ class RedEventViewSession extends JView {
 		$lists = array();
 		
 		// venues selector
-    $venues = array(JHTML::_('select.option', 0, JText::_('Select Venue')));
+    $venues = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_Select_Venue')));
 		$venues = array_merge($venues, $this->get('VenuesOptions'));
 		$lists['venue'] = JHTML::_('select.genericlist', $venues, 'venueid', 'class="validate-venue"', 'value', 'text', $xref->venueid);
 		
 		// group selector
-    $options = array(JHTML::_('select.option', 0, JText::_('Select group')));
+    $options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_Select_group')));
 		$options = array_merge($options, $this->get('GroupsOptions'));
 		$lists['group'] = JHTML::_('select.genericlist', $options, 'groupid', '', 'value', 'text', $xref->groupid);
 		
@@ -115,18 +115,18 @@ class RedEventViewSession extends JView {
     $lockedrecurrence = ($xref->count > 0); 
 
     // Recurrence selector
-    $recur_type = array( JHTML::_('select.option', 'NONE', JText::_('NO REPEAT')),
-                         JHTML::_('select.option', 'DAILY', JText::_('DAILY')),
-                         JHTML::_('select.option', 'WEEKLY', JText::_('WEEKLY')),
-                         JHTML::_('select.option', 'MONTHLY', JText::_('MONTHLY')),
-                         JHTML::_('select.option', 'YEARLY', JText::_('YEARLY'))
+    $recur_type = array( JHTML::_('select.option', 'NONE', JText::_('COM_REDEVENT_NO_REPEAT')),
+                         JHTML::_('select.option', 'DAILY', JText::_('COM_REDEVENT_DAILY')),
+                         JHTML::_('select.option', 'WEEKLY', JText::_('COM_REDEVENT_WEEKLY')),
+                         JHTML::_('select.option', 'MONTHLY', JText::_('COM_REDEVENT_MONTHLY')),
+                         JHTML::_('select.option', 'YEARLY', JText::_('COM_REDEVENT_YEARLY'))
                        );
     $lists['recurrence_type'] = JHTML::_('select.radiolist', $recur_type, 'recurrence_type', '', 'value', 'text', $xref->rrules->type);
     
     // published state selector
-    $published = array( JHTML::_('select.option', '1', JText::_('PUBLISHED')),
-                         JHTML::_('select.option', '0', JText::_('UNPUBLISHED')),
-                         JHTML::_('select.option', '-1', JText::_('ARCHIVED'))
+    $published = array( JHTML::_('select.option', '1', JText::_('COM_REDEVENT_PUBLISHED')),
+                         JHTML::_('select.option', '0', JText::_('COM_REDEVENT_UNPUBLISHED')),
+                         JHTML::_('select.option', '-1', JText::_('COM_REDEVENT_ARCHIVED'))
                        );
     $lists['published'] = JHTML::_('select.radiolist', $published, 'published', '', 'value', 'text', $xref->published);
     
@@ -138,7 +138,7 @@ class RedEventViewSession extends JView {
 		
 		$pane 		= & JPane::getInstance('tabs');
 		
-		$rolesoptions = array(JHTML::_('select.option', 0, JText::_('Select role')));
+		$rolesoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_Select_role')));
 		$rolesoptions = array_merge($rolesoptions, $this->get('RolesOptions'));
 		
 		$pricegroupsoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_PRICEGROUP')));
@@ -175,7 +175,7 @@ class RedEventViewSession extends JView {
     $xref = $this->get('xref');
     
     /* Get the date */
-    $date = (!redEVENTHelper::isValidDate($xref->dates) ? Jtext::_('Open date') : strftime( $elsettings->formatdate, strtotime( $xref->dates )));
+    $date = (!redEVENTHelper::isValidDate($xref->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $elsettings->formatdate, strtotime( $xref->dates )));
     $enddate  = (!redEVENTHelper::isValidDate($xref->enddates) || $xref->enddates == $xref->dates) ? '' : strftime( $elsettings->formatdate, strtotime( $xref->enddates ));
     $displaydate = $date. ($enddate ? ' - '.$enddate: '');
 
@@ -202,7 +202,7 @@ class RedEventViewSession extends JView {
 	    $document->addScriptDeclaration($js);		
 		}
 		else {
-			echo JText::_('ERROR: JSON IS NOT ENABLED');
+			echo JText::_('COM_REDEVENT_ERROR_JSON_IS_NOT_ENABLED');
 		}
 		return;
 	}
@@ -216,7 +216,7 @@ class RedEventViewSession extends JView {
 	{ 
     ?>	
 	  <div class="tagsdiv">
-	  	<?php echo JHTML::link('index.php?option=com_redevent&view=tags&tmpl=component&field='.$field, JText::_('TAGS'), 'class="modal"'); ?>
+	  	<?php echo JHTML::link('index.php?option=com_redevent&view=tags&tmpl=component&field='.$field, JText::_('COM_REDEVENT_TAGS'), 'class="modal"'); ?>
     </div>  
 	  <?php 
 	}

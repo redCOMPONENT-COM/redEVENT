@@ -84,7 +84,7 @@ class RedEventControllerCategories extends RedEventController
 					$link = 'index.php?option=com_redevent&view=categories';
 					break;
 			}
-			$msg = JText::_( 'CATEGORY SAVED' );
+			$msg = JText::_('COM_REDEVENT_CATEGORY_SAVED' );
 
 			$cache = &JFactory::getCache('com_redevent');
 			$cache->clean();
@@ -112,7 +112,7 @@ class RedEventControllerCategories extends RedEventController
 		$cid 	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
 		if (!is_array( $cid ) || count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to publish' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_publish' ) );
 		}
 
 		$model = $this->getModel('categories');
@@ -122,7 +122,7 @@ class RedEventControllerCategories extends RedEventController
 		}
 
 		$total = count( $cid );
-		$msg 	= $total.' '.JText::_( 'CATEGORY PUBLISHED');
+		$msg 	= $total.' '.JText::_('COM_REDEVENT_CATEGORY_PUBLISHED');
 
 		$this->setRedirect( 'index.php?option=com_redevent&view=categories', $msg );
 	}
@@ -139,7 +139,7 @@ class RedEventControllerCategories extends RedEventController
 		$cid 	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
 		if (!is_array( $cid ) || count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to unpublish' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_unpublish' ) );
 		}
 
 		$model = $this->getModel('categories');
@@ -149,7 +149,7 @@ class RedEventControllerCategories extends RedEventController
 		}
 
 		$total = count( $cid );
-		$msg 	= $total.' '.JText::_( 'CATEGORY UNPUBLISHED');
+		$msg 	= $total.' '.JText::_('COM_REDEVENT_CATEGORY_UNPUBLISHED');
 
 		$this->setRedirect( 'index.php?option=com_redevent&view=categories', $msg );
 	}
@@ -218,7 +218,7 @@ class RedEventControllerCategories extends RedEventController
 		$cid		= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
 		if (!is_array( $cid ) || count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to delete' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_delete' ) );
 		}
 
 		$model = $this->getModel('categories');
@@ -296,7 +296,7 @@ class RedEventControllerCategories extends RedEventController
 
 		// Error if checkedout by another administrator
 		if ($model->isCheckedOut( $user->get('id') )) {
-			$this->setRedirect( 'index.php?option=com_redevent&view=categories', JText::_( 'EDITED BY ANOTHER ADMIN' ) );
+			$this->setRedirect( 'index.php?option=com_redevent&view=categories', JText::_('COM_REDEVENT_EDITED_BY_ANOTHER_ADMIN' ) );
 		}
 
 		$model->checkout();
@@ -362,7 +362,7 @@ class RedEventControllerCategories extends RedEventController
       $handle = fopen($file['tmp_name'],'r');
       if(!$handle) 
       {
-        $msg = JText::_('Cannot open uploaded file.');  
+        $msg = JText::_('COM_REDEVENT_Cannot_open_uploaded_file.');  
         $this->setRedirect( 'index.php?option=com_redevent&controller=categories&task=importexport', $msg, 'error' ); 
         return;   
       }

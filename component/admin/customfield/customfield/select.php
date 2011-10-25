@@ -94,7 +94,7 @@ class TCustomfieldSelect extends TCustomfield {
   	}
   	
     $option_list = array();
-    $option_list[] = JHTML::_('select.option', '', JText::_('Select'));
+    $option_list[] = JHTML::_('select.option', '', JText::_('COM_REDEVENT_Select'));
     $options = explode("\n", $this->options);
     if ($options) 
     {

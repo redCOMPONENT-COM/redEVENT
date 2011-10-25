@@ -60,12 +60,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<dl class="event_info floattext">
 
 		<?php if ($this->elsettings->showdetailstitle == 1) : ?>
-			<dt class="title"><?php echo JText::_( 'TITLE' ).':'; ?></dt>
+			<dt class="title"><?php echo JText::_('COM_REDEVENT_TITLE' ).':'; ?></dt>
     		<dd class="title"><?php echo $this->escape($this->row->full_title); ?></dd>
 		<?php
   		endif;
   		?>
-  		<dt class="when"><?php echo JText::_( 'WHEN' ).':'; ?></dt>
+  		<dt class="when"><?php echo JText::_('COM_REDEVENT_WHEN' ).':'; ?></dt>
 		<dd class="when">
 			<?php
 			$tmp = ELOutput::formatdate($this->row->dates, $this->row->times);
@@ -85,7 +85,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   		<?php
   		if ($this->row->venueid != 0) :
   		?>
-		    <dt class="where"><?php echo JText::_( 'WHERE' ).':'; ?></dt>
+		    <dt class="where"><?php echo JText::_('COM_REDEVENT_WHERE' ).':'; ?></dt>
 		    <dd class="where">
     		<?php if (($this->elsettings->showdetlinkvenue == 1) && (!empty($this->row->url))) : ?>
 
@@ -109,7 +109,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		$n = count($this->row->categories);
 		?>
 
-		<dt class="category"><?php echo $n < 2 ? JText::_( 'CATEGORY' ) : JText::_( 'CATEGORIES' ); ?>:</dt>
+		<dt class="category"><?php echo $n < 2 ? JText::_('COM_REDEVENT_CATEGORY' ) : JText::_('COM_REDEVENT_CATEGORIES' ); ?>:</dt>
     		<dd class="category">
     			<?php
 				$i = 0;
@@ -128,7 +128,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
   	<?php if ($this->elsettings->showevdescription == 1 && $this->row->datdescription != '' && $this->row->datdescription != '<br />') : ?>
 
-  	    <h2 class="description"><?php echo JText::_( 'DESCRIPTION' ); ?></h2>
+  	    <h2 class="description"><?php echo JText::_('COM_REDEVENT_DESCRIPTION' ); ?></h2>
   		<div class="description event_desc">
 				<?php $review_txt =  trim(strip_tags($this->row->review_message));
 				echo $this->tags->ReplaceTags($this->row->datdescription, array('hasreview' => (!empty($review_txt))) ); ?>
@@ -144,9 +144,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   			<?php foreach ($this->row->attachments as $file): ?>
 	  				<tr>
 	  					<td>
-		  					<span class="event-file-dl-icon hasTip" title="<?php echo JText::_('Download').' '.$this->escape($file->file).'::'.$this->escape($file->description);?>">
+		  					<span class="event-file-dl-icon hasTip" title="<?php echo JText::_('COM_REDEVENT_Download').' '.$this->escape($file->file).'::'.$this->escape($file->description);?>">
 		  					<?php echo JHTML::link('index.php?option=com_redevent&task=getfile&format=raw&file='.$file->id, 
-		  					                       JHTML::image('components/com_redevent/assets/images/download_16.png', JText::_('Download'))); ?></span>  			
+		  					                       JHTML::image('components/com_redevent/assets/images/download_16.png', JText::_('COM_REDEVENT_Download'))); ?></span>  			
 	  					</td>
 	  					<td class="event-file-name"><?php echo $this->escape($file->name ? $file->name : $file->file); ?></td>
 	  				</tr>
@@ -161,7 +161,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<?php if ($this->row->venueid != 0) : ?>
 
 		<h2 class="location">
-			<?php echo JText::_( 'VENUE' ) ; ?>
+			<?php echo JText::_('COM_REDEVENT_VENUE' ) ; ?>
 		</h2>
 
 		<?php //flyer
@@ -176,7 +176,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 				<?php if (!empty($this->row->url)) : ?>
 					&nbsp; - &nbsp;
-					<a href="<?php echo $this->row->url; ?>"> <?php echo JText::_( 'WEBSITE' ); ?></a>
+					<a href="<?php echo $this->row->url; ?>"> <?php echo JText::_('COM_REDEVENT_WEBSITE' ); ?></a>
 				<?php
 				endif;
 				?>
@@ -187,35 +187,35 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   			?>
 
   				<?php if ( $this->row->street ) : ?>
-  				<dt class="venue_street"><?php echo JText::_( 'STREET' ).':'; ?></dt>
+  				<dt class="venue_street"><?php echo JText::_('COM_REDEVENT_STREET' ).':'; ?></dt>
 				<dd class="venue_street">
     				<?php echo $this->escape($this->row->street); ?>
 				</dd>
 				<?php endif; ?>
 
 				<?php if ( $this->row->plz ) : ?>
-  				<dt class="venue_plz"><?php echo JText::_( 'ZIP' ).':'; ?></dt>
+  				<dt class="venue_plz"><?php echo JText::_('COM_REDEVENT_ZIP' ).':'; ?></dt>
 				<dd class="venue_plz">
     				<?php echo $this->escape($this->row->plz); ?>
 				</dd>
 				<?php endif; ?>
 
 				<?php if ( $this->row->city ) : ?>
-    			<dt class="venue_city"><?php echo JText::_( 'CITY' ).':'; ?></dt>
+    			<dt class="venue_city"><?php echo JText::_('COM_REDEVENT_CITY' ).':'; ?></dt>
     			<dd class="venue_city">
     				<?php echo $this->escape($this->row->city); ?>
     			</dd>
     			<?php endif; ?>
 
     			<?php if ( $this->row->state ) : ?>
-    			<dt class="venue_state"><?php echo JText::_( 'STATE' ).':'; ?></dt>
+    			<dt class="venue_state"><?php echo JText::_('COM_REDEVENT_STATE' ).':'; ?></dt>
     			<dd class="venue_state">
     				<?php echo $this->escape($this->row->state); ?>
     			</dd>
 				<?php endif; ?>
 
 				<?php if ( $this->row->country ) : ?>
-				<dt class="venue_country"><?php echo JText::_( 'COUNTRY' ).':'; ?></dt>
+				<dt class="venue_country"><?php echo JText::_('COM_REDEVENT_COUNTRY' ).':'; ?></dt>
     			<dd class="venue_country">
     				<?php echo redEVENTHelperCountries::getCountryFlag( $this->row->country ); ?>
     			</dd>
@@ -227,7 +227,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 		<?php if ($this->elsettings->showlocdescription == 1 && $this->row->locdescription) :	?>
 
-			<h2 class="location_desc"><?php echo JText::_( 'DESCRIPTION' ); ?></h2>
+			<h2 class="location_desc"><?php echo JText::_('COM_REDEVENT_DESCRIPTION' ); ?></h2>
   			<div class="description location_desc">
   				<?php echo $this->row->locdescription;	?>
   			</div>
@@ -237,7 +237,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<?php	endif; ?>
 	
 	<?php if ($this->row->registra): ?>	
-		<h2 class="location_desc"><?php echo JText::_( 'Registration' ); ?></h2>
+		<h2 class="location_desc"><?php echo JText::_('COM_REDEVENT_Registration' ); ?></h2>
 		<?php $registration_status = redEVENTHelper::canRegister($this->row->xref); ?>
 		<div class="event-registration">
 		<?php 

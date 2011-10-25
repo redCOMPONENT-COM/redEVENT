@@ -327,12 +327,12 @@ class redEVENTHelper {
 		{
 			if (empty($event->enddates) || $event->enddates == '0000-00-00' || $event->enddates == $event->dates) // same day
 	    {
-      	return '1' . ' ' . JText::_('Day');
+      	return '1' . ' ' . JText::_('COM_REDEVENT_Day');
       }
       else
       {
       	$days = floor((strtotime($event->enddates) - strtotime($event->dates)) / (3600 * 24)) + 1;
-      	return $days . ' ' . JText::_('Days');
+      	return $days . ' ' . JText::_('COM_REDEVENT_Days');
       }
 		}
 		else // there is start and end times
@@ -342,12 +342,12 @@ class redEVENTHelper {
 	    {
       	$end = strtotime($event->dates. ' ' . $event->endtimes);
       	$duration = $end - $start;
-      	return floor($duration / 3600) . JText::_('LOC_H') . sprintf('%02d', floor(($duration % 3600) / 60));
+      	return floor($duration / 3600) . JText::_('COM_REDEVENT_LOC_H') . sprintf('%02d', floor(($duration % 3600) / 60));
       }
       else // not same day, display in days
       {
       	$days = floor((strtotime($event->enddates) - strtotime($event->dates)) / (3600 * 24)) + 1;
-      	return $days . ' ' . JText::_('Days');  	
+      	return $days . ' ' . JText::_('COM_REDEVENT_Days');  	
       }
 		}
 	}
@@ -555,9 +555,9 @@ class redEVENTHelper {
   function canRegister($xref_id, $user_id = null)
   {  	
   	if (!file_exists(JPATH_SITE.DS.'components'.DS.'com_redform'.DS.'redform.core.php')) {
-			JError::raiseWarning(0,JTExt::_('REDEVENT_REGISTRATION_NOT_ALLOWED_REDFORMCORE_NOT_FOUND'));
+			JError::raiseWarning(0,JText::_('COM_REDEVENT_REGISTRATION_NOT_ALLOWED_REDFORMCORE_NOT_FOUND'));
       $result->canregister = 0;
-      $result->status = JTEXT::_('USER REDEVENT_REGISTRATION_NOT_ALLOWED_REDFORMCORE_NOT_FOUND REGISTRATION REACHED');
+      $result->status = JText::_('COM_REDEVENT_REGISTRATION_NOT_ALLOWED_REDFORMCORE_NOT_FOUND');
       return $result;
 		}
 		
@@ -584,7 +584,7 @@ class redEVENTHelper {
     if (!$event->registra)
     {
       $result->canregister = 0;
-      $result->status = JTEXT::_('NO REGISTRATION FOR THIS EVENT');
+      $result->status = JText::_('COM_REDEVENT_NO_REGISTRATION_FOR_THIS_EVENT');
       return $result;
     }
     else if (redEVENTHelper::isValidDate($event->registrationend))
@@ -592,7 +592,7 @@ class redEVENTHelper {
       if ( strtotime($event->registrationend) < $now_unix )
       {
         $result->canregister = 0;
-        $result->status = JTEXT::_('REGISTRATION IS OVER');
+        $result->status = JText::_('COM_REDEVENT_REGISTRATION_IS_OVER');
         return $result;
       }
     }
@@ -600,7 +600,7 @@ class redEVENTHelper {
     {
       // it's separated from previous case so that it is not checked if a registration end was set
       $result->canregister = 0;
-      $result->status = JTEXT::_('REGISTRATION IS OVER');
+      $result->status = JText::_('COM_REDEVENT_REGISTRATION_IS_OVER');
       return $result;
     }
 
@@ -622,7 +622,7 @@ class redEVENTHelper {
       if ($event->maxattendees <= $event->registered && $event->maxwaitinglist <= $event->waiting)
       {
         $result->canregister = 0;
-        $result->status = JTEXT::_('EVENT FULL');
+        $result->status = JText::_('COM_REDEVENT_EVENT_FULL');
         return $result;
       }
     }
@@ -678,7 +678,7 @@ class redEVENTHelper {
     if ($event->userregistered >= ($event->max_multi_signup ? $event->max_multi_signup : 1) )
     {
       $result->canregister = 0;
-      $result->status = JTEXT::_('USER MAX REGISTRATION REACHED');
+      $result->status = JText::_('COM_REDEVENT_USER_MAX_REGISTRATION_REACHED');
       return $result;
     }
         
@@ -1085,7 +1085,7 @@ class redEVENTHelper {
 		$title = (isset($event->full_title) ? $event->full_title : $event->title);
 		// item description text
 		$description = $title.'\\n';
-		$description .= JText::_( 'CATEGORY' ).': '.implode(', ', $categories).'\\n';
+		$description .= JText::_('COM_REDEVENT_CATEGORY' ).': '.implode(', ', $categories).'\\n';
 //		if (isset($event->summary) && $event->summary) {
 //			$description .= $event->summary.'\\n';
 //		}

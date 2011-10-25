@@ -28,13 +28,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <table class="courseinfo_tabel">
 <thead>
 	<tr>
-			<th class="courseinfo_titlename"><?php echo JText::_('EVENT_NAME'); ?></th>
-			<th class="courseinfo_titledate"><?php echo JText::_('EVENT_DATE'); ?></th>
-			<th class="courseinfo_titleduration"><?php echo JText::_('EVENT_DURATION'); ?></th>
-			<th class="courseinfo_titlevenue" colspan="2"><?php echo JText::_('EVENT_VENUE'); ?></th>
-			<th class="courseinfo_titleprice"><?php echo JText::_('EVENT_PRICE'); ?></th>
-			<th class="courseinfo_titlecredit"><?php echo JText::_('EVENT_CREDITS'); ?></th>
-			<th class="courseinfo_titlesignup"><?php echo JText::_('EVENT_SIGNUP'); ?></th>
+			<th class="courseinfo_titlename"><?php echo JText::_('COM_REDEVENT_EVENT_NAME'); ?></th>
+			<th class="courseinfo_titledate"><?php echo JText::_('COM_REDEVENT_EVENT_DATE'); ?></th>
+			<th class="courseinfo_titleduration"><?php echo JText::_('COM_REDEVENT_EVENT_DURATION'); ?></th>
+			<th class="courseinfo_titlevenue" colspan="2"><?php echo JText::_('COM_REDEVENT_EVENT_VENUE'); ?></th>
+			<th class="courseinfo_titleprice"><?php echo JText::_('COM_REDEVENT_EVENT_PRICE'); ?></th>
+			<th class="courseinfo_titlecredit"><?php echo JText::_('COM_REDEVENT_EVENT_CREDITS'); ?></th>
+			<th class="courseinfo_titlesignup"><?php echo JText::_('COM_REDEVENT_EVENT_SIGNUP'); ?></th>
 	</tr>
 </thead>
 <tbody>

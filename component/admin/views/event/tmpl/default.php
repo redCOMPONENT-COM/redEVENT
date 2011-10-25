@@ -26,7 +26,7 @@ JHTML::_('behavior.calendar');
 JHTML::_('behavior.tooltip');
  
 // for tooltips
-$this->infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-hint.png', JText::_( 'NOTES' ) );
+$this->infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-hint.png', JText::_('COM_REDEVENT_NOTES' ) );
 ?>
 <script language="javascript" type="text/javascript">
 
@@ -56,11 +56,11 @@ $this->infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-h
       title.replace(/\s/g,'');
       
       if ( title.length==0 ) {
-          alert("<?php echo JText::_( 'ADD TITLE', true ); ?>");
+          alert("<?php echo JText::_('COM_REDEVENT_ADD_TITLE', true ); ?>");
           validator.handleResponse(false,form.title);
           return false;
       } else if ( validator.validate(form.categories) === false ) {
-          alert("<?php echo JText::_( 'SELECT CATEGORY', true ); ?>");
+          alert("<?php echo JText::_('COM_REDEVENT_SELECT_CATEGORY', true ); ?>");
           validator.handleResponse(false,form.categories);
           return false;
       } else if (document.formvalidator.isValid(form) === false) {
@@ -80,18 +80,18 @@ $this->infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-h
 	}
 	
 	// for xref update script
-	var edittext = "<?php echo JText::_('EDIT'); ?>";
-  var confirmremove = "<?php echo JText::_('REMOVE_DATE_TIME_BLOCK'); ?>";
-  var textremove = "<?php echo JText::_('REMOVE'); ?>";
-  var textyes = "<?php echo JText::_('YES'); ?>";
-  var textno = "<?php echo JText::_('NO'); ?>";
+	var edittext = "<?php echo JText::_('COM_REDEVENT_EDIT'); ?>";
+  var confirmremove = "<?php echo JText::_('COM_REDEVENT_REMOVE_DATE_TIME_BLOCK'); ?>";
+  var textremove = "<?php echo JText::_('COM_REDEVENT_REMOVE'); ?>";
+  var textyes = "<?php echo JText::_('COM_REDEVENT_YES'); ?>";
+  var textno = "<?php echo JText::_('COM_REDEVENT_NO'); ?>";
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" >
 <?php
 echo $this->pane->startPane("det-pane");
 
-	echo $this->pane->startPanel( JText::_('EVENT'), 'event' );
+	echo $this->pane->startPanel( JText::_('COM_REDEVENT_EVENT'), 'event' );
 	echo $this->loadTemplate('event');
 	echo $this->pane->endPanel();
 
@@ -103,50 +103,50 @@ echo $this->pane->startPane("det-pane");
 		echo $this->pane->endPanel();
 	}
 	
-	$title = JText::_( 'SUBMIT_TYPES' );
+	$title = JText::_('COM_REDEVENT_SUBMIT_TYPES' );
 	echo $this->pane->startPanel( $title, 'submit_types' );
 	echo $this->loadTemplate('submission_types');
 	echo $this->pane->endPanel();
 	
-	$title = JText::_( 'EMAILS' );
+	$title = JText::_('COM_REDEVENT_EMAILS' );
 	echo $this->pane->startPanel( $title, 'emails' );
 	echo $this->loadTemplate('emails');
 	echo $this->pane->endPanel();
 	
-	$title = JText::_( 'FORM' );
+	$title = JText::_('COM_REDEVENT_FORM' );
 	echo $this->pane->startPanel( $title, 'form' );
 	if ($this->redform_install) {
 		echo $this->loadTemplate('form');
 	}
-	else echo JText::_('REDFORM_NOT_INSTALLED');
+	else echo JText::_('COM_REDEVENT_REDFORM_NOT_INSTALLED');
 	echo $this->pane->endPanel();
 	
-	$title = JText::_( 'SUBMISSION' );
+	$title = JText::_('COM_REDEVENT_SUBMISSION' );
 	echo $this->pane->startPanel( $title, 'submission' );
 	echo $this->loadTemplate('submission');
 	echo $this->pane->endPanel();
 	
-	$title = JText::_( 'WAITINGLIST' );
+	$title = JText::_('COM_REDEVENT_WAITINGLIST' );
 	echo $this->pane->startPanel( $title, 'waitinglist' );
 	echo $this->loadTemplate('waitinglist');
 	echo $this->pane->endPanel();
 
-	$title = JText::_( 'CONFIRMATION' );
+	$title = JText::_('COM_REDEVENT_CONFIRMATION' );
 	echo $this->pane->startPanel( $title, 'confirmation' );
 	echo $this->loadTemplate('confirmation');
 	echo $this->pane->endPanel();
 	
-	$title = JText::_( 'REGISTRATION' );
+	$title = JText::_('COM_REDEVENT_REGISTRATION' );
 	echo $this->pane->startPanel( $title, 'registra' );
  	echo $this->loadTemplate('registration');
 	echo $this->pane->endPanel();
 	
-	$title = JText::_( 'PAYMENT' );
+	$title = JText::_('COM_REDEVENT_PAYMENT' );
 	echo $this->pane->startPanel( $title, 'payment' );
  	echo $this->loadTemplate('payment');
 	echo $this->pane->endPanel();
 	
-	$title = JText::_( 'IMAGE' );
+	$title = JText::_('COM_REDEVENT_IMAGE' );
 	echo $this->pane->startPanel( $title, 'image' );
 	$k = 0;
 	?>
@@ -154,7 +154,7 @@ echo $this->pane->startPane("det-pane");
 		<tr class="row<?php echo $k = 1 - $k; ?>">
 			<td class="redevent_settings">
 				<label for="image">
-					<?php echo JText::_( 'CHOOSE IMAGE' ).':'; ?>
+					<?php echo JText::_('COM_REDEVENT_CHOOSE_IMAGE' ).':'; ?>
 				</label>
 			</td>
 			<td>
@@ -180,7 +180,7 @@ echo $this->pane->startPane("det-pane");
 	<?php
 	echo $this->pane->endPanel();
 	
-  $title = JText::_( 'CUSTOM FIELDS' );
+  $title = JText::_('COM_REDEVENT_CUSTOM_FIELDS' );
   echo $this->pane->startPanel( $title, 'customfields' );
   echo $this->loadTemplate('customfields');
   echo $this->pane->endPanel();
@@ -190,7 +190,7 @@ echo $this->pane->startPane("det-pane");
   echo $this->loadTemplate('attachments');
   echo $this->pane->endPanel();
   
-	$title = JText::_( 'METADATA INFORMATION' );
+	$title = JText::_('COM_REDEVENT_METADATA_INFORMATION' );
 	echo $this->pane->startPanel( $title, 'meta' );
 	echo $this->loadTemplate('metadata');
 	echo $this->pane->endPanel();

@@ -72,7 +72,7 @@ class RedeventViewVenue extends JView
 			echo json_encode($resp);
 		}
 		else {
-			echo JText::_('ERROR: JSON IS NOT ENABLED');
+			echo JText::_('COM_REDEVENT_ERROR_JSON_IS_NOT_ENABLED');
 		}
 		exit;
 	}

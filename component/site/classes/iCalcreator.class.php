@@ -4688,7 +4688,7 @@ class calendarComponent {
           case 'BYWEEKNO':
           case 'BYMONTH':
           case 'BYSETPOS': {
-            $content2 .= ";$rulelabel=";
+            $content2 .= ";$rulelabel="COM_REDEVENT_;
             if( is_array( $rulevalue )) {
               foreach( $rulevalue as $vix => $valuePart ) {
                 $content2 .= ( $vix ) ? ',' : null;
@@ -4700,7 +4700,7 @@ class calendarComponent {
             break;
           }
           case 'BYDAY': {
-            $content2 .= ";$rulelabel=";
+            $content2 .= ";$rulelabel="COM_REDEVENT_;
             $bydaycnt = 0;
             foreach( $rulevalue as $vix => $valuePart ) {
               $content21 = $content22 = null;

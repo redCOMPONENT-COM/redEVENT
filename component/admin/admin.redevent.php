@@ -48,7 +48,7 @@ require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield.php
 
 // redform
 if (!file_exists(JPATH_SITE.DS.'components'.DS.'com_redform'.DS.'redform.core.php')) {
-	JError::raiseWarning(0,JTExt::_('REDEVENT_ERROR_REDFORMCORE_NOT_FOUND'));
+	JError::raiseWarning(0,JText::_('COM_REDEVENT_ERROR_REDFORMCORE_NOT_FOUND'));
 }
 else {
 	include_once(JPATH_SITE.DS.'components'.DS.'com_redform'.DS.'redform.core.php');

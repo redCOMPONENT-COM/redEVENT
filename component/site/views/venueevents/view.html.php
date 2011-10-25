@@ -83,7 +83,7 @@ class RedeventViewVenueevents extends JView
 		//does the venue exist?
 		if ($venue->id == 0)
 		{
-			return JError::raiseError( 404, JText::sprintf( 'Venue #%d not found', $venue->id ) );
+			return JError::raiseError( 404, JText::sprintf( 'COM_REDEVENT_Venue_d_not_found', $venue->id ) );
 		}
 
 		//are events available?
@@ -114,9 +114,9 @@ class RedeventViewVenueevents extends JView
 		//create the pathway
 		if ($task == 'archive') {
 			$link = JRoute::_( RedeventHelperRoute::getVenueEventsRoute($venue->slug, 'archive') );
-			$pathway->addItem( JText::_( 'ARCHIVE' ).' - '.$venue->venue, $link);
+			$pathway->addItem( JText::_('COM_REDEVENT_ARCHIVE' ).' - '.$venue->venue, $link);
 			$print_link = JRoute::_('index.php?option=com_redevent&view=venueevents&id='. $venue->slug .'&task=archive&pop=1&tmpl=component');
-			$pagetitle = $venue->venue.' - '.JText::_( 'ARCHIVE' );
+			$pagetitle = $venue->venue.' - '.JText::_('COM_REDEVENT_ARCHIVE' );
 		} else {
 			$link = JRoute::_( RedeventHelperRoute::getVenueEventsRoute($venue->slug) );
 			$pathway->addItem( $venue->venue, $link);

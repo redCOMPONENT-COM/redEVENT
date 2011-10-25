@@ -54,7 +54,7 @@ class RedEventViewCategoryelement extends JView {
 		$template 			= $mainframe->getTemplate();
 
 		//prepare document
-		$document->setTitle(JText::_( 'SELECT CATEGORY'));;
+		$document->setTitle(JText::_('COM_REDEVENT_SELECT_CATEGORY'));;
 		$document->addStyleSheet('templates/'.$template.'/css/general.css');
 
 		// Get data from the model

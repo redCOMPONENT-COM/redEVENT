@@ -39,11 +39,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	
 	<form action="<?php echo $this->action; ?>" method="post" name="manageform">
 	<div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
-		<h2 class="register"><?php echo JText::_( 'REGISTERED USERS' ).': '.$this->row->full_title; ?>
+		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).': '.$this->row->full_title; ?>
 		<?php if ($this->manage_attendees): ?>
     <?php echo ELOutput::xrefattendeesbutton($this->row->xref); ?>
 		<?php endif; ?></h2>
-		<?php echo JHTML::link('index.php?option=com_redevent&controller=attendees&task=exportattendees&format=csv&xref='. $this->row->xref, JText::_('CSV export'));?>
+		<?php echo JHTML::link('index.php?option=com_redevent&controller=attendees&task=exportattendees&format=csv&xref='. $this->row->xref, JText::_('COM_REDEVENT_CSV_export'));?>
 						
 		<?php if (count($this->roles)): ?>
 		<?php $this->showRoles(); ?>
@@ -80,7 +80,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	      				  <?php if ($this->unreg_check && $register->submitter->uid == $this->user->get('id')): ?>
 	      				  <?php $unreg_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug) .'&task=delreguser&rid=' .$register->attendee_id); ?>
 	                <td class="attendee">
-	                  <?php echo JHTML::link($unreg_url, JText::_('cancel'), array('class' => 'unreglink')); ?>
+	                  <?php echo JHTML::link($unreg_url, JText::_('COM_REDEVENT_cancel'), array('class' => 'unreglink')); ?>
 	                </td>
 	                <?php else: ?>
 	                <td class="attendee"></td>
@@ -96,7 +96,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		</div>
 		
 		<?php if ($waiting_count): ?>
-		<h2 class="register"><?php echo JText::_( 'WAITING LIST' ); ?></h2>
+		<h2 class="register"><?php echo JText::_('COM_REDEVENT_WAITING_LIST' ); ?></h2>
     
     <div class="register">
       <table class="registered">
@@ -127,7 +127,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 <?php if ($this->unreg_check && $register->submitter->uid == $this->user->get('id')): ?>
                 <?php $unreg_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug).'&task=delreguser&rid=' .$register->attendee_id); ?>
                 <td class="attendee">
-                  <?php echo JHTML::link($unreg_url, JText::_('cancel'), array('class' => 'unreglink')); ?>
+                  <?php echo JHTML::link($unreg_url, JText::_('COM_REDEVENT_cancel'), array('class' => 'unreglink')); ?>
                 </td>
                 <?php else: ?>
                 <td class="attendee"></td>
@@ -146,5 +146,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	</form>
 	<?php
 	
-echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=myevents'), JText::_('RETURN TO MY EVENTS'), array('class' => 're-back'));
+echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=myevents'), JText::_('COM_REDEVENT_RETURN_TO_MY_EVENTS'), array('class' => 're-back'));
 ?>

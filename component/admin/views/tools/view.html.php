@@ -44,7 +44,7 @@ class RedEventViewTools extends JView {
 
 		//only admins have access to this view
 		if ($user->get('gid') < 24) {
-			JError::raiseWarning( 'REDEVENT_GENERIC_ERROR', JText::_( 'ALERTNOTAUTH'));
+			JError::raiseWarning( 'REDEVENT_GENERIC_ERROR', JText::_('COM_REDEVENT_ALERTNOTAUTH'));
 			$mainframe->redirect( 'index.php?option=com_redevent&view=redevent' );
 		}
 
@@ -56,7 +56,7 @@ class RedEventViewTools extends JView {
     ELAdmin::setMenu();
 
 		//create the toolbar
-		JToolBarHelper::title( JText::_( 'Tools' ), 'tools' );
+		JToolBarHelper::title( JText::_('COM_REDEVENT_Tools' ), 'tools' );
 		JToolBarHelper::help( 'redevent.tools', true );
 
 		parent::display($tpl);

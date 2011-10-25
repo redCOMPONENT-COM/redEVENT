@@ -100,7 +100,7 @@ class RedeventModelVenues extends JModel
     $this->_db->setQuery($sub);
     $obj = $this->_db->loadObject();
     if (!$obj) {
-      JError::raiseWarning(0, JText::_('VENUE CATEGORY NOT FOUND'));
+      JError::raiseWarning(0, JText::_('COM_REDEVENT_VENUE_CATEGORY_NOT_FOUND'));
     }
     else {
       $this->_category = $obj;

@@ -36,7 +36,7 @@ $row = & $this->row;
 
       <dl class="location floattext">
         <?php if (count($row->categories)): ?>
-        <dt class="venue_categories"><?php echo (count($row->categories) > 1 ? JText::_( 'CATEGORIES' ) : JText::_( 'CATEGORY' )) .':'; ?></dt>
+        <dt class="venue_categories"><?php echo (count($row->categories) > 1 ? JText::_('COM_REDEVENT_CATEGORIES' ) : JText::_('COM_REDEVENT_CATEGORY' )) .':'; ?></dt>
           <dd class="venue_categories">
           <?php
           $cats = array(); 
@@ -56,7 +56,7 @@ $row = & $this->row;
         <?php endif; ?>
         
         <?php if (($this->elsettings->showdetlinkvenue == 1) && (!empty($row->url))) : ?>
-        <dt class="venue_website"><?php echo JText::_( 'WEBSITE' ).':'; ?></dt>
+        <dt class="venue_website"><?php echo JText::_('COM_REDEVENT_WEBSITE' ).':'; ?></dt>
           <dd class="venue_website">
           <a href="<?php echo $row->url; ?>" target="_blank"> <?php echo $row->urlclean; ?></a>
         </dd>
@@ -67,41 +67,41 @@ $row = & $this->row;
           ?>
 
           <?php if ( $row->street ) : ?>
-          <dt class="venue_street"><?php echo JText::_( 'STREET' ).':'; ?></dt>
+          <dt class="venue_street"><?php echo JText::_('COM_REDEVENT_STREET' ).':'; ?></dt>
         <dd class="venue_street">
             <?php echo $this->escape($row->street); ?>
         </dd>
         <?php endif; ?>
 
         <?php if ( $row->plz ) : ?>
-          <dt class="venue_plz"><?php echo JText::_( 'ZIP' ).':'; ?></dt>
+          <dt class="venue_plz"><?php echo JText::_('COM_REDEVENT_ZIP' ).':'; ?></dt>
         <dd class="venue_plz">
             <?php echo $this->escape($row->plz); ?>
         </dd>
         <?php endif; ?>
 
         <?php if ( $row->city ) : ?>
-          <dt class="venue_city"><?php echo JText::_( 'CITY' ).':'; ?></dt>
+          <dt class="venue_city"><?php echo JText::_('COM_REDEVENT_CITY' ).':'; ?></dt>
           <dd class="venue_city">
             <?php echo $this->escape($row->city); ?>
           </dd>
           <?php endif; ?>
 
           <?php if ( $row->state ) : ?>
-        <dt class="venue_state"><?php echo JText::_( 'STATE' ).':'; ?></dt>
+        <dt class="venue_state"><?php echo JText::_('COM_REDEVENT_STATE' ).':'; ?></dt>
         <dd class="venue_state">
             <?php echo $this->escape($row->state); ?>
         </dd>
         <?php endif; ?>
 
         <?php if ( $row->country ) : ?>
-        <dt class="venue_country"><?php echo JText::_( 'COUNTRY' ).':'; ?></dt>
+        <dt class="venue_country"><?php echo JText::_('COM_REDEVENT_COUNTRY' ).':'; ?></dt>
           <dd class="venue_country">
             <?php echo $row->countryimg ? $row->countryimg : $row->country; ?>
           </dd>
           <?php endif; ?>
 
-          <dt class="venue_assignedevents"><?php echo JText::_( 'EVENTS' ).':'; ?></dt>
+          <dt class="venue_assignedevents"><?php echo JText::_('COM_REDEVENT_EVENTS' ).':'; ?></dt>
           <dd class="venue_assignedevents">
             <a href="<?php echo $row->target; ?>"><?php echo $row->assignedevents; ?></a>
           </dd>
@@ -113,7 +113,7 @@ $row = & $this->row;
   </div>
     <?php if ($this->elsettings->showlocdescription == 1 && !empty($row->locdescription)) : ?>
     <div class="description">
-      <h2 class="description"><?php echo JText::_( 'DESCRIPTION' ).':'; ?></h2>
+      <h2 class="description"><?php echo JText::_('COM_REDEVENT_DESCRIPTION' ).':'; ?></h2>
         <?php echo $row->locdescription; ?>
     </div>
     <?php endif; ?>

@@ -70,7 +70,7 @@ class RedEventModelLog extends JModel
 		}
 		
 		if (empty($contents)) {
-			$contents = array(JText::_('No log'));
+			$contents = array(JText::_('COM_REDEVENT_No_log'));
 		}
 		else {
 			$contents = explode("\n", $contents);

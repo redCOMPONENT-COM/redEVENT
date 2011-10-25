@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <?php
 // Set toolbar items for the page
 $edit		= JRequest::getVar('edit',true);
-$text = !$edit ? JText::_( 'New' ) : JText::_( 'Edit' );
+$text = !$edit ? JText::_('COM_REDEVENT_New' ) : JText::_('COM_REDEVENT_Edit' );
 JToolBarHelper::title(   JText::_( 'COM_REDEVENT_PRICEGROUPS_PRICEGROUP' ).': <small><small>[ ' . $text.' ]</small></small>' );
 JToolBarHelper::save();
 JToolBarHelper::apply();
@@ -67,7 +67,7 @@ $imagepath = '/administrator/components/com_redevent/assets/images/';
     // do field validation
     var validator = document.formvalidator;
     if ( validator.validate(form.name) === false ){
-      alert( "<?php echo JText::_( 'NAME IS REQUIRED', true ); ?>" );
+      alert( "<?php echo JText::_('COM_REDEVENT_NAME_IS_REQUIRED', true ); ?>" );
     } else {
       submitform( pressbutton );
     }
@@ -82,14 +82,14 @@ $imagepath = '/administrator/components/com_redevent/assets/images/';
 
 <table class="admintable">
 	<tr>
-		<td width="100" align="right" class="key"><label for="name"><?php echo JText::_( 'Name' ); ?>:
+		<td width="100" align="right" class="key"><label for="name"><?php echo JText::_('COM_REDEVENT_Name' ); ?>:
 		</label></td>
 		<td><input class="text_area required" type="text" name="name" id="name"
 			size="32" maxlength="250" value="<?php echo $this->object->name; ?>" />
 		</td>
 	</tr>
 	<tr>
-		<td width="100" align="right" class="key"><label for="alias"><?php echo JText::_( 'Alias' ); ?>:
+		<td width="100" align="right" class="key"><label for="alias"><?php echo JText::_('COM_REDEVENT_Alias' ); ?>:
 		</label></td>
 		<td><input class="text_area" type="text" name="alias" id="alias"
 			size="32" maxlength="250" value="<?php echo $this->object->alias; ?>" />
@@ -110,14 +110,14 @@ $imagepath = '/administrator/components/com_redevent/assets/images/';
 		</td>
 	</tr>
 	<tr>
-		<td width="100" align="right" class="key"><label for="alias"><?php echo JText::_( 'Image' ); ?>:</label></td>
+		<td width="100" align="right" class="key"><label for="alias"><?php echo JText::_('COM_REDEVENT_Image' ); ?>:</label></td>
 		<td>
 			<?php	echo JHTML::_('list.images', 'image', $this->object->image, 'id="image"', $imagepath); ?>
-			<img src="<?php echo JURI::root().$imagepath.$this->object->image; ?>" id="img-preview" border="0" alt="<?php echo JText::_( 'Preview' ); ?>" />
+			<img src="<?php echo JURI::root().$imagepath.$this->object->image; ?>" id="img-preview" border="0" alt="<?php echo JText::_('COM_REDEVENT_Preview' ); ?>" />
 		</td>
 	</tr>
 	<tr>
-		<td valign="top" align="right" class="key"><label for="ordering"> <?php echo JText::_( 'Ordering' ); ?>:
+		<td valign="top" align="right" class="key"><label for="ordering"> <?php echo JText::_('COM_REDEVENT_Ordering' ); ?>:
 		</label></td>
 		<td><?php echo $this->lists['ordering']; ?></td>
 	</tr>

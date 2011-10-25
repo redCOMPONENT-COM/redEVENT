@@ -57,7 +57,7 @@ class RedEventViewxrefelement extends JView {
 		$template 			= $mainframe->getTemplate();
 
 		//prepare the document
-		$document->setTitle(JText::_( 'SELECTEVENT' ));
+		$document->setTitle(JText::_('COM_REDEVENT_SELECTEVENT' ));
 		$document->addStyleSheet('templates/'.$template.'/css/general.css');
 
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
@@ -76,10 +76,10 @@ class RedEventViewxrefelement extends JView {
 
 		//Create the filter selectlist
 		$filters = array();
-		$filters[] = JHTML::_('select.option', '1', JText::_( 'EVENT TITLE' ) );
-		$filters[] = JHTML::_('select.option', '2', JText::_( 'VENUE' ) );
-		$filters[] = JHTML::_('select.option', '3', JText::_( 'CITY' ) );
-		$filters[] = JHTML::_('select.option', '4', JText::_( 'CATEGORY' ) );
+		$filters[] = JHTML::_('select.option', '1', JText::_('COM_REDEVENT_EVENT_TITLE' ) );
+		$filters[] = JHTML::_('select.option', '2', JText::_('COM_REDEVENT_VENUE' ) );
+		$filters[] = JHTML::_('select.option', '3', JText::_('COM_REDEVENT_CITY' ) );
+		$filters[] = JHTML::_('select.option', '4', JText::_('COM_REDEVENT_CATEGORY' ) );
 		$lists['filter'] = JHTML::_('select.genericlist', $filters, 'filter', 'size="1" class="inputbox"', 'value', 'text', $filter );
 
 		// search filter

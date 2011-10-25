@@ -120,7 +120,7 @@ class RedEventModelTools extends JModel
 			foreach ($images as $image)
 			{
 				if ($image !== JFilterInput::clean($image, 'path')) {
-					RedeventError::raiseWarning(100, JText::_('UNABLE TO DELETE').' '.htmlspecialchars($image, ENT_COMPAT, 'UTF-8'));
+					RedeventError::raiseWarning(100, JText::_('COM_REDEVENT_UNABLE_TO_DELETE').' '.htmlspecialchars($image, ENT_COMPAT, 'UTF-8'));
 					$fail++;
 					continue;
 				}
@@ -166,10 +166,10 @@ class RedEventModelTools extends JModel
 		if (count($res)) {
 			$dbok = false;
 			$error = array();
-			$error[] = JText::sprintf('%s attendees records without matching redform submitters', count($res));
+			$error[] = JText::sprintf('COM_REDEVENT_d_attendees_records_without_matching_redform_submitters', count($res));
 			foreach ($res as $r)
 			{
-				$error[] = JText::sprintf('event %s session %s / register id %s', ($r->eventid ? $r->eventid : '?'), $r->xref, $r->id);
+				$error[] = JText::sprintf('COM_REDEVENT_event_d_session_d_slash_register_id_d', ($r->eventid ? $r->eventid : '?'), $r->xref, $r->id);
 			}
 			$errors[] = implode('<br/>', $error);
 		}
@@ -203,8 +203,8 @@ class RedEventModelTools extends JModel
 			$this->_db->setQuery($q);
 			if(!$this->_db->query()) 
 			{
-	      RedeventError::raiseWarning(0, JText::_( "CANT DELETE REGISTRATIONS" ) . ': ' . $this->_db->getErrorMsg() );
-				$this->setError(JText::_( "CANT DELETE REGISTRATIONS" ) . ': '. $this->_db->getErrorMsg());
+	      RedeventError::raiseWarning(0, JText::_( "COM_REDEVENT_CANT_DELETE_REGISTRATIONS" ) . ': ' . $this->_db->getErrorMsg() );
+				$this->setError(JText::_( "COM_REDEVENT_CANT_DELETE_REGISTRATIONS" ) . ': '. $this->_db->getErrorMsg());
 				return false;
 			}
     }

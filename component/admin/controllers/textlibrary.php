@@ -93,16 +93,16 @@ class RedEventControllerTextLibrary extends RedEventController {
     $cid    = JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
     if (!is_array( $cid ) || count( $cid ) < 1) {
-      JError::raiseError(500, JText::_( 'Select an item to delete' ) );
+      JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_delete' ) );
     }
 
     $model = $this->getModel('textlibrary');
 
     if ($model->delete($cid)) {
-	    $msg = count( $cid ).' '.JText::_( 'TAGS DELETED');
+	    $msg = count( $cid ).' '.JText::_('COM_REDEVENT_TAGS_DELETED');
     }
     else {
-    	$msg = JText::_('ERROR REMOVE TAG FAILED' . ': ' . $model->getError());
+    	$msg = JText::_('COM_REDEVENT_ERROR_REMOVE_TAG_FAILED' . ': ' . $model->getError());
     	RedeventError::raiseWarning(1, $msg);
     }    
 
@@ -166,7 +166,7 @@ class RedEventControllerTextLibrary extends RedEventController {
       $handle = fopen($file['tmp_name'],'r');
       if(!$handle) 
       {
-        $msg = JText::_('Cannot open uploaded file.');  
+        $msg = JText::_('COM_REDEVENT_Cannot_open_uploaded_file.');  
         $this->setRedirect( 'index.php?option=com_redevent&controller=textlibrary&task=import', $msg, 'error' ); 
         return;   
       }

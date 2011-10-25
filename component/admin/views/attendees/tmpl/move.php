@@ -78,7 +78,7 @@ $selectxref_link = JRoute::_('index.php?option=com_redevent&controller=attendees
 			<td>
 				<input type="text" name="dest_name" id="dest_name" readonly="readonly" value="<?php echo $this->session->title; ?>" />
 				<input type="hidden" name="dest" id="dest" value="<?php echo $this->session->xref; ?>" />
-				<a class="xrefmodal" title="<?php echo JText::_('COM_REDEVENT_ATTENDEES_MOVE_SELECT_DESTINATION '); ?>" href="<?php echo $selectxref_link; ?>" rel="{handler: 'iframe', size: {x: 800, y: 500}}">
+				<a class="xrefmodal" title="<?php echo JText::_('COM_REDEVENT_ATTENDEES_MOVE_SELECT_DESTINATION'); ?>" href="<?php echo $selectxref_link; ?>" rel="{handler: 'iframe', size: {x: 800, y: 500}}">
 					<span><?php echo JText::_('COM_REDEVENT_ATTENDEES_MOVE_SELECT_DESTINATION')?></span>
         </a>
 			</td>

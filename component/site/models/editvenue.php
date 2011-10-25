@@ -94,7 +94,7 @@ class RedeventModelEditvenue extends JModel
 			* Error if allready checked out
 			*/
 			if ($this->_venue->isCheckedOut( $user->get('id') )) {
-				$mainframe->redirect( 'index.php?option=&view='.$view, JText::_( 'THE VENUE' ).' '.$this->_venue->venue.' '.JText::_( 'EDITED BY ANOTHER ADMIN' ) );
+				$mainframe->redirect( 'index.php?option=&view='.$view, JText::_('COM_REDEVENT_THE_VENUE' ).' '.$this->_venue->venue.' '.JText::_('COM_REDEVENT_EDITED_BY_ANOTHER_ADMIN' ) );
 			} else {
 				$this->_venue->checkout( $user->get('id') );
 			}
@@ -282,7 +282,7 @@ class RedeventModelEditvenue extends JModel
 
 		//If image upload is required we will stop here if no file was attached
 		if ( empty($file['name']) && $params->get('edit_image', 1) == 2 ) {
-			$this->setError( JText::_( 'IMAGE EMPTY' ) );
+			$this->setError( JText::_('COM_REDEVENT_IMAGE_EMPTY' ) );
 			return false;
 		}
 
@@ -304,7 +304,7 @@ class RedeventModelEditvenue extends JModel
 			$filepath = $base_Dir . $filename;
 
 			if (!JFile::upload( $file['tmp_name'], $filepath )) {
-				$this->setError( JText::_( 'UPLOAD FAILED' ) );
+				$this->setError( JText::_('COM_REDEVENT_UPLOAD_FAILED' ) );
 				return false;
 			} else {
 				$row->locimage = $filename;
@@ -388,20 +388,20 @@ class RedeventModelEditvenue extends JModel
 
 			$mail = JFactory::getMailer();
 
-			$state 	= $row->published ? JText::sprintf('MAIL VENUE PUBLISHED', $link) : JText::_('MAIL VENUE UNPUBLISHED');
+			$state 	= $row->published ? JText::sprintf('COM_REDEVENT_MAIL_VENUE_PUBLISHED', $link) : JText::_('COM_REDEVENT_MAIL_VENUE_UNPUBLISHED');
 
 			If ($edited) {
 
 				$modified_ip 	= getenv('REMOTE_ADDR');
-				$edited 		= JHTML::Date( $row->modified, JText::_( 'DATE_FORMAT_LC2' ) );
-				$mailbody 		= JText::sprintf('MAIL EDIT VENUE', $user->name, $user->username, $user->email, $modified_ip, $edited, $row->venue, $row->url, $row->street, $row->plz, $row->city, $row->country, $row->locdescription, $state);
-				$mail->setSubject( $SiteName.JText::_( 'EDIT VENUE MAIL' ) );
+				$edited 		= JHTML::Date( $row->modified, JText::_('DATE_FORMAT_LC2' ) );
+				$mailbody 		= JText::sprintf('COM_REDEVENT_MAIL_EDIT_VENUE', $user->name, $user->username, $user->email, $modified_ip, $edited, $row->venue, $row->url, $row->street, $row->plz, $row->city, $row->country, $row->locdescription, $state);
+				$mail->setSubject( $SiteName.JText::_('COM_REDEVENT_EDIT_VENUE_MAIL' ) );
 
 			} else {
 
-				$created 		= JHTML::Date( $row->modified, JText::_( 'DATE_FORMAT_LC2' ) );
-				$mailbody 		= JText::sprintf('MAIL NEW VENUE', $user->name, $user->username, $user->email, $row->author_ip, $created, $row->venue, $row->url, $row->street, $row->plz, $row->city, $row->country, $row->locdescription, $state);
-				$mail->setSubject( $SiteName.JText::_( 'NEW VENUE MAIL' ) );
+				$created 		= JHTML::Date( $row->modified, JText::_('DATE_FORMAT_LC2' ) );
+				$mailbody 		= JText::sprintf('COM_REDEVENT_MAIL_NEW_VENUE', $user->name, $user->username, $user->email, $row->author_ip, $created, $row->venue, $row->url, $row->street, $row->plz, $row->city, $row->country, $row->locdescription, $state);
+				$mail->setSubject( $SiteName.JText::_('COM_REDEVENT_NEW_VENUE_MAIL' ) );
 
 			}
 
@@ -421,19 +421,19 @@ class RedeventModelEditvenue extends JModel
 
 			$usermail = JFactory::getMailer();
 
-			$state 	= $row->published ? JText::sprintf('USER MAIL VENUE PUBLISHED', $link) : JText::_('USER MAIL VENUE UNPUBLISHED');
+			$state 	= $row->published ? JText::sprintf('COM_REDEVENT_USER_MAIL_VENUE_PUBLISHED', $link) : JText::_('COM_REDEVENT_USER_MAIL_VENUE_UNPUBLISHED');
 
 			If ($edited) {
 
-				$edited 		= JHTML::Date( $row->modified, JText::_( 'DATE_FORMAT_LC2' ) );
-				$mailbody 		= JText::sprintf('USER MAIL EDIT VENUE', $user->name, $user->username, $edited, $row->venue, $row->url, $row->street, $row->plz, $row->city, $row->country, $row->locdescription, $state);
-				$usermail->setSubject( $SiteName.JText::_( 'EDIT USER VENUE MAIL' ) );
+				$edited 		= JHTML::Date( $row->modified, JText::_('DATE_FORMAT_LC2' ) );
+				$mailbody 		= JText::sprintf('COM_REDEVENT_USER_MAIL_EDIT_VENUE', $user->name, $user->username, $edited, $row->venue, $row->url, $row->street, $row->plz, $row->city, $row->country, $row->locdescription, $state);
+				$usermail->setSubject( $SiteName.JText::_('COM_REDEVENT_EDIT_USER_VENUE_MAIL' ) );
 
 			} else {
 
-				$created 		= JHTML::Date( $row->modified, JText::_( 'DATE_FORMAT_LC2' ) );
-				$mailbody 		= JText::sprintf('USER MAIL NEW VENUE', $user->name, $user->username, $created, $row->venue, $row->url, $row->street, $row->plz, $row->city, $row->country, $row->locdescription, $state);
-				$usermail->setSubject( $SiteName.JText::_( 'NEW USER VENUE MAIL' ) );
+				$created 		= JHTML::Date( $row->modified, JText::_('DATE_FORMAT_LC2' ) );
+				$mailbody 		= JText::sprintf('COM_REDEVENT_USER_MAIL_NEW_VENUE', $user->name, $user->username, $created, $row->venue, $row->url, $row->street, $row->plz, $row->city, $row->country, $row->locdescription, $state);
+				$usermail->setSubject( $SiteName.JText::_('COM_REDEVENT_NEW_USER_VENUE_MAIL' ) );
 
 			}
 

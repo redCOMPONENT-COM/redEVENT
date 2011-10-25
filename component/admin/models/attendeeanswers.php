@@ -114,7 +114,7 @@ class RedEventModelAttendeeanswers extends JModel
 			list($form_id, $answer_id) = $this->_db->loadRow();
 			
 			if (!$form_id || !$answer_id) {
-			  Jerror::raiseError(0, JText::_('No data'));
+			  Jerror::raiseError(0, JText::_('COM_REDEVENT_No_data'));
 			}
 			
 			// get fields

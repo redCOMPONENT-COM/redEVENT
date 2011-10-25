@@ -24,9 +24,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 
 <div id="redevent" class="jlmap">
-  <div id="goback"><a href="javascript:history.back()"><?php echo JText::_('Back'); ?></a></div>
+  <div id="goback"><a href="javascript:history.back()"><?php echo JText::_('COM_REDEVENT_Back'); ?></a></div>
   <h1 class="componentheading">
-    <?php echo JText::_('Locations'); ?>
+    <?php echo JText::_('COM_REDEVENT_Locations'); ?>
   </h1>
 
 <?php if ($this->elsettings->gmapkey): ?>
@@ -97,7 +97,7 @@ window.addEvent('domready', function() {
 	    <?php if ($this->params->get('show_vcat_filter', 1)) : ?>
 	      <tr>
 	        <td>
-			      <label for="filter_type"><?php echo JText::_('FILTER VENUES CATEGORY'); ?></label>
+			      <label for="filter_type"><?php echo JText::_('COM_REDEVENT_FILTER_VENUES_CATEGORY'); ?></label>
 			    </td>
 			    <td>
 			      <?php echo $this->lists['venuescats']; ?>
@@ -107,7 +107,7 @@ window.addEvent('domready', function() {
 	    <?php if ($this->params->get('show_cat_filter', 1)) : ?>
 	      <tr>
 	        <td>
-		      <label for="filter_type"><?php echo JText::_('FILTER EVENTS CATEGORY'); ?></label>
+		      <label for="filter_type"><?php echo JText::_('COM_REDEVENT_FILTER_EVENTS_CATEGORY'); ?></label>
 	        </td>
 	        <td>
 		      <?php echo $this->lists['eventscats']; ?>

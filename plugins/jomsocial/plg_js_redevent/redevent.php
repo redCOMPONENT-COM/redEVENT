@@ -86,7 +86,7 @@ class plgCommunityRedevent extends CApplications
 		if( !file_exists( $this->_path . DS . 'admin.redevent.php' ) ){
 			$el_exist = 0;
 			$content = "<div class=\"icon-nopost\"><img src='".JURI::base()."components/com_community/assets/error.gif' alt=\"\" /></div>";	
-			$content .= "<div class=\"content-nopost\">".JText::_('PLG_REDEVENT REDEVENT NOT INSTALLED')."</div>";
+			$content .= "<div class=\"content-nopost\">".JText::_('PLG_JOMSOCIAL_REDEVENT_REDEVENT_NOT_INSTALLED')."</div>";
 		}else{
 			$user		= & CFactory::getActiveProfile();
 			$userName = $user->getDisplayName();
@@ -120,7 +120,7 @@ class plgCommunityRedevent extends CApplications
 		            <img src="<?php echo JURI::base(); ?>plugins/community/redevent/favicon.png" alt="" />
 		        </div>
 		        <div class="content-nopost">
-		            <?php echo $userName; ?> <?php echo JText::_('PLG_REDEVENT NO EVENT JOINED'); ?>
+		            <?php echo $userName; ?> <?php echo JText::_('PLG_JOMSOCIAL_REDEVENT_NO_EVENT_JOINED'); ?>
 		        </div>
 				<?php
 			}
@@ -129,7 +129,7 @@ class plgCommunityRedevent extends CApplications
 			?>
 				<div id="community-redevent-wrap">
 				  <?php if ($params->get('showattending', 1)): ?>
-				  <div class="ctitle"><?php echo JText::_('Going to') ?></div>
+				  <div class="ctitle"><?php echo JText::_('PLG_JOMSOCIAL_REDEVENT_Going_to') ?></div>
 				    <table cellpadding="2" cellspacing="0" border="0" width="100%">
 					
 					<?php foreach( $events['isregistered'] as $event ): ?>
@@ -142,7 +142,7 @@ class plgCommunityRedevent extends CApplications
 									<?php echo $event->title; ?>
 								</a>
 								<?php if( !empty( $event->venue ) ): ?>
-									<?php echo JText::_('PLG_REDEVENT AT'); ?>
+									<?php echo JText::_('PLG_JOMSOCIAL_REDEVENT_AT'); ?>
 									<a href="<?php echo JRoute::_( 'index.php?option=com_redevent&view=venueevents&id=' . $event->venueslug . '&Itemid=' . $itemId);?>"><?php echo $event->venue;?></a>
 								<?php endif; ?>
 							</td>
@@ -162,7 +162,7 @@ class plgCommunityRedevent extends CApplications
 					<?php endif; ?>
 					
           <?php if ($params->get('showmanaging', 1)): ?>
-            <div class="ctitle"><?php echo JText::_('Created') ?></div>
+            <div class="ctitle"><?php echo JText::_('PLG_JOMSOCIAL_REDEVENT_Created') ?></div>
             <table cellpadding="2" cellspacing="0" border="0" width="100%">
           
             <?php foreach( $events['manages'] as $event ): ?>
@@ -175,7 +175,7 @@ class plgCommunityRedevent extends CApplications
                   <?php echo $event->title; ?>
 	                </a>
 	               <?php if( !empty( $event->venue ) ): ?>
-	                 <?php echo JText::_('PLG_REDEVENT AT'); ?>
+	                 <?php echo JText::_('PLG_JOMSOCIAL_REDEVENT_AT'); ?>
 	                 <a href="<?php echo JRoute::_( 'index.php?option=com_redevent&view=venueevents&id=' . $event->venueslug . '&Itemid=' . $itemId);?>"><?php echo $event->venue;?></a>
 	               <?php endif; ?>
 	              </td>                  

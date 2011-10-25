@@ -69,23 +69,23 @@ $pane =& JPane::getInstance('tabs');
 			var validator = document.formvalidator;
 
 			if ( validator.validate(form.title) === false ) {
-   				alert("<?php echo JText::_( 'ADD TITLE', true ); ?>");
+   				alert("<?php echo JText::_('COM_REDEVENT_ADD_TITLE', true ); ?>");
    				validator.handleResponse(false,form.title);
    				return false;
 			} else if ($(form.categories) && validator.validate(form.categories) === false ) {
-    			alert("<?php echo JText::_( 'SELECT CATEGORY', true ); ?>");
+    			alert("<?php echo JText::_('COM_REDEVENT_SELECT_CATEGORY', true ); ?>");
     			validator.handleResponse(false,form.categories);
     			return false;
 			} else if ( $(form.venueid) && validator.validate(form.venueid) === false ) {
-    			alert("<?php echo JText::_( 'SELECT VENUE', true ); ?>");
+    			alert("<?php echo JText::_('COM_REDEVENT_SELECT_VENUE', true ); ?>");
     			validator.handleResponse(false,form.venueid);
     			return false;
 			} else if ( $(form.dates) && validator.validate(form.dates) === false ) {
-    			alert("<?php echo JText::_( 'SELECT DATE', true ); ?>");
+    			alert("<?php echo JText::_('COM_REDEVENT_SELECT_DATE', true ); ?>");
     			validator.handleResponse(false,form.dates);
     			return false;
 			} else if (validator.isValid(form) === false ) {
-    			alert("<?php echo JText::_( 'Error: Please check required fields', true ); ?>");
+    			alert("<?php echo JText::_('COM_REDEVENT_Error_Please_check_required_fields', true ); ?>");
     			return false;
   			} else {
   			<?php
@@ -154,23 +154,23 @@ $pane =& JPane::getInstance('tabs');
 
 		<div class="re_save_buttons floattext">
 			<button type="submit" class="submit"
-				onclick="return submitbutton('saveevent')"><?php echo JText::_('SAVE') ?>
+				onclick="return submitbutton('saveevent')"><?php echo JText::_('COM_REDEVENT_SAVE') ?>
 			</button>
 			<button type="reset" class="button cancel"
-				onclick="submitbutton('cancelevent')"><?php echo JText::_('CANCEL') ?>
+				onclick="submitbutton('cancelevent')"><?php echo JText::_('COM_REDEVENT_CANCEL') ?>
 			</button>
 		</div>
 
 		<p class="clear"></p>
 		
 <?php echo $pane->startPane( 'pane' ); ?>
-<?php echo $pane->startPanel( JText::_('DETAILS'), 'ev1' ); ?>
+<?php echo $pane->startPanel( JText::_('COM_REDEVENT_DETAILS'), 'ev1' ); ?>
 
 	<table class="fieldstable">
 		<tbody>
 			<tr>
 				<td class="key">
-					<label for="title"><?php echo JText::_( 'TITLE' ).':'; ?></label>
+					<label for="title"><?php echo JText::_('COM_REDEVENT_TITLE' ).':'; ?></label>
 				</td>
 				<td>
 					<input class="inputbox required" type="text" id="title"
@@ -180,14 +180,14 @@ $pane =& JPane::getInstance('tabs');
 			<?php if ($this->params->get('edit_categories', 0)): ?>
 			<tr>
 				<td class="key">
-					<label for="categories" class="catsid"> <?php echo JText::_( 'CATEGORY' ).':';?></label>
+					<label for="categories" class="catsid"> <?php echo JText::_('COM_REDEVENT_CATEGORY' ).':';?></label>
 				</td>
 				<td><?php	echo $this->lists['categories']; ?></td>
 			</tr>
 			<?php endif; ?>
 			<?php if ($this->canpublish): ?>
 			<tr>
-				<td class="key"><label for="published"><?php echo JText::_('PUBLISHED') .': '; ?></label>
+				<td class="key"><label for="published"><?php echo JText::_('COM_REDEVENT_PUBLISHED') .': '; ?></label>
 				</td>
 				<td><?php echo $this->lists['published']; ?></td>
 			</tr>
@@ -203,7 +203,7 @@ $pane =& JPane::getInstance('tabs');
 	      </td>
 	      <td>
 	        <?php echo $field->render(); ?>
-	        <?php echo ($field->required? ' '.JText::_('Required') : '' ); ?>
+	        <?php echo ($field->required? ' '.JText::_('COM_REDEVENT_Required') : '' ); ?>
 	      </td>   
 	    </tr>
 	    <?php endforeach; ?>
@@ -232,23 +232,23 @@ $pane =& JPane::getInstance('tabs');
 <?php endif; ?>
 
 <?php if (( $this->params->get('edit_image', 1) == 2 ) || ($this->params->get('edit_image', 1) == 1)) : ?>
-<?php echo $pane->startPanel( JText::_('IMAGE'), 'ev-image' ); ?>
+<?php echo $pane->startPanel( JText::_('COM_REDEVENT_IMAGE'), 'ev-image' ); ?>
 <div class="editevent-image">
 <?php if ($this->row->datimage) :
 				echo ELOutput::flyer( $this->row, $this->dimage, 'event' );
 			else :
-				echo JHTML::_('image', 'components/com_redevent/assets/images/noimage.png', JText::_('NO IMAGE'), array('class' => 'modal'));
-			endif;?> <label for="userfile"><?php echo JText::_('IMAGE'); ?></label>
+				echo JHTML::_('image', 'components/com_redevent/assets/images/noimage.png', JText::_('COM_REDEVENT_NO_IMAGE'), array('class' => 'modal'));
+			endif;?> <label for="userfile"><?php echo JText::_('COM_REDEVENT_IMAGE'); ?></label>
 <input class="inputbox <?php echo $this->params->get('edit_image', 1) == 2 ? 'required' : ''; ?>"	name="userfile" id="userfile" type="file" /> 
-<small class="editlinktip hasTip"	title="<?php echo JText::_( 'NOTES' ); ?>::<?php echo JText::_('MAX IMAGE FILE SIZE').' '.$this->elsettings->sizelimit.' kb'; ?>"><?php echo $this->infoimage; ?> </small>
+<small class="editlinktip hasTip"	title="<?php echo JText::_('COM_REDEVENT_NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_MAX_IMAGE_FILE_SIZE').' '.$this->elsettings->sizelimit.' kb'; ?>"><?php echo $this->infoimage; ?> </small>
 </div>
 <?php echo $pane->endPanel(); ?>
 <?php endif; ?>
 
 
 <?php if ($this->params->get('edit_description', 0)): ?>
-<?php echo $pane->startPanel( JText::_('DESCRIPTION'), 'ev3' ); ?>
-<fieldset class="description"><legend><?php echo JText::_('DESCRIPTION'); ?></legend>
+<?php echo $pane->startPanel( JText::_('COM_REDEVENT_DESCRIPTION'), 'ev3' ); ?>
+<fieldset class="description"><legend><?php echo JText::_('COM_REDEVENT_DESCRIPTION'); ?></legend>
 
 <?php
       		//if usertyp min editor then editor else textfield
@@ -258,10 +258,10 @@ $pane =& JPane::getInstance('tabs');
       		?> <textarea style="width: 100%;" rows="10"
 	name="datdescription" class="inputbox" wrap="virtual"
 	onkeyup="berechne(this.form)"><?php echo $this->row->datdescription; ?></textarea><br />
-<?php echo JText::_( 'NO HTML' ); ?><br />
+<?php echo JText::_('COM_REDEVENT_NO_HTML' ); ?><br />
 <input disabled value="<?php echo $this->params->get('max_description', 1000); ?>"
-	size="4" name="zeige" /><?php echo JText::_( 'AVAILABLE' ); ?><br />
-<a href="javascript:rechne(document.eventform);"><?php echo JText::_( 'REFRESH' ); ?></a>
+	size="4" name="zeige" /><?php echo JText::_('COM_REDEVENT_AVAILABLE' ); ?><br />
+<a href="javascript:rechne(document.eventform);"><?php echo JText::_('COM_REDEVENT_REFRESH' ); ?></a>
 <?php endif; ?>
 </fieldset>
 <?php echo $pane->endPanel(); ?>
@@ -276,10 +276,10 @@ $pane =& JPane::getInstance('tabs');
 
 <div class="re_save_buttons floattext">
 <button type="submit" class="submit"
-	onclick="return submitbutton('saveevent')"><?php echo JText::_('SAVE') ?>
+	onclick="return submitbutton('saveevent')"><?php echo JText::_('COM_REDEVENT_SAVE') ?>
 </button>
 <button type="reset" class="button cancel"
-	onclick="submitbutton('cancelevent')"><?php echo JText::_('CANCEL') ?>
+	onclick="submitbutton('cancelevent')"><?php echo JText::_('COM_REDEVENT_CANCEL') ?>
 </button>
 </div>
 

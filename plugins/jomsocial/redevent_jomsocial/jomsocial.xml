@@ -10,7 +10,7 @@
 	<copyright>(c) 2008 - 2009 Redweb.dk</copyright>
 	<license>GNU/GPL</license>
 	<version>1.0</version>
-  <description>Plugin for JomSocial and redEVENT</description>
+  <description>PLG_REDEVENT_JOMSOCIAL_PLUGIN_DESC</description>
   
   <files>
     <filename plugin="jomsocial">jomsocial.php</filename>
@@ -23,27 +23,27 @@
   
   <params>
     <param type="spacer" default="Activity Stream" label="" name="spacer"/>
-    <param type="radio" name="activity_addevent" label="ACTIVITY ADD EVENT" default="1" description="ACTIVITY ADD EVENT TIP">
+    <param type="radio" name="activity_addevent" label="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_ADD_EVENT" default="1" description="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_ADD_EVENT_TIP">
 	    <option value="0">No</option>
 	    <option value="1">Yes</option>
     </param>
-    <param type="radio" name="activity_editevent" label="ACTIVITY EDIT EVENT" default="1" description="ACTIVITY EDIT EVENT TIP">
+    <param type="radio" name="activity_editevent" label="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EDIT_EVENT" default="1" description="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EDIT_EVENT_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>
-    <param type="radio" name="activity_addvenue" label="ACTIVITY ADD VENUE" default="1" description="ACTIVITY ADD VENUE TIP">
+    <param type="radio" name="activity_addvenue" label="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_ADD_VENUE" default="1" description="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_ADD_VENUE_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>
-    <param type="radio" name="activity_editvenue" label="ACTIVITY EDIT VENUE" default="1" description="ACTIVITY EDIT VENUE TIP">
+    <param type="radio" name="activity_editvenue" label="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EDIT_VENUE" default="1" description="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EDIT_VENUE_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>
-    <param type="radio" name="activity_eventregister" label="ACTIVITY EVENT REGISTER" default="1" description="ACTIVITY EVENT REGISTER TIP">
+    <param type="radio" name="activity_eventregister" label="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EVENT_REGISTER" default="1" description="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EVENT_REGISTER_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>
-    <param type="radio" name="activity_eventunregister" label="ACTIVITY EVENT UNREGISTER" default="1" description="ACTIVITY EVENT UNREGISTER TIP">
+    <param type="radio" name="activity_eventunregister" label="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EVENT_UNREGISTER" default="1" description="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EVENT_UNREGISTER_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>

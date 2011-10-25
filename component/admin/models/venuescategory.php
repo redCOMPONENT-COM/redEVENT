@@ -166,7 +166,7 @@ class RedEventModelVenuesCategory extends JModel
 			$category->meta_description		= null;
 			$category->meta_keywords		= null;
 			$category->published			= 1;
-			$category->image				= JText::_('SELECTIMAGE');
+			$category->image				= JText::_('COM_REDEVENT_SELECTIMAGE');
 			$category->access				= 0;
 			$category->private				= 0;
 			$this->_data					= $category;

@@ -1,10 +1,10 @@
-<?php $infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-hint.png', JText::_( 'NOTES' ) ); ?>
+<?php $infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-hint.png', JText::_('COM_REDEVENT_NOTES' ) ); ?>
 <?php $k = 0; ?>
 <table class="adminform">
 	<tr class="row<?php echo $k = 1 - $k; ?>">
 		<td>
 			<label for="notify_on_list_subject">
-				<?php echo JText::_( 'NOTIFY ON LIST SUBJECT' ).':'; ?>
+				<?php echo JText::_('COM_REDEVENT_NOTIFY_ON_LIST_SUBJECT' ).':'; ?>
 			</label>
 			</td>
 		<td>
@@ -14,7 +14,7 @@
 	<tr class="row<?php echo $k = 1 - $k; ?>">
 		<td>
 			<label for="notify_on_list_body">
-				<?php echo JText::_( 'NOTIFY ON LIST BODY' ).':'; ?>
+				<?php echo JText::_('COM_REDEVENT_NOTIFY_ON_LIST_BODY' ).':'; ?>
 			</label>
 		</td>
 		<td>
@@ -25,7 +25,7 @@
 	<tr class="row<?php echo $k = 1 - $k; ?>">
 		<td>
 			<label for="notify_off_list_subject">
-				<?php echo JText::_( 'NOTIFY OFF LIST SUBJECT' ).':'; ?>
+				<?php echo JText::_('COM_REDEVENT_NOTIFY_OFF_LIST_SUBJECT' ).':'; ?>
 			</label>
 		</td>
 		<td>
@@ -35,7 +35,7 @@
 	<tr class="row<?php echo $k = 1 - $k; ?>">
 		<td>
 			<label for="notify_off_list_body">
-				<?php echo JText::_( 'NOTIFY OFF LIST BODY' ).':'; ?>
+				<?php echo JText::_('COM_REDEVENT_NOTIFY_OFF_LIST_BODY' ).':'; ?>
 			</label>
 		</td>
 		<td>

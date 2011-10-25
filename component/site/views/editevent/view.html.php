@@ -47,7 +47,7 @@ class RedeventViewEditevent extends JView
 		$user      = & JFactory::getUser();
 
 		if (!$user->get('id')) {
-			echo JText::_('REDEVENT_LOGIN_TO_SUBMIT_EVENT');
+			echo JText::_('COM_REDEVENT_LOGIN_TO_SUBMIT_EVENT');
 			return;			
 		}
 		
@@ -63,7 +63,7 @@ class RedeventViewEditevent extends JView
 		$useracl = &UserAcl::getInstance();
 		if (!$useracl->canAddEvent()) 
 		{
-			echo JText::_('EDIT EVENT NOT ALLOWED');
+			echo JText::_('COM_REDEVENT_EDIT_EVENT_NOT_ALLOWED');
 			return;
 		}
 
@@ -108,7 +108,7 @@ class RedeventViewEditevent extends JView
     $document->addScript('components/com_redevent/assets/js/xref_prices.js');
     
 		//Set page title
-		$id ? $title = $row->title.' - '.JText::_( 'EDIT EVENT' ) : $title = JText::_( 'ADD EVENT' );
+		$id ? $title = $row->title.' - '.JText::_('COM_REDEVENT_EDIT_EVENT' ) : $title = JText::_('COM_REDEVENT_ADD_EVENT' );
 		$document->setTitle($title);
 
 		// Get the menu object of the active menu item
@@ -134,7 +134,7 @@ class RedeventViewEditevent extends JView
 		$dimage = redEVENTImage::flyercreator($row->datimage, 'event');
 
 		//Set the info image
-		$infoimage = JHTML::_('image', 'components/com_redevent/assets/images/icon-16-hint.png', JText::_( 'NOTES' ) );
+		$infoimage = JHTML::_('image', 'components/com_redevent/assets/images/icon-16-hint.png', JText::_('COM_REDEVENT_NOTES' ) );
 
 		//Create the stuff required for the venueselect functionality
 		$url	= $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
@@ -175,12 +175,12 @@ class RedeventViewEditevent extends JView
 		}
 		
     // published state selector
-    $published = array( JHTML::_('select.option', '1', JText::_('PUBLISHED')),
-                         JHTML::_('select.option', '0', JText::_('UNPUBLISHED')),
+    $published = array( JHTML::_('select.option', '1', JText::_('COM_REDEVENT_PUBLISHED')),
+                         JHTML::_('select.option', '0', JText::_('COM_REDEVENT_UNPUBLISHED')),
                        );
     $lists['published'] = JHTML::_('select.radiolist', $published, 'published', '', 'value', 'text', $row->published);
     
-		$rolesoptions = array(JHTML::_('select.option', 0, JText::_('Select role')));
+		$rolesoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_Select_role')));
 		$rolesoptions = array_merge($rolesoptions, $this->get('RolesOptions'));
 		
 		$pricegroupsoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_PRICEGROUP')));
@@ -245,7 +245,7 @@ class RedeventViewEditevent extends JView
 		$lists['order_Dir'] 	= $filter_order_Dir;
 		$lists['order'] 		= $filter_order;
 
-		$document->setTitle(JText::_( 'SELECTVENUE' ));
+		$document->setTitle(JText::_('COM_REDEVENT_SELECTVENUE' ));
     if (!$params->get('custom_css')) {
       $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
     }
@@ -254,8 +254,8 @@ class RedeventViewEditevent extends JView
     }
 
 		$filters = array();
-		$filters[] = JHTML::_('select.option', '1', JText::_( 'VENUE' ) );
-		$filters[] = JHTML::_('select.option', '2', JText::_( 'CITY' ) );
+		$filters[] = JHTML::_('select.option', '1', JText::_('COM_REDEVENT_VENUE' ) );
+		$filters[] = JHTML::_('select.option', '2', JText::_('COM_REDEVENT_CITY' ) );
 		$searchfilter = JHTML::_('select.genericlist', $filters, 'filter_type', 'size="1" class="inputbox"', 'value', 'text', $filter_type );
 
 		$this->assignRef('rows' , 				$rows);
@@ -301,7 +301,7 @@ class RedeventViewEditevent extends JView
 		else 
 		{
 			$events = array();
-			$events[] = JHTML::_('select.option', '0', JText::_( 'SELECT EVENT' ) );
+			$events[] = JHTML::_('select.option', '0', JText::_('COM_REDEVENT_SELECT_EVENT' ) );
 			$events= array_merge($events, $this->get('EventOptions'));
 			$lists['event'] = JHTML::_('select.genericlist', $events, 'eventid', 'size="1" class="inputbox validate-event"', 'value', 'text', $xref->eventid );
 			unset($events);
@@ -309,25 +309,25 @@ class RedeventViewEditevent extends JView
 		
 		// venues
 		$venues = array();
-		$venues[] = JHTML::_('select.option', '0', JText::_( 'SELECT VENUE' ) );
+		$venues[] = JHTML::_('select.option', '0', JText::_('COM_REDEVENT_SELECT_VENUE' ) );
 		$venues = array_merge($venues, $this->get('VenueOptions'));
 		$lists['venue'] = JHTML::_('select.genericlist', $venues, 'venueid', 'size="1" class="inputbox validate-venue"', 'value', 'text', $xref->venueid );
 		unset($venues);
 		
 		// groups
 		$groups = array();
-		$groups[] = JHTML::_('select.option', '0', JText::_( 'SELECT GROUP' ) );
+		$groups[] = JHTML::_('select.option', '0', JText::_('COM_REDEVENT_SELECT_GROUP' ) );
 		$groups = array_merge($groups, $this->get('GroupOptions'));
 		$lists['group'] = JHTML::_('select.genericlist', $groups, 'groupid', 'size="1" class="inputbox"', 'value', 'text', $xref->groupid );
 		unset($groups);
 		
     // published state selector
-    $published = array( JHTML::_('select.option', '1', JText::_('PUBLISHED')),
-                         JHTML::_('select.option', '0', JText::_('UNPUBLISHED')),
+    $published = array( JHTML::_('select.option', '1', JText::_('COM_REDEVENT_PUBLISHED')),
+                         JHTML::_('select.option', '0', JText::_('COM_REDEVENT_UNPUBLISHED')),
                        );
     $lists['published'] = JHTML::_('select.radiolist', $published, 'published', '', 'value', 'text', $xref->published);
 		
-		$rolesoptions = array(JHTML::_('select.option', 0, JText::_('Select role')));
+		$rolesoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_Select_role')));
 		$rolesoptions = array_merge($rolesoptions, $this->get('RolesOptions'));
 		
 		$pricegroupsoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_PRICEGROUP')));

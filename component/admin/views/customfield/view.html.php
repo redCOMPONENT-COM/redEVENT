@@ -70,7 +70,7 @@ class RedeventViewCustomfield extends JView
 
 		// fail if checked out not by 'me'
 		if ($model->isCheckedOut( $user->get('id') )) {
-			$msg = JText::sprintf( 'DESCBEINGEDITTED', JText::_( 'Custom field' ), $object->name );
+			$msg = JText::sprintf( 'COM_REDEVENT_DESCBEINGEDITTED', JText::_('COM_REDEVENT_Custom_field' ), $object->name );
 			$mainframe->redirect( 'index.php?option='. $option, $msg );
 		}
 
@@ -106,10 +106,10 @@ class RedeventViewCustomfield extends JView
     	switch ($object->object_key)
     	{
     		case 'redevent.event':
-    			$f = JText::_('Event').'<input type="hidden" name="object_key" value="'.$object->object_key.'"/>';
+    			$f = JText::_('COM_REDEVENT_Event').'<input type="hidden" name="object_key" value="'.$object->object_key.'"/>';
     			break;
     		case 'redevent.xref':
-    			$f = JText::_('Event session').'<input type="hidden" name="object_key" value="'.$object->object_key.'"/>';
+    			$f = JText::_('COM_REDEVENT_Event_session').'<input type="hidden" name="object_key" value="'.$object->object_key.'"/>';
     			break;
     	}
     	$lists['objects'] = $f;

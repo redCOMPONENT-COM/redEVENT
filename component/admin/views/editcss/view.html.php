@@ -44,7 +44,7 @@ class RedEventViewEditcss extends JView {
 		
 		//only admins have access to this view
 		if ($user->get('gid') < 24) {
-			JError::raiseWarning( 'REDEVENT_GENERIC_ERROR', JText::_( 'ALERTNOTAUTH'));
+			JError::raiseWarning( 'REDEVENT_GENERIC_ERROR', JText::_('COM_REDEVENT_ALERTNOTAUTH'));
 			$mainframe->redirect( 'index.php?option=com_redevent&view=redevent' );
 		}
 
@@ -55,7 +55,7 @@ class RedEventViewEditcss extends JView {
 		$css_path	= $path.DS.$filename;
 
 		//create the toolbar
-		JToolBarHelper::title( JText::_( 'EDIT CSS' ), 'cssedit' );
+		JToolBarHelper::title( JText::_('COM_REDEVENT_EDIT_CSS' ), 'cssedit' );
 		JToolBarHelper::apply( 'applycss' );
 		JToolBarHelper::spacer();
 		JToolBarHelper::save( 'savecss' );
@@ -82,7 +82,7 @@ class RedEventViewEditcss extends JView {
 		}
 		else
 		{
-			$msg = JText::sprintf('FAILED TO OPEN FILE FOR WRITING', $css_path);
+			$msg = JText::sprintf('COM_REDEVENT_FAILED_TO_OPEN_FILE_FOR_WRITING', $css_path);
 			$mainframe->redirect('index.php?option='.$option, $msg);
 		}
 

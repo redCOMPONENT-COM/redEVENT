@@ -1,10 +1,10 @@
-<?php $infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-hint.png', JText::_( 'NOTES' ) ); ?>
+<?php $infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-hint.png', JText::_('COM_REDEVENT_NOTES' ) ); ?>
 <?php $k = 0; ?>
 <table class="adminform">
 	<tr class="row<?php echo $k = 1 - $k; ?>">
 		<td>
 			<label for="activate">
-				<?php echo JText::_( 'ENABLE ACTIVATION' ).':'; ?>
+				<?php echo JText::_('COM_REDEVENT_ENABLE_ACTIVATION' ).':'; ?>
 			</label>
 		</td>
 		<td>
@@ -17,7 +17,7 @@
 	<tr class="row<?php echo $k = 1 - $k; ?>">
 		<td>
 			<label for="notify">
-				<?php echo JText::_( 'ENABLE NOTIFICATION' ).':'; ?>
+				<?php echo JText::_('COM_REDEVENT_ENABLE_NOTIFICATION' ).':'; ?>
 			</label>
 		</td>
 		<td>
@@ -30,7 +30,7 @@
 	<tr class="row<?php echo $k = 1 - $k; ?>">
 		<td>
 			<label for="notify_subject">
-				<?php echo JText::_( 'NOTIFY SUBJECT' ).':'; ?>
+				<?php echo JText::_('COM_REDEVENT_NOTIFY_SUBJECT' ).':'; ?>
 			</label>
 		</td>
 		<td>
@@ -40,9 +40,9 @@
 	<tr class="row<?php echo $k = 1 - $k; ?>">
 		<td>
 			<label for="notify_body">
-				<?php echo JText::_( 'NOTIFY BODY' ).':'; ?>
+				<?php echo JText::_('COM_REDEVENT_NOTIFY_BODY' ).':'; ?>
 			</label>
-			<span class="editlinktip hasTip" title="<?php echo JText::_( 'NOTIFY BODY' ); ?>::<?php echo JText::_('NOTIFY BODY NOTE'); ?>">
+			<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_NOTIFY_BODY' ); ?>::<?php echo JText::_('COM_REDEVENT_NOTIFY_BODY_NOTE'); ?>">
 				<?php echo $infoimage; ?>
 			</span>
 		</td>
@@ -54,7 +54,7 @@
 	<tr class="row<?php echo $k = 1 - $k; ?>">
 		<td>
 			<label for="notify_confirm_subject">
-				<?php echo JText::_( 'NOTIFY CONFIRM SUBJECT' ).':'; ?>
+				<?php echo JText::_('COM_REDEVENT_NOTIFY_CONFIRM_SUBJECT' ).':'; ?>
 			</label>
 		</td>
 		<td>
@@ -64,7 +64,7 @@
 	<tr class="row<?php echo $k = 1 - $k; ?>">
 		<td>
 			<label for="notify_confirm_body">
-				<?php echo JText::_( 'NOTIFY CONFIRM BODY' ).':'; ?>
+				<?php echo JText::_('COM_REDEVENT_NOTIFY_CONFIRM_BODY' ).':'; ?>
 			</label>
 		</td>
 		<td>

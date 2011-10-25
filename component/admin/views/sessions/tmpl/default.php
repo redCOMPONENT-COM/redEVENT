@@ -42,10 +42,10 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 <tr>
 	<td align="left" width="100%">
 		<div>
-			<?php echo JText::_( 'Filter' ); ?>:
+			<?php echo JText::_('COM_REDEVENT_Filter' ); ?>:
 			<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
-			<button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
-			<button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
+			<button onclick="this.form.submit();"><?php echo JText::_('COM_REDEVENT_Go' ); ?></button>
+			<button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_('COM_REDEVENT_Reset' ); ?></button>
 		</div>
 		<div class="sessions-filter">		
 			<label for="eventid" class="hasTip" title="<?php echo JText::_( 'COM_REDEVENT_SESSIONS_EVENT_FILTER' ).'::'.JText::_( 'COM_REDEVENT_SESSIONS_EVENT_FILTER_TIP' ); ?>">
@@ -53,8 +53,8 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 			</label>
 			<?php	$link = 'index.php?option=com_redevent&amp;view=eventelement&amp;tmpl=component&amp;field=eventid'; ?>
 			<input style="background: #ffffff;" type="text" id="eventid_name" value="<?php echo ($this->eventid ? $this->event->title : JText::_('COM_REDEVENT_SESSIONS_EVENT_FILTER_ALL')); ?>" disabled="disabled" />
-			<a class="modal" title="<?php JText::_('Select'); ?>"  href="<?php echo $link; ?>" rel="{handler: 'iframe', size: {x: 650, y: 375}}"><?php echo JText::_('Select'); ?></a>
-			<a title="<?php JText::_('Reset'); ?>" id="ev-reset-button"><?php echo JText::_('Reset'); ?></a>
+			<a class="modal" title="<?php JText::_('COM_REDEVENT_Select'); ?>"  href="<?php echo $link; ?>" rel="{handler: 'iframe', size: {x: 650, y: 375}}"><?php echo JText::_('COM_REDEVENT_Select'); ?></a>
+			<a title="<?php JText::_('COM_REDEVENT_Reset'); ?>" id="ev-reset-button"><?php echo JText::_('COM_REDEVENT_Reset'); ?></a>
 			<input type="hidden" id="eventid" name="eventid" value="<?php echo $this->eventid; ?>" />
 		</div>
 		<div class="sessions-filter">
@@ -63,8 +63,8 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 			</label>
 			<?php	$link = 'index.php?option=com_redevent&amp;view=venueelement&amp;tmpl=component&amp;field=venueid'; ?>
 			<input style="background: #ffffff;" type="text" id="venueid_name" value="<?php echo ($this->venue ? $this->venue->venue : JText::_('COM_REDEVENT_SESSIONS_VENUE_FILTER_ALL')); ?>" disabled="disabled" />
-			<a class="modal" title="<?php JText::_('Select'); ?>"  href="<?php echo $link; ?>" rel="{handler: 'iframe', size: {x: 650, y: 375}}"><?php echo JText::_('Select'); ?></a>
-			<a title="<?php JText::_('Reset'); ?>" id="venue-reset-button"><?php echo JText::_('Reset'); ?></a>
+			<a class="modal" title="<?php JText::_('COM_REDEVENT_Select'); ?>"  href="<?php echo $link; ?>" rel="{handler: 'iframe', size: {x: 650, y: 375}}"><?php echo JText::_('COM_REDEVENT_Select'); ?></a>
+			<a title="<?php JText::_('COM_REDEVENT_Reset'); ?>" id="venue-reset-button"><?php echo JText::_('COM_REDEVENT_Reset'); ?></a>
 			<input type="hidden" id="venueid" name="venueid" value="<?php echo $this->venueid; ?>" />
 		</div>
 	</td>
@@ -79,20 +79,20 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 	<thead>
 		<tr>
 			<th width="5">
-				<?php echo JText::_( 'NUM' ); ?>
+				#
 			</th>
 			<th width="20">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->items ); ?>);" />
 			</th>
-			<th><?php echo JHTML::_('grid.sort',  JText::_('DATE'), 'obj.dates', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			<th><?php echo JText::_('TIME'); ?></th>
+			<th><?php echo JHTML::_('grid.sort',  JText::_('COM_REDEVENT_DATE'), 'obj.dates', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th><?php echo JText::_('COM_REDEVENT_TIME'); ?></th>
 			<?php if (!$this->event): ?>
 			<th><?php echo JHTML::_('grid.sort',  JText::_('COM_REDEVENT_EVENT'), 'e.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<?php endif; ?>
-			<th><?php echo JHTML::_('grid.sort',  JText::_('VENUE'), 'v.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			<th><?php echo JHTML::_('grid.sort',  JText::_('TITLE'), 'obj.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			<th><?php echo JHTML::_('grid.sort',  JText::_('NOTE'), 'obj.note', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-      <th width="5"><?php echo JHTML::_('grid.sort',  JText::_('PUBLISHED'), 'obj.published', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th><?php echo JHTML::_('grid.sort',  JText::_('COM_REDEVENT_VENUE'), 'v.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th><?php echo JHTML::_('grid.sort',  JText::_('COM_REDEVENT_TITLE'), 'obj.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th><?php echo JHTML::_('grid.sort',  JText::_('COM_REDEVENT_NOTE'), 'obj.note', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+      <th width="5"><?php echo JHTML::_('grid.sort',  JText::_('COM_REDEVENT_PUBLISHED'), 'obj.published', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
       <th width="5"><?php echo JHTML::_('grid.sort',  JText::_('COM_REDEVENT_SESSION_FEATURED'), 'obj.featured', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
       <?php if (!$this->event || $this->event->registra): ?>
 			<th><?php echo JHTML::_('grid.sort',  JText::_('COM_REDEVENT_REGISTRATION_END'), 'obj.registrationend', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
@@ -114,7 +114,7 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 		foreach ((array) $this->items as $i => $row) 
 		{
 			/* Get the date */
-			$date = (!redEVENTHelper::isValidDate($row->dates) ? Jtext::_('Open date') : strftime( $this->settings->formatdate, strtotime( $row->dates )));
+			$date = (!redEVENTHelper::isValidDate($row->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $this->settings->formatdate, strtotime( $row->dates )));
 			$enddate  = (!redEVENTHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) ? '' : strftime( $this->settings->formatdate, strtotime( $row->enddates ));
 			$displaydate = $date. ($enddate ? ' - '.$enddate: '');
 			$endreg = (!redEVENTHelper::isValidDate($row->registrationend) ? '-' : strftime( $this->settings->formatdate, strtotime( $row->registrationend )));
@@ -166,7 +166,7 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 						echo $row->event_title;
 					} else {
 					?>
-						<a href="<?php echo $eventlink; ?>" title="<?php echo JText::_( 'EDIT EVENT' ); ?>">
+						<a href="<?php echo $eventlink; ?>" title="<?php echo JText::_('COM_REDEVENT_EDIT_EVENT' ); ?>">
 							<?php echo $row->event_title; ?></a>
 					<?php
 					}
@@ -180,7 +180,7 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 						echo $row->venue;
 					} else {
 					?>
-						<a href="<?php echo $venuelink; ?>" title="<?php echo JText::_( 'EDIT VENUE' ); ?>">
+						<a href="<?php echo $venuelink; ?>" title="<?php echo JText::_('COM_REDEVENT_EDIT_VENUE' ); ?>">
 							<?php echo $row->venue; ?></a>
 					<?php
 					}
@@ -193,7 +193,7 @@ if (!$this->event || $this->event->registra) $colspan += 2;
         	<?php if ($row->published >= 0): ?>
 	        <?php echo $published; ?>
 	        <?php else: ?>
-	        <?php echo JHTML::image('administrator/images/publish_y.png', JText::_('ARCHIVED')); ?>
+	        <?php echo JHTML::image('administrator/images/publish_y.png', JText::_('COM_REDEVENT_ARCHIVED')); ?>
 	        <?php endif; ?>
 				</td>
 	      <td align="center"><?php echo $featured ?></td>

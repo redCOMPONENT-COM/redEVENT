@@ -87,16 +87,16 @@ class RedeventViewSimpleList extends JView
 		}
 
 		//params
-		$params->def( 'page_title', (isset($item->name)? $item->name : Jtext::_('Events')));
+		$params->def( 'page_title', (isset($item->name)? $item->name : JText::_('COM_REDEVENT_Events')));
 
 		if ( $pop ) {//If printpopup set true
 			$params->set( 'popup', 1 );
 		}
 		
 		if ( $task == 'archive' ) {
-			$pathway->addItem(JText::_( 'ARCHIVE' ), JRoute::_('index.php?option=com_redevent&view=simplelist&task=archive') );
+			$pathway->addItem(JText::_('COM_REDEVENT_ARCHIVE' ), JRoute::_('index.php?option=com_redevent&view=simplelist&task=archive') );
 			$print_link = JRoute::_('index.php?option=com_redevent&view=simplelist&task=archive&tmpl=component&pop=1');
-			$pagetitle = $params->get('page_title').' - '.JText::_( 'ARCHIVE' );
+			$pagetitle = $params->get('page_title').' - '.JText::_('COM_REDEVENT_ARCHIVE' );
 		} else {
 			$print_link = JRoute::_('index.php?option=com_redevent&view=simplelist&tmpl=component&pop=1');
 			$pagetitle = $params->get('page_title');

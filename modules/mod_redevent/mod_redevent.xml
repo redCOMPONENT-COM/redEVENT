@@ -28,7 +28,7 @@
 	</languages>
 
 	<params>
-		<param name="count" type="text" default="5" label="EVENTS IN MODULE" description="EVENTS IN MODULE DESC" />
+		<param name="count" type="text" default="5" label="MOD_REDEVENT_EVENTS_IN_MODULE" description="MOD_REDEVENT_EVENTS_IN_MODULE_DESC" />
 		<param name="type" type="list" default="0" label="MOD_REDEVENT_EVENT_STATE" description="MOD_REDEVENT_EVENT_STATE_DESC">
 			<option value="0">MOD_REDEVENT_EVENT_STATE_PUBLISHED</option>
 			<option value="1">MOD_REDEVENT_EVENT_STATE_UPCOMING</option>
@@ -62,57 +62,57 @@
 			<option value="1">MOD_REDEVENT_TITLE_TYPE_SESSION</option>
 			<option value="2">MOD_REDEVENT_TITLE_TYPE_FULL</option>
 		</param>	
-		<param name="cuttitle" type="text" default="18" label="MAX TITLE LENGTH" description="MAX TITLE LENGTH DESC" />
+		<param name="cuttitle" type="text" default="18" label="MOD_REDEVENT_MAX_TITLE_LENGTH" description="MOD_REDEVENT_MAX_TITLE_LENGTH_DESC" />
 		<param name="picture_size" type="text" default="30" label="MOD_REDEVENT_PICTURE_SIZE" description="MOD_REDEVENT_PICTURE_SIZE_DESC" />
-		<param name="catid" type="text" default="" label="CATEGORY ID" description="CATEGORY ID DESC" />
-		<param name="venid" type="text" default="" label="VENUE ID" description="VENUE ID DESC" />
-		<param name="formatdate" type="text" default="%d.%m.%Y" label="DATE FORMAT" description="DATE FORMAT DESC" />
-		<param name="formattime" type="text" default="%H.%M" label="TIME FORMAT" description="TIME FORMAT DESC" />
-    <param name="show_enddate" type="list" default="1" label="SHOW END DATE" description="SHOW END DATE DESC">
+		<param name="catid" type="text" default="" label="MOD_REDEVENT_CATEGORY_ID" description="MOD_REDEVENT_CATEGORY_ID_DESC" />
+		<param name="venid" type="text" default="" label="MOD_REDEVENT_VENUE_ID" description="MOD_REDEVENT_VENUE_ID_DESC" />
+		<param name="formatdate" type="text" default="%d.%m.%Y" label="MOD_REDEVENT_DATE_FORMAT" description="MOD_REDEVENT_DATE_FORMAT_DESC" />
+		<param name="formattime" type="text" default="%H.%M" label="MOD_REDEVENT_TIME_FORMAT" description="MOD_REDEVENT_TIME_FORMAT_DESC" />
+    <param name="show_enddate" type="list" default="1" label="MOD_REDEVENT_SHOW_END_DATE" description="MOD_REDEVENT_SHOW_END_DATE_DESC">
       <option value="0">NO</option>
       <option value="1">YES</option>
     </param>
-    <param name="show_time" type="list" default="1" label="SHOW TIME" description="SHOW TIME DESC">
+    <param name="show_time" type="list" default="1" label="MOD_REDEVENT_SHOW_TIME" description="MOD_REDEVENT_SHOW_TIME_DESC">
       <option value="0">NO</option>
       <option value="1">YES</option>
     </param>
-		<param name="moduleclass_sfx" type="text" default="" label="MODULE CLASS SUFFIX" description="MODULE CLASS SUFFIX DESC" />
+		<param name="moduleclass_sfx" type="text" default="" label="MOD_REDEVENT_MODULE_CLASS_SUFFIX" description="MOD_REDEVENT_MODULE_CLASS_SUFFIX_DESC" />
 		
 		<param name="layout" type="list" default="default" label="MOD_REDEVENT_LAYOUT_LABEL" description="MOD_REDEVENT_LAYOUT_DESC">
 			<option value="default">MOD_REDEVENT_LAYOUT_ULLIST</option>
 			<option value="table">MOD_REDEVENT_LAYOUT_TABLE</option>
 		</param>
 		
-		<param type="spacer" default="MOD_REDEVENT_LAYOUT_ULLIST_SETTINGS" name="sp" label="label"/>
+		<param type="spacer" default="MOD_REDEVENT_LAYOUT_ULLIST_SETTINGS" name="sp" label="MOD_REDEVENT_label"/>
 		<param name="showvenue" type="list" default="1" label="MOD_REDEVENT_SHOW_VENUE" description="MOD_REDEVENT_SHOW_VENUE_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
-		<param name="linkloc" type="radio" default="1" label="LINK TO VENUE" description="LINK TO VENUE DESC">
+		<param name="linkloc" type="radio" default="1" label="MOD_REDEVENT_LINK_TO_VENUE" description="MOD_REDEVENT_LINK_TO_VENUE_DESC">
 			<option value="0">NO</option>
 			<option value="1">YES</option>
 		</param>
-		<param name="linkdet" type="list" default="1" label="LINK TO DETAILS" description="LINK TO DETAILS DESC">
+		<param name="linkdet" type="list" default="1" label="MOD_REDEVENT_LINK_TO_DETAILS" description="MOD_REDEVENT_LINK_TO_DETAILS_DESC">
 			<option value="0">NO</option>
-			<option value="1">DATE</option>
-			<option value="2">TITLE</option>
+			<option value="1">MOD_REDEVENT_DATE</option>
+			<option value="2">MOD_REDEVENT_TITLE</option>
 		</param>
     <param name="show_picture" type="list" default="1" label="MOD_REDEVENT_SHOW_PICTURE" description="MOD_REDEVENT_SHOW_PICTURE_DESC">
       <option value="0">NO</option>
       <option value="1">YES</option>
     </param>
 
-		<param type="spacer" default="MOD_REDEVENT_LAYOUT_TABLE_SETTINGS" name="sp2" label="label"/>
+		<param type="spacer" default="MOD_REDEVENT_LAYOUT_TABLE_SETTINGS" name="sp2" label="MOD_REDEVENT_label"/>
 		<param name="table_cols" type="text" default="DATE, TITLE" label="MOD_REDEVENT_COLUMNS_LABEL" description="MOD_REDEVENT_COLUMNS_DESC" />
 		
 	</params>
 	
 	<params group="advanced">
-		<param name="cache" type="list" default="1" label="CACHING" description="CACHING DESC">
+		<param name="cache" type="list" default="1" label="MOD_REDEVENT_CACHING" description="MOD_REDEVENT_CACHING_DESC">
 			<option value="1">USE GLOBAL</option>
 			<option value="0">NO CACHING</option>
 		</param>
-		<param name="cache_time" type="text" default="900" label="CACHE TIME" description="CACHE TIME DESC" />
+		<param name="cache_time" type="text" default="900" label="MOD_REDEVENT_CACHE_TIME" description="MOD_REDEVENT_CACHE_TIME_DESC" />
 	</params>
 
 </install>

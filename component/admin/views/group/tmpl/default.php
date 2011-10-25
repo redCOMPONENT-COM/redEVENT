@@ -36,7 +36,7 @@ JHTML::_('behavior.tooltip');
 			return;
 		}
 		else if (form.name.value == ""){
-			alert( "<?php echo JText::_( 'ADD GROUP NAME'); ?>" );
+			alert( "<?php echo JText::_('COM_REDEVENT_ADD_GROUP_NAME'); ?>" );
 		} else {
 			submitform( task );
 		}
@@ -45,11 +45,11 @@ JHTML::_('behavior.tooltip');
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
-<fieldset class="adminform"><legend><?php echo JText::_( 'Group' ); ?></legend>
+<fieldset class="adminform"><legend><?php echo JText::_('COM_REDEVENT_Group' ); ?></legend>
 
 <table class="admintable">
 	<tr>
-		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_( 'GROUP NAME' ); ?>:
+		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_('COM_REDEVENT_GROUP_NAME' ); ?>:
 		</label></td>
 		<td><input class="text_area required" type="text" name="name" id="name"
 			size="32" maxlength="250" value="<?php echo $this->row->name; ?>" />
@@ -57,31 +57,31 @@ JHTML::_('behavior.tooltip');
 	</tr>
 	
 	<tr>
-		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'GROUP IS DEFAULT' ).'::'.JText::_( 'GROUP IS DEFAULT TIP' ); ?>"><label for="isdefault"> <?php echo JText::_( 'GROUP IS DEFAULT' ); ?>:
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_GROUP_IS_DEFAULT' ).'::'.JText::_('COM_REDEVENT_GROUP_IS_DEFAULT_TIP' ); ?>"><label for="isdefault"> <?php echo JText::_('COM_REDEVENT_GROUP_IS_DEFAULT' ); ?>:
 		</label></td>
 		<td><?php echo JHTML::_('select.booleanlist', 'isdefault', '', $this->row->isdefault); ?>
 		</td>
 	</tr>
 	
 	<tr>
-		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'GROUP_EDIT_EVENTS' ).'::'.JText::_( 'GROUP_EDIT_EVENTS_TIP' ); ?>">
-			<label for="edit_events"> <?php echo JText::_( 'GROUP_EDIT_EVENTS' ); ?>:</label>
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_GROUP_EDIT_EVENTS' ).'::'.JText::_('COM_REDEVENT_GROUP_EDIT_EVENTS_TIP' ); ?>">
+			<label for="edit_events"> <?php echo JText::_('COM_REDEVENT_GROUP_EDIT_EVENTS' ); ?>:</label>
 		</td>
 		<td><?php echo $this->lists['edit_events']; ?>
 		</td>
 	</tr>
 	
 	<tr>
-		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'GROUP_EDIT_VENUES' ).'::'.JText::_( 'GROUP_EDIT_VENUES_TIP' ); ?>">
-			<label for="edit_venues"> <?php echo JText::_( 'GROUP_EDIT_VENUES' ); ?>:</label>
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_GROUP_EDIT_VENUES' ).'::'.JText::_('COM_REDEVENT_GROUP_EDIT_VENUES_TIP' ); ?>">
+			<label for="edit_venues"> <?php echo JText::_('COM_REDEVENT_GROUP_EDIT_VENUES' ); ?>:</label>
 		</td>
 		<td><?php echo $this->lists['edit_venues']; ?>
 		</td>
 	</tr>
 	
 	<tr>
-		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'GROUP_PUBLISH_EVENTS' ).'::'.JText::_( 'GROUP_PUBLISH_EVENTS_TIP' ); ?>">
-			<label for="publish_events"> <?php echo JText::_( 'GROUP_PUBLISH_EVENTS' ); ?>:
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_GROUP_PUBLISH_EVENTS' ).'::'.JText::_('COM_REDEVENT_GROUP_PUBLISH_EVENTS_TIP' ); ?>">
+			<label for="publish_events"> <?php echo JText::_('COM_REDEVENT_GROUP_PUBLISH_EVENTS' ); ?>:
 		</label></td>
 		<td>
 			<?php echo $this->lists['publish_events']; ?>
@@ -89,8 +89,8 @@ JHTML::_('behavior.tooltip');
 	</tr>
 	
 	<tr>
-		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_( 'GROUP_PUBLISH_VENUES' ).'::'.JText::_( 'GROUP_PUBLISH_VENUES_TIP' ); ?>">
-			<label for="publish_venues"> <?php echo JText::_( 'GROUP_PUBLISH_VENUES' ); ?>:
+		<td width="100" align="right" class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_GROUP_PUBLISH_VENUES' ).'::'.JText::_('COM_REDEVENT_GROUP_PUBLISH_VENUES_TIP' ); ?>">
+			<label for="publish_venues"> <?php echo JText::_('COM_REDEVENT_GROUP_PUBLISH_VENUES' ); ?>:
 		</label></td>
 		<td>
 			<?php echo $this->lists['publish_venues']; ?>
@@ -98,7 +98,7 @@ JHTML::_('behavior.tooltip');
 	</tr>
 	
 	<tr>
-		<td width="100" align="right" class="key"><label for="description"> <?php echo JText::_( 'DESCRIPTION' ); ?>:
+		<td width="100" align="right" class="key"><label for="description"> <?php echo JText::_('COM_REDEVENT_DESCRIPTION' ); ?>:
 		</label></td>
 		<td>
 			<textarea wrap="virtual" rows="10" cols="40" name="description" class="inputbox"><?php echo $this->row->description; ?></textarea>
@@ -113,7 +113,7 @@ JHTML::_('behavior.tooltip');
 	{
 		foreach ( $this->parameters->getGroups() as $key => $groups )
 		{
-			$gname = ( strtolower($key) == '_default' ) ? JText::_( 'General' ) : $key;
+			$gname = ( strtolower($key) == '_default' ) ? JText::_('COM_REDEVENT_General' ) : $key;
 			?>
 			<fieldset class="adminform">
 				<legend>

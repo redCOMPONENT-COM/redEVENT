@@ -28,87 +28,87 @@ defined('_JEXEC') or die('Restricted access');
 		<td width="10%">
 			<div class="linkicon">
 				<a href="index.php?option=com_redevent&amp;controller=tools&amp;task=cleaneventimg">
-					<?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/icon-48-cleaneventimg.png',  JText::_( 'CLEANUP EVENT IMG' ) ); ?>
-					<span><?php echo JText::_( 'CLEANUP EVENT IMG' ); ?></span>
+					<?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/icon-48-cleaneventimg.png',  JText::_('COM_REDEVENT_CLEANUP_EVENT_IMG' ) ); ?>
+					<span><?php echo JText::_('COM_REDEVENT_CLEANUP_EVENT_IMG' ); ?></span>
 				</a>
 			</div>
 		</td>
 		<td width="40%" valign="middle">
-			<?php echo JText::_( 'CLEANUP EVENT IMG DESC' ); ?>
+			<?php echo JText::_('COM_REDEVENT_CLEANUP_EVENT_IMG_DESC' ); ?>
 		</td>
 		<td width="10%">
 			<div class="linkicon">
 				<a href="index.php?option=com_redevent&amp;controller=tools&amp;task=cleanvenueimg">
-					<?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/icon-48-cleanvenueimg.png',  JText::_( 'CLEANUP VENUE IMG' ) ); ?>
-					<span><?php echo JText::_( 'CLEANUP VENUE IMG' ); ?></span>
+					<?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/icon-48-cleanvenueimg.png',  JText::_('COM_REDEVENT_CLEANUP_VENUE_IMG' ) ); ?>
+					<span><?php echo JText::_('COM_REDEVENT_CLEANUP_VENUE_IMG' ); ?></span>
 				</a>
 			</div>
 		</td>
 		<td width="40%" valign="middle">
-			<?php echo JText::_( 'CLEANUP VENUE IMG DESC' ); ?>
+			<?php echo JText::_('COM_REDEVENT_CLEANUP_VENUE_IMG_DESC' ); ?>
 		</td>
 	</tr>
 	<tr>
     <td width="10%">
       <div class="linkicon">
         <a href="index.php?option=com_redevent&amp;task=importeventlist">
-          <?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/icon-48-cleaneventimg.png',  JText::_( 'IMPORT EVENTLIST' ) ); ?>
-          <span><?php echo JText::_( 'IMPORT EVENTLIST' ); ?></span>
+          <?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/icon-48-cleaneventimg.png',  JText::_('COM_REDEVENT_IMPORT_EVENTLIST' ) ); ?>
+          <span><?php echo JText::_('COM_REDEVENT_IMPORT_EVENTLIST' ); ?></span>
         </a>
       </div>
     </td>
     <td width="40%" valign="middle">
-      <?php echo JText::_( 'IMPORT EVENTLIST DESC' ); ?>
+      <?php echo JText::_('COM_REDEVENT_IMPORT_EVENTLIST_DESC' ); ?>
     </td>	
     
     <td width="10%">
       <div class="linkicon">
         <a href="index.php?option=com_redevent&amp;task=autoarchive">
-          <?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/icon-48-cleaneventimg.png',  JText::_( 'TRIGGER AUTOARCHIVE' ) ); ?>
-          <span><?php echo JText::_( 'TRIGGER AUTOARCHIVE' ); ?></span>
+          <?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/icon-48-cleaneventimg.png',  JText::_('COM_REDEVENT_TRIGGER_AUTOARCHIVE' ) ); ?>
+          <span><?php echo JText::_('COM_REDEVENT_TRIGGER_AUTOARCHIVE' ); ?></span>
         </a>
       </div>
     </td>
     <td width="40%" valign="middle">
-      <?php echo JText::_( 'TRIGGER AUTOARCHIVE DESC' ); ?>
+      <?php echo JText::_('COM_REDEVENT_TRIGGER_AUTOARCHIVE_DESC' ); ?>
     </td>	
 	</tr>
 	<tr>    
     <td width="10%">
       <div class="linkicon">
         <a href="index.php?option=com_redevent&controller=tools&task=checkdb">
-          <?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/icon-48-cleaneventimg.png',  JText::_( 'CHECK DATABASE' ) ); ?>
-          <span><?php echo JText::_( 'CHECK DATABASE' ); ?></span>
+          <?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/icon-48-cleaneventimg.png',  JText::_('COM_REDEVENT_CHECK_DATABASE' ) ); ?>
+          <span><?php echo JText::_('COM_REDEVENT_CHECK_DATABASE' ); ?></span>
         </a>
       </div>
     </td>
     <td width="40%" valign="middle">
-      <?php echo JText::_( 'CHECK DATABASE DESC' ); ?>
+      <?php echo JText::_('COM_REDEVENT_CHECK_DATABASE_DESC' ); ?>
     </td>	
     
     <td width="10%">
       <div class="linkicon">
         <a href="index.php?option=com_redevent&controller=tools&task=fixdb">
-          <?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/icon-48-cleaneventimg.png',  JText::_( 'FIX DATABASE' ) ); ?>
-          <span><?php echo JText::_( 'FIX DATABASE' ); ?></span>
+          <?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/icon-48-cleaneventimg.png',  JText::_('COM_REDEVENT_FIX_DATABASE' ) ); ?>
+          <span><?php echo JText::_('COM_REDEVENT_FIX_DATABASE' ); ?></span>
         </a>
       </div>
     </td>
     <td width="40%" valign="middle">
-      <?php echo JText::_( 'FIX DATABASE DESC' ); ?>
+      <?php echo JText::_('COM_REDEVENT_FIX_DATABASE_DESC' ); ?>
     </td>	
 	</tr>
 	<tr>
     <td width="10%">
       <div class="linkicon">
         <a href="index.php?option=com_redevent&amp;task=sampledata">
-          <?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/icon-48-cleaneventimg.png',  JText::_( 'ADD SAMPLE DATA' ) ); ?>
-          <span><?php echo JText::_( 'ADD SAMPLE DATA' ); ?></span>
+          <?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/icon-48-cleaneventimg.png',  JText::_('COM_REDEVENT_ADD_SAMPLE_DATA' ) ); ?>
+          <span><?php echo JText::_('COM_REDEVENT_ADD_SAMPLE_DATA' ); ?></span>
         </a>
       </div>
     </td>
     <td width="40%" valign="middle">
-      <?php echo JText::_( 'ADD SAMPLE DATA DESC' ); ?>
+      <?php echo JText::_('COM_REDEVENT_ADD_SAMPLE_DATA_DESC' ); ?>
     </td>	
     
     <td width="10%">

@@ -33,10 +33,10 @@ defined('_JEXEC') or die('Restricted access');
 			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows ); ?>);" />
 		</th> 
 		<th class="title">
-			<?php echo JHTML::_('grid.sort',  JText::_('TEXT_TAG'), 'obj.text_name', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+			<?php echo JHTML::_('grid.sort',  JText::_('COM_REDEVENT_TEXT_TAG'), 'obj.text_name', $this->lists['order_Dir'], $this->lists['order'] ); ?>
 		</th>
 		<th class="title">
-			<?php echo JText::_('TEXT_DESCRIPTION'); ?>
+			<?php echo JText::_('COM_REDEVENT_TEXT_DESCRIPTION'); ?>
 		</th>
 	</tr>
 	</thead>
@@ -69,7 +69,7 @@ defined('_JEXEC') or die('Restricted access');
 					echo htmlspecialchars($row->text_name, ENT_QUOTES, 'UTF-8');
 				} else {
 					?>
-					<span class="editlinktip hasTip" title="<?php echo JText::_( 'EDIT TAG' );?>::<?php echo $row->text_name; ?>">
+					<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_EDIT_TAG' );?>::<?php echo $row->text_name; ?>">
 					<a href="<?php echo $link; ?>">
 					<?php echo htmlspecialchars($row->text_name, ENT_QUOTES, 'UTF-8'); ?>
 					</a></span>

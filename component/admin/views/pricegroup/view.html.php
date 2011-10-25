@@ -70,7 +70,7 @@ class RedeventViewPricegroup extends JView
 
 		// fail if checked out not by 'me'
 		if ($model->isCheckedOut( $user->get('id') )) {
-			$msg = JText::sprintf( 'DESCBEINGEDITTED', JText::_( 'COM_REDEVENT_PRICEGROUPS_PRICEGROUP' ), $object->name );
+			$msg = JText::sprintf( 'COM_REDEVENT_DESCBEINGEDITTED', JText::_( 'COM_REDEVENT_PRICEGROUPS_PRICEGROUP' ), $object->name );
 			$mainframe->redirect( 'index.php?option='. $option, $msg );
 		}
 

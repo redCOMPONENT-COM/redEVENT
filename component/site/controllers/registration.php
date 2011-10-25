@@ -63,7 +63,7 @@ class RedEventControllerRegistration extends RedEventController
 	  
   	if (!$xref) 
   	{
-  		$msg = JText::_('REDEVENT_REGISTRATION_MISSING_XREF');
+  		$msg = JText::_('COM_REDEVENT_REGISTRATION_MISSING_XREF');
   		$this->setRedirect('index.php', $msg, 'error');
   		return;
   	}  	
@@ -80,7 +80,7 @@ class RedEventControllerRegistration extends RedEventController
   		$price = $model->getRegistrationPrice($p);
 	  	if ($price === false) 
 	  	{
-	  		$msg = JText::_('REDEVENT_REGISTRATION_MISSING_PRICE');
+	  		$msg = JText::_('COM_REDEVENT_REGISTRATION_MISSING_PRICE');
 	  		$this->setRedirect('index.php', $msg, 'error');
 	  		return;  		
 	  	}
@@ -97,7 +97,7 @@ class RedEventControllerRegistration extends RedEventController
   	$result = $rfcore->saveAnswers('redevent', $options);
   	if (!$result)  // redform saving failed
   	{
-  		$msg = JTEXT::_('REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED').' - '.$rfcore->getError();
+  		$msg = JText::_('COM_REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED').' - '.$rfcore->getError();
   		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($details->did, $xref)), $msg, 'error');
   		return;
   	}
@@ -119,7 +119,7 @@ class RedEventControllerRegistration extends RedEventController
 	  	foreach ($result->posts as $rfpost)
 	  	{
 	  		if (!$res = $model->register($rfpost['sid'], $result->submit_key, $pricegroups[$k++])) {
-	  			$msg = JTEXT::_('REDEVENT_REGISTRATION_REGISTRATION_FAILED').': '.$model->getError();
+	  			$msg = JText::_('COM_REDEVENT_REGISTRATION_REGISTRATION_FAILED');
 		  		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($details->did, $xref)), $msg, 'error');
 		  		return;
 	  		}
@@ -170,7 +170,7 @@ class RedEventControllerRegistration extends RedEventController
 	  $model->cancel($submit_key);
 		$eventdata = $model->getSessionDetails();
 	  
-  	$msg = JText::_('Registration cancelled');
+  	$msg = JText::_('COM_REDEVENT_Registration_cancelled');
 		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($eventdata->did, $xref)), $msg);
 	}
 	
@@ -192,7 +192,7 @@ class RedEventControllerRegistration extends RedEventController
 			$layout = 'default';
 		}
 		else {
-			$this->setRedirect(RedeventHelperRoute::getMyEventsRoute(), JText::_('ACCESS NOT ALLOWED'), 'error');
+			$this->setRedirect(RedeventHelperRoute::getMyEventsRoute(), JText::_('COM_REDEVENT_ACCESS_NOT_ALLOWED'), 'error');
 			$this->redirect();
 		}
 		JRequest::setvar('view', 'attendees');
@@ -206,7 +206,7 @@ class RedEventControllerRegistration extends RedEventController
   	$task = JRequest::getVar('task');
 		if (JRequest::getVar('cancel', '', 'post')) 
 		{
-  		$msg = JText::_('Registration Edit cancelled');
+  		$msg = JText::_('COM_REDEVENT_Registration_Edit_cancelled');
   		if ($task == 'managerupdate') {
   			$this->setRedirect(JRoute::_(RedeventHelperRoute::getManageAttendees($xref)), $msg);  			
   		}
@@ -232,7 +232,7 @@ class RedEventControllerRegistration extends RedEventController
   		$price = $model->getRegistrationPrice($p);
 	  	if ($price === false) 
 	  	{
-	  		$msg = JText::_('REDEVENT_REGISTRATION_MISSING_PRICE');
+	  		$msg = JText::_('COM_REDEVENT_REGISTRATION_MISSING_PRICE');
 	  		$this->setRedirect('index.php', $msg, 'error');
 	  		return;  		
 	  	}
@@ -240,7 +240,7 @@ class RedEventControllerRegistration extends RedEventController
   	}  	
   	
   	if (!$xref) {
-  		$msg = JText::_('REDEVENT_REGISTRATION_MISSING_XREF');
+  		$msg = JText::_('COM_REDEVENT_REGISTRATION_MISSING_XREF');
   		$this->setRedirect('index.php', $msg, 'error');
   		return;
   	}
@@ -250,7 +250,7 @@ class RedEventControllerRegistration extends RedEventController
 		$rfcore = new redFormCore();
   	$result = $rfcore->saveAnswers('redevent', $options);
   	if (!$result) {
-  		$msg = JTEXT::_('REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED').' - '.$rfcore->getError();
+  		$msg = JText::_('COM_REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED').' - '.$rfcore->getError();
   		if ($task == 'managerupdate') {
   			$this->setRedirect(JRoute::_(RedeventHelperRoute::getManageAttendees($xref)), $msg, 'error');  			
   		}
@@ -266,7 +266,7 @@ class RedEventControllerRegistration extends RedEventController
   	{
   		$k = 0;
   		if (!$res = $model->register($rfpost['sid'], $result->submit_key, $pricegroups[$k++])) {
-  			$msg = JTEXT::_('REDEVENT_REGISTRATION_REGISTRATION_FAILED');
+  			$msg = JText::_('COM_REDEVENT_REGISTRATION_REGISTRATION_FAILED');
 	  		if ($task == 'managerupdate') {
 	  			$this->setRedirect(JRoute::_(RedeventHelperRoute::getManageAttendees($xref)), $msg, 'error');  			
 	  		}
@@ -375,7 +375,7 @@ class RedEventControllerRegistration extends RedEventController
 						
 						/* Send the mail */
 						if (!$this->mailer->Send()) {
-							$mainframe->enqueueMessage(JText::_('THERE WAS A PROBLEM SENDING MAIL'));
+							$mainframe->enqueueMessage(JText::_('COM_REDEVENT_THERE_WAS_A_PROBLEM_SENDING_MAIL'));
               RedeventHelperLog::simpleLog('Error sending confirm email'.': '.$this->mailer->error);
 						}
 						
@@ -387,11 +387,11 @@ class RedEventControllerRegistration extends RedEventController
 			$msg = JText::_('COM_REDEVENT_REGISTRATION_ACTIVATION_SUCCESSFULL');
 		}
 		else if ($regdata && $regdata->confirmed == 1) {
-			$msg = JText::_('YOUR SUBMISSION HAS ALREADY BEEN CONFIRMED');
+			$msg = JText::_('COM_REDEVENT_YOUR_SUBMISSION_HAS_ALREADY_BEEN_CONFIRMED');
 			$msgtype = 'error';
 		}
 		else {
-			$msg = JText::_('YOUR SUBMISSION CANNOT BE CONFIRMED');
+			$msg = JText::_('COM_REDEVENT_YOUR_SUBMISSION_CANNOT_BE_CONFIRMED');
 			$msgtype = 'error';
 		}
 		

@@ -402,11 +402,11 @@ class RedEventModelCategories extends JModel
 
 		if (count( $err )) {
 			$cids 	= implode( ', ', $err );
-    		$msg 	= JText::sprintf( 'EVENT ASSIGNED CATEGORY', $cids );
+    		$msg 	= JText::sprintf( 'COM_REDEVENT_EVENT_ASSIGNED_CATEGORY_S', $cids );
     		return $msg;
 		} else {
 			$total 	= count( $cid );
-			$msg 	= $total.' '.JText::_('CATEGORIES DELETED');
+			$msg 	= $total.' '.JText::_('COM_REDEVENT_CATEGORIES_DELETED');
 			return $msg;
 		}
 	}

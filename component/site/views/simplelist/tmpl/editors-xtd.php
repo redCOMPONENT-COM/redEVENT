@@ -49,18 +49,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<?php if ($this->params->get('filter_text',1)) : ?>
 		<div class="el_fleft">
 			<?php
-			echo '<label for="filter_type">'.JText::_('FILTER').'</label>&nbsp;';
+			echo '<label for="filter_type">'.JText::_('COM_REDEVENT_FILTER').'</label>&nbsp;';
 			echo $this->lists['filter_type'].'&nbsp;';
 			?>
-			<input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" title="<?php echo JText::_('EVENTS_FILTER_HINT'); ?>"/>
-			<button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_( 'GO' ); ?></button>
-			<button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_( 'RESET' ); ?></button>
+			<input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" title="<?php echo JText::_('COM_REDEVENT_EVENTS_FILTER_HINT'); ?>"/>
+			<button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_('COM_REDEVENT_GO' ); ?></button>
+			<button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_('COM_REDEVENT_RESET' ); ?></button>
 		</div>
 		<?php endif; ?>
 		<?php if ($this->params->get('display')) : ?>
 		<div class="el_fright">
 			<?php
-			echo '<label for="limit">'.JText::_('DISPLAY NUM').'</label>&nbsp;';
+			echo '<label for="limit">'.JText::_('COM_REDEVENT_DISPLAY_NUM').'</label>&nbsp;';
 			echo $this->pageNav->getLimitBox();
 			?>
 		</div>
@@ -125,7 +125,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<?php
 	if ($this->noevents == 1) :
 		?>
-		<tr align="center"><td><?php echo JText::_( 'NO EVENTS' ); ?></td></tr>
+		<tr align="center"><td><?php echo JText::_('COM_REDEVENT_NO_EVENTS' ); ?></td></tr>
 		<?php
 	else :
 

@@ -1,10 +1,10 @@
-<?php $infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-hint.png', JText::_( 'NOTES' ) ); ?>
+<?php $infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-hint.png', JText::_('COM_REDEVENT_NOTES' ) ); ?>
 <?php $k = 0; ?>
 <table class="adminform">
 <tr class="row<?php echo $k = 1 - $k; ?>">
 		<td>
 			<label for="redform_id">
-				<?php echo JText::_( 'REDFORM_FORM_ID' ).':'; ?>
+				<?php echo JText::_('COM_REDEVENT_REDFORM_FORM_ID' ).':'; ?>
 			</label>
 		</td>
 		<td>
@@ -14,12 +14,12 @@
 <tr class="row<?php echo $k = 1 - $k; ?>">
 	<td>
 		<label for="max_multi_signup">
-			<?php echo JText::_( 'MAX_MULTI_SIGNUP' ).':'; ?>
+			<?php echo JText::_('COM_REDEVENT_MAX_MULTI_SIGNUP' ).':'; ?>
 		</label>
 	</td>
 	<td>
 		<input type="text" class="inputbox" name="max_multi_signup" value="<?php echo $this->row->max_multi_signup; ?>" size="15" id="max_multi_signup" />
-		<span class="editlinktip hasTip" title="<?php echo JText::_( 'MAX_MULTI_SIGNUP_TIP' ); ?>">
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_MAX_MULTI_SIGNUP_TIP' ); ?>">
 			<?php echo $infoimage; ?>
 		</span>
 	</td>
@@ -33,7 +33,7 @@
 <tr class="row<?php echo $k = 1 - $k; ?>">
 	<td>
 		<label for="redform_fields">
-			<?php echo JText::_( 'REDFORM FORM SELECT FIELDS' ).':'; ?>
+			<?php echo JText::_('COM_REDEVENT_REDFORM_FORM_SELECT_FIELDS' ).':'; ?>
 		</label>
 		</td>
 		<td>

@@ -5,7 +5,7 @@
 			<tr>
 				<td>
 					<label for="title">
-						<?php echo JText::_( 'EVENT TITLE' ).':'; ?>
+						<?php echo JText::_('COM_REDEVENT_EVENT_TITLE' ).':'; ?>
 					</label>
 				</td>
 				<td>
@@ -15,7 +15,7 @@
 			<tr>
 				<td>
 					<label for="alias">
-						<?php echo JText::_( 'Alias' ).':'; ?>
+						<?php echo JText::_('COM_REDEVENT_Alias' ).':'; ?>
 					</label>
 				</td>
 				<td colspan="3">
@@ -25,7 +25,7 @@
 			<tr>
 				<td>
 					<label for="course_code">
-						<?php echo JText::_( 'COURSE_CODE' ).':'; ?>
+						<?php echo JText::_('COM_REDEVENT_COURSE_CODE' ).':'; ?>
 					</label>
 				</td>
 				<td>
@@ -45,7 +45,7 @@
 			<tr>
 				<td>
 					<label for="published">
-						<?php echo JText::_( 'PUBLISHED' ).':'; ?>
+						<?php echo JText::_('COM_REDEVENT_PUBLISHED' ).':'; ?>
 					</label>
 				</td>
 				<td>
@@ -58,7 +58,7 @@
 			<tr>
 				<td>
 					<label for="creator">
-						<?php echo JText::_( 'CREATOR' ).':'; ?>
+						<?php echo JText::_('COM_REDEVENT_CREATOR' ).':'; ?>
 					</label>
 				</td>
 				<td>
@@ -72,7 +72,7 @@
 		<tr>
 			<td>
 				<label for="catid">
-					<?php echo JText::_( 'CATEGORY' ).':'; ?>
+					<?php echo JText::_('COM_REDEVENT_CATEGORY' ).':'; ?>
 				</label>
 			</td>
 			<td>

@@ -59,14 +59,14 @@ class ELOutput {
 			JHTML::_('behavior.tooltip');
 
 			if ( $params->get('icons') ) {
-				$image = JHTML::_('image.site', 'submitevent.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'DELIVER NEW EVENT' ));
+				$image = JHTML::_('image.site', 'submitevent.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_DELIVER_NEW_EVENT' ));
 			} else {
-				$image = JText::_( 'DELIVER NEW EVENT' );
+				$image = JText::_('COM_REDEVENT_DELIVER_NEW_EVENT' );
 			}
 
 			$link 		= RedeventHelperRoute::getEditEventRoute();
-			$overlib 	= JText::_( 'SUBMIT EVENT TIP' );
-			$output		= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.JText::_( 'DELIVER NEW EVENT' ).'::'.$overlib.'">'.$image.'</a>';
+			$overlib 	= JText::_('COM_REDEVENT_SUBMIT_EVENT_TIP' );
+			$output		= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.JText::_('COM_REDEVENT_DELIVER_NEW_EVENT' ).'::'.$overlib.'">'.$image.'</a>';
 
 			return $output;
 		}
@@ -93,12 +93,11 @@ class ELOutput {
 		JHTML::_('behavior.tooltip');
 
 		if ( $params->get('icons') ) {
-			$image = JHTML::_('image.site', 'thumbnail.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'REDEVENT_EVENTS_THUMBNAILS_LAYOUT' ));
+			$image = JHTML::_('image.site', 'thumbnail.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EVENTS_THUMBNAILS_LAYOUT' ));
 		} else {
-			$image = JText::_( 'REDEVENT_EVENTS_THUMBNAILS_LAYOUT' );
+			$image = JText::_('COM_REDEVENT_EVENTS_THUMBNAILS_LAYOUT' );
 		}
-		$overlib 	= JText::_( 'SUBMIT REDEVENT_EVENTS_THUMBNAILS_LAYOUT' );
-		$output		= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.JText::_( 'REDEVENT_EVENTS_THUMBNAILS_LAYOUT' ).'::">'.$image.'</a>';
+		$output		= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.JText::_('COM_REDEVENT_EVENTS_THUMBNAILS_LAYOUT' ).'::">'.$image.'</a>';
 
 		return $output;
 	}
@@ -118,12 +117,11 @@ class ELOutput {
 		JHTML::_('behavior.tooltip');
 
 		if ( $params->get('icons') ) {
-			$image = JHTML::_('image.site', 'list.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'REDEVENT_EVENTS_LIST_LAYOUT' ));
+			$image = JHTML::_('image.site', 'list.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EVENTS_LIST_LAYOUT' ));
 		} else {
-			$image = JText::_( 'REDEVENT_EVENTS_LIST_LAYOUT' );
+			$image = JText::_('COM_REDEVENT_EVENTS_LIST_LAYOUT' );
 		}
-		$overlib 	= JText::_( 'REDEVENT_EVENTS_LIST_LAYOUT' );
-		$output		= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.JText::_( 'REDEVENT_EVENTS_LIST_LAYOUT' ).'::">'.$image.'</a>';
+		$output		= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.JText::_('COM_REDEVENT_EVENTS_LIST_LAYOUT' ).'::">'.$image.'</a>';
 
 		return $output;
 	}
@@ -136,7 +134,7 @@ class ELOutput {
 	 */
 	function editVenueButton($id)
 	{
-		$txt   =  ($id ? JText::_( 'EDIT VENUE' ) : JText::_( 'ADD VENUE' ));
+		$txt   =  ($id ? JText::_('COM_REDEVENT_EDIT_VENUE' ) : JText::_('COM_REDEVENT_ADD_VENUE' ));
 		$link  = JRoute::_(RedeventHelperRoute::getEditVenueRoute($id));
 		$image = JHTML::image('components/com_redevent/assets/images/calendar_edit.png', $txt);
 		return JHTML::link($link, $image, array( 'class' => "editlinktip hasTip", 'title' => $txt.'::'));
@@ -168,12 +166,12 @@ class ELOutput {
 		if ($task == 'archive') {
 			
 			if ( $params->get('icons') ) {
-				$image = JHTML::_('image.site', 'eventlist.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'SHOW EVENTS' ));
+				$image = JHTML::_('image.site', 'eventlist.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_SHOW_EVENTS' ));
 			} else {
-				$image = JText::_( 'SHOW EVENTS' );
+				$image = JText::_('COM_REDEVENT_SHOW_EVENTS' );
 			}
-			$overlib 	= JText::_( 'SHOW EVENTS TIP' );
-			$title 		= JText::_( 'SHOW EVENTS' );
+			$overlib 	= JText::_('COM_REDEVENT_SHOW_EVENTS_TIP' );
+			$title 		= JText::_('COM_REDEVENT_SHOW_EVENTS' );
 			
 			if ($id) {
 					$link 		= JRoute::_( 'index.php?option=com_redevent&view='.$view.'&id='.$id );
@@ -184,12 +182,12 @@ class ELOutput {
 		} else {
 			
 			if ( $params->get('icons') ) {
-				$image = JHTML::_('image.site', 'archive_front.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'SHOW ARCHIVE' ));
+				$image = JHTML::_('image.site', 'archive_front.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_SHOW_ARCHIVE' ));
 			} else {
-				$image = JText::_( 'SHOW ARCHIVE' );
+				$image = JText::_('COM_REDEVENT_SHOW_ARCHIVE' );
 			}
-			$overlib 	= JText::_( 'SHOW ARCHIVE TIP' );
-			$title 		= JText::_( 'SHOW ARCHIVE' );
+			$overlib 	= JText::_('COM_REDEVENT_SHOW_ARCHIVE_TIP' );
+			$title 		= JText::_('COM_REDEVENT_SHOW_ARCHIVE' );
 				
 			if ($id) {
 				$link 		= JRoute::_( 'index.php?option=com_redevent&view='.$view.'&id='.$id.'&task=archive' );
@@ -225,23 +223,23 @@ class ELOutput {
 			{
 				case 'editevent':
 					if ( $params->get('icons') ) {
-						$image = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'EDIT EVENT' ));
+						$image = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EDIT_EVENT' ));
 					} else {
-						$image = JText::_( 'EDIT EVENT' );
+						$image = JText::_('COM_REDEVENT_EDIT_EVENT' );
 					}
-					$overlib = JText::_( 'EDIT EVENT TIP' );
-					$text = JText::_( 'EDIT EVENT' );
+					$overlib = JText::_('COM_REDEVENT_EDIT_EVENT_TIP' );
+					$text = JText::_('COM_REDEVENT_EDIT_EVENT' );
 					$link  = JRoute::_(RedeventHelperRoute::getEditEventRoute($id, JRequest::getInt('xref')));
 					break;
 
 				case 'editvenue':
 					if ( $params->get('icons') ) {
-						$image = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'EDIT EVENT' ));
+						$image = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EDIT_EVENT' ));
 					} else {
-						$image = JText::_( 'EDIT VENUE' );
+						$image = JText::_('COM_REDEVENT_EDIT_VENUE' );
 					}
-					$overlib = JText::_( 'EDIT VENUE TIP' );
-					$text = JText::_( 'EDIT VENUE' );
+					$overlib = JText::_('COM_REDEVENT_EDIT_VENUE_TIP' );
+					$text = JText::_('COM_REDEVENT_EDIT_VENUE' );
 					$link  = JRoute::_(RedeventHelperRoute::getEditVenueRoute($id));
 					break;
 			}
@@ -264,10 +262,10 @@ class ELOutput {
 	{
 		JHTML::_('behavior.tooltip');
 
-		$image = JHTML::_('image.site', 'attendees.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_( 'REDEVENT_EDIT_ATTENDEES' ));
+		$image = JHTML::_('image.site', 'attendees.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EDIT_ATTENDEES' ));
 
-		$overlib = JText::_( 'REDEVENT_EDIT_ATTENDEES_TIP' );
-		$text = JText::_( 'REDEVENT_EDIT_ATTENDEES' );
+		$overlib = JText::_('COM_REDEVENT_EDIT_ATTENDEES_TIP' );
+		$text = JText::_('COM_REDEVENT_EDIT_ATTENDEES' );
 //		$link 	= 'index.php?option=com_redevent&view=details&layout=manageattendees&xref='. $id;
 		$link = RedeventHelperRoute::getManageAttendees($id);
 		$output	= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
@@ -292,9 +290,9 @@ class ELOutput {
 
 			// checks template image directory for image, if non found default are loaded
 			if ( $params->get( 'icons' ) ) {
-				$image = JHTML::_('image.site', 'printButton.png', 'images/M_images/', NULL, NULL, JText::_( 'Print' ));
+				$image = JHTML::_('image.site', 'printButton.png', 'images/M_images/', NULL, NULL, JText::_('COM_REDEVENT_Print' ));
 			} else {
-				$image = JText::_( 'Print' );
+				$image = JText::_('COM_REDEVENT_Print' );
 			}
 
 			if (JRequest::getInt('pop')) {
@@ -302,8 +300,8 @@ class ELOutput {
 				$output = '<a href="#" onclick="window.print();return false;">'.$image.'</a>';
 			} else {
 				//button in view
-				$overlib = JText::_( 'PRINT TIP' );
-				$text = JText::_( 'Print' );
+				$overlib = JText::_('COM_REDEVENT_PRINT_TIP' );
+				$text = JText::_('COM_REDEVENT_Print' );
 
 				$output	= '<a href="'. JRoute::_($print_link) .'" class="editlinktip hasTip" onclick="window.open(this.href,\'win2\',\''.$status.'\'); return false;" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
 			}
@@ -332,13 +330,13 @@ class ELOutput {
 			$status = 'width=400,height=300,menubar=yes,resizable=yes';
 
 			if ($params->get('icons')) 	{
-				$image = JHTML::_('image.site', 'emailButton.png', 'images/M_images/', NULL, NULL, JText::_( 'Email' ));
+				$image = JHTML::_('image.site', 'emailButton.png', 'images/M_images/', NULL, NULL, JText::_('COM_REDEVENT_Email' ));
 			} else {
-				$image = JText::_( 'Email' );
+				$image = JText::_('COM_REDEVENT_Email' );
 			}
 
-			$overlib = JText::_( 'EMAIL TIP' );
-			$text = JText::_( 'Email' );
+			$overlib = JText::_('COM_REDEVENT_EMAIL_TIP' );
+			$text = JText::_('COM_REDEVENT_Email' );
 
 			$output	= '<a href="'. JRoute::_($url) .'" class="editlinktip hasTip" onclick="window.open(this.href,\'win2\',\''.$status.'\'); return false;" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
 
@@ -360,7 +358,7 @@ class ELOutput {
 		$settings = & redEVENTHelper::config();
 		
 		//Link to map
-		$mapimage = JHTML::image(JURI::root().'/components/com_redevent/assets/images/mapsicon.png', JText::_( 'MAP' ) );
+		$mapimage = JHTML::image(JURI::root().'/components/com_redevent/assets/images/mapsicon.png', JText::_('COM_REDEVENT_MAP' ) );
 
 		//set var
 		$output 	= null;
@@ -386,7 +384,7 @@ class ELOutput {
 			$attributes[$k] = $k.'="'.$v.'"';
 		}
 		$attributes = implode(' ', $attributes);
-		$output = '<a title="'.JText::_( 'MAP' ).'" rel="{handler:\'iframe\'}" href="'.JRoute::_('index.php?option=com_redevent&view=venue&layout=gmap&tmpl=component&id='.$data->venueid).'"'.$attributes.'>'.$mapimage.'</a>';
+		$output = '<a title="'.JText::_('COM_REDEVENT_MAP' ).'" rel="{handler:\'iframe\'}" href="'.JRoute::_('index.php?option=com_redevent&view=venue&layout=gmap&tmpl=component&id='.$data->venueid).'"'.$attributes.'>'.$mapimage.'</a>';
 
 		return $output;
 	}
@@ -509,7 +507,7 @@ class ELOutput {
 
 				}
 
-				$icon	= '<img src="'.JURI::root().'/'.$image['thumb'].'" width="'.$image['thumbwidth'].'" height="'.$image['thumbheight'].'" alt="'.$info.'" title="'.JText::_( 'CLICK TO ENLARGE' ).'" />';
+				$icon	= '<img src="'.JURI::root().'/'.$image['thumb'].'" width="'.$image['thumbwidth'].'" height="'.$image['thumbheight'].'" alt="'.$info.'" title="'.JText::_('COM_REDEVENT_CLICK_TO_ENLARGE' ).'" />';
 				$output	= '<a href="'.$url.'" '.$attributes.'>'.$icon.'</a>';
 
 			//No thumbnail? Then take the in the settings specified values for the original
@@ -537,7 +535,7 @@ class ELOutput {
         jimport('joomla.filesystem.file');
 
         if (JFile::exists(JPATH_COMPONENT_SITE.DS.'assets'.DS.'images'.DS.'flags'.DS.$country.'.gif')) {
-        	$countryimg = '<img src="'.JURI::base(true).'/components/com_redevent/assets/images/flags/'.$country.'.gif" alt="'.JText::_( 'COUNTRY' ).': '.$country.'" width="16" height="11" />';
+        	$countryimg = '<img src="'.JURI::base(true).'/components/com_redevent/assets/images/flags/'.$country.'.gif" alt="'.JText::_('COM_REDEVENT_COUNTRY' ).': '.$country.'" width="16" height="11" />';
 
         	return $countryimg;
         }
@@ -580,7 +578,7 @@ class ELOutput {
 		$settings = & redEVENTHelper::config();
 		
 		if(!redEVENTHelper::isValidDate($date)) {
-			return JText::_('OPEN DATE');
+			return JText::_('COM_REDEVENT_OPEN_DATE');
 		}
 		
 		if(!$time) {
@@ -627,7 +625,7 @@ class ELOutput {
 	function formatEventDateTime($event, $show_end = true)
 	{
 		if (!redEVENTHelper::isValidDate($event->dates)) { // open dates
-			$date = '<span class="event-date open-date">'.JText::_('OPEN DATE').'</span>';
+			$date = '<span class="event-date open-date">'.JText::_('COM_REDEVENT_OPEN_DATE').'</span>';
 			return $date;
 		}
 		$settings = & redEVENTHelper::config();
@@ -747,7 +745,7 @@ class ELOutput {
 		$settings = & redEVENTHelper::config();
 		
 		if(!$price) {
-			return JText::_('REDEVENT_EVENT_PRICE_FREE');
+			return JText::_('COM_REDEVENT_EVENT_PRICE_FREE');
 		}
 		
 		switch ($settings->currency_decimals) {

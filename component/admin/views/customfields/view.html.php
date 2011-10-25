@@ -51,7 +51,7 @@ class RedeventViewCustomfields extends JView
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_CUSTOMFIELDS'));
 		
 		// Set toolbar items for the page
-		JToolBarHelper::title(   JText::_( 'Custom fields' ), 'generic.png' );
+		JToolBarHelper::title(   JText::_('COM_REDEVENT_Custom_fields' ), 'generic.png' );
 		JToolBarHelper::deleteList();
 		JToolBarHelper::editListX();
 		JToolBarHelper::addNewX();

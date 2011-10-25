@@ -67,9 +67,9 @@ class RedEventViewEvents extends JView {
 		JHTML::_('behavior.tooltip');
 
 		//create the toolbar
-		JToolBarHelper::title( JText::_( 'EVENTS' ), 'events' );
-		JToolBarHelper::customX('archive', 'redevent_archive', 'redevent_archive', JText::_('ARCHIVE'), true);
-    JToolBarHelper::customX('archivepast', 'redevent_archive', 'redevent_archive', JText::_('ARCHIVE OLD EVENTS'), true);
+		JToolBarHelper::title( JText::_('COM_REDEVENT_EVENTS' ), 'events' );
+		JToolBarHelper::customX('archive', 'redevent_archive', 'redevent_archive', JText::_('COM_REDEVENT_ARCHIVE'), true);
+    JToolBarHelper::customX('archivepast', 'redevent_archive', 'redevent_archive', JText::_('COM_REDEVENT_ARCHIVE_OLD_EVENTS'), true);
 		JToolBarHelper::spacer();
 		JToolBarHelper::publishList();
 		JToolBarHelper::spacer();
@@ -103,10 +103,10 @@ class RedEventViewEvents extends JView {
 		
 		//search filter
 		$filters = array();
-		$filters[] = JHTML::_('select.option', '1', JText::_( 'EVENT TITLE' ) );
-		$filters[] = JHTML::_('select.option', '2', JText::_( 'VENUE' ) );
-		$filters[] = JHTML::_('select.option', '3', JText::_( 'CITY' ) );
-		$filters[] = JHTML::_('select.option', '4', JText::_( 'CATEGORY' ) );
+		$filters[] = JHTML::_('select.option', '1', JText::_('COM_REDEVENT_EVENT_TITLE' ) );
+		$filters[] = JHTML::_('select.option', '2', JText::_('COM_REDEVENT_VENUE' ) );
+		$filters[] = JHTML::_('select.option', '3', JText::_('COM_REDEVENT_CITY' ) );
+		$filters[] = JHTML::_('select.option', '4', JText::_('COM_REDEVENT_CATEGORY' ) );
 		$lists['filter'] = JHTML::_('select.genericlist', $filters, 'filter', 'size="1" class="inputbox"', 'value', 'text', $filter );
 
 		// search filter

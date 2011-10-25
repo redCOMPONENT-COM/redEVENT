@@ -56,7 +56,7 @@ class RedeventViewVenuesmap extends JView
       $title = $item->name;
     }
     else {
-      $title = JText::_('Venues map');
+      $title = JText::_('COM_REDEVENT_Venues_map');
       $params->set('page_title', $title);
     }
 
@@ -93,8 +93,8 @@ class RedeventViewVenuesmap extends JView
 		$pathway 	= & $mainframe->getPathWay();
 		
 	  if ( $task == 'archive' ) {
-      $pathway->addItem(JText::_( 'ARCHIVE' ), JRoute::_('index.php?view=venues&task=archive') );
-      $pagetitle = $params->get('page_title').' - '.JText::_( 'ARCHIVE' );
+      $pathway->addItem(JText::_('COM_REDEVENT_ARCHIVE' ), JRoute::_('index.php?view=venues&task=archive') );
+      $pagetitle = $params->get('page_title').' - '.JText::_('COM_REDEVENT_ARCHIVE' );
       $print_link = JRoute::_('index.php?view=venues&task=archive&pop=1&tmpl=component');
     } else {
       $pagetitle = $params->get('page_title');
@@ -105,12 +105,12 @@ class RedeventViewVenuesmap extends JView
     
     // venues categories
     $vcat_options = redEVENTHelper::getVenuesCatOptions(false);
-    array_unshift($vcat_options, JHTML::_('select.option', 0, JText::_('ALL')));
+    array_unshift($vcat_options, JHTML::_('select.option', 0, JText::_('COM_REDEVENT_ALL')));
     $lists['venuescats'] = JHTML::_('select.genericlist', $vcat_options, 'vcat', '', 'value', 'text', $vcat);
     
     // events categories
     $cat_options = redEVENTHelper::getEventsCatOptions(false);
-    array_unshift($cat_options, JHTML::_('select.option', 0, JText::_('ALL')));
+    array_unshift($cat_options, JHTML::_('select.option', 0, JText::_('COM_REDEVENT_ALL')));
     $lists['eventscats'] = JHTML::_('select.genericlist', $cat_options, 'cat', '', 'value', 'text', $cat);
     
     $lists['customfilters'] = $custom;

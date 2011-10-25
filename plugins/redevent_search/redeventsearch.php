@@ -36,9 +36,9 @@ class plgSearchRedeventSearch extends JPlugin {
 	 * @var array
 	 */
 	private $_areas = array(
-	                'redeventevents' => 'REDEVENT EVENTS',
-	                'redeventcategories' => 'REDEVENT CATEGORIES',
-	                'redeventvenues' => 'REDEVENT VENUES',
+	                'redeventevents' => 'PLG_REDEVENT_SEARCH_EVENTS',
+	                'redeventcategories' => 'PLG_REDEVENT_SEARCH_CATEGORIES',
+	                'redeventvenues' => 'PLG_REDEVENT_SEARCH_VENUES',
 	        );
 	        
 	/**
@@ -90,7 +90,7 @@ class plgSearchRedeventSearch extends JPlugin {
 	
 		$rows = array();
 		
-		$search = $db->Quote(JText::_( 'EVENTS' ));
+		$search = $db->Quote(JText::_( 'PLG_REDEVENT_SEARCH_EVENTS' ));
 	
 		if (!$areas || in_array('redeventevents', $areas))
 		{
@@ -150,7 +150,7 @@ class plgSearchRedeventSearch extends JPlugin {
 			//the database query; 
 			$query = 'SELECT e.summary AS text, x.id AS xref, x.dates, x.times, '
 			. ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', e.title, x.title) ELSE e.title END as title, '
-			. ' CONCAT_WS( " / ", '. $search .', '.$db->Quote(JText::_( 'EVENTS' )).' ) AS section,'
+			. ' CONCAT_WS( " / ", '. $search .', '.$db->Quote(JText::_( 'PLG_REDEVENT_SEARCH_EVENTS' )).' ) AS section,'
 	    . ' CASE WHEN CHAR_LENGTH( e.alias ) THEN CONCAT_WS( \':\', x.id, e.alias ) ELSE x.id END AS slug, '
 	    . ' NULL AS created, '
 			. ' "2" AS browsernav'
@@ -246,7 +246,7 @@ class plgSearchRedeventSearch extends JPlugin {
 	
 	    //the database query; differs per situation! It will look something like this:
 	    $query = 'SELECT c.catname AS title,'
-	    . ' CONCAT_WS( " / ", '. $search .', '.$db->Quote(JText::_( 'CATEGORIES' )).' ) AS section,'
+	    . ' CONCAT_WS( " / ", '. $search .', '.$db->Quote(JText::_( 'PLG_REDEVENT_SEARCH_CATEGORIES' )).' ) AS section,'
 	    . ' CASE WHEN CHAR_LENGTH( c.alias ) THEN CONCAT_WS( \':\', c.id, c.alias ) ELSE c.id END AS slug, '
 	    . ' NULL AS created, '
 	    . ' "2" AS browsernav'
@@ -318,7 +318,7 @@ class plgSearchRedeventSearch extends JPlugin {
 	
 	    //the database query; differs per situation! It will look something like this:
 	    $query = 'SELECT v.venue AS title,'
-	    . ' CONCAT_WS( " / ", '. $search .', '.$db->Quote(JText::_( 'VENUES' )).' ) AS section,'
+	    . ' CONCAT_WS( " / ", '. $search .', '.$db->Quote(JText::_( 'PLG_REDEVENT_SEARCH_VENUES' )).' ) AS section,'
 	    . ' CASE WHEN CHAR_LENGTH( v.alias ) THEN CONCAT_WS( \':\', v.id, v.alias ) ELSE v.id END AS slug, '
 	    . ' NULL AS created, '
 	    . ' "2" AS browsernav'

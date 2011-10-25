@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <h1 class='componentheading'>
 	<?php
-		echo JText::_('SELECTVENUE');
+		echo JText::_('COM_REDEVENT_SELECTVENUE');
 	?>
 </h1>
 
@@ -52,16 +52,16 @@ defined('_JEXEC') or die('Restricted access');
 <div id="re_filter" class="floattext">
 		<div class="re_fleft">
 			<?php
-			echo '<label for="filter_type">'.JText::_('FILTER').'</label>&nbsp;';
+			echo '<label for="filter_type">'.JText::_('COM_REDEVENT_FILTER').'</label>&nbsp;';
 			echo $this->searchfilter.'&nbsp;';
 			?>
 			<input type="text" name="filter" id="filter" value="<?php echo $this->filter;?>" class="text_area" onchange="document.getElementById('venueselectform').submit();" />
-			<button onclick="document.getElementById('venueselectform').submit();"><?php echo JText::_( 'Go' ); ?></button>
-			<button onclick="document.getElementById('filter').value='';document.getElementById('venueselectform').submit();"><?php echo JText::_( 'Reset' ); ?></button>
+			<button onclick="document.getElementById('venueselectform').submit();"><?php echo JText::_('COM_REDEVENT_Go' ); ?></button>
+			<button onclick="document.getElementById('filter').value='';document.getElementById('venueselectform').submit();"><?php echo JText::_('COM_REDEVENT_Reset' ); ?></button>
 		</div>
 		<div class="re_fright">
 			<?php
-			echo '<label for="limit">'.JText::_('DISPLAY NUM').'</label>&nbsp;';
+			echo '<label for="limit">'.JText::_('COM_REDEVENT_DISPLAY_NUM').'</label>&nbsp;';
 			echo $this->pageNav->getLimitBox();
 			?>
 		</div>
@@ -71,10 +71,10 @@ defined('_JEXEC') or die('Restricted access');
 <table class="eventtable" width="100%" border="0" cellspacing="0" cellpadding="0" summary="eventlist">
 	<thead>
 		<tr>
-			<th width="7" class="sectiontableheader" align="left"><?php echo JText::_( 'Num' ); ?></th>
-			<th align="left" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', 'VENUE', 'l.venue', $this->lists['order_Dir'], $this->lists['order'], 'selectvenue' ); ?></th>
-			<th align="left" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', 'CITY', 'l.city', $this->lists['order_Dir'], $this->lists['order'], 'selectvenue' ); ?></th>
-			<th align="left" class="sectiontableheader" align="left"><?php echo JText::_( 'COUNTRY' ); ?></th>
+			<th width="7" class="sectiontableheader" align="left">#</th>
+			<th align="left" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_VENUE', 'l.venue', $this->lists['order_Dir'], $this->lists['order'], 'selectvenue' ); ?></th>
+			<th align="left" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_CITY', 'l.city', $this->lists['order_Dir'], $this->lists['order'], 'selectvenue' ); ?></th>
+			<th align="left" class="sectiontableheader" align="left"><?php echo JText::_('COM_REDEVENT_COUNTRY' ); ?></th>
 		</tr>
 	</thead>
 

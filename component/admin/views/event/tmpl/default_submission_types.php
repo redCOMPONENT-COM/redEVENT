@@ -1,19 +1,19 @@
 <table class="adminform">
 	<tr>
 		<td colspan="2" class="redevent_settings_details">
-				<?php echo JText::_( 'SUBMIT_TYPES' ).':'; ?>
+				<?php echo JText::_('COM_REDEVENT_SUBMIT_TYPES' ).':'; ?>
 		</td>
 	</tr>
   <tr>
     <td colspan="2" class="redevent_settings_details_info">
-        <?php echo JText::_( 'SUBMISSION TAB DESC' ); ?>
+        <?php echo JText::_('COM_REDEVENT_SUBMISSION_TAB_DESC' ); ?>
     </td>
   </tr>
 	<tr>
 		<td>
 			<input type="checkbox" id="submission_type_external" name="submission_types[]" value="external"
 			<?php if (in_array('external', $this->submission_types)) echo ' checked="checked"'; ?>
-			/><?php echo JText::_('EXTERNAL'); ?>
+			/><?php echo JText::_('COM_REDEVENT_EXTERNAL'); ?>
 		</td>
 		<td>
 			<input type="text" class="inputbox" name="submission_type_external" value="<?php echo $this->row->submission_type_external; ?>" size="120" id="submission_type_external" />
@@ -29,7 +29,7 @@
 					$display = 'block';
 				}
 			?>
-			/><label for="submission_type_phone"><?php echo JText::_('PHONE'); ?></label>
+			/><label for="submission_type_phone"><?php echo JText::_('COM_REDEVENT_PHONE'); ?></label>
 			<div id="submission_type_phone_input" style="display: <?php echo $display;?>">
         <?php echo $this->printTags('submission_type_phone'); ?>
 				<?php echo $this->editor->display( 'submission_type_phone',  $this->row->submission_type_phone, '100%;', '350', '75', '20', array('pagebreak', 'readmore', 'image') ) ; ?>
@@ -46,7 +46,7 @@
 					$display = 'block';
 				}
 			?>
-			/><label for="submission_type_webform"><?php echo JText::_('WEBFORM'); ?></label>
+			/><label for="submission_type_webform"><?php echo JText::_('COM_REDEVENT_WEBFORM'); ?></label>
 			<div id="submission_type_webform_input" style="display: <?php echo $display;?>">
         <?php echo $this->printTags('submission_type_webform'); ?>
 				<?php echo $this->editor->display( 'submission_type_webform',  $this->row->submission_type_webform, '100%;', '350', '75', '20', array('pagebreak', 'readmore', 'image') ) ; ?>
@@ -63,8 +63,8 @@
 					$display = 'block';
 				}
 			?>
-			/><label for="submission_type_email"><?php echo JText::_('EMAIL'); ?></label>
-			<span class="editlinktip hasTip" title="<?php echo JText::_( 'REDEVENT_SUBMISSION_TYPE_EMAIL_TIP' ); ?>">
+			/><label for="submission_type_email"><?php echo JText::_('COM_REDEVENT_EMAIL'); ?></label>
+			<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_SUBMISSION_TYPE_EMAIL_TIP' ); ?>">
 				<?php echo $this->infoimage; ?>
 			</span>
 			<div id="submission_type_email_input" style="display: <?php echo $display;?>">
@@ -83,8 +83,8 @@
 					$display = 'block';
 				}
 			?>
-			/><label for="submission_type_formal_offer"><?php echo JText::_('FORMALOFFER'); ?></label>
-			<span class="editlinktip hasTip" title="<?php echo JText::_( 'REDEVENT_SUBMISSION_TYPE_FORMALOFFER_TIP' ); ?>">
+			/><label for="submission_type_formal_offer"><?php echo JText::_('COM_REDEVENT_FORMALOFFER'); ?></label>
+			<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_SUBMISSION_TYPE_FORMALOFFER_TIP' ); ?>">
 				<?php echo $this->infoimage; ?>
 			</span>
 			<div id="submission_type_formaloffer_input" style="display: <?php echo $display;?>">

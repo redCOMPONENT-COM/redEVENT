@@ -86,9 +86,9 @@ class RedeventControllerCustomfield extends JController
 		$model = $this->getModel('customfield');
 
 		if ($returnid = $model->store($post)) {
-			$msg = JText::_( 'Custom field Saved' );
+			$msg = JText::_('COM_REDEVENT_Custom_field_Saved' );
 		} else {
-			$msg = JText::_( 'Error Saving Custom field' ).'<br/>'.$model->getError();
+			$msg = JText::_('COM_REDEVENT_Error_Saving_Custom_field' ).'<br/>'.$model->getError();
 			$msgtype = 'error';
 		}
 
@@ -110,7 +110,7 @@ class RedeventControllerCustomfield extends JController
 		JArrayHelper::toInteger($cid);
 
 		if (count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to delete' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_delete' ) );
 		}
 
 		$model = $this->getModel('customfield');
@@ -129,7 +129,7 @@ class RedeventControllerCustomfield extends JController
 		JArrayHelper::toInteger($cid);
 
 		if (count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to publish' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_publish' ) );
 		}
 
 		$model = $this->getModel('customfield');
@@ -148,7 +148,7 @@ class RedeventControllerCustomfield extends JController
 		JArrayHelper::toInteger($cid);
 
 		if (count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to unpublish' ) );
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_unpublish' ) );
 		}
 
 		$model = $this->getModel('customfield');
@@ -255,7 +255,7 @@ class RedeventControllerCustomfield extends JController
       $handle = fopen($file['tmp_name'],'r');
       if(!$handle) 
       {
-        $msg = JText::_('Cannot open uploaded file.');  
+        $msg = JText::_('COM_REDEVENT_Cannot_open_uploaded_file.');  
         $this->setRedirect( 'index.php?option=com_redevent&controller=customfield&task=import', $msg, 'error' ); 
         return;   
       }

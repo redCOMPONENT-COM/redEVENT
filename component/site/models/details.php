@@ -113,7 +113,7 @@ class RedeventModelDetails extends JModel
 			// Is the category published?
 			if (!count($this->_details->categories))
 			{
-				RedeventError::raiseError( 404, JText::_("CATEGORY NOT PUBLISHED") );
+				RedeventError::raiseError( 404, JText::_("COM_REDEVENT_CATEGORY_NOT_PUBLISHED") );
 			}
 
 			// Do we have access to each category ?
@@ -121,7 +121,7 @@ class RedeventModelDetails extends JModel
 			{
 				if ($cat->access > $user->get('aid'))
 				{
-					JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+					JError::raiseError( 403, JText::_("COM_REDEVENT_ALERTNOTAUTH") );
 				}
 			}
 		}
@@ -294,7 +294,7 @@ class RedeventModelDetails extends JModel
 		
 		if ($submitters === null)
 		{
-			$msg = JText::_('ERROR GETTING ATTENDEES');
+			$msg = JText::_('COM_REDEVENT_ERROR_GETTING_ATTENDEES');
 			$this->setError($msg);
 			RedeventError::raiseWarning(5, $msg);
 			return null;
@@ -311,7 +311,7 @@ class RedeventModelDetails extends JModel
 			
 			if (!$fields) 
 			{
-				RedeventError::raiseWarning('error', JText::_('Cannot load fields').$db->getErrorMsg());
+				RedeventError::raiseWarning('error', JText::_('COM_REDEVENT_Cannot_load_fields').$db->getErrorMsg());
 				return null;
 			}			
 			
@@ -336,7 +336,7 @@ class RedeventModelDetails extends JModel
 				        ;
 				$db->setQuery($query);
 				if (!$db->query()) {
-					RedeventError::raiseWarning('error', JText::_('Cannot load registered users').' '.$db->getErrorMsg());
+					RedeventError::raiseWarning('error', JText::_('COM_REDEVENT_Cannot_load_registered_users').' '.$db->getErrorMsg());
 					return null;
 				}			
 				$answers = $db->loadObjectList();
@@ -351,7 +351,7 @@ class RedeventModelDetails extends JModel
       {
         if (!isset($submitters[$answer->submit_key])) 
         {
-        	$msg = JText::_('ERROR REGISTRATION WITHOUT SUBMITTER') . ': ' . $answer->id;
+        	$msg = JText::_('COM_REDEVENT_ERROR_REGISTRATION_WITHOUT_SUBMITTER') . ': ' . $answer->id;
         	$this->setError($msg);
         	RedeventError::raiseWarning(10, $msg);
         	return null;
@@ -531,8 +531,8 @@ class RedeventModelDetails extends JModel
   	$mailer->MsgHTML($htmlmsg);
   	if (!$mailer->send())
   	{
-  		RedeventHelperLog::simplelog(JText::_('REDEVENT_ERROR_REGISTRATION_MANAGERS_NOTIFICATION_FAILED'));
-  		$this->setError(JText::_('REDEVENT_ERROR_REGISTRATION_MANAGERS_NOTIFICATION_FAILED'));
+  		RedeventHelperLog::simplelog(JText::_('COM_REDEVENT_ERROR_REGISTRATION_MANAGERS_NOTIFICATION_FAILED'));
+  		$this->setError(JText::_('COM_REDEVENT_ERROR_REGISTRATION_MANAGERS_NOTIFICATION_FAILED'));
   		return false;
   	}
   	return true;

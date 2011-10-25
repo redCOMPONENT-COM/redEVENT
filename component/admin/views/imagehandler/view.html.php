@@ -98,7 +98,7 @@ class RedEventViewImagehandler extends JView  {
 			parent::display($tpl);
 		} else {
 			//no images in the folder, redirect to uploadscreen and raise notice
-			RedeventError::raiseNotice('REDEVENT_GENERIC_ERROR', JText::_('NO IMAGES AVAILABLE'));
+			RedeventError::raiseNotice('REDEVENT_GENERIC_ERROR', JText::_('COM_REDEVENT_NO_IMAGES_AVAILABLE'));
 			$this->setLayout('uploadimage');
 			JRequest::setVar( 'task', $task );
 			$this->_displayuploadimage($tpl);

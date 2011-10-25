@@ -29,15 +29,16 @@
 		<param name="cuttitle" type="text" default="18" label="MOD_REDEVENT_VENUES_EVENTS_TITLE_LENGTH" description="MOD_REDEVENT_VENUES_EVENTS_TITLE_LENGTH_DESC" />
 		<param name="catid" type="text" default="" label="MOD_REDEVENT_VENUES_EVENTS_CATEGORY_ID" description="MOD_REDEVENT_VENUES_EVENTS_CATEGORY_ID_DESC" />
 		<param name="venid" type="text" default="" label="MOD_REDEVENT_VENUES_EVENTS_VENUE_ID" description="MOD_REDEVENT_VENUES_EVENTS_VENUE_DESC" />
-		<param name="moduleclass_sfx" type="text" default="" label="MODULE CLASS SUFFIX" description="MODULE CLASS SUFFIX DESC" />
+				
+		<param name="moduleclass_sfx" type="text" default="" label="MOD_REDEVENT_MODULE_CLASS_SUFFIX" description="MOD_REDEVENT_MODULE_CLASS_SUFFIX_DESC" />
 	</params>
-
+	
 	<params group="advanced">
-		<param name="cache" type="list" default="1" label="CACHING" description="CACHING DESC">
+		<param name="cache" type="list" default="1" label="MOD_REDEVENT_CACHING" description="MOD_REDEVENT_CACHING_DESC">
 			<option value="1">USE GLOBAL</option>
 			<option value="0">NO CACHING</option>
 		</param>
-		<param name="cache_time" type="text" default="900" label="CACHE TIME" description="CACHE TIME DESC" />
+		<param name="cache_time" type="text" default="900" label="MOD_REDEVENT_CACHE_TIME" description="MOD_REDEVENT_CACHE_TIME_DESC" />
 	</params>
-
+	
 </install>

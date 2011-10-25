@@ -264,7 +264,7 @@ class RedEventModelAttendee extends JModel
 		$rfcore = new redFormCore();
 		$result = $rfcore->saveAnswers('redevent', array('baseprice' => $details->price, 'edit' => 1));	
   	if (!$result) {
-  		$msg = JTEXT::_('REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED');
+  		$msg = JText::_('COM_REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED');
   		$this->setError($msg.' - '.$rfcore->getError());
   		return false;
   	}
