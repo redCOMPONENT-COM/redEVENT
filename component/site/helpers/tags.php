@@ -927,10 +927,10 @@ class redEVENT_tags {
 		}
 		  	
 		$db = & JFactory::getDBO();
-		$query =  ' SELECT SUM(pr.price + pr.vat) '
-		        . ' FROM #__rwf_payments_requests AS pr '
-		        . ' WHERE pr.submit_key = '.$db->quote($this->_submitkey)
-		        . ' GROUP BY pr.submit_key '
+		$query =  ' SELECT SUM(s.price) '
+		        . ' FROM #__rwf_submitters AS s '
+		        . ' WHERE s.submit_key = '.$db->quote($this->_submitkey)
+		        . ' GROUP BY s.submit_key '
 		        ;
 		$db->setQuery($query);
 		$res = $db->loadResult();
@@ -1016,6 +1016,7 @@ class redEVENT_tags {
   	$details = $this->getEvent()->getData();
   	$prices  = $this->getEvent()->getPrices();
   	$options = array('extrafields' => array());
+  	$user = &JFactory::getUser();
   	
  		$rfcore = $this->_getRFCore();
  		if (!$rfcore->getFormStatus($this->getEvent()->getData()->redform_id)) {
@@ -1029,7 +1030,7 @@ class redEVENT_tags {
   	// multiple signup ?
   	$single = JRequest::getInt('single', 0);
   	$max = $this->getEvent()->getData()->max_multi_signup;
-  	if ($max && ! $single) {
+  	if ($max && ! $single && $user->get('id')) {
   		$multi = $max;
   		// we must deduce current registrations of this user !
   		$nbregs = $this->_getCurrentRegs();
