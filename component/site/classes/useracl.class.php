@@ -279,7 +279,8 @@ class UserAcl {
 		       . '           OR (gm.manage_events = 1 AND e.created_by = '.$db->Quote($this->_userid).') ) ) )'
 		       ;
 		$db->setQuery($query);
-		return ($db->loadResult() ? true : false);
+		$res = $db->loadResult();
+		return ($res ? true : false);
 	}
 	
 	/**

@@ -214,7 +214,7 @@ class RedeventModelEditevent extends JModel
 				return false;
 			}
 			// init session data too
-			$this->getSessionDetails(); 
+			$this->getSessionDetails(true); 
 			$this->_xref = null;
 			
 			// reset event id and title
@@ -359,7 +359,13 @@ class RedeventModelEditevent extends JModel
 		return true;
 	}
 	
-	function getSessionDetails()
+	/**
+	 * return details about session
+	 * 
+	 * @param bool $no_check set true to skip acl check
+	 * @return multitype:
+	 */
+	function getSessionDetails($no_check = false)
 	{
 		$app = &JFactory::getApplication();
 		if (empty($this->_xrefdata))
@@ -367,14 +373,14 @@ class RedeventModelEditevent extends JModel
 			$acl = &UserAcl::getInstance();
 			if ($this->_xref)
 			{
-				if (!$acl->canEditXref($this->_xref)) {
+				if (!$no_check && !$acl->canEditXref($this->_xref)) {
 					JError::raiseError(403, JText::_('COM_REDEVENT_NOT_ALLOWED'));
 				}
 				$this->_xrefdata = $this->_getXrefData($this->_xref);
 			}
 			else
 			{
-				if (!$acl->canAddXref()) {
+				if (!$no_check && !$acl->canAddXref()) {
 					JError::raiseError(403, JText::_('COM_REDEVENT_NOT_ALLOWED'));
 				}
 				
@@ -1500,7 +1506,7 @@ class RedeventModelEditevent extends JModel
       return array();
     }
     $fields = array();
-    $data = $this->getSessionDetails();
+    $data = $this->getSessionDetails(true);
     foreach ($result as $c)
     {
       $field =& redEVENTHelper::getCustomField($c->type);
