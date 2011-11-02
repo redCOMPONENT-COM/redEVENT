@@ -103,7 +103,7 @@ else {
   }
 	
 	if (!empty($Itemid))
-	  shRemoveFromGETVarsList('Itemid');  
+	  //shRemoveFromGETVarsList('Itemid');  
   
   /* Remove some default values */
 //  shRemoveFromGETVarsList('option');
@@ -140,7 +140,7 @@ else {
     	shRemoveFromGETVarsList('layout');
     }
     
-    if ($view == 'details' || $view == 'signup')
+    if ($view == 'details' || $view == 'signup' || $controller = 'registration')
     {
 	    if (isset($xref) && $xref)
 	    {
@@ -360,7 +360,9 @@ else {
   if (isset($task)) {
     if (strtolower($task) == 'confirm') {
       $title[] = 'confirm';
+      $title[] = $submit_key;
       $title[] = $confirmid;
+	    shRemoveFromGETVarsList('submit_key');
       shRemoveFromGETVarsList('confirmid');
     }
     else {

@@ -307,13 +307,18 @@ class RedeventHelperRoute
 		$user 	= & JFactory::getUser();
 		$access = (int)$user->get('aid');
 		
+		$view = isset($query['view']) ? $query['view'] : null;
+		if (!$view && isset($query['controller']) && $query['controller'] == 'registration') {
+			$view = 'details';
+		}
+		
 		if ($items) 
 		{
 			foreach($items as $item)
 			{	
-				if (isset($query['view']) && (@$item->query['view'] == $query['view']) && ($item->published == 1) && ($item->access <= $access)) 
+				if ($view && (@$item->query['view'] == $view) && ($item->published == 1) && ($item->access <= $access)) 
 				{					
-					switch ($query['view'])
+					switch ($view)
 					{
 						case 'details':
 							if (isset($query['xref']) && (int) $query['xref'] == (int) @$item->query['xref']) {
@@ -332,9 +337,9 @@ class RedeventHelperRoute
 			// second round for view with optional params
 			foreach($items as $item)
 			{	
-				if (isset($query['view']) && (@$item->query['view'] == $query['view']) && ($item->published == 1) && ($item->access <= $access)) 
+				if (isset($view) && (@$item->query['view'] == $view) && ($item->published == 1) && ($item->access <= $access)) 
 				{					
-					switch ($query['view'])
+					switch ($view)
 					{
 						case 'details':
 							if (isset($query['id']) && (int) $query['id'] == (int) @$item->query['id']) {
