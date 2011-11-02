@@ -88,6 +88,7 @@ function updateend(cal)
       <?php echo $this->lists['venue']; ?>
     </td>
   </tr>
+	<?php if ($this->params->get('edit_session_title', 1)) :?>
 	<tr>
 		<td class="key hasTip"
 			title="<?php echo JText::_('COM_REDEVENT_SESSION_TITLE_TIP'); ?>"><label
@@ -95,6 +96,7 @@ function updateend(cal)
 		<td><input class="inputbox" type="text" id="title" name="title" value="<?php echo $this->xref->title; ?>" />
 		</td>
 	</tr>
+	<?php endif; ?>
   <tr>
     <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_EDIT_XREF_GROUP_TIP'); ?>">
       <label for="groupid"><?php echo JText::_('COM_REDEVENT_Group') .': '; ?></label>

@@ -196,6 +196,10 @@
       <option value="1">Yes</option>
     </param>
     <param name="max_description" type="text" default="1000" label="COM_REDEVENT_SETTINGS_FRONTEND_MAX_DESCRIPTION_LABEL" description="COM_REDEVENT_SETTINGS_FRONTEND_MAX_DESCRIPTION_DESC" />
+    <param name="edit_session_title" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_SESSION_TITLE_LABEL" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_SESSION_TITLE_DESC">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
     <param name="edit_registration" type="radio" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_REGISTRATION" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_REGISTRATION_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>

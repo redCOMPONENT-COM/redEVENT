@@ -43,6 +43,7 @@ JHTML::_('behavior.calendar');
 				</div>
 			</td>
 		</tr>
+		<?php if ($this->params->get('edit_session_title', 1)) :?>
 		<tr>
 			<td class="key hasTip"
 				title="<?php echo JText::_('COM_REDEVENT_SESSION_TITLE_TIP'); ?>"><label
@@ -50,6 +51,7 @@ JHTML::_('behavior.calendar');
 			<td><input class="inputbox" type="text" id="session_title" name="session_title" value="<?php echo $this->row->session_title; ?>" />
 			</td>
 		</tr>
+		<?php endif; ?>
 		<tr>
 			<td class="key hasTip"
 				title="<?php echo JText::_('COM_REDEVENT_EDIT_XREF_START_DATE_TIP'); ?>"><label
