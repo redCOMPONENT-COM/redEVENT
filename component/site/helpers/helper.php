@@ -567,6 +567,11 @@ class redEVENTHelper {
     $result = new stdclass();
     $result->canregister = 1;
     
+    $acl = UserAcl::getInstance();
+    if ($acl->canManageAttendees($xref_id)) {
+    	return $result;
+    }
+    
     $query = ' SELECT x.dates, x.times, x.enddates, x.endtimes, x.maxattendees, x.maxwaitinglist, x.registrationend, e.registra, e.max_multi_signup '
            . ' FROM #__redevent_event_venue_xref AS x '
            . ' INNER JOIN #__redevent_events AS e ON x.eventid = e.id '

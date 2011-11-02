@@ -112,40 +112,69 @@ class RedEventModelRegistration extends JModel
 		$config  = redEventHelper::config();
 		$session = &$this->getSessionDetails();
 		
-		$status = redEVENTHelper::canRegister($session->xref);
-		if (!$status->canregister) {
-			$this->setError($status->status);
-			return false;			
+		if (!$sid) {
+			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_UPDATE_XREF_REQUIRED'));
+			return false;
 		}
 		
-		if ($sid)
-		{
-			$obj = $this->getTable('Redevent_register', '');
-			$obj->loadBySid($sid);
-			$obj->sid        = $sid;
-			$obj->xref       = $this->_xref;
-			$obj->pricegroup_id = $pricegroup_id;
-			$obj->submit_key = $submit_key;
-			$obj->uid        = $user->get('id');
-			$obj->uregdate 	 = gmdate('Y-m-d H:i:s');
-			$obj->uip        = $config->storeip ? getenv('REMOTE_ADDR') : 'DISABLED';
-			
-			if (!$obj->check()) {
-				$this->setError($obj->getError());
-				return false;
-			}
-			
-			if (!$obj->store()) {
-				$this->setError($obj->getError());
-				return false;
-			}
-			
-			if ($session->activate == 0) // no activation 
-			{
-				$this->confirm($obj->id);
-			}
-			return $obj;
+		$obj = $this->getTable('Redevent_register', '');
+		$obj->loadBySid($sid);
+		$obj->sid        = $sid;
+		$obj->xref       = $this->_xref;
+		$obj->pricegroup_id = $pricegroup_id;
+		$obj->submit_key = $submit_key;
+		$obj->uid        = $user->get('id');
+		$obj->uregdate 	 = gmdate('Y-m-d H:i:s');
+		$obj->uip        = $config->storeip ? getenv('REMOTE_ADDR') : 'DISABLED';
+		
+		if (!$obj->check()) {
+			$this->setError($obj->getError());
+			return false;
 		}
+		
+		if (!$obj->store()) {
+			$this->setError($obj->getError());
+			return false;
+		}
+		
+		if ($session->activate == 0) // no activation 
+		{
+			$this->confirm($obj->id);
+		}
+		return $obj;
+	}
+	
+	/**
+	 * to update a registration
+	 * 
+	 * @param int $sid associated redform submitter id
+	 * @param string $submit_key associated redform submit key
+	 * @param int $pricegroup_id
+	 * @return boolean|object attendee row or false if failed
+	 */
+	function update($sid, $submit_key, $pricegroup_id)
+	{
+		if (!$sid) {
+			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_UPDATE_XREF_REQUIRED'));
+			return false;
+		}
+		
+		$obj = $this->getTable('Redevent_register', '');
+		$obj->loadBySid($sid);
+		$obj->sid        = $sid;
+		$obj->pricegroup_id = $pricegroup_id;
+		$obj->submit_key = $submit_key;
+		
+		if (!$obj->check()) {
+			$this->setError($obj->getError());
+			return false;
+		}
+		
+		if (!$obj->store()) {
+			$this->setError($obj->getError());
+			return false;
+		}
+		return $obj;		
 	}
 	
 	/**

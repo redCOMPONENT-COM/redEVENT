@@ -67,7 +67,14 @@ class RedEventControllerRegistration extends RedEventController
   		$this->setRedirect('index.php', $msg, 'error');
   		return;
   	}  	
-
+  	
+  	$status = redEVENTHelper::canRegister($xref);
+	  if (!$status->canregister) {
+	  	$msg = $status->status;
+  		$this->setRedirect('index.php', $msg, 'error');
+	  	return false;
+	  }
+  	
   	$model       = $this->getModel('registration');
 	  $model->setXref($xref);  	
   	
@@ -265,8 +272,8 @@ class RedEventControllerRegistration extends RedEventController
   	foreach ($result->posts as $rfpost)
   	{
   		$k = 0;
-  		if (!$res = $model->register($rfpost['sid'], $result->submit_key, $pricegroups[$k++])) {
-  			$msg = JText::_('COM_REDEVENT_REGISTRATION_REGISTRATION_FAILED');
+  		if (!$res = $model->update($rfpost['sid'], $result->submit_key, $pricegroups[$k++])) {
+  			$msg = JText::_('COM_REDEVENT_REGISTRATION_REGISTRATION_UPDATE_FAILED');
 	  		if ($task == 'managerupdate') {
 	  			$this->setRedirect(JRoute::_(RedeventHelperRoute::getManageAttendees($xref)), $msg, 'error');  			
 	  		}
