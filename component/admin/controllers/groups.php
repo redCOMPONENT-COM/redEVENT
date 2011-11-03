@@ -75,7 +75,7 @@ class RedEventControllerGroups extends RedEventController
 	 */
 	function add( )
 	{
-		global $option;
+    $option = JRequest::getCmd('option');
 
 		$this->setRedirect( 'index.php?option='. $option .'&view=group' );
 	}

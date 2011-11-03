@@ -346,7 +346,7 @@ class RedEventModelEvent extends JModel
 	 */
 	function store($data)
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		$elsettings = ELAdmin::config();
 		$user		= & JFactory::getUser();

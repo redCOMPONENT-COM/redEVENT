@@ -36,7 +36,7 @@ class RedEventViewGroupacl extends JView {
 
 	function display($tpl = null)
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		//Load pane behavior
 		jimport('joomla.html.pane');

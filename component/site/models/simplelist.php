@@ -59,7 +59,7 @@ class RedeventModelSimpleList extends RedeventModelBaseEventList
 	 */
 	function _buildWhere()
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		$user		= & JFactory::getUser();
 		$gid		= (int) $user->get('aid');

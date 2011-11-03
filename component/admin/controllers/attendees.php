@@ -65,7 +65,7 @@ class RedEventControllerAttendees extends RedEventController
 	
 	public function Submitters() 
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 		$mainframe->redirect('index.php?option=com_redform&controller=submitters&task=submitters&integration=redevent&xref='.JRequest::getInt('xref').'&form_id='.JRequest::getInt('form_id').'&filter='.JRequest::getInt('filter'));
 		
 		/* Create the view object */
@@ -332,7 +332,7 @@ class RedEventControllerAttendees extends RedEventController
 	/* Obsolete */
 	function export()
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		$model = $this->getModel('attendees');
 

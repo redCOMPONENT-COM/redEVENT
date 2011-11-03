@@ -117,7 +117,7 @@ class RedeventModelVenues extends JModel
 	 */
 	function &getData( )
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		$menu		=& JSite::getMenu();
 		$item    	= $menu->getActive();

@@ -80,7 +80,9 @@ class RedEventModelAttendees extends JModel
 	{
 		parent::__construct();
 
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+
+		$option = JRequest::getCmd('option');
 
 		$limit		= $mainframe->getUserStateFromRequest( $option.'limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
 		$limitstart = $mainframe->getUserStateFromRequest( $option.'limitstart', 'limitstart', 0, 'int' );
@@ -280,7 +282,8 @@ class RedEventModelAttendees extends JModel
 	 */
 	function _buildContentOrderBy() 
 	{
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+		$option = JRequest::getCmd('option');
 		
 		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.attendees.filter_order', 'filter_order', 'r.confirmdate', 'cmd' );
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.attendees.filter_order_Dir',	'filter_order_Dir',	'', 'word' );
@@ -297,7 +300,8 @@ class RedEventModelAttendees extends JModel
 	 */
 	function _buildContentWhere()
 	{
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+		$option = JRequest::getCmd('option');
 
 		$xref = JRequest::getInt('xref');
 

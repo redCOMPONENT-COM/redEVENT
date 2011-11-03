@@ -72,7 +72,9 @@ class RedEventModelRegistrations extends JModel
 	{
 		parent::__construct();
 
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+
+		$option = JRequest::getCmd('option');
 
 		$limit		  = $mainframe->getUserStateFromRequest( $option.'limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
 		$limitstart = $mainframe->getUserStateFromRequest( $option.'limitstart', 'limitstart', 0, 'int' );
@@ -194,7 +196,8 @@ class RedEventModelRegistrations extends JModel
 	 */
 	function _buildContentOrderBy() 
 	{
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+		$option = JRequest::getCmd('option');
 		
 		$filter_order		  = $this->getState('filter_order');
 		$filter_order_Dir	= $this->getState('filter_order_Dir');
@@ -217,7 +220,8 @@ class RedEventModelRegistrations extends JModel
 	 */
 	function _buildContentWhere()
 	{
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+		$option = JRequest::getCmd('option');
 
 		$where = array();
 	

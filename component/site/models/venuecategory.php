@@ -53,7 +53,7 @@ class RedeventModelVenuecategory extends RedeventModelBaseEventList {
 	{
 		parent::__construct();
 
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		$id = JRequest::getInt('id');
 		$this->setId((int)$id);
@@ -169,7 +169,7 @@ class RedeventModelVenuecategory extends RedeventModelBaseEventList {
 	 */
 	function _buildCategoryWhere( )
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		$user		= & JFactory::getUser();
 		$gid		= (int) $user->get('aid');

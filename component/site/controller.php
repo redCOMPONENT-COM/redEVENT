@@ -476,7 +476,7 @@ class RedeventController extends JController
 	 */
 	function vcal()
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		$task 			= JRequest::getWord( 'task' );
 		$id 			= JRequest::getInt( 'id' );
@@ -526,7 +526,7 @@ class RedeventController extends JController
 	 * Initialise the mailer object to start sending mails
 	 */
 	private function Mailer() {
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 		jimport('joomla.mail.helper');
 		/* Start the mailer object */
 		$this->mailer = JFactory::getMailer();

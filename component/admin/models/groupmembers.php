@@ -71,7 +71,9 @@ class RedEventModelGroupmembers extends JModel
 	{
 		parent::__construct();
 
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+
+		$option = JRequest::getCmd('option');
 
 		$limit		= $mainframe->getUserStateFromRequest( $option.'limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
 		$limitstart = $mainframe->getUserStateFromRequest( $option.'limitstart', 'limitstart', 0, 'int' );
@@ -194,7 +196,8 @@ class RedEventModelGroupmembers extends JModel
 	 */
 	function _buildContentOrderBy()
 	{
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+		$option = JRequest::getCmd('option');
 
 		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.groupmembers.filter_order', 'filter_order', 'name', 'cmd' );
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.groupmembers.filter_order_Dir', 'filter_order_Dir', '', 'word' );
@@ -212,7 +215,8 @@ class RedEventModelGroupmembers extends JModel
 	 */
 	function _buildContentWhere()
 	{
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+		$option = JRequest::getCmd('option');
 
 		$search 			= $mainframe->getUserStateFromRequest( $option.'.groupmembers.search', 'search', '', 'string' );
 		$search 			= $this->_db->getEscaped( trim(JString::strtolower( $search ) ) );

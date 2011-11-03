@@ -42,7 +42,7 @@ class RedeventViewPayment extends JView
 	 */
 	function display($tpl = null)
 	{		
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 		/* Set which page to show */
 		$state      = JRequest::getVar('state', '');
 		$submit_key = JRequest::getVar('submit_key', '');

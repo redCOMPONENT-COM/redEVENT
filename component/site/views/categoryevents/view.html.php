@@ -42,7 +42,8 @@ class RedeventViewCategoryevents extends JView
 	 */
 	function display( $tpl=null ) 
 	{
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+		$option = JRequest::getCmd('option');
 
 		//initialize variables
 		$document 	= & JFactory::getDocument();

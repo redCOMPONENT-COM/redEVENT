@@ -65,7 +65,9 @@ class RedEventModelXrefelement extends JModel
 	{
 		parent::__construct();
 
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+
+		$option = JRequest::getCmd('option');
 
 		$limit		= $mainframe->getUserStateFromRequest( $option.'limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
 		$limitstart = $mainframe->getUserStateFromRequest( $option.'limitstart', 'limitstart', 0, 'int' );
@@ -162,7 +164,8 @@ class RedEventModelXrefelement extends JModel
 	 */
 	function _buildContentOrderBy()
 	{
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+		$option = JRequest::getCmd('option');
 
 		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.xrefelement.filter_order', 'filter_order', 'x.dates', 'cmd' );
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.xrefelement.filter_order_Dir', 'filter_order_Dir', '', 'word' );
@@ -180,7 +183,8 @@ class RedEventModelXrefelement extends JModel
 	 */
 	function _buildContentWhere()
 	{
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+		$option = JRequest::getCmd('option');
 
 		$filter_state 		= $mainframe->getUserStateFromRequest( $option.'.xrefelement.filter_state', 'filter_state', '', 'word' );
 		$filter 			= $mainframe->getUserStateFromRequest( $option.'.xrefelement.filter', 'filter', '', 'int' );

@@ -42,7 +42,7 @@ class RedeventViewVenuecategory extends JView
 	 */
 	function display( )
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		$doc 		= & JFactory::getDocument();
 		$elsettings = & redEVENTHelper::config();

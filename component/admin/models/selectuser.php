@@ -125,7 +125,8 @@ class RedeventModelSelectUser extends JModel
 
 	function _buildContentOrderBy()
 	{
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+		$option = JRequest::getCmd('option');
 
 		$filter_order		  = $this->getState('filter_order');
 		$filter_order_Dir	= $this->getState('filter_order_Dir');
@@ -141,7 +142,8 @@ class RedeventModelSelectUser extends JModel
 
 	function _buildContentWhere()
 	{
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+		$option = JRequest::getCmd('option');
 
 		$search				= $this->getState('search');
 

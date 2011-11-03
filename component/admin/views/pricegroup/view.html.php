@@ -37,7 +37,7 @@ class RedeventViewPricegroup extends JView
 {
 	function display($tpl = null)
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		if($this->getLayout() == 'form') {
 			$this->_displayForm($tpl);
@@ -52,7 +52,8 @@ class RedeventViewPricegroup extends JView
 
 	function _displayForm($tpl)
 	{
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+		$option = JRequest::getCmd('option');
 		
 		$db		=& JFactory::getDBO();
 		$uri 	=& JFactory::getURI();

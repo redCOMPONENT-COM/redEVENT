@@ -236,7 +236,7 @@ class RedEventModelWaitinglist extends JModel {
 	 */
 	private function Mailer() 
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 		jimport('joomla.mail.helper');
 		/* Start the mailer object */
 		$this->mailer = JFactory::getMailer();
@@ -248,7 +248,7 @@ class RedEventModelWaitinglist extends JModel {
 	
 	private function SendMail($type) 
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 		
 		if (empty($this->taghelper)) {
 			$this->taghelper = new redEVENT_tags();

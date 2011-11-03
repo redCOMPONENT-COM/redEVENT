@@ -47,7 +47,7 @@ class RedeventViewAttendees extends JView
 			return $this->_displayManageAttendees($tpl);
 		}
 		
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 		
 		$document 	= JFactory::getDocument();
 		$user		= JFactory::getUser();

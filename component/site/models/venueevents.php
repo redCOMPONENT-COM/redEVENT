@@ -53,7 +53,7 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 	{
 		parent::__construct();
 
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		$id = JRequest::getInt('id');
 		$this->setId((int)$id);

@@ -36,7 +36,7 @@ class RedEventViewEvent extends JView {
 
 	function display($tpl = null)
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		if($this->getLayout() == 'editxref') {
 			$this->_displayeditxref($tpl);

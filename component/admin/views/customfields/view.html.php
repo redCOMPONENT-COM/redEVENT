@@ -37,7 +37,8 @@ class RedeventViewCustomfields extends JView
 {
 	function display($tpl = null)
 	{
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+		$option = JRequest::getCmd('option');
 	
 		if ($this->getLayout() == 'import') {
 			return $this->_displayImport($tpl);

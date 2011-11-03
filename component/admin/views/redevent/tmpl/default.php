@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 					<td>
 						<div id="cpanel">
 						<?php
-						global $option;
+    				$option = JRequest::getCmd('option');
 
 						$link = 'index.php?option='.$option.'&amp;view=events';
 						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-events.png', JText::_('COM_REDEVENT_EVENTS' ) );

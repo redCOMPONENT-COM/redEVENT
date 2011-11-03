@@ -36,7 +36,8 @@ class RedEventViewCategories extends JView {
 
 	function display($tpl = null)
 	{
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+		$option = JRequest::getCmd('option');
 	
 		if ($this->getLayout() == 'importexport') {
 			return $this->_displayExport($tpl);

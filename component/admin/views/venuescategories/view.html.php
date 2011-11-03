@@ -36,7 +36,8 @@ class RedEventViewVenuesCategories extends JView {
 
 	function display($tpl = null)
 	{
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+		$option = JRequest::getCmd('option');
 
 		//initialise variables
 		$user 		= & JFactory::getUser();

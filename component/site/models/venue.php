@@ -74,7 +74,7 @@ class RedeventModelVenue extends JModel
 	 */
 	function &getData(  )
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 		
 		if (empty($this->_venue))
 		{

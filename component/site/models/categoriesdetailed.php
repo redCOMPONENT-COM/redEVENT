@@ -106,7 +106,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 	 */
 	function &getData( )
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		$params 	= & $mainframe->getParams();
 		$elsettings = & redEVENTHelper::config();

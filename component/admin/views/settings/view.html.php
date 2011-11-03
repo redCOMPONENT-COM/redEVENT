@@ -36,7 +36,7 @@ class RedEventViewSettings extends JView {
 
 	function display($tpl = null) {
 
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		//initialise variables
 		$document 	= & JFactory::getDocument();
@@ -128,7 +128,7 @@ class RedEventViewSettings extends JView {
 
 	function WarningIcon()
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		$url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
 		$tip = '<img src="'.$url.'includes/js/ThemeOffice/warning.png" border="0"  alt="" />';

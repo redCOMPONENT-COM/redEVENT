@@ -88,7 +88,7 @@ class RedEventControllerTextLibrary extends RedEventController {
    */
   function remove()
   {
-    global $option;
+    $option = JRequest::getCmd('option');
 
     $cid    = JRequest::getVar( 'cid', array(0), 'post', 'array' );
 

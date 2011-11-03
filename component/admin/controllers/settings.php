@@ -57,7 +57,7 @@ class RedEventControllerSettings extends RedEventController
 	 */
 	function cancel()
 	{
-		global $option;
+    $option = JRequest::getCmd('option');
 
 		$model = $this->getModel('settings');
 

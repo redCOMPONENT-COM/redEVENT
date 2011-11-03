@@ -219,7 +219,7 @@ class RedeventViewEditevent extends JView
 	 */
 	function _displayselectvenue($tpl)
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		$document	= & JFactory::getDocument();
 		$params 	= & $mainframe->getParams();

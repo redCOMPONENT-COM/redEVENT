@@ -57,7 +57,7 @@ class plgButtonRedevent extends JPlugin
 	 */
 	function onDisplay($name)
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		JPlugin::loadLanguage( 'plg_editors-xtd_redevent', JPATH_ADMINISTRATOR );
 

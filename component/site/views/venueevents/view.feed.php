@@ -44,7 +44,7 @@ class RedeventViewVenueevents extends JView
 	 */
 	function display( )
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 	
 		if ($this->getLayout() == 'rsscal') {
 			return $this->_displayRssCal();

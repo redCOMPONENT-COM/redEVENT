@@ -63,7 +63,8 @@ class RedeventModelCustomfields extends JModel
   function __construct()
   {
     parent::__construct();
-    global $mainframe, $option;
+    $mainframe = &JFactory::getApplication();
+    $option = JRequest::getCmd('option');
 
     // Get the pagination request variables
     $limit    = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
@@ -110,7 +111,8 @@ class RedeventModelCustomfields extends JModel
 
 	function _buildContentOrderBy()
 	{
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+		$option = JRequest::getCmd('option');
 
 		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.customfields.filter_order',		'filter_order',		'obj.ordering',	'cmd' );
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.customfields.filter_order_Dir',	'filter_order_Dir',	'',				'word' );
@@ -126,7 +128,8 @@ class RedeventModelCustomfields extends JModel
 
 	function _buildContentWhere()
 	{
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+		$option = JRequest::getCmd('option');
 
 		$filter_state		= $mainframe->getUserStateFromRequest( $option.'.customfields.filter_state',		'filter_state',		'',				'word' );
 		$search				= $mainframe->getUserStateFromRequest( $option.'.customfields.search',			'search',			'',				'string' );

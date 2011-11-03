@@ -36,7 +36,7 @@ class RedEventViewSession extends JView {
 
 	function display($tpl = null)
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 		
 		// ajax in event form, or standalone ?
 		$standalone = Jrequest::getVar('standalone', 0);

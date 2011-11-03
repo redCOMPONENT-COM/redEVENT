@@ -42,7 +42,7 @@ class modRedEventHelper
 	 */
 	public function getList(&$params)
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		$db			=& JFactory::getDBO();
 		$user		=& JFactory::getUser();

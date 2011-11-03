@@ -213,7 +213,7 @@ class RedEventControllerVenuescategories extends RedEventController
 	 */
 	function remove()
 	{
-		global $option;
+    $option = JRequest::getCmd('option');
 
 		$cid		= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
@@ -259,7 +259,7 @@ class RedEventControllerVenuescategories extends RedEventController
 	 */
 	function access( )
 	{
-		global $option;
+    $option = JRequest::getCmd('option');
 
 		$cid		= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 		$id			= $cid[0];

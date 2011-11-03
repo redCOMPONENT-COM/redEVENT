@@ -46,7 +46,7 @@ class RedeventModelUpcomingevents extends RedeventModelBaseEventList {
 	
 	public function getUpcomingEvents() 
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 		
 		$db = JFactory::getDBO();
 		$params = $mainframe->getParams();

@@ -63,7 +63,8 @@ class RedeventModelRoles extends JModel
   function __construct()
   {
     parent::__construct();
-    global $mainframe, $option;
+    $mainframe = &JFactory::getApplication();
+    $option = JRequest::getCmd('option');
 
     // Get the pagination request variables
     $limit      = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
@@ -120,7 +121,8 @@ class RedeventModelRoles extends JModel
 
 	function _buildContentOrderBy()
 	{
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+		$option = JRequest::getCmd('option');
 
 		$filter_order		  = $this->getState('filter_order');
 		$filter_order_Dir	= $this->getState('filter_order_Dir');
@@ -136,7 +138,8 @@ class RedeventModelRoles extends JModel
 
 	function _buildContentWhere()
 	{
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+		$option = JRequest::getCmd('option');
 
 		$search				= $this->getState('search');
 

@@ -51,7 +51,7 @@ class RedEventModelVenuesmap extends JModel
 	{
 		parent::__construct();
 
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		// Get the paramaters of the active menu item
 		$params 	= & $mainframe->getParams('com_redevent');
@@ -65,7 +65,7 @@ class RedEventModelVenuesmap extends JModel
 	 */
 	function &getData( )
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		$menu		=& JSite::getMenu();
 		$item    	= $menu->getActive();

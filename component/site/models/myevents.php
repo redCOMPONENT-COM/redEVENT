@@ -85,7 +85,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
     {
         parent::__construct();
 
-        global $mainframe;
+        $mainframe = &JFactory::getApplication();
 
         // Get the paramaters of the active menu item
         $params = & $mainframe->getParams('com_redevent');
@@ -650,7 +650,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
      */
     function _buildEventListAttendingWhere()
     {
-        global $mainframe;
+        $mainframe = &JFactory::getApplication();
 
         $user = & JFactory::getUser();
         $gid = (int)$user->get('aid');

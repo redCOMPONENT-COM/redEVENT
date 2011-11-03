@@ -53,7 +53,9 @@ class RedEventModelImagehandler extends JModel
 	{
 		parent::__construct();
 
-		global $mainframe, $option;
+		$mainframe = &JFactory::getApplication();
+
+		$option = JRequest::getCmd('option');
 
 		$task 		= JRequest::getVar( 'task' );
 		$limit		= $mainframe->getUserStateFromRequest( $option.'imageselect'.$task.'limit', 'limit', $mainframe->getCfg('list_limit'), 'int');

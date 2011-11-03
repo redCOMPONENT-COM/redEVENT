@@ -43,7 +43,7 @@ class RedeventViewEditvenue extends JView
 	 */
 	function display( $tpl=null )
 	{
-		global $mainframe;
+		$mainframe = &JFactory::getApplication();
 
 		$editor 	  = & JFactory::getEditor();
 		$document 	= & JFactory::getDocument();
