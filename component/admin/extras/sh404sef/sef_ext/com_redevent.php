@@ -140,7 +140,7 @@ else {
     	shRemoveFromGETVarsList('layout');
     }
     
-    if ($view == 'details' || $view == 'signup' || $controller = 'registration')
+    if ($view == 'details' || $view == 'signup' || $controller == 'registration')
     {
 	    if (isset($xref) && $xref)
 	    {
