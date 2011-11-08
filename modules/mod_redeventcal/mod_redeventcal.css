@@ -26,6 +26,14 @@
 	text-align: center;
 	background-color: #F0F8FF;
 }
+.redeventcal td.mod_redeventcal_wk {
+	font: bold 11px/20px "Trebuchet MS", Arial, Verdana, Helvetica, sans-serif;
+	width: 21px;
+	height: 20px;
+	text-align: center;
+	background-color: #777;
+	color: #fff;
+}
 
 /* Today cell preperties */
 .redeventcal td.mod_redeventcal_caltoday
@@ -133,6 +141,11 @@ text-decoration: none;
 	font: bold 11px/20px "Trebuchet MS", Arial, Verdana, Helvetica, sans-serif;
 	color: #616B76;
 	background: #D9E2E1;
+}
+.redeventcal th.mod_redeventcal_wk {
+	font: bold 11px/20px "Trebuchet MS", Arial, Verdana, Helvetica, sans-serif;
+	color: #FFFFFF;
+	background: #777;	
 }
 
 

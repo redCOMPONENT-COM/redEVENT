@@ -69,6 +69,8 @@ JHTML::_('behavior.tooltip');
 	$Show_Tooltips		= $params->get( 'Show_Tooltips', '1' );	
 	$Remember			= $params->get( 'Remember', '1' );
 	$CalTooltipsTitle		= $params->get( 'recal_tooltips_title', 'Events' );	
+	$show_weeknb = $params->get( 'show_week_number', 1 );	
+	$week_nb_format = $first_day ? '%W' : '%U';
 	
 	//get switch trigger
 	$req_month 		= JRequest::getVar( 're_mcal_month', '', 'request', 'int' );

@@ -40,6 +40,10 @@
 			<option value="0">Sunday</option>
 			<option value="1">Monday</option>
 		</param>
+		<param name="show_week_number" type="radio" default="0" label="MOD_REDEVENT_CALENDAR_SHOW_WEEK_NB_LABEL" description="MOD_REDEVENT_CALENDAR_SHOW_WEEK_NB_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
 		<param name="Year_length" type="radio" default="1" label="MOD_REDEVENT_CALENDAR_YEAR_LENGTH" description="MOD_REDEVENT_CALENDAR_YEAR_LENGTH_DESC">
 			<option value="0">Two</option>
 			<option value="1">Four</option>
