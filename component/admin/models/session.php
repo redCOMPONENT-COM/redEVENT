@@ -402,7 +402,7 @@ class RedEventModelSession extends JModel
     // then recreate them if any
     foreach ((array) $data['pricegroup'] as $k => $r)
     {    	
-    	if (!($data['pricegroup'][$k] && $data['price'][$k])) {
+    	if (!($data['pricegroup'][$k])) {
     		continue;
     	}
       $new = & JTable::getInstance('RedEvent_sessions_pricegroups', '');
