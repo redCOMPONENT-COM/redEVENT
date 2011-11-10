@@ -308,10 +308,10 @@ class RedEventModelAttendees extends JModel
 		$where = array();
 
 		if ($xref) {
-			$where[] = ' x.id = '. $xref;
+			$where[] = ' r.xref = '. $xref;
 		}
 		else if (!is_null($this->_xref) && $this->_xref > 0) {
-			$where[] = 'x.id = '.$this->_xref;
+			$where[] = 'r.xref = '.$this->_xref;
 		}
 		else if (!is_null($this->_eventid) && $this->_eventid > 0) {
 			$where[] = ' x.eventid = '.$this->_eventid;
@@ -610,14 +610,13 @@ class RedEventModelAttendees extends JModel
 		$this->getEvent();
 	  
 		// first, get all submissions			
-		$query = ' SELECT r.*, r.waitinglist, r.confirmed, r.confirmdate, r.submit_key, u.name, pg.name as pricegroup '
+		$query = ' SELECT r.*, r.waitinglist, r.confirmed, r.confirmdate, r.submit_key, r.cancelled, u.name, pg.name as pricegroup '
 						. ' FROM #__redevent_register AS r '
 						. ' INNER JOIN #__rwf_submitters AS s ON s.id = r.sid '
 		        . ' LEFT JOIN #__redevent_pricegroups AS pg ON pg.id = r.pricegroup_id '
 						. ' LEFT JOIN #__users AS u ON r.uid = u.id '
-						. ' WHERE r.xref = ' . $this->_xref
-            . ' AND r.confirmed = 1'
 						;
+		$query .= $this->_buildContentWhere();
 		$this->_db->setQuery($query);
 		$submitters = $this->_db->loadObjectList();
 		
