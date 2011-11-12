@@ -41,7 +41,7 @@ class RedEventViewRegistrations extends JView {
 		
 		//initialise variables
 		$db = JFactory::getDBO();
-		$elsettings = ELAdmin::config();
+		$settings = ELAdmin::config();
 		$document	= JFactory::getDocument();
 		$user = JFactory::getUser();
 		$state = &$this->get('State');
@@ -110,6 +110,7 @@ class RedEventViewRegistrations extends JView {
 		$this->assignRef('rows',      $rows);
 		$this->assignRef('pageNav',   $pageNav);
 		$this->assignRef('user',      $user);
+		$this->assignRef('settings',  $settings);
 		
 		parent::display($tpl);
 	}
