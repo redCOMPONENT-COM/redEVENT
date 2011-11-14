@@ -1,0 +1,60 @@
+/* RokMiniEvents */
+
+
+.rokminievents-badge {background:url(../images/event-badge.png) no-repeat;}
+
+
+.rokminievents-wrapper .timeline .progress-wrapper {background: #E5E5E5;}
+.rokminievents-wrapper .timeline .progress-wrapper:hover {background: #D6D6D6;}
+.rokminievents-wrapper .rokminievent-page {background-image: url(../images/rokminievents-page.png);}
+
+/* color specific */
+
+.rokminievents-wrapper .left-arrow, .rokminievents-wrapper .right-arrow {background-image: url(../images/control-arrows.png);}
+.rokminievents-wrapper .timeline .progress .knob {background: url(../images/rokminievents-knob.png) 50% 16px no-repeat;}
+.timeline-dates .date.active, .timeline-dates .date.active:hover {background: #666;color:#fff;}
+
+.rokminievents {list-style: none;padding: 0;width: 30000px;margin: 0;}
+.rokminievents-container {overflow: hidden;margin: 0;padding-bottom: 1px;}
+.rokminievents-item {float: left;overflow: hidden;margin: 0;padding: 0;border-radius: 5px;}
+.rokminievents-item-padding {margin:0 15px;padding:10px 0;}
+.rokminievents-item:hover {background:#f6f6f6;}
+.rokminievents-badge {width: 39px;height: 51px;float: left;margin-right: 15px;text-align: center;padding: 10px;margin-bottom:10px;}
+.rokminievents-badge span {text-align:center;}
+.showyear {height: 65px;padding: 3px 10px;}
+.rokminievents-badge .day {display: block;font-size: 26px;line-height: 28px;color:#fff;}
+.showyear .day {line-height: 34px;}
+.rokminievents-badge .month {display: block;font-size: 18px;line-height: 18px;text-transform: uppercase;}
+.showyear .month {line-height: 16px;}
+.rokminievents-badge .year {display: block;font-size: 13px;line-height: 18px;text-transform: uppercase;}
+.rokminievents-wrapper {margin: 0;}
+.rokminievents-title, .rokminievents-title-nolink {display: block;font-size: 120%;line-height: 120%;margin: 0 0 5px 0;word-wrap: break-word;font-weight: bold;}
+.rokminievents-title {cursor: pointer;}
+.rokminievents-date {display: block;font-size: 110%;cursor: pointer;line-height: 110%;font-weight: bold;margin-bottom: 5px;}
+.rokminievents-time {display: block;font-size: 90%;line-height: 100%;margin-bottom: 5px;color:#666;}
+.rokminievents p {margin-bottom: 0;}
+.rokminievents-controls {clear: both;}
+.rokminievents-wrapper .arrows {float: right;}
+.rokminievents-wrapper .left-arrow, .rokminievents-wrapper .right-arrow {width: 17px;height: 15px;display: inline-block;cursor: pointer;background-repeat: no-repeat;}
+.rokminievents-wrapper .left-arrow.disabled:hover, .rokminievents-wrapper .right-arrow.disabled:hover {background-color: transparent;cursor: default;}
+.rokminievents-wrapper .left-arrow {background-position: 50% -60px;}
+.rokminievents-wrapper .left-arrow:hover {background-position: 50% -40px;}
+.rokminievents-wrapper .left-arrow.disabled:hover {background-position: 50% -60px;}
+.rokminievents-wrapper .right-arrow {background-position: 50% -20px;}
+.rokminievents-wrapper .right-arrow:hover {background-position: 50% 0;}
+.rokminievents-wrapper .right-arrow.disabled:hover {background-position: 50% -20px;}
+.rokminievents-wrapper .timeline {margin-top: 20px;}
+.rokminievents-wrapper .arrows-on .timeline {margin-right: 45px;}
+.rokminievents-wrapper .timeline .progress-wrapper {height: 15px;padding: 0 29px;}
+.rokminievents-wrapper .timeline .progress {height: 15px;position: relative;}
+.rokminievents-wrapper .timeline .progress .knob {position: absolute;left: 0;top: -16px;width: 29px;height: 37px;cursor: pointer;}
+.rokminievents-wrapper .timeline .progress .knob, .rokminievents-wrapper .timeline .progress-wrapper {border-radius: 9px;}
+.rokminievents-wrapper .rokminievent-page {width: 9px;height: 16px;position: absolute;visibility: hidden;cursor: pointer;background-repeat: no-repeat;background-position: 50% 50%;}
+.timeline-dates {margin-top: 6px;position: relative;}
+.date-inline {height: 18px;}
+.date-column {height: 32px;}
+.timeline-dates .date {text-align: center;font-size: 10px;line-height: 18px;position: absolute;border-radius: 5px;padding: 0 4px;font-weight: bold;cursor: pointer;}
+.timeline-dates .date:hover, .timeline-dates .active {background:#f6f6f6;}
+.timeline-dates.date-inline .date {width: 80px;}
+.timeline-dates.date-column .date {width: 45px;}
+.timeline-dates.date-column .date span {display: block;}

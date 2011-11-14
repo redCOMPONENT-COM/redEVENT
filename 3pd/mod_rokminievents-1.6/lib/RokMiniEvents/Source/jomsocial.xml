@@ -1,0 +1,30 @@
+<source>
+	<params>
+        <param name="@spacer" type="spacer" default="&lt;div  style=&quot;font-weight:normal;font-size:12px;color:#fff;padding:4px;margin:0;background:#666;&quot;&gt;JomSocial Settings&lt;/div&gt;" label="" description="" />
+        <param name="jomsocial" type="list" default="1" label="ROKMINIEVENTS_JOMSOCIAL_LABEL_ENABLE" description="ROKMINIEVENTS_JOMSOCIAL_DESC_ENABLE">
+			<option value="1">YES</option>
+			<option value="0">NO</option>
+		</param>
+        <param name="jomsocial_category" type="jomsocialeventcategory" default="0" label="ROKMINIEVENTS_JOMSOCIAL_LABEL_CATEGORY" description="ROKMINIEVENTS_JOMSOCIAL_DESC_CATEGORY"/>
+        <param name="jomsocial_total" type="text" size="4" default="10" label="ROKMINIEVENTS_JOMSOCIAL_LABEL_MAXRESULTS" description="ROKMINIEVENTS_JOMSOCIAL_DESC_MAXRESULTS" />
+		<!--<param name="jomsocial_user" type="list" default="1" label="ROKMINIEVENTS_JOMSOCIAL_LABEL_USERREVENTS" description="ROKMINIEVENTS_JOMSOCIAL_DESC_USERREVENTS">-->
+			<!--<option value="1">YES</option>-->
+			<!--<option value="0">NO</option>-->
+		<!--</param>-->
+        <param name="jomsocial_type" type="list" default="all" label="ROKMINIEVENTS_JOMSOCIAL_LABEL_GROUPEVENTS" description="ROKMINIEVENTS_JOMSOCIAL_DESC_GROUPEVENTS">
+			<option value="all">YES</option>
+			<option value="profile">NO</option>
+		</param>
+
+		<param name="jomsocial_past" type="list" default="1" label="ROKMINIEVENTS_JOMSOCIAL_LABEL_PASTEVENTS" description="ROKMINIEVENTS_JOMSOCIAL_DESC_PASTEVENTS">
+			<option value="0">YES</option>
+			<option value="1">NO</option>
+		</param>
+		
+		<param name="jomsocial_links" type="list" label="ROKMINIEVENTS_JOMSOCIAL_LABEL_LINKTO" description="ROKMINIEVENTS_JOMSOCIAL_DESC_LINKTO">
+			<option value="link_no">ROKMINIEVENTS_JOMSOCIAL_DONTLINK</option>
+			<option value="link_internal">ROKMINIEVENTS_JOMSOCIAL_LINKASINTERNAL</option>
+			<option value="link_external">ROKMINIEVENTS_JOMSOCIAL_LINKASEXTERNAL</option>
+		</param>
+    </params>
+</source>

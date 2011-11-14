@@ -1,0 +1,24 @@
+<source>
+	<params addpath="/administrator/components/com_jevents/elements/">
+        <param name="@spacer" type="spacer" default="&lt;div  style=&quot;font-weight:normal;font-size:12px;color:#fff;padding:4px;margin:0;background:#666;&quot;&gt;JEvents Settings&lt;/div&gt;" label="" description="" />
+        <param name="jevents" type="list" default="1" label="ROKMINIEVENTS_JEVENTS_LABEL_ENABLE" description="ROKMINIEVENTS_JEVENTS_DESC_ENABLE">
+			<option value="1">YES</option>
+			<option value="0">NO</option>
+		</param>
+        <param name="jevents_category" type="jevcategory" default="0" scope="com_jevents" label="ROKMINIEVENTS_JEVENTS_LABEL_CATEGORY" description="ROKMINIEVENTS_JEVENTS_DESC_CATEGORY"/>
+        <param name="jevents_total" type="text" size="4" default="10" label="ROKMINIEVENTS_JEVENTS_LABEL_MAXRESULTS" description="ROKMINIEVENTS_JEVENTS_DESC_MAXRESULTS" />
+        <param name="jevents_norepeats" type="list" default="0" label="ROKMINIEVENTS_JEVENTS_LABEL_DISPLAY_REPEATS" description="ROKMINIEVENTS_JEVENTS_DESC_DISPLAY_REPEATS">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+        <param name="rsevents_past" type="list" default="1" label="ROKMINIEVENTS_JEVENTS_LABEL_PASTEVENTS" description="ROKMINIEVENTS_JEVENTS_DESC_PASTEVENTS">
+			<option value="1">YES</option>
+			<option value="0">NO</option>
+		</param>
+		<param name="jevents_links" type="list" label="ROKMINIEVENTS_JEVENTS_LABEL_LINKTO" description="ROKMINIEVENTS_JEVENTS_DESC_LINKTO">
+			<option value="link_no">ROKMINIEVENTS_JEVENTS_DONTLINK</option>
+			<option value="link_internal">ROKMINIEVENTS_JEVENTS_LINKASINTERNAL</option>
+			<option value="link_external">ROKMINIEVENTS_JEVENTS_LINKASEXTERNAL</option>
+		</param>
+    </params>
+</source>

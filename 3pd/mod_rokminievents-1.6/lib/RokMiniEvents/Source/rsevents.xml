@@ -1,0 +1,25 @@
+<source>
+	<params addpath="/administrator/components/com_rsevents/elements/">
+        <param name="@spacer" type="spacer" default="&lt;div  style=&quot;font-weight:normal;font-size:12px;color:#fff;padding:4px;margin:0;background:#666;&quot;&gt;RSEvents Settings&lt;/div&gt;" label="" description="" />
+        <param name="rsevents" type="list" default="1" label="ROKMINIEVENTS_RSEVENTS_LABEL_ENABLE" description="ROKMINIEVENTS_RSEVENTS_DESC_ENABLE">
+			<option value="1">YES</option>
+			<option value="0">NO</option>
+		</param>
+        <param name="rsevents_category" type="categories" default="0" label="ROKMINIEVENTS_RSEVENTS_LABEL_CATEGORY" description="ROKMINIEVENTS_RSEVENTS_DESC_CATEGORY"/>
+        <param name="rsevents_venue" type="locations" default="0" label="ROKMINIEVENTS_RSEVENTS_LABEL_VENUE" description="ROKMINIEVENTS_RSEVENTS_DESC_VENUE"/>
+        <param name="rsevents_total" type="text" size="4" default="10" label="ROKMINIEVENTS_RSEVENTS_LABEL_MAXRESULTS" description="ROKMINIEVENTS_RSEVENTS_DESC_MAXRESULTS" />
+		<!--<param name="rsevents_user" type="list" default="1" label="ROKMINIEVENTS_RSEVENTS_LABEL_USERREVENTS" description="ROKMINIEVENTS_RSEVENTS_DESC_USERREVENTS">-->
+			<!--<option value="1">YES</option>-->
+			<!--<option value="0">NO</option>-->
+		<!--</param>-->
+		<param name="rsevents_past" type="list" default="0" label="ROKMINIEVENTS_RSEVENTS_LABEL_PASTEVENTS" description="ROKMINIEVENTS_RSEVENTS_DESC_PASTEVENTS">
+			<option value="1">YES</option>
+			<option value="0">NO</option>
+		</param>
+		<param name="rsevents_links" type="list" label="ROKMINIEVENTS_RSEVENTS_LABEL_LINKTO" description="ROKMINIEVENTS_RSEVENTS_DESC_LINKTO">
+			<option value="link_no">ROKMINIEVENTS_RSEVENTS_DONTLINK</option>
+			<option value="link_internal">ROKMINIEVENTS_RSEVENTS_LINKASINTERNAL</option>
+			<option value="link_external">ROKMINIEVENTS_RSEVENTS_LINKASEXTERNAL</option>
+		</param>
+    </params>
+</source>
