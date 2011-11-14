@@ -134,8 +134,16 @@ class modRedEventCategoriesHelper
 			$query .= ' AND c.parent_id = '. $this->_db->Quote($params->get('parent', 0));
 		}
 		$query .= ' AND (c.private = 0 OR gc.id IS NOT NULL) ';
-	
 		$query .= ' GROUP BY c.id ';
+		switch ($params->get('ordering', 0))
+		{
+			case 1:
+				$query .= ' ORDER BY c.catname ';
+				break;
+			case 0:
+			default:
+				$query .= ' ORDER BY c.ordering ';
+		}
 	
 		return $query;
 	}
