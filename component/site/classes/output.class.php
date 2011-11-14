@@ -637,7 +637,7 @@ class ELOutput {
 		$date = '<span class="event-date">';
 		$date .= '<span class="event-start">';
 		$date .= '<span class="event-day">'.self::formatdate($event->dates, $event->times).'</span>';
-		if (!$allday && $settings->showtime == 1) {
+		if (!$allday && $settings->params->get('lists_show_time', 0) == 1) {
 			$date .= ' <span class="event-time">'.self::formattime($event->dates, $event->times).'</span>';
 		}
 		$date .= '</span>';
@@ -658,12 +658,12 @@ class ELOutput {
 			if (redEVENTHelper::isValidDate($event->enddates) && strtotime($event->enddates) != strtotime($event->dates)) 
 			{
 				$date .= ' <span class="event-end"><span class="event-day">'.self::formatdate($event->enddates, $event->endtimes).'</span>';
-				if ($settings->showtime == 1) {
+				if ($settings->params->get('lists_show_time', 0) == 1) {
 					$date .= ' <span class="event-time">'.self::formattime($event->dates, $event->endtimes).'</span>';
 				}
 				$date .= '</span>';
 			}
-			else if ($settings->showtime == 1)
+			else if ($settings->params->get('lists_show_time', 0) == 1)
 			{
 				$date .= ' <span class="event-time">'.self::formattime($event->dates, $event->endtimes).'</span>';				
 			}
