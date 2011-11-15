@@ -69,8 +69,15 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 		</div>
 	</td>
 		<td nowrap="nowrap">
+			<div>
 			<?php echo $this->lists['state'];	?>
 			<?php echo $this->lists['featured'];	?>
+			</div>
+			<div>
+			<label for="filter_group"><?php echo JText::_('COM_REDEVENT_SESSIONS_FILTER_GROUP_LABEL'); ?></label> 
+			<?php echo $this->lists['filter_group'];	?>		
+			<?php echo $this->lists['filter_group_manage'];	?>			
+			</div>
 		</td>
 </tr>
 </table>

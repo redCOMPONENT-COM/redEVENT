@@ -92,11 +92,15 @@ class RedeventModelSessions extends JModel
     
     $filter_state     = $app->getUserStateFromRequest( 'com_redevent.sessions.filter_state', 'filter_state', 'notarchived', 'cmd' );
     $filter_featured  = $app->getUserStateFromRequest( 'com_redevent.sessions.filter_featured', 'filter_featured', '', 'cmd' );
+    $filter_group  = $app->getUserStateFromRequest( 'com_redevent.sessions.filter_group', 'filter_group', 0, 'int' );
+    $filter_group_manage  = $app->getUserStateFromRequest( 'com_redevent.sessions.filter_group_manage', 'filter_group_manage', 1, 'int' );
     
     $this->setState('filter_order',      $filter_order);
     $this->setState('filter_order_Dir',  $filter_order_Dir);
     $this->setState('filter_state',      $filter_state);
     $this->setState('filter_featured',   $filter_featured);
+    $this->setState('filter_group',      $filter_group);
+    $this->setState('filter_group_manage', $filter_group_manage);
     $this->setState('search',            strtolower($search));
     $this->setState('eventid',           $eventid);
     $this->setState('venueid',           $venueid);
@@ -148,11 +152,60 @@ class RedeventModelSessions extends JModel
 			. ' FROM #__redevent_event_venue_xref AS obj '
 			. ' INNER JOIN #__redevent_events AS e ON obj.eventid = e.id '
 		  . ' LEFT JOIN #__redevent_venues AS v ON v.id = obj.venueid '
-			. $where
-			. $orderby
-		;
+		  ;
+		if ($gp = $this->getState('filter_group')) {
+			$query .= ' LEFT JOIN #__redevent_venue_category_xref AS xvcat ON v.id = xvcat.venue_id'
+		        . ' LEFT JOIN #__redevent_venues_categories AS vc ON xvcat.category_id = vc.id'
+            . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id'
+	          . ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id '
+	          . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = v.id AND gv.group_id = '.$gp
+	          . ' LEFT JOIN #__redevent_groups AS gvg ON gvg.id = gv.group_id '
+	          . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = vc.id AND gvc.group_id = '.$gp
+	          . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id = '.$gp
+	          ;
+		}
+		  
+		$query .= $where;
+		if ($gp = $this->getState('filter_group')) 
+		{
+			if ($this->getState('filter_group_manage')) // manage ?
+			{
+				$group = $this->getGroup($gp);
+				if ($group->edit_events == 0) {
+					$query .= ' AND 0 ';
+				}
+				else {
+					$query .= ' AND (gv.id IS NOT NULL OR gvc.id IS NOT NULL) '
+				       . ' AND (gc.id IS NOT NULL) '
+			          ;
+				}
+			}
+			else {
+			$query .= ' AND (v.private = 0 OR gv.id IS NOT NULL) '
+		       . ' AND (c.private = 0 OR gc.id IS NOT NULL) '
+		       . ' AND (vc.private = 0 OR vc.private IS NULL OR gvc.id IS NOT NULL) '
+	          ;				
+			}
+		}
+		$query .= $orderby;
 
 		return $query;
+	}
+	
+	/**
+	 * get group details
+	 * 
+	 * @param int $id
+	 * @return object
+	 */
+	function getGroup($id)
+	{
+		$query = ' SELECT g.* ' 
+		       . ' FROM #__redevent_groups AS g ' 
+		       . ' WHERE g.id = ' . $this->_db->Quote($id);
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadObject();
+		return $res;
 	}
 
 	function _buildContentOrderBy()
@@ -402,6 +455,19 @@ class RedeventModelSessions extends JModel
 			}
 		}
 		return true;
+	}
+	
+	/**
+	 * returns groups as options
+	 * @return array
+	 */
+	function getGroupsOptions()
+	{
+		$query = ' SELECT g.id AS value, g.name AS text ' 
+		       . ' FROM #__redevent_groups AS g ' 
+		       . ' ORDER BY g.name ';
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
 	}
 }
 ?>

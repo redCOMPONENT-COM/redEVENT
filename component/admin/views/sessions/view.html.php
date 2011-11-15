@@ -88,6 +88,14 @@ class RedeventViewSessions extends JView
 		                  );
 		$lists['featured']	= JHTML::_('select.genericlist', $options, 'filter_featured', 'class="inputbox" onchange="submitform();" size="1"', 'value', 'text', $filter_featured );
 		
+		$options = $this->get('groupsoptions');
+		$options = array_merge(array(JHTML::_('select.option', '', ' - '.JText::_('COM_REDEVENT_SESSIONS_filter_group_select').' - ')), $options);
+		$lists['filter_group']	= JHTML::_('select.genericlist', $options, 'filter_group', 'class="inputbox" onchange="submitform();" size="1"', 'value', 'text', $state->get('filter_group'));
+		
+		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_SESSIONS_filter_group_select_view')), 
+		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_SESSIONS_filter_group_select_manage')), );
+		$lists['filter_group_manage']	= JHTML::_('select.genericlist', $options, 'filter_group_manage', 'class="inputbox" onchange="submitform();" size="1"', 'value', 'text', $state->get('filter_group_manage'));
+		
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 		
 		// Set toolbar items for the page
