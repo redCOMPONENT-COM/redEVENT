@@ -32,15 +32,6 @@ defined('JPATH_BASE') or die();
 * @since 2.0
 */
 
-require_once ('customfield'.DS.'textbox.php');
-require_once ('customfield'.DS.'textarea.php');
-require_once ('customfield'.DS.'date.php');
-require_once ('customfield'.DS.'radio.php');
-require_once ('customfield'.DS.'checkbox.php');
-require_once ('customfield'.DS.'select.php');
-require_once ('customfield'.DS.'selectmultiple.php');
-require_once ('customfield'.DS.'wysiwyg.php');
-
 class TCustomfield extends JObject {
 	/**
 	 * custom field id
@@ -114,7 +105,7 @@ class TCustomfield extends JObject {
    *
    * @access protected
    */
-  function __construct() {
+  function __construct() {  	
   	
   }
   
