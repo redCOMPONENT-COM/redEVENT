@@ -20,10 +20,19 @@ window.addEvent('domready', function() {
 
    while(toggler.length>0)
    {
+	   // find index of open ones ?
+	   var index = -1;
+	   for (var i = 0, n = toggler.length; i < n; i++) {
+		   if ($(toggler[i]).hasClass('open')) {
+			   index = i;
+			   break;
+		   }
+	   }
+      
       // Apply accordion
       new Accordion(toggler, content, {
          opacity: false,
-         display: -1,
+         display: index,
          alwaysHide: true,
          onComplete: function() { 
             var element=$(this.elements[this.previous]);

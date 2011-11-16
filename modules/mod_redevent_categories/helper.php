@@ -98,7 +98,9 @@ class modRedEventCategoriesHelper
 		$mainframe = &JFactory::getApplication();
 		$user		= & JFactory::getUser();
 		$gid		= (int) $user->get('aid');
-	
+		
+		$db = &JFactory::getDBO();
+		
 		$acl = &UserAcl::getInstance();
 		$gids = $acl->getUserGroupsIds();
 		if (!is_array($gids) || !count($gids)) {
@@ -131,7 +133,7 @@ class modRedEventCategoriesHelper
 		;
 	
 		if ($params->get('parent', 0)) {
-			$query .= ' AND c.parent_id = '. $this->_db->Quote($params->get('parent', 0));
+			$query .= ' AND c.parent_id = '. $db->Quote($params->get('parent', 0));
 		}
 		$query .= ' AND (c.private = 0 OR gc.id IS NOT NULL) ';
 		$query .= ' GROUP BY c.id ';
@@ -148,19 +150,29 @@ class modRedEventCategoriesHelper
 		return $query;
 	}
 	
-	function printDtCat($category, $depth, $showcount = 1)
+	/**
+	 * print category with dt/dl structure for accordeon
+	 * 
+	 * @param object $category
+	 * @param int $depth current depth
+	 * @param boolean $showcount show events count
+	 * @param arrray $currents currently 'opened' category
+	 * @return string
+	 */
+	function printDtCat($category, $depth, $showcount = 1, $currents)
 	{
 		$link = JRoute::_(RedeventHelperRoute::getCategoryeventsRoute($category->slug));
 		$txt  = $showcount ? $category->catname.' ('.$category->assignedevents.')' : $category->catname;
+		$opened_class = in_array($category->id, $currents) ? ' open' : '';
 		ob_start();
 		?>
-				<dt class="accordion_toggler_<?php echo $depth; ?>">
+				<dt class="accordion_toggler_<?php echo $depth.$opened_class; ?>">
 					<?php echo JHTML::link($link, $txt); ?>
 				</dt>
 		    <dd class="sub_accordion accordion_content_<?php echo $depth; ?>">
 		    <?php if (count($category->children)): ?>
 		    	<dl>
-		    	<?php foreach ($category->children as $c) echo self::printDtCat($c, $depth+1, $showcount); ?>
+		    	<?php foreach ($category->children as $c) echo self::printDtCat($c, $depth+1, $showcount, $currents); ?>
 		    	</dl>
 		    <?php endif; ?>
 		    </dd>
@@ -169,4 +181,23 @@ class modRedEventCategoriesHelper
 		ob_end_clean();
 		return $html; 
 	}
+	
+	/**
+	 * return array of ids category parent
+	 * 
+	 * @param int $catid
+	 * @return array
+	 */
+	function getParentsCats($catid)
+	{		
+		$db = &JFactory::getDBO();
+		$query = ' SELECT p.id ' 
+		       . ' FROM #__redevent_categories AS p, #__redevent_categories AS current ' 
+		       . ' WHERE current.id = ' . $db->Quote($catid)
+		       . '   AND p.lft <= current.lft AND p.rgt >= current.rgt '
+		       ;
+		$db->setQuery($query);
+		$res = $db->loadResultArray();
+		return $res;
+	}		
 }

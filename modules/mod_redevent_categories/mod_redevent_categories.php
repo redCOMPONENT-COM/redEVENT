@@ -41,4 +41,11 @@ $document = &JFactory::getDocument();
 $document->addStyleSheet( JURI::base() . '/modules/mod_redevent_categories/mod_redevent_categories.css' );
 $document->addScript(JURI::base() . '/modules/mod_redevent_categories/mod_redevent_categories.js' );
 
+if (JRequest::getCmd('option') == 'com_redevent' && JRequest::getCmd('view') == 'categoryevents') {
+	$currents = modRedEventCategoriesHelper::getParentsCats(JRequest::getInt('id'));
+}
+else {
+	$currents = array();
+}
+
 require(JModuleHelper::getLayoutPath('mod_redevent_categories'));

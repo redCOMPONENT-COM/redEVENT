@@ -22,6 +22,6 @@ $i = 0;
 ?>
 <dl class="mod_re_cats_accordion">
 	<?php foreach ($list as $cat): ?>
-	<?php echo modRedEventCategoriesHelper::printDtCat($cat, 1, $params->get('show_count', 1)); ?>
+	<?php echo modRedEventCategoriesHelper::printDtCat($cat, 1, $params->get('show_count', 1), $currents); ?>
 	<?php endforeach; ?>
 </dl>
