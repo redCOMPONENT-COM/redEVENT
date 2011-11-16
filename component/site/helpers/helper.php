@@ -505,7 +505,7 @@ class redEVENTHelper {
   
   function getCustomField($type)
   {
-    require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield.php');
+		require_once (JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'customfield'.DS.'includes.php');
     
     if (class_exists('TCustomfield'.ucfirst($type))) {
     	$class = 'TCustomfield'.ucfirst($type);

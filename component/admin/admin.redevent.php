@@ -44,15 +44,7 @@ require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'output.class.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'attachment.class.php');
 require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'admin.class.php');
 require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'error.class.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'textbox.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'textarea.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'date.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'radio.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'checkbox.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'select.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'selectmultiple.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'customfield'.DS.'wysiwyg.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'includes.php');
 
 // redform
 if (!file_exists(JPATH_SITE.DS.'components'.DS.'com_redform'.DS.'redform.core.php')) {
