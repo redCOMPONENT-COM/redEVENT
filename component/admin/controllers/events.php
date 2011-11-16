@@ -233,7 +233,12 @@ class RedEventControllerEvents extends RedEventController
 		if (!isset($post['checked_out'])) $post['checked_out'] = 0;
 		
 		/* Fix the submission types */
-		$post['submission_types'] = implode(',', $post['submission_types']);
+		if (!$post['submission_types']) {
+			$post['submission_types'] = array();
+		}
+		else {
+			$post['submission_types'] = implode(',', $post['submission_types']);
+		}
 		
 		$model = $this->getModel('event');
 		$model_wait = $this->getModel('waitinglist');
