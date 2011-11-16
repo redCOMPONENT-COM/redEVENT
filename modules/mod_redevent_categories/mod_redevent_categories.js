@@ -1,5 +1,9 @@
 window.addEvent('domready', function() {
 
+	// Adaption IE6
+	if(window.ie6) var heightValue='100%';
+	else var heightValue='';
+
    // Selectors of the containers for switches and content
    var togglerName='dt.accordion_toggler_';
    var contentName='dd.accordion_content_';
