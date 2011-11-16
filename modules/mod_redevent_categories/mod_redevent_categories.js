@@ -1,3 +1,7 @@
+/**
+ * nested accordeon code, from http://blog.medianotions.de/en/articles/2008/mootools-nested-accordion
+ */
+
 window.addEvent('domready', function() {
 
 	// Adaption IE6
