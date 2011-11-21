@@ -125,13 +125,8 @@ class modRedeventTeaserHelper
 
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
-		
 		$rows = self::_categories($rows);
 		
-		//assign datemethod value to jview
-		jimport('joomla.application.component.view');
-		JView::assignRef('datemethod', $params->get('datemethod', 1));
-
 		//Loop through the result rows and prepare data
 		$i		= 0;
 		$lists	= array();
