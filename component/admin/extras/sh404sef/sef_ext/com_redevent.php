@@ -358,12 +358,14 @@ else {
   }
   
   if (isset($task)) {
-    if (strtolower($task) == 'confirm') {
+    if (strtolower($task) == 'confirm' && strtolower($controller == 'registration')) {
+      $title[] = 'registration';
       $title[] = 'confirm';
       $title[] = $submit_key;
       $title[] = $confirmid;
 	    shRemoveFromGETVarsList('submit_key');
       shRemoveFromGETVarsList('confirmid');
+      shRemoveFromGETVarsList('controller');
     }
     else {
       $title[] = $task;    	
