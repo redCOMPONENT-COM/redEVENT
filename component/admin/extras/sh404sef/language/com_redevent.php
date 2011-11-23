@@ -29,6 +29,10 @@
   $sh_LANG['en']['search'] = 'event-search';
   $sh_LANG['en']['myevents'] = 'my-events';
   $sh_LANG['en']['open-date'] = 'open-date';
+  $sh_LANG['en']['registration'] = 'registration';
+  $sh_LANG['en']['confirm'] = 'confirm';
+  $sh_LANG['en']['free'] = 'free';
+  $sh_LANG['en']['paid'] = 'paid';
   
   // dutch
   $sh_LANG['nl']['_COM_SEF_REDEVENT'] = 'redEVENT';
@@ -49,6 +53,10 @@
   $sh_LANG['nl']['search'] = 'event-search';
   $sh_LANG['nl']['myevents'] = 'my-events';
   $sh_LANG['en']['open-date'] = 'open-date';
+  $sh_LANG['en']['registration'] = 'registration';
+  $sh_LANG['en']['confirm'] = 'confirm';
+  $sh_LANG['en']['free'] = 'free';
+  $sh_LANG['en']['paid'] = 'paid';
   // danish
   $sh_LANG['dk']['_COM_SEF_REDEVENT'] = 'redEVENT';
   $sh_LANG['dk']['_COM_SEF_TITLE_REDEVENT'] = 'redEVENT';
@@ -68,4 +76,8 @@
   $sh_LANG['dk']['search'] = 'event-search';
   $sh_LANG['dk']['myevents'] = 'my-events';
   $sh_LANG['en']['open-date'] = 'open-date';
+  $sh_LANG['en']['registration'] = 'registration';
+  $sh_LANG['en']['confirm'] = 'confirm';
+  $sh_LANG['en']['free'] = 'free';
+  $sh_LANG['en']['paid'] = 'paid';
 ?>

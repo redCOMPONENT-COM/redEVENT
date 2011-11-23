@@ -8,18 +8,50 @@
  */
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
 
-if (!function_exists('getPg'))
+if (!class_exists('redEVENTsh404Helper'))
 {
-	function getPg($id)
-	{
-		$db= &JFactory::getDBO();
-		$query = ' SELECT alias ' 
-		       . ' FROM #__redevent_pricegroups ' 
-		       . ' WHERE id = ' . $db->Quote(intval($id));
-		$db->setQuery($query);
-		$res = $db->loadResult();
+	class redEVENTsh404Helper {
 		
-		return ($res ? $res : $id);
+		/**
+		 * return pricegroup alias
+		 * 
+		 * @param int $id
+		 * @return alias or id if empty
+		 */
+		function getPg($id)
+		{
+			$db= &JFactory::getDBO();
+			$query = ' SELECT alias '
+			. ' FROM #__redevent_pricegroups '
+			. ' WHERE id = ' . $db->Quote(intval($id));
+			$db->setQuery($query);
+			$res = $db->loadResult();
+
+			return ($res ? $res : $id);
+		}
+		
+		/**
+		 * check if submission includes a paid registration 
+		 * 
+		 * @param string $submit_key
+		 * @return boolean
+		 */
+		function getIsPaidRegistration($submit_key)
+		{
+			$db = &JFactory::getDBO();
+						
+			// get form id and answer id
+			$query = ' SELECT sp.price '
+						       . ' FROM #__redevent_register AS r '
+						       . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.id =  r.xref '
+						       . ' INNER JOIN #__redevent_sessions_pricegroups AS sp ON sp.xref =  x.id AND sp.pricegroup_id = r.pricegroup_id'
+						       . ' WHERE r.submit_key = '.$db->Quote($submit_key)
+						       . '   AND sp.price > 0 '
+			;
+			$db->setQuery($query);
+			$res = $db->loadResult();
+			return ($res ? true : false);
+		}
 	}
 }
 
@@ -140,7 +172,7 @@ else {
     	shRemoveFromGETVarsList('layout');
     }
     
-    if ($view == 'details' || $view == 'signup' || $controller == 'registration')
+    if ($view == 'details' || $view == 'signup' || (isset($controller) && $controller == 'registration'))
     {
 	    if (isset($xref) && $xref)
 	    {
@@ -302,7 +334,7 @@ else {
        if ($details->times != '00-00') $title[] = $details->times;
        $title[] = $xref;
        if (isset($pg)) {
-       	$title[] = getPg($pg);
+       	$title[] = redEVENTsh404Helper::getPg($pg);
         shRemoveFromGETVarsList('pg');
        }
        shRemoveFromGETVarsList('xref');
@@ -359,13 +391,21 @@ else {
   
   if (isset($task)) {
     if (strtolower($task) == 'confirm' && strtolower($controller == 'registration')) {
-      $title[] = 'registration';
-      $title[] = 'confirm';
+      $title[] = $xref;
+      $title[] = $sh_LANG[$shLangIso]['registration'];
+      $title[] = $sh_LANG[$shLangIso]['confirm'];
+      if (redEVENTsh404Helper::getIsPaidRegistration($submit_key)) {
+      	$title[] = $sh_LANG[$shLangIso]['free'];
+      }
+      else {
+      	$title[] = $sh_LANG[$shLangIso]['paid'];      	
+      }
       $title[] = $submit_key;
       $title[] = $confirmid;
 	    shRemoveFromGETVarsList('submit_key');
       shRemoveFromGETVarsList('confirmid');
       shRemoveFromGETVarsList('controller');
+	    shRemoveFromGETVarsList('xref');
     }
     else {
       $title[] = $task;    	
