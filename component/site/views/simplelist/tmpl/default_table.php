@@ -48,6 +48,11 @@ $colnames = array_map('trim', $colnames);
 				<th id="el_city" class="sectiontableheader"><?php echo JHTML::_('grid.sort', isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_CITY'), 'l.city', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php break;?>
 				
+				<?php case 'country': ?>
+				<?php case 'countryflag': ?>
+				<th id="el_country" class="sectiontableheader"><?php echo JHTML::_('grid.sort', isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_COUNTRY'), 'l.country', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<?php break;?>
+				
 				<?php case 'state': ?>
 				<th id="el_state" class="sectiontableheader"><?php echo JHTML::_('grid.sort', isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_STATE'), 'l.state', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php break;?>
@@ -158,6 +163,14 @@ $colnames = array_map('trim', $colnames);
 				
 				<?php case 'city': ?>
 					<td class="re_city"><?php echo $row->city ? $this->escape($row->city) : '-'; ?></td>
+				<?php break;?>
+				
+				<?php case 'country': ?>
+					<td class="re_country"><?php echo $row->country ? redEVENTHelperCountries::getShortCountryName($row->country) : ''; ?></td>
+				<?php break;?>
+				
+				<?php case 'countryflag': ?>
+					<td class="re_countryflag"><?php echo $row->country ? redEVENTHelperCountries::getCountryFlag($row->country) : ''; ?></td>
 				<?php break;?>
 				
 				<?php case 'state': ?>

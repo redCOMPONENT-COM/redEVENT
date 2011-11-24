@@ -1268,6 +1268,8 @@ class redEVENTHelper {
 		                 'placesleft', 
 		                 'price',
 		                 'credits',
+		                 'country',
+		                 'countryflag',
 		);
 		
 		$query = 'SELECT CONCAT("custom", f.id) FROM #__redevent_fields AS f WHERE f.published = 1';
