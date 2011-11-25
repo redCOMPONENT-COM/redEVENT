@@ -22,7 +22,6 @@
 
 	<languages>
 		<language tag="en-GB">languages/en-GB.mod_redevent_all_events.ini</language>
-		<language tag="sv-SE">languages/sv-SE.mod_redevent_all_events.ini</language>
 	</languages>
 
 	<params>

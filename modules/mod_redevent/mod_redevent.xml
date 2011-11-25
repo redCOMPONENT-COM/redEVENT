@@ -21,10 +21,6 @@
 
 	<languages>
 		<language tag="en-GB">languages/en-GB.mod_redevent.ini</language>
-		<language tag="de-DE">languages/de-DE.mod_redevent.ini</language>
-		<language tag="nl-NL">languages/nl-NL.mod_redevent.ini</language>
-		<language tag="fi-FI">languages/fi-FI.mod_redevent.ini</language>
-		<language tag="sv-SE">languages/sv-SE.mod_redevent.ini</language>
 	</languages>
 
 	<params>

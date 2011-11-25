@@ -28,7 +28,6 @@
   
 	<languages>
     <language tag="en-GB">language/en-GB/en-GB.plg_search_redeventsearch.ini</language>
-    <language tag="sv-SE">language/sv-SE/sv-SE.plg_search_redeventsearch.ini</language>
   </languages>
 
 </install>
