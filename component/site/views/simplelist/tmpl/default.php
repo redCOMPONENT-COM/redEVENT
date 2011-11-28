@@ -58,7 +58,7 @@ $toggle = $this->params->get('filter_toggle', 3);
 
 <!-- filters  -->
 <?php $toggle = $this->params->get('filter_toggle', 3); ?>
-<?php if ($toggle != 1 || $this->params->get('display')) : ?>
+<?php if ($toggle != 1 || $this->params->get('display_limit_select')) : ?>
 <div id="el_filter" class="floattext">
 		<?php if ($toggle != 1 || 1) : ?>
 			<?php if ($toggle > 1) : ?>
@@ -101,7 +101,7 @@ $toggle = $this->params->get('filter_toggle', 3);
    	<input type="hidden" id="f-showfilters" name="showfilters" value="<?php echo $toggle == 0 ? '1' : JRequest::getInt('showfilters', $toggle != 3 ? 1 : 0); ?>"/>
 		<?php endif; ?>
 		
-		<?php if ($this->params->get('display')) : ?>
+		<?php if ($this->params->get('display_limit_select')) : ?>
 		<div class="el_fright">
 			<?php
 			echo '<label for="limit">'.JText::_('COM_REDEVENT_DISPLAY_NUM').'</label>&nbsp;';

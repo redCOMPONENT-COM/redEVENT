@@ -175,7 +175,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     </table>	
   </div>
   
-  <?php if ($this->params->get('display')) : ?>
+  <?php if ($this->params->get('display_limit_select')) : ?>
 	<div class="el_fright">
 		<?php	echo '<label for="limit">'.JText::_('COM_REDEVENT_DISPLAY_NUM').'</label>&nbsp;';
 		echo $this->pageNav->getLimitBox();

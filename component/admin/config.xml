@@ -54,7 +54,7 @@
 	</params>
 
 	<params group="COM_REDEVENT_SETTINGS_lists">
-		<param name="display" type="radio" default="1" label="COM_REDEVENT_DISPLAY_SELECT" description="COM_REDEVENT_DISPLAY_SELECT_DESC">
+		<param name="display_limit_select" type="radio" default="1" label="COM_REDEVENT_DISPLAY_LIMIT_SELECT" description="COM_REDEVENT_DISPLAY_LIMIT_SELECT_DESC">
 			<option value="0">COM_REDEVENT_Hide</option>
 			<option value="1">COM_REDEVENT_Show</option>
 		</param>

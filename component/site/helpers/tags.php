@@ -1996,6 +1996,19 @@ class redEVENT_tags {
 	{
 		return $this->_getSubmissionTotalPrice();
 	}
+	
+	/**
+	 * returns gps utm position of the venue
+	 * @return string
+	 */
+	function _getTag_latlong()
+	{
+		$session = $this->getEvent()->getData();
+		if ($session->latitude || $session->longitude) {
+			return $session->latitude.','.$session->longitude;
+		}
+		return '';
+	}
 }
 
 class RedeventParsedTag {

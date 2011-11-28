@@ -61,7 +61,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <form action="<?php echo $this->action; ?>" method="post" id="adminForm">
 
-<?php if ($this->params->get('filter_text',1) || $this->params->get('display')) : ?>
+<?php if ($this->params->get('filter_text',1) || $this->params->get('display_limit_select')) : ?>
 <div id="el_filter" class="floattext">
 		<?php if ($this->params->get('filter_text',1)) : ?>
 		<div class="el_fleft">
@@ -74,7 +74,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			<button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_('COM_REDEVENT_RESET' ); ?></button>
 		</div>
 		<?php endif; ?>
-		<?php if ($this->params->get('display')) : ?>
+		<?php if ($this->params->get('display_limit_select')) : ?>
 		<div class="el_fright">
 			<?php
 			echo '<label for="limit">'.JText::_('COM_REDEVENT_DISPLAY_NUM').'</label>&nbsp;';
