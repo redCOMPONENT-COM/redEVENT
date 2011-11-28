@@ -22,8 +22,64 @@
  
 window.addEvent('domready', function() {
 
-	 $$( '.tagsdiv' ).each(function(item){
-		 // could put better init for modal
-	 } );
+	$$( '.tagsdiv' ).each(function(item){
+		// could put better init for modal
+	});
+	
+	if ($('submission_type_email_check')) {
+		$('submission_type_email_check').addEvent('click', redEVENTEventCheck.checkSubmissionEmailState);
+	}
+	
+	if ($ES("input[name=send_pdf_form]")) {
+		$ES("input[name=send_pdf_form]").addEvent('change', redEVENTEventCheck.checkEmailPdfState);
+	}
 
+	$("submission_type_phone_check").addEvent('click', function() {
+		if ($("submission_type_phone_check").getProperty('checked')) {
+			$("submission_type_phone_input").setStyle('display', 'block');
+		}
+		else $("submission_type_phone_input").setStyle('display', 'none');
+	});
+	
+	$("submission_type_formaloffer_check").addEvent('click', function() {
+		if ($("submission_type_formaloffer_check").getProperty('checked')) {
+			$("submission_type_formaloffer_input").setStyle('display', 'block');
+			$("submission_type_formaloffer_body_input").setStyle('display', 'block');
+		}
+		else {
+			$("submission_type_formaloffer_input").setStyle('display', 'none');
+			$("submission_type_formaloffer_body_input").setStyle('display', 'none');
+		}
+	});
+	
+	$("submission_type_webform_check").addEvent('click', function() {
+		if ($("submission_type_webform_check").getProperty('checked')) {
+			$("submission_type_webform_input").setStyle('display', 'block');
+		}
+		else $("submission_type_webform_input").setStyle('display', 'none');
+	});
 });
+
+redEVENTEventCheck = {
+	
+	checkSubmissionEmailState : function ()	{
+		redEVENTEventCheck.checkEmailPdfState();
+		if ($("submission_type_email_check").getProperty('checked')) {
+			$("submission_type_email_input").setStyle('display', 'block');
+			$("submission_type_email_body_input").setStyle('display', 'block');
+		}
+		else {
+			$("submission_type_email_input").setStyle('display', 'none');
+			$("submission_type_email_body_input").setStyle('display', 'none');
+		}
+	},
+	
+	checkEmailPdfState : function()	{
+		if ($("send_pdf_form1").getProperty('checked')) {
+			$$(".submission_type_email_pdf_options").setStyle('display', '');
+		}
+		else {
+			$$(".submission_type_email_pdf_options").setStyle('display', 'none');
+		}	
+	}
+};

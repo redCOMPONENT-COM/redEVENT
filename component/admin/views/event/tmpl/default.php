@@ -212,7 +212,6 @@ echo $this->pane->endPane(); ?>
 	<input type="hidden" name="author_ip" value="<?php echo $this->row->author_ip; ?>" />
 <?php } ?>
 </form>
-<?php echo $this->loadTemplate('jsscript'); ?>
 
 <p class="copyright">
 	<?php echo ELAdmin::footer( ); ?>

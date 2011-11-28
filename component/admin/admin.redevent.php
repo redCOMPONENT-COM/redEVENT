@@ -24,13 +24,6 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-$document = JFactory::getDocument();
-if ($document->getType() == 'html') {
-	$document->addCustomTag( '<script type="text/javascript" src="'.JURI::root().'administrator/components/com_redform/js/jquery.js"></script>' );
-	$document->addCustomTag( '<script type="text/javascript">jQuery.noConflict();</script>' );
-	$document->addCustomTag( '<script type="text/javascript" src="'.JURI::root().'administrator/components/com_redform/js/jquery.random.js"></script>' );
-}
-
 //Require classes
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'log.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'helper.php');
