@@ -20,7 +20,7 @@
  * along with redEVENT; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 ?>
 <h2><?php echo JText::_('COM_REDEVENT_TAGS_TITLE'); ?></h2>
@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php $k = 0; ?>
 			<?php foreach ($tags as $tag): ?>
 			<tr class="<?php echo ($k ? 'row1' : 'row0'); ?>">
-				<td>[<?php echo $tag->name; ?>]</td>
+				<td>[<?php echo addslashes($this->escape($tag->name)); ?>]</td>
 				<td><?php echo $tag->description; ?></td>
 			</tr>
 			<?php $k = 1 - $k; ?>

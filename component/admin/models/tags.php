@@ -185,7 +185,7 @@ class TagsModelTag {
 	function __construct($name, $desc, $section = 'General', $id = 0)
 	{
 		$name = trim($name);
-		$this->name        = JFilterOutput::cleanText($name);
+		$this->name        = $name;
 		$this->description = trim($desc);
 		$this->section     = trim($section);
 		$this->id          = $id;
