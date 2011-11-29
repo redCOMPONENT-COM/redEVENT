@@ -239,7 +239,8 @@ class RedeventModelSessions extends JModel
 		}
 		
 		if ($search) {
-			$where[] = 'LOWER(obj.details) LIKE '.$this->_db->Quote('%'.$search.'%');
+			$where[] = '(LOWER(e.title) LIKE '.$this->_db->Quote('%'.$search.'%').' OR '
+			         . ' LOWER(obj.title) LIKE '.$this->_db->Quote('%'.$search.'%').')';
 		}
 		
 		switch ($this->getState('filter_state'))
