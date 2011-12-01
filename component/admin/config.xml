@@ -150,8 +150,6 @@
     </param>
     <param name="ical_max_items" type="text" default="100" label="COM_REDEVENT_SETTINGS_ICAL_MAX_ITEMS" description="COM_REDEVENT_SETTINGS_ICAL_MAX_ITEMS_DESC" />
     
-		<param type="respacer" default="COM_REDEVENT_SETTINGS_SEPARATOR_SEO"/>    
-    <param name="default_itemid" type="text" default="" label="COM_REDEVENT_SETTINGS_DEFAULT_ITEMID" description="COM_REDEVENT_SETTINGS_DEFAULT_ITEMID_DESC"/>
  	</params>
  	
  	<params group="COM_REDEVENT_pasteventssettings">
@@ -277,7 +275,9 @@
     <param name="attachments_types" type="text" size="100" default="txt,csv,htm,html,xml,css,doc,xls,rtf,ppt,pdf,swf,flv,avi,wmv,mov,jpg,jpeg,gif,png,zip,tar.gz" label="COM_REDEVENT_SETTINGS_ATTACHMENT_TYPES" description="COM_REDEVENT_SETTINGS_ATTACHMENT_TYPES_DESC" />
  	</params>
  	
- 	<params group="COM_REDEVENT_SETTINGS_sh404sef">
+ 	<params group="COM_REDEVENT_SETTINGS_SEO">
+    <param name="default_itemid" type="text" default="" label="COM_REDEVENT_SETTINGS_DEFAULT_ITEMID" description="COM_REDEVENT_SETTINGS_DEFAULT_ITEMID_DESC"/>
+		<param type="respacer" default="COM_REDEVENT_SETTINGS_SEO_SEPARATOR_sh404sef"/>    
     <param name="sh404sef_always_include_menu_title" type="radio" default="0" label="COM_REDEVENT_SH404SEF_ALWAYS_INSERT_MENU_TITLE" description="COM_REDEVENT_SH404SEF_ALWAYS_INSERT_MENU_TITLE_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>

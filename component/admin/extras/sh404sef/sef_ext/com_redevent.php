@@ -135,7 +135,7 @@ else {
   }
 	
 	if (!empty($Itemid))
-	  //shRemoveFromGETVarsList('Itemid');  
+	  shRemoveFromGETVarsList('Itemid');  
   
   /* Remove some default values */
 //  shRemoveFromGETVarsList('option');
