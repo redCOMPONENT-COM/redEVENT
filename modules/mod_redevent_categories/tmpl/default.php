@@ -19,9 +19,18 @@
  */
 defined('_JEXEC') or die('Restricted access');
 $i = 0;
+
+if ($params->get('mode', 0)):
 ?>
 <dl class="mod_re_cats_accordion">
 	<?php foreach ($list as $cat): ?>
 	<?php echo modRedEventCategoriesHelper::printDtCat($cat, 1, $params->get('show_count', 1), $currents); ?>
 	<?php endforeach; ?>
 </dl>
+<?php else : ?>
+<ul class="mod_re_cats">
+	<?php foreach ($list as $cat): ?>
+	<?php echo modRedEventCategoriesHelper::printFlatCat($cat, $params->get('show_count', 1), $currents); ?>
+	<?php endforeach; ?>
+</ul>
+<?php endif; ?>

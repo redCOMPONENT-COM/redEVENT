@@ -1,5 +1,28 @@
 @CHARSET "UTF-8";
 
+/* @group Flat */
+ul.mod_re_cats {
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.mod_re_cats li {
+   height: 20px;
+   padding: 5px 0 2px 5px;
+   cursor: pointer;
+   border-top: 1px solid lightgrey;
+}
+
+ul.mod_re_cats li:first-child {
+   border-top: none;
+}
+
+ul.mod_re_cats li.open {
+   background: url(images/array_right.png) no-repeat right; 
+}
+
+
 /* @group Accordion */
 
 dl.mod_re_cats_accordion

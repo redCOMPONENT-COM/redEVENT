@@ -170,12 +170,36 @@ class modRedEventCategoriesHelper
 					<?php echo JHTML::link($link, $txt); ?>
 				</dt>
 		    <dd class="sub_accordion accordion_content_<?php echo $depth; ?>">
-		    <?php if (count($category->children)): ?>
+		    <?php if (isset($category->children) && count($category->children)): ?>
 		    	<dl>
 		    	<?php foreach ($category->children as $c) echo self::printDtCat($c, $depth+1, $showcount, $currents); ?>
 		    	</dl>
 		    <?php endif; ?>
 		    </dd>
+		<?php
+		$html = ob_get_contents();
+		ob_end_clean();
+		return $html; 
+	}
+	
+	/**
+	 * print category with flat structur
+	 * 
+	 * @param object $category
+	 * @param boolean $showcount show events count
+	 * @param arrray $currents currently 'opened' category
+	 * @return string
+	 */
+	function printFlatCat($category, $showcount = 1, $currents)
+	{
+		$link = JRoute::_(RedeventHelperRoute::getCategoryeventsRoute($category->slug));
+		$txt  = $showcount ? $category->catname.' ('.$category->assignedevents.')' : $category->catname;
+		$opened_class = in_array($category->id, $currents) ? ' open' : '';
+		ob_start();
+		?>
+				<li class="<?php echo $opened_class; ?>">
+					<?php echo JHTML::link($link, $txt); ?>
+				</li>
 		<?php
 		$html = ob_get_contents();
 		ob_end_clean();
