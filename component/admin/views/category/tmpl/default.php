@@ -24,7 +24,17 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
+
+window.addEvent('domready', function(){
+	$('but-no-parent').addEvent('click', function(){
+		$('parent_id').getElements('option').each(function(el){
+			$(el).removeProperty('selected');
+		});
+	});
+	
+});
+
 function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
@@ -134,6 +144,9 @@ function submitbutton(pressbutton)
 						<?php
 						echo $this->lists['categories'];
 						?>
+					</td>
+					<td>
+					<button type="button" id="but-no-parent"><?php echo JText::_('COM_REDEVENT_CATEGORY_BUTTON_NO_PARENT_LABEL'); ?></button>
 					</td>
 				</tr>
 			</table>
