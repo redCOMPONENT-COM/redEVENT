@@ -393,6 +393,11 @@ class redEVENT_tags {
 		if (!$this->_xref) {
 			return false;
 		}
+						
+		if (!$this->_eventid) {
+			$session = $this->getEvent()->getData();
+			$this->_eventid = $session->eventid;
+		}
 		
 		$app = & JFactory::getApplication();
 		$this->getEventLinks();
