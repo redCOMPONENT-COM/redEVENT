@@ -1161,10 +1161,8 @@ class RedeventModelEditevent extends JModel
 		}		
 		$where[] = ' v.published = 1 ';
 		
-		if (count($where)) {
-			$query .= ' WHERE '. implode(' AND ', $where);
-		}
-		        
+		$query .= ' WHERE '. implode(' AND ', $where);
+				        
 		$query .= ' GROUP BY v.id ';
 		$query .= ' ORDER BY v.venue ASC ';
 		
@@ -1195,18 +1193,21 @@ class RedeventModelEditevent extends JModel
 		$where = array();
 		
 		$where[] = ' e.published = 1 ';
-		$where[] = ' gc.accesslevel > 0 ';
-		$where[] = ' (g.isdefault = 1 '
-		         . '      AND (g.edit_events > 1 '
-		         . '             OR (g.edit_events = 1 AND e.created_by = ' . $this->_db->Quote($user->get('id')) .'))) '
-		         . ' OR (gm.member = ' . $this->_db->Quote($user->get('id'))
-		         . '      AND (gm.manage_xrefs = 1 '
-		         . '           OR gm.manage_events > 1 OR (gm.manage_events = 1 AND e.created_by = gm.member))) ';
 		
-		if (count($where)) {
-			$query .= ' WHERE '. implode(' AND ', $where);
+		// filtering if not superuser
+		if (!UserAcl::superuser())
+		{
+			$where[] = ' gc.accesslevel > 0 ';
+			$where[] = ' (g.isdefault = 1 '
+			         . '      AND (g.edit_events > 1 '
+			         . '             OR (g.edit_events = 1 AND e.created_by = ' . $this->_db->Quote($user->get('id')) .'))) '
+			         . ' OR (gm.member = ' . $this->_db->Quote($user->get('id'))
+			         . '      AND (gm.manage_xrefs = 1 '
+			         . '           OR gm.manage_events > 1 OR (gm.manage_events = 1 AND e.created_by = gm.member))) ';
 		}
-		        
+		
+		$query .= ' WHERE '. implode(' AND ', $where);
+				        
 		$query .= ' GROUP BY e.id ';
 		$query .= ' ORDER BY e.title ASC ';
 		
