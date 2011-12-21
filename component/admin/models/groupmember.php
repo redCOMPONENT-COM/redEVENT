@@ -131,7 +131,7 @@ class RedEventModelGroupmember extends JModel
 				$query = 'SELECT g.id, g.name, gm.* '
 						. ' FROM #__redevent_groupmembers AS gm '
 						. ' INNER JOIN #__redevent_groups AS g on g.id = gm.group_id'
-						. ' WHERE gm.id = '.$this->_id
+						. ' WHERE gm.member = '.$this->_data->member
 						;
 				$this->_db->setQuery($query);
 				$this->_data->groups = $this->_db->loadObjectList();				
