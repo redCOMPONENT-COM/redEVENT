@@ -58,7 +58,15 @@
 			<option value="0">NO</option>
 			<option value="1">YES</option>
 		</param>		
-		<param name="ainfo" type="radio" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_ADDITIONAL_INFORMATION" description="MOD_REDEVENT_TEASER_SETTINGS_ADDITIONAL_INFORMATION_DESC">
+		<param name="showtime" type="radio" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_SHOW_TIME" description="MOD_REDEVENT_TEASER_SETTINGS_SHOW_TIME_DESC">
+			<option value="0">NO</option>
+			<option value="1">YES</option>
+		</param>
+		<param name="showvenue" type="radio" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_SHOW_VENUE" description="MOD_REDEVENT_TEASER_SETTINGS_SHOW_VENUE_DESC">
+			<option value="0">NO</option>
+			<option value="1">YES</option>
+		</param>
+		<param name="showcategory" type="radio" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_SHOW_CATEGORY" description="MOD_REDEVENT_TEASER_SETTINGS_SHOW_CATEGORY_DESC">
 			<option value="0">NO</option>
 			<option value="1">YES</option>
 		</param>

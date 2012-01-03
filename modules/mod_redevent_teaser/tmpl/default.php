@@ -71,15 +71,15 @@ if (!$items) {
 	  <div class="clear">
 	  </div> 
 	  <!-- additional information list -->
-	  <?php if ($params->get('ainfo') == 1): ?>
+	  <?php if ($params->get('showtime', 1) || $params->get('showvenue', 1)  || $params->get('showcategory', 1)): ?>
 	  <ul>
 	    <!-- Time -->
-	    <?php if (!empty ($item->time)) : ?>
+	    <?php if ($params->get('showtime', 1) && !empty ($item->time)) : ?>
 	    <li>
 	    <?php echo JText::_('MOD_REDEVENT_TEASER_AINFO_TIME').' '.$item->time; ?></li>
 	    <?php endif; ?> 
 	    <!-- Venue -->
-	    <?php if ($item->venue) : ?>
+	    <?php if ($params->get('showvenue', 1) && $item->venue) : ?>
 	    <li>
 	    <?php echo JText::_('MOD_REDEVENT_TEASER_AINFO_VENUE').' ';?>
 	    <a href="<?php echo $item->venuelink; ?>" title="<?php echo $item->venue; ?>"><?php echo $item->venue; ?></a>
@@ -87,10 +87,12 @@ if (!$items) {
 	    <?php echo $item->city; ?></li>
 	    <?php endif; ?> 
 	    <!-- Category -->
+	    <?php if ($params->get('showcategory', 1)) : ?>
 	    <li>
 	    <?php echo JText::_('MOD_REDEVENT_TEASER_AINFO_CATEGORY').' ';?>
 	    <?php echo implode(", ", $item->categorylink); ?>
 	    </li>
+	    <?php endif; ?> 
 	  </ul>
 	  <?php endif; ?>
 	  
