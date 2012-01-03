@@ -167,6 +167,7 @@ class RedEventModelArchive extends JModel
 		$query = 'SELECT a.*, cat.checked_out AS cchecked_out, cat.catname, u.email, u.name AS author, x.id AS xref'
 					. ' FROM #__redevent_events AS a'
 					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
+					. ' LEFT JOIN #__redevent_venues AS loc ON x.venueid = loc.id'
           . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
 					. ' LEFT JOIN #__redevent_categories AS cat ON cat.id = xcat.category_id'
 					. ' LEFT JOIN #__users AS u ON u.id = a.created_by'
