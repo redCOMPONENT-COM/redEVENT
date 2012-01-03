@@ -2003,7 +2003,7 @@ class redEVENT_tags {
 	}
 	
 	/**
-	 * returns gps utm position of the venue
+	 * returns gps position of the venue
 	 * @return string
 	 */
 	function _getTag_latlong()
