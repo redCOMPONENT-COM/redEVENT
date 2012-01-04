@@ -478,7 +478,6 @@ class RedEventModelEvent extends JModel
 		$db = JFactory::getDBO();
 		$q = "SELECT id, formname
 			FROM #__rwf_forms
-			WHERE published = 1
 			ORDER BY formname";
 		$db->setQuery($q);
 		if ($db->query()) return $db->loadObjectList('id');
