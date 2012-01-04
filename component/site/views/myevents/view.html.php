@@ -267,10 +267,10 @@ class RedeventViewMyevents extends JView
 		JHTML::_('behavior.tooltip');
     $document = & JFactory::getDocument();
 
-		$image = JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EDIT_XREF' ));
+		$image = JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_DELETE_XREF' ));
 
-		$overlib = JText::_('COM_REDEVENT_EDIT_XREF_TIP' );
-		$text = JText::_('COM_REDEVENT_EDIT_XREF' );
+		$overlib = JText::_('COM_REDEVENT_DELETE_XREF_TIP' );
+		$text = JText::_('COM_REDEVENT_DELETE_XREF' );
 
 		$link 	= 'index.php?option=com_redevent&task=deletexref&xref='.$id;
 		$output	= '<a href="'.JRoute::_($link).'" class="deletelink hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
