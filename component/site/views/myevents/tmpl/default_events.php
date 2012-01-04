@@ -168,7 +168,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				//title
 				?>
 				<td headers="el_title" align="left" valign="top">
-					<a href="<?php echo $detaillink ; ?>"> <?php echo $this->escape($row->title); ?></a>
+					<a href="<?php echo $detaillink ; ?>"> <?php echo $this->escape($row->full_title); ?></a>
 				</td>
 
 				<?php if ($this->params->get('showlocate', 1)) :	?>
