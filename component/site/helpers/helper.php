@@ -1316,5 +1316,73 @@ class redEVENTHelper {
 		$res = $db->loadResult();
 		return $res;
 	}
+	
+	
+	/**
+	 * Check registration expiration delay, and cleans up registrations accordingly
+	 *
+	 * @return boolean true on success
+	 */
+	function registrationexpiration()
+	{
+		$settings = JComponentHelper::getParams('com_redevent');
+		if (!$settings->get('registration_expiration', 0)) {
+			// nothing to do
+			return true;
+		}
+
+		$db = &JFactory::getDBO();
+
+		// get expired registrations
+		$query = ' SELECT r.id as attendee_id, r.xref, r.uregdate '
+		. ' FROM #__redevent_register AS r '
+		. ' INNER JOIN #__rwf_submitters AS s ON r.sid = s.id '
+		. ' LEFT JOIN #__rwf_payment AS p ON p.submit_key = s.submit_key AND p.paid > 0 '
+		. ' WHERE DATEDIFF(NOW(), r.paymentstart) >= '. $settings->get('registration_expiration', 0)
+		. '   AND s.price > 0 '
+		. '   AND r.confirmed = 1 AND r.cancelled = 0 AND r.waitinglist = 0 '
+		. '   AND p.id IS NULL '
+		. ' GROUP BY r.id '
+// 		. ' ORDER BY r.uregdate DESC '
+		;
+		$db->setQuery($query);
+		$res = $db->loadObjectList();
+
+		if (!$res || !count($res)) {
+			return true;
+		}
+
+		$xrefs = array();
+		$exp_ids = array();
+		foreach ($res as $exp)
+		{
+			$xrefs[] = $exp->xref;
+			$exp_ids[] = $exp->attendee_id;
+		}
+		$xrefs = array_unique($xrefs);
+
+		// change registrations as cancelled
+		$query = ' UPDATE #__redevent_register AS r '
+		. '   SET r.cancelled = 1 '
+		. ' WHERE r.id IN ('.implode(', ', $exp_ids).')'
+		;
+		$db->setQuery( $query );
+
+		if (!$db->query()) {
+			echo JText::_('COM_REDEVENT_CLEANUP_ERROR_CANCELLING_EXPIRED_REGISTRATION');
+			return false;
+		}
+
+		// then update waiting list of corresponding sessions
+		require_once(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models'.DS.'waitinglist.php');
+		foreach ($xrefs as $xref)
+		{
+			$model = JModel::getInstance('waitinglist', 'RedeventModel');
+			$model->setXrefId($xref);
+			$model->UpdateWaitingList();
+		}
+
+		return true;
+	}
 }
 ?>

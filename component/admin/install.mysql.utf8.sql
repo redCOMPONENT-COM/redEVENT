@@ -122,6 +122,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_register` (
 `waitinglist` tinyint(2) NOT NULL default '0',
 `confirmed` tinyint(2) NOT NULL default '0',
 `confirmdate` datetime NULL default NULL,
+`paymentstart` datetime NULL default NULL,
 `uregdate` varchar(50) NOT NULL default '',
 `uip` varchar(15) NOT NULL default '',
 `submit_key` varchar(45) NOT NULL,

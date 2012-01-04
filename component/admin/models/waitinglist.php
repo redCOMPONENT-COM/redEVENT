@@ -191,7 +191,7 @@ class RedEventModelWaitinglist extends JModel {
 		$this->move_off_ids = $db->loadResultArray();
 		
 		$q = "UPDATE #__redevent_register
-			SET waitinglist = 0
+			SET waitinglist = 0, paymentstart = NOW()
 			WHERE xref = ".$this->xref."
 			AND waitinglist = 1
 			AND confirmed = 1

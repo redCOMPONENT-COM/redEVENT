@@ -717,6 +717,23 @@ if (is_array($cols))
   		$res = false;
   	}
   }
+			    
+  if (!array_key_exists('paymentstart', $cols))
+  {
+  	$query = " ALTER IGNORE TABLE #__redevent_register "
+  	       . "   ADD COLUMN `paymentstart` datetime NULL default NULL, ";
+  	$db->setQuery($query);
+  	if (!$db->query()) {
+  		$res = false;
+  	}
+  	
+  	$query = " UPDATE #__redevent_register SET `paymentstart` = `confirmdate` ";
+  	$db->setQuery($query);
+  	if (!$db->query()) {
+  		$res = false;
+  	}
+  	
+  }
   
   /** add indexes **/
   if (empty($cols['xref']->Key)) {

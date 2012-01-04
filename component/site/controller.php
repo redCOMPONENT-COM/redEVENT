@@ -860,5 +860,10 @@ class RedeventController extends JController
 		echo ELoutput::ImgRelAbs($image);
 		exit;
 	}
+	
+	function registrationexpiration()
+	{
+		redEVENTHelper::registrationexpiration();
+	}
 }
 ?>
