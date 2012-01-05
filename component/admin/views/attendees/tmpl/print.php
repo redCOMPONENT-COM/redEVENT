@@ -77,7 +77,7 @@ $colspan = 10;
 				<td>
 				  <?php 
 				  //echo $row->confirmed == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES'); 
-				  if (!$row->confirmed) {
+				  if ($row->confirmed) {
             echo JText::_('COM_REDEVENT_Yes');
 				  }
           else {
@@ -88,7 +88,7 @@ $colspan = 10;
 				<td><?php // echo $row->waitinglist == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES'); ?>
           <?php 
           //echo $row->confirmed == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES'); 
-          if (!$row->waitinglist) {
+          if ($row->waitinglist) {
             echo JText::_('COM_REDEVENT_Yes');
           }
           else {
