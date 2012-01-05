@@ -1198,12 +1198,12 @@ class RedeventModelEditevent extends JModel
 		if (!UserAcl::superuser())
 		{
 			$where[] = ' gc.accesslevel > 0 ';
-			$where[] = ' (g.isdefault = 1 '
+			$where[] = ' ((g.isdefault = 1 '
 			         . '      AND (g.edit_events > 1 '
 			         . '             OR (g.edit_events = 1 AND e.created_by = ' . $this->_db->Quote($user->get('id')) .'))) '
 			         . ' OR (gm.member = ' . $this->_db->Quote($user->get('id'))
 			         . '      AND (gm.manage_xrefs = 1 '
-			         . '           OR gm.manage_events > 1 OR (gm.manage_events = 1 AND e.created_by = gm.member))) ';
+			         . '           OR gm.manage_events > 1 OR (gm.manage_events = 1 AND e.created_by = gm.member)))) ';
 		}
 		
 		$query .= ' WHERE '. implode(' AND ', $where);
