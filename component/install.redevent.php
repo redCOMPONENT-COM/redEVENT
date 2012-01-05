@@ -721,7 +721,7 @@ if (is_array($cols))
   if (!array_key_exists('paymentstart', $cols))
   {
   	$query = " ALTER IGNORE TABLE #__redevent_register "
-  	       . "   ADD COLUMN `paymentstart` datetime NULL default NULL, ";
+  	       . "   ADD COLUMN `paymentstart` datetime NULL default NULL ";
   	$db->setQuery($query);
   	if (!$db->query()) {
   		$res = false;
