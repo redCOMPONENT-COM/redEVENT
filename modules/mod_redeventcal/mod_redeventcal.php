@@ -99,15 +99,15 @@ JHTML::_('behavior.tooltip');
 	$today          = date( 'j',$time);
 	
 	if ($req_month == 0) {
-	  $req_month = $today_month;
+	  $req_month = $today_month + $Month_offset;
 	}
-	$offset_month = $req_month + $Month_offset;
+	
 	if ($req_year == 0) {
 	  $req_year = $today_year;
 	}
-	if ($offset_month >12) 
+	if ($req_month >12) 
 	{
-		$offset_month = $offset_month -12; // Roll over year end	
+		$req_month = $req_month -12; // Roll over year end	
 		$req_year = $req_year + 1;
 	}
 	
@@ -142,7 +142,7 @@ JHTML::_('behavior.tooltip');
   $next->setVar('re_mcal_year', $next_month_year);
   $next_link = $next->toString();
 	
-	$days = modredeventcalHelper::getdays($req_year, $offset_month, $params);
+	$days = modredeventcalHelper::getdays($req_year, $req_month, $params);
 	
 	require( JModuleHelper::getLayoutPath( 'mod_redeventcal' ) );	
 ?> 

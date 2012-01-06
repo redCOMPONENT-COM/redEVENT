@@ -21,7 +21,7 @@ echo "<div class='redeventcal' align='center'>";
 $calendar = '';
 $month_href = NULL;
 $year = $req_year;
-$month = $offset_month;
+$month = $req_month;
 	
 $uxtime_first_of_month = gmmktime(0, 0, 0, $month, 1, $year);
 #remember that mktime will automatically correct if invalid dates are entered
@@ -53,7 +53,7 @@ $year_length = $Year_length ? $year : substr($year, 2, 3);
 
 $the_month = ucfirst($Month_length ?  $month_name_short : $month_name_long);
 
-$title   = $the_month.'&nbsp;'.$year_length;    #note that some locales don't capitalize month and day names
+$title   = $the_month.' &nbsp;'.$year_length;    #note that some locales don't capitalize month and day names
 
 #Begin calendar. Uses a real <caption>. See http://diveintomark.org/archives/2002/07/03
 
