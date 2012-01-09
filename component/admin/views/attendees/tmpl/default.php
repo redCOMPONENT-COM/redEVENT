@@ -82,7 +82,7 @@ if ($this->event->maxattendees) {
 				<?php if ($this->params->get('attendees_table_show_uniqueid', 1)): ?>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_UNIQUE_ID', 'r.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php endif; ?>
-				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_USERNAME', 'u.username', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_REGISTERED_BY', 'u.username', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php if ($this->event->activate): ?>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ACTIVATED', 'r.confirmed', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php endif; ?>
