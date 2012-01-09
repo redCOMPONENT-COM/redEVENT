@@ -310,12 +310,22 @@
       <option value="1">Yes</option>
     </param> 	
     <param name="csv_export_strip_linebreaks" type="radio" default="0" label="COM_REDEVENT_SETTINGS_CSV_EXPORT_STRIP_LINEBREAKS_LABEL" description="COM_REDEVENT_SETTINGS_CSV_EXPORT_STRIP_LINEBREAKS_DESC">
-      <option value="0">No</option>"component/admin/languages/en-GB.com_redevent.ini"
+      <option value="0">No</option>
       <option value="1">Yes</option>
     </param> 
     <param name="cat_select_ordering" type="list" default="0" label="COM_REDEVENT_SETTINGS_CAT_SELECT_ORDERING_LABEL" description="COM_REDEVENT_SETTINGS_CAT_SELECT_ORDERING_DESC">
       <option value="0">COM_REDEVENT_SETTINGS_CAT_SELECT_ORDERING_PARENT</option>
       <option value="1">COM_REDEVENT_SETTINGS_CAT_SELECT_ORDERING_NAME</option>
+    </param> 
+    <param type="spacer"/>
+    <param type="spacer" default="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SPACER"/>
+    <param name="attendees_table_show_ip" type="radio" default="0" label="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SHOW_IP_LABEL" description="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SHOW_IP_DESC">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param> 
+    <param name="attendees_table_show_uniqueid" type="radio" default="1" label="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SHOW_UNIQUEID_LABEL" description="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SHOW_UNIQUEID_DESC">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
     </param> 
  	</params>
  	

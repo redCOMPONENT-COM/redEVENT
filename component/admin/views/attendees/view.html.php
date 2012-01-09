@@ -38,6 +38,7 @@ class RedEventViewAttendees extends JView {
 	{
 		$mainframe = &JFactory::getApplication();
 		$option = JRequest::getCmd('option');
+		$params = &JComponentHelper::getParams('com_redevent');
 
 		if($this->getLayout() == 'print') {
 			$this->_displayprint($tpl);
@@ -168,6 +169,7 @@ class RedEventViewAttendees extends JView {
 		$this->assignRef('rf_fields', $rf_fields);
 		$this->assignRef('form',      $form);
 		$this->assignRef('user',      $user);
+		$this->assignRef('params',    $params);
 		
 		parent::display($tpl);
 	}

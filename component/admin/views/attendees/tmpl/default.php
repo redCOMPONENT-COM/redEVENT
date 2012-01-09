@@ -23,12 +23,15 @@
  
 defined('_JEXEC') or die('Restricted access'); 
 JHTML::_('behavior.tooltip');
-$colspan = 7;
+$colspan = 8;
+if ($this->params->get('attendees_table_show_ip', 0)) {
+	$colspan += 1;
+}
+if ($this->params->get('attendees_table_show_uniqueid', 0)) {
+	$colspan += 1;
+}
 if ($this->event->activate) {
 	$colspan += 2;
-}
-if ($this->form->activatepayment) {
-	$colspan += 3;
 }
 if ($this->event->maxattendees) {
 	$colspan += 1;
@@ -73,8 +76,12 @@ if ($this->event->maxattendees) {
 				<?php if ($this->event->activate): ?>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ACTIVATIONDATE', 'r.confirmdate', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php endif; ?>
+				<?php if ($this->params->get('attendees_table_show_ip', 0)): ?>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_IP_ADDRESS', 'r.uip', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<?php endif; ?>
+				<?php if ($this->params->get('attendees_table_show_uniqueid', 1)): ?>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_UNIQUE_ID', 'r.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<?php endif; ?>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_USERNAME', 'u.username', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php if ($this->event->activate): ?>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ACTIVATED', 'r.confirmed', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
@@ -130,8 +137,12 @@ if ($this->event->maxattendees) {
 				<?php if ($this->event->activate): ?>
 				<td><?php echo ($row->confirmdate) ? JHTML::Date( $row->confirmdate, JText::_('DATE_FORMAT_LC2' ) ) : '-'; ?></td>
         <?php endif; ?>
+				<?php if ($this->params->get('attendees_table_show_ip', 0)): ?>
 				<td><?php echo $row->uip == 'DISABLED' ? JText::_('COM_REDEVENT_DISABLED' ) : $row->uip; ?></td>
+        <?php endif; ?>
+				<?php if ($this->params->get('attendees_table_show_uniqueid', 1)): ?>
 				<td><?php echo $row->course_code .'-'. $row->xref .'-'. $row->attendee_id; ?></td>
+        <?php endif; ?>
 				<td><?php echo $row->name; ?></td>
 				<?php if ($this->event->activate): ?>
 				<td>
