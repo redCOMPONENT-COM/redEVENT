@@ -41,10 +41,10 @@ $colspan = 10;
 			<tr>
 				<th width="5">#</th>
 				<th class="title"><?php echo JText::_('COM_REDEVENT_REGDATE'); ?></th>
-				<th class="title"><?php echo JText::_('COM_REDEVENT_CONFIRMDATE'); ?></th>
+				<th class="title"><?php echo JText::_('COM_REDEVENT_ACTIVATIONDATE'); ?></th>
 				<th class="title"><?php echo JText::_('COM_REDEVENT_UNIQUE_ID'); ?></th>
 				<th class="title"><?php echo JText::_('COM_REDEVENT_USERNAME'); ?></th>
-				<th class="title"><?php echo JText::_('COM_REDEVENT_CONFIRMED'); ?></th>
+				<th class="title"><?php echo JText::_('COM_REDEVENT_ACTIVATED'); ?></th>
 				<th class="title"><?php echo JText::_('COM_REDEVENT_WAITINGLIST'); ?></th>
 				<?php foreach ((array) $this->rf_fields as $f):?>
 					<?php $colspan++; ?>

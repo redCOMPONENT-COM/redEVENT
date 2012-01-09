@@ -51,7 +51,7 @@ class RedEventViewAttendees extends JView {
 		               JText::_('COM_REDEVENT_IP_ADDRESS'), 
 		               JText::_('COM_REDEVENT_UNIQUE_ID'), 
 		               JText::_('COM_REDEVENT_USERNAME'),
-		               JText::_('COM_REDEVENT_CONFIRMED'),
+		               JText::_('COM_REDEVENT_ACTIVATED'),
 		               JText::_('COM_REDEVENT_CANCELLED'),
 		               JText::_('COM_REDEVENT_WAITINGLIST'),
 		               JText::_('COM_REDEVENT_PRICE'),

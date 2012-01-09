@@ -361,8 +361,8 @@ class RedEventModelAttendees extends JModel
 	{
 		if (empty($this->_event))
 		{
-			$query = ' SELECT x.eventid, e.title, x.dates, e.redform_id , x.id AS xref, e.showfields, e.course_code  '
-			       . ' , v.venue '
+			$query = ' SELECT x.eventid, x.maxattendees, e.title, x.dates, e.redform_id , x.id AS xref, e.showfields, e.course_code  '
+			       . ' , e.activate, v.venue '
 			       . ' FROM #__redevent_events e '
 			       . ' LEFT JOIN #__redevent_event_venue_xref x	ON x.eventid = e.id '
 			       . ' LEFT JOIN #__redevent_venues AS v ON x.venueid = v.id '

@@ -73,7 +73,7 @@ defined('_JEXEC') or die('Restricted access');
 		</td>
 	</tr>
 	<tr>
-		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_('COM_REDEVENT_CONFIRMED' ); ?>:
+		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_('COM_REDEVENT_ACTIVATED' ); ?>:
 		</label></td>
 		<td>
 			<?php echo ($this->row->confirmed ? $this->row->confirmdate : ''); ?>

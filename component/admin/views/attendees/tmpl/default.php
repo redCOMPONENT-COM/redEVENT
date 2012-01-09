@@ -23,7 +23,16 @@
  
 defined('_JEXEC') or die('Restricted access'); 
 JHTML::_('behavior.tooltip');
-$colspan = 13;
+$colspan = 7;
+if ($this->event->activate) {
+	$colspan += 2;
+}
+if ($this->form->activatepayment) {
+	$colspan += 3;
+}
+if ($this->event->maxattendees) {
+	$colspan += 1;
+}
 ?>
 
 <form action="index.php" method="post" name="adminForm">
@@ -61,12 +70,18 @@ $colspan = 13;
 				<th width="5">#</th>
 				<th width="5"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_REGDATE', 'r.uregdate', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_CONFIRMDATE', 'r.confirmdate', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<?php if ($this->event->activate): ?>
+				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ACTIVATIONDATE', 'r.confirmdate', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<?php endif; ?>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_IP_ADDRESS', 'r.uip', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_UNIQUE_ID', 'r.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_USERNAME', 'u.username', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_CONFIRMED', 'r.confirmed', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<?php if ($this->event->activate): ?>
+				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ACTIVATED', 'r.confirmed', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<?php endif; ?>
+				<?php if ($this->event->maxattendees): ?>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_WAITINGLIST', 'r.waitinglist', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<?php endif; ?>
 				<?php foreach ((array) $this->rf_fields as $f):?>
 					<?php $colspan++; ?>
 					<th class="title"><?php echo JHTML::_('grid.sort',  $f->field_header, 'f.field_'.$f->id, $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
@@ -112,10 +127,13 @@ $colspan = 13;
 					</a></span>
 					<?php } ?>
 				</td>
+				<?php if ($this->event->activate): ?>
 				<td><?php echo ($row->confirmdate) ? JHTML::Date( $row->confirmdate, JText::_('DATE_FORMAT_LC2' ) ) : '-'; ?></td>
+        <?php endif; ?>
 				<td><?php echo $row->uip == 'DISABLED' ? JText::_('COM_REDEVENT_DISABLED' ) : $row->uip; ?></td>
 				<td><?php echo $row->course_code .'-'. $row->xref .'-'. $row->attendee_id; ?></td>
 				<td><?php echo $row->name; ?></td>
+				<?php if ($this->event->activate): ?>
 				<td>
 				  <?php 
 				  //echo $row->confirmed == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES'); 
@@ -127,6 +145,9 @@ $colspan = 13;
           }
 				  ?>
 				</td>
+        <?php endif; ?>
+        
+				<?php if ($this->event->maxattendees): ?>
 				<td><?php // echo $row->waitinglist == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES'); ?>
           <?php 
           //echo $row->confirmed == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES'); 
@@ -142,6 +163,7 @@ $colspan = 13;
           }
           ?>
         </td>
+        <?php endif; ?>
 				
         <?php foreach ((array) $this->rf_fields as $f):?>
 					<?php $fname = 'field_'.$f->id; ?>
