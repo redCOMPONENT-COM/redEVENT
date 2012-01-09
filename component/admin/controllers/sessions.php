@@ -272,8 +272,11 @@ class RedEventControllerSessions extends RedEventController
 		$model = $this->getModel('session');
 		foreach ($cid as $xref) 
 		{
-			if(!$model->removexref($xref)) {
-				echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
+			if(!$model->removexref($xref)) 
+			{
+				$msg = $model->getError();
+				$this->setRedirect('index.php?option=com_redevent&view=sessions', $msg, 'error');
+				return;
 			}
 		}
 
