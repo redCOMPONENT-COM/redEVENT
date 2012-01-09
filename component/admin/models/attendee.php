@@ -276,6 +276,7 @@ class RedEventModelAttendee extends JModel
 		{
 			$data['confirmed'] = 1;
 			$data['confirmdate'] = gmdate('Y-m-d H:i:s');
+			$data['paymentstart'] = gmdate('Y-m-d H:i:s');
 		}
   	
 		$row =& JTable::getInstance('redevent_register', '');

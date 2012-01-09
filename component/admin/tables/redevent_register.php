@@ -69,6 +69,11 @@ class RedEvent_register extends JTable
 	 * @var string (sql date)
 	 */
 	var $confirmdate = null;	
+	/**
+	 * paymentstart timestamp
+	 * @var string (sql date)
+	 */
+	var $paymentstart = null;	
 	
 	/** @var boolean cancelled registration */
 	var $cancelled = null;

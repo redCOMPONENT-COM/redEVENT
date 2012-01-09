@@ -188,6 +188,7 @@ class RedEventModelRegistration extends JModel
 		// first, changed status to confirmed
 		$query = ' UPDATE #__redevent_register '
 		       . ' SET confirmed = 1, confirmdate = ' .$this->_db->Quote(gmdate('Y-m-d H:i:s'))
+		       . '   , paymentstart = ' .$this->_db->Quote(gmdate('Y-m-d H:i:s'))
 		       . ' WHERE id = ' . $rid;
 		$this->_db->setQuery($query);
 		$res = $this->_db->query();
