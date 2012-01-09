@@ -201,8 +201,11 @@ class RedEventModelRegistration extends JModel
 		// now, handle waiting list
 		$session = &$this->getSessionDetails();
 		if ($session->maxattendees == 0) { // no waiting list
+			// send attending email
+			$this->_sendWaitinglistStatusEmail($rid, 0);
 			return true;
 		}
+		
 		$attendees = $this->_getAttendees();
 		if (count($attendees) > $session->maxattendees) 
 		{
