@@ -77,7 +77,7 @@
 		<tr>
 			<td class="key">
 				<label for="submission_type_external" class="hasTip" title="<?php echo JText::_('COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL').'::'.JText::_('COM_REDEVENT_TYPES_PARAMS_SCREEN_TIP'); ?>">
-					<?php echo JText::_('COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL' ); ?>:</label><br/><?php echo JText::_('COM_REDEVENT_TYPES_PARAMS_SCREEN_TIP'); ?>
+					<?php echo JText::_('COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL' ); ?>:</label><br/><?php echo JText::_('COM_REDEVENT_TYPES_PARAMS_WEBFORM_SCREEN_TIP'); ?>
 			</td>
 			<td>
         <?php echo $this->printTags('submission_type_webform'); ?>

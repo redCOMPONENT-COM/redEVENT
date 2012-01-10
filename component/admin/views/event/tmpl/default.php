@@ -120,7 +120,7 @@ echo $this->pane->startPane("det-pane");
 	
 	$title = JText::_('COM_REDEVENT_CONFIRMATION' );
 	echo $this->pane->startPanel( $title, 'confirmation' );
-	echo $this->loadTemplate('waitinglist');
+	echo $this->loadTemplate('confirmation');
 	echo $this->pane->endPanel();
 	
 	$title = JText::_('COM_REDEVENT_PAYMENT' );
