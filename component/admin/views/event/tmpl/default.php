@@ -103,6 +103,11 @@ echo $this->pane->startPane("det-pane");
 		echo $this->pane->endPanel();
 	}
 	
+	$title = JText::_('COM_REDEVENT_REGISTRATION' );
+	echo $this->pane->startPanel( $title, 'registra' );
+ 	echo $this->loadTemplate('registration');
+	echo $this->pane->endPanel();
+	
 	$title = JText::_('COM_REDEVENT_SUBMIT_TYPES' );
 	echo $this->pane->startPanel( $title, 'submit_types' );
 	echo $this->loadTemplate('submission_types');
@@ -121,11 +126,6 @@ echo $this->pane->startPane("det-pane");
 	$title = JText::_('COM_REDEVENT_CONFIRMATION' );
 	echo $this->pane->startPanel( $title, 'confirmation' );
 	echo $this->loadTemplate('confirmation');
-	echo $this->pane->endPanel();
-	
-	$title = JText::_('COM_REDEVENT_REGISTRATION' );
-	echo $this->pane->startPanel( $title, 'registra' );
- 	echo $this->loadTemplate('registration');
 	echo $this->pane->endPanel();
 	
 	$title = JText::_('COM_REDEVENT_PAYMENT' );

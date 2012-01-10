@@ -46,7 +46,10 @@ class RedEventControllerRegistration extends RedEventController
 		$this->registerTask( 'review', 'confirm' );		
 	}
 	
-		
+	/**
+	 * handle registration
+	 * 
+	 */
 	function register()
 	{
 		if (JRequest::getVar('cancel', '', 'post')) {
@@ -120,12 +123,18 @@ class RedEventControllerRegistration extends RedEventController
   	
   	if (!$isedit && !$review)
   	{
-	  	// redform save fine, now add the attendees
+	  	// redform saved fine, now add the attendees
+	  	
+  		$user = &JFactory::getUser();
+  		if (!$user->get('id') && $details->juser) {
+  			$user = $this->_createUser($result->posts[0]['sid']);
+  		}
+  		
 	  	$attendees = array();
 	  	$k = 0;
 	  	foreach ($result->posts as $rfpost)
 	  	{
-	  		if (!$res = $model->register($rfpost['sid'], $result->submit_key, $pricegroups[$k++])) {
+	  		if (!$res = $model->register($user, $rfpost['sid'], $result->submit_key, $pricegroups[$k++])) {
 	  			$msg = JText::_('COM_REDEVENT_REGISTRATION_REGISTRATION_FAILED');
 		  		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($details->did, $xref)), $msg, 'error');
 		  		return;
@@ -136,17 +145,14 @@ class RedEventControllerRegistration extends RedEventController
 			$dispatcher =& JDispatcher::getInstance();
 			$res = $dispatcher->trigger( 'onEventUserRegistered', array( $xref ) );
 									
-			$mail = $model->sendNotificationEmail($submit_key);
+			if ($details->notify) {
+				$mail = $model->sendNotificationEmail($submit_key);
+			}
 			$mail = $model->notifyManagers($submit_key);
   	}
   	
   	if (!$review)
-  	{  	  	
-			$this->addModelPath( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_redevent' . DS . 'models' );
-			$model_wait = $this->getModel('Waitinglist', 'RedEventModel');
-			$model_wait->setXrefId($xref);
-			$model_wait->UpdateWaitingList();
-			
+  	{  	  							
 			$cache = JFactory::getCache('com_redevent');
 			$cache->clean();
 			
@@ -423,5 +429,160 @@ class RedEventControllerRegistration extends RedEventController
 			$this->mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
 		}
 		return $this->mailer;
+	}
+	
+	
+	/**
+	* create user from posted data
+	*
+	* @param int $sid redform submission id
+	* @return object|false created user
+	*/
+	function _createUser($sid)
+	{		
+		require_once(JPATH_SITE.DS.'components'.DS.'com_user'.DS.'controller.php');
+		jimport('joomla.user.helper');
+		
+		$db		=& JFactory::getDBO();
+		$rfcore = new redformCore();
+		$answers = $rfcore->getSubmissionContactEmail(array($sid));
+		
+		$details = current($answers);
+		
+		if ($uid = $this->_getUserIdFromEmail($details['email'])) {
+			return JFactory::getUser($uid);
+		}
+		
+		if (!$details['username']) {
+			RedeventError::raiseWarning('', JText::_('COM_REDEVENT_NEED_MISSING_USERNAME_TO_CREATE_USER'));
+			return false;
+		}
+		if (!$details['email']) {
+			RedeventError::raiseWarning('', JText::_('COM_REDEVENT_NEED_MISSING_EMAIL_TO_CREATE_USER'));
+			return false;
+		}
+		
+		// check unicity
+		$username = $details['username'];
+		$i = 2;
+		while (true) 
+		{
+			$query = 'SELECT id FROM #__users WHERE username = ' . $db->Quote( $username );
+			$db->setQuery($query, 0, 1);
+			if ($db->loadResult()) {
+				// username exists, add a suffix
+				$username = $details['username'].'_'.$i++;
+			}
+			else {
+				break;
+			}
+		}
+		
+		// Get required system objects
+		$user 		= JFactory::getUser(0);
+		$authorize	= JFactory::getACL();
+		$password   = JUserHelper::genRandomPassword();
+		$newUsertype = 'Registered';
+		
+		// Set some initial user values
+		$user->set('id', 0);
+		$user->set('name', $details['fullname']);
+		$user->set('username', $username);
+		$user->set('email', $details['email']);
+		$user->set('usertype', $newUsertype);
+		$user->set('gid', $authorize->get_group_id( '', $newUsertype, 'ARO' ));
+		$user->set('password', md5($password));						
+		if (!$user->save())
+		{
+			RedeventError::raiseWarning('', JText::_($user->getError()));
+			return false;
+		}
+		
+		// send email using juser controller
+		$this->_sendUserCreatedMail($user, $password);
+		
+		return $user;
+	}
+	
+	/**
+	 * inspired from com_user controller function
+	 * 
+	 * @param object $user
+	 * @param string $password
+	 */	
+	function _sendUserCreatedMail(&$user, $password)
+	{
+		$lang = &JFactory::getLanguage();
+		$lang->load('com_user');
+		
+		$mainframe = &JFactory::getApplication();
+
+		$db		=& JFactory::getDBO();
+
+		$name 		= $user->get('name');
+		$email 		= $user->get('email');
+		$username 	= $user->get('username');
+
+		$usersConfig 	= &JComponentHelper::getParams( 'com_users' );
+		$sitename 		= $mainframe->getCfg( 'sitename' );
+		$mailfrom 		= $mainframe->getCfg( 'mailfrom' );
+		$fromname 		= $mainframe->getCfg( 'fromname' );
+		$siteURL		= JURI::base();
+
+		$subject 	= sprintf ( JText::_( 'Account details for' ), $name, $sitename);
+		$subject 	= html_entity_decode($subject, ENT_QUOTES);
+		
+		$message = JText::_('COM_REDEVENT_INFORM_USERNAME');
+		$message = str_replace('[fullname]', $name, $message);
+		$message = str_replace('[username]', $username, $message);
+		$message = str_replace('[password]', $password, $message);
+		
+		$message = html_entity_decode($message, ENT_QUOTES);
+
+		//get all super administrator
+		$query = 'SELECT name, email, sendEmail' .
+					' FROM #__users' .
+					' WHERE LOWER( usertype ) = "super administrator"';
+		$db->setQuery( $query );
+		$rows = $db->loadObjectList();
+
+		// Send email to user
+		if ( ! $mailfrom  || ! $fromname ) {
+			$fromname = $rows[0]->name;
+			$mailfrom = $rows[0]->email;
+		}
+
+		JUtility::sendMail($mailfrom, $fromname, $email, $subject, $message);
+
+		// Send notification to all administrators
+		$subject2 = sprintf ( JText::_( 'Account details for' ), $name, $sitename);
+		$subject2 = html_entity_decode($subject2, ENT_QUOTES);
+
+		// get superadministrators id
+		foreach ( $rows as $row )
+		{
+			if ($row->sendEmail)
+			{
+				$message2 = sprintf ( JText::_( 'SEND_MSG_ADMIN' ), $row->name, $sitename, $name, $email, $username);
+				$message2 = html_entity_decode($message2, ENT_QUOTES);
+				JUtility::sendMail($mailfrom, $fromname, $row->email, $subject2, $message2);
+			}
+		}
+	}
+	
+	/**
+	 * Returns userid if a user exists
+	 *
+	 * @param string The email to search on
+	 * @return int The user id or 0 if not found
+	 */
+	function _getUserIdFromEmail($email)
+	{
+		// Initialize some variables
+		$db = & JFactory::getDBO();
+
+		$query = 'SELECT id FROM #__users WHERE email = ' . $db->Quote( $email );
+		$db->setQuery($query, 0, 1);
+		return $db->loadResult();
 	}
 }

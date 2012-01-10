@@ -101,14 +101,14 @@ class RedEventModelRegistration extends JModel
 	/**
 	 * create a new attendee
 	 * 
+	 * @param object user performing the registration
 	 * @param int $sid associated redform submitter id
 	 * @param string $submit_key associated redform submit key
 	 * @param int $pricegroup_id
 	 * @return boolean|object attendee row or false if failed
 	 */
-	function register($sid, $submit_key, $pricegroup_id)
+	function register($user, $sid, $submit_key, $pricegroup_id)
 	{
-		$user    = &JFactory::getUser();
 		$config  = redEventHelper::config();
 		$session = &$this->getSessionDetails();
 		
@@ -143,7 +143,7 @@ class RedEventModelRegistration extends JModel
 		}
 		return $obj;
 	}
-	
+		
 	/**
 	 * to update a registration
 	 * 
@@ -459,7 +459,7 @@ class RedEventModelRegistration extends JModel
 			";
 		$db->setQuery($q);
 		$eventsettings = $db->loadObject();
-		
+				
 		/* Get a list of fields that are of type email/username/fullname */
 		$q = "SELECT f.id, f.field, f.fieldtype 
 			FROM #__rwf_fields f
@@ -506,145 +506,7 @@ class RedEventModelRegistration extends JModel
       
       $attendees[] = $attendee;
 		}
-						        
-		if ($user->id > 1) {
-			/* user is logged in thus contact person */
-		}
-		else 
-		{
-			/* Register the user in Joomla if chosen*/
-			if ($eventsettings->juser) 
-			{
-				// use info from first attendee to create a new user
-				$attendee = $attendees[0];
-				
-				if (strlen($attendee->getUsername()) > 0 && strlen($attendee->getEmail()) > 0) 
-				{
-					/* Check if the user already exists in Joomla with this e-mail address */
-					$query = "SELECT id
-							FROM #__users
-							WHERE email = ".$db->Quote($attendee->getEmail())."
-							LIMIT 1";
-					$db->setQuery($query);
-					$found_id = $db->loadResult();
-					
-					if ($found_id) {
-						$uid = $found_id;
-					}
-					else 
-					{
-						/* Load the User helper */
-						jimport('joomla.user.helper');
-						
-            if (!$attendee->getFullname()) {
-            	$attendee->setFullname($attendee->getUsername());
-            }
-						
-						// Get required system objects
-						$user 		= JFactory::getUser(0);
-						$pathway 	= $mainframe->getPathway();
-						$config		= JFactory::getConfig();
-						$authorize	= JFactory::getACL();
-						$document   = JFactory::getDocument();
-						$password   = JUserHelper::genRandomPassword();
-						$usersConfig = JComponentHelper::getParams( 'com_users' );
-						$newUsertype = 'Registered';
-						
-						// Set some initial user values
-						$user->set('id', 0);
-            $user->set('name', $attendee->getFullname());
-            $user->set('username', $attendee->getUsername());
-            $user->set('email', $attendee->getEmail());
-						$user->set('usertype', $newUsertype);
-						$user->set('gid', $authorize->get_group_id( '', $newUsertype, 'ARO' ));
-						$user->set('password', md5($password));
-						
-						// TODO: Should this be JDate?
-						$user->set('registerDate', date('Y-m-d H:i:s'));
-						
-						// If there was an error with registration, set the message and display form
-						if (!$user->save())
-						{
-							RedeventError::raiseWarning('', JText::_($user->getError()));
-							/* We cannot save the user, need to delete already stored user data */
-							
-							/* Delete the redFORM entry first */
-							/* Submitter records */
-							$q = "DELETE FROM #__rwf_submitters
-								WHERE submit_key = ".$db->Quote($submit_key);
-							$db->setQuery($q);
-							$db->query();
-							
-							/* All cleaned up, return false */
-							return false;
-						}
-						else
-						{
-							/** update registration with user id **/
-							$q = ' UPDATE #__redevent_register '
-							   . ' SET uid = '. $db->Quote($user->id)
-							   . ' WHERE submit_key = '.$db->Quote($submit_key);
-							$db->setQuery($q);
-							$db->query();							
-							
-							// send mail with account details
-							/* Load the mailer */
-				      $this->Mailer();
-				    
-				      /* Add the email address */
-				      $this->mailer->AddAddress($user->email, $user->name);
-
-				      /* Get the activation link */
-				      $activatelink = '<a href="'.JRoute::_(JURI::root().'index.php?option=com_redevent&controller=registration&task=activate&confirmid='.str_replace(".", "_", $registration->uip).'x'.$registration->xref.'x'.$user->id.'x'.$registration->id.'x'.$submit_key).'">'.JText::_('COM_REDEVENT_Activate').'</a>';
-				      /* Mail attendee */
-				      $htmlmsg = '<html><head><title></title></title></head><body>';
-				      $htmlmsg .= $eventsettings->notify_body;
-
-				      $htmlmsg .= '<br /><br />';
-				      $reginfo = nl2br(JText::_('COM_REDEVENT_INFORM_USERNAME'));
-				      $reginfo = str_replace('[fullname]', $user->name, $reginfo);
-				      $reginfo = str_replace('[username]', $user->username, $reginfo);
-				      $reginfo = str_replace('[password]', $password, $reginfo);
-				      $htmlmsg .= $reginfo;
-
-				      $htmlmsg .= '</body></html>';
-				      
-				      $tags = new redEVENT_tags();
-				      $tags->setXref($registration->xref);
-				      $tags->setSubmitkey($submit_key);
-				      
-				      $htmlmsg = $tags->ReplaceTags($htmlmsg);
-				      $htmlmsg = str_replace('[activatelink]', $activatelink, $htmlmsg);
-				      $htmlmsg = str_replace('[fullname]', $user->name, $htmlmsg);
-				      
-							// convert urls
-							$htmlmsg = ELOutput::ImgRelAbs($htmlmsg);
-							
-				      $this->mailer->setBody($htmlmsg);
-				      $this->mailer->setSubject($tags->ReplaceTags($eventsettings->notify_subject));
-
-				      /* Count number of messages sent */
-				      if (!$this->mailer->Send()) {
-				      	RedeventHelperLog::simpleLog('Error sending notify message to submitter');
-				      }
-				      /* Clear the mail details */
-				      $this->mailer->ClearAddresses();
-        
-							/* Check if the user needs to be added to Community Builder */
-							if ($elsettings->comunsolution == 1) 
-							{
-								$q = "INSERT INTO #__comprofiler (id, user_id, avatarapproved, approved, confirmed, banned)
-									VALUES (".$uid.", ".$uid.", 1, 1, 1, 0)";
-								$db->setQuery($q);
-								if (!$db->query()) RedeventError::raiseWarning('', JText::_($db->getErrorMsg()));
-							}
-  						return $registration;
-						}
-					}
-				}
-			}
-		}
-		
+						 		
 		/**
 		 * Send a submission mail to the attendee and/or contact person 
 		 * This will only work if the contact person has an e-mail address
