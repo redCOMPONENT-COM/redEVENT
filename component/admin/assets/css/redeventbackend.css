@@ -234,16 +234,21 @@ p.re-spacer {
 	margin: 0;
 }
 
-div.type-params table td.key, table.admintable td.paramlist_key {
+table.editevent {
+	width: 95%;
+}
+
+table.editevent td.key, table.editevent td.paramlist_key {
     background-color: #F6F6F6;
     border-bottom: 1px solid #E9E9E9;
     border-right: 1px solid #E9E9E9;
     color: #666666;
     text-align: right;
-    width: 140px;
+    width: 170px;
     vertical-align:top;
+    padding: 3px;
 }
 
-div.type-params table td.key label, table.admintable td.paramlist_key label {
+table.editevent td.key label, table.editevent td.paramlist_key label {
     font-weight:bold;
 }

@@ -113,19 +113,14 @@ echo $this->pane->startPane("det-pane");
 	echo $this->loadTemplate('submission_types');
 	echo $this->pane->endPanel();
 		
-	$title = JText::_('COM_REDEVENT_SUBMISSION' );
-	echo $this->pane->startPanel( $title, 'submission' );
-	echo $this->loadTemplate('submission');
+	$title = JText::_('COM_REDEVENT_ACTIVATION' );
+	echo $this->pane->startPanel( $title, 'activation' );
+	echo $this->loadTemplate('activation');
 	echo $this->pane->endPanel();
 	
-	$title = JText::_('COM_REDEVENT_WAITINGLIST' );
-	echo $this->pane->startPanel( $title, 'waitinglist' );
-	echo $this->loadTemplate('waitinglist');
-	echo $this->pane->endPanel();
-
 	$title = JText::_('COM_REDEVENT_CONFIRMATION' );
 	echo $this->pane->startPanel( $title, 'confirmation' );
-	echo $this->loadTemplate('confirmation');
+	echo $this->loadTemplate('waitinglist');
 	echo $this->pane->endPanel();
 	
 	$title = JText::_('COM_REDEVENT_PAYMENT' );

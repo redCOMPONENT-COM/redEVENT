@@ -56,6 +56,9 @@
 			<label for="notify_confirm_subject">
 				<?php echo JText::_('COM_REDEVENT_NOTIFY_CONFIRM_SUBJECT' ).':'; ?>
 			</label>
+			<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_NOTIFY_CONFIRM_SUBJECT' ); ?>::<?php echo JText::_('COM_REDEVENT_NOTIFY_CONFIRM_SUBJECT_NOTE'); ?>">
+				<?php echo $infoimage; ?>
+			</span>
 		</td>
 		<td>
 			<input class="inputbox" name="notify_confirm_subject" value="<?php echo $this->row->notify_confirm_subject; ?>" size="45" id="notify_confirm_subject" />

@@ -7,20 +7,20 @@
 	<?php if (in_array('external', $this->submission_types)) echo ' checked="checked"'; ?>
 	/><?php echo JText::_('COM_REDEVENT_EXTERNAL'); ?>
 	
-			<?php 
-				$display = 'none';
-				if (in_array('external', $this->submission_types)) {
-					echo ' checked="checked"';
-					$display = 'block';
-				}
-			?>
+	<?php 
+		$display = 'none';
+		if (in_array('external', $this->submission_types)) {
+			echo ' checked="checked"';
+			$display = 'block';
+		}
+	?>
 			
 	<fieldset id="external-params" style="display: <?php echo $display;?>">
 	<legend><?php echo JText::_('COM_REDEVENT_EXTERNAL'); ?></legend>
 	
-	<table>
+	<table class="editevent">
 		<tr>
-			<td width="100" align="right" class="key">
+			<td class="key">
 				<label for="submission_type_external" class="hasTip" title="<?php echo JText::_('COM_REDEVENT_EXTERNAL_URL_LABEL').'::'.JText::_('COM_REDEVENT_EXTERNAL_URL_TIP'); ?>">
 					<?php echo JText::_('COM_REDEVENT_EXTERNAL_URL_LABEL' ); ?>:</label>
 			</td>
@@ -33,21 +33,21 @@
 </div>
 
 <div class="type-params">
-			<input type="checkbox" class="reg-type" id="submission_type_phone_check" name="submission_types[]" value="phone"
-			<?php 
-				$display = 'none';
-				if (in_array('phone', $this->submission_types)) {
-					echo ' checked="checked"';
-					$display = 'block';
-				}
-			?>
-			/><label for="submission_type_phone"><?php echo JText::_('COM_REDEVENT_PHONE'); ?></label>
+	<input type="checkbox" class="reg-type" id="submission_type_phone_check" name="submission_types[]" value="phone"
+	<?php 
+		$display = 'none';
+		if (in_array('phone', $this->submission_types)) {
+			echo ' checked="checked"';
+			$display = 'block';
+		}
+	?>
+	/><label for="submission_type_phone"><?php echo JText::_('COM_REDEVENT_PHONE'); ?></label>
 	<fieldset id="phone-params" style="display: <?php echo $display;?>">
 	<legend><?php echo JText::_('COM_REDEVENT_PHONE'); ?></legend>
 	
-	<table>
+	<table class="editevent">
 		<tr>
-			<td width="100" align="right" class="key">
+			<td class="key">
 				<label for="submission_type_external" class="hasTip" title="<?php echo JText::_('COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL').'::'.JText::_('COM_REDEVENT_TYPES_PARAMS_SCREEN_TIP'); ?>">
 					<?php echo JText::_('COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL' ); ?>:</label><br/><?php echo JText::_('COM_REDEVENT_TYPES_PARAMS_SCREEN_TIP'); ?>
 			</td>
@@ -61,21 +61,21 @@
 </div>
 
 <div class="type-params">
-			<input type="checkbox" class="reg-type" id="submission_type_webform_check" name="submission_types[]" value="webform"
-			<?php 
-				$display = 'none';
-				if (in_array('webform', $this->submission_types)) {
-					echo ' checked="checked"';
-					$display = 'block';
-				}
-			?>
-			/><label for="submission_type_webform"><?php echo JText::_('COM_REDEVENT_WEBFORM'); ?></label>
+	<input type="checkbox" class="reg-type" id="submission_type_webform_check" name="submission_types[]" value="webform"
+	<?php 
+		$display = 'none';
+		if (in_array('webform', $this->submission_types)) {
+			echo ' checked="checked"';
+			$display = 'block';
+		}
+	?>
+	/><label for="submission_type_webform"><?php echo JText::_('COM_REDEVENT_WEBFORM'); ?></label>
 			
 	<fieldset id="webform-params" style="display: <?php echo $display;?>">
 	<legend><?php echo JText::_('COM_REDEVENT_WEBFORM'); ?></legend>	
-	<table>
+	<table class="editevent">
 		<tr>
-			<td width="100" align="right" class="key">
+			<td class="key">
 				<label for="submission_type_external" class="hasTip" title="<?php echo JText::_('COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL').'::'.JText::_('COM_REDEVENT_TYPES_PARAMS_SCREEN_TIP'); ?>">
 					<?php echo JText::_('COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL' ); ?>:</label><br/><?php echo JText::_('COM_REDEVENT_TYPES_PARAMS_SCREEN_TIP'); ?>
 			</td>
@@ -83,27 +83,48 @@
         <?php echo $this->printTags('submission_type_webform'); ?>
 				<?php echo $this->editor->display( 'submission_type_webform',  $this->row->submission_type_webform, '100%;', '350', '75', '20', array('pagebreak', 'readmore', 'image') ) ; ?>
 			</td>
+		</tr>			
+		<tr>
+			<td class="key">
+				<label for="submission_type_external" class="hasTip" title="<?php echo JText::_('COM_REDEVENT_REVIEW_SCREEN').'::'.JText::_('COM_REDEVENT_REVIEW_SCREEN_INFO'); ?>">
+					<?php echo JText::_('COM_REDEVENT_REVIEW_SCREEN' ); ?>:</label><br/><?php echo JText::_('COM_REDEVENT_REVIEW_SCREEN_INFO'); ?>
+			</td>
+			<td>
+        <?php echo $this->printTags('review_message'); ?>
+				<?php echo $this->editor->display( 'review_message',  $this->row->review_message, '100%;', '350', '75', '20', array('pagebreak', 'readmore', 'image') ) ; ?>
+			</td>
 		</tr>
+		<tr>
+			<td class="key">
+				<label for="submission_type_external" class="hasTip" title="<?php echo JText::_('COM_REDEVENT_CONFIRMATION').'::'.JText::_('COM_REDEVENT_CONFIRMATION_INFO'); ?>">
+					<?php echo JText::_('COM_REDEVENT_ENTER_CONFIRMATION_MESSAGE' ); ?>:</label><br/><?php echo JText::_('COM_REDEVENT_CONFIRMATION_INFO'); ?>
+			</td>
+			<td>
+				<?php echo $this->printTags('confirmation_message'); ?>
+				<?php echo $this->editor->display( 'confirmation_message',  $this->row->confirmation_message, '100%;', '350', '75', '20', array('pagebreak', 'readmore', 'image') ) ; ?>
+			</td>
+		</tr>
+		
 	</table>
 	</fieldset>
 </div>
 
 <div class="type-params">
-			<input type="checkbox" class="reg-type" id="submission_type_email_check" name="submission_types[]" value="email"
-			<?php 
-				$display = 'none';
-				if (in_array('email', $this->submission_types)) {
-					echo ' checked="checked"';
-					$display = 'block';
-				}
-			?>
-			/><label for="submission_type_email"><?php echo JText::_('COM_REDEVENT_EMAIL'); ?></label>
+	<input type="checkbox" class="reg-type" id="submission_type_email_check" name="submission_types[]" value="email"
+	<?php 
+		$display = 'none';
+		if (in_array('email', $this->submission_types)) {
+			echo ' checked="checked"';
+			$display = 'block';
+		}
+	?>
+	/><label for="submission_type_email"><?php echo JText::_('COM_REDEVENT_EMAIL'); ?></label>
 			
 	<fieldset id="email-params" style="display: <?php echo $display;?>">
 	<legend><?php echo JText::_('COM_REDEVENT_EMAIL'); ?></legend>	
-	<table>
+	<table class="editevent">
 		<tr>
-			<td width="100" align="right" class="key">
+			<td class="key">
 				<label for="submission_type_external" class="hasTip" title="<?php echo JText::_('COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL').'::'.JText::_('COM_REDEVENT_TYPES_PARAMS_SCREEN_TIP'); ?>">
 					<?php echo JText::_('COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL' ); ?>:</label><br/><?php echo JText::_('COM_REDEVENT_SUBMISSION_TYPE_EMAIL_TIP'); ?>
 			</td>
@@ -163,21 +184,21 @@
 </div>
 
 <div class="type-params">
-			<input type="checkbox" class="reg-type" id="submission_type_formaloffer_check" name="submission_types[]" value="formaloffer"
-			<?php 
-				$display = 'none';
-				if (in_array('formaloffer', $this->submission_types)) {
-					echo ' checked="checked"';
-					$display = 'block';
-				}
-			?>
-			/><label for="submission_type_formal_offer"><?php echo JText::_('COM_REDEVENT_FORMALOFFER'); ?></label>
+	<input type="checkbox" class="reg-type" id="submission_type_formaloffer_check" name="submission_types[]" value="formaloffer"
+	<?php 
+		$display = 'none';
+		if (in_array('formaloffer', $this->submission_types)) {
+			echo ' checked="checked"';
+			$display = 'block';
+		}
+	?>
+	/><label for="submission_type_formal_offer"><?php echo JText::_('COM_REDEVENT_FORMALOFFER'); ?></label>
 			
 	<fieldset id="formaloffer-params" style="display: <?php echo $display;?>">
 	<legend><?php echo JText::_('COM_REDEVENT_FORMALOFFER'); ?></legend>	
-	<table>
+	<table class="editevent">
 		<tr>
-			<td width="100" align="right" class="key">
+			<td class="key">
 				<label for="submission_type_external" class="hasTip" title="<?php echo JText::_('COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL').'::'.JText::_('COM_REDEVENT_TYPES_PARAMS_SCREEN_TIP'); ?>">
 					<?php echo JText::_('COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL' ); ?>:</label><br/><?php echo JText::_('COM_REDEVENT_SUBMISSION_TYPE_FORMALOFFER_TIP'); ?>
 			</td>
@@ -185,29 +206,49 @@
         <?php echo $this->printTags('submission_type_formal_offer'); ?>
 				<?php echo $this->editor->display( 'submission_type_formal_offer',  $this->row->submission_type_formal_offer, '100%;', '350', '75', '20', array('pagebreak', 'readmore', 'image') ) ; ?>
 			</td>
+		</tr>		
+		<tr>
+			<td class="key">
+				<label for="submission_type_formal_offer_subject">
+					<?php echo JText::_('COM_REDEVENT_FORMAL_OFFER_SUBJECT' ).':'; ?>
+				</label>
+			</td>
+			<td>
+				<input class="inputbox" name="submission_type_formal_offer_subject" value="<?php echo $this->row->submission_type_formal_offer_subject; ?>" size="50" maxlength="255" id="formal_offer_subject" />
+			</td>
 		</tr>
-		
-	<tr>
-		<td class="key">
-			<label for="submission_type_formal_offer_subject">
-				<?php echo JText::_('COM_REDEVENT_FORMAL_OFFER_SUBJECT' ).':'; ?>
-			</label>
-		</td>
-		<td>
-			<input class="inputbox" name="submission_type_formal_offer_subject" value="<?php echo $this->row->submission_type_formal_offer_subject; ?>" size="50" maxlength="255" id="formal_offer_subject" />
-		</td>
-	</tr>
-	<tr>
-		<td class="key">
-			<label for="submission_type_formal_offer_body">
-				<?php echo JText::_('COM_REDEVENT_FORMAL_OFFER_BODY' ).':'; ?>
-			</label>
-		</td>
-		<td>
-			<?php echo $this->printTags('submission_type_formal_offer_body'); ?>
-			<?php echo $this->editor->display( 'submission_type_formal_offer_body',  $this->row->submission_type_formal_offer_body, '100%;', '350', '75', '20', array('pagebreak', 'readmore') ) ; ?>
-		</td>	
-	</tr>
+		<tr>
+			<td class="key">
+				<label for="submission_type_formal_offer_body">
+					<?php echo JText::_('COM_REDEVENT_FORMAL_OFFER_BODY' ).':'; ?>
+				</label>
+			</td>
+			<td>
+				<?php echo $this->printTags('submission_type_formal_offer_body'); ?>
+				<?php echo $this->editor->display( 'submission_type_formal_offer_body',  $this->row->submission_type_formal_offer_body, '100%;', '350', '75', '20', array('pagebreak', 'readmore') ) ; ?>
+			</td>	
+		</tr>
+		<tr>
+			<td class="key">
+				<label for="show_submission_type_webform_formal_offer">
+					<?php echo JText::_('COM_REDEVENT_SHOW_SUBMIT_AND_PRINT_BUTTON' ).':'; ?>
+				</label>
+			</td>
+			<td>
+				<?php echo JHTML::_('select.booleanlist', 'show_submission_type_webform_formal_offer', '', $this->row->show_submission_type_webform_formal_offer); ?>
+			</td>	
+		</tr>
+		<tr>
+			<td class="key">
+				<label for="submission_type_webform_formal_offer">
+					<?php echo JText::_('COM_REDEVENT_WEBFORM_PRINT_FORMAL_OFFER' ).':'; ?>
+				</label>
+			</td>
+			<td>
+	        <?php echo $this->printTags('submission_type_webform_input'); ?>
+					<?php echo $this->editor->display( 'submission_type_webform_formal_offer',  $this->row->submission_type_webform_formal_offer, '100%;', '350', '75', '20', array('pagebreak', 'readmore', 'image') ) ; ?>
+			</td>	
+		</tr>	
 	</table>
 	</fieldset>
 </div>
