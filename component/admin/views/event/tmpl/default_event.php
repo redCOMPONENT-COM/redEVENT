@@ -65,6 +65,7 @@
 					<?php echo redEVENTHelper::getUserSelector('created_by',$this->row->created_by); ?>
 				</td>
 			</tr>
+			
 		</table>
 	</td>
 	<td>
@@ -120,4 +121,33 @@
 		?>
 	</td>
 </tr>
+</table>
+
+<?php $k = 0; ?>
+<table class="adminform">
+	<tr class="row<?php echo $k = 1 - $k; ?>">
+		<td class="redevent_settings">
+			<label for="image">
+				<?php echo JText::_('COM_REDEVENT_CHOOSE_IMAGE' ).':'; ?>
+			</label>
+		</td>
+		<td>
+			<?php echo $this->imageselect; ?>
+		</td>
+	</tr>
+	<tr class="row<?php echo $k = 1 - $k; ?>">
+		<td>&nbsp;</td>
+		<td>
+			<img src="../images/M_images/blank.png" name="imagelib" id="imagelib" width="80" height="80" border="2" alt="Preview" />
+			<script language="javascript" type="text/javascript">
+			if ($('a_imagename').value !=''){
+				var imname = $('a_imagename').value;
+				jsimg='../images/redevent/events/' + imname;
+				$('imagelib').src= jsimg;
+			}
+			</script>
+
+			<br />
+		</td>
+	</tr>
 </table>

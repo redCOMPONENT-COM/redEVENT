@@ -233,3 +233,17 @@ p.re-spacer {
 	padding: 5px 0;
 	margin: 0;
 }
+
+div.type-params table td.key, table.admintable td.paramlist_key {
+    background-color: #F6F6F6;
+    border-bottom: 1px solid #E9E9E9;
+    border-right: 1px solid #E9E9E9;
+    color: #666666;
+    text-align: right;
+    width: 140px;
+    vertical-align:top;
+}
+
+div.type-params table td.key label, table.admintable td.paramlist_key label {
+    font-weight:bold;
+}

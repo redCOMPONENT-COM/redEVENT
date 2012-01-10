@@ -107,20 +107,7 @@ echo $this->pane->startPane("det-pane");
 	echo $this->pane->startPanel( $title, 'submit_types' );
 	echo $this->loadTemplate('submission_types');
 	echo $this->pane->endPanel();
-	
-	$title = JText::_('COM_REDEVENT_EMAILS' );
-	echo $this->pane->startPanel( $title, 'emails' );
-	echo $this->loadTemplate('emails');
-	echo $this->pane->endPanel();
-	
-	$title = JText::_('COM_REDEVENT_FORM' );
-	echo $this->pane->startPanel( $title, 'form' );
-	if ($this->redform_install) {
-		echo $this->loadTemplate('form');
-	}
-	else echo JText::_('COM_REDEVENT_REDFORM_NOT_INSTALLED');
-	echo $this->pane->endPanel();
-	
+		
 	$title = JText::_('COM_REDEVENT_SUBMISSION' );
 	echo $this->pane->startPanel( $title, 'submission' );
 	echo $this->loadTemplate('submission');
@@ -145,41 +132,7 @@ echo $this->pane->startPane("det-pane");
 	echo $this->pane->startPanel( $title, 'payment' );
  	echo $this->loadTemplate('payment');
 	echo $this->pane->endPanel();
-	
-	$title = JText::_('COM_REDEVENT_IMAGE' );
-	echo $this->pane->startPanel( $title, 'image' );
-	$k = 0;
-	?>
-	<table class="adminform">
-		<tr class="row<?php echo $k = 1 - $k; ?>">
-			<td class="redevent_settings">
-				<label for="image">
-					<?php echo JText::_('COM_REDEVENT_CHOOSE_IMAGE' ).':'; ?>
-				</label>
-			</td>
-			<td>
-				<?php echo $this->imageselect; ?>
-			</td>
-		</tr>
-		<tr class="row<?php echo $k = 1 - $k; ?>">
-			<td>&nbsp;</td>
-			<td>
-				<img src="../images/M_images/blank.png" name="imagelib" id="imagelib" width="80" height="80" border="2" alt="Preview" />
-				<script language="javascript" type="text/javascript">
-				if ($('a_imagename').value !=''){
-					var imname = $('a_imagename').value;
-					jsimg='../images/redevent/events/' + imname;
-					$('imagelib').src= jsimg;
-				}
-				</script>
-
-				<br />
-			</td>
-		</tr>
-	</table>
-	<?php
-	echo $this->pane->endPanel();
-	
+		
   $title = JText::_('COM_REDEVENT_CUSTOM_FIELDS' );
   echo $this->pane->startPanel( $title, 'customfields' );
   echo $this->loadTemplate('customfields');
