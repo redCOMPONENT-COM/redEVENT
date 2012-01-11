@@ -1,9 +1,9 @@
 <?php $infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-hint.png', JText::_('COM_REDEVENT_NOTES' ) ); ?>
 
 <?php $k = 0; ?>
-<table class="adminform">
+<table class="editevent">
 	<tr class="row<?php echo $k = 1 - $k; ?>">
-		<td class="redevent_settings">
+		<td class="key">
 			<label for="registra">
 				<?php echo JText::_('COM_REDEVENT_ENABLE_REGISTRATION' ).':'; ?>
 			</label>
@@ -16,19 +16,7 @@
 		</td>
 	</tr>
 	<tr class="row<?php echo $k = 1 - $k; ?>">
-		<td>
-			<label for="registra">
-				<?php echo JText::_('COM_REDEVENT_CREATE_JOOMLA_USER' ).':'; ?>
-			</label>
-		</td>
-		<td>
-			<?php
-			echo JHTML::_('select.booleanlist', 'juser', '', $this->row->juser );
-			?>
-		</td>
-	</tr>
-	<tr class="row<?php echo $k = 1 - $k; ?>">
-		<td>
+		<td class="key">
 			<label for="unregistra">
 				<?php echo JText::_('COM_REDEVENT_ENABLE_UNREGISTRATION' ).':'; ?>
 			</label>
@@ -41,15 +29,14 @@
 		</td>
 	</tr>
 	<tr class="row<?php echo $k = 1 - $k; ?>">
-		<td>
-			<label for="show_names">
-				<?php echo JText::_('COM_REDEVENT_SHOW_REGISTERED_FRONTEND' ).':'; ?>
+		<td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_CREATE_JOOMLA_USER' ).'::'.JText::_('COM_REDEVENT_CREATE_JOOMLA_USER_TIP' ); ?>">
+			<label for="registra">
+				<?php echo JText::_('COM_REDEVENT_CREATE_JOOMLA_USER' ).':'; ?>
 			</label>
 		</td>
 		<td>
 			<?php
-			$html = JHTML::_('select.booleanlist', 'show_names', '', $this->row->show_names );
-			echo $html;
+			echo JHTML::_('select.booleanlist', 'juser', '', $this->row->juser );
 			?>
 		</td>
 	</tr>
@@ -59,7 +46,7 @@
 		</td>
 	</tr>
 	<tr class="row<?php echo $k = 1 - $k; ?>">
-			<td>
+		<td class="key">
 				<label for="redform_id">
 					<?php echo JText::_('COM_REDEVENT_REDFORM_FORM_ID' ).':'; ?>
 				</label>
@@ -69,7 +56,7 @@
 		</td>
 	</tr>
 	<tr class="row<?php echo $k = 1 - $k; ?>">
-		<td>
+		<td class="key">
 			<label for="max_multi_signup">
 				<?php echo JText::_('COM_REDEVENT_MAX_MULTI_SIGNUP' ).':'; ?>
 			</label>
@@ -81,6 +68,19 @@
 			</span>
 		</td>
 	</tr>
+	<tr class="row<?php echo $k = 1 - $k; ?>">
+		<td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_SHOW_REGISTERED_FRONTEND' ).'::'.JText::_('COM_REDEVENT_SHOW_REGISTERED_FRONTEND_TIP' ); ?>">
+			<label for="show_names">
+				<?php echo JText::_('COM_REDEVENT_SHOW_REGISTERED_FRONTEND' ).':'; ?>
+			</label>
+		</td>
+		<td>
+			<?php
+			$html = JHTML::_('select.booleanlist', 'show_names', '', $this->row->show_names );
+			echo $html;
+			?>
+		</td>
+	</tr>
 	<?php if (count($this->formfields) > 0) { ?>
 	<tr class="row<?php echo $k = 1 - $k; ?>">
 		<td colspan="2">
@@ -88,7 +88,7 @@
 		</td>
 	</tr>
 	<tr class="row<?php echo $k = 1 - $k; ?>">
-		<td>
+		<td class="key">
 			<label for="redform_fields">
 				<?php echo JText::_('COM_REDEVENT_REDFORM_FORM_SELECT_FIELDS' ).':'; ?>
 			</label>
