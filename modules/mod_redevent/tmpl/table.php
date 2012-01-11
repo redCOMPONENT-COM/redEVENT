@@ -69,62 +69,71 @@ $i = 0;
 		<tr class="sectiontableentry<?php echo ($i+1).$isover; ?>">
 			
 			<?php foreach ($cols as $c): ?>
-			<td>
 			<?php 
 			switch ($c)
 			{
 				case 'date':
+					$tdclass = 'mre-date';
 					if ($params->get('linkdet', 2) == 1) {
-						echo JHTML::link($item->link, $item->dateinfo);
+						$tdtext = JHTML::link($item->link, $item->dateinfo);
 					}
 					else {
-						echo $item->dateinfo;
+						$tdtext = $item->dateinfo;
 					}
 					break;
 					
 				case 'title':
+					$tdclass = 'mre-title';
 					if ($params->get('linkdet', 2) == 2) {
-						echo JHTML::link($item->link, $item->title_short);
+						$tdtext = JHTML::link($item->link, $item->title_short);
 					}
 					else {
-						echo $item->title_short;
+						$tdtext = $item->title_short;
 					}
 					break;
 					
 				case 'category':
-					echo modRedEventHelper::displayCats($item->categories);
+					$tdclass = 'mre-category';
+					$tdtext = modRedEventHelper::displayCats($item->categories);
 					break;
 					
 				case 'venue':
+					$tdclass = 'mre-venue';
 					if ($params->get('linkloc', 1) == 1) {
-						echo JHTML::link($item->venueurl, $item->venue_short);
+						$tdtext = JHTML::link($item->venueurl, $item->venue_short);
 					}
 					else {
-						echo $item->venue_short;
+						$tdtext = $item->venue_short;
 					}
 					break;
 					
 				case 'city':
-					echo $item->city;
+					$tdclass = 'mre-city';
+					$tdtext = $item->city;
 					break;
 					
 				case 'state':
-					echo $item->state;
+					$tdclass = 'mre-state';
+					$tdtext = $item->state;
 					break;
 					
 				case 'picture':
-					echo redEVENTImage::modalimage('events', $item->datimage, $item->title_short, intval($params->get('picture_size', 30)));
+					$tdclass = 'mre-picture';
+					$tdtext = redEVENTImage::modalimage('events', $item->datimage, $item->title_short, intval($params->get('picture_size', 30)));
 					break;
 					
 				default:
 					if (strpos($c, 'custom') === 0)
 					{
 						$customid = intval(substr($c, 6));
+						$tdclass = 'mre-custom'.$customid;
 						if (isset($item->$c)) {
-							echo str_replace("\n", "<br/>", $item->$c);
+							$tdtext = str_replace("\n", "<br/>", $item->$c);
 						}
 					}
-			}?>
+			}?>			
+			<td class="<?php echo $tdclass; ?>">
+				<?php echo $tdtext; ?>
 			</td>
 			<?php endforeach; ?>
 		</tr>
