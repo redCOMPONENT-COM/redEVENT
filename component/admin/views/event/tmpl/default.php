@@ -102,6 +102,14 @@ echo $this->pane->startPane("det-pane");
 		echo $this->loadTemplate('session');
 		echo $this->pane->endPanel();
 	}
+
+	if (count($this->customfields))
+	{
+		$title = JText::_('COM_REDEVENT_CUSTOM_FIELDS' );
+	  echo $this->pane->startPanel( $title, 'customfields' );
+	  echo $this->loadTemplate('customfields');
+	  echo $this->pane->endPanel();
+	}
 	
 	$title = JText::_('COM_REDEVENT_REGISTRATION' );
 	echo $this->pane->startPanel( $title, 'registra' );
@@ -127,11 +135,6 @@ echo $this->pane->startPane("det-pane");
 	echo $this->pane->startPanel( $title, 'payment' );
  	echo $this->loadTemplate('payment');
 	echo $this->pane->endPanel();
-		
-  $title = JText::_('COM_REDEVENT_CUSTOM_FIELDS' );
-  echo $this->pane->startPanel( $title, 'customfields' );
-  echo $this->loadTemplate('customfields');
-  echo $this->pane->endPanel();
 	
   $title = JText::_( 'COM_REDEVENT_EVENT_ATTACHMENTS_TAB' );
   echo $this->pane->startPanel( $title, 'attachments' );
