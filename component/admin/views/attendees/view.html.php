@@ -170,6 +170,7 @@ class RedEventViewAttendees extends JView {
 		$this->assignRef('form',      $form);
 		$this->assignRef('user',      $user);
 		$this->assignRef('params',    $params);
+		$this->assignRef('cancelled', $state->get('filter_cancelled'));
 		
 		parent::display($tpl);
 	}

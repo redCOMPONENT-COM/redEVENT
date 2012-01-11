@@ -67,7 +67,12 @@ if ($this->event->maxattendees) {
 			</td>
 		</tr>
 	</table>
-	<table class="adminlist" cellspacing="1">
+	
+	<?php if ($this->cancelled): ?>
+	<div class="cancelled-notice"><?php echo ($this->cancelled == 1 ? JTExt::_('COM_REDEVENT_CANCELLED_REGISTRATIONS') : JTExt::_('COM_REDEVENT_ALL_REGISTRATIONS')); ?></div>
+	<?php endif; ?>
+	
+	<table id="attendees" class="adminlist" cellspacing="1">
 		<thead>
 			<tr>
 				<th width="5">#</th>
@@ -118,8 +123,14 @@ if ($this->event->maxattendees) {
 				
 				$link 		= 'index.php?option=com_redevent&controller=attendees&task=edit&xref='. $row->xref.'&cid[]='.$row->id;
 				$checked 	= JHTML::_('grid.checkedout', $row, $i );
+				if ($this->cancelled == 2 && $row->cancelled) {
+					$cancelclass = " cancelled";
+				}
+				else {
+					$cancelclass = "";					
+				}
    			?>
-			<tr class="<?php echo "row$k"; ?>">
+			<tr class="<?php echo "row$k".$cancelclass; ?>">
 				<td><?php echo $this->pageNav->getRowOffset( $i ); ?></td>
 				<td><?php echo $checked; ?></td>
 				<td>

@@ -252,3 +252,18 @@ table.editevent td.key, table.editevent td.paramlist_key {
 table.editevent td.key label, table.editevent td.paramlist_key label {
     font-weight:bold;
 }
+
+div.cancelled-notice {
+	border-width: 2px 0;
+	border-color: gold;
+	border-style: solid;
+	padding: 7px 0;
+	margin: 5px 0;
+	background-color: AntiqueWhite;
+	font-size: 1.5em;
+	text-align:center;
+}
+
+#attendees tr.cancelled, #attendees tr.cancelled td {
+	background-color: AntiqueWhite;
+}
