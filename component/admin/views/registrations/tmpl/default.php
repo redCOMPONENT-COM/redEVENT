@@ -31,7 +31,7 @@ $colspan = 13;
 	<table class="adminform">
 		<tr>
 			 <td width="100%">
-				<!-- <input type="text" name="search" id="search" value="<?php echo $this->lists['search']; ?>" class="text_area" onChange="document.adminForm.submit();" /> -->
+				<input type="text" name="search" id="search" value="<?php echo $this->lists['search']; ?>" class="text_area" onChange="document.adminForm.submit();" />
 				<button onclick="this.form.submit();"><?php echo JText::_('COM_REDEVENT_Go' ); ?></button>
 				<button onclick="this.form.getElementById('filter').value='0';this.form.submit();"><?php echo JText::_('COM_REDEVENT_Reset' ); ?></button>
 			</td>
