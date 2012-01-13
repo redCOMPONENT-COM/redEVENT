@@ -41,7 +41,27 @@ window.addEvent('domready', function() {
 	
 	if ($ES("input[name=send_pdf_form]")) {
 		$ES("input[name=send_pdf_form]").addEvent('change', redEVENTEventCheck.checkEmailPdfState);
-	}	
+	}
+	
+	$('activate1').addEvent('click', function(){
+		$('notify1').setProperty('checked', 'checked');
+		if ($('activate1').getProperty('checked')) {
+			$$('.activation-field').setStyle('display', '');
+		}
+	});
+	$('activate0').addEvent('click', function(){
+		if ($('activate0').getProperty('checked')) {
+			$$('.activation-field').setStyle('display', 'none');
+		}
+	});
+	
+	if ($('activate0').getProperty('checked')) {
+		$$('.activation-field').setStyle('display', 'none');
+	}
+
+	$('notify0').addEvent('click', function(){
+		$('activate0').setProperty('checked', 'checked').fireEvent('click');
+	});
 });
 
 redEVENTEventCheck = {

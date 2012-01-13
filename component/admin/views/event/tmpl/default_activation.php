@@ -1,22 +1,9 @@
 <?php $infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-hint.png', JText::_('COM_REDEVENT_NOTES' ) ); ?>
 <?php $k = 0; ?>
-<table class="adminform">
+<table class="editevent" id="act-table">
 	<tr class="row<?php echo $k = 1 - $k; ?>">
-		<td>
-			<label for="activate">
-				<?php echo JText::_('COM_REDEVENT_ENABLE_ACTIVATION' ).':'; ?>
-			</label>
-		</td>
-		<td>
-			<?php
-			$html = JHTML::_('select.booleanlist', 'activate', '', $this->row->activate );
-			echo $html;
-			?>
-		</td>
-	</tr>
-	<tr class="row<?php echo $k = 1 - $k; ?>">
-		<td>
-			<label for="notify">
+		<td class="key">
+			<label for="notify" class="hasTip" title="<?php echo JText::_('COM_REDEVENT_ENABLE_NOTIFICATION').'::'.JText::_('COM_REDEVENT_ENABLE_NOTIFICATION_TIP'); ?>">
 				<?php echo JText::_('COM_REDEVENT_ENABLE_NOTIFICATION' ).':'; ?>
 			</label>
 		</td>
@@ -28,7 +15,23 @@
 		</td>
 	</tr>
 	<tr class="row<?php echo $k = 1 - $k; ?>">
+		<td class="key">
+			<label for="notify" class="hasTip" title="<?php echo JText::_('COM_REDEVENT_ENABLE_ACTIVATION').'::'.JText::_('COM_REDEVENT_ENABLE_ACTIVATION_TIP'); ?>">
+				<?php echo JText::_('COM_REDEVENT_ENABLE_ACTIVATION' ).':'; ?>
+			</label>
+			<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_ENABLE_ACTIVATION' ); ?>::<?php echo JText::_('COM_REDEVENT_ENABLE_ACTIVATION_TIP'); ?>">
+				<?php echo $infoimage; ?>
+			</span>
+		</td>
 		<td>
+			<?php
+			$html = JHTML::_('select.booleanlist', 'activate', '', $this->row->activate );
+			echo $html;
+			?>
+		</td>
+	</tr>
+	<tr class="row<?php echo $k = 1 - $k; ?>">
+		<td class="key">
 			<label for="notify_subject">
 				<?php echo JText::_('COM_REDEVENT_NOTIFY_SUBJECT' ).':'; ?>
 			</label>
@@ -38,7 +41,7 @@
 		</td>
 	</tr>
 	<tr class="row<?php echo $k = 1 - $k; ?>">
-		<td>
+		<td class="key">
 			<label for="notify_body">
 				<?php echo JText::_('COM_REDEVENT_NOTIFY_BODY' ).':'; ?>
 			</label>
@@ -51,8 +54,8 @@
 			<?php echo $this->editor->display( 'notify_body',  $this->row->notify_body, '100%;', '550', '75', '20', array('pagebreak', 'readmore', 'image') ) ; ?>
 		</td>
 	</tr>
-	<tr class="row<?php echo $k = 1 - $k; ?>">
-		<td>
+	<tr class="row<?php echo $k = 1 - $k; ?> activation-field">
+		<td class="key">
 			<label for="notify_confirm_subject">
 				<?php echo JText::_('COM_REDEVENT_NOTIFY_CONFIRM_SUBJECT' ).':'; ?>
 			</label>
@@ -64,8 +67,8 @@
 			<input class="inputbox" name="notify_confirm_subject" value="<?php echo $this->row->notify_confirm_subject; ?>" size="45" id="notify_confirm_subject" />
 		</td>
 	</tr>
-	<tr class="row<?php echo $k = 1 - $k; ?>">
-		<td>
+	<tr class="row<?php echo $k = 1 - $k; ?> activation-field">
+		<td class="key">
 			<label for="notify_confirm_body">
 				<?php echo JText::_('COM_REDEVENT_NOTIFY_CONFIRM_BODY' ).':'; ?>
 			</label>

@@ -63,6 +63,10 @@ $this->infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-h
           alert("<?php echo JText::_('COM_REDEVENT_SELECT_CATEGORY', true ); ?>");
           validator.handleResponse(false,form.categories);
           return false;
+      } else if ( $('activate1').getProperty('checked') &&  $('notify0').getProperty('checked')) {
+          alert("<?php echo JText::_('COM_REDEVENT_EVENT_ACTIVATION_REQUIRES_NOTIFICATION_ENABLED', true ); ?>");
+          validator.handleResponse(false,form.activate1);
+          return false;
       } else if (document.formvalidator.isValid(form) === false) {
           var msg = '<?php echo JText::_('COM_REDEVENT_EVENT_FORM_INVALID'); ?>';
      
