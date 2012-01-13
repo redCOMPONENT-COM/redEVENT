@@ -111,6 +111,7 @@ class RedEventViewRegistrations extends JView {
 		$this->assignRef('pageNav',   $pageNav);
 		$this->assignRef('user',      $user);
 		$this->assignRef('settings',  $settings);
+		$this->assignRef('cancelled', $state->get('filter_cancelled'));
 		
 		parent::display($tpl);
 	}

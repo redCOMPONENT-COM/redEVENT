@@ -92,5 +92,5 @@ source_lang = en-GB
 
 [redEVENT.15-admin-en-GB-plg_content_resimplelist-ini]
 file_filter = languages/<lang>/plugins/plg_resimplelist/<lang>.plg_content_resimplelist.ini
-source_file = plugins/plg_resimplelist/language/en-GB/en-GB.plg_content_resimplelist.ini
+source_file = plugins/plg_resimplelist/languages/en-GB.plg_content_resimplelist.ini
 source_lang = en-GB
