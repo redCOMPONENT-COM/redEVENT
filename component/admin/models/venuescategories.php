@@ -178,10 +178,9 @@ class RedEventModelVenuesCategories extends JModel
 		$where		= $this->_buildContentWhere();
 		$orderby	= $this->_buildContentOrderBy();
 
-		$query = 'SELECT c.*, (COUNT(parent.name) - 1) AS depth, c.access, c.groupid, u.name AS editor, g.name AS groupname, gr.name AS catgroup, p.name as parent_name '
+		$query = 'SELECT c.*, (COUNT(parent.name) - 1) AS depth, c.access, c.groupid, u.name AS editor, gr.name AS catgroup, p.name as parent_name '
 					. ' FROM #__redevent_venues_categories AS parent, #__redevent_venues_categories AS c'
           . ' LEFT JOIN #__redevent_venues_categories AS p ON p.id = c.parent_id '
-					. ' LEFT JOIN #__groups AS g ON g.id = c.access'
 					. ' LEFT JOIN #__users AS u ON u.id = c.checked_out'
 					. ' LEFT JOIN #__redevent_groups AS gr ON gr.id = c.groupid'
 					. $where
