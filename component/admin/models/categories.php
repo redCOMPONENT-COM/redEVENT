@@ -179,9 +179,10 @@ class RedEventModelCategories extends JModel
 		$orderby	= $this->_buildContentOrderBy();
 
     $query = ' SELECT c.*, c.catname, (COUNT(parent.catname) - 1) AS depth, c.access, c.groupid, '
-           . ' u.name AS editor, gr.name AS catgroup, p.catname as parent_name '
+           . ' u.name AS editor, g.title AS groupname, gr.name AS catgroup, p.catname as parent_name '
            . ' FROM #__redevent_categories AS parent, #__redevent_categories AS c '
            . ' LEFT JOIN #__redevent_categories AS p ON c.parent_id = p.id '
+           . ' LEFT JOIN #__usergroups AS g ON g.id = c.access'
            . ' LEFT JOIN #__users AS u ON u.id = c.checked_out'
            . ' LEFT JOIN #__redevent_groups AS gr ON gr.id = c.groupid'
            . $where

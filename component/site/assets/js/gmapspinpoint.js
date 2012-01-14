@@ -21,10 +21,13 @@
  */
 
 window.addEvent('domready', function (){
-	GMapsOverlay.init();
+	//GMapsOverlay.init();
 });
 	
 //nothing yet
+/**
+ * @TODO: fix it !
+ */
 var GMapsOverlay = {
 		
 		marker:  null,
@@ -47,7 +50,8 @@ var GMapsOverlay = {
 
 		    $$('.pinpoint').addEvent('click', this.click.bind(this));
 
-		    this.eventKeyDown = this.keyboardListener.bindAsEventListener(this);
+//		    this.eventKeyDown = this.keyboardListener.bindAsEventListener(this);
+		    this.eventKeyDown = this.keyboardListener.bind(this);
 
 		    this.eventPosition = this.position.bind(this);
 
@@ -61,7 +65,7 @@ var GMapsOverlay = {
 
 		    }).injectInside(document.body);
 		    
-		    this.top = new Element('div').setProperty('id', 'gmTop').setHTML(sTitle).injectInside(this.center);
+		    this.top = new Element('div').setProperty('id', 'gmTop').set('html', sTitle).injectInside(this.center);
 		    
 		    this.maplayer = new Element('div').setProperty('id', 'gmMap').injectInside(this.center);
 
@@ -240,7 +244,7 @@ var GMapsOverlay = {
 
 		      this.center.className = '';
 
-		      this.caption.setHTML("Google-Maps");
+		      this.caption.set('html', "Google-Maps");
 
 		      if (this.center.clientHeight != this.maplayer.offsetHeight){
 
@@ -370,7 +374,7 @@ var GMapsOverlay = {
 		  markerShowInfo: function()
 		  {
 		     var info = new Element('div').setProperty('id', 'markerInfo');
-		     info.setHTML('<strong>' + (this.venue ? this.venue : '') + '</strong><br />' + (this.address ? this.address : ''));
+		     info.set('html', '<strong>' + (this.venue ? this.venue : '') + '</strong><br />' + (this.address ? this.address : ''));
 		     new Element('br').injectInside(info);
 
 		     var pos = this.marker.getPosition();

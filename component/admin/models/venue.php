@@ -156,12 +156,13 @@ class RedEventModelVenue extends JModel
 		if (empty($this->_data))
 		{
 			$venue = new stdClass();
-			$venue->id					= 0;
-			$venue->venue				= null;
-			$venue->alias				= null;
-			$venue->url					= null;
-			$venue->street				= null;
-			$venue->city				= null;
+			$venue->id          = 0;
+			$venue->venue       = null;
+			$venue->alias       = null;
+			$venue->company     = null;
+			$venue->url         = null;
+			$venue->street      = null;
+			$venue->city        = null;
 			$venue->plz					= null;
 			$venue->state				= null;
 			$venue->country				= null;

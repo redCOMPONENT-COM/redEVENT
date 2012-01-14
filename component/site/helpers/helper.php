@@ -874,13 +874,15 @@ class redEVENTHelper {
 	
 	/**
 	* Build the select list for access level
+	* 
+	* @TODO: adapt for 1.7 acl
 	*/
 	function getAccesslevelOptions()
 	{
 		$db =& JFactory::getDBO();
 
-		$query = 'SELECT id AS value, name AS text'
-		. ' FROM #__groups'
+		$query = 'SELECT id AS value, title AS text'
+		. ' FROM #__usergroups'
 		. ' ORDER BY id'
 		;
 		$db->setQuery( $query );

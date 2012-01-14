@@ -77,6 +77,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues` (
 `meta_description` text NOT NULL,
 `locimage` varchar(100) NOT NULL default '',
 `map` tinyint(4) NOT NULL default '0',
+`private` tinyint(1) NOT NULL default '0',
 `created_by` int(11) unsigned NOT NULL default '0',
 `author_ip` varchar(15) NOT NULL default '',
 `created` datetime NOT NULL,
