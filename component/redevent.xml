@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <install type="component" version="1.7.0" method="upgrade">
-	<name>redEVENT</name>
+	<name>COM_REDEVENT</name>
 	<creationDate>19-04-2010</creationDate>
 	<author>Redweb.dk</author>
 	<authorEmail>email@redweb.dk</authorEmail>
@@ -8,7 +8,7 @@
 	<copyright>(c) 2008 - 2012 Redweb.dk</copyright>
 	<license>GNU/GPL</license>
 	<version>2.5alpha1.0</version>
-	<description>redEVENT Event and Calendar Component for Joomla 1.7 by redCOMPONENT.com</description>
+	<description>COM_REDEVENT_XML_DESCRIPTION</description>
 	
 	
 	<!-- Runs on install/uninstall/update -->
@@ -41,26 +41,23 @@
 		<folder>classes</folder>
 		<folder>controllers</folder>
 		<folder>helpers</folder>
+		<folder>language</folder>
 		<folder>models</folder>
 		<folder>views</folder>
 	</files>
-
-	<languages folder="site/languages">
-		<language tag="en-GB">en-GB.com_redevent.ini</language>
-	</languages>
 
 	<administration>
 
 		<menu img="../administrator/components/com_redevent/assets/images/redevent.png">redEVENT</menu>
 		<submenu>
-			<menu img="../administrator/components/com_redevent/assets/images/icon-16-events.png" view="events">REDEVENT_MENU_EVENTS</menu>
-			<menu img="../administrator/components/com_redevent/assets/images/icon-16-venues.png" view="venues">REDEVENT_MENU_VENUES</menu>
-			<menu img="../administrator/components/com_redevent/assets/images/icon-16-categories.png" view="categories">REDEVENT_MENU_CATEGORIES</menu>
-			<menu img="../administrator/components/com_redevent/assets/images/icon-16-venuescategories.png" view="venuescategories">REDEVENT_MENU_VENUES_CATEGORIES</menu>
-			<menu img="../administrator/components/com_redevent/assets/images/icon-16-groups.png" view="groups">REDEVENT_MENU_GROUPS</menu>
-			<menu img="../administrator/components/com_redevent/assets/images/icon-16-library.png" view="textlibrary">REDEVENT_MENU_TAGS_LIBRARY</menu>
-			<menu img="../administrator/components/com_redevent/assets/images/icon-16-customfields.png" view="customfields">REDEVENT_MENU_CUSTOMFIELDS</menu>
-			<menu img="../administrator/components/com_redevent/assets/images/icon-16-settings.png" view="settings">REDEVENT_MENU_SETTINGS</menu>
+			<menu img="../administrator/components/com_redevent/assets/images/icon-16-events.png" view="events">COM_REDEVENT_MENU_EVENTS</menu>
+			<menu img="../administrator/components/com_redevent/assets/images/icon-16-venues.png" view="venues">COM_REDEVENT_MENU_VENUES</menu>
+			<menu img="../administrator/components/com_redevent/assets/images/icon-16-categories.png" view="categories">COM_REDEVENT_MENU_CATEGORIES</menu>
+			<menu img="../administrator/components/com_redevent/assets/images/icon-16-venuescategories.png" view="venuescategories">COM_REDEVENT_MENU_VENUES_CATEGORIES</menu>
+			<menu img="../administrator/components/com_redevent/assets/images/icon-16-groups.png" view="groups">COM_REDEVENT_MENU_GROUPS</menu>
+			<menu img="../administrator/components/com_redevent/assets/images/icon-16-library.png" view="textlibrary">COM_REDEVENT_MENU_TAGS_LIBRARY</menu>
+			<menu img="../administrator/components/com_redevent/assets/images/icon-16-customfields.png" view="customfields">COM_REDEVENT_MENU_CUSTOMFIELDS</menu>
+			<menu img="../administrator/components/com_redevent/assets/images/icon-16-settings.png" view="settings">COM_REDEVENT_MENU_SETTINGS</menu>
 		</submenu>
 	
 		<files folder="admin">
@@ -79,14 +76,10 @@
 			<folder>controllers</folder>
 			<folder>elements</folder>
 			<folder>sql</folder>
+			<folder>language</folder>
 			<folder>tables</folder>
 		</files>
-	
-		<languages folder="admin/languages">
-			<language tag="en-GB">en-GB.com_redevent.ini</language>
-			<language tag="en-GB">en-GB.com_redevent.menu.ini</language>
-		</languages>
-	
+		
 	</administration>
 	
 	<!-- UPDATESERVER DEFINITION -->
