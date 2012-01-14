@@ -284,7 +284,7 @@ class redEVENTImage {
 			return false;			
 		}
 		
-		$base = $app->isAdmin() ? $app->getSiteURL() : JURI::base();
+		$base = JURI::root();
 		
 		$thumb_path = self::getThumbUrl($type, $image, $maxdim);
 				
@@ -332,7 +332,7 @@ class redEVENTImage {
 		}
 		$folder = $type;
 				
-		$base = $app->isAdmin() ? $app->getSiteURL() : JURI::base();
+		$base = JURI::root();
 		
 		$thumb_name = md5($image).$width.'_'.$height.'.png';
 		

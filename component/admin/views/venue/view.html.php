@@ -53,7 +53,7 @@ class RedEventViewVenue extends JView {
 
 		//get vars
 		$cid 			= JRequest::getInt( 'cid' );
-    $url    = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+    $url    = JURI::root();
 
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITVENUE'));
 		//add css and js to document

@@ -129,7 +129,7 @@ $app = &JFactory::getApplication();
 					}
 					?>
 					</div>
-					<div class="linkfront"><?php echo JHTML::link($app->getSiteUrl().RedeventHelperRoute::getDetailsRoute($row->id), 
+					<div class="linkfront"><?php echo JHTML::link(JURI::root().RedeventHelperRoute::getDetailsRoute($row->id), 
 					                        JHTML::image('administrator/components/com_redevent/assets/images/linkfront.png', 
 					                                     JText::_('COM_REDEVENT_EVENT_FRONTEND_LINK'))); ?>
 					</div>

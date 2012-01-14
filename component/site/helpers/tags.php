@@ -203,7 +203,7 @@ class redEVENT_tags {
 	public function ReplaceTags($text, $options = null) 
 	{
 		$mainframe = &JFactory::getApplication();
-		$base_url  = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+		$base_url  = JURI::root();
 		$rfcore    = $this->_getRFCore();
 		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
 		if ($options) {
@@ -1750,7 +1750,7 @@ class redEVENT_tags {
 		  return $img;
 		}
 		$mainframe = &JFactory::getApplication();
-		$base_url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+		$base_url = JURI::root();
 		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
 		$elsettings = redEVENTHelper::config();
 		$text = '<span class="vlink webform">'
@@ -1776,7 +1776,7 @@ class redEVENT_tags {
 		  return $img;
 		}
 		$mainframe = &JFactory::getApplication();
-		$base_url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+		$base_url = JURI::root();
 		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
 		$elsettings = redEVENTHelper::config();
 		$text = '<span class="vlink email">'
@@ -1800,7 +1800,7 @@ class redEVENT_tags {
 		  return $img;
 		}
 		$mainframe = &JFactory::getApplication();
-		$base_url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+		$base_url = JURI::root();
 		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
 		$elsettings = redEVENTHelper::config();
 		$text = '<span class="vlink formaloffer">'
@@ -1824,7 +1824,7 @@ class redEVENT_tags {
 		  return $img;
 		}
 		$mainframe = &JFactory::getApplication();
-		$base_url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+		$base_url = JURI::root();
 		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
 		$elsettings = redEVENTHelper::config();
 		if (!empty($this->getEvent()->getData()->external_registration_url)) {
@@ -1854,7 +1854,7 @@ class redEVENT_tags {
 		  return $img;
 		}
 		$mainframe = &JFactory::getApplication();
-		$base_url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+		$base_url = JURI::root();
 		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
 		$elsettings = redEVENTHelper::config();
 		$text = '<span class="vlink phone">'

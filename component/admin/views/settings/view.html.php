@@ -130,7 +130,7 @@ class RedEventViewSettings extends JView {
 	{
 		$mainframe = &JFactory::getApplication();
 
-		$url = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+		$url = JURI::root();
 		$tip = '<img src="'.$url.'includes/js/ThemeOffice/warning.png" border="0"  alt="" />';
 
 		return $tip;

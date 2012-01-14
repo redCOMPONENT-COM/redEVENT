@@ -137,7 +137,7 @@ class RedeventViewEditevent extends JView
 		$infoimage = JHTML::_('image', 'components/com_redevent/assets/images/icon-16-hint.png', JText::_('COM_REDEVENT_NOTES' ) );
 
 		//Create the stuff required for the venueselect functionality
-		$url	= $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+		$url	= JURI::root();
 
 		$js = "
 		function reSelectVenue(id, venue) {

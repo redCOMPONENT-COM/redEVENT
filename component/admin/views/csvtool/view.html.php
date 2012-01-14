@@ -42,7 +42,7 @@ class RedEventViewCsvtool extends JView {
 		//initialise variables
 		$document	= & JFactory::getDocument();
 		$db			= & JFactory::getDBO();
-    $url    = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+    $url    = JURI::root();
 		
 		JHTML::_('behavior.mootools');
 

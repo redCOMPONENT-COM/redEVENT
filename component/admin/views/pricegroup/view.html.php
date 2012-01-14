@@ -59,7 +59,7 @@ class RedeventViewPricegroup extends JView
 		$uri 	=& JFactory::getURI();
 		$user 	=& JFactory::getUser();
 		$model	=& $this->getModel();
-		$url 		= $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+		$url 		= JURI::root();
 		
     $document = & JFactory::getDocument();
     $document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');

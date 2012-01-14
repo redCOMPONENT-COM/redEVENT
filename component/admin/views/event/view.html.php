@@ -67,7 +67,7 @@ class RedEventViewEvent extends JView {
 		//get vars
 		$cid		= JRequest::getVar( 'cid' );
 		$task		= JRequest::getVar('task');
-		$url 		= $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+		$url 		= JURI::root();
 
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITEVENT'));
 		//add the custom stylesheet and the seo javascript

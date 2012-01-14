@@ -433,7 +433,7 @@ class ELOutput {
     
     $settings = & redEVENTHelper::config();
         
-    $url    = $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+    $url    = JURI::root();
     
     //Link to map
     $mapimage = JHTML::image($url.'components/com_redevent/assets/images/marker.png', JText::_( 'COM_REDEVENT_PINPOINTLOCATION_ALT' ), array('class' => 'pinpoint'));

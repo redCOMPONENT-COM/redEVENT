@@ -59,7 +59,7 @@ class RedeventViewRole extends JView
 		$uri 	=& JFactory::getURI();
 		$user 	=& JFactory::getUser();
 		$model	=& $this->getModel();
-		$url 		= $mainframe->isAdmin() ? $mainframe->getSiteURL() : JURI::base();
+		$url 		= JURI::root();
 		
     $document = & JFactory::getDocument();
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITROLE'));
