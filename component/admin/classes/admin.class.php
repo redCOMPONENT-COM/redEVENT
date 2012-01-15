@@ -76,7 +76,7 @@ class ELAdmin {
 		JSubMenuHelper::addEntry( JText::_( 'COM_REDEVENT_MENU_PRICEGROUPS' ), 'index.php?option=com_redevent&view=pricegroups', $view == 'pricegroups');
 		JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_HELP' ), 'index.php?option=com_redevent&view=help', $view == 'help');
 		JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_LOG' ), 'index.php?option=com_redevent&view=log', $view == 'log');
-		JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_SETTINGS' ), 'index.php?option=com_redevent&controller=settings&task=edit', $controller == 'settings');
+// 		JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_SETTINGS' ), 'index.php?option=com_redevent&controller=settings&task=edit', $controller == 'settings');
 	}
 
 	/**

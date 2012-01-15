@@ -1,64 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 
-	<params addpath="/administrator/components/com_redevent/elements">
-		
-		<param name="cat_num" type="text" size="2" default="4" label="COM_REDEVENT_CAT_DISPLAY" description="COM_REDEVENT_CAT_DISPLAY_DESC" />	
-		<param name="details_layout" type="radio" default="fixed" label="COM_REDEVENT_SETTINGS_DETAILS_LAYOUT" description="COM_REDEVENT_SETTINGS_DETAILS_LAYOUT_DESC">
+	<fieldset name="general" label="COM_REDEVENT_SETTINGS_GENERAL_LABEL" description="COM_REDEVENT_SETTINGS_GENERAL_DESC">		
+		<field name="cat_num" type="text" size="2" default="4" label="COM_REDEVENT_CAT_DISPLAY" description="COM_REDEVENT_CAT_DISPLAY_DESC" />	
+		<field name="details_layout" type="radio" default="fixed" label="COM_REDEVENT_SETTINGS_DETAILS_LAYOUT" description="COM_REDEVENT_SETTINGS_DETAILS_LAYOUT_DESC">
 			<option value="default">COM_REDEVENT_SETTINGS_DETAILS_LAYOUT_TAGS</option>
 			<option value="fixed">COM_REDEVENT_SETTINGS_DETAILS_LAYOUT_FIXED</option>
-		</param>
-		<param name="icons" type="radio" default="1" label="COM_REDEVENT_SHOW_ICONS" description="COM_REDEVENT_SHOW_ICONS_DESC">
+		</field>
+		<field name="icons" type="radio" default="1" label="COM_REDEVENT_SHOW_ICONS" description="COM_REDEVENT_SHOW_ICONS_DESC">
 			<option value="0">COM_REDEVENT_Hide</option>
 			<option value="1">COM_REDEVENT_Show</option>
-		</param>
-		<param name="show_print_icon" type="radio" default="1" label="COM_REDEVENT_PRINT_ICON" description="COM_REDEVENT_PRINT_ICON_DESC">
+		</field>
+		<field name="show_print_icon" type="radio" default="1" label="COM_REDEVENT_PRINT_ICON" description="COM_REDEVENT_PRINT_ICON_DESC">
 			<option value="0">COM_REDEVENT_Hide</option>
 			<option value="1">COM_REDEVENT_Show</option>
-		</param>
-		<param name="show_email_icon" type="radio" default="1" label="COM_REDEVENT_EMAIL_ICON" description="COM_REDEVENT_EMAIL_ICON_DESC">
+		</field>
+		<field name="show_email_icon" type="radio" default="1" label="COM_REDEVENT_EMAIL_ICON" description="COM_REDEVENT_EMAIL_ICON_DESC">
 			<option value="0">COM_REDEVENT_Hide</option>
 			<option value="1">COM_REDEVENT_Show</option>
-		</param>
-    <param name="show_gotoarchive_icon" type="radio" default="1" label="COM_REDEVENT_GO_TO_ARCHIVE_ICON" description="COM_REDEVENT_GO_TO_ARCHIVE_ICON_DESC">
+		</field>
+    <field name="show_gotoarchive_icon" type="radio" default="1" label="COM_REDEVENT_GO_TO_ARCHIVE_ICON" description="COM_REDEVENT_GO_TO_ARCHIVE_ICON_DESC">
       <option value="0">COM_REDEVENT_Hide</option>
       <option value="1">COM_REDEVENT_Show</option>
-    </param>
-    <param name="show_thumb_icon" type="radio" default="1" label="COM_REDEVENT_SHOW_THUMBNAIL_ICON" description="COM_REDEVENT_SHOW_THUMBNAIL_ICON_DESC">
+    </field>
+    <field name="show_thumb_icon" type="radio" default="1" label="COM_REDEVENT_SHOW_THUMBNAIL_ICON" description="COM_REDEVENT_SHOW_THUMBNAIL_ICON_DESC">
       <option value="0">COM_REDEVENT_Hide</option>
       <option value="1">COM_REDEVENT_Show</option>
-    </param>
-    <param name="details_attendees_links" type="list" default="0" label="COM_REDEVENT_SETTINGS_DETAILS_SHOW_ATTENDEES_LINKS_LABEL" description="COM_REDEVENT_SETTINGS_DETAILS_SHOW_ATTENDEES_LINKS_DESC">
+    </field>
+    <field name="details_attendees_links" type="list" default="0" label="COM_REDEVENT_SETTINGS_DETAILS_SHOW_ATTENDEES_LINKS_LABEL" description="COM_REDEVENT_SETTINGS_DETAILS_SHOW_ATTENDEES_LINKS_DESC">
       <option value="0">COM_REDEVENT_SETTINGS_DETAILS_SHOW_ATTENDEES_LINKS_CURRENT_SESSION</option>
       <option value="1">COM_REDEVENT_SETTINGS_DETAILS_SHOW_ATTENDEES_LINKS_ALL_SESSIONS</option>
-    </param> 	 
-    <param name="details_attendees_layout" type="list" default="0" label="COM_REDEVENT_DETAILS_ATTENDEES_LAYOUT" description="COM_REDEVENT_DETAILS_ATTENDEES_LAYOUT_TIP">
+    </field> 	 
+    <field name="details_attendees_layout" type="list" default="0" label="COM_REDEVENT_DETAILS_ATTENDEES_LAYOUT" description="COM_REDEVENT_DETAILS_ATTENDEES_LAYOUT_TIP">
       <option value="0">Table</option>
       <option value="1">List</option>
-    </param> 	  
-    <param name="custom_css" type="text" default="" size="60" label="COM_REDEVENT_CUSTOM_CSS_PATH" description="COM_REDEVENT_CUSTOM_CSS_PATH_DESC"/>
-    <param name="event_ics" type="radio" default="1" label="COM_REDEVENT_SETTINGS_SHOW_EVENT_ICAL" description="COM_REDEVENT_SETTINGS_SHOW_EVENT_ICAL_DESC">
+    </field> 	  
+    <field name="custom_css" type="text" default="" size="60" label="COM_REDEVENT_CUSTOM_CSS_PATH" description="COM_REDEVENT_CUSTOM_CSS_PATH_DESC"/>
+    <field name="event_ics" type="radio" default="1" label="COM_REDEVENT_SETTINGS_SHOW_EVENT_ICAL" description="COM_REDEVENT_SETTINGS_SHOW_EVENT_ICAL_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
+    </field>
     
-    <param name="use_default_picture" type="radio" default="1" label="COM_REDEVENT_SETTINGS_USE_DEFAULT_PICTURE" description="COM_REDEVENT_SETTINGS_USE_DEFAULT_PICTURE_DESC">
+    <field name="use_default_picture" type="radio" default="1" label="COM_REDEVENT_SETTINGS_USE_DEFAULT_PICTURE" description="COM_REDEVENT_SETTINGS_USE_DEFAULT_PICTURE_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
+    </field>
     
-    <param name="showmapserv" type="radio" default="1" label="COM_REDEVENT_SETTINGS_ACTIVATE_VENUE_MAP_LABEL" description="COM_REDEVENT_SETTINGS_ACTIVATE_VENUE_MAP_DESC">
+    <field name="showmapserv" type="radio" default="1" label="COM_REDEVENT_SETTINGS_ACTIVATE_VENUE_MAP_LABEL" description="COM_REDEVENT_SETTINGS_ACTIVATE_VENUE_MAP_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
-	</params>
+    </field>
+	</fieldset>
 
-	<params group="COM_REDEVENT_SETTINGS_lists">
-		<param name="display_limit_select" type="radio" default="1" label="COM_REDEVENT_DISPLAY_LIMIT_SELECT" description="COM_REDEVENT_DISPLAY_LIMIT_SELECT_DESC">
+	<fieldset name="COM_REDEVENT_SETTINGS_lists" label="COM_REDEVENT_SETTINGS_lists" description="COM_REDEVENT_SETTINGS_lists">
+		<field name="display_limit_select" type="radio" default="1" label="COM_REDEVENT_DISPLAY_LIMIT_SELECT" description="COM_REDEVENT_DISPLAY_LIMIT_SELECT_DESC">
 			<option value="0">COM_REDEVENT_Hide</option>
 			<option value="1">COM_REDEVENT_Show</option>
-		</param>
-		<param name="display_num" type="list" default="15" label="COM_REDEVENT_EVENT_NUMBER" description="COM_REDEVENT_EVENT_NUMBER_TIP">
+		</field>
+		<field name="display_num" type="list" default="15" label="COM_REDEVENT_EVENT_NUMBER" description="COM_REDEVENT_EVENT_NUMBER_TIP">
 			<option value="5">5</option>
 			<option value="10">10</option>
 			<option value="15">15</option>
@@ -68,285 +67,298 @@
 			<option value="50">50</option>
 			<option value="100">100</option>
 			<option value="200">200</option>
-		</param>	
-  	<param name="filter_toggle" type="list" default="3" label="COM_REDEVENT_SETTINGS_FILTER_TOGGLE" description="COM_REDEVENT_SETTINGS_FILTER_TOGGLE_DESC">
+		</field>	
+  	<field name="filter_toggle" type="list" default="3" label="COM_REDEVENT_SETTINGS_FILTER_TOGGLE" description="COM_REDEVENT_SETTINGS_FILTER_TOGGLE_DESC">
 			<option value="0">COM_REDEVENT_SETTINGS_FILTER_TOGGLE_OPTION_OFF_SHOW_FILTERS</option>
 			<option value="1">COM_REDEVENT_SETTINGS_FILTER_TOGGLE_OPTION_OFF_HIDE_FILTERS</option>
 			<option value="2">COM_REDEVENT_SETTINGS_FILTER_TOGGLE_OPTION_ON_SHOW_FILTERS</option>
 			<option value="3">COM_REDEVENT_SETTINGS_FILTER_TOGGLE_OPTION_ON_HIDE_FILTERS</option>
-		</param>
-  	<param name="filter_text" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FILTER_TEXT" description="COM_REDEVENT_SETTINGS_FILTER_TEXT_DESC">
+		</field>
+  	<field name="filter_text" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FILTER_TEXT" description="COM_REDEVENT_SETTINGS_FILTER_TEXT_DESC">
 			<option value="0">COM_REDEVENT_Hide</option>
 			<option value="1">COM_REDEVENT_Show</option>
-		</param>
-  	<param name="filter_type_event" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FILTER_TYPE_EVENT" description="COM_REDEVENT_SETTINGS_FILTER_TYPE_EVENT_DESC">
+		</field>
+  	<field name="filter_type_event" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FILTER_TYPE_EVENT" description="COM_REDEVENT_SETTINGS_FILTER_TYPE_EVENT_DESC">
 			<option value="0">COM_REDEVENT_Hide</option>
 			<option value="1">COM_REDEVENT_Show</option>
-		</param>
-  	<param name="filter_type_category" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FILTER_TYPE_CATEGORY" description="COM_REDEVENT_SETTINGS_FILTER_TYPE_CATEGORY_DESC">
+		</field>
+  	<field name="filter_type_category" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FILTER_TYPE_CATEGORY" description="COM_REDEVENT_SETTINGS_FILTER_TYPE_CATEGORY_DESC">
 			<option value="0">COM_REDEVENT_Hide</option>
 			<option value="1">COM_REDEVENT_Show</option>
-		</param>
-  	<param name="filter_type_venue" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FILTER_TYPE_VENUE" description="COM_REDEVENT_SETTINGS_FILTER_TYPE_VENUE_DESC">
+		</field>
+  	<field name="filter_type_venue" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FILTER_TYPE_VENUE" description="COM_REDEVENT_SETTINGS_FILTER_TYPE_VENUE_DESC">
 			<option value="0">COM_REDEVENT_Hide</option>
 			<option value="1">COM_REDEVENT_Show</option>
-		</param>
-  	<param name="filter_type_city" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FILTER_TYPE_CITY" description="COM_REDEVENT_SETTINGS_FILTER_TYPE_CITY_DESC">
+		</field>
+  	<field name="filter_type_city" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FILTER_TYPE_CITY" description="COM_REDEVENT_SETTINGS_FILTER_TYPE_CITY_DESC">
 			<option value="0">COM_REDEVENT_Hide</option>
 			<option value="1">COM_REDEVENT_Show</option>
-		</param>
-  	<param name="lists_filter_event" type="radio" default="0" label="COM_REDEVENT_SETTINGS_LISTS_FILTER_EVENT" description="COM_REDEVENT_SETTINGS_LISTS_FILTER_EVENT_DESC">
+		</field>
+  	<field name="lists_filter_event" type="radio" default="0" label="COM_REDEVENT_SETTINGS_LISTS_FILTER_EVENT" description="COM_REDEVENT_SETTINGS_LISTS_FILTER_EVENT_DESC">
 			<option value="0">COM_REDEVENT_Hide</option>
 			<option value="1">COM_REDEVENT_Show</option>
-		</param>
-  	<param name="lists_filter_category" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_FILTER_CATEGORY" description="COM_REDEVENT_SETTINGS_LISTS_FILTER_CATEGORY_DESC">
+		</field>
+  	<field name="lists_filter_category" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_FILTER_CATEGORY" description="COM_REDEVENT_SETTINGS_LISTS_FILTER_CATEGORY_DESC">
 			<option value="0">COM_REDEVENT_Hide</option>
 			<option value="1">COM_REDEVENT_Show</option>
-		</param>
-  	<param name="lists_filter_venue" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_FILTER_VENUE" description="COM_REDEVENT_SETTINGS_LISTS_FILTER_VENUE_DESC">
+		</field>
+  	<field name="lists_filter_venue" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_FILTER_VENUE" description="COM_REDEVENT_SETTINGS_LISTS_FILTER_VENUE_DESC">
 			<option value="0">COM_REDEVENT_Hide</option>
 			<option value="1">COM_REDEVENT_Show</option>
-		</param>
+		</field>
 		
 		
-		<param name="lists_columns" type="text" size="80" default="date, title, venue, city, category" label="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_DESC" />
-		<param name="lists_columns_names" type="text" size="80" default="date, title, venue, city, category" label="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_NAMES_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_NAMES_DESC" />
+		<field name="lists_columns" type="text" size="80" default="date, title, venue, city, category" label="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_DESC" />
+		<field name="lists_columns_names" type="text" size="80" default="date, title, venue, city, category" label="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_NAMES_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_NAMES_DESC" />
 
-  	<param name="catlinklist" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_CATEGORY_LINK_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_CATEGORY_LINK_DESC">
+  	<field name="catlinklist" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_CATEGORY_LINK_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_CATEGORY_LINK_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
-		</param>
-  	<param name="showlinkvenue" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_VENUE_LINK_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_VENUE_LINK_DESC">
+		</field>
+  	<field name="showlinkvenue" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_VENUE_LINK_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_VENUE_LINK_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
-		</param>
-  	<param name="link_date" type="radio" default="0" label="COM_REDEVENT_SETTINGS_LISTS_DATE_LINK_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_DATE_LINK_DESC">
+		</field>
+  	<field name="link_date" type="radio" default="0" label="COM_REDEVENT_SETTINGS_LISTS_DATE_LINK_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_DATE_LINK_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
-		</param>
+		</field>
 		
-  	<param name="lists_show_time" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_SHOW_TIME_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_SHOW_TIME_DESC">
+  	<field name="lists_show_time" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_SHOW_TIME_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_SHOW_TIME_DESC">
 			<option value="0">COM_REDEVENT_Hide</option>
 			<option value="1">COM_REDEVENT_Show</option>
-		</param>
+		</field>
     
-    <param name="lists_show_custom_tip" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_SHOW_CUSTOM_TIP_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_SHOW_CUSTOM_TIP_DESC">
+    <field name="lists_show_custom_tip" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_SHOW_CUSTOM_TIP_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_SHOW_CUSTOM_TIP_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
+    </field>
     
-    <param name="lists_showend" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_SHOW_END" description="COM_REDEVENT_SETTINGS_LISTS_SHOW_END_DESC">
+    <field name="lists_showend" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_SHOW_END" description="COM_REDEVENT_SETTINGS_LISTS_SHOW_END_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
+    </field>
     
-    <param name="events_rsscal" type="radio" default="0" label="COM_REDEVENT_SETTINGS_SHOW_EVENTS_RSSCAL" description="COM_REDEVENT_SETTINGS_SHOW_EVENTS_RSSCAL_DESC">
+    <field name="events_rsscal" type="radio" default="0" label="COM_REDEVENT_SETTINGS_SHOW_EVENTS_RSSCAL" description="COM_REDEVENT_SETTINGS_SHOW_EVENTS_RSSCAL_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
-    <param name="events_ical" type="radio" default="1" label="COM_REDEVENT_SETTINGS_SHOW_EVENTS_ICAL" description="COM_REDEVENT_SETTINGS_SHOW_EVENTS_ICAL_DESC">
+    </field>
+    <field name="events_ical" type="radio" default="1" label="COM_REDEVENT_SETTINGS_SHOW_EVENTS_ICAL" description="COM_REDEVENT_SETTINGS_SHOW_EVENTS_ICAL_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
-    <param name="ical_max_items" type="text" default="100" label="COM_REDEVENT_SETTINGS_ICAL_MAX_ITEMS" description="COM_REDEVENT_SETTINGS_ICAL_MAX_ITEMS_DESC" />
+    </field>
+    <field name="ical_max_items" type="text" default="100" label="COM_REDEVENT_SETTINGS_ICAL_MAX_ITEMS" description="COM_REDEVENT_SETTINGS_ICAL_MAX_ITEMS_DESC" />
     
- 	</params>
+ 	</fieldset>
  	
- 	<params group="COM_REDEVENT_pasteventssettings">
-    <param name="pastevents_action" type="list" default="0" label="COM_REDEVENT_PAST_EVENTS_ACTION" description="COM_REDEVENT_PAST_EVENTS_ACTION_TIP">
+ 	<fieldset name="COM_REDEVENT_pasteventssettings" label="COM_REDEVENT_pasteventssettings" description="COM_REDEVENT_pasteventssettings">
+    <field name="pastevents_action" type="list" default="0" label="COM_REDEVENT_PAST_EVENTS_ACTION" description="COM_REDEVENT_PAST_EVENTS_ACTION_TIP">
       <option value="0">COM_REDEVENT_DO_NOTHING</option>
       <option value="1">COM_REDEVENT_DELETE_OLD_EVENTS</option>
       <option value="2">COM_REDEVENT_ARCHIVE_OLD_EVENTS</option>
-    </param>
-    <param name="pastevents_delay" type="text" default="2" label="COM_REDEVENT_PAST_EVENTS_DELAY" description="COM_REDEVENT_PAST_EVENTS_DELAY_TIP" />
-    <param name="pastevents_reference_date" type="list" default="end" label="COM_REDEVENT_PAST_EVENTS_REFERENCE_DATE" description="COM_REDEVENT_PAST_EVENTS_REFERENCE_DATE_TIP">
+    </field>
+    <field name="pastevents_delay" type="text" default="2" label="COM_REDEVENT_PAST_EVENTS_DELAY" description="COM_REDEVENT_PAST_EVENTS_DELAY_TIP" />
+    <field name="pastevents_reference_date" type="list" default="end" label="COM_REDEVENT_PAST_EVENTS_REFERENCE_DATE" description="COM_REDEVENT_PAST_EVENTS_REFERENCE_DATE_TIP">
       <option value="end">COM_REDEVENT_END_DATE</option>
       <option value="start">COM_REDEVENT_START_DATE</option>
       <option value="registration">COM_REDEVENT_REGISTRATION_DATE</option>
-    </param>
- 	</params>
+    </field>
+ 	</fieldset>
  	
- 	<params group="COM_REDEVENT_frontendeventsubmit">
- 	  <param type="respacer" default="COM_REDEVENT_SETTINGS_FRONTEND_TIP"/>
-		<param name="event_template" type="xref" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EVENT_TEMPLATE" description="COM_REDEVENT_SETTINGS_FRONTEND_EVENT_TEMPLATE_TIP" />
-    <param name="edit_categories" type="radio" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_CATEGORY" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_CATEGORY_TIP">
+ 	<fieldset name="COM_REDEVENT_frontendeventsubmit" label="COM_REDEVENT_frontendeventsubmit" description="COM_REDEVENT_SETTINGS_FRONTEND_TIP">
+		<field name="event_template" type="xref" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EVENT_TEMPLATE" description="COM_REDEVENT_SETTINGS_FRONTEND_EVENT_TEMPLATE_TIP" />
+    <field name="edit_categories" type="radio" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_CATEGORY" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_CATEGORY_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
-    <param name="edit_customs" type="radio" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_CUSTOM_FIELDS" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_CUSTOM_FIELDS_TIP">
+    </field>
+    <field name="edit_customs" type="radio" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_CUSTOM_FIELDS" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_CUSTOM_FIELDS_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
-    <param name="edit_image" type="list" default="1" label="COM_REDEVENT_SETTINGS_FRONTEND_SUBMIT_IMAGE_LABEL" description="COM_REDEVENT_SETTINGS_FRONTEND_SUBMIT_IMAGE_DESC">
+    </field>
+    <field name="edit_image" type="list" default="1" label="COM_REDEVENT_SETTINGS_FRONTEND_SUBMIT_IMAGE_LABEL" description="COM_REDEVENT_SETTINGS_FRONTEND_SUBMIT_IMAGE_DESC">
       <option value="0">COM_REDEVENT_SETTINGS_FRONTEND_SUBMIT_IMAGE_DISABLED</option>
       <option value="1">COM_REDEVENT_SETTINGS_FRONTEND_SUBMIT_IMAGE_OPTIONAL</option>
       <option value="2">COM_REDEVENT_SETTINGS_FRONTEND_SUBMIT_IMAGE_REQUIRED</option>
-    </param>
-    <param name="edit_summary" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_SUMMARY" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_SUMMARY_TIP">
+    </field>
+    <field name="edit_summary" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_SUMMARY" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_SUMMARY_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
-    <param name="edit_description" type="radio" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_DESCRIPTION" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_DESCRIPTION_TIP">
+    </field>
+    <field name="edit_description" type="radio" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_DESCRIPTION" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_DESCRIPTION_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
-    <param name="edit_description_allow_editor" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_DESCRIPTION_ALLOW_EDITOR" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_DESCRIPTION_ALLOW_EDITOR_TIP">
+    </field>
+    <field name="edit_description_allow_editor" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_DESCRIPTION_ALLOW_EDITOR" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_DESCRIPTION_ALLOW_EDITOR_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
-    <param name="max_description" type="text" default="1000" label="COM_REDEVENT_SETTINGS_FRONTEND_MAX_DESCRIPTION_LABEL" description="COM_REDEVENT_SETTINGS_FRONTEND_MAX_DESCRIPTION_DESC" />
-    <param name="edit_session_title" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_SESSION_TITLE_LABEL" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_SESSION_TITLE_DESC">
+    </field>
+    <field name="max_description" type="text" default="1000" label="COM_REDEVENT_SETTINGS_FRONTEND_MAX_DESCRIPTION_LABEL" description="COM_REDEVENT_SETTINGS_FRONTEND_MAX_DESCRIPTION_DESC" />
+    <field name="edit_session_title" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_SESSION_TITLE_LABEL" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_SESSION_TITLE_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
-    <param name="edit_registration" type="radio" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_REGISTRATION" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_REGISTRATION_TIP">
+    </field>
+    <field name="edit_registration" type="radio" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_REGISTRATION" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_REGISTRATION_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
-    <param name="edit_registration_end" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_REGISTRATION_END" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_REGISTRATION_END_TIP">
+    </field>
+    <field name="edit_registration_end" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_REGISTRATION_END" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_REGISTRATION_END_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
-    <param name="edit_price" type="radio" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_PRICE" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_PRICE_TIP">
+    </field>
+    <field name="edit_price" type="radio" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_PRICE" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_PRICE_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
-    <param name="edit_credits" type="radio" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_CREDITS" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_CREDITS_TIP">
+    </field>
+    <field name="edit_credits" type="radio" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_CREDITS" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_CREDITS_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
-    <param name="edit_roles" type="radio" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_ROLES" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_ROLES_TIP">
+    </field>
+    <field name="edit_roles" type="radio" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_ROLES" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_ROLES_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
-    <param name="create_session" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FRONTEND_CREATE_SESSION" description="COM_REDEVENT_SETTINGS_FRONTEND_CREATE_SESSION_TIP">
+    </field>
+    <field name="create_session" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FRONTEND_CREATE_SESSION" description="COM_REDEVENT_SETTINGS_FRONTEND_CREATE_SESSION_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
-    <param name="allow_attachments" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FRONTEND_ALLOW_ATTACHMENTS_LABEL" description="COM_REDEVENT_SETTINGS_FRONTEND_ALLOW_ATTACHMENTS_TIP">
+    </field>
+    <field name="allow_attachments" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FRONTEND_ALLOW_ATTACHMENTS_LABEL" description="COM_REDEVENT_SETTINGS_FRONTEND_ALLOW_ATTACHMENTS_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
-    <param name="edit_recurrence" type="radio" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EDITRECURRENCE_LABEL" description="COM_REDEVENT_SETTINGS_FRONTEND_EDITRECURRENCE_DESC">
+    </field>
+    <field name="edit_recurrence" type="radio" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EDITRECURRENCE_LABEL" description="COM_REDEVENT_SETTINGS_FRONTEND_EDITRECURRENCE_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
- 	</params>
+    </field>
+ 	</fieldset>
  	
- 	<params group="COM_REDEVENT_registration">
- 	  <param type="respacer" default="COM_REDEVENT_SETTINGS_TAGS_LINK"/>
-    <param name="registration_default_recipients" type="text" default="" size="80" label="COM_REDEVENT_SETTINGS_REGISTRATION_DEFAULT_RECIPIENTS" description="COM_REDEVENT_SETTINGS_REGISTRATION_DEFAULT_RECIPIENTS_TIP"/>
-    <param name="registration_notify_creator" type="radio" default="1" label="COM_REDEVENT_SETTINGS_REGISTRATION_NOTIFY_CREATOR" description="COM_REDEVENT_SETTINGS_REGISTRATION_NOTIFY_CREATOR_TIP">
+ 	<fieldset name="COM_REDEVENT_registration" label="COM_REDEVENT_registration" description="COM_REDEVENT_registration">
+ 	  <field type="spacer" label="COM_REDEVENT_SETTINGS_TAGS_LINK"/>
+    <field name="registration_default_recipients" type="text" default="" size="80" label="COM_REDEVENT_SETTINGS_REGISTRATION_DEFAULT_RECIPIENTS" description="COM_REDEVENT_SETTINGS_REGISTRATION_DEFAULT_RECIPIENTS_TIP"/>
+    <field name="registration_notify_creator" type="radio" default="1" label="COM_REDEVENT_SETTINGS_REGISTRATION_NOTIFY_CREATOR" description="COM_REDEVENT_SETTINGS_REGISTRATION_NOTIFY_CREATOR_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
- 		<param name="registration_notification_subject" type="text" size="80" default="New registration for event [event_title] on [date]" label="COM_REDEVENT_SETTINGS_REGISTRATION_NOTIFICATION_SUBJECT" description="COM_REDEVENT_SETTINGS_REGISTRATION_NOTIFICATION_SUBJECT_TIP" />
- 		<param name="registration_notification_body" type="textarea" cols="80" rows="5" default="registration details&lt;br /&gt;&lt;br /&gt;[answers]" label="COM_REDEVENT_SETTINGS_REGISTRATION_NOTIFICATION_BODY" description="COM_REDEVENT_SETTINGS_REGISTRATION_NOTIFICATION_BODY_TIP" />
+    </field>
+ 		<field name="registration_notification_subject" type="text" size="80" default="New registration for event [event_title] on [date]" label="COM_REDEVENT_SETTINGS_REGISTRATION_NOTIFICATION_SUBJECT" description="COM_REDEVENT_SETTINGS_REGISTRATION_NOTIFICATION_SUBJECT_TIP" />
+ 		<field name="registration_notification_body" type="textarea" cols="80" rows="5" default="registration details&lt;br /&gt;&lt;br /&gt;[answers]" label="COM_REDEVENT_SETTINGS_REGISTRATION_NOTIFICATION_BODY" description="COM_REDEVENT_SETTINGS_REGISTRATION_NOTIFICATION_BODY_TIP" />
  		
-    <param name="registration_notification_attach_rfuploads" type="radio" default="1" label="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_LABEL" description="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_DESC">
+    <field name="registration_notification_attach_rfuploads" type="radio" default="1" label="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_LABEL" description="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
-    <param name="registration_notification_attach_rfuploads_maxsize" type="text" size="20" default="2000" label="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_MAXSIZE_LABEL" description="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_MAXSIZE_DESC" />
+    </field>
+    <field name="registration_notification_attach_rfuploads_maxsize" type="text" size="20" default="2000" label="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_MAXSIZE_LABEL" description="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_MAXSIZE_DESC" />
     
- 		<param name="unregistration_notification_subject" type="text" size="80" default="Cancelled registration for event [event_title] on [date]" label="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_SUBJECT" description="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_SUBJECT_DESC" />
- 		<param name="unregistration_notification_body" type="textarea" cols="80" rows="5" default="registration details were &lt;br /&gt;&lt;br /&gt;[answers]" label="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_BODY" description="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_BODY_DESC" />
+ 		<field name="unregistration_notification_subject" type="text" size="80" default="Cancelled registration for event [event_title] on [date]" label="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_SUBJECT" description="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_SUBJECT_DESC" />
+ 		<field name="unregistration_notification_body" type="textarea" cols="80" rows="5" default="registration details were &lt;br /&gt;&lt;br /&gt;[answers]" label="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_BODY" description="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_BODY_DESC" />
  	
- 		<param type="spacer" />
- 		<param type="spacer" default="COM_REDEVENT_SETTINGS_REGISTRATION_EXPIRATION_DESC" />
- 	 	<param name="registration_expiration" type="text" size="80" default="" label="COM_REDEVENT_SETTINGS_REGISTRATION_EXPIRATION_LABEL" description="COM_REDEVENT_SETTINGS_REGISTRATION_EXPIRATION_DESC" />
+ 		<field type="spacer" hr="true"/>
+ 		<field type="spacer" label="COM_REDEVENT_SETTINGS_REGISTRATION_EXPIRATION_DESC" />
+ 	 	<field name="registration_expiration" type="text" size="80" default="" label="COM_REDEVENT_SETTINGS_REGISTRATION_EXPIRATION_LABEL" description="COM_REDEVENT_SETTINGS_REGISTRATION_EXPIRATION_DESC" />
  	
- 	</params>
+ 	</fieldset>
  	
- 	<params group="COM_REDEVENT_SETTINGS_REMINDER">
- 	  <param type="respacer" default="COM_REDEVENT_SETTINGS_TAGS_LINK"/>
- 	  <param type="spacer" default="COM_REDEVENT_SETTINGS_REMINDER_STATUS_DESC"/>
-		<param name="reminder_status" type="list" default="1" label="COM_REDEVENT_SETTINGS_REMINDER_STATUS_LABEL" description="COM_REDEVENT_SETTINGS_REMINDER_STATUS_DESC">
+ 	<fieldset name="COM_REDEVENT_SETTINGS_REMINDER" label="COM_REDEVENT_SETTINGS_REMINDER" description="COM_REDEVENT_SETTINGS_REMINDER_STATUS_DESC">
+ 	  <field type="spacer" label="COM_REDEVENT_SETTINGS_TAGS_LINK"/>
+		<field name="reminder_status" type="list" default="1" label="COM_REDEVENT_SETTINGS_REMINDER_STATUS_LABEL" description="COM_REDEVENT_SETTINGS_REMINDER_STATUS_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
-		</param>
-		<param name="reminder_include_waiting" type="list" default="0" label="COM_REDEVENT_SETTINGS_REMINDER_INCLUDE_WAITING_LABEL" description="COM_REDEVENT_SETTINGS_REMINDER_INCLUDE_WAITING_DESC">
+		</field>
+		<field name="reminder_include_waiting" type="list" default="0" label="COM_REDEVENT_SETTINGS_REMINDER_INCLUDE_WAITING_LABEL" description="COM_REDEVENT_SETTINGS_REMINDER_INCLUDE_WAITING_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
-		</param>
-		<param name="reminder_days" type="text" size="2" default="14" label="COM_REDEVENT_SETTINGS_REMINDER_DAYS_LABEL" description="COM_REDEVENT_SETTINGS_REMINDER_DAYS_DESC" />
-		<param name="reminder_subject" type="text" size="80" default="Reminder: you are registered to [event_title]@[venue_title] on [date]" label="COM_REDEVENT_SETTINGS_REMINDER_SUBJECT_LABEL" description="COM_REDEVENT_SETTINGS_REMINDER_SUBJECT_DESC" />
-		<param name="reminder_body" type="textarea" cols="80" rows="5" default="You are registered to [event_title]@[venue_title] on [date]" label="COM_REDEVENT_SETTINGS_REMINDER_BODY_LABEL" description="COM_REDEVENT_SETTINGS_REMINDER_BODY_DESC" />
- 	</params>
+		</field>
+		<field name="reminder_days" type="text" size="2" default="14" label="COM_REDEVENT_SETTINGS_REMINDER_DAYS_LABEL" description="COM_REDEVENT_SETTINGS_REMINDER_DAYS_DESC" />
+		<field name="reminder_subject" type="text" size="80" default="Reminder: you are registered to [event_title]@[venue_title] on [date]" label="COM_REDEVENT_SETTINGS_REMINDER_SUBJECT_LABEL" description="COM_REDEVENT_SETTINGS_REMINDER_SUBJECT_DESC" />
+		<field name="reminder_body" type="textarea" cols="80" rows="5" default="You are registered to [event_title]@[venue_title] on [date]" label="COM_REDEVENT_SETTINGS_REMINDER_BODY_LABEL" description="COM_REDEVENT_SETTINGS_REMINDER_BODY_DESC" />
+ 	</fieldset>
  	
- 	<params group="COM_REDEVENT_SETTINGS_ATTACHMENTS">
-    <param name="attachments_path" type="text" size="100" default="media/com_redevent/attachments" label="COM_REDEVENT_SETTINGS_ATTACHMENT_PATH" description="COM_REDEVENT_SETTINGS_ATTACHMENT_PATH_DESC" />
-    <param name="attachments_maxsize" type="text" size="15" default="1000" label="COM_REDEVENT_SETTINGS_ATTACHMENT_MAXSIZE" description="COM_REDEVENT_SETTINGS_ATTACHMENT_MAXSIZE_DESC" />
-    <param name="attachments_types" type="text" size="100" default="txt,csv,htm,html,xml,css,doc,xls,rtf,ppt,pdf,swf,flv,avi,wmv,mov,jpg,jpeg,gif,png,zip,tar.gz" label="COM_REDEVENT_SETTINGS_ATTACHMENT_TYPES" description="COM_REDEVENT_SETTINGS_ATTACHMENT_TYPES_DESC" />
- 	</params>
+ 	<fieldset name="COM_REDEVENT_SETTINGS_ATTACHMENTS" label="COM_REDEVENT_SETTINGS_ATTACHMENTS" description="COM_REDEVENT_SETTINGS_ATTACHMENTS">
+    <field name="attachments_path" type="text" size="100" default="media/com_redevent/attachments" label="COM_REDEVENT_SETTINGS_ATTACHMENT_PATH" description="COM_REDEVENT_SETTINGS_ATTACHMENT_PATH_DESC" />
+    <field name="attachments_maxsize" type="text" size="15" default="1000" label="COM_REDEVENT_SETTINGS_ATTACHMENT_MAXSIZE" description="COM_REDEVENT_SETTINGS_ATTACHMENT_MAXSIZE_DESC" />
+    <field name="attachments_types" type="text" size="100" default="txt,csv,htm,html,xml,css,doc,xls,rtf,ppt,pdf,swf,flv,avi,wmv,mov,jpg,jpeg,gif,png,zip,tar.gz" label="COM_REDEVENT_SETTINGS_ATTACHMENT_TYPES" description="COM_REDEVENT_SETTINGS_ATTACHMENT_TYPES_DESC" />
+ 	</fieldset>
  	
- 	<params group="COM_REDEVENT_SETTINGS_SEO">
-    <param name="default_itemid" type="text" default="" label="COM_REDEVENT_SETTINGS_DEFAULT_ITEMID" description="COM_REDEVENT_SETTINGS_DEFAULT_ITEMID_DESC"/>
-		<param type="respacer" default="COM_REDEVENT_SETTINGS_SEO_SEPARATOR_sh404sef"/>    
-    <param name="sh404sef_always_include_menu_title" type="radio" default="0" label="COM_REDEVENT_SH404SEF_ALWAYS_INSERT_MENU_TITLE" description="COM_REDEVENT_SH404SEF_ALWAYS_INSERT_MENU_TITLE_TIP">
+ 	<fieldset name="COM_REDEVENT_SETTINGS_SEO" label="COM_REDEVENT_SETTINGS_SEO" description="COM_REDEVENT_SETTINGS_SEO">
+    <field name="default_itemid" type="text" default="" label="COM_REDEVENT_SETTINGS_DEFAULT_ITEMID" description="COM_REDEVENT_SETTINGS_DEFAULT_ITEMID_DESC"/>
+		<field type="spacer" label="COM_REDEVENT_SETTINGS_SEO_SEPARATOR_sh404sef"/>    
+    <field name="sh404sef_always_include_menu_title" type="radio" default="0" label="COM_REDEVENT_SH404SEF_ALWAYS_INSERT_MENU_TITLE" description="COM_REDEVENT_SH404SEF_ALWAYS_INSERT_MENU_TITLE_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
-    <param name="sh404sef_always_include_itemid" type="radio" default="0" label="COM_REDEVENT_SH404SEF_ALWAYS_INSERT_ITEMID" description="COM_REDEVENT_SH404SEF_ALWAYS_INSERT_ITEMID_TIP">
+    </field>
+    <field name="sh404sef_always_include_itemid" type="radio" default="0" label="COM_REDEVENT_SH404SEF_ALWAYS_INSERT_ITEMID" description="COM_REDEVENT_SH404SEF_ALWAYS_INSERT_ITEMID_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
- 	</params>
+    </field>
+ 	</fieldset>
  	
- 	<params group="COM_REDEVENT_SETTINGS_MISC">
- 		<param name="ical_timezone" type="timezones" default="0" label="COM_REDEVENT_SETTINGS_MISC_TIMEZONE_LABEL" description="COM_REDEVENT_SETTINGS_MISC_TIMEZONE_DESC" />
-    <param name="ical_no_timezone" type="radio" default="0" label="COM_REDEVENT_SETTINGS_MISC_NOTIMEZONE_LABEL" description="COM_REDEVENT_SETTINGS_MISC_NOTIMEZONE_DESC">
+ 	<fieldset name="COM_REDEVENT_SETTINGS_MISC" label="COM_REDEVENT_SETTINGS_MISC" description="COM_REDEVENT_SETTINGS_MISC">
+ 		<field name="ical_timezone" type="timezones" default="0" label="COM_REDEVENT_SETTINGS_MISC_TIMEZONE_LABEL" description="COM_REDEVENT_SETTINGS_MISC_TIMEZONE_DESC" />
+    <field name="ical_no_timezone" type="radio" default="0" label="COM_REDEVENT_SETTINGS_MISC_NOTIMEZONE_LABEL" description="COM_REDEVENT_SETTINGS_MISC_NOTIMEZONE_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
-    <param name="week_start" type="radio" default="MO" label="COM_REDEVENT_WEEK_START" description="COM_REDEVENT_WEEK_START_DESC">
+    </field>
+    <field name="week_start" type="radio" default="MO" label="COM_REDEVENT_WEEK_START" description="COM_REDEVENT_WEEK_START_DESC">
       <option value="SU">COM_REDEVENT_SUNDAY</option>
       <option value="MO">COM_REDEVENT_MONDAY</option>
-    </param>
-    <param name="recurrence_limit" type="text" default="30" label="COM_REDEVENT_RECURRENCE_ANTICIPATION_WINDOW" description="COM_REDEVENT_RECURRENCE_ANTICIPATION_WINDOW_DESC" />
-		<param name="default_content" type="event" default="0" label="COM_REDEVENT_SELECT_EVENT_DEFAULT_CONTENT" description="COM_REDEVENT_SELECT_EVENT_DEFAULT_CONTENT_DESC" />
-    <param name="allow_email_aliasing" type="radio" default="1" label="COM_REDEVENT_SETTINGS_MISC_ALLOW_EMAIL_ALIASING" description="COM_REDEVENT_SETTINGS_MISC_ALLOW_EMAIL_ALIASING_TIP">
+    </field>
+    <field name="recurrence_limit" type="text" default="30" label="COM_REDEVENT_RECURRENCE_ANTICIPATION_WINDOW" description="COM_REDEVENT_RECURRENCE_ANTICIPATION_WINDOW_DESC" />
+		<field name="default_content" type="event" default="0" label="COM_REDEVENT_SELECT_EVENT_DEFAULT_CONTENT" description="COM_REDEVENT_SELECT_EVENT_DEFAULT_CONTENT_DESC" />
+    <field name="allow_email_aliasing" type="radio" default="1" label="COM_REDEVENT_SETTINGS_MISC_ALLOW_EMAIL_ALIASING" description="COM_REDEVENT_SETTINGS_MISC_ALLOW_EMAIL_ALIASING_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param> 	
-    <param name="csv_export_strip_linebreaks" type="radio" default="0" label="COM_REDEVENT_SETTINGS_CSV_EXPORT_STRIP_LINEBREAKS_LABEL" description="COM_REDEVENT_SETTINGS_CSV_EXPORT_STRIP_LINEBREAKS_DESC">
+    </field> 	
+    <field name="csv_export_strip_linebreaks" type="radio" default="0" label="COM_REDEVENT_SETTINGS_CSV_EXPORT_STRIP_LINEBREAKS_LABEL" description="COM_REDEVENT_SETTINGS_CSV_EXPORT_STRIP_LINEBREAKS_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param> 
-    <param name="cat_select_ordering" type="list" default="0" label="COM_REDEVENT_SETTINGS_CAT_SELECT_ORDERING_LABEL" description="COM_REDEVENT_SETTINGS_CAT_SELECT_ORDERING_DESC">
+    </field> 
+    <field name="cat_select_ordering" type="list" default="0" label="COM_REDEVENT_SETTINGS_CAT_SELECT_ORDERING_LABEL" description="COM_REDEVENT_SETTINGS_CAT_SELECT_ORDERING_DESC">
       <option value="0">COM_REDEVENT_SETTINGS_CAT_SELECT_ORDERING_PARENT</option>
       <option value="1">COM_REDEVENT_SETTINGS_CAT_SELECT_ORDERING_NAME</option>
-    </param> 
-    <param type="spacer"/>
-    <param type="spacer" default="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SPACER"/>
-    <param name="attendees_table_show_ip" type="radio" default="0" label="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SHOW_IP_LABEL" description="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SHOW_IP_DESC">
+    </field> 
+    <field type="spacer" hr="true"/>
+    <field type="spacer" label="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SPACER"/>
+    <field name="attendees_table_show_ip" type="radio" default="0" label="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SHOW_IP_LABEL" description="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SHOW_IP_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param> 
-    <param name="attendees_table_show_uniqueid" type="radio" default="1" label="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SHOW_UNIQUEID_LABEL" description="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SHOW_UNIQUEID_DESC">
+    </field> 
+    <field name="attendees_table_show_uniqueid" type="radio" default="1" label="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SHOW_UNIQUEID_LABEL" description="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SHOW_UNIQUEID_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param> 
- 	</params>
+    </field> 
+ 	</fieldset>
  	
- 	<params group="COM_REDEVENT_SETTINGS_SOCIAL">
-    <param name="gplusone" type="radio" default="0" label="COM_REDEVENT_SETTINGS_SOCIAL_GOOGLEPLUSONE_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_GOOGLEPLUSONE_DESC">
+ 	<fieldset name="COM_REDEVENT_SETTINGS_SOCIAL" label="COM_REDEVENT_SETTINGS_SOCIAL" description="COM_REDEVENT_SETTINGS_SOCIAL">
+    <field name="gplusone" type="radio" default="0" label="COM_REDEVENT_SETTINGS_SOCIAL_GOOGLEPLUSONE_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_GOOGLEPLUSONE_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
-    <param type="respacer" />
-    <param name="fbopengraph" type="radio" default="0" label="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_DESC">
+    </field>
+    <field type="divider" />
+    <field name="fbopengraph" type="radio" default="0" label="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>    
-    <param name="fbadmin" type="text" default="" label="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_ADMIN_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_ADMIN_DESC"/>
-    <param type="respacer" />
-    <param name="tweet" type="radio" default="0" label="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_BUTTON_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_BUTTON_DESC">
+    </field>    
+    <field name="fbadmin" type="text" default="" label="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_ADMIN_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_ADMIN_DESC"/>
+    <field type="divider" />
+    <field name="tweet" type="radio" default="0" label="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_BUTTON_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_BUTTON_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </param>
-    <param name="tweet_recommend" type="text" default="" label="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND_DESC"/>
-    <param name="tweet_recommend2" type="text" default="" label="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_DESC"/>
-    <param name="tweet_recommend2_text" type="text" default="" label="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_TEXT_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_TEXT_DESC"/>
- 	</params>
+    </field>
+    <field name="tweet_recommend" type="text" default="" label="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND_DESC"/>
+    <field name="tweet_recommend2" type="text" default="" label="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_DESC"/>
+    <field name="tweet_recommend2_text" type="text" default="" label="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_TEXT_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_TEXT_DESC"/>
+ 	</fieldset>
+ 	
+	<fieldset	name="permissions"
+		label="JCONFIG_PERMISSIONS_LABEL"
+		description="JCONFIG_PERMISSIONS_DESC">
+		<field
+			name="rules"
+			type="rules"
+			label="JCONFIG_PERMISSIONS_LABEL"
+			class="inputbox"
+			validate="rules"
+			filter="rules"
+			component="com_redevent"
+			section="component"
+		/>
+	</fieldset>
 </config>
