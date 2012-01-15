@@ -72,9 +72,8 @@ defined('_JEXEC') or die('Restricted access');
 			<td><?php echo $this->pageNav->getRowOffset( $i ); ?></td>
 			<td>
 				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_SELECT' );?>::<?php echo $row->title; ?>">
-				<a style="cursor:pointer" onclick="window.parent.selectXref('<?php echo $row->xref; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $row->title ); ?>', '<?php echo $this->field; ?>');">
-					<?php echo htmlspecialchars($row->title, ENT_QUOTES, 'UTF-8'); ?>
-				</a></span>
+        <a class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('<?php echo $row->xref; ?>', '<?php echo $this->escape(addslashes($row->title)); ?>');"><?php echo $this->escape($row->title); ?></a>
+        </span>
 			</td>
 			<td>
 				<?php

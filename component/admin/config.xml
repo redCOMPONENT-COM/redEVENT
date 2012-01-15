@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<config>
+<config addfieldpath="/administrator/components/com_redevent/models/fields">
 
 	<fieldset name="general" label="COM_REDEVENT_SETTINGS_GENERAL_LABEL" description="COM_REDEVENT_SETTINGS_GENERAL_DESC">		
 		<field name="cat_num" type="text" size="2" default="4" label="COM_REDEVENT_CAT_DISPLAY" description="COM_REDEVENT_CAT_DISPLAY_DESC" />	
@@ -166,7 +166,7 @@
  	</fieldset>
  	
  	<fieldset name="COM_REDEVENT_frontendeventsubmit" label="COM_REDEVENT_frontendeventsubmit" description="COM_REDEVENT_SETTINGS_FRONTEND_TIP">
-		<field name="event_template" type="xref" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EVENT_TEMPLATE" description="COM_REDEVENT_SETTINGS_FRONTEND_EVENT_TEMPLATE_TIP" />
+		<field name="event_template" type="session" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EVENT_TEMPLATE" description="COM_REDEVENT_SETTINGS_FRONTEND_EVENT_TEMPLATE_TIP" />
     <field name="edit_categories" type="radio" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_CATEGORY" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_CATEGORY_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
