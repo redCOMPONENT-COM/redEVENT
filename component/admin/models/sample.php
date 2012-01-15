@@ -181,7 +181,7 @@ class RedEventModelSample extends JModel
 		$event->submission_type_webform              = JText::_('COM_REDEVENT_SAMPLE_EVENT_WEBFORM');
 		$event->submission_type_email_subject        = null;
 		$event->submission_type_webform_formal_offer = null;
-		$event->show_submission_type_webform_formal_offer = 0;
+// 		$event->show_submission_type_webform_formal_offer = 0;
 		
 		$event->send_pdf_form = 0;
 		$event->pdf_form_data = 0;

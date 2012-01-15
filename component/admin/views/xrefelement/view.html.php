@@ -93,6 +93,7 @@ class RedEventViewxrefelement extends JView {
 		$this->assignRef('elsettings'	, $elsettings);
 		$this->assignRef('form_id',  JRequest::getInt('form_id'));
 		$this->assign('field',          $fieldname);
+		$this->assign('function', JRequest::getCmd('function'));
 
 		parent::display($tpl);
 	}

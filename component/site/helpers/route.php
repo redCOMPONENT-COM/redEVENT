@@ -300,12 +300,11 @@ class RedeventHelperRoute
 	 * @return int Itemid
 	 */
 	function _findItem($query)
-	{
+	{		
 		$component =& JComponentHelper::getComponent('com_redevent');
 		$menus	= & JApplication::getMenu('site');
-		$items	= $menus->getItems('componentid', $component->id);
+		$items	= $menus->getItems('component_id', $component->id);
 		$user 	= & JFactory::getUser();
-		$access = (int)$user->get('aid');
 		
 		$view = isset($query['view']) ? $query['view'] : null;
 		if (!$view && isset($query['controller']) && $query['controller'] == 'registration') {
@@ -316,7 +315,7 @@ class RedeventHelperRoute
 		{
 			foreach($items as $item)
 			{	
-				if ($view && (@$item->query['view'] == $view) && ($item->published == 1) && ($item->access <= $access)) 
+				if ($view && (@$item->query['view'] == $view) && ($item->published == 1)) 
 				{					
 					switch ($view)
 					{
@@ -337,7 +336,7 @@ class RedeventHelperRoute
 			// second round for view with optional params
 			foreach($items as $item)
 			{	
-				if (isset($view) && (@$item->query['view'] == $view) && ($item->published == 1) && ($item->access <= $access)) 
+				if (isset($view) && (@$item->query['view'] == $view) && ($item->published == 1)) 
 				{					
 					switch ($view)
 					{

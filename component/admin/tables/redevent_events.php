@@ -118,7 +118,7 @@ class RedEvent_events extends JTable
 	/** @var string */
 	var $submission_type_webform	= null;
   /** @var boolean */
-  var $show_submission_type_webform_formal_offer = 0;
+//   var $show_submission_type_webform_formal_offer = 0;
 	/** @var string */
 	var $submission_type_webform_formal_offer = null;
 	/** @var int */
