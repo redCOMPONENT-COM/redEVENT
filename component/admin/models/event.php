@@ -444,13 +444,7 @@ class RedEventModelEvent extends JModel
 	 */
 	public function getCheckredFORM() 
 	{
-		$db = JFactory::getDBO();
-		$q = "SELECT id FROM #__components
-			WHERE link = 'option=com_redform'";
-		$db->setQuery($q);
-		$result = $db->loadResult();
-		if ($result > 0) return true;
-		else return false;
+		return JComponentHelper::isEnabled('com_redform', true);
 	}
 	
 	/**

@@ -254,7 +254,7 @@ class RedEventControllerEvents extends RedEventController
 				} 
 			}
 			
-			if ($this->twit == true)
+			if ($this->twit == true && 0)
 			{
 				//If the AutoTweet NG Component is installed 
 				if (JComponentHelper::getComponent('com_autotweet', true)->enabled) {
