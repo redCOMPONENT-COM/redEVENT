@@ -39,6 +39,37 @@ defined('_JEXEC') or die('Restricted access');
   </tr>
   <tr>
     <td>
+	<?php
+	echo JHtml::_('tabs.start','config-tabs-global', array('useCookie'=>1));
+		$fieldSets = $this->globalparams->getFieldsets();
+		foreach ($fieldSets as $name => $fieldSet) :
+			$label = empty($fieldSet->label) ? 'COM_REDEVENT_'.$name.'_FIELDSET_LABEL' : $fieldSet->label;
+			echo JHtml::_('tabs.panel',JText::_($label), 'publishing-details');
+			if (isset($fieldSet->description) && !empty($fieldSet->description)) :
+				echo '<p class="tab-description">'.JText::_($fieldSet->description).'</p>';
+			endif;
+	?>
+			<ul class="config-option-list">
+			<?php
+			foreach ($this->globalparams->getFieldset($name) as $field):
+			?>
+				<li>
+				<?php if (!$field->hidden) : ?>
+				<?php echo $field->label; ?>
+				<?php endif; ?>
+				<?php echo $field->input; ?>
+				</li>
+			<?php
+			endforeach;
+			?>
+			</ul>
+
+
+	<div class="clr"></div>
+	<?php
+		endforeach;
+	echo JHtml::_('tabs.end');/*
+	?>
     <?php echo $this->tabs->startPane('globalparams'); ?>
 		<?php $j = 0; ?>
     <?php echo $this->tabs->startPanel(JText::_('COM_REDEVENT_GLOBAL_PARAMETERS' ), 'global'.$j); ?>
@@ -54,7 +85,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php endif; ?>
     <?php endforeach; ?>
     
-    <?php echo $this->tabs->endPane(); ?>
+    <?php echo $this->tabs->endPane(); */?>
     </td>
   </tr>
 </table>

@@ -25,6 +25,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
+jimport('joomla.form.form');
+
 /**
  * View class for the EventList Settings screen
  *
@@ -80,12 +82,8 @@ class RedEventViewSettings extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::help( 'el.settings', true );
 
-		//Get global parameters
-// 		$table =& JTable::getInstance('extension');
-// 		$table->loadByOption( 'com_redevent' );
-		$params = JComponentHelper::getParams('com_redevent');
-		$globalparams = new JParameter( $table->params, JPATH_ADMINISTRATOR.DS.'components'.DS.'com_redevent'.DS.'config.xml' );
-
+		$globalparams = $this->get('form');
+		
 		// tabs for global params
 		jimport('joomla.html.pane');
 		$tabs = & JPane::getInstance('tabs');

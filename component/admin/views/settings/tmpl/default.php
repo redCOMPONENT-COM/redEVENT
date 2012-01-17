@@ -28,11 +28,11 @@ defined('_JEXEC') or die('Restricted access');
 
       <div id="elconfig-document">
       <div id="page-basic">
-        <?php echo $this->loadTemplate('basic'); ?>
+        <?php //echo $this->loadTemplate('basic'); ?>
       </div>
 
       <div id="page-details">
-        <?php echo $this->loadTemplate('detailspage'); ?>
+        <?php //echo $this->loadTemplate('detailspage'); ?>
       </div>
       
       <div id="page-parameters">
@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
       </div>
       
       <div id="page-signup">
-        <?php echo $this->loadTemplate('signup'); ?>
+        <?php //echo $this->loadTemplate('signup'); ?>
       </div>
     </div>
     <div class="clr"></div>

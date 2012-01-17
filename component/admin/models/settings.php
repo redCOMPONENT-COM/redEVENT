@@ -22,7 +22,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
+jimport('joomla.application.component.modelform');
 
 /**
  * EventList Component Settings Model
@@ -31,7 +31,7 @@ jimport('joomla.application.component.model');
  * @subpackage EventList
  * @since		0.9
  */
-class RedEventModelSettings extends JModel
+class RedEventModelSettings extends JModelForm
 {
 	/**
 	 * Settings data
@@ -169,6 +169,39 @@ class RedEventModelSettings extends JModel
 		}
 
     	return true;
+	}
+	
+	
+	/**
+	* Method to get a form object.
+	*
+	* @param	array	$data		Data for the form.
+	* @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
+	*
+	* @return	mixed	A JForm object on success, false on failure
+	* @since	1.6
+	*/
+	public function getForm($data = array(), $loadData = true)
+	{
+		jimport('joomla.form.form');
+		JForm::addFormPath(JPATH_COMPONENT_ADMINISTRATOR);
+
+		// Get the form.
+		$form = $this->loadForm(
+							'parameters',
+							'config',
+							array('control' => 'jform', 'load_data' => $loadData),
+							false,
+							'/config'
+							);
+
+		if (empty($form)) {
+			return false;
+		}
+
+		$params = JComponentHelper::getComponent('com_redevent')->params;
+		$form->bind($params);
+		return $form;
 	}
 }
 ?>
