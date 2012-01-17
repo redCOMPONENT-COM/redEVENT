@@ -39,8 +39,8 @@ window.addEvent('domready', function() {
 		$('submission_type_email_check').addEvent('click', redEVENTEventCheck.checkSubmissionEmailState);
 	}
 	
-	if ($ES("input[name=send_pdf_form]")) {
-		$ES("input[name=send_pdf_form]").addEvent('change', redEVENTEventCheck.checkEmailPdfState);
+	if ($$("input[name=send_pdf_form]")) {
+		$$("input[name=send_pdf_form]").addEvent('change', redEVENTEventCheck.checkEmailPdfState);
 	}
 	
 	$('activate1').addEvent('click', function(){

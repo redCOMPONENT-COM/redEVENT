@@ -61,7 +61,6 @@ class RedEventViewEvent extends JView {
 		$document	= & JFactory::getDocument();
 		$pane 		= & JPane::getInstance('tabs');
 		$user 		= & JFactory::getUser();
-		$elsettings = ELAdmin::config();
 		$params   = JComponentHelper::getParams('com_redevent');
 
 		//get vars
@@ -101,7 +100,7 @@ class RedEventViewEvent extends JView {
     $customfields =& $this->get('Customfields');
 		
 		/* Check if we have a redFORM id */
-		if (empty($row->redform_id)) $row->redform_id = $elsettings->defaultredformid;
+		if (empty($row->redform_id)) $row->redform_id = $params->get('defaultredformid');
 
 		// fail if checked out not by 'me'
 		if ($row->id) {
@@ -258,7 +257,7 @@ class RedEventViewEvent extends JView {
 		$this->assignRef('editor'		, $editor);
 		$this->assignRef('pane'			, $pane);
 		$this->assignRef('task'			, $task);
-		$this->assignRef('elsettings'	, $elsettings);
+		$this->assignRef('params'	,   $params);
 		$this->assignRef('formfields'	, $formfields);
 		$this->assignRef('venueslist'	, $venueslist);
     $this->assignRef('redform_install'	, $redform_install);
@@ -285,7 +284,7 @@ class RedEventViewEvent extends JView {
 		$editor 	= & JFactory::getEditor();
 		$document	= & JFactory::getDocument();
 		$uri 		= & JFactory::getURI();
-		$elsettings = ELAdmin::config();
+		$params   = JComponentHelper::getParams('com_redevent');
 
 		//add css and js to document
 		//JHTML::_('behavior.modal', 'a.modal');
@@ -352,7 +351,7 @@ class RedEventViewEvent extends JView {
 		$this->assignRef('editor'      	, $editor);
     $this->assignRef('lists'        , $lists);
 		$this->assignRef('request_url'	, $uri->toString());
-		$this->assignRef('elsettings'	  , $elsettings);
+		$this->assignRef('params'	  ,     $params);
     $this->assignRef('customfields' , $customfields);
 		$this->assignRef('pane'			    , $pane);
 
@@ -362,22 +361,22 @@ class RedEventViewEvent extends JView {
 	function _displayclosexref($tpl)
 	{	
     $document = & JFactory::getDocument();
-    $elsettings = ELAdmin::config();
+		$params   = JComponentHelper::getParams('com_redevent');
     
     $xref = $this->get('xref');
     
     /* Get the date */
-    $date = (!redEVENTHelper::isValidDate($xref->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $elsettings->formatdate, strtotime( $xref->dates )));
-    $enddate  = (!redEVENTHelper::isValidDate($xref->enddates) || $xref->enddates == $xref->dates) ? '' : strftime( $elsettings->formatdate, strtotime( $xref->enddates ));
+    $date = (!redEVENTHelper::isValidDate($xref->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $params->get('formatdate'), strtotime( $xref->dates )));
+    $enddate  = (!redEVENTHelper::isValidDate($xref->enddates) || $xref->enddates == $xref->dates) ? '' : strftime( $params->get('formatdate'), strtotime( $xref->enddates ));
     $displaydate = $date. ($enddate ? ' - '.$enddate: '');
 
     $displaytime = '';
     /* Get the time */
     if (isset($xref->times) && $xref->times != '00:00:00') {
-    	$displaytime = strftime( $elsettings->formattime, strtotime( $xref->times ));
+    	$displaytime = strftime( $params->get('formattime'), strtotime( $xref->times ));
 
     	if (isset($xref->endtimes) && $xref->endtimes != '00:00:00') {
-    		$displaytime .= ' - '.strftime( $elsettings->formattime, strtotime( $xref->endtimes ));
+    		$displaytime .= ' - '.strftime( $params->get('formattime'), strtotime( $xref->endtimes ));
     	}
     }
     $json_data = array( 'id'        => $xref->id,
