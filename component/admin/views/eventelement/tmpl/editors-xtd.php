@@ -113,7 +113,7 @@ defined('_JEXEC') or die('Restricted access');
 						$displaytime = '-';
 					} else {
 						$time = strftime( $this->elsettings->formattime, strtotime( $row->times ));
-						$displaytime = $time.' '.$this->elsettings->timename;
+						$displaytime = $time;
 					}
 					echo $displaytime;
 				?>

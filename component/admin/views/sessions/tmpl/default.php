@@ -129,10 +129,10 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 			$displaytime = '';
 			/* Get the time */
 			if (isset($row->times) && $row->times != '00:00:00') {
-				$displaytime = strftime( $this->settings->formattime, strtotime( $row->times )).' '.$this->settings->timename;
+				$displaytime = strftime( $this->settings->formattime, strtotime( $row->times ));
 	
 				if (isset($row->endtimes) && $row->endtimes != '00:00:00') {
-					$displaytime .= ' - '.strftime( $this->settings->formattime, strtotime( $row->endtimes )). ' '.$this->settings->timename;
+					$displaytime .= ' - '.strftime( $this->settings->formattime, strtotime( $row->endtimes ));
 				}
 			}
 			$checked 	= JHTML::_('grid.checkedout',   $row, $i );

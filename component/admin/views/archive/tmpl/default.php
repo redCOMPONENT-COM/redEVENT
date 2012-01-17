@@ -101,7 +101,7 @@ defined('_JEXEC') or die('Restricted access');
 								/* Get the time */
 								$time = strftime( $this->elsettings->formattime, strtotime( $eventdetails->times ));
 								$endtimes = strftime( $this->elsettings->formattime, strtotime( $eventdetails->endtimes ));
-								$displaytime = $time.' '.$this->elsettings->timename.' - '.$endtimes. ' '.$this->elsettings->timename;
+								$displaytime = $time.' - '.$endtimes;
 								?>
 								<tr class="eventdatetime">
 									<td><?php echo $eventdetails->venue; ?></td>

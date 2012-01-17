@@ -1,9 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config addfieldpath="/administrator/components/com_redevent/models/fields">
 
-	<fieldset name="general" label="COM_REDEVENT_SETTINGS_GENERAL_LABEL" description="COM_REDEVENT_SETTINGS_GENERAL_DESC">		
+	<fieldset name="general" label="COM_REDEVENT_SETTINGS_GENERAL_LABEL" description="COM_REDEVENT_SETTINGS_GENERAL_DESC">			
+		<field type="spacer" label="COM_REDEVENT_DISPLAY_SETTINGS" />
+		<field name="showdetails" type="list" default="1" label="COM_REDEVENT_SHOW_DETAILS" description="COM_REDEVENT_SHOW_DETAILS_TIP">
+			<option value="0">COM_REDEVENT_DETAILS_OFF</option>
+			<option value="1">COM_REDEVENT_LINK_ON_TITLE</option>
+		</field>
+		<field name="formatdate" type="text" default="%d.%m.%Y" label="COM_REDEVENT_DATE_STRFTIME" description="COM_REDEVENT_DATE_STRFTIME_TIP" />
+		<field name="formattime" type="text" default="%H.%M" label="COM_REDEVENT_TIME_STRFTIME" description="COM_REDEVENT_TIME_STRFTIME_TIP" />
+		<field name="currency_decimal_separator" type="text" default="," label="COM_REDEVENT_CURRENCY_DECIMAL_SEPARATOR" description="COM_REDEVENT_CURRENCY_DECIMAL_SEPARATOR_TIP" />
+		<field name="currency_thousand_separator" type="text" default="." label="COM_REDEVENT_CURRENCY_THOUSAND_SEPARATOR" description="COM_REDEVENT_CURRENCY_THOUSAND_SEPARATOR_TIP" />
+		<field name="currency_decimals" type="list" default="1" label="COM_REDEVENT_CURRENCY_DECIMALS" description="COM_REDEVENT_CURRENCY_DECIMALS_TIP">
+			<option value="decimals">COM_REDEVENT_DECIMALS</option>
+			<option value="comma">COM_REDEVENT_DECIMALS_COMMA_HYPHEN</option>
+			<option value="none">COM_REDEVENT_NONE</option>
+		</field>
+		<field name="storeip" type="radio" default="1" label="COM_REDEVENT_STORE_IP" description="COM_REDEVENT_STORE_IP_TIP">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>		
+		
+		<field type="spacer" label="COM_REDEVENT_MAIL_HANDLING" />
+		<field name="mailinform" type="list" default="1" label="COM_REDEVENT_MAIL_NEW_SUBMISSION" description="COM_REDEVENT_MAIL_NEW_SUBMISSION_TIP">
+			<option value="0">COM_REDEVENT_DISABLED</option>
+			<option value="1">COM_REDEVENT_ONLY_NEW_EVENT</option>
+			<option value="2">COM_REDEVENT_ONLY_NEW_VENUE</option>
+			<option value="3">COM_REDEVENT_BOTH</option>
+		</field>
+		<field name="mailinformrec" type="text" default="" label="COM_REDEVENT_MAIL_RECIPIENT" description="COM_REDEVENT_MAIL_RECIPIENT_TIP" />
+		
+		<field name="mailinformuser" type="list" default="1" label="COM_REDEVENT_MAIL_NEW_USER_SUBMISSION" description="COM_REDEVENT_MAIL_NEW_USER_SUBMISSION_TIP">
+			<option value="0">COM_REDEVENT_DISABLED</option>
+			<option value="1">COM_REDEVENT_ONLY_NEW_EVENT</option>
+			<option value="2">COM_REDEVENT_ONLY_NEW_VENUE</option>
+			<option value="3">COM_REDEVENT_BOTH</option>
+		</field>
+		
+		<field type="spacer" label="COM_REDEVENT_IMAGE_HANDLING" />
+		<field name="sizelimit" type="text" default="100" label="COM_REDEVENT_IMAGE_FILESIZE" description="COM_REDEVENT_IMAGE_FILESIZE_TIP" />
+		<field name="imageheight" type="text" default="100" label="COM_REDEVENT_IMAGE_HEIGHT" description="COM_REDEVENT_IMAGE_HEIGHT_TIP" />
+		<field name="imagewidth" type="text" default="100" label="COM_REDEVENT_IMAGE_WIDTH" description="COM_REDEVENT_IMAGE_WIDTH_TIP" warning="COM_REDEVENT_WARNING" />
+		<field name="gddisabled" type="radio" default="1" label="COM_REDEVENT_GD_LIBRARY" description="COM_REDEVENT_GD_LIBRARY_TIP">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>		
+		<field name="lightbox" type="radio" default="1" label="COM_REDEVENT_IMAGE_LIGHTBOX" description="COM_REDEVENT_IMAGE_LIGHTBOX_TIP">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>	
+		
+		<field type="spacer" label="COM_REDEVENT_META_HANDLING" />
+		<field name="meta_keywords" type="list" default="[title],[a_name],[catsid],[dates]" label="COM_REDEVENT_META_KEYWORDS" description="COM_REDEVENT_META_KEYWORDS_TIP">
+			<option value="[title]">COM_REDEVENT_EVENT_TITLE</option>
+			<option value="[a_name]">COM_REDEVENT_VENUE</option>
+			<option value="[catsid]">COM_REDEVENT_CATEGORY</option>
+			<option value="[dates]">COM_REDEVENT_DATE</option>
+			<option value="[times]">COM_REDEVENT_EVENT_TIME</option>
+			<option value="[enddates]">COM_REDEVENT_ENDDATE</option>
+			<option value="[endtimes]">COM_REDEVENT_END_TIME</option>
+		</field>	
+		<field name="meta_description" type="textarea" rows="10" cols="50" 
+		       translate_default="true"
+		       default="COM_REDEVENT_META_DESCRIPTION_STANDARD" 
+		       label="COM_REDEVENT_META_DESCRIPTION" 
+		       description="COM_REDEVENT_META_DESCRIPTION_TIP" />
+		
+		<field type="spacer" label="COM_REDEVENT_SIGNUP_LINKS" />
+		<field name="signup_external_text" type="text" 
+		       translate_default="true"
+		       default="COM_REDEVENT_SETTING_SIGNUP_EXTERNAL_TEXT_DEFAULT" 
+		       label="COM_REDEVENT_SETTING_SIGNUP_EXTERNAL_TEXT" 
+		       description="COM_REDEVENT_SETTING_SIGNUP_EXTERNAL_TEXT_DESC" />
+		<field name="signup_external_img" type="imagelist" 
+		       label="COM_REDEVENT_SETTING_SIGNUP_EXTERNAL_IMAGE" 
+		       description="COM_REDEVENT_SETTING_SIGNUP_EXTERNAL_IMAGE_DESC"
+		       directory="/administrator/components/com_redevent/assets/images"
+		       default="external_icon.gif" />
+		       
+		<field name="signup_webform_text" type="text" 
+		       translate_default="true"
+		       default="COM_REDEVENT_SETTING_SIGNUP_WEBFORM_TEXT_DEFAULT" 
+		       label="COM_REDEVENT_SETTING_SIGNUP_WEBFORM_TEXT" 
+		       description="COM_REDEVENT_SETTING_SIGNUP_WEBFORM_TEXT_DESC" />
+		<field name="signup_webform_img" type="imagelist" 
+		       label="COM_REDEVENT_SETTING_SIGNUP_webform_IMAGE" 
+		       description="COM_REDEVENT_SETTING_SIGNUP_webform_IMAGE_DESC"
+		       directory="/administrator/components/com_redevent/assets/images"
+		       default="form_icon.gif" />
+		       
+		<field name="signup_email_text" type="text" 
+		       translate_default="true"
+		       default="COM_REDEVENT_SETTING_SIGNUP_email_TEXT_DEFAULT" 
+		       label="COM_REDEVENT_SETTING_SIGNUP_email_TEXT" 
+		       description="COM_REDEVENT_SETTING_SIGNUP_email_TEXT_DESC" />
+		<field name="signup_email_img" type="imagelist" 
+		       label="COM_REDEVENT_SETTING_SIGNUP_email_IMAGE" 
+		       description="COM_REDEVENT_SETTING_SIGNUP_email_IMAGE_DESC"
+		       directory="/administrator/components/com_redevent/assets/images"
+		       default="email_icon.gif" />
+		       
+		<field name="signup_formal_offer_text" type="text" 
+		       translate_default="true"
+		       default="COM_REDEVENT_SETTING_SIGNUP_formal_offer_TEXT_DEFAULT" 
+		       label="COM_REDEVENT_SETTING_SIGNUP_formal_offer_TEXT" 
+		       description="COM_REDEVENT_SETTING_SIGNUP_formal_offer_TEXT_DESC" />
+		<field name="signup_formal_offer_img" type="imagelist" 
+		       label="COM_REDEVENT_SETTING_SIGNUP_formal_offer_IMAGE" 
+		       description="COM_REDEVENT_SETTING_SIGNUP_formal_offer_IMAGE_DESC"
+		       directory="/administrator/components/com_redevent/assets/images"
+		       default="formal_icon.gif" />
+		       
+		<field name="signup_phone_text" type="text" 
+		       translate_default="true"
+		       default="COM_REDEVENT_SETTING_SIGNUP_phone_TEXT_DEFAULT" 
+		       label="COM_REDEVENT_SETTING_SIGNUP_phone_TEXT" 
+		       description="COM_REDEVENT_SETTING_phone_EXTERNAL_TEXT_DESC" />
+		<field name="signup_phone_img" type="imagelist" 
+		       label="COM_REDEVENT_SETTING_SIGNUP_phone_IMAGE" 
+		       description="COM_REDEVENT_SETTING_SIGNUP_phone_IMAGE_DESC"
+		       directory="/administrator/components/com_redevent/assets/images"
+		       default="phone_icon.gif" />
+		
+		
+		<field type="spacer" hr="true" />
 		<field name="cat_num" type="text" size="2" default="4" label="COM_REDEVENT_CAT_DISPLAY" description="COM_REDEVENT_CAT_DISPLAY_DESC" />	
-		<field name="details_layout" type="radio" default="fixed" label="COM_REDEVENT_SETTINGS_DETAILS_LAYOUT" description="COM_REDEVENT_SETTINGS_DETAILS_LAYOUT_DESC">
+		<field name="details_layout" type="list" default="fixed" label="COM_REDEVENT_SETTINGS_DETAILS_LAYOUT" description="COM_REDEVENT_SETTINGS_DETAILS_LAYOUT_DESC">
 			<option value="default">COM_REDEVENT_SETTINGS_DETAILS_LAYOUT_TAGS</option>
 			<option value="fixed">COM_REDEVENT_SETTINGS_DETAILS_LAYOUT_FIXED</option>
 		</field>
@@ -291,6 +413,7 @@
  	</fieldset>
  	
  	<fieldset name="COM_REDEVENT_SETTINGS_MISC" label="COM_REDEVENT_SETTINGS_MISC" description="COM_REDEVENT_SETTINGS_MISC">
+ 		<field name="defaultredformid" type="text" default="1" label="COM_REDEVENT_DEFAULT_FORM_ID" description="COM_REDEVENT_DEFAULT_FORM_ID_TIP" />
  		<field name="ical_timezone" type="timezones" default="0" label="COM_REDEVENT_SETTINGS_MISC_TIMEZONE_LABEL" description="COM_REDEVENT_SETTINGS_MISC_TIMEZONE_DESC" />
     <field name="ical_no_timezone" type="radio" default="0" label="COM_REDEVENT_SETTINGS_MISC_NOTIMEZONE_LABEL" description="COM_REDEVENT_SETTINGS_MISC_NOTIMEZONE_DESC">
       <option value="0">No</option>

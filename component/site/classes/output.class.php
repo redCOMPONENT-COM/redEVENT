@@ -611,7 +611,6 @@ class ELOutput {
 		
 		//Format time
 		$formattime = strftime( $settings->formattime, strtotime( $date.' '.$time ));
-		$formattime .= ' '.$settings->timename;
 		
 		return $formattime;
 	}

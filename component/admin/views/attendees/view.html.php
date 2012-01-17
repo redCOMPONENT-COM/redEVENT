@@ -123,10 +123,10 @@ class RedEventViewAttendees extends JView {
 			if ($value->times) 
 			{
 				$time = strftime( $elsettings->formattime, strtotime( $value->times ));	
-				$displaydate .= ' '. $time.$elsettings->timename;
+				$displaydate .= ' '. $time;
 				if ($value->endtimes) {
 					$endtimes = strftime( $elsettings->formattime, strtotime( $value->endtimes ));
-					$displaydate .= ' - '.$endtimes.$elsettings->timename;
+					$displaydate .= ' - '.$endtimes;
 				}
 			}
 			$filters[] = JHTML::_('select.option', $value->id, $value->venue.' '.$displaydate );

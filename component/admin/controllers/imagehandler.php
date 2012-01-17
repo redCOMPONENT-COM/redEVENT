@@ -112,7 +112,7 @@ class RedEventControllerImagehandler extends RedEventController
 
 		} else {
 			// create thumbnail
-			redEVENTImage::thumb($filepath, dirname($filepath).DS.'small'.DS.$filename, $elsettings->imagewidth, $elsettings->imagehight);
+			redEVENTImage::thumb($filepath, dirname($filepath).DS.'small'.DS.$filename, $elsettings->imagewidth, $elsettings->get('imageheight', 100));
 			
 			echo "<script> alert('".JText::_('COM_REDEVENT_UPLOAD_COMPLETE' )."'); window.history.go(-1); window.parent.elSelectImage('$filename', '$filename'); </script>\n";
 			$mainframe->close();

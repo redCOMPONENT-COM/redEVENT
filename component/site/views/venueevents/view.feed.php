@@ -90,12 +90,10 @@ class RedeventViewVenueevents extends JView
 			//Format time
 			if ($row->times) {
 				$time = strftime( $elsettings->formattime, strtotime( $row->times ));
-				$time = $time.' '.$elsettings->timename;
 				$displaytime = $time;
 			}
 			if ($row->endtimes) {
 				$endtime = strftime( $elsettings->formattime, strtotime( $row->endtimes ));
-				$endtime = $endtime.' '.$elsettings->timename;
 				$displaytime = $time.' - '.$endtime;
 			}
 
@@ -183,13 +181,11 @@ class RedeventViewVenueevents extends JView
 			//Format time
 			if ($row->times) {
 				$time = strftime( $elsettings->formattime, strtotime( $row->times ));
-				$time = $time.' '.$elsettings->timename;
 				$displaytime = $time;
 				$rssstartdate .= 'T'.$row->times.$utcoffset;	
 			}
 			if ($row->endtimes) {
 				$endtime = strftime( $elsettings->formattime, strtotime( $row->endtimes ));
-				$endtime = $endtime.' '.$elsettings->timename;
 				$displaytime = $time.' - '.$endtime;
 				$rssenddate .= 'T'.$row->endtimes.$utcoffset;	
 			}

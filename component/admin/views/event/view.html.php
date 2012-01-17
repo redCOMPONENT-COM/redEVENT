@@ -374,10 +374,10 @@ class RedEventViewEvent extends JView {
     $displaytime = '';
     /* Get the time */
     if (isset($xref->times) && $xref->times != '00:00:00') {
-    	$displaytime = strftime( $elsettings->formattime, strtotime( $xref->times )).' '.$elsettings->timename;
+    	$displaytime = strftime( $elsettings->formattime, strtotime( $xref->times ));
 
     	if (isset($xref->endtimes) && $xref->endtimes != '00:00:00') {
-    		$displaytime .= ' - '.strftime( $elsettings->formattime, strtotime( $xref->endtimes )). ' '.$elsettings->timename;
+    		$displaytime .= ' - '.strftime( $elsettings->formattime, strtotime( $xref->endtimes ));
     	}
     }
     $json_data = array( 'id'        => $xref->id,

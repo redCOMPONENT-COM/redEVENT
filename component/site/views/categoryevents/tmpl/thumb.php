@@ -25,7 +25,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <style type="text/css">
-.rf_img {min-height:<?php echo $this->config->imagehight;?>px;}
+.rf_img {min-height:<?php echo $this->config->get('imageheight', 100);?>px;}
 </style>
 <div id="redevent" class="el_categoryevents">
 <p class="buttons">

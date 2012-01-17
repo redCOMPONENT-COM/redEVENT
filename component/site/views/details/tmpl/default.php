@@ -71,10 +71,10 @@ if ($this->row->show_names) : ?>
         $displaytime = '';
         /* Get the time */
         if (isset($venuedate->times) && $venuedate->times != '00:00:00') {
-          $displaytime = strftime( $this->elsettings->formattime, strtotime( $venuedate->times )).' '.$this->elsettings->timename;
+          $displaytime = strftime( $this->elsettings->formattime, strtotime( $venuedate->times ));
     
           if (isset($venuedate->endtimes) && $venuedate->endtimes != '00:00:00') {
-            $displaytime .= ' - '.strftime( $this->elsettings->formattime, strtotime( $venuedate->endtimes )). ' '.$this->elsettings->timename;
+            $displaytime .= ' - '.strftime( $this->elsettings->formattime, strtotime( $venuedate->endtimes ));
           }
         }
         

@@ -214,7 +214,7 @@ class redEVENTImage {
 				$filepath 	= JPATH_SITE.'/images/redevent/'.$folder.'/'.$image;
 				$save 		= JPATH_SITE.'/images/redevent/'.$folder.'/small/'.$image;
 
-				redEVENTImage::thumb($filepath, $save, $settings->imagewidth, $settings->imagehight);
+				redEVENTImage::thumb($filepath, $save, $settings->imagewidth, $settings->get('imageheight', 100));
 			}
 
 			//set paths
@@ -225,10 +225,10 @@ class redEVENTImage {
 			$iminfo = @getimagesize('images/redevent/'.$folder.'/'.$image);
 
 			//if the width or height is too large this formula will resize them accordingly
-			if (($iminfo[0] > $settings->imagewidth) || ($iminfo[1] > $settings->imagehight)) {
+			if (($iminfo[0] > $settings->imagewidth) || ($iminfo[1] > $settings->get('imageheight', 100))) {
 
 				$iRatioW = $settings->imagewidth / $iminfo[0];
-				$iRatioH = $settings->imagehight / $iminfo[1];
+				$iRatioH = $settings->get('imageheight', 100) / $iminfo[1];
 
 				if ($iRatioW < $iRatioH) {
 					$dimage['width'] 	= round($iminfo[0] * $iRatioW);
@@ -322,7 +322,7 @@ class redEVENTImage {
 		else
 		{
 			$width  = $settings->imagewidth;
-			$height = $settings->imagehight;
+			$height = $settings->get('imageheight', 100);
 		}
 		
 		$types = array('events', 'venues', 'categories');
