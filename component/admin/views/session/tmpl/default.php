@@ -74,7 +74,7 @@ function updateend(cal)
 <fieldset class="adminform">
 <legend><?php echo JText::_('COM_REDEVENT_Dates'); ?></legend>
 
-<table class="admintable">
+<table class="editevent">
 <tbody>
   <tr>
     <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_VENUE_TIP'); ?>">
@@ -187,7 +187,7 @@ function updateend(cal)
 
 <fieldset class="adminform">
 <legend><?php echo JText::_('COM_REDEVENT_Custom_fields'); ?></legend>
-<table class="admintable">
+<table class="editevent">
 	<tbody>
     <?php foreach ($this->customfields as $field): ?>
     <tr>
@@ -219,7 +219,7 @@ function updateend(cal)
 <fieldset class="adminform">
 <legend><?php echo JText::_('COM_REDEVENT_Registration'); ?></legend>
 
-<table class="admintable">
+<table class="editevent">
 <tbody>
   <tr>
     <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_MAX_ATTENDEES_TIP'); ?>">
