@@ -87,7 +87,7 @@ JHTML::_('behavior.tooltip');
 			
 			<?php	echo $this->tabs->startPanel( JText::_('COM_REDEVENT_EVENT_INFO_TAB'), 'info' ); ?>
 
-	<table  class="adminform">
+	<table  class="editevent">
 		<tr>
 			<td>
 				<label for="venue">
@@ -142,7 +142,7 @@ JHTML::_('behavior.tooltip');
       </td>
     </tr>
 	</table>
-			<table class="adminform">
+			<table class="editevent">
 				<tr>
 					<td>
 						<?php

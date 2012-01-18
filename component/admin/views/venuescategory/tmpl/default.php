@@ -58,7 +58,7 @@ function submitbutton(pressbutton)
 	<table cellspacing="0" cellpadding="0" border="0" width="100%">
 		<tr>
 			<td valign="top">
-				<table  class="adminform">
+				<table  class="adminform editevent">
 					<tr>
 						<td>
 							<label for="name">
@@ -92,7 +92,7 @@ function submitbutton(pressbutton)
 					</tr>
 				</table>
 
-			<table class="adminform">
+			<table class="adminform editevent">
 				<tr>
 					<td>
 						<?php

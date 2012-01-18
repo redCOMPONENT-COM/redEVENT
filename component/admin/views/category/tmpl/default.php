@@ -64,7 +64,7 @@ function submitbutton(pressbutton)
 			<?php echo $this->tabs->startPane("det-pane"); ?>
 			
 			<?php	echo $this->tabs->startPanel( JText::_('COM_REDEVENT_EVENT_INFO_TAB'), 'info' ); ?>
-				<table  class="adminform">
+				<table  class="adminform editevent">
 					<tr>
 						<td>
 							<label for="catname">
@@ -108,7 +108,7 @@ function submitbutton(pressbutton)
 					</tr>
 				</table>
 
-			<table class="adminform">
+			<table class="adminform editevent">
 				<tr>
 					<td>
 						<?php
