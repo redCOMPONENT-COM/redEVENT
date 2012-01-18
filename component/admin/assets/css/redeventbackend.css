@@ -267,3 +267,31 @@ div.cancelled-notice {
 #attendees tr.cancelled, #attendees tr.cancelled td {
 	background-color: AntiqueWhite;
 }
+
+div.current table.editevent label {
+	display: inline;
+	float: none;
+}
+
+div.current table.editevent input,
+div.current table.editevent select,
+div.current table.editevent textarea {
+	float: none;
+}
+
+div.current fieldset.editevent label {
+	display: inline;
+	float: none;
+}
+
+div.current fieldset.editevent input,
+div.current fieldset.editevent select,
+div.current fieldset.editevent textarea {
+	float: none;
+}
+
+div.current div.type-params input,
+div.current div.type-params select,
+div.current div.type-params textarea {
+	float: none;
+}

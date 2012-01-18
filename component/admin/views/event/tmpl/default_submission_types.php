@@ -5,7 +5,8 @@
 <div class="type-params">
 	<input type="checkbox" class="reg-type" id="submission_type_external" name="submission_types[]" value="external"
 	<?php if (in_array('external', $this->submission_types)) echo ' checked="checked"'; ?>
-	/><?php echo JText::_('COM_REDEVENT_EXTERNAL'); ?>
+	/><label for="submission_type_external"><?php echo JText::_('COM_REDEVENT_EXTERNAL'); ?></label>
+	<div class="clear"></div>
 	
 	<?php 
 		$display = 'none';
@@ -15,7 +16,7 @@
 		}
 	?>
 			
-	<fieldset id="external-params" style="display: <?php echo $display;?>">
+	<fieldset id="external-params" class="adminform" style="display: <?php echo $display;?>">
 	<legend><?php echo JText::_('COM_REDEVENT_EXTERNAL'); ?></legend>
 	
 	<table class="editevent">
@@ -42,7 +43,9 @@
 		}
 	?>
 	/><label for="submission_type_phone"><?php echo JText::_('COM_REDEVENT_PHONE'); ?></label>
-	<fieldset id="phone-params" style="display: <?php echo $display;?>">
+	<div class="clear"></div>
+	
+	<fieldset id="phone-params" class="adminform" style="display: <?php echo $display;?>">
 	<legend><?php echo JText::_('COM_REDEVENT_PHONE'); ?></legend>
 	
 	<table class="editevent">
@@ -70,8 +73,9 @@
 		}
 	?>
 	/><label for="submission_type_webform"><?php echo JText::_('COM_REDEVENT_WEBFORM'); ?></label>
+	<div class="clear"></div>
 			
-	<fieldset id="webform-params" style="display: <?php echo $display;?>">
+	<fieldset id="webform-params" class="adminform" style="display: <?php echo $display;?>">
 	<legend><?php echo JText::_('COM_REDEVENT_WEBFORM'); ?></legend>	
 	<table class="editevent">
 		<tr>
@@ -119,8 +123,9 @@
 		}
 	?>
 	/><label for="submission_type_email"><?php echo JText::_('COM_REDEVENT_EMAIL'); ?></label>
+	<div class="clear"></div>
 			
-	<fieldset id="email-params" style="display: <?php echo $display;?>">
+	<fieldset id="email-params" class="adminform" style="display: <?php echo $display;?>">
 	<legend><?php echo JText::_('COM_REDEVENT_EMAIL'); ?></legend>	
 	<table class="editevent">
 		<tr>
@@ -193,8 +198,9 @@
 		}
 	?>
 	/><label for="submission_type_formal_offer"><?php echo JText::_('COM_REDEVENT_FORMALOFFER'); ?></label>
+	<div class="clear"></div>
 			
-	<fieldset id="formaloffer-params" style="display: <?php echo $display;?>">
+	<fieldset id="formaloffer-params" class="adminform" style="display: <?php echo $display;?>">
 	<legend><?php echo JText::_('COM_REDEVENT_FORMALOFFER'); ?></legend>	
 	<table class="editevent">
 		<tr>

@@ -1,26 +1,26 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
 <div id="recurrence">
 <?php $disabled = ''; ?>
-<fieldset class="adminform">
+<fieldset class="adminform editevent">
 <legend><?php echo JText::_('COM_REDEVENT_RECURRENCE_TYPE'); ?></legend>
 <?php echo $this->lists['recurrence_type']; ?>
 
 <div id="xref_recurrence_repeat_common">
 
-<fieldset class="adminform">
+<fieldset class="adminform editevent">
 <legend><?php echo JText::_('COM_REDEVENT_REPEAT_INTERVAL'); ?></legend>
 <input type="text" name="recurrence_interval" value="" class="hasTip" title="<?php echo JText::_('COM_REDEVENT_REPEAT_INTERVAL_TIP'); ?>"/><span id="repeat_object"></span>
 </fieldset>
 
-<fieldset class="adminform">
+<fieldset class="adminform editevent">
 <legend><input id="rcount" type="radio" name="rutype" value="count"/><?php echo JText::_('COM_REDEVENT_REPEAT_COUNT'); ?></legend>
 <input type="text" id="recurrence_repeat_count" name="recurrence_repeat_count" value="" class="hasTip" title="<?php echo JText::_('COM_REDEVENT_REPEAT_COUNT_TIP'); ?>" />
 </fieldset>
 
-<fieldset class="adminform">
+<fieldset class="adminform editevent">
 <legend><input id="runtil" type="radio" name="rutype" value="until"/><?php echo JText::_('COM_REDEVENT_REPEAT_UNTIL'); ?></legend>
 
-<table class="admintable">
+<table class="editevent">
 <tbody>
   <tr>
     <td class="hasTip" title="<?php echo JText::_('COM_REDEVENT_REPEAT_UNTIL_TIP'); ?>">
@@ -34,7 +34,7 @@
 </div>
 
 <div id="recurrence_repeat_weekly">
-<fieldset class="adminform">
+<fieldset class="adminform editevent">
 <legend><?php echo JText::_('COM_REDEVENT_RECURRENCE_WEEK_BY_DAY'); ?></legend>
 
       <input type="checkbox" id="recurrence_week_byday0" name="wweekdays[]" value="SU"/><label for="recurrence_week_byday0"><?php echo JText::_('COM_REDEVENT_SUNDAY_S'); ?></label> 
@@ -50,7 +50,7 @@
 
 <div id="recurrence_repeat_monthly">
 
-<fieldset class="adminform">
+<fieldset class="adminform editevent">
 <legend><input id="monthtypebmd" type="radio" name="monthtype" value="bymonthday" /><?php echo JText::_('COM_REDEVENT_RECURRENCE_MONTH_BY_MONTHDAY'); ?></legend>
 
 <input type="text" name="bymonthdays" value=""/>
@@ -59,10 +59,10 @@
 <input type="checkbox" id="reverse_bymonthday" name="reverse_bymonthday" /><label for="reverse_bymonthday"><?php echo JText::_('COM_REDEVENT_REVERSE_BY_MONTH_DAY'); ?></label> 
 </fieldset>
 
-<fieldset class="adminform">
+<fieldset class="adminform editevent">
 <legend><input id="monthtypebd" type="radio" name="monthtype" value="byday" /><?php echo JText::_('COM_REDEVENT_RECURRENCE_MONTH_BY_DAY'); ?></legend>
 
-<table class="admintable">
+<table class="editevent">
 <tbody>
   <tr>
     <td>
@@ -115,7 +115,7 @@
 
 <div id="recurrence_repeat_yearly">
 
-<fieldset class="adminform">
+<fieldset class="adminform editevent">
 <legend><?php echo JText::_('COM_REDEVENT_RECURRENCE_YEAR_BY_YEARDAY'); ?></legend>
 
 <input type="text" name="byyeardays" value=""/>
