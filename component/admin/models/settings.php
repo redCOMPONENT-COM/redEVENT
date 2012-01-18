@@ -22,7 +22,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.modelform');
+jimport('joomla.application.component.modeladmin');
 
 /**
  * EventList Component Settings Model
@@ -31,7 +31,7 @@ jimport('joomla.application.component.modelform');
  * @subpackage EventList
  * @since		0.9
  */
-class RedEventModelSettings extends JModelForm
+class RedEventModelSettings extends JModelAdmin
 {
 	/**
 	 * Settings data

@@ -79,7 +79,9 @@ class RedEventViewEvent extends JView {
 		$document->addScriptDeclaration('var removemsg = "'.JText::_('COM_REDEVENT_ATTACHMENT_CONFIRM_MSG').'";' );
 
 		//get data from model
+		$form = $this->get('form');
 		$model		= & $this->getModel();
+		
 		
 		if ($task == 'add') {
 			$model->setId($params->get('default_content'));
@@ -264,6 +266,7 @@ class RedEventViewEvent extends JView {
     $this->assignRef('customfields'  , $customfields);
 		$this->assignRef('access'	, redEVENTHelper::getAccesslevelOptions());
     $this->assignRef('xrefs'  , $xrefs);
+    $this->assignRef('form',    $form);
 
     if (!$row->id) {
     	$this->_prepareSessionTab();

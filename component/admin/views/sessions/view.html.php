@@ -48,8 +48,8 @@ class RedeventViewSessions extends JView
 		$db		 = &JFactory::getDBO();
 		$uri	 = &JFactory::getURI();
 		$state = &$this->get('state');
-		$settings = ELAdmin::config();
-
+		$params = JComponentHelper::getParams('com_redevent');
+		
 		$filter_order		= $state->get('filter_order');
 		$filter_order_Dir	= $state->get('filter_order_Dir');
 		$search          = $state->get('search');
@@ -166,7 +166,7 @@ class RedeventViewSessions extends JView
 		$this->assignRef('venue',		$venue);
 		$this->assignRef('eventid',		$eventid);
 		$this->assignRef('venueid',		$venueid);
-		$this->assignRef('settings',    $settings);
+		$this->assignRef('params',    $params);
 		$this->assignRef('pagination',	$pagination);
 		$this->assignRef('request_url',	$uri->toString());
 
