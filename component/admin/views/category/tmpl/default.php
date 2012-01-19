@@ -240,11 +240,8 @@ function submitbutton(pressbutton)
 					</td>
 				</tr>
 				<tr>
-					<td>
-					</td>
-					<td>
+					<td colspan="2">
 						<span id="imagelib"></span>
-						<img src="../images/M_images/blank.png" name="imagelib" id="imagelib" width="80" height="80" border="2" alt="Preview" />
 					</td>
 				</tr>
 			</table>

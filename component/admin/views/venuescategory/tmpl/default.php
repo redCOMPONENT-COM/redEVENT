@@ -30,6 +30,20 @@ window.addEvent('domready', function() {
 	$('noparent').addEvent('click', function(){
 		  $('parent_id').selectedIndex = '-1';
   });
+
+	$('image').addEvent('change', function(){
+		if (this.get('value')) {
+			$('imagelib').empty().adopt(
+					new Element('img', {
+						src: '../'+this.get('value'),
+						class: 're-image-preview',
+						alt: 'preview'
+					}));
+		}
+		else {
+			$('imagelib').empty();
+		}
+	}).fireEvent('change');
 });
 
 function submitbutton(pressbutton)
@@ -175,35 +189,20 @@ function submitbutton(pressbutton)
 			<?php
 			$title = JText::_('COM_REDEVENT_IMAGE' );
 			echo $this->pane->endPanel();
-			echo $this->pane->startPanel( $title, 'image' );
+			echo $this->pane->startPanel( $title, 'vcimage' );
 			?>
 			<table>
 				<tr>
 					<td>
-						<label for="image">
-							<?php echo JText::_('COM_REDEVENT_CHOOSE_IMAGE' ).':'; ?>
-						</label>
+						<?php echo $this->form->getLabel('image'); ?>
 					</td>
 					<td>
-						<?php
-							echo $this->imageselect;
-						?>
+						<?php echo $this->form->getInput('image'); ?>
 					</td>
 				</tr>
 				<tr>
-					<td>
-					</td>
-					<td>
-						<img src="../images/M_images/blank.png" name="imagelib" id="imagelib" width="80" height="80" border="2" alt="Preview" />
-						<script language="javascript" type="text/javascript">
-						if ($('a_imagename').value !=''){
-							var imname = $('a_imagename').value;
-							jsimg='../images/redevent/categories/' + imname;
-							$('imagelib').src= jsimg;
-						}
-						</script>
-						<br />
-						<br />
+					<td colspan="2">
+						<span id="imagelib"></span>
 					</td>
 				</tr>
 			</table>
