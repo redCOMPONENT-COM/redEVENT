@@ -279,6 +279,17 @@ table.editevent textarea {
 	float: none;
 }
 
+fieldset.editevent label {
+	display: inline;
+	float: none;
+}
+
+fieldset.editevent input,
+fieldset.editevent select,
+fieldset.editevent textarea {
+	float: none;
+}
+
 div.current table.editevent label {
 	display: inline;
 	float: none;

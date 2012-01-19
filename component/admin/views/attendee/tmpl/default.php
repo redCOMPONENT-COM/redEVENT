@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <fieldset class="adminform"><legend><?php echo JText::_('COM_REDEVENT_Booking' ); ?></legend>
 
-<table class="admintable">
+<table class="editevent">
 <?php if ($this->row->id): ?>
 	<tr>
 		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_('COM_REDEVENT_UNIQUE_ID' ); ?>:
@@ -91,7 +91,7 @@ defined('_JEXEC') or die('Restricted access');
 				
 </fieldset>
 
-<fieldset class="adminform"><legend><?php echo JText::_('COM_REDEVENT_Answers' ); ?></legend>
+<fieldset class="adminform editevent"><legend><?php echo JText::_('COM_REDEVENT_Answers' ); ?></legend>
 <?php $options = array('extrafields' => array(array('label' => JText::_('COM_REDEVENT_REGISTRATION_PRICE'), 'field' => $this->lists['pricegroup_id']))); ?>
 <?php
 	$rfcore = new redFormCore(); 
