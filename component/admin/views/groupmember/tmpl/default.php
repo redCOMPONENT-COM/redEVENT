@@ -46,12 +46,13 @@ JHTML::_('behavior.tooltip');
 
 <fieldset class="adminform"><legend><?php echo JText::_('COM_REDEVENT_Group_member' ); ?></legend>
 
-<table class="admintable">
+<table class="editevent">
 	<tr>
-		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_('COM_REDEVENT_USER' ); ?>:
-		</label></td>
+		<td width="100" align="right" class="key">
+			<?php echo $this->form->getLabel('member'); ?>
+		</td>
 		<td>
-			<?php echo $this->lists['user']; ?>
+			<?php echo $this->form->getInput('member'); ?>
 		</td>
 	</tr>
 	<tr>

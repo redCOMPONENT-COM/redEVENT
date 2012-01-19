@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+		
+	<field
+		name="member"
+		type="user"
+		label="COM_REDEVENT_USER"
+		description ="COM_REDEVENT_USER" 
+		required="true" 
+		class="inputbox" />	
+		
+</form>

@@ -70,13 +70,6 @@ class RedEventViewGroup extends JView {
 
 		//make data safe
 		JFilterOutput::objectHTMLSafe( $row );
-
-		/*
-		 * extended data
-		 */
-		$paramsdata = $row->parameters;
-		$paramsdefs = JPATH_COMPONENT . DS . 'models' . DS . 'group.xml';
-		$parameters = new JParameter( $paramsdata, $paramsdefs );
 		
 		//build toolbar
 		if ( $cid ) {
@@ -122,7 +115,6 @@ class RedEventViewGroup extends JView {
 		
 		//assign data to template
 		$this->assignRef('row'      	, $row);
-		$this->assignRef('parameters'	, $parameters);
 		$this->assignRef('pane'      	, $pane);
 		$this->assignRef('template'		, $template);
 		$this->assignRef('lists'      	, $lists);

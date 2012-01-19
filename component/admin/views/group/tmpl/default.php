@@ -45,9 +45,10 @@ JHTML::_('behavior.tooltip');
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
-<fieldset class="adminform"><legend><?php echo JText::_('COM_REDEVENT_Group' ); ?></legend>
+<fieldset class="adminform">
+<legend><?php echo JText::_('COM_REDEVENT_Group' ); ?></legend>
 
-<table class="admintable">
+<table class="editevent">
 	<tr>
 		<td width="100" align="right" class="key"><label for="name"> <?php echo JText::_('COM_REDEVENT_GROUP_NAME' ); ?>:
 		</label></td>
@@ -107,30 +108,7 @@ JHTML::_('behavior.tooltip');
 </table>
 	
 </fieldset>
-		
-	<?php
-	if ($this->parameters->getGroups())
-	{
-		foreach ( $this->parameters->getGroups() as $key => $groups )
-		{
-			$gname = ( strtolower($key) == '_default' ) ? JText::_('COM_REDEVENT_General' ) : $key;
-			?>
-			<fieldset class="adminform">
-				<legend>
-					<?php
-					echo JText::_( $gname );
-					?>
-				</legend>
-				<?php
-				// render is defined in joomla\libraries\joomla\html\parameter.php
-				echo $this->parameters->render( 'parameters', $key );
-				?>
-			</fieldset>
-			<?php
-		}
-	}
-	?>
-	
+			
 <?php echo JHTML::_( 'form.token' ); ?>
 <input type="hidden" name="option" value="com_redevent" />
 <input type="hidden" name="controller" value="groups" />

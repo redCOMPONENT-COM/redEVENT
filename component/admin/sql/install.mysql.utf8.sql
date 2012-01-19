@@ -198,6 +198,8 @@ CREATE TABLE IF NOT EXISTS `#__redevent_groups` (
 `isdefault` tinyint(1) NOT NULL default '0',
 `edit_events` tinyint(4) NOT NULL default '0',
 `edit_venues` tinyint(4) NOT NULL default '0',
+`publish_events` tinyint(4) NOT NULL default '0',
+`publish_venues` tinyint(4) NOT NULL default '0',
 `checked_out` int(11) NOT NULL default '0',
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
 PRIMARY KEY  (`id`)
@@ -212,6 +214,8 @@ CREATE TABLE IF NOT EXISTS `#__redevent_groupmembers` (
   `manage_xrefs` tinyint(4) NOT NULL,
   `manage_attendees` tinyint(4) NOT NULL,
   `edit_venues` tinyint(4) NOT NULL,
+	`publish_events` tinyint(4) NOT NULL default '0',
+	`publish_venues` tinyint(4) NOT NULL default '0',
   `receive_registrations` tinyint(4) NOT NULL,
   `checked_out` int(11) NOT NULL default '0',
   `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',

@@ -58,6 +58,7 @@ class RedEventViewGroupmember extends JView {
 		//Get data from the model
 		$model				= & $this->getModel();
 		$row      		= & $this->get( 'Data');
+		$form     = & $this->get( 'Form' );
 		$group   			= & $this->get( 'Group');
 
 		// fail if checked out not by 'me'
@@ -91,9 +92,7 @@ class RedEventViewGroupmember extends JView {
 		//create selectlists
 		$lists = array();
 		
-		//user list
-		$lists['user'] = JHTML::_('list.users', 'member', $row->member, 0, NULL, 'name', 0);
-		
+		//user list		
 		$lists['is_admin'] = JHTML::_('select.booleanlist', 'is_admin', '', $row->is_admin);
 		
 		// add/edit events
@@ -136,6 +135,7 @@ class RedEventViewGroupmember extends JView {
 		$this->assignRef('group_id'  	, $group_id);
 		$this->assignRef('pane'      	, $pane);
 		$this->assignRef('lists'      , $lists);
+		$this->assignRef('form'      	, $form);
 
 		parent::display($tpl);
 	}
