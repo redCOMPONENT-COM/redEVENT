@@ -430,6 +430,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_fields` (
   `visible` tinyint(1) DEFAULT '0',
   `required` tinyint(1) DEFAULT '0',
   `searchable` tinyint(1) DEFAULT '1',
+  `frontend_edit` TINYINT( 1 ) NULL DEFAULT '0',
   `in_lists` tinyint(1) DEFAULT '0',
   `options` text,
   `fieldcode` varchar(255) NOT NULL,

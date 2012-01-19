@@ -63,7 +63,7 @@ if (!$edit)  {
 <div class="col50">
 <fieldset class="adminform"><legend><?php echo JText::_('COM_REDEVENT_Custom_field' ); ?></legend>
 
-<table class="admintable">
+<table class="editevent">
 	<tr>
 		<td width="100" align="right" class="key"><label for="name"><?php echo JText::_('COM_REDEVENT_Name' ); ?>:
 		</label></td>
