@@ -128,7 +128,7 @@ class RedEventViewImagehandler extends JView  {
 		//initialise variables
 		$document	= & JFactory::getDocument();
 		$uri 		= & JFactory::getURI();
-		$elsettings = ELAdmin::config();
+		$elsettings = JComponentHelper::getParams('com_redevent');
 
 		//get vars
 		$task 		= JRequest::getVar( 'task' );

@@ -356,7 +356,7 @@ class redEVENTImage {
 	{
 		jimport('joomla.filesystem.file');
 
-		$sizelimit 	= $elsettings->sizelimit*1024; //size limit in kb
+		$sizelimit 	= $elsettings->get('sizelimit')*1024; //size limit in kb
 		$imagesize 	= $file['size'];
 
 		//check if the upload is an image...getimagesize will return false if not

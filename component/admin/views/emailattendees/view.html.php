@@ -39,7 +39,7 @@ class RedEventViewEmailattendees extends JView {
 		$mainframe = &JFactory::getApplication();
 		
 		$editor 	= & JFactory::getEditor();
-		$settings = ELAdmin::config();
+		$settings = JComponentHelper::getParams('com_redevent');
 		
 		$cids = JRequest::getVar('cid', array(), 'post');
 		JArrayHelper::toInteger($cids);

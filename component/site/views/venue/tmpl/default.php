@@ -55,7 +55,7 @@ $row = & $this->row;
         </dd>
         <?php endif; ?>
         
-        <?php if (($this->elsettings->showdetlinkvenue == 1) && (!empty($row->url))) : ?>
+        <?php if (($this->elsettings->get('showdetlinkvenue') == 1) && (!empty($row->url))) : ?>
         <dt class="venue_website"><?php echo JText::_('COM_REDEVENT_WEBSITE' ).':'; ?></dt>
           <dd class="venue_website">
           <a href="<?php echo $row->url; ?>" target="_blank"> <?php echo $row->urlclean; ?></a>
@@ -63,7 +63,7 @@ $row = & $this->row;
         <?php endif; ?>
 
         <?php
-          if ( $this->elsettings->showdetailsadress == 1 ) :
+          if ( $this->elsettings->get('showdetailsadress') == 1 ) :
           ?>
 
           <?php if ( $row->street ) : ?>
@@ -111,7 +111,7 @@ $row = & $this->row;
 
     </dl>
   </div>
-    <?php if ($this->elsettings->showlocdescription == 1 && !empty($row->locdescription)) : ?>
+    <?php if ($this->elsettings->get('showlocdescription') == 1 && !empty($row->locdescription)) : ?>
     <div class="description">
       <h2 class="description"><?php echo JText::_('COM_REDEVENT_DESCRIPTION' ).':'; ?></h2>
         <?php echo $row->locdescription; ?>

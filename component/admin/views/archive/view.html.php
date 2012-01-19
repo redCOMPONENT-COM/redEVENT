@@ -43,7 +43,7 @@ class RedEventViewArchive extends JView {
 		$document	= & JFactory::getDocument();
 		$db			= & JFactory::getDBO();
 		$user		= & JFactory::getUser();
-		$elsettings = ELAdmin::config();
+		$elsettings = JComponentHelper::getParams('com_redevent');
 
 		//get vars
 		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.archive.filter_order', 'filter_order', 'x.dates', 'cmd' );

@@ -80,11 +80,11 @@ class RedeventViewSimpleList extends JView
 			//Format date
 			if (redEVENTHelper::isValidDate($row->dates))
 			{
-				$date = strftime( $elsettings->formatdate, strtotime( $row->dates ));
+				$date = strftime( $elsettings->get('formatdate'), strtotime( $row->dates ));
 				if (!redEVENTHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) {
 					$displaydate = $date;
 				} else {
-					$enddate 	= strftime( $elsettings->formatdate, strtotime( $row->enddates ));
+					$enddate 	= strftime( $elsettings->get('formatdate'), strtotime( $row->enddates ));
 					$displaydate = $date.' - '.$enddate;
 				}
 			}
@@ -94,11 +94,11 @@ class RedeventViewSimpleList extends JView
 
 			//Format time
 			if ($row->times) {
-				$time = strftime( $elsettings->formattime, strtotime( $row->times ));
+				$time = strftime( $elsettings->get('formattime'), strtotime( $row->times ));
 				$displaytime = $time;
 			}
 			if ($row->endtimes) {
-				$endtime = strftime( $elsettings->formattime, strtotime( $row->endtimes ));
+				$endtime = strftime( $elsettings->get('formattime'), strtotime( $row->endtimes ));
 				$displaytime = $time.' - '.$endtime;
 			}
 
@@ -174,14 +174,14 @@ class RedeventViewSimpleList extends JView
 			//Format date
 			if (redEVENTHelper::isValidDate($row->dates))
 			{
-				$date = strftime( $elsettings->formatdate, strtotime( $row->dates ));
+				$date = strftime( $elsettings->get('formatdate'), strtotime( $row->dates ));
 				$rssstartdate = $row->dates;
 				if (!redEVENTHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) {
 					$displaydate = $date;
 					$rssenddate = $row->dates;
 				} 
 				else {
-					$enddate 	= strftime( $elsettings->formatdate, strtotime( $row->enddates ));
+					$enddate 	= strftime( $elsettings->get('formatdate'), strtotime( $row->enddates ));
 					$rssenddate = $row->enddates;
 					$displaydate = $date.' - '.$enddate;
 				}
@@ -192,12 +192,12 @@ class RedeventViewSimpleList extends JView
 
 			//Format time
 			if ($row->times) {
-				$time = strftime( $elsettings->formattime, strtotime( $row->times ));
+				$time = strftime( $elsettings->get('formattime'), strtotime( $row->times ));
 				$displaytime = $time;
 				$rssstartdate .= 'T'.$row->times.$utcoffset;	
 			}
 			if ($row->endtimes) {
-				$endtime = strftime( $elsettings->formattime, strtotime( $row->endtimes ));
+				$endtime = strftime( $elsettings->get('formattime'), strtotime( $row->endtimes ));
 				$displaytime = $time.' - '.$endtime;
 				$rssenddate .= 'T'.$row->endtimes.$utcoffset;	
 			}

@@ -1665,7 +1665,7 @@ class redEVENT_tags {
 		if (strtotime($this->getEvent()->getData()->registrationend))
 		{
 			$elsettings = redEVENTHelper::config();
-			$res = strftime( $elsettings->formatdate . ' '. $elsettings->formattime, 
+			$res = strftime( $elsettings->get('formatdate') . ' '. $elsettings->get('formattime'), 
 			                 strtotime($this->getEvent()->getData()->registrationend));
 		}
 		return $res;
@@ -1758,8 +1758,8 @@ class redEVENT_tags {
                           $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('webform', 
                                  $this->getEvent()->getData()->slug, 
                                  $this->getEvent()->getData()->xslug)), 
-                          JHTML::_('image', $iconspath.$elsettings->signup_webform_img,  
-                          JText::_($elsettings->signup_webform_text), 
+                          JHTML::_('image', $iconspath.$elsettings->get('signup_webform_img'),  
+                          JText::_($elsettings->get('signup_webform_text')), 
                           'width="24px" height="24px"'))
                .'</span> ';
 		return $text;
@@ -1782,8 +1782,8 @@ class redEVENT_tags {
 		$text = '<span class="vlink email">'
 		      . JHTML::_('link',
 		                 $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('email', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)),
-		                 JHTML::_('image', $iconspath.$elsettings->signup_email_img,
-		                 JText::_($elsettings->signup_email_text),
+		                 JHTML::_('image', $iconspath.$elsettings->get('signup_email_img'),
+		                 JText::_($elsettings->get('signup_email_text')),
 				             'width="24px" height="24px"'))
 		      .'</span> ';
 		return $text;
@@ -1806,8 +1806,8 @@ class redEVENT_tags {
 		$text = '<span class="vlink formaloffer">'
 		      . JHTML::_('link',
 		                 $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('formaloffer', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)),
-		                 JHTML::_('image', $iconspath.$elsettings->signup_formal_offer_img,
-		                 JText::_($elsettings->signup_formal_offer_text),
+		                 JHTML::_('image', $iconspath.$elsettings->get('signup_formal_offer_img'),
+		                 JText::_($elsettings->get('signup_formal_offer_text')),
 		                 'width="24px" height="24px"'))
 		       .'</span> ';
 		return $text;
@@ -1836,8 +1836,8 @@ class redEVENT_tags {
 		$text = '<span class="vlink external">'
 		      . JHTML::_('link',
 		                 $link,
-		                 JHTML::_('image', $iconspath.$elsettings->signup_external_img,
-		                 $elsettings->signup_external_text),
+		                 JHTML::_('image', $iconspath.$elsettings->get('signup_external_img'),
+		                 $elsettings->get('signup_external_text')),
 				             'target="_blank"')
 		       .'</span> ';
 		return $text;
@@ -1860,8 +1860,8 @@ class redEVENT_tags {
 		$text = '<span class="vlink phone">'
 		      . JHTML::_('link',
 		                 $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('phone', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)),
-		                 JHTML::_('image', $iconspath.$elsettings->signup_phone_img,
-		                 JText::_($elsettings->signup_phone_text),
+		                 JHTML::_('image', $iconspath.$elsettings->get('signup_phone_img'),
+		                 JText::_($elsettings->get('signup_phone_text')),
 		                 'width="24px" height="24px"'))
 		      .'</span> ';
 		return $text;

@@ -59,7 +59,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 	<dl class="event_info floattext">
 
-		<?php if ($this->elsettings->showdetailstitle == 1) : ?>
+		<?php if ($this->elsettings->get('showdetailstitle') == 1) : ?>
 			<dt class="title"><?php echo JText::_('COM_REDEVENT_TITLE' ).':'; ?></dt>
     		<dd class="title"><?php echo $this->escape($this->row->full_title); ?></dd>
 		<?php
@@ -87,15 +87,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   		?>
 		    <dt class="where"><?php echo JText::_('COM_REDEVENT_WHERE' ).':'; ?></dt>
 		    <dd class="where">
-    		<?php if (($this->elsettings->showdetlinkvenue == 1) && (!empty($this->row->url))) : ?>
+    		<?php if (($this->elsettings->get('showdetlinkvenue') == 1) && (!empty($this->row->url))) : ?>
 
 			    <a href="<?php echo $this->row->url; ?>"><?php echo $this->escape($this->row->venue); ?></a> -
 
-			<?php elseif ($this->elsettings->showdetlinkvenue == 2) : ?>
+			<?php elseif ($this->elsettings->get('showdetlinkvenue') == 2) : ?>
 
 			    <a href="<?php echo JRoute::_( 'index.php?view=venueevents&id='.$this->row->venueslug ); ?>"><?php echo $this->row->venue; ?></a> -
 
-			<?php elseif ($this->elsettings->showdetlinkvenue == 0) :
+			<?php elseif ($this->elsettings->get('showdetlinkvenue') == 0) :
 
 				echo $this->escape($this->row->venue).' - ';
 
@@ -126,7 +126,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			</dd>
 	</dl>
 
-  	<?php if ($this->elsettings->showevdescription == 1 && $this->row->datdescription != '' && $this->row->datdescription != '<br />') : ?>
+  	<?php if ($this->elsettings->get('showevdescription') == 1 && $this->row->datdescription != '' && $this->row->datdescription != '<br />') : ?>
 
   	    <h2 class="description"><?php echo JText::_('COM_REDEVENT_DESCRIPTION' ); ?></h2>
   		<div class="description event_desc">
@@ -183,7 +183,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				</dd>
 
 			<?php
-  			if ( $this->elsettings->showdetailsadress == 1 ) :
+  			if ( $this->elsettings->get('showdetailsadress') == 1 ) :
   			?>
 
   				<?php if ( $this->row->street ) : ?>
@@ -225,7 +225,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			?>
 		</dl>
 
-		<?php if ($this->elsettings->showlocdescription == 1 && $this->row->locdescription) :	?>
+		<?php if ($this->elsettings->get('showlocdescription') == 1 && $this->row->locdescription) :	?>
 
 			<h2 class="location_desc"><?php echo JText::_('COM_REDEVENT_DESCRIPTION' ); ?></h2>
   			<div class="description location_desc">
@@ -255,10 +255,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		{
 			switch ($subtype) {
 				case 'email':
-					$venues_html .= '<div class="registration_method">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('email', $this->row->slug, $this->row->xslug)), JHTML::_('image', $imagepath.$this->elsettings->signup_email_img,  JText::_($this->elsettings->signup_email_text), 'width="24px" height="24px"')).'</div> ';
+					$venues_html .= '<div class="registration_method">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('email', $this->row->slug, $this->row->xslug)), JHTML::_('image', $imagepath.$this->elsettings->get('signup_email_img'),  JText::_($this->elsettings->get('signup_email_text')), 'width="24px" height="24px"')).'</div> ';
 					break;
 				case 'phone':
-					$venues_html .= '<div class="registration_method">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('phone', $this->row->slug, $this->row->xslug)), JHTML::_('image', $imagepath.$this->elsettings->signup_phone_img,  JText::_($this->elsettings->signup_phone_text), 'width="24px" height="24px"')).'</div> ';
+					$venues_html .= '<div class="registration_method">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('phone', $this->row->slug, $this->row->xslug)), JHTML::_('image', $imagepath.$this->elsettings->get('signup_phone_img'),  JText::_($this->elsettings->get('signup_phone_text')), 'width="24px" height="24px"')).'</div> ';
 					break;
 				case 'external':
 		      if (!empty($this->row->external_registration_url)) {
@@ -267,7 +267,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		      else {
 		      	$link = $this->row->submission_type_external;
 		      }
-					$venues_html .= '<div class="registration_method hasTip" title="::'.$this->elsettings->signup_external_text.'">'.JHTML::_('link', $link, JHTML::_('image', $imagepath.$this->elsettings->signup_external_img,  $this->elsettings->signup_external_text), 'target="_blank"').'</div> ';
+					$venues_html .= '<div class="registration_method hasTip" title="::'.$this->elsettings->get('signup_external_text').'">'.JHTML::_('link', $link, JHTML::_('image', $imagepath.$this->elsettings->get('signup_external_img'),  $this->elsettings->get('signup_external_text')), 'target="_blank"').'</div> ';
 					break;
 				case 'webform':
 					if ($this->prices && count($this->prices))
@@ -275,7 +275,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						foreach ($this->prices as $p) 
 						{
 							$title = ' title="'.$p->name.'::'.addslashes(str_replace("\n", "<br/>", $p->tooltip)).'"';
-							$img = empty($p->image) ? JHTML::_('image', $imagepath.$this->elsettings->signup_webform_img,  JText::_($p->name)) 
+							$img = empty($p->image) ? JHTML::_('image', $imagepath.$this->elsettings->get('signup_webform_img'),  JText::_($p->name)) 
 							                        : JHTML::_('image', $imagepath.$p->image,  JText::_($p->name));
 							$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->row->slug, $this->row->xslug, $p->slug));
 							
@@ -284,11 +284,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						}
 					}
 					else {
-						$venues_html .= '<div class="registration_method webform">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->row->slug, $this->row->xslug)), JHTML::_('image', $imagepath.$this->elsettings->signup_webform_img,  JText::_($this->elsettings->signup_webform_text))).'</div> ';
+						$venues_html .= '<div class="registration_method webform">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->row->slug, $this->row->xslug)), JHTML::_('image', $imagepath.$this->elsettings->get('signup_webform_img'),  JText::_($this->elsettings->get('signup_webform_text')))).'</div> ';
 					}
 					break;
 				case 'formaloffer':
-					$venues_html .= '<div class="registration_methodr">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('formaloffer', $this->row->slug, $this->row->xslug)), JHTML::_('image', $imagepath.$this->elsettings->signup_formal_offer_img,  JText::_($this->elsettings->signup_formal_offer_text), 'width="24px" height="24px"')).'</div> ';
+					$venues_html .= '<div class="registration_methodr">'.JHTML::_('link', JRoute::_(RedeventHelperRoute::getSignupRoute('formaloffer', $this->row->slug, $this->row->xslug)), JHTML::_('image', $imagepath.$this->elsettings->get('signup_formal_offer_img'),  JText::_($this->elsettings->get('signup_formal_offer_text')), 'width="24px" height="24px"')).'</div> ';
 					break;
 			}
 		}
@@ -303,7 +303,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<?php echo $this->loadTemplate($attendees_layout); ?>
 	<?php endif; ?>
 	
-	<?php if ($this->elsettings->commentsystem != 0) :	?>
+	<?php if ($this->elsettings->get('commentsystem') != 0) :	?>
 	
 		<!-- Comments -->
 		<?php echo $this->loadTemplate('comments'); ?>

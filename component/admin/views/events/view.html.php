@@ -47,7 +47,7 @@ class RedEventViewEvents extends JView {
 		$user 		= & JFactory::getUser();
 		$document	= & JFactory::getDocument();
 		$db  		= & JFactory::getDBO();
-		$elsettings = ELAdmin::config();
+		$elsettings = JComponentHelper::getParams('com_redevent');
 
 		//get vars
 		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.events.filter_order', 'filter_order', 	'a.title', 'cmd' );

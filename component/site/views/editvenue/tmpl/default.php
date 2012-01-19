@@ -356,7 +356,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
             <label for="userfile"><?php echo JText::_('COM_REDEVENT_IMAGE'); ?></label>
       			<input class="inputbox <?php echo $this->params->get('edit_image', 1) == 2 ? 'required' : ''; ?>" name="userfile" id="userfile" type="file" />
-      			<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_MAX_IMAGE_FILE_SIZE').' '.$this->elsettings->sizelimit.' kb'; ?>">
+      			<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_MAX_IMAGE_FILE_SIZE').' '.$this->elsettings->get('sizelimit').' kb'; ?>">
       				<?php echo $this->infoimage; ?>
       			</span>
 

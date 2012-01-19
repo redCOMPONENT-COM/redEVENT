@@ -90,8 +90,8 @@ defined('_JEXEC') or die('Restricted access');
 								/* Get the date */
 								if (redEVENTHelper::isValidDate($eventdetails->dates)) 
 								{
-									$date = strftime( $this->elsettings->formatdate, strtotime( $eventdetails->dates )); 
-									$enddate 	= strftime( $this->elsettings->formatdate, strtotime( $eventdetails->enddates ));
+									$date = strftime( $this->elsettings->get('formatdate'), strtotime( $eventdetails->dates )); 
+									$enddate 	= strftime( $this->elsettings->get('formatdate'), strtotime( $eventdetails->enddates ));
 									$displaydate = $date.' - '.$enddate;
 								}
 								else {
@@ -99,8 +99,8 @@ defined('_JEXEC') or die('Restricted access');
 								}
 									
 								/* Get the time */
-								$time = strftime( $this->elsettings->formattime, strtotime( $eventdetails->times ));
-								$endtimes = strftime( $this->elsettings->formattime, strtotime( $eventdetails->endtimes ));
+								$time = strftime( $this->elsettings->get('formattime'), strtotime( $eventdetails->times ));
+								$endtimes = strftime( $this->elsettings->get('formattime'), strtotime( $eventdetails->endtimes ));
 								$displaytime = $time.' - '.$endtimes;
 								?>
 								<tr class="eventdatetime">

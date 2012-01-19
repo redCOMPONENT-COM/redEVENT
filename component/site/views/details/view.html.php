@@ -90,7 +90,7 @@ class RedeventViewDetails extends JView
 		}
 
 		//Check if user has access to the details
-		if ($elsettings->showdetails == 0) {
+		if ($elsettings->get('showdetails') == 0) {
 			$mainframe->redirect('index.php',JText::_('COM_REDEVENT_EVENT_DETAILS_NOT_AVAILABLE'), 'error');
 		}
 
@@ -167,7 +167,7 @@ class RedeventViewDetails extends JView
 				}
 				if (preg_match("/[\/[\/]/",$keyword)) {
 					$keyword = trim(str_replace("[","",str_replace("]","",$keyword)));
-					$buffer = $this->keyword_switcher($keyword, $row, $elsettings->formattime, $elsettings->formatdate);
+					$buffer = $this->keyword_switcher($keyword, $row, $elsettings->get('formattime'), $elsettings->get('formatdate'));
 					if ($buffer != "") {
 						$meta_keywords_content .= $buffer;
 					} else {
@@ -185,7 +185,7 @@ class RedeventViewDetails extends JView
 			foreach($description as $desc) {
 					$keyword = substr($desc, 0, strpos($desc,"]",0));
 					if ($keyword != "") {
-						$description_content .= $this->keyword_switcher($keyword, $row, $elsettings->formattime, $elsettings->formatdate);
+						$description_content .= $this->keyword_switcher($keyword, $row, $elsettings->get('formattime'), $elsettings->get('formatdate'));
 						$description_content .= substr($desc, strpos($desc,"]",0)+1);
 					} else {
 						$description_content .= $desc;

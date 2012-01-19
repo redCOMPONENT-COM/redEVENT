@@ -16,7 +16,7 @@
 		  						$showdets = array();
 								$showdets[] = JHTML::_('select.option', '0', JText::_('COM_REDEVENT_DETAILS_OFF' ) );
 								$showdets[] = JHTML::_('select.option', '1', JText::_('COM_REDEVENT_LINK_ON_TITLE' ) );
-								$showdet = JHTML::_('select.genericlist', $showdets, 'showdetails', 'size="1" class="inputbox"', 'value', 'text', $this->elsettings->showdetails );
+								$showdet = JHTML::_('select.genericlist', $showdets, 'showdetails', 'size="1" class="inputbox"', 'value', 'text', $this->elsettings->get('showdetails') );
 								echo $showdet;
         					?>
        	 				</td>
@@ -28,7 +28,7 @@
 							</span>
 						</td>
        					<td valign="top">
-							<input type="text" name="formatdate" value="<?php echo $this->elsettings->formatdate; ?>" size="15" maxlength="15" />
+							<input type="text" name="formatdate" value="<?php echo $this->elsettings->get('formatdate'); ?>" size="15" maxlength="15" />
 							&nbsp;<a href="http://www.php.net/strftime" target="_blank"><?php echo JText::_('COM_REDEVENT_PHP_STRFTIME_MANUAL' ); ?></a>
        	 				</td>
       				</tr>
@@ -39,7 +39,7 @@
 							</span>
 						</td>
        					<td valign="top">
-							<input type="text" name="formattime" value="<?php echo $this->elsettings->formattime; ?>" size="15" maxlength="15" />
+							<input type="text" name="formattime" value="<?php echo $this->elsettings->get('formattime'); ?>" size="15" maxlength="15" />
 							&nbsp;<a href="http://www.php.net/strftime" target="_blank"><?php echo JText::_('COM_REDEVENT_PHP_STRFTIME_MANUAL' ); ?></a>
        	 				</td>
       				</tr>
@@ -50,7 +50,7 @@
 							</span>
 						</td>
        					<td valign="top">
-							<input type="text" name="timename" value="<?php echo $this->elsettings->timename; ?>" size="15" maxlength="10" />
+							<input type="text" name="timename" value="<?php echo $this->elsettings->get('timename'); ?>" size="15" maxlength="10" />
        	 				</td>
       				</tr>
 					<tr>
@@ -60,7 +60,7 @@
 							</span>
 						</td>
        					<td valign="top">
-							<input type="text" name="currency_decimal_separator" value="<?php echo $this->elsettings->currency_decimal_separator; ?>" size="15" maxlength="1" />
+							<input type="text" name="currency_decimal_separator" value="<?php echo $this->elsettings->get('currency_decimal_separator'); ?>" size="15" maxlength="1" />
        	 				</td>
       				</tr>
 					<tr>
@@ -70,7 +70,7 @@
 							</span>
 						</td>
        					<td valign="top">
-							<input type="text" name="currency_thousand_separator" value="<?php echo $this->elsettings->currency_thousand_separator; ?>" size="15" maxlength="1" />
+							<input type="text" name="currency_thousand_separator" value="<?php echo $this->elsettings->get('currency_thousand_separator'); ?>" size="15" maxlength="1" />
        	 				</td>
       				</tr>
 					<tr>
@@ -85,7 +85,7 @@
 								$showdets[] = JHTML::_('select.option', 'decimals', JText::_('COM_REDEVENT_DECIMALS' ) );
 								$showdets[] = JHTML::_('select.option', 'comma', ',-');
 								$showdets[] = JHTML::_('select.option', 'none', JText::_('COM_REDEVENT_NONE' ) );
-								$showdet = JHTML::_('select.genericlist', $showdets, 'currency_decimals', 'size="1" class="inputbox"', 'value', 'text', $this->elsettings->currency_decimals );
+								$showdet = JHTML::_('select.genericlist', $showdets, 'currency_decimals', 'size="1" class="inputbox"', 'value', 'text', $this->elsettings->get('currency_decimals') );
 								echo $showdet;
         					?>
        	 				</td>
@@ -98,7 +98,7 @@
 						</td>
        					<td valign="top">
 							<?php
-								echo JHTML::_('select.booleanlist', 'storeip', 'class="inputbox"', $this->elsettings->storeip );
+								echo JHTML::_('select.booleanlist', 'storeip', 'class="inputbox"', $this->elsettings->get('storeip') );
         					?>
        	 				</td>
       				</tr>
@@ -119,15 +119,15 @@
        					<td valign="top">
 							<?php
 							$mode = 0;
-							if ($this->elsettings->mailinform >= 1) {
+							if ($this->elsettings->get('mailinform') >= 1) {
 							$mode = 1;
 							} // if
 							?>
 							<select name="mailinform" size="1" class="inputbox" onChange="changemailMode()">
-  								<option value="0"<?php if ($this->elsettings->mailinform == 0) { ?> selected="selected"<?php } ?>><?php echo JText::_('COM_REDEVENT_DISABLED' ); ?></option>
-  								<option value="1"<?php if ($this->elsettings->mailinform == 1) { ?> selected="selected"<?php } ?>><?php echo JText::_('COM_REDEVENT_ONLY_NEW_EVENT' ); ?></option>
-  								<option value="2"<?php if ($this->elsettings->mailinform == 2) { ?> selected="selected"<?php } ?>><?php echo JText::_('COM_REDEVENT_ONLY_NEW_VENUE' ); ?></option>
-		  						<option value="3"<?php if ($this->elsettings->mailinform == 3) { ?> selected="selected"<?php } ?>><?php echo JText::_('COM_REDEVENT_BOTH' ); ?></option>
+  								<option value="0"<?php if ($this->elsettings->get('mailinform') == 0) { ?> selected="selected"<?php } ?>><?php echo JText::_('COM_REDEVENT_DISABLED' ); ?></option>
+  								<option value="1"<?php if ($this->elsettings->get('mailinform') == 1) { ?> selected="selected"<?php } ?>><?php echo JText::_('COM_REDEVENT_ONLY_NEW_EVENT' ); ?></option>
+  								<option value="2"<?php if ($this->elsettings->get('mailinform') == 2) { ?> selected="selected"<?php } ?>><?php echo JText::_('COM_REDEVENT_ONLY_NEW_VENUE' ); ?></option>
+		  						<option value="3"<?php if ($this->elsettings->get('mailinform') == 3) { ?> selected="selected"<?php } ?>><?php echo JText::_('COM_REDEVENT_BOTH' ); ?></option>
 							</select>
        	 				</td>
       				</tr>
@@ -138,7 +138,7 @@
 							</span>
 						</td>
        					<td valign="top">
-							<input type="text" name="mailinformrec" value="<?php echo $this->elsettings->mailinformrec; ?>" size="40" maxlength="220" />
+							<input type="text" name="mailinformrec" value="<?php echo $this->elsettings->get('mailinformrec'); ?>" size="40" maxlength="220" />
        	 				</td>
       				</tr>
       				<tr>

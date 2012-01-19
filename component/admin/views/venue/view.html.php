@@ -49,7 +49,7 @@ class RedEventViewVenue extends JView {
 		$pane		  = & JPane::getInstance('sliders');
 		$tabs 		= & JPane::getInstance('tabs');
 		$user 		= & JFactory::getUser();
-		$settings	= ELAdmin::config();
+		$settings	= JComponentHelper::getParams('com_redevent');
 
 		//get vars
 		$cid 			= JRequest::getInt( 'cid' );

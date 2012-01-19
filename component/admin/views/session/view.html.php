@@ -70,7 +70,7 @@ class RedEventViewSession extends JView {
 		$editor 	= & JFactory::getEditor();
 		$document	= & JFactory::getDocument();
 		$uri 		= & JFactory::getURI();
-		$elsettings = ELAdmin::config();
+		$elsettings = JComponentHelper::getParams('com_redevent');
 
 		//add css and js to document
 		//JHTML::_('behavior.modal', 'a.modal');
@@ -170,22 +170,22 @@ class RedEventViewSession extends JView {
 	function _displayclosexref($tpl)
 	{	
     $document = & JFactory::getDocument();
-    $elsettings = ELAdmin::config();
+    $elsettings = JComponentHelper::getParams('com_redevent');
     
     $xref = $this->get('xref');
     
     /* Get the date */
-    $date = (!redEVENTHelper::isValidDate($xref->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $elsettings->formatdate, strtotime( $xref->dates )));
-    $enddate  = (!redEVENTHelper::isValidDate($xref->enddates) || $xref->enddates == $xref->dates) ? '' : strftime( $elsettings->formatdate, strtotime( $xref->enddates ));
+    $date = (!redEVENTHelper::isValidDate($xref->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $elsettings->get('formatdate'), strtotime( $xref->dates )));
+    $enddate  = (!redEVENTHelper::isValidDate($xref->enddates) || $xref->enddates == $xref->dates) ? '' : strftime( $elsettings->get('formatdate'), strtotime( $xref->enddates ));
     $displaydate = $date. ($enddate ? ' - '.$enddate: '');
 
     $displaytime = '';
     /* Get the time */
     if (isset($xref->times) && $xref->times != '00:00:00') {
-    	$displaytime = strftime( $elsettings->formattime, strtotime( $xref->times ));
+    	$displaytime = strftime( $elsettings->get('formattime'), strtotime( $xref->times ));
 
     	if (isset($xref->endtimes) && $xref->endtimes != '00:00:00') {
-    		$displaytime .= ' - '.strftime( $elsettings->formattime, strtotime( $xref->endtimes ));
+    		$displaytime .= ' - '.strftime( $elsettings->get('formattime'), strtotime( $xref->endtimes ));
     	}
     }
     $json_data = array( 'id'        => $xref->id,

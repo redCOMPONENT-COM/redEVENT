@@ -35,10 +35,10 @@ if ($this->row->show_names && $this->registers) {
 		//loop through attendees
 		foreach ($this->registers as $id => $register) {
 			//if CB
-			if ($this->elsettings->comunsolution == 1 && 0) :
+			if ($this->elsettings->get('comunsolution') == 1 && 0) :
 				$thumb_path = 'images/comprofiler/tn';
 				$no_photo 	= ' alt="'.$register->name.'"';
-				if ($this->elsettings->comunoption == 1) :
+				if ($this->elsettings->get('comunoption') == 1) :
 					//User has avatar
 					if(!empty($register->avatar)) :
 						echo "<li><a href='".JRoute::_('index.php?option=com_comprofiler&task=userProfile&user='.$register->uid )."'><img src=".$thumb_path.$register->avatar.$no_photo." alt='no photo' /><span class='username'>".$register->name."</span></a></li>";
@@ -49,7 +49,7 @@ if ($this->row->show_names && $this->registers) {
 				endif;
 		
 				//only show the username with link to profile
-				if ($this->elsettings->comunoption == 0) :
+				if ($this->elsettings->get('comunoption') == 0) :
 					echo "<li><span class='username'><a href='".JRoute::_( 'index.php?option=com_comprofiler&amp;task=userProfile&amp;user='.$register->uid )."'>".$register->name." </a></span></li>";
 				endif;
 		
@@ -57,7 +57,7 @@ if ($this->row->show_names && $this->registers) {
 			endif;
 		
 			//no communitycomponent is set so only show the username
-			// if ($this->elsettings->comunsolution == 0) :
+			// if ($this->elsettings->get('comunsolution') == 0) :
 				echo '<li>';
 				foreach ($register as $key => $name) {
 					if (stristr($name, '~~~')) $name = str_replace('~~~', '<br />', $name).'<br />';

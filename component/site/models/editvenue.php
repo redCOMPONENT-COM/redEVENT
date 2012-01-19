@@ -274,7 +274,7 @@ class RedeventModelEditvenue extends JModel
 			//get IP, time and userid
 			$row->created 			= gmdate('Y-m-d H:i:s');
 
-			$row->author_ip 		= $elsettings->storeip ? getenv('REMOTE_ADDR') : 'DISABLED';
+			$row->author_ip 		= $elsettings->get('storeip') ? getenv('REMOTE_ADDR') : 'DISABLED';
 			$row->created_by		= $user->get('id');
 		}
 
@@ -384,7 +384,7 @@ class RedeventModelEditvenue extends JModel
 		$link 	= JRoute::_(JURI::base().RedeventHelperRoute::getVenueEventsRoute($row->id), false);
 
 		//create mail
-		if (($elsettings->mailinform == 2) || ($elsettings->mailinform == 3)) {
+		if (($elsettings->get('mailinform') == 2) || ($elsettings->get('mailinform') == 3)) {
 
 			$mail = JFactory::getMailer();
 
@@ -405,7 +405,7 @@ class RedeventModelEditvenue extends JModel
 
 			}
 
-			$receivers = explode( ',', trim($elsettings->mailinformrec));
+			$receivers = explode( ',', trim($elsettings->get('mailinformrec')));
 
 			$mail->addRecipient( $receivers );
 			$mail->setSender( array( $MailFrom, $FromName ) );
@@ -417,7 +417,7 @@ class RedeventModelEditvenue extends JModel
 		}
 
 		//create the mail for the user
-		if (($elsettings->mailinformuser == 2) || ($elsettings->mailinformuser == 3)) {
+		if (($elsettings->get('mailinformuser') == 2) || ($elsettings->get('mailinformuser') == 3)) {
 
 			$usermail = JFactory::getMailer();
 

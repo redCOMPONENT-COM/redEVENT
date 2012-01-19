@@ -51,7 +51,7 @@ class RedEventViewAttendees extends JView {
 		
 		//initialise variables
 		$db = JFactory::getDBO();
-		$elsettings = ELAdmin::config();
+		$elsettings = JComponentHelper::getParams('com_redevent');
 		$document	= JFactory::getDocument();
 		$user = JFactory::getUser();
 		$state = &$this->get('State');
@@ -101,7 +101,7 @@ class RedEventViewAttendees extends JView {
 		$form      = $this->get( 'Form' );
 		$rf_fields = $this->get( 'RedFormFrontFields' );
 		
-		$event->dates = redEVENTHelper::isValidDate($event->dates) ? strftime($elsettings->formatdate, strtotime( $event->dates )) : JText::_('COM_REDEVENT_OPEN_DATE');
+		$event->dates = redEVENTHelper::isValidDate($event->dates) ? strftime($elsettings->get('formatdate'), strtotime( $event->dates )) : JText::_('COM_REDEVENT_OPEN_DATE');
 		
 		//build filter selectlist
 		$datetimelocation = $this->get('DateTimeLocation');
@@ -111,8 +111,8 @@ class RedEventViewAttendees extends JView {
 			/* Get the date */
 			if (redEVENTHelper::isValidDate($value->dates))
 			{
-				$date = strftime( $elsettings->formatdate, strtotime( $value->dates ));
-				$enddate 	= strftime( $elsettings->formatdate, strtotime( $value->enddates ));
+				$date = strftime( $elsettings->get('formatdate'), strtotime( $value->dates ));
+				$enddate 	= strftime( $elsettings->get('formatdate'), strtotime( $value->enddates ));
 				$displaydate = $date.' - '.$enddate;
 			}
 			else {
@@ -122,10 +122,10 @@ class RedEventViewAttendees extends JView {
 			/* Get the time */
 			if ($value->times) 
 			{
-				$time = strftime( $elsettings->formattime, strtotime( $value->times ));	
+				$time = strftime( $elsettings->get('formattime'), strtotime( $value->times ));	
 				$displaydate .= ' '. $time;
 				if ($value->endtimes) {
-					$endtimes = strftime( $elsettings->formattime, strtotime( $value->endtimes ));
+					$endtimes = strftime( $elsettings->get('formattime'), strtotime( $value->endtimes ));
 					$displaydate .= ' - '.$endtimes;
 				}
 			}
@@ -184,7 +184,7 @@ class RedEventViewAttendees extends JView {
 	 */
 	function _displayprint($tpl = null)
 	{
-		$elsettings = ELAdmin::config();
+		$elsettings = JComponentHelper::getParams('com_redevent');
 		$document	= & JFactory::getDocument();
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 
@@ -193,7 +193,7 @@ class RedEventViewAttendees extends JView {
 		$rf_fields = $this->get( 'RedFormFrontFields' );
 		$form      = $this->get( 'Form' );
 
-		$event->dates = redEVENTHelper::isValidDate($event->dates) ? strftime($elsettings->formatdate, strtotime( $event->dates )) : JText::_('COM_REDEVENT_OPEN_DATE');
+		$event->dates = redEVENTHelper::isValidDate($event->dates) ? strftime($elsettings->get('formatdate'), strtotime( $event->dates )) : JText::_('COM_REDEVENT_OPEN_DATE');
 
 		//assign data to template
 		$this->assignRef('rows'      	, $rows);
@@ -213,7 +213,7 @@ class RedEventViewAttendees extends JView {
 	 */
 	function _displaymove($tpl = null)
 	{
-		$elsettings = ELAdmin::config();
+		$elsettings = JComponentHelper::getParams('com_redevent');
 		$document	= & JFactory::getDocument();
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 		

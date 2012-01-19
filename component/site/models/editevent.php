@@ -758,7 +758,7 @@ class RedeventModelEditevent extends JModel
 			* This extra Check is needed to make it possible
 			* that the venue is published after an edit from an owner
 			*/
-			if ($elsettings->venueowner == 1 && $row->created_by == $user->get('id')) {
+			if ($elsettings->get('venueowner') == 1 && $row->created_by == $user->get('id')) {
 				$owneredit = 1;
 			} else {
 				$owneredit = 0;
@@ -774,7 +774,7 @@ class RedeventModelEditevent extends JModel
 			//get IP, time and userid
 			$row->created 		= gmdate('Y-m-d H:i:s');
 
-			$row->author_ip 	= $elsettings->storeip ? getenv('REMOTE_ADDR') : 'DISABLED';
+			$row->author_ip 	= $elsettings->get('storeip') ? getenv('REMOTE_ADDR') : 'DISABLED';
 			$row->created_by 	= $user->get('id');
 
 			//Set owneredit to false
@@ -1012,7 +1012,7 @@ class RedeventModelEditevent extends JModel
 		$link 	= JRoute::_(JURI::base().RedeventHelperRoute::getDetailsRoute($row->id), isset($xref) ? $xref->id : false);
 
 		//create the mail for the site owner
-		if (($elsettings->mailinform == 1) || ($elsettings->mailinform == 3)) {
+		if (($elsettings->get('mailinform') == 1) || ($elsettings->get('mailinform') == 3)) {
 
 			$mail = JFactory::getMailer();
 
@@ -1033,7 +1033,7 @@ class RedeventModelEditevent extends JModel
 
 			}
 
-			$receivers = explode( ',', trim($elsettings->mailinformrec));
+			$receivers = explode( ',', trim($elsettings->get('mailinformrec')));
 
 			$mail->addRecipient( $receivers );
 			$mail->setSender( array( $MailFrom, $FromName ) );
@@ -1047,7 +1047,7 @@ class RedeventModelEditevent extends JModel
 		}//mail end
 
 		//create the mail for the user
-		if (($elsettings->mailinformuser == 1) || ($elsettings->mailinformuser == 3)) {
+		if (($elsettings->get('mailinformuser') == 1) || ($elsettings->get('mailinformuser') == 3)) {
 
 			$usermail = JFactory::getMailer();
 

@@ -131,7 +131,7 @@ class RedeventViewVenuecategory extends JView
 
 		//Check if the user has access to the form
 		$maintainer = ELUser::ismaintainer();
-		$genaccess 	= ELUser::validate_user( $elsettings->evdelrec, $elsettings->delivereventsyes );
+		$genaccess 	= ELUser::validate_user( $elsettings->get('evdelrec'), $elsettings->get('delivereventsyes') );
 
 		if ($maintainer || $genaccess ) $dellink = 1;
 

@@ -106,10 +106,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 							}
 
 							?><br />
-							<b><?php echo JText::_('COM_REDEVENT_IMAGE_FILESIZE' ).':'; ?></b> <?php echo $this->elsettings->sizelimit; ?> kb<br />
+							<b><?php echo JText::_('COM_REDEVENT_IMAGE_FILESIZE' ).':'; ?></b> <?php echo $this->elsettings->get('sizelimit'); ?> kb<br />
 
 							<?php
-							if ( $this->elsettings->gddisabled ) {
+							if ( $this->elsettings->get('gddisabled') ) {
 
 								if (imagetypes() & IMG_PNG) {
 									echo "<br /><font color='green'>".JText::_('COM_REDEVENT_PNG_SUPPORT' )."</font>";
@@ -142,7 +142,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	</tr>
 </table>
 
-<?php if ( $this->elsettings->gddisabled ) { ?>
+<?php if ( $this->elsettings->get('gddisabled') ) { ?>
 
 <table class="noshow">
 	<tr>

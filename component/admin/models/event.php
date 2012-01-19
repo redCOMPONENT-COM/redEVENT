@@ -348,7 +348,7 @@ class RedEventModelEvent extends JModelAdmin
 	{
 		$mainframe = &JFactory::getApplication();
 
-		$elsettings = ELAdmin::config();
+		$elsettings = JComponentHelper::getParams('com_redevent');
 		$user		= & JFactory::getUser();
 
 		$tzoffset 	= $mainframe->getCfg('offset');
@@ -399,7 +399,7 @@ class RedEventModelEvent extends JModelAdmin
 			//get IP, time and userid
 			$row->created 			= gmdate('Y-m-d H:i:s');
 
-			$row->author_ip 		= $elsettings->storeip ? getenv('REMOTE_ADDR') : 'DISABLED';
+			$row->author_ip 		= $elsettings->get('storeip') ? getenv('REMOTE_ADDR') : 'DISABLED';
 			$row->created_by		= $row->created_by ? $row->created_by : $user->get('id');
 		}
 

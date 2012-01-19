@@ -27,7 +27,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div class="elcomments">
 
 <?php
-switch ($this->elsettings->commentsystem) {
+switch ($this->elsettings->get('commentsystem')) {
 	
 	//jcomments integration
 	case 1:

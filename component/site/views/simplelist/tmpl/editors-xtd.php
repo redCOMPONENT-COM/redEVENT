@@ -165,7 +165,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				  </a>
 				</td>
 
-				<?php if (( $this->params->get('showtitle', 1) ) && ($this->elsettings->showdetails == 0) ) :
+				<?php if (( $this->params->get('showtitle', 1) ) && ($this->elsettings->get('showdetails') == 0) ) :
 				?>
 
 				<td headers="el_title" align="left" valign="top"><?php echo $this->escape($row->title); ?></td>

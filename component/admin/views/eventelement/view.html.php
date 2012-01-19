@@ -41,7 +41,7 @@ class RedEventViewEventelement extends JView {
 
 		//initialise variables
 		$db			= & JFactory::getDBO();
-		$elsettings = ELAdmin::config();
+		$elsettings = JComponentHelper::getParams('com_redevent');
 		$document	= & JFactory::getDocument();
 		$fieldname = JRequest::getVar('field');
 		

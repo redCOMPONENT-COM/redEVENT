@@ -85,7 +85,7 @@ class RedeventViewVenuesmap extends JView
     $countries = $this->get('Countries');
 
 		//Add needed scripts if the lightbox effect is enabled
-		if ($elsettings->lightbox == 1) {
+		if ($elsettings->get('lightbox') == 1) {
   			JHTML::_('behavior.modal');
 		}
 

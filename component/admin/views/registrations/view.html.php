@@ -41,7 +41,7 @@ class RedEventViewRegistrations extends JView {
 		
 		//initialise variables
 		$db = JFactory::getDBO();
-		$settings = ELAdmin::config();
+		$settings = JComponentHelper::getParams('com_redevent');
 		$document	= JFactory::getDocument();
 		$user = JFactory::getUser();
 		$state = &$this->get('State');

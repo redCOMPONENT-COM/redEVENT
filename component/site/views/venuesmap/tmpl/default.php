@@ -29,7 +29,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     <?php echo JText::_('COM_REDEVENT_Locations'); ?>
   </h1>
 
-<?php if ($this->elsettings->gmapkey): ?>
+<?php if ($this->elsettings->get('gmapkey')): ?>
 
 <script type="text/javascript">
 <!--

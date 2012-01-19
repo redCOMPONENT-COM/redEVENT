@@ -40,6 +40,7 @@ class redEVENTHelper {
 	 */
 	function &config()
 	{
+		return JComponentHelper::getParams('com_redevent');
 		static $config;
 
 		if (!is_object($config))

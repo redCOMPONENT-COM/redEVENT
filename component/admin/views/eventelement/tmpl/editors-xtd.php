@@ -95,11 +95,11 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 					//Format date
-					$date = redEVENTHelper::isValidDate($row->dates) ? strftime( $this->elsettings->formatdate, strtotime( $row->dates )) : JText::_('COM_REDEVENT_OPEN_DATE');
+					$date = redEVENTHelper::isValidDate($row->dates) ? strftime( $this->elsettings->get('formatdate'), strtotime( $row->dates )) : JText::_('COM_REDEVENT_OPEN_DATE');
 					if ( !redEVENTHelper::isValidDate($row->enddates) ) {
 						$displaydate = $date;
 					} else {
-						$enddate 	= strftime( $this->elsettings->formatdate, strtotime( $row->enddates ));
+						$enddate 	= strftime( $this->elsettings->get('formatdate'), strtotime( $row->enddates ));
 						$displaydate = $date.' - '.$enddate;
 					}
 
@@ -112,7 +112,7 @@ defined('_JEXEC') or die('Restricted access');
 					if (!$row->times) {
 						$displaytime = '-';
 					} else {
-						$time = strftime( $this->elsettings->formattime, strtotime( $row->times ));
+						$time = strftime( $this->elsettings->get('formattime'), strtotime( $row->times ));
 						$displaytime = $time;
 					}
 					echo $displaytime;

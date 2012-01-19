@@ -64,7 +64,7 @@ class RedEventControllerImagehandler extends RedEventController
 		// Check for request forgeries
 		JRequest::checkToken() or die( 'Invalid Token' );
 
-		$elsettings = ELAdmin::config();
+		$elsettings = JComponentHelper::getParams('com_redevent');
 
 		$file 		= JRequest::getVar( 'userfile', '', 'files', 'array' );
 		$task 		= JRequest::getVar( 'task' );
@@ -112,7 +112,7 @@ class RedEventControllerImagehandler extends RedEventController
 
 		} else {
 			// create thumbnail
-			redEVENTImage::thumb($filepath, dirname($filepath).DS.'small'.DS.$filename, $elsettings->imagewidth, $elsettings->get('imageheight', 100));
+			redEVENTImage::thumb($filepath, dirname($filepath).DS.'small'.DS.$filename, $elsettings->get('imagewidth'), $elsettings->get('imageheight', 100));
 			
 			echo "<script> alert('".JText::_('COM_REDEVENT_UPLOAD_COMPLETE' )."'); window.history.go(-1); window.parent.elSelectImage('$filename', '$filename'); </script>\n";
 			$mainframe->close();

@@ -149,26 +149,6 @@ class RedEventViewEvent extends JView {
 		/* Create submission types */
 		$submission_types = explode(',', $row->submission_types);
 		
-		//build image select js and load the view
-		$js = "
-		function elSelectImage(image, imagename) {
-			document.getElementById('a_image').value = image;
-			document.getElementById('a_imagename').value = imagename;
-			document.getElementById('imagelib').src = '../images/redevent/events/' + image;
-			document.getElementById('sbox-window').close();
-		}";
-
-		$link = 'index.php?option=com_redevent&amp;view=imagehandler&amp;layout=uploadimage&amp;task=eventimg&amp;tmpl=component';
-		$link2 = 'index.php?option=com_redevent&amp;view=imagehandler&amp;task=selecteventimg&amp;tmpl=component';
-		$document->addScriptDeclaration($js);
-		$imageselect = "\n<input style=\"background: #ffffff;\" type=\"text\" id=\"a_imagename\" value=\"$row->datimage\" disabled=\"disabled\" /><br />";
-
-		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('COM_REDEVENT_Upload')."\" href=\"$link\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('COM_REDEVENT_Upload')."</a></div></div>\n";
-		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('COM_REDEVENT_SELECTIMAGE')."\" href=\"$link2\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('COM_REDEVENT_SELECTIMAGE')."</a></div></div>\n";
-
-		$imageselect .= "\n&nbsp;<input class=\"inputbox\" type=\"button\" onclick=\"elSelectImage('', '".JText::_('COM_REDEVENT_SELECTIMAGE')."' );\" value=\"".JText::_('COM_REDEVENT_Reset')."\" />";
-		$imageselect .= "\n<input type=\"hidden\" id=\"a_image\" name=\"datimage\" value=\"$row->datimage\" />";
-		
 		/* Check if redFORM is installed */
 		$redform_install = $this->get('CheckredFORM');
 		
@@ -298,14 +278,6 @@ class RedEventViewEvent extends JView {
 
     $document->addScript(JURI::root().'components/com_redevent/assets/js/xref_recurrence.js');
     
-		//Build the image select functionality
-		$js = "
-		function elSelectImage(image, imagename) {
-			document.getElementById('a_image').value = image;
-			document.getElementById('a_imagename').value = imagename;
-			document.getElementById('sbox-window').close();
-		}";
-
 		$xref = $this->get('xref');
 		$xref->eventid = ($xref->eventid) ? $xref->eventid : JRequest::getVar('eventid', 0, 'request', 'int'); 		
     $customfields =& $this->get('XrefCustomfields');

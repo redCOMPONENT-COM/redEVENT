@@ -64,17 +64,17 @@ if ($this->row->show_names) : ?>
 					continue;
 				}
         /* Get the date */
-        $date = (!redEVENTHelper::isValidDate($venuedate->dates)  ? JText::_('COM_REDEVENT_Open_date') : strftime( $this->elsettings->formatdate, strtotime( $venuedate->dates )));
-        $enddate  = (!redEVENTHelper::isValidDate($venuedate->enddates) || $venuedate->enddates == '0000-00-00' || $venuedate->enddates == $venuedate->dates) ? '' : strftime( $this->elsettings->formatdate, strtotime( $venuedate->enddates ));
+        $date = (!redEVENTHelper::isValidDate($venuedate->dates)  ? JText::_('COM_REDEVENT_Open_date') : strftime( $this->elsettings->get('formatdate'), strtotime( $venuedate->dates )));
+        $enddate  = (!redEVENTHelper::isValidDate($venuedate->enddates) || $venuedate->enddates == '0000-00-00' || $venuedate->enddates == $venuedate->dates) ? '' : strftime( $this->elsettings->get('formatdate'), strtotime( $venuedate->enddates ));
         $displaydate = $date. ($enddate ? ' - '.$enddate: '');
     
         $displaytime = '';
         /* Get the time */
         if (isset($venuedate->times) && $venuedate->times != '00:00:00') {
-          $displaytime = strftime( $this->elsettings->formattime, strtotime( $venuedate->times ));
+          $displaytime = strftime( $this->elsettings->get('formattime'), strtotime( $venuedate->times ));
     
           if (isset($venuedate->endtimes) && $venuedate->endtimes != '00:00:00') {
-            $displaytime .= ' - '.strftime( $this->elsettings->formattime, strtotime( $venuedate->endtimes ));
+            $displaytime .= ' - '.strftime( $this->elsettings->get('formattime'), strtotime( $venuedate->endtimes ));
           }
         }
         
@@ -87,7 +87,7 @@ if ($this->row->show_names) : ?>
 		?>
 	<?php endif; ?>
 		
-	<?php if ($this->elsettings->commentsystem != 0) :	?>
+	<?php if ($this->elsettings->get('commentsystem') != 0) :	?>
 	
 		<!-- Comments -->
 		<?php echo $this->loadTemplate('comments'); ?>
