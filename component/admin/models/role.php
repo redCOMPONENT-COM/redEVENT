@@ -367,7 +367,8 @@ class RedeventModelRole extends JModel
   
   function getRmUserTypesOptions()
   {
-  	if (JComponentHelper::isEnabled('com_redmember'))
+//   	if (JComponentHelper::getComponent('com_redmember', true)->enabled) // throws a warning in 1.7.3... not the expecteed behavior !
+		if (file_exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_redmember'))
   	{
   		$query = ' SELECT usertype_id AS value, usertype_name AS text ' 
   		       . ' FROM #__redmember_usertype ' 
