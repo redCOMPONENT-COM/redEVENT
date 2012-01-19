@@ -36,18 +36,19 @@ window.addEvent('domready', function() {
 		}
 		id = event.target.id.substr(13);
 		var url = 'index.php?option=com_redevent&task=ajaxattachremove&format=raw&id='+id;
-		var theAjax = new Ajax(url, {
+		var theAjax = new Request( {
+			url : url,
 			method: 'post',
 			postBody : ''
 			});
 		
 		theAjax.addEvent('onSuccess', function(response) {
 			if (response == "1") {
-				$(event.target).getParent().getParent().remove();
+				$(event.target).getParent().getParent().dispose();
 			}
 			//this.venue = eval('(' + response + ')');
 		}.bind(this));
-		theAjax.request();
+		theAjax.send();
 	});
 });
 

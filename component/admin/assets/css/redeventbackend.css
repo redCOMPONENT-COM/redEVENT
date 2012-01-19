@@ -295,3 +295,9 @@ div.current div.type-params select,
 div.current div.type-params textarea {
 	float: none;
 }
+
+img.re-image-preview {
+	border:2px solid black;
+	max-height:80px;
+	max-width:150px;	
+}

@@ -32,7 +32,20 @@ window.addEvent('domready', function(){
 			$(el).removeProperty('selected');
 		});
 	});
-	
+
+	$('image').addEvent('change', function(){
+		if (this.get('value')) {
+			$('imagelib').empty().adopt(
+					new Element('img', {
+						src: '../'+this.get('value'),
+						class: 're-image-preview',
+						alt: 'preview'
+					}));
+		}
+		else {
+			$('imagelib').empty();
+		}
+	}).fireEvent('change');
 });
 
 function submitbutton(pressbutton)
@@ -188,20 +201,10 @@ function submitbutton(pressbutton)
 			<table>
 				<tr>
 					<td>
-						<label for="event_template" class="hasTip" title="<?php echo JText::_('COM_REDEVENT_Category_Event_template' ).'::'.JText::_('COM_REDEVENT_Category_Event_template_tip' ); ?>">
-							<?php echo JText::_('COM_REDEVENT_Category_Event_template' ).':'; ?>
-						</label>
+						<?php echo $this->form->getLabel('event_template'); ?>
 					</td>
 					<td>
-						<?php	$link = 'index.php?option=com_redevent&amp;view=xrefelement&amp;tmpl=component&amp;field=event_template'; ?>
-						<div style="float: left;"><input style="background: #ffffff;" type="text" id="event_template_name" value="<?php echo ($this->row->event_template_name ? $this->row->event_template_name : JText::_('COM_REDEVENT_Default')); ?>" disabled="disabled" /></div>
-						<div class="button2-left"><div class="blank">
-							<a class="modal" title="<?php JText::_('COM_REDEVENT_Select'); ?>"  href="<?php echo $link; ?>" rel="{handler: 'iframe', size: {x: 650, y: 375}}"><?php echo JText::_('COM_REDEVENT_Select'); ?></a>
-						</div></div>
-						<div class="button2-left"><div class="blank">
-							<a title="<?php JText::_('COM_REDEVENT_Reset'); ?>" id="ev-reset-button"><?php echo JText::_('COM_REDEVENT_Reset'); ?></a>
-						</div></div>
-						<input type="hidden" id="event_template" name="event_template" value="<?php echo $this->row->event_template; ?>" />
+						<?php echo $this->form->getInput('event_template'); ?>
 					</td>
 				</tr>
 			</table>
@@ -230,30 +233,18 @@ function submitbutton(pressbutton)
 			<table>
 				<tr>
 					<td>
-						<label for="image">
-							<?php echo JText::_('COM_REDEVENT_CHOOSE_IMAGE' ).':'; ?>
-						</label>
+						<?php echo $this->form->getLabel('image'); ?>
 					</td>
 					<td>
-						<?php
-							echo $this->imageselect;
-						?>
+						<?php echo $this->form->getInput('image'); ?>
 					</td>
 				</tr>
 				<tr>
 					<td>
 					</td>
 					<td>
+						<span id="imagelib"></span>
 						<img src="../images/M_images/blank.png" name="imagelib" id="imagelib" width="80" height="80" border="2" alt="Preview" />
-						<script language="javascript" type="text/javascript">
-						if ($('a_imagename').value !=''){
-							var imname = $('a_imagename').value;
-							jsimg='../images/redevent/categories/' + imname;
-							$('imagelib').src= jsimg;
-						}
-						</script>
-						<br />
-						<br />
 					</td>
 				</tr>
 			</table>

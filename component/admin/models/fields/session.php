@@ -58,7 +58,7 @@ class JFormFieldSession extends JFormField
 		// Setup variables for display
 		$html = array();
 		$link = 'index.php?option=com_redevent&amp;view=xrefelement&amp;tmpl=component'
-		                  . '&amp;function=jSelectProjectround_'.$this->id;
+		                  . '&amp;function=jSelectSession_'.$this->id;
 		
 		
 		JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_redevent'.DS.'tables');

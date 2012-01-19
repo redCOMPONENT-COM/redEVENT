@@ -41,7 +41,7 @@ class RedEventViewxrefelement extends JView {
 
 		//initialise variables
 		$db			= & JFactory::getDBO();
-		$elsettings = ELAdmin::config();
+		$params   = &JComponentHelper::getParams('com_redevent');
 		$document	= & JFactory::getDocument();
 		$fieldname = JRequest::getVar('field');
 		
@@ -90,7 +90,7 @@ class RedEventViewxrefelement extends JView {
 		$this->assignRef('lists'      	, $lists);
 		$this->assignRef('rows'      	, $rows);
 		$this->assignRef('pageNav' 		, $pageNav);
-		$this->assignRef('elsettings'	, $elsettings);
+		$this->assignRef('params'	,     $params);
 		$this->assignRef('form_id',  JRequest::getInt('form_id'));
 		$this->assign('field',          $fieldname);
 		$this->assign('function', JRequest::getCmd('function'));

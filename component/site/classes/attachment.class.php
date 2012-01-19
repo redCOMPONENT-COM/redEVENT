@@ -81,7 +81,8 @@ class REAttach extends JObject {
 					JError::raiseWarning(0, JText::_('COM_REDEVENT_ERROR_COULD_NOT_CREATE_FOLDER').': '.$path);
 					return false;
 				}
-				JFile::write($path.DS.'index.html', '<html><body bgcolor="#FFFFFF"></body></html>');
+				$txt = '<html><body bgcolor="#FFFFFF"></body></html>';
+				JFile::write($path.DS.'index.html', $txt, false);
 			}
 			
 			JFile::copy($post_files['tmp_name'][$k], $path.DS.$file);
