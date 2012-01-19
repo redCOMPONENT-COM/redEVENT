@@ -58,7 +58,7 @@ class RedEventViewGroupmember extends JView {
 		//Get data from the model
 		$model				= & $this->getModel();
 		$row      		= & $this->get( 'Data');
-		$form     = & $this->get( 'Form' );
+		$form         = & $this->get( 'Form' );
 		$group   			= & $this->get( 'Group');
 
 		// fail if checked out not by 'me'

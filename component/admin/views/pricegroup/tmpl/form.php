@@ -45,16 +45,21 @@ $imagepath = '/administrator/components/com_redevent/assets/images/';
 
 <script language="javascript" type="text/javascript">
 	window.addEvent('domready', function(){
+
 		$('image').addEvent('change', function(){
-			if ($('image').value != "") {
-				$('img-preview').setStyle('visibility', 'visible');
-				$('img-preview').src = imgpath+$('image').value;
+			if (this.get('value')) {
+				$('imagelib').empty().adopt(
+						new Element('img', {
+							src: '../'+this.get('value'),
+							class: 're-image-preview',
+							alt: 'preview'
+						}));
 			}
 			else {
-				$('img-preview').setStyle('visibility', 'hidden');
-				$('img-preview').src = '';				
+				$('imagelib').empty();
 			}
-		});
+		}).fireEvent('change');
+		
 	});
 
 	function submitbutton(pressbutton) {
@@ -80,7 +85,7 @@ $imagepath = '/administrator/components/com_redevent/assets/images/';
 <div class="col50">
 <fieldset class="adminform"><legend><?php echo JText::_( 'COM_REDEVENT_PRICEGROUPS_PRICEGROUP' ); ?></legend>
 
-<table class="admintable">
+<table class="editevent">
 	<tr>
 		<td width="100" align="right" class="key"><label for="name"><?php echo JText::_('COM_REDEVENT_Name' ); ?>:
 		</label></td>
@@ -110,10 +115,13 @@ $imagepath = '/administrator/components/com_redevent/assets/images/';
 		</td>
 	</tr>
 	<tr>
-		<td width="100" align="right" class="key"><label for="alias"><?php echo JText::_('COM_REDEVENT_Image' ); ?>:</label></td>
+		<td width="100" align="right" class="key">
+			<?php echo $this->form->getLabel('image'); ?>
+		</td>
 		<td>
-			<?php	echo JHTML::_('list.images', 'image', $this->object->image, 'id="image"', $imagepath); ?>
-			<img src="<?php echo JURI::root().$imagepath.$this->object->image; ?>" id="img-preview" border="0" alt="<?php echo JText::_('COM_REDEVENT_Preview' ); ?>" />
+			<?php echo $this->form->getInput('image'); ?>
+			<div class="clear"></div>
+			<div id="imagelib"></div>
 		</td>
 	</tr>
 	<tr>

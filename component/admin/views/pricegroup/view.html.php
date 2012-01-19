@@ -64,9 +64,10 @@ class RedeventViewPricegroup extends JView
     $document = & JFactory::getDocument();
     $document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 
-		$lists = array();
-		//get the project
-		$object	=& $this->get('data');
+		
+		$object	= & $this->get('data');
+		$form   = & $this->get( 'Form' );
+		
 		$isNew  = ($object->id < 1);
 
 		// fail if checked out not by 'me'
@@ -86,6 +87,8 @@ class RedeventViewPricegroup extends JView
 			//$season->published = 1;
 			$object->order 	= 0;
 		}
+
+		$lists = array();
 		  
 		// build the html select list for ordering
 		$query = 'SELECT ordering AS value, name AS text'
@@ -96,6 +99,7 @@ class RedeventViewPricegroup extends JView
 						
 		$this->assignRef('lists',		$lists);
 		$this->assignRef('object',		$object);
+		$this->assignRef('form'      	, $form);
 
 		parent::display($tpl);
 	}

@@ -25,16 +25,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-jimport('joomla.application.component.model');
+jimport('joomla.application.component.modeladmin');
 
 /**
  * Joomla Redevent Component Model
  *
- * @author Julien Vonthron <julien.vonthron@gmail.com>
+ * @author redcomponent
  * @package   Redevent
  * @since 0.1
  */
-class RedeventModelPricegroup extends JModel
+class RedeventModelPricegroup extends JModelAdmin
 {
   /**
    * item id
@@ -343,5 +343,56 @@ class RedeventModelPricegroup extends JModel
     
     return true;
   }  
+  
+  /**
+  * Returns a Table object, always creating it
+  *
+  * @param	type	The table type to instantiate
+  * @param	string	A prefix for the table class name. Optional.
+  * @param	array	Configuration array for model. Optional.
+  * @return	JTable	A database object
+  * @since	1.6
+  */
+  public function getTable($type = 'redevent_pricegroups', $prefix = '', $config = array())
+  {
+  	return JTable::getInstance($type, $prefix, $config);
+  }
+  
+	/**
+	 * Method to get the record form.
+	 *
+	 * @param	array	$data		Data for the form.
+	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
+	 * @return	mixed	A JForm object on success, false on failure
+	 * @since	1.7
+	 */
+	public function getForm($data = array(), $loadData = true)
+	{
+		// Get the form.
+		$form = $this->loadForm('com_redevent.pricegroup', 'pricegroup',
+		                        array('load_data' => $loadData) );
+		if (empty($form))
+		{
+			return false;
+		}
+		return $form;
+	}
+	
+	/**
+	* Method to get the data that should be injected in the form.
+	*
+	* @return	mixed	The data for the form.
+	* @since	1.7
+	*/
+	protected function loadFormData()
+	{
+		// Check the session for previously entered form data.
+		$data = JFactory::getApplication()->getUserState('com_redevent.edit.pricegroup.data', array());
+		if (empty($data))
+		{
+			$data = $this->getData();
+		}
+		return $data;
+	}
 }
 ?>
