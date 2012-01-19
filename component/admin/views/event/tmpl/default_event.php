@@ -29,6 +29,8 @@
 		</li>
 		<li>
 			<?php echo $this->form->getLabel('datimage').$this->form->getInput('datimage'); ?>
+			<div class="clear"></div>
+			<div id="imagelib"></div>
 		</li>
 	</ul>
 </fieldset>

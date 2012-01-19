@@ -55,7 +55,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 				<input type="text" name="attach-desc[]" value="" style="width: 100%" />
 			</td>
 			<td>
-				<?php echo JHTML::_('select.genericlist', $this->access, 'attach-access[]', 'class="inputbox" size="3"', 'value', 'text', 0); ?>
+				<?php echo JHTML::_('access.assetgrouplist', 'attach-access[]', 1); ?>
 			</td>
 			<td>&nbsp;</td>
 		</tr>

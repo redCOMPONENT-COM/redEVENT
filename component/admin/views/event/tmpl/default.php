@@ -40,6 +40,20 @@ $this->infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-h
           }
         }
       );
+      
+			$('datimage').addEvent('change', function(){
+				if (this.get('value')) {
+					$('imagelib').empty().adopt(
+							new Element('img', {
+								src: '../'+this.get('value'),
+								class: 're-image-preview',
+								alt: 'preview'
+							}));
+				}
+				else {
+					$('imagelib').empty();
+				}
+			}).fireEvent('change');
     });
     
 	function submitbutton(task)
