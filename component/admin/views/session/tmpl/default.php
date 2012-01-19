@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <script language="javascript" type="text/javascript">
-Window.onDomReady(function() {
+window.addEvent('domready', function() {
         document.formvalidator.setHandler('venue', function(value) {
                 return value != 0;
         });

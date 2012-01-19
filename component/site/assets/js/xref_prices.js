@@ -1,5 +1,5 @@
 /**
- * @version 1.0 $Id: settings.js 30 2009-05-08 10:22:21Z roland $
+ * @version 2.5
  * @package Joomla
  * @subpackage redEVENT
  * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
@@ -33,7 +33,7 @@ window.addEvent('domready', function() {
 			var newrow = $('trnewprice').clone().removeProperty('id');
 			newrow.getElement('select').removeProperty('id').value = sel.value;
 			newrow.getElement('.price-val').removeProperty('id').value = price.value;
-			newrow.getElement('button').removeProperty('name').setText(txt_remove).addEvent('click', removePrice);
+			newrow.getElement('button').removeProperty('name').set('text', txt_remove).addEvent('click', removePrice);
 			newrow.injectBefore($('trnewprice'));
 			sel.value = 0;
 			price.value = 0;
@@ -45,5 +45,5 @@ window.addEvent('domready', function() {
 
 function removePrice()
 {
-	this.getParent().getParent().remove();
+	this.getParent().getParent().dispose();
 }

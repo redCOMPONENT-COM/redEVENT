@@ -1,5 +1,5 @@
 /**
- * @version 1.0 $Id: settings.js 30 2009-05-08 10:22:21Z roland $
+ * @version 2.5
  * @package Joomla
  * @subpackage redEVENT
  * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes

@@ -26,7 +26,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 
 <script type="text/javascript">
-	Window.onDomReady(function() {
+	window.addEvent('domready', function() {
 		var form = document.getElementById('venueForm');
 		var map = form.getElementById('map1');
 		
