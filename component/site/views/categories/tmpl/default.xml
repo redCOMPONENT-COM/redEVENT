@@ -5,15 +5,14 @@
 			<![CDATA[COM_REDEVENT_CATEGORIES_LAYOUT_DESC]]>
 		</message>
 	</layout>
-	<state>
-		<name>COM_REDEVENT_CATEGORIES_LAYOUT</name>
-		<description>COM_REDEVENT_CATEGORIES_LAYOUT_DESC</description>
-    <params addpath="/administrator/components/com_redevent/elements">
-      <param name="parentcategory" type="categories" default="0" label="COM_REDEVENT_SELECT_PARENT_CATEGORY" description="COM_REDEVENT_SELECT_PARENT_CATEGORY_DESC" />
-      <param name="display_all_categories" type="radio" default="1" label="COM_REDEVENT_DISPLAY_ALL_CATEGORIES" description="COM_REDEVENT_DISPLAY_ALL_CATEGORIES_TIP">
-        <option value="0">No</option>
-        <option value="1">Yes</option>
-      </param>
-    </params>
-	</state>
+	
+	<fields name="params" addfieldpath="/administrator/components/com_redevent/models/fields">
+   	<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
+			<field name="parentcategory" type="recategory" default="0" reset="true" label="COM_REDEVENT_SELECT_PARENT_CATEGORY" description="COM_REDEVENT_SELECT_PARENT_CATEGORY_DESC" />
+			<field name="display_all_categories" type="radio" default="1" label="COM_REDEVENT_DISPLAY_ALL_CATEGORIES" description="COM_REDEVENT_DISPLAY_ALL_CATEGORIES_TIP">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
+		</fieldset>
+	</fields>
 </metadata>
