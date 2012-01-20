@@ -128,8 +128,7 @@ class RedeventViewVenueevents extends JView
 		$list_link  = RedeventHelperRoute::getVenueEventsRoute($venue->slug);
 		
 		//set Page title
-		$mainframe->setPageTitle( $pagetitle );
-   	$mainframe->addMetaTag( 'title' , $pagetitle );
+		$this->document->setTitle($pagetitle);
 		$document->setMetadata('keywords', $venue->meta_keywords );
 		$document->setDescription( strip_tags($venue->meta_description) );
 

@@ -82,8 +82,7 @@ class RedeventViewCategoriesdetailed extends JView
 			$pagetitle = $params->get('page_title');
 		}
 		//set Page title
-		$mainframe->setPageTitle( $pagetitle );
-		$mainframe->addMetaTag( 'title' , $pagetitle );
+		$this->document->setTitle($pagetitle);
 		$document->setMetadata( 'keywords' , $pagetitle );
 
 		//Print

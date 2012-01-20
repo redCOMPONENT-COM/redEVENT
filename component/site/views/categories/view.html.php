@@ -78,8 +78,7 @@ class RedeventViewCategories extends JView
 		}
 
 		//Set Page title
-		$mainframe->setPageTitle( $pagetitle );
-   		$mainframe->addMetaTag( 'title' , $pagetitle );
+		$this->document->setTitle($pagetitle);
 
 		//get icon settings
 		$params->def( 'icons', $mainframe->getCfg( 'icons' ) );

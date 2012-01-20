@@ -105,8 +105,7 @@ class RedeventViewSimpleList extends JView
 		$list_link = RedeventHelperRoute::getSimpleListRoute();
 		
 		//Set Page title
-		$mainframe->setPageTitle( $pagetitle );
-   	$mainframe->addMetaTag( 'title' , $pagetitle );
+		$this->document->setTitle($pagetitle);
 
 		//Check if the user has access to the form
 		$maintainer = ELUser::ismaintainer();

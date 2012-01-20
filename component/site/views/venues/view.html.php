@@ -95,8 +95,7 @@ class RedeventViewVenues extends JView
 		}
 		
 		//Set Page title
-		$mainframe->setPageTitle( $pagetitle );
-   		$mainframe->addMetaTag( 'title' , $pagetitle );
+		$this->document->setTitle($pagetitle);
    		$document->setMetadata('keywords', $pagetitle );
 
 

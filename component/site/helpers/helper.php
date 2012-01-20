@@ -38,7 +38,7 @@ class redEVENTHelper {
 	 * @return object
 	 * @since 0.9
 	 */
-	function &config()
+	public static function config()
 	{
 		return JComponentHelper::getParams('com_redevent');
 		static $config;
@@ -65,12 +65,18 @@ class redEVENTHelper {
  	  * @since 0.9
    	*/
 	function cleanup($forced = 0)
-	{
+	{		
+		$db			= & JFactory::getDBO();
+		
 		$elsettings = & redEVENTHelper::config();
 		$params = &JComponentHelper::getParams('com_redevent');
 
 		$now 		= time();
-		$lastupdate = $elsettings->lastupdate;
+		
+		$query = ' SELECT lastupdate ' 
+		       . ' FROM #__redevent_settings ';
+		$db->setQuery($query);
+		$lastupdate = $db->loadResult();
 
 		//last update later then 24h?
 		//$difference = $now - $lastupdate;
@@ -83,8 +89,6 @@ class redEVENTHelper {
 
 		if ( $nrdaysnow > $nrdaysupdate || $forced) 
 		{
-			$db			= & JFactory::getDBO();
-
 			$nulldate = '0000-00-00';
 			$limit_date = strftime('%Y-%m-%d', time() - $params->get('pastevents_delay', 3) * 3600 * 24);
 			

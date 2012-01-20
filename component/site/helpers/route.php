@@ -315,7 +315,7 @@ class RedeventHelperRoute
 		{
 			foreach($items as $item)
 			{	
-				if ($view && (@$item->query['view'] == $view) && ($item->published == 1)) 
+				if ($view && (@$item->query['view'] == $view)) 
 				{					
 					switch ($view)
 					{
@@ -336,7 +336,7 @@ class RedeventHelperRoute
 			// second round for view with optional params
 			foreach($items as $item)
 			{	
-				if (isset($view) && (@$item->query['view'] == $view) && ($item->published == 1)) 
+				if (isset($view) && (@$item->query['view'] == $view)) 
 				{					
 					switch ($view)
 					{

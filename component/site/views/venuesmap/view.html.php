@@ -116,8 +116,7 @@ class RedeventViewVenuesmap extends JView
     $lists['customfilters'] = $custom;
     
 		//Set Page title
-		$mainframe->setPageTitle( $pagetitle );
-   	$mainframe->addMetaTag( 'title' , $pagetitle );
+		$this->document->setTitle($pagetitle);
    	$document->setMetadata('keywords', $pagetitle );
    	
    	$ajaxurl = 'index.php?option=com_redevent&view=venue&tmpl=component';

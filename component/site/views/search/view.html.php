@@ -120,8 +120,7 @@ class RedeventViewSearch extends JView
 		}
 		
 		//Set Page title
-		$mainframe->setPageTitle( $pagetitle );
-    $mainframe->addMetaTag( 'title' , $pagetitle );
+		$this->document->setTitle($pagetitle);
 		
 		//create select lists
 		$lists	= $this->_buildSortLists();

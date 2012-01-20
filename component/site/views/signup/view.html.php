@@ -57,8 +57,7 @@ class RedeventViewSignup extends JView
 		$venue = $this->get('Venue');
 				
     $pagetitle = $params->set('page_title', JText::_('COM_REDEVENT_SIGNUP_PAGE_TITLE'));
-		$document->setTitle($pagetitle);
-    $mainframe->setPageTitle( $pagetitle );
+		$this->document->setTitle($pagetitle);
     
     //Print
     $params->def( 'print', !$mainframe->getCfg( 'hidePrint' ) );
