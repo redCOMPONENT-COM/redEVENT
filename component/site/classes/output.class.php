@@ -493,7 +493,7 @@ class ELOutput {
 			//does a thumbnail exist?
 			if (JFile::exists(JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.'small'.DS.$imagefile)) {
 
-				if ($settings->lightbox == 0) {
+				if ($settings->get('lightbox') == 0) {
 
 					$url		= '#';
 					$attributes	= 'class="modal" onclick="window.open(\''.JURI::root().'/'.$image['original'].'\',\'Popup\',\'width='.$image['width'].',height='.$image['height'].',location=no,menubar=no,scrollbars=no,status=no,toolbar=no,resizable=no\')"';
@@ -586,7 +586,7 @@ class ELOutput {
 		}
 		
 		//Format date
-		$formatdate = strftime( $settings->formatdate, strtotime( $date.' '.$time ));
+		$formatdate = strftime( $settings->get('formatdate'), strtotime( $date.' '.$time ));
 		
 		return $formatdate;
 	}
@@ -610,7 +610,7 @@ class ELOutput {
 		}
 		
 		//Format time
-		$formattime = strftime( $settings->formattime, strtotime( $date.' '.$time ));
+		$formattime = strftime( $settings->get('formattime'), strtotime( $date.' '.$time ));
 		
 		return $formattime;
 	}
@@ -628,7 +628,7 @@ class ELOutput {
 			return $date;
 		}
 		$settings = & redEVENTHelper::config();
-		$showend = $settings->params->get('lists_showend', 1);
+		$showend = $settings->get('lists_showend', 1);
 		
 		// is this a full day(s) event ?
 		$allday = '00:00:00' == $event->times && '00:00:00' == $event->endtimes;
@@ -636,7 +636,7 @@ class ELOutput {
 		$date = '<span class="event-date">';
 		$date .= '<span class="event-start">';
 		$date .= '<span class="event-day">'.self::formatdate($event->dates, $event->times).'</span>';
-		if (!$allday && $settings->params->get('lists_show_time', 0) == 1) {
+		if (!$allday && $settings->get('lists_show_time', 0) == 1) {
 			$date .= ' <span class="event-time">'.self::formattime($event->dates, $event->times).'</span>';
 		}
 		$date .= '</span>';
@@ -657,12 +657,12 @@ class ELOutput {
 			if (redEVENTHelper::isValidDate($event->enddates) && strtotime($event->enddates) != strtotime($event->dates)) 
 			{
 				$date .= ' <span class="event-end"><span class="event-day">'.self::formatdate($event->enddates, $event->endtimes).'</span>';
-				if ($settings->params->get('lists_show_time', 0) == 1) {
+				if ($settings->get('lists_show_time', 0) == 1) {
 					$date .= ' <span class="event-time">'.self::formattime($event->dates, $event->endtimes).'</span>';
 				}
 				$date .= '</span>';
 			}
-			else if ($settings->params->get('lists_show_time', 0) == 1)
+			else if ($settings->get('lists_show_time', 0) == 1)
 			{
 				$date .= ' <span class="event-time">'.self::formattime($event->dates, $event->endtimes).'</span>';				
 			}
@@ -747,18 +747,18 @@ class ELOutput {
 			return JText::_('COM_REDEVENT_EVENT_PRICE_FREE');
 		}
 		
-		switch ($settings->currency_decimals) {
+		switch ($settings->get('currency_decimals')) {
 			case 'decimals':
 				//Format price
-				$formatprice = number_format($price, 2, $settings->currency_decimal_separator, $settings->currency_thousand_separator);
+				$formatprice = number_format($price, 2, $settings->get('currency_decimal_separator'), $settings->get('currency_thousand_separator'));
 				break;
 			case 'comma':
 				//Format price
-				$formatprice = number_format($price, 0, $settings->currency_decimal_separator, $settings->currency_thousand_separator).',-';
+				$formatprice = number_format($price, 0, $settings->get('currency_decimal_separator'), $settings->get('currency_thousand_separator')).',-';
 				break;
 			case 'none':
 				//Format price
-				$formatprice = number_format($price, 0, $settings->currency_decimal_separator, $settings->currency_thousand_separator);
+				$formatprice = number_format($price, 0, $settings->get('currency_decimal_separator'), $settings->get('currency_thousand_separator'));
 				break;
 		}
 		if ($currency) {

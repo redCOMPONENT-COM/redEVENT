@@ -50,7 +50,7 @@ class RedeventViewCategoryEvents extends JView
 		
 		// Get data from the model
 		$model = $this->getModel();
-		$model->setLimit($settings->params->get('ical_max_items', 100));
+		$model->setLimit($settings->get('ical_max_items', 100));
 		$model->setLimitstart(0);
 		$rows = & $model->getData();
 				

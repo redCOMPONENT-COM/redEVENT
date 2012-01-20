@@ -148,7 +148,7 @@ class RedeventViewCategoryevents extends JView
 		$feed->setFilename( CACHE, 'category'.$catid.'.rss' ); 
 		
 		$model = $this->getModel();
-		$model->setLimit($elsettings->params->get('ical_max_items', 100));
+		$model->setLimit($elsettings->get('ical_max_items', 100));
 		$model->setLimitstart(0);
 		$rows = & $this->get('Data');
 		
