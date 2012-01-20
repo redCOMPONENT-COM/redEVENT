@@ -5,11 +5,9 @@
 			<![CDATA[COM_REDEVENT_CATEGORYEVENTS_THUMB_LAYOUT_DESC]]>
 		</message>
 	</layout>
-	<state>
-		<name>COM_REDEVENT_CATEGORYEVENTS_THUMB_LAYOUT</name>
-		<description>COM_REDEVENT_CATEGORYEVENTS_THUMB_LAYOUT_DESC</description>
-		<url addpath="/administrator/components/com_redevent/elements">
-			<param name="id" type="categories" default="0" label="COM_REDEVENT_SELECT_CATEGORY" description="COM_REDEVENT_SELECT_CATEGORY_DESC" />
-		</url>
-	</state>
+	<fields name="request" addfieldpath="/administrator/components/com_redevent/models/fields">
+   	<fieldset name="request" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
+			<field name="id" type="recategory" default="0" label="COM_REDEVENT_SELECT_CATEGORY" description="COM_REDEVENT_SELECT_CATEGORY_DESC" />
+		</fieldset>
+	</fields>
 </metadata>

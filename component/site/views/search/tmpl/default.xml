@@ -5,64 +5,63 @@
 			<![CDATA[COM_REDEVENT_SEARCH_DEFAULT_LAYOUT_TIP]]>
 		</message>
 	</layout>
-	<state>
-		<name>COM_REDEVENT_SEARCH_DEFAULT_LAYOUT</name>
-		<description>COM_REDEVENT_SEARCH_DEFAULT_LAYOUT_TIP</description>
-    <params addpath="/administrator/components/com_redevent/elements">
-			<param name="introtext" type="textarea" default="" label="COM_REDEVENT_INTROTEXT_FIELD" rows="8" cols="30" description="COM_REDEVENT_INTROTEXT_FIELD_TIP"/>
-			<param name="showintrotext" type="radio" default="0" label="COM_REDEVENT_DISPLAY_INTROTEXT" description="COM_REDEVENT_DISPLAY_INTROTEXT_TIP">
+	
+	<fields name="params" addfieldpath="/administrator/components/com_redevent/models/fields">
+   	<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
+			<field name="introtext" type="textarea" default="" label="COM_REDEVENT_INTROTEXT_FIELD" rows="8" cols="30" description="COM_REDEVENT_INTROTEXT_FIELD_TIP"/>
+			<field name="showintrotext" type="radio" default="0" label="COM_REDEVENT_DISPLAY_INTROTEXT" description="COM_REDEVENT_DISPLAY_INTROTEXT_TIP">
 				<option value="0">COM_REDEVENT_Hide</option>
 				<option value="1">COM_REDEVENT_Show</option>
-			</param>
-			<param name="show_filter" type="radio" default="1" label="COM_REDEVENT_SHOW_FILTER_SEARCH" description="COM_REDEVENT_SHOW_FILTER_SEARCH_TIP">
+			</field>
+			<field name="show_filter" type="radio" default="1" label="COM_REDEVENT_SHOW_FILTER_SEARCH" description="COM_REDEVENT_SHOW_FILTER_SEARCH_TIP">
 				<option value="0">COM_REDEVENT_Hide</option>
 				<option value="1">COM_REDEVENT_Show</option>
-			</param>
-			<param name="show_filter_venuecategory" type="radio" default="1" label="COM_REDEVENT_SHOW_FILTER_VENUE_CATEGORY" description="COM_REDEVENT_SHOW_FILTER_VENUE_CATEGORY_TIP">
+			</field>
+			<field name="show_filter_venuecategory" type="radio" default="1" label="COM_REDEVENT_SHOW_FILTER_VENUE_CATEGORY" description="COM_REDEVENT_SHOW_FILTER_VENUE_CATEGORY_TIP">
 				<option value="0">COM_REDEVENT_Hide</option>
 				<option value="1">COM_REDEVENT_Show</option>
-			</param>
-			<param name="show_filter_category" type="radio" default="1" label="COM_REDEVENT_SHOW_FILTER_CATEGORY" description="COM_REDEVENT_SHOW_FILTER_CATEGORY_TIP">
+			</field>
+			<field name="show_filter_category" type="radio" default="1" label="COM_REDEVENT_SHOW_FILTER_CATEGORY" description="COM_REDEVENT_SHOW_FILTER_CATEGORY_TIP">
 				<option value="0">COM_REDEVENT_Hide</option>
 				<option value="1">COM_REDEVENT_Show</option>
-			</param>
-			<param name="show_filter_date" type="radio" default="1" label="COM_REDEVENT_SHOW_FILTER_DATE" description="COM_REDEVENT_SHOW_FILTER_DATE_TIP">
+			</field>
+			<field name="show_filter_date" type="radio" default="1" label="COM_REDEVENT_SHOW_FILTER_DATE" description="COM_REDEVENT_SHOW_FILTER_DATE_TIP">
 				<option value="0">COM_REDEVENT_Hide</option>
 				<option value="1">COM_REDEVENT_Show</option>
-			</param>
-			<param name="show_filter_country" type="radio" default="1" label="COM_REDEVENT_SHOW_FILTER_COUNTRY" description="COM_REDEVENT_SHOW_FILTER_COUNTRY_TIP">
+			</field>
+			<field name="show_filter_country" type="radio" default="1" label="COM_REDEVENT_SHOW_FILTER_COUNTRY" description="COM_REDEVENT_SHOW_FILTER_COUNTRY_TIP">
 				<option value="0">COM_REDEVENT_Hide</option>
 				<option value="1">COM_REDEVENT_Show</option>
-			</param>
-			<param name="show_filter_state" type="radio" default="1" label="COM_REDEVENT_VIEW_SEARCH_SHOW_FILTER_STATE" description="COM_REDEVENT_VIEW_SEARCH_SHOW_FILTER_STATE_TIP">
+			</field>
+			<field name="show_filter_state" type="radio" default="1" label="COM_REDEVENT_VIEW_SEARCH_SHOW_FILTER_STATE" description="COM_REDEVENT_VIEW_SEARCH_SHOW_FILTER_STATE_TIP">
 				<option value="0">COM_REDEVENT_Hide</option>
 				<option value="1">COM_REDEVENT_Show</option>
-			</param>
-			<param name="show_filter_city" type="radio" default="1" label="COM_REDEVENT_SHOW_FILTER_CITY" description="COM_REDEVENT_SHOW_FILTER_CITY_TIP">
+			</field>
+			<field name="show_filter_city" type="radio" default="1" label="COM_REDEVENT_SHOW_FILTER_CITY" description="COM_REDEVENT_SHOW_FILTER_CITY_TIP">
 				<option value="0">COM_REDEVENT_Hide</option>
 				<option value="1">COM_REDEVENT_Show</option>
-			</param>
-			<param name="show_filter_venue" type="radio" default="1" label="COM_REDEVENT_SHOW_FILTER_VENUE" description="COM_REDEVENT_SHOW_FILTER_VENUE_TIP">
+			</field>
+			<field name="show_filter_venue" type="radio" default="1" label="COM_REDEVENT_SHOW_FILTER_VENUE" description="COM_REDEVENT_SHOW_FILTER_VENUE_TIP">
 				<option value="0">COM_REDEVENT_Hide</option>
 				<option value="1">COM_REDEVENT_Show</option>
-			</param>
-			<param name="show_filter_event" type="radio" default="0" label="COM_REDEVENT_SHOW_FILTER_EVENT" description="COM_REDEVENT_SHOW_FILTER_EVENT_TIP">
+			</field>
+			<field name="show_filter_event" type="radio" default="0" label="COM_REDEVENT_SHOW_FILTER_EVENT" description="COM_REDEVENT_SHOW_FILTER_EVENT_TIP">
 				<option value="0">COM_REDEVENT_Hide</option>
 				<option value="1">COM_REDEVENT_Show</option>
-			</param>
-			<param name="requires_filter" type="radio" default="0" label="COM_REDEVENT_VIEW_SEARCH_PARAM_REQUIRES_FILTER" description="COM_REDEVENT_VIEW_SEARCH_PARAM_REQUIRES_FILTER_DESC">
+			</field>
+			<field name="requires_filter" type="radio" default="0" label="COM_REDEVENT_VIEW_SEARCH_PARAM_REQUIRES_FILTER" description="COM_REDEVENT_VIEW_SEARCH_PARAM_REQUIRES_FILTER_DESC">
 				<option value="0">No</option>
 				<option value="1">Yes</option>
-			</param>
+			</field>
 			
-			<param type="spacer" default="0" label="" description="" />
-			<param name="category" type="categories" default="0" label="COM_REDEVENT_VIEW_SEARCH_SELECT_CATEGORY" description="COM_REDEVENT_VIEW_SEARCH_SELECT_CATEGORY_DESC" />
+			<field type="spacer" default="0" label="" description="" />
+			<field name="category" type="recategory" default="0" reset="true" label="COM_REDEVENT_VIEW_SEARCH_SELECT_CATEGORY" description="COM_REDEVENT_VIEW_SEARCH_SELECT_CATEGORY_DESC" />
 			
-			<param name="session_state" type="list" default="0" label="COM_REDEVENT_VIEW_FILTER_SESSION_STATE" description="COM_REDEVENT_VIEW_FILTER_SESSION_STATE_DESC">
+			<field name="session_state" type="list" default="0" label="COM_REDEVENT_VIEW_FILTER_SESSION_STATE" description="COM_REDEVENT_VIEW_FILTER_SESSION_STATE_DESC">
 				<option value="0">COM_REDEVENT_VIEW_FILTER_EVENT_STATE_ALL</option>
 				<option value="1">COM_REDEVENT_VIEW_FILTER_EVENT_STATE_UPCOMINGS</option>
 				<option value="2">COM_REDEVENT_VIEW_FILTER_EVENT_STATE_OPENDATE</option>
-			</param>
-		</params>
-	</state>
+			</field>
+		</fieldset>
+	</fields>
 </metadata>

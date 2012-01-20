@@ -5,21 +5,20 @@
 			<![CDATA[COM_REDEVENT_UPCOMING_EVENTS_DESC]]>
 		</message>
 	</layout>
-	<state>
-		<name>COM_REDEVENT_UPCOMING_EVENTS_LAYOUT</name>
-		<description>COM_REDEVENT_UPCOMING_EVENTS_DESC</description>
-		<params>
-      <param name="introtext" type="textarea" default="" label="COM_REDEVENT_INTROTEXT_FIELD" rows="8" cols="30" description="COM_REDEVENT_INTROTEXT_FIELD_TIP"/>
-      <param name="showintrotext" type="radio" default="0" label="COM_REDEVENT_DISPLAY_INTROTEXT" description="COM_REDEVENT_DISPLAY_INTROTEXT_TIP">
+	
+	<fields name="params" addfieldpath="/administrator/components/com_redevent/models/fields">
+   	<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
+      <field name="introtext" type="textarea" default="" label="COM_REDEVENT_INTROTEXT_FIELD" rows="8" cols="30" description="COM_REDEVENT_INTROTEXT_FIELD_TIP"/>
+      <field name="showintrotext" type="radio" default="0" label="COM_REDEVENT_DISPLAY_INTROTEXT" description="COM_REDEVENT_DISPLAY_INTROTEXT_TIP">
         <option value="0">COM_REDEVENT_Hide</option>
         <option value="1">COM_REDEVENT_Show</option>
-      </param>
-			<param name="show_number_courses" type="text" size="10" default="10" label="COM_REDEVENT_SHOW_NUMBER_COURSES" description="COM_REDEVENT_SHOW_NUMBER_COURSES_TIP" />
-			<param name="upcoming_days_ahead" type="text" size="10" default="30" label="COM_REDEVENT_UPCOMING_DAYS_AHEAD" description="COM_REDEVENT_UPCOMING_DAYS_AHEAD_TIP" />
-			<param name="show_days_no_date" type="radio" default="0" label="COM_REDEVENT_SHOW_DAYS_NO_DATE" description="COM_REDEVENT_SHOW_DAYS_NO_DATE_TIP">
+      </field>
+			<field name="show_number_courses" type="text" size="10" default="10" label="COM_REDEVENT_SHOW_NUMBER_COURSES" description="COM_REDEVENT_SHOW_NUMBER_COURSES_TIP" />
+			<field name="upcoming_days_ahead" type="text" size="10" default="30" label="COM_REDEVENT_UPCOMING_DAYS_AHEAD" description="COM_REDEVENT_UPCOMING_DAYS_AHEAD_TIP" />
+			<field name="show_days_no_date" type="radio" default="0" label="COM_REDEVENT_SHOW_DAYS_NO_DATE" description="COM_REDEVENT_SHOW_DAYS_NO_DATE_TIP">
 				<option value="0">No</option>
 				<option value="1">Yes</option>
-			</param>
-		</params>
-	</state>
+			</field>
+		</fieldset>
+	</fields>
 </metadata>

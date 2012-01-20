@@ -5,11 +5,9 @@
 			<![CDATA[COM_REDEVENTDAY_LAYOUT_DESC]]>
 		</message>
 	</layout>
-	<state>
-		<name>COM_REDEVENTDAY_LAYOUT</name>
-		<description>COM_REDEVENTDAY_LAYOUT_DESC</description>
-		<params>
-			<param name="days" type="text" size="2" default="0" label="COM_REDEVENT_DAYS_FIELD" description="COM_REDEVENT_DAYS_FIELD_TIP" />
-		</params>
-	</state>
+	<fields name="params" addfieldpath="/administrator/components/com_redevent/models/fields">
+   	<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
+			<field name="days" type="text" size="2" default="0" label="COM_REDEVENT_DAYS_FIELD" description="COM_REDEVENT_DAYS_FIELD_TIP" />
+		</fieldset>
+	</fields>
 </metadata>

@@ -5,12 +5,10 @@
 			<![CDATA[COM_REDEVENT_DETAILS_FIXED_LAYOUT_DESC]]>
 		</message>
 	</layout>
-	<state>
-		<name>COM_REDEVENT_DETAILS_FIXED_LAYOUT</name>
-		<description>COM_REDEVENT_DETAILS_FIXED_LAYOUT_DESC</description>
-		<url addpath="/administrator/components/com_redevent/elements">
-			<param name="id" type="hidden" default="0" class="event-id"/>
-			<param name="xref" type="xref" default="0" label="COM_REDEVENT_SELECT_EVENT" description="COM_REDEVENT_SELECT_EVENT_DESC" />
-		</url>
-	</state>
+	<fields name="request" addfieldpath="/administrator/components/com_redevent/models/fields">
+   	<fieldset name="request" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
+			<field name="id" type="hidden" default="0" class="event-id"/>
+			<field name="xref" type="session" default="0" label="COM_REDEVENT_SELECT_EVENT" description="COM_REDEVENT_SELECT_EVENT_DESC" />
+		</fieldset>
+	</fields>
 </metadata>

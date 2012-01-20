@@ -5,8 +5,4 @@
 			<![CDATA[COM_REDEVENT_EVENT_SUBMISSION_DESC]]>
 		</message>
 	</layout>
-	<state>
-		<name>COM_REDEVENT_EVENT_SUBMISSION</name>
-		<description>COM_REDEVENT_EVENT_SUBMISSION_DESC</description>
-	</state>
 </metadata>
