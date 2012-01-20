@@ -163,10 +163,10 @@ class RedEventViewEvent extends JView {
 			{
 				if ($hasattendees) 
 				{ // can't reassign the form in that case !
-					foreach ($redforms as $form) 
+					foreach ($redforms as $aform) 
 					{
-						if ($form->id == $row->redform_id) {
-							$lists['redforms'] = $form->formname.'<input type="hidden" name="redform_id" value="'.$row->redform_id.'"/>';
+						if ($aform->id == $row->redform_id) {
+							$lists['redforms'] = $aform->formname.'<input type="hidden" name="redform_id" value="'.$row->redform_id.'"/>';
 							break;
 						}
 					} 
