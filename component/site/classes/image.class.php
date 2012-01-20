@@ -209,12 +209,12 @@ class redEVENTImage {
 		if ( $image ) {
 
 			//Create thumbnail if enabled and it does not exist already
-			if ($settings->gddisabled == 1 && !file_exists(JPATH_SITE.'/images/redevent/'.$folder.'/small/'.$image)) {
+			if ($settings->get('gddisabled') == 1 && !file_exists(JPATH_SITE.'/images/redevent/'.$folder.'/small/'.$image)) {
 
 				$filepath 	= JPATH_SITE.'/images/redevent/'.$folder.'/'.$image;
 				$save 		= JPATH_SITE.'/images/redevent/'.$folder.'/small/'.$image;
 
-				redEVENTImage::thumb($filepath, $save, $settings->imagewidth, $settings->get('imageheight', 100));
+				redEVENTImage::thumb($filepath, $save, $settings->get('imagewidth'), $settings->get('imageheight', 100));
 			}
 
 			//set paths
@@ -225,9 +225,9 @@ class redEVENTImage {
 			$iminfo = @getimagesize('images/redevent/'.$folder.'/'.$image);
 
 			//if the width or height is too large this formula will resize them accordingly
-			if (($iminfo[0] > $settings->imagewidth) || ($iminfo[1] > $settings->get('imageheight', 100))) {
+			if (($iminfo[0] > $settings->get('imagewidth')) || ($iminfo[1] > $settings->get('imageheight', 100))) {
 
-				$iRatioW = $settings->imagewidth / $iminfo[0];
+				$iRatioW = $settings->get('imagewidth') / $iminfo[0];
 				$iRatioH = $settings->get('imageheight', 100) / $iminfo[1];
 
 				if ($iRatioW < $iRatioH) {
@@ -321,7 +321,7 @@ class redEVENTImage {
 		}
 		else
 		{
-			$width  = $settings->imagewidth;
+			$width  = $settings->get('imagewidth');
 			$height = $settings->get('imageheight', 100);
 		}
 		

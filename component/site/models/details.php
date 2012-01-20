@@ -576,7 +576,8 @@ class RedeventModelDetails extends JModel
   	$this->_db->setQuery($query);
   	$res = $this->_db->loadObjectList(); 
   	 		
-  	if ($res && JComponentHelper::isEnabled('com_redmember'))
+//   	if ($res && JComponentHelper::getComponent('com_redmember', true)->enabled)
+  	if ($res && file_exists(JPATH_ADMINISTRATOR.DS.'component'.DS.'com_redmember'))
   	{
   		$uids = array();
   		$types = array();
