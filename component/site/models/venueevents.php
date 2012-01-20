@@ -100,7 +100,7 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 		$mainframe = &JFactory::getApplication();
 		
 		$user		=& JFactory::getUser();
-		$gid		= (int) $user->get('aid');
+		$gid		= (int) max($user->getAuthorisedViewLevels());
 
 		// Get the paramaters of the active menu item
 		$params 	= & $mainframe->getParams('com_redevent');
@@ -210,7 +210,7 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 				JError::raiseError(403, JText::_('COM_REDEVENT_ACCESS_NOT_ALLOWED'));
 			}
 		}			
-		$_venue->attachments = REAttach::getAttachments('venue'.$_venue->id, $user->get('aid'));		
+		$_venue->attachments = REAttach::getAttachments('venue'.$_venue->id, max($user->getAuthorisedViewLevels()));		
 
 		return $_venue;
 	}

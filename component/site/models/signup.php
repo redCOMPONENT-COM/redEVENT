@@ -111,7 +111,7 @@ class RedeventModelSignup extends JModel
       // Do we have access to each category ?
       foreach ($this->_details->categories as $cat)
       {
-        if ($cat->access > $user->get('aid'))
+        if ($cat->access > max($user->getAuthorisedViewLevels()))
         {
           JError::raiseError( 403, JText::_("COM_REDEVENT_ALERTNOTAUTH") );
         }

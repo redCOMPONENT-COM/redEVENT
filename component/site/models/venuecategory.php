@@ -172,7 +172,7 @@ class RedeventModelVenuecategory extends RedeventModelBaseEventList {
 		$mainframe = &JFactory::getApplication();
 
 		$user		= & JFactory::getUser();
-		$gid		= (int) $user->get('aid');
+		$gid		= (int) max($user->getAuthorisedViewLevels());
 		$category = & $this->getCategory();
 
 		// Get the paramaters of the active menu item

@@ -97,7 +97,7 @@ class modRedEventCategoriesHelper
 		//initialize some vars
 		$mainframe = &JFactory::getApplication();
 		$user		= & JFactory::getUser();
-		$gid		= (int) $user->get('aid');
+		$gid		= (int) max($user->getAuthorisedViewLevels());
 		
 		$db = &JFactory::getDBO();
 		

@@ -181,7 +181,7 @@ class RedeventModelCategories extends JModel
     $mainframe = &JFactory::getApplication();
     $params   = & $mainframe->getParams('com_redevent');
 		$user		= & JFactory::getUser();
-		$gid		= (int) $user->get('aid');
+		$gid		= max($user->getAuthorisedViewLevels());
 		
 		$acl = &UserAcl::getInstance();		
 		$gids = $acl->getUserGroupsIds();

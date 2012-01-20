@@ -46,7 +46,7 @@ class modRedEventHelper
 
 		$db			=& JFactory::getDBO();
 		$user		=& JFactory::getUser();
-		$user_gid	= (int) $user->get('aid');	
+		$user_gid	= (int) max($user->getAuthorisedViewLevels());	
 		
 		switch ($params->get('ordering', 0))
 		{

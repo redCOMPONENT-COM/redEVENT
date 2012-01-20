@@ -46,7 +46,7 @@ class modRedEventAllEventsHelper
 
 		$db			=& JFactory::getDBO();
 		$user		=& JFactory::getUser();
-		$user_gid	= (int) $user->get('aid');
+		$user_gid	= (int) max($user->getAuthorisedViewLevels());
 
 		$where = ' WHERE a.published = 1 ';
 		$order = ' ORDER BY a.title ASC ';

@@ -194,7 +194,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 	function _buildDataQuery( &$category )
 	{
 		$user		= & JFactory::getUser();
-		$aid		= (int) $user->get('aid');
+		$aid		= max($user->getAuthorisedViewLevels());
 		
 		$acl = &UserAcl::getInstance();
 		$gids = $acl->getUserGroupsIds();
@@ -270,7 +270,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
     $mainframe = &JFactory::getApplication();
     $params   = & $mainframe->getParams('com_redevent');
 		$user		= & JFactory::getUser();
-		$gid 		= (int) $user->get('aid');
+		$gid 		= max($user->getAuthorisedViewLevels());
 		
 		$acl = &UserAcl::getInstance();		
 		$gids = $acl->getUserGroupsIds();

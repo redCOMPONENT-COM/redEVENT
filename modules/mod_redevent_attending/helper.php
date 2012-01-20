@@ -47,7 +47,7 @@ class modRedEventAttendingHelper
 		if (!$user->get('id')) {
 			return false;
 		}
-		$user_gid	= (int) $user->get('aid');
+		$user_gid	= (int) max($user->getAuthorisedViewLevels());
 		$reparams = JComponentHelper::getParams('com_redevent');
 		$weekstart = ($reparams->get('week_start', "MO") == "SU" ? 0 : 1);
 				

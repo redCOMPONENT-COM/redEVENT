@@ -112,7 +112,7 @@ class RedeventModelDay extends RedeventModelBaseEventList
 		$mainframe = &JFactory::getApplication();
 
 		$user		= & JFactory::getUser();
-		$gid		= (int) $user->get('aid');
+		$gid		= max($user->getAuthorisedViewLevels());
 		$nulldate 	= '0000-00-00';
 
 		// Get the paramaters of the active menu item

@@ -350,7 +350,7 @@ class RedeventModelEditevent extends JModel
 	      $this->_db->setQuery( $query );
 	
 	      $this->_event->categories = $this->_db->loadObjectList();
-				$this->_event->attachments = REAttach::getAttachments('event'.$this->_event->id, $user->get('aid'));		
+				$this->_event->attachments = REAttach::getAttachments('event'.$this->_event->id, max($user->getAuthorisedViewLevels()));		
   			$this->_event->rrules = RedeventHelperRecurrence::getRule($this->_event->rrule);
 			}
 

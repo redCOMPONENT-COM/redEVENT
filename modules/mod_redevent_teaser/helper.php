@@ -45,7 +45,7 @@ class modRedeventTeaserHelper
 
 		$db			=& JFactory::getDBO();
 		$user		=& JFactory::getUser();
-		$user_gid	= (int) $user->get('aid');
+		$user_gid	= (int) max($user->getAuthorisedViewLevels());
 
 		$where = array();
 		

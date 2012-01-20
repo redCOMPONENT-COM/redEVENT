@@ -67,7 +67,7 @@ class plgReSimplistModel extends RedeventModelBaseEventList {
 	function _buildWhere()
 	{
 		$user		= & JFactory::getUser();
-		$gid		= (int) $user->get('aid');
+		$gid		= (int) max($user->getAuthorisedViewLevels());
 		
 		$where = array();
 		

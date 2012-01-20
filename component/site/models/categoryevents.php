@@ -185,7 +185,7 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
 		$mainframe = &JFactory::getApplication();
 
 		$user		= & JFactory::getUser();
-		$gid		= (int) $user->get('aid');
+		$gid		= max($user->getAuthorisedViewLevels());
 		$category = & $this->getCategory();
 
 		// Get the paramaters of the active menu item
@@ -303,7 +303,7 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList {
 					JError::raiseError(403, JText::_('COM_REDEVENT_ACCESS_NOT_ALLOWED'));
 				}
 			}
-			$this->_category->attachments = REAttach::getAttachments('category'.$this->_category->id, $user->get('aid'));		
+			$this->_category->attachments = REAttach::getAttachments('category'.$this->_category->id, max($user->getAuthorisedViewLevels()));		
 		}
 		
 		return $this->_category;

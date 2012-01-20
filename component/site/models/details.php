@@ -119,7 +119,7 @@ class RedeventModelDetails extends JModel
 			// Do we have access to each category ?
 			foreach ($this->_details->categories as $cat)
 			{
-				if ($cat->access > $user->get('aid'))
+				if ($cat->access > max($user->getAuthorisedViewLevels()))
 				{
 					JError::raiseError( 403, JText::_("COM_REDEVENT_ALERTNOTAUTH") );
 				}
@@ -169,7 +169,7 @@ class RedeventModelDetails extends JModel
 			$this->_details = $this->_db->loadObject();
 			if ($this->_details) {
         $this->_details = $this->_getEventCategories($this->_details);	
-				$this->_details->attachments = REAttach::getAttachments('event'.$this->_details->did, $user->get('aid'));
+				$this->_details->attachments = REAttach::getAttachments('event'.$this->_details->did, max($user->getAuthorisedViewLevels()));
 			}
 			return (boolean) $this->_details;
 		}

@@ -50,7 +50,7 @@ class modredeventcalhelper
         . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
 				. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
 				. ' WHERE x.published = 1'
-				. '   AND c.access <= '.(int)$user->aid
+				. '   AND c.access <= '.max($user->getAuthorisedViewLevels())
   	    . '   AND ( x.dates BETWEEN ' .$db->Quote($monthstart). ' AND ' .$db->Quote($monthend)
   	    . '         OR (x.enddates IS NOT NULL and x.enddates > "0000-00-00" AND x.enddates BETWEEN ' .$db->Quote($monthstart). ' AND ' .$db->Quote($monthend).') ) '
 				.($catid ? $categories : '')

@@ -808,7 +808,7 @@ class RedeventController extends JController
 	{
 		$id = JRequest::getInt('file');
 		$user = &JFactory::getUser();
-		$path = REAttach::getAttachmentPath($id, $user->get('aid'));
+		$path = REAttach::getAttachmentPath($id, max($user->getAuthorisedViewLevels()));
 				
 		$mime = redEVENTHelper::getMimeType($path);
 		

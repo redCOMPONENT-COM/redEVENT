@@ -294,7 +294,7 @@ class RedeventModelBaseEventList extends JModel
 		$mainframe = &JFactory::getApplication();
 
 		$user		= & JFactory::getUser();
-		$gid		= (int) $user->get('aid');
+		$gid		= max($user->getAuthorisedViewLevels());
 
 		// Get the paramaters of the active menu item
 		$params 	= & $mainframe->getParams();
@@ -392,7 +392,7 @@ class RedeventModelBaseEventList extends JModel
 		$mainframe = &JFactory::getApplication();
 
 		$user		= & JFactory::getUser();
-		$gid		= (int) $user->get('aid');
+		$gid		= max($user->getAuthorisedViewLevels());
 
 		// Get the paramaters of the active menu item
 		$params 	= & $mainframe->getParams();
