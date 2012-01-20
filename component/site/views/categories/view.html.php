@@ -65,7 +65,7 @@ class RedeventViewCategories extends JView
 		$limit			= JRequest::getInt('limit', $params->get('cat_num'));
 		$task			= JRequest::getWord('task');
 
-		$params->def( 'page_title', $item->name);
+		$params->def( 'page_title', $item->title);
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();

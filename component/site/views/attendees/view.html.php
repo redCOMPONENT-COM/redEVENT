@@ -94,7 +94,7 @@ class RedeventViewAttendees extends JView
 		$pathway->addItem( JText::_('COM_REDEVENT_ATTENDEES' ), JRoute::_('index.php?option=com_redevent&view=attendees&xref='.$row->slug));
 		
 		//set page title and meta stuff
-		$document->setTitle( $item->name.' - '.$row->full_title );
+		$document->setTitle( $item->title.' - '.$row->full_title );
 		            
     $unreg_check = redEVENTHelper::canUnregister($row->xref);
     

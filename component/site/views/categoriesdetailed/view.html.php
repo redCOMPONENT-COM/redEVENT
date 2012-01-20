@@ -71,7 +71,7 @@ class RedeventViewCategoriesdetailed extends JView
     }
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
-		$params->def( 'page_title', $item->name);
+		$params->def( 'page_title', $item->title);
 		
 		if ( $task == 'archive' ) {
 			$pathway->addItem(JText::_('COM_REDEVENT_ARCHIVE' ), JRoute::_(RedeventHelperRoute::getCategoriesDetailedRoute(null, 'archive')));

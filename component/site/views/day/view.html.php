@@ -89,7 +89,7 @@ class RedeventViewDay extends JView
 		}
 
 		//params
-		if ($item) $params->def( 'page_title', $item->name);
+		if ($item) $params->def( 'page_title', $item->title);
 
 		if ( $pop ) {//If printpopup set true
 			$params->set( 'popup', 1 );
@@ -101,7 +101,7 @@ class RedeventViewDay extends JView
 		$pathway->addItem($daydate, '');
 
 		//Set Page title
-		if ($item && !$item->name) {
+		if ($item && !$item->title) {
 			$document->setTitle($params->get('page_title'));
 			$document->setMetadata( 'keywords' , $params->get('page_title') );
 		}

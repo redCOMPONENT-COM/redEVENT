@@ -53,7 +53,7 @@ class RedeventViewVenuesmap extends JView
     $task       = JRequest::getWord('task');
     	
     if ($item) {
-      $title = $item->name;
+      $title = $item->title;
     }
     else {
       $title = JText::_('COM_REDEVENT_Venues_map');

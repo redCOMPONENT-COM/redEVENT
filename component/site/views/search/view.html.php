@@ -104,7 +104,7 @@ class RedeventViewSearch extends JView
 		}
 		
 		//params
-		$params->def( 'page_title', $item->name);
+		$params->def( 'page_title', $item->title);
 
 		if ( $pop ) {//If printpopup set true
 			$params->set( 'popup', 1 );

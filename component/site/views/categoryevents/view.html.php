@@ -57,7 +57,7 @@ class RedeventViewCategoryevents extends JView
 		/* Check if the item is an object */
 		if (!is_object($item)) {
 			$item = new StdClass;
-			$item->name = '';
+			$item->title = '';
 		}
 		
 		//add css file
@@ -99,8 +99,8 @@ class RedeventViewCategoryevents extends JView
 		}
 
 		//Set Meta data
-		if (!$item->name) $document->setTitle( $category->catname );
-		else $document->setTitle( $item->name.' - '.$category->catname );
+		if (!$item->title) $document->setTitle( $category->catname );
+		else $document->setTitle( $item->title.' - '.$category->catname );
     	$document->setMetadata( 'keywords', $category->meta_keywords );
     	$document->setDescription( strip_tags($category->meta_description) );
 

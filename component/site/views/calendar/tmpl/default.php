@@ -55,7 +55,7 @@ foreach ($this->rows as $row)
 	$colorpic = '';
 	$content = '';
 	$contentend = '';
-	if ($this->settings->showdetails) {
+	if ($this->settings->get('showdetails')) {
 		$detaillink = RedeventHelperRoute::getDetailsRoute($row->slug, $row->xslug);
 	}
 	else {
@@ -98,7 +98,7 @@ foreach ($this->rows as $row)
 	$eventdate = ELOutput::formatdate($row->dates, $row->times);
 
 	//venue
-	if ($this->settings->showlocate == 1)
+	if ($this->settings->get('showlocate') == 1)
 	{
 		$venue = '<div class="location"><span class="label">'.JText::_('COM_REDEVENT_VENUE').': </span>';
 

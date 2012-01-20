@@ -87,7 +87,7 @@ class RedeventViewSimpleList extends JView
 		}
 
 		//params
-		$params->def( 'page_title', (isset($item->name)? $item->name : JText::_('COM_REDEVENT_Events')));
+		$params->def( 'page_title', (isset($item->title)? $item->title : JText::_('COM_REDEVENT_Events')));
 
 		if ( $pop ) {//If printpopup set true
 			$params->set( 'popup', 1 );

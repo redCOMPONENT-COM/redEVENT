@@ -76,12 +76,11 @@ class RedeventViewCalendar extends JView
         $rows = & $this->get('Data');
 
         //Set Meta data
-        $document->setTitle($item->name);
+        $document->setTitle($item->title);
 
         //Set Page title
-        $pagetitle = $params->def('page_title', $item->name);
-        $app->setPageTitle($pagetitle);
-        $app->addMetaTag('title', $pagetitle);
+        $pagetitle = $params->def('page_title', $item->title);
+				$this->document->setTitle($pagetitle);
 
         //init calendar
     		$cal = new RECalendar($year, $month, 0, $app->getCfg('offset'));
