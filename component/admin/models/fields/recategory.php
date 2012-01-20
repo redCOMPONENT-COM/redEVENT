@@ -28,13 +28,19 @@ jimport('joomla.form.formfield');
 /**
  * Session form field class
  */
-class JFormFieldSession extends JFormField
+class JFormFieldRECategory extends JFormField
 {
 	/**
 	 * field type
 	 * @var string
 	 */
-	protected $type = 'Session';
+	protected $type = 'recategory';
+	
+	/**
+	 * display reset button
+	 * @var boolean
+	 */
+	protected $reset;
 	
 	/**
 	* Method to get the field input markup
@@ -43,14 +49,14 @@ class JFormFieldSession extends JFormField
 	{
 		// Load modal behavior
 		JHtml::_('behavior.modal', 'a.modal');
-		
+	
 		$size		= $this->element['size'] ? ' size="'.(int) $this->element['size'].'"' : ' size="35"';
 		$reset	= (string) $this->element['reset'];
 		$reset  = ($reset == 'true' || $reset == '1');
 		
 		// Build the script
 		$script = array();
-		$script[] = '    function jSelectSession_'.$this->id.'(id, title, object) {';
+		$script[] = '    function jSelectCategory_'.$this->id.'(id, title) {';
 		$script[] = '        document.id("'.$this->id.'_id").value = id;';
 		$script[] = '        document.id("'.$this->id.'_name").value = title;';
 		$script[] = '        SqueezeBox.close();';
@@ -71,25 +77,26 @@ class JFormFieldSession extends JFormField
 	
 		// Setup variables for display
 		$html = array();
-		$link = 'index.php?option=com_redevent&amp;view=xrefelement&amp;tmpl=component'
-		                  . '&amp;function=jSelectSession_'.$this->id;
+		$link = 'index.php?option=com_redevent&amp;view=categoryelement&amp;tmpl=component'
+		                  . '&amp;function=jSelectCategory_'.$this->id;
 		
 		
 		JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_redevent'.DS.'tables');
-
-		$event =& JTable::getInstance('redevent_events', '');
+		
+		$category =& JTable::getInstance('redevent_categories', '');
+		
 		if ($this->value) {
-			$event->xload($this->value);
+			$category->load($this->value);
 		} else {
-			$event->title = JText::_('COM_REDEVENT_SELECT_SESSION');
+			$category->catname = JText::_('COM_REDEVENT_SELECT_CATEGORY');
 		}
 				
 		if ($this->value)
 		{
-			$title = $event->title;
+			$title = $category->catname;
 		}
 	  if (empty($title)) {
-		  $title = JText::_('COM_REDEVENT_SELECT_SESSION');
+		  $title = JText::_('COM_REDEVENT_SELECT_CATEGORY');
 	  }
 		$title = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
 	
@@ -101,14 +108,12 @@ class JFormFieldSession extends JFormField
 		// The select button
 		$html[] = '<div class="button2-left">';
 		$html[] = '  <div class="blank">';
-		$html[] = '    <a class="modal" title="'.JText::_('COM_REDEVENT_SELECT_SESSION').'" href="'.$link.
+		$html[] = '    <a class="modal" title="'.JText::_('COM_REDEVENT_SELECT_CATEGORY').'" href="'.$link.
 	                         '" rel="{handler: \'iframe\', size: {x:700, y:450}}">'.
-		JText::_('COM_REDEVENT_SELECT_SESSION').'</a>';
+		                       JText::_('COM_REDEVENT_SELECT_CATEGORY').'</a>';
 		$html[] = '  </div>';
 		$html[] = '</div>';
-		
-		if ($reset) 
-		{
+		if ($reset) {
 			$html[] = '<div class="button2-left">';
 			$html[] = '  <div class="blank">';
 			$html[] = '    <a id="reset'.$this->id.'" title="'.JText::_('COM_REDEVENT_RESET').'">'.

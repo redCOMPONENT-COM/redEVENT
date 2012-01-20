@@ -24,7 +24,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<form action="index.php?option=com_redevent&amp;view=categoryelement&amp;tmpl=component" method="post" name="adminForm">
+<form action="index.php?option=com_redevent&view=categoryelement&tmpl=component&function=<?php echo $this->function; ?>" method="post" name="adminForm">
 
 <table class="adminform">
 	<tr>
@@ -74,9 +74,10 @@ defined('_JEXEC') or die('Restricted access');
 			<td width="7"><?php echo $this->pageNav->getRowOffset( $i ); ?></td>
 			<td align="left">
 				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_SELECT' );?>::<?php echo $row->catname; ?>">
-				<a style="cursor:pointer" onclick="window.parent.elSelectCategory('<?php echo $row->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $row->catname ); ?>');">
-					<?php echo htmlspecialchars($row->catname, ENT_QUOTES, 'UTF-8'); ?>
-				</a></span>
+        <a class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($this->function);?>('<?php echo $row->id; ?>', '<?php echo $this->escape(addslashes($row->catname)); ?>');">
+        	<?php echo $this->escape($row->catname); ?>
+        </a>
+        </span>
 			</td>
 			<td align="center"><?php echo $access; ?></td>
 			<td align="center">
