@@ -77,6 +77,7 @@ class RedEventViewVenuecategoryelement extends JView {
 		$this->assignRef('lists'      	, $lists);
 		$this->assignRef('rows'      	, $rows);
 		$this->assignRef('pageNav' 		, $pageNav);
+		$this->assign('function', JRequest::getCmd('function'));
 
 		parent::display($tpl);
 	}
