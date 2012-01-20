@@ -679,15 +679,9 @@ class UserAcl {
 	 */
 	function superuser()
 	{
-  	$auth =& JFactory::getACL();
-        
-    $auth->addACL('com_redevent', 'manageattendees', 'users', 'super administrator');
-    $auth->addACL('com_redevent', 'manageattendees', 'users', 'administrator');
-    $auth->addACL('com_redevent', 'manageattendees', 'users', 'manager');  	
-    
-  	$user = & JFactory::getUser();
+  	$user = & JFactory::getUser();  
   	
-  	if ($user->authorize('com_redevent', 'manageattendees')) {
+  	if ($user->authorise('core.admin', 'com_redevent')) {
   		return true;
   	}
   	return false;

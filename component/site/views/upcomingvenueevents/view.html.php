@@ -105,7 +105,7 @@ class RedeventViewUpcomingVenueevents extends JView
 		}
 		
 		//set Page title
-		$this->document->setTitle($pagetitle);
+		$document->setTitle($pagetitle);
 		$document->setMetadata('keywords', $venue->meta_keywords );
 		$document->setDescription( strip_tags($venue->meta_description) );
 		
