@@ -51,7 +51,7 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 			<label for="eventid" class="hasTip" title="<?php echo JText::_( 'COM_REDEVENT_SESSIONS_EVENT_FILTER' ).'::'.JText::_( 'COM_REDEVENT_SESSIONS_EVENT_FILTER_TIP' ); ?>">
 				<?php echo JText::_( 'COM_REDEVENT_SESSIONS_EVENT_FILTER' ).':'; ?>
 			</label>
-			<?php	$link = 'index.php?option=com_redevent&amp;view=eventelement&amp;tmpl=component&amp;field=eventid'; ?>
+			<?php	$link = 'index.php?option=com_redevent&amp;view=eventelement&amp;tmpl=component&amp;function=elSelectEvent'; ?>
 			<input style="background: #ffffff;" type="text" id="eventid_name" value="<?php echo ($this->eventid ? $this->event->title : JText::_('COM_REDEVENT_SESSIONS_EVENT_FILTER_ALL')); ?>" disabled="disabled" />
 			<a class="modal" title="<?php JText::_('COM_REDEVENT_Select'); ?>"  href="<?php echo $link; ?>" rel="{handler: 'iframe', size: {x: 650, y: 375}}"><?php echo JText::_('COM_REDEVENT_Select'); ?></a>
 			<a title="<?php JText::_('COM_REDEVENT_Reset'); ?>" id="ev-reset-button"><?php echo JText::_('COM_REDEVENT_Reset'); ?></a>
@@ -61,7 +61,7 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 			<label for="venueid" class="hasTip" title="<?php echo JText::_( 'COM_REDEVENT_SESSIONS_VENUE_FILTER' ).'::'.JText::_( 'COM_REDEVENT_SESSIONS_VENUE_FILTER_TIP' ); ?>">
 				<?php echo JText::_( 'COM_REDEVENT_SESSIONS_VENUE_FILTER' ).':'; ?>
 			</label>
-			<?php	$link = 'index.php?option=com_redevent&amp;view=venueelement&amp;tmpl=component&amp;field=venueid'; ?>
+			<?php	$link = 'index.php?option=com_redevent&amp;view=venueelement&amp;tmpl=component&amp;function=elSelectVenue'; ?>
 			<input style="background: #ffffff;" type="text" id="venueid_name" value="<?php echo ($this->venue ? $this->venue->venue : JText::_('COM_REDEVENT_SESSIONS_VENUE_FILTER_ALL')); ?>" disabled="disabled" />
 			<a class="modal" title="<?php JText::_('COM_REDEVENT_Select'); ?>"  href="<?php echo $link; ?>" rel="{handler: 'iframe', size: {x: 650, y: 375}}"><?php echo JText::_('COM_REDEVENT_Select'); ?></a>
 			<a title="<?php JText::_('COM_REDEVENT_Reset'); ?>" id="venue-reset-button"><?php echo JText::_('COM_REDEVENT_Reset'); ?></a>

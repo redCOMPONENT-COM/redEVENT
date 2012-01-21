@@ -128,32 +128,32 @@ class RedeventViewSessions extends JView
 		$js = "
 		window.addEvent('domready', function(){
 		
-			$('ev-reset-button').addEvent('click', function(){
-				$('eventid').value = 0;
-				$('eventid_name').value = '".JText::_('COM_REDEVENT_SESSIONS_EVENT_FILTER_ALL')."';
-				$('adminForm').submit();
+			document.id('ev-reset-button').addEvent('click', function(){
+				document.id('eventid').value = 0;
+				document.id('eventid_name').value = '".JText::_('COM_REDEVENT_SESSIONS_EVENT_FILTER_ALL')."';
+				document.id('adminForm').submit();
 			});
 			
-			$('venue-reset-button').addEvent('click', function(){
-				$('venueid').value = 0;
-				$('venueid_name').value = '".JText::_('COM_REDEVENT_SESSIONS_VENUE_FILTER_ALL')."';
-				$('adminForm').submit();
+			document.id('venue-reset-button').addEvent('click', function(){
+				document.id('venueid').value = 0;
+				document.id('venueid_name').value = '".JText::_('COM_REDEVENT_SESSIONS_VENUE_FILTER_ALL')."';
+				document.id('adminForm').submit();
 			});
 			
 		});
 		
 		function elSelectEvent(id, title, field) {
-			document.getElementById(field).value = id;
-			document.getElementById(field+'_name').value = title;
-			document.getElementById('sbox-window').close();
-			$('adminForm').submit();
+			document.id('eventid').value = id;
+			document.id('eventid_name').value = title;
+			SqueezeBox.close();
+			document.id('adminForm').submit();
 		}
 		
 		function elSelectVenue(id, title, field) {
-			document.getElementById(field).value = id;
-			document.getElementById(field+'_name').value = title;
-			document.getElementById('sbox-window').close();
-			$('adminForm').submit();
+			document.id('venueid').value = id;
+			document.id('venueid_name').value = title;
+			SqueezeBox.close();
+			document.id('adminForm').submit();
 		}";
 		$document->addScriptDeclaration($js);
 		
