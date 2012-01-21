@@ -104,7 +104,7 @@ foreach ($this->_eventlinks as $key => $event) {
 							{
 								$title = ' title="'.$p->name.'::'.addslashes(str_replace("\n", "<br/>", $p->tooltip)).'"';
 								$img = empty($p->image) ? JHTML::_('image', $imagepath.$elsettings->get('signup_webform_img'),  JText::_($p->name)) 
-								                        : JHTML::_('image', $imagepath.$p->image,  JText::_($p->name));
+								                        : JHTML::_('image', JURI::base().$p->image,  JText::_($p->name));
 								$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->slug, $event->xslug, $p->slug));
 								
 								$venues_html .= '<div class="courseinfo_vlink courseinfo_webform hasTip '.$p->alias.'"'.$title.'>'

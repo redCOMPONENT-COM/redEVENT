@@ -91,7 +91,7 @@ foreach ($this->_eventlinks as $key => $event) {
 							foreach ($event->prices as $p) 
 							{					
 								$img = empty($p->image) ? JHTML::_('image', $imagepath.$elsettings->get('signup_webform_img'),  JText::_($elsettings->get('signup_webform_text')))
-								                        : JHTML::_('image', $imagepath.$p->image,  JText::_($p->name));
+								                        : JHTML::_('image', JURI::base().$p->image,  JText::_($p->name));
 								$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->slug, $event->xslug, $p->slug));
 								
 								$venues_html .= '<div class="courseinfo_vlink courseinfo_webform hasTip '.$p->alias.'">'
