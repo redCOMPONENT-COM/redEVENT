@@ -321,7 +321,7 @@ class RedeventViewDetails extends JView
 	
 	function showRoles()
 	{
-		if (JComponentHelper::isEnabled('com_redmember'))
+		if (file_exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_redmember') && JComponentHelper::isEnabled('com_redmember'))
 		{
 			$layout = $this->getLayout();
 			$this->setLayout('default');
