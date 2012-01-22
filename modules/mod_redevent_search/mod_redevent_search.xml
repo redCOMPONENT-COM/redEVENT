@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/module-install.dtd">
-<install type="module" version="1.5.0" method="upgrade">
+<extension
+	type="module"
+	version="1.7"
+	client="site"
+	method="upgrade">
 	<name>redEVENT Search</name>
 	<creationDate>Apr 16, 2011</creationDate>
 	<author>Redweb.dk</author>
@@ -18,60 +21,75 @@
     <filename>helper.php</filename>
     <filename>tmpl/default.php</filename>
     <filename>tmpl/index.html</filename>
+    <folder>language</folder>
 	</files>
 
-	<languages>
-		<language tag="en-GB">languages/en-GB.mod_redevent_search.ini</language>
-	</languages>
-
-	<params>
-  	<param name="filter_text" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TEXT" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TEXT_DESC">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-  	<param name="filter_type_event" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_EVENT" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_EVENT_DESC">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-  	<param name="filter_type_category" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_CATEGORY" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_CATEGORY_DESC">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-  	<param name="filter_type_venue" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_VENUE" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_VENUE_DESC">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-  	<param name="filter_type_city" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_CITY" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_CITY_DESC">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		
-		<param name="show_filter_category" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_CATEGORY" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_CATEGORY_DESC">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="show_filter_date" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_DATE" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_DATE_DESC">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="show_filter_venue" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_VENUE" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_DATE_DESC">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="show_filter_custom" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_CUSTOM" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_CUSTOM_DESC">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+		  	<field name="filter_text" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TEXT" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TEXT_DESC">
+					<option value="0">Hide</option>
+					<option value="1">Show</option>
+				</field>
+		  	<field name="filter_type_event" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_EVENT" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_EVENT_DESC">
+					<option value="0">Hide</option>
+					<option value="1">Show</option>
+				</field>
+		  	<field name="filter_type_category" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_CATEGORY" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_CATEGORY_DESC">
+					<option value="0">Hide</option>
+					<option value="1">Show</option>
+				</field>
+		  	<field name="filter_type_venue" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_VENUE" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_VENUE_DESC">
+					<option value="0">Hide</option>
+					<option value="1">Show</option>
+				</field>
+		  	<field name="filter_type_city" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_CITY" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_TYPE_CITY_DESC">
+					<option value="0">Hide</option>
+					<option value="1">Show</option>
+				</field>
 				
-		<param name="moduleclass_sfx" type="text" default="" label="MOD_REDEVENT_MODULE_CLASS_SUFFIX" description="MOD_REDEVENT_MODULE_CLASS_SUFFIX_DESC" />
-	</params>
+				<field name="show_filter_category" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_CATEGORY" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_CATEGORY_DESC">
+					<option value="0">Hide</option>
+					<option value="1">Show</option>
+				</field>
+				<field name="show_filter_date" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_DATE" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_DATE_DESC">
+					<option value="0">Hide</option>
+					<option value="1">Show</option>
+				</field>
+				<field name="show_filter_venue" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_VENUE" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_DATE_DESC">
+					<option value="0">Hide</option>
+					<option value="1">Show</option>
+				</field>
+				<field name="show_filter_custom" type="radio" default="1" label="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_CUSTOM" description="MOD_REDEVENT_SEARCH_SETTINGS_FILTER_CUSTOM_DESC">
+					<option value="0">Hide</option>
+					<option value="1">Show</option>
+				</field>
+						
+			</fieldset>
 	
-	<params group="advanced">
-		<param name="cache" type="list" default="1" label="MOD_REDEVENT_CACHING" description="MOD_REDEVENT_CACHING_DESC">
-			<option value="1">USE GLOBAL</option>
-			<option value="0">NO CACHING</option>
-		</param>
-		<param name="cache_time" type="text" default="900" label="MOD_REDEVENT_CACHE_TIME" description="MOD_REDEVENT_CACHE_TIME_DESC" />
-	</params>
+			<fieldset
+				name="advanced">
+				<field
+					name="layout"
+					type="modulelayout"
+					label="JFIELD_ALT_LAYOUT_LABEL"
+					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+				<field
+					name="moduleclass_sfx"
+					type="text"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+				<field
+					name="cache"
+					type="list"
+					default="0"
+					label="COM_MODULES_FIELD_CACHING_LABEL"
+					description="COM_MODULES_FIELD_CACHING_DESC">
+					<option
+						value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
 
-</install>
+</extension>
