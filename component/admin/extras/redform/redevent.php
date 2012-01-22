@@ -25,10 +25,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
  
 // Import library dependencies
-jimport('joomla.plugin');
-
-// load language file for frontend
-JPlugin::loadLanguage( 'plg_redform_integration_redevent', JPATH_ADMINISTRATOR );
+jimport('joomla.plugin.plugin');
 
 class plgRedform_integrationRedevent extends JPlugin {
  	
@@ -37,6 +34,7 @@ class plgRedform_integrationRedevent extends JPlugin {
 	public function plgRedform_integrationRedevent(&$subject, $config = array()) 
 	{
 		parent::__construct($subject, $config);
+		$this->loadLanguage();
 		
 		$this->_db = &Jfactory::getDBO();
 	}
