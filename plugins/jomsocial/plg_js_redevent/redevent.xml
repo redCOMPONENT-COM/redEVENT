@@ -1,44 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install version="1.5" type="plugin" group="community" method="upgrade">
-	<name>redEVENT</name>
-	<creationDate>07/07/2009</creationDate>
-	<author>Redweb.dk</author>
+<extension version="1.7" type="plugin" group="community" method="upgrade">
+	<name>PLG_JOMSOCIAL_REDEVENT</name>
+	<creationDate>jan, 2012</creationDate>
+	<author>redWEB Aps</author>
 	<authorEmail>email@redweb.dk</authorEmail>
-	<authorUrl>www.redweb.dk</authorUrl>
-	<copyright>(c) 2008 - 2009 Redweb.dk</copyright>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>(C) 2008 - 2012 redCOMPONENT.com</copyright>
 	<license>GNU/GPL</license>
-	<version>1.0</version>
+	<version>2.5</version>
 	<isapplication>true</isapplication>
-	<description>
-		redEVENT Application for JomSocial
-	</description>
-	<languages>
-	    <language tag="en-GB">en-GB.plg_js_redevent.ini</language>
-	</languages>
+	<description>PLG_JOMSOCIAL_REDEVENT_XML_DESCRIPTION</description>
+
 	<files>
 		<file plugin="redevent">redevent.php</file>
 		<file>redevent/favicon.png</file>
 		<file>redevent/style.css</file>
-	</files>
+    <folder>language</folder>
+  </files>
 	
-	<params>
-		<param name="coreapp" type="list" default="0" label="Core Application" description="Causes this application to not appearin the users applications list but it will allow this application to appear in the user profile automatically if selected.">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this plugin">
-			<option value="1">Yes</option>
-			<option value="0">No</option>
-		</param>
-    <param type="spacer" default="" label="" name="spacer"/>
-    <param name="showattending" type="list" default="1" label="Show Attending" description="Select whether to show the events the user is registered to">
-      <option value="1">Yes</option>
-      <option value="0">No</option>
-    </param>
-    <param name="showmanaging" type="list" default="1" label="Show Managing" description="Select whether to show the events the user is managing">
-      <option value="1">Yes</option>
-      <option value="0">No</option>
-    </param>
-    <param name="dateformat" type="text" default="%d/%m/%Y" label="Date Format" description="date format for event. See php function strftime for details"/>
-	</params>
-</install>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="coreapp" type="list" default="0" label="Core Application" description="Causes this application to not appearin the users applications list but it will allow this application to appear in the user profile automatically if selected.">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this plugin">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+		    <field type="spacer" hr="true" name="spacer"/>
+		    <field name="showattending" type="list" default="1" label="Show Attending" description="Select whether to show the events the user is registered to">
+		      <option value="1">Yes</option>
+		      <option value="0">No</option>
+		    </field>
+		    <field name="showmanaging" type="list" default="1" label="Show Managing" description="Select whether to show the events the user is managing">
+		      <option value="1">Yes</option>
+		      <option value="0">No</option>
+		    </field>
+		    <field name="dateformat" type="text" default="%d/%m/%Y" label="Date Format" description="date format for event. See php function strftime for details"/>
+  		</fieldset>
+ 		</fields>
+	</config>
+
+</extension>

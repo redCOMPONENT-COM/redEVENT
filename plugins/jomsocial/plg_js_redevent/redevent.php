@@ -24,9 +24,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once( JPATH_BASE . DS . 'components' . DS . 'com_community' . DS . 'libraries' . DS . 'core.php');
-
-JPlugin::loadLanguage( 'plg_js_redevent', JPATH_ADMINISTRATOR );
+include_once( JPATH_BASE . DS . 'components' . DS . 'com_community' . DS . 'libraries' . DS . 'core.php');
 
 class plgCommunityRedevent extends CApplications
 {

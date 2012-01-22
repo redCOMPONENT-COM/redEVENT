@@ -1,52 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE install PUBLIC 
-  "-//Joomla! 1.5//DTD plugin 1.0//EN" "http://dev.joomla.org/xml/1.5/plugin-install.dtd">
-<install version="1.5" type="plugin" group="redevent" method="upgrade">
-	<name>redEVENT - JomSocial Plugin</name>
-	<creationDate>07/07/2009</creationDate>
-	<author>Redweb.dk</author>
+<extension version="1.7" type="plugin" group="redevent" method="upgrade">
+	<name>PLG_REDEVENT_JOMSOCIAL</name>
+	<creationDate>jan, 2012</creationDate>
+	<author>redWEB Aps</author>
 	<authorEmail>email@redweb.dk</authorEmail>
-	<authorUrl>www.redweb.dk</authorUrl>
-	<copyright>(c) 2008 - 2009 Redweb.dk</copyright>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>(C) 2008 - 2012 redCOMPONENT.com</copyright>
 	<license>GNU/GPL</license>
-	<version>1.0</version>
+	<version>2.5</version>
   <description>PLG_REDEVENT_JOMSOCIAL_PLUGIN_DESC</description>
   
   <files>
     <filename plugin="jomsocial">jomsocial.php</filename>
+    <filename>index.html</filename>
+    <folder>language</folder>
   </files>
-    
-  <languages>
-    <language tag="en-GB">languages/en-GB.plg_redevent_jomsocial.ini</language>
-    <language tag="sv-SE">languages/sv-SE.plg_redevent_jomsocial.ini</language>
-  </languages>
-  
-  <params>
-    <param type="spacer" default="Activity Stream" label="" name="spacer"/>
-    <param type="radio" name="activity_addevent" label="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_ADD_EVENT" default="1" description="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_ADD_EVENT_TIP">
-	    <option value="0">No</option>
-	    <option value="1">Yes</option>
-    </param>
-    <param type="radio" name="activity_editevent" label="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EDIT_EVENT" default="1" description="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EDIT_EVENT_TIP">
-      <option value="0">No</option>
-      <option value="1">Yes</option>
-    </param>
-    <param type="radio" name="activity_addvenue" label="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_ADD_VENUE" default="1" description="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_ADD_VENUE_TIP">
-      <option value="0">No</option>
-      <option value="1">Yes</option>
-    </param>
-    <param type="radio" name="activity_editvenue" label="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EDIT_VENUE" default="1" description="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EDIT_VENUE_TIP">
-      <option value="0">No</option>
-      <option value="1">Yes</option>
-    </param>
-    <param type="radio" name="activity_eventregister" label="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EVENT_REGISTER" default="1" description="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EVENT_REGISTER_TIP">
-      <option value="0">No</option>
-      <option value="1">Yes</option>
-    </param>
-    <param type="radio" name="activity_eventunregister" label="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EVENT_UNREGISTER" default="1" description="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EVENT_UNREGISTER_TIP">
-      <option value="0">No</option>
-      <option value="1">Yes</option>
-    </param>
-  </params>
+	
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+		    <field type="spacer" default="Activity Stream" label="" name="spacer"/>
+		    <field type="radio" name="activity_addevent" label="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_ADD_EVENT" default="1" description="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_ADD_EVENT_TIP">
+			    <option value="0">No</option>
+			    <option value="1">Yes</option>
+		    </field>
+		    <field type="radio" name="activity_editevent" label="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EDIT_EVENT" default="1" description="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EDIT_EVENT_TIP">
+		      <option value="0">No</option>
+		      <option value="1">Yes</option>
+		    </field>
+		    <field type="radio" name="activity_addvenue" label="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_ADD_VENUE" default="1" description="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_ADD_VENUE_TIP">
+		      <option value="0">No</option>
+		      <option value="1">Yes</option>
+		    </field>
+		    <field type="radio" name="activity_editvenue" label="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EDIT_VENUE" default="1" description="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EDIT_VENUE_TIP">
+		      <option value="0">No</option>
+		      <option value="1">Yes</option>
+		    </field>
+		    <field type="radio" name="activity_eventregister" label="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EVENT_REGISTER" default="1" description="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EVENT_REGISTER_TIP">
+		      <option value="0">No</option>
+		      <option value="1">Yes</option>
+		    </field>
+		    <field type="radio" name="activity_eventunregister" label="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EVENT_UNREGISTER" default="1" description="PLG_REDEVENT_JOMSOCIAL_ACTIVITY_EVENT_UNREGISTER_TIP">
+		      <option value="0">No</option>
+		      <option value="1">Yes</option>
+		    </field>
+  		</fieldset>
+ 		</fields>
+	</config>
 
-</install>
+</extension>

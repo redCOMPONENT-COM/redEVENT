@@ -25,12 +25,10 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
  
 // Import library dependencies
-jimport('joomla.event.plugin');
+jimport('joomla.plugin.plugin');
 
 // include jomsocial core
-require_once( JPATH_BASE.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php');
-
-JPlugin::loadLanguage( 'plg_redevent_jomsocial', JPATH_ADMINISTRATOR );
+include_once( JPATH_BASE.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php');
 
 class plgRedeventjomsocial extends JPlugin {
  
