@@ -27,9 +27,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 // Import library dependencies
 jimport('joomla.event.plugin');
 
-// load language file for frontend
-JPlugin::loadLanguage( 'plg_content_resimplelist', JPATH_ADMINISTRATOR );
-
 if (!defined('REDEVENT_PATH_SITE')) DEFINE('REDEVENT_PATH_SITE', JPATH_SITE.DS.'components'.DS.'com_redevent');
 
 include_once(REDEVENT_PATH_SITE.DS.'classes'.DS.'output.class.php');
@@ -49,16 +46,24 @@ class plgContentRESimplelist extends JPlugin {
 	public function __construct( $subject, $params )
 	{
 		parent::__construct( $subject, $params );
-		$this->_db = &JFactory::getDBO();
+		$this->loadLanguage();
 	}
 	
-	public function onPrepareContent( &$article, &$params, $limitstart )
+	/**
+	* Plugin that loads events lists within content
+	*
+	* @param	string	The context of the content being passed to the plugin.
+	* @param	object	The article object.  Note $article->text is also available
+	* @param	object	The article params
+	* @param	int		The 'page' number
+	*/
+	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
 		$document = &JFactory::getDocument();
 		$document->addStyleSheet('plugins/content/resimplelist.css');
-				
+		
 		// do we have matches for the plugin
-		if (!preg_match_all('/{RESimplelist([\s]+[^}]*)}/i', $article->text, $matches, PREG_SET_ORDER))
+		if (!preg_match_all('/{RESimplelist([\s]+[^}]*)*}/i', $article->text, $matches, PREG_SET_ORDER))
 		{
 			return;
 		}
@@ -67,20 +72,23 @@ class plgContentRESimplelist extends JPlugin {
 		$replace = array();
 		foreach ($matches as $match)
 		{
-			// get params
-			$match_params = trim($match[1]);
 			$settings = array();
-			if (!empty($match_params)) 
+			// get params
+			if (isset($match[1]))
 			{
-				preg_match_all('/([^=\s]+)="([^"]*)"/', $match_params, $match_params_array, PREG_SET_ORDER);
-				foreach ($match_params_array as $m) 
+				$match_params = trim($match[1]);
+				if (!empty($match_params)) 
 				{
-					$property = strtolower($m[1]);
-					if (!isset($settings[$property])) {
-						$settings[$property] = array();
-					}
-					$settings[$property][] = $m[2];
-				}				
+					preg_match_all('/([^=\s]+)="([^"]*)"/', $match_params, $match_params_array, PREG_SET_ORDER);
+					foreach ($match_params_array as $m) 
+					{
+						$property = strtolower($m[1]);
+						if (!isset($settings[$property])) {
+							$settings[$property] = array();
+						}
+						$settings[$property][] = $m[2];
+					}				
+				}
 			}
 			
 			$search[]  = $match[0];
