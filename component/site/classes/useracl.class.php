@@ -537,14 +537,7 @@ class UserAcl {
 			       . ' WHERE isdefault = 1 '
 			       . '    OR gm.member = '. $db->Quote($this->_userid);
 			$db->setQuery($query);
-			$groups = $db->loadObjectList();
-			
-			foreach ((array) $groups as $group)
-			{
-				$params = new JParameter( $group->parameters, JPATH_ADMINISTRATOR.DS.'components'.DS.'com_redevent'.DS.'models'.DS.'group.xml' );
-				$group->params = $params;
-				$this->_groups[$group->group_id] = $group;
-			}			
+			$this->_groups = $db->loadObjectList();
 		}
 		return $this->_groups;
 	}

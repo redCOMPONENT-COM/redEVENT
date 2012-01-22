@@ -1,35 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE install PUBLIC 
-  "-//Joomla! 1.5//DTD plugin 1.0//EN" "http://dev.joomla.org/xml/1.5/plugin-install.dtd">
-<install version="1.5" type="plugin" group="search" method="upgrade">
+<extension version="1.7" type="plugin" group="search" method="upgrade">
 	<name>Search - redEvent</name>
-	<creationDate>Oct 2009</creationDate>
-  <author>Redweb.dk</author>
-  <authorEmail>email@redweb.dk</authorEmail>
-  <authorUrl>www.redweb.dk</authorUrl>
-  <copyright>(c) 2008 - 2009 Redweb.dk</copyright>
-  <license>GNU/GPL</license>
-  <version>1.0</version>
-  <description>Search plugin for redEvent component</description>
+	<creationDate>jan, 2010</creationDate>
+	<author>redWEB Aps</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>(C) 2008 - 2012 redCOMPONENT.com</copyright>
+	<license>GNU/GPL</license>
+	<version>2.5</version>
+  <description>PLG_REDEVENT_SEARCH_XML_DESC</description>
 	
 	<files>
     <filename plugin="redeventsearch">redeventsearch.php</filename>
+    <folder>language</folder>
   </files>
 	
-  <params>
-    <param name="search_limit" type="text" size="5" default="50" label="Search Limit" description="Number of Search items to return"/>
-		<param name="include_date" type="list" default="1" label="PLG_REDEVENT_SEARCH_INCLUDE_DATE" description="PLG_REDEVENT_SEARCH_INCLUDE_DATE_DESC">
-			<option value="0">No</option>
-			<option value="1">PLG_REDEVENT_SEARCH_INCLUDE_DATE_DATE</option>
-			<option value="1">PLG_REDEVENT_SEARCH_INCLUDE_DATE_DATE_TIME</option>
-		</param>
-    <param name="date_format" type="text" size="15" default="%x" label="PLG_REDEVENT_SEARCH_DATE_FORMAT" description="PLG_REDEVENT_SEARCH_DATE_FORMAT_DESC"/>
-  </params>
-  
-	<languages>
-    <language tag="en-GB">language/en-GB/en-GB.plg_search_redeventsearch.ini</language>
-  </languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+		    <field name="search_limit" type="text" size="5" default="50" label="Search Limit" description="Number of Search items to return"/>
+				<field name="include_date" type="list" default="1" label="PLG_REDEVENT_SEARCH_INCLUDE_DATE" description="PLG_REDEVENT_SEARCH_INCLUDE_DATE_DESC">
+					<option value="0">No</option>
+					<option value="1">PLG_REDEVENT_SEARCH_INCLUDE_DATE_DATE</option>
+					<option value="1">PLG_REDEVENT_SEARCH_INCLUDE_DATE_DATE_TIME</option>
+				</field>
+		    <field name="date_format" type="text" size="15" default="%x" label="PLG_REDEVENT_SEARCH_DATE_FORMAT" description="PLG_REDEVENT_SEARCH_DATE_FORMAT_DESC"/>
+  		</fieldset>
+ 		</fields>
+	</config>
 
-</install>
+</extension>
 	
   

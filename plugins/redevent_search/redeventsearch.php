@@ -27,28 +27,33 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 // Import library dependencies
 jimport('joomla.plugin.plugin');
  
-JPlugin::loadLanguage( 'plg_search_redeventsearch', 'administrator' );
- 
 class plgSearchRedeventSearch extends JPlugin {
 	
 	/**
-	 * plugin 'areas', i.e. it's differents search sections
-	 * @var array
-	 */
-	private $_areas = array(
-	                'redeventevents' => 'PLG_REDEVENT_SEARCH_EVENTS',
-	                'redeventcategories' => 'PLG_REDEVENT_SEARCH_CATEGORIES',
-	                'redeventvenues' => 'PLG_REDEVENT_SEARCH_VENUES',
-	        );
-	        
-	/**
-	 * Handles onSearchAreas event
-	 * 
-	 * @return array
-	 */
-	public function onSearchAreas()
+	* Constructor
+	*
+	* @access      protected
+	* @param       object  $subject The object to observe
+	* @param       array   $config  An array that holds the plugin configuration
+	* @since       1.5
+	*/
+	public function __construct(& $subject, $config)
 	{
-		return $this->_areas;
+		parent::__construct($subject, $config);
+		$this->loadLanguage();
+	}
+
+	/**
+	 * @return array An array of search areas
+	 */
+	public function onContentSearchAreas() 
+	{
+		static $areas = array(
+		     'redeventevents' => 'PLG_REDEVENT_SEARCH_EVENTS',
+		     'redeventcategories' => 'PLG_REDEVENT_SEARCH_CATEGORIES',
+		     'redeventvenues' => 'PLG_REDEVENT_SEARCH_VENUES',
+		);
+		return $areas;
 	}
  
 	/** 
@@ -60,14 +65,16 @@ class plgSearchRedeventSearch extends JPlugin {
 	 * @param array $areas areas to be search
 	 * @return array matches
 	 */
-	public function onSearch( $text, $phrase='', $ordering='', $areas=null )
+	public function onContentSearch( $text, $phrase='', $ordering='', $areas=null )
 	{
 		$db   =& JFactory::getDBO();
 		$user =& JFactory::getUser();
-	
+		
+		require_once JPATH_SITE.'/components/com_redevent/helpers/route.php';
+		
 		//If the array is not correct, return it:
 		if (is_array( $areas )) {
-			if (!array_intersect( $areas, array_keys( $this->_areas ) )) {
+			if (!array_intersect( $areas, array_keys($this->onContentSearchAreas()))) {
 				return array();
 			}
 		}
@@ -76,7 +83,7 @@ class plgSearchRedeventSearch extends JPlugin {
 		$plugin =& JPluginHelper::getPlugin('search', 'redeventsearch');
 	
 		//Then load the parameters of the plugin..
-		$pluginParams = new JParameter( $plugin->params );
+		$pluginParams = $this->params;
 		
 	  $limit = $pluginParams->def( 'search_limit', 50 );
 	
@@ -168,7 +175,7 @@ class plgSearchRedeventSearch extends JPlugin {
 			foreach($results as $key => $row) 
 			{
 				// The 'output' of the displayed link
-				$results[$key]->href = 'index.php?option=com_redevent&view=details&id='.$row->slug.'&xref='.$row->xref;
+				$results[$key]->href = RedeventHelperRoute::getDetailsRoute($row->slug, $row->xref);
 
 				//date
 				if ($this->params->get('include_date', 1))
@@ -261,7 +268,7 @@ class plgSearchRedeventSearch extends JPlugin {
 	
 	    //The 'output' of the displayed link
 	    foreach($results as $key => $row) {
-	      $results[$key]->href = 'index.php?option=com_redevent&view=categoryevents&id='.$row->slug;
+	      $results[$key]->href = RedeventHelperRoute::getCategoryEventsRoute($row->slug);
 	    }
 	    $rows = array_merge($rows, $results);
 	  }
@@ -333,7 +340,7 @@ class plgSearchRedeventSearch extends JPlugin {
 	
 	    //The 'output' of the displayed link
 	    foreach($results as $key => $row) {
-	      $results[$key]->href = 'index.php?option=com_redevent&view=venueevents&id='.$row->slug;
+	      $results[$key]->href = RedeventHelperRoute::getVenueEventsRoute($row->slug);
 	    }
 	    $rows = array_merge($rows, $results);
 	  }
