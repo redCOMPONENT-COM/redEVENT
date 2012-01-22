@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/module-install.dtd">
-<install type="module" version="1.5.0" method="upgrade">
-	<name>redEVENT Events</name>
+<extension
+	type="module"
+	version="1.7"
+	client="site"
+	method="upgrade">
+	<name>MOD_REDEVENT</name>
 	<creationDate>Apr 16, 2010</creationDate>
 	<author>Redweb.dk</author>
 	<authorEmail>email@redweb.dk</authorEmail>
@@ -9,106 +12,118 @@
 	<copyright>(c) 2008 - 2010 Redweb.dk</copyright>
 	<license>GNU/GPL</license>
 	<version>2.0 beta 9.1</version>
-	<description>MOD_REDEVENT_DESCRIPTION</description>
+	<description>MOD_REDEVENT_XML_DESCRIPTION</description>
 
 	<files>
 		<filename module="mod_redevent">mod_redevent.php</filename>
 		<filename>mod_redevent.css</filename>
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
+    <folder>language</folder>
     <folder>tmpl</folder>
 	</files>
 
-	<languages>
-		<language tag="en-GB">languages/en-GB.mod_redevent.ini</language>
-	</languages>
-
-	<params>
-		<param name="count" type="text" default="5" label="MOD_REDEVENT_EVENTS_IN_MODULE" description="MOD_REDEVENT_EVENTS_IN_MODULE_DESC" />
-		<param name="type" type="list" default="0" label="MOD_REDEVENT_EVENT_STATE" description="MOD_REDEVENT_EVENT_STATE_DESC">
-			<option value="0">MOD_REDEVENT_EVENT_STATE_PUBLISHED</option>
-			<option value="1">MOD_REDEVENT_EVENT_STATE_UPCOMING</option>
-			<option value="2">MOD_REDEVENT_EVENT_STATE_ARCHIVED</option>
-			<option value="3">MOD_REDEVENT_EVENT_STATE_OPENDATE</option>
-			<option value="4">MOD_REDEVENT_EVENT_STATE_JUSTPASSED</option>
-		</param>
-		<param name="dayoffset" type="text" default="0" label="MOD_REDEVENT_DATE_OFFSET" description="MOD_REDEVENT_DATE_OFFSET_DESC"/>
-		<param name="ordering" type="list" default="0" label="MOD_REDEVENT_ORDERING_LABEL" description="MOD_REDEVENT_ORDERING_DESC">
-			<option value="0">MOD_REDEVENT_ORDERING_DATE_ASC</option>
-			<option value="1">MOD_REDEVENT_ORDERING_DATE_DESC</option>
-			<option value="2">MOD_REDEVENT_ORDERING_CREATED_ASC</option>
-			<option value="3">MOD_REDEVENT_ORDERING_CREATED_DESC</option>
-			<option value="4">MOD_REDEVENT_ORDERING_TITLE_ASC</option>
-			<option value="5">MOD_REDEVENT_ORDERING_TITLE_DESC</option>
-		</param>	
-		<param name="featuredonly" type="list" default="0" label="MOD_REDEVENT_SHOW_FEATURED_ONLY" description="MOD_REDEVENT_SHOW_FEATURED_ONLY_DESC">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="showsessions" type="list" default="1" label="MOD_REDEVENT_SHOW_SESSIONS" description="MOD_REDEVENT_SHOW_SESSIONS_DESC">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="showrecurring" type="list" default="1" label="MOD_REDEVENT_SHOW_RECURRING" description="MOD_REDEVENT_SHOW_RECURRING_DESC">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>	
-		<param name="title_type" type="list" default="0" label="MOD_REDEVENT_TITLE_TYPE_LABEL" description="MOD_REDEVENT_TITLE_TYPE_DESC">
-			<option value="0">MOD_REDEVENT_TITLE_TYPE_EVENT</option>
-			<option value="1">MOD_REDEVENT_TITLE_TYPE_SESSION</option>
-			<option value="2">MOD_REDEVENT_TITLE_TYPE_FULL</option>
-		</param>	
-		<param name="cuttitle" type="text" default="18" label="MOD_REDEVENT_MAX_TITLE_LENGTH" description="MOD_REDEVENT_MAX_TITLE_LENGTH_DESC" />
-		<param name="picture_size" type="text" default="30" label="MOD_REDEVENT_PICTURE_SIZE" description="MOD_REDEVENT_PICTURE_SIZE_DESC" />
-		<param name="catid" type="text" default="" label="MOD_REDEVENT_CATEGORY_ID" description="MOD_REDEVENT_CATEGORY_ID_DESC" />
-		<param name="venid" type="text" default="" label="MOD_REDEVENT_VENUE_ID" description="MOD_REDEVENT_VENUE_ID_DESC" />
-		<param name="formatdate" type="text" default="%d.%m.%Y" label="MOD_REDEVENT_DATE_FORMAT" description="MOD_REDEVENT_DATE_FORMAT_DESC" />
-		<param name="formattime" type="text" default="%H.%M" label="MOD_REDEVENT_TIME_FORMAT" description="MOD_REDEVENT_TIME_FORMAT_DESC" />
-    <param name="show_enddate" type="list" default="1" label="MOD_REDEVENT_SHOW_END_DATE" description="MOD_REDEVENT_SHOW_END_DATE_DESC">
-      <option value="0">NO</option>
-      <option value="1">YES</option>
-    </param>
-    <param name="show_time" type="list" default="1" label="MOD_REDEVENT_SHOW_TIME" description="MOD_REDEVENT_SHOW_TIME_DESC">
-      <option value="0">NO</option>
-      <option value="1">YES</option>
-    </param>
-		<param name="moduleclass_sfx" type="text" default="" label="MOD_REDEVENT_MODULE_CLASS_SUFFIX" description="MOD_REDEVENT_MODULE_CLASS_SUFFIX_DESC" />
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="count" type="text" default="5" label="MOD_REDEVENT_EVENTS_IN_MODULE" description="MOD_REDEVENT_EVENTS_IN_MODULE_DESC" />
+				<field name="type" type="list" default="0" label="MOD_REDEVENT_EVENT_STATE" description="MOD_REDEVENT_EVENT_STATE_DESC">
+					<option value="0">MOD_REDEVENT_EVENT_STATE_PUBLISHED</option>
+					<option value="1">MOD_REDEVENT_EVENT_STATE_UPCOMING</option>
+					<option value="2">MOD_REDEVENT_EVENT_STATE_ARCHIVED</option>
+					<option value="3">MOD_REDEVENT_EVENT_STATE_OPENDATE</option>
+					<option value="4">MOD_REDEVENT_EVENT_STATE_JUSTPASSED</option>
+				</field>
+				<field name="dayoffset" type="text" default="0" label="MOD_REDEVENT_DATE_OFFSET" description="MOD_REDEVENT_DATE_OFFSET_DESC"/>
+				<field name="ordering" type="list" default="0" label="MOD_REDEVENT_ORDERING_LABEL" description="MOD_REDEVENT_ORDERING_DESC">
+					<option value="0">MOD_REDEVENT_ORDERING_DATE_ASC</option>
+					<option value="1">MOD_REDEVENT_ORDERING_DATE_DESC</option>
+					<option value="2">MOD_REDEVENT_ORDERING_CREATED_ASC</option>
+					<option value="3">MOD_REDEVENT_ORDERING_CREATED_DESC</option>
+					<option value="4">MOD_REDEVENT_ORDERING_TITLE_ASC</option>
+					<option value="5">MOD_REDEVENT_ORDERING_TITLE_DESC</option>
+				</field>	
+				<field name="featuredonly" type="list" default="0" label="MOD_REDEVENT_SHOW_FEATURED_ONLY" description="MOD_REDEVENT_SHOW_FEATURED_ONLY_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="showsessions" type="list" default="1" label="MOD_REDEVENT_SHOW_SESSIONS" description="MOD_REDEVENT_SHOW_SESSIONS_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="showrecurring" type="list" default="1" label="MOD_REDEVENT_SHOW_RECURRING" description="MOD_REDEVENT_SHOW_RECURRING_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>	
+				<field name="title_type" type="list" default="0" label="MOD_REDEVENT_TITLE_TYPE_LABEL" description="MOD_REDEVENT_TITLE_TYPE_DESC">
+					<option value="0">MOD_REDEVENT_TITLE_TYPE_EVENT</option>
+					<option value="1">MOD_REDEVENT_TITLE_TYPE_SESSION</option>
+					<option value="2">MOD_REDEVENT_TITLE_TYPE_FULL</option>
+				</field>	
+				<field name="cuttitle" type="text" default="18" label="MOD_REDEVENT_MAX_TITLE_LENGTH" description="MOD_REDEVENT_MAX_TITLE_LENGTH_DESC" />
+				<field name="picture_size" type="text" default="30" label="MOD_REDEVENT_PICTURE_SIZE" description="MOD_REDEVENT_PICTURE_SIZE_DESC" />
+				<field name="catid" type="text" default="" label="MOD_REDEVENT_CATEGORY_ID" description="MOD_REDEVENT_CATEGORY_ID_DESC" />
+				<field name="venid" type="text" default="" label="MOD_REDEVENT_VENUE_ID" description="MOD_REDEVENT_VENUE_ID_DESC" />
+				<field name="formatdate" type="text" default="%d.%m.%Y" label="MOD_REDEVENT_DATE_FORMAT" description="MOD_REDEVENT_DATE_FORMAT_DESC" />
+				<field name="formattime" type="text" default="%H.%M" label="MOD_REDEVENT_TIME_FORMAT" description="MOD_REDEVENT_TIME_FORMAT_DESC" />
+		    <field name="show_enddate" type="list" default="1" label="MOD_REDEVENT_SHOW_END_DATE" description="MOD_REDEVENT_SHOW_END_DATE_DESC">
+		      <option value="0">JNO</option>
+		      <option value="1">JYES</option>
+		    </field>
+		    <field name="show_time" type="list" default="1" label="MOD_REDEVENT_SHOW_TIME" description="MOD_REDEVENT_SHOW_TIME_DESC">
+		      <option value="0">JNO</option>
+		      <option value="1">JYES</option>
+		    </field>
+		    
+				<field type="spacer" hr="true" />
+				<field type="spacer" label="MOD_REDEVENT_LAYOUT_ULLIST_SETTINGS"/>
+				<field name="showvenue" type="list" default="1" label="MOD_REDEVENT_SHOW_VENUE" description="MOD_REDEVENT_SHOW_VENUE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="linkloc" type="radio" default="1" label="MOD_REDEVENT_LINK_TO_VENUE" description="MOD_REDEVENT_LINK_TO_VENUE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="linkdet" type="list" default="1" label="MOD_REDEVENT_LINK_TO_DETAILS" description="MOD_REDEVENT_LINK_TO_DETAILS_DESC">
+					<option value="0">JNO</option>
+					<option value="1">MOD_REDEVENT_DATE</option>
+					<option value="2">MOD_REDEVENT_TITLE</option>
+				</field>
+		    <field name="show_picture" type="list" default="1" label="MOD_REDEVENT_SHOW_PICTURE" description="MOD_REDEVENT_SHOW_PICTURE_DESC">
+		      <option value="0">JNO</option>
+		      <option value="1">JYES</option>
+		    </field>
 		
-		<param name="layout" type="list" default="default" label="MOD_REDEVENT_LAYOUT_LABEL" description="MOD_REDEVENT_LAYOUT_DESC">
-			<option value="default">MOD_REDEVENT_LAYOUT_ULLIST</option>
-			<option value="table">MOD_REDEVENT_LAYOUT_TABLE</option>
-		</param>
-		
-		<param type="spacer" default="MOD_REDEVENT_LAYOUT_ULLIST_SETTINGS" name="sp" label="MOD_REDEVENT_label"/>
-		<param name="showvenue" type="list" default="1" label="MOD_REDEVENT_SHOW_VENUE" description="MOD_REDEVENT_SHOW_VENUE_DESC">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="linkloc" type="radio" default="1" label="MOD_REDEVENT_LINK_TO_VENUE" description="MOD_REDEVENT_LINK_TO_VENUE_DESC">
-			<option value="0">NO</option>
-			<option value="1">YES</option>
-		</param>
-		<param name="linkdet" type="list" default="1" label="MOD_REDEVENT_LINK_TO_DETAILS" description="MOD_REDEVENT_LINK_TO_DETAILS_DESC">
-			<option value="0">NO</option>
-			<option value="1">MOD_REDEVENT_DATE</option>
-			<option value="2">MOD_REDEVENT_TITLE</option>
-		</param>
-    <param name="show_picture" type="list" default="1" label="MOD_REDEVENT_SHOW_PICTURE" description="MOD_REDEVENT_SHOW_PICTURE_DESC">
-      <option value="0">NO</option>
-      <option value="1">YES</option>
-    </param>
-
-		<param type="spacer" default="MOD_REDEVENT_LAYOUT_TABLE_SETTINGS" name="sp2" label="MOD_REDEVENT_label"/>
-		<param name="table_cols" type="text" default="DATE, TITLE" label="MOD_REDEVENT_COLUMNS_LABEL" description="MOD_REDEVENT_COLUMNS_DESC" />
-		
-	</params>
+				<field type="spacer" hr="true" />
+				<field type="spacer" label="MOD_REDEVENT_LAYOUT_TABLE_SETTINGS"/>
+				<field name="table_cols" type="text" default="DATE, TITLE" label="MOD_REDEVENT_COLUMNS_LABEL" description="MOD_REDEVENT_COLUMNS_DESC" />
+				
+			</fieldset>
 	
-	<params group="advanced">
-		<param name="cache" type="list" default="1" label="MOD_REDEVENT_CACHING" description="MOD_REDEVENT_CACHING_DESC">
-			<option value="1">USE GLOBAL</option>
-			<option value="0">NO CACHING</option>
-		</param>
-		<param name="cache_time" type="text" default="900" label="MOD_REDEVENT_CACHE_TIME" description="MOD_REDEVENT_CACHE_TIME_DESC" />
-	</params>
+			<fieldset
+				name="advanced">
+				<field
+					name="layout"
+					type="modulelayout"
+					label="JFIELD_ALT_LAYOUT_LABEL"
+					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+				<field
+					name="moduleclass_sfx"
+					type="text"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+				<field
+					name="cache"
+					type="list"
+					default="0"
+					label="COM_MODULES_FIELD_CACHING_LABEL"
+					description="COM_MODULES_FIELD_CACHING_DESC">
+					<option
+						value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
 
-</install>
+</extension>
