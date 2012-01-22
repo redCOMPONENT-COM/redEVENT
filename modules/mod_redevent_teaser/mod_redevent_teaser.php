@@ -55,4 +55,4 @@ if (!$items) {
 	return;
 }
 
-require(JModuleHelper::getLayoutPath('mod_redevent_teaser'));
+require(JModuleHelper::getLayoutPath('mod_redevent_teaser', $params->get('layout')));

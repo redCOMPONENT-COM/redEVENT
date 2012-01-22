@@ -30,76 +30,47 @@ if (!$items) {
 }
 ?>
 <div id="redeventteaser">
-  <?php foreach ($list as $item) :  ?> 
-		<div class="teaser-event">
-	  <h2 class="event-title">
-	    <?php if ($item->eventlink) : ?>
-	    <a href="<?php echo $item->eventlink; ?>" title="
-	      <?php echo $item->title; ?> ">
-	      <?php endif; ?>
-	      <?php echo $item->title; ?>
-	      <?php if ($item->eventlink) : ?></a>
-	    <?php endif; ?></h2> 
-	  <div class="calendar">
-	    <div class="year">
-	              <?php echo $item->year; ?>
-	    </div>
-	    <div class="month">
-	      <?php echo $item->month; ?>
-	    </div>
-	    <div class="day">
-	      <?php echo $item->dayname; ?>
-	    </div>
-	    <div class="daynum">
-	      <?php echo $item->daynum; ?>
-	    </div> 
-	  </div> 
-	  
-	  <div class="teaser">
-	    <p>
-	      <?php if ($item->eventimage): ?>
-	      	<?php echo $item->eventimage; ?>
-	      <?php elseif ($item->venueimage): ?>
-	      	<?php echo $item->venueimage; ?>
-	      <?php endif; ?>
-	      <?php echo $item->eventdescription; ?>
-	    </p>
-	  </div>
-	  <div class="clear">
-	  </div> 
-	  <!-- additional information list -->
-	  <?php if ($params->get('showtime', 1) || $params->get('showvenue', 1)  || $params->get('showcategory', 1)): ?>
-	  <ul>
-	    <!-- Time -->
-	    <?php if ($params->get('showtime', 1) && !empty ($item->time)) : ?>
-	    <li>
-	    <?php echo JText::_('MOD_REDEVENT_TEASER_AINFO_TIME').' '.$item->time; ?></li>
-	    <?php endif; ?> 
-	    <!-- Venue -->
-	    <?php if ($params->get('showvenue', 1) && $item->venue) : ?>
-	    <li>
-	    <?php echo JText::_('MOD_REDEVENT_TEASER_AINFO_VENUE').' ';?>
-	    <a href="<?php echo $item->venuelink; ?>" title="<?php echo $item->venue; ?>"><?php echo $item->venue; ?></a>
-	    - 
-	    <?php echo $item->city; ?></li>
-	    <?php endif; ?> 
-	    <!-- Category -->
-	    <?php if ($params->get('showcategory', 1)) : ?>
-	    <li>
-	    <?php echo JText::_('MOD_REDEVENT_TEASER_AINFO_CATEGORY').' ';?>
-	    <?php echo implode(", ", $item->categorylink); ?>
-	    </li>
-	    <?php endif; ?> 
-	  </ul>
-	  <?php endif; ?>
-	  
-	   <!-- social bookmarks -->
-	    <span class="share">
-			<?php 
-			$url = JURI::base();
-			$pars = parse_url($url);
-			$base = $pars['host'];
-			?>
+     
+<!-- LAYOUT 2 --> 
+
+  <?php foreach ($list as $item) :  ?>   
+  <div class="teaser-event">
+  <h2 class="sidetitle">
+    <?php if ($item->eventlink) : ?>
+    <a href="<?php echo $item->eventlink; ?>" title="
+      <?php echo $item->title; ?> ">
+      <?php endif; ?>
+      <?php echo $item->title; ?>
+      <?php if ($item->eventlink) : ?></a>
+    <?php endif; ?></h2> 
+  <div class="calendar">
+    <div class="year">
+          <?php echo $item->year; ?>
+    </div>
+    <div class="month">
+      <?php echo $item->month; ?>
+    </div>
+    <div class="day">
+      <?php echo $item->dayname; ?>
+    </div>
+    <div class="daynum">
+      <?php echo $item->daynum; ?>
+    </div> 
+  </div> 
+  
+ <div class="teaser">
+    </div>  <div class="clear">
+  </div> 
+  <!-- additional information list -->
+  
+  
+   <!-- social bookmarks -->
+    <span class="share">
+<?php 
+$url = JURI::base();
+$pars = parse_url($url);
+$base = $pars['host'];
+?>
       
       <!--Facebook TODO: rel="nofollow" for fb modal -->
       <?php if ($params->get('linkfb') == 1) { ?>
@@ -125,9 +96,9 @@ if (!$items) {
       }
       ?>  
       
-    </span>    
-    </div>
-    <hr />		
+    </span>
+    </div>    
+    <hr />
   <?php endforeach; ?>  
 
 </div>

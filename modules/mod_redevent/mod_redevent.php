@@ -41,8 +41,8 @@ if (!$items) {
 $document = &JFactory::getDocument(); 
 $document->addStyleSheet( JURI::base() . '/modules/mod_redevent/mod_redevent.css' );
 
-$layout = $params->get('layout', 'default');
-if ($layout == 'table')
+$layout = $params->get('layout');
+if ($layout == '_:table')
 {
 	$cols = explode(",", $params->get('table_cols', 'date, title'));
 	$cols = array_map('trim', $cols);
