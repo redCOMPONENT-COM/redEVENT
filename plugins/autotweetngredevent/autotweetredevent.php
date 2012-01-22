@@ -35,10 +35,10 @@ if (!JComponentHelper::getComponent('com_redevent', true)->enabled) {
 	return;
 }
 
-require_once (JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_autotweet' . DS . 'helpers' . DS . 'autotweetbase.php');
+include_once (JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_autotweet' . DS . 'helpers' . DS . 'autotweetbase.php');
 
-// redform
-require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'route.php');
+// redevent
+include_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'route.php');
 
 /**
  * redEVENT extension plugin for AutoTweet.
