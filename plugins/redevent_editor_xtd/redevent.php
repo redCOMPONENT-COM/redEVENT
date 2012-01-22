@@ -37,17 +37,15 @@ class plgButtonRedevent extends JPlugin
 	/**
 	 * Constructor
 	 *
-	 * For php4 compatability we must not use the __constructor as a constructor for plugins
-	 * because func_get_args ( void ) returns a copy of all passed arguments NOT references.
-	 * This causes problems with cross-referencing necessary for the observer design pattern.
-	 *
-	 * @param object $subject The object to observe
-	 * @param 	array  $config  An array that holds the plugin configuration
-	 * @since 1.5
+	 * @access      protected
+	 * @param       object  $subject The object to observe
+	 * @param       array   $config  An array that holds the plugin configuration
+	 * @since       1.5
 	 */
-	function plgButtonRedevent(& $subject, $config)
+	public function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
+		$this->loadLanguage();
 	}
 
 	/**
@@ -58,8 +56,6 @@ class plgButtonRedevent extends JPlugin
 	function onDisplay($name)
 	{
 		$mainframe = &JFactory::getApplication();
-
-		JPlugin::loadLanguage( 'plg_editors-xtd_redevent', JPATH_ADMINISTRATOR );
 
 		$doc = & JFactory::getDocument();
 		$template = $mainframe->getTemplate();

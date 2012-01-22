@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 				var tag = "<a href=\""+link+"\">"+title+"</a>";
 
 				window.parent.jInsertEditorText(tag, '<?php echo $eName; ?>');
-				window.parent.document.getElementById('sbox-window').close();
+				window.parent.SqueezeBox.close();
 				return false;
 			}
 		</script>
@@ -88,7 +88,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_SELECT' );?>::<?php echo $row->title; ?>">
 				<a style="cursor:pointer" 
-					 onclick="insertEvent('<?php echo $row->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $row->title ); ?>', '<?php echo JRoute::_('index.php?option=com_redevent&view=details&id='. $row->slug, true); ?>');">
+					 onclick="insertEvent('<?php echo $row->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $row->title ); ?>', '<?php echo JURI::root().RedeventHelperRoute::getDetailsRoute($row->slug, $row->xref); ?>');">
 					<?php echo htmlspecialchars($row->title, ENT_QUOTES, 'UTF-8'); ?>
 				</a></span>
 			</td>

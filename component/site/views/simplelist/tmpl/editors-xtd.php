@@ -33,8 +33,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				var tag = "<a href=\""+link+"\">"+title+"</a>";
 
 				window.parent.jInsertEditorText(tag, '<?php echo $eName; ?>');
-				window.parent.document.getElementById('sbox-window').close();
-				return false;
+				window.parent.SqueezeBox.close();
 			}
 		</script>
 
@@ -160,7 +159,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				</td>
 
 				<td headers="el_title" align="left" valign="top">
-					<a onclick="insertEvent('<?php echo $row->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $row->title ); ?>', '<?php echo JRoute::_('index.php?option=com_redevent&view=details&id='. $row->slug, true); ?>');">
+					<a onclick="insertEvent('<?php echo $row->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $row->title ); ?>', '<?php echo JURI::root().RedeventHelperRoute::getDetailsRoute($row->slug, $row->xref); ?>');">
 				  <?php echo $this->escape($row->title); ?>
 				  </a>
 				</td>
