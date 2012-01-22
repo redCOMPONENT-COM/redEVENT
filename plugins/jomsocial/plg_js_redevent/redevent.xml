@@ -12,9 +12,10 @@
 	<description>PLG_JOMSOCIAL_REDEVENT_XML_DESCRIPTION</description>
 
 	<files>
-		<file plugin="redevent">redevent.php</file>
-		<file>redevent/favicon.png</file>
-		<file>redevent/style.css</file>
+		<filename plugin="redevent">redevent.php</filename>
+		<filename>redevent/favicon.png</filename>
+		<filename>redevent/style.css</filename>
+    <filename>index.html</filename>
     <folder>language</folder>
   </files>
 	
