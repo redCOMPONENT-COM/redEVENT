@@ -22,6 +22,7 @@
 		<filename>tmpl/default.php</filename>
 		<filename>tmpl/index.html</filename>
     <folder>tmpl</folder>
+    <folder>language</folder>
 	</files>
 
 	<config>
