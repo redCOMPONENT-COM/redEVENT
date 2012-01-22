@@ -60,6 +60,8 @@ require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'route
 // include mootools tooltip
 JHTML::_('behavior.tooltip');
 
+$app = &JFactory::getApplication();
+
 	// Parameters
 	$day_name_length	= $params->get( 'day_name_length', '2' );
 	$first_day			= $params->get( 'first_day', '1' );
@@ -80,13 +82,13 @@ JHTML::_('behavior.tooltip');
 	{
 		if ($req_month == 0) 
 		{
-			$req_month = $mainframe->getUserState("redeventcalmonth");
-			$req_year = $mainframe->getUserState("redeventcalyear");	
+			$req_month = $app->getUserState("redeventcalmonth");
+			$req_year = $app->getUserState("redeventcalyear");	
 		}
 		else
 		{
-			$mainframe->setUserState("redeventcalmonth",$req_month);
-			$mainframe->setUserState("redeventcalyear",$req_year);
+			$app->setUserState("redeventcalmonth",$req_month);
+			$app->setUserState("redeventcalyear",$req_year);
 		}
 	}
 	
