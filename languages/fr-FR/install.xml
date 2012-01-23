@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="file" version="1.7.0" method="upgrade">
+	<name>redevent fr-FR</name>
+	<creationDate>jan, 2012</creationDate>
+	<author>redWEB Aps</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>(C) 2008 - 2012 redCOMPONENT.com</copyright>
+	<license>GNU/GPL</license>
+	<version>2.5</version>
+	<description>redevent fr-FR</description>
+	
+	<fileset>
+		<files folder="component/admin" target="administrator/components/com_redevent/language/fr-FR">
+			<filename>fr-FR.com_redevent.ini</filename>
+			<filename>fr-FR.com_redevent.sys.ini</filename>
+		</files>
+		<files folder="component/site" target="components/com_redevent/language/fr-FR">
+			<filename>fr-FR.com_redevent.ini</filename>
+		</files>
+		<files folder="modules/mod_redevent" target="modules/mod_redevent/language/fr-FR">
+			<filename>fr-FR.mod_redevent.ini</filename>
+			<filename>fr-FR.mod_redevent.sys.ini</filename>
+		</files>
+		<files folder="modules/mod_redevent_all_events" target="modules/mod_redevent_all_events/language/fr-FR">
+			<filename>fr-FR.mod_redevent_all_events.ini</filename>
+			<filename>fr-FR.mod_redevent_all_events.sys.ini</filename>
+		</files>
+		<files folder="modules/mod_redevent_attending" target="modules/mod_redevent_attending/language/fr-FR">
+			<filename>fr-FR.mod_redevent_attending.ini</filename>
+			<filename>fr-FR.mod_redevent_attending.sys.ini</filename>
+		</files>
+		<files folder="modules/mod_redevent_categories" target="modules/mod_redevent_categories/language/fr-FR">
+			<filename>fr-FR.mod_redevent_categories.ini</filename>
+			<filename>fr-FR.mod_redevent_categories.sys.ini</filename>
+		</files>
+		<files folder="modules/mod_redevent_search" target="modules/mod_redevent_search/language/fr-FR">
+			<filename>fr-FR.mod_redevent_search.ini</filename>
+			<filename>fr-FR.mod_redevent_search.sys.ini</filename>
+		</files>
+		<files folder="modules/mod_redevent_teaser" target="modules/mod_redevent_teaser/language/fr-FR">
+			<filename>fr-FR.mod_redevent_teaser.ini</filename>
+			<filename>fr-FR.mod_redevent_teaser.sys.ini</filename>
+		</files>
+		<files folder="modules/mod_redevent_venues_events" target="modules/mod_redevent_venues_events/language/fr-FR">
+			<filename>fr-FR.mod_redevent_venues_events.ini</filename>
+			<filename>fr-FR.mod_redevent_venues_events.sys.ini</filename>
+		</files>
+		<files folder="modules/mod_redeventcal" target="modules/mod_redeventcal/language/fr-FR">
+			<filename>fr-FR.mod_redeventcal.ini</filename>
+			<filename>fr-FR.mod_redeventcal.sys.ini</filename>
+		</files>
+		<files folder="plugins/plg_js_redevent" target="plugins/plg_js_redevent/language/fr-FR">
+			<filename>fr-FR.plg_community_redevent.ini</filename>
+			<filename>fr-FR.plg_community_redevent.sys.ini</filename>
+		</files>
+		<files folder="plugins/plg_redevent_redmember" target="plugins/plg_redevent_redmember/language/fr-FR">
+			<filename>fr-FR.plg_redevent_redmember.ini</filename>
+			<filename>fr-FR.plg_redevent_redmember.sys.ini</filename>
+		</files>
+		<files folder="plugins/plg_redmember_redevent" target="plugins/plg_redmember_redevent/language/fr-FR">
+			<filename>fr-FR.plg_redmember_redevent.ini</filename>
+			<filename>fr-FR.plg_redmember_redevent.sys.ini</filename>
+		</files>
+		<files folder="plugins/plg_resimplelist" target="plugins/plg_resimplelist/language/fr-FR">
+			<filename>fr-FR.plg_content_resimplelist.ini</filename>
+			<filename>fr-FR.plg_content_resimplelist.sys.ini</filename>
+		</files>
+		<files folder="plugins/redevent_editor_xtd" target="plugins/redevent_editor_xtd/language/fr-FR">
+			<filename>fr-FR.plg_editors-xtd_redevent.ini</filename>
+			<filename>fr-FR.plg_editors-xtd_redevent.sys.ini</filename>
+		</files>
+		<files folder="plugins/redevent_jomsocial" target="plugins/redevent_jomsocial/language/fr-FR">
+			<filename>fr-FR.plg_redevent_jomsocial.ini</filename>
+			<filename>fr-FR.plg_redevent_jomsocial.sys.ini</filename>
+		</files>
+		<files folder="plugins/redevent_search" target="plugins/redevent_search/language/fr-FR">
+			<filename>fr-FR.plg_search_redeventsearch.ini</filename>
+			<filename>fr-FR.plg_search_redeventsearch.sys.ini</filename>
+		</files>
+	</fileset>
+</extension>
