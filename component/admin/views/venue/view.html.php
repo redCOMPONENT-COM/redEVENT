@@ -110,27 +110,6 @@ class RedEventViewVenue extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::help( 'el.editvenues', true );
 
-		//Build the image select functionality
-		$js = "
-		function elSelectImage(image, imagename) {
-			document.getElementById('a_image').value = image;
-			document.getElementById('a_imagename').value = imagename;
-			document.getElementById('imagelib').src = '../images/redevent/venues/' + image;
-			document.getElementById('sbox-window').close();
-		}";
-
-		$link = 'index.php?option=com_redevent&amp;view=imagehandler&amp;layout=uploadimage&amp;task=venueimg&amp;tmpl=component';
-		$link2 = 'index.php?option=com_redevent&amp;view=imagehandler&amp;task=selectvenueimg&amp;tmpl=component';
-		$document->addScriptDeclaration($js);
-
-		JHTML::_('behavior.modal', 'a.modal');
-
-		$imageselect = "\n<input style=\"background: #ffffff;\" type=\"text\" id=\"a_imagename\" value=\"$row->locimage\" disabled=\"disabled\" /><br />";
-		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('COM_REDEVENT_Upload')."\" href=\"$link\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('COM_REDEVENT_Upload')."</a></div></div>\n";
-		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"".JText::_('COM_REDEVENT_SELECTIMAGE')."\" href=\"$link2\" rel=\"{handler: 'iframe', size: {x: 650, y: 375}}\">".JText::_('COM_REDEVENT_SELECTIMAGE')."</a></div></div>\n";
-		$imageselect .= "\n&nbsp;<input class=\"inputbox\" type=\"button\" onclick=\"elSelectImage('', '".JText::_('COM_REDEVENT_SELECTIMAGE')."' );\" value=\"".JText::_('COM_REDEVENT_Reset')."\" />";
-		$imageselect .= "\n<input type=\"hidden\" id=\"a_image\" name=\"locimage\" value=\"$row->locimage\" />";
-
 		$lists = array();
     // categories selector
     $selected = array();
@@ -165,6 +144,7 @@ class RedEventViewVenue extends JView {
 		$this->assignRef('imageselect' 	, $imageselect);
     $this->assignRef('pinpointicon', $pinpointicon);
 		$this->assignRef('access'	, redEVENTHelper::getAccesslevelOptions());
+		$this->assignRef('form'      	, $this->get('form'));
 
 		parent::display($tpl);
 	}

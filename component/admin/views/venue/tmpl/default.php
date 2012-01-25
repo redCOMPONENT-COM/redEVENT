@@ -28,6 +28,25 @@ JHTML::_('behavior.tooltip');
 ?>
 
 <script language="javascript" type="text/javascript">
+
+window.addEvent('domready', function() {
+	
+	$('locimage').addEvent('change', function() {
+		if (this.get('value')) {
+			$('imagelib').empty().adopt(
+					new Element('img', {
+						src: '../'+this.get('value'),
+						class: 're-image-preview',
+						alt: 'preview'
+					}));
+		}
+		else {
+			$('imagelib').empty();
+		}
+	}).fireEvent('change');
+	
+});
+
 	function submitbutton(task)
 	{
 		var form = document.adminForm;
@@ -297,36 +316,21 @@ JHTML::_('behavior.tooltip');
 	$title = JText::_('COM_REDEVENT_IMAGE' );
 	echo $this->pane->startPanel( $title, 'image' );
 	?>
-	<table>
-		<tr>
-			<td>
-				<label for="locimage">
-					<?php echo JText::_('COM_REDEVENT_CHOOSE_IMAGE' ).':'; ?>
-				</label>
-			</td>
-			<td>
-				<?php
-					echo $this->imageselect;
-				?>
-			</td>
-		</tr>
-		<tr>
-			<td>
-			</td>
-			<td>
-				<img src="../images/M_images/blank.png" name="imagelib" id="imagelib" width="80" height="80" border="2" alt="Preview" />
-				<script language="javascript" type="text/javascript">
-				if ($('a_imagename').value !=''){
-					var imname = $('a_imagename').value;
-					jsimg='../images/redevent/venues/' + imname;
-					$('imagelib').src= jsimg;
-				}
-				</script>
-				<br />
-				<br />
-			</td>
-		</tr>
-	</table>
+			<table>
+				<tr>
+					<td>
+						<?php echo $this->form->getLabel('locimage'); ?>
+					</td>
+					<td>
+						<?php echo $this->form->getInput('locimage'); ?>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<span id="imagelib"></span>
+					</td>
+				</tr>
+			</table>
 	<?php
 	echo $this->pane->endPanel();
 	$title = JText::_('COM_REDEVENT_ACCESS' );
