@@ -71,6 +71,8 @@ class RedeventViewVenue extends JView
 		$document 	= & JFactory::getDocument();
 		$document->addScript('http://maps.google.com/maps/api/js?sensor=false');
 		$document->addScript(JURI::root().'/components/com_redevent/assets/js/venuemap.js');
+		JText::script("COM_REDEVENT_GET_DIRECTIONS");
+		
 		//add css file
     if (!$params->get('custom_css')) {
       $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');

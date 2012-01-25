@@ -358,7 +358,7 @@ class ELOutput {
 		$settings = & redEVENTHelper::config();
 		
 		//Link to map
-		$mapimage = JHTML::image(JURI::root().'/components/com_redevent/assets/images/mapsicon.png', JText::_('COM_REDEVENT_MAP' ) );
+		$mapimage = JHTML::image(JURI::root().'components/com_redevent/assets/images/mapsicon.png', JText::_('COM_REDEVENT_MAP' ) );
 
 		//set var
 		$output 	= null;
@@ -399,12 +399,11 @@ class ELOutput {
 		$document->addScript(JURI::root().'/components/com_redevent/assets/js/venuemap.js');
 		$document->addScriptDeclaration('
 			var basepath = "'.JURI::root().'";
-			var directiontext="'.JText::_( 'COM_REDEVENT_GET_DIRECTIONS' ).'";
 			window.addEvent(\'domready\', function() {
 				mymap.initajax('.$data->venueid.', "venue-location");
 			});
 		');
-		
+		JText::script("COM_REDEVENT_GET_DIRECTIONS");
 		if (isset($attributes['class'])) {
 			$attributes['class'] .= ' venuemap';
 		}

@@ -92,9 +92,9 @@ var mymap = {
         for (var i = 0; i < addressparts.length; i++) {
         	txt += addressparts[i]+'<br/>';
         }
-        div.setHTML(txt);
+        div.set('html', txt);
         if (this.venue.address) {
-        	new Element('a', {href: 'http://maps.google.com/maps?daddr='+encodeURI(this.venue.address)+'@'+this.venue.latitude+','+this.venue.longitude, target: '_blank'}).setText(directiontext).injectInside(div);
+        	new Element('a', {href: 'http://maps.google.com/maps?daddr='+encodeURI(this.venue.address)+'@'+this.venue.latitude+','+this.venue.longitude, target: '_blank'}).set('html', Joomla.JText._('COM_REDEVENT_GET_DIRECTIONS')).injectInside(div);
         }
         var infowindow = new google.maps.InfoWindow();
         infowindow.setContent(div);
@@ -102,7 +102,7 @@ var mymap = {
     		infowindow.open(this.map, marker);
     	}.bind(this));
     	// only open on map display if map is big enough
-        var size = $(this.map.getDiv()).getSize().size;
+        var size = $(this.map.getDiv()).getSize();
         if (size.x >= 350 && size.y >= 350) {
         	infowindow.open(this.map, marker);
         }

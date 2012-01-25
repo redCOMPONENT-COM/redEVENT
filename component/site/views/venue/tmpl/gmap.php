@@ -26,7 +26,6 @@ $row = & $this->row;
 JHTML::_('behavior.mootools');
 ?>
 <script type="text/javascript">
-var directiontext = "<?php echo JText::_('COM_REDEVENT_GET_DIRECTIONS'); ?>";
 var basepath = "<?php echo JURI::root(); ?>";
 window.addEvent('domready', function() {
 	mymap.initajax(<?php echo $this->row->id; ?>, "venue-location");
