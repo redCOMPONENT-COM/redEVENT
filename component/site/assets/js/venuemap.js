@@ -46,7 +46,8 @@ var mymap = {
 	
 	initajax : function(venueid, elementid) {
 		var url = basepath + 'index.php?option=com_redevent&view=venue&format=raw&id='+venueid;
-		var theAjax = new Ajax(url, {
+		var theAjax = new Request({
+			url: url,
 			method: 'post',
 			postBody : ''
 			});
@@ -62,15 +63,17 @@ var mymap = {
 				this.codeadress();
 			}
 		}.bind(this));
-		theAjax.request();
+		theAjax.send();
 	},
 	
 	codeadress : function() {
 		var geocoder = new google.maps.Geocoder();
 	    geocoder.geocode( { 'address': this.venue.address}, function(results, status) {
-	    	this.venue.latitude = results[0].geometry.location.lat();
-	    	this.venue.longitude = results[0].geometry.location.lng();
-	    	this.setmarker();
+	    	if (results[0]) {
+		    	this.venue.latitude = results[0].geometry.location.lat();
+		    	this.venue.longitude = results[0].geometry.location.lng();
+		    	this.setmarker();
+		    }
 	    }.bind(this));
 	},
 	

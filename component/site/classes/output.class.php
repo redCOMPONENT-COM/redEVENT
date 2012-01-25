@@ -418,42 +418,46 @@ class ELOutput {
 		$output		= '<div id="venue-location" '.$attributes.'></div>';
 		return $output;
 	}
-
+  
   /**
-   * Creates the map button
-   *
-   * @param obj $data
-   * @param obj $settings
-   *
-   * @since 0.9
-   */
-  function pinpointicon($data)
+  * Creates the map button
+  *
+  * @param obj $data
+  * @param obj $settings
+  *
+  * @since 0.9
+  */
+  function pinpointicon($data, $attributes = array())
   {
-    $mainframe = &JFactory::getApplication();
-    
-    $settings = & redEVENTHelper::config();
-        
-    $url    = JURI::root();
-    
-    //Link to map
-    $mapimage = JHTML::image($url.'components/com_redevent/assets/images/marker.png', JText::_( 'COM_REDEVENT_PINPOINTLOCATION_ALT' ), array('class' => 'pinpoint'));
-
-    //set var
-    $output   = null;
-    $attributes = null;
-    
-    $data->country = JString::strtoupper($data->country);
-
-    $document   = & JFactory::getDocument();
-    JHTML::_('behavior.mootools');
-
+		JHTML::_('behavior.framework');
+		$document 	= & JFactory::getDocument();
 		$document->addScript('http://maps.google.com/maps/api/js?sensor=false');
-    $document->addScript($url.'/components/com_redevent/assets/js/gmapspinpoint.js');
-    $document->addStyleSheet($url.'/components/com_redevent/assets/css/gmapsoverlay.css', 'text/css');
-    $output   = $mapimage;
+    $document->addScript(JURI::root().'components/com_redevent/assets/js/pinpoint.js');
+    JText::script("COM_REDEVENT_APPLY");
+    JText::script("COM_REDEVENT_CLOSE");
+    
+    $document->addStyleSheet(JURI::root().'components/com_redevent/assets/css/gmapsoverlay.css', 'text/css');
 
-    return $output;
-  }
+    //Link to map
+    $mapimage = JHTML::image(JURI::root().'components/com_redevent/assets/images/marker.png', JText::_( 'COM_REDEVENT_PINPOINTLOCATION_ALT' ), array('class' => 'pinpoint'));
+      
+  	$data->country = JString::strtoupper($data->country);
+  
+  	if (isset($attributes['class'])) {
+  	$attributes['class'] .= ' venuemap';
+  	}
+  		else {
+  			$attributes['class'] = 'venuemap';
+  	}
+    		
+  	foreach ($attributes as $k => $v) {
+  		$attributes[$k] = $k.'="'.$v.'"';
+  	}
+  	$attributes = implode(' ', $attributes);
+  	$output = '<span title="'.JText::_('COM_REDEVENT_MAP' ).'" '.$attributes.'>'.$mapimage.'</span>';
+  
+  	return $output;
+	}
 
 	/**
 	 * Creates the flyer

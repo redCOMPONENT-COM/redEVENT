@@ -41,7 +41,7 @@ class RedEventViewVenue extends JView {
 
 		// Load pane behavior
 		jimport('joomla.html.pane');
-		JHTML::_('behavior.mootools');
+		JHTML::_('behavior.framework');
 
 		//initialise variables
 		$editor 	= & JFactory::getEditor();
@@ -124,7 +124,7 @@ class RedEventViewVenue extends JView {
     $lists['countries'] = JHTML::_('select.genericlist', $countries, 'country', 'class="inputbox"', 'value', 'text', $row->country );
     unset($countries);    
     
-    $pinpointicon = ELOutput::pinpointicon( $row );
+    $pinpointicon = ELOutput::pinpointicon2( $row );
 	
 		if ($task == 'copy') 
 		{

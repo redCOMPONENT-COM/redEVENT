@@ -69,3 +69,8 @@
 #gmCaption {
 	margin-right: 71px;
 }
+
+span.gmaplink {
+	color: darkblue;
+	cursor: pointer;
+}
