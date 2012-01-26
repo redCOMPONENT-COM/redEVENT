@@ -79,21 +79,21 @@ class RedeventViewVenueevents extends JView
       }
 
 			//Format date
-			$date = strftime( $elsettings->get('formatdate'), strtotime( $row->dates ));
+			$date = strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $row->dates ));
 			if (!$row->enddates) {
 				$displaydate = $date;
 			} else {
-				$enddate 	= strftime( $elsettings->get('formatdate'), strtotime( $row->enddates ));
+				$enddate 	= strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $row->enddates ));
 				$displaydate = $date.' - '.$enddate;
 			}
 
 			//Format time
 			if ($row->times) {
-				$time = strftime( $elsettings->get('formattime'), strtotime( $row->times ));
+				$time = strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $row->times ));
 				$displaytime = $time;
 			}
 			if ($row->endtimes) {
-				$endtime = strftime( $elsettings->get('formattime'), strtotime( $row->endtimes ));
+				$endtime = strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $row->endtimes ));
 				$displaytime = $time.' - '.$endtime;
 			}
 
@@ -167,20 +167,20 @@ class RedeventViewVenueevents extends JView
 			}
 
 			//Format date
-			$date = strftime( $elsettings->get('formatdate'), strtotime( $row->dates ));
+			$date = strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $row->dates ));
 			$rssstartdate = $row->dates;
 			if (!$row->enddates) {
 				$displaydate = $date;
 				$rssenddate = $row->dates;
 			} else {
-				$enddate 	= strftime( $elsettings->get('formatdate'), strtotime( $row->enddates ));
+				$enddate 	= strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $row->enddates ));
 				$rssenddate = $row->enddates;
 				$displaydate = $date.' - '.$enddate;
 			}
 
 			//Format time
 			if ($row->times) {
-				$time = strftime( $elsettings->get('formattime'), strtotime( $row->times ));
+				$time = strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $row->times ));
 				$displaytime = $time;
 				$rssstartdate .= 'T'.$row->times.$utcoffset;	
 			}

@@ -341,17 +341,17 @@ class RedEventViewEvent extends JView {
     $xref = $this->get('xref');
     
     /* Get the date */
-    $date = (!redEVENTHelper::isValidDate($xref->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $params->get('formatdate'), strtotime( $xref->dates )));
-    $enddate  = (!redEVENTHelper::isValidDate($xref->enddates) || $xref->enddates == $xref->dates) ? '' : strftime( $params->get('formatdate'), strtotime( $xref->enddates ));
+    $date = (!redEVENTHelper::isValidDate($xref->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $params->get('formatdate', '%d.%m.%Y'), strtotime( $xref->dates )));
+    $enddate  = (!redEVENTHelper::isValidDate($xref->enddates) || $xref->enddates == $xref->dates) ? '' : strftime( $params->get('formatdate', '%d.%m.%Y'), strtotime( $xref->enddates ));
     $displaydate = $date. ($enddate ? ' - '.$enddate: '');
 
     $displaytime = '';
     /* Get the time */
     if (isset($xref->times) && $xref->times != '00:00:00') {
-    	$displaytime = strftime( $params->get('formattime'), strtotime( $xref->times ));
+    	$displaytime = strftime( $params->get('formattime', '%H:%M'), strtotime( $xref->times ));
 
     	if (isset($xref->endtimes) && $xref->endtimes != '00:00:00') {
-    		$displaytime .= ' - '.strftime( $params->get('formattime'), strtotime( $xref->endtimes ));
+    		$displaytime .= ' - '.strftime( $params->get('formattime', '%H:%M'), strtotime( $xref->endtimes ));
     	}
     }
     $json_data = array( 'id'        => $xref->id,

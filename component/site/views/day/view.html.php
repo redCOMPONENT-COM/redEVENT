@@ -79,7 +79,7 @@ class RedeventViewDay extends JView
 		$total 		= & $this->get('Total');
 		$day	= & $this->get('Day');
 		
-		$daydate = strftime( $elsettings->get('formatdate'), strtotime( $day ));
+		$daydate = strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $day ));
 
 		//are events available?
 		if (!$rows) {

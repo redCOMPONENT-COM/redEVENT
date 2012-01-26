@@ -74,11 +74,11 @@ class RedeventViewVenuecategory extends JView
 			//Format date
 			if (redEVENTHelper::isValidDate($row->dates))
 			{
-				$date = strftime( $elsettings->get('formatdate'), strtotime( $row->dates ));
+				$date = strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $row->dates ));
 				if (!redEVENTHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) {
 					$displaydate = $date;
 				} else {
-					$enddate 	= strftime( $elsettings->get('formatdate'), strtotime( $row->enddates ));
+					$enddate 	= strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $row->enddates ));
 					$displaydate = $date.' - '.$enddate;
 				}
 			}
@@ -88,11 +88,11 @@ class RedeventViewVenuecategory extends JView
 
 			//Format time
 			if ($row->times) {
-				$time = strftime( $elsettings->get('formattime'), strtotime( $row->times ));
+				$time = strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $row->times ));
 				$displaytime = $time;
 			}
 			if ($row->endtimes) {
-				$endtime = strftime( $elsettings->get('formattime'), strtotime( $row->endtimes ));
+				$endtime = strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $row->endtimes ));
 				$displaytime = $time.' - '.$endtime;
 			}
 

@@ -55,7 +55,7 @@ foreach ($this->rows as $row)
 	$colorpic = '';
 	$content = '';
 	$contentend = '';
-	if ($this->settings->get('showdetails')) {
+	if ($this->settings->get('showdetails', 1)) {
 		$detaillink = RedeventHelperRoute::getDetailsRoute($row->slug, $row->xslug);
 	}
 	else {

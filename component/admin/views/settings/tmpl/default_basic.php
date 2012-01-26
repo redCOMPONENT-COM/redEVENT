@@ -28,7 +28,7 @@
 							</span>
 						</td>
        					<td valign="top">
-							<input type="text" name="formatdate" value="<?php echo $this->elsettings->get('formatdate'); ?>" size="15" maxlength="15" />
+							<input type="text" name="formatdate" value="<?php echo $this->elsettings->get('formatdate', '%d.%m.%Y'); ?>" size="15" maxlength="15" />
 							&nbsp;<a href="http://www.php.net/strftime" target="_blank"><?php echo JText::_('COM_REDEVENT_PHP_STRFTIME_MANUAL' ); ?></a>
        	 				</td>
       				</tr>
@@ -39,7 +39,7 @@
 							</span>
 						</td>
        					<td valign="top">
-							<input type="text" name="formattime" value="<?php echo $this->elsettings->get('formattime'); ?>" size="15" maxlength="15" />
+							<input type="text" name="formattime" value="<?php echo $this->elsettings->get('formattime', '%H:%M'); ?>" size="15" maxlength="15" />
 							&nbsp;<a href="http://www.php.net/strftime" target="_blank"><?php echo JText::_('COM_REDEVENT_PHP_STRFTIME_MANUAL' ); ?></a>
        	 				</td>
       				</tr>

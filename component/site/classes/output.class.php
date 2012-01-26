@@ -589,7 +589,7 @@ class ELOutput {
 		}
 		
 		//Format date
-		$formatdate = strftime( $settings->get('formatdate'), strtotime( $date.' '.$time ));
+		$formatdate = strftime( $settings->get('formatdate', '%d.%m.%Y'), strtotime( $date.' '.$time ));
 		
 		return $formatdate;
 	}
@@ -613,7 +613,7 @@ class ELOutput {
 		}
 		
 		//Format time
-		$formattime = strftime( $settings->get('formattime'), strtotime( $date.' '.$time ));
+		$formattime = strftime( $settings->get('formattime', '%H:%M'), strtotime( $date.' '.$time ));
 		
 		return $formattime;
 	}
