@@ -24,7 +24,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 
-<form method="post" action="<?php echo $this->request_url; ?>" enctype="multipart/form-data" name="adminForm">
+<form method="post" action="<?php echo $this->request_url; ?>" enctype="multipart/form-data" name="adminForm" id="adminForm">
 
 <table class="noshow">
   	<tr>
@@ -71,7 +71,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	          			<td>
  							<input class="inputbox" name="userfile" id="userfile" type="file" />
 							<br /><br />
-							<input class="button" type="submit" value="<?php echo JText::_('COM_REDEVENT_UPLOAD') ?>" name="adminForm" />
+							<input class="button" type="submit" value="<?php echo JText::_('COM_REDEVENT_UPLOAD') ?>" />
     			       	</td>
       				</tr>
 				</tbody>

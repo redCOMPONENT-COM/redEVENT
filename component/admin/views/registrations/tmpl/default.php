@@ -26,7 +26,7 @@ JHTML::_('behavior.tooltip');
 $colspan = 13;
 ?>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 	
 	<table class="adminform">
 		<tr>

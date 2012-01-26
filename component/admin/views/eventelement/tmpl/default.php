@@ -24,7 +24,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<form action="index.php?option=com_redevent&amp;view=eventelement&amp;tmpl=component&field=<?php echo $this->field; ?>" method="post" name="adminForm">
+<form action="index.php?option=com_redevent&amp;view=eventelement&amp;tmpl=component&field=<?php echo $this->field; ?>" method="post" name="adminForm" id="adminForm">
 
 <table class="adminform">
 	<tr>

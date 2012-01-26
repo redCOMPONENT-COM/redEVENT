@@ -27,7 +27,7 @@ $app = &JFactory::getApplication();
 <?php if (!count( $this->rows )):?>
 <p><?php echo JHTML::link('index.php?option=com_redevent&task=sampledata', JText::_('COM_REDEVENT_Add_sample_data')); ?></p>
 <?php endif;?>
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 
 	<table class="adminform">
 		<tr>

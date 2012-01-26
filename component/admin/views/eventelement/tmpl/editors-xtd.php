@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 			}
 		</script>
 		
-<form action="index.php?option=com_redevent&amp;task=insertevent&amp;tmpl=component" method="post" name="adminForm">
+<form action="index.php?option=com_redevent&amp;task=insertevent&amp;tmpl=component" method="post" name="adminForm" id="adminForm">
 
 <table class="adminform">
 	<tr>

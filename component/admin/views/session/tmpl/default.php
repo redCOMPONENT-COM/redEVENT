@@ -67,7 +67,7 @@ function updateend(cal)
 }
 </script>
 
-<form name="adminForm" action="index.php" method="post">
+<form name="adminForm" action="index.php" method="post" id="adminForm">
 <?php echo $this->pane->startPane("det-pane");
 			echo $this->pane->startPanel( JText::_('COM_REDEVENT_Details'), 'tdetails' );
 ?>

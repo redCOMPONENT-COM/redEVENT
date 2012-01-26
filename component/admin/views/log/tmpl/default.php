@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php echo $line . '<br/>'; ?>
 <?php endforeach; ?>
 
-<form action="index.php" method="post" name="adminForm">  
+<form action="index.php" method="post" name="adminForm" id="adminForm">  
   <input type="hidden" name="option" value="com_redevent" />
   <input type="hidden" name="view" value="log" />
   <input type="hidden" name="task" value="" />
