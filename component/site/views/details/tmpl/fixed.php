@@ -276,10 +276,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						{
 							$title = ' title="'.$p->name.'::'.addslashes(str_replace("\n", "<br/>", $p->tooltip)).'"';
 							$img = empty($p->image) ? JHTML::_('image', $imagepath.$this->elsettings->get('signup_webform_img'),  JText::_($p->name)) 
-							                        : JHTML::_('image', $imagepath.$p->image,  JText::_($p->name));
+							                        : JHTML::_('image', JURI::root().$p->image,  JText::_($p->name));
 							$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->row->slug, $this->row->xslug, $p->slug));
 							
-							$venues_html .= '<div class="courseinfo_vlink courseinfo_webform hasTip '.$p->alias.'"'.$title.'>'
+							$venues_html .= '<div class="registration_method hasTip '.$p->alias.'"'.$title.'>'
 								             .JHTML::_('link', $link, $img).'</div> ';
 						}
 					}
@@ -294,6 +294,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		}
 		echo $venues_html; ?>
 		<?php endif; ?>
+		<div class="clear"></div>
 		</div>
 	<?php endif; ?>
 
