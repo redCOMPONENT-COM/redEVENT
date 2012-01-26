@@ -124,7 +124,7 @@ class RedEventViewVenue extends JView {
     $lists['countries'] = JHTML::_('select.genericlist', $countries, 'country', 'class="inputbox"', 'value', 'text', $row->country );
     unset($countries);    
     
-    $pinpointicon = ELOutput::pinpointicon2( $row );
+    $pinpointicon = ELOutput::pinpointicon( $row );
 	
 		if ($task == 'copy') 
 		{
