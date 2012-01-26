@@ -39,7 +39,7 @@
 	<legend><?php echo JText::_('COM_REDEVENT_EVENT_DESCRIPTION'); ?></legend>
 	<ul class="adminformlist">
 	<li>
-		<?php echo $this->form->getLabel('layout').$this->form->getInput('layout'); ?>
+		<?php echo $this->form->getLabel('details_layout').$this->form->getInput('details_layout'); ?>
 	</li>
 	</ul>
 	<div class="clr"></div>

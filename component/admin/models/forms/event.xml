@@ -63,7 +63,7 @@
 		/>
 	
 	<field
-		name="layout"
+		name="details_layout"
 		type="list"
 		class="inputbox"
 		default="0"
