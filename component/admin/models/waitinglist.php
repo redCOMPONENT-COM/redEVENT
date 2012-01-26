@@ -257,8 +257,13 @@ class RedEventModelWaitinglist extends JModel {
 		
 		if ($type == 'off') {
 			$update_ids = $this->move_off_ids;
-			$body = nl2br($this->taghelper->ReplaceTags($this->event_data->notify_off_list_body));
-			$subject = $this->taghelper->ReplaceTags($this->event_data->notify_off_list_subject);
+			$body = trim($this->event_data->notify_off_list_body);
+			if (!$body) $body = trim($this->event_data->notify_body);
+			$subject = trim($this->event_data->notify_off_list_subject);
+			if (!$subject) $subject = trim($this->event_data->notify_subject);
+			
+			$body = nl2br($this->taghelper->ReplaceTags($body));
+			$subject = $this->taghelper->ReplaceTags($subject);
 		}
 		else if ($type == 'on') {
 			$update_ids = $this->move_on_ids;

@@ -278,9 +278,15 @@ class RedEventModelRegistration extends JModel
 			$this->taghelper->setXref($this->_xref);
 		}
 				
-		if ($waiting == 0) {
-			$body    = nl2br($this->taghelper->ReplaceTags($session->notify_off_list_body));
-			$subject = $this->taghelper->ReplaceTags($session->notify_off_list_subject);
+		if ($waiting == 0) 
+		{
+			$body = trim($session->notify_off_list_body);
+			if (!$body) $body = trim($session->notify_body);
+			$subject = trim($session->notify_off_list_subject);
+			if (!$subject) $subject = trim($session->notify_ubject);
+			
+			$body    = nl2br($this->taghelper->ReplaceTags($body));
+			$subject = $this->taghelper->ReplaceTags($subject);
 		}
 		else {
 			$body = nl2br($this->taghelper->ReplaceTags($session->notify_on_list_body));
