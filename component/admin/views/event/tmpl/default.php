@@ -56,17 +56,17 @@ $this->infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-h
 			}).fireEvent('change');
     });
     
-	function submitbutton(task)
+	Joomla.submitbutton = function(task)
 	{
 	
     if (task == 'cancel') {
-      submitform( task );
-      return;
+    	Joomla.submitform( task );
+      return true;
     }
     
       var form = document.getElementById('adminForm');
       var validator = document.formvalidator;
-      var title = $(form.title).getValue();
+      var title = $(form.title).get('value');
       title.replace(/\s/g,'');
       
       if ( title.length==0 ) {
@@ -93,9 +93,9 @@ $this->infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-h
 			$("meta_description").value = $description;
 			// submit_unlimited();
 
-			submitform( task );
+			Joomla.submitform( task );
 		}
-	}
+	};
 	
 	// for xref update script
 	var edittext = "<?php echo JText::_('COM_REDEVENT_EDIT'); ?>";
