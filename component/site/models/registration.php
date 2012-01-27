@@ -277,7 +277,7 @@ class RedEventModelRegistration extends JModel
 			$this->taghelper = new redEVENT_tags();
 			$this->taghelper->setXref($this->_xref);
 		}
-				
+		
 		if ($waiting == 0) 
 		{
 			$body = trim($session->notify_off_list_body);

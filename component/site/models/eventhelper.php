@@ -114,12 +114,11 @@ class RedeventModelEventhelper extends JModel
 			// Do we have access to each category ?
 			foreach ($this->_event->categories as $cat)
 			{
-				if ($cat->access > $user->get('aid'))
+				if ($cat->access > $user->get('aid', 0))
 				{
 					JError::raiseError( 403, JText::_("COM_REDEVENT_ALERTNOTAUTH") );
 				}
 			}
-
 		}
 
 		return $this->_event;
