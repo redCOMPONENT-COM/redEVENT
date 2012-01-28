@@ -57,7 +57,6 @@
 			<menu img="../administrator/components/com_redevent/assets/images/icon-16-groups.png" view="groups">COM_REDEVENT_MENU_GROUPS</menu>
 			<menu img="../administrator/components/com_redevent/assets/images/icon-16-library.png" view="textlibrary">COM_REDEVENT_MENU_TAGS_LIBRARY</menu>
 			<menu img="../administrator/components/com_redevent/assets/images/icon-16-customfields.png" view="customfields">COM_REDEVENT_MENU_CUSTOMFIELDS</menu>
-			<menu img="../administrator/components/com_redevent/assets/images/icon-16-settings.png" view="settings">COM_REDEVENT_MENU_SETTINGS</menu>
 		</submenu>
 	
 		<files folder="admin">
