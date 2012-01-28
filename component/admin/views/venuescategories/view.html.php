@@ -72,6 +72,9 @@ class RedEventViewVenuesCategories extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::deleteList();
 		JToolBarHelper::spacer();
+		if ($user->authorise('core.admin', 'com_redevent')) {
+			JToolBarHelper::preferences('com_redevent', '600', '800');
+		}
 		JToolBarHelper::help( 'el.listcategories', true );
 
 		//Get data from the model

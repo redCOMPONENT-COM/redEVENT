@@ -54,7 +54,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<h2><?php echo $this->event->title. '@'. $this->event->venue. ' ' . (redEVENTHelper::isValidDate($this->event->dates) ? strftime($this->settings->formatdate, strtotime($this->event->dates)) : ''); ?></h2>
+<h2><?php echo $this->event->title. '@'. $this->event->venue. ' ' . (redEVENTHelper::isValidDate($this->event->dates) ? strftime($this->settings->get('formatdate', '%d.%m.%Y'), strtotime($this->event->dates)) : ''); ?></h2>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
 	<table cellspacing="0" cellpadding="0" border="0" width="100%">

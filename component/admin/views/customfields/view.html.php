@@ -39,6 +39,7 @@ class RedeventViewCustomfields extends JView
 	{
 		$mainframe = &JFactory::getApplication();
 		$option = JRequest::getCmd('option');
+		$user 		= & JFactory::getUser();
 	
 		if ($this->getLayout() == 'import') {
 			return $this->_displayImport($tpl);
@@ -58,6 +59,9 @@ class RedeventViewCustomfields extends JView
 		JToolBarHelper::addNewX();
 		JToolBarHelper::custom('export', 'csvexport', 'csvexport', JText::_('COM_REDEVENT_BUTTON_EXPORT'), false);
 		JToolBarHelper::custom('import', 'csvimport', 'csvimport', JText::_('COM_REDEVENT_BUTTON_IMPORT'), false);
+		if ($user->authorise('core.admin', 'com_redevent')) {
+			JToolBarHelper::preferences('com_redevent', '600', '800');
+		}
     JToolBarHelper::help( 'screen.redevent', true );
         
 		$db		=& JFactory::getDBO();

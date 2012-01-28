@@ -39,6 +39,7 @@ class RedeventViewSessions extends JView
 	{
 		$mainframe = &JFactory::getApplication();
 		$option = JRequest::getCmd('option');
+		$user 		= & JFactory::getUser();
 
 		$document = &JFactory::getDocument();
 		
@@ -122,6 +123,10 @@ class RedeventViewSessions extends JView
 		JToolBarHelper::custom('unfeatured', 'unfeatured', 'unfeatured', 'COM_REDEVENT_UNFEATURE', true);
 		JToolBarHelper::spacer();
 		JToolBarHelper::custom('back', 'back', 'back', 'COM_REDEVENT_BACK', false);
+		if ($user->authorise('core.admin', 'com_redevent')) {
+			JToolBarHelper::spacer();
+			JToolBarHelper::preferences('com_redevent', '600', '800');
+		}
 		
 		// event 
 		JHTML::_('behavior.modal', 'a.modal');

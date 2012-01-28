@@ -92,6 +92,9 @@ class RedEventViewAttendees extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::back();
 		JToolBarHelper::spacer();
+		if ($user->authorise('core.admin', 'com_redevent')) {
+			JToolBarHelper::preferences('com_redevent', '600', '800');
+		}
 		JToolBarHelper::help( 'el.registereduser', true );
 
 		// Get data from the model

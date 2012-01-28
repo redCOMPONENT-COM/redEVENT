@@ -76,6 +76,9 @@ class RedEventViewCategories extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::custom('importexport', 'csvexport', 'csvexport', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), false);
 		JToolBarHelper::spacer();
+		if ($user->authorise('core.admin', 'com_redevent')) {
+			JToolBarHelper::preferences('com_redevent', '600', '800');
+		}
 		JToolBarHelper::help( 'el.listcategories', true );
 
 		//Get data from the model

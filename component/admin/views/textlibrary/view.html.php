@@ -66,6 +66,10 @@ class RedEventViewTextLibrary extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::custom('export', 'csvexport', 'csvexport', JText::_('COM_REDEVENT_BUTTON_EXPORT'), false);
 		JToolBarHelper::custom('import', 'csvimport', 'csvimport', JText::_('COM_REDEVENT_BUTTON_IMPORT'), false);
+		if ($user->authorise('core.admin', 'com_redevent')) {
+			JToolBarHelper::spacer();
+			JToolBarHelper::preferences('com_redevent', '600', '800');
+		}
 		
 		// Get data from the model
 		$rows = $this->get('Data');

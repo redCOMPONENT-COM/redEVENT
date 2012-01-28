@@ -68,6 +68,9 @@ class RedEventViewRegistrations extends JView {
 		JToolBarHelper::title( JText::_( 'COM_REDEVENT_PAGETITLE_REGISTRATIONS' ), 'users' );
 		JToolBarHelper::back();
 		JToolBarHelper::spacer();
+		if ($user->authorise('core.admin', 'com_redevent')) {
+			JToolBarHelper::preferences('com_redevent', '600', '800');
+		}
 		JToolBarHelper::help( 'redevent.registrations', true );
 
 		// Get data from the model
