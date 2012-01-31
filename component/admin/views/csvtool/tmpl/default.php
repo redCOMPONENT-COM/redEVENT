@@ -59,10 +59,6 @@ defined('_JEXEC') or die('Restricted access');
 
 </table>
 
-<p class="copyright">
-	<?php echo ELAdmin::footer( ); ?>
-</p>
-
 <input type="hidden" name="task" id="exptask" value="" />
 <input type="hidden" name="controller" value="csvtool" />
 </form>

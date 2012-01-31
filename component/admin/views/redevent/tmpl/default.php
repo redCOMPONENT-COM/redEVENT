@@ -197,7 +197,4 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 		</tr>
 		</table>
-
-	<p class="copyright">
-		<?php echo ELAdmin::footer( ); ?>
-	</p>
+		

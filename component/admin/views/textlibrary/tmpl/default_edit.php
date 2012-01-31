@@ -56,11 +56,6 @@ JHTML::_('behavior.modal');
 <input type="hidden" name="task" value="" />
 </form>
 
-<p class="copyright">
-	<?php echo ELAdmin::footer( ); ?>
-</p>
-
 <?php
 //keep session alive while editing
 JHTML::_('behavior.keepalive');
-?>

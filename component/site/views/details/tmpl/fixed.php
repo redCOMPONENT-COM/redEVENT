@@ -340,7 +340,4 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		  <?php endif; ?>
 	</ul>
 	
-<p class="copyright">
-	<?php echo ELOutput::footer( ); ?>
-</p>
 </div>

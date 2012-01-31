@@ -24,8 +24,3 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 echo $this->tags->ReplaceTags($this->page);
-
-?>
-<p class="copyright">
-	<?php echo ELOutput::footer( ); ?>
-</p>

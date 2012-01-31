@@ -87,10 +87,6 @@ defined('_JEXEC') or die('Restricted access');
 
 </table>
 
-<p class="copyright">
-	<?php echo ELAdmin::footer( ); ?>
-</p>
-
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="" />

@@ -155,8 +155,4 @@ $toggle = $this->params->get('filter_toggle', 3);
 <!-- end: exports -->
 <?php endif; ?>
 
-<p class="copyright">
-	<?php echo ELOutput::footer( ); ?>
-</p>
-
 </div>

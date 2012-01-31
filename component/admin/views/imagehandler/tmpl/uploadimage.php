@@ -172,7 +172,3 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <input type="hidden" name="controller" value="imagehandler" />
 <input type="hidden" name="task" value="<?php echo $this->task;?>" />
 </form>
-
-<p class="copyright">
-	<?php echo ELAdmin::footer( ); ?>
-</p>

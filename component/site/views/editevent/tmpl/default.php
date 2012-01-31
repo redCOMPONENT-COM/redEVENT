@@ -298,10 +298,6 @@ $pane =& JPane::getInstance('tabs');
 </p>
 </form>
 
-<p class="copyright">
-    	<?php echo ELOutput::footer( ); ?>
-    </p>
-
 </div>
 <?php
 //keep session alive while editing

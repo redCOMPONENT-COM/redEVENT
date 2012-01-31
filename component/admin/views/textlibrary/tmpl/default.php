@@ -93,11 +93,6 @@ defined('_JEXEC') or die('Restricted access');
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
 </form>
 
-<p class="copyright">
-	<?php echo ELAdmin::footer( ); ?>
-</p>
-
 <?php
 //keep session alive while editing
 JHTML::_('behavior.keepalive');
-?>

@@ -168,10 +168,6 @@ echo $this->pane->endPane(); ?>
 <?php } ?>
 </form>
 
-<p class="copyright">
-	<?php echo ELAdmin::footer( ); ?>
-</p>
-
 <?php
 //keep session alive while editing
 JHTML::_('behavior.keepalive');

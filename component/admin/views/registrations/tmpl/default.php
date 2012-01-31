@@ -145,9 +145,6 @@ $colspan = 13;
 
 	</table>
 
-	<p class="copyright">
-		<?php echo ELAdmin::footer( ); ?>
-
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="option" value="com_redevent" />
 		<input type="hidden" name="controller" value="registrations" />
@@ -155,5 +152,5 @@ $colspan = 13;
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 		<input type="hidden" name="filter_order_Dir" value="" />
-	</p>
+
 </form>

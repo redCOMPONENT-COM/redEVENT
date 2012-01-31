@@ -127,10 +127,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <p class="pagescounter">
 	<?php echo $this->pageNav->getPagesCounter(); ?>
 </p>
-
-<p class="copyright">
-	<?php echo ELOutput::footer( ); ?>
-</p>
 <!--footer end-->
 
 </div>

@@ -38,6 +38,3 @@ if (isset($this->result)) { ?>
 	<input type="hidden" name="xref" value="<?php echo JRequest::getVar('xref'); ?>" />
 	<input type="hidden" name="id" value="<?php echo JRequest::getVar('id'); ?>" />
 </form>
-<p class="copyright">
-	<?php echo ELOutput::footer( ); ?>
-</p>

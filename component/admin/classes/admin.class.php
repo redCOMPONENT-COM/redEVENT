@@ -32,18 +32,6 @@ defined('_JEXEC') or die('Restricted access');
  */
 class ELAdmin {
 
-	/**
-	* Writes footer. Do not remove!
-	*
-	* @since 0.9
-	*/
-	function footer( )
-	{
-
-		// echo 'EventList by <a href="http://www.schlu.net" target="_blank">schlu.net</a>';
-
-	}
-
 	function config()
 	{
 		$db =& JFactory::getDBO();

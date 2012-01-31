@@ -72,10 +72,6 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		</table>
 
-		<p class="copyright">
-			<?php echo ELAdmin::footer( ); ?>
-		</p>
-
 		<?php echo JHTML::_( 'form.token' ); ?>
 		<input type="hidden" name="filename" value="<?php echo $this->filename; ?>" />
 		<input type="hidden" name="option" value="com_redevent" />

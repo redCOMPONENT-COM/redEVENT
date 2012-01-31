@@ -32,17 +32,6 @@ defined('_JEXEC') or die('Restricted access');
 class ELOutput {
 
 	/**
-	* Writes footer. Official copyright! Do not remove!
-	*
-	* @author Christoph Lukes
-	* @since 0.9
-	*/
-	function footer( )
-	{
-		// echo 'EventList powered by <a href="http://www.schlu.net">schlu.net</a>';
-	}
-
-	/**
 	* Writes Event submission button
 	*
 	* @author Christoph Lukes

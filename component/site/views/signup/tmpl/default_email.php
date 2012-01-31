@@ -42,6 +42,3 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 
 ?>
-<p class="copyright">
-	<?php echo ELOutput::footer( ); ?>
-</p>
