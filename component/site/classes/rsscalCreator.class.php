@@ -1065,5 +1065,3 @@ class rsscalVersion2_0 extends rsscalVersion {
     return $output;
   }
 }
-
-?>

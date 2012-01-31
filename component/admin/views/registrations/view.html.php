@@ -116,4 +116,3 @@ class RedEventViewRegistrations extends JView {
 		parent::display($tpl);
 	}
 }
-?>

@@ -215,4 +215,3 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 		return $_venue;
 	}
 }
-?>

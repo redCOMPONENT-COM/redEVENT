@@ -131,4 +131,3 @@ class RedeventViewCategoriesdetailed extends JView
 
 	}//function end
 }
-?>

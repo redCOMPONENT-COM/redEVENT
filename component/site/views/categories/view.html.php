@@ -114,4 +114,3 @@ class RedeventViewCategories extends JView
 		parent::display($tpl);
 	}
 }
-?>

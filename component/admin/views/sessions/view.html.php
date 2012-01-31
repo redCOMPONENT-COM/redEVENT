@@ -196,4 +196,3 @@ class RedeventViewSessions extends JView
 		return $href;
 	}
 }
-?>

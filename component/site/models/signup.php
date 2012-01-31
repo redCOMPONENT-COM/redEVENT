@@ -389,4 +389,3 @@ class RedeventModelSignup extends JModel
   	return count($res);
   }
 }
-?>

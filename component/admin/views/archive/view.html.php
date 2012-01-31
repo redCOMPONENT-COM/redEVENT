@@ -107,4 +107,3 @@ class RedEventViewArchive extends JView {
 		parent::display($tpl);
 	}
 }
-?>

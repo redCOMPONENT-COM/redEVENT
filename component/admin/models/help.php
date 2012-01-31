@@ -44,4 +44,3 @@ class RedEventModelHelp extends JModel
 		parent::__construct();
 	}
 }
-?>

@@ -75,4 +75,3 @@ class JElementEvent extends JElement
 		return $html;
 	}
 }
-?>

@@ -540,4 +540,3 @@ class RedEventControllerAttendees extends RedEventController
 		$this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='. $xref );
  	}
 }
-?>

@@ -386,4 +386,3 @@ class plgContentRESimplelist extends JPlugin {
 	}
 		
 }
-?>

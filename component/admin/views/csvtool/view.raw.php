@@ -142,4 +142,3 @@ class RedEventViewCsvtool extends JView {
     return join($delimiter, $output) . "\n";
 	} 
 }
-?>

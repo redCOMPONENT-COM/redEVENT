@@ -123,4 +123,3 @@ class RedeventViewUpcomingevents extends JView
 		}
 	}
 }
-?>

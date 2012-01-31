@@ -262,4 +262,3 @@ class plgRedeventjomsocial extends JPlugin {
     return true;
   }
 }
-?>

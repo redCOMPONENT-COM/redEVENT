@@ -442,4 +442,3 @@ class RedEventControllerCategories extends RedEventController
     return $field;
   }
 }
-?>

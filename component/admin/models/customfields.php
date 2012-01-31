@@ -277,4 +277,3 @@ class RedeventModelCustomfields extends JModel
 		return $count;
 	}
 }
-?>

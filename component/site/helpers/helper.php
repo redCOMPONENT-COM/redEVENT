@@ -1385,4 +1385,3 @@ class redEVENTHelper {
 		return true;
 	}
 }
-?>

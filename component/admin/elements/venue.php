@@ -75,4 +75,3 @@ class JElementVenue extends JElement
 		return $html;
 	}
 }
-?>

@@ -31,4 +31,3 @@ class jc_com_redevent extends JCommentsPlugin {
     return $db->loadResult();
   }
 }
-?>

@@ -258,4 +258,3 @@ class RedEventModelRegistrations extends JModel
 		return $where;
 	}
 }
-?>

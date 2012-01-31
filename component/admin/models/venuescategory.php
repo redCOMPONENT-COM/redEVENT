@@ -347,4 +347,3 @@ class RedEventModelVenuesCategory extends JModel
 		}
 	}
 }
-?>

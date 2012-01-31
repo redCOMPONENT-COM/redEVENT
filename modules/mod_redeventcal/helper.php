@@ -128,5 +128,3 @@ class modredeventcalhelper
 	return $days;
 	} //End of function getdays
 } //End class
-
-?> 

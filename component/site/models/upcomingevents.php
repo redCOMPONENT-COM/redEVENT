@@ -99,4 +99,3 @@ class RedeventModelUpcomingevents extends RedeventModelBaseEventList {
 		return $rows;
 	}
 }
-?>

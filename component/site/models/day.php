@@ -177,4 +177,3 @@ class RedeventModelDay extends RedeventModelBaseEventList
 		return $this->_date;
 	}
 }
-?>

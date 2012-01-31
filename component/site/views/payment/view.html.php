@@ -131,4 +131,3 @@ class RedeventViewPayment extends JView
 		parent::display($tpl);
 	}
 }
-?>

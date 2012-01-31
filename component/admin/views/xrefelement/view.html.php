@@ -97,4 +97,3 @@ class RedEventViewxrefelement extends JView {
 		parent::display($tpl);
 	}
 }//end class
-?>

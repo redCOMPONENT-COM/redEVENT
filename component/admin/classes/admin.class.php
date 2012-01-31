@@ -168,5 +168,3 @@ class ELAdmin {
 		return false;
 	}
 }
-
-?>

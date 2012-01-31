@@ -257,4 +257,3 @@ class RedeventViewSearch extends JView
 		return $lists;
 	}
 }
-?>

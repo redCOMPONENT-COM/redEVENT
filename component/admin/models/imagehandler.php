@@ -245,4 +245,3 @@ class RedEventModelImagehandler extends JModel
 		}
 	}
 }
-?>

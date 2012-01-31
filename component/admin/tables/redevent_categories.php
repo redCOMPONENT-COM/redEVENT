@@ -151,4 +151,3 @@ class RedEvent_categories extends JTable
 	   return $right+1;
 	}
 }
-?>

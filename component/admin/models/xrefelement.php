@@ -231,4 +231,3 @@ class RedEventModelXrefelement extends JModel
 		return $where;
 	}
 }//Class end
-?>

@@ -77,4 +77,3 @@ class RedeventViewUpcomingevents extends JView
 		parent::display($tpl);
 	}
 }
-?>

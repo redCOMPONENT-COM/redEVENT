@@ -124,4 +124,3 @@ class RedEventControllerSettings extends RedEventController
 		$this->setRedirect( $link, $msg );
 	}
 }
-?>

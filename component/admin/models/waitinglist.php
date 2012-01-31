@@ -438,4 +438,3 @@ class RedEventModelWaitinglist extends JModel {
   	return $res;
   }
 }
-?>

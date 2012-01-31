@@ -199,4 +199,3 @@ class RedEvent_venues extends JTable
 		return true;
 	}
 }
-?>

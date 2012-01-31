@@ -40,4 +40,3 @@ function com_uninstall() {
 
 	echo "<strong>redEVENT 2.0 beta 3 has been uninstalled</strong>";
 }
-?>

@@ -200,4 +200,3 @@ class RedEvent_settings extends JTable
 		parent::__construct('#__redevent_settings', 'id', $db);
 	}
 }
-?>

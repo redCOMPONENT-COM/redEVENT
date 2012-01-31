@@ -284,4 +284,3 @@ class RedEventModelTools extends JModel
 		return $this->_unassigned;
 	}
 }
-?>

@@ -503,4 +503,3 @@ class RedEventViewEvent extends JView {
     $this->assignRef('xrefcustomfields' , $customfields);
   }
 }
-?>

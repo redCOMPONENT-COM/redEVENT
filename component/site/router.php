@@ -357,4 +357,3 @@ function RedEventParseRoute($segments)
 
 	return $vars;
 }
-?>

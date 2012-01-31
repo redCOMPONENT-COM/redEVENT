@@ -110,4 +110,3 @@ class RedEvent_groups extends JTable
 		return true;
 	}
 }
-?>

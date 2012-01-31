@@ -238,4 +238,3 @@ class RedeventViewCategoryevents extends JView
 		return $lists;
 	}
 }
-?>

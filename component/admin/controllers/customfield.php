@@ -317,4 +317,3 @@ class RedeventControllerCustomfield extends JController
     }
 	}
 }
-?>

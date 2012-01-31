@@ -153,4 +153,3 @@ class RedeventViewEditvenue extends JView
 
 	}
 }
-?>

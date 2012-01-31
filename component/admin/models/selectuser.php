@@ -196,4 +196,3 @@ class RedeventModelSelectUser extends JModel
     return $this->_total;
   }  
 }
-?>

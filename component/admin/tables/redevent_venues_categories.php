@@ -147,4 +147,3 @@ class RedEvent_venues_categories extends JTable
 	   return $right+1;
 	}
 }
-?>

@@ -314,4 +314,3 @@ class RedEventModelTextLibrary extends JModel
 		return $count;
 	}
 }
-?>

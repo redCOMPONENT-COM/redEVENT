@@ -471,4 +471,3 @@ class RedeventModelEditvenue extends JModel
 		return (int) $this->_db->loadResult();
 	}	
 }
-?>

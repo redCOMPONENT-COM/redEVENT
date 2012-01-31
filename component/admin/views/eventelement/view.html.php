@@ -158,4 +158,3 @@ class RedEventViewEventelement extends JView {
 	}
 
 }//end class
-?>

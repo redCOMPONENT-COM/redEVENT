@@ -352,4 +352,3 @@ class RedeventViewDetails extends JView
 		$document->addScript('http://connect.facebook.net/en_US/all.js#xfbml=1');
 	}
 }
-?>

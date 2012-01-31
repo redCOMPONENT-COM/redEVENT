@@ -344,4 +344,3 @@ class RedeventModelPricegroup extends JModel
     return true;
   }  
 }
-?>

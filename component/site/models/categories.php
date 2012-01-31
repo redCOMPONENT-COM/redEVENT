@@ -230,4 +230,3 @@ class RedeventModelCategories extends JModel
 		return $query;
 	}
 }
-?>

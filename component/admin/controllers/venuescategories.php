@@ -304,4 +304,3 @@ class RedEventControllerVenuescategories extends RedEventController
 		parent::display();
 	}
 }
-?>

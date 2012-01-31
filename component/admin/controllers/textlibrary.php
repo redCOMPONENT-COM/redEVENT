@@ -228,4 +228,3 @@ class RedEventControllerTextLibrary extends RedEventController {
     }
 	}
 }
-?>

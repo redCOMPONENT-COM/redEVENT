@@ -80,4 +80,3 @@ class REattendee {
     return $this->_id; 
   }
 }
-?>

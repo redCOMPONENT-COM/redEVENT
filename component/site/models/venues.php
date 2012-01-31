@@ -273,4 +273,3 @@ class RedeventModelVenues extends JModel
 		return $query;
 	}
 }
-?>

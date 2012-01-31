@@ -180,4 +180,3 @@ class RedEventViewCategory extends JView {
 		parent::display($tpl);
 	}
 }
-?>

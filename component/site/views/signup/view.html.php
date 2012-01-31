@@ -189,4 +189,3 @@ class RedeventViewSignup extends JView
 		parent::display($tpl);
 	}
 }
-?>

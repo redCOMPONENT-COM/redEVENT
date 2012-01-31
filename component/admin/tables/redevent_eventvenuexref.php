@@ -304,4 +304,3 @@ class RedEvent_eventvenuexref extends JTable
     }
 	}
 }
-?>

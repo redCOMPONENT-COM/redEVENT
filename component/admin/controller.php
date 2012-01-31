@@ -217,4 +217,3 @@ class RedEventController extends JController
 		parent::display();
 	}
 }
-?>

@@ -272,4 +272,3 @@ class RedeventModelEventhelper extends JModel
   	return $res;
   }
 }
-?>

@@ -528,4 +528,3 @@ class RedEventModelSession extends JModel
   	return $res;
   }
 }
-?>

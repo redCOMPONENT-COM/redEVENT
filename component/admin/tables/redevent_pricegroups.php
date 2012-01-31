@@ -105,4 +105,3 @@ class Redevent_pricegroups extends JTable
 		return true;
 	}
 }
-?>

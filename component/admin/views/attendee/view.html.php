@@ -85,4 +85,3 @@ class RedEventViewAttendee extends JView {
 		parent::display($tpl);
 	}
 }
-?>

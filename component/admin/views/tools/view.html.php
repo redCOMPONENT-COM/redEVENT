@@ -62,4 +62,3 @@ class RedEventViewTools extends JView {
 		parent::display($tpl);
 	}
 }
-?>

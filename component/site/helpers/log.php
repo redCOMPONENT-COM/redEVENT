@@ -58,4 +58,3 @@ class RedeventHelperLog
       return true;
     }
 }
-?>

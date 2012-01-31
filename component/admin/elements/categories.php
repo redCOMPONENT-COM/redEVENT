@@ -77,4 +77,3 @@ class JElementCategories extends JElement
 		return $html;
 	}
 }
-?>

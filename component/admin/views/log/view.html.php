@@ -62,4 +62,3 @@ class RedEventViewLog extends JView {
 		parent::display($tpl);
 	}
 }
-?>

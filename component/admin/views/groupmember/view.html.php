@@ -140,4 +140,3 @@ class RedEventViewGroupmember extends JView {
 		parent::display($tpl);
 	}
 }
-?>

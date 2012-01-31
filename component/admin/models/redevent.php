@@ -195,4 +195,3 @@ class RedEventModelRedEvent extends JModel
 		return $_category;
 	}
 }
-?>

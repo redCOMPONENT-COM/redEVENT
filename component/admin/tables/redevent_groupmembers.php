@@ -104,4 +104,3 @@ class RedEvent_groupmembers extends JTable
 		return true;
 	}
 }
-?>

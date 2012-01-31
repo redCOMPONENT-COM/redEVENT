@@ -185,4 +185,3 @@ class RedeventViewDay extends JView
 		return $lists;
 	}
 }
-?>

@@ -292,4 +292,3 @@ class xmap_com_redevent
 		return $formatdate;
 	}
 }
-?>

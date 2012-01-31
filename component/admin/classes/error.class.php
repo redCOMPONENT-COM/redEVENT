@@ -41,4 +41,3 @@ class RedeventError extends JError {
   }
   
 }
-?>

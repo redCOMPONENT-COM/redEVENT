@@ -401,4 +401,3 @@ class plgSearchRedeventSearch extends JPlugin {
 		return count($where) ? implode(" OR ", $where) : false;	
 	}
 }
-?>

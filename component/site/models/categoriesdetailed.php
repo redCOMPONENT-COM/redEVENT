@@ -327,4 +327,3 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 	}
 	
 }
-?>

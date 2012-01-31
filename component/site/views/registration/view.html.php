@@ -167,4 +167,3 @@ class RedeventViewRegistration extends JView
 		parent::display($tpl);
 	}
 }
-?>

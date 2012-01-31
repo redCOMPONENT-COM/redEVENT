@@ -82,4 +82,3 @@ class RedeventViewRoles extends JView
 		parent::display($tpl);
 	}
 }
-?>

@@ -152,4 +152,3 @@ class RedEventModelAttendeeanswers extends JModel
 		return true;
 	}
 }
-?>

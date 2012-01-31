@@ -380,4 +380,3 @@ class RedEventModelVenue extends JModel
   }
 
 }
-?>

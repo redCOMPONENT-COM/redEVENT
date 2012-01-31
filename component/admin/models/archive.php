@@ -359,4 +359,3 @@ class RedEventModelArchive extends JModel
 		return $ardatetimes;
 	}
 }
-?>

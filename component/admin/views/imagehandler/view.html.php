@@ -148,4 +148,3 @@ class RedEventViewImagehandler extends JView  {
 		parent::display($tpl);
 	}
 }
-?>

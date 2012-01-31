@@ -260,4 +260,3 @@ class RedeventViewVenueevents extends JView
 		return $lists;
 	}
 }
-?>

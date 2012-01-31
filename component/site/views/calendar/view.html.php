@@ -129,4 +129,3 @@ class RedeventViewCalendar extends JView
         return $tip;
     }
 }
-?>

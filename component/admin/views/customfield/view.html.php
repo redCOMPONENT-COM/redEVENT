@@ -142,4 +142,3 @@ class RedeventViewCustomfield extends JView
 		parent::display($tpl);
 	}
 }
-?>

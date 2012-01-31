@@ -208,4 +208,3 @@ class RedEventModelVenuecategoryelement extends JModel
 		return $where;
 	}
 }
-?>

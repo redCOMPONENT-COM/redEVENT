@@ -251,4 +251,3 @@ class RedEventViewSession extends JView {
          '<img class="calendar" src="'.JURI::root(true).'/templates/system/images/calendar.png" alt="calendar" id="'.$id.'_img" />';
   }
 }
-?>

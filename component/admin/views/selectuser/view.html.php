@@ -79,4 +79,3 @@ class RedEventViewSelectUser extends JView {
 	}
 
 }//end class
-?>

@@ -157,4 +157,3 @@ class RedeventModelCountriesmap extends JModel
 		return $query;
 	}
 }
-?>

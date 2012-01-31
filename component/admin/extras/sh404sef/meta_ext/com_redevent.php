@@ -38,4 +38,3 @@ if (!is_null($subtype) && $xref) {
 	// 'website' Online Signup | Date | Location | Coursetitle
 	$shCustomTitleTag = $app->getCfg('sitename'). ' Online Signup'.' | '.$details->dates.' | '.ucfirst($details->city).' | '.ucfirst($details->title);
 }
-?>

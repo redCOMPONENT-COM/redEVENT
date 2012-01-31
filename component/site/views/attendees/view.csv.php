@@ -119,4 +119,3 @@ class RedeventViewAttendees extends JView
     return join($delimiter, $output) . "\n";
 	} 
 }
-?>

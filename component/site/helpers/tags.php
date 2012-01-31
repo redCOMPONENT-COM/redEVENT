@@ -2099,4 +2099,3 @@ class RedeventParsedTag {
 	}
 	
 }
-?>

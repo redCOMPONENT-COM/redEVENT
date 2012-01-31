@@ -741,4 +741,3 @@ class RedEventModelAttendees extends JModel
   	return true;  	
 	}
 }
-?>

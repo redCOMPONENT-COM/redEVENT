@@ -80,4 +80,3 @@ class JElementXref extends JElement
 		return $html;
 	}
 }
-?>

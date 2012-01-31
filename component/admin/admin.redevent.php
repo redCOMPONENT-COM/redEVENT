@@ -69,4 +69,3 @@ $controller = new $classname( );
 // Perform the Request task
 $controller->execute( JRequest::getWord('task', 'redevent'));
 $controller->redirect();
-?>

@@ -68,4 +68,3 @@ class redevent_attachments extends JTable
 		return true;
 	}
 }
-?>

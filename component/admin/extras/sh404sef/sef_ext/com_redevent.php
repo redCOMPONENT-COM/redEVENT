@@ -448,4 +448,3 @@ else {
   (isset($limitstart) ? @$limitstart : null), (isset($shLangName) ? @$shLangName : null),
   (isset($showall) ? @$showall : null));
 }
-?>

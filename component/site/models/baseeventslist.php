@@ -890,4 +890,3 @@ class RedeventModelBaseEventList extends JModel
 		return $res;
 	}
 }
-?>

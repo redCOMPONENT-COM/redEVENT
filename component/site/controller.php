@@ -866,4 +866,3 @@ class RedeventController extends JController
 		redEVENTHelper::registrationexpiration();
 	}
 }
-?>

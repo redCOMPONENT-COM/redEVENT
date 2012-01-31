@@ -81,4 +81,3 @@ class RedEventViewCategoryelement extends JView {
 		parent::display($tpl);
 	}
 }
-?>

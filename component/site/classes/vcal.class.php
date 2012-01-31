@@ -189,4 +189,3 @@ END:VCALENDAR
 		$mainframe->close();
 	}
 }
-?>

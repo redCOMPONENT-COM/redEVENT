@@ -273,4 +273,3 @@ class RedEventModelGroupmember extends JModel
 		return $row->id;
 	}
 }
-?>

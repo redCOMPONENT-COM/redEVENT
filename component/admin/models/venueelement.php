@@ -229,4 +229,3 @@ class RedEventModelVenueelement extends JModel
 		return $where;
 	}
 }
-?>

@@ -160,4 +160,3 @@ class RedeventControllerPricegroups extends JController
 		$this->setRedirect( 'index.php?option=com_redevent&view=pricegroups', $msg );
 	}
 }
-?>

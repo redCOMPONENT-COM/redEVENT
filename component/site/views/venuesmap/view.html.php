@@ -143,4 +143,3 @@ class RedeventViewVenuesmap extends JView
 		parent::display($tpl);
 	}
 }
-?>

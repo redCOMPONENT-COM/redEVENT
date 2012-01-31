@@ -58,4 +58,3 @@ class RedEventControllerSignup extends RedEventController
 		parent::display();
 	}
 }
-?>

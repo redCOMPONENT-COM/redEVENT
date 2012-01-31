@@ -108,4 +108,3 @@ class RedEventViewRedEvent extends JView {
 		<?php
 	}
 }
-?>

@@ -77,4 +77,3 @@ class RedeventViewVenue extends JView
 		exit;
 	}
 }
-?>

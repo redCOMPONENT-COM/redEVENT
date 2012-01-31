@@ -212,4 +212,3 @@ class RedeventViewVenueevents extends JView
 		$feed->returnRSS( CACHE ); 
 	}
 }
-?>

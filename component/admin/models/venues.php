@@ -511,4 +511,3 @@ class RedEventModelVenues extends JModel
 		return $count;
 	}
 }
-?>

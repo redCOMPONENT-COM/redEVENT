@@ -595,4 +595,3 @@ class RedEventModelEvents extends JModel
 		return $res;
 	}
 }//Class end
-?>

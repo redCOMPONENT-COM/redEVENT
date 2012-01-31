@@ -79,4 +79,3 @@ class RedEventModelLog extends JModel
 		return $contents;
 	}
 }
-?>

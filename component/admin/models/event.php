@@ -587,4 +587,3 @@ class RedEventModelEvent extends JModel
   	return $res ? true : false;
   }
 }
-?>

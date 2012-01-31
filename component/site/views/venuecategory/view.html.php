@@ -198,4 +198,3 @@ class RedeventViewVenuecategory extends JView
 		return $lists;
 	}
 }
-?>

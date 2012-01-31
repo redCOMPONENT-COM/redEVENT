@@ -82,4 +82,3 @@ class RedeventViewPricegroups extends JView
 		parent::display($tpl);
 	}
 }
-?>

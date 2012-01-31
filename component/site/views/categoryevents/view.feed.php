@@ -224,4 +224,3 @@ class RedeventViewCategoryevents extends JView
 		$feed->returnRSS( CACHE ); 
 	}
 }
-?>

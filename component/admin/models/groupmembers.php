@@ -259,4 +259,3 @@ class RedEventModelGroupmembers extends JModel
 		return true;
 	}
 }
-?>

@@ -208,4 +208,3 @@ class RedEventModelCategoryelement extends JModel
 		return $where;
 	}
 }
-?>

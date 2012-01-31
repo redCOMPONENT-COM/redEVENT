@@ -159,4 +159,3 @@ class Redevent_customfield extends JTable
 		return true;
 	}
 }
-?>

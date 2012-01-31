@@ -481,4 +481,3 @@ class RedEventModelCategories extends JModel
 		return $count;
 	}
 }
-?>

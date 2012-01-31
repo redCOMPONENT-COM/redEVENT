@@ -139,4 +139,3 @@ class RedEventViewVenuesCategory extends JView {
 		parent::display($tpl);
 	}
 }
-?>

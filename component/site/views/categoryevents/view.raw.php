@@ -69,4 +69,3 @@ class RedeventViewCategoryEvents extends JView
 		$mainframe->close();					
 	}
 }
-?>

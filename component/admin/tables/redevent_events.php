@@ -312,4 +312,3 @@ class RedEvent_events extends JTable
 		}  
 	}
 }
-?>

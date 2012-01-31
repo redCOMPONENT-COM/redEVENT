@@ -85,4 +85,3 @@ class RedEventViewGroupacl extends JView {
 		parent::display($tpl);
 	}
 }
-?>

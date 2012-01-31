@@ -83,4 +83,3 @@ class Redevent_repeats extends JTable
 		return true;
 	}
 }
-?>

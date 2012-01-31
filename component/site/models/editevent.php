@@ -1701,4 +1701,3 @@ class RedeventModelEditevent extends JModel
   	return $res;
   }
 }
-?>

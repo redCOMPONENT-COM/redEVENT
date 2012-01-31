@@ -76,4 +76,3 @@ class TableTextlibrary extends JTable {
 		return true;
 	}
 }
-?>

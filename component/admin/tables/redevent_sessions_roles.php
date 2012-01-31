@@ -69,4 +69,3 @@ class Redevent_sessions_roles extends JTable
 		return true;
 	}
 }
-?>

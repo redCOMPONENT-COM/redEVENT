@@ -93,4 +93,3 @@ class RedEventViewGroups extends JView {
 		parent::display($tpl);
 	}
 }
-?>

@@ -56,4 +56,3 @@ class RedEventViewAttendeeanswers extends JView {
 		parent::display($tpl);
 	}
 }
-?>

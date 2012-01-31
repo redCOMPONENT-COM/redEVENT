@@ -460,4 +460,3 @@ class redEVENTImage {
 		else return $category->catname; 
 	}
 }
-?>

@@ -95,4 +95,3 @@ class RedEventViewCsvtool extends JView {
 		parent::display($tpl);
 	}
 }
-?>

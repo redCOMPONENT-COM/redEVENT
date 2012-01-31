@@ -632,4 +632,3 @@ class RedeventModelDetails extends JModel
     return $rows;
   }
 }
-?>

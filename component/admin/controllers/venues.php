@@ -418,4 +418,3 @@ class RedEventControllerVenues extends RedEventController
     return $field;
   }
 }
-?>

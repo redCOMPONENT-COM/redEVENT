@@ -7470,4 +7470,3 @@ class vtimezone extends calendarComponent {
     return $component;
   }
 }
-?>

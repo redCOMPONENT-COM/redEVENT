@@ -803,4 +803,3 @@ class ELOutput {
 		return str_ireplace(JURI::root().JURI::root(), JURI::root(), $newtext);
 	}
 }
-?>

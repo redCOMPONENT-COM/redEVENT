@@ -116,4 +116,3 @@ class RedEventViewHelp extends JView {
 		return $toc;
 	}
 }
-?>

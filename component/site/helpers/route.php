@@ -355,4 +355,3 @@ class RedeventHelperRoute
 		return false;
 	}
 }
-?>

@@ -191,4 +191,3 @@ class RedeventModelRoles extends JModel
     return $this->_total;
   }
 }
-?>

@@ -283,4 +283,3 @@ class RedeventModelCalendar extends JModel
       return $this->_categories;
     }
 }
-?>

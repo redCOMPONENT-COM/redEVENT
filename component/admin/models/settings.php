@@ -171,4 +171,3 @@ class RedEventModelSettings extends JModel
     	return true;
 	}
 }
-?>

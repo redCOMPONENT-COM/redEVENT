@@ -224,4 +224,3 @@ class RedeventViewSimpleList extends JView
 		$feed->returnRSS( CACHE ); 
 	}
 }
-?>

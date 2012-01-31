@@ -45,4 +45,3 @@ class RedEventModelEditcss extends JModel
 		parent::__construct();
 	}
 }
-?>
