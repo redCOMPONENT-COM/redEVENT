@@ -126,7 +126,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			</dd>
 	</dl>
 
-  	<?php if ($this->elsettings->get('showevdescription') == 1 && $this->row->datdescription != '' && $this->row->datdescription != '<br />') : ?>
+  	<?php if ($this->row->datdescription != '' && $this->row->datdescription != '<br />') : ?>
 
   	    <h2 class="description"><?php echo JText::_('COM_REDEVENT_DESCRIPTION' ); ?></h2>
   		<div class="description event_desc">
