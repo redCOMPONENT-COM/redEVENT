@@ -99,9 +99,6 @@ class RedeventViewVenueevents extends JView
 			JHTML::_('behavior.modal');
 		}
 
-		//Get image
-		$limage = redEVENTImage::flyercreator($venue->locimage);
-
 		//add alternate feed link
 		$link    = 'index.php?option=com_redevent&view=venueevents&format=feed&id='.$venue->id;
 		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
@@ -186,7 +183,6 @@ class RedeventViewVenueevents extends JView
 		$this->assignRef('print_link' , 			$print_link);
 		$this->assignRef('params' , 				$params);
 		$this->assignRef('editlink', 				$maintainer);
-		$this->assignRef('limage' , 				$limage);
 		$this->assignRef('venuedescription' , 		$venuedescription);
 		$this->assignRef('pageNav' , 				$pageNav);
 		$this->assignRef('elsettings' , 			$elsettings);

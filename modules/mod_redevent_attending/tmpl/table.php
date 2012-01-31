@@ -73,7 +73,7 @@ defined('_JEXEC') or die('Restricted access');
 		
 		<?php if ($params->get('show_picture', 1)):?>
 		<td class="event-thumb">
-				<?php $img = redEVENTImage::modalimage('events', $item->datimage, $item->title_short, intval($params->get('picture_size', 30)));
+				<?php $img = redEVENTImage::modalimage($item->datimage, $item->title_short, intval($params->get('picture_size', 30)));
 							echo $img; ?>
 		</td>
 		<?php endif;?>

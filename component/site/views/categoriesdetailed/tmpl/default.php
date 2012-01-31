@@ -55,7 +55,7 @@ foreach($this->categories as $category) :
 	<div class="catimg">
 	  	<?php
 	  	if ($category->image) {
-	  		$img = JHTML::image(redEVENTImage::getThumbUrl('categories', $category->image), $category->catname);
+	  		$img = JHTML::image(redEVENTImage::getThumbUrl($category->image), $category->catname);
 	  	}
 	  	else {
 	  		$img = JHTML::image('components/com_redevent/assets/images/noimage.png', $category->catname);

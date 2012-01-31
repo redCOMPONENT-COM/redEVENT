@@ -46,7 +46,7 @@ defined('_JEXEC') or die('Restricted access');
 		<div class="event-box">
 			<?php if ($params->get('show_picture', 1)):?>
 			<div class="event-thumb">
-				<?php $img = redEVENTImage::modalimage('events', $item->datimage, $item->title_short, intval($params->get('picture_size', 30)));
+				<?php $img = redEVENTImage::modalimage($item->datimage, $item->title_short, intval($params->get('picture_size', 30)));
 							echo $img; ?>
 			</div>
 			<?php endif;?>

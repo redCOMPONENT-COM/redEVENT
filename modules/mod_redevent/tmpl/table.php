@@ -119,7 +119,7 @@ $i = 0;
 					
 				case 'picture':
 					$tdclass = 'mre-picture';
-					$tdtext = redEVENTImage::modalimage('events', $item->datimage, $item->title_short, intval($params->get('picture_size', 30)));
+					$tdtext = redEVENTImage::modalimage($item->datimage, $item->title_short, intval($params->get('picture_size', 30)));
 					break;
 					
 				default:

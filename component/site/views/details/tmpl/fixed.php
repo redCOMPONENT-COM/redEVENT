@@ -52,7 +52,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	</h2>
 
 	<?php //flyer
-	$eventimage = redEVENTImage::modalimage('events', basename($this->row->datimage), $this->row->title);
+	$eventimage = redEVENTImage::modalimage($this->row->datimage, $this->row->title);
 //  $eventimage = JHTML::image(JURI::root().'/'.$eventimage['original'], $this->row->title, array('title' => $this->row->title));
 	echo $eventimage;
 	?>
@@ -165,7 +165,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		</h2>
 
 		<?php //flyer
-		echo redEVENTImage::modalimage('venues', basename($this->row->locimage), $this->row->venue);
+		echo redEVENTImage::modalimage($this->row->locimage, $this->row->venue);
 		echo ELOutput::mapicon($this->row, array('class' => 'event-map'));
 		?>
 

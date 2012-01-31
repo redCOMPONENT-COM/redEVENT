@@ -187,42 +187,24 @@ class redEVENTImage {
 	* @author Christoph Lukes
 	* @since 0.9
 	*
-	* @param string $image The image name
-	* @param array $settings
-	* @param string $type event or venue
+	* @param string $image The image relative path
 	*
 	* @return imagedata if available
 	*/
-	function flyercreator($image, $type= 'venue')
+	function flyercreator($image)
 	{
 		$settings = & redEVENTHelper::config();
 		
 		jimport('joomla.filesystem.file');
 
-		//define the environment based on the type
-		if ($type == 'event') {
-			$folder		= 'events';
-		} else {
-			$folder 	= 'venues';
-		}
-
 		if ( $image ) {
 
-			//Create thumbnail if enabled and it does not exist already
-			if ($settings->get('gddisabled') == 1 && !file_exists(JPATH_SITE.'/images/redevent/'.$folder.'/small/'.$image)) {
-
-				$filepath 	= JPATH_SITE.'/images/redevent/'.$folder.'/'.$image;
-				$save 		= JPATH_SITE.'/images/redevent/'.$folder.'/small/'.$image;
-
-				redEVENTImage::thumb($filepath, $save, $settings->get('imagewidth'), $settings->get('imageheight', 100));
-			}
-
 			//set paths
-			$dimage['original'] = 'images/redevent/'.$folder.'/'.$image;
-			$dimage['thumb'] 	= 'images/redevent/'.$folder.'/small/'.$image;
+			$dimage['original'] = $image;
+			$dimage['thumb'] 	= self::getThumbUrl($image);
 
 			//get imagesize of the original
-			$iminfo = @getimagesize('images/redevent/'.$folder.'/'.$image);
+			$iminfo = @getimagesize(JPATH_SITE.DS.$image);
 
 			//if the width or height is too large this formula will resize them accordingly
 			if (($iminfo[0] > $settings->get('imagewidth')) || ($iminfo[1] > $settings->get('imageheight', 100))) {
@@ -245,14 +227,11 @@ class redEVENTImage {
 
 			}
 
-			if (JFile::exists(JPATH_SITE.'/images/redevent/'.$folder.'/small/'.$image)) {
+			//get imagesize of the thumbnail
+			$thumbiminfo = @getimagesize(dirname(JPATH_SITE.DS.$image).DS.'re_thumb'.DS.basename($image));
+			$dimage['thumbwidth'] 	= $thumbiminfo[0];
+			$dimage['thumbheight'] 	= $thumbiminfo[1];
 
-				//get imagesize of the thumbnail
-				$thumbiminfo = @getimagesize('images/redevent/'.$folder.'/small/'.$image);
-				$dimage['thumbwidth'] 	= $thumbiminfo[0];
-				$dimage['thumbheight'] 	= $thumbiminfo[1];
-
-			}
 			return $dimage;
 		}
 		return false;
@@ -263,30 +242,22 @@ class redEVENTImage {
 	 * If thumbnails exits, display the thumbnail with a modal link,
 	 * otherwise, just display the full size picture
 	 * 
-	 * @param string type, must be one of 'events', 'venues', etc...
-	 * @param string image name
+	 * @param string image path, relative to joomla images folder
 	 * @param string alt attribute
 	 * @param array other attributes
 	 */
-	function modalimage($type, $image, $alt, $maxdim = null, $attribs = array())
+	function modalimage($path, $alt, $maxdim = null, $attribs = array())
 	{
 		jimport('joomla.filesystem.file');
 		$app = &JFactory::getApplication();
 		
-		$types = array('events', 'venues', 'categories');
-		if (!in_array($type, $types)) {
-			Jerror::raiseWarning(0, JText::_('COM_REDEVENT_WARNING_UNKOWN_IMAGE_CATEGORY'));
-			return false;
-		}
-		$folder = $type;
-		
-		if (empty($image) || !file_exists(JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.$image)) {
+		if (empty($path) || !file_exists(JPATH_SITE.DS.$path)) {
 			return false;			
 		}
 		
 		$base = JURI::root();
 		
-		$thumb_path = self::getThumbUrl($type, $image, $maxdim);
+		$thumb_path = self::getThumbUrl($path, $maxdim);
 				
 		JHTML::_('behavior.modal', 'a.imodal');
 		if (isset($attribs['class'])) {
@@ -296,7 +267,7 @@ class redEVENTImage {
 			$attribs['class'] = 'imodal';
 		}
 		$thumb = JHTML::image($thumb_path, $alt, $attribs);
-		$html = JHTML::link(JRoute::_($base.'images/redevent/'.$folder.'/'.$image), $thumb, $attribs);
+		$html = JHTML::link(JRoute::_($base.$path), $thumb, $attribs);
 			
 		return $html;
 	}
@@ -304,11 +275,10 @@ class redEVENTImage {
 	/**
 	 * return full url to thumbnail
 	 * 
-	 * @param string type, must be one of 'events', 'venues', etc...
-	 * @param string image name
+	 * @param string image path, relative to joomla images folder
 	 * @return url or false if it doesn't exists
 	 */
-	function getThumbUrl($type, $image, $maxdim = null)
+	function getThumbUrl($path, $maxdim = null)
 	{		
 		jimport('joomla.filesystem.file');
 		$app = &JFactory::getApplication();
@@ -321,32 +291,36 @@ class redEVENTImage {
 		}
 		else
 		{
-			$width  = $settings->get('imagewidth');
+			$width  = $settings->get('imagewidth', 100);
 			$height = $settings->get('imageheight', 100);
 		}
-		
-		$types = array('events', 'venues', 'categories');
-		if (!in_array($type, $types)) {
-			Jerror::raiseWarning(0, JText::_('COM_REDEVENT_WARNING_UNKOWN_IMAGE_CATEGORY'));
-			return false;
-		}
-		$folder = $type;
-				
+						
 		$base = JURI::root();
 		
-		$thumb_name = md5($image).$width.'_'.$height.'.png';
-		
-//		echo JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.'small'.DS.$image;
-		if (JFile::exists(JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.'small'.DS.$thumb_name)) 
+		$thumb_name = md5(basename($path)).$width.'_'.$height.'.png';
+		if (dirname($path) != '.')
 		{
-			return $base.'images/redevent/'.$folder.'/small/'.$thumb_name;
+			$thumb_path = JPATH_SITE.DS.dirname($path).DS.'re_thumb'.DS.$thumb_name;
+			$thumb_uri = $base.str_replace("\"", "/", dirname($path)).'/re_thumb/'.$thumb_name;
 		}
-		else if (JFile::exists(JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.$image))
+		else 
+		{
+			JError::raisewarning(0, JText::sprintf('COM_REDEVENT_THUMBNAILS_WRONG_BASE_PATH',dirname($thumb_path)));
+		}
+		
+		if (JFile::exists($thumb_path)) 
+		{
+			return $thumb_uri;
+		}
+		else if (JFile::exists(JPATH_SITE.DS.$path))
 		{
 			//try to generate the thumb
-			$path = JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.'small'.DS.$thumb_name;
-			if (redEVENTImage::thumb(JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.$image, $path, $width, $height)) {
-				return $base.'images/redevent/'.$folder.'/small/'.$thumb_name;
+			if (!JFolder::exists(dirname($thumb_path)) && !JFolder::create(dirname($thumb_path))) {
+				JError::raisewarning(0, JText::sprintf('COM_REDEVENT_THUMBNAILS_CANT_CREATE_PATH',dirname($thumb_path)));
+				return false;
+			}
+			if (redEVENTImage::thumb(JPATH_SITE.DS.$path, $thumb_path, $width, $height)) {
+				return $thumb_uri;
 			}			
 		}
 		return false;
@@ -455,7 +429,7 @@ class redEVENTImage {
 			$image_attribs = array_merge( $image_attribs, $attribs);
 		}
 		if ($category->image) {
-		  return self::modalimage('categories', basename($category->image), $category->catname, null, $image_attribs);	
+		  return self::modalimage($category->image, $category->catname, null, $image_attribs);	
 		}
 		else return $category->catname; 
 	}

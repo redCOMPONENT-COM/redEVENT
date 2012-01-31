@@ -1340,8 +1340,10 @@ class redEVENT_tags {
 	
 	function _getTag_event_image()
 	{
-		$eventimage = redEVENTImage::flyercreator($this->getEvent()->getData()->datimage, 'event');
-		$eventimage = JHTML::image(JURI::root().'/'.$eventimage['original'], $this->getEvent()->getData()->title, array('title' => $this->getEvent()->getData()->title));
+		$eventimage = '';
+		if ($this->getEvent()->getData()->datimage) {
+			$eventimage = JHTML::image(JURI::root().$this->getEvent()->getData()->datimage, $this->getEvent()->getData()->title, array('title' => $this->getEvent()->getData()->title));
+		}
 		return $eventimage;
 	}
 	
@@ -1352,7 +1354,7 @@ class redEVENT_tags {
 	
 	function _getTag_event_thumb()
 	{
-		$eventimage = redEVENTImage::modalimage('events', basename($this->getEvent()->getData()->datimage), $this->getEvent()->getData()->title);
+		$eventimage = redEVENTImage::modalimage($this->getEvent()->getData()->datimage, $this->getEvent()->getData()->title);
 		return $eventimage;
 	}
 	
@@ -1580,8 +1582,10 @@ class redEVENT_tags {
 	
 	function _getTag_venueimage()
 	{
-		$venueimage = redEVENTImage::flyercreator($this->getEvent()->getData()->locimage);
-		$venueimage = JHTML::image(JURI::root().'/'.$venueimage['original'], 
+		if (!$this->getEvent()->getData()->locimage) {
+			return '';
+		}
+		$venueimage = JHTML::image(JURI::root().$this->getEvent()->getData()->locimage, 
 		                           $this->getEvent()->getData()->venue, 
 		                           array('title' => $this->getEvent()->getData()->venue));
 		$venueimage = JHTML::link($this->absoluteUrls(
@@ -1597,8 +1601,7 @@ class redEVENT_tags {
 	
 	function _getTag_venue_thumb()
 	{              
-		$venueimage = redEVENTImage::modalimage('venues', 
-		                                        basename($this->getEvent()->getData()->locimage), 
+		$venueimage = redEVENTImage::modalimage($this->getEvent()->getData()->locimage, 
 		                                        $this->getEvent()->getData()->venue);
 		return $venueimage;
 	}

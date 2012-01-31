@@ -47,7 +47,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div class="floattext">
 <div class="catimg">
 	<?php if ($this->category->image): ?>
-	<?php echo redEVENTImage::modalimage('categories', $this->category->image, $this->category->name); ?>
+	<?php echo redEVENTImage::modalimage($this->category->image, $this->category->name); ?>
 	<?php else: ?>
 	<?php echo JHTML::image('components/com_redevent/assets/images/noimage.png', $this->category->name); ?>
 	<?php endif; ?>
