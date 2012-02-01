@@ -280,17 +280,26 @@ class RedEventModelRegistration extends JModel
 		
 		if ($waiting == 0) 
 		{
-			$body = trim($session->notify_off_list_body);
-			if (!$body) $body = trim($session->notify_body);
-			$subject = trim($session->notify_off_list_subject);
-			if (!$subject) $subject = trim($session->notify_ubject);
-			
+			if (empty($session->notify_off_list_subject))
+			{
+				$subject = $session->notify_subject;
+				$body    = $session->notify_body;
+			}
+			else
+			{
+				$subject = $session->notify_off_list_subject;
+				$body    = $session->notify_off_list_body;
+			}
 			$body    = nl2br($this->taghelper->ReplaceTags($body));
 			$subject = $this->taghelper->ReplaceTags($subject);
 		}
 		else {
 			$body = nl2br($this->taghelper->ReplaceTags($session->notify_on_list_body));
 			$subject = $this->taghelper->ReplaceTags($session->notify_on_list_subject);
+		}
+		
+		if (empty($subject)) { // not sending !
+			return false;
 		}
 		
 		// update image paths in body
@@ -330,7 +339,7 @@ class RedEventModelRegistration extends JModel
 			}
 			$query = 'SELECT a.id AS did, x.id AS xref, a.title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, '
 			    . ' a.registra, a.unregistra, a.activate, a.notify, a.redform_id as form_id, '
-			    . ' a.notify_confirm_body, a.notify_confirm_subject, ' 
+			    . ' a.notify_confirm_body, a.notify_confirm_subject, a.notify_subject, a.notify_body, ' 
 			    . ' a.notify_off_list_subject, a.notify_off_list_body, a.notify_on_list_subject, a.notify_on_list_body, '
 					. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
 					. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone,'
