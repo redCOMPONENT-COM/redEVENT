@@ -115,7 +115,7 @@ class RedeventModelPricegroup extends JModel
 			$res = $this->_db->loadResult();
 			
 			if ($res) {
-				$this->setError(0, 'COM_REDEVENT_PRICEGROUPS_DELETE_ERROR_PRICEGROUP_ASSIGNED');
+				$this->setError(Jtext::_('COM_REDEVENT_PRICEGROUPS_DELETE_ERROR_PRICEGROUP_ASSIGNED'));
 				return false;
 			}
 				

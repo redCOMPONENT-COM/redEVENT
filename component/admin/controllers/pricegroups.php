@@ -106,7 +106,6 @@ class RedeventControllerPricegroups extends JController
 	{
 		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
 		JArrayHelper::toInteger($cid);
-
 		if (count( $cid ) < 1) {
 			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_delete' ) );
 		}
@@ -114,10 +113,14 @@ class RedeventControllerPricegroups extends JController
 		$model = $this->getModel('pricegroup');
 		
 		if(!$model->delete($cid)) {
-			echo "<script> alert('".$model->getError(true)."'); window.history.go(-1); </script>\n";
+			$msg = $model->getError();
+			$msgtype = 'error';
+		}
+		else {
+			$msg = JText::sprintf('COM_REDEVENT_D_items_deleted', count($cid));
 		}
 
-		$this->setRedirect( 'index.php?option=com_redevent&view=pricegroups' );
+		$this->setRedirect( 'index.php?option=com_redevent&view=pricegroups', $msg, $msgtype );
 	}
 
 	function cancel()
