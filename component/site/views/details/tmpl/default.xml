@@ -8,7 +8,7 @@
 	<fields name="request" addfieldpath="/administrator/components/com_redevent/models/fields">
    	<fieldset name="request" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
 			<field name="id" type="hidden" default="0" class="event-id"/>
-			<field name="xref" type="session" default="0" label="COM_REDEVENT_SELECT_EVENT" description="COM_REDEVENT_SELECT_EVENT_DESC" />
+			<field name="xref" type="session" default="0" label="COM_REDEVENT_SELECT_EVENT" description="COM_REDEVENT_SELECT_EVENT_DESC" required="true"/>
 		</fieldset>
 	</fields>
 </metadata>

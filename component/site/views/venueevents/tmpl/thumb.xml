@@ -9,7 +9,7 @@
 		<name>COM_REDEVENT_VENUEEVENTS_THUMB_LAYOUT</name>
 		<description>COM_REDEVENT_VENUEEVENTS_THUMB_LAYOUT_DESC</description>
 		<url addpath="/administrator/components/com_redevent/elements">
-			<param name="id" type="categories" default="0" label="COM_REDEVENT_SELECT_CATEGORY" description="COM_REDEVENT_SELECT_CATEGORY_DESC" />
+			<param name="id" type="categories" default="0" label="COM_REDEVENT_SELECT_CATEGORY" description="COM_REDEVENT_SELECT_CATEGORY_DESC" required="true" />
 		</url>
 	</state>
 </metadata>
