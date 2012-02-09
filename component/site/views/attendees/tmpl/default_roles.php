@@ -23,7 +23,7 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-?>	ttt
+?>
 <ul class="event_roles">
 	<?php foreach ($this->roles as $r): ?>
 	<li><span class="role-name"><?php echo $r->role; ?>:</span> <?php echo $r->name; ?></li>
