@@ -778,7 +778,7 @@ class RedEventModelRegistration extends JModel
 	
 	function getRegistration($submitter_id)
 	{
-		$query =' SELECT s.*, r.uid, r.pricegroup_id, e.unregistra '
+		$query =' SELECT s.*, r.uid, r.xref, r.pricegroup_id, e.unregistra '
         . ' FROM #__rwf_submitters AS s '
         . ' INNER JOIN #__redevent_register AS r ON r.sid = s.id '
         . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.id = r.xref '
