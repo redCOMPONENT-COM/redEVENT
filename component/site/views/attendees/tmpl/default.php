@@ -38,7 +38,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	
 	
 	<form action="<?php echo $this->action; ?>" method="post" name="manageform">
-	<div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
+	<div id="redevent" class="el_details">
 		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).': '.$this->row->full_title; ?>
 		<?php if ($this->manage_attendees): ?>
     <?php echo ELOutput::xrefattendeesbutton($this->row->xref); ?>

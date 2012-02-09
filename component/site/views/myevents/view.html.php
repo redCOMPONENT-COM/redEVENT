@@ -108,7 +108,7 @@ class RedeventViewMyevents extends JView
         $attending_pageNav = & $this->get('AttendingPagination');
 
         //params
-        $params->def('page_title', $item->title);
+        $params->def('page_title', $item ? $item->title : 'COM_REDEVENT_VIEW_MYEVENTS_TITLE');
 
         if ($pop)
         {//If printpopup set true
