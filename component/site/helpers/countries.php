@@ -530,10 +530,13 @@ class redEVENTHelperCountries
     return $countrycoord;
   }
 
-	function getCountryOptions($value_tag = 'value', $text_tag = 'text')
+	function getCountryOptions($value_tag = 'value', $text_tag = 'text', $add_select = false)
 	{
 		$countries = self::getCountries();
 		$options = array();
+		if ($add_select) {
+			$options[] = JHTML::_('select.option', '', JText::_('COM_REDEVENT_SELECT_COUNTRY'));
+		}
 		foreach ($countries AS $k => $c)
 		{
 			$name = explode(',', $c['name']);

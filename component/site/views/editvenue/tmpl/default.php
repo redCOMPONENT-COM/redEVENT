@@ -39,20 +39,20 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	{		
 		var form = document.getElementById('venueForm');
 		
-		$(form.street).addClass('required');
-		$(form.plz).addClass('required');
-		$(form.city).addClass('required');
-		$(form.country).addClass('required');
+		document.id(form.street).addClass('required');
+		document.id(form.plz).addClass('required');
+		document.id(form.city).addClass('required');
+		document.id(form.country).addClass('required');
 	}
 	
 	function removerequired() 
 	{		
 		var form = document.getElementById('venueForm');
 		
-		$(form.street).removeClass('required');
-		$(form.plz).removeClass('required');
-		$(form.city).removeClass('required');
-		$(form.country).removeClass('required');
+		document.id(form.street).removeClass('required');
+		document.id(form.plz).removeClass('required');
+		document.id(form.city).removeClass('required');
+		document.id(form.country).removeClass('required');
 	}
 
 	function submitbutton( pressbutton ) 
@@ -64,24 +64,19 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 		var form = document.getElementById('venueForm');
 		var validator = document.formvalidator;
-		var venue = $(form.venue).getValue();
+		var venue = document.id(form.venue).get('value');
 		venue.replace(/\s/g,'');
 		
 		var map = form.getElementById('map1');
-		var streetcheck = $(form.street).hasClass('required');
+		var streetcheck = document.id(form.street).hasClass('required');
 	
 		//workaround cause validate strict doesn't allow and operator
 		//and ie doesn't understand CDATA properly
-		if (map.checked) {
-			if(!streetcheck) {  
-				addrequired();
-			}
+		if (map.checked && !(form.latitude.value && form.longitude.value)) {
+			addrequired();
 		}
-
-		if (!map.checked) {
-			if(streetcheck) {  
-				removerequired();
-			}
+		else { 
+			removerequired();
 		}
 
 		if ( venue.length==0 ) {
@@ -272,10 +267,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 										<label for="country"><?php echo JText::_('COM_REDEVENT_COUNTRY' ).':'; ?></label>
                 	</td>
                 	<td>
-                		<input class="inputbox" type="text" name="country" id="country" value="<?php echo $this->row->country; ?>" size="3" maxlength="2" />
-                		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_COUNTRY_HINT'); ?>">
-                		<?php echo $this->infoimage; ?>
-                		</span>
+                		<?php echo $this->lists['country']; ?>
                 	</td>
                 </tr>
 
@@ -309,30 +301,26 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 </tr>
 						    <tr>
 						      <td>
-						        <label for="latitude">
-						          <?php echo JText::_( 'COM_REDEVENT_LATITUDE' ).':'; ?>
-						        </label>
+								<?php echo JText::_( 'COM_REDEVENT_COORDINATES' ).':'; ?>
 						      </td>
 						      <td>
-						        <input class="inputbox" name="latitude" id="latitude" value="<?php echo $this->row->latitude; ?>" size="14" maxlength="25" />
-						              <span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_LATITUDE_TIP'); ?>">
-						          <?php echo JHTML::image('components/com_redevent/assets/images/marker_16.png', 'pinpoint', array('class' => 'pinpoint')); ?>
-						          <?php echo $this->infoimage; ?>
-						        </span>
-						      </td>
-						    </tr>
-						    <tr>
-						      <td>
-						        <label for="longitude">
-						          <?php echo JText::_( 'COM_REDEVENT_LONGITUDE' ).':'; ?>
-						        </label>
-						      </td>
-						      <td>
-						        <input class="inputbox" name="longitude" id="longitude" value="<?php echo $this->row->longitude; ?>" size="14" maxlength="25" />
-						              <span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_LONGITUDE_TIP'); ?>">
-						          <?php echo JHTML::image('components/com_redevent/assets/images/marker_16.png', 'pinpoint', array('class' => 'pinpoint')); ?>
-						          <?php echo $this->infoimage; ?>
-						        </span>
+						      	<div class="coords">
+							      	<div class="coord">
+												<label for="latitude">
+													<?php echo JText::_( 'COM_REDEVENT_LATITUDE' ).':'; ?>
+												</label>
+												<input class="inputbox" name="latitude" id="latitude" value="<?php echo $this->row->latitude; ?>" size="14" maxlength="25" />
+							        </div>
+							      	<div class="coord">
+								        <label for="longitude">
+								          <?php echo JText::_( 'COM_REDEVENT_LONGITUDE' ).':'; ?>
+								        </label>
+								        <input class="inputbox" name="longitude" id="longitude" value="<?php echo $this->row->longitude; ?>" size="14" maxlength="25" />
+							        </div>
+						        </div>
+										<div class="coords-pinpoint">
+								          <?php echo $pinpointicon = ELOutput::pinpointicon( $this->row ); ?>
+										</div>
 						      </td>
 						    </tr>
             		<?php endif; ?>
@@ -347,8 +335,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             <legend><?php echo JText::_('COM_REDEVENT_IMAGE'); ?></legend>
 
     		<?php
-            if ($this->row->locimage) :
-    				echo ELOutput::flyer( $this->row, $this->limage );
+        if ($this->row->locimage) :
+					echo redEVENTImage::modalimage( $this->row->locimage, $this->row->venue);
     		else :
       		    echo JHTML::_('image', 'components/com_redevent/assets/images/noimage.png', JText::_('COM_REDEVENT_NO_IMAGE'), array('class' => 'modal'));
     		endif;

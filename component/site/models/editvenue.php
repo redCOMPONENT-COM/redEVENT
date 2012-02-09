@@ -173,7 +173,6 @@ class RedeventModelEditvenue extends JModel
     $this->_db->setQuery($query);
     
     $results = $this->_db->loadObjectList();
-    
     $options = array();
     foreach((array) $results as $cat)
     {
@@ -289,8 +288,14 @@ class RedeventModelEditvenue extends JModel
 		if ( ( $params->get('edit_image', 1) == 2 || $params->get('edit_image', 1) == 1 ) && ( !empty($file['name'])  ) )  {
 
 			jimport('joomla.filesystem.file');
-
-			$base_Dir 	= JPATH_SITE.'/images/redevent/venues/';
+			
+			if ($params->get('default_image_path', 'redevent')) {
+				$reldirpath = $params->get('default_image_path', 'redevent').DS.'venues'.DS;
+			}
+			else {
+				$reldirpath = '';
+			}
+			$base_Dir 	= JPATH_SITE.DS.'images'.DS.$reldirpath;
 
 			//check the image
 			$check = redEVENTImage::check($file, $elsettings);
@@ -307,7 +312,7 @@ class RedeventModelEditvenue extends JModel
 				$this->setError( JText::_('COM_REDEVENT_UPLOAD_FAILED' ) );
 				return false;
 			} else {
-				$row->locimage = $filename;
+				$row->locimage = 'images'.DS.$reldirpath.$filename;
 			}
 		} else {
 			//keep image if edited and left blank

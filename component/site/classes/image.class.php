@@ -242,7 +242,7 @@ class redEVENTImage {
 	 * If thumbnails exits, display the thumbnail with a modal link,
 	 * otherwise, just display the full size picture
 	 * 
-	 * @param string image path, relative to joomla images folder
+	 * @param string image path, relative to joomla base folder
 	 * @param string alt attribute
 	 * @param array other attributes
 	 */

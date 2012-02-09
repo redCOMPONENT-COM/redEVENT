@@ -124,18 +124,17 @@ class RedeventViewEditvenue extends JView
                                     'categories[]', 
                                     'class="inputbox validate-categories" multiple="multiple" size="'.min(3, max(10, count($options))).'"', 
                                     'value', 'text', $selected);
-        
+    
+    // country
+    $options = redEVENTHelperCountries::getCountryOptions('value', 'text', true);
+    $lists['country'] = JHTML::_('select.genericlist', $options, 'country', '', 'value', 'text', $row->country);  
+    
     // published state selector
     $canpublish = $acl->canPublishVenue($id);
     $published = array( JHTML::_('select.option', '1', JText::_('COM_REDEVENT_PUBLISHED')),
                          JHTML::_('select.option', '0', JText::_('COM_REDEVENT_UNPUBLISHED')),
                        );
     $lists['published'] = JHTML::_('select.radiolist', $published, 'published', '', 'value', 'text', $row->published);
-    
-    // gmap pinpoint    
-		$document->addScript('http://maps.google.com/maps/api/js?sensor=false');
-    $document->addStyleSheet(JURI::root().'/components/com_redevent/assets/css/gmapsoverlay.css', 'text/css');
-		$document->addScript(JURI::root().'/components/com_redevent/assets/js/gmapspinpoint.js');
     
 		$this->assignRef('row' , 					$row);
 		$this->assignRef('editor' , 				$editor);
