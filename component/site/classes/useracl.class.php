@@ -534,9 +534,10 @@ class UserAcl {
 			       . ' FROM #__redevent_groups AS g '
 			       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id ' 
 			       . ' WHERE isdefault = 1 '
-			       . '    OR gm.member = '. $db->Quote($this->_userid);
+			       . '    OR gm.member = '. $db->Quote($this->_userid)
+			       . ' GROUP BY g.id ';
 			$db->setQuery($query);
-			$groups = $db->loadObjectList();
+			$groups = $db->loadObjectList('group_id');
 			
 			foreach ((array) $groups as $group)
 			{
