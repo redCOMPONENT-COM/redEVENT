@@ -34,7 +34,7 @@ $selectxref_link = JRoute::_('index.php?option=com_redevent&controller=attendees
 	{
 		$('dest').value = xref;
 		$('dest_name').value = title;
-		$('sbox-window').close();
+		SqueezeBox.close();
 	}
 
 	function submitbutton(pressbutton)

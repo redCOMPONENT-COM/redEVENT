@@ -66,13 +66,13 @@ class RedeventViewEditevent extends JView
 			echo JText::_('COM_REDEVENT_EDIT_EVENT_NOT_ALLOWED');
 			return;
 		}
-
+		
 		// Initialize variables
 		$editor 	  = & JFactory::getEditor();
 		$document 	= & JFactory::getDocument();
 		$elsettings = & redEVENTHelper::config();
     $params     = & $mainframe->getParams();
-
+    
 		//Get Data from the model
 		$row 		  = &$this->get('Event');
 		$customs  = &$this->get('Customfields');
@@ -143,7 +143,7 @@ class RedeventViewEditevent extends JView
 		function reSelectVenue(id, venue) {
 			document.getElementById('a_id').value = id;
 			document.getElementById('a_name').value = venue;
-			document.getElementById('sbox-window').close();
+			SqueezeBox.close();
 		}";
 
 		$document->addScriptDeclaration($js);
