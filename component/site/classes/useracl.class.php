@@ -488,34 +488,63 @@ class UserAcl {
 		if (!$this->_userid) {
 			return false;
 		}
-  	if ($this->superuser()) {
-  		return true;
-  	}
-  	
+		if ($this->superuser()) {
+			return true;
+		}
+		 
+		$db = &JFactory::getDBO();
 		if (!$id) // this is a new event
-		{		
+		{
 			$query = ' SELECT g.id '
 			       . ' FROM #__redevent_groups AS g '
 			       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
-			       . ' WHERE ( gm.member = '.$this->_db->Quote($this->_userid).' AND gm.publish_venues > 0 ) '
+			       . ' WHERE ( gm.member = '.$db->Quote($this->_userid).' AND (gm.publish_venues > 0 OR  g.publish_venues > 0)) '
 			       . '   OR ( g.isdefault = 1 AND g.publish_venues > 0 ) '
-			       ;		
+			;
+			$db->setQuery($query);
+			return ($db->loadResult() ? true : false);
 		}
 		else
 		{
+			// a bit tricky here: when a user creates a venue, it's not assigned to any group, so we must first check this case
 			$query = ' SELECT v.id '
 			       . ' FROM #__redevent_venues AS v '
-			       . ' INNER JOIN #__redevent_groups_venues AS gv ON gv.venue_id = v.id '
-			       . ' LEFT JOIN #__redevent_groups AS g ON g.id = gv.group_id '
-			       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gv.group_id '
-			       . ' WHERE v.id = '. $this->_db->Quote($id)
-			       . '   AND ( ( g.isdefault = 1 AND (g.publish_venues = 2 OR (g.publish_venues = 1 AND v.created_by = '.$this->_db->Quote($this->_userid).') ) ) '
-			       . '      OR ( gm.publish_venues = 2 OR (gm.publish_venues = 1 AND v.created_by = '.$this->_db->Quote($this->_userid).') ) ) '
-			       ;	
+			       . ' WHERE v.id = '. $db->Quote($id)
+			       . ' AND v.created_by = '.$db->Quote($this->_userid);
+			$db->setQuery($query);
+			$isown = $db->loadResult();
+
+			if ($isown)
+			{
+				// we just need to find one group the users belong too where he is allowed to edit own venue
+				$query = ' SELECT g.id '
+				       . ' FROM #__redevent_groups AS g '
+				       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
+				       . ' WHERE ( g.isdefault = 1 OR gm.member = '. $db->Quote($this->_userid).')'
+				       . '   AND ( g.publish_venues > 0 OR gm.publish_venues > 0 ) '
+				;
+				$db->setQuery($query);
+				$res = $db->loadResult();
+				if ($res) {
+					return true;
+				}
+			}
+			// else generic query, venues assigned to groups
+			$query = ' SELECT v.id '
+			. ' FROM #__redevent_venues AS v '
+			. ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = v.id '
+			. ' LEFT JOIN #__redevent_groups AS g ON g.id = gv.group_id '
+			. ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gv.group_id '
+			. ' WHERE v.id = '. $db->Quote($id)
+			. '   AND ( g.isdefault = 1 OR gm.member = '. $db->Quote($this->_userid).')'
+			. '   AND ( g.publish_venues = 2 '
+			. '      OR (g.publish_venues = 1 AND v.created_by = '.$db->Quote($this->_userid).') '
+			. '      OR gm.publish_venues = 2 '
+			. '      OR (gm.publish_venues = 1 AND v.created_by = '.$db->Quote($this->_userid).') ) '
+			;
+			$db->setQuery($query);
+			return ($db->loadResult() ? true : false);
 		}
-		$this->_db->setQuery($query);
-//		echo($db->getQuery());
-		return ($this->_db->loadResult() ? true : false);	
 	}
 	
 	/**
@@ -609,17 +638,6 @@ class UserAcl {
 	function getManagedVenues()
 	{
 		$db = &JFactory::getDBO();
-
-		$groups = $this->getUserGroups();
-		if (!$groups) {
-			return false;
-		}
-		
-		$group_ids = array_keys($groups);
-		$quoted = array();
-		foreach ($group_ids as $g) {
-			$quoted[] = $db->Quote($g);
-		}		
 		
 		$query = ' SELECT DISTINCT v.id AS venue_id  '
 		       . ' FROM #__redevent_venues AS v '
@@ -627,10 +645,20 @@ class UserAcl {
 		       . ' LEFT JOIN #__redevent_venue_category_xref as xvcat ON xvcat.venue_id = v.id '
 		       . ' LEFT JOIN #__redevent_venues_categories as vcat ON vcat.id = xvcat.category_id '
 		       . ' LEFT JOIN #__redevent_groups_venues_categories as gvc ON gvc.category_id = vcat.id '
-		       . ' WHERE (gv.group_id IN ('. implode(', ', $quoted) .') AND gv.accesslevel > 0) '
-		       . '    OR (gvc.group_id IN ('. implode(', ', $quoted) .') AND gvc.accesslevel > 0) '
-		       . '    OR v.created_by = '.$db->Quote($this->_userid);
-		       ;
+		       . ' WHERE v.created_by = '.$db->Quote($this->_userid);
+				
+		$groups = $this->getUserGroups();
+		if ($groups) 
+		{
+			$group_ids = array_keys($groups);
+			$quoted = array();
+			foreach ($group_ids as $g) {
+				$quoted[] = $db->Quote($g);
+			}
+		  $query .= '    OR (gv.group_id IN ('. implode(', ', $quoted) .') AND gv.accesslevel > 0) '
+		          . '    OR (gvc.group_id IN ('. implode(', ', $quoted) .') AND gvc.accesslevel > 0) '
+		          ;
+		}
 		$db->setQuery($query);
 		return $db->loadResultArray();
 	}

@@ -568,9 +568,9 @@ class RedeventModelEditevent extends JModel
 		
 		//administrators or superadministrators have access to all venues, also maintained ones
 		if (!$superuser) 
-		{					
+		{
 			$acl = UserACl::getInstance();
-			$managed = $acl->getManagedVenues();
+			$managed = $acl->getManagedVenues();			
 			if ($managed && count($managed)) {
 				$where[] = ' l.id IN ('.implode(',', $managed).')';
 			}
@@ -590,7 +590,6 @@ class RedeventModelEditevent extends JModel
 		}
 
 		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '');
-
 		return $where;
 	}
 

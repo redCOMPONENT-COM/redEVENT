@@ -34,6 +34,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<tr>
 			<th id="el_title" class="sectiontableheader" align="left"><?php echo JText::_('COM_REDEVENT_VENUE'); ?></th>
 			<th id="el_city" class="sectiontableheader" align="left"><?php echo JText::_('COM_REDEVENT_CITY'); ?></th>
+			<th id="el_published" class="sectiontableheader" align="left"><?php echo JText::_('COM_REDEVENT_PUBLISHED'); ?></th>
 			<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('COM_REDEVENT_EDIT'); ?></th>
 		</tr>
 	</thead>
@@ -46,6 +47,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     <tr class="sectiontableentry<?php echo $i + 1 . $this->params->get( 'pageclass_sfx' ); ?>" >
       <td headers="el_title" align="left" valign="top"><?php echo JHTML::link($link, $row->venue); ?></td>
       <td headers="el_city" align="left" valign="top"><?php echo $row->city ? $row->city : '-'; ?></td>   
+      <td headers="el_published" align="center" valign="top">
+      	<?php echo $row->published ? JHTML::image('components/com_redevent/assets/images/ok.png', JText::_('COM_REDEVENT_Published' )) 
+      	                           : JHTML::image('components/com_redevent/assets/images/no.png', JText::_('COM_REDEVENT_Unpublished' )) ; ?>
+      </td>   
       <td headers="el_edit" align="left" valign="top"><?php echo $this->venueeditbutton($row->id); ?></td>      
     </tr>
   <?php 
