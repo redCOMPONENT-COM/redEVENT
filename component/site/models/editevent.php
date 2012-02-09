@@ -722,6 +722,8 @@ class RedeventModelEditevent extends JModel
 				$row->load($template_event);
 				$row->id    = null;
 				$row->alias = null;
+				$row->checked_out = null;
+				$row->checked_out_time = null;
 			}
 			else
 			{
