@@ -464,7 +464,7 @@ class UserAcl {
 		
 		$query = ' SELECT v.id '
 		       . ' FROM #__redevent_venues AS v '
-		       . ' INNER JOIN #__redevent_groups_venues AS gv ON gv.venue_id = v.id '
+		       . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = v.id '
 		       . ' LEFT JOIN #__redevent_groups AS g ON g.id = gv.group_id '
 		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gv.group_id '
 		       . ' WHERE v.id = '. $db->Quote($id)
@@ -474,7 +474,6 @@ class UserAcl {
            . '              OR ( gm.member = '.$this->_db->Quote($this->_userid).' AND (g.edit_venues = 2 OR gm.edit_venues = 2) ) ) ) ) '
 		       ;
 		$db->setQuery($query);
-//		echo($db->getQuery());
 		return ($db->loadResult() ? true : false);
 	}
 
