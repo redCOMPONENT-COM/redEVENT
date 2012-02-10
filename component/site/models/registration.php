@@ -293,12 +293,13 @@ class RedEventModelRegistration extends JModel
 		$mailer = JFactory::getMailer();
 		
 		$rfcore = new RedFormCore();
-		$emails = $rfcore->getSubmissionContactEmail(array($sid));
-		$email = current($emails);
-		
-		/* Add the email address */
-		$mailer->AddAddress($email['email'], $email['fullname']);
-			
+		$emails = $rfcore->getSidContactEmails($sid);
+		foreach ($emails as $email)
+		{		
+			/* Add the email address */
+			$mailer->AddAddress($email['email'], $email['fullname']);
+		}
+				
 		/* Mail submitter */
 		$htmlmsg = '<html><head><title></title></title></head><body>'.$body.'</body></html>';
 		$mailer->setBody($htmlmsg);

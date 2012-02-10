@@ -1679,7 +1679,7 @@ class redEVENT_tags {
 		$res = '';
 		$emails = $this->_getRFCore()->getSubmissionContactEmail($this->_submitkey, false);
 		if (is_array($emails) && count($emails)) {
-			$contact = current($emails);
+			$contact = current(current($emails));
 			$res = isset($contact['username']) ? $contact['username'] : '';
 		}
 		return $res;
@@ -1690,7 +1690,7 @@ class redEVENT_tags {
 		$res = '';
 		$emails = $this->_getRFCore()->getSubmissionContactEmail($this->_submitkey, true);
 		if (is_array($emails) && count($emails)) {
-			$contact = current($emails);
+			$contact = current(current($emails));
 			$res = isset($contact['email']) ? $contact['email'] : '';
 		}
 		return $res;
@@ -1701,7 +1701,7 @@ class redEVENT_tags {
 		$res = '';
 		$emails = $this->_getRFCore()->getSubmissionContactEmail($this->_submitkey, true);
 		if (is_array($emails) && count($emails)) {
-			$contact = current($emails);
+			$contact = current(current($emails));
 			$res = isset($contact['fullname']) ? $contact['fullname'] : '';
 		}
 		return $res;

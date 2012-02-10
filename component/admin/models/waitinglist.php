@@ -277,26 +277,29 @@ class RedEventModelWaitinglist extends JModel {
 		{
 			/* Start mailing */
 			$this->Mailer();
-			foreach ($emails as $key => $email) 
+			foreach ($emails as $key => $sid) 
 			{
-				/* Send a off mailinglist mail to the submitter if set */
-				/* Add the email address */
-				$this->mailer->AddAddress($email['email'], $email['fullname']);
-				
-				/* Mail submitter */
-				$htmlmsg = '<html><head><title></title></title></head><body>'.$body.'</body></html>';
-				$this->mailer->setBody($htmlmsg);
-				$this->mailer->setSubject($subject);
-				
-				/* Send the mail */
-				if (!$this->mailer->Send()) {
-					$mainframe->enqueueMessage(JText::_('COM_REDEVENT_THERE_WAS_A_PROBLEM_SENDING_MAIL'));
-					RedeventHelperLog::simpleLog('Error sending mail on/off waiting list');
+				foreach ($sid as $email) 
+				{
+					/* Send a off mailinglist mail to the submitter if set */
+					/* Add the email address */
+					$this->mailer->AddAddress($email['email'], $email['fullname']);
 				}
-				
-				/* Clear the mail details */
-				$this->mailer->ClearAddresses();
 			}
+					
+			/* Mail submitter */
+			$htmlmsg = '<html><head><title></title></title></head><body>'.$body.'</body></html>';
+			$this->mailer->setBody($htmlmsg);
+			$this->mailer->setSubject($subject);
+			
+			/* Send the mail */
+			if (!$this->mailer->Send()) {
+				$mainframe->enqueueMessage(JText::_('COM_REDEVENT_THERE_WAS_A_PROBLEM_SENDING_MAIL'));
+				RedeventHelperLog::simpleLog('Error sending mail on/off waiting list');
+			}
+			
+			/* Clear the mail details */
+			$this->mailer->ClearAddresses();
 		}
 	}
 	
