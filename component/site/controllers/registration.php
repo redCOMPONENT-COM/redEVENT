@@ -125,9 +125,11 @@ class RedEventControllerRegistration extends RedEventController
   	{
 	  	// redform saved fine, now add the attendees
 	  	
-  		$user = &JFactory::getUser();
+  		$user = JFactory::getUser();
   		if (!$user->get('id') && $details->juser) {
-  			$user = $this->_createUser($result->posts[0]['sid']);
+  			if ($new = $this->_createUser($result->posts[0]['sid'])) {
+  				$user = $new;
+  			}
   		}
   		
 	  	$attendees = array();
@@ -453,17 +455,19 @@ class RedEventControllerRegistration extends RedEventController
 			return JFactory::getUser($uid);
 		}
 		
-		if (!$details['username']) {
-			RedeventError::raiseWarning('', JText::_('COM_REDEVENT_NEED_MISSING_USERNAME_TO_CREATE_USER'));
-			return false;
-		}
 		if (!$details['email']) {
 			RedeventError::raiseWarning('', JText::_('COM_REDEVENT_NEED_MISSING_EMAIL_TO_CREATE_USER'));
 			return false;
 		}
 		
+		if (!$details['username'] && !$details['fullname']) {
+			$username = 'redeventuser'.$sid;
+		}
+		else {
+			$username = $details['username'] ? $details['username'] : $details['fullname'];			
+		}
+		
 		// check unicity
-		$username = $details['username'];
 		$i = 2;
 		while (true) 
 		{
