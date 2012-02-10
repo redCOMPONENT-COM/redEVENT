@@ -374,28 +374,31 @@ class RedEventControllerRegistration extends RedEventController
 				if (count($addresses) > 0) 
 				{
 					/* Start mailing */
-					foreach ($addresses as $key => $email) 
+					foreach ($addresses as $key => $sid) 
 					{
-						/* Send a off mailinglist mail to the submitter if set */
-						/* Add the email address */
-						$this->mailer->AddAddress($email['email']);
-						
-						/* Mail submitter */
-						$htmlmsg = '<html><head><title></title></title></head><body>'.$tags->ReplaceTags($eventdata->notify_confirm_body).'</body></html>';
-						// convert urls
-						$htmlmsg = ELOutput::ImgRelAbs($htmlmsg);
-						
-						$this->mailer->setBody($htmlmsg);
-						$this->mailer->setSubject($tags->ReplaceTags($eventdata->notify_confirm_subject));
-						
-						/* Send the mail */
-						if (!$this->mailer->Send()) {
-							$mainframe->enqueueMessage(JText::_('COM_REDEVENT_THERE_WAS_A_PROBLEM_SENDING_MAIL'));
-              RedeventHelperLog::simpleLog('Error sending confirm email'.': '.$this->mailer->error);
+						foreach ($sid as $email) 
+						{
+							/* Send a off mailinglist mail to the submitter if set */
+							/* Add the email address */
+							$this->mailer->AddAddress($email['email']);
+							
+							/* Mail submitter */
+							$htmlmsg = '<html><head><title></title></title></head><body>'.$tags->ReplaceTags($eventdata->notify_confirm_body).'</body></html>';
+							// convert urls
+							$htmlmsg = ELOutput::ImgRelAbs($htmlmsg);
+							
+							$this->mailer->setBody($htmlmsg);
+							$this->mailer->setSubject($tags->ReplaceTags($eventdata->notify_confirm_subject));
+							
+							/* Send the mail */
+							if (!$this->mailer->Send()) {
+								$mainframe->enqueueMessage(JText::_('COM_REDEVENT_THERE_WAS_A_PROBLEM_SENDING_MAIL'));
+	              RedeventHelperLog::simpleLog('Error sending confirm email'.': '.$this->mailer->error);
+							}
+							
+							/* Clear the mail details */
+							$this->mailer->ClearAddresses();
 						}
-						
-						/* Clear the mail details */
-						$this->mailer->ClearAddresses();
 					}
 				}
 			}
@@ -447,17 +450,22 @@ class RedEventControllerRegistration extends RedEventController
 		
 		$db		=& JFactory::getDBO();
 		$rfcore = new redformCore();
-		$answers = $rfcore->getSubmissionContactEmail(array($sid));
+		$answers = $rfcore->getSidContactEmails($sid);
+		
+		if (!$answers) {
+			throw new Exception(JText::_('COM_REDEVENT_NO_ANSWERS_FOUND_FOR_SID').' '.$sid);			
+		}
 		
 		$details = current($answers);
 		
-		if ($uid = $this->_getUserIdFromEmail($details['email'])) {
-			return JFactory::getUser($uid);
-		}
-		
 		if (!$details['email']) {
+			//throw new Exception(JText::_('COM_REDEVENT_NEED_MISSING_EMAIL_TO_CREATE_USER'));
 			RedeventError::raiseWarning('', JText::_('COM_REDEVENT_NEED_MISSING_EMAIL_TO_CREATE_USER'));
 			return false;
+		}
+		
+		if ($uid = $this->_getUserIdFromEmail($details['email'])) {
+			return JFactory::getUser($uid);
 		}
 		
 		if (!$details['username'] && !$details['fullname']) {
