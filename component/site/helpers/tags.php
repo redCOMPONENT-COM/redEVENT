@@ -1317,6 +1317,25 @@ class redEVENT_tags {
 		return $tmp;
 	}
 	
+	function _getTag_starttime()
+	{
+		$tmp = "";
+		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
+		{
+			$tmp = ELOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+		}
+		return $tmp;
+	}
+	
+	function _getTag_endtime()
+	{
+		$tmp = "";
+		if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes)) {
+			$tmp = ELOutput::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+		}
+		return $tmp;
+	}
+	
 	function _getTag_startenddatetime()
 	{
 		$tmp = ELOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);

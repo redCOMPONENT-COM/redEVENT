@@ -67,6 +67,8 @@ class RedEventModelTags extends JModel
 		$tags[] = new TagsModelTag('date', JText::_('COM_REDEVENT_SUBMISSION_EVENT_DATE'));
 		$tags[] = new TagsModelTag('enddate', JText::_('COM_REDEVENT_SUBMISSION_EVENT_ENDDATE'));
 		$tags[] = new TagsModelTag('time', JText::_('COM_REDEVENT_SUBMISSION_EVENT_TIME'));
+		$tags[] = new TagsModelTag('starttime', JText::_('COM_REDEVENT_SUBMISSION_EVENT_STARTTIME'));
+		$tags[] = new TagsModelTag('endtime', JText::_('COM_REDEVENT_SUBMISSION_EVENT_ENDTIME'));
 		$tags[] = new TagsModelTag('startenddatetime', JText::_('COM_REDEVENT_SUBMISSION_EVENT_STARTENDDATETIME'));
 		$tags[] = new TagsModelTag('duration', JText::_('COM_REDEVENT_SUBMISSION_EVENT_DURATION'));
 		$tags[] = new TagsModelTag('venues', JText::_('COM_REDEVENT_SUBMISSION_VENUES'));
