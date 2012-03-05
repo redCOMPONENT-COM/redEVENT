@@ -53,21 +53,33 @@ class RedEventModelWaitinglist extends JModel {
 	function __construct()
 	{
 		parent::__construct();
-
 	}
 	
-	public function setXrefId($id) {
+	/**
+	 * set xref
+	 * 
+	 * @param int $id
+	 */
+	public function setXrefId($id) 
+	{
 		$this->xref = $id;
 		/* Get the eventdata */
 		$this->getEventData();
 	}
 	
-	public function setEventId($id) {
+	/**
+	 * set event id
+	 * 
+	 * @param int $id
+	 */
+	public function setEventId($id) 
+	{
 		$this->eventid = $id;
 	}
 	
 	/* Cleans up the array */
-	private function clean() {
+	private function clean() 
+	{
 		$this->event_data = null;
 		$this->move_on = null;
 		$this->move_off = null;
@@ -76,51 +88,61 @@ class RedEventModelWaitinglist extends JModel {
 		$this->mailer = null;
 	}
 	
+	/**
+	 * update the waiting list
+	 * 
+	 * @return boolean true on success 
+	 */
 	public function UpdateWaitingList() 
 	{		
     $this->getEventData();
-    
-		// nothing to do if there is no max
-		if (empty($this->event_data->maxattendees)) {
-			return true;
-		}
-		
+    		
 		/* If there is an event ID set, update all waitinglists for that event */
-		if (!is_null($this->eventid)) {
+		if (!is_null($this->eventid)) 
+		{
 			$xrefids = $this->getXrefIds();
-			foreach ($xrefids AS $key => $xref) {
+			foreach ($xrefids AS $key => $xref) 
+			{
 				$this->setXrefId($xref);
 				$this->ProcessWaitingList();
 				$this->clean();
 			}
 		}
 		else {
-			$this->ProcessWaitingList();
+			if (!$this->ProcessWaitingList()) {
+				return false;
+			}
 		}
-		
+		return true;		
 	}
 	
 	
 	
 	/**
 	 * Process waitinglist
+	 * 
+	 * @return boolean true on success
 	 */
-	 private function ProcessWaitingList() 
-	 {
+	private function ProcessWaitingList()
+	{
 		/* Get attendee total first */
 		$this->getWaitingList();
-//		RedeventHelperLog::simplelog('waiting list: '. $this->waitinglist[0]->total.'/'.$this->waitinglist[1]->total . '('.$this->xref.')');
-		
+
 		/* Check if there are too many ppl going to the event */
-		if (isset($this->waitinglist[0])) 
+		if (isset($this->waitinglist[0]))
 		{
-			if ($this->event_data->maxattendees < $this->waitinglist[0]->total) 
+			if ($this->event_data->maxattendees == 0 && isset($this->waitinglist[1])) // no more limit, and still user on waiting list !
+			{
+				$this->move_off = $this->waitinglist[1]->total;
+				$this->MoveOffWaitingList();
+			}
+			else if ($this->event_data->maxattendees < $this->waitinglist[0]->total)
 			{
 				/* Need to move people on the waitinglist */
 				$this->move_on = $this->waitinglist[0]->total - $this->event_data->maxattendees;
 				$this->MoveOnWaitingList();
 			}
-			else if ($this->event_data->maxattendees > $this->waitinglist[0]->total) 
+			else if ($this->event_data->maxattendees > $this->waitinglist[0]->total)
 			{
 				/* Need to move people off the waitinglist */
 				$this->move_off = $this->event_data->maxattendees - $this->waitinglist[0]->total;
@@ -128,27 +150,21 @@ class RedEventModelWaitinglist extends JModel {
 			}
 		}
 		/* Nobody going yet, maximum number of attendees can go off the waitinglist */
-		else if (isset($this->waitinglist[1])) {
+		else if (isset($this->waitinglist[1]))
+		{
 			/* Need to move people off the waitinglist */
 			$this->move_off = $this->event_data->maxattendees;
 			$this->MoveOffWaitingList();
 		}
-		/* Mail the attendees of their new status */
-		if (count($this->move_on_ids) > 0) {
-			/* Mail attendees they have been moved on the waitlinglist */
-			$this->SendMail('on');
-		}
-		
-		if (count($this->move_off_ids) > 0) {
-			/* Mail attendees they have been moved off the waitlinglist */
-			$this->SendMail('off');
-		}
-	 }
+		return true;
+	}
 	
 	/**
 	 * Get the xref IDs for an event
+	 * 
+	 * @return array
 	 */
-	private function getXrefIds() 
+	private function getXrefIds()
 	{
 		$db = JFactory::getDBO();
 		$q = "SELECT id FROM #__redevent_event_venue_xref WHERE eventid = ".$this->eventid;
@@ -159,6 +175,8 @@ class RedEventModelWaitinglist extends JModel {
 	/**
 	 * Load the number of people that are confirmed and if they are on or off
 	 * the waitinglist
+	 * 
+	 * @return array indexed by 0|1 (attending | waiting)
 	 */
 	public function getWaitingList() 
 	{
@@ -171,15 +189,16 @@ class RedEventModelWaitinglist extends JModel {
 		   . ' GROUP BY r.waitinglist ';
 		$db->setQuery($q);
 		$this->waitinglist = $db->loadObjectList('waitinglist');
+		return $this->waitinglist;
 	}
 	
 	/**
 	 * Move people off the waitinglist
 	 */
-	private function MoveOffWaitingList() 
+	private function MoveOffWaitingList()
 	{
 		$db = JFactory::getDBO();
-		$q = "SELECT sid
+		$q = "SELECT id
 			FROM #__redevent_register
 			WHERE xref = ".$this->xref."
 			AND waitinglist = 1
@@ -189,26 +208,29 @@ class RedEventModelWaitinglist extends JModel {
 			LIMIT ".$this->move_off;
 		$db->setQuery($q);
 		$this->move_off_ids = $db->loadResultArray();
-		
-		$q = "UPDATE #__redevent_register
-			SET waitinglist = 0, paymentstart = NOW()
-			WHERE xref = ".$this->xref."
-			AND waitinglist = 1
-			AND confirmed = 1
-		  AND cancelled = 0
-			ORDER BY confirmdate
-			LIMIT ".$this->move_off;
-		$db->setQuery($q);
-		$db->query();
+
+		if (!count($this->move_off_ids)) {
+			return true;
+		}
+
+		foreach ($this->move_off_ids as $rid)
+		{
+			$attendee = new REattendee($rid);
+			if (!$attendee->toggleWaitingListStatus(0)) {
+				$this->setError($attendee->getError());
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	/**
 	 * Move people on the waiting list
 	 */
-	private function MoveOnWaitingList() 
+	private function MoveOnWaitingList()
 	{
 		$db = JFactory::getDBO();
-		$q = "SELECT sid
+		$q = "SELECT id
 			FROM #__redevent_register
 			WHERE xref = ".$this->xref."
 			AND waitinglist = 0
@@ -218,94 +240,20 @@ class RedEventModelWaitinglist extends JModel {
 			LIMIT ".$this->move_on;
 		$db->setQuery($q);
 		$this->move_on_ids = $db->loadResultArray();
-		
-		$q = "UPDATE #__redevent_register
-			SET waitinglist = 1
-			WHERE xref = ".$this->xref."
-			AND waitinglist = 0
-			AND confirmed = 1
-		  AND cancelled = 0
-			ORDER BY confirmdate DESC
-			LIMIT ".$this->move_on;
-		$db->setQuery($q);
-		$db->query();
-	}
-	
-	/**
-	 * Initialise the mailer object to start sending mails
-	 */
-	private function Mailer() 
-	{
-		$mainframe = &JFactory::getApplication();
-		jimport('joomla.mail.helper');
-		/* Start the mailer object */
-		$this->mailer = JFactory::getMailer();
-		$this->mailer->isHTML(true);
-		$this->mailer->From = $mainframe->getCfg('mailfrom');
-		$this->mailer->FromName = $mainframe->getCfg('sitename');
-		$this->mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
-	}
-	
-	private function SendMail($type) 
-	{
-		$mainframe = &JFactory::getApplication();
-		
-		if (empty($this->taghelper)) {
-			$this->taghelper = new redEVENT_tags();
-		  $this->taghelper->setXref($this->xref);
+
+		if (!count($this->move_on_ids)) {
+			return true;
 		}
-		
-		if ($type == 'off') {
-			$update_ids = $this->move_off_ids;
-			$body = trim($this->event_data->notify_off_list_body);
-			if (!$body) $body = trim($this->event_data->notify_body);
-			$subject = trim($this->event_data->notify_off_list_subject);
-			if (!$subject) $subject = trim($this->event_data->notify_subject);
-			
-			$body = nl2br($this->taghelper->ReplaceTags($body));
-			$subject = $this->taghelper->ReplaceTags($subject);
-		}
-		else if ($type == 'on') {
-			$update_ids = $this->move_on_ids;
-			$body = nl2br($this->taghelper->ReplaceTags($this->event_data->notify_on_list_body));
-			$subject = $this->taghelper->ReplaceTags($this->event_data->notify_on_list_subject);
-		}
-		
-		// update image paths in body
-		$body = ELOutput::ImgRelAbs($body);
-		
-		$rfcore = new RedFormCore();
-		$emails = $rfcore->getSubmissionContactEmail($update_ids);
-		
-		/* Check if there are any addresses to be mailed */
-		if (count($emails) > 0) 
+
+		foreach ($this->move_on_ids as $rid)
 		{
-			/* Start mailing */
-			$this->Mailer();
-			foreach ($emails as $key => $sid) 
-			{
-				foreach ($sid as $email) 
-				{
-					/* Send a off mailinglist mail to the submitter if set */
-					/* Add the email address */
-					$this->mailer->AddAddress($email['email'], $email['fullname']);
-				}
+			$attendee = new REattendee($rid);
+			if (!$attendee->toggleWaitingListStatus(1)) {
+				$this->setError($attendee->getError());
+				return false;
 			}
-					
-			/* Mail submitter */
-			$htmlmsg = '<html><head><title></title></title></head><body>'.$body.'</body></html>';
-			$this->mailer->setBody($htmlmsg);
-			$this->mailer->setSubject($subject);
-			
-			/* Send the mail */
-			if (!$this->mailer->Send()) {
-				$mainframe->enqueueMessage(JText::_('COM_REDEVENT_THERE_WAS_A_PROBLEM_SENDING_MAIL'));
-				RedeventHelperLog::simpleLog('Error sending mail on/off waiting list');
-			}
-			
-			/* Clear the mail details */
-			$this->mailer->ClearAddresses();
 		}
+		return true;
 	}
 	
 	/**
@@ -344,7 +292,6 @@ class RedEventModelWaitinglist extends JModel {
 	  if (!count($register_ids)) {
 	    return true;
 	  }
-	  $sids = $this->_getAttendeesSids($register_ids);
 	  
 	  /* Get attendee total first */
     $this->getEventData();
@@ -359,31 +306,26 @@ class RedEventModelWaitinglist extends JModel {
       /* Need to move people on the waitinglist */
       // we can only take as many new people off the list as there are remaining places
       if ($this->event_data->maxattendees) {
-        $this->move_off_ids = array_slice($sids, 0, $remaining);
+        $this->move_off_ids = array_slice($register_ids, 0, $remaining);
       }
       else {
-        $this->move_off_ids = $sids;
+        $this->move_off_ids = $register_ids;
       }
-      
-      $query = ' UPDATE #__redevent_register SET waitinglist = 0 WHERE sid IN ('.implode(',', $this->move_off_ids).')';
-      $this->_db->setQuery($query);
 
-      if (!$this->_db->query($query)) {
-        $this->setError($this->_db->getErrorMsg());
-        return false;
-      }
+      foreach ($this->move_off_ids as $rid)
+      {
+      	$attendee = new REattendee($rid);
+				if (!$attendee->toggleWaitingListStatus(0)) {
+					$this->setError($attendee->getError());
+					return false;
+				}
+      }      
     }
     else {
       $this->setError(JText::_('COM_REDEVENT_NOT_ENOUGH_PLACES_LEFT'));
       return false;
       // event is full already
     }
-    
-    /* Mail the attendees of their new status */
-    if (count($this->move_off_ids) > 0) {
-      /* Mail attendees they have been moved on the waitlinglist */
-      $this->SendMail('off');
-    }	  
     return true;
 	}
 	
@@ -393,51 +335,23 @@ class RedEventModelWaitinglist extends JModel {
    * @param array $answer_ids to put on waiting list
    */
   public function putOnWaitingList($register_ids)
-  {    
-	  $sids = $this->_getAttendeesSids($register_ids);
-	  
+  {    	  
     /* Check if there are too many ppl going to the event */
-    if (count($sids)) {
-      $this->move_on_ids = $sids;
-      /* Need to move people on the waitinglist */      
-      $query = ' UPDATE #__redevent_register SET waitinglist = 1 WHERE sid IN ('.implode(',', $this->move_on_ids).')';
-      $this->_db->setQuery($query);
-    
-      if (!$this->_db->query($query)) {
-        $this->setError($this->_db->getErrorMsg());
-        return false;
+    if (count($register_ids)) 
+    {
+      foreach ($register_ids as $rid)
+      {
+      	$attendee = new REattendee($rid);
+				if (!$attendee->toggleWaitingListStatus(1)) {
+					$this->setError($attendee->getError());
+					return false;
+				}
       }
     }
     else {
       return true;
       // event is full already
     }
-    
-    /* Mail the attendees of their new status */
-    if (count($this->move_on_ids) > 0) {
-      /* Mail attendees they have been moved on the waitlinglist */
-      $this->SendMail('on');
-    }   
     return true;
-  }
-  
-  /**
-   * return array of sids corresponding to register_ids
-   * 
-   * @param array $register_ids
-   * @return array sids
-   */
-  function _getAttendeesSids($register_ids)
-  {
-  	if (!count($register_ids)) {
-  		return false;
-  	}
-  	$query = ' SELECT sid ' 
-  	       . ' FROM #__redevent_register ' 
-  	       . ' WHERE id IN (' . implode(", ", $register_ids) .')'
-  	       ;
-  	$this->_db->setQuery($query);
-  	$res = $this->_db->loadResultArray();
-  	return $res;
   }
 }
