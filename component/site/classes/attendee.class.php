@@ -23,6 +23,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * attendee class - helper for managing attendees
+ */
 class REattendee extends JObject {
 	
 	protected $_username;
@@ -40,6 +43,13 @@ class REattendee extends JObject {
 	 * @var object
 	 */
 	protected $_data;
+	
+	/**
+	 * redform answers
+	 * 
+	 * @var array
+	 */
+	protected $_answers;
 	
 	/**
 	 * events data, caching for when several attendees are called
@@ -69,11 +79,45 @@ class REattendee extends JObject {
 	
   public function getUsername()
   {
+  	if (!$this->_username) 
+  	{
+  		$answers = $this->getAnswers();
+  		
+  		foreach ($answers as $a) 
+  		{
+  			if ($a->fieldtype == 'username' && $a->answer) {
+  				$this->_username = $a->answer;
+  				return $this->_username;
+  			}
+  		}
+  		// still there... look for user ?
+  		if ($this->load()->uid) {
+  			$this->_username = JFactory::getUser()->get('username');
+  			return $this->_username;
+			}
+  	}
     return $this->_username;
   }
 	
 	public function setFullname($name)
 	{
+  	if (!$this->_fullname) 
+  	{
+  		$answers = $this->getAnswers();
+  		
+  		foreach ($answers as $a) 
+  		{
+  			if ($a->fieldtype == 'fullname' && $a->answer) {
+  				$this->_fullname = $a->answer;
+  				return $this->_fullname;
+  			}
+  		}
+  		// still there... look for user ?
+  		if ($this->load()->uid) {
+  			$this->_fullname = JFactory::getUser()->get('name');
+  			return $this->_fullname;
+			}
+  	}
     $this->_fullname = $name;		
 	}
 	
@@ -89,6 +133,23 @@ class REattendee extends JObject {
   
   public function getEmail()
   {
+  	if (!$this->_email) 
+  	{
+  		$answers = $this->getAnswers();
+  		
+  		foreach ($answers as $a) 
+  		{
+  			if ($a->fieldtype == 'email' && JMailHelper::isEmailAddress($a->answer)) {
+  				$this->_email = $a->answer;
+  				return $this->_email;
+  			}
+  		}
+  		// still there... look for user ?
+  		if ($this->load()->uid) {
+  			$this->_email = JFactory::getUser()->get('email');
+  			return $this->_email;
+			}
+  	}
     return $this->_email; 
   }
 
@@ -396,9 +457,7 @@ class REattendee extends JObject {
 	 */
 	protected function getRFRecipients()
 	{
-		$data = $this->load();
-		$rfcore  = new redformcore();
-		$answers = $rfcore->getSidsFieldsAnswers($data->sid);
+		$answers = $this->getAnswers();
 		
 		$emails = array();
 		foreach ($answers as $f)
@@ -411,6 +470,21 @@ class REattendee extends JObject {
 		}
 		return count($emails) ? $emails : false;
 	}	
+	
+	/**
+	 * get redform answers for this attendee
+	 * 
+	 * return array
+	 */
+	protected function getAnswers()
+	{
+		if (empty($this->_answers))
+		{
+			$rfcore  = new redformcore();
+			$this->_answers = $rfcore->getSidsFieldsAnswers($this->load()->sid);
+		}
+		return $this->_answers;
+	}
 	
 	/**
 	 * returns attendee event session info
@@ -509,5 +583,78 @@ class REattendee extends JObject {
 		$this->_db->setQuery($query);
 		$xref_group_recipients = $this->_db->loadObjectList();
 		return $xref_group_recipients;
+	}
+	
+	/**
+	* Send e-mail confirmations
+	*/
+	public function sendNotificationEmail()
+	{
+		$mainframe = JFactory::getApplication();		
+		$eventsettings = $this->getSessionDetails();
+			
+		/**
+		 * Send a submission mail to the attendee and/or contact person
+		 * This will only work if the contact person has an e-mail address
+		 **/
+		if (isset($eventsettings->notify) && $eventsettings->notify)
+		{
+			/* Load the mailer */
+			$mailer = JFactory::getMailer();
+			$mailer->isHTML(true);
+			$mailer->From = $mainframe->getCfg('mailfrom');
+			$mailer->FromName = $mainframe->getCfg('sitename');
+			$mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
+	
+			$tags = new redEVENT_tags();
+			$tags->setXref($this->getXref());
+			$tags->addOptions(array('sids' => array($this->load()->sid)));
+				
+			if ($this->getEmail())
+			{
+				/* Check if we have all the fields */
+				if (!$this->getUsername()) $this->setUsername($this->getEmail());
+				if (!$this->getFullname()) $this->setFullname($this->getUsername());
+
+				/* Add the email address */
+				$mailer->AddAddress($this->getEmail(), $this->getFullname());
+					
+				/* build activation link */
+				// TODO: use the route helper !
+				$url = JRoute::_( JURI::root().'index.php?option=com_redevent&controller=registration&task=activate'
+				. '&confirmid='.str_replace(".", "_", $this->_data->uip)
+				.              'x'.$this->_data->xref
+				.              'x'.$this->_data->uid
+				.              'x'.$this->_data->id
+				.              'x'.$this->_data->submit_key );
+				$activatelink = '<a href="'.$url.'">'.JText::_('COM_REDEVENT_Activate').'</a>';
+				$cancellink = JRoute::_(JURI::root().'index.php?option=com_redevent&task=cancelreg'
+				.'&rid='.$rid.'&xref='.$this->_data->xref.'&submit_key='.$submit_key);
+					
+				/* Mail attendee */
+				$htmlmsg = '<html><head><title></title></title></head><body>';
+				$htmlmsg .= $eventsettings->notify_body;
+				$htmlmsg .= '</body></html>';
+					
+				$htmlmsg = $tags->ReplaceTags($htmlmsg);
+				$htmlmsg = str_replace('[activatelink]', $activatelink, $htmlmsg);
+				$htmlmsg = str_replace('[cancellink]', $cancellink, $htmlmsg);
+				$htmlmsg = str_replace('[fullname]', $this->getFullname(), $htmlmsg);
+					
+				// convert urls
+				$htmlmsg = ELOutput::ImgRelAbs($htmlmsg);
+					
+				$mailer->setBody($htmlmsg);
+				$subject = $tags->ReplaceTags($eventsettings->notify_subject);
+				$mailer->setSubject($subject);
+
+				/* Count number of messages sent */
+				if (!$mailer->Send()) {
+					RedeventHelperLog::simpleLog('Error sending notify message to submitted attendants');
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }

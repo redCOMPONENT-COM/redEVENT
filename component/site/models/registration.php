@@ -300,164 +300,40 @@ class RedEventModelRegistration extends JModel
 		}
 		return true;
   	
-  }
-  
+  }  
 
 	/**
 	 * Send e-mail confirmations
+	 * 
+	 * @param string submit key
+	 * @return boolean true on success
 	 */
 	public function sendNotificationEmail($submit_key) 
 	{
-		$mainframe = & JFactory::getApplication();
-		
 		/* Load database connection */
 		$db = JFactory::getDBO();
 		
-		/* Determine contact person */
-		$user = JFactory::getUser();
-		
-		/* Get the global settings */
-		$elsettings = redEVENTHelper::config();
-		
 		/* Get registration settings */
-		$q = "SELECT *
+		$q = "SELECT r.id
 			FROM #__redevent_register r
 			WHERE submit_key = ".$db->Quote($submit_key);
 		$db->setQuery($q);
-		$registration = $db->loadObject();
+		$registrations = $db->loadResultArray();
 		
-		if (!$registration) {
+		if (!$registrations || !count($registrations)) {
 			JError::raiseError(0, JText::sprintf('COM_REDEVENT_notification_registration_not_found_for_key_s', $submit_key));
 			return false;
 		}
 		
-		/* Get settings for event */
-		$q = "SELECT e.title, e.notify_subject, e.notify_body, e.notify, x.maxattendees, e.activate,
-					e.juser, e.confirmation_message, e.redform_id, e.submission_type_formal_offer, e.submission_type_formal_offer_subject,
-					e.datdescription, e.id AS eventid
-			FROM #__redevent_events e
-			LEFT JOIN #__redevent_event_venue_xref x
-			ON x.eventid = e.id
-			WHERE x.id = ".$registration->xref."
-			";
-		$db->setQuery($q);
-		$eventsettings = $db->loadObject();
-				
-		/* Get a list of fields that are of type email/username/fullname */
-		$q = "SELECT f.id, f.field, f.fieldtype 
-			FROM #__rwf_fields f
-			WHERE f.published = 1
-			AND f.form_id = ".$eventsettings->redform_id."
-			AND f.fieldtype in ('email', 'username', 'fullname')
-			GROUP BY f.fieldtype";
-		$db->setQuery($q);
-		$selectfields = $db->loadObjectList('fieldtype');
-
-		/* Get the username and e-mail from the redFORM database */
-		$getfields = array($db->nameQuote('s.id'));
-		foreach ((array) $selectfields as $selectfield) {
-			$getfields[] = $db->nameQuote('f.field_'. $selectfield->id);
-		}
-		
-		
-		/* Get list of attendees */
-		$q = ' SELECT r.id as rid, '. implode(', ', $getfields)
-		   . ' FROM #__redevent_register as r '
-		   . ' INNER JOIN #__rwf_submitters AS s ON s.id = r.sid '
-		   . ' INNER JOIN '. $db->nameQuote('#__rwf_forms_'.$eventsettings->redform_id).' AS f ON s.answer_id = f.id '
-		   . ' WHERE r.submit_key = '.$db->Quote($registration->submit_key)
-		   ;
-		$db->setQuery($q);
-		$useremails = $db->loadObjectList();
-				
-		$attendees = array();
-		foreach ($useremails as $attendeeinfo)
+		foreach ($registrations as $rid)
 		{
-			$attendee = new REattendee($attendeeinfo->rid);
-			if (isset($selectfields['fullname'])) {
-				$property = 'field_'. $selectfields['fullname']->id;
-				$attendee->setFullname($attendeeinfo->$property);
-			}
-      if (isset($selectfields['username'])) {
-        $property = 'field_'. $selectfields['username']->id;
-        $attendee->setUsername($attendeeinfo->$property);
-      }
-      if (isset($selectfields['email'])) {
-        $property = 'field_'. $selectfields['email']->id;
-        $attendee->setEmail($attendeeinfo->$property);
-      }
-      
-      $attendees[] = $attendee;
-		}
-						 		
-		/**
-		 * Send a submission mail to the attendee and/or contact person 
-		 * This will only work if the contact person has an e-mail address
-		 **/		
-		if (isset($eventsettings->notify) && $eventsettings->notify) 
-		{
-			/* Load the mailer */
-			$this->Mailer();
-      
-			$tags = new redEVENT_tags();
-			$tags->setXref($registration->xref);
-			$tags->setSubmitkey($submit_key);
-			
-			/* Now send some mail to the attendants */
-			foreach ($attendees as $attendee) 
-			{
-				if ($attendee->getEmail()) 
-				{
-					/* Check if we have all the fields */
-					if (!$attendee->getUsername()) $attendee->setUsername($attendee->getEmail());
-					if (!$attendee->getFullname()) $attendee->setFullname($attendee->getUsername());
-		
-					/* Add the email address */
-					$this->mailer->AddAddress($attendee->getEmail(), $attendee->getFullname());
-					
-					/* build activation link */
-					// TODO: use the route helper !
-					$rid = $attendee->getId();
-					$url = JRoute::_( JURI::root().'index.php?option=com_redevent&controller=registration&task=activate'
-					     . '&confirmid='.str_replace(".", "_", $registration->uip)
-					     .              'x'.$registration->xref
-					     .              'x'.$registration->uid
-					     .              'x'.$rid
-					     .              'x'.$submit_key );
-					$activatelink = '<a href="'.$url.'">'.JText::_('COM_REDEVENT_Activate').'</a>';
-					$cancellink = JRoute::_(JURI::root().'index.php?option=com_redevent&task=cancelreg'
-					                        .'&rid='.$rid.'&xref='.$registration->xref.'&submit_key='.$submit_key);
-					
-					/* Mail attendee */
-					$htmlmsg = '<html><head><title></title></title></head><body>';
-					$htmlmsg .= $eventsettings->notify_body;
-					$htmlmsg .= '</body></html>';
-					
-					$htmlmsg = $tags->ReplaceTags($htmlmsg);
-					$htmlmsg = str_replace('[activatelink]', $activatelink, $htmlmsg);
-					$htmlmsg = str_replace('[cancellink]', $cancellink, $htmlmsg);
-					$htmlmsg = str_replace('[fullname]', $attendee->getFullname(), $htmlmsg);
-					
-					// convert urls
-					$htmlmsg = ELOutput::ImgRelAbs($htmlmsg);
-					
-					$this->mailer->setBody($htmlmsg);
-					$this->mailer->setSubject($tags->ReplaceTags($eventsettings->notify_subject));
-		
-					/* Count number of messages sent */
-					if (!$this->mailer->Send()) {
-						RedeventHelperLog::simpleLog('Error sending notify message to submitted attendants');
-					}
-		
-					/* Clear the mail details */
-					$this->mailer->ClearAllRecipients();
-				}
-				else {
-					/* Not sending mail as there is no e-mail address */
-				}
+			$attendee = new REattendee($rid);
+			if (!$attendee->sendNotificationEmail()) {
+				$this->setError($attendee->getError());
+				return false;
 			}
 		}
-		return $registration;
+		return true;
 	}
 	
 
