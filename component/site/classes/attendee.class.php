@@ -225,6 +225,7 @@ class REattendee extends JObject {
 			$this->sendWaitinglistStatusEmail(0);
 			$this->sendWLAdminNotification(0);
 		}
+		return true;
 	}
   
   /**
@@ -347,12 +348,12 @@ class REattendee extends JObject {
 	{
 		$params = JComponentHelper::getParams('com_redevent');
 		if (!$params->get('wl_notify_admin', 0)) { // never notify admins
-			//return true;
-		}
-		else if ($params->get('wl_notify_admin', 0) == 1 && $waiting = 1) { // only for people begin added to attending
 			return true;
 		}
-		else if ($params->get('wl_notify_admin', 0) == 2 && $waiting = 0) { // only for people being added to waiting list
+		else if ($params->get('wl_notify_admin', 0) == 1 && $waiting == 1) { // only for people begin added to attending
+			return true;
+		}
+		else if ($params->get('wl_notify_admin', 0) == 2 && $waiting == 0) { // only for people being added to waiting list
 			return true;
 		}
 		
