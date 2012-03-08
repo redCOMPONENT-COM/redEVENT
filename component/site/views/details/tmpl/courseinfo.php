@@ -68,11 +68,13 @@ foreach ($this->_eventlinks as $key => $event) {
 		<td class="courseinfo_signup" width="*"><div class="courseinfo_signupwrapper">
 		<?php
 		$registration_status = redEVENTHelper::canRegister($event->xref);
-		if (!$registration_status->canregister) {
-		  $img = JHTML::_('image', JURI::base() . 'components/com_redevent/assets/images/agt_action_fail.png', 
+		if (!$registration_status->canregister) 
+		{
+			$imgpath = 'components/com_redevent/assets/images/'.$registration_status->error.'.png';
+		  $img = JHTML::_('image', JURI::base() . $imgpath, 
 		                          $registration_status->status, 
 		                          array('class' => 'hasTip', 'title' => $registration_status->status));
-			echo $img;
+			echo ELOutput::moreInfoIcon($event->xslug, $img, $registration_status->status);
 		}
 		else 
 		{

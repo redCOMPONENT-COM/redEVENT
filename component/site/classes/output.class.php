@@ -443,6 +443,32 @@ class ELOutput {
 
     return $output;
   }
+  
+  /**
+   * returns moreinfo link
+   * 
+   * @param string $text the content of the link tag
+   * @param unknown_type $title the 'title' for the link
+   * @return string
+   */
+  public static function moreInfoIcon($xref_slug, $text = null, $title = null)
+  {
+  	if (!$text) {
+  		$text = JText::_('COM_REDEVENT_DETAILS_MOREINFO_BUTTON_LABEL');
+  	}
+  	if (!$title) {
+  		$title = JText::_('COM_REDEVENT_DETAILS_MOREINFO_BUTTON_LABEL');
+  	}
+		JHTML::_('behavior.modal', 'a.moreinfo');
+		$link = JRoute::_(RedeventHelperRoute::getMoreInfoRoute($xref_slug, 
+		                                                        array('tmpl' =>'component')));
+		$text = '<a class="moreinfo" title="'.$title
+		      .  '" href="'.$link.'" rel="{handler: \'iframe\', size: {x: 400, y: 500}}">'
+		      . $text
+		      . ' </a>'
+		      ;
+		return $text;  	
+  }
 
 	/**
 	 * Creates the flyer

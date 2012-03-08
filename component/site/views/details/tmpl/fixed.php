@@ -242,10 +242,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<div class="event-registration">
 		<?php 
 		if (!$registration_status->canregister):
-		  $img = JHTML::_('image', JURI::base() . 'components/com_redevent/assets/images/agt_action_fail.png', 
+			$imgpath = 'components/com_redevent/assets/images/'.$registration_status->error.'.png';
+		  $img = JHTML::_('image', JURI::base() . $imgpath, 
 		                          $registration_status->status, 
 		                          array('class' => 'hasTip', 'title' => $registration_status->status));
-			echo $img;
+			echo ELOutput::moreInfoIcon($event->xslug, $img, $registration_status->status);
 		else : ?>
 		<?php $venues_html = '';	
 		/* Get the different submission types */

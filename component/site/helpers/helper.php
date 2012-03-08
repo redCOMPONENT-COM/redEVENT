@@ -590,6 +590,7 @@ class redEVENTHelper {
     {
       $result->canregister = 0;
       $result->status = JText::_('COM_REDEVENT_NO_REGISTRATION_FOR_THIS_EVENT');
+      $result->error = 'noregistration';
       return $result;
     }
     else if (redEVENTHelper::isValidDate($event->registrationend))
@@ -598,6 +599,7 @@ class redEVENTHelper {
       {
         $result->canregister = 0;
         $result->status = JText::_('COM_REDEVENT_REGISTRATION_IS_OVER');
+      	$result->error = 'isover';
         return $result;
       }
     }
@@ -606,6 +608,7 @@ class redEVENTHelper {
       // it's separated from previous case so that it is not checked if a registration end was set
       $result->canregister = 0;
       $result->status = JText::_('COM_REDEVENT_REGISTRATION_IS_OVER');
+      $result->error = 'isover';
       return $result;
     }
 
@@ -628,6 +631,7 @@ class redEVENTHelper {
       {
         $result->canregister = 0;
         $result->status = JText::_('COM_REDEVENT_EVENT_FULL');
+      	$result->error = 'isfull';
         return $result;
       }
     }
@@ -647,6 +651,7 @@ class redEVENTHelper {
       {
       	$result->canregister = 0;
       	$result->status = JTEXT::_('COM_REDEVENT_REGISTRATION_NOT_ALLOWED_PENDING_UNCONFIRM_REGISTRATION');
+      	$result->error = 'haspending';
       	return $result;
       }
     }
@@ -684,6 +689,7 @@ class redEVENTHelper {
     {
       $result->canregister = 0;
       $result->status = JText::_('COM_REDEVENT_USER_MAX_REGISTRATION_REACHED');
+			$result->error = 'usermax';
       return $result;
     }
         
