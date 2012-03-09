@@ -101,7 +101,7 @@ class RedEventViewEvent extends JView {
     $customfields =& $this->get('Customfields');
 		
 		/* Check if we have a redFORM id */
-		if (empty($row->redform_id)) $row->redform_id = $elsettings->defaultredformid;
+		if (empty($row->redform_id)) $row->redform_id = $params->get('defaultredformid', 1);
 
 		// fail if checked out not by 'me'
 		if ($row->id) {

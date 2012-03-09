@@ -62,10 +62,6 @@ $row = & $this->row;
         </dd>
         <?php endif; ?>
 
-        <?php
-          if ( $this->elsettings->showdetailsadress == 1 ) :
-          ?>
-
           <?php if ( $row->street ) : ?>
           <dt class="venue_street"><?php echo JText::_('COM_REDEVENT_STREET' ).':'; ?></dt>
         <dd class="venue_street">
@@ -105,10 +101,6 @@ $row = & $this->row;
           <dd class="venue_assignedevents">
             <a href="<?php echo $row->target; ?>"><?php echo $row->assignedevents; ?></a>
           </dd>
-      <?php
-      endif;
-      ?>
-
     </dl>
   </div>
     <?php if ($this->elsettings->showlocdescription == 1 && !empty($row->locdescription)) : ?>

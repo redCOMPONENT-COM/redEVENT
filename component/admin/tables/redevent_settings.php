@@ -77,15 +77,9 @@ class RedEvent_settings extends JTable
 	/** @var string */
 	var $timename 			= null;
 	/** @var int */
-	var $showdetails 		= "1";
-	/** @var int */
 	var $showtimedetails 	= "1";
 	/** @var int */
 	var $showevdescription 	= "1";
-	/** @var int */
-	var $showdetailstitle 	= "1";
-	/** @var int */
-	var $showdetailsadress 	= "1";
 	/** @var int */
 	var $showlocdescription = "1";
 	/** @var int */
@@ -94,12 +88,6 @@ class RedEvent_settings extends JTable
 	var $showdetlinkvenue 	= "1";
 	/** @var int */
 	var $delivereventsyes 	= "-2";
-	/** @var int */
-	var $mailinform 		= "0";
-	/** @var string */
-	var $mailinformrec 		= null;
-	/** @var string */
-	var $mailinformuser 	= "0";
 	/** @var int */
 	var $datdesclimit 		= "1000";
 	/** @var int */
@@ -178,8 +166,6 @@ class RedEvent_settings extends JTable
 	var $checked_out 		= null;
 	/** @var date */
 	var $checked_out_time 	= null;
-	/** @var date */
-	var $defaultredformid 	= null;
 	/** @var string */
 	var $currency_decimal_separator	= null;
 	/** @var string */

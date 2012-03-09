@@ -392,14 +392,7 @@ if (is_array($cols))
 /* Get the current columns */
 $cols = $tables['#__redevent_settings'];
 
-if (is_array($cols)) {
-	/* Check if we have the defaultredformid column */
-	if (!array_key_exists('defaultredformid', $cols)) {
-		$q = "ALTER IGNORE TABLE #__redevent_settings ADD COLUMN defaultredformid INT(11) NOT NULL default '1'";
-		$db->setQuery($q);
-		$db->query();
-	}
-	
+if (is_array($cols)) {	
 	/* Check if we have the currency_decimals column */
 	if (!array_key_exists('currency_decimals', $cols)) {
 		$q = "ALTER IGNORE TABLE #__redevent_settings ADD COLUMN `currency_decimals` varchar(10) default 'decimals'";
@@ -1153,18 +1146,12 @@ $q = "INSERT IGNORE INTO `#__redevent_settings` SET "
    . " formatdate = '%d.%m.%Y', "
    . " formattime = '%H.%M', "
    . " timename = 'h', "
-   . " showdetails = 1, "
    . " showtimedetails = 0, "
    . " showevdescription = 1, "
-   . " showdetailstitle = 1, "
-   . " showdetailsadress = 1, "
    . " showlocdescription = 1, "
    . " showlinkvenue = 1, "
    . " showdetlinkvenue = 2, "
    . " delivereventsyes = -2, "
-   . " mailinform = 0, "
-   . " mailinformrec = 'example@example.com', "
-   . " mailinformuser = 0, "
    . " datdesclimit = '1000', "
    . " autopubl = -2, "
    . " deliverlocsyes = -2, "
@@ -1204,7 +1191,6 @@ $q = "INSERT IGNORE INTO `#__redevent_settings` SET "
    . " lastupdate = '0', "
    . " checked_out = '', "
    . " checked_out_time = '', "
-   . " defaultredformid = 1, "
    . " currency_decimals = 'decimals', "
    . " currency_decimal_separator = ',', "
    . " currency_thousand_separator = '.', "

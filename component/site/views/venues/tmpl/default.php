@@ -62,10 +62,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				</dd>
 				<?php endif; ?>
 
-				<?php
-	  			if ( $this->elsettings->showdetailsadress == 1 ) :
-	  			?>
-
 	  			<?php if ( $row->street ) : ?>
 	  			<dt class="venue_street"><?php echo JText::_('COM_REDEVENT_STREET' ).':'; ?></dt>
 				<dd class="venue_street">
@@ -105,9 +101,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	    		<dd class="venue_assignedevents">
 	    			<a href="<?php echo $row->targetlink; ?>"><?php echo (int)$row->assignedevents; ?></a>
 	    		</dd>
-			<?php
-			endif;
-			?>
 
 		</dl>
 

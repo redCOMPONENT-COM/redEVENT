@@ -60,8 +60,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			</dd>
 		<?php endif; ?>
 
-		<?php if ( $this->elsettings->showdetailsadress == 1 ) : ?>
-
   			<?php if ( $this->venue->street ) : ?>
   			<dt class="venue_street"><?php echo JText::_('COM_REDEVENT_STREET' ).':'; ?></dt>
 			<dd class="venue_street">
@@ -96,9 +94,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     			<?php echo $this->venue->countryimg ? $this->venue->countryimg : $this->venue->country; ?>
     		</dd>
     		<?php endif; ?>
-		<?php
-		endif; //showdetails ende
-		?>
 	</dl>
 
 	<?php

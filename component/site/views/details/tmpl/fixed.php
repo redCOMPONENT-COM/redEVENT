@@ -58,14 +58,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	?>
 
 	<dl class="event_info floattext">
-
-		<?php if ($this->elsettings->showdetailstitle == 1) : ?>
-			<dt class="title"><?php echo JText::_('COM_REDEVENT_TITLE' ).':'; ?></dt>
-    		<dd class="title"><?php echo $this->escape($this->row->full_title); ?></dd>
-		<?php
-  		endif;
-  		?>
-  		<dt class="when"><?php echo JText::_('COM_REDEVENT_WHEN' ).':'; ?></dt>
+		
+		<dt class="title"><?php echo JText::_('COM_REDEVENT_TITLE' ).':'; ?></dt>
+    <dd class="title"><?php echo $this->escape($this->row->full_title); ?></dd>
+  	
+  	<dt class="when"><?php echo JText::_('COM_REDEVENT_WHEN' ).':'; ?></dt>
 		<dd class="when">
 			<?php
 			$tmp = ELOutput::formatdate($this->row->dates, $this->row->times);
@@ -182,23 +179,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				?>
 				</dd>
 
-			<?php
-  			if ( $this->elsettings->showdetailsadress == 1 ) :
-  			?>
-
-  				<?php if ( $this->row->street ) : ?>
-  				<dt class="venue_street"><?php echo JText::_('COM_REDEVENT_STREET' ).':'; ?></dt>
+  			<?php if ( $this->row->street ) : ?>
+  			<dt class="venue_street"><?php echo JText::_('COM_REDEVENT_STREET' ).':'; ?></dt>
 				<dd class="venue_street">
     				<?php echo $this->escape($this->row->street); ?>
 				</dd>
 				<?php endif; ?>
 
 				<?php if ( $this->row->plz ) : ?>
-  				<dt class="venue_plz"><?php echo JText::_('COM_REDEVENT_ZIP' ).':'; ?></dt>
+  			<dt class="venue_plz"><?php echo JText::_('COM_REDEVENT_ZIP' ).':'; ?></dt>
 				<dd class="venue_plz">
     				<?php echo $this->escape($this->row->plz); ?>
 				</dd>
-				<?php endif; ?>
 
 				<?php if ( $this->row->city ) : ?>
     			<dt class="venue_city"><?php echo JText::_('COM_REDEVENT_CITY' ).':'; ?></dt>

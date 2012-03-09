@@ -384,7 +384,7 @@ class RedeventModelEditvenue extends JModel
 		$link 	= JRoute::_(JURI::base().RedeventHelperRoute::getVenueEventsRoute($row->id), false);
 
 		//create mail
-		if (($elsettings->mailinform == 2) || ($elsettings->mailinform == 3)) {
+		if (($params->get('mailinform') == 2) || ($params->get('mailinform') == 3)) {
 
 			$mail = JFactory::getMailer();
 
@@ -405,7 +405,7 @@ class RedeventModelEditvenue extends JModel
 
 			}
 
-			$receivers = explode( ',', trim($elsettings->mailinformrec));
+			$receivers = explode( ',', trim($params->get('mailinformrec')));
 
 			$mail->addRecipient( $receivers );
 			$mail->setSender( array( $MailFrom, $FromName ) );
@@ -417,7 +417,7 @@ class RedeventModelEditvenue extends JModel
 		}
 
 		//create the mail for the user
-		if (($elsettings->mailinformuser == 2) || ($elsettings->mailinformuser == 3)) {
+		if (($params->get('mailinformuser') == 2) || ($params->get('mailinformuser') == 3)) {
 
 			$usermail = JFactory::getMailer();
 

@@ -1014,7 +1014,7 @@ class RedeventModelEditevent extends JModel
 		$link 	= JRoute::_(JURI::base().RedeventHelperRoute::getDetailsRoute($row->id), isset($xref) ? $xref->id : false);
 
 		//create the mail for the site owner
-		if (($elsettings->mailinform == 1) || ($elsettings->mailinform == 3)) {
+		if (($params->get('mailinform') == 1) || ($params->get('mailinform') == 3)) {
 
 			$mail = JFactory::getMailer();
 
@@ -1035,7 +1035,7 @@ class RedeventModelEditevent extends JModel
 
 			}
 
-			$receivers = explode( ',', trim($elsettings->mailinformrec));
+			$receivers = explode( ',', trim($params->get('mailinformrec')));
 
 			$mail->addRecipient( $receivers );
 			$mail->setSender( array( $MailFrom, $FromName ) );
@@ -1049,7 +1049,7 @@ class RedeventModelEditevent extends JModel
 		}//mail end
 
 		//create the mail for the user
-		if (($elsettings->mailinformuser == 1) || ($elsettings->mailinformuser == 3)) {
+		if (($params->get('mailinformuser') == 1) || ($params->get('mailinformuser') == 3)) {
 
 			$usermail = JFactory::getMailer();
 
