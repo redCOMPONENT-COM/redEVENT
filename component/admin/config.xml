@@ -153,10 +153,14 @@
  	</params>
  	
  	<params group="COM_REDEVENT_pasteventssettings">
-    <param name="pastevents_action" type="list" default="0" label="COM_REDEVENT_PAST_EVENTS_ACTION" description="COM_REDEVENT_PAST_EVENTS_ACTION_TIP">
-      <option value="0">COM_REDEVENT_DO_NOTHING</option>
-      <option value="1">COM_REDEVENT_DELETE_OLD_EVENTS</option>
-      <option value="2">COM_REDEVENT_ARCHIVE_OLD_EVENTS</option>
+    <param name="pastevents_action" type="list" default="0" label="COM_REDEVENT_SETTINGS_PAST_EVENTS_ACTION" description="COM_REDEVENT_SETTINGS_PAST_EVENTS_ACTION_DESC">
+      <option value="0">COM_REDEVENT_SETTINGS_PAST_EVENTS_DO_NOTHING</option>
+      <option value="1">COM_REDEVENT_SETTINGS_PAST_EVENTS_DELETE_OLD_SESSIONS</option>
+      <option value="2">COM_REDEVENT_SETTINGS_PAST_EVENTS_ARCHIVE_OLD_SESSIONS</option>
+    </param>
+    <param name="pastevents_events_action" type="radio" default="1" label="COM_REDEVENT_SETTINGS_PAST_EVENTS_EVENTS_ACTION" description="COM_REDEVENT_SETTINGS_PAST_EVENTS_EVENTS_ACTION_DESC">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
     </param>
     <param name="pastevents_delay" type="text" default="2" label="COM_REDEVENT_PAST_EVENTS_DELAY" description="COM_REDEVENT_PAST_EVENTS_DELAY_TIP" />
     <param name="pastevents_reference_date" type="list" default="end" label="COM_REDEVENT_PAST_EVENTS_REFERENCE_DATE" description="COM_REDEVENT_PAST_EVENTS_REFERENCE_DATE_TIP">
