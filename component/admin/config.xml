@@ -52,13 +52,6 @@
       <option value="1">Yes</option>
     </param>
 	</params>
-	
-	<params group="COM_REDEVENT_SETTINGS_general">
-  	<param name="showdetails" type="radio" default="1" label="COM_REDEVENT_SETTINGS_GENERAL_SHOW_DETAILS" description="COM_REDEVENT_SETTINGS_GENERAL_SHOW_DETAILS_DESC">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-	</params>
 
 	<params group="COM_REDEVENT_SETTINGS_lists">
 		<param name="display_limit_select" type="radio" default="1" label="COM_REDEVENT_DISPLAY_LIMIT_SELECT" description="COM_REDEVENT_DISPLAY_LIMIT_SELECT_DESC">
@@ -334,6 +327,10 @@
  	</params>
  	
  	<params group="COM_REDEVENT_SETTINGS_MISC">
+  	<param name="showdetails" type="radio" default="1" label="COM_REDEVENT_SETTINGS_GENERAL_SHOW_DETAILS" description="COM_REDEVENT_SETTINGS_GENERAL_SHOW_DETAILS_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
  		<param name="ical_timezone" type="timezones" default="0" label="COM_REDEVENT_SETTINGS_MISC_TIMEZONE_LABEL" description="COM_REDEVENT_SETTINGS_MISC_TIMEZONE_DESC" />
     <param name="ical_no_timezone" type="radio" default="0" label="COM_REDEVENT_SETTINGS_MISC_NOTIMEZONE_LABEL" description="COM_REDEVENT_SETTINGS_MISC_NOTIMEZONE_DESC">
       <option value="0">No</option>

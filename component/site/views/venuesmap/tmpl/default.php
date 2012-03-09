@@ -29,8 +29,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     <?php echo JText::_('COM_REDEVENT_Locations'); ?>
   </h1>
 
-<?php if ($this->elsettings->gmapkey): ?>
-
 <script type="text/javascript">
 <!--
 var venueurl = '<?php echo JRoute::_($this->ajaxurl, false); ?>';
@@ -135,5 +133,4 @@ window.addEvent('domready', function() {
 
 
 <div id="gmap" style="height: 500px"></div>
-<?php endif; ?>
 </div>

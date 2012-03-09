@@ -36,18 +36,6 @@ class RedEvent_settings extends JTable
 	 * @var int
 	 */
 	var $id					= "1";
-	/** @var int */
-	var $showtime 			= "0";
-	/** @var int */
-	var $showtitle 			= "1";
-	/** @var int */
-	var $showlocate 		= "1";
-	/** @var int */
-	var $showcity 			= "1";
-	/** @var string */
-	var $map24id 			= null;
-	/** @var int */
-	var $gmapkey	 		= null;
 	/** @var string */
 	var $tablewidth 		= null;
 	/** @var string */
