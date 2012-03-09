@@ -91,6 +91,7 @@ class RedeventViewSimpleList extends JView
 
 		if ( $pop ) {//If printpopup set true
 			$params->set( 'popup', 1 );
+			$This->setLayout('print');
 		}
 		
 		if ( $task == 'archive' ) {

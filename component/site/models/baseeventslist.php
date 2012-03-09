@@ -140,11 +140,11 @@ class RedeventModelBaseEventList extends JModel
 			$query = $this->_buildQuery();
 
 			if ($pop) {
-				$this->_data = $this->_getList( $query );
-			} else {
-				$pagination = $this->getPagination();
-				$this->_data = $this->_getList( $query, $pagination->limitstart, $pagination->limit );
+				// put a limit for print pagination
+				//$this->setLimit(5);
 			}
+			$pagination = $this->getPagination();
+			$this->_data = $this->_getList( $query, $pagination->limitstart, $pagination->limit );
 			$this->_data = $this->_categories($this->_data);
       $this->_data = $this->_getPlacesLeft($this->_data);
       $this->_data = $this->_getPrices($this->_data);

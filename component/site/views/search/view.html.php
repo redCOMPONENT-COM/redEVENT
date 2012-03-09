@@ -108,6 +108,7 @@ class RedeventViewSearch extends JView
 
 		if ( $pop ) {//If printpopup set true
 			$params->set( 'popup', 1 );
+			$this->setLayout('print');
 		}
 		
 		if ( $task == 'archive' ) {
