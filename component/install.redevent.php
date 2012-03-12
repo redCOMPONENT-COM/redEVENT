@@ -839,7 +839,7 @@ if (is_array($cols))
   }	
   
 	/* show in lists ? */
-  if (array_key_exists('visible', $cols)) {
+  if (array_key_exists('visible', $cols) && !array_key_exists('frontend_edit', $cols)) {
     $q = "ALTER IGNORE TABLE #__redevent_fields CHANGE `visible` `frontend_edit` TINYINT( 1 ) NULL DEFAULT '0'";
     $db->setQuery($q);
     $db->query();    

@@ -413,7 +413,6 @@ CREATE TABLE IF NOT EXISTS `#__redevent_fields` (
   `max` int(5) NOT NULL,
   `name` varchar(255) NOT NULL,
   `tips` text NOT NULL,
-  `visible` tinyint(1) DEFAULT '0',
   `required` tinyint(1) DEFAULT '0',
   `searchable` tinyint(1) DEFAULT '1',
   `frontend_edit` TINYINT( 1 ) NULL DEFAULT '0',
