@@ -114,6 +114,9 @@ function com_install() {
 
 jimport( 'joomla.filesystem.folder' );
 
+$lang =& JFactory::getLanguage();
+$lang->load('com_redevent');
+
 // check upgrade from 1.0 to 2.0
 upgrade1_2();
 
