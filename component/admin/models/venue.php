@@ -159,6 +159,7 @@ class RedEventModelVenue extends JModel
 			$venue->id					= 0;
 			$venue->venue				= null;
 			$venue->alias				= null;
+			$venue->company			= null;
 			$venue->url					= null;
 			$venue->street				= null;
 			$venue->city				= null;
