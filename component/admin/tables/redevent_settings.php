@@ -65,8 +65,6 @@ class RedEvent_settings extends JTable
 	/** @var string */
 	var $timename 			= null;
 	/** @var int */
-	var $showtimedetails 	= "1";
-	/** @var int */
 	var $showevdescription 	= "1";
 	/** @var int */
 	var $showlocdescription = "1";
