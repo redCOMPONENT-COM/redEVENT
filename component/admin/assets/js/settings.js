@@ -20,33 +20,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-function changemailMode()
-{
-	if(document.getElementById) {
-		mode = window.document.adminForm.mailinform.selectedIndex;
-		switch (mode) {
-			case 0:
-				document.getElementById('mail1').style.display = 'none';
-			break;
-			default:
-				document.getElementById('mail1').style.display = '';
-		} // switch
-	} // if
-}
-
-function changeintegrateMode()
-{
-	if(document.getElementById) {
-		mode = window.document.adminForm.comunsolution.selectedIndex;
-		switch (mode) {
-			case 0:
-				document.getElementById('integrate').style.display = 'none';
-				break;
-			default:
-				document.getElementById('integrate').style.display = '';
-		} // switch
-	} // if
-}
 
 function changegdMode(mode)
 {
@@ -61,108 +34,10 @@ function changegdMode(mode)
 	} // if
 }
 
-function changetitleMode(mode)
-{
-	if(document.getElementById) {
-		switch (mode) {
-			case 0:
-				document.getElementById('title1').style.display = 'none';
-				document.adminForm.titlewidth.value='';
-				document.getElementById('title2').style.display = 'none';
-				break;
-			default:
-				document.getElementById('title1').style.display = '';
-				document.getElementById('title2').style.display = '';
-		} // switch
-	} // if
-}
-
-function changelocateMode(mode)
-{
-	if(document.getElementById) {
-		switch (mode) {
-			case 0:
-				document.getElementById('locate1').style.display = 'none';
-				document.adminForm.locationwidth.value='';
-				document.getElementById('locate2').style.display = 'none';
-				document.getElementById('locate3').style.display = 'none';
-				break;
-			default:
-				document.getElementById('locate1').style.display = '';
-				document.getElementById('locate2').style.display = '';
-				document.getElementById('locate3').style.display = '';
-		} // switch
-	} // if
-}
-
-function changecityMode(mode)
-{
-	if(document.getElementById) {
-		switch (mode) {
-			case 0:
-				document.getElementById('city1').style.display = 'none';
-				document.adminForm.citywidth.value='';
-				document.getElementById('city2').style.display = 'none';
-				break;
-			default:
-				document.getElementById('city1').style.display = '';
-				document.getElementById('city2').style.display = '';
-		} // switch
-	} // if
-}
-
-function changestateMode(mode)
-{
-	if(document.getElementById) {
-		switch (mode) {
-			case 0:
-				document.getElementById('state1').style.display = 'none';
-				document.adminForm.statewidth.value='';
-				document.getElementById('state2').style.display = 'none';
-				break;
-			default:
-				document.getElementById('state1').style.display = '';
-				document.getElementById('state2').style.display = '';
-		} // switch
-	} // if
-}
-
-function changecatMode(mode)
-{
-	if(document.getElementById) {
-		switch (mode) {
-			case 0:
-				document.getElementById('cat1').style.display = 'none';
-				document.adminForm.catfrowidth.value='';
-				document.getElementById('cat2').style.display = 'none';
-				document.getElementById('cat3').style.display = 'none';
-				break;
-			default:
-				document.getElementById('cat1').style.display = '';
-				document.getElementById('cat2').style.display = '';
-				document.getElementById('cat3').style.display = '';
-		} // switch
-	} // if
-}
-
-function changeregMode()
-{
-	if(document.getElementById) {
-		mode = window.document.adminForm.showfroregistra.selectedIndex;
-		switch (mode) {
-			case 0:
-				document.getElementById('froreg').style.display = 'none';
-				break;
-			default:
-				document.getElementById('froreg').style.display = '';
-		} // switch
-	} // if
-}
-
 document.switcher = null;
-Window.onDomReady(function(){
- 	toggler = $('submenu')
-  	element = $('elconfig-document')
+window.addEvent('domready', function() {
+ 	toggler = $('submenu');
+  	element = $('elconfig-document');
   	if(element) {
   		document.switcher = new JSwitcher(toggler, element, {cookieName: toggler.getAttribute('class')});
   	}

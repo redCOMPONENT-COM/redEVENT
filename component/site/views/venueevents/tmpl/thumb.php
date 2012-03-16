@@ -52,7 +52,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	?>
 
 	<dl class="location floattext">
-		<?php if (($this->elsettings->showdetlinkvenue == 1) && (!empty($this->venue->url))) : ?>
+		<?php if (!empty($this->venue->url)) : ?>
 		<dt class="venue"><?php echo JText::_('COM_REDEVENT_WEBSITE' ).':'; ?></dt>
 			<dd class="venue">
 					<a href="<?php echo $this->venue->url; ?>" target="_blank"> <?php echo $this->venue->urlclean; ?></a>
@@ -97,7 +97,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	</dl>
 
 	<?php
-  	if ($this->elsettings->showlocdescription == 1 && !empty($this->venuedescription)) :
+  	if (!empty($this->venuedescription)) :
 	?>
 
 		<h2 class="description"><?php echo JText::_('COM_REDEVENT_DESCRIPTION' ); ?></h2>

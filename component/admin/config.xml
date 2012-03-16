@@ -3,6 +3,7 @@
 
 	<params addpath="/administrator/components/com_redevent/elements">
 		
+ 	  <param type="respacer" default="COM_REDEVENT_SETTINGS_GLOBAL_SETTINGS_TIP"/>
 		<param name="cat_num" type="text" size="2" default="4" label="COM_REDEVENT_CAT_DISPLAY" description="COM_REDEVENT_CAT_DISPLAY_DESC" />	
 		<param name="details_layout" type="radio" default="fixed" label="COM_REDEVENT_SETTINGS_DETAILS_LAYOUT" description="COM_REDEVENT_SETTINGS_DETAILS_LAYOUT_DESC">
 			<option value="default">COM_REDEVENT_SETTINGS_DETAILS_LAYOUT_TAGS</option>
@@ -50,6 +51,23 @@
     <param name="showmapserv" type="radio" default="1" label="COM_REDEVENT_SETTINGS_ACTIVATE_VENUE_MAP_LABEL" description="COM_REDEVENT_SETTINGS_ACTIVATE_VENUE_MAP_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
+    </param>
+	</params>
+
+	<params group="COM_REDEVENT_SETTINGS_GENERAL">
+  	<param name="showdetails" type="radio" default="1" label="COM_REDEVENT_SETTINGS_GENERAL_SHOW_DETAILS" description="COM_REDEVENT_SETTINGS_GENERAL_SHOW_DETAILS_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="formatdate" type="text" default="%d/%m/%Y" label="COM_REDEVENT_DATE_STRFTIME" description="COM_REDEVENT_DATE_STRFTIME_TIP"/>
+		<param name="formattime" type="text" default="%H:%M" label="COM_REDEVENT_TIME_STRFTIME" description="COM_REDEVENT_TIME_STRFTIME_TIP"/>
+		<param name="currency_decimal_separator" type="text" default="," label="COM_REDEVENT_CURRENCY_DECIMAL_SEPARATOR" description="COM_REDEVENT_CURRENCY_DECIMAL_SEPARATOR_TIP"/>
+		<param name="currency_thousand_separator" type="text" default="." label="COM_REDEVENT_CURRENCY_THOUSAND_SEPARATOR" description="COM_REDEVENT_CURRENCY_THOUSAND_SEPARATOR_TIP"/>
+    
+    <param name="currency_decimals" type="list" default="decimals" label="COM_REDEVENT_CURRENCY_DECIMALS" description="COM_REDEVENT_CURRENCY_DECIMALS_TIP">
+      <option value="decimals">COM_REDEVENT_DECIMALS</option>
+      <option value="comma">,-</option>
+      <option value="none">COM_REDEVENT_NONE</option>
     </param>
 	</params>
 
@@ -251,6 +269,10 @@
  	</params>
  	
  	<params group="COM_REDEVENT_registration">
+  	<param name="storeip" type="radio" default="1" label="COM_REDEVENT_STORE_IP" description="COM_REDEVENT_STORE_IP_TIP">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
  	  <param type="respacer" default="COM_REDEVENT_SETTINGS_TAGS_LINK"/>
     <param name="registration_default_recipients" type="text" default="" size="80" label="COM_REDEVENT_SETTINGS_REGISTRATION_DEFAULT_RECIPIENTS" description="COM_REDEVENT_SETTINGS_REGISTRATION_DEFAULT_RECIPIENTS_TIP"/>
     <param name="registration_notify_creator" type="radio" default="1" label="COM_REDEVENT_SETTINGS_REGISTRATION_NOTIFY_CREATOR" description="COM_REDEVENT_SETTINGS_REGISTRATION_NOTIFY_CREATOR_TIP">
@@ -327,10 +349,6 @@
  	</params>
  	
  	<params group="COM_REDEVENT_SETTINGS_MISC">
-  	<param name="showdetails" type="radio" default="1" label="COM_REDEVENT_SETTINGS_GENERAL_SHOW_DETAILS" description="COM_REDEVENT_SETTINGS_GENERAL_SHOW_DETAILS_DESC">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
  		<param name="ical_timezone" type="timezones" default="0" label="COM_REDEVENT_SETTINGS_MISC_TIMEZONE_LABEL" description="COM_REDEVENT_SETTINGS_MISC_TIMEZONE_DESC" />
     <param name="ical_no_timezone" type="radio" default="0" label="COM_REDEVENT_SETTINGS_MISC_NOTIMEZONE_LABEL" description="COM_REDEVENT_SETTINGS_MISC_NOTIMEZONE_DESC">
       <option value="0">No</option>

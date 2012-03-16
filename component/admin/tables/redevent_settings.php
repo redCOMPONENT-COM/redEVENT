@@ -36,66 +36,10 @@ class RedEvent_settings extends JTable
 	 * @var int
 	 */
 	var $id					= "1";
-	/** @var string */
-	var $tablewidth 		= null;
-	/** @var string */
-	var $datewidth 			= null;
-	/** @var string */
-	var $titlewidth 		= null;
-	/** @var string */
-	var $infobuttonwidth 	= null;
-	/** @var string */
-	var $locationwidth 		= null;
-	/** @var string */
-	var $citywidth 			= null;
-	/** @var string */
-	var $datename 			= null;
-	/** @var string */
-	var $titlename 			= null;
-	/** @var string */
-	var $infobuttonname 	= null;
-	/** @var string */
-	var $locationname 		= null;
-	/** @var string */
-	var $cityname 			= null;
-	/** @var string */
-	var $formatdate 		= null;
-	/** @var string */
-	var $formattime 		= null;
-	/** @var string */
-	var $timename 			= null;
-	/** @var int */
-	var $showevdescription 	= "1";
-	/** @var int */
-	var $showlocdescription = "1";
-	/** @var int */
-	var $showlinkvenue 		= "1";
-	/** @var int */
-	var $showdetlinkvenue 	= "1";
 	/** @var int */
 	var $delivereventsyes 	= "-2";
 	/** @var int */
-	var $datdesclimit 		= "1000";
-	/** @var int */
-	var $autopubl 			= "-2";
-	/** @var int */
-	var $deliverlocsyes 	= "-2";
-	/** @var int */
-	var $autopublocate 		= "-2";
-	/** @var int */
-	var $showcat 			= "0";
-	/** @var int */
-	var $catfrowidth 		= "";
-	/** @var string */
-	var $catfroname 		= null;
-	/** @var int */
 	var $evdelrec 			= "1";
-	/** @var int */
-	var $evpubrec 			= "1";
-	/** @var int */
-	var $locdelrec 			= "1";
-	/** @var int */
-	var $locpubrec 			= "1";
 	/** @var int */
 	var $sizelimit 			= "100";
 	/** @var int */
@@ -111,39 +55,11 @@ class RedEvent_settings extends JTable
 	/** @var int */
 	var $comunoption 		= "0";
 	/** @var int */
-	var $catlinklist 		= "0";
-	/** @var int */
-	var $showfroregistra 	= "0";
-	/** @var int */
-	var $showfrounregistra 	= "0";
-	/** @var int */
-	var $eventedit 			= "-2";
-	/** @var int */
-	var $eventeditrec 		= "1";
-	/** @var int */
-	var $eventowner 		= "0";
-	/** @var int */
-	var $venueedit 			= "-2";
-	/** @var int */
-	var $venueeditrec 		= "1";
-	/** @var int */
-	var $venueowner 		= "0";
-	/** @var int */
 	var $lightbox 			= "0";
 	/** @var string */
 	var $meta_keywords 		= null;
 	/** @var string */
 	var $meta_description 	= null;
-	/** @var int */
-	var $showstate 			= "0";
-	/** @var string */
-	var $statename 			= null;
-	/** @var string */
-	var $statewidth 		= null;
-	/** @var int */
-	var $regname	 		= null;
-	/** @var int */
-	var $storeip	 		= null;
 	/** @var int */
 	var $commentsystem		= 0;
 	/** @var string */
@@ -152,11 +68,6 @@ class RedEvent_settings extends JTable
 	var $checked_out 		= null;
 	/** @var date */
 	var $checked_out_time 	= null;
-	/** @var string */
-	var $currency_decimal_separator	= null;
-	/** @var string */
-	var $currency_thousand_separator = null;
-	var $currency_decimals = 'decimals';
 	var $signup_external_text = null;
 	var $signup_external_img = null;
 	var $signup_webform_text = null;
@@ -170,5 +81,18 @@ class RedEvent_settings extends JTable
 
 	function redevent_settings(& $db) {
 		parent::__construct('#__redevent_settings', 'id', $db);
+	}
+	
+	/**
+	 * for legacy purpose
+	 * @see JObject::get()
+	 */
+	function get($property, $default=null)
+	{
+		if(isset($this->$property)) {
+			return $this->$property;
+		}
+		$params = JComponentHelper::getParams('com_redevent');
+		return $params->get($property, $default);
 	}
 }

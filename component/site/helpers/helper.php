@@ -41,17 +41,13 @@ class redEVENTHelper {
 	function &config()
 	{
 		static $config;
-
-		if (!is_object($config))
+		
+		if (!$config)
 		{
-			$db 	= & JFactory::getDBO();
-			$sql 	= 'SELECT * FROM #__redevent_settings WHERE id = 1';
-			$db->setQuery($sql);
-			$config = $db->loadObject();
-			
-			$config->params = JComponentHelper::getParams('com_redevent');
+			$config = JTable::getInstance('RedEvent_settings', '');
+			$config->load(1);
+			$config->params = JComponentHelper::getParams('com_redevent'); // redundant, but for legacy
 		}
-
 		return $config;
 	}
 

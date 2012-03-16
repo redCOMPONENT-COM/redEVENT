@@ -754,17 +754,6 @@ class RedeventModelEditevent extends JModel
 
 			$row->modified 		= gmdate('Y-m-d H:i:s');
 			$row->modified_by 	= $user->get('id');
-
-			/*
-			* Is editor the owner of the event
-			* This extra Check is needed to make it possible
-			* that the venue is published after an edit from an owner
-			*/
-			if ($elsettings->venueowner == 1 && $row->created_by == $user->get('id')) {
-				$owneredit = 1;
-			} else {
-				$owneredit = 0;
-			}
 		} 
 		else 
 		{
@@ -776,11 +765,8 @@ class RedeventModelEditevent extends JModel
 			//get IP, time and userid
 			$row->created 		= gmdate('Y-m-d H:i:s');
 
-			$row->author_ip 	= $elsettings->storeip ? getenv('REMOTE_ADDR') : 'DISABLED';
+			$row->author_ip 	= $elsettings->get('storeip', '1') ? getenv('REMOTE_ADDR') : 'DISABLED';
 			$row->created_by 	= $user->get('id');
-
-			//Set owneredit to false
-			$owneredit = 0;
 		}
 
 		//Image upload

@@ -95,9 +95,7 @@ class RedeventViewVenueevents extends JView
 		}
 
 		// Add needed scripts if the lightbox effect is enabled
-		if ($elsettings->lightbox == 1) {
-			JHTML::_('behavior.modal');
-		}
+		JHTML::_('behavior.modal');
 
 		//Get image
 		$limage = redEVENTImage::flyercreator($venue->locimage);

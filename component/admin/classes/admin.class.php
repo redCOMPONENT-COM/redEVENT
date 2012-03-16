@@ -32,17 +32,26 @@ defined('_JEXEC') or die('Restricted access');
  */
 class ELAdmin {
 
+	/**
+	 * returns parameters for redevent
+	 * 
+	 * @return object
+	 */
 	function config()
 	{
-		$db =& JFactory::getDBO();
-
-		$sql = 'SELECT * FROM #__redevent_settings WHERE id = 1';
-		$db->setQuery($sql);
-		$config = $db->loadObject();
-
+		static $config;
+		
+		if (!$config)
+		{
+			$config = JTable::getInstance('RedEvent_settings', '');
+			$config->load(1);
+		}		
 		return $config;
 	}
 	
+	/**
+	 * display the submenu
+	 */
 	function setMenu()
 	{
 		$user = & JFactory::getUser();

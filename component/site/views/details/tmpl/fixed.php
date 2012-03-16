@@ -84,18 +84,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   		?>
 		    <dt class="where"><?php echo JText::_('COM_REDEVENT_WHERE' ).':'; ?></dt>
 		    <dd class="where">
-    		<?php if (($this->elsettings->showdetlinkvenue == 1) && (!empty($this->row->url))) : ?>
+    		<?php if ((!empty($this->row->url))) : ?>
 
 			    <a href="<?php echo $this->row->url; ?>"><?php echo $this->escape($this->row->venue); ?></a> -
 
-			<?php elseif ($this->elsettings->showdetlinkvenue == 2) : ?>
-
-			    <a href="<?php echo JRoute::_( 'index.php?view=venueevents&id='.$this->row->venueslug ); ?>"><?php echo $this->row->venue; ?></a> -
-
-			<?php elseif ($this->elsettings->showdetlinkvenue == 0) :
-
-				echo $this->escape($this->row->venue).' - ';
-
+			<?php 
 			endif;
 
 			echo $this->escape($this->row->city); ?>
@@ -123,7 +116,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			</dd>
 	</dl>
 
-  	<?php if ($this->elsettings->showevdescription == 1 && $this->row->datdescription != '' && $this->row->datdescription != '<br />') : ?>
+  	<?php if ($this->row->datdescription != '' && $this->row->datdescription != '<br />') : ?>
 
   	    <h2 class="description"><?php echo JText::_('COM_REDEVENT_DESCRIPTION' ); ?></h2>
   		<div class="description event_desc">
@@ -217,7 +210,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			?>
 		</dl>
 
-		<?php if ($this->elsettings->showlocdescription == 1 && $this->row->locdescription) :	?>
+		<?php if ($this->row->locdescription) :	?>
 
 			<h2 class="location_desc"><?php echo JText::_('COM_REDEVENT_DESCRIPTION' ); ?></h2>
   			<div class="description location_desc">

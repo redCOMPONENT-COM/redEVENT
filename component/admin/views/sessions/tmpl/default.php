@@ -121,18 +121,18 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 		foreach ((array) $this->items as $i => $row) 
 		{
 			/* Get the date */
-			$date = (!redEVENTHelper::isValidDate($row->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $this->settings->formatdate, strtotime( $row->dates )));
-			$enddate  = (!redEVENTHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) ? '' : strftime( $this->settings->formatdate, strtotime( $row->enddates ));
+			$date = (!redEVENTHelper::isValidDate($row->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $this->settings->get('formatdate', '%d.%m.%Y'), strtotime( $row->dates )));
+			$enddate  = (!redEVENTHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) ? '' : strftime( $this->settings->get('formatdate', '%d.%m.%Y'), strtotime( $row->enddates ));
 			$displaydate = $date. ($enddate ? ' - '.$enddate: '');
-			$endreg = (!redEVENTHelper::isValidDate($row->registrationend) ? '-' : strftime( $this->settings->formatdate, strtotime( $row->registrationend )));
+			$endreg = (!redEVENTHelper::isValidDate($row->registrationend) ? '-' : strftime( $this->settings->get('formatdate', '%d.%m.%Y'), strtotime( $row->registrationend )));
 	
 			$displaytime = '';
 			/* Get the time */
 			if (isset($row->times) && $row->times != '00:00:00') {
-				$displaytime = strftime( $this->settings->formattime, strtotime( $row->times )).' '.$this->settings->timename;
+				$displaytime = strftime( $this->settings->get('formattime', '%H:%M'), strtotime( $row->times ));
 	
 				if (isset($row->endtimes) && $row->endtimes != '00:00:00') {
-					$displaytime .= ' - '.strftime( $this->settings->formattime, strtotime( $row->endtimes )). ' '.$this->settings->timename;
+					$displaytime .= ' - '.strftime( $this->settings->get('formattime', '%H:%M'), strtotime( $row->endtimes ));
 				}
 			}
 			$checked 	= JHTML::_('grid.checkedout',   $row, $i );

@@ -106,7 +106,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 							}
 
 							?><br />
-							<b><?php echo JText::_('COM_REDEVENT_IMAGE_FILESIZE' ).':'; ?></b> <?php echo $this->elsettings->sizelimit; ?> kb<br />
+							<b><?php echo JText::_('COM_REDEVENT_IMAGE_FILESIZE' ).':'; ?></b> <?php echo $this->elsettings->get('sizelimit', '100'); ?> kb<br />
 
 							<?php
 							if ( $this->elsettings->gddisabled ) {

@@ -1681,7 +1681,7 @@ class redEVENT_tags {
 		if (strtotime($this->getEvent()->getData()->registrationend))
 		{
 			$elsettings = redEVENTHelper::config();
-			$res = strftime( $elsettings->formatdate . ' '. $elsettings->formattime, 
+			$res = strftime( $elsettings->get('formatdate', '%d.%m.%Y') . ' '. $elsettings->get('formattime', '%H:%M'), 
 			                 strtotime($this->getEvent()->getData()->registrationend));
 		}
 		return $res;

@@ -240,7 +240,7 @@ $pane =& JPane::getInstance('tabs');
 				echo JHTML::_('image', 'components/com_redevent/assets/images/noimage.png', JText::_('COM_REDEVENT_NO_IMAGE'), array('class' => 'modal'));
 			endif;?> <label for="userfile"><?php echo JText::_('COM_REDEVENT_IMAGE'); ?></label>
 <input class="inputbox <?php echo $this->params->get('edit_image', 1) == 2 ? 'required' : ''; ?>"	name="userfile" id="userfile" type="file" /> 
-<small class="editlinktip hasTip"	title="<?php echo JText::_('COM_REDEVENT_NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_MAX_IMAGE_FILE_SIZE').' '.$this->elsettings->sizelimit.' kb'; ?>"><?php echo $this->infoimage; ?> </small>
+<small class="editlinktip hasTip"	title="<?php echo JText::_('COM_REDEVENT_NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_MAX_IMAGE_FILE_SIZE').' '.$this->elsettings->get('sizelimit', '100').' kb'; ?>"><?php echo $this->infoimage; ?> </small>
 </div>
 <?php echo $pane->endPanel(); ?>
 <?php endif; ?>

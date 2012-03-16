@@ -123,7 +123,7 @@ class RedEventModelRegistration extends JModel
 		$obj->submit_key = $submit_key;
 		$obj->uid        = $user ? $user->get('id') : 0;
 		$obj->uregdate 	 = gmdate('Y-m-d H:i:s');
-		$obj->uip        = $config->storeip ? getenv('REMOTE_ADDR') : 'DISABLED';
+		$obj->uip        = $config->get('storeip', '1') ? getenv('REMOTE_ADDR') : 'DISABLED';
 		
 		if (!$obj->check()) {
 			$this->setError($obj->getError());

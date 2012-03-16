@@ -601,7 +601,7 @@ class ELOutput {
 		}
 		
 		//Format date
-		$formatdate = strftime( $settings->formatdate, strtotime( $date.' '.$time ));
+		$formatdate = strftime( $settings->get('formatdate', '%d.%m.%Y'), strtotime( $date.' '.$time ));
 		
 		return $formatdate;
 	}
@@ -625,9 +625,7 @@ class ELOutput {
 		}
 		
 		//Format time
-		$formattime = strftime( $settings->formattime, strtotime( $date.' '.$time ));
-		$formattime .= ' '.$settings->timename;
-		
+		$formattime = strftime( $settings->get('formattime', '%H:%M'), strtotime( $date.' '.$time ));		
 		return $formattime;
 	}
 	
@@ -763,18 +761,18 @@ class ELOutput {
 			return JText::_('COM_REDEVENT_EVENT_PRICE_FREE');
 		}
 		
-		switch ($settings->currency_decimals) {
+		switch ($settings->get('currency_decimals', 'decimals')) {
 			case 'decimals':
 				//Format price
-				$formatprice = number_format($price, 2, $settings->currency_decimal_separator, $settings->currency_thousand_separator);
+				$formatprice = number_format($price, 2, $settings->get('currency_decimal_separator', ','), $settings->get('currency_thousand_separator', '.'));
 				break;
 			case 'comma':
 				//Format price
-				$formatprice = number_format($price, 0, $settings->currency_decimal_separator, $settings->currency_thousand_separator).',-';
+				$formatprice = number_format($price, 0, $settings->get('currency_decimal_separator', ','), $settings->get('currency_thousand_separator', '.')).',-';
 				break;
 			case 'none':
 				//Format price
-				$formatprice = number_format($price, 0, $settings->currency_decimal_separator, $settings->currency_thousand_separator);
+				$formatprice = number_format($price, 0, $settings->get('currency_decimal_separator', ','), $settings->get('currency_thousand_separator', '.'));
 				break;
 		}
 		if ($currency) {

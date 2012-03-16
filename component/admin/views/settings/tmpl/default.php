@@ -26,25 +26,25 @@ defined('_JEXEC') or die('Restricted access');
 
 <form action="index.php" method="post" name="adminForm">
 
-      <div id="elconfig-document">
-      <div id="page-basic">
-        <?php echo $this->loadTemplate('basic'); ?>
-      </div>
+	<div id="elconfig-document">      
+		<div id="page-parameters">
+			<?php echo $this->loadTemplate('global'); ?>
+		</div>
       
-      <div id="page-parameters">
-        <?php echo $this->loadTemplate('global'); ?>
-      </div>
+		<div id="page-basic">
+			<?php echo $this->loadTemplate('basic'); ?>
+		</div>
       
-      <div id="page-signup">
-        <?php echo $this->loadTemplate('signup'); ?>
-      </div>
-    </div>
-    <div class="clr"></div>
+		<div id="page-signup">
+			<?php echo $this->loadTemplate('signup'); ?>
+		</div>
+	</div>
+	<div class="clr"></div>
 
-    <?php echo JHTML::_( 'form.token' ); ?>
-    <input type="hidden" name="task" value="">
-    <input type="hidden" name="id" value="1">
-    <input type="hidden" name="lastupdate" value="<?php echo $this->elsettings->lastupdate; ?>">
-    <input type="hidden" name="option" value="com_redevent">
-    <input type="hidden" name="controller" value="settings">
+	<?php echo JHTML::_( 'form.token' ); ?>
+	<input type="hidden" name="task" value="">
+	<input type="hidden" name="id" value="1">
+	<input type="hidden" name="lastupdate" value="<?php echo $this->elsettings->lastupdate; ?>">
+	<input type="hidden" name="option" value="com_redevent">
+	<input type="hidden" name="controller" value="settings">
 </form>

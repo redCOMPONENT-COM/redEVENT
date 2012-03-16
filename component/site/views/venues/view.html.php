@@ -71,9 +71,7 @@ class RedeventViewVenues extends JView
 		$total 		= & $this->get('Total');
 
 		//Add needed scripts if the lightbox effect is enabled
-		if ($elsettings->lightbox == 1) {
-  			JHTML::_('behavior.modal');
-		}
+		JHTML::_('behavior.modal');
 
 		//add alternate feed link
 		$link    = 'index.php?option=com_redevent&view=venues&format=feed';

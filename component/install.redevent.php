@@ -396,26 +396,6 @@ if (is_array($cols))
 $cols = $tables['#__redevent_settings'];
 
 if (is_array($cols)) {	
-	/* Check if we have the currency_decimals column */
-	if (!array_key_exists('currency_decimals', $cols)) {
-		$q = "ALTER IGNORE TABLE #__redevent_settings ADD COLUMN `currency_decimals` varchar(10) default 'decimals'";
-		$db->setQuery($q);
-		$db->query();
-	}
-	
-	/* Check if we have the currency_decimal_separator column */
-	if (!array_key_exists('currency_decimal_separator', $cols)) {
-		$q = "ALTER IGNORE TABLE #__redevent_settings ADD COLUMN `currency_decimal_separator` varchar(1) default ','";
-		$db->setQuery($q);
-		$db->query();
-	}
-	
-	/* Check if we have the currency_thousand_separator column */
-	if (!array_key_exists('currency_thousand_separator', $cols)) {
-		$q = "ALTER IGNORE TABLE #__redevent_settings ADD COLUMN `currency_thousand_separator` varchar(1) default '.'";
-		$db->setQuery($q);
-		$db->query();
-	}
 	
 	/* Check if we have the signup_external_text column */
 	if (!array_key_exists('signup_external_text', $cols)) {
@@ -1131,33 +1111,8 @@ if (strstr($cols['id']->Type, 'tiny')) {
 /* Add the basic configuration entry */
 $q = "INSERT IGNORE INTO `#__redevent_settings` SET "
    . " id = 1, "
-   . " tablewidth = '100%', "
-   . " datewidth = '15%', "
-   . " titlewidth = '25%', "
-   . " locationwidth = '20%', "
-   . " citywidth = '20%', "
-   . " datename = 'Date', "
-   . " titlename = 'Title', "
-   . " locationname = 'Venue', "
-   . " cityname = 'City', "
-   . " formatdate = '%d.%m.%Y', "
-   . " formattime = '%H.%M', "
-   . " timename = 'h', "
-   . " showlocdescription = 1, "
-   . " showlinkvenue = 1, "
-   . " showdetlinkvenue = 2, "
    . " delivereventsyes = -2, "
-   . " datdesclimit = '1000', "
-   . " autopubl = -2, "
-   . " deliverlocsyes = -2, "
-   . " autopublocate = -2, "
-   . " showcat = 1, "
-   . " catfrowidth = '20%', "
-   . " catfroname = 'Type', "
    . " evdelrec = 1, "
-   . " evpubrec = 1, "
-   . " locdelrec = 1, "
-   . " locpubrec = 1, "
    . " sizelimit = '100', "
    . " imagehight = '100', "
    . " imagewidth = '100', "
@@ -1165,30 +1120,13 @@ $q = "INSERT IGNORE INTO `#__redevent_settings` SET "
    . " imageenabled = 1, "
    . " comunsolution = 0, "
    . " comunoption = 0, "
-   . " catlinklist = 1, "
-   . " showfroregistra = 2, "
-   . " showfrounregistra = 2, "
-   . " eventedit = -2, "
-   . " eventeditrec = 1, "
-   . " eventowner = 0, "
-   . " venueedit = -2, "
-   . " venueeditrec = 1, "
-   . " venueowner = 0, "
    . " lightbox = 0, "
    . " meta_keywords = '[title], [a_name], [catsid], [times]', "
    . " meta_description = 'The event titled [title] starts on [dates]!', "
-   . " showstate = 0, "
-   . " statename = 'State', "
-   . " statewidth = 0, "
-   . " regname = '', "
-   . " storeip = 1, "
    . " commentsystem = 0, "
    . " lastupdate = '0', "
    . " checked_out = '', "
    . " checked_out_time = '', "
-   . " currency_decimals = 'decimals', "
-   . " currency_decimal_separator = ',', "
-   . " currency_thousand_separator = '.', "
    . " signup_external_text = 'SIGNUP_EXTERNAL', "
    . " signup_external_img = 'external_icon.gif', "
    . " signup_webform_text ='SIGNUP_WEBFORM', "

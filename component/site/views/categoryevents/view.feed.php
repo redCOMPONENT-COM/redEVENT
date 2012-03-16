@@ -80,11 +80,11 @@ class RedeventViewCategoryevents extends JView
 			//Format date
 			if (redEVENTHelper::isValidDate($row->dates))
 			{
-				$date = strftime( $elsettings->formatdate, strtotime( $row->dates ));
+				$date = strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $row->dates ));
 				if (!redEVENTHelper::isValidDate($row->enddates)) {
 					$displaydate = $date;
 				} else {
-					$enddate 	= strftime( $elsettings->formatdate, strtotime( $row->enddates ));
+					$enddate 	= strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $row->enddates ));
 					$displaydate = $date.' - '.$enddate;
 				}
 			}
@@ -94,13 +94,11 @@ class RedeventViewCategoryevents extends JView
 
 			//Format time
 			if ($row->times) {
-				$time = strftime( $elsettings->formattime, strtotime( $row->times ));
-				$time = $time.' '.$elsettings->timename;
+				$time = strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $row->times ));
 				$displaytime = $time;
 			}
 			if ($row->endtimes) {
-				$endtime = strftime( $elsettings->formattime, strtotime( $row->endtimes ));
-				$endtime = $endtime.' '.$elsettings->timename;
+				$endtime = strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $row->endtimes ));
 				$displaytime = $time.' - '.$endtime;
 			}
 
@@ -177,13 +175,13 @@ class RedeventViewCategoryevents extends JView
 			//Format date
 			if (redEVENTHelper::isValidDate($row->dates))
 			{
-				$date = strftime( $elsettings->formatdate, strtotime( $row->dates ));
+				$date = strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $row->dates ));
 				$rssstartdate = $row->dates;
 				if (!redEVENTHelper::isValidDate($row->enddates)) {
 					$displaydate = $date;
 					$rssenddate = $row->dates;
 				} else {
-					$enddate 	= strftime( $elsettings->formatdate, strtotime( $row->enddates ));
+					$enddate 	= strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $row->enddates ));
 					$rssenddate = $row->enddates;
 					$displaydate = $date.' - '.$enddate;
 				}
@@ -194,14 +192,12 @@ class RedeventViewCategoryevents extends JView
 
 			//Format time
 			if ($row->times) {
-				$time = strftime( $elsettings->formattime, strtotime( $row->times ));
-				$time = $time.' '.$elsettings->timename;
+				$time = strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $row->times ));
 				$displaytime = $time;
 				$rssstartdate .= 'T'.$row->times.$utcoffset;	
 			}
 			if ($row->endtimes) {
-				$endtime = strftime( $elsettings->formattime, strtotime( $row->endtimes ));
-				$endtime = $endtime.' '.$elsettings->timename;
+				$endtime = strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $row->endtimes ));
 				$displaytime = $time.' - '.$endtime;
 				$rssenddate .= 'T'.$row->endtimes.$utcoffset;	
 			}
