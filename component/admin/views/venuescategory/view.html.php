@@ -56,10 +56,10 @@ class RedEventViewVenuesCategory extends JView {
 
 		//create the toolbar
 		if ( $cid ) {
-			JToolBarHelper::title( JText::_('COM_REDEVENT_EDIT_VENUES_CATEGORY' ), 'categoriesedit' );
+			JToolBarHelper::title( JText::_('COM_REDEVENT_EDIT_VENUES_CATEGORY' ), 'venuescategories' );
 
 		} else {
-			JToolBarHelper::title( JText::_('COM_REDEVENT_ADD_VENUES_CATEGORY' ), 'categoriesedit' );
+			JToolBarHelper::title( JText::_('COM_REDEVENT_ADD_VENUES_CATEGORY' ), 'venuescategories' );
 
 			//set the submenu
       ELAdmin::setMenu();

@@ -61,7 +61,7 @@ class RedEventViewVenuesCategories extends JView {
     ELAdmin::setMenu();
 
 		//create the toolbar
-		JToolBarHelper::title( JText::_('COM_REDEVENT_VENUES_CATEGORIES' ), 'elcategories' );
+		JToolBarHelper::title( JText::_('COM_REDEVENT_VENUES_CATEGORIES' ), 'venuescategories' );
 		JToolBarHelper::publishList();
 		JToolBarHelper::spacer();
 		JToolBarHelper::unpublishList();

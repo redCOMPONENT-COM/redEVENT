@@ -86,6 +86,19 @@ class RedeventViewCustomfield extends JView
 			//$season->published = 1;
 			$object->order 	= 0;
 		}
+		
+		// Set toolbar items for the page
+		$edit		= JRequest::getVar('edit',true);
+		$text = !$edit ? JText::_('COM_REDEVENT_New' ) : JText::_('COM_REDEVENT_Edit' );
+		JToolBarHelper::title(   JText::_('COM_REDEVENT_Custom_field' ).': <small><small>[ ' . $text.' ]</small></small>', 'customfields' );
+		JToolBarHelper::save();
+		JToolBarHelper::apply();
+		if (!$edit)  {
+			JToolBarHelper::cancel();
+		} else {
+			// for existing items the button is renamed `close`
+			JToolBarHelper::cancel( 'cancel', 'Close' );
+		}
 		  
 		// build the html select list for ordering
 		$query = 'SELECT ordering AS value, name AS text'
@@ -136,6 +149,7 @@ class RedeventViewCustomfield extends JView
     $types[] = JHTML::_('select.option', 'wysiwyg', 'Wysiwyg');  
     $lists['types'] = JHTML::_('select.genericlist', $types, 'type', 'class="inputbox"', 'value', 'text', $object->type );
 
+    
 		$this->assignRef('lists',		$lists);
 		$this->assignRef('object',		$object);
 

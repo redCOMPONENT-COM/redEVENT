@@ -80,10 +80,10 @@ class RedEventViewGroup extends JView {
 		
 		//build toolbar
 		if ( $cid ) {
-			JToolBarHelper::title( JText::_('COM_REDEVENT_EDIT_GROUP' ), 'groupedit' );
+			JToolBarHelper::title( JText::_('COM_REDEVENT_EDIT_GROUP' ), 'accessgroups' );
 			JToolBarHelper::spacer();
 		} else {
-			JToolBarHelper::title( JText::_('COM_REDEVENT_ADD_GROUP' ), 'groupedit' );
+			JToolBarHelper::title( JText::_('COM_REDEVENT_ADD_GROUP' ), 'accessgroups' );
 			JToolBarHelper::spacer();
 		}
 		JToolBarHelper::apply();

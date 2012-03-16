@@ -41,7 +41,7 @@ class RedEventViewLog extends JView {
 		$user 		= & JFactory::getUser();
 
 		//build toolbar
-		JToolBarHelper::title( JText::_('COM_REDEVENT_LOG' ), 'home' );
+		JToolBarHelper::title( JText::_('COM_REDEVENT_LOG' ), 'log' );
     JToolBarHelper::custom('clearlog', 'delete', 'delete', 'Clear Log', false);
 		JToolBarHelper::help( 'el.intro', true );
     //create the toolbar

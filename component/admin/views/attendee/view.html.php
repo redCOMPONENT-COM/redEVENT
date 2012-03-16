@@ -65,10 +65,10 @@ class RedEventViewAttendee extends JView {
 		
 		//build toolbar
 		if ( !empty($cid) ) {
-			JToolBarHelper::title( JText::_('COM_REDEVENT_EDIT_REGISTRATION' ), 'registrationedit' );
+			JToolBarHelper::title( JText::_('COM_REDEVENT_EDIT_REGISTRATION' ), 'registrations' );
 			JToolBarHelper::spacer();
 		} else {
-			JToolBarHelper::title( JText::_('COM_REDEVENT_ADD_REGISTRATION' ), 'registrationedit' );
+			JToolBarHelper::title( JText::_('COM_REDEVENT_ADD_REGISTRATION' ), 'registrations' );
 			JToolBarHelper::spacer();
 		}
 		JToolBarHelper::apply();

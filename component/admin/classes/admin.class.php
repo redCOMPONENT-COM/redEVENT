@@ -49,21 +49,14 @@ class ELAdmin {
 		$view = JRequest::getVar('view', '');
 		$controller = JRequest::getVar('controller', '');
 	  //Create Submenu
-    JSubMenuHelper::addEntry( JText::_('COM_REDEVENT' ), 'index.php?option=com_redevent', $view == '');
+    JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_MENU_CPANEL' ), 'index.php?option=com_redevent', $view == 'redevent');
     JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_EVENTS' ), 'index.php?option=com_redevent&view=events', $view == 'events');
     JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_SESSIONS' ), 'index.php?option=com_redevent&view=sessions&eventid=0&venueid=0', $view == 'sessions');
-    JSubMenuHelper::addEntry( JText::_( 'COM_REDEVENT_MENU_REGISTRATIONS' ), 'index.php?option=com_redevent&view=registrations', $view == 'registrations');
+    JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_MENU_REGISTRATIONS' ), 'index.php?option=com_redevent&view=registrations', $view == 'registrations');
     JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_VENUES' ), 'index.php?option=com_redevent&view=venues', $view == 'venues');
     JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_CATEGORIES' ), 'index.php?option=com_redevent&view=categories', $view == 'categories');
-    JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_VENUES_CATEGORIES' ), 'index.php?option=com_redevent&view=venuescategories', $view == 'venuescategories');
     JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_ARCHIVESCREEN' ), 'index.php?option=com_redevent&view=archive', $view == 'archive');
     JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_GROUPS' ), 'index.php?option=com_redevent&view=groups', $view == 'groups');
-    JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_TEXT_LIBRARY' ), 'index.php?option=com_redevent&view=textlibrary', $view == 'textlibrary');
-    JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_CUSTOM_FIELDS' ), 'index.php?option=com_redevent&view=customfields', $view == 'customfields');
-    JSubMenuHelper::addEntry( JText::_( 'COM_REDEVENT_MENU_ROLES' ), 'index.php?option=com_redevent&view=roles', $view == 'roles');
-    JSubMenuHelper::addEntry( JText::_( 'COM_REDEVENT_MENU_PRICEGROUPS' ), 'index.php?option=com_redevent&view=pricegroups', $view == 'pricegroups');
-    JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_HELP' ), 'index.php?option=com_redevent&view=help', $view == 'help');
-    JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_LOG' ), 'index.php?option=com_redevent&view=log', $view == 'log');
     if ($user->get('gid') > 24) {
       JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_SETTINGS' ), 'index.php?option=com_redevent&controller=settings&task=edit', $controller == 'settings');
     }

@@ -66,7 +66,7 @@ class RedEventViewGroups extends JView {
 		$pageNav 	= & $this->get( 'Pagination' );
 
 		//create the toolbar
-		JToolBarHelper::title( JText::_('COM_REDEVENT_GROUPS' ), 'groups' );
+		JToolBarHelper::title( JText::_('COM_REDEVENT_GROUPS' ), 'accessgroups' );
 		JToolBarHelper::addNew();
 		JToolBarHelper::spacer();
 		JToolBarHelper::editList();

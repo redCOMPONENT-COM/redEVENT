@@ -65,7 +65,7 @@ class RedEventViewRegistrations extends JView {
     ELAdmin::setMenu();
 
 		//add toolbar
-		JToolBarHelper::title( JText::_( 'COM_REDEVENT_PAGETITLE_REGISTRATIONS' ), 'users' );
+		JToolBarHelper::title( JText::_( 'COM_REDEVENT_PAGETITLE_REGISTRATIONS' ), 'registrations' );
 		JToolBarHelper::back();
 		JToolBarHelper::spacer();
 		JToolBarHelper::help( 'redevent.registrations', true );
