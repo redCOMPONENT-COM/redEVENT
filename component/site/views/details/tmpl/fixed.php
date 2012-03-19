@@ -23,6 +23,8 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+if ($this->row->venueid != 0) $venuelink = RedeventHelperRoute::getVenueEventsRoute($this->row->venueslug);
 ?>
 <div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
 	<p class="buttons">
@@ -85,13 +87,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		    <dt class="where"><?php echo JText::_('COM_REDEVENT_WHERE' ).':'; ?></dt>
 		    <dd class="where">
     		<?php if ((!empty($this->row->url))) : ?>
-
-			    <a href="<?php echo $this->row->url; ?>"><?php echo $this->escape($this->row->venue); ?></a> -
-
-			<?php 
-			endif;
-
-			echo $this->escape($this->row->city); ?>
+    			<?php echo JHTML::link($this->row->url, $this->escape($this->row->venue)); ?>
+				<?php else :?>
+    			<?php echo JHTML::link($venuelink, $this->escape($this->row->venue)); ?>
+				<?php endif; ?>
+				<?php if ($this->escape($this->row->city)): ?>
+					<?php echo ' - '.$this->escape($this->row->city); ?>
+				<?php endif; ?>
+					
 
 			</dd>
 
@@ -104,14 +107,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     			<?php
 				$i = 0;
     			foreach ($this->row->categories as $category) :
-    			?>
-					<a href="<?php echo JRoute::_( 'index.php?view=categoryevents&id='. $category->slug ); ?>"><?php echo $this->escape($category->catname); ?></a>
-				<?php 
-					$i++;
-					if ($i != $n) :
-						echo ',';
-					endif;
-				endforeach;
+    				echo JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($category->slug), $this->escape($category->catname));
+						$i++;
+						if ($i != $n) :
+							echo ',';
+						endif;
+					endforeach;
     			?>
 			</dd>
 	</dl>
@@ -162,7 +163,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<dl class="location floattext">
 			 <dt class="venue"><?php echo JText::_('COM_REDEVENT_VENUE').':'; ?></dt>
 				<dd class="venue">
-				<?php echo "<a href='".JRoute::_( 'index.php?view=venueevents&id='.$this->row->venueslug )."'>".$this->escape($this->row->venue)."</a>"; ?>
+				<?php echo JHTML::link($venuelink, $this->escape($this->row->venue)); ?>
 
 				<?php if (!empty($this->row->url)) : ?>
 					&nbsp; - &nbsp;
