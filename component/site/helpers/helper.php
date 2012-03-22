@@ -44,6 +44,7 @@ class redEVENTHelper {
 		
 		if (!$config)
 		{
+			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_redevent'.DS.'tables'.DS.'redevent_settings.php');
 			$config = JTable::getInstance('RedEvent_settings', '');
 			$config->load(1);
 			$config->params = JComponentHelper::getParams('com_redevent'); // redundant, but for legacy
