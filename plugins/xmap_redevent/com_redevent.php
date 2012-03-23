@@ -16,16 +16,23 @@ class xmap_com_redevent
 	 * This function is called before a menu item is printed. We use it to set the
 	 * proper uniqueid for the item
 	 */
-	function prepareMenuItem(&$node,&$params) {
-		$link_query = parse_url( $node->link );
-		parse_str( html_entity_decode($link_query['query']), $link_vars);
-		$id = intval(xmap_com_redevent::getParam($link_vars,'id',0));
-		$view = xmap_com_redevent::getParam($link_vars,'view',0);
-		if ( !$id ) {
-			$menu =& JSite::getMenu();
-			$params = $menu->getParams($node->id);
-			$id = $params->get('id',0);
+	function prepareMenuItem($node, &$params) 
+	{
+		$db = JFactory::getDbo();
+		$link_query = parse_url($node->link);
+		if (!isset($link_query['query'])) {
+			return;
 		}
+		parse_str(html_entity_decode($link_query['query']), $link_vars);
+		$view   = JArrayHelper::getValue($link_vars, 'view', '');
+		$layout = JArrayHelper::getValue($link_vars, 'layout', '');
+		$id     = JArrayHelper::getValue($link_vars, 'id', 0);
+		
+// 		if ( !$id ) {
+// 			$menu =& JSite::getMenu();
+// 			$params = $menu->getParams($node->id);
+// 			$id = $params->get('id',0);
+// 		}
 		if ( $id ) {
 			if ( $view == 'details' ) {
 				$node->uid = 'com_redevente'.$id;
@@ -45,14 +52,14 @@ class xmap_com_redevent
 	/*
 	 * Return Category tree 
 	 */
-	function getTree( &$xmap, &$parent, $params )
+	static function getTree( $xmap, $parent, &$params )
 	{
 		$catid=0;
 		$venid=0;
 		$link_query = parse_url( $parent->link );
 		parse_str( html_entity_decode($link_query['query']), $link_vars );
 		$view = JArrayHelper::getValue($link_vars,'view','');
-
+				
 		if ( $view == 'categoryevents' ) {
 			$catid = intval(JArrayHelper::getValue($link_vars,'id',0));
 		} elseif ( $view == 'venueevents' ) {
@@ -63,7 +70,7 @@ class xmap_com_redevent
 			return true;
 		}
 
-		$include_events = JArrayHelper::getValue( $params, 'include_events',1,'' );
+		$include_events = intval(JArrayHelper::getValue($params,'include_events',1));
 		$include_events = ( $include_events == 1
                                   || ( $include_events == 2 && $xmap->view == 'xml') 
                                   || ( $include_events == 3 && $xmap->view == 'html'));
@@ -130,7 +137,6 @@ class xmap_com_redevent
 	function getCategoryTree(&$xmap, &$parent, $params,$catid=0)
 	{		
 		$db = &JFactory::getDBO();
-		$gid = intval($xmap->gid);
 		
 		$query = "SELECT id , catname, alias"
 				. "\nFROM #__redevent_categories"
@@ -187,7 +193,6 @@ class xmap_com_redevent
 	{
 		
 		$db = &JFactory::getDBO();
-		$gid = intval($xmap->gid);
 
  		$xmap->changeLevel(1);
 		if ( !$id ) {
@@ -239,11 +244,6 @@ class xmap_com_redevent
 
 		$xmap->changeLevel(-1);
 		
-	}
-
-	function &getParam($arr, $name, $def) {
-		$var = JArrayHelper::getValue( $arr, $name, $def, '' );
-		return $var;
 	}
 	
 	/**
