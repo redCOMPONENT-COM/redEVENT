@@ -32,7 +32,7 @@ jimport( 'joomla.application.component.view');
  * EventList Component Category Feed
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since		0.9
  */
 class RedeventViewCategoryevents extends JView

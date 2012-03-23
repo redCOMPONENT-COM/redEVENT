@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
  * EventList events Model class
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEvent_events extends JTable

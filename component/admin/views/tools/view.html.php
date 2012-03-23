@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * View class for the EventList Cleanup screen
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventViewTools extends JView {

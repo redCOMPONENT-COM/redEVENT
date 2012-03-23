@@ -14,7 +14,7 @@ jimport('joomla.application.component.controller');
  * EventList Component Controller
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedeventController extends JController

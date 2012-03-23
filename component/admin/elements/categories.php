@@ -28,7 +28,7 @@ defined('_JEXEC') or die();
  * Renders an Category element
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 

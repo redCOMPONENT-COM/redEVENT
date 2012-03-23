@@ -30,7 +30,7 @@ jimport( 'joomla.application.component.view');
  * HTML View class for the Categoriesdetailed View
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedeventViewCategoriesdetailed extends JView

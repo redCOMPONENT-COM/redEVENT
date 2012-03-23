@@ -30,7 +30,7 @@ jimport( 'joomla.application.component.view');
  * HTML View class for the Editevents View
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedeventViewVenue extends JView

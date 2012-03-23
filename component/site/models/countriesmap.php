@@ -2,7 +2,7 @@
 /**
  * @version 1.1 $Id: view.html.php 407 2007-09-21 16:03:39Z schlu $
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @copyright (C) 2005 - 2008 Christoph Lukes
  * @license GNU/GPL, see LICENSE.php
  * EventList is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@ jimport('joomla.application.component.model');
  * EventList Component Venuesmap Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since		0.9
  */
 class RedeventModelCountriesmap extends JModel

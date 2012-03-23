@@ -29,7 +29,7 @@ jimport('joomla.application.component.controller');
  * EventList Component Archive Controller
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventControllerArchive extends RedEventController

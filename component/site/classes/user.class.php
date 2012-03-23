@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
  * Holds all authentication logic
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class ELUser {

@@ -30,7 +30,7 @@ jimport('joomla.application.component.model');
  * EventList Component Event Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since		0.9
  */
 class RedEventModelEvent extends JModel

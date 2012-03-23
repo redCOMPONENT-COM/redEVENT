@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
  * Holds the logic for image manipulation
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  */
 class redEVENTImage {
 

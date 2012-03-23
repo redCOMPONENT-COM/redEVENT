@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
  * Holds some usefull functions to keep the code a bit cleaner
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  */
 class redEVENTHelper {
 

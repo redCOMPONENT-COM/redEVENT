@@ -31,7 +31,7 @@ require_once('baseeventslist.php');
  * EventList Component Details Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since		0.9
  */
 class RedeventModelUpcomingVenueevents extends RedeventModelBaseEventList {

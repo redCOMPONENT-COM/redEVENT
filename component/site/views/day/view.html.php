@@ -30,7 +30,7 @@ jimport( 'joomla.application.component.view');
  * HTML View class for the Day View
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage Redevent
  * @since 0.9
  */
 class RedeventViewDay extends JView

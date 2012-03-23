@@ -2,7 +2,7 @@
 /**
  * @version 1.1 $Id: default.php 1078 2009-06-29 18:15:43Z schlu $
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @copyright (C) 2005 - 2009 Christoph Lukes
  * @license GNU/GPL, see LICENSE.php
  * EventList is free software; you can redistribute it and/or

@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * View class for the redevent log
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventViewLog extends JView {

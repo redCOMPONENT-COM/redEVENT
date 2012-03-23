@@ -28,7 +28,7 @@ defined('_JEXEC') or die();
  * Renders an venue element
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 1.5
  */
 
