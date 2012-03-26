@@ -417,7 +417,7 @@ class RedeventController extends JController
 			// send unreg notification email
 			$key = redEVENTHelper::getAttendeeSubmitKey($rid);
 			$sid = redEVENTHelper::getAttendeeSid($rid);
-			$model->notifyManagers($key, true, $sid);
+			$model->notifyManagers($key, true, $rid);
 		}
 		
 		if ($task == 'managedelreguser')

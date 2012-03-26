@@ -341,7 +341,7 @@ class RedEventModelRegistration extends JModel
 		foreach ($registrations as $rid)
 		{
 			$attendee = new REattendee($rid);
-			if (!$attendee->notifyManagers()) {
+			if (!$attendee->notifyManagers($unreg)) {
 				$this->setError($attendee->getError());
 				return false;
 			}
@@ -453,11 +453,6 @@ class RedEventModelRegistration extends JModel
 			JError::raiseError( 403, JText::_('COM_REDEVENT_ALERTNOTAUTH') );
 			return;
 	  }
-	  
-	  if (!redEVENTHelper::canUnregister($xref)) {
-	  	$this->setError(JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED'));
-	  	return false;
-	  }
 	  		
 	  		// first, check if the user is allowed to unregister from this
 	  // he must be the one that submitted the form, plus the unregistration must be allowed
@@ -473,6 +468,11 @@ class RedEventModelRegistration extends JModel
 	  
 	  // or be allowed to manage attendees
 	  $manager = $acl->canManageAttendees($xref);
+	  
+	  if (!redEVENTHelper::canUnregister($xref) && !$manager) {
+	  	$this->setError(JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED'));
+	  	return false;
+	  }
 	  
 	  if (($submitterinfo->uid <> $userid || $submitterinfo->unregistra == 0) && !$manager)
 	  {
