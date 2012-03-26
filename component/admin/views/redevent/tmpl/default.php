@@ -64,10 +64,7 @@ defined('_JEXEC') or die('Restricted access');
 						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-archive.png', JText::_('COM_REDEVENT_ARCHIVESCREEN' ) );
 
 						//only admins should be able to see this items
-						if ($this->user->get('gid') > 24) {
-							$link = 'index.php?option='.$option.'&amp;controller=settings&amp;task=edit';
-							RedEventViewRedEvent::quickiconButton( $link, 'icon-48-settings.png', JText::_('COM_REDEVENT_SETTINGS' ) );
-
+						if ($this->user->authorise('com_redevent', 'manage')) {
 							$link = 'index.php?option='.$option.'&amp;view=editcss';
 							RedEventViewRedEvent::quickiconButton( $link, 'icon-48-cssedit.png', JText::_('COM_REDEVENT_EDIT_CSS' ) );
 

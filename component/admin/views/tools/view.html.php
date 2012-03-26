@@ -43,7 +43,7 @@ class RedEventViewTools extends JView {
 		$user			= & JFactory::getUser();
 
 		//only admins have access to this view
-		if ($user->get('gid') < 24) {
+		if (!$user->authorise('com_redevent', 'manage')) {
 			JError::raiseWarning( 'REDEVENT_GENERIC_ERROR', JText::_('COM_REDEVENT_ALERTNOTAUTH'));
 			$mainframe->redirect( 'index.php?option=com_redevent&view=redevent' );
 		}
