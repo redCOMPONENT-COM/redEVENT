@@ -39,7 +39,7 @@ class RedeventModelBaseEventList extends JModel
 	 *
 	 * @var array
 	 */
-	var $_data = null;
+	protected $_data = null;
 
 	/**
 	 * custom fields data array

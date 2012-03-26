@@ -273,6 +273,15 @@ class RedeventHelperRoute
 		return self::buildUrl( $parts );	
 	}
 	
+	public static function getWeekRoute($week)
+	{		
+		$parts = array( "option" => "com_redevent",
+		                "view"   => 'week', 
+		                "week"   => $week, 
+									);
+		return self::buildUrl( $parts );	
+	}
+	
 	protected static function buildUrl($parts)
 	{		
 		if($item = self::_findItem($parts)) {

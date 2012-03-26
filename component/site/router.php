@@ -134,6 +134,13 @@ function RedEventBuildRoute(&$query)
     		unset($query['tmpl']);
     	}
 	  	break;
+	  case 'week':
+    	if(isset($query['week']))
+    	{
+    		$segments[] = $query['week'];
+    		unset($query['week']);
+    	}
+	  	break;
 	}
 
 	return $segments;
@@ -331,6 +338,11 @@ function RedEventParseRoute($segments)
       $vars['view'] = $segments[0];
 			$vars['xref'] = $segments[1]; 
 			$vars['tmpl'] = 'component'; 
+    	break;
+    	
+    case 'week':
+      $vars['view'] = $segments[0];
+			$vars['week'] = $segments[1];
     	break;
     
     case 'confirmation':

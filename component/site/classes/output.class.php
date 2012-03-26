@@ -616,7 +616,7 @@ class ELOutput {
 	 *
 	 * @since 0.9
 	 */
-	function formattime($date, $time)
+	public static function formattime($date, $time)
 	{
 		$settings = & redEVENTHelper::config();
 		

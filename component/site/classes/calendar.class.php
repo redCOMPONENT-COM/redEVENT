@@ -853,10 +853,11 @@ $year=$this->actyear;
 $week=$this->getWeekNum($var);
 	if ($week>50 && $this->actmonth==1) $year=$this->actyear-1;
 $out="";
-	if ($this->weekUrl){
-		if (strpos($this->weekUrl,"?") === false) $glue="?";
-		else $glue="&amp;";
-		$out.="<a href=\"".$this->weekUrl.$glue.$this->yearID."=".$year."&amp;".$this->weekID."=".$week."\">".$week."</a>";
+	if ($this->weekUrl || 1) {
+		$out .= JHTML::link(RedeventHelperRoute::getWeekRoute(sprintf("%d-%02d",$year, $week)), $week);
+// 		if (strpos($this->weekUrl,"?") === false) $glue="?";
+// 		else $glue="&amp;";
+// 		$out.="<a href=\"".$this->weekUrl.$glue.$this->yearID."=".$year."&amp;".$this->weekID."=".$week."\">".$week."</a>";
 	}
 	elseif ($this->javaScriptWeek) $out.="<a href=\"javascript:".$this->javaScriptWeek."(".$year.",".$week.")\">".$week."</a>";
 	else $out.=$week;
