@@ -311,7 +311,7 @@ class RedeventModelEditevent extends JModel
 			}
 			
 			$query = ' SELECT e.*, v.venue, x.id AS xref, x.eventid, x.venueid, '
-			       . ' x.dates, x.enddates, x.times, x.endtimes, x.maxattendees, '
+			       . ' x.dates, x.enddates, x.times, x.endtimes, x.maxattendees, x.details, '
 			       . ' x.maxwaitinglist, x.course_credit, x.registrationend, x.title as session_title, '
 			       . ' r.id as recurrence_id, r.rrule, rp.count '
 			       . (count($xfields) ? ', '.implode(', ', $xfields) : '')
