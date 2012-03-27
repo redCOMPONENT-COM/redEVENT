@@ -267,7 +267,7 @@ class RedEventModelWaitinglist extends JModel {
 		}
 		
 		// update image paths in body
-		$body = ELOutput::ImgRelAbs($body);
+		$body = REOutput::ImgRelAbs($body);
 		
 		$rfcore = new RedFormCore();
 		$emails = $rfcore->getSubmissionContactEmail($update_ids);

@@ -35,8 +35,8 @@ foreach ($this->rows as $row)
 
 	if ($this->params->get('show_tip_time', 0))
 	{
-		$start = ELOutput::formattime($row->dates, $row->times);
-		$end = ELOutput::formattime($row->dates, $row->endtimes);
+		$start = REOutput::formattime($row->dates, $row->times);
+		$end = REOutput::formattime($row->dates, $row->endtimes);
 
 		if ($start != '')
 		{
@@ -95,7 +95,7 @@ foreach ($this->rows as $row)
 
 	$catname = '<div class="catname">'.implode(', ', $cat_names).'</div>';
 
-	$eventdate = ELOutput::formatdate($row->dates, $row->times);
+	$eventdate = REOutput::formatdate($row->dates, $row->times);
 
 	//venue
 	if ($this->settings->get('showlocate') == 1)
@@ -117,7 +117,7 @@ foreach ($this->rows as $row)
 	//generate the output
 	$content .= $colorpic;
 	if ($this->params->get('show_start_time', 0)) {
-		$content .= ELOutput::formattime($row->dates, $row->times).' ';
+		$content .= REOutput::formattime($row->dates, $row->times).' ';
 	}
 	$content .= $this->caltooltip($catname.$eventname.$timehtml.$venue, $eventdate, $row->full_title, $detaillink, 'eventTip');
 	$content .= $contentend;

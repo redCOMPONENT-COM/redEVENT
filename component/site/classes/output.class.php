@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package Joomla
  * @subpackage EventList
  */
-class ELOutput {
+class REOutput {
 
 	/**
 	* Writes footer. Official copyright! Do not remove!

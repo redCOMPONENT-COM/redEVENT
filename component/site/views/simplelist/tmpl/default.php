@@ -29,12 +29,12 @@ $toggle = $this->params->get('filter_toggle', 3);
 <p class="buttons">
 	<?php
 		if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup
-			echo ELOutput::submitbutton( $this->dellink, $this->params );
-			echo ELOutput::thumbbutton( $this->thumb_link, $this->params );
-			echo ELOutput::archivebutton( $this->params, $this->task );
+			echo REOutput::submitbutton( $this->dellink, $this->params );
+			echo REOutput::thumbbutton( $this->thumb_link, $this->params );
+			echo REOutput::archivebutton( $this->params, $this->task );
 		endif;
 
-		echo ELOutput::printbutton( $this->print_link, $this->params );
+		echo REOutput::printbutton( $this->print_link, $this->params );
 	?>
 </p>
 
@@ -156,7 +156,7 @@ $toggle = $this->params->get('filter_toggle', 3);
 <?php endif; ?>
 
 <p class="copyright">
-	<?php echo ELOutput::footer( ); ?>
+	<?php echo REOutput::footer( ); ?>
 </p>
 
 </div>

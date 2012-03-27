@@ -28,11 +28,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<p class="buttons">
 		<?php
 			if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup
-				echo ELOutput::submitbutton( $this->dellink, $this->params );
-				echo ELOutput::archivebutton( $this->params, $this->task );
+				echo REOutput::submitbutton( $this->dellink, $this->params );
+				echo REOutput::archivebutton( $this->params, $this->task );
 			endif;
 
-			echo ELOutput::printbutton( $this->print_link, $this->params );
+			echo REOutput::printbutton( $this->print_link, $this->params );
 		?>
 	</p>
 
@@ -51,7 +51,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 			<?php
 				echo redEVENTImage::modalimage($row->locimage, $row->venue);
-				echo ELOutput::mapicon( $row , array('class' => 'map'));
+				echo REOutput::mapicon( $row , array('class' => 'map'));
 			?>
 
 			<dl class="location floattext">
@@ -130,6 +130,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 	<!--copyright-->
 	<p class="copyright">
-		<?php echo ELOutput::footer( ); ?>
+		<?php echo REOutput::footer( ); ?>
 	</p>
 </div>

@@ -39,5 +39,5 @@ if (isset($this->result)) { ?>
 	<input type="hidden" name="id" value="<?php echo JRequest::getVar('id'); ?>" />
 </form>
 <p class="copyright">
-	<?php echo ELOutput::footer( ); ?>
+	<?php echo REOutput::footer( ); ?>
 </p>

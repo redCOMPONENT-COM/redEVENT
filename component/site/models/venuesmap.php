@@ -111,7 +111,7 @@ class RedEventModelVenuesmap extends JModel
 
     		    //create flag
 				if ($venue->country) {
-					$venue->countryimg = ELOutput::getFlag( $venue->country );
+					$venue->countryimg = REOutput::getFlag( $venue->country );
 				}
 				
 				//create target link

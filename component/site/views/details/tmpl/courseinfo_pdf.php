@@ -41,10 +41,10 @@ foreach ($this->_eventlinks as $key => $event) {
 	<tr>
 		<td><?php echo JHTML::_('link', $event_url, $event->full_title); ?></td>
 		<td><?php echo $event->location; ?></td>
-		<td><?php echo ELOutput::formatdate($event->dates, $event->times); ?> 
+		<td><?php echo REOutput::formatdate($event->dates, $event->times); ?> 
 		<?php echo redEVENTHelper::getEventDuration($event); ?> 
 		<?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
-		<td class="re-price"><?php echo ELOutput::formatListPrices($event->prices); ?></td>
+		<td class="re-price"><?php echo REOutput::formatListPrices($event->prices); ?></td>
 	</tr>
 <?php }
 ?>

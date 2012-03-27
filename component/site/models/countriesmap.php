@@ -83,8 +83,8 @@ class RedeventModelCountriesmap extends JModel
 			{
 				$country =& $this->_data[$i];
 								
-				$country->flag = ELOutput::getFlag( $country->iso2 );
-				$country->flagurl = ELOutput::getFlagUrl( $country->iso2 );
+				$country->flag = REOutput::getFlag( $country->iso2 );
+				$country->flagurl = REOutput::getFlagUrl( $country->iso2 );
 				$country->latitude = $countrycoords[$country->iso2][0];
         $country->longitude = $countrycoords[$country->iso2][1];
 				

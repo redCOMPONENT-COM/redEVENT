@@ -116,6 +116,6 @@ defined('_JEXEC') or die('Restricted access');
 </p>
 
 <p class="copyright">
-<?php echo ELOutput::footer();	?>
+<?php echo REOutput::footer();	?>
 </p>
 </div>

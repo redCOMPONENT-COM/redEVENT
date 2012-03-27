@@ -319,7 +319,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 							        </div>
 						        </div>
 										<div class="coords-pinpoint">
-								          <?php echo $pinpointicon = ELOutput::pinpointicon( $this->row ); ?>
+								          <?php echo $pinpointicon = REOutput::pinpointicon( $this->row ); ?>
 										</div>
 						      </td>
 						    </tr>
@@ -428,7 +428,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     </form>
 
     <p class="copyright">
-        <?php echo ELOutput::footer( ); ?>
+        <?php echo REOutput::footer( ); ?>
     </p>
 
 </div>

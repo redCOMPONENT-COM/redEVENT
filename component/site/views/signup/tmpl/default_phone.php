@@ -27,5 +27,5 @@ echo $this->tags->ReplaceTags($this->page);
 
 ?>
 <p class="copyright">
-	<?php echo ELOutput::footer( ); ?>
+	<?php echo REOutput::footer( ); ?>
 </p>

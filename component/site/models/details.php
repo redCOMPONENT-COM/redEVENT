@@ -527,7 +527,7 @@ class RedeventModelDetails extends JModel
   	
 		// convert urls
 		$htmlmsg = '<html><body>'.$tags->ReplaceTags($params->get('registration_notification_body')).'</body></html>';
-		$htmlmsg = ELOutput::ImgRelAbs($htmlmsg);
+		$htmlmsg = REOutput::ImgRelAbs($htmlmsg);
   	$mailer->MsgHTML($htmlmsg);
   	if (!$mailer->send())
   	{

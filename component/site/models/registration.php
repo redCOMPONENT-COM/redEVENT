@@ -288,7 +288,7 @@ class RedEventModelRegistration extends JModel
 		}
 		
 		// update image paths in body
-		$body = ELOutput::ImgRelAbs($body);
+		$body = REOutput::ImgRelAbs($body);
 		
 		$mailer = JFactory::getMailer();
 		
@@ -557,7 +557,7 @@ class RedEventModelRegistration extends JModel
 					$htmlmsg = str_replace('[fullname]', $attendee->getFullname(), $htmlmsg);
 					
 					// convert urls
-					$htmlmsg = ELOutput::ImgRelAbs($htmlmsg);
+					$htmlmsg = REOutput::ImgRelAbs($htmlmsg);
 					
 					$this->mailer->setBody($htmlmsg);
 					$this->mailer->setSubject($tags->ReplaceTags($eventsettings->notify_subject));
@@ -695,7 +695,7 @@ class RedEventModelRegistration extends JModel
 		</html>';
   	
 		// convert urls
-		$mail = ELOutput::ImgRelAbs($mail);
+		$mail = REOutput::ImgRelAbs($mail);
 		
 		if (!$unreg && $params->get('registration_notification_attach_rfuploads', 1))
 		{

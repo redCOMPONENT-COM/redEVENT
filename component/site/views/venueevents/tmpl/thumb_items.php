@@ -40,10 +40,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<span class="summary"><?php echo JHTML::_('link', JRoute::_($detaillink), $row->full_title); ?></span> @ <span class="location"><?php echo JHTML::_('link', JRoute::_($venuelink), $row->venue); ?></span>
 		</p>
 		<p class="rf_thumbevent_date">
-    	<span class="dtstart"><?php echo ELOutput::formatdate($row->dates, $row->times); ?></span>    	
+    	<span class="dtstart"><?php echo REOutput::formatdate($row->dates, $row->times); ?></span>    	
     	<?php
     	if (redEVENTHelper::isValidDate($row->enddates) && $row->enddates != $row->dates) :
-    		echo ' - <span class="dtend">'.ELOutput::formatdate($row->enddates, $row->endtimes).'</span>';
+    		echo ' - <span class="dtend">'.REOutput::formatdate($row->enddates, $row->endtimes).'</span>';
     	endif;
     	?>
 		</p>

@@ -26,7 +26,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div id="redevent" class="el_eventlist">
 <p class="buttons">
 	<?php
-		echo ELOutput::printbutton( $this->print_link, $this->params );
+		echo REOutput::printbutton( $this->print_link, $this->params );
 	?>
 </p>
 
@@ -82,7 +82,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php endif; ?>
 
 <p class="copyright">
-	<?php echo ELOutput::footer( ); ?>
+	<?php echo REOutput::footer( ); ?>
 </p>
 
 </div>
