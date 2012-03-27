@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package Joomla
  * @subpackage redEVENT
  */
-class ELOutput {
+class REOutput {
 
 	/**
 	* Writes Event submission button

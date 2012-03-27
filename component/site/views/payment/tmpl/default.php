@@ -26,7 +26,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <div id="redevent" class="event_id<?php echo $this->row->eventid; ?> el_payment">
 	<p class="buttons">
-			<?php echo ELOutput::printbutton( $this->print_link, $this->params ); ?>
+			<?php echo REOutput::printbutton( $this->print_link, $this->params ); ?>
 	</p>
 <div class="payment-result">
 <?php echo $this->text; ?>

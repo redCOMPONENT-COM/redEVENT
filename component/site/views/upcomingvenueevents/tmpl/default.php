@@ -27,11 +27,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <p class="buttons">
 	<?php
 		if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup
-			echo ELOutput::submitbutton( $this->dellink, $this->params );
-			echo ELOutput::archivebutton( $this->params, $this->task, $this->venue->slug );
+			echo REOutput::submitbutton( $this->dellink, $this->params );
+			echo REOutput::archivebutton( $this->params, $this->task, $this->venue->slug );
 		endif;
-		echo ELOutput::mailbutton( $this->venue->slug, 'venueevents', $this->params );
-		echo ELOutput::printbutton( $this->print_link, $this->params );
+		echo REOutput::mailbutton( $this->venue->slug, 'venueevents', $this->params );
+		echo REOutput::printbutton( $this->print_link, $this->params );
 	?>
 </p>
 <?php if ($this->params->def('show_page_title', 1)) : ?>
@@ -43,7 +43,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<!--Venue-->
 	<?php //flyer
 	echo redEVENTImage::modalimage('venues', $this->venue->locimage, $this->venue->venue);
-	echo ELOutput::mapicon( $this->venue, array('class' => 'map'));
+	echo REOutput::mapicon( $this->venue, array('class' => 'map'));
 	?>
 
 	<dl class="location floattext">

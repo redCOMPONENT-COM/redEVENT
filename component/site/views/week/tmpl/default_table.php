@@ -123,7 +123,7 @@ $colnames = array_map('trim', $colnames);
 					echo JText::_('COM_REDEVENT_ALL_DAY');
 				}
 				else {
-					echo ELOutput::formattime($row->dates, $row->times);
+					echo REOutput::formattime($row->dates, $row->times);
 				}
 				?>
 			</td>
@@ -133,16 +133,16 @@ $colnames = array_map('trim', $colnames);
 				case 'date': ?>
 	    		<td class="re_date">
 	    			<?php if ($row->dates && strtotime($row->dates)): ?>
-	    			<meta itemprop="startDate" content="<?php echo ELOutput::getIsoDate($row->dates, $row->times); ?>">
+	    			<meta itemprop="startDate" content="<?php echo REOutput::getIsoDate($row->dates, $row->times); ?>">
 	    			<?php endif; ?>
 	    			<?php if ($row->enddates && strtotime($row->enddates)): ?>
-	    			<meta itemprop="startDate" content="<?php echo ELOutput::getIsoDate($row->enddates, $row->endtimes); ?>">
+	    			<meta itemprop="startDate" content="<?php echo REOutput::getIsoDate($row->enddates, $row->endtimes); ?>">
 	    			<?php endif; ?>
 	    			
 						<?php if ($this->params->get('link_date', 0)): ?>
-			    			<?php echo JHTML::link($detaillink, ELOutput::formatEventDateTime($row));	?>
+			    			<?php echo JHTML::link($detaillink, REOutput::formatEventDateTime($row));	?>
 						<?php else: ?>
-			    			<?php echo ELOutput::formatEventDateTime($row);	?>
+			    			<?php echo REOutput::formatEventDateTime($row);	?>
 						<?php endif; ?>
 					</td>
 				<?php break;?>
@@ -215,7 +215,7 @@ $colnames = array_map('trim', $colnames);
 				<?php break;?>
 				
 				<?php case 'price': ?>
-					<td class="re_prices"><?php echo ELOutput::formatListPrices($row->prices); ?></td>
+					<td class="re_prices"><?php echo REOutput::formatListPrices($row->prices); ?></td>
 				<?php break;?>
 				
 				<?php case 'credits': ?>

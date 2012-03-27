@@ -27,16 +27,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
 <div class="event-header">
 	<div class="buttons">
-		<?php echo ELOutput::mailbutton( $this->row->slug, 'details', $this->params ); ?>
-		<?php echo ELOutput::printbutton( $this->print_link, $this->params ); ?>
+		<?php echo REOutput::mailbutton( $this->row->slug, 'details', $this->params ); ?>
+		<?php echo REOutput::printbutton( $this->print_link, $this->params ); ?>
 		<?php if ($this->row->enable_ical == 1 || ($this->row->enable_ical == 0 && $this->params->get('event_ics', 1))): ?>
 			<?php $img = JHTML::image(JURI::base().'components/com_redevent/assets/images/iCal2.0.png', JText::_('COM_REDEVENT_EXPORT_ICS')); ?>
 			<?php echo JHTML::link( JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug).'&format=raw&layout=ics', false), 
 			                        $img ); ?>
 		<?php endif; ?>
-    <?php echo ELOutput::editbutton($this->item->id, $this->row->did, $this->params, $this->allowedtoeditevent, 'editevent' ); ?>
+    <?php echo REOutput::editbutton($this->item->id, $this->row->did, $this->params, $this->allowedtoeditevent, 'editevent' ); ?>
     <?php if ($this->manage_attendees): ?>
-    <?php echo ELOutput::xrefattendeesbutton($this->row->xref); ?>
+    <?php echo REOutput::xrefattendeesbutton($this->row->xref); ?>
 		<?php endif; ?>
 	</div>	
       

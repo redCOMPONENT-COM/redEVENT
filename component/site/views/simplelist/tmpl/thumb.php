@@ -30,12 +30,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <p class="buttons">
 	<?php
 		if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup
-			echo ELOutput::listbutton( $this->list_link, $this->params );
-			echo ELOutput::submitbutton( $this->dellink, $this->params );
-			echo ELOutput::archivebutton( $this->params, $this->task );
+			echo REOutput::listbutton( $this->list_link, $this->params );
+			echo REOutput::submitbutton( $this->dellink, $this->params );
+			echo REOutput::archivebutton( $this->params, $this->task );
 		endif;
 
-		echo ELOutput::printbutton( $this->print_link, $this->params );
+		echo REOutput::printbutton( $this->print_link, $this->params );
 	?>
 </p>
 

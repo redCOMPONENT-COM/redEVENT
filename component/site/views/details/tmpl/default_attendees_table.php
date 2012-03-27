@@ -30,7 +30,7 @@ if ($this->row->show_names) {
 
 		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).': '.$this->row->full_title; ?>
 		<?php if ($this->manage_attendees): ?>
-    <?php echo ELOutput::xrefattendeesbutton($this->row->xref); ?>
+    <?php echo REOutput::xrefattendeesbutton($this->row->xref); ?>
 		<?php endif; ?></h2>
 				
 		<?php if (count($this->roles)): ?>

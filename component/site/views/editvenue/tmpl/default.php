@@ -348,7 +348,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
     		<?php
             if ($this->row->locimage) :
-    				echo ELOutput::flyer( $this->row, $this->limage );
+    				echo REOutput::flyer( $this->row, $this->limage );
     		else :
       		    echo JHTML::_('image', 'components/com_redevent/assets/images/noimage.png', JText::_('COM_REDEVENT_NO_IMAGE'), array('class' => 'modal'));
     		endif;

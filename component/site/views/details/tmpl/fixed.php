@@ -28,9 +28,9 @@ if ($this->row->venueid != 0) $venuelink = RedeventHelperRoute::getVenueEventsRo
 ?>
 <div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
 	<p class="buttons">
-		<?php echo ELOutput::mailbutton( $this->row->slug, 'details', $this->params ); ?>
+		<?php echo REOutput::mailbutton( $this->row->slug, 'details', $this->params ); ?>
 		
-		<?php echo ELOutput::printbutton( $this->print_link, $this->params ); ?>
+		<?php echo REOutput::printbutton( $this->print_link, $this->params ); ?>
 		
 		<?php if ($this->params->get('event_ics', 1)): ?>
 			<?php $img = JHTML::image(JURI::base().'components/com_redevent/assets/images/iCal2.0.png', JText::_('COM_REDEVENT_EXPORT_ICS')); ?>
@@ -49,7 +49,7 @@ if ($this->row->venueid != 0) $venuelink = RedeventHelperRoute::getVenueEventsRo
 	<h2 class="redevent">
 		<?php
     	echo $this->row->full_title;
-    	echo '&nbsp;'.ELOutput::editbutton($this->item->id, $this->row->did, $this->params, $this->allowedtoeditevent, 'editevent' );
+    	echo '&nbsp;'.REOutput::editbutton($this->item->id, $this->row->did, $this->params, $this->allowedtoeditevent, 'editevent' );
     	?>
 	</h2>
 
@@ -67,16 +67,16 @@ if ($this->row->venueid != 0) $venuelink = RedeventHelperRoute::getVenueEventsRo
   	<dt class="when"><?php echo JText::_('COM_REDEVENT_WHEN' ).':'; ?></dt>
 		<dd class="when">
 			<?php
-			$tmp = ELOutput::formatdate($this->row->dates, $this->row->times);
+			$tmp = REOutput::formatdate($this->row->dates, $this->row->times);
 			if (!empty($this->row->times) && strcasecmp('00:00:00', $this->row->times)) {
-				$tmp .= ' ' .ELOutput::formattime($this->row->dates, $this->row->times);
+				$tmp .= ' ' .REOutput::formattime($this->row->dates, $this->row->times);
 			}
 			if (!empty($this->row->enddates) && $this->row->enddates != $this->row->dates)
 			{
-				$tmp .= ' - ' .ELOutput::formatdate($this->row->enddates, $this->row->endtimes);
+				$tmp .= ' - ' .REOutput::formatdate($this->row->enddates, $this->row->endtimes);
 			}
 			if (!empty($this->row->endtimes) && strcasecmp('00:00:00', $this->row->endtimes)) {
-				$tmp .= ' ' .ELOutput::formattime($this->row->dates, $this->row->endtimes);
+				$tmp .= ' ' .REOutput::formattime($this->row->dates, $this->row->endtimes);
 			}
 			echo $tmp;
 			?>
@@ -157,7 +157,7 @@ if ($this->row->venueid != 0) $venuelink = RedeventHelperRoute::getVenueEventsRo
 
 		<?php //flyer
 		echo redEVENTImage::modalimage('venues', basename($this->row->locimage), $this->row->venue);
-		echo ELOutput::mapicon($this->row, array('class' => 'event-map'));
+		echo REOutput::mapicon($this->row, array('class' => 'event-map'));
 		?>
 
 		<dl class="location floattext">
@@ -232,7 +232,7 @@ if ($this->row->venueid != 0) $venuelink = RedeventHelperRoute::getVenueEventsRo
 		  $img = JHTML::_('image', JURI::base() . $imgpath, 
 		                          $registration_status->status, 
 		                          array('class' => 'hasTip', 'title' => $registration_status->status));
-			echo ELOutput::moreInfoIcon($event->xslug, $img, $registration_status->status);
+			echo REOutput::moreInfoIcon($event->xslug, $img, $registration_status->status);
 		else : ?>
 		<?php $venues_html = '';	
 		/* Get the different submission types */

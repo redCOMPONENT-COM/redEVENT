@@ -310,7 +310,7 @@ class REattendee extends JObject {
 		}
 
 		// update image paths in body
-		$body = ELOutput::ImgRelAbs($body);
+		$body = REOutput::ImgRelAbs($body);
 
 		$mailer = JFactory::getMailer();
 
@@ -381,7 +381,7 @@ class REattendee extends JObject {
 		
 		$subject = $tags->ReplaceTags($waiting ? $params->get('wl_notify_admin_waiting_subject') : $params->get('wl_notify_admin_attending_subject'));
 		$body    = $tags->ReplaceTags($waiting ? $params->get('wl_notify_admin_waiting_body') : $params->get('wl_notify_admin_attending_body'));
-		$body    = ELOutput::ImgRelAbs($body);
+		$body    = REOutput::ImgRelAbs($body);
 		
 		$mailer->setSubject($subject);
 		$mailer->MsgHTML($body);
@@ -664,7 +664,7 @@ class REattendee extends JObject {
 			$htmlmsg = str_replace('[fullname]', $this->getFullname(), $htmlmsg);
 				
 			// convert urls
-			$htmlmsg = ELOutput::ImgRelAbs($htmlmsg);
+			$htmlmsg = REOutput::ImgRelAbs($htmlmsg);
 				
 			$mailer->setBody($htmlmsg);
 			$subject = $tags->ReplaceTags($eventsettings->notify_subject);
@@ -748,7 +748,7 @@ class REattendee extends JObject {
 			</html>';
 		 
 		// convert urls
-		$mail = ELOutput::ImgRelAbs($mail);
+		$mail = REOutput::ImgRelAbs($mail);
 	
 		if (!$unreg && $params->get('registration_notification_attach_rfuploads', 1))
 		{

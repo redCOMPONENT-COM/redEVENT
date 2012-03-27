@@ -385,7 +385,7 @@ class RedEventControllerRegistration extends RedEventController
 							/* Mail submitter */
 							$htmlmsg = '<html><head><title></title></title></head><body>'.$tags->ReplaceTags($eventdata->notify_confirm_body).'</body></html>';
 							// convert urls
-							$htmlmsg = ELOutput::ImgRelAbs($htmlmsg);
+							$htmlmsg = REOutput::ImgRelAbs($htmlmsg);
 							
 							$this->mailer->setBody($htmlmsg);
 							$this->mailer->setSubject($tags->ReplaceTags($eventdata->notify_confirm_subject));

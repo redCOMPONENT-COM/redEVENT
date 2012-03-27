@@ -1089,7 +1089,7 @@ class redEVENT_tags {
   		{
   			$field = array();
   			$field['label'] = '<label for="pricegroup_id">'.JText::_('COM_REDEVENT_REGISTRATION_PRICE').'</label>';
-  			$field['field'] = ELOutput::formatprice($selpg->price, $currency).(count($prices) > 1 ? ' ('.$selpg->name.')' : '') . '<input type="hidden" name="pricegroup_id[]" class="fixedprice" value="'.$selpg->pricegroup_id.'" price="'.$selpg->price.'" />';
+  			$field['field'] = REOutput::formatprice($selpg->price, $currency).(count($prices) > 1 ? ' ('.$selpg->name.')' : '') . '<input type="hidden" name="pricegroup_id[]" class="fixedprice" value="'.$selpg->pricegroup_id.'" price="'.$selpg->price.'" />';
   			$field['class'] = 'reg-price pg'.$selpg->id;
 	  		$options['extrafields'][] = $field;
   		}
@@ -1183,12 +1183,12 @@ class redEVENT_tags {
 			return;
 		}
 		if (count($prices) == 1) {
-			return ELOutput::formatprice($prices[0]->price);
+			return REOutput::formatprice($prices[0]->price);
 		}
 		$res = array();
 		foreach ($prices as $p) 
 		{
-			$res[] = ELOutput::formatprice($p->price). ' ('.$p->name.')';
+			$res[] = REOutput::formatprice($p->price). ' ('.$p->name.')';
 		}
 		return implode(' / ', $res);
 	}
@@ -1292,12 +1292,12 @@ class redEVENT_tags {
 	
 	function _getTag_date()
 	{
-		return ELOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+		return REOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 	}
 	
 	function _getTag_enddate()
 	{
-		return ELOutput::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+		return REOutput::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
 	}
 	
 	function _getTag_time()
@@ -1305,10 +1305,10 @@ class redEVENT_tags {
 		$tmp = "";
 		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
 		{
-			$tmp = ELOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+			$tmp = REOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 			 
 			if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes)) {
-				$tmp .= ' - ' .ELOutput::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+				$tmp .= ' - ' .REOutput::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
 			}
 		}
 		return $tmp;
@@ -1319,7 +1319,7 @@ class redEVENT_tags {
 		$tmp = "";
 		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
 		{
-			$tmp = ELOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+			$tmp = REOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 		}
 		return $tmp;
 	}
@@ -1328,23 +1328,23 @@ class redEVENT_tags {
 	{
 		$tmp = "";
 		if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes)) {
-			$tmp = ELOutput::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+			$tmp = REOutput::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
 		}
 		return $tmp;
 	}
 	
 	function _getTag_startenddatetime()
 	{
-		$tmp = ELOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+		$tmp = REOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times)) {
-			$tmp .= ' ' .ELOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+			$tmp .= ' ' .REOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 		}
 		if (!empty($this->getEvent()->getData()->enddates) && $this->getEvent()->getData()->enddates != $this->getEvent()->getData()->dates)
 		{
-			$tmp .= ' - ' .ELOutput::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+			$tmp .= ' - ' .REOutput::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
 		}
 		if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes)) {
-			$tmp .= ' ' .ELOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->endtimes);
+			$tmp .= ' ' .REOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->endtimes);
 		}
 		return $tmp;
 	}
@@ -1636,12 +1636,12 @@ class redEVENT_tags {
 	
 	function _getTag_venue_mapicon()
 	{
-		return ELOutput::mapicon($this->getEvent()->getData(), array('class' => 'event-map'));
+		return REOutput::mapicon($this->getEvent()->getData(), array('class' => 'event-map'));
 	}
 	
 	function _getTag_venue_map()
 	{
-		return ELOutput::map($this->getEvent()->getData(), array('class' => 'event-full-map'));
+		return REOutput::map($this->getEvent()->getData(), array('class' => 'event-full-map'));
 	}
 	
 	/**************  registration tags ******************/
@@ -1984,7 +1984,7 @@ class redEVENT_tags {
 		{
 			$title = urlencode($this->getEvent()->getData()->title
 			               .' '
-			               .ELOutput::formatdate($this->getEvent()->getData()->dates, 
+			               .REOutput::formatdate($this->getEvent()->getData()->dates, 
 			                                     $this->getEvent()->getData()->times));
 			$link = $this->absoluteUrls(
 			             'index.php?option=com_redform&controller=payment&task=select&source=redevent&key='

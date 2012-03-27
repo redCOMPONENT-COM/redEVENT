@@ -28,7 +28,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div id="redevent" class="el_webformsignup">
 	<p class="buttons">
 	  <?php
-	    echo ELOutput::printbutton( $this->print_link, $this->params );
+	    echo REOutput::printbutton( $this->print_link, $this->params );
 	  ?>
 	</p>
 	

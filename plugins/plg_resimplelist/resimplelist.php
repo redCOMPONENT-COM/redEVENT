@@ -224,7 +224,7 @@ class plgContentRESimplelist extends JPlugin {
 							echo '<td>'.redEVENTHelper::getRemainingPlaces($event).'</td>';
 							break;
 						case 'price':
-							echo '<td>'.ELOutput::formatListPrices($event->prices).'</td>';
+							echo '<td>'.REOutput::formatListPrices($event->prices).'</td>';
 							break;
 						default:
 							if (strstr($c, 'custom') && $f = $this->_getCustom($c)) {
