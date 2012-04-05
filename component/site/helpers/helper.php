@@ -208,7 +208,7 @@ class redEVENTHelper {
 	function generaterecurrences($recurrence_id = null)
 	{
 		$db = & JFactory::getDBO();
-
+		
 		$nulldate = '0000-00-00';
 	   
 		// generate until limit
@@ -230,7 +230,7 @@ class redEVENTHelper {
 		$query .= ' GROUP BY rp.recurrence_id ';
 		$db->setQuery($query);
 		$recurrences = $db->loadObjectList();
-
+		
 		if (empty($recurrences)) {
 			return true;
 		}
@@ -247,7 +247,7 @@ class redEVENTHelper {
   	         ;
 		$db->setQuery($query);
 		$xrefs = $db->loadObjectList('id');
-
+		
 		// now, do the job...
 		foreach ($recurrences as $r)
 		{

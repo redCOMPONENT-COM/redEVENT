@@ -108,8 +108,9 @@ class RedeventHelperRecurrence
     // week start
     $rrule .= "WKST=". $params->get('week_start', 'MO').';';
     // selected days
-    $rrule .= "BYDAY=". implode(',', $data['wweekdays']).';';
-    
+    if (isset($data['wweekdays'])) {
+    	$rrule .= "BYDAY=". implode(',', $data['wweekdays']).';';
+    }
     return $rrule;
   }
 
@@ -141,21 +142,29 @@ class RedeventHelperRecurrence
       $rrule .= "WKST=". $params->get('week_start', 'MO').';';
       // selected weeks, normal order
       $days = array();
-      foreach($data['mweeks'] as $week)
+      if (isset($data['mweeks']))
       {
-        foreach ($data['mweekdays'] as $day)
-        {
-          $days[] = $week.$day;
-        }
+	      foreach($data['mweeks'] as $week)
+	      {
+	        foreach ($data['mweekdays'] as $day)
+	        {
+	          $days[] = $week.$day;
+	        }
+	      }
       }
-      foreach($data['mrweeks'] as $week)
+      if (isset($data['mrweeks']))
       {
-        foreach ($data['mrweekdays'] as $day)
-        {
-          $days[] = '-'.$week.$day;
-        }
+	      foreach($data['mrweeks'] as $week)
+	      {
+	        foreach ($data['mrweekdays'] as $day)
+	        {
+	          $days[] = '-'.$week.$day;
+	        }
+	      }
       }
-      $rrule .= "BYDAY=". implode(',', $days).';';
+      if (count($days)) {
+      	$rrule .= "BYDAY=". implode(',', $days).';';
+      }
     }
   
     if ($data['monthtype'] == 'bymonthday')
@@ -333,12 +342,7 @@ class RedeventHelperRecurrence
     }
     
     $days_name = array('SU' => 'sunday', 'MO' => 'monday', 'TU' => 'tuesday', 'WE' => 'wednesday', 'TH' => 'thursday', 'FR' => 'friday', 'SA' => 'saturday');
-    if ($week_start == 'SU') {
-      $days_number = array('SU' => 0, 'MO' => 1, 'TU' => 2, 'WE' => 3, 'TH' => 4, 'FR' => 5, 'SA' => 6);
-    }
-    else {
-      $days_number = array('SU' => 7, 'MO' => 1, 'TU' => 2, 'WE' => 3, 'TH' => 4, 'FR' => 5, 'SA' => 6);
-    }
+    $days_number = array('SU' => 0, 'MO' => 1, 'TU' => 2, 'WE' => 3, 'TH' => 4, 'FR' => 5, 'SA' => 6, 'SU' => 7);
     $xref_start = strtotime($last_xref->dates);
     
     // get the next start timestamp
@@ -351,6 +355,9 @@ class RedeventHelperRecurrence
       case 'WEEKLY':
         // calculate next dates for all set weekdays
         $next = array();
+        if (!$rule->weekdays || !count($rule->weekdays)) { // force to the day of previous session
+        	$rule->weekdays = array(array_search(date('N', strtotime($last_xref->dates)), $days_number));
+        }
         foreach ($rule->weekdays as $d) 
         {
           if ($week_start == 'SU') {
@@ -374,10 +381,57 @@ class RedeventHelperRecurrence
         break;
         
       case 'MONTHLY':
-        if ($rule->monthtype == 'bymonthdays') 
+        if (!$rule->monthtype == 'bymonthdays') 
+        	{
+        		// first day of this month
+        		$first_this = mktime(0, 0, 0, strftime('%m', $xref_start), 1, strftime('%Y', $xref_start));
+        		// last day of this month
+        		$last_this = mktime(0, 0, 0, strftime('%m', $xref_start)+1, 0, strftime('%Y', $xref_start));
+        		// first day of +interval month
+        		$first_next_interval = mktime(0, 0, 0, strftime('%m', $xref_start) + $rule->interval, 1, strftime('%Y', $xref_start));
+        		// last day of this month
+        		$last_next_interval = mktime(0, 0, 0, strftime('%m', $xref_start)+1 + $rule->interval, 0, strftime('%Y', $xref_start));
+        	
+        		$days = array();
+        		//          print_r($rule);
+        		foreach ($rule->weeks as $week)
+        		{
+        			foreach ($rule->weekdays as $day)
+        			{
+        				$int_day = strtotime($week. ' ' . $days_name[$day], $first_this);
+        				if ($int_day > $xref_start && $int_day <= $last_this) {
+        					$days[] = $int_day;
+        				}
+        				$int_day = strtotime($week. ' ' . $days_name[$day], $first_next_interval);
+        				if ($int_day > $xref_start && $int_day <= $last_next_interval) {
+        					$days[] = $int_day;
+        				}
+        			}
+        		}
+        		foreach ($rule->rweeks as $week)
+        		{
+        			foreach ($rule->rweekdays as $day)
+        			{
+        				$int_day = strtotime('-'.$week. ' ' . $days_name[$day], $last_this + 24*3600);
+        				if ($int_day > $xref_start && $int_day >= $first_this) {
+        					$days[] = $int_day;
+        				}
+        				$int_day = strtotime('-'.$week. ' ' . $days_name[$day], $last_next_interval + 24*3600);
+        				if ($int_day > $xref_start && $int_day >= $first_next_interval) {
+        					$days[] = $int_day;
+        				}
+        			}
+        		}
+        		$next_start = min($days);
+        	}
+        else 
         {
           $current = strftime('%d', strtotime($last_xref->dates));
-                    
+          
+          if (!$rule->bydays || !count($rule->bydays)) { // force to the day of previous session
+          	$rule->bydays = array(date('d', strtotime($last_xref->dates)));
+          }
+               
           if (!$rule->reverse_bydays)
           {
             sort($rule->bydays);
@@ -403,6 +457,7 @@ class RedeventHelperRecurrence
           {
             $current_sec = strtotime($last_xref->dates);
             $next = array();
+            
             foreach ($rule->bydays as $day) 
             {
               // we need to check the dates for this month, and the +interval month
@@ -418,49 +473,6 @@ class RedeventHelperRecurrence
             // the next is the closest, lower value
             $next_start = min($next);            
           }       
-        }
-        else 
-        {
-          // first day of this month
-          $first_this = mktime(0, 0, 0, strftime('%m', $xref_start), 1, strftime('%Y', $xref_start));
-          // last day of this month
-          $last_this = mktime(0, 0, 0, strftime('%m', $xref_start)+1, 0, strftime('%Y', $xref_start));
-          // first day of +interval month
-          $first_next_interval = mktime(0, 0, 0, strftime('%m', $xref_start) + $rule->interval, 1, strftime('%Y', $xref_start));
-          // last day of this month
-          $last_next_interval = mktime(0, 0, 0, strftime('%m', $xref_start)+1 + $rule->interval, 0, strftime('%Y', $xref_start));
-          
-          $days = array();
-//          print_r($rule);
-          foreach ($rule->weeks as $week)
-          {
-            foreach ($rule->weekdays as $day)
-            {
-              $int_day = strtotime($week. ' ' . $days_name[$day], $first_this);
-              if ($int_day > $xref_start && $int_day <= $last_this) {
-                $days[] = $int_day;                
-              }
-              $int_day = strtotime($week. ' ' . $days_name[$day], $first_next_interval);
-              if ($int_day > $xref_start && $int_day <= $last_next_interval) {
-                $days[] = $int_day;                
-              }
-            }            
-          }
-          foreach ($rule->rweeks as $week)
-          {
-            foreach ($rule->rweekdays as $day)
-            {
-              $int_day = strtotime('-'.$week. ' ' . $days_name[$day], $last_this + 24*3600);
-              if ($int_day > $xref_start && $int_day >= $first_this) {
-                $days[] = $int_day;                
-              }
-              $int_day = strtotime('-'.$week. ' ' . $days_name[$day], $last_next_interval + 24*3600);
-              if ($int_day > $xref_start && $int_day >= $first_next_interval) {
-                $days[] = $int_day;                
-              }
-            }            
-          }
-          $next_start = min($days);
         }
         break;
         
@@ -527,7 +539,7 @@ class RedeventHelperRecurrence
       default:
         break;
     }
-
+    
     if (!isset($next_start) || !$next_start) {
       return false;
     }
@@ -555,7 +567,7 @@ class RedeventHelperRecurrence
       $new->registrationend = strftime('%Y-%m-%d', strtotime($last_xref->registrationend) + $delta);
     }
     $new->count++;
-
+    
 //    print_r($new); 
 //    exit;
     return $new;
