@@ -44,23 +44,25 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 		parent::__construct();
 		$week = JRequest::getVar('week');
 		$this->setWeek($week);
-		
-		$offset = &JFactory::getApplication()->getParams('com_redevent')->get('weekoffset');
-		if (intval($offset)) {
-			$this->addOffset(intval($offset));
+		if (!$week) // is there an offset in the view parameters ? 
+		{			
+			$offset = JComponentHelper::getParams('com_redevent')->get('weekoffset');
+			if (intval($offset)) {
+				$this->addOffset(intval($offset));
+			}
 		}
 	}
 	
 	/**
 	 * sets the week reference, must be in year-number format
-	 * @param string $week
+	 * @param string $week null for current week
 	 */
-	public function setWeek($week)
+	public function setWeek($week = null)
 	{
 		if (!$week) {
-			return;
+			$this->_week = date("Y-W");
 		}
-		if (preg_match('/^([0-9]{4})-([0-9]{2})$/', $week, $matches)) {
+		else if (preg_match('/^([0-9]{4})-([0-9]{2})$/', $week, $matches)) {
 			$this->_week = $matches[1].'-'.$matches[2];
 		}
 		else {
@@ -228,7 +230,7 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 	{
 		if (!$this->_week)
 		{
-			$this->_week = date("Y-W");
+			$this->setWeek();
 		}
 		return $this->_week;
 	}
