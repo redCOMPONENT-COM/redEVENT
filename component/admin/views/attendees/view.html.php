@@ -92,7 +92,7 @@ class RedEventViewAttendees extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::back();
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.registereduser', true );
+		//JToolBarHelper::help( 'el.registereduser', true );
 
 		// Get data from the model
 		$rows      = $this->get( 'Data');

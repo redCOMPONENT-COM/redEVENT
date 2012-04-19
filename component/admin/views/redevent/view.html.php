@@ -46,7 +46,7 @@ class RedEventViewRedEvent extends JView {
 
 		//build toolbar
 		JToolBarHelper::title( JText::_('COM_REDEVENT' ), 'home' );
-		JToolBarHelper::help( 'el.intro', true );
+		//JToolBarHelper::help( 'el.intro', true );
 
 		// Get data from the model
 		$events      = & $this->get( 'Eventsdata');

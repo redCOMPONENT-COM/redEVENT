@@ -90,7 +90,7 @@ class RedEventViewCategory extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::cancel();
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.editcategories', true );
+		//JToolBarHelper::help( 'el.editcategories', true );
 
 		//Get data from the model
 		$model		= & $this->getModel();

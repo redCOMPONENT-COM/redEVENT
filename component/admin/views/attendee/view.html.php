@@ -76,7 +76,7 @@ class RedEventViewAttendee extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::cancel();
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.registrationedit', true );
+		//JToolBarHelper::help( 'el.registrationedit', true );
 		
 //		echo '<pre>';print_r($row); echo '</pre>';exit;
     $this->assignRef('row',    $row);

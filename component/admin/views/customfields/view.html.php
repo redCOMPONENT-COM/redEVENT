@@ -58,7 +58,7 @@ class RedeventViewCustomfields extends JView
 		JToolBarHelper::addNewX();
 		JToolBarHelper::custom('export', 'csvexport', 'csvexport', JText::_('COM_REDEVENT_BUTTON_EXPORT'), false);
 		JToolBarHelper::custom('import', 'csvimport', 'csvimport', JText::_('COM_REDEVENT_BUTTON_IMPORT'), false);
-    JToolBarHelper::help( 'screen.redevent', true );
+    //JToolBarHelper::help( 'screen.redevent', true );
         
 		$db		=& JFactory::getDBO();
 		$uri	=& JFactory::getURI();

@@ -85,7 +85,7 @@ class RedEventViewEvents extends JView {
 		JToolBarHelper::custom( 'copy', 'copy.png', 'copy_f2.png', 'Copy' );
 		JToolBarHelper::custom('export', 'exportevents', 'exportevents', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), false);
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.listevents', true );
+		//JToolBarHelper::help( 'el.listevents', true );
 
 		// Get data from the model
 		$rows      	= & $this->get( 'Data');

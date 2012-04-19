@@ -69,7 +69,7 @@ class RedEventViewArchive extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::deleteList();
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.archive', true );
+// 		//JToolBarHelper::help( 'el.archive', true );
 
 		// Get data from the model
 		$rows      	= & $this->get( 'Data');

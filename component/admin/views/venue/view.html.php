@@ -108,7 +108,7 @@ class RedEventViewVenue extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::cancel();
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.editvenues', true );
+		//JToolBarHelper::help( 'el.editvenues', true );
 
 		//Build the image select functionality
 		$js = "

@@ -72,7 +72,7 @@ class RedEventViewVenuesCategories extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::deleteList();
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.listcategories', true );
+		//JToolBarHelper::help( 'el.listcategories', true );
 
 		//Get data from the model
 		$rows      	= & $this->get( 'Data');

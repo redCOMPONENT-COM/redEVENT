@@ -68,7 +68,7 @@ class RedEventViewRegistrations extends JView {
 		JToolBarHelper::title( JText::_( 'COM_REDEVENT_PAGETITLE_REGISTRATIONS' ), 'registrations' );
 		JToolBarHelper::back();
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'redevent.registrations', true );
+		//JToolBarHelper::help( 'redevent.registrations', true );
 
 		// Get data from the model
 		$rows      = $this->get( 'Data');

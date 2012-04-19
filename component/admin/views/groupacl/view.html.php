@@ -66,7 +66,7 @@ class RedEventViewGroupacl extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::cancel('cancelacl');
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.editgroupacl', true );
+		//JToolBarHelper::help( 'el.editgroupacl', true );
 
 		//create selectlists
 		$lists = array();

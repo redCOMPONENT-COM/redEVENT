@@ -50,7 +50,7 @@ class RedeventViewRoles extends JView
 		JToolBarHelper::deleteList();
 		JToolBarHelper::editListX();
 		JToolBarHelper::addNewX();
-    JToolBarHelper::help( 'screen.redevent', true );
+    //JToolBarHelper::help( 'screen.redevent', true );
         
 		$db		=& JFactory::getDBO();
 		$uri	=& JFactory::getURI();

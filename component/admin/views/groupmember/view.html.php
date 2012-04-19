@@ -86,7 +86,7 @@ class RedEventViewGroupmember extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::cancel();
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.editgroup', true );
+		//JToolBarHelper::help( 'el.editgroup', true );
 
 		//create selectlists
 		$lists = array();

@@ -247,7 +247,7 @@ class RedEventViewEvent extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::cancel();
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.editevents', true );
+		//JToolBarHelper::help( 'el.editevents', true );
 		      		
 		//assign vars to the template
 		$this->assignRef('lists'      	, $lists);

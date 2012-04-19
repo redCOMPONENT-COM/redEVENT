@@ -79,7 +79,7 @@ class RedEventViewVenues extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::custom('importexport', 'exportevents', 'exportevents', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), false);
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.listvenues', true );
+		//JToolBarHelper::help( 'el.listvenues', true );
 
 		// Get data from the model
 		$rows      	= & $this->get( 'Data');

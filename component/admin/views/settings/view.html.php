@@ -84,7 +84,7 @@ class RedEventViewSettings extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::cancel();
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.settings', true );
+		//JToolBarHelper::help( 'el.settings', true );
 
 		//Get global parameters
 		$table =& JTable::getInstance('component');

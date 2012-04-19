@@ -57,7 +57,7 @@ class RedEventViewTools extends JView {
 
 		//create the toolbar
 		JToolBarHelper::title( JText::_('COM_REDEVENT_Tools' ), 'tools' );
-		JToolBarHelper::help( 'redevent.tools', true );
+		//JToolBarHelper::help( 'redevent.tools', true );
 
 		parent::display($tpl);
 	}

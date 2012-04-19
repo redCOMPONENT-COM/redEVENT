@@ -62,7 +62,7 @@ class RedEventViewEditcss extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::cancel();
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.editcss', true );
+		//JToolBarHelper::help( 'el.editcss', true );
 		
 		JRequest::setVar( 'hidemainmenu', 1 );
 

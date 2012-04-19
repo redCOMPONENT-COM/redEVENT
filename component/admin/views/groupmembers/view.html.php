@@ -75,7 +75,7 @@ class RedEventViewGroupmembers extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::deleteList();
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.listgroups', true );
+		//JToolBarHelper::help( 'el.listgroups', true );
 
 		// table ordering
 		$lists['order_Dir'] = $filter_order_Dir;
