@@ -5,11 +5,10 @@
 			<![CDATA[COM_REDEVENT_XML_VIEW_WEEK_DEFAULT_Layout_DESC]]>
 		</message>
 	</layout>
-	<state>
-		<name>COM_REDEVENT_XML_VIEW_WEEK_DEFAULT_Layout</name>
-		<description>COM_REDEVENT_XML_VIEW_WEEK_DEFAULT_Layout</description>
-		<params>
-			<param name="weekoffset" type="text" size="2" default="0" label="COM_REDEVENT_XML_VIEW_WEEK_WEEKOFFSET" description="COM_REDEVENT_XML_VIEW_WEEK_WEEKOFFSET_DESC" />
-		</params>
-	</state>
+	
+	<fields name="request" addfieldpath="/administrator/components/com_redevent/models/fields">
+   	<fieldset name="request" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
+			<field name="weekoffset" type="text" size="2" default="0" label="COM_REDEVENT_XML_VIEW_WEEK_WEEKOFFSET" description="COM_REDEVENT_XML_VIEW_WEEK_WEEKOFFSET_DESC" />
+		</fieldset>
+	</fields>
 </metadata>

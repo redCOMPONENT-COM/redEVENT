@@ -46,7 +46,7 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 		$this->setWeek($week);
 		if (!$week) // is there an offset in the view parameters ? 
 		{			
-			$offset = JComponentHelper::getParams('com_redevent')->get('weekoffset');
+			$offset = JRequest::getInt('weekoffset');
 			if (intval($offset)) {
 				$this->addOffset(intval($offset));
 			}
@@ -62,7 +62,7 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 		if (!$week) {
 			$this->_week = date("Y-W");
 		}
-		else if (preg_match('/^([0-9]{4})-([0-9]{2})$/', $week, $matches)) {
+		else if (preg_match('/^([0-9]{4})([0-9]{2})$/', $week, $matches)) {
 			$this->_week = $matches[1].'-'.$matches[2];
 		}
 		else {
@@ -77,7 +77,7 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 	public function addOffset($offset)
 	{
 		$aday = reset($this->getWeekDays());
-		$week = date("Y-W", strtotime(sprintf("%s %+d weeks",$aday, $offset)));
+		$week = date("YW", strtotime(sprintf("%s %+d weeks",$aday, $offset)));
 		$this->setWeek($week);
 	}
 	
@@ -286,7 +286,7 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 	{
 		$aday = reset($this->getWeekDays());
 		$prev = strtotime("$aday -7 days");
-		return date('Y-W', $prev);
+		return date('YW', $prev);
 	}
 	
 	/**
@@ -298,6 +298,6 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 	{
 		$aday = reset($this->getWeekDays());
 		$prev = strtotime("$aday +7 days");
-		return date('Y-W', $prev);
+		return date('YW', $prev);
 	}
 }

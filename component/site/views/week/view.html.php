@@ -73,7 +73,7 @@ class RedeventViewWeek extends JView
 		
 		//params
 		if ($item) {
-			$title = $item->name;
+			$title = $item->title;
 		}
 		else {
 			$title = JText::sprintf('COM_REDEVENT_WEEK_HEADER', $this->get('weeknumber'), $this->get('year'));
@@ -84,7 +84,7 @@ class RedeventViewWeek extends JView
 		$pathway->addItem(JText::sprintf('COM_REDEVENT_WEEK_HEADER', $this->get('weeknumber'), $this->get('year')));
 
 		//Set Page title
-		if ($item && !$item->name) {
+		if ($item && !$item->title) {
 			$document->setTitle($params->get('page_title'));
 			$document->setMetadata( 'keywords' , $params->get('page_title') );
 		}
