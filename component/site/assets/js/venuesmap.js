@@ -41,7 +41,7 @@ var venuesmap = {
 	    		  center: new google.maps.LatLng(43,2),
 	    		  mapTypeId: google.maps.MapTypeId.ROADMAP
 	    		};
-	    map = new google.maps.Map( $('gmap').setProperty('style', 'width: 100%; height: 600px'), mapOptions);
+	    map = new google.maps.Map( document.id('gmap').setProperty('style', 'width: 100%; height: 600px'), mapOptions);
 	    	    
 	    // get marker manager
 	    var mgr = new MarkerManager(map);
@@ -79,7 +79,6 @@ var venuesmap = {
 	    var countrymarkers = [];
 	    // add marker for each country	    
 	    countries.each(function(element) {
-	      var marker;
 	      if (element.lat !=0 && element.lng !=0) {
 	        // create latlng object 
 	        var icon = new google.maps.MarkerImage(element.flag, 
