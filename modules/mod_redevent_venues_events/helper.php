@@ -48,7 +48,7 @@ class modRedEventVenuesEventsHelper
 		$user		=& JFactory::getUser();
 		$user_gid	= (int) max($user->getAuthorisedViewLevels());
 
-		$where = ' WHERE a.published = 1, x.published ';
+		$where = ' WHERE a.published = 1 AND x.published = 1 ';
 		$order = ' ORDER BY a.title ASC ';
 
 		$catid 	= trim( $params->get('catid') );
