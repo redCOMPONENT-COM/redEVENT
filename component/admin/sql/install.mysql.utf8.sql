@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_events` (
   `max_multi_signup` int(2) unsigned NOT NULL default '1',
   `submission_type_formal_offer` text,
   `submission_type_formal_offer_subject` varchar(255) default NULL,
+  `show_submission_type_webform_formal_offer` tinyint(1) NOT NULL default '0',
   `submission_type_webform` text,
   `submission_type_formal_offer_body` text,
   `submission_type_email_body` text,
