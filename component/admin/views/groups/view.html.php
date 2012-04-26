@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * View class for the EventList groups screen
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventViewGroups extends JView {
@@ -66,7 +66,7 @@ class RedEventViewGroups extends JView {
 		$pageNav 	= & $this->get( 'Pagination' );
 
 		//create the toolbar
-		JToolBarHelper::title( JText::_('COM_REDEVENT_GROUPS' ), 'groups' );
+		JToolBarHelper::title( JText::_('COM_REDEVENT_GROUPS' ), 'accessgroups' );
 		JToolBarHelper::addNew();
 		JToolBarHelper::spacer();
 		JToolBarHelper::editList();
@@ -74,10 +74,10 @@ class RedEventViewGroups extends JView {
 		JToolBarHelper::deleteList();
 		JToolBarHelper::spacer();
 		JToolBarHelper::custom('sync', 'redevent_sync', 'redevent_sync', JText::_('COM_REDEVENT_TOOLBAR_GROUP_SYNC'), false, false);
+	
 		if ($user->authorise('core.admin', 'com_redevent')) {
 			JToolBarHelper::preferences('com_redevent', '600', '800');
 		}
-		JToolBarHelper::help( 'el.listgroups', true );
 
 		// table ordering
 		$lists['order_Dir'] = $filter_order_Dir;
@@ -96,4 +96,3 @@ class RedEventViewGroups extends JView {
 		parent::display($tpl);
 	}
 }
-?>

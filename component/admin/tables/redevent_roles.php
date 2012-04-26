@@ -81,4 +81,3 @@ class Redevent_roles extends JTable
 		return true;
 	}
 }
-?>

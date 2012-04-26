@@ -64,4 +64,3 @@ class RedeventViewDetails extends JView
 		$mainframe->close();		
 	}
 }
-?>

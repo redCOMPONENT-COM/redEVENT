@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * View class for the EventList Help screen
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventViewHelp extends JView {
@@ -58,62 +58,6 @@ class RedEventViewHelp extends JView {
 		//create the toolbar
 		JToolBarHelper::title( JText::_('COM_REDEVENT_HELP' ), 'help' );
 
-		// Check for files in the actual language
-		$langTag = $lang->getTag();
-
-		if ( !JFolder::exists( JPATH_SITE . DS.'administrator'.DS.'components'.DS.'com_redevent/help'.DS .$langTag ) ) {
-			$langTag = 'en-GB';		// use english as fallback
-		}
-
-		//search the keyword in the files
-		$toc 		= RedEventViewHelp::getHelpToc( $helpsearch );
-
-		//assign data to template
-		$this->assignRef('pane'			, $pane);
-		$this->assignRef('langTag'		, $langTag);
-		$this->assignRef('helpsearch'	, $helpsearch);
-		$this->assignRef('toc'			, $toc);
-
 		parent::display($tpl);
 	}
-
-	/**
- 	* Compiles the help table of contents
- 	* Based on the Joomla admin component
- 	*
- 	* @param string A specific keyword on which to filter the resulting list
- 	*/
-	function getHelpTOC( $helpsearch )
-	{
-		$lang =& JFactory::getLanguage();
-		jimport( 'joomla.filesystem.folder' );
-
-		// Check for files in the actual language
-		$langTag = $lang->getTag();
-
-		if( !JFolder::exists( JPATH_SITE . DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'help'.DS .$langTag ) ) {
-			$langTag = 'en-GB';		// use english as fallback
-		}
-		$files = JFolder::files( JPATH_SITE . DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'help'.DS.$langTag, '\.xml$|\.html$' );
-
-		$toc = array();
-		foreach ($files as $file) {
-			$buffer = file_get_contents( JPATH_SITE . DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'help'.DS.$langTag.DS.$file );
-			if (preg_match( '#<title>(.*?)</title>#', $buffer, $m )) {
-				$title = trim( $m[1] );
-				if ($title) {
-					if ($helpsearch) {
-						if (JString::strpos( strip_tags( $buffer ), $helpsearch ) !== false) {
-							$toc[$file] = $title;
-						}
-					} else {
-						$toc[$file] = $title;
-					}
-				}
-			}
-		}
-		asort( $toc );
-		return $toc;
-	}
 }
-?>

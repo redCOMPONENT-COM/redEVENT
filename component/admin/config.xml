@@ -373,6 +373,21 @@
  		<field name="unregistration_notification_body" type="textarea" cols="80" rows="5" default="registration details were &lt;br /&gt;&lt;br /&gt;[answers]" label="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_BODY" description="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_BODY_DESC" />
  	
  		<field type="spacer" hr="true"/>
+ 		
+    <field name="wl_notify_admin" type="list" default="0" label="COM_REDEVENT_SETTINGS_REGISTRATION_ADMIN_WAITING_LIST_NOTIFICATION_LABEL" description="COM_REDEVENT_SETTINGS_REGISTRATION_ADMIN_WAITING_LIST_NOTIFICATION_DESC">
+      <option value="0">COM_REDEVENT_SETTINGS_REGISTRATION_ADMIN_WAITING_LIST_NOTIFICATION_NEVER</option>
+      <option value="1">COM_REDEVENT_SETTINGS_REGISTRATION_ADMIN_WAITING_LIST_NOTIFICATION_ATTENDING</option>
+      <option value="2">COM_REDEVENT_SETTINGS_REGISTRATION_ADMIN_WAITING_LIST_NOTIFICATION_WAITING</option>
+      <option value="3">COM_REDEVENT_SETTINGS_REGISTRATION_ADMIN_WAITING_LIST_NOTIFICATION_ALWAYS</option>
+    </field>
+ 		
+ 		<field name="wl_notify_admin_waiting_subject" type="text" size="80" default="[event_title]: attendee added to waiting list" label="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_WAITING_ADMIN_NOTIFICATION_SUBJECT" description="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_WAITING_ADMIN_NOTIFICATION_SUBJECT_DESC" />
+ 		<field name="wl_notify_admin_waiting_body" type="textarea" cols="80" rows="5" default="registration details&lt;br /&gt;&lt;br /&gt;[answers]" label="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_WAITING_ADMIN_NOTIFICATION_BODY" description="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_WAITING_ADMIN_NOTIFICATION_BODY_TIP" />
+ 		
+ 		<param name="wl_notify_admin_attending_subject" type="text" size="80" default="[event_title]: attendee added to attending list" label="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_ATTENDING_ADMIN_NOTIFICATION_SUBJECT" description="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_ATTENDING_ADMIN_NOTIFICATION_SUBJECT_TIP" />
+ 		<param name="wl_notify_admin_attending_body" type="textarea" cols="80" rows="5" default="registration details&lt;br /&gt;&lt;br /&gt;[answers]" label="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_ATTENDING_ADMIN_NOTIFICATION_BODY" description="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_ATTENDING_ADMIN_NOTIFICATION_BODY_TIP" />
+ 
+ 		<field type="spacer" hr="true"/>
  		<field type="spacer" label="COM_REDEVENT_SETTINGS_REGISTRATION_EXPIRATION_DESC" />
  	 	<field name="registration_expiration" type="text" size="80" default="" label="COM_REDEVENT_SETTINGS_REGISTRATION_EXPIRATION_LABEL" description="COM_REDEVENT_SETTINGS_REGISTRATION_EXPIRATION_DESC" />
  	

@@ -1,0 +1,46 @@
+@CHARSET "UTF-8";
+
+
+div#redevent div.week-details {
+	text-align:right;
+	font-size:0.9em;
+}
+
+div#redevent table.week-nav {
+	width:100%;
+	background-color: #DDD;
+	margin-bottom: 10px;
+	font-weight:bold;
+	height: 2em;
+}
+
+div#redevent table.week-nav td.week-prev{
+	width:30px;
+	text-align:left;
+}
+
+div#redevent table.week-nav td.week-next{
+	width:30px;
+	text-align:right;
+}
+
+div#redevent table.week-nav td.week-current{
+	width:30px;
+	text-align:center;
+}
+
+div#redevent table.week-nav td.week-current{
+	width:30px;
+	text-align:center;
+}
+
+div#redevent div.day-events {
+	padding-bottom: 5px;
+}
+
+div#redevent div.day-events div.day-title {
+	font-weight:bold;
+	background-color: #DDD;
+	height:1.5em;
+	padding: 3px 0;
+}

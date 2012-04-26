@@ -30,7 +30,7 @@ jimport('joomla.application.component.model');
  * EventList Component Venuesmap Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since		0.9
  */
 class RedEventModelVenuesmap extends JModel
@@ -283,4 +283,3 @@ class RedEventModelVenuesmap extends JModel
 	}
 	
 }
-?>

@@ -30,7 +30,7 @@ jimport('joomla.application.component.model');
  * EventList Component Categories Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since		0.9
  */
 class RedeventModelCategories extends JModel
@@ -192,20 +192,23 @@ class RedeventModelCategories extends JModel
 
 		//check archive task and ensure that only categories get selected if they contain a published/archived event
 		$task 	= JRequest::getVar('task', '', '', 'string');
-		$eventstate = array();
-		if($task == 'archive') {
-		  $eventstate[] = 'x.published = -1';
-		} else {
-      $eventstate[] = 'x.published = 1';
-		}
-    if ($params->get('display_all_categories', 1)) {
-      $eventstate[] = ' x.id IS NULL ';
+		$eventstate = '';
+    if ($params->get('display_all_categories', 0) == 0) {
+			if($task == 'archive') {
+			  $eventstate = ' AND x.published = -1';
+			} else {
+	      $eventstate = ' AND x.published = 1';
+			}
     }
-    $eventstate = ' AND ('.implode(' OR ', $eventstate).')';
-		
-				
+    
+    if($task == 'archive') {
+    	$count= 'CASE WHEN x.published = -1 THEN 1 ELSE 0 END';
+    } else {
+    	$count= 'CASE WHEN x.published = 1 THEN 1 ELSE 0 END';
+    }
+    
 		//get categories
-      $query = ' SELECT c.*, COUNT(x.id) AS assignedevents, '
+      $query = ' SELECT c.*, SUM('.$count.') AS assignedevents, '
           . '   CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
           . ' FROM #__redevent_categories AS c '
           . ' LEFT JOIN #__redevent_categories AS child ON child.lft BETWEEN c.lft AND c.rgt '
@@ -230,4 +233,3 @@ class RedeventModelCategories extends JModel
 		return $query;
 	}
 }
-?>

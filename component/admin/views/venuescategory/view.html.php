@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * View class for the EventList category screen
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventViewVenuesCategory extends JView {
@@ -56,10 +56,10 @@ class RedEventViewVenuesCategory extends JView {
 
 		//create the toolbar
 		if ( $cid ) {
-			JToolBarHelper::title( JText::_('COM_REDEVENT_EDIT_VENUES_CATEGORY' ), 'categoriesedit' );
+			JToolBarHelper::title( JText::_('COM_REDEVENT_EDIT_VENUES_CATEGORY' ), 'venuescategories' );
 
 		} else {
-			JToolBarHelper::title( JText::_('COM_REDEVENT_ADD_VENUES_CATEGORY' ), 'categoriesedit' );
+			JToolBarHelper::title( JText::_('COM_REDEVENT_ADD_VENUES_CATEGORY' ), 'venuescategories' );
 
 			//set the submenu
       ELAdmin::setMenu();
@@ -72,7 +72,7 @@ class RedEventViewVenuesCategory extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::cancel();
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.editcategories', true );
+		//JToolBarHelper::help( 'el.editcategories', true );
 
 		//Get data from the model
 		$model		= & $this->getModel();
@@ -117,4 +117,3 @@ class RedEventViewVenuesCategory extends JView {
 		parent::display($tpl);
 	}
 }
-?>

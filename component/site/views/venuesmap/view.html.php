@@ -2,7 +2,7 @@
 /**
  * @version 1.1 $Id: view.html.php 407 2007-09-21 16:03:39Z schlu $
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @copyright (C) 2005 - 2008 Christoph Lukes
  * @license GNU/GPL, see LICENSE.php
  * EventList is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@ jimport( 'joomla.application.component.view');
  * HTML View class for the Venues View
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedeventViewVenuesmap extends JView
@@ -85,9 +85,7 @@ class RedeventViewVenuesmap extends JView
     $countries = $this->get('Countries');
 
 		//Add needed scripts if the lightbox effect is enabled
-		if ($elsettings->get('lightbox') == 1) {
-  			JHTML::_('behavior.modal');
-		}
+		JHTML::_('behavior.modal');
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
@@ -142,4 +140,3 @@ class RedeventViewVenuesmap extends JView
 		parent::display($tpl);
 	}
 }
-?>

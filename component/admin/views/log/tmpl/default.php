@@ -32,6 +32,3 @@ defined('_JEXEC') or die('Restricted access');
   <input type="hidden" name="view" value="log" />
   <input type="hidden" name="task" value="" />
 </form>
-<p class="copyright">
-	<?php echo ELAdmin::footer( ); ?>
-</p>

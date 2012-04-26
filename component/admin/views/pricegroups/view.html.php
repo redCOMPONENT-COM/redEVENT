@@ -44,16 +44,17 @@ class RedeventViewPricegroups extends JView
 		$document	= & JFactory::getDocument();
 		
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_PRICEGROUPS'));
+    $document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 		
 		// Set toolbar items for the page
-		JToolBarHelper::title(   JText::_( 'COM_REDEVENT_MENU_PRICEGROUPS' ), 'generic.png' );
+		JToolBarHelper::title(   JText::_( 'COM_REDEVENT_MENU_PRICEGROUPS' ), 'pricegroups' );
 		JToolBarHelper::deleteList();
 		JToolBarHelper::editListX();
 		JToolBarHelper::addNewX();
+	
 		if ($user->authorise('core.admin', 'com_redevent')) {
 			JToolBarHelper::preferences('com_redevent', '600', '800');
 		}
-    JToolBarHelper::help( 'screen.redevent', true );
         
 		$db		=& JFactory::getDBO();
 		$uri	=& JFactory::getURI();
@@ -86,4 +87,3 @@ class RedeventViewPricegroups extends JView
 		parent::display($tpl);
 	}
 }
-?>

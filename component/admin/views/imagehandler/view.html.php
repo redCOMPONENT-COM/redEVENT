@@ -30,7 +30,7 @@ jimport( 'joomla.application.component.view');
  * Based on the Joomla! media component
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventViewImagehandler extends JView  {
@@ -148,4 +148,3 @@ class RedEventViewImagehandler extends JView  {
 		parent::display($tpl);
 	}
 }
-?>

@@ -191,4 +191,3 @@ class RedeventModelPricegroups extends JModel
     return $this->_total;
   }
 }
-?>

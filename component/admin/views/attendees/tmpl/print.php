@@ -122,7 +122,3 @@ $colspan = 10;
 		</tbody>
 
 	</table>
-
-	<p class="copyright">
-		<?php echo ELAdmin::footer( ); ?>
-	</p>

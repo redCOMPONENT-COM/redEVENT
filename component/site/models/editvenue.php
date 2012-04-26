@@ -30,7 +30,7 @@ jimport('joomla.application.component.model');
  * EventList Component Editvenue Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since		0.9
  */
 class RedeventModelEditvenue extends JModel
@@ -273,7 +273,7 @@ class RedeventModelEditvenue extends JModel
 			//get IP, time and userid
 			$row->created 			= gmdate('Y-m-d H:i:s');
 
-			$row->author_ip 		= $elsettings->get('storeip') ? getenv('REMOTE_ADDR') : 'DISABLED';
+			$row->author_ip 		= $elsettings->get('storeip', '1') ? getenv('REMOTE_ADDR') : 'DISABLED';
 			$row->created_by		= $user->get('id');
 		}
 
@@ -389,7 +389,7 @@ class RedeventModelEditvenue extends JModel
 		$link 	= JRoute::_(JURI::base().RedeventHelperRoute::getVenueEventsRoute($row->id), false);
 
 		//create mail
-		if (($elsettings->get('mailinform') == 2) || ($elsettings->get('mailinform') == 3)) {
+		if (($params->get('mailinform') == 2) || ($params->get('mailinform') == 3)) {
 
 			$mail = JFactory::getMailer();
 
@@ -410,7 +410,7 @@ class RedeventModelEditvenue extends JModel
 
 			}
 
-			$receivers = explode( ',', trim($elsettings->get('mailinformrec')));
+			$receivers = explode( ',', trim($params->get('mailinformrec')));
 
 			$mail->addRecipient( $receivers );
 			$mail->setSender( array( $MailFrom, $FromName ) );
@@ -422,13 +422,13 @@ class RedeventModelEditvenue extends JModel
 		}
 
 		//create the mail for the user
-		if (($elsettings->get('mailinformuser') == 2) || ($elsettings->get('mailinformuser') == 3)) {
+		if (($params->get('mailinformuser') == 2) || ($params->get('mailinformuser') == 3)) {
 
 			$usermail = JFactory::getMailer();
 
 			$state 	= $row->published ? JText::sprintf('COM_REDEVENT_USER_MAIL_VENUE_PUBLISHED', $link) : JText::_('COM_REDEVENT_USER_MAIL_VENUE_UNPUBLISHED');
 
-			If ($edited) {
+			if ($edited) {
 
 				$edited 		= JHTML::Date( $row->modified, JText::_('DATE_FORMAT_LC2' ) );
 				$mailbody 		= JText::sprintf('COM_REDEVENT_USER_MAIL_EDIT_VENUE', $user->name, $user->username, $edited, $row->venue, $row->url, $row->street, $row->plz, $row->city, $row->country, $row->locdescription, $state);
@@ -476,4 +476,3 @@ class RedeventModelEditvenue extends JModel
 		return (int) $this->_db->loadResult();
 	}	
 }
-?>

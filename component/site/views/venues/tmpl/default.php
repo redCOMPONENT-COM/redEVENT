@@ -55,18 +55,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			?>
 
 			<dl class="location floattext">
-				<?php if (($this->elsettings->get('showdetlinkvenue') == 1) && (!empty($row->url))) : ?>
+				<?php if (!empty($row->url)) : ?>
 				<dt class="venue_website"><?php echo JText::_('COM_REDEVENT_WEBSITE' ).':'; ?></dt>
 	   			<dd class="venue_website">
 					<a href="<?php echo $row->url; ?>" target="_blank"> <?php echo $row->urlclean; ?></a>
 				</dd>
 				<?php endif; ?>
 
-				<?php
-	  			if ( $this->elsettings->get('showdetailsadress') == 1 ) :
-	  			?>
-
-	  			<?php if ( $row->street ) : ?>
+	  		<?php if ( $row->street ) : ?>
 	  			<dt class="venue_street"><?php echo JText::_('COM_REDEVENT_STREET' ).':'; ?></dt>
 				<dd class="venue_street">
 	    			<?php echo $this->escape($row->street); ?>
@@ -105,13 +101,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	    		<dd class="venue_assignedevents">
 	    			<a href="<?php echo $row->targetlink; ?>"><?php echo (int)$row->assignedevents; ?></a>
 	    		</dd>
-			<?php
-			endif;
-			?>
 
 		</dl>
 
-	    <?php if ($this->elsettings->get('showlocdescription') == 1 && $row->locdescription) :	?>
+	  <?php if ($row->locdescription) :	?>
 		<h2 class="description"><?php echo JText::_('COM_REDEVENT_DESCRIPTION' ).':'; ?></h2>
 		<div class="description">
 	    	<?php echo $row->locdescription; ?>
@@ -126,10 +119,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 	<p class="pagescounter">
 		<?php echo $this->pageNav->getPagesCounter(); ?>
-	</p>
-
-	<!--copyright-->
-	<p class="copyright">
-		<?php echo REOutput::footer( ); ?>
 	</p>
 </div>

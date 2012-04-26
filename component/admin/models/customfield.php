@@ -426,4 +426,3 @@ class RedeventModelCustomfield extends JModel
     return true;
   }
 }
-?>

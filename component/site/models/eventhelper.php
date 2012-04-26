@@ -119,7 +119,6 @@ class RedeventModelEventhelper extends JModel
 					JError::raiseError( 403, JText::_("COM_REDEVENT_ALERTNOTAUTH") );
 				}
 			}
-
 		}
 
 		return $this->_event;
@@ -273,4 +272,3 @@ class RedeventModelEventhelper extends JModel
   	return $res;
   }
 }
-?>

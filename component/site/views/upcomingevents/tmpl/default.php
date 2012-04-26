@@ -42,9 +42,4 @@ if (count($this->upcomingevents) == 0) {
 else {
 	echo $this->loadTemplate('courseinfo');
 } ?>
-<!--copyright-->
-
-<p class="copyright">
-	<?php echo REOutput::footer( ); ?>
-</p>
 </div>

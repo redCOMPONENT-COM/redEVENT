@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * View class for the EventList editgroupmember screen
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventViewGroupmember extends JView {
@@ -76,10 +76,10 @@ class RedEventViewGroupmember extends JView {
 
 		//build toolbar
 		if ( $cid ) {
-			JToolBarHelper::title( $group->name .' - '. JText::_( 'COM_REDEVENT_GROUPMEMBER_EDIT_MEMBERR' ), 'groupedit' );
+			JToolBarHelper::title( $group->name .' - '. JText::_( 'COM_REDEVENT_GROUPMEMBER_EDIT_MEMBERR' ), 'accessgroups' );
 			JToolBarHelper::spacer();
 		} else {
-			JToolBarHelper::title( $group->name .' - '. JText::_( 'COM_REDEVENT_GROUPMEMBER_ADD_MEMBER' ), 'groupedit' );
+			JToolBarHelper::title( $group->name .' - '. JText::_( 'COM_REDEVENT_GROUPMEMBER_ADD_MEMBER' ), 'accessgroups' );
 			JToolBarHelper::spacer();
 		}
 		JToolBarHelper::apply();
@@ -87,7 +87,7 @@ class RedEventViewGroupmember extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::cancel();
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.editgroup', true );
+		//JToolBarHelper::help( 'el.editgroup', true );
 
 		//create selectlists
 		$lists = array();
@@ -140,4 +140,3 @@ class RedEventViewGroupmember extends JView {
 		parent::display($tpl);
 	}
 }
-?>

@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * View class for the redevent log
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventViewLog extends JView {
@@ -41,9 +41,9 @@ class RedEventViewLog extends JView {
 		$user 		= & JFactory::getUser();
 
 		//build toolbar
-		JToolBarHelper::title( JText::_('COM_REDEVENT_LOG' ), 'home' );
+		JToolBarHelper::title( JText::_('COM_REDEVENT_LOG' ), 'log' );
     JToolBarHelper::custom('clearlog', 'delete', 'delete', 'Clear Log', false);
-		JToolBarHelper::help( 'el.intro', true );
+		//JToolBarHelper::help( 'el.intro', true );
     //create the toolbar
 
 		// Get data from the model
@@ -62,4 +62,3 @@ class RedEventViewLog extends JView {
 		parent::display($tpl);
 	}
 }
-?>

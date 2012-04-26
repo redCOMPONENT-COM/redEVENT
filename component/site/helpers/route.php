@@ -43,7 +43,7 @@ class RedeventHelperRoute
 	 * @param int $xref
 	 * @return url
 	 */
-	function getDetailsRoute($id = 0, $xref = 0, $task = null)
+	public static function getDetailsRoute($id = 0, $xref = 0, $task = null)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "details" );
@@ -66,7 +66,7 @@ class RedeventHelperRoute
 	 * @param int or slug $xref
 	 * @return string url
 	 */
-	function getMoreInfoRoute($xref, $options = null)
+	public static function getMoreInfoRoute($xref, $options = null)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "moreinfo",
@@ -83,7 +83,7 @@ class RedeventHelperRoute
 	 * @param mixed date
 	 * @return url
 	 */
-	function getDayRoute($id = 0)
+	public static function getDayRoute($id = 0)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "day",
@@ -92,7 +92,7 @@ class RedeventHelperRoute
 	}
 	
 	
-	function getVenueEventsRoute($id, $task = null, $layout = null)
+	public static function getVenueEventsRoute($id, $task = null, $layout = null)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "venueevents",
@@ -106,7 +106,7 @@ class RedeventHelperRoute
 		return self::buildUrl( $parts );
 	}
 
-	function getUpcomingVenueEventsRoute($id, $task = null)
+	public static function getUpcomingVenueEventsRoute($id, $task = null)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "upcomingvenueevents",
@@ -117,7 +117,7 @@ class RedeventHelperRoute
 		return self::buildUrl( $parts );
 	}
 	
-	function getCategoryEventsRoute($id, $task = null, $layout = null)
+	public static function getCategoryEventsRoute($id, $task = null, $layout = null)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "categoryevents",
@@ -137,7 +137,7 @@ class RedeventHelperRoute
 	 * @param string $task
 	 * @return string
 	 */
-	function getCategoriesRoute($id = null, $task = null)
+	public static function getCategoriesRoute($id = null, $task = null)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "categories" );
@@ -156,7 +156,7 @@ class RedeventHelperRoute
 	 * @param string $task
 	 * @return string
 	 */
-	function getCategoriesDetailedRoute($id = null, $task = null)
+	public static function getCategoriesDetailedRoute($id = null, $task = null)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "categoriesdetailed" );
@@ -174,7 +174,7 @@ class RedeventHelperRoute
 	 * @param string $task
 	 * @return string
 	 */
-	function getSimpleListRoute($task = null, $layout = null)
+	public static function getSimpleListRoute($task = null, $layout = null)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "simplelist" );
@@ -187,7 +187,7 @@ class RedeventHelperRoute
 		return self::buildUrl( $parts );
 	}
 	
-	function getSignupRoute($type, $id, $xref, $pricegroup = null)
+	public static function getSignupRoute($type, $id, $xref, $pricegroup = null)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "signup",
@@ -201,21 +201,21 @@ class RedeventHelperRoute
 		return self::buildUrl( $parts );
 	}
 	
-	function getMyeventsRoute()
+	public static function getMyeventsRoute()
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "myevents" );
 		return self::buildUrl( $parts );		
 	}
 	
-	function getSearchRoute()
+	public static function getSearchRoute()
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "search" );
 		return self::buildUrl( $parts );		
 	}
 	
-	function getEditEventRoute($id = null, $xref = 0)
+	public static function getEditEventRoute($id = null, $xref = 0)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "editevent" );
@@ -228,7 +228,7 @@ class RedeventHelperRoute
 		return self::buildUrl( $parts );			
 	}
 	
-	function getEditXrefRoute($id = null)
+	public static function getEditXrefRoute($id = null)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "editxref" );
@@ -238,7 +238,7 @@ class RedeventHelperRoute
 		return self::buildUrl( $parts );			
 	}
 	
-	function getEditVenueRoute($id = null)
+	public static function getEditVenueRoute($id = null)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "editvenue" );
@@ -248,7 +248,7 @@ class RedeventHelperRoute
 		return self::buildUrl( $parts );			
 	}
 	
-	function getRegistrationRoute($xref, $task, $submit_key = null)
+	public static function getRegistrationRoute($xref, $task, $submit_key = null)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "controller" => "registration",
@@ -260,7 +260,7 @@ class RedeventHelperRoute
 		return self::buildUrl( $parts );			
 	}
 	
-	function getManageAttendees($xref, $task = 'manageattendees')
+	public static function getManageAttendees($xref, $task = 'manageattendees')
 	{		
 		$parts = array( "option" => "com_redevent",
 		                "controller" => "registration",
@@ -273,7 +273,16 @@ class RedeventHelperRoute
 		return self::buildUrl( $parts );	
 	}
 	
-	function buildUrl($parts)
+	public static function getWeekRoute($week)
+	{		
+		$parts = array( "option" => "com_redevent",
+		                "view"   => 'week', 
+		                "week"   => $week, 
+									);
+		return self::buildUrl( $parts );	
+	}
+	
+	protected static function buildUrl($parts)
 	{		
 		if($item = self::_findItem($parts)) {
 			$parts['Itemid'] = $item->id;
@@ -299,8 +308,8 @@ class RedeventHelperRoute
 	 *
 	 * @return int Itemid
 	 */
-	function _findItem($query)
-	{		
+	protected static function _findItem($query)
+	{
 		$component =& JComponentHelper::getComponent('com_redevent');
 		$menus	= & JApplication::getMenu('site');
 		$items	= $menus->getItems('component_id', $component->id);
@@ -354,4 +363,3 @@ class RedeventHelperRoute
 		return false;
 	}
 }
-?>

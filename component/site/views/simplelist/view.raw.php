@@ -68,4 +68,3 @@ class RedeventViewSimpleList extends JView
 		$mainframe->close();		
 	}
 }
-?>

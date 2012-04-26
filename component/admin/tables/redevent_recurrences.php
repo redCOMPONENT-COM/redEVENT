@@ -77,4 +77,3 @@ class Redevent_recurrences extends JTable
 		return true;
 	}
 }
-?>

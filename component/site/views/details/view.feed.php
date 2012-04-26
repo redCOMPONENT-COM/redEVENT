@@ -74,4 +74,3 @@ class RedeventViewDetails extends JView
 		$document->addItem( $item );
 	}
 }
-?>

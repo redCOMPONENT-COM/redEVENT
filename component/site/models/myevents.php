@@ -965,4 +965,3 @@ class MyVenuesPagination extends JPagination
         return $html;
     }
 }
-?>

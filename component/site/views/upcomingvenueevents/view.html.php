@@ -30,7 +30,7 @@ jimport( 'joomla.application.component.view');
  * HTML View class for the Upcoming events View
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedeventViewUpcomingVenueevents extends JView
@@ -74,10 +74,8 @@ class RedeventViewUpcomingVenueevents extends JView
 		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
 		$document->addHeadLink(JRoute::_($link.'&type=rss'), 'alternate', 'rel', $attribs);
 		
-		// Add needed scripts if the lightbox effect is enabled
-		if ($elsettings->get('lightbox') == 1) {
-			JHTML::_('behavior.modal');
-		}
+		// Add needed scripts if the lightbox effect
+		JHTML::_('behavior.modal');
 
 		//add alternate feed link
 		$link    = 'index.php?option=com_redevent&view=venueevents&format=feed&id='.$venue->id;
@@ -169,4 +167,3 @@ class RedeventViewUpcomingVenueevents extends JView
 		parent::display($tpl);
 	}
 }
-?>

@@ -53,7 +53,7 @@ class RedeventViewCustomfields extends JView
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_CUSTOMFIELDS'));
 		
 		// Set toolbar items for the page
-		JToolBarHelper::title(   JText::_('COM_REDEVENT_Custom_fields' ), 'generic.png' );
+		JToolBarHelper::title(   JText::_('COM_REDEVENT_Custom_fields' ), 'customfields' );
 		JToolBarHelper::deleteList();
 		JToolBarHelper::editListX();
 		JToolBarHelper::addNewX();
@@ -62,7 +62,6 @@ class RedeventViewCustomfields extends JView
 		if ($user->authorise('core.admin', 'com_redevent')) {
 			JToolBarHelper::preferences('com_redevent', '600', '800');
 		}
-    JToolBarHelper::help( 'screen.redevent', true );
         
 		$db		=& JFactory::getDBO();
 		$uri	=& JFactory::getURI();
@@ -124,4 +123,3 @@ class RedeventViewCustomfields extends JView
 		parent::display($tpl);
 	}
 }
-?>

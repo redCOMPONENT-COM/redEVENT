@@ -141,7 +141,6 @@ class RedeventViewAttendees extends JView
 		$user		= JFactory::getUser();
 		$elsettings = redEVENTHelper::config();
 		$uri        = & JFactory::getURI();
-		
 		$row		= $this->get('Session');
 		$registers	= $this->get('Registers');
 		$regcheck	= $this->get('ManageAttendees');
@@ -251,4 +250,3 @@ class RedeventViewAttendees extends JView
 		}
 	}
 }
-?>

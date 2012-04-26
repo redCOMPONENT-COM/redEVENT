@@ -44,4 +44,3 @@ class RedEventControllerRegistrations extends RedEventController
 		parent::__construct();
 	}
 }
-?>

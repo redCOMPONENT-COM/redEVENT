@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
  * EventList registration Model class
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEvent_eventvenuexref extends JTable
@@ -304,4 +304,3 @@ class RedEvent_eventvenuexref extends JTable
     }
 	}
 }
-?>

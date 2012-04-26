@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * View class for the EventList categories screen
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventViewCategories extends JView {
@@ -79,7 +79,6 @@ class RedEventViewCategories extends JView {
 		if ($user->authorise('core.admin', 'com_redevent')) {
 			JToolBarHelper::preferences('com_redevent', '600', '800');
 		}
-		JToolBarHelper::help( 'el.listcategories', true );
 
 		//Get data from the model
 		$rows      	= & $this->get( 'Data');
@@ -134,4 +133,3 @@ class RedEventViewCategories extends JView {
 		parent::display($tpl);
 	}
 }
-?>

@@ -106,7 +106,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 							}
 
 							?><br />
-							<b><?php echo JText::_('COM_REDEVENT_IMAGE_FILESIZE' ).':'; ?></b> <?php echo $this->elsettings->get('sizelimit'); ?> kb<br />
+							<b><?php echo JText::_('COM_REDEVENT_IMAGE_FILESIZE' ).':'; ?></b> <?php echo $this->elsettings->get('sizelimit', '100'); ?> kb<br />
 
 							<?php
 							if ( $this->elsettings->get('gddisabled') ) {
@@ -172,7 +172,3 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <input type="hidden" name="controller" value="imagehandler" />
 <input type="hidden" name="task" value="<?php echo $this->task;?>" />
 </form>
-
-<p class="copyright">
-	<?php echo ELAdmin::footer( ); ?>
-</p>

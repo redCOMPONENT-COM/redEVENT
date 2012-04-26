@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * View class for the EventList home screen
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventViewRedEvent extends JView {
@@ -46,10 +46,10 @@ class RedEventViewRedEvent extends JView {
 
 		//build toolbar
 		JToolBarHelper::title( JText::_('COM_REDEVENT' ), 'home' );
+	
 		if ($user->authorise('core.admin', 'com_redevent')) {
 			JToolBarHelper::preferences('com_redevent', '600', '800');
 		}
-		JToolBarHelper::help( 'el.intro', true );
 
 		// Get data from the model
 		$events      = & $this->get( 'Eventsdata');
@@ -111,4 +111,3 @@ class RedEventViewRedEvent extends JView {
 		<?php
 	}
 }
-?>

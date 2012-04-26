@@ -12,6 +12,7 @@
   
   <files>
     <filename plugin="resimplelist">resimplelist.php</filename>
+    <folder>resimplelist</folder>
     <filename>resimplelist.css</filename>
     <filename>index.html</filename>
     <folder>language</folder>

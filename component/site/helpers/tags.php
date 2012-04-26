@@ -870,9 +870,6 @@ class redEVENT_tags {
    */
   private function _answersToHtml()
   {
-  	if (empty($this->_submitkey)) {
-  		return '';
-  	}
   	$answers = $this->_getAnswers();
   	if (!$answers) {
   		return '';
@@ -2121,4 +2118,3 @@ class RedeventParsedTag {
 	}
 	
 }
-?>

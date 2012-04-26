@@ -29,7 +29,7 @@ jimport('joomla.application.component.controller');
  * EventList Component Venues Controller
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventControllerVenues extends RedEventController
@@ -418,4 +418,3 @@ class RedEventControllerVenues extends RedEventController
     return $field;
   }
 }
-?>

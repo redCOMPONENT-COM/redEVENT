@@ -30,7 +30,7 @@ jimport('joomla.application.component.model');
  * EventList Component Editevent Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since		0.9
  */
 class RedeventModelEditevent extends JModel
@@ -311,7 +311,7 @@ class RedeventModelEditevent extends JModel
 			}
 			
 			$query = ' SELECT e.*, v.venue, x.id AS xref, x.eventid, x.venueid, '
-			       . ' x.dates, x.enddates, x.times, x.endtimes, x.maxattendees, '
+			       . ' x.dates, x.enddates, x.times, x.endtimes, x.maxattendees, x.details, '
 			       . ' x.maxwaitinglist, x.course_credit, x.registrationend, x.title as session_title, '
 			       . ' r.id as recurrence_id, r.rrule, rp.count '
 			       . (count($xfields) ? ', '.implode(', ', $xfields) : '')
@@ -753,17 +753,6 @@ class RedeventModelEditevent extends JModel
 
 			$row->modified 		= gmdate('Y-m-d H:i:s');
 			$row->modified_by 	= $user->get('id');
-
-			/*
-			* Is editor the owner of the event
-			* This extra Check is needed to make it possible
-			* that the venue is published after an edit from an owner
-			*/
-			if ($elsettings->get('venueowner') == 1 && $row->created_by == $user->get('id')) {
-				$owneredit = 1;
-			} else {
-				$owneredit = 0;
-			}
 		} 
 		else 
 		{
@@ -775,11 +764,8 @@ class RedeventModelEditevent extends JModel
 			//get IP, time and userid
 			$row->created 		= gmdate('Y-m-d H:i:s');
 
-			$row->author_ip 	= $elsettings->get('storeip') ? getenv('REMOTE_ADDR') : 'DISABLED';
+			$row->author_ip 	= $elsettings->get('storeip', '1') ? getenv('REMOTE_ADDR') : 'DISABLED';
 			$row->created_by 	= $user->get('id');
-
-			//Set owneredit to false
-			$owneredit = 0;
 		}
 
 		//Image upload
@@ -1013,7 +999,7 @@ class RedeventModelEditevent extends JModel
 		$link 	= JRoute::_(JURI::base().RedeventHelperRoute::getDetailsRoute($row->id), isset($xref) ? $xref->id : false);
 
 		//create the mail for the site owner
-		if (($elsettings->get('mailinform') == 1) || ($elsettings->get('mailinform') == 3)) {
+		if (($params->get('mailinform') == 1) || ($params->get('mailinform') == 3)) {
 
 			$mail = JFactory::getMailer();
 
@@ -1034,7 +1020,7 @@ class RedeventModelEditevent extends JModel
 
 			}
 
-			$receivers = explode( ',', trim($elsettings->get('mailinformrec')));
+			$receivers = explode( ',', trim($params->get('mailinformrec')));
 
 			$mail->addRecipient( $receivers );
 			$mail->setSender( array( $MailFrom, $FromName ) );
@@ -1048,7 +1034,7 @@ class RedeventModelEditevent extends JModel
 		}//mail end
 
 		//create the mail for the user
-		if (($elsettings->get('mailinformuser') == 1) || ($elsettings->get('mailinformuser') == 3)) {
+		if (($params->get('mailinformuser') == 1) || ($params->get('mailinformuser') == 3)) {
 
 			$usermail = JFactory::getMailer();
 
@@ -1702,4 +1688,3 @@ class RedeventModelEditevent extends JModel
   	return $res;
   }
 }
-?>

@@ -30,7 +30,7 @@ jimport('joomla.application.component.model');
  * EventList Component Details Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since		0.9
  */
 class RedeventModelSignup extends JModel
@@ -389,4 +389,3 @@ class RedeventModelSignup extends JModel
   	return count($res);
   }
 }
-?>

@@ -29,7 +29,7 @@ jimport('joomla.application.component.controller');
  * EventList Component Groups Controller
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventControllerGroups extends RedEventController
@@ -257,4 +257,3 @@ class RedEventControllerGroups extends RedEventController
 		$this->setRedirect( $link, $msg );
 	}
 }
-?>

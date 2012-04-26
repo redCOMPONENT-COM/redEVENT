@@ -30,7 +30,7 @@ jimport('joomla.filesystem.file');
  * EventList Component Imagehandler Controller
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventControllerImagehandler extends RedEventController
@@ -175,4 +175,3 @@ class RedEventControllerImagehandler extends RedEventController
 	}
 
 }
-?>

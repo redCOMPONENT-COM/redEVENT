@@ -70,4 +70,3 @@ class RedeventViewVenueEvents extends JView
 		$mainframe->close();
 	}
 }
-?>

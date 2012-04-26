@@ -427,10 +427,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
     </form>
 
-    <p class="copyright">
-        <?php echo REOutput::footer( ); ?>
-    </p>
-
 </div>
 
 <?php

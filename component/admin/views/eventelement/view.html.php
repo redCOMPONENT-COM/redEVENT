@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * View class for the EventList eventelement screen
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventViewEventelement extends JView {
@@ -158,4 +158,3 @@ class RedEventViewEventelement extends JView {
 	}
 
 }//end class
-?>

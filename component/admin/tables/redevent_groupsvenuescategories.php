@@ -81,4 +81,3 @@ class RedEvent_groupsvenuescategories extends JTable
 		return true;
 	}
 }
-?>

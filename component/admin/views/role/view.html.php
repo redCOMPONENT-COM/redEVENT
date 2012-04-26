@@ -89,6 +89,19 @@ class RedeventViewRole extends JView
 			//$season->published = 1;
 			$object->order 	= 0;
 		}
+		
+		// Set toolbar items for the page
+		$edit		= JRequest::getVar('edit',true);
+		$text = !$edit ? JText::_('COM_REDEVENT_New' ) : JText::_('COM_REDEVENT_Edit' );
+		JToolBarHelper::title(   JText::_( 'COM_REDEVENT_ROLE' ).': <small><small>[ ' . $text.' ]</small></small>', 'roles' );
+		JToolBarHelper::save();
+		JToolBarHelper::apply();
+		if (!$edit)  {
+			JToolBarHelper::cancel();
+		} else {
+			// for existing items the button is renamed `close`
+			JToolBarHelper::cancel( 'cancel', 'Close' );
+		}
 		  
 		// build the html select list for ordering
 		$query = 'SELECT ordering AS value, name AS text'
@@ -116,4 +129,3 @@ class RedeventViewRole extends JView
 		parent::display($tpl);
 	}
 }
-?>

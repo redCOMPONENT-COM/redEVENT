@@ -51,4 +51,3 @@ class RedEventControllerAttendees extends RedEventController
 		parent::display();
 	}
 }
-?>

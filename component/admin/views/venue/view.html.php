@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * View class for the EventList Venueedit screen
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventViewVenue extends JView {
@@ -105,7 +105,7 @@ class RedEventViewVenue extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::cancel();
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.editvenues', true );
+		//JToolBarHelper::help( 'el.editvenues', true );
 
 		$lists = array();
     // categories selector
@@ -146,4 +146,3 @@ class RedEventViewVenue extends JView {
 		parent::display($tpl);
 	}
 }
-?>

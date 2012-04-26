@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
  * EventList groupmembers Model class
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEvent_groupmembers extends JTable
@@ -104,4 +104,3 @@ class RedEvent_groupmembers extends JTable
 		return true;
 	}
 }
-?>

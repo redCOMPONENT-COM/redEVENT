@@ -30,7 +30,7 @@ jimport('joomla.application.component.model');
  * EventList Component Group Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since		0.9
  */
 class RedEventModelGroup extends JModel
@@ -357,4 +357,3 @@ class RedEventModelGroup extends JModel
 		return $row->id;
 	}
 }
-?>

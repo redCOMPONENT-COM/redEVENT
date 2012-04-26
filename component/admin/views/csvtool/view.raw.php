@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * View class for the EventList attendees screen
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventViewCsvtool extends JView {
@@ -142,4 +142,3 @@ class RedEventViewCsvtool extends JView {
     return join($delimiter, $output) . "\n";
 	} 
 }
-?>

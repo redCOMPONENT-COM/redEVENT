@@ -185,10 +185,6 @@ defined('_JEXEC') or die('Restricted access');
 		</tbody>
 	</table>
 
-	<p class="copyright">
-		<?php echo ELAdmin::footer( ); ?>
-	</p>
-
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="option" value="com_redevent" />
 	<input type="hidden" name="view" value="archive" />

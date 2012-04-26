@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * View class for the EventList event screen
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventViewEvent extends JView {
@@ -102,7 +102,7 @@ class RedEventViewEvent extends JView {
     $customfields =& $this->get('Customfields');
 		
 		/* Check if we have a redFORM id */
-		if (empty($row->redform_id)) $row->redform_id = $params->get('defaultredformid');
+		if (empty($row->redform_id)) $row->redform_id = $params->get('defaultredformid', 1);
 
 		// fail if checked out not by 'me'
 		if ($row->id) {
@@ -228,7 +228,7 @@ class RedEventViewEvent extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::cancel();
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.editevents', true );
+		//JToolBarHelper::help( 'el.editevents', true );
 		      		
 		//assign vars to the template
 		$this->assignRef('lists'      	, $lists);
@@ -340,9 +340,9 @@ class RedEventViewEvent extends JView {
     
     $xref = $this->get('xref');
     
-    /* Get the date */
     $date = (!redEVENTHelper::isValidDate($xref->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $params->get('formatdate', '%d.%m.%Y'), strtotime( $xref->dates )));
     $enddate  = (!redEVENTHelper::isValidDate($xref->enddates) || $xref->enddates == $xref->dates) ? '' : strftime( $params->get('formatdate', '%d.%m.%Y'), strtotime( $xref->enddates ));
+
     $displaydate = $date. ($enddate ? ' - '.$enddate: '');
 
     $displaytime = '';
@@ -352,6 +352,7 @@ class RedEventViewEvent extends JView {
 
     	if (isset($xref->endtimes) && $xref->endtimes != '00:00:00') {
     		$displaytime .= ' - '.strftime( $params->get('formattime', '%H:%M'), strtotime( $xref->endtimes ));
+
     	}
     }
     $json_data = array( 'id'        => $xref->id,
@@ -477,4 +478,3 @@ class RedEventViewEvent extends JView {
     $this->assignRef('xrefcustomfields' , $customfields);
   }
 }
-?>

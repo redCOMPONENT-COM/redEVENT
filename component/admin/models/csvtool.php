@@ -187,4 +187,3 @@ class RedEventModelcsvtool extends JModel
 		return $submitters;
 	}
 }
-?>

@@ -30,7 +30,7 @@ jimport('joomla.application.component.model');
  * EventList Component Category Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since		0.9
  */
 class RedEventModelTextLibrary extends JModel
@@ -314,4 +314,3 @@ class RedEventModelTextLibrary extends JModel
 		return $count;
 	}
 }
-?>

@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * View class for the EventList CSS edit screen
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventViewEditcss extends JView {
@@ -62,7 +62,7 @@ class RedEventViewEditcss extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::cancel();
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.editcss', true );
+		//JToolBarHelper::help( 'el.editcss', true );
 		
 		JRequest::setVar( 'hidemainmenu', 1 );
 

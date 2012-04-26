@@ -120,4 +120,3 @@ class plgSystemAutotweetRedevent extends plgAutotweetBase
 		return $data;
 	}
 }	
-?>

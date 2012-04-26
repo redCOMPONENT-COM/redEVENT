@@ -143,9 +143,4 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 </p>
 <?php endif; ?>
 
-<!--copyright-->
-
-<p class="copyright">
-	<?php echo REOutput::footer( ); ?>
-</p>
 </div>

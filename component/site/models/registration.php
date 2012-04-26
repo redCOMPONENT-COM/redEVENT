@@ -63,8 +63,6 @@ class RedEventModelRegistration extends JModel
 	 */
 	var $_rf_answers;
 	
-	var $mailer = null;
-	
 	var $_prices = null;
 	
 	/**
@@ -125,7 +123,7 @@ class RedEventModelRegistration extends JModel
 		$obj->submit_key = $submit_key;
 		$obj->uid        = $user ? $user->get('id') : 0;
 		$obj->uregdate 	 = gmdate('Y-m-d H:i:s');
-		$obj->uip        = $config->storeip ? getenv('REMOTE_ADDR') : 'DISABLED';
+		$obj->uip        = $config->get('storeip', '1') ? getenv('REMOTE_ADDR') : 'DISABLED';
 		
 		if (!$obj->check()) {
 			$this->setError($obj->getError());
@@ -185,136 +183,18 @@ class RedEventModelRegistration extends JModel
 	 */
 	function confirm($rid)
 	{
+		$attendee = new REattendee($rid);
+		
 		// first, changed status to confirmed
-		$query = ' UPDATE #__redevent_register '
-		       . ' SET confirmed = 1, confirmdate = ' .$this->_db->Quote(gmdate('Y-m-d H:i:s'))
-		       . '   , paymentstart = ' .$this->_db->Quote(gmdate('Y-m-d H:i:s'))
-		       . ' WHERE id = ' . $rid;
-		$this->_db->setQuery($query);
-		$res = $this->_db->query();
-		
-		if (!$res) {
-			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_FAILED_CONFIRM_REGISTRATION'));
-			return false;
-		}
-		
-		// now, handle waiting list
-		$session = &$this->getSessionDetails();
-		if ($session->maxattendees == 0) { // no waiting list
-			// send attending email
-			$this->_sendWaitinglistStatusEmail($rid, 0);
-			return true;
-		}
-		
-		$attendees = $this->_getAttendees();
-		if (count($attendees) > $session->maxattendees) 
+		if (!$attendee->confirm()) 
 		{
-			// put this attendee on WL
-			$query = ' UPDATE #__redevent_register '
-			       . ' SET waitinglist = 1'
-		  	     . ' WHERE id = ' . $rid;
-			$this->_db->setQuery($query);
-			$res = $this->_db->query();
-			
-			if (!$res) {
-				$this->setError(JText::_('COM_REDEVENT_REGISTRATION_FAILED_ADDING_TO_WAITING_LIST'));
-				return false;
-			}
-			
-			// send waiting list email
-			$this->_sendWaitinglistStatusEmail($rid, 1);
-		}
-		else {
-			$this->_attendees[] = $rid;
-			
-			// send attending email
-			$this->_sendWaitinglistStatusEmail($rid, 0);
-		}
+			$this->setError($attendee->getError());
+			return false;
+		}		
 		
 		return true;
 	}
-	
-	/**
-	 * returns array of ids of currently attending (confirmed, not on wl, not cancelled) register_id
-	 * 
-	 * @return array;
-	 */
-	private function _getAttendees()
-	{
-		if (is_null($this->_attendees))
-		{
-			$query = ' SELECT r.id ' 
-			       . ' FROM #__redevent_register AS r ' 
-			       . ' WHERE r.xref = ' . $this->_xref
-			       . '   AND r.confirmed = 1 '
-			       . '   AND r.cancelled = 0 '
-			       . '   AND r.waitinglist = 0 '
-			       ;
-			$this->_db->setQuery($query);
-			$this->_attendees = $this->_db->loadResultArray();
-		}
-		return $this->_attendees;
-	}
-	
-	/**
-	 * send waiting list status emails
-	 * 
-	 * @param int $rid register id
-	 * @param int $waiting status: 0 for attending, 1 for waiting
-	 * @return boolean true on success
-	 */
-	function _sendWaitinglistStatusEmail($rid, $waiting = 0)
-	{
-		$session = &$this->getSessionDetails();
 		
-		$query = ' SELECT sid ' 
-		       . ' FROM #__redevent_register AS r ' 
-		       . ' WHERE id = ' . $rid;
-		$this->_db->setQuery($query);
-		$sid = $this->_db->loadResult();
-		
-		if (empty($this->taghelper)) {
-			$this->taghelper = new redEVENT_tags();
-			$this->taghelper->setXref($this->_xref);
-		}
-				
-		if ($waiting == 0) {
-			$body    = nl2br($this->taghelper->ReplaceTags($session->notify_off_list_body));
-			$subject = $this->taghelper->ReplaceTags($session->notify_off_list_subject);
-		}
-		else {
-			$body = nl2br($this->taghelper->ReplaceTags($session->notify_on_list_body));
-			$subject = $this->taghelper->ReplaceTags($session->notify_on_list_subject);
-		}
-		
-		// update image paths in body
-		$body = REOutput::ImgRelAbs($body);
-		
-		$mailer = JFactory::getMailer();
-		
-		$rfcore = new RedFormCore();
-		$emails = $rfcore->getSidContactEmails($sid);
-		foreach ($emails as $email)
-		{		
-			/* Add the email address */
-			$mailer->AddAddress($email['email'], $email['fullname']);
-		}
-				
-		/* Mail submitter */
-		$htmlmsg = '<html><head><title></title></title></head><body>'.$body.'</body></html>';
-		$mailer->setBody($htmlmsg);
-		$mailer->setSubject($subject);
-		$mailer->IsHTML(true);
-			
-		/* Send the mail */
-		if (!$mailer->Send()) {
-			RedeventHelperLog::simpleLog(JText::_('COM_REDEVENT_REGISTRATION_FAILED_SENDING_WAITING_LIST_STATUS_EMAIL'));
-			return false;
-		}
-		
-		return true;
-	}
-	
 	function getSessionDetails()
 	{
 		if (empty($this->_xrefdata))
@@ -325,7 +205,7 @@ class RedEventModelRegistration extends JModel
 			}
 			$query = 'SELECT a.id AS did, x.id AS xref, a.title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, '
 			    . ' a.registra, a.unregistra, a.activate, a.notify, a.redform_id as form_id, '
-			    . ' a.notify_confirm_body, a.notify_confirm_subject, ' 
+			    . ' a.notify_confirm_body, a.notify_confirm_subject, a.notify_subject, a.notify_body, ' 
 			    . ' a.notify_off_list_subject, a.notify_off_list_body, a.notify_on_list_subject, a.notify_on_list_body, '
 					. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
 					. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone,'
@@ -376,27 +256,6 @@ class RedEventModelRegistration extends JModel
     return $row;   
   }
   
-  /**
-   * adds registered (int) and waiting (int) properties to rows.
-   * 
-   * @return array 
-   */
-  function getRegistrationsCount() 
-  {
-  	$session = &$this->getSessionDetails();
-  	
-		$query = ' SELECT waitinglist, COUNT(id) AS total '
-		       . ' FROM #__redevent_register '
-		       . ' WHERE xref = '.$session->xref
-		       . ' AND confirmed = 1 '
-		       . '   AND r.cancelled = 0 '
-		       . ' GROUP BY waitinglist'
-		       ;
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadObjectList('waitinglist');
-    return array('attending' => (isset($res[0]) ? $res[0]->total : 0), 'waiting' => (isset($res[1]) ? $res[1]->total : 0));
-  }
-  
   function cancel($submit_key)
   {
   	$session = &$this->getSessionDetails();
@@ -418,350 +277,78 @@ class RedEventModelRegistration extends JModel
 		}
 		return true;
   	
-  }
-  
+  }  
 
 	/**
 	 * Send e-mail confirmations
+	 * 
+	 * @param string submit key
+	 * @return boolean true on success
 	 */
 	public function sendNotificationEmail($submit_key) 
 	{
-		$mainframe = & JFactory::getApplication();
-		
 		/* Load database connection */
 		$db = JFactory::getDBO();
 		
-		/* Determine contact person */
-		$user = JFactory::getUser();
-		
-		/* Get the global settings */
-		$elsettings = redEVENTHelper::config();
-		
 		/* Get registration settings */
-		$q = "SELECT *
+		$q = "SELECT r.id
 			FROM #__redevent_register r
 			WHERE submit_key = ".$db->Quote($submit_key);
 		$db->setQuery($q);
-		$registration = $db->loadObject();
+		$registrations = $db->loadResultArray();
 		
-		if (!$registration) {
+		if (!$registrations || !count($registrations)) {
 			JError::raiseError(0, JText::sprintf('COM_REDEVENT_notification_registration_not_found_for_key_s', $submit_key));
 			return false;
 		}
 		
-		/* Get settings for event */
-		$q = "SELECT e.title, e.notify_subject, e.notify_body, e.notify, x.maxattendees, e.activate,
-					e.juser, e.confirmation_message, e.redform_id, e.submission_type_formal_offer, e.submission_type_formal_offer_subject,
-					e.datdescription, e.id AS eventid
-			FROM #__redevent_events e
-			LEFT JOIN #__redevent_event_venue_xref x
-			ON x.eventid = e.id
-			WHERE x.id = ".$registration->xref."
-			";
-		$db->setQuery($q);
-		$eventsettings = $db->loadObject();
-				
-		/* Get a list of fields that are of type email/username/fullname */
-		$q = "SELECT f.id, f.field, f.fieldtype 
-			FROM #__rwf_fields f
-			WHERE f.published = 1
-			AND f.form_id = ".$eventsettings->redform_id."
-			AND f.fieldtype in ('email', 'username', 'fullname')
-			GROUP BY f.fieldtype";
-		$db->setQuery($q);
-		$selectfields = $db->loadObjectList('fieldtype');
-
-		/* Get the username and e-mail from the redFORM database */
-		$getfields = array($db->nameQuote('s.id'));
-		foreach ((array) $selectfields as $selectfield) {
-			$getfields[] = $db->nameQuote('f.field_'. $selectfield->id);
-		}
-		
-		
-		/* Get list of attendees */
-		$q = ' SELECT r.id as rid, '. implode(', ', $getfields)
-		   . ' FROM #__redevent_register as r '
-		   . ' INNER JOIN #__rwf_submitters AS s ON s.id = r.sid '
-		   . ' INNER JOIN '. $db->nameQuote('#__rwf_forms_'.$eventsettings->redform_id).' AS f ON s.answer_id = f.id '
-		   . ' WHERE r.submit_key = '.$db->Quote($registration->submit_key)
-		   ;
-		$db->setQuery($q);
-		$useremails = $db->loadObjectList();
-				
-		$attendees = array();
-		foreach ($useremails as $attendeeinfo)
+		foreach ($registrations as $rid)
 		{
-			$attendee = new REattendee($attendeeinfo->rid);
-			if (isset($selectfields['fullname'])) {
-				$property = 'field_'. $selectfields['fullname']->id;
-				$attendee->setFullname($attendeeinfo->$property);
-			}
-      if (isset($selectfields['username'])) {
-        $property = 'field_'. $selectfields['username']->id;
-        $attendee->setUsername($attendeeinfo->$property);
-      }
-      if (isset($selectfields['email'])) {
-        $property = 'field_'. $selectfields['email']->id;
-        $attendee->setEmail($attendeeinfo->$property);
-      }
-      
-      $attendees[] = $attendee;
-		}
-						 		
-		/**
-		 * Send a submission mail to the attendee and/or contact person 
-		 * This will only work if the contact person has an e-mail address
-		 **/		
-		if (isset($eventsettings->notify) && $eventsettings->notify) 
-		{
-			/* Load the mailer */
-			$this->Mailer();
-      
-			$tags = new redEVENT_tags();
-			$tags->setXref($registration->xref);
-			$tags->setSubmitkey($submit_key);
-			
-			/* Now send some mail to the attendants */
-			foreach ($attendees as $attendee) 
-			{
-				if ($attendee->getEmail()) 
-				{
-					/* Check if we have all the fields */
-					if (!$attendee->getUsername()) $attendee->setUsername($attendee->getEmail());
-					if (!$attendee->getFullname()) $attendee->setFullname($attendee->getUsername());
-		
-					/* Add the email address */
-					$this->mailer->AddAddress($attendee->getEmail(), $attendee->getFullname());
-					
-					/* build activation link */
-					// TODO: use the route helper !
-					$rid = $attendee->getId();
-					$url = JRoute::_( JURI::root().'index.php?option=com_redevent&controller=registration&task=activate'
-					     . '&confirmid='.str_replace(".", "_", $registration->uip)
-					     .              'x'.$registration->xref
-					     .              'x'.$registration->uid
-					     .              'x'.$rid
-					     .              'x'.$submit_key );
-					$activatelink = '<a href="'.$url.'">'.JText::_('COM_REDEVENT_Activate').'</a>';
-					$cancellink = JRoute::_(JURI::root().'index.php?option=com_redevent&task=cancelreg'
-					                        .'&rid='.$rid.'&xref='.$registration->xref.'&submit_key='.$submit_key);
-					
-					/* Mail attendee */
-					$htmlmsg = '<html><head><title></title></title></head><body>';
-					$htmlmsg .= $eventsettings->notify_body;
-					$htmlmsg .= '</body></html>';
-					
-					$htmlmsg = $tags->ReplaceTags($htmlmsg);
-					$htmlmsg = str_replace('[activatelink]', $activatelink, $htmlmsg);
-					$htmlmsg = str_replace('[cancellink]', $cancellink, $htmlmsg);
-					$htmlmsg = str_replace('[fullname]', $attendee->getFullname(), $htmlmsg);
-					
-					// convert urls
-					$htmlmsg = REOutput::ImgRelAbs($htmlmsg);
-					
-					$this->mailer->setBody($htmlmsg);
-					$this->mailer->setSubject($tags->ReplaceTags($eventsettings->notify_subject));
-		
-					/* Count number of messages sent */
-					if (!$this->mailer->Send()) {
-						RedeventHelperLog::simpleLog('Error sending notify message to submitted attendants');
-					}
-		
-					/* Clear the mail details */
-					$this->mailer->ClearAllRecipients();
-				}
-				else {
-					/* Not sending mail as there is no e-mail address */
-				}
+			$attendee = new REattendee($rid);
+			if (!$attendee->sendNotificationEmail()) {
+				$this->setError($attendee->getError());
+				return false;
 			}
 		}
-		return $registration;
+		return true;
 	}
 	
 
-  function notifyManagers($submit_key, $unreg = false, $reg_sid = 0)
+  function notifyManagers($submit_key, $unreg = false, $reg_id = 0)
   {
-  	$this->setSubmitKey($submit_key);
-  	$session = &$this->getSessionDetails();
-  	
-  	jimport('joomla.mail.helper');
-  	$app    = &JFactory::getApplication();
-  	$params = $app->getParams('com_redevent');
-		$tags   = new redEVENT_tags();
-		$tags->setXref($this->_xref);
-		$tags->setSubmitkey($submit_key);
-		if ($reg_sid) {
-			$tags->addOptions(array('sids' => array($reg_sid)));
-		}
-  	
-  	$event = $this->getSessionDetails();
-  	
-  	// we will use attendee details for 'from' field
-  	$contact = $this->getRegistrationContactPerson($submit_key);
-  	
-  	$recipients = array();
-  	
-  	// default recipients
-  	$default = $params->get('registration_default_recipients');
-  	if (!empty($default)) 
-  	{
-  		if (strstr($default, ';')) {
-  			$addresses = explode(";", $default);
-  		}
-  		else {
-  			$addresses = explode(",", $default);
-  		}
-  		foreach ($addresses as $a) 
-  		{
-  			$a = trim($a);
-	  		if (JMailHelper::isEmailAddress($a)) {
-	  			$recipients[] = array('email' => $a, 'name' => '');
-	  		}  			
-  		}
-  	}
-  	
-  	// creator
-  	if ($params->get('registration_notify_creator', 1)) {
-  		if (JMailHelper::isEmailAddress($event->creator_email)) {
-  			$recipients[] = array('email' => $event->creator_email, 'name' => $event->creator_name);
-  		}
-  	}
-  	
-  	// group recipients
-  	$gprecipients = $this->_getXrefRegistrationRecipients();
-  	foreach ($gprecipients AS $r)
-  	{
-  		if (JMailHelper::isEmailAddress($r->email)) {
-  			$recipients[] =  array('email' => $r->email, 'name' => $r->name);	
-  		}
-  	}
-  	
-  	// redform recipients
-  	$rfrecipients = $this->getRFRecipients();
-  	foreach ((array) $rfrecipients as $r)
-  	{
-  		if (JMailHelper::isEmailAddress($r)) {
-  			$recipients[] =  array('email' => $r, 'name' => '');	
-  		}
-  	}
-  	
-  	if (!count($recipients)) {
-  		return true;
-  	}
-  	
-  	$mailer = & JFactory::getMailer();
-  	if ($contact && $params->get('allow_email_aliasing', 1)) {
-	  	$sender = array($contact->getEmail(), $contact->getFullname());
-		}
-		else { // default to site settings
-			$sender = array($app->getCfg('mailfrom'), $app->getCfg('sitename'));
-		}
-		$mailer->setSender($sender);
-		$mailer->addReplyTo($sender);
+		/* Load database connection */
+		$db = JFactory::getDBO();
 		
-  	foreach ($recipients as $r)
-  	{
-  		$mailer->addAddress($r['email'], $r['name']);
-  	}
-  	
-  	$mail = '<HTML><HEAD>
-		<STYLE TYPE="text/css">
-		<!--
-		  table.formanswers , table.formanswers td, table.formanswers th
-			{
-			    border-color: darkgrey;
-			    border-style: solid;
-			    text-align:left;
-			}			
-			table.formanswers
-			{
-			    border-width: 0 0 1px 1px;
-			    border-spacing: 0;
-			    border-collapse: collapse;
-			    padding: 5px;
-			}			
-			table.formanswers td, table.formanswers th
-			{
-			    margin: 0;
-			    padding: 4px;
-			    border-width: 1px 1px 0 0;
-			}		  
-		-->
-		</STYLE>
-		</head>
-		<BODY bgcolor="#FFFFFF">
-		'.$tags->ReplaceTags($unreg ? $params->get('unregistration_notification_body') : $params->get('registration_notification_body')).'
-		</body>
-		</html>';
-  	
-		// convert urls
-		$mail = REOutput::ImgRelAbs($mail);
-		
-		if (!$unreg && $params->get('registration_notification_attach_rfuploads', 1))
+		if ($reg_id)
 		{
-			// files submitted through redform
-			$files = $this->getRFFiles();
-			$filessize = 0;
-			foreach ($files as $f)
-			{
-				$filessize += filesize($f);
-			}
+			$registrations = array($reg_id);
+		}
+		else 
+		{
+			/* Get registration settings */
+			$q = "SELECT r.id
+				FROM #__redevent_register r
+				WHERE submit_key = ".$db->Quote($submit_key);
+			$db->setQuery($q);
+			$registrations = $db->loadResultArray();
 			
-			if ($filessize < $params->get('registration_notification_attach_rfuploads_maxsize', 1500) * 1000) 
-			{
-				foreach ($files as $f) {
-					$mailer->addAttachment($f);
-				}
+			if (!$registrations || !count($registrations)) {
+				JError::raiseError(0, JText::sprintf('COM_REDEVENT_notification_registration_not_found_for_key_s', $submit_key));
+				return false;
 			}
 		}
-						
-  	$mailer->setSubject($tags->ReplaceTags($unreg ? $params->get('unregistration_notification_subject') : $params->get('registration_notification_subject')));
-  	$mailer->MsgHTML($mail);
-  	if (!$mailer->send())
-  	{
-  		RedeventHelperLog::simplelog(JText::_('COM_REDEVENT_ERROR_REGISTRATION_MANAGERS_NOTIFICATION_FAILED'));
-  		$this->setError(JText::_('COM_REDEVENT_ERROR_REGISTRATION_MANAGERS_NOTIFICATION_FAILED'));
-  		return false;
-  	}
-  	return true;
-  }
-  
-  function _getXrefRegistrationRecipients()
-  {
-  	$event = $this->getSessionDetails();
-  	
-		$query = ' SELECT u.name, u.email '
-					 . ' FROM #__redevent_event_venue_xref AS x '
-					 . ' INNER JOIN #__redevent_groups AS g ON x.groupid = g.id '
-					 . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
-					 . ' INNER JOIN #__users AS u ON gm.member = u.id '
-					 . ' WHERE x.id = '. $this->_db->Quote($event->xref)
-					 . '   AND gm.receive_registrations = 1 '
-					 ;
-		$this->_db->setQuery($query);
-		$xref_group_recipients = $this->_db->loadObjectList();
-		return $xref_group_recipients;
-  }
-  
-	/**
-	 * Initialise the mailer object to start sending mails
-	 */
-	private function Mailer() 
-	{
-		if (empty($this->mailer))
+		
+		foreach ($registrations as $rid)
 		{
-			$mainframe = & JFactory::getApplication();
-			jimport('joomla.mail.helper');
-			/* Start the mailer object */
-			$this->mailer = JFactory::getMailer();
-			$this->mailer->isHTML(true);
-			$this->mailer->From = $mainframe->getCfg('mailfrom');
-			$this->mailer->FromName = $mainframe->getCfg('sitename');
-			$this->mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
+			$attendee = new REattendee($rid);
+			if (!$attendee->notifyManagers($unreg)) {
+				$this->setError($attendee->getError());
+				return false;
+			}
 		}
-		return $this->mailer;
-	}
-	
+		return true;
+  }
+  	
 	function getRegistration($submitter_id)
 	{
 		$query =' SELECT s.*, r.uid, r.xref, r.pricegroup_id, e.unregistra '
@@ -786,142 +373,6 @@ class RedEventModelRegistration extends JModel
 		$this->_db->setQuery($query);
 		$registration->answers = $this->_db->loadObject();
 		return $registration;
-	}
-	
-	/**
-	 * returns contact person for submitted registration
-	 * first, looks for a user id, otherwise looks into redform fields
-	 * 
-	 * @param string $submit_key
-	 * @return object REAttendee
-	 */
-	function getRegistrationContactPerson($submit_key)
-	{		
-		$this->setSubmitKey($submit_key);
-		$attendee = new REattendee();
-		
-		// first, take info from joomla user is a uid is set
-		$query = ' SELECT u.name, u.email '
-		       . ' FROM #__redevent_register AS r '
-		       . ' LEFT JOIN #__users AS u on r.uid = u.id '
-		       . ' WHERE r.submit_key = '. $this->_db->Quote($submit_key)
-		       . '   AND uid > 0 '
-		       ;
-		$this->_db->setQuery($query, 0, 1);
-		$res = $this->_db->loadObject();
-		
-		if ($res)
-		{
-			$attendee->setEmail($res->email);
-			$attendee->setFullname($res->name);
-		}
-		else // uid not set, so get the info from submission directly
-		{
-	  	$fields  = $this->getRFFields();
-	  	$answers = $this->getRFAnswers();
-			foreach ($fields as $f)
-			{
-				$property = 'field_'.$f->id;
-				switch($f->fieldtype)
-				{
-					case 'email':
-						$attendee->setEmail($answers[0]->fields->$property);
-						break;
-					case 'fullname':
-						$attendee->setFullname($answers[0]->fields->$property);
-						break;
-					case 'username':
-						$attendee->setUsername($answers[0]->fields->$property);
-						break;
-				}
-			}
-		}
-		$email = $attendee->getEmail();
-		if (empty($email)) {
-			return false;
-		}
-		return $attendee;
-	}
-	
-	/**
-	 * return redform fields for this event
-	 * 
-	 * @return array
-	 */
-	function getRFFields()
-	{
-		if (empty($this->_rf_fields)) 
-		{
-			$event = $this->getSessionDetails();
-			$rfcore  = new redformcore();
-	  	$this->_rf_fields  = $rfcore->getFields($event->redform_id);			
-		}
-		return $this->_rf_fields;
-	}
-	
-	/**
-	 * returns answers array for current submit_key
-	 * 
-	 * @return array
-	 */
-	function getRFAnswers()
-	{
-		if (empty($this->_rf_answers)) 
-		{
-			$rfcore  = new redformcore();
-	  	$this->_rf_answers  = $rfcore->getAnswers($this->_submit_key);			
-		}
-		return $this->_rf_answers;		
-	}
-	
-	/**
-	 * return selected redform recipients emails if any
-	 * 
-	 * @return string
-	 */
-	function getRFRecipients()
-	{
-		$fields  = $this->getRFFields();
-	
-		foreach ($fields as $f)
-		{
-			$property = 'field_'.$f->id;
-			if ($f->fieldtype == 'recipients')
-			{
-				$answers = $this->getRFAnswers();
-				$email = explode('~~~', $answers[0]->fields->$property);
-				return $email;
-			}
-		}
-		return false;
-	}	
-	
-	/**
-	 * return redform submitted files path if any
-	 * 
-	 * @return array
-	 */
-	protected function getRFFiles()
-	{
-		$files = array();
-		$fields  = $this->getRFFields();
-		$answers = $this->getRFAnswers();
-		
-		foreach ($fields as $f)
-		{
-			$property = 'field_'.$f->id;
-			if ($f->fieldtype == 'fileupload')
-			{
-				foreach ($answers as $a)
-				{
-					$path = $a->fields->$property;
-					if (!empty($path) && file_exists($path)) {
-						$files[] = $path;
-					}
-				}
-			}
-		}
-		return $files;
 	}
 	
 	/**
@@ -1002,11 +453,6 @@ class RedEventModelRegistration extends JModel
 			JError::raiseError( 403, JText::_('COM_REDEVENT_ALERTNOTAUTH') );
 			return;
 	  }
-	  
-	  if (!redEVENTHelper::canUnregister($xref)) {
-	  	$this->setError(JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED'));
-	  	return false;
-	  }
 	  		
 	  		// first, check if the user is allowed to unregister from this
 	  // he must be the one that submitted the form, plus the unregistration must be allowed
@@ -1022,6 +468,11 @@ class RedEventModelRegistration extends JModel
 	  
 	  // or be allowed to manage attendees
 	  $manager = $acl->canManageAttendees($xref);
+	  
+	  if (!redEVENTHelper::canUnregister($xref) && !$manager) {
+	  	$this->setError(JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED'));
+	  	return false;
+	  }
 	  
 	  if (($submitterinfo->uid <> $userid || $submitterinfo->unregistra == 0) && !$manager)
 	  {

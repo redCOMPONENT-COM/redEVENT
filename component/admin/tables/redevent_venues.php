@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
  * EventList venues Model class
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEvent_venues extends JTable
@@ -199,4 +199,3 @@ class RedEvent_venues extends JTable
 		return true;
 	}
 }
-?>

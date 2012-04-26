@@ -77,4 +77,3 @@ class JElementVenuecategories extends JElement
 		return $html;
 	}
 }
-?>

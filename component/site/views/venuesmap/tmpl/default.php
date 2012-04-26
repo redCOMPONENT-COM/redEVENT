@@ -2,7 +2,7 @@
 /**
  * @version 1.1 $Id: default.php 668 2008-05-12 14:32:13Z schlu $
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @copyright (C) 2005 - 2008 Christoph Lukes
  * @license GNU/GPL, see LICENSE.php
  * EventList is free software; you can redistribute it and/or
@@ -130,5 +130,4 @@ window.addEvent('domready', function() {
 
 
 <div id="gmap" style="height: 500px"></div>
-
 </div>

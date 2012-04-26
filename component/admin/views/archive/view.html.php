@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * View class for the EventList archive screen
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventViewArchive extends JView {
@@ -72,7 +72,6 @@ class RedEventViewArchive extends JView {
 		if ($user->authorise('core.admin', 'com_redevent')) {
 			JToolBarHelper::preferences('com_redevent', '600', '800');
 		}
-		JToolBarHelper::help( 'el.archive', true );
 
 		// Get data from the model
 		$rows      	= & $this->get( 'Data');
@@ -110,4 +109,3 @@ class RedEventViewArchive extends JView {
 		parent::display($tpl);
 	}
 }
-?>

@@ -2,7 +2,7 @@
 /**
  * @version 1.0 $Id$
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @copyright (C) 2005 - 2008 Christoph Lukes
  * @license GNU/GPL, see LICENSE.php
  * EventList is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@ jimport('joomla.application.component.model');
  * EventList Component Home Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since		0.9
  */
 class RedEventModelRedEvent extends JModel
@@ -195,4 +195,3 @@ class RedEventModelRedEvent extends JModel
 		return $_category;
 	}
 }
-?>

@@ -45,7 +45,7 @@ if ($this->row->show_names && $this->registers) {
 			{
 				if ($register->submitter->waitinglist == 0)
 				{
-					if ($this->unreg_check && $register->submitter->uid == $this->user->get('id')) {
+					if ($register->submitter->uid == $this->user->get('id')) {
 						echo '<li><ul class="attendee myreg">';
 					}
 					else {
@@ -55,7 +55,7 @@ if ($this->row->show_names && $this->registers) {
 						if (stristr($name, '~~~')) $name = str_replace('~~~', '<br />', $name).'<br />';
 						echo "<li class='userfield ".strtolower($k)."'>".$name."</li>";
 					}
-					if ($this->unreg_check && $register->submitter->uid == $this->user->get('id')) {
+	      	if (($this->unreg_check && $register->submitter->uid == $this->user->get('id')) || $this->candeleteattendees) {
 					  $unreg_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug). '&task=delreguser&rid=' .$register->attendee_id);
             echo '<li>'. JHTML::link($unreg_url, JText::_('COM_REDEVENT_cancel'), array('class' => 'unreglink')) .'</li>';
           }
@@ -78,7 +78,7 @@ if ($this->row->show_names && $this->registers) {
       foreach ($this->registers as $key => $register) {
         if ($register->submitter->waitinglist == 1)
         {
-          if ($this->unreg_check && $register->submitter->uid == $this->user->get('id')) {
+	      	if (($register->submitter->uid == $this->user->get('id')) || $this->candeleteattendees) {
             echo '<li><ul class="attendee myreg">';
           }
           else {
@@ -88,7 +88,7 @@ if ($this->row->show_names && $this->registers) {
             if (stristr($name, '~~~')) $name = str_replace('~~~', '<br />', $name).'<br />';
             echo "<li class='userfield ".strtolower($k)."'>".$name."</li>";
           }
-          if ($this->unreg_check && $register->submitter->uid == $this->user->get('id')) {
+	      	if (($this->unreg_check && $register->submitter->uid == $this->user->get('id')) || $this->candeleteattendees) {
             $unreg_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug).'&task=delreguser&rid=' .$register->attendee_id);
             echo '<li>'. JHTML::link($unreg_url, JText::_('COM_REDEVENT_cancel'), array('class' => 'unreglink')) .'</li>';
           }

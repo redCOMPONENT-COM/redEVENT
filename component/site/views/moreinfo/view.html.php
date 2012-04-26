@@ -72,4 +72,3 @@ class RedeventViewMoreinfo extends JView
 		parent::display($tpl);		
 	}
 }
-?>

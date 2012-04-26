@@ -14,7 +14,7 @@ jimport('joomla.application.component.controller');
  * EventList Component Controller
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedeventController extends JController
@@ -417,7 +417,7 @@ class RedeventController extends JController
 			// send unreg notification email
 			$key = redEVENTHelper::getAttendeeSubmitKey($rid);
 			$sid = redEVENTHelper::getAttendeeSid($rid);
-			$model->notifyManagers($key, true, $sid);
+			$model->notifyManagers($key, true, $rid);
 		}
 		
 		if ($task == 'managedelreguser')
@@ -866,4 +866,3 @@ class RedeventController extends JController
 		redEVENTHelper::registrationexpiration();
 	}
 }
-?>

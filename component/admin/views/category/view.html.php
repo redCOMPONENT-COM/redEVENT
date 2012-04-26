@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * View class for the EventList category screen
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventViewCategory extends JView {
@@ -87,7 +87,7 @@ class RedEventViewCategory extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::cancel();
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.editcategories', true );
+		//JToolBarHelper::help( 'el.editcategories', true );
 
 		//Get data from the model
 		$model		= & $this->getModel();
@@ -138,4 +138,3 @@ class RedEventViewCategory extends JView {
 		parent::display($tpl);
 	}
 }
-?>

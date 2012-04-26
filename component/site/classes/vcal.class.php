@@ -77,7 +77,7 @@ function quoted_printable_encode($input) {
 * offers the vcal/ical functonality
 *
 * @package Joomla
-* @subpackage EventList
+* @subpackage redEVENT
 * @author Lybegard Karl-Olof
 * @since 0.9
 */
@@ -189,4 +189,3 @@ END:VCALENDAR
 		$mainframe->close();
 	}
 }
-?>

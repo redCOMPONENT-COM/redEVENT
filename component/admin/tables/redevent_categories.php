@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
  * see http://dev.mysql.com/tech-resources/articles/hierarchical-data.html for reference
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEvent_categories extends JTable
@@ -151,4 +151,3 @@ class RedEvent_categories extends JTable
 	   return $right+1;
 	}
 }
-?>

@@ -147,4 +147,3 @@ $app = &JFactory::getApplication();
 	$days = modredeventcalHelper::getdays($req_year, $req_month, $params);
 	
 	require( JModuleHelper::getLayoutPath( 'mod_redeventcal' ) );	
-?> 

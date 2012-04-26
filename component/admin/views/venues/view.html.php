@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * View class for the EventList Venues screen
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventViewVenues extends JView {
@@ -80,10 +80,10 @@ class RedEventViewVenues extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::custom('importexport', 'exportevents', 'exportevents', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), false);
 		JToolBarHelper::spacer();
+	
 		if ($user->authorise('core.admin', 'com_redevent')) {
 			JToolBarHelper::preferences('com_redevent', '600', '800');
 		}
-		JToolBarHelper::help( 'el.listvenues', true );
 
 		// Get data from the model
 		$rows      	= & $this->get( 'Data');
@@ -147,4 +147,3 @@ class RedEventViewVenues extends JView {
 		parent::display($tpl);
 	}
 }
-?>

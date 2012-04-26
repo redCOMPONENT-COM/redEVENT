@@ -44,4 +44,3 @@ class RedeventControllerAttachments extends RedeventController
 		parent::__construct();
 	}
 }
-?>

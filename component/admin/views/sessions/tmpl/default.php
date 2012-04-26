@@ -125,6 +125,7 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 			$enddate  = (!redEVENTHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) ? '' : strftime( $this->params->get('formatdate', '%d.%m.%Y'), strtotime( $row->enddates ));
 			$displaydate = $date. ($enddate ? ' - '.$enddate: '');
 			$endreg = (!redEVENTHelper::isValidDate($row->registrationend) ? '-' : strftime( $this->params->get('formatdate', '%d.%m.%Y'), strtotime( $row->registrationend )));
+
 	
 			$displaytime = '';
 			/* Get the time */

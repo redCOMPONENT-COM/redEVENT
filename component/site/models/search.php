@@ -434,4 +434,3 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		return $res;
 	}
 }
-?>

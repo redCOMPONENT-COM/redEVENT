@@ -46,7 +46,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   <?php $link = JRoute::_('index.php?option=com_redevent&view=venueevents&id=' . $row->venueslug); ?>
     <tr class="sectiontableentry<?php echo $i + 1 . $this->params->get( 'pageclass_sfx' ); ?>" >
       <td headers="el_title" align="left" valign="top"><?php echo JHTML::link($link, $row->venue); ?></td>
-      <td headers="el_city" align="left" valign="top"><?php echo $row->city ? $row->city : '-'; ?></td>   
+      <td headers="el_city" align="left" valign="top"><?php echo $row->city ? $row->city : '-'; ?></td>
       <td headers="el_published" align="center" valign="top">
       	<?php echo $row->published ? JHTML::image('components/com_redevent/assets/images/ok.png', JText::_('COM_REDEVENT_Published' )) 
       	                           : JHTML::image('components/com_redevent/assets/images/no.png', JText::_('COM_REDEVENT_Unpublished' )) ; ?>

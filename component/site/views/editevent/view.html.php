@@ -30,7 +30,7 @@ jimport( 'joomla.application.component.view');
  * HTML View class for the EditeventView
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedeventViewEditevent extends JView
@@ -390,4 +390,3 @@ class RedeventViewEditevent extends JView
          '<img class="calendar" src="'.JURI::root(true).'/templates/system/images/calendar.png" alt="calendar" id="'.$id.'_img" />';
   }
 }
-?>

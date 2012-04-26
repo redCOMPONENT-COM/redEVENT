@@ -411,4 +411,3 @@ class plgRedeventredmember extends JPlugin {
 		return true;
 	}
 }
-?>

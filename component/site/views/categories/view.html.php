@@ -30,7 +30,7 @@ jimport( 'joomla.application.component.view');
  * HTML View class for the Categories View
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedeventViewCategories extends JView
@@ -113,4 +113,3 @@ class RedeventViewCategories extends JView
 		parent::display($tpl);
 	}
 }
-?>

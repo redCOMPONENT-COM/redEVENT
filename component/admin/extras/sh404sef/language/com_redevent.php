@@ -80,4 +80,4 @@
   $sh_LANG['en']['confirm'] = 'confirm';
   $sh_LANG['en']['free'] = 'free';
   $sh_LANG['en']['paid'] = 'paid';
-?>
+  

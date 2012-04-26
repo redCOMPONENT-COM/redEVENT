@@ -449,4 +449,3 @@ class RedEventModelImport extends JModel
 		return $this->_customsimport;
 	}
 }
-?>

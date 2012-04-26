@@ -291,4 +291,3 @@ class RedEventModelGroupacl extends JModel
 		return $this->_group;
 	}
 }
-?>

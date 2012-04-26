@@ -83,6 +83,7 @@ defined('_JEXEC') or die('Restricted access');
 						$displaydate = $date;
 					} else {
 						$enddate 	= strftime( $this->params->get('formatdate', '%d.%m.%Y'), strtotime( $row->enddates ));
+
 						$displaydate = $date.' - '.$enddate;
 					}
 
@@ -113,10 +114,6 @@ defined('_JEXEC') or die('Restricted access');
 	</tbody>
 
 </table>
-
-<p class="copyright">
-	<?php echo ELAdmin::footer( ); ?>
-</p>
 
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />

@@ -38,10 +38,3 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<input type="hidden" name="xref" value="<?php echo JRequest::getVar('xref'); ?>" />
 	<input type="hidden" name="id" value="<?php echo JRequest::getVar('id'); ?>" />
 </form>
-<?php
-
-
-?>
-<p class="copyright">
-	<?php echo REOutput::footer( ); ?>
-</p>

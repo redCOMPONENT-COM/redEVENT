@@ -171,4 +171,3 @@ class RedeventModelSimpleList extends RedeventModelBaseEventList
 	}
 	
 }
-?>

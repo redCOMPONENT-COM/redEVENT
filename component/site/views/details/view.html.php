@@ -90,7 +90,7 @@ class RedeventViewDetails extends JView
 		}
 
 		//Check if user has access to the details
-		if ($elsettings->get('showdetails', 1) == 0) {
+		if ($params->get('showdetails', 1) == 0) {
 			$mainframe->redirect('index.php',JText::_('COM_REDEVENT_EVENT_DETAILS_NOT_AVAILABLE'), 'error');
 		}
 
@@ -235,6 +235,7 @@ class RedeventViewDetails extends JView
     
     //manages attendees
     $manage_attendees  = $this->get('ManageAttendees') || $this->get('ViewFullAttendees');
+    $candeleteattendees  = $this->get('ManageAttendees');
 		
 		//assign vars to jview
 		$this->assignRef('row',              $row);
@@ -242,6 +243,7 @@ class RedeventViewDetails extends JView
     $this->assignRef('user',             $user);
 		$this->assignRef('allowedtoeditevent', 	$allowedtoeditevent);
 		$this->assignRef('manage_attendees',    $manage_attendees);
+		$this->assignRef('candeleteattendees',   $candeleteattendees);
 		$this->assignRef('print_link',       $print_link);
 		$this->assignRef('registers',        $registers);
 		$this->assignRef('registersfields',  $register_fields);
@@ -352,4 +354,3 @@ class RedeventViewDetails extends JView
 		$document->addScript('http://connect.facebook.net/en_US/all.js#xfbml=1');
 	}
 }
-?>

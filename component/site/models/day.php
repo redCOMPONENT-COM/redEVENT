@@ -31,7 +31,7 @@ require_once('baseeventslist.php');
  * EventList Component Day Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since		0.9
  */
 class RedeventModelDay extends RedeventModelBaseEventList
@@ -177,4 +177,3 @@ class RedeventModelDay extends RedeventModelBaseEventList
 		return $this->_date;
 	}
 }
-?>

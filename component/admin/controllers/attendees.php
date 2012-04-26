@@ -29,7 +29,7 @@ jimport('joomla.application.component.controller');
  * EventList Component Attendees Controller
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventControllerAttendees extends RedEventController
@@ -540,4 +540,3 @@ class RedEventControllerAttendees extends RedEventController
 		$this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='. $xref );
  	}
 }
-?>

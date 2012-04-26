@@ -44,16 +44,17 @@ class RedeventViewRoles extends JView
 		$document	= & JFactory::getDocument();
 		
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_ROLES'));
+    $document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 		
 		// Set toolbar items for the page
-		JToolBarHelper::title(   JText::_( 'COM_REDEVENT_MENU_ROLES' ), 'generic.png' );
+		JToolBarHelper::title(   JText::_( 'COM_REDEVENT_MENU_ROLES' ), 'roles' );
 		JToolBarHelper::deleteList();
 		JToolBarHelper::editListX();
 		JToolBarHelper::addNewX();
+	
 		if ($user->authorise('core.admin', 'com_redevent')) {
 			JToolBarHelper::preferences('com_redevent', '600', '800');
 		}
-    JToolBarHelper::help( 'screen.redevent', true );
         
 		$db		=& JFactory::getDBO();
 		$uri	=& JFactory::getURI();
@@ -86,4 +87,3 @@ class RedeventViewRoles extends JView
 		parent::display($tpl);
 	}
 }
-?>

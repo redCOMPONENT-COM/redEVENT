@@ -160,4 +160,3 @@ class RedeventControllerRoles extends JController
 		$this->setRedirect( 'index.php?option=com_redevent&view=roles', $msg );
 	}
 }
-?>

@@ -32,7 +32,7 @@ jimport( 'joomla.application.component.view');
  * HTML View class for the Venueevents View
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedeventViewVenueevents extends JView
@@ -185,7 +185,7 @@ class RedeventViewVenueevents extends JView
 				$rssstartdate .= 'T'.$row->times.$utcoffset;	
 			}
 			if ($row->endtimes) {
-				$endtime = strftime( $elsettings->formattime, strtotime( $row->endtimes ));
+				$endtime = strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $row->endtimes ));
 				$displaytime = $time.' - '.$endtime;
 				$rssenddate .= 'T'.$row->endtimes.$utcoffset;	
 			}
@@ -208,4 +208,3 @@ class RedeventViewVenueevents extends JView
 		$feed->returnRSS( CACHE ); 
 	}
 }
-?>

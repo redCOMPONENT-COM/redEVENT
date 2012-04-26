@@ -399,4 +399,3 @@ class RedeventModelRole extends JModel
   	return false;
   }
 }
-?>

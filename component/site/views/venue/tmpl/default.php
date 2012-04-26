@@ -2,7 +2,7 @@
 /**
  * @version 1.1 $Id: default.php 668 2008-05-12 14:32:13Z schlu $
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @copyright (C) 2005 - 2008 Christoph Lukes
  * @license GNU/GPL, see LICENSE.php
  * EventList is free software; you can redistribute it and/or
@@ -55,18 +55,14 @@ $row = & $this->row;
         </dd>
         <?php endif; ?>
         
-        <?php if (($this->elsettings->get('showdetlinkvenue') == 1) && (!empty($row->url))) : ?>
+        <?php if (!empty($row->url)) : ?>
         <dt class="venue_website"><?php echo JText::_('COM_REDEVENT_WEBSITE' ).':'; ?></dt>
           <dd class="venue_website">
           <a href="<?php echo $row->url; ?>" target="_blank"> <?php echo $row->urlclean; ?></a>
         </dd>
         <?php endif; ?>
 
-        <?php
-          if ( $this->elsettings->get('showdetailsadress') == 1 ) :
-          ?>
-
-          <?php if ( $row->street ) : ?>
+        <?php if ( $row->street ) : ?>
           <dt class="venue_street"><?php echo JText::_('COM_REDEVENT_STREET' ).':'; ?></dt>
         <dd class="venue_street">
             <?php echo $this->escape($row->street); ?>
@@ -105,13 +101,9 @@ $row = & $this->row;
           <dd class="venue_assignedevents">
             <a href="<?php echo $row->target; ?>"><?php echo $row->assignedevents; ?></a>
           </dd>
-      <?php
-      endif;
-      ?>
-
     </dl>
   </div>
-    <?php if ($this->elsettings->get('showlocdescription') == 1 && !empty($row->locdescription)) : ?>
+    <?php if (!empty($row->locdescription)) : ?>
     <div class="description">
       <h2 class="description"><?php echo JText::_('COM_REDEVENT_DESCRIPTION' ).':'; ?></h2>
         <?php echo $row->locdescription; ?>

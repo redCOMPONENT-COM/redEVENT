@@ -164,8 +164,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				  </a>
 				</td>
 
-				<?php if (( $this->params->get('showtitle', 1) ) && ($this->elsettings->get('showdetails', 1) == 0) ) :
-				?>
+				<?php if (( $this->params->get('showtitle', 1) ) && ($this->params->get('showdetails', 1) == 0) ) :	?>
 
 				<td headers="el_title" align="left" valign="top"><?php echo $this->escape($row->title); ?></td>
 
@@ -233,10 +232,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <p class="pagescounter">
 	<?php echo $this->pageNav->getPagesCounter(); ?>
-</p>
-
-<p class="copyright">
-	<?php echo REOutput::footer( ); ?>
 </p>
 
 </div>

@@ -27,19 +27,16 @@ defined('_JEXEC') or die('Restricted access');
  * Holds the logic for all output related things
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  */
 class REOutput {
 
 	/**
 	* Writes footer. Official copyright! Do not remove!
-	*
-	* @author Christoph Lukes
 	* @since 0.9
 	*/
 	function footer( )
 	{
-		// echo 'EventList powered by <a href="http://www.schlu.net">schlu.net</a>';
 	}
 
 	/**
@@ -58,7 +55,7 @@ class REOutput {
 
 			JHTML::_('behavior.tooltip');
 
-			if ( $params->get('icons') ) {
+			if ( $params->get('icons', 1) ) {
 				$image = JHTML::_('image.site', 'submitevent.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_DELIVER_NEW_EVENT' ));
 			} else {
 				$image = JText::_('COM_REDEVENT_DELIVER_NEW_EVENT' );
@@ -92,7 +89,7 @@ class REOutput {
     
 		JHTML::_('behavior.tooltip');
 
-		if ( $params->get('icons') ) {
+		if ( $params->get('icons', 1) ) {
 			$image = JHTML::_('image.site', 'thumbnail.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EVENTS_THUMBNAILS_LAYOUT' ));
 		} else {
 			$image = JText::_('COM_REDEVENT_EVENTS_THUMBNAILS_LAYOUT' );
@@ -165,7 +162,7 @@ class REOutput {
 		
 		if ($task == 'archive') {
 			
-			if ( $params->get('icons') ) {
+			if ( $params->get('icons', 1) ) {
 				$image = JHTML::_('image.site', 'eventlist.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_SHOW_EVENTS' ));
 			} else {
 				$image = JText::_('COM_REDEVENT_SHOW_EVENTS' );
@@ -181,7 +178,7 @@ class REOutput {
 			
 		} else {
 			
-			if ( $params->get('icons') ) {
+			if ( $params->get('icons', 1) ) {
 				$image = JHTML::_('image.site', 'archive_front.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_SHOW_ARCHIVE' ));
 			} else {
 				$image = JText::_('COM_REDEVENT_SHOW_ARCHIVE' );
@@ -222,7 +219,7 @@ class REOutput {
 			switch ($view)
 			{
 				case 'editevent':
-					if ( $params->get('icons') ) {
+					if ( $params->get('icons', 1) ) {
 						$image = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EDIT_EVENT' ));
 					} else {
 						$image = JText::_('COM_REDEVENT_EDIT_EVENT' );
@@ -233,7 +230,7 @@ class REOutput {
 					break;
 
 				case 'editvenue':
-					if ( $params->get('icons') ) {
+					if ( $params->get('icons', 1) ) {
 						$image = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EDIT_EVENT' ));
 					} else {
 						$image = JText::_('COM_REDEVENT_EDIT_VENUE' );
@@ -289,7 +286,7 @@ class REOutput {
 			$status = 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no';
 
 			// checks template image directory for image, if non found default are loaded
-			if ( $params->get( 'icons' ) ) {
+			if ( $params->get( 'icons', 1 ) ) {
 				$image = JHTML::_('image.site', 'printButton.png', 'images/M_images/', NULL, NULL, JText::_('COM_REDEVENT_Print' ));
 			} else {
 				$image = JText::_('COM_REDEVENT_Print' );
@@ -329,7 +326,7 @@ class REOutput {
 			$url	= 'index.php?option=com_mailto&tmpl=component&link='.base64_encode( $link );
 			$status = 'width=400,height=300,menubar=yes,resizable=yes';
 
-			if ($params->get('icons')) 	{
+			if ($params->get('icons', 1)) 	{
 				$image = JHTML::_('image.site', 'emailButton.png', 'images/M_images/', NULL, NULL, JText::_('COM_REDEVENT_Email' ));
 			} else {
 				$image = JText::_('COM_REDEVENT_Email' );
@@ -457,6 +454,32 @@ class REOutput {
   
   	return $output;
 	}
+  
+  /**
+   * returns moreinfo link
+   * 
+   * @param string $text the content of the link tag
+   * @param unknown_type $title the 'title' for the link
+   * @return string
+   */
+  public static function moreInfoIcon($xref_slug, $text = null, $title = null)
+  {
+  	if (!$text) {
+  		$text = JText::_('COM_REDEVENT_DETAILS_MOREINFO_BUTTON_LABEL');
+  	}
+  	if (!$title) {
+  		$title = JText::_('COM_REDEVENT_DETAILS_MOREINFO_BUTTON_LABEL');
+  	}
+		JHTML::_('behavior.modal', 'a.moreinfo');
+		$link = JRoute::_(RedeventHelperRoute::getMoreInfoRoute($xref_slug, 
+		                                                        array('tmpl' =>'component')));
+		$text = '<a class="moreinfo" title="'.$title
+		      .  '" href="'.$link.'" rel="{handler: \'iframe\', size: {x: 400, y: 500}}">'
+		      . $text
+		      . ' </a>'
+		      ;
+		return $text;  	
+  }
 
 	/**
 	 * Creates the flyer
@@ -604,7 +627,7 @@ class REOutput {
 	 *
 	 * @since 0.9
 	 */
-	function formattime($date, $time)
+	public static function formattime($date, $time)
 	{
 		$settings = & redEVENTHelper::config();
 		
@@ -613,8 +636,7 @@ class REOutput {
 		}
 		
 		//Format time
-		$formattime = strftime( $settings->get('formattime', '%H:%M'), strtotime( $date.' '.$time ));
-		
+		$formattime = strftime( $settings->get('formattime', '%H:%M'), strtotime( $date.' '.$time ));	
 		return $formattime;
 	}
 	
@@ -750,18 +772,18 @@ class REOutput {
 			return JText::_('COM_REDEVENT_EVENT_PRICE_FREE');
 		}
 		
-		switch ($settings->get('currency_decimals')) {
+		switch ($settings->get('currency_decimals', 'decimals')) {
 			case 'decimals':
 				//Format price
-				$formatprice = number_format($price, 2, $settings->get('currency_decimal_separator'), $settings->get('currency_thousand_separator'));
+				$formatprice = number_format($price, 2, $settings->get('currency_decimal_separator', ','), $settings->get('currency_thousand_separator', '.'));
 				break;
 			case 'comma':
 				//Format price
-				$formatprice = number_format($price, 0, $settings->get('currency_decimal_separator'), $settings->get('currency_thousand_separator')).',-';
+				$formatprice = number_format($price, 0, $settings->get('currency_decimal_separator', ','), $settings->get('currency_thousand_separator', '.')).',-';
 				break;
 			case 'none':
 				//Format price
-				$formatprice = number_format($price, 0, $settings->get('currency_decimal_separator'), $settings->get('currency_thousand_separator'));
+				$formatprice = number_format($price, 0, $settings->get('currency_decimal_separator', ','), $settings->get('currency_thousand_separator', '.'));
 				break;
 		}
 		if ($currency) {
@@ -816,4 +838,3 @@ class REOutput {
 		return str_ireplace(JURI::root().JURI::root(), JURI::root(), $newtext);
 	}
 }
-?>

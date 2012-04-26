@@ -32,7 +32,7 @@ require_once('baseeventslist.php');
  * EventList Component Venueevents Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since		0.9
  */
 class RedeventModelVenueevents extends RedeventModelBaseEventList
@@ -215,4 +215,3 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 		return $_venue;
 	}
 }
-?>

@@ -76,4 +76,3 @@ class Redevent_sessions_pricegroups extends JTable
 		return true;
 	}
 }
-?>

@@ -84,4 +84,3 @@ class plgRedform_integrationRedevent extends JPlugin {
 		return true;
 	}
 }
-?>

@@ -30,7 +30,7 @@ jimport('joomla.application.component.modeladmin');
  * EventList Component Group Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since		0.9
  */
 class RedEventModelGroupmember extends JModelAdmin
@@ -323,4 +323,3 @@ class RedEventModelGroupmember extends JModelAdmin
 		return $data;
 	}
 }
-?>

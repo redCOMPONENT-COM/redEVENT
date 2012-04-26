@@ -322,4 +322,3 @@ class RedeventViewMyevents extends JView
 		return $output;
 	}
 }
-?>

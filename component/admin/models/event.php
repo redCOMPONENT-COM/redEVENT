@@ -30,7 +30,7 @@ jimport('joomla.application.component.modeladmin');
  * EventList Component Event Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since		0.9
  */
 class RedEventModelEvent extends JModelAdmin
@@ -399,7 +399,7 @@ class RedEventModelEvent extends JModelAdmin
 			//get IP, time and userid
 			$row->created 			= gmdate('Y-m-d H:i:s');
 
-			$row->author_ip 		= $elsettings->get('storeip') ? getenv('REMOTE_ADDR') : 'DISABLED';
+			$row->author_ip 		= $elsettings->get('storeip', '1') ? getenv('REMOTE_ADDR') : 'DISABLED';
 			$row->created_by		= $row->created_by ? $row->created_by : $user->get('id');
 		}
 
@@ -632,4 +632,3 @@ class RedEventModelEvent extends JModelAdmin
 		return $data;
 	}
 }
-?>

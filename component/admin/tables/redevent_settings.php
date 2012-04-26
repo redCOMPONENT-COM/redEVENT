@@ -26,21 +26,25 @@ defined('_JEXEC') or die('Restricted access');
  * EventList settings table class
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEvent_settings extends JTable
 {
-	/**
-	 * Unique Key
-	 * @var int
-	 */
-	var $id					= "1";	
-	/** @var string */
-	var $lastupdate 		= null;
-
 	function redevent_settings(& $db) {
 		parent::__construct('#__redevent_settings', 'id', $db);
 	}
+	
+	/**
+	 * for legacy purpose
+	 * @see JObject::get()
+	 */
+	function get($property, $default=null)
+	{
+		if(isset($this->$property)) {
+			return $this->$property;
+		}
+		$params = JComponentHelper::getParams('com_redevent');
+		return $params->get($property, $default);
+	}
 }
-?>

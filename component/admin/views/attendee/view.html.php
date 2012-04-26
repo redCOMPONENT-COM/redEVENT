@@ -65,10 +65,10 @@ class RedEventViewAttendee extends JView {
 		
 		//build toolbar
 		if ( !empty($cid) ) {
-			JToolBarHelper::title( JText::_('COM_REDEVENT_EDIT_REGISTRATION' ), 'registrationedit' );
+			JToolBarHelper::title( JText::_('COM_REDEVENT_EDIT_REGISTRATION' ), 'registrations' );
 			JToolBarHelper::spacer();
 		} else {
-			JToolBarHelper::title( JText::_('COM_REDEVENT_ADD_REGISTRATION' ), 'registrationedit' );
+			JToolBarHelper::title( JText::_('COM_REDEVENT_ADD_REGISTRATION' ), 'registrations' );
 			JToolBarHelper::spacer();
 		}
 		JToolBarHelper::apply();
@@ -76,7 +76,7 @@ class RedEventViewAttendee extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::cancel();
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.registrationedit', true );
+		//JToolBarHelper::help( 'el.registrationedit', true );
 		
 //		echo '<pre>';print_r($row); echo '</pre>';exit;
     $this->assignRef('row',    $row);
@@ -85,4 +85,3 @@ class RedEventViewAttendee extends JView {
 		parent::display($tpl);
 	}
 }
-?>

@@ -36,29 +36,32 @@ defined('_JEXEC') or die('Restricted access');
 						$link = 'index.php?option='.$option.'&amp;view=events';
 						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-events.png', JText::_('COM_REDEVENT_EVENTS' ) );
 
-						$link = 'index.php?option='.$option.'&amp;view=event';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-eventedit.png', JText::_('COM_REDEVENT_ADD_EVENT' ) );
-
 						$link = 'index.php?option='.$option.'&amp;view=venues';
 						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-venues.png', JText::_('COM_REDEVENT_VENUES' ) );
-
-						$link = 'index.php?option='.$option.'&amp;view=venue';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-venuesedit.png', JText::_('COM_REDEVENT_ADD_VENUE' ) );
 
 						$link = 'index.php?option='.$option.'&amp;view=categories';
 						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-categories.png', JText::_('COM_REDEVENT_CATEGORIES' ) );
 
-						$link = 'index.php?option='.$option.'&amp;view=category';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-categoriesedit.png', JText::_('COM_REDEVENT_ADD_CATEGORY' ) );
+						$link = 'index.php?option='.$option.'&amp;view=venuescategories';
+						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-venuescategories.png', JText::_('COM_REDEVENT_VENUES_CATEGORIES' ) );
 
+						$link = 'index.php?option='.$option.'&amp;view=registrations';
+						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-registrations.png', JText::_('COM_REDEVENT_REGISTRATIONS' ) );
+						
 						$link = 'index.php?option='.$option.'&amp;view=groups';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-groups.png', JText::_('COM_REDEVENT_GROUPS' ) );
-
-						$link = 'index.php?option='.$option.'&amp;view=group';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-groupedit.png', JText::_('COM_REDEVENT_ADD_GROUP' ) );
+						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-accessgroups.png', JText::_('COM_REDEVENT_GROUPS' ) );
 						
 						$link = 'index.php?option='.$option.'&amp;view=textlibrary';
 						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-library.png', JText::_('COM_REDEVENT_TEXT_LIBRARY' ) );
+						
+						$link = 'index.php?option='.$option.'&amp;view=customfields';
+						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-customfields.png', JText::_('COM_REDEVENT_CUSTOM_FIELDS' ) );
+						
+						$link = 'index.php?option='.$option.'&amp;view=roles';
+						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-roles.png', JText::_('COM_REDEVENT_ROLES' ) );
+						
+						$link = 'index.php?option='.$option.'&amp;view=pricegroups';
+						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-pricegroups.png', JText::_('COM_REDEVENT_MENU_PRICEGROUPS' ) );
 
 						$link = 'index.php?option='.$option.'&amp;view=archive';
 						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-archive.png', JText::_('COM_REDEVENT_ARCHIVESCREEN' ) );
@@ -70,6 +73,9 @@ defined('_JEXEC') or die('Restricted access');
 
 							$link = 'index.php?option='.$option.'&amp;view=tools';
 							RedEventViewRedEvent::quickiconButton( $link, 'icon-48-housekeeping.png', JText::_('COM_REDEVENT_TOOLS' ) );
+							
+							$link = 'index.php?option='.$option.'&amp;view=log';
+							RedEventViewRedEvent::quickiconButton( $link, 'icon-48-log.png', JText::_('COM_REDEVENT_LOG' ) );
 						}
 
 						$link = 'index.php?option='.$option.'&amp;view=help';
@@ -194,7 +200,4 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 		</tr>
 		</table>
-
-	<p class="copyright">
-		<?php echo ELAdmin::footer( ); ?>
-	</p>
+		

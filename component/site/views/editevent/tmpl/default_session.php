@@ -157,6 +157,15 @@ JHTML::_('behavior.calendar');
     </tr>
     <?php endforeach; ?>
 		<?php endif; ?>
+		
+		  <tr>
+		    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_SESSION_DETAILS'); ?>::<?php echo JText::_('COM_REDEVENT_SESSION_DETAILS_DESC'); ?>">
+		      <label for="summary"><?php echo JText::_( 'COM_REDEVENT_SESSION_DETAILS' ) .': '; ?></label>
+		    </td>
+		    <td>
+		      <?php echo $this->editor->display('details', $this->row->details, '100%', '100', '70', '5', array('pagebreak', 'readmore') ); ?>
+		    </td>
+		  </tr>
 	</tbody>
 </table>
 

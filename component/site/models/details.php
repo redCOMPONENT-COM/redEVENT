@@ -30,7 +30,7 @@ jimport('joomla.application.component.model');
  * EventList Component Details Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since		0.9
  */
 class RedeventModelDetails extends JModel
@@ -465,6 +465,7 @@ class RedeventModelDetails extends JModel
   	return $acl->canViewAttendees($this->_xref);
   }
   
+  //TODO: not used ?
   function notifyManagers()
   {
   	jimport('joomla.mail.helper');
@@ -706,4 +707,3 @@ class RedeventModelDetails extends JModel
     return $rows;
   }
 }
-?>

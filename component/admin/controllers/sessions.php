@@ -29,7 +29,7 @@ jimport('joomla.application.component.controller');
  * EventList Component Events Controller
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventControllerSessions extends RedEventController
@@ -347,4 +347,3 @@ class RedEventControllerSessions extends RedEventController
 		$this->setRedirect('index.php?option=com_redevent&view=sessions', $msg);
 	}
 }
-?>

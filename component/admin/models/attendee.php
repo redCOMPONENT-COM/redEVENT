@@ -318,4 +318,3 @@ class RedEventModelAttendee extends JModel
 		return $res;
 	}
 }
-?>

@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
  * Holds the logic for image manipulation
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  */
 class redEVENTImage {
 
@@ -330,7 +330,7 @@ class redEVENTImage {
 	{
 		jimport('joomla.filesystem.file');
 
-		$sizelimit 	= $elsettings->get('sizelimit')*1024; //size limit in kb
+		$sizelimit 	= $elsettings->get('sizelimit', '100')*1024; //size limit in kb
 		$imagesize 	= $file['size'];
 
 		//check if the upload is an image...getimagesize will return false if not
@@ -434,4 +434,3 @@ class redEVENTImage {
 		else return $category->catname; 
 	}
 }
-?>

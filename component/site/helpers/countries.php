@@ -1189,4 +1189,3 @@ class redEVENTHelperCountries
 		}
 	}
 }
-?>

@@ -23,6 +23,10 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+if ($this->row->venueid != 0) {
+	$venuelink = RedeventHelperRoute::getVenueEventsRoute($this->row->venueslug);
+}
 ?>
 <div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
 	<p class="buttons">
@@ -58,14 +62,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	?>
 
 	<dl class="event_info floattext">
-
-		<?php if ($this->elsettings->get('showdetailstitle') == 1) : ?>
-			<dt class="title"><?php echo JText::_('COM_REDEVENT_TITLE' ).':'; ?></dt>
-    		<dd class="title"><?php echo $this->escape($this->row->full_title); ?></dd>
-		<?php
-  		endif;
-  		?>
-  		<dt class="when"><?php echo JText::_('COM_REDEVENT_WHEN' ).':'; ?></dt>
+		
+		<dt class="title"><?php echo JText::_('COM_REDEVENT_TITLE' ).':'; ?></dt>
+    <dd class="title"><?php echo $this->escape($this->row->full_title); ?></dd>
+  	
+  	<dt class="when"><?php echo JText::_('COM_REDEVENT_WHEN' ).':'; ?></dt>
 		<dd class="when">
 			<?php
 			$tmp = REOutput::formatdate($this->row->dates, $this->row->times);
@@ -87,21 +88,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   		?>
 		    <dt class="where"><?php echo JText::_('COM_REDEVENT_WHERE' ).':'; ?></dt>
 		    <dd class="where">
-    		<?php if (($this->elsettings->get('showdetlinkvenue') == 1) && (!empty($this->row->url))) : ?>
-
-			    <a href="<?php echo $this->row->url; ?>"><?php echo $this->escape($this->row->venue); ?></a> -
-
-			<?php elseif ($this->elsettings->get('showdetlinkvenue') == 2) : ?>
-
-			    <a href="<?php echo JRoute::_( 'index.php?view=venueevents&id='.$this->row->venueslug ); ?>"><?php echo $this->row->venue; ?></a> -
-
-			<?php elseif ($this->elsettings->get('showdetlinkvenue') == 0) :
-
-				echo $this->escape($this->row->venue).' - ';
-
-			endif;
-
-			echo $this->escape($this->row->city); ?>
+    		<?php if ((!empty($this->row->url))) : ?>
+    			<?php echo JHTML::link($this->row->url, $this->escape($this->row->venue)); ?>
+				<?php else :?>
+    			<?php echo JHTML::link($venuelink, $this->escape($this->row->venue)); ?>
+				<?php endif; ?>
+				<?php if ($this->escape($this->row->city)): ?>
+					<?php echo ' - '.$this->escape($this->row->city); ?>
+				<?php endif; ?>
 
 			</dd>
 
@@ -114,14 +108,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     			<?php
 				$i = 0;
     			foreach ($this->row->categories as $category) :
-    			?>
-					<a href="<?php echo JRoute::_( 'index.php?view=categoryevents&id='. $category->slug ); ?>"><?php echo $this->escape($category->catname); ?></a>
-				<?php 
-					$i++;
-					if ($i != $n) :
-						echo ',';
-					endif;
-				endforeach;
+    				echo JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($category->slug), $this->escape($category->catname));
+						$i++;
+						if ($i != $n) :
+							echo ',';
+						endif;
+					endforeach;
     			?>
 			</dd>
 	</dl>
@@ -172,7 +164,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<dl class="location floattext">
 			 <dt class="venue"><?php echo JText::_('COM_REDEVENT_VENUE').':'; ?></dt>
 				<dd class="venue">
-				<?php echo "<a href='".JRoute::_( 'index.php?view=venueevents&id='.$this->row->venueslug )."'>".$this->escape($this->row->venue)."</a>"; ?>
+				<?php echo JHTML::link($venuelink, $this->escape($this->row->venue)); ?>
 
 				<?php if (!empty($this->row->url)) : ?>
 					&nbsp; - &nbsp;
@@ -194,11 +186,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<?php endif; ?>
 
 				<?php if ( $this->row->plz ) : ?>
-  				<dt class="venue_plz"><?php echo JText::_('COM_REDEVENT_ZIP' ).':'; ?></dt>
+  			<dt class="venue_plz"><?php echo JText::_('COM_REDEVENT_ZIP' ).':'; ?></dt>
 				<dd class="venue_plz">
     				<?php echo $this->escape($this->row->plz); ?>
 				</dd>
-				<?php endif; ?>
 
 				<?php if ( $this->row->city ) : ?>
     			<dt class="venue_city"><?php echo JText::_('COM_REDEVENT_CITY' ).':'; ?></dt>
@@ -225,7 +216,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			?>
 		</dl>
 
-		<?php if ($this->elsettings->get('showlocdescription') == 1 && $this->row->locdescription) :	?>
+		<?php if ($this->row->locdescription) :	?>
 
 			<h2 class="location_desc"><?php echo JText::_('COM_REDEVENT_DESCRIPTION' ); ?></h2>
   			<div class="description location_desc">
@@ -242,10 +233,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<div class="event-registration">
 		<?php 
 		if (!$registration_status->canregister):
-		  $img = JHTML::_('image', JURI::base() . 'components/com_redevent/assets/images/agt_action_fail.png', 
+			$imgpath = 'components/com_redevent/assets/images/'.$registration_status->error.'.png';
+		  $img = JHTML::_('image', JURI::base() . $imgpath, 
 		                          $registration_status->status, 
 		                          array('class' => 'hasTip', 'title' => $registration_status->status));
-			echo $img;
+			echo REOutput::moreInfoIcon($event->xslug, $img, $registration_status->status);
 		else : ?>
 		<?php $venues_html = '';	
 		/* Get the different submission types */
@@ -341,7 +333,4 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		  <?php endif; ?>
 	</ul>
 	
-<p class="copyright">
-	<?php echo REOutput::footer( ); ?>
-</p>
 </div>

@@ -27,6 +27,3 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div id="confirmation_message">
 	<?php echo $this->row->confirmation_message; ?>
 </div>
-<p class="copyright">
-	<?php echo REOutput::footer( ); ?>
-</p>

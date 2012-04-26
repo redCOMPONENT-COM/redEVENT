@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * View class for the EventList attendees screen
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventViewAttendees extends JView {
@@ -74,7 +74,7 @@ class RedEventViewAttendees extends JView {
     ELAdmin::setMenu();
 
 		//add toolbar
-		JToolBarHelper::title( JText::_('COM_REDEVENT_REGISTRATIONS' ), 'users' );
+		JToolBarHelper::title( JText::_('COM_REDEVENT_REGISTRATIONS' ), 'registrations' );
 //		JToolBarHelper::custom('submitters', 'redevent_submitters', 'redevent_submitters', JText::_('COM_REDEVENT_Attendees'), false);
 		JToolBarHelper::custom('emailall', 'send.png', 'send.png', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_ALL', false, true);
 		JToolBarHelper::custom('email', 'send.png', 'send.png', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_SELECTED', true, true);
@@ -95,7 +95,6 @@ class RedEventViewAttendees extends JView {
 		if ($user->authorise('core.admin', 'com_redevent')) {
 			JToolBarHelper::preferences('com_redevent', '600', '800');
 		}
-		JToolBarHelper::help( 'el.registereduser', true );
 
 		// Get data from the model
 		$rows      = $this->get( 'Data');
@@ -237,4 +236,3 @@ class RedEventViewAttendees extends JView {
 		parent::display($tpl);
 	}
 }
-?>

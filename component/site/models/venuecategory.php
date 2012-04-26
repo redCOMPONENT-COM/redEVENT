@@ -273,4 +273,3 @@ class RedeventModelVenuecategory extends RedeventModelBaseEventList {
 	}
 	
 }
-?>

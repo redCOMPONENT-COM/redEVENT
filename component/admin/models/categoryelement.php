@@ -29,7 +29,7 @@ jimport('joomla.application.component.model');
  * EventList Component Categoryelement Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since		0.9
  */
 class RedEventModelCategoryelement extends JModel
@@ -208,4 +208,3 @@ class RedEventModelCategoryelement extends JModel
 		return $where;
 	}
 }
-?>

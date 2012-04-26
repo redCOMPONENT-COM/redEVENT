@@ -32,7 +32,7 @@ require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'calendar.class.php');
  * HTML View class for the Calendar View
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 1.1
  */
 class RedeventViewCalendar extends JView
@@ -128,4 +128,3 @@ class RedeventViewCalendar extends JView
         return $tip;
     }
 }
-?>

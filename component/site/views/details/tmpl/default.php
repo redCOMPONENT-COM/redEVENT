@@ -124,7 +124,4 @@ if ($this->row->show_names) : ?>
 			<?php endif;?>
 	</ul>
 	
-<p class="copyright">
-	<?php echo REOutput::footer( ); ?>
-</p>
 </div>

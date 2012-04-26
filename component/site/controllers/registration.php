@@ -470,9 +470,11 @@ class RedEventControllerRegistration extends RedEventController
 		
 		if (!$details['username'] && !$details['fullname']) {
 			$username = 'redeventuser'.$sid;
+			$details['fullname'] = $username;
 		}
 		else {
-			$username = $details['username'] ? $details['username'] : $details['fullname'];			
+			$username = $details['username'] ? $details['username'] : $details['fullname'];
+			$details['fullname'] = $details['fullname'] ? $details['fullname'] : $username;
 		}
 		
 		// check unicity

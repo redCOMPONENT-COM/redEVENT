@@ -30,7 +30,7 @@ jimport('joomla.application.component.modeladmin');
  * EventList Component Category Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since		0.9
  */
 class RedEventModelVenuesCategory extends JModelAdmin
@@ -399,4 +399,3 @@ class RedEventModelVenuesCategory extends JModelAdmin
 			return $data;
 	}
 }
-?>

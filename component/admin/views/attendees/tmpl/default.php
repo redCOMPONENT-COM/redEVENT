@@ -217,9 +217,6 @@ if ($this->event->maxattendees) {
 
 	</table>
 
-	<p class="copyright">
-		<?php echo ELAdmin::footer( ); ?>
-
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="option" value="com_redevent" />
 		<input type="hidden" name="controller" value="attendees" />
@@ -229,5 +226,4 @@ if ($this->event->maxattendees) {
 		<input type="hidden" name="eventid" value="<?php echo $this->event->eventid; ?>" />
 		<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 		<input type="hidden" name="filter_order_Dir" value="" />
-	</p>
 </form>

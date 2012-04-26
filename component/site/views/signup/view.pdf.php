@@ -90,4 +90,3 @@ class RedeventViewSignup extends JView
     exit;     
 	}
 }
-?>

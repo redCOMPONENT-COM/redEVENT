@@ -30,7 +30,7 @@ jimport( 'joomla.application.component.view');
  * HTML View class for the Venueevents View
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedeventViewVenueevents extends JView
@@ -95,9 +95,7 @@ class RedeventViewVenueevents extends JView
 		}
 
 		// Add needed scripts if the lightbox effect is enabled
-		if ($elsettings->get('lightbox') == 1) {
-			JHTML::_('behavior.modal');
-		}
+		JHTML::_('behavior.modal');
 
 		//add alternate feed link
 		$link    = 'index.php?option=com_redevent&view=venueevents&format=feed&id='.$venue->id;
@@ -255,4 +253,3 @@ class RedeventViewVenueevents extends JView
 		return $lists;
 	}
 }
-?>

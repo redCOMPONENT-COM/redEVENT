@@ -2,7 +2,7 @@
 /**
  * @version 1.1 $Id: default.php 1078 2009-06-29 18:15:43Z schlu $
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @copyright (C) 2005 - 2009 Christoph Lukes
  * @license GNU/GPL, see LICENSE.php
  * EventList is free software; you can redistribute it and/or
@@ -55,7 +55,7 @@ foreach ($this->rows as $row)
 	$colorpic = '';
 	$content = '';
 	$contentend = '';
-	if ($this->settings->get('showdetails', 1)) {
+	if ($this->params->get('showdetails', 1)) {
 		$detaillink = RedeventHelperRoute::getDetailsRoute($row->slug, $row->xslug);
 	}
 	else {
@@ -98,7 +98,7 @@ foreach ($this->rows as $row)
 	$eventdate = REOutput::formatdate($row->dates, $row->times);
 
 	//venue
-	if ($this->settings->get('showlocate') == 1)
+	if ($this->params->get('showlocate', 1) == 1)
 	{
 		$venue = '<div class="location"><span class="label">'.JText::_('COM_REDEVENT_VENUE').': </span>';
 

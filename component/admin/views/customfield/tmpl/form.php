@@ -26,21 +26,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <?php JHTML::_('behavior.tooltip'); ?>
 <?php JHTML::_('behavior.formvalidation'); ?>
 
-<?php
-// Set toolbar items for the page
-$edit		= JRequest::getVar('edit',true);
-$text = !$edit ? JText::_('COM_REDEVENT_New' ) : JText::_('COM_REDEVENT_Edit' );
-JToolBarHelper::title(   JText::_('COM_REDEVENT_Custom_field' ).': <small><small>[ ' . $text.' ]</small></small>' );
-JToolBarHelper::save();
-JToolBarHelper::apply();
-if (!$edit)  {
-	JToolBarHelper::cancel();
-} else {
-	// for existing items the button is renamed `close`
-	JToolBarHelper::cancel( 'cancel', 'Close' );
-}
-?>
-
 <script language="javascript" type="text/javascript">
 	function submitbutton(pressbutton) {
 		var form = document.adminForm;

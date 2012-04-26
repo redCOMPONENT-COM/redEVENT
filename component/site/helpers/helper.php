@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
  * Holds some usefull functions to keep the code a bit cleaner
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  */
 class redEVENTHelper {
 
@@ -42,17 +42,14 @@ class redEVENTHelper {
 	{
 		return JComponentHelper::getParams('com_redevent');
 		static $config;
-
-		if (!is_object($config))
+		
+		if (!$config)
 		{
-			$db 	= & JFactory::getDBO();
-			$sql 	= 'SELECT * FROM #__redevent_settings WHERE id = 1';
-			$db->setQuery($sql);
-			$config = $db->loadObject();
-			
-			$config->params = JComponentHelper::getParams('com_redevent');
+			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_redevent'.DS.'tables'.DS.'redevent_settings.php');
+			$config = JTable::getInstance('RedEvent_settings', '');
+			$config->load(1);
+			$config->params = JComponentHelper::getParams('com_redevent'); // redundant, but for legacy
 		}
-
 		return $config;
 	}
 
@@ -133,16 +130,18 @@ class redEVENTHelper {
 					RedeventHelperLog::simpleLog('CLEANUP Error while deleting old xrefs: '. $db->getErrorMsg());
 				}
 				
-				
-				// now delete the events with no more xref
-        $query = ' DELETE e FROM #__redevent_events AS e '
-               . ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
-               . ' WHERE x.id IS NULL '
-               . '   AND e.id IN (' . implode(', ', $event_ids) . ')'
-               ;
-        $db->SetQuery( $query );
-				if (!$db->Query()) {
-					RedeventHelperLog::simpleLog('CLEANUP Error while deleting old events with no more xrefs: '. $db->getErrorMsg());
+				if ($params->get('pastevents_events_action', 1))
+				{
+					// now delete the events with no more xref
+	        $query = ' DELETE e FROM #__redevent_events AS e '
+	               . ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
+	               . ' WHERE x.id IS NULL '
+	               . '   AND e.id IN (' . implode(', ', $event_ids) . ')'
+	               ;
+	        $db->SetQuery( $query );
+					if (!$db->Query()) {
+						RedeventHelperLog::simpleLog('CLEANUP Error while deleting old events with no more xrefs: '. $db->getErrorMsg());
+					}
 				}
 			}
 
@@ -182,17 +181,20 @@ class redEVENTHelper {
 				if (!$db->Query()) {
 					RedeventHelperLog::simpleLog('CLEANUP Error while archiving old xrefs: '. $db->getErrorMsg());
 				}
-								
-        // update events to archive (if no more published xref)
-        $query = ' UPDATE #__redevent_events AS e '
-               . ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id AND x.published <> -1 '
-               . ' SET e.published = -1 '
-               . ' WHERE x.id IS NULL '
-               . '   AND e.id IN (' . implode(', ', $event_ids) . ')'
-               ;
-        $db->SetQuery( $query );
-				if (!$db->Query()) {
-					RedeventHelperLog::simpleLog('CLEANUP Error while archiving events with only archived xrefs: '. $db->getErrorMsg());
+				
+				if ($params->get('pastevents_events_action', 1))
+				{
+	        // update events to archive (if no more published xref)
+	        $query = ' UPDATE #__redevent_events AS e '
+	               . ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id AND x.published <> -1 '
+	               . ' SET e.published = -1 '
+	               . ' WHERE x.id IS NULL '
+	               . '   AND e.id IN (' . implode(', ', $event_ids) . ')'
+	               ;
+	        $db->SetQuery( $query );
+					if (!$db->Query()) {
+						RedeventHelperLog::simpleLog('CLEANUP Error while archiving events with only archived xrefs: '. $db->getErrorMsg());
+					}
 				}
 			}
 
@@ -595,6 +597,7 @@ class redEVENTHelper {
     {
       $result->canregister = 0;
       $result->status = JText::_('COM_REDEVENT_NO_REGISTRATION_FOR_THIS_EVENT');
+      $result->error = 'noregistration';
       return $result;
     }
     else if (redEVENTHelper::isValidDate($event->registrationend))
@@ -603,6 +606,7 @@ class redEVENTHelper {
       {
         $result->canregister = 0;
         $result->status = JText::_('COM_REDEVENT_REGISTRATION_IS_OVER');
+      	$result->error = 'isover';
         return $result;
       }
     }
@@ -611,6 +615,7 @@ class redEVENTHelper {
       // it's separated from previous case so that it is not checked if a registration end was set
       $result->canregister = 0;
       $result->status = JText::_('COM_REDEVENT_REGISTRATION_IS_OVER');
+      $result->error = 'isover';
       return $result;
     }
 
@@ -633,6 +638,7 @@ class redEVENTHelper {
       {
         $result->canregister = 0;
         $result->status = JText::_('COM_REDEVENT_EVENT_FULL');
+      	$result->error = 'isfull';
         return $result;
       }
     }
@@ -652,6 +658,7 @@ class redEVENTHelper {
       {
       	$result->canregister = 0;
       	$result->status = JTEXT::_('COM_REDEVENT_REGISTRATION_NOT_ALLOWED_PENDING_UNCONFIRM_REGISTRATION');
+      	$result->error = 'haspending';
       	return $result;
       }
     }
@@ -689,6 +696,7 @@ class redEVENTHelper {
     {
       $result->canregister = 0;
       $result->status = JText::_('COM_REDEVENT_USER_MAX_REGISTRATION_REACHED');
+			$result->error = 'usermax';
       return $result;
     }
         
@@ -1392,4 +1400,3 @@ class redEVENTHelper {
 		return true;
 	}
 }
-?>

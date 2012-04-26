@@ -32,7 +32,7 @@ jimport('joomla.filesystem.file');
  * EventList Component Imageselect Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventModelImagehandler extends JModel
@@ -245,4 +245,3 @@ class RedEventModelImagehandler extends JModel
 		}
 	}
 }
-?>

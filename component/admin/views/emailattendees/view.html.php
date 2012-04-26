@@ -65,4 +65,3 @@ class RedEventViewEmailattendees extends JView {
 		parent::display($tpl);
   }
 }
-?>

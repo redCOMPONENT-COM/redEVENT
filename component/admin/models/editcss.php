@@ -30,7 +30,7 @@ jimport('joomla.application.component.model');
  * EventList Component Editcss Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since		0.9
  */
 class RedEventModelEditcss extends JModel
@@ -45,4 +45,3 @@ class RedEventModelEditcss extends JModel
 		parent::__construct();
 	}
 }
-?>

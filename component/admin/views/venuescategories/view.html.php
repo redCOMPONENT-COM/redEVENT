@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * View class for the redevent venues categories screen
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventViewVenuesCategories extends JView {
@@ -61,7 +61,7 @@ class RedEventViewVenuesCategories extends JView {
     ELAdmin::setMenu();
 
 		//create the toolbar
-		JToolBarHelper::title( JText::_('COM_REDEVENT_VENUES_CATEGORIES' ), 'elcategories' );
+		JToolBarHelper::title( JText::_('COM_REDEVENT_VENUES_CATEGORIES' ), 'venuescategories' );
 		JToolBarHelper::publishList();
 		JToolBarHelper::spacer();
 		JToolBarHelper::unpublishList();
@@ -72,10 +72,10 @@ class RedEventViewVenuesCategories extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::deleteList();
 		JToolBarHelper::spacer();
+	
 		if ($user->authorise('core.admin', 'com_redevent')) {
 			JToolBarHelper::preferences('com_redevent', '600', '800');
 		}
-		JToolBarHelper::help( 'el.listcategories', true );
 
 		//Get data from the model
 		$rows      	= & $this->get( 'Data');
@@ -104,4 +104,3 @@ class RedEventViewVenuesCategories extends JView {
 		parent::display($tpl);
 	}
 }
-?>

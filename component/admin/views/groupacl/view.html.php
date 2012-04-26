@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * View class for the EventList group ACL screen
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since 0.9
  */
 class RedEventViewGroupacl extends JView {
@@ -59,14 +59,14 @@ class RedEventViewGroupacl extends JView {
 		$gvcategories = & $this->get('MaintainedVenuesCategories');
 
 		//build toolbar
-		JToolBarHelper::title( JText::_('COM_REDEVENT_EDIT_GROUP_ACL' ) .' - '. $group->name, 'groupedit' );
+		JToolBarHelper::title( JText::_('COM_REDEVENT_EDIT_GROUP_ACL' ) .' - '. $group->name, 'accessgroups' );
 		JToolBarHelper::spacer();
 		JToolBarHelper::apply('applyacl');
 		JToolBarHelper::save('saveacl');
 		JToolBarHelper::spacer();
 		JToolBarHelper::cancel('cancelacl');
 		JToolBarHelper::spacer();
-		JToolBarHelper::help( 'el.editgroupacl', true );
+		//JToolBarHelper::help( 'el.editgroupacl', true );
 
 		//create selectlists
 		$lists = array();
@@ -85,4 +85,3 @@ class RedEventViewGroupacl extends JView {
 		parent::display($tpl);
 	}
 }
-?>

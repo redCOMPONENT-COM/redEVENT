@@ -30,7 +30,7 @@ jimport('joomla.application.component.model');
  * Redevent Component log Model
  *
  * @package Joomla
- * @subpackage EventList
+ * @subpackage redEVENT
  * @since		0.9
  */
 class RedEventModelLog extends JModel
@@ -79,4 +79,3 @@ class RedEventModelLog extends JModel
 		return $contents;
 	}
 }
-?>

@@ -471,4 +471,3 @@ class RedeventModelSessions extends JModel
 		return $this->_db->loadObjectList();
 	}
 }
-?>
