@@ -165,21 +165,14 @@ if ($this->row->venueid != 0) {
 			 <dt class="venue"><?php echo JText::_('COM_REDEVENT_VENUE').':'; ?></dt>
 				<dd class="venue">
 				<?php echo JHTML::link($venuelink, $this->escape($this->row->venue)); ?>
-
 				<?php if (!empty($this->row->url)) : ?>
 					&nbsp; - &nbsp;
 					<a href="<?php echo $this->row->url; ?>"> <?php echo JText::_('COM_REDEVENT_WEBSITE' ); ?></a>
-				<?php
-				endif;
-				?>
+				<?php	endif; ?>
 				</dd>
 
-			<?php
-  			if ( $this->elsettings->get('showdetailsadress') == 1 ) :
-  			?>
-
-  				<?php if ( $this->row->street ) : ?>
-  				<dt class="venue_street"><?php echo JText::_('COM_REDEVENT_STREET' ).':'; ?></dt>
+  			<?php if ( $this->row->street ) : ?>
+  			<dt class="venue_street"><?php echo JText::_('COM_REDEVENT_STREET' ).':'; ?></dt>
 				<dd class="venue_street">
     				<?php echo $this->escape($this->row->street); ?>
 				</dd>
@@ -190,15 +183,16 @@ if ($this->row->venueid != 0) {
 				<dd class="venue_plz">
     				<?php echo $this->escape($this->row->plz); ?>
 				</dd>
+				<?php endif; ?>
 
 				<?php if ( $this->row->city ) : ?>
     			<dt class="venue_city"><?php echo JText::_('COM_REDEVENT_CITY' ).':'; ?></dt>
     			<dd class="venue_city">
     				<?php echo $this->escape($this->row->city); ?>
     			</dd>
-    			<?php endif; ?>
+    		<?php endif; ?>
 
-    			<?php if ( $this->row->state ) : ?>
+    		<?php if ( $this->row->state ) : ?>
     			<dt class="venue_state"><?php echo JText::_('COM_REDEVENT_STATE' ).':'; ?></dt>
     			<dd class="venue_state">
     				<?php echo $this->escape($this->row->state); ?>
@@ -210,21 +204,15 @@ if ($this->row->venueid != 0) {
     			<dd class="venue_country">
     				<?php echo redEVENTHelperCountries::getCountryFlag( $this->row->country ); ?>
     			</dd>
-    			<?php endif; ?>
-			<?php
-			endif;
-			?>
+    		<?php endif; ?>
 		</dl>
 
 		<?php if ($this->row->locdescription) :	?>
-
 			<h2 class="location_desc"><?php echo JText::_('COM_REDEVENT_DESCRIPTION' ); ?></h2>
   			<div class="description location_desc">
   				<?php echo $this->row->locdescription;	?>
   			</div>
-
 		<?php endif; ?>
-
 	<?php	endif; ?>
 	
 	<?php if ($this->row->registra): ?>	
@@ -237,7 +225,7 @@ if ($this->row->venueid != 0) {
 		  $img = JHTML::_('image', JURI::base() . $imgpath, 
 		                          $registration_status->status, 
 		                          array('class' => 'hasTip', 'title' => $registration_status->status));
-			echo REOutput::moreInfoIcon($event->xslug, $img, $registration_status->status);
+			echo REOutput::moreInfoIcon($this->row->xslug, $img, $registration_status->status);
 		else : ?>
 		<?php $venues_html = '';	
 		/* Get the different submission types */
