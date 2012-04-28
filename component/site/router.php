@@ -167,8 +167,10 @@ function RedEventParseRoute($segments)
 		
 		case 'venue':
 		{
-			$id = explode(':', $segments[1]);
-			$vars['id'] = $id[0];
+			if (isset($segments[1])) {
+				$id = explode(':', $segments[1]);
+				$vars['id'] = $id[0];
+			}
 			$vars['view'] = 'venue';
 		} break;
 

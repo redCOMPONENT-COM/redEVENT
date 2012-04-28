@@ -81,7 +81,7 @@ class RedeventModelVenue extends JModel
 			if ($this->_id) 
 			{
 				// Load the Event data
-	      $query = ' SELECT v.id, v.venue, v.url, v.street, v.plz, v.city, v.state, v.country, v.locdescription, v.locimage, v.latitude, v.longitude, '
+	      $query = ' SELECT v.id, v.venue, v.url, v.street, v.plz, v.city, v.state, v.country, v.locdescription, v.locimage, v.latitude, v.longitude, v.company, '
 				  . ' COUNT( a.id ) AS assignedevents,'
 	        . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as slug'
 	        . ' FROM #__redevent_venues as v'
@@ -139,11 +139,17 @@ class RedeventModelVenue extends JModel
 	 */
 	function _loadVenue( )
 	{
-		if (empty($this->_venue)) {
-
-			$this->_venue =& JTable::getInstance('redevent_venues', '');
-			$this->_venue->load( $this->_id );
-
+		if (empty($this->_venue)) 
+		{
+			$db = &JFactory::getDbo();
+			$query = $db->getQuery(true);
+			
+			$query->select('*');
+			$query->from('#__redevent_venues');
+			$query->where('id = ' . $this->_id);
+			$db->setQuery($query);
+			$this->_venue = $db->loadObject();
+			echo '<pre>';print_r($this->_venue); echo '</pre>';exit;
 			return $this->_venue;
 		}
 		return true;

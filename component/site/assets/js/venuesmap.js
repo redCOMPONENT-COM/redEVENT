@@ -62,13 +62,14 @@ var venuesmap = {
 	        
 	        google.maps.event.addListener(marker, 'click', function(latlng) {
 	        	var url = venueurl + '&id=' + this.venue.id;
-	    		var theAjax = new Ajax(url, {
+	    		var theAjax = new Request({
+	    			url: url,
 	    			method: 'post',
 	    			postBody : ''
 	    			});
 	    		
 	    		theAjax.addEvent('onSuccess', venuesmap.popvenueinfo.bind(this.marker));
-	    		theAjax.request();
+	    		theAjax.send();
 		        }.bind({'venue':venue, 'marker': marker})
 	        );                  
 	        
