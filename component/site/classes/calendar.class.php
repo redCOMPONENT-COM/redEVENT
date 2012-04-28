@@ -828,7 +828,7 @@ function mkEventContent($var)
 					
 					foreach($eventContent as $arrayContent)
 					{
-						$out .= '<div class="'.$eventContentid.'">';
+						$out .= '<div class="'.$eventContentid.' row'.($x % 2).'">';
 						if (is_int($eventContentUrl)) {
 							$out.= $arrayContent;
 						}
