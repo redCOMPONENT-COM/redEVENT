@@ -508,12 +508,14 @@ class RedEventModelEvents extends JModel
 		       . '    x.dates, x.enddates, x.times, x.endtimes, x.registrationend, '
 		       . '    x.note AS session_note, x.details AS session_details, x.icaldetails AS session_icaldetails, x.maxattendees, x.maxwaitinglist, x.course_credit, '
 		       . '    x.featured, x.external_registration_url, x.published as session_published, '
+		       . '    u.name as creator_name, u.email AS creator_email, '
 		       . (count($xcustoms) ? implode(', ', $xcustoms).', ' : '' )
 		       . '    v.venue, v.city '
 		       . ' FROM #__redevent_events AS e '
 		       . ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
 		       . ' LEFT JOIN #__redevent_venues AS v ON v.id = x.venueid '
 		       . ' LEFT JOIN #__redevent_event_category_xref AS xc ON xc.event_id = e.id '
+		       . ' LEFT JOIN #__users AS u ON e.created_by = u.id '
 		       . $where
 		       . ' GROUP BY x.id, e.id '
 		       . ' ORDER BY e.id, x.dates '
