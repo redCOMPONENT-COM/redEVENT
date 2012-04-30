@@ -455,6 +455,8 @@
       <option value="0">COM_REDEVENT_SETTINGS_CAT_SELECT_ORDERING_PARENT</option>
       <option value="1">COM_REDEVENT_SETTINGS_CAT_SELECT_ORDERING_NAME</option>
     </field> 
+    <field name="pinpoint_defaultaddress" type="text" default="usa" label="COM_REDEVENT_SETTINGS_PINPOINT_DEFAULT_ADDRESS_LABEL" description="COM_REDEVENT_SETTINGS_PINPOINT_DEFAULT_ADDRESS_LABEL" />
+    
     <field type="spacer" hr="true"/>
     <field type="spacer" label="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SPACER"/>
     <field name="attendees_table_show_ip" type="radio" default="0" label="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SHOW_IP_LABEL" description="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SHOW_IP_DESC">

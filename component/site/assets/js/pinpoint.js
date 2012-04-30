@@ -47,60 +47,63 @@ var mymap = {
 	map : null,
 	marker : null,
 	infowindow: null,
+	defaultaddress: 'usa',
 	
 	init : function(element) 
+	{
+		this.map = new google.maps.Map(element,
+			    this.options);
+		this.initmarker();
+		this.map.setCenter(this.marker.getPosition());
+	},
+	
+	initaddress : function()
+	{
+		var address = new Array();
+		if (document.id('street').get('value')) {
+			address.push(document.id('street').get('value'));
+		}
+		if (document.id('city').get('value')) {
+			address.push(document.id('city').get('value'));
+		}
+		if (document.id('country').get('value')) {
+			var sel = document.id('country').getSelected();
+			address.push(sel[0].get("text"));
+		}
+		address = address.join().toLowerCase();
+		return address;
+	},
+
+	codeadress : function() 
+	{
+		var address = this.venue.address;
+		var finalzoom = 16;
+		if (address == "") {
+			address = this.defaultaddress;
+			finalzoom = 3;
+		}
+		var geocoder = new google.maps.Geocoder();
+	    geocoder.geocode( { 'address': address}, function(results, status) {
+	    	if (results[0]) {
+		    	this.venue.latitude = results[0].geometry.location.lat();
+		    	this.venue.longitude = results[0].geometry.location.lng();
+				this.setmarker();
+				this.map.setZoom(finalzoom);
+		    }
+	    }.bind(this));
+	},
+	
+	initmarker : function()
 	{
 		this.venue = {
 				latitude: document.id('latitude').get('value'),
 				longitude: document.id('longitude').get('value'),
 				address: this.initaddress()
 		};
-		this.map = new google.maps.Map(element,
-			    this.options);
-		if (this.venue.latitude == "0" && this.venue.longitude == "0") {
-			this.codeadress();
-		}
-		this.setmarker();
-        this.markerShowInfo();
-	},
-	
-	initaddress : function()
-	{
-		var address = '';
-		if (document.id('street').get('value')) {
-			address += document.id('street').get('value') + ",";
-		}
-		if (document.id('city').get('value')) {
-			address += document.id('city').get('value') + ",";
-		}
-		if (document.id('country').get('value')) {
-			address += document.id('country').get('value') + ",";
-		}
-		if (address.length) {
-			address.substr(0, address.length-1);
-		}
-		return address;
-	},
-
-	codeadress : function() 
-	{
-		var geocoder = new google.maps.Geocoder();
-	    geocoder.geocode( { 'address': this.venue.address}, function(results, status) {
-	    	if (results[0]) {
-		    	this.venue.latitude = results[0].geometry.location.lat();
-		    	this.venue.longitude = results[0].geometry.location.lng();
-		    	this.setmarker();
-		    }
-	    }.bind(this));
-	},
-	
-	setmarker : function() 
-	{
-		var latlng = new google.maps.LatLng(this.venue.latitude, this.venue.longitude);
-		this.map.setCenter(latlng);
+		
 		this.marker = new google.maps.Marker({
             map: this.map, 
-            position: latlng,
+            position: new google.maps.LatLng(this.venue.latitude, this.venue.longitude),
             draggable: true
         });
         
@@ -111,6 +114,18 @@ var mymap = {
         }.bind(this));
 
         google.maps.event.addListener(this.marker, "dragend", this.markerShowInfo.bind(this));
+        
+        // marker now set to default position, try to geocode if an address was provided and coordinates not set
+		if (! (this.marker.getPosition().lat() || this.marker.getPosition().lng()) ) {
+			this.codeadress();
+		}
+	},
+	
+	setmarker : function() 
+	{
+		var latlng = new google.maps.LatLng(this.venue.latitude, this.venue.longitude);
+		this.map.setCenter(latlng);	
+		this.marker.setPosition(latlng);
 	},
 
 	  
@@ -122,10 +137,8 @@ var mymap = {
 		new Element('br').inject(info);
 
 		var pos = this.marker.getPosition();
-		if (pos) {
-			lat = pos.lat()+'';
-			lng = pos.lng()+'';
-		}
+		lat = pos.lat()+'';
+		lng = pos.lng()+'';
 
 		info.appendText(sLatitude + ': ' + lat.substr(0,8) + '...');
 		new Element('br').inject(info);

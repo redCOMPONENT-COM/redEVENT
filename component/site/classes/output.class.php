@@ -426,11 +426,13 @@ class REOutput {
   function pinpointicon($data, $attributes = array())
   {
 		JHTML::_('behavior.framework');
+		$params = JComponentHelper::getParams('com_redevent');
 		$document 	= & JFactory::getDocument();
 		$document->addScript('http://maps.google.com/maps/api/js?sensor=false');
     $document->addScript(JURI::root().'components/com_redevent/assets/js/pinpoint.js');
     JText::script("COM_REDEVENT_APPLY");
     JText::script("COM_REDEVENT_CLOSE");
+    $document->addScriptDeclaration('mymap.defaultaddress = "'.$params->get('pinpoint_defaultaddress', 'usa').'";');
     
     $document->addStyleSheet(JURI::root().'components/com_redevent/assets/css/gmapsoverlay.css', 'text/css');
 
