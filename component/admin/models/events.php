@@ -474,6 +474,7 @@ class RedEventModelEvents extends JModel
 		
 		// custom fields
 		$customs = array();
+		$xcustoms = array();
 		$fields = $this->_getEventsCustomFieldsColumns();
 		$replace = array();
 		foreach ((array) $fields AS $f)
