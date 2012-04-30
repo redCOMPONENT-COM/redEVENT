@@ -26,7 +26,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div id="redevent" class="jlmap">
   <div id="goback"><a href="javascript:history.back()"><?php echo JText::_('COM_REDEVENT_Back'); ?></a></div>
   <h1 class="componentheading">
-    <?php echo JText::_('COM_REDEVENT_Locations'); ?>
+    <?php echo JText::_('COM_REDEVENT_VENUES_MAP'); ?>
   </h1>
 
 <script type="text/javascript">
