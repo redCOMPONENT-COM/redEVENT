@@ -11,72 +11,11 @@
 	<description>redevent sv-SE</description>
 	
 	<fileset>
-		<files folder="component/admin" target="administrator/components/com_redevent/language/sv-SE">
-			<filename>sv-SE.com_redevent.ini</filename>
-			<filename>sv-SE.com_redevent.sys.ini</filename>
+		<files folder="admin" target="administrator/language">
+			<folder>sv-SE</folder>
 		</files>
-		<files folder="component/site" target="components/com_redevent/language/sv-SE">
-			<filename>sv-SE.com_redevent.ini</filename>
-		</files>
-		<files folder="modules/mod_redevent" target="modules/mod_redevent/language/sv-SE">
-			<filename>sv-SE.mod_redevent.ini</filename>
-			<filename>sv-SE.mod_redevent.sys.ini</filename>
-		</files>
-		<files folder="modules/mod_redevent_all_events" target="modules/mod_redevent_all_events/language/sv-SE">
-			<filename>sv-SE.mod_redevent_all_events.ini</filename>
-			<filename>sv-SE.mod_redevent_all_events.sys.ini</filename>
-		</files>
-		<files folder="modules/mod_redevent_attending" target="modules/mod_redevent_attending/language/sv-SE">
-			<filename>sv-SE.mod_redevent_attending.ini</filename>
-			<filename>sv-SE.mod_redevent_attending.sys.ini</filename>
-		</files>
-		<files folder="modules/mod_redevent_categories" target="modules/mod_redevent_categories/language/sv-SE">
-			<filename>sv-SE.mod_redevent_categories.ini</filename>
-			<filename>sv-SE.mod_redevent_categories.sys.ini</filename>
-		</files>
-		<files folder="modules/mod_redevent_search" target="modules/mod_redevent_search/language/sv-SE">
-			<filename>sv-SE.mod_redevent_search.ini</filename>
-			<filename>sv-SE.mod_redevent_search.sys.ini</filename>
-		</files>
-		<files folder="modules/mod_redevent_teaser" target="modules/mod_redevent_teaser/language/sv-SE">
-			<filename>sv-SE.mod_redevent_teaser.ini</filename>
-			<filename>sv-SE.mod_redevent_teaser.sys.ini</filename>
-		</files>
-		<files folder="modules/mod_redevent_venues_events" target="modules/mod_redevent_venues_events/language/sv-SE">
-			<filename>sv-SE.mod_redevent_venues_events.ini</filename>
-			<filename>sv-SE.mod_redevent_venues_events.sys.ini</filename>
-		</files>
-		<files folder="modules/mod_redeventcal" target="modules/mod_redeventcal/language/sv-SE">
-			<filename>sv-SE.mod_redeventcal.ini</filename>
-			<filename>sv-SE.mod_redeventcal.sys.ini</filename>
-		</files>
-		<files folder="plugins/plg_js_redevent" target="plugins/plg_js_redevent/language/sv-SE">
-			<filename>sv-SE.plg_community_redevent.ini</filename>
-			<filename>sv-SE.plg_community_redevent.sys.ini</filename>
-		</files>
-		<files folder="plugins/plg_redevent_redmember" target="plugins/plg_redevent_redmember/language/sv-SE">
-			<filename>sv-SE.plg_redevent_redmember.ini</filename>
-			<filename>sv-SE.plg_redevent_redmember.sys.ini</filename>
-		</files>
-		<files folder="plugins/plg_redmember_redevent" target="plugins/plg_redmember_redevent/language/sv-SE">
-			<filename>sv-SE.plg_redmember_redevent.ini</filename>
-			<filename>sv-SE.plg_redmember_redevent.sys.ini</filename>
-		</files>
-		<files folder="plugins/plg_resimplelist" target="plugins/plg_resimplelist/language/sv-SE">
-			<filename>sv-SE.plg_content_resimplelist.ini</filename>
-			<filename>sv-SE.plg_content_resimplelist.sys.ini</filename>
-		</files>
-		<files folder="plugins/redevent_editor_xtd" target="plugins/redevent_editor_xtd/language/sv-SE">
-			<filename>sv-SE.plg_editors-xtd_redevent.ini</filename>
-			<filename>sv-SE.plg_editors-xtd_redevent.sys.ini</filename>
-		</files>
-		<files folder="plugins/redevent_jomsocial" target="plugins/redevent_jomsocial/language/sv-SE">
-			<filename>sv-SE.plg_redevent_jomsocial.ini</filename>
-			<filename>sv-SE.plg_redevent_jomsocial.sys.ini</filename>
-		</files>
-		<files folder="plugins/redevent_search" target="plugins/redevent_search/language/sv-SE">
-			<filename>sv-SE.plg_search_redeventsearch.ini</filename>
-			<filename>sv-SE.plg_search_redeventsearch.sys.ini</filename>
+		<files folder="site" target="language">
+			<folder>sv-SE</folder>
 		</files>
 	</fileset>
 </extension>

@@ -9,74 +9,13 @@
 	<license>GNU/GPL</license>
 	<version>2.5</version>
 	<description>redevent da-DK</description>
-	
+		
 	<fileset>
-		<files folder="component/admin" target="administrator/components/com_redevent/language/da-DK">
-			<filename>da-DK.com_redevent.ini</filename>
-			<filename>da-DK.com_redevent.sys.ini</filename>
+		<files folder="admin" target="administrator/language">
+			<folder>da-DK</folder>
 		</files>
-		<files folder="component/site" target="components/com_redevent/language/da-DK">
-			<filename>da-DK.com_redevent.ini</filename>
-		</files>
-		<files folder="modules/mod_redevent" target="modules/mod_redevent/language/da-DK">
-			<filename>da-DK.mod_redevent.ini</filename>
-			<filename>da-DK.mod_redevent.sys.ini</filename>
-		</files>
-		<files folder="modules/mod_redevent_all_events" target="modules/mod_redevent_all_events/language/da-DK">
-			<filename>da-DK.mod_redevent_all_events.ini</filename>
-			<filename>da-DK.mod_redevent_all_events.sys.ini</filename>
-		</files>
-		<files folder="modules/mod_redevent_attending" target="modules/mod_redevent_attending/language/da-DK">
-			<filename>da-DK.mod_redevent_attending.ini</filename>
-			<filename>da-DK.mod_redevent_attending.sys.ini</filename>
-		</files>
-		<files folder="modules/mod_redevent_categories" target="modules/mod_redevent_categories/language/da-DK">
-			<filename>da-DK.mod_redevent_categories.ini</filename>
-			<filename>da-DK.mod_redevent_categories.sys.ini</filename>
-		</files>
-		<files folder="modules/mod_redevent_search" target="modules/mod_redevent_search/language/da-DK">
-			<filename>da-DK.mod_redevent_search.ini</filename>
-			<filename>da-DK.mod_redevent_search.sys.ini</filename>
-		</files>
-		<files folder="modules/mod_redevent_teaser" target="modules/mod_redevent_teaser/language/da-DK">
-			<filename>da-DK.mod_redevent_teaser.ini</filename>
-			<filename>da-DK.mod_redevent_teaser.sys.ini</filename>
-		</files>
-		<files folder="modules/mod_redevent_venues_events" target="modules/mod_redevent_venues_events/language/da-DK">
-			<filename>da-DK.mod_redevent_venues_events.ini</filename>
-			<filename>da-DK.mod_redevent_venues_events.sys.ini</filename>
-		</files>
-		<files folder="modules/mod_redeventcal" target="modules/mod_redeventcal/language/da-DK">
-			<filename>da-DK.mod_redeventcal.ini</filename>
-			<filename>da-DK.mod_redeventcal.sys.ini</filename>
-		</files>
-		<files folder="plugins/plg_js_redevent" target="plugins/plg_js_redevent/language/da-DK">
-			<filename>da-DK.plg_community_redevent.ini</filename>
-			<filename>da-DK.plg_community_redevent.sys.ini</filename>
-		</files>
-		<files folder="plugins/plg_redevent_redmember" target="plugins/plg_redevent_redmember/language/da-DK">
-			<filename>da-DK.plg_redevent_redmember.ini</filename>
-			<filename>da-DK.plg_redevent_redmember.sys.ini</filename>
-		</files>
-		<files folder="plugins/plg_redmember_redevent" target="plugins/plg_redmember_redevent/language/da-DK">
-			<filename>da-DK.plg_redmember_redevent.ini</filename>
-			<filename>da-DK.plg_redmember_redevent.sys.ini</filename>
-		</files>
-		<files folder="plugins/plg_resimplelist" target="plugins/plg_resimplelist/language/da-DK">
-			<filename>da-DK.plg_content_resimplelist.ini</filename>
-			<filename>da-DK.plg_content_resimplelist.sys.ini</filename>
-		</files>
-		<files folder="plugins/redevent_editor_xtd" target="plugins/redevent_editor_xtd/language/da-DK">
-			<filename>da-DK.plg_editors-xtd_redevent.ini</filename>
-			<filename>da-DK.plg_editors-xtd_redevent.sys.ini</filename>
-		</files>
-		<files folder="plugins/redevent_jomsocial" target="plugins/redevent_jomsocial/language/da-DK">
-			<filename>da-DK.plg_redevent_jomsocial.ini</filename>
-			<filename>da-DK.plg_redevent_jomsocial.sys.ini</filename>
-		</files>
-		<files folder="plugins/redevent_search" target="plugins/redevent_search/language/da-DK">
-			<filename>da-DK.plg_search_redeventsearch.ini</filename>
-			<filename>da-DK.plg_search_redeventsearch.sys.ini</filename>
+		<files folder="site" target="language">
+			<folder>da-DK</folder>
 		</files>
 	</fileset>
 </extension>
