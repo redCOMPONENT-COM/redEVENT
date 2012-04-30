@@ -89,6 +89,7 @@ var mymap = {
 		    	this.venue.longitude = results[0].geometry.location.lng();
 				this.setmarker();
 				this.map.setZoom(finalzoom);
+				this.markerShowInfo();
 		    }
 	    }.bind(this));
 	},
@@ -118,6 +119,9 @@ var mymap = {
         // marker now set to default position, try to geocode if an address was provided and coordinates not set
 		if (! (this.marker.getPosition().lat() || this.marker.getPosition().lng()) ) {
 			this.codeadress();
+		}
+		else {
+			this.markerShowInfo();
 		}
 	},
 	
