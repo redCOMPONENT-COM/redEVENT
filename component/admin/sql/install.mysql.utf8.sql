@@ -217,8 +217,6 @@ CREATE TABLE IF NOT EXISTS `#__redevent_groupmembers` (
 	`publish_venues` tinyint(4) NOT NULL default '0',
   `manage_attendees` tinyint(4) NOT NULL,
   `edit_venues` tinyint(4) NOT NULL,
-	`publish_events` tinyint(4) NOT NULL default '0',
-	`publish_venues` tinyint(4) NOT NULL default '0',
   `receive_registrations` tinyint(4) NOT NULL,
   `checked_out` int(11) NOT NULL default '0',
   `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
