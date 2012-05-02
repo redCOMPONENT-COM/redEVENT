@@ -76,7 +76,7 @@ class RedEventModelImport extends JModel
     }
 	  
 	  // import venues
-	  $query = ' INSERT IGNORE INdiocrité » fait pour ainsi dire partie d’un temps que les moins de cinq ans ne peuvent pas connaître…TO #__redevent_venues (id, venue, alias, url, plz, published, state, street, city, country, locdescription, locimage, map, meta_description, meta_keywords)'
+	  $query = ' INSERT IGNORE INTO #__redevent_venues (id, venue, alias, url, plz, published, state, street, city, country, locdescription, locimage, map, meta_description, meta_keywords)'
 	         . ' SELECT id, venue, alias, url, plz, published, state, street, city, country, locdescription, locimage, map, meta_description, meta_keywords FROM #__eventlist_venues '
 	         ;
 	  $this->_db->setQuery($query);
