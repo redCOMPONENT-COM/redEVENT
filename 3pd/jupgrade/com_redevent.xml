@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	
+	<name>redEVENT for Joomla 2.5</name>
+	
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>redevent_attachments</table>
+		<table>redevent_categories</table>
+		<table>redevent_countries</table>
+		<table>redevent_events</table>
+		<table>redevent_event_category_xref</table>
+		<table>redevent_event_venue_xref</table>
+		<table>redevent_fields</table>
+		<table>redevent_groupmembers</table>
+		<table>redevent_groups</table>
+		<table>redevent_groups_categories</table>
+		<table>redevent_groups_venues</table>
+		<table>redevent_groups_venues_categories</table>
+		<table>redevent_pricegroups</table>
+		<table>redevent_recurrences</table>
+		<table>redevent_redmember_groups</table>
+		<table>redevent_register</table>
+		<table>redevent_repeats</table>
+		<table>redevent_roles</table>
+		<table>redevent_roles_redmember</table>
+		<table>redevent_sessions_pricegroups</table>
+		<table>redevent_sessions_roles</table>
+		<table>redevent_settings</table>
+		<table>redevent_textlibrary</table>
+		<table>redevent_venues</table>
+		<table>redevent_venues_categories</table>
+		<table>redevent_venue_category_xref</table>
+	</tables>
+
+	<!-- The folders to copy to the new site. -->
+	<folders>
+		<folder>images/redevent</folder>
+	</folders>
+	
+</jupgrade>
