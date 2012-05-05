@@ -43,7 +43,7 @@ class com_redeventInstallerScript
 		$installer = new JInstaller();
 		$installer->setAdapter('plugin');
 		if (!$installer->install(JPATH_SITE.DS.'tmp'.DS.'redform_redevent')) {
-			echo JText::_('COM_REDEVENT_Plugin_install_failed:_') . $installer->getError().'<br />';
+			echo JText::_('COM_REDEVENT_Plugin_install_failed') . $installer->getError().'<br />';
 		}
 		else {
 			// autopublish the plugin
