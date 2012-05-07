@@ -160,10 +160,10 @@ if ($this->event->maxattendees) {
 				  <?php 
 				  //echo $row->confirmed == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES'); 
 				  if (!$row->confirmed) {
-            echo JHTML::link('javascript: void(0);', JHTML::_('image.administrator', 'publish_x.png'), array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'confirmattendees\');'));
+            echo JHTML::link('javascript: void(0);', JHTML::_('image', 'admin/publish_x.png', JText::_('JNO'), null, true), array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'confirmattendees\');'));
 				  }
           else {
-            echo JHTML::link('javascript: void(0);', JHTML::_('image.administrator', 'tick.png'), array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'unconfirmattendees\');'));
+            echo JHTML::link('javascript: void(0);', JHTML::_('image', 'admin/tick.png', JText::_('JYES'), null, true), array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'unconfirmattendees\');'));
           }
 				  ?>
 				</td>
@@ -175,12 +175,12 @@ if ($this->event->maxattendees) {
           //echo $row->confirmed == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES'); 
           if (!$row->waitinglist) {
             echo JHTML::link('javascript: void(0);', 
-                             JHTML::_('image.administrator', 'publish_x.png'), 
+                             JHTML::_('image', 'admin/publish_x.png', JText::_('JNO'), null, true), 
                              array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'onwaiting\');', 'title' => JText::_('COM_REDEVENT_PUT_ON_WAITING_LIST')));
           }
           else {
             echo JHTML::link( 'javascript: void(0);', 
-                              JHTML::_('image.administrator', 'tick.png'), 
+                              JHTML::_('image', 'admin/tick.png', JText::_('JYES'), null, true), 
                               array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'offwaiting\');', 'title' => JText::_('COM_REDEVENT_PUT_OFF_WAITING_LIST')));
           }
           ?>

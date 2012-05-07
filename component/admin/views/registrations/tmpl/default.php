@@ -101,11 +101,11 @@ $colspan = 13;
 				  <?php 
 				  //echo $row->confirmed == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES'); 
 				  if (!$row->confirmed) {
-            echo JHTML::_('image.administrator', 'publish_x.png');
+            echo JHTML::_('image', 'admin/publish_x.png', JText::_('JNO'), null, true);
 				  }
           else {?>
             <span class="hasTip" title="<?php echo JHTML::Date( $row->confirmdate, JText::_('DATE_FORMAT_LC2' )); ?>">
-            <?php echo JHTML::_('image.administrator', 'tick.png'); ?>
+            <?php echo JHTML::_('image', 'admin/tick.png', JText::_('JYES'), null, true); ?>
             </span>
             <?php 
           }
@@ -114,10 +114,10 @@ $colspan = 13;
 				<td>
           <?php 
           if (!$row->waitinglist) {
-          	echo JHTML::_('image.administrator', 'publish_x.png');
+          	echo JHTML::_('image', 'admin/publish_x.png', JText::_('JNO'), null, true);
           }
           else {
-            echo JHTML::_('image.administrator', 'tick.png');
+            echo JHTML::_('image', 'admin/tick.png', JText::_('JYES'), null, true);
           }
           ?>
         </td>
