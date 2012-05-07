@@ -133,50 +133,48 @@ class com_redeventInstallerScript
 
 		// equivalent version
 		$version = '2.5.b.3.0';
-		if ($version)
+		
+		// We have a version!
+		foreach ($files as $file)
 		{
-			// We have a version!
-			foreach ($files as $file)
+			if (version_compare($file, $version) > 0)
 			{
-				if (version_compare($file, $version) > 0)
+				$buffer = file_get_contents($basepath . '/' . $file . '.sql');
+	
+				// Graceful exit and rollback if read not successful
+				if ($buffer === false)
 				{
-					$buffer = file_get_contents($basepath . '/' . $file . '.sql');
-		
-					// Graceful exit and rollback if read not successful
-					if ($buffer === false)
+					JError::raiseWarning(1, JText::_('JLIB_INSTALLER_ERROR_SQL_READBUFFER'));
+	
+					return false;
+				}
+	
+				// Create an array of queries from the sql file
+				$queries = JInstallerHelper::splitSql($buffer);
+	
+				if (count($queries) == 0)
+				{
+					// No queries to process
+					continue;
+				}
+	
+				// Process each query in the $queries array (split out of sql file).
+				foreach ($queries as $query)
+				{
+					$query = trim($query);
+					if ($query != '' && $query{0} != '#')
 					{
-						JError::raiseWarning(1, JText::_('JLIB_INSTALLER_ERROR_SQL_READBUFFER'));
-		
-						return false;
-					}
-		
-					// Create an array of queries from the sql file
-					$queries = JInstallerHelper::splitSql($buffer);
-		
-					if (count($queries) == 0)
-					{
-						// No queries to process
-						continue;
-					}
-		
-					// Process each query in the $queries array (split out of sql file).
-					foreach ($queries as $query)
-					{
-						$query = trim($query);
-						if ($query != '' && $query{0} != '#')
+						$db->setQuery($query);
+	
+						if (!$db->query())
 						{
-							$db->setQuery($query);
-		
-							if (!$db->query())
-							{
-								JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
-		
-								return false;
-							}
+							JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
+	
+							return false;
 						}
 					}
-					echo Jtext::sprintf('COM_REDEVENT_UPDATED_DB_TO', $file).'<br/>';
 				}
+				echo Jtext::sprintf('COM_REDEVENT_UPDATED_DB_TO', $file).'<br/>';
 			}
 		}
 	}
