@@ -134,7 +134,7 @@
 		<field
 			name="notify_subject"
 			type="text"
-			default=""
+			size="80"
 			label="COM_REDEVENT_NOTIFY_SUBJECT"
 			description=""
 			class="inputbox" />
@@ -142,6 +142,7 @@
 		<field
 			name="notify_body"
 			type="editor"
+			size="80"
 			label="COM_REDEVENT_NOTIFY_BODY"
 			description="COM_REDEVENT_NOTIFY_BODY_NOTE"
 			class="inputbox"
@@ -165,7 +166,7 @@
 		<field
 			name="notify_confirm_subject"
 			type="text"
-			default=""
+			size="80"
 			label="COM_REDEVENT_NOTIFY_CONFIRM_SUBJECT"
 			description=""
 			class="inputbox" />
