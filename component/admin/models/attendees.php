@@ -705,14 +705,31 @@ class RedEventModelAttendees extends JModel
 		return $emails;
 	}
 	
+	/**
+	 * send mail to selected attendees
+	 * 
+	 * @param array $cid attendee ids
+	 * @param string $subject
+	 * @param string $body
+	 * @param string $from
+	 * @param string $fromname
+	 * @param string $replyto
+	 * @return boolean
+	 */
 	function sendMail($cid, $subject, $body, $from = null, $fromname = null, $replyto = null)
 	{
 		$app = &JFactory::getApplication();
 		$emails = $this->getEmails($cid);
 		
-		$mailer = & JFactory::getMailer();
+		$taghelper = new redEVENT_tags();
+		$taghelper->setXref($this->_xref);
+  	$subject = $taghelper->ReplaceTags($subject);
+  	$body    = $taghelper->ReplaceTags($body);
+
+  	$mailer = & JFactory::getMailer();
   	$mailer->setSubject($subject);
   	$mailer->MsgHTML('<html><body>'.$body.'</body></html>');
+  	
   	
   	if (!empty($from) && JMailHelper::isEmailAddress($from)) 
   	{

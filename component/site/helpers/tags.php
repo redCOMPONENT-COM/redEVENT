@@ -245,7 +245,7 @@ class redEVENT_tags {
 		$replaced = false; // check if tags where replaced, in which case we sshould run it again
 			
 		// first, let's do the library tags replacement
-		$text = $this->_replaceLibraryTags($text);
+		$text = $this->replaceLibraryTags($text);
 
 		// now get the list of all remaining tags
 		if (preg_match_all('/\[([^\]\s]+)(?:\s*)([^\]]*)\]/i', $text, $alltags, PREG_SET_ORDER))
@@ -655,7 +655,7 @@ class redEVENT_tags {
 	 * @param string
 	 * @return string
 	 */
-	private function _replaceLibraryTags($text) 
+	public function replaceLibraryTags($text) 
 	{
 	  $tags = &$this->_getLibraryTags();
 	  
@@ -671,7 +671,7 @@ class redEVENT_tags {
 	  
 	  // now, the problem that there could have been libray tags embedded into one another, so we keep replacing if $count is > 0
 	  if ($count) {
-	    $text = $this->_replaceLibraryTags($text);
+	    $text = $this->replaceLibraryTags($text);
 	  }
 	  return $text;
 	}

@@ -516,6 +516,7 @@ class RedEventControllerAttendees extends RedEventController
 		$body     = JRequest::getVar('body', '', 'post', 'string',  JREQUEST_ALLOWRAW );
 		
 		$model = $this->getModel('attendees');
+		$model->setXref($xref);
 		
 		$msg = '';
 		$mtype= 'message';

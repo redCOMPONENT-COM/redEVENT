@@ -37,6 +37,11 @@ class RedEventViewEmailattendees extends JView {
 	function display($tpl = null)
 	{
 		$mainframe = &JFactory::getApplication();
+		$document = JFactory::getDocument();
+		
+		$document->setTitle(JText::_('COM_REDEVENT_EMAIL_ATTENDEES_TITLE'));
+		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		JHTML::_('behavior.tooltip');
 		
 		$editor 	= & JFactory::getEditor();
 		$settings = JComponentHelper::getParams('com_redevent');
@@ -45,7 +50,7 @@ class RedEventViewEmailattendees extends JView {
 		JArrayHelper::toInteger($cids);
 		
 		//add toolbar
-		JToolBarHelper::title( JText::_( 'COM_REDEVENT_EMAIL_ATTENDEES_TITLE' ), 'users' );
+		JToolBarHelper::title( JText::_( 'COM_REDEVENT_EMAIL_ATTENDEES_TITLE' ), 'registrations' );
 		JToolBarHelper::custom('sendemail', 'send.png', 'send.png', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_SEND', false);
 		JToolBarHelper::cancel('cancelemail');
 		

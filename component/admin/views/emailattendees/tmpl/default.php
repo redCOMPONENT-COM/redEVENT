@@ -57,12 +57,12 @@ function submitbutton(pressbutton)
 <h2><?php echo $this->event->title. '@'. $this->event->venue. ' ' . (redEVENTHelper::isValidDate($this->event->dates) ? strftime($this->settings->get('formatdate', '%d.%m.%Y'), strtotime($this->event->dates)) : ''); ?></h2>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
-	<table cellspacing="0" cellpadding="0" border="0" width="100%">
+	<table>
 		<tr>
 			<td valign="top">
-				<table  class="adminform">
+				<table class="adminform editevent">
 					<tr>
-						<td>
+						<td class="paramlist_key">
 								<?php echo JText::_( 'COM_REDEVENT_EMAIL_ATTENDEES_TO' ).':'; ?>
 						</td>
 						<td>
@@ -72,7 +72,7 @@ function submitbutton(pressbutton)
 						</td>
 					</tr>
 					<tr>
-						<td>
+						<td class="paramlist_key">
 							<label for="from">
 								<?php echo JText::_( 'COM_REDEVENT_EMAIL_ATTENDEES_FROM' ).':'; ?>
 							</label>
@@ -82,7 +82,7 @@ function submitbutton(pressbutton)
 						</td>
 					</tr>
 					<tr>
-						<td>
+						<td class="paramlist_key">
 							<label for="fromname">
 								<?php echo JText::_( 'COM_REDEVENT_EMAIL_ATTENDEES_FROMNAME' ).':'; ?>
 							</label>
@@ -92,8 +92,8 @@ function submitbutton(pressbutton)
 						</td>
 					</tr>
 					<tr>
-						<td>
-							<label for="subject">
+						<td class="paramlist_key">
+							<label for="subject" class="hasTip" title="<?php echo JText::_( 'COM_REDEVENT_EMAIL_ATTENDEES_SUBJECT' ).'::'.JText::_( 'COM_REDEVENT_EMAIL_ATTENDEES_SUBJECT_DESC' ); ?>">
 								<?php echo JText::_( 'COM_REDEVENT_EMAIL_ATTENDEES_SUBJECT' ).':'; ?>
 							</label>
 						</td>
@@ -102,10 +102,11 @@ function submitbutton(pressbutton)
 						</td>
 					</tr>
 					<tr>
-						<td>
+						<td class="paramlist_key">
 							<label for="body">
 								<?php echo JText::_( 'COM_REDEVENT_EMAIL_ATTENDEES_BODY' ).':'; ?>
 							</label>
+							<br/><?php echo JText::_('COM_REDEVENT_EMAIL_ATTENDEES_BODY_NOTE'); ?>
 						</td>
 						<td>
 							<?php echo $this->editor->display('body', '', '100%', '350', '75', '20'); ?>
