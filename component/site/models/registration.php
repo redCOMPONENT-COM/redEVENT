@@ -205,7 +205,7 @@ class RedEventModelRegistration extends JModel
 			}
 			$query = 'SELECT a.id AS did, x.id AS xref, a.title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, '
 			    . ' a.registra, a.unregistra, a.activate, a.notify, a.redform_id as form_id, '
-			    . ' a.notify_confirm_body, a.notify_confirm_subject, a.notify_subject, a.notify_body, ' 
+			    . ' a.enable_activation_confirmation, a.notify_confirm_body, a.notify_confirm_subject, a.notify_subject, a.notify_body, ' 
 			    . ' a.notify_off_list_subject, a.notify_off_list_body, a.notify_on_list_subject, a.notify_on_list_body, '
 					. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
 					. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone,'

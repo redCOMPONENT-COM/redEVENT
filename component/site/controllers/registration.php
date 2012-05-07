@@ -363,7 +363,8 @@ class RedEventControllerRegistration extends RedEventController
 		{
 			$model->confirm($register_id);
 			
-			if ($eventdata->notify) 
+			// send activation confirmation email if activated
+			if ($eventdata->enable_activation_confirmation) 
 			{
 				$this->_Mailer();				
 				

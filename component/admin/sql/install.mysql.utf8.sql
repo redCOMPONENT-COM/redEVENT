@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_events` (
   `paymentaccepted` text NOT NULL,
   `paymentprocessing` text NOT NULL,
   `enable_ical` tinyint(2) NOT NULL default '0',
+  `enable_activation_confirmation` TINYINT( 1 ) NOT NULL DEFAULT  '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 

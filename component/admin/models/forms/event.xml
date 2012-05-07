@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form>
 	
+	<fieldset name="event">
 	<field
 		name="id"
 		type="text"
@@ -102,4 +103,83 @@
 		class="inputbox"
 		directory="redevent/events"/>
 		
+	</fieldset>
+	
+	<fieldset name="activation">
+		
+		<field
+			name="notify"
+			type="radio"
+			class="inputbox"
+			default="0"
+			size="1"
+			label="COM_REDEVENT_ENABLE_NOTIFICATION"
+			description="COM_REDEVENT_ENABLE_NOTIFICATION_TIP">
+			<option	value="0">JNO</option>
+			<option	value="1">JYES</option>
+		</field>
+	
+		<field
+			name="activate"
+			type="radio"
+			class="inputbox"
+			default="0"
+			size="1"
+			label="COM_REDEVENT_ENABLE_ACTIVATION"
+			description="COM_REDEVENT_ENABLE_ACTIVATION_TIP">
+			<option	value="0">JNO</option>
+			<option	value="1">JYES</option>
+		</field>
+		
+		<field
+			name="notify_subject"
+			type="text"
+			default=""
+			label="COM_REDEVENT_NOTIFY_SUBJECT"
+			description=""
+			class="inputbox" />
+			
+		<field
+			name="notify_body"
+			type="editor"
+			label="COM_REDEVENT_NOTIFY_BODY"
+			description="COM_REDEVENT_NOTIFY_BODY_NOTE"
+			class="inputbox"
+			filter="safehtml"
+			buttons="true"
+			hide="readmore,pagebreak"
+			/>
+			
+		<field
+			name="enable_activation_confirmation"
+			type="radio"
+			class="inputbox"
+			default="0"
+			size="1"
+			label="COM_REDEVENT_XML_EVENT_ENABLE_ACTIVATION_CONFIRMATION_EMAIL_LABEL"
+			description="COM_REDEVENT_XML_EVENT_ENABLE_ACTIVATION_CONFIRMATION_EMAIL_DESC">
+			<option	value="0">JNO</option>
+			<option	value="1">JYES</option>
+		</field>
+			
+		<field
+			name="notify_confirm_subject"
+			type="text"
+			default=""
+			label="COM_REDEVENT_NOTIFY_CONFIRM_SUBJECT"
+			description=""
+			class="inputbox" />
+			
+		<field
+			name="notify_confirm_body"
+			type="editor"
+			label="COM_REDEVENT_NOTIFY_CONFIRM_BODY"
+			description=""
+			class="inputbox"
+			filter="safehtml"
+			buttons="true"
+			hide="readmore,pagebreak"
+			/>
+			
+	</fieldset>
 </form>
