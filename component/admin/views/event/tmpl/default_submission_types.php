@@ -3,19 +3,16 @@
 </div>
 
 <div class="type-params">
-	<input type="checkbox" class="reg-type" id="submission_type_external" name="submission_types[]" value="external"
-	<?php if (in_array('external', $this->submission_types)) echo ' checked="checked"'; ?>
-	/><label for="submission_type_external"><?php echo JText::_('COM_REDEVENT_EXTERNAL'); ?></label>
-	<div class="clear"></div>
-	
+	<input type="checkbox" class="reg-type" id="submission_type_external" name="submission_types[]" value="external"<?php 
+	if (in_array('external', $this->submission_types)) echo ' checked="checked"'; ?>/>
+	<label for="submission_type_external"><?php echo JText::_('COM_REDEVENT_EXTERNAL'); ?></label>
+	<div class="clear"></div>	
 	<?php 
 		$display = 'none';
 		if (in_array('external', $this->submission_types)) {
-			echo ' checked="checked"';
 			$display = 'block';
 		}
-	?>
-			
+	?>			
 	<fieldset id="external-params" class="adminform" style="display: <?php echo $display;?>">
 	<legend><?php echo JText::_('COM_REDEVENT_EXTERNAL'); ?></legend>
 	
