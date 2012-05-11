@@ -446,7 +446,7 @@ class RedEventControllerRegistration extends RedEventController
 	*/
 	function _createUser($sid)
 	{		
-		require_once(JPATH_SITE.DS.'components'.DS.'com_user'.DS.'controller.php');
+// 		require_once(JPATH_SITE.DS.'components'.DS.'com_user'.DS.'controller.php');
 		jimport('joomla.user.helper');
 		
 		$db		=& JFactory::getDBO();
@@ -493,20 +493,23 @@ class RedEventControllerRegistration extends RedEventController
 			}
 		}
 		
+		jimport('joomla.application.component.helper');
 		// Get required system objects
-		$user 		= JFactory::getUser(0);
-		$authorize	= JFactory::getACL();
+		$user 		= clone(JFactory::getUser(0));
+		$usersParams = &JComponentHelper::getParams( 'com_users' ); // load the Params
 		$password   = JUserHelper::genRandomPassword();
-		$newUsertype = 'Registered';
+		
+		$config = JComponentHelper::getParams('com_users');
+    // Default to Registered.
+		$defaultUserGroup = $config->get('new_usertype', 2);
 		
 		// Set some initial user values
 		$user->set('id', 0);
 		$user->set('name', $details['fullname']);
 		$user->set('username', $username);
 		$user->set('email', $details['email']);
-		$user->set('usertype', $newUsertype);
-		$user->set('gid', $authorize->get_group_id( '', $newUsertype, 'ARO' ));
-		$user->set('password', md5($password));						
+		$user->set('groups', array($defaultUserGroup));
+		$user->set('password', md5($password));			
 		if (!$user->save())
 		{
 			RedeventError::raiseWarning('', JText::_($user->getError()));
@@ -515,7 +518,6 @@ class RedEventControllerRegistration extends RedEventController
 		
 		// send email using juser controller
 		$this->_sendUserCreatedMail($user, $password);
-		
 		return $user;
 	}
 	
@@ -544,7 +546,7 @@ class RedEventControllerRegistration extends RedEventController
 		$fromname 		= $mainframe->getCfg( 'fromname' );
 		$siteURL		= JURI::base();
 
-		$subject 	= sprintf ( JText::_( 'Account details for' ), $name, $sitename);
+		$subject 	= JText::sprintf('COM_REDEVENT_CREATED_ACCOUNT_EMAIL_SUBJECT', $name, $sitename);
 		$subject 	= html_entity_decode($subject, ENT_QUOTES);
 		
 		$message = JText::_('COM_REDEVENT_INFORM_USERNAME');
@@ -570,7 +572,7 @@ class RedEventControllerRegistration extends RedEventController
 		JUtility::sendMail($mailfrom, $fromname, $email, $subject, $message);
 
 		// Send notification to all administrators
-		$subject2 = sprintf ( JText::_( 'Account details for' ), $name, $sitename);
+		$subject2 = JText::sprintf('COM_REDEVENT_CREATED_ACCOUNT_EMAIL_SUBJECT', $name, $sitename);
 		$subject2 = html_entity_decode($subject2, ENT_QUOTES);
 
 		// get superadministrators id
