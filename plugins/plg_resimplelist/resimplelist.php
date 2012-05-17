@@ -60,7 +60,7 @@ class plgContentRESimplelist extends JPlugin {
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
 		$document = &JFactory::getDocument();
-		$document->addStyleSheet('plugins/content/resimplelist.css');
+		$document->addStyleSheet('plugins/content/resimplelist/resimplelist.css');
 		
 		// do we have matches for the plugin
 		if (!preg_match_all('/{RESimplelist([\s]+[^}]*)*}/i', $article->text, $matches, PREG_SET_ORDER))
