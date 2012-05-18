@@ -458,6 +458,10 @@ class UserAcl {
 	 */
 	function canEditVenue($id)
 	{
+		if (!$this->_userid) {
+			return false;
+		}
+		
   	if ($this->superuser()) {
   		return true;
   	}
