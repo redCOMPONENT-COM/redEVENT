@@ -282,31 +282,41 @@ class REattendee extends JObject {
 			$this->taghelper = new redEVENT_tags();
 			$this->taghelper->setXref($data->xref);
 		}
-
+		
 		if ($waiting == 0)
 		{
-			if (empty($session->notify_off_list_subject))
+			if ($session->notify_off_list_subject)
+			{
+				$subject = $session->notify_off_list_subject;
+				$body    = $session->notify_off_list_body;
+			}
+			else if ($session->notify_subject)
 			{
 				$subject = $session->notify_subject;
 				$body    = $session->notify_body;
 			}
 			else
 			{
-				$subject = $session->notify_off_list_subject;
-				$body    = $session->notify_off_list_body;
+				$subject = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_OFF_SUBJECT');
+				$body    = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_OFF_BODY');
 			}
 			$body    = nl2br($this->taghelper->ReplaceTags($body));
 			$subject = $this->taghelper->ReplaceTags($subject);
 		}
-		else {
-			$body = nl2br($this->taghelper->ReplaceTags($session->notify_on_list_body));
-			$subject = $this->taghelper->ReplaceTags($session->notify_on_list_subject);
-		}
-
-		if (empty($subject)) {
-			// not sending !
-			throw new Exception(JText::_('COM_REDEVENT_WL_NOTIFICATION_MISSING_SUBJECT'));
-			return false;
+		else
+		{
+			if ($session->notify_on_list_body)
+			{
+				$subject = $session->notify_on_list_subject;
+				$body    = $session->notify_on_list_body;
+			}
+			else
+			{
+				$subject = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_ON_SUBJECT');
+				$body    = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_ON_BODY');
+			}
+			$body    = nl2br($this->taghelper->ReplaceTags($body));
+			$subject = $this->taghelper->ReplaceTags($subject);
 		}
 
 		// update image paths in body
