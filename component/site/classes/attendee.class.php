@@ -285,22 +285,38 @@ class REattendee extends JObject {
 
 		if ($waiting == 0)
 		{
-			if (empty($session->notify_off_list_subject))
-			{
-				$subject = $session->notify_subject;
-				$body    = $session->notify_body;
-			}
-			else
+			if ($session->notify_off_list_subject)
 			{
 				$subject = $session->notify_off_list_subject;
 				$body    = $session->notify_off_list_body;
 			}
+			else if ($session->notify_subject)
+			{
+				$subject = $session->notify_subject;
+				$body    = $session->notify_body;
+			}
+			else 
+			{
+				$subject = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_OFF_SUBJECT');
+				$body    = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_OFF_BODY');		
+			}
 			$body    = nl2br($this->taghelper->ReplaceTags($body));
 			$subject = $this->taghelper->ReplaceTags($subject);
 		}
-		else {
-			$body = nl2br($this->taghelper->ReplaceTags($session->notify_on_list_body));
-			$subject = $this->taghelper->ReplaceTags($session->notify_on_list_subject);
+		else 
+		{
+			if ($session->notify_on_list_body)
+			{
+				$subject = $session->notify_on_list_subject;
+				$body    = $session->notify_on_list_body;
+			}
+			else 
+			{
+				$subject = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_ON_SUBJECT');
+				$body    = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_ON_BODY');		
+			}
+			$body    = nl2br($this->taghelper->ReplaceTags($body));
+			$subject = $this->taghelper->ReplaceTags($subject);
 		}
 
 		if (empty($subject)) {
