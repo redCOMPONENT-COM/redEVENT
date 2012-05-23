@@ -12,7 +12,7 @@
 	<copyright>(C) 2008 - 2012 redCOMPONENT.com</copyright>
 	<license>GNU/GPL</license>
 	<version>2.5</version>
-	<description>MOD_REDEVENT_attending_DESCRIPTION</description>
+	<description>MOD_REDEVENT_ATTENDING_DESCRIPTION</description>
 
 	<files>
 		<filename module="mod_redevent_attending">mod_redevent_attending.php</filename>
