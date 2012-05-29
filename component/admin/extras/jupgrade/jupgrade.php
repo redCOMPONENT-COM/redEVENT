@@ -42,6 +42,23 @@ class jUpgradeComponentRedEvent extends jUpgradeExtensions
 	 */
 	public function migrateExtensionCustom()
 	{
+		jimport('joomla.filesystem.file');
+		jimport('joomla.filesystem.folder');
+		jimport('joomla.application.component.helper');
+
+		// copy attachements
+		$params = JComponentHelper::getParams('com_redevent');
+		$src = JPATH_ROOT.DS.$params->get('attachments_path', 'media/com_redevent/attachments');
+		$dest = JPATH_ROOT.DS.'jupgrade'.DS.$params->get('attachments_path', 'media/com_redevent/attachments');
+		
+		if (file_exists($src) && !file_exists($dest)) 
+		{
+			$res = JFolder::copy($src, $dest);
+			if (!$res === true) {
+				return false;
+			}
+		}
+		
 		return true;
 	}
 }
