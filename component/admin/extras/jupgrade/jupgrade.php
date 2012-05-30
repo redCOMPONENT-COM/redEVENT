@@ -59,6 +59,28 @@ class jUpgradeComponentRedEvent extends jUpgradeExtensions
 			}
 		}
 		
+		echo 'updating tables</br>';
+		//change path for images
+		
+		$query = 'SELECT datimage FROM #__redevent_events';
+		$this->db_new->setQuery($query);
+		$res = $this->db_new->loadObjectList();
+		print_r($res);
+		
+		$query = 'UPDATE #__redevent_events SET datimage = CONCAT("images/redevent/events/", datimage) WHERE CHAR_LENGTH(datimage) > 0';
+		$this->db_new->setQuery($query);
+		$res = $this->db_new->query();
+		echo ($this->db_new->getQuery())."<br/>";
+		
+		$query = 'UPDATE #__redevent_categories SET image = CONCAT("images/redevent/categories/", image) WHERE CHAR_LENGTH(image) > 0';
+		$this->db_new->setQuery($query);
+		$res = $this->db_new->query();
+		
+		$query = 'UPDATE #__redevent_venues SET locimage = CONCAT("images/redevent/categories/", locimage) WHERE CHAR_LENGTH(locimage) > 0';
+		$this->db_new->setQuery($query);
+		$res = $this->db_new->query();
+		echo 'tables updated</br>';
+		
 		return true;
 	}
 }
