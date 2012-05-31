@@ -41,8 +41,8 @@ for( $n = 0, $t = ( 3 + $first_day ) *24 *60 *60; $n < 7; ++$n, $t += 24 *60 *60
 	}
 	else
 	{
-		$day_names_long[$n] = mb_convert_case(gmstrftime('%A',$t),MB_CASE_TITLE); #%A means full textual day name
-		$day_names_short[$n] = mb_convert_case(gmstrftime('%A',$t),MB_CASE_TITLE); #%a means short day name
+		$day_names_long[$n] = mb_convert_case(gmstrftime('%A',$t),MB_CASE_TITLE, 'UTF-8'); #%A means full textual day name
+		$day_names_short[$n] = mb_convert_case(gmstrftime('%A',$t),MB_CASE_TITLE, 'UTF-8'); #%a means short day name
 	}
 }
  
@@ -93,11 +93,11 @@ if($day_name_length)
 		{
 			if (function_exists('mb_substr'))
 			{
-				$calendar .= '<th class="mod_redeventcal_daynames" abbr="'.$d.'">&nbsp;'.mb_substr($d,0,$day_name_length).'&nbsp;</th>';
+				$calendar .= '<th class="mod_redeventcal_daynames" abbr="'.$d.'">&nbsp;'.mb_substr($d,0,$day_name_length, 'UTF-8').'&nbsp;</th>';
 			}
 			else
 			{
-				$calendar .= '<th class="mod_redeventcal_daynames" abbr="'.$d.'">&nbsp;'.substr($d,0,$day_name_length).'&nbsp;</th>';
+				$calendar .= '<th class="mod_redeventcal_daynames" abbr="'.$d.'">&nbsp;'.substr($d,0,$day_name_length, 'UTF-8').'&nbsp;</th>';
 			}
 		}
 		$calendar .= "</tr>\n";
