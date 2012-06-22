@@ -58,6 +58,17 @@ if (!$items) {
     </div> 
   </div> 
   
+	  <!-- webform -->
+    <?php if ($params->get('showregister', 1)) : ?>
+  	<div class="webform">
+	    <?php echo JText::_('MOD_REDEVENT_TEASER_REGISTER').' ';
+			$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $item->slug, $item->xslug));
+			$img = JHTML::image('modules/mod_redevent_teaser/tmpl/webform_icon.gif', 'register');
+	    echo JHTML::link($link, $img, 'class="webform-icon"');
+	    ?>
+  	</div> 
+    <?php endif; ?> 
+    
  <div class="teaser">
     </div>  <div class="clear">
   </div> 

@@ -69,6 +69,10 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
+				<field name="showregister" type="radio" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_SHOW_REGISTER" description="MOD_REDEVENT_TEASER_SETTINGS_SHOW_REGISTER_DESC">
+					<option value="0">NO</option>
+					<option value="1">YES</option>
+				</field>
 				<field name="linkfb" type="radio" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_LINK_TO_FB" description="MOD_REDEVENT_TEASER_SETTINGS_LINK_TO_FB_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>

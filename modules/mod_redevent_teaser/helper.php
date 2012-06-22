@@ -110,6 +110,7 @@ class modRedeventTeaserHelper
 		$query = 'SELECT a.*, x.eventid, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, l.venue, l.city, l.url , l.locimage, l.state, '
 		    . ' CONCAT_WS(",", c.image) AS categories_images,'
         . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
+        . ' CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug, '
 		    . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug '
 				. ' FROM #__redevent_event_venue_xref AS x'
 				. ' INNER JOIN #__redevent_events AS a ON a.id = x.eventid'
@@ -164,6 +165,8 @@ class modRedeventTeaserHelper
 			$lists[$i]->time 			= $row->times ? self::_format_time($row->dates, $row->times, $params) : '' ;
 			$lists[$i]->eventimage		= $dimage;
 			$lists[$i]->venueimage		= $limage;
+			$lists[$i]->slug		= $row->slug;
+			$lists[$i]->xslug		= $row->xslug;
 			
 			// Hint: Thanks for checking the code. If you want to display the event description in the module use the following command in your layout:
 			// echo $item->eventdescription; 
@@ -193,7 +196,6 @@ class modRedeventTeaserHelper
 			
 			$i++;
 		}     
-		
 		return $lists;
 	}
 	

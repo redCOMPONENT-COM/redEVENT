@@ -55,6 +55,17 @@ if (!$items) {
 	    </div> 
 	  </div> 
 	  
+	  <!-- webform -->
+    <?php if ($params->get('showregister', 1)) : ?>
+  	<div class="webform">
+	    <?php echo JText::_('MOD_REDEVENT_TEASER_REGISTER').' ';
+			$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $item->slug, $item->xslug));
+			$img = JHTML::image('modules/mod_redevent_teaser/tmpl/webform_icon.gif', 'register');
+	    echo JHTML::link($link, $img, 'class="webform-icon"');
+	    ?>
+  	</div> 
+    <?php endif; ?> 
+    
 	  <div class="teaser">
 	    <p>
 	      <?php if ($item->eventimage): ?>
@@ -68,7 +79,7 @@ if (!$items) {
 	  <div class="clear">
 	  </div> 
 	  <!-- additional information list -->
-	  <?php if ($params->get('showtime', 1) || $params->get('showvenue', 1)  || $params->get('showcategory', 1)): ?>
+	  <?php if ($params->get('showtime', 1) || $params->get('showvenue', 1)  || $params->get('showcategory', 1) || $params->get('showregister', 1)): ?>
 	  <ul>
 	    <!-- Time -->
 	    <?php if ($params->get('showtime', 1) && !empty ($item->time)) : ?>
@@ -90,6 +101,18 @@ if (!$items) {
 	    <?php echo implode(", ", $item->categorylink); ?>
 	    </li>
 	    <?php endif; ?> 
+	    
+	    <!-- webform -->
+	    <?php if ($params->get('showregister', 1)) : ?>
+	    <li>
+	    <?php echo JText::_('MOD_REDEVENT_TEASER_REGISTER').' ';
+			$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $item->slug, $item->xslug));
+			$img = JHTML::image('modules/mod_redevent_teaser/tmpl/webform_icon.gif', 'register');
+	    echo JHTML::link($link, $img, 'class="webform-icon"');
+	    ?>
+	    </li>
+	    <?php endif; ?> 
+	    
 	  </ul>
 	  <?php endif; ?>
 	  

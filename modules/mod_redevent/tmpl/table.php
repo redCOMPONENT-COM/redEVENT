@@ -50,6 +50,9 @@ $i = 0;
 			case 'picture':
 				echo Jtext::_('MOD_REDEVENT_TABLE_HEADER_PICTURE');
 				break;
+			case 'webform':
+				echo Jtext::_('MOD_REDEVENT_TABLE_HEADER_REGISTRATION');
+				break;
 			default:
 				if (strpos($c, 'custom') === 0)
 				{
@@ -122,6 +125,14 @@ $i = 0;
 					$tdtext = redEVENTImage::modalimage($item->datimage, $item->title_short, intval($params->get('picture_size', 30)));
 					break;
 					
+						
+				case 'webform':
+					$tdclass = 'mre-webform';
+					$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $item->slug, $item->xslug));
+					$img = JHTML::image('modules/mod_redevent/webform_icon.gif', 'register');
+					$tdtext = JHTML::link($link, $img, 'class="webform-icon"');
+					break;
+						
 				default:
 					if (strpos($c, 'custom') === 0)
 					{
