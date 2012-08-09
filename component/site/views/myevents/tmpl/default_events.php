@@ -226,15 +226,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<td headers="el_edit" align="left" valign="top">
 					<?php if ($row->published == '1'): ?>
 						<?php if ($this->acl->canEditXref($row->xref)): ?>
-							<?php echo JHTML::link('index.php?option=com_redevent&task=unpublishxref&xref='. $row->xref, JHTML::_('image.site', 'ok.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_Published' ))); ?>
+							<?php echo JHTML::link('index.php?option=com_redevent&task=unpublishxref&xref='. $row->xref, JHTML::_('image', 'components/com_redevent/assets/images/ok.png', JText::_('COM_REDEVENT_Published' ))); ?>
 						<?php else: ?>
-							<?php echo JHTML::_('image.site', 'ok.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_Published' )); ?>						
+							<?php echo JHTML::_('image', 'components/com_redevent/assets/images/ok.png', JText::_('COM_REDEVENT_Published' )); ?>						
 						<?php endif; ?>
 					<?php elseif ($row->published == '0'):?>
 						<?php if ($this->acl->canEditXref($row->xref)): ?>
-							<?php echo JHTML::link('index.php?option=com_redevent&task=publishxref&xref='. $row->xref, JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_Unpublished' ))); ?>
+							<?php echo JHTML::link('index.php?option=com_redevent&task=publishxref&xref='. $row->xref, JHTML::_('image', 'components/com_redevent/assets/images/no.png', JText::_('COM_REDEVENT_Unpublished' ))); ?>
 						<?php else: ?>
-							<?php echo JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_Unpublished' )); ?>
+							<?php echo JHTML::_('image', 'components/com_redevent/assets/images/no.png', JText::_('COM_REDEVENT_Unpublished' )); ?>
 						<?php endif; ?>
 					<?php endif;?>
 				</td>

@@ -56,7 +56,7 @@ class REOutput {
 			JHTML::_('behavior.tooltip');
 
 			if ( $params->get('icons', 1) ) {
-				$image = JHTML::_('image.site', 'submitevent.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_DELIVER_NEW_EVENT' ));
+				$image = JHTML::_('image', 'components/com_redevent/assets/images/submitevent.png', JText::_('COM_REDEVENT_DELIVER_NEW_EVENT' ));
 			} else {
 				$image = JText::_('COM_REDEVENT_DELIVER_NEW_EVENT' );
 			}
@@ -90,7 +90,7 @@ class REOutput {
 		JHTML::_('behavior.tooltip');
 
 		if ( $params->get('icons', 1) ) {
-			$image = JHTML::_('image.site', 'thumbnail.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EVENTS_THUMBNAILS_LAYOUT' ));
+			$image = JHTML::_('image', 'components/com_redevent/assets/images/thumbnail.png', JText::_('COM_REDEVENT_EVENTS_THUMBNAILS_LAYOUT' ));
 		} else {
 			$image = JText::_('COM_REDEVENT_EVENTS_THUMBNAILS_LAYOUT' );
 		}
@@ -114,7 +114,7 @@ class REOutput {
 		JHTML::_('behavior.tooltip');
 
 		if ( $params->get('icons') ) {
-			$image = JHTML::_('image.site', 'list.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EVENTS_LIST_LAYOUT' ));
+			$image = JHTML::_('image', 'components/com_redevent/assets/images/list.png', JText::_('COM_REDEVENT_EVENTS_LIST_LAYOUT' ));
 		} else {
 			$image = JText::_('COM_REDEVENT_EVENTS_LIST_LAYOUT' );
 		}
@@ -163,7 +163,7 @@ class REOutput {
 		if ($task == 'archive') {
 			
 			if ( $params->get('icons', 1) ) {
-				$image = JHTML::_('image.site', 'eventlist.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_SHOW_EVENTS' ));
+				$image = JHTML::_('image', 'components/com_redevent/assets/images/eventlist.png', JText::_('COM_REDEVENT_SHOW_EVENTS' ));
 			} else {
 				$image = JText::_('COM_REDEVENT_SHOW_EVENTS' );
 			}
@@ -179,7 +179,7 @@ class REOutput {
 		} else {
 			
 			if ( $params->get('icons', 1) ) {
-				$image = JHTML::_('image.site', 'archive_front.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_SHOW_ARCHIVE' ));
+				$image = JHTML::_('image', 'components/com_redevent/assets/images/archive_front.png', JText::_('COM_REDEVENT_SHOW_ARCHIVE' ));
 			} else {
 				$image = JText::_('COM_REDEVENT_SHOW_ARCHIVE' );
 			}
@@ -220,7 +220,7 @@ class REOutput {
 			{
 				case 'editevent':
 					if ( $params->get('icons', 1) ) {
-						$image = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EDIT_EVENT' ));
+						$image = JHTML::_('image', 'components/com_redevent/assets/images/calendar_edit.png', JText::_('COM_REDEVENT_EDIT_EVENT' ));
 					} else {
 						$image = JText::_('COM_REDEVENT_EDIT_EVENT' );
 					}
@@ -231,7 +231,7 @@ class REOutput {
 
 				case 'editvenue':
 					if ( $params->get('icons', 1) ) {
-						$image = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EDIT_EVENT' ));
+						$image = JHTML::_('image', 'components/com_redevent/assets/images/calendar_edit.png', JText::_('COM_REDEVENT_EDIT_EVENT' ));
 					} else {
 						$image = JText::_('COM_REDEVENT_EDIT_VENUE' );
 					}
@@ -259,7 +259,7 @@ class REOutput {
 	{
 		JHTML::_('behavior.tooltip');
 
-		$image = JHTML::_('image.site', 'attendees.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EDIT_ATTENDEES' ));
+		$image = JHTML::_('image', 'components/com_redevent/assets/images/attendees.png', JText::_('COM_REDEVENT_EDIT_ATTENDEES' ));
 
 		$overlib = JText::_('COM_REDEVENT_EDIT_ATTENDEES_TIP' );
 		$text = JText::_('COM_REDEVENT_EDIT_ATTENDEES' );
@@ -287,7 +287,7 @@ class REOutput {
 
 			// checks template image directory for image, if non found default are loaded
 			if ( $params->get( 'icons', 1 ) ) {
-				$image = JHTML::_('image.site', 'printButton.png', 'images/M_images/', NULL, NULL, JText::_('COM_REDEVENT_Print' ));
+				$image = JHTML::_('image', 'images/printButton.png', JText::_('COM_REDEVENT_Print'), null, true);
 			} else {
 				$image = JText::_('COM_REDEVENT_Print' );
 			}
@@ -327,7 +327,7 @@ class REOutput {
 			$status = 'width=400,height=300,menubar=yes,resizable=yes';
 
 			if ($params->get('icons', 1)) 	{
-				$image = JHTML::_('image.site', 'emailButton.png', 'images/M_images/', NULL, NULL, JText::_('COM_REDEVENT_Email' ));
+				$image = JHTML::_('image', 'images/emailButton.png', JText::_('COM_REDEVENT_Email' ), null, true);
 			} else {
 				$image = JText::_('COM_REDEVENT_Email' );
 			}

@@ -26,8 +26,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $waiting_count = 0;
 
-$edit_image   = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_Edit' ), 'class="hasTip" title="'.JText::_('COM_REDEVENT_Edit' ).'::"');
-$remove_image = JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_Delete' ), 'class="hasTip" title="'.JText::_('COM_REDEVENT_Delete' ).'::"');
+$edit_image   = JHTML::_('image', 'components/com_redevent/assets/images/calendar_edit.png', JText::_('COM_REDEVENT_Edit' ), 'class="hasTip" title="'.JText::_('COM_REDEVENT_Edit' ).'::"');
+$remove_image = JHTML::_('image', 'components/com_redevent/assets/images/no.png', JText::_('COM_REDEVENT_Delete' ), 'class="hasTip" title="'.JText::_('COM_REDEVENT_Delete' ).'::"');
 
 if ($this->manage_attendees) {
 	?>	

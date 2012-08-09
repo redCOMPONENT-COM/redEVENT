@@ -219,7 +219,7 @@ class RedeventViewMyevents extends JView
 		}
 		JHTML::_('behavior.tooltip');
 
-		$image = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EDIT_XREF' ));
+		$image = JHTML::_('image', 'components/com_redevent/assets/images/calendar_edit.png', JText::_('COM_REDEVENT_EDIT_XREF' ));
 
 		$overlib = JText::_('COM_REDEVENT_EDIT_XREF_TIP' );
 		$text = JText::_('COM_REDEVENT_EDIT_XREF' );
@@ -244,7 +244,7 @@ class RedeventViewMyevents extends JView
 		}
 		JHTML::_('behavior.tooltip');
 
-		$image = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EDIT_EVENT' ));
+		$image = JHTML::_('image', 'components/com_redevent/assets/images/calendar_edit.png', JText::_('COM_REDEVENT_EDIT_EVENT' ));
 
 		$overlib = JText::_('COM_REDEVENT_EDIT_EVENT_TIP' );
 		$text = JText::_('COM_REDEVENT_EDIT_EVENT' );
@@ -266,7 +266,7 @@ class RedeventViewMyevents extends JView
 		JHTML::_('behavior.tooltip');
     $document = & JFactory::getDocument();
 
-		$image = JHTML::_('image.site', 'no.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_DELETE_XREF' ));
+		$image = JHTML::_('image', 'components/com_redevent/assets/images/no.png', JText::_('COM_REDEVENT_DELETE_XREF' ));
 
 		$overlib = JText::_('COM_REDEVENT_DELETE_XREF_TIP' );
 		$text = JText::_('COM_REDEVENT_DELETE_XREF' );
@@ -287,7 +287,7 @@ class RedeventViewMyevents extends JView
 	{
 		JHTML::_('behavior.tooltip');
 
-		$image = JHTML::_('image.site', 'attendees.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EDIT_ATTENDEES' ));
+		$image = JHTML::_('image', 'components/com_redevent/assets/images/attendees.png', JText::_('COM_REDEVENT_EDIT_ATTENDEES' ));
 
 		$overlib = JText::_('COM_REDEVENT_EDIT_ATTENDEES_TIP' );
 		$text = JText::_('COM_REDEVENT_EDIT_ATTENDEES' );
@@ -311,7 +311,7 @@ class RedeventViewMyevents extends JView
 	{
 		JHTML::_('behavior.tooltip');
 
-		$image = JHTML::_('image.site', 'calendar_edit.png', 'components/com_redevent/assets/images/', NULL, NULL, JText::_('COM_REDEVENT_EDIT_VENUE' ));
+		$image = JHTML::_('image', 'components/com_redevent/assets/images/calendar_edit.png', JText::_('COM_REDEVENT_EDIT_VENUE' ));
 
 		$overlib = JText::_('COM_REDEVENT_EDIT_VENUE_TIP' );
 		$text = JText::_('COM_REDEVENT_EDIT_VENUE' );
