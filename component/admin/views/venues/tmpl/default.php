@@ -147,7 +147,7 @@ defined('_JEXEC') or die('Restricted access');
         </td>
 			<td align="center"><?php echo $published; ?></td>
 			<td align="center">
-				<?php echo $row->private ? JHTML::image('administrator/images/tick.png', JText::_('COM_REDEVENT_LABEL_PRIVATE')) : ''; ?>
+				<?php echo $row->private ? JHTML::image('administrator/components/com_redevent/assets/images/icon-16-private.png', JText::_('COM_REDEVENT_LABEL_PRIVATE')) : ''; ?>
 			</td>
 			<td>
 				<?php echo JText::_('COM_REDEVENT_AUTHOR' ).': '; ?><a href="<?php echo 'index.php?option=com_users&amp;task=edit&amp;hidemainmenu=1&amp;cid[]='.$row->created_by; ?>"><?php echo $row->author; ?></a><br />

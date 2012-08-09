@@ -140,7 +140,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<?php echo $access; ?>
 			</td>
 			<td align="center">
-				<?php echo $row->private ? JHTML::image('administrator/images/tick.png', JText::_('COM_REDEVENT_LABEL_PRIVATE')) : ''; ?>
+				<?php echo $row->private ? JHTML::image('administrator/components/com_redevent/assets/images/icon-16-private.png', JText::_('COM_REDEVENT_LABEL_PRIVATE')) : ''; ?>
 			</td>
 			<td class="order" colspan="2">
 				<span><?php echo $this->pageNav->orderUpIcon( $i, true, 'orderup', 'Move Up', $this->ordering ); ?></span>

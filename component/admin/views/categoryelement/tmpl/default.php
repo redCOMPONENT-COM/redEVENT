@@ -84,8 +84,8 @@ defined('_JEXEC') or die('Restricted access');
 				<?php
 				$img = $row->published ? 'tick.png' : 'publish_x.png';
 				$alt = $row->published ? 'Published' : 'Unpublished';
+				echo JHTML::_('image', 'admin/'.$img, $alt, '', true);
 				?>
-				<img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt;?>" />
 			</td>
 		</tr>
 			<?php $k = 1 - $k; } ?>

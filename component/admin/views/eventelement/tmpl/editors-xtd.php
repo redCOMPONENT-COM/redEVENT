@@ -122,8 +122,9 @@ defined('_JEXEC') or die('Restricted access');
 			<td><?php echo $row->city ? htmlspecialchars($row->city, ENT_QUOTES, 'UTF-8') : '-'; ?></td>
 			<td><?php echo $row->catname ? htmlspecialchars($row->catname, ENT_QUOTES, 'UTF-8') : '-'; ?></td>
 			<td align="center">
-				<?php $img = $row->published ? 'tick.png' : 'publish_x.png'; ?>
-				<img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="" />
+				<?php $img = $row->published ? 'tick.png' : 'publish_x.png'; 
+				$alt = $row->published ? 'Published' : 'Unpublished';
+				echo JHTML::_('image', 'admin/'.$img, $alt, '', true);?>
 			</td>
 		</tr>
 			<?php $k = 1 - $k; } ?>

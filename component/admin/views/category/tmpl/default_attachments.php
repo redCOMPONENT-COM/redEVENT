@@ -41,7 +41,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 			<td><input type="text" name="attached-name[]" style="width: 100%" value="<?php echo $file->name; ?>" /></td>
 			<td><input type="text" name="attached-desc[]" style="width: 100%" value="<?php echo $file->description; ?>" /></td>
 			<td><?php echo JHTML::_('select.genericlist', $this->access, 'attached-access[]', 'class="inputbox" size="3"', 'value', 'text', $file->access); ?></td>
-			<td><?php echo JHTML::image('administrator/images/publish_x.png', JText::_('COM_REDEVENT_REMOVE_ATTACHMENT')
+			<td><?php echo JHTML::image('administrator/components/com_redevent/assets/images/no.png', JText::_('COM_REDEVENT_REMOVE_ATTACHMENT')
 			                         , array('id' => 'attach-remove'.$file->id,'class' => 'attach-remove')); ?></td>
 		</tr>
 		<?php endforeach; ?>
