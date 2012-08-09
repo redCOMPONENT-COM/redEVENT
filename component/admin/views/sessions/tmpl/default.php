@@ -137,7 +137,7 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 				}
 			}
 			$checked 	= JHTML::_('grid.checkedout',   $row, $i );
-			$published 	= JHTML::_('grid.published',   $row, $i );
+ 			$published 	= JHTML::_('grid.published',   $row, $i );
 			$featured = $this->featured($row, $i);
 			
 			$sessionlink = JRoute::_( 'index.php?option=com_redevent&controller=sessions&task=edit&cid[]='. $row->id );
@@ -201,7 +201,7 @@ if (!$this->event || $this->event->registra) $colspan += 2;
         	<?php if ($row->published >= 0): ?>
 	        <?php echo $published; ?>
 	        <?php else: ?>
-	        <?php echo JHTML::image('administrator/images/publish_y.png', JText::_('COM_REDEVENT_ARCHIVED')); ?>
+	        <?php echo JHTML::image('administrator/components/com_redevent/assets/images/icon-16-archive.png', JText::_('COM_REDEVENT_ARCHIVED')); ?>
 	        <?php endif; ?>
 				</td>
 	      <td align="center"><?php echo $featured ?></td>
