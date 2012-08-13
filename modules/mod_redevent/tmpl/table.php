@@ -20,49 +20,58 @@
  */
 defined('_JEXEC') or die('Restricted access');
 $i = 0;
+$class_prefix = 'mre-';
 ?>
 <table class="redeventmod">
 	<thead>
 	<tr>
 		<?php foreach ($cols as $c): ?>
-		<th>
 		<?php 
 		switch ($c)
 		{
 			case 'date':
-				echo Jtext::_('MOD_REDEVENT_TABLE_HEADER_Date');
+				$thtxt = Jtext::_('MOD_REDEVENT_TABLE_HEADER_Date');
+				$tdclass = $class_prefix .  'date';
 				break;
 			case 'title':
-				echo Jtext::_('MOD_REDEVENT_TABLE_HEADER_Title');
+				$thtxt = Jtext::_('MOD_REDEVENT_TABLE_HEADER_Title');
+				$tdclass = $class_prefix .  'title';
 				break;
 			case 'category':
-				echo Jtext::_('MOD_REDEVENT_TABLE_HEADER_Category');
+				$thtxt = Jtext::_('MOD_REDEVENT_TABLE_HEADER_Category');
+				$tdclass = $class_prefix .  'category';
 				break;
 			case 'venue':
-				echo Jtext::_('MOD_REDEVENT_TABLE_HEADER_Venue');
+				$thtxt = Jtext::_('MOD_REDEVENT_TABLE_HEADER_Venue');
+				$tdclass = $class_prefix .  'venue';
 				break;
 			case 'state':
-				echo Jtext::_('MOD_REDEVENT_TABLE_HEADER_state');
+				$thtxt = Jtext::_('MOD_REDEVENT_TABLE_HEADER_state');
+				$tdclass = $class_prefix .  'state';
 				break;
 			case 'city':
-				echo Jtext::_('MOD_REDEVENT_TABLE_HEADER_City');
+				$thtxt = Jtext::_('MOD_REDEVENT_TABLE_HEADER_City');
+				$tdclass = $class_prefix .  'city';
 				break;
 			case 'picture':
-				echo Jtext::_('MOD_REDEVENT_TABLE_HEADER_PICTURE');
+				$thtxt = Jtext::_('MOD_REDEVENT_TABLE_HEADER_PICTURE');
+				$tdclass = $class_prefix .  'picture';
 				break;
 			case 'webform':
-				echo Jtext::_('MOD_REDEVENT_TABLE_HEADER_REGISTRATION');
+				$thtxt = Jtext::_('MOD_REDEVENT_TABLE_HEADER_REGISTRATION');
+				$tdclass = $class_prefix .  'webform';
 				break;
 			default:
 				if (strpos($c, 'custom') === 0)
 				{
 					$customid = intval(substr($c, 6));
 					if (isset($customfields[$customid])) {
-						echo $customfields[$customid]->name;
+						$thtxt = $customfields[$customid]->name;
+						$tdclass = $class_prefix .  'custom'.$customid;						
 					}
 				}
 		}?>
-		</th>
+		<th class="<?php echo $tdclass; ?>"><?php echo $thtxt; ?></th>
 		<?php endforeach; ?>
 	</tr>
 	</thead>
@@ -76,7 +85,7 @@ $i = 0;
 			switch ($c)
 			{
 				case 'date':
-					$tdclass = 'mre-date';
+					$tdclass = $class_prefix .  'date';
 					if ($params->get('linkdet', 2) == 1) {
 						$tdtext = JHTML::link($item->link, $item->dateinfo);
 					}
@@ -86,7 +95,7 @@ $i = 0;
 					break;
 					
 				case 'title':
-					$tdclass = 'mre-title';
+					$tdclass = $class_prefix .  'title';
 					if ($params->get('linkdet', 2) == 2) {
 						$tdtext = JHTML::link($item->link, $item->title_short);
 					}
@@ -96,12 +105,12 @@ $i = 0;
 					break;
 					
 				case 'category':
-					$tdclass = 'mre-category';
+					$tdclass = $class_prefix .  'category';
 					$tdtext = modRedEventHelper::displayCats($item->categories);
 					break;
 					
 				case 'venue':
-					$tdclass = 'mre-venue';
+					$tdclass = $class_prefix .  'venue';
 					if ($params->get('linkloc', 1) == 1) {
 						$tdtext = JHTML::link($item->venueurl, $item->venue_short);
 					}
@@ -111,23 +120,23 @@ $i = 0;
 					break;
 					
 				case 'city':
-					$tdclass = 'mre-city';
+					$tdclass = $class_prefix .  'city';
 					$tdtext = $item->city;
 					break;
 					
 				case 'state':
-					$tdclass = 'mre-state';
+					$tdclass = $class_prefix .  'state';
 					$tdtext = $item->state;
 					break;
 					
 				case 'picture':
-					$tdclass = 'mre-picture';
+					$tdclass = $class_prefix .  'picture';
 					$tdtext = redEVENTImage::modalimage($item->datimage, $item->title_short, intval($params->get('picture_size', 30)));
 					break;
 					
 						
 				case 'webform':
-					$tdclass = 'mre-webform';
+					$tdclass = $class_prefix .  'webform';
 					$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $item->slug, $item->xslug));
 					$img = JHTML::image('modules/mod_redevent/webform_icon.gif', 'register');
 					$tdtext = JHTML::link($link, $img, 'class="webform-icon"');
@@ -137,7 +146,7 @@ $i = 0;
 					if (strpos($c, 'custom') === 0)
 					{
 						$customid = intval(substr($c, 6));
-						$tdclass = 'mre-custom'.$customid;
+						$tdclass = $class_prefix .  'custom'.$customid;
 						if (isset($item->$c)) {
 							$tdtext = str_replace("\n", "<br/>", $item->$c);
 						}
