@@ -39,3 +39,8 @@ table.redeventmod tr.sectiontableentry2 td
 
 table.redeventmod tr:hover td
 { background: #F8F8F8 }
+
+table.redeventmod td.mre-picture, 
+table.redeventmod td.mre-webform {
+	vertical-align: middle;
+} 
