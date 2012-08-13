@@ -18,6 +18,7 @@
 	<files>
 		<filename module="mod_redeventcal">mod_redeventcal.php</filename>
 		<filename>mod_redeventcal.css</filename>
+		<filename>mod_redeventcal.js</filename>
 		<filename>index.html</filename>
     <filename>helper.php</filename>
     <filename>tmpl/default.php</filename>
@@ -63,6 +64,11 @@
 				</field>
 				<field name="catid" type="text" default="" label="MOD_REDEVENT_CALENDAR_CATEGORY_ID" description="MOD_REDEVENT_CALENDAR_CATEGORY_ID_DESC" />
 				<field name="venid" type="text" default="" label="MOD_REDEVENT_CALENDAR_VENUE_ID" description="MOD_REDEVENT_CALENDAR_VENUE_ID_DESC" />		
+				
+				<field name="toggle" type="radio" default="0" label="MOD_REDEVENT_CALENDAR_TOGGLE_LABEL" description="MOD_REDEVENT_CALENDAR_TOGGLE_DESC">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
 				
 			</fieldset>
 	

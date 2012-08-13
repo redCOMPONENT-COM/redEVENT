@@ -174,3 +174,18 @@ text-decoration: none;
 	font-size: 100%;
 	margin: 0;
 }
+
+.redeventcal cal_toggle {
+	padding: 4px;
+}
+
+.redeventcal.hide_mod div.cal_content,
+.redeventcal.hide_mod div.cal_toggle {
+	display: none;
+}
+
+.redeventcal.hide_mod div.toggleoff {
+	background: url('toggleoff.png') center no-repeat;
+	height: 30px;
+	min-width: 30px;
+}

@@ -60,6 +60,9 @@ require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'route
 // include mootools tooltip
 JHTML::_('behavior.tooltip');
 
+$document = &JFactory::getDocument(); 
+$document->addScript( JURI::base() . 'modules/mod_redeventcal/mod_redeventcal.js' );
+
 $app = &JFactory::getApplication();
 
 	// Parameters

@@ -1,6 +1,9 @@
 <?php // no direct access
 defined('_JEXEC') or die('Restricted access'); ?>
 
+<div class='redeventcal' align='center'>
+
+<div class="cal_content">
 <?php
 //Month Names
 $uxtime_first_of_month = gmmktime(0, 0, 0, $prev_month, 1, $req_year);
@@ -14,9 +17,6 @@ $pn = array( $prev_month=>$prev_link, $next_month=>$next_link);
 
 $document = &JFactory::getDocument();
 $document->addStyleSheet( JURI::base() . '/modules/mod_redeventcal/mod_redeventcal.css' );
-
-//Output
-echo "<div class='redeventcal' align='center'>";
 
 $calendar = '';
 $month_href = NULL;
@@ -186,5 +186,12 @@ for ($counti = $weekday; $counti < 7; $counti++) {
 
 echo $calendar."</tr>\n</table>\n";
 
-echo "</div>";
 ?>
+</div>
+
+<?php if ($params->get('toggle', 0)):?>
+<div class="cal_toggle"><?php echo JText::_('MOD_REDEVENTCAL_MINIMIZE'); ?></div>
+<div class="toggleoff hasTip" title="<?php echo JText::_('MOD_REDEVENTCAL_TOGGLE_TIP');?>"></div>
+<?php endif; ?>
+
+</div>
