@@ -44,11 +44,13 @@ class modredeventcalhelper
 		}
 		
 		$query = 'SELECT x.dates, x.times, x.enddates,a.title, DAYOFMONTH(x.dates) AS created_day, YEAR(x.dates) AS created_year, MONTH(x.dates) AS created_month'
+        . ' ,CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug '
+        . ' ,CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug '
 				. ' FROM #__redevent_event_venue_xref AS x'
-				. ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
-        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-        . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-				. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
+				. ' INNER JOIN #__redevent_events AS a ON a.id = x.eventid'
+        . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+        . ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+				. ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
 				. ' WHERE x.published = 1'
 				. '   AND c.access <= '.max($user->getAuthorisedViewLevels())
   	    . '   AND ( x.dates BETWEEN ' .$db->Quote($monthstart). ' AND ' .$db->Quote($monthend)
@@ -114,13 +116,14 @@ class modredeventcalhelper
 					if (empty($days[$count][1]))
 					{
 						$title = htmlspecialchars($event->title);
+						$link  = RedeventHelperRoute::getDetailsRoute( $event->slug, $event->xslug ) ;		
 					}
 					else
 					{
 						$tt = $days[$count][1];
 						$title = $tt . '&#013 +' . htmlspecialchars($event->title);
+						$link  = RedeventHelperRoute::getDayRoute( $tdate, 'day') ;		// more than 1 event this day, link to day view
 					}			
-					$link			= RedeventHelperRoute::getDayRoute( $tdate, 'day') ;		
 					$days[$count] = array($link,$title);
 				}
 		}
