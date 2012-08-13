@@ -19,6 +19,7 @@
 		<filename module="mod_redeventcal">mod_redeventcal.php</filename>
 		<filename>mod_redeventcal.css</filename>
 		<filename>mod_redeventcal.js</filename>
+		<filename>toggleoff.png</filename>
 		<filename>index.html</filename>
     <filename>helper.php</filename>
     <filename>tmpl/default.php</filename>
