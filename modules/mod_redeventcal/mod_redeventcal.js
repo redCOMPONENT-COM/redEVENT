@@ -12,7 +12,7 @@ window.addEvent('domready', function(){
 		$$('div.redeventcal div.toggleoff').addEvent('click', function(){
 			this.getParent('div.redeventcal').removeClass('hide_mod');
 			if (dataStore) {
-				dataStore.removeItem('hide_mod_recal', 1);
+				dataStore.setItem('hide_mod_recal', -1);
 			}				
 		});
 	}
@@ -22,8 +22,11 @@ window.addEvent('domready', function(){
 		// localStorage and sessionStorage supported
 		var dataStore = window.sessionStorage;
 		
-		if (dataStore.getItem('hide_mod_recal')) {
+		if (dataStore.getItem('hide_mod_recal') == 1) {
 			$$('div.redeventcal').addClass('hide_mod');
+		}
+		if (dataStore.getItem('hide_mod_recal') == -1) {
+			$$('div.redeventcal').removeClass('hide_mod');
 		}
 	}
 });

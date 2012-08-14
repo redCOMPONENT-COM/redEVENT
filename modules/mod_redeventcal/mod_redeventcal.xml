@@ -70,6 +70,10 @@
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
+				<field name="default_toggle" type="radio" default="0" label="MOD_REDEVENT_CALENDAR_TOGGLE_DEFAULT_LABEL" description="MOD_REDEVENT_CALENDAR_TOGGLE_DEFAULT_DESC">
+					<option value="0">MOD_REDEVENT_CALENDAR_TOGGLE_DEFAULT_HIDE</option>
+					<option value="1">MOD_REDEVENT_CALENDAR_TOGGLE_DEFAULT_SHOW</option>
+				</field>
 				
 			</fieldset>
 	

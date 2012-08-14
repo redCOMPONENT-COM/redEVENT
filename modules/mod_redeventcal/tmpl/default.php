@@ -1,7 +1,15 @@
 <?php // no direct access
-defined('_JEXEC') or die('Restricted access'); ?>
+defined('_JEXEC') or die('Restricted access'); 
 
-<div class='redeventcal' align='center'>
+if ($params->get('toggle', 0) && $params->get('default_toggle', 1) == 0) {
+	$toggleclass = ' hide_mod';
+}
+else {
+	$toggleclass = '';
+}
+?>
+
+<div class='redeventcal<?php echo $toggleclass; ?>' align='center'>
 
 <div class="cal_content">
 <?php
