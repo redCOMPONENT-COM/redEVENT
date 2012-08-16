@@ -18,7 +18,7 @@
 class modredeventcalhelper
 {
 
-	function getdays ($greq_year, $greq_month, &$params)
+	public static function getdays ($greq_year, $greq_month, &$params)
 	{
 		$db			=& JFactory::getDBO();
 		$user		=& JFactory::getUser();
@@ -43,7 +43,7 @@ class modredeventcalhelper
 			$venues = ' AND (l.id=' . implode( ' OR l.id=', $ids ) . ')';
 		}
 		
-		$query = 'SELECT x.dates, x.times, x.enddates,a.title, DAYOFMONTH(x.dates) AS created_day, YEAR(x.dates) AS created_year, MONTH(x.dates) AS created_month'
+		$query = 'SELECT x.dates, x.times, x.enddates,a.title, DAYOFMONTH(x.dates) AS start_day, YEAR(x.dates) AS start_year, MONTH(x.dates) AS start_month'
         . ' ,CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug '
         . ' ,CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug '
 				. ' FROM #__redevent_event_venue_xref AS x'
@@ -63,15 +63,16 @@ class modredeventcalhelper
 		$db->setQuery( $query );
 		$events = $db->loadObjectList();
 		
-		$days = array();
+		// group events per days
+		$days_events = array();
 		foreach ( $events as $event )
 		{
 		   // Cope with no end date set i.e. set it to same as start date
 			if  (($event->enddates == '0000-00-00') or (is_null($event->enddates)))
 			{
-				$eyear = $event->created_year;
-				$emonth = $event->created_month;
-				$eday = $event->created_day;		
+				$eyear = $event->start_year;
+				$emonth = $event->start_month;
+				$eday = $event->start_day;		
 			}
 			else
 			{
@@ -83,16 +84,15 @@ class modredeventcalhelper
 				$emonth = $emonth + 12; 
 			}
 					
-			if ($event->created_year < $greq_year) 
+			if ($event->start_year < $greq_year) 
 			{
-				$event->created_month = $event->created_month - 12;
+				$event->start_month = $event->start_month - 12;
 			}
 
-			if (  ($greq_year >= $event->created_year) && ($greq_year <= $eyear) 
-			   && ($greq_month >= $event->created_month) && ($greq_month <= $emonth) )
-		   {
-			// Set end day for current month
-
+			if (  ($greq_year >= $event->start_year) && ($greq_year <= $eyear) 
+			   && ($greq_month >= $event->start_month) && ($greq_month <= $emonth) )
+			{
+				// Set end day for current month
 				if ($emonth > $greq_month)
 				{
 					$emonth = $greq_month;
@@ -100,34 +100,29 @@ class modredeventcalhelper
 					$eday = date('t', mktime(0,0,0, $greq_month, 1, $greq_year));
 				}
 
-			// Set start day for current month
-				if ($event->created_month < $greq_month)
+				// Set start day for current month
+				if ($event->start_month < $greq_month)
 				{
-					$event->created_month = $greq_month;
-					$event->created_day = 1;
+					$event->start_month = $greq_month;
+					$event->start_day = 1;
 				}	
 			
-				for ($count = $event->created_day; $count <= $eday; $count++)
-				{		
-					$uxdate = mktime(0,0,0,$event->created_month,$count,$event->created_year); // Toni change
-					$tdate = strftime('%Y%m%d',$uxdate);// Toni change Joomla 1.5
-					$created_day = $count;
-			
-					if (empty($days[$count][1]))
-					{
-						$title = htmlspecialchars($event->title);
-						$link  = RedeventHelperRoute::getDetailsRoute( $event->slug, $event->xslug ) ;		
+				for ($day = $event->start_day; $day <= $eday; $day++)
+				{
+					if (!isset($days_events[$day])) {
+						$days_events[$day] = array($event);
 					}
-					else
-					{
-						$tt = $days[$count][1];
-						$title = $tt . '&#013 +' . htmlspecialchars($event->title);
-						$link  = RedeventHelperRoute::getDayRoute( $tdate, 'day') ;		// more than 1 event this day, link to day view
-					}			
-					$days[$count] = array($link,$title);
+					else {
+						$days_events[$day][] = $event;
+					}
 				}
+			}
 		}
-	}
-	return $days;
+		return $days_events;
 	} //End of function getdays
+	
+	public function buidTip()
+	{
+		
+	}
 } //End class

@@ -149,4 +149,64 @@ $app = &JFactory::getApplication();
 	
 	$days = modredeventcalHelper::getdays($req_year, $req_month, $params);
 	
+	$day_names = array(
+			Jtext::_('SUNDAY'),
+			Jtext::_('MONDAY'),
+			Jtext::_('TUESDAY'),
+			Jtext::_('WEDNESDAY'),
+			Jtext::_('THURSDAY'),
+			Jtext::_('FRIDAY'),
+			Jtext::_('SATURDAY'),	
+			Jtext::_('SUNDAY'),		
+			);
+	$day_names_short = array(
+			Jtext::_('SUN'),
+			Jtext::_('MON'),
+			Jtext::_('TUE'),
+			Jtext::_('WED'),
+			Jtext::_('THU'),
+			Jtext::_('FRI'),
+			Jtext::_('SAT'),	
+			Jtext::_('SUN'),		
+			);
+	
+	if ($first_day) {
+		array_shift($day_names);
+		array_shift($day_names_short);
+	}
+	else {
+		array_pop($day_names);
+		array_pop($day_names_short);		
+	}
+	
+	$month_names = array(
+			JText::_('JANUARY'),
+			JText::_('FEBRUARY'),
+			JText::_('MARCH'),
+			JText::_('APRIL'),
+			JText::_('MAY'),
+			JText::_('JUNE'),
+			JText::_('JULY'),
+			JText::_('AUGUST'),
+			JText::_('SEPTEMBER'),
+			JText::_('OCTOBER'),
+			JText::_('NOVEMBER'),
+			JText::_('DECEMBER'),
+			);
+	
+	$month_names_short = array(
+			JText::_('JANUARY_SHORT'),
+			JText::_('FEBRUARY_SHORT'),
+			JText::_('MARCH_SHORT'),
+			JText::_('APRIL_SHORT'),
+			JText::_('MAY_SHORT'),
+			JText::_('JUNE_SHORT'),
+			JText::_('JULY_SHORT'),
+			JText::_('AUGUST_SHORT'),
+			JText::_('SEPTEMBER_SHORT'),
+			JText::_('OCTOBER_SHORT'),
+			JText::_('NOVEMBER_SHORT'),
+			JText::_('DECEMBER_SHORT'),
+			);
+	
 	require( JModuleHelper::getLayoutPath( 'mod_redeventcal' ) );	
