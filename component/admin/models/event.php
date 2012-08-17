@@ -221,7 +221,7 @@ class RedEventModelEvent extends JModelAdmin
 			$event->datdescription    = null;
 			$event->meta_keywords				= null;
 			$event->meta_description			= null;
-			$event->datimage					= JText::_('COM_REDEVENT_SELECTIMAGE');
+			$event->datimage					= null;
 			$event->venue						= JText::_('COM_REDEVENT_SELECTVENUE');
 			$event->maxattendees				= 0;
 			$event->maxwaitinglist				= 0;
