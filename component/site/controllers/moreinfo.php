@@ -49,6 +49,12 @@ class RedEventControllerMoreinfo extends RedEventController
 		
 		$app = &JFactory::getApplication();
 		
+		$params = JComponentHelper::getParams('com_redevent');
+		if (!$params->get('enable_moreinfo', 1)) {
+			echo Jtext::_('COM_REDEVENT_MOREINFO_ERROR_DISABLED_BY_ADMIN');
+			$app->close(403);
+		}
+		
 		$xref = JRequest::getInt('xref');
 		$email = JRequest::getVar('email');
 		

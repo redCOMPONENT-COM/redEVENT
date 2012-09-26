@@ -43,6 +43,11 @@ class RedeventViewMoreinfo extends JView
 	 */
 	function display( $tpl=null )
 	{			
+		$params = JComponentHelper::getParams('com_redevent');
+		if (!$params->get('enable_moreinfo', 1)) {
+			echo Jtext::_('COM_REDEVENT_MOREINFO_ERROR_DISABLED_BY_ADMIN');
+			return;
+		}
     if ($this->getLayout() == 'final')
     {
     	return $this->_displayFinal($tpl);

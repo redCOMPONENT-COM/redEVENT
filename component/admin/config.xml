@@ -456,6 +456,10 @@
       <option value="1">COM_REDEVENT_SETTINGS_CAT_SELECT_ORDERING_NAME</option>
     </field> 
     <field name="pinpoint_defaultaddress" type="text" default="usa" label="COM_REDEVENT_SETTINGS_PINPOINT_DEFAULT_ADDRESS_LABEL" description="COM_REDEVENT_SETTINGS_PINPOINT_DEFAULT_ADDRESS_LABEL" />
+    <field name="enable_moreinfo" type="radio" default="1" label="COM_REDEVENT_SETTINGS_MISC_ENABLE_MOREINFO" description="COM_REDEVENT_SETTINGS_MISC_ENABLE_MOREINFO_DESC">
+      <option value="0">JNo</option>
+      <option value="1">JYes</option>
+    </field> 
     
     <field type="spacer" hr="true"/>
     <field type="spacer" label="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SPACER"/>
