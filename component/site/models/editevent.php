@@ -735,7 +735,7 @@ class RedeventModelEditevent extends JModel
 		$data['datdescription'] = JRequest::getVar( 'datdescription', $row->datdescription, 'post','string', JREQUEST_ALLOWRAW );
 		
 		$curimage = JRequest::getVar( 'curimage', '', 'post','string' );
-
+		
 		//bind it to the table
 		if (!$row->bind($data)) {
 			RedeventError::raiseError( 500, $this->_db->stderr() );
@@ -864,6 +864,9 @@ class RedeventModelEditevent extends JModel
 		if (isset($data['dates']) && strlen($data['dates']))
 		{
 			$xref = & JTable::getInstance('redevent_eventvenuexref', '');
+			if (isset($data['xref'])) {
+				$xref->load($data['xref']);
+			}
 			$xref->bind($data);
 			$xref->id        = isset($data['xref']) ? $data['xref'] : null;
 			$xref->eventid   = $row->id;
@@ -1256,7 +1259,6 @@ class RedeventModelEditevent extends JModel
 				return false;				
 			}			
 		}
-		
 		if (!$row->bind($data)) {
 			$this->setError('SUBMIT XREF ERROR BINDING DATA');
 			RedeventHelperLog::simplelog('SUBMIT XREF ERROR BINDING DATA');
