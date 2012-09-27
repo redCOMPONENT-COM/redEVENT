@@ -30,7 +30,11 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="recal_tooltips_title" type="text" default="Events" label="MOD_REDEVENT_CALENDAR_TOOLTIP_TITLE" description="MOD_REDEVENT_CALENDAR_TOOLTIP_TITLE_DESC" />			
+				<field name="recal_tooltips_title" type="text" default="Events" label="MOD_REDEVENT_CALENDAR_TOOLTIP_TITLE" description="MOD_REDEVENT_CALENDAR_TOOLTIP_TITLE_DESC" />	
+				<field name="events_tip" type="list" default="0" label="MOD_REDEVENT_CALENDAR_EVENT_TIP" description="MOD_REDEVENT_CALENDAR_EVENT_TIP">
+					<option value="0">MOD_REDEVENT_CALENDAR_EVENT_TIP_EVENT</option>
+					<option value="1">MOD_REDEVENT_CALENDAR_EVENT_TIP_EVENT_VENUE</option>
+				</field>		
 		    <field name="day_name_length" type="list" default="2" label="MOD_REDEVENT_CALENDAR_DAY_NAME_LENGTH" description="MOD_REDEVENT_CALENDAR_DAY_NAME_LENGTH_DESC">
 					<option value="1">MOD_REDEVENT_CALENDAR_DAY_NAME_LENGTH_ONE</option>
 					<option value="2">MOD_REDEVENT_CALENDAR_DAY_NAME_LENGTH_TWO</option>

@@ -44,6 +44,7 @@ class modredeventcalhelper
 		}
 		
 		$query = 'SELECT x.dates, x.times, x.enddates,a.title, DAYOFMONTH(x.dates) AS start_day, YEAR(x.dates) AS start_year, MONTH(x.dates) AS start_month'
+		    . ' ,l.venue '
         . ' ,CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug '
         . ' ,CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug '
 				. ' FROM #__redevent_event_venue_xref AS x'

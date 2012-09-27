@@ -112,14 +112,14 @@ $weekday = ($weekday + 7 - $first_day) % 7; #adjust for $first_day
 					$link = JRoute::_(RedeventHelperRoute::getDayRoute($year.sprintf('%02d', $month).sprintf('%02d', $day)));
 					$tip = array();
 					foreach ($events as $e) {
-						$tip[] = $e->title;
+						$tip[] = $params->get('events_tip') ? $e->title.' @ '.$e->venue : $e->title;
 					}
 					$tip = implode("<br/>", $tip);
 				}
 				else
 				{
 					$link = JRoute::_(RedeventHelperRoute::getDetailsRoute($events[0]->slug, $events[0]->xslug));
-					$tip = $events[0]->title;
+					$tip = $params->get('events_tip') ? $events[0]->title.' @ '.$events[0]->venue : $events[0]->title;
 				}
 				$text = count( $events ) . ' ' . JText::_($CalTooltipsTitle);
 									
