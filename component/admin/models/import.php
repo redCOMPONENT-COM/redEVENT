@@ -55,14 +55,28 @@ class RedEventModelImport extends JModel
 	 */
 	public function importeventlist()
 	{
-    // find out eventlist version !
-    if (!file_exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eventlist'.DS.'eventlist.xml')) {
-      $this->setError(JText::_('COM_REDEVENT_EVENTLIST_NOT_FOUND'));
-      return false;    	
+    // find out eventlist version !    
+    // is eventlist installed ?
+    if (file_exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eventlist'.DS.'eventlist.xml') && 0) 
+    {
+			$data = JApplicationHelper::parseXMLInstallFile(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eventlist'.DS.'eventlist.xml');
+			$version = $data['version'];
     }
-		$data = JApplicationHelper::parseXMLInstallFile(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eventlist'.DS.'eventlist.xml');
-		$version = $data['version'];
-		    
+		else // not installed, but are there eventlist table ? 
+		{
+			$tables = $this->_db->getTableList();
+			if (in_array($this->_db->getPrefix().'eventlist_cats_event_relations', $tables)) {
+				$version = '1.1';
+			}
+			else if (in_array($this->_db->getPrefix().'eventlist_events', $tables)) {
+				$version = '1.0';
+			}
+			else {
+				$this->setError(JText::_('COM_REDEVENT_EVENTLIST_NOT_FOUND'));
+				return false;
+			}
+		}
+		
 	  // make sure redevent db is empty
 	  $query = ' SELECT COUNT(*) FROM #__redevent_events ';
     $this->_db->setQuery($query);
