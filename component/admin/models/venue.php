@@ -281,7 +281,7 @@ class RedEventModelVenue extends JModelAdmin
 
 		// Check if image was selected
 		jimport('joomla.filesystem.file');
-		$format 	= JFile::getExt(JPATH_SITE.'/images/redevent/venues/'.$row->locimage);
+		$format 	= strtolower(JFile::getExt($row->locimage));
 
 		$allowable 	= array ('gif', 'jpg', 'png');
 		if (in_array($format, $allowable)) {
