@@ -259,13 +259,19 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 </p>
 </form>
 
-<div class="pageslinks">
-  <?php echo $this->events_pageNav->getPagesLinks(); ?>
+<!--pagination-->
+<?php if (($this->params->def('show_pagination', 1) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->events_pageNav->get('pages.total') > 1)) : ?>
+<div class="pagination">
+	<?php  if ($this->params->def('show_pagination_results', 1)) : ?>
+		<p class="counter">
+				<?php echo $this->events_pageNav->getPagesCounter(); ?>
+		</p>
+	
+		<?php endif; ?>
+	<?php echo $this->events_pageNav->getPagesLinks(); ?>
 </div>
-
-<p class="pagescounter">
-  <?php echo $this->events_pageNav->getPagesCounter(); ?>
-</p>
+<?php  endif; ?>
+<!-- pagination end -->
 
 <?php endif; ?>
 

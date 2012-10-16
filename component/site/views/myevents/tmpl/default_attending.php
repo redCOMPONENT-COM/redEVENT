@@ -54,11 +54,18 @@ ob_end_flush();
 </p>
 </form>
 
-<div class="pageslinks">
-  <?php echo $this->attending_pageNav->getPagesLinks(); ?>
+<!--pagination-->
+<?php if (($this->params->def('show_pagination', 1) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->attending_pageNav->get('pages.total') > 1)) : ?>
+<div class="pagination">
+	<?php  if ($this->params->def('show_pagination_results', 1)) : ?>
+		<p class="counter">
+				<?php echo $this->attending_pageNav->getPagesCounter(); ?>
+		</p>
+	
+		<?php endif; ?>
+	<?php echo $this->attending_pageNav->getPagesLinks(); ?>
 </div>
+<?php  endif; ?>
+<!-- pagination end -->
 
-<p class="pagescounter">
-  <?php echo $this->attending_pageNav->getPagesCounter(); ?>
-</p>
 <?php endif; ?>

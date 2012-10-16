@@ -125,13 +125,19 @@ $toggle = $this->params->get('filter_toggle', 3);
 
 <!--footer-->
 
-<div class="pageslinks">
+<!--pagination-->
+<?php if (($this->params->def('show_pagination', 1) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->pageNav->get('pages.total') > 1)) : ?>
+<div class="pagination">
+	<?php  if ($this->params->def('show_pagination_results', 1)) : ?>
+		<p class="counter">
+				<?php echo $this->pageNav->getPagesCounter(); ?>
+		</p>
+	
+		<?php endif; ?>
 	<?php echo $this->pageNav->getPagesLinks(); ?>
 </div>
-
-<p class="pagescounter">
-	<?php echo $this->pageNav->getPagesCounter(); ?>
-</p>
+<?php  endif; ?>
+<!-- pagination end -->
 
 <?php if ($this->params->get('events_rsscal', 0) || $this->params->get('events_ical', 1)): ?>
 <!-- start: exports -->

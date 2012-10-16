@@ -113,11 +113,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<?php endforeach; ?>
 
 	<!--pagination-->
-	<p class="pageslinks">
+	<?php if (($this->params->def('show_pagination', 1) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->pageNav->get('pages.total') > 1)) : ?>
+	<div class="pagination">
+		<?php  if ($this->params->def('show_pagination_results', 1)) : ?>
+			<p class="counter">
+					<?php echo $this->pageNav->getPagesCounter(); ?>
+			</p>
+		
+			<?php endif; ?>
 		<?php echo $this->pageNav->getPagesLinks(); ?>
-	</p>
-
-	<p class="pagescounter">
-		<?php echo $this->pageNav->getPagesCounter(); ?>
-	</p>
+	</div>
+	<?php  endif; ?>
+	<!-- pagination end -->
 </div>

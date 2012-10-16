@@ -119,13 +119,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <?php echo $this->loadTemplate('items'); ?>
 
-<!--footer-->
-<div class="pageslinks">
+<!--footer--><!--pagination-->
+<?php if (($this->params->def('show_pagination', 1) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->pageNav->get('pages.total') > 1)) : ?>
+<div class="pagination">
+	<?php  if ($this->params->def('show_pagination_results', 1)) : ?>
+		<p class="counter">
+				<?php echo $this->pageNav->getPagesCounter(); ?>
+		</p>
+	
+		<?php endif; ?>
 	<?php echo $this->pageNav->getPagesLinks(); ?>
 </div>
-
-<p class="pagescounter">
-	<?php echo $this->pageNav->getPagesCounter(); ?>
-</p>
+<?php  endif; ?>
+<!-- pagination end -->
 
 </div>

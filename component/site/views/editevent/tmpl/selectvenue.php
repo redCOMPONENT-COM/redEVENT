@@ -107,12 +107,16 @@ defined('_JEXEC') or die('Restricted access');
 </p>
 </form>
 
-<p class="pageslinks">
+<!--pagination-->
+<?php if ($this->pageNav->get('pages.total') > 1) : ?>
+<div class="pagination">
+		<p class="counter">
+				<?php echo $this->pageNav->getPagesCounter(); ?>
+		</p>
+	
 	<?php echo $this->pageNav->getPagesLinks(); ?>
-</p>
-
-<p class="pagescounter">
-	<?php echo $this->pageNav->getPagesCounter(); ?>
-</p>
+</div>
+<?php  endif; ?>
+<!-- pagination end -->
 
 </div>
