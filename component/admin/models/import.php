@@ -115,7 +115,7 @@ class RedEventModelImport extends JModel
 	{    
 	  // import venues
 	  $query = ' INSERT IGNORE INTO #__redevent_venues (id, venue, alias, url, plz, published, state, street, city, country, locdescription, locimage, map, meta_description, meta_keywords)'
-	         . ' SELECT id, venue, alias, url, plz, published, state, street, city, country, locdescription, locimage, map, meta_description, meta_keywords FROM #__eventlist_venues '
+	         . ' SELECT id, venue, alias, url, plz, published, state, street, city, country, locdescription, concat("images/redevent/venues/", locimage) AS locimage, map, meta_description, meta_keywords FROM #__eventlist_venues '
 	         ;
 	  $this->_db->setQuery($query);
 	  if (!$this->_db->query()) {
@@ -126,7 +126,7 @@ class RedEventModelImport extends JModel
 	  
     // import categories
     $query = ' INSERT IGNORE INTO #__redevent_categories (id, catname, alias, published, catdescription, image, meta_description, meta_keywords) '
-           . ' SELECT id, catname, alias, published, catdescription, image, meta_description, meta_keywords FROM #__eventlist_categories '
+           . ' SELECT id, catname, alias, published, catdescription, concat("images/redevent/categories/", image) AS image, meta_description, meta_keywords FROM #__eventlist_categories '
            ;
     $this->_db->setQuery($query);
     if (!$this->_db->query()) {
@@ -140,7 +140,7 @@ class RedEventModelImport extends JModel
     
     // then import events.... We add a [eventlist_import] tag to the description, so that people don't have to manually edit each description
     $query = ' INSERT IGNORE INTO #__redevent_events (id, title, alias, published, datdescription, datimage, meta_description, meta_keywords) '
-           . ' SELECT id, title, alias, published, CONCAT("[eventlist_import]",datdescription), datimage, meta_description, meta_keywords FROM #__eventlist_events '
+           . ' SELECT id, title, alias, published, CONCAT("[eventlist_import]",datdescription), concat("images/redevent/events/", datimage) AS datimage, meta_description, meta_keywords FROM #__eventlist_events '
            ;
     $this->_db->setQuery($query);
     if (!$this->_db->query()) {
@@ -188,7 +188,7 @@ class RedEventModelImport extends JModel
 	               )'
 	         . ' SELECT id, venue, alias, url, plz, published, state, street, city, country, 
 	               latitude, longitude, ordering,
-	               locdescription, locimage, map, meta_description, meta_keywords 
+	               locdescription, concat("images/redevent/venues/", locimage) AS locimage, map, meta_description, meta_keywords 
 	               FROM #__eventlist_venues '
 	         ;
 	  $this->_db->setQuery($query);
@@ -202,7 +202,7 @@ class RedEventModelImport extends JModel
     $query = ' INSERT IGNORE INTO #__redevent_categories (
                  id, parent_id, catname, alias, published, catdescription, image, color, ordering,
                  meta_description, meta_keywords) '
-           . ' SELECT id, parent_id, catname, alias, published, catdescription, image, color, ordering,
+           . ' SELECT id, parent_id, catname, alias, published, catdescription, concat("images/redevent/categories/", image) AS image, color, ordering,
                  meta_description, meta_keywords FROM #__eventlist_categories '
            ;
     $this->_db->setQuery($query);
@@ -217,7 +217,7 @@ class RedEventModelImport extends JModel
     
     // then import events.... We add a [eventlist_import] tag to the description, so that people don't have to manually edit each description
     $query = ' INSERT IGNORE INTO #__redevent_events (id, title, alias, published, datdescription, summary, datimage, meta_description, meta_keywords) '
-           . ' SELECT id, title, alias, published, CONCAT("[eventlist_import]",datdescription), datdescription, datimage, meta_description, meta_keywords FROM #__eventlist_events '
+           . ' SELECT id, title, alias, published, CONCAT("[eventlist_import]",datdescription), datdescription, concat("images/redevent/events/", datimage) AS datimage, meta_description, meta_keywords FROM #__eventlist_events '
            ;
     $this->_db->setQuery($query);
     if (!$this->_db->query()) {
