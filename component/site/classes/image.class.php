@@ -252,6 +252,7 @@ class redEVENTImage {
 		$app = &JFactory::getApplication();
 		
 		if (empty($path) || !file_exists(JPATH_SITE.DS.$path)) {
+			$app->enqueueMessage(JText::sprintf('COM_REDEVENT_IMAGECLASS_WRONG_PATH_S', $path), 'notice');
 			return false;			
 		}
 		

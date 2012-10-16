@@ -799,7 +799,7 @@ class RedeventModelEditevent extends JModel
 				if (!JFile::upload($file['tmp_name'], $filepath)) {
 					JError::raiseWarning(0, JText::_('COM_REDEVENT_UPLOAD_FAILED' ));
 				} else {
-					$row->datimage = $filename;
+					$row->datimage = '/images/redevent/events/'.$filename;
 				}
 			}
 		} 
@@ -1002,37 +1002,43 @@ class RedeventModelEditevent extends JModel
 		$link 	= JRoute::_(JURI::base().RedeventHelperRoute::getDetailsRoute($row->id), isset($xref) ? $xref->id : false);
 
 		//create the mail for the site owner
-		if (($params->get('mailinform') == 1) || ($params->get('mailinform') == 3)) {
-
-			$mail = JFactory::getMailer();
-
-			$state 	= $row->published ? JText::sprintf('COM_REDEVENT_MAIL_EVENT_PUBLISHED', $link) : JText::_('COM_REDEVENT_MAIL_EVENT_UNPUBLISHED');
-
-			if ($edited) {
-
-				$modified_ip 	= getenv('REMOTE_ADDR');
-				$edited 		= JHTML::Date( $row->modified, JText::_('DATE_FORMAT_LC2' ) );
-				$mailbody 		= JText::sprintf('COM_REDEVENT_MAIL_EDIT_EVENT', $user->name, $user->username, $user->email, $modified_ip, $edited, $row->title, $xref->dates, $xref->times, $rowloc->venue, $rowloc->city, $row->datdescription, $state);
-				$mail->setSubject( $SiteName.JText::_('COM_REDEVENT_EDIT_EVENT_MAIL' ) );
-
-			} else {
-
-				$created 	= JHTML::Date( $row->created, JText::_('DATE_FORMAT_LC2' ) );
-				$mailbody 	= JText::sprintf('COM_REDEVENT_MAIL_NEW_EVENT', $user->name, $user->username, $user->email, $row->author_ip, $created, $row->title, $xref->dates, $xref->times, $rowloc->venue, $rowloc->city, $row->datdescription, $state);
-				$mail->setSubject( $SiteName.JText::_('COM_REDEVENT_NEW_EVENT_MAIL' ) );
-
-			}
-
+		if (($params->get('mailinform') == 1) || ($params->get('mailinform') == 3)) 
+		{			
 			$receivers = explode( ',', trim($params->get('mailinformrec')));
-
-			$mail->addRecipient( $receivers );
-			$mail->setSender( array( $MailFrom, $FromName ) );
-			$mail->setBody( $mailbody );
-
-			$sent = $mail->Send();
-      if (!$sent) {
-        RedeventHelperLog::simpleLog('Error sending created/edited event notification to site owner');
-      }
+			if (!count($receivers) || !JMailHelper::isEmailAddress($receivers[0])) {
+				$mainframe->enqueueMessage(JText::_('COM_REDEVENT_EDIT_EVENT_NOTIFICATION_MISSING_RECIPIENT'), 'notice');
+			}
+			else
+			{
+				$mail = JFactory::getMailer();
+	
+				$state 	= $row->published ? JText::sprintf('COM_REDEVENT_MAIL_EVENT_PUBLISHED', $link) : JText::_('COM_REDEVENT_MAIL_EVENT_UNPUBLISHED');
+	
+				if ($edited) {
+	
+					$modified_ip 	= getenv('REMOTE_ADDR');
+					$edited 		= JHTML::Date( $row->modified, JText::_('DATE_FORMAT_LC2' ) );
+					$mailbody 		= JText::sprintf('COM_REDEVENT_MAIL_EDIT_EVENT', $user->name, $user->username, $user->email, $modified_ip, $edited, $row->title, $xref->dates, $xref->times, $rowloc->venue, $rowloc->city, $row->datdescription, $state);
+					$mail->setSubject( $SiteName.JText::_('COM_REDEVENT_EDIT_EVENT_MAIL' ) );
+	
+				} else {
+	
+					$created 	= JHTML::Date( $row->created, JText::_('DATE_FORMAT_LC2' ) );
+					$mailbody 	= JText::sprintf('COM_REDEVENT_MAIL_NEW_EVENT', $user->name, $user->username, $user->email, $row->author_ip, $created, $row->title, $xref->dates, $xref->times, $rowloc->venue, $rowloc->city, $row->datdescription, $state);
+					$mail->setSubject( $SiteName.JText::_('COM_REDEVENT_NEW_EVENT_MAIL' ) );
+	
+				}
+	
+	
+				$mail->addRecipient( $receivers );
+				$mail->setSender( array( $MailFrom, $FromName ) );
+				$mail->setBody( $mailbody );
+	
+				$sent = $mail->Send();
+	      if (!$sent) {
+	        RedeventHelperLog::simpleLog('Error sending created/edited event notification to site owner');
+	      }
+			}
 
 		}//mail end
 
