@@ -72,7 +72,7 @@ if ($this->event->maxattendees) {
 	<div class="cancelled-notice"><?php echo ($this->cancelled == 1 ? JTExt::_('COM_REDEVENT_CANCELLED_REGISTRATIONS') : JTExt::_('COM_REDEVENT_ALL_REGISTRATIONS')); ?></div>
 	<?php endif; ?>
 	
-	<table id="attendees" class="adminlist" cellspacing="1">
+	<table id="attendees" class="adminlist">
 		<thead>
 			<tr>
 				<th width="5">#</th>
@@ -192,7 +192,7 @@ if ($this->event->maxattendees) {
 					<td><?php echo $row->$fname; ?></td>
 				<?php endforeach;?>
         
-        <td><a href="<?php echo JRoute::_('index.php?option=com_redevent&view=attendeeanswers&tmpl=component&submitter_id='. $row->submitter_id); ?>" class="answersmodal"><?php echo JText::_('COM_REDEVENT_view')?></a></td>
+        <td><a href="<?php echo JRoute::_('index.php?option=com_redevent&view=attendeeanswers&tmpl=component&submitter_id='. $row->submitter_id); ?>" class="answersmodal" rel="{handler: 'iframe'}"><?php echo JText::_('COM_REDEVENT_view')?></a></td>
 				
 				<?php if ($this->form->activatepayment): ?>
 					<td>

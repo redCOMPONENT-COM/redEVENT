@@ -589,7 +589,12 @@ class RedEventModelAttendees extends JModel
 		return $this->_db->loadObjectList();
 	}
 	
-	function getFields($select = array())
+	/**
+	 * returns redform fields
+	 * @param boolean $all set true to return all fields
+	 * @return array
+	 */
+	function getFields($all = false)
 	{
 		$event = $this->getEvent();
 		$rfcore = new RedFormCore();

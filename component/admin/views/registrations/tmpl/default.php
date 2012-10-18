@@ -122,7 +122,7 @@ $colspan = 13;
           ?>
         </td>
         
-        <td><a href="<?php echo JRoute::_('index.php?option=com_redevent&view=attendeeanswers&tmpl=component&submitter_id='. $row->submitter_id); ?>" class="answersmodal"><?php echo JText::_('COM_REDEVENT_view')?></a></td>
+        <td><a href="<?php echo JRoute::_('index.php?option=com_redevent&view=attendeeanswers&tmpl=component&submitter_id='. $row->submitter_id); ?>" class="answersmodal" rel="{handler: 'iframe'}"><?php echo JText::_('COM_REDEVENT_view')?></a></td>
 				
 					<td>
 						<?php echo $row->price; ?>
