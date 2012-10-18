@@ -61,7 +61,8 @@ function updateEvents()
 {
 	$('events-select').empty().addClass('loading');
 	
-	var query = new Ajax('index.php?option=com_redevent&controller=csvtool&task=eventoptions&format=raw', {
+	var query = new Request( {
+		url: 'index.php?option=com_redevent&controller=csvtool&task=eventoptions&format=raw',
 		method: 'post',
 		data : {'venue_id':$('venue_filter').value, 'category_id': $('category_filter').value}
 		});
@@ -74,5 +75,5 @@ function updateEvents()
 		}
 		$('events-select').adopt(select).removeClass('loading');
 	});
-	query.request();
+	query.send();
 }
