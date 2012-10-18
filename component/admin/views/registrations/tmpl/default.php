@@ -99,15 +99,28 @@ $colspan = 13;
 				<td><?php echo $row->name; ?></td>
 				<td>
 				  <?php 
-				  //echo $row->confirmed == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES'); 
-				  if (!$row->confirmed) {
-            echo JHTML::_('image', 'admin/publish_x.png', JText::_('JNO'), null, true);
+				  if (!$row->confirmed) 
+				  {
+            echo JHTML::link('javascript: void(0);', 
+            		             JHTML::_('image', 'admin/publish_x.png', JText::_('JNO'), null, true), 
+            		             array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'confirmattendees\');',
+            		                   'class' => 'hasTip',
+            		             		   'title' => Jtext::_('COM_REDEVENT_REGISTRATION_NOT_ACTIVATED')
+            		             		              .'::'.Jtext::_('COM_REDEVENT_CLICK_TO_ACTIVATE'))
+            		);
+            
 				  }
-          else {?>
-            <span class="hasTip" title="<?php echo JHTML::Date( $row->confirmdate, JText::_('DATE_FORMAT_LC2' )); ?>">
-            <?php echo JHTML::_('image', 'admin/tick.png', JText::_('JYES'), null, true); ?>
-            </span>
-            <?php 
+          else 
+          {
+          	$tip = Jtext::_('COM_REDEVENT_REGISTRATION_ACTIVATED')
+            		   .'::'.Jtext::sprintf('COM_REDEVENT_REGISTRATION_ACTIVATED_ON_S'
+            		   		                  ,JHTML::Date( $row->confirmdate, JText::_('DATE_FORMAT_LC2' )));
+          	echo JHTML::link('javascript: void(0);', 
+          			             JHTML::_('image', 'admin/tick.png', JText::_('JYES'), null, true), 
+          			             array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'unconfirmattendees\');',
+            		                   'class' => 'hasTip',
+            		             		   'title' => $tip
+          			             		));
           }
 				  ?>
 				</td>

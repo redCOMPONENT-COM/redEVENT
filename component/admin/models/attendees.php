@@ -503,8 +503,9 @@ class RedEventModelAttendees extends JModel
     if (count( $cid ))
     {
       $ids = implode(',', $cid);
+      $date = JFactory::getDate();
             
-      $query = 'UPDATE #__redevent_register SET confirmed = 1 WHERE id IN ('. $ids .') ';
+      $query = 'UPDATE #__redevent_register SET confirmed = 1, confirmdate = '.$this->_db->Quote($date->toSql()).' WHERE id IN ('. $ids .') ';
       $this->_db->setQuery( $query );
       
       if (!$this->_db->query()) {

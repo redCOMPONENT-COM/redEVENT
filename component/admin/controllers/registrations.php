@@ -125,4 +125,52 @@ class RedEventControllerRegistrations extends RedEventController
 
 		$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg );
 	}
+	
+	/**
+	 * confirm an attendee registration
+	 *
+	 * @return boolean true on success
+	 */
+	public function confirmattendees()
+	{
+		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
+	
+		$model = $this->getModel('attendees');
+	
+		if ($model->confirmattendees($cid))
+		{
+			$msg = JText::_('COM_REDEVENT_REGISTRATION_CONFIRMED');
+		$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg );
+		}
+		else
+		{
+			$msg = JText::_('COM_REDEVENT_ERROR_REGISTRATION_CONFIRM') . ': ' . $model->getError();
+			$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg, 'error' );
+		}
+		return true;
+	}
+	
+	/**
+	 * remove confirm status from an attendee registration
+	 *
+	 * @return boolean true on success
+	 */
+	public function unconfirmattendees()
+	{
+		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
+	
+		$model = $this->getModel('attendees');
+	
+		if ($model->unconfirmattendees($cid))
+		{
+			$msg = JText::_('COM_REDEVENT_REGISTRATION_UNCONFIRMED');
+			$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg );
+		}
+		else
+		{
+			$msg = JText::_('COM_REDEVENT_ERROR_REGISTRATION_UNCONFIRM') . ': ' . $model->getError();
+			$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg, 'error' );
+		}
+		return true;
+	}
 }
