@@ -168,7 +168,7 @@ class RedEventModelRegistrations extends JModel
 
 		$query = ' SELECT r.*, r.id as attendee_id, u.username, u.name, e.id AS eventid, u.email '
 		       . ', s.answer_id, r.waitinglist, r.confirmdate, r.confirmed, s.id AS submitter_id, s.price, pg.name as pricegroup, fo.activatepayment, p.paid, p.status '
-		       . ', e.course_code, e.title, x.dates, x.times, v.venue '
+		       . ', e.course_code, e.title, x.dates, x.times, v.venue, x.maxattendees '
 		       . ', auth.username AS creator '
 		       . ' FROM #__redevent_register AS r '
 		       . ' LEFT JOIN #__redevent_pricegroups AS pg ON pg.id = r.pricegroup_id '
@@ -264,12 +264,12 @@ class RedEventModelRegistrations extends JModel
 	 *
 	 * @access public
 	 * @return true on success
-	 * @since 0.9
+	 * @since 2.5
 	 */
 	public function remove($cid = array())
 	{
 		if (!count($cid)) {
-			return false;
+			return true;
 		}
 		/**
 		 * track xrefs attendees are being cancelled from
@@ -311,6 +311,54 @@ class RedEventModelRegistrations extends JModel
 			$model_wait->setXrefId($xref);
 			if (!$model_wait->UpdateWaitingList()) {
 				$this->setError($model_wait->getError());
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * toggle registrations on and off the wainting list
+	 * @param array $cid register_ids
+	 * @param boolean $on set true to put on waiting list, false to take off
+	 */
+	public function togglewaiting($cid, $on)
+	{
+		if (!count($cid)) {
+			return true;
+		}
+		// we need to group by xref
+		$db = &JFactory::getDbo();
+		$query = $db->getQuery(true);
+		
+		$query->select('r.id AS rid, e.redform_id,r.xref AS xref_id');
+		$query->from('#__redevent_register AS r');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = r.xref');
+		$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
+		$query->where('r.id IN ('.implode(',', $cid).')');
+		$db->setQuery($query);
+		$res = $db->loadObjectList();
+		
+		// let's group
+		$xrefs = array();
+		foreach ($res as $r) {
+			@$xrefs[$r->xref_id][] = $r->rid;
+		}
+		// let's do the thing	
+		foreach ($xrefs as $xref => $rids)
+		{	
+			$model = JModel::getInstance('waitinglist', 'RedeventModel');
+			$model->setXrefId($xref);
+			if ($on)
+			{
+				$res = $model->putOnWaitingList($rids);
+			}
+			else
+			{
+				$res = $model->putOffWaitingList($rids);				
+			}
+			if (!$res) {
+				$this->setError($model->getError());
 				return false;
 			}
 		}

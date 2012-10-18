@@ -173,4 +173,54 @@ class RedEventControllerRegistrations extends RedEventController
 		}
 		return true;
 	}
+	
+	/**
+	 * puts attendees on the waiting list of the session
+	 * 
+	 * @return boolean true on success
+	 */
+	public function onwaiting()
+	{
+		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
+		$count = count($cid);
+		
+		$model = $this->getModel('registrations');
+	
+		if ($model->togglewaiting($cid, 1))
+		{
+			$msg = $count.' '.JText::_('COM_REDEVENT_PUT_ON_WAITING_SUCCESS');
+			$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg );
+		}
+		else
+		{
+			$msg = JText::_('COM_REDEVENT_PUT_ON_WAITING_FAILURE') . ': ' . $model->getError();
+			$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg, 'error' );
+		}
+		return true;
+	}
+	
+	/**
+	 * puts attendees off the waiting list of the session
+	 *
+	 * @return boolean true on success
+	 */
+	function offwaiting()
+	{
+		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
+		$count = count($cid);
+		
+		$model = $this->getModel('registrations');
+		
+		if ($model->togglewaiting($cid, 0))
+		{
+			$msg = $count.' '.JText::_('COM_REDEVENT_PUT_OFF_WAITING_SUCCESS');
+			$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg );
+		}
+		else
+		{
+			$msg = JText::_('COM_REDEVENT_PUT_OFF_WAITING_FAILURE') . ': ' . $model->getError();
+			$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg, 'error' );
+		}
+		return true;
+	}
 }

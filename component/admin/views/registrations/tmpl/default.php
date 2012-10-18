@@ -88,7 +88,7 @@ $colspan = 13;
 							echo JHTML::Date( $row->uregdate, JText::_('DATE_FORMAT_LC2' ) );
 						} else {
 					?>
-					<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_EDIT_MEMBER' );?>::<?php echo $row->name; ?>">
+					<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_EDIT_REGISTRATION' );?>::<?php echo $row->name; ?>">
 					<a href="<?php echo $link; ?>">
 					<?php echo JHTML::Date( $row->uregdate, JText::_('DATE_FORMAT_LC2' ) ); ?>
 					</a></span>
@@ -125,14 +125,32 @@ $colspan = 13;
 				  ?>
 				</td>
 				<td>
-          <?php 
-          if (!$row->waitinglist) {
-          	echo JHTML::_('image', 'admin/publish_x.png', JText::_('JNO'), null, true);
+					<?php if (!$row->maxattendees): // no waiting list ?>
+					<?php echo '-'; ?>					
+          <?php else:
+          if (!$row->waitinglist) // attending
+          {
+          	$tip = Jtext::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ATTENDING')
+            		   .'::'.Jtext::_('COM_REDEVENT_REGISTRATION_CLICK_TO_PUT_ON_WAITING_LIST');
+            echo JHTML::link('javascript: void(0);', 
+                              JHTML::_('image', 'administrator/components/com_redevent/assets/images/attending-16.png', JText::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ATTENDING'), null, false), 
+                              array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'onwaiting\');',
+            		                   'class' => 'hasTip',
+            		             		   'title' => $tip
+          			             		));
           }
-          else {
-            echo JHTML::_('image', 'admin/tick.png', JText::_('JYES'), null, true);
+          else // waiting
+          {
+          	$tip = Jtext::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ON_WAITING_LIST')
+            		   .'::'.Jtext::_('COM_REDEVENT_REGISTRATION_CLICK_TO_TAKE_OFF_WAITING_LIST');
+            echo JHTML::link( 'javascript: void(0);', 
+                              JHTML::_('image', 'administrator/components/com_redevent/assets/images/enumList.png', JText::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ON_WAITING_LIST'), null, false), 
+                              array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'offwaiting\');',
+            		                   'class' => 'hasTip',
+            		             		   'title' => $tip
+          			             		));
           }
-          ?>
+          endif; ?>
         </td>
         
         <td><a href="<?php echo JRoute::_('index.php?option=com_redevent&view=attendeeanswers&tmpl=component&submitter_id='. $row->submitter_id); ?>" class="answersmodal" rel="{handler: 'iframe'}"><?php echo JText::_('COM_REDEVENT_view')?></a></td>

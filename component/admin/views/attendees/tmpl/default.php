@@ -170,18 +170,29 @@ if ($this->event->maxattendees) {
         <?php endif; ?>
         
 				<?php if ($this->event->maxattendees): ?>
-				<td><?php // echo $row->waitinglist == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES'); ?>
+				<td>
           <?php 
-          //echo $row->confirmed == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES'); 
-          if (!$row->waitinglist) {
+          if (!$row->waitinglist) // attending
+          {
+          	$tip = Jtext::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ATTENDING')
+            		   .'::'.Jtext::_('COM_REDEVENT_REGISTRATION_CLICK_TO_PUT_ON_WAITING_LIST');
             echo JHTML::link('javascript: void(0);', 
-                             JHTML::_('image', 'admin/publish_x.png', JText::_('JNO'), null, true), 
-                             array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'onwaiting\');', 'title' => JText::_('COM_REDEVENT_PUT_ON_WAITING_LIST')));
+                              JHTML::_('image', 'administrator/components/com_redevent/assets/images/attending-16.png', JText::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ATTENDING'), null, false), 
+                              array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'onwaiting\');',
+            		                   'class' => 'hasTip',
+            		             		   'title' => $tip
+          			             		));
           }
-          else {
+          else // waiting
+          {
+          	$tip = Jtext::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ON_WAITING_LIST')
+            		   .'::'.Jtext::_('COM_REDEVENT_REGISTRATION_CLICK_TO_TAKE_OFF_WAITING_LIST');
             echo JHTML::link( 'javascript: void(0);', 
-                              JHTML::_('image', 'admin/tick.png', JText::_('JYES'), null, true), 
-                              array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'offwaiting\');', 'title' => JText::_('COM_REDEVENT_PUT_OFF_WAITING_LIST')));
+                              JHTML::_('image', 'administrator/components/com_redevent/assets/images/enumList.png', JText::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ON_WAITING_LIST'), null, false), 
+                              array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'offwaiting\');',
+            		                   'class' => 'hasTip',
+            		             		   'title' => $tip
+          			             		));
           }
           ?>
         </td>
