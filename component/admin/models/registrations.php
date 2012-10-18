@@ -257,4 +257,63 @@ class RedEventModelRegistrations extends JModel
 		
 		return $where;
 	}
+	
+	
+	/**
+	 * Delete registered users
+	 *
+	 * @access public
+	 * @return true on success
+	 * @since 0.9
+	 */
+	public function remove($cid = array())
+	{
+		if (!count($cid)) {
+			return false;
+		}
+		/**
+		 * track xrefs attendees are being cancelled from
+		 * @var array
+		 */
+		$xrefs = array();
+		foreach ($cid as $register_id)
+		{
+			$db = &JFactory::getDbo();
+			$query = $db->getQuery(true);
+			
+			$query->select('e.redform_id,r.xref AS xref_id');
+			$query->from('#__redevent_register AS r');
+			$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = r.xref');
+			$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
+			$query->where('r.id = '.(int) $register_id);
+			$db->setQuery($query);
+			$res = $db->loadObject();
+			$xrefs[] = $res->xref_id;
+	
+			$query = ' DELETE s, f, r '
+			. ' FROM #__redevent_register AS r '
+			. ' LEFT JOIN #__rwf_submitters AS s ON r.sid = s.id '
+			. ' LEFT JOIN #__rwf_forms_'.$res->redform_id .' AS f ON f.id = s.answer_id '
+			. ' WHERE r.id = '.$register_id
+			. '   AND r.cancelled = 1 ';
+			;
+			$this->_db->setQuery( $query );
+				
+			if (!$this->_db->query()) {
+				RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
+				return false;
+			}
+		}
+		// now update waiting list for all updated sessions
+		foreach ($xrefs as $xref)
+		{			
+			$model_wait = JModel::getInstance('waitinglist', 'RedeventModel');
+			$model_wait->setXrefId($xref);
+			if (!$model_wait->UpdateWaitingList()) {
+				$this->setError($model_wait->getError());
+				return false;
+			}
+		}
+		return true;
+	}
 }

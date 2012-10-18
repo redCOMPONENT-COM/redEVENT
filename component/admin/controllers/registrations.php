@@ -39,8 +39,90 @@ class RedEventControllerRegistrations extends RedEventController
 	 *
 	 *@since 0.9
 	 */
-	function __construct() 
+	public function __construct() 
 	{
 		parent::__construct();
+	}
+	
+	/**
+	 * set cancelled status to an attendee registration
+	 *
+	 * @return boolean true on success
+	 */
+	public function cancelreg()
+	{
+		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
+	
+		$model = $this->getModel('attendees');
+	
+		if ($model->cancelreg($cid))
+		{
+			$msg = JText::_( 'COM_REDEVENT_ATTENDEES_REGISTRATION_CANCELLED');
+			$this->setRedirect( 'index.php?option=com_redevent&view=registrations&filter_cancelled=1', $msg );
+		}
+		else
+		{
+			$msg = JText::_( 'COM_REDEVENT_ATTENDEES_REGISTRATION_CANCELLED_ERROR') . ': ' . $model->getError();
+			$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg, 'error' );
+		}
+		return true;
+	}
+	
+	/**
+	 * remove cancelled status from an attendee registration
+	 *
+	 * @return boolean true on success
+	 */
+	public function uncancelreg()
+	{
+		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
+	
+		$model = $this->getModel('attendees');
+	
+		if ($model->uncancelreg($cid))
+		{
+			$msg = JText::_( 'COM_REDEVENT_ATTENDEES_REGISTRATION_UNCANCELLED');
+			$this->setRedirect( 'index.php?option=com_redevent&view=registrations&filter_cancelled=0', $msg );
+		}
+		else
+		{
+			$msg = JText::_( 'COM_REDEVENT_ATTENDEES_REGISTRATION_UNCANCELLED_ERROR') . ': ' . $model->getError();
+			$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg, 'error' );
+		}
+		return true;
+	}
+	
+	 
+	/**
+	 * Delete attendees
+	 *
+	 * @return true on sucess
+	 * @access private
+	 * @since 2.5
+	 */
+	public function remove($cid = array())
+	{		
+		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
+		
+		/* Check if anything is selected */
+		if (!is_array( $cid ) || count( $cid ) < 1) {
+			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_delete' ) );
+		}
+		$total 	= count( $cid );
+		
+		/* Get all submitter ID's */
+		$model = $this->getModel('registrations');
+				
+		if(!$model->remove($cid)) {
+      RedEventError::raiseWarning(0, JText::_( "COM_REDEVENT_CANT_DELETE_REGISTRATIONS" ) . ': ' . $model->getError() );
+			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
+		}
+				
+		$cache = JFactory::getCache('com_redevent');
+		$cache->clean();
+
+		$msg = $total.' '.JText::_('COM_REDEVENT_REGISTERED_USERS_DELETED');
+
+		$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg );
 	}
 }

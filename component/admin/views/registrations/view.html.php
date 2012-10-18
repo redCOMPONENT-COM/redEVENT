@@ -66,8 +66,15 @@ class RedEventViewRegistrations extends JView {
 
 		//add toolbar
 		JToolBarHelper::title( JText::_( 'COM_REDEVENT_PAGETITLE_REGISTRATIONS' ), 'registrations' );
-		JToolBarHelper::back();
+		if ($state->get('filter_cancelled', 0) == 0) {
+			JToolBarHelper::custom('cancelreg', 'cancel', 'cancel', 'COM_REDEVENT_ATTENDEES_TOOLBAR_CANCEL', true, true);
+		}
+		if ($state->get('filter_cancelled', 0) == 1) {
+			JToolBarHelper::custom('uncancelreg', 'redrestore', 'redrestore', 'COM_REDEVENT_ATTENDEES_TOOLBAR_RESTORE', true, true);
+			JToolBarHelper::deleteList(JText::_('COM_REDEVENT_ATTENDEES_DELETE_WARNING'));
+		}
 		JToolBarHelper::spacer();
+		JToolBarHelper::back();
 	
 		if ($user->authorise('core.admin', 'com_redevent')) {
 			JToolBarHelper::preferences('com_redevent', '600', '800');

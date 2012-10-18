@@ -390,7 +390,6 @@ class RedEventModelAttendees extends JModel
 		if (count( $cid ))
 		{
 			$ids = implode(',', $cid);
-			$form = $this->getForm();
 						
 			$query = ' UPDATE #__redevent_register AS r '
              . '   SET r.cancelled = 1 '
@@ -418,7 +417,6 @@ class RedEventModelAttendees extends JModel
 		if (count( $cid ))
 		{
 			$ids = implode(',', $cid);
-			$form = $this->getForm();
 						
 			$query = ' UPDATE #__redevent_register AS r '
              . '   SET r.cancelled = 0 '
