@@ -300,7 +300,7 @@ class REattendee extends JObject {
 				$subject = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_OFF_SUBJECT');
 				$body    = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_OFF_BODY');		
 			}
-			$body    = nl2br($this->taghelper->ReplaceTags($body));
+			$body    = $this->taghelper->ReplaceTags($body);
 			$subject = $this->taghelper->ReplaceTags($subject);
 		}
 		else 
@@ -315,7 +315,7 @@ class REattendee extends JObject {
 				$subject = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_ON_SUBJECT');
 				$body    = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_ON_BODY');		
 			}
-			$body    = nl2br($this->taghelper->ReplaceTags($body));
+			$body    = $this->taghelper->ReplaceTags($body);
 			$subject = $this->taghelper->ReplaceTags($subject);
 		}
 
