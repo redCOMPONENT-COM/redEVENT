@@ -373,14 +373,17 @@ class RedEventModelEvent extends JModelAdmin
 
 		//Check if image was selected
 		jimport('joomla.filesystem.file');
-		$format 	= strtolower(JFile::getExt($row->datimage));
-
-		$allowable 	= array ('gif', 'jpg', 'png');
-		if (in_array($format, $allowable)) {
-			$row->datimage = $row->datimage;
-		} else {
-			$mainframe->enqueueMessage(JText::_('COM_REDEVENT_IMAGE_FORMAT_NOT_ALLOWED').': '.$format);
-			$row->datimage = '';
+		if ($row->datimage)
+		{
+			$format 	= strtolower(JFile::getExt($row->datimage));
+	
+			$allowable 	= array ('gif', 'jpg', 'png');
+			if (in_array($format, $allowable)) {
+				$row->datimage = $row->datimage;
+			} else {
+				$mainframe->enqueueMessage(JText::_('COM_REDEVENT_IMAGE_FORMAT_NOT_ALLOWED').': '.$format);
+				$row->datimage = '';
+			}
 		}
 
 		// sanitise id field

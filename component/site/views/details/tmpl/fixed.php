@@ -57,7 +57,6 @@ if ($this->row->venueid != 0) {
 
 	<?php //flyer
 	$eventimage = redEVENTImage::modalimage($this->row->datimage, $this->row->title);
-//  $eventimage = JHTML::image(JURI::root().'/'.$eventimage['original'], $this->row->title, array('title' => $this->row->title));
 	echo $eventimage;
 	?>
 

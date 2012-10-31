@@ -245,13 +245,18 @@ class redEVENTImage {
 	 * @param string image path, relative to joomla base folder
 	 * @param string alt attribute
 	 * @param array other attributes
+	 * @return mixed boolean false if empty path, html string otherwise
 	 */
 	function modalimage($path, $alt, $maxdim = null, $attribs = array())
 	{
 		jimport('joomla.filesystem.file');
 		$app = &JFactory::getApplication();
 		
-		if (empty($path) || !file_exists(JPATH_SITE.DS.$path)) {
+		if (empty($path)) {
+			return false;
+		}
+		
+		if (!file_exists(JPATH_SITE.DS.$path)) {
 			$app->enqueueMessage(JText::sprintf('COM_REDEVENT_IMAGECLASS_WRONG_PATH_S', $path), 'notice');
 			return false;			
 		}
