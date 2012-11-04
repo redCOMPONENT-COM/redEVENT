@@ -53,6 +53,7 @@ function RedEventBuildRoute(&$query)
 	  case 'editvenue':
 	  case 'payment':
 	  case 'simplelist':
+	  case 'featured':
 	  case 'venue':
 	  case 'venues':
     	if(isset($query['id']))
@@ -356,6 +357,7 @@ function RedEventParseRoute($segments)
     case 'venuecategory':
     case 'venuesmap':
     case 'myevents':
+    case 'featured':
       $vars['view'] = $segments[0];      
       break;
       

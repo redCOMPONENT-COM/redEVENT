@@ -199,6 +199,24 @@ class RedeventHelperRoute
 		return self::buildUrl( $parts );
 	}
 	
+	/**
+	 * return route to featured sessions view
+	 * @param string $task
+	 * @return string
+	 */
+	public static function getFeaturedRoute($task = null, $layout = null)
+	{
+		$parts = array( "option" => "com_redevent",
+		                "view"   => "featured" );
+		if ($task) {
+			$parts['task'] = $task;
+		}
+		if ($layout) {
+			$parts['layout'] = $layout;
+		}
+		return self::buildUrl( $parts );
+	}
+	
 	public static function getSignupRoute($type, $id, $xref, $pricegroup = null)
 	{
 		$parts = array( "option" => "com_redevent",
