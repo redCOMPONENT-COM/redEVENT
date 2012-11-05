@@ -28,11 +28,6 @@ $toggle = $this->params->get('filter_toggle', 3);
 <div id="redevent" class="el_eventlist">
 <p class="buttons">
 	<?php
-		if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup
-			echo REOutput::submitbutton( $this->dellink, $this->params );
-			echo REOutput::thumbbutton( $this->thumb_link, $this->params );
-		endif;
-
 		echo REOutput::printbutton( $this->print_link, $this->params );
 	?>
 </p>
@@ -137,27 +132,5 @@ $toggle = $this->params->get('filter_toggle', 3);
 </div>
 <?php  endif; ?>
 <!-- pagination end -->
-
-<?php if ($this->params->get('events_rsscal', 0) || $this->params->get('events_ical', 1)): ?>
-<!-- start: exports -->
-<div class="events-exports">
-<?php if ($this->params->get('events_rsscal', 0)): ?>
-<span class="events-rsscal">
-	<?php echo JHTML::link( JRoute::_(RedeventHelperRoute::getSimpleListRoute(null, 'rsscal').'&format=feed'),
-                          JHTML::image('components/com_redevent/assets/images/rsscal2.0.png', JText::_('COM_REDEVENT_EXPORT_RSSCAL'))
-	                        ); ?>
-</span>
-<?php endif; ?>
-
-<?php if ($this->params->get('events_ical', 1)): ?>
-<span class="events-ical">
-	<?php echo JHTML::link( JRoute::_(RedeventHelperRoute::getSimpleListRoute().'&format=raw&layout=ics'),
-                          JHTML::image('components/com_redevent/assets/images/iCal2.0.png', JText::_('COM_REDEVENT_EXPORT_ICS'))
-	                        ); ?>
-</span>
-<?php endif; ?>
-</div>
-<!-- end: exports -->
-<?php endif; ?>
 
 </div>

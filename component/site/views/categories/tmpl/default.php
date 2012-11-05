@@ -28,7 +28,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <p class="buttons">
 	<?php
 		echo REOutput::submitbutton( $this->dellink, $this->params );
-		echo REOutput::archivebutton( $this->params, $this->task );
 	?>
 </p>
 

@@ -144,58 +144,41 @@ class REOutput {
 	* @since 0.9
 	*
 	* @param array $params needed params
-	* @param string $task The current task
-	* @param int $categid The cat id
 	* @return string html
 	*/
-	function archivebutton( &$params, $task = NULL, $id = NULL )
+	function archivebutton( &$params )
 	{
     if (!$params->get( 'show_gotoarchive_icon', 1)) {
       return '';
     }
-    
-		$settings = & redEVENTHelper::config();
-		
-		JHTML::_('behavior.tooltip');
-		
-		$view = JRequest::getWord('view');
-		
-		if ($task == 'archive') {
+    		
+		JHTML::_('behavior.tooltip');				
 			
-			if ( $params->get('icons', 1) ) {
-				$image = JHTML::_('image', 'components/com_redevent/assets/images/eventlist.png', JText::_('COM_REDEVENT_SHOW_EVENTS' ));
-			} else {
-				$image = JText::_('COM_REDEVENT_SHOW_EVENTS' );
-			}
-			$overlib 	= JText::_('COM_REDEVENT_SHOW_EVENTS_TIP' );
-			$title 		= JText::_('COM_REDEVENT_SHOW_EVENTS' );
-			
-			if ($id) {
-					$link 		= JRoute::_( 'index.php?option=com_redevent&view='.$view.'&id='.$id );
-			} else {
-					$link 		= JRoute::_( 'index.php' );
-			}
-			
+		if ( $params->get('icons', 1) ) {
+			$image = JHTML::_('image', 'components/com_redevent/assets/images/archive_front.png', JText::_('COM_REDEVENT_SHOW_ARCHIVE' ));
 		} else {
-			
-			if ( $params->get('icons', 1) ) {
-				$image = JHTML::_('image', 'components/com_redevent/assets/images/archive_front.png', JText::_('COM_REDEVENT_SHOW_ARCHIVE' ));
-			} else {
-				$image = JText::_('COM_REDEVENT_SHOW_ARCHIVE' );
-			}
-			$overlib 	= JText::_('COM_REDEVENT_SHOW_ARCHIVE_TIP' );
-			$title 		= JText::_('COM_REDEVENT_SHOW_ARCHIVE' );
-				
-			if ($id) {
-				$link 		= JRoute::_( 'index.php?option=com_redevent&view='.$view.'&id='.$id.'&task=archive' );
-			} else {
-				$link		= JRoute::_('index.php?option=com_redevent&view='.$view.'&task=archive');
-			}
+			$image = JText::_('COM_REDEVENT_SHOW_ARCHIVE' );
 		}
+		$overlib 	= JText::_('COM_REDEVENT_SHOW_ARCHIVE_TIP' );
+		$title 		= JText::_('COM_REDEVENT_SHOW_ARCHIVE' );
+			
+		$link		= JRoute::_('index.php?option=com_redevent&view=archive');
 
 		$output = '<a href="'.$link.'" class="editlinktip hasTip" title="'.$title.'::'.$overlib.'">'.$image.'</a>';
 
 		return $output;
+	}
+	
+	/**
+	 * display a button for current events
+	 * 
+	 * @param array $params
+	 * @param string $link
+	 * @return html
+	 */
+	public static function currentbutton( &$params, $link)
+	{
+		return '';
 	}
 
 	/**

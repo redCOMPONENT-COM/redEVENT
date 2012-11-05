@@ -33,7 +33,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup
 			if ($this->editlink) echo REOutput::editVenueButton($this->venue->slug);
 			echo REOutput::listbutton( $this->list_link, $this->params );
-			echo REOutput::archivebutton( $this->params, $this->task, $this->venue->slug );
 		endif;
 		echo REOutput::mailbutton( $this->venue->slug, 'venueevents', $this->params );
 		echo REOutput::printbutton( $this->print_link, $this->params );

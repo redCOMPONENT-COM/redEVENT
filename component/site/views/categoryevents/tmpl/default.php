@@ -30,7 +30,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup
 			echo REOutput::thumbbutton( $this->thumb_link, $this->params );
 			echo REOutput::submitbutton( $this->dellink, $this->params );
-			echo REOutput::archivebutton( $this->params, $this->task, $this->category->slug );
 		endif;
 		echo REOutput::mailbutton( $this->category->slug, 'categoryevents', $this->params );
 		echo REOutput::printbutton( $this->print_link, $this->params );

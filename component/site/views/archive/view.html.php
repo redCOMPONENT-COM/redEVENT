@@ -27,13 +27,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.application.component.view');
 
 /**
- * HTML View class for the EventList View
+ * HTML View class for the EventList archive View
  *
  * @package Joomla
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedeventViewSimpleList extends JView
+class RedeventViewArchive extends JViewLegacy
 {
 	/**
 	 * Creates the Simple List View
@@ -94,27 +94,13 @@ class RedeventViewSimpleList extends JView
 			$This->setLayout('print');
 		}
 		
-		$print_link = JRoute::_('index.php?option=com_redevent&view=simplelist&tmpl=component&pop=1');
+		$print_link = JRoute::_(RedeventHelperRoute::getArchiveRoute().'&pop=1');
 		$pagetitle = $params->get('page_title');
-
-		$thumb_link = RedeventHelperRoute::getSimpleListRoute(null, 'thumb');
+			
 		$list_link = RedeventHelperRoute::getSimpleListRoute();
 		
 		//Set Page title
 		$this->document->setTitle($pagetitle);
-
-		//Check if the user has access to the form
-		$maintainer = ELUser::ismaintainer();
-		$genaccess 	= ELUser::validate_user( $elsettings->get('evdelrec'), $elsettings->get('delivereventsyes') );
-
-		if ($maintainer || $genaccess ) $dellink = 1;
-
-		//add alternate feed link
-		$link    = 'index.php?option=com_redevent&view=simplelist&format=feed';
-		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
-		$document->addHeadLink(JRoute::_($link.'&type=rss'), 'alternate', 'rel', $attribs);
-		$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
-		$document->addHeadLink(JRoute::_($link.'&type=atom'), 'alternate', 'rel', $attribs);
 		
 		//create select lists
 		$lists	= $this->_buildSortLists();

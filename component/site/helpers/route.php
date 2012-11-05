@@ -187,6 +187,18 @@ class RedeventHelperRoute
 		return self::buildUrl( $parts );
 	}
 	
+	/**
+	 * return route to simple list view
+	 * @param string $task
+	 * @return string
+	 */
+	public static function getArchiveRoute()
+	{
+		$parts = array( "option" => "com_redevent",
+		                "view"   => "archive" );
+		return self::buildUrl( $parts );
+	}
+	
 	public static function getSignupRoute($type, $id, $xref, $pricegroup = null)
 	{
 		$parts = array( "option" => "com_redevent",
