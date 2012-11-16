@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_events` (
   `paymentprocessing` text NOT NULL,
   `enable_ical` tinyint(2) NOT NULL default '0',
   `enable_activation_confirmation` TINYINT( 1 ) NOT NULL DEFAULT  '0',
+  `language` char(7) NOT NULL,
   PRIMARY KEY  (`id`)
 ) DEFAULT CHARSET=utf8;
 
@@ -89,6 +90,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues` (
 `checked_out` int(11) NOT NULL default '0',
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
 `ordering` int(11) NOT NULL default '0',
+`language` char(7) NOT NULL,
 PRIMARY KEY  (`id`)
 ) DEFAULT CHARSET=utf8;
 
@@ -112,6 +114,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_categories` (
 `lft` int(11) NOT NULL default '0',
 `rgt` int(11) NOT NULL default '0',
 `event_template` int(11) NOT NULL default '0',
+`language` char(7) NOT NULL,
 PRIMARY KEY  (`id`)
 ) DEFAULT CHARSET=utf8;
 
@@ -145,6 +148,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_roles` (
 `ordering` int(11) NOT NULL default '0',
 `checked_out` int(11) NOT NULL default '0',
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
+`language` char(7) NOT NULL,
 PRIMARY KEY  (`id`)
 ) DEFAULT CHARSET=utf8;
 
@@ -179,6 +183,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_pricegroups` (
 `ordering` int(11) NOT NULL default '0',
 `checked_out` int(11) NOT NULL default '0',
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
+`language` char(7) NOT NULL,
 PRIMARY KEY  (`id`)
 ) DEFAULT CHARSET=utf8;
 
@@ -327,6 +332,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues_categories` (
   `ordering` int(11) NOT NULL default '0',
   `lft` int(11) NOT NULL default '0',
   `rgt` int(11) NOT NULL default '0',
+  `language` char(7) NOT NULL,
   PRIMARY KEY  (`id`)
 ) DEFAULT CHARSET=utf8;
 
@@ -356,6 +362,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_fields` (
   `default_value` varchar(255) NOT NULL,
   `checked_out` int(11) NOT NULL,
   `checked_out_time` datetime NOT NULL,
+  `language` char(7) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `object_key` (`object_key`)
 ) DEFAULT CHARSET=utf8;
