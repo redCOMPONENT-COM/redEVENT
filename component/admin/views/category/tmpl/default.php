@@ -119,6 +119,18 @@ function submitbutton(pressbutton)
               <input type="button" class="button" value="<?php echo JText::_('COM_REDEVENT_PICK' ); ?>" onclick="openPicker('color', -200, 20);" /> 
             </td>
 					</tr>
+					
+					<tr>
+						<td>
+							<?php echo $this->form->getLabel('language'); ?>
+						</td>
+						<td>
+							<?php echo $this->form->getInput('language'); ?>
+						</td>
+						<td></td>
+						<td></td>
+					</tr>
+				
 				</table>
 
 			<table class="adminform editevent">

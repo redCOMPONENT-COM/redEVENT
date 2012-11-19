@@ -81,6 +81,9 @@ class RedEventModelCategories extends JModel
 
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
+		
+		$language = $mainframe->getUserStateFromRequest($option.'.filter.language', 'filter_language', '');
+		$this->setState('filter.language', $language);
 
 		$array = JRequest::getVar('cid',  0, '', 'array');
 		$this->setId((int)$array[0]);

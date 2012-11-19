@@ -24,8 +24,8 @@
 defined('_JEXEC') or die('Restricted access'); ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-
-	<table class="adminform">
+	
+ 	<table class="adminform">
 		<tr>
 			<td width="100%">
 			  	<?php echo JText::_('COM_REDEVENT_SEARCH' ); ?>
@@ -36,12 +36,18 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<td nowrap="nowrap">
 			  <?php
 			  echo $this->lists['state'];
-				?>
+				?>	
+
+			<select name="filter_language" class="inputbox" onchange="this.form.submit()">
+				<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE');?></option>
+				<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language')); ?>
+			</select>
+			
 			</td>
 		</tr>
 	</table>
 
-	<table class="adminlist" cellspacing="1">
+	<table class="adminlist">
 	<thead>
 		<tr>
 			<th width="5">#</th>

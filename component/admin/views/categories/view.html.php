@@ -103,6 +103,8 @@ class RedEventViewCategories extends JView {
 		$this->assignRef('ordering'		, $ordering);
 		$this->assignRef('user'			, $user);
     $this->assignRef('filter_order'     , $filter_order);
+    
+    $this->state = $this->get('state');
 
 		parent::display($tpl);
 	}

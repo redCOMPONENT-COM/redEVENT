@@ -50,6 +50,15 @@
 			value="0">
 			JUNPUBLISHED</option>
 	</field>
+
+	<field
+		name="language"
+		type="contentlanguage"
+		label="JFIELD_LANGUAGE_LABEL"
+		description="COM_REDEVENT_FIELD_LANGUAGE_DESC"
+		class="inputbox">
+		<option value="*">JALL</option>
+	</field>
 		
 	<field
 		name="catdescription"
@@ -69,6 +78,14 @@
 		class="inputbox"
 		filter="safehtml"
 		buttons="false"/>
+		
+	<field
+		name="image"
+		type="media"
+		label="COM_REDEVENT_CHOOSE_IMAGE"
+		description="COM_REDEVENT_CHOOSE_IMAGE"
+		class="inputbox"
+		directory="redevent/categories"/>
 		
 	<field
 		name="image"
