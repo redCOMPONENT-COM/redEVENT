@@ -260,6 +260,10 @@ class RedEventModelCategory extends JModelAdmin
 	 */
 	function store($data)
 	{
+		// triggers for smart search
+		$dispatcher	= JDispatcher::getInstance();
+		JPluginHelper::importPlugin('finder');
+		
 		$row  =& $this->getTable('redevent_categories', '');
 		
 		// bind it to the table
@@ -268,8 +272,10 @@ class RedEventModelCategory extends JModelAdmin
 			return false;
 		}
 
+		$isNew = false;
 		if (!$row->id) {
 			$row->ordering = $row->getNextOrder();
+			$isNew = true;
 		}
 
 		// Make sure the data is valid
@@ -277,7 +283,10 @@ class RedEventModelCategory extends JModelAdmin
 			$this->setError($row->getError());
 			return false;
 		}
-
+		
+		// Trigger the onFinderBeforeSave event.
+		$results = $dispatcher->trigger('onFinderBeforeSave', array($this->option . '.' . $this->name, $row, $isNew));
+		
 		// Store it in the db
 		if (!$row->store()) {
 			RedeventError::raiseError(500, $this->_db->getErrorMsg() );
@@ -286,6 +295,9 @@ class RedEventModelCategory extends JModelAdmin
 	
 		// attachments
 		REAttach::store('category'.$row->id);
+		
+		// Trigger the onFinderAfterSave event.
+		$results = $dispatcher->trigger('onFinderAfterSave', array($this->option . '.' . $this->name, $row, $isNew));
 		
 		return $row->id;
 	}

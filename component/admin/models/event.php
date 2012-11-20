@@ -347,6 +347,10 @@ class RedEventModelEvent extends JModelAdmin
 	function store($data)
 	{
 		$mainframe = &JFactory::getApplication();
+		
+		// triggers for smart search
+		$dispatcher	= JDispatcher::getInstance();
+		JPluginHelper::importPlugin('finder');
 
 		$elsettings = JComponentHelper::getParams('com_redevent');
 		$user		= & JFactory::getUser();
@@ -354,6 +358,7 @@ class RedEventModelEvent extends JModelAdmin
 		$tzoffset 	= $mainframe->getCfg('offset');
 
 		$row =& JTable::getInstance('redevent_events', '');
+		
 		
 		// Bind the form fields to the table
 		if (!$row->bind($data)) {
@@ -396,6 +401,7 @@ class RedEventModelEvent extends JModelAdmin
 			$row->modified 		= gmdate('Y-m-d H:i:s');
 			$row->modified_by 	= $user->get('id');
 			$row->created_by		= $row->created_by ? $row->created_by : $user->get('id');
+			$isNew = false;
 		} else {
 			$row->modified 		= $nullDate;
 			$row->modified_by 	= '';
@@ -405,6 +411,7 @@ class RedEventModelEvent extends JModelAdmin
 
 			$row->author_ip 		= $elsettings->get('storeip', '1') ? getenv('REMOTE_ADDR') : 'DISABLED';
 			$row->created_by		= $row->created_by ? $row->created_by : $user->get('id');
+			$isNew = true;
 		}
 
 		// Make sure the data is valid
@@ -412,6 +419,9 @@ class RedEventModelEvent extends JModelAdmin
 			$this->setError($row->getError());
 			return false;
 		}
+		
+		// Trigger the onFinderBeforeSave event.
+		$results = $dispatcher->trigger('onFinderBeforeSave', array($this->option . '.' . $this->name, $row, $isNew));
 
 		// Store the table to the database
 		if (!$row->store(true)) {
@@ -439,7 +449,10 @@ class RedEventModelEvent extends JModelAdmin
 		
 		// attachments
 		REAttach::store('event'.$row->id);
-    
+		
+		// Trigger the onFinderAfterSave event.
+		$results = $dispatcher->trigger('onFinderAfterSave', array($this->option . '.' . $this->name, $row, $isNew));
+		
 		return $row->id;
 	}
 	

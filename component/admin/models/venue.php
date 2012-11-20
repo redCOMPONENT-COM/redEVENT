@@ -272,7 +272,13 @@ class RedEventModelVenue extends JModelAdmin
 		$tzoffset 	= $config->getValue('config.offset');
 
 		$row  =& $this->getTable('redevent_venues', '');
-
+		
+		// triggers for smart search
+		$dispatcher	= JDispatcher::getInstance();
+		JPluginHelper::importPlugin('finder');
+		
+		
+		
 		// bind it to the table
 		if (!$row->bind($data)) {
 			RedeventError::raiseError(500, $this->_db->getErrorMsg() );
@@ -299,6 +305,7 @@ class RedEventModelVenue extends JModelAdmin
 		if ($row->id) {
 			$row->modified 		= gmdate('Y-m-d H:i:s');
 			$row->modified_by 	= $user->get('id');
+			$isNew = false;
 		} else {
 			$row->modified 		= $nullDate;
 			$row->modified_by 	= '';
@@ -308,6 +315,7 @@ class RedEventModelVenue extends JModelAdmin
 
 			$row->author_ip 		= $elsettings->get('storeip', '1') ? getenv('REMOTE_ADDR') : 'DISABLED';
 			$row->created_by		= $user->get('id');
+			$isNew = true;
 		}
 
 		//uppercase needed by mapservices
@@ -325,7 +333,10 @@ class RedEventModelVenue extends JModelAdmin
 			$this->setError($row->getError());
 			return false;
 		}
-
+		
+		// Trigger the onFinderBeforeSave event.
+		$results = $dispatcher->trigger('onFinderBeforeSave', array($this->option . '.' . $this->name, $row, $isNew));
+		
 		// Store it in the db
 		if (!$row->store()) {
 			RedeventError::raiseError(500, $this->_db->getErrorMsg() );
@@ -340,19 +351,26 @@ class RedEventModelVenue extends JModelAdmin
       $this->setError($this->_db->getErrorMsg());
       return false;     
     }
+    
     // insert new ref
-    foreach ((array) $data['categories'] as $cat_id) {
-      $query = ' INSERT INTO #__redevent_venue_category_xref (venue_id, category_id) VALUES (' . $this->_db->Quote($row->id) . ', '. $this->_db->Quote($cat_id) . ')';
-      $this->_db->setQuery($query);
-      if (!$this->_db->query()) {
-        $this->setError($this->_db->getErrorMsg());
-        return false;     
-      }     
-    }  
+    if (isset($data['categories']))
+    {
+	    foreach ((array) $data['categories'] as $cat_id) 
+	    {
+	      $query = ' INSERT INTO #__redevent_venue_category_xref (venue_id, category_id) VALUES (' . $this->_db->Quote($row->id) . ', '. $this->_db->Quote($cat_id) . ')';
+	      $this->_db->setQuery($query);
+	      if (!$this->_db->query()) {
+	        $this->setError($this->_db->getErrorMsg());
+	        return false;     
+	      }     
+	    }  
+    }
     
 		// attachments
 		REAttach::store('venue'.$row->id);
-
+		
+		// Trigger the onFinderAfterSave event.
+		$results = $dispatcher->trigger('onFinderAfterSave', array($this->option . '.' . $this->name, $row, $isNew));
 		return $row->id;
 	}
 	

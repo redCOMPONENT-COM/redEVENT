@@ -326,6 +326,17 @@ class RedEventModelVenues extends JModel
 				$this->setError($this->_db->getErrorMsg());
 				return false;
 			}
+			
+			// for finder plugins
+			$dispatcher	= JDispatcher::getInstance();
+			JPluginHelper::importPlugin('finder');
+			foreach ($cid as $row_id)
+			{
+				$obj = new stdclass;
+				$obj->id = $row_id;
+				// Trigger the onFinderAfterDelete event.
+				$dispatcher->trigger('onFinderChangeState', array('com_redevent.venue', $cid, $publish));
+			}
 		}
 	}
 
@@ -407,11 +418,22 @@ class RedEventModelVenues extends JModel
 			$cids 	= implode( ', ', $err );
     		$msg 	= JText::sprintf( 'COM_REDEVENT_VENUE_ASSIGNED_EVENT_S', $cids );
     		return $msg;
-		} else {
-			$total 	= count( $cid );
-			$msg 	= $total.' '.JText::_('COM_REDEVENT_VENUES_DELETED');
-			return $msg;
 		}
+					
+		// for finder plugins
+		$dispatcher	= JDispatcher::getInstance();
+		JPluginHelper::importPlugin('finder');
+		foreach ($cid as $row_id)
+		{
+			$obj = new stdclass;
+			$obj->id = $row_id;				
+			// Trigger the onFinderAfterDelete event.
+			$dispatcher->trigger('onFinderAfterDelete', array('com_redevent.venue', $obj));
+		}
+		
+		$total 	= count( $cid );
+		$msg 	= $total.' '.JText::_('COM_REDEVENT_VENUES_DELETED');
+		return $msg;
 	}
 	
 

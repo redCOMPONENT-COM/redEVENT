@@ -274,6 +274,13 @@ class RedEventModelCategories extends JModel
 				$this->setError($this->_db->getErrorMsg());
 				return false;
 			}
+			
+			// for finder plugins
+			$dispatcher	= JDispatcher::getInstance();
+			JPluginHelper::importPlugin('finder');
+			
+			// Trigger the onFinderCategoryChangeState event.
+			$dispatcher->trigger('onFinderCategoryChangeState', array('com_redevent.category', $cids, $publish));
 		}
 		return true;
 	}

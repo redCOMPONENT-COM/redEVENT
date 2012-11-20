@@ -299,6 +299,17 @@ class RedEventModelEvents extends JModel
 					return false;
 				}
 			}
+			
+			// for finder plugins
+			$dispatcher	= JDispatcher::getInstance();
+			JPluginHelper::importPlugin('finder');
+			foreach ($cid as $row_id)
+			{
+				$obj = new stdclass;
+				$obj->id = $row_id;
+				// Trigger the onFinderAfterDelete event.
+				$dispatcher->trigger('onFinderChangeState', array('com_redevent.event', $cid, $publish));
+			}
 		}
 	}
 	
@@ -386,6 +397,17 @@ class RedEventModelEvents extends JModel
 			if(!$this->_db->query()) {
 				$this->setError($this->_db->getErrorMsg());
 				return false;
+			}
+			
+			// for finder plugins
+			$dispatcher	= JDispatcher::getInstance();
+			JPluginHelper::importPlugin('finder');
+			foreach ($cid as $row_id)
+			{
+				$obj = new stdclass;
+				$obj->id = $row_id;
+				// Trigger the onFinderAfterDelete event.
+				$dispatcher->trigger('onFinderAfterDelete', array('com_redevent.event', $obj));
 			}
 		}
 
