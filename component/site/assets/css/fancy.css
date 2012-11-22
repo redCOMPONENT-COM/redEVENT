@@ -1,0 +1,324 @@
+/*START redEVENT*/
+
+#redevent #adminForm a{
+	text-decoration:none;
+}
+
+#redevent{
+	overflow: visible !important;
+	overflow-x: visible !important;
+	overflow-y: visible !important;
+}
+
+.frontpage_event_wrapper{
+	width:100%;
+	height:auto !important;
+	min-height:300px;
+	_height:300px;
+	border-bottom:2px solid #cbcbcb;
+	padding-top:20px;
+	padding-bottom:20px;
+	float:left;
+}
+
+.frontpage_event_left_wrapper{
+	width:315px;
+	height:auto !important;
+	min-height:300px;
+	_height:300px;
+	float:left;
+}
+
+.frontpage_event_img{
+	width:300px;
+	height:300px;
+	float:left;
+}
+
+.frontpage_event_mid_wrapper{
+	width:360px;
+	height:auto !important;
+	min-height:300px;
+	_height:300px;
+	float:left;
+}
+
+.frontpage_event_title{
+	width:350px;
+	height:auto !important;
+	min-height:20px;
+	_height:20px;
+	float:left;
+}
+
+.frontpage_event_title a{
+	font-size:30px;
+	font-weight:bold;
+	margin-top:-2px;
+	line-height:100%;
+	float:left;
+}
+
+.frontpage_event_summary{
+	width:350px;
+	height:auto !important;
+	min-height:40px;
+	max-height:110px;
+	overflow:hidden;
+	font-size:13px;
+	float:left;
+}
+
+.frontpage_event_summary p{
+	margin-top:10px;
+}
+
+.frontpage_event_summary a{
+	color:#333;
+}
+
+.frontpage_event_desc{
+	width:350px;
+	height:70px;
+	overflow:hidden;
+	font-size:10px;
+	color:white !important;
+	float:left;
+}
+
+.frontpage_event_right_wrapper{
+	width:142px;
+	height:auto !important;
+	min-height:300px;
+	_height:300px;
+	padding-left:15px;
+	padding-right:15px;
+	border-left:2px solid #cbcbcb;
+	float:left;
+}
+
+.frontpage_event_date{
+	font-size:55px;
+	font-weight:bold;
+	color:#333;
+}
+
+.frontpage_event_date{
+	width:110px;
+	height:50px;
+	margin-top:10px;
+	float:left;
+}
+
+.frontpage_event_payment{
+	width:142px;
+	height:53px;
+	float:left;
+}
+
+
+.frontpage_event_share{
+	width:110px;
+	height:50px;
+	float:left;
+}
+
+a.event-map img{
+	width:150px;
+	height:150px;
+}
+
+#redevent .description p{
+	font-size:12px;
+	line-height: 12px;
+}
+
+form#venueForm label{
+	width:100% !important;
+	margin-right:10px;
+}
+
+form#venueForm input{
+	float:left;
+	
+}
+
+form#venueForm input#latitude{
+    border-radius: 3px 3px 3px 3px;
+    color: #555555;
+    display: inline-block;
+    font-size: 14px;
+    height: 20px;
+    line-height: 20px;
+    margin-bottom: 9px;
+    padding: 4px 6px;
+        -moz-transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+
+form#venueForm input#longitude{
+    border-radius: 3px 3px 3px 3px;
+    color: #555555;
+    display: inline-block;
+    font-size: 14px;
+    height: 20px;
+    line-height: 20px;
+    margin-bottom: 9px;
+    padding: 4px 6px;
+        -moz-transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+
+div#redevent a.modal img, div#redevent a.imodal img, div#redevent img.modal, div#redevent .catimg img, div#redevent .venuemap, div#redevent .map{
+	border: none !important;
+}
+
+fieldset.el_fldst_image img.modal{
+	    float: none !important;
+    margin-left: -433px !important;
+    width: 20% !important;
+}
+
+table#re-attachments thead tr{
+	text-align: left;
+}
+
+table#re-attachments thead td{
+	text-align: left;
+}
+
+table#re-attachments input{
+	width:80% !important;
+}
+
+
+.signup_custom_redevent a{
+	color:white !important;
+}
+
+.signup_custom_redevent a:hover{
+	color:white !important;
+	text-decoration: none !important;
+}
+
+#totalprice .label{
+	padding-top:5px;
+	padding-bottom:5px;
+	
+}
+
+/*END redEVENT*/
+
+/*START 3D FLIPCARD*/
+
+#f1_container {
+	position: relative;
+	width: 300px;
+	height: 300px;
+	z-index: 1;
+}
+#f1_container {
+	-webkit-perspective: 1000px;
+	-moz-perspective: 1000px;
+	-o-perspective: 1000px;
+	perspective: 1000px;
+	behavior: url('/pie/PIE.htc') !important;
+	z-index: 120 !important;
+}
+#f1_card {
+	width: 100%;
+	height: 100%;
+	-webkit-transform-style: preserve-3d;
+	-webkit-transition: all 0.4s linear;
+	-moz-transform-style: preserve-3d;
+	-moz-transition: all 0.4s linear;
+	-o-transform-style: preserve-3d;
+	-o-transition: all 0.4s linear;
+	transform-style: preserve-3d;
+	transition: all 0.4s linear;
+	behavior: url('/pie/PIE.htc') !important;
+	z-index: 100 !important;
+}
+#f1_container:hover #f1_card, #f1_container.hover_effect #f1_card {
+	-webkit-transform: rotateY(180deg);
+	-moz-transform: rotateY(180deg);
+	-o-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+	behavior: url('/pie/PIE.htc') !important;
+	z-index: 200 !important;
+}
+.face {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-o-backface-visibility: hidden;
+	backface-visibility: hidden;
+	behavior: url('/pie/PIE.htc') !important;
+	z-index: 140 !important;
+}
+.face.back {
+	display: block;
+	-webkit-transform: rotateY(180deg);
+	-webkit-box-sizing: border-box;
+	-moz-transform: rotateY(180deg);
+	-moz-box-sizing: border-box;
+	-o-transform: rotateY(180deg);
+	-o-box-sizing: border-box;
+	transform: rotateY(180deg);
+	box-sizing: border-box;
+	padding: 10px;
+	color: #333333;
+	background-color: #F5F5F5;
+	border:1px solid #E3E3E3;
+	behavior: url('/pie/PIE.htc') !important;
+	z-index: 60 !important;
+}
+
+.face.back:hover{
+	z-index: 300 !important;
+}
+
+.flip_venue_container{
+	text-align: left;
+}
+
+.flip_venue_container h1{
+	font-size: 30px;
+	color:#CA202C;
+}
+
+.flip_venue_container h2{
+	font-size: 15px;
+}
+
+.flip_venue_headline h2{
+	
+}
+
+.flip_venue_info p{
+	font-size: 12px;
+	line-height: 6px;
+}
+
+.flip_venue_desc{
+	font-size: 12px;
+	line-height: 14px;
+}
+
+.flip_venue_desc h3{
+	color:#CA202C;
+	font-size:16px;
+}
+
+.flip_venue_desc p.attending{
+	text-align: right;
+	color:#CA202C;
+}
+
+/*END 3D FLIPCARD*/
