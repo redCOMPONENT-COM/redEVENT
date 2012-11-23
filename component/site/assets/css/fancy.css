@@ -14,7 +14,6 @@
 	width:100%;
 	height:auto !important;
 	min-height:300px;
-	_height:300px;
 	border-bottom:2px solid #cbcbcb;
 	padding-top:20px;
 	padding-bottom:20px;
@@ -22,37 +21,33 @@
 }
 
 .frontpage_event_left_wrapper{
-	width:315px;
+	width:200px;
 	height:auto !important;
 	min-height:300px;
-	_height:300px;
 	float:left;
 }
 
 .frontpage_event_img{
-	width:300px;
-	height:300px;
+	width:200px;
 	float:left;
 }
 
 .frontpage_event_mid_wrapper{
-	width:360px;
+	width:260px;
 	height:auto !important;
 	min-height:300px;
-	_height:300px;
 	float:left;
+	margin-left: 5px;
 }
 
 .frontpage_event_title{
-	width:350px;
 	height:auto !important;
 	min-height:20px;
-	_height:20px;
 	float:left;
 }
 
 .frontpage_event_title a{
-	font-size:30px;
+	font-size:2em;
 	font-weight:bold;
 	margin-top:-2px;
 	line-height:100%;
@@ -60,12 +55,12 @@
 }
 
 .frontpage_event_summary{
-	width:350px;
+	width:200px;
 	height:auto !important;
 	min-height:40px;
 	max-height:110px;
 	overflow:hidden;
-	font-size:13px;
+	font-size:1.2em;
 	float:left;
 }
 
@@ -78,10 +73,10 @@
 }
 
 .frontpage_event_desc{
-	width:350px;
+	width:200px;
 	height:70px;
 	overflow:hidden;
-	font-size:10px;
+	font-size:1em;
 	color:white !important;
 	float:left;
 }
@@ -98,7 +93,7 @@
 }
 
 .frontpage_event_date{
-	font-size:55px;
+	font-size:3em;
 	font-weight:bold;
 	color:#333;
 }
@@ -217,7 +212,7 @@ table#re-attachments input{
 
 #f1_container {
 	position: relative;
-	width: 300px;
+	width: 200px;
 	height: 300px;
 	z-index: 1;
 }
@@ -289,12 +284,12 @@ table#re-attachments input{
 }
 
 .flip_venue_container h1{
-	font-size: 30px;
+	font-size: 1.8em;
 	color:#CA202C;
 }
 
 .flip_venue_container h2{
-	font-size: 15px;
+	font-size: 1.4em;
 }
 
 .flip_venue_headline h2{
@@ -302,18 +297,16 @@ table#re-attachments input{
 }
 
 .flip_venue_info p{
-	font-size: 12px;
-	line-height: 6px;
+	font-size: 1em;
 }
 
 .flip_venue_desc{
-	font-size: 12px;
-	line-height: 14px;
+	font-size: 1em;
 }
 
 .flip_venue_desc h3{
 	color:#CA202C;
-	font-size:16px;
+	font-size: 1.2em;
 }
 
 .flip_venue_desc p.attending{
