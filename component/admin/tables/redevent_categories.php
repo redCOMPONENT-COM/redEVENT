@@ -98,16 +98,6 @@ class RedEvent_categories extends JTable
 			$this->alias = $alias;
 		}
 
-		/** check for existing name */
-		$query = 'SELECT id FROM #__redevent_categories WHERE catname = '.$this->_db->Quote($this->catname);
-		$this->_db->setQuery($query);
-
-		$xid = intval($this->_db->loadResult());
-		if ($xid && $xid != intval($this->id)) {
-			JError::raiseWarning('REDEVENT_GENERIC_ERROR', JText::sprintf('COM_REDEVENT_CATEGORY_NAME_ALREADY_EXIST', $this->catname));
-			return true;
-		}
-
 		return true;
 	}
 	
