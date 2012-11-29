@@ -736,6 +736,12 @@ class RedeventModelEditevent extends JModel
 		
 		$curimage = JRequest::getVar( 'curimage', '', 'post','string' );
 		
+		// published state
+		if (!$acl->canPublishEvent($this->_id)) {
+			// use default state
+			$row->published = $params->get('default_submit_published_state', 0);
+		}
+		
 		//bind it to the table
 		if (!$row->bind($data)) {
 			RedeventError::raiseError( 500, $this->_db->stderr() );
