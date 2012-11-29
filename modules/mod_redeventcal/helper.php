@@ -26,8 +26,13 @@ class modredeventcalhelper
 		$catid 				= trim( $params->get('catid') );
 		$venid 				= trim( $params->get('venid') );
 		
+		$tz = new DatetimeZone(JFactory::getApplication()->getCfg('offset'));
+		
 		$monthstart = date('Y-m-d', mktime(0,0,0, $greq_month, 1, $greq_year));
 		$monthend = date('Y-m-d', mktime(0,0,0, $greq_month+1, 1, $greq_year));
+		$monthstart = JFactory::getDate("$greq_month/1/$greq_year", $tz)->format('Y-m-d', true);
+		$nextm = $greq_month + 1;
+		$monthend   = JFactory::getDate("$greq_month/1/$greq_year next month", $tz)->format('Y-m-d', true);
 		
 		//Get eventdates
 		if ($catid)
@@ -63,7 +68,7 @@ class modredeventcalhelper
 		
 		$db->setQuery( $query );
 		$events = $db->loadObjectList();
-		
+// 		echo '<pre>';print_r($events); echo '</pre>';exit;
 		// group events per days
 		$days_events = array();
 		foreach ( $events as $event )
@@ -98,7 +103,7 @@ class modredeventcalhelper
 				{
 					$emonth = $greq_month;
 
-					$eday = date('t', mktime(0,0,0, $greq_month, 1, $greq_year));
+					$eday   = JFactory::getDate($greq_month."/1/$greq_year", $tz)->format('t', true);
 				}
 
 				// Set start day for current month

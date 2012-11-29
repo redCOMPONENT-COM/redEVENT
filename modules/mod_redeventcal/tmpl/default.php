@@ -12,6 +12,9 @@ $next_month_link = JHTML::link($next_link, '>>');
 
 
 $uxtime_first_of_month = gmmktime(0, 0, 0, $month, 1, $year);
+$firstofthemonth = JFactory::getDate("$month/1/$year");
+$uxtime_first_of_month = $firstofthemonth->toUnix();
+
 #remember that mktime will automatically correct if invalid dates are entered
 # for instance, mktime(0,0,0,12,32,1997) will be the date for Jan 1, 1998
 # this provides a built in "rounding" feature to generate_calendar()
@@ -23,12 +26,11 @@ $current_year = $Year_length ? $year : substr($year, 2, 3);
 $caption   = $prev_month_link.' '.$current_month.' '.$current_year.' '.$next_month_link;
 
 // Today
-$config    = JFactory::getConfig();
-$tzoffset  = $config->getValue('config.offset');
-$time      = time()  + ($tzoffset*60*60); //25/2/08 Change for v 0.6 to incorporate server offset into time;
-$today     = date( 'j', $time);
-$currmonth = date( 'm', $time);
-$curryear  = date( 'Y', $time);
+$tz = new DateTimeZone(JFactory::getApplication()->getCfg('offset'));
+$currentdate = JFactory::getDate('now', $tz);
+$today     = $currentdate->format('j', true);
+$currmonth = $currentdate->format('m', true);
+$curryear  = $currentdate->format('Y', true);
 
 // for toggle
 if ($params->get('toggle', 0) && $params->get('default_toggle', 1) == 0) {
@@ -45,7 +47,7 @@ else {
 <?php	
 
 // where do we start => first weekday of the month
-$weekday = strftime('%w', $uxtime_first_of_month);
+$weekday = $firstofthemonth->format('w', true);
 $weekday = ($weekday + 7 - $first_day) % 7; #adjust for $first_day
 ?>
 <table class="mod_redeventcal_calendar" cellspacing="0" cellpadding="0">
