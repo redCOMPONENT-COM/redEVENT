@@ -90,8 +90,8 @@ defined('_JEXEC') or die('Restricted access');
 								/* Get the date */
 								if (redEVENTHelper::isValidDate($eventdetails->dates)) 
 								{
-									$date = strftime( $this->elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $eventdetails->dates )); 
-									$enddate 	= strftime( $this->elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $eventdetails->enddates ));
+									$date = strftime( $this->elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $eventdetails->dates )); 
+									$enddate 	= strftime( $this->elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $eventdetails->enddates ));
 									$displaydate = $date.' - '.$enddate;
 								}
 								else {

@@ -340,8 +340,8 @@ class RedEventViewEvent extends JView {
     
     $xref = $this->get('xref');
     
-    $date = (!redEVENTHelper::isValidDate($xref->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $params->get('formatdate', '%d.%m.%Y'), strtotime( $xref->dates )));
-    $enddate  = (!redEVENTHelper::isValidDate($xref->enddates) || $xref->enddates == $xref->dates) ? '' : strftime( $params->get('formatdate', '%d.%m.%Y'), strtotime( $xref->enddates ));
+    $date = (!redEVENTHelper::isValidDate($xref->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $xref->dates )));
+    $enddate  = (!redEVENTHelper::isValidDate($xref->enddates) || $xref->enddates == $xref->dates) ? '' : strftime( $params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $xref->enddates ));
 
     $displaydate = $date. ($enddate ? ' - '.$enddate: '');
 

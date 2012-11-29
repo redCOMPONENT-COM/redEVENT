@@ -74,7 +74,7 @@ $colspan = 13;
 				$link 		= 'index.php?option=com_redevent&controller=attendees&task=edit&xref='. $row->xref.'&cid[]='.$row->id;
 				$checked 	= JHTML::_('grid.checkedout', $row, $i );
 				
-				$eventdate = (!redEVENTHelper::isValidDate($row->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $this->settings->get('formatdate', '%d.%m.%Y'), strtotime( $row->dates )));
+				$eventdate = (!redEVENTHelper::isValidDate($row->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $this->settings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->dates )));
 				$sessionlink = JHTML::link('index.php?option=com_redevent&view=attendees&xref='.$row->xref, 
 				                           $row->title . '<br/>'.$eventdate, 
 				                           'class="hasTip" title="'.JText::_('COM_REDEVENT_VIEW_REGISTRATIONS_CLICK_TO_MANAGE').'::"').'<br/>@'.$row->venue.'</br>'.JText::_('COM_REDEVENT_AUTHOR').': '.$row->creator;
