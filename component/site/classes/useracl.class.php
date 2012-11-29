@@ -272,8 +272,10 @@ class UserAcl {
 		       . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = x.venueid AND gv.group_id = gc.group_id '
 		       . ' LEFT JOIN #__redevent_groups AS g ON g.id = gc.group_id '
 		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
+		       . ' LEFT JOIN #__redevent_venue_category_xref AS xvcat ON xvcat.venue_id = x.venueid '
+		       . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = xvcat.category_id '
 		       . ' WHERE x.id = '. $db->Quote($xref)
-		       . '   AND gc.accesslevel > 0 AND (gv.accesslevel > 0 OR v.created_by = '.$db->Quote($this->_userid).') '
+		       . '   AND gc.accesslevel > 0 AND (gvc.accesslevel > 0 OR gv.accesslevel > 0 OR v.created_by = '.$db->Quote($this->_userid).') '
 		       . '   AND ( ( g.isdefault = 1 AND ( g.edit_events = 2 OR (g.edit_events = 1 AND e.created_by = '.$db->Quote($this->_userid).')) ) '
 		       . '      OR ( gm.member = '.$db->Quote($this->_userid)
 		       . '        AND (gm.manage_xrefs > 0 OR gm.manage_events > 1 '
@@ -306,7 +308,9 @@ class UserAcl {
 		       . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = x.venueid AND gv.group_id = gc.group_id '
 		       . ' LEFT JOIN #__redevent_groups AS g ON g.id = gc.group_id '
 		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
-		       . ' WHERE gc.accesslevel > 0 AND (gv.accesslevel > 0 OR v.created_by = '.$db->Quote($this->_userid).') '
+		       . ' LEFT JOIN #__redevent_venue_category_xref AS xvcat ON xvcat.venue_id = x.venueid '
+		       . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = xvcat.category_id '
+		       . ' WHERE gc.accesslevel > 0 AND (gv.accesslevel > 0 OR gvc.accesslevel > 0 OR v.created_by = '.$db->Quote($this->_userid).') '
 		       . '   AND ( ( g.isdefault = 1 AND ( g.edit_events = 2 OR (g.edit_events = 1 AND e.created_by = '.$db->Quote($this->_userid).')) ) '
 		       . '      OR ( gm.member = '.$db->Quote($this->_userid)
 		       . '        AND (gm.manage_xrefs > 0 OR gm.manage_events > 1 '
@@ -314,7 +318,8 @@ class UserAcl {
 		       . ' GROUP BY x.id '
 		       ;
 		$db->setQuery($query);
-		return $db->loadResultArray();
+		$res = $db->loadResultArray();
+		return $res;
 	}
 
 	

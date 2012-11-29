@@ -477,14 +477,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         
         $where = array();
 
-        // First thing we need to do is to select only needed events
-        if ($task == 'archive')
-        {
-            $where[] = ' x.published = -1 ';
-        } else
-        {
-            $where[] = ' x.published > -1 ';
-        }
+        $where[] = ' x.published > -1 ';
         
         $acl = UserAcl::getInstance();
         if (!$acl->superuser()) 
