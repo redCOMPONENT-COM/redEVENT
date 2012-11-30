@@ -277,6 +277,16 @@ class redEVENTHelper {
 					if (!$db->query()) {
 						RedeventHelperLog::simpleLog('recurrence copying roles error: '.$db->getErrorMsg());
 					}
+					
+					// copy the prices
+					$query = ' INSERT INTO #__redevent_sessions_pricegroups (xref, pricegroup_id, price) ' 
+					       . ' SELECT '.$object->id.', pricegroup_id, price '
+					       . ' FROM #__redevent_sessions_pricegroups '
+					       . ' WHERE xref = ' . $db->Quote($r->xref_id);
+					$db->setQuery($query);
+					if (!$db->query()) {
+						RedeventHelperLog::simpleLog('recurrence copying prices error: '.$db->getErrorMsg());
+					}
 
 					// update repeats table
 					$query = ' INSERT INTO #__redevent_repeats '
