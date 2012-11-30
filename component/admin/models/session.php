@@ -451,6 +451,14 @@ class RedEventModelSession extends JModel
       return false;
     }
     
+    // delete corresponding prices
+    $q = "DELETE FROM #__redevent_sessions_pricegroups WHERE xref =". $this->_db->Quote((int)$id);
+    $this->_db->setQuery($q);
+    if (!$this->_db->query()) {
+      $this->setError(JText::_('COM_REDEVENT_DB_ERROR_DELETING_XREF_ROLES'));
+      return false;
+    }
+    
     // delete corresponding record in repeats table in case of recurrences
     $q = "DELETE FROM #__redevent_repeats WHERE xref_id =". $this->_db->Quote((int)$id);
     $this->_db->setQuery($q);
