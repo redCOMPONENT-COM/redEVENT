@@ -120,6 +120,30 @@ file_filter = languages/<lang>/admin/<lang>/<lang>.plg_community_redevent.sys.in
 source_file = plugins/jomsocial/plg_js_redevent/language/en-GB/en-GB.plg_community_redevent.sys.ini
 source_lang = en-GB
 
+[redEVENT.25-admin-en-GB-plg_finder_re_events-ini]
+file_filter = languages/<lang>/admin/<lang>/<lang>.plg_finder_re_events.ini
+source_file = plugins/finder/re_events/language/en-GB/en-GB.plg_finder_re_events.ini
+source_lang = en-GB
+type=INI
+
+[redEVENT.25-admin-en-GB-plg_finder_re_events-sys-ini]
+file_filter = languages/<lang>/admin/<lang>/<lang>.plg_finder_re_events.sys.ini
+source_file = plugins/finder/re_events/language/en-GB/en-GB.plg_finder_re_events.sys.ini
+source_lang = en-GB
+type=INI
+
+[redEVENT.25-admin-en-GB-plg_finder_re_venues-ini]
+file_filter = languages/<lang>/admin/<lang>/<lang>.plg_finder_re_venues.ini
+source_file = plugins/finder/re_venues/language/en-GB/en-GB.plg_finder_re_venues.ini
+source_lang = en-GB
+type=INI
+
+[redEVENT.25-admin-en-GB-plg_finder_re_venues-sys-ini]
+file_filter = languages/<lang>/admin/<lang>/<lang>.plg_finder_re_venues.sys.ini
+source_file = plugins/finder/re_venues/language/en-GB/en-GB.plg_finder_re_venues.sys.ini
+source_lang = en-GB
+type=INI
+
 [redEVENT.25-admin-en-GB-plg_redevent_jomsocial-ini]
 file_filter = languages/<lang>/admin/<lang>/<lang>.plg_redevent_jomsocial.ini
 source_file = plugins/jomsocial/redevent_jomsocial/language/en-GB/en-GB.plg_redevent_jomsocial.ini
