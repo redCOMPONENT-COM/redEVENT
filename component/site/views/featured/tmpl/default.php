@@ -65,7 +65,7 @@ $toggle = $this->params->get('filter_toggle', 3);
 
 <!--table-->
 
-<?php echo $this->loadTemplate('table'); ?>
+<?php echo $this->loadTemplate('events'); ?>
 
 <p>
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />

@@ -123,7 +123,7 @@ $colnames = array_map('trim', $colnames);
 	    			<meta itemprop="startDate" content="<?php echo REOutput::getIsoDate($row->dates, $row->times); ?>">
 	    			<?php endif; ?>
 	    			<?php if ($row->enddates && strtotime($row->enddates)): ?>
-	    			<meta itemprop="startDate" content="<?php echo REOutput::getIsoDate($row->enddates, $row->endtimes); ?>">
+	    			<meta itemprop="endDate" content="<?php echo REOutput::getIsoDate($row->enddates, $row->endtimes); ?>">
 	    			<?php endif; ?>
 	    			
 						<?php if ($this->params->get('link_date', 0)): ?>

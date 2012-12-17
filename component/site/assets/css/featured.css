@@ -1,0 +1,34 @@
+@CHARSET "UTF-8";
+
+div.featured-events div.event {
+	clear: both;
+	padding: 0 5px;
+	min-height: 100px;
+}
+
+div.featured-events div.when-where {
+	float: left;
+	padding: 0px;
+	margin: 0 5px;
+	background-color: white;
+	border: 2px darkred solid;
+	text-align: center;
+	width: 50px;
+}
+
+div.featured-events div.when-where div.month {
+	background-color: darkred;
+	color: white;
+	padding: 0 3px;
+	font-weight: bold;
+}
+
+div.featured-events div.when-where div.daynumber {
+	font-size: 2em;
+	font-weight: bold;
+}
+
+div.featured-events div.event-image {
+	float: right;
+	padding: 3px 5px;
+}
