@@ -324,11 +324,13 @@ class RedeventHelperRecurrence
     }
   }
   
-  function getnext($recurrence, $last_xref)
+  function getnext($recurrence, $last_xref, JRegistry $params = null)
   {
     $rule = RedeventHelperRecurrence::getRule($recurrence);
     
-    $params = & JComponentHelper::getParams('com_redevent');
+    if ($params === null) {
+    	$params = & JComponentHelper::getParams('com_redevent');
+    }
     $week_start = $params->get('week_start', 'SU');
 
 //    print_r($rule); 
@@ -381,7 +383,7 @@ class RedeventHelperRecurrence
         break;
         
       case 'MONTHLY':
-        if (!$rule->monthtype == 'bymonthdays') 
+        if (!$rule->monthtype == 'bymonthday') 
         	{
         		// first day of this month
         		$first_this = mktime(0, 0, 0, strftime('%m', $xref_start), 1, strftime('%Y', $xref_start));
@@ -431,7 +433,7 @@ class RedeventHelperRecurrence
           if (!$rule->bydays || !count($rule->bydays)) { // force to the day of previous session
           	$rule->bydays = array(date('d', strtotime($last_xref->dates)));
           }
-               
+          
           if (!$rule->reverse_bydays)
           {
             sort($rule->bydays);
@@ -443,9 +445,10 @@ class RedeventHelperRecurrence
                 break;
               }
             }
+            
             if ($next_day == null) // not this month => this month + interval month!
             {
-              $year_month = strftime('%Y-%m', strtotime(date("F", strtotime($last_xref->dates)) .' 1 +'. $rule->interval ." month"));
+              $year_month = strftime('%Y-%m', strtotime(date("Y-m-1", strtotime($last_xref->dates)) .' + '. $rule->interval ." months"));
               $next_start = strtotime($year_month.'-'.$rule->bydays[0]);
             }
             else {
@@ -461,11 +464,11 @@ class RedeventHelperRecurrence
             foreach ($rule->bydays as $day) 
             {
               // we need to check the dates for this month, and the +interval month
-              $dd = strtotime(date("F", strtotime($last_xref->dates)) .' 1 +1 month -'.$day. ' day');
+              $dd = strtotime(date("Y-m-1", strtotime($last_xref->dates)) .' + 1 months -'.$day. ' day');
               if ($dd > $current_sec) {
                 $next[] = $dd;
               }
-              $dd = strtotime(date("F", strtotime($last_xref->dates)) .' 1 +'.(1 + $rule->interval).' month -'.$day. ' day', strtotime($last_xref->dates));
+              $dd = strtotime(date("Y-m-1", strtotime($last_xref->dates)) .' +'.(1 + $rule->interval).' months -'.$day. ' days', strtotime($last_xref->dates));
               if ($dd > $current_sec) {
                 $next[] = $dd;
               }
@@ -553,7 +556,7 @@ class RedeventHelperRecurrence
     if (!$delta) { // no delta, so same session...
     	return false;
     }
-
+    
     // return the new occurence
     $new = clone $last_xref;
     
