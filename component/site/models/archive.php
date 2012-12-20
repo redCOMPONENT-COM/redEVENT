@@ -160,6 +160,11 @@ class RedeventModelArchive extends RedeventModelBaseEventList
       }
     }
     
+    $day_limit = trim($params->get('display_limit')) == '' ? false : (int) $params->get('display_limit');
+    if ($day_limit) {
+			$limit = strftime('%Y-%m-%d %H:%M', strtotime("- $day_limit days"));
+			$where[] = '(CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > '.$this->_db->Quote($limit);
+    }
 		
 		return ' WHERE '.implode(' AND ', $where);
 	}
