@@ -324,7 +324,7 @@ class redEVENTImage {
 		{
 			//try to generate the thumb
 			if (!JFolder::exists(dirname($thumb_path)) && !JFolder::create(dirname($thumb_path))) {
-				JError::raisewarning(0, JText::sprintf('COM_REDEVENT_THUMBNAILS_CANT_CREATE_PATH',dirname($thumb_path)));
+				RedeventHelperLog::simpleLog(sprintf('Can\'t create path for thumbnail: %s',dirname($thumb_path)));
 				return false;
 			}
 			if (redEVENTImage::thumb(JPATH_SITE.DS.$path, $thumb_path, $width, $height)) {
