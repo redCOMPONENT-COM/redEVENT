@@ -32,20 +32,36 @@ class recurrenceTest extends JoomlaTestCase
 		$xref->times = '14:00';
 		$xref->endtimes = '16:00';
 		$xref->registrationend = null;
-		
+				
 		$expect = clone $xref;
 		$expect->dates = '2013-01-04';
-		$expect->enddates = '2013-01-04';
+		$expect->enddates = '2013-01-04';		
 		
 		$data['first'] = array($rrule, $xref, $expect, 'should be one month from initial');
 		
 		// continuing
 		$expect2 = clone $expect;
 		$expect2->dates = '2013-02-04';
-		$expect2->enddates = '2013-02-04';
-		
+		$expect2->enddates = '2013-02-04';		
 		
 		$data['second'] = array($rrule, $expect, $expect2, 'should be one month from initial');
+		
+		// weekly
+		$rrule = 'RRULE:FREQ=WEEKLY;INTERVAL=1;COUNT=999;WKST=MO;';
+		$xref_3 = new stdclass();
+		$xref_3->dates = '2012-10-14';
+		$xref_3->enddates = '2012-10-14';
+		$xref_3->times = '14:00';
+		$xref_3->endtimes = '16:00';
+		$xref_3->registrationend = null;
+		$xref_3->count = 0;
+				
+		$expect_3 = clone $xref_3;
+		$expect_3->dates = '2012-10-21';
+		$expect_3->enddates = '2012-10-21';	
+		
+		$data['weekly'] = array($rrule, $xref_3, $expect_3, 'should be one week from initial');
+		
 		return $data;
 	}
 	
