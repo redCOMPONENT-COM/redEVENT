@@ -23,6 +23,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+require_once (JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'log.php');
+
 /**
  * Holds the logic for image manipulation
  *
@@ -257,7 +259,7 @@ class redEVENTImage {
 		}
 		
 		if (!file_exists(JPATH_SITE.DS.$path)) {
-			$app->enqueueMessage(JText::sprintf('COM_REDEVENT_IMAGECLASS_WRONG_PATH_S', $path), 'notice');
+			RedeventHelperLog::simpleLog(sprintf('Image not found: %s', $path));
 			return false;			
 		}
 		
