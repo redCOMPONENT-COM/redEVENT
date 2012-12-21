@@ -50,12 +50,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 </div>
 
 <!-- Details EVENT -->
-	<?php //flyer
+	<?php 
 		$review_txt =  trim(strip_tags($this->row->review_message));
 		echo $this->tags->ReplaceTags($this->row->datdescription, array('hasreview' => (!empty($review_txt))) );
-/* If registration is enabled */
-if ($this->row->show_names) : ?>
+		
+		if ($this->view_attendees_list) : ?>
 		<!-- Registration -->
+		<div class="registrations">
 		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).':'; ?></h2>
 		<?php
 			foreach ($this->venuedates AS $key => $venuedate) 
@@ -82,9 +83,9 @@ if ($this->row->show_names) : ?>
         $attendees_layout = ($this->params->get('details_attendees_layout', 0) ? 'attendees' : 'attendees_table');
         
 				echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&id='.$this->row->slug.'&tpl='. $attendees_layout .'&xref='.$venuedate->id), JText::_('COM_REDEVENT_SHOW_REGISTERED_USERS').' '.$displaydate.' '.$displaytime);
-				echo '<br />';
 			}
 		?>
+		</div>
 	<?php endif; ?>
 		
 	<?php if ($this->elsettings->get('commentsystem') != 0) :	?>

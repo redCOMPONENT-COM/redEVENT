@@ -236,14 +236,17 @@ class RedeventViewDetails extends JView
     //manages attendees
     $manage_attendees  = $this->get('ManageAttendees') || $this->get('ViewFullAttendees');
     $candeleteattendees  = $this->get('ManageAttendees');
-		
+    $view_attendees_list = $row->show_names 
+                       && in_array($params->get('frontend_view_attendees_access'), JFactory::getUser()->getAuthorisedViewLevels());
+    
 		//assign vars to jview
 		$this->assignRef('row',              $row);
 		$this->assignRef('params',           $params);
     $this->assignRef('user',             $user);
 		$this->assignRef('allowedtoeditevent', 	$allowedtoeditevent);
 		$this->assignRef('manage_attendees',    $manage_attendees);
-		$this->assignRef('candeleteattendees',   $candeleteattendees);
+		$this->assignRef('view_attendees_list', $view_attendees_list);
+		$this->assignRef('candeleteattendees',  $candeleteattendees);
 		$this->assignRef('print_link',       $print_link);
 		$this->assignRef('registers',        $registers);
 		$this->assignRef('registersfields',  $register_fields);

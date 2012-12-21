@@ -394,6 +394,13 @@
  		<field type="spacer" hr="true"/>
  		<field type="spacer" label="COM_REDEVENT_SETTINGS_REGISTRATION_EXPIRATION_DESC" />
  	 	<field name="registration_expiration" type="text" size="80" default="" label="COM_REDEVENT_SETTINGS_REGISTRATION_EXPIRATION_LABEL" description="COM_REDEVENT_SETTINGS_REGISTRATION_EXPIRATION_DESC" />
+ 	 	 	 	
+ 		<field type="spacer" hr="true"/>
+ 		<field name="frontend_view_attendees_access"
+ 		       type="accesslevel"
+ 		       label="COM_REDEVENT_SETTINGS_REGISTRATION_FRONTEND_VIEW_ATTENDEES_ACCESS" 
+ 		       description="COM_REDEVENT_SETTINGS_REGISTRATION_FRONTEND_VIEW_ATTENDEES_ACCESS_DESC" 			
+ 		/>
  	
  	</fieldset>
  	

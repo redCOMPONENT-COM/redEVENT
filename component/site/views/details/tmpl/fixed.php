@@ -276,9 +276,9 @@ if ($this->row->venueid != 0) {
 		<div class="clear"></div>
 		</div>
 	<?php endif; ?>
-
+	
 	<?php /* If registration is enabled */
-	if ($this->row->show_names) : ?>
+	if ($this->view_attendees_list) : ?>
 	<?php $attendees_layout = ($this->params->get('details_attendees_layout', 0) ? 'attendees' : 'attendees_table'); ?>
 	<?php echo $this->loadTemplate($attendees_layout); ?>
 	<?php endif; ?>

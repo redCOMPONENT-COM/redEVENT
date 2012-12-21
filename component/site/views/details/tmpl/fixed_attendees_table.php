@@ -24,7 +24,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-if ($this->row->show_names) {
+if ($this->view_attendees_list) {
 	?>
 	<div class="event_id<?php echo $this->row->did; ?> el_details">
 		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ); ?>
@@ -130,4 +130,3 @@ if ($this->row->show_names) {
 	</div>
 	<?php
 }
-?>

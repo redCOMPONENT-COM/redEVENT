@@ -24,7 +24,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-if ($this->row->show_names) {
+if ($this->view_attendees_list) {
 	?>
 	<div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
 
@@ -132,4 +132,3 @@ if ($this->row->show_names) {
 	<?php
 }
 echo JHTML::_('link', JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xref)), JText::_('COM_REDEVENT_RETURN_EVENT_DETAILS'));
-?>
