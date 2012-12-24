@@ -33,9 +33,7 @@ jimport('joomla.application.component.controller');
  * @since 0.9
  */
 class RedEventControllerEvents extends RedEventController
-{
-	private $twit;
-	
+{	
 	/**
 	 * Constructor
 	 *
@@ -47,6 +45,7 @@ class RedEventControllerEvents extends RedEventController
 
 		// Register Extra task
 		$this->registerTask( 'apply', 		'save' );
+		$this->registerTask( 'saveAndTwit', 'save' );
 		$this->registerTask( 'copy',	 	'edit' );
 		$this->registerTask( 'add',	 	'edit' );
 		
@@ -249,21 +248,14 @@ class RedEventControllerEvents extends RedEventController
 			
 			if (isset($post['venueid']) && $post['venueid'])
 			{
-				if (!$this->_saveInitialSession($returnid)) {
+				if (!$xref = $this->_saveInitialSession($returnid)) {
 					$msg .= "\n".JTExt::_('COM_REDEVENT_EVENT_FAILED_SAVING_INITIAL_SESSION').': '.$this->getError();
 				} 
-			}
-			
-			if ($this->twit == true && 0)
-			{
-				//If the AutoTweet NG Component is installed 
-				if (JComponentHelper::getComponent('com_autotweet', true)->enabled) {
-					//If the redEVENT twitter plugin is installed
-					if (JPluginHelper::isEnabled("system", "autotweetredevent"))
-					{
-						//Add twitter redirect
-						$twitter_redirect = '&twit_id='.$returnid.'&message='.$msg;
-					}
+				if (JRequest::getVar('task') == 'saveAndTwit')
+				{
+					JPluginHelper::importPlugin( 'system', 'autotweetredevent');
+					$dispatcher =& JDispatcher::getInstance();
+					$res = $dispatcher->trigger( 'onAfterRedeventSessionSave', array( $xref ) );
 				}
 			}
 
@@ -274,7 +266,7 @@ class RedEventControllerEvents extends RedEventController
 					break;
 
 				default :
-					$link = 'index.php?option=com_redevent&view=events'.$twitter_redirect;
+					$link = 'index.php?option=com_redevent&view=events';
 					break;
 			}
 						
@@ -291,16 +283,6 @@ class RedEventControllerEvents extends RedEventController
 		
 		$this->setRedirect( $link, $msg );
  	}
-
-	function saveAndTwit()
-	{
-		$this->twit = true;
-		$this->save();
-	}
-
-	function twitRedirect() {
-		$this->setRedirect('index.php?option='.JRequest::getVar('option').'&view=events&id='.JRequest::getVar('twit_id'), JRequest::getVar('message'));
-	}
 
 	/**
 	 * logic to remove an event
@@ -542,7 +524,7 @@ class RedEventControllerEvents extends RedEventController
    * save data of first session associated to newly created event
    * 
    * @param int $eventid
-   * @return true on success
+   * @return mixed xref id on success, else false
    */
   protected function _saveInitialSession($eventid)
   {
@@ -565,7 +547,7 @@ class RedEventControllerEvents extends RedEventController
     	$this->setError($model->getError());
     	return false;
     }
-    return true;
+    return $returnid;
   	
   }
 }

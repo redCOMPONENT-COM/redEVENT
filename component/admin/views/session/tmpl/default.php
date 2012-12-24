@@ -24,7 +24,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 window.addEvent('domready', function() {
         document.formvalidator.setHandler('venue', function(value) {
                 return value != 0;
@@ -293,7 +293,7 @@ function updateend(cal)
 <?php echo JHTML::_( 'form.token' ); ?>
 <input type="hidden" name="option" value="com_redevent" />
 <input type="hidden" name="controller" value="sessions"/>
-<input type="hidden" name="task" value="savexref"/>
+<input type="hidden" name="task" value=""/>
 <input type="hidden" name="id" value="<?php echo $this->xref->id; ?>"/>
 <input type="hidden" name="eventid" value="<?php echo $this->xref->eventid; ?>"/>
 <input type="hidden" name="recurrenceid" value="<?php echo (isset($this->xref->recurrence_id) ? $this->xref->recurrence_id : ''); ?>"/>

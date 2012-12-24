@@ -217,7 +217,7 @@ class RedEventViewEvent extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::save();
 		//If the AutoTweet NG Component is installed 
-		if (0 && JComponentHelper::getComponent('com_autotweet', true)->enabled)
+		if (JComponentHelper::getComponent('com_autotweet', true)->enabled && !$row->id)
 		{
 			//If the redEVENT twitter plugin is installed
 			if (JPluginHelper::isEnabled("system", "autotweetredevent"))

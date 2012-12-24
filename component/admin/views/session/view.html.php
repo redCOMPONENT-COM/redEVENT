@@ -58,6 +58,15 @@ class RedEventViewSession extends JView {
 			JToolBarHelper::title(   JText::_( 'COM_REDEVENT_SESSION' ).': <small><small>[ ' . $text.' ]</small></small>' );
 			JToolBarHelper::save();
 			JToolBarHelper::apply();
+			//If the AutoTweet NG Component is installed 
+			if (JComponentHelper::getComponent('com_autotweet', true)->enabled)
+			{
+				//If the redEVENT twitter plugin is installed
+				if (JPluginHelper::isEnabled("system", "autotweetredevent"))
+				{
+					JToolBarHelper::save('saveAndTwit', 'Save & twit');
+				}
+			}
 			if (!$edit)  {
 				JToolBarHelper::cancel();
 			} else {

@@ -21,22 +21,22 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.error.error' );
+jimport('joomla.error.error');
 
-// check for component
-if (!JComponentHelper::getComponent('com_autotweet', true)->enabled) {
-	JError::raiseWarning('5', 'AutoTweet NG redEVENT-Plugin - AutoTweet NG Component is not installed or not enabled.');
+// Check for component
+if (!JComponentHelper::getComponent('com_autotweet', true)->enabled)
+{
+	JError::raiseWarning('5', 'AutoTweet NG Content-Plugin - AutoTweet NG Component is not installed or not enabled.');
 	return;
 }
+require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_autotweet' . DS . 'helpers' . DS . 'autotweetbase.php';
+JTable::addIncludePath(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_autotweet' . DS . 'tables');
 
 // check for redEVENT extension
 if (!JComponentHelper::getComponent('com_redevent', true)->enabled) {
-	JError::raiseWarning('5', 'AutoTweet NG redEVENT-Plugin - redEVENT forum extensions is not installed or not enabled.');
+	JError::raiseWarning('5', 'AutoTweet NG redEVENT-Plugin - redEVENT extension is not installed or not enabled.');
 	return;
 }
-
-include_once (JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_autotweet' . DS . 'helpers' . DS . 'autotweetbase.php');
-
 // redevent
 include_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'route.php');
 
@@ -46,33 +46,45 @@ include_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'route
   */
 class plgSystemAutotweetRedevent extends plgAutotweetBase
 {
-	function plgSystemAutotweetRedevent( &$subject, $params )
+	protected $text_template = '';
+	
+	protected $date_format = '';
+	
+	public function __construct( &$subject, $params )
 	{
 		parent::__construct( $subject, $params );
 		
 		// Get Plugin info
-		$plugin		=& JPluginHelper::getPlugin('system', 'autotweetredevent');
-		$pluginParams	= new JParameter($plugin->params);
+		$pluginParams = $this->pluginParams;
+		
+		$this->text_template = $pluginParams->get('text_template', JText::sprintf('PLG_SYSTEM_AUTOTWEET_REDEVENT_TEXT_TEMPLATE'));
+		$this->date_format   = $pluginParams->get('date_format', JText::sprintf('PLG_SYSTEM_AUTOTWEET_REDEVENT_DATE_FORMAT'));
 	}
 
-	// handles normal forum post
-	function onAfterDispatch()
+	/**
+	 * triggered after a session gets saved
+	 * @return boolean
+	 */
+	public function onAfterRedeventSessionSave($xref)
 	{
-		// Only post if data doesent already exist in the database
-		if (JRequest::getVar('option') == "com_redevent"
-		    && JRequest::getVar('view') == "events"
-		    && JRequest::getVar('twit_id') != "")
-		{
-			$db = &JFactory::getDBO();
-			
-			$query = " SELECT ".$db->NameQuote('id').", ".$db->NameQuote('title').
-				 " FROM ".$db->NameQuote('#__redevent_events').
-				 " WHERE ".$db->NameQuote('id')." = '".JRequest::getVar('twit_id')."'";
-			$db->setQuery($query);
-			$row = $db->loadObjectList();	
-			
-			$this->postStatusMessage($row[0]->id, JFactory::getDate()->toFormat(), $row[0]->title, 'event');
-		}
+		$db = &JFactory::getDBO();
+		
+		$db = &JFactory::getDbo();
+		$query = $db->getQuery(true);
+		
+		$query->select('x.id, x.dates, x.times');
+		$query->select('e.title');
+		$query->select('v.venue');
+		$query->from('#__redevent_event_venue_xref AS x');
+		$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
+		$query->join('INNER', '#__redevent_venues AS v ON v.id = x.venueid');
+		$query->where('x.id = '.(int) $xref);
+		$db->setQuery($query);
+		$res = $db->loadObject();
+		
+		$date = strtotime($res->dates) ? JFactory::getDate($res->dates) : false;
+		
+		$this->postStatusMessage($res->id, JFactory::getDate()->toFormat(), $res->title.'@'.$res->venue.($date ? $date->format(' \o\n Y-m-d') : ''), 'eventsession');
 	
 		return true;
 	}
@@ -85,21 +97,18 @@ class plgSystemAutotweetRedevent extends plgAutotweetBase
 	 * @return array title, text, hash, url
 	 */
 	public function getData($id, $typeinfo)
-	{
-//		if ($typeinfo != 'event') {
-//			return false;
-//		}
-		
+	{		
 		// $typeinfo not used
 		$db = & JFactory::getDBO();
     $user = & JFactory::getUser();
 		
-    $query = ' SELECT a.id, a.title, '
-           . ' x.id as xref, '
+    $query = ' SELECT a.id, a.title, a.summary, a.dates, a.times, '
+           . ' x.id as xref, v.venue, '
            . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug '
            . ' FROM #__redevent_events AS a '
            . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id '
-           . ' WHERE a.id = ' . $id;
+           . ' INNER JOIN #__redevent_venues AS v ON v.id = x.venueid '
+           . ' WHERE x.id = ' . $id;
     $db->setQuery($query);
     
     if (!$event = $db->loadObject()) {
@@ -115,8 +124,24 @@ class plgSystemAutotweetRedevent extends plgAutotweetBase
 			'text'		=> $event->title,
 			'hashtags'	=> '',
 			'url'		=> RedeventHelperRoute::getDetailsRoute($event->slug, $event->xref),
+			'fulltext' => $event->summary,
 		);	
 		
 		return $data;
+	}
+	
+	protected function getFulltext($event)
+	{
+		$app = JFactory::getApplication();
+		$text = str_replace("{site_name}", $app->getCfg('sitename'), $this->text_template);
+		$text = str_replace("{title}", $event->title, $text);
+		$text = str_replace("{venue}", $event->venue, $text);
+		if (!strtotime($event->dated)) {
+			$text = str_replace("{date}",  '', $text);
+		}
+		else {
+			$date = JFactory::getDate($event->dates);
+			$text = str_replace("{date}",  $date->format($this->date_format), $text);
+		}
 	}
 }	

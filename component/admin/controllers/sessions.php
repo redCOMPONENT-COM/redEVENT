@@ -39,67 +39,23 @@ class RedEventControllerSessions extends RedEventController
 	 *
 	 * @since 0.9
 	 */
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 
 		// Register Extra task
-		$this->registerTask( 'apply', 		'save' );
-		$this->registerTask( 'copy',	 	'edit' );
-		$this->registerTask( 'add',	 	'edit' );
+		$this->registerTask( 'apply', 		  'save' );
+		$this->registerTask( 'saveAndTwit', 'save' );
+		$this->registerTask( 'copy',	     	'edit' );
+		$this->registerTask( 'add',	 	      'edit' );
 	}
-	
-	function editxref()
-	{
-    JRequest::setVar( 'view', 'session' );
-    JRequest::setVar( 'layout', 'default' );
-		
-    parent::display();
-	}
-	
-	function savexref()
-	{		
-    // Check for request forgeries
-    JRequest::checkToken() or die( 'Invalid Token' );
-        
-    $post = JRequest::get( 'post' );
-    $post['details'] = JRequest::getVar('details', '', 'post', 'string', JREQUEST_ALLOWRAW);
-    $post['icaldetails'] = JRequest::getVar('icaldetails', '', 'post', 'string', JREQUEST_ALLOWRAW);
-    
-    $model = $this->getModel('session');
-    if ($returnid = $model->savexref($post)) 
-    {
-			/* Check if people need to be moved on or off the waitinglist */
-			$model_wait = $this->getModel('waitinglist');
-			$model_wait->setXrefId($returnid);
-			$model_wait->UpdateWaitingList();
-			
-			$cache = &JFactory::getCache('com_redevent');
-			$cache->clean();
-			
-      $msg = 'saved session';
-      $this->setRedirect('index.php?option=com_redevent&controller=sessions&task=closexref&tmpl=component&xref='. $returnid, $msg);      
-    }
-    else {
-    	$msg = 'error saving: '. $model->getError() ;
-      $this->setRedirect('index.php?option=com_redevent&controller=sessions&task=editxref&tmpl=component&xref='. $returnid,  $msg, 'error');
-    }
-	}
-	
-  function closexref()
-  {
-    JRequest::setVar( 'view', 'session' );
-    JRequest::setVar( 'layout', 'closexref' );
-    
-    parent::display();
-  }
-  
-  function back()
+		  
+  public function back()
   {
   	$this->setRedirect('index.php?option=com_redevent&view=events');
   }
   
-  function edit()
+  public function edit()
   {
   	JRequest::setVar( 'hidemainmenu', 1 );
 		JRequest::setVar( 'layout', 'default'  );
@@ -115,7 +71,10 @@ class RedEventControllerSessions extends RedEventController
 		parent::display();
   }
 	
-	function save()
+  /**
+   * save the event session
+   */
+	public function save()
 	{		
     // Check for request forgeries
     JRequest::checkToken() or die( 'Invalid Token' );
@@ -147,6 +106,13 @@ class RedEventControllerSessions extends RedEventController
 			
 			$cache = &JFactory::getCache('com_redevent');
 			$cache->clean();
+						
+			if (JRequest::getVar('task') == 'saveAndTwit')
+			{
+				JPluginHelper::importPlugin( 'system', 'autotweetredevent');
+				$dispatcher =& JDispatcher::getInstance();
+				$res = $dispatcher->trigger( 'onAfterRedeventSessionSave', array( $returnid ) );
+			}
 			
       $msg = 'saved session';
       if (JRequest::getVar('task') == 'apply') {
@@ -160,9 +126,10 @@ class RedEventControllerSessions extends RedEventController
     	$msg = 'error saving: '. $model->getError() ;
       $this->setRedirect('index.php?option=com_redevent&view=sessions',  $msg, 'error');
     }
+    return true;
 	}
-	
-	function cancel()
+		
+	public function cancel()
 	{
     $eventid = JRequest::getInt('eventid');
     $this->setRedirect('index.php?option=com_redevent&view=sessions');
@@ -175,7 +142,7 @@ class RedEventControllerSessions extends RedEventController
 	 * @return void
 	 * @since 0.9
 	 */
-	function publish()
+	public function publish()
 	{
 		$cid 	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
@@ -203,7 +170,7 @@ class RedEventControllerSessions extends RedEventController
 	 * @return void
 	 * @since 0.9
 	 */
-	function unpublish()
+	public function unpublish()
 	{
 		$cid 	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
@@ -231,7 +198,7 @@ class RedEventControllerSessions extends RedEventController
 	 * @return void
 	 * @since 0.9
 	 */
-	function archive()
+	public function archive()
 	{
 		$cid 	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
@@ -259,7 +226,7 @@ class RedEventControllerSessions extends RedEventController
 	 * @return void
 	 * @since 0.9
 	 */
- 	function remove()
+ 	public function remove()
 	{
 		$cid = JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
@@ -298,7 +265,7 @@ class RedEventControllerSessions extends RedEventController
 	 * @return void
 	 * @since 0.9
 	 */
-	function featured()
+	public function featured()
 	{
 		$cid 	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
@@ -326,7 +293,7 @@ class RedEventControllerSessions extends RedEventController
 	 * @return void
 	 * @since 0.9
 	 */
-	function unfeatured()
+	public function unfeatured()
 	{
 		$cid 	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
 
