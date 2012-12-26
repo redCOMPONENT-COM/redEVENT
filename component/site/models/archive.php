@@ -45,7 +45,11 @@ class RedeventModelArchive extends RedeventModelBaseEventList
 		$filter 		  = $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter', 'filter', '', 'string');
 		$filter_type 	= $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter_type', 'filter_type', '', 'string');
     $customs      = $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter_customs', 'filtercustom', array(), 'array');
-		
+    
+    // Get the filter request variables
+    $this->setState('filter_order',     JRequest::getCmd('filter_order', 'x.dates'));
+    $this->setState('filter_order_dir', JRequest::getCmd('filter_order_Dir', $mainframe->getParams('com_redevent')->get('archive_ordering', 'ASC')));
+    
 		$this->setState('filter',         $filter);
 		$this->setState('filter_type',    $filter_type);
 		$this->setState('filter_customs', $customs);

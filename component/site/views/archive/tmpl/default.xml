@@ -20,6 +20,11 @@
 			       label="COM_REDEVENT_VIEW_ARCHIVE_FIELD_DISPLAY_LIMIT" 
 			       description="COM_REDEVENT_VIEW_ARCHIVE_FIELD_DISPLAY_LIMIT_TIP"
 			       />
+			       
+			<field name="archive_ordering" type="list" default="ASC" label="COM_REDEVENT_VIEW_ARCHIVE_FIELD_ORDERING" description="COM_REDEVENT_VIEW_ARCHIVE_FIELD_ORDERING_TIP">
+				<option value="ASC">COM_REDEVENT_VIEW_ARCHIVE_FIELD_ORDERING_OLDEST_FIRST</option>
+				<option value="DESC">COM_REDEVENT_VIEW_ARCHIVE_FIELD_ORDERING_RECENT_FIRST</option>
+			</field>
 		</fieldset>
 	</fields>
 </metadata>
