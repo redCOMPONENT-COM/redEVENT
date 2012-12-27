@@ -14,6 +14,9 @@
 				<option value="1">COM_REDEVENT_Show</option>
 			</field>
 			
+			<field name="category_id" type="recategory" default="0" label="COM_REDEVENT_SELECT_CATEGORY" description="COM_REDEVENT_SELECT_CATEGORY_DESC" />
+      <field name="venue_id" type="revenue" default="0" label="COM_REDEVENT_Select_Venue" description="COM_REDEVENT_SELECTVENUE" />
+			
 			<field name="display_limit" 
 			       type="text" size="5"
 			       default=""
