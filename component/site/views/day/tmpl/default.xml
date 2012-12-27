@@ -8,6 +8,24 @@
 	<fields name="params" addfieldpath="/administrator/components/com_redevent/models/fields">
    	<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
 			<field name="days" type="text" size="2" default="0" label="COM_REDEVENT_DAYS_FIELD" description="COM_REDEVENT_DAYS_FIELD_TIP" />
+			<field name="show_pagination" type="list"
+				description="JGLOBAL_PAGINATION_DESC"
+				label="JGLOBAL_PAGINATION_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+				<option value="2">JGLOBAL_AUTO</option>
+			</field>
+
+			<field name="show_pagination_results" type="list"
+				label="JGLOBAL_PAGINATION_RESULTS_LABEL"
+				description="JGLOBAL_PAGINATION_RESULTS_DESC">
+
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
 		</fieldset>
 	</fields>
 </metadata>

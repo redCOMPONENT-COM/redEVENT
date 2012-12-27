@@ -190,6 +190,26 @@
 			<option value="100">100</option>
 			<option value="200">200</option>
 		</field>	
+		
+		<field name="show_pagination"
+			type="list"
+			default="2"
+			label="JGLOBAL_Pagination_Label"
+			description="JGLOBAL_Pagination_Desc">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+				<option value="2">JGLOBAL_AUTO</option>
+		</field>
+
+		<field name="show_pagination_results"
+			type="radio"
+			default="1"
+			label="JGLOBAL_PAGINATION_RESULTS_LABEL"
+			description="JGLOBAL_PAGINATION_RESULTS_DESC">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+		</field>
+		
   	<field name="filter_toggle" type="list" default="3" label="COM_REDEVENT_SETTINGS_FILTER_TOGGLE" description="COM_REDEVENT_SETTINGS_FILTER_TOGGLE_DESC">
 			<option value="0">COM_REDEVENT_SETTINGS_FILTER_TOGGLE_OPTION_OFF_SHOW_FILTERS</option>
 			<option value="1">COM_REDEVENT_SETTINGS_FILTER_TOGGLE_OPTION_OFF_HIDE_FILTERS</option>

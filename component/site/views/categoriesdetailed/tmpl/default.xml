@@ -14,6 +14,25 @@
         <option value="1">Yes</option>
       </field>
 			<field name="detcat_nr" type="text" size="1" default="3" label="COM_REDEVENT_DET_CATEGORIES_PREVIEW" description="COM_REDEVENT_DET_CATEGORIES_PREVIEW_DESC" />
+
+			<field name="show_pagination" type="list"
+				description="JGLOBAL_PAGINATION_DESC"
+				label="JGLOBAL_PAGINATION_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+				<option value="2">JGLOBAL_AUTO</option>
+			</field>
+
+			<field name="show_pagination_results" type="list"
+				label="JGLOBAL_PAGINATION_RESULTS_LABEL"
+				description="JGLOBAL_PAGINATION_RESULTS_DESC">
+
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
 		</fieldset>
 	</fields>
 </metadata>

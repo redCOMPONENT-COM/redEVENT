@@ -21,6 +21,25 @@
 			       description="COM_REDEVENT_VIEW_ARCHIVE_FIELD_DISPLAY_LIMIT_TIP"
 			       />
 			       
+			<field name="show_pagination" type="list"
+				description="JGLOBAL_PAGINATION_DESC"
+				label="JGLOBAL_PAGINATION_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+				<option value="2">JGLOBAL_AUTO</option>
+			</field>
+
+			<field name="show_pagination_results" type="list"
+				label="JGLOBAL_PAGINATION_RESULTS_LABEL"
+				description="JGLOBAL_PAGINATION_RESULTS_DESC">
+
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			
 			<field name="archive_ordering" type="list" default="ASC" label="COM_REDEVENT_VIEW_ARCHIVE_FIELD_ORDERING" description="COM_REDEVENT_VIEW_ARCHIVE_FIELD_ORDERING_TIP">
 				<option value="ASC">COM_REDEVENT_VIEW_ARCHIVE_FIELD_ORDERING_OLDEST_FIRST</option>
 				<option value="DESC">COM_REDEVENT_VIEW_ARCHIVE_FIELD_ORDERING_RECENT_FIRST</option>

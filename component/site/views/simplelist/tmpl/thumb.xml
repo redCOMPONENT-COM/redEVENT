@@ -18,6 +18,24 @@
 				<option value="1">COM_REDEVENT_VIEW_FILTER_EVENT_STATE_UPCOMINGS</option>
 				<option value="2">COM_REDEVENT_VIEW_FILTER_EVENT_STATE_OPENDATE</option>
 			</field>
+			<field name="show_pagination" type="list"
+				description="JGLOBAL_PAGINATION_DESC"
+				label="JGLOBAL_PAGINATION_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+				<option value="2">JGLOBAL_AUTO</option>
+			</field>
+
+			<field name="show_pagination_results" type="list"
+				label="JGLOBAL_PAGINATION_RESULTS_LABEL"
+				description="JGLOBAL_PAGINATION_RESULTS_DESC">
+
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
 		</fieldset>
 	</fields>
 </metadata>
