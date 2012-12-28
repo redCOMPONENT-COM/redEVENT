@@ -421,6 +421,13 @@
  		       label="COM_REDEVENT_SETTINGS_REGISTRATION_FRONTEND_VIEW_ATTENDEES_ACCESS" 
  		       description="COM_REDEVENT_SETTINGS_REGISTRATION_FRONTEND_VIEW_ATTENDEES_ACCESS_DESC" 			
  		/>
+ 		
+    <field name="price_select_layout" type="list" default="0" 
+           label="COM_REDEVENT_SETTINGS_REGISTRATION_PRICE_SELECT_LAYOUT_LABEL" 
+           description="COM_REDEVENT_SETTINGS_REGISTRATION_PRICE_SELECT_LAYOUT_DESC">
+      <option value="select">COM_REDEVENT_SETTINGS_REGISTRATION_PRICE_SELECT_LAYOUT_SELECT</option>
+      <option value="radio">COM_REDEVENT_SETTINGS_REGISTRATION_PRICE_SELECT_LAYOUT_RADIO</option>
+    </field>
  	
  	</fieldset>
  	

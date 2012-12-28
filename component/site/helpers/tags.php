@@ -1080,8 +1080,8 @@ class redEVENT_tags {
   		if (($multi > 1 && count($prices) > 1) || !$selpg) // multiple selection
   		{
   			$field = array();
-  			$field['label'] = '<label for="pricegroup_id">'.JText::_('COM_REDEVENT_REGISTRATION_PRICE').'</label>';
-  			$field['field'] = ($currency ? $currency.' ' : '').redEVENTHelper::getRfPricesSelect($prices);
+  			$field['label'] = '<label for="pricegroup_id">'.JText::_('COM_REDEVENT_REGISTRATION_PRICE').($currency ? ' <span class="price-currency">('.$currency.')</span>' : '').'</label>';
+  			$field['field'] = redEVENTHelper::getRfPricesSelect($prices);
   			$field['class'] = 'reg-price';
 	  		$options['extrafields'][] = $field;
   		}
@@ -1089,7 +1089,8 @@ class redEVENT_tags {
   		{
   			$field = array();
   			$field['label'] = '<label for="pricegroup_id">'.JText::_('COM_REDEVENT_REGISTRATION_PRICE').'</label>';
-  			$field['field'] = REOutput::formatprice($selpg->price, $currency).(count($prices) > 1 ? ' ('.$selpg->name.')' : '') . '<input type="hidden" name="pricegroup_id[]" class="fixedprice" value="'.$selpg->pricegroup_id.'" price="'.$selpg->price.'" />';
+  			$field['field'] = REOutput::formatprice($selpg->price, $currency).(count($prices) > 1 ? ' ('.$selpg->name.')' : '') 
+  			                . '<input type="hidden" name="pricegroup_id[]" class="fixedprice" value="'.$selpg->pricegroup_id.'" price="'.$selpg->price.'" />';
   			$field['class'] = 'reg-price pg'.$selpg->id;
 	  		$options['extrafields'][] = $field;
   		}

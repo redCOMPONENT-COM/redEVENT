@@ -1195,6 +1195,7 @@ class redEVENTHelper {
   
   /**
    * generates the html for price group selection for redform
+   * @TODO doesn't work with multiple forms !!!
    * 
    * @param array session pricegroups objects
    * @param int selected pricegroup id
@@ -1202,13 +1203,35 @@ class redEVENTHelper {
    */
   function getRfPricesSelect($sessionpricegroups, $selected = null)
   {
-  	$sel = '<select name="pricegroup_id">';
-  	foreach ((array)$sessionpricegroups as $p)
+  	$layout = JComponentHelper::getParams('com_redevent')->get('price_select_layout', 'select');
+  	$html = array();
+  	if ($layout == 'radio')
   	{
-  		$sel .= '<option value="'.$p->pricegroup_id.'" price="'.$p->price.'"'.($p->pricegroup_id == $selected ? ' selected="selected"' : '').'>'.$p->price.' ('.$p->name.')'.'</option>';
+  		$html[] = '<fieldset class="price-select">';
+  		foreach ((array)$sessionpricegroups as $i => $p)
+	  	{
+	  		$selected = $selected == null ? $p->pricegroup_id : $selected; // force at least one radio to be selected
+				$html[] = '<input type="radio" name="pricegroup_id" value="'.$p->pricegroup_id.'" price="'.$p->price.'"'
+				  . 'id="pricegroup_id'.$i.'"'
+				  . ($p->pricegroup_id == $selected ? ' checked="checked"' : '')
+				  . '/>';
+				
+				$html[] = '<label for="pricegroup_id' . $i . '">'
+				. $p->price.' ('.$p->name.')' . '</label>';
+	  	}
+  		
+  		$html[] = '</fieldset>';
   	}
-  	$sel .= '</select>';
-  	return $sel;
+  	else
+  	{
+	  	$html[] = '<select name="pricegroup_id">';
+	  	foreach ((array)$sessionpricegroups as $p)
+	  	{
+	  		$html[] = '<option value="'.$p->pricegroup_id.'" price="'.$p->price.'"'.($p->pricegroup_id == $selected ? ' selected="selected"' : '').'>'.$p->price.' ('.$p->name.')'.'</option>';
+	  	}
+	  	$html[] = '</select>';
+  	}
+  	return implode($html);
   }
   
   /**
