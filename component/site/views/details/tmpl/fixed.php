@@ -27,6 +27,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 if ($this->row->venueid != 0) {
 	$venuelink = RedeventHelperRoute::getVenueEventsRoute($this->row->venueslug);
 }
+$d = JFactory::getDate();
+echo JText::_('PLG_SYSTEM_AUTOTWEET_REDEVENT_DATE_FORMAT', true);
+echo $d->format(JText::_('PLG_SYSTEM_AUTOTWEET_REDEVENT_DATE_FORMAT', true));
 ?>
 <div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
 	<p class="buttons">

@@ -16,4 +16,19 @@
 		<folder>language</folder>
 	</files>
 	
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+		    <field name="text_template" type="textarea" 
+		           default="" 
+		           label="PLG_SYSTEM_AUTOTWEET_REDEVENT_TEXT_TEMPLATE_LABEL" 
+		           description="PLG_SYSTEM_AUTOTWEET_REDEVENT_TEXT_TEMPLATE_DESCRIPTION"/>
+		    <field name="date_format" type="text" 
+		           default="" 
+		           label="PLG_SYSTEM_AUTOTWEET_REDEVENT_DATE_FORMAT_LABEL" 
+		           description="PLG_SYSTEM_AUTOTWEET_REDEVENT_DATE_FORMAT_DESCRIPTION"/>
+  		</fieldset>
+ 		</fields>
+	</config>
+	
 </extension>

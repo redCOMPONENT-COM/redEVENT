@@ -38,7 +38,9 @@ if (!JComponentHelper::getComponent('com_redevent', true)->enabled) {
 	return;
 }
 // redevent
-include_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'route.php');
+include_once (JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'route.php');
+require_once (JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'log.php');
+require_once (JPATH_SITE.DS.'administrator/components/com_redevent/classes/error.class.php');
 
 /**
  * redEVENT extension plugin for AutoTweet.
@@ -53,12 +55,13 @@ class plgSystemAutotweetRedevent extends plgAutotweetBase
 	public function __construct( &$subject, $params )
 	{
 		parent::__construct( $subject, $params );
+		$this->loadLanguage();
 		
 		// Get Plugin info
 		$pluginParams = $this->pluginParams;
 		
-		$this->text_template = $pluginParams->get('text_template', JText::sprintf('PLG_SYSTEM_AUTOTWEET_REDEVENT_TEXT_TEMPLATE'));
-		$this->date_format   = $pluginParams->get('date_format', JText::sprintf('PLG_SYSTEM_AUTOTWEET_REDEVENT_DATE_FORMAT'));
+		$this->text_template = $pluginParams->get('text_template', JText::_('PLG_SYSTEM_AUTOTWEET_REDEVENT_TEXT_TEMPLATE'));
+		$this->date_format   = $pluginParams->get('date_format', JText::_('PLG_SYSTEM_AUTOTWEET_REDEVENT_DATE_FORMAT'));
 	}
 
 	/**
@@ -102,8 +105,8 @@ class plgSystemAutotweetRedevent extends plgAutotweetBase
 		$db = & JFactory::getDBO();
     $user = & JFactory::getUser();
 		
-    $query = ' SELECT a.id, a.title, a.summary, a.dates, a.times, '
-           . ' x.id as xref, v.venue, '
+    $query = ' SELECT a.id, a.title, a.summary, '
+           . ' x.id as xref, v.venue, x.dates, x.times, '
            . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug '
            . ' FROM #__redevent_events AS a '
            . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id '
@@ -118,13 +121,14 @@ class plgSystemAutotweetRedevent extends plgAutotweetBase
     	return false;
     }
     
+    
 		// return values
 		$data = array (
 			'title'		=> $event->title,
-			'text'		=> $event->title,
+			'text'		=> $this->getFulltext($event),
 			'hashtags'	=> '',
 			'url'		=> RedeventHelperRoute::getDetailsRoute($event->slug, $event->xref),
-			'fulltext' => $event->summary,
+			'fulltext' => $this->getFulltext($event),
 		);	
 		
 		return $data;
@@ -136,12 +140,13 @@ class plgSystemAutotweetRedevent extends plgAutotweetBase
 		$text = str_replace("{site_name}", $app->getCfg('sitename'), $this->text_template);
 		$text = str_replace("{title}", $event->title, $text);
 		$text = str_replace("{venue}", $event->venue, $text);
-		if (!strtotime($event->dated)) {
+		if (!strtotime($event->dates)) {
 			$text = str_replace("{date}",  '', $text);
 		}
 		else {
 			$date = JFactory::getDate($event->dates);
 			$text = str_replace("{date}",  $date->format($this->date_format), $text);
 		}
+		return $text;
 	}
 }	
