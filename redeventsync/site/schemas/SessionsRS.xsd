@@ -1,0 +1,67 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+        targetNamespace="http://www.redcomponent.com/redevent"
+        xmlns:re="http://www.redcomponent.com/redevent" 
+        elementFormDefault="qualified" 
+        attributeFormDefault="unqualified" >
+	<xs:element name="SessionsRS">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="SessionRS" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>						
+							<xs:element type="xs:positiveInteger" name="TransactionId">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">The id of this transaction in the original message RQ sequence</xs:documentation>
+								</xs:annotation>
+							</xs:element>	
+							<xs:choice>
+								<xs:sequence>
+									<xs:element name="Success">
+										<xs:complexType>
+											<xs:annotation>
+												<xs:documentation source="Description" xml:lang="en">Returning an empty element of this type indicates the successful processing of the message. This is used in conjunction with the Warning Type to report any warnings or business errors.</xs:documentation>
+											</xs:annotation>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="Warnings" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Used when a message has been successfully processed to report any warnings or business errors that occurred.</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element type="xs:string" name="Warning">
+													<xs:annotation>
+														<xs:documentation>Description of the warning.</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>									
+									</xs:element>
+									<xs:element type="xs:string" name="SessionCode">
+										<xs:annotation>
+											<xs:documentation source="Description" xml:lang="en">The session code of the Session succesfully created / modified / deleted</xs:documentation>
+										</xs:annotation>
+									</xs:element>	
+								</xs:sequence>
+								<xs:element name="Errors">
+									<xs:annotation>
+										<xs:documentation>Indicates an error occurred during the processing of a message. If the message successfully processes, but there are business errors, those errors should be passed in the warning element.</xs:documentation>
+									</xs:annotation>
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element type="xs:string" name="Error">
+												<xs:annotation>
+													<xs:documentation>Description of the error.</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>	
+								</xs:element>
+							</xs:choice>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

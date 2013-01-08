@@ -73,6 +73,19 @@
 		<!-- Create the package -->
 		<tar basedir="${dirs.tmp}/component" destfile="${dirs.release}/com_${comp.name}-${version}.tar.gz" includeemptydirs="true" compression="gzip" />
 
+		<copy todir="${dirs.tmp}/redeventsync" >
+			<fileset dir="${dirs.root}/redeventsync">
+				<include name="**" />
+			</fileset>
+			<filterchain>
+				<replacetokens begintoken="##" endtoken="##">
+					<token key="DATE" value="${build.date}" />
+					<token key="VERSION" value="${version}" />
+				</replacetokens>
+			</filterchain>
+		</copy>
+		<tar basedir="${dirs.tmp}/redeventsync" destfile="${dirs.release}/com_redeventsync-${version}.tar.gz" includeemptydirs="true" compression="gzip" />
+
 		<!-- admin modules -->
 		<foreach param="dirname" absparam="absname" target="zipfolder">
 			<property name="myp" value="modules/admin" />
@@ -251,5 +264,73 @@
 			</filterchain>
         </copy>
 
+
+		<!-- redeventsync -->
+
+        <!-- Manifest & install script -->
+		<delete dir="${www.dir}/administrator/components/com_redeventsync" quiet="yes" includeemptydirs="false" />
+		<delete dir="${www.dir}/components/com_redeventsync" quiet="yes" includeemptydirs="false" />
+        <echo message="Copying manifest..." />
+        <copy file="${dirs.root}/redeventsync/redeventsync.xml"
+            tofile="${www.dir}/administrator/components/com_redeventsync/redeventsync.xml" overwrite="true">
+            <!-- trick to replace extension folders in the manifest-->
+            <filterchain>
+        	  <replaceregexp>
+        		<regexp pattern="folder=&quot;admin&quot;" replace="folder=&quot;administrator/components/com_redeventsync&quot;"/>
+        	  </replaceregexp>
+          	  <replaceregexp>
+          		<regexp pattern="folder=&quot;site&quot;" replace="folder=&quot;components/com_redeventsync&quot;"/>
+          	  </replaceregexp>
+				<replacetokens begintoken="##" endtoken="##">
+					<token key="DATE" value="${build.date}" />
+					<token key="VERSION" value="${version}" />
+				</replacetokens>
+            </filterchain>
+        </copy>
+        <copy file="${dirs.root}/redeventsync/install.php"
+            tofile="${www.dir}/administrator/components/com_redeventsync/install.php" overwrite="true" />
+
+        <!-- Backend component -->
+        <copy todir="${www.dir}/administrator/components/com_redeventsync" overwrite="true">
+            <fileset dir="${dirs.root}/redeventsync/admin">
+                <include name="**" />
+                <!-- Exclude the manifest to avoid overwriting the previously copied -->
+                <exclude name="redeventsync.xml" />
+            </fileset>
+        </copy>
+
+        <!-- Frontend component -->
+        <echo message="Copying frontend component..." />
+        <copy todir="${www.dir}/components/com_redeventsync" overwrite="true">
+            <fileset dir="${dirs.root}/redeventsync/site" />
+        </copy>
+
+        <!-- Media -->
+        <copy todir="${www.dir}/media" overwrite="true">
+            <fileset dir="${dirs.root}/redeventsync/media">
+                <include name="**" />
+            </fileset>
+        </copy>
+
+		<!-- included Plugins -->
+		<copy todir="${www.dir}/plugins" overwrite="true">
+			<fileset dir="${dirs.root}/redeventsync/admin/plugins">
+				<include name="**" />
+			</fileset>
+
+			<filterchain>
+				<replacetokens begintoken="##" endtoken="##">
+					<token key="DATE" value="${build.date}" />
+					<token key="VERSION" value="${version}" />
+				</replacetokens>
+			</filterchain>
+		</copy>
+
+		<!-- Test -->
+		<copy todir="${www.dir}/test" overwrite="true">
+			<fileset dir="${dirs.root}/redeventsync/test">
+				<include name="**" />
+			</fileset>
+		</copy>
     </target>
 </project>

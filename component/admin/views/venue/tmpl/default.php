@@ -104,6 +104,9 @@ JHtml::_('behavior.formvalidation');
 				<li><?php echo $this->form->getLabel('alias'); ?>
 				<?php echo $this->form->getInput('alias'); ?></li>
 
+				<li><?php echo $this->form->getLabel('venue_code'); ?>
+				<?php echo $this->form->getInput('venue_code'); ?></li>
+
 				<li><?php echo $this->form->getLabel('language'); ?>
 				<?php echo $this->form->getInput('language'); ?></li>
 

@@ -29,6 +29,14 @@
 			class="inputbox" />
 		
 		<field
+			name="venue_code"
+			type="text"
+			default=""
+			label="COM_REDEVENT_VENUE_CODE"
+			description ="COM_REDEVENT_VENUE_CODE_DESC"
+			class="inputbox" />
+		
+		<field
 			name="published"
 			type="list"
 			class="inputbox"

@@ -1313,6 +1313,11 @@ class redEVENT_tags {
 		return $this->getEvent()->getData()->full_title;
 	}
 
+	function _getTag_session_code()
+	{
+		return $this->getEvent()->getData()->session_code;
+	}
+
 	function _getTag_price()
 	{
 		return $this->formatPrices($this->getEvent()->getPrices());
@@ -1579,6 +1584,11 @@ class redEVENT_tags {
 	function _getTag_venue_title()
 	{
 		return $this->_getTag_venue();
+	}
+
+	function _getTag_venue_code()
+	{
+		return $this->getEvent()->getData()->venue_code;
 	}
 
 	function _getTag_venue_company()

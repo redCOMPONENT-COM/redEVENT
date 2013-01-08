@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SessionsRS
+	xmlns="http://www.redcomponent.com/redevent">
+	<SessionRS>
+		<TransactionId>3456</TransactionId>
+		<Success/>
+		<SessionCode>a code</SessionCode>
+	</SessionRS>
+	<SessionRS>
+		<TransactionId>23434234</TransactionId>
+		<Errors>
+			<Error>it failed</Error>
+		</Errors>
+	</SessionRS>
+</SessionsRS>

@@ -230,11 +230,11 @@ class RedeventModelBaseEventList extends JModel
 		$db = &JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref');
+		$query->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.session_code');
 		$query->select('x.maxattendees, x.maxwaitinglist, x.course_credit, x.featured, x.icaldetails, x.icalvenue, x.title as session_title');
 		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
 		$query->select('a.id, a.title, a.created, a.datdescription, a.registra, a.datimage, a.summary, a.submission_type_external');
-		$query->select('l.venue, l.city, l.state, l.url, l.street, l.country, l.locdescription');
+		$query->select('l.venue, l.city, l.state, l.url, l.street, l.country, l.locdescription, l.venue_code');
 		$query->select('c.catname, c.id AS catid');
 		$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
 		$query->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug');

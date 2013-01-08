@@ -270,18 +270,22 @@ class RedeventControllerFrontadmin extends FOFController
 
 			foreach ($regs as $user_id)
 			{
-				$res = $model->quickbook($user_id, $xref);
+				$attendee = $model->quickbook($user_id, $xref);
 				$regresp = new stdclass;
 
-				if ($res)
+				if ($attendee)
 				{
 					$regresp->status = 1;
 
 					if (redFORMHelperAnalytics::isEnabled())
 					{
-						$regresp->analytics = redFORMHelperAnalytics::recordTrans($res, array('affiliation' => 'redevent-b2b'));
+						$regresp->analytics = redFORMHelperAnalytics::recordTrans($attendee->submit_key, array('affiliation' => 'redevent-b2b'));
 					}
 					$added++;
+
+					JPluginHelper::importPlugin( 'redevent' );
+					$dispatcher =& JDispatcher::getInstance();
+					$res = $dispatcher->trigger('onAttendeeCreated', array($attendee->id));
 				}
 				else
 				{
@@ -355,6 +359,10 @@ class RedeventControllerFrontadmin extends FOFController
 		if ($res = $model->cancelregistration($rid))
 		{
 			$resp->status = 1;
+
+			JPluginHelper::importPlugin( 'redevent' );
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAttendeeCancelled', array($rid));
 		}
 		else
 		{

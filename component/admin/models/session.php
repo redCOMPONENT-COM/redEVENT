@@ -454,7 +454,6 @@ class RedEventModelSession extends JModel
 			return false;
 		}
 
-
 		$q = "DELETE FROM #__redevent_event_venue_xref WHERE id =". $this->_db->Quote((int)$id);
 		$this->_db->setQuery($q);
 		if (!$this->_db->query()) {

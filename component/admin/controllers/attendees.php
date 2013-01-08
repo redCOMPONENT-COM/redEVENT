@@ -39,7 +39,7 @@ class RedEventControllerAttendees extends RedEventController
 	 *
 	 *@since 0.9
 	 */
-	function __construct() 
+	function __construct()
 	{
 		parent::__construct();
 		$this->registerTask( 'addattendee', 'attendees' );
@@ -48,39 +48,39 @@ class RedEventControllerAttendees extends RedEventController
 		$this->registerTask( 'emailall',  'email' );
 		$this->registerTask( 'applymove', 'move' );
 	}
-	
-	public function Attendees() 
+
+	public function Attendees()
 	{
 		/* Create the view object */
 		$view = $this->getView('attendees', 'html');
-		
+
 		/* Standard model */
 		$view->setModel( $this->getModel( 'attendees', 'RedeventModel' ), true );
 		$view->setModel( $this->getModel( 'waitinglist', 'RedeventModel' ) );
 		$view->setLayout('default');
-		
+
 		/* Now display the view */
 		$view->display();
 	}
-	
-	public function Submitters() 
+
+	public function Submitters()
 	{
 		$mainframe = &JFactory::getApplication();
 		$mainframe->redirect('index.php?option=com_redform&controller=submitters&task=submitters&integration=redevent&xref='.JRequest::getInt('xref').'&form_id='.JRequest::getInt('form_id').'&filter='.JRequest::getInt('filter'));
-		
+
 		/* Create the view object */
 		$view = $this->getView('submitters', 'html');
-		
+
 		/* Standard model */
 		JController::addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_redform'.DS.'models');
 		$view->setModel( $this->getModel( 'submitters', 'RedformModel' ), true);
 		$view->setModel( $this->getModel( 'redform', 'RedformModel' ));
 		$view->setLayout('submitters');
-		
+
 		/* Now display the view */
 		$view->display();
 	}
-	
+
 	/**
 	 * Delete attendees
 	 *
@@ -89,30 +89,37 @@ class RedEventControllerAttendees extends RedEventController
 	 * @since 0.9
 	 */
 	function remove($cid = array())
-	{		
+	{
 		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
 		$xref 	= JRequest::getInt('xref');
 		$total 	= count( $cid );
 		$formid = JRequest::getInt('form_id');
-		
+
 		/* Check if anything is selected */
 		if (!is_array( $cid ) || count( $cid ) < 1) {
 			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_delete' ) );
 		}
-		
+
 		/* Get all submitter ID's */
 		$model = $this->getModel('attendees');
-				
+
 		if(!$model->remove($cid)) {
       RedEventError::raiseWarning(0, JText::_( "COM_REDEVENT_CANT_DELETE_REGISTRATIONS" ) . ': ' . $model->getError() );
 			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
 		}
-		
+
+		foreach($cid as $attendee_id)
+		{
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAttendeeDeleted', array($attendee_id));
+		}
+
 		/* Check if we have space on the waiting list */
 		$model_wait = $this->getModel('waitinglist');
 		$model_wait->setXrefId($xref);
 		$model_wait->UpdateWaitingList();
-		
+
 		$cache = JFactory::getCache('com_redevent');
 		$cache->clean();
 
@@ -129,49 +136,57 @@ class RedEventControllerAttendees extends RedEventController
 	 * @since 0.9
 	 */
 	function move($cid = array())
-	{		
+	{
 		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
 		$xref 	= JRequest::getInt('xref');
 		$dest 	= JRequest::getInt('dest');
 		$total 	= count( $cid );
 		$formid = JRequest::getInt('form_id');
-		
+
 		/* Check if anything is selected */
 		if (!is_array( $cid ) || count( $cid ) < 1) {
 			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_attendee_to_move' ) );
 		}
-		
-		
-		if (!$dest) // display the form to chose destination 
-		{			
+
+
+		if (!$dest) // display the form to chose destination
+		{
 			/* Create the view object */
 			$view = $this->getView('attendees', 'html');
-			
+
 			/* Standard model */
 			$view->setModel( $this->getModel( 'attendees', 'RedeventModel' ), true );
 			/* set layout */
 			$view->setLayout('move');
-			
+
 			/* Now display the view */
 			$view->display();
 			return;
 		}
-		
+
 		/* Get all submitter ID's */
 		$model = $this->getModel('attendees');
-				
+
 		if(!$model->move($cid, $dest)) {
       RedEventError::raiseWarning(0, JText::_( "COM_REDEVENT_ATTENDEES_CANT_MOVE_REGISTRATIONS" ) . ': ' . $model->getError() );
 			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
 		}
+
+		foreach($cid as $attendee_id)
+		{
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
+		}
+
 		/* Check if we have space on the waiting list */
 		$model_wait = $this->getModel('waitinglist');
 		$model_wait->setXrefId($xref);
 		$model_wait->UpdateWaitingList();
-		
+
 		$model_wait->setXrefId($dest);
 		$model_wait->UpdateWaitingList();
-		
+
 		$cache = JFactory::getCache('com_redevent');
 		$cache->clean();
 
@@ -179,156 +194,199 @@ class RedEventControllerAttendees extends RedEventController
 
 		$this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$dest, $msg );
 	}
-	
+
 	function selectXref()
 	{
 		JRequest::setVar('view', 'xrefelement');
 		JRequest::setVar('form_id', JRequest::getVar('form_id'));
 		parent::display();
 	}
-	
+
 	/**
 	 * confirm an attendee registration
-	 * 
+	 *
 	 * @return unknown_type
 	 */
 	function confirmattendees()
 	{
     $cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
     $xref   = JRequest::getInt('xref');
-    
+
     $model = $this->getModel('attendees');
-    
+
     if ($model->confirmattendees($cid))
     {
+
+	    foreach($cid as $attendee_id)
+	    {
+		    JPluginHelper::importPlugin('redevent');
+		    $dispatcher =& JDispatcher::getInstance();
+		    $res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
+	    }
+
   	  $msg = JText::_('COM_REDEVENT_REGISTRATION_CONFIRMED');
       $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg );
   	}
   	else
   	{
       $msg = JText::_('COM_REDEVENT_ERROR_REGISTRATION_CONFIRM') . ': ' . $model->getError();
-      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg, 'error' );  	  
+      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg, 'error' );
   	}
     return true;
 	}
-	
+
   /**
    * remove confirm status from an attendee registration
-   * 
+   *
    * @return unknown_type
    */
   function unconfirmattendees()
   {
     $cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
     $xref   = JRequest::getInt('xref');
-    
+
     $model = $this->getModel('attendees');
-    
+
     if ($model->unconfirmattendees($cid))
     {
+	    foreach($cid as $attendee_id)
+	    {
+		    JPluginHelper::importPlugin('redevent');
+		    $dispatcher =& JDispatcher::getInstance();
+		    $res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
+	    }
+
       $msg = JText::_('COM_REDEVENT_REGISTRATION_UNCONFIRMED');
       $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg );
     }
     else
     {
       $msg = JText::_('COM_REDEVENT_ERROR_REGISTRATION_UNCONFIRM') . ': ' . $model->getError();
-      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg, 'error' );      
+      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg, 'error' );
     }
     return true;
   }
-	
+
   /**
    * set cancelled status to an attendee registration
-   * 
+   *
    * @return boolean true on success
    */
   function cancelreg()
   {
     $cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
     $xref   = JRequest::getInt('xref');
-    
+
     $model = $this->getModel('attendees');
-    
+
     if ($model->cancelreg($cid))
     {
       $msg = JText::_( 'COM_REDEVENT_ATTENDEES_REGISTRATION_CANCELLED');
       $this->setRedirect( 'index.php?option=com_redevent&view=attendees&filter_cancelled=1&xref='.$xref, $msg );
+
+		foreach($cid as $attendee_id)
+		{
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+		    $res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
+		}
     }
     else
     {
       $msg = JText::_( 'COM_REDEVENT_ATTENDEES_REGISTRATION_CANCELLED_ERROR') . ': ' . $model->getError();
-      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg, 'error' );      
+      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg, 'error' );
     }
     return true;
   }
-	
+
   /**
    * remove cancelled status from an attendee registration
-   * 
+   *
    * @return boolean true on success
    */
   function uncancelreg()
   {
     $cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
     $xref   = JRequest::getInt('xref');
-    
+
     $model = $this->getModel('attendees');
-    
+
     if ($model->uncancelreg($cid))
     {
+	    foreach($cid as $attendee_id)
+	    {
+		    JPluginHelper::importPlugin('redevent');
+		    $dispatcher =& JDispatcher::getInstance();
+		    $res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
+	    }
+
       $msg = JText::_( 'COM_REDEVENT_ATTENDEES_REGISTRATION_UNCANCELLED');
       $this->setRedirect( 'index.php?option=com_redevent&view=attendees&filter_cancelled=0&xref='.$xref, $msg );
     }
     else
     {
       $msg = JText::_( 'COM_REDEVENT_ATTENDEES_REGISTRATION_UNCANCELLED_ERROR') . ': ' . $model->getError();
-      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg, 'error' );      
+      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg, 'error' );
     }
     return true;
   }
-  
+
   function onwaiting()
   {
     $cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
     $xref   = JRequest::getInt('xref');
-    
+
     $model = $this->getModel('waitinglist');
     $model->setXrefId($xref);
-    
+
     if ($model->putOnWaitingList($cid))
     {
+	    foreach($cid as $attendee_id)
+	    {
+		    JPluginHelper::importPlugin('redevent');
+		    $dispatcher =& JDispatcher::getInstance();
+		    $res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
+	    }
+
       $msg = JText::_('COM_REDEVENT_PUT_ON_WAITING_SUCCESS');
       $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg );
     }
     else
     {
       $msg = JText::_('COM_REDEVENT_PUT_ON_WAITING_FAILURE') . ': ' . $model->getError();
-      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg, 'error' );      
+      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg, 'error' );
     }
-    return true;    
+    return true;
   }
 
   function offwaiting()
   {
     $cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
     $xref   = JRequest::getInt('xref');
-    
+
     $model = $this->getModel('waitinglist');
     $model->setXrefId($xref);
-    
+
     if ($model->putOffWaitingList($cid))
     {
+	    foreach($cid as $attendee_id)
+	    {
+		    JPluginHelper::importPlugin('redevent');
+		    $dispatcher =& JDispatcher::getInstance();
+		    $res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
+	    }
+
       $msg = JText::_('COM_REDEVENT_PUT_OFF_WAITING_SUCCESS');
       $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg );
     }
     else
     {
       $msg = JText::_('COM_REDEVENT_PUT_OFF_WAITING_FAILURE') . ': ' . $model->getError();
-      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg, 'error' );      
+      $this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg, 'error' );
     }
-    return true;    
+    return true;
   }
-		
+
 	/* Obsolete */
 	function export()
 	{
@@ -356,7 +414,7 @@ class RedEventControllerAttendees extends RedEventController
     		$col[] = str_replace("\"", "\"\"", $data->username);
     		$col[] = str_replace("\"", "\"\"", $data->email);
     		$col[] = str_replace("\"", "\"\"", JHTML::Date( $data->uregdate, JText::_('DATE_FORMAT_LC2' ) ));
-			
+
    	 		for($j = 0; $j < count($col); $j++)
     		{
         		$export .= "\"" . $col[$j] . "\"";
@@ -376,7 +434,7 @@ class RedEventControllerAttendees extends RedEventController
 
 		$mainframe->close();
 	}
-	
+
 	/**
 	 * logic to create the edit screen
 	 *
@@ -394,9 +452,9 @@ class RedEventControllerAttendees extends RedEventController
 
 		if ($task == 'copy' || $task == 'add') {
 			JRequest::setVar( 'task', $task );
-		} 
-		else 
-		{			
+		}
+		else
+		{
 			$user	=& JFactory::getUser();
 			// Error if checkedout by another administrator
 			if ($model->isCheckedOut( $user->get('id') )) {
@@ -418,9 +476,9 @@ class RedEventControllerAttendees extends RedEventController
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or die( 'Invalid Token' );
-		
+
 		$xref = JRequest::getVar('xref', 0, '', 'int') or die( 'Missing xref' );
-		
+
 		$row = & JTable::getInstance('redevent_register', '');
 		$row->bind(JRequest::get('post'));
 		$row->checkin();
@@ -443,21 +501,25 @@ class RedEventControllerAttendees extends RedEventController
 		$task		= JRequest::getVar('task');
 
 		$post 	= JRequest::get( 'post' );
-		
+
 		$model = $this->getModel('attendee');
-		
+
 		$msg = '';
 		$mtype= 'message';
 
-		if ($returnid = $model->store($post)) 
-		{		
+		if ($returnid = $model->store($post))
+		{
 			$model_wait = $this->getModel('Waitinglist');
 			$model_wait->setXrefId($xref);
 			$model_wait->UpdateWaitingList();
-	      
+
 			$cache = JFactory::getCache('com_redevent');
 			$cache->clean();
-			
+
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAttendeeModified', array($returnid));
+
 			switch ($task)
 			{
 				case 'apply' :
@@ -469,23 +531,23 @@ class RedEventControllerAttendees extends RedEventController
 					break;
 			}
 			$msg	= JText::_('COM_REDEVENT_REGISTRATION_SAVED');
-			
+
 		} else {
 
 			$link 	= 'index.php?option=com_redevent&view=attendees&xref='. $xref;
 			$msg	= $model->getError();
-			$mtype= 'error';				
+			$mtype= 'error';
 		}
 
 		$model->checkin();
 
 		$this->setRedirect( $link, $msg, $mtype );
  	}
- 	
+
  	function email()
  	{
 		$task = JRequest::getVar('task');
-		
+
 		if ($task == 'email') {
 			$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
 		}
@@ -493,12 +555,12 @@ class RedEventControllerAttendees extends RedEventController
 			$cid = null;
 		}
 		$xref 	= JRequest::getInt('xref');
-		
+
 		JRequest::setVar('view', 'emailattendees');
-		
+
 		parent::display();
  	}
- 	
+
  	function sendemail()
  	{
 		// Check for request forgeries
@@ -508,19 +570,19 @@ class RedEventControllerAttendees extends RedEventController
 
 		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
 		JArrayHelper::toInteger($cid);
-		
+
 		$subject  = JRequest::getVar('subject', '', 'post', 'string');
 		$from     = JRequest::getVar('from', '', 'post', 'string');
 		$fromname = JRequest::getVar('fromname', '', 'post', 'string');
 		$replyto  = JRequest::getVar('replyto', '', 'post', 'string');
 		$body     = JRequest::getVar('body', '', 'post', 'string',  JREQUEST_ALLOWRAW );
-		
+
 		$model = $this->getModel('attendees');
 		$model->setXref($xref);
-		
+
 		$msg = '';
 		$mtype= 'message';
-		
+
 		if ($model->sendMail($cid, $subject, $body, $from, $fromname, $replyto))
 		{
 			$msg = JText::_('COM_REDEVENT_EMAIL_ATTENDEES_SENT');
@@ -530,11 +592,11 @@ class RedEventControllerAttendees extends RedEventController
 			$msg = $model->getError();
 			$mtype = 'error';
 		}
-		
+
 		$this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='. $xref, $msg, $mtype );
 		$this->redirect();
  	}
- 	
+
  	function cancelemail()
  	{
 		$xref = JRequest::getVar('xref', 0, '', 'int') or die( 'Missing xref' );

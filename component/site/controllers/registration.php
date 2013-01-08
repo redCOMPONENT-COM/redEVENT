@@ -141,7 +141,12 @@ class RedEventControllerRegistration extends RedEventController
 					$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($details->did, $xref)), $msg, 'error');
 					return;
 				}
+
+				JPluginHelper::importPlugin( 'redevent' );
+				$dispatcher =& JDispatcher::getInstance();
+				$res = $dispatcher->trigger('onAttendeeCreated', array($res->id));
 			}
+
 			JPluginHelper::importPlugin( 'redevent' );
 			$dispatcher =& JDispatcher::getInstance();
 			$res = $dispatcher->trigger( 'onEventUserRegistered', array( $xref ) );
@@ -406,6 +411,10 @@ class RedEventControllerRegistration extends RedEventController
 				}
 			}
 			$msg = JText::_('COM_REDEVENT_REGISTRATION_ACTIVATION_SUCCESSFULL');
+
+			JPluginHelper::importPlugin( 'redevent' );
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onUserConfirmed', array($register_id));
 		}
 		else if ($regdata && $regdata->confirmed == 1) {
 			$msg = JText::_('COM_REDEVENT_YOUR_SUBMISSION_HAS_ALREADY_BEEN_CONFIRMED');
