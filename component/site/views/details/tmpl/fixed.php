@@ -129,6 +129,15 @@ echo $d->format(JText::_('PLG_SYSTEM_AUTOTWEET_REDEVENT_DATE_FORMAT', true));
   		</div>
 
   	<?php endif; ?>
+
+  	<?php if ($this->row->details != '' && $this->row->details != '<br />') : ?>
+
+  	    <h2 class="description"><?php echo JText::_('COM_REDEVENT_SESSION_DETAILS' ); ?></h2>
+  		<div class="description event_desc">
+			<?php echo $this->tags->ReplaceTags($this->row->details); ?>
+  		</div>
+
+  	<?php endif; ?>
   	
   	<?php if ($this->row->attachments && count($this->row->attachments)):?>
   	    <h2 class="description"><?php echo JText::_( 'COM_REDEVENT_FILES' ); ?></h2>

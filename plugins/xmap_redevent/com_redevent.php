@@ -35,14 +35,14 @@ class xmap_com_redevent
 // 		}
 		if ( $id ) {
 			if ( $view == 'details' ) {
-				$node->uid = 'com_redevente'.$id;
+				$node->uid = 'com_redevent_ev'.$id;
 				$node->expandible = false;
 			} elseif ( $view == 'categoryevents'  ) {
 				$node->expandible = true;
-				$node->uid = 'com_redeventc'.$id;
+				$node->uid = 'com_redevent_catev'.$id;
 			} elseif ( $view == 'venueevents'  ) {
 				$node->expandible = true;
-				$node->uid = 'com_redeventv'.$id;
+				$node->uid = 'com_redevent_vev'.$id;
 			}
 		} else {
 			$node->expandible = true;
