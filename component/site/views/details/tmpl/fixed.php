@@ -27,9 +27,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 if ($this->row->venueid != 0) {
 	$venuelink = RedeventHelperRoute::getVenueEventsRoute($this->row->venueslug);
 }
-$d = JFactory::getDate();
-echo JText::_('PLG_SYSTEM_AUTOTWEET_REDEVENT_DATE_FORMAT', true);
-echo $d->format(JText::_('PLG_SYSTEM_AUTOTWEET_REDEVENT_DATE_FORMAT', true));
 ?>
 <div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
 	<p class="buttons">
@@ -120,7 +117,10 @@ echo $d->format(JText::_('PLG_SYSTEM_AUTOTWEET_REDEVENT_DATE_FORMAT', true));
 			</dd>
 	</dl>
 
-  	<?php if ($this->row->datdescription != '' && $this->row->datdescription != '<br />') : ?>
+  	<?php 
+  	$stripped = JFilterOutput::cleanText($this->row->datdescription);
+  	$stripped = trim($stripped);
+  	if ($this->row->datdescription) : ?>
 
   	    <h2 class="description"><?php echo JText::_('COM_REDEVENT_DESCRIPTION' ); ?></h2>
   		<div class="description event_desc">
@@ -130,7 +130,10 @@ echo $d->format(JText::_('PLG_SYSTEM_AUTOTWEET_REDEVENT_DATE_FORMAT', true));
 
   	<?php endif; ?>
 
-  	<?php if ($this->row->details != '' && $this->row->details != '<br />') : ?>
+  	<?php 
+  	$strip_details = JFilterOutput::cleanText($this->row->details);
+  	$strip_details = trim($strip_details);
+  	if ($strip_details) : ?>
 
   	    <h2 class="description"><?php echo JText::_('COM_REDEVENT_SESSION_DETAILS' ); ?></h2>
   		<div class="description event_desc">
