@@ -102,6 +102,7 @@ class RedeventModelEditvenue extends JModel
 		} 
 		else 
 		{			
+			$this->_venue =& JTable::getInstance('redevent_venues', '');
 			//prepare output
 			$this->_venue->id				= '';
 			$this->_venue->venue			= '';
