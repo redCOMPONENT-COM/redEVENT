@@ -112,17 +112,13 @@ class RedeventViewCalendar extends JView
     {
         $tooltip = (htmlspecialchars($tooltip));
         $title = (htmlspecialchars($title));
-    
-        if ($title) {
-            $title = $title.'::';
-        }
-    
+        
         if ($href) {
             $href = JRoute::_($href);
             $style = '';
-            $tip = '<span class="'.$class.'" title="'.$title.$tooltip.'"><a href="'.$href.'">'.$text.'</a></span>';
+            $tip = '<span class="'.$class.'" title="'.$title.'" rel="'.$tooltip.'"><a href="'.$href.'">'.$text.'</a></span>';
         } else {
-            $tip = '<span class="'.$class.'" title="'.$title.$tooltip.'">'.$text.'</span>';
+            $tip = '<span class="'.$class.'" title="'.$title.'" rel="'.$tooltip.'">'.$text.'</span>';
         }
     
         return $tip;
