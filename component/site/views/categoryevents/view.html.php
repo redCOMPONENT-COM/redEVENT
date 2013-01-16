@@ -153,10 +153,10 @@ class RedeventViewCategoryevents extends JView
 		$lists	= $this->_buildSortLists($elsettings);
 				
 		$state    =& $this->get( 'state' );
-    $filter_customs   = $state->get('filter_customs');
+		$filter_customs   = $state->get('filter_customs');
 		
 		$this->assign('lists', 						$lists);
-    $this->assign('action',   $uri->toString());
+		$this->assign('action', JRoute::_('index.php?option=com_redevent&view=categoryevents&id='.$category->id));
 
 		$this->assignRef('rows' , 					$rows);
 		$this->assignRef('customs',     $customs);

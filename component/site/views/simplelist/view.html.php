@@ -182,7 +182,7 @@ class RedeventViewSimpleList extends JView
     $filter_venue    = $state->get('filter_venue');
     $filter_event    = $state->get('filter_event');
     
-    $this->assign('action', JRoute::_($uri->toString()));
+    $this->assign('action', JRoute::_('index.php?option=com_redevent&view=simplelist'));
       
 		$sortselects = array();
 		if ($params->get('filter_type_event', 1))	$sortselects[]	= JHTML::_('select.option', 'title', JText::_('COM_REDEVENT_FILTER_SELECT_EVENT') );

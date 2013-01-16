@@ -192,7 +192,6 @@ class redEVENT_tags {
 	 * [city]
 	 * [username]
 	 * [useremail]
-	 * [regurl]
 	 * [eventplaces]
 	 * [waitinglistplaces]
 	 * [eventplacesleft]
@@ -407,10 +406,10 @@ class redEVENT_tags {
 		$lists['order'] 		= JRequest::getCmd('filter_order', 'x.dates');
 		$this->lists = $lists;
 		
-    $uri    = &JFactory::getURI();
-    $this->action = $uri->toString();
+		$uri    = &JFactory::getURI('index.php?option=com_redevent');
+		$this->action = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->_eventid, $this->_xref));
     
-    $this->customs = $this->getXrefCustomFields();
+		$this->customs = $this->getXrefCustomFields();
     
 		ob_start();
 		if (JRequest::getVar('format') == 'pdf') {
@@ -1732,11 +1731,6 @@ class redEVENT_tags {
 	function _getTag_answers()
 	{
 		return $this->_answersToHtml();
-	}
-	
-	function _getTag_regurl()
-	{
-		return $this->absoluteUrls($uri->toString());
 	}
 	
 	function _getTag_eventplaces()

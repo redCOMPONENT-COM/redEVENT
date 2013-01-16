@@ -367,12 +367,12 @@ class RedeventController extends JController
 	 */
 	function delreguser()
 	{
-	  $mainframe = & JFactory::getApplication();
+		$mainframe = & JFactory::getApplication();
 		$msg = '';
 		$msgtype = 'message';
 		$task = JRequest::getVar('task');
 	  
-	  $params  = & $mainframe->getParams('com_redevent');
+		$params  = & $mainframe->getParams('com_redevent');
 	  
 		// Check for request forgeries
 		//JRequest::checkToken() or die( 'Invalid Token' );
@@ -380,7 +380,7 @@ class RedeventController extends JController
 		$id 	= JRequest::getInt( 'id', 0 );
 		$rid 	= JRequest::getInt( 'rid' );
 		
-    $xref   = JRequest::getInt( 'xref', 0 );
+		$xref   = JRequest::getInt( 'xref', 0 );
     
 		// Get/Create the model
 		$model = $this->getModel('Registration', 'RedeventModel');
@@ -395,7 +395,7 @@ class RedeventController extends JController
 			/* Check if we have space on the waiting list */
 			$this->addModelPath(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models');
 			$model_wait = $this->getModel('waitinglist');
-	    $model_wait->setXrefId($xref);
+			$model_wait->setXrefId($xref);
 			$model_wait->UpdateWaitingList();
 			
 	//		JPluginHelper::importPlugin( 'redevent' );

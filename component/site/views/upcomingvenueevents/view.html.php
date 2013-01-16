@@ -162,7 +162,7 @@ class RedeventViewUpcomingVenueevents extends JView
 		$this->assignRef('task' , 					$task); 
 		$this->assignRef('print_link' , 			$print_link);
 		$this->assignRef('dellink' , 				$dellink);
-    $this->assign('action',   str_replace('&', '&amp;', $uri->toString()));
+    $this->assign('action',   JRoute::_(RedeventHelperRoute::getUpcomingVenueEventsRoute($venue->slug)));
 		
 		parent::display($tpl);
 	}

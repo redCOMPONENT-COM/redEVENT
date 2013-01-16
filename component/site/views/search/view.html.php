@@ -197,7 +197,7 @@ class RedeventViewSearch extends JView
 		
 		$this->assign('lists' , 					$lists);
 		$this->assign('total',						$total);
-		$this->assign('action', 					$uri->toString());
+		$this->assign('action', 					JRoute::_(RedeventHelperRoute::getSearchRoute());
 
 		$this->assignRef('rows' , 					$rows);
 		$this->assignRef('customs',         $customs);

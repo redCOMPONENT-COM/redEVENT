@@ -149,7 +149,7 @@ class RedeventViewFeatured extends JViewLegacy
 	 */
 	function _buildSortLists()
 	{
-	  $app = & JFactory::getApplication();
+		$app = & JFactory::getApplication();
 		$uri = & JFactory::getURI();
 		
 		// remove previously set filter in get
@@ -169,13 +169,13 @@ class RedeventViewFeatured extends JViewLegacy
 
 		$state = $this->get('state');
 		
-    $filter          = $state->get('filter');
-    $filter_type     = $state->get('filter_type');
-    $filter_category = $state->get('filter_category');
-    $filter_venue    = $state->get('filter_venue');
-    $filter_event    = $state->get('filter_event');
-    
-    $this->assign('action', $uri->toString());
+		$filter          = $state->get('filter');
+		$filter_type     = $state->get('filter_type');
+		$filter_category = $state->get('filter_category');
+		$filter_venue    = $state->get('filter_venue');
+		$filter_event    = $state->get('filter_event');
+
+		$this->assign('action', JRoute::_(RedeventHelperRoute::getFeaturedRoute()));
       
 		$sortselects = array();
 		if ($params->get('filter_type_event', 1))	$sortselects[]	= JHTML::_('select.option', 'title', JText::_('COM_REDEVENT_FILTER_SELECT_EVENT') );

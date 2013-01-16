@@ -66,7 +66,7 @@ class RedeventViewMoreinfo extends JView
     
     
     $this->assign('xref',   $xref);
-    $this->assign('action', $uri->toString());
+    $this->assign('action', JRoute::_(RedeventHelperRoute::getMoreInfoRoute($xref)));
     $this->assignRef('user', $user);
 		
 		parent::display($tpl);

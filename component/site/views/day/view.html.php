@@ -141,7 +141,7 @@ class RedeventViewDay extends JView
 		$this->assignRef('elsettings' , 			$elsettings);
 		$this->assignRef('lists' , 					$lists);
 		$this->assignRef('daydate' , 				$daydate);
-    $this->assign('action',   str_replace('&', '&amp;', $uri->toString()));
+		$this->assign('action',   JRoute::_(RedeventHelperRoute::getDayRoute(JRequest::getInt('id'))));
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
 		$cols = redEVENTHelper::validateColumns($cols);

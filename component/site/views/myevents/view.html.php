@@ -141,7 +141,7 @@ class RedeventViewMyevents extends JView
         $lists['filter_event'] = JHTML::_('select.genericlist', $options, 'filter_event', 'onchange="document.getElementById(\'adminForm\').submit();"', 'value', 'text', $filter_event);
         
 
-        $this->assign('action', $uri->toString());
+        $this->assign('action', JRoute::_(RedeventHelperRoute::getMyeventsRoute()));
 
         $this->assignRef('events', $events);
         $this->assignRef('venues', $venues);

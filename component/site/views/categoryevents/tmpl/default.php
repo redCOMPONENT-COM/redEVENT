@@ -23,6 +23,7 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
 ?>
 <div id="redevent" class="el_categoryevents">
 <p class="buttons">

@@ -133,7 +133,7 @@ class RedeventViewVenuesmap extends JView
 		$this->assignRef('task' , 				$task);
 		$this->assignRef('pagetitle' , 		$pagetitle);
     $this->assignRef('lists' ,        $lists);
-    $this->assign('action',           $uri->toString());
+    $this->assign('action',           JRoute::_('index.php?option=com_redevent&view=venuesmap'));
     $this->assign('ajaxurl',          $ajaxurl);
 		$this->assign('filter_customs', 			$filter_customs);
 

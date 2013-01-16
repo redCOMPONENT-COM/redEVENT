@@ -150,7 +150,7 @@ class RedeventViewVenuecategory extends JView
 		//create select lists
 		$lists	= $this->_buildSortLists($elsettings);
 		$this->assign('lists', 						$lists);
-    $this->assign('action',   str_replace('&', '&amp;', $uri->toString()));
+		$this->assign('action',   JRoute::_('index.php?option=com_redevent&view=venuecategory&id='.$category->slug));
 
 		$this->assignRef('rows' , 					$rows);
 		$this->assignRef('customs',         $customs);
