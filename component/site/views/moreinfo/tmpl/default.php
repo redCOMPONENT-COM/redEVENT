@@ -25,7 +25,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <div id="moreinfoform">
-<form action="<?php echo $this->action?>" method="post" class="moreinfo">
+<form action="<?php echo JRoute::_($this->action); ?>" method="post" class="moreinfo">
 
 <h1><?php echo JText::_('COM_REDEVENT_MOREINFO_TITLE'); ?></h1>
 <p><?php echo JText::_('COM_REDEVENT_MOREINFO_INTRO'); ?></p>

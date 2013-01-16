@@ -24,7 +24,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 
-<form method="post" action="<?php echo $this->request_url; ?>" enctype="multipart/form-data" name="adminForm" id="adminForm">
+<form method="post" action="<?php echo JRoute::_($this->request_url); ?>" enctype="multipart/form-data" name="adminForm" id="adminForm">
 
 <table class="noshow">
   	<tr>

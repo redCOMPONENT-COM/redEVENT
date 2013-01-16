@@ -37,7 +37,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	</script>
 	
 	
-	<form action="<?php echo $this->action; ?>" method="post" name="manageform">
+	<form action="<?php echo JRoute::_($this->action); ?>" method="post" name="manageform">
 	<div id="redevent" class="el_details">
 		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).': '.$this->row->full_title; ?>
 		<?php if ($this->manage_attendees): ?>

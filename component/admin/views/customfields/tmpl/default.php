@@ -45,7 +45,7 @@ JHTML::_('behavior.tooltip');
   }
 </script>
 
-<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_($this->request_url); ?>" method="post" name="adminForm" id="adminForm">
 <table>
 <tr>
 	<td align="left" width="100%">

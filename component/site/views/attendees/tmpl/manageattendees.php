@@ -43,7 +43,7 @@ if ($this->manage_attendees) {
 	</script>
 	
 	
-	<form action="<?php echo $this->action; ?>" method="post" name="manageform">
+	<form action="<?php echo JRoute::_($this->action); ?>" method="post" name="manageform">
 	<div id="redevent" class="event_id<?php echo $this->row->eventid; ?> el_details">
 		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).': '.$this->row->full_title; ?></h2>
 		

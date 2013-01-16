@@ -27,7 +27,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div id="confirmation_message">
 	<?php echo JText::sprintf('COM_REDEVENT_REGISTRATION_CONFIRM_CANCEL_TXT', $this->course->full_title, $this->course->venue, $this->course->dateinfo); ?>
 </div>
-<form name="cancelreg" id="cancelreg" method="post" action="<?php echo $this->action; ?>">
+<form name="cancelreg" id="cancelreg" method="post" action="<?php echo JRoute::_($this->action); ?>">
 <button type="submit" id="submitbt"><?php echo JText::_('COM_REDEVENT_BUTTON_LABEL_CONFIRM'); ?></button>
 <input name="task" type="hidden" value="delreguser" />
 </form>

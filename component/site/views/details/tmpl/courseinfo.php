@@ -35,7 +35,7 @@ function tableOrdering( order, dir, view )
 }
 </script>
 
-<form action="<?php echo $this->action; ?>" method="post" id="venuesform">
+<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="venuesform">
 <div id="upcomingevents">
 <table class="courseinfo_tabel">
 <thead>

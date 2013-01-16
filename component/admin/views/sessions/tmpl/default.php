@@ -37,7 +37,7 @@ if (!$this->event || $this->event->registra) $colspan += 2;
   }
 </script>
 
-<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_($this->request_url); ?>" method="post" name="adminForm" id="adminForm">
 <table>
 <tr>
 	<td align="left" width="100%">

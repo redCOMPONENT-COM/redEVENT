@@ -58,7 +58,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	}
 </script>
 
-<form action="<?php echo $this->action; ?>" method="post" id="adminForm">
+<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="adminForm">
 
 <div id="el_filter" class="floattext">
 

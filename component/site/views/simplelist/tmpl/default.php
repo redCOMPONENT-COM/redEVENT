@@ -53,7 +53,7 @@ $toggle = $this->params->get('filter_toggle', 3);
 <?php endif; ?>
 
 <!-- use form for filters and pagination -->
-<form action="<?php echo $this->action; ?>" method="post" id="adminForm">
+<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="adminForm">
 
 <!-- filters  -->
 <?php $toggle = $this->params->get('filter_toggle', 3); ?>

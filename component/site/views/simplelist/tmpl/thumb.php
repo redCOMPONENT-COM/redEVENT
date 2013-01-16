@@ -54,7 +54,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php endif; ?>
 
 <!-- filter -->
-<form action="<?php echo $this->action; ?>" method="post" id="adminForm">
+<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="adminForm">
 
 <?php $toggle = $this->params->get('filter_toggle', 3); ?>
 <?php if ($toggle != 1 || $this->params->get('display_limit_select')) : ?>

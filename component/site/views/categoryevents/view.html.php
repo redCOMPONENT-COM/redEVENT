@@ -156,7 +156,7 @@ class RedeventViewCategoryevents extends JView
     $filter_customs   = $state->get('filter_customs');
 		
 		$this->assign('lists', 						$lists);
-    $this->assign('action',   str_replace('&', '&amp;', $uri->toString()));
+    $this->assign('action',   $uri->toString());
 
 		$this->assignRef('rows' , 					$rows);
 		$this->assignRef('customs',     $customs);

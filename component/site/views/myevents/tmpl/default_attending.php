@@ -40,7 +40,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	}
 </script>
 
-<form action="<?php echo $this->action; ?>" method="post" id="attending-events">
+<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="attending-events">
 
 <?php 
 $this->rows = $this->attending;

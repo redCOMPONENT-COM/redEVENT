@@ -40,7 +40,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	}
 </script>
 
-<form action="<?php echo $this->action; ?>" method="post" id="adminForm">
+<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="adminForm">
 
 <?php if ($this->params->get('filter_text',1) || $this->params->get('display_limit_select') || $this->params->get('showeventfilter')) : ?>
 <div id="el_filter" class="floattext">

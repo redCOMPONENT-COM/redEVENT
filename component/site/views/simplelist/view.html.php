@@ -157,6 +157,7 @@ class RedeventViewSimpleList extends JView
 	{
 	  $app = & JFactory::getApplication();
 		$uri = & JFactory::getURI();
+		$state = $this->get('state');
 		
 		// remove previously set filter in get
 		$uri->delVar('filter');
@@ -170,8 +171,8 @@ class RedeventViewSimpleList extends JView
 		$elsettings = & redEVENTHelper::config();
 		$params     = $app->getParams();
 		
-		$filter_order		= JRequest::getCmd('filter_order', 'x.dates');
-		$filter_order_Dir	= JRequest::getWord('filter_order_Dir', 'ASC');
+		$filter_order		= $state->get('filter_order');
+		$filter_order_Dir	= $state->get('filter_order_Dir');
 
 		$state = $this->get('state');
 		
@@ -181,7 +182,7 @@ class RedeventViewSimpleList extends JView
     $filter_venue    = $state->get('filter_venue');
     $filter_event    = $state->get('filter_event');
     
-    $this->assign('action', $uri->toString());
+    $this->assign('action', JRoute::_($uri->toString()));
       
 		$sortselects = array();
 		if ($params->get('filter_type_event', 1))	$sortselects[]	= JHTML::_('select.option', 'title', JText::_('COM_REDEVENT_FILTER_SELECT_EVENT') );

@@ -95,7 +95,8 @@ class RedeventModelBaseEventList extends JModel
 
 		// Get the filter request variables
 		$this->setState('filter_order',     JRequest::getCmd('filter_order', 'x.dates'));
-		$this->setState('filter_order_dir', JRequest::getCmd('filter_order_Dir', 'ASC'));
+// 		echo '<pre>';print_r(JRequest::getCmd('filter_order', 'x.dates')); echo '</pre>';exit;
+		$this->setState('filter_order_dir', strtoupper(JRequest::getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC');
 		
 		$this->setState('filter',      $mainframe->getUserStateFromRequest('com_redevent.'.$this->getName().'.filter',      'filter', '', 'string'));
 		$this->setState('filter_type', $mainframe->getUserStateFromRequest('com_redevent.'.$this->getName().'.filter_type', 'filter_type', '', 'string'));

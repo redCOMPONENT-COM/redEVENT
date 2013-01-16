@@ -85,7 +85,7 @@ window.addEvent('domready', function() {
 <?php endif; ?>
 
 <?php if ($this->params->get('show_cat_filter', 1) || $this->params->get('show_vcat_filter', 1) || $this->params->get('show_custom_filters', 1)) : ?>
-<form action="<?php echo $this->action; ?>" method="post" id="filterform">
+<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="filterform">
 <div id="red_filter" class="floattext">
     <div class="el_fleft">
     <table>
