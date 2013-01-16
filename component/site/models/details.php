@@ -404,6 +404,9 @@ class RedeventModelDetails extends JModel
 	 */
 	public function getVenues() 
 	{
+		if (!$this->_details) {
+			return false;
+		}
 		$db = JFactory::getDBO();
 		$q = "SELECT *
 			FROM #__redevent_venues v
@@ -419,6 +422,9 @@ class RedeventModelDetails extends JModel
 	 */
 	public function getVenueDates() 
 	{
+		if (!$this->_details) {
+			return false;
+		}
 		$db = JFactory::getDBO();
 		$q = ' SELECT * '
 		    .' FROM #__redevent_event_venue_xref x '
@@ -438,6 +444,9 @@ class RedeventModelDetails extends JModel
    */
   function _getEventCategories($row)
   {
+	if (!$row) {
+		return false;
+	}
   	$query =  ' SELECT c.id, c.catname, c.access, '
 			  	. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
 			  	. ' FROM #__redevent_categories as c '
