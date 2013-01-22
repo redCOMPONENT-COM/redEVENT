@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<extension type="plugin" group="xmap" version="1.6">
-	<name>Xmap - redEVENT Plugin</name>
+<extension type="plugin" group="xmap" version="1.7">
+	<name>PLG_XMAP_REDEVENT</name>
 	<author>redCOMPONENT / adapted from Eventlist plugin by Guillermo Vargas</author>
 	<creationDate>2011-04-29</creationDate>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>email@redweb.dk</authorEmail>
 	<authorUrl>www.redweb.dk</authorUrl>
 	<copyright>(c) 2011 Redweb.dk</copyright>
-	<version>1.0.0</version>
-	<description>Plugin for redEVENT component</description>
+	<version>2.5.0</version>
+	<description>PLG_XMAP_REDEVENT_DESC</description>
 	
 	<files>
+		<folder>language</folder>
 		<filename plugin="com_redevent">com_redevent.php</filename>
 	</files>
         
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="include_events" type="list" default="1" label="Show Events" description="Should we include events into the sitemap?">
-					<option value="0">Never</option>
-					<option value="1">Always</option>
-					<option value="2">In XML Sitemap Only</option>
-					<option value="3">In Site Sitemap Only</option>
+				<field name="include_events" type="list" default="1" label="PLG_XMAP_REDEVENT_SHOW_EVENTS_LABEL" description="Should we include events into the sitemap?">
+					<option value="0">PLG_XMAP_REDEVENT_SHOW_EVENTS_NEVER</option>
+					<option value="1">PLG_XMAP_REDEVENT_SHOW_EVENTS_ALWAYS</option>
+					<option value="2">PLG_XMAP_REDEVENT_SHOW_EVENTS_IN_XML_SITEMAP_ONLY</option>
+					<option value="3">PLG_XMAP_REDEVENT_SHOW_EVENTS_IN_SITE_SITEMAP_ONLY</option>
 				</field>
-				<field name="max_events" type="text" default="" label="Max events" description="Max number of events per category to include on sitemap (Leave empty for no limit)" />
-				<field name="max_age" type="text" default="" label="happening later than (days ago)" description="Only show events happening later than this number of days ago (Leave it blank to ignore this option)" />
-				<field name="dateformat" type="text" default="%F" label="Date format" description="see php sprintf documentation for formats" />
-				<field name="@spacer" type="spacer" default="" label="XML Sitemap" description="Options for the XML sitemap only" />
-				<field name="cat_priority" type="list" default="-1" label="Category Priority" description="Set the priority for the categories">
-					<option value="-1">Use Parent Menu Settings</option>
+				<field name="max_events" type="text" default="10" label="PLG_XMAP_REDEVENT_MAX_EVENTS_LABEL" description="PLG_XMAP_REDEVENT_MAX_EVENTS_DESC" />
+				<field name="dateformat" type="text" default="Y-m-d" label="PLG_XMAP_REDEVENT_DATE_FORMAT_LABEL" description="PLG_XMAP_REDEVENT_DATE_FORMAT_DESC" />
+				<field name="@spacer" type="spacer" default="" label="PLG_XMAP_REDEVENT_XML_SITEMAP_LABEL" description="PLG_XMAP_REDEVENT_XML_SITEMAP_DESC" />
+				<field name="cat_priority" type="list" default="-1" label="PLG_XMAP_REDEVENT_CATEGORY_PRIORITY_LABEL" description="PLG_XMAP_REDEVENT_CATEGORY_PRIORITY_DESC">
+					<option value="-1">PLG_XMAP_REDEVENT_USE_PARENT_MENU_SETTINGS</option>
 					<option value="0.0">0.0</option>
 					<option value="0.1">0.1</option>
 					<option value="0.2">0.2</option>
@@ -41,18 +41,18 @@
 					<option value="0.9">0.9</option>
 					<option value="1">1</option>
 				</field>
-				<field name="cat_changefreq" type="list" default="-1" label="Category Change frequency" description="Set the chage frequency for the categories">
-				        <option value="-1">Use Parent Menu Settings</option>
-				        <option value="always">Always</option>
-				        <option value="hourly">Hourly</option>
-				        <option value="daily">Daily</option>
-				        <option value="weekly">Weekly</option>
-				        <option value="monthly">Monthly</option>
-				        <option value="yearly">Yearly</option>
-				        <option value="never">Never</option>
+				<field name="cat_changefreq" type="list" default="-1" label="PLG_XMAP_REDEVENT_CATEGORY_CHANGE_FREQ_LABEL" description="PLG_XMAP_REDEVENT_CATEGORY_CHANGE_FREQ_DESC">
+				        <option value="-1">PLG_XMAP_REDEVENT_USE_PARENT_MENU_SETTINGS</option>
+				        <option value="always">PLG_XMAP_REDEVENT_ALWAYS</option>
+				        <option value="hourly">PLG_XMAP_REDEVENT_HOURLY</option>
+				        <option value="daily">PLG_XMAP_REDEVENT_DAILY</option>
+				        <option value="weekly">PLG_XMAP_REDEVENT_WEEKLY</option>
+				        <option value="monthly">PLG_XMAP_REDEVENT_MONTHLY</option>
+				        <option value="yearly">PLG_XMAP_REDEVENT_YEARLY</option>
+				        <option value="never">PLG_XMAP_REDEVENT_NEVER</option>
 				</field>
-				<field name="file_priority" type="list" default="-1" label="File Priority" description="Set the priority for the files">
-				        <option value="-1">Use Parent Menu Settings</option>
+				<field name="venue_priority" type="list" default="-1" label="PLG_XMAP_REDEVENT_VENUE_PRIORITY_LABEL" description="PLG_XMAP_REDEVENT_VENUE_PRIORITY_DESC">
+				        <option value="-1">PLG_XMAP_REDEVENT_USE_PARENT_MENU_SETTINGS</option>
 				        <option value="0.0">0.0</option>
 				        <option value="0.1">0.1</option>
 				        <option value="0.2">0.2</option>
@@ -65,17 +65,41 @@
 				        <option value="0.9">0.9</option>
 				        <option value="1">1</option>
 				</field>
-				<field name="file_changefreq" type="list" default="-1" label="File Change frequency" description="Set the chage frequency for the files">
-				        <option value="-1">Use Parent Menu Settings</option>
-				        <option value="always">Always</option>
-				        <option value="hourly">Hourly</option>
-				        <option value="daily">Daily</option>
-				        <option value="weekly">Weekly</option>
-				        <option value="monthly">Monthly</option>
-				        <option value="yearly">Yearly</option>
-				        <option value="never">Never</option>
+				<field name="venue_changefreq" type="list" default="-1" label="PLG_XMAP_REDEVENT_VENUE_CHANGE_FREQ_LABEL" description="PLG_XMAP_REDEVENT_VENUE_CHANGE_FREQ_DESC">
+				        <option value="-1">PLG_XMAP_REDEVENT_USE_PARENT_MENU_SETTINGS</option>
+				        <option value="always">PLG_XMAP_REDEVENT_ALWAYS</option>
+				        <option value="hourly">PLG_XMAP_REDEVENT_HOURLY</option>
+				        <option value="daily">PLG_XMAP_REDEVENT_DAILY</option>
+				        <option value="weekly">PLG_XMAP_REDEVENT_WEEKLY</option>
+				        <option value="monthly">PLG_XMAP_REDEVENT_MONTHLY</option>
+				        <option value="yearly">PLG_XMAP_REDEVENT_YEARLY</option>
+				        <option value="never">PLG_XMAP_REDEVENT_NEVER</option>
 				</field>
-        </fieldset>
-			</fields>
-		</config>
+				<field name="event_priority" type="list" default="-1" label="PLG_XMAP_REDEVENT_EVENT_PRIORITY_LABEL" description="PLG_XMAP_REDEVENT_EVENT_PRIORITY_DESC">
+				        <option value="-1">PLG_XMAP_REDEVENT_USE_PARENT_MENU_SETTINGS</option>
+				        <option value="0.0">0.0</option>
+				        <option value="0.1">0.1</option>
+				        <option value="0.2">0.2</option>
+				        <option value="0.3">0.3</option>
+				        <option value="0.4">0.4</option>
+				        <option value="0.5">0.5</option>
+				        <option value="0.6">0.6</option>
+				        <option value="0.7">0.7</option>
+				        <option value="0.8">0.8</option>
+				        <option value="0.9">0.9</option>
+				        <option value="1">1</option>
+				</field>
+				<field name="event_changefreq" type="list" default="-1" label="PLG_XMAP_REDEVENT_EVENT_CHANGE_FREQ_LABEL" description="PLG_XMAP_REDEVENT_EVENT_CHANGE_FREQ_DESC">
+				        <option value="-1">PLG_XMAP_REDEVENT_USE_PARENT_MENU_SETTINGS</option>
+				        <option value="always">PLG_XMAP_REDEVENT_ALWAYS</option>
+				        <option value="hourly">PLG_XMAP_REDEVENT_HOURLY</option>
+				        <option value="daily">PLG_XMAP_REDEVENT_DAILY</option>
+				        <option value="weekly">PLG_XMAP_REDEVENT_WEEKLY</option>
+				        <option value="monthly">PLG_XMAP_REDEVENT_MONTHLY</option>
+				        <option value="yearly">PLG_XMAP_REDEVENT_YEARLY</option>
+				        <option value="never">PLG_XMAP_REDEVENT_NEVER</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
 </extension>

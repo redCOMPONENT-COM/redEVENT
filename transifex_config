@@ -193,3 +193,13 @@ source_lang = en-GB
 file_filter = languages/<lang>/admin/<lang>/<lang>.plg_content_resimplelist.sys.ini
 source_file = plugins/plg_resimplelist/language/en-GB/en-GB.plg_content_resimplelist.sys.ini
 source_lang = en-GB
+
+[redEVENT.25-admin-plg_xmap_com_redevent-ini]
+file_filter = languages/<lang>/admin/<lang>/<lang>.plg_xmap_com_redevent.ini
+source_file = plugins/xmap_redevent/language/en-GB/en-GB.plg_xmap_com_redevent.ini
+source_lang = en-GB
+
+[redEVENT.25-admin-plg_xmap_com_redevent-sys-ini]
+file_filter = languages/<lang>/admin/<lang>/<lang>.plg_xmap_com_redevent.sys.ini
+source_file = plugins/xmap_redevent/language/en-GB/en-GB.plg_xmap_com_redevent.sys.ini
+source_lang = en-GB

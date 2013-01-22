@@ -105,6 +105,14 @@ class RedeventHelperRoute
 		}
 		return self::buildUrl( $parts );
 	}
+	
+	public static function getVenueCategoryRoute($id)
+	{
+		$parts = array( "option" => "com_redevent",
+		                "view"   => "venuecategory",
+		                "id"     => $id );
+		return self::buildUrl( $parts );
+	}
 
 	public static function getUpcomingVenueEventsRoute($id, $task = null)
 	{
