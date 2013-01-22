@@ -98,7 +98,7 @@ class RedeventViewSimpleList extends JView
 		$pagetitle = $params->get('page_title');
 
 		$thumb_link = RedeventHelperRoute::getSimpleListRoute(null, 'thumb');
-		$list_link = RedeventHelperRoute::getSimpleListRoute();
+		$list_link = RedeventHelperRoute::getSimpleListRoute(null, 'default');
 		
 		//Set Page title
 		$this->document->setTitle($pagetitle);

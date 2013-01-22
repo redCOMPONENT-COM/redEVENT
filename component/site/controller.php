@@ -59,6 +59,20 @@ class RedeventController extends JController
 			return $this->$method();
 		}
 		
+		// default list layout for certain views
+		switch ($view)
+		{
+			case 'categoryevents':
+			case 'simplelist':
+			case 'venueevents':
+				$input = JFactory::getApplication()->input;
+				dump($input->get('layout'));
+				if (!$input->get('layout')) {
+					$input->set('layout', JFactory::getApplication()->getParams('com_redevent')->get('default_list_layout', 'table'));
+				}
+				break;
+		}
+		
 		parent::display();
 	}
 

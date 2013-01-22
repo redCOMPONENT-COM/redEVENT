@@ -135,13 +135,9 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 				//create target link
 				$task 	= JRequest::getWord('task');
 				
-				$category->linktext = $task == 'archive' ? JText::_('COM_REDEVENT_SHOW_ARCHIVE' ) : JText::_('COM_REDEVENT_SHOW_EVENTS' );
+				$category->linktext = JText::_('COM_REDEVENT_SHOW_EVENTS' );
 
-				if ($task == 'archive') {
-					$category->linktarget = JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($category->slug, 'archive'));
-				} else {
-					$category->linktarget = JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($category->slug));
-				}
+				$category->linktarget = JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($category->slug));
 				
 			}
 

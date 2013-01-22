@@ -191,6 +191,15 @@
 			<option value="200">200</option>
 		</field>	
 		
+		<field name="default_list_layout"
+			type="list"
+			default="table"
+			label="COM_REDEVENT_SETTINGS_LISTS_DEFAULT_LAYOUT_LABEL"
+			description="COM_REDEVENT_SETTINGS_LISTS_DEFAULT_LAYOUT_DESC">
+				<option value="default">COM_REDEVENT_SETTINGS_LISTS_DEFAULT_LAYOUT_TABLE</option>
+				<option value="thumb">COM_REDEVENT_SETTINGS_LISTS_DEFAULT_LAYOUT_THUMBNAILS</option>
+		</field>
+		
 		<field name="show_pagination"
 			type="list"
 			default="2"
@@ -250,8 +259,8 @@
 		</field>
 		
 		
-		<field name="lists_columns" type="text" size="80" default="date, title, venue, city, category" label="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_DESC" />
-		<field name="lists_columns_names" type="text" size="80" default="date, title, venue, city, category" label="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_NAMES_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_NAMES_DESC" />
+	<field name="lists_columns" type="text" size="80" default="date, title, venue, city, category" label="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_DESC" />
+	<field name="lists_columns_names" type="text" size="80" default="date, title, venue, city, category" label="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_NAMES_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_NAMES_DESC" />
 
   	<field name="catlinklist" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_CATEGORY_LINK_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_CATEGORY_LINK_DESC">
 			<option value="0">No</option>

@@ -120,7 +120,7 @@ class RedeventViewVenueevents extends JView
 			$pagetitle = $venue->venue;
 		}
 		$thumb_link = RedeventHelperRoute::getVenueEventsRoute($venue->slug, null, 'thumb');
-		$list_link  = RedeventHelperRoute::getVenueEventsRoute($venue->slug);
+		$list_link  = RedeventHelperRoute::getVenueEventsRoute($venue->slug, null, 'default');
 		
 		//set Page title
 		$this->document->setTitle($pagetitle);

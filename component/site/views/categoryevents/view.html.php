@@ -54,6 +54,10 @@ class RedeventViewCategoryevents extends JView
 		$uri 		= & JFactory::getURI();
 		$pathway 	= & $mainframe->getPathWay();
 		
+		if (!$this->getLayout()) {
+			$this->setLayout($params->get('default_list_layout'));
+		}
+		
 		/* Check if the item is an object */
 		if (!is_object($item)) {
 			$item = new StdClass;
@@ -129,7 +133,7 @@ class RedeventViewCategoryevents extends JView
 			$print_link = JRoute::_( $link.'&pop=1&tmpl=component');
 		}
 		$thumb_link = RedeventHelperRoute::getCategoryEventsRoute($category->slug, null, 'thumb');
-		$list_link  = RedeventHelperRoute::getCategoryEventsRoute($category->slug);
+		$list_link  = RedeventHelperRoute::getCategoryEventsRoute($category->slug, null, 'default');
 
 		//Check if the user has access to the form
 		$maintainer = ELUser::ismaintainer();
