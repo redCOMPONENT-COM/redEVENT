@@ -52,8 +52,8 @@ class RedEventViewVenue extends JView {
 		$settings	= JComponentHelper::getParams('com_redevent');
 
 		//get vars
-		$cid 			= JRequest::getInt( 'cid' );
-    $url    = JURI::root();
+		$cid 			= JRequest::getVar( 'cid' );
+    	$url    = JURI::root();
 
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITVENUE'));
 		//add css and js to document

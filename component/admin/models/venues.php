@@ -471,32 +471,51 @@ class RedEventModelVenues extends JModel
 	public function export($categories = null)
 	{
 		$where = array();
-		
+
 		if ($categories) {
 			$where[] = " (xc.category_id = ". implode(" OR xc.category_id = ", $categories).') ';
 		}
-		
+
 		if (count($where)) {
 			$where = ' WHERE '.implode(' AND ', $where);
 		}
 		else {
 			$where = '';
 		}
-				
+
 		$query = ' SELECT v.id, v.venue, v.alias, v.url, v.street, v.plz, v.city, v.state, v.country, v.latitude, v.longitude, '
-		       . ' v.locdescription, v.meta_description, v.meta_keywords, v.locimage, v.private, v.map, v.published,  '
-		       . '    u.name as creator_name, u.email AS creator_email '
-		       . ' FROM #__redevent_venues AS v '
-		       . ' LEFT JOIN #__redevent_venue_category_xref AS xc ON xc.venue_id = v.id '
-		       . ' LEFT JOIN #__users AS u ON v.created_by = u.id '
-		       . $where
-		       . ' GROUP BY v.id '
-		       ;
-    $this->_db->setQuery($query);
-    
-    $results = $this->_db->loadAssocList();
-    
-    return $results;
+				. ' v.locdescription, v.meta_description, v.meta_keywords, v.locimage, v.private, v.map, v.published,  '
+				. '    u.name as creator_name, u.email AS creator_email '
+				. ' FROM #__redevent_venues AS v '
+				. ' LEFT JOIN #__redevent_venue_category_xref AS xc ON xc.venue_id = v.id '
+				. ' LEFT JOIN #__users AS u ON v.created_by = u.id '
+				. $where
+				. ' GROUP BY v.id '
+				;
+		$this->_db->setQuery($query);
+
+		$results = $this->_db->loadAssocList();
+
+		$query = ' SELECT xc.venue_id, GROUP_CONCAT(c.name SEPARATOR "#!#") AS categories_names '
+				. ' FROM #__redevent_venue_category_xref AS xc '
+				. ' LEFT JOIN #__redevent_venues_categories AS c ON c.id = xc.category_id '
+				. ' GROUP BY xc.venue_id '
+				;
+		$this->_db->setQuery($query);
+
+		$cats = $this->_db->loadObjectList('venue_id');
+		foreach ($results as $k => $r)
+		{
+			if (isset($cats[$r['id']]))
+			{
+				$results[$k]['categories_names'] = $cats[$r['id']]->categories_names;
+			}
+			else
+			{
+				$results[$k]['categories_names'] = null;
+			}
+		}
+		return $results;
 	}
 	
   /**
@@ -508,6 +527,7 @@ class RedEventModelVenues extends JModel
 	 */
 	public function import($records, $replace = 0)
 	{
+		$app = JFactory::getApplication();
 		$count = array('added' => 0, 'updated' => 0);
 		
 		$current = null; // current event for sessions
@@ -524,12 +544,18 @@ class RedEventModelVenues extends JModel
 			}
 			// store !
 			if (!$v->check()) {
-				JError::raiseWarning(0, JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$v->getError());
+				$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$v->getError(), 'error');
 				continue;
 			}
 			if (!$v->store()) {
-				JError::raiseWarning(0, JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$v->getError());
+				$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$v->getError(), 'error');
 				continue;
+			}
+			if ($update) {
+				$count['updated']++;
+			}
+			else {
+				$count['added']++;
 			}
 		}
 		return $count;
