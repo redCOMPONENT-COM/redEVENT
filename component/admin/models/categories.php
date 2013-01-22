@@ -456,33 +456,55 @@ class RedEventModelCategories extends JModel
 	 * import categories in database
 	 * 
 	 * @param array $records
-	 * @param boolean $replace existing categories with same id
+	 * @param string $duplicate_method method for handling duplicate record (ignore, create_new, update)
 	 * @return boolean true on success
 	 */
-	public function import($records, $replace = 0)
+	public function import($records, $duplicate_method = 'ignore')
 	{
-		$count = array('added' => 0, 'updated' => 0);
+		$app = JFactory::getApplication();
+		$count = array('added' => 0, 'updated' => 0, 'ignored' => 0);
 		
 		$current = null; // current event for sessions
 		foreach ($records as $r)
 		{			
-			$v = Jtable::getInstance('RedEvent_categories', '');	
+			$v = $this->getTable('RedEvent_categories', '');	
 			$v->bind($r);
-			if (!$replace) {
-				$v->id = null;
-				$update = 0;
+			
+			if (isset($r->id) && $r->id) 
+			{
+				// load existing data
+				$found = $v->load($r->id);
+				
+				// discard if set to ignore duplicate
+				if ($found && $duplicate_method == 'ignore') {
+					$count['ignored']++;
+					continue;
+				}
 			}
-			else if ($v->id) {
-				$update = 1;
+			// bind submitted data
+			$v->bind($r);
+			if ($duplicate_method == 'update' && $found) {
+				$updating = 1;
 			}
+			else {
+				$v->id = null; // to be sure to create a new record
+				$updating = 0;
+			}
+
 			// store !
 			if (!$v->check()) {
-				JError::raiseWarning(0, JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$v->getError());
+				$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$v->getError(), 'error');
 				continue;
 			}
 			if (!$v->store()) {
-				JError::raiseWarning(0, JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$v->getError());
+				$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$v->getError(), 'error');
 				continue;
+			}
+			if ($updating) {
+				$count['updated']++;
+			}
+			else {
+				$count['added']++;
 			}
 		}
 		return $count;

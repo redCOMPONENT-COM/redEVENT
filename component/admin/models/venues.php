@@ -539,28 +539,30 @@ class RedEventModelVenues extends JModel
 		$current = null; // current event for sessions
 		foreach ($records as $r)
 		{			
-			$v = Jtable::getInstance('RedEvent_venues', '');
+			$v = $this->getTable('RedEvent_venues', '');	
+			$v->bind($r);
 			
 			if (isset($r->id) && $r->id) 
 			{
 				// load existing data
-				$v->load($r->id);
+				$found = $v->load($r->id);
+				
 				// discard if set to ignore duplicate
-				if ($v->id && $duplicate_method == 'ignore') {
+				if ($found && $duplicate_method == 'ignore') {
 					$count['ignored']++;
 					continue;
 				}
-				else if (!$v->id) {
-					// remove the id from submitted record, as it doesn't match anything anyway
-					$r->id = null;
-				}
 			}
-			
+			// bind submitted data
 			$v->bind($r);
-			if ($duplicate_method == 'create_new') {
-				$v->id = null;
+			if ($duplicate_method == 'update' && $found) {
+				$updating = 1;
 			}
-			
+			else {
+				$v->id = null; // to be sure to create a new record
+				$updating = 0;
+			}
+
 			// store !
 			if (!$v->check()) {
 				$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$v->getError(), 'error');
@@ -580,7 +582,7 @@ class RedEventModelVenues extends JModel
 			}
 			$v->setCats($cats_ids);
 			
-			if ($r->id) {
+			if ($updating) {
 				$count['updated']++;
 			}
 			else {

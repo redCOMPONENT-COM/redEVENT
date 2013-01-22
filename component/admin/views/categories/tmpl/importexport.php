@@ -25,6 +25,8 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.html.pane');
 
+JHTML::_('behavior.tooltip');
+
 $pane 		= & JPane::getInstance('tabs');
 ?>
 
@@ -38,7 +40,7 @@ $pane 		= & JPane::getInstance('tabs');
 <button type="submit" name="submit_b"><?php echo Jtext::_('COM_REDEVENT_PAGETITLE_CATEGORIES_EXPORT'); ?></button>
 <input type="hidden" name="option" value="com_redevent" />
 <input type="hidden" name="controller" value="categories" />
-<input type="hidden" name="task" value="importexport" />
+<input type="hidden" name="task" value="doexport" />
 </form>
 <?php $pane->endPanel(); ?>
 
@@ -46,11 +48,21 @@ $pane 		= & JPane::getInstance('tabs');
 <p><?php echo Jtext::_('COM_REDEVENT_CATEGORIES_IMPORT_INTRO'); ?></p>
 <form action="index.php" method="post" name="importform" id="importform"  enctype="multipart/form-data" >
 
-<table class="adminlist exportcsv" cellspacing="1">
+<table class="adminlist exportcsv">
 	<tbody>
 	<tr>
 		<td class="label" width="150px"><?php echo JText::_('COM_REDEVENT_CATEGORIES_CSV_IMPORT_FILE'); ?></td>
 		<td><input type="file" name="import" /><button type="submit"><?php echo JText::_('COM_REDEVENT_IMPORT')?></button></td>
+	</tr>
+	<tr>
+		<td class="label hasTip" rel="<?php echo JText::_('COM_REDEVENT_CSV_IMPORT_HANDLE_DUPLICATE_METHOD_TIP'); ?>" width="150px"><?php echo JText::_('COM_REDEVENT_CSV_IMPORT_HANDLE_DUPLICATE_METHOD'); ?></td>
+		<td>
+			<select name="duplicate_method" id="duplicate_method">
+				<option value="ignore"><?php echo JText::_('COM_REDEVENT_CSV_IMPORT_HANDLE_DUPLICATE_METHOD_OPTION_IGNORE'); ?></option>
+				<option value="create_new"><?php echo JText::_('COM_REDEVENT_CSV_IMPORT_HANDLE_DUPLICATE_METHOD_OPTION_CREATE_NEW'); ?></option>
+				<option value="update"><?php echo JText::_('COM_REDEVENT_CSV_IMPORT_HANDLE_DUPLICATE_METHOD_OPTION_UPDATE'); ?></option>
+			</select>
+		</td>
 	</tr>
 	</tbody>
 </table>
