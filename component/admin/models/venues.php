@@ -536,7 +536,6 @@ class RedEventModelVenues extends JModel
 		$app = JFactory::getApplication();
 		$count = array('added' => 0, 'updated' => 0, 'ignored' => 0);
 		
-		$current = null; // current event for sessions
 		foreach ($records as $r)
 		{			
 			$v = $this->getTable('RedEvent_venues', '');	

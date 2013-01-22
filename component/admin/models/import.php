@@ -280,12 +280,13 @@ class RedEventModelImport extends JModel
 	 * insert events/sessions in database
 	 * 
 	 * @param array $records
-	 * @param boolean $replace existing events with same id
+	 * @param string $duplicate_method method for handling duplicate record (ignore, create_new, update)
 	 * @return boolean true on success
 	 */
-	public function eventsimport($records, $replace = 0)
+	public function eventsimport($records, $duplicate_method = 'ignore')
 	{
-		$count = array('added' => 0, 'updated' => 0);
+		$app = JFactory::getApplication();
+		$count = array('added' => 0, 'updated' => 0, 'ignored' => 0);
 		
 		$current = null; // current event for sessions
 		foreach ($records as $r)
@@ -295,22 +296,35 @@ class RedEventModelImport extends JModel
 			// first import the event if new event
 			if (!empty($r->title)) // new event
 			{
-				$ev = Jtable::getInstance('RedEvent_events', '');	
+				$ev = $this->getTable('RedEvent_events', '');
+				if (isset($r->id) && $r->id) 
+				{
+					// load existing data
+					$found = $ev->load($r->id);
+					
+					// discard if set to ignore duplicate
+					if ($found && $duplicate_method == 'ignore') {
+						$count['ignored']++;
+						continue;
+					}
+				}
+				// bind submitted data
 				$ev->bind($r);
-				if (!$replace) {
-					$ev->id = null;
-					$update = 0;
+				if ($duplicate_method == 'update' && $found) {
+					$updating = 1;
 				}
-				else if ($ev->id) {
-					$update = 1;
+				else {
+					$ev->id = null; // to be sure to create a new record
+					$updating = 0;
 				}
+	
 				// store !
 				if (!$ev->check()) {
-					JError::raiseError(0, JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$ev->getError());
+					$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$ev->getError(), 'error');
 					continue;
 				}
 				if (!$ev->store()) {
-					JError::raiseError(0, JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$ev->getError());
+					$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$ev->getError(), 'error');
 					continue;
 				}
 				
@@ -323,7 +337,7 @@ class RedEventModelImport extends JModel
 				}
 				$ev->setCats($cats_ids);
 				
-				($update ? $count['update']++ : $count['added']++);
+				($updating ? $count['updated']++ : $count['added']++);
 				$current = $ev;
 			}
 			
@@ -332,7 +346,7 @@ class RedEventModelImport extends JModel
 			{
 				$venueid = $this->_getVenueId($r->venue, $r->city);
 				
-				$session = JTable::getInstance('RedEvent_eventvenuexref', '');
+				$session = $this->getTable('RedEvent_eventvenuexref', '');
 				$session->bind($r);
 				$session->id = null;
 				$session->eventid = $current->id;
@@ -359,11 +373,11 @@ class RedEventModelImport extends JModel
 				
 				// store !
 				if (!$session->check()) {
-					JError::raiseError(0, JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$session->getError());
+					$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$session->getError(), 'error');
 					continue;
 				}
 				if (!$session->store()) {
-					JError::raiseError(0, JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$session->getError());
+					$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$session->getError(), 'error');
 					continue;
 				}
 				
