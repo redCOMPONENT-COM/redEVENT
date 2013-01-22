@@ -188,4 +188,35 @@ class RedEvent_venues extends JTable
 
 		return true;
 	}
+	/**
+	 * Sets categories of venue
+	 * 
+	 * @param array $catids
+	 * @return boolean true on success
+	 */
+	function setCats($catids = array())
+	{
+		if (!$this->id) {
+			$this->setError('COM_REDEVENT_VENUE_TABLE_NOT_INITIALIZED');
+			return false;
+		}
+		// update the event category xref
+		// first, delete current rows for this event
+		$query = ' DELETE FROM #__redevent_venue_category_xref WHERE venue_id = ' . $this->_db->Quote($this->id);
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) {
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		// insert new ref
+		foreach ((array) $catids as $cat_id) {
+			$query = ' INSERT INTO #__redevent_venue_category_xref (venue_id, category_id) VALUES (' . $this->_db->Quote($this->id) . ', '. $this->_db->Quote($cat_id) . ')';
+			$this->_db->setQuery($query);
+			if (!$this->_db->query()) {
+				$this->setError($this->_db->getErrorMsg());
+				return false;
+			}
+		}
+		return true;
+	}
 }

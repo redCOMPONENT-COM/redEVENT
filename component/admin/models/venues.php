@@ -62,6 +62,12 @@ class RedEventModelVenues extends JModel
 	var $_id = null;
 
 	/**
+	 * for import
+	 * @var array
+	 */
+	private $_cats   = null;
+	
+	/**
 	 * Constructor
 	 *
 	 * @since 0.9
@@ -522,26 +528,39 @@ class RedEventModelVenues extends JModel
 	 * insert venues database
 	 * 
 	 * @param array $records
-	 * @param boolean $replace existing events with same id
+	 * @param string $duplicate_method method for handling duplicate record (ignore, create_new, update)
 	 * @return boolean true on success
 	 */
-	public function import($records, $replace = 0)
+	public function import($records, $duplicate_method = 'ignore')
 	{
 		$app = JFactory::getApplication();
-		$count = array('added' => 0, 'updated' => 0);
+		$count = array('added' => 0, 'updated' => 0, 'ignored' => 0);
 		
 		$current = null; // current event for sessions
 		foreach ($records as $r)
 		{			
-			$v = Jtable::getInstance('RedEvent_venues', '');	
+			$v = Jtable::getInstance('RedEvent_venues', '');
+			
+			if (isset($r->id) && $r->id) 
+			{
+				// load existing data
+				$v->load($r->id);
+				// discard if set to ignore duplicate
+				if ($v->id && $duplicate_method == 'ignore') {
+					$count['ignored']++;
+					continue;
+				}
+				else if (!$v->id) {
+					// remove the id from submitted record, as it doesn't match anything anyway
+					$r->id = null;
+				}
+			}
+			
 			$v->bind($r);
-			if (!$replace) {
+			if ($duplicate_method == 'create_new') {
 				$v->id = null;
-				$update = 0;
 			}
-			else if ($v->id) {
-				$update = 1;
-			}
+			
 			// store !
 			if (!$v->check()) {
 				$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$v->getError(), 'error');
@@ -551,7 +570,17 @@ class RedEventModelVenues extends JModel
 				$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$v->getError(), 'error');
 				continue;
 			}
-			if ($update) {
+
+			// categories relations
+			$cats = explode('#!#', $r->categories_names);
+			$cats_ids = array();
+			foreach ($cats as $c)
+			{
+				$cats_ids[] = $this->_getCatId($c);
+			}
+			$v->setCats($cats_ids);
+			
+			if ($r->id) {
 				$count['updated']++;
 			}
 			else {
@@ -559,5 +588,46 @@ class RedEventModelVenues extends JModel
 			}
 		}
 		return $count;
+	}
+
+	/**
+	 * Return cat id matching name, creating if needed
+	 *
+	 * @param string $name
+	 * @return id cat id
+	 */
+	private function _getCatId($name)
+	{
+		$id = array_search($name, $this->_getCats());
+		if ($id === false) // doesn't exist, create it
+		{
+			$new = JTable::getInstance('RedEvent_venues_categories', '');
+			$new->name = $name;
+			$new->store();
+			$id = $new->id;
+			$this->_cats[$id] = $name;
+		}
+		return $id;
+	}
+	
+	/**
+	 * returns array of current cats names indexed by ids
+	 * 
+	 * @return array
+	 */
+	private function _getCats()
+	{
+		if (empty($this->_cats))
+		{
+			$this->_cats = array();
+			$query = ' SELECT id, name FROM #__redevent_venues_categories ';
+			$this->_db->setQuery($query);
+			$res = $this->_db->loadObjectList();
+			foreach ((array) $res as $r)
+			{
+				$this->_cats[$r->id] = $r->name;
+			}
+		}
+		return $this->_cats;
 	}
 }
