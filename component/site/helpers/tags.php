@@ -948,8 +948,11 @@ class redEVENT_tags {
   	$fields = $rfcore->getFields($this->getEvent()->getData()->redform_id);
   	
   	$tags = array();
-  	foreach ((array) $fields as $f) {
-  		$tags[$f->id] = 'answer_'.$f->id;
+  	if ($fields && count($fields))
+  	{
+	  	foreach ((array) $fields as $f) {
+	  		$tags[$f->id] = 'answer_'.$f->id;
+	  	}
   	}
   	return $tags;
   }
