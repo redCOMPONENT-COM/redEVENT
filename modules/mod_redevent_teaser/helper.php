@@ -141,13 +141,14 @@ class modRedeventTeaserHelper
 			$length = mb_strlen( $row->title, 'UTF-8' );
 			$title_length = $params->get('cuttitle', 35);
 			if ($title_length && $length > $title_length) {
-				$rows[$k]->title = mb_substr($row->title, 0, $title_length, 'UTF-8').'...';
+				$title = mb_substr($row->title, 0, $title_length, 'UTF-8').'...';
 			}
 			else {
-				$rows[$k]->title = $row->title;
+				$title = $row->title;
 			}			
 
-			$lists[$i]->title			= htmlspecialchars( $row->title, ENT_COMPAT, 'UTF-8' );
+			$lists[$i] = new stdclass;
+			$lists[$i]->title			= htmlspecialchars( $title, ENT_COMPAT, 'UTF-8' );
 			$lists[$i]->venue			= htmlspecialchars( $row->venue, ENT_COMPAT, 'UTF-8' );
 //			$lists[$i]->catname		= htmlspecialchars( $row->catname, ENT_COMPAT, 'UTF-8' );
 			$lists[$i]->state			= htmlspecialchars( $row->state, ENT_COMPAT, 'UTF-8' );		
