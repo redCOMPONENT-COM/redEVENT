@@ -204,7 +204,7 @@ class RedeventViewDetails extends JView
 		// more metadata		
 		$document->addCustomTag('<meta property="og:title" content="'.$row->full_title.'"/>');
 		$document->addCustomTag('<meta property="og:type" content="event"/>');
-		$document->addCustomTag('<meta property="og:url" content="'.$uri->toString().'"/>');
+		$document->addCustomTag('<meta property="og:url" content="'.JRoute::_('index.php?option=com_redevent&view=details&id='.$row->slug.'"/>');
 		if ($row->datimage) {
 			$document->addCustomTag('<meta property="og:image" content="'.JURI::base().'images/redevent/events/'.$row->datimage.'"/>');
 		}
