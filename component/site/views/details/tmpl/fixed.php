@@ -117,10 +117,11 @@ if ($this->row->venueid != 0) {
 			</dd>
 	</dl>
 
-  	<?php 
-  	$stripped = JFilterOutput::cleanText($this->row->datdescription);
+  	<?php
+  	$stripped = $this->row->datdescription;
+  	$stripped = JFilterOutput::cleanText($stripped);
   	$stripped = trim($stripped);
-  	if ($this->row->datdescription) : ?>
+  	if ($stripped) : ?>
 
   	    <h2 class="description"><?php echo JText::_('COM_REDEVENT_DESCRIPTION' ); ?></h2>
   		<div class="description event_desc">
@@ -131,7 +132,8 @@ if ($this->row->venueid != 0) {
   	<?php endif; ?>
 
   	<?php 
-  	$strip_details = JFilterOutput::cleanText($this->row->details);
+  	$strip_details = $this->row->details;
+  	$strip_details = JFilterOutput::cleanText($strip_details);
   	$strip_details = trim($strip_details);
   	if ($strip_details) : ?>
 
