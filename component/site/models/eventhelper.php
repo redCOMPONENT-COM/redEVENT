@@ -111,13 +111,18 @@ class RedeventModelEventhelper extends JModel
 				RedeventError::raiseError( 404, JText::_("COM_REDEVENT_CATEGORY_NOT_PUBLISHED") );
 			}
 
-			// Do we have access to each category ?
-			foreach ($this->_event->categories as $cat)
+			// Do we have access to any category ?
+			$access = false;
+			foreach ($this->_details->categories as $cat)
 			{
-				if ($cat->access > max($user->getAuthorisedViewLevels()))
+				if ($cat->access <= max($user->getAuthorisedViewLevels()))
 				{
-					JError::raiseError( 403, JText::_("COM_REDEVENT_ALERTNOTAUTH") );
+					$access = true;
+					break;
 				}
+			}
+			if (!$access) {
+				JError::raiseError( 403, JText::_("COM_REDEVENT_ALERTNOTAUTH") );
 			}
 		}
 

@@ -102,20 +102,25 @@ class RedeventModelSignup extends JModel
 		{
 			$user	= & JFactory::getUser();
 		
-      // Is the category published?
-      if (!count($this->_details->categories))
-      {
-        JError::raiseError( 404, JText::_("COM_REDEVENT_CATEGORY_NOT_PUBLISHED") );
-      }
-
-      // Do we have access to each category ?
-      foreach ($this->_details->categories as $cat)
-      {
-        if ($cat->access > max($user->getAuthorisedViewLevels()))
-        {
-          JError::raiseError( 403, JText::_("COM_REDEVENT_ALERTNOTAUTH") );
-        }
-      }
+	      // Is the category published?
+	      if (!count($this->_details->categories))
+	      {
+	        JError::raiseError( 404, JText::_("COM_REDEVENT_CATEGORY_NOT_PUBLISHED") );
+	      }
+	
+	      // Do we have access to any category ?
+	      $access = false;
+	      foreach ($this->_details->categories as $cat)
+	      {
+	      	if ($cat->access <= max($user->getAuthorisedViewLevels()))
+	      	{
+	      		$access = true;
+	      		break;
+	      	}
+	      }
+	      if (!$access) {
+	      	JError::raiseError( 403, JText::_("COM_REDEVENT_ALERTNOTAUTH") );
+	      }
 
 		}
 
