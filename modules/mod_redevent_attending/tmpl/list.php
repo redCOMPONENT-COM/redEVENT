@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
 	<span class="nav-prec"><?php echo JHTML::link($previous, '<<'); ?></span>
 	<span class="nav-select"><?php echo $select; ?></span>
 	<span class="nav-next"><?php echo JHTML::link($next, '>>'); ?></span>
-	<input type="hidden" name="currenturi" value="<?php echo $curi->toString(); ?>"/>
+	<input type="hidden" name="currenturi" value="<?php echo htmlspecialchars($curi->toString()); ?>"/>
 </form>
 <?php endif; ?>
 

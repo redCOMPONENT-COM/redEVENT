@@ -57,11 +57,11 @@ $select = modRedEventAttendingHelper::getSelect($params);
 // quick links to previous and next
 $prevuri = clone $curi;
 $prevuri->setVar('reattoffset', $offset-1);
-$previous = $prevuri->toString();
+$previous = htmlspecialchars($prevuri->toString());
 
 $nexturi = clone $curi;
 $nexturi->setVar('reattoffset', $offset+1);
-$next     = $nexturi->toString();
+$next     = htmlspecialchars($nexturi->toString());
 
 $document = &JFactory::getDocument(); 
 $document->addStyleSheet( JURI::base() . '/modules/mod_redevent_attending/mod_redevent_attending.css' );

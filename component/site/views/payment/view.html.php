@@ -92,7 +92,7 @@ class RedeventViewPayment extends JView
 			$params->set( 'popup', 1 );
 		}
 
-		$print_link = JRoute::_($uri->toString().'&pop=1&tmpl=component');
+		$print_link = JRoute::_(htmlspecialchars($uri->toString()).'&pop=1&tmpl=component');
 
 		//set page title and meta stuff
 		$document->setTitle( $row->title. ' - '. JText::_('COM_REDEVENT_Payment') );
