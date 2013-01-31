@@ -119,6 +119,7 @@ $toggle = $this->params->get('filter_toggle', 3);
 <p>
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="" />
+<input type="hidden" name="layout" value="<?php echo $this->getLayout(); ?>" />
 </p>
 </form>
 

@@ -113,6 +113,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php endif; ?>
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="" />
+<input type="hidden" name="layout" value="<?php echo $this->getLayout(); ?>" />
 </form>
 <!-- filter end -->
 

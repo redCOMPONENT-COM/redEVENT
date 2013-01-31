@@ -66,8 +66,9 @@ class RedeventController extends JController
 			case 'simplelist':
 			case 'venueevents':
 				$input = JFactory::getApplication()->input;
+				dump($input->get('layout'), 'layout');
 				if (!$input->get('layout')) {
-					$input->set('layout', JFactory::getApplication()->getParams('com_redevent')->get('default_list_layout', 'table'));
+					$input->def('layout', JFactory::getApplication()->getParams('com_redevent')->get('default_list_layout', 'table'));
 				}
 				break;
 		}
@@ -78,14 +79,9 @@ class RedeventController extends JController
 	function _checkfilter()
 	{
 		$app = & JFactory::getApplication();
-		
-//		if (!JRequest::getVar('filter', 0, 'post'))
-//		{
-//			return false;
-//		}
-		
+				
 		$post = JRequest::get('post');
-		$uri = &Jfactory::getUri();
+		$uri  = Jfactory::getUri();
 		
 		$myuri = clone($uri); // do not modify it if not proper view...
 		$vars = 0;
@@ -95,13 +91,13 @@ class RedeventController extends JController
 			{
 				case 'filter_category':
 				case 'filter_venuecategory':
-//				case 'limit':
-//				case 'limitstart':
 				case 'filter_order':
 				case 'filter_order_Dir':
 				case 'filter':
 				case 'filter_type':
 				case 'filter_venue':
+				case 'layout':
+				case 'task':
 					if ($v)
 					{
 						$myuri->setVar($filter, $v);

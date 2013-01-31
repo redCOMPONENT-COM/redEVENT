@@ -170,6 +170,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<input type="hidden" name="filter_order_Dir" value="" />
 	<input type="hidden" name="view" value="venueevents" />
 	<input type="hidden" name="id" value="<?php echo $this->venue->id; ?>" />
+	<input type="hidden" name="layout" value="<?php echo $this->getLayout(); ?>" />
 	</p>
 	</form>
 
