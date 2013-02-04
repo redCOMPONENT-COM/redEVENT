@@ -257,7 +257,10 @@ class RedeventHelperRecurrence
           {
             preg_match('/([-]*)([0-9]*)([A-Z]*)/', $d, $res);
             $revert = ($res[1] == '-');
-            if ($res[2] && $res[3]) {
+            if ($res[2] && $res[3]) { // has number and day
+              if ($rules->type == 'MONTHLY') {
+                $rules->monthtype = 'byday';
+              }
               if ($revert) {
                 if (!in_array($res[2], $rules->rweeks)) {
                   $rules->rweeks[] = $res[2];
@@ -275,7 +278,7 @@ class RedeventHelperRecurrence
                 }              
               }
             }
-            else if ($res[2]) {
+            else if ($res[2]) { // only number
               $rules->bydays[] = $res[2];
               if ($rules->type == 'MONTHLY') {
                 $rules->monthtype = 'bymonthdays';
@@ -284,7 +287,10 @@ class RedeventHelperRecurrence
                 $rules->reverse_bydays = 1;
               }
             }
-            else if ($res[3]) {
+            else if ($res[3]) { // only day
+              if ($rules->type == 'MONTHLY') {
+                $rules->monthtype = 'byday';
+              }
               if ($revert) {
                 if (!in_array($res[3], $rules->rweekdays)) {
                   $rules->rweekdays[] = $res[3];
@@ -302,7 +308,7 @@ class RedeventHelperRecurrence
           break;
       }
     }
-    
+//     echo '<pre>';print_r($rules); echo '</pre>';exit;
     return $rules;
   }
   
@@ -333,7 +339,7 @@ class RedeventHelperRecurrence
     }
     $week_start = $params->get('week_start', 'SU');
 
-//    print_r($rule); 
+//     echo '<pre>';print_r($rule); echo '</pre>';exit;
 //    print_r($last_xref);
         
     $new = false;
@@ -346,7 +352,7 @@ class RedeventHelperRecurrence
     $days_name = array('SU' => 'sunday', 'MO' => 'monday', 'TU' => 'tuesday', 'WE' => 'wednesday', 'TH' => 'thursday', 'FR' => 'friday', 'SA' => 'saturday');
     $days_number = array('SU' => 0, 'MO' => 1, 'TU' => 2, 'WE' => 3, 'TH' => 4, 'FR' => 5, 'SA' => 6, 'SU' => 7);
     $xref_start = strtotime($last_xref->dates);
-    
+
     // get the next start timestamp
     switch ($rule->type)
     {
@@ -383,8 +389,8 @@ class RedeventHelperRecurrence
         break;
         
       case 'MONTHLY':
-        if (!$rule->monthtype == 'bymonthday') 
-        	{
+        if ($rule->monthtype == 'byday') 
+        {
         		// first day of this month
         		$first_this = mktime(0, 0, 0, strftime('%m', $xref_start), 1, strftime('%Y', $xref_start));
         		// last day of this month
@@ -393,7 +399,7 @@ class RedeventHelperRecurrence
         		$first_next_interval = mktime(0, 0, 0, strftime('%m', $xref_start) + $rule->interval, 1, strftime('%Y', $xref_start));
         		// last day of this month
         		$last_next_interval = mktime(0, 0, 0, strftime('%m', $xref_start)+1 + $rule->interval, 0, strftime('%Y', $xref_start));
-        	
+        		
         		$days = array();
         		//          print_r($rule);
         		foreach ($rule->weeks as $week)
@@ -425,7 +431,7 @@ class RedeventHelperRecurrence
         			}
         		}
         		$next_start = min($days);
-        	}
+        }
         else 
         {
           $current = strftime('%d', strtotime($last_xref->dates));
@@ -571,6 +577,7 @@ class RedeventHelperRecurrence
     }
     $new->count++;
     
+//     echo '<pre>';print_r($new); echo '</pre>';exit;
 //    print_r($new); 
 //    exit;
     return $new;
