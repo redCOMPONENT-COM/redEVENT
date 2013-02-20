@@ -30,4 +30,29 @@ class RedeventToolbar extends FOFToolbar
 		//Create Submenu
 		ELAdmin::setMenu();
 	} 
+	
+	/**
+	 * Renders the toolbar for the component's Roles page
+	 */
+	public function onRolesBrowse()
+	{
+		//on frontend, buttons must be added specifically
+		list($isCli, $isAdmin) = FOFDispatcher::isCliAdmin();
+	
+		if($isAdmin || $this->renderFrontendSubmenu) {
+			$this->renderSubmenu();
+		}
+	
+		if(!$isAdmin && !$this->renderFrontendButtons) return;
+	
+		$option = $this->input->getCmd('option','com_redevent');
+	
+		JToolBarHelper::title(JText::_('COM_REDEVENT_MENU_ROLES'), 'roles');
+		JToolBarHelper::addNewX();
+		JToolBarHelper::editListX();
+		JToolBarHelper::deleteList();
+		if (JFactory::getUser()->authorise('core.admin', 'com_redevent')) {
+			JToolBarHelper::preferences('com_redevent', '600', '600');
+		}
+	}
 }

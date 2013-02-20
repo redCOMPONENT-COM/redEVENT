@@ -15,7 +15,7 @@
 		<header name="ordering" type="ordering" sortable="true"
 			buttons="yes" buttonclass="btn"
 		/>
-		<header name="language" type="language" sortable="true" />
+		<header name="language" type="language" sortable="true" none="true"/>
 	</headerset>
 
 	<fieldset name="items">
@@ -29,6 +29,8 @@
 		 />
 
 		<field name="ordering" type="ordering" />
-		<field name="language" type="language" />
+		<field name="language" type="language">
+			<option value="*">JALL</option>
+		</field>
 	</fieldset>
 </form>
