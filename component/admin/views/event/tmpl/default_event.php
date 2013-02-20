@@ -10,6 +10,9 @@
 			<?php echo $this->form->getLabel('alias').$this->form->getInput('alias'); ?>
 		</li>
 		<li>
+			<?php echo $this->form->getLabel('language').$this->form->getInput('language'); ?>
+		</li>
+		<li>
 			<?php echo $this->form->getLabel('course_code').$this->form->getInput('course_code'); ?>
 		</li>
 		<li>

@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @package		redevent
  * @since 2.0
  */
-class RedeventViewCustomfield extends JView
+class RedeventViewCustomfield extends JViewLegacy
 {
 	function display($tpl = null)
 	{
@@ -59,16 +59,17 @@ class RedeventViewCustomfield extends JView
 		$uri 	=& JFactory::getURI();
 		$user 	=& JFactory::getUser();
 		$model	=& $this->getModel();
-		
-    $document = & JFactory::getDocument();
+
+		$document = & JFactory::getDocument();
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITCUSTOMFIELD'));
-    $document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 
 		$lists = array();
 		//get the project
-		$object	=& $this->get('data');
+		$object	= $this->get('data');
+		$form   = $this->get( 'form' );
 		$isNew  = ($object->id < 1);
-
+		
 		// fail if checked out not by 'me'
 		if ($model->isCheckedOut( $user->get('id') )) {
 			$msg = JText::sprintf( 'COM_REDEVENT_DESCBEINGEDITTED', JText::_('COM_REDEVENT_Custom_field' ), $object->name );
@@ -100,58 +101,15 @@ class RedeventViewCustomfield extends JView
 			JToolBarHelper::cancel( 'cancel', 'Close' );
 		}
 		  
-		// build the html select list for ordering
-		$query = 'SELECT ordering AS value, name AS text'
-			. ' FROM #__redevent_fields'
-			. ' ORDER BY ordering';
+		// build the html select list for object key
+		if ($object->id)
+		{
+			$form->setFieldAttribute('object_key', 'readonly', 'true');
+		}
 
-		$lists['ordering'] 			= JHTML::_('list.specificordering',  $object, $object->id, $query, 1 );
-
-		// build the html select lists
-		$lists['published']     = JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $object->published );
-    $lists['searchable']    = JHTML::_('select.booleanlist',  'searchable', 'class="inputbox"', $object->searchable );
-    $lists['in_lists']      = JHTML::_('select.booleanlist',  'in_lists', 'class="inputbox"', $object->in_lists );
-    $lists['frontend_edit'] = JHTML::_('select.booleanlist',  'frontend_edit', 'class="inputbox"', $object->frontend_edit );
-    $lists['required'] = JHTML::_('select.booleanlist',  'required', 'class="inputbox"', $object->required );
-		
-    // build the html select list for object key
-    if ($object->id)
-    {
-    	switch ($object->object_key)
-    	{
-    		case 'redevent.event':
-    			$f = JText::_('COM_REDEVENT_Event').'<input type="hidden" name="object_key" value="'.$object->object_key.'"/>';
-    			break;
-    		case 'redevent.xref':
-    			$f = JText::_('COM_REDEVENT_Event_session').'<input type="hidden" name="object_key" value="'.$object->object_key.'"/>';
-    			break;
-    	}
-    	$lists['objects'] = $f;
-    }
-    else
-    {
-	    $object_keys = array();
-	    $object_keys[] = JHTML::_('select.option', 'redevent.event', 'Event');
-	    $object_keys[] = JHTML::_('select.option', 'redevent.xref', 'Event session');
-	    //$object_keys[] = JHTML::_('select.option', 'redevent.venue', 'Venue');   
-	    $lists['objects'] = JHTML::_('select.genericlist', $object_keys, 'object_key', 'class="inputbox"', 'value', 'text', $object->object_key );
-    }
-    // build the html select list for object key
-    $types = array();
-    //$types[] = JHTML::_('select.option', 'group', 'Group');
-    $types[] = JHTML::_('select.option', 'text', 'Text');
-    $types[] = JHTML::_('select.option', 'textarea', 'Textarea');   
-    $types[] = JHTML::_('select.option', 'select', 'Select');
-    $types[] = JHTML::_('select.option', 'select_multiple', 'Multiple select');
-    $types[] = JHTML::_('select.option', 'radio', 'Radio');     
-    $types[] = JHTML::_('select.option', 'checkbox', 'Checkbox');  
-    $types[] = JHTML::_('select.option', 'date', 'Date');  
-    $types[] = JHTML::_('select.option', 'wysiwyg', 'Wysiwyg');  
-    $lists['types'] = JHTML::_('select.genericlist', $types, 'type', 'class="inputbox"', 'value', 'text', $object->type );
-
-    
 		$this->assignRef('lists',		$lists);
 		$this->assignRef('object',		$object);
+		$this->assignRef('form',		$form);
 
 		parent::display($tpl);
 	}
