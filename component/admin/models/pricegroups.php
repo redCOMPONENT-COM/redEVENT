@@ -81,6 +81,9 @@ class RedeventModelPricegroups extends JModel
     $this->setState('filter_order', $filter_order);
     $this->setState('filter_order_Dir', $filter_order_Dir);
     $this->setState('search', strtolower($search));        
+
+    $language = $mainframe->getUserStateFromRequest('com_redevent.pricegroups.filter.language', 'filter_language', '');
+    $this->setState('filter.language', $language);
   }
   
   /**
@@ -105,13 +108,18 @@ class RedeventModelPricegroups extends JModel
   
 	function _buildQuery()
 	{
+		// Create a new query object.
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+		
 		// Get the WHERE and ORDER BY clauses for the query
 		$where		= $this->_buildContentWhere();
 		$orderby	= $this->_buildContentOrderBy();
 
-		$query = ' SELECT obj.*, u.name AS editor '
+		$query = ' SELECT obj.*, u.name AS editor, l.title AS language_title '
 			. ' FROM #__redevent_pricegroups AS obj '
 			. ' LEFT JOIN #__users AS u ON u.id = obj.checked_out '
+			. ' LEFT JOIN #__languages AS l ON l.lang_code = obj.language '
 			. $where
 			. $orderby
 		;
@@ -149,6 +157,10 @@ class RedeventModelPricegroups extends JModel
 			$where[] = 'LOWER(obj.name) LIKE '.$this->_db->Quote('%'.$search.'%');
 		}
 
+		// Filter on the language.
+		if ($language = $this->getState('filter.language')) {
+			$where[] = 'obj.language = '.$this->_db->quote($language);
+		}
 		$where 		= ( count( $where ) ? ' WHERE '. implode( ' AND ', $where ) : '' );
 
 		return $where;

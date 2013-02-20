@@ -78,11 +78,12 @@ class RedeventViewPricegroups extends JView
 		$lists['order']     = $state->get( 'filter_order' );
 		$lists['search']    = $state->get( 'search' );
 				
-		$this->assignRef('user',		JFactory::getUser());
-		$this->assignRef('lists',		$lists);
-		$this->assignRef('items',		$items);
-		$this->assignRef('pagination',	$pagination);
+		$this->assignRef('user',        JFactory::getUser());
+		$this->assignRef('lists',       $lists);
+		$this->assignRef('items',       $items);
+		$this->assignRef('pagination',  $pagination);
 		$this->assignRef('request_url',	$uri->toString());
+		$this->assignRef('state',       $state);
 
 		parent::display($tpl);
 	}

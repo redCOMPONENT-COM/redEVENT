@@ -30,99 +30,46 @@ defined('_JEXEC') or die('Restricted access'); ?>
 $imagepath = '/administrator/components/com_redevent/assets/images/';
 ?>
 
-<script language="javascript" type="text/javascript">
-	window.addEvent('domready', function(){
-
-		$('image').addEvent('change', function(){
-			if (this.get('value')) {
-				$('imagelib').empty().adopt(
-						new Element('img', {
-							src: '../'+this.get('value'),
-							class: 're-image-preview',
-							alt: 'preview'
-						}));
-			}
-			else {
-				$('imagelib').empty();
-			}
-		}).fireEvent('change');
-		
-	});
-
-	function submitbutton(pressbutton) {
-		var form = document.adminForm;
-		if (pressbutton == 'cancel') {
-			submitform( pressbutton );
-			return;
+<script type="text/javascript">
+	Joomla.submitbutton = function(task)
+	{
+		if (task == 'cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
+			Joomla.submitform(task, document.getElementById('adminForm'));
+		} else {
+			alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
 		}
-
-    // do field validation
-    var validator = document.formvalidator;
-    if ( validator.validate(form.name) === false ){
-      alert( "<?php echo JText::_('COM_REDEVENT_NAME_IS_REQUIRED', true ); ?>" );
-    } else {
-      submitform( pressbutton );
-    }
 	}
-
-	var imgpath = "<?php echo JURI::root().$imagepath; ?>";
 </script>
+			
+<form action="index.php" method="post" name="adminForm" id="adminForm" class="form-validate">
+	<div class="width-60">
+		<fieldset class="adminform">
+			<legend><?php echo JText::_( 'COM_REDEVENT_PRICEGROUPS_PRICEGROUP' ); ?></legend>
+			<ul class="adminformlist">
+				<li><?php echo $this->form->getLabel('name'); ?>
+				<?php echo $this->form->getInput('name'); ?></li>
+				
+				<li><?php echo $this->form->getLabel('alias'); ?>
+				<?php echo $this->form->getInput('alias'); ?></li>
+				
+				<li><?php echo $this->form->getLabel('language'); ?>
+				<?php echo $this->form->getInput('language'); ?></li>
+				
+				<li><?php echo $this->form->getLabel('tooltip'); ?>
+				<?php echo $this->form->getInput('tooltip'); ?></li>
+				
+				<li><?php echo $this->form->getLabel('adminonly'); ?>
+				<?php echo $this->form->getInput('adminonly'); ?></li>
+				
+				<li><?php echo $this->form->getLabel('image'); ?>
+				<?php echo $this->form->getInput('image'); ?></li>
+			</ul>
+			<div class="clr"></div>
+		</fieldset>
+	</div>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
-<div class="col50">
-<fieldset class="adminform"><legend><?php echo JText::_( 'COM_REDEVENT_PRICEGROUPS_PRICEGROUP' ); ?></legend>
-
-<table class="editevent">
-	<tr>
-		<td width="100" align="right" class="key"><label for="name"><?php echo JText::_('COM_REDEVENT_Name' ); ?>:
-		</label></td>
-		<td><input class="text_area required" type="text" name="name" id="name"
-			size="32" maxlength="250" value="<?php echo $this->object->name; ?>" />
-		</td>
-	</tr>
-	<tr>
-		<td width="100" align="right" class="key"><label for="alias"><?php echo JText::_('COM_REDEVENT_Alias' ); ?>:
-		</label></td>
-		<td><input class="text_area" type="text" name="alias" id="alias"
-			size="32" maxlength="250" value="<?php echo $this->object->alias; ?>" />
-		</td>
-	</tr>
-	<tr>
-		<td width="100" align="right" class="hasTip key" title="<?php echo JText::_( 'COM_REDEVENT_PRICEGROUPS_TOOLTIP' ).'::'.JText::_( 'COM_REDEVENT_PRICEGROUPS_TOOLTIP_TIP' ); ?>">
-			<label for="tooltip"><?php echo JText::_( 'COM_REDEVENT_PRICEGROUPS_TOOLTIP' ); ?>:</label>
-		</td>
-		<td><textarea name="tooltip" id="tooltip"	cols="32" rows="4"><?php echo $this->object->tooltip; ?></textarea>
-		</td>
-	</tr>
-	<tr>
-		<td width="100" align="right" class="hasTip key" title="<?php echo JText::_( 'COM_REDEVENT_PRICEGROUPS_ADMINONLY' ).'::'.JText::_( 'COM_REDEVENT_PRICEGROUPS_ADMINONLY_TIP' ); ?>">
-			<label for="tooltip"><?php echo JText::_( 'COM_REDEVENT_PRICEGROUPS_ADMINONLY' ); ?>:</label>
-		</td>
-		<td><?php echo JHTML::_('select.booleanlist', 'adminonly', '', $this->object->adminonly); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="100" align="right" class="key">
-			<?php echo $this->form->getLabel('image'); ?>
-		</td>
-		<td>
-			<?php echo $this->form->getInput('image'); ?>
-			<div class="clear"></div>
-			<div id="imagelib"></div>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" align="right" class="key"><label for="ordering"> <?php echo JText::_('COM_REDEVENT_Ordering' ); ?>:
-		</label></td>
-		<td><?php echo $this->lists['ordering']; ?></td>
-	</tr>
-</table>
-</fieldset>
-</div>
-
-<div class="clr"></div>
-
-<input type="hidden" name="option" value="com_redevent" /> <input
-	type="hidden" name="controller" value="pricegroups" /> <input
-	type="hidden" name="cid[]" value="<?php echo $this->object->id; ?>" />
-<input type="hidden" name="task" value="" /></form>
+	<input type="hidden" name="option" value="com_redevent" /> 
+	<input type="hidden" name="controller" value="pricegroups" />
+	<input type="hidden" name="cid[]" value="<?php echo $this->object->id; ?>" />
+	<input type="hidden" name="task" value="" />
+</form>

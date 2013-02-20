@@ -101,7 +101,7 @@ class RedeventViewCustomfield extends JViewLegacy
 			JToolBarHelper::cancel( 'cancel', 'Close' );
 		}
 		  
-		// build the html select list for object key
+		// prevent changing which object the field is for once originally saved
 		if ($object->id)
 		{
 			$form->setFieldAttribute('object_key', 'readonly', 'true');
