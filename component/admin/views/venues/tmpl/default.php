@@ -71,7 +71,7 @@ defined('_JEXEC') or die('Restricted access');
 		$k = 0;
 		for ($i=0, $n=count( $this->rows ); $i < $n; $i++) {
 			$row = &$this->rows[$i];
-			$link 		= 'index.php?option=com_redevent&amp;controller=venues&amp;task=edit&amp;cid[]='. $row->id;
+			$link 		= 'index.php?option=com_redevent&amp;view=venue&id='. $row->id;
 			$sessionslink = 'index.php?option=com_redevent&view=sessions&venueid='. $row->id;
 			$checked 	= JHTML::_('grid.checkedout', $row, $i );
 			$published 	= JHTML::_('grid.published', $row, $i );

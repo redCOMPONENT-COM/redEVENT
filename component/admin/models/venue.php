@@ -56,8 +56,8 @@ class RedEventModelVenue extends JModelAdmin
 	{
 		parent::__construct();
 
-		$array = JRequest::getVar('cid',  0, '', 'array');
-		$this->setId((int)$array[0]);
+		$id = JRequest::getVar('id',  0, '', 'int');
+		$this->setId($id);
 	}
 
 	/**
