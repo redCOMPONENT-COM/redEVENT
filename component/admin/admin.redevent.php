@@ -24,6 +24,12 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+// Load FOF
+include_once JPATH_LIBRARIES.'/fof/include.php';
+if(!defined('FOF_INCLUDED')) {
+	JError::raiseError ('500', 'FOF is not installed');
+}
+
 //Require classes
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'log.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'helper.php');
@@ -53,20 +59,22 @@ JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
 // Require the base controller
 require_once (JPATH_COMPONENT.DS.'controller.php');
 
-// Require specific controller if requested
-if( $controller = JRequest::getWord('controller') ) {
-	$path = JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php';
-	if (file_exists($path)) {
-		require_once $path;
-	} else {
-		$controller = '';
-	}
-}
+// // Require specific controller if requested
+// if( $controller = JRequest::getWord('controller') ) {
+// 	$path = JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php';
+// 	if (file_exists($path)) {
+// 		require_once $path;
+// 	} else {
+// 		$controller = '';
+// 	}
+// }
 
-//Create the controller
-$classname  = 'RedEventController'.$controller;
-$controller = new $classname( );
+// //Create the controller
+// $classname  = 'RedEventController'.$controller;
+// $controller = new $classname( );
 
-// Perform the Request task
-$controller->execute( JRequest::getWord('task', 'redevent'));
-$controller->redirect();
+// // Perform the Request task
+// $controller->execute( JRequest::getWord('task', 'redevent'));
+// $controller->redirect();
+
+FOFDispatcher::getTmpInstance('com_redevent')->dispatch();
