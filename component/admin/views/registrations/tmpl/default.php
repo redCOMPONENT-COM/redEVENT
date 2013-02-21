@@ -71,7 +71,7 @@ $colspan = 13;
 			{
 				$row = &$this->rows[$i];
 				
-				$link 		= 'index.php?option=com_redevent&controller=attendees&task=edit&xref='. $row->xref.'&cid[]='.$row->id;
+				$link 		= 'index.php?option=com_redevent&view=attendee&xref='. $row->xref.'&cid[]='.$row->id;
 				$checked 	= JHTML::_('grid.checkedout', $row, $i );
 				
 				$eventdate = (!redEVENTHelper::isValidDate($row->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $this->settings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->dates )));

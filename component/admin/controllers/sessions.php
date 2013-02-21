@@ -116,7 +116,7 @@ class RedEventControllerSessions extends RedEventController
 			
       $msg = 'saved session';
       if (JRequest::getVar('task') == 'apply') {
-      	$this->setRedirect('index.php?option=com_redevent&controller=sessions&task=edit&cid[]='. $returnid, $msg);
+      	$this->setRedirect('index.php?option=com_redevent&view=session&cid[]='. $returnid, $msg);
       } 
       else {
       	$this->setRedirect('index.php?option=com_redevent&view=sessions', $msg);

@@ -96,7 +96,7 @@ $app = &JFactory::getApplication();
 			for($i=0, $n=count( $this->rows ); $i < $n; $i++) {
 				$row = &$this->rows[$i];
 
-				$link 			= 'index.php?option=com_redevent&amp;controller=events&amp;task=edit&amp;cid[]='.$row->id;
+				$link 			= 'index.php?option=com_redevent&view=event&cid[]='.$row->id;
 
 				$checked 	= JHTML::_('grid.checkedout', $row, $i );
 				$published 	= JHTML::_('grid.published', $row, $i );
@@ -142,7 +142,7 @@ $app = &JFactory::getApplication();
 						if ($cat->checked_out && ( $cat->checked_out != $this->user->get('id') ) ) {
               echo htmlspecialchars($cat->catname, ENT_QUOTES, 'UTF-8');
             } else {
-              $catlink    = 'index.php?option=com_redevent&amp;controller=categories&amp;task=edit&amp;cid[]='.$cat->id;
+              $catlink    = 'index.php?option=com_redevent&view=category&cid[]='.$cat->id;
 		          ?>
 		            <span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_EDIT_CATEGORY' );?>::<?php echo $cat->catname; ?>">
 		            <a href="<?php echo $catlink; ?>">

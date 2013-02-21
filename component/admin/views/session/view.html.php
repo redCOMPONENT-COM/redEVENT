@@ -36,32 +36,41 @@ class RedEventViewSession extends JView {
 
 	function display($tpl = null)
 	{
+
+		//initialise variables
+		$editor 	= & JFactory::getEditor();
+		$document	= & JFactory::getDocument();
+		$uri 		= & JFactory::getURI();
+		$elsettings = JComponentHelper::getParams('com_redevent');
+		
 		$mainframe = &JFactory::getApplication();
+
+		// data
+		$xref = $this->get('xref');
 		
 		// ajax in event form, or standalone ?
 		$standalone = Jrequest::getVar('standalone', 0);
 
 		if (!$standalone && $this->getLayout() == 'closexref') {
-      $this->_displayclosexref($tpl);
-      return;
-    }
-    
-    if ($standalone) 
-    {    	
-	    $document = & JFactory::getDocument();
-			$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITROLE'));
-	    $document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
-    
+			$this->_displayclosexref($tpl);
+			return;
+		}
+
+		if ($standalone)
+		{
+			$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITSESSION'));
+			$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+
 			// Set toolbar items for the page
 			$edit		= JRequest::getVar('edit',true);
-			$text = !$edit ? JText::_('COM_REDEVENT_New' ) : JText::_('COM_REDEVENT_Edit' );
-			JToolBarHelper::title(   JText::_( 'COM_REDEVENT_SESSION' ).': <small><small>[ ' . $text.' ]</small></small>' );
+			$text = !$xref->id ? JText::_('COM_REDEVENT_New' ) : JText::_('COM_REDEVENT_Edit' );
+			JToolBarHelper::title(   JText::sprintf( 'COM_REDEVENT_SESSION_FOR_S',$xref->event_title ).': <small><small>[ ' . $text.' ]</small></small>' );
 			JToolBarHelper::save();
 			JToolBarHelper::apply();
-			
+				
 			if (JPluginHelper::isEnabled('system', 'autotweetredevent'))
 			{
-				//If the AutoTweet NG Component is installed 
+				//If the AutoTweet NG Component is installed
 				// Ignore warnings because component may not be installed
 				$warnHandlers = JERROR::getErrorHandling( E_WARNING );
 				JERROR::setErrorHandling( E_WARNING, 'ignore' );
@@ -71,23 +80,18 @@ class RedEventViewSession extends JView {
 				}
 				// Reset the warning handler(s)
 				foreach( $warnHandlers as $mode ) {
-				   JERROR::setErrorHandling( E_WARNING, $mode );
+					JERROR::setErrorHandling( E_WARNING, $mode );
 				}
 			}
-			
+				
 			if (!$edit)  {
 				JToolBarHelper::cancel();
 			} else {
 				// for existing items the button is renamed `close`
 				JToolBarHelper::cancel( 'cancel', 'Close' );
 			}
-    }
+		}
 
-		//initialise variables
-		$editor 	= & JFactory::getEditor();
-		$document	= & JFactory::getDocument();
-		$uri 		= & JFactory::getURI();
-		$elsettings = JComponentHelper::getParams('com_redevent');
 
 		//add css and js to document
 		//JHTML::_('behavior.modal', 'a.modal');
@@ -96,10 +100,10 @@ class RedEventViewSession extends JView {
 		
 		jimport('joomla.html.pane');
 
-    $document->addScript(JURI::root().'components/com_redevent/assets/js/xref_recurrence.js');
-    $document->addScript(JURI::root().'components/com_redevent/assets/js/xref_roles.js');
-    $document->addScript(JURI::root().'components/com_redevent/assets/js/xref_prices.js');
-    $document->addScriptDeclaration('var txt_remove = "'.JText::_('COM_REDEVENT_REMOVE').'";');
+		$document->addScript(JURI::root().'components/com_redevent/assets/js/xref_recurrence.js');
+		$document->addScript(JURI::root().'components/com_redevent/assets/js/xref_roles.js');
+		$document->addScript(JURI::root().'components/com_redevent/assets/js/xref_prices.js');
+		$document->addScriptDeclaration('var txt_remove = "'.JText::_('COM_REDEVENT_REMOVE').'";');
     
 		//Build the image select functionality
 		$js = "
@@ -109,49 +113,48 @@ class RedEventViewSession extends JView {
 			document.getElementById('sbox-window').close();
 		}";
 
-		$xref = $this->get('xref');
-		$xref->eventid = ($xref->eventid) ? $xref->eventid : JRequest::getVar('eventid', 0, 'request', 'int'); 		
-    $customfields =& $this->get('XrefCustomfields');
-    
-    $roles  =& $this->get('SessionRoles');
-    $prices =& $this->get('SessionPrices');
+		$xref->eventid = ($xref->eventid) ? $xref->eventid : JRequest::getVar('eventid', 0, 'request', 'int');
+		$customfields =& $this->get('XrefCustomfields');
+
+		$roles  =& $this->get('SessionRoles');
+		$prices =& $this->get('SessionPrices');
     
 		$lists = array();
 		
 		// venues selector
-    $venues = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_Select_Venue')));
+		$venues = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_Select_Venue')));
 		$venues = array_merge($venues, $this->get('VenuesOptions'));
 		$lists['venue'] = JHTML::_('select.genericlist', $venues, 'venueid', 'class="validate-venue"', 'value', 'text', $xref->venueid);
-		
+
 		// group selector
-    $options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_Select_group')));
+		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_Select_group')));
 		$options = array_merge($options, $this->get('GroupsOptions'));
 		$lists['group'] = JHTML::_('select.genericlist', $options, 'groupid', '', 'value', 'text', $xref->groupid);
-		
-    // if this is not the first xref of the recurrence, we shouldn't modify it
-    $lockedrecurrence = ($xref->count > 0); 
 
-    // Recurrence selector
-    $recur_type = array( JHTML::_('select.option', 'NONE', JText::_('COM_REDEVENT_NO_REPEAT')),
-                         JHTML::_('select.option', 'DAILY', JText::_('COM_REDEVENT_DAILY')),
-                         JHTML::_('select.option', 'WEEKLY', JText::_('COM_REDEVENT_WEEKLY')),
-                         JHTML::_('select.option', 'MONTHLY', JText::_('COM_REDEVENT_MONTHLY')),
-                         JHTML::_('select.option', 'YEARLY', JText::_('COM_REDEVENT_YEARLY'))
-                       );
-    $lists['recurrence_type'] = JHTML::_('select.radiolist', $recur_type, 'recurrence_type', '', 'value', 'text', $xref->rrules->type);
-    
-    // published state selector
-    $published = array( JHTML::_('select.option', '1', JText::_('COM_REDEVENT_PUBLISHED')),
-                         JHTML::_('select.option', '0', JText::_('COM_REDEVENT_UNPUBLISHED')),
-                         JHTML::_('select.option', '-1', JText::_('COM_REDEVENT_ARCHIVED'))
-                       );
-    $lists['published'] = JHTML::_('select.radiolist', $published, 'published', '', 'value', 'text', $xref->published);
-    
-    // featured state selector
-    $options = array( JHTML::_('select.option', '0', JText::_('COM_REDEVENT_SESSION_NOT_FEATURED')),
-                         JHTML::_('select.option', '1', JText::_('COM_REDEVENT_SESSION_IS_FEATURED'))
-                       );
-    $lists['featured'] = JHTML::_('select.booleanlist', 'featured', '', $xref->featured);
+		// if this is not the first xref of the recurrence, we shouldn't modify it
+		$lockedrecurrence = ($xref->count > 0);
+
+	    // Recurrence selector
+	    $recur_type = array( JHTML::_('select.option', 'NONE', JText::_('COM_REDEVENT_NO_REPEAT')),
+	                         JHTML::_('select.option', 'DAILY', JText::_('COM_REDEVENT_DAILY')),
+	                         JHTML::_('select.option', 'WEEKLY', JText::_('COM_REDEVENT_WEEKLY')),
+	                         JHTML::_('select.option', 'MONTHLY', JText::_('COM_REDEVENT_MONTHLY')),
+	                         JHTML::_('select.option', 'YEARLY', JText::_('COM_REDEVENT_YEARLY'))
+	                       );
+	    $lists['recurrence_type'] = JHTML::_('select.radiolist', $recur_type, 'recurrence_type', '', 'value', 'text', $xref->rrules->type);
+
+	    // published state selector
+	    $published = array( JHTML::_('select.option', '1', JText::_('COM_REDEVENT_PUBLISHED')),
+	    		JHTML::_('select.option', '0', JText::_('COM_REDEVENT_UNPUBLISHED')),
+	    		JHTML::_('select.option', '-1', JText::_('COM_REDEVENT_ARCHIVED'))
+	    );
+	    $lists['published'] = JHTML::_('select.radiolist', $published, 'published', '', 'value', 'text', $xref->published);
+
+	    // featured state selector
+	    $options = array( JHTML::_('select.option', '0', JText::_('COM_REDEVENT_SESSION_NOT_FEATURED')),
+	    		JHTML::_('select.option', '1', JText::_('COM_REDEVENT_SESSION_IS_FEATURED'))
+	    );
+	    $lists['featured'] = JHTML::_('select.booleanlist', 'featured', '', $xref->featured);
 		
 		$pane 		= & JPane::getInstance('tabs');
 		
@@ -168,12 +171,12 @@ class RedEventViewSession extends JView {
 		}
 		
 		//assign to template
-    $this->assignRef('xref'         , $xref);
+		$this->assignRef('xref'         , $xref);
 		$this->assignRef('editor'      	, $editor);
-    $this->assignRef('lists'        , $lists);
+		$this->assignRef('lists'        , $lists);
 		$this->assignRef('request_url'	, $uri->toString());
 		$this->assignRef('elsettings'	  , $elsettings);
-    $this->assignRef('customfields' , $customfields);
+		$this->assignRef('customfields' , $customfields);
 		$this->assignRef('pane'			    , $pane);
 		$this->assignRef('roles'        , $roles);
 		$this->assignRef('rolesoptions' , $rolesoptions);
@@ -186,37 +189,37 @@ class RedEventViewSession extends JView {
 	
 	function _displayclosexref($tpl)
 	{	
-    $document = & JFactory::getDocument();
-    $elsettings = JComponentHelper::getParams('com_redevent');
-    
-    $xref = $this->get('xref');
-    
-    /* Get the date */
-    $date = (!redEVENTHelper::isValidDate($xref->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $xref->dates )));
-    $enddate  = (!redEVENTHelper::isValidDate($xref->enddates) || $xref->enddates == $xref->dates) ? '' : strftime( $elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $xref->enddates ));
-    $displaydate = $date. ($enddate ? ' - '.$enddate: '');
+		$document = & JFactory::getDocument();
+		$elsettings = JComponentHelper::getParams('com_redevent');
 
-    $displaytime = '';
-    /* Get the time */
-    if (isset($xref->times) && $xref->times != '00:00:00') {
-    	$displaytime = strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $xref->times ));
+		$xref = $this->get('xref');
 
-    	if (isset($xref->endtimes) && $xref->endtimes != '00:00:00') {
-    		$displaytime .= ' - '.strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $xref->endtimes ));
-    	}
-    }
-    $json_data = array( 'id'        => $xref->id,
-                        'venue'     => $xref->venue,
-                        'date'      => $displaydate,
-                        'time'      => $displaytime,
-                        'published' => $xref->published,
-                        'note'      => $xref->note,
-                        'featured'  => $xref->featured,
-                        'eventid'   => $xref->eventid,
-                      );
+		/* Get the date */
+		$date = (!redEVENTHelper::isValidDate($xref->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $xref->dates )));
+		$enddate  = (!redEVENTHelper::isValidDate($xref->enddates) || $xref->enddates == $xref->dates) ? '' : strftime( $elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $xref->enddates ));
+		$displaydate = $date. ($enddate ? ' - '.$enddate: '');
+
+		$displaytime = '';
+		/* Get the time */
+		if (isset($xref->times) && $xref->times != '00:00:00') {
+			$displaytime = strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $xref->times ));
+
+			if (isset($xref->endtimes) && $xref->endtimes != '00:00:00') {
+				$displaytime .= ' - '.strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $xref->endtimes ));
+			}
+		}
+		$json_data = array( 'id'        => $xref->id,
+			'venue'     => $xref->venue,
+			'date'      => $displaydate,
+			'time'      => $displaytime,
+			'published' => $xref->published,
+			'note'      => $xref->note,
+			'featured'  => $xref->featured,
+			'eventid'   => $xref->eventid,
+        );
 		if (function_exists('json_encode')) {
-  	  $js = 'window.parent.updatexref('.json_encode($json_data).');';
-	    $document->addScriptDeclaration($js);		
+			$js = 'window.parent.updatexref('.json_encode($json_data).');';
+			$document->addScriptDeclaration($js);
 		}
 		else {
 			echo JText::_('COM_REDEVENT_ERROR_JSON_IS_NOT_ENABLED');
@@ -231,11 +234,11 @@ class RedEventViewSession extends JView {
 	 */
 	function printTags($field = '')
 	{ 
-    ?>	
-	  <div class="tagsdiv">
-	  	<?php echo JHTML::link('index.php?option=com_redevent&view=tags&tmpl=component&field='.$field, JText::_('COM_REDEVENT_TAGS'), 'class="modal"'); ?>
-    </div>  
-	  <?php 
+		?>	
+		<div class="tagsdiv">
+			<?php echo JHTML::link('index.php?option=com_redevent&view=tags&tmpl=component&field='.$field, JText::_('COM_REDEVENT_TAGS'), 'class="modal"'); ?>
+		</div>  
+		<?php 
 	}
 	
   /**

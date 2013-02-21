@@ -209,50 +209,53 @@ class RedEventModelSession extends JModel
     return $fields;     
   }
   
-  /**
-   * return xref from request
-   *
-   * @return unknown
-   */
-  function getXref()
-  {
-  	$xref = $this->_id;  	
-  	
-  	if ($xref) 
-  	{  		
+	/**
+	 * return xref from request
+	 *
+	 * @return unknown
+	 */
+	public function getXref()
+	{
+		$xref = $this->_id;
+
+		if ($xref)
+		{
 			$customs = $this->_getXCustomFields();
-		
-    	$query = ' SELECT x.*, v.venue, r.id as recurrence_id, r.rrule, rp.count ';
+
+			$query = ' SELECT x.*, v.venue, r.id as recurrence_id, r.rrule, rp.count ';
+			$query .= ' , e.title as event_title ';
 			// add the custom fields
 			foreach ((array) $customs as $c)
 			{
 				$query .= ', x.custom'. $c->id;
 			}
-			
-  	  $query .= ' FROM #__redevent_event_venue_xref AS x '
-  	       . ' LEFT JOIN #__redevent_venues AS v on v.id = x.venueid '
-           . ' LEFT JOIN #__redevent_repeats AS rp on rp.xref_id = x.id '
-           . ' LEFT JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
-           ;
-			
-  	  $query .= ' WHERE x.id = '. $this->_db->Quote($xref);
-  	  
-      $this->_db->setQuery($query);
-  		$object = $this->_db->loadObject();
-  		$object->rrules = RedeventHelperRecurrence::getRule($object->rrule);
-  	}
-  	else {
-      $object = JTable::getInstance('RedEvent_eventvenuexref', '');
-  		$object->id    = null;
-  		$object->venue = 0;
-      $object->recurrence_id = 0;
-      $object->rrule = '';
-      $object->count = 0;
-  		$object->rrules = RedeventHelperRecurrence::getRule();
-  	}
-  	return $object;
-  }
-  
+				
+			$query .= ' FROM #__redevent_event_venue_xref AS x '
+			        . ' INNER JOIN #__redevent_events AS e on e.id = x.eventid '
+			        . ' LEFT JOIN #__redevent_venues AS v on v.id = x.venueid '
+			        . ' LEFT JOIN #__redevent_repeats AS rp on rp.xref_id = x.id '
+			        . ' LEFT JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
+			;
+												
+			$query .= ' WHERE x.id = '. $this->_db->Quote($xref);
+
+			$this->_db->setQuery($query);
+			$object = $this->_db->loadObject();
+			$object->rrules = RedeventHelperRecurrence::getRule($object->rrule);
+		}
+		else {
+			$object = JTable::getInstance('RedEvent_eventvenuexref', '');
+			$object->id    = null;
+			$object->venue = 0;
+			$object->recurrence_id = 0;
+			$object->rrule = '';
+			$object->count = 0;
+			$object->rrules = RedeventHelperRecurrence::getRule();
+		}
+
+		return $object;
+	}
+
   /**
    * return list of venues as options
    *

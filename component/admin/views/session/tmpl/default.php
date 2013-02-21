@@ -292,7 +292,7 @@ function updateend(cal)
 
 <?php echo JHTML::_( 'form.token' ); ?>
 <input type="hidden" name="option" value="com_redevent" />
-<input type="hidden" name="controller" value="sessions"/>
+<input type="hidden" name="view" value="session"/>
 <input type="hidden" name="task" value=""/>
 <input type="hidden" name="id" value="<?php echo $this->xref->id; ?>"/>
 <input type="hidden" name="eventid" value="<?php echo $this->xref->eventid; ?>"/>

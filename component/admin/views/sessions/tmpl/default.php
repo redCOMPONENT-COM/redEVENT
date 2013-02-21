@@ -140,9 +140,9 @@ if (!$this->event || $this->event->registra) $colspan += 2;
  			$published 	= JHTML::_('grid.published',   $row, $i );
 			$featured = $this->featured($row, $i);
 			
-			$sessionlink = JRoute::_( 'index.php?option=com_redevent&controller=sessions&task=edit&cid[]='. $row->id );
-			$venuelink = JRoute::_( 'index.php?option=com_redevent&controller=venues&task=edit&cid[]='. $row->venueid );
-			$eventlink = JRoute::_( 'index.php?option=com_redevent&controller=events&task=edit&cid[]='. $row->eventid );
+			$sessionlink = JRoute::_( 'index.php?option=com_redevent&view=session&cid[]='. $row->id );
+			$venuelink = JRoute::_( 'index.php?option=com_redevent&view=venue&cid[]='. $row->venueid );
+			$eventlink = JRoute::_( 'index.php?option=com_redevent&view=event&cid[]='. $row->eventid );
 			
 			?>
 			<tr class="<?php echo "row$k"; ?>">
