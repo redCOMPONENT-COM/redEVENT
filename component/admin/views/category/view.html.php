@@ -50,18 +50,18 @@ class RedEventViewCategory extends JView {
 
 		//get vars
 		$cid 		= JRequest::getVar( 'cid' );
-    $url    = JURI::root();
+		$url    = JURI::root();
 
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITCATEGORY'));
 		//add css to document
 		$document->addStyleSheet($url.'/administrator/components/com_redevent/assets/css/redeventbackend.css');
-		
-    $document->addScript($url.'/components/com_redevent/assets/js/attachments.js');
+
+		$document->addScript($url.'/components/com_redevent/assets/js/attachments.js');
 		$document->addScriptDeclaration('var removemsg = "'.JText::_('COM_REDEVENT_ATTACHMENT_CONFIRM_MSG').'";' );
-		
-    // js color picker
-    $document->addStyleSheet($url.'/administrator/components/com_redevent/assets/css/colorpicker.css');
-    $document->addScript($url.'/administrator/components/com_redevent/assets/js/colorpicker.js');
+
+		// js color picker
+		$document->addStyleSheet($url.'/administrator/components/com_redevent/assets/css/colorpicker.css');
+		$document->addScript($url.'/administrator/components/com_redevent/assets/js/colorpicker.js');
 
 		//create the toolbar
 		if ( $cid ) {
@@ -80,14 +80,8 @@ class RedEventViewCategory extends JView {
 			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_HELP' ), 'index.php?option=com_redevent&view=help');
 		}
 		JToolBarHelper::apply();
-		JToolBarHelper::spacer();
 		JToolBarHelper::save();
-		JToolBarHelper::spacer();
-		JToolBarHelper::media_manager();
-		JToolBarHelper::spacer();
 		JToolBarHelper::cancel();
-		JToolBarHelper::spacer();
-		//JToolBarHelper::help( 'el.editcategories', true );
 
 		//Get data from the model
 		$model		= & $this->getModel();

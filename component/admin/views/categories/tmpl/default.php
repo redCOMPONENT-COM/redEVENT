@@ -82,7 +82,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			$row = $this->rows[$i];
 
 			$link 		= 'index.php?option=com_redevent&view=category&id='. $row->id;
-			$grouplink 	= 'index.php?option=com_redevent&amp;controller=groups&amp;task=edit&amp;cid[]='. $row->groupid;
+			$grouplink 	= 'index.php?option=com_redevent&view=group&cid[]='. $row->groupid;
 			$published 	= JHTML::_('grid.published', $row, $i );
 			$access 	= JHTML::_('grid.access', $row, $i );
 			$checked 	= JHTML::_('grid.checkedout', $row, $i );

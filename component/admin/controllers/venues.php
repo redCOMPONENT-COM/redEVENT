@@ -231,7 +231,7 @@ class RedEventControllerVenues extends RedEventController
 			switch ($task)
 			{
 				case 'apply':
-					$link = 'index.php?option=com_redevent&view=venue&hidemainmenu=1&cid[]='.$returnid;
+					$link = 'index.php?option=com_redevent&view=venue&hidemainmenu=1&id='.$returnid;
 					break;
 
 				default:

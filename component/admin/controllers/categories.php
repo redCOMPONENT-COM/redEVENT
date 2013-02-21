@@ -77,7 +77,7 @@ class RedEventControllerCategories extends RedEventController
 			switch ($task)
 			{
 				case 'apply' :
-					$link = 'index.php?option=com_redevent&view=category&cid[]='.$returnid;
+					$link = 'index.php?option=com_redevent&view=category&id='.$returnid;
 					break;
 
 				default :
