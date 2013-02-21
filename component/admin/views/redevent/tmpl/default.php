@@ -74,7 +74,7 @@ defined('_JEXEC') or die('Restricted access');
 							$link = 'index.php?option='.$option.'&amp;view=tools';
 							RedEventViewRedEvent::quickiconButton( $link, 'icon-48-housekeeping.png', JText::_('COM_REDEVENT_TOOLS' ) );
 							
-							$link = 'index.php?option='.$option.'&amp;view=log';
+							$link = 'index.php?option='.$option.'&amp;view=logs';
 							RedEventViewRedEvent::quickiconButton( $link, 'icon-48-log.png', JText::_('COM_REDEVENT_LOG' ) );
 						}
 

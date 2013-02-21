@@ -122,19 +122,7 @@ class RedEventController extends JController
 
 		parent::display();
 	}
-	
-	/**
-	 * Clears log file
-	 *
-	 */
-	function clearlog()
-	{
-		RedeventHelperLog::clear();
-		$msg = JText::_('COM_REDEVENT_LOG_CLEARED');
-		$this->setRedirect('index.php?option=com_redevent&view=log', $msg);
-		$this->redirect();
-	}
-	
+		
   /**
    * import eventlist events, categories, and venues.
    * 

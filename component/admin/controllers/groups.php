@@ -188,7 +188,6 @@ class RedEventControllerGroups extends RedEventController
 	function editmembers()
 	{
 		JRequest::setVar('view', 'groupmembers');
-		
 		parent::display();
 	}
 

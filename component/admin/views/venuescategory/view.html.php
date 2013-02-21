@@ -62,16 +62,11 @@ class RedEventViewVenuesCategory extends JView {
 			JToolBarHelper::title( JText::_('COM_REDEVENT_ADD_VENUES_CATEGORY' ), 'venuescategories' );
 
 			//set the submenu
-      ELAdmin::setMenu();
+      		ELAdmin::setMenu();
 		}
 		JToolBarHelper::apply();
-		JToolBarHelper::spacer();
 		JToolBarHelper::save();
-		JToolBarHelper::spacer();
-		JToolBarHelper::media_manager();
-		JToolBarHelper::spacer();
 		JToolBarHelper::cancel();
-		JToolBarHelper::spacer();
 		//JToolBarHelper::help( 'el.editcategories', true );
 
 		//Get data from the model

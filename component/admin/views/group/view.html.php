@@ -48,7 +48,9 @@ class RedEventViewGroup extends JView {
 
 		//get vars
 		$template		= $mainframe->getTemplate();
-		$cid 			= JRequest::getInt( 'cid' );
+		$cid 			= JRequest::getVar( 'cid', array() );
+		$cid = JArrayHelper::toInteger($cid);
+		$cid = count($cid) ? $cid[0] : null;
 
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITGROUP'));
 		//add css

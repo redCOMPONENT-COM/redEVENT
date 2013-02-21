@@ -79,7 +79,7 @@ class RedEventControllerGroupmembers extends RedEventController
     $option = JRequest::getCmd('option');
 		$group_id = JRequest::getVar('group_id', 0, '', 'int') or die( 'Missing group id' );
 
-		$this->setRedirect( 'index.php?option='. $option .'&view=groupmember&group_id='. $group_id );
+		$this->setRedirect( 'index.php?option='. $option .'&controller=groupmembers&view=groupmember&group_id='. $group_id );
 	}
 
 	/**

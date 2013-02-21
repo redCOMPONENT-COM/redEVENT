@@ -59,22 +59,23 @@ JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
 // Require the base controller
 require_once (JPATH_COMPONENT.DS.'controller.php');
 
-// // Require specific controller if requested
-// if( $controller = JRequest::getWord('controller') ) {
-// 	$path = JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php';
-// 	if (file_exists($path)) {
-// 		require_once $path;
-// 	} else {
-// 		$controller = '';
-// 	}
-// }
+// Require specific controller if requested (non fof !)
+if( $controller = JRequest::getWord('controller') ) {
+	$path = JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php';
+	if (file_exists($path)) {
+		require_once $path;
+	} else {
+		$controller = '';
+	}
 
-// //Create the controller
-// $classname  = 'RedEventController'.$controller;
-// $controller = new $classname( );
-
-// // Perform the Request task
-// $controller->execute( JRequest::getWord('task', 'redevent'));
-// $controller->redirect();
-
-FOFDispatcher::getTmpInstance('com_redevent')->dispatch();
+	//Create the controller
+	$classname  = 'RedEventController'.$controller;
+	$controller = new $classname( );
+	
+	// Perform the Request task
+	$controller->execute( JRequest::getWord('task', 'redevent'));
+	$controller->redirect();
+}
+else {
+	FOFDispatcher::getTmpInstance('com_redevent')->dispatch();
+}

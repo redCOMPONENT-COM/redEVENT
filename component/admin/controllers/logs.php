@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.0 $Id: default.php 160 2009-05-29 16:16:39Z julien $
+ * @version 1.0 $Id: cleanup.php 30 2009-05-08 10:22:21Z roland $
  * @package Joomla
  * @subpackage redEVENT
  * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
@@ -21,14 +21,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-defined('_JEXEC') or die('Restricted access');
-?>
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die();
 
-<table class="admintable">
-  <?php foreach ($this->row as $answer): ?>
-  <tr>
-    <td class="key"><?php echo $answer->field; ?></td>
-    <td valign="top"><?php echo $answer->value; ?></td>
-  </tr>
-  <?php endforeach; ?>
-</table>
+jimport('joomla.application.component.controller');
+
+/**
+ * Joomla redEVENT Component Controller
+ *
+ * @package		redEVENT
+ * @since 2.0
+ */
+class RedeventControllerLogs extends JController
+{
+	/**
+	 * Clears log file
+	 *
+	 */
+	public function clearlog()
+	{
+		RedeventHelperLog::clear();
+		$msg = JText::_('COM_REDEVENT_LOG_CLEARED');
+		$this->setRedirect('index.php?option=com_redevent&view=logs', $msg);
+		$this->redirect();
+	}
+}

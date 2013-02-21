@@ -24,8 +24,6 @@
 //no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
-
 /**
  * EventList Component attendee answers Model
  *
@@ -33,7 +31,7 @@ jimport('joomla.application.component.model');
  * @subpackage redEVENT
  * @since		0.9
  */
-class RedEventModelAttendeeanswers extends JModel
+class RedEventModelAttendeeanswers extends FOFModel
 {
 	/**
 	 * Event id
@@ -90,6 +88,11 @@ class RedEventModelAttendeeanswers extends JModel
 
 		//$this->_loadData();
 		return $this->_data;
+	}
+	
+	public function getItem()
+	{
+		return $this->getData();
 	}
 
 	/**
