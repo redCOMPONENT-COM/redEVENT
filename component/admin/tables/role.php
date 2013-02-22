@@ -38,7 +38,7 @@ class RedeventTableRole extends FOFTable
 	 * @param object Database connector object
 	 * @since 1.0
 	 */
-	function __construct( $table, $key, &$db ) {
+	public function __construct( $table, $key, &$db ) {
 		parent::__construct('#__redevent_roles', 'id', $db);
 	}
 
@@ -49,9 +49,28 @@ class RedeventTableRole extends FOFTable
 	 * @return boolean True on success
 	 * @since 1.0
 	 */
-	function check()
+	public function check()
 	{
 		// check that there is only alphanumerics in tag ?
+		return true;
+	}
+	
+	public function onBeforeDelete($oid)
+	{
+		// make sure it's not being used in sessions
+		$db = &JFactory::getDbo();
+		$query = $db->getQuery(true);
+		
+		$query->select('r.id');
+		$query->from('#__redevent_sessions_roles AS r');
+		$query->where('r.role_id = '.$oid);
+		$db->setQuery($query);
+		$res = $db->loadObject();
+			
+		if ($res) {
+			$this->setError(Jtext::_('COM_REDEVENT_ROLE_DELETE_ERROR_ROLES_ASSIGNED'));
+			return false;
+		}
 		return true;
 	}
 }
