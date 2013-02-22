@@ -35,6 +35,15 @@ jimport('joomla.application.component.controller');
  */
 class RedEventControllerRedevent extends FOFController
 {
+	public function __construct($config = array())
+	{
+		parent::__construct($config);
+
+		// Register Extra task
+		$this->registerTask( 'applycss', 	'savecss' );
+	}
+	
+	
 	/**
 	 * Saves the css
 	 *
@@ -81,6 +90,7 @@ class RedEventControllerRedevent extends FOFController
 			{
 				case 'applycss' :
 					$mainframe->redirect('index.php?option='.$option.'&view=editcss', JText::_('COM_REDEVENT_CSS_FILE_SUCCESSFULLY_ALTERED'));
+					echo '<pre>';print_r($this); echo '</pre>';exit;
 					break;
 	
 				case 'savecss'  :
