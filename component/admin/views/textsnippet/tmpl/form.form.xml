@@ -41,8 +41,7 @@
 			name="text_field"
 			type="dynamiceditor"
 			default=""
-			label="COM_REDEVENT_TEXT_FIELD"
-			description ="COM_REDEVENT_TEXT_FIELD"
+			label=""
 			class="inputbox" />
 			
 	</fieldset>

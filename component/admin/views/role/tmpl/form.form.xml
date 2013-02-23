@@ -45,8 +45,8 @@
 		</field>
 	</fieldset>
 	<fieldset name="description_group"
-		label="COM_redevent_ITEMS_GROUP_DESCRIPTION"
-		description="COM_redevent_ITEMS_GROUP_DESCRIPTION_DESC"
+		label="COM_redevent_description"
+		description="COM_redevent_description"
 		class="span6"
 	>
 		<field name="description" type="editor"
