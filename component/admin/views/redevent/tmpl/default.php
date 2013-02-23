@@ -51,7 +51,7 @@ defined('_JEXEC') or die('Restricted access');
 						$link = 'index.php?option='.$option.'&amp;view=groups';
 						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-accessgroups.png', JText::_('COM_REDEVENT_GROUPS' ) );
 						
-						$link = 'index.php?option='.$option.'&amp;view=textlibrary';
+						$link = 'index.php?option='.$option.'&amp;view=textsnippets';
 						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-library.png', JText::_('COM_REDEVENT_TEXT_LIBRARY' ) );
 						
 						$link = 'index.php?option='.$option.'&amp;view=customfields';

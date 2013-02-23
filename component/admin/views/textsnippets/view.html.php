@@ -21,58 +21,48 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-defined('_JEXEC') or die('Restricted access');
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 /**
- * EventList categories Model class
+ * View class for the EventList category screen
  *
  * @package Joomla
  * @subpackage redEVENT
  * @since 0.9
  */
-class TableTextlibrary extends JTable {
-	
-	/**
-	 * Primary Key
-	 * @var int
-	 */
-	var $id 				= null;
-	/** @var string */
-	var $text_name			= null;
-	/** @var string */
-	var $text_description	= null;
-	/** @var string */
-	var $text_field 		= '';
-	/** @var int */
-	var $checked_out 		= 0;
-	/** @var string */
-	var $checked_out_time	= '';
-	
-	
-	/**
-	* @param database A database connector object
-	*/
-	function __construct($db) {
-		parent::__construct('#__redevent_textlibrary', 'id', $db);
+class RedEventViewTextsnippets extends FOFView {
+
+	function display($tpl = null)
+	{	
+		if ($this->getLayout() == 'import') {
+			return $this->_displayImport($tpl);
+		}		
+				
+		parent::display($tpl);
 	}
-		
-	function check()
+	
+	function _displayImport($tpl = null)
 	{
-		if (!$this->text_name) 
-		{
-			$this->setError(JText::_( 'COM_REDEVENT_NAME_IS_REQUIRED'));
-	    return false;
-		}
-		
-		// check tag unicity
-		$exists = ELAdmin::checkTagExists($this->text_name);
-		
-		if ($exists && !($exists->section == 'library' && $exists->id == $this->id)) 
-		{
-			$this->setError(JText::sprintf('COM_REDEVENT_ERROR_TAG_ALREADY_EXISTS', $exists->section));
-			return false;
-		}
-		
-		return true;
+		$document	= & JFactory::getDocument();
+		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_TEXTLIBRARY_IMPORT'));
+		//add css and submenu to document
+		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+
+		//Create Submenu
+		ELAdmin::setMenu();
+
+		JHTML::_('behavior.tooltip');
+
+		//create the toolbar
+		JToolBarHelper::title( JText::_( 'COM_REDEVENT_PAGETITLE_TEXTLIBRARY_IMPORT' ), 'events' );
+
+		JToolBarHelper::back();
+
+		$lists = array();
+
+		//assign data to template
+		$this->assignRef('lists'      	, $lists);
+
+		parent::display($tpl);
 	}
 }
