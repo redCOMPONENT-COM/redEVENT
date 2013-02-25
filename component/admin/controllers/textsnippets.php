@@ -38,9 +38,8 @@ class RedEventControllerTextsnippets extends FOFController {
 	 */
 	function import()
 	{
-		JRequest::setVar( 'view', 'textsnippets' );
-		JRequest::setVar( 'layout', 'import' );
-		parent::display();
+		$this->layout = 'import';
+		parent::add();
 	}
 
 	function export()
@@ -136,7 +135,7 @@ class RedEventControllerTextsnippets extends FOFController {
 			// database update
 			if (count($records))
 			{
-				$model = $this->getModel('textlibrary');
+				$model = $this->getModel('textsnippets');
 				$result = $model->import($records, $replace);
 				$msg .= "<p>total added records: ".$result['added']."<br /></p>\n";
 				$msg .= "<p>total updated records: ".$result['updated']."<br /></p>\n";
@@ -144,7 +143,7 @@ class RedEventControllerTextsnippets extends FOFController {
 			$this->setRedirect( 'index.php?option=com_redevent&view=textsnippets&task=import', $msg );
 		}
 		else {
-			parent::display();
+			$this->setRedirect( 'index.php?option=com_redevent&view=textsnippets&task=import' );
 		}
 	}
 }

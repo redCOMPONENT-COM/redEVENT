@@ -54,6 +54,31 @@ class RedeventToolbar extends FOFToolbar
 		}
 	}
 	
+	/**
+	 * Renders the toolbar for the component's Textsnippets page
+	 */
+	public function onTextsnippetsBrowse()
+	{
+		//on frontend, buttons must be added specifically
+		list($isCli, $isAdmin) = FOFDispatcher::isCliAdmin();
+	
+		if($isAdmin || $this->renderFrontendSubmenu) {
+			$this->renderSubmenu();
+		}
+	
+		if(!$isAdmin && !$this->renderFrontendButtons) return;
+		
+		JToolBarHelper::title(JText::_('COM_REDEVENT_MENU_ROLES'), 'roles');
+		JToolBarHelper::addNewX();
+		JToolBarHelper::editListX();
+		JToolBarHelper::custom('export', 'csvexport', 'csvexport', JText::_('COM_REDEVENT_BUTTON_EXPORT'), false);
+		JToolBarHelper::custom('import', 'csvimport', 'csvimport', JText::_('COM_REDEVENT_BUTTON_IMPORT'), false);		
+		JToolBarHelper::deleteList();
+		if (JFactory::getUser()->authorise('core.admin', 'com_redevent')) {
+			JToolBarHelper::preferences('com_redevent', '600', '600');
+		}
+	}
+	
 	public function onBrowse()
 	{
 		parent::onBrowse();

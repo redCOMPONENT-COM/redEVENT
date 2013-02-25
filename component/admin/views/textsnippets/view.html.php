@@ -56,7 +56,7 @@ class RedEventViewTextsnippets extends FOFView {
 		//create the toolbar
 		JToolBarHelper::title( JText::_( 'COM_REDEVENT_PAGETITLE_TEXTLIBRARY_IMPORT' ), 'events' );
 
-		JToolBarHelper::back();
+		JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_redevent&view=textsnippets');
 
 		$lists = array();
 

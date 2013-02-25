@@ -51,7 +51,7 @@ class RedEventModelTextsnippets extends FOFModel
 	 */
 	public function export()
 	{				
-		$query = ' SELECT t.id, t.text_name, t.text_description, t.text_field  '
+		$query = ' SELECT t.id, t.text_name, t.text_description, t.text_field, t.language  '
 		       . ' FROM #__redevent_textlibrary AS t '
 		;
 		$this->_db->setQuery($query);
@@ -75,7 +75,7 @@ class RedEventModelTextsnippets extends FOFModel
 		$current = null; // current event for sessions
 		foreach ($records as $r)
 		{			
-			$v = Jtable::getInstance('Textlibrary', 'Table');	
+			$v = $this->getTable();	
 			$v->bind($r);
 			if (!$replace) {
 				$v->id = null;

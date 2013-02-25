@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
 <p><?php echo Jtext::_('COM_REDEVENT_TEXTLIBRARY_IMPORT_INTRO'); ?></p>
 <form action="index.php" method="post" name="importform" id="importform"  enctype="multipart/form-data" >
 
-<table class="adminlist" cellspacing="1">
+<table class="adminlist">
 	<tbody>
 	<tr>
 		<td class="label" width="150px"><?php echo JText::_('COM_REDEVENT_TEXTLIBRARY_CSV_IMPORT_FILE'); ?></td>
@@ -37,6 +37,6 @@ defined('_JEXEC') or die('Restricted access');
 </table>
 
 <input type="hidden" name="option" value="com_redevent" />
-<input type="hidden" name="controller" value="textlibrary" />
+<input type="hidden" name="controller" value="textsnippets" />
 <input type="hidden" name="task" value="doimport" />
 </form>
