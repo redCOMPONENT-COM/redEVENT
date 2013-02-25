@@ -33,107 +33,15 @@ jimport('joomla.filter.input');
 * @package		Redevent
 * @since 2.0
 */
-class Redevent_customfield extends JTable
+class RedeventTableCustomfield extends FOFTable
 {
-	/**
-	 * Primary Key
-	 *
-	 * @var int
-	 */
-	var $id = null;
-	/**
-	 * field name
-	 *
-	 * @var string
-	 */
-  var $name;
-  /**
-   * tag name, must be unique
-   *
-   * @var string
-   */
-  var $tag;
-  /**
-   * field type
-   *
-   * @var string
-   */
-  var $type;
-  /**
-   * for tooltip
-   *
-   * @var string
-   */
-  var $tips;
-  /**
-   * is it searchable
-   *
-   * @var boolean
-   */
-  var $searchable;
-  /**
-   * show in lists ?
-   *
-   * @var boolean
-   */
-  var $in_lists;
-  /**
-   * allow to edit in frontend
-   *
-   * @var boolean
-   */
-  var $frontend_edit;
-  /**
-   * is the field required
-   *
-   * @var boolean
-   */
-  var $required;
-  /**
-   * object key (individual / round / ...)
-   *
-   * @var string
-   */
-  var $object_key;
-  /**
-   * for options
-   *
-   * @var string
-   */
-  var $options;  
-  /**
-   * min size (textbox...)
-   *
-   * @var int
-   */
-  var $min = 0;
-  /**
-   * max size (textbox...)
-   *
-   * @var int
-   */
-  var $max = 100;
-  /**
-   * field default value
-   * 
-   * @var string
-   */
-  var $default_value;
-  
-  
-  var $checked_out;
-  var $checked_out_time;    
-  var $ordering;
-  var $published;
-
-
 	/**
 	 * Constructor
 	 *
 	 * @param object Database connector object
 	 * @since 1.0
 	 */
-	function __construct(& $db) {
+	public function __construct( $table, $key, &$db ) {
 		parent::__construct('#__redevent_fields', 'id', $db);
 	}
 
@@ -147,15 +55,15 @@ class Redevent_customfield extends JTable
 	function check()
 	{
 		// check that there is only alphanumerics in tag ?
-		
+
 		// check tag unicity
 		$exists = ELAdmin::checkTagExists($this->tag);
-		
+
 		if ($exists && !($exists->section == 'custom' && $exists->id == $this->id)) {
 			$this->setError(JText::sprintf('COM_REDEVENT_ERROR_TAG_ALREADY_EXISTS', $exists->section));
 			return false;
 		}
-		
+
 		return true;
 	}
 }

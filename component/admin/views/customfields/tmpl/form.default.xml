@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+	lessfiles="media://com_redevent/css/backend.less||media://com_redevent/css/backend.css"
+	type="browse"
+	show_header="1"
+	show_filters="1"
+	show_pagination="1"
+	norows_placeholder="COM_redevent_COMMON_NORECORDS"
+>
+	<headerset>
+		<header name="id" type="rowselect" tdwidth="20" />
+		<header name="COM_REDEVENT_Name" type="fieldsearchable" sortable="true"
+			buttons="yes" buttonclass="btn"
+		/>
+		<header name="COM_REDEVENT_Tag" type="fieldsearchable" sortable="true"
+			buttons="yes" buttonclass="btn"
+		/>
+		<header name="COM_REDEVENT_Assigned" type="list" sortable="yes"	/>
+		<header name="COM_REDEVENT_Type" type="list" sortable="yes"	/>
+		<header name="COM_REDEVENT_Searchable" type="list" sortable="yes"	/>
+		<header name="COM_REDEVENT_In_lists" type="list" sortable="yes"	/>
+		<header name="COM_REDEVENT_Frontend_edit" type="list" sortable="yes"	/>
+		
+		<header name="JSTATUS" type="published" sortable="yes"	/>
+		<header name="JGRID_HEADING_ORDERING" type="ordering" sortable="true"	/>
+		<header name="JGRID_HEADING_LANGUAGE" type="language" sortable="true" none="true"/>
+	</headerset>
+
+	<fieldset name="items">
+		<field name="id" type="selectrow"/>
+
+		<field name="name" type="text"
+			show_link="true"
+			url="index.php?option=com_redevent&amp;view=customfield&amp;id=[ITEM:ID]"
+			class="redevent-edit-link"
+			empty_replacement="(no title)"
+		 />		
+		<field name="tag" type="text" />		
+		<field name="object_key" type="list">
+			<option value="redevent.event">COM_REDEVENT_EVENT</option>
+			<option value="redevent.xref">COM_REDEVENT_SESSION</option>
+		</field>
+		<field name="type" type="text"/>
+		<field name="searchable" type="list">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="in_lists" type="list">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="frontend_edit" type="list">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="published" type="published" />
+		<field name="ordering" type="ordering" labelclass="order"/>
+		<field name="language" type="language">
+			<option value="*">JALL</option>
+		</field>
+	</fieldset>
+</form>

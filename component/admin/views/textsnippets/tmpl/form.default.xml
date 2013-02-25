@@ -15,7 +15,7 @@
 		<header name="text_description" type="fieldsearchable" sortable="no"
 			buttons="yes" buttonclass="btn"
 		/>
-		<header name="language" type="language" sortable="true" none="true"/>
+		<header name="JGRID_HEADING_LANGUAGE" type="language" sortable="true" none="true"/>
 	</headerset>
 
 	<fieldset name="items">

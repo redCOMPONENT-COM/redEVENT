@@ -9,11 +9,11 @@
 >
 	<headerset>
 		<header name="id" type="rowselect" tdwidth="20" />
-		<header name="name" type="fieldsearchable" sortable="true"
+		<header name="COM_REDEVENT_name" type="fieldsearchable" sortable="true"
 			buttons="yes" buttonclass="btn"
 		/>
-		<header name="ordering" type="ordering" sortable="true"	/>
-		<header name="language" type="language" sortable="true" none="true"/>
+		<header name="JGRID_HEADING_ordering" type="ordering" sortable="true"	/>
+		<header name="JGRID_HEADING_LANGUAGE" type="language" sortable="true" none="true"/>
 	</headerset>
 
 	<fieldset name="items">
