@@ -12,9 +12,7 @@
 		<header name="name" type="fieldsearchable" sortable="true"
 			buttons="yes" buttonclass="btn"
 		/>
-		<header name="ordering" type="ordering" sortable="true"
-			buttons="yes" buttonclass="btn"
-		/>
+		<header name="ordering" type="ordering" sortable="true"	/>
 		<header name="language" type="language" sortable="true" none="true"/>
 	</headerset>
 
@@ -28,7 +26,7 @@
 			empty_replacement="(no title)"
 		 />
 
-		<field name="ordering" type="ordering" />
+		<field name="ordering" type="ordering" labelclass="order"/>
 		<field name="language" type="language">
 			<option value="*">JALL</option>
 		</field>
