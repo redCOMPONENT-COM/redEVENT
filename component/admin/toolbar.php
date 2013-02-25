@@ -44,9 +44,7 @@ class RedeventToolbar extends FOFToolbar
 		}
 	
 		if(!$isAdmin && !$this->renderFrontendButtons) return;
-	
-		$option = $this->input->getCmd('option','com_redevent');
-	
+		
 		JToolBarHelper::title(JText::_('COM_REDEVENT_MENU_ROLES'), 'roles');
 		JToolBarHelper::addNewX();
 		JToolBarHelper::editListX();
@@ -54,5 +52,36 @@ class RedeventToolbar extends FOFToolbar
 		if (JFactory::getUser()->authorise('core.admin', 'com_redevent')) {
 			JToolBarHelper::preferences('com_redevent', '600', '600');
 		}
+	}
+	
+	public function onBrowse()
+	{
+		parent::onBrowse();
+
+		// Set toolbar title
+		$option = 'com_redevent';
+		$subtitle_key = strtoupper($option . '_TITLE_' . $this->input->getCmd('view', 'cpanel'));
+		JToolBarHelper::title(JText::_(strtoupper($option)) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>', $this->input->getCmd('view', 'cpanel'));		
+	}
+
+	public function onRead()
+	{
+		parent::onRead();
+		
+		// Set toolbar title
+		$option = 'com_redevent';
+		$subtitle_key = strtoupper($option . '_TITLE_' . $this->input->getCmd('view', 'cpanel') . '_READ');
+		JToolBarHelper::title(JText::_(strtoupper($option)) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>', FOFInflector::pluralize($this->input->getCmd('view', 'cpanel')));
+	}
+
+	public function onAdd()
+	{
+		parent::onAdd();
+		
+		// Set toolbar title
+		$option = 'com_redevent';
+		// Set toolbar title
+		$subtitle_key = strtoupper($option . '_TITLE_' . FOFInflector::pluralize($this->input->getCmd('view', 'cpanel'))) . '_EDIT';
+		JToolBarHelper::title(JText::_(strtoupper($option)) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>', FOFInflector::pluralize($this->input->getCmd('view', 'cpanel')));
 	}
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form
 	lessfiles="media://com_redevent/css/backend.less||media://com_redevent/css/backend.css"
+	validate="true"
 >
 	<fieldset name="basic_configuration"
 		label="COM_REDEVENT_TEXTSNIPPET_EDIT_SNIPPET_FIELDSET"

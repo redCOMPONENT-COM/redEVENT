@@ -307,6 +307,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_textlibrary` (
   `text_name` varchar(255) default NULL,
   `text_description` varchar(255) default NULL,
   `text_field` text,
+  `language` char(7) NOT NULL,
   `checked_out` int(11) NOT NULL default '0',
   `checked_out_time` datetime default '0000-00-00 00:00:00',
   PRIMARY KEY  (`id`),

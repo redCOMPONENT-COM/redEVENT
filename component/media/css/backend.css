@@ -1,0 +1,340 @@
+/**
+ * @version 1.0 $Id$
+ * @package Joomla
+ * @subpackage redEVENT
+ * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license GNU/GPL, see LICENSE.php
+ * redEVENT is based on EventList made by Christoph Lukes from schlu.net
+ * redEVENT can be downloaded from www.redcomponent.com
+ * redEVENT is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License 2
+ * as published by the Free Software Foundation.
+
+ * redEVENT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with redEVENT; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+ 
+/** header icons **/
+.icon-48-archive			{ background-image: url(../images/icon-48-archive.png); }
+.icon-48-elcategories 		{ background-image: url(../images/icon-48-categories.png); }
+.icon-48-categoriesedit 	{ background-image: url(../images/icon-48-categoriesedit.png); }
+.icon-48-venuescategories 		{ background-image: url(../images/icon-48-venuescategories.png); }
+.icon-48-registrations 		{ background-image: url(../images/icon-48-registrations.png); }
+.icon-48-accessgroups 		{ background-image: url(../images/icon-48-accessgroups.png); }
+.icon-48-customfields 		{ background-image: url(../images/icon-48-customfields.png); }
+.icon-48-roles 		{ background-image: url(../images/icon-48-roles.png); }
+.icon-48-pricegroups 		{ background-image: url(../images/icon-48-pricegroups.png); }
+.icon-48-log 		{ background-image: url(../images/icon-48-log.png); }
+.icon-48-cssedit 			{ background-image: url(../images/icon-48-cssedit.png); }
+.icon-48-eventedit 			{ background-image: url(../images/icon-48-eventedit.png); }
+.icon-48-events 			{ background-image: url(../images/icon-48-events.png); }
+.icon-48-re-sessions			{ background-image: url(../images/icon-48-events.png); }
+.icon-48-groups				{ background-image: url(../images/icon-48-groups.png); }
+.icon-48-groupedit			{ background-image: url(../images/icon-48-groupedit.png); }
+.icon-48-help 				{ background-image: url(../images/icon-48-help.png); }
+.icon-48-home 				{ background-image: url(../images/icon-48-home.png); }
+.icon-48-settings	 		{ background-image: url(../images/icon-48-settings.png); }
+.icon-48-update 			{ background-image: url(../images/icon-48-update.png); }
+.icon-48-users 				{ background-image: url(../images/icon-48-users.png); }
+.icon-48-venues 			{ background-image: url(../images/icon-48-venues.png); }
+.icon-48-venuesedit			{ background-image: url(../images/icon-48-venuesedit.png); }
+.icon-48-housekeeping		{ background-image: url(../images/icon-48-housekeeping.png); }
+.icon-48-library			{ background-image: url(../images/icon-48-library.png); }
+.icon-48-libraryedit			{ background-image: url(../images/icon-48-libraryedit.png); }
+.icon-48-tools		{ background-image: url(../images/icon-48-housekeeping.png); }
+.icon-32-redevent_import		{ background-image: url(../images/redevent_import_32.png); }
+.icon-32-exportevents		{ background-image: url(../images/icon-32-export.png); }
+.icon-32-csvexport		{ background-image: url(../images/icon-32-export.png); }
+.icon-32-csvimport		{ background-image: url(../images/icon-32-import.png); }
+.icon-32-redevent_submitters	{ background-image: url(../images/redevent_submitters_32.png); }
+.icon-32-redevent_archive			{ background-image: url(../images/redevent_archive_32.png); }
+.icon-32-redevent_unarchive			{ background-image: url(../images/redevent_unarchive_32.png); }
+.icon-32-redevent_sync			{ background-image: url(../images/redevent_sync_32.png); }
+.icon-32-featured	{ background-image: url(../images/icon-32-featured.png); }
+.icon-32-unfeatured	{ background-image: url(../images/icon-32-unfeatured.png); }
+.icon-32-redrestore			{ background-image: url(../images/icon-32-refresh.png); }
+
+/** linkicons **/
+div.linkicon {
+	text-align: center;
+	margin-right: 5px;
+	margin-bottom: 5px;
+}
+
+div.linkicon a {
+	display: block;
+	border: 1px solid #f0f0f0;
+	height: 97px;
+	width: 108px;
+	color: #666;
+	vertical-align: middle;
+	text-decoration: none;
+}
+
+div.linkicon a:hover {
+	border-left: 1px solid #eee;
+	border-top: 1px solid #eee;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	background: #f9f9f9;
+	color: #0B55C4;
+}
+
+div.linkicon img  { padding: 10px 0; margin: 0 auto; }
+div.linkicon span { display: block; text-align: center; }
+
+/**
+ * imageselect
+ *
+ * based on com_media
+ */
+
+div.item {
+	float: left;
+	border: 1px solid #ccc;
+	margin: 3px;
+	position: relative;
+}
+
+div.imgBorder {
+	height: 72px;
+	vertical-align: middle;
+	width: 88px;
+	overflow: hidden;
+}
+
+div.imgBorder a {
+	height: 72px;
+	width: 88px;
+	display: block;
+	cursor: pointer;
+}
+
+div.imgBorder a:hover {
+	height: 72px;
+	width: 88px;
+	background-color: #f0f0f0;
+	color : #FF6600;
+}
+
+div.controls {
+	text-align: center;
+	height: 20px;
+	line-height: 20px;
+	background: #f9fcf9;
+	border-top: 1px solid #ddd;
+}
+
+div.controls img {
+	vertical-align: middle;
+}
+
+div.imageinfo {
+	background: #f9f9f9;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	width: 88px;
+	height: 15px;
+	vertical-align: middle;
+	text-align: center;
+	overflow: hidden;
+}
+
+div.image {
+/*	padding-top: 10px; removed because of the button icons */
+}
+
+div.pnav {
+	padding: 5px;
+	text-align: center;
+	background: #f3f3f3;
+	border: 1px solid #ccc;
+	overflow: hidden;
+}
+
+div.imghead {
+	padding: 3px;
+	border: 1px solid #ccc;
+}
+
+/* other */
+.copyright
+{ font-size: 0.85em; text-align: center; margin: 1em 0; color: #aaa; }
+
+div.clear
+{ border: 0; clear: both; float: none; height: 1px; line-height: 1px; }
+
+.redevent_settings {
+	width: 25em;
+}
+
+.redevent_settings_details {
+	width: 10em;
+}
+
+.redevent_settings_repeat {
+	width: 15em;
+}
+
+
+label.invalid {
+  color: red;
+}
+
+.invalid {
+  background-color:pink;
+}
+
+/* venue pinpoint */
+div#setmap {
+  clear:both;
+}
+
+div#setmap table {
+  float:left;
+}
+
+div#pinpointicon {
+  float:left;
+  position:relative;
+  bottom: -30px;
+}
+
+div#timedetails th.colvenue {
+  width: 30%;
+}
+div#timedetails th.colcity {
+  width: 20%;
+}
+div#timedetails th.coldate {
+  width: 30%;
+}
+div#timedetails th.coltime {
+  width: 20%;
+}
+
+div.tagsdiv table.tag_list td, div.tagsdiv table.tag_list th {
+  padding:0px;
+  height:10px
+}
+
+div.sessions-filter {
+	margin: 5px 0;
+}
+
+div.sessions-filter a {
+	border: 1px solid darkgrey;
+	background-color: lightgrey;
+	padding: 2px;
+	color:black;
+}
+
+p.re-spacer {
+	background-color: lightgrey;
+	font-weight:bold;
+	padding: 5px 0;
+	margin: 0;
+}
+
+table.editevent {
+	width: 95%;
+}
+
+table.editevent td.key, table.editevent td.paramlist_key {
+    background-color: #F6F6F6;
+    border-bottom: 1px solid #E9E9E9;
+    border-right: 1px solid #E9E9E9;
+    color: #666666;
+    text-align: right;
+    width: 170px;
+    vertical-align:top;
+    padding: 3px;
+}
+
+table.editevent td.key label, table.editevent td.paramlist_key label {
+    font-weight:bold;
+}
+
+div.cancelled-notice {
+	border-width: 2px 0;
+	border-color: gold;
+	border-style: solid;
+	padding: 7px 0;
+	margin: 5px 0;
+	background-color: AntiqueWhite;
+	font-size: 1.5em;
+	text-align:center;
+}
+
+#attendees tr.cancelled, #attendees tr.cancelled td {
+	background-color: AntiqueWhite;
+}
+
+table.editevent label {
+	display: inline;
+	float: none;
+}
+
+table.editevent input,
+table.editevent select,
+table.editevent textarea {
+	float: none;
+}
+
+fieldset.editevent label {
+	display: inline;
+	float: none;
+}
+
+fieldset.editevent input,
+fieldset.editevent select,
+fieldset.editevent textarea {
+	float: none;
+}
+
+div.current table.editevent label {
+	display: inline;
+	float: none;
+}
+
+div.current table.editevent input,
+div.current table.editevent select,
+div.current table.editevent textarea {
+	float: none;
+}
+
+div.current fieldset.editevent label {
+	display: inline;
+	float: none;
+}
+
+div.current fieldset.editevent input,
+div.current fieldset.editevent select,
+div.current fieldset.editevent textarea {
+	float: none;
+}
+
+div.current div.type-params input,
+div.current div.type-params select,
+div.current div.type-params textarea {
+	float: none;
+}
+
+img.re-image-preview {
+	border:2px solid black;
+	max-height:80px;
+	max-width:150px;	
+}
+
+/** from fof **/
+div.redevent-clear { clear: left; }
+.joomla-version-25 label.redevent-label { min-width: 250px; background-color: rgba(0,0,0,0.1); padding: 2px; margin-right: 10px; }
+.joomla-version-25 label.redevent-label-main { font-weight: bold; font-size: 120%; }
+
+.redevent-title-field { display: block; font-size: x-large; font-weight: bold; border-bottom: thin solid gray; }

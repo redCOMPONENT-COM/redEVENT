@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form
 	lessfiles="media://com_redevent/css/backend.less||media://com_redevent/css/backend.css"
+	validate="true"
 >
 	<fieldset name="basic_configuration"
 		label="COM_REDEVENT_ROLE"
@@ -8,7 +9,7 @@
 		class="span6"
 	>
 		<field name="name" type="text"
-			class="inputbox"
+			class="inputbox validate-username"
 			label="COM_REDEVENT_Name"
 			labelclass="redevent-label redevent-label-main"
 			required="true"
@@ -20,7 +21,7 @@
 			type="contentlanguage"
 			label="JFIELD_LANGUAGE_LABEL"
 			description="COM_REDEVENT_FIELD_LANGUAGE_DESC"
-			class="inputbox">
+			labelclass="redevent-label">
 			<option value="*">JALL</option>
 		</field>
 	
@@ -51,7 +52,7 @@
 	>
 		<field name="description" type="editor"
 			label=""
-			class="inputbox"
+			labelclass="redevent-label"
 			required="false"
 			filter="JComponentHelper::filterText" buttons="true"
 		/>
