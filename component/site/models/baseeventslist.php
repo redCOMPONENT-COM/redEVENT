@@ -78,17 +78,17 @@ class RedeventModelBaseEventList extends JModel
 	{
 		parent::__construct();
 
-		$mainframe = & JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		// Get the paramaters of the active menu item
-		$params 	= & $mainframe->getParams('com_redevent');
+		$params 	= & $app->getParams('com_redevent');
 
 		//get the number of events from database
-		$limit       	= $mainframe->getUserStateFromRequest('com_redevent.limit', 'limit', $params->def('display_num', 0), 'int');
+		$limit       	= $app->getUserStateFromRequest('com_redevent.limit', 'limit', $params->def('display_num', 0), 'int');
 		$limitstart		= JRequest::getVar('limitstart', 0, '', 'int');
 			        
 		// In case limit has been changed, adjust it
-    $limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
+    	$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
     
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
@@ -98,12 +98,14 @@ class RedeventModelBaseEventList extends JModel
 // 		echo '<pre>';print_r(JRequest::getCmd('filter_order', 'x.dates')); echo '</pre>';exit;
 		$this->setState('filter_order_Dir', strtoupper(JRequest::getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC');
 		
-		$this->setState('filter',      $mainframe->getUserStateFromRequest('com_redevent.'.$this->getName().'.filter',      'filter', '', 'string'));
-		$this->setState('filter_type', $mainframe->getUserStateFromRequest('com_redevent.'.$this->getName().'.filter_type', 'filter_type', '', 'string'));
+		$this->setState('filter',      $app->getUserStateFromRequest('com_redevent.'.$this->getName().'.filter',      'filter', '', 'string'));
+		$this->setState('filter_type', $app->getUserStateFromRequest('com_redevent.'.$this->getName().'.filter_type', 'filter_type', '', 'string'));
 			
-		$this->setState('filter_event',    $mainframe->getUserStateFromRequest('com_redevent.'.$this->getName().'.filter_event',    'filter_event', 0, 'int'));
-		$this->setState('filter_category', $mainframe->getUserStateFromRequest('com_redevent.'.$this->getName().'.filter_category', 'filter_category', 0, 'int'));
-		$this->setState('filter_venue',    $mainframe->getUserStateFromRequest('com_redevent.'.$this->getName().'.filter_venue',    'filter_venue',    0, 'int'));
+		$this->setState('filter_event',    $app->getUserStateFromRequest('com_redevent.'.$this->getName().'.filter_event',    'filter_event', 0, 'int'));
+		$this->setState('filter_category', $app->getUserStateFromRequest('com_redevent.'.$this->getName().'.filter_category', 'filter_category', 0, 'int'));
+		$this->setState('filter_venue',    $app->getUserStateFromRequest('com_redevent.'.$this->getName().'.filter_venue',    'filter_venue',    0, 'int'));
+		
+		$this->setState('filter.language', $app->getLanguageFilter());
 	}
 
 
@@ -147,8 +149,8 @@ class RedeventModelBaseEventList extends JModel
 			$pagination = $this->getPagination();
 			$this->_data = $this->_getList( $query, $pagination->limitstart, $pagination->limit );
 			$this->_data = $this->_categories($this->_data);
-      $this->_data = $this->_getPlacesLeft($this->_data);
-      $this->_data = $this->_getPrices($this->_data);
+			$this->_data = $this->_getPlacesLeft($this->_data);
+			$this->_data = $this->_getPrices($this->_data);
 		}
 
 		return $this->_data;
@@ -206,8 +208,6 @@ class RedeventModelBaseEventList extends JModel
 	function _buildQuery()
 	{
 		// Get the WHERE and ORDER BY clauses for the query
-		$where		= $this->_buildWhere();
-		$orderby	= $this->_buildOrderBy();
 		$customs = $this->getCustomFields();
 		$xcustoms = $this->getXrefCustomFields();
 		$acl = &UserAcl::getInstance();
@@ -218,50 +218,46 @@ class RedeventModelBaseEventList extends JModel
 		}
 		$gids = implode(',', $gids);
 		
+		$db = &JFactory::getDbo();
+		$query = $db->getQuery(true);
 		
-
-		//Get Events from Database
-		$query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, ' 
-		    . ' x.maxattendees, x.maxwaitinglist, x.course_credit, x.featured, x.icaldetails, x.icalvenue, x.title as session_title, '
-        . ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
-		    . ' a.id, a.title, a.created, a.datdescription, a.registra, a.datimage, a.summary, a.submission_type_external, '
-				. ' l.venue, l.city, l.state, l.url, l.street, l.country, l.locdescription, '
-				. ' c.catname, c.id AS catid,'
-        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
-        . ' CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug, '
-        . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
-        . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
-        ;
+		$query->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref');
+		$query->select('x.maxattendees, x.maxwaitinglist, x.course_credit, x.featured, x.icaldetails, x.icalvenue, x.title as session_title');
+		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
+		$query->select('a.id, a.title, a.created, a.datdescription, a.registra, a.datimage, a.summary, a.submission_type_external');
+		$query->select('l.venue, l.city, l.state, l.url, l.street, l.country, l.locdescription');
+		$query->select('c.catname, c.id AS catid');
+		$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
+		$query->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug');
+		$query->select('CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug');
+		$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug');
 		// add the custom fields
 		foreach ((array) $customs as $c)
 		{
-			$query .= ', a.custom'. $c->id;
+			$query->select('a.custom'. $c->id);
 		}
-		// add the custom fields
 		foreach ((array) $xcustoms as $c)
 		{
-			$query .= ', x.custom'. $c->id;
+			$query->select('x.custom'. $c->id);
 		}
+		$query->from('#__redevent_event_venue_xref AS x');
+		$query->join('INNER', '#__redevent_events AS a ON a.id = x.eventid');
+		$query->join('INNER', '#__redevent_venues AS l ON l.id = x.venueid');
+		$query->join('LEFT', '#__redevent_venue_category_xref AS xvcat ON l.id = xvcat.venue_id');
+		$query->join('LEFT', '#__redevent_venues_categories AS vc ON xvcat.category_id = vc.id');
+		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
+		$query->join('INNER', '#__redevent_categories AS c ON c.id = xcat.category_id');
+		$query->join('LEFT', '#__redevent_groups_venues AS gv ON gv.venue_id = l.id AND gv.group_id IN ('.$gids.')');
+		$query->join('LEFT', '#__redevent_groups_venues_categories AS gvc ON gvc.category_id = vc.id AND gvc.group_id IN ('.$gids.')');
+		$query->join('LEFT', '#__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN ('.$gids.')');
+		$query->where('(l.private = 0 OR gv.id IS NOT NULL)');
+		$query->where('(c.private = 0 OR gc.id IS NOT NULL)');
+		$query->where('(vc.private = 0 OR vc.private IS NULL OR gvc.id IS NOT NULL)');
+		$query->group('x.id');
+
+		$query = $this->_buildWhere($query);
+		$query = $this->_buildOrderBy($query);
 		
-    $query .= ' FROM #__redevent_event_venue_xref AS x'
-		        . ' INNER JOIN #__redevent_events AS a ON a.id = x.eventid'
-		        . ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
-		        . ' LEFT JOIN #__redevent_venue_category_xref AS xvcat ON l.id = xvcat.venue_id'
-		        . ' LEFT JOIN #__redevent_venues_categories AS vc ON xvcat.category_id = vc.id'
-            . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-	          . ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id '
-	          . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = l.id AND gv.group_id IN ('.$gids.')'
-	          . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = vc.id AND gvc.group_id IN ('.$gids.')'
-	          . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN ('.$gids.')'
-		        ;
-		
-		$query .= $where
-		       . ' AND (l.private = 0 OR gv.id IS NOT NULL) '
-		       . ' AND (c.private = 0 OR gc.id IS NOT NULL) '
-		       . ' AND (vc.private = 0 OR vc.private IS NULL OR gvc.id IS NOT NULL) '
-		       . ' GROUP BY (x.id) '
-				   . $orderby
-				   ;
 		return $query;
 	}
 
@@ -271,7 +267,7 @@ class RedeventModelBaseEventList extends JModel
 	 * @access private
 	 * @return string
 	 */
-	function _buildOrderBy()
+	function _buildOrderBy($query)
 	{
 		$filter_order		  = $this->getState('filter_order');
 		$filter_order_dir	= $this->getState('filter_order_dir');
@@ -279,9 +275,9 @@ class RedeventModelBaseEventList extends JModel
 		if (preg_match("/field([0-9]+)/", $filter_order, $regs)) {
 			$filter_order = 'c'. $regs[1] .'.value';
 		}
-		$orderby 	= ' ORDER BY '.$filter_order.' '.$filter_order_dir.', x.dates, x.times';
+		$query->order($filter_order.' '.$filter_order_dir.', x.dates, x.times');
 
-		return $orderby;
+		return $query;
 	}
 
 	/**
@@ -290,15 +286,15 @@ class RedeventModelBaseEventList extends JModel
 	 * @access private
 	 * @return string
 	 */
-	function _buildWhere()
+	function _buildWhere($query)
 	{
-		$mainframe = &JFactory::getApplication();
+		$app = &JFactory::getApplication();
 
 		$user		= & JFactory::getUser();
 		$gid		= max($user->getAuthorisedViewLevels());
 
 		// Get the paramaters of the active menu item
-		$params 	= & $mainframe->getParams();
+		$params 	= & $app->getParams();
 
 		$task 		= JRequest::getWord('task');
 		
@@ -306,13 +302,13 @@ class RedeventModelBaseEventList extends JModel
 		
 		// First thing we need to do is to select only needed events
 		if ($task == 'archive') {
-			$where[] = ' x.published = -1 ';
+			$query->where(' x.published = -1 ');
 		} else {
-			$where[] = ' x.published = 1 ';
+			$query->where(' x.published = 1 ');
 		}
 				
 		// Second is to only select events assigned to category the user has access to
-		$where[] = ' c.access <= '.$gid;
+		$query->where(' c.access <= '.$gid);
 		
 		/*
 		 * If we have a filter, and this is enabled... lets tack the AND clause
@@ -333,53 +329,53 @@ class RedeventModelBaseEventList extends JModel
 				switch ($filter_type)
 				{
 					case 'title' :
-						$where[] = ' LOWER( a.title ) LIKE '.$filter;
+						$query->where(' LOWER( a.title ) LIKE '.$filter);
 						break;
 
 					case 'venue' :
-						$where[] = ' LOWER( l.venue ) LIKE '.$filter;
+						$query->where(' LOWER( l.venue ) LIKE '.$filter);
 						break;
 
 					case 'city' :
-						$where[] = ' LOWER( l.city ) LIKE '.$filter;
+						$query->where(' LOWER( l.city ) LIKE '.$filter);
 						break;
 						
 					case 'type' :
-						$where[] = '  LOWER( c.catname ) LIKE '.$filter;
+						$query->where('  LOWER( c.catname ) LIKE '.$filter);
 						break;
 				}
 			}
 		}
 		
-    if ($filter_venue = $this->getState('filter_venue'))
-    {
-    	$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);    	
-    }
-    
+		if ($filter_venue = $this->getState('filter_venue'))
+		{
+			$query->where(' l.id = ' . $this->_db->Quote($filter_venue));
+		}
+
 		if ($ev = $this->getState('filter_event')) 
 		{
-			$where[] = 'a.id = '.$this->_db->Quote($ev);
+			$query->where('a.id = '.$this->_db->Quote($ev));
 		}
 	    
-		if ($cat = $this->getState('filter_category')) 
-		{		
-    	$category = $this->getCategory((int) $cat);
-    	if ($category) {
-				$where[] = '(c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
-    	}
+		if ($cat = $this->getState('filter_category'))
+		{
+			$category = $this->getCategory((int) $cat);
+			if ($category) {
+				$query->where('(c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))');
+			}
 		}
 	
 		$sstate = $params->get( 'session_state', '0' );
 		if ($sstate == 1)
 		{
 			$now = strftime('%Y-%m-%d %H:%M');
-			$where[] = '(CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > '.$this->_db->Quote($now);
+			$query->where('(CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > '.$this->_db->Quote($now));
 		} 
 		else if ($sstate == 2) {
-			$where[] = 'x.dates = 0';
+			$query->where('x.dates = 0');
 		}
 		
-		return ' WHERE '.implode(' AND ', $where);
+		return $query;
 	}
 	
 /**
@@ -390,13 +386,13 @@ class RedeventModelBaseEventList extends JModel
 	 */
 	function _buildEventsOptionsWhere()
 	{
-		$mainframe = &JFactory::getApplication();
+		$app = &JFactory::getApplication();
 
 		$user		= & JFactory::getUser();
 		$gid		= max($user->getAuthorisedViewLevels());
 
 		// Get the paramaters of the active menu item
-		$params 	= & $mainframe->getParams();
+		$params 	= & $app->getParams();
 
 		$task 		= JRequest::getWord('task');
 		
@@ -476,50 +472,54 @@ class RedeventModelBaseEventList extends JModel
 	}
 	
 	/**
-   * adds categories property to event rows
-   *
-   * @param array $rows of events
-   * @return array
-   */
-  function _categories($rows)
-  {
-		$acl = &UserAcl::getInstance();		
+	 * adds categories property to event rows
+	 *
+	 * @param array $rows of events
+	 * @return array
+	 */
+	protected function _categories($rows)
+	{
+		$acl = &UserAcl::getInstance();
 		$gids = $acl->getUserGroupsIds();
 		if (!is_array($gids) || !count($gids)) {
 			$gids = array(0);
 		}
 		$gids = implode(',', $gids);
-		
-    for ($i=0, $n=count($rows); $i < $n; $i++) 
-    {
-      $query =  ' SELECT c.id, c.catname, c.color, '
-              . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
-              . ' FROM #__redevent_categories as c '
-              . ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
-	            . '  LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id '
-              . ' WHERE c.published = 1 '
-              . '   AND x.event_id = ' . $this->_db->Quote($rows[$i]->id)
-              . '   AND (c.private = 0 OR gc.group_id IN ('.$gids.')) '
-              . ' GROUP BY c.id '
-              . ' ORDER BY c.ordering'
-              ;
-      $this->_db->setQuery( $query );
 
-      $rows[$i]->categories = $this->_db->loadObjectList();
-    }
+		for ($i=0, $n=count($rows); $i < $n; $i++)
+		{
+			$db = &JFactory::getDbo();
+			$query = $db->getQuery(true);
+			
+			$query->select('c.id, c.catname, c.color');
+			$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug');
+			$query->from('#__redevent_categories as c');
+			$query->join('INNER', '#__redevent_event_category_xref as x ON x.category_id = c.id');
+			$query->join('LEFT', '#__redevent_groups_categories AS gc ON gc.category_id = c.id');
+			$query->where('c.published = 1');
+			$query->where('x.event_id = ' . $this->_db->Quote($rows[$i]->id));
+			$query->where('(c.private = 0 OR gc.group_id IN ('.$gids.'))');
+			$query->group('c.id');
+			$query->order('c.ordering');
+			if ($this->getState('filter.language')) {
+				$query->where('(c.language in ('.$this->_db->quote(JFactory::getLanguage()->getTag()).','.$this->_db->quote('*').') OR c.language IS NULL)');
+			}
+			$db->setQuery($query);
 
-    return $rows;   
-  }
+			$rows[$i]->categories = $db->loadObjectList();
+		}
+		return $rows;
+	}
   
-  /**
-   * adds registered (int) and waiting (int) properties to rows.
-   * 
-   * @return array 
-   */
-	function _getPlacesLeft($rows)
+	/**
+	 * adds registered (int) and waiting (int) properties to rows.
+	 *
+	 * @return array
+	 */
+	protected function _getPlacesLeft($rows)
 	{
 		foreach ((array) $rows as $k => $r)
-  	{
+		{
 			$q = ' SELECT r.waitinglist, COUNT(r.id) AS total '
 			   . ' FROM #__redevent_register AS r '
 			   . ' WHERE r.xref = '. $this->_db->Quote($r->xref)
@@ -534,23 +534,23 @@ class RedeventModelBaseEventList extends JModel
 		}
 		return $rows;
 	}
-  
-  /**
-   * adds registered (int) and waiting (int) properties to rows.
-   * 
-   * @return array 
-   */
-  function _getPrices($rows) 
-  {
-  	if (!$rows) {
-  		return $rows;
-  	}
-    $db = JFactory::getDBO();
-    $ids = array();
-    foreach ($rows as $k => $r) 
-    {
-    	$ids[$r->xref] = $k;
-    }
+
+	/**
+	 * adds registered (int) and waiting (int) properties to rows.
+	 *
+	 * @return array
+	 */
+	function _getPrices($rows)
+	{
+		if (!$rows) {
+			return $rows;
+		}
+		$db = JFactory::getDBO();
+		$ids = array();
+		foreach ($rows as $k => $r)
+		{
+			$ids[$r->xref] = $k;
+		}
   	$query = ' SELECT sp.*, p.name, p.alias, p.image, p.tooltip, f.currency, '
 	         . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug ' 
   	       . ' FROM #__redevent_sessions_pricegroups AS sp '
