@@ -24,16 +24,14 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.modeladmin');
-
 /**
- * EventList Component Category Model
+ * RedEvent Model Category
  *
  * @package Joomla
  * @subpackage redEVENT
  * @since		0.9
  */
-class RedEventModelCategory extends JModelAdmin
+class RedEventModelCategory extends FOFModel
 {
 	/**
 	 * Category id
@@ -88,7 +86,7 @@ class RedEventModelCategory extends JModelAdmin
 	 * @return	array
 	 * @since	0.9
 	 */
-	function &getData()
+	function &getItem()
 	{
 		if ($this->_loadData())
 		{
@@ -185,72 +183,6 @@ class RedEventModelCategory extends JModelAdmin
 	}
 
 	/**
-	 * Method to checkin/unlock the item
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	0.9
-	 */
-	function checkin()
-	{
-		if ($this->_id)
-		{
-			$category = & JTable::getInstance('redevent_categories', '');
-			return $category->checkin($this->_id);
-		}
-		return false;
-	}
-
-	/**
-	 * Method to checkout/lock the item
-	 *
-	 * @access	public
-	 * @param	int	$uid	User ID of the user checking the item out
-	 * @return	boolean	True on success
-	 * @since	0.9
-	 */
-	function checkout($uid = null)
-	{
-		if ($this->_id)
-		{
-			// Make sure we have a user id to checkout the group with
-			if (is_null($uid)) {
-				$user	=& JFactory::getUser();
-				$uid	= $user->get('id');
-			}
-			// Lets get to it and checkout the thing...
-			$category = & JTable::getInstance('redevent_categories', '');
-			return $category->checkout($uid, $this->_id);
-		}
-		return false;
-	}
-
-	/**
-	 * Tests if the category is checked out
-	 *
-	 * @access	public
-	 * @param	int	A user id
-	 * @return	boolean	True if checked out
-	 * @since	0.9
-	 */
-	function isCheckedOut( $uid=0 )
-	{
-		if ($this->_loadData())
-		{
-			if ($uid) {
-				return ($this->_data->checked_out && $this->_data->checked_out != $uid);
-			} else {
-				return $this->_data->checked_out;
-			}
-		} elseif ($this->_id < 1) {
-			return false;
-		} else {
-			RedeventError::raiseWarning( 0, 'Unable to Load Data');
-			return false;
-		}
-	}
-
-	/**
 	 * Method to store the category
 	 *
 	 * @access	public
@@ -263,7 +195,7 @@ class RedEventModelCategory extends JModelAdmin
 		$dispatcher	= JDispatcher::getInstance();
 		JPluginHelper::importPlugin('finder');
 		
-		$row  =& $this->getTable('redevent_categories', '');
+		$row  =& $this->getTable();
 		
 		// bind it to the table
 		if (!$row->bind($data)) {
@@ -312,7 +244,7 @@ class RedEventModelCategory extends JModelAdmin
 	 */
 	function access($id, $access)
 	{
-		$row  =& $this->getTable('redevent_categories', '');
+		$row = $this->getTable();
 
 		$row->load( $id );
 		$row->access = $access;
@@ -330,7 +262,8 @@ class RedEventModelCategory extends JModelAdmin
 	/**
 	 * Get a list of all categories and put them in a select list
 	 */
-	public function getCategories() {
+	public function getCategories() 
+	{
 		$db = JFactory::getDBO();
 		/* 1. Get all categories */
 		$q = "SELECT id, parent_id, catname
@@ -373,7 +306,8 @@ class RedEventModelCategory extends JModelAdmin
 	/**
 	 * Create the subcategory layout
 	 */
-	private function buildCategory($cattree, $catfilter, $subcats, $loop=1) {
+	private function buildCategory($cattree, $catfilter, $subcats, $loop=1) 
+	{
 		if (isset($cattree[$catfilter])) {
 			foreach ($cattree[$catfilter] as $subcatid => $category) {
 				$this->html .= '<option value="'.$category['cid'].'"';

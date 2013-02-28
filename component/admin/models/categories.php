@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
  * @subpackage redEVENT
  * @since		0.9
  */
-class RedEventModelCategories extends FOFModel
+class RedeventModelCategories extends FOFModel
 {
 	public function &getItemList($overrideLimits = false, $group = '')
 	{
@@ -62,7 +62,7 @@ class RedEventModelCategories extends FOFModel
 		$db = &JFactory::getDbo();
 		$query = $db->getQuery(true);
 		
-		$query->select('c.*, c.catname, (COUNT(parent.catname) - 1) AS depth, c.access, c.groupid, p.catname as parent_name');
+		$query->select('c.*, (COUNT(parent.catname) - 1) AS depth, p.catname as parent_name');
 		$query->select('u.name AS editor');
 		$query->select('g.title AS groupname, gr.name AS catgroup');
 		$query->from('#__redevent_categories AS parent, #__redevent_categories AS c');
@@ -114,7 +114,7 @@ class RedEventModelCategories extends FOFModel
 
 		return $query;
 	}
-
+	
 	/**
 	 * Method to (un)publish a category
 	 *
@@ -122,7 +122,7 @@ class RedEventModelCategories extends FOFModel
 	 * @return	boolean	True on success
 	 * @since	0.9
 	 */
-	function publish($cid = array(), $publish = 1)
+	public function publish($cid = array(), $publish = 1)
 	{
 		$user 	=& JFactory::getUser();
 
@@ -151,6 +151,25 @@ class RedEventModelCategories extends FOFModel
 		return true;
 	}
 	
+	protected function onAfterGetItem(&$record)
+	{
+		if ($record) {
+			$files = REAttach::getAttachments('category'.$record->id);
+			$record->attachments = $files;
+		}
+	}
+	
+	protected function onAfterSave(&$table)
+	{
+		parent::onAfterSave($table);
+		// attachments
+		REAttach::store('category'.$table->id);
+		
+		// Trigger the onFinderAfterSave event.		
+		$dispatcher = JDispatcher::getInstance();		
+		$results = $dispatcher->trigger('onFinderAfterSave', array($this->option . '.' . $this->name, $table, $this->_isNewRecord));
+	}
+	
 	/**
 	 * Method to count the nr of assigned events to the category
 	 *
@@ -158,7 +177,7 @@ class RedEventModelCategories extends FOFModel
 	 * @return	boolean	True on success
 	 * @since	0.9
 	 */
-	function _countcatevents($id)
+	protected function _countcatevents($id)
 	{
 		$query = 'SELECT COUNT( * )'
 				.' FROM #__redevent_event_category_xref AS x'
@@ -235,9 +254,9 @@ class RedEventModelCategories extends FOFModel
 		}
 	}
 	
-  /**
+	/**
 	 * export venues
-   *
+	 *
 	 * @param array $categories filter
 	 * @return array
 	 */

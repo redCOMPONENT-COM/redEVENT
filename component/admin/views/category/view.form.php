@@ -23,8 +23,6 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.application.component.view');
-
 /**
  * View class for the EventList category screen
  *
@@ -32,7 +30,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedEventViewCategory extends JView {
+class RedeventViewCategory extends FOFViewForm {
 
 	function display($tpl = null)
 	{
@@ -40,13 +38,13 @@ class RedEventViewCategory extends JView {
 
 		//Load pane behavior
 		jimport('joomla.html.pane');
-
+		
 		//initialise variables
-		$editor 	= & JFactory::getEditor();
-		$document	= & JFactory::getDocument();
-		$user 		= & JFactory::getUser();
-		$pane 		= & JPane::getInstance('sliders');
-		$tabs 		= & JPane::getInstance('tabs');
+		$editor 	= JFactory::getEditor();
+		$document	= JFactory::getDocument();
+		$user 		= JFactory::getUser();
+		$pane 		= JPane::getInstance('sliders');
+		$tabs 		= JPane::getInstance('tabs');
 
 		//get vars
 		$cid 		= JRequest::getVar( 'cid' );
@@ -54,14 +52,15 @@ class RedEventViewCategory extends JView {
 
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITCATEGORY'));
 		//add css to document
-		$document->addStyleSheet($url.'/administrator/components/com_redevent/assets/css/redeventbackend.css');
-
-		$document->addScript($url.'/components/com_redevent/assets/js/attachments.js');
+		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.less||media://com_redevent/css/backend.css');
+		
+		// attachments
+		FOFTemplateUtils::addJS('media://com_redevent/js/attachments.js');		
 		$document->addScriptDeclaration('var removemsg = "'.JText::_('COM_REDEVENT_ATTACHMENT_CONFIRM_MSG').'";' );
 
 		// js color picker
-		$document->addStyleSheet($url.'/administrator/components/com_redevent/assets/css/colorpicker.css');
-		$document->addScript($url.'/administrator/components/com_redevent/assets/js/colorpicker.js');
+		FOFTemplateUtils::addCSS('media://com_redevent/css/colorpicker.css');
+		FOFTemplateUtils::addJS('media://com_redevent/js/colorpicker.js');		
 
 		//create the toolbar
 		if ( $cid ) {
@@ -84,10 +83,10 @@ class RedEventViewCategory extends JView {
 		JToolBarHelper::cancel();
 
 		//Get data from the model
-		$model		= & $this->getModel();
-		$row     	= & $this->get( 'Data' );
-		$form     = & $this->get( 'Form' );
-		$groups 	= & $this->get( 'Groups' );
+		$model		= $this->getModel();
+		$row     	= $this->get( 'Item' );
+		$form       = $this->get( 'Form' );
+		$groups 	= $this->get( 'Groups' );
 
 		// fail if checked out not by 'me'
 		if ($row->id) {
@@ -108,15 +107,6 @@ class RedEventViewCategory extends JView {
 		
 		//build selectlists
 		$lists['access'] 			= JHTML::_('list.accesslevel', $row );
-
-		//build grouplist
-		$grouplist		= array();
-		$grouplist[] 	= JHTML::_('select.option', '0', JText::_('COM_REDEVENT_NO_GROUP' ) );
-		$grouplist 		= array_merge( $grouplist, $groups );
-
-		$lists['groups']	= JHTML::_('select.genericlist', $grouplist, 'groupid', 'size="1" class="inputbox"', 'value', 'text', $row->groupid );
-		
-		$lists['access'] 			= JHTML::_('list.accesslevel', $row );
 		
 		//assign data to template
 		$this->assignRef('lists'      	, $lists);
@@ -128,7 +118,7 @@ class RedEventViewCategory extends JView {
 		$this->assignRef('access'	, redEVENTHelper::getAccesslevelOptions());
 		
 		JHTML::_('behavior.tooltip');
-
+		
 		parent::display($tpl);
 	}
 }

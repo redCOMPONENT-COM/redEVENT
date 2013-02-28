@@ -23,8 +23,6 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.application.component.view');
-
 /**
  * View class for the EventList categories screen
  *
@@ -32,7 +30,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedEventViewCategories extends JView {
+class RedEventViewCategories extends FOFView {
 
 	function display($tpl = null)
 	{
@@ -44,9 +42,9 @@ class RedEventViewCategories extends JView {
 		}
 		
 		//initialise variables
-		$user 		= & JFactory::getUser();
-		$db  		= & JFactory::getDBO();
-		$document	= & JFactory::getDocument();
+		$user 		= JFactory::getUser();
+		$db  		= JFactory::getDBO();
+		$document	= JFactory::getDocument();
 		
 		JHTML::_('behavior.tooltip');
 
@@ -62,7 +60,7 @@ class RedEventViewCategories extends JView {
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 
 		//Create Submenu
-    ELAdmin::setMenu();
+		ELAdmin::setMenu();
 
 		//create the toolbar
 		JToolBarHelper::title( JText::_('COM_REDEVENT_CATEGORIES' ), 'elcategories' );
@@ -81,7 +79,7 @@ class RedEventViewCategories extends JView {
 		}
 
 		//Get data from the model
-		$rows      	= & $this->get( 'Data');
+		$rows      	= & $this->get( 'ItemList');
 		//$total      = & $this->get( 'Total');
 		$pageNav 	= & $this->get( 'Pagination' );
 

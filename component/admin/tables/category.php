@@ -33,57 +33,17 @@ defined('_JEXEC') or die('Restricted access');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedEvent_categories extends JTable
+class RedeventTableCategory extends FOFTable
 {
 	/**
-	 * Primary Key
-	 * @var int
+	 * @param database A database connector object
 	 */
-	var $id 				= null;
-	/** @var int */
-	var $parent_id			= 0;
-	/** @var string */
-	var $catname 			= '';
-	/** @var string */
-	var $alias	 			= '';
-	/** @var string */
-	var $catdescription 	= null;
-	/** @var string */
-	var $meta_description 	= null;
-	/** @var string */
-	var $meta_keywords		= null;
-  /** @var string */
-  var $color        = '';
-	/** @var string */
-	var $image 				= '';
-	/** @var int */
-	var $private			= 0;
-	/** @var int */
-	var $published			= null;
-	/** @var int */
-	var $checked_out 		= 0;
-	/** @var date */
-	var $checked_out_time	= 0;
-	/** @var int */
-	var $access 			= 0;
-	/** @var int */
-	var $groupid 			= 0;
-	/** @var string */
-	var $maintainers		= null;
-	/** @var int */
-	var $event_template	= 0;
-	/** @var int */
-	var $ordering 			= null;
-
-	/**
-	* @param database A database connector object
-	*/
-	function redevent_categories(& $db) {
+	public function __construct( $table, $key, &$db ) {
 		parent::__construct('#__redevent_categories', 'id', $db);
 	}
 
 	// overloaded check function
-	function check()
+	public function check()
 	{
 		// Not typed in a category name?
 		if (trim( $this->catname ) == '') {
@@ -101,7 +61,7 @@ class RedEvent_categories extends JTable
 		return true;
 	}
 	
-	function store($updateNulls = false)
+	public function store($updateNulls = false)
 	{
 		if (parent::store($updateNulls)) {
 			$this->rebuildTree();			
@@ -111,12 +71,13 @@ class RedEvent_categories extends JTable
 		return true;
 	}
 	
-	function rebuildTree()
+	protected function rebuildTree()
 	{
 		$this->_rebuildTree(0, 0);
 	}
 	
-	function _rebuildTree($parent, $left) {
+	protected function _rebuildTree($parent, $left) 
+	{
 	   // the right value of this node is the left value + 1
 	   $right = $left+1;
 	
