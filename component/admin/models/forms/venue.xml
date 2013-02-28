@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form>
 	
+	<fieldset name="venue">
 	<field
 		name="id"
 		type="text"
@@ -51,9 +52,26 @@
 		class="inputbox">
 		<option value="*">JALL</option>
 	</field>
+			
+	<field
+		name="company"
+		type="text"
+		default=""
+		label="COM_REDEVENT_VENUE_EDIT_COMPANY_LABEL"
+		description ="COM_REDEVENT_VENUE_EDIT_COMPANY_TIP" 
+		class="inputbox" />
 		
 	<field
-		name="description"
+		name="categories"
+		type="revenuecategory"
+		default=""
+		label="COM_REDEVENT_CATEGORY"
+		description ="COM_REDEVENT_CATEGORY" 
+		required="true" 
+		class="inputbox" />
+		
+	<field
+		name="locdescription"
 		type="editor"
 		label="COM_REDEVENT_DESCRIPTION"
 		description="COM_REDEVENT_DESCRIPTION"
@@ -69,5 +87,97 @@
 		description="COM_REDEVENT_CHOOSE_IMAGE"
 		class="inputbox"
 		directory="redevent/categories"/>
+	</fieldset>
+	
+	<field
+		name="private"
+		type="list"
+		class="inputbox"
+		default="0"
+		size="1"
+		label="COM_REDEVENT_VENUE_PRIVATE_LABEL"
+		description="COM_REDEVENT_VENUE_PRIVATE_TIP">
+		<option
+			value="1">
+			JYES</option>
+		<option
+			value="0">
+			JNO</option>
+	</field>
+	
+	<fieldset name="address">
+		<field
+			name="street"
+			type="text"
+			default=""
+			label="COM_REDEVENT_STREET"
+			description ="COM_REDEVENT_STREET" 
+			class="inputbox" />
+		<field
+			name="plz"
+			type="text"
+			default=""
+			label="COM_REDEVENT_ZIP"
+			description ="COM_REDEVENT_ZIP" 
+			class="inputbox" />
+		<field
+			name="city"
+			type="text"
+			default=""
+			label="COM_REDEVENT_CITY"
+			description ="COM_REDEVENT_CITY" 
+			class="inputbox" />
+		<field
+			name="state"
+			type="text"
+			default=""
+			label="COM_REDEVENT_STATE"
+			description ="COM_REDEVENT_STREET" 
+			class="inputbox" />
+		<field
+			name="country"
+			type="recountry"
+			default=""
+			label="COM_REDEVENT_COUNTRY"
+			description ="COM_REDEVENT_COUNTRY_HINT" 
+			class="inputbox" />
+		<field
+			name="url"
+			type="url"
+			default=""
+			label="COM_REDEVENT_WEBSITE"
+			description ="COM_REDEVENT_WEBSITE_HINT" 
+			class="inputbox" />
+	
+		<field
+			name="map"
+			type="list"
+			class="inputbox"
+			default="0"
+			size="1"
+			label="COM_REDEVENT_ENABLE_MAP"
+			description="COM_REDEVENT_ADDRESS_NOTICE">
+			<option
+				value="1">
+				JYES</option>
+			<option
+				value="0">
+				JNO</option>
+		</field>
+		<field
+			name="latitude"
+			type="text"
+			default=""
+			label="COM_REDEVENT_LATITUDE"
+			description ="COM_REDEVENT_LATITUDE_TIP" 
+			class="inputbox" />
+		<field
+			name="longitude"
+			type="text"
+			default=""
+			label="COM_REDEVENT_LONGITUDE"
+			description ="COM_REDEVENT_LONGITUDE_TIP" 
+			class="inputbox" />
 		
+	</fieldset>
 </form>

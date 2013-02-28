@@ -34,7 +34,13 @@ defined('_JEXEC') or die('Restricted access');
 			<button onclick="this.form.submit();"><?php echo JText::_('COM_REDEVENT_Go' ); ?></button>
 			<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo JText::_('COM_REDEVENT_Reset' ); ?></button>
 		</td>
-		<td nowrap="nowrap"><?php echo $this->lists['state']; ?></td>
+		<td nowrap="nowrap"><?php echo $this->lists['state']; ?>
+				
+		<select name="filter_language" class="inputbox" onchange="this.form.submit()">
+			<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE');?></option>
+			<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter_language')); ?>
+		</select>
+		</td>
 	</tr>
 </table>
 
@@ -54,13 +60,14 @@ defined('_JEXEC') or die('Restricted access');
 			<th><?php echo JText::_('COM_REDEVENT_CREATION' ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JText::_('COM_REDEVENT_SESSIONS' ); ?></th>
 		    <th width="80" colspan="2"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_REORDER', 'l.ordering', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th width="1%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'c.language', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 		    <th width="1%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ID', 'l.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 		</tr>
 	</thead>
 
 	<tfoot>
 		<tr>
-			<td colspan="15">
+			<td colspan="20">
 				<?php echo $this->pageNav->getListFooter(); ?>
 			</td>
 		</tr>
@@ -126,7 +133,7 @@ defined('_JEXEC') or die('Restricted access');
         <td>
           <?php
           //$cats_html = array();
-          foreach ((array) $row->categories as $k => $cat)
+          foreach ((array) $row->categories as $ck => $cat)
           {
             if ($cat->checked_out && ( $cat->checked_out != $this->user->get('id') ) ) {
               echo htmlspecialchars($cat->name, ENT_QUOTES, 'UTF-8');
@@ -138,7 +145,7 @@ defined('_JEXEC') or die('Restricted access');
                   <?php echo htmlspecialchars($cat->name, ENT_QUOTES, 'UTF-8'); ?>
                 </a></span>
               <?php
-              if ($k < count($row->categories)-1) {
+              if ($ck < count($row->categories)-1) {
                 echo "<br/>";
               }
             }
@@ -179,6 +186,7 @@ defined('_JEXEC') or die('Restricted access');
 				echo $this->pageNav->orderDownIcon( $i, $n, true, 'orderdown', 'Move Down', $this->ordering );
 				?>
 			</td>
+			<td align="center"><?php echo $row->language_title; ?></td>
 			<td align="center"><?php echo $row->id; ?></td>
 		</tr>
 		<?php $k = 1 - $k; } ?>

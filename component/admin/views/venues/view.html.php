@@ -63,7 +63,7 @@ class RedEventViewVenues extends JView {
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 
 		//Create Submenu
-    ELAdmin::setMenu();
+		ELAdmin::setMenu();
 
 		JHTML::_('behavior.tooltip');
 
@@ -114,6 +114,7 @@ class RedEventViewVenues extends JView {
 		$this->assignRef('ordering'		, $ordering);
 		$this->assignRef('user'			, $user);
 		$this->assignRef('template'		, $template);
+		$this->assignRef('state'        , $this->get('State'));
 
 		parent::display($tpl);
 	}

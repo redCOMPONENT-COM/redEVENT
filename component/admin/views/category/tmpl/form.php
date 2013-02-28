@@ -39,15 +39,6 @@ JHtml::_('behavior.formvalidation');
 ?>
 
 <script type="text/javascript">
-
-window.addEvent('domready', function(){
-	$('but-no-parent').addEvent('click', function(){
-		$('parent_id').getElements('option').each(function(el){
-			$(el).removeProperty('selected');
-		});
-	});
-});
-
 Joomla.submitbutton = function(task)
 {
 	if (task == 'cancel' || document.formvalidator.isValid(document.id('adminForm'))) {

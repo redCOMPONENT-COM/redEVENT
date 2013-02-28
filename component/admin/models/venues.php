@@ -77,18 +77,36 @@ class RedEventModelVenues extends JModel
 		parent::__construct();
 
 		$mainframe = &JFactory::getApplication();
-
 		$option = JRequest::getCmd('option');
 
-		$limit		= $mainframe->getUserStateFromRequest( $option.'limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest( $option.'limitstart', 'limitstart', 0, 'int' );
-
-		$this->setState('limit', $limit);
+		$limit      = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
+		$this->setState('limit', $limit);		
+		$limitstart = $mainframe->getUserStateFromRequest( $option.'.venues.limitstart', 'limitstart', 0, '', 'int' );
+		// In case limit has been changed, adjust it
+		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
 		$this->setState('limitstart', $limitstart);
+				
+		$filter_state = $mainframe->getUserStateFromRequest( $option.'.filter_state', 'filter_state', '', 'word' );
+		$this->setState('filter_state', $filter_state);
+		
+		$filter       = $mainframe->getUserStateFromRequest( $option.'.filter', 'filter', '', 'int' );
+		$this->setState('filter', $filter);
+		
+		$search       = $mainframe->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
+		$search       = $this->_db->getEscaped( trim(JString::strtolower( $search ) ) );
+		$this->setState('search', $search);
+		
+		$filter_language = $mainframe->getUserStateFromRequest( $option.'.filter_language', 'filter_language', '', 'string' );
+		$this->setState('filter_language', $filter_language);
+		
+		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.venues.filter_order', 'filter_order', 'a.title', 'cmd' );
+		$this->setState('filter_order', $filter_order);
+		
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.venues.filter_order_Dir', 'filter_order_Dir', '', 'word' );
+		$this->setState('filter_order_Dir', $filter_order_Dir);
 
 		$array = JRequest::getVar('cid',  0, '', 'array');
 		$this->setId((int)$array[0]);
-
 	}
 
 		/**
@@ -169,17 +187,22 @@ class RedEventModelVenues extends JModel
 	 */
 	function _buildQuery()
 	{
+
+		$db = &JFactory::getDbo();
+		$query = $db->getQuery(true);
+		
+		$query->select('l.*, u.email, u.name AS author');
+		$query->from('#__redevent_venues AS l');
+		$query->join('LEFT', '#__users AS u ON u.id = l.created_by');
+
+		// Join over the language
+		$query->select('lg.title AS language_title');
+		$query->join('LEFT', $db->quoteName('#__languages').' AS lg ON lg.lang_code = l.language');
+		
 		// Get the WHERE and ORDER BY clauses for the query
-		$where		= $this->_buildContentWhere();
-		$orderby	= $this->_buildContentOrderBy();
-
-		$query = 'SELECT l.*, u.email, u.name AS author'
-				. ' FROM #__redevent_venues AS l'
-				. ' LEFT JOIN #__users AS u ON u.id = l.created_by'
-				. $where
-				. $orderby
-				;
-
+		$query = $this->_buildContentWhere($query);
+		$query = $this->_buildContentOrderBy($query);
+		
 		return $query;
 	}
 
@@ -190,18 +213,15 @@ class RedEventModelVenues extends JModel
 	 * @return string
 	 * @since 0.9
 	 */
-	function _buildContentOrderBy()
+	function _buildContentOrderBy($query)
 	{
-		$mainframe = &JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-
-		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.venues.filter_order', 'filter_order', 'l.ordering', 'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.venues.filter_order_Dir', 'filter_order_Dir', '', 'word' );
+		$filter_order		= $this->getState('filter_order');
+		$filter_order_Dir	= $this->getState('filter_order_Dir');
 
 	//	$orderby 	= ' ORDER BY '.$filter_order.' '.$filter_order_Dir.', l.ordering';
-		$orderby 	= ' ORDER BY '.$filter_order.' '.$filter_order_Dir;
+		$query->order($filter_order.' '.$filter_order_Dir);
 
-		return $orderby;
+		return $query;
 	}
 
 	/**
@@ -211,26 +231,22 @@ class RedEventModelVenues extends JModel
 	 * @return string
 	 * @since 0.9
 	 */
-	function _buildContentWhere()
+	function _buildContentWhere($query)
 	{
-		$mainframe = &JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-
-		$filter_state 		= $mainframe->getUserStateFromRequest( $option.'.filter_state', 'filter_state', '', 'word' );
-		$filter 			= $mainframe->getUserStateFromRequest( $option.'.filter', 'filter', '', 'int' );
-		$search 			= $mainframe->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
-		$search 			= $this->_db->getEscaped( trim(JString::strtolower( $search ) ) );
-
-		$where = array();
+		$filter_state 		= $this->getState('filter_state');
+		$filter 			= $this->getState('filter');
+		$search 			= $this->getState('search');
 
 		/*
 		* Filter state
 		*/
 		if ( $filter_state ) {
-			if ( $filter_state == 'P' ) {
-				$where[] = 'l.published = 1';
-			} else if ($filter_state == 'U' ) {
-				$where[] = 'l.published = 0';
+			if ($filter_state == 'P') {
+				$query->where('l.published = 1');
+			} else if ($filter_state == 'U') {
+				$query->where('l.published = 0');
+			} else {
+				$query->where('l.published >= 0');
 			}
 		}
 
@@ -238,19 +254,23 @@ class RedEventModelVenues extends JModel
 		* Search venues
 		*/
 		if ($search && $filter == 1) {
-			$where[] = ' LOWER(l.venue) LIKE \'%'.$search.'%\' ';
+			$query->where(' LOWER(l.venue) LIKE \'%'.$search.'%\' ');
 		}
 
 		/*
 		* Search city
 		*/
 		if ($search && $filter == 2) {
-			$where[] = ' LOWER(l.city) LIKE \'%'.$search.'%\' ';
+			$query->where(' LOWER(l.city) LIKE \'%'.$search.'%\' ');
 		}
 
-		$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
-
-		return $where;
+		$filter_language = $this->getState('filter_language');
+		if ($filter_language) {
+			// 			$this->setState('filter_language', $filter_language);
+			$query->where('l.language = '.$this->_db->quote($filter_language));
+		}
+		
+		return $query;
 	}
 
 	/**

@@ -40,14 +40,11 @@ class RedEventViewVenue extends JView {
 		$params = JComponentHelper::getParams('com_redevent');
 
 		// Load pane behavior
-		jimport('joomla.html.pane');
 		JHTML::_('behavior.framework');
 
 		//initialise variables
 		$editor 	= & JFactory::getEditor();
 		$document	= & JFactory::getDocument();
-		$pane		  = & JPane::getInstance('sliders');
-		$tabs 		= & JPane::getInstance('tabs');
 		$user 		= & JFactory::getUser();
 		$settings	= JComponentHelper::getParams('com_redevent');
 
@@ -61,7 +58,7 @@ class RedEventViewVenue extends JView {
 		$document->addStyleSheet('../includes/js/joomla/popup.css');
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 
-    $document->addScript($url.'/components/com_redevent/assets/js/attachments.js');
+    	$document->addScript($url.'/components/com_redevent/assets/js/attachments.js');
 		$document->addScriptDeclaration('var removemsg = "'.JText::_('COM_REDEVENT_ATTACHMENT_CONFIRM_MSG').'";' );
     
 		// Get data from the model
@@ -108,20 +105,20 @@ class RedEventViewVenue extends JView {
 		//JToolBarHelper::help( 'el.editvenues', true );
 
 		$lists = array();
-    // categories selector
-    $selected = array();
-    foreach ((array) $row->categories as $cat) {
-      $selected[] = $cat;
-    }
-    $lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('Categories'), 'categories[]', 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $selected); 
-        
-    $countries = array();
-    $countries[] = JHTML::_('select.option', '', JText::_('COM_REDEVENT_Select_country'));
-    $countries = array_merge($countries, redEVENTHelperCountries::getCountryOptions());
-    $lists['countries'] = JHTML::_('select.genericlist', $countries, 'country', 'class="inputbox"', 'value', 'text', $row->country );
-    unset($countries);    
-    
-    $pinpointicon = REOutput::pinpointicon( $row );
+	    // categories selector
+	    $selected = array();
+	    foreach ((array) $row->categories as $cat) {
+	      $selected[] = $cat;
+	    }
+	    $lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('Categories'), 'categories[]', 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $selected); 
+	        
+	    $countries = array();
+	    $countries[] = JHTML::_('select.option', '', JText::_('COM_REDEVENT_Select_country'));
+	    $countries = array_merge($countries, redEVENTHelperCountries::getCountryOptions());
+	    $lists['countries'] = JHTML::_('select.genericlist', $countries, 'country', 'class="inputbox"', 'value', 'text', $row->country );
+	    unset($countries);    
+	    
+	    $pinpointicon = REOutput::pinpointicon( $row );
 	
 		if ($task == 'copy') 
 		{
@@ -132,14 +129,12 @@ class RedEventViewVenue extends JView {
 		
 		//assign data to template
 		$this->assignRef('row'      	, $row);
-		$this->assignRef('pane'      	, $pane);
-		$this->assignRef('tabs'      	, $tabs);
 		$this->assignRef('editor'      	, $editor);
 		$this->assignRef('settings'     , $settings);
 		$this->assignRef('params'     , $params);
-    $this->assignRef('lists'      , $lists);
+		$this->assignRef('lists'      , $lists);
 		$this->assignRef('imageselect' 	, $imageselect);
-    $this->assignRef('pinpointicon', $pinpointicon);
+		$this->assignRef('pinpointicon', $pinpointicon);
 		$this->assignRef('access'	, redEVENTHelper::getAccesslevelOptions());
 		$this->assignRef('form'      	, $this->get('form'));
 
