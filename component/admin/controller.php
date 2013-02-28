@@ -32,7 +32,7 @@ jimport('joomla.application.component.controller');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedEventController extends JController
+class RedEventController extends JControllerLegacy
 {
 	function __construct()
 	{
@@ -40,15 +40,6 @@ class RedEventController extends JController
 
 		// Register Extra task
 		$this->registerTask( 'applycss', 	'savecss' );
-	}
-
-	/**
-	 * Display the view
-	 */
-	function display()
-	{
-		parent::display();
-
 	}
 
 	/**

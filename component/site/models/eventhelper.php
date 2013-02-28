@@ -33,7 +33,7 @@ jimport('joomla.application.component.model');
  * @subpackage redEVENT
  * @since		2.0
  */
-class RedeventModelEventhelper extends JModel
+class RedeventModelEventhelper extends JModelLegacy
 {
 	/**
 	 * event data caching

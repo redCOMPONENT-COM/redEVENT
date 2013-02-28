@@ -24,8 +24,6 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
-
 /**
  * EventList Component Categories Model
  *
@@ -33,139 +31,23 @@ jimport('joomla.application.component.model');
  * @subpackage redEVENT
  * @since		0.9
  */
-class RedEventModelCategories extends JModel
+class RedEventModelCategories extends FOFModel
 {
-	/**
-	 * Category data array
-	 *
-	 * @var array
-	 */
-	var $_data = null;
-
-	/**
-	 * Category total
-	 *
-	 * @var integer
-	 */
-	var $_total = null;
-
-	/**
-	 * Pagination object
-	 *
-	 * @var object
-	 */
-	var $_pagination = null;
-
-	/**
-	 * Categorie id
-	 *
-	 * @var int
-	 */
-	var $_id = null;
-
-	/**
-	 * Constructor
-	 *
-	 * @since 0.9
-	 */
-	function __construct()
+	public function &getItemList($overrideLimits = false, $group = '')
 	{
-		parent::__construct();
-
-		$mainframe = &JFactory::getApplication();
-
-		$option = JRequest::getCmd('option');
-
-		$limit		= $mainframe->getUserStateFromRequest( $option.'.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest( $option.'.limitstart', 'limitstart', 0, 'int' );
-
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
+		$list = parent::getItemList($overrideLimits, $group);
 		
-		$language = $mainframe->getUserStateFromRequest($option.'.filter.language', 'filter_language', '');
-		$this->setState('filter.language', $language);
-
-		$array = JRequest::getVar('cid',  0, '', 'array');
-		$this->setId((int)$array[0]);
-
-	}
-
-	/**
-	 * Method to set the category identifier
-	 *
-	 * @access	public
-	 * @param	int Category identifier
-	 */
-	function setId($id)
-	{
-		// Set id and wipe data
-		$this->_id	 = $id;
-		$this->_data = null;
-	}
-
-	/**
-	 * Method to get categories item data
-	 *
-	 * @access public
-	 * @return array
-	 */
-	function getData()
-	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_data))
-		{
-			$query = $this->_buildQuery();
-			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-			
-			$k = 0;
-			$count = count($this->_data);
-			for($i = 0; $i < $count; $i++)
-			{
-				$category =& $this->_data[$i];
-
-				$category->assignedevents = $this->_countcatevents( $category->id );
-
-				$k = 1 - $k;
-			}
+		if (!$list || !count($list)) {
+			return $this->list;
 		}
-
-		return $this->_data;
-	}
-
-	/**
-	 * Method to get the total nr of the categories
-	 *
-	 * @access public
-	 * @return integer
-	 */
-	function getTotal()
-	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_total))
+		// assigned events count
+		$count = count($this->list);
+		for($i = 0; $i < $count; $i++)
 		{
-			$query = $this->_buildQuery();
-			$this->_total = $this->_getListCount($query);
+			$category =& $this->list[$i];		
+			$category->assignedevents = $this->_countcatevents( $category->id );
 		}
-
-		return $this->_total;
-	}
-
-	/**
-	 * Method to get a pagination object for the categories
-	 *
-	 * @access public
-	 * @return integer
-	 */
-	function getPagination()
-	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_pagination))
-		{
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
-		}
-
-		return $this->_pagination;
+		return $this->list;		
 	}
 
 	/**
@@ -175,81 +57,62 @@ class RedEventModelCategories extends JModel
 	 * @return integer
 	 * @since 0.9
 	 */
-	function _buildQuery()
+	public function buildQuery($overrideLimits = false)
 	{
-		// Get the WHERE and ORDER BY clauses for the query
-		$where		= $this->_buildContentWhere();
-		$orderby	= $this->_buildContentOrderBy();
+		$db = &JFactory::getDbo();
+		$query = $db->getQuery(true);
+		
+		$query->select('c.*, c.catname, (COUNT(parent.catname) - 1) AS depth, c.access, c.groupid, p.catname as parent_name');
+		$query->select('u.name AS editor');
+		$query->select('g.title AS groupname, gr.name AS catgroup');
+		$query->from('#__redevent_categories AS parent, #__redevent_categories AS c');
+		$query->join('LEFT', '#__redevent_categories AS p ON c.parent_id = p.id');
+		$query->join('LEFT', '#__usergroups AS g ON g.id = c.access');
+		$query->join('LEFT', '#__users AS u ON u.id = c.checked_out');
+		$query->join('LEFT', '#__redevent_groups AS gr ON gr.id = c.groupid');
+		$query->where('c.lft BETWEEN parent.lft AND parent.rgt');
+		$query->group('c.id');
 
-    $query = ' SELECT c.*, c.catname, (COUNT(parent.catname) - 1) AS depth, c.access, c.groupid, '
-           . ' u.name AS editor, g.title AS groupname, gr.name AS catgroup, p.catname as parent_name '
-           . ' FROM #__redevent_categories AS parent, #__redevent_categories AS c '
-           . ' LEFT JOIN #__redevent_categories AS p ON c.parent_id = p.id '
-           . ' LEFT JOIN #__usergroups AS g ON g.id = c.access'
-           . ' LEFT JOIN #__users AS u ON u.id = c.checked_out'
-           . ' LEFT JOIN #__redevent_groups AS gr ON gr.id = c.groupid'
-           . $where
-           . ' GROUP BY c.id '
-           . $orderby
-           ;
-           
+		// Get the WHERE clause for the query
+		$query = $this->_buildContentWhere($query);
+		
+		if (!$overrideLimits)
+		{
+			$order = $this->getState('filter_order', 'c.lft', 'cmd');
+
+			$dir = $this->getState('filter_order_Dir', '', 'cmd');
+			$query->order($db->qn($order) . ' ' . $dir);
+		}
+		 
 		return $query;
-	}
-
-	/**
-	 * Method to build the orderby clause of the query for the categories
-	 *
-	 * @access private
-	 * @return string
-	 * @since 0.9
-	 */
-	function _buildContentOrderBy()
-	{
-		$mainframe = &JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-
-		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.categories.filter_order', 		'filter_order', 	'c.lft', 'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.categories.filter_order_Dir',	'filter_order_Dir',	'', 'word' );
-
-		$orderby 	= ' ORDER BY '.$filter_order.' '.$filter_order_Dir.', c.ordering';
-
-		return $orderby;
 	}
 
 	/**
 	 * Method to build the where clause of the query for the categories
 	 *
-	 * @access private
-	 * @return string
-	 * @since 0.9
+	 * @param JDatabaseQuery $query
+	 * @return JDatabaseQuery
 	 */
-	function _buildContentWhere()
+	protected function _buildContentWhere($query)
 	{
 		$mainframe = &JFactory::getApplication();
 		$option = JRequest::getCmd('option');
-
-		$filter_state 		= $mainframe->getUserStateFromRequest( $option.'.categories.filter_state', 'filter_state', '', 'word' );
 		$search 			= $mainframe->getUserStateFromRequest( $option.'.categories.search', 'search', '', 'string' );
 		$search 			= $this->_db->getEscaped( trim(JString::strtolower( $search ) ) );
-
-		$where = array();
-    $where[] = 'c.lft BETWEEN parent.lft AND parent.rgt';
-
-		if ( $filter_state ) {
+				
+		if ( $filter_state = $this->getState('published', '') ) {
 			if ( $filter_state == 'P' ) {
-				$where[] = 'c.published = 1';
+				$query->where('c.published = 1');
 			} else if ($filter_state == 'U' ) {
-				$where[] = 'c.published = 0';
+				$query->where('c.published = 0');
 			}
 		}
 
 		if ($search) {
-			$where[] = ' LOWER(c.catname) LIKE \'%'.$search.'%\' ';
+			$query->where('LOWER(c.catname) LIKE \'%'.$search.'%\')');
 		}
 
-		$where 		= ' WHERE '. implode( ' AND ', $where );
-
-		return $where;
+		return $query;
 	}
 
 	/**
@@ -285,59 +148,6 @@ class RedEventModelCategories extends JModel
 			// Trigger the onFinderCategoryChangeState event.
 			$dispatcher->trigger('onFinderCategoryChangeState', array('com_redevent.category', $cids, $publish));
 		}
-		return true;
-	}
-
-	/**
-	 * Method to move a category
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	0.9
-	 */
-	function move($direction)
-	{
-		$row =& JTable::getInstance('redevent_categories', '');
-
-		if (!$row->load( $this->_id ) ) {
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-
-		if (!$row->move( $direction )) {
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Method to order categories
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	0.9
-	 */
-	function saveorder($cid = array(), $order)
-	{
-		$row =& JTable::getInstance('redevent_categories', '');
-
-		// update ordering values
-		for( $i=0; $i < count($cid); $i++ )
-		{
-			$row->load( (int) $cid[$i] );
-
-			if ($row->ordering != $order[$i])
-			{
-				$row->ordering = $order[$i];
-				if (!$row->store()) {
-					$this->setError($this->_db->getErrorMsg());
-					return false;
-				}
-			}
-		}
-
 		return true;
 	}
 	
@@ -448,14 +258,14 @@ class RedEventModelCategories extends JModel
 		       . ' FROM #__redevent_categories AS c '
 		       . $where
 		       ;
-    $this->_db->setQuery($query);
-    
-    $results = $this->_db->loadAssocList();
-    
-    return $results;
+       $this->_db->setQuery($query);
+
+       $results = $this->_db->loadAssocList();
+
+       return $results;
 	}
 	
-  /**
+	/**
 	 * import categories in database
 	 * 
 	 * @param array $records
@@ -469,7 +279,7 @@ class RedEventModelCategories extends JModel
 		
 		foreach ($records as $r)
 		{			
-			$v = $this->getTable('RedEvent_categories', '');	
+			$v = $this->getTable();	
 			$v->bind($r);
 			
 			if (isset($r->id) && $r->id) 

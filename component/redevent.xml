@@ -46,6 +46,14 @@
 		<folder>views</folder>
 	</files>
 
+	<!-- media files -->
+	<media folder="media" destination="com_redform">
+		<filename>index.html</filename>
+		<folder>images</folder>
+		<folder>css</folder>
+		<folder>js</folder>
+	</media>
+	
 	<administration>
 
 		<menu img="../administrator/components/com_redevent/assets/images/redevent.png">redEVENT</menu>
@@ -87,4 +95,8 @@
 		<server type="extension" priority="1" name="redEVENT Update Site">http://www.redcomponent.com/updates/redevent-update.xml</server>
 	</updateservers>
 		
+	<!-- Plugins here -->
+	<plugins>
+		<plugin folder="admin/extras/redform" plugin="redevent" group="redform_integration" />
+	</plugins>
 </extension>

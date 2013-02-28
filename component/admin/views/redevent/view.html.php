@@ -32,7 +32,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedEventViewRedEvent extends JView {
+class RedEventViewRedEvent extends JViewLegacy {
 
 	function display($tpl = null)
 	{
@@ -40,9 +40,8 @@ class RedEventViewRedEvent extends JView {
 		jimport('joomla.html.pane');
 
 		//initialise variables
-		$document	= & JFactory::getDocument();
-		$pane   	= & JPane::getInstance('sliders');
-		$user 		= & JFactory::getUser();
+		$document	= JFactory::getDocument();
+		$user 		= JFactory::getUser();
 
 		//build toolbar
 		JToolBarHelper::title( JText::_('COM_REDEVENT' ), 'home' );
@@ -52,19 +51,18 @@ class RedEventViewRedEvent extends JView {
 		}
 
 		// Get data from the model
-		$events      = & $this->get( 'Eventsdata');
-		$venue       = & $this->get( 'Venuesdata');
-		$category	 = & $this->get( 'Categoriesdata' );
+		$events      = $this->get( 'Eventsdata');
+		$venue       = $this->get( 'Venuesdata');
+		$category	 = $this->get( 'Categoriesdata' );
 
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_REDEVENT'));
 		//add css and submenu to document
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 
 		//Create Submenu
-    ELAdmin::setMenu();
+		ELAdmin::setMenu();
 
 		//assign vars to the template
-		$this->assignRef('pane'			, $pane);
 		$this->assignRef('events'		, $events);
 		$this->assignRef('venue'		, $venue);
 		$this->assignRef('category'		, $category);
@@ -85,7 +83,7 @@ class RedEventViewRedEvent extends JView {
 	function quickiconButton( $link, $image, $text, $modal = 0 )
 	{
 		//initialise variables
-		$lang 		= & JFactory::getLanguage();
+		$lang 		= JFactory::getLanguage();
   		?>
 
 		<div style="float:<?php echo ($lang->isRTL()) ? 'right' : 'left'; ?>;">

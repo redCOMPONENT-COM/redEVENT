@@ -24,6 +24,10 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+if(!defined('DS')){
+	define('DS',DIRECTORY_SEPARATOR);
+}
+
 // Load FOF
 include_once JPATH_LIBRARIES.'/fof/include.php';
 if(!defined('FOF_INCLUDED')) {

@@ -22,8 +22,21 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+$options = array(
+		'onActive' => 'function(title, description){
+        description.setStyle("display", "block");
+        title.addClass("open").removeClass("closed");
+    }',
+		'onBackground' => 'function(title, description){
+        description.setStyle("display", "none");
+        title.addClass("closed").removeClass("open");
+    }',
+		'startOffset' => 0,  // 0 starts on the first tab, 1 starts the second, etc...
+		'useCookie' => true, // this must not be a string. Don't use quotes.
+);
 ?>
-	<table cellspacing="0" cellpadding="0" border="0" width="100%">
+	<table id="recevent-cpanel">
 		<tr>
 			<td valign="top">
 			<table class="adminlist">
@@ -31,7 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 					<td>
 						<div id="cpanel">
 						<?php
-    				$option = JRequest::getCmd('option');
+						$option = JRequest::getCmd('option');
 
 						$link = 'index.php?option='.$option.'&amp;view=events';
 						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-events.png', JText::_('COM_REDEVENT_EVENTS' ) );
@@ -89,8 +102,8 @@ defined('_JEXEC') or die('Restricted access');
 			<td valign="top" width="320px" style="padding: 7px 0 0 5px">
 			<?php
 			$title = JText::_('COM_REDEVENT_EVENT_STATS' );
-			echo $this->pane->startPane( 'stat-pane' );
-			echo $this->pane->startPanel( $title, 'events' );
+			echo JHtml::_('sliders.start', 'tab_group_id', $options);
+			echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_EVENT_STATS'), 'events');
 
 				?>
 				<table class="adminlist">
@@ -129,10 +142,7 @@ defined('_JEXEC') or die('Restricted access');
 				</table>
 				<?php
 
-				$title = JText::_('COM_REDEVENT_VENUE_STATS' );
-				echo $this->pane->endPanel();
-				echo $this->pane->startPanel( $title, 'venues' );
-
+				echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_VENUE_STATS'), 'venues');
 				?>
 				<table class="adminlist">
 					<tr>
@@ -162,10 +172,7 @@ defined('_JEXEC') or die('Restricted access');
 				</table>
 				<?php
 
-				$title = JText::_('COM_REDEVENT_CATEGORY_STATS' );
-				echo $this->pane->endPanel();
-				echo $this->pane->startPanel( $title, 'categories' );
-
+				echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_CATEGORY_STATS'), 'categories');
 				?>
 				<table class="adminlist">
 					<tr>
@@ -193,9 +200,8 @@ defined('_JEXEC') or die('Restricted access');
 						</td>
 					</tr>
 				</table>
-				<?php
-				echo $this->pane->endPanel();
-				echo $this->pane->endPane();
+				<?php 
+				echo JHtml::_('sliders.end');
 				?>
 			</td>
 		</tr>

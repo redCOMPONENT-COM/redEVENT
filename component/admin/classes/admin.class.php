@@ -52,20 +52,20 @@ class ELAdmin {
 	/**
 	 * display the submenu
 	 */
-	function setMenu()
+	public static function setMenu()
 	{
-		$user = & JFactory::getUser();
+		$user = JFactory::getUser();
 		$view = JRequest::getVar('view', '');
 		$controller = JRequest::getVar('controller', '');
-	  //Create Submenu
-    JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_MENU_CPANEL' ), 'index.php?option=com_redevent', $view == 'redevent');
-    JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_EVENTS' ), 'index.php?option=com_redevent&view=events', $view == 'events');
-    JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_SESSIONS' ), 'index.php?option=com_redevent&view=sessions&eventid=0&venueid=0', $view == 'sessions');
-    JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_MENU_REGISTRATIONS' ), 'index.php?option=com_redevent&view=registrations', $view == 'registrations');
-    JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_VENUES' ), 'index.php?option=com_redevent&view=venues', $view == 'venues');
-    JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_CATEGORIES' ), 'index.php?option=com_redevent&view=categories', $view == 'categories');
-    JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_ARCHIVESCREEN' ), 'index.php?option=com_redevent&view=archive', $view == 'archive');
-    JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_GROUPS' ), 'index.php?option=com_redevent&view=groups', $view == 'groups');
+		//Create Submenu
+		JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_MENU_CPANEL' ), 'index.php?option=com_redevent', $view == 'redevent');
+		JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_EVENTS' ), 'index.php?option=com_redevent&view=events', $view == 'events');
+		JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_SESSIONS' ), 'index.php?option=com_redevent&view=sessions&eventid=0&venueid=0', $view == 'sessions');
+		JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_MENU_REGISTRATIONS' ), 'index.php?option=com_redevent&view=registrations', $view == 'registrations');
+		JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_VENUES' ), 'index.php?option=com_redevent&view=venues', $view == 'venues');
+		JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_CATEGORIES' ), 'index.php?option=com_redevent&view=categories', $view == 'categories');
+		JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_ARCHIVESCREEN' ), 'index.php?option=com_redevent&view=archive', $view == 'archive');
+		JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_GROUPS' ), 'index.php?option=com_redevent&view=groups', $view == 'groups');
 	}
 
 	/**
