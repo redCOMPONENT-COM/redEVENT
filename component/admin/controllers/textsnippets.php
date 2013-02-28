@@ -30,7 +30,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedEventControllerTextsnippets extends FOFController {
+class RedeventControllerTextsnippets extends FOFController {
   
 	/**
 	 * start export screens

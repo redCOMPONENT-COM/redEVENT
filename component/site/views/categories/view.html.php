@@ -41,18 +41,18 @@ class RedeventViewCategories extends JView
 
 		$document 	= & JFactory::getDocument();
 		$elsettings = & redEVENTHelper::config();
-    $params   = & $mainframe->getParams();
+		$params   = & $mainframe->getParams();
 
 		$rows 		= & $this->get('Data');
 		$total 		= & $this->get('Total');
 
 		//add css file
-    if (!$params->get('custom_css')) {
-      $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
-    }
-    else {
-      $document->addStyleSheet($params->get('custom_css'));     
-    }
+		if (!$params->get('custom_css')) {
+			$document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
+		}
+		else {
+			$document->addStyleSheet($params->get('custom_css'));
+		}
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
 		//get menu information

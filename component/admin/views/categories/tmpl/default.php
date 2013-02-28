@@ -83,9 +83,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			$row = $this->rows[$i];
 
 			$link 		= 'index.php?option=com_redevent&view=category&id='. $row->id;
-			$grouplink 	= 'index.php?option=com_redevent&view=group&cid[]='. $row->groupid;
+			$grouplink 	= 'index.php?option=com_redevent&view=group&task=edit&cid[]='. $row->groupid;
 			$published 	= JHTML::_('grid.published', $row, $i );
-			$access 	= JHTML::_('grid.access', $row, $i );
 			$checked 	= JHTML::_('grid.checkedout', $row, $i );
    		?>
 		<tr class="<?php echo "row$k"; ?>">
@@ -144,10 +143,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<?php echo $published; ?>
 			</td>
 			<td align="center">
-				<?php echo $access; ?>
+				<?php echo $row->access_level; ?>
 			</td>
 			<td align="center">
-				<?php echo $row->private ? JHTML::image('administrator/components/com_redevent/assets/images/icon-16-private.png', JText::_('COM_REDEVENT_LABEL_PRIVATE')) : ''; ?>
+				<?php echo $row->private ? JHTML::image('media/com_redevent/images/icon-16-private.png', JText::_('COM_REDEVENT_LABEL_PRIVATE')) : ''; ?>
 			</td>
 			<td class="order" colspan="2">
 				<span><?php echo $this->pageNav->orderUpIcon( $i, true, 'orderup', 'Move Up', $this->ordering ); ?></span>
@@ -172,4 +171,5 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
+	<input type="hidden" name="<?php echo JFactory::getSession()->getFormToken(); ?>" value="1" />
 </form>

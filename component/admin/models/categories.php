@@ -78,6 +78,10 @@ class RedeventModelCategories extends FOFModel
 		$query->where('(c.lft BETWEEN parent.lft AND parent.rgt)');
 		$query->group('c.id');
 
+		// Join over the asset groups.
+		$query->select('ag.title AS access_level');
+		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = c.access');
+		
 		// Join over the language
 		$query->select('l.title AS language_title');
 		$query->join('LEFT', $db->quoteName('#__languages').' AS l ON l.lang_code = c.language');
@@ -124,7 +128,6 @@ class RedeventModelCategories extends FOFModel
 		}
 
 		if ($search) {
-			dump($search);
 			$query->where('LOWER(c.catname) LIKE \'%'.$search.'%\'');
 		}
 
@@ -138,31 +141,19 @@ class RedeventModelCategories extends FOFModel
 	 * @return	boolean	True on success
 	 * @since	0.9
 	 */
-	public function publish($cid = array(), $publish = 1)
+	public function publish($publish = 1, $user = null)
 	{
-		$user 	=& JFactory::getUser();
-
-		if (count( $cid ))
-		{
-			$cids = implode( ',', $cid );
-
-			$query = 'UPDATE #__redevent_categories'
-				. ' SET published = ' . (int) $publish
-				. ' WHERE id IN ('. $cids .')'
-				. ' AND ( checked_out = 0 OR ( checked_out = ' . (int) $user->get('id'). ' ) )'
-			;
-			$this->_db->setQuery( $query );
-			if (!$this->_db->query()) {
-				$this->setError($this->_db->getErrorMsg());
-				return false;
-			}
-			
+		if (!parent::publish($publish, $user)) {
+			return false;
+		}
+		if (is_array($this->id_list) && !empty($this->id_list))
+		{			
 			// for finder plugins
 			$dispatcher	= JDispatcher::getInstance();
 			JPluginHelper::importPlugin('finder');
 			
 			// Trigger the onFinderCategoryChangeState event.
-			$dispatcher->trigger('onFinderCategoryChangeState', array('com_redevent.category', $cids, $publish));
+			$dispatcher->trigger('onFinderCategoryChangeState', array('com_redevent.category', $this->id_list, $publish));
 		}
 		return true;
 	}

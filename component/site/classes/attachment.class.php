@@ -57,6 +57,9 @@ class REAttach extends JObject {
 		}
 		
 		$maxsize = $params->get('attachments_maxsize', 1000)*1000;
+		if (!isset($post_files['name'])) {
+			return true;
+		}
 		foreach ($post_files['name'] as $k => $file)
 		{
 			if (empty($file)) {

@@ -43,6 +43,7 @@ class RedeventTableCustomfield extends FOFTable
 	 */
 	public function __construct( $table, $key, &$db ) {
 		parent::__construct('#__redevent_fields', 'id', $db);
+		$this->setColumnAlias('enabled', 'published');
 	}
 
 	/**

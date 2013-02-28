@@ -40,6 +40,7 @@ class RedeventTableCategory extends FOFTable
 	 */
 	public function __construct( $table, $key, &$db ) {
 		parent::__construct('#__redevent_categories', 'id', $db);
+		$this->setColumnAlias('enabled', 'published');
 	}
 
 	// overloaded check function
