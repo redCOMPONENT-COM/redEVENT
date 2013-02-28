@@ -114,14 +114,17 @@ class RedEventModelEvent extends JModelAdmin
 			if (!$this->_id) {
 				return false;
 			}
-			$query = 'SELECT e.*, v.venue'
-					. ' FROM #__redevent_events AS e'
-					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id'
-					. ' LEFT JOIN #__redevent_venues AS v ON v.id = x.venueid'
-					. ' WHERE e.id = '.$this->_id
-					;
-			$this->_db->setQuery($query);
-			$this->_data = $this->_db->loadObject();
+			$db = &JFactory::getDbo();
+			$query = $db->getQuery(true);
+			
+			$query->select('e.*, v.venue');
+			$query->from('#__redevent_events AS e');
+			$query->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = e.id');
+			$query->join('LEFT', '#__redevent_venues AS v ON v.id = x.venueid');
+			$query->where('e.id = '.$this->_id);
+			
+			$db->setQuery($query);
+			$this->_data = $db->loadObject();
 			
 			if ($this->_data) {
 			  $categories = & $this->getEventCategories();

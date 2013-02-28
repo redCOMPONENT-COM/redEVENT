@@ -42,6 +42,11 @@ $app = &JFactory::getApplication();
 			</td>
 			<td nowrap="nowrap">
 				<?php echo $this->lists['state'];	?>
+				
+				<select name="filter_language" class="inputbox" onchange="this.form.submit()">
+					<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE');?></option>
+					<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter_language')); ?>
+				</select>
 			</td>
 		</tr>
 	</table>
@@ -78,13 +83,14 @@ $app = &JFactory::getApplication();
 				<th class="title"><?php echo JText::_( 'COM_REDEVENT_SESSIONS' ); ?></th>
 				<th width="1%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_PUBLISHED', 'a.published', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<th class="title"><?php echo JText::_('COM_REDEVENT_CREATION' ); ?></th>
+				<th width="1%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'c.language', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<th width="1%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ID', 'a.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			</tr>
 		</thead>
 
 		<tfoot>
 			<tr>
-				<td colspan="11">
+				<td colspan="20">
 					<?php echo $this->pageNav->getListFooter(); ?>
 				</td>
 			</tr>
@@ -194,6 +200,7 @@ $app = &JFactory::getApplication();
 						<?php echo $image; ?>
 					</span>
 				</td>
+				<td align="center"><?php echo $row->language_title; ?></td>
 				<td align="center"><?php echo $row->id; ?></td>
 			</tr>
 			<?php $k = 1 - $k;  } ?>

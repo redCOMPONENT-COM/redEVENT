@@ -63,25 +63,21 @@ class RedEventViewEvents extends JView {
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 
 		//Create Submenu
-    ELAdmin::setMenu();
+		ELAdmin::setMenu();
 
 		JHTML::_('behavior.tooltip');
 
 		//create the toolbar
 		JToolBarHelper::title( JText::_('COM_REDEVENT_EVENTS' ), 'events' );
 		JToolBarHelper::customX('archive', 'redevent_archive', 'redevent_archive', JText::_('COM_REDEVENT_ARCHIVE'), true);
-    JToolBarHelper::customX('archivepast', 'redevent_archive', 'redevent_archive', JText::_('COM_REDEVENT_ARCHIVE_OLD_EVENTS'), true);
+		JToolBarHelper::customX('archivepast', 'redevent_archive', 'redevent_archive', JText::_('COM_REDEVENT_ARCHIVE_OLD_EVENTS'), true);
 		JToolBarHelper::spacer();
 		JToolBarHelper::publishList();
-		JToolBarHelper::spacer();
 		JToolBarHelper::unpublishList();
 		JToolBarHelper::spacer();
 		JToolBarHelper::addNew();
-		JToolBarHelper::spacer();
 		JToolBarHelper::editList();
-		JToolBarHelper::spacer();
 		JToolBarHelper::deleteList(JText::_( 'COM_REDEVENT_EVENTS_REMOVE_CONFIRM_MESSAGE'));
-		JToolBarHelper::spacer();
 		JToolBarHelper::custom( 'copy', 'copy.png', 'copy_f2.png', 'Copy' );
 		JToolBarHelper::custom('export', 'exportevents', 'exportevents', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), false);
 		JToolBarHelper::spacer();
@@ -123,6 +119,9 @@ class RedEventViewEvents extends JView {
 		$this->assignRef('template'		, $template);
 		$this->assignRef('elsettings'	, $elsettings);
 		$this->assignRef('eventvenues'	, $eventvenues);
+		$this->assignRef('state'        , $this->get('State'));
+		
+// 		echo '<pre>';print_r($this->state); echo '</pre>';exit;
 
 		parent::display($tpl);
 	}
