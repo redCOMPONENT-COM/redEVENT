@@ -77,7 +77,7 @@ class JFormFieldREVenueCategory extends JFormField
 	
 		// Setup variables for display
 		$html = array();
-		$link = 'index.php?option=com_redevent&amp;view=venuecategoryelement&amp;tmpl=component'
+		$link = 'index.php?option=com_redevent&controller=venuescategories&amp;view=venuecategoryelement&amp;tmpl=component'
 		                  . '&amp;function=jSelectVenueCategory_'.$this->id;
 		
 		

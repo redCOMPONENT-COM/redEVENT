@@ -38,21 +38,17 @@ class RedEventViewVenuesCategory extends JView {
 	{
 		$mainframe = &JFactory::getApplication();
 
-		//Load pane behavior
-		jimport('joomla.html.pane');
-
 		//initialise variables
-		$editor 	= & JFactory::getEditor();
-		$document	= & JFactory::getDocument();
-		$user 		= & JFactory::getUser();
-		$pane 		= & JPane::getInstance('sliders');
+		$editor 	= JFactory::getEditor();
+		$document	= JFactory::getDocument();
+		$user 		= JFactory::getUser();
 
 		//get vars
 		$cid 		= JRequest::getVar( 'cid' );
 
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITVENUECATEGORY'));
 		//add css to document
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
 
 		//create the toolbar
 		if ( $cid ) {
@@ -70,10 +66,10 @@ class RedEventViewVenuesCategory extends JView {
 		//JToolBarHelper::help( 'el.editcategories', true );
 
 		//Get data from the model
-		$model		= & $this->getModel();
-		$row     	= & $this->get( 'Data' );
-		$form     = & $this->get( 'Form' );
-		$groups 	= & $this->get( 'Groups' );
+		$model   = $this->getModel();
+		$row     = $this->get( 'Data' );
+		$form    = $this->get( 'Form' );
+		$groups  = $this->get( 'Groups' );
 
 		// fail if checked out not by 'me'
 		if ($row->id) {
@@ -88,10 +84,7 @@ class RedEventViewVenuesCategory extends JView {
 		
 		/* Initiate the Lists array */
 		$lists = array();
-		
-		/* Build a select list for categories */
-    $lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('Categories'), 'parent_id', 'class="inputbox" size="10"', 'value', 'text', $row->parent_id); 
-    		
+			
 		//build selectlists		//build selectlists
 		$lists['access'] 			= JHTML::_('list.accesslevel', $row );
 

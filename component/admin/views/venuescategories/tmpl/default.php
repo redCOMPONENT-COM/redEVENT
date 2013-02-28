@@ -37,6 +37,11 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			  <?php
 			  echo $this->lists['state'];
 				?>
+
+				<select name="filter_language" class="inputbox" onchange="this.form.submit()">
+					<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE');?></option>
+					<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter_language')); ?>
+				</select>
 			</td>
 		</tr>
 	</table>
@@ -48,7 +53,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<th width="5"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
 			<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_CATEGORY', 'name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="20%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ALIAS', 'c.alias', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-      <th width="20%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_PARENT_CATEGORY', 'c.lft', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th width="20%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_PARENT_CATEGORY', 'c.lft', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="15%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_GROUP', 'gr.name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JText::_('COM_REDEVENT_VENUES' ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JText::_('COM_REDEVENT_PUBLISHED' ); ?></th>
@@ -56,13 +61,14 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<th><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_LABEL_PRIVATE', 'l.private', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="80"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_REORDER', 'c.ordering', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="1%"><?php echo JHTML::_('grid.order', $this->rows, 'filesave.png', 'saveordercat' ); ?></th>
+			<th width="1%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'c.language', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ID', 'c.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 		</tr>
 	</thead>
 
 	<tfoot>
 		<tr>
-			<td colspan="13">
+			<td colspan="20">
 				<?php echo $this->pageNav->getListFooter(); ?>
 			</td>
 		</tr>
@@ -74,19 +80,18 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		for ($i=0, $n=count($this->rows); $i < $n; $i++) {
 			$row = $this->rows[$i];
 
-			$link 		= 'index.php?option=com_redevent&amp;controller=venuescategories&amp;task=edit&amp;cid[]='. $row->id;
-			$grouplink 	= 'index.php?option=com_redevent&amp;controller=groups&amp;task=edit&amp;cid[]='. $row->groupid;
+			$link 		= 'index.php?option=com_redevent&amp;controller=venuescategories&view=venuescategory&amp;task=edit&amp;cid[]='. $row->id;
+			$grouplink 	= 'index.php?option=com_redevent&amp;controller=groups&view=group&amp;task=edit&amp;cid[]='. $row->groupid;
 			$published 	= JHTML::_('grid.published', $row, $i );
-			$access 	= JHTML::_('grid.access', $row, $i );
 			$checked 	= JHTML::_('grid.checkedout', $row, $i );
    		?>
 		<tr class="<?php echo "row$k"; ?>">
 			<td><?php echo $this->pageNav->getRowOffset( $i ); ?></td>
 			<td width="7"><?php echo $checked; ?></td>
 			<td align="left">
-        <?php if ($this->filter_order == 'c.lft') :?>
-        <?php echo str_repeat('-', $row->depth). ' '; ?>
-        <?php endif;?>
+			<?php if ($this->filter_order == 'c.lft') :?>
+			<?php echo str_repeat('-', $row->depth). ' '; ?>
+			<?php endif;?>
 				<?php
 				if ( $row->checked_out && ( $row->checked_out != $this->user->get('id') ) ) {
 					echo htmlspecialchars($row->name, ENT_QUOTES, 'UTF-8');
@@ -109,9 +114,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				}
 				?>
 			</td>
-      <td>
-        <?php echo ($row->parent_name) ? htmlspecialchars($row->parent_name, ENT_QUOTES, 'UTF-8') : '-'; ?>
-      </td>
+			<td>
+				<?php echo ($row->parent_name) ? htmlspecialchars($row->parent_name, ENT_QUOTES, 'UTF-8') : '-'; ?>
+			</td>
 			<td align="center">
 				<?php if ($row->catgroup) {	?>
 					<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_EDIT_GROUP' );?>::<?php echo $row->catgroup; ?>">
@@ -131,7 +136,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<?php echo $published; ?>
 			</td>
 			<td align="center">
-				<?php echo $access; ?>
+				<?php echo $row->access_level; ?>
 			</td>
 			<td align="center">
 				<?php echo $row->private ? JHTML::image('administrator/components/com_redevent/assets/images/icon-16-private.png', JText::_('COM_REDEVENT_LABEL_PRIVATE')) : ''; ?>
@@ -145,6 +150,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 				<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?> class="text_area" style="text-align: center" />
 			</td>
+			<td align="center"><?php echo $row->language_title; ?></td>
 			<td align="center"><?php echo $row->id; ?></td>
 		</tr>
 		<?php $k = 1 - $k; } ?>

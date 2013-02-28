@@ -58,7 +58,7 @@ class RedEventViewVenuesCategories extends JView {
 		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
 
 		//Create Submenu
-    ELAdmin::setMenu();
+		ELAdmin::setMenu();
 
 		//create the toolbar
 		JToolBarHelper::title( JText::_('COM_REDEVENT_VENUES_CATEGORIES' ), 'venuescategories' );
@@ -78,9 +78,10 @@ class RedEventViewVenuesCategories extends JView {
 		}
 
 		//Get data from the model
-		$rows      	= & $this->get( 'Data');
+		$rows      	= $this->get( 'Data');
 		//$total      = & $this->get( 'Total');
-		$pageNav 	= & $this->get( 'Pagination' );
+		$pageNav 	= $this->get( 'Pagination' );
+		$state 	    = $this->get( 'State' );
 
 		//publish unpublished filter
 		$lists['state']	= JHTML::_('grid.state', $filter_state );
@@ -99,7 +100,8 @@ class RedEventViewVenuesCategories extends JView {
 		$this->assignRef('pageNav' 		, $pageNav);
 		$this->assignRef('ordering'		, $ordering);
 		$this->assignRef('user'			, $user);
-    $this->assignRef('filter_order'     , $filter_order);
+		$this->assignRef('filter_order'     , $filter_order);
+		$this->assignRef('state'        , $state);
 
 		parent::display($tpl);
 	}
