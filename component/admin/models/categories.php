@@ -33,6 +33,11 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventModelCategories extends FOFModel
 {
+	public function __construct($config = array())
+	{
+		parent::__construct($config);
+	}
+	
 	public function &getItemList($overrideLimits = false, $group = '')
 	{
 		$list = parent::getItemList($overrideLimits, $group);
@@ -70,9 +75,13 @@ class RedeventModelCategories extends FOFModel
 		$query->join('LEFT', '#__usergroups AS g ON g.id = c.access');
 		$query->join('LEFT', '#__users AS u ON u.id = c.checked_out');
 		$query->join('LEFT', '#__redevent_groups AS gr ON gr.id = c.groupid');
-		$query->where('c.lft BETWEEN parent.lft AND parent.rgt');
+		$query->where('(c.lft BETWEEN parent.lft AND parent.rgt)');
 		$query->group('c.id');
 
+		// Join over the language
+		$query->select('l.title AS language_title');
+		$query->join('LEFT', $db->quoteName('#__languages').' AS l ON l.lang_code = c.language');
+		
 		// Get the WHERE clause for the query
 		$query = $this->_buildContentWhere($query);
 		
@@ -100,16 +109,23 @@ class RedeventModelCategories extends FOFModel
 		$search 			= $mainframe->getUserStateFromRequest( $option.'.categories.search', 'search', '', 'string' );
 		$search 			= $this->_db->getEscaped( trim(JString::strtolower( $search ) ) );
 				
-		if ( $filter_state = $this->getState('published', '') ) {
+		if ( $filter_state = $this->getState('filter_state', '') ) {
 			if ( $filter_state == 'P' ) {
 				$query->where('c.published = 1');
 			} else if ($filter_state == 'U' ) {
 				$query->where('c.published = 0');
 			}
 		}
+		
+		$filter_language = $this->getState('language');		
+		if ($filter_language) {
+			$this->setState('language', $filter_language);
+			$query->where('c.language = '.$this->_db->quote($filter_language));
+		}
 
 		if ($search) {
-			$query->where('LOWER(c.catname) LIKE \'%'.$search.'%\')');
+			dump($search);
+			$query->where('LOWER(c.catname) LIKE \'%'.$search.'%\'');
 		}
 
 		return $query;

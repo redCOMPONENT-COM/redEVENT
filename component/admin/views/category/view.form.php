@@ -43,8 +43,6 @@ class RedeventViewCategory extends FOFViewForm {
 		$editor 	= JFactory::getEditor();
 		$document	= JFactory::getDocument();
 		$user 		= JFactory::getUser();
-		$pane 		= JPane::getInstance('sliders');
-		$tabs 		= JPane::getInstance('tabs');
 
 		//get vars
 		$cid 		= JRequest::getVar( 'cid' );
@@ -55,12 +53,9 @@ class RedeventViewCategory extends FOFViewForm {
 		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.less||media://com_redevent/css/backend.css');
 		
 		// attachments
+		JHtml::_('behavior.framework');
 		FOFTemplateUtils::addJS('media://com_redevent/js/attachments.js');		
 		$document->addScriptDeclaration('var removemsg = "'.JText::_('COM_REDEVENT_ATTACHMENT_CONFIRM_MSG').'";' );
-
-		// js color picker
-		FOFTemplateUtils::addCSS('media://com_redevent/css/colorpicker.css');
-		FOFTemplateUtils::addJS('media://com_redevent/js/colorpicker.js');		
 
 		//create the toolbar
 		if ( $cid ) {
@@ -78,9 +73,6 @@ class RedeventViewCategory extends FOFViewForm {
 			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_GROUPS' ), 'index.php?option=com_redevent&view=groups');
 			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_HELP' ), 'index.php?option=com_redevent&view=help');
 		}
-		JToolBarHelper::apply();
-		JToolBarHelper::save();
-		JToolBarHelper::cancel();
 
 		//Get data from the model
 		$model		= $this->getModel();
@@ -113,8 +105,6 @@ class RedeventViewCategory extends FOFViewForm {
 		$this->assignRef('row'      	, $row);
 		$this->assignRef('form'      	, $form);
 		$this->assignRef('editor'		, $editor);
-		$this->assignRef('pane'			, $pane);
-		$this->assignRef('tabs'			, $tabs);
 		$this->assignRef('access'	, redEVENTHelper::getAccesslevelOptions());
 		
 		JHTML::_('behavior.tooltip');

@@ -22,9 +22,10 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+$function = $this->input->get('function');
 ?>
 
-<form action="index.php?option=com_redevent&view=categoryelement&tmpl=component&function=<?php echo $this->function; ?>" method="post" name="adminForm" id="adminForm">
+<form action="index.php?option=com_redevent&view=categories&layout=element&tmpl=component&function=<?php echo $function; ?>" method="post" name="adminForm" id="adminForm">
 
 <table class="adminform">
 	<tr>
@@ -34,7 +35,13 @@ defined('_JEXEC') or die('Restricted access');
 			<button onclick="this.form.submit();"><?php echo JText::_('COM_REDEVENT_Go' ); ?></button>
 			<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo JText::_('COM_REDEVENT_Reset' ); ?></button>
 		</td>
-		<td nowrap="nowrap"><?php  echo $this->lists['state']; ?></td>
+		<td nowrap="nowrap">
+		<?php  echo $this->lists['state']; ?>
+			<select name="language" class="inputbox" onchange="this.form.submit()">
+				<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE');?></option>
+				<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('language')); ?>
+			</select>
+			</td>
 	</tr>
 </table>
 
@@ -74,7 +81,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td width="7"><?php echo $this->pageNav->getRowOffset( $i ); ?></td>
 			<td align="left">
 				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_SELECT' );?>::<?php echo $row->catname; ?>">
-        <a class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($this->function);?>('<?php echo $row->id; ?>', '<?php echo $this->escape(addslashes($row->catname)); ?>');">
+        <a class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('<?php echo $row->id; ?>', '<?php echo $this->escape(addslashes($row->catname)); ?>');">
         	<?php echo $this->escape($row->catname); ?>
         </a>
         </span>

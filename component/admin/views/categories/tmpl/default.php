@@ -38,9 +38,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			  echo $this->lists['state'];
 				?>	
 
-			<select name="filter_language" class="inputbox" onchange="this.form.submit()">
+			<select name="language" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language')); ?>
+				<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('language')); ?>
 			</select>
 			
 			</td>
@@ -54,8 +54,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<th width="5"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
 			<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_CATEGORY', 'catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="20%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ALIAS', 'c.alias', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-      <th width="10px" nowrap="nowrap"><?php echo JText::_('COM_REDEVENT_COLOR' ); ?></th>
-      <th width="20%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_PARENT_CATEGORY', 'c.lft', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th width="10px" nowrap="nowrap"><?php echo JText::_('COM_REDEVENT_COLOR' ); ?></th>
+			<th width="20%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_PARENT_CATEGORY', 'c.lft', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="15%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_GROUP', 'gr.name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JText::_('COM_REDEVENT_EVENTS' ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JText::_('COM_REDEVENT_PUBLISHED' ); ?></th>
@@ -63,13 +63,14 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<th width="7%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_LABEL_PRIVATE', 'c.private', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="80"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_REORDER', 'c.ordering', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="1%"><?php echo JHTML::_('grid.order', $this->rows, 'filesave.png', 'saveordercat' ); ?></th>
+			<th width="1%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'c.language', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ID', 'c.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 		</tr>
 	</thead>
 
 	<tfoot>
 		<tr>
-			<td colspan="14">
+			<td colspan="20">
 				<?php echo $this->pageNav->getListFooter(); ?>
 			</td>
 		</tr>
@@ -157,6 +158,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 				<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?> class="text_area" style="text-align: center" />
 			</td>
+			<td align="center"><?php echo $row->language_title; ?></td>
 			<td align="center"><?php echo $row->id; ?></td>
 		</tr>
 		<?php $k = 1 - $k; } ?>
@@ -166,7 +168,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="option" value="com_redevent" />
-	<input type="hidden" name="controller" value="categories" />
 	<input type="hidden" name="view" value="categories" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />

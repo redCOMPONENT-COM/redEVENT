@@ -77,13 +77,13 @@ class JFormFieldRECategory extends JFormField
 	
 		// Setup variables for display
 		$html = array();
-		$link = 'index.php?option=com_redevent&amp;view=categoryelement&amp;tmpl=component'
+		$link = 'index.php?option=com_redevent&amp;view=categories&amp;layout=element&amp;tmpl=component'
 		                  . '&amp;function=jSelectCategory_'.$this->id;
 		
 		
 		JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_redevent'.DS.'tables');
 		
-		$category =& JTable::getInstance('redevent_categories', '');
+		$category = FOFTable::getAnInstance('Category', 'RedeventTable');
 		
 		if ($this->value) {
 			$category->load($this->value);

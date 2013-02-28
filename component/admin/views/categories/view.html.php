@@ -57,7 +57,7 @@ class RedEventViewCategories extends FOFView {
 
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_CATEGORIES'));
 		//add css and submenu to document
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
 
 		//Create Submenu
 		ELAdmin::setMenu();
@@ -100,9 +100,10 @@ class RedEventViewCategories extends FOFView {
 		$this->assignRef('pageNav' 		, $pageNav);
 		$this->assignRef('ordering'		, $ordering);
 		$this->assignRef('user'			, $user);
-    $this->assignRef('filter_order'     , $filter_order);
-    
-    $this->state = $this->get('state');
+	    $this->assignRef('filter_order'     , $filter_order);
+	    
+	    $this->state = $this->get('state');
+// 	    echo '<pre>';print_r($this->state); echo '</pre>';exit;
 
 		parent::display($tpl);
 	}
@@ -112,10 +113,10 @@ class RedEventViewCategories extends FOFView {
 		$document	= & JFactory::getDocument();
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_CATEGORIES_EXPORT'));
 		//add css and submenu to document
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
 
 		//Create Submenu
-    ELAdmin::setMenu();
+		ELAdmin::setMenu();
 
 		JHTML::_('behavior.tooltip');
 
