@@ -1,10 +1,9 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
+ * @package     Joomla
+ * @subpackage  redEVENT
+ * @copyright   redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license     GNU/GPL, see LICENSE.php
  * redEVENT is based on EventList made by Christoph Lukes from schlu.net
  * redEVENT can be downloaded from www.redcomponent.com
  * redEVENT is free software; you can redistribute it and/or
@@ -21,17 +20,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+// No direct access
+defined('_JEXEC') or die('Restricted access');
 
-if(!defined('DS')){
-	define('DS',DIRECTORY_SEPARATOR);
+if (!defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
 }
 
 // Load FOF
-include_once JPATH_LIBRARIES.'/fof/include.php';
-if(!defined('FOF_INCLUDED')) {
-	JError::raiseError ('500', 'FOF is not installed');
+include_once JPATH_LIBRARIES . '/fof/include.php';
+if (!defined('FOF_INCLUDED'))
+{
+	JError::raiseError('500', 'FOF is not installed');
 }
 
 //Require classes
@@ -75,7 +76,7 @@ if( $controller = JRequest::getWord('controller') ) {
 	//Create the controller
 	$classname  = 'RedEventController'.$controller;
 	$controller = new $classname( );
-	
+
 	// Perform the Request task
 	$controller->execute( JRequest::getWord('task', 'redevent'));
 	$controller->redirect();
