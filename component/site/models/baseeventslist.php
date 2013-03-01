@@ -104,6 +104,9 @@ class RedeventModelBaseEventList extends JModel
 		$this->setState('filter_category', $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_category', 'filter_category', 0, 'int'));
 		$this->setState('filter_venue',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_venue',    'filter_venue',    0, 'int'));
 
+		$customs      = $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_customs', 'filtercustom', array(), 'array');
+		$this->setState('filter_customs', $customs);
+
 		$this->setState('filter.language', $app->getLanguageFilter());
 	}
 
@@ -219,7 +222,7 @@ class RedeventModelBaseEventList extends JModel
 		// Get the WHERE and ORDER BY clauses for the query
 		$customs = $this->getCustomFields();
 		$xcustoms = $this->getXrefCustomFields();
-		$acl = &UserAcl::getInstance();
+		$acl = UserAcl::getInstance();
 
 		$gids = $acl->getUserGroupsIds();
 
@@ -307,27 +310,13 @@ class RedeventModelBaseEventList extends JModel
 	 */
 	protected function _buildWhere($query)
 	{
-		$app = &JFactory::getApplication();
+		$app = JFactory::getApplication();
 
-		$user		= & JFactory::getUser();
+		$user		= JFactory::getUser();
 		$gid		= max($user->getAuthorisedViewLevels());
 
 		// Get the paramaters of the active menu item
-		$params 	= & $app->getParams();
-
-		$task 		= JRequest::getWord('task');
-
-		$where = array();
-
-		// First thing we need to do is to select only needed events
-		if ($task == 'archive')
-		{
-			$query->where(' x.published = -1 ');
-		}
-		else
-		{
-			$query->where(' x.published = 1 ');
-		}
+		$params 	= $app->getParams();
 
 		// Second is to only select events assigned to category the user has access to
 		$query->where(' c.access <= ' . $gid);
@@ -401,10 +390,25 @@ class RedeventModelBaseEventList extends JModel
 			$query->where('x.dates = 0');
 		}
 
+		$customs = $this->getState('filter_customs');
+
+		foreach ((array) $customs as $key => $custom)
+		{
+			if ($custom != '')
+			{
+				if (is_array($custom))
+				{
+					$custom = implode("/n", $custom);
+				}
+
+				$query->where('custom' . $key . ' LIKE ' . $this->_db->Quote('%' . $custom . '%'));
+			}
+		}
+
 		if ($this->getState('filter.language'))
 		{
-			$query->where('(a.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR a.language IS NULL)');
-			$query->where('(c.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR c.language IS NULL)');
+			$query->where('(a.language in (' .  $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' .  $this->_db->quote('*') . ') OR a.language IS NULL)');
+			$query->where('(c.language in (' .  $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' .  $this->_db->quote('*') . ') OR c.language IS NULL)');
 		}
 
 		return $query;
