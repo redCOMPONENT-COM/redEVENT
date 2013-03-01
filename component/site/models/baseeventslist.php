@@ -46,35 +46,35 @@ class RedeventModelBaseEventList extends JModel
 	 *
 	 * @var array
 	 */
-	var $_customfields = null;
+	protected $_customfields = null;
 
 	/**
 	 * xref custom fields data array
 	 *
 	 * @var array
 	 */
-	var $_xrefcustomfields = null;
+	protected $_xrefcustomfields = null;
 
 	/**
 	 * Events total
 	 *
 	 * @var integer
 	 */
-	var $_total = null;
+	protected $_total = null;
 
 	/**
 	 * Pagination object
 	 *
 	 * @var object
 	 */
-	var $_pagination = null;
+	protected $_pagination = null;
 
 	/**
 	 * Constructor
 	 *
 	 * @since 0.9
 	 */
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 
@@ -113,7 +113,7 @@ class RedeventModelBaseEventList extends JModel
 	 * set limit
 	 * @param int value
 	 */
-	function setLimit($value)
+	public function setLimit($value)
 	{
 		$this->setState('limit', (int) $value);
 	}
@@ -122,7 +122,7 @@ class RedeventModelBaseEventList extends JModel
 	 * set limitstart
 	 * @param int value
 	 */
-	function setLimitStart($value)
+	public function setLimitStart($value)
 	{
 		$this->setState('limitstart', (int) $value);
 	}
@@ -133,7 +133,7 @@ class RedeventModelBaseEventList extends JModel
 	 * @access public
 	 * @return array
 	 */
-	function &getData( )
+	public function &getData( )
 	{
 		$pop	= JRequest::getBool('pop');
 
@@ -162,7 +162,7 @@ class RedeventModelBaseEventList extends JModel
 	 * @access public
 	 * @return integer
 	 */
-	function getTotal()
+	public function getTotal()
 	{
 		// Lets load the total nr if it doesn't already exist
 		if (empty($this->_total))
@@ -180,7 +180,7 @@ class RedeventModelBaseEventList extends JModel
 	 * @access public
 	 * @return integer
 	 */
-	function getPagination()
+	public function getPagination()
 	{
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_pagination))
@@ -205,7 +205,7 @@ class RedeventModelBaseEventList extends JModel
 	 * @access private
 	 * @return string
 	 */
-	function _buildQuery()
+	protected function _buildQuery()
 	{
 		// Get the WHERE and ORDER BY clauses for the query
 		$customs = $this->getCustomFields();
@@ -267,7 +267,7 @@ class RedeventModelBaseEventList extends JModel
 	 * @access private
 	 * @return string
 	 */
-	function _buildOrderBy($query)
+	protected function _buildOrderBy($query)
 	{
 		$filter_order		  = $this->getState('filter_order');
 		$filter_order_dir	= $this->getState('filter_order_dir');
@@ -286,7 +286,7 @@ class RedeventModelBaseEventList extends JModel
 	 * @access private
 	 * @return string
 	 */
-	function _buildWhere($query)
+	protected function _buildWhere($query)
 	{
 		$app = &JFactory::getApplication();
 
@@ -375,16 +375,22 @@ class RedeventModelBaseEventList extends JModel
 			$query->where('x.dates = 0');
 		}
 
+		if ($this->getState('filter.language'))
+		{
+			$query->where('(a.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR a.language IS NULL)');
+			$query->where('(c.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR c.language IS NULL)');
+		}
+
 		return $query;
 	}
 
-/**
+	/**
 	 * Build the where clause
 	 *
 	 * @access private
 	 * @return string
 	 */
-	function _buildEventsOptionsWhere()
+	protected function _buildEventsOptionsWhere()
 	{
 		$app = &JFactory::getApplication();
 
@@ -540,7 +546,7 @@ class RedeventModelBaseEventList extends JModel
 	 *
 	 * @return array
 	 */
-	function _getPrices($rows)
+	protected function _getPrices($rows)
 	{
 		if (!$rows) {
 			return $rows;
@@ -595,7 +601,7 @@ class RedeventModelBaseEventList extends JModel
    *
    * @return array
    */
-  function getCustomFields()
+  public function getCustomFields()
   {
   	if (empty($this->_customfields))
   	{
@@ -616,7 +622,7 @@ class RedeventModelBaseEventList extends JModel
    *
    * @return array
    */
-  function getXrefCustomFields()
+  public function getXrefCustomFields()
   {
   	if (empty($this->_xrefcustomfields))
   	{
@@ -637,7 +643,7 @@ class RedeventModelBaseEventList extends JModel
    *
    * @return array
    */
-  function getListCustomFields()
+  public function getListCustomFields()
   {
   	$res = array();
 
@@ -656,7 +662,15 @@ class RedeventModelBaseEventList extends JModel
   	return $res;
   }
 
-  function _cmpCustomFields($a, $b)
+  /**
+   * compare custom fields by ordering
+   *
+   * @param   object  $a
+   * @param   object  $b
+   *
+   * @return number
+   */
+  protected function _cmpCustomFields($a, $b)
   {
     return $a->ordering - $b->ordering;
   }
@@ -666,7 +680,7 @@ class RedeventModelBaseEventList extends JModel
    *
    * @return array
    */
-  function getSearchableCustomFields()
+  public function getSearchableCustomFields()
   {
   	$fields = $this->getCustomFields();
   	$res = array();
@@ -682,7 +696,7 @@ class RedeventModelBaseEventList extends JModel
 	/**
 	 * return filter for event custom fields
 	 */
-	function getCustomFilters()
+	public function getCustomFilters()
 	{
 		$query = ' SELECT f.* FROM #__redevent_fields AS f '
            . ' WHERE f.published = 1 '
@@ -707,7 +721,7 @@ class RedeventModelBaseEventList extends JModel
 	 *
 	 * @return array
 	 */
-	function getCategoriesOptions()
+	public function getCategoriesOptions()
 	{
 		$app = &JFactory::getApplication();
     $filter_venuecategory = JRequest::getVar('filter_venuecategory');
@@ -775,7 +789,7 @@ class RedeventModelBaseEventList extends JModel
 
 	 * @return array
 	 */
-	function getVenuesOptions()
+	public function getVenuesOptions()
 	{
 		$app = &JFactory::getApplication();
 		$vcat    = JRequest::getVar('filter_venuecategory');
@@ -822,7 +836,7 @@ class RedeventModelBaseEventList extends JModel
 		return $res;
 	}
 
-	function getEventsOptions()
+	public function getEventsOptions()
 	{
 		// Get the WHERE and ORDER BY clauses for the query
 		$where		= $this->_buildEventsOptionsWhere();
@@ -880,7 +894,7 @@ class RedeventModelBaseEventList extends JModel
 	 * @param int id
 	 * @return object
 	 */
-	function getCategory($id)
+	public function getCategory($id)
 	{
 		$query = ' SELECT c.id, c.catname, c.lft, c.rgt '
 		       . ' FROM #__redevent_categories AS c '
