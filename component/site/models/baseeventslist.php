@@ -392,6 +392,18 @@ class RedeventModelBaseEventList extends JModel
 			$query->where('x.dates = 0');
 		}
 
+		// State
+		if ($state = JRequest::getVar('state', '', 'request', 'string'))
+		{
+			$query->where(' STRCMP(l.state, ' . $this->_db->Quote($state) . ') = 0 ');
+		}
+
+		// Country
+		if ($country = JRequest::getVar('country', '', 'request', 'string'))
+		{
+			$query->where(' STRCMP(l.country, ' . $this->_db->Quote($country) . ') = 0 ');
+		}
+
 		$customs = $this->getState('filter_customs');
 
 		foreach ((array) $customs as $key => $custom)
@@ -409,8 +421,8 @@ class RedeventModelBaseEventList extends JModel
 
 		if ($this->getState('filter.language'))
 		{
-			$query->where('(a.language in (' .  $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' .  $this->_db->quote('*') . ') OR a.language IS NULL)');
-			$query->where('(c.language in (' .  $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' .  $this->_db->quote('*') . ') OR c.language IS NULL)');
+			$query->where('(a.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR a.language IS NULL)');
+			$query->where('(c.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR c.language IS NULL)');
 		}
 
 		return $query;
