@@ -140,7 +140,7 @@ class RedeventModelBaseEventList extends JModel
 	 * @access public
 	 * @return array
 	 */
-	public function &getData( )
+	public function &getData()
 	{
 		$pop	= JRequest::getBool('pop');
 
