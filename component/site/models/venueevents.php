@@ -1,10 +1,9 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
+ * @package     Joomla
+ * @subpackage  redEVENT
+ * @copyright   redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license     GNU/GPL, see LICENSE.php
  * redEVENT is based on EventList made by Christoph Lukes from schlu.net
  * redEVENT can be downloaded from www.redcomponent.com
  * redEVENT is free software; you can redistribute it and/or
@@ -21,68 +20,61 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// no direct access
+// No direct access
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-require_once('baseeventslist.php');
+require_once 'baseeventslist.php';
 
 /**
- * EventList Component Venueevents Model
+ * Redevent Model Venue events
  *
- * @package Joomla
- * @subpackage redEVENT
- * @since		0.9
+ * @package     Joomla
+ * @subpackage  redEVENT
+ * @since       0.9
  */
 class RedeventModelVenueevents extends RedeventModelBaseEventList
 {
+	/**
+	 * venue id
+	 *
+	 * @var int
+	 */
+	protected $_id = 0;
+
 	/**
 	 * venue data array
 	 *
 	 * @var array
 	 */
-	var $_venue = null;
+	protected $_venue = null;
 
 	/**
 	 * Constructor
 	 *
 	 * @since 0.9
 	 */
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 
 		$mainframe = &JFactory::getApplication();
 
 		$id = JRequest::getInt('id');
-		$this->setId((int)$id);
-		
-		// Get the paramaters of the active menu item
-		$params 	= & $mainframe->getParams('com_redevent');
-
-		//get the number of events from database
-		$limit       	= $mainframe->getUserStateFromRequest('com_redevent.venueevents.limit', 'limit', $params->def('display_num', 0), 'int');
-		$limitstart		= JRequest::getInt('limitstart');
-
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-
-		// Get the filter request variables
-		$this->setState('filter_order', JRequest::getCmd('filter_order', 'x.dates'));
-		$this->setState('filter_order_dir', JRequest::getCmd('filter_order_Dir', 'ASC'));
-		
-    $customs      = $mainframe->getUserStateFromRequest('com_redevent.categoryevents.filter_customs', 'filtercustom', array(), 'array');
-		$this->setState('filter_customs', $customs);
+		$this->setId((int) $id);
 	}
 
 	/**
 	 * Method to set the venue id
 	 *
+	 * @param   int  $id  venue ID number
+	 *
+	 * @return void
+	 *
 	 * @access	public
-	 * @param	int	venue ID number
 	 */
-	function setId($id)
+	public function setId($id)
 	{
 		// Set new venue ID and wipe data
 		$this->_id			= $id;
@@ -90,98 +82,20 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 	}
 
 	/**
-	 * Method to build the WHERE clause
-	 *
-	 * @access private
-	 * @return array
+	 * (non-PHPdoc)
+	 * @see RedeventModelBaseEventList::_buildWhere()
 	 */
-	function _buildWhere( )
+	protected function _buildWhere($query)
 	{
-		$mainframe = &JFactory::getApplication();
-		
-		$user		=& JFactory::getUser();
-		$gid		= (int) max($user->getAuthorisedViewLevels());
+		$query = parent::_buildWhere($query);
 
-		// Get the paramaters of the active menu item
-		$params 	= & $mainframe->getParams('com_redevent');
-		
-		$task 		= JRequest::getWord('task');
-
-		$where = array();
-		
-		// First thing we need to do is to select only the requested events
-		if ($task == 'archive') {
-			$where[] = ' x.published = -1';
-		} else {
-			$where[] = ' x.published = 1';
-		}
-		
 		/* Check if a venue ID is set */
-		if ($this->_id > 0) $where[] = ' x.venueid = '.$this->_id;
-		
-		// Second is to only select events assigned to category the user has access to
-		$where[] = ' c.access <= '.$gid;
-
-		/*
-		 * If we have a filter, and this is enabled... lets tack the AND clause
-		 * for the filter onto the WHERE clause of the content item query.
-		 */
-		if ($params->get('filter_text'))
+		if ($this->_id > 0)
 		{
-			$filter 		  = $this->getState('filter');
-			$filter_type 	= $this->getState('filter_type');
-			
-			if ($filter)
-			{
-				// clean filter variables
-				$filter 		= JString::strtolower($filter);
-				$filter			= $this->_db->Quote( '%'.$this->_db->getEscaped( $filter, true ).'%', false );
-				$filter_type 	= JString::strtolower($filter_type);
+			$query->where('x.venueid = ' . $this->_id);
+		}
 
-				switch ($filter_type)
-				{
-					case 'title' :
-						$where[] = ' LOWER( a.title ) LIKE '.$filter;
-						break;
-					
-					case 'type' :
-						$where[] = ' LOWER( c.catname ) LIKE '.$filter;
-						break;
-				}
-			}
-		}
-	    
-		if ($ev = $this->getState('filter_event')) 
-		{
-			$where[] = 'a.id = '.$this->_db->Quote($ev);
-		}
-		
-    if ($filter_venue = $this->getState('filter_venue'))
-    {
-    	$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);    	
-    }
-	    
-		if ($cat = $this->getState('filter_category')) 
-		{		
-    	$category = $this->getCategory((int) $cat);
-    	if ($category) {
-				$where[] = '(c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
-    	}
-		}
-		
-    $customs = $this->getState('filter_customs');	
-    foreach ((array) $customs as $key => $custom)
-    {
-      if ($custom != '') 
-      {
-      	if (is_array($custom)) {
-      		$custom = implode("/n", $custom);
-      	}
-        $where[] = ' custom'.$key.' LIKE ' . $this->_db->Quote('%'.$custom.'%');
-      }
-    }
-    
-		return ' WHERE ' . implode(' AND ', $where);
+		return $query;
 	}
 
 	/**
@@ -190,27 +104,30 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 	 * @access public
 	 * @return array
 	 */
-	function getVenue( )
+	public function getVenue()
 	{
-		$user		= & JFactory::getUser();
-		//Location holen
-		$query = 'SELECT *, v.id AS venueid, '
-        . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as slug '
-				. ' FROM #__redevent_venues AS v'
-				. ' WHERE v.id = '.$this->_id;
+		$user		= JFactory::getUser();
 
-		$this->_db->setQuery( $query );
+		$query = 'SELECT *, v.id AS venueid, '
+		. ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as slug '
+		. ' FROM #__redevent_venues AS v'
+		. ' WHERE v.id = ' . $this->_id;
+
+		$this->_db->setQuery($query);
 		$_venue = $this->_db->loadObject();
-			
+
 		if ($_venue->private)
 		{
-			$acl = &UserAcl::getInstance();
+			$acl = UserAcl::getInstance();
 			$cats = $acl->getManagedVenues();
-			if (!is_array($cats) || !in_array($_venue->id, $cats)) {
+
+			if (!is_array($cats) || !in_array($_venue->id, $cats))
+			{
 				JError::raiseError(403, JText::_('COM_REDEVENT_ACCESS_NOT_ALLOWED'));
 			}
-		}			
-		$_venue->attachments = REAttach::getAttachments('venue'.$_venue->id, max($user->getAuthorisedViewLevels()));		
+		}
+
+		$_venue->attachments = REAttach::getAttachments('venue' . $_venue->id, max($user->getAuthorisedViewLevels()));
 
 		return $_venue;
 	}
