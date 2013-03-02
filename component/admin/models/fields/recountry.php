@@ -26,19 +26,19 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.form.formfield');
 
 /**
- * group field
+ * country field
  *
  * @package     Joomla
  * @subpackage  redEVENT
  * @since       2.5
  */
-class JFormFieldRegroup extends JFormFieldList
+class JFormFieldRecountry extends JFormFieldList
 {
 	/**
 	 * field type
 	 * @var string
 	 */
-	protected $type = 'regroup';
+	protected $type = 'recountry';
 
 	/**
 	 * (non-PHPdoc)
@@ -46,21 +46,7 @@ class JFormFieldRegroup extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$options = parent::getOptions();
-
-		$db = &JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select('id AS value, name AS text');
-		$query->from('#__redevent_groups');
-		$query->order('name ASC');
-		$db->setQuery($query);
-		$res = $db->loadObjectList();
-
-		if ($res && count($res))
-		{
-			$options = array_merge($options, $res);
-		}
+		$options = array_merge(parent::getOptions(), redEVENTHelperCountries::getCountryOptions());
 
 		return $options;
 	}

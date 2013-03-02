@@ -67,8 +67,9 @@ var mymap = {
 			address.push(document.id('city').get('value'));
 		}
 		if (document.id('country').get('value')) {
-			var sel = document.id('country').getSelected();
-			address.push(sel[0].get("text"));
+//			var sel = document.id('country').getSelected();
+//			address.push(sel[0].get("text"));
+			address.push(document.id('country').get('value'));
 		}
 		address = address.join().toLowerCase();
 		return address;

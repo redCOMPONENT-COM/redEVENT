@@ -32,35 +32,39 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedEventViewVenue extends JView {
-
+class RedEventViewVenue extends JView
+{
+	/**
+	 * (non-PHPdoc)
+	 * @see JView::display()
+	 */
 	function display($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
-		$params = JComponentHelper::getParams('com_redevent');
+		$mainframe = JFactory::getApplication();
+		$params    = JComponentHelper::getParams('com_redevent');
 
 		// Load pane behavior
 		JHTML::_('behavior.framework');
 
-		//initialise variables
-		$editor 	= & JFactory::getEditor();
-		$document	= & JFactory::getDocument();
-		$user 		= & JFactory::getUser();
+		// Initialise variables
+		$editor 	= JFactory::getEditor();
+		$document	= JFactory::getDocument();
+		$user 		= JFactory::getUser();
 		$settings	= JComponentHelper::getParams('com_redevent');
 
-		//get vars
+		// get vars
 		$cid 			= JRequest::getVar( 'cid' );
     	$url    = JURI::root();
 
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITVENUE'));
-		//add css and js to document
-		$document->addScript('../includes/js/joomla/popup.js');
-		$document->addStyleSheet('../includes/js/joomla/popup.css');
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		// Add css and js to document
+		FOFTemplateUtils::addCSS("media://com_redevent/css/backend.css");
+// 		$document->addScript('../includes/js/joomla/popup.js');
+// 		$document->addStyleSheet('../includes/js/joomla/popup.css');
 
-    	$document->addScript($url.'/components/com_redevent/assets/js/attachments.js');
+		FOFTemplateUtils::addJS("media://com_redevent/js/attachments.js");
 		$document->addScriptDeclaration('var removemsg = "'.JText::_('COM_REDEVENT_ATTACHMENT_CONFIRM_MSG').'";' );
-    
+
 		// Get data from the model
 		$model		= & $this->getModel();
 		$row      	= & $this->get( 'Data');
@@ -74,10 +78,10 @@ class RedEventViewVenue extends JView {
 		}
 
 		$task = JRequest::getVar('task');
-		
+
 		//create the toolbar
 		if ($task == 'copy') {
-		  	JToolBarHelper::title( JText::_('COM_REDEVENT_COPY_VENUE'), 'venuesedit');		
+		  	JToolBarHelper::title( JText::_('COM_REDEVENT_COPY_VENUE'), 'venuesedit');
 		} elseif ( $cid ) {
 			JToolBarHelper::title( JText::_('COM_REDEVENT_EDIT_VENUE' ), 'venuesedit' );
 
@@ -110,23 +114,23 @@ class RedEventViewVenue extends JView {
 	    foreach ((array) $row->categories as $cat) {
 	      $selected[] = $cat;
 	    }
-	    $lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('Categories'), 'categories[]', 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $selected); 
-	        
+	    $lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('Categories'), 'categories[]', 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $selected);
+
 	    $countries = array();
 	    $countries[] = JHTML::_('select.option', '', JText::_('COM_REDEVENT_Select_country'));
 	    $countries = array_merge($countries, redEVENTHelperCountries::getCountryOptions());
 	    $lists['countries'] = JHTML::_('select.genericlist', $countries, 'country', 'class="inputbox"', 'value', 'text', $row->country );
-	    unset($countries);    
-	    
+	    unset($countries);
+
 	    $pinpointicon = REOutput::pinpointicon( $row );
-	
-		if ($task == 'copy') 
+
+		if ($task == 'copy')
 		{
 			$row->id = null;
 			$row->venue .= ' '.JText::_('COM_REDEVENT_copy');
 			$row->alias = '';
 		}
-		
+
 		//assign data to template
 		$this->assignRef('row'      	, $row);
 		$this->assignRef('editor'      	, $editor);
