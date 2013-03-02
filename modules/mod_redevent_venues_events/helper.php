@@ -30,7 +30,7 @@ require_once (JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'rout
  * @package Joomla
  * @subpackage RedEvent Module
  * @since		0.9
- */
+*/
 class modRedEventVenuesEventsHelper
 {
 
@@ -68,21 +68,27 @@ class modRedEventVenuesEventsHelper
 		}
 
 		$query = 'SELECT a.*, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, x.venueid, l.venue, l.city, l.url ,'
-        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
-		    . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug '
-				. ' FROM #__redevent_event_venue_xref AS x'
-				. ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
-				. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-        . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-				. $where
-				.' AND c.access <= '.$user_gid
-				.($catid ? $categories : '')
-				.($venid ? $venues : '')
-				. ' GROUP BY a.id, l.id '
-				. $order
-//				.' LIMIT '.(int)$params->get( 'count', '2' )
-				;
+		. ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
+		. ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug '
+		. ' FROM #__redevent_event_venue_xref AS x'
+		. ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
+		. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
+		. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+		. ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+		. $where
+		.' AND c.access <= '.$user_gid
+		.($catid ? $categories : '')
+		.($venid ? $venues : '');
+
+		if (JFactory::getApplication()->getLanguageFilter())
+		{
+			$query .= 'AND (a.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR a.language IS NULL)';
+		}
+
+		$query .= ' GROUP BY a.id, l.id '
+		. $order
+		//				.' LIMIT '.(int)$params->get( 'count', '2' )
+		;
 
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
@@ -99,11 +105,11 @@ class modRedEventVenuesEventsHelper
 			}
 			else {
 				$rows[$k]->title_short = htmlspecialchars($row->title, ENT_COMPAT, 'UTF-8');
-			}      
+			}
 			$rows[$k]->link		= JRoute::_(RedeventHelperRoute::getDetailsRoute($row->slug));
 			$rows[$k]->text		= $rows[$k]->title_short;
 		}
-		
+
 		// now sort all this by venues
 		$venuesevents = array();
 		foreach ( $rows as $k => $row )
@@ -113,7 +119,7 @@ class modRedEventVenuesEventsHelper
 			}
 			$venuesevents[$row->venueid][] = $row;
 		}
-		
+
 		return $venuesevents;
 	}
 
@@ -126,14 +132,14 @@ class modRedEventVenuesEventsHelper
 	function _format_url($url)
 	{
 		if(!empty($url) && strtolower(substr($url, 0, 7)) != "http://") {
-        	$url = 'http://'.$url;
-        }
+			$url = 'http://'.$url;
+		}
 		return $url;
 	}
-	
+
 	/**
 	 * returns events venues as options
-	 * 
+	 *
 	 * @param array $sessions
 	 * @return array $options for select
 	 */
