@@ -48,6 +48,7 @@ class RedeventModelVenue extends JModel
 	 */
 	public function __construct()
 	{
+		$app = JFactory::getApplication();
 		parent::__construct();
 
 		$this->setState('filter.language', $app->getLanguageFilter());
