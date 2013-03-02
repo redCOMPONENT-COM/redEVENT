@@ -32,8 +32,8 @@ jimport( 'joomla.application.component.view');
  * @package Joomla
  * @subpackage redEVENT
  * @since 0.9
- */
-class RedeventViewUpcomingVenueevents extends JView
+*/
+class RedeventViewUpcomingvenueevents extends JView
 {
 	/**
 	 * Creates the Venueevents View
@@ -44,7 +44,7 @@ class RedeventViewUpcomingVenueevents extends JView
 	{
 		$mainframe = &JFactory::getApplication();
 		$option = JRequest::getCmd('option');
-		
+
 		//initialize variables
 		$document 	= & JFactory::getDocument();
 		$menu		= & JSite::getMenu();
@@ -54,26 +54,24 @@ class RedeventViewUpcomingVenueevents extends JView
 		$uri 		= & JFactory::getURI();
 		$pop			= JRequest::getBool('pop');
 		$upcomingvenueevents = $this->get('UpcomingVenueEvents');
-		
+
 		$model_venueevents = $this->getModel('Venueevents');
-		$rows 		= & $model_venueevents->getData();
 		$venue	 	= & $model_venueevents->getVenue();
-		$total 		= & $model_venueevents->getTotal(); 
-		
+
 		//add css file
-    if (!$params->get('custom_css')) {
-      $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
-    }
-    else {
-      $document->addStyleSheet($params->get('custom_css'));     
-    }
+		if (!$params->get('custom_css')) {
+			$document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
+		}
+		else {
+			$document->addStyleSheet($params->get('custom_css'));
+		}
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
-		
+
 		/* Add rss link */
 		$link	= '&format=feed';
 		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
 		$document->addHeadLink(JRoute::_($link.'&type=rss'), 'alternate', 'rel', $attribs);
-		
+
 		// Add needed scripts if the lightbox effect
 		JHTML::_('behavior.modal');
 
@@ -86,9 +84,9 @@ class RedeventViewUpcomingVenueevents extends JView
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
-		
+
 		$task = JRequest::getVar('task');
-		
+
 		//create the pathway
 		if ($task == 'archive') {
 			$pathway->addItem( JText::_('COM_REDEVENT_ARCHIVE' ).' - '.$venue->venue, JRoute::_('index.php?option='.$option.'&view=upcomingvenueevents&task=archive&id='.$venue->slug));
@@ -101,18 +99,18 @@ class RedeventViewUpcomingVenueevents extends JView
 			$print_link = JRoute::_('index.php?option=com_redevent&view=upcomingvenueevents&id='. $venue->slug .'&pop=1&tmpl=component');
 			$pagetitle = $venue->venue.' - '.JText::_( 'COM_REDEVENT_UPCOMING_EVENTS_TITLE' );
 		}
-		
+
 		//set Page title
 		$document->setTitle($pagetitle);
 		$document->setMetadata('keywords', $venue->meta_keywords );
 		$document->setDescription( strip_tags($venue->meta_description) );
-		
+
 		//Check if the user has access to the form
 		$maintainer = ELUser::ismaintainer();
 		$genaccess 	= ELUser::validate_user( $elsettings->get('evdelrec'), $elsettings->get('delivereventsyes') );
 
 		if ($maintainer || $genaccess ) $dellink = 1;
-		
+
 		//Printfunction
 		$params->def( 'print', !$mainframe->getCfg( 'hidePrint' ) );
 		$params->def( 'icons', $mainframe->getCfg( 'icons' ) );
@@ -120,7 +118,7 @@ class RedeventViewUpcomingVenueevents extends JView
 		if ( $pop ) {
 			$params->set( 'popup', 1 );
 		}
-		
+
 		//Generate Venuedescription
 		if (!empty ($venue->locdescription)) {
 			//execute plugins
@@ -143,27 +141,19 @@ class RedeventViewUpcomingVenueevents extends JView
 		if ($venue->country) {
 			$venue->countryimg = REOutput::getFlag( $venue->country );
 		}
-		
-		// Create the pagination object
-		$limitstart		= JRequest::getInt('limitstart');
-		$limit       	= $mainframe->getUserStateFromRequest('com_redevent.venueevents.limit', 'limit', $params->def('display_num', 0), 'int');
-		jimport('joomla.html.pagination');
-		$pageNav = new JPagination($total, $limitstart, $limit);
-		
+
 		$this->assignRef('upcomingvenueevents' , $upcomingvenueevents);
 		$this->assignRef('params' , $params);
-		$this->assignRef('rows' , $rows);
 		$this->assignRef('venue' , $venue);
-		$this->assignRef('pageNav', $pageNav);
-		$this->assignRef('venuedescription' , 		$venuedescription); 
+		$this->assignRef('venuedescription' , 		$venuedescription);
 		$this->assignRef('elsettings' , 			$elsettings);
 		$this->assignRef('item' , 					$item);
 		$this->assignRef('pagetitle' , 				$pagetitle);
-		$this->assignRef('task' , 					$task); 
+		$this->assignRef('task' , 					$task);
 		$this->assignRef('print_link' , 			$print_link);
 		$this->assignRef('dellink' , 				$dellink);
-    $this->assign('action',   JRoute::_(RedeventHelperRoute::getUpcomingVenueEventsRoute($venue->slug)));
-		
+		$this->assign('action',   JRoute::_(RedeventHelperRoute::getUpcomingVenueEventsRoute($venue->slug)));
+
 		parent::display($tpl);
 	}
 }

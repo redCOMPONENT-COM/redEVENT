@@ -46,12 +46,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	?>
 
 	<dl class="location floattext">
-	
+
 		<?php if ( $this->venue->company ) : ?>
 			<dt class="venue_company"><?php echo JText::_( 'COM_REDEVENT_COMPANY' ).':'; ?></dt>
 			<dd class="venue_company"><?php echo $this->escape($this->venue->company); ?></dd>
 		<?php endif; ?>
-				
+
 		<?php if (!empty($this->venue->url)) : ?>
 		<dt class="venue"><?php echo JText::_('COM_REDEVENT_WEBSITE' ).':'; ?></dt>
 			<dd class="venue">
@@ -109,26 +109,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<!--table-->
 
 	<?php
-	if (count($this->upcomingvenueevents) == 0) {
+	if (count($this->upcomingvenueevents) == 0)
+	{
 		echo JText::_('COM_REDEVENT_NO_UPCOMING_EVENTS');
 	}
-	else {
+	else
+	{
 		echo $this->loadTemplate('courseinfo');
-	} ?>
+	}
+	?>
 
-<!--pagination-->
-<?php if (!$this->params->get( 'popup' ) ) : ?>
-<?php if (($this->params->def('show_pagination', 1) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->pageNav->get('pages.total') > 1)) : ?>
-<div class="pagination">
-	<?php  if ($this->params->def('show_pagination_results', 1)) : ?>
-		<p class="counter">
-				<?php echo $this->pageNav->getPagesCounter(); ?>
-		</p>
-	
-		<?php endif; ?>
-	<?php echo $this->pageNav->getPagesLinks(); ?>
-</div>
-<?php  endif; ?>
-<!-- pagination end -->
-<?php endif; ?>
 </div>

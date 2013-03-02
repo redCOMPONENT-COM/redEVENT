@@ -22,9 +22,9 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
- 
+
 jimport('joomla.form.formfield');
- 
+
 /**
  * Session form field class
  */
@@ -35,13 +35,13 @@ class JFormFieldREVenue extends JFormField
 	 * @var string
 	 */
 	protected $type = 'revenue';
-	
+
 	/**
 	 * display reset button
 	 * @var boolean
 	 */
 	protected $reset;
-	
+
 	/**
 	* Method to get the field input markup
 	*/
@@ -49,11 +49,11 @@ class JFormFieldREVenue extends JFormField
 	{
 		// Load modal behavior
 		JHtml::_('behavior.modal', 'a.modal');
-	
+
 		$size		= $this->element['size'] ? ' size="'.(int) $this->element['size'].'"' : ' size="35"';
 		$reset	= (string) $this->element['reset'];
 		$reset  = ($reset == 'true' || $reset == '1');
-		
+
 		// Build the script
 		$script = array();
 		$script[] = '    function jSelectVenue_'.$this->id.'(id, title) {';
@@ -61,36 +61,36 @@ class JFormFieldREVenue extends JFormField
 		$script[] = '        document.id("'.$this->id.'_name").value = title;';
 		$script[] = '        SqueezeBox.close();';
 		$script[] = '    }';
-		
+
 		if ($reset)
 		{
 			$script[] = ' window.addEvent("domready", function(){';
 			$script[] = '    document.id("reset'.$this->id.'").addEvent("click", function() {';
 			$script[] = '        document.id("'.$this->id.'_id").value = 0;';
 			$script[] = '        document.id("'.$this->id.'_name").value = "'.JText::_('COM_REDEVENT_SELECTVENUE', true).'";';
-			$script[] = '    });';			
+			$script[] = '    });';
 			$script[] = ' });';
 		}
-	
+
 		// Add to document head
 		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
-	
+
 		// Setup variables for display
 		$html = array();
-		$link = 'index.php?option=com_redevent&amp;view=venueelement&amp;tmpl=component'
+		$link = 'index.php?option=com_redevent&controller=venues&amp;view=venueelement&amp;tmpl=component'
 		                  . '&amp;function=jSelectVenue_'.$this->id;
-		
-		
+
+
 		JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_redevent'.DS.'tables');
-		
+
 		$object =& JTable::getInstance('redevent_venues', '');
-		
+
 		if ($this->value) {
 			$object->load($this->value);
 		} else {
 			$object->venue = JText::_('COM_REDEVENT_SELECTVENUE');
 		}
-				
+
 		if ($this->value)
 		{
 			$title = $object->venue;
@@ -99,12 +99,12 @@ class JFormFieldREVenue extends JFormField
 		  $title = JText::_('COM_REDEVENT_SELECTVENUE');
 	  }
 		$title = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
-	
+
 		// The current input field
 		$html[] = '<div class="fltlft">';
 		$html[] = '  <input type="text" id="'.$this->id.'_name" value="'.$title.'" disabled="disabled"'.$size.' />';
 		$html[] = '</div>';
-	
+
 		// The select button
 		$html[] = '<div class="button2-left">';
 		$html[] = '  <div class="blank">';
@@ -121,22 +121,22 @@ class JFormFieldREVenue extends JFormField
 			$html[] = '  </div>';
 			$html[] = '</div>';
 		}
-	
+
 		// The active id field
 		if (0 == (int)$this->value) {
 			$value = '';
 		} else {
 			$value = (int)$this->value;
 		}
-	
+
 		// class='required' for client side validation
 		$class = '';
 		if ($this->required) {
 			$class = ' class="required modal-value"';
 		}
-	
+
 		$html[] = '<input type="hidden" id="'.$this->id.'_id"'.$class.' name="'.$this->name.'" value="'.$value.'" />';
-	
+
 		return implode("\n", $html);
 	}
 }
