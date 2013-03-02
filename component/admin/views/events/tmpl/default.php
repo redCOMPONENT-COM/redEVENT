@@ -42,7 +42,7 @@ $app = &JFactory::getApplication();
 			</td>
 			<td nowrap="nowrap">
 				<?php echo $this->lists['state'];	?>
-				
+
 				<select name="filter_language" class="inputbox" onchange="this.form.submit()">
 					<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE');?></option>
 					<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter_language')); ?>
@@ -123,7 +123,7 @@ $app = &JFactory::getApplication();
 						</a></span>
 						<?php
 					}
-					?>	 
+					?>
 
 					<br />
 
@@ -135,8 +135,8 @@ $app = &JFactory::getApplication();
 					}
 					?>
 					</div>
-					<div class="linkfront"><?php echo JHTML::link(JURI::root().RedeventHelperRoute::getDetailsRoute($row->id), 
-					                        JHTML::image('administrator/components/com_redevent/assets/images/linkfront.png', 
+					<div class="linkfront"><?php echo JHTML::link(JURI::root().RedeventHelperRoute::getDetailsRoute($row->id),
+					                        JHTML::image('administrator/components/com_redevent/assets/images/linkfront.png',
 					                                     JText::_('COM_REDEVENT_EVENT_FRONTEND_LINK'))); ?>
 					</div>
 				</td>
@@ -164,14 +164,14 @@ $app = &JFactory::getApplication();
 				</td>
 				<td>
 					<?php if (isset($this->eventvenues[$row->id])): ?>
-						<?php echo JHTML::link('index.php?option=com_redevent&view=sessions&eventid='.$row->id, 
+						<?php echo JHTML::link('index.php?option=com_redevent&view=sessions&eventid='.$row->id,
 				                           Jtext::sprintf('COM_REDEVENT_SESSIONS_LINK', $this->eventvenues[$row->id]->total
 				                                                                      , $this->eventvenues[$row->id]->unpublished
 				                                                                      , $this->eventvenues[$row->id]->published
 				                                                                      , $this->eventvenues[$row->id]->archived
 				                                                                      , $this->eventvenues[$row->id]->featured),
-				                           array('class' => 'hasTip', 
-				                                 'title' => Jtext::_('COM_REDEVENT_SESSIONS_LINK_TIP_TITLE').'::'.Jtext::sprintf('COM_REDEVENT_SESSIONS_LINK_TIP' 
+				                           array('class' => 'hasTip',
+				                                 'title' => Jtext::_('COM_REDEVENT_SESSIONS_LINK_TIP_TITLE').'::'.Jtext::sprintf('COM_REDEVENT_SESSIONS_LINK_TIP'
 				                                                                                                                 , $this->eventvenues[$row->id]->unpublished
 				                                                                                                                 , $this->eventvenues[$row->id]->published
 				                                                                                                                 , $this->eventvenues[$row->id]->archived
@@ -200,7 +200,7 @@ $app = &JFactory::getApplication();
 						<?php echo $image; ?>
 					</span>
 				</td>
-				<td align="center"><?php echo $row->language_title; ?></td>
+				<td align="center"><?php echo $row->language_title ? $row->language_title : JText::_('JALL');; ?></td>
 				<td align="center"><?php echo $row->id; ?></td>
 			</tr>
 			<?php $k = 1 - $k;  } ?>

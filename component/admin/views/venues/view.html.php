@@ -39,11 +39,11 @@ class RedEventViewVenues extends JView {
 		$mainframe = &JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 		$user 		= & JFactory::getUser();
-	
+
 		if ($this->getLayout() == 'importexport') {
 			return $this->_displayExport($tpl);
 		}
-		
+
 		//initialise variables
 		$user 		= & JFactory::getUser();
 		$db 		= & JFactory::getDBO();
@@ -80,7 +80,7 @@ class RedEventViewVenues extends JView {
 		JToolBarHelper::spacer();
 		JToolBarHelper::custom('importexport', 'exportevents', 'exportevents', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), false);
 		JToolBarHelper::spacer();
-	
+
 		if ($user->authorise('core.admin', 'com_redevent')) {
 			JToolBarHelper::preferences('com_redevent', '600', '800');
 		}
@@ -118,7 +118,7 @@ class RedEventViewVenues extends JView {
 
 		parent::display($tpl);
 	}
-	
+
 	function _displayExport($tpl = null)
 	{
 		$document	= & JFactory::getDocument();
@@ -133,18 +133,18 @@ class RedEventViewVenues extends JView {
 
 		//create the toolbar
 		JToolBarHelper::title( JText::_( 'COM_REDEVENT_PAGETITLE_VENUES_EXPORT' ), 'events' );
-		
+
 		JToolBarHelper::back();
 		JToolBarHelper::custom('doexport', 'exportevents', 'exportevents', JText::_('COM_REDEVENT_BUTTON_EXPORT'), false);
-		
+
 		$lists = array();
-		
+
 		$lists['categories'] = JHTML::_('select.genericlist', $this->get('CategoriesOptions'), 'categories[]'
 		                                        , 'size="15" multiple="multiple"', 'value', 'text');
-		
+
 		//assign data to template
 		$this->assignRef('lists'      	, $lists);
-		
+
 		parent::display($tpl);
 	}
 }

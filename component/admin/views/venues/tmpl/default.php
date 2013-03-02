@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 			<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo JText::_('COM_REDEVENT_Reset' ); ?></button>
 		</td>
 		<td nowrap="nowrap"><?php echo $this->lists['state']; ?>
-				
+
 		<select name="filter_language" class="inputbox" onchange="this.form.submit()">
 			<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE');?></option>
 			<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter_language')); ?>
@@ -186,7 +186,7 @@ defined('_JEXEC') or die('Restricted access');
 				echo $this->pageNav->orderDownIcon( $i, $n, true, 'orderdown', 'Move Down', $this->ordering );
 				?>
 			</td>
-			<td align="center"><?php echo $row->language_title; ?></td>
+			<td align="center"><?php echo $row->language_title ? $row->language_title : JText::_('JALL'); ?></td>
 			<td align="center"><?php echo $row->id; ?></td>
 		</tr>
 		<?php $k = 1 - $k; } ?>

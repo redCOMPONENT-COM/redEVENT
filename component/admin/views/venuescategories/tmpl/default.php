@@ -150,7 +150,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 				<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?> class="text_area" style="text-align: center" />
 			</td>
-			<td align="center"><?php echo $row->language_title; ?></td>
+			<td align="center"><?php echo $row->language_title ? $row->language_title : JText::_('JALL');; ?></td>
 			<td align="center"><?php echo $row->id; ?></td>
 		</tr>
 		<?php $k = 1 - $k; } ?>
