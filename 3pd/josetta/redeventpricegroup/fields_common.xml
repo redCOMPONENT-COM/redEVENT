@@ -64,7 +64,7 @@
 		<field>
 			<id>adminonly</id>
 			<name>COM_REDEVENT_PRICEGROUPS_ADMINONLY</name>
-			<column>COM_REDEVENT_PRICEGROUPS_ADMINONLY_TIP</column>
+			<column>adminonly</column>
 			<translate>no</translate>
 			<display>no</display>
 			<require>no</require>

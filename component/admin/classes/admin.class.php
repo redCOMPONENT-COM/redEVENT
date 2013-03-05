@@ -34,21 +34,21 @@ class ELAdmin {
 
 	/**
 	 * returns parameters for redevent
-	 * 
+	 *
 	 * @return object
 	 */
 	function config()
 	{
 		static $config;
-		
+
 		if (!$config)
 		{
 			$config = JTable::getInstance('RedEvent_settings', '');
 			$config->load(1);
-		}		
+		}
 		return $config;
 	}
-	
+
 	/**
 	 * display the submenu
 	 */
@@ -71,12 +71,12 @@ class ELAdmin {
 	/**
 	 * Get a option list of all categories
 	 */
-	public function getCategoriesOptions() 
+	public function getCategoriesOptions()
 	{
 		$db =& JFactory::getDBO();
 		$params = JComponentHelper::getParams('com_redevent');
 		$ordering = $params->get('cat_select_ordering');
-		
+
 		$query = ' SELECT c.id, c.catname, (COUNT(parent.catname) - 1) AS depth '
            . ' FROM #__redevent_categories AS c, '
            . ' #__redevent_categories AS parent '
@@ -85,9 +85,9 @@ class ELAdmin {
            . ($ordering ? ' ORDER BY c.catname': ' ORDER BY c.lft')
            ;
     $db->setQuery($query);
-    
+
     $results = $db->loadObjectList();
-    
+
     $options = array();
     foreach((array) $results as $cat)
     {
@@ -95,11 +95,11 @@ class ELAdmin {
     }
 		return $options;
 	}
-	
+
 	/**
 	 * Get a option list of all categories
 	 */
-	public function getVenuesCategoriesOptions() 
+	public function getVenuesCategoriesOptions()
 	{
 		$db =& JFactory::getDBO();
 	 $query = ' SELECT c.id, c.name, (COUNT(parent.name) - 1) AS depth '
@@ -110,9 +110,9 @@ class ELAdmin {
            . ' ORDER BY c.lft;'
            ;
     $db->setQuery($query);
-    
+
     $results = $db->loadObjectList();
-    
+
     $options = array();
     foreach((array) $results as $cat)
     {
@@ -124,17 +124,17 @@ class ELAdmin {
 	/**
 	 * Get a option list of all categories
 	 */
-	public function getVenuesOptions() 
+	public function getVenuesOptions()
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 	 $query = ' SELECT v.id, v.venue '
            . ' FROM #__redevent_venues AS v '
            . ' ORDER BY v.venue'
            ;
     $db->setQuery($query);
-    
+
     $results = $db->loadObjectList();
-    
+
     $options = array();
     foreach((array) $results as $r)
     {
@@ -142,23 +142,23 @@ class ELAdmin {
     }
 		return $options;
 	}
-	
+
 	/**
 	 * checks wether a tag already exists
-	 * 
+	 *
 	 * @param string $tag tag name
 	 * @return mixed boolean false if doesn't exists, tag object if it does
 	 */
 	function checkTagExists($tag)
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$model = JModel::getInstance('tags', 'redeventModel');
 		$core = $model->getData();
 		foreach ($core as $cat)
 		{
 			foreach ($cat as $t)
 			{
-				if (strcasecmp($t->name, $tag) == 0) 
+				if (strcasecmp($t->name, $tag) == 0)
 				{
 					return $t;
 				}

@@ -58,10 +58,18 @@ class RedeventTableCustomfield extends FOFTable
 		// check that there is only alphanumerics in tag ?
 
 		// check tag unicity
-		$exists = ELAdmin::checkTagExists($this->tag);
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
 
-		if ($exists && !($exists->section == 'custom' && $exists->id == $this->id)) {
-			$this->setError(JText::sprintf('COM_REDEVENT_ERROR_TAG_ALREADY_EXISTS', $exists->section));
+		$query->select('id');
+		$query->from('#__redevent_fields');
+		$query->where('tag = ' . $db->quote($this->tag));
+
+		$db->setQuery($query);
+		$exists = $db->loadObject();
+
+		if ($exists && $exists->id != $this->id) {
+			$this->setError(JText::sprintf('COM_REDEVENT_ERROR_TAG_ALREADY_EXISTS', $this->tag));
 			return false;
 		}
 

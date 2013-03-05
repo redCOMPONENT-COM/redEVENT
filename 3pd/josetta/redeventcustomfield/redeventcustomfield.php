@@ -30,12 +30,12 @@ require_once JPATH_ADMINISTRATOR . '/components/com_josetta/classes/extensionplu
  * Josetta! translation Plugin
  *
  * @package		Josetta
- * @subpackage	josetta.redeventpricegroup
+ * @subpackage	josetta.redeventcustomfield
  */
-class plgJosetta_extRedeventpricegroup extends JosettaClassesExtensionplugin
+class plgJosetta_extRedeventcustomfield extends JosettaClassesExtensionplugin
 {
-	protected $_context = 'com_redevent_pricegroup';
-	protected $_defaultTable = 'redevent_pricegroups';
+	protected $_context = 'com_redevent_customfield';
+	protected $_defaultTable = 'redevent_customfields';
 
 	public function __construct(&$subject, $config = array())
 	{
@@ -70,7 +70,7 @@ class plgJosetta_extRedeventpricegroup extends JosettaClassesExtensionplugin
 	 */
 	public function onJosettaGetTypes()
 	{
-		$item = array( self::$this->_context => 'redEVENT - ' . JText::_('COM_REDEVENT_title_pricegroups'));
+		$item = array( self::$this->_context => 'redEVENT - ' . JText::_('COM_REDEVENT_title_customfields'));
 		$items[] = $item;
 		return $items;
 	}
@@ -84,7 +84,7 @@ class plgJosetta_extRedeventpricegroup extends JosettaClassesExtensionplugin
 	{
 		// Set the table directory
 		JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_redevent/tables');
-		$table = FOFTable::getAnInstance('Pricegroup', 'RedeventTable');
+		$table = FOFTable::getAnInstance('Customfield', 'RedeventTable');
 
 		return $table;
 	}
