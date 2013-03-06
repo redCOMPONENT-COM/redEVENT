@@ -24,7 +24,7 @@
 defined('_JEXEC') or die('Restricted access'); ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-	
+
  	<table class="adminform">
 		<tr>
 			<td width="100%">
@@ -36,13 +36,13 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<td nowrap="nowrap">
 			  <?php
 			  echo $this->lists['state'];
-				?>	
+				?>
 
 			<select name="language" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('language')); ?>
 			</select>
-			
+
 			</td>
 		</tr>
 	</table>
@@ -157,7 +157,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 				<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?> class="text_area" style="text-align: center" />
 			</td>
-			<td align="center"><?php echo $row->language_title; ?></td>
+			<td align="center"><?php echo $row->language == '*' ? Jtext::_('All') : $row->language_title; ?></td>
 			<td align="center"><?php echo $row->id; ?></td>
 		</tr>
 		<?php $k = 1 - $k; } ?>

@@ -200,7 +200,7 @@ $app = &JFactory::getApplication();
 						<?php echo $image; ?>
 					</span>
 				</td>
-				<td align="center"><?php echo $row->language_title ? $row->language_title : JText::_('JALL');; ?></td>
+				<td align="center"><?php echo $row->language == '*' ? Jtext::_('All') : $row->language_title; ?></td>
 				<td align="center"><?php echo $row->id; ?></td>
 			</tr>
 			<?php $k = 1 - $k;  } ?>

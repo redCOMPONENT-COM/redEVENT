@@ -186,7 +186,7 @@ defined('_JEXEC') or die('Restricted access');
 				echo $this->pageNav->orderDownIcon( $i, $n, true, 'orderdown', 'Move Down', $this->ordering );
 				?>
 			</td>
-			<td align="center"><?php echo $row->language_title ? $row->language_title : JText::_('JALL'); ?></td>
+			<td align="center"><?php echo $row->language == '*' ? Jtext::_('All') : $row->language_title; ?></td>
 			<td align="center"><?php echo $row->id; ?></td>
 		</tr>
 		<?php $k = 1 - $k; } ?>
