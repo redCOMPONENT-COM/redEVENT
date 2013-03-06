@@ -66,7 +66,7 @@ class RedEventModelVenues extends JModel
 	 * @var array
 	 */
 	private $_cats   = null;
-	
+
 	/**
 	 * Constructor
 	 *
@@ -80,28 +80,28 @@ class RedEventModelVenues extends JModel
 		$option = JRequest::getCmd('option');
 
 		$limit      = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-		$this->setState('limit', $limit);		
+		$this->setState('limit', $limit);
 		$limitstart = $mainframe->getUserStateFromRequest( $option.'.venues.limitstart', 'limitstart', 0, '', 'int' );
 		// In case limit has been changed, adjust it
 		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
 		$this->setState('limitstart', $limitstart);
-				
+
 		$filter_state = $mainframe->getUserStateFromRequest( $option.'.filter_state', 'filter_state', '', 'word' );
 		$this->setState('filter_state', $filter_state);
-		
+
 		$filter       = $mainframe->getUserStateFromRequest( $option.'.filter', 'filter', '', 'int' );
 		$this->setState('filter', $filter);
-		
+
 		$search       = $mainframe->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
 		$search       = $this->_db->getEscaped( trim(JString::strtolower( $search ) ) );
 		$this->setState('search', $search);
-		
+
 		$filter_language = $mainframe->getUserStateFromRequest( $option.'.filter_language', 'filter_language', '', 'string' );
 		$this->setState('filter_language', $filter_language);
-		
-		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.venues.filter_order', 'filter_order', 'a.title', 'cmd' );
+
+		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.venues.filter_order', 'filter_order', 'l.venue', 'cmd' );
 		$this->setState('filter_order', $filter_order);
-		
+
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.venues.filter_order_Dir', 'filter_order_Dir', '', 'word' );
 		$this->setState('filter_order_Dir', $filter_order_Dir);
 
@@ -190,7 +190,7 @@ class RedEventModelVenues extends JModel
 
 		$db = &JFactory::getDbo();
 		$query = $db->getQuery(true);
-		
+
 		$query->select('l.*, u.email, u.name AS author');
 		$query->from('#__redevent_venues AS l');
 		$query->join('LEFT', '#__users AS u ON u.id = l.created_by');
@@ -198,11 +198,11 @@ class RedEventModelVenues extends JModel
 		// Join over the language
 		$query->select('lg.title AS language_title');
 		$query->join('LEFT', $db->quoteName('#__languages').' AS lg ON lg.lang_code = l.language');
-		
+
 		// Get the WHERE and ORDER BY clauses for the query
 		$query = $this->_buildContentWhere($query);
 		$query = $this->_buildContentOrderBy($query);
-		
+
 		return $query;
 	}
 
@@ -269,7 +269,7 @@ class RedEventModelVenues extends JModel
 			// 			$this->setState('filter_language', $filter_language);
 			$query->where('l.language = '.$this->_db->quote($filter_language));
 		}
-		
+
 		return $query;
 	}
 
@@ -286,7 +286,7 @@ class RedEventModelVenues extends JModel
 		* Get editor name
 		*/
 		$count = count($rows);
-		
+
 		for ($i=0, $n=$count; $i < $n; $i++) {
 
 			$query = 'SELECT name'
@@ -296,7 +296,7 @@ class RedEventModelVenues extends JModel
 
 			$this->_db->setQuery( $query );
 			$rows[$i]->editor = $this->_db->loadResult();
-			
+
 			/*
 			* Get nr of assigned events
 			*/
@@ -304,10 +304,10 @@ class RedEventModelVenues extends JModel
 				.' FROM #__redevent_event_venue_xref'
 				.' WHERE venueid = ' . (int)$rows[$i]->id
 				;
-					
+
 			$this->_db->setQuery($query);
 			$rows[$i]->assignedevents = $this->_db->loadResult();
-			
+
 			// get categories
 			$query =  ' SELECT c.id, c.name, c.checked_out '
               . ' FROM #__redevent_venues_categories as c '
@@ -352,7 +352,7 @@ class RedEventModelVenues extends JModel
 				$this->setError($this->_db->getErrorMsg());
 				return false;
 			}
-			
+
 			// for finder plugins
 			$dispatcher	= JDispatcher::getInstance();
 			JPluginHelper::importPlugin('finder');
@@ -445,29 +445,29 @@ class RedEventModelVenues extends JModel
     		$msg 	= JText::sprintf( 'COM_REDEVENT_VENUE_ASSIGNED_EVENT_S', $cids );
     		return $msg;
 		}
-					
+
 		// for finder plugins
 		$dispatcher	= JDispatcher::getInstance();
 		JPluginHelper::importPlugin('finder');
 		foreach ($cid as $row_id)
 		{
 			$obj = new stdclass;
-			$obj->id = $row_id;				
+			$obj->id = $row_id;
 			// Trigger the onFinderAfterDelete event.
 			$dispatcher->trigger('onFinderAfterDelete', array('com_redevent.venue', $obj));
 		}
-		
+
 		$total 	= count( $cid );
 		$msg 	= $total.' '.JText::_('COM_REDEVENT_VENUES_DELETED');
 		return $msg;
 	}
-	
+
 
 
 	/**
 	 * Get a option list of all categories
 	 */
-	public function getCategoriesOptions() 
+	public function getCategoriesOptions()
 	{
 	 $query = ' SELECT c.id, c.name, (COUNT(parent.name) - 1) AS depth '
            . ' FROM #__redevent_venues_categories AS c, '
@@ -477,9 +477,9 @@ class RedEventModelVenues extends JModel
            . ' ORDER BY c.lft;'
            ;
     $this->_db->setQuery($query);
-    
+
     $results = $this->_db->loadObjectList();
-    
+
     $options = array();
     foreach((array) $results as $cat)
     {
@@ -487,7 +487,7 @@ class RedEventModelVenues extends JModel
     }
 		return $options;
 	}
-	
+
 	/**
 	 * export venues
    *
@@ -543,10 +543,10 @@ class RedEventModelVenues extends JModel
 		}
 		return $results;
 	}
-	
+
   /**
 	 * insert venues database
-	 * 
+	 *
 	 * @param array $records
 	 * @param string $duplicate_method method for handling duplicate record (ignore, create_new, update)
 	 * @return boolean true on success
@@ -555,17 +555,17 @@ class RedEventModelVenues extends JModel
 	{
 		$app = JFactory::getApplication();
 		$count = array('added' => 0, 'updated' => 0, 'ignored' => 0);
-		
+
 		foreach ($records as $r)
-		{			
-			$v = $this->getTable('RedEvent_venues', '');	
+		{
+			$v = $this->getTable('RedEvent_venues', '');
 			$v->bind($r);
-			
-			if (isset($r->id) && $r->id) 
+
+			if (isset($r->id) && $r->id)
 			{
 				// load existing data
 				$found = $v->load($r->id);
-				
+
 				// discard if set to ignore duplicate
 				if ($found && $duplicate_method == 'ignore') {
 					$count['ignored']++;
@@ -600,7 +600,7 @@ class RedEventModelVenues extends JModel
 				$cats_ids[] = $this->_getCatId($c);
 			}
 			$v->setCats($cats_ids);
-			
+
 			if ($updating) {
 				$count['updated']++;
 			}
@@ -630,10 +630,10 @@ class RedEventModelVenues extends JModel
 		}
 		return $id;
 	}
-	
+
 	/**
 	 * returns array of current cats names indexed by ids
-	 * 
+	 *
 	 * @return array
 	 */
 	private function _getCats()
