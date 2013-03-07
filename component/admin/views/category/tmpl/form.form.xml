@@ -83,6 +83,7 @@
 		label="COM_REDEVENT_GROUP"
 		description="COM_REDEVENT_GROUP"
 		class="inputbox">
+		<option value=""></option>
 	</field>
 		
 	<field
