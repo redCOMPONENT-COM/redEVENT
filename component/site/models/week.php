@@ -32,27 +32,27 @@ require_once('baseeventslist.php');
  * @package Joomla
  * @subpackage redEVENT
  * @since		2.0
- */
+*/
 class RedEventModelWeek extends RedeventModelBaseEventList
 {
 	protected $_week;
-	
+
 	protected $_data;
-	
+
 	public function __construct()
 	{
 		parent::__construct();
 		$week = JRequest::getVar('week');
 		$this->setWeek($week);
-		if (!$week) // is there an offset in the view parameters ? 
-		{			
+		if (!$week) // is there an offset in the view parameters ?
+		{
 			$offset = JRequest::getInt('weekoffset');
 			if (intval($offset)) {
 				$this->addOffset(intval($offset));
 			}
 		}
 	}
-	
+
 	/**
 	 * sets the week reference, must be in year-number format
 	 * @param string $week null for current week
@@ -69,18 +69,18 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 			JError::raiseWarning(0, 'wrong week format '.$week);
 		}
 	}
-	
+
 	/**
 	 * adds an offset to current week
 	 * @param int $offset
 	 */
 	public function addOffset($offset)
 	{
-		$aday = reset($this->getWeekDays());
+		$aday = $this->getWeekMonday();
 		$week = date("YW", strtotime(sprintf("%s %+d weeks",$aday, $offset)));
 		$this->setWeek($week);
 	}
-	
+
 	/**
 	 * Method to get the Events
 	 *
@@ -90,12 +90,12 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 	function &getData( )
 	{
 		$pop	= JRequest::getBool('pop');
-	
+
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_data))
 		{
 			$query = $this->_buildQuery();
-	
+
 			if ($pop) {
 				// put a limit for print pagination
 				//$this->setLimit(5);
@@ -105,10 +105,10 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 			$this->_data = $this->_getPlacesLeft($this->_data);
 			$this->_data = $this->_getPrices($this->_data);
 		}
-	
+
 		return $this->_data;
 	}
-	
+
 	/**
 	 * Build the where clause
 	 *
@@ -117,41 +117,41 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 	 */
 	function _buildWhere()
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
-		$user		= & JFactory::getUser();
-		$gid		= (int) $user->get('aid');
+		$user		= JFactory::getUser();
+		$gid		= max($user->getAuthorisedViewLevels());
 
 		// Get the paramaters of the active menu item
 		$params 	= & $mainframe->getParams();
-		
+
 		$where = array();
-		
+
 		if (!$this->_week)
 		{
 			// current week
-			$mode = $params->get('week_start') == 'MO' ? 1 : 0; 
+			$mode = $params->get('week_start') == 'MO' ? 3 : 6;
 			$where[] = ' YEARWEEK(x.dates, '.$mode.') = YEARWEEK(NOW(), '.$mode.') ';
 		}
 		else
 		{
-			$firstday = reset($this->getWeekDays());
-			$mode = $params->get('week_start') == 'MO' ? 1 : 0; 
+			$firstday = $this->getWeekMonday();
+			$mode = $params->get('week_start') == 'MO' ? 3 : 6;
 			$where[] = ' YEARWEEK(x.dates, '.$mode.') = YEARWEEK('.$this->_db->Quote($firstday).', '.$mode.') ';
 		}
-								
+
 		// Second is to only select events assigned to category the user has access to
 		$where[] = ' c.access <= '.$gid;
 
 		/*
 		 * If we have a filter, and this is enabled... lets tack the AND clause
-		 * for the filter onto the WHERE clause of the item query.
-		 */
+		* for the filter onto the WHERE clause of the item query.
+		*/
 		if ($params->get('filter_text'))
 		{
 			$filter 		  = $this->getState('filter');
 			$filter_type 	= $this->getState('filter_type');
-			
+
 			if ($filter)
 			{
 				// clean filter variables
@@ -172,58 +172,59 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 					case 'city' :
 						$where[] = ' LOWER( l.city ) LIKE '.$filter;
 						break;
-						
+
 					case 'type' :
 						$where[] = ' LOWER( c.catname ) LIKE '.$filter;
 						break;
 				}
 			}
 		}
-	    
-		if ($ev = $this->getState('filter_event')) 
-		{		
+
+		if ($ev = $this->getState('filter_event'))
+		{
 			$where[] = 'a.id = '.$this->_db->Quote($ev);
 		}
-		
-    if ($filter_venue = $this->getState('filter_venue'))
-    {
-    	$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);    	
-    }
-	    
-		if ($cat = $this->getState('filter_category')) 
-		{		
-    	$category = $this->getCategory((int) $cat);
-    	if ($category) {
-				$where[] = '(c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
-    	}
+
+		if ($filter_venue = $this->getState('filter_venue'))
+		{
+			$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);
 		}
-		
+
+		if ($cat = $this->getState('filter_category'))
+		{
+			$category = $this->getCategory((int) $cat);
+			if ($category) {
+				$where[] = '(c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
+			}
+		}
+
 		// more filters
 		if ($state = JRequest::getVar('state', '', 'request', 'string')) {
 			$where[] = ' STRCMP(l.state, '.$this->_db->Quote($state).') = 0 ';
-		}		
+		}
 		if ($country = JRequest::getVar('country', '', 'request', 'string')) {
 			$where[] = ' STRCMP(l.country, '.$this->_db->Quote($country).') = 0 ';
 		}
-			
-    $customs = $this->getState('filter_customs');	
-    foreach ((array) $customs as $key => $custom)
-    {
-      if ($custom != '') 
-      {
-      	if (is_array($custom)) {
-      		$custom = implode("/n", $custom);
-      	}
-        $where[] = ' custom'.$key.' LIKE ' . $this->_db->Quote('%'.$custom.'%');
-      }
-    }    
-		
+
+		$customs = $this->getState('filter_customs');
+
+		foreach ((array) $customs as $key => $custom)
+		{
+			if ($custom != '')
+			{
+				if (is_array($custom)) {
+					$custom = implode("/n", $custom);
+				}
+				$where[] = ' custom'.$key.' LIKE ' . $this->_db->Quote('%'.$custom.'%');
+			}
+		}
+
 		return ' WHERE '.implode(' AND ', $where);
 	}
-	
+
 	/**
 	 * returns current week reference (year-weeknumber)
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getWeek()
@@ -234,10 +235,10 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 		}
 		return $this->_week;
 	}
-	
+
 	/**
 	 * return week number
-	 * 
+	 *
 	 * @return int
 	 */
 	public function getWeekNumber()
@@ -245,7 +246,7 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 		$week = $this->getWeek();
 		return substr($week, 5);
 	}
-	
+
 	/**
 	 * return year
 	 *
@@ -256,8 +257,8 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 		$week = $this->getWeek();
 		return substr($week, 0, 4);
 	}
-	
-	
+
+
 	/**
 	 * return days of the week
 	 *
@@ -268,27 +269,37 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 		$week = $this->getWeek();
 		$week_number = $this->getWeekNumber();
 		$year = $this->getYear();
-		
+
 		$days = array();
-		for($day=1; $day<=7; $day++)
+		if (JFactory::getApplication()->getParams()->get('week_start') == 'SU')
 		{
-			$days[] = date('Y-m-d', strtotime($year."W".$week_number.$day));
+			$offset = -1;
 		}
+		else
+		{
+			$offset = 0;
+		}
+
+		for ($day = 1; $day <= 7; $day++)
+		{
+			$days[] = date('Y-m-d', strtotime($year."W".$week_number.($day + $offset)));
+		}
+
 		return $days;
 	}
-	
+
 	/**
 	 * return reference for previous week (year-weeknumber)
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getPreviousWeek()
 	{
-		$aday = reset($this->getWeekDays());
+		$aday = $this->getWeekMonday();
 		$prev = strtotime("$aday -7 days");
 		return date('YW', $prev);
 	}
-	
+
 	/**
 	 * return reference for next week (year-weeknumber)
 	 *
@@ -296,8 +307,20 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 	 */
 	public function getNextWeek()
 	{
-		$aday = reset($this->getWeekDays());
+		$aday = $this->getWeekMonday();
 		$prev = strtotime("$aday +7 days");
 		return date('YW', $prev);
+	}
+
+	/**
+	 * returns the date for monday in current week, to be safe to use for week calculations
+	 * as first day can be msunday or monday
+	 *
+	 * @return string date
+	 */
+	public function getWeekMonday()
+	{
+		$days = $this->getWeekDays();
+		return $days[1];
 	}
 }

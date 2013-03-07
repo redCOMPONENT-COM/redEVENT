@@ -38,7 +38,7 @@ $days = $this->sortByDay();
 			</tr>
 		</tbody>
 	</table>
-	<?php for ($i = $this->start; $i < 7 + $this->start; $i++): ?>
+	<?php for ($i = 0; $i < 7; $i++): ?>
 		<div class="day-events">
 		<div class="day-title"><?php echo $this->getDayName($i); ?></div>
 		<?php if (isset($days[$i]) && count($days[$i])): ?>
