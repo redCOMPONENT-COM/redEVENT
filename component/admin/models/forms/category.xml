@@ -28,14 +28,6 @@
 		class="inputbox" />
 	
 	<field
-		name="course_code"
-		type="text"
-		default=""
-		label="COM_REDEVENT_COURSE_CODE"
-		description ="COM_REDEVENT_COURSE_CODE" 
-		class="inputbox" />
-	
-	<field
 		name="published"
 		type="list"
 		class="inputbox"

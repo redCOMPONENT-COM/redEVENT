@@ -21,22 +21,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-defined( '_JEXEC' ) or die( '' );
+defined('_JEXEC') or die('');
 
-// include base class of josettadefinition.
+// Include base class of josettadefinition.
 require_once JPATH_ADMINISTRATOR . '/components/com_josetta/classes/extensionplugin.php';
 
 /**
  * Josetta! translation Plugin
  *
- * @package		Josetta
- * @subpackage	josetta.redeventcustomfield
+ * @package     Josetta
+ * @subpackage  josetta.redeventcustomfield
+ * @since       2.5
  */
 class plgJosetta_extRedeventcategory extends JosettaClassesExtensionplugin
 {
 	protected $_context = 'com_redevent_category';
+
 	protected $_defaultTable = 'redevent_categories';
 
+	/**
+	 * constructor
+	 *
+	 * @param   string  &$subject  subject
+	 * @param   array   $config    config
+	 */
 	public function __construct(&$subject, $config = array())
 	{
 		include_once JPATH_LIBRARIES . '/fof/include.php';
@@ -66,12 +74,12 @@ class plgJosetta_extRedeventcategory extends JosettaClassesExtensionplugin
 	 * and a displayable title
 	 *
 	 * @return array
-	 *
 	 */
 	public function onJosettaGetTypes()
 	{
 		$item = array( self::$this->_context => 'redEVENT - ' . JText::_('COM_REDEVENT_title_categories'));
 		$items[] = $item;
+
 		return $items;
 	}
 
@@ -83,26 +91,114 @@ class plgJosetta_extRedeventcategory extends JosettaClassesExtensionplugin
 	protected function _getTable()
 	{
 		// Set the table directory
-		JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_redevent/tables');
+		JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_redevent/tables');
 		$table = FOFTable::getAnInstance('Category', 'RedeventTable');
 
 		return $table;
 	}
+
 	/**
-	 * Method to load an item from the database
+	 * Hook for module to add their own fields processing
+	 * to the form xml
 	 *
-	 * @param string $context a context string, to either process o* @param int $id id of the element
-	 *
-	 * @return object an object representing the item, with no pa*
+	 * @return string
 	 */
-	public function oonJosettaLoadItem( $context, $id = '')
+	protected function _output3rdPartyFieldsXml($xmlData, $field, $itemType, $item, $originalItem, $targetLanguage)
 	{
-		if ((!empty($context) && ($context != $this->_context))||(empty($id)))
+		switch ($xmlData->fieldType)
 		{
-			return;
+			case 'regroup':
+				$options = $this->getOptions($field);
+
+				foreach ($options as $option)
+				{
+					$xmlData->subfield .= '<option value="' . (string) $option->value . '">' . (string) $option->text . '</option>';
+				}
 		}
-		//call the parent base class method to load the article raw data
-		$item = parent::onJosettaLoadItem( $context, $id);
-		echo '<pre>';print_r($item); echo '</pre>';exit;
+
+		return $xmlData;
+	}
+
+	/**
+	 * Format a the original field value for display on the translate view
+	 *
+	 * @param   object  $originalItem        the actual data of the original item
+	 * @param   string  $originalFieldTitle  the field title
+	 * @param   object  $field               the Joomla! field object
+	 *
+	 * @return   string the formatted, ready to display, string
+	 */
+	public function onJosettaGet3rdPartyFormatOriginalField($originalItem, $originalFieldTitle, $field)
+	{
+		$displayText = null;
+
+		switch ($originalFieldTitle)
+		{
+			case 'groupid':
+
+				if (!$originalItem->groupid)
+				{
+					$displayText = '';
+					break;
+				}
+
+				$db      = JFactory::getDbo();
+				$query = $db->getQuery(true);
+
+				$query->select('name');
+				$query->from('#__redevent_groups');
+				$query->where('id = ' . $originalItem->groupid);
+
+				$db->setQuery($query);
+				$res = $db->loadResult();
+				$displayText = $res;
+				break;
+		}
+
+		return $displayText;
+	}
+
+	/**
+	 * Method to get the field options.
+	 *
+	 * @param   object  $field  field
+	 *
+	 * @return  array  The field option objects.
+	 *
+	 * @since   11.1
+	 */
+	protected function getOptions($field)
+	{
+		// Initialize variables.
+		$options = array();
+
+		foreach ($field->children() as $option)
+		{
+			// Only add <option /> elements.
+			if ($option->getName() != 'option')
+			{
+				continue;
+			}
+
+			// Create a new option object based on the <option /> element.
+			$tmp = JHtml::_(
+			'select.option', (string) $option['value'],
+			JText::alt(trim((string) $option), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $field->fieldname)), 'value', 'text',
+			((string) $option['disabled'] == 'true')
+			);
+
+			// Set some option attributes.
+			$tmp->class = (string) $option['class'];
+
+			// Set some JavaScript option attributes.
+			$tmp->onclick = (string) $option['onclick'];
+
+			// Add the option object to the result set.
+			$options[] = $tmp;
+		}
+
+		reset($options);
+
+		return $options;
 	}
 }

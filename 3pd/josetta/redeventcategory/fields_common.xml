@@ -22,7 +22,19 @@
 			<require>no</require>
 			<readonly>true</readonly>
 		</field>
-
+		
+		<field>
+			<id>parent_id</id>
+			<name>COM_REDEVENT_PARENT_CATEGORY</name>
+			<column>parent_id</column>
+			<description>COM_REDEVENT_PARENT_CATEGORY</description>
+			<translate>yes</translate>
+			<type>recategory</type>
+			<addfieldpath>/administrator/components/com_redevent/models/fields</addfieldpath>
+			<display>yes</display>
+			<option value=""></option>
+		</field>
+		
 		<field>
 			<id>catname</id>
 			<name>COM_REDEVENT_NAME</name>
@@ -49,23 +61,40 @@
 		</field>
 
 		<field>
-			<id>description</id>
+			<id>catdescription</id>
 			<name>COM_REDEVENT_DESCRIPTION</name>
 			<description>COM_REDEVENT_DESCRIPTION</description>
-			<column>description</column>
+			<column>catdescription</column>
 			<type>editor</type>
 			<translate>yes</translate>
 			<display>yes</display>
 			<require>no</require>
 		</field>
 		
-		<field>
-			<id>adminonly</id>
-			<column>adminonly</column>
-			<translate>no</translate>
-			<display>no</display>
-			<require>no</require>
-		</field>
+		
+	    <field>
+	      <id>meta_description</id>
+	      <name>JFIELD_META_DESCRIPTION_LABEL</name>
+	      <description>JFIELD_META_DESCRIPTION_DESC</description>
+	      <column>meta_description</column>
+	      <type>textarea</type>
+	      <size>0</size>
+	      <length>0</length>
+	      <translate>yes</translate>
+	      <display>yes</display>
+	    </field>
+	    
+	    <field>
+	      <id>meta_keywords</id>
+	      <name>JFIELD_META_KEYWORDS_LABEL</name>
+	      <description>JFIELD_META_KEYWORDS_DESC</description>
+	      <column>meta_keywords</column>
+	      <type>textarea</type>
+	      <size>0</size>
+	      <length>0</length>
+	      <translate>yes</translate>
+	      <display>yes</display>
+	    </field>
 		
 		<field>
 			<id>color</id>
@@ -90,6 +119,14 @@
 			<display>no</display>
 			<require>no</require>
 		</field>
+	    
+		<field>
+			<id>published</id>
+			<column>published</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>
 		
 	    <field>
 	      <id>access</id>
@@ -110,33 +147,19 @@
 			<type>regroup</type>
 			<addfieldpath>/administrator/components/com_redevent/models/fields</addfieldpath>
 			<display>yes</display>
-			<require>no</require>
 			<option value=""></option>
-		</field>
-		
-		
-	    <field>
-	      <id>meta_description</id>
-	      <name>JFIELD_META_DESCRIPTION_LABEL</name>
-	      <description>JFIELD_META_DESCRIPTION_DESC</description>
-	      <column>meta_description</column>
-	      <type>textarea</type>
-	      <size>0</size>
-	      <length>0</length>
-	      <translate>yes</translate>
-	      <display>yes</display>
-	    </field>
-	    <field>
-	      <id>meta_keywords</id>
-	      <name>JFIELD_META_KEYWORDS_LABEL</name>
-	      <description>JFIELD_META_KEYWORDS_DESC</description>
-	      <column>meta_keywords</column>
-	      <type>textarea</type>
-	      <size>0</size>
-	      <length>0</length>
-	      <translate>yes</translate>
-	      <display>yes</display>
-	    </field>
+		</field>	
+
+		<field>
+			<id>event_template</id>
+			<name>COM_REDEVENT_Category_Event_template</name>
+			<column>event_template</column>
+			<description>COM_REDEVENT_Category_Event_template</description>
+			<translate>yes</translate>
+			<type>session</type>
+			<addfieldpath>/administrator/components/com_redevent/models/fields</addfieldpath>
+			<display>yes</display>
+		</field>		
     
 	</fields>
 </josetta>
