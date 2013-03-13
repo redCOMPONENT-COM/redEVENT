@@ -48,7 +48,7 @@ class RedeventModelCalendar extends JModel
      * @var array
      */
     var $_categories = null;
-    
+
     var $_topcat = null;
 
     /**
@@ -97,17 +97,17 @@ class RedeventModelCalendar extends JModel
       {
         $query = $this->_buildQuery();
         $this->_data = $this->_getList( $query );
-        
+
         // we have the events happening this month. We have to create occurences for each day for multiple day events.
-        $multi = array();        
+        $multi = array();
         foreach($this->_data AS $item)
         {
           $item->categories = $this->getCategories($item->id);
-          
-          if(!is_null($item->enddates) ) 
+
+          if(!is_null($item->enddates) )
           {
-            if( $item->enddates != $item->dates) 
-            {              	
+            if( $item->enddates != $item->dates)
+            {
               $day = $item->start_day;
 
               for ($counter = 0; $counter <= $item->datediff-1; $counter++)
@@ -116,7 +116,7 @@ class RedeventModelCalendar extends JModel
 
                 //next day:
                 $nextday = mktime(0, 0, 0, $item->start_month, $day, $item->start_year);
-                	
+
                 //ensure we only generate days of current month in this loop
                 if (strftime('%m', $this->_date) == strftime('%m', $nextday)) {
                   $multi[$counter] = clone $item;
@@ -156,19 +156,20 @@ class RedeventModelCalendar extends JModel
     function _buildQuery()
     {
 			$acl = UserAcl::getInstance();
-			
+
 			$gids = $acl->getUserGroupsIds();
 			if (!is_array($gids) || !count($gids)) {
 				$gids = array(0);
 			}
 			$gids = implode(',', $gids);
-		
+
 			// Get the WHERE clauses for the query
 			$where = $this->_buildWhere();
 
 			//Get Events from Database
 			$query = ' SELECT DATEDIFF(x.enddates, x.dates) AS datediff, a.id, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, '
 			       . ' a.title, x.venueid as locid, a.datdescription, a.created, l.venue, l.city, l.state, l.url, l.street, l.country, x.featured, '
+			       . ' a.datimage, '
 			       . ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
 			       . ' DAYOFMONTH(x.dates) AS start_day, YEAR(x.dates) AS start_year, MONTH(x.dates) AS start_month,'
 			       . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug,'
@@ -204,7 +205,7 @@ class RedeventModelCalendar extends JModel
 
         // Get the paramaters of the active menu item
         $params = & $app->getParams();
-        
+
         $task = JRequest::getWord('task');
 
         $where = array();
@@ -216,21 +217,21 @@ class RedeventModelCalendar extends JModel
         {
             $where[] = ' x.published = 1 ';
         }
-        
+
         // category must be published too
         $where[] = ' cat.published = 1 ';
-        
+
 
         // only select events within specified dates. (chosen month)
         $monthstart = mktime(0, 0, 1, strftime('%m', $this->_date), 1, strftime('%Y', $this->_date));
         $monthend = mktime(0, 0, -1, strftime('%m', $this->_date)+1, 1, strftime('%Y', $this->_date));
-        
+
         $where[] = ' ((x.dates BETWEEN (\''.strftime('%Y-%m-%d', $monthstart).'\') AND (\''.strftime('%Y-%m-%d', $monthend).'\'))'
                  . ' OR (x.enddates BETWEEN (\''.strftime('%Y-%m-%d', $monthstart).'\') AND (\''.strftime('%Y-%m-%d', $monthend).'\')))';
-    
+
         // check if a category is specified
         $topcat = $params->get('topcat', '');
-        if (is_numeric($topcat) && $topcat) 
+        if (is_numeric($topcat) && $topcat)
         {
           // get children categories
           $query = ' SELECT lft, rgt FROM #__redevent_categories WHERE id = '. $this->_db->Quote($topcat);
@@ -245,13 +246,13 @@ class RedeventModelCalendar extends JModel
             $cats = $this->_db->loadResultArray();
             if ($cats) {
                $where[] = ' xcat.category_id IN ('. implode(', ', $cats) .')';
-            }            
+            }
           }
           else {
             JError::raiseWarning(0, JText::_('COM_REDEVENT_CATEGORY_NOT_FOUND'));
           }
         }
-        
+
         // acl
 				$where[] = ' (l.private = 0 OR gv.id IS NOT NULL) ';
 		    $where[] = ' (cat.private = 0 OR gc.id IS NOT NULL) ';
@@ -277,7 +278,7 @@ class RedeventModelCalendar extends JModel
             . ' ORDER BY c.ordering'
             ;
       $this->_db->setQuery( $query );
-      
+
       $this->_categories = $this->_db->loadObjectList();
 
       return $this->_categories;

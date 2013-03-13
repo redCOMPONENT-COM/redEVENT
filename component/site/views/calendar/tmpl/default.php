@@ -22,7 +22,7 @@ defined('_JEXEC') or die ('Restricted access');
 
 // build calendar
 $countcatevents = array ();
- 
+
 foreach ($this->rows as $row)
 {
 	//get event date
@@ -67,7 +67,7 @@ foreach ($this->rows as $row)
 	foreach($row->categories AS $category)
 	{
 		$cat_classes[] = 'cat'.$category->id;
-		 
+
 		//attach category color if any in front of the catname
 		if ($category->color) {
 			$cat_names[] = '<span class="colorpic" style="background-color: '.$category->color.';"></span>'.$category->catname;
@@ -75,12 +75,12 @@ foreach ($this->rows as $row)
 		else {
 			$cat_names[] = $category->catname;
 		}
-			
+
 		//attach category color if any in front of the event title in the calendar overview
 		if ( isset ($category->color) && $category->color) {
 			$colorpic .= '<span class="colorpic" style="background-color: '.$category->color.';"></span>';
 		}
-			
+
 		//count number of events per category
 		if (!array_key_exists($category->id, $countcatevents)) {
 			$countcatevents[$category->id] = 1;
@@ -116,10 +116,29 @@ foreach ($this->rows as $row)
 
 	//generate the output
 	$content .= $colorpic;
-	if ($this->params->get('show_start_time', 0)) {
-		$content .= REOutput::formattime($row->dates, $row->times).' ';
+	if ($this->params->get('show_start_time', 0))
+	{
+		$content .= REOutput::formattime($row->dates, $row->times) . ' ';
 	}
-	$content .= $this->caltooltip($catname.$eventname.$timehtml.$venue, $eventdate, $row->full_title, $detaillink, 'eventTip');
+
+	// Text to display in calendar
+	if ($this->params->get('session_display', 0) == 0 || !$row->datimage)
+	{
+		$text = $row->full_title;
+	}
+	elseif ($this->params->get('session_display', 0) == 1)
+	{
+		$img = redEVENTImage::getThumbUrl($row->datimage, $this->params->get('pic_size', 20));
+		$text = '<span class="session-image">' . JHTML::image($img, $row->full_title) . '</span>';
+	}
+	else
+	{
+		$img = redEVENTImage::getThumbUrl($row->datimage, $this->params->get('pic_size', 20));
+		$text = '<span class="session-image">' . JHTML::image($img, $row->full_title) . '</span>';
+		$text .= $row->full_title;
+	}
+
+	$content .= $this->caltooltip($catname.$eventname.$timehtml.$venue, $eventdate, $text, $detaillink, 'eventTip');
 	$content .= $contentend;
 	// add the event to the calendar
 	$this->cal->setEventContent($year, $month, $day, $content);
@@ -132,49 +151,49 @@ foreach ($this->rows as $row)
         	<?php echo $this->escape($this->params->get('page_title')); ?>
     	</h1>
     <?php endif; ?>
-	
-<?php  
+
+<?php
   // print the calendar
   if ($this->params->get('show_week_num', 1)) {
   	$this->cal->enableWeekNum($this->params->get('week_column_name'));
   }
   print ($this->cal->showMonth());
-  //return; 
+  //return;
 ?>
 </div>
 
 <div id="jlcalendarlegend">
-	
+
     <div id="buttonshowall">
         <?php echo JText::_('COM_REDEVENT_SHOWALL'); ?>
     </div>
-	
+
     <div id="buttonhideall">
         <?php echo JText::_('COM_REDEVENT_HIDEALL'); ?>
     </div>
-	
+
     <?php
     //print the legend
 	if($this->params->get('displayLegend')) :
-	
+
 	$counter = array();
-	
+
 	//walk through events
 	foreach ($this->rows as $row):
-		
+
 		//walk through the event categories
     	foreach ($row->categories as $cat) :
-    	
+
     		//sort out dupes
     		if(!in_array($cat->id, $counter)):
-    	
+
     			//add cat id to cat counter
     			$counter[] = $cat->id;
-    		
+
     			//build legend
         		if (array_key_exists($cat->id, $countcatevents)):
     			?>
-    			
+
     				<div class="eventCat" catid="<?php echo $cat->id; ?>">
         				<?php
         				if ( isset ($cat->color) && $cat->color) :
@@ -185,11 +204,11 @@ foreach ($this->rows as $row)
     				</div>
     			<?php
 				endif;
-			
+
 			endif;
-						
+
     	endforeach;
-    	
+
     endforeach;
 	endif;
     ?>

@@ -5,28 +5,52 @@
 			<![CDATA[COM_REDEVENT_CALENDAR_DESC]]>
 		</message>
 	</layout>
-   <fields name="params" addfieldpath="/administrator/components/com_redevent/models/fields">
-   	<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
-	    <field name="show_start_time" type="radio" default="0" label="COM_REDEVENT_VIEW_CALENDAR_SHOW_START_TIME_LABEL" description="COM_REDEVENT_VIEW_CALENDAR_SHOW_START_TIME_DESC">
-	       <option value="0">No</option>
-	       <option value="1">Yes</option>
-	     </field>
-	    <field name="show_tip_time" type="radio" default="0" label="COM_REDEVENT_VIEW_CALENDAR_SHOW_TIP_TIME_LABEL" description="COM_REDEVENT_VIEW_CALENDAR_SHOW_TIP_TIME_DESC">
-	       <option value="0">No</option>
-	       <option value="1">Yes</option>
-	     </field>
-	    <field name="displayLegend" type="radio" default="1" label="COM_REDEVENT_DISPLAY_LEGEND" description="COM_REDEVENT_DISPLAY_LEGEND_DESC">
-	       <option value="0">No</option>
-	       <option value="1">Yes</option>
-	     </field>
-	
-	     <field name="show_week_num" type="radio" default="1" label="COM_REDEVENT_VIEW_CALENDAR_SHOW_WEEK_NUM_LABEL" description="COM_REDEVENT_VIEW_CALENDAR_SHOW_WEEK_NUM_DESC">
-	       <option value="0">No</option>
-	       <option value="1">Yes</option>
-	     </field>
-	     <field name="week_column_name" type="text" default="" label="COM_REDEVENT_VIEW_CALENDAR_WEEK_COLUMN_NAME_LABEL" description="COM_REDEVENT_VIEW_CALENDAR_WEEK_COLUMN_NAME_DESC" />
-	     
-	     <field name="topcat" type="recategory" default="0" reset="true" size="15" label="COM_REDEVENT_SELECT_CATEGORY" description="COM_REDEVENT_SELECT_CATEGORY_DESC" />
-     </fieldset>
-   </fields>
+	<fields name="params"
+		addfieldpath="/administrator/components/com_redevent/models/fields">
+		<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
+			<field name="session_display" type="list" default="0"
+				label="COM_REDEVENT_VIEW_CALENDAR_SESSION_DISPLAY_LABEL"
+				description="COM_REDEVENT_VIEW_CALENDAR_SESSION_DISPLAY_DESC">
+				<option value="0">COM_REDEVENT_VIEW_CALENDAR_SESSION_DISPLAY_TITLE</option>
+				<option value="1">COM_REDEVENT_VIEW_CALENDAR_SESSION_DISPLAY_PICTURE</option>
+				<option value="2">COM_REDEVENT_VIEW_CALENDAR_SESSION_DISPLAY_BOTH</option>
+			</field>
+			<field name="pic_size"
+			       type="text"
+			       label="COM_REDEVENT_VIEW_CALENDAR_SESSION_PICSIZE_LABEL"
+			       description="COM_REDEVENT_VIEW_CALENDAR_SESSION_PICSIZE_DESC"
+			       size="4"
+			       class="validate-integer"
+			       default="20"
+			       />
+			<field name="show_start_time" type="radio" default="0"
+				label="COM_REDEVENT_VIEW_CALENDAR_SHOW_START_TIME_LABEL"
+				description="COM_REDEVENT_VIEW_CALENDAR_SHOW_START_TIME_DESC">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
+			<field name="show_tip_time" type="radio" default="0"
+				label="COM_REDEVENT_VIEW_CALENDAR_SHOW_TIP_TIME_LABEL" description="COM_REDEVENT_VIEW_CALENDAR_SHOW_TIP_TIME_DESC">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
+			<field name="displayLegend" type="radio" default="1"
+				label="COM_REDEVENT_DISPLAY_LEGEND" description="COM_REDEVENT_DISPLAY_LEGEND_DESC">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
+
+			<field name="show_week_num" type="radio" default="1"
+				label="COM_REDEVENT_VIEW_CALENDAR_SHOW_WEEK_NUM_LABEL" description="COM_REDEVENT_VIEW_CALENDAR_SHOW_WEEK_NUM_DESC">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
+			<field name="week_column_name" type="text" default=""
+				label="COM_REDEVENT_VIEW_CALENDAR_WEEK_COLUMN_NAME_LABEL"
+				description="COM_REDEVENT_VIEW_CALENDAR_WEEK_COLUMN_NAME_DESC" />
+
+			<field name="topcat" type="recategory" default="0" reset="true"
+				size="15" label="COM_REDEVENT_SELECT_CATEGORY" description="COM_REDEVENT_SELECT_CATEGORY_DESC" />
+		</fieldset>
+	</fields>
 </metadata>
