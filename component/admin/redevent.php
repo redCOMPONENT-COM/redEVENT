@@ -81,6 +81,7 @@ if( $controller = JRequest::getWord('controller') ) {
 	$controller->execute( JRequest::getWord('task', 'redevent'));
 	$controller->redirect();
 }
-else {
+else
+{
 	FOFDispatcher::getTmpInstance('com_redevent')->dispatch();
 }

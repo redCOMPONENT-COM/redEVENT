@@ -69,11 +69,14 @@
 		</submenu>
 	
 		<files folder="admin">
+			<filename>access.xml</filename>
 			<filename>changelog.txt</filename>
-			<filename>index.html</filename>
-			<filename>admin.redevent.php</filename>
-			<filename>controller.php</filename>
 			<filename>config.xml</filename>
+			<filename>controller.php</filename>
+			<filename>dispatcher.php</filename>
+			<filename>index.html</filename>
+			<filename>redevent.php</filename>
+			<filename>toolbar.php</filename>
 			<folder>classes</folder>
 			<folder>customfield</folder>
 			<folder>assets</folder>
