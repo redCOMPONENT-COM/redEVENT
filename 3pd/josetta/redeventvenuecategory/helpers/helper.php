@@ -31,7 +31,7 @@ defined('_JEXEC') or die('');
  * @subpackage  josetta.ReCategoryHelper
  * @since       2.5
  */
-abstract class JosettaReCategoryHelper
+abstract class JosettaReVenueCategoryHelper
 {
 	/**
 	 * Cached array of the category items.
@@ -64,7 +64,7 @@ abstract class JosettaReCategoryHelper
 			// B/C compat.
 			foreach ($items as &$item)
 			{
-				$item->title = $item->catname;
+				$item->title = $item->name;
 			}
 
 			// Indent cat list, for easier reading
@@ -100,7 +100,7 @@ abstract class JosettaReCategoryHelper
 			$query = $db->getQuery(true);
 
 			$query->select('c.*');
-			$query->from('#__redevent_categories as c');
+			$query->from('#__redevent_venues_categories as c');
 
 			if (!empty($config['filter.published']))
 			{
@@ -117,7 +117,7 @@ abstract class JosettaReCategoryHelper
 
 			foreach ($items as &$item)
 			{
-				$item->title = $item->catname;
+				$item->title = $item->name;
 			}
 
 			self::$_categoriesDataPerLanguage[$hash] = $items;
