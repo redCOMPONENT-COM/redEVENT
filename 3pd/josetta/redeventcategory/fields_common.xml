@@ -29,8 +29,8 @@
 			<column>parent_id</column>
 			<description>COM_REDEVENT_PARENT_CATEGORY</description>
 			<translate>yes</translate>
-			<type>recategory</type>
-			<addfieldpath>/administrator/components/com_redevent/models/fields</addfieldpath>
+			<type>relanguagecategory</type>
+			<addfieldpath>/plugins/josetta_ext/redeventcategory/fields</addfieldpath>
 			<display>yes</display>
 			<option value=""></option>
 		</field>
@@ -155,10 +155,9 @@
 			<name>COM_REDEVENT_Category_Event_template</name>
 			<column>event_template</column>
 			<description>COM_REDEVENT_Category_Event_template</description>
-			<translate>yes</translate>
-			<type>session</type>
-			<addfieldpath>/administrator/components/com_redevent/models/fields</addfieldpath>
-			<display>yes</display>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
 		</field>		
     
 	</fields>

@@ -36,24 +36,25 @@ class RedEventViewCategories extends FOFView {
 	{
 		$mainframe = &JFactory::getApplication();
 		$option = JRequest::getCmd('option');
-	
+
 		if ($this->getLayout() == 'importexport') {
 			return $this->_displayExport($tpl);
 		}
-		
+
 		//initialise variables
 		$user 		= JFactory::getUser();
 		$db  		= JFactory::getDBO();
 		$document	= JFactory::getDocument();
-		
+
 		JHTML::_('behavior.tooltip');
 
+		$this->state = $this->get('state');
+
 		//get vars
-		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.categories.filter_order', 		'filter_order', 	'c.lft', 'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.categories.filter_order_Dir',	'filter_order_Dir',	'', 'word' );
-		$filter_state 		= $mainframe->getUserStateFromRequest( $option.'.categories.filter_state', 		'filter_state', 	'*', 'word' );
-		$search 			= $mainframe->getUserStateFromRequest( $option.'.categories.search', 			'search', 			'', 'string' );
-		$search 			= $db->getEscaped( trim(JString::strtolower( $search ) ) );
+		$filter_order		= $this->state->get('filter_order');
+		$filter_order_Dir	= $this->state->get('filter_order_Dir');
+		$filter_state 		= $this->state->get('filter_state');
+		$search 			= $this->state->get('search');
 
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_CATEGORIES'));
 		//add css and submenu to document
@@ -101,13 +102,10 @@ class RedEventViewCategories extends FOFView {
 		$this->assignRef('ordering'		, $ordering);
 		$this->assignRef('user'			, $user);
 	    $this->assignRef('filter_order'     , $filter_order);
-	    
-	    $this->state = $this->get('state');
-// 	    echo '<pre>';print_r($this->state); echo '</pre>';exit;
 
 		parent::display($tpl);
 	}
-	
+
 	function _displayExport($tpl = null)
 	{
 		$document	= & JFactory::getDocument();
@@ -122,15 +120,15 @@ class RedEventViewCategories extends FOFView {
 
 		//create the toolbar
 		JToolBarHelper::title( JText::_( 'COM_REDEVENT_PAGETITLE_CATEGORIES_EXPORT' ), 'events' );
-		
+
 		JToolBarHelper::back();
 		JToolBarHelper::custom('doexport', 'exportevents', 'exportevents', JText::_('COM_REDEVENT_BUTTON_EXPORT'), false);
-		
+
 		$lists = array();
-				
+
 		//assign data to template
 		$this->assignRef('lists'      	, $lists);
-		
+
 		parent::display($tpl);
 	}
 }

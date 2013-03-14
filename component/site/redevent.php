@@ -1,12 +1,19 @@
 <?php
-/** 
- * @copyright Copyright (C) 2008 redCOMPONENT.com. All rights reserved. 
- * @license can be read in this package of software in the file license.txt or 
- * read on http://redcomponent.com/license.txt  
- * Developed by email@recomponent.com - redCOMPONENT.com 
+/**
+ * @copyright Copyright (C) 2008 redCOMPONENT.com. All rights reserved.
+ * @license can be read in this package of software in the file license.txt or
+ * read on http://redcomponent.com/license.txt
+ * Developed by email@recomponent.com - redCOMPONENT.com
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+// Load FOF
+include_once JPATH_LIBRARIES . '/fof/include.php';
+if (!defined('FOF_INCLUDED'))
+{
+	JError::raiseError('500', 'FOF is not installed');
+}
 
 // Set the table directory
 JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');

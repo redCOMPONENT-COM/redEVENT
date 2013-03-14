@@ -114,6 +114,21 @@ class plgJosetta_extRedeventcategory extends JosettaClassesExtensionplugin
 				{
 					$xmlData->subfield .= '<option value="' . (string) $option->value . '">' . (string) $option->text . '</option>';
 				}
+
+				break;
+
+			case 'relanguagecategory':
+				$options = $this->getOptions($field);
+
+				foreach ($options as $option)
+				{
+					$xmlData->subfield .= '<option value="' . (string) $option->value . '">' . (string) $option->text . '</option>';
+				}
+
+				$xmlData->other .= ' languages="' . $targetLanguage . '"';
+				$multiple = !empty($field->multiple) && (string) $field->multiple == 'yes';
+				$xmlData->other .= $multiple ? ' multiple="true"' : '';
+				break;
 		}
 
 		return $xmlData;
