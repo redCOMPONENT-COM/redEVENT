@@ -127,6 +127,10 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 
 		$where = array();
 
+		$where[] = ' x.published = 1 ';
+		$where[] = ' a.published <> 0 ';
+
+
 		if (!$this->_week)
 		{
 			// current week

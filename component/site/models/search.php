@@ -60,7 +60,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		$limit       	= $mainframe->getUserStateFromRequest('com_redevent.search.limit', 'limit', $params->def('display_num', 0), 'int');
 		$limitstart		= JRequest::getVar('limitstart', 0, '', 'int');
 
-			
+
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
 
@@ -73,7 +73,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		$filter_state     = $mainframe->getUserStateFromRequest('com_redevent.search.filter_state',     'filter_state', null, 'string');
 		$filter_city      = $mainframe->getUserStateFromRequest('com_redevent.search.filter_city',      'filter_city', null, 'string');
 		$filter_venue     = $mainframe->getUserStateFromRequest('com_redevent.search.filter_venue',     'filter_venue', null, 'int');
-		 
+
 		$filter_date_from     = $mainframe->getUserStateFromRequest('com_redevent.search.filter_date_from',          'filter_date_from',          '', 'string');
 		$filter_date_to       = $mainframe->getUserStateFromRequest('com_redevent.search.filter_date_to',          'filter_date_to',          '', 'string');
 		$filter_venuecategory = $mainframe->getUserStateFromRequest('com_redevent.search.filter_venuecategory', 'filter_venuecategory', 0, 'int');
@@ -84,7 +84,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 
 		$filter 		      = JRequest::getString('filter', '', 'request');
 		$filter_type 	    = JRequest::getWord('filter_type', '', 'request');
-			
+
 		// saving state
 		$this->setState('filter_continent',     $filter_continent);
 		$this->setState('filter_country',       $filter_country);
@@ -129,11 +129,16 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 			}
 		}
 
-		// First thing we need to do is to select only needed events
-		if ($task == 'archive') {
-			$where[] = ' x.published = -1';
-		} else {
-			$where[] = ' x.published = 1';
+		// First thing we need to do is to select only the published events
+		if ($task == 'archive')
+		{
+			$where[] = ' x.published = -1 ';
+			$where[] = ' a.published <> 0 ';
+		}
+		else
+		{
+			$where[] = ' x.published = 1 ';
+			$where[] = ' a.published <> 0 ';
 		}
 
 		$sstate = $params->get( 'session_state', '0' );
@@ -161,21 +166,21 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		}
 		return $where;
 	}
-	
+
 	/**
 	 * return array of filters for where part of sql query
-	 * 
+	 *
 	 * @return array
 	 */
 	function getFilter()
 	{
 		if (empty($this->_filter))
 		{
-			// Get the paramaters of the active menu item		
+			// Get the paramaters of the active menu item
 			$mainframe = &Jfactory::getApplication();
 			$params    = & $mainframe->getParams();
 			$post = JRequest::get('request');
-				
+
 			$filter_continent = $this->getState('filter_continent');
 			$filter_country   = $this->getState('filter_country');
 			$filter_state     = $this->getState('filter_state');
@@ -187,14 +192,14 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 			$filter_venuecategory = $this->getState('filter_venuecategory');
 			$filter_category      = $this->getState('filter_category');
 			$filter_event         = $this->getState('filter_event');
-			 
+
 			$customs              = $this->getState('filtercustom');
-			 
+
 			$filter 		      = $this->getState('filter');
 			$filter_type 	    = $this->getState('filter_type');
-			 
+
 			$where = array();
-			 
+
 			if ($filter)
 			{
 				// clean filter variables
@@ -244,7 +249,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 			else if (!is_null($filter_continent) && $filter_continent != "0") {
 				$where[] = ' c.continent = ' . $this->_db->Quote($filter_continent);
 			}
-			 
+
 			// filter category
 			if ($filter_category) {
 				$category = $this->getCategory((int) $filter_category);
@@ -259,12 +264,12 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 					$where[] = '(vc.id = '.$this->_db->Quote($category->id) . ' OR (vc.lft > ' . $this->_db->Quote($category->lft) . ' AND vc.rgt < ' . $this->_db->Quote($category->rgt) . '))';
 				}
 			}
-			 
+
 			if ($filter_event)
 			{
 				$where[] = ' a.id = ' . $this->_db->Quote($filter_event);
 			}
-			 
+
 			//custom fields
 			foreach ((array) $customs as $key => $custom)
 			{
@@ -276,17 +281,17 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 					$where[] = ' custom'.$key.' LIKE ' . $this->_db->Quote('%'.$custom.'%');
 				}
 			}
-			 
+
 			$this->_filter = $where;
 		}
 		return $this->_filter;
 	}
-	  
+
 	function getCountryOptions()
 	{
 		$mainframe = &JFactory::getApplication();
 		$filter_continent = $mainframe->getUserState('com_redevent.search.filter_continent');
-		 
+
 		$query = ' SELECT DISTINCT c.iso2 as value, c.name as text '
 		       . ' FROM #__redevent_event_venue_xref AS x'
 		       . ' INNER JOIN #__redevent_venues AS v ON v.id = x.venueid'
@@ -304,7 +309,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	{
 		$mainframe = &JFactory::getApplication();
 		$filter_country = $mainframe->getUserState('com_redevent.search.filter_country');
-  	
+
 		$query = ' SELECT DISTINCT v.state as value, v.state as text '
            . ' FROM #__redevent_event_venue_xref AS x'
            . ' INNER JOIN #__redevent_venues AS v ON v.id = x.venueid'
@@ -323,7 +328,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		$mainframe = &JFactory::getApplication();
 		$country = $mainframe->getUserState('com_redevent.search.filter_country');
 		$state =   $mainframe->getUserState('com_redevent.search.filter_state');
-		
+
 		$query = ' SELECT DISTINCT v.city as value, v.city as text '
            . ' FROM #__redevent_event_venue_xref AS x'
            . ' INNER JOIN #__redevent_venues AS v ON v.id = x.venueid'
@@ -343,8 +348,8 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
-	
-		
+
+
 	/**
 	 * get list of events as options, according to category, venue, and venue category criteria
 	 * @return unknown_type
@@ -357,7 +362,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		$filter_category = JRequest::getVar('filter_category', $params->get('category', 0));
 		$filter_venue = JRequest::getVar('filter_venue');
 		$task 		= JRequest::getWord('task');
-			
+
 		//Get Events from Database
 		$query  = ' SELECT a.id AS value, a.title AS text '
 		        . ' FROM #__redevent_event_venue_xref AS x'
@@ -368,9 +373,9 @@ class RedeventModelSearch extends RedeventModelBaseEventList
             . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
 	          . ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
 		        ;
-	
-		
-		$where = array();		
+
+
+		$where = array();
 		// First thing we need to do is to select only needed events
 		if ($task == 'archive') {
 			$where[] = ' x.published = -1';
@@ -408,7 +413,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	 * @return object
 	 */
 	function getCategory($id)
-	{		
+	{
 		$query = ' SELECT c.id, c.catname, c.lft, c.rgt '
 		       . ' FROM #__redevent_categories AS c '
 		       . ' WHERE c.id = '. $this->_db->Quote($id)
@@ -424,7 +429,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	 * @return object
 	 */
 	function getVenueCategory($id)
-	{		
+	{
 		$query = ' SELECT vc.id, vc.name, vc.lft, vc.rgt '
 		       . ' FROM #__redevent_venues_categories as vc '
 		       . ' WHERE vc.id = '. $this->_db->Quote($id)

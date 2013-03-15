@@ -57,7 +57,7 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 
 		$id = JRequest::getInt('id');
 		$this->setId((int)$id);
-		
+
 		// Get the paramaters of the active menu item
 		$params 	= & $mainframe->getParams('com_redevent');
 
@@ -71,7 +71,7 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 		// Get the filter request variables
 		$this->setState('filter_order', JRequest::getCmd('filter_order', 'x.dates'));
 		$this->setState('filter_order_dir', JRequest::getCmd('filter_order_Dir', 'ASC'));
-		
+
     $customs      = $mainframe->getUserStateFromRequest('com_redevent.categoryevents.filter_customs', 'filtercustom', array(), 'array');
 		$this->setState('filter_customs', $customs);
 	}
@@ -98,27 +98,32 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 	function _buildWhere( )
 	{
 		$mainframe = &JFactory::getApplication();
-		
+
 		$user		=& JFactory::getUser();
 		$gid		= (int) max($user->getAuthorisedViewLevels());
 
 		// Get the paramaters of the active menu item
 		$params 	= & $mainframe->getParams('com_redevent');
-		
+
 		$task 		= JRequest::getWord('task');
 
 		$where = array();
-		
-		// First thing we need to do is to select only the requested events
-		if ($task == 'archive') {
-			$where[] = ' x.published = -1';
-		} else {
-			$where[] = ' x.published = 1';
+
+		// First thing we need to do is to select only the published events
+		if ($task == 'archive')
+		{
+			$where[] = ' x.published = -1 ';
+			$where[] = ' a.published <> 0 ';
 		}
-		
+		else
+		{
+			$where[] = ' x.published = 1 ';
+			$where[] = ' a.published <> 0 ';
+		}
+
 		/* Check if a venue ID is set */
 		if ($this->_id > 0) $where[] = ' x.venueid = '.$this->_id;
-		
+
 		// Second is to only select events assigned to category the user has access to
 		$where[] = ' c.access <= '.$gid;
 
@@ -130,7 +135,7 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 		{
 			$filter 		  = $this->getState('filter');
 			$filter_type 	= $this->getState('filter_type');
-			
+
 			if ($filter)
 			{
 				// clean filter variables
@@ -143,36 +148,36 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 					case 'title' :
 						$where[] = ' LOWER( a.title ) LIKE '.$filter;
 						break;
-					
+
 					case 'type' :
 						$where[] = ' LOWER( c.catname ) LIKE '.$filter;
 						break;
 				}
 			}
 		}
-	    
-		if ($ev = $this->getState('filter_event')) 
+
+		if ($ev = $this->getState('filter_event'))
 		{
 			$where[] = 'a.id = '.$this->_db->Quote($ev);
 		}
-		
+
     if ($filter_venue = $this->getState('filter_venue'))
     {
-    	$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);    	
+    	$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);
     }
-	    
-		if ($cat = $this->getState('filter_category')) 
-		{		
+
+		if ($cat = $this->getState('filter_category'))
+		{
     	$category = $this->getCategory((int) $cat);
     	if ($category) {
 				$where[] = '(c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
     	}
 		}
-		
-    $customs = $this->getState('filter_customs');	
+
+    $customs = $this->getState('filter_customs');
     foreach ((array) $customs as $key => $custom)
     {
-      if ($custom != '') 
+      if ($custom != '')
       {
       	if (is_array($custom)) {
       		$custom = implode("/n", $custom);
@@ -180,7 +185,7 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
         $where[] = ' custom'.$key.' LIKE ' . $this->_db->Quote('%'.$custom.'%');
       }
     }
-    
+
 		return ' WHERE ' . implode(' AND ', $where);
 	}
 
@@ -201,7 +206,7 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 
 		$this->_db->setQuery( $query );
 		$_venue = $this->_db->loadObject();
-			
+
 		if ($_venue->private)
 		{
 			$acl = &UserAcl::getInstance();
@@ -209,8 +214,8 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 			if (!is_array($cats) || !in_array($_venue->id, $cats)) {
 				JError::raiseError(403, JText::_('COM_REDEVENT_ACCESS_NOT_ALLOWED'));
 			}
-		}			
-		$_venue->attachments = REAttach::getAttachments('venue'.$_venue->id, max($user->getAuthorisedViewLevels()));		
+		}
+		$_venue->attachments = REAttach::getAttachments('venue'.$_venue->id, max($user->getAuthorisedViewLevels()));
 
 		return $_venue;
 	}

@@ -36,7 +36,7 @@ require_once('baseeventslist.php');
  */
 class RedeventModelDay extends RedeventModelBaseEventList
 {
-	
+
 
 	/**
 	 * Constructor
@@ -46,7 +46,7 @@ class RedeventModelDay extends RedeventModelBaseEventList
 	function __construct()
 	{
 		parent::__construct();
-			
+
 		$rawday = JRequest::getInt('id', 0, 'request');
 		$this->setDate($rawday);
 	}
@@ -63,39 +63,39 @@ class RedeventModelDay extends RedeventModelBaseEventList
 
 		// Get the paramaters of the active menu item
 		$params 	= & $mainframe->getParams('com_redevent');
-		
+
 		//0 means we have a direct request from a menuitem and without any parameters (eg: calendar module)
 		if ($date == 0) {
-			
+
 			$dayoffset	= $params->get('days');
 			$timestamp	= mktime(0, 0, 0, date("m"), date("d") + $dayoffset, date("Y"));
 			$date		= strftime('%Y-%m-%d', $timestamp);
-			
+
 		//a valid date  has 8 characters
 		} elseif (strlen($date) == 8) {
-			
+
 			$year 	= substr($date, 0, -4);
 			$month	= substr($date, 4, -2);
 			$tag	= substr($date, 6);
-			
+
 			//check if date is valid
 			if (checkdate($month, $tag, $year)) {
-				
+
 				$date = $year.'-'.$month.'-'.$tag;
-				
+
 			} else {
-				
+
 				//date isn't valid raise notice and use current date
 				$date = date('Ymd');
 				JError::raiseNotice( 'REDEVENT_GENERIC_ERROR', JText::_('COM_REDEVENT_INVALID_DATE_REQUESTED_USING_CURRENT') );
-				
+
 			}
-			
+
 		} else {
 			//date isn't valid raise notice and use current date
 			$date = date('Ymd');
 			JError::raiseNotice( 'REDEVENT_GENERIC_ERROR', JText::_('COM_REDEVENT_INVALID_DATE_REQUESTED_USING_CURRENT') );
-			
+
 		}
 
 		$this->_date = $date;
@@ -119,11 +119,11 @@ class RedeventModelDay extends RedeventModelBaseEventList
 		$params 	= & $mainframe->getParams();
 
 		// First thing we need to do is to select only published events
-		$where = ' WHERE x.published = 1';
+		$where = ' WHERE x.published = 1 AND a.published <> 0';
 
 		// Second is to only select events assigned to category the user has access to
 		$where .= ' AND c.access <= '.$gid;
-		
+
 		// Third is to only select events of the specified day
 		$where .= ' AND (\''.$this->_date.'\' BETWEEN (x.dates) AND (IF (x.enddates >= now(), x.enddates, \''.$nulldate.'\')) OR \''.$this->_date.'\' = x.dates)';
 
@@ -156,7 +156,7 @@ class RedeventModelDay extends RedeventModelBaseEventList
 					case 'city' :
 						$where .= ' AND LOWER( l.city ) LIKE '.$filter;
 						break;
-						
+
 					case 'type' :
 						$where .= ' AND LOWER( c.catname ) LIKE '.$filter;
 						break;
@@ -165,7 +165,7 @@ class RedeventModelDay extends RedeventModelBaseEventList
 		}
 		return $where;
 	}
-	
+
 	/**
 	 * Return date
 	 *

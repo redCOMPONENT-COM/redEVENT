@@ -209,13 +209,17 @@ class RedeventModelCalendar extends JModel
         $task = JRequest::getWord('task');
 
         $where = array();
+
         // First thing we need to do is to select only the published events
         if ($task == 'archive')
         {
             $where[] = ' x.published = -1 ';
-        } else
+            $where[] = ' a.published <> 0 ';
+        }
+        else
         {
             $where[] = ' x.published = 1 ';
+            $where[] = ' a.published <> 0 ';
         }
 
         // category must be published too
