@@ -681,13 +681,23 @@ class RedeventModelBaseEventList extends JModel
 	{
 		if (empty($this->_customfields))
 		{
-			$query = ' SELECT f.id, f.name, f.in_lists, f.searchable, f.ordering, f.tips '
-			. ' FROM #__redevent_fields AS f'
-			. ' WHERE f.published = 1'
-			. '   AND f.object_key = ' . $this->_db->Quote('redevent.event')
-			. ' ORDER BY f.ordering ASC ';
-			$this->_db->setQuery($query);
-			$this->_customfields = $this->_db->loadObjectList();
+			$db      = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			$query->select('f.id, f.name, f.in_lists, f.searchable, f.ordering, f.tips');
+			$query->from('#__redevent_fields AS f');
+			$query->join('INNER', '#__');
+			$query->where('f.published = 1');
+			$query->where('f.object_key = ' . $db->Quote('redevent.event'));
+			$query->order('f.ordering ASC');
+
+			if ($this->getState('filter.language'))
+			{
+				$query->where('(f.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR f.language IS NULL)');
+			}
+
+			$db->setQuery($query);
+			$this->_customfields = $db->loadObjectList();
 		}
 
 		return $this->_customfields;
@@ -702,13 +712,23 @@ class RedeventModelBaseEventList extends JModel
 	{
 		if (empty($this->_xrefcustomfields))
 		{
-			$query = ' SELECT f.id, f.name, f.in_lists, f.searchable, f.ordering, f.tips '
-			. ' FROM #__redevent_fields AS f'
-			. ' WHERE f.published = 1'
-			. '   AND f.object_key = ' . $this->_db->Quote('redevent.xref')
-			. ' ORDER BY f.ordering ASC ';
-			$this->_db->setQuery($query);
-			$this->_xrefcustomfields = $this->_db->loadObjectList();
+			$db      = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			$query->select('f.id, f.name, f.in_lists, f.searchable, f.ordering, f.tips');
+			$query->from('#__redevent_fields AS f');
+			$query->join('INNER', '#__');
+			$query->where('f.published = 1');
+			$query->where('f.object_key = ' . $db->Quote('redevent.xref'));
+			$query->order('f.ordering ASC');
+
+			if ($this->getState('filter.language'))
+			{
+				$query->where('(f.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR f.language IS NULL)');
+			}
+
+			$db->setQuery($query);
+			$this->_xrefcustomfields = $db->loadObjectList();
 		}
 
 		return $this->_xrefcustomfields;
