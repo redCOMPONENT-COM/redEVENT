@@ -2,108 +2,108 @@
 <form>
 	
 	<fieldset name="venue">
-	<field
-		name="id"
-		type="text"
-		default="0"
-		label="JGLOBAL_FIELD_ID_LABEL"
-		description ="JGLOBAL_FIELD_ID_DESC"
-		class="readonly"
-		readonly="true"	/>
+		<field
+			name="id"
+			type="text"
+			default="0"
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description ="JGLOBAL_FIELD_ID_DESC"
+			class="readonly"
+			readonly="true"	/>
+		
+		<field
+			name="venue"
+			type="text"
+			default=""
+			label="COM_REDEVENT_VENUE"
+			description ="COM_REDEVENT_VENUE" 
+			required="true" 
+			class="inputbox" />
+		
+		<field
+			name="alias"
+			type="text"
+			default=""
+			label="COM_REDEVENT_Alias"
+			description ="COM_REDEVENT_Alias"
+			class="inputbox" />
+		
+		<field
+			name="published"
+			type="list"
+			class="inputbox"
+			default="1"
+			size="1"
+			label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC">
+			<option
+				value="1">
+				JPUBLISHED</option>
+			<option
+				value="0">
+				JUNPUBLISHED</option>
+		</field>
 	
-	<field
-		name="venue"
-		type="text"
-		default=""
-		label="COM_REDEVENT_VENUE"
-		description ="COM_REDEVENT_VENUE" 
-		required="true" 
-		class="inputbox" />
-	
-	<field
-		name="alias"
-		type="text"
-		default=""
-		label="COM_REDEVENT_Alias"
-		description ="COM_REDEVENT_Alias"
-		class="inputbox" />
-	
-	<field
-		name="published"
-		type="list"
-		class="inputbox"
-		default="1"
-		size="1"
-		label="JSTATUS"
-		description="JFIELD_PUBLISHED_DESC">
-		<option
-			value="1">
-			JPUBLISHED</option>
-		<option
-			value="0">
-			JUNPUBLISHED</option>
-	</field>
-
-	<field
-		name="language"
-		type="contentlanguage"
-		label="JFIELD_LANGUAGE_LABEL"
-		description="COM_REDEVENT_FIELD_LANGUAGE_DESC"
-		class="inputbox">
-		<option value="*">JALL</option>
-	</field>
+		<field
+			name="language"
+			type="contentlanguage"
+			label="JFIELD_LANGUAGE_LABEL"
+			description="COM_REDEVENT_FIELD_LANGUAGE_DESC"
+			class="inputbox">
+			<option value="*">JALL</option>
+		</field>
+				
+		<field
+			name="company"
+			type="text"
+			default=""
+			label="COM_REDEVENT_VENUE_EDIT_COMPANY_LABEL"
+			description ="COM_REDEVENT_VENUE_EDIT_COMPANY_TIP" 
+			class="inputbox" />
 			
-	<field
-		name="company"
-		type="text"
-		default=""
-		label="COM_REDEVENT_VENUE_EDIT_COMPANY_LABEL"
-		description ="COM_REDEVENT_VENUE_EDIT_COMPANY_TIP" 
-		class="inputbox" />
+		<field
+			name="categories"
+			type="revenuecategory"
+			default=""
+			label="COM_REDEVENT_CATEGORY"
+			description ="COM_REDEVENT_CATEGORY" 
+			required="true" 
+			class="inputbox" />
+			
+		<field
+			name="locdescription"
+			type="editor"
+			label="COM_REDEVENT_DESCRIPTION"
+			description="COM_REDEVENT_DESCRIPTION"
+			class="inputbox"
+			filter="safehtml"
+			buttons="true"
+			hide="readmore,pagebreak"/>
+			
+		<field
+			name="locimage"
+			type="media"
+			label="COM_REDEVENT_CHOOSE_IMAGE"
+			description="COM_REDEVENT_CHOOSE_IMAGE"
+			class="inputbox"
+			directory="redevent/categories"/>
 		
-	<field
-		name="categories"
-		type="revenuecategory"
-		default=""
-		label="COM_REDEVENT_CATEGORY"
-		description ="COM_REDEVENT_CATEGORY" 
-		required="true" 
-		class="inputbox" />
-		
-	<field
-		name="locdescription"
-		type="editor"
-		label="COM_REDEVENT_DESCRIPTION"
-		description="COM_REDEVENT_DESCRIPTION"
-		class="inputbox"
-		filter="safehtml"
-		buttons="true"
-		hide="readmore,pagebreak"/>
-		
-	<field
-		name="locimage"
-		type="media"
-		label="COM_REDEVENT_CHOOSE_IMAGE"
-		description="COM_REDEVENT_CHOOSE_IMAGE"
-		class="inputbox"
-		directory="redevent/categories"/>
+		<field
+			name="private"
+			type="list"
+			class="inputbox"
+			default="0"
+			size="1"
+			label="COM_REDEVENT_VENUE_PRIVATE_LABEL"
+			description="COM_REDEVENT_VENUE_PRIVATE_TIP">
+			<option
+				value="1">
+				JYES</option>
+			<option
+				value="0">
+				JNO</option>
+		</field>
 	</fieldset>
-	
-	<field
-		name="private"
-		type="list"
-		class="inputbox"
-		default="0"
-		size="1"
-		label="COM_REDEVENT_VENUE_PRIVATE_LABEL"
-		description="COM_REDEVENT_VENUE_PRIVATE_TIP">
-		<option
-			value="1">
-			JYES</option>
-		<option
-			value="0">
-			JNO</option>
-	</field>
 	
 	<fieldset name="address">
 		<field
@@ -178,6 +178,21 @@
 			label="COM_REDEVENT_LONGITUDE"
 			description ="COM_REDEVENT_LONGITUDE_TIP" 
 			class="inputbox" />
+	</fieldset>
+	
+	<fieldset name="acl">		
+	
+		<field name="asset_id" type="hidden" filter="unset" />
 		
+		<field name="rules"
+		       type="rules"
+		       label="COM_REDEVENT_EVENTS_MANAGE_RULES_LABEL"
+		       translate_label="true"
+		       filter="rules"
+		       validate="rules"
+		       class="inputbox"
+		       component="com_redevent"
+		       section="venue"
+		/>
 	</fieldset>
 </form>

@@ -50,7 +50,7 @@ JHtml::_('behavior.formvalidation');
 	    // check if map is set to yes
 	    var map = $$('input[name=map]');
 
-		if (map.length > 1 && map[1].checked == true) {			
+		if (map.length > 1 && map[1].checked == true) {
 			var longitude = $('longitude').getValue();
 			var latitude  = $('latitude').getValue();
 			if (!longitude || longitude == 0 || !latitude || latitude == 0) {
@@ -92,7 +92,7 @@ JHtml::_('behavior.formvalidation');
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" class="form-validate" >
-	
+
 	<div class="width-60 fltlft">
 		<?php echo JHtml::_('tabs.start', 'tab_venue_id-'.$this->row->id, $options); ?>
 		<?php echo JHtml::_('tabs.panel', JText::_('COM_REDEVENT_EVENT_INFO_TAB'), 'details'); ?>
@@ -100,16 +100,16 @@ JHtml::_('behavior.formvalidation');
 			<ul class="adminformlist">
 				<li><?php echo $this->form->getLabel('venue'); ?>
 				<?php echo $this->form->getInput('venue'); ?></li>
-				
+
 				<li><?php echo $this->form->getLabel('alias'); ?>
 				<?php echo $this->form->getInput('alias'); ?></li>
-				
+
 				<li><?php echo $this->form->getLabel('language'); ?>
 				<?php echo $this->form->getInput('language'); ?></li>
-				
+
 				<li><?php echo $this->form->getLabel('company'); ?>
 				<?php echo $this->form->getInput('company'); ?></li>
-				
+
 				<li>
 					<label for="categories"><?php echo JText::_('COM_REDEVENT_CATEGORY' ).':'; ?></label>
 				<?php echo $this->lists['categories']; ?></li>
@@ -119,47 +119,47 @@ JHtml::_('behavior.formvalidation');
 			<div class="clr"></div>
 			<?php echo $this->form->getInput('locdescription'); ?>
 		</fieldset>
-			
+
 		<?php echo JHtml::_('tabs.panel', JText::_('COM_REDEVENT_EVENT_ATTACHMENTS_TAB'), 'attachments'); ?>
 			<?php echo $this->loadTemplate('attachments'); ?>
 		<?php echo JHtml::_('tabs.end'); ?>
 	</div>
-	
-	<div class="width-40 fltrt">			
+
+	<div class="width-40 fltrt">
 		<?php echo JHtml::_('sliders.start', 'venues-sliders-'.$this->row->id, $options); ?>
-		
-			<?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_ADDRESS'), 'address'); ?>			
+
+			<?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_ADDRESS'), 'address'); ?>
 			<fieldset class="panelform">
 				<ul class="adminformlist">
 					<li><?php echo $this->form->getLabel('street'); ?>
 					<?php echo $this->form->getInput('street'); ?></li>
-					
+
 					<li><?php echo $this->form->getLabel('plz'); ?>
 					<?php echo $this->form->getInput('plz'); ?></li>
-					
+
 					<li><?php echo $this->form->getLabel('city'); ?>
 					<?php echo $this->form->getInput('city'); ?></li>
-					
+
 					<li><?php echo $this->form->getLabel('state'); ?>
 					<?php echo $this->form->getInput('state'); ?></li>
-					
+
 					<li><?php echo $this->form->getLabel('country'); ?>
 					<?php echo $this->form->getInput('country'); ?></li>
-					
+
 					<li><?php echo $this->form->getLabel('url'); ?>
 					<?php echo $this->form->getInput('url'); ?></li>
 				</ul>
 			</fieldset>
 			<?php if ( $this->params->get('showmapserv',1)): ?>
-			<div id="setmap">	
+			<div id="setmap">
 				<fieldset class="panelform">
 					<ul class="adminformlist">
 						<li><?php echo $this->form->getLabel('map'); ?>
 						<?php echo $this->form->getInput('map'); ?></li>
-						
+
 						<li><?php echo $this->form->getLabel('latitude'); ?>
 						<?php echo $this->form->getInput('latitude'); ?></li>
-						
+
 						<li><?php echo $this->form->getLabel('longitude'); ?>
 						<?php echo $this->form->getInput('longitude'); ?></li>
 					</ul>
@@ -169,19 +169,19 @@ JHtml::_('behavior.formvalidation');
 				</fieldset>
 			</div>
 			<?php endif; ?>
-			
+
 			<?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_IMAGE'), 'image'); ?>
 			<fieldset class="panelform">
 				<?php echo $this->form->getLabel('locimage'); ?>
 				<?php echo $this->form->getInput('locimage'); ?>
 			</fieldset>
-			
+
 			<?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_ACCESS'), 'access'); ?>
 			<fieldset class="panelform">
 				<?php echo $this->form->getLabel('private'); ?>
 				<?php echo $this->form->getInput('private'); ?>
 			</fieldset>
-	
+
 			<?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_METADATA_INFORMATION'), 'metadata'); ?>
 			<table>
 				<tr>
@@ -208,9 +208,24 @@ JHtml::_('behavior.formvalidation');
 					</td>
 				</tr>
 			</table>
-			
+
 		<?php echo JHtml::_('sliders.end'); ?>
-	</div>	
+	</div>
+
+   <!-- begin ACL definition-->
+   <div class="clr"></div>
+   <?php if (1 or $this->canDo->get('core.admin')): ?>
+	   <div class="width-100 fltlft">
+		   <?php echo JHtml::_('sliders.start', 'permissions-sliders-'.$this->row->id, array('useCookie'=>1)); ?>
+		   <?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_VENUE_FIELDSET_RULES'), 'access-rules'); ?>
+		   <fieldset class="panelform">
+			   <?php echo $this->form->getLabel('rules'); ?>
+			   <?php echo $this->form->getInput('rules'); ?>
+		   </fieldset>
+		   <?php echo JHtml::_('sliders.end'); ?>
+	   </div>
+   <?php endif; ?>
+   <!-- end ACL definition-->
 
 <?php
 if ( $this->params->get('showmapserv', 1) == 0 ) { ?>

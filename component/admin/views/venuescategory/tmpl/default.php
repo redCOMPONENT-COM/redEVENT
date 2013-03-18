@@ -58,10 +58,10 @@ Joomla.submitbutton = function(task)
 			<ul class="adminformlist">
 				<li><?php echo $this->form->getLabel('name'); ?>
 				<?php echo $this->form->getInput('name'); ?></li>
-				
+
 				<li><?php echo $this->form->getLabel('alias'); ?>
 				<?php echo $this->form->getInput('alias'); ?></li>
-				
+
 				<li><?php echo $this->form->getLabel('language'); ?>
 				<?php echo $this->form->getInput('language'); ?></li>
 			</ul>
@@ -71,40 +71,40 @@ Joomla.submitbutton = function(task)
 			<?php echo $this->form->getInput('description'); ?>
 		</fieldset>
 	</div>
-	
-	<div class="width-40 fltrt">			
+
+	<div class="width-40 fltrt">
 		<?php echo JHtml::_('sliders.start', 'categories-sliders-'.$this->row->id, $options); ?>
-		
-			<?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_CATEGORIES'), 'categories'); ?>			
+
+			<?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_CATEGORIES'), 'categories'); ?>
 			<fieldset class="panelform">
 				<?php echo $this->form->getLabel('parent_id'); ?>
 				<?php echo $this->form->getInput('parent_id'); ?>
 			</fieldset>
-			
-			<?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_ACCESS'), 'access'); ?>			
+
+			<?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_ACCESS'), 'access'); ?>
 			<fieldset class="panelform">
 				<ul class="adminformlist">
 					<li><?php echo $this->form->getLabel('access'); ?>
 					<?php echo $this->form->getInput('access'); ?></li>
-					
+
 					<li><?php echo $this->form->getLabel('private'); ?>
 					<?php echo $this->form->getInput('private'); ?></li>
 				</ul>
 			</fieldset>
-			
-			<?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_GROUP'), 'group'); ?>			
+
+			<?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_GROUP'), 'group'); ?>
 			<fieldset class="panelform">
 				<label for="groups"><?php echo JText::_('COM_REDEVENT_GROUP' ).':'; ?></label>
 				<?php echo $this->lists['groups']; ?>
 			</fieldset>
-			
-			<?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_IMAGE'), 'vcimage'); ?>			
+
+			<?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_IMAGE'), 'vcimage'); ?>
 			<fieldset class="panelform">
 					<?php echo $this->form->getLabel('image'); ?>
 					<?php echo $this->form->getInput('image'); ?>
 			</fieldset>
-			
-			<?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_METADATA_INFORMATION'), 'metadata'); ?>			
+
+			<?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_METADATA_INFORMATION'), 'metadata'); ?>
 			<fieldset class="panelform">
 				<table>
 				<tr>
@@ -132,9 +132,24 @@ Joomla.submitbutton = function(task)
 				</tr>
 				</table>
 			</fieldset>
-			
+
 		<?php echo JHtml::_('sliders.end'); ?>
 	</div>
+
+   <!-- begin ACL definition-->
+   <div class="clr"></div>
+   <?php if (1 or $this->canDo->get('core.admin')): ?>
+	   <div class="width-100 fltlft">
+		   <?php echo JHtml::_('sliders.start', 'permissions-sliders-'.$this->row->id, array('useCookie'=>1)); ?>
+		   <?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_VENUECATEGORIE_FIELDSET_RULES'), 'access-rules'); ?>
+		   <fieldset class="panelform">
+			   <?php echo $this->form->getLabel('rules'); ?>
+			   <?php echo $this->form->getInput('rules'); ?>
+		   </fieldset>
+		   <?php echo JHtml::_('sliders.end'); ?>
+	   </div>
+   <?php endif; ?>
+   <!-- end ACL definition-->
 
 <?php echo JHTML::_( 'form.token' ); ?>
 <input type="hidden" name="option" value="com_redevent" />

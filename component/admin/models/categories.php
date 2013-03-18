@@ -255,9 +255,13 @@ class RedeventModelCategories extends FOFModel
 	 * @return	string $msg
 	 * @since	0.9
 	 */
-	public function delete($cid)
+	public function delete()
 	{
-		$cids = implode(',', $cid);
+		if (!is_array($this->id_list) || empty($this->id_list))
+		{
+			return true;
+		}
+		$cids = implode(',', $this->id_list);
 
 		$query = 'SELECT c.id, c.catname, COUNT( xcat.event_id ) AS numcat'
 		. ' FROM #__redevent_categories AS c'
@@ -304,7 +308,7 @@ class RedeventModelCategories extends FOFModel
 			}
 
 			// Rebuild the tree
-			$table = JTable::getInstance('redevent_categories', '');
+			$table = $this->getTable();
 			$table->rebuildTree();
 		}
 

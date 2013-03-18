@@ -32,65 +32,8 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedEvent_venues extends JTable
 {
-	/**
-	 * Primary Key
-	 * @var int
-	 */
-	var $id 				= null;
-	/** @var string */
-	var $venue 				= null;
-	/** @var string */
-	var $alias	 			= null;
-	/** @var string */
-	var $url 				= null;
-	/** @var string */
-	var $company		= null;
-	/** @var string */
-	var $street 			= null;
-	/** @var string */
-	var $plz 				= null;
-	/** @var string */
-	var $city 				= null;
-	/** @var string */
-	var $state				= null;
-	/** @var string */
-	var $country			= null;
-  /** @var float */
-  var $latitude      = '';
-  /** @var float */
-  var $longitude     = '';
-	/** @var string */
-	var $locdescription 	= null;
-	/** @var string */
-	var $meta_description 	= null;
-	/** @var string */
-	var $meta_keywords		= null;
-	/** @var string */
-	var $locimage 			= null;
-	/** @var int */
-	var $private			= 0;
-	/** @var int */
-	var $map		 		= null;
-	/** @var int */
-	var $created_by			= null;
-	/** @var string */
-	var $author_ip	 		= null;
-	/** @var date */
-	var $created		 	= null;
-	/** @var date */
-	var $modified 			= null;
-	/** @var int */
-	var $modified_by 		= null;
-	/** @var int */
-	var $published	 		= null;
-	/** @var int */
-	var $checked_out 		= null;
-	/** @var date */
-	var $checked_out_time 	= null;
-	/** @var int */
-	var $ordering 			= null;
-	
-	function redevent_venues(& $db) {
+	public function __construct(& $db)
+	{
 		parent::__construct('#__redevent_venues', 'id', $db);
 	}
 
@@ -109,14 +52,14 @@ class RedEvent_venues extends JTable
 			$this->alias = $alias;
 		}
 
-		if ( $this->map && !($this->latitude || $this->longitude)) 
+		if ( $this->map && !($this->latitude || $this->longitude))
 		{
 			if ((!trim($this->street)) || (!trim($this->plz)) || (!trim($this->city)) || (!trim($this->country))) {
 				$this->setError( JText::_('COM_REDEVENT_ADD_ADDRESS') );
 				return false;
 			}
 		}
-		
+
 		if (JFilterInput::checkAttribute(array ('href', $this->url))) {
 			$this->setError( JText::_('COM_REDEVENT_ERROR_URL_WRONG_FORMAT' ) );
 			return false;
@@ -171,7 +114,7 @@ class RedEvent_venues extends JTable
      	 	$this->setError(JText::_('COM_REDEVENT_ERROR_COUNTRY_LONG' ));
      	 	return false;
 		}
-		
+
 		/** check for existing venue */
 		$query = ' SELECT id FROM #__redevent_venues'
 		       . ' WHERE venue = ' . $this->_db->Quote($this->venue)
@@ -190,7 +133,7 @@ class RedEvent_venues extends JTable
 	}
 	/**
 	 * Sets categories of venue
-	 * 
+	 *
 	 * @param array $catids
 	 * @return boolean true on success
 	 */
@@ -218,5 +161,67 @@ class RedEvent_venues extends JTable
 			}
 		}
 		return true;
+	}
+
+	public function bind($array, $ignore = '')
+	{
+		// Bind the rules.
+		if (isset($array['rules']) && is_array($array['rules']))
+		{
+			$rules = new JAccessRules($array['rules']);
+			$this->setRules($rules);
+		}
+
+		return parent::bind($array, $ignore);
+	}
+
+	/**
+	 * Method to compute the default name of the asset.
+	 * The default name is in the form `table_name.id`
+	 * where id is the value of the primary key of the table.
+	 *
+	 * @return      string
+	 * @since       2.5
+	 **/
+	protected function _getAssetName()
+	{
+		$k = $this->_tbl_key;
+		return 'com_redevent.venue.' . (int) $this->$k;
+	}
+
+	/**
+	 * Method to return the title to use for the asset table.
+	 *
+	 * @return      string
+	 * @since       2.5
+	 */
+	protected function _getAssetTitle()
+	{
+		return $this->catname;
+	}
+
+	/**
+	 * Method to get the asset-parent-id of the item
+	 *
+	 * @return      int
+	 */
+	protected function _getAssetParentId()
+	{
+		// We will retrieve the parent-asset from the Asset-table
+		$assetParent = JTable::getInstance('Asset');
+		// Default: if no asset-parent can be found we take the global asset
+		$assetParentId = $assetParent->getRootId();
+
+		// Find the parent-asset
+		// We can't use venue categories as parent, as their can be multiple...
+		// The item has the component as asset-parent
+		$assetParent->loadByName('com_redevent');
+
+		// Return the found asset-parent-id
+		if ($assetParent->id)
+		{
+			$assetParentId=$assetParent->id;
+		}
+		return $assetParentId;
 	}
 }
