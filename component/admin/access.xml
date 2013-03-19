@@ -37,6 +37,9 @@
 		<action name="re.publishvenueany" 
 		        title="COM_REDEVENT_ACCESS_PUBLISH_VENUE_ANY"
 		        description="COM_REDEVENT_ACCESS_PUBLISH_VENUE_ANY_DESC" />
+		<action name="re.viewattendees" 
+		        title="COM_REDEVENT_ACCESS_VIEW_ATTENDEES"
+		        description="COM_REDEVENT_ACCESS_VIEW_ATTENDEES_DESC" />
 		<action name="re.manageattendees" 
 		        title="COM_REDEVENT_ACCESS_MANAGE_ATTENDEES"
 		        description="COM_REDEVENT_ACCESS_MANAGE_ATTENDEES_DESC" />
@@ -52,9 +55,15 @@
 	<section name="venue">
 		<action name="re.manageevents"
 		        title="COM_REDEVENT_ACCESS_VENUE_MANAGE_EVENTS"
-		        description="COM_REDEVENT_ACCESS_VENUE_MANAGE_EVENTS_DESC" />		       
+		        description="COM_REDEVENT_ACCESS_VENUE_MANAGE_EVENTS_DESC" />
+		<action name="re.managevenue"
+		        title="COM_REDEVENT_ACCESS_VENUECATEGORY_MANAGE_VENUE"
+		        description="COM_REDEVENT_ACCESS_VENUECATEGORY_MANAGE_VENUE_DESC" />	
 	</section>
 	<section name="venuecategory">
+		<action name="re.managevenues"
+		        title="COM_REDEVENT_ACCESS_VENUECATEGORY_MANAGE_VENUES"
+		        description="COM_REDEVENT_ACCESS_VENUECATEGORY_MANAGE_VENUES_DESC" />	
 		<action name="re.manageevents"
 		        title="COM_REDEVENT_ACCESS_VENUECATEGORY_MANAGE_EVENTS"
 		        description="COM_REDEVENT_ACCESS_VENUECATEGORY_MANAGE_EVENTS_DESC" />		       

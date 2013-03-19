@@ -26,28 +26,38 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Holds the logic for all output related things
  *
- * @package Joomla
- * @subpackage redEVENT
- */
-class UserAcl {
-	
-	var $_groups = null;
-	
-	var $_userid = 0;
-	
-	var $_db = null;
-	
-	function __construct($userid = 0)
+ * @package     Joomla
+ * @subpackage  redEVENT
+ * @since       2.0
+*/
+class UserAcl
+{
+
+	protected $_groups = null;
+
+	protected $_userid = 0;
+
+	protected $user = null;
+
+	protected $_db = null;
+
+	/**
+	 * constructor
+	 *
+	 * @param   int  $userid  user id
+	 */
+	protected function __construct($userid = 0)
 	{
-		$this->_db = &JFactory::getDBO();
-		
-		if (!$userid) {
-			$user = &Jfactory::getUser();
+		$this->_db = JFactory::getDBO();
+
+		if (!$userid)
+		{
+			$user = Jfactory::getUser();
 			$userid = $user->get('id');
 		}
 		$this->_userid = $userid;
 	}
-	
+
 	/**
 	 * Returns a reference to the global User object, only creating it if it
 	 * doesn't already exist.
@@ -60,534 +70,665 @@ class UserAcl {
 	 * @return 	JUser  			The User object.
 	 * @since 	1.5
 	 */
-	function &getInstance($id = 0)
+	public function &getInstance($id = 0)
 	{
 		static $instances;
 
-		if (!isset ($instances)) {
+		if (!isset ($instances))
+		{
 			$instances = array ();
 		}
 
 		// Find the user id
 		if(!$id)
 		{
-			$user = &Jfactory::getUser();
+			$user = Jfactory::getUser();
 			$id = $user->get('id');
 		}
 
-		if (empty($instances[$id])) {
+		if (empty($instances[$id]))
+		{
 			$inst = new UserAcl($id);
 			$instances[$id] = $inst;
 		}
 
 		return $instances[$id];
 	}
-	
+
 	/**
 	 * returns true if the user can add events
-	 * 
+	 *
 	 * @return boolean
 	 */
-	function canAddEvent()
+	public function canAddEvent()
 	{
-		if (!$this->_userid) {
-			return false;
-		}
-  	if ($this->superuser()) {
-  		return true;
-  	}
-  	
-		$groups = $this->getUserGroups();
-		foreach ((array) $groups as $group)
+		if (!$this->_userid)
 		{
-			if ($group->manage_events > 0 || $group->gedit_events > 0) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	/**
-	 * returns true if the user can add venues
-	 * 
-	 * @return boolean
-	 */
-	function canAddVenue()
-	{
-		if (!$this->_userid) {
 			return false;
 		}
-  	if ($this->superuser()) {
-  		return true;
-  	}
-  	
-		$groups = $this->getUserGroups();
-		foreach ((array) $groups as $group)
+
+		if ($this->superuser())
 		{
-			if ($group->edit_venues > 0 || $group->gedit_venues > 0) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	/**
-	 * return true if the user can edit specified event
-	 * @param int $eventid
-	 * @return boolean
-	 */
-	function canEditEvent($eventid)
-	{
-		if (!$this->_userid) {
-			return false;
-		}
-  	if ($this->superuser()) {
-  		return true;
-  	}
-  	
-		$db = &JFactory::getDBO();
-		
-		$query = ' SELECT e.id '
-		       . ' FROM #__redevent_events AS e '
-		       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
-		       . ' INNER JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
-		       . ' LEFT JOIN #__redevent_groups AS g ON g.id = gc.group_id '
-		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
-		       . ' WHERE e.id = '. $db->Quote($eventid)
-		       . '   AND gc.accesslevel > 0 '
-		       . '   AND ( ( g.isdefault = 1 ' // default group
-		       . '         AND (g.edit_events = 2 '
-		       . '             OR (g.edit_events = 1 AND e.created_by = '.$db->Quote($this->_userid).') ) ) '
-		       . '      OR ( gm.member = '.$db->Quote($this->_userid) // user is member of this group
-		       . '         AND ( gm.manage_events = 2 '
-		       . '             OR (gm.manage_events = 1 AND e.created_by = '.$db->Quote($this->_userid).') ) ) )'
-		       ;
-		$db->setQuery($query);
-//		echo($db->getQuery());
-		return ($db->loadResult() ? true : false);
-	}
-	
-	/**
-	 * returns true if user can publish specified event
-	 * @param int event id, or 0 for a new event
-	 * @return boolean
-	 */
-	function canPublishEvent($eventid = 0)
-	{
-		if (!$this->_userid) {
-			return false;
-		}
-  	if ($this->superuser()) {
-  		return true;
-  	}
-  	
-		if (!$eventid) // this is a new event
-		{		
-			$query = ' SELECT g.id '
-			       . ' FROM #__redevent_groups AS g '
-			       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
-			       . ' WHERE ( gm.member = '.$this->_db->Quote($this->_userid).' AND gm.publish_events > 0 ) '
-			       . '   OR ( g.isdefault = 1 AND g.publish_events > 0 ) '
-			       ;		
-		}
-		else
-		{
-			$query = ' SELECT e.id '
-			       . ' FROM #__redevent_events AS e '
-			       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
-			       . ' INNER JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
-			       . ' LEFT JOIN #__redevent_groups AS g ON g.id = gc.group_id '
-			       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
-			       . ' WHERE e.id = '. $this->_db->Quote($eventid)
-			       . '   AND ( ( g.isdefault = 1 AND (g.publish_events = 2 OR (g.publish_events = 1 AND e.created_by = '.$this->_db->Quote($this->_userid).') ) ) '
-			       . '      OR ( gm.publish_events = 2 OR (gm.publish_events = 1 AND e.created_by = '.$this->_db->Quote($this->_userid).') ) ) '
-			       ;			
-		}
-		$this->_db->setQuery($query);
-//		echo($db->getQuery());
-		return ($this->_db->loadResult() ? true : false);	
-	}
-	
-	/**
-	 * returns true if user can publish specified event
-	 * @param int event id, or 0 for a new event
-	 * @return boolean
-	 */
-	function canPublishXref($xref = 0)
-	{
-		if (!$this->_userid) {
-			return false;
-		}
-  	if ($this->superuser()) {
-  		return true;
-  	}
-  	
-		if (!$xref) // this is a new event
-		{		
-			return false;
-		}
-		else
-		{
-			$query = ' SELECT x.id '
-			       . ' FROM #__redevent_event_venue_xref AS x '
-			       . ' INNER JOIN #__redevent_events AS e ON e.id = x.eventid '
-			       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = x.eventid '
-			       . ' INNER JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
-			       . ' LEFT JOIN #__redevent_groups AS g ON g.id = gc.group_id '
-			       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
-			       . ' WHERE x.id = '. $this->_db->Quote($xref)
-			       . '   AND ( ( g.isdefault = 1 AND (g.publish_events = 2 OR (g.publish_events = 1 AND e.created_by = '.$this->_db->Quote($this->_userid).') ) ) '
-			       . '      OR ( gm.publish_events = 2 OR (gm.publish_events = 1 AND e.created_by = '.$this->_db->Quote($this->_userid).') ) ) '
-			       ;			
-		}
-		$this->_db->setQuery($query);
-//		echo($db->getQuery());
-		return ($this->_db->loadResult() ? true : false);	
-	}
-	
-	/**
-	 * return true if the user can edit specified xref
-	 * @param int xref
-	 * @return boolean
-	 */
-	function canEditXref($xref)
-	{
-		if (!$this->_userid) {
-			return false;
-		}
-  	if ($this->superuser()) {
-  		return true;
-  	}
-  	
-		$db = &JFactory::getDBO();
-
-		$query = ' SELECT e.id '
-		       . ' FROM #__redevent_events AS e '
-		       . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
-		       . ' INNER JOIN #__redevent_venues AS v ON v.id = x.venueid '
-		       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
-		       . ' INNER JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
-		       . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = x.venueid AND gv.group_id = gc.group_id '
-		       . ' LEFT JOIN #__redevent_groups AS g ON g.id = gc.group_id '
-		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
-		       . ' LEFT JOIN #__redevent_venue_category_xref AS xvcat ON xvcat.venue_id = x.venueid '
-		       . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = xvcat.category_id '
-		       . ' WHERE x.id = '. $db->Quote($xref)
-		       . '   AND gc.accesslevel > 0 AND (gvc.accesslevel > 0 OR gv.accesslevel > 0 OR v.created_by = '.$db->Quote($this->_userid).') '
-		       . '   AND ( ( g.isdefault = 1 AND ( g.edit_events = 2 OR (g.edit_events = 1 AND e.created_by = '.$db->Quote($this->_userid).')) ) '
-		       . '      OR ( gm.member = '.$db->Quote($this->_userid)
-		       . '        AND (gm.manage_xrefs > 0 OR gm.manage_events > 1 '
-		       . '           OR (gm.manage_events = 1 AND e.created_by = '.$db->Quote($this->_userid).') ) ) )'
-		       ;
-		$db->setQuery($query);
-		$res = $db->loadResult();
-		return ($res ? true : false);
-	}
-	
-	/**
-	 * get array of all the xrefs the user can edit
-	 * 
-	 * @return array int xrefs
-	 */
-	function getCanEditXrefs()
-	{
-		if (!$this->_userid) {
-			return false;
-		}
-  	
-		$db = &JFactory::getDBO();
-
-		$query = ' SELECT x.id '
-		       . ' FROM #__redevent_events AS e '
-		       . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
-		       . ' INNER JOIN #__redevent_venues AS v ON v.id = x.venueid '
-		       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
-		       . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
-		       . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = x.venueid AND gv.group_id = gc.group_id '
-		       . ' LEFT JOIN #__redevent_groups AS g ON g.id = gc.group_id '
-		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
-		       . ' LEFT JOIN #__redevent_venue_category_xref AS xvcat ON xvcat.venue_id = x.venueid '
-		       . ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = xvcat.category_id '
-		       . ' WHERE gc.accesslevel > 0 AND (gv.accesslevel > 0 OR gvc.accesslevel > 0 OR v.created_by = '.$db->Quote($this->_userid).') '
-		       . '   AND ( ( g.isdefault = 1 AND ( g.edit_events = 2 OR (g.edit_events = 1 AND e.created_by = '.$db->Quote($this->_userid).')) ) '
-		       . '      OR ( gm.member = '.$db->Quote($this->_userid)
-		       . '        AND (gm.manage_xrefs > 0 OR gm.manage_events > 1 '
-		       . '           OR (gm.manage_events = 1 AND e.created_by = '.$db->Quote($this->_userid).') ) ) )'
-		       . ' GROUP BY x.id '
-		       ;
-		$db->setQuery($query);
-		$res = $db->loadResultArray();
-		return $res;
-	}
-
-	
-	/**
-	 * get array of all the xrefs the user can view attendees from
-	 * 
-	 * @return array int xrefs
-	 */
-	function getCanViewAttendees()
-	{
-		if (!$this->_userid) {
-			return false;
-		}
-  	
-		$db = &JFactory::getDBO();
-
-		$query = ' SELECT x.id '
-		       . ' FROM #__redevent_events AS e '
-		       . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
-		       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
-		       . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
-		       . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = x.venueid AND gv.group_id = gc.group_id '
-		       . ' LEFT JOIN #__redevent_groups AS g ON g.id = gc.group_id '
-		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
-		       . ' WHERE gc.accesslevel > 0 AND gv.accesslevel > 0 '
-		       . '   AND ( ( g.isdefault = 1 AND ( g.edit_events = 2 OR (g.edit_events = 1 AND e.created_by = '.$db->Quote($this->_userid).')) ) '
-		       . '      OR ( gm.member = '.$db->Quote($this->_userid)
-		       . '        AND (gm.manage_xrefs > 0 OR gm.manage_events > 1 OR gm.manage_attendees > 0'
-		       . '           OR (gm.manage_events = 1 AND e.created_by = '.$db->Quote($this->_userid).') ) ) )'
-		       . ' GROUP BY x.id '
-		       ;
-		$db->setQuery($query);
-		$res = $db->loadResultArray();
-		return $res;
-	}
-	
-  /**
-   * check if user is allowed to addxrefs
-   * @return boolean
-   */
-	function canAddXref()
-  {
-  	$params = JComponentHelper::getParams('com_redevent');
-		if (!$this->_userid) {
-			return false;
-		}
-  	if ($this->superuser()) {
-  		return true;
-  	}
-  	if ($this->canAddEvent() && $params->get('create_session', 1)) {
-  		return true;
-  	}
-  	
-  	$query = ' SELECT gm.id '
-  	       . ' FROM #__redevent_groups AS g '
-  	       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
-  	       . ' WHERE gm.member = '. $this->_db->Quote($this->_userid)
-  	       . '   AND (gm.manage_xrefs > 0 OR gm.manage_events > 0) '
-  	       ;
-  	$this->_db->setQuery($query);
-  	$res = $this->_db->loadObjectList();
-  	return count($res) > 0;
-  } 
-	
-	/**
-	 * return true if current user can manage attendees
-	 * @param int xref_id
-	 */
-  function canManageAttendees($xref_id)
-  {
-		if (!$this->_userid) {
-			return false;
-		}
-  	if ($this->superuser()) {
-  		return true;
-  	}
-  	
-		$db = &JFactory::getDBO();
-  	
-  	$query = ' SELECT gm.id '
-  	       . ' FROM #__redevent_event_venue_xref AS x '
-  	       . ' INNER JOIN #__redevent_groups AS g ON x.groupid = g.id '
-  	       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
-  	       . ' WHERE gm.member = '. $db->Quote($this->_userid)
-  	       . '   AND gm.manage_attendees > 1 '
-  	       . '   AND x.id = '. $db->Quote($xref_id)
-  	       ;
-  	$db->setQuery($query);
-  	$res1 = $db->loadObjectList();
-  	
-  	$query = ' SELECT gm.id '
-  	       . ' FROM #__redevent_event_venue_xref AS x '
-           . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = x.eventid'
-  	       . ' INNER JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
-  	       . ' INNER JOIN #__redevent_groups AS g ON gc.group_id = g.id '
-  	       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
-  	       . ' WHERE gm.member = '. $db->Quote($this->_userid)
-  	       . '   AND gm.manage_attendees > 1 '
-  	       . '   AND x.id = '. $db->Quote($xref_id)
-  	       ;
-  	$db->setQuery($query);
-  	$res2 = $db->loadObjectList();
-  	
-  	return count($res1) + count($res2);
-  }
-	
-	/**
-	 * return true if current user can view attendees
-	 * @param int xref_id
-	 */
-  function canViewAttendees($xref_id)
-  {
-		if (!$this->_userid) {
-			return false;
-		}
-  	if ($this->superuser()) {
-  		return true;
-  	}
-  	
-		$db = &JFactory::getDBO();
-  	
-  	$query = ' SELECT gm.id '
-  	       . ' FROM #__redevent_event_venue_xref AS x '
-           . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = x.eventid'
-  	       . ' INNER JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
-  	       . ' INNER JOIN #__redevent_groups AS g ON gc.group_id = g.id '
-  	       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
-  	       . ' WHERE gm.member = '. $db->Quote($this->_userid)
-  	       . '   AND (gm.manage_xrefs > 0 OR gm.manage_events > 0 OR gm.manage_attendees > 0 OR gm.receive_registrations > 0) '
-  	       . '   AND x.id = '. $db->Quote($xref_id)
-  	       ;
-  	$db->setQuery($query);
-  	$res = $db->loadObjectList();
-  	return count($res);
-  }
-	
-	/**
-	 * return true if the user can edit specified event
-	 * @param int $eventid
-	 * @return boolean
-	 */
-	function canEditVenue($id)
-	{
-		if (!$this->_userid) {
-			return false;
-		}
-		
-  	if ($this->superuser()) {
-  		return true;
-  	}
-  	
-		$db = &JFactory::getDBO();
-		
-		$query = ' SELECT v.id '
-		       . ' FROM #__redevent_venues AS v '
-		       . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = v.id '
-		       . ' LEFT JOIN #__redevent_groups AS g ON g.id = gv.group_id '
-		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gv.group_id '
-		       . ' WHERE v.id = '. $db->Quote($id)
-		       . '   AND ( v.created_by = '.$db->Quote($this->_userid)
-           . '       OR ( gv.accesslevel > 0 '
-           . '          AND (  ( g.isdefault = 1 AND g.edit_venues = 2 ) '
-           . '              OR ( gm.member = '.$db->Quote($this->_userid).' AND (g.edit_venues = 2 OR gm.edit_venues = 2) ) ) ) ) '
-		       ;
-		$db->setQuery($query);
-		return ($db->loadResult() ? true : false);
-	}
-
-	
-	/**
-	 * returns true if user can publish specified venue
-	 * @param int venue id, or 0 for a new venue
-	 * @return boolean
-	 */
-	function canPublishVenue($id = 0)
-	{
-		if (!$this->_userid) {
-			return false;
-		}
-		if ($this->superuser()) {
 			return true;
 		}
-		 
-		$db = &JFactory::getDBO();
-		if (!$id) // this is a new event
+
+		$user = $this->getUser();
+
+		$canAdd = $user->authorise('re.createevent');
+		$cats = $this->getAuthorisedCategories('re.manageevents');
+
+		return ($canAdd && count($cats));
+	}
+
+	/**
+	 * returns true if the user can add venues
+	 *
+	 * @return boolean
+	 */
+	public function canAddVenue()
+	{
+		if (!$this->_userid)
 		{
-			$query = ' SELECT g.id '
-			       . ' FROM #__redevent_groups AS g '
-			       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
-			       . ' WHERE ( gm.member = '.$db->Quote($this->_userid).' AND (gm.publish_venues > 0 OR  g.publish_venues > 0)) '
-			       . '   OR ( g.isdefault = 1 AND g.publish_venues > 0 ) '
-			;
-			$db->setQuery($query);
-			return ($db->loadResult() ? true : false);
+			return false;
+		}
+
+		if ($this->superuser())
+		{
+			return true;
+		}
+
+		return $this->getUser()->authorise('re.createvenue');
+	}
+
+	/**
+	 * return true if the user can edit specified event
+	 *
+	 * @param   int  $eventid  event id
+	 *
+	 * @return boolean
+	 */
+	public function canEditEvent($eventid)
+	{
+		if (!$this->_userid)
+		{
+			return false;
+		}
+
+		if ($this->superuser())
+		{
+			return true;
+		}
+
+		$cats    = $this->getAuthorisedCategories('re.manageevents');
+		$canEdit = $user->authorise('re.editevent');
+		$canAdd  = $user->authorise('re.createevent');
+
+		if ((!$canEdit && !$canAdd) || !count($cats))
+		{
+			return false;
+		}
+
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('e.id');
+		$query->from('#__redevent_events AS e');
+		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
+		$query->where('e.id = ' . $eventid);
+		$query->where('xcat.id IN (' . implode(', ', $cats) . ')');
+		if (!$canEdit)
+		{
+			$query->where('e.created_by = ' . $db->Quote($this->_userid));
+		}
+		$db->setQuery($query);
+
+		return ($db->loadResult() ? true : false);
+	}
+
+	/**
+	 * returns true if user can publish specified event
+	 *
+	 * @param   int $eventid  event id, or 0 for a new event
+	 *
+	 * @return boolean
+	 */
+	public function canPublishEvent($eventid = 0)
+	{
+		if (!$this->_userid)
+		{
+			return false;
+		}
+
+		if ($this->superuser())
+		{
+			return true;
+		}
+
+		$cats    = $this->getAuthorisedCategories('re.manageevents');
+		$canPublishOwn = $user->authorise('re.publishown');
+		$canPublishAny = $user->authorise('re.publishany');
+
+		if ((!$canPublishOwn && !$canPublishAny) || !count($cats))
+		{
+			return false;
+		}
+
+		if ($eventid == 0)
+		{
+			// New event, so it's own and should be in allowed cats...
+			return true;
+		}
+
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('e.id');
+		$query->from('#__redevent_events AS e');
+		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
+		$query->where('e.id = ' . $eventid);
+		$query->where('xcat.id IN (' . implode(', ', $cats) . ')');
+		if (!$canPublishAny)
+		{
+			$query->where('e.created_by = ' . $db->Quote($this->_userid));
+		}
+		$db->setQuery($query);
+
+		return ($db->loadResult() ? true : false);
+	}
+
+	/**
+	 * returns true if user can publish specified event
+	 *
+	 * @param   int  $xref  session id, or 0 for a new session
+	 *
+	 * @return boolean
+	 */
+	public function canPublishXref($xref = 0)
+	{
+		if (!$this->_userid)
+		{
+			return false;
+		}
+
+		if ($this->superuser())
+		{
+			return true;
+		}
+
+		$cats    = $this->getAuthorisedCategories('re.manageevents');
+		$canPublishOwn = $user->authorise('re.publishown');
+		$canPublishAny = $user->authorise('re.publishany');
+
+		if ((!$canPublishOwn && !$canPublishAny) || !count($cats))
+		{
+			return false;
+		}
+
+		if ($xref == 0)
+		{
+			// New session, so it's own and should be for allowed event...
+			return true;
+		}
+
+		// Otherwise find corresponding event, and check for this event
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('x.eventid');
+		$query->from('#__redevent_event_venue_xref AS x');
+		$query->where('x.id = ' . $xref);
+
+		$db->setQuery($query);
+		$res = $db->loadResult();
+
+		return $this->canPublishEvent($res);
+	}
+
+	/**
+	 * return true if the user can edit specified xref
+	 *
+	 * @param   int  $xref  xref
+	 *
+	 * @return boolean
+	 */
+	public function canEditXref($xref)
+	{
+		if (!$this->_userid)
+		{
+			return false;
+		}
+
+		if ($this->superuser())
+		{
+			return true;
+		}
+
+		$cats    = $this->getAuthorisedCategories('re.manageevents');
+		$venues  = $this->getAuthorisedVenues('re.manageevents');
+		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
+		$canEdit = $user->authorise('re.editsession');
+		$canAdd  = $user->authorise('re.createsession');
+
+		if ((!$canEdit && !$canAdd) || !count($cats) || (!count($venuescats) && !count($venues)))
+		{
+			return false;
+		}
+
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('x.id');
+		$query->from('#__redevent_events AS e');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.event_id = e.id');
+		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
+		$query->join('LEFT', '#__redevent_venue_category_xref AS xvcat ON xvcat.venue_id = x.venueid');
+		$query->where('x.id = ' . $xref);
+		$query->where('xcat.id IN (' . implode(', ', $cats) . ')');
+
+		if (count($venuescats) && count($venues))
+		{
+			$query->where('(xvcat.id IN (' . implode(', ', $venuescats) . ') OR x.venueid IN (' . implode(', ', $venues) . '))');
+		}
+		elseif (count($venuescats))
+		{
+			$query->where('xvcat.id IN (' . implode(', ', $venuescats) . ')');
 		}
 		else
 		{
-			// a bit tricky here: when a user creates a venue, it's not assigned to any group, so we must first check this case
-			$query = ' SELECT v.id '
-			       . ' FROM #__redevent_venues AS v '
-			       . ' WHERE v.id = '. $db->Quote($id)
-			       . ' AND v.created_by = '.$db->Quote($this->_userid);
-			$db->setQuery($query);
-			$isown = $db->loadResult();
-
-			if ($isown)
-			{
-				// we just need to find one group the users belong too where he is allowed to edit own venue
-				$query = ' SELECT g.id '
-				       . ' FROM #__redevent_groups AS g '
-				       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
-				       . ' WHERE ( g.isdefault = 1 OR gm.member = '. $db->Quote($this->_userid).')'
-				       . '   AND ( g.publish_venues > 0 OR gm.publish_venues > 0 ) '
-				;
-				$db->setQuery($query);
-				$res = $db->loadResult();
-				if ($res) {
-					return true;
-				}
-			}
-			// else generic query, venues assigned to groups
-			$query = ' SELECT v.id '
-			. ' FROM #__redevent_venues AS v '
-			. ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = v.id '
-			. ' LEFT JOIN #__redevent_groups AS g ON g.id = gv.group_id '
-			. ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gv.group_id '
-			. ' WHERE v.id = '. $db->Quote($id)
-			. '   AND ( g.isdefault = 1 OR gm.member = '. $db->Quote($this->_userid).')'
-			. '   AND ( g.publish_venues = 2 '
-			. '      OR (g.publish_venues = 1 AND v.created_by = '.$db->Quote($this->_userid).') '
-			. '      OR gm.publish_venues = 2 '
-			. '      OR (gm.publish_venues = 1 AND v.created_by = '.$db->Quote($this->_userid).') ) '
-			;
-			$db->setQuery($query);
-			return ($db->loadResult() ? true : false);
+			$query->where('x.venueid IN (' . implode(', ', $venues) . ')');
 		}
+
+		if (!$canEdit)
+		{
+			$query->where('e.created_by = ' . $db->Quote($this->_userid));
+		}
+		$db->setQuery($query);
+
+		return ($db->loadResult() ? true : false);
 	}
-	
+
+	/**
+	 * get array of all the xrefs the user can edit
+	 *
+	 * @return array int xrefs
+	 */
+	public function getCanEditXrefs()
+	{
+		if (!$this->_userid)
+		{
+			return false;
+		}
+
+		$cats    = $this->getAuthorisedCategories('re.manageevents');
+		$venues  = $this->getAuthorisedVenues('re.manageevents');
+		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
+		$canEdit = $user->authorise('re.editsession');
+		$canAdd  = $user->authorise('re.createsession');
+
+		if ((!$canEdit && !$canAdd) || !count($cats) || (!count($venuescats) && !count($venues)))
+		{
+			return false;
+		}
+
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('x.id');
+		$query->from('#__redevent_events AS e');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.event_id = e.id');
+		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
+		$query->join('LEFT', '#__redevent_venue_category_xref AS xvcat ON xvcat.venue_id = x.venueid');
+
+		if (!$this->superuser())
+		{
+			$query->where('xcat.id IN (' . implode(', ', $cats) . ')');
+
+			if (count($venuescats) && count($venues))
+			{
+				$query->where('(xvcat.id IN (' . implode(', ', $venuescats) . ') OR x.venueid IN (' . implode(', ', $venues) . '))');
+			}
+			elseif (count($venuescats))
+			{
+				$query->where('xvcat.id IN (' . implode(', ', $venuescats) . ')');
+			}
+			else
+			{
+				$query->where('x.venueid IN (' . implode(', ', $venues) . ')');
+			}
+
+			if (!$canEdit)
+			{
+				$query->where('e.created_by = ' . $db->Quote($this->_userid));
+			}
+		}
+
+		$db->setQuery($query);
+		$res = $db->loadColumn();
+
+		return $res;
+	}
+
+
+	/**
+	 * get array of all the xrefs the user can view attendees from
+	 *
+	 * @return array int xrefs
+	 */
+	public function getCanViewAttendees()
+	{
+		if (!$this->_userid)
+		{
+			return false;
+		}
+
+		$cats    = $this->getAuthorisedCategories('re.manageevents');
+		$venues  = $this->getAuthorisedVenues('re.manageevents');
+		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
+		$canViewAttendees = $user->authorise('re.viewattendees') || $user->authorise('re.manageattendees');
+
+		if (!$canManageAttendees || !count($cats) || (!count($venuescats) && !count($venues)))
+		{
+			return false;
+		}
+
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('x.id');
+		$query->from('#__redevent_events AS e');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.event_id = e.id');
+		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
+		$query->join('LEFT', '#__redevent_venue_category_xref AS xvcat ON xvcat.venue_id = x.venueid');
+
+		if (!$this->superuser())
+		{
+			$query->where('xcat.id IN (' . implode(', ', $cats) . ')');
+
+			if (count($venuescats) && count($venues))
+			{
+				$query->where('(xvcat.id IN (' . implode(', ', $venuescats) . ') OR x.venueid IN (' . implode(', ', $venues) . '))');
+			}
+			elseif (count($venuescats))
+			{
+				$query->where('xvcat.id IN (' . implode(', ', $venuescats) . ')');
+			}
+			else
+			{
+				$query->where('x.venueid IN (' . implode(', ', $venues) . ')');
+			}
+		}
+
+		$db->setQuery($query);
+		$res = $db->loadColumn();
+
+		return $res;
+	}
+
+	/**
+	 * check if user is allowed to addxrefs
+	 * @return boolean
+	 */
+	public function canAddXref()
+	{
+		if (!$this->_userid)
+		{
+			return false;
+		}
+
+		if ($this->superuser())
+		{
+			return true;
+		}
+
+		$user = $this->getUser();
+
+		$canAdd = $user->authorise('re.createsession');
+		$cats = $this->getAuthorisedCategories('re.manageevents');
+
+		return ($canAdd && count($cats));
+	}
+
+	/**
+	 * return true if current user can manage attendees
+	 *
+	 * @param   int  $xref_id  xref_id
+	 *
+	 * @return boolean
+	 */
+	public function canManageAttendees($xref_id)
+	{
+		if (!$this->_userid)
+		{
+			return false;
+		}
+
+		$cats    = $this->getAuthorisedCategories('re.manageevents');
+		$venues  = $this->getAuthorisedVenues('re.manageevents');
+		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
+		$canManageAttendees = $user->authorise('re.manageattendees');
+
+		if (!$canManageAttendees || !count($cats) || (!count($venuescats) && !count($venues)))
+		{
+			return false;
+		}
+
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('x.id');
+		$query->from('#__redevent_events AS e');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.event_id = e.id');
+		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
+		$query->join('LEFT', '#__redevent_venue_category_xref AS xvcat ON xvcat.venue_id = x.venueid');
+		$query->where('x.id = ' . $xref_id);
+
+		if (!$this->superuser())
+		{
+			$query->where('xcat.id IN (' . implode(', ', $cats) . ')');
+
+			if (count($venuescats) && count($venues))
+			{
+				$query->where('(xvcat.id IN (' . implode(', ', $venuescats) . ') OR x.venueid IN (' . implode(', ', $venues) . '))');
+			}
+			elseif (count($venuescats))
+			{
+				$query->where('xvcat.id IN (' . implode(', ', $venuescats) . ')');
+			}
+			else
+			{
+				$query->where('x.venueid IN (' . implode(', ', $venues) . ')');
+			}
+		}
+
+		$db->setQuery($query);
+		$res = $db->loadColumn();
+
+		return $res ? true : false;
+	}
+
+	/**
+	 * return true if current user can view attendees
+	 *
+	 * @param   int  $xref_id  xref_id
+	 */
+	public function canViewAttendees($xref_id)
+	{
+		if (!$this->_userid)
+		{
+			return false;
+		}
+
+		$cats    = $this->getAuthorisedCategories('re.manageevents');
+		$venues  = $this->getAuthorisedVenues('re.manageevents');
+		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
+		$canViewAttendees = $user->authorise('re.viewattendees') || $user->authorise('re.manageattendees');
+
+		if (!$canViewAttendees || !count($cats) || (!count($venuescats) && !count($venues)))
+		{
+			return false;
+		}
+
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('x.id');
+		$query->from('#__redevent_events AS e');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.event_id = e.id');
+		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
+		$query->join('LEFT', '#__redevent_venue_category_xref AS xvcat ON xvcat.venue_id = x.venueid');
+		$query->where('x.id = ' . $xref_id);
+
+		if (!$this->superuser())
+		{
+			$query->where('xcat.id IN (' . implode(', ', $cats) . ')');
+
+			if (count($venuescats) && count($venues))
+			{
+				$query->where('(xvcat.id IN (' . implode(', ', $venuescats) . ') OR x.venueid IN (' . implode(', ', $venues) . '))');
+			}
+			elseif (count($venuescats))
+			{
+				$query->where('xvcat.id IN (' . implode(', ', $venuescats) . ')');
+			}
+			else
+			{
+				$query->where('x.venueid IN (' . implode(', ', $venues) . ')');
+			}
+		}
+
+		$db->setQuery($query);
+		$res = $db->loadColumn();
+
+		return $res ? true : false;
+	}
+
+	/**
+	 * return true if the user can edit specified venue
+	 *
+	 * @param   int  $id  venue id
+	 *
+	 * @return boolean
+	 */
+	public function canEditVenue($id)
+	{
+		if (!$this->_userid)
+		{
+			return false;
+		}
+
+		if ($this->superuser())
+		{
+			return true;
+		}
+
+		$cats    = $this->getAuthorisedVenuesCategories('re.managevenues');
+		$canAdd = $user->authorise('re.createvenue');
+		$canEdit = $user->authorise('re.editvenue');
+
+		if ((!$canEdit && !$canAdd) || !count($cats))
+		{
+			return false;
+		}
+
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('v.id');
+		$query->from('#__redevent_venues AS v');
+		$query->join('INNER', '#__redevent_venue_category_xref AS xcat ON xcat.venue_id = v.id');
+		$query->where('v.id = ' . $id);
+		$query->where('xcat.id IN (' . implode(', ', $cats) . ')');
+		if (!$canEdit)
+		{
+			$query->where('v.created_by = ' . $db->Quote($this->_userid));
+		}
+		$db->setQuery($query);
+
+		return ($db->loadResult() ? true : false);
+	}
+
+
+	/**
+	 * returns true if user can publish specified venue
+	 *
+	 * @param   int  $id  venue id, or 0 for a new venue
+	 *
+	 * @return boolean
+	 */
+	public function canPublishVenue($id = 0)
+	{
+		if (!$this->_userid)
+		{
+			return false;
+		}
+
+		if ($this->superuser())
+		{
+			return true;
+		}
+
+		$cats    = $this->getAuthorisedVenuesCategories('re.managevenues');
+		$canPublishOwn = $user->authorise('re.publishvenueown');
+		$canPublishAny = $user->authorise('re.publishvenueany');
+
+		if ((!$canPublishOwn && !$canPublishAny) || !count($cats))
+		{
+			return false;
+		}
+
+		if ($eventid == 0)
+		{
+			// New venue, so it's own and should be in allowed cats...
+			return true;
+		}
+
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('v.id');
+		$query->from('#__redevent_venues AS v');
+		$query->join('INNER', '#__redevent_venue_category_xref AS xcat ON xcat.venue_id = v.id');
+		$query->where('v.id = ' . $id);
+		$query->where('xcat.id IN (' . implode(', ', $cats) . ')');
+		if (!$canPublishAny)
+		{
+			$query->where('v.created_by = ' . $db->Quote($this->_userid));
+		}
+		$db->setQuery($query);
+
+		return ($db->loadResult() ? true : false);
+	}
+
 	/**
 	 * get user groups
-	 * 
+	 *
 	 * @return array
-	 */	
-	function getUserGroups()
+	 */
+	public function getUserGroups()
 	{
 		if (empty($this->_groups))
 		{
 			$db = &JFactory::getDBO();
-			
+
 			$query = ' SELECT g.id AS group_id, g.name AS group_name, g.parameters, g.isdefault, g.edit_events AS gedit_events, g.edit_venues AS gedit_venues, '
-			       . '   gm.member AS user_id, gm.manage_events, gm.manage_xrefs, gm.edit_venues '
-			       . ' FROM #__redevent_groups AS g '
-			       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id ' 
-			       . ' WHERE isdefault = 1 '
-			       . '    OR gm.member = '. $db->Quote($this->_userid)
-			       . ' GROUP BY g.id ';
+			. '   gm.member AS user_id, gm.manage_events, gm.manage_xrefs, gm.edit_venues '
+			. ' FROM #__redevent_groups AS g '
+			. ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
+			. ' WHERE isdefault = 1 '
+			. '    OR gm.member = '. $db->Quote($this->_userid)
+			. ' GROUP BY g.id ';
 			$db->setQuery($query);
 			$this->_groups = $db->loadObjectList('group_id');
 		}
 		return $this->_groups;
 	}
-	
+
 	/**
 	 * return user group ids
-	 * 
+	 *
 	 * @return array
 	 */
-	function getUserGroupsIds()
+	public function getUserGroupsIds()
 	{
 		$res = array();
 		$groups = $this->getUserGroups();
@@ -596,13 +737,13 @@ class UserAcl {
 		}
 		return $res;
 	}
-	
+
 	/**
 	 * returns default group if set
-	 * 
+	 *
 	 * return object or false
 	 */
-	function getDefaultGroup()
+	public function getDefaultGroup()
 	{
 		foreach ($this->getUserGroups AS $g)
 		{
@@ -612,137 +753,178 @@ class UserAcl {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * get categories managed by user
-	 * 
+	 *
 	 * @return array
 	 */
 	function getManagedCategories()
 	{
-		$db = &JFactory::getDBO();
-
-		$groups = $this->getUserGroups();
-		if (!$groups) {
-			return false;
-		}
-		$group_ids = array_keys($groups);
-		$quoted = array();
-		foreach ($group_ids as $g) {
-			$quoted[] = $db->Quote($g);
-		}		
-		
-		$query = ' SELECT DISTINCT gc.category_id  '
-		       . ' FROM #__redevent_groups_categories as gc '
-		       . ' WHERE gc.group_id IN ('. implode(', ', $quoted) .')'
-		       . '   AND gc.accesslevel > 0'
-		       ;
-		$db->setQuery($query);
-		return $db->loadResultArray();
+		return $this->getAuthorisedCategories('re.manageevents');
 	}
-	
+
 	/**
 	 * get venues managed by the user
-	 * 
+	 *
 	 * @return array
 	 */
 	function getManagedVenues()
 	{
-		$db = &JFactory::getDBO();
-		
-		$query = ' SELECT DISTINCT v.id AS venue_id  '
-		       . ' FROM #__redevent_venues AS v '
-		       . ' LEFT JOIN #__redevent_groups_venues as gv ON gv.venue_id = v.id '
-		       . ' LEFT JOIN #__redevent_venue_category_xref as xvcat ON xvcat.venue_id = v.id '
-		       . ' LEFT JOIN #__redevent_venues_categories as vcat ON vcat.id = xvcat.category_id '
-		       . ' LEFT JOIN #__redevent_groups_venues_categories as gvc ON gvc.category_id = vcat.id '
-		       . ' WHERE v.created_by = '.$db->Quote($this->_userid);
-				
-		$groups = $this->getUserGroups();
-		if ($groups) 
+		// Explicitely managed
+		$venues = $this->getAuthorisedVenues('re.managevenue');
+
+		// Then managed through venue category
+		$cats = $this->getAuthorisedVenuesCategories('re.managevenues');
+
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('v.id');
+		$query->from('#__redevent_venues AS v');
+		$query->join('LEFT', '#__redevent_venue_category_xref as xcat ON xcat.venue_id = v.id');
+		$query->where('v.created_by = ' . $this->_userid, 'OR');
+		if ($cats && count($cats))
 		{
-			$group_ids = array_keys($groups);
-			$quoted = array();
-			foreach ($group_ids as $g) {
-				$quoted[] = $db->Quote($g);
-			}
-		  $query .= '    OR (gv.group_id IN ('. implode(', ', $quoted) .') AND gv.accesslevel > 0) '
-		          . '    OR (gvc.group_id IN ('. implode(', ', $quoted) .') AND gvc.accesslevel > 0) '
-		          ;
+			$query->where('xcat.id IN (' . implode($glue, $cats) . ')');
 		}
+
 		$db->setQuery($query);
-		return $db->loadResultArray();
+		$res = $db->loadColumn();
+
+		$venues = array_merge($venues, $res);
+		$venues = array_unique($venues);
+
+		return $venues;
 	}
-	
+
 	/**
 	 * get venues categories managed by user
-	 * 
+	 *
 	 * @return array
 	 */
 	function getManagedVenuesCategories()
 	{
-		$db = &JFactory::getDBO();
-
-		$groups = $this->getUserGroups();
-		if ($groups) {
-			$group_ids = array_keys($groups);
-		}
-		$quoted = array();
-		foreach ($group_ids as $g) {
-			$quoted[] = $db->Quote($g);
-		}		
-		
-		$query = ' SELECT DISTINCT gc.category_id  '
-		       . ' FROM #__redevent_groups_venues_categories as gc '
-		       . ' WHERE gc.group_id IN ('. implode(', ', $quoted) .')'
-		       . '   AND gc.accesslevel > 0'
-		       ;
-		$db->setQuery($query);
-		return $db->loadResultArray();
+		return $this->getAuthorisedVenuesCategories('re.managevenues');
 	}
-	
+
 	/**
 	 * Checks if the user is a superuser
 	 * A superuser will allways have access if the feature is activated
 	 *
 	 * @since 0.9
-	 * 
+	 *
 	 * @return boolean True on success
 	 */
-	function superuser()
+	public function superuser()
 	{
-  	$user = & JFactory::getUser();  
-  	
-  	if ($user->authorise('core.admin', 'com_redevent')) {
-  		return true;
-  	}
-  	return false;
-	}
-	
-	/**
-	 * Checks if the user has the privileges to use the wysiwyg editor
-	 *
-	 * We could use the validate_user method instead of this to allow to set a groupid
-	 * Not sure if this is a good idea
-	 *
-	 * @since 0.9
-	 * 
-	 * @return boolean True on success
-	 */
-	function editoruser()
-	{
-		$user 		= & JFactory::getUser();
-		
-		$group_ids = array(
-		//			18, //registered
-		//			19, //author
-					20, //editor
-					21, //publisher
-					23, //manager
-					24, //administrator
-					25 //super administrator
-					);
+		if ($this->getUser()->authorise('core.admin', 'com_redevent'))
+		{
+			return true;
+		}
 
-		return in_array($user->get('gid'), $group_ids);
+		return false;
+	}
+
+	/**
+	 * return the list of authorised categories for specified action
+	 *
+	 * @param   string  $action  action name
+	 *
+	 * @return array
+	 */
+	public function getAuthorisedCategories($action)
+	{
+		// Brute force method: get all published category rows for the component and check each one
+		// TODO: Modify the way permissions are stored in the db to allow for faster implementation and better scaling
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+		->select('c.id AS id, a.name AS asset_name')
+		->from('#__redevent_categories AS c')
+		->innerJoin('#__assets AS a ON c.asset_id = a.id');
+		$db->setQuery($query);
+		$allCategories = $db->loadObjectList('id');
+		$allowedCategories = array();
+		foreach ($allCategories as $category)
+		{
+			if ($this->getUser()->authorise($action, $category->asset_name))
+			{
+				$allowedCategories[] = (int) $category->id;
+			}
+		}
+		return $allowedCategories;
+	}
+
+	/**
+	 * return the list of authorised venues categories for specified action
+	 *
+	 * @param   string  $action  action name
+	 *
+	 * @return array
+	 */
+	public function getAuthorisedVenuesCategories($action)
+	{
+		// Brute force method: get all published category rows for the component and check each one
+		// TODO: Modify the way permissions are stored in the db to allow for faster implementation and better scaling
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+		->select('c.id AS id, a.name AS asset_name')
+		->from('#__redevent_venues_categories AS c')
+		->innerJoin('#__assets AS a ON c.asset_id = a.id');
+		$db->setQuery($query);
+		$allCategories = $db->loadObjectList('id');
+		$allowedCategories = array();
+		foreach ($allCategories as $category)
+		{
+			if ($this->getUser()->authorise($action, $category->asset_name))
+			{
+				$allowedCategories[] = (int) $category->id;
+			}
+		}
+		return $allowedCategories;
+	}
+
+	/**
+	 * return the list of authorised venues for specified action
+	 *
+	 * @param   string  $action  action name
+	 *
+	 * @return array
+	 */
+	public function getAuthorisedVenues($action)
+	{
+		// Brute force method: get all published venues rows for the component and check each one
+		// TODO: Modify the way permissions are stored in the db to allow for faster implementation and better scaling
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+		->select('c.id AS id, a.name AS asset_name, c.created_by')
+		->from('#__redevent_venues AS c')
+		->innerJoin('#__assets AS a ON c.asset_id = a.id');
+		$db->setQuery($query);
+		$all = $db->loadObjectList('id');
+		$allowed = array();
+		foreach ($all as $item)
+		{
+			if ($item->created_by == $this->_userid || $this->getUser()->authorise($action, $item->asset_name))
+			{
+				$allowed[] = (int) $item->id;
+			}
+		}
+		return $allowed;
+	}
+
+	/**
+	 * return JUser object
+	 *
+	 * @return JUser
+	 */
+	protected function getUser()
+	{
+		if (empty($this->user))
+		{
+			$this->user = JFactory::getUser($this->_userid);
+		}
+
+		return $this->user;
 	}
 }
