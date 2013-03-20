@@ -454,7 +454,6 @@ class redEVENTHelper {
 			. ' INNER JOIN #__redevent_venues_categories AS child ON child.lft BETWEEN c.lft AND c.rgt '
 			. ' INNER JOIN #__redevent_venue_category_xref AS xcat ON xcat.category_id = child.id '
 			. ' INNER JOIN #__redevent_venues AS v ON v.id = xcat.venue_id '
-			. '  LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = c.id '
 			. ' WHERE c.published = 1 '
 			. '   AND c.access IN (' . $gids . ')'
 			. ' GROUP BY c.id '
@@ -471,7 +470,6 @@ class redEVENTHelper {
 			// select only categories with published venues
 			$query = ' SELECT c.id '
 			. ' FROM #__redevent_venues_categories AS c '
-			. ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = c.id '
 			. ' WHERE c.published = 1 '
 			. '   AND c.access IN (' . $gids . ')'
 			. ' GROUP BY c.id '

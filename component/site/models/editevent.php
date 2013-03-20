@@ -1197,9 +1197,6 @@ class RedeventModelEditevent extends JModel
 		$query = ' SELECT e.id AS value, e.title AS text '
 		       . ' FROM #__redevent_events AS e '
 		       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
-		       . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = xcat.category_id '
-		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
-		       . ' LEFT JOIN #__redevent_groups AS g ON gc.group_id = g.id '
 		       ;
 
 		$where = array();
@@ -1209,47 +1206,18 @@ class RedeventModelEditevent extends JModel
 		// filtering if not superuser
 		if (!UserAcl::superuser())
 		{
-			$where[] = ' gc.accesslevel > 0 ';
-			$where[] = ' ((g.isdefault = 1 '
-			         . '      AND (g.edit_events > 1 '
-			         . '             OR (g.edit_events = 1 AND e.created_by = ' . $this->_db->Quote($user->get('id')) .'))) '
-			         . ' OR (gm.member = ' . $this->_db->Quote($user->get('id'))
-			         . '      AND (gm.manage_xrefs = 1 '
-			         . '           OR gm.manage_events > 1 OR (gm.manage_events = 1 AND e.created_by = gm.member)))) ';
+			$cats = UserAcl::getInstance()->getAuthorisedCategories('re.manageevents');
+			if (!$cats || !count($cats))
+			{
+				return false;
+			}
+			$where[] = ' xcat.category_id IN (' . implode(',', $cats) . ') ';
 		}
 
 		$query .= ' WHERE '. implode(' AND ', $where);
 
 		$query .= ' GROUP BY e.id ';
 		$query .= ' ORDER BY e.title ASC ';
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
-
-
-	/**
-	 * return user groups as options
-	 *
-	 * @return array
-	 */
-	function getGroupOptions()
-	{
-		$user = &JFactory::getUser();
-
-		$query = ' SELECT g.id AS value, g.name AS text '
-		       . ' FROM #__redevent_groups AS g '
-		       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
-		       ;
-
-		$where = array();
-		$where[] = 'gm.member =' . $this->_db->Quote($user->get('id'));
-
-		if (count($where)) {
-			$query .= ' WHERE '. implode(' AND ', $where);
-		}
-
-		$query .= ' ORDER BY g.name ASC ';
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();

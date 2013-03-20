@@ -195,24 +195,6 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
     }
 
     /**
-     * Method to get the Venues
-     *
-     * @access public
-     * @return array
-     */
-    function & getGroups()
-    {
-        // Lets load the content if it doesn't already exist
-        if ( empty($this->_groups))
-        {
-            $query = $this->_buildQueryGroups();
-            $this->_groups = $this->_getList($query);
-        }
-
-        return $this->_groups;
-    }
-
-    /**
      * Total nr of events
      *
      * @access public
@@ -399,18 +381,17 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
      */
     function _buildQueryVenues()
     {
+    	if (!$allowed = UserAcl::getInstance()->getAllowedForEventsVenues())
+    	{
+    		return false;
+    	}
+
         $user = & JFactory::getUser();
         //Get Events from Database
         $query = ' SELECT l.id, l.venue, l.city, l.state, l.url, l.published, '
                . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug'
                . ' FROM #__redevent_venues AS l '
-               . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = l.id '
-               . ' LEFT JOIN #__redevent_groups AS g ON g.id = gv.group_id '
-               . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
-               . ' WHERE l.created_by = '.$this->_db->Quote($user->id)
-               . '    OR ( gv.accesslevel > 0 '
-               . '       AND (  ( g.isdefault = 1 AND g.edit_venues = 2 ) '
-               . '           OR ( gm.member = '.$this->_db->Quote($user->id).' AND (g.edit_venues = 2 OR gm.edit_venues = 2) ) ) ) '
+               . ' WHERE l.id IN (' . implode(',', $allowed) . ') '
                . ' GROUP BY (l.id) '
                . ' ORDER BY l.venue ASC '
                ;

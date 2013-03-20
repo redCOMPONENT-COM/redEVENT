@@ -351,13 +351,6 @@ class RedeventViewEditevent extends JView
 		$lists['venue'] = JHTML::_('select.genericlist', $venues, 'venueid', 'size="1" class="inputbox validate-venue"', 'value', 'text', $xref->venueid);
 		unset($venues);
 
-		// Groups
-		$groups = array();
-		$groups[] = JHTML::_('select.option', '0', JText::_('COM_REDEVENT_SELECT_GROUP'));
-		$groups = array_merge($groups, $this->get('GroupOptions'));
-		$lists['group'] = JHTML::_('select.genericlist', $groups, 'groupid', 'size="1" class="inputbox"', 'value', 'text', $xref->groupid);
-		unset($groups);
-
 		// Published state selector
 		$published = array( JHTML::_('select.option', '1', JText::_('COM_REDEVENT_PUBLISHED')),
 				JHTML::_('select.option', '0', JText::_('COM_REDEVENT_UNPUBLISHED')),

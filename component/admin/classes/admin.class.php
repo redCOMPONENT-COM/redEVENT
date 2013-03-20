@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package Joomla
  * @subpackage redEVENT
  * @since 0.9
- */
+*/
 class ELAdmin {
 
 	/**
@@ -65,7 +65,6 @@ class ELAdmin {
 		JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_VENUES' ), 'index.php?option=com_redevent&view=venues', $view == 'venues');
 		JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_CATEGORIES' ), 'index.php?option=com_redevent&view=categories', $view == 'categories');
 		JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_ARCHIVESCREEN' ), 'index.php?option=com_redevent&view=archive', $view == 'archive');
-		JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_GROUPS' ), 'index.php?option=com_redevent&view=groups', $view == 'groups');
 	}
 
 	/**
@@ -78,21 +77,21 @@ class ELAdmin {
 		$ordering = $params->get('cat_select_ordering');
 
 		$query = ' SELECT c.id, c.catname, (COUNT(parent.catname) - 1) AS depth '
-           . ' FROM #__redevent_categories AS c, '
-           . ' #__redevent_categories AS parent '
-           . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
-           . ' GROUP BY c.id '
-           . ($ordering ? ' ORDER BY c.catname': ' ORDER BY c.lft')
-           ;
-    $db->setQuery($query);
+		. ' FROM #__redevent_categories AS c, '
+		. ' #__redevent_categories AS parent '
+		. ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
+		. ' GROUP BY c.id '
+		. ($ordering ? ' ORDER BY c.catname': ' ORDER BY c.lft')
+		;
+		$db->setQuery($query);
 
-    $results = $db->loadObjectList();
+		$results = $db->loadObjectList();
 
-    $options = array();
-    foreach((array) $results as $cat)
-    {
-      $options[] = JHTML::_('select.option', $cat->id, ($ordering == 0 ? str_repeat('>', $cat->depth) : '') . ' ' . $cat->catname);
-    }
+		$options = array();
+		foreach((array) $results as $cat)
+		{
+			$options[] = JHTML::_('select.option', $cat->id, ($ordering == 0 ? str_repeat('>', $cat->depth) : '') . ' ' . $cat->catname);
+		}
 		return $options;
 	}
 
@@ -103,21 +102,21 @@ class ELAdmin {
 	{
 		$db =& JFactory::getDBO();
 	 $query = ' SELECT c.id, c.name, (COUNT(parent.name) - 1) AS depth '
-           . ' FROM #__redevent_venues_categories AS c, '
-           . ' #__redevent_venues_categories AS parent '
-           . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
-           . ' GROUP BY c.id '
-           . ' ORDER BY c.lft;'
-           ;
-    $db->setQuery($query);
+	 . ' FROM #__redevent_venues_categories AS c, '
+	 . ' #__redevent_venues_categories AS parent '
+	 . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
+	 . ' GROUP BY c.id '
+	 . ' ORDER BY c.lft;'
+	 ;
+	 $db->setQuery($query);
 
-    $results = $db->loadObjectList();
+	 $results = $db->loadObjectList();
 
-    $options = array();
-    foreach((array) $results as $cat)
-    {
-      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->name);
-    }
+	 $options = array();
+	 foreach((array) $results as $cat)
+	 {
+	 	$options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->name);
+	 }
 		return $options;
 	}
 
@@ -128,18 +127,18 @@ class ELAdmin {
 	{
 		$db = JFactory::getDBO();
 	 $query = ' SELECT v.id, v.venue '
-           . ' FROM #__redevent_venues AS v '
-           . ' ORDER BY v.venue'
-           ;
-    $db->setQuery($query);
+	 . ' FROM #__redevent_venues AS v '
+	 . ' ORDER BY v.venue'
+	 ;
+	 $db->setQuery($query);
 
-    $results = $db->loadObjectList();
+	 $results = $db->loadObjectList();
 
-    $options = array();
-    foreach((array) $results as $r)
-    {
-      $options[] = JHTML::_('select.option', $r->id, $r->venue);
-    }
+	 $options = array();
+	 foreach((array) $results as $r)
+	 {
+	 	$options[] = JHTML::_('select.option', $r->id, $r->venue);
+	 }
 		return $options;
 	}
 

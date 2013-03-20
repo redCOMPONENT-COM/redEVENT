@@ -540,7 +540,6 @@ class RedeventModelBaseEventList extends JModel
 			$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug');
 			$query->from('#__redevent_categories as c');
 			$query->join('INNER', '#__redevent_event_category_xref as x ON x.category_id = c.id');
-			$query->join('LEFT', '#__redevent_groups_categories AS gc ON gc.category_id = c.id');
 			$query->where('c.published = 1');
 			$query->where('x.event_id = ' . $this->_db->Quote($rows[$i]->id));
 			$query->where('c.access IN (' . $gids . ')');

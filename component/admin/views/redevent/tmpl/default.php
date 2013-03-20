@@ -60,19 +60,16 @@ $options = array(
 
 						$link = 'index.php?option='.$option.'&amp;view=registrations';
 						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-registrations.png', JText::_('COM_REDEVENT_REGISTRATIONS' ) );
-						
-						$link = 'index.php?option='.$option.'&amp;view=groups';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-accessgroups.png', JText::_('COM_REDEVENT_GROUPS' ) );
-						
+
 						$link = 'index.php?option='.$option.'&amp;view=textsnippets';
 						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-library.png', JText::_('COM_REDEVENT_TEXT_LIBRARY' ) );
-						
+
 						$link = 'index.php?option='.$option.'&amp;view=customfields';
 						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-customfields.png', JText::_('COM_REDEVENT_CUSTOM_FIELDS' ) );
-						
+
 						$link = 'index.php?option='.$option.'&amp;view=roles';
 						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-roles.png', JText::_('COM_REDEVENT_ROLES' ) );
-						
+
 						$link = 'index.php?option='.$option.'&amp;view=pricegroups';
 						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-pricegroups.png', JText::_('COM_REDEVENT_MENU_PRICEGROUPS' ) );
 
@@ -86,7 +83,7 @@ $options = array(
 
 							$link = 'index.php?option='.$option.'&amp;view=tools';
 							RedEventViewRedEvent::quickiconButton( $link, 'icon-48-housekeeping.png', JText::_('COM_REDEVENT_TOOLS' ) );
-							
+
 							$link = 'index.php?option='.$option.'&amp;view=logs';
 							RedEventViewRedEvent::quickiconButton( $link, 'icon-48-log.png', JText::_('COM_REDEVENT_LOG' ) );
 						}
@@ -199,10 +196,10 @@ $options = array(
 						</td>
 					</tr>
 				</table>
-				<?php 
+				<?php
 				echo JHtml::_('sliders.end');
 				?>
 			</td>
 		</tr>
 		</table>
-		
+

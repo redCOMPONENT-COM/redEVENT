@@ -60,14 +60,14 @@ class UserAcl
 	 * doesn't already exist.
 	 *
 	 * This method must be invoked as:
-	 * 		<pre>  $user =& JUser::getInstance($id);</pre>
+	 * 		<pre>  $useracl = UserAcl::getInstance($id);</pre>
 	 *
 	 * @access 	public
 	 * @param 	int 	$id 	The user to load - Can be an integer or string - If string, it is converted to ID automatically.
-	 * @return 	JUser  			The User object.
+	 * @return 	UserAcl		The User object.
 	 * @since 	1.5
 	 */
-	public function &getInstance($id = 0)
+	public static function &getInstance($id = 0)
 	{
 		static $instances;
 
