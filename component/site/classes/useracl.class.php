@@ -160,8 +160,8 @@ class UserAcl
 		}
 
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
-		$canEdit = $user->authorise('re.editevent', 'com_redevent');
-		$canAdd  = $user->authorise('re.createevent', 'com_redevent');
+		$canEdit = $this->getUser()->authorise('re.editevent', 'com_redevent');
+		$canAdd  = $this->getUser()->authorise('re.createevent', 'com_redevent');
 
 		if ((!$canEdit && !$canAdd) || !count($cats))
 		{
@@ -175,7 +175,7 @@ class UserAcl
 		$query->from('#__redevent_events AS e');
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
 		$query->where('e.id = ' . $eventid);
-		$query->where('xcat.id IN (' . implode(', ', $cats) . ')');
+		$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
 		if (!$canEdit)
 		{
 			$query->where('e.created_by = ' . $db->Quote($this->_userid));
@@ -226,7 +226,7 @@ class UserAcl
 		$query->from('#__redevent_events AS e');
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
 		$query->where('e.id = ' . $eventid);
-		$query->where('xcat.id IN (' . implode(', ', $cats) . ')');
+		$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
 		if (!$canPublishAny)
 		{
 			$query->where('e.created_by = ' . $db->Quote($this->_userid));
@@ -256,8 +256,8 @@ class UserAcl
 		}
 
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
-		$canPublishOwn = $user->authorise('re.publishown', 'com_redevent');
-		$canPublishAny = $user->authorise('re.publishany', 'com_redevent');
+		$canPublishOwn = $this->getUser()->authorise('re.publishown', 'com_redevent');
+		$canPublishAny = $this->getUser()->authorise('re.publishany', 'com_redevent');
 
 		if ((!$canPublishOwn && !$canPublishAny) || !count($cats))
 		{
@@ -306,8 +306,8 @@ class UserAcl
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
 		$venues  = $this->getAuthorisedVenues('re.manageevents');
 		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
-		$canEdit = $user->authorise('re.editsession', 'com_redevent');
-		$canAdd  = $user->authorise('re.createsession', 'com_redevent');
+		$canEdit = $this->getUser()->authorise('re.editsession', 'com_redevent');
+		$canAdd  = $this->getUser()->authorise('re.createsession', 'com_redevent');
 
 		if ((!$canEdit && !$canAdd) || !count($cats) || (!count($venuescats) && !count($venues)))
 		{
@@ -323,15 +323,15 @@ class UserAcl
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
 		$query->join('LEFT', '#__redevent_venue_category_xref AS xvcat ON xvcat.venue_id = x.venueid');
 		$query->where('x.id = ' . $xref);
-		$query->where('xcat.id IN (' . implode(', ', $cats) . ')');
+		$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
 
 		if (count($venuescats) && count($venues))
 		{
-			$query->where('(xvcat.id IN (' . implode(', ', $venuescats) . ') OR x.venueid IN (' . implode(', ', $venues) . '))');
+			$query->where('(xvcat.category_id IN (' . implode(', ', $venuescats) . ') OR x.venueid IN (' . implode(', ', $venues) . '))');
 		}
 		elseif (count($venuescats))
 		{
-			$query->where('xvcat.id IN (' . implode(', ', $venuescats) . ')');
+			$query->where('xvcat.category_id IN (' . implode(', ', $venuescats) . ')');
 		}
 		else
 		{
@@ -362,8 +362,8 @@ class UserAcl
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
 		$venues  = $this->getAuthorisedVenues('re.manageevents');
 		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
-		$canEdit = $user->authorise('re.editsession', 'com_redevent');
-		$canAdd  = $user->authorise('re.createsession', 'com_redevent');
+		$canEdit = $this->getUser()->authorise('re.editsession', 'com_redevent');
+		$canAdd  = $this->getUser()->authorise('re.createsession', 'com_redevent');
 
 		if ((!$canEdit && !$canAdd) || !count($cats) || (!count($venuescats) && !count($venues)))
 		{
@@ -381,15 +381,15 @@ class UserAcl
 
 		if (!$this->superuser())
 		{
-			$query->where('xcat.id IN (' . implode(', ', $cats) . ')');
+			$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
 
 			if (count($venuescats) && count($venues))
 			{
-				$query->where('(xvcat.id IN (' . implode(', ', $venuescats) . ') OR x.venueid IN (' . implode(', ', $venues) . '))');
+				$query->where('(xvcat.category_id IN (' . implode(', ', $venuescats) . ') OR x.venueid IN (' . implode(', ', $venues) . '))');
 			}
 			elseif (count($venuescats))
 			{
-				$query->where('xvcat.id IN (' . implode(', ', $venuescats) . ')');
+				$query->where('xvcat.category_id IN (' . implode(', ', $venuescats) . ')');
 			}
 			else
 			{
@@ -424,7 +424,7 @@ class UserAcl
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
 		$venues  = $this->getAuthorisedVenues('re.manageevents');
 		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
-		$canViewAttendees = $user->authorise('re.viewattendees', 'com_redevent') || $user->authorise('re.manageattendees', 'com_redevent');
+		$canViewAttendees = $this->getUser()->authorise('re.viewattendees', 'com_redevent') || $this->getUser()->authorise('re.manageattendees', 'com_redevent');
 
 		if (!$canManageAttendees || !count($cats) || (!count($venuescats) && !count($venues)))
 		{
@@ -442,15 +442,15 @@ class UserAcl
 
 		if (!$this->superuser())
 		{
-			$query->where('xcat.id IN (' . implode(', ', $cats) . ')');
+			$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
 
 			if (count($venuescats) && count($venues))
 			{
-				$query->where('(xvcat.id IN (' . implode(', ', $venuescats) . ') OR x.venueid IN (' . implode(', ', $venues) . '))');
+				$query->where('(xvcat.category_id IN (' . implode(', ', $venuescats) . ') OR x.venueid IN (' . implode(', ', $venues) . '))');
 			}
 			elseif (count($venuescats))
 			{
-				$query->where('xvcat.id IN (' . implode(', ', $venuescats) . ')');
+				$query->where('xvcat.category_id IN (' . implode(', ', $venuescats) . ')');
 			}
 			else
 			{
@@ -505,7 +505,7 @@ class UserAcl
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
 		$venues  = $this->getAuthorisedVenues('re.manageevents');
 		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
-		$canManageAttendees = $user->authorise('re.manageattendees', 'com_redevent');
+		$canManageAttendees = $this->getUser()->authorise('re.manageattendees', 'com_redevent');
 
 		if (!$canManageAttendees || !count($cats) || (!count($venuescats) && !count($venues)))
 		{
@@ -524,15 +524,15 @@ class UserAcl
 
 		if (!$this->superuser())
 		{
-			$query->where('xcat.id IN (' . implode(', ', $cats) . ')');
+			$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
 
 			if (count($venuescats) && count($venues))
 			{
-				$query->where('(xvcat.id IN (' . implode(', ', $venuescats) . ') OR x.venueid IN (' . implode(', ', $venues) . '))');
+				$query->where('(xvcat.category_id IN (' . implode(', ', $venuescats) . ') OR x.venueid IN (' . implode(', ', $venues) . '))');
 			}
 			elseif (count($venuescats))
 			{
-				$query->where('xvcat.id IN (' . implode(', ', $venuescats) . ')');
+				$query->where('xvcat.category_id IN (' . implode(', ', $venuescats) . ')');
 			}
 			else
 			{
@@ -561,7 +561,7 @@ class UserAcl
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
 		$venues  = $this->getAuthorisedVenues('re.manageevents');
 		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
-		$canViewAttendees = $user->authorise('re.viewattendees', 'com_redevent') || $user->authorise('re.manageattendees', 'com_redevent');
+		$canViewAttendees = $this->getUser()->authorise('re.viewattendees', 'com_redevent') || $this->getUser()->authorise('re.manageattendees', 'com_redevent');
 
 		if (!$canViewAttendees || !count($cats) || (!count($venuescats) && !count($venues)))
 		{
@@ -580,15 +580,15 @@ class UserAcl
 
 		if (!$this->superuser())
 		{
-			$query->where('xcat.id IN (' . implode(', ', $cats) . ')');
+			$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
 
 			if (count($venuescats) && count($venues))
 			{
-				$query->where('(xvcat.id IN (' . implode(', ', $venuescats) . ') OR x.venueid IN (' . implode(', ', $venues) . '))');
+				$query->where('(xvcat.category_id IN (' . implode(', ', $venuescats) . ') OR x.venueid IN (' . implode(', ', $venues) . '))');
 			}
 			elseif (count($venuescats))
 			{
-				$query->where('xvcat.id IN (' . implode(', ', $venuescats) . ')');
+				$query->where('xvcat.category_id IN (' . implode(', ', $venuescats) . ')');
 			}
 			else
 			{
@@ -622,8 +622,8 @@ class UserAcl
 		}
 
 		$cats    = $this->getAuthorisedVenuesCategories('re.managevenues');
-		$canAdd = $user->authorise('re.createvenue', 'com_redevent');
-		$canEdit = $user->authorise('re.editvenue', 'com_redevent');
+		$canAdd = $this->getUser()->authorise('re.createvenue', 'com_redevent');
+		$canEdit = $this->getUser()->authorise('re.editvenue', 'com_redevent');
 
 		if ((!$canEdit && !$canAdd) || !count($cats))
 		{
@@ -637,7 +637,7 @@ class UserAcl
 		$query->from('#__redevent_venues AS v');
 		$query->join('INNER', '#__redevent_venue_category_xref AS xcat ON xcat.venue_id = v.id');
 		$query->where('v.id = ' . $id);
-		$query->where('xcat.id IN (' . implode(', ', $cats) . ')');
+		$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
 		if (!$canEdit)
 		{
 			$query->where('v.created_by = ' . $db->Quote($this->_userid));
@@ -668,8 +668,8 @@ class UserAcl
 		}
 
 		$cats    = $this->getAuthorisedVenuesCategories('re.managevenues');
-		$canPublishOwn = $user->authorise('re.publishvenueown', 'com_redevent');
-		$canPublishAny = $user->authorise('re.publishvenueany', 'com_redevent');
+		$canPublishOwn = $this->getUser()->authorise('re.publishvenueown', 'com_redevent');
+		$canPublishAny = $this->getUser()->authorise('re.publishvenueany', 'com_redevent');
 
 		if ((!$canPublishOwn && !$canPublishAny) || !count($cats))
 		{
@@ -689,7 +689,7 @@ class UserAcl
 		$query->from('#__redevent_venues AS v');
 		$query->join('INNER', '#__redevent_venue_category_xref AS xcat ON xcat.venue_id = v.id');
 		$query->where('v.id = ' . $id);
-		$query->where('xcat.id IN (' . implode(', ', $cats) . ')');
+		$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
 		if (!$canPublishAny)
 		{
 			$query->where('v.created_by = ' . $db->Quote($this->_userid));
@@ -786,7 +786,7 @@ class UserAcl
 		$query->where('v.created_by = ' . $this->_userid, 'OR');
 		if ($cats && count($cats))
 		{
-			$query->where('xcat.id IN (' . implode($glue, $cats) . ')');
+			$query->where('xcat.category_id IN (' . implode($glue, $cats) . ')');
 		}
 
 		$db->setQuery($query);
@@ -820,7 +820,7 @@ class UserAcl
 		$query->where('v.created_by = ' . $this->_userid, 'OR');
 		if ($cats && count($cats))
 		{
-			$query->where('xcat.id IN (' . implode($glue, $cats) . ')');
+			$query->where('xcat.category_id IN (' . implode($glue, $cats) . ')');
 		}
 
 		$db->setQuery($query);

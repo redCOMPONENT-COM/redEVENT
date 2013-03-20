@@ -551,7 +551,7 @@ class redEVENTHelperCountries
 	{
 		foreach (self::getCountries() as $iso3 => $c)
 		{
-			if ($d['iso2'] == $iso_code_2)
+			if ($c['iso2'] == $iso_code_2)
 			{
 				return $iso3;
 			}
