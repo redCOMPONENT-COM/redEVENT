@@ -88,4 +88,57 @@ class plgJosetta_extRedeventcustomfield extends JosettaClassesExtensionplugin
 
 		return $table;
 	}
+
+	public function onJosettaSaveItem($context, $item, &$errors)
+	{
+		if (($context != $this->_context))
+		{
+			return;
+		}
+
+		if ($id = parent::onJosettaSaveItem($context, $item, $errors))
+		{
+			// Need to check if we must add the field in tables
+			$db      = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			$query->select('f.*');
+			$query->from('#__redevent_fields AS f');
+			$query->where('id = ' . $id);
+
+			$db->setQuery($query);
+			$row = $db->loadObject();
+
+			// add the field to the object table
+			switch ($row->object_key)
+			{
+				case 'redevent.event':
+					$table = '#__redevent_events';
+					break;
+				case 'redevent.xref':
+					$table = '#__redevent_event_venue_xref';
+					break;
+				default:
+					JError::raiseWarning(0, 'undefined custom field object_key');
+					break;
+			}
+			$tables = $db->getTableFields(array($table), false);
+			$cols = $tables[$table];
+
+			if (!array_key_exists('custom' . $row->id, $cols))
+			{
+				switch ($row->type)
+				{
+					default: // for now, let's not restrict the type...
+						$columntype = 'TEXT';
+				}
+				$q = 'ALTER IGNORE TABLE ' . $table . ' ADD COLUMN custom' . $row->id . ' ' . $columntype;
+				$db->setQuery($q);
+				if (!$db->query()) {
+					JError::raiseWarning(0, 'failed adding custom field to table');
+				}
+			}
+			return true;
+		}
+	}
 }
