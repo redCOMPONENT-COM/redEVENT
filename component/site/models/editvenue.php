@@ -43,7 +43,7 @@ class RedeventModelEditvenue extends JModel
 	var $_venue = null;
 
 	var $_categories = null;
-	
+
 	/**
 	 * Constructor
 	 *
@@ -85,7 +85,7 @@ class RedeventModelEditvenue extends JModel
 
 		$view		= JRequest::getWord('view');
 
-		if ($this->_id) 
+		if ($this->_id)
 		{
 			// Load the Event data
 			$this->_loadVenue();
@@ -99,9 +99,9 @@ class RedeventModelEditvenue extends JModel
 				$this->_venue->checkout( $user->get('id') );
 			}
 
-		} 
-		else 
-		{			
+		}
+		else
+		{
 			$this->_venue =& JTable::getInstance('redevent_venues', '');
 			//prepare output
 			$this->_venue->id				= '';
@@ -152,7 +152,7 @@ class RedeventModelEditvenue extends JModel
 			$cwhere = ' WHERE c.published = 1';
 		}
 		else
-		{					
+		{
 			$acl = UserACl::getInstance();
 			$managed = $acl->getManagedVenuesCategories();
 			if (!$managed || !count($managed)) {
@@ -162,7 +162,7 @@ class RedeventModelEditvenue extends JModel
 		}
 
 		//get the maintained categories and the categories whithout any group
-		//or just get all if somebody have edit rights	
+		//or just get all if somebody have edit rights
     $query = ' SELECT c.id, c.name, (COUNT(parent.name) - 1) AS depth, c.ordering '
            . ' FROM #__redevent_venues_categories AS c, '
            . ' #__redevent_venues_categories AS parent '
@@ -172,7 +172,7 @@ class RedeventModelEditvenue extends JModel
            . ' ORDER BY c.lft;'
            ;
     $this->_db->setQuery($query);
-    
+
     $results = $this->_db->loadObjectList();
     $options = array();
     foreach((array) $results as $cat)
@@ -193,13 +193,13 @@ class RedeventModelEditvenue extends JModel
 	 */
 	function _loadVenue( )
 	{
-		if (empty($this->_venue)) 
+		if (empty($this->_venue))
 		{
 			$user	= & JFactory::getUser();
 			$this->_venue =& JTable::getInstance('redevent_venues', '');
-			$this->_venue->load( $this->_id );			
-		
-      if ($this->_venue->id) 
+			$this->_venue->load( $this->_id );
+
+      if ($this->_venue->id)
       {
         $query =  ' SELECT c.id '
               . ' FROM #__redevent_venues_categories as c '
@@ -208,9 +208,9 @@ class RedeventModelEditvenue extends JModel
               . '   AND x.venue_id = ' . $this->_db->Quote($this->_venue->id)
               ;
         $this->_db->setQuery( $query );
-  
+
         $this->_venue->categories = $this->_db->loadResultArray();
-				$this->_venue->attachments = REAttach::getAttachments('venue'.$this->_venue->id, max($user->getAuthorisedViewLevels()));	
+				$this->_venue->attachments = REAttach::getAttachments('venue'.$this->_venue->id, max($user->getAuthorisedViewLevels()));
       }
 		}
 	  return $this->_venue;
@@ -246,7 +246,7 @@ class RedeventModelEditvenue extends JModel
 	function store($data, $file)
 	{
 		$mainframe = &JFactory::getApplication();
-		
+
 		$user 		= & JFactory::getUser();
 		$elsettings = & redEVENTHelper::config();
 
@@ -255,7 +255,7 @@ class RedeventModelEditvenue extends JModel
 		$MailFrom	 	= $mainframe->getCfg('mailfrom');
 		$FromName 		= $mainframe->getCfg('fromname');
 		$tzoffset 		= $mainframe->getCfg('offset');
-		
+
 		$params = $mainframe->getParams('com_redevent');
 
 		$row 		= & JTable::getInstance('redevent_venues', '');
@@ -289,7 +289,7 @@ class RedeventModelEditvenue extends JModel
 		if ( ( $params->get('edit_image', 1) == 2 || $params->get('edit_image', 1) == 1 ) && ( !empty($file['name'])  ) )  {
 
 			jimport('joomla.filesystem.file');
-			
+
 			if ($params->get('default_image_path', 'redevent')) {
 				$reldirpath = $params->get('default_image_path', 'redevent').DS.'venues'.DS;
 			}
@@ -321,27 +321,24 @@ class RedeventModelEditvenue extends JModel
 		}//end image upload if
 
 		//Check description
-		$editoruser = ELUser::editoruser();
+		//check description --> wipe out code
+		$row->locdescription = strip_tags($row->locdescription, '<br><br/>');
 
-		if (!$editoruser) {
-			//check description --> wipe out code
-			$row->locdescription = strip_tags($row->locdescription, '<br><br/>');
+		//convert the linux \n (Mac \r, Win \r\n) to <br /> linebreaks
+		$row->locdescription = str_replace(array("\r\n", "\r", "\n"), "<br />", $row->locdescription);
 
-			//convert the linux \n (Mac \r, Win \r\n) to <br /> linebreaks
-			$row->locdescription = str_replace(array("\r\n", "\r", "\n"), "<br />", $row->locdescription);
+		//cut too long words
+		$row->locdescription = wordwrap($row->locdescription, 75, " ", 1);
 
-			//cut too long words
-			$row->locdescription = wordwrap($row->locdescription, 75, " ", 1);
+		//check length
+		$length = JString::strlen($row->locdescription);
+		if ($length > $params->get('max_description', 1000))
+		{
 
-			//check length
-			$length = JString::strlen($row->locdescription);
-			if ($length > $params->get('max_description', 1000)) {
-
-				// if required shorten it
-				$row->locdescription = JString::substr($row->locdescription, 0, $params->get('max_description', 1000));
-				//if shortened add ...
-				$row->locdescription = $row->locdescription.'...';
-			}
+			// if required shorten it
+			$row->locdescription = JString::substr($row->locdescription, 0, $params->get('max_description', 1000));
+			//if shortened add ...
+			$row->locdescription = $row->locdescription.'...';
 		}
 
 		$row->venue = trim( JFilterOutput::ampReplace( $row->venue ) );
@@ -360,15 +357,15 @@ class RedeventModelEditvenue extends JModel
 		if (!$row->store()) {
 			$this->setError($this->_db->getErrorMsg());
 			return false;
-		}		
-	        
+		}
+
     // update the event category xref
     // first, delete current rows for this event
     $query = ' DELETE FROM #__redevent_venue_category_xref WHERE venue_id = ' . $this->_db->Quote($row->id);
     $this->_db->setQuery($query);
     if (!$this->_db->query()) {
       $this->setError($this->_db->getErrorMsg());
-      return false;     
+      return false;
     }
     // insert new ref
     foreach ((array) $data['categories'] as $cat_id) {
@@ -376,15 +373,15 @@ class RedeventModelEditvenue extends JModel
       $this->_db->setQuery($query);
       if (!$this->_db->query()) {
         $this->setError($this->_db->getErrorMsg());
-        return false;     
-      }     
+        return false;
+      }
     }
 
-		// attachments    
+		// attachments
 		if ($params->get('allow_attachments', 1)) {
 			REAttach::store('venue'.$row->id);
 		}
-		
+
 		jimport('joomla.utilities.mail');
 
 		$link 	= JRoute::_(JURI::base().RedeventHelperRoute::getVenueEventsRoute($row->id), false);
@@ -457,15 +454,15 @@ class RedeventModelEditvenue extends JModel
 
 		return $row->id;
 	}
-	
+
 	function _inAdminGroup()
 	{
 		$venue = $this->_loadVenue();
-				
+
 		$user 		= & JFactory::getUser();
-		
+
 		$query = ' SELECT gv.id '
-		       . ' FROM #__redevent_groups_venues AS gv ' 
+		       . ' FROM #__redevent_groups_venues AS gv '
 		       . ' INNER JOIN #__redevent_groupmembers AS gm ON gv.group_id = gm.group_id '
 		       . ' WHERE gm.member ='. $this->_db->Quote($user->id)
   	       . '   AND gm.edit_venues > 0 '
@@ -473,7 +470,7 @@ class RedeventModelEditvenue extends JModel
 		       . '   AND gv.venue_id ='. $this->_db->Quote($venue->id)
 		       ;
 		$this->_db->setQuery($query);
-		
+
 		return (int) $this->_db->loadResult();
-	}	
+	}
 }

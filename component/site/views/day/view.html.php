@@ -57,10 +57,10 @@ class RedeventViewDay extends JView
       $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
     }
     else {
-      $document->addStyleSheet($params->get('custom_css'));     
+      $document->addStyleSheet($params->get('custom_css'));
     }
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
-		
+
     // add js
     JHTML::_('behavior.mootools');
     // for filter hint
@@ -78,7 +78,7 @@ class RedeventViewDay extends JView
 		$customs 	= & $this->get('ListCustomFields');
 		$total 		= & $this->get('Total');
 		$day	= & $this->get('Day');
-		
+
 		$daydate = strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $day ));
 
 		//are events available?
@@ -107,10 +107,7 @@ class RedeventViewDay extends JView
 		}
 
 		//Check if the user has access to the form
-		$maintainer = ELUser::ismaintainer();
-		$genaccess 	= ELUser::validate_user( $elsettings->get('evdelrec'), $elsettings->get('delivereventsyes') );
-
-		if ($maintainer || $genaccess ) $dellink = 1;
+		$dellink = JFactory::getUser()->authorise('re.createevent');
 
 		//add alternate feed link
 		$link    = 'index.php?option=com_redevent&view=simplelist&format=feed';
@@ -146,7 +143,7 @@ class RedeventViewDay extends JView
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
 		$cols = redEVENTHelper::validateColumns($cols);
 		$this->assign('columns',        $cols);
-		
+
 		parent::display($tpl);
 
 	}//function ListEvents end
@@ -161,9 +158,9 @@ class RedeventViewDay extends JView
 	function _buildSortLists()
 	{
     $app = & JFactory::getApplication();
-    
+
 		$elsettings = & redEVENTHelper::config();
-		
+
 		$filter_order		= JRequest::getCmd('filter_order', 'x.dates');
 		$filter_order_Dir	= JRequest::getWord('filter_order_Dir', 'ASC');
 

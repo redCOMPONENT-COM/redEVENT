@@ -40,7 +40,7 @@ class RedeventViewCategoryevents extends JView
 	 *
 	 * @since 0.9
 	 */
-	function display( $tpl=null ) 
+	function display( $tpl=null )
 	{
 		$mainframe = &JFactory::getApplication();
 		$option = JRequest::getCmd('option');
@@ -53,26 +53,26 @@ class RedeventViewCategoryevents extends JView
 		$params 	= & $mainframe->getParams();
 		$uri 		= & JFactory::getURI();
 		$pathway 	= & $mainframe->getPathWay();
-		
+
 		if (!$this->getLayout()) {
 			$this->setLayout($params->get('default_list_layout'));
 		}
-		
+
 		/* Check if the item is an object */
 		if (!is_object($item)) {
 			$item = new StdClass;
 			$item->title = '';
 		}
-		
+
 		//add css file
     if (!$params->get('custom_css')) {
       $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
     }
     else {
-      $document->addStyleSheet($params->get('custom_css'));     
+      $document->addStyleSheet($params->get('custom_css'));
     }
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
-		
+
     // add js
     JHTML::_('behavior.mootools');
     // for filter hint
@@ -82,7 +82,7 @@ class RedeventViewCategoryevents extends JView
 		$limit       	= $mainframe->getUserStateFromRequest('com_redevent.categoryevents.limit', 'limit', $params->def('display_num', 0), 'int');
 		$task 			= JRequest::getWord('task');
 		$pop			= JRequest::getBool('pop');
-		
+
 		//get data from model
 		$rows 		= & $this->get('Data');
 		$customs 	= & $this->get('ListCustomFields');
@@ -115,14 +115,14 @@ class RedeventViewCategoryevents extends JView
 		if ( $pop ) {
 			$params->set( 'popup', 1 );
 		}
-		
+
 		//add alternate feed link
 		$link    = RedeventHelperRoute::getCategoryEventsRoute($category->slug).'&format=feed';
 		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
 		$document->addHeadLink(JRoute::_($link.'&type=rss'), 'alternate', 'rel', $attribs);
 		$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
 		$document->addHeadLink(JRoute::_($link.'&type=atom'), 'alternate', 'rel', $attribs);
-		
+
 		if ($task == 'archive') {
 			$link = RedeventHelperRoute::getCategoryEventsRoute($category->slug, 'archive');
 			$pathway->addItem( JText::_('COM_REDEVENT_ARCHIVE' ).' - '.$category->catname, JRoute::_($link));
@@ -136,10 +136,7 @@ class RedeventViewCategoryevents extends JView
 		$list_link  = RedeventHelperRoute::getCategoryEventsRoute($category->slug, null, 'default');
 
 		//Check if the user has access to the form
-		$maintainer = ELUser::ismaintainer();
-		$genaccess 	= ELUser::validate_user( $elsettings->get('evdelrec'), $elsettings->get('delivereventsyes') );
-
-		if ($maintainer || $genaccess ) $dellink = 1;
+		$dellink = JFactory::getUser()->authorise('re.manageevents');
 
 		// Create the pagination object
 		jimport('joomla.html.pagination');
@@ -155,10 +152,10 @@ class RedeventViewCategoryevents extends JView
 
 		//create select lists
 		$lists	= $this->_buildSortLists($elsettings);
-				
+
 		$state    =& $this->get( 'state' );
 		$filter_customs   = $state->get('filter_customs');
-		
+
 		$this->assign('lists', 						$lists);
 		$this->assign('action', JRoute::_('index.php?option=com_redevent&view=categoryevents&id='.$category->id));
 
@@ -179,11 +176,11 @@ class RedeventViewCategoryevents extends JView
 		$this->assignRef('list_link',   $list_link);
 		$this->assignRef('customsfilters',     $customsfilters);
 		$this->assign('filter_customs',      $filter_customs);
-				
+
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
 		$cols = redEVENTHelper::validateColumns($cols);
 		$this->assign('columns',        $cols);
-		
+
 		parent::display($tpl);
 	}
 
@@ -191,26 +188,26 @@ class RedeventViewCategoryevents extends JView
 	{
     $app    = & JFactory::getApplication();
 		$params = $app->getParams();
-    
+
 		// Table ordering values
 		$filter_order		= JRequest::getCmd('filter_order', 'x.dates');
 		$filter_order_Dir	= JRequest::getCmd('filter_order_Dir', 'ASC');
 
 		$state = $this->get('state');
-		
+
     $filter          = $state->get('filter');
     $filter_type     = $state->get('filter_type');
     $filter_category = $state->get('filter_category');
     $filter_venue    = $state->get('filter_venue');
     $filter_event    = $state->get('filter_event');
-      
+
 
 		$sortselects = array();
 		if ($params->get('filter_type_event', 1))	$sortselects[]	= JHTML::_('select.option', 'title', JText::_('COM_REDEVENT_FILTER_SELECT_EVENT') );
 		if ($params->get('filter_type_venue', 1))	$sortselects[] 	= JHTML::_('select.option', 'venue', JText::_('COM_REDEVENT_FILTER_SELECT_VENUE') );
 		if ($params->get('filter_type_city', 1))	$sortselects[] 	= JHTML::_('select.option', 'city', JText::_('COM_REDEVENT_FILTER_SELECT_CITY') );
 		if ($params->get('filter_type_category', 1))	$sortselects[] 	= JHTML::_('select.option', 'type', JText::_('COM_REDEVENT_FILTER_SELECT_CATEGORY') );
-		
+
 		if (count($sortselects) == 0) {
 			$sortselect = false;
 		}
@@ -220,20 +217,20 @@ class RedeventViewCategoryevents extends JView
 		else {
 			$sortselect 	= JHTML::_('select.genericlist', $sortselects, 'filter_type', 'size="1" class="inputbox"', 'value', 'text', $filter_type );
 		}
-		
+
 		// venue filter
 		$options = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_FILTER_SELECT_VENUE') ));
 		$options = array_merge($options, $this->get('VenuesOptions'));
 		$lists['venuefilter'] = JHTML::_('select.genericlist', $options, 'filter_venue', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_venue );
-	
+
 		// events filter
 		if ($params->get('lists_filter_event', 0))
 		{
 			$options = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_FILTER_SELECT_EVENT') ));
 			$options = array_merge($options, $this->get('EventsOptions'));
-			$lists['eventfilter'] = JHTML::_('select.genericlist', $options, 'filter_event', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_event );			
+			$lists['eventfilter'] = JHTML::_('select.genericlist', $options, 'filter_event', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_event );
 		}
-		
+
 		$lists['order_Dir'] 	= $filter_order_Dir;
 		$lists['order'] 		= $filter_order;
 		$lists['filter'] 		= $filter;

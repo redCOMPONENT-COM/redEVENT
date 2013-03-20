@@ -46,6 +46,9 @@
 		<action name="re.receiveregistrations" 
 		        title="COM_REDEVENT_ACCESS_RECEIVE_REGISTRATIONS"
 		        description="COM_REDEVENT_ACCESS_RECEIVE_REGISTRATIONS_DESC" />
+		<action name="re.manageevents"
+		        title="COM_REDEVENT_ACCESS_CATEGORY_MANAGE_EVENTS"
+		        description="COM_REDEVENT_ACCESS_CATEGORY_MANAGE_EVENTS_DESC" />		 
 	</section>
 	<section name="category">
 		<action name="re.manageevents"

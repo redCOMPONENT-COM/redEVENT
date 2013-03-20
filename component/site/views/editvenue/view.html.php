@@ -60,9 +60,9 @@ class RedeventViewEditvenue extends JView
 		}
 		else if (!$id && !$acl->canAddVenue()) {
 			echo JText::_('COM_REDEVENT_USER_NOT_ALLOWED_TO_ADD_VENUE');
-			return;			
+			return;
 		}
-		
+
 		//Get Data from the model
 		$row 		= $this->Get('Venue');
 		JFilterOutput::objectHTMLSafe( $row, ENT_QUOTES, 'locdescription' );
@@ -76,13 +76,13 @@ class RedeventViewEditvenue extends JView
       $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
     }
     else {
-      $document->addStyleSheet($params->get('custom_css'));     
+      $document->addStyleSheet($params->get('custom_css'));
     }
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
 		$document->addScript('components/com_redevent/assets/js/attachments.js' );
 		$document->addScriptDeclaration('var removemsg = "'.JText::_('COM_REDEVENT_ATTACHMENT_CONFIRM_MSG').'";' );
-		
+
 		// Get the menu object of the active menu item
 		$menu		= & JSite::getMenu();
 		$item    	= $menu->getActive();
@@ -98,13 +98,7 @@ class RedeventViewEditvenue extends JView
 		$document->setTitle($title);
 
 		//editor user
-//		$editoruser = ELUser::editoruser();
-		$editoruser = true;
-		
-		//transform <br /> and <br> back to \r\n for non editorusers
-		if (!$editoruser) {
-			$row->locdescription = redEVENTHelper::br2break($row->locdescription);
-		}
+		$row->locdescription = redEVENTHelper::br2break($row->locdescription);
 
 		//Get image
 		$limage = redEVENTImage::flyercreator($row->locimage);
@@ -119,23 +113,23 @@ class RedeventViewEditvenue extends JView
       $selected[] = $cat;
     }
     $options = (array) $this->get('CategoryOptions');
-    $lists['categories'] = JHTML::_('select.genericlist', 
-                                    $options, 
-                                    'categories[]', 
-                                    'class="inputbox validate-categories" multiple="multiple" size="'.min(3, max(10, count($options))).'"', 
+    $lists['categories'] = JHTML::_('select.genericlist',
+                                    $options,
+                                    'categories[]',
+                                    'class="inputbox validate-categories" multiple="multiple" size="'.min(3, max(10, count($options))).'"',
                                     'value', 'text', $selected);
-    
+
     // country
     $options = redEVENTHelperCountries::getCountryOptions('value', 'text', true);
-    $lists['country'] = JHTML::_('select.genericlist', $options, 'country', '', 'value', 'text', $row->country);  
-    
+    $lists['country'] = JHTML::_('select.genericlist', $options, 'country', '', 'value', 'text', $row->country);
+
     // published state selector
     $canpublish = $acl->canPublishVenue($id);
     $published = array( JHTML::_('select.option', '1', JText::_('COM_REDEVENT_PUBLISHED')),
                          JHTML::_('select.option', '0', JText::_('COM_REDEVENT_UNPUBLISHED')),
                        );
     $lists['published'] = JHTML::_('select.radiolist', $published, 'published', '', 'value', 'text', $row->published);
-    
+
 		$this->assignRef('row' , 					$row);
 		$this->assignRef('editor' , 				$editor);
 		$this->assignRef('editoruser' , 			$editoruser);

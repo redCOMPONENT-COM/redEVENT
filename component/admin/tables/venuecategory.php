@@ -62,6 +62,31 @@ class RedeventTableVenueCategory extends FOFTable
 		return true;
 	}
 
+	public function bind($array, $ignore = '')
+	{
+		// Bind the rules.
+		if (isset($array['rules']) && is_array($array['rules']))
+		{
+			$filtered = array();
+			foreach ((array) $array['rules'] as $action => $ids)
+			{
+				// Build the rules array.
+				$filtered[$action] = array();
+				foreach ($ids as $id => $p)
+				{
+					if ($p !== '')
+					{
+						$filtered[$action][$id] = ($p == '1' || $p == 'true') ? true : false;
+					}
+				}
+			}
+			$rules = new JAccessRules($filtered);
+			$this->setRules($rules);
+		}
+
+		return parent::bind($array, $ignore);
+	}
+
 	public function store($updateNulls = false)
 	{
 		if (parent::store($updateNulls)) {

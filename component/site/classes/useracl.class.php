@@ -114,7 +114,7 @@ class UserAcl
 
 		$user = $this->getUser();
 
-		$canAdd = $user->authorise('re.createevent');
+		$canAdd = $user->authorise('re.createevent', 'com_redevent');
 		$cats = $this->getAuthorisedCategories('re.manageevents');
 
 		return ($canAdd && count($cats));
@@ -137,7 +137,7 @@ class UserAcl
 			return true;
 		}
 
-		return $this->getUser()->authorise('re.createvenue');
+		return $this->getUser()->authorise('re.createvenue', 'com_redevent');
 	}
 
 	/**
@@ -160,8 +160,8 @@ class UserAcl
 		}
 
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
-		$canEdit = $user->authorise('re.editevent');
-		$canAdd  = $user->authorise('re.createevent');
+		$canEdit = $user->authorise('re.editevent', 'com_redevent');
+		$canAdd  = $user->authorise('re.createevent', 'com_redevent');
 
 		if ((!$canEdit && !$canAdd) || !count($cats))
 		{
@@ -205,8 +205,8 @@ class UserAcl
 		}
 
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
-		$canPublishOwn = $user->authorise('re.publishown');
-		$canPublishAny = $user->authorise('re.publishany');
+		$canPublishOwn = $this->getUser()->authorise('re.publishown', 'com_redevent');
+		$canPublishAny = $this->getUser()->authorise('re.publishany', 'com_redevent');
 
 		if ((!$canPublishOwn && !$canPublishAny) || !count($cats))
 		{
@@ -256,8 +256,8 @@ class UserAcl
 		}
 
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
-		$canPublishOwn = $user->authorise('re.publishown');
-		$canPublishAny = $user->authorise('re.publishany');
+		$canPublishOwn = $user->authorise('re.publishown', 'com_redevent');
+		$canPublishAny = $user->authorise('re.publishany', 'com_redevent');
 
 		if ((!$canPublishOwn && !$canPublishAny) || !count($cats))
 		{
@@ -306,8 +306,8 @@ class UserAcl
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
 		$venues  = $this->getAuthorisedVenues('re.manageevents');
 		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
-		$canEdit = $user->authorise('re.editsession');
-		$canAdd  = $user->authorise('re.createsession');
+		$canEdit = $user->authorise('re.editsession', 'com_redevent');
+		$canAdd  = $user->authorise('re.createsession', 'com_redevent');
 
 		if ((!$canEdit && !$canAdd) || !count($cats) || (!count($venuescats) && !count($venues)))
 		{
@@ -362,8 +362,8 @@ class UserAcl
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
 		$venues  = $this->getAuthorisedVenues('re.manageevents');
 		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
-		$canEdit = $user->authorise('re.editsession');
-		$canAdd  = $user->authorise('re.createsession');
+		$canEdit = $user->authorise('re.editsession', 'com_redevent');
+		$canAdd  = $user->authorise('re.createsession', 'com_redevent');
 
 		if ((!$canEdit && !$canAdd) || !count($cats) || (!count($venuescats) && !count($venues)))
 		{
@@ -424,7 +424,7 @@ class UserAcl
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
 		$venues  = $this->getAuthorisedVenues('re.manageevents');
 		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
-		$canViewAttendees = $user->authorise('re.viewattendees') || $user->authorise('re.manageattendees');
+		$canViewAttendees = $user->authorise('re.viewattendees', 'com_redevent') || $user->authorise('re.manageattendees', 'com_redevent');
 
 		if (!$canManageAttendees || !count($cats) || (!count($venuescats) && !count($venues)))
 		{
@@ -482,8 +482,8 @@ class UserAcl
 
 		$user = $this->getUser();
 
-		$canAdd = $user->authorise('re.createsession');
-		$cats = $this->getAuthorisedCategories('re.manageevents');
+		$canAdd = $user->authorise('re.createsession', 'com_redevent');
+		$cats = $this->getAuthorisedCategories('re.manageevents', 'com_redevent');
 
 		return ($canAdd && count($cats));
 	}
@@ -505,7 +505,7 @@ class UserAcl
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
 		$venues  = $this->getAuthorisedVenues('re.manageevents');
 		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
-		$canManageAttendees = $user->authorise('re.manageattendees');
+		$canManageAttendees = $user->authorise('re.manageattendees', 'com_redevent');
 
 		if (!$canManageAttendees || !count($cats) || (!count($venuescats) && !count($venues)))
 		{
@@ -561,7 +561,7 @@ class UserAcl
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
 		$venues  = $this->getAuthorisedVenues('re.manageevents');
 		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
-		$canViewAttendees = $user->authorise('re.viewattendees') || $user->authorise('re.manageattendees');
+		$canViewAttendees = $user->authorise('re.viewattendees', 'com_redevent') || $user->authorise('re.manageattendees', 'com_redevent');
 
 		if (!$canViewAttendees || !count($cats) || (!count($venuescats) && !count($venues)))
 		{
@@ -622,8 +622,8 @@ class UserAcl
 		}
 
 		$cats    = $this->getAuthorisedVenuesCategories('re.managevenues');
-		$canAdd = $user->authorise('re.createvenue');
-		$canEdit = $user->authorise('re.editvenue');
+		$canAdd = $user->authorise('re.createvenue', 'com_redevent');
+		$canEdit = $user->authorise('re.editvenue', 'com_redevent');
 
 		if ((!$canEdit && !$canAdd) || !count($cats))
 		{
@@ -668,8 +668,8 @@ class UserAcl
 		}
 
 		$cats    = $this->getAuthorisedVenuesCategories('re.managevenues');
-		$canPublishOwn = $user->authorise('re.publishvenueown');
-		$canPublishAny = $user->authorise('re.publishvenueany');
+		$canPublishOwn = $user->authorise('re.publishvenueown', 'com_redevent');
+		$canPublishAny = $user->authorise('re.publishvenueany', 'com_redevent');
 
 		if ((!$canPublishOwn && !$canPublishAny) || !count($cats))
 		{
@@ -805,7 +805,7 @@ class UserAcl
 	 */
 	function getManagedVenuesCategories()
 	{
-		return $this->getAuthorisedVenuesCategories('re.managevenues');
+		return $this->getAuthorisedVenuesCategories('re.managevenues', 'com_redevent');
 	}
 
 	/**
@@ -816,14 +816,40 @@ class UserAcl
 	 *
 	 * @return boolean True on success
 	 */
-	public function superuser()
+	public static function superuser($user = null)
 	{
-		if ($this->getUser()->authorise('core.admin', 'com_redevent'))
+		if ($user == null)
+		{
+			$user = JFactory::getUser();
+		}
+
+		if ($user->authorise('core.admin', 'com_redevent'))
 		{
 			return true;
 		}
 
 		return false;
+	}
+
+	/**
+	 * return true if the user is allowed to manage events in this category
+	 *
+	 * @param   int  $id  category id
+	 *
+	 * @return boolean
+	 */
+	public function manageCategory($id)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+		->select('c.id AS id, a.name AS asset_name')
+		->from('#__redevent_categories AS c')
+		->innerJoin('#__assets AS a ON c.asset_id = a.id')
+		->where('c.id = ' . $id);
+		$db->setQuery($query);
+		$category = $db->loadObject();
+
+		return $this->getUser()->authorise('re.manageevents', $category->asset_name);
 	}
 
 	/**
@@ -845,6 +871,7 @@ class UserAcl
 		$db->setQuery($query);
 		$allCategories = $db->loadObjectList('id');
 		$allowedCategories = array();
+
 		foreach ($allCategories as $category)
 		{
 			if ($this->getUser()->authorise($action, $category->asset_name))
@@ -852,6 +879,7 @@ class UserAcl
 				$allowedCategories[] = (int) $category->id;
 			}
 		}
+
 		return $allowedCategories;
 	}
 

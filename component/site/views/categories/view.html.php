@@ -91,10 +91,7 @@ class RedeventViewCategories extends JView
 // 		$document->addHeadLink(JRoute::_($link.'&format=feed&type=atom'), 'alternate', 'rel', $attribs);
 
 		//Check if the user has access to the form
-		$maintainer = ELUser::ismaintainer();
-		$genaccess 	= ELUser::validate_user( $elsettings->get('evdelrec'), $elsettings->get('delivereventsyes') );
-
-		if ($maintainer || $genaccess ) $dellink = 1;
+		$dellink = JFactory::getUser()->authorise('re.createevent');
 
 		// Create the pagination object
 		jimport('joomla.html.pagination');

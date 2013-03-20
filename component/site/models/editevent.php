@@ -65,21 +65,21 @@ class RedeventModelEditevent extends JModel
 	 * @var array
 	 */
 	var $_xrefdata = null;
-	
+
 	/**
 	 * event custom fields data array
 	 *
 	 * @var array
 	 */
 	var $_customfields = null;
-	
+
 	/**
 	 * Xrefs custom fields data array
 	 *
 	 * @var array
 	 */
 	var $_xrefcustomfields = null;
-	
+
 	/**
 	 * Constructor
 	 *
@@ -127,16 +127,16 @@ class RedeventModelEditevent extends JModel
 	 *
 	 * @access public
 	 * @since	0.9
-	 * 
+	 *
 	 * @return object
 	 */
-	function &getEvent(  )
+	function &getEvent()
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		// Initialize variables
-		$user		= & JFactory::getUser();
-		$elsettings = & redEVENTHelper::config();
+		$user		= JFactory::getUser();
+		$elsettings = redEVENTHelper::config();
 		$acl = UserAcl::getInstance();
 
 		$view		= JRequest::getWord('view');
@@ -144,7 +144,7 @@ class RedeventModelEditevent extends JModel
 		/*
 		* If Id exists we will do the edit stuff
 		*/
-		if ($this->_id) 
+		if ($this->_id)
 		{
 			/*
 			* Load the Event data
@@ -174,49 +174,50 @@ class RedeventModelEditevent extends JModel
 			/*
 			* If no Id exists we will do the add event stuff
 			*/
-		} 
-		else 
+		}
+		else
 		{
 			//Check if the user has access to the form
 			if (!$acl->canAddEvent()) {
 				JError::raiseError( 403, JText::_('COM_REDEVENT_NO_ACCESS' ) );
 			}
-			
+
 			$this->_initData();
 		}
-		
+
 		return $this->_event;
 	}
-	
+
 	/**
 	 * prefill data for new events - get it from event template if set
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	function _initData()
 	{
-		$app = &JFactory::getApplication();
-		
+		$app = JFactory::getApplication();
+
 		$template_xref = $app->getParams()->get('event_template', 0);
-		
+
 		if ($template_xref)
 		{
 			$this->_xref = $template_xref;
 			// get associated event id
-			$query = ' SELECT eventid ' 
-			       . ' FROM #__redevent_event_venue_xref ' 
+			$query = ' SELECT eventid '
+			       . ' FROM #__redevent_event_venue_xref '
 			       . ' WHERE id = ' . $this->_db->Quote($template_xref);
 			$this->_db->setQuery($query);
 			$template_id = $this->_db->loadResult();
-			
-			if (!$this->_loadEvent($template_id)) {
+
+			if (!$this->_loadEvent($template_id))
+			{
 				$this->setError(JText::_('COM_REDEVENT_SUMBIT_EVENT_ERROR_LOADING_TEMPLATE'));
 				return false;
 			}
 			// init session data too
-			$this->getSessionDetails(true); 
+			$this->getSessionDetails(true);
 			$this->_xref = null;
-			
+
 			// reset event id and title
 			$this->_event->id = null;
 			$this->_event->title = '';
@@ -227,7 +228,7 @@ class RedeventModelEditevent extends JModel
 		{
 			$this->_event->id				= 0;
 			$this->_event->venueid			= '';
-      $this->_event->categories  = null;
+			$this->_event->categories  = null;
 			$this->_event->title			  = '';
 			$this->_event->created			= null;
 			$this->_event->author_ip		= null;
@@ -272,7 +273,7 @@ class RedeventModelEditevent extends JModel
 			$this->_event->summary					= null;
 			$this->_event->attachments				= array();
 		}
-		
+
 		$this->_event->xref			= 0;
 		$this->_event->venue		= JText::_('COM_REDEVENT_SELECTVENUE');
 		$this->_event->dates    = null;
@@ -296,48 +297,48 @@ class RedeventModelEditevent extends JModel
 		if (empty($this->_event))
 		{
 			$user	= & JFactory::getUser();
-			
+
 			if (!$id) {
 				$id = $this->_id;
 			}
 			if (!$id) {
 				return false;
 			}
-			
-			$xfields = array();			
+
+			$xfields = array();
 			foreach ($this->_getXCustomFields() as $f)
 			{
 				$xfields[] = 'x.custom'.$f->id;
 			}
-			
+
 			$query = ' SELECT e.*, v.venue, x.id AS xref, x.eventid, x.venueid, '
 			       . ' x.dates, x.enddates, x.times, x.endtimes, x.maxattendees, x.details, '
 			       . ' x.maxwaitinglist, x.course_credit, x.registrationend, x.title as session_title, '
 			       . ' r.id as recurrence_id, r.rrule, rp.count '
 			       . (count($xfields) ? ', '.implode(', ', $xfields) : '')
 					   ;
-			
+
 			$query .= ' FROM #__redevent_events AS e'
 			        . ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id'
 			        . ' LEFT JOIN #__redevent_venues AS v ON v.id = x.venueid'
 			        . ' LEFT JOIN #__redevent_repeats AS rp on rp.xref_id = x.id '
 			        . ' LEFT JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
 					    ;
-					    
-			if ($this->_xref) {		    
+
+			if ($this->_xref) {
 				$query .= ' WHERE x.id = '.(int) $this->_xref;
 			}
-			else {		    
+			else {
 				$query .= ' WHERE e.id = '.(int) $id;
 			}
 			$this->_db->setQuery($query);
 			$this->_event = $this->_db->loadObject();
-			
+
 			if (!$this->_event) {
 				return false;
 			}
-			
-			if ($this->_event->id) 
+
+			if ($this->_event->id)
 			{
 				$query =  ' SELECT c.id, c.catname, '
               . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
@@ -348,9 +349,9 @@ class RedeventModelEditevent extends JModel
               . ' ORDER BY c.ordering'
               ;
 	      $this->_db->setQuery( $query );
-	
+
 	      $this->_event->categories = $this->_db->loadObjectList();
-				$this->_event->attachments = REAttach::getAttachments('event'.$this->_event->id, max($user->getAuthorisedViewLevels()));		
+				$this->_event->attachments = REAttach::getAttachments('event'.$this->_event->id, max($user->getAuthorisedViewLevels()));
   			$this->_event->rrules = RedeventHelperRecurrence::getRule($this->_event->rrule);
 			}
 
@@ -358,10 +359,10 @@ class RedeventModelEditevent extends JModel
 		}
 		return true;
 	}
-	
+
 	/**
 	 * return details about session
-	 * 
+	 *
 	 * @param bool $no_check set true to skip acl check
 	 * @return multitype:
 	 */
@@ -383,13 +384,13 @@ class RedeventModelEditevent extends JModel
 				if (!$no_check && !$acl->canAddXref()) {
 					JError::raiseError(403, JText::_('COM_REDEVENT_NOT_ALLOWED'));
 				}
-				
+
 				$template_xref = $app->getParams()->get('event_template', 0);
 				if ($template_xref) {
 					$obj = $this->_getXrefData($template_xref);
 				}
-				else 
-				{				
+				else
+				{
 					$obj = new stdclass();
 					$obj->groupid           = 0;
 					$obj->external_registration_url   = null;
@@ -413,14 +414,14 @@ class RedeventModelEditevent extends JModel
 				$obj->rrule         = null;
 				$this->_xrefdata = $obj;
 			}
-		}	
+		}
   	$this->_xrefdata->rrules = RedeventHelperRecurrence::getRule($this->_xrefdata->rrule);
 		return $this->_xrefdata;
 	}
-	
+
 	/**
 	 * returns xref data
-	 * 
+	 *
 	 * @param int $xref
 	 * @return object xref data
 	 */
@@ -459,7 +460,7 @@ class RedeventModelEditevent extends JModel
 			$cwhere = ' WHERE c.published = 1';
 		}
 		else
-		{					
+		{
 			$acl = UserACl::getInstance();
 			$managed = $acl->getManagedCategories();
 			if (!$managed || !count($managed)) {
@@ -469,7 +470,7 @@ class RedeventModelEditevent extends JModel
 		}
 
 		//get the maintained categories and the categories whithout any group
-		//or just get all if somebody have edit rights	
+		//or just get all if somebody have edit rights
     $query = ' SELECT c.id, c.catname, (COUNT(parent.catname) - 1) AS depth, c.event_template, c.ordering '
            . ' FROM #__redevent_categories AS c, '
            . ' #__redevent_categories AS parent '
@@ -479,9 +480,9 @@ class RedeventModelEditevent extends JModel
            . ' ORDER BY c.catname'
            ;
     $this->_db->setQuery($query);
-    
+
     $results = $this->_db->loadObjectList();
-    
+
     $options = array();
     foreach((array) $results as $cat)
     {
@@ -503,7 +504,7 @@ class RedeventModelEditevent extends JModel
 	{
 		$app  = &JFactory::getApplication();
 		$params = $app->getParams();
-		
+
 		$where		= $this->_buildVenuesWhere();
 		$orderby	= $this->_buildVenuesOrderBy();
 
@@ -555,30 +556,30 @@ class RedeventModelEditevent extends JModel
 	{
 		$filter_type		= JRequest::getInt('filter_type');
 		$filter 			= JRequest::getString('filter');
-		$filter 			= $this->_db->getEscaped( trim(JString::strtolower( $filter ) ) );		
-		
+		$filter 			= $this->_db->getEscaped( trim(JString::strtolower( $filter ) ) );
+
 		$user   = &JFactory::getUser();
 		$app    = &JFactory::getApplication();
 		$params = $app->getParams();
-		
+
 		$superuser	= UserAcl::superuser();
 
-		
+
 		$where = array();
-		
+
 		//administrators or superadministrators have access to all venues, also maintained ones
-		if (!$superuser) 
+		if (!$superuser)
 		{
 			$acl = UserACl::getInstance();
-			$managed = $acl->getManagedVenues();			
+			$managed = $acl->getManagedVenues();
 			if ($managed && count($managed)) {
 				$where[] = ' l.id IN ('.implode(',', $managed).')';
 			}
 			else {
 				$where[] = ' 0 ';
 			}
-		}		
-		
+		}
+
 		$where[] = 'l.published = 1';
 
 		if ($filter && $filter_type == 1) {
@@ -705,18 +706,18 @@ class RedeventModelEditevent extends JModel
 		$tzoffset 		= $mainframe->getCfg('offset');
 
 		$row 	= & JTable::getInstance('redevent_events', '');
-		
+
 		if ($data['id'])
 		{
 			$row->load((int) $data['id']);
 		}
-		else 
+		else
 		{
 			$category_ids = (isset($data['categories']) ? $data['categories'] : array());
 			$template_event = $this->_getEventTemplate($category_ids);
 			$template_event = ($template_event ? $template_event : $params->get('event_template', 0));
-			
-			if ($template_event) 
+
+			if ($template_event)
 			{
 				$row->load($template_event);
 				$row->id    = null;
@@ -730,27 +731,27 @@ class RedeventModelEditevent extends JModel
 				return false;
 			}
 		}
-		
+
 		//Sanitize
 		$data['datdescription'] = JRequest::getVar( 'datdescription', $row->datdescription, 'post','string', JREQUEST_ALLOWRAW );
-		
+
 		$curimage = JRequest::getVar( 'curimage', '', 'post','string' );
-		
+
 		// published state
 		if (!$acl->canPublishEvent($this->_id)) {
 			// use default state
 			$row->published = $params->get('default_submit_published_state', 0);
 		}
-		
+
 		//bind it to the table
 		if (!$row->bind($data)) {
 			RedeventError::raiseError( 500, $this->_db->stderr() );
 			return false;
 		}
-		
+
 
 		//Are we saving from an item edit?
-		if ($row->id) 
+		if ($row->id)
 		{
 			//check if user is allowed to edit events
 			if (!$acl->canEditEvent($this->_id)) {
@@ -759,8 +760,8 @@ class RedeventModelEditevent extends JModel
 
 			$row->modified 		= gmdate('Y-m-d H:i:s');
 			$row->modified_by 	= $user->get('id');
-		} 
-		else 
+		}
+		else
 		{
 			//check if user is allowed to submit new events
 			if (!$acl->canAddEvent()){
@@ -777,13 +778,13 @@ class RedeventModelEditevent extends JModel
 		//Image upload
 
 		//If image upload is required we will stop here if no file was attached
-		if ( empty($file['name']) && $params->get('edit_image', 1) == 2 ) 
+		if ( empty($file['name']) && $params->get('edit_image', 1) == 2 )
 		{
 			$this->setError( JText::_('COM_REDEVENT_IMAGE_EMPTY' ) );
 			return false;
 		}
 
-		if ( ( $params->get('edit_image', 1) == 2 || $params->get('edit_image', 1) == 1 ) && ( !empty($file['name'])  ) )  
+		if ( ( $params->get('edit_image', 1) == 2 || $params->get('edit_image', 1) == 1 ) && ( !empty($file['name'])  ) )
 		{
 			jimport('joomla.filesystem.file');
 
@@ -792,7 +793,7 @@ class RedeventModelEditevent extends JModel
 			//check the image
 			$check = redEVENTImage::check($file, $elsettings);
 
-			if ($check === false) 
+			if ($check === false)
 			{
 				JError::raiseWarning(0, JText::_('COM_REDEVENT_EDITEVENT_IMAGE_CHECKFAILED'));
 			}
@@ -801,15 +802,15 @@ class RedeventModelEditevent extends JModel
 				//sanitize the image filename
 				$filename = redEVENTImage::sanitize($base_Dir, $file['name']);
 				$filepath = $base_Dir . $filename;
-	
+
 				if (!JFile::upload($file['tmp_name'], $filepath)) {
 					JError::raiseWarning(0, JText::_('COM_REDEVENT_UPLOAD_FAILED' ));
 				} else {
 					$row->datimage = '/images/redevent/events/'.$filename;
 				}
 			}
-		} 
-		else 
+		}
+		else
 		{
 			//keep image if edited and left blank
 			$row->datimage = $curimage;
@@ -830,7 +831,7 @@ class RedeventModelEditevent extends JModel
 			JError::raiseError( 500, $this->_db->stderr() );
 			return false;
 		}
-				
+
     // update the event category xref
 		if (isset($data['categories']))
 		{
@@ -839,7 +840,7 @@ class RedeventModelEditevent extends JModel
 	    $this->_db->setQuery($query);
 	    if (!$this->_db->query()) {
 	      $this->setError($this->_db->getErrorMsg());
-	      return false;     
+	      return false;
 	    }
 	    // insert new ref
 	    foreach ((array) $data['categories'] as $cat_id) {
@@ -847,8 +848,8 @@ class RedeventModelEditevent extends JModel
 	      $this->_db->setQuery($query);
 	      if (!$this->_db->query()) {
 	        $this->setError($this->_db->getErrorMsg());
-	        return false;     
-	      }     
+	        return false;
+	      }
 	    }
 		}
 		else if (!$edited)
@@ -863,10 +864,10 @@ class RedeventModelEditevent extends JModel
 	    if (!$this->_db->query()) {
 	    	$this->setError($this->_db->getErrorMsg());
 				JError::raiseWarning(0, JText::_('COM_REDEVENT_copying_categories_failed').': '.$xref->getError());
-	    }     
+	    }
 		}
-		
-		// is there a date ?	
+
+		// is there a date ?
 		if (isset($data['dates']) && strlen($data['dates']))
 		{
 			$xref = & JTable::getInstance('redevent_eventvenuexref', '');
@@ -880,27 +881,27 @@ class RedeventModelEditevent extends JModel
 			if (isset($data['session_title'])) {
 				$xref->title = $data['session_title'];
 			}
-			
+
 			if (!($xref->check() && $xref->store())) {
 				JError::raiseWarning(0, JText::_('COM_REDEVENT_Saving_event_session_failed').': '.$xref->getError());
 			}
-			$row->xref = $xref->id;		
-		
+			$row->xref = $xref->id;
+
 			if ($params->get('edit_roles', 0))
 			{
 		    /** roles **/
 		    // first remove current rows
-		    $query = ' DELETE FROM #__redevent_sessions_roles ' 
+		    $query = ' DELETE FROM #__redevent_sessions_roles '
 		           . ' WHERE xref = ' . $this->_db->Quote($xref->id);
-		    $this->_db->setQuery($query);     
+		    $this->_db->setQuery($query);
 		    if (!$this->_db->query()) {
 		    	$this->setError($this->_db->getErrorMsg());
 		    	return false;
 		    }
-		    
+
 		    // then recreate them if any
 		    foreach ((array) $data['rrole'] as $k => $r)
-		    {    	
+		    {
 		    	if (!($data['rrole'][$k] && $data['urole'][$k])) {
 		    		continue;
 		    	}
@@ -914,22 +915,22 @@ class RedeventModelEditevent extends JModel
 		      }
 		    }
 			}
-		
+
     	/** prices **/
 			if ($params->get('edit_price', 0))
-			{    
+			{
 		    // first remove current rows
-		    $query = ' DELETE FROM #__redevent_sessions_pricegroups ' 
+		    $query = ' DELETE FROM #__redevent_sessions_pricegroups '
 		           . ' WHERE xref = ' . $this->_db->Quote($xref->id);
-		    $this->_db->setQuery($query);     
+		    $this->_db->setQuery($query);
 		    if (!$this->_db->query()) {
 		    	$this->setError($this->_db->getErrorMsg());
 		    	return false;
 		    }
-		    
+
 		    // then recreate them if any
 		    foreach ((array) $data['pricegroup'] as $k => $r)
-		    {    	
+		    {
 		    	if (!($data['pricegroup'][$k])) {
 		    		continue;
 		    	}
@@ -944,7 +945,7 @@ class RedeventModelEditevent extends JModel
 		    }
 			}
     	/** prices END **/
-			
+
 			// we need to save the recurrence too
 			$recurrence = & JTable::getInstance('RedEvent_recurrences', '');
 			if (!isset($data['recurrenceid']) || !$data['recurrenceid'])
@@ -959,7 +960,7 @@ class RedeventModelEditevent extends JModel
 						$this->setError($recurrence->getError());
 						return false;
 					}
-					 
+
 					// add repeat record
 					$repeat = & JTable::getInstance('RedEvent_repeats', '');
 					$repeat->set('xref_id', $xref->id);
@@ -990,15 +991,15 @@ class RedeventModelEditevent extends JModel
 			if ($recurrence->id) {
 				redEVENTHelper::generaterecurrences($recurrence->id);
 			}
-			
+
 		}	/** session end **/
-    	
+
 		// attachments
 		if ($params->get('allow_attachments', 1)) {
 			REAttach::store('event'.$row->id);
 		}
-		
-		
+
+
 		// MAIL HANDLING
 		$this->_db->setQuery('SELECT * FROM #__redevent_venues AS v LEFT JOIN #__redevent_event_venue_xref AS x ON x.venueid = v.id WHERE x.eventid = '.(int)$row->id);
 		$rowloc = $this->_db->loadObject();
@@ -1008,8 +1009,8 @@ class RedeventModelEditevent extends JModel
 		$link 	= JRoute::_(JURI::base().RedeventHelperRoute::getDetailsRoute($row->id), isset($xref) ? $xref->id : false);
 
 		//create the mail for the site owner
-		if (($params->get('mailinform') == 1) || ($params->get('mailinform') == 3)) 
-		{			
+		if (($params->get('mailinform') == 1) || ($params->get('mailinform') == 3))
+		{
 			$receivers = explode( ',', trim($params->get('mailinformrec')));
 			if (!count($receivers) || !JMailHelper::isEmailAddress($receivers[0])) {
 				$mainframe->enqueueMessage(JText::_('COM_REDEVENT_EDIT_EVENT_NOTIFICATION_MISSING_RECIPIENT'), 'notice');
@@ -1017,29 +1018,29 @@ class RedeventModelEditevent extends JModel
 			else
 			{
 				$mail = JFactory::getMailer();
-	
+
 				$state 	= $row->published ? JText::sprintf('COM_REDEVENT_MAIL_EVENT_PUBLISHED', $link) : JText::_('COM_REDEVENT_MAIL_EVENT_UNPUBLISHED');
-	
+
 				if ($edited) {
-	
+
 					$modified_ip 	= getenv('REMOTE_ADDR');
 					$edited 		= JHTML::Date( $row->modified, JText::_('DATE_FORMAT_LC2' ) );
 					$mailbody 		= JText::sprintf('COM_REDEVENT_MAIL_EDIT_EVENT', $user->name, $user->username, $user->email, $modified_ip, $edited, $row->title, $xref->dates, $xref->times, $rowloc->venue, $rowloc->city, $row->datdescription, $state);
 					$mail->setSubject( $SiteName.JText::_('COM_REDEVENT_EDIT_EVENT_MAIL' ) );
-	
+
 				} else {
-	
+
 					$created 	= JHTML::Date( $row->created, JText::_('DATE_FORMAT_LC2' ) );
 					$mailbody 	= JText::sprintf('COM_REDEVENT_MAIL_NEW_EVENT', $user->name, $user->username, $user->email, $row->author_ip, $created, $row->title, $xref->dates, $xref->times, $rowloc->venue, $rowloc->city, $row->datdescription, $state);
 					$mail->setSubject( $SiteName.JText::_('COM_REDEVENT_NEW_EVENT_MAIL' ) );
-	
+
 				}
-	
-	
+
+
 				$mail->addRecipient( $receivers );
 				$mail->setSender( array( $MailFrom, $FromName ) );
 				$mail->setBody( $mailbody );
-	
+
 				$sent = $mail->Send();
 	      if (!$sent) {
 	        RedeventHelperLog::simpleLog('Error sending created/edited event notification to site owner');
@@ -1081,7 +1082,7 @@ class RedeventModelEditevent extends JModel
 
 		return $row;
 	}
-	
+
 	/**
 	 * Function to retrieve the form fields
 	 */
@@ -1096,7 +1097,7 @@ class RedeventModelEditevent extends JModel
 		if ($db->query()) return $db->loadObjectList('id');
 		else return false;
 	}
-	
+
 	/**
 	 * Function to retrieve the redFORM forms
 	 */
@@ -1110,7 +1111,7 @@ class RedeventModelEditevent extends JModel
 		if ($db->query()) return $db->loadObjectList('id');
 		else return false;
 	}
-	
+
 	/**
 	 * Retrieve a list of events, venues and times
 	 */
@@ -1128,10 +1129,10 @@ class RedeventModelEditevent extends JModel
 		}
 		return $ardatetimes;
 	}
-	
+
 	/**
 	 * return venues lists as options, according to group ACL
-	 * 
+	 *
 	 * @return array
 	 */
 	function getVenueOptions()
@@ -1139,19 +1140,19 @@ class RedeventModelEditevent extends JModel
 		$user = &JFactory::getUser();
 		$app  = &JFactory::getApplication();
 		$params = $app->getParams();
-			
-		$superuser	= UserAcl::superuser();		
-		
+
+		$superuser	= UserAcl::superuser();
+
 		$query = ' SELECT v.id AS value, '
 		       . ' CASE WHEN CHAR_LENGTH(v.city) THEN CONCAT_WS(\' - \', v.venue, v.city) ELSE v.venue END as text '
 		       . ' FROM #__redevent_venues AS v '
-		       ;		       		
-		
+		       ;
+
 		$where = array();
-		
+
 		//administrators or superadministrators have access to all venues, also maintained ones
-		if (!$superuser) 
-		{					
+		if (!$superuser)
+		{
 			$acl = UserACl::getInstance();
 			$managed = $acl->getManagedVenues();
 			if ($managed && count($managed)) {
@@ -1160,14 +1161,14 @@ class RedeventModelEditevent extends JModel
 			else {
 				$where[] = ' 0 ';
 			}
-		}		
+		}
 		$where[] = ' v.published = 1 ';
-		
+
 		$query .= ' WHERE '. implode(' AND ', $where);
-				        
+
 		$query .= ' GROUP BY v.id ';
 		$query .= ' ORDER BY v.venue ASC ';
-		
+
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
 		return $res;
@@ -1175,7 +1176,7 @@ class RedeventModelEditevent extends JModel
 
 	/**
 	 * return events lists as options, according to group ACL
-	 * 
+	 *
 	 * @return array
 	 */
 	function getEventOptions()
@@ -1183,7 +1184,7 @@ class RedeventModelEditevent extends JModel
 		$user = &JFactory::getUser();
 		$app = &JFactory::getApplication();
 		$params = $app->getParams();
-		
+
 		$query = ' SELECT e.id AS value, e.title AS text '
 		       . ' FROM #__redevent_events AS e '
 		       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
@@ -1191,11 +1192,11 @@ class RedeventModelEditevent extends JModel
 		       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
 		       . ' LEFT JOIN #__redevent_groups AS g ON gc.group_id = g.id '
 		       ;
-		       
+
 		$where = array();
-		
+
 		$where[] = ' e.published = 1 ';
-		
+
 		// filtering if not superuser
 		if (!UserAcl::superuser())
 		{
@@ -1207,101 +1208,101 @@ class RedeventModelEditevent extends JModel
 			         . '      AND (gm.manage_xrefs = 1 '
 			         . '           OR gm.manage_events > 1 OR (gm.manage_events = 1 AND e.created_by = gm.member)))) ';
 		}
-		
+
 		$query .= ' WHERE '. implode(' AND ', $where);
-				        
+
 		$query .= ' GROUP BY e.id ';
 		$query .= ' ORDER BY e.title ASC ';
-		
+
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
-	
+
 
 	/**
 	 * return user groups as options
-	 * 
+	 *
 	 * @return array
 	 */
 	function getGroupOptions()
 	{
 		$user = &JFactory::getUser();
-		
+
 		$query = ' SELECT g.id AS value, g.name AS text '
 		       . ' FROM #__redevent_groups AS g '
 		       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
 		       ;
-		       
-		$where = array();		
+
+		$where = array();
 		$where[] = 'gm.member =' . $this->_db->Quote($user->get('id'));
-		
+
 		if (count($where)) {
 			$query .= ' WHERE '. implode(' AND ', $where);
 		}
-		        
+
 		$query .= ' ORDER BY g.name ASC ';
-		
+
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * Saves xref data
 	 * @param array
 	 * @return boolean true on success
 	 */
 	function storeXref($data)
-	{		
+	{
 		$user 		= & JFactory::getUser();
 		$settings = & redEVENTHelper::config();
-		
+
 		// TODO : check user group access ?
   	$row = & JTable::getInstance('RedEvent_eventvenuexref', '');
-  	
+
 		if ($data['id']) {
 			if (!$this->canManageXref($data['id'])) {
 				$this->setError('YOU ARE NOT ALLOWED TO EDIT THIS DATE');
-				return false;				
+				return false;
 			}
 			$row->load($data['id']);
 		}
 		else {
 			if (!$this->getCanAddXref()) {
 				$this->setError('YOU ARE NOT ALLOWED TO ADD EVENT DATE');
-				return false;				
-			}			
+				return false;
+			}
 		}
 		if (!$row->bind($data)) {
 			$this->setError('SUBMIT XREF ERROR BINDING DATA');
 			RedeventHelperLog::simplelog('SUBMIT XREF ERROR BINDING DATA');
 			return false;
 		}
-	
+
 		if (!$row->check()) {
 			$this->setError('SUBMIT XREF ERROR CHECK DATA');
 			RedeventHelperLog::simplelog('SUBMIT XREF ERROR CHECK DATA');
 			return false;
 		}
-			
+
 		if (!$row->store(true)) {
 			$this->setError('SUBMIT XREF ERROR STORE DATA');
 			RedeventHelperLog::simplelog('SUBMIT XREF ERROR STORE DATA');
 			return false;
 		}
-		
+
     /** roles **/
     // first remove current rows
-    $query = ' DELETE FROM #__redevent_sessions_roles ' 
+    $query = ' DELETE FROM #__redevent_sessions_roles '
            . ' WHERE xref = ' . $this->_db->Quote($row->id);
-    $this->_db->setQuery($query);     
+    $this->_db->setQuery($query);
     if (!$this->_db->query()) {
     	$this->setError($this->_db->getErrorMsg());
     	return false;
     }
-    
+
     // then recreate them if any
     foreach ((array) $data['rrole'] as $k => $r)
-    {    	
+    {
     	if (!($data['rrole'][$k] && $data['urole'][$k])) {
     		continue;
     	}
@@ -1315,20 +1316,20 @@ class RedeventModelEditevent extends JModel
       }
     }
     /** roles END **/
-    
+
     /** prices **/
     // first remove current rows
-    $query = ' DELETE FROM #__redevent_sessions_pricegroups ' 
+    $query = ' DELETE FROM #__redevent_sessions_pricegroups '
            . ' WHERE xref = ' . $this->_db->Quote($row->id);
-    $this->_db->setQuery($query);     
+    $this->_db->setQuery($query);
     if (!$this->_db->query()) {
     	$this->setError($this->_db->getErrorMsg());
     	return false;
     }
-    
+
     // then recreate them if any
     foreach ((array) $data['pricegroup'] as $k => $r)
-    {    	
+    {
     	if (!($data['pricegroup'][$k])) {
     		continue;
     	}
@@ -1342,7 +1343,7 @@ class RedeventModelEditevent extends JModel
       }
     }
     /** prices END **/
-    
+
     // we need to save the recurrence too
     $recurrence = & JTable::getInstance('RedEvent_recurrences', '');
     if (!isset($data['recurrenceid']) || !$data['recurrenceid'])
@@ -1388,40 +1389,40 @@ class RedeventModelEditevent extends JModel
     if ($recurrence->id) {
     	redEVENTHelper::generaterecurrences($recurrence->id);
     }
-    
+
 		return true;
 	}
-	
+
 	function publishxref($xref_id, $newstate)
 	{
 		if (!$this->canManageXref($xref_id)) {
 			$this->setError(JText::_('COM_REDEVENT_YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_DATE'));
-			return false;				
+			return false;
 		}
   	$row = & JTable::getInstance('RedEvent_eventvenuexref', '');
-  	
+
 		if (!$row->publish(array($xref_id), $newstate)) {
 			$this->setError(JText::_('COM_REDEVENT_ERROR_CHANGING_STATE')).'<br>'.$row->getError();
 			return false;
 		}
 		return true;
 	}
-	
+
 	function deletexref($xref_id)
 	{
 		if (!$this->canManageXref($xref_id)) {
 			$this->setError(JText::_('COM_REDEVENT_YOU_ARE_NOT_ALLOWED_TO_DELETE_THIS_DATE'));
-			return false;				
+			return false;
 		}
   	$row = & JTable::getInstance('RedEvent_eventvenuexref', '');
-  	
+
 		if (!$row->delete($xref_id)) {
 			$this->setError(JText::_('COM_REDEVENT_ERROR_DELETING_EVENT_DATE').': '.$row->getError());
 			return false;
 		}
 		return true;
 	}
-	
+
   function canManageXref($xref_id = 0)
   {
   	if (!$xref_id) {
@@ -1431,10 +1432,10 @@ class RedeventModelEditevent extends JModel
   		return false;
   	}
 		$acl = UserAcl::getInstance();
-  	
+
   	return $acl->canEditXref($xref_id);
   }
-	
+
   /**
    * check if user is allowed to addxrefs
    * @return boolean
@@ -1443,11 +1444,11 @@ class RedeventModelEditevent extends JModel
   {
 		$acl = UserAcl::getInstance();
   	return $acl->canAddXref();
-  } 
+  }
 
   /**
    * returns all custom fields for event
-   * 
+   *
    * @return array
    */
   function _getCustomFields()
@@ -1468,7 +1469,7 @@ class RedeventModelEditevent extends JModel
 
   /**
    * returns all custom fields for xrefs
-   * 
+   *
    * @return array
    */
   function _getXCustomFields()
@@ -1486,7 +1487,7 @@ class RedeventModelEditevent extends JModel
   	}
   	return $this->_xrefcustomfields;
   }
-  
+
   /**
    * get custom fields
    *
@@ -1502,8 +1503,8 @@ class RedeventModelEditevent extends JModel
            . ' ORDER BY f.ordering '
            ;
     $this->_db->setQuery($query);
-    $result = $this->_db->loadObjectList();    
-  
+    $result = $this->_db->loadObjectList();
+
     if (!$result) {
       return array();
     }
@@ -1519,16 +1520,16 @@ class RedeventModelEditevent extends JModel
       }
       $fields[] = $field;
     }
-    return $fields;     
+    return $fields;
   }
-  
+
   /**
    * get custom fields
    *
    * @return objects array
    */
   function getCustomfields()
-  {  	
+  {
     $query = ' SELECT f.* '
            . ' FROM #__redevent_fields AS f '
            . ' WHERE f.object_key = '. $this->_db->Quote("redevent.event")
@@ -1537,8 +1538,8 @@ class RedeventModelEditevent extends JModel
            . ' ORDER BY f.ordering '
            ;
     $this->_db->setQuery($query);
-    $result = $this->_db->loadObjectList();   
-    
+    $result = $this->_db->loadObjectList();
+
     if (!$result) {
       return array();
     }
@@ -1554,12 +1555,12 @@ class RedeventModelEditevent extends JModel
       }
       $fields[] = $field;
     }
-    return $fields;     
+    return $fields;
   }
-  
+
   /**
    * returns id of event to use as template for the submission
-   * 
+   *
    * @param array categories ids submitted for the event
    * @return int session id
    */
@@ -1567,11 +1568,11 @@ class RedeventModelEditevent extends JModel
   {
 		$mainframe = &JFactory::getApplication();
 		$params    = $mainframe->getParams('com_redevent');
-		
+
 		$xref_template = false;
-		
-  	if (is_array($categories) && count($categories)) 
-  	{  	
+
+  	if (is_array($categories) && count($categories))
+  	{
 	  	// get all categories
 	    $query = ' SELECT c.id, c.catname, (COUNT(parent.catname) - 1) AS depth, c.event_template, c.ordering '
 	           . ' FROM #__redevent_categories AS c, '
@@ -1582,7 +1583,7 @@ class RedeventModelEditevent extends JModel
 	           . ' ORDER BY c.lft;'
 	           ;
 	    $this->_db->setQuery($query);
-	    
+
 	    $cats = $this->_db->loadObjectList();
 	  	// try to find an event template in the categories of the event, or their parents.
 	  	// try first with deepest category with smallest ordering value
@@ -1595,7 +1596,7 @@ class RedeventModelEditevent extends JModel
 	  		}
 	  	}
   	}
-  	
+
   	if (!$xref_template)
   	{
 			// didn't find any event template in categories...
@@ -1605,10 +1606,10 @@ class RedeventModelEditevent extends JModel
 				return false;
 			}
   	}
-  	
+
   	// find corresponding event id
-  	$query = ' SELECT x.eventid ' 
-  	       . ' FROM #__redevent_event_venue_xref AS x ' 
+  	$query = ' SELECT x.eventid '
+  	       . ' FROM #__redevent_event_venue_xref AS x '
   	       . ' WHERE id = ' . $this->_db->Quote($xref_template);
   	$this->_db->setQuery($query);
   	$res = $this->_db->loadResult();
@@ -1616,12 +1617,12 @@ class RedeventModelEditevent extends JModel
 			JError::raiseWarning(0, JText::_('COM_REDEVENT_INVALID_FRONTEND_SUBMISSION_EVENT_TEMPLATE'));
 			return false;
 		}
-		return $res;  	
+		return $res;
   }
-  
+
   /**
    * returns the event id of the event template for this category
-   * 
+   *
    * if no event template defined, it looks up in parent categories
    * @param int category $id
    * @param int event id
@@ -1637,40 +1638,40 @@ class RedeventModelEditevent extends JModel
 		       ;
   	$this->_db->setQuery($query);
   	$res = $this->_db->loadResult();
-  	
+
   	return $res;
   }
-  
+
   function _cmpCatEventTemplate($a, $b)
   {
   	if ($a->depth != $b->depth) {
   		return ($a->depth > $b->depth ? -1 : 1);
   	}
-  	
+
   	if ($a->ordering != $b->ordering) {
   		return ($a->ordering > $b->ordering ? 1 : -1);
   	}
-  	
+
   	return 0;
   }
-  
-  
+
+
   function getRolesOptions()
   {
-  	$query = ' SELECT id AS value, name AS text ' 
-  	       . ' FROM #__redevent_roles ' 
+  	$query = ' SELECT id AS value, name AS text '
+  	       . ' FROM #__redevent_roles '
   	       . ' ORDER BY ordering ASC ';
   	$this->_db->setQuery($query);
   	$res = $this->_db->loadObjectList();
   	return $res;
   }
-  
+
   function getSessionRoles()
   {
   	if ($this->_xref)
   	{
-	  	$query = ' SELECT r.* ' 
-	  	       . ' FROM #__redevent_sessions_roles AS r ' 
+	  	$query = ' SELECT r.* '
+	  	       . ' FROM #__redevent_sessions_roles AS r '
 	  	       . ' WHERE xref = ' . $this->_db->Quote($this->_xref);
 	  	$this->_db->setQuery($query);
 	  	$res = $this->_db->loadObjectList();
@@ -1678,22 +1679,22 @@ class RedeventModelEditevent extends JModel
   	}
   	return array();
   }
-  
+
   function getPricegroupsOptions()
   {
-  	$query = ' SELECT id AS value, name AS text ' 
-  	       . ' FROM #__redevent_pricegroups ' 
+  	$query = ' SELECT id AS value, name AS text '
+  	       . ' FROM #__redevent_pricegroups '
   	       . ' WHERE adminonly = 0 '
   	       . ' ORDER BY ordering ASC ';
   	$this->_db->setQuery($query);
   	$res = $this->_db->loadObjectList();
   	return $res;
   }
-  
+
   function getSessionPrices()
   {
-  	$query = ' SELECT r.* ' 
-  	       . ' FROM #__redevent_sessions_pricegroups AS r ' 
+  	$query = ' SELECT r.* '
+  	       . ' FROM #__redevent_sessions_pricegroups AS r '
   	       . ' INNER JOIN #__redevent_pricegroups AS pg ON pg.id = r.pricegroup_id '
   	       . ' WHERE xref = ' . $this->_db->Quote($this->_xref)
   	       . ' ORDER BY pg.ordering ';
