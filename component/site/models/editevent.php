@@ -738,13 +738,15 @@ class RedeventModelEditevent extends JModel
 		$curimage = JRequest::getVar( 'curimage', '', 'post','string' );
 
 		// published state
-		if (!$acl->canPublishEvent($this->_id)) {
+		if (!$acl->canPublishEvent($this->_id))
+		{
 			// use default state
 			$row->published = $params->get('default_submit_published_state', 0);
 		}
 
 		//bind it to the table
-		if (!$row->bind($data)) {
+		if (!$row->bind($data))
+		{
 			RedeventError::raiseError( 500, $this->_db->stderr() );
 			return false;
 		}
@@ -754,7 +756,8 @@ class RedeventModelEditevent extends JModel
 		if ($row->id)
 		{
 			//check if user is allowed to edit events
-			if (!$acl->canEditEvent($this->_id)) {
+			if (!$acl->canEditEvent($this->_id))
+			{
 				JError::raiseError( 403, JText::_('COM_REDEVENT_NO_ACCESS' ) );
 			}
 
@@ -764,7 +767,8 @@ class RedeventModelEditevent extends JModel
 		else
 		{
 			//check if user is allowed to submit new events
-			if (!$acl->canAddEvent()){
+			if (!$acl->canAddEvent())
+			{
 				JError::raiseError( 403, JText::_('COM_REDEVENT_NO_ACCESS' ) );
 			}
 
@@ -803,9 +807,12 @@ class RedeventModelEditevent extends JModel
 				$filename = redEVENTImage::sanitize($base_Dir, $file['name']);
 				$filepath = $base_Dir . $filename;
 
-				if (!JFile::upload($file['tmp_name'], $filepath)) {
+				if (!JFile::upload($file['tmp_name'], $filepath))
+				{
 					JError::raiseWarning(0, JText::_('COM_REDEVENT_UPLOAD_FAILED' ));
-				} else {
+				}
+				else
+				{
 					$row->datimage = '/images/redevent/events/'.$filename;
 				}
 			}
@@ -817,7 +824,8 @@ class RedeventModelEditevent extends JModel
 		}//end image if
 
 		//Make sure the table is valid
-		if (!$row->check($elsettings)) {
+		if (!$row->check($elsettings))
+		{
 			$this->setError($row->getError());
 			return false;
 		}
@@ -827,7 +835,8 @@ class RedeventModelEditevent extends JModel
 		$edited = $row->id ? $row->id : false;
 
 		//store it in the db
-		if (!$row->store(true)) {
+		if (!$row->store(true))
+		{
 			JError::raiseError( 500, $this->_db->stderr() );
 			return false;
 		}

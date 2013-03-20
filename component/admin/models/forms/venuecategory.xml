@@ -107,6 +107,6 @@
 	       validate="rules"
 	       class="inputbox"
 	       component="com_redevent"
-	       section="category"
+	       section="venuecategory"
 	/>
 </form>

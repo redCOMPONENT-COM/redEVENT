@@ -29,33 +29,33 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	window.addEvent('domready', function() {
 		var form = document.getElementById('venueForm');
 		var map = form.getElementById('map1');
-		
+
 		if(map.checked) {
 			addrequired();
 		}
 	});
-	
-	function addrequired() 
-	{		
+
+	function addrequired()
+	{
 		var form = document.getElementById('venueForm');
-		
+
 		document.id(form.street).addClass('required');
 		document.id(form.plz).addClass('required');
 		document.id(form.city).addClass('required');
 		document.id(form.country).addClass('required');
 	}
-	
-	function removerequired() 
-	{		
+
+	function removerequired()
+	{
 		var form = document.getElementById('venueForm');
-		
+
 		document.id(form.street).removeClass('required');
 		document.id(form.plz).removeClass('required');
 		document.id(form.city).removeClass('required');
 		document.id(form.country).removeClass('required');
 	}
 
-	function submitbutton( pressbutton ) 
+	function submitbutton( pressbutton )
 	{
 		if (pressbutton == 'cancelvenue') {
 			elsubmitform( pressbutton );
@@ -66,16 +66,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		var validator = document.formvalidator;
 		var venue = document.id(form.venue).get('value');
 		venue.replace(/\s/g,'');
-		
+
 		var map = form.getElementById('map1');
 		var streetcheck = document.id(form.street).hasClass('required');
-	
+
 		//workaround cause validate strict doesn't allow and operator
 		//and ie doesn't understand CDATA properly
 		if (map.checked && !(form.latitude.value && form.longitude.value)) {
 			addrequired();
 		}
-		else { 
+		else {
 			removerequired();
 		}
 
@@ -107,17 +107,17 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   		} else {
   			<?php
 			// JavaScript for extracting editor text
-			echo $this->editor->save( 'locdescription' );
+			//echo $this->editor->save( 'locdescription' );
 			?>
 			elsubmitform(pressbutton);
 
 			return true;
 		}
 	}
-	
+
 	//joomla submitform needs form name
 	function elsubmitform(pressbutton)
-	{			
+	{
 		var form = document.getElementById('venueForm');
 		if (pressbutton) {
 			form.task.value=pressbutton;
@@ -129,7 +129,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	}
 
 	var tastendruck = false;
-	
+
 	function rechne(restzeichen)
 	{
 		maximum = <?php echo $this->params->get('max_description', 1000); ?>;
@@ -140,7 +140,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		} else {
     	links = maximum - restzeichen.locdescription.value.length;
     }
-	    
+
  		restzeichen.zeige.value = links;
   }
 
@@ -151,7 +151,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	}
 
 	// for pinpoint map
-	
+
     var sApply = "<?php echo JText::_('COM_REDEVENT_APPLY'); ?>";
     var sClose = "<?php echo JText::_('COM_REDEVENT_CLOSE'); ?>";
     var sMove = "<?php echo JText::_('COM_REDEVENT_MOVEMARKERHERE'); ?>";
@@ -195,8 +195,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 	<td>
                 		<input class="inputbox required" type="text" name="venue" id="venue" value="<?php echo $this->escape($this->row->venue); ?>" size="55" maxlength="50" />
                 	</td>
-                </tr>     
-                  
+                </tr>
+
 								<tr>
 									<td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_Category'); ?>">
                 		<label for="categories"><?php echo JText::_('COM_REDEVENT_Category' ).':'; ?></label>
@@ -204,8 +204,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 	<td>
                 		<?php echo $this->lists['categories']; ?>
                 	</td>
-                </tr>    
-                                   
+                </tr>
+
 						<?php if ($this->canpublish): ?>
 								<tr>
 									<td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_Published'); ?>">
@@ -214,7 +214,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 	<td>
 										<?php echo $this->lists['published'] ?>
                 	</td>
-                </tr>                        
+                </tr>
 						<?php endif; ?>
 
 								<tr>
@@ -353,7 +353,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
       	</fieldset>
       	<?php endif; ?>
-          
+
       	<fieldset class="el_fldst_description">
 
           	<legend><?php echo JText::_('COM_REDEVENT_DESCRIPTION'); ?></legend>
@@ -372,11 +372,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         		<?php	endif; ?>
 
       	</fieldset>
-      	
+
 				<?php if ($this->params->get('allow_attachments', 1)): ?>
 				<?php echo $this->loadTemplate('attachments'); ?>
 				<?php endif; ?>
-				
+
       	<fieldset class="el_fldst_meta">
 
           	<legend><?php echo JText::_('COM_REDEVENT_METADATA_INFORMATION'); ?></legend>
@@ -391,7 +391,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 		<textarea class="inputbox" cols="40" rows="5" name="meta_description" id="metadesc" style="width:250px;"><?php echo  $this->row->meta_description; ?></textarea>
                 	</td>
                 </tr>
-                
+
 								<tr>
 									<td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_META_DESCRIPTION'); ?>">
               			<label for="metakey"><?php echo JText::_('COM_REDEVENT_META_KEYWORDS' ); ?></label>
@@ -401,7 +401,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 </tr>
 							</tbody>
 						</table>
-            
+
     		<input type="button" class="button el_fright" value="<?php echo JText::_('COM_REDEVENT_ADD_VENUE_CITY' ); ?>" onclick="f=document.getElementById('venueForm');f.metakey.value=f.venue.value+', '+f.city.value+f.metakey.value;" />
 
       	</fieldset>
@@ -414,7 +414,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     			<?php echo JText::_('COM_REDEVENT_CANCEL') ?>
     		</button>
 		</div>
-		
+
 		<p class="clear">
       	<input type="hidden" name="option" value="com_redevent" />
       	<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />

@@ -32,7 +32,7 @@ jimport('joomla.application.component.model');
  * @package Joomla
  * @subpackage redEVENT
  * @since		0.9
- */
+*/
 class RedeventModelEditvenue extends JModel
 {
 	/**
@@ -76,12 +76,12 @@ class RedeventModelEditvenue extends JModel
 	 */
 	function &getVenue(  )
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$params = JComponentHelper::getParams('com_redevent');
 
 		// Initialize variables
-		$user       = & JFactory::getUser();
-		$elsettings = & redEVENTHelper::config();
+		$user       = JFactory::getUser();
+		$elsettings = redEVENTHelper::config();
 
 		$view		= JRequest::getWord('view');
 
@@ -91,7 +91,7 @@ class RedeventModelEditvenue extends JModel
 			$this->_loadVenue();
 
 			/*
-			* Error if allready checked out
+			 * Error if allready checked out
 			*/
 			if ($this->_venue->isCheckedOut( $user->get('id') )) {
 				$mainframe->redirect( 'index.php?option=&view='.$view, JText::_('COM_REDEVENT_THE_VENUE' ).' '.$this->_venue->venue.' '.JText::_('COM_REDEVENT_EDITED_BY_ANOTHER_ADMIN' ) );
@@ -102,12 +102,12 @@ class RedeventModelEditvenue extends JModel
 		}
 		else
 		{
-			$this->_venue =& JTable::getInstance('redevent_venues', '');
+			$this->_venue = JTable::getInstance('redevent_venues', '');
 			//prepare output
 			$this->_venue->id				= '';
 			$this->_venue->venue			= '';
 			$this->_venue->published	= 0;
-      $this->_venue->categories = null;
+			$this->_venue->categories = null;
 			$this->_venue->url				= '';
 			$this->_venue->company        = '';
 			$this->_venue->street			= '';
@@ -148,14 +148,16 @@ class RedeventModelEditvenue extends JModel
 		$superuser	= UserAcl::superuser();
 
 		//administrators or superadministrators have access to all categories, also maintained ones
-		if($superuser) {
+		if($superuser)
+		{
 			$cwhere = ' WHERE c.published = 1';
 		}
 		else
 		{
 			$acl = UserACl::getInstance();
 			$managed = $acl->getManagedVenuesCategories();
-			if (!$managed || !count($managed)) {
+			if (!$managed || !count($managed))
+			{
 				return false;
 			}
 			$cwhere = ' WHERE c.id IN ('.implode(',', $managed).') ';
@@ -163,24 +165,24 @@ class RedeventModelEditvenue extends JModel
 
 		//get the maintained categories and the categories whithout any group
 		//or just get all if somebody have edit rights
-    $query = ' SELECT c.id, c.name, (COUNT(parent.name) - 1) AS depth, c.ordering '
-           . ' FROM #__redevent_venues_categories AS c, '
-           . ' #__redevent_venues_categories AS parent '
-           . $cwhere
-           . ' AND c.lft BETWEEN parent.lft AND parent.rgt '
-           . ' GROUP BY c.id '
-           . ' ORDER BY c.lft;'
-           ;
-    $this->_db->setQuery($query);
+		$query = ' SELECT c.id, c.name, (COUNT(parent.name) - 1) AS depth, c.ordering '
+		. ' FROM #__redevent_venues_categories AS c, '
+		. ' #__redevent_venues_categories AS parent '
+		. $cwhere
+		. ' AND c.lft BETWEEN parent.lft AND parent.rgt '
+		. ' GROUP BY c.id '
+		. ' ORDER BY c.lft;'
+		;
+		$this->_db->setQuery($query);
 
-    $results = $this->_db->loadObjectList();
-    $options = array();
-    foreach((array) $results as $cat)
-    {
-      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->name);
-    }
+		$results = $this->_db->loadObjectList();
+		$options = array();
+		foreach((array) $results as $cat)
+		{
+			$options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->name);
+		}
 
-    $this->_categories = $options;
+		$this->_categories = $options;
 
 		return $this->_categories;
 	}
@@ -199,21 +201,21 @@ class RedeventModelEditvenue extends JModel
 			$this->_venue =& JTable::getInstance('redevent_venues', '');
 			$this->_venue->load( $this->_id );
 
-      if ($this->_venue->id)
-      {
-        $query =  ' SELECT c.id '
-              . ' FROM #__redevent_venues_categories as c '
-              . ' INNER JOIN #__redevent_venue_category_xref as x ON x.category_id = c.id '
-              . ' WHERE c.published = 1 '
-              . '   AND x.venue_id = ' . $this->_db->Quote($this->_venue->id)
-              ;
-        $this->_db->setQuery( $query );
+			if ($this->_venue->id)
+			{
+				$query =  ' SELECT c.id '
+				. ' FROM #__redevent_venues_categories as c '
+				. ' INNER JOIN #__redevent_venue_category_xref as x ON x.category_id = c.id '
+				. ' WHERE c.published = 1 '
+				. '   AND x.venue_id = ' . $this->_db->Quote($this->_venue->id)
+				;
+				$this->_db->setQuery( $query );
 
-        $this->_venue->categories = $this->_db->loadResultArray();
+				$this->_venue->categories = $this->_db->loadResultArray();
 				$this->_venue->attachments = REAttach::getAttachments('venue'.$this->_venue->id, max($user->getAuthorisedViewLevels()));
-      }
+			}
 		}
-	  return $this->_venue;
+		return $this->_venue;
 	}
 
 	/**
@@ -359,23 +361,23 @@ class RedeventModelEditvenue extends JModel
 			return false;
 		}
 
-    // update the event category xref
-    // first, delete current rows for this event
-    $query = ' DELETE FROM #__redevent_venue_category_xref WHERE venue_id = ' . $this->_db->Quote($row->id);
-    $this->_db->setQuery($query);
-    if (!$this->_db->query()) {
-      $this->setError($this->_db->getErrorMsg());
-      return false;
-    }
-    // insert new ref
-    foreach ((array) $data['categories'] as $cat_id) {
-      $query = ' INSERT INTO #__redevent_venue_category_xref (venue_id, category_id) VALUES (' . $this->_db->Quote($row->id) . ', '. $this->_db->Quote($cat_id) . ')';
-      $this->_db->setQuery($query);
-      if (!$this->_db->query()) {
-        $this->setError($this->_db->getErrorMsg());
-        return false;
-      }
-    }
+		// update the event category xref
+		// first, delete current rows for this event
+		$query = ' DELETE FROM #__redevent_venue_category_xref WHERE venue_id = ' . $this->_db->Quote($row->id);
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) {
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		// insert new ref
+		foreach ((array) $data['categories'] as $cat_id) {
+			$query = ' INSERT INTO #__redevent_venue_category_xref (venue_id, category_id) VALUES (' . $this->_db->Quote($row->id) . ', '. $this->_db->Quote($cat_id) . ')';
+			$this->_db->setQuery($query);
+			if (!$this->_db->query()) {
+				$this->setError($this->_db->getErrorMsg());
+				return false;
+			}
+		}
 
 		// attachments
 		if ($params->get('allow_attachments', 1)) {
@@ -414,9 +416,9 @@ class RedeventModelEditvenue extends JModel
 			$mail->setSender( array( $MailFrom, $FromName ) );
 			$mail->setBody( $mailbody );
 
-      if (!$mail->Send()) {
-        RedeventHelperLog::simpleLog('Error sending created/edited venue notification to site owner');
-      }
+			if (!$mail->Send()) {
+				RedeventHelperLog::simpleLog('Error sending created/edited venue notification to site owner');
+			}
 		}
 
 		//create the mail for the user
@@ -444,9 +446,9 @@ class RedeventModelEditvenue extends JModel
 			$usermail->setSender( array( $MailFrom, $FromName ) );
 			$usermail->setBody( $mailbody );
 
-      if (!$usermail->Send()) {
-        RedeventHelperLog::simpleLog('Error sending created/edited venue notification to venue owner');
-      }
+			if (!$usermail->Send()) {
+				RedeventHelperLog::simpleLog('Error sending created/edited venue notification to venue owner');
+			}
 		}
 
 		//update item order
@@ -462,13 +464,13 @@ class RedeventModelEditvenue extends JModel
 		$user 		= & JFactory::getUser();
 
 		$query = ' SELECT gv.id '
-		       . ' FROM #__redevent_groups_venues AS gv '
-		       . ' INNER JOIN #__redevent_groupmembers AS gm ON gv.group_id = gm.group_id '
-		       . ' WHERE gm.member ='. $this->_db->Quote($user->id)
-  	       . '   AND gm.edit_venues > 0 '
-  	       . '   AND gv.accesslevel > 0 '
-		       . '   AND gv.venue_id ='. $this->_db->Quote($venue->id)
-		       ;
+		. ' FROM #__redevent_groups_venues AS gv '
+		. ' INNER JOIN #__redevent_groupmembers AS gm ON gv.group_id = gm.group_id '
+		. ' WHERE gm.member ='. $this->_db->Quote($user->id)
+		. '   AND gm.edit_venues > 0 '
+		. '   AND gv.accesslevel > 0 '
+		. '   AND gv.venue_id ='. $this->_db->Quote($venue->id)
+		;
 		$this->_db->setQuery($query);
 
 		return (int) $this->_db->loadResult();

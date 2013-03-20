@@ -483,7 +483,7 @@ class UserAcl
 		$user = $this->getUser();
 
 		$canAdd = $user->authorise('re.createsession', 'com_redevent');
-		$cats = $this->getAuthorisedCategories('re.manageevents', 'com_redevent');
+		$cats = $this->getAuthorisedCategories('re.manageevents');
 
 		return ($canAdd && count($cats));
 	}
@@ -676,7 +676,7 @@ class UserAcl
 			return false;
 		}
 
-		if ($eventid == 0)
+		if ($id == 0)
 		{
 			// New venue, so it's own and should be in allowed cats...
 			return true;
@@ -839,7 +839,7 @@ class UserAcl
 	 */
 	function getManagedVenuesCategories()
 	{
-		return $this->getAuthorisedVenuesCategories('re.managevenues', 'com_redevent');
+		return $this->getAuthorisedVenuesCategories('re.managevenues');
 	}
 
 	/**
