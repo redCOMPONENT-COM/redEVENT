@@ -759,7 +759,7 @@ class UserAcl
 	 *
 	 * @return array
 	 */
-	function getManagedCategories()
+	public function getManagedCategories()
 	{
 		return $this->getAuthorisedCategories('re.manageevents');
 	}
@@ -769,13 +769,47 @@ class UserAcl
 	 *
 	 * @return array
 	 */
-	function getManagedVenues()
+	public function getManagedVenues()
 	{
 		// Explicitely managed
 		$venues = $this->getAuthorisedVenues('re.managevenue');
 
 		// Then managed through venue category
 		$cats = $this->getAuthorisedVenuesCategories('re.managevenues');
+
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('v.id');
+		$query->from('#__redevent_venues AS v');
+		$query->join('LEFT', '#__redevent_venue_category_xref as xcat ON xcat.venue_id = v.id');
+		$query->where('v.created_by = ' . $this->_userid, 'OR');
+		if ($cats && count($cats))
+		{
+			$query->where('xcat.id IN (' . implode($glue, $cats) . ')');
+		}
+
+		$db->setQuery($query);
+		$res = $db->loadColumn();
+
+		$venues = array_merge($venues, $res);
+		$venues = array_unique($venues);
+
+		return $venues;
+	}
+
+	/**
+	 * get venues where user is allowed to manage events
+	 *
+	 * @return array
+	 */
+	public function getAllowedForEventsVenues()
+	{
+		// Explicitely managed
+		$venues = $this->getAuthorisedVenues('re.manageevents');
+
+		// Then managed through venue category
+		$cats = $this->getAuthorisedVenuesCategories('re.manageevents');
 
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);

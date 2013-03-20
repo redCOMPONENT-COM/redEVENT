@@ -571,7 +571,7 @@ class RedeventModelEditevent extends JModel
 		if (!$superuser)
 		{
 			$acl = UserACl::getInstance();
-			$managed = $acl->getManagedVenues();
+			$managed = $acl->getAllowedForEventsVenues();
 			if ($managed && count($managed)) {
 				$where[] = ' l.id IN ('.implode(',', $managed).')';
 			}
@@ -1154,7 +1154,7 @@ class RedeventModelEditevent extends JModel
 		if (!$superuser)
 		{
 			$acl = UserACl::getInstance();
-			$managed = $acl->getManagedVenues();
+			$managed = $acl->getAllowedForEventsVenues();
 			if ($managed && count($managed)) {
 				$where[] = ' v.id IN ('.implode(',', $managed).')';
 			}
