@@ -215,11 +215,7 @@ class modRedeventTeaserHelper
 	{
 		$db =& JFactory::getDBO();
 
-		$acl = &UserAcl::getInstance();
-		$gids = $acl->getUserGroupsIds();
-		if (!is_array($gids) || !count($gids)) {
-			$gids = array(0);
-		}
+		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
 
 		$events = array();
@@ -236,10 +232,9 @@ class modRedeventTeaserHelper
 		. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
 		. ' FROM #__redevent_categories as c '
 		. ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
-		. '  LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id '
 		. ' WHERE c.published = 1 '
 		. '   AND x.event_id IN (' . implode(", ", $events) .')'
-		. '   AND (c.private = 0 OR gc.group_id IN ('.$gids.')) '
+		. '   AND (c.access IN (' . $gids . ')) '
 		. ' ORDER BY c.ordering'
 		;
 		$db->setQuery( $query );

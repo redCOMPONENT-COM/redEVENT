@@ -87,22 +87,13 @@
 			description="COM_REDEVENT_CHOOSE_IMAGE"
 			class="inputbox"
 			directory="redevent/categories"/>
-		
+			
 		<field
-			name="private"
-			type="list"
-			class="inputbox"
-			default="0"
-			size="1"
-			label="COM_REDEVENT_VENUE_PRIVATE_LABEL"
-			description="COM_REDEVENT_VENUE_PRIVATE_TIP">
-			<option
-				value="1">
-				JYES</option>
-			<option
-				value="0">
-				JNO</option>
-		</field>
+			name="access"
+			type="accesslevel"
+			label="JFIELD_ACCESS_LABEL"
+			description="JFIELD_ACCESS_DESC"
+			class="span12 small"/>
 	</fieldset>
 	
 	<fieldset name="address">

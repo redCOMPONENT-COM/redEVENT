@@ -296,15 +296,8 @@ class modRedEventHelper
 	{
 		$app = JFactory::getApplication();
 		$db  = JFactory::getDBO();
-		$acl = UserAcl::getInstance();
 
-		$gids = $acl->getUserGroupsIds();
-
-		if (!is_array($gids) || !count($gids))
-		{
-			$gids = array(0);
-		}
-
+		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
 
 		for ($i = 0, $n = count($rows); $i < $n; $i++)
@@ -315,10 +308,9 @@ class modRedEventHelper
 			$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug');
 			$query->from('#__redevent_categories as c');
 			$query->join('INNER', '#__redevent_event_category_xref as x ON x.category_id = c.id');
-			$query->join('LEFT', '#__redevent_groups_categories AS gc ON gc.category_id = c.id');
 			$query->where('c.published = 1');
 			$query->where('x.event_id = ' . $db->Quote($rows[$i]->id));
-			$query->where('(c.private = 0 OR gc.group_id IN (' . $gids . '))');
+			$query->where('(c.access IN (' . $gids . '))');
 			$query->group('c.id');
 			$query->order('c.ordering');
 

@@ -56,7 +56,7 @@ defined('_JEXEC') or die('Restricted access');
 			<th><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_CITY', 'l.city', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
       <th><?php echo JText::_('COM_REDEVENT_CATEGORY' ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JText::_('COM_REDEVENT_PUBLISHED' ); ?></th>
-			<th><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_LABEL_PRIVATE', 'l.private', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ACCESS', 'l.access', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th><?php echo JText::_('COM_REDEVENT_CREATION' ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JText::_('COM_REDEVENT_SESSIONS' ); ?></th>
 		    <th width="80" colspan="2"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_REORDER', 'l.ordering', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
@@ -154,7 +154,7 @@ defined('_JEXEC') or die('Restricted access');
         </td>
 			<td align="center"><?php echo $published; ?></td>
 			<td align="center">
-				<?php echo $row->private ? JHTML::image('administrator/components/com_redevent/assets/images/icon-16-private.png', JText::_('COM_REDEVENT_LABEL_PRIVATE')) : ''; ?>
+				<?php echo $row->access_level; ?>
 			</td>
 			<td>
 				<?php echo JText::_('COM_REDEVENT_AUTHOR' ).': '; ?><a href="<?php echo 'index.php?option=com_users&amp;task=edit&amp;hidemainmenu=1&amp;cid[]='.$row->created_by; ?>"><?php echo $row->author; ?></a><br />

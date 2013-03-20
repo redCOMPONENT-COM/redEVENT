@@ -35,47 +35,47 @@ require_once('baseeventslist.php');
  */
 class RedeventModelArchive extends RedeventModelBaseEventList
 {
-	
+
 	function __construct()
-	{		
+	{
 		parent::__construct();
-		
+
 		$mainframe = & JFactory::getApplication();
-		
+
 		$filter 		  = $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter', 'filter', '', 'string');
 		$filter_type 	= $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter_type', 'filter_type', '', 'string');
 	    $customs      = $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter_customs', 'filtercustom', array(), 'array');
-	    
+
 	    $category = $mainframe->getParams('com_redevent')->get('category_id');
 	    $filter_category = $mainframe->getUserStateFromRequest('com_redevent.'.$this->getName().'.filter_category', 'filter_category', 0, 'int');
 	    if ($category && !$filter_category) {
 	    	$filter_category = $category;
 	    }
 	    $this->setState('filter_category', $filter_category);
-	
+
 	    $venue    = $mainframe->getParams('com_redevent')->get('venue_id');
 	    $filter_venue = $mainframe->getUserStateFromRequest('com_redevent.'.$this->getName().'.filter_venue',    'filter_venue',    0, 'int');
 	    if ($venue && !$filter_venue) {
 	    	$filter_venue = $venue;
 	    }
 		$this->setState('filter_venue',   $filter_venue);
-    
+
 	    // Get the filter request variables
 	    $this->setState('filter_order',     JRequest::getCmd('filter_order', 'x.dates'));
 	    $this->setState('filter_order_dir', JRequest::getCmd('filter_order_Dir', $mainframe->getParams('com_redevent')->get('archive_ordering', 'ASC')));
-    
+
 		$this->setState('filter',         $filter);
 		$this->setState('filter_type',    $filter_type);
 		$this->setState('filter_customs', $customs);
 	}
-	
+
 	/**
 	 * Build the where clause
 	 *
 	 * @access private
 	 * @return string
 	 */
-	function _buildWhere()
+	function _buildWhere($query)
 	{
 		$mainframe = &JFactory::getApplication();
 
@@ -101,7 +101,7 @@ class RedeventModelArchive extends RedeventModelBaseEventList
 		{
 			$filter 		  = $this->getState('filter');
 			$filter_type 	= $this->getState('filter_type');
-				
+
 			if ($filter)
 			{
 				// clean filter variables
@@ -129,7 +129,7 @@ class RedeventModelArchive extends RedeventModelBaseEventList
 				}
 			}
 		}
-	  
+
 		if ($ev = $this->getState('filter_event'))
 		{
 			$where[] = 'a.id = '.$this->_db->Quote($ev);
@@ -139,7 +139,7 @@ class RedeventModelArchive extends RedeventModelBaseEventList
 		{
 			$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);
 		}
-	  
+
 		if ($cat = $this->getState('filter_category'))
 		{
 			$category = $this->getCategory((int) $cat);
@@ -184,7 +184,9 @@ class RedeventModelArchive extends RedeventModelBaseEventList
 			$where[] = '(CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > '.$this->_db->Quote($limit);
 		}
 
-		return ' WHERE '.implode(' AND ', $where);
+		$query->where(implode(' AND ', $where));
+
+		return $query;
 	}
 
 }

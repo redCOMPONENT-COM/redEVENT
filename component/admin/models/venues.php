@@ -195,6 +195,10 @@ class RedEventModelVenues extends JModel
 		$query->from('#__redevent_venues AS l');
 		$query->join('LEFT', '#__users AS u ON u.id = l.created_by');
 
+		// Join over the asset groups.
+		$query->select('ag.title AS access_level');
+		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = l.access');
+
 		// Join over the language
 		$query->select('lg.title AS language_title');
 		$query->join('LEFT', $db->quoteName('#__languages').' AS lg ON lg.lang_code = l.language');

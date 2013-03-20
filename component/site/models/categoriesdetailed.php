@@ -204,16 +204,8 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 	protected function _buildDataQuery(&$category)
 	{
 		$user		= & JFactory::getUser();
-		$aid		= max($user->getAuthorisedViewLevels());
 
-		$acl = &UserAcl::getInstance();
-		$gids = $acl->getUserGroupsIds();
-
-		if (!is_array($gids) || !count($gids))
-		{
-			$gids = array(0);
-		}
-
+		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
 
 		$task 		= JRequest::getWord('task');
@@ -252,14 +244,11 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 		$query->join('LEFT', '#__redevent_venues_categories AS vc ON xvcat.category_id = vc.id');
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
 		$query->join('INNER', '#__redevent_categories AS c ON c.id = xcat.category_id');
-		$query->join('LEFT', '#__redevent_groups_venues AS gv ON gv.venue_id = l.id AND gv.group_id IN (' . $gids . ')');
-		$query->join('LEFT', '#__redevent_groups_venues_categories AS gvc ON gvc.category_id = vc.id AND gvc.group_id IN (' . $gids . ')');
-		$query->join('LEFT', '#__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN (' . $gids . ')');
 
 		$query->where('c.lft BETWEEN ' . $db->Quote($category->lft) . ' AND ' . $db->Quote($category->rgt));
-		$query->where('(l.private = 0 OR gv.id IS NOT NULL) ');
-		$query->where('(c.private = 0 OR gc.id IS NOT NULL) ');
-		$query->where('(vc.private = 0 OR vc.private IS NULL OR gvc.id IS NOT NULL) ');
+		$query->where('(l.access IN (' . $gids . ')) ');
+		$query->where('(c.access IN (' . $gids . ')) ');
+		$query->where('(vc.id IS NULL OR vc.access IN (' . $gids . ')) ');
 
 		if ($this->getState('filter.language'))
 		{
@@ -281,19 +270,11 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 	 */
 	protected function _buildQuery()
 	{
-		$mainframe = &JFactory::getApplication();
-		$params   = & $mainframe->getParams('com_redevent');
-		$user		= & JFactory::getUser();
-		$gid 		= max($user->getAuthorisedViewLevels());
+		$mainframe = JFactory::getApplication();
+		$params    = $mainframe->getParams('com_redevent');
+		$user      = JFactory::getUser();
 
-		$acl = &UserAcl::getInstance();
-		$gids = $acl->getUserGroupsIds();
-
-		if (!is_array($gids) || !count($gids))
-		{
-			$gids = array(0);
-		}
-
+		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
 
 		$db      = JFactory::getDbo();
@@ -303,10 +284,9 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 		$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug');
 
 		$query->from('#__redevent_categories AS c');
-		$query->join('LEFT', '#__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN (' . $gids . ')');
 
 		$query->where('c.published = 1');
-		$query->where('(c.private = 0 OR gc.id IS NOT NULL)');
+		$query->where('(c.access IN (' . $gids . '))');
 
 		if ($this->_parent)
 		{
@@ -320,7 +300,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
 			$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.category_id = child.id ');
 			$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.eventid = xcat.event_id ');
 			$query->where('child.published = 1 ');
-			$query->where('child.access <= ' . $gid);
+			$query->where('child.access IN (' . $gids . ')');
 		}
 
 		if ($this->getState('filter.language'))

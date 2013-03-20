@@ -147,11 +147,7 @@ class RedEventModelVenuesmap extends JModel
 
 		$params = $app->getParams();
 
-		$acl = UserAcl::getInstance();
-		$gids = $acl->getUserGroupsIds();
-		if (!is_array($gids) || !count($gids)) {
-			$gids = array(0);
-		}
+		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
 
 		$db      = JFactory::getDbo();
@@ -162,11 +158,9 @@ class RedEventModelVenuesmap extends JModel
 		$query->from('#__redevent_venues as v');
 		$query->join('LEFT', '#__redevent_venue_category_xref AS xvcat ON xvcat.venue_id = v.id');
 		$query->join('LEFT', '#__redevent_venues_categories AS vcat ON vcat.id = xvcat.category_id');
-		$query->join('LEFT', '#__redevent_groups_venues AS gv ON gv.venue_id = v.id');
-		$query->join('LEFT', '#__redevent_groups_venues_categories AS gvc ON gvc.category_id = vcat.id');
 		$query->where('v.published = 1');
-		$query->where('(v.private = 0 OR gv.group_id IN (' . $gids . '))');
-		$query->where('(vcat.id IS NULL OR vcat.private = 0 OR vcat.private IS NULL OR gvc.group_id IN (' . $gids . '))');
+		$query->where('(v.access IN (' . $gids . '))');
+		$query->where('(vcat.id IS NULL OR vcat.access IN (' . $gids . '))');
 
 		if ($params->get('show_empty_venues', 0))
 		{

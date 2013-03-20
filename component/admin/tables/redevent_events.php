@@ -29,125 +29,9 @@ defined('_JEXEC') or die('Restricted access');
  * @package Joomla
  * @subpackage redEVENT
  * @since 0.9
- */
+*/
 class RedEvent_events extends JTable
 {
-	/**
-	 * Primary Key
-	 * @var int
-	 */
-	var $id 						= null;
-	/** @var string */      		
-	var $title 						= '';
-	/** @var string */      		
-	var $alias	 					= '';
-	/** @var int */         		
-	var $created_by					= null;
-	/** @var int */         		
-	var $modified 					= 0;
-	/** @var int */         		
-	var $modified_by 				= null;
-	/** @var string */         		
-	var $summary 				= null;
-	/** @var string */      		
-	var $datdescription 			= null;
-	/** @var int */         		
-	var $details_layout 					= 0;
-	/** @var string */      		
-	var $meta_description 			= null;
-	/** @var string */      		
-	var $meta_keywords				= null;
-	/** @var string */      		
-	var $datimage 					= '';
-	/** @var string */      		
-	var $author_ip 					= null;
-	/** @var date */        		
-	var $created	 				= null;
-	/** @var int */         		
-	var $published 					= null;
-	/** @var int */         		
-	var $registra 					= null;
-	/** @var int */         		
-	var $unregistra 				= null;
-	/** @var int */         		
-	var $checked_out 				= null;
-	/** @var date */        		
-	var $checked_out_time 			= 0;
-	/** @var boolean */     		
-	var $notify 					= 0;
-	/** @var string */      		
-	var $notify_subject 			= null;
-	/** @var string */      		
-	var $notify_body 				= null;
-	/** @var boolean */     		
-	var $redform_id					= null;
-	/** @var boolean */     		
-	var $juser 						= 1;
-	/** @var string */
-	var $notify_on_list_body		= null;
-	/** @var string */
-	var $notify_off_list_body		= null;
-	/** @var string */
-	var $notify_on_list_subject		= null;
-	/** @var string */
-	var $notify_off_list_subject	= null;
-	/** @var string */
-	var $show_names	= 0;
-	/** @var string */
-	var $notify_confirm_subject 	= null;
-	/** @var string */
-	var $notify_confirm_body 		= null;
-	/** @var string */
-	var $review_message 			= null;
-	/** @var string */
-	var $confirmation_message 		= null;
-	/** @var string */
-	var $activate 					= null;
-	/** @var string */
-	var $showfields 				= null;
-	/** @var string */
-	var $submission_types			= null;
-	/** @var string */
-	var $course_code				= null;
-	/** @var string */
-	var $submission_type_email		= null;
-	/** @var string */
-	var $submission_type_external	= null;
-	/** @var string */
-	var $submission_type_phone		= null;
-	/** @var string */
-	var $submission_type_webform	= null;
-  /** @var boolean */
-//   var $show_submission_type_webform_formal_offer = 0;
-	/** @var string */
-	var $submission_type_webform_formal_offer = null;
-	/** @var int */
-	var $max_multi_signup			= null;
-	/** @var string */
-	var $submission_type_formal_offer		= null;
-	/** @var string */
-	var $submission_type_formal_offer_subject		= null;
-	/** @var string */
-	var $submission_type_formal_offer_body	= null;
-	/** @var string */
-	var $submission_type_email_body			= null;
-	/** @var string */
-	var $submission_type_email_subject		= null;
-	/** @var string */
-	var $submission_type_email_pdf			= null;
-	/** @var string */
-	var $submission_type_formal_offer_pdf	= null;
-	/** @var int */
-	var $send_pdf_form			= null;
-	/** @var int */
-	var $pdf_form_data			= null;
-	/** @var string */
-	var $paymentaccepted	= null;
-	/** @var string */
-	var $paymentprocessing	= null;	
-	/** @var int */
-	var $enable_ical			= null;
-	
 	function redevent_events(& $db) {
 		parent::__construct('#__redevent_events', 'id', $db);
 	}
@@ -162,76 +46,101 @@ class RedEvent_events extends JTable
 
 		if ( $this->title == '' ) {
 			$this->_error = JText::_('COM_REDEVENT_ADD_TITLE' );
-      		JError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
-      		return false;
+			JError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
+			return false;
 		}
 
 		if ( $titlelength > 100 ) {
-      		$this->_error = JText::_('COM_REDEVENT_ERROR_TITLE_LONG' );
-      		JError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
-      		return false;
+			$this->_error = JText::_('COM_REDEVENT_ERROR_TITLE_LONG' );
+			JError::raiseWarning('REDEVENT_GENERIC_ERROR', $this->_error );
+			return false;
 		}
 
 		$alias = JFilterOutput::stringURLSafe($this->title);
 
 		if(empty($this->alias) || $this->alias === $alias ) {
 			$this->alias = $alias;
-		}		
-          
+		}
+
 		// check that there is no loop with the tag inclusion
 		if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_email) > 0) {
-      $this->_error = JText::_('COM_REDEVENT_ERROR_TAG_LOOP_XXXXSIGNUPPAGE');
-      JError::raiseWarning(0, $this->_error);
+			$this->_error = JText::_('COM_REDEVENT_ERROR_TAG_LOOP_XXXXSIGNUPPAGE');
+			JError::raiseWarning(0, $this->_error);
 		}
-	
-    if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_phone) > 0) {
-      $this->_error = JText::_('COM_REDEVENT_ERROR_TAG_LOOP_XXXXSIGNUPPAGE');
-      JError::raiseWarning(0, $this->_error);
-    }
-	
-    if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_webform) > 0) {
-      $this->_error = JText::_('COM_REDEVENT_ERROR_TAG_LOOP_XXXXSIGNUPPAGE');
-      JError::raiseWarning(0, $this->_error);
-    }
-	
-    if ($app->isAdmin() && !empty($this->review_message) && !strstr($this->review_message, '[redform]')) {
-      $this->_error = JText::_('COM_REDEVENT_WARNING_REDFORM_TAG_MUST_BE_INCLUDED_IN_REVIEW_SCREEN_IF_NOT_EMPTY');
-      JError::raiseWarning(0, $this->_error);
-    }
-	
-    // prevent people from using {redform}x{/redform} inside the wysiwyg => replace with [redform]
-    $this->datdescription = preg_replace('#(\{redform\}.*\{/redform\})#i', '[redform]', $this->datdescription);
-    $this->review_message = preg_replace('#(\{redform\}.*\{/redform\})#i', '[redform]', $this->review_message);
-    
+
+		if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_phone) > 0) {
+			$this->_error = JText::_('COM_REDEVENT_ERROR_TAG_LOOP_XXXXSIGNUPPAGE');
+			JError::raiseWarning(0, $this->_error);
+		}
+
+		if (preg_match('/\[[a-z]*signuppage\]/', $this->submission_type_webform) > 0) {
+			$this->_error = JText::_('COM_REDEVENT_ERROR_TAG_LOOP_XXXXSIGNUPPAGE');
+			JError::raiseWarning(0, $this->_error);
+		}
+
+		if ($app->isAdmin() && !empty($this->review_message) && !strstr($this->review_message, '[redform]')) {
+			$this->_error = JText::_('COM_REDEVENT_WARNING_REDFORM_TAG_MUST_BE_INCLUDED_IN_REVIEW_SCREEN_IF_NOT_EMPTY');
+			JError::raiseWarning(0, $this->_error);
+		}
+
+		// prevent people from using {redform}x{/redform} inside the wysiwyg => replace with [redform]
+		$this->datdescription = preg_replace('#(\{redform\}.*\{/redform\})#i', '[redform]', $this->datdescription);
+		$this->review_message = preg_replace('#(\{redform\}.*\{/redform\})#i', '[redform]', $this->review_message);
+
 		return true;
 	}
-	
+
 	function xload($xref)
 	{
-	  $this->reset();
+		$this->reset();
 
-    $db =& $this->getDBO();
+		$db =& $this->getDBO();
 
-    $query = 'SELECT e.* '
-    . ' FROM #__redevent_events as e '
-    . ' INNER JOIN #__redevent_event_venue_xref as x ON x.eventid = e.id '
-    . ' WHERE x.id = ' . $db->Quote($xref);
-    $db->setQuery( $query );
+		$query = 'SELECT e.* '
+		. ' FROM #__redevent_events as e '
+		. ' INNER JOIN #__redevent_event_venue_xref as x ON x.eventid = e.id '
+		. ' WHERE x.id = ' . $db->Quote($xref);
+		$db->setQuery( $query );
 
-    if ($result = $db->loadAssoc( )) {
-      return $this->bind($result);
-    }
-    else
-    {
-      $this->setError( $db->getErrorMsg() );
-      return false;
-    }
+		if ($result = $db->loadAssoc( )) {
+			return $this->bind($result);
+		}
+		else
+		{
+			$this->setError( $db->getErrorMsg() );
+			return false;
+		}
+	}
+
+	public function bind($array, $ignore = '')
+	{
+		// Bind the rules.
+		if (isset($array['rules']) && is_array($array['rules']))
+		{
+			$filtered = array();
+			foreach ((array) $array['rules'] as $action => $ids)
+			{
+				// Build the rules array.
+				$filtered[$action] = array();
+				foreach ($ids as $id => $p)
+				{
+					if ($p !== '')
+					{
+						$filtered[$action][$id] = ($p == '1' || $p == 'true') ? true : false;
+					}
+				}
+			}
+			$rules = new JAccessRules($filtered);
+			$this->setRules($rules);
+		}
+
+		return parent::bind($array, $ignore);
 	}
 
 	/**
 	 * override for custom fields
 	 */
-	function bind( $from, $ignore=array() )
+	function _bind( $from, $ignore=array() )
 	{
 		$fromArray	= is_array( $from );
 		$fromObject	= is_object( $from );
@@ -259,8 +168,8 @@ class RedEvent_events extends JTable
 		$customs = $this->_getCustomFieldsColumns();
 		foreach ($customs as $c)
 		{
-			if ($fromArray && isset( $from[$c] )) 
-			{				
+			if ($fromArray && isset( $from[$c] ))
+			{
 				$this->$c = is_array($from[$c]) ? implode("\n", $from[$c]) : $from[$c];
 			} else if ($fromObject && isset( $from->$c )) {
 				$this->$c = is_array($from->$c) ? implode("\n", $from->$c) : $from->$c;
@@ -269,46 +178,100 @@ class RedEvent_events extends JTable
 				$this->$c = '';
 			}
 		}
+
 		return true;
 	}
-	
+
 	function _getCustomFieldsColumns()
 	{
-		$query = ' SELECT CONCAT("custom", id) ' 
-		       . ' FROM #__redevent_fields ' 
-		       . ' WHERE object_key = ' . $this->_db->Quote('redevent.event');
+		$query = ' SELECT CONCAT("custom", id) '
+		. ' FROM #__redevent_fields '
+		. ' WHERE object_key = ' . $this->_db->Quote('redevent.event');
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadResultArray();
 		return $res;
 	}
-	
+
 	/**
 	 * Sets categories of event
 	 * Enter description here ...
 	 * @param unknown_type $catids
 	 */
 	function setCats($catids = array())
-	{		
+	{
 		if (!$this->id) {
 			$this->setError('COM_REDEVENT_EVENT_TABLE_NOT_INITIALIZED');
 			return false;
 		}
 		// update the event category xref
 		// first, delete current rows for this event
-    $query = ' DELETE FROM #__redevent_event_category_xref WHERE event_id = ' . $this->_db->Quote($this->id);
-    $this->_db->setQuery($query);
-    if (!$this->_db->query()) {
-      $this->setError($this->_db->getErrorMsg());
-      return false;    	
-    }
+		$query = ' DELETE FROM #__redevent_event_category_xref WHERE event_id = ' . $this->_db->Quote($this->id);
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) {
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
 		// insert new ref
 		foreach ((array) $catids as $cat_id) {
-		  $query = ' INSERT INTO #__redevent_event_category_xref (event_id, category_id) VALUES (' . $this->_db->Quote($this->id) . ', '. $this->_db->Quote($cat_id) . ')';
-		  $this->_db->setQuery($query);
-	    if (!$this->_db->query()) {
-	      $this->setError($this->_db->getErrorMsg());
-	      return false;     
-	    }		  
-		}  
+			$query = ' INSERT INTO #__redevent_event_category_xref (event_id, category_id) VALUES (' . $this->_db->Quote($this->id) . ', '. $this->_db->Quote($cat_id) . ')';
+			$this->_db->setQuery($query);
+			if (!$this->_db->query()) {
+				$this->setError($this->_db->getErrorMsg());
+				return false;
+			}
+		}
+	}
+
+	/**
+	 * Method to compute the default name of the asset.
+	 * The default name is in the form `table_name.id`
+	 * where id is the value of the primary key of the table.
+	 *
+	 * @return      string
+	 *
+	 * @since       2.5
+	 **/
+	protected function _getAssetName()
+	{
+		$k = $this->_tbl_key;
+
+		return 'com_redevent.event.' . (int) $this->$k;
+	}
+
+	/**
+	 * Method to return the title to use for the asset table.
+	 *
+	 * @return      string
+	 *
+	 * @since       2.5
+	 */
+	protected function _getAssetTitle()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * Method to get the asset-parent-id of the item
+	 *
+	 * @return      int
+	 */
+	protected function _getAssetParentId()
+	{
+		// We will retrieve the parent-asset from the Asset-table
+		$assetParent = JTable::getInstance('Asset');
+
+		// Default: if no asset-parent can be found we take the global asset
+		$assetParentId = $assetParent->getRootId();
+
+		// The item has the component as asset-parent
+		$assetParent->loadByName('com_redevent');
+
+		// Return the found asset-parent-id
+		if ($assetParent->id)
+		{
+			$assetParentId = $assetParent->id;
+		}
+
+		return $assetParentId;
 	}
 }

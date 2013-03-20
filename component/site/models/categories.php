@@ -186,14 +186,7 @@ class RedeventModelCategories extends JModel
 		$user		= & JFactory::getUser();
 		$gid		= max($user->getAuthorisedViewLevels());
 
-		$acl = &UserAcl::getInstance();
-		$gids = $acl->getUserGroupsIds();
-
-		if (!is_array($gids) || !count($gids))
-		{
-			$gids = array(0);
-		}
-
+		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
 
 		// Check archive task and ensure that only categories get selected if they contain a published/archived event
@@ -218,9 +211,8 @@ class RedeventModelCategories extends JModel
 		$query->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.category_id = child.id');
 		$query->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = xcat.event_id');
 		$query->join('LEFT', '#__redevent_events AS e ON x.eventid = e.id');
-		$query->join('LEFT', '#__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN (' . $gids . ')');
 		$query->where('child.published = 1');
-		$query->where('child.access <= ' . $gid);
+		$query->where('child.access IN (' . $gids . ')');
 
 		if ($params->get('display_all_categories', 0) == 0)
 		{
@@ -239,7 +231,7 @@ class RedeventModelCategories extends JModel
 			$query->where('c.parent_id = ' . $this->_db->Quote($this->_parent->id));
 		}
 
-		$query->where('(c.private = 0 OR gc.id IS NOT NULL) ');
+		$query->where('(c.access IN (' . $gids . ')) ');
 
 		if ($this->getState('filter.language'))
 		{

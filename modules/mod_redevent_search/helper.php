@@ -49,14 +49,7 @@ class modRedEventSearchHelper
 	{
 		$app = JFactory::getApplication();
 
-		$acl  = UserAcl::getInstance();
-		$gids = $acl->getUserGroupsIds();
-
-		if (!is_array($gids) || !count($gids))
-		{
-			$gids = array(0);
-		}
-
+		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
 
 		//Get Events from Database
@@ -68,19 +61,15 @@ class modRedEventSearchHelper
 		. ' LEFT JOIN #__redevent_venues_categories AS vc ON xvcat.category_id = vc.id'
 		. ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
 		. ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-
-		. ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = l.id AND gv.group_id IN ('.$gids.')'
-		. ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = vc.id AND gvc.group_id IN ('.$gids.')'
-		. ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN ('.$gids.')'
 		;
 
 		$where = array();
 		$where[] = ' x.published = 1';
 
 		//acl
-		$where[] = ' (l.private = 0 OR gv.id IS NOT NULL) ';
-		$where[] = ' (c.private = 0 OR gc.id IS NOT NULL) ';
-		$where[] = ' (vc.private = 0 OR vc.private IS NULL OR gvc.id IS NOT NULL) ';
+		$where[] = ' (l.access IN (' . $gids . ')) ';
+		$where[] = ' (c.access IN (' . $gids . ')) ';
+		$where[] = ' (vc.id IS NULL OR vc.access IN (' . $gids . ')) ';
 
 		if ($app->getLanguageFilter())
 		{
@@ -107,11 +96,7 @@ class modRedEventSearchHelper
 	{
 		$app = &JFactory::getApplication();
 
-		$acl = &UserAcl::getInstance();
-		$gids = $acl->getUserGroupsIds();
-		if (!is_array($gids) || !count($gids)) {
-			$gids = array(0);
-		}
+		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
 
 		$query = ' SELECT DISTINCT v.id AS value, '
@@ -119,15 +104,12 @@ class modRedEventSearchHelper
 		. ' FROM #__redevent_venues AS v '
 		. ' LEFT JOIN #__redevent_venue_category_xref AS xcat ON xcat.venue_id = v.id '
 		. ' LEFT JOIN #__redevent_venues_categories AS vcat ON vcat.id = xcat.category_id '
-
-		. ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = v.id AND gv.group_id IN ('.$gids.')'
-		. ' LEFT JOIN #__redevent_groups_venues_categories AS gvc ON gvc.category_id = vcat.id AND gvc.group_id IN ('.$gids.')'
 		;
 		$where = array();
 
 		//acl
-		$where[] = ' (v.private = 0 OR gv.id IS NOT NULL) ';
-		$where[] = ' (vcat.id IS NULL OR vcat.private = 0 OR gvc.id IS NOT NULL) ';
+		$where[] = ' (v.access IN (' . $gids . ')) ';
+		$where[] = ' (vcat.id IS NULL OR vcat.access IN (' . $gids . ')) ';
 
 		if ($app->getLanguageFilter())
 		{

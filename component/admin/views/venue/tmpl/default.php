@@ -178,8 +178,8 @@ JHtml::_('behavior.formvalidation');
 
 			<?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_ACCESS'), 'access'); ?>
 			<fieldset class="panelform">
-				<?php echo $this->form->getLabel('private'); ?>
-				<?php echo $this->form->getInput('private'); ?>
+				<?php echo $this->form->getLabel('access'); ?>
+				<?php echo $this->form->getInput('access'); ?>
 			</fieldset>
 
 			<?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_METADATA_INFORMATION'), 'metadata'); ?>

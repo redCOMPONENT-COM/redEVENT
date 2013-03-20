@@ -61,7 +61,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
     var $_total_attending = null;
 
     var $_groups = null;
-    
+
     /**
      * Pagination object
      *
@@ -211,7 +211,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 
         return $this->_groups;
     }
-    
+
     /**
      * Total nr of events
      *
@@ -332,7 +332,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         $where = $this->_buildEventListWhere();
         $orderby = $this->_buildEventListOrderBy();
 
-        //Get Events from Database        
+        //Get Events from Database
         $query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published, '
         . ' a.id, a.title, a.created, a.datdescription, a.registra, a.course_code, '
         . ' l.venue, l.city, l.state, l.url, l.id as locid, '
@@ -346,14 +346,11 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         . ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
         . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
         . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-        . ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id '
-        . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
-		    . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = x.venueid AND gv.group_id = gc.group_id '
         . $where
         . ' GROUP BY (x.id) '
         . $orderby
         ;
-        
+
         return $query;
     }
 
@@ -440,7 +437,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 
         return $query;
     }
-    
+
     /**
      * Build the order clause
      *
@@ -467,23 +464,23 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
     {
         $mainframe = &JFactory::getApplication();
 
-        $user = & JFactory::getUser();
-        $gid = (int)max($user->getAuthorisedViewLevels());
+        $user = JFactory::getUser();
+        $gid = (int) max($user->getAuthorisedViewLevels());
 
         // Get the paramaters of the active menu item
-        $params = & $mainframe->getParams();
+        $params = $mainframe->getParams();
 
         $task = JRequest::getWord('task');
-        
+
         $where = array();
 
         $where[] = ' x.published > -1 ';
-        
+
         $acl = UserAcl::getInstance();
-        if (!$acl->superuser()) 
+        if (!$acl->superuser())
         {
         	$xrefs = $acl->getCanEditXrefs();
-        	$xrefs = array_merge($acl->getCanViewAttendees(), $xrefs);
+        	$xrefs = array_merge($acl->getXrefsCanViewAttendees(), $xrefs);
         	$xrefs = array_unique($xrefs);
         	if ($xrefs && count($xrefs)) {
         		$where[] = ' x.id IN ('.implode(",", $xrefs).')';
@@ -492,15 +489,15 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         		$where[] = '0';
         	}
         }
-                   
+
         if ($params->get('showopendates', 1) == 0) {
         	$where[] = ' x.dates IS NOT NULL AND x.dates > 0 ';
         }
-    
+
         if ($params->get('shownonbookable', 1) == 0) {
         	$where[] = ' a.registra > 0 ';
         }
-        
+
         /*
          * If we have a filter, and this is enabled... lets tack the AND clause
          * for the filter onto the WHERE clause of the item query.
@@ -540,7 +537,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         if (JRequest::getInt('filter_event')) {
         	$where[] = ' a.id = '.JRequest::getInt('filter_event');
         }
-        
+
         $where = ' WHERE '. implode(' AND ', $where);
         return $where;
     }
@@ -561,7 +558,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         $params = & $mainframe->getParams();
 
         $task = JRequest::getWord('task');
-        
+
         $where = array();
 
         // First thing we need to do is to select only needed events
@@ -571,13 +568,13 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         } else
         {
             $where[] = ' x.published > -1 ';
-        }    
-        
+        }
+
         $acl = UserAcl::getInstance();
-        if (!$acl->superuser()) 
+        if (!$acl->superuser())
         {
         	$xrefs = $acl->getCanEditXrefs();
-        	$xrefs = array_merge($acl->getCanViewAttendees(), $xrefs);
+        	$xrefs = array_merge($acl->getXrefsCanViewAttendees(), $xrefs);
         	$xrefs = array_unique($xrefs);
         	if ($xrefs && count($xrefs)) {
         		$where[] = ' x.id IN ('.implode(",", $xrefs).')';
@@ -586,15 +583,15 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         		$where[] = '0';
         	}
         }
-                   
+
         if ($params->get('showopendates', 1) == 0) {
         	$where[] = ' x.dates IS NOT NULL AND x.dates > 0 ';
         }
-    
+
         if ($params->get('shownonbookable', 1) == 0) {
         	$where[] = ' a.registra > 0 ';
         }
-        
+
         /*
          * If we have a filter, and this is enabled... lets tack the AND clause
          * for the filter onto the WHERE clause of the item query.
@@ -631,7 +628,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
                 }
             }
         }
-        
+
         $where = ' WHERE '. implode(' AND ', $where);
         return $where;
     }
@@ -673,12 +670,12 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
     }
 
 
-    
+
 	function getEventsOptions()
 	{
 		// Get the WHERE and ORDER BY clauses for the query
 		$where = $this->_buildEventsOptionsWhere();
-		
+
 		//Get Events from Database
 		$query = ' SELECT a.id AS value, a.title as text '
 		       . ' FROM #__redevent_event_venue_xref AS x'

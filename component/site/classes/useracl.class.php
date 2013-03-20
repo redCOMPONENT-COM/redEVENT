@@ -32,9 +32,6 @@ defined('_JEXEC') or die('Restricted access');
 */
 class UserAcl
 {
-
-	protected $_groups = null;
-
 	protected $_userid = 0;
 
 	protected $user = null;
@@ -174,7 +171,7 @@ class UserAcl
 		$query->select('e.id');
 		$query->from('#__redevent_events AS e');
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
-		$query->where('e.id = ' . $eventid);
+		$query->where('e.id = ' . (int) $eventid);
 		$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
 		if (!$canEdit)
 		{
@@ -319,7 +316,7 @@ class UserAcl
 
 		$query->select('x.id');
 		$query->from('#__redevent_events AS e');
-		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.event_id = e.id');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.eventid = e.id');
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
 		$query->join('LEFT', '#__redevent_venue_category_xref AS xvcat ON xvcat.venue_id = x.venueid');
 		$query->where('x.id = ' . $xref);
@@ -375,7 +372,7 @@ class UserAcl
 
 		$query->select('x.id');
 		$query->from('#__redevent_events AS e');
-		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.event_id = e.id');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.eventid = e.id');
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
 		$query->join('LEFT', '#__redevent_venue_category_xref AS xvcat ON xvcat.venue_id = x.venueid');
 
@@ -414,7 +411,7 @@ class UserAcl
 	 *
 	 * @return array int xrefs
 	 */
-	public function getCanViewAttendees()
+	public function getXrefsCanViewAttendees()
 	{
 		if (!$this->_userid)
 		{
@@ -426,9 +423,9 @@ class UserAcl
 		$venuescats  = $this->getAuthorisedVenuesCategories('re.manageevents');
 		$canViewAttendees = $this->getUser()->authorise('re.viewattendees', 'com_redevent') || $this->getUser()->authorise('re.manageattendees', 'com_redevent');
 
-		if (!$canManageAttendees || !count($cats) || (!count($venuescats) && !count($venues)))
+		if (!$canViewAttendees || !count($cats) || (!count($venuescats) && !count($venues)))
 		{
-			return false;
+			return array();
 		}
 
 		$db      = JFactory::getDbo();
@@ -436,7 +433,7 @@ class UserAcl
 
 		$query->select('x.id');
 		$query->from('#__redevent_events AS e');
-		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.event_id = e.id');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.eventid = e.id');
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
 		$query->join('LEFT', '#__redevent_venue_category_xref AS xvcat ON xvcat.venue_id = x.venueid');
 
@@ -517,7 +514,7 @@ class UserAcl
 
 		$query->select('x.id');
 		$query->from('#__redevent_events AS e');
-		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.event_id = e.id');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.eventid = e.id');
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
 		$query->join('LEFT', '#__redevent_venue_category_xref AS xvcat ON xvcat.venue_id = x.venueid');
 		$query->where('x.id = ' . $xref_id);
@@ -573,7 +570,7 @@ class UserAcl
 
 		$query->select('x.id');
 		$query->from('#__redevent_events AS e');
-		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.event_id = e.id');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.eventid = e.id');
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
 		$query->join('LEFT', '#__redevent_venue_category_xref AS xvcat ON xvcat.venue_id = x.venueid');
 		$query->where('x.id = ' . $xref_id);
@@ -700,61 +697,6 @@ class UserAcl
 	}
 
 	/**
-	 * get user groups
-	 *
-	 * @return array
-	 */
-	public function getUserGroups()
-	{
-		if (empty($this->_groups))
-		{
-			$db = &JFactory::getDBO();
-
-			$query = ' SELECT g.id AS group_id, g.name AS group_name, g.parameters, g.isdefault, g.edit_events AS gedit_events, g.edit_venues AS gedit_venues, '
-			. '   gm.member AS user_id, gm.manage_events, gm.manage_xrefs, gm.edit_venues '
-			. ' FROM #__redevent_groups AS g '
-			. ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
-			. ' WHERE isdefault = 1 '
-			. '    OR gm.member = '. $db->Quote($this->_userid)
-			. ' GROUP BY g.id ';
-			$db->setQuery($query);
-			$this->_groups = $db->loadObjectList('group_id');
-		}
-		return $this->_groups;
-	}
-
-	/**
-	 * return user group ids
-	 *
-	 * @return array
-	 */
-	public function getUserGroupsIds()
-	{
-		$res = array();
-		$groups = $this->getUserGroups();
-		foreach ((array)$groups as $g) {
-			$res[] = $g->group_id;
-		}
-		return $res;
-	}
-
-	/**
-	 * returns default group if set
-	 *
-	 * return object or false
-	 */
-	public function getDefaultGroup()
-	{
-		foreach ($this->getUserGroups AS $g)
-		{
-			if ($g->isdefault) {
-				return $g;
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * get categories managed by user
 	 *
 	 * @return array
@@ -820,7 +762,7 @@ class UserAcl
 		$query->where('v.created_by = ' . $this->_userid, 'OR');
 		if ($cats && count($cats))
 		{
-			$query->where('xcat.category_id IN (' . implode($glue, $cats) . ')');
+			$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
 		}
 
 		$db->setQuery($query);

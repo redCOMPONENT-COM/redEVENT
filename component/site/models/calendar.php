@@ -168,17 +168,6 @@ class RedeventModelCalendar extends JModel
 	 */
 	protected function _buildQuery()
 	{
-		$acl = UserAcl::getInstance();
-
-		$gids = $acl->getUserGroupsIds();
-
-		if (!is_array($gids) || !count($gids))
-		{
-			$gids = array(0);
-		}
-
-		$gids = implode(',', $gids);
-
 		// Get Events from Database
 		$db = &JFactory::getDbo();
 		$query = $db->getQuery(true);
@@ -197,9 +186,6 @@ class RedeventModelCalendar extends JModel
 		$query->join('LEFT', '#__redevent_venues_categories AS vc ON xvcat.category_id = vc.id');
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
 		$query->join('INNER', '#__redevent_categories AS cat ON cat.id = xcat.category_id');
-		$query->join('LEFT', '#__redevent_groups_venues AS gv ON gv.venue_id = l.id AND gv.group_id IN (' . $gids . ')');
-		$query->join('LEFT', '#__redevent_groups_venues_categories AS gvc ON gvc.category_id = vc.id AND gvc.group_id IN (' . $gids . ')');
-		$query->join('LEFT', '#__redevent_groups_categories AS gc ON gc.category_id = cat.id AND gc.group_id IN (' . $gids . ')');
 		$query->group('x.id');
 		$query->order('x.dates, x.times');
 
@@ -293,9 +279,12 @@ class RedeventModelCalendar extends JModel
 		}
 
 		// Acl
-		$query->where(' (l.private = 0 OR gv.id IS NOT NULL) ');
-		$query->where(' (cat.private = 0 OR gc.id IS NOT NULL) ');
-		$query->where(' (vc.private = 0 OR vc.private IS NULL OR gvc.id IS NOT NULL) ');
+		$gids = JFactory::getUser()->getAuthorisedViewLevels();
+		$gids = implode(',', $gids);
+
+		$query->where(' (l.access IN (' . $gids . ')) ');
+		$query->where(' (cat.access IN (' . $gids . ')) ');
+		$query->where(' (vc.access IN (' . $gids . ') OR vc.id IS NULL) ');
 
 		return $query;
 	}

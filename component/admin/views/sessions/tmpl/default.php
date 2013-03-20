@@ -47,7 +47,7 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 			<button onclick="this.form.submit();"><?php echo JText::_('COM_REDEVENT_Go' ); ?></button>
 			<button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_('COM_REDEVENT_Reset' ); ?></button>
 		</div>
-		<div class="sessions-filter">		
+		<div class="sessions-filter">
 			<label for="eventid" class="hasTip" title="<?php echo JText::_( 'COM_REDEVENT_SESSIONS_EVENT_FILTER' ).'::'.JText::_( 'COM_REDEVENT_SESSIONS_EVENT_FILTER_TIP' ); ?>">
 				<?php echo JText::_( 'COM_REDEVENT_SESSIONS_EVENT_FILTER' ).':'; ?>
 			</label>
@@ -74,9 +74,9 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 			<?php echo $this->lists['featured'];	?>
 			</div>
 			<div>
-			<label for="filter_group"><?php echo JText::_('COM_REDEVENT_SESSIONS_FILTER_GROUP_LABEL'); ?></label> 
-			<?php echo $this->lists['filter_group'];	?>		
-			<?php echo $this->lists['filter_group_manage'];	?>			
+			<label for="filter_group"><?php echo JText::_('COM_REDEVENT_SESSIONS_FILTER_GROUP_LABEL'); ?></label>
+			<?php echo $this->lists['filter_group'];	?>
+			<?php echo $this->lists['filter_group_manage'];	?>
 			</div>
 		</td>
 </tr>
@@ -116,9 +116,9 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 	</tfoot>
 	<tbody>
 		<?php
-		$k = 0;		
+		$k = 0;
 		if ($this->items && count($this->items)):
-		foreach ((array) $this->items as $i => $row) 
+		foreach ((array) $this->items as $i => $row)
 		{
 			/* Get the date */
 			$date = (!redEVENTHelper::isValidDate($row->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->dates )));
@@ -126,12 +126,12 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 			$displaydate = $date. ($enddate ? ' - '.$enddate: '');
 			$endreg = (!redEVENTHelper::isValidDate($row->registrationend) ? '-' : strftime( $this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->registrationend )));
 
-	
+
 			$displaytime = '';
 			/* Get the time */
 			if (isset($row->times) && $row->times != '00:00:00') {
 				$displaytime = strftime( $this->params->get('formattime', '%H:%M'), strtotime( $row->times ));
-	
+
 				if (isset($row->endtimes) && $row->endtimes != '00:00:00') {
 					$displaytime .= ' - '.strftime( $this->params->get('formattime', '%H:%M'), strtotime( $row->endtimes ));
 				}
@@ -139,11 +139,11 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 			$checked 	= JHTML::_('grid.checkedout',   $row, $i );
  			$published 	= JHTML::_('grid.published',   $row, $i );
 			$featured = $this->featured($row, $i);
-			
+
 			$sessionlink = JRoute::_( 'index.php?option=com_redevent&view=session&cid[]='. $row->id );
-			$venuelink = JRoute::_( 'index.php?option=com_redevent&view=venue&cid[]='. $row->venueid );
+			$venuelink = JRoute::_( 'index.php?option=com_redevent&view=venue&id='. $row->venueid );
 			$eventlink = JRoute::_( 'index.php?option=com_redevent&view=event&cid[]='. $row->eventid );
-			
+
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo $this->pagination->getRowOffset( $i ); ?></td>
@@ -160,13 +160,13 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 					}
 					?>
 					<span class="linkfront hasTip" title="<?php echo JText::_('COM_REDEVENT_EVENT_FRONTEND_LINK')?>">
-						<?php echo JHTML::link(JURI::root().RedeventHelperRoute::getDetailsRoute($row->eventid, $row->id), 
-					                         JHTML::image('administrator/components/com_redevent/assets/images/linkfront.png', 
+						<?php echo JHTML::link(JURI::root().RedeventHelperRoute::getDetailsRoute($row->eventid, $row->id),
+					                         JHTML::image('administrator/components/com_redevent/assets/images/linkfront.png',
 					                         JText::_('COM_REDEVENT_EVENT_FRONTEND_LINK'))); ?>
 					</span>
 				</td>
 	      <td><?php echo $displaytime; ?></td>
-				
+
 			<?php if (!$this->event): ?>
 				<td>
 					<?php
@@ -181,7 +181,7 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 					?>
 				</td>
 				<?php endif; ?>
-			  
+
 			  <td>
 					<?php
 					if (  JTable::isCheckedOut($this->user->get ('id'), $row->venue_checked_out ) ) {
@@ -194,7 +194,7 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 					}
 					?>
 				</td>
-				
+
 	      <td><?php echo $row->title; ?></td>
 	      <td><?php echo $row->note; ?></td>
         <td align="center">
@@ -205,10 +205,10 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 	        <?php endif; ?>
 				</td>
 	      <td align="center"><?php echo $featured ?></td>
-	      
+
 	      <?php if (!$this->event || $row->registra): ?>
 	      <td><?php echo $endreg; ?></td>
-	      <td><?php echo ($row->registra ? 
+	      <td><?php echo ($row->registra ?
 	                      JHTML::link('index.php?option=com_redevent&view=attendees&xref='.$row->id, intval($row->attendees->attending). ' / '. intval($row->attendees->waiting)) : '-'); ?></td>
 	      <?php endif; ?>
 	    </tr>

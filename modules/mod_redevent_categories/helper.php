@@ -101,11 +101,7 @@ class modRedEventCategoriesHelper
 
 		$db = &JFactory::getDBO();
 
-		$acl = &UserAcl::getInstance();
-		$gids = $acl->getUserGroupsIds();
-		if (!is_array($gids) || !count($gids)) {
-			$gids = array(0);
-		}
+		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
 
 		//check archive task and ensure that only categories get selected if they contain a published/archived event
@@ -126,9 +122,6 @@ class modRedEventCategoriesHelper
 		. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = child.id '
 		. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = xcat.event_id '
 		. ' LEFT JOIN #__redevent_events AS a ON x.eventid = a.id '
-
-		. ' LEFT JOIN #__redevent_groups_categories AS gc ON gc.category_id = c.id AND gc.group_id IN ('.$gids.')'
-
 		. ' WHERE child.published = 1 '
 		.     $eventstate
 		;
@@ -142,7 +135,7 @@ class modRedEventCategoriesHelper
 		if ($params->get('parent', 0)) {
 			$query .= ' AND c.parent_id = '. $db->Quote($params->get('parent', 0));
 		}
-		$query .= ' AND (c.private = 0 OR gc.id IS NOT NULL) ';
+		$query .= ' AND (c.access IN (' . $gids . ')) ';
 		$query .= ' GROUP BY c.id ';
 		switch ($params->get('ordering', 0))
 		{

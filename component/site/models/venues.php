@@ -244,15 +244,7 @@ class RedeventModelVenues extends JModel
 		// Get the paramaters of the active menu item
 		$params   = & $mainframe->getParams('com_redevent');
 
-
-		$acl = UserAcl::getInstance();
-		$gids = $acl->getUserGroupsIds();
-
-		if (!is_array($gids) || !count($gids))
-		{
-			$gids = array(0);
-		}
-
+		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
 
 		$db      = JFactory::getDbo();
@@ -265,11 +257,9 @@ class RedeventModelVenues extends JModel
 		$query->join('LEFT', '#__redevent_events AS a ON a.id = x.eventid');
 		$query->join('LEFT', '#__redevent_venue_category_xref AS xc ON xc.venue_id = v.id');
 		$query->join('LEFT', '#__redevent_venues_categories AS c ON c.id = xc.category_id');
-		$query->join('LEFT', '#__redevent_groups_venues AS gv ON gv.venue_id = v.id');
-		$query->join('LEFT', '#__redevent_groups_venues_categories AS gvc ON gvc.category_id = c.id');
 		$query->where('v.published = 1');
-		$query->where('(v.private = 0 OR gv.group_id IN (' . $gids . '))');
-		$query->where('(c.private = 0 OR c.private IS NULL OR gvc.group_id IN (' . $gids . '))');
+		$query->where('(v.access IN (' . $gids . '))');
+		$query->where('(c.id IS NULL OR c.access IN (' . $gids . '))');
 		$query->group('v.id');
 		$query->order('v.venue');
 
