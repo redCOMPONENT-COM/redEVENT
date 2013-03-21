@@ -18,7 +18,7 @@ class xmap_com_redevent {
     * This function is called before a menu item is printed. We use it to set the
     * proper uniqueid for the item and indicate whether the node is expandible or not
     */
-	public static function prepareMenuItem($node, &$params) 
+	public static function prepareMenuItem($node, &$params)
 	{
 		$link_query = parse_url($node->link);
 		if (!isset($link_query['query'])) {
@@ -28,7 +28,7 @@ class xmap_com_redevent {
 		$view   = JArrayHelper::getValue($link_vars, 'view', '');
 		$layout = JArrayHelper::getValue($link_vars, 'layout', '');
 		$id     = JArrayHelper::getValue($link_vars, 'id', 0, 'INT');
-		
+
 		switch ($view)
 		{
 			case 'categoryevents':
@@ -38,9 +38,9 @@ class xmap_com_redevent {
 				$node->expandible = true;
 				$node->uid = 'com_redevent_'.$view.$id;
 				break;
-				
+
 			case 'categories':
-			case 'categoriesdetailled':	
+			case 'categoriesdetailled':
 			case 'featured':
 			case 'upcomingevents':
 			case 'venues':
@@ -52,7 +52,7 @@ class xmap_com_redevent {
 				$node->uid = 'com_redevent_ev'.$id;
 				$node->expandible = false;
 				break;
-					
+
 			case 'attendees':
 			case 'editevent':
 			case 'editvenue':
@@ -64,20 +64,20 @@ class xmap_com_redevent {
 			case 'week':
 			default:
 				$node->uid = 'com_redevent_'.$view;
-				$node->expandible = false;							
+				$node->expandible = false;
 		}
 	}
 
 	/** Get the content tree for this kind of content */
 	public static function getTree( $xmap, $parent, &$params )
-	{        		
+	{
 		$link_query = parse_url( $parent->link );
 		parse_str( html_entity_decode($link_query['query']), $link_vars );
 		$view = JArrayHelper::getValue($link_vars,'view','');
-				
+
 		$include_events = intval(JArrayHelper::getValue($params,'include_events',1));
 		$include_events = ( $include_events == 1
-                                  || ( $include_events == 2 && $xmap->view == 'xml') 
+                                  || ( $include_events == 2 && $xmap->view == 'xml')
                                   || ( $include_events == 3 && $xmap->view == 'html'));
 		$params['include_events'] = $include_events;
 
@@ -119,17 +119,17 @@ class xmap_com_redevent {
 			case 'categoriesdetailed':
 				self::getCategoriesTree($xmap, $parent, $params);
 				break;
-				
+
 			case 'venuecategory':
 				self::getVenuesCategoriesTree($xmap, $parent, $params);
 				break;
-		
+
 			case 'upcomingvenueevents':
 			case 'venueevents':
 			case 'venues':
 				self::getVenueEventsTree($xmap, $parent, $params);
 				break;
-				
+
 			case 'simplelist':
 			case 'upcomingevents':
 			case 'featured':
@@ -138,7 +138,7 @@ class xmap_com_redevent {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * tree for categories and categories detailed views
 	 *
@@ -152,13 +152,13 @@ class xmap_com_redevent {
 		parse_str( html_entity_decode($link_query['query']), $link_vars );
 
 		$view = JArrayHelper::getValue($link_vars,'view','');
-		
+
 		$xmap->changeLevel(1);
 		if ($params['include_events'])
 		{
 			$db = JFactory::getDBO();
 			$query = $db->getQuery(true);
-			
+
 			$query->select("x.id as xref, x.eventid, e.title, e.alias, x.dates, x.times");
 			$query->select("UNIX_TIMESTAMP(e.created) as created, UNIX_TIMESTAMP(e.modified) as modified ");
 			$query->select('CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(\':\', e.id, e.alias) ELSE e.id END as slug');
@@ -168,18 +168,18 @@ class xmap_com_redevent {
 			$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
 			$query->where('x.published = 1');
 			$query->order('x.dates,x.times,x.enddates,x.endtimes');
-			
+
 			if ($view == 'featured') {
 				$query->where('x.featured = 1');
 			}
-			
+
 			if ($view == 'upcomingevents') {
 				$now = strftime('%Y-%m-%d %H:%M');
 				$query->where('(CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > '.$db->Quote($now));
 			}
-			
+
 			$db->setQuery($query, 0, JArrayHelper::getValue($params,'max_events',10,'int'));
-			
+
 			$rows = $db->loadObjectList();
 			foreach ($rows as $event)
 			{
@@ -197,10 +197,10 @@ class xmap_com_redevent {
 		}
 		$xmap->changeLevel(-1);
 	}
-		
+
 	/**
 	 * tree for categories and categories detailed views
-	 * 
+	 *
 	 * @param unknown $xmap
 	 * @param unknown $parent
 	 * @param unknown $params
@@ -213,16 +213,16 @@ class xmap_com_redevent {
 
 		$db = &JFactory::getDbo();
 		$query = $db->getQuery(true);
-		
+
 		$query->select('c.id , c.catname, c.alias');
 		$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug');
 		$query->from('#__redevent_categories AS c');
-		$query->where('c.published = 1 AND c.private = 0');
+		$query->where('c.published = 1');
 		$query->where('c.parent_id = '.$catid);
 		$query->order('ordering');
 		$db->setQuery($query);
 		$cats = $db->loadObjectList();
-		
+
 		$xmap->changeLevel(1);
 		foreach($cats as $cat)
 		{
@@ -241,7 +241,7 @@ class xmap_com_redevent {
 		if ($params['include_events'])
 		{
 			$query = $db->getQuery(true);
-			
+
 			$query->select("x.id as xref, x.eventid, e.title, e.alias, x.dates, x.times");
 			$query->select("UNIX_TIMESTAMP(e.created) as created, UNIX_TIMESTAMP(e.modified) as modified ");
 			$query->select('CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(\':\', e.id, e.alias) ELSE e.id END as slug');
@@ -253,9 +253,9 @@ class xmap_com_redevent {
 			$query->where('xcat.category_id = '.$catid);
 			$query->order('x.dates,x.times,x.enddates,x.endtimes');
 			$db->setQuery($query, 0, JArrayHelper::getValue($params,'max_events',10,'int'));
-						
+
 			$rows = $db->loadObjectList();
-			foreach ($rows as $event) 
+			foreach ($rows as $event)
 			{
 				$node = new stdclass;
 				$node->id   = $parent->id;
@@ -271,10 +271,10 @@ class xmap_com_redevent {
 		}
 		$xmap->changeLevel(-1);
 	}
-	
+
 	/**
 	 * expands venue menus
-	 * 
+	 *
 	 * @param unknown $xmap
 	 * @param unknown $parent
 	 * @param unknown $params
@@ -284,20 +284,20 @@ class xmap_com_redevent {
 		$link_query = parse_url( $parent->link );
 		parse_str( html_entity_decode($link_query['query']), $link_vars );
 		$venue_id = intval(JArrayHelper::getValue($link_vars,'id',0));
-		
+
 		$view = JArrayHelper::getValue($link_vars,'view','');
-		
+
 		$db = &JFactory::getDBO();
 
  		$xmap->changeLevel(1);
-		if ( !$venue_id ) 
+		if ( !$venue_id )
 		{
 			$query = $db->getQuery(true);
-			
+
 			$query->select('id , venue, alias');
 			$query->select('CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\', id, alias) ELSE id END as slug');
 			$query->from('#__redevent_venues');
-			$query->where('published = 1 AND private = 0');
+			$query->where('published = 1');
 			$query->order('ordering');
 			$db->setQuery($query);
 			$venues = $db->loadObjectList();
@@ -316,11 +316,11 @@ class xmap_com_redevent {
 					self::getVenueEventsTree($xmap, $node, $params);
 				}
 	    	}
-		} 
-		else if ($params['include_events']) 
+		}
+		else if ($params['include_events'])
 		{
 			$query = $db->getQuery(true);
-			
+
 			$query->select("x.id as xref, x.eventid, e.title, e.alias, x.dates, x.times");
 			$query->select("UNIX_TIMESTAMP(e.created) as created, UNIX_TIMESTAMP(e.modified) as modified ");
 			$query->select('CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(\':\', e.id, e.alias) ELSE e.id END as slug');
@@ -331,16 +331,16 @@ class xmap_com_redevent {
 			$query->where('x.published = 1');
 			$query->where('x.venueid = '.$venue_id);
 			$query->order('x.dates,x.times,x.enddates,x.endtimes');
-			
+
 			if ($view == 'upcomingvenueevents') {
 				$now = strftime('%Y-%m-%d %H:%M');
 				$query->where('(CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > '.$db->Quote($now));
 			}
-			
+
 			$db->setQuery($query, 0, JArrayHelper::getValue($params,'max_events',10,'int'));
-			
+
 			$rows = $db->loadObjectList();
-			foreach($rows as $event) 
+			foreach($rows as $event)
 			{
 				$node = new stdclass;
 				$node->id   = $parent->id;
@@ -370,21 +370,21 @@ class xmap_com_redevent {
 		$link_query = parse_url( $parent->link );
 		parse_str( html_entity_decode($link_query['query']), $link_vars );
 		$catid = intval(JArrayHelper::getValue($link_vars,'id',0));
-	
+
 		$db = &JFactory::getDbo();
 		$query = $db->getQuery(true);
-	
+
 		$query->select('c.id , c.name, c.alias');
 		$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug');
 		$query->from('#__redevent_venues_categories AS c');
-		$query->where('c.published = 1 AND c.private = 0');
+		$query->where('c.published = 1');
 		$query->where('c.parent_id = '.$catid);
 		$query->order('ordering');
 		$db->setQuery($query);
 		$cats = $db->loadObjectList();
-	
+
 		$xmap->changeLevel(1);
-		
+
 		// sub categories
 		if (count($cats))
 		{
@@ -402,10 +402,10 @@ class xmap_com_redevent {
 				self::getVenuesCategoriesTree($xmap, $node, $params);
 			}
 		}
-		
+
 		// category venues
 		$query = $db->getQuery(true);
-	
+
 		$query->select('v.id, v.venue');
 		$query->select('CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as slug');
 		$query->from('#__redevent_venues AS v');
@@ -414,7 +414,7 @@ class xmap_com_redevent {
 		$query->order('v.ordering');
 		$db->setQuery($query);
 		$venues = $db->loadObjectList();
-		
+
 		if (count($venues))
 		{
 			foreach($venues as $venue)
@@ -430,13 +430,13 @@ class xmap_com_redevent {
 				$xmap->printNode($node);
 				self::getVenueEventsTree($xmap, $node, $params);
 			}
-		}		
+		}
 		$xmap->changeLevel(-1);
 	}
-	
+
 	/**
 	 * return true is a date is valid (not null, or 0000-00...)
-	 * 
+	 *
 	 * @param string $date
 	 * @return boolean
 	 */
@@ -451,7 +451,7 @@ class xmap_com_redevent {
 		if (!strtotime($date)) {
 			return false;
 		}
-		return true;		
+		return true;
 	}
 
 	/**
@@ -459,23 +459,23 @@ class xmap_com_redevent {
 	 *
 	 * @param string $date
 	 * @param string $time
-	 * 
+	 *
 	 * @return string $formatdate
 	 *
 	 * @since 0.9
 	 */
 	protected static function _formatdate($date, $time, $params)
-	{		
+	{
 		if(!self::_isValidDate($date)) {
 			return JText::_('Open date');
 		}
-		
+
 		if(!$time) {
 			$time = '00:00:00';
 		}
-		
+
 		//Format date
-		$date = JFactory::getDate($date.' '.$time);		
+		$date = JFactory::getDate($date.' '.$time);
 		return $date->format($params['dateformat'], true);
 	}
 }

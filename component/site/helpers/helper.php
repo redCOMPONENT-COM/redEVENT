@@ -493,7 +493,6 @@ class redEVENTHelper {
 		if (!$show_unpublished) {
 			$where[] = ' c.published = 1 ';
 		}
-		//    $where[] = ' (c.private = 0 OR gvc.group_id IN ('.$gids.') ) ';
 
 		if (count($where)) {
 			$query .= ' WHERE ' . implode(' AND ', $where);

@@ -514,7 +514,7 @@ class RedEventModelVenues extends JModel
 		}
 
 		$query = ' SELECT v.id, v.venue, v.alias, v.url, v.street, v.plz, v.city, v.state, v.country, v.latitude, v.longitude, '
-				. ' v.locdescription, v.meta_description, v.meta_keywords, v.locimage, v.private, v.map, v.published,  '
+				. ' v.locdescription, v.meta_description, v.meta_keywords, v.locimage, v.map, v.published,  '
 				. '    u.name as creator_name, u.email AS creator_email '
 				. ' FROM #__redevent_venues AS v '
 				. ' LEFT JOIN #__redevent_venue_category_xref AS xc ON xc.venue_id = v.id '

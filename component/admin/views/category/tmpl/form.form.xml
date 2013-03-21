@@ -118,18 +118,7 @@
 		label="JFIELD_ACCESS_LABEL"
 		description="JFIELD_ACCESS_DESC"
 		class="span12 small"/>
-		
-	<field
-		name="private"
-		type="list"
-		label="COM_REDEVENT_CATEGORY_PRIVATE_LABEL"
-		description="COM_REDEVENT_CATEGORY_PRIVATE_TIP"
-		default="0"
-		class="inputbox">
-		<option value="0">JNO</option>
-		<option value="1">JYES</option>
-	</field>
-	
+			
 	<field name="asset_id" type="hidden" filter="unset" />
 	
 	<field name="rules"

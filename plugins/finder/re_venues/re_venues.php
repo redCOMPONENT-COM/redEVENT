@@ -54,13 +54,6 @@ class plgFinderRe_venues extends FinderIndexerAdapter
 	 * @since  2.5
 	 */
 	protected $type_title = 'Venue';
-	
-	/**
-	 * is the venue private 
-	 * 
-	 * @var    int
-	 */
-	protected $old_private = 0;
 
 	/**
 	 * The table name.
@@ -69,7 +62,7 @@ class plgFinderRe_venues extends FinderIndexerAdapter
 	 * @since  2.5
 	 */
 	protected $table = '#__redevent_venues';
-	
+
 	protected $state_field = 'published';
 
 	/**
@@ -155,10 +148,8 @@ class plgFinderRe_venues extends FinderIndexerAdapter
 		// We only want to handle web links here. We need to handle front end and back end editing.
 		if ($context == 'com_redevent.venue' || $context == 'com_redevent.venue.form' )
 		{
-			// FIXME: this is a bit ugly
-			$row->access = ($row->private == 0);
 			// Check if the access levels are different
-			if (!$isNew && $this->old_private != $row->private)
+			if (!$isNew && $this->old_access != $row->access)
 			{
 				// Process the change.
 				$this->itemAccessChange($row);
@@ -335,7 +326,7 @@ class plgFinderRe_venues extends FinderIndexerAdapter
 		$sql->select('a.created_by, a.modified, a.modified_by');
 		$sql->select('a.published AS state, a.created AS start_date');
 		$sql->select('a.url, a.company, a.street, a.plz as zip, a.city, a.state AS venue_state, a.country');
-		$sql->select('a.private = 0 AS access');
+		$sql->select('a.access');
  		$sql->select('c.name AS category, c.published AS cat_state, c.access AS cat_access');
 
 		// Handle the alias CASE WHEN portion of the query
@@ -347,9 +338,9 @@ class plgFinderRe_venues extends FinderIndexerAdapter
 		$case_when_item_alias .= ' ELSE ';
 		$case_when_item_alias .= $a_id.' END as slug';
 		$sql->select($case_when_item_alias);
-		
+
 		$sql->select('u.name AS author');
-		
+
 		$sql->from('#__redevent_venues AS a');
 		$sql->join('LEFT', '#__users AS u ON u.id = a.created_by');
 		$sql->join('LEFT', '#__redevent_venue_category_xref AS xcat ON xcat.venue_id = a.id');
@@ -357,8 +348,8 @@ class plgFinderRe_venues extends FinderIndexerAdapter
 
 		return $sql;
 	}
-	
-	
+
+
 	/**
 	 * Method to check the existing access level for items
 	 *
@@ -369,11 +360,11 @@ class plgFinderRe_venues extends FinderIndexerAdapter
 	 * @since   2.5
 	 */
 	protected function checkItemAccess($row)
-	{	
+	{
 		// Store the access level to determine if it changes
-		$this->old_private = $row->private;
+		$this->old_access = $row->access;
 	}
-	
+
 	protected function checkCategoryAccess($row)
 	{
 		$query = $this->db->getQuery(true);
@@ -385,7 +376,7 @@ class plgFinderRe_venues extends FinderIndexerAdapter
 		// Store the access level to determine if it changes
 		$this->old_cataccess = $this->db->loadResult();
 	}
-		
+
 	/**
 	 * Method to get a SQL query to load the published and access states for
 	 * a venue and category.
@@ -402,11 +393,11 @@ class plgFinderRe_venues extends FinderIndexerAdapter
 		// Item and category published state
 		$sql->select('a.' . $this->state_field . ' AS state, c.published AS cat_state');
 		// Item and category access levels
-		$sql->select('(1 - a.private) as access, c.access AS cat_access');
+		$sql->select('a.access, c.access AS cat_access');
 		$sql->from($this->table . ' AS a');
 		$sql->join('LEFT', '#__redevent_venue_category_xref AS xcat ON xcat.venue_id = a.id');
 		$sql->join('LEFT', '#__redevent_venues_categories AS c ON c.id = xcat.category_id');
-	
+
 		return $sql;
 	}
 }

@@ -86,9 +86,6 @@ Joomla.submitbutton = function(task)
 				<ul class="adminformlist">
 					<li><?php echo $this->form->getLabel('access'); ?>
 					<?php echo $this->form->getInput('access'); ?></li>
-
-					<li><?php echo $this->form->getLabel('private'); ?>
-					<?php echo $this->form->getInput('private'); ?></li>
 				</ul>
 			</fieldset>
 

@@ -107,24 +107,24 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 	public function getVenue()
 	{
 		$user		= JFactory::getUser();
+		$gids = $user->getAuthorisedViewLevels();
+		$gids = implode(',', $gids);
 
-		$query = 'SELECT *, v.id AS venueid, '
-		. ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as slug '
-		. ' FROM #__redevent_venues AS v'
-		. ' WHERE v.id = ' . $this->_id;
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
 
-		$this->_db->setQuery($query);
-		$_venue = $this->_db->loadObject();
+		$query->select('*, id AS venueid');
+		$query->select('CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\', id, alias) ELSE id END as slug');
+		$query->from('#__redevent_venues');
+		$query->where('id = ' . $this->_id);
+		$query->where('access IN (' . $gids . ')');
 
-		if ($_venue->private)
+		$db->setQuery($query);
+		$_venue = $db->loadObject();
+
+		if (!$this->_category)
 		{
-			$acl = UserAcl::getInstance();
-			$cats = $acl->getManagedVenues();
-
-			if (!is_array($cats) || !in_array($_venue->id, $cats))
-			{
-				JError::raiseError(403, JText::_('COM_REDEVENT_ACCESS_NOT_ALLOWED'));
-			}
+			JError::raiseError(403, JText::_('COM_REDEVENT_ACCESS_NOT_ALLOWED'));
 		}
 
 		$_venue->attachments = REAttach::getAttachments('venue' . $_venue->id, max($user->getAuthorisedViewLevels()));

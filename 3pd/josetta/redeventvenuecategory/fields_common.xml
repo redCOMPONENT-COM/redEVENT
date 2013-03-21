@@ -111,14 +111,6 @@
 			<display>no</display>
 			<require>no</require>
 		</field>
-		
-		<field>
-			<id>private</id>
-			<column>private</column>
-			<translate>no</translate>
-			<display>no</display>
-			<require>no</require>
-		</field>
 	    
 		<field>
 			<id>published</id>
