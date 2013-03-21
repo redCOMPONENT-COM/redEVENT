@@ -392,7 +392,6 @@ class RedeventModelEditevent extends JModel
 				else
 				{
 					$obj = new stdclass();
-					$obj->groupid           = 0;
 					$obj->external_registration_url   = null;
 					$obj->details           = null;
 					$obj->maxattendees      = 0;
@@ -1165,7 +1164,7 @@ class RedeventModelEditevent extends JModel
 			$acl = UserACl::getInstance();
 			$managed = $acl->getAllowedForEventsVenues();
 			if ($managed && count($managed)) {
-				$where[] = ' v.id IN ('.implode(',', $managed).')';
+				$where[] = ' v.id IN (' . implode(',', $managed) . ')';
 			}
 			else {
 				$where[] = ' 0 ';
@@ -1234,7 +1233,7 @@ class RedeventModelEditevent extends JModel
 		$settings = & redEVENTHelper::config();
 
 		// TODO : check user group access ?
-  	$row = & JTable::getInstance('RedEvent_eventvenuexref', '');
+		$row = & JTable::getInstance('RedEvent_eventvenuexref', '');
 
 		if ($data['id']) {
 			if (!$this->canManageXref($data['id'])) {

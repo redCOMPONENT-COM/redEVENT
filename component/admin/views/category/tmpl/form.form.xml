@@ -76,15 +76,6 @@
 		class="inputbox">
 		<option value="*">JALL</option>
 	</field>
-
-	<field
-		name="groupid"
-		type="regroup"
-		label="COM_REDEVENT_GROUP"
-		description="COM_REDEVENT_GROUP"
-		class="inputbox">
-		<option value=""></option>
-	</field>
 		
 	<field
 		name="catdescription"

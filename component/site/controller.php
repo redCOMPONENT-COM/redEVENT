@@ -1,9 +1,9 @@
 <?php
-/** 
- * @copyright Copyright (C) 2008 redCOMPONENT.com. All rights reserved. 
- * @license can be read in this package of software in the file license.txt or 
- * read on http://redcomponent.com/license.txt  
- * Developed by email@recomponent.com - redCOMPONENT.com 
+/**
+ * @copyright Copyright (C) 2008 redCOMPONENT.com. All rights reserved.
+ * @license can be read in this package of software in the file license.txt or
+ * read on http://redcomponent.com/license.txt
+ * Developed by email@recomponent.com - redCOMPONENT.com
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -27,13 +27,13 @@ class RedeventController extends JController
 	function __construct()
 	{
 		parent::__construct();
-		
+
 		//register extratasks
 		$this->registerTask( 'ical', 'vcal' );
 		$this->registerTask( 'managedelreguser', 'delreguser' );
 		$this->registerTask( 'unpublishxref', 'publishxref' );
 		$this->registerTask( 'archivexref', 'publishxref' );
-		
+
 		// prevent issues with view name change in 2.0 beta 6.2
 		if (JRequest::getVar('view') == 'eventlist') {
 			JRequest::setVar('view', 'simplelist');
@@ -42,23 +42,23 @@ class RedeventController extends JController
 
 	/**
 	 * Display the view
-	 * 
+	 *
 	 * @since 0.9
 	 */
-	function display() 
+	function display()
 	{
 		// if filter is set, put the filter values as get variable so that the user can go back without warning
 		if ($this->_checkfilter()) { // a redirect was set in the filter function
 			return;
 		}
-		
+
 		$view = JRequest::getVar('view', '');
-		
+
 		$method = '_display'.ucfirst($view);
 		if (method_exists($this, $method)) {
 			return $this->$method();
 		}
-		
+
 		// default list layout for certain views
 		switch ($view)
 		{
@@ -71,17 +71,17 @@ class RedeventController extends JController
 				}
 				break;
 		}
-		
+
 		parent::display();
 	}
 
 	function _checkfilter()
 	{
 		$app = & JFactory::getApplication();
-				
+
 		$post = JRequest::get('post');
 		$uri  = Jfactory::getUri();
-		
+
 		$myuri = clone($uri); // do not modify it if not proper view...
 		$vars = 0;
 		foreach ($post as $filter => $v)
@@ -107,8 +107,8 @@ class RedeventController extends JController
 					$filt = array();
 					foreach ((array) $v as $n => $val)
 					{
-						if (is_array($val)) 
-						{							
+						if (is_array($val))
+						{
 //							echo '<pre>';print_r($val); echo '</pre>';exit;
 							$r = array();
 							foreach ($val as $sub) {
@@ -123,12 +123,12 @@ class RedeventController extends JController
 					if (count($filt)) {
 //						echo '<pre>';print_r($filt); echo '</pre>';exit;
 						$myuri->setVar($filter, $filt);
-						$vars++;						
+						$vars++;
 					}
 					break;
 			}
 		}
-		
+
 		if ($vars)
 		{
 			switch (JRequest::getVar('view', ''))
@@ -143,10 +143,10 @@ class RedeventController extends JController
 			}
 		}
 	}
-	
+
 	/**
 	 * Logic for canceling an event edit task
-	 * 
+	 *
 	 * @since 0.9
 	 */
 	function cancelevent()
@@ -154,9 +154,9 @@ class RedeventController extends JController
 		$user	= & JFactory::getUser();
 		$id		= JRequest::getInt( 'id');
 		$xref		= JRequest::getInt( 'xref');
-		
+
 		$msg = JText::_('COM_REDEVENT_ACTION_CANCELLED');
-		
+
 		switch (JRequest::getWord('referer'))
 		{
 			case 'myevents':
@@ -167,7 +167,7 @@ class RedeventController extends JController
 					$link = JRoute::_(RedeventHelperRoute::getDetailsRoute($id, $xref), false);
 				}
 				else {
-					$link = JRoute::_(RedeventHelperRoute::getMyeventsRoute(), false);					
+					$link = JRoute::_(RedeventHelperRoute::getMyeventsRoute(), false);
 				}
 		}
 
@@ -194,7 +194,7 @@ class RedeventController extends JController
 
 	/**
 	 * Logic for canceling an event and proceed to add a venue
-	 * 
+	 *
 	 * @since 0.9
 	 */
 	function addvenue()
@@ -267,8 +267,8 @@ class RedeventController extends JController
 		$post = JRequest::get( 'post' );
 		$post['locdescription'] = JRequest::getVar( 'locdescription', '', 'post', 'string', JREQUEST_ALLOWRAW );
 
-    $isNew = ($post['id']) ? false : true;    
-	
+    $isNew = ($post['id']) ? false : true;
+
 		if (!$isNew && !$acl->canEditVenue($post['id'])) {
 			$msg = JText::_('COM_REDEVENT_USER_NOT_ALLOWED_TO_EDIT_THIS_VENUE');
 			$this->setRedirect(JRoute::_(RedeventHelperRoute::getVenueEventsRoute($post['id'])), $msg, 'error' );
@@ -278,9 +278,9 @@ class RedeventController extends JController
 			$msg =  JText::_('COM_REDEVENT_USER_NOT_ALLOWED_TO_ADD_VENUE');
 			$link = JRequest::getString('referer', JURI::base(), 'post');
 			$this->setRedirect($link, $msg, 'error' );
-			return;			
+			return;
 		}
-    
+
 		$file 		= JRequest::getVar( 'userfile', '', 'files', 'array' );
 
 		$model = $this->getModel('editvenue');
@@ -288,11 +288,11 @@ class RedeventController extends JController
 		if ($returnid = $model->store($post, $file)) {
 
 			$msg 	= JText::_('COM_REDEVENT_VENUE_SAVED' );
-				
+
 			JPluginHelper::importPlugin( 'redevent' );
 			$dispatcher =& JDispatcher::getInstance();
 			$res = $dispatcher->trigger( 'onVenueEdited', array( $returnid, $isNew ) );
-          
+
 			$cache = &JFactory::getCache('com_redevent');
 			$cache->clean();
 
@@ -320,29 +320,29 @@ class RedeventController extends JController
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or die( 'Invalid Token' );
-		
+
 		//get image
 		$file 		= JRequest::getVar( 'userfile', '', 'files', 'array' );
 		$post 		= JRequest::get( 'post', 4 );
-				
+
     $isNew = ($post['id']) ? false : true;
-		
+
 		$model = $this->getModel('editevent');
 		$this->addModelPath(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models');
 		$model_wait = $this->getModel('waitinglist');
-		
-		if ($row = $model->store($post, $file)) 
-		{		
+
+		if ($row = $model->store($post, $file))
+		{
       JPluginHelper::importPlugin( 'redevent' );
       $dispatcher =& JDispatcher::getInstance();
-      $res = $dispatcher->trigger( 'onEventEdited', array( $row->id, $isNew ) );   
-      
+      $res = $dispatcher->trigger( 'onEventEdited', array( $row->id, $isNew ) );
+
 			$cache = &JFactory::getCache('com_redevent');
 			$cache->clean();
 			$msg 		= 'saved';
 //			$link = JRequest::getString('referer', RedeventHelperRoute::getMyeventsRoute(), 'post');
-		} 
-		else 
+		}
+		else
 		{
 			$msg 		= $model->getError();
 //			$link = JRequest::getString('referer', RedeventHelperRoute::getMyeventsRoute(), 'post');
@@ -362,7 +362,7 @@ class RedeventController extends JController
 					$link = JRoute::_(RedeventHelperRoute::getDetailsRoute($row->id, ($row->xref ? $row->xref : null) ), false);
 				}
 				else {
-					$link = JRoute::_(RedeventHelperRoute::getMyeventsRoute(), false);					
+					$link = JRoute::_(RedeventHelperRoute::getMyeventsRoute(), false);
 				}
 		}
 		$this->setRedirect($link, $msg );
@@ -379,60 +379,60 @@ class RedeventController extends JController
 		$msg = '';
 		$msgtype = 'message';
 		$task = JRequest::getVar('task');
-	  
+
 		$params  = & $mainframe->getParams('com_redevent');
-	  
+
 		// Check for request forgeries
 		//JRequest::checkToken() or die( 'Invalid Token' );
 
 		$id 	= JRequest::getInt( 'id', 0 );
 		$rid 	= JRequest::getInt( 'rid' );
-		
+
 		$xref   = JRequest::getInt( 'xref', 0 );
-    
+
 		// Get/Create the model
 		$model = $this->getModel('Registration', 'RedeventModel');
 
-		if (!$model->cancelregistration($rid, $xref)) 
+		if (!$model->cancelregistration($rid, $xref))
 		{
 			$msg = $model->getError();
 			$msgtype = 'error';
 		}
-		else 
+		else
 		{
 			/* Check if we have space on the waiting list */
 			$this->addModelPath(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models');
 			$model_wait = $this->getModel('waitinglist');
 			$model_wait->setXrefId($xref);
 			$model_wait->UpdateWaitingList();
-			
+
 	//		JPluginHelper::importPlugin( 'redevent' );
 	//		$dispatcher =& JDispatcher::getInstance();
 	//		$res = $dispatcher->trigger( 'onEventUserUnregistered', array( $xref ) );
-	      
+
 			$cache = JFactory::getCache('com_redevent');
 			$cache->clean();
 
 			if ($task == 'managedelreguser')
 			{
-				$msg = JText::_('COM_REDEVENT_REGISTRATION_REMOVAL_SUCCESSFULL' );			
+				$msg = JText::_('COM_REDEVENT_REGISTRATION_REMOVAL_SUCCESSFULL' );
 			}
 			else
 			{
 				$msg = JText::_('COM_REDEVENT_UNREGISTERED_SUCCESSFULL' );
 			}
-			
+
 			// send unreg notification email
 			$key = redEVENTHelper::getAttendeeSubmitKey($rid);
 			$sid = redEVENTHelper::getAttendeeSid($rid);
 			$model->notifyManagers($key, true, $rid);
 		}
-		
+
 		if ($task == 'managedelreguser')
 		{
 			$this->setRedirect( JRoute::_(RedeventHelperRoute::getManageAttendees($xref, 'manageattendees'), false), $msg, $msgtype );
 		}
-		else 
+		else
 		{
 			if ($params->get('details_attendees_layout', 0)) {
 			  $this->setRedirect( JRoute::_('index.php?option=com_redevent&view=details&id='.$id.'&tpl=attendees&xref=' . $xref, false), $msg, $msgtype );
@@ -445,7 +445,7 @@ class RedeventController extends JController
 
 	/**
 	 * first step in unreg process by email
-	 * 
+	 *
 	 */
 	function cancelreg()
 	{
@@ -454,13 +454,13 @@ class RedeventController extends JController
 			echo JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED');
 			return;
 		}
-		
+
 		// display the unreg form confirmation
 		JRequest::setVar('view', 'registration');
-		JRequest::setVar('layout', 'cancel');		
+		JRequest::setVar('layout', 'cancel');
 		parent::display();
 	}
-	
+
 	/**
 	 * Display the select venue modal popup
 	 *
@@ -476,7 +476,7 @@ class RedeventController extends JController
 
 	/**
 	 * offers the vcal/ical functonality
-	 * 
+	 *
 	 * @todo Not yet working
 	 *
 	 * @author Lybegard Karl-Olof
@@ -527,9 +527,9 @@ class RedeventController extends JController
 		} else {
 			$v->generateHTMLiCal();
 		}
-		
+
 	}
-		 
+
 	 /**
 	 * Initialise the mailer object to start sending mails
 	 */
@@ -543,52 +543,52 @@ class RedeventController extends JController
 		$this->mailer->FromName = $mainframe->getCfg('sitename');
 		$this->mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
 	}
-	
-	
+
+
 	function savexref()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or die( 'Invalid Token' );
-		
+
 		//get image
 		$post 		= JRequest::get('post');
 		$xref 		= JRequest::getInt('id');
-		
+
 		$post['details'] = JRequest::getVar( 'details', '', 'post', 'string', JREQUEST_ALLOWRAW );
-		
+
 		$model = $this->getModel('editevent');
 		$this->addModelPath(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models');
 		$model_wait = $this->getModel('waitinglist');
-		
-		if ($returnid = $model->storeXref($post)) 
+
+		if ($returnid = $model->storeXref($post))
 		{
 			/* Check if people need to be moved on or off the waitinglist */
-			if ($xref) 
+			if ($xref)
 			{
 				$model_wait->setXrefId($xref);
 				$model_wait->UpdateWaitingList();
 			}
-		
+
 			$msg = JText::_('COM_REDEVENT_EVENT_DATE_SAVED');
-			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg);				
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg);
 		}
 		else {
 			$msg = JText::_('COM_REDEVENT_SUBMIT_XREF_ERROR').$model->getError();
-			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');			
-		}		
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');
+		}
 	}
-	
+
 	function publishxref()
 	{
 		$acl = new UserAcl();
 		$xref = JRequest::getInt('xref');
-				
+
 		if (!$acl->canPublishXref($xref)) {
 			$msg = JText::_('COM_REDEVENT_MYEVENTS_CHANGE_PUBLISHED_STATE_NOTE_ALLOWED');
-			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');		
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');
 			return;
 		}
-		
+
 		$model = $this->getModel('editevent');
 		$task = JRequest::getVar('task');
 		switch (JRequest::getVar('task'))
@@ -603,70 +603,70 @@ class RedeventController extends JController
 				$newstate = -1;
 				break;
 		}
-		
+
 		if ($model->publishxref($xref, $newstate)) {
 			$msg = JText::_('COM_REDEVENT_PUBLISHED_STATE_UPDATED');
-			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg);				
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg);
 		}
 		else {
 			$msg = JText::_('COM_REDEVENT_PUBLISHED_STATE_UPDATE_ERROR').'<br>'.$model->getError();
-			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');			
-		}		
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');
+		}
 	}
 
 	function deletexref()
-	{		
+	{
 		$acl = new UserAcl();
 		$xref = JRequest::getInt('xref');
-	
+
 		if (!$acl->canEditXref($xref)) {
 			$msg = JText::_('COM_REDEVENT_MYEVENTS_DELETE_XREF_NOTE_ALLOWED');
-			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');		
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');
 			return;
 		}
-		
+
 		$model = $this->getModel('editevent');
-		
+
 		if ($model->deletexref($xref)) {
 			$msg = JText::_('COM_REDEVENT_EVENT_DATE_DELETED');
-			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg);				
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg);
 		}
 		else {
 			$msg = JText::_('COM_REDEVENT_EVENT_DATE_DELETION_ERROR').'<br>'.$model->getError();
-			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');			
-		}		
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');
+		}
 	}
-	
+
   function insertevent()
   {
 		JRequest::setVar( 'view', 'simplelist' );
 		JRequest::setVar( 'layout', 'editors-xtd'  );
 		JRequest::setVar( 'filter_state', 'P'  );
 
-		parent::display();  	
+		parent::display();
   }
-  
+
 
 
 	/**
 	 * Display the details view
-	 * 
+	 *
 	 * @since 2.0
 	 */
-	function _displayDetails() 
-	{		
+	function _displayDetails()
+	{
 		if (JRequest::getVar('format', 'html') == 'html')
 		{
 			/* Create the view object */
 			$view = $this->getView('details', 'html');
 			$this->addModelPath(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models');
-			
+
 			/* Standard model */
 			$view->setModel( $this->getModel( 'details', 'RedeventModel' ), true );
 			$view->setModel( $this->getModel( 'waitinglist', 'RedeventModel' ));
 			$view->setModel( $this->getModel( 'event', 'RedeventModel' ));
 			$view->setLayout( JRequest::getCmd( 'layout', 'default' ));
-			
+
 			/* Now display the view. */
 			$view->display();
 		}
@@ -674,11 +674,11 @@ class RedeventController extends JController
 			parent::display();
 		}
 	}
-	
+
 	/**
 	 * Load custom models for venue upcoming events view
 	 */
-	function _displayUpcomingvenueevents() 
+	function _displayUpcomingvenueevents()
 	{
 		/* Create the view object */
 		if (JRequest::getVar('format') == 'feed') {
@@ -687,35 +687,35 @@ class RedeventController extends JController
 		else {
 			$view = $this->getView('upcomingvenueevents', 'html');
 		}
-		
+
 		/* Standard model */
 		$view->setModel( $this->getModel( 'upcomingvenueevents', 'RedeventModel' ), true );
 		$view->setModel( $this->getModel( 'venueevents', 'RedeventModel' ));
-		
+
 		/* Now display the view. */
 		$view->display();
 	}
-	
+
 
 
 	/**
 	 * Display the signup view
-	 * 
+	 *
 	 * @since 2.0
 	 */
-	function _displaySignup() 
-	{	  
+	function _displaySignup()
+	{
 		if (JRequest::getVar('format', 'html') == 'html')
 		{
   		/* Create the view object */
   		$view = $this->getView('signup', 'html');
   		$this->addModelPath(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models');
-  		
+
   		/* Standard model */
   		$view->setModel( $this->getModel( 'signup', 'RedeventModel' ), true );
   		$view->setModel( $this->getModel( 'details', 'RedeventModel' ) );
   		$view->setLayout('default');
-  		
+
   		/* Now display the view. */
   		$view->display();
 		}
@@ -724,7 +724,7 @@ class RedeventController extends JController
 		  parent::display();
 		}
 	}
-	
+
 
 	/**
 	 * send reminder emails
@@ -734,7 +734,7 @@ class RedeventController extends JController
 		jimport('joomla.filesystem.file');
 		$app = &JFactory::getApplication();
 		$params = $app->getParams('com_redevent');
-		
+
 		$file = JPATH_COMPONENT_SITE.DS.'reminder.txt';
 		if (JFile::exists($file))
 		{
@@ -744,18 +744,18 @@ class RedeventController extends JController
 		{
 			$date = 0;
 		}
-		
+
 		// only run this once a day
 		echo sprintf("last update on %s<br/>", strftime('%Y-%m-%d %H:%M', $date));
 		if (time() - $date < 3600*23.9 && !JRequest::getVar('force', 0)) {
 			echo "reminder sent less the 24 hours ago<br/>";
 			return;
 		}
-		
+
 		$model = $this->getModel('attendees');
-		
+
 		$events = $model->getReminderEvents($params->get('reminder_days', 14));
-		
+
 		if ($events && count($events))
 		{
 			$mailer   = &JFactory::getMailer();
@@ -763,17 +763,17 @@ class RedeventController extends JController
 			$FromName = $app->getCfg('fromname');
 			$mailer->setSender( array( $MailFrom, $FromName ) );
 			$mailer->IsHTML(true);
-			
+
 			$subject = $params->get('reminder_subject');
 			$body = $params->get('reminder_body');
-									
+
 			foreach ($events as $event)
 			{
-				echo "sending reminder for event: ".$event->full_title."<br>";				
-				
+				echo "sending reminder for event: ".$event->full_title."<br>";
+
 				$tags = new redEVENT_tags();
 				$tags->setXref($event->id);
-								                
+
 				// get attendees
 				$attendees = $model->getAttendeesEmails($event->id, $params->get('reminder_include_waiting', 1));
 				if (!$attendees) {
@@ -783,16 +783,16 @@ class RedeventController extends JController
 				{
 					$msubject = $tags->ReplaceTags($subject, array('sids' => array($sid)));
 					$mbody    = '<html><body>'.$tags->ReplaceTags($body).'</body></html>';
-					
+
 					// convert urls
 					$mbody = REOutput::ImgRelAbs($mbody);
-						
+
 					$mailer->setSubject($msubject);
 					$mailer->setBody($mbody);
-					
+
 					$mailer->clearAllRecipients();
 					$mailer->addRecipient( $a );
-					
+
 					$sent = $mailer->Send();
 				}
 			}
@@ -801,29 +801,29 @@ class RedeventController extends JController
 		{
 			echo 'No events for this reminder interval<br/>';
 		}
-		
+
 		// update file
 		JFile::write($file, time());
 	}
-	
 
-	
+
+
 	/**
 	 * for attachement downloads
-	 * 
+	 *
 	 */
 	function getfile()
 	{
 		$id = JRequest::getInt('file');
 		$user = &JFactory::getUser();
 		$path = REAttach::getAttachmentPath($id, max($user->getAuthorisedViewLevels()));
-				
+
 		$mime = redEVENTHelper::getMimeType($path);
-		
+
 		$doc =& JFactory::getDocument();
 		$doc->setMimeEncoding($mime);
 		header('Content-Disposition: attachment; filename="'.basename($path).'"');
-		if ($fd = fopen ($path, "r")) 
+		if ($fd = fopen ($path, "r"))
 		{
 	    $fsize = filesize($path);
 	    header("Content-length: $fsize");
@@ -861,14 +861,14 @@ class RedeventController extends JController
 		echo 1;
 		$mainframe->close();
 	}
-	
+
 	function debugrel()
 	{
 		$image = JHTML::image('components/com_redevent/assets/images/calendar_edit.png', 'blabla');
 		echo ELoutput::ImgRelAbs($image);
 		exit;
 	}
-	
+
 	function registrationexpiration()
 	{
 		redEVENTHelper::registrationexpiration();

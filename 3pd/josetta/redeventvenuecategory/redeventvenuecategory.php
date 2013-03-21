@@ -107,16 +107,6 @@ class plgJosetta_extRedeventVenueCategory extends JosettaClassesExtensionplugin
 	{
 		switch ($xmlData->fieldType)
 		{
-			case 'regroup':
-				$options = $this->getOptions($field);
-
-				foreach ($options as $option)
-				{
-					$xmlData->subfield .= '<option value="' . (string) $option->value . '">' . (string) $option->text . '</option>';
-				}
-
-				break;
-
 			case 'relanguagevenuecategory':
 				$options = $this->getOptions($field);
 
@@ -149,25 +139,6 @@ class plgJosetta_extRedeventVenueCategory extends JosettaClassesExtensionplugin
 
 		switch ($originalFieldTitle)
 		{
-			case 'groupid':
-
-				if (!$originalItem->groupid)
-				{
-					$displayText = '';
-					break;
-				}
-
-				$db      = JFactory::getDbo();
-				$query = $db->getQuery(true);
-
-				$query->select('name');
-				$query->from('#__redevent_groups');
-				$query->where('id = ' . $originalItem->groupid);
-
-				$db->setQuery($query);
-				$res = $db->loadResult();
-				$displayText = $res;
-				break;
 
 			case 'parent_id':
 				$table = FOFTable::getAnInstance('venuecategory', 'RedeventTable');

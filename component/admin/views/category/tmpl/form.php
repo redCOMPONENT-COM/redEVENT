@@ -94,9 +94,6 @@ Joomla.submitbutton = function(task)
 				<ul class="adminformlist">
 					<li><?php echo $this->form->getLabel('access'); ?>
 					<?php echo $this->form->getInput('access'); ?></li>
-
-					<li><?php echo $this->form->getLabel('private'); ?>
-					<?php echo $this->form->getInput('private'); ?></li>
 				</ul>
 			</fieldset>
 
@@ -107,15 +104,6 @@ Joomla.submitbutton = function(task)
 					<?php echo $this->form->getInput('event_template'); ?></li>
 				</ul>
 			</fieldset>
-
-			<?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_GROUP'), 'group'); ?>
-			<fieldset class="panelform">
-				<ul class="adminformlist">
-					<li><?php echo $this->form->getLabel('groupid'); ?>
-					<?php echo $this->form->getInput('groupid'); ?></li>
-				</ul>
-			</fieldset>
-
 
 			<?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_IMAGE'), 'catimage'); ?>
 			<fieldset class="panelform">

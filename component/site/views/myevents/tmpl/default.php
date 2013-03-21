@@ -41,5 +41,4 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <?php echo $this->loadTemplate('attending'); ?>
 
-<?php echo $this->loadTemplate('groups'); ?>
 </div>

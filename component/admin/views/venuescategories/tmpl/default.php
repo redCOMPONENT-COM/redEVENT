@@ -54,7 +54,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_CATEGORY', 'name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="20%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ALIAS', 'c.alias', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="20%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_PARENT_CATEGORY', 'c.lft', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			<th width="15%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_GROUP', 'gr.name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JText::_('COM_REDEVENT_VENUES' ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JText::_('COM_REDEVENT_PUBLISHED' ); ?></th>
 			<th width="7%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ACCESS', 'c.access', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
@@ -80,7 +79,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			$row = $this->rows[$i];
 
 			$link 		= 'index.php?option=com_redevent&amp;controller=venuescategories&view=venuescategory&amp;task=edit&amp;cid[]='. $row->id;
-			$grouplink 	= 'index.php?option=com_redevent&amp;controller=groups&view=group&amp;task=edit&amp;cid[]='. $row->groupid;
 			$published 	= JHTML::_('grid.published', $row, $i );
 			$checked 	= JHTML::_('grid.checkedout', $row, $i );
    		?>
@@ -115,18 +113,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</td>
 			<td>
 				<?php echo ($row->parent_name) ? htmlspecialchars($row->parent_name, ENT_QUOTES, 'UTF-8') : '-'; ?>
-			</td>
-			<td align="center">
-				<?php if ($row->catgroup) {	?>
-					<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_EDIT_GROUP' );?>::<?php echo $row->catgroup; ?>">
-					<a href="<?php echo $grouplink; ?>">
-						<?php echo htmlspecialchars($row->catgroup, ENT_QUOTES, 'UTF-8'); ?>
-					</a></span>
-				<?php
-				} else {
-					echo '-';
-				}
-				?>
 			</td>
 			<td align="center">
 				<?php echo $row->assignedvenues; ?>

@@ -43,12 +43,12 @@ class RedeventViewMyevents extends JView
     function display($tpl = null)
     {
         $mainframe = &JFactory::getApplication();
-			
+
         $user = & JFactory::getUser();
         if (!$user->get('id')) {
         	$mainframe->redirect('index.php',JText::_('COM_REDEVENT_Only_logged_users_can_access_this_page'), 'error');
         }
-        
+
         //initialize variables
         $document   = & JFactory::getDocument();
         $elsettings = & redEVENTHelper::config();
@@ -66,11 +66,11 @@ class RedeventViewMyevents extends JView
 		      $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
 		    }
 		    else {
-		      $document->addStyleSheet($params->get('custom_css'));     
+		      $document->addStyleSheet($params->get('custom_css'));
 		    }
         $document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
-        
+
 				JHTML::_('behavior.mootools');
 				$js = " window.addEvent('domready', function(){
 			            $$('.deletelink').addEvent('click', function(event){
@@ -85,10 +85,10 @@ class RedeventViewMyevents extends JView
 													}
 													return false;
 	                    	}
-			            });		            
+			            });
 		        }); ";
 				$document->addScriptDeclaration( $js );
-				
+
         // get variables
         $limitstart   = JRequest::getVar('limitstart', 0, '', 'int');
         $limit        = $mainframe->getUserStateFromRequest('com_redevent.myevents.limit', 'limit', $params->def('display_num', 5), 'int');
@@ -100,7 +100,6 @@ class RedeventViewMyevents extends JView
         $events = & $this->get('Events');
         $venues = & $this->get('Venues');
         $attending = & $this->get('Attending');
-        $groups = & $this->get('Groups');
 
         //paginations
         $events_pageNav = & $this->get('EventsPagination');
@@ -139,14 +138,13 @@ class RedeventViewMyevents extends JView
         	$options = array_merge($options, $ev);
         }
         $lists['filter_event'] = JHTML::_('select.genericlist', $options, 'filter_event', 'onchange="document.getElementById(\'adminForm\').submit();"', 'value', 'text', $filter_event);
-        
+
 
         $this->assign('action', JRoute::_(RedeventHelperRoute::getMyeventsRoute()));
 
         $this->assignRef('events', $events);
         $this->assignRef('venues', $venues);
         $this->assignRef('attending', $attending);
-        $this->assignRef('groups', $groups);
         $this->assignRef('task', $task);
         $this->assignRef('print_link', $print_link);
         $this->assignRef('params', $params);
@@ -162,11 +160,11 @@ class RedeventViewMyevents extends JView
         $this->assignRef('canAddXref',  $acl->canAddXref());
         $this->assignRef('canAddEvent', $acl->canAddEvent());
         $this->assignRef('canAddVenue', $acl->canAddVenue());
-        
+
         $cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
         $cols = redEVENTHelper::validateColumns($cols);
         $this->assign('columns',        $cols);
-        
+
         parent::display($tpl);
 
     }
@@ -204,7 +202,7 @@ class RedeventViewMyevents extends JView
 
         return $lists;
     }
-    
+
 	/**
 	 * Creates the xref edit button
 	 *
@@ -229,7 +227,7 @@ class RedeventViewMyevents extends JView
 
 		return $output;
 	}
-    
+
 	/**
 	 * Creates the event edit button
 	 *
@@ -276,7 +274,7 @@ class RedeventViewMyevents extends JView
 
 		return $output;
 	}
-	
+
 	/**
 	 * Creates the attendees edit button
 	 *

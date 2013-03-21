@@ -92,12 +92,6 @@ Joomla.submitbutton = function(task)
 				</ul>
 			</fieldset>
 
-			<?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_GROUP'), 'group'); ?>
-			<fieldset class="panelform">
-				<label for="groups"><?php echo JText::_('COM_REDEVENT_GROUP' ).':'; ?></label>
-				<?php echo $this->lists['groups']; ?>
-			</fieldset>
-
 			<?php echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_IMAGE'), 'vcimage'); ?>
 			<fieldset class="panelform">
 					<?php echo $this->form->getLabel('image'); ?>

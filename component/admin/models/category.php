@@ -48,13 +48,6 @@ class RedEventModelCategory extends FOFModel
 	var $_data = null;
 
 	/**
-	 * Groups data array
-	 *
-	 * @var array
-	 */
-	var $_groups = null;
-
-	/**
 	 * Constructor
 	 *
 	 * @since 0.9
@@ -95,26 +88,6 @@ class RedEventModelCategory extends FOFModel
 		else  $this->_initData();
 
 		return $this->_data;
-	}
-
-	/**
-	 * Method to get the group data
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	0.9
-	 */
-	function &getGroups()
-	{
-		$query = 'SELECT id AS value, name AS text'
-			. ' FROM #__redevent_groups'
-			. ' ORDER BY name'
-			;
-		$this->_db->setQuery( $query );
-
-		$this->_groups = $this->_db->loadObjectList();
-
-		return $this->_groups;
 	}
 
 	/**
@@ -162,7 +135,6 @@ class RedEventModelCategory extends FOFModel
 			$category = new stdClass();
 			$category->id					= 0;
 			$category->parent_id			= 0;
-			$category->groupid				= 0;
 			$category->catname				= null;
 			$category->alias				= null;
 			$category->catdescription		= null;
@@ -174,7 +146,6 @@ class RedEventModelCategory extends FOFModel
 			$category->access				= 0;
 			$category->event_template = 0;
 			$category->event_template_name = '';
-			$category->private			= 0;
 			$category->attachments	= array();
 			$this->_data					= $category;
 			return (boolean) $this->_data;
@@ -194,9 +165,9 @@ class RedEventModelCategory extends FOFModel
 		// triggers for smart search
 		$dispatcher	= JDispatcher::getInstance();
 		JPluginHelper::importPlugin('finder');
-		
+
 		$row  =& $this->getTable();
-		
+
 		// bind it to the table
 		if (!$row->bind($data)) {
 			RedeventError::raiseError(500, $this->_db->getErrorMsg() );
@@ -214,22 +185,22 @@ class RedEventModelCategory extends FOFModel
 			$this->setError($row->getError());
 			return false;
 		}
-		
+
 		// Trigger the onFinderBeforeSave event.
 		$results = $dispatcher->trigger('onFinderBeforeSave', array($this->option . '.' . $this->name, $row, $isNew));
-		
+
 		// Store it in the db
 		if (!$row->store()) {
 			RedeventError::raiseError(500, $this->_db->getErrorMsg() );
 			return false;
 		}
-	
+
 		// attachments
 		REAttach::store('category'.$row->id);
-		
+
 		// Trigger the onFinderAfterSave event.
 		$results = $dispatcher->trigger('onFinderAfterSave', array($this->option . '.' . $this->name, $row, $isNew));
-		
+
 		return $row->id;
 	}
 
@@ -258,11 +229,11 @@ class RedEventModelCategory extends FOFModel
 
 		return true;
 	}
-	
+
 	/**
 	 * Get a list of all categories and put them in a select list
 	 */
-	public function getCategories() 
+	public function getCategories()
 	{
 		$db = JFactory::getDBO();
 		/* 1. Get all categories */
@@ -275,7 +246,7 @@ class RedEventModelCategory extends FOFModel
 		}
 		$db->setQuery($q);
 		$rawcats = $db->loadObjectList();
-		
+
 		/* 2. Group categories based on their parent_id */
 		$categories = array();
 		foreach ($rawcats as $key => $rawcat) {
@@ -292,21 +263,21 @@ class RedEventModelCategory extends FOFModel
 				$html .= '<option value="'.$category['cid'].'"';
 				if ($this->_data->parent_id == $category['cid']) $html .= 'selected="selected"';
 				$html .= '>'.$category['catname'].'</option>';
-				
+
 				/* Write the subcategories */
 				$this->buildCategory($categories, $category['cid'], array());
 				$html .= $this->html;
 			}
 		}
 		$html .= '</select>';
-		
+
 		return $html;
 	}
-	
+
 	/**
 	 * Create the subcategory layout
 	 */
-	private function buildCategory($cattree, $catfilter, $subcats, $loop=1) 
+	private function buildCategory($cattree, $catfilter, $subcats, $loop=1)
 	{
 		if (isset($cattree[$catfilter])) {
 			foreach ($cattree[$catfilter] as $subcatid => $category) {
@@ -317,8 +288,8 @@ class RedEventModelCategory extends FOFModel
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Returns a Table object, always creating it
 	 *

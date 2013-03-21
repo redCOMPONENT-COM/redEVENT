@@ -27,63 +27,63 @@ defined('_JEXEC') or die('Restricted access');
  * attendee class - helper for managing attendees
  */
 class REattendee extends JObject {
-	
+
 	protected $_username;
-	
+
 	protected $_fullname;
-	
+
 	protected $_email;
-	
+
 	protected $_id;
-	
+
 	protected $_db;
-	
+
 	/**
-	 * data from db 
+	 * data from db
 	 * @var object
 	 */
 	protected $_data;
-	
+
 	/**
 	 * redform answers
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $_answers;
-	
+
 	/**
 	 * events data, caching for when several attendees are called
 	 * @var array
 	 */
 	static protected $sessions = array();
-	
+
 	/**
 	 * array of 'attending' registrations for events sessions data
 	 * @var array
 	 */
 	static protected $attending = array();
-	
+
 	public function __construct($id = null)
 	{
 		if ($id) {
 			$this->setId($id);
 		}
-		
+
 		$this->_db = Jfactory::getDbo();
 	}
-	
+
 	public function setUsername($name)
 	{
 		$this->_username = $name;
 	}
-	
+
   public function getUsername()
   {
-  	if (!$this->_username) 
+  	if (!$this->_username)
   	{
   		$answers = $this->getAnswers();
-  		
-  		foreach ($answers as $a) 
+
+  		foreach ($answers as $a)
   		{
   			if ($a->fieldtype == 'username' && $a->answer) {
   				$this->_username = $a->answer;
@@ -98,14 +98,14 @@ class REattendee extends JObject {
   	}
     return $this->_username;
   }
-	
+
 	public function setFullname($name)
 	{
-  	if (!$this->_fullname) 
+  	if (!$this->_fullname)
   	{
   		$answers = $this->getAnswers();
-  		
-  		foreach ($answers as $a) 
+
+  		foreach ($answers as $a)
   		{
   			if ($a->fieldtype == 'fullname' && $a->answer) {
   				$this->_fullname = $a->answer;
@@ -118,26 +118,26 @@ class REattendee extends JObject {
   			return $this->_fullname;
 			}
   	}
-    $this->_fullname = $name;		
+    $this->_fullname = $name;
 	}
-	
+
   public function getFullname()
   {
-    return $this->_fullname; 
+    return $this->_fullname;
   }
-	
+
 	public function setEmail($email)
 	{
-    $this->_email= $email;		
+    $this->_email= $email;
 	}
-  
+
   public function getEmail()
   {
-  	if (!$this->_email) 
+  	if (!$this->_email)
   	{
   		$answers = $this->getAnswers();
-  		
-  		foreach ($answers as $a) 
+
+  		foreach ($answers as $a)
   		{
   			if ($a->fieldtype == 'email' && JMailHelper::isEmailAddress($a->answer)) {
   				$this->_email = $a->answer;
@@ -150,19 +150,19 @@ class REattendee extends JObject {
   			return $this->_email;
 			}
   	}
-    return $this->_email; 
+    return $this->_email;
   }
 
   public function setId($id)
   {
-    $this->_id = (int) $id; 
+    $this->_id = (int) $id;
   }
-  
+
   public function getId()
   {
-    return $this->_id; 
+    return $this->_id;
   }
-  
+
 	/**
 	 * loads data from the db
 	 *
@@ -181,7 +181,7 @@ class REattendee extends JObject {
 		}
 		return $this->_data;
 	}
-  
+
 	/**
 	 * confirms attendee registration
 	 *
@@ -201,7 +201,7 @@ class REattendee extends JObject {
 			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_FAILED_CONFIRM_REGISTRATION'));
 			return false;
 		}
-		
+
 		// now, handle waiting list
 		$session = $this->getSessionDetails();
 		if ($session->maxattendees == 0) { // no waiting list
@@ -210,44 +210,44 @@ class REattendee extends JObject {
 			$this->sendWLAdminNotification(0);
 			return true;
 		}
-		
+
 		$attendees = $this->getAttending();
-		if (count($attendees) > $session->maxattendees) 
+		if (count($attendees) > $session->maxattendees)
 		{
 			// put this attendee on WL
 			$this->toggleWaitingListStatus(1);
 		}
-		else 
+		else
 		{
 			$this->addToAttending();
-			
+
 			// send attending email
 			$this->sendWaitinglistStatusEmail(0);
 			$this->sendWLAdminNotification(0);
 		}
 		return true;
 	}
-  
+
   /**
    * toggles waiting list status
-   * 
+   *
    * @param int $waiting 0 for attending, 1 for waiting
    * @return true on success
    */
 	public function toggleWaitingListStatus($waiting = null)
 	{
 		$data = $this->load();
-  	
+
 		if (is_null($waiting)) {
 	  	$waiting = $data->waitinglist ? 0 : 1;
 		}
-	  	
-		$query = ' UPDATE #__redevent_register AS r ' 
-		       . ' SET r.waitinglist = '.$waiting 
+
+		$query = ' UPDATE #__redevent_register AS r '
+		       . ' SET r.waitinglist = '.$waiting
 		       . '   , r.paymentstart = NOW() '
 		       . ' WHERE id = ' . $this->_db->Quote($this->_id);
 		$this->_db->setQuery($query);
-		 
+
 		if (!$this->_db->query()) {
 			$this->setError(JText::_('COM_REDEVENT_FAILED_UPDATING_WAITINGLIST_STATUS'));
 			return false;
@@ -259,11 +259,11 @@ class REattendee extends JObject {
 		}
 		catch (Exception $e) {
 			$this->setError($e->getMessage());
-			return false;			
+			return false;
 		}
 		return true;
 	}
-		
+
 	/**
 	 * send waiting list status emails
 	 *
@@ -295,25 +295,25 @@ class REattendee extends JObject {
 				$subject = $session->notify_subject;
 				$body    = $session->notify_body;
 			}
-			else 
+			else
 			{
 				$subject = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_OFF_SUBJECT');
-				$body    = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_OFF_BODY');		
+				$body    = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_OFF_BODY');
 			}
 			$body    = $this->taghelper->ReplaceTags($body);
 			$subject = $this->taghelper->ReplaceTags($subject);
 		}
-		else 
+		else
 		{
 			if ($session->notify_on_list_body)
 			{
 				$subject = $session->notify_on_list_subject;
 				$body    = $session->notify_on_list_body;
 			}
-			else 
+			else
 			{
 				$subject = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_ON_SUBJECT');
-				$body    = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_ON_BODY');		
+				$body    = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_ON_BODY');
 			}
 			$body    = $this->taghelper->ReplaceTags($body);
 			$subject = $this->taghelper->ReplaceTags($subject);
@@ -353,12 +353,12 @@ class REattendee extends JObject {
 
 		return true;
 	}
-	
+
 	/**
 	 * send waiting list status change notification to event admins
-	 * 
+	 *
 	 * @param int $waiting 0 for attending, 1 for waiting
-	 * @return boolean true on success 
+	 * @return boolean true on success
 	 */
 	public function sendWLAdminNotification($waiting = 0)
 	{
@@ -372,7 +372,7 @@ class REattendee extends JObject {
 		else if ($params->get('wl_notify_admin', 0) == 2 && $waiting == 0) { // only for people being added to waiting list
 			return true;
 		}
-		
+
 		$app    = &JFactory::getApplication();
 		$tags   = new redEVENT_tags();
 		$tags->setXref($this->getXref());
@@ -380,25 +380,25 @@ class REattendee extends JObject {
 		$event = $this->getSessionDetails();
 		// recipients
 		$recipients = $this->getAdminEmails();
-		
+
 		if (!count($recipients)) {
 			return true;
 		}
-		
+
 		$mailer = & JFactory::getMailer();
 		$sender = array($app->getCfg('mailfrom'), $app->getCfg('sitename'));
 		$mailer->setSender($sender);
 		$mailer->addReplyTo($sender);
-		
+
 		foreach ($recipients as $r)
 		{
 			$mailer->addAddress($r['email'], $r['name']);
 		}
-		
+
 		$subject = $tags->ReplaceTags($waiting ? $params->get('wl_notify_admin_waiting_subject') : $params->get('wl_notify_admin_attending_subject'));
 		$body    = $tags->ReplaceTags($waiting ? $params->get('wl_notify_admin_waiting_body') : $params->get('wl_notify_admin_attending_body'));
 		$body    = REOutput::ImgRelAbs($body);
-		
+
 		$mailer->setSubject($subject);
 		$mailer->MsgHTML($body);
 		if (!$mailer->send())
@@ -409,17 +409,17 @@ class REattendee extends JObject {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * return email for the registration admins
-	 * 
+	 *
 	 * @return array
 	 */
 	protected function getAdminEmails()
 	{
 		$params = JComponentHelper::getParams('com_redevent');
   	$event  = $this->getSessionDetails();
-		
+
 		$recipients = array();
 		// default recipients
 		$default = $params->get('registration_default_recipients');
@@ -439,7 +439,7 @@ class REattendee extends JObject {
 				}
 			}
 		}
-			
+
 		// creator
 		if ($params->get('registration_notify_creator', 1)) {
 			if (JMailHelper::isEmailAddress($event->creator_email)) {
@@ -466,16 +466,16 @@ class REattendee extends JObject {
 		}
 		return $recipients;
 	}
-	
+
 	/**
 	 * return selected redform recipients emails if any
-	 * 
+	 *
 	 * @return string
 	 */
 	protected function getRFRecipients()
 	{
 		$answers = $this->getAnswers();
-		
+
 		$emails = array();
 		foreach ($answers as $f)
 		{
@@ -486,11 +486,11 @@ class REattendee extends JObject {
 			}
 		}
 		return count($emails) ? $emails : false;
-	}	
-	
+	}
+
 	/**
 	 * get redform answers for this attendee
-	 * 
+	 *
 	 * return array
 	 */
 	protected function getAnswers()
@@ -502,7 +502,7 @@ class REattendee extends JObject {
 		}
 		return $this->_answers;
 	}
-	
+
 	/**
 	 * returns attendee event session info
 	 * @return object
@@ -538,17 +538,17 @@ class REattendee extends JObject {
 		}
 		return self::$sessions[$xref];
 	}
-	
+
 	/**
 	 * return attendee event session xref
-	 * 
+	 *
 	 * @return int
 	 */
 	public function getXref()
 	{
 		return $this->load()->xref;
 	}
-	
+
 	/**
 	 * return redform submitted files path if any
 	 *
@@ -575,7 +575,7 @@ class REattendee extends JObject {
 		}
 		return $files;
 	}
-	
+
 	/**
 	 * returns array of ids of currently attending (confirmed, not on wl, not cancelled) register_id
 	 *
@@ -597,46 +597,52 @@ class REattendee extends JObject {
 		}
 		return self::$attending[$this->getXref()];
 	}
-	
+
 	/**
-	 * add id to the list of attending attendees 
-	 * 
+	 * add id to the list of attending attendees
+	 *
 	 */
 	protected function addToAttending()
 	{
 		self::$attending[$this->getXref()][] = $this->_id;
 	}
-	
+
 	/**
 	 * returns registration recipients from groups acl
-	 * 
+	 *
 	 * @return array
 	 */
 	protected function getXrefRegistrationRecipients()
 	{
 		$event = $this->getSessionDetails();
+		$usersIds = UserAcl::getXrefRegistrationRecipients($event->xref);
 
-		$query = ' SELECT u.name, u.email '
-		. ' FROM #__redevent_event_venue_xref AS x '
-		. ' INNER JOIN #__redevent_groups AS g ON x.groupid = g.id '
-		. ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
-		. ' INNER JOIN #__users AS u ON gm.member = u.id '
-		. ' WHERE x.id = '. $this->_db->Quote($event->xref)
-		. '   AND gm.receive_registrations = 1 '
-		;
-		$this->_db->setQuery($query);
-		$xref_group_recipients = $this->_db->loadObjectList();
+		if (!$usersIds)
+		{
+			return false;
+		}
+
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('u.name, u.email');
+		$query->from('#__users AS u');
+		$query->where('u.id IN (' . implode(",", $usersIds) . ')');
+
+		$db->setQuery($query);
+		$xref_group_recipients = $db->loadObjectList();
+
 		return $xref_group_recipients;
 	}
-	
+
 	/**
 	* Send e-mail confirmations
 	*/
 	public function sendNotificationEmail()
 	{
-		$mainframe = JFactory::getApplication();		
+		$mainframe = JFactory::getApplication();
 		$eventsettings = $this->getSessionDetails();
-			
+
 		/**
 		 * Send a submission mail to the attendee and/or contact person
 		 * This will only work if the contact person has an e-mail address
@@ -649,14 +655,14 @@ class REattendee extends JObject {
 			$mailer->From = $mainframe->getCfg('mailfrom');
 			$mailer->FromName = $mainframe->getCfg('sitename');
 			$mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
-	
+
 			$tags = new redEVENT_tags();
 			$tags->setXref($this->getXref());
 			$tags->addOptions(array('sids' => array($this->load()->sid)));
-			
+
 			$rfcore = new RedFormCore();
 			$emails = $rfcore->getSidContactEmails($this->load()->sid);
-					
+
 			/* build activation link */
 			// TODO: use the route helper !
 			$url = JRoute::_( JURI::root().'index.php?option=com_redevent&controller=registration&task=activate'
@@ -668,30 +674,30 @@ class REattendee extends JObject {
 			$activatelink = '<a href="'.$url.'">'.JText::_('COM_REDEVENT_Activate').'</a>';
 			$cancellink = JRoute::_(JURI::root().'index.php?option=com_redevent&task=cancelreg'
 			.'&rid='.$this->_data->id.'&xref='.$this->_data->xref.'&submit_key='.$this->_data->submit_key);
-				
+
 			/* Mail attendee */
 			$htmlmsg = '<html><head><title></title></title></head><body>';
 			$htmlmsg .= $eventsettings->notify_body;
 			$htmlmsg .= '</body></html>';
-				
+
 			$htmlmsg = $tags->ReplaceTags($htmlmsg);
 			$htmlmsg = str_replace('[activatelink]', $activatelink, $htmlmsg);
 			$htmlmsg = str_replace('[cancellink]', $cancellink, $htmlmsg);
 			$htmlmsg = str_replace('[fullname]', $this->getFullname(), $htmlmsg);
-				
+
 			// convert urls
 			$htmlmsg = REOutput::ImgRelAbs($htmlmsg);
-				
+
 			$mailer->setBody($htmlmsg);
 			$subject = $tags->ReplaceTags($eventsettings->notify_subject);
-			$mailer->setSubject($subject);			
-				
+			$mailer->setSubject($subject);
+
 			foreach ($emails as $email)
 			{
 				/* Add the email address */
 				$mailer->AddAddress($email['email'], $email['fullname']);
 			}
-			
+
 			/* send */
 			if (!$mailer->Send()) {
 				RedeventHelperLog::simpleLog('Error sending notify message to submitted attendants');
@@ -700,7 +706,7 @@ class REattendee extends JObject {
 		}
 		return true;
 	}
-	
+
 	function notifyManagers($unreg = false)
 	{
 		jimport('joomla.mail.helper');
@@ -710,14 +716,14 @@ class REattendee extends JObject {
 		$tags->setXref($this->getXref());
 		$tags->setSubmitkey($this->load()->submit_key);
 		$tags->addOptions(array('sids' => array($this->load()->sid)));
-		 
+
 		$event = $this->getSessionDetails();
-		 
-		$recipients = $this->getAdminEmails();		 
+
+		$recipients = $this->getAdminEmails();
 		if (!count($recipients)) {
 			return true;
 		}
-		 
+
 		$mailer = & JFactory::getMailer();
 		if ($this->getEmail() && $params->get('allow_email_aliasing', 1)) {
 			$sender = array($this->getEmail(), $this->getFullname());
@@ -727,12 +733,12 @@ class REattendee extends JObject {
 		}
 		$mailer->setSender($sender);
 		$mailer->addReplyTo($sender);
-	
+
 		foreach ($recipients as $r)
 		{
 			$mailer->addAddress($r['email'], $r['name']);
 		}
-		 
+
 		$mail = '<HTML><HEAD>
 			<STYLE TYPE="text/css">
 			<!--
@@ -741,20 +747,20 @@ class REattendee extends JObject {
 				    border-color: darkgrey;
 				    border-style: solid;
 				    text-align:left;
-				}			
+				}
 				table.formanswers
 				{
 				    border-width: 0 0 1px 1px;
 				    border-spacing: 0;
 				    border-collapse: collapse;
 				    padding: 5px;
-				}			
+				}
 				table.formanswers td, table.formanswers th
 				{
 				    margin: 0;
 				    padding: 4px;
 				    border-width: 1px 1px 0 0;
-				}		  
+				}
 			-->
 			</STYLE>
 			</head>
@@ -762,10 +768,10 @@ class REattendee extends JObject {
 			'.$tags->ReplaceTags($unreg ? $params->get('unregistration_notification_body') : $params->get('registration_notification_body')).'
 			</body>
 			</html>';
-		 
+
 		// convert urls
 		$mail = REOutput::ImgRelAbs($mail);
-	
+
 		if (!$unreg && $params->get('registration_notification_attach_rfuploads', 1))
 		{
 			// files submitted through redform
@@ -775,7 +781,7 @@ class REattendee extends JObject {
 			{
 				$filessize += filesize($f);
 			}
-				
+
 			if ($filessize < $params->get('registration_notification_attach_rfuploads_maxsize', 1500) * 1000)
 			{
 				foreach ($files as $f) {
@@ -783,7 +789,7 @@ class REattendee extends JObject {
 				}
 			}
 		}
-	
+
 		$mailer->setSubject($tags->ReplaceTags($unreg ? $params->get('unregistration_notification_subject') : $params->get('registration_notification_subject')));
 		$mailer->MsgHTML($mail);
 		if (!$mailer->send())
@@ -794,5 +800,5 @@ class REattendee extends JObject {
 		}
 		return true;
 	}
-		
+
 }

@@ -69,7 +69,6 @@ class RedEventViewVenuesCategory extends JView {
 		$model   = $this->getModel();
 		$row     = $this->get( 'Data' );
 		$form    = $this->get( 'Form' );
-		$groups  = $this->get( 'Groups' );
 
 		// fail if checked out not by 'me'
 		if ($row->id) {
@@ -81,19 +80,12 @@ class RedEventViewVenuesCategory extends JView {
 
 		//clean data
 		JFilterOutput::objectHTMLSafe( $row, ENT_QUOTES, 'description' );
-		
+
 		/* Initiate the Lists array */
 		$lists = array();
-			
+
 		//build selectlists		//build selectlists
 		$lists['access'] 			= JHTML::_('list.accesslevel', $row );
-
-		//build grouplist
-		$grouplist		= array();
-		$grouplist[] 	= JHTML::_('select.option', '0', JText::_('COM_REDEVENT_NO_GROUP' ) );
-		$grouplist 		= array_merge( $grouplist, $groups );
-
-		$lists['groups']	= JHTML::_('select.genericlist', $grouplist, 'groupid', 'size="1" class="inputbox"', 'value', 'text', $row->groupid );
 
 		//assign data to template
 		$this->assignRef('lists'      	, $lists);

@@ -139,18 +139,6 @@
 	    </field>
 
 		<field>
-			<id>groupid</id>
-			<name>COM_REDEVENT_GROUP</name>
-			<column>group_title</column>
-			<description>COM_REDEVENT_GROUP</description>
-			<translate>yes</translate>
-			<type>regroup</type>
-			<addfieldpath>/administrator/components/com_redevent/models/fields</addfieldpath>
-			<display>yes</display>
-			<option value=""></option>
-		</field>	
-
-		<field>
 			<id>event_template</id>
 			<name>COM_REDEVENT_Category_Event_template</name>
 			<column>event_template</column>

@@ -80,7 +80,6 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues` (
 `meta_description` text NOT NULL,
 `locimage` varchar(100) NOT NULL default '',
 `map` tinyint(4) NOT NULL default '0',
-`private` tinyint(1) NOT NULL default '0',
 `author_ip` varchar(15) NOT NULL default '',
 `created` datetime NOT NULL,
 `created_by` int(11) unsigned NOT NULL default '0',
@@ -104,12 +103,10 @@ CREATE TABLE IF NOT EXISTS `#__redevent_categories` (
 `meta_description` text NOT NULL,
 `color` varchar(100) NOT NULL default '',
 `image` varchar(100) NOT NULL default '',
-`private` tinyint(1) NOT NULL default '0',
 `published` tinyint(1) NOT NULL default '0',
 `checked_out` int(11) NOT NULL default '0',
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
 `access` int(11) unsigned NOT NULL default '0',
-`groupid` int(11) NOT NULL default '0',
 `ordering` int(11) NOT NULL default '0',
 `lft` int(11) NOT NULL default '0',
 `rgt` int(11) NOT NULL default '0',
@@ -209,7 +206,6 @@ CREATE TABLE IF NOT EXISTS `#__redevent_event_venue_xref` (
   `alias` varchar(255) default NULL,
   `eventid` int(11) unsigned NOT NULL,
   `venueid` int(11) unsigned NOT NULL,
-  `groupid` int(11) unsigned NOT NULL default '0',
   `dates` date NULL default NULL,
   `enddates` date NULL default NULL,
   `times` time NULL default NULL,
@@ -228,8 +224,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_event_venue_xref` (
   `featured` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `eventid` (`eventid`),
-  KEY `venueid` (`venueid`),
-  KEY `groupid` (`groupid`)
+  KEY `venueid` (`venueid`)
 ) COMMENT='Event Venue Cross reference' DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_event_category_xref` (
@@ -260,12 +255,10 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues_categories` (
   `meta_keywords` text NOT NULL,
   `meta_description` text NOT NULL,
   `image` varchar(100) NOT NULL default '',
-  `private` tinyint(1) NOT NULL default '0',
   `published` tinyint(1) NOT NULL default '0',
   `checked_out` int(11) NOT NULL default '0',
   `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
   `access` int(11) unsigned NOT NULL default '0',
-  `groupid` int(11) NOT NULL default '0',
   `ordering` int(11) NOT NULL default '0',
   `lft` int(11) NOT NULL default '0',
   `rgt` int(11) NOT NULL default '0',

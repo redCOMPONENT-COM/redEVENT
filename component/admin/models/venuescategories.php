@@ -81,23 +81,23 @@ class RedeventModelVenuescategories extends JModel
 		// In case limit has been changed, adjust it
 		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
 		$this->setState('limitstart', $limitstart);
-		
+
 		$filter_state = $mainframe->getUserStateFromRequest( $option.'.filter_state', 'filter_state', '', 'word' );
 		$this->setState('filter_state', $filter_state);
-		
+
 		$filter       = $mainframe->getUserStateFromRequest( $option.'.filter', 'filter', '', 'int' );
 		$this->setState('filter', $filter);
-		
+
 		$search       = $mainframe->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
 		$search       = $this->_db->getEscaped( trim(JString::strtolower( $search ) ) );
 		$this->setState('search', $search);
-		
+
 		$filter_language = $mainframe->getUserStateFromRequest( $option.'.filter_language', 'filter_language', '', 'string' );
 		$this->setState('filter_language', $filter_language);
-		
+
 		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.venuescategories.filter_order', 'filter_order', 'c.ordering', 'cmd' );
 		$this->setState('filter_order', $filter_order);
-		
+
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.venuescategories.filter_order_Dir', 'filter_order_Dir', '', 'word' );
 		$this->setState('filter_order_Dir', $filter_order_Dir);
 
@@ -131,7 +131,7 @@ class RedeventModelVenuescategories extends JModel
 		{
 			$query = $this->_buildQuery();
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-			
+
 			$k = 0;
 			$count = count($this->_data);
 			for($i = 0; $i < $count; $i++)
@@ -191,16 +191,15 @@ class RedeventModelVenuescategories extends JModel
 	 * @since 0.9
 	 */
 	function _buildQuery()
-	{		
+	{
 		$db = &JFactory::getDbo();
 		$query = $db->getQuery(true);
-		
-		$query->select('c.*, (COUNT(parent.name) - 1) AS depth, c.access, c.groupid, u.name AS editor');
-		$query->select('gr.name AS catgroup, p.name as parent_name, g.title AS groupname');
+
+		$query->select('c.*, (COUNT(parent.name) - 1) AS depth, c.access, u.name AS editor');
+		$query->select('p.name as parent_name, g.title AS groupname');
 		$query->from('#__redevent_venues_categories AS parent, #__redevent_venues_categories AS c');
 		$query->join('LEFT', '#__redevent_venues_categories AS p ON p.id = c.parent_id');
 		$query->join('LEFT', '#__users AS u ON u.id = c.checked_out');
-		$query->join('LEFT', '#__redevent_groups AS gr ON gr.id = c.groupid');
 		$query->join('LEFT', '#__usergroups AS g ON g.id = c.access');
 		$query->where('c.lft BETWEEN parent.lft AND parent.rgt');
 		$query->group('c.id');
@@ -208,11 +207,11 @@ class RedeventModelVenuescategories extends JModel
 		// Join over the asset groups.
 		$query->select('ag.title AS access_level');
 		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = c.access');
-		
+
 		// Join over the language
 		$query->select('lg.title AS language_title');
 		$query->join('LEFT', $db->quoteName('#__languages').' AS lg ON lg.lang_code = c.language');
-		
+
 		// Get the WHERE and ORDER BY clauses for the query
 		$query = $this->_buildContentWhere($query);
 		$query = $this->_buildContentOrderBy($query);
@@ -231,7 +230,7 @@ class RedeventModelVenuescategories extends JModel
 	{
 		$filter_order		= $this->getState('filter_order');
 		$filter_order_Dir	= $this->getState('filter_order_Dir');
-		
+
 		$query->order($filter_order.' '.$filter_order_Dir.', c.ordering');
 
 		return $query;
@@ -296,11 +295,11 @@ class RedeventModelVenuescategories extends JModel
 				$this->setError($this->_db->getErrorMsg());
 				return false;
 			}
-			
+
 			// for finder plugins
 			$dispatcher	= JDispatcher::getInstance();
 			JPluginHelper::importPlugin('finder');
-			
+
 			// Trigger the onFinderCategoryChangeState event.
 			$dispatcher->trigger('onFinderCategoryChangeState', array('com_redevent.venue_category', $cids, $publish));
 		}
@@ -359,7 +358,7 @@ class RedeventModelVenuescategories extends JModel
 
 		return true;
 	}
-	
+
 	/**
 	 * Method to count the nr of venues events to the category
 	 *
@@ -376,13 +375,13 @@ class RedeventModelVenuescategories extends JModel
         .' INNER JOIN #__redevent_venues AS v ON v.id = xv.venue_id '
 				.' WHERE c.id = ' . (int)$id
 				;
-					
+
 		$this->_db->setQuery($query);
 		$number = $this->_db->loadResult();
-    	
+
     return $number;
 	}
-	
+
 
 	/**
 	 * Method to remove a venues category
@@ -430,7 +429,7 @@ class RedeventModelVenuescategories extends JModel
 				$this->setError($this->_db->getErrorMsg());
 				return false;
 			}
-			
+
 			$table = JTable::getInstance('redevent_venues_categories', '');
 			$table->rebuildTree();
 		}

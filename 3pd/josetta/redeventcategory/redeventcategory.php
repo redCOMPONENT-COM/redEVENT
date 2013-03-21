@@ -107,16 +107,6 @@ class plgJosetta_extRedeventcategory extends JosettaClassesExtensionplugin
 	{
 		switch ($xmlData->fieldType)
 		{
-			case 'regroup':
-				$options = $this->getOptions($field);
-
-				foreach ($options as $option)
-				{
-					$xmlData->subfield .= '<option value="' . (string) $option->value . '">' . (string) $option->text . '</option>';
-				}
-
-				break;
-
 			case 'relanguagecategory':
 				$options = $this->getOptions($field);
 
@@ -132,45 +122,6 @@ class plgJosetta_extRedeventcategory extends JosettaClassesExtensionplugin
 		}
 
 		return $xmlData;
-	}
-
-	/**
-	 * Format a the original field value for display on the translate view
-	 *
-	 * @param   object  $originalItem        the actual data of the original item
-	 * @param   string  $originalFieldTitle  the field title
-	 * @param   object  $field               the Joomla! field object
-	 *
-	 * @return   string the formatted, ready to display, string
-	 */
-	public function onJosettaGet3rdPartyFormatOriginalField($originalItem, $originalFieldTitle, $field)
-	{
-		$displayText = null;
-
-		switch ($originalFieldTitle)
-		{
-			case 'groupid':
-
-				if (!$originalItem->groupid)
-				{
-					$displayText = '';
-					break;
-				}
-
-				$db      = JFactory::getDbo();
-				$query = $db->getQuery(true);
-
-				$query->select('name');
-				$query->from('#__redevent_groups');
-				$query->where('id = ' . $originalItem->groupid);
-
-				$db->setQuery($query);
-				$res = $db->loadResult();
-				$displayText = $res;
-				break;
-		}
-
-		return $displayText;
 	}
 
 	/**

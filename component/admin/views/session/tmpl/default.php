@@ -37,7 +37,7 @@ window.addEvent('domready', function() {
         });
 
         $('times').addEvent('change', function(){
-					if ($('dates').value !== "" && $('dates').value !== "0000-00-00" && $('dates').value !== $('enddates').value) {						
+					if ($('dates').value !== "" && $('dates').value !== "0000-00-00" && $('dates').value !== $('enddates').value) {
 						 $('endtimes').value = this.value;
 					}
         });
@@ -53,7 +53,7 @@ function submitbutton(pressbutton) {
         if (document.formvalidator.isValid(form)) {
                 //f.check.value='<?php echo JUtility::getToken(); ?>';//send token
 						submitform( pressbutton );
-                return true; 
+                return true;
         }
         else {
                 alert('Some values are not acceptable.  Please retry.');
@@ -85,19 +85,11 @@ function updateend(cal)
     </td>
   </tr>
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_GROUP_TIP'); ?>">
-      <label for="groupid"><?php echo JText::_('COM_REDEVENT_Group') .': '; ?></label>
-    </td>
-    <td>
-      <?php echo $this->lists['group']; ?>
-    </td>
-  </tr>
-  <tr>
     <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_SESSION_TITLE_TIP'); ?>">
       <label for="title"><?php echo JText::_( 'COM_REDEVENT_SESSION_TITLE_LABEL' ) .': '; ?></label>
     </td>
     <td>
-      <input type="text" size="20" maxlength="255" name="title" id="title" value="<?php echo $this->xref->title; ?>" /> 
+      <input type="text" size="20" maxlength="255" name="title" id="title" value="<?php echo $this->xref->title; ?>" />
     </td>
   </tr>
   <tr>
@@ -105,7 +97,7 @@ function updateend(cal)
       <label for="alias"><?php echo JText::_( 'COM_REDEVENT_SESSION_ALIAS_LABEL' ) .': '; ?></label>
     </td>
     <td>
-      <input type="text" size="20" maxlength="255" name="alias" id="alias" value="<?php echo $this->xref->alias; ?>" /> 
+      <input type="text" size="20" maxlength="255" name="alias" id="alias" value="<?php echo $this->xref->alias; ?>" />
     </td>
   </tr>
 	<tr>
@@ -121,7 +113,7 @@ function updateend(cal)
       <label for="times"><?php echo JText::_('COM_REDEVENT_TIME') .': '; ?></label>
     </td>
     <td>
-      <input type="text" size="8" maxlength="8" name="times" id="times" value="<?php echo $this->xref->times; ?>" />      
+      <input type="text" size="8" maxlength="8" name="times" id="times" value="<?php echo $this->xref->times; ?>" />
     </td>
   </tr>
   <tr>
@@ -137,7 +129,7 @@ function updateend(cal)
       <label for="endtimes"><?php echo JText::_('COM_REDEVENT_ENDTIMES') .': '; ?></label>
     </td>
     <td>
-      <input type="text" size="8" maxlength="8" name="endtimes" id="endtimes" value="<?php echo $this->xref->endtimes; ?>" /> 
+      <input type="text" size="8" maxlength="8" name="endtimes" id="endtimes" value="<?php echo $this->xref->endtimes; ?>" />
     </td>
   </tr>
   <tr>
@@ -153,7 +145,7 @@ function updateend(cal)
       <label for="note"><?php echo JText::_('COM_REDEVENT_XREF_NOTE' ) .': '; ?></label>
     </td>
     <td>
-      <input type="text" size="50" maxlength="50" name="note" id="note" value="<?php echo $this->xref->note; ?>" /> 
+      <input type="text" size="50" maxlength="50" name="note" id="note" value="<?php echo $this->xref->note; ?>" />
     </td>
   </tr>
   <tr>
@@ -161,7 +153,7 @@ function updateend(cal)
       <label for="external_registration_url"><?php echo JText::_('COM_REDEVENT_XREF_EXTERNAL_REGISTRATION' ) .': '; ?></label>
     </td>
     <td>
-      <input type="text" size="50" maxlength="255" name="external_registration_url" id="external_registration_url" value="<?php echo $this->xref->external_registration_url; ?>" /> 
+      <input type="text" size="50" maxlength="255" name="external_registration_url" id="external_registration_url" value="<?php echo $this->xref->external_registration_url; ?>" />
     </td>
   </tr>
   <tr>
@@ -198,7 +190,7 @@ function updateend(cal)
       </td>
       <td>
         <?php echo $field->render(); ?>
-      </td>   
+      </td>
     </tr>
     <?php endforeach; ?>
 	</tbody>
@@ -226,7 +218,7 @@ function updateend(cal)
       <label for="maxattendees"><?php echo JText::_('COM_REDEVENT_MAXIMUM_ATTENDEES' ) .': '; ?></label>
     </td>
     <td>
-      <input type="text" size="8" maxlength="8" name="maxattendees" id="maxattendees" value="<?php echo $this->xref->maxattendees; ?>" /> 
+      <input type="text" size="8" maxlength="8" name="maxattendees" id="maxattendees" value="<?php echo $this->xref->maxattendees; ?>" />
     </td>
   </tr>
   <tr>
@@ -234,7 +226,7 @@ function updateend(cal)
       <label for="maxwaitinglist"><?php echo JText::_('COM_REDEVENT_MAXIMUM_WAITINGLIST' ) .': '; ?></label>
     </td>
     <td>
-      <input type="text" size="8" maxlength="8" name="maxwaitinglist" id="maxwaitinglist" value="<?php echo $this->xref->maxwaitinglist; ?>" /> 
+      <input type="text" size="8" maxlength="8" name="maxwaitinglist" id="maxwaitinglist" value="<?php echo $this->xref->maxwaitinglist; ?>" />
     </td>
   </tr>
 
@@ -243,10 +235,10 @@ function updateend(cal)
       <label for="course_credit"><?php echo JText::_('COM_REDEVENT_COURSE_CREDIT' ) .': '; ?></label>
     </td>
     <td>
-      <input type="text" size="8" maxlength="8" name="course_credit" id="course_credit" value="<?php echo $this->xref->course_credit; ?>" /> 
+      <input type="text" size="8" maxlength="8" name="course_credit" id="course_credit" value="<?php echo $this->xref->course_credit; ?>" />
     </td>
   </tr>
-    
+
   <tr>
     <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_COURSE_PRICE_TIP'); ?>">
       <label for="course_price"><?php echo JText::_('COM_REDEVENT_COURSE_PRICE' ) .': '; ?></label>
@@ -261,12 +253,12 @@ function updateend(cal)
 			  <?php endforeach; ?>
 			  <tr id="trnewprice">
 			  	<td><?php echo JHTML::_('select.genericlist', $this->pricegroupsoptions, 'pricegroup[]', array('id' => 'newprice', 'class' => 'newprice')); ?></td>
-			  	<td><input type="text" name="price[]" class="price-val" value="0.00" size="10" /> <button type="button" class="price-button" id="add-price"><?php echo JText::_('COM_REDEVENT_add'); ?></button></td>  	
+			  	<td><input type="text" name="price[]" class="price-val" value="0.00" size="10" /> <button type="button" class="price-button" id="add-price"><?php echo JText::_('COM_REDEVENT_add'); ?></button></td>
 			  </tr>
 	    </table>
     </td>
   </tr>
-  
+
 </tbody>
 </table>
 
@@ -276,19 +268,19 @@ function updateend(cal)
 <?php echo $this->pane->endPanel();
 
 			echo $this->pane->startPanel(JText::_('COM_REDEVENT_Recurrence'), 'recurrence');
-			echo $this->loadTemplate('recurrence'); 
+			echo $this->loadTemplate('recurrence');
 			echo $this->pane->endPanel();
 
 			echo $this->pane->startPanel(JText::_('COM_REDEVENT_MENU_ROLES'), 'roles');
-			echo $this->loadTemplate('roles'); 
+			echo $this->loadTemplate('roles');
 			echo $this->pane->endPanel();
-			
+
 			echo $this->pane->startPanel(JText::_('COM_REDEVENT_SESSION_TAB_ICAL'), 'ical');
-			echo $this->loadTemplate('ical'); 
+			echo $this->loadTemplate('ical');
 			echo $this->pane->endPanel();
-			
+
 			echo $this->pane->endPane();
-?> 
+?>
 
 <?php echo JHTML::_( 'form.token' ); ?>
 <input type="hidden" name="option" value="com_redevent" />
@@ -301,5 +293,5 @@ function updateend(cal)
 
 <?php if (!$this->standalone): ?>
 <input type="submit" name="submitbutton" value="submit"/>
-<?php endif; ?> 
+<?php endif; ?>
 </form>

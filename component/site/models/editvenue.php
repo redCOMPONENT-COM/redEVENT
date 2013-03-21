@@ -457,22 +457,10 @@ class RedeventModelEditvenue extends JModel
 		return $row->id;
 	}
 
-	function _inAdminGroup()
+	protected function _inAdminGroup()
 	{
 		$venue = $this->_loadVenue();
 
-		$user 		= & JFactory::getUser();
-
-		$query = ' SELECT gv.id '
-		. ' FROM #__redevent_groups_venues AS gv '
-		. ' INNER JOIN #__redevent_groupmembers AS gm ON gv.group_id = gm.group_id '
-		. ' WHERE gm.member ='. $this->_db->Quote($user->id)
-		. '   AND gm.edit_venues > 0 '
-		. '   AND gv.accesslevel > 0 '
-		. '   AND gv.venue_id ='. $this->_db->Quote($venue->id)
-		;
-		$this->_db->setQuery($query);
-
-		return (int) $this->_db->loadResult();
+		return UserAcl::getInstance()->canEditVenue($venue->id);
 	}
 }

@@ -42,12 +42,12 @@ class RedEventViewSession extends JView {
 		$document	= & JFactory::getDocument();
 		$uri 		= & JFactory::getURI();
 		$elsettings = JComponentHelper::getParams('com_redevent');
-		
+
 		$mainframe = &JFactory::getApplication();
 
 		// data
 		$xref = $this->get('xref');
-		
+
 		// ajax in event form, or standalone ?
 		$standalone = Jrequest::getVar('standalone', 0);
 
@@ -67,7 +67,7 @@ class RedEventViewSession extends JView {
 			JToolBarHelper::title(   JText::sprintf( 'COM_REDEVENT_SESSION_FOR_S',$xref->event_title ).': <small><small>[ ' . $text.' ]</small></small>' );
 			JToolBarHelper::save();
 			JToolBarHelper::apply();
-				
+
 			if (JPluginHelper::isEnabled('system', 'autotweetredevent'))
 			{
 				//If the AutoTweet NG Component is installed
@@ -83,7 +83,7 @@ class RedEventViewSession extends JView {
 					JERROR::setErrorHandling( E_WARNING, $mode );
 				}
 			}
-				
+
 			if (!$edit)  {
 				JToolBarHelper::cancel();
 			} else {
@@ -97,14 +97,14 @@ class RedEventViewSession extends JView {
 		//JHTML::_('behavior.modal', 'a.modal');
 		JHTML::_('behavior.tooltip');
 		JHTML::_('behavior.formvalidation');
-		
+
 		jimport('joomla.html.pane');
 
 		$document->addScript(JURI::root().'components/com_redevent/assets/js/xref_recurrence.js');
 		$document->addScript(JURI::root().'components/com_redevent/assets/js/xref_roles.js');
 		$document->addScript(JURI::root().'components/com_redevent/assets/js/xref_prices.js');
 		$document->addScriptDeclaration('var txt_remove = "'.JText::_('COM_REDEVENT_REMOVE').'";');
-    
+
 		//Build the image select functionality
 		$js = "
 		function elSelectImage(image, imagename) {
@@ -118,18 +118,13 @@ class RedEventViewSession extends JView {
 
 		$roles  =& $this->get('SessionRoles');
 		$prices =& $this->get('SessionPrices');
-    
+
 		$lists = array();
-		
+
 		// venues selector
 		$venues = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_Select_Venue')));
 		$venues = array_merge($venues, $this->get('VenuesOptions'));
 		$lists['venue'] = JHTML::_('select.genericlist', $venues, 'venueid', 'class="validate-venue"', 'value', 'text', $xref->venueid);
-
-		// group selector
-		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_Select_group')));
-		$options = array_merge($options, $this->get('GroupsOptions'));
-		$lists['group'] = JHTML::_('select.genericlist', $options, 'groupid', '', 'value', 'text', $xref->groupid);
 
 		// if this is not the first xref of the recurrence, we shouldn't modify it
 		$lockedrecurrence = ($xref->count > 0);
@@ -155,21 +150,21 @@ class RedEventViewSession extends JView {
 	    		JHTML::_('select.option', '1', JText::_('COM_REDEVENT_SESSION_IS_FEATURED'))
 	    );
 	    $lists['featured'] = JHTML::_('select.booleanlist', 'featured', '', $xref->featured);
-		
+
 		$pane 		= & JPane::getInstance('tabs');
-		
+
 		$rolesoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_Select_role')));
 		$rolesoptions = array_merge($rolesoptions, $this->get('RolesOptions'));
-		
+
 		$pricegroupsoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_PRICEGROUP')));
 		$pricegroupsoptions = array_merge($pricegroupsoptions, $this->get('PricegroupsOptions'));
-		
-		if (JRequest::getVar('task') == 'copy') 
+
+		if (JRequest::getVar('task') == 'copy')
 		{
 			$xref->id = null;
 			$xref->recurrence_id = null;
 		}
-		
+
 		//assign to template
 		$this->assignRef('xref'         , $xref);
 		$this->assignRef('editor'      	, $editor);
@@ -186,9 +181,9 @@ class RedEventViewSession extends JView {
 
 		parent::display($tpl);
 	}
-	
+
 	function _displayclosexref($tpl)
-	{	
+	{
 		$document = & JFactory::getDocument();
 		$elsettings = JComponentHelper::getParams('com_redevent');
 
@@ -226,21 +221,21 @@ class RedEventViewSession extends JView {
 		}
 		return;
 	}
-	
+
 	/**
 	 * prints the code for tags display
-	 * 
-	 * @param array tags to exclude from printing 
+	 *
+	 * @param array tags to exclude from printing
 	 */
 	function printTags($field = '')
-	{ 
-		?>	
+	{
+		?>
 		<div class="tagsdiv">
 			<?php echo JHTML::link('index.php?option=com_redevent&view=tags&tmpl=component&field='.$field, JText::_('COM_REDEVENT_TAGS'), 'class="modal"'); ?>
-		</div>  
-		<?php 
+		</div>
+		<?php
 	}
-	
+
   /**
    * Displays a calendar control field
    *

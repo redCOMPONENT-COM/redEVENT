@@ -50,13 +50,6 @@ class RedEventModelVenuesCategory extends JModelAdmin
 	var $_data = null;
 
 	/**
-	 * Groups data array
-	 *
-	 * @var array
-	 */
-	var $_groups = null;
-
-	/**
 	 * Constructor
 	 *
 	 * @since 0.9
@@ -101,26 +94,6 @@ class RedEventModelVenuesCategory extends JModelAdmin
 	}
 
 	/**
-	 * Method to get the group data
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	0.9
-	 */
-	function &getGroups()
-	{
-		$query = 'SELECT id AS value, name AS text'
-			. ' FROM #__redevent_groups'
-			. ' ORDER BY name'
-			;
-		$this->_db->setQuery( $query );
-
-		$this->_groups = $this->_db->loadObjectList();
-
-		return $this->_groups;
-	}
-
-	/**
 	 * Method to load content event data
 	 *
 	 * @access	private
@@ -159,7 +132,6 @@ class RedEventModelVenuesCategory extends JModelAdmin
 			$category = new stdClass();
 			$category->id					= 0;
 			$category->parent_id			= 0;
-			$category->groupid				= 0;
 			$category->name				= null;
 			$category->alias				= null;
 			$category->description		= null;
@@ -168,7 +140,6 @@ class RedEventModelVenuesCategory extends JModelAdmin
 			$category->published			= 1;
 			$category->image				= null;
 			$category->access				= 0;
-			$category->private				= 0;
 			$this->_data					= $category;
 			return (boolean) $this->_data;
 		}
@@ -251,7 +222,7 @@ class RedEventModelVenuesCategory extends JModelAdmin
 	function store($data)
 	{
 		$row  =& $this->getTable('redevent_venues_categories', '');
-		
+
 		// bind it to the table
 		if (!$row->bind($data)) {
 			RedeventError::raiseError(500, $this->_db->getErrorMsg() );
@@ -302,14 +273,14 @@ class RedEventModelVenuesCategory extends JModelAdmin
 
 		return true;
 	}
-	
+
 	/**
 	 * Get a list of all categories as options
 	 */
-	public function getCategories() 
-	{	  
+	public function getCategories()
+	{
 	  $current = &$this->getData();
-	  
+
     $query = ' SELECT c.id, c.name, (COUNT(parent.name) - 1) AS depth '
            . ' FROM #__redevent_venues_categories AS c, '
            . ' #__redevent_venues_categories AS parent '
@@ -317,14 +288,14 @@ class RedEventModelVenuesCategory extends JModelAdmin
            ;
     if ($this->_id) { // prevent loops !
       $query .= '   AND c.lft NOT BETWEEN '. $this->_db->Quote($current->lft) .' AND '. $this->_db->Quote($current->rgt);
-    }  
+    }
     $query .= ' GROUP BY c.id '
            . ' ORDER BY c.lft;'
            ;
     $this->_db->setQuery($query);
-    
+
     $results = $this->_db->loadObjectList();
-    
+
     $options = array();
     foreach((array) $results as $cat)
     {
@@ -332,7 +303,7 @@ class RedEventModelVenuesCategory extends JModelAdmin
     }
     return $options;
 	}
-	
+
 	/**
 	 * Create the subcategory layout
 	 */
@@ -347,8 +318,8 @@ class RedEventModelVenuesCategory extends JModelAdmin
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Returns a Table object, always creating it
 	 *
@@ -362,7 +333,7 @@ class RedEventModelVenuesCategory extends JModelAdmin
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
-	
+
 	/**
 	 * Method to get the record form.
 	 *
@@ -382,7 +353,7 @@ class RedEventModelVenuesCategory extends JModelAdmin
 		}
 		return $form;
 	}
-	
+
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *

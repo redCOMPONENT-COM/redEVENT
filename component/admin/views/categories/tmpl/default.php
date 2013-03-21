@@ -56,11 +56,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<th width="20%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ALIAS', 'c.alias', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="10px" nowrap="nowrap"><?php echo JText::_('COM_REDEVENT_COLOR' ); ?></th>
 			<th width="20%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_PARENT_CATEGORY', 'c.lft', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			<th width="15%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_GROUP', 'gr.name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JText::_('COM_REDEVENT_EVENTS' ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JText::_('COM_REDEVENT_PUBLISHED' ); ?></th>
 			<th width="7%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ACCESS', 'c.access', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			<th width="7%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_LABEL_PRIVATE', 'c.private', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="80"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_REORDER', 'c.ordering', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="1%"><?php echo JHTML::_('grid.order', $this->rows, 'filesave.png', 'saveordercat' ); ?></th>
 			<th width="1%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'c.language', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
@@ -83,7 +81,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			$row = $this->rows[$i];
 
 			$link 		= 'index.php?option=com_redevent&view=category&id='. $row->id;
-			$grouplink 	= 'index.php?option=com_redevent&view=group&task=edit&cid[]='. $row->groupid;
 			$published 	= JHTML::_('grid.published', $row, $i );
 			$checked 	= JHTML::_('grid.checkedout', $row, $i );
    		?>
@@ -125,18 +122,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
         <?php echo ($row->parent_name) ? htmlspecialchars($row->parent_name, ENT_QUOTES, 'UTF-8') : '-'; ?>
       </td>
 			<td align="center">
-				<?php if ($row->catgroup) {	?>
-					<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_EDIT_GROUP' );?>::<?php echo $row->catgroup; ?>">
-					<a href="<?php echo $grouplink; ?>">
-						<?php echo htmlspecialchars($row->catgroup, ENT_QUOTES, 'UTF-8'); ?>
-					</a></span>
-				<?php
-				} else {
-					echo '-';
-				}
-				?>
-			</td>
-			<td align="center">
 				<?php echo $row->assignedevents; ?>
 			</td>
 			<td align="center">
@@ -144,9 +129,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</td>
 			<td align="center">
 				<?php echo $row->access_level; ?>
-			</td>
-			<td align="center">
-				<?php echo $row->private ? JHTML::image('media/com_redevent/images/icon-16-private.png', JText::_('COM_REDEVENT_LABEL_PRIVATE')) : ''; ?>
 			</td>
 			<td class="order" colspan="2">
 				<span><?php echo $this->pageNav->orderUpIcon( $i, true, 'orderup', 'Move Up', $this->ordering ); ?></span>

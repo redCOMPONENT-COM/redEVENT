@@ -60,8 +60,6 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 
     var $_total_attending = null;
 
-    var $_groups = null;
-
     /**
      * Pagination object
      *
@@ -395,26 +393,6 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
                . ' GROUP BY (l.id) '
                . ' ORDER BY l.venue ASC '
                ;
-
-        return $query;
-    }
-
-    /**
-     * Build the query
-     *
-     * @access private
-     * @return string
-     */
-    function _buildQueryGroups()
-    {
-        $user = & JFactory::getUser();
-        //Get Events from Database
-        $query = 'SELECT g.id, g.name '
-        . ' FROM #__redevent_groups AS g '
-        . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
-        .' WHERE gm.member = '. $this->_db->Quote($user->id)
-        .' ORDER BY g.name ASC '
-        ;
 
         return $query;
     }

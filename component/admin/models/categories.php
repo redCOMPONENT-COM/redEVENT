@@ -100,12 +100,11 @@ class RedeventModelCategories extends FOFModel
 
 		$query->select('c.*, (COUNT(parent.catname) - 1) AS depth, p.catname as parent_name');
 		$query->select('u.name AS editor');
-		$query->select('g.title AS groupname, gr.name AS catgroup');
+		$query->select('g.title AS groupname');
 		$query->from('#__redevent_categories AS parent, #__redevent_categories AS c');
 		$query->join('LEFT', '#__redevent_categories AS p ON c.parent_id = p.id');
 		$query->join('LEFT', '#__usergroups AS g ON g.id = c.access');
 		$query->join('LEFT', '#__users AS u ON u.id = c.checked_out');
-		$query->join('LEFT', '#__redevent_groups AS gr ON gr.id = c.groupid');
 		$query->where('(c.lft BETWEEN parent.lft AND parent.rgt)');
 		$query->group('c.id');
 
@@ -349,8 +348,8 @@ class RedeventModelCategories extends FOFModel
 		}
 
 		$query = ' SELECT c.id, c.catname, c.alias, c.catdescription, c.meta_description, c.meta_keywords,  '
-		. ' c.color, c.image, c.private, c.published, c.access,  '
-		. ' c.groupid, c.event_template, c.ordering  '
+		. ' c.color, c.image, c.published, c.access,  '
+		. ' c.event_template, c.ordering  '
 		. ' FROM #__redevent_categories AS c '
 		. $where;
 		$this->_db->setQuery($query);

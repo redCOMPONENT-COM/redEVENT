@@ -38,7 +38,7 @@ class RedeventViewCategory extends FOFViewForm {
 
 		//Load pane behavior
 		jimport('joomla.html.pane');
-		
+
 		//initialise variables
 		$editor 	= JFactory::getEditor();
 		$document	= JFactory::getDocument();
@@ -51,10 +51,10 @@ class RedeventViewCategory extends FOFViewForm {
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITCATEGORY'));
 		//add css to document
 		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.less||media://com_redevent/css/backend.css');
-		
+
 		// attachments
 		JHtml::_('behavior.framework');
-		FOFTemplateUtils::addJS('media://com_redevent/js/attachments.js');		
+		FOFTemplateUtils::addJS('media://com_redevent/js/attachments.js');
 		$document->addScriptDeclaration('var removemsg = "'.JText::_('COM_REDEVENT_ATTACHMENT_CONFIRM_MSG').'";' );
 
 		//create the toolbar
@@ -70,7 +70,6 @@ class RedeventViewCategory extends FOFViewForm {
 			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_VENUES' ), 'index.php?option=com_redevent&view=venues');
 			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_CATEGORIES' ), 'index.php?option=com_redevent&view=categories');
 			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_ARCHIVESCREEN' ), 'index.php?option=com_redevent&view=archive');
-			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_GROUPS' ), 'index.php?option=com_redevent&view=groups');
 			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_HELP' ), 'index.php?option=com_redevent&view=help');
 		}
 
@@ -78,7 +77,6 @@ class RedeventViewCategory extends FOFViewForm {
 		$model		= $this->getModel();
 		$row     	= $this->get( 'Item' );
 		$form       = $this->get( 'Form' );
-		$groups 	= $this->get( 'Groups' );
 
 		// fail if checked out not by 'me'
 		if ($row->id) {
@@ -90,25 +88,25 @@ class RedeventViewCategory extends FOFViewForm {
 
 		//clean data
 		JFilterOutput::objectHTMLSafe( $row, ENT_QUOTES, 'catdescription' );
-		
+
 		/* Initiate the Lists array */
 		$lists = array();
-		
+
 		/* Build a select list for categories */
 		$lists['categories'] = $this->get('Categories');
-		
+
 		//build selectlists
 		$lists['access'] 			= JHTML::_('list.accesslevel', $row );
-		
+
 		//assign data to template
 		$this->assignRef('lists'      	, $lists);
 		$this->assignRef('row'      	, $row);
 		$this->assignRef('form'      	, $form);
 		$this->assignRef('editor'		, $editor);
 		$this->assignRef('access'	, redEVENTHelper::getAccesslevelOptions());
-		
+
 		JHTML::_('behavior.tooltip');
-		
+
 		parent::display($tpl);
 	}
 }

@@ -27,14 +27,14 @@ defined('_JEXEC') or die('Restricted access');
 <script language="javascript" type="text/javascript">
 window.addEvent('domready', function() {
 
-        $('enddates').addEvent('click', function(){           
+        $('enddates').addEvent('click', function(){
         	 if (this.value === "" || this.value === "0000-00-00") {
         		  this.value = $('dates').value;
          	 }
         });
 
         $('times').addEvent('change', function(){
-					if ($('dates').value !== "" && $('dates').value !== "0000-00-00" && $('dates').value !== $('enddates').value) {						
+					if ($('dates').value !== "" && $('dates').value !== "0000-00-00" && $('dates').value !== $('enddates').value) {
 						 $('endtimes').value = this.value;
 					}
         });
@@ -60,19 +60,11 @@ function updateend(cal)
     </td>
   </tr>
   <tr>
-    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_GROUP_TIP'); ?>">
-      <label for="groupid"><?php echo JText::_('COM_REDEVENT_Group') .': '; ?></label>
-    </td>
-    <td>
-      <?php echo $this->lists['group']; ?>
-    </td>
-  </tr>
-  <tr>
     <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_SESSION_TITLE_TIP'); ?>">
       <label for="session_title"><?php echo JText::_( 'COM_REDEVENT_SESSION_TITLE_LABEL' ) .': '; ?></label>
     </td>
     <td>
-      <input type="text" size="20" maxlength="255" name="session_title" id="session_title" value="" /> 
+      <input type="text" size="20" maxlength="255" name="session_title" id="session_title" value="" />
     </td>
   </tr>
   <tr>
@@ -80,7 +72,7 @@ function updateend(cal)
       <label for="session_alias"><?php echo JText::_( 'COM_REDEVENT_SESSION_ALIAS_LABEL' ) .': '; ?></label>
     </td>
     <td>
-      <input type="text" size="20" maxlength="255" name="session_alias" id="session_alias" value="" /> 
+      <input type="text" size="20" maxlength="255" name="session_alias" id="session_alias" value="" />
     </td>
   </tr>
 	<tr>
@@ -96,7 +88,7 @@ function updateend(cal)
       <label for="times"><?php echo JText::_('COM_REDEVENT_TIME') .': '; ?></label>
     </td>
     <td>
-      <input type="text" size="8" maxlength="8" name="times" id="times" value="" />      
+      <input type="text" size="8" maxlength="8" name="times" id="times" value="" />
     </td>
   </tr>
   <tr>
@@ -112,7 +104,7 @@ function updateend(cal)
       <label for="endtimes"><?php echo JText::_('COM_REDEVENT_ENDTIMES') .': '; ?></label>
     </td>
     <td>
-      <input type="text" size="8" maxlength="8" name="endtimes" id="endtimes" value="" /> 
+      <input type="text" size="8" maxlength="8" name="endtimes" id="endtimes" value="" />
     </td>
   </tr>
   <tr>
@@ -128,7 +120,7 @@ function updateend(cal)
       <label for="session_note"><?php echo JText::_('COM_REDEVENT_XREF_NOTE' ) .': '; ?></label>
     </td>
     <td>
-      <input type="text" size="50" maxlength="50" name="session_note" id="note" value="" /> 
+      <input type="text" size="50" maxlength="50" name="session_note" id="note" value="" />
     </td>
   </tr>
   <tr>
@@ -136,7 +128,7 @@ function updateend(cal)
       <label for="session_external_registration_url"><?php echo JText::_('COM_REDEVENT_XREF_EXTERNAL_REGISTRATION' ) .': '; ?></label>
     </td>
     <td>
-      <input type="text" size="50" maxlength="255" name="session_external_registration_url" id="session_external_registration_url" value="" /> 
+      <input type="text" size="50" maxlength="255" name="session_external_registration_url" id="session_external_registration_url" value="" />
     </td>
   </tr>
   <tr>
@@ -173,7 +165,7 @@ function updateend(cal)
       </td>
       <td>
         <?php echo $field->render(); ?>
-      </td>   
+      </td>
     </tr>
     <?php endforeach; ?>
 	</tbody>
@@ -197,7 +189,7 @@ function updateend(cal)
       <label for="maxattendees"><?php echo JText::_('COM_REDEVENT_MAXIMUM_ATTENDEES' ) .': '; ?></label>
     </td>
     <td>
-      <input type="text" size="8" maxlength="8" name="maxattendees" id="maxattendees" value="" /> 
+      <input type="text" size="8" maxlength="8" name="maxattendees" id="maxattendees" value="" />
     </td>
   </tr>
   <tr>
@@ -205,7 +197,7 @@ function updateend(cal)
       <label for="maxwaitinglist"><?php echo JText::_('COM_REDEVENT_MAXIMUM_WAITINGLIST' ) .': '; ?></label>
     </td>
     <td>
-      <input type="text" size="8" maxlength="8" name="maxwaitinglist" id="maxwaitinglist" value="" /> 
+      <input type="text" size="8" maxlength="8" name="maxwaitinglist" id="maxwaitinglist" value="" />
     </td>
   </tr>
 
@@ -214,10 +206,10 @@ function updateend(cal)
       <label for="course_credit"><?php echo JText::_('COM_REDEVENT_COURSE_CREDIT' ) .': '; ?></label>
     </td>
     <td>
-      <input type="text" size="8" maxlength="8" name="course_credit" id="course_credit" value="" /> 
+      <input type="text" size="8" maxlength="8" name="course_credit" id="course_credit" value="" />
     </td>
   </tr>
-    
+
   <tr>
     <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_COURSE_PRICE_TIP'); ?>">
       <label for="course_price"><?php echo JText::_('COM_REDEVENT_COURSE_PRICE' ) .': '; ?></label>
@@ -226,23 +218,23 @@ function updateend(cal)
 	    <table>
 			  <tr id="trnewprice">
 			  	<td><?php echo JHTML::_('select.genericlist', $this->pricegroupsoptions, 'pricegroup[]', array('id' => 'newprice', 'class' => 'newprice')); ?></td>
-			  	<td><input type="text" name="price[]" class="price-val" value="0.00" size="10" /> <button type="button" class="price-button" id="add-price"><?php echo JText::_('COM_REDEVENT_add'); ?></button></td>  	
+			  	<td><input type="text" name="price[]" class="price-val" value="0.00" size="10" /> <button type="button" class="price-button" id="add-price"><?php echo JText::_('COM_REDEVENT_add'); ?></button></td>
 			  </tr>
 	    </table>
     </td>
   </tr>
-  
+
 </tbody>
 </table>
 
 </fieldset>
 
 
-<?php 
-	echo $this->loadTemplate('session_roles'); 
-	echo $this->loadTemplate('session_ical'); 
-	echo $this->loadTemplate('session_recurrence'); 
-?> 
+<?php
+	echo $this->loadTemplate('session_roles');
+	echo $this->loadTemplate('session_ical');
+	echo $this->loadTemplate('session_recurrence');
+?>
 
 <input type="hidden" name="recurrenceid" value=""/>
 <input type="hidden" name="repeat" id="repeat" value=""/>

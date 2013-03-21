@@ -49,7 +49,7 @@ class RedeventModelSignup extends JModel
 	 * @var array
 	 */
 	var $_registers = null;
-	
+
 	var $_xref = null;
 
 	/**
@@ -79,7 +79,7 @@ class RedeventModelSignup extends JModel
 		// Set new details ID and wipe data
 		$this->_id			= $id;
 	}
-	
+
 	function setXref($xref)
 	{
 		// Set new details ID and wipe data
@@ -101,13 +101,13 @@ class RedeventModelSignup extends JModel
 		if ($this->_loadDetails())
 		{
 			$user	= & JFactory::getUser();
-		
+
 	      // Is the category published?
 	      if (!count($this->_details->categories))
 	      {
 	        JError::raiseError( 404, JText::_("COM_REDEVENT_CATEGORY_NOT_PUBLISHED") );
 	      }
-	
+
 	      // Do we have access to any category ?
 	      $access = false;
 	      foreach ($this->_details->categories as $cat)
@@ -126,7 +126,7 @@ class RedeventModelSignup extends JModel
 
 		return $this->_details;
 	}
- 
+
 	/**
 	 * Method to load required data
 	 *
@@ -141,7 +141,7 @@ class RedeventModelSignup extends JModel
 			// Get the WHERE clause
 			$where	= $this->_buildDetailsWhere();
 
-			$query = 'SELECT a.id AS did, x.dates, x.enddates, a.title, x.times, x.endtimes, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, a.registra, a.unregistra,' 
+			$query = 'SELECT a.id AS did, x.dates, x.enddates, a.title, x.times, x.endtimes, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, a.registra, a.unregistra,'
 					. ' a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
 					. ' a.max_multi_signup, a.confirmation_message, a.review_message, x.course_credit, a.course_code, c.catname, c.published, c.access, a.submission_type_phone,'
 					. ' a.submission_type_webform, a.submission_type_formal_offer, a.submission_type_email, v.venue, v.city AS location, '
@@ -158,7 +158,7 @@ class RedeventModelSignup extends JModel
 					;
     		$this->_db->setQuery($query);
 			$this->_details = $this->_db->loadObject();
-						
+
       if ($this->_details->did) {
         $query =  ' SELECT c.id, c.catname, c.access, '
               . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
@@ -169,10 +169,10 @@ class RedeventModelSignup extends JModel
               . ' ORDER BY c.ordering'
               ;
         $this->_db->setQuery( $query );
-  
+
         $this->_details->categories = $this->_db->loadObjectList();
       }
-			return (boolean) $this->_details;			
+			return (boolean) $this->_details;
 		}
 		return true;
 	}
@@ -187,7 +187,7 @@ class RedeventModelSignup extends JModel
 	function _buildDetailsWhere()
 	{
 		$where = ' WHERE x.id = '.$this->_xref;
-		
+
 		return $where;
 	}
 
@@ -204,7 +204,7 @@ class RedeventModelSignup extends JModel
       $this->mailer->FromName = $mainframe->getCfg('sitename');
       $this->mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
     }
-	
+
 	/**
 	 * Get the details of a venue
 	 */
@@ -218,17 +218,17 @@ class RedeventModelSignup extends JModel
 		$db->setQuery($q);
 		return $db->loadObject();
 	}
-	
+
 	/**
 	 * Send the signup email
 	 * object $tags
 	 * boolean $send_attachment
 	 */
-	public function getSendSignupEmail($tags, $send_attachment) 
+	public function getSendSignupEmail($tags, $send_attachment)
 	{
 		/* Initialise the mailer */
 		$this->Mailer();
-		
+
 		/* Check if the attachment needs to be send */
 		if ($send_attachment) {
 			$pdf = file_get_contents(JURI::root().'index.php?option=com_redevent&view=signup&task=createpdfemail&format=pdf&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id'));
@@ -238,7 +238,7 @@ class RedeventModelSignup extends JModel
 		}
 		/* Add the recipient */
 		$this->mailer->AddAddress(JRequest::getVar('subemailaddress'), JRequest::getVar('subemailname'));
-		
+
 		/* Add the body to the mail */
 		/* Read the template */
 		$db = JFactory::getDBO();
@@ -246,15 +246,15 @@ class RedeventModelSignup extends JModel
 		$db->setQuery($q);
 		$email_settings = $db->loadObject();
 		$message = $tags->ReplaceTags($email_settings->submission_type_email_body);
-		
+
 		// convert urls
 		$message = REOutput::ImgRelAbs($message);
-						
+
 		$this->mailer->setBody($message);
-		
+
 		/* Set the subject */
 		$this->mailer->setSubject($tags->ReplaceTags($email_settings->submission_type_email_subject));
-		
+
 		/* Sent out the mail */
 		if (!$this->mailer->Send()) {
 			RedeventError::raiseWarning(0, JText::_('COM_REDEVENT_NO_MAIL_SEND').' '.$this->mailer->error);
@@ -262,24 +262,24 @@ class RedeventModelSignup extends JModel
 		}
 		/* Clear the mail details */
 		$this->mailer->ClearAddresses();
-		
+
 		/* Remove the temporary file */
 		if ($send_attachment) {
 			unlink($pdffile);
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Send the signup email
 	 */
 	public function getSendFormalOfferEmail($tags) {
 		/* Initialise the mailer */
 		$this->Mailer();
-		
+
 		/* Load the details for this course */
 		$db = JFactory::getDBO();
-		$q = "SELECT * 
+		$q = "SELECT *
 			FROM #__redevent_event_venue_xref x
 			LEFT JOIN #__redevent_events e
 			ON e.id = x.eventid
@@ -288,44 +288,44 @@ class RedeventModelSignup extends JModel
 			WHERE x.id = ".JRequest::getInt('xref');
 		$db->setQuery($q);
 		$details = $db->loadObject();
-		
+
 		/* Add the recipient */
 		$this->mailer->AddAddress(JRequest::getVar('subemailaddress'), JRequest::getVar('subemailname'));
-		
+
 		/* Set the subject */
 		$this->mailer->setSubject($tags->ReplaceTags($details->submission_type_formal_offer_subject));
-		
+
 		/* Add the body to the mail */
 		/* Read the template */
 		$message = $tags->ReplaceTags($details->submission_type_formal_offer_body);
 		// convert urls
 		$message = REOutput::ImgRelAbs($message);
 		$this->mailer->setBody($message);
-		
+
 		/* Sent out the mail */
 		if (!$this->mailer->Send()) {
 			RedeventError::raiseWarning(0, JText::_('COM_REDEVENT_NO_MAIL_SEND').' '.$this->mailer->error);
 			return false;
 		}
-		
+
 		/* Clear the mail details */
 		$this->mailer->ClearAddresses();
-		
+
 		return true;
 	}
-	
+
 	function getIsFull()
 	{
 		$details = & $this->getDetails();
 		if (!$details->maxattendees) { // no max number, the event is never full
 			return false;
 		}
-		
+
 		$max = $details->maxwaitinglist + $details->maxattendees;
-		
+
 		$query = ' SELECT COUNT(*) as total '
 		        . ' FROM #__redevent_event_venue_xref AS x'
-            . ' INNER JOIN #__redevent_register AS r on r.xref = x.id ' 
+            . ' INNER JOIN #__redevent_register AS r on r.xref = x.id '
 		        . ' INNER JOIN #__rwf_submitters AS s ON s.id = r.id'
 		        . ' WHERE x.id = ' . $this->_db->Quote($this->_xref)
 		        . '   AND r.confirmed = 1'
@@ -333,12 +333,12 @@ class RedeventModelSignup extends JModel
 		        ;
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadResult();
-		
+
 		if ($res >= $max) {
-      return true;			
+      return true;
 		}
 	}
-	
+
 	/**
 	 * returns the registration status as an object (canregister, status)
 	 *
@@ -348,7 +348,7 @@ class RedeventModelSignup extends JModel
 	{
 	  return redEVENTHelper::canRegister($this->_xref);
 	}
-	
+
 	function getRegistration($submitter_id)
 	{
 		$query =' SELECT s.*, r.uid, e.unregistra '
@@ -360,12 +360,12 @@ class RedeventModelSignup extends JModel
 		    ;
 		$this->_db->setQuery($query);
 		$registration = $this->_db->loadObject();
-		
+
 		if (!$registration) {
 			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_NOT_VALID'));
 			return false;
 		}
-		  
+
 		$query = ' SELECT * '
 		       . ' FROM #__rwf_forms_'. $registration->form_id
 		       . ' WHERE id = '. $registration->answer_id
@@ -374,23 +374,10 @@ class RedeventModelSignup extends JModel
 		$registration->answers = $this->_db->loadObject();
 		return $registration;
 	}
-	
+
 
   function getManageAttendees($xref_id)
   {
-  	$user = & JFactory::getUser();
-  	
-  	$query = ' SELECT gm.id '
-  	       . ' FROM #__redevent_event_venue_xref AS x '
-  	       . ' INNER JOIN #__redevent_groups AS g ON x.groupid = g.id '
-  	       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
-  	       . ' WHERE gm.member = '. $this->_db->Quote($user->get('id'))
-  	       . '   AND (gm.manage_xrefs > 0 OR gm.manage_events > 0) '
-  	       . '   AND x.id = '. $this->_db->Quote($xref_id)
-  	       ;
-  	$this->_db->setQuery($query);
-  	$res = $this->_db->loadObjectList();
-  	
-  	return count($res);
+  	return UserAcl::getInstance()->canManageAttendees($xref_id);
   }
 }
