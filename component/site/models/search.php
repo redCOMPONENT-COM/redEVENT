@@ -100,6 +100,7 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		$query->where(' c.access <= ' . $gid);
 
 		$query->where('x.published = 1');
+		$query->where('a.published <> 0');
 
 		if ($this->getState('filter.language'))
 		{

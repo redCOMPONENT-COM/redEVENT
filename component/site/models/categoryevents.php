@@ -85,6 +85,7 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList
 		$query = parent::_buildWhere($query);
 
 		$category = $this->getCategory();
+		$query->where(' a.published <> 0 ');
 
 		$query->where('(c.id = ' . $this->_db->Quote($category->id)
 		. ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))');

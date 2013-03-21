@@ -69,7 +69,6 @@ class RedeventModelDay extends RedeventModelBaseEventList
 			$timestamp	= mktime(0, 0, 0, date("m"), date("d") + $dayoffset, date("Y"));
 			$date		= strftime('%Y-%m-%d', $timestamp);
 		}
-
 		// A valid date  has 8 characters
 		elseif (strlen($date) == 8)
 		{

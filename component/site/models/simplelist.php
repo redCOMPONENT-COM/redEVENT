@@ -75,6 +75,7 @@ class RedeventModelSimpleList extends RedeventModelBaseEventList
 		} else {
 			$query->where(' x.published = 1');
 		}
+		$query->where('a.published <> 0');
 				
 		// Second is to only select events assigned to category the user has access to
 		$query->where(' c.access <= '.$gid);

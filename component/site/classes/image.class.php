@@ -31,8 +31,8 @@ require_once (JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'log.
  * @package Joomla
  * @subpackage redEVENT
  */
-class redEVENTImage {
-
+class redEVENTImage
+{
 	/**
 	* Creates a Thumbnail of an image
 	*
@@ -45,7 +45,7 @@ class redEVENTImage {
 	* @param string $height The height of the image
 	* @return true when success
 	*/
-	function thumb($file, $save, $width, $height)
+	public static function thumb($file, $save, $width, $height)
 	{
 		//GD-Lib > 2.0 only!
 		@unlink($save);
@@ -54,13 +54,13 @@ class redEVENTImage {
 		if (!$infos = @getimagesize($file)) {
 			return false;
 		}
-		
+
 		// keep proportions
 		$iWidth = $infos[0];
 		$iHeight = $infos[1];
 		$iRatioW = $width / $iWidth;
 		$iRatioH = $height / $iHeight;
-		
+
 		if ($iRatioW < $iRatioH) {
 			$iNewW = $iWidth * $iRatioW;
 			$iNewH = $iHeight * $iRatioW;
@@ -68,7 +68,7 @@ class redEVENTImage {
 			$iNewW = $iWidth * $iRatioH;
 			$iNewH = $iHeight * $iRatioH;
 		}
-		
+
 		//Don't resize images which are smaller than thumbs
 		if ($infos[0] < $width && $infos[1] < $height) {
 			$iNewW = $infos[0];
@@ -81,7 +81,7 @@ class redEVENTImage {
 			*/
 			$imgA = imagecreatefromgif($file);
 			$imgB = imagecreate($iNewW,$iNewH);
-			
+
        		//keep gif transparent color if possible
           	if(function_exists('imagecolorsforindex') && function_exists('imagecolortransparent')) {
             	$transcolorindex = imagecolortransparent($imgA);
@@ -102,7 +102,7 @@ class redEVENTImage {
             	imagefill($imgB, 0, 0, $whitecolorindex);
           	}
           	imagecopyresampled($imgB, $imgA, 0, 0, 0, 0, $iNewW, $iNewH, $infos[0], $infos[1]);
-			imagegif($imgB, $save);        
+			imagegif($imgB, $save);
 
 		} elseif($infos[2] == 2) {
 			/*
@@ -138,7 +138,7 @@ class redEVENTImage {
 	*
 	* @return int
 	*/
-	function gdVersion($user_ver = 0)
+	public static function gdVersion($user_ver = 0)
 	{
 		if (! extension_loaded('gd')) {
 			return;
@@ -193,10 +193,10 @@ class redEVENTImage {
 	*
 	* @return imagedata if available
 	*/
-	function flyercreator($image)
+	public static function flyercreator($image)
 	{
 		$settings = & redEVENTHelper::config();
-		
+
 		jimport('joomla.filesystem.file');
 
 		if ( $image ) {
@@ -238,35 +238,35 @@ class redEVENTImage {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * returns the hml code for modal display of image
 	 * If thumbnails exits, display the thumbnail with a modal link,
 	 * otherwise, just display the full size picture
-	 * 
+	 *
 	 * @param string image path, relative to joomla base folder
 	 * @param string alt attribute
 	 * @param array other attributes
 	 * @return mixed boolean false if empty path, html string otherwise
 	 */
-	function modalimage($path, $alt, $maxdim = null, $attribs = array())
+	public static function modalimage($path, $alt, $maxdim = null, $attribs = array())
 	{
 		jimport('joomla.filesystem.file');
 		$app = &JFactory::getApplication();
-		
+
 		if (empty($path)) {
 			return false;
 		}
-		
+
 		if (!file_exists(JPATH_SITE.DS.$path)) {
 			RedeventHelperLog::simpleLog(sprintf('Image not found: %s', $path));
-			return false;			
+			return false;
 		}
-		
+
 		$base = JURI::root();
-		
+
 		$thumb_path = self::getThumbUrl($path, $maxdim);
-				
+
 		JHTML::_('behavior.modal', 'a.imodal');
 		if (isset($attribs['class'])) {
 			$attribs['class'] .= ' imodal';
@@ -276,23 +276,23 @@ class redEVENTImage {
 		}
 		$thumb = JHTML::image($thumb_path, $alt, $attribs);
 		$html = JHTML::link(JRoute::_($base.$path), $thumb, $attribs);
-			
+
 		return $html;
 	}
-	
+
 	/**
 	 * return full url to thumbnail
-	 * 
+	 *
 	 * @param string image path, relative to joomla images folder
 	 * @return url or false if it doesn't exists
 	 */
-	function getThumbUrl($path, $maxdim = null)
-	{		
+	public static function getThumbUrl($path, $maxdim = null)
+	{
 		jimport('joomla.filesystem.file');
 		$app = &JFactory::getApplication();
 		$settings = redEVENTHelper::config();
-		
-		if ($maxdim) 
+
+		if ($maxdim)
 		{
 			$width  = $maxdim;
 			$height = $maxdim;
@@ -302,21 +302,21 @@ class redEVENTImage {
 			$width  = $settings->get('imagewidth', 100);
 			$height = $settings->get('imageheight', 100);
 		}
-						
+
 		$base = JURI::root();
-		
+
 		$thumb_name = md5(basename($path)).$width.'_'.$height.'.png';
 		if (dirname($path) != '.')
 		{
 			$thumb_path = JPATH_SITE.DS.dirname($path).DS.'re_thumb'.DS.$thumb_name;
 			$thumb_uri = $base.str_replace("\"", "/", dirname($path)).'/re_thumb/'.$thumb_name;
 		}
-		else 
+		else
 		{
 			JError::raisewarning(0, JText::sprintf('COM_REDEVENT_THUMBNAILS_WRONG_BASE_PATH',dirname($thumb_path)));
 		}
-		
-		if (JFile::exists($thumb_path)) 
+
+		if (JFile::exists($thumb_path))
 		{
 			return $thumb_uri;
 		}
@@ -329,12 +329,12 @@ class redEVENTImage {
 			}
 			if (redEVENTImage::thumb(JPATH_SITE.DS.$path, $thumb_path, $width, $height)) {
 				return $thumb_uri;
-			}			
+			}
 		}
 		return false;
 	}
 
-	function check($file, $elsettings)
+	public static function check($file, $elsettings)
 	{
 		jimport('joomla.filesystem.file');
 
@@ -387,7 +387,7 @@ class redEVENTImage {
 	*
 	* @return string $filename the sanitized and unique image file name
 	*/
-	function sanitize($base_Dir, $filename)
+	public static function sanitize($base_Dir, $filename)
 	{
 		jimport('joomla.filesystem.file');
 
@@ -420,7 +420,7 @@ class redEVENTImage {
 
 		return $filename;
 	}
-	
+
 	/**
 	 * returns html code for category image, or just the category name if image is not set
 	 *
@@ -429,16 +429,16 @@ class redEVENTImage {
 	 * @param array attribs
 	 * @return html
 	 */
-	function getCategoryImage($category, $modal = true, $attribs = null)
+	public static function getCategoryImage($category, $modal = true, $attribs = null)
 	{
 		$image_attribs = array('title' => $category->catname);
-		
+
 		if ($attribs && is_array($attribs)) {
 			$image_attribs = array_merge( $image_attribs, $attribs);
 		}
 		if ($category->image) {
-		  return self::modalimage($category->image, $category->catname, null, $image_attribs);	
+		  return self::modalimage($category->image, $category->catname, null, $image_attribs);
 		}
-		else return $category->catname; 
+		else return $category->catname;
 	}
 }

@@ -91,7 +91,7 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 	 */
 	public function addOffset($offset)
 	{
-		$aday = reset($this->getWeekDays());
+		$aday = $this->getWeekMonday();
 		$week = date("YW", strtotime(sprintf("%s %+d weeks", $aday, $offset)));
 		$this->setWeek($week);
 	}
@@ -138,7 +138,7 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 		}
 		else
 		{
-			$firstday = reset($this->getWeekDays());
+			$firstday = $this->getWeekMonday();
 			$mode = $params->get('week_start') == 'MO' ? 1 : 0;
 			$query->where('YEARWEEK(x.dates, ' . $mode . ') = YEARWEEK(' . $this->_db->Quote($firstday) . ', ' . $mode . ') ');
 		}
@@ -197,10 +197,18 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 		$year = $this->getYear();
 
 		$days = array();
+		if (JFactory::getApplication()->getParams()->get('week_start') == 'SU')
+		{
+			$offset = -1;
+		}
+		else
+		{
+			$offset = 0;
+		}
 
 		for ($day = 1; $day <= 7; $day++)
 		{
-			$days[] = date('Y-m-d', strtotime($year . "W" . $week_number . $day));
+			$days[] = date('Y-m-d', strtotime($year."W".$week_number.($day + $offset)));
 		}
 
 		return $days;
@@ -213,7 +221,7 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 	 */
 	public function getPreviousWeek()
 	{
-		$aday = reset($this->getWeekDays());
+		$aday = $this->getWeekMonday();
 		$prev = strtotime("$aday -7 days");
 
 		return date('YW', $prev);
@@ -226,9 +234,21 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 	 */
 	public function getNextWeek()
 	{
-		$aday = reset($this->getWeekDays());
+		$aday = $this->getWeekMonday();
 		$prev = strtotime("$aday +7 days");
 
 		return date('YW', $prev);
+	}
+	
+	/**
+	 * returns the date for monday in current week, to be safe to use for week calculations
+	 * as first day can be msunday or monday
+	 *
+	 * @return string date
+	 */
+	public function getWeekMonday()
+	{
+		$days = $this->getWeekDays();
+		return $days[1];
 	}
 }

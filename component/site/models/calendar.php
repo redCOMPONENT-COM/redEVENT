@@ -174,6 +174,7 @@ class RedeventModelCalendar extends JModel
 
 		$query->select('DATEDIFF(x.enddates, x.dates) AS datediff, a.id, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes');
 		$query->select('a.title, x.venueid as locid, a.datdescription, a.created, l.venue, l.city, l.state, l.url, l.street, l.country, x.featured');
+		$query->select('a.datimage');
 		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
 		$query->select('DAYOFMONTH(x.dates) AS start_day, YEAR(x.dates) AS start_year, MONTH(x.dates) AS start_month');
 		$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
@@ -228,6 +229,7 @@ class RedeventModelCalendar extends JModel
 		{
 			$query->where(' x.published = 1 ');
 		}
+        $query->where(' a.published <> 0 ');
 
 		// Category must be published too
 		$query->where(' cat.published = 1 ');

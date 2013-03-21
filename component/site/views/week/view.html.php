@@ -58,9 +58,9 @@ class RedeventViewWeek extends JView
       $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/week.css');
     }
     else {
-      $document->addStyleSheet($params->get('custom_css'));     
+      $document->addStyleSheet($params->get('custom_css'));
     }
-		
+
     // add js
     JHTML::_('behavior.mootools');
 
@@ -70,7 +70,7 @@ class RedeventViewWeek extends JView
 		//get data from model
 		$rows = & $this->get('Data');
 		$week = & $this->get('Day');
-		
+
 		//params
 		if ($item) {
 			$title = $item->title;
@@ -88,7 +88,7 @@ class RedeventViewWeek extends JView
 			$document->setTitle($params->get('page_title'));
 			$document->setMetadata( 'keywords' , $params->get('page_title') );
 		}
-						
+
 		$this->assignRef('data',	   $rows);
 		$this->assignRef('title',	   $title);
 		$this->assignRef('params',   $params);
@@ -98,35 +98,37 @@ class RedeventViewWeek extends JView
 		$this->assign('weekdays',   $this->get('weekdays'));
 		$this->assign('next',   $this->get('nextweek'));
 		$this->assign('previous',   $this->get('previousweek'));
-		
+
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
 		array_unshift($cols, 'time');
 		array_unique($cols);
 		$exclude = array('date');
 		$cols = array_diff($cols, $exclude);
-		
+
 		$cols = redEVENTHelper::validateColumns($cols);
 		$this->assign('columns',        $cols);
 		$start = JComponentHelper::getParams('com_redevent')->get('week_start') == 'MO' ? 1 : 0;
 		$this->assign('start',        $start);
-		
+
 		parent::display($tpl);
 	}
-	
+
 	public function sortByDay()
 	{
 		if (!$this->data) {
 			return false;
 		}
-		$days = array();
-		$format = JComponentHelper::getParams('com_redevent')->get('week_start') == 'MO' ? '%u' : '%w';
+
+		$weekdays = $this->get('weekdays');
+
 		foreach ($this->data as $ev)
 		{
-			$days[strftime($format, strtotime($ev->dates))][] = $ev;
+			$days[array_search($ev->dates, $weekdays)][] = $ev;
 		}
+
 		return $days;
 	}
-	
+
 	/**
 	 * get day name from number
 	 * @param int $number
@@ -135,7 +137,7 @@ class RedeventViewWeek extends JView
 	public function getDayName($number)
 	{
 		$days = $this->get('WeekDays');
-		$day = $days[$number-1];
+		$day = $days[$number];
 		return date('l, j F Y', strtotime($day));
 	}
 }
