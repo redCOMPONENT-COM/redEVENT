@@ -463,9 +463,22 @@ class UserAcl
 
 	/**
 	 * check if user is allowed to addxrefs
+	 *
 	 * @return boolean
+	 *
+	 * @deprecated  see  canAddSession
 	 */
 	public function canAddXref()
+	{
+		return self::canAddSession();
+	}
+
+	/**
+	 * check if user is allowed to add a session
+	 *
+	 * @return boolean
+	 */
+	public function canAddSession()
 	{
 		if (!$this->_userid)
 		{

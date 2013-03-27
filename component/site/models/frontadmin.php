@@ -1,8 +1,8 @@
+<?php
 /**
- * @version    2.5 
- * @package    redEVENT
+ * @package    RedEVENT
  * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
+ * @license    GNU/GPL, see LICENSE.php
  * redEVENT is based on EventList made by Christoph Lukes from schlu.net
  * redEVENT can be downloaded from www.redcomponent.com
  * redEVENT is free software; you can redistribute it and/or
@@ -18,30 +18,56 @@
  * along with redEVENT; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+// No direct access
+defined('_JEXEC') or die('Restricted access');
+
+jimport('joomla.application.component.model');
 
 /**
- * this file manages the js script for b2b interface
+ * Redevents Component events list Model
+ *
+ * @package  Redevent
+ * @since    2.5
  */
+class RedeventModelFrontadmin extends JModel
+{
+	/**
+	 * returns events as options for filter
+	 *
+	 * @return array
+	 */
+	public function getEventsOptions()
+	{
+		return array();
+	}
 
-window.addEvent('domready', function() {	
-	
-	redb2b.init();
-	
-});
+	/**
+	 * returns sessions as options for filter
+	 *
+	 * @return array
+	 */
+	public function getSessionsOptions()
+	{
+		return array();
+	}
 
-var redb2b = {
-	
-		/**
-		 * load the base page
-		 */
-		init : function() {
-			var request = new Request({
-				url: 'index.php?option=com_redevent&controller=frontadmin&task=main&tmpl=component',
-				onSuccess : function(responseText, responseXML) {
-					document.id('redadmin-main').set('html', responseText);
-				}
-			});
-			request.send();
-		}
-		
-};
+	/**
+	 * returns sessions as options for filter
+	 *
+	 * @return array
+	 */
+	public function getVenuesOptions()
+	{
+		return array();
+	}
+
+	/**
+	 * returns sessions as options for filter
+	 *
+	 * @return array
+	 */
+	public function getCategoriesOptions()
+	{
+		return array();
+	}
+}

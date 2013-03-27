@@ -97,6 +97,31 @@ class RedeventViewFrontadmin extends JView
 
 	protected function displayMain($tpl = null)
 	{
+		$useracl = UserAcl::getInstance();
+
+		$state = $this->get('state');
+
+		// Events filter
+		$options = array(JHtml::_('select.option', '', JText::_('COM_REDEVENT_EVENT')));
+		$this->events_options     = array_merge($options, $this->get('EventsOptions'));
+
+		// Sessions filter
+		$options = array(JHtml::_('select.option', '', JText::_('COM_REDEVENT_SESSION')));
+		$this->sessions_options   = array_merge($options, $this->get('SessionsOptions'));
+
+		// Venues filter
+		$options = array(JHtml::_('select.option', '', JText::_('COM_REDEVENT_VENUE')));
+		$this->venues_options     = array_merge($options, $this->get('VenuesOptions'));
+
+		// Categories filter
+		$options = array(JHtml::_('select.option', '', JText::_('COM_REDEVENT_CATEGORY')));
+		$this->categories_options = array_merge($options, $this->get('CategoriesOptions'));
+
+		$this->filter_from        = $state->get('filter_from');
+		$this->filter_to          = $state->get('filter_to');
+
+		$this->useracl = $useracl;
+
 		parent::display($tpl);
 	}
 }

@@ -22,11 +22,10 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <ul class="inline">
-	<li><?php echo JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_HELLO_USER_S', JFactory::getUser()->get('name')); ?></li>
-	<li><?php echo JHTML::link('index.php?option=com_users&task=user.logout', JText::_('COM_REDEVENT_FRONTEND_ADMIN_LOGOUT')); ?></li>
-	<li><?php echo JHTML::link('#', JText::_('COM_REDEVENT_FRONTEND_ADMIN_MY_ACCOUNT'), array('class' => 'btn')); ?></li>
-	<li><?php echo JHTML::link('#', JText::_('COM_REDEVENT_FRONTEND_ADMIN_FILE_ARCHIVE'), array('class' => 'btn')); ?></li>
-	<li><?php echo JHTML::link('#', JText::_('COM_REDEVENT_FRONTEND_ADMIN_SUPPORT'), array('class' => 'btn')); ?></li>
-	<li><?php echo JHTML::link('#', JText::_('COM_REDEVENT_FRONTEND_ADMIN_CONTACT'), array('class' => 'btn')); ?></li>
+	<li><input name="filter_org" id="filter_org" type="text" class="input-medium" placeholder="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ORGANIZATION'); ?>"/></li>
+	<li><input name="filter_person" id="filter_person" type="text" class="input-medium" placeholder="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_PERSON'); ?>"/></li>
+	<li><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SEARCH_IN'); ?></li>
+	<li><label class="checkbox"><input name="filter_active" id="filter_active" type="checkbox" /> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ACTIVE_COURSES'); ?></label></li>
+	<li><label class="checkbox"><input name="filter_archived" id="filter_archived" type="checkbox" /> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSES_HISTORY'); ?></label></li>
 </ul>.
 <div class="clear"></div>

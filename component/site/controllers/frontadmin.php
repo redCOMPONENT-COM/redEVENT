@@ -23,8 +23,6 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport('joomla.application.component.controller');
-
 /**
  * redEVENT Component b2b Controller
  *
@@ -38,7 +36,8 @@ class RedeventControllerFrontadmin extends FOFController
 	{
 		$app = JFactory::getApplication();
 
-		$this->viewName = 'frontadmin';
+		$this->viewName  = 'frontadmin';
+		$this->modelName = 'frontadmin';
 		$this->layout   = 'main';
 
 		$this->display();

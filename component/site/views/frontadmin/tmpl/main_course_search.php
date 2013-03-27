@@ -21,12 +21,25 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<ul class="inline">
-	<li><?php echo JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_HELLO_USER_S', JFactory::getUser()->get('name')); ?></li>
-	<li><?php echo JHTML::link('index.php?option=com_users&task=user.logout', JText::_('COM_REDEVENT_FRONTEND_ADMIN_LOGOUT')); ?></li>
-	<li><?php echo JHTML::link('#', JText::_('COM_REDEVENT_FRONTEND_ADMIN_MY_ACCOUNT'), array('class' => 'btn')); ?></li>
-	<li><?php echo JHTML::link('#', JText::_('COM_REDEVENT_FRONTEND_ADMIN_FILE_ARCHIVE'), array('class' => 'btn')); ?></li>
-	<li><?php echo JHTML::link('#', JText::_('COM_REDEVENT_FRONTEND_ADMIN_SUPPORT'), array('class' => 'btn')); ?></li>
-	<li><?php echo JHTML::link('#', JText::_('COM_REDEVENT_FRONTEND_ADMIN_CONTACT'), array('class' => 'btn')); ?></li>
-</ul>.
-<div class="clear"></div>
+<form id="course-search-form" name="course-search-form">
+	<div>
+		<?php echo JHtml::_('select.genericlist', $this->events_options, 'filter_event', array('class' => 'input-medium')); ?>
+	</div>
+	<div>
+		<?php echo JHtml::_('select.genericlist', $this->sessions_options, 'filter_session'); ?>
+	</div>
+	<div>
+		<?php echo JHtml::_('select.genericlist', $this->venues_options, 'filter_venue'); ?>
+	</div>
+	<div>
+		<?php echo JHtml::_('select.genericlist', $this->categories_options, 'filter_category'); ?>
+	</div>
+	<div>
+		<?php echo JHtml::calendar($this->filter_from, 'filter_from', 'filter_from'); ?>
+	</div>
+	<div>
+		<?php echo JHTML::calendar($this->filter_to, 'filter_to', 'filter_to'); ?>
+	</div>
+	<button><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_BUTTON_SEARCH'); ?></button>
+
+</form>
