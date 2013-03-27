@@ -30,7 +30,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 </div>
 
 <div id="redadmin-main">
-	<?php echo $this->loadTemplate('main'); ?>
 </div>
 
 </div>

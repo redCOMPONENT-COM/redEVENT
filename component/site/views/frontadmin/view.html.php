@@ -33,7 +33,7 @@ jimport('joomla.application.component.view');
  * @subpackage  redevent
  * @since       2.0
 */
-class RedeventViewAdmin extends JView
+class RedeventViewFrontadmin extends JView
 {
 	/**
 	 * Creates the View
@@ -46,6 +46,11 @@ class RedeventViewAdmin extends JView
 	 */
 	public function display($tpl = null)
 	{
+		if ($this->getLayout() == 'main')
+		{
+			return $this->displayMain($tpl);
+		}
+
 		JHTML::_('behavior.framework');
 
 		// Load Akeeba Strapper
@@ -87,6 +92,11 @@ class RedeventViewAdmin extends JView
 
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
+		parent::display($tpl);
+	}
+
+	protected function displayMain($tpl = null)
+	{
 		parent::display($tpl);
 	}
 }

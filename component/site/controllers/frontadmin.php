@@ -38,7 +38,12 @@ class RedeventControllerFrontadmin extends FOFController
 	{
 		$app = JFactory::getApplication();
 
-		echo 'hello main';
+		$this->viewName = 'frontadmin';
+		$this->layout   = 'main';
+
+		$this->display();
+
+		// No debug !
 		$app->close();
 	}
 }
