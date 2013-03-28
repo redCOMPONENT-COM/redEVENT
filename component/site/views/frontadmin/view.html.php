@@ -48,9 +48,9 @@ class RedeventViewFrontadmin extends JView
 	 */
 	public function display($tpl = null)
 	{
-		if ($this->getLayout() == 'main')
+		if ($this->getLayout() == 'searchsessions')
 		{
-			return $this->displayMain($tpl);
+			return $this->displaySearchSessions($tpl);
 		}
 
 		JHTML::_('behavior.framework');
@@ -74,7 +74,6 @@ class RedeventViewFrontadmin extends JView
 		$pathway    = $mainframe->getPathWay();
 		$params     = $mainframe->getParams();
 		$uri        = JFactory::getURI();
-		$acl        = UserACl::getInstance();
 
 		$menu = JSite::getMenu();
 		$item = $menu->getActive();
@@ -94,14 +93,8 @@ class RedeventViewFrontadmin extends JView
 
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
-		parent::display($tpl);
-	}
-
-	protected function displayMain($tpl = null)
-	{
 		$useracl = UserAcl::getInstance();
 
-		$params = JFactory::getApplication()->getParams('com_redevent');
 		$state = $this->get('state');
 
 		// Events filter
@@ -120,6 +113,10 @@ class RedeventViewFrontadmin extends JView
 		$options = array(JHtml::_('select.option', '', JText::_('COM_REDEVENT_CATEGORY')));
 		$this->categories_options = array_merge($options, $this->get('CategoriesOptions'));
 
+		// Organizations filter
+		$options = array(JHtml::_('select.option', '', JText::_('COM_REDEVENT_FRONTEND_ADMIN_ORGANIZATION')));
+		$this->organizations_options = array_merge($options, $this->get('OrganizationsOptions'));
+
 		$this->filter_from        = $state->get('filter_from');
 		$this->filter_to          = $state->get('filter_to');
 
@@ -128,8 +125,28 @@ class RedeventViewFrontadmin extends JView
 
 		$this->useracl = $useracl;
 		$this->params  = $params;
+		$this->state   = $state;
 
-		$this->events = $this->get('Events');
+		$this->sessions = $this->get('Sessions');
+
+		parent::display($tpl);
+	}
+
+	protected function displaySearchSessions($tpl = null)
+	{
+		$useracl = UserAcl::getInstance();
+		$params = JFactory::getApplication()->getParams('com_redevent');
+		$state = $this->get('state');
+
+		$this->order_Dir = $state->get('filter_order');
+		$this->order     = $state->get('filter_order_Dir');
+
+		$this->params  = $params;
+		$this->state   = $state;
+
+		$this->useracl = $useracl;
+		$this->sessions = $this->get('Sessions');
+		$this->params  = $params;
 
 		parent::display($tpl);
 	}

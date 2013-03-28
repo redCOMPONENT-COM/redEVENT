@@ -22,10 +22,14 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <ul class="inline">
-	<li><input name="filter_org" id="filter_org" type="text" class="input-medium" placeholder="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ORGANIZATION'); ?>"/></li>
+	<li>
+		<?php echo JHtml::_('select.genericlist', $this->organizations_options, 'filter_organization', '', 'value', 'text', $this->state->get('filter_organization')); ?>
+	</li>
 	<li><input name="filter_person" id="filter_person" type="text" class="input-medium" placeholder="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_PERSON'); ?>"/></li>
 	<li><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SEARCH_IN'); ?></li>
-	<li><label class="checkbox"><input name="filter_active" id="filter_active" type="checkbox" /> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ACTIVE_COURSES'); ?></label></li>
-	<li><label class="checkbox"><input name="filter_archived" id="filter_archived" type="checkbox" /> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSES_HISTORY'); ?></label></li>
+	<li><label class="checkbox"><input name="filter_active" id="filter_active" type="checkbox"
+		<?php echo $this->state->get('filter_active') ? ' checked="checked"' : ''; ?>/> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ACTIVE_COURSES'); ?></label></li>
+	<li><label class="checkbox"><input name="filter_archived" id="filter_archived" type="checkbox"
+		<?php echo $this->state->get('filter_archived') ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSES_HISTORY'); ?></label></li>
 </ul>.
 <div class="clear"></div>

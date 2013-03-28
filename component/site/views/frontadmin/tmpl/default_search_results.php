@@ -21,7 +21,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<?php if ($this->events): ?>
+<?php if ($this->sessions): ?>
 	<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ALL_EVENTS'); ?></h2>
 
 	<table class="table">
@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach ($this->events as $row): ?>
+			<?php foreach ($this->sessions as $row): ?>
 				<tr>
 					<td><?php echo REOutput::formatEventDateTime($row, false); ?></td>
 					<td><?php echo redEVENTHelper::getEventDuration($row); ?></td>
@@ -73,7 +73,7 @@ defined('_JEXEC') or die('Restricted access');
 							<?php echo JHTML::_('image', 'components/com_redevent/assets/images/ok.png', JText::_('COM_REDEVENT_Published' )); ?>
 						<?php endif; ?>
 					<?php elseif ($row->published == '0'):?>
-						<?php if ($this->acl->canEditXref($row->xref)): ?>
+						<?php if ($this->useracl->canEditXref($row->xref)): ?>
 							<?php echo JHTML::link('index.php?option=com_redevent&task=publishxref&xref='. $row->xref, JHTML::_('image', 'components/com_redevent/assets/images/no.png', JText::_('COM_REDEVENT_Unpublished' ))); ?>
 						<?php else: ?>
 							<?php echo JHTML::_('image', 'components/com_redevent/assets/images/no.png', JText::_('COM_REDEVENT_Unpublished' )); ?>

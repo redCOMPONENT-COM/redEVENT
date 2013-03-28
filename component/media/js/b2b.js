@@ -32,9 +32,18 @@ window.addEvent('domready', function() {
 var redb2b = {
 	
 		/**
-		 * load the base page
+		 * init events
 		 */
 		init : function() {
+			new Form.Request(document.id('course-search-form'), document.id('main-results'), {
+				resetForm : false,
+				extraData : {
+					'tmpl' : 'component'
+				}
+			});
+		},
+		
+		updatemain : function() {
 			var request = new Request({
 				url: 'index.php?option=com_redevent&controller=frontadmin&task=main&tmpl=component',
 				onSuccess : function(responseText, responseXML) {

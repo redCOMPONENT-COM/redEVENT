@@ -20,26 +20,5 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-?>
-<form id="course-search-form" name="course-search-form">
-	<div>
-		<?php echo JHtml::_('select.genericlist', $this->events_options, 'filter_event', array('class' => 'input-medium')); ?>
-	</div>
-	<div>
-		<?php echo JHtml::_('select.genericlist', $this->sessions_options, 'filter_session'); ?>
-	</div>
-	<div>
-		<?php echo JHtml::_('select.genericlist', $this->venues_options, 'filter_venue'); ?>
-	</div>
-	<div>
-		<?php echo JHtml::_('select.genericlist', $this->categories_options, 'filter_category'); ?>
-	</div>
-	<div>
-		<?php echo JHtml::calendar($this->filter_from, 'filter_from', 'filter_from'); ?>
-	</div>
-	<div>
-		<?php echo JHTML::calendar($this->filter_to, 'filter_to', 'filter_to'); ?>
-	</div>
-	<button><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_BUTTON_SEARCH'); ?></button>
 
-</form>
+require_once 'default_search_results.php';

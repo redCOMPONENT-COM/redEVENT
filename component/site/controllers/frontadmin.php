@@ -32,13 +32,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  */
 class RedeventControllerFrontadmin extends FOFController
 {
-	public function main()
+	public function searchsessions()
 	{
 		$app = JFactory::getApplication();
 
 		$this->viewName  = 'frontadmin';
 		$this->modelName = 'frontadmin';
-		$this->layout   = 'main';
+		$this->layout    = 'searchsessions';
 
 		$this->display();
 

@@ -33,32 +33,54 @@ require_once 'baseeventslist.php';
 class RedeventModelFrontadmin extends RedeventModelBaseEventList
 {
 	/**
-	 * caching for events
+	 * caching for sessions
 	 *
 	 * @var array
 	 */
-	protected $events = null;
-	protected $pagination_events = null;
-	protected $total_events = null;
+	protected $sessions = null;
+	protected $pagination_sessions = null;
+	protected $total_sessions = null;
+
+	protected $useracl = null;
+
+	public function __construct($config = array())
+	{
+		parent::__construct($config);
+
+		$app = JFactory::getApplication();
+
+		$this->useracl = UserAcl::getInstance();
+
+		$this->setState('filter_session',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_session',    'filter_session',    0, 'int'));
+		$this->setState('filter_person_active',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_person_active',    'filter_person_active',    1, 'int'));
+		$this->setState('filter_person_archive',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_person_archive',    'filter_person_archive',    0, 'int'));
+		$this->setState('filter_from',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_from',    'filter_from',    '', 'string'));
+		$this->setState('filter_to',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_to',    'filter_to',    '', 'string'));
+	}
+
+	public function getUseracl()
+	{
+		return $this->useracl;
+	}
 
 	/**
-	 * Method to get the Events
+	 * Method to get the Sessions the user can manage
 	 *
 	 * @return array
 	 */
-	public function getEvents()
+	public function getSessions()
 	{
 		// Lets load the content if it doesn't already exist
-		if (empty($this->events))
+		if (empty($this->sessions))
 		{
-			$query = $this->_buildQueryEvents();
-			$pagination = $this->getEventsPagination();
-			$this->events = $this->_getList($query, $pagination->limitstart, $pagination->limit);
-			$this->events = $this->_categories($this->events);
-			$this->events = $this->_getPlacesLeft($this->events);
+			$query = $this->_buildQuerySessions();
+			$pagination = $this->getSessionsPagination();
+			$this->sessions = $this->_getList($query, $pagination->limitstart, $pagination->limit);
+			$this->sessions = $this->_categories($this->sessions);
+			$this->sessions = $this->_getPlacesLeft($this->sessions);
 		}
 
-		return $this->events;
+		return $this->sessions;
 	}
 
 	/**
@@ -67,16 +89,16 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	 * @access public
 	 * @return integer
 	 */
-	public function getEventsPagination()
+	public function getSessionsPagination()
 	{
 		// Lets load the content if it doesn't already exist
-		if (empty($this->pagination_events))
+		if (empty($this->pagination_sessions))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination_events = new JPagination($this->getTotalEvents(), $this->getState('limitstart_events'), $this->getState('limit'));
+			$this->pagination_sessions = new JPagination($this->getTotalSessions(), $this->getState('limitstart_sessions'), $this->getState('limit'));
 		}
 
-		return $this->pagination_events;
+		return $this->pagination_sessions;
 	}
 
 	/**
@@ -84,16 +106,16 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	 *
 	 * @return integer
 	 */
-	public function getTotalEvents()
+	public function getTotalSessions()
 	{
 		// Lets load the total nr if it doesn't already exist
-		if (empty($this->total_events))
+		if (empty($this->total_sessions))
 		{
-			$query = $this->_buildQueryEvents();
-			$this->total_events = $this->_getListCount($query);
+			$query = $this->_buildQuerySessions();
+			$this->total_sessions = $this->_getListCount($query);
 		}
 
-		return $this->total_events;
+		return $this->total_sessions;
 	}
 
 	/**
@@ -103,7 +125,26 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	 */
 	public function getEventsOptions()
 	{
-		return array();
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$ids = $this->useracl->getCanEditEvents();
+
+		if (!$ids)
+		{
+			return array();
+		}
+
+		$query->select('a.id AS value, a.title as text');
+		$query->from('#__redevent_events AS a');
+
+		$query->where('a.id IN(' . implode(',', $ids) . ')');
+		$query->order('a.title');
+
+		$db->setQuery($query);
+		$res = $db->loadObjectList();
+
+		return $res;
 	}
 
 	/**
@@ -113,7 +154,30 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	 */
 	public function getSessionsOptions()
 	{
-		return array();
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$ids = $this->useracl->getCanEditXrefs();
+
+		if (!$ids)
+		{
+			return array();
+		}
+
+		$query->select('x.id AS value');
+		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE x.dates END as text');
+		$query->from('#__redevent_event_venue_xref AS x');
+		$query->join('INNER', '#__redevent_events AS a ON x.eventid = a.id');
+
+		$query->where('x.id IN(' . implode(',', $ids) . ')');
+		$query->where('x.eventid = ' . $this->getState('filter_event'));
+		$query->order('x.dates');
+
+		$db->setQuery($query);
+		$res = $db->loadObjectList();
+
+		return $res;
+
 	}
 
 	/**
@@ -123,7 +187,25 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	 */
 	public function getVenuesOptions()
 	{
-		return array();
+		$allowed = $this->useracl->getAllowedForEventsVenues();
+
+		if (!$allowed)
+		{
+			return array();
+		}
+
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('id as value, venue as text');
+		$query->from('#__redevent_venues');
+		$query->where('id IN (' . implode(',', $allowed) . ')');
+		$query->order('venue');
+
+		$db->setQuery($query);
+		$res = $db->loadObjectList();
+
+		return $res;
 	}
 
 	/**
@@ -133,7 +215,53 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	 */
 	public function getCategoriesOptions()
 	{
-		return array();
+		$allowed = $this->useracl->getAuthorisedCategories('re.manageevents');
+
+		if (!$allowed)
+		{
+			return array();
+		}
+
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('id as value, catname as text');
+		$query->from('#__redevent_categories');
+		$query->where('id IN (' . implode(',', $allowed) . ')');
+		$query->order('catname');
+
+		$db->setQuery($query);
+		$res = $db->loadObjectList();
+
+		return $res;
+	}
+
+	/**
+	 * returns Organizations as options for filter
+	 *
+	 * @return array
+	 */
+	public function getOrganizationsOptions()
+	{
+		$user = JFactory::getUser();
+
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('o.organization_id as value, o.organization_name as text');
+		$query->from('#__redmember_organization AS o');
+		$query->order('o.organization_name');
+
+		if (!$this->useracl->superuser())
+		{
+			$query->join('INNER', '#__redmember_user_organization_xref AS x ON x.organization_id = o.organization_id');
+			$query->where('x.user_id = ' . $user->get('id'));
+		}
+
+		$db->setQuery($query);
+		$res = $db->loadObjectList();
+
+		return $res;
 	}
 
 	/**
@@ -142,7 +270,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	 * @access private
 	 * @return string
 	 */
-	protected function _buildQueryEvents()
+	protected function _buildQuerySessions()
 	{
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
@@ -165,7 +293,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$query->join('LEFT', $db->quoteName('#__languages').' AS lg ON lg.lang_code = a.language');
 
 		// Get the WHERE and ORDER BY clauses for the query
-		$query = $this->_buildEventListWhere($query);
+		$query = $this->_buildSessionsListWhere($query);
 
 		$filter_order = $this->getState('filter_order');
 		$filter_order_dir = $this->getState('filter_order_dir');
@@ -182,22 +310,12 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	 *
 	 * @return JDatabaseQuery
 	 */
-	protected function _buildEventListWhere(JDatabaseQuery $query)
+	protected function _buildSessionsListWhere(JDatabaseQuery $query)
 	{
-		$mainframe = JFactory::getApplication();
-
-		$user = JFactory::getUser();
-
-		// Get the paramaters of the active menu item
-		$params = $mainframe->getParams();
-
-		$task = JRequest::getWord('task');
-
-		$where = array();
-
-		$where[] = ' x.published > -1 ';
-
+		$db = JFactory::getDbo();
 		$acl = UserAcl::getInstance();
+
+		$query->where('x.published > -1');
 
 		if (!$acl->superuser())
 		{
@@ -207,67 +325,38 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 
 			if ($xrefs && count($xrefs))
 			{
-				$where[] = ' x.id IN (' . implode(",", $xrefs) . ')';
+				$query->where(' x.id IN (' . implode(",", $xrefs) . ')');
 			}
 			else
 			{
-				$where[] = '0';
-			}
-		}
-
-		if ($params->get('showopendates', 1) == 0)
-		{
-			$where[] = ' x.dates IS NOT NULL AND x.dates > 0 ';
-		}
-
-		if ($params->get('shownonbookable', 1) == 0)
-		{
-			$where[] = ' a.registra > 0 ';
-		}
-
-		/*
-		 * If we have a filter, and this is enabled... lets tack the AND clause
-		* for the filter onto the WHERE clause of the item query.
-		*/
-		if ($params->get('filter_text'))
-		{
-			$filter      = JRequest::getString('filter', '', 'request');
-			$filter_type = JRequest::getWord('filter_type', '', 'request');
-
-			if ($filter)
-			{
-				// Clean filter variables
-				$filter = JString::strtolower($filter);
-				$filter = $this->_db->Quote('%' . $this->_db->getEscaped($filter, true) . '%', false);
-				$filter_type = JString::strtolower($filter_type);
-
-				switch ($filter_type)
-				{
-					case 'title':
-						$where[] = ' LOWER( a.title ) LIKE ' . $filter;
-						break;
-
-					case 'venue':
-						$where[] = ' LOWER( l.venue ) LIKE ' . $filter;
-						break;
-
-					case 'city':
-						$where[] = ' LOWER( l.city ) LIKE ' . $filter;
-						break;
-
-					case 'type':
-						$where[] = ' LOWER( c.catname ) LIKE ' . $filter;
-						break;
-				}
+				$query->where('0');
 			}
 		}
 
 		if (JRequest::getInt('filter_event'))
 		{
-			$where[] = ' a.id = ' . JRequest::getInt('filter_event');
+			$query->where('a.id = ' . JRequest::getInt('filter_event'));
 		}
 
-		$query->where(implode(' AND ', $where));
+		if (JRequest::getInt('filter_venue'))
+		{
+			$query->where('l.id = ' . JRequest::getInt('filter_venue'));
+		}
+
+		if (JRequest::getInt('filter_category'))
+		{
+			$query->where('c.id = ' . JRequest::getInt('filter_category'));
+		}
+
+		if ($from = $this->getState('filter_from') && redEVENTHelper::isValidDate($this->getState('filter_from')))
+		{
+			$query->where('DATE(x.dates) >= ' . $db->quote($this->getState('filter_from')));
+		}
+
+		if ($to = $this->getState('filter_to') && redEVENTHelper::isValidDate($this->getState('filter_to')))
+		{
+			$query->where('x.dates > 0 AND DATE(x.dates) <= ' . $db->quote($this->getState('filter_to')));
+		}
 
 		return $query;
 	}

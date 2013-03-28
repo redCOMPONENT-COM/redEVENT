@@ -345,6 +345,44 @@ class UserAcl
 	}
 
 	/**
+	 * get array of all the ids of events the user can edit
+	 *
+	 * @return array int event ids
+	 */
+	public function getCanEditEvents()
+	{
+		if (!$this->_userid)
+		{
+			return false;
+		}
+
+		$cats    = $this->getAuthorisedCategories('re.manageevents');
+		$canEdit = $this->getUser()->authorise('re.editevent', 'com_redevent');
+
+		if ((!$canEdit) || !count($cats))
+		{
+			return false;
+		}
+
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('e.id');
+		$query->from('#__redevent_events AS e');
+		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
+
+		if (!$this->superuser())
+		{
+			$query->where('xcat.category_id IN (' . implode(', ', $cats) . ')');
+		}
+
+		$db->setQuery($query);
+		$res = $db->loadColumn();
+
+		return $res;
+	}
+
+	/**
 	 * get array of all the xrefs the user can edit
 	 *
 	 * @return array int xrefs
