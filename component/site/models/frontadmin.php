@@ -171,6 +171,12 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 
 		$query->where('x.id IN(' . implode(',', $ids) . ')');
 		$query->where('x.eventid = ' . $this->getState('filter_event'));
+
+		if ($this->getState('filter_venue'))
+		{
+			$query->where('x.venueid = ' . $this->getState('filter_venue'));
+		}
+
 		$query->order('x.dates');
 
 		$db->setQuery($query);

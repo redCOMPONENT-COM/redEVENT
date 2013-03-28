@@ -102,6 +102,7 @@ class RedeventViewFrontadmin extends JView
 		$this->events_options     = array_merge($options, $this->get('EventsOptions'));
 
 		// Sessions filter
+		JText::script("COM_REDEVENT_SESSION");
 		$options = array(JHtml::_('select.option', '', JText::_('COM_REDEVENT_SESSION')));
 		$this->sessions_options   = array_merge($options, $this->get('SessionsOptions'));
 

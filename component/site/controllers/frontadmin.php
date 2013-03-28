@@ -45,4 +45,16 @@ class RedeventControllerFrontadmin extends FOFController
 		// No debug !
 		$app->close();
 	}
+
+	public function sessionsoptions()
+	{
+		$app = JFactory::getApplication();
+
+		$model = $this->getModel('Frontadmin', 'RedeventModel');
+		$options = $model->getSessionsOptions();
+
+		echo json_encode($options);
+
+		$app->close();
+	}
 }

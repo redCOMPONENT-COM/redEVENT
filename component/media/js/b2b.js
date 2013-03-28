@@ -37,9 +37,18 @@ var redb2b = {
 		init : function() {
 			new Form.Request(document.id('course-search-form'), document.id('main-results'), {
 				resetForm : false,
+				useSpinner: true,
 				extraData : {
 					'tmpl' : 'component'
 				}
+			});
+			
+			document.id('filter_event').addEvent('change', function(){
+				redb2b.updateSessions();
+			});
+			
+			document.id('filter_venue').addEvent('change', function(){
+				redb2b.updateSessions();
 			});
 		},
 		
@@ -51,6 +60,27 @@ var redb2b = {
 				}
 			});
 			request.send();
+		},
+		
+		updateSessions : function() {
+			var req = new Request.JSON({
+				url : 'index.php?option=com_redevent&controller=frontadmin&task=sessionsoptions&tmpl=component',
+				data :document.id('course-search-form'),
+				onRequest: function(){
+					document.id('filter_session').set('spinner').spin();
+			    },
+				onSuccess : function(options) {
+					var sel = document.id('filter_session').unspin();
+					sel.empty();
+					new Element('option', {'value': ''}).set('text', Joomla.JText._("COM_REDEVENT_SESSION")).inject(sel);
+					if (options.length) {
+						options.each(function(el){
+							new Element('option', {'value': el.value}).set('text', el.text).inject(sel);
+						});
+					}
+				}
+			});
+			req.send();
 		}
 		
 };
