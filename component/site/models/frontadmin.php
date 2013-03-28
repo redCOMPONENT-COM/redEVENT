@@ -53,7 +53,6 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		{
 			$query = $this->_buildQueryEvents();
 			$pagination = $this->getEventsPagination();
-
 			$this->events = $this->_getList($query, $pagination->limitstart, $pagination->limit);
 			$this->events = $this->_categories($this->events);
 			$this->events = $this->_getPlacesLeft($this->events);
@@ -160,6 +159,10 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$query->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
 		$query->join('LEFT', '#__redevent_categories AS c ON c.id = xcat.category_id');
 		$query->group('x.id');
+
+		// Join over the language
+		$query->select('lg.title AS language_title, lg.sef AS language_sef');
+		$query->join('LEFT', $db->quoteName('#__languages').' AS lg ON lg.lang_code = a.language');
 
 		// Get the WHERE and ORDER BY clauses for the query
 		$query = $this->_buildEventListWhere($query);

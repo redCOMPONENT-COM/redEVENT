@@ -209,7 +209,7 @@ class RedeventViewMyevents extends JView
 	 * @param int xref id
 	 * @since 2.0
 	 */
-	function xrefeditbutton($id, $xref)
+	public static function xrefeditbutton($id, $xref)
 	{
 		$acl = &UserAcl::getInstance();
 		if (!$acl->canEditXref($xref)) {
@@ -234,7 +234,7 @@ class RedeventViewMyevents extends JView
 	 * @param int xref id
 	 * @since 2.0
 	 */
-	function eventeditbutton($id, $xref)
+	public static function eventeditbutton($id, $xref)
 	{
 		$acl = &UserAcl::getInstance();
 		if (!$acl->canEditEvent($id)) {
@@ -259,7 +259,7 @@ class RedeventViewMyevents extends JView
 	 * @param int xref id
 	 * @since 2.0
 	 */
-	function xrefdeletebutton($id)
+	public static function xrefdeletebutton($id)
 	{
 		JHTML::_('behavior.tooltip');
     $document = & JFactory::getDocument();
@@ -281,7 +281,7 @@ class RedeventViewMyevents extends JView
 	 * @param int xref id
 	 * @since 2.0
 	 */
-	function xrefattendeesbutton($id)
+	public static function xrefattendeesbutton($id)
 	{
 		JHTML::_('behavior.tooltip');
 
@@ -305,7 +305,7 @@ class RedeventViewMyevents extends JView
 	 * @param string $view
 	 * @since 0.9
 	 */
-	function venueeditbutton($id)
+	public static function venueeditbutton($id)
 	{
 		JHTML::_('behavior.tooltip');
 

@@ -26,6 +26,8 @@ defined('_JEXEC') or die ('Restricted access');
 
 jimport('joomla.application.component.view');
 
+require_once JPATH_SITE . '/components/com_redevent/views/myevents/view.html.php';
+
 /**
  * HTML View class for the frontend admin View
  *
