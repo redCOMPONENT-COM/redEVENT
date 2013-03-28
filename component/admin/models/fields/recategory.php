@@ -89,8 +89,8 @@ class JFormFieldRECategory extends JFormField
 
 
 		JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_redevent'.DS.'tables');
-
-		$category = FOFTable::getAnInstance('Category', 'RedeventTable');
+		$tmp = FOFTable::getAnInstance('Category', 'RedeventTable');
+		$category = clone $tmp;
 
 		if ($this->value) {
 			$category->load($this->value);

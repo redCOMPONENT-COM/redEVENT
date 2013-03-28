@@ -99,6 +99,7 @@ class RedeventViewFrontadmin extends JView
 	{
 		$useracl = UserAcl::getInstance();
 
+		$params = JFactory::getApplication()->getParams('com_redevent');
 		$state = $this->get('state');
 
 		// Events filter
@@ -120,7 +121,13 @@ class RedeventViewFrontadmin extends JView
 		$this->filter_from        = $state->get('filter_from');
 		$this->filter_to          = $state->get('filter_to');
 
+		$this->order_Dir = $state->get('filter_order');
+		$this->order     = $state->get('filter_order_Dir');
+
 		$this->useracl = $useracl;
+		$this->params  = $params;
+
+		$this->events = $this->get('Events');
 
 		parent::display($tpl);
 	}

@@ -61,7 +61,7 @@ class redEVENTHelper {
 	 *
 	 * @since 0.9
 	 */
-	function cleanup($forced = 0)
+	public static function cleanup($forced = 0)
 	{
 		$db			= & JFactory::getDBO();
 
@@ -210,7 +210,7 @@ class redEVENTHelper {
 	 *
 	 * @return bool true on success
 	 */
-	function generaterecurrences($recurrence_id = null)
+	public static function generaterecurrences($recurrence_id = null)
 	{
 		$db = & JFactory::getDBO();
 
@@ -323,7 +323,7 @@ class redEVENTHelper {
 	 * @param string $string
 	 * @return string
 	 */
-	function br2break($string)
+	public static function br2break($string)
 	{
 		return preg_replace("=<br(>|([\s/][^>]*)>)\r?\n?=i", "\r\n", $string);
 	}
@@ -333,7 +333,7 @@ class redEVENTHelper {
 	 *
 	 * @param $event object having properties dates, enddates, times, endtimes
 	 */
-	function getEventDuration($event)
+	public static function getEventDuration($event)
 	{
 		if (!redEVENTHelper::isValidDate($event->dates)) {
 			return '-';
@@ -377,7 +377,7 @@ class redEVENTHelper {
 	 * @param array   id of enabled categories
 	 * @return array
 	 */
-	function getEventsCatOptions($show_empty = true, $show_unpublished = false, $enabled = false)
+	public static function getEventsCatOptions($show_empty = true, $show_unpublished = false, $enabled = false)
 	{
 		$db   = & JFactory::getDBO();
 
@@ -439,7 +439,7 @@ class redEVENTHelper {
 	 * @param boolean show unpublished venues categories
 	 * @return array
 	 */
-	function getVenuesCatOptions($show_empty = true, $show_unpublished = false)
+	public static function getVenuesCatOptions($show_empty = true, $show_unpublished = false)
 	{
 		$db   = JFactory::getDBO();
 
@@ -515,7 +515,7 @@ class redEVENTHelper {
 		return $options;
 	}
 
-	function getCustomField($type)
+	public static function getCustomField($type)
 	{
 		require_once (JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'customfield'.DS.'includes.php');
 
@@ -536,7 +536,7 @@ class redEVENTHelper {
 		}
 	}
 
-	function renderFieldValue($field)
+	public static function renderFieldValue($field)
 	{
 		switch ($field->type)
 		{
@@ -564,7 +564,7 @@ class redEVENTHelper {
 	 * @param $user_id
 	 * @return object (canregister, status)
 	 */
-	function canRegister($xref_id, $user_id = null)
+	public static function canRegister($xref_id, $user_id = null)
 	{
 		if (!file_exists(JPATH_SITE.DS.'components'.DS.'com_redform'.DS.'redform.core.php')) {
 			JError::raiseWarning(0,JText::_('COM_REDEVENT_REGISTRATION_NOT_ALLOWED_REDFORMCORE_NOT_FOUND'));
@@ -708,7 +708,7 @@ class redEVENTHelper {
 		return $result;
 	}
 
-	function canUnregister($xref_id, $user_id = null)
+	public static function canUnregister($xref_id, $user_id = null)
 	{
 		$db = & JFactory::getDBO();
 		$user = & JFactory::getUser($user_id);
@@ -757,7 +757,7 @@ class redEVENTHelper {
 	 * @param object xref
 	 * @return string
 	 */
-	function getRemainingPlaces($xref)
+	public static function getRemainingPlaces($xref)
 	{
 		// only display for events were registrations still open
 		if (!$xref->registra) {
@@ -784,7 +784,7 @@ class redEVENTHelper {
 	 * @param object $event
 	 * @param boolean daycheck: if true, events are over only the next day, otherwise, use time too.
 	 */
-	function isOver($event, $day_check = true)
+	public static function isOver($event, $day_check = true)
 	{
 		if (! (property_exists($event, 'dates') && property_exists($event, 'times')
 		&& property_exists($event, 'enddates') && property_exists($event, 'endtimes') ) ) {
@@ -809,7 +809,7 @@ class redEVENTHelper {
 	 *
 	 * @return array
 	 */
-	function getTimeZones()
+	public static function getTimeZones()
 	{
 		$timezones = array(
 				'-12'=>'Pacific/Kwajalein',
@@ -851,7 +851,7 @@ class redEVENTHelper {
 	 * @param string $offset
 	 * @return string
 	 */
-	function getTimeZone($offset)
+	public static function getTimeZone($offset)
 	{
 		$tz = self::getTimeZones();
 		if (isset($tz[$offset])) {
@@ -866,7 +866,7 @@ class redEVENTHelper {
 	 * @param string $date
 	 * @return boolean
 	 */
-	function isValidDate($date)
+	public static function isValidDate($date)
 	{
 		if (is_null($date)) {
 			return false;
@@ -885,7 +885,7 @@ class redEVENTHelper {
 	 * @param object $session must contain xref, course_code
 	 * @return string
 	 */
-	function getSessioncode($session)
+	public static function getSessioncode($session)
 	{
 		return $session->course_code.'-'.$session->xref;
 	}
@@ -895,7 +895,7 @@ class redEVENTHelper {
 	 *
 	 * @TODO: adapt for 1.7 acl
 	 */
-	function getAccesslevelOptions()
+	public static function getAccesslevelOptions()
 	{
 		$db =& JFactory::getDBO();
 
@@ -915,7 +915,7 @@ class redEVENTHelper {
 	 * @param string file path
 	 * @return string mime type
 	 */
-	function getMimeType($filename)
+	public static function getMimeType($filename)
 	{
 		if (function_exists('finfo_open')) {
 			$finfo = finfo_open(FILEINFO_MIME);
@@ -1001,7 +1001,7 @@ class redEVENTHelper {
 	 *
 	 * @return object
 	 */
-	function getCalendarTool()
+	public static function getCalendarTool()
 	{
 		require_once JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'classes'.DS.'iCalcreator.class.php';
 		$mainframe = &JFactory::getApplication();
@@ -1024,7 +1024,7 @@ class redEVENTHelper {
 		return $vcal;
 	}
 
-	function icalAddEvent(&$calendartool, $event)
+	public static function icalAddEvent(&$calendartool, $event)
 	{
 		require_once JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'classes'.DS.'iCalcreator.class.php';
 		$mainframe = &JFactory::getApplication();
@@ -1167,7 +1167,7 @@ class redEVENTHelper {
 	 * @param string  The date format
 	 * @param array Additional html attributes
 	 */
-	function calendar($value, $name, $id, $format = '%Y-%m-%d', $onClose = null, $attribs = null)
+	public static function calendar($value, $name, $id, $format = '%Y-%m-%d', $onClose = null, $attribs = null)
 	{
 		JHTML::_('behavior.calendar'); //load the calendar behavior
 
@@ -1196,7 +1196,7 @@ class redEVENTHelper {
 	 * @param int selected pricegroup id
 	 * @return string html
 	 */
-	function getRfPricesSelect($sessionpricegroups, $selected = null)
+	public static function getRfPricesSelect($sessionpricegroups, $selected = null)
 	{
 		$layout = JComponentHelper::getParams('com_redevent')->get('price_select_layout', 'select');
 		$html = array();
@@ -1237,7 +1237,7 @@ class redEVENTHelper {
 	 * @param string $enclosure
 	 * @return string csv line
 	 */
-	function writecsvrow($fields, $delimiter = ',', $enclosure = '"')
+	public static function writecsvrow($fields, $delimiter = ',', $enclosure = '"')
 	{
 		$params = &JComponentHelper::getParams('com_redevent');
 
@@ -1254,177 +1254,177 @@ class redEVENTHelper {
 			$output[] = preg_match("/(?:${delimiter_esc}|${enclosure_esc}|\s)/", $field) ? (
 			$enclosure . str_replace($enclosure, $enclosure . $enclosure, $field) . $enclosure
 			) : $field;
-}
+		}
 
-return join($delimiter, $output) . "\n";
-}
-
-/**
- * returns html for user selector
- *
- * @param string $field_name
- * @param int $selected
- * @return string
- */
-function getUserSelector($field_name, $selected)
-{
-	$app = &JFactory::getApplication();
-	$document = &JFactory::getDocument();
-	$db = &JFactory::getDBO();
-	$user = &JFactory::getUser($selected);
-
-	JHTML::_('behavior.mootools');
-	$document->addScript(JURI::base().'components/com_redevent/assets/js/selectuser.js');
-	//		echo '<pre>';print_r(JURI::base().'components/com_redevent/assets/selectuser.js'); echo '</pre>';exit;
-
-	$link = 'index.php?option=com_redevent&amp;task=selectuser&amp;tmpl=component&field='.$field_name;
-
-	$field  = '<input type="text" readonly="readonly" name="'.$field_name.'_name" id="'.$field_name.'_name" value="'.$user->get('username').'"/>';
-	$field .= '<input type="hidden" name="'.$field_name.'" id="'.$field_name.'" value="'.$user->get('id').'"/>';
-	$field .= "<a class=\"modal\" class=\"re-selectuserbutton\" title=\"".JText::_('COM_REDEVENT_SELECT_USER')."\" href=\"$link\" rel=\"{handler: 'iframe', size: {x: 650, y: 500}}\">".JText::_('COM_REDEVENT_SELECT_USER')."</a>\n";
-
-	return $field;
-}
-
-/**
- * return the valid columns for frontend display
- *
- * @param array $columns
- * @return array $columns
- */
-function validateColumns($columns)
-{
-	$db = &JFactory::getDBO();
-
-	$columns = array_map('strtolower', $columns);
-	$columns = array_map('trim', $columns);
-
-	$allowed = array('date',
-			'title',
-			'venue',
-			'state',
-			'city',
-			'category',
-			'picture',
-			'registrationend',
-			'places',
-			'placesleft',
-			'price',
-			'credits',
-			'country',
-			'countryflag',
-	);
-
-	$query = 'SELECT CONCAT("custom", f.id) FROM #__redevent_fields AS f WHERE f.published = 1';
-	$db->setQuery($query);
-	if ($res = $db->loadResultArray()) {
-		$allowed = array_merge($allowed, $res);
+		return join($delimiter, $output) . "\n";
 	}
 
-	return array_intersect($columns, $allowed);
-}
+	/**
+	 * returns html for user selector
+	 *
+	 * @param string $field_name
+	 * @param int $selected
+	 * @return string
+	 */
+	public static function getUserSelector($field_name, $selected)
+	{
+		$app = &JFactory::getApplication();
+		$document = &JFactory::getDocument();
+		$db = &JFactory::getDBO();
+		$user = &JFactory::getUser($selected);
 
-/**
- * returns submit_key associated to attendee id
- *
- * @param int $attendee_id
- * @return string key
- */
-function getAttendeeSubmitKey($attendee_id)
-{
-	$db = &JFactory::getDBO();
+		JHTML::_('behavior.mootools');
+		$document->addScript(JURI::base().'components/com_redevent/assets/js/selectuser.js');
+		//		echo '<pre>';print_r(JURI::base().'components/com_redevent/assets/selectuser.js'); echo '</pre>';exit;
 
-	$query = ' SELECT submit_key '
-	. ' FROM #__redevent_register '
-	. ' WHERE id = ' . $db->Quote($attendee_id);
-	$db->setQuery($query);
-	$res = $db->loadResult();
-	return $res;
-}
+		$link = 'index.php?option=com_redevent&amp;task=selectuser&amp;tmpl=component&field='.$field_name;
 
-/**
- * returns sid associated to attendee id
- *
- * @param int $attendee_id
- * @return int sid
- */
-function getAttendeeSid($attendee_id)
-{
-	$db = &JFactory::getDBO();
+		$field  = '<input type="text" readonly="readonly" name="'.$field_name.'_name" id="'.$field_name.'_name" value="'.$user->get('username').'"/>';
+		$field .= '<input type="hidden" name="'.$field_name.'" id="'.$field_name.'" value="'.$user->get('id').'"/>';
+		$field .= "<a class=\"modal\" class=\"re-selectuserbutton\" title=\"".JText::_('COM_REDEVENT_SELECT_USER')."\" href=\"$link\" rel=\"{handler: 'iframe', size: {x: 650, y: 500}}\">".JText::_('COM_REDEVENT_SELECT_USER')."</a>\n";
 
-	$query = ' SELECT sid '
-	. ' FROM #__redevent_register '
-	. ' WHERE id = ' . $db->Quote($attendee_id);
-	$db->setQuery($query);
-	$res = $db->loadResult();
-	return $res;
-}
+		return $field;
+	}
+
+	/**
+	 * return the valid columns for frontend display
+	 *
+	 * @param array $columns
+	 * @return array $columns
+	 */
+	public static function validateColumns($columns)
+	{
+		$db = &JFactory::getDBO();
+
+		$columns = array_map('strtolower', $columns);
+		$columns = array_map('trim', $columns);
+
+		$allowed = array('date',
+				'title',
+				'venue',
+				'state',
+				'city',
+				'category',
+				'picture',
+				'registrationend',
+				'places',
+				'placesleft',
+				'price',
+				'credits',
+				'country',
+				'countryflag',
+		);
+
+		$query = 'SELECT CONCAT("custom", f.id) FROM #__redevent_fields AS f WHERE f.published = 1';
+		$db->setQuery($query);
+		if ($res = $db->loadResultArray()) {
+			$allowed = array_merge($allowed, $res);
+		}
+
+		return array_intersect($columns, $allowed);
+	}
+
+	/**
+	 * returns submit_key associated to attendee id
+	 *
+	 * @param int $attendee_id
+	 * @return string key
+	 */
+	public static function getAttendeeSubmitKey($attendee_id)
+	{
+		$db = &JFactory::getDBO();
+
+		$query = ' SELECT submit_key '
+		. ' FROM #__redevent_register '
+		. ' WHERE id = ' . $db->Quote($attendee_id);
+		$db->setQuery($query);
+		$res = $db->loadResult();
+		return $res;
+	}
+
+	/**
+	 * returns sid associated to attendee id
+	 *
+	 * @param int $attendee_id
+	 * @return int sid
+	 */
+	public static function getAttendeeSid($attendee_id)
+	{
+		$db = &JFactory::getDBO();
+
+		$query = ' SELECT sid '
+		. ' FROM #__redevent_register '
+		. ' WHERE id = ' . $db->Quote($attendee_id);
+		$db->setQuery($query);
+		$res = $db->loadResult();
+		return $res;
+	}
 
 
-/**
- * Check registration expiration delay, and cleans up registrations accordingly
- *
- * @return boolean true on success
- */
-function registrationexpiration()
-{
-	$settings = JComponentHelper::getParams('com_redevent');
-	if (!$settings->get('registration_expiration', 0)) {
-		// nothing to do
+	/**
+	 * Check registration expiration delay, and cleans up registrations accordingly
+	 *
+	 * @return boolean true on success
+	 */
+	public static function registrationexpiration()
+	{
+		$settings = JComponentHelper::getParams('com_redevent');
+		if (!$settings->get('registration_expiration', 0)) {
+			// nothing to do
+			return true;
+		}
+
+		$db = &JFactory::getDBO();
+
+		// get expired registrations
+		$query = ' SELECT r.id as attendee_id, r.xref, r.uregdate '
+		. ' FROM #__redevent_register AS r '
+		. ' INNER JOIN #__rwf_submitters AS s ON r.sid = s.id '
+		. ' LEFT JOIN #__rwf_payment AS p ON p.submit_key = s.submit_key AND p.paid > 0 '
+		. ' WHERE DATEDIFF(NOW(), r.paymentstart) >= '. $settings->get('registration_expiration', 0)
+		. '   AND s.price > 0 '
+		. '   AND r.confirmed = 1 AND r.cancelled = 0 AND r.waitinglist = 0 '
+		. '   AND p.id IS NULL '
+		. ' GROUP BY r.id '
+		// 		. ' ORDER BY r.uregdate DESC '
+		;
+		$db->setQuery($query);
+		$res = $db->loadObjectList();
+
+		if (!$res || !count($res)) {
+			return true;
+		}
+
+		$xrefs = array();
+		$exp_ids = array();
+		foreach ($res as $exp)
+		{
+			$xrefs[] = $exp->xref;
+			$exp_ids[] = $exp->attendee_id;
+		}
+		$xrefs = array_unique($xrefs);
+
+		// change registrations as cancelled
+		$query = ' UPDATE #__redevent_register AS r '
+		. '   SET r.cancelled = 1 '
+		. ' WHERE r.id IN ('.implode(', ', $exp_ids).')'
+		;
+		$db->setQuery( $query );
+
+		if (!$db->query()) {
+			echo JText::_('COM_REDEVENT_CLEANUP_ERROR_CANCELLING_EXPIRED_REGISTRATION');
+			return false;
+		}
+
+		// then update waiting list of corresponding sessions
+		require_once(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models'.DS.'waitinglist.php');
+		foreach ($xrefs as $xref)
+		{
+			$model = JModel::getInstance('waitinglist', 'RedeventModel');
+			$model->setXrefId($xref);
+			$model->UpdateWaitingList();
+		}
+
 		return true;
 	}
-
-	$db = &JFactory::getDBO();
-
-	// get expired registrations
-	$query = ' SELECT r.id as attendee_id, r.xref, r.uregdate '
-	. ' FROM #__redevent_register AS r '
-	. ' INNER JOIN #__rwf_submitters AS s ON r.sid = s.id '
-	. ' LEFT JOIN #__rwf_payment AS p ON p.submit_key = s.submit_key AND p.paid > 0 '
-	. ' WHERE DATEDIFF(NOW(), r.paymentstart) >= '. $settings->get('registration_expiration', 0)
-	. '   AND s.price > 0 '
-	. '   AND r.confirmed = 1 AND r.cancelled = 0 AND r.waitinglist = 0 '
-	. '   AND p.id IS NULL '
-	. ' GROUP BY r.id '
-	// 		. ' ORDER BY r.uregdate DESC '
-	;
-	$db->setQuery($query);
-	$res = $db->loadObjectList();
-
-	if (!$res || !count($res)) {
-		return true;
-	}
-
-	$xrefs = array();
-	$exp_ids = array();
-	foreach ($res as $exp)
-	{
-		$xrefs[] = $exp->xref;
-		$exp_ids[] = $exp->attendee_id;
-	}
-	$xrefs = array_unique($xrefs);
-
-	// change registrations as cancelled
-	$query = ' UPDATE #__redevent_register AS r '
-	. '   SET r.cancelled = 1 '
-	. ' WHERE r.id IN ('.implode(', ', $exp_ids).')'
-	;
-	$db->setQuery( $query );
-
-	if (!$db->query()) {
-		echo JText::_('COM_REDEVENT_CLEANUP_ERROR_CANCELLING_EXPIRED_REGISTRATION');
-		return false;
-	}
-
-	// then update waiting list of corresponding sessions
-	require_once(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models'.DS.'waitinglist.php');
-	foreach ($xrefs as $xref)
-	{
-		$model = JModel::getInstance('waitinglist', 'RedeventModel');
-		$model->setXrefId($xref);
-		$model->UpdateWaitingList();
-	}
-
-	return true;
-}
 }

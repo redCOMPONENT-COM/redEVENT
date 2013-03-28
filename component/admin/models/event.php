@@ -55,7 +55,7 @@ class RedEventModelEvent extends JModelAdmin
 	 * @var array
 	 */
 	var $_categories = null;
-	
+
 	/**
 	 * Constructor
 	 *
@@ -116,16 +116,16 @@ class RedEventModelEvent extends JModelAdmin
 			}
 			$db = &JFactory::getDbo();
 			$query = $db->getQuery(true);
-			
+
 			$query->select('e.*, v.venue');
 			$query->from('#__redevent_events AS e');
 			$query->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = e.id');
 			$query->join('LEFT', '#__redevent_venues AS v ON v.id = x.venueid');
 			$query->where('e.id = '.$this->_id);
-			
+
 			$db->setQuery($query);
 			$this->_data = $db->loadObject();
-			
+
 			if ($this->_data) {
 			  $categories = & $this->getEventCategories();
 			  $this->_data->categories_ids = array_keys($categories);
@@ -156,15 +156,15 @@ class RedEventModelEvent extends JModelAdmin
 
 		return $this->_categories;
 	}
-	
+
 	/**
 	 * Get a option list of all categories
 	 */
-	public function getCategories() 
+	public function getCategories()
 	{
 		return ELAdmin::getCategoriesOptions();
 	}
-	
+
 	/**
 	 * Method to initialise the event data
 	 *
@@ -178,7 +178,7 @@ class RedEventModelEvent extends JModelAdmin
 		if (empty($this->_data))
 		{
 			$params = &JComponentHelper::getParams( 'com_redevent' );
-			
+
 			if ($params->get('default_content', 0))
 			{
 				$id = (int) $params->get('default_content', 0);
@@ -188,7 +188,7 @@ class RedEventModelEvent extends JModelAdmin
 						;
 				$this->_db->setQuery($query);
 				$event = $this->_db->loadObject();
-				if (!empty($event)) 
+				if (!empty($event))
 				{
 					$event->id              = 0;
 					$event->title						= null;
@@ -199,10 +199,10 @@ class RedEventModelEvent extends JModelAdmin
 					$event->author_ip					= null;
 					$event->created_by					= null;
 		      $this->_data = $event;
-					return (boolean) $this->_data;					
+					return (boolean) $this->_data;
 				}
 			}
-			
+
 			$event = new stdClass();
 			$event->id							= 0;
 			$event->locid						= 0;
@@ -350,7 +350,7 @@ class RedEventModelEvent extends JModelAdmin
 	function store($data)
 	{
 		$mainframe = &JFactory::getApplication();
-		
+
 		// triggers for smart search
 		$dispatcher	= JDispatcher::getInstance();
 		JPluginHelper::importPlugin('finder');
@@ -361,8 +361,8 @@ class RedEventModelEvent extends JModelAdmin
 		$tzoffset 	= $mainframe->getCfg('offset');
 
 		$row =& JTable::getInstance('redevent_events', '');
-		
-		
+
+
 		// Bind the form fields to the table
 		if (!$row->bind($data)) {
 			$this->setError($this->_db->getErrorMsg());
@@ -384,7 +384,7 @@ class RedEventModelEvent extends JModelAdmin
 		if ($row->datimage)
 		{
 			$format 	= strtolower(JFile::getExt($row->datimage));
-	
+
 			$allowable 	= array ('gif', 'jpg', 'png');
 			if (in_array($format, $allowable)) {
 				$row->datimage = $row->datimage;
@@ -422,7 +422,7 @@ class RedEventModelEvent extends JModelAdmin
 			$this->setError($row->getError());
 			return false;
 		}
-		
+
 		// Trigger the onFinderBeforeSave event.
 		$results = $dispatcher->trigger('onFinderBeforeSave', array($this->option . '.' . $this->name, $row, $isNew));
 
@@ -431,14 +431,14 @@ class RedEventModelEvent extends JModelAdmin
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
-		
+
 		// update the event category xref
 		// first, delete current rows for this event
     $query = ' DELETE FROM #__redevent_event_category_xref WHERE event_id = ' . $this->_db->Quote($row->id);
     $this->_db->setQuery($query);
     if (!$this->_db->query()) {
       $this->setError($this->_db->getErrorMsg());
-      return false;    	
+      return false;
     }
 		// insert new ref
 		foreach ((array) $data['categories'] as $cat_id) {
@@ -446,35 +446,35 @@ class RedEventModelEvent extends JModelAdmin
 		  $this->_db->setQuery($query);
 	    if (!$this->_db->query()) {
 	      $this->setError($this->_db->getErrorMsg());
-	      return false;     
-	    }		  
-		}  
-		
+	      return false;
+	    }
+		}
+
 		// attachments
 		REAttach::store('event'.$row->id);
-		
+
 		// Trigger the onFinderAfterSave event.
 		$results = $dispatcher->trigger('onFinderAfterSave', array($this->option . '.' . $this->name, $row, $isNew));
-		
+
 		return $row->id;
 	}
-	
+
 	/**
 	 * Check if redFORM is installed
 	 */
-	public function getCheckredFORM() 
+	public function getCheckredFORM()
 	{
 		return JComponentHelper::isEnabled('com_redform', true);
 	}
-	
+
 	/**
 	 * Function to retrieve the form fields
 	 */
-	function getFormFields() 
+	function getFormFields()
 	{
 		$db = JFactory::getDBO();
 		$q = "SELECT id, field
-		           , CASE WHEN (CHAR_LENGTH(field_header) > 0) THEN field_header ELSE field END AS field_header 
+		           , CASE WHEN (CHAR_LENGTH(field_header) > 0) THEN field_header ELSE field END AS field_header
 			FROM #__rwf_fields
 			WHERE form_id = ".$this->_data->redform_id."
 			AND published = 1
@@ -483,11 +483,11 @@ class RedEventModelEvent extends JModelAdmin
 		if ($db->query()) return $db->loadObjectList('id');
 		else return false;
 	}
-	
+
 	/**
 	 * Function to retrieve the redFORM forms
 	 */
-	function getRedForms() 
+	function getRedForms()
 	{
 		$db = JFactory::getDBO();
 		$q = "SELECT id, formname
@@ -497,11 +497,11 @@ class RedEventModelEvent extends JModelAdmin
 		if ($db->query()) return $db->loadObjectList('id');
 		else return false;
 	}
-	
+
 	/**
 	 * Retrieve a list of venues
 	 */
-	public function getVenues() 
+	public function getVenues()
 	{
 		$db = JFactory::getDBO();
 		$q = "SELECT id, venue
@@ -510,11 +510,11 @@ class RedEventModelEvent extends JModelAdmin
 		$db->setQuery($q);
 		return $db->loadObjectList();
 	}
-	
+
 	/**
 	 * Retrieve a list of events, venues and times
 	 */
-	public function getEventVenue() 
+	public function getEventVenue()
 	{
 		$db = JFactory::getDBO();
 		$q = "SELECT x.*
@@ -529,11 +529,11 @@ class RedEventModelEvent extends JModelAdmin
 		}
 		return $ardatetimes;
 	}
-	
+
   /**
    * Retrieve a list of events, venues and times
    */
-  public function getXrefs() 
+  public function getXrefs()
   {
   	if (!$this->_id) {
   		return false;
@@ -547,7 +547,7 @@ class RedEventModelEvent extends JModelAdmin
     $db->setQuery($q);
     return $db->loadObjectList();
   }
-  
+
   /**
    * get custom fields
    *
@@ -561,8 +561,8 @@ class RedEventModelEvent extends JModelAdmin
            . ' ORDER BY f.ordering '
            ;
     $this->_db->setQuery($query);
-    $result = $this->_db->loadObjectList();    
-  
+    $result = $this->_db->loadObjectList();
+
     if (!$result) {
       return array();
     }
@@ -575,15 +575,15 @@ class RedEventModelEvent extends JModelAdmin
       $prop = 'custom'.$c->id;
       if (isset($data->$prop)) {
       	$field->value = $data->$prop;
-      } 
+      }
       $fields[] = $field;
     }
-    return $fields;     
+    return $fields;
   }
-  
+
   /**
    * check whether there are attendees registered to any session of this event
-   * 
+   *
    * @return boolean
    */
   function hasAttendees()
@@ -591,16 +591,16 @@ class RedEventModelEvent extends JModelAdmin
   	if (!$this->_id) {
   		return false;
   	}
-  	$query = ' SELECT r.id ' 
+  	$query = ' SELECT r.id '
   	       . ' FROM #__redevent_register AS r '
-  	       . ' INNER JOIN #__redevent_event_venue_xref AS x ON r.xref = x.id ' 
+  	       . ' INNER JOIN #__redevent_event_venue_xref AS x ON r.xref = x.id '
   	       . ' INNER JOIN #__redevent_events AS e ON e.id = x.eventid '
   	       . ' WHERE e.id = ' . $this->_db->Quote($this->_id);
   	$this->_db->setQuery($query);
   	$res = $this->_db->loadResult();
   	return $res ? true : false;
   }
-  
+
   /**
   * Returns a Table object, always creating it
   *
@@ -614,7 +614,7 @@ class RedEventModelEvent extends JModelAdmin
   {
   	return JTable::getInstance($type, $prefix, $config);
   }
-  
+
 	/**
 	 * Method to get the record form.
 	 *
@@ -634,7 +634,7 @@ class RedEventModelEvent extends JModelAdmin
 		}
 		return $form;
 	}
-	
+
 	/**
 	* Method to get the data that should be injected in the form.
 	*

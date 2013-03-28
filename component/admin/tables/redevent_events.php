@@ -138,61 +138,6 @@ class RedEvent_events extends JTable
 	}
 
 	/**
-	 * override for custom fields
-	 */
-	function _bind( $from, $ignore=array() )
-	{
-		$fromArray	= is_array( $from );
-		$fromObject	= is_object( $from );
-
-		if (!$fromArray && !$fromObject)
-		{
-			$this->setError( get_class( $this ).'::bind failed. Invalid from argument' );
-			return false;
-		}
-		if (!is_array( $ignore )) {
-			$ignore = explode( ' ', $ignore );
-		}
-		foreach ($this->getProperties() as $k => $v)
-		{
-			// internal attributes of an object are ignored
-			if (!in_array( $k, $ignore ))
-			{
-				if ($fromArray && isset( $from[$k] )) {
-					$this->$k = $from[$k];
-				} else if ($fromObject && isset( $from->$k )) {
-					$this->$k = $from->$k;
-				}
-			}
-		}
-		$customs = $this->_getCustomFieldsColumns();
-		foreach ($customs as $c)
-		{
-			if ($fromArray && isset( $from[$c] ))
-			{
-				$this->$c = is_array($from[$c]) ? implode("\n", $from[$c]) : $from[$c];
-			} else if ($fromObject && isset( $from->$c )) {
-				$this->$c = is_array($from->$c) ? implode("\n", $from->$c) : $from->$c;
-			}
-			else {
-				$this->$c = '';
-			}
-		}
-
-		return true;
-	}
-
-	function _getCustomFieldsColumns()
-	{
-		$query = ' SELECT CONCAT("custom", id) '
-		. ' FROM #__redevent_fields '
-		. ' WHERE object_key = ' . $this->_db->Quote('redevent.event');
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadResultArray();
-		return $res;
-	}
-
-	/**
 	 * Sets categories of event
 	 * Enter description here ...
 	 * @param unknown_type $catids
@@ -247,7 +192,7 @@ class RedEvent_events extends JTable
 	 */
 	protected function _getAssetTitle()
 	{
-		return $this->name;
+		return $this->title;
 	}
 
 	/**

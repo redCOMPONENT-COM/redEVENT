@@ -630,14 +630,13 @@ class REOutput {
 	 * @param object $event
 	 * @return string or false for open date
 	 */
-	function formatEventDateTime($event, $show_end = true)
+	function formatEventDateTime($event, $showend = true)
 	{
 		if (!redEVENTHelper::isValidDate($event->dates)) { // open dates
 			$date = '<span class="event-date open-date">'.JText::_('COM_REDEVENT_OPEN_DATE').'</span>';
 			return $date;
 		}
 		$settings = & redEVENTHelper::config();
-		$showend = $settings->get('lists_showend', 1);
 
 		// is this a full day(s) event ?
 		$allday = '00:00:00' == $event->times && '00:00:00' == $event->endtimes;
