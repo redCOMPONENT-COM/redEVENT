@@ -35,7 +35,7 @@ var redb2b = {
 		 * init events
 		 */
 		init : function() {
-			new Form.Request(document.id('course-search-form'), document.id('main-results'), {
+			new Form.Request(document.id('course-search-form'), document.id('main-course-results'), {
 				resetForm : false,
 				useSpinner: true,
 				extraData : {
@@ -49,6 +49,39 @@ var redb2b = {
 			
 			document.id('filter_venue').addEvent('change', function(){
 				redb2b.updateSessions();
+			});
+			
+			document.id('filter_organization').addEvent('change', function(){
+				redb2b.searchBookings();
+				
+				var person_req = new Request.JSON({
+					url : 'index.php?option=com_redevent&controller=frontadmin&task=getusers&tmpl=component',
+					data : document.id('org-form'),
+					method : 'post',
+					onSuccess : function(options){
+						var sel = document.id('filter_user');
+						sel.empty();
+						new Element('option', {'value': ''}).set('text', Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_SELECT_USER")).inject(sel);
+						if (options.length) {
+							options.each(function(el){
+								new Element('option', {'value': el.value}).set('text', el.text).inject(sel);
+							});
+						}			
+					}
+				});
+				person_req.send();
+			});
+			
+			document.id('filter_user').addEvent('change', function(){
+				redb2b.searchBookings();
+			});
+			
+			document.id('filter_person_active').addEvent('change', function(){
+				redb2b.searchBookings();
+			});
+			
+			document.id('filter_person_archive').addEvent('change', function(){
+				redb2b.searchBookings();
 			});
 		},
 		
@@ -81,6 +114,18 @@ var redb2b = {
 				}
 			});
 			req.send();
+		},
+		
+		searchBookings : function() {
+			var req = new Request({
+				url : 'index.php?option=com_redevent&controller=frontadmin&task=getbookings&tmpl=component',
+				data : document.id('org-form'),
+				method : 'post',
+				onSuccess : function(responseText){
+					document.id('main-bookings').set('html', responseText);					
+				}
+			});
+			req.send();			
 		}
 		
 };

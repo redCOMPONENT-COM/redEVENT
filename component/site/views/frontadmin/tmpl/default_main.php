@@ -28,7 +28,13 @@ defined('_JEXEC') or die('Restricted access');
 
 <div id="main-content" class="row-fluid">
 	<div id="main-results" class="span9">
-		<?php echo $this->loadTemplate('search_results'); ?>
+		<div id="main-bookings">
+			<?php echo $this->loadTemplate('bookings_search_results'); ?>
+		</div>
+
+		<div id="main-course-results">
+			<?php echo $this->loadTemplate('search_results'); ?>
+		</div>
 	</div>
 
 	<div id="main-right" class="span3">

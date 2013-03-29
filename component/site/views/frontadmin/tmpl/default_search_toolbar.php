@@ -21,15 +21,17 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
+<form name="org-form" id="org-form" method="post" action="index.php?option=com_redevent&controller=frontadmin&task=getbookings">
 <ul class="inline">
 	<li>
 		<?php echo JHtml::_('select.genericlist', $this->organizations_options, 'filter_organization', '', 'value', 'text', $this->state->get('filter_organization')); ?>
 	</li>
 	<li><input name="filter_person" id="filter_person" type="text" class="input-medium" placeholder="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_PERSON'); ?>"/></li>
 	<li><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SEARCH_IN'); ?></li>
-	<li><label class="checkbox"><input name="filter_active" id="filter_active" type="checkbox"
-		<?php echo $this->state->get('filter_active') ? ' checked="checked"' : ''; ?>/> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ACTIVE_COURSES'); ?></label></li>
-	<li><label class="checkbox"><input name="filter_archived" id="filter_archived" type="checkbox"
-		<?php echo $this->state->get('filter_archived') ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSES_HISTORY'); ?></label></li>
-</ul>.
+	<li><label class="checkbox"><input name="filter_person_active" id="filter_person_active" type="checkbox" value="1"
+		<?php echo $this->state->get('filter_person_active') ? ' checked="checked"' : ''; ?>/> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ACTIVE_COURSES'); ?></label></li>
+	<li><label class="checkbox"><input name="filter_person_archive" id="filter_person_archive" type="checkbox" value="1"
+		<?php echo $this->state->get('filter_person_archive') ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSES_HISTORY'); ?></label></li>
+</ul>
 <div class="clear"></div>
+</form>

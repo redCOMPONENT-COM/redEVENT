@@ -41,6 +41,10 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	protected $pagination_sessions = null;
 	protected $total_sessions = null;
 
+	protected $booked = null;
+	protected $pagination_booked = null;
+	protected $total_booked = null;
+
 	protected $useracl = null;
 
 	public function __construct($config = array())
@@ -51,9 +55,14 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 
 		$this->useracl = UserAcl::getInstance();
 
+		// Bookings filter
+		$this->setState('filter_organization',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_organization',    'filter_organization',    0, 'int'));
+		$this->setState('filter_person',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_person',    'filter_person',    '', 'string'));
+		$this->setState('filter_person_active',    $app->input->get('filter_person_active',    0, 'int'));
+		$this->setState('filter_person_archive',   $app->input->get('filter_person_archive',    0, 'int'));
+
+		// Manage sessions filters
 		$this->setState('filter_session',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_session',    'filter_session',    0, 'int'));
-		$this->setState('filter_person_active',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_person_active',    'filter_person_active',    1, 'int'));
-		$this->setState('filter_person_archive',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_person_archive',    'filter_person_archive',    0, 'int'));
 		$this->setState('filter_from',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_from',    'filter_from',    '', 'string'));
 		$this->setState('filter_to',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_to',    'filter_to',    '', 'string'));
 	}
@@ -116,6 +125,41 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		}
 
 		return $this->total_sessions;
+	}
+
+	/**
+	 * Method to get a pagination object for the events
+	 *
+	 * @access public
+	 * @return integer
+	 */
+	public function getBookedPagination()
+	{
+		// Lets load the content if it doesn't already exist
+		if (empty($this->pagination_booked))
+		{
+			jimport('joomla.html.pagination');
+			$this->pagination_booked = new JPagination($this->getTotalBooked(), $this->getState('limitstart_sessions'), $this->getState('limit'));
+		}
+
+		return $this->pagination_booked;
+	}
+
+	/**
+	 * Total nr of events
+	 *
+	 * @return integer
+	 */
+	public function getTotalBooked()
+	{
+		// Lets load the total nr if it doesn't already exist
+		if (empty($this->total_booked))
+		{
+			$query = $this->_buildQueryBooked();
+			$this->total_booked = $this->_getListCount($query);
+		}
+
+		return $this->total_booked;
 	}
 
 	/**
@@ -268,6 +312,155 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$res = $db->loadObjectList();
 
 		return $res;
+	}
+
+	/**
+	 * check if user is course admin
+	 *
+	 * @return boolean
+	 */
+	public function isCourseAdmin()
+	{
+		$user = JFactory::getUser();
+
+		$res = $user->authorise('re.editevent', 'com_redevent') || $user->authorise('re.addevent', 'com_redevent')
+			|| $user->authorise('re.editsession', 'com_redevent') || $user->authorise('re.editsession', 'com_redevent');
+
+		return $res;
+	}
+
+	/**
+	 * get all events booked by people from organization
+	 *
+	 * @return boolean
+	 */
+	public function getBookings()
+	{
+		if (!$this->getState('filter_organization'))
+		{
+			return false;
+		}
+
+		// Lets load the content if it doesn't already exist
+		if (empty($this->booked))
+		{
+			$query = $this->_buildQueryBooked();
+			$pagination = $this->getBookedPagination();
+			$this->booked = $this->_getList($query, $pagination->limitstart, $pagination->limit);
+			$this->booked = $this->_categories($this->booked);
+			$this->booked = $this->_getPlacesLeft($this->booked);
+		}
+
+		return $this->booked;
+	}
+
+	/**
+	 * return organization name
+	 *
+	 * @return boolean
+	 */
+	public function getOrganization()
+	{
+		if (!$this->getState('filter_organization'))
+		{
+			return false;
+		}
+
+		$id = $this->getState('filter_organization');
+		$opt = $this->getOrganizationsOptions();
+
+		foreach ($opt as $org)
+		{
+			if ($org->value == $id)
+			{
+				return $org->text;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * returns users from organization as options
+	 *
+	 * @return boolean
+	 */
+	public function getUsersOptions()
+	{
+		if (!$this->getState('filter_organization'))
+		{
+			return array();
+		}
+
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('u.id AS value, u.name AS text');
+		$query->from('#__redmember_users AS rmu');
+		$query->join('INNER', '#__users AS u ON u.id = rmu.user_id');
+		$query->join('INNER', '#__redmember_user_organization_xref AS rmuo ON rmuo.user_id = rmu.user_id');
+		$query->where('rmuo.organization_id = ' . (int) $this->getState('filter_organization'));
+		$query->order('u.name');
+
+		$db->setQuery($query);
+		$res = $db->loadObjectList();
+
+		return $res;
+	}
+
+	/**
+	 * build the organization booked events query
+	 *
+	 * @return void
+	 */
+	protected function _buildQueryBooked()
+	{
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published');
+		$query->select('a.id, a.title, a.created, a.datdescription, a.registra, a.course_code');
+		$query->select('l.venue, l.city, l.state, l.url, l.id as locid');
+		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
+		$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
+		$query->select('CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug');
+		$query->from('#__redevent_event_venue_xref AS x');
+		$query->join('LEFT', '#__redevent_events AS a ON a.id = x.eventid');
+		$query->join('LEFT', '#__redevent_venues AS l ON l.id = x.venueid');
+		$query->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
+		$query->join('LEFT', '#__redevent_categories AS c ON c.id = xcat.category_id');
+		$query->group('x.id');
+
+		// Join over the language
+		$query->select('lg.title AS language_title, lg.sef AS language_sef');
+		$query->join('LEFT', $db->quoteName('#__languages').' AS lg ON lg.lang_code = a.language');
+
+		// Join over
+		$query->join('INNER', '#__redevent_register AS r ON r.xref = x.id');
+		$query->join('INNER', '#__redmember_users AS rmu ON rmu.user_id = r.uid');
+		$query->join('INNER', '#__redmember_user_organization_xref AS rmuo ON rmuo.user_id = rmu.user_id');
+		$query->where('rmuo.organization_id = ' . $this->getState('filter_organization'));
+
+		$session_state = array();
+
+		if ($this->getState('filter_person_archive'))
+		{
+			$session_state[] = 'x.published = -1';
+		}
+
+		if (!count($session_state) || $this->getState('filter_person_active'))
+		{
+			$session_state[] = 'x.published = 1';
+		}
+
+		$query->where('(' . implode(' OR ', $session_state) . ')');
+
+		$filter_order = $this->getState('filter_order');
+		$filter_order_dir = $this->getState('filter_order_dir');
+
+		$query->order($filter_order . ' ' . $filter_order_dir . ', x.dates, x.times');
+
+		return $query;
 	}
 
 	/**

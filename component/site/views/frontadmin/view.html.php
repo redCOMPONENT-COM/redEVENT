@@ -53,6 +53,11 @@ class RedeventViewFrontadmin extends JView
 			return $this->displaySearchSessions($tpl);
 		}
 
+		if ($this->getLayout() == 'bookings')
+		{
+			return $this->displayBookings($tpl);
+		}
+
 		JHTML::_('behavior.framework');
 
 		// Load Akeeba Strapper
@@ -118,6 +123,11 @@ class RedeventViewFrontadmin extends JView
 		$options = array(JHtml::_('select.option', '', JText::_('COM_REDEVENT_FRONTEND_ADMIN_ORGANIZATION')));
 		$this->organizations_options = array_merge($options, $this->get('OrganizationsOptions'));
 
+		// Users filter
+		JText::script("COM_REDEVENT_FRONTEND_ADMIN_SELECT_USER");
+		$options = array(JHtml::_('select.option', '', JText::_('COM_REDEVENT_FRONTEND_ADMIN_SELECT_USER')));
+		$this->users_options = array_merge($options, $this->get('UsersOptions'));
+
 		$this->filter_from        = $state->get('filter_from');
 		$this->filter_to          = $state->get('filter_to');
 
@@ -129,6 +139,9 @@ class RedeventViewFrontadmin extends JView
 		$this->state   = $state;
 
 		$this->sessions = $this->get('Sessions');
+
+		$this->organization = $this->get('Organization');
+		$this->bookings   = $this->get('OrganizationBookings');
 
 		parent::display($tpl);
 	}
@@ -148,6 +161,27 @@ class RedeventViewFrontadmin extends JView
 		$this->useracl = $useracl;
 		$this->sessions = $this->get('Sessions');
 		$this->params  = $params;
+
+		parent::display($tpl);
+	}
+
+	protected function displayBookings($tpl = null)
+	{
+		$useracl = UserAcl::getInstance();
+		$params = JFactory::getApplication()->getParams('com_redevent');
+		$state = $this->get('state');
+
+		$this->order_Dir = $state->get('filter_order');
+		$this->order     = $state->get('filter_order_Dir');
+
+		$this->params  = $params;
+		$this->state   = $state;
+
+		$this->useracl = $useracl;
+		$this->bookings = $this->get('Bookings');
+		$this->params  = $params;
+
+		$this->organization = $this->get('Organization');
 
 		parent::display($tpl);
 	}
