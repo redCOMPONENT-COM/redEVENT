@@ -26,7 +26,11 @@ defined('_JEXEC') or die('Restricted access');
 	<li>
 		<?php echo JHtml::_('select.genericlist', $this->organizations_options, 'filter_organization', '', 'value', 'text', $this->state->get('filter_organization')); ?>
 	</li>
-	<li><input name="filter_person" id="filter_person" type="text" class="input-medium" placeholder="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_PERSON'); ?>"/></li>
+	<li>
+		<input name="filter_person" id="filter_person" type="text"
+			class="input-medium" placeholder="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_PERSON'); ?>"
+		/> <button type="button" id="reset_person"><?php echo JText::_('COM_REDEVENT_RESET');?></button>
+	</li>
 	<li><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SEARCH_IN'); ?></li>
 	<li><label class="checkbox"><input name="filter_person_active" id="filter_person_active" type="checkbox" value="1"
 		<?php echo $this->state->get('filter_person_active') ? ' checked="checked"' : ''; ?>/> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ACTIVE_COURSES'); ?></label></li>

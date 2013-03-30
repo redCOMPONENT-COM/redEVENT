@@ -72,7 +72,7 @@ var redb2b = {
 				person_req.send();
 			});
 			
-			document.id('filter_user').addEvent('change', function(){
+			document.id('filter_person').addEvent('change', function(){
 				redb2b.searchBookings();
 			});
 			
@@ -81,6 +81,11 @@ var redb2b = {
 			});
 			
 			document.id('filter_person_archive').addEvent('change', function(){
+				redb2b.searchBookings();
+			});
+			
+			document.id('reset_person').addEvent('click', function(){
+				document.id('filter_person').set('value', '');
 				redb2b.searchBookings();
 			});
 		},

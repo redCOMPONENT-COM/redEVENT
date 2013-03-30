@@ -439,6 +439,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$query->join('INNER', '#__redevent_register AS r ON r.xref = x.id');
 		$query->join('INNER', '#__redmember_users AS rmu ON rmu.user_id = r.uid');
 		$query->join('INNER', '#__redmember_user_organization_xref AS rmuo ON rmuo.user_id = rmu.user_id');
+		$query->join('INNER', '#__users AS u ON u.id = rmu.user_id');
 		$query->where('rmuo.organization_id = ' . $this->getState('filter_organization'));
 
 		$session_state = array();
@@ -454,6 +455,15 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		}
 
 		$query->where('(' . implode(' OR ', $session_state) . ')');
+
+		if ($this->getState('filter_person'))
+		{
+			$matching = array();
+			$matching[] = 'u.name LIKE (' . $db->Quote('%' . $this->getState('filter_person') . '%') . ')';
+			$matching[] = 'u.username LIKE (' . $db->Quote('%' . $this->getState('filter_person') . '%') . ')';
+			$matching[] = 'u.email LIKE (' . $db->Quote('%' . $this->getState('filter_person') . '%') . ')';
+			$query->where('(' . implode(' OR ', $matching) . ')');
+		}
 
 		$filter_order = $this->getState('filter_order');
 		$filter_order_dir = $this->getState('filter_order_dir');
