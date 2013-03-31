@@ -39,7 +39,7 @@ class RedEventModelImport extends JModel
 	private $_venues = null;
 	private $_pgs    = null;
 	private $_customsimport = null;
-	
+
 	/**
 	 * Constructor
 	 *
@@ -49,20 +49,20 @@ class RedEventModelImport extends JModel
 	{
 		parent::__construct();
 	}
-  
+
 	/**
 	 * import categories, venues and events from eventlist
 	 */
 	public function importeventlist()
 	{
-    // find out eventlist version !    
+    // find out eventlist version !
     // is eventlist installed ?
-    if (file_exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eventlist'.DS.'eventlist.xml') && 0) 
+    if (file_exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eventlist'.DS.'eventlist.xml') && 0)
     {
 			$data = JApplicationHelper::parseXMLInstallFile(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eventlist'.DS.'eventlist.xml');
 			$version = $data['version'];
     }
-		else // not installed, but are there eventlist table ? 
+		else // not installed, but are there eventlist table ?
 		{
 			$tables = $this->_db->getTableList();
 			if (in_array($this->_db->getPrefix().'eventlist_cats_event_relations', $tables)) {
@@ -76,7 +76,7 @@ class RedEventModelImport extends JModel
 				return false;
 			}
 		}
-		
+
 	  // make sure redevent db is empty
 	  $query = ' SELECT COUNT(*) FROM #__redevent_events ';
     $this->_db->setQuery($query);
@@ -99,7 +99,7 @@ class RedEventModelImport extends JModel
       $this->setError(JText::_('COM_REDEVENT_EVENTLIST_IMPORT_DB_NOT_EMPTY'));
       return false;
     }
-    
+
     if (version_compare($version, '1.1.a') > 0) {
     	return self::_importeventlist11();
     }
@@ -107,12 +107,12 @@ class RedEventModelImport extends JModel
     	return self::_importeventlist10();
     }
 	}
-	
+
 	/**
 	 * import from eventlist 1.0 structure
 	 */
 	protected function _importeventlist10()
-	{    
+	{
 	  // import venues
 	  $query = ' INSERT IGNORE INTO #__redevent_venues (id, venue, alias, url, plz, published, state, street, city, country, locdescription, locimage, map, meta_description, meta_keywords)'
 	         . ' SELECT id, venue, alias, url, plz, published, state, street, city, country, locdescription, concat("images/redevent/venues/", locimage) AS locimage, map, meta_description, meta_keywords FROM #__eventlist_venues '
@@ -123,7 +123,7 @@ class RedEventModelImport extends JModel
 	    return false;
 	  }
 	  $nb_venues = $this->_db->getAffectedRows();
-	  
+
     // import categories
     $query = ' INSERT IGNORE INTO #__redevent_categories (id, catname, alias, published, catdescription, image, meta_description, meta_keywords) '
            . ' SELECT id, catname, alias, published, catdescription, concat("images/redevent/categories/", image) AS image, meta_description, meta_keywords FROM #__eventlist_categories '
@@ -137,7 +137,7 @@ class RedEventModelImport extends JModel
     // we need to rebuild the category tree
     $table = JTable::getInstance('RedEvent_categories', '');
     $table->rebuildTree();
-    
+
     // then import events.... We add a [eventlist_import] tag to the description, so that people don't have to manually edit each description
     $query = ' INSERT IGNORE INTO #__redevent_events (id, title, alias, published, datdescription, datimage, meta_description, meta_keywords) '
            . ' SELECT id, title, alias, published, CONCAT("[eventlist_import]",datdescription), concat("images/redevent/events/", datimage) AS datimage, meta_description, meta_keywords FROM #__eventlist_events '
@@ -149,7 +149,7 @@ class RedEventModelImport extends JModel
     }
     $nb_events = $this->_db->getAffectedRows();
     $this->addLibraryTag();
-        
+
     // corresponding xrefs
     $query = ' INSERT IGNORE INTO #__redevent_event_venue_xref (eventid, venueid, dates, enddates, times, endtimes, published) '
            . ' SELECT id AS eventid, locid AS venueid, dates, enddates, times, endtimes, published FROM #__eventlist_events '
@@ -159,7 +159,7 @@ class RedEventModelImport extends JModel
       $this->setError(JText::_('COM_REDEVENT_EVENTLIST_ERROR_IMPORTING_EVENTS_VENUESDATES'));
       return false;
     }
-    
+
     // corresponding category
     $query = ' INSERT IGNORE INTO #__redevent_event_category_xref (event_id, category_id) '
            . ' SELECT id AS eventid, catsid AS category_id FROM #__eventlist_events '
@@ -168,13 +168,13 @@ class RedEventModelImport extends JModel
     if (!$this->_db->query()) {
       $this->setError(JText::_('COM_REDEVENT_EVENTLIST_ERROR_IMPORTING_EVENTS_CATEGORIES'));
       return false;
-    }    
-    
+    }
+
 	  $result = array('events' => $nb_events, 'venues' => $nb_venues, 'categories' => $nb_cats,);
-	         
-	  return $result;		
+
+	  return $result;
 	}
-	
+
 	/*
 	 * import from eventlist 1.1 db structure
 	 */
@@ -182,13 +182,13 @@ class RedEventModelImport extends JModel
 	{
 	  // import venues
 	  $query = ' INSERT IGNORE INTO #__redevent_venues (
-	               id, venue, alias, url, plz, published, state, street, city, country, 
-	               latitude, longitude, ordering,
+	               id, venue, alias, url, plz, published, state, street, city, country,
+	               ordering,
 	               locdescription, locimage, map, meta_description, meta_keywords
 	               )'
-	         . ' SELECT id, venue, alias, url, plz, published, state, street, city, country, 
-	               latitude, longitude, ordering,
-	               locdescription, concat("images/redevent/venues/", locimage) AS locimage, map, meta_description, meta_keywords 
+	         . ' SELECT id, venue, alias, url, plz, published, state, street, city, country,
+	               ordering,
+	               locdescription, concat("images/redevent/venues/", locimage) AS locimage, map, meta_description, meta_keywords
 	               FROM #__eventlist_venues '
 	         ;
 	  $this->_db->setQuery($query);
@@ -197,12 +197,12 @@ class RedEventModelImport extends JModel
 	    return false;
 	  }
 	  $nb_venues = $this->_db->getAffectedRows();
-	  
+
     // import categories
     $query = ' INSERT IGNORE INTO #__redevent_categories (
-                 id, parent_id, catname, alias, published, catdescription, image, color, ordering,
+                 id, parent_id, catname, alias, published, catdescription, image, ordering,
                  meta_description, meta_keywords) '
-           . ' SELECT id, parent_id, catname, alias, published, catdescription, concat("images/redevent/categories/", image) AS image, color, ordering,
+           . ' SELECT id, parent_id, catname, alias, published, catdescription, concat("images/redevent/categories/", image) AS image, ordering,
                  meta_description, meta_keywords FROM #__eventlist_categories '
            ;
     $this->_db->setQuery($query);
@@ -214,7 +214,7 @@ class RedEventModelImport extends JModel
     // we need to rebuild the category tree
     $table = JTable::getInstance('RedEvent_categories', '');
     $table->rebuildTree();
-    
+
     // then import events.... We add a [eventlist_import] tag to the description, so that people don't have to manually edit each description
     $query = ' INSERT IGNORE INTO #__redevent_events (id, title, alias, published, datdescription, summary, datimage, meta_description, meta_keywords) '
            . ' SELECT id, title, alias, published, CONCAT("[eventlist_import]",datdescription), datdescription, concat("images/redevent/events/", datimage) AS datimage, meta_description, meta_keywords FROM #__eventlist_events '
@@ -226,7 +226,7 @@ class RedEventModelImport extends JModel
     }
     $nb_events = $this->_db->getAffectedRows();
     $this->addLibraryTag();
-        
+
     // corresponding xrefs
     $query = ' INSERT IGNORE INTO #__redevent_event_venue_xref (eventid, venueid, dates, enddates, times, endtimes, published) '
            . ' SELECT id AS eventid, locid AS venueid, dates, enddates, times, endtimes, published FROM #__eventlist_events '
@@ -236,7 +236,7 @@ class RedEventModelImport extends JModel
       $this->setError(JText::_('COM_REDEVENT_EVENTLIST_ERROR_IMPORTING_EVENTS_VENUESDATES'));
       return false;
     }
-    
+
     // corresponding category
     $query = ' INSERT IGNORE INTO #__redevent_event_category_xref (event_id, category_id) '
            . ' SELECT itemid AS eventid, catid AS category_id FROM #__eventlist_cats_event_relations '
@@ -245,21 +245,21 @@ class RedEventModelImport extends JModel
     if (!$this->_db->query()) {
       $this->setError(JText::_('COM_REDEVENT_EVENTLIST_ERROR_IMPORTING_EVENTS_CATEGORIES'));
       return false;
-    }    
-    
+    }
+
 	  $result = array('events' => $nb_events, 'venues' => $nb_venues, 'categories' => $nb_cats,);
-	         
-	  return $result;			
+
+	  return $result;
 	}
-	
+
 	public function addLibraryTag()
 	{
-		$query = ' SELECT id ' 
-		       . ' FROM #__redevent_textlibrary ' 
+		$query = ' SELECT id '
+		       . ' FROM #__redevent_textlibrary '
 		       . ' WHERE text_name = ' . $this->_db->Quote(eventlist_import);
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadResult();
-		
+
 		if ($res) { // already present
 			return true;
 		}
@@ -275,10 +275,10 @@ class RedEventModelImport extends JModel
     	return false;
     }
 	}
-	
+
 	/**
 	 * insert events/sessions in database
-	 * 
+	 *
 	 * @param array $records
 	 * @param string $duplicate_method method for handling duplicate record (ignore, create_new, update)
 	 * @return boolean true on success
@@ -287,21 +287,21 @@ class RedEventModelImport extends JModel
 	{
 		$app = JFactory::getApplication();
 		$count = array('added' => 0, 'updated' => 0, 'ignored' => 0);
-		
+
 		$current = null; // current event for sessions
 		foreach ($records as $r)
 		{
 			$this->_replaceCustoms($r);
-			
+
 			// first import the event if new event
 			if (!empty($r->title)) // new event
 			{
 				$ev = $this->getTable('RedEvent_events', '');
-				if (isset($r->id) && $r->id) 
+				if (isset($r->id) && $r->id)
 				{
 					// load existing data
 					$found = $ev->load($r->id);
-					
+
 					// discard if set to ignore duplicate
 					if ($found && $duplicate_method == 'ignore') {
 						$count['ignored']++;
@@ -317,7 +317,7 @@ class RedEventModelImport extends JModel
 					$ev->id = null; // to be sure to create a new record
 					$updating = 0;
 				}
-	
+
 				// store !
 				if (!$ev->check()) {
 					$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$ev->getError(), 'error');
@@ -327,7 +327,7 @@ class RedEventModelImport extends JModel
 					$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$ev->getError(), 'error');
 					continue;
 				}
-				
+
 				// categories relations
 				$cats = explode('#!#', $r->categories_names);
 				$cats_ids = array();
@@ -336,16 +336,16 @@ class RedEventModelImport extends JModel
 					$cats_ids[] = $this->_getCatId($c);
 				}
 				$ev->setCats($cats_ids);
-				
+
 				($updating ? $count['updated']++ : $count['added']++);
 				$current = $ev;
 			}
-			
+
 			// import session part
 			if (isset($r->xref) && $r->xref)
 			{
 				$venueid = $this->_getVenueId($r->venue, $r->city);
-				
+
 				$session = $this->getTable('RedEvent_eventvenuexref', '');
 				$session->bind($r);
 				$session->id = null;
@@ -370,7 +370,7 @@ class RedEventModelImport extends JModel
 				if (isset($r->session_published)) {
 					$session->published = $r->session_published;
 				}
-				
+
 				// store !
 				if (!$session->check()) {
 					$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$session->getError(), 'error');
@@ -380,7 +380,7 @@ class RedEventModelImport extends JModel
 					$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$session->getError(), 'error');
 					continue;
 				}
-				
+
 				// import pricegroups
 				$pgs = explode('#!#', $r->pricegroups_names);
 				$prices = explode('#!#', $r->prices);
@@ -395,15 +395,15 @@ class RedEventModelImport extends JModel
 					$price->price = $prices[$k];
 					$pricegroups[] = $price;
 				}
-				$session->setPrices($pricegroups);		
+				$session->setPrices($pricegroups);
 			}
 		}
 		return $count;
 	}
-	
+
 	/**
 	 * Return cat id matching name, creating if needed
-	 * 
+	 *
 	 * @param string $name
 	 * @return id cat id
 	 */
@@ -420,10 +420,10 @@ class RedEventModelImport extends JModel
 		}
 		return $id;
 	}
-	
+
 	/**
 	 * returns array of current cats names indexed by ids
-	 * 
+	 *
 	 * @return array
 	 */
 	private function _getCats()
@@ -441,10 +441,10 @@ class RedEventModelImport extends JModel
 		}
 		return $this->_cats;
 	}
-	
+
 	/**
 	 * Return price group id matching name, creating if needed
-	 * 
+	 *
 	 * @param string $name
 	 * @return id cat id
 	 */
@@ -461,10 +461,10 @@ class RedEventModelImport extends JModel
 		}
 		return $id;
 	}
-	
+
 	/**
 	 * returns array of current cats names indexed by ids
-	 * 
+	 *
 	 * @return array
 	 */
 	private function _getPricegroups()
@@ -482,10 +482,10 @@ class RedEventModelImport extends JModel
 		}
 		return $this->_pgs;
 	}
-	
+
 	/**
 	 * Return venue id matching name, creating if needed
-	 * 
+	 *
 	 * @param string $name
 	 * @return id cat id
 	 */
@@ -513,10 +513,10 @@ class RedEventModelImport extends JModel
 		}
 		return $id;
 	}
-	
+
 	/**
 	 * returns array of current cats names indexed by ids
-	 * 
+	 *
 	 * @return array
 	 */
 	private function _getVenues()
@@ -534,17 +534,17 @@ class RedEventModelImport extends JModel
 		}
 		return $this->_venues;
 	}
-	
+
 	/**
 	 * returns event custom fields of array as an array
-	 * 
+	 *
 	 * @param array $row
 	 * @return array
 	 */
 	private function _replaceCustoms(&$row)
 	{
 		$fields = $this->_getCustoms();
-		
+
 		$res = array();
 		foreach ($row as $col => $val)
 		{
@@ -554,17 +554,17 @@ class RedEventModelImport extends JModel
 		}
 		return $row;
 	}
-	
+
 	/**
 	 * return csv header names for event tags
-	 * 
+	 *
 	 * @return array
 	 */
 	function _getCustoms()
 	{
 		if (empty($this->_customsimport))
-		{			
-			$query = ' SELECT CONCAT("custom", id) as col, CONCAT("custom_", name, "#", tag) as csvcol' 
+		{
+			$query = ' SELECT CONCAT("custom", id) as col, CONCAT("custom_", name, "#", tag) as csvcol'
 			       . ' FROM #__redevent_fields '
 			       ;
 			$this->_db->setQuery($query);
