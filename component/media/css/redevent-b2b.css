@@ -17,3 +17,14 @@
 #redevent-admin .clear {
 	clear:both;
 }
+
+#redevent-admin .nouser {
+	border: 1px dashed;
+	padding: 4px;
+	margin: 5px 0;
+}
+
+#redevent-admin div.notice {
+	font-weight: bold;
+	font-size: 1.1em;
+}

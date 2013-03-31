@@ -55,6 +55,8 @@ defined('_JEXEC') or die('Restricted access');
 				'class="btn"')); ?>
 		<?php endif; ?>
 		</div>
+
+		<?php echo $this->loadTemplate('selected_users'); ?>
 	</div>
 </div>
 <div class="clear"></div>

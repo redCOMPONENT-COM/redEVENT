@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 	<li>
 		<input name="filter_person" id="filter_person" type="text"
 			class="input-medium" placeholder="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_PERSON'); ?>"
-		/> <button type="button" id="reset_person"><?php echo JText::_('COM_REDEVENT_RESET');?></button>
+		/> <button type="button" id="reset_person" class="btn"><?php echo JText::_('COM_REDEVENT_RESET');?></button>
 	</li>
 	<li><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SEARCH_IN'); ?></li>
 	<li><label class="checkbox"><input name="filter_person_active" id="filter_person_active" type="checkbox" value="1"
