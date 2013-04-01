@@ -59,6 +59,7 @@ class RedeventViewFrontadmin extends JView
 		}
 
 		JHTML::_('behavior.framework');
+		JHtml::_('behavior.tooltip');
 
 		// Load Akeeba Strapper
 		include_once JPATH_ROOT.'/media/akeeba_strapper/strapper.php';
@@ -186,6 +187,13 @@ class RedeventViewFrontadmin extends JView
 		parent::display($tpl);
 	}
 
+	/**
+	 * returns string for available places display
+	 *
+	 * @param   object  $row  session data
+	 *
+	 * @return string
+	 */
 	protected function printPlaces($row)
 	{
 		if (!$row->maxattendees)
@@ -196,5 +204,26 @@ class RedeventViewFrontadmin extends JView
 		$left = max(array($row->maxattendees - $row->registered, 0));
 
 		return $row->maxattendees . '/' . ($left > 6 ? '6+' : $left);
+	}
+
+
+	/**
+	 * Creates the attendees edit button
+	 *
+	 * @param   int  $id  xref id
+	 *
+	 * @since 2.0
+	 */
+	public static function bookbutton($id)
+	{
+		JHTML::_('behavior.tooltip');
+
+		$image = JHTML::_('image', 'components/com_redevent/assets/images/attendees.png', JText::_('COM_REDEVENT_BOOK_EVENT' ));
+
+		$overlib = JText::_('COM_REDEVENT_BOOK_EVENT_DESC' );
+		$text = JText::_('COM_REDEVENT_BOOK_EVENT' );
+		$output	= '<a href="#" id="bookid' . $id . '" class="bookthis hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
+
+		return $output;
 	}
 }

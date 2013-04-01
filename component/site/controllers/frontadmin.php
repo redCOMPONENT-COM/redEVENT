@@ -32,6 +32,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  */
 class RedeventControllerFrontadmin extends FOFController
 {
+	/**
+	 * return sessions html table
+	 *
+	 * @return void
+	 */
 	public function searchsessions()
 	{
 		$app = JFactory::getApplication();
@@ -46,6 +51,11 @@ class RedeventControllerFrontadmin extends FOFController
 		$app->close();
 	}
 
+	/**
+	 * return sessions options as JSON
+	 *
+	 * @return void
+	 */
 	public function sessionsoptions()
 	{
 		$app = JFactory::getApplication();
@@ -58,6 +68,11 @@ class RedeventControllerFrontadmin extends FOFController
 		$app->close();
 	}
 
+	/**
+	 * return booked sessions html table
+	 *
+	 * @return void
+	 */
 	public function getbookings()
 	{
 		$app = JFactory::getApplication();
@@ -72,6 +87,11 @@ class RedeventControllerFrontadmin extends FOFController
 		$app->close();
 	}
 
+	/**
+	 * return sessions details as JSON
+	 *
+	 * @return void
+	 */
 	public function getusers()
 	{
 		$app = JFactory::getApplication();
@@ -80,6 +100,23 @@ class RedeventControllerFrontadmin extends FOFController
 		$options = $model->getUsersOptions();
 
 		echo json_encode($options);
+
+		$app->close();
+	}
+
+	/**
+	 * return sessions details as JSON
+	 *
+	 * @return void
+	 */
+	public function getsession()
+	{
+		$app = JFactory::getApplication();
+		$model = $this->getModel('details');
+		$model->setXref($app->input->get('id'));
+		$data  = $model->getDetails();
+
+		echo json_encode($data);
 
 		$app->close();
 	}

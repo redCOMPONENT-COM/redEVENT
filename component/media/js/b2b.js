@@ -35,6 +35,10 @@ var redb2b = {
 		 * init events
 		 */
 		init : function() {
+
+			/**
+			 * ajax search course
+			 */
 			new Form.Request(document.id('course-search-form'), document.id('main-course-results'), {
 				resetForm : false,
 				useSpinner: true,
@@ -42,15 +46,24 @@ var redb2b = {
 					'tmpl' : 'component'
 				}
 			});
-			
+
+			/**
+			 * update sessions options when selecting event
+			 */
 			document.id('filter_event').addEvent('change', function(){
 				redb2b.updateSessions();
 			});
-			
+
+			/**
+			 * update sessions options when selecting venue
+			 */
 			document.id('filter_venue').addEvent('change', function(){
 				redb2b.updateSessions();
 			});
-			
+
+			/**
+			 * update organization bookings when selecting organization
+			 */
 			document.id('filter_organization').addEvent('change', function(){
 				redb2b.searchBookings();
 				
@@ -71,39 +84,52 @@ var redb2b = {
 				});
 				person_req.send();
 			});
-			
+
+			/**
+			 * update organization bookings when selecting person
+			 */
 			document.id('filter_person').addEvent('change', function(){
 				redb2b.searchBookings();
 			});
-			
+
+			/**
+			 * update organization bookings when selecting session status active
+			 */
 			document.id('filter_person_active').addEvent('change', function(){
 				redb2b.searchBookings();
 			});
-			
+
+			/**
+			 * update organization bookings when selecting session status archived
+			 */
 			document.id('filter_person_archive').addEvent('change', function(){
 				redb2b.searchBookings();
 			});
-			
+
+			/**
+			 * update organization bookings when resetting filter person field
+			 */
 			document.id('reset_person').addEvent('click', function(){
 				document.id('filter_person').set('value', '');
 				redb2b.searchBookings();
 			});
-		},
-		
-		updatemain : function() {
-			var request = new Request({
-				url: 'index.php?option=com_redevent&controller=frontadmin&task=main&tmpl=component',
-				onSuccess : function(responseText, responseXML) {
-					document.id('redadmin-main').set('html', responseText);
-				}
+
+			/**
+			 * update course search when clicking on book session button in lists
+			 */
+			document.id('redevent-admin').addEvent('click:relay(.bookthis)', function(e){
+				e.stop();				
+				var id = this.id.substr('6');
+				redb2b.selectSession(id);
 			});
-			request.send();
 		},
-		
-		updateSessions : function() {
+				
+		updateSessions : function(async) {
+			async = typeof async !== 'undefined' ? async : true;
 			var req = new Request.JSON({
 				url : 'index.php?option=com_redevent&controller=frontadmin&task=sessionsoptions&tmpl=component',
 				data :document.id('course-search-form'),
+				async : async,
 				onRequest: function(){
 					document.id('filter_session').set('spinner').spin();
 			    },
@@ -122,7 +148,7 @@ var redb2b = {
 		},
 		
 		searchBookings : function() {
-			var req = new Request({
+			req = new Request({
 				url : 'index.php?option=com_redevent&controller=frontadmin&task=getbookings&tmpl=component',
 				data : document.id('org-form'),
 				method : 'post',
@@ -130,7 +156,20 @@ var redb2b = {
 					document.id('main-bookings').set('html', responseText);					
 				}
 			});
-			req.send();			
+			req.send();
+		},
+		
+		selectSession : function(id) {
+			var req = new Request.JSON({
+				url : 'index.php?option=com_redevent&controller=frontadmin&task=getsession&tmpl=component&id=' + id,
+				onSuccess : function(session){
+					document.id('filter_event').set('value', session.did);
+					document.id('filter_session').empty();
+					thereq = redb2b.updateSessions(false);
+					document.id('filter_session').set('value', id);
+				}
+			});
+			req.send();				
 		}
 		
 };

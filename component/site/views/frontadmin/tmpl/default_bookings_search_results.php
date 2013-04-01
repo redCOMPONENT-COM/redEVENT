@@ -63,7 +63,7 @@ defined('_JEXEC') or die('Restricted access');
 						?>
 					</td>
 					<td><?php echo $row->language_sef; ?></td>
-					<td><?php echo RedeventViewMyevents::xrefattendeesbutton($row->xref); ?><?php echo $this->printPlaces($row); ?></td>
+					<td><?php echo $this->bookbutton($row->xref); ?><?php echo $this->printPlaces($row); ?></td>
 					<td><?php echo 'edit participants'; ?></td>
 				</tr>
 			<?php endforeach;?>
