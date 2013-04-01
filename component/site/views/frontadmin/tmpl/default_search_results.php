@@ -63,7 +63,7 @@ defined('_JEXEC') or die('Restricted access');
 						?>
 					</td>
 					<td><?php echo $row->language_sef; ?></td>
-					<td><?php echo RedeventViewMyevents::xrefattendeesbutton($row->xref); ?><?php echo $row->registered . ($row->maxattendees ? '/'  . $row->maxattendees : ''); ?></td>
+					<td><?php echo RedeventViewMyevents::xrefattendeesbutton($row->xref); ?><?php echo $this->printPlaces($row); ?></td>
 					<td><?php echo RedeventViewMyevents::eventeditbutton($row->slug, $row->xref); ?></td>
 					<td>
 					<?php if ($row->published == '1'): ?>

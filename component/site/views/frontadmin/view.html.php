@@ -185,4 +185,16 @@ class RedeventViewFrontadmin extends JView
 
 		parent::display($tpl);
 	}
+
+	protected function printPlaces($row)
+	{
+		if (!$row->maxattendees)
+		{
+			return '-';
+		}
+
+		$left = max(array($row->maxattendees - $row->registered, 0));
+
+		return $row->maxattendees . '/' . ($left > 6 ? '6+' : $left);
+	}
 }
