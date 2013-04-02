@@ -90,9 +90,6 @@ class RedeventModelArchive extends RedeventModelBaseEventList
 		$where = array();
 		$where[] = ' x.published = -1';
 
-		// Second is to only select events assigned to category the user has access to
-		$where[] = ' c.access <= '.$gid;
-
 		/*
 		 * If we have a filter, and this is enabled... lets tack the AND clause
 		* for the filter onto the WHERE clause of the item query.

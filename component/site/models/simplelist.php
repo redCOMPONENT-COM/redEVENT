@@ -34,21 +34,21 @@ require_once('baseeventslist.php');
  * @since		0.9
  */
 class RedeventModelSimpleList extends RedeventModelBaseEventList
-{	
+{
 	public function __construct()
-	{		
-		parent::__construct();		
+	{
+		parent::__construct();
 		$mainframe = & JFactory::getApplication();
-		
+
 		$filter 		  = $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter', 'filter', '', 'string');
 		$filter_type 	= $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter_type', 'filter_type', '', 'string');
 		$customs      = $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter_customs', 'filtercustom', array(), 'array');
-		
+
 		$this->setState('filter',         $filter);
 		$this->setState('filter_type',    $filter_type);
 		$this->setState('filter_customs', $customs);
 	}
-	
+
 	/**
 	 * Build the where clause
 	 *
@@ -66,9 +66,9 @@ class RedeventModelSimpleList extends RedeventModelBaseEventList
 		$params 	= & $mainframe->getParams();
 
 		$task 		= JRequest::getWord('task');
-		
+
 		$where = array();
-				
+
 		// First thing we need to do is to select only needed events
 		if ($task == 'archive') {
 			$query->where(' x.published = -1');
@@ -76,9 +76,6 @@ class RedeventModelSimpleList extends RedeventModelBaseEventList
 			$query->where(' x.published = 1');
 		}
 		$query->where('a.published <> 0');
-				
-		// Second is to only select events assigned to category the user has access to
-		$query->where(' c.access <= '.$gid);
 
 		/*
 		 * If we have a filter, and this is enabled... lets tack the AND clause
@@ -88,7 +85,7 @@ class RedeventModelSimpleList extends RedeventModelBaseEventList
 		{
 			$filter 		  = $this->getState('filter');
 			$filter_type 	= $this->getState('filter_type');
-			
+
 			if ($filter)
 			{
 				// clean filter variables
@@ -109,24 +106,24 @@ class RedeventModelSimpleList extends RedeventModelBaseEventList
 					case 'city' :
 						$query->where(' LOWER( l.city ) LIKE '.$filter);
 						break;
-						
+
 					case 'type' :
 						$query->where(' LOWER( c.catname ) LIKE '.$filter);
 						break;
 				}
 			}
 		}
-	    
-		if ($ev = $this->getState('filter_event')) 
-		{		
+
+		if ($ev = $this->getState('filter_event'))
+		{
 			$query->where('a.id = '.$this->_db->Quote($ev));
 		}
-		
+
 		if ($filter_venue = $this->getState('filter_venue'))
 		{
 			$query->where(' l.id = ' . $this->_db->Quote($filter_venue));
 		}
-	  
+
 		if ($cat = $this->getState('filter_category'))
 		{
 			$category = $this->getCategory((int) $cat);
@@ -134,21 +131,21 @@ class RedeventModelSimpleList extends RedeventModelBaseEventList
 				$query->where('(c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))');
 			}
 		}
-		
+
 		// more filters
 		if ($state = JRequest::getVar('state', '', 'request', 'string')) {
 			$query->where(' STRCMP(l.state, '.$this->_db->Quote($state).') = 0 ');
-		}		
+		}
 		if ($country = JRequest::getVar('country', '', 'request', 'string')) {
 			$query->where(' STRCMP(l.country, '.$this->_db->Quote($country).') = 0 ');
 		}
-	
+
 		$sstate = $params->get( 'session_state', '0' );
 		if ($sstate == 1)
 		{
 			$now = strftime('%Y-%m-%d %H:%M');
 			$query->where('(CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > '.$this->_db->Quote($now));
-		} 
+		}
 		else if ($sstate == 2) {
 			$query->where('x.dates = 0');
 		}
@@ -164,7 +161,7 @@ class RedeventModelSimpleList extends RedeventModelBaseEventList
 				$query->where(' custom'.$key.' LIKE ' . $this->_db->Quote('%'.$custom.'%'));
 			}
 		}
-		
+
 		// Filter by language
 		if ($this->getState('filter.language')) {
 			$query->where('a.language in ('.$this->_db->quote(JFactory::getLanguage()->getTag()).','.$this->_db->quote('*').')');
@@ -174,5 +171,5 @@ class RedeventModelSimpleList extends RedeventModelBaseEventList
 
 		return $query;
 	}
-	
+
 }

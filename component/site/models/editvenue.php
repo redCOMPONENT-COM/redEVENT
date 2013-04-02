@@ -212,7 +212,7 @@ class RedeventModelEditvenue extends JModel
 				$this->_db->setQuery( $query );
 
 				$this->_venue->categories = $this->_db->loadResultArray();
-				$this->_venue->attachments = REAttach::getAttachments('venue'.$this->_venue->id, max($user->getAuthorisedViewLevels()));
+				$this->_venue->attachments = REAttach::getAttachments('venue'.$this->_venue->id, $user->getAuthorisedViewLevels());
 			}
 		}
 		return $this->_venue;

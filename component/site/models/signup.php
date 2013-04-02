@@ -112,11 +112,11 @@ class RedeventModelSignup extends JModel
 	      $access = false;
 	      foreach ($this->_details->categories as $cat)
 	      {
-	      	if ($cat->access <= max($user->getAuthorisedViewLevels()))
-	      	{
-	      		$access = true;
-	      		break;
-	      	}
+	      		if (in_array($cat->access, $user->getAuthorisedViewLevels()))
+	      		{
+	      			$access = true;
+	      			break;
+	      		}
 	      }
 	      if (!$access) {
 	      	JError::raiseError( 403, JText::_("COM_REDEVENT_ALERTNOTAUTH") );

@@ -603,7 +603,6 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
         $mainframe = &JFactory::getApplication();
 
         $user = & JFactory::getUser();
-        $gid = (int)max($user->getAuthorisedViewLevels());
 
         // Get the paramaters of the active menu item
         $params = & $mainframe->getParams();
@@ -621,9 +620,6 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 
         // then if the user is attending the event
         $where .= ' AND r.uid = '.$this->_db->Quote($user->id);
-
-        // Second is to only select events assigned to category the user has access to
-        $where .= ' AND c.access <= '.$gid;
 
         return $where;
     }

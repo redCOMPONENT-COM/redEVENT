@@ -309,9 +309,6 @@ class RedeventModelBaseEventList extends JModel
 		// Get the paramaters of the active menu item
 		$params 	= $app->getParams();
 
-		// Second is to only select events assigned to category the user has access to
-		$query->where(' c.access <= ' . $gid);
-
 		$query->where('x.published = 1');
 		$query->where('a.published <> 0');
 
@@ -450,9 +447,6 @@ class RedeventModelBaseEventList extends JModel
 			$where[] = ' x.published = 1 ';
 		}
 		$where[] = ' a.published <> 0';
-
-		// Second is to only select events assigned to category the user has access to
-		$where[] = ' c.access <= ' . $gid;
 
 		/*
 		 * If we have a filter, and this is enabled... lets tack the AND clause

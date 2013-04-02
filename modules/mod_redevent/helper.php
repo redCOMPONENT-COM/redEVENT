@@ -44,7 +44,7 @@ class modRedEventHelper
 
 		$db			= JFactory::getDBO();
 		$user		= JFactory::getUser();
-		$user_gid	= (int) max($user->getAuthorisedViewLevels());
+		$user_gid	= $user->getAuthorisedViewLevels();
 
 		$query = $db->getQuery(true);
 
@@ -75,7 +75,7 @@ class modRedEventHelper
 
 		$where = array();
 
-		$where[] = 'c.access <= ' . $user_gid;
+		$where[] = 'c.access IN (' . implode(',', $user_gid) . ')';
 
 		$type = $params->get('type', '0');
 

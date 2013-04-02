@@ -93,9 +93,6 @@ class RedeventModelVenuecategory extends RedeventModelBaseEventList
 
 		$query->where('vc.lft BETWEEN ' . $this->_db->Quote($category->lft) . ' AND ' . $this->_db->Quote($category->rgt));
 
-		// Second is to only select events assigned to category the user has access to
-		$query->where(' vc.access <= ' . $gid);
-
 		return $query;
 	}
 

@@ -75,7 +75,7 @@ class RedeventModelEventhelper extends JModelLegacy
 		$this->_id			= $id;
 		$this->_event		= null;
 	}
-	
+
 	/**
 	 * Method to set the details id
 	 *
@@ -115,7 +115,7 @@ class RedeventModelEventhelper extends JModelLegacy
 			$access = false;
 			foreach ($this->_details->categories as $cat)
 			{
-				if ($cat->access <= max($user->getAuthorisedViewLevels()))
+				if (in_array($cat->access, $user->getAuthorisedViewLevels()))
 				{
 					$access = true;
 					break;
@@ -146,7 +146,7 @@ class RedeventModelEventhelper extends JModelLegacy
 
 			$query = 'SELECT x.*, a.*, a.id AS did, x.id AS xref, a.title, a.datdescription, '
 			    . ' a.meta_keywords, a.meta_description, a.datimage, a.registra, a.unregistra, a.summary, '
-			    . ' x.title as session_title, ' 
+			    . ' x.title as session_title, '
           . ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
 					. ' a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
 					. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone, a.review_message, '
@@ -171,14 +171,14 @@ class RedeventModelEventhelper extends JModelLegacy
     	$this->_db->setQuery($query);
 			$this->_event = $this->_db->loadObject();
 			if ($this->_event) {
-        $this->_details = $this->_getEventCategories($this->_event);			
-				$this->_details->attachments = REAttach::getAttachments('event'.$this->_details->did, max($user->getAuthorisedViewLevels()));		
+        $this->_details = $this->_getEventCategories($this->_event);
+				$this->_details->attachments = REAttach::getAttachments('event'.$this->_details->did, $user->getAuthorisedViewLevels());
 			}
 			return (boolean) $this->_event;
 		}
 		return true;
-	}	
- 
+	}
+
 	/**
 	 * Method to build the WHERE clause of the query to select the details
 	 *
@@ -194,7 +194,7 @@ class RedeventModelEventhelper extends JModelLegacy
 
 		return $where;
 	}
-	
+
   /**
    * adds categories property to event row
    *
@@ -215,9 +215,9 @@ class RedeventModelEventhelper extends JModelLegacy
 
   	$row->categories = $this->_db->loadObjectList();
 
-    return $row;   
+    return $row;
   }
-  
+
   public function getPlacesLeft()
   {
   	$session = &$this->getData();
@@ -237,7 +237,7 @@ class RedeventModelEventhelper extends JModelLegacy
     $left = $session->maxattendees - $res;
     return ($left > 0 ? $left : 0);
   }
-  
+
   public function getWaitingPlacesLeft()
   {
   	$session = &$this->getData();
@@ -252,18 +252,18 @@ class RedeventModelEventhelper extends JModelLegacy
     $this->_db->setQuery($q);
     $res = $this->_db->loadResult();
     $left = $session->maxwaitinglist - $res;
-    return ($left > 0 ? $left : 0);  	
+    return ($left > 0 ? $left : 0);
   }
 
   /**
    * get current session prices
-   * 
+   *
    * @return array
    */
   public function getPrices()
   {
   	$query = ' SELECT sp.*, p.name, p.alias, p.image, p.tooltip, f.currency, '
-	         . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug ' 
+	         . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug '
   	       . ' FROM #__redevent_sessions_pricegroups AS sp '
   	       . ' INNER JOIN #__redevent_pricegroups AS p on p.id = sp.pricegroup_id '
   	       . ' INNER JOIN #__redevent_event_venue_xref AS x on x.id = sp.xref '
@@ -273,7 +273,7 @@ class RedeventModelEventhelper extends JModelLegacy
   	       . ' ORDER BY p.ordering ASC '
   	       ;
   	$this->_db->setQuery($query);
-  	$res = $this->_db->loadObjectList();   	
+  	$res = $this->_db->loadObjectList();
   	return $res;
   }
 }

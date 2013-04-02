@@ -120,7 +120,7 @@ class RedeventModelDetails extends JModel
 			$access = false;
 			foreach ($this->_details->categories as $cat)
 			{
-				if ($cat->access <= max($user->getAuthorisedViewLevels()))
+				if (in_array($cat->access, $user->getAuthorisedViewLevels()))
 				{
 					$access = true;
 					break;
@@ -174,7 +174,7 @@ class RedeventModelDetails extends JModel
 			$this->_details = $this->_db->loadObject();
 			if ($this->_details) {
 				$this->_details = $this->_getEventCategories($this->_details);
-				$this->_details->attachments = REAttach::getAttachments('event'.$this->_details->did, max($user->getAuthorisedViewLevels()));
+				$this->_details->attachments = REAttach::getAttachments('event'.$this->_details->did, $user->getAuthorisedViewLevels());
 			}
 			return (boolean) $this->_details;
 		}

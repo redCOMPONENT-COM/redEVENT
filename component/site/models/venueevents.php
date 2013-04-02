@@ -127,7 +127,7 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 			JError::raiseError(403, JText::_('COM_REDEVENT_ACCESS_NOT_ALLOWED'));
 		}
 
-		$_venue->attachments = REAttach::getAttachments('venue' . $_venue->id, max($user->getAuthorisedViewLevels()));
+		$_venue->attachments = REAttach::getAttachments('venue' . $_venue->id, $user->getAuthorisedViewLevels());
 
 		return $_venue;
 	}
