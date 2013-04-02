@@ -72,7 +72,7 @@ var redb2b = {
 					data : document.id('org-form'),
 					method : 'post',
 					onSuccess : function(options){
-						var sel = document.id('filter_user');
+						var sel = document.id('filter_person');
 						sel.empty();
 						new Element('option', {'value': ''}).set('text', Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_SELECT_USER")).inject(sel);
 						if (options.length) {
@@ -170,6 +170,11 @@ var redb2b = {
 				}
 			});
 			req.send();				
-		}
+		},
 		
+		attendeesList : function() {
+			var req = new Request.JSON({
+				
+			});
+		}
 };
