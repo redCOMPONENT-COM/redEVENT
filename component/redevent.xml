@@ -47,7 +47,7 @@
 	</files>
 
 	<!-- media files -->
-	<media folder="media" destination="com_redform">
+	<media folder="media" destination="com_redevent">
 		<filename>index.html</filename>
 		<folder>images</folder>
 		<folder>css</folder>
