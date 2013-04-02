@@ -43,16 +43,16 @@ defined('_JEXEC') or die('Restricted access');
 		<div>
 		<?php if ($this->useracl->canAddEvent()): ?>
 			<?php echo JHtml::link(RedeventHelperRoute::getEditEventRoute(),
-				Jtext::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_BUTTON_ADD_EVENT',
-				array('class' => 'btn'))); ?>
+				Jtext::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_BUTTON_ADD_EVENT'),
+				array('class' => 'btn')); ?>
 		<?php endif; ?>
 		</div>
 
 		<div>
 		<?php if ($this->useracl->canAddSession()): ?>
 			<?php echo JHtml::link(RedeventHelperRoute::getEditXrefRoute(),
-				Jtext::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_BUTTON_ADD_SESSION',
-				'class="btn"')); ?>
+				Jtext::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_BUTTON_ADD_SESSION'),
+				array('class' => 'btn')); ?>
 		<?php endif; ?>
 		</div>
 
