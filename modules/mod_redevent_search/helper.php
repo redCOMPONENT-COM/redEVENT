@@ -73,7 +73,7 @@ class modRedEventSearchHelper
 
 		if ($app->getLanguageFilter())
 		{
-			$where[] = '(c.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR c.language IS NULL)';
+			$where[] = '(c.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR c.language IS NULL)';
 		}
 
 		if (count($where)) {
@@ -113,7 +113,7 @@ class modRedEventSearchHelper
 
 		if ($app->getLanguageFilter())
 		{
-			$where[] = '(v.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR v.language IS NULL)';
+			$where[] = '(v.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR v.language IS NULL)';
 		}
 
 		if (count($where)) {
