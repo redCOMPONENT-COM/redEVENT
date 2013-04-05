@@ -23,7 +23,7 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
- 
+
 // Import library dependencies
 jimport('joomla.plugin.plugin');
 
@@ -36,19 +36,19 @@ include_once(REDEVENT_PATH_SITE.DS.'classes'.DS.'useracl.class.php');
 include_once('resimplelist'.DS.'model.php');
 
 class plgContentRESimplelist extends JPlugin {
- 
+
 	protected $_db;
-	
+
 	protected $_customs;
-	
+
 	protected $_model;
-	
+
 	public function __construct( $subject, $params )
 	{
 		parent::__construct( $subject, $params );
 		$this->loadLanguage();
 	}
-	
+
 	/**
 	* Plugin that loads events lists within content
 	*
@@ -61,13 +61,13 @@ class plgContentRESimplelist extends JPlugin {
 	{
 		$document = &JFactory::getDocument();
 		$document->addStyleSheet('plugins/content/resimplelist/resimplelist.css');
-		
+
 		// do we have matches for the plugin
 		if (!preg_match_all('/{RESimplelist([\s]+[^}]*)*}/i', $article->text, $matches, PREG_SET_ORDER))
 		{
 			return;
 		}
-		
+
 		$search  = array();
 		$replace = array();
 		foreach ($matches as $match)
@@ -77,34 +77,34 @@ class plgContentRESimplelist extends JPlugin {
 			if (isset($match[1]))
 			{
 				$match_params = trim($match[1]);
-				if (!empty($match_params)) 
+				if (!empty($match_params))
 				{
-					preg_match_all('/([^=\s]+)="([^"]*)"/', $match_params, $match_params_array, PREG_SET_ORDER);
-					foreach ($match_params_array as $m) 
+					preg_match_all('/([^=\s]+)=["\']([^"\']*)[\'"]/', $match_params, $match_params_array, PREG_SET_ORDER);
+					foreach ($match_params_array as $m)
 					{
 						$property = strtolower($m[1]);
 						if (!isset($settings[$property])) {
 							$settings[$property] = array();
 						}
 						$settings[$property][] = $m[2];
-					}				
+					}
 				}
 			}
-			
+
 			$search[]  = $match[0];
 			$replace[] = $this->_getList($settings);
 		}
 		$article->text = str_replace($search, $replace, $article->text);
 	}
-	
+
 	protected function _getList($settings = array())
-	{				
+	{
 		$this->_model = new plgReSimplistModel();
 		$this->_model->setLimit($this->params->get('max_events', 20));
 		$this->_model->setLimitStart(0);
-		
+
 		$filtercustoms = array();
-		foreach ($settings as $key => $val) 
+		foreach ($settings as $key => $val)
 		{
 			switch ($key)
 			{
@@ -128,7 +128,7 @@ class plgContentRESimplelist extends JPlugin {
 						$parts = explode(",", $v);
 						foreach ($parts as $p) {
 							$values[] = trim($p);
-						} 
+						}
 					}
 					$this->_model->setState($key, $values);
 					break;
@@ -143,14 +143,14 @@ class plgContentRESimplelist extends JPlugin {
 		if (count($filtercustoms)) {
 			$this->_model->setState('customs', $filtercustoms);
 		}
-		
+
 		$res = $this->_model->getData();
-		
+
 		if (!$res) {
 			return '';
 		}
-		
-		if (isset($settings['cols'])) 
+
+		if (isset($settings['cols']))
 		{
 			$cols = array();
 			foreach(explode(",", $settings['cols'][0]) as $c) {
@@ -160,14 +160,14 @@ class plgContentRESimplelist extends JPlugin {
 		else {
 			$cols = array( 'date', 'title', 'venue', 'city', 'category');
 		}
-		
+
 		$i = 0;
 		ob_start();
 		?>
 		<table class="plg_resimplelist" border="0" cellspacing="0" cellpadding="0">
 		<thead>
 			<tr>
-				<?php 
+				<?php
 				foreach ($cols as $c)
 				{
 					switch ($c)
@@ -198,9 +198,9 @@ class plgContentRESimplelist extends JPlugin {
 								echo '<th>'.$f->name.'</th>';
 							}
 							break;
-							
+
 					}
-				}				
+				}
 				?>
 			</tr>
 		</thead>
@@ -208,7 +208,7 @@ class plgContentRESimplelist extends JPlugin {
 		<?php foreach ($res as $event): ?>
 		<?php $link = JRoute::_(REdeventHelperRoute::getDetailsRoute($event->id, $event->xref)); ?>
 			<tr class="sectiontableentry<?php echo $i+1; ?>">
-				<?php 
+				<?php
 				foreach ($cols as $c)
 				{
 					switch ($c)
@@ -240,7 +240,7 @@ class plgContentRESimplelist extends JPlugin {
 							}
 							break;
 					}
-				}				
+				}
 				?>
 			</tr>
 			<?php $i = 1 - $i;?>
@@ -252,10 +252,10 @@ class plgContentRESimplelist extends JPlugin {
 		ob_end_clean();
 		return $html;
 	}
-		
+
 	/**
 	 * return formatted event date and time (start and end), or false if open date
-	 * 
+	 *
 	 * @param object $event
 	 * @return string or false for open date
 	 */
@@ -265,7 +265,7 @@ class plgContentRESimplelist extends JPlugin {
 			$date = '<span class="event-date open-date">'.JText::_('PLG_RESIMPLELIST_OPEN_DATE').'</span>';
 			return $date;
 		}
-		
+
 		// is this a full day(s) event ?
 		$allday = '00:00:00' == $event->times && '00:00:00' == $event->endtimes;
 
@@ -276,8 +276,8 @@ class plgContentRESimplelist extends JPlugin {
 			$date .= ' <span class="event-time">'.self::_formattime($event->dates, $event->times).'</span>';
 		}
 		$date .= '</span>';
-		
-		if ($allday) 
+
+		if ($allday)
 		{
 			if ($this->params->get('show_end', 1) && redEVENTHelper::isValidDate($event->enddates))
 			{
@@ -290,7 +290,7 @@ class plgContentRESimplelist extends JPlugin {
 		}
 		else if ($this->params->get('show_end', 1))
 		{
-			if (redEVENTHelper::isValidDate($event->enddates) && strtotime($event->enddates) != strtotime($event->dates)) 
+			if (redEVENTHelper::isValidDate($event->enddates) && strtotime($event->enddates) != strtotime($event->dates))
 			{
 				$date .= ' <span class="event-end"><span class="event-day">'.self::_formatdate($event->enddates, $event->endtimes).'</span>';
 				if ($this->params->get('show_time', 1)) {
@@ -300,66 +300,66 @@ class plgContentRESimplelist extends JPlugin {
 			}
 			else if ($this->params->get('show_time', 1))
 			{
-				$date .= ' <span class="event-time">'.self::_formattime($event->dates, $event->endtimes).'</span>';				
+				$date .= ' <span class="event-time">'.self::_formattime($event->dates, $event->endtimes).'</span>';
 			}
 		}
 		$date .= '</span>';
-		
+
 		return $date;
 	}
-	
+
 
 	/**
 	 * Formats date
 	 *
 	 * @param string $date
 	 * @param string $time
-	 * 
+	 *
 	 * @return string $formatdate
 	 *
 	 * @since 0.9
 	 */
 	protected function _formatdate($date, $time)
-	{		
+	{
 		if(!redEVENTHelper::isValidDate($date)) {
 			return JText::_('OPEN DATE');
 		}
-		
+
 		if(!$time) {
 			$time = '00:00:00';
 		}
-		
+
 		//Format date
 		$formatdate = strftime( $this->params->get('date_format', '%b %d, %Y'), strtotime( $date.' '.$time ));
-		
+
 		return $formatdate;
 	}
-	
+
 	/**
 	 * Formats time
 	 *
 	 * @param string $date
 	 * @param string $time
-	 * 
+	 *
 	 * @return string $formattime
 	 *
 	 * @since 0.9
 	 */
 	protected function _formattime($date, $time)
-	{		
+	{
 		if(!$time) {
 			return;
 		}
-		
+
 		//Format time
 		$formattime = strftime( $this->params->get('time_format', '%H:%I'), strtotime( $date.' '.$time ));
-		
+
 		return $formattime;
 	}
-	
+
 	/**
 	 * return formatted categories for display
-	 * 
+	 *
 	 * @param object $event
 	 * @return string
 	 */
@@ -372,19 +372,19 @@ class plgContentRESimplelist extends JPlugin {
 		}
 		return implode("<br/>", $cats);
 	}
-		
+
 	/**
 	 * return custom field or false if not found
-	 * 
+	 *
 	 * @param string $dbfield name of field in tables (custom<id>)
 	 * @return mixed object field or false
 	 */
 	protected function _getCustom($dbfield)
-	{		
-		if (is_null($this->_customs)) {			
+	{
+		if (is_null($this->_customs)) {
 			$this->_customs = $this->_model->getListCustomFields();
 		}
-		foreach ((array) $this->_customs as $f) 
+		foreach ((array) $this->_customs as $f)
 		{
 			if ('custom'.$f->id == $dbfield) {
 				return $f;
@@ -392,5 +392,5 @@ class plgContentRESimplelist extends JPlugin {
 		}
 		return false;
 	}
-		
+
 }
