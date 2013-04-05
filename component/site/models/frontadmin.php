@@ -547,6 +547,11 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 			$query->where('a.id = ' . JRequest::getInt('filter_event'));
 		}
 
+		if (JRequest::getInt('filter_session'))
+		{
+			$query->where('x.id = ' . JRequest::getInt('filter_session'));
+		}
+
 		if (JRequest::getInt('filter_venue'))
 		{
 			$query->where('l.id = ' . JRequest::getInt('filter_venue'));

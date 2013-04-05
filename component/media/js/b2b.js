@@ -31,6 +31,8 @@ window.addEvent('domready', function() {
 
 var redb2b = {
 	
+		sessionsreq : null,
+		
 		/**
 		 * init events
 		 */
@@ -39,7 +41,7 @@ var redb2b = {
 			/**
 			 * ajax search course
 			 */
-			new Form.Request(document.id('course-search-form'), document.id('main-course-results'), {
+			this.sessionsreq = new Form.Request(document.id('course-search-form'), document.id('main-course-results'), {
 				resetForm : false,
 				useSpinner: true,
 				extraData : {
@@ -59,6 +61,13 @@ var redb2b = {
 			 */
 			document.id('filter_venue').addEvent('change', function(){
 				redb2b.updateSessions();
+			});
+
+			/**
+			 * update sessions options when selecting venue
+			 */
+			document.id('filter_session').addEvent('change', function(){
+				redb2b.setbookingmode();
 			});
 
 			/**
@@ -122,6 +131,12 @@ var redb2b = {
 				var id = this.id.substr('6');
 				redb2b.selectSession(id);
 			});
+			
+			document.id('search-course-reset').addEvent('click', function(){
+				this.form.reset();
+				redb2b.setbookingmode();
+				redb2b.sessionsreq.send();
+			});
 		},
 				
 		updateSessions : function(async) {
@@ -142,6 +157,7 @@ var redb2b = {
 							new Element('option', {'value': el.value}).set('text', el.text).inject(sel);
 						});
 					}
+					redb2b.setbookingmode();
 				}
 			});
 			req.send();
@@ -167,9 +183,24 @@ var redb2b = {
 					document.id('filter_session').empty();
 					thereq = redb2b.updateSessions(false);
 					document.id('filter_session').set('value', id);
+					redb2b.setbookingmode();
+					redb2b.sessionsreq.send();
 				}
 			});
 			req.send();				
+		},
+		
+		setbookingmode : function(){
+			if (document.id('filter_session').get('value') > 0) {
+				document.id('search-course').set('styles', {'display' :'none'});
+				document.id('book-course').set('styles', {'display' :'block'});
+				document.id('session-form-title').set('text', Joomla.JText._("COM_REDEVENT_BOOK_EVENT"));				
+			}
+			else {
+				document.id('search-course').set('styles', {'display' :'block'});
+				document.id('book-course').set('styles', {'display' :'block'});
+				document.id('session-form-title').set('text', Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_COURSE_SEARCH_TITLE"));					
+			}
 		},
 		
 		attendeesList : function() {
