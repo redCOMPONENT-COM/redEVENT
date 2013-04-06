@@ -574,4 +574,66 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 
 		return $query;
 	}
+
+	/**
+	 * return organization members and their booking status for the session
+	 *
+	 * @param   int  $xref          session id
+	 * @param   int  $organization  organization id
+	 *
+	 * @return array
+	 */
+	public function getAttendees($xref, $organization)
+	{
+		// Get organization members
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('u.*');
+		$query->from('#__redmember_user_organization_xref AS rmuo');
+		$query->join('INNER', '#__redmember_users AS rmu ON rmuo.user_id = rmu.user_id');
+		$query->join('INNER', '#__users AS u ON u.id = rmu.user_id');
+		$query->where('rmuo.organization_id = ' . (int) $organization);
+		$query->order('u.name');
+
+		$db->setQuery($query);
+		$users = $db->loadObjectList();
+
+		if (!$users)
+		{
+			return array();
+		}
+
+		// Now get the one registered for the session
+		// Get the ids first
+		$ids = array();
+		foreach ($users as $u)
+		{
+			$ids[] = $u->id;
+		}
+
+		$query = $db->getQuery(true);
+
+		$query->select('r.*');
+		$query->from('#__redevent_register AS r');
+		$query->where('r.xref = ' . $xref);
+		$query->where('r.uid IN (' . implode(',', $ids) . ')');
+
+		$db->setQuery($query);
+		$regs = $db->loadObjectList('uid');
+
+		foreach ($users as &$u)
+		{
+			if (isset($regs[$u->id]))
+			{
+				$u->registered = $regs[$u->id];
+			}
+			else
+			{
+				$u->registered =null;
+			}
+		}
+
+		return $users;
+	}
 }

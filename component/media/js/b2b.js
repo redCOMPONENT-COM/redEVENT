@@ -92,6 +92,8 @@ var redb2b = {
 					}
 				});
 				person_req.send();
+				// Display organization users ?
+				redb2b.attendeesList();
 			});
 
 			/**
@@ -99,6 +101,8 @@ var redb2b = {
 			 */
 			document.id('filter_person').addEvent('change', function(){
 				redb2b.searchBookings();
+				// Display organization users ?
+				redb2b.attendeesList();
 			});
 
 			/**
@@ -187,25 +191,37 @@ var redb2b = {
 					redb2b.sessionsreq.send();
 				}
 			});
-			req.send();				
+			req.send();			
 		},
 		
 		setbookingmode : function(){
 			if (document.id('filter_session').get('value') > 0) {
 				document.id('search-course').set('styles', {'display' :'none'});
 				document.id('book-course').set('styles', {'display' :'block'});
-				document.id('session-form-title').set('text', Joomla.JText._("COM_REDEVENT_BOOK_EVENT"));				
+				document.id('session-form-title').set('text', Joomla.JText._("COM_REDEVENT_BOOK_EVENT"));
 			}
 			else {
 				document.id('search-course').set('styles', {'display' :'block'});
 				document.id('book-course').set('styles', {'display' :'block'});
 				document.id('session-form-title').set('text', Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_COURSE_SEARCH_TITLE"));					
 			}
+			// Display organization users ?
+			redb2b.attendeesList();
 		},
 		
 		attendeesList : function() {
-			var req = new Request.JSON({
-				
-			});
+			document.id('main-attendees').set('styles', {'display' : 'none'}).empty();
+			if (document.id('filter_organization').get('value') > 0 && document.id('filter_session').get('value') > 0) {
+				var req = new Request.HTML({
+					url: 'index.php?option=com_redevent&controller=frontadmin&task=getattendees&tmpl=component',
+					data : {'xref' : document.id('filter_session').get('value'),
+						'org' : document.id('filter_organization').get('value')
+					},
+					onSuccess : function(text) {
+						resdiv = document.id('main-attendees').adopt(text).set('styles', {'display' : 'block'});
+					}
+				});
+				req.send();
+			}
 		}
 };

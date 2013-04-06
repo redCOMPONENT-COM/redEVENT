@@ -28,6 +28,10 @@ defined('_JEXEC') or die('Restricted access');
 
 <div id="main-content" class="row-fluid">
 	<div id="main-results" class="span9">
+		<div id="main-attendees" style="display:none">
+
+		</div>
+
 		<div id="main-bookings">
 			<?php echo $this->loadTemplate('bookings_search_results'); ?>
 		</div>

@@ -58,6 +58,11 @@ class RedeventViewFrontadmin extends JView
 			return $this->displayBookings($tpl);
 		}
 
+		if ($this->getLayout() == 'attendees')
+		{
+			return $this->displayAttendees($tpl);
+		}
+
 		JHTML::_('behavior.framework');
 		JHtml::_('behavior.tooltip');
 
@@ -229,5 +234,10 @@ class RedeventViewFrontadmin extends JView
 		$output	= '<a href="#" id="bookid' . $id . '" class="bookthis hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
 
 		return $output;
+	}
+
+	protected function displayAttendees($tpl= null)
+	{
+		parent::display($tpl);
 	}
 }

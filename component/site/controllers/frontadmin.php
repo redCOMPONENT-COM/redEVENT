@@ -120,4 +120,23 @@ class RedeventControllerFrontadmin extends FOFController
 
 		$app->close();
 	}
+
+	public function getattendees()
+	{
+		$app = JFactory::getApplication();
+
+		$this->viewName  = 'frontadmin';
+		$this->modelName = 'frontadmin';
+		$this->layout    = 'attendees';
+
+		$model = $this->getModel('frontadmin');
+
+		$att = $model->getAttendees($app->input->get('xref', 0, 'int'), $app->input->get('org', 0, 'int'));
+
+		$view = $this->getThisView();
+		$view->assignRef('attendees', $att);
+		$this->display();
+
+		JFactory::getApplication()->close();
+	}
 }
