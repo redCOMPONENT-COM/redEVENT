@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 		</thead>
 		<tbody>
 			<?php foreach ($this->sessions as $row): ?>
-				<tr>
+				<tr class="xref<?php echo $row->xref; ?>">
 					<td><?php echo REOutput::formatEventDateTime($row, false); ?></td>
 					<td><?php echo redEVENTHelper::getEventDuration($row); ?></td>
 					<td><?php echo $row->full_title; ?></td>
@@ -64,25 +64,29 @@ defined('_JEXEC') or die('Restricted access');
 					</td>
 					<td><?php echo $row->language_sef; ?></td>
 					<td><?php echo $this->bookbutton($row->xref); ?><?php echo $this->printPlaces($row); ?></td>
-					<td><?php echo RedeventViewMyevents::eventeditbutton($row->slug, $row->xref); ?></td>
+					<td>
+					<?php if ($this->useracl->canEditEvent((int) $row->slug)): ?>
+						<?php echo JHTML::image('media/com_redevent/images/icon-16-edit.png', JText::_('COM_REDEVENT_EDIT_EVENT'), array('class' => 'editevent')); ?>
+					<?php endif; ?>
+					</td>
 					<td>
 					<?php if ($row->published == '1'): ?>
 						<?php if ($this->useracl->canEditXref($row->xref)): ?>
-							<?php echo JHTML::link('index.php?option=com_redevent&task=unpublishxref&xref='. $row->xref, JHTML::_('image', 'components/com_redevent/assets/images/ok.png', JText::_('COM_REDEVENT_Published' ))); ?>
+							<?php echo JHTML::image('media/com_redevent/images/ok.png', JText::_('COM_REDEVENT_Published'), array('class' => 'unpublishxref')); ?>
 						<?php else: ?>
-							<?php echo JHTML::_('image', 'components/com_redevent/assets/images/ok.png', JText::_('COM_REDEVENT_Published' )); ?>
+							<?php echo JHTML::image('media/com_redevent/images/ok.png', JText::_('COM_REDEVENT_Published')); ?>
 						<?php endif; ?>
 					<?php elseif ($row->published == '0'):?>
 						<?php if ($this->useracl->canEditXref($row->xref)): ?>
-							<?php echo JHTML::link('index.php?option=com_redevent&task=publishxref&xref='. $row->xref, JHTML::_('image', 'components/com_redevent/assets/images/no.png', JText::_('COM_REDEVENT_Unpublished' ))); ?>
+							<?php echo JHTML::image('media/com_redevent/images/no.png', JText::_('COM_REDEVENT_unPublished'), array('class' => 'publishxref')); ?>
 						<?php else: ?>
-							<?php echo JHTML::_('image', 'components/com_redevent/assets/images/no.png', JText::_('COM_REDEVENT_Unpublished' )); ?>
+							<?php echo JHTML::image('media/com_redevent/images/no.png', JText::_('COM_REDEVENT_unPublished')); ?>
 						<?php endif; ?>
 					<?php endif;?>
 					</td>
 					<td>
 						<?php if ($this->useracl->canEditXref($row->xref)): ?>
-							<?php echo RedeventViewMyevents::xrefdeletebutton($row->xref); ?>
+							<?php echo JHTML::image('media/com_redevent/images/icon-16-delete.png', JText::_('COM_REDEVENT_DELETE'), array('class' => 'deletexref')); ?>
 						<?php endif; ?>
 					</td>
 				</tr>

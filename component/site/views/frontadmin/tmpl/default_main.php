@@ -44,6 +44,9 @@ defined('_JEXEC') or die('Restricted access');
 	<div id="main-right" class="span3">
 		<?php echo $this->loadTemplate('course_search'); ?>
 
+		<?php echo $this->loadTemplate('selected_users'); ?>
+
+		<hr/>
 		<div>
 		<?php if ($this->useracl->canAddEvent()): ?>
 			<?php echo JHtml::link(RedeventHelperRoute::getEditEventRoute(),
@@ -59,8 +62,6 @@ defined('_JEXEC') or die('Restricted access');
 				array('class' => 'btn')); ?>
 		<?php endif; ?>
 		</div>
-
-		<?php echo $this->loadTemplate('selected_users'); ?>
 	</div>
 </div>
 <div class="clear"></div>

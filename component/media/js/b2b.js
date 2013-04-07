@@ -71,7 +71,7 @@ var redb2b = {
 			 * update sessions options when selecting venue
 			 */
 			document.id('filter_session').addEvent('change', function(){
-				redb2b.setbookingmode();
+				redb2b.attendeesList();
 			});
 
 			/**
@@ -142,7 +142,7 @@ var redb2b = {
 			
 			document.id('search-course-reset').addEvent('click', function(){
 				this.form.reset();
-				redb2b.setbookingmode();
+				redb2b.attendeesList();
 				redb2b.sessionsreq.send();
 			});
 			
@@ -170,6 +170,7 @@ var redb2b = {
 						redb2b.selected.erase(id);
 						if (!redb2b.selected.length) {
 							div.getElement(".notice").set('styles', {display:'block'});
+							div.addClass('nouser');
 						}
 					});
 					var imgspan = new Element('span.member-remove');
@@ -182,6 +183,8 @@ var redb2b = {
 					newrow.inject(div);
 					
 					redb2b.selected.push(id);
+					
+					document.id('book-course').set('styles', {'display' :'block'});
 				}
 				else {
 					/** remove from selected list **/
@@ -190,9 +193,26 @@ var redb2b = {
 					if (!redb2b.selected.length) {
 						div.getElement(".notice").set('styles', {display:'block'});
 						div.addClass('nouser');
+						document.id('book-course').set('styles', {'display' :'none'});
 					}
 				}
-			});			
+			});
+			
+			/**
+			 * edit attendee
+			 */
+			document.id('redevent-admin').addEvent('click:relay(.editattendee)', function(e){
+				alert('non implemented yet');
+			});
+			
+			/**
+			 * remove registration
+			 */
+			document.id('redevent-admin').addEvent('click:relay(.unregister)', function(e){
+				if (confirm('are you sure ?')) {
+					alert('non implemented yet');					
+				}
+			});
 		},
 				
 		updateSessions : function(async) {
@@ -213,7 +233,7 @@ var redb2b = {
 							new Element('option', {'value': el.value}).set('text', el.text).inject(sel);
 						});
 					}
-					redb2b.setbookingmode();
+					redb2b.attendeesList();
 				}
 			});
 			req.send();
@@ -239,26 +259,11 @@ var redb2b = {
 					document.id('filter_session').empty();
 					thereq = redb2b.updateSessions(false);
 					document.id('filter_session').set('value', id);
-					redb2b.setbookingmode();
+					redb2b.attendeesList();
 					redb2b.sessionsreq.send();
 				}
 			});
 			req.send();			
-		},
-		
-		setbookingmode : function(){
-			if (document.id('filter_session').get('value') > 0) {
-				document.id('search-course').set('styles', {'display' :'none'});
-				document.id('book-course').set('styles', {'display' :'block'});
-				document.id('session-form-title').set('text', Joomla.JText._("COM_REDEVENT_BOOK_EVENT"));
-			}
-			else {
-				document.id('search-course').set('styles', {'display' :'block'});
-				document.id('book-course').set('styles', {'display' :'block'});
-				document.id('session-form-title').set('text', Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_COURSE_SEARCH_TITLE"));					
-			}
-			// Display organization users ?
-			redb2b.attendeesList();
 		},
 		
 		attendeesList : function() {
