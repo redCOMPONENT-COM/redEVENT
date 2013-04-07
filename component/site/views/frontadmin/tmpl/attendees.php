@@ -43,7 +43,9 @@ defined('_JEXEC') or die('Restricted access');
 			<td class="attendee-name"><?php echo $a->name; ?></td>
 			<td><?php echo $a->username; ?></td>
 			<td><?php echo $a->email; ?></td>
-			<td><?php echo JHtml::link('#', 'edit') . ($a->registered ? ' ' . JHtml::link('#', 'remove') : ''); ?> </td>
+			<td><?php echo JHTML::image('media/com_redevent/images/icon-16-edit.png', 'edit', array('class' => 'editattendee'))
+				. ($a->registered ? ' '	. JHTML::image('media/com_redevent/images/icon-16-delete.png', 'remove', array('class' => 'unregister')) : ''); ?>
+			</td>
 		</tr>
 		<?php endforeach;?>
 	</tbody>

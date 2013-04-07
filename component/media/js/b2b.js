@@ -31,7 +31,11 @@ window.addEvent('domready', function() {
 
 var redb2b = {
 	
+		/** request object for session **/
 		sessionsreq : null,
+		
+		/** selected users for booking **/
+		selected : new Array(),
 		
 		/**
 		 * init events
@@ -141,6 +145,54 @@ var redb2b = {
 				redb2b.setbookingmode();
 				redb2b.sessionsreq.send();
 			});
+			
+			/**
+			 * add checked attendee
+			 */
+			document.id('redevent-admin').addEvent('click:relay(.attendee-sel)', function(e){
+				var id = this.id.substr('3');
+				var name = this.getParent('tr').getElement('.attendee-name').get('text');
+				var div = document.id('select-list');
+				
+				if (this.getProperty('checked')) {
+					div.removeClass('nouser');
+					div.getElement(".notice").set('styles', {display:'none'});
+					
+					var newrow = new Element('div#member'+id);
+					var img = new Element('img', {
+						'src' : 'media/com_redevent/images/icon-16-delete.png',
+						'alt': 'delete'
+					}).addEvent('click', function(){
+						newrow.dispose();
+						if (document.id('cid'+id)) {
+							document.id('cid'+id).removeProperty('checked');
+						}
+						redb2b.selected.erase(id);
+						if (!redb2b.selected.length) {
+							div.getElement(".notice").set('styles', {display:'block'});
+						}
+					});
+					var imgspan = new Element('span.member-remove');
+					var input = new Element('input', {'name' : 'reg[]', 'value' : id, 'type' : 'hidden'});				
+					var inputspan = new Element('span.member-name').set('text', name);
+					
+					newrow.adopt(imgspan.adopt(img));
+					newrow.adopt(inputspan.adopt(input));					
+					
+					newrow.inject(div);
+					
+					redb2b.selected.push(id);
+				}
+				else {
+					/** remove from selected list **/
+					document.id('member'+id).dispose();
+					redb2b.selected.erase(id);
+					if (!redb2b.selected.length) {
+						div.getElement(".notice").set('styles', {display:'block'});
+						div.addClass('nouser');
+					}
+				}
+			});			
 		},
 				
 		updateSessions : function(async) {
