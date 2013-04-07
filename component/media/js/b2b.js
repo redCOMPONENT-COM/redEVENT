@@ -71,6 +71,7 @@ var redb2b = {
 			 * update sessions options when selecting venue
 			 */
 			document.id('filter_session').addEvent('change', function(){
+				document.id('book-xref').set('value', this.get('value'));
 				redb2b.attendeesList();
 			});
 
@@ -158,7 +159,7 @@ var redb2b = {
 					div.removeClass('nouser');
 					div.getElement(".notice").set('styles', {display:'none'});
 					
-					var newrow = new Element('div#member'+id);
+					var newrow = new Element('div#member'+id, {'class' : 'selectedmember'});
 					var img = new Element('img', {
 						'src' : 'media/com_redevent/images/icon-16-delete.png',
 						'alt': 'delete'
@@ -191,9 +192,7 @@ var redb2b = {
 					document.id('member'+id).dispose();
 					redb2b.selected.erase(id);
 					if (!redb2b.selected.length) {
-						div.getElement(".notice").set('styles', {display:'block'});
-						div.addClass('nouser');
-						document.id('book-course').set('styles', {'display' :'none'});
+						redb2b.resetSelected();
 					}
 				}
 			});
@@ -212,6 +211,18 @@ var redb2b = {
 				if (confirm('are you sure ?')) {
 					alert('non implemented yet');					
 				}
+			});
+			
+			document.id('book-course').addEvent('click', function(){
+				req = new Request({
+					url : 'index.php?option=com_redevent&controller=frontadmin&task=quickbook&tmpl=component',
+					data : document.id('selected_users'),
+					method : 'post',
+					onSuccess : function(responseText){
+						alert('should book !');					
+					}
+				});
+				req.send({'test' : 11});
 			});
 		},
 				
@@ -259,6 +270,7 @@ var redb2b = {
 					document.id('filter_session').empty();
 					thereq = redb2b.updateSessions(false);
 					document.id('filter_session').set('value', id);
+					document.id('book-xref').set('value', id);
 					redb2b.attendeesList();
 					redb2b.sessionsreq.send();
 				}
@@ -268,6 +280,7 @@ var redb2b = {
 		
 		attendeesList : function() {
 			document.id('main-attendees').set('styles', {'display' : 'none'}).empty();
+			redb2b.resetSelected();
 			if (document.id('filter_organization').get('value') > 0 && document.id('filter_session').get('value') > 0) {
 				var req = new Request.HTML({
 					url: 'index.php?option=com_redevent&controller=frontadmin&task=getattendees&tmpl=component',
@@ -280,5 +293,14 @@ var redb2b = {
 				});
 				req.send();
 			}
+		},
+		
+		resetSelected : function() {
+			redb2b.selected = new Array();
+			var div = document.id('select-list');
+			div.getElement(".notice").set('styles', {display:'block'});
+			div.addClass('nouser');
+			div.getElements('.selectedmember').dispose();
+			document.id('book-course').set('styles', {'display' :'none'});			
 		}
 };

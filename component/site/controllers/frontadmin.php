@@ -139,4 +139,11 @@ class RedeventControllerFrontadmin extends FOFController
 
 		JFactory::getApplication()->close();
 	}
+
+	public function quickbook()
+	{
+		echo 'quickbook';
+
+		JFactory::getApplication()->close();
+	}
 }

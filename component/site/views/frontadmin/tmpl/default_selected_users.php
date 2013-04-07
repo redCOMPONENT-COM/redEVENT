@@ -21,7 +21,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<div id="selected_users">
+<form id="selected_users">
 	<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SELECTED_USERS'); ?></h2>
 
 	<div id="select-list" class="nouser">
@@ -30,6 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 			<div><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SELECT_COURSE_TO_SELECT_USERS_DESC')?></div>
 		</div>
 	</div>
+	<input name="xref" type="hidden" id="book-xref" value="" />
 	<button type="button" id="book-course" style="display: none" class="btn"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_BUTTON_BOOK'); ?></button>
 	<button type="button" id="add-employee" class="btn"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ADD_EMPLOYEE')?></button>
-</div>
+</form>
