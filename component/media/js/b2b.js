@@ -224,6 +224,36 @@ var redb2b = {
 				});
 				req.send({'test' : 11});
 			});
+			
+			/**
+			 * remove session
+			 */
+			document.id('redevent-admin').addEvent('click:relay(.deletexref)', function(e){
+				if (confirm('are you sure ?')) {
+					alert('non implemented yet');					
+				}
+			});
+			
+			/**
+			 * publish session
+			 */
+			document.id('redevent-admin').addEvent('click:relay(.publishxref)', function(e){
+				alert('non implemented yet');		
+			});
+			
+			/**
+			 * unpublish session
+			 */
+			document.id('redevent-admin').addEvent('click:relay(.unpublishxref)', function(e){
+				alert('non implemented yet');		
+			});
+			
+			/**
+			 * edit event
+			 */
+			document.id('redevent-admin').addEvent('click:relay(.editevent)', function(e){
+				alert('non implemented yet');		
+			});
 		},
 				
 		updateSessions : function(async) {

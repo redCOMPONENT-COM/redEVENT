@@ -21,7 +21,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<h3 id="session-form-title"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_SEARCH_TITLE')?></h3>
+<h2 id="session-form-title"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_SEARCH_TITLE')?></h2>
 <form id="course-search-form" name="course-search-form" action="index.php?option=com_redevent&controller=frontadmin&task=searchsessions" method="post">
 	<div>
 		<?php echo JHtml::_('select.genericlist', $this->events_options, 'filter_event'

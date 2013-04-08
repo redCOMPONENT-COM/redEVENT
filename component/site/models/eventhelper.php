@@ -103,7 +103,7 @@ class RedeventModelEventhelper extends JModelLegacy
 		 */
 		if ($this->_loadDetails())
 		{
-			$user	= & JFactory::getUser();
+			$user	= JFactory::getUser();
 
 			// Is the category published?
 			if (!count($this->_event->categories))

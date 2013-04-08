@@ -112,9 +112,9 @@ class RedeventControllerFrontadmin extends FOFController
 	public function getsession()
 	{
 		$app = JFactory::getApplication();
-		$model = $this->getModel('details');
+		$model = $this->getModel('eventhelper');
 		$model->setXref($app->input->get('id'));
-		$data  = $model->getDetails();
+		$data  = $model->getData();
 
 		echo json_encode($data);
 
