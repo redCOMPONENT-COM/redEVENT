@@ -30,24 +30,24 @@ defined('_JEXEC') or die('Restricted access');
  * @subpackage redEVENT
  */
 class UserAcl {
-	
+
 	var $_groups = null;
-	
+
 	var $_userid = 0;
-	
+
 	var $_db = null;
-	
+
 	function __construct($userid = 0)
 	{
 		$this->_db = &JFactory::getDBO();
-		
+
 		if (!$userid) {
 			$user = &Jfactory::getUser();
 			$userid = $user->get('id');
 		}
 		$this->_userid = $userid;
 	}
-	
+
 	/**
 	 * Returns a reference to the global User object, only creating it if it
 	 * doesn't already exist.
@@ -82,10 +82,10 @@ class UserAcl {
 
 		return $instances[$id];
 	}
-	
+
 	/**
 	 * returns true if the user can add events
-	 * 
+	 *
 	 * @return boolean
 	 */
 	function canAddEvent()
@@ -96,7 +96,7 @@ class UserAcl {
   	if ($this->superuser()) {
   		return true;
   	}
-  	
+
 		$groups = $this->getUserGroups();
 		foreach ((array) $groups as $group)
 		{
@@ -104,13 +104,13 @@ class UserAcl {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * returns true if the user can add venues
-	 * 
+	 *
 	 * @return boolean
 	 */
 	function canAddVenue()
@@ -121,7 +121,7 @@ class UserAcl {
   	if ($this->superuser()) {
   		return true;
   	}
-  	
+
 		$groups = $this->getUserGroups();
 		foreach ((array) $groups as $group)
 		{
@@ -129,10 +129,10 @@ class UserAcl {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * return true if the user can edit specified event
 	 * @param int $eventid
@@ -146,9 +146,9 @@ class UserAcl {
   	if ($this->superuser()) {
   		return true;
   	}
-  	
+
 		$db = &JFactory::getDBO();
-		
+
 		$query = ' SELECT e.id '
 		       . ' FROM #__redevent_events AS e '
 		       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
@@ -168,7 +168,7 @@ class UserAcl {
 //		echo($db->getQuery());
 		return ($db->loadResult() ? true : false);
 	}
-	
+
 	/**
 	 * returns true if user can publish specified event
 	 * @param int event id, or 0 for a new event
@@ -182,15 +182,15 @@ class UserAcl {
   	if ($this->superuser()) {
   		return true;
   	}
-  	
+
 		if (!$eventid) // this is a new event
-		{		
+		{
 			$query = ' SELECT g.id '
 			       . ' FROM #__redevent_groups AS g '
 			       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
 			       . ' WHERE ( gm.member = '.$this->_db->Quote($this->_userid).' AND gm.publish_events > 0 ) '
 			       . '   OR ( g.isdefault = 1 AND g.publish_events > 0 ) '
-			       ;		
+			       ;
 		}
 		else
 		{
@@ -203,13 +203,13 @@ class UserAcl {
 			       . ' WHERE e.id = '. $this->_db->Quote($eventid)
 			       . '   AND ( ( g.isdefault = 1 AND (g.publish_events = 2 OR (g.publish_events = 1 AND e.created_by = '.$this->_db->Quote($this->_userid).') ) ) '
 			       . '      OR ( gm.publish_events = 2 OR (gm.publish_events = 1 AND e.created_by = '.$this->_db->Quote($this->_userid).') ) ) '
-			       ;			
+			       ;
 		}
 		$this->_db->setQuery($query);
 //		echo($db->getQuery());
-		return ($this->_db->loadResult() ? true : false);	
+		return ($this->_db->loadResult() ? true : false);
 	}
-	
+
 	/**
 	 * returns true if user can publish specified event
 	 * @param int event id, or 0 for a new event
@@ -223,9 +223,9 @@ class UserAcl {
   	if ($this->superuser()) {
   		return true;
   	}
-  	
+
 		if (!$xref) // this is a new event
-		{		
+		{
 			return false;
 		}
 		else
@@ -238,15 +238,16 @@ class UserAcl {
 			       . ' LEFT JOIN #__redevent_groups AS g ON g.id = gc.group_id '
 			       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = gc.group_id '
 			       . ' WHERE x.id = '. $this->_db->Quote($xref)
-			       . '   AND ( ( g.isdefault = 1 AND (g.publish_events = 2 OR (g.publish_events = 1 AND e.created_by = '.$this->_db->Quote($this->_userid).') ) ) '
-			       . '      OR ( gm.publish_events = 2 OR (gm.publish_events = 1 AND e.created_by = '.$this->_db->Quote($this->_userid).') ) ) '
-			       ;			
+			       . '   AND ( ( (g.isdefault = 1 OR gm.member = '.$this->_db->Quote($this->_userid).') AND (g.publish_events = 2 OR (g.publish_events = 1 AND e.created_by = '.$this->_db->Quote($this->_userid).') ) ) '
+			       . '      OR ( gm.member = '.$this->_db->Quote($this->_userid)
+			       . '          AND (gm.publish_events = 2 OR (gm.publish_events = 1 AND e.created_by = '.$this->_db->Quote($this->_userid).') ) ) ) '
+			       ;
 		}
 		$this->_db->setQuery($query);
 //		echo($db->getQuery());
-		return ($this->_db->loadResult() ? true : false);	
+		return ($this->_db->loadResult() ? true : false);
 	}
-	
+
 	/**
 	 * return true if the user can edit specified xref
 	 * @param int xref
@@ -260,7 +261,7 @@ class UserAcl {
   	if ($this->superuser()) {
   		return true;
   	}
-  	
+
 		$db = &JFactory::getDBO();
 
 		$query = ' SELECT e.id '
@@ -285,10 +286,10 @@ class UserAcl {
 		$res = $db->loadResult();
 		return ($res ? true : false);
 	}
-	
+
 	/**
 	 * get array of all the xrefs the user can edit
-	 * 
+	 *
 	 * @return array int xrefs
 	 */
 	function getCanEditXrefs()
@@ -296,7 +297,7 @@ class UserAcl {
 		if (!$this->_userid) {
 			return false;
 		}
-  	
+
 		$db = &JFactory::getDBO();
 
 		$query = ' SELECT x.id '
@@ -322,10 +323,10 @@ class UserAcl {
 		return $res;
 	}
 
-	
+
 	/**
 	 * get array of all the xrefs the user can view attendees from
-	 * 
+	 *
 	 * @return array int xrefs
 	 */
 	function getCanViewAttendees()
@@ -333,7 +334,7 @@ class UserAcl {
 		if (!$this->_userid) {
 			return false;
 		}
-  	
+
 		$db = &JFactory::getDBO();
 
 		$query = ' SELECT x.id '
@@ -355,7 +356,7 @@ class UserAcl {
 		$res = $db->loadResultArray();
 		return $res;
 	}
-	
+
   /**
    * check if user is allowed to addxrefs
    * @return boolean
@@ -372,7 +373,7 @@ class UserAcl {
   	if ($this->canAddEvent() && $params->get('create_session', 1)) {
   		return true;
   	}
-  	
+
   	$query = ' SELECT gm.id '
   	       . ' FROM #__redevent_groups AS g '
   	       . ' INNER JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
@@ -382,8 +383,8 @@ class UserAcl {
   	$this->_db->setQuery($query);
   	$res = $this->_db->loadObjectList();
   	return count($res) > 0;
-  } 
-	
+  }
+
 	/**
 	 * return true if current user can manage attendees
 	 * @param int xref_id
@@ -396,9 +397,9 @@ class UserAcl {
   	if ($this->superuser()) {
   		return true;
   	}
-  	
+
 		$db = &JFactory::getDBO();
-  	
+
   	$query = ' SELECT gm.id '
   	       . ' FROM #__redevent_event_venue_xref AS x '
   	       . ' INNER JOIN #__redevent_groups AS g ON x.groupid = g.id '
@@ -409,7 +410,7 @@ class UserAcl {
   	       ;
   	$db->setQuery($query);
   	$res1 = $db->loadObjectList();
-  	
+
   	$query = ' SELECT gm.id '
   	       . ' FROM #__redevent_event_venue_xref AS x '
            . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = x.eventid'
@@ -422,10 +423,10 @@ class UserAcl {
   	       ;
   	$db->setQuery($query);
   	$res2 = $db->loadObjectList();
-  	
+
   	return count($res1) + count($res2);
   }
-	
+
 	/**
 	 * return true if current user can view attendees
 	 * @param int xref_id
@@ -438,9 +439,9 @@ class UserAcl {
   	if ($this->superuser()) {
   		return true;
   	}
-  	
+
 		$db = &JFactory::getDBO();
-  	
+
   	$query = ' SELECT gm.id '
   	       . ' FROM #__redevent_event_venue_xref AS x '
            . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = x.eventid'
@@ -455,7 +456,7 @@ class UserAcl {
   	$res = $db->loadObjectList();
   	return count($res);
   }
-	
+
 	/**
 	 * return true if the user can edit specified event
 	 * @param int $eventid
@@ -466,13 +467,13 @@ class UserAcl {
 		if (!$this->_userid) {
 			return false;
 		}
-		
+
   	if ($this->superuser()) {
   		return true;
   	}
-  	
+
 		$db = &JFactory::getDBO();
-		
+
 		$query = ' SELECT v.id '
 		       . ' FROM #__redevent_venues AS v '
 		       . ' LEFT JOIN #__redevent_groups_venues AS gv ON gv.venue_id = v.id '
@@ -488,7 +489,7 @@ class UserAcl {
 		return ($db->loadResult() ? true : false);
 	}
 
-	
+
 	/**
 	 * returns true if user can publish specified venue
 	 * @param int venue id, or 0 for a new venue
@@ -502,7 +503,7 @@ class UserAcl {
 		if ($this->superuser()) {
 			return true;
 		}
-		 
+
 		$db = &JFactory::getDBO();
 		if (!$id) // this is a new event
 		{
@@ -557,22 +558,22 @@ class UserAcl {
 			return ($db->loadResult() ? true : false);
 		}
 	}
-	
+
 	/**
 	 * get user groups
-	 * 
+	 *
 	 * @return array
-	 */	
+	 */
 	function getUserGroups()
 	{
 		if (empty($this->_groups))
 		{
 			$db = &JFactory::getDBO();
-			
+
 			$query = ' SELECT g.id AS group_id, g.name AS group_name, g.parameters, g.isdefault, g.edit_events AS gedit_events, g.edit_venues AS gedit_venues, '
 			       . '   gm.member AS user_id, gm.manage_events, gm.manage_xrefs, gm.edit_venues '
 			       . ' FROM #__redevent_groups AS g '
-			       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id ' 
+			       . ' LEFT JOIN #__redevent_groupmembers AS gm ON gm.group_id = g.id '
 			       . ' WHERE isdefault = 1 '
 			       . '    OR gm.member = '. $db->Quote($this->_userid)
 			       . ' GROUP BY g.id ';
@@ -581,10 +582,10 @@ class UserAcl {
 		}
 		return $this->_groups;
 	}
-	
+
 	/**
 	 * return user group ids
-	 * 
+	 *
 	 * @return array
 	 */
 	function getUserGroupsIds()
@@ -596,10 +597,10 @@ class UserAcl {
 		}
 		return $res;
 	}
-	
+
 	/**
 	 * returns default group if set
-	 * 
+	 *
 	 * return object or false
 	 */
 	function getDefaultGroup()
@@ -612,10 +613,10 @@ class UserAcl {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * get categories managed by user
-	 * 
+	 *
 	 * @return array
 	 */
 	function getManagedCategories()
@@ -630,8 +631,8 @@ class UserAcl {
 		$quoted = array();
 		foreach ($group_ids as $g) {
 			$quoted[] = $db->Quote($g);
-		}		
-		
+		}
+
 		$query = ' SELECT DISTINCT gc.category_id  '
 		       . ' FROM #__redevent_groups_categories as gc '
 		       . ' WHERE gc.group_id IN ('. implode(', ', $quoted) .')'
@@ -640,16 +641,16 @@ class UserAcl {
 		$db->setQuery($query);
 		return $db->loadResultArray();
 	}
-	
+
 	/**
 	 * get venues managed by the user
-	 * 
+	 *
 	 * @return array
 	 */
 	function getManagedVenues()
 	{
 		$db = &JFactory::getDBO();
-		
+
 		$query = ' SELECT DISTINCT v.id AS venue_id  '
 		       . ' FROM #__redevent_venues AS v '
 		       . ' LEFT JOIN #__redevent_groups_venues as gv ON gv.venue_id = v.id '
@@ -657,9 +658,9 @@ class UserAcl {
 		       . ' LEFT JOIN #__redevent_venues_categories as vcat ON vcat.id = xvcat.category_id '
 		       . ' LEFT JOIN #__redevent_groups_venues_categories as gvc ON gvc.category_id = vcat.id '
 		       . ' WHERE v.created_by = '.$db->Quote($this->_userid);
-				
+
 		$groups = $this->getUserGroups();
-		if ($groups) 
+		if ($groups)
 		{
 			$group_ids = array_keys($groups);
 			$quoted = array();
@@ -673,10 +674,10 @@ class UserAcl {
 		$db->setQuery($query);
 		return $db->loadResultArray();
 	}
-	
+
 	/**
 	 * get venues categories managed by user
-	 * 
+	 *
 	 * @return array
 	 */
 	function getManagedVenuesCategories()
@@ -690,8 +691,8 @@ class UserAcl {
 		$quoted = array();
 		foreach ($group_ids as $g) {
 			$quoted[] = $db->Quote($g);
-		}		
-		
+		}
+
 		$query = ' SELECT DISTINCT gc.category_id  '
 		       . ' FROM #__redevent_groups_venues_categories as gc '
 		       . ' WHERE gc.group_id IN ('. implode(', ', $quoted) .')'
@@ -700,25 +701,25 @@ class UserAcl {
 		$db->setQuery($query);
 		return $db->loadResultArray();
 	}
-	
+
 	/**
 	 * Checks if the user is a superuser
 	 * A superuser will allways have access if the feature is activated
 	 *
 	 * @since 0.9
-	 * 
+	 *
 	 * @return boolean True on success
 	 */
 	function superuser()
 	{
-  	$user = & JFactory::getUser();  
-  	
+  	$user = & JFactory::getUser();
+
   	if ($user->authorise('core.admin', 'com_redevent')) {
   		return true;
   	}
   	return false;
 	}
-	
+
 	/**
 	 * Checks if the user has the privileges to use the wysiwyg editor
 	 *
@@ -726,13 +727,13 @@ class UserAcl {
 	 * Not sure if this is a good idea
 	 *
 	 * @since 0.9
-	 * 
+	 *
 	 * @return boolean True on success
 	 */
 	function editoruser()
 	{
 		$user 		= & JFactory::getUser();
-		
+
 		$group_ids = array(
 		//			18, //registered
 		//			19, //author
