@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 		</thead>
 		<tbody>
 			<?php foreach ($this->sessions as $row): ?>
-				<tr class="xref<?php echo $row->xref; ?>">
+				<tr xref="<?php echo $row->xref; ?>">
 					<td><?php echo REOutput::formatEventDateTime($row, false); ?></td>
 					<td><?php echo redEVENTHelper::getEventDuration($row); ?></td>
 					<td><?php echo $row->full_title; ?></td>

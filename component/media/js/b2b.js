@@ -229,8 +229,8 @@ var redb2b = {
 			 * remove session
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.deletexref)', function(e){
-				if (confirm('are you sure ?')) {
-					alert('non implemented yet');					
+				if (!confirm('are you sure ?')) {
+					return;
 				}
 			});
 			
@@ -238,14 +238,14 @@ var redb2b = {
 			 * publish session
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.publishxref)', function(e){
-				alert('non implemented yet');		
+				redb2b.publishSession(this.getParent('tr').getProperty('xref'), 1);
 			});
 			
 			/**
 			 * unpublish session
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.unpublishxref)', function(e){
-				alert('non implemented yet');		
+				redb2b.publishSession(this.getParent('tr').getProperty('xref'), 0);
 			});
 			
 			/**
@@ -332,5 +332,23 @@ var redb2b = {
 			div.addClass('nouser');
 			div.getElements('.selectedmember').dispose();
 			document.id('book-course').set('styles', {'display' :'none'});			
+		},
+		
+		publishSession : function(xref, state) {
+			var req = new Request.JSON({
+				url: 'index.php?option=com_redevent&controller=frontadmin&task=publishxref&tmpl=component',
+				data : {'xref' : xref,
+					'state' : state
+				},
+				onSuccess : function(result) {
+					if (result.status) {
+						redb2b.sessionsreq.send();
+					}
+					else {
+						alert(result.error);
+					}
+				}
+			});
+			req.send();
 		}
 };

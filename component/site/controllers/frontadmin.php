@@ -146,4 +146,43 @@ class RedeventControllerFrontadmin extends FOFController
 
 		JFactory::getApplication()->close();
 	}
+
+	/**
+	 * ajax publish/unpublish a session
+	 *
+	 * @return void
+	 */
+	public function publishxref()
+	{
+		$input = JFactory::getApplication()->input;
+		$xref  = $input->get('xref', 0, 'int');
+		$state = $input->get('state', 0, 'int');
+
+		$useracl = UserAcl::getInstance();
+
+		$resp = new stdclass();
+
+		if (!$useracl->canPublishXref($xref)) {
+			$resp->status = 0;
+			$resp->error  = JText::_('COM_REDEVENT_USER_ACTION_NOT_ALLOWED');
+		}
+		else
+		{
+			$model = $this->getModel('frontadmin');
+			$res = $model->publishXref($xref, $state);
+
+			if ($res)
+			{
+				$resp->status = 1;
+			}
+			else
+			{
+				$resp->status = 0;
+				$resp->error  = $model->getError();
+			}
+		}
+
+		echo json_encode($resp);
+		JFactory::getApplication()->close();
+	}
 }

@@ -636,4 +636,27 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 
 		return $users;
 	}
+
+	/**
+	 * publish xref
+	 *
+	 * @param   int  $xref   session id
+	 * @param   int  $state  publish state
+	 *
+	 * @return boolean true on success
+	 */
+	public function publishXref($xref, $state)
+	{
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->update('#__redevent_event_venue_xref AS x');
+		$query->set('x.published = ' . $db->Quote($state));
+		$query->where('x.id = ' . $db->Quote($xref));
+
+		$db->setQuery($query);
+		$res = $db->query();
+
+		return $res;
+	}
 }
