@@ -254,6 +254,10 @@ var redb2b = {
 			document.id('redevent-admin').addEvent('click:relay(.editevent)', function(e){
 				alert('non implemented yet');		
 			});
+			
+			window.addEvent('beforeunload', function() {
+				return confirm(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_CONFIRM_CLOSE"));
+			});
 		},
 				
 		updateSessions : function(async) {
