@@ -76,7 +76,7 @@ class modRedEventVenuesEventsHelper
 		. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
 		. ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
 		. $where
-		.' AND c.access IN (' . implode(',', $user_gid) . ')';
+		.' AND c.access IN (' . implode(',', $user_gid) . ')'
 		.($catid ? $categories : '')
 		.($venid ? $venues : '');
 
