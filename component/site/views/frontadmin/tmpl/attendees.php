@@ -29,6 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_NAME'); ?></th>
 			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_USERNAME'); ?></th>
 			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_EMAIL'); ?></th>
+			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_LANGUAGE'); ?></th>
 			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_EDIT_MEMBER'); ?></th>
 		</tr>
 	</thead>
@@ -43,6 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td class="attendee-name"><?php echo $a->name; ?></td>
 			<td><?php echo $a->username; ?></td>
 			<td><?php echo $a->email; ?></td>
+			<td><?php echo JFactory::getUser($a->id)->getParameters()->get('language'); ?></td>
 			<td><?php echo JHTML::image('media/com_redevent/images/icon-16-edit.png', 'edit', array('class' => 'editattendee'))
 				. ($a->registered ? ' '	. JHTML::image('media/com_redevent/images/icon-16-delete.png', 'remove', array('class' => 'unregister')) : ''); ?>
 			</td>
