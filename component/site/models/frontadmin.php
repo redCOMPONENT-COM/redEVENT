@@ -691,6 +691,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$query->select('id')
 			->from('#__redevent_register')
 			->where('uid = ' . $user_id)
+			->where('cancelled = 0')
 			->where('xref = ' . $xref);
 
 		$db->setQuery($query);
@@ -706,7 +707,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 
 		$pricegroup = $this->getPricegroup($xref);
 
-		$options = array('baseprice' => $pricegroup->price);
+		$options = array('baseprice' => $pricegroup ? $pricegroup->price : 0);
 
 		$redform = RedFormCore::getInstance($details->redform_id);
 		$result = $redform->quickSubmit($user_id, 'redevent', $options);
@@ -722,7 +723,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$user = JFactory::getUser($user_id);
 		$rfpost = $result->posts[0];
 
-		if (!$res = $registrationmodel->register($user, $rfpost['sid'], $result->submit_key, $pricegroup->id))
+		if (!$res = $registrationmodel->register($user, $rfpost['sid'], $result->submit_key, $pricegroup ? $pricegroup->id : 0))
 		{
 			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_REGISTRATION_FAILED'));
 			return false;

@@ -216,7 +216,7 @@ var redb2b = {
 						method : 'post',
 						onSuccess : function(response){
 							if (response.status == 1) {
-								redb2b.attendeesList()		
+								redb2b.attendeesList();	
 							}
 							else {
 								alert(response.error);
@@ -232,9 +232,16 @@ var redb2b = {
 					url : 'index.php?option=com_redevent&controller=frontadmin&task=quickbook&tmpl=component',
 					data : document.id('selected_users'),
 					method : 'post',
+					onRequest: function(){
+						document.id('attendees-tbl').set('spinner').spin();
+						document.id('selected_users').set('spinner').spin();
+				    },
 					onSuccess : function(response){
+						document.id('attendees-tbl').set('spinner').unspin();
+						document.id('selected_users').set('spinner').unspin();
 						if (response.status == 1) {
 							alert('all booked !');		
+							redb2b.attendeesList();
 						}
 						else if (response.regs.length) {
 							var errors = new Array();
