@@ -624,6 +624,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$query->from('#__redevent_register AS r');
 		$query->where('r.xref = ' . $xref);
 		$query->where('r.uid IN (' . implode(',', $ids) . ')');
+		$query->where('r.cancelled = 0');
 
 		$db->setQuery($query);
 		$regs = $db->loadObjectList('uid');
@@ -683,6 +684,24 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$registrationmodel = JModel::getInstance('Registration', 'RedeventModel');
 		$registrationmodel->setXref($xref);
 
+		// First check that not already regiterered
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('id')
+			->from('#__redevent_register')
+			->where('uid = ' . $user_id)
+			->where('xref = ' . $xref);
+
+		$db->setQuery($query);
+
+		if ($db->loadResult())
+		{
+			$this->setError(JText::_('COM_REDEVENT_ALREADY_REGISTERED'));
+
+			return false;
+		}
+
 		$details = $registrationmodel->getSessionDetails();
 
 		$pricegroup = $this->getPricegroup($xref);
@@ -718,6 +737,13 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		return true;
 	}
 
+	/**
+	 * get any pricegroup id and price associated to session
+	 *
+	 * @param   int  $xref  session id
+	 *
+	 * @return object
+	 */
 	protected function getPricegroup($xref)
 	{
 		$db      = JFactory::getDbo();
@@ -731,5 +757,49 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$res = $db->loadObject();
 
 		return $res;
+	}
+
+	/**
+	 * cancel a registration
+	 *
+	 * @param   int  $register_id  register id
+	 *
+	 * @return boolean true on success
+	 */
+	public function cancelreg($register_id)
+	{
+		if (!$register_id)
+		{
+			$this->setError('register id is required');
+
+			return false;
+		}
+
+		// Get attendee details
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('*');
+		$query->from('#__redevent_register');
+		$query->where('id = ' . $register_id);
+
+		$db->setQuery($query, 0 ,1);
+		$res = $db->loadObject();
+
+		if (!$res)
+		{
+			$this->setError('Attendee not found');
+
+			return false;
+		}
+
+		$useracl = UserAcl::getInstance();
+
+		if (!$useracl->canManageAttendees($res->xref) or 1)
+		{
+			$this->setError(JText::_('COM_REDEVENT_USER_ACTION_NOT_ALLOWED'));
+
+			return false;
+		}
 	}
 }

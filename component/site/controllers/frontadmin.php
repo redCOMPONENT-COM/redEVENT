@@ -226,4 +226,26 @@ class RedeventControllerFrontadmin extends FOFController
 		echo json_encode($resp);
 		JFactory::getApplication()->close();
 	}
+
+	public function cancelreg()
+	{
+		$app = JFactory::getApplication();
+		$rid = $app->input->get('rid');
+		$model = $this->getModel('registration');
+
+		$resp = new stdClass();
+
+		if ($res = $model->cancelregistration($rid))
+		{
+			$resp->status = 1;
+		}
+		else
+		{
+			$resp->status = 0;
+			$resp->error = $model->getError();
+		}
+
+		echo json_encode($resp);
+		JFactory::getApplication()->close();
+	}
 }

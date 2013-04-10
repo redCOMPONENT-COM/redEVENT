@@ -208,8 +208,22 @@ var redb2b = {
 			 * remove registration
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.unregister)', function(e){
-				if (confirm('are you sure ?')) {
-					alert('non implemented yet');					
+				if (confirm(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_CONFIRM"))) {
+					var register_id = this.getParent('tr').getProperty('rid');
+					req = new Request.JSON({
+						url : 'index.php?option=com_redevent&controller=frontadmin&task=cancelreg&tmpl=component',
+						data : {'rid' : register_id},
+						method : 'post',
+						onSuccess : function(response){
+							if (response.status == 1) {
+								redb2b.attendeesList()		
+							}
+							else {
+								alert(response.error);
+							}
+						}
+					});
+					req.send();
 				}
 			});
 			
@@ -237,14 +251,14 @@ var redb2b = {
 						}
 					}
 				});
-				req.send({'test' : 11});
+				req.send();
 			});
 			
 			/**
 			 * remove session
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.deletexref)', function(e){
-				if (!confirm('are you sure ?')) {
+				if (!confirm(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_CONFIRM"))) {
 					return;
 				}
 			});

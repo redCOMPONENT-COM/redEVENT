@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 	</thead>
 	<tbody>
 		<?php foreach($this->attendees as $a): ?>
-		<tr<?php echo ($a->registered ? ' class="registered"' : ''); ?>>
+		<tr<?php echo ($a->registered ? ' class="registered"' : ''); ?> rid="<?php echo $a->registered ? $a->registered->id : ''; ?>">
 			<td>
 				<?php if (!$a->registered): ?>
 				<input name="cid[]" id="cid<?php echo $a->id; ?>" class="attendee-sel" type="checkbox"/>
