@@ -518,7 +518,7 @@ class REattendee extends JObject {
 			. ' a.notify_off_list_subject, a.notify_off_list_body, a.notify_on_list_subject, a.notify_on_list_body, '
 			. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
 			. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone,'
-			. ' v.venue,'
+            . ' v.venue, v.email as venue_email,'
 			. ' u.name AS creator_name, u.email AS creator_email, '
 			. ' a.confirmation_message, a.review_message, '
 			. " IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.catname, c.published, c.access,"
@@ -720,6 +720,10 @@ class REattendee extends JObject {
 		$event = $this->getSessionDetails();
 
 		$recipients = $this->getAdminEmails();
+        if(!empty($event->venue_email))
+        {
+            $recipients[] = array('email' => $event->venue_email, 'name' => $event->venue);
+        }
 		if (!count($recipients)) {
 			return true;
 		}
