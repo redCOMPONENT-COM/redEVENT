@@ -449,10 +449,13 @@ class REattendee extends JObject {
 
 		// group recipients
 		$gprecipients = $this->getXrefRegistrationRecipients();
-		foreach ($gprecipients AS $r)
+		if ($gprecipients)
 		{
-			if (JMailHelper::isEmailAddress($r->email)) {
-				$recipients[] =  array('email' => $r->email, 'name' => $r->name);
+			foreach ($gprecipients AS $r)
+			{
+				if (JMailHelper::isEmailAddress($r->email)) {
+					$recipients[] =  array('email' => $r->email, 'name' => $r->name);
+				}
 			}
 		}
 
@@ -498,8 +501,11 @@ class REattendee extends JObject {
 		if (empty($this->_answers))
 		{
 			$rfcore  = new redformcore();
-			$this->_answers = $rfcore->getSidsFieldsAnswers($this->load()->sid);
+			$sid = $this->load()->sid;
+			$sidsanswers =  $rfcore->getSidsFieldsAnswers(array($sid));
+			$this->_answers = $sidsanswers[$sid];
 		}
+
 		return $this->_answers;
 	}
 
@@ -559,17 +565,13 @@ class REattendee extends JObject {
 		$files = array();
 		$answers = $this->getAnswers();
 
-		foreach ($fields as $f)
+		foreach ($answers as $f)
 		{
-			$property = 'field_'.$f->id;
 			if ($f->fieldtype == 'fileupload')
 			{
-				foreach ($answers as $a)
-				{
-					$path = $a->answer;
-					if (!empty($path) && file_exists($path)) {
-						$files[] = $path;
-					}
+				$path = $f->answer;
+				if (!empty($path) && file_exists($path)) {
+					$files[] = $path;
 				}
 			}
 		}
@@ -710,7 +712,7 @@ class REattendee extends JObject {
 	function notifyManagers($unreg = false)
 	{
 		jimport('joomla.mail.helper');
-		$app    = &JFactory::getApplication();
+		$app    = JFactory::getApplication();
 		$params = $app->getParams('com_redevent');
 		$tags   = new redEVENT_tags();
 		$tags->setXref($this->getXref());
@@ -728,7 +730,7 @@ class REattendee extends JObject {
 			return true;
 		}
 
-		$mailer = & JFactory::getMailer();
+		$mailer = JFactory::getMailer();
 		if ($this->getEmail() && $params->get('allow_email_aliasing', 1)) {
 			$sender = array($this->getEmail(), $this->getFullname());
 		}

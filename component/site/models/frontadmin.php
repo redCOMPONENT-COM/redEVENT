@@ -45,6 +45,12 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	protected $pagination_booked = null;
 	protected $total_booked = null;
 
+	/**
+	 * cache for quickbook
+	 * @var object
+	 */
+	protected $form;
+
 	protected $useracl = null;
 
 	public function __construct($config = array())
@@ -656,6 +662,73 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 
 		$db->setQuery($query);
 		$res = $db->query();
+
+		return $res;
+	}
+
+	/**
+	 * quickbook an user
+	 *
+	 * uses redmember data to try to fill up form fields
+	 *
+	 * @param   int  $user_id  user id
+	 * @param   int  $xref     session id
+	 *
+	 * @return boolean true on success
+	 */
+	public function quickbook($user_id, $xref)
+	{
+		require_once 'registration.php';
+
+		$registrationmodel = JModel::getInstance('Registration', 'RedeventModel');
+		$registrationmodel->setXref($xref);
+
+		$details = $registrationmodel->getSessionDetails();
+
+		$pricegroup = $this->getPricegroup($xref);
+
+		$options = array('baseprice' => $pricegroup->price);
+
+		$redform = RedFormCore::getInstance($details->redform_id);
+		$result = $redform->quickSubmit($user_id, 'redevent', $options);
+
+		if (!$result)
+		{
+			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED').' - '.$rfcore->getError());
+
+			return false;
+		}
+
+		$submit_key = $result->submit_key;
+		$user = JFactory::getUser($user_id);
+		$rfpost = $result->posts[0];
+
+		if (!$res = $registrationmodel->register($user, $rfpost['sid'], $result->submit_key, $pricegroup->id))
+		{
+			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_REGISTRATION_FAILED'));
+			return false;
+		}
+
+		if ($details->notify)
+		{
+			$mail = $registrationmodel->sendNotificationEmail($submit_key);
+		}
+		$mail = $registrationmodel->notifyManagers($submit_key);
+
+		return true;
+	}
+
+	protected function getPricegroup($xref)
+	{
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('pricegroup_id AS id, price');
+		$query->from('#__redevent_sessions_pricegroups');
+		$query->where('xref = ' . $xref);
+
+		$db->setQuery($query, 0, 1);
+		$res = $db->loadObject();
 
 		return $res;
 	}

@@ -40,13 +40,13 @@ class RedEventModelRegistration extends JModel
 	 * @var int
 	 */
 	var $_xref = 0;
-	
+
 	/**
 	 * data
 	 * @var object
 	 */
 	var $_xrefdata = null;
-	
+
 	/**
 	 * registration submit_key
 	 * @var string
@@ -62,14 +62,14 @@ class RedEventModelRegistration extends JModel
 	 * @var array
 	 */
 	var $_rf_answers;
-	
+
 	var $_prices = null;
-	
+
 	/**
 	 * array of attending register id
 	 */
 	private $_attendees = null;
-	
+
 	function __construct($xref = 0, $config = array())
 	{
 		parent::__construct($config);
@@ -80,25 +80,25 @@ class RedEventModelRegistration extends JModel
 			$this->setXref(JRequest::getInt('xref', 0));
 		}
 	}
-	
+
 	function setXref($xref_id)
 	{
 		$this->_xref = (int) $xref_id;
 	}
-	
+
 	function setSubmitKey($submit_key)
 	{
-		if ($submit_key && $this->_submit_key != $submit_key) 
+		if ($submit_key && $this->_submit_key != $submit_key)
 		{
 			$this->_submit_key = $submit_key;
 			$this->_rf_answers = null;
 			$this->_rf_fields  = null;
 		}
 	}
-	
+
 	/**
 	 * create a new attendee
-	 * 
+	 *
 	 * @param object user performing the registration
 	 * @param int $sid associated redform submitter id
 	 * @param string $submit_key associated redform submit key
@@ -109,12 +109,12 @@ class RedEventModelRegistration extends JModel
 	{
 		$config  = redEventHelper::config();
 		$session = &$this->getSessionDetails();
-		
+
 		if (!$sid) {
 			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_UPDATE_XREF_REQUIRED'));
 			return false;
 		}
-		
+
 		$obj = $this->getTable('Redevent_register', '');
 		$obj->loadBySid($sid);
 		$obj->sid        = $sid;
@@ -124,27 +124,27 @@ class RedEventModelRegistration extends JModel
 		$obj->uid        = $user ? $user->get('id') : 0;
 		$obj->uregdate 	 = gmdate('Y-m-d H:i:s');
 		$obj->uip        = $config->get('storeip', '1') ? getenv('REMOTE_ADDR') : 'DISABLED';
-		
+
 		if (!$obj->check()) {
 			$this->setError($obj->getError());
 			return false;
 		}
-		
+
 		if (!$obj->store()) {
 			$this->setError($obj->getError());
 			return false;
 		}
-		
-		if ($session->activate == 0) // no activation 
+
+		if ($session->activate == 0) // no activation
 		{
 			$this->confirm($obj->id);
 		}
 		return $obj;
 	}
-		
+
 	/**
 	 * to update a registration
-	 * 
+	 *
 	 * @param int $sid associated redform submitter id
 	 * @param string $submit_key associated redform submit key
 	 * @param int $pricegroup_id
@@ -156,45 +156,45 @@ class RedEventModelRegistration extends JModel
 			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_UPDATE_XREF_REQUIRED'));
 			return false;
 		}
-		
+
 		$obj = $this->getTable('Redevent_register', '');
 		$obj->loadBySid($sid);
 		$obj->sid        = $sid;
 		$obj->pricegroup_id = $pricegroup_id;
 		$obj->submit_key = $submit_key;
-		
+
 		if (!$obj->check()) {
 			$this->setError($obj->getError());
 			return false;
 		}
-		
+
 		if (!$obj->store()) {
 			$this->setError($obj->getError());
 			return false;
 		}
-		return $obj;		
+		return $obj;
 	}
-	
+
 	/**
 	 * confirm a registration
-	 * 
+	 *
 	 * @param int $rid register id
 	 * @return boolean true on success
 	 */
 	function confirm($rid)
 	{
 		$attendee = new REattendee($rid);
-		
+
 		// first, changed status to confirmed
-		if (!$attendee->confirm()) 
+		if (!$attendee->confirm())
 		{
 			$this->setError($attendee->getError());
 			return false;
-		}		
-		
+		}
+
 		return true;
 	}
-		
+
 	function getSessionDetails()
 	{
 		if (empty($this->_xrefdata))
@@ -205,7 +205,7 @@ class RedEventModelRegistration extends JModel
 			}
 			$query = 'SELECT a.id AS did, x.id AS xref, a.title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, '
 			    . ' a.registra, a.unregistra, a.activate, a.notify, a.redform_id as form_id, '
-			    . ' a.enable_activation_confirmation, a.notify_confirm_body, a.notify_confirm_subject, a.notify_subject, a.notify_body, ' 
+			    . ' a.enable_activation_confirmation, a.notify_confirm_body, a.notify_confirm_subject, a.notify_subject, a.notify_body, '
 			    . ' a.notify_off_list_subject, a.notify_off_list_body, a.notify_on_list_subject, a.notify_on_list_body, '
 					. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
 					. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone,'
@@ -227,12 +227,12 @@ class RedEventModelRegistration extends JModel
     	$this->_db->setQuery($query);
 			$this->_xrefdata = $this->_db->loadObject();
 			if ($this->_xrefdata) {
-        $this->_xrefdata = $this->_getEventCategories($this->_xrefdata);				
+        $this->_xrefdata = $this->_getEventCategories($this->_xrefdata);
 			}
 		}
 		return $this->_xrefdata;
 	}
-	
+
   /**
    * adds categories property to event row
    *
@@ -253,15 +253,15 @@ class RedEventModelRegistration extends JModel
 
   	$row->categories = $this->_db->loadObjectList();
 
-    return $row;   
+    return $row;
   }
-  
+
   function cancel($submit_key)
   {
   	$session = &$this->getSessionDetails();
-  	
+
 		if (!empty( $submit_key ))
-		{						
+		{
 			$query = ' DELETE s, f, r '
         . ' FROM #__redevent_register AS r '
         . ' INNER JOIN #__rwf_submitters AS s ON r.sid = s.id '
@@ -269,39 +269,39 @@ class RedEventModelRegistration extends JModel
         . ' WHERE r.submit_key = '.$this->_db->Quote($submit_key);
         ;
 			$this->_db->setQuery( $query );
-			
+
 			if (!$this->_db->query()) {
 				redeventError::raiseError( 1001, $this->_db->getErrorMsg() );
 				return false;
 			}
 		}
 		return true;
-  	
-  }  
+
+  }
 
 	/**
 	 * Send e-mail confirmations
-	 * 
+	 *
 	 * @param string submit key
 	 * @return boolean true on success
 	 */
-	public function sendNotificationEmail($submit_key) 
+	public function sendNotificationEmail($submit_key)
 	{
 		/* Load database connection */
 		$db = JFactory::getDBO();
-		
+
 		/* Get registration settings */
 		$q = "SELECT r.id
 			FROM #__redevent_register r
 			WHERE submit_key = ".$db->Quote($submit_key);
 		$db->setQuery($q);
 		$registrations = $db->loadResultArray();
-		
+
 		if (!$registrations || !count($registrations)) {
 			JError::raiseError(0, JText::sprintf('COM_REDEVENT_notification_registration_not_found_for_key_s', $submit_key));
 			return false;
 		}
-		
+
 		foreach ($registrations as $rid)
 		{
 			$attendee = new REattendee($rid);
@@ -312,18 +312,18 @@ class RedEventModelRegistration extends JModel
 		}
 		return true;
 	}
-	
+
 
   function notifyManagers($submit_key, $unreg = false, $reg_id = 0)
   {
 		/* Load database connection */
 		$db = JFactory::getDBO();
-		
+
 		if ($reg_id)
 		{
 			$registrations = array($reg_id);
 		}
-		else 
+		else
 		{
 			/* Get registration settings */
 			$q = "SELECT r.id
@@ -331,13 +331,13 @@ class RedEventModelRegistration extends JModel
 				WHERE submit_key = ".$db->Quote($submit_key);
 			$db->setQuery($q);
 			$registrations = $db->loadResultArray();
-			
+
 			if (!$registrations || !count($registrations)) {
 				JError::raiseError(0, JText::sprintf('COM_REDEVENT_notification_registration_not_found_for_key_s', $submit_key));
 				return false;
 			}
 		}
-		
+
 		foreach ($registrations as $rid)
 		{
 			$attendee = new REattendee($rid);
@@ -348,7 +348,7 @@ class RedEventModelRegistration extends JModel
 		}
 		return true;
   }
-  	
+
 	function getRegistration($submitter_id)
 	{
 		$query =' SELECT s.*, r.uid, r.xref, r.pricegroup_id, e.unregistra '
@@ -360,12 +360,12 @@ class RedEventModelRegistration extends JModel
 		    ;
 		$this->_db->setQuery($query);
 		$registration = $this->_db->loadObject();
-		
+
 		if (!$registration) {
 			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_NOT_VALID'));
 			return false;
 		}
-		  
+
 		$query = ' SELECT * '
 		       . ' FROM #__rwf_forms_'. $registration->form_id
 		       . ' WHERE id = '. $registration->answer_id
@@ -374,10 +374,10 @@ class RedEventModelRegistration extends JModel
 		$registration->answers = $this->_db->loadObject();
 		return $registration;
 	}
-	
+
 	/**
 	 * get price according to pricegroup
-	 * 
+	 *
 	 * @param unknown_type $pricegroup
 	 */
 	function getRegistrationPrice($pricegroup)
@@ -385,8 +385,8 @@ class RedEventModelRegistration extends JModel
 		if (is_null($this->_prices))
 		{
 			$event = $this->getSessionDetails();
-			$query = ' SELECT * ' 
-			       . ' FROM #__redevent_sessions_pricegroups ' 
+			$query = ' SELECT * '
+			       . ' FROM #__redevent_sessions_pricegroups '
 			       . ' WHERE xref = ' . $event->xref
 			       . ' ORDER BY price DESC '
 			       ;
@@ -394,7 +394,7 @@ class RedEventModelRegistration extends JModel
 			$res = $this->_db->loadObjectList();
 			$this->_prices = $res ? $res : array();
 		}
-		
+
 		if (!count($this->_prices)) {
 			return 0;
 		}
@@ -406,21 +406,21 @@ class RedEventModelRegistration extends JModel
 				break;
 			}
 		}
-		//pricegroup not found... not good at all ! 
+		//pricegroup not found... not good at all !
 		$this->setError(JText::_('COM_REDEVENT_Pricegroup_not_found'));
 		return false;
 	}
 
   /**
    * get current session prices
-   * 
+   *
    * @return array
    */
   function getPricegroups()
   {
 		$event = $this->getSessionDetails();
   	$query = ' SELECT sp.*, p.name, p.alias, p.tooltip, f.currency, '
-	         . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug ' 
+	         . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug '
   	       . ' FROM #__redevent_sessions_pricegroups AS sp '
   	       . ' INNER JOIN #__redevent_pricegroups AS p on p.id = sp.pricegroup_id '
   	       . ' INNER JOIN #__redevent_event_venue_xref AS x on x.id = sp.xref '
@@ -430,11 +430,11 @@ class RedEventModelRegistration extends JModel
   	       . ' ORDER BY p.ordering ASC '
   	       ;
   	$this->_db->setQuery($query);
-  	$res = $this->_db->loadObjectList();   	
+  	$res = $this->_db->loadObjectList();
   	return $res;
   }
-  
-  
+
+
   /**
   * Cancel a registration
   *
@@ -448,12 +448,12 @@ class RedEventModelRegistration extends JModel
 	  $user =  & JFactory::getUser();
 	  $userid = $user->get('id');
   	$acl = UserAcl::getInstance();
-	  
+
 	  if ($userid < 1) {
 			JError::raiseError( 403, JText::_('COM_REDEVENT_ALERTNOTAUTH') );
 			return;
 	  }
-	  		
+
 	  		// first, check if the user is allowed to unregister from this
 	  // he must be the one that submitted the form, plus the unregistration must be allowed
 	  $q = ' SELECT s.*, r.uid, e.unregistra, x.dates, x.times, x.registrationend  '
@@ -465,22 +465,22 @@ class RedEventModelRegistration extends JModel
 	  		    ;
 		$this->_db->setQuery($q);
 	  $submitterinfo = $this->_db->loadObject();
-	  
+
 	  // or be allowed to manage attendees
 	  $manager = $acl->canManageAttendees($xref);
-	  
+
 	  if (!redEVENTHelper::canUnregister($xref) && !$manager) {
 	  	$this->setError(JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED'));
 	  	return false;
 	  }
-	  
+
 	  if (($submitterinfo->uid <> $userid || $submitterinfo->unregistra == 0) && !$manager)
 	  {
 			$this->setError(JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED'));
 			return false;
 	  }
-	  
-	  
+
+
 	  // Now that we made sure, we can delete the submitter and corresponding form values
 	  /* Delete the redFORM entry first */
 	  /* Submitter answers first*/
