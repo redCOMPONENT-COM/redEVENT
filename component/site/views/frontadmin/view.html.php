@@ -152,6 +152,7 @@ class RedeventViewFrontadmin extends JView
 		// JS language strings
 		JText::script("COM_REDEVENT_FRONTEND_ADMIN_COURSE_SEARCH_TITLE");
 		JText::script("COM_REDEVENT_BOOK_SESSION");
+		JText::script("COM_REDEVENT_FRONTEND_ADMIN_CONFIRM_CLOSE");
 
 		parent::display($tpl);
 	}

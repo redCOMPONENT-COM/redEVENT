@@ -449,10 +449,13 @@ class REattendee extends JObject {
 
 		// group recipients
 		$gprecipients = $this->getXrefRegistrationRecipients();
-		foreach ($gprecipients AS $r)
+		if ($gprecipients)
 		{
-			if (JMailHelper::isEmailAddress($r->email)) {
-				$recipients[] =  array('email' => $r->email, 'name' => $r->name);
+			foreach ($gprecipients AS $r)
+			{
+				if (JMailHelper::isEmailAddress($r->email)) {
+					$recipients[] =  array('email' => $r->email, 'name' => $r->name);
+				}
 			}
 		}
 
@@ -498,8 +501,11 @@ class REattendee extends JObject {
 		if (empty($this->_answers))
 		{
 			$rfcore  = new redformcore();
-			$this->_answers = $rfcore->getSidsFieldsAnswers($this->load()->sid);
+			$sid = $this->load()->sid;
+			$sidsanswers =  $rfcore->getSidsFieldsAnswers(array($sid));
+			$this->_answers = $sidsanswers[$sid];
 		}
+
 		return $this->_answers;
 	}
 
@@ -518,7 +524,7 @@ class REattendee extends JObject {
 			. ' a.notify_off_list_subject, a.notify_off_list_body, a.notify_on_list_subject, a.notify_on_list_body, '
 			. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
 			. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone,'
-			. ' v.venue,'
+            . ' v.venue, v.email as venue_email,'
 			. ' u.name AS creator_name, u.email AS creator_email, '
 			. ' a.confirmation_message, a.review_message, '
 			. " IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.catname, c.published, c.access,"
@@ -559,17 +565,13 @@ class REattendee extends JObject {
 		$files = array();
 		$answers = $this->getAnswers();
 
-		foreach ($fields as $f)
+		foreach ($answers as $f)
 		{
-			$property = 'field_'.$f->id;
 			if ($f->fieldtype == 'fileupload')
 			{
-				foreach ($answers as $a)
-				{
-					$path = $a->answer;
-					if (!empty($path) && file_exists($path)) {
-						$files[] = $path;
-					}
+				$path = $f->answer;
+				if (!empty($path) && file_exists($path)) {
+					$files[] = $path;
 				}
 			}
 		}
@@ -710,7 +712,7 @@ class REattendee extends JObject {
 	function notifyManagers($unreg = false)
 	{
 		jimport('joomla.mail.helper');
-		$app    = &JFactory::getApplication();
+		$app    = JFactory::getApplication();
 		$params = $app->getParams('com_redevent');
 		$tags   = new redEVENT_tags();
 		$tags->setXref($this->getXref());
@@ -720,11 +722,15 @@ class REattendee extends JObject {
 		$event = $this->getSessionDetails();
 
 		$recipients = $this->getAdminEmails();
+        if(!empty($event->venue_email))
+        {
+            $recipients[] = array('email' => $event->venue_email, 'name' => $event->venue);
+        }
 		if (!count($recipients)) {
 			return true;
 		}
 
-		$mailer = & JFactory::getMailer();
+		$mailer = JFactory::getMailer();
 		if ($this->getEmail() && $params->get('allow_email_aliasing', 1)) {
 			$sender = array($this->getEmail(), $this->getFullname());
 		}

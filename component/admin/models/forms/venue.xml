@@ -139,6 +139,14 @@
 			label="COM_REDEVENT_WEBSITE"
 			description ="COM_REDEVENT_WEBSITE_HINT" 
 			class="inputbox" />
+
+        <field
+            name="email"
+            type="email"
+            default=""
+            label="COM_REDEVENT_EMAIL"
+            description ="COM_REDEVENT_EMAIL"
+            class="inputbox" />
 	
 		<field
 			name="map"

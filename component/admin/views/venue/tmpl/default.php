@@ -148,6 +148,9 @@ JHtml::_('behavior.formvalidation');
 
 					<li><?php echo $this->form->getLabel('url'); ?>
 					<?php echo $this->form->getInput('url'); ?></li>
+
+                    <li><?php echo $this->form->getLabel('email'); ?>
+                    <?php echo $this->form->getInput('email'); ?></li>
 				</ul>
 			</fieldset>
 			<?php if ( $this->params->get('showmapserv',1)): ?>

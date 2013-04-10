@@ -214,12 +214,27 @@ var redb2b = {
 			});
 			
 			document.id('book-course').addEvent('click', function(){
-				req = new Request({
+				req = new Request.JSON({
 					url : 'index.php?option=com_redevent&controller=frontadmin&task=quickbook&tmpl=component',
 					data : document.id('selected_users'),
 					method : 'post',
-					onSuccess : function(responseText){
-						alert('should book !');					
+					onSuccess : function(response){
+						if (response.status == 1) {
+							alert('all booked !');		
+						}
+						else if (response.regs.length) {
+							var errors = new Array();
+							for (var i = 0; i < response.regs.length; i++) {
+								var r = response.regs[i];
+								if (r.status == 0) {
+									errors.push(r.error);
+								}
+							}
+							alert(errors.join("\n"));
+						}
+						else {
+							alert(response.error);
+						}
 					}
 				});
 				req.send({'test' : 11});
@@ -253,6 +268,10 @@ var redb2b = {
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.editevent)', function(e){
 				alert('non implemented yet');		
+			});
+			
+			window.addEvent('beforeunload', function() {
+				return confirm(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_CONFIRM_CLOSE"));
 			});
 		},
 				

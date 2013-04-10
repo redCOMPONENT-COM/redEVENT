@@ -142,7 +142,48 @@ class RedeventControllerFrontadmin extends FOFController
 
 	public function quickbook()
 	{
-		echo 'quickbook';
+		$app = JFactory::getApplication();
+
+		$xref = $app->input->get('xref', 0, 'int');
+		$regs = $app->input->get('reg', array(), 'array');
+		JArrayHelper::toInteger($regs);
+
+		$resp = new stdclass;
+		$resp->status = 1;
+		$resp->regs = array();
+
+		$acl = UserAcl::getInstance();
+
+		if (!$acl->canManageAttendees($xref))
+		{
+			$resp->status = 0;
+			$resp->error = JText::_('COM_REDEVENT_USER_ACTION_NOT_ALLOWED');
+		}
+		else
+		{
+			$model = $this->getModel('frontadmin');
+
+			foreach ($regs as $user_id)
+			{
+				$res = $model->quickbook($user_id, $xref);
+				$regresp = new stdclass;
+
+				if ($res)
+				{
+					$regresp->status = 1;
+				}
+				else
+				{
+					$resp->status = 0;
+					$regresp->status = 0;
+					$regresp->error = $model->getError();
+				}
+
+				$resp->regs[] = $regresp;
+			}
+		}
+
+		echo json_encode($resp);
 
 		JFactory::getApplication()->close();
 	}
