@@ -144,8 +144,8 @@
             name="email"
             type="email"
             default=""
-            label="COM_REDEVENT_EMAIL"
-            description ="COM_REDEVENT_EMAIL"
+            label="COM_REDEVENT_ADMIN_EMAIL"
+            description ="COM_REDEVENT_ADMIN_EMAIL_HINT"
             class="inputbox" />
 	
 		<field
