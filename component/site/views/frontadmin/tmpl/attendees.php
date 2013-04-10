@@ -30,6 +30,9 @@ defined('_JEXEC') or die('Restricted access');
 			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_USERNAME'); ?></th>
 			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_EMAIL'); ?></th>
 			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_LANGUAGE'); ?></th>
+			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_STATUS'); ?></th>
+			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_PO_NUMBER'); ?></th>
+			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_COMMENTS'); ?></th>
 			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_EDIT_MEMBER'); ?></th>
 		</tr>
 	</thead>
@@ -45,8 +48,30 @@ defined('_JEXEC') or die('Restricted access');
 			<td><?php echo $a->username; ?></td>
 			<td><?php echo $a->email; ?></td>
 			<td><?php echo JFactory::getUser($a->id)->getParameters()->get('language'); ?></td>
-			<td><?php echo JHTML::image('media/com_redevent/images/icon-16-edit.png', 'edit', array('class' => 'editattendee'))
-				. ($a->registered ? ' '	. JHTML::image('media/com_redevent/images/icon-16-delete.png', 'remove', array('class' => 'unregister')) : ''); ?>
+			<?php if ($a->registered): ?>
+			<?php
+			$imgstatus = $a->registered->waitinglist ?
+				JHtml::image('media/com_redevent/images/waiting-16.png', 'waiting',
+					array('class' => "hasTip", 'title' => JText::_('COM_REDEVENT_WAITING_LIST'))) :
+				JHtml::image('media/com_redevent/images/attending-16.png', 'attending',
+					array('class' => "hasTip", 'title' => JText::_('COM_REDEVENT_ATTENDING')));
+			?>
+			<td><?php echo $imgstatus; ?></td>
+			<td class="ponumber"><?php echo $a->registered->ponumber; ?></td>
+			<td class="comments"><?php echo $a->registered->comments; ?></td>
+			<?php else: ?>
+			<td></td>
+			<td></td>
+			<td></td>
+			<?php endif; ?>
+			<td><?php echo JHTML::image('media/com_redevent/images/icon-16-edit.png', 'edit'
+				, array('class' => 'hasTip editattendee'
+						, 'title' => JText::_('COM_REDEVENT_EDIT_PARTICIPANT')
+						,  'rel' => JText::_('COM_REDEVENT_EDIT_PARTICIPANT_TIP')))
+				. ($a->registered ? ' '	. JHTML::image('media/com_redevent/images/icon-16-delete.png', 'remove'
+					, array('class' => 'unregister hasTip'
+							, 'title' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CANCEL_REGISTRATION')
+							, 'rel' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CANCEL_REGISTRATION_TIP'))) : ''); ?>
 			</td>
 		</tr>
 		<?php endforeach;?>

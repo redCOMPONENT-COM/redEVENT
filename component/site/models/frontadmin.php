@@ -723,11 +723,14 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$user = JFactory::getUser($user_id);
 		$rfpost = $result->posts[0];
 
-		if (!$res = $registrationmodel->register($user, $rfpost['sid'], $result->submit_key, $pricegroup ? $pricegroup->id : 0))
+		if (!$reg = $registrationmodel->register($user, $rfpost['sid'], $result->submit_key, $pricegroup ? $pricegroup->id : 0))
 		{
 			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_REGISTRATION_FAILED'));
 			return false;
 		}
+
+		// Force confirm
+		$model->confirm($reg->id);
 
 		if ($details->notify)
 		{

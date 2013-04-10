@@ -66,27 +66,42 @@ defined('_JEXEC') or die('Restricted access');
 					<td><?php echo $this->bookbutton($row->xref); ?><?php echo $this->printPlaces($row); ?></td>
 					<td>
 					<?php if ($this->useracl->canEditEvent((int) $row->slug)): ?>
-						<?php echo JHTML::image('media/com_redevent/images/icon-16-edit.png', JText::_('COM_REDEVENT_EDIT_EVENT'), array('class' => 'editevent')); ?>
+						<?php echo JHTML::image('media/com_redevent/images/icon-16-edit.png', JText::_('COM_REDEVENT_EDIT_EVENT')
+							, array('class' => 'editevent hasTip'
+									, 'title' => JText::_('COM_REDEVENT_EDIT_EVENT')
+									, 'rel' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CLICK_TO_EDIT_EVENT'))); ?>
 					<?php endif; ?>
 					</td>
 					<td>
 					<?php if ($row->published == '1'): ?>
 						<?php if ($this->useracl->canEditXref($row->xref)): ?>
-							<?php echo JHTML::image('media/com_redevent/images/ok.png', JText::_('COM_REDEVENT_Published'), array('class' => 'unpublishxref')); ?>
+							<?php echo JHTML::image('media/com_redevent/images/ok.png', JText::_('COM_REDEVENT_Published')
+								, array('class' => 'unpublishxref hasTip'
+									, 'title' => JText::_('COM_REDEVENT_Published')
+									, 'rel' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CLICK_TO_UNPUBLISH'))); ?>
 						<?php else: ?>
-							<?php echo JHTML::image('media/com_redevent/images/ok.png', JText::_('COM_REDEVENT_Published')); ?>
+							<?php echo JHTML::image('media/com_redevent/images/ok.png', JText::_('COM_REDEVENT_Published')
+								, array('class' => 'hasTip'
+									, 'title' => JText::_('COM_REDEVENT_Published'))); ?>
 						<?php endif; ?>
 					<?php elseif ($row->published == '0'):?>
 						<?php if ($this->useracl->canEditXref($row->xref)): ?>
-							<?php echo JHTML::image('media/com_redevent/images/no.png', JText::_('COM_REDEVENT_unPublished'), array('class' => 'publishxref')); ?>
+							<?php echo JHTML::image('media/com_redevent/images/no.png', JText::_('COM_REDEVENT_unPublished')
+								, array('class' => 'publishxref hasTip'
+									, 'title' => JText::_('COM_REDEVENT_unPublished')
+									, 'rel' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CLICK_TO_PUBLISH'))); ?>
 						<?php else: ?>
-							<?php echo JHTML::image('media/com_redevent/images/no.png', JText::_('COM_REDEVENT_unPublished')); ?>
+							<?php echo JHTML::image('media/com_redevent/images/no.png', JText::_('COM_REDEVENT_unPublished')
+								, array('class' => 'hasTip'
+									, 'title' => JText::_('COM_REDEVENT_unPublished'))); ?>
 						<?php endif; ?>
 					<?php endif;?>
 					</td>
 					<td>
 						<?php if ($this->useracl->canEditXref($row->xref)): ?>
-							<?php echo JHTML::image('media/com_redevent/images/icon-16-delete.png', JText::_('COM_REDEVENT_DELETE'), array('class' => 'deletexref')); ?>
+							<?php echo JHTML::image('media/com_redevent/images/icon-16-delete.png', JText::_('COM_REDEVENT_DELETE'), array('class' => 'deletexref hasTip'
+									, 'title' => JText::_('COM_REDEVENT_DELETE')
+									, 'rel' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CLICK_TO_DELETE_SESSION'))); ?>
 						<?php endif; ?>
 					</td>
 				</tr>

@@ -326,7 +326,8 @@ var redb2b = {
 				data : document.id('org-form'),
 				method : 'post',
 				onSuccess : function(responseText){
-					document.id('main-bookings').set('html', responseText);					
+					document.id('main-bookings').set('html', responseText);	
+					redb2b.refreshTips();
 				}
 			});
 			req.send();
@@ -359,6 +360,7 @@ var redb2b = {
 					},
 					onSuccess : function(text) {
 						resdiv = document.id('main-attendees').adopt(text).set('styles', {'display' : 'block'});
+						redb2b.refreshTips();
 					}
 				});
 				req.send();
@@ -390,5 +392,9 @@ var redb2b = {
 				}
 			});
 			req.send();
+		},
+		
+		refreshTips : function(){
+			myTips = new Tips(".hasTip");
 		}
 };
