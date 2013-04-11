@@ -214,7 +214,11 @@ var redb2b = {
 						url : 'index.php?option=com_redevent&controller=frontadmin&task=cancelreg&tmpl=component',
 						data : {'rid' : register_id},
 						method : 'post',
+						onRequest: function(){
+							document.id('attendees-tbl').set('spinner').spin();
+					    },
 						onSuccess : function(response){
+							document.id('attendees-tbl').set('spinner').unspin();
 							if (response.status == 1) {
 								redb2b.attendeesList();	
 							}
@@ -298,26 +302,16 @@ var redb2b = {
 			/**
 			 * edit ponumber
 			 */
-			document.id('redevent-admin').addEvent('click:relay(.ponumber)', function(e){
-				var td = this;
-				var currentText = this.get('text');
-				var input = new Element('input', {
-					'name': 'ponumber[]',
-					'type': 'text',
-					'value' : currentText,
-				})
-//				.addEvent('blur', function(){
-//					alert('non implemented yet');
-//					var text = this.get('value');
-//					td.empty().set('text', text);
-//				});	
-				this.empty().adopt(input);
+			document.id('redevent-admin').addEvent('change:relay(.ponumber)', function(e){
+				var text = this.get('value');
+				alert('non implemented yet');
 			});
 			
 			/**
 			 * edit ponumber
 			 */
 			document.id('redevent-admin').addEvent('change:relay(.ponumber)', function(e){
+				var text = this.get('value');
 				alert('non implemented yet');		
 			});
 

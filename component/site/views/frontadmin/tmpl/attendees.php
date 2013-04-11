@@ -57,7 +57,7 @@ defined('_JEXEC') or die('Restricted access');
 					array('class' => "hasTip", 'title' => JText::_('COM_REDEVENT_ATTENDING')));
 			?>
 			<td><?php echo $imgstatus; ?></td>
-			<td class="ponumber"><?php echo $a->registered->ponumber; ?></td>
+			<td><input name="ponumber[]" class="input-small ponumber" type="text" value="<?php echo $a->registered->ponumber; ?>" /></td>
 			<td><input name="comments[]" class="input-small comments" type="text" value="<?php echo $a->registered->comments; ?>" /></td>
 			<?php else: ?>
 			<td></td>
