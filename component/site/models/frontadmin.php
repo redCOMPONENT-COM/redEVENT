@@ -730,7 +730,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		}
 
 		// Force confirm
-		$model->confirm($reg->id);
+		$registrationmodel->confirm($reg->id);
 
 		if ($details->notify)
 		{

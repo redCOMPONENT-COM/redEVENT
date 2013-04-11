@@ -58,7 +58,7 @@ defined('_JEXEC') or die('Restricted access');
 			?>
 			<td><?php echo $imgstatus; ?></td>
 			<td class="ponumber"><?php echo $a->registered->ponumber; ?></td>
-			<td class="comments"><?php echo $a->registered->comments; ?></td>
+			<td><input name="comments[]" class="input-small comments" type="text" value="<?php echo $a->registered->comments; ?>" /></td>
 			<?php else: ?>
 			<td></td>
 			<td></td>

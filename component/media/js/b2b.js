@@ -294,6 +294,39 @@ var redb2b = {
 			window.addEvent('beforeunload', function() {
 				return confirm(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_CONFIRM_CLOSE"));
 			});
+
+			/**
+			 * edit ponumber
+			 */
+			document.id('redevent-admin').addEvent('click:relay(.ponumber)', function(e){
+				var td = this;
+				var currentText = this.get('text');
+				var input = new Element('input', {
+					'name': 'ponumber[]',
+					'type': 'text',
+					'value' : currentText,
+				})
+//				.addEvent('blur', function(){
+//					alert('non implemented yet');
+//					var text = this.get('value');
+//					td.empty().set('text', text);
+//				});	
+				this.empty().adopt(input);
+			});
+			
+			/**
+			 * edit ponumber
+			 */
+			document.id('redevent-admin').addEvent('change:relay(.ponumber)', function(e){
+				alert('non implemented yet');		
+			});
+
+			/**
+			 * edit comments
+			 */
+			document.id('redevent-admin').addEvent('change:relay(.comments)', function(e){
+				alert('non implemented yet');		
+			});
 		},
 				
 		updateSessions : function(async) {
