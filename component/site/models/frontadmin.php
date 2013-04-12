@@ -828,4 +828,48 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		}
 		return true;
 	}
+
+	/**
+	 * update comments
+	 *
+	 * @param   int     $rid    register id
+	 * @param   string  $value  value
+	 *
+	 * @return boolean true on success
+	 */
+	public function updatecomments($rid, $value)
+	{
+		$query = ' UPDATE #__redevent_register SET comments = ' . $this->_db->Quote($value)
+			. ' WHERE id = ' . (int) $rid;
+		$this->_db->setQuery($query);
+
+		if (!$res = $this->_db->query())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * update updatestatus
+	 *
+	 * @param   int     $rid    register id
+	 * @param   string  $value  value
+	 *
+	 * @return boolean true on success
+	 */
+	public function updatestatus($rid, $value)
+	{
+		$query = ' UPDATE #__redevent_register SET updatestatus = ' . $this->_db->Quote($value)
+			. ' WHERE id = ' . (int) $rid;
+		$this->_db->setQuery($query);
+
+		if (!$res = $this->_db->query())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		return true;
+	}
 }

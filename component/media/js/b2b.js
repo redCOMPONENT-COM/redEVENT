@@ -323,17 +323,32 @@ var redb2b = {
 			});
 			
 			/**
-			 * edit ponumber
-			 */
-			document.id('redevent-admin').addEvent('change:relay(.comments)', function(e){
-				var text = this.get('value');
-				alert('non implemented yet');		
-			});
-
-			/**
 			 * edit comments
 			 */
 			document.id('redevent-admin').addEvent('change:relay(.comments)', function(e){
+				var text = this.get('value');
+				var rid = this.getParent('tr').getProperty('rid');
+				var el = this;
+				var req = new Request.JSON({
+					url : 'index.php?option=com_redevent&controller=frontadmin&task=updatecomments&tmpl=component',
+					data :{'rid' : rid, 'value' : text},
+					onRequest: function(){
+						el.set('spinner').spin();
+				    },
+					onSuccess : function(result) {
+						el.unspin();
+						if (!result.status) {
+							alert(result.error);
+						}
+					}
+				});
+				req.send();
+			});
+
+			/**
+			 * edit status
+			 */
+			document.id('redevent-admin').addEvent('change:relay(.status)', function(e){
 				alert('non implemented yet');		
 			});
 		},

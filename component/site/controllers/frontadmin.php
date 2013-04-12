@@ -282,4 +282,59 @@ class RedeventControllerFrontadmin extends FOFController
 		JFactory::getApplication()->close();
 	}
 
+	/**
+	 * ajax update comments
+	 *
+	 * @return void
+	 */
+	public function updatecomments()
+	{
+		$app = JFactory::getApplication();
+		$rid = $app->input->get('rid', 0, 'int');
+		$value = $app->input->get('value', '', 'string');
+		$model = $this->getModel('frontadmin');
+
+		$resp = new stdClass();
+
+		if ($res = $model->updatecomments($rid, $value))
+		{
+			$resp->status = 1;
+		}
+		else
+		{
+			$resp->status = 0;
+			$resp->error = $model->getError();
+		}
+
+		echo json_encode($resp);
+		JFactory::getApplication()->close();
+	}
+
+	/**
+	 * ajax update status
+	 *
+	 * @return void
+	 */
+	public function updatestatus()
+	{
+		$app = JFactory::getApplication();
+		$rid = $app->input->get('rid', 0, 'int');
+		$value = $app->input->get('value', '', 'string');
+		$model = $this->getModel('frontadmin');
+
+		$resp = new stdClass();
+
+		if ($res = $model->updatestatus($rid, $value))
+		{
+			$resp->status = 1;
+		}
+		else
+		{
+			$resp->status = 0;
+			$resp->error = $model->getError();
+		}
+
+		echo json_encode($resp);
+		JFactory::getApplication()->close();
+	}
 }
