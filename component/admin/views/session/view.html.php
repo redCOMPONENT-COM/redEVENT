@@ -195,14 +195,18 @@ class RedEventViewSession extends JView {
 		$displaydate = $date. ($enddate ? ' - '.$enddate: '');
 
 		$displaytime = '';
+
 		/* Get the time */
-		if (isset($xref->times) && $xref->times != '00:00:00') {
+		if (isset($xref->times) && $xref->times != '00:00:00')
+		{
 			$displaytime = strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $xref->times ));
 
-			if (isset($xref->endtimes) && $xref->endtimes != '00:00:00') {
+			if (isset($xref->endtimes) && $xref->endtimes != '00:00:00')
+			{
 				$displaytime .= ' - '.strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $xref->endtimes ));
 			}
 		}
+
 		$json_data = array( 'id'        => $xref->id,
 			'venue'     => $xref->venue,
 			'date'      => $displaydate,
@@ -212,6 +216,7 @@ class RedEventViewSession extends JView {
 			'featured'  => $xref->featured,
 			'eventid'   => $xref->eventid,
         );
+
 		if (function_exists('json_encode')) {
 			$js = 'window.parent.updatexref('.json_encode($json_data).');';
 			$document->addScriptDeclaration($js);

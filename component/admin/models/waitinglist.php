@@ -34,7 +34,7 @@ jimport('joomla.application.component.model');
  * @since		0.9
  */
 class RedEventModelWaitinglist extends JModel {
-	
+
 	private $xref = null;
 	private $eventid = null;
 	var $event_data = null;
@@ -44,7 +44,7 @@ class RedEventModelWaitinglist extends JModel {
 	private $move_off_ids = array();
 	private $mailer = null;
 	private $taghelper = null;
-	
+
 	/**
 	 * Constructor
 	 *
@@ -54,31 +54,31 @@ class RedEventModelWaitinglist extends JModel {
 	{
 		parent::__construct();
 	}
-	
+
 	/**
 	 * set xref
-	 * 
+	 *
 	 * @param int $id
 	 */
-	public function setXrefId($id) 
+	public function setXrefId($id)
 	{
 		$this->xref = $id;
 		/* Get the eventdata */
 		$this->getEventData();
 	}
-	
+
 	/**
 	 * set event id
-	 * 
+	 *
 	 * @param int $id
 	 */
-	public function setEventId($id) 
+	public function setEventId($id)
 	{
 		$this->eventid = $id;
 	}
-	
+
 	/* Cleans up the array */
-	private function clean() 
+	private function clean()
 	{
 		$this->event_data = null;
 		$this->move_on = null;
@@ -87,21 +87,21 @@ class RedEventModelWaitinglist extends JModel {
 		$this->move_off_ids = null;
 		$this->mailer = null;
 	}
-	
+
 	/**
 	 * update the waiting list
-	 * 
-	 * @return boolean true on success 
+	 *
+	 * @return boolean true on success
 	 */
-	public function UpdateWaitingList() 
-	{		
+	public function UpdateWaitingList()
+	{
     $this->getEventData();
-    		
+
 		/* If there is an event ID set, update all waitinglists for that event */
-		if (!is_null($this->eventid)) 
+		if (!is_null($this->eventid))
 		{
 			$xrefids = $this->getXrefIds();
-			foreach ($xrefids AS $key => $xref) 
+			foreach ($xrefids AS $key => $xref)
 			{
 				$this->setXrefId($xref);
 				$this->ProcessWaitingList();
@@ -113,14 +113,14 @@ class RedEventModelWaitinglist extends JModel {
 				return false;
 			}
 		}
-		return true;		
+		return true;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Process waitinglist
-	 * 
+	 *
 	 * @return boolean true on success
 	 */
 	private function ProcessWaitingList()
@@ -131,10 +131,14 @@ class RedEventModelWaitinglist extends JModel {
 		/* Check if there are too many ppl going to the event */
 		if (isset($this->waitinglist[0]))
 		{
-			if ($this->event_data->maxattendees == 0 && isset($this->waitinglist[1])) // no more limit, and still user on waiting list !
+			if ($this->event_data->maxattendees == 0)
 			{
-				$this->move_off = $this->waitinglist[1]->total;
-				$this->MoveOffWaitingList();
+				if (isset($this->waitinglist[1]))
+				{
+					// No more limit, and still user on waiting list !
+					$this->move_off = $this->waitinglist[1]->total;
+					$this->MoveOffWaitingList();
+				}
 			}
 			else if ($this->event_data->maxattendees < $this->waitinglist[0]->total)
 			{
@@ -158,10 +162,10 @@ class RedEventModelWaitinglist extends JModel {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Get the xref IDs for an event
-	 * 
+	 *
 	 * @return array
 	 */
 	private function getXrefIds()
@@ -171,14 +175,14 @@ class RedEventModelWaitinglist extends JModel {
 		$db->setQuery($q);
 		return $db->loadResultArray();
 	}
-	
+
 	/**
 	 * Load the number of people that are confirmed and if they are on or off
 	 * the waitinglist
-	 * 
+	 *
 	 * @return array indexed by 0|1 (attending | waiting)
 	 */
-	public function getWaitingList() 
+	public function getWaitingList()
 	{
 		$db = JFactory::getDBO();
 		$q = ' SELECT r.waitinglist, COUNT(r.id) AS total '
@@ -191,7 +195,7 @@ class RedEventModelWaitinglist extends JModel {
 		$this->waitinglist = $db->loadObjectList('waitinglist');
 		return $this->waitinglist;
 	}
-	
+
 	/**
 	 * Move people off the waitinglist
 	 */
@@ -223,7 +227,7 @@ class RedEventModelWaitinglist extends JModel {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Move people on the waiting list
 	 */
@@ -241,7 +245,7 @@ class RedEventModelWaitinglist extends JModel {
 		$db->setQuery($q);
 		$this->move_on_ids = $db->loadResultArray();
 
-		
+
 		if (!count($this->move_on_ids)) {
 			return true;
 		}
@@ -256,11 +260,11 @@ class RedEventModelWaitinglist extends JModel {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Get the basic event information
 	 */
-	private function getEventData() 
+	private function getEventData()
 	{
 	  if (empty($this->event_data))
 	  {
@@ -282,10 +286,10 @@ class RedEventModelWaitinglist extends JModel {
 	  }
 	  return $this->event_data;
 	}
-	
+
 	/**
 	 * put people off from the waiting list
-	 * 
+	 *
 	 * @param array $answer_ids to put off waiting
 	 */
 	public function putOffWaitingList($register_ids)
@@ -293,16 +297,16 @@ class RedEventModelWaitinglist extends JModel {
 	  if (!count($register_ids)) {
 	    return true;
 	  }
-	  
+
 	  /* Get attendee total first */
     $this->getEventData();
     $this->getWaitingList();
-    
+
     /* Check if there are too many ppl going to the event */
     $remaining = $this->event_data->maxattendees - $this->waitinglist[0]->total;
-    
+
     // if there are places remaining, or no limit, put people off the list.
-    if ($this->event_data->maxattendees == 0 || $remaining) 
+    if ($this->event_data->maxattendees == 0 || $remaining)
     {
       /* Need to move people on the waitinglist */
       // we can only take as many new people off the list as there are remaining places
@@ -320,7 +324,7 @@ class RedEventModelWaitinglist extends JModel {
 					$this->setError($attendee->getError());
 					return false;
 				}
-      }      
+      }
     }
     else {
       $this->setError(JText::_('COM_REDEVENT_NOT_ENOUGH_PLACES_LEFT'));
@@ -329,16 +333,16 @@ class RedEventModelWaitinglist extends JModel {
     }
     return true;
 	}
-	
+
   /**
    * put people on the waiting list
-   * 
+   *
    * @param array $answer_ids to put on waiting list
    */
   public function putOnWaitingList($register_ids)
-  {    	  
+  {
     /* Check if there are too many ppl going to the event */
-    if (count($register_ids)) 
+    if (count($register_ids))
     {
       foreach ($register_ids as $rid)
       {

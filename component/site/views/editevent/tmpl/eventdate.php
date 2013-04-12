@@ -145,6 +145,8 @@ function updateend(cal)
       <input type="text" size="50" maxlength="255" name="external_registration_url" id="external_registration_url" value="<?php echo $this->xref->external_registration_url; ?>" />
     </td>
   </tr>
+
+  <?php if ($this->canpublish): ?>
   <tr>
     <td class="key">
       <label for="published"><?php echo JText::_('COM_REDEVENT_PUBLISHED') .': '; ?></label>
@@ -153,6 +155,8 @@ function updateend(cal)
       <?php echo $this->lists['published']; ?>
     </td>
   </tr>
+  <?php endif; ?>
+
 	<?php if ($this->params->get('edit_price', 0)): ?>
   <tr>
     <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_EDIT_XREF_COURSE_PRICE_TIP'); ?>">

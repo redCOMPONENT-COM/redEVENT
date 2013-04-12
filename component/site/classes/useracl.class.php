@@ -339,6 +339,7 @@ class UserAcl
 		{
 			$query->where('e.created_by = ' . $db->Quote($this->_userid));
 		}
+
 		$db->setQuery($query);
 
 		return ($db->loadResult() ? true : false);

@@ -313,6 +313,8 @@ class RedeventViewEditevent extends JView
 		$params 	= $mainframe->getParams();
 
 		$editor 	= JFactory::getEditor();
+		
+		$useracl = UserAcl::getInstance();
 
 		JHTML::_('behavior.mootools');
 
@@ -327,6 +329,8 @@ class RedeventViewEditevent extends JView
 		$roles    = $this->get('SessionRoles');
 		$prices   = $this->get('SessionPrices');
 
+		$canpublish = $useracl->canPublishEvent($xref->eventid);
+		
 		// Form elements
 		$lists = array();
 
@@ -386,7 +390,8 @@ class RedeventViewEditevent extends JView
 		$this->assignRef('rolesoptions', $rolesoptions);
 		$this->assignRef('prices',       $prices);
 		$this->assignRef('pricegroupsoptions', $pricegroupsoptions);
-
+		$this->assign('canpublish', $canpublish);
+		
 		parent::display($tpl);
 	}
 
