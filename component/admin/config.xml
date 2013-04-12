@@ -519,6 +519,11 @@
       <option value="0">No</option>
       <option value="1">Yes</option>
     </field> 
+    <field type="spacer" hr="true"/>
+	    <field name="default_search_results_type" type="radio" default="1" label="COM_REDEVENT_SETTINGS_DEFAULT_SEARCH_RESULTS_TYPE_LABEL" description="COM_REDEVENT_SETTINGS_DEFAULT_SEARCH_RESULTS_TYPE_DESC">
+	      <option value="0">COM_REDEVENT_EVENTS</option>
+	      <option value="1">COM_REDEVENT_SESSIONS</option>
+	    </field> 
  	</fieldset>
  	
  	<fieldset name="COM_REDEVENT_SETTINGS_SOCIAL" label="COM_REDEVENT_SETTINGS_SOCIAL" description="COM_REDEVENT_SETTINGS_SOCIAL">

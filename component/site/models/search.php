@@ -81,8 +81,8 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 		$this->setState('filter_category',      $filter_category);
 		$this->setState('filter_event',         $filter_event);
 
-		$results_type = $params->get('results_type', 1);
-		$this->setState('results_type', $params->get('results_type', 1));
+		$results_type = $params->get('results_type', $params->get('default_search_results_type', 1));
+		$this->setState('results_type', $results_type);
 
 		// If searching for events
 		if ($results_type == 0)
