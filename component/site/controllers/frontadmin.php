@@ -227,6 +227,11 @@ class RedeventControllerFrontadmin extends FOFController
 		JFactory::getApplication()->close();
 	}
 
+	/**
+	 * cancel a registration
+	 *
+	 * @return void
+	 */
 	public function cancelreg()
 	{
 		$app = JFactory::getApplication();
@@ -248,4 +253,33 @@ class RedeventControllerFrontadmin extends FOFController
 		echo json_encode($resp);
 		JFactory::getApplication()->close();
 	}
+
+	/**
+	 * ajax update ponumber
+	 *
+	 * @return void
+	 */
+	public function updateponumber()
+	{
+		$app = JFactory::getApplication();
+		$rid = $app->input->get('rid', 0, 'int');
+		$value = $app->input->get('value', '', 'string');
+		$model = $this->getModel('frontadmin');
+
+		$resp = new stdClass();
+
+		if ($res = $model->updateponumber($rid, $value))
+		{
+			$resp->status = 1;
+		}
+		else
+		{
+			$resp->status = 0;
+			$resp->error = $model->getError();
+		}
+
+		echo json_encode($resp);
+		JFactory::getApplication()->close();
+	}
+
 }

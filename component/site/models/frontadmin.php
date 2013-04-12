@@ -806,4 +806,26 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 			return false;
 		}
 	}
+
+	/**
+	 * update po number
+	 *
+	 * @param   int     $rid    register id
+	 * @param   string  $value  value
+	 *
+	 * @return boolean true on success
+	 */
+	public function updateponumber($rid, $value)
+	{
+		$query = ' UPDATE #__redevent_register SET ponumber = ' . $this->_db->Quote($value)
+			. ' WHERE id = ' . (int) $rid;
+		$this->_db->setQuery($query);
+
+		if (!$res = $this->_db->query())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		return true;
+	}
 }

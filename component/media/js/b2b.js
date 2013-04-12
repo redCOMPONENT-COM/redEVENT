@@ -304,13 +304,28 @@ var redb2b = {
 			 */
 			document.id('redevent-admin').addEvent('change:relay(.ponumber)', function(e){
 				var text = this.get('value');
-				alert('non implemented yet');
+				var rid = this.getParent('tr').getProperty('rid');
+				var el = this;
+				var req = new Request.JSON({
+					url : 'index.php?option=com_redevent&controller=frontadmin&task=updateponumber&tmpl=component',
+					data :{'rid' : rid, 'value' : text},
+					onRequest: function(){
+						el.set('spinner').spin();
+				    },
+					onSuccess : function(result) {
+						el.unspin();
+						if (!result.status) {
+							alert(result.error);
+						}
+					}
+				});
+				req.send();
 			});
 			
 			/**
 			 * edit ponumber
 			 */
-			document.id('redevent-admin').addEvent('change:relay(.ponumber)', function(e){
+			document.id('redevent-admin').addEvent('change:relay(.comments)', function(e){
 				var text = this.get('value');
 				alert('non implemented yet');		
 			});
