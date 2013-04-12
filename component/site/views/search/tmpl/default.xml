@@ -13,6 +13,10 @@
 				<option value="0">COM_REDEVENT_Hide</option>
 				<option value="1">COM_REDEVENT_Show</option>
 			</field>
+			<field name="results_type" type="radio" default="1" label="COM_REDEVENT_VIEW_SEARCH_RESULTS_TYPE" description="COM_REDEVENT_VIEW_SEARCH_RESULTS_TYPE_TIP">
+				<option value="0">COM_REDEVENT_EVENTS</option>
+				<option value="1">COM_REDEVENT_SESSIONS</option>
+			</field>
 			<field name="show_filter" type="radio" default="1" label="COM_REDEVENT_SHOW_FILTER_SEARCH" description="COM_REDEVENT_SHOW_FILTER_SEARCH_TIP">
 				<option value="0">COM_REDEVENT_Hide</option>
 				<option value="1">COM_REDEVENT_Show</option>

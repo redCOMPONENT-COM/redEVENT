@@ -1289,36 +1289,47 @@ class redEVENTHelper {
 	/**
 	 * return the valid columns for frontend display
 	 *
-	 * @param array $columns
+	 * @param   array    $columns  columns to filter
+	 * @param   array    $allowed  allowed static columns, overrides default list
+	 * @param   boolean  $customs  allow custom fields columns
+	 *
 	 * @return array $columns
 	 */
-	public static function validateColumns($columns)
+	public static function validateColumns($columns, $allowed = null, $customs = true)
 	{
 		$db = &JFactory::getDBO();
 
 		$columns = array_map('strtolower', $columns);
 		$columns = array_map('trim', $columns);
 
-		$allowed = array('date',
-				'title',
-				'venue',
-				'state',
-				'city',
-				'category',
-				'picture',
-				'registrationend',
-				'places',
-				'placesleft',
-				'price',
-				'credits',
-				'country',
-				'countryflag',
-		);
+		if (!$allowed)
+		{
+			$allowed = array('date',
+					'title',
+					'venue',
+					'state',
+					'city',
+					'category',
+					'picture',
+					'registrationend',
+					'places',
+					'placesleft',
+					'price',
+					'credits',
+					'country',
+					'countryflag',
+			);
+		}
 
-		$query = 'SELECT CONCAT("custom", f.id) FROM #__redevent_fields AS f WHERE f.published = 1';
-		$db->setQuery($query);
-		if ($res = $db->loadResultArray()) {
-			$allowed = array_merge($allowed, $res);
+		if ($customs)
+		{
+			$query = 'SELECT CONCAT("custom", f.id) FROM #__redevent_fields AS f WHERE f.published = 1';
+			$db->setQuery($query);
+
+			if ($res = $db->loadResultArray())
+			{
+				$allowed = array_merge($allowed, $res);
+			}
 		}
 
 		return array_intersect($columns, $allowed);
