@@ -63,6 +63,11 @@ class RedeventViewFrontadmin extends JView
 			return $this->displayAttendees($tpl);
 		}
 
+		if ($this->getLayout() == 'editmember')
+		{
+			return $this->displayEditmember($tpl);
+		}
+
 		JHTML::_('behavior.framework');
 		JHtml::_('behavior.tooltip');
 
@@ -240,6 +245,19 @@ class RedeventViewFrontadmin extends JView
 
 	protected function displayAttendees($tpl= null)
 	{
+		parent::display($tpl);
+	}
+
+	protected function displayEditMember($tpl= null)
+	{
+		$member = $this->get('MemberInfo');
+		$booked = $this->get('MemberBooked');
+		$previous = $this->get('MemberPrevious');
+
+		$this->assignRef('member',     $member);
+		$this->assignRef('booked',     $booked);
+		$this->assignRef('previous',   $previous);
+
 		parent::display($tpl);
 	}
 }

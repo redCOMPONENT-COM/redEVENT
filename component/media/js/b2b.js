@@ -200,10 +200,25 @@ var redb2b = {
 			/**
 			 * edit attendee
 			 */
-			document.id('redevent-admin').addEvent('click:relay(.editattendee)', function(e){
-				alert('non implemented yet');
+			document.id('redevent-admin').addEvent('click:relay(.editmember)', function(e){
+				var id = this.getParent('tr').getProperty('uid');
+				req = new Request({
+					url : 'index.php?option=com_redevent&controller=frontadmin&task=editmember&tmpl=component',
+					data : {'uid' : id},
+					method : 'post',
+					onSuccess : function(responseText){
+						document.id('redadmin-main').hide();
+						var editdiv = new Element('div', {'id' : 'editmemberscreen'}).set('html', responseText);
+						editdiv.addEvent('click:relay(#closeeditmember)', function(e){
+							document.id('editmemberscreen').dispose();
+							document.id('redadmin-main').show();
+						});
+						editdiv.inject('redadmin-toolbar', 'after');
+					}
+				});
+				req.send();
 			});
-			
+						
 			/**
 			 * remove registration
 			 */

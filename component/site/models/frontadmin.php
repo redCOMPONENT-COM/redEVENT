@@ -45,6 +45,8 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	protected $pagination_booked = null;
 	protected $total_booked = null;
 
+	protected $uid = null;
+
 	/**
 	 * cache for quickbook
 	 * @var object
@@ -71,6 +73,8 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$this->setState('filter_session',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_session',    'filter_session',    0, 'int'));
 		$this->setState('filter_from',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_from',    'filter_from',    '', 'string'));
 		$this->setState('filter_to',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_to',    'filter_to',    '', 'string'));
+
+		$this->uid = $app->input->get('uid', 0, 'int');
 	}
 
 	public function getUseracl()
@@ -871,5 +875,12 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 			return false;
 		}
 		return true;
+	}
+
+	public function getMemberInfo()
+	{
+		$user = JFactory::getUser($this->uid);
+
+		return $user;
 	}
 }
