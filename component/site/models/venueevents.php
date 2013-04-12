@@ -122,11 +122,6 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 		$db->setQuery($query);
 		$_venue = $db->loadObject();
 
-		if (!$this->_category)
-		{
-			JError::raiseError(403, JText::_('COM_REDEVENT_ACCESS_NOT_ALLOWED'));
-		}
-
 		$_venue->attachments = REAttach::getAttachments('venue' . $_venue->id, $user->getAuthorisedViewLevels());
 
 		return $_venue;
