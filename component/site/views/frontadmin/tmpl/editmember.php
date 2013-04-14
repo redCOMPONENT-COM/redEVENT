@@ -25,9 +25,11 @@ defined('_JEXEC') or die('Restricted access');
 
 <div id="editmember-menu">
 	<div class="editmember-breadcrumbs"></div>
+	<?php if ($this->uid): ?>
 	<div class="editmember-addnew">
-		<button type="button" id="add-employee" class="btn"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ADD_EMPLOYEE'); ?></button>
+		<button type="button" class="add-employee btn"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ADD_EMPLOYEE'); ?></button>
 	</div>
+	<?php endif; ?>
 </div>
 
 <div id="editmember-info">
@@ -52,10 +54,11 @@ defined('_JEXEC') or die('Restricted access');
 			</div>
 		</div>
 		<input name="id" type="hidden" value="<?php echo $this->member->id; ?>"/>
-		<button type="button" id="update-employee" class="btn"><?php echo JText::_('COM_REDEVENT_UPDATE'); ?></button>
+		<button type="button" id="update-employee" class="btn"><?php echo $this->uid ? JText::_('COM_REDEVENT_UPDATE') : JText::_('COM_REDEVENT_CREATE'); ?></button>
 	</form>
 </div>
 
+<?php if ($this->uid): ?>
 <div id="editmember-booked">
 	<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_MEMBER_BOOKED'); ?></h2>
 	<form class="ajaxlist">
@@ -85,3 +88,4 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo $this->loadTemplate('sessions'); ?>
 	</form>
 </div>
+<?php endif; ?>

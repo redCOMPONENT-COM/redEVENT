@@ -50,8 +50,8 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JHTML::calendar($this->filter_to, 'filter_to', 'filter_to', '%Y-%m-%d', array('class' => 'input-small')); ?>
 	</div>
 
-	<input type="hidden" name="order" value="<?php echo $this->order; ?>"/>
-	<input type="hidden" name="order_Dir" value="<?php echo $this->order_Dir; ?>"/>
+	<input type="hidden" name="filter_order" value="<?php echo $this->order; ?>"/>
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->order_Dir; ?>"/>
 
 	<button type="button" id="search-course" class="btn"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_BUTTON_SEARCH'); ?></button>
 	<button type="button" id="search-course-reset" class="btn"><?php echo JText::_('COM_REDEVENT_RESET'); ?></button>

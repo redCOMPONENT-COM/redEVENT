@@ -133,7 +133,11 @@ var redb2b = {
 			});
 			
 			document.id('search-course-reset').addEvent('click', function(){
-				this.form.reset();
+				document.id('filter_event').set('value', '').fireEvent('change');
+				document.id('filter_venue').set('value', '');
+				document.id('filter_category').set('value', '');
+				document.id('filter_from').set('value', '');
+				document.id('filter_to').set('value', '');
 				redb2b.attendeesList();
 				redb2b.getSessions();
 			});
@@ -191,25 +195,18 @@ var redb2b = {
 			});
 			
 			/**
-			 * edit attendee
+			 * edit member
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.editmember)', function(e){
 				var id = this.getParent('tr').getProperty('uid');
-				req = new Request({
-					url : 'index.php?option=com_redevent&controller=frontadmin&task=editmember&tmpl=component',
-					data : {'uid' : id},
-					method : 'post',
-					onSuccess : function(responseText){
-						document.id('redadmin-main').hide();
-						var editdiv = new Element('div', {'id' : 'editmemberscreen'}).set('html', responseText);
-						editdiv.addEvent('click:relay(#closeeditmember)', function(e){
-							document.id('editmemberscreen').dispose();
-							document.id('redadmin-main').show();
-						});
-						editdiv.inject('redadmin-toolbar', 'after');
-					}
-				});
-				req.send();
+				redb2b.editmember(id);
+			});
+
+			/**
+			 * add member
+			 */
+			document.id('redevent-admin').addEvent('click:relay(.add-employee)', function(e){
+				redb2b.editmember(0);
 			});
 						
 			/**
@@ -359,7 +356,6 @@ var redb2b = {
 			document.id('redevent-admin').addEvent('change:relay(.status)', function(e){
 				alert('non implemented yet');		
 			});
-			
 
 			document.id('redevent-admin').addEvent('click:relay(#editmemberscreen .ajaxsortcolumn)', function(e){
 				e.stop();
@@ -382,8 +378,8 @@ var redb2b = {
 			document.id('main-course-results').addEvent('click:relay(.ajaxsortcolumn)', function(e){
 				e.stop();
 				var form = document.id('course-search-form');
-				form.order.value = this.getProperty('ordercol');
-				form.order_Dir.value = this.getProperty('orderdir');
+				form.filter_order.value = this.getProperty('ordercol');
+				form.filter_order_Dir.value = this.getProperty('orderdir');
 				redb2b.getSessions();
 			});
 			
@@ -526,6 +522,27 @@ var redb2b = {
 				}
 			});
 			req.send();
+		},
+		
+		editmember : function(id) {
+			req = new Request({
+				url : 'index.php?option=com_redevent&controller=frontadmin&task=editmember&tmpl=component',
+				data : {'uid' : id},
+				method : 'post',
+				onSuccess : function(responseText){
+					document.id('redadmin-main').hide();
+					if (document.id('editmemberscreen')) {
+						document.id('editmemberscreen').dispose();
+					}
+					var editdiv = new Element('div', {'id' : 'editmemberscreen'}).set('html', responseText);
+					editdiv.addEvent('click:relay(#closeeditmember)', function(e){
+						document.id('editmemberscreen').dispose();
+						document.id('redadmin-main').show();
+					});
+					editdiv.inject('redadmin-toolbar', 'after');
+				}
+			});
+			req.send();			
 		},
 		
 		refreshTips : function(){

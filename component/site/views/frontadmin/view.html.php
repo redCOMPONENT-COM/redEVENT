@@ -158,6 +158,9 @@ class RedeventViewFrontadmin extends JView
 		$this->members_order = $state->get('members_order');
 		$this->members_order_dir = $state->get('members_order_dir');
 
+		$this->bookings_order = $state->get('bookings_order');
+		$this->bookings_order_dir = $state->get('bookings_order_dir');
+
 		$this->useracl = $useracl;
 		$this->params  = $params;
 		$this->state   = $state;
