@@ -69,6 +69,9 @@ defined('_JEXEC') or die('Restricted access');
 			$this->order = $this->booked_order;
 			$this->order_dir = $this->booked_order_dir;
 			$this->task = "getmemberbooked";
+			$this->pagination = $this->booked_pagination;
+			$this->limitstart_name = "booked_limitstart";
+			$this->limitstart = $this->booked_limitstart;
 		?>
 		<?php echo $this->loadTemplate('sessions'); ?>
 	</form>
@@ -84,6 +87,9 @@ defined('_JEXEC') or die('Restricted access');
 			$this->order = $this->previous_order;
 			$this->order_dir = $this->previous_order_dir;
 			$this->task = "getmemberprevious";
+			$this->pagination = $this->previous_pagination;
+			$this->limitstart_name = "previous_limitstart";
+			$this->limitstart = $this->previous_limitstart;
 		?>
 		<?php echo $this->loadTemplate('sessions'); ?>
 	</form>

@@ -363,17 +363,14 @@ var redb2b = {
 				var form = this.getParent('form');
 				form.getElement('.redajax_order').set('value', this.getProperty('ordercol'));
 				form.getElement('.redajax_order_dir').set('value', this.getProperty('orderdir'));
-				var req = new Request.HTML({
-					url: 'index.php?option=com_redevent',
-					data : form,
-					onRequest : function(){
-						form.set('spinner').spin();						
-					},
-					onSuccess : function(text) {
-						form.empty().adopt(text).unspin();
-					}
-				});
-				req.send();
+				redb2b.updateFormList(form);
+			});
+			
+			document.id('redevent-admin').addEvent('click:relay(#editmemberscreen .itemnav)', function(e){
+				e.stop();
+				var form = this.getParent('form');
+				form.getElement('.redajax_limitstart').set('value', this.getProperty('startvalue'));
+				redb2b.updateFormList(form);				
 			});
 			
 			document.id('main-course-results').addEvent('click:relay(.ajaxsortcolumn)', function(e){
@@ -399,11 +396,25 @@ var redb2b = {
 				redb2b.searchBookings();
 			});
 			
+			document.id('main-bookings').addEvent('click:relay(.itemnav)', function(e){
+				e.stop();
+				var form = document.id('org-form');
+				form.bookings_limitstart.value = this.getProperty('startvalue');
+				redb2b.searchBookings();
+			});
+			
 			document.id('main-attendees').addEvent('click:relay(.ajaxsortcolumn)', function(e){
 				e.stop();
 				var form = document.id('org-form');
 				form.members_order.value = this.getProperty('ordercol');
 				form.members_order_dir.value = this.getProperty('orderdir');
+				redb2b.attendeesList();
+			});
+			
+			document.id('main-attendees').addEvent('click:relay(.itemnav)', function(e){
+				e.stop();
+				var form = document.id('org-form');
+				form.attendees_limitstart.value = this.getProperty('startvalue');
 				redb2b.attendeesList();
 			});
 		},
@@ -553,6 +564,20 @@ var redb2b = {
 			req.send();			
 		},
 		
+		updateFormList : function(form) {
+			var req = new Request.HTML({
+				url: 'index.php?option=com_redevent',
+				data : form,
+				onRequest : function(){
+					form.set('spinner').spin();						
+				},
+				onSuccess : function(text) {
+					form.empty().adopt(text).unspin();
+				}
+			});
+			req.send();			
+		},
+				
 		refreshTips : function(){
 			myTips = new Tips(".hasTip");
 		}

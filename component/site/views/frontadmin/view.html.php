@@ -152,8 +152,8 @@ class RedeventViewFrontadmin extends JView
 		$this->filter_from        = $state->get('filter_from');
 		$this->filter_to          = $state->get('filter_to');
 
-		$this->order_Dir = $state->get('filter_order');
-		$this->order     = $state->get('filter_order_Dir');
+		$this->order     = $state->get('filter_order');
+		$this->order_Dir = $state->get('filter_order_Dir');
 
 		$this->members_order = $state->get('members_order');
 		$this->members_order_dir = $state->get('members_order_dir');
@@ -201,6 +201,9 @@ class RedeventViewFrontadmin extends JView
 		$this->pagination = $this->get('SessionsPagination');
 		$this->limitstart = $state->get('limitstart');
 
+		$this->bookings_pagination = $this->get('BookingsPagination');
+		$this->bookings_limitstart = $state->get('bookings_limitstart');
+
 		parent::display($tpl);
 	}
 
@@ -212,6 +215,9 @@ class RedeventViewFrontadmin extends JView
 
 		$this->bookings_order_dir = $state->get('bookings_order_dir');
 		$this->bookings_order     = $state->get('bookings_order');
+
+		$this->bookings_pagination = $this->get('BookingsPagination');
+		$this->bookings_limitstart = $state->get('bookings_limitstart');
 
 		$this->params  = $params;
 		$this->state   = $state;
@@ -271,6 +277,8 @@ class RedeventViewFrontadmin extends JView
 
 		$this->members_order = $state->get('members_order');
 		$this->members_order_dir = $state->get('members_order_dir');
+		$this->members_pagination = $this->get('membersPagination');
+		$this->members_limitstart = $state->get('members_limitstart');
 
 		parent::display($tpl);
 	}
@@ -291,9 +299,13 @@ class RedeventViewFrontadmin extends JView
 
 		$this->booked_order = $state->get('booked_order');
 		$this->booked_order_dir = $state->get('booked_order_dir');
+		$this->booked_pagination = $this->get('MemberBookedPagination');
+		$this->booked_limitstart = $state->get('booked_limitstart');
 
 		$this->previous_order = $state->get('previous_order');
 		$this->previous_order_dir = $state->get('previous_order_dir');
+		$this->previous_pagination = $this->get('MemberPreviousPagination');
+		$this->previous_limitstart = $state->get('previous_limitstart');
 
 		parent::display($tpl);
 	}
@@ -312,6 +324,9 @@ class RedeventViewFrontadmin extends JView
 		$this->order_dir = $state->get('booked_order_dir');
 		$this->task      = 'getmemberbooked';
 		$this->uid       = $state->get('uid');
+		$this->pagination = $this->get('MemberBookedPagination');
+		$this->limitstart_name = "booked_limitstart";
+		$this->limitstart = $state->get('booked_limitstart');
 
 		$this->setLayout('editmember_sessions');
 		parent::display($tpl);
@@ -331,6 +346,9 @@ class RedeventViewFrontadmin extends JView
 		$this->order_dir = $state->get('previous_order_dir');
 		$this->task      = 'getmemberprevious';
 		$this->uid       = $state->get('uid');
+		$this->pagination = $this->get('MemberPreviousPagination');
+		$this->limitstart_name = "previous_limitstart";
+		$this->limitstart = $state->get('previous_limitstart');
 
 		$this->setLayout('editmember_sessions');
 		parent::display($tpl);

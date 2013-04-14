@@ -69,4 +69,12 @@ defined('_JEXEC') or die('Restricted access');
 			<?php endforeach;?>
 		</tbody>
 	</table>
+
+	<!--pagination-->
+	<?php if (($this->bookings_pagination->get('pages.total') > 1)) : ?>
+	<div class="pagination">
+		<?php echo $this->bookings_pagination->getPagesLinks(); ?>
+	</div>
+	<?php  endif; ?>
+	<!-- pagination end -->
 <?php endif; ?>

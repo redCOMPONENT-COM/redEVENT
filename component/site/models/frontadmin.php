@@ -69,7 +69,8 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$this->useracl = UserAcl::getInstance();
 
 		// Get the number of events from database
-		$limit       	= $app->getUserStateFromRequest('com_redevent.limit', 'limit', $params->def('display_num', 0), 'int');
+// 		$limit       	= $app->getUserStateFromRequest('com_redevent.limit', 'limit', $params->def('display_num', 0), 'int');
+		$limit       	= $app->getUserStateFromRequest('com_redevent.limit', 'limit', 2, 'int');
 		$limitstart		= JRequest::getVar('limitstart', 0, '', 'int');
 
 		// In case limit has been changed, adjust it
@@ -97,16 +98,36 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$this->setState('bookings_order',     JRequest::getCmd('bookings_order', 'x.dates'));
 		$this->setState('bookings_order_dir', strtoupper(JRequest::getCmd('bookings_order_dir', 'DESC')) == 'DESC' ? 'DESC' : 'ASC');
 
+		$bookings_limitstart		= JRequest::getVar('bookings_limitstart', 0, '', 'int');
+		// In case limit has been changed, adjust it
+		$bookings_limitstart = ($limit != 0 ? (floor($bookings_limitstart / $limit) * $limit) : 0);
+		$this->setState('bookings_limitstart', $bookings_limitstart);
+
 		// Members list
 		$this->setState('members_order',     JRequest::getCmd('members_order', 'u.name'));
 		$this->setState('members_order_dir', strtoupper(JRequest::getCmd('members_order_dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC');
+
+		$members_limitstart		= JRequest::getVar('members_limitstart', 0, '', 'int');
+		// In case limit has been changed, adjust it
+		$members_limitstart = ($limit != 0 ? (floor($members_limitstart / $limit) * $limit) : 0);
+		$this->setState('members_limitstart', $members_limitstart);
 
 		// Editmember
 		$this->setState('booked_order',     JRequest::getCmd('booked_order', 'x.dates'));
 		$this->setState('booked_order_dir', strtoupper(JRequest::getCmd('booked_order_dir', 'DESC')) == 'DESC' ? 'DESC' : 'ASC');
 
+		$booked_limitstart		= JRequest::getVar('booked_limitstart', 0, '', 'int');
+		// In case limit has been changed, adjust it
+		$booked_limitstart = ($limit != 0 ? (floor($booked_limitstart / $limit) * $limit) : 0);
+		$this->setState('booked_limitstart', $booked_limitstart);
+
 		$this->setState('previous_order',     JRequest::getCmd('previous_order', 'x.dates'));
 		$this->setState('previous_order_dir', strtoupper(JRequest::getCmd('previous_order_dir', 'DESC')) == 'DESC' ? 'DESC' : 'ASC');
+
+		$previous_limitstart		= JRequest::getVar('previous_limitstart', 0, '', 'int');
+		// In case limit has been changed, adjust it
+		$previous_limitstart = ($limit != 0 ? (floor($previous_limitstart / $limit) * $limit) : 0);
+		$this->setState('previous_limitstart', $previous_limitstart);
 
 		$this->uid = $app->input->get('uid', 0, 'int');
 		$this->setState('uid', $this->uid);
@@ -179,13 +200,13 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	 * @access public
 	 * @return integer
 	 */
-	public function getBookedPagination()
+	public function getBookingsPagination()
 	{
 		// Lets load the content if it doesn't already exist
 		if (empty($this->pagination_booked))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination_booked = new REAjaxPagination($this->getTotalBooked(), $this->getState('limitstart_sessions'), $this->getState('limit'));
+			$this->pagination_booked = new REAjaxPagination($this->getTotalBookings(), $this->getState('bookings_limitstart'), $this->getState('limit'));
 		}
 
 		return $this->pagination_booked;
@@ -196,12 +217,12 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	 *
 	 * @return integer
 	 */
-	public function getTotalBooked()
+	public function getTotalBookings()
 	{
 		// Lets load the total nr if it doesn't already exist
 		if (empty($this->total_booked))
 		{
-			$query = $this->_buildQueryBooked();
+			$query = $this->_buildQueryBookings();
 			$this->total_booked = $this->_getListCount($query);
 		}
 
@@ -220,7 +241,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		if (empty($this->pagination_booked))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination_booked = new REAjaxPagination($this->getTotalMemberBooked(), $this->getState('limitstart_sessions'), $this->getState('limit'));
+			$this->pagination_booked = new REAjaxPagination($this->getTotalMemberBooked(), $this->getState('booked_limitstart'), $this->getState('limit'));
 		}
 
 		return $this->pagination_booked;
@@ -238,7 +259,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		if (empty($this->pagination_previous))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination_previous = new REAjaxPagination($this->getTotalMemberPrevious(), $this->getState('limitstart_sessions'), $this->getState('limit'));
+			$this->pagination_previous = new REAjaxPagination($this->getTotalMemberPrevious(), $this->getState('previous_limitstart'), $this->getState('limit'));
 		}
 
 		return $this->pagination_previous;
@@ -460,8 +481,8 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		// Lets load the content if it doesn't already exist
 		if (empty($this->booked))
 		{
-			$query = $this->_buildQueryBooked();
-			$pagination = $this->getBookedPagination();
+			$query = $this->_buildQueryBookings();
+			$pagination = $this->getBookingsPagination();
 			$this->booked = $this->_getList($query, $pagination->limitstart, $pagination->limit);
 			$this->booked = $this->_categories($this->booked);
 			$this->booked = $this->_getPlacesLeft($this->booked);
@@ -529,7 +550,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	 *
 	 * @return void
 	 */
-	protected function _buildQueryBooked()
+	protected function _buildQueryBookings()
 	{
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
@@ -605,7 +626,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 
 	protected function _buildQueryMemberBooked()
 	{
-		$query = $this->_buildQueryBooked();
+		$query = $this->_buildQueryBookings();
 		$query->clear('where');
 		$query->where('r.uid = ' . $this->uid);
 
@@ -636,7 +657,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 
 	protected function _buildQueryMemberPrevious()
 	{
-		$query = $this->_buildQueryBooked();
+		$query = $this->_buildQueryBookings();
 		$query->clear('where');
 		$query->where('r.uid = ' . $this->uid);
 

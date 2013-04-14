@@ -39,7 +39,10 @@ defined('_JEXEC') or die('Restricted access');
 </ul>
 	<input type="hidden" name="bookings_order" value="<?php echo $this->bookings_order; ?>"/>
 	<input type="hidden" name="bookings_order_dir" value="<?php echo $this->bookings_order_dir; ?>"/>
+	<input type="hidden" name="bookings_limitstart" value="<?php echo $this->bookings_limitstart; ?>"/>
+
 	<input type="hidden" name="members_order" value="<?php echo $this->members_order; ?>"/>
 	<input type="hidden" name="members_order_dir" value="<?php echo $this->members_order_dir; ?>"/>
+	<input type="hidden" name="members_limitstart" value="<?php echo $this->members_limitstart; ?>"/>
 <div class="clear"></div>
 </form>
