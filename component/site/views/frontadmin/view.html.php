@@ -73,6 +73,11 @@ class RedeventViewFrontadmin extends JView
 			return $this->displayMemberBooked($tpl);
 		}
 
+		if ($this->getLayout() == 'memberprevious')
+		{
+			return $this->displayMemberPrevious($tpl);
+		}
+
 		JHTML::_('behavior.framework');
 		JHtml::_('behavior.tooltip');
 
@@ -289,6 +294,25 @@ class RedeventViewFrontadmin extends JView
 		$this->order     = $state->get('booked_order');
 		$this->order_dir = $state->get('booked_order_dir');
 		$this->task      = 'getmemberbooked';
+		$this->uid       = $state->get('uid');
+
+		$this->setLayout('editmember_sessions');
+		parent::display($tpl);
+	}
+
+	protected function displayMemberPrevious($tpl= null)
+	{
+		$booked = $this->get('MemberPrevious');
+		$state = $this->get('state');
+
+		$this->params = JFactory::getApplication()->getParams('com_redevent');
+
+		$this->sessions  = $booked;
+		$this->order_input = "previous_order";
+		$this->order_dir_input = "previous_order_dir";
+		$this->order     = $state->get('previous_order');
+		$this->order_dir = $state->get('previous_order_dir');
+		$this->task      = 'getmemberprevious';
 		$this->uid       = $state->get('uid');
 
 		$this->setLayout('editmember_sessions');

@@ -558,8 +558,8 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 			$query->where('(' . implode(' OR ', $matching) . ')');
 		}
 
-		$filter_order = $this->getState('booked_order');
-		$filter_order_dir = $this->getState('booked_order_dir');
+		$filter_order = $this->getState('filter_order');
+		$filter_order_dir = $this->getState('filter_order_dir');
 
 		$query->order($filter_order . ' ' . $filter_order_dir . ', x.dates, x.times');
 
@@ -589,6 +589,11 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$now = strftime('%Y-%m-%d %H:%M');
  		$query->where('(x.dates = 0 OR (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > ' . $this->_db->Quote($now) . ')');
 
+ 		$filter_order = $this->getState('booked_order');
+ 		$filter_order_dir = $this->getState('booked_order_dir');
+ 		$query->clear('order');
+ 		$query->order($filter_order . ' ' . $filter_order_dir . ', x.dates, x.times');
+
 		return $query;
 	}
 
@@ -615,6 +620,11 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$now = strftime('%Y-%m-%d %H:%M');
 		$query->where('x.dates > 0');
 		$query->where('(CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) < ' . $this->_db->Quote($now));
+
+		$filter_order = $this->getState('previous_order');
+		$filter_order_dir = $this->getState('previous_order_dir');
+		$query->clear('order');
+		$query->order($filter_order . ' ' . $filter_order_dir . ', x.dates, x.times');
 
 		return $query;
 	}

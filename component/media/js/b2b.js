@@ -41,7 +41,7 @@ var redb2b = {
 		 * init events
 		 */
 		init : function() {
-
+			
 			/**
 			 * ajax search course
 			 */
@@ -214,7 +214,6 @@ var redb2b = {
 							document.id('redadmin-main').show();
 						});
 						editdiv.inject('redadmin-toolbar', 'after');
-						redajax.init();
 					}
 				});
 				req.send();
@@ -367,6 +366,25 @@ var redb2b = {
 			document.id('redevent-admin').addEvent('change:relay(.status)', function(e){
 				alert('non implemented yet');		
 			});
+			
+
+			document.id('redevent-admin').addEvent('click:relay(#editmemberscreen .ajaxsortcolumn)', function(e){
+				e.stop();
+				var form = this.getParent('form');
+				form.getElement('.redajax_order').set('value', this.getProperty('ordercol'));
+				form.getElement('.redajax_order_dir').set('value', this.getProperty('orderdir'));
+				var req = new Request.HTML({
+					url: 'index.php?option=com_redevent',
+					data : form,
+					onRequest : function(){
+						form.set('spinner').spin();						
+					},
+					onSuccess : function(text) {
+						form.empty().adopt(text).unspin();
+					}
+				});
+				req.send();
+			});
 		},
 				
 		updateSessions : function(async) {
@@ -470,28 +488,4 @@ var redb2b = {
 		refreshTips : function(){
 			myTips = new Tips(".hasTip");
 		}
-};
-
-redajax = {
-	init : function(){
-		$$('.ajaxlist').addEvent('click:relay(.ajaxsortcolumn)', function(e){
-			e.stop();
-			var form = this.getParent('form');
-			form.getElement('.redajax_order').set('value', this.getProperty('ordercol'));
-			form.getElement('.redajax_order_dir').set('value', this.getProperty('orderdir'));
-			var req = new Request.HTML({
-				url: 'index.php?option=com_redevent',
-				data : form,
-				onSuccess : function(text) {
-					form.empty().adopt(text);
-					redajax.refreshTips();
-				}
-			});
-			req.send();
-		});
-	},
-	
-	refreshTips : function(){
-		myTips = new Tips(".hasTip");
-	}
 };

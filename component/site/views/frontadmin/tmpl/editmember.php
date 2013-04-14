@@ -74,9 +74,14 @@ defined('_JEXEC') or die('Restricted access');
 <div id="editmember-previous">
 	<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_MEMBER_PREVIOUS'); ?></h2>
 	<form class="ajaxlist">
-	<?php if ($this->previous): ?>
-		<?php $this->sessions = $this->previous; ?>
+		<?php
+			$this->sessions = $this->previous;
+			$this->order_input = "previous_order";
+			$this->order_dir_input = "previous_order_dir";
+			$this->order = $this->previous_order;
+			$this->order_dir = $this->previous_order_dir;
+			$this->task = "getmemberprevious";
+		?>
 		<?php echo $this->loadTemplate('sessions'); ?>
-	<?php endif; ?>
 	</form>
 </div>

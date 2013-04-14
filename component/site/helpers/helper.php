@@ -1456,7 +1456,6 @@ class redEVENTHelper {
 	public static function ajaxSortColumn($title, $order, $direction = 'asc', $selected = 0, $task = null, $new_direction = 'asc')
 	{
 		$direction = strtolower($direction);
-		$images = array('sort_asc.png', 'sort_desc.png');
 		$index = intval($direction == 'desc');
 
 		if ($order != $selected)
@@ -1474,7 +1473,8 @@ class redEVENTHelper {
 
 		if ($order == $selected)
 		{
-			$html .= JHtml::_('image', 'system/' . $images[$index], '', null, true);
+			$iclass = array('icon-chevron-up', 'icon-chevron-down');
+			$html .= ' <i class="' . $iclass[$index] . '"></i>';
 		}
 
 		$html .= '</a>';
