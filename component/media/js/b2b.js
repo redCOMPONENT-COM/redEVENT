@@ -385,6 +385,14 @@ var redb2b = {
 				});
 				req.send();
 			});
+			
+			document.id('main-course-results').addEvent('click:relay(.ajaxsortcolumn)', function(e){
+				e.stop();
+				var form = document.id('course-search-form');
+				form.order.value = this.getProperty('ordercol');
+				form.order_Dir.value = this.getProperty('orderdir');
+				redb2b.sessionsreq.send();
+			});
 		},
 				
 		updateSessions : function(async) {

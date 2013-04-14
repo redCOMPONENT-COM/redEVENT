@@ -78,6 +78,10 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$this->setState('filter_from',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_from',    'filter_from',    '', 'string'));
 		$this->setState('filter_to',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_to',    'filter_to',    '', 'string'));
 
+		// Sessions
+		$this->setState('filter_order',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_order',    'order',    'x.dates', 'string'));
+		$this->setState('filter_order_dir',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_order_Dir',    'order_Dir',    'DESC', 'string'));
+
 		// Editmember
 		$this->setState('booked_order',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.booked_order',    'booked_order',    'x.dates', 'string'));
 		$this->setState('booked_order_dir',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.booked_order_dir',    'booked_order_dir',    'DESC', 'string'));

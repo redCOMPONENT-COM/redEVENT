@@ -179,8 +179,8 @@ class RedeventViewFrontadmin extends JView
 		$params = JFactory::getApplication()->getParams('com_redevent');
 		$state = $this->get('state');
 
-		$this->order_Dir = $state->get('filter_order');
-		$this->order     = $state->get('filter_order_Dir');
+		$this->order_Dir = $state->get('filter_order_dir');
+		$this->order     = $state->get('filter_order');
 
 		$this->params  = $params;
 		$this->state   = $state;
