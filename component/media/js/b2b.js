@@ -354,8 +354,28 @@ var redb2b = {
 			/**
 			 * edit status
 			 */
-			document.id('redevent-admin').addEvent('change:relay(.status)', function(e){
-				alert('non implemented yet');		
+			document.id('redevent-admin').addEvent('click:relay(.statusicon)', function(e){
+				var current = this.getProperty('current');
+				var rid = this.getParent('tr').getProperty('rid');
+				var el = this;
+				var req = new Request.JSON({
+					url : 'index.php?option=com_redevent&controller=frontadmin&task=updatestatus&tmpl=component',
+					data :{'rid' : rid, 'value' : current},
+					onRequest: function(){
+						el.set('spinner').spin();
+				    },
+					onSuccess : function(result) {
+						el.unspin();
+						if (!result.status) {
+							alert(result.error);
+						}
+						var parent = el.getParent();
+						el.dispose();
+						parent.set('html', result.html);
+						redb2b.refreshTips();
+					}
+				});
+				req.send();
 			});
 
 			document.id('redevent-admin').addEvent('click:relay(#editmemberscreen .ajaxsortcolumn)', function(e){
@@ -364,13 +384,15 @@ var redb2b = {
 				form.getElement('.redajax_order').set('value', this.getProperty('ordercol'));
 				form.getElement('.redajax_order_dir').set('value', this.getProperty('orderdir'));
 				redb2b.updateFormList(form);
+				redb2b.refreshTips();
 			});
 			
 			document.id('redevent-admin').addEvent('click:relay(#editmemberscreen .itemnav)', function(e){
 				e.stop();
 				var form = this.getParent('form');
 				form.getElement('.redajax_limitstart').set('value', this.getProperty('startvalue'));
-				redb2b.updateFormList(form);				
+				redb2b.updateFormList(form);	
+				redb2b.refreshTips();			
 			});
 			
 			document.id('main-course-results').addEvent('click:relay(.ajaxsortcolumn)', function(e){
@@ -559,6 +581,7 @@ var redb2b = {
 						document.id('redadmin-main').show();
 					});
 					editdiv.inject('redadmin-toolbar', 'after');
+					redb2b.refreshTips();
 				}
 			});
 			req.send();			
@@ -573,6 +596,7 @@ var redb2b = {
 				},
 				onSuccess : function(text) {
 					form.empty().adopt(text).unspin();
+					redb2b.refreshTips();
 				}
 			});
 			req.send();			

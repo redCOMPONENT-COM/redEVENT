@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 		</thead>
 		<tbody>
 			<?php foreach ($this->sessions as $row): ?>
-			<tr xref="<?php echo $row->xref; ?>">
+			<tr xref="<?php echo $row->xref; ?>" rid="<?php echo $row->rid; ?>">
 				<td><?php echo REOutput::formatEventDateTime($row, false); ?></td>
 				<td><?php echo redEVENTHelper::getEventDuration($row); ?></td>
 				<td><?php echo $row->full_title; ?></td>
@@ -59,7 +59,7 @@ defined('_JEXEC') or die('Restricted access');
 					echo implode("<br/>", $cats);
 					?>
 				</td>
-				<td>st</td>
+				<td><?php echo redEVENTHelper::getStatusIcon($row->status); ?></td>
 				<td><?php echo JHTML::image('media/com_redevent/images/icon-16-delete.png', 'remove'
 						, array('class' => 'unregister hasTip'
 								, 'title' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CANCEL_REGISTRATION')

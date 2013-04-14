@@ -557,6 +557,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$query->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published');
 		$query->select('a.id, a.title, a.created, a.datdescription, a.registra, a.course_code');
 		$query->select('l.venue, l.city, l.state, l.url, l.id as locid');
+		$query->select('r.id AS rid, r.status');
 		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
 		$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
 		$query->select('CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug');
@@ -1054,7 +1055,8 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	 */
 	public function updatestatus($rid, $value)
 	{
-		$query = ' UPDATE #__redevent_register SET updatestatus = ' . $this->_db->Quote($value)
+		$nextvalue = ($value + 1) % 4;
+		$query = ' UPDATE #__redevent_register SET status = ' . $this->_db->Quote($nextvalue)
 			. ' WHERE id = ' . (int) $rid;
 		$this->_db->setQuery($query);
 
@@ -1063,7 +1065,8 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
-		return true;
+
+		return $nextvalue;
 	}
 
 	public function getMemberInfo()

@@ -368,10 +368,12 @@ class RedeventControllerFrontadmin extends FOFController
 		$model = $this->getModel('frontadmin');
 
 		$resp = new stdClass();
+		$res = $model->updatestatus($rid, $value);
 
-		if ($res = $model->updatestatus($rid, $value))
+		if ($res !== false)
 		{
 			$resp->status = 1;
+			$resp->html = redEVENTHelper::getStatusIcon($res);
 		}
 		else
 		{

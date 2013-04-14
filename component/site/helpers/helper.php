@@ -1481,4 +1481,48 @@ class redEVENTHelper {
 
 		return $html;
 	}
+
+
+	/**
+	 * get attendee status icon
+	 *
+	 * @param   int  $status  current status value
+	 *
+	 * @return string
+	 */
+	public static function getStatusIcon($status)
+	{
+		$status = (int) $status;
+		switch ($status)
+		{
+			case 1:
+				$src = 'status_passed.png';
+				$tip = JText::_('COM_REDEVENT_ATTENDEE_STATUS_PASSED');
+				break;
+
+			case 2:
+				$src = 'status_failed.png';
+				$tip = JText::_('COM_REDEVENT_ATTENDEE_STATUS_FAILED');
+				break;
+
+			case 3:
+				$src = 'status_dnp.png';
+				$tip = JText::_('COM_REDEVENT_ATTENDEE_STATUS_DNP');
+				break;
+
+			case 0:
+			default:
+				$src = 'status_na.png';
+				$tip = JText::_('COM_REDEVENT_ATTENDEE_STATUS_NA');
+				break;
+		}
+
+		$options = array('class' => 'hasTip statusicon');
+		$options['title'] = JText::_('COM_REDEVENT_STATUS');
+		$options['rel'] = $tip;
+		$options['current'] = $status;
+		$img = JHtml::image('media/com_redevent/images/' . $src, $src, $options);
+
+		return $img;
+	}
 }
