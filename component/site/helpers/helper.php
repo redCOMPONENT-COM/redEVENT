@@ -1468,7 +1468,7 @@ class redEVENTHelper {
 			$direction = ($direction == 'desc') ? 'asc' : 'desc';
 		}
 
-		$html = '<a href="#" onclick="redajax.tableOrdering(\'' . $order . '\',\'' . $direction . '\',\'' . $task . '\');return false;" title="'
+		$html = '<a href="#" ordercol="' . $order . '" orderdir="' . $direction . '" class="ajaxsortcolumn" title="'
 		. JText::_('JGLOBAL_CLICK_TO_SORT_THIS_COLUMN') . '">';
 		$html .= JText::_($title);
 

@@ -78,7 +78,16 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$this->setState('filter_from',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_from',    'filter_from',    '', 'string'));
 		$this->setState('filter_to',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_to',    'filter_to',    '', 'string'));
 
+		// Editmember
+		$this->setState('booked_order',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.booked_order',    'booked_order',    'x.dates', 'string'));
+		$this->setState('booked_order_dir',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.booked_order_dir',    'booked_order_dir',    'DESC', 'string'));
+
+		$this->setState('previous_order',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.previous_order',    'previous_order',    'x.dates', 'string'));
+		$this->setState('previous_order_dir',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.previous_order_dir',    'previous_order_dir',    'DESC', 'string'));
+
 		$this->uid = $app->input->get('uid', 0, 'int');
+		$this->setState('uid', $this->uid);
+
 	}
 
 	public function getUseracl()
@@ -549,8 +558,8 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 			$query->where('(' . implode(' OR ', $matching) . ')');
 		}
 
-		$filter_order = $this->getState('filter_order');
-		$filter_order_dir = $this->getState('filter_order_dir');
+		$filter_order = $this->getState('booked_order');
+		$filter_order_dir = $this->getState('booked_order_dir');
 
 		$query->order($filter_order . ' ' . $filter_order_dir . ', x.dates, x.times');
 

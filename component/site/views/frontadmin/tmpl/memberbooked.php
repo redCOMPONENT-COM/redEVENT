@@ -59,15 +59,20 @@ defined('_JEXEC') or die('Restricted access');
 <div id="editmember-booked">
 	<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_MEMBER_BOOKED'); ?></h2>
 	<form class="ajaxlist">
+	<?php if ($this->booked): ?>
 		<?php
 			$this->sessions = $this->booked;
-			$this->order_input = "booked_order";
-			$this->order_dir_input = "booked_order_dir";
 			$this->order = $this->booked_order;
 			$this->order_dir = $this->booked_order_dir;
-			$this->task = "getmemberbooked";
 		?>
 		<?php echo $this->loadTemplate('sessions'); ?>
+	<?php endif;?>
+		<input type="hidden" name="controller" value="frontadmin"/>
+		<input type="hidden" name="tmpl" value="component"/>
+		<input type="hidden" name="task" value="getmemberbooked"/>
+		<input type="hidden" name="order" value="<?php echo $this->booked_order; ?>"/>
+		<input type="hidden" name="order_dir" value="<?php echo $this->booked_order_dir; ?>"/>
+
 	</form>
 </div>
 

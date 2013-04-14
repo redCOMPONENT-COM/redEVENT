@@ -68,6 +68,11 @@ class RedeventViewFrontadmin extends JView
 			return $this->displayEditmember($tpl);
 		}
 
+		if ($this->getLayout() == 'memberbooked')
+		{
+			return $this->displayMemberBooked($tpl);
+		}
+
 		JHTML::_('behavior.framework');
 		JHtml::_('behavior.tooltip');
 
@@ -253,12 +258,40 @@ class RedeventViewFrontadmin extends JView
 		$member = $this->get('MemberInfo');
 		$booked = $this->get('MemberBooked');
 		$previous = $this->get('MemberPrevious');
+		$state = $this->get('state');
+
+		$this->params = JFactory::getApplication()->getParams('com_redevent');
 
 		$this->assignRef('member',     $member);
 		$this->assignRef('booked',     $booked);
 		$this->assignRef('previous',   $previous);
-		$this->params = JFactory::getApplication()->getParams('com_redevent');;
+		$this->uid       = $state->get('uid');
 
+		$this->booked_order = $state->get('booked_order');
+		$this->booked_order_dir = $state->get('booked_order_dir');
+
+		$this->previous_order = $state->get('previous_order');
+		$this->previous_order_dir = $state->get('previous_order_dir');
+
+		parent::display($tpl);
+	}
+
+	protected function displayMemberBooked($tpl= null)
+	{
+		$booked = $this->get('MemberBooked');
+		$state = $this->get('state');
+
+		$this->params = JFactory::getApplication()->getParams('com_redevent');
+
+		$this->sessions  = $booked;
+		$this->order_input = "booked_order";
+		$this->order_dir_input = "booked_order_dir";
+		$this->order     = $state->get('booked_order');
+		$this->order_dir = $state->get('booked_order_dir');
+		$this->task      = 'getmemberbooked';
+		$this->uid       = $state->get('uid');
+
+		$this->setLayout('editmember_sessions');
 		parent::display($tpl);
 	}
 }

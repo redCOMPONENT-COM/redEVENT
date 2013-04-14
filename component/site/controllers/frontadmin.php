@@ -155,6 +155,21 @@ class RedeventControllerFrontadmin extends FOFController
 		JFactory::getApplication()->close();
 	}
 
+	public function getmemberbooked()
+	{
+		$app = JFactory::getApplication();
+
+		$this->viewName  = 'frontadmin';
+		$this->modelName = 'frontadmin';
+		$this->layout    = 'memberbooked';
+
+		$model = $this->getModel('frontadmin');
+
+		$this->display();
+
+		JFactory::getApplication()->close();
+	}
+
 	public function quickbook()
 	{
 		$app = JFactory::getApplication();

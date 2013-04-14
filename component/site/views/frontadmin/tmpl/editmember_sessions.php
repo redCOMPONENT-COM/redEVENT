@@ -21,15 +21,16 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
+<?php if ($this->sessions): ?>
 <table class="table">
 	<thead>
 		<tr>
-			<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_DATE'), 'x.dates', $this->order_Dir, $this->order); ?></th>
+			<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_DATE'), 'x.dates', $this->order_dir, $this->order); ?></th>
 			<th><?php echo JText::_('COM_REDEVENT_EVENT_DURATION'); ?></th>
-			<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TITLE'), 'e.title', $this->order_Dir, $this->order); ?></th>
-			<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_VENUE'), 'l.venue', $this->order_Dir, $this->order); ?></th>
-			<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CITY'), 'l.city', $this->order_Dir, $this->order); ?></th>
-			<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CATEGORY'), 'c.catname', $this->order_Dir, $this->order); ?></th>
+			<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TITLE'), 'a.title', $this->order_dir, $this->order); ?></th>
+			<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_VENUE'), 'l.venue', $this->order_dir, $this->order); ?></th>
+			<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CITY'), 'l.city', $this->order_dir, $this->order); ?></th>
+			<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CATEGORY'), 'c.catname', $this->order_dir, $this->order); ?></th>
 			<th><?php echo JText::_('COM_REDEVENT_STATUS'); ?></th>
 			<th colspan="3"><?php echo JText::_('COM_REDEVENT_ACTIONS'); ?></th>
 		</tr>
@@ -68,3 +69,10 @@ defined('_JEXEC') or die('Restricted access');
 		<?php endforeach;?>
 	</tbody>
 </table>
+<?php endif; ?>
+<input type="hidden" name="controller" value="frontadmin"/>
+<input type="hidden" name="tmpl" value="component"/>
+<input type="hidden" name="task" value="<?php echo $this->task; ?>"/>
+<input type="hidden" name="<?php echo $this->order_input; ?>" class="redajax_order" value="<?php echo $this->order; ?>"/>
+<input type="hidden" name="<?php echo $this->order_dir_input; ?>" class="redajax_order_dir" value="<?php echo $this->order_dir; ?>"/>
+<input type="hidden" name="uid" value="<?php echo $this->uid; ?>"/>

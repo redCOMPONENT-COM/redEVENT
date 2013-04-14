@@ -214,6 +214,7 @@ var redb2b = {
 							document.id('redadmin-main').show();
 						});
 						editdiv.inject('redadmin-toolbar', 'after');
+						redajax.init();
 					}
 				});
 				req.send();
@@ -469,4 +470,28 @@ var redb2b = {
 		refreshTips : function(){
 			myTips = new Tips(".hasTip");
 		}
+};
+
+redajax = {
+	init : function(){
+		$$('.ajaxlist').addEvent('click:relay(.ajaxsortcolumn)', function(e){
+			e.stop();
+			var form = this.getParent('form');
+			form.getElement('.redajax_order').set('value', this.getProperty('ordercol'));
+			form.getElement('.redajax_order_dir').set('value', this.getProperty('orderdir'));
+			var req = new Request.HTML({
+				url: 'index.php?option=com_redevent',
+				data : form,
+				onSuccess : function(text) {
+					form.empty().adopt(text);
+					redajax.refreshTips();
+				}
+			});
+			req.send();
+		});
+	},
+	
+	refreshTips : function(){
+		myTips = new Tips(".hasTip");
+	}
 };
