@@ -30,10 +30,7 @@ window.addEvent('domready', function() {
 });
 
 var redb2b = {
-	
-		/** request object for session **/
-		sessionsreq : null,
-		
+			
 		/** selected users for booking **/
 		selected : new Array(),
 		
@@ -42,17 +39,6 @@ var redb2b = {
 		 */
 		init : function() {
 			
-			/**
-			 * ajax search course
-			 */
-			this.sessionsreq = new Form.Request(document.id('course-search-form'), document.id('main-course-results'), {
-				resetForm : false,
-				useSpinner: true,
-				extraData : {
-					'tmpl' : 'component'
-				}
-			});
-
 			/**
 			 * update sessions options when selecting event
 			 */
@@ -131,7 +117,12 @@ var redb2b = {
 				document.id('filter_person').set('value', '');
 				redb2b.searchBookings();
 			});
-
+			
+			/**
+			 * search for sessions
+			 */
+			document.id('search-course').addEvent('click', redb2b.getSessions);
+			
 			/**
 			 * update course search when clicking on book session button in lists
 			 */
@@ -144,7 +135,7 @@ var redb2b = {
 			document.id('search-course-reset').addEvent('click', function(){
 				this.form.reset();
 				redb2b.attendeesList();
-				redb2b.sessionsreq.send();
+				redb2b.getSessions();
 			});
 			
 			/**
@@ -393,7 +384,7 @@ var redb2b = {
 				var form = document.id('course-search-form');
 				form.order.value = this.getProperty('ordercol');
 				form.order_Dir.value = this.getProperty('orderdir');
-				redb2b.sessionsreq.send();
+				redb2b.getSessions();
 			});
 			
 			document.id('main-bookings').addEvent('click:relay(.ajaxsortcolumn)', function(e){
@@ -411,6 +402,21 @@ var redb2b = {
 				form.members_order_dir.value = this.getProperty('orderdir');
 				redb2b.attendeesList();
 			});
+		},
+		
+		getSessions : function() {
+			var req = new Request({
+				url: 'index.php?option=com_redevent&controller=frontadmin&task=searchsessions&tmpl=component',
+				data: document.id('course-search-form'),
+				onRequest : function(){
+					document.id('main-course-results').set('spinner').spin();
+				},
+				onSuccess : function(response) {
+					document.id('main-course-results').empty().set('html', response).unspin();
+					redb2b.refreshTips();
+				}
+			});
+			req.send();
 		},
 				
 		updateSessions : function(async) {
@@ -460,7 +466,7 @@ var redb2b = {
 					document.id('filter_session').set('value', id);
 					document.id('book-xref').set('value', id);
 					redb2b.attendeesList();
-					redb2b.sessionsreq.send();
+					redb2b.getSessions();
 				}
 			});
 			req.send();			
@@ -512,7 +518,7 @@ var redb2b = {
 				},
 				onSuccess : function(result) {
 					if (result.status) {
-						redb2b.sessionsreq.send();
+						redb2b.getSessions();
 					}
 					else {
 						alert(result.error);
