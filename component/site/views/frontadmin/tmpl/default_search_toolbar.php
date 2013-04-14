@@ -37,5 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 	<li><label class="checkbox"><input name="filter_person_archive" id="filter_person_archive" type="checkbox" value="1"
 		<?php echo $this->state->get('filter_person_archive') ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSES_HISTORY'); ?></label></li>
 </ul>
+	<input type="hidden" name="bookings_order" value="<?php echo $this->bookings_order; ?>"/>
+	<input type="hidden" name="bookings_order_dir" value="<?php echo $this->bookings_order_dir; ?>"/>
 <div class="clear"></div>
 </form>

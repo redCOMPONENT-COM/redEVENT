@@ -82,6 +82,10 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$this->setState('filter_order',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_order',    'order',    'x.dates', 'string'));
 		$this->setState('filter_order_dir',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_order_Dir',    'order_Dir',    'DESC', 'string'));
 
+		// Organization bookings
+		$this->setState('bookings_order',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.bookings_order',    'bookings_order',    'x.dates', 'string'));
+		$this->setState('bookings_order_dir',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.bookings_order_dir',    'bookings_order_dir',    'DESC', 'string'));
+
 		// Editmember
 		$this->setState('booked_order',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.booked_order',    'booked_order',    'x.dates', 'string'));
 		$this->setState('booked_order_dir',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.booked_order_dir',    'booked_order_dir',    'DESC', 'string'));
@@ -562,8 +566,8 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 			$query->where('(' . implode(' OR ', $matching) . ')');
 		}
 
-		$filter_order = $this->getState('filter_order');
-		$filter_order_dir = $this->getState('filter_order_dir');
+		$filter_order = $this->getState('bookings_order');
+		$filter_order_dir = $this->getState('bookings_order_dir');
 
 		$query->order($filter_order . ' ' . $filter_order_dir . ', x.dates, x.times');
 

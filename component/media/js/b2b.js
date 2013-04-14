@@ -393,6 +393,14 @@ var redb2b = {
 				form.order_Dir.value = this.getProperty('orderdir');
 				redb2b.sessionsreq.send();
 			});
+			
+			document.id('main-bookings').addEvent('click:relay(.ajaxsortcolumn)', function(e){
+				e.stop();
+				var form = document.id('org-form');
+				form.bookings_order.value = this.getProperty('ordercol');
+				form.bookings_order_dir.value = this.getProperty('orderdir');
+				redb2b.searchBookings();
+			});
 		},
 				
 		updateSessions : function(async) {
