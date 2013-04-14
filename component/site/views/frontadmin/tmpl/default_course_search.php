@@ -52,6 +52,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	<input type="hidden" name="filter_order" value="<?php echo $this->order; ?>"/>
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->order_Dir; ?>"/>
+	<input type="hidden" name="limitstart" value="<?php echo $this->limitstart; ?>"/>
 
 	<button type="button" id="search-course" class="btn"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_BUTTON_SEARCH'); ?></button>
 	<button type="button" id="search-course-reset" class="btn"><?php echo JText::_('COM_REDEVENT_RESET'); ?></button>

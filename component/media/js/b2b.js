@@ -133,7 +133,8 @@ var redb2b = {
 			});
 			
 			document.id('search-course-reset').addEvent('click', function(){
-				document.id('filter_event').set('value', '').fireEvent('change');
+				document.id('filter_event').set('value', '');
+				document.id('filter_session').empty();
 				document.id('filter_venue').set('value', '');
 				document.id('filter_category').set('value', '');
 				document.id('filter_from').set('value', '');
@@ -380,6 +381,13 @@ var redb2b = {
 				var form = document.id('course-search-form');
 				form.filter_order.value = this.getProperty('ordercol');
 				form.filter_order_Dir.value = this.getProperty('orderdir');
+				redb2b.getSessions();
+			});
+			
+			document.id('main-course-results').addEvent('click:relay(.itemnav)', function(e){
+				e.stop();
+				var form = document.id('course-search-form');
+				form.limitstart.value = this.getProperty('startvalue');
 				redb2b.getSessions();
 			});
 			

@@ -170,6 +170,9 @@ class RedeventViewFrontadmin extends JView
 		$this->organization = $this->get('Organization');
 		$this->bookings   = $this->get('OrganizationBookings');
 
+		$this->pagination = $this->get('SessionsPagination');
+		$this->limitstart = $state->get('limitstart');
+
 		// JS language strings
 		JText::script("COM_REDEVENT_FRONTEND_ADMIN_COURSE_SEARCH_TITLE");
 		JText::script("COM_REDEVENT_BOOK_SESSION");
@@ -194,6 +197,9 @@ class RedeventViewFrontadmin extends JView
 		$this->useracl = $useracl;
 		$this->sessions = $this->get('Sessions');
 		$this->params  = $params;
+
+		$this->pagination = $this->get('SessionsPagination');
+		$this->limitstart = $state->get('limitstart');
 
 		parent::display($tpl);
 	}

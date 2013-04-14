@@ -64,8 +64,19 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		parent::__construct($config);
 
 		$app = JFactory::getApplication();
+		$params = $app->getParams('com_redevent');
 
 		$this->useracl = UserAcl::getInstance();
+
+		// Get the number of events from database
+		$limit       	= $app->getUserStateFromRequest('com_redevent.limit', 'limit', $params->def('display_num', 0), 'int');
+		$limitstart		= JRequest::getVar('limitstart', 0, '', 'int');
+
+		// In case limit has been changed, adjust it
+		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
+
+		$this->setState('limit', $limit);
+		$this->setState('limitstart_sessions', $limitstart);
 
 		// Bookings filter
 		$this->setState('filter_organization',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_organization',    'filter_organization',    0, 'int'));
@@ -139,7 +150,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		if (empty($this->pagination_sessions))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination_sessions = new JPagination($this->getTotalSessions(), $this->getState('limitstart_sessions'), $this->getState('limit'));
+			$this->pagination_sessions = new REAjaxPagination($this->getTotalSessions(), $this->getState('limitstart_sessions'), $this->getState('limit'));
 		}
 
 		return $this->pagination_sessions;
@@ -174,7 +185,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		if (empty($this->pagination_booked))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination_booked = new JPagination($this->getTotalBooked(), $this->getState('limitstart_sessions'), $this->getState('limit'));
+			$this->pagination_booked = new REAjaxPagination($this->getTotalBooked(), $this->getState('limitstart_sessions'), $this->getState('limit'));
 		}
 
 		return $this->pagination_booked;
@@ -209,7 +220,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		if (empty($this->pagination_booked))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination_booked = new JPagination($this->getTotalMemberBooked(), $this->getState('limitstart_sessions'), $this->getState('limit'));
+			$this->pagination_booked = new REAjaxPagination($this->getTotalMemberBooked(), $this->getState('limitstart_sessions'), $this->getState('limit'));
 		}
 
 		return $this->pagination_booked;
@@ -227,7 +238,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		if (empty($this->pagination_previous))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination_previous = new JPagination($this->getTotalMemberPrevious(), $this->getState('limitstart_sessions'), $this->getState('limit'));
+			$this->pagination_previous = new REAjaxPagination($this->getTotalMemberPrevious(), $this->getState('limitstart_sessions'), $this->getState('limit'));
 		}
 
 		return $this->pagination_previous;

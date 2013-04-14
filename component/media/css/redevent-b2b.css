@@ -37,6 +37,10 @@
 	float: right;
 }
 
+#redevent-admin .pagenav {
+	clear: none;
+}
+
 .spinner {
 	position: absolute;
 	opacity: 0.9;
