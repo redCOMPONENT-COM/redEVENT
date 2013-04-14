@@ -86,6 +86,10 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$this->setState('bookings_order',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.bookings_order',    'bookings_order',    'x.dates', 'string'));
 		$this->setState('bookings_order_dir',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.bookings_order_dir',    'bookings_order_dir',    'DESC', 'string'));
 
+		// Members list
+		$this->setState('members_order',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.members_order',    'members_order',    'u.name', 'string'));
+		$this->setState('members_order_dir',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.members_order_dir',    'members_order_dir',    'ASC', 'string'));
+
 		// Editmember
 		$this->setState('booked_order',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.booked_order',    'booked_order',    'x.dates', 'string'));
 		$this->setState('booked_order_dir',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.booked_order_dir',    'booked_order_dir',    'DESC', 'string'));
@@ -758,7 +762,8 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$query->join('INNER', '#__redmember_users AS rmu ON rmuo.user_id = rmu.user_id');
 		$query->join('INNER', '#__users AS u ON u.id = rmu.user_id');
 		$query->where('rmuo.organization_id = ' . (int) $organization);
-		$query->order('u.name');
+
+		$query->order($this->getState('members_order') . ' ' . $this->getState('members_order_dir') . ', u.name');
 
 		$db->setQuery($query);
 		$users = $db->loadObjectList();

@@ -155,6 +155,9 @@ class RedeventViewFrontadmin extends JView
 		$this->order_Dir = $state->get('filter_order');
 		$this->order     = $state->get('filter_order_Dir');
 
+		$this->members_order = $state->get('members_order');
+		$this->members_order_dir = $state->get('members_order_dir');
+
 		$this->useracl = $useracl;
 		$this->params  = $params;
 		$this->state   = $state;
@@ -255,6 +258,11 @@ class RedeventViewFrontadmin extends JView
 
 	protected function displayAttendees($tpl= null)
 	{
+		$state = $this->get('state');
+
+		$this->members_order = $state->get('members_order');
+		$this->members_order_dir = $state->get('members_order_dir');
+
 		parent::display($tpl);
 	}
 

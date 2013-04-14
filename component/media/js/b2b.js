@@ -156,36 +156,38 @@ var redb2b = {
 				var div = document.id('select-list');
 				
 				if (this.getProperty('checked')) {
-					div.removeClass('nouser');
-					div.getElement(".notice").set('styles', {display:'none'});
-					
-					var newrow = new Element('div#member'+id, {'class' : 'selectedmember'});
-					var img = new Element('img', {
-						'src' : 'media/com_redevent/images/icon-16-delete.png',
-						'alt': 'delete'
-					}).addEvent('click', function(){
-						newrow.dispose();
-						if (document.id('cid'+id)) {
-							document.id('cid'+id).removeProperty('checked');
-						}
-						redb2b.selected.erase(id);
-						if (!redb2b.selected.length) {
-							div.getElement(".notice").set('styles', {display:'block'});
-							div.addClass('nouser');
-						}
-					});
-					var imgspan = new Element('span.member-remove');
-					var input = new Element('input', {'name' : 'reg[]', 'value' : id, 'type' : 'hidden'});				
-					var inputspan = new Element('span.member-name').set('text', name);
-					
-					newrow.adopt(imgspan.adopt(img));
-					newrow.adopt(inputspan.adopt(input));					
-					
-					newrow.inject(div);
-					
-					redb2b.selected.push(id);
-					
-					document.id('book-course').set('styles', {'display' :'block'});
+					if (!redb2b.selected.contains(id)) {
+						div.removeClass('nouser');
+						div.getElement(".notice").set('styles', {display:'none'});
+						
+						var newrow = new Element('div#member'+id, {'class' : 'selectedmember'});
+						var img = new Element('img', {
+							'src' : 'media/com_redevent/images/icon-16-delete.png',
+							'alt': 'delete'
+						}).addEvent('click', function(){
+							newrow.dispose();
+							if (document.id('cid'+id)) {
+								document.id('cid'+id).removeProperty('checked');
+							}
+							redb2b.selected.erase(id);
+							if (!redb2b.selected.length) {
+								div.getElement(".notice").set('styles', {display:'block'});
+								div.addClass('nouser');
+							}
+						});
+						var imgspan = new Element('span.member-remove');
+						var input = new Element('input', {'name' : 'reg[]', 'value' : id, 'type' : 'hidden'});				
+						var inputspan = new Element('span.member-name').set('text', name);
+						
+						newrow.adopt(imgspan.adopt(img));
+						newrow.adopt(inputspan.adopt(input));					
+						
+						newrow.inject(div);
+						
+						redb2b.selected.push(id);
+						
+						document.id('book-course').set('styles', {'display' :'block'});
+					}
 				}
 				else {
 					/** remove from selected list **/
@@ -401,6 +403,14 @@ var redb2b = {
 				form.bookings_order_dir.value = this.getProperty('orderdir');
 				redb2b.searchBookings();
 			});
+			
+			document.id('main-attendees').addEvent('click:relay(.ajaxsortcolumn)', function(e){
+				e.stop();
+				var form = document.id('org-form');
+				form.members_order.value = this.getProperty('ordercol');
+				form.members_order_dir.value = this.getProperty('orderdir');
+				redb2b.attendeesList();
+			});
 		},
 				
 		updateSessions : function(async) {
@@ -458,15 +468,26 @@ var redb2b = {
 		
 		attendeesList : function() {
 			document.id('main-attendees').set('styles', {'display' : 'none'}).empty();
-			redb2b.resetSelected();
 			if (document.id('filter_organization').get('value') > 0 && document.id('filter_session').get('value') > 0) {
+				var orgform = document.id('org-form');
 				var req = new Request.HTML({
 					url: 'index.php?option=com_redevent&controller=frontadmin&task=getattendees&tmpl=component',
 					data : {'xref' : document.id('filter_session').get('value'),
-						'org' : document.id('filter_organization').get('value')
+						'org' : document.id('filter_organization').get('value'),
+						'members_order' : orgform.members_order.value,
+						'members_order_dir' : orgform.members_order_dir.value
+					},
+					onRequest : function(){
+						document.id('main-attendees').set('spinner').spin();
 					},
 					onSuccess : function(text) {
-						resdiv = document.id('main-attendees').adopt(text).set('styles', {'display' : 'block'});
+						resdiv = document.id('main-attendees').adopt(text).set('styles', {'display' : 'block'}).unspin();
+						Array.each(redb2b.selected, function(val) {
+							var cid = document.id('cid' + val);
+							if (cid) {
+								cid.setProperty('checked', 'checked');
+							}
+						});
 						redb2b.refreshTips();
 					}
 				});
