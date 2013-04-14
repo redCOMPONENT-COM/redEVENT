@@ -69,8 +69,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$this->useracl = UserAcl::getInstance();
 
 		// Get the number of events from database
-// 		$limit       	= $app->getUserStateFromRequest('com_redevent.limit', 'limit', $params->def('display_num', 0), 'int');
-		$limit       	= $app->getUserStateFromRequest('com_redevent.limit', 'limit', 2, 'int');
+		$limit       	= $app->getUserStateFromRequest('com_redevent.limit', 'limit', $params->def('display_num', 0), 'int');
 		$limitstart		= JRequest::getVar('limitstart', 0, '', 'int');
 
 		// In case limit has been changed, adjust it
