@@ -1438,4 +1438,47 @@ class redEVENTHelper {
 
 		return true;
 	}
+
+	/**
+	 * Method to sort a column in a grid
+	 *
+	 * @param   string  $title          The link title
+	 * @param   string  $order          The order field for the column
+	 * @param   string  $direction      The current direction
+	 * @param   string  $selected       The selected ordering
+	 * @param   string  $task           An optional task override
+	 * @param   string  $new_direction  An optional direction for the new column
+	 *
+	 * @return  string
+	 *
+	 * @since   11.1
+	 */
+	public static function ajaxSortColumn($title, $order, $direction = 'asc', $selected = 0, $task = null, $new_direction = 'asc')
+	{
+		$direction = strtolower($direction);
+		$images = array('sort_asc.png', 'sort_desc.png');
+		$index = intval($direction == 'desc');
+
+		if ($order != $selected)
+		{
+			$direction = $new_direction;
+		}
+		else
+		{
+			$direction = ($direction == 'desc') ? 'asc' : 'desc';
+		}
+
+		$html = '<a href="#" onclick="redajax.tableOrdering(\'' . $order . '\',\'' . $direction . '\',\'' . $task . '\');return false;" title="'
+		. JText::_('JGLOBAL_CLICK_TO_SORT_THIS_COLUMN') . '">';
+		$html .= JText::_($title);
+
+		if ($order == $selected)
+		{
+			$html .= JHtml::_('image', 'system/' . $images[$index], '', null, true);
+		}
+
+		$html .= '</a>';
+
+		return $html;
+	}
 }

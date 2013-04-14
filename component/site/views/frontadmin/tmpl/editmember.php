@@ -58,10 +58,16 @@ defined('_JEXEC') or die('Restricted access');
 
 <div class="editmember-booked">
 	<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_MEMBER_BOOKED'); ?></h2>
-
+	<?php if ($this->booked): ?>
+		<?php $this->sessions = $this->booked; ?>
+		<?php echo $this->loadTemplate('sessions'); ?>
+	<?php endif;?>
 </div>
 
 <div class="editmember-previous">
 	<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_MEMBER_PREVIOUS'); ?></h2>
-
+	<?php if ($this->previous): ?>
+		<?php $this->sessions = $this->previous; ?>
+		<?php echo $this->loadTemplate('sessions'); ?>
+	<?php endif; ?>
 </div>

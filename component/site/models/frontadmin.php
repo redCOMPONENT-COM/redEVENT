@@ -45,6 +45,10 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	protected $pagination_booked = null;
 	protected $total_booked = null;
 
+	protected $previous = null;
+	protected $pagination_previous = null;
+	protected $total_previous = null;
+
 	protected $uid = null;
 
 	/**
@@ -170,6 +174,76 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		}
 
 		return $this->total_booked;
+	}
+
+	/**
+	 * Method to get a pagination object for the events
+	 *
+	 * @access public
+	 * @return integer
+	 */
+	public function getMemberBookedPagination()
+	{
+		// Lets load the content if it doesn't already exist
+		if (empty($this->pagination_booked))
+		{
+			jimport('joomla.html.pagination');
+			$this->pagination_booked = new JPagination($this->getTotalMemberBooked(), $this->getState('limitstart_sessions'), $this->getState('limit'));
+		}
+
+		return $this->pagination_booked;
+	}
+
+	/**
+	 * Method to get a pagination object for the events
+	 *
+	 * @access public
+	 * @return integer
+	 */
+	public function getMemberPreviousPagination()
+	{
+		// Lets load the content if it doesn't already exist
+		if (empty($this->pagination_previous))
+		{
+			jimport('joomla.html.pagination');
+			$this->pagination_previous = new JPagination($this->getTotalMemberPrevious(), $this->getState('limitstart_sessions'), $this->getState('limit'));
+		}
+
+		return $this->pagination_previous;
+	}
+
+	/**
+	 * Total nr of events
+	 *
+	 * @return integer
+	 */
+	public function getTotalMemberBooked()
+	{
+		// Lets load the total nr if it doesn't already exist
+		if (empty($this->total_booked))
+		{
+			$query = $this->_buildQueryMemberBooked();
+			$this->total_booked = $this->_getListCount($query);
+		}
+
+		return $this->total_booked;
+	}
+
+	/**
+	 * Total nr of events
+	 *
+	 * @return integer
+	 */
+	public function getTotalMemberPrevious()
+	{
+		// Lets load the total nr if it doesn't already exist
+		if (empty($this->total_previous))
+		{
+			$query = $this->_buildQueryMemberPrevious();
+			$this->total_previous = $this->_getListCount($query);
+		}
+
+		return $this->total_previous;
 	}
 
 	/**
@@ -479,6 +553,59 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$filter_order_dir = $this->getState('filter_order_dir');
 
 		$query->order($filter_order . ' ' . $filter_order_dir . ', x.dates, x.times');
+
+		return $query;
+	}
+
+	public function getMemberBooked()
+	{
+		// Lets load the content if it doesn't already exist
+		if (empty($this->booked))
+		{
+			$query = $this->_buildQueryMemberBooked();
+			$pagination = $this->getMemberBookedPagination();
+			$this->booked = $this->_getList($query, $pagination->limitstart, $pagination->limit);
+			$this->booked = $this->_categories($this->booked);
+		}
+
+		return $this->booked;
+	}
+
+	protected function _buildQueryMemberBooked()
+	{
+		$query = $this->_buildQueryBooked();
+		$query->clear('where');
+		$query->where('r.uid = ' . $this->uid);
+
+		$now = strftime('%Y-%m-%d %H:%M');
+ 		$query->where('(x.dates = 0 OR (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > ' . $this->_db->Quote($now) . ')');
+
+		return $query;
+	}
+
+	public function getMemberPrevious()
+	{
+		// Lets load the content if it doesn't already exist
+		if (empty($this->previous))
+		{
+			$query = $this->_buildQueryMemberPrevious();
+			$pagination = $this->getMemberPreviousPagination();
+			$this->previous = $this->_getList($query, $pagination->limitstart, $pagination->limit);
+			$this->previous = $this->_categories($this->previous);
+		}
+
+		return $this->previous;
+	}
+
+	protected function _buildQueryMemberPrevious()
+	{
+		$query = $this->_buildQueryBooked();
+		$query->clear('where');
+		$query->where('r.uid = ' . $this->uid);
+
+		$now = strftime('%Y-%m-%d %H:%M');
+		$query->where('x.dates > 0');
+		$query->where('(CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) < ' . $this->_db->Quote($now));
 
 		return $query;
 	}

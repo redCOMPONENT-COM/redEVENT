@@ -257,6 +257,7 @@ class RedeventViewFrontadmin extends JView
 		$this->assignRef('member',     $member);
 		$this->assignRef('booked',     $booked);
 		$this->assignRef('previous',   $previous);
+		$this->params = JFactory::getApplication()->getParams('com_redevent');;
 
 		parent::display($tpl);
 	}
