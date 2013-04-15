@@ -49,17 +49,17 @@ defined('_JEXEC') or die('Restricted access');
 		<hr/>
 		<div>
 		<?php if ($this->useracl->canAddEvent()): ?>
-			<?php echo JHtml::link(RedeventHelperRoute::getEditEventRoute(),
+			<?php echo JHtml::link(RedeventHelperRoute::getEditEventRoute().'&tmpl=component',
 				Jtext::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_BUTTON_ADD_EVENT'),
-				array('class' => 'btn')); ?>
+				array('class' => 'btn xrefmodal')); ?>
 		<?php endif; ?>
 		</div>
 
 		<div>
 		<?php if ($this->useracl->canAddSession()): ?>
-			<?php echo JHtml::link(RedeventHelperRoute::getEditXrefRoute(),
+			<?php echo JHtml::link(RedeventHelperRoute::getEditXrefRoute().'&tmpl=component',
 				Jtext::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_BUTTON_ADD_SESSION'),
-				array('class' => 'btn')); ?>
+				array('class' => 'btn xrefmodal')); ?>
 		<?php endif; ?>
 		</div>
 	</div>

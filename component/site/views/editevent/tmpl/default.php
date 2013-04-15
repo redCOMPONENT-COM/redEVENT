@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.calendar');
 
 jimport('joomla.html.pane');
-$pane =& JPane::getInstance('tabs'); 
+$pane =& JPane::getInstance('tabs');
 ?>
 
 <script type="text/javascript">
@@ -41,13 +41,13 @@ $pane =& JPane::getInstance('tabs');
 				}
 			}
 		);
-	        
+
     document.formvalidator.setHandler('startdate', function(value) {
     	return value.length > 0;
     });
 
     if ($('enddates')) {
-	    $('enddates').addEvent('click', 
+	    $('enddates').addEvent('click',
 	    	function(){
 	    		if (this.value === "" || this.value === "0000-00-00") {
 	      		this.value = $('dates').value;
@@ -57,8 +57,8 @@ $pane =& JPane::getInstance('tabs');
 
 	});
 
-	
-		function submitbutton( pressbutton ) 
+
+		function submitbutton( pressbutton )
 		{
 			if (pressbutton == 'cancelevent' || pressbutton == 'addvenue') {
 				elsubmitform( pressbutton );
@@ -90,7 +90,7 @@ $pane =& JPane::getInstance('tabs');
   			} else {
   			<?php
 			// JavaScript for extracting editor text
-				
+
       		if ($this->editoruser && $this->params->get('edit_description', 0)) {
 						echo $this->editor->save( 'datdescription' );
       		}
@@ -102,10 +102,10 @@ $pane =& JPane::getInstance('tabs');
 			}
 			return false;
 		}
-		
+
 		//joomla submitform needs form name
 		function elsubmitform(pressbutton)
-		{			
+		{
 			var form = document.getElementById('eventform');
 			if (pressbutton) {
 				form.task.value=pressbutton;
@@ -118,7 +118,7 @@ $pane =& JPane::getInstance('tabs');
 
 
 		var tastendruck = false;
-		
+
 		function rechne(restzeichen)
 		{
 			maximum = <?php echo $this->params->get('max_description', 1000); ?>;
@@ -137,7 +137,7 @@ $pane =& JPane::getInstance('tabs');
   			tastendruck = true;
   			rechne(restzeichen);
    		}
-   		
+
 		function updateend(cal)
 		{
 			$('enddates').value = cal.date.print(cal.params.ifFormat);
@@ -162,7 +162,7 @@ $pane =& JPane::getInstance('tabs');
 		</div>
 
 		<p class="clear"></p>
-		
+
 <?php echo $pane->startPane( 'pane' ); ?>
 <?php echo $pane->startPanel( JText::_('COM_REDEVENT_DETAILS'), 'ev1' ); ?>
 
@@ -192,7 +192,7 @@ $pane =& JPane::getInstance('tabs');
 				<td><?php echo $this->lists['published']; ?></td>
 			</tr>
 			<?php endif; ?>
-			
+
 			<?php if ($this->params->get('edit_customs', 0) && count($this->customs)): ?>
 	    <?php foreach ($this->customs as $field): ?>
 	    <tr>
@@ -204,11 +204,11 @@ $pane =& JPane::getInstance('tabs');
 	      <td>
 	        <?php echo $field->render(); ?>
 	        <?php echo ($field->required? ' '.JText::_('COM_REDEVENT_Required') : '' ); ?>
-	      </td>   
+	      </td>
 	    </tr>
 	    <?php endforeach; ?>
 			<?php endif; ?>
-			
+
 			<?php if ($this->params->get('edit_summary', 1)) :?>
 		  <tr>
 		    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_EVENT_SUMMARY'); ?>::<?php echo JText::_('COM_REDEVENT_EVENT_SUMMARY_DESC'); ?>">
@@ -219,7 +219,7 @@ $pane =& JPane::getInstance('tabs');
 		    </td>
 		  </tr>
 			<?php endif; ?>
-			
+
 		</tbody>
 	</table>
 <?php echo $pane->endPanel(); ?>
@@ -239,7 +239,7 @@ $pane =& JPane::getInstance('tabs');
 			else :
 				echo JHTML::_('image', 'components/com_redevent/assets/images/noimage.png', JText::_('COM_REDEVENT_NO_IMAGE'), array('class' => 'modal'));
 			endif;?> <label for="userfile"><?php echo JText::_('COM_REDEVENT_IMAGE'); ?></label>
-<input class="inputbox <?php echo $this->params->get('edit_image', 1) == 2 ? 'required' : ''; ?>"	name="userfile" id="userfile" type="file" /> 
+<input class="inputbox <?php echo $this->params->get('edit_image', 1) == 2 ? 'required' : ''; ?>"	name="userfile" id="userfile" type="file" />
 <small class="editlinktip hasTip"	title="<?php echo JText::_('COM_REDEVENT_NOTES' ); ?>::<?php echo JText::_('COM_REDEVENT_MAX_IMAGE_FILE_SIZE').' '.$this->elsettings->get('sizelimit', '100').' kb'; ?>"><?php echo $this->infoimage; ?> </small>
 </div>
 <?php echo $pane->endPanel(); ?>
@@ -285,16 +285,17 @@ $pane =& JPane::getInstance('tabs');
 
 <p class="clear">
 <?php echo JHTML::_( 'form.token' ); ?>
-<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" /> 
-<input type="hidden" name="xref" value="<?php echo $this->row->xref; ?>" /> 
+<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
+<input type="hidden" name="xref" value="<?php echo $this->row->xref; ?>" />
 <input type="hidden" name="returnid" value="<?php echo JRequest::getInt('returnid'); ?>" />
-<input type="hidden" name="referer"	value="<?php echo $this->referer; ?>" /> 
+<input type="hidden" name="referer"	value="<?php echo $this->referer; ?>" />
 <input type="hidden" name="created" value="<?php echo $this->row->created; ?>" />
-<input type="hidden" name="author_ip"	value="<?php echo $this->row->author_ip; ?>" /> 
-<input type="hidden" name="created_by" value="<?php echo $this->row->created_by; ?>" /> 
-<input type="hidden" name="curimage" value="<?php echo $this->row->datimage; ?>" /> 
+<input type="hidden" name="author_ip"	value="<?php echo $this->row->author_ip; ?>" />
+<input type="hidden" name="created_by" value="<?php echo $this->row->created_by; ?>" />
+<input type="hidden" name="curimage" value="<?php echo $this->row->datimage; ?>" />
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="option" value="com_redevent" />
+<input type="hidden" name="tmpl" value="<?php echo JFactory::getApplication()->input->get('tmpl'); ?>" />
 </p>
 </form>
 

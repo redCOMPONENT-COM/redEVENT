@@ -63,7 +63,7 @@ defined('_JEXEC') or die('Restricted access');
 				<td><?php echo JHTML::image('media/com_redevent/images/icon-16-delete.png', 'remove'
 						, array('class' => 'unregister hasTip'
 								, 'title' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CANCEL_REGISTRATION')
-								, 'rel' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CANCEL_REGISTRATION_TIP'))); ?>
+								, 'tip' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CANCEL_REGISTRATION_TIP'))); ?>
 				</td>
 			</tr>
 			<?php endforeach;?>

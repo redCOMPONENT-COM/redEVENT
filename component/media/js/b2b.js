@@ -439,6 +439,17 @@ var redb2b = {
 				form.attendees_limitstart.value = this.getProperty('startvalue');
 				redb2b.attendeesList();
 			});
+			
+			// For edit events and sessions
+			SqueezeBox.initialize({handler: 'iframe', size: {x: 600, y: 500}});
+			document.id('redevent-admin').addEvent('click:relay(.xrefmodal)', function(e) {
+				e.stop();
+				SqueezeBox.fromElement(this);
+			});
+		      
+			$('sbox-btn-close').addEvent('click', function() {
+				redb2b.getSessions();
+			});
 		},
 		
 		getSessions : function() {
@@ -603,6 +614,6 @@ var redb2b = {
 		},
 				
 		refreshTips : function(){
-			myTips = new Tips(".hasTip");
+			myTips = new Tips(".hasTip", {text : 'tip'});
 		}
 };

@@ -80,6 +80,7 @@ class RedeventViewFrontadmin extends JView
 
 		JHTML::_('behavior.framework');
 		JHtml::_('behavior.tooltip');
+		JHtml::_('behavior.modal');
 
 		// Load Akeeba Strapper
 		include_once JPATH_ROOT.'/media/akeeba_strapper/strapper.php';
@@ -266,7 +267,7 @@ class RedeventViewFrontadmin extends JView
 
 		$overlib = JText::_('COM_REDEVENT_BOOK_EVENT_DESC' );
 		$text = JText::_('COM_REDEVENT_BOOK_EVENT' );
-		$output	= '<a href="#" id="bookid' . $id . '" class="bookthis hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
+		$output	= '<a href="#" id="bookid' . $id . '" class="bookthis hasTip" title="'.$text.'" tip="'.$overlib.'">'.$image.'</a>';
 
 		return $output;
 	}

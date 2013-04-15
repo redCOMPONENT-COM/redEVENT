@@ -36,7 +36,7 @@ jimport('joomla.application.component.helper');
  * @since 0.9
  */
 class RedeventHelperRoute
-{	
+{
 	/**
 	 * return link to details view of specified event
 	 * @param int $id
@@ -58,8 +58,8 @@ class RedeventHelperRoute
 		}
 		return self::buildUrl( $parts );
 	}
-	
-	
+
+
 	/**
 	 * returns link to moreinfo view
 	 *
@@ -75,9 +75,9 @@ class RedeventHelperRoute
 		if ($options) {
 			$parts = array_merge($parts, $options);
 		}
-		return self::buildUrl( $parts );		
+		return self::buildUrl( $parts );
 	}
-	
+
 	/**
 	 * return link to day view
 	 * @param mixed date
@@ -90,8 +90,8 @@ class RedeventHelperRoute
 		                "id"     => $id );
 		return self::buildUrl( $parts );
 	}
-	
-	
+
+
 	public static function getVenueEventsRoute($id, $task = null, $layout = null)
 	{
 		$parts = array( "option" => "com_redevent",
@@ -105,7 +105,7 @@ class RedeventHelperRoute
 		}
 		return self::buildUrl( $parts );
 	}
-	
+
 	public static function getVenueCategoryRoute($id)
 	{
 		$parts = array( "option" => "com_redevent",
@@ -124,7 +124,7 @@ class RedeventHelperRoute
 		}
 		return self::buildUrl( $parts );
 	}
-	
+
 	public static function getCategoryEventsRoute($id, $task = null, $layout = null)
 	{
 		$parts = array( "option" => "com_redevent",
@@ -138,7 +138,7 @@ class RedeventHelperRoute
 		}
 		return self::buildUrl( $parts );
 	}
-	
+
 	/**
 	 * return route to categories view
 	 * @param int top category id, 0 or null for all categories
@@ -150,7 +150,7 @@ class RedeventHelperRoute
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "categories" );
 		if ($id) {
-			$parts['id'] = $id;			
+			$parts['id'] = $id;
 		}
 		if ($task) {
 			$parts['task'] = $task;
@@ -169,14 +169,14 @@ class RedeventHelperRoute
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "categoriesdetailed" );
 		if ($id) {
-			$parts['id'] = $id;			
+			$parts['id'] = $id;
 		}
 		if ($task) {
 			$parts['task'] = $task;
 		}
 		return self::buildUrl( $parts );
 	}
-	
+
 	/**
 	 * return route to simple list view
 	 * @param string $task
@@ -194,7 +194,7 @@ class RedeventHelperRoute
 		}
 		return self::buildUrl( $parts );
 	}
-	
+
 	/**
 	 * return route to simple list view
 	 * @param string $task
@@ -206,7 +206,7 @@ class RedeventHelperRoute
 		                "view"   => "archive" );
 		return self::buildUrl( $parts );
 	}
-	
+
 	/**
 	 * return route to featured sessions view
 	 * @param string $task
@@ -224,7 +224,7 @@ class RedeventHelperRoute
 		}
 		return self::buildUrl( $parts );
 	}
-	
+
 	public static function getSignupRoute($type, $id, $xref, $pricegroup = null)
 	{
 		$parts = array( "option" => "com_redevent",
@@ -238,21 +238,21 @@ class RedeventHelperRoute
 		}
 		return self::buildUrl( $parts );
 	}
-	
+
 	public static function getMyeventsRoute()
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "myevents" );
-		return self::buildUrl( $parts );		
+		return self::buildUrl( $parts );
 	}
-	
+
 	public static function getSearchRoute()
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "search" );
-		return self::buildUrl( $parts );		
+		return self::buildUrl( $parts );
 	}
-	
+
 	public static function getEditEventRoute($id = null, $xref = 0)
 	{
 		$parts = array( "option" => "com_redevent",
@@ -263,19 +263,23 @@ class RedeventHelperRoute
 		if ($xref) {
 			$parts['xref'] = $xref;
 		}
-		return self::buildUrl( $parts );			
+		return self::buildUrl( $parts );
 	}
-	
-	public static function getEditXrefRoute($id = null)
+
+	public static function getEditXrefRoute($id = null, $xref = 0)
 	{
 		$parts = array( "option" => "com_redevent",
-		                "view"   => "editxref" );
+		                "view"   => "editevent",
+		                "layout" => "eventdate");
 		if (!empty($id)) {
 			$parts['id'] = $id;
 		}
-		return self::buildUrl( $parts );			
+		if ($xref) {
+			$parts['xref'] = $xref;
+		}
+		return self::buildUrl( $parts );
 	}
-	
+
 	public static function getEditVenueRoute($id = null)
 	{
 		$parts = array( "option" => "com_redevent",
@@ -283,9 +287,9 @@ class RedeventHelperRoute
 		if (!empty($id)) {
 			$parts['id'] = $id;
 		}
-		return self::buildUrl( $parts );			
+		return self::buildUrl( $parts );
 	}
-	
+
 	public static function getRegistrationRoute($xref, $task, $submit_key = null)
 	{
 		$parts = array( "option" => "com_redevent",
@@ -295,46 +299,46 @@ class RedeventHelperRoute
 		if (!empty($submit_key)) {
 			$parts['submit_key'] = $submit_key;
 		}
-		return self::buildUrl( $parts );			
+		return self::buildUrl( $parts );
 	}
-	
+
 	public static function getManageAttendees($xref, $task = 'manageattendees')
-	{		
+	{
 		$parts = array( "option" => "com_redevent",
 		                "controller" => "registration",
-		                "view"   => 'attendees', 
-		                "xref"   => $xref, 
+		                "view"   => 'attendees',
+		                "xref"   => $xref,
 									);
 		if (!empty($task)) {
 			$parts['task'] = $task;
 		}
-		return self::buildUrl( $parts );	
+		return self::buildUrl( $parts );
 	}
-	
+
 	public static function getWeekRoute($week)
-	{		
+	{
 		$parts = array( "option" => "com_redevent",
-		                "view"   => 'week', 
-		                "week"   => $week, 
+		                "view"   => 'week',
+		                "week"   => $week,
 									);
-		return self::buildUrl( $parts );	
+		return self::buildUrl( $parts );
 	}
-	
+
 	protected static function buildUrl($parts)
-	{		
+	{
 		if($item = self::_findItem($parts)) {
 			$parts['Itemid'] = $item->id;
 		}
 		else {
 			$params = JComponentHelper::getParams('com_redevent');
 			if ($params->get('default_itemid')) {
-				$parts['Itemid'] = intval($params->get('default_itemid'));				
+				$parts['Itemid'] = intval($params->get('default_itemid'));
 			}
 		}
-		
+
 		return 'index.php?'.JURI::buildQuery( $parts );
 	}
-	
+
 	/**
 	 * Determines the Itemid
 	 *
@@ -352,18 +356,18 @@ class RedeventHelperRoute
 		$menus	= & JApplication::getMenu('site');
 		$items	= $menus->getItems('component_id', $component->id);
 		$user 	= & JFactory::getUser();
-		
+
 		$view = isset($query['view']) ? $query['view'] : null;
 		if (!$view && isset($query['controller']) && $query['controller'] == 'registration') {
 			$view = 'details';
 		}
-		
-		if ($items) 
+
+		if ($items)
 		{
 			foreach($items as $item)
-			{	
-				if ($view && (@$item->query['view'] == $view)) 
-				{					
+			{
+				if ($view && (@$item->query['view'] == $view))
+				{
 					switch ($view)
 					{
 						case 'details':
@@ -382,9 +386,9 @@ class RedeventHelperRoute
 
 			// second round for view with optional params
 			foreach($items as $item)
-			{	
-				if (isset($view) && (@$item->query['view'] == $view)) 
-				{					
+			{
+				if (isset($view) && (@$item->query['view'] == $view))
+				{
 					switch ($view)
 					{
 						case 'details':
