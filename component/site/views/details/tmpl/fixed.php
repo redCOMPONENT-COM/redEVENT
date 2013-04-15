@@ -31,12 +31,12 @@ if ($this->row->venueid != 0) {
 <div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
 	<p class="buttons">
 		<?php echo REOutput::mailbutton( $this->row->slug, 'details', $this->params ); ?>
-		
+
 		<?php echo REOutput::printbutton( $this->print_link, $this->params ); ?>
-		
+
 		<?php if ($this->params->get('event_ics', 1)): ?>
 			<?php $img = JHTML::image(JURI::base().'components/com_redevent/assets/images/iCal2.0.png', JText::_('COM_REDEVENT_EXPORT_ICS')); ?>
-			<?php echo JHTML::link( JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug).'&format=raw&layout=ics', false), 
+			<?php echo JHTML::link( JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug).'&format=raw&layout=ics', false),
 			                        $img ); ?>
 		<?php endif; ?>
 	</p>
@@ -61,10 +61,10 @@ if ($this->row->venueid != 0) {
 	?>
 
 	<dl class="event_info floattext">
-		
+
 		<dt class="title"><?php echo JText::_('COM_REDEVENT_TITLE' ).':'; ?></dt>
     <dd class="title"><?php echo $this->escape($this->row->full_title); ?></dd>
-  	
+
   	<dt class="when"><?php echo JText::_('COM_REDEVENT_WHEN' ).':'; ?></dt>
 		<dd class="when">
 			<?php
@@ -98,7 +98,7 @@ if ($this->row->venueid != 0) {
 
 			</dd>
 
-		<?php endif; 
+		<?php endif;
 		$n = count($this->row->categories);
 		?>
 
@@ -131,7 +131,7 @@ if ($this->row->venueid != 0) {
 
   	<?php endif; ?>
 
-  	<?php 
+  	<?php
   	$strip_details = $this->row->details;
   	$strip_details = JFilterOutput::cleanText($strip_details);
   	$strip_details = trim($strip_details);
@@ -143,7 +143,7 @@ if ($this->row->venueid != 0) {
   		</div>
 
   	<?php endif; ?>
-  	
+
   	<?php if ($this->row->attachments && count($this->row->attachments)):?>
   	    <h2 class="description"><?php echo JText::_( 'COM_REDEVENT_FILES' ); ?></h2>
   		<div>
@@ -153,8 +153,8 @@ if ($this->row->venueid != 0) {
 	  				<tr>
 	  					<td>
 		  					<span class="event-file-dl-icon hasTip" title="<?php echo JText::_('COM_REDEVENT_Download').' '.$this->escape($file->file).'::'.$this->escape($file->description);?>">
-		  					<?php echo JHTML::link('index.php?option=com_redevent&task=getfile&format=raw&file='.$file->id, 
-		  					                       JHTML::image('components/com_redevent/assets/images/download_16.png', JText::_('COM_REDEVENT_Download'))); ?></span>  			
+		  					<?php echo JHTML::link('index.php?option=com_redevent&task=getfile&format=raw&file='.$file->id,
+		  					                       JHTML::image('components/com_redevent/assets/images/download_16.png', JText::_('COM_REDEVENT_Download'))); ?></span>
 	  					</td>
 	  					<td class="event-file-name"><?php echo $this->escape($file->name ? $file->name : $file->file); ?></td>
 	  				</tr>
@@ -230,24 +230,27 @@ if ($this->row->venueid != 0) {
   			</div>
 		<?php endif; ?>
 	<?php	endif; ?>
-	
-	<?php if ($this->row->registra): ?>	
+
+	<?php if ($this->row->registra): ?>
 		<h2 class="location_desc"><?php echo JText::_('COM_REDEVENT_Registration' ); ?></h2>
+		<?php if (redEVENTHelper::isValidDate($this->row->registrationend)): ?>
+			<?php echo strftime('%F', strtotime($this->row->registrationend)); ?>
+		<?php endif; ?>
 		<?php $registration_status = redEVENTHelper::canRegister($this->row->xref); ?>
 		<div class="event-registration">
-		<?php 
+		<?php
 		if (!$registration_status->canregister):
 			$imgpath = 'components/com_redevent/assets/images/'.$registration_status->error.'.png';
-		  $img = JHTML::_('image', JURI::base() . $imgpath, 
-		                          $registration_status->status, 
+		  $img = JHTML::_('image', JURI::base() . $imgpath,
+		                          $registration_status->status,
 		                          array('class' => 'hasTip', 'title' => $registration_status->status));
 			echo REOutput::moreInfoIcon($this->row->xslug, $img, $registration_status->status);
 		else : ?>
-		<?php $venues_html = '';	
+		<?php $venues_html = '';
 		/* Get the different submission types */
 		$submissiontypes = explode(',', $this->row->submission_types);
 		$imagepath = JURI::base() . 'administrator/components/com_redevent/assets/images/';
-		foreach ($submissiontypes as $key => $subtype) 
+		foreach ($submissiontypes as $key => $subtype)
 		{
 			switch ($subtype) {
 				case 'email':
@@ -268,13 +271,13 @@ if ($this->row->venueid != 0) {
 				case 'webform':
 					if ($this->prices && count($this->prices))
 					{
-						foreach ($this->prices as $p) 
+						foreach ($this->prices as $p)
 						{
 							$title = ' title="'.$p->name.'::'.addslashes(str_replace("\n", "<br/>", $p->tooltip)).'"';
-							$img = empty($p->image) ? JHTML::_('image', $imagepath.$this->elsettings->get('signup_webform_img'),  JText::_($p->name)) 
+							$img = empty($p->image) ? JHTML::_('image', $imagepath.$this->elsettings->get('signup_webform_img'),  JText::_($p->name))
 							                        : JHTML::_('image', JURI::root().$p->image,  JText::_($p->name));
 							$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $this->row->slug, $this->row->xslug, $p->slug));
-							
+
 							$venues_html .= '<div class="registration_method hasTip '.$p->alias.'"'.$title.'>'
 								             .JHTML::_('link', $link, $img).'</div> ';
 						}
@@ -293,18 +296,18 @@ if ($this->row->venueid != 0) {
 		<div class="clear"></div>
 		</div>
 	<?php endif; ?>
-	
+
 	<?php /* If registration is enabled */
 	if ($this->view_attendees_list) : ?>
 	<?php $attendees_layout = ($this->params->get('details_attendees_layout', 0) ? 'attendees' : 'attendees_table'); ?>
 	<?php echo $this->loadTemplate($attendees_layout); ?>
 	<?php endif; ?>
-	
+
 	<?php if ($this->elsettings->get('commentsystem') != 0) :	?>
-	
+
 		<!-- Comments -->
 		<?php echo $this->loadTemplate('comments'); ?>
-		
+
   	<?php endif; ?>
 
 	<ul class="redevent-social">
@@ -317,11 +320,11 @@ if ($this->row->venueid != 0) {
 			<?php if ($this->params->get('tweet', 0)):?>
 			<li class="tweetevent">
 				<div>
-					<a href="http://twitter.com/share" 
-					   class="twitter-share-button" 
-					   data-text="<?php echo $this->row->full_title; ?>" 
-					   data-count="horizontal" 
-					   <?php echo ($this->params->get('tweet_recommend') ? 'data-via="'.$this->params->get('tweet_recommend').'"' : ''); ?> 
+					<a href="http://twitter.com/share"
+					   class="twitter-share-button"
+					   data-text="<?php echo $this->row->full_title; ?>"
+					   data-count="horizontal"
+					   <?php echo ($this->params->get('tweet_recommend') ? 'data-via="'.$this->params->get('tweet_recommend').'"' : ''); ?>
 					   <?php if ($this->params->get('tweet_recommend2')) {
 					   	if ($this->params->get('tweet_recommend2_text')) {
 					   		$text = 'data-related="'.$this->params->get('tweet_recommend2').':'.htmlspecialchars($this->params->get('tweet_recommend2_text')).'"';
@@ -330,11 +333,11 @@ if ($this->row->venueid != 0) {
 					   		$text = 'data-related="'.$this->params->get('tweet_recommend2').'"';
 					   	}
 					   	echo $text;
-					   } 
+					   }
 					   ?>
 					   data-lang="<?php echo substr($this->lang->getTag(), 0, 2); ?>">Tweet</a>
 				</div></li>
 		  <?php endif; ?>
 	</ul>
-	
+
 </div>

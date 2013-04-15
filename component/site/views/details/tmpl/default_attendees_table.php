@@ -32,11 +32,11 @@ if ($this->view_attendees_list) {
 		<?php if ($this->manage_attendees): ?>
     <?php echo REOutput::xrefattendeesbutton($this->row->xref); ?>
 		<?php endif; ?></h2>
-				
+
 		<?php if (count($this->roles)): ?>
 		<?php $this->showRoles(); ?>
 		<?php endif; ?>
-		
+
 		<div class="register">
 			<table class="registered">
 			<thead>
@@ -48,7 +48,7 @@ if ($this->view_attendees_list) {
   			</tr>
 			</thead>
 			<tbody>
-  			<?php 
+  			<?php
     			//loop through attendees
     			$waiting_count = 0;
     			$n = 0;
@@ -58,17 +58,17 @@ if ($this->view_attendees_list) {
 	    				  <tr class="<?php echo ($n ? 'd1' : 'd0'); ?><?php echo ($register->submitter->uid == $this->user->get('id')) ? ' myreg': ''; ?>">
 	     				    <?php	foreach ($register->answers as $k => $name): ?>
 	      				  <td class='userfield <?php echo strtolower($k); ?>'>
-	      				    <?php 
+	      				    <?php
 	      						if (stristr($name, '~~~')) $name = str_replace('~~~', '<br />', $name).'<br />';
 	        						echo $name;
 	      				  ?>
 	      				  </td>
 	      				  <?php endforeach; ?>
-	      				  
+
 	      				  <?php if (($this->unreg_check && $register->submitter->uid == $this->user->get('id')) || $this->candeleteattendees): ?>
 	      				  <?php $unreg_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug) .'&task=delreguser&rid=' .$register->attendee_id); ?>
 	                <td class="attendee">
-	                  <?php echo JHTML::link($unreg_url, JText::_('COM_REDEVENT_cancel'), array('class' => 'unreglink')); ?>
+	                  <?php echo JHTML::link($unreg_url, JText::_('COM_REDEVENT_UNREGISTER'), array('class' => 'unreglink')); ?>
 	                </td>
 	                <?php else: ?>
 	                <td class="attendee"></td>
@@ -82,10 +82,10 @@ if ($this->view_attendees_list) {
 			</tbody>
 			</table>
 		</div>
-		
+
 		<?php if ($waiting_count): ?>
 		<h2 class="register"><?php echo JText::_('COM_REDEVENT_WAITING_LIST' ); ?></h2>
-    
+
     <div class="register">
       <table class="registered">
       <thead>
@@ -97,7 +97,7 @@ if ($this->view_attendees_list) {
         </tr>
       </thead>
       <tbody>
-        <?php 
+        <?php
           //loop through attendees
     			$n = 0;
           foreach ($this->registers as $key => $register):
@@ -105,17 +105,17 @@ if ($this->view_attendees_list) {
               <tr class="<?php echo ($n ? 'd1' : 'd0'); ?><?php echo ($this->unreg_check && $register->submitter->uid == $this->user->get('id')) ? 'myreg': ''; ?>">
                 <?php foreach ($register->answers as $k => $name): ?>
                 <td class='userfield <?php echo strtolower($k); ?>'>
-                  <?php 
+                  <?php
                   if (stristr($name, '~~~')) $name = str_replace('~~~', '<br />', $name).'<br />';
                     echo $name;
                 ?>
                 </td>
                 <?php endforeach; ?>
-                
+
       				  <?php if (($this->unreg_check && $register->submitter->uid == $this->user->get('id')) || $this->candeleteattendees): ?>
                 <?php $unreg_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug).'&task=delreguser&rid=' .$register->attendee_id); ?>
                 <td class="attendee">
-                  <?php echo JHTML::link($unreg_url, JText::_('COM_REDEVENT_cancel'), array('class' => 'unreglink')); ?>
+                  <?php echo JHTML::link($unreg_url, JText::_('COM_REDEVENT_UNREGISTER'), array('class' => 'unreglink')); ?>
                 </td>
                 <?php else: ?>
                 <td class="attendee"></td>
@@ -126,7 +126,7 @@ if ($this->view_attendees_list) {
           <?php endforeach; ?>
       </tbody>
       </table>
-    </div>    
+    </div>
     <?php endif; ?>
 	</div>
 	<?php

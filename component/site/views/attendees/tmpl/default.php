@@ -29,14 +29,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	function tableOrdering( order, dir, task )
 	{
 	        var form = document.manageform;
-	 
+
 	        form.filter_order.value = order;
 	        form.filter_order_Dir.value = dir;
 	        form.submit( task );
 	}
 	</script>
-	
-	
+
+
 	<form action="<?php echo JRoute::_($this->action); ?>" method="post" name="manageform">
 	<div id="redevent" class="el_details">
 		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).': '.$this->row->full_title; ?>
@@ -44,11 +44,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     <?php echo REOutput::xrefattendeesbutton($this->row->xref); ?>
 		<?php endif; ?></h2>
 		<?php echo JHTML::link('index.php?option=com_redevent&controller=attendees&task=exportattendees&format=csv&xref='. $this->row->xref, JText::_('COM_REDEVENT_CSV_export'));?>
-						
+
 		<?php if (count($this->roles)): ?>
 		<?php $this->showRoles(); ?>
 		<?php endif; ?>
-		
+
 		<div class="register">
 			<table class="registered">
 			<thead>
@@ -60,7 +60,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   			</tr>
 			</thead>
 			<tbody>
-  			<?php 
+  			<?php
     			//loop through attendees
     			$waiting_count = 0;
     			$n = 0;
@@ -70,17 +70,17 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	    				  <tr class="<?php echo ($n ? 'd1' : 'd0'); ?><?php echo ($this->unreg_check && $register->submitter->uid == $this->user->get('id')) ? ' myreg': ''; ?>">
 	     				    <?php	foreach ($register->answers as $k => $name): ?>
 	      				  <td class='userfield <?php echo strtolower($k); ?>'>
-	      				    <?php 
+	      				    <?php
 	      						if (stristr($name, '~~~')) $name = str_replace('~~~', '<br />', $name).'<br />';
 	        						echo $name;
 	      				  ?>
 	      				  </td>
 	      				  <?php endforeach; ?>
-	      				  
+
 	      				  <?php if ($this->unreg_check && $register->submitter->uid == $this->user->get('id')): ?>
 	      				  <?php $unreg_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug) .'&task=delreguser&rid=' .$register->attendee_id); ?>
 	                <td class="attendee">
-	                  <?php echo JHTML::link($unreg_url, JText::_('COM_REDEVENT_cancel'), array('class' => 'unreglink')); ?>
+	                  <?php echo JHTML::link($unreg_url, JText::_('COM_REDEVENT_UNREGISTER'), array('class' => 'unreglink')); ?>
 	                </td>
 	                <?php else: ?>
 	                <td class="attendee"></td>
@@ -94,10 +94,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			</tbody>
 			</table>
 		</div>
-		
+
 		<?php if ($waiting_count): ?>
 		<h2 class="register"><?php echo JText::_('COM_REDEVENT_WAITING_LIST' ); ?></h2>
-    
+
     <div class="register">
       <table class="registered">
       <thead>
@@ -109,7 +109,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         </tr>
       </thead>
       <tbody>
-        <?php 
+        <?php
           //loop through attendees
     			$n = 0;
           foreach ($this->registers as $key => $register):
@@ -117,17 +117,17 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
               <tr class="<?php echo ($n ? 'd1' : 'd0'); ?><?php echo ($this->unreg_check && $register->submitter->uid == $this->user->get('id')) ? 'myreg': ''; ?>">
                 <?php foreach ($register->answers as $k => $name): ?>
                 <td class='userfield <?php echo strtolower($k); ?>'>
-                  <?php 
+                  <?php
                   if (stristr($name, '~~~')) $name = str_replace('~~~', '<br />', $name).'<br />';
                     echo $name;
                 ?>
                 </td>
                 <?php endforeach; ?>
-                
+
                 <?php if ($this->unreg_check && $register->submitter->uid == $this->user->get('id')): ?>
                 <?php $unreg_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug).'&task=delreguser&rid=' .$register->attendee_id); ?>
                 <td class="attendee">
-                  <?php echo JHTML::link($unreg_url, JText::_('COM_REDEVENT_cancel'), array('class' => 'unreglink')); ?>
+                  <?php echo JHTML::link($unreg_url, JText::_('COM_REDEVENT_UNREGISTER'), array('class' => 'unreglink')); ?>
                 </td>
                 <?php else: ?>
                 <td class="attendee"></td>
@@ -138,13 +138,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
           <?php endforeach; ?>
       </tbody>
       </table>
-    </div>    
+    </div>
     <?php endif; ?>
 	</div>
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="" />
 	</form>
 	<?php
-	
+
 echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=myevents'), JText::_('COM_REDEVENT_RETURN_TO_MY_EVENTS'), array('class' => 're-back'));
 ?>
