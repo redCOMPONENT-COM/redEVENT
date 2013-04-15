@@ -31,17 +31,17 @@ if ($this->view_attendees_list && $this->registers) {
 		<?php if ($this->manage_attendees): ?>
     <?php echo REOutput::xrefattendeesbutton($this->row->xref); ?>
 		<?php endif; ?></h2>
-						
+
 		<?php if (count($this->roles)): ?>
 		<?php $this->showRoles(); ?>
 		<?php endif; ?>
-		
+
 		<div class="register">
 			<ul class="user floattext">
 			<?php
 			//loop through attendees
 			$waiting_count = 0;
-			foreach ($this->registers as $key => $register) 
+			foreach ($this->registers as $key => $register)
 			{
 				if ($register->submitter->waitinglist == 0)
 				{
@@ -57,7 +57,7 @@ if ($this->view_attendees_list && $this->registers) {
 					}
 	      	if (($this->unreg_check && $register->submitter->uid == $this->user->get('id')) || $this->candeleteattendees) {
 					  $unreg_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug). '&task=delreguser&rid=' .$register->attendee_id);
-            echo '<li>'. JHTML::link($unreg_url, JText::_('COM_REDEVENT_cancel'), array('class' => 'unreglink')) .'</li>';
+            echo '<li>'. JHTML::link($unreg_url, JText::_('COM_REDEVENT_UNREGISTER'), array('class' => 'unreglink')) .'</li>';
           }
 					echo '</ul></li>';
 				}
@@ -67,10 +67,10 @@ if ($this->view_attendees_list && $this->registers) {
 			} ?>
 		</ul>
 		</div>
-		
+
 		<?php if ($waiting_count): ?>
 		<h2 class="register"><?php echo JText::_('COM_REDEVENT_WAITING_LIST' ); ?></h2>
-    
+
     <div class="register">
       <ul class="user floattext">
       <?php
@@ -90,13 +90,13 @@ if ($this->view_attendees_list && $this->registers) {
           }
 	      	if (($this->unreg_check && $register->submitter->uid == $this->user->get('id')) || $this->candeleteattendees) {
             $unreg_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug).'&task=delreguser&rid=' .$register->attendee_id);
-            echo '<li>'. JHTML::link($unreg_url, JText::_('COM_REDEVENT_cancel'), array('class' => 'unreglink')) .'</li>';
+            echo '<li>'. JHTML::link($unreg_url, JText::_('COM_REDEVENT_UNREGISTER'), array('class' => 'unreglink')) .'</li>';
           }
           echo '</ul></li>';
         }
       } ?>
     </ul>
-    </div>    
+    </div>
     <?php endif; ?>
 	</div>
 	<?php
