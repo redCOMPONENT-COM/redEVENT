@@ -144,4 +144,42 @@ class modRedEventSearchHelper
 		}
 		return $filters;
 	}
+	
+	function getAjaxSearch($string){
+		$db =& JFactory::getDBO();
+		$query = ' SELECT e.id, e.title FROM #__redevent_events AS e '
+			. ' WHERE e.published = 1 AND e.title  LIKE "%'.$string.'%" '
+			. ' ORDER BY e.title ASC '
+			;
+			//print_r($string);exit;
+			$db->setQuery($query);
+			$rows = $db->loadObjectList();
+			$i = 1;
+			if($string==''){
+				$tags = '{';
+				foreach ($rows AS $row){
+					if($i < count($rows)){
+						$tags .= ' "'.$row->id.'": "'.$row->title.'",';
+					}else{
+						$tags .= ' "'.$row->id.'": "'.$row->title.'"';
+					}
+					$i ++;
+				}
+				$tags .= " } ";
+			}else{
+				$tags = '';
+				foreach ($rows AS $row){
+					if($i < count($rows)){
+						$tags .= '"'.$row->title.'",';
+					}else{
+						$tags .= '"'.$row->title.'"';
+					}
+					$i ++;
+				}
+			}
+			print_r($tags);exit;
+			
+			$result = $db->loadAssocList();
+			echo json_encode($result);exit;
+	}
 }

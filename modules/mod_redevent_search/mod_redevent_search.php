@@ -29,13 +29,15 @@ require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'route
 require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'helper.php');
 require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'classes'.DS.'useracl.class.php');
 
-$document = &JFactory::getDocument(); 
+$app = JFactory::getApplication();
+
+$document = &JFactory::getDocument();
 $document->addStyleSheet( JURI::base() . 'modules/mod_redevent_search/mod_redevent_search.css' );
 
 $helper = new modRedEventSearchHelper();
 
-$elsettings = & redEVENTHelper::config();
-		
+$elsettings = redEVENTHelper::config();
+
 $action = JRoute::_(RedeventHelperRoute::getSearchRoute());
 
 
@@ -74,7 +76,17 @@ $lists['venues'] = JHTML::_('select.genericlist', $options, 'filter_venue', 'siz
 $filter_date_from = JRequest::getVar('filter_date_from');
 $filter_date_to   = JRequest::getVar('filter_date_to');
 
-$customsfilters = $helper->getCustomFilters(); 
+$customsfilters = $helper->getCustomFilters();
+
+$post = JRequest::get( 'post' );
+$search = $post['search'];
+
+if($search =='ajax')
+{
+	$helper->getAjaxSearch($post['query']);
+	$app->close();
+}
+
 
 // DISPLAY
-require(JModuleHelper::getLayoutPath('mod_redevent_search'));
+require(JModuleHelper::getLayoutPath('mod_redevent_search', $params->get('layout', 'default')));
