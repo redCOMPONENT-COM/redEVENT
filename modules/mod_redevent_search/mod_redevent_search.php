@@ -78,8 +78,8 @@ $filter_date_to   = JRequest::getVar('filter_date_to');
 
 $customsfilters = $helper->getCustomFilters();
 
-$post = JRequest::get( 'post' );
-$search = $post['search'];
+$post = JRequest::get('post');
+$search = isset($post['search']) ? $post['search'] : '';
 
 if($search =='ajax')
 {
