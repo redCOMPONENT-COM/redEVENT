@@ -320,6 +320,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 
 		$query->where('a.id IN(' . implode(',', $ids) . ')');
 		$query->order('a.title');
+		$query->group('a.id');
 
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
@@ -443,6 +444,8 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 			$query->join('INNER', '#__redmember_user_organization_xref AS x ON x.organization_id = o.organization_id');
 			$query->where('x.user_id = ' . $user->get('id'));
 		}
+
+		$query->group('o.organization_id');
 
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
