@@ -780,12 +780,13 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	/**
 	 * return organization members and their booking status for the session
 	 *
-	 * @param   int  $xref          session id
-	 * @param   int  $organization  organization id
+	 * @param   int     $xref          session id
+	 * @param   int     $organization  organization id
+	 * @param   string  $filter_user   filter user
 	 *
 	 * @return array
 	 */
-	public function getAttendees($xref, $organization)
+	public function getAttendees($xref, $organization, $filter_user)
 	{
 		// Get organization members
 		$db      = JFactory::getDbo();
@@ -798,6 +799,16 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$query->where('rmuo.organization_id = ' . (int) $organization);
 
 		$query->order($this->getState('members_order') . ' ' . $this->getState('members_order_dir') . ', u.name');
+
+		if ($filter_user)
+		{
+			$like = $db->Quote("%{$filter_user}%");
+			$cond = array();
+			$cond[] = 'u.username LIKE ' . $like;
+			$cond[] = 'u.name LIKE ' . $like;
+			$cond[] = 'u.email LIKE ' . $like;
+			$query->where('(' . implode(' OR ', $cond) . ')');
+		}
 
 		$db->setQuery($query);
 		$users = $db->loadObjectList();

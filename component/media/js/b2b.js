@@ -90,7 +90,7 @@ var redb2b = {
 			/**
 			 * update organization bookings when selecting person
 			 */
-			document.id('filter_person').addEvent('change', function(){
+			document.id('filter_person').removeEvents().addEvent('change', function(){
 				redb2b.searchBookings();
 				// Display organization users ?
 				redb2b.attendeesList();
@@ -114,8 +114,7 @@ var redb2b = {
 			 * update organization bookings when resetting filter person field
 			 */
 			document.id('reset_person').addEvent('click', function(){
-				document.id('filter_person').set('value', '');
-				redb2b.searchBookings();
+				document.id('filter_person').set('value', '').fireEvent('change');
 			});
 			
 			/**
@@ -462,6 +461,7 @@ var redb2b = {
 				onSuccess : function(response) {
 					document.id('main-course-results').empty().set('html', response).unspin();
 					redb2b.refreshTips();
+					redb2b.attendeesList();
 				}
 			});
 			req.send();
@@ -528,6 +528,7 @@ var redb2b = {
 					url: 'index.php?option=com_redevent&controller=frontadmin&task=getattendees&tmpl=component',
 					data : {'xref' : document.id('filter_session').get('value'),
 						'org' : document.id('filter_organization').get('value'),
+						'filter_person' : document.id('filter_person').get('value'),
 						'members_order' : orgform.members_order.value,
 						'members_order_dir' : orgform.members_order_dir.value
 					},
