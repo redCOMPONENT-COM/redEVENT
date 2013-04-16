@@ -319,8 +319,8 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$query->from('#__redevent_events AS a');
 
 		$query->where('a.id IN(' . implode(',', $ids) . ')');
+		$query->where('a.published > -1');
 		$query->order('a.title');
-		$query->group('a.id');
 
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
