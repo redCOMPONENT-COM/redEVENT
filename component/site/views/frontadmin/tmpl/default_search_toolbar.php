@@ -21,7 +21,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<form name="org-form" id="org-form">
+<form name="org-form" id="org-form" method="post">
 	<ul class="inline">
 		<li>
 			<?php echo JHtml::_('select.genericlist', $this->organizations_options, 'filter_organization', '', 'value', 'text', $this->state->get('filter_organization')); ?>

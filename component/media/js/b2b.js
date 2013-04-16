@@ -97,6 +97,13 @@ var redb2b = {
 			});
 
 			/**
+			 * update organization bookings when selecting person
+			 */
+			document.id('org-form').addEvent('submit', function(e){
+				e.stop();
+			});
+
+			/**
 			 * update organization bookings when selecting session status active
 			 */
 			document.id('filter_person_active').addEvent('change', function(){
