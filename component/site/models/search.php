@@ -99,6 +99,10 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 	 */
 	public function &getData()
 	{
+		if ($this->getState('results_type', 1) == 1)
+		{
+			return parent::getData();
+		}
 
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_data))
