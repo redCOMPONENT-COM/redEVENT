@@ -52,6 +52,23 @@ class RedeventControllerFrontadmin extends FOFController
 	}
 
 	/**
+	 * return events options as JSON
+	 *
+	 * @return void
+	 */
+	public function eventsoptions()
+	{
+		$app = JFactory::getApplication();
+
+		$model = $this->getModel('Frontadmin', 'RedeventModel');
+		$options = $model->getEventsOptions();
+
+		echo json_encode($options);
+
+		$app->close();
+	}
+
+	/**
 	 * return sessions options as JSON
 	 *
 	 * @return void
@@ -62,6 +79,40 @@ class RedeventControllerFrontadmin extends FOFController
 
 		$model = $this->getModel('Frontadmin', 'RedeventModel');
 		$options = $model->getSessionsOptions();
+
+		echo json_encode($options);
+
+		$app->close();
+	}
+
+	/**
+	 * return venues options as JSON
+	 *
+	 * @return void
+	 */
+	public function venuesoptions()
+	{
+		$app = JFactory::getApplication();
+
+		$model = $this->getModel('Frontadmin', 'RedeventModel');
+		$options = $model->getVenuesOptions();
+
+		echo json_encode($options);
+
+		$app->close();
+	}
+
+	/**
+	 * return categories options as JSON
+	 *
+	 * @return void
+	 */
+	public function categoriesoptions()
+	{
+		$app = JFactory::getApplication();
+
+		$model = $this->getModel('Frontadmin', 'RedeventModel');
+		$options = $model->getCategoriesOptions();
 
 		echo json_encode($options);
 

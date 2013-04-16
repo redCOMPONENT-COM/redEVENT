@@ -125,20 +125,20 @@ class RedeventViewFrontadmin extends JView
 		$state = $this->get('state');
 
 		// Events filter
-		$options = array(JHtml::_('select.option', '', JText::_('COM_REDEVENT_EVENT')));
+		$options = array(JHtml::_('select.option', '', JText::_('COM_REDEVENT_FILTER_SELECT_EVENT')));
 		$this->events_options     = array_merge($options, $this->get('EventsOptions'));
 
 		// Sessions filter
 		JText::script("COM_REDEVENT_SESSION");
-		$options = array(JHtml::_('select.option', '', JText::_('COM_REDEVENT_SESSION')));
+		$options = array(JHtml::_('select.option', '', JText::_('COM_REDEVENT_FILTER_SELECT_SESSION')));
 		$this->sessions_options   = array_merge($options, $this->get('SessionsOptions'));
 
 		// Venues filter
-		$options = array(JHtml::_('select.option', '', JText::_('COM_REDEVENT_VENUE')));
+		$options = array(JHtml::_('select.option', '', JText::_('COM_REDEVENT_FILTER_SELECT_VENUE')));
 		$this->venues_options     = array_merge($options, $this->get('VenuesOptions'));
 
 		// Categories filter
-		$options = array(JHtml::_('select.option', '', JText::_('COM_REDEVENT_CATEGORY')));
+		$options = array(JHtml::_('select.option', '', JText::_('COM_REDEVENT_FILTER_SELECT_CATEGORY')));
 		$this->categories_options = array_merge($options, $this->get('CategoriesOptions'));
 
 		// Organizations filter
@@ -182,6 +182,10 @@ class RedeventViewFrontadmin extends JView
 		JText::script("COM_REDEVENT_FRONTEND_ADMIN_CONFIRM_CLOSE");
 		JText::script("COM_REDEVENT_FRONTEND_ADMIN_CONFIRM");
 		JText::script("COM_REDEVENT_FRONTEND_ADMIN_SELECT_SESSION_FIRST");
+		JText::script("COM_REDEVENT_FILTER_SELECT_EVENT");
+		JText::script("COM_REDEVENT_FILTER_SELECT_SESSION");
+		JText::script("COM_REDEVENT_FILTER_SELECT_VENUE");
+		JText::script("COM_REDEVENT_FILTER_SELECT_CATEGORY");
 
 		parent::display($tpl);
 	}

@@ -317,10 +317,24 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 
 		$query->select('a.id AS value, a.title as text');
 		$query->from('#__redevent_events AS a');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.eventid = a.id');
+		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
 
 		$query->where('a.id IN(' . implode(',', $ids) . ')');
 		$query->where('a.published > -1');
 		$query->order('a.title');
+
+		if ($this->getState('filter_category'))
+		{
+			$query->where('xcat.category_id = ' . $this->getState('filter_category'));
+		}
+
+		if ($this->getState('filter_venue'))
+		{
+			$query->where('x.venueid = ' . $this->getState('filter_venue'));
+		}
+
+		$query->group('a.id');
 
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
@@ -352,6 +366,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 
 		$query->where('x.id IN(' . implode(',', $ids) . ')');
 		$query->where('x.eventid = ' . $this->getState('filter_event'));
+		$query->where('x.published > -1');
 
 		if ($this->getState('filter_venue'))
 		{
@@ -384,10 +399,18 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('id as value, venue as text');
-		$query->from('#__redevent_venues');
-		$query->where('id IN (' . implode(',', $allowed) . ')');
-		$query->order('venue');
+		$query->select('v.id as value, v.venue as text');
+		$query->from('#__redevent_venues AS v');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.venueid = v.id');
+		$query->where('v.id IN (' . implode(',', $allowed) . ')');
+		$query->order('v.venue');
+
+		if ($this->getState('filter_event'))
+		{
+			$query->where('x.eventid = ' . $this->getState('filter_event'));
+		}
+
+		$query->group('v.id');
 
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
@@ -412,10 +435,17 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('id as value, catname as text');
-		$query->from('#__redevent_categories');
-		$query->where('id IN (' . implode(',', $allowed) . ')');
-		$query->order('catname');
+		$query->select('c.id as value, c.catname as text');
+		$query->from('#__redevent_categories AS c');
+		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.category_id = c.id');
+		$query->where('c.id IN (' . implode(',', $allowed) . ')');
+		$query->order('c.catname');
+
+		if ($this->getState('filter_event'))
+		{
+			$query->where('xcat.event_id = ' . $this->getState('filter_event'));
+		}
+		$query->group('c.id');
 
 		$db->setQuery($query);
 		$res = $db->loadObjectList();

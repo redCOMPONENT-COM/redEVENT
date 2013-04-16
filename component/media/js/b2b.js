@@ -43,14 +43,21 @@ var redb2b = {
 			 * update sessions options when selecting event
 			 */
 			document.id('filter_event').addEvent('change', function(){
-				redb2b.updateSessions();
+				redb2b.updateSessionSearchFields();
 			});
 
 			/**
 			 * update sessions options when selecting venue
 			 */
 			document.id('filter_venue').addEvent('change', function(){
-				redb2b.updateSessions();
+				redb2b.updateSessionSearchFields();
+			});
+
+			/**
+			 * update sessions options when selecting venue
+			 */
+			document.id('filter_category').addEvent('change', function(){
+				redb2b.updateSessionSearchFields();
 			});
 
 			/**
@@ -477,8 +484,42 @@ var redb2b = {
 			});
 			req.send();
 		},
+		
+		updateSessionSearchFields : function() {
+			redb2b.updateEventField();
+			redb2b.updateSessionField();
+			redb2b.updateVenueField();
+			redb2b.updateCategoryField();
+			redb2b.getSessions();
+		},
 				
-		updateSessions : function(async) {
+		updateEventField : function(async) {
+			async = typeof async !== 'undefined' ? async : true;
+			var req = new Request.JSON({
+				url : 'index.php?option=com_redevent&controller=frontadmin&task=eventsoptions&tmpl=component',
+				data :document.id('course-search-form'),
+				async : async,
+				onRequest: function(){
+					document.id('filter_event').set('spinner').spin();
+			    },
+				onSuccess : function(options) {
+					var sel = document.id('filter_event').unspin();
+					var current = sel.get('value');
+					
+					sel.empty();
+					new Element('option', {'value': ''}).set('text', Joomla.JText._("COM_REDEVENT_FILTER_SELECT_EVENT")).inject(sel);
+					if (options.length) {
+						options.each(function(el){
+							new Element('option', {'value': el.value}).set('text', el.text).inject(sel);
+						});
+					}					
+					sel.set('value', current);
+				}
+			});
+			req.send();
+		},
+				
+		updateSessionField : function(async) {
 			async = typeof async !== 'undefined' ? async : true;
 			var req = new Request.JSON({
 				url : 'index.php?option=com_redevent&controller=frontadmin&task=sessionsoptions&tmpl=component',
@@ -489,14 +530,70 @@ var redb2b = {
 			    },
 				onSuccess : function(options) {
 					var sel = document.id('filter_session').unspin();
+					var current = sel.get('value');
+					
 					sel.empty();
-					new Element('option', {'value': ''}).set('text', Joomla.JText._("COM_REDEVENT_SESSION")).inject(sel);
+					new Element('option', {'value': ''}).set('text', Joomla.JText._("COM_REDEVENT_FILTER_SELECT_SESSION")).inject(sel);
 					if (options.length) {
 						options.each(function(el){
 							new Element('option', {'value': el.value}).set('text', el.text).inject(sel);
 						});
 					}
+					sel.set('value', current);
+					
 					redb2b.getMembersList();
+				}
+			});
+			req.send();
+		},
+				
+		updateVenueField : function(async) {
+			async = typeof async !== 'undefined' ? async : true;
+			var req = new Request.JSON({
+				url : 'index.php?option=com_redevent&controller=frontadmin&task=venuesoptions&tmpl=component',
+				data :document.id('course-search-form'),
+				async : async,
+				onRequest: function(){
+					document.id('filter_venue').set('spinner').spin();
+			    },
+				onSuccess : function(options) {
+					var sel = document.id('filter_venue').unspin();
+					var current = sel.get('value');
+					
+					sel.empty();
+					new Element('option', {'value': ''}).set('text', Joomla.JText._("COM_REDEVENT_FILTER_SELECT_VENUE")).inject(sel);
+					if (options.length) {
+						options.each(function(el){
+							new Element('option', {'value': el.value}).set('text', el.text).inject(sel);
+						});
+					}
+					sel.set('value', current);
+				}
+			});
+			req.send();
+		},
+				
+		updateCategoryField : function(async) {
+			async = typeof async !== 'undefined' ? async : true;
+			var req = new Request.JSON({
+				url : 'index.php?option=com_redevent&controller=frontadmin&task=categoriesoptions&tmpl=component',
+				data :document.id('course-search-form'),
+				async : async,
+				onRequest: function(){
+					document.id('filter_category').set('spinner').spin();
+			    },
+				onSuccess : function(options) {
+					var sel = document.id('filter_category').unspin();
+					var current = sel.get('value');
+					
+					sel.empty();
+					new Element('option', {'value': ''}).set('text', Joomla.JText._("COM_REDEVENT_FILTER_SELECT_CATEGORY")).inject(sel);
+					if (options.length) {
+						options.each(function(el){
+							new Element('option', {'value': el.value}).set('text', el.text).inject(sel);
+						});
+					}
+					sel.set('value', current);
 				}
 			});
 			req.send();
@@ -521,7 +618,7 @@ var redb2b = {
 				onSuccess : function(session){
 					document.id('filter_event').set('value', session.did);
 					document.id('filter_session').empty();
-					thereq = redb2b.updateSessions(false);
+					thereq = redb2b.updateSessionField(false);
 					document.id('filter_session').set('value', id);
 					document.id('book-xref').set('value', id);
 					redb2b.getMembersList();
