@@ -35,7 +35,7 @@ class redEVENT_tags {
 	private $_submitkey;
 	private $_maxattendees;
 	private $_maxwaitinglist;
-  private $_published;
+	private $_published;
 	protected $_eventlinks = null;
 	private $_libraryTags = null;
 	private $_customfields = null;
@@ -77,13 +77,13 @@ class redEVENT_tags {
 		}
 
 		if ($this->_xref) {
-      $db = & JFactory::getDBO();
+			$db = & JFactory::getDBO();
 			$q = "SELECT eventid, venueid, maxattendees, maxwaitinglist, published FROM #__redevent_event_venue_xref WHERE id = ".$this->_xref;
 			$db->setQuery($q);
 			list($this->_eventid, $this->_venueid, $this->_maxattendees, $this->_maxwaitinglist, $this->_published) = $db->loadRow();
-      if (!$this->_published) {
-        JError::raiseError(404, JText::_('COM_REDEVENT_This_event_is_not_published'), 'this xref is not published, can\'t be displayed in venues');
-      }
+			if (!$this->_published) {
+				JError::raiseError(404, JText::_('COM_REDEVENT_This_event_is_not_published'), 'this xref is not published, can\'t be displayed in venues');
+			}
 		}
 	}
 
@@ -415,19 +415,19 @@ class redEVENT_tags {
 		ob_start();
 		if (JRequest::getVar('format') == 'pdf') {
 			if (file_exists($template_path.DS.'details'.DS.'courseinfo_pdf.php')) {
-  			include($template_path.DS.'details'.DS.'courseinfo_pdf.php');
+				include($template_path.DS.'details'.DS.'courseinfo_pdf.php');
 			}
 			else {
-        include(JPATH_COMPONENT.DS.'views'.DS.'details'.DS.'tmpl'.DS.'courseinfo_pdf.php');
+				include(JPATH_COMPONENT.DS.'views'.DS.'details'.DS.'tmpl'.DS.'courseinfo_pdf.php');
 			}
 		}
 		else {
-      if (file_exists($template_path.DS.'details'.DS.'courseinfo.php')) {
-        include($template_path.DS.'details'.DS.'courseinfo.php');
-      }
-      else {
-        include(JPATH_COMPONENT.DS.'views'.DS.'details'.DS.'tmpl'.DS.'courseinfo.php');
-      }
+			if (file_exists($template_path.DS.'details'.DS.'courseinfo.php')) {
+				include($template_path.DS.'details'.DS.'courseinfo.php');
+			}
+			else {
+				include(JPATH_COMPONENT.DS.'views'.DS.'details'.DS.'tmpl'.DS.'courseinfo.php');
+			}
 		}
 		$contents = ob_get_contents();
 		ob_end_clean();
@@ -443,19 +443,19 @@ class redEVENT_tags {
 		$app = & JFactory::getApplication();
 		$template_path = JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'com_redevent';
 
-    $this->row = $this->getEvent()->getData();
+		$this->row = $this->getEvent()->getData();
 
 		ob_start();
 		if (JRequest::getVar('format') == 'pdf') {
 
 		}
 		else {
-      if (file_exists($template_path.DS.'details'.DS.'default_attachments.php')) {
-        include($template_path.DS.'details'.DS.'default_attachments.php');
-      }
-      else {
-        include(JPATH_COMPONENT.DS.'views'.DS.'details'.DS.'tmpl'.DS.'default_attachments.php');
-      }
+			if (file_exists($template_path.DS.'details'.DS.'default_attachments.php')) {
+				include($template_path.DS.'details'.DS.'default_attachments.php');
+			}
+			else {
+				include(JPATH_COMPONENT.DS.'views'.DS.'details'.DS.'tmpl'.DS.'default_attachments.php');
+			}
 		}
 		$contents = ob_get_contents();
 		ob_end_clean();
@@ -476,17 +476,17 @@ class redEVENT_tags {
 
 			$db = JFactory::getDBO();
 			$query = ' SELECT e.*, IF (x.course_credit = 0, "", x.course_credit) AS course_credit, '
-			   . ' x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees, x.maxwaitinglist, v.venue, x.venueid, x.details, x.registrationend, '
-         . ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', e.title, x.title) ELSE e.title END as full_title, '
-			   . ' x.external_registration_url, '
-			   . ' v.city AS location, v.state, v.url as venueurl, v.locdescription as venue_description, '
-			   . ' v.country, v.locimage, v.street, v.plz, v.map, '
-			   . ' f.formname, '
-			   . ' UNIX_TIMESTAMP(x.dates) AS unixdates, '
-			   . ' CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(":", e.id, e.alias) ELSE e.id END as slug, '
-         . ' CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug, '
-			   . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(":", v.id, v.alias) ELSE v.id END as venueslug '
-			   ;
+			. ' x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees, x.maxwaitinglist, v.venue, x.venueid, x.details, x.registrationend, '
+			. ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', e.title, x.title) ELSE e.title END as full_title, '
+			. ' x.external_registration_url, '
+			. ' v.city AS location, v.state, v.url as venueurl, v.locdescription as venue_description, '
+			. ' v.country, v.locimage, v.street, v.plz, v.map, '
+			. ' f.formname, '
+			. ' UNIX_TIMESTAMP(x.dates) AS unixdates, '
+			. ' CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(":", e.id, e.alias) ELSE e.id END as slug, '
+			. ' CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug, '
+			. ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(":", v.id, v.alias) ELSE v.id END as venueslug '
+			;
 
 			// add the custom fields
 			foreach ((array) $xcustoms as $c)
@@ -496,158 +496,158 @@ class redEVENT_tags {
 
 
 			$query .= ' FROM #__redevent_events AS e '
-			   . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
-			   . ' INNER JOIN #__redevent_venues AS v ON x.venueid = v.id '
-			   . ' LEFT JOIN #__rwf_forms AS f ON f.id = e.redform_id '
-			   . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
-			   . ' LEFT JOIN #__redevent_categories AS c ON xcat.category_id = c.id '
-			   . ' LEFT JOIN #__users AS u ON u.id = e.created_by '
-			   ;
+			. ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
+			. ' INNER JOIN #__redevent_venues AS v ON x.venueid = v.id '
+			. ' LEFT JOIN #__rwf_forms AS f ON f.id = e.redform_id '
+			. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
+			. ' LEFT JOIN #__redevent_categories AS c ON xcat.category_id = c.id '
+			. ' LEFT JOIN #__users AS u ON u.id = e.created_by '
+			;
 
 			$query .= ' WHERE x.published = '. $db->Quote($this->getEvent()->getData()->published)
-			   . ' AND e.id = '.$this->_eventid
-			   . ' GROUP BY x.id '
-			   . ' ORDER BY '.$order.' '.$order_Dir.', x.dates, x.times '
-			   ;
+			. ' AND e.id = '.$this->_eventid
+			. ' GROUP BY x.id '
+			. ' ORDER BY '.$order.' '.$order_Dir.', x.dates, x.times '
+			;
 			$db->setQuery($query);
 			$this->_eventlinks = $db->loadObjectList();
-	    $this->_eventlinks = $this->_getPlacesLeft($this->_eventlinks);
+			$this->_eventlinks = $this->_getPlacesLeft($this->_eventlinks);
 			$this->_eventlinks = $this->_getCategories($this->_eventlinks);
-	    $this->_eventlinks = $this->_getUserRegistrations($this->_eventlinks);
-	    $this->_eventlinks = $this->_getPrices($this->_eventlinks);
+			$this->_eventlinks = $this->_getUserRegistrations($this->_eventlinks);
+			$this->_eventlinks = $this->_getPrices($this->_eventlinks);
 		}
 		return $this->_eventlinks;
 	}
 
 	private function _getCategories($rows)
 	{
-    $db = JFactory::getDBO();
+		$db = JFactory::getDBO();
 		foreach ($rows as $k => $r) {
 			$query = ' SELECT c.id, c.catname, c.image, '
-             . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(":", c.id, c.alias) ELSE c.id END as slug '
-			       . ' FROM #__redevent_categories AS c '
-			       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = c.id '
-			       . ' WHERE xcat.event_id = ' . $db->Quote($r->id)
-			       . ' ORDER BY c.lft '
-			       ;
+			. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(":", c.id, c.alias) ELSE c.id END as slug '
+			. ' FROM #__redevent_categories AS c '
+			. ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = c.id '
+			. ' WHERE xcat.event_id = ' . $db->Quote($r->id)
+			. ' ORDER BY c.lft '
+			;
 			$db->setQuery($query);
 			$rows[$k]->categories = $db->loadObjectList();
 		}
 		return ($rows);
 	}
 
-  /**
-   * adds registered (int) and waiting (int) properties to rows.
-   *
-   * @return array
-   */
-  private function _getPlacesLeft($rows)
-  {
-    $db = JFactory::getDBO();
-    foreach ($rows as $k => $r)
-    {
+	/**
+	 * adds registered (int) and waiting (int) properties to rows.
+	 *
+	 * @return array
+	 */
+	private function _getPlacesLeft($rows)
+	{
+		$db = JFactory::getDBO();
+		foreach ($rows as $k => $r)
+		{
 			$q = ' SELECT r.waitinglist, COUNT(r.id) AS total '
-			   . ' FROM #__redevent_register AS r '
-			   . ' WHERE r.xref = '. $db->Quote($r->xref)
-			   . ' AND r.confirmed = 1 '
-		     . ' AND r.cancelled = 0 '
-			   . ' GROUP BY r.waitinglist '
-			   ;
-	    $db->setQuery($q);
-	    $res = $db->loadObjectList('waitinglist');
-      $rows[$k]->registered = (isset($res[0]) ? $res[0]->total : 0) ;
-      $rows[$k]->waiting = (isset($res[1]) ? $res[1]->total : 0) ;
-    }
-    return $rows;
-  }
+			. ' FROM #__redevent_register AS r '
+			. ' WHERE r.xref = '. $db->Quote($r->xref)
+			. ' AND r.confirmed = 1 '
+			. ' AND r.cancelled = 0 '
+			. ' GROUP BY r.waitinglist '
+			;
+			$db->setQuery($q);
+			$res = $db->loadObjectList('waitinglist');
+			$rows[$k]->registered = (isset($res[0]) ? $res[0]->total : 0) ;
+			$rows[$k]->waiting = (isset($res[1]) ? $res[1]->total : 0) ;
+		}
+		return $rows;
+	}
 
-  /**
-   * adds property userregistered to rows: the number of time this user is already registered for each xref
-   *
-   * @return array
-   */
-  private function _getUserRegistrations($rows)
-  {
-    $db = JFactory::getDBO();
-    $user = & JFactory::getUser();
+	/**
+	 * adds property userregistered to rows: the number of time this user is already registered for each xref
+	 *
+	 * @return array
+	 */
+	private function _getUserRegistrations($rows)
+	{
+		$db = JFactory::getDBO();
+		$user = & JFactory::getUser();
 
-    foreach ($rows as $k => $r)
-    {
-	    if ($user->get('id'))
-	    {
-	      $q = "SELECT COUNT(r.id) AS total
-	        FROM #__redevent_register AS r
-	        WHERE r.xref = ". $db->Quote($r->xref) ."
-	        AND r.confirmed = 1
-	        AND r.cancelled = 0
-	        AND r.uid = ". $db->Quote($user->get('id')) ."
-	        ";
-	      $db->setQuery($q);
-	      $rows[$k]->userregistered = $db->loadResult();
-	    }
-	    else
-	    {
-        $rows[$k]->userregistered = 0;
-	    }
-    }
-    return $rows;
-  }
+		foreach ($rows as $k => $r)
+		{
+			if ($user->get('id'))
+			{
+				$q = "SELECT COUNT(r.id) AS total
+				FROM #__redevent_register AS r
+				WHERE r.xref = ". $db->Quote($r->xref) ."
+				AND r.confirmed = 1
+				AND r.cancelled = 0
+				AND r.uid = ". $db->Quote($user->get('id')) ."
+				";
+				$db->setQuery($q);
+				$rows[$k]->userregistered = $db->loadResult();
+			}
+			else
+			{
+				$rows[$k]->userregistered = 0;
+			}
+		}
+		return $rows;
+	}
 
-  /**
-   * adds registered (int) and waiting (int) properties to rows.
-   *
-   * @return array
-   */
-  private function _getPrices($rows)
-  {
-  	if (!count($rows)) {
-  		return $rows;
-  	}
-    $db = JFactory::getDBO();
-    $ids = array();
-    foreach ($rows as $k => $r)
-    {
-    	$ids[$r->xref] = $k;
-    }
+	/**
+	 * adds registered (int) and waiting (int) properties to rows.
+	 *
+	 * @return array
+	 */
+	private function _getPrices($rows)
+	{
+		if (!count($rows)) {
+			return $rows;
+		}
+		$db = JFactory::getDBO();
+		$ids = array();
+		foreach ($rows as $k => $r)
+		{
+			$ids[$r->xref] = $k;
+		}
 
-  	$query = ' SELECT sp.*, p.name, p.alias, p.image, p.tooltip, f.currency, '
-	         . ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug '
-  	       . ' FROM #__redevent_sessions_pricegroups AS sp '
-  	       . ' INNER JOIN #__redevent_pricegroups AS p on p.id = sp.pricegroup_id '
-  	       . ' INNER JOIN #__redevent_event_venue_xref AS x on x.id = sp.xref '
-  	       . ' INNER JOIN #__redevent_events AS e on e.id = x.eventid '
-  	       . ' LEFT JOIN #__rwf_forms AS f on e.redform_id = f.id '
-  	       . ' WHERE sp.xref IN (' . implode(",", array_keys($ids)).')'
-  	       . ' ORDER BY p.ordering ASC '
-  	       ;
-  	$db->setQuery($query);
-  	$res = $db->loadObjectList();
+		$query = ' SELECT sp.*, p.name, p.alias, p.image, p.tooltip, f.currency, '
+		. ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug '
+		. ' FROM #__redevent_sessions_pricegroups AS sp '
+		. ' INNER JOIN #__redevent_pricegroups AS p on p.id = sp.pricegroup_id '
+		. ' INNER JOIN #__redevent_event_venue_xref AS x on x.id = sp.xref '
+		. ' INNER JOIN #__redevent_events AS e on e.id = x.eventid '
+		. ' LEFT JOIN #__rwf_forms AS f on e.redform_id = f.id '
+		. ' WHERE sp.xref IN (' . implode(",", array_keys($ids)).')'
+		. ' ORDER BY p.ordering ASC '
+		;
+		$db->setQuery($query);
+		$res = $db->loadObjectList();
 
-  	// sort this out
-  	$prices = array();
-  	foreach ((array)$res as $p)
-  	{
-  		if (!isset($prices[$p->xref])) {
-  			$prices[$p->xref] = array($p);
-  		}
-  		else {
-  			$prices[$p->xref][] = $p;
-  		}
-  	}
+		// sort this out
+		$prices = array();
+		foreach ((array)$res as $p)
+		{
+			if (!isset($prices[$p->xref])) {
+				$prices[$p->xref] = array($p);
+			}
+			else {
+				$prices[$p->xref][] = $p;
+			}
+		}
 
-  	// add to rows
-    foreach ($rows as $k => $r)
-    {
-    	if (isset($prices[$r->xref])) {
-    		$rows[$k]->prices = $prices[$r->xref];
-    	}
-    	else {
-    		$rows[$k]->prices = null;
-    	}
-    }
+		// add to rows
+		foreach ($rows as $k => $r)
+		{
+			if (isset($prices[$r->xref])) {
+				$rows[$k]->prices = $prices[$r->xref];
+			}
+			else {
+				$rows[$k]->prices = null;
+			}
+		}
 
-    return $rows;
-  }
+		return $rows;
+	}
 
 	/**
 	 * recursively replaces all the library tags from the text
@@ -657,23 +657,23 @@ class redEVENT_tags {
 	 */
 	public function replaceLibraryTags($text)
 	{
-	  $tags = &$this->_getLibraryTags();
+		$tags = &$this->_getLibraryTags();
 
-	  $search = array();
-	  $replace = array();
-	  foreach ($tags as $tag => $data)
-	  {
-	    $search[] = '['.$data->text_name.']';
-	    $replace[] = $data->text_field;
-	  }
-	  // first replacement
-	  $text = str_ireplace($search, $replace, $text, $count);
+		$search = array();
+		$replace = array();
+		foreach ($tags as $tag => $data)
+		{
+			$search[] = '['.$data->text_name.']';
+			$replace[] = $data->text_field;
+		}
+		// first replacement
+		$text = str_ireplace($search, $replace, $text, $count);
 
-	  // now, the problem that there could have been libray tags embedded into one another, so we keep replacing if $count is > 0
-	  if ($count) {
-	    $text = $this->replaceLibraryTags($text);
-	  }
-	  return $text;
+		// now, the problem that there could have been libray tags embedded into one another, so we keep replacing if $count is > 0
+		if ($count) {
+			$text = $this->replaceLibraryTags($text);
+		}
+		return $text;
 	}
 
 	/**
@@ -684,32 +684,32 @@ class redEVENT_tags {
 	 */
 	private function _replaceLibraryTag($tag)
 	{
-	  $tags = &$this->_getLibraryTags();
+		$tags = &$this->_getLibraryTags();
 
-	  if (isset($tags[$tag])) {
-	  	return $tags[$tag]->text_field;
-	  }
-	  return false;
+		if (isset($tags[$tag])) {
+			return $tags[$tag]->text_field;
+		}
+		return false;
 	}
 
 	/**
 	 * gets list of tags belonging to the text library
-   *
-   * @param array
-   * @return array (objects: text_name, text_field)
-   */
+	 *
+	 * @param array
+	 * @return array (objects: text_name, text_field)
+	 */
 	private function &_getLibraryTags()
 	{
-	  if (empty($this->_libraryTags))
-	  {
-  		$db = JFactory::getDBO();
-  		$q = "SELECT text_name, text_field
-  			FROM #__redevent_textlibrary WHERE CHAR_LENGTH(text_name) > 0";
-  		$db->setQuery($q);
+		if (empty($this->_libraryTags))
+		{
+			$db = JFactory::getDBO();
+			$q = "SELECT text_name, text_field
+			FROM #__redevent_textlibrary WHERE CHAR_LENGTH(text_name) > 0";
+			$db->setQuery($q);
 
-  		$this->_libraryTags = $db->loadObjectList('text_name');
-	  }
-	  return $this->_libraryTags;
+			$this->_libraryTags = $db->loadObjectList('text_name');
+		}
+		return $this->_libraryTags;
 	}
 
 	/**
@@ -721,164 +721,164 @@ class redEVENT_tags {
 	private function _getComments($event)
 	{
 		$app = & JFactory::getApplication();
-    $template_path = JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'com_redevent';
-    $contents = '';
-    $this->row = $event;
-    $this->row->did = $event->id;
-    $this->elsettings = & redEVENTHelper::config();
-    if (JRequest::getVar('format') != 'raw') {
-      ob_start();
-      if (file_exists($template_path.DS.'details'.DS.'default_comments.php')) {
-        include($template_path.DS.'details'.DS.'default_comments.php');
-      }
-      else {
-        include(JPATH_COMPONENT.DS.'views'.DS.'details'.DS.'tmpl'.DS.'default_comments.php');
-      }
-	    $contents = ob_get_contents();
-	    ob_end_clean();
-    }
-    return $contents;
+		$template_path = JPATH_BASE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'com_redevent';
+		$contents = '';
+		$this->row = $event;
+		$this->row->did = $event->id;
+		$this->elsettings = & redEVENTHelper::config();
+		if (JRequest::getVar('format') != 'raw') {
+			ob_start();
+			if (file_exists($template_path.DS.'details'.DS.'default_comments.php')) {
+				include($template_path.DS.'details'.DS.'default_comments.php');
+			}
+			else {
+				include(JPATH_COMPONENT.DS.'views'.DS.'details'.DS.'tmpl'.DS.'default_comments.php');
+			}
+			$contents = ob_get_contents();
+			ob_end_clean();
+		}
+		return $contents;
 	}
 
 	private function _getFormalOffer($event)
 	{
 		ob_start();
 		?>
-		<form name="subemail" action="<?php echo JRoute::_('index.php'); ?>" method="post">
-		  <?php echo $this->ReplaceTags($event->submission_type_formal_offer); ?>
-		  <input type="hidden" name="task" value="signup" />
-		  <input type="hidden" name="option" value="com_redevent" />
-		  <input type="hidden" name="view" value="signup" />
-		  <input type="hidden" name="subtype" value="formaloffer" />
-		  <input type="hidden" name="sendmail" value="1" />
-		  <input type="hidden" name="xref" value="<?php echo $event->xref; ?>" />
-		  <input type="hidden" name="id" value="<?php echo $event->id; ?>" />
+		<form name="subemail" action="<?php echo JRoute::_('index.php'); ?>"
+			method="post">
+			<?php echo $this->ReplaceTags($event->submission_type_formal_offer); ?>
+			<input type="hidden" name="task" value="signup" /> <input type="hidden"
+				name="option" value="com_redevent" /> <input type="hidden" name="view"
+				value="signup" /> <input type="hidden" name="subtype"
+				value="formaloffer" /> <input type="hidden" name="sendmail" value="1" />
+			<input type="hidden" name="xref" value="<?php echo $event->xref; ?>" />
+			<input type="hidden" name="id" value="<?php echo $event->id; ?>" />
 		</form>
 		<?php
-    $contents = ob_get_contents();
-    ob_end_clean();
-    return $contents;
+		$contents = ob_get_contents();
+		ob_end_clean();
+		return $contents;
 	}
 
-  private function _getEmailSubmission($event)
-  {
-    ob_start();
-    ?>
-		<form name="subemail" action="<?php echo JRoute::_('index.php'); ?>" method="post">
-		  <?php echo $this->ReplaceTags($event->submission_type_email); ?>
-		  <input type="hidden" name="task" value="signup" />
-		  <input type="hidden" name="option" value="com_redevent" />
-		  <input type="hidden" name="view" value="signup" />
-		  <input type="hidden" name="subtype" value="email" />
-		  <input type="hidden" name="sendmail" value="1" />
-      <input type="hidden" name="xref" value="<?php echo $event->xref; ?>" />
-      <input type="hidden" name="id" value="<?php echo $event->id; ?>" />
+	private function _getEmailSubmission($event)
+	{
+		ob_start();
+		?>
+		<form name="subemail" action="<?php echo JRoute::_('index.php'); ?>"
+			method="post">
+			<?php echo $this->ReplaceTags($event->submission_type_email); ?>
+			<input type="hidden" name="task" value="signup" /> <input type="hidden"
+				name="option" value="com_redevent" /> <input type="hidden" name="view"
+				value="signup" /> <input type="hidden" name="subtype" value="email" />
+			<input type="hidden" name="sendmail" value="1" /> <input type="hidden"
+				name="xref" value="<?php echo $event->xref; ?>" /> <input
+				type="hidden" name="id" value="<?php echo $event->id; ?>" />
 		</form>
-    <?php
-    $contents = ob_get_contents();
-    ob_end_clean();
-    return $contents;
-  }
+		<?php
+		$contents = ob_get_contents();
+		ob_end_clean();
+		return $contents;
+	}
 
-  /**
-   * get custom fields and their value
-   *
-   * @return array tag => field
-   */
-  function getCustomfields()
-  {
-  	if (empty($this->_customfields))
-  	{
-  		$details = &$this->getEvent()->getData();
+	/**
+	 * get custom fields and their value
+	 *
+	 * @return array tag => field
+	 */
+	function getCustomfields()
+	{
+		if (empty($this->_customfields))
+		{
+			$details = &$this->getEvent()->getData();
 
-	  	$db = & JFactory::getDBO();
-	    $query = ' SELECT f.* '
-	           . ' FROM #__redevent_fields AS f '
-	           . ' WHERE f.published = 1 '
-	           . ' AND CHAR_LENGTH(f.tag) > 0 '
-	           ;
-	    $db->setQuery($query);
-	    $fields = $db->loadObjectList();
+			$db = & JFactory::getDBO();
+			$query = ' SELECT f.* '
+			. ' FROM #__redevent_fields AS f '
+			. ' WHERE f.published = 1 '
+			. ' AND CHAR_LENGTH(f.tag) > 0 ';
+			$db->setQuery($query);
+			$fields = $db->loadObjectList();
 
-	    $replace = array();
-	    foreach ((array) $fields as $field)
-	    {
-	    	$prop = 'custom'.$field->id;
-	    	if (isset($details->$prop)) {
-	    		$field->value = $details->$prop;
-	    	}
-	    	else {
-	    		$field->value = null;
-	    	}
-	    	$obj = new stdclass();
-	    	$obj->text_name = $field->tag;
-	      $obj->text_field = redEVENTHelper::renderFieldValue($field);
-	      $replace[$field->tag] = $obj;
-	    }
-	    $this->_customfields = $replace;
-  	}
-    return $this->_customfields;
-  }
+			$replace = array();
+			foreach ((array) $fields as $field)
+			{
+				$prop = 'custom'.$field->id;
+				if (isset($details->$prop)) {
+					$field->value = $details->$prop;
+				}
+				else {
+					$field->value = null;
+				}
+				$obj = new stdclass();
+				$obj->text_name = $field->tag;
+				$obj->text_field = redEVENTHelper::renderFieldValue($field);
+				$replace[$field->tag] = $obj;
+			}
+			$this->_customfields = $replace;
+		}
+		return $this->_customfields;
+	}
 
-  /**
-   * returns all custom fields for xrefs
-   *
-   * @return array
-   */
-  function getXrefCustomFields()
-  {
-  	if (empty($this->_xrefcustomfields))
-  	{
-  		$db = & JFactory::getDBO();
-	  	$query = ' SELECT f.id, f.name, f.in_lists, f.searchable, f.ordering '
-	  	       . ' FROM #__redevent_fields AS f'
-	  	       . ' WHERE f.published = 1'
-	  	       . '   AND f.object_key = '. $db->Quote('redevent.xref')
-	  	       . ' ORDER BY f.ordering ASC '
-	  	       ;
-	  	$db->setQuery($query);
-	  	$this->_xrefcustomfields = $db->loadObjectList();
-  	}
-  	return $this->_xrefcustomfields;
-  }
+	/**
+	 * returns all custom fields for xrefs
+	 *
+	 * @return array
+	 */
+	function getXrefCustomFields()
+	{
+		if (empty($this->_xrefcustomfields))
+		{
+			$db = & JFactory::getDBO();
+			$query = ' SELECT f.id, f.name, f.in_lists, f.searchable, f.ordering '
+			. ' FROM #__redevent_fields AS f'
+			. ' WHERE f.published = 1'
+			. '   AND f.object_key = '. $db->Quote('redevent.xref')
+			. ' ORDER BY f.ordering ASC ';
+			$db->setQuery($query);
+			$this->_xrefcustomfields = $db->loadObjectList();
+		}
+		return $this->_xrefcustomfields;
+	}
 
-  function getAttendeeUniqueId($submit_key)
-  {
-  	$db = & JFactory::getDBO();
-  	$query = ' SELECT e.title, e.alias, e.course_code, r.xref, r.id '
-  	       . ' FROM #__redevent_register AS r '
-  	       . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.id = r.xref '
-  	       . ' INNER JOIN #__redevent_events AS e ON e.id = x.eventid '
-  	       . ' WHERE r.submit_key = '. $db->Quote($submit_key)
-  	       ;
-  	$db->setQuery($query, 0, 1);
-  	$obj = $db->loadObject();
-  	if ($obj) {
-  		$code = $obj->course_code .'-'. $obj->xref .'-'. $obj->id;
-  	}
-  	else {
-  		$code = '';
-  	}
-  	return $code;
-  }
+	function getAttendeeUniqueId($submit_key)
+	{
+		$db = & JFactory::getDBO();
+		$query = ' SELECT e.title, e.alias, e.course_code, r.xref, r.id '
+		. ' FROM #__redevent_register AS r '
+		. ' INNER JOIN #__redevent_event_venue_xref AS x ON x.id = r.xref '
+		. ' INNER JOIN #__redevent_events AS e ON e.id = x.eventid '
+		. ' WHERE r.submit_key = '. $db->Quote($submit_key);
+		$db->setQuery($query, 0, 1);
+		$obj = $db->loadObject();
 
-  /**
-   * return answers as html text
-   *
-   * @param string $submit_key
-   * @return string html
-   */
-  private function _answersToHtml()
-  {
-  	$answers = $this->_getAnswers();
-  	if (!$answers) {
-  		return '';
-  	}
-  	$res = '';
+		if ($obj)
+		{
+			$code = $obj->course_code .'-'. $obj->xref .'-'. $obj->id;
+		}
+		else
+		{
+			$code = '';
+		}
+		return $code;
+	}
 
-  	foreach ($answers as $a)
-  	{
-  		$res .= '<table class="formanswers">';
+	/**
+	 * return answers as html text
+	 *
+	 * @param string $submit_key
+	 * @return string html
+	 */
+	private function _answersToHtml()
+	{
+		$answers = $this->_getAnswers();
+		if (!$answers) {
+			return '';
+		}
+		$res = '';
+
+		foreach ($answers as $a)
+		{
+			$res .= '<table class="formanswers">';
 			foreach ($a as $field)
 			{
 				$res .= '<tr>';
@@ -886,230 +886,244 @@ class redEVENT_tags {
 				$res .= '<td>'.str_replace('~~~','<br/>', $field->answer).'</td>';
 				$res .= '</tr>';
 			}
-  		$res .= '</table>';
-  	}
-  	return $res;
-  }
+			$res .= '</table>';
+		}
+		return $res;
+	}
 
-  /**
-   * returns answers as array of row arrays
-   *
-   * @return array
-   */
-  private function _getAnswers()
-  {
-	  	if (!$this->getEvent()->getData()) {
-	  		JError::raiseWarning(0, JText::_('COM_REDEVENT_Error_missing_data'));
-	  		return false;
-	  	}
+	/**
+	 * returns answers as array of row arrays
+	 *
+	 * @return array
+	 */
+	private function _getAnswers()
+	{
+		if (!$this->getEvent()->getData()) {
+			JError::raiseWarning(0, JText::_('COM_REDEVENT_Error_missing_data'));
+			return false;
+		}
 
-	  	if (!$sids = $this->getOption('sids'))
-	  	{
-		  	if (!$this->_submitkey) {
-		  		return false;
-		  	}
+		if (!$sids = $this->getOption('sids'))
+		{
+			if (!$this->_submitkey) {
+				return false;
+			}
 
-		  	$db = & JFactory::getDBO();
-		  	$query = ' SELECT r.sid '
-		  	       . ' FROM #__redevent_register AS r '
-		  	       . ' WHERE r.submit_key = '.$db->quote($this->_submitkey)
-		  	       ;
-				$db->setQuery($query);
-				$sids = $db->loadResultArray();
-		  }
+			$db = & JFactory::getDBO();
+			$query = ' SELECT r.sid '
+			. ' FROM #__redevent_register AS r '
+			. ' WHERE r.submit_key = '.$db->quote($this->_submitkey)
+			;
+			$db->setQuery($query);
+			$sids = $db->loadResultArray();
+		}
 
-			$rfcore = $this->_getRFCore();
-			return $rfcore->getSidsFieldsAnswers($sids);
-  }
+		$rfcore = $this->_getRFCore();
+		return $rfcore->getSidsFieldsAnswers($sids);
+	}
 
-  private function _getSubmissionTotalPrice()
-  {
-  	if (!$this->_submitkey) {
+	private function _getSubmissionTotalPrice()
+	{
+		if (!$this->_submitkey) {
 			return false;
 		}
 
 		$db = & JFactory::getDBO();
 		$query =  ' SELECT SUM(s.price) '
-		        . ' FROM #__rwf_submitters AS s '
-		        . ' WHERE s.submit_key = '.$db->quote($this->_submitkey)
-		        . ' GROUP BY s.submit_key '
-		        ;
-		$db->setQuery($query);
-		$res = $db->loadResult();
-		return $res;
-  }
+			. ' FROM #__rwf_submitters AS s '
+			. ' WHERE s.submit_key = '.$db->quote($this->_submitkey)
+			. ' GROUP BY s.submit_key '
+			;
+			$db->setQuery($query);
+			$res = $db->loadResult();
+			return $res;
+	}
 
-  private function _getFieldsTags()
-  {
-  	if (!$this->getEvent()->getData()) {
-  		JError::raiseWarning(0, JText::_('COM_REDEVENT_Error_missing_data'));
-  		return false;
-  	}
+	private function _getFieldsTags()
+	{
+		if (!$this->getEvent()->getData()) {
+			JError::raiseWarning(0, JText::_('COM_REDEVENT_Error_missing_data'));
+			return false;
+		}
 		$rfcore = $this->_getRFCore();
-  	$fields = $rfcore->getFields($this->getEvent()->getData()->redform_id);
+		$fields = $rfcore->getFields($this->getEvent()->getData()->redform_id);
 
-  	$tags = array();
-  	if ($fields && count($fields))
-  	{
-	  	foreach ((array) $fields as $f) {
-	  		$tags[$f->id] = 'answer_'.$f->id;
-	  	}
-  	}
-  	return $tags;
-  }
+		$tags = array();
+		if ($fields && count($fields))
+		{
+			foreach ((array) $fields as $f) {
+				$tags[$f->id] = 'answer_'.$f->id;
+			}
+		}
+		return $tags;
+	}
 
-  private function _getFieldAnswer($id)
-  {
-  	$answers = $this->_getAnswers();
-  	if (!$answers) {
-  		return '';
-  	}
+	private function _getFieldAnswer($id)
+	{
+		$answers = $this->_getAnswers();
+		if (!$answers) {
+			return '';
+		}
 
-  	// only take first answer...
-  	$fields = reset($answers);
-  	foreach ($fields as $f)
-  	{
-  		if ($f->id == $id) {
-  			return $f->answer;
-  		}
-  	}
-  	return '';
-  }
+		// only take first answer...
+		$fields = reset($answers);
+		foreach ($fields as $f)
+		{
+			if ($f->id == $id) {
+				return $f->answer;
+			}
+		}
+		return '';
+	}
 
-  private function _getRFCore()
-  {
-  	if (empty($this->_rfcore))
-  	{
-  		$this->_rfcore = new RedFormCore();
-  	}
-  	return $this->_rfcore;
-  }
+	private function _getRFCore()
+	{
+		if (empty($this->_rfcore))
+		{
+			$this->_rfcore = new RedFormCore();
+		}
+		return $this->_rfcore;
+	}
 
-  /**
-   * return current number of registrations for current user to this event
-   * @return int
-   */
-  private function _getCurrentRegs()
-  {
-  	$user = &JFactory::getUser();
-  	if (!$user) {
-  		JError::raiseError(403, 'NO_AUTH');
-  	}
+	/**
+	 * return current number of registrations for current user to this event
+	 * @return int
+	 */
+	private function _getCurrentRegs()
+	{
+		$user = &JFactory::getUser();
+		if (!$user) {
+			JError::raiseError(403, 'NO_AUTH');
+		}
 
-  	$db = &JFactory::getDBO();
-  	$query = ' SELECT COUNT(id) '
-  	       . ' FROM #__redevent_register AS r '
-  	       . ' WHERE r.uid = ' . $user->get('id')
-		       . '   AND r.cancelled = 0 '
-  	       . '   AND r.xref = ' . $this->_xref
-  	       ;
-  	$db->setQuery($query);
-  	$res = $db->loadResult();
-  	return $res;
-  }
+		$db = &JFactory::getDBO();
+		$query = ' SELECT COUNT(id) '
+	 . ' FROM #__redevent_register AS r '
+	 . ' WHERE r.uid = ' . $user->get('id')
+	 . '   AND r.cancelled = 0 '
+	. '   AND r.xref = ' . $this->_xref
+	;
+	$db->setQuery($query);
+	$res = $db->loadResult();
+	return $res;
+	}
 
-  /**
-   * returns form
-   *
-   * @return string
-   */
-  function getForm()
-  {
+	/**
+	 * returns form
+	 *
+	 * @return string
+	 */
+	function getForm()
+	{
 		$app = &JFactory::getApplication();
-  	$submit_key = JRequest::getVar('submit_key');
+		$submit_key = JRequest::getVar('submit_key');
 
-  	$details = $this->getEvent()->getData();
-  	$prices  = $this->getEvent()->getPrices();
-  	$options = array('extrafields' => array());
-  	$user = &JFactory::getUser();
+		$details = $this->getEvent()->getData();
+		$prices  = $this->getEvent()->getPrices();
+		$options = array('extrafields' => array());
+		$user = &JFactory::getUser();
 
- 		$rfcore = $this->_getRFCore();
- 		if (!$rfcore->getFormStatus($this->getEvent()->getData()->redform_id)) {
+		$rfcore = $this->_getRFCore();
+
+		if (!$rfcore->getFormStatus($this->getEvent()->getData()->redform_id))
+		{
 			$error = $rfcore->getError();
+
 			return '<span class="redform_error">'.$error.'</span>';
- 		}
- 		$form = $rfcore->getForm($this->getEvent()->getData()->redform_id);
+		}
 
-  	$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute($this->getEvent()->getData()->xslug, 'register'));
+		$form = $rfcore->getForm($this->getEvent()->getData()->redform_id);
 
-  	// multiple signup ?
-  	$single = JRequest::getInt('single', 0);
-  	$max = $this->getEvent()->getData()->max_multi_signup;
-  	if ($max && ! $single && $user->get('id')) {
-  		$multi = $max;
-  		// we must deduce current registrations of this user !
-  		$nbregs = $this->_getCurrentRegs();
-  		$multi = $max - $nbregs;
+		$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute($this->getEvent()->getData()->xslug, 'register'));
 
-  		if ($multi < 1) {
-  			return JText::_('COM_REDEVENT_USER_MAX_REGISTRATION_REACHED');
-  		}
-  	}
-  	else { // single signup
-  		$multi = 1;
-  	}
+		// multiple signup ?
+		$single = JRequest::getInt('single', 0);
+		$max = $this->getEvent()->getData()->max_multi_signup;
 
-  	// multiple pricegroup handling
-  	$selpg = null;
-  	if (count($prices))
-  	{
-  		$currency = current($prices)->currency ? current($prices)->currency : null;
+		if ($max && ! $single && $user->get('id'))
+		{
+			$multi = $max;
+			// we must deduce current registrations of this user !
+			$nbregs = $this->_getCurrentRegs();
+			$multi = $max - $nbregs;
 
-	  	// is pricegroup already selected ?
-	  	// if a review, we already have pricegroup_id in session
-	  	$pgids = $app->getUserState('pgids'.$submit_key);
-	  	if (!empty($pgids)) {
-	  		$pg = intval($pgids[0]);
-	  	}
-	  	else {
-	  		$pg = JRequest::getInt('pg');
-	  	}
+			if ($multi < 1)
+			{
+				return JText::_('COM_REDEVENT_USER_MAX_REGISTRATION_REACHED');
+			}
+		}
+		else
+		{
+			// single signup
+			$multi = 1;
+		}
 
-	  	if (count($prices) == 1) {
-	  		$selpg = current($prices);
-	  	}
-	  	else if ($pg)
-	  	{
-	  		foreach ($prices as $p)
-	  		{
-	  			if ($p->pricegroup_id == $pg)
-	  			{
-	  				$selpg = $p;
-	  				break;
-	  			}
-	  		}
-	  	}
+		// multiple pricegroup handling
+		$selpg = null;
+		if (count($prices))
+		{
+			$currency = current($prices)->currency ? current($prices)->currency : null;
 
-  		if (($multi > 1 && count($prices) > 1) || !$selpg) // multiple selection
-  		{
-  			$field = array();
-  			$field['label'] = '<label for="pricegroup_id">'.JText::_('COM_REDEVENT_REGISTRATION_PRICE').($currency ? ' <span class="price-currency">('.$currency.')</span>' : '').'</label>';
-  			$field['field'] = redEVENTHelper::getRfPricesSelect($prices);
-  			$field['class'] = 'reg-price';
-	  		$options['extrafields'][] = $field;
-  		}
-  		else // single selection => hidden field
-  		{
-  			$field = array();
-  			$field['label'] = '<label for="pricegroup_id">'.JText::_('COM_REDEVENT_REGISTRATION_PRICE').'</label>';
-  			$field['field'] = REOutput::formatprice($selpg->price, $currency).(count($prices) > 1 ? ' ('.$selpg->name.')' : '')
-  			                . '<input type="hidden" name="pricegroup_id[]" class="fixedprice" value="'.$selpg->pricegroup_id.'" price="'.$selpg->price.'" />';
-  			$field['class'] = 'reg-price pg'.$selpg->id;
-	  		$options['extrafields'][] = $field;
-  		}
-  	}
+			// is pricegroup already selected ?
+			// if a review, we already have pricegroup_id in session
+			$pgids = $app->getUserState('pgids'.$submit_key);
+			if (!empty($pgids))
+			{
+				$pg = intval($pgids[0]);
+			}
+			else
+			{
+				$pg = JRequest::getInt('pg');
+			}
 
-  	$details->course_price = null;
-  	$options['booking'] = $details;
+			if (count($prices) == 1)
+			{
+				$selpg = current($prices);
+			}
+			else if ($pg)
+			{
+				foreach ($prices as $p)
+				{
+					if ($p->pricegroup_id == $pg)
+					{
+						$selpg = $p;
+						break;
+					}
+				}
+			}
 
-  	$html = '<form action="'.$action.'" method="post" name="redform" enctype="multipart/form-data" onsubmit="return CheckSubmit(this);">';
-  	$html .= $rfcore->getFormFields($this->getEvent()->getData()->redform_id, $submit_key, $multi, $options);
-  	$html .= '<input type="hidden" name="xref" value="'.$this->_xref.'"/>';
-  	if ($this->getOption('hasreview')) {
-  		$html .= '<input type="hidden" name="hasreview" value="1"/>';
-  	}
+			if (($multi > 1 && count($prices) > 1) || !$selpg) // multiple selection
+			{
+				$field = array();
+				$field['label'] = '<label for="pricegroup_id">'.JText::_('COM_REDEVENT_REGISTRATION_PRICE').($currency ? ' <span class="price-currency">('.$currency.')</span>' : '').'</label>';
+				$field['field'] = redEVENTHelper::getRfPricesSelect($prices);
+				$field['class'] = 'reg-price';
+				$options['extrafields'][] = $field;
+			}
+			else // single selection => hidden field
+			{
+				$field = array();
+				$field['label'] = '<label for="pricegroup_id">'.JText::_('COM_REDEVENT_REGISTRATION_PRICE').'</label>';
+				$field['field'] = REOutput::formatprice($selpg->price, $currency).(count($prices) > 1 ? ' ('.$selpg->name.')' : '')
+				. '<input type="hidden" name="pricegroup_id[]" class="fixedprice" value="'.$selpg->pricegroup_id.'" price="'.$selpg->price.'" />';
+				$field['class'] = 'reg-price pg'.$selpg->id;
+				$options['extrafields'][] = $field;
+			}
+		}
+
+		$details->course_price = null;
+		$options['booking'] = $details;
+
+		$html = '<form action="'.$action.'" method="post" name="redform" enctype="multipart/form-data" onsubmit="return CheckSubmit(this);">';
+		$html .= $rfcore->getFormFields($this->getEvent()->getData()->redform_id, $submit_key, $multi, $options);
+		$html .= '<input type="hidden" name="xref" value="'.$this->_xref.'"/>';
+		if ($this->getOption('hasreview'))
+		{
+			$html .= '<input type="hidden" name="hasreview" value="1"/>';
+		}
 		$html .= '<div id="submit_button" style="display: block;" class="submitform'.$form->classname.'">';
-		if (empty($submit_key)) {
+		if (empty($submit_key))
+		{
 			$html .= '<input type="submit" id="regularsubmit" name="submit" value="'.JText::_('COM_REDEVENT_Submit').'" />';
 		}
 		else {
@@ -1117,11 +1131,31 @@ class redEVENT_tags {
 			$html .= '<input type="submit" id="redformcancel" name="cancel" value="'.JText::_('COM_REDEVENT_Cancel').'" />';
 		}
 		$html .= '</div>';
-  	$html .= '</form>';
-  	return $html;
-  }
+		$html .= '</form>';
 
-  function absoluteUrls($url, $xhtml = true, $ssl = null)
+		if (redFORMHelperAnalytics::isEnabled())
+		{
+			if ($this->getOption('hasreview'))
+			{
+				$label = "display review registration form for event " . $this->getEvent()->getData()->title;
+			}
+			else
+			{
+				$label = "display registration form for event " . $this->getEvent()->getData()->title;
+			}
+
+			$event = new stdclass;
+			$event->category = 'registration form';
+			$event->action = 'display';
+			$event->label = $label;
+			$event->value = null;
+			redFORMHelperAnalytics::trackEvent($event);
+		}
+
+		return $html;
+	}
+
+	function absoluteUrls($url, $xhtml = true, $ssl = null)
 	{
 		// Get the router
 		$app	= &JFactory::getApplication();
@@ -1133,8 +1167,8 @@ class redEVENT_tags {
 		}
 
 		if ( (strpos($url, '&') !== 0 ) && (strpos($url, 'index.php') !== 0) ) {
-            return $url;
- 		}
+			return $url;
+		}
 
 		// Build route
 		$uri = &$router->build($url);
@@ -1146,10 +1180,10 @@ class redEVENT_tags {
 		/*
 		 * Get the secure/unsecure URLs.
 
-		 * If the first 5 characters of the BASE are 'https', then we are on an ssl connection over
-		 * https and need to set our secure URL to the current request URL, if not, and the scheme is
-		 * 'http', then we need to do a quick string manipulation to switch schemes.
-		 */
+		* If the first 5 characters of the BASE are 'https', then we are on an ssl connection over
+		* https and need to set our secure URL to the current request URL, if not, and the scheme is
+		* 'http', then we need to do a quick string manipulation to switch schemes.
+		*/
 		$ssl	= (int) $ssl;
 		if ( $ssl || 1 )
 		{
@@ -1207,10 +1241,10 @@ class redEVENT_tags {
 		$db = &JFactory::getDBO();
 		// get how many registrations are associated to submit key, and how manyn on waiting list
 		$query = ' SELECT COUNT(*) as total, SUM(r.waitinglist) as waiting '
-		       . ' FROM #__redevent_register AS r '
-		       . ' WHERE r.submit_key = '. $db->Quote($this->_submitkey)
-		       . ' GROUP BY r.submit_key '
-		       ;
+		. ' FROM #__redevent_register AS r '
+	. ' WHERE r.submit_key = '. $db->Quote($this->_submitkey)
+	. ' GROUP BY r.submit_key '
+		;
 		$db->setQuery($query);
 		$res = $db->loadObject();
 
@@ -1238,10 +1272,10 @@ class redEVENT_tags {
 
 	/*************************************************************************
 	 * tags functions
-	 *
-	 * name must be _getTag_xxxxx_yyy
-	 *
-	 */
+	*
+	* name must be _getTag_xxxxx_yyy
+	*
+	*/
 
 	/************ event tags **************************/
 
@@ -1257,9 +1291,9 @@ class redEVENT_tags {
 		$venues_html = $this->SignUpLinks();
 
 		$replacecourse = array($venues_html,
-		$this->formatPrices($this->getEvent()->getPrices()),
-		$this->getEvent()->getData()->course_credit,
-		$this->getEvent()->getData()->course_code);
+				$this->formatPrices($this->getEvent()->getPrices()),
+				$this->getEvent()->getData()->course_credit,
+				$this->getEvent()->getData()->course_code);
 		$res = str_replace($findcourse, $replacecourse, $this->getEvent()->getData()->datdescription);
 		return $res;
 	}
@@ -1460,7 +1494,7 @@ class redEVENT_tags {
 	function _getTag_ical()
 	{
 		$ttext = JText::_('COM_REDEVENT_EXPORT_ICS');
-	  $res = JHTML::link( $this->_getTag_ical_url(),
+		$res = JHTML::link( $this->_getTag_ical_url(),
 	                      $ttext, array('class' => 'event-ics'));
 		return $res;
 	}
@@ -1510,10 +1544,10 @@ class redEVENT_tags {
 		$link = JRoute::_(RedeventHelperRoute::getMoreInfoRoute($this->getEvent()->getData()->xslug,
 		                                                        array('tmpl' =>'component')));
 		$text = '<a class="moreinfo" title="'.JText::_('COM_REDEVENT_DETAILS_MOREINFO_BUTTON_LABEL')
-		      .  '" href="'.$link.'" rel="{handler: \'iframe\', size: {x: 400, y: 500}}">'
-		      . JText::_('COM_REDEVENT_DETAILS_MOREINFO_BUTTON_LABEL')
-		      . ' </a>'
-		      ;
+		.  '" href="'.$link.'" rel="{handler: \'iframe\', size: {x: 400, y: 500}}">'
+	. JText::_('COM_REDEVENT_DETAILS_MOREINFO_BUTTON_LABEL')
+	. ' </a>'
+		;
 		return $text;
 	}
 
@@ -1527,9 +1561,9 @@ class redEVENT_tags {
 	}
 
 	/**
-	* returns event creator email
-	* @return string
-	*/
+	 * returns event creator email
+	 * @return string
+	 */
 	function _getTag_author_email()
 	{
 		return $this->getEvent()->getData()->creator_email;
@@ -1661,18 +1695,18 @@ class redEVENT_tags {
 	function _getTag_inputname()
 	{
 		$text = '<div id="divsubemailname">'
-		      .   '<div class="divsubemailnametext">'.JText::_('COM_REDEVENT_NAME').'</div>'
-		      .   '<div class="divsubemailnameinput"><input type="text" name="subemailname" /></div>'
-		      . '</div>';
+				.   '<div class="divsubemailnametext">'.JText::_('COM_REDEVENT_NAME').'</div>'
+			.   '<div class="divsubemailnameinput"><input type="text" name="subemailname" /></div>'
+			. '</div>';
 		return $text;
 	}
 
 	function _getTag_inputemail()
 	{
 		$text = '<div id="divsubemailaddress">'
-		      .   '<div class="divsubemailaddresstext">'.JText::_('COM_REDEVENT_EMAIL').'</div>'
-		      .   '<div class="divsubemailaddressinput"><input type="text" name="subemailaddress" /></div>'
-		      . '</div>';
+		.   '<div class="divsubemailaddresstext">'.JText::_('COM_REDEVENT_EMAIL').'</div>'
+			.   '<div class="divsubemailaddressinput"><input type="text" name="subemailaddress" /></div>'
+		. '</div>';
 		return $text;
 	}
 
@@ -1772,7 +1806,7 @@ class redEVENT_tags {
 		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
 		$elsettings = redEVENTHelper::config();
 		$text = '<span class="vlink webform">'
-               . JHTML::_('link',
+		. JHTML::_('link',
                           $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('webform',
                                  $this->getEvent()->getData()->slug,
                                  $this->getEvent()->getData()->xslug)),
@@ -1798,7 +1832,7 @@ class redEVENT_tags {
 		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
 		$elsettings = redEVENTHelper::config();
 		$text = '<span class="vlink email">'
-		      . JHTML::_('link',
+				. JHTML::_('link',
 		                 $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('email', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)),
 		                 JHTML::_('image', $iconspath.$elsettings->get('signup_email_img'),
 		                 JText::_($elsettings->get('signup_email_text')),
@@ -1822,7 +1856,7 @@ class redEVENT_tags {
 		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
 		$elsettings = redEVENTHelper::config();
 		$text = '<span class="vlink formaloffer">'
-		      . JHTML::_('link',
+		. JHTML::_('link',
 		                 $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('formaloffer', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)),
 		                 JHTML::_('image', $iconspath.$elsettings->get('signup_formal_offer_img'),
 		                 JText::_($elsettings->get('signup_formal_offer_text')),
@@ -1852,7 +1886,7 @@ class redEVENT_tags {
 			$link = $this->getEvent()->getData()->submission_type_external;
 		}
 		$text = '<span class="vlink external">'
-		      . JHTML::_('link',
+		. JHTML::_('link',
 		                 $link,
 		                 JHTML::_('image', $iconspath.$elsettings->get('signup_external_img'),
 		                 $elsettings->get('signup_external_text')),
@@ -1876,7 +1910,7 @@ class redEVENT_tags {
 		$iconspath = $base_url.'administrator/components/com_redevent/assets/images/';
 		$elsettings = redEVENTHelper::config();
 		$text = '<span class="vlink phone">'
-		      . JHTML::_('link',
+			. JHTML::_('link',
 		                 $this->absoluteUrls(RedeventHelperRoute::getSignupRoute('phone', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)),
 		                 JHTML::_('image', $iconspath.$elsettings->get('signup_phone_img'),
 		                 JText::_($elsettings->get('signup_phone_text')),
@@ -2060,7 +2094,7 @@ class RedeventParsedTag {
 	 *
 	 * @param string $full_tag full tag, including delimiters and parameters
 	 * @throws Exception
-	 */
+	*/
 	public function __construct($full_tag)
 	{
 		$this->full_tag = $full_tag;
