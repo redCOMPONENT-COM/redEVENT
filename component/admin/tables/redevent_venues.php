@@ -38,7 +38,7 @@ class RedEvent_venues extends JTable
 	}
 
 	// overloaded check function
-	function check($elsettings)
+	function check()
 	{
 		// not typed in a venue name
 		if(!trim($this->venue)) {
@@ -210,7 +210,7 @@ class RedEvent_venues extends JTable
 	 */
 	protected function _getAssetTitle()
 	{
-		return $this->catname;
+		return $this->venue;
 	}
 
 	/**
