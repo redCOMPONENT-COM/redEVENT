@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php foreach ($this->sessions as $row): ?>
 			<?php
 				$eventediturl = RedeventHelperRoute::getEditEventRoute($row->id).'&tmpl=component';
-				$eventeditimg = JHTML::image('media/com_redevent/images/icon-16-edit.png', JText::_('COM_REDEVENT_EDIT_EVENT')
+				$eventeditimg = JHTML::image('media/com_redevent/images/b2b-edit.png', JText::_('COM_REDEVENT_EDIT_EVENT')
 							, array('class' => 'hasTip'
 									, 'title' => JText::_('COM_REDEVENT_EDIT_EVENT')
 									, 'tip' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CLICK_TO_EDIT_EVENT')));
@@ -93,23 +93,23 @@ defined('_JEXEC') or die('Restricted access');
 					<td>
 					<?php if ($row->published == '1'): ?>
 						<?php if ($this->useracl->canEditXref($row->xref)): ?>
-							<?php echo JHTML::image('media/com_redevent/images/ok.png', JText::_('COM_REDEVENT_Published')
+							<?php echo JHTML::image('media/com_redevent/images/b2b-published.png', JText::_('COM_REDEVENT_Published')
 								, array('class' => 'unpublishxref hasTip'
 									, 'title' => JText::_('COM_REDEVENT_Published')
 									, 'tip' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CLICK_TO_UNPUBLISH'))); ?>
 						<?php else: ?>
-							<?php echo JHTML::image('media/com_redevent/images/ok.png', JText::_('COM_REDEVENT_Published')
+							<?php echo JHTML::image('media/com_redevent/images/b2b-published.png', JText::_('COM_REDEVENT_Published')
 								, array('class' => 'hasTip'
 									, 'title' => JText::_('COM_REDEVENT_Published'))); ?>
 						<?php endif; ?>
 					<?php elseif ($row->published == '0'):?>
 						<?php if ($this->useracl->canEditXref($row->xref)): ?>
-							<?php echo JHTML::image('media/com_redevent/images/no.png', JText::_('COM_REDEVENT_unPublished')
+							<?php echo JHTML::image('media/com_redevent/images/b2b-unpublished.png', JText::_('COM_REDEVENT_unPublished')
 								, array('class' => 'publishxref hasTip'
 									, 'title' => JText::_('COM_REDEVENT_unPublished')
 									, 'tip' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CLICK_TO_PUBLISH'))); ?>
 						<?php else: ?>
-							<?php echo JHTML::image('media/com_redevent/images/no.png', JText::_('COM_REDEVENT_unPublished')
+							<?php echo JHTML::image('media/com_redevent/images/b2b-unpublished.png', JText::_('COM_REDEVENT_unPublished')
 								, array('class' => 'hasTip'
 									, 'title' => JText::_('COM_REDEVENT_unPublished'))); ?>
 						<?php endif; ?>
@@ -117,7 +117,7 @@ defined('_JEXEC') or die('Restricted access');
 					</td>
 					<td>
 						<?php if ($this->useracl->canEditXref($row->xref)): ?>
-							<?php echo JHTML::image('media/com_redevent/images/icon-16-delete.png', JText::_('COM_REDEVENT_DELETE'), array('class' => 'deletexref hasTip'
+							<?php echo JHTML::image('media/com_redevent/images/b2b-delete.png', JText::_('COM_REDEVENT_DELETE'), array('class' => 'deletexref hasTip'
 									, 'title' => JText::_('COM_REDEVENT_DELETE')
 									, 'tip' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CLICK_TO_DELETE_SESSION'))); ?>
 						<?php endif; ?>
