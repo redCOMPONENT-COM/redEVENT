@@ -22,28 +22,12 @@
 			<require>no</require>
 			<readonly>true</readonly>
 		</field>
-		
+				
 		<field>
-			<id>categories</id>
-			<name>COM_REDEVENT_CATEGORIES</name>
-			<column>categories</column>
-			<description>COM_REDEVENT_CATEGORIES</description>
-			<translate>yes</translate>
-			<type>relanguagevenuecategory</type>
-			<multiple>yes</multiple>
-			<addfieldpath>/plugins/josetta_ext/redeventvenue/fields</addfieldpath>
-			<display>yes</display>
-			<option>
-				<value></value>
-				<title>aa</title>
-			</option>
-		</field>
-		
-		<field>
-			<id>venue</id>
-			<name>COM_REDEVENT_NAME</name>
-			<description>COM_REDEVENT_NAME</description>
-			<column>venue</column>
+			<id>title</id>
+			<name>COM_REDEVENT_TITLE</name>
+			<description>COM_REDEVENT_TITLE</description>
+			<column>title</column>
 			<type>josettatext</type>
 			<size>60</size>
 			<length>255</length>
@@ -65,93 +49,46 @@
 		</field>
 		
 		<field>
-			<id>url</id>
-			<column>url</column>
-			<translate>no</translate>
+			<id>categories</id>
+			<name>COM_REDEVENT_CATEGORIES</name>
+			<column>categories</column>
+			<description>COM_REDEVENT_CATEGORIES</description>
+			<translate>yes</translate>
+			<type>relanguagecategory</type>
+			<multiple>yes</multiple>
+			<addfieldpath>/plugins/josetta_ext/redeventvenue/fields</addfieldpath>
 			<display>yes</display>
+			<option value=""></option>
 			<require>no</require>
 		</field>
 		
 		<field>
-			<id>email</id>
-			<column>email</column>
-			<translate>no</translate>
-			<display>yes</display>
-			<require>no</require>
-		</field>
-		
-		<field>
-			<id>company</id>
-			<column>company</column>
-			<translate>no</translate>
-			<display>yes</display>
-			<require>no</require>
-		</field>
-		
-		<field>
-			<id>street</id>
-			<column>street</column>
-			<translate>no</translate>
-			<display>yes</display>
-			<require>no</require>
-		</field>
-		
-		<field>
-			<id>plz</id>
-			<column>plz</column>
-			<translate>no</translate>
-			<display>yes</display>
-			<require>no</require>
-		</field>
-		
-		<field>
-			<id>city</id>
-			<column>city</column>
-			<translate>no</translate>
-			<display>yes</display>
-			<require>no</require>
-		</field>
-		
-		<field>
-			<id>state</id>
-			<column>state</column>
-			<translate>no</translate>
-			<display>yes</display>
-			<require>no</require>
-		</field>
-		
-		<field>
-			<id>country</id>
-			<column>country</column>
-			<translate>no</translate>
-			<display>yes</display>
-			<require>no</require>
-		</field>
-		
-		<field>
-			<id>latitude</id>
-			<column>latitude</column>
-			<translate>no</translate>
-			<display>yes</display>
-			<require>no</require>
-		</field>
-		
-		<field>
-			<id>longitude</id>
-			<column>longitude</column>
-			<translate>no</translate>
-			<display>yes</display>
-			<require>no</require>
-		</field>
-
-		<field>
-			<id>locdescription</id>
-			<name>COM_REDEVENT_DESCRIPTION</name>
-			<description>COM_REDEVENT_DESCRIPTION</description>
-			<column>description</column>
+			<id>summary</id>
+			<column>summary</column>
+			<name>COM_REDEVENT_EVENT_SUMMARY</name>
+			<description>COM_REDEVENT_EVENT_SUMMARY_DESC</description>
 			<type>editor</type>
 			<translate>yes</translate>
 			<display>yes</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>datdescription</id>
+			<column>summary</column>
+			<name>COM_REDEVENT_EVENT_DESCRIPTION</name>
+			<description>COM_REDEVENT_EVENT_DESCRIPTION_DESC</description>
+			<type>editor</type>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>details_layout</id>
+			<column>details_layout</column>
+			<translate>no</translate>
+			<display>no</display>
 			<require>no</require>
 		</field>
 				
@@ -180,7 +117,7 @@
 	    </field>
 		
 		<field>
-			<id>locimage</id>
+			<id>datimage</id>
 			<column>image</column>
 			<translate>no</translate>
 			<display>no</display>
@@ -188,22 +125,354 @@
 		</field>
 		
 		<field>
-			<id>map</id>
-			<column>map</column>
+			<id>registra</id>
+			<column>registra</column>
 			<translate>no</translate>
 			<display>no</display>
 			<require>no</require>
-		</field>  
+		</field>
 		
-	    <field>
-	      <id>access</id>
-	      <name>access</name>
-	      <column>access</column>
-	      <translate>no</translate>
-	      <display>no</display>
-	      <require>no</require>
-	      <grid>no</grid>
-	    </field>
+		<field>
+			<id>unregistra</id>
+			<column>unregistra</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>notify</id>
+			<column>notify</column>
+			<translate>no</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+						
+		<field>
+			<id>notify_subject</id>
+			<column>notify_subject</column>
+			<name>COM_REDEVENT_NOTIFY_SUBJECT</name>
+			<description>COM_REDEVENT_NOTIFY_SUBJECT</description>
+			<type>josettatext</type>
+			<size>60</size>
+			<length>255</length>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+				
+		<field>
+			<id>notify_body</id>
+			<column>notify_body</column>
+			<name>COM_REDEVENT_NOTIFY_BODY</name>
+			<description>COM_REDEVENT_NOTIFY_BODY_NOTE</description>
+			<type>editor</type>
+			<translate>yes</translate>
+			<display>yes</display>
+		</field>
+						
+		<field>
+			<id>redform_id</id>
+			<column>redform_id</column>
+			<name>COM_REDEVENT_REDFORM_FORM_ID</name>
+			<description>COM_REDEVENT_REDFORM_FORM_ID</description>
+			<type>redform</type>
+			<addfieldpath>/administrator/components/com_redevent/models/fields</addfieldpath>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>yes</require>
+		</field>
+		
+		<field>
+			<id>registeruser</id>
+			<column>registeruser</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>juser</id>
+			<column>juser</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>notify_on_list_subject</id>
+			<column>notify_on_list_subject</column>
+			<name>COM_REDEVENT_NOTIFY_ON_LIST_SUBJECT</name>
+			<description>COM_REDEVENT_NOTIFY_ON_LIST_SUBJECT</description>
+			<type>josettatext</type>
+			<size>60</size>
+			<length>255</length>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+				
+		<field>
+			<id>notify_on_list_body</id>
+			<column>notify_on_list_body</column>
+			<name>COM_REDEVENT_NOTIFY_ON_LIST_BODY</name>
+			<description>COM_REDEVENT_NOTIFY_ON_LIST_BODY_NOTE</description>
+			<type>editor</type>
+			<translate>yes</translate>
+			<display>yes</display>
+		</field>
+		
+		<field>
+			<id>show_names</id>
+			<column>show_names</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>activate</id>
+			<column>activate</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>		
+		
+		<field>
+			<id>notify_confirm_subject</id>
+			<column>notify_confirm_subject</column>
+			<name>COM_REDEVENT_NOTIFY_CONFIRM_SUBJECT</name>
+			<description>COM_REDEVENT_NOTIFY_CONFIRM_SUBJECT</description>
+			<type>josettatext</type>
+			<size>60</size>
+			<length>255</length>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+				
+		<field>
+			<id>notify_confirm_body</id>
+			<column>notify_confirm_body</column>
+			<name>COM_REDEVENT_NOTIFY_CONFIRM_BODY</name>
+			<description>COM_REDEVENT_NOTIFY_CONFIRM_BODY</description>
+			<type>editor</type>
+			<translate>yes</translate>
+			<display>yes</display>
+		</field>
+		
+		<field>
+			<id>showfields</id>
+			<column>showfields</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>	
+				
+		<field>
+			<id>confirmation_message</id>
+			<column>confirmation_message</column>
+			<name>COM_REDEVENT_CONFIRMATION</name>
+			<description>COM_REDEVENT_CONFIRMATION_INFO</description>
+			<type>editor</type>
+			<translate>yes</translate>
+			<display>yes</display>
+		</field>
+		
+		<field>
+			<id>submission_types</id>
+			<column>submission_types</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>	
+		
+		<field>
+			<id>course_code</id>
+			<column>course_code</column>
+			<name>COM_REDEVENT_COURSE_CODE</name>
+			<description>COM_REDEVENT_COURSE_CODE</description>
+			<type>josettatext</type>
+			<size>60</size>
+			<length>255</length>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+				
+		<field>
+			<id>submission_type_email</id>
+			<column>submission_type_email</column>
+			<name>COM_REDEVENT_SUBMISSION_TYPE_EMAIL</name>
+			<description>COM_REDEVENT_SUBMISSION_TYPE_EMAIL_DESC</description>
+			<type>editor</type>
+			<translate>yes</translate>
+			<display>yes</display>
+		</field>
+		
+		<field>
+			<id>submission_type_email_subject</id>
+			<column>submission_type_email_subject</column>
+			<name>COM_REDEVENT_SUBMISSION_TYPE_EMAIL_EMAIL_SUBJECT</name>
+			<description>COM_REDEVENT_SUBMISSION_TYPE_EMAIL_EMAIL_SUBJECT_DESC</description>
+			<type>josettatext</type>
+			<size>60</size>
+			<length>255</length>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+				
+		<field>
+			<id>submission_type_email_body</id>
+			<column>submission_type_email_body</column>
+			<name>COM_REDEVENT_SUBMISSION_TYPE_EMAIL_EMAIL_BODY</name>
+			<description>COM_REDEVENT_SUBMISSION_TYPE_EMAIL_EMAIL_BODY_DESC</description>
+			<type>editor</type>
+			<translate>yes</translate>
+			<display>yes</display>
+		</field>
+		
+		<field>
+			<id>submission_type_external</id>
+			<column>submission_type_external</column>
+			<name>COM_REDEVENT_SUBMISSION_TYPE_EXTERNAL</name>
+			<description>COM_REDEVENT_SUBMISSION_TYPE_EXTERNAL_DESC</description>
+			<type>josettatext</type>
+			<size>60</size>
+			<length>255</length>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>max_multi_signup</id>
+			<column>max_multi_signup</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>	
+				
+		<field>
+			<id>submission_type_formal_offer</id>
+			<column>submission_type_formal_offer</column>
+			<name>COM_REDEVENT_FORMALOFFER</name>
+			<description>COM_REDEVENT_FORMALOFFER_DESC</description>
+			<type>editor</type>
+			<translate>yes</translate>
+			<display>yes</display>
+		</field>
+		
+		<field>
+			<id>submission_type_formal_offer_subject</id>
+			<column>submission_type_formal_offer_subject</column>
+			<name>COM_REDEVENT_FORMAL_OFFER_SUBJECT</name>
+			<description>COM_REDEVENT_FORMAL_OFFER_SUBJECT</description>
+			<type>josettatext</type>
+			<size>60</size>
+			<length>255</length>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+				
+		<field>
+			<id>submission_type_formal_offer_body</id>
+			<column>submission_type_formal_offer_body</column>
+			<name>COM_REDEVENT_FORMAL_OFFER_BODY</name>
+			<description>COM_REDEVENT_FORMAL_OFFER_BODY</description>
+			<type>editor</type>
+			<translate>yes</translate>
+			<display>yes</display>
+		</field>
+		
+		<field>
+			<id>submission_type_formal_offer_subject</id>
+			<column>submission_type_formal_offer_subject</column>
+			<name>COM_REDEVENT_FORMAL_OFFER_SUBJECT</name>
+			<description>COM_REDEVENT_FORMAL_OFFER_SUBJECT</description>
+			<type>josettatext</type>
+			<size>60</size>
+			<length>255</length>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+				
+		<field>
+			<id>submission_type_formal_offer</id>
+			<column>submission_type_formal_offer</column>
+			<name>COM_REDEVENT_FORMAL_OFFER_BODY</name>
+			<description>COM_REDEVENT_FORMAL_OFFER_BODY</description>
+			<type>editor</type>
+			<translate>yes</translate>
+			<display>yes</display>
+		</field>
+				
+		<field>
+			<id>submission_type_webform</id>
+			<column>submission_type_webform</column>
+			<name>COM_REDEVENT_WEBFORM</name>
+			<description>COM_REDEVENT_WEBFORM_DESC</description>
+			<type>editor</type>
+			<translate>yes</translate>
+			<display>yes</display>
+		</field>
+				
+		<field>
+			<id>review_message</id>
+			<column>review_message</column>
+			<name>COM_REDEVENT_REVIEW_SCREEN</name>
+			<description>COM_REDEVENT_REVIEW_SCREEN_INFO</description>
+			<type>editor</type>
+			<translate>yes</translate>
+			<display>yes</display>
+		</field>
+				
+		<field>
+			<id>paymentaccepted</id>
+			<column>paymentaccepted</column>
+			<name>COM_REDEVENT_PAYMENTACCEPTED</name>
+			<description>COM_REDEVENT_PAYMENTACCEPTED_INFO</description>
+			<type>editor</type>
+			<translate>yes</translate>
+			<display>yes</display>
+		</field>
+				
+		<field>
+			<id>paymentprocessing</id>
+			<column>paymentprocessing</column>
+			<name>COM_REDEVENT_PAYMENTPROCESSING</name>
+			<description>COM_REDEVENT_PAYMENTPROCESSING_INFO</description>
+			<type>editor</type>
+			<translate>yes</translate>
+			<display>yes</display>
+		</field>
+		
+		<field>
+			<id>enable_ical</id>
+			<column>enable_ical</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>show_submission_type_webform_formal_offer</id>
+			<column>show_submission_type_webform_formal_offer</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>enable_activation_confirmation</id>
+			<column>enable_activation_confirmation</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>
 	    
 	</fields>
 </josetta>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <josetta>
-	<context>redevent_venue</context>
-	<name>Redevent venue</name>
-	<table>#__redevent_venues</table>
+	<context>redevent_event</context>
+	<name>Redevent event</name>
+	<table>#__redevent_events</table>
 	<reference>
 		<id>
 			<column>id</column>
@@ -10,7 +10,7 @@
 			<size>10</size>
 		</id>
 		<title>
-			<column>venue</column>
+			<column>title</column>
 			<type>josettatext</type>
 			<size>100</size>
 		</title>

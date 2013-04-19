@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="1.7" type="plugin" group="josetta_ext">
-	<name>Josetta redEVENT venues plugin</name>
+	<name>Josetta redEVENT events plugin</name>
 	<creationDate>mar, 2013</creationDate>
 	<author>redWEB Aps</author>
 	<authorEmail>email@redweb.dk</authorEmail>
@@ -13,7 +13,7 @@
 	<files>
 		<filename>definitions.xml</filename>
 		<filename>fields_common.xml</filename>
-		<filename plugin="redeventvenue">redeventvenue.php</filename>
+		<filename plugin="redeventevent">redeventevent.php</filename>
 		<filename>index.html</filename>
 	</files>
 

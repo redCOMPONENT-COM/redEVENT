@@ -33,10 +33,7 @@
 			<multiple>yes</multiple>
 			<addfieldpath>/plugins/josetta_ext/redeventvenue/fields</addfieldpath>
 			<display>yes</display>
-			<option>
-				<value></value>
-				<title>aa</title>
-			</option>
+			<option value=""></option>
 		</field>
 		
 		<field>

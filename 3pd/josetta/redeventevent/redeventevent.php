@@ -33,11 +33,11 @@ require_once JPATH_ADMINISTRATOR . '/components/com_josetta/classes/extensionplu
  * @subpackage  josetta.redeventcustomfield
  * @since       2.5
  */
-class plgJosetta_extRedeventvenue extends JosettaClassesExtensionplugin
+class plgJosetta_extRedeventevent extends JosettaClassesExtensionplugin
 {
-	protected $_context = 'com_redevent_venue';
+	protected $_context = 'com_redevent_event';
 
-	protected $_defaultTable = 'redevent_venues';
+	protected $_defaultTable = 'redevent_events';
 
 	/**
 	 * constructor
@@ -77,7 +77,7 @@ class plgJosetta_extRedeventvenue extends JosettaClassesExtensionplugin
 	 */
 	public function onJosettaGetTypes()
 	{
-		$item = array( self::$this->_context => 'redEVENT - ' . JText::_('COM_REDEVENT_venues'));
+		$item = array( self::$this->_context => 'redEVENT - ' . JText::_('COM_REDEVENT_EVENTS'));
 		$items[] = $item;
 
 		return $items;
@@ -92,7 +92,7 @@ class plgJosetta_extRedeventvenue extends JosettaClassesExtensionplugin
 	{
 		// Set the table directory
 		JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_redevent/tables');
-		$table = JTable::getInstance('redevent_venues', '');
+		$table = JTable::getInstance('redevent_events', '');
 
 		return $table;
 	}
@@ -107,7 +107,7 @@ class plgJosetta_extRedeventvenue extends JosettaClassesExtensionplugin
 	{
 		switch ($xmlData->fieldType)
 		{
-			case 'relanguagevenuecategory':
+			case 'relanguagecategory':
 				$options = $this->getOptions($field);
 
 				foreach ($options as $option)
@@ -190,10 +190,10 @@ class plgJosetta_extRedeventvenue extends JosettaClassesExtensionplugin
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('vc.id AS value, vc.name AS text');
-		$query->from('#__redevent_venues_categories AS vc');
-		$query->join('INNER', '#__redevent_venue_category_xref AS x ON x.category_id = vc.id');
-		$query->where('venue_id = ' . $item->id);
+		$query->select('c.id AS value, c.catname AS text');
+		$query->from('#__redevent_categories AS c');
+		$query->join('INNER', '#__redevent_event_category_xref AS x ON x.category_id = c.id');
+		$query->where('event_id = ' . $item->id);
 
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
@@ -246,7 +246,7 @@ class plgJosetta_extRedeventvenue extends JosettaClassesExtensionplugin
 
 		// Save categories
 		// first, delete current rows for this event
-		$query = ' DELETE FROM #__redevent_venue_category_xref WHERE venue_id = ' . $db->Quote($id);
+		$query = ' DELETE FROM #__redevent_event_category_xref WHERE event_id = ' . $db->Quote($id);
 		$db->setQuery($query);
 		if (!$db->query())
 		{
@@ -259,7 +259,7 @@ class plgJosetta_extRedeventvenue extends JosettaClassesExtensionplugin
 		{
 			foreach ((array) $item['categories'] as $cat_id)
 			{
-				$query = ' INSERT INTO #__redevent_venue_category_xref (venue_id, category_id) VALUES (' . $db->Quote($id) . ', '. $db->Quote($cat_id) . ')';
+				$query = ' INSERT INTO #__redevent_event_category_xref (event_id, category_id) VALUES (' . $db->Quote($id) . ', '. $db->Quote($cat_id) . ')';
 				$db->setQuery($query);
 				if (!$db->query())
 				{
@@ -283,7 +283,7 @@ class plgJosetta_extRedeventvenue extends JosettaClassesExtensionplugin
 	{
 		$displayText = null;
 
-		if ($type->type == 'RELanguageVenueCategory')
+		if ($type->type == 'RELanguageCategory')
 		{
 // 			echo '<pre>type';print_r($type); echo '</pre>';
 			$displayText = $type->input;
@@ -305,7 +305,7 @@ class plgJosetta_extRedeventvenue extends JosettaClassesExtensionplugin
 	{
 		$displayText = null;
 
-		if ($field->type == 'RELanguageVenueCategory')
+		if ($field->type == 'RELanguageCategory')
 		{
 			$displayText = implode("\n", $originalItem->categories_names);
 		}

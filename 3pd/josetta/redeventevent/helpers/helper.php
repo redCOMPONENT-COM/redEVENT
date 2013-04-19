@@ -31,7 +31,7 @@ defined('_JEXEC') or die('');
  * @subpackage  josetta.JosettaReVenueCategoryHelper
  * @since       2.5
  */
-abstract class JosettaReVenueCategoryHelper
+abstract class JosettaReCategoryHelper
 {
 	/**
 	 * Cached array of the category items.
