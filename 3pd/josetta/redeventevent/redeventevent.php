@@ -307,7 +307,24 @@ class plgJosetta_extRedeventevent extends JosettaClassesExtensionplugin
 
 		if ($field->type == 'RELanguageCategory')
 		{
-			$displayText = implode("\n", $originalItem->categories_names);
+			$displayText = implode("<br/>\n", $originalItem->categories_names);
+		}
+
+		if ($field->type == 'redform')
+		{
+			$val = (int) $field->value;
+
+			$db      = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			$query->select('formname');
+			$query->from('#__rwf_forms');
+			$query->where('id = ' . $val);
+
+			$db->setQuery($query);
+			$res = $db->loadResult();
+
+			$displayText = $res;
 		}
 
 		return $displayText;

@@ -56,9 +56,8 @@
 			<translate>yes</translate>
 			<type>relanguagecategory</type>
 			<multiple>yes</multiple>
-			<addfieldpath>/plugins/josetta_ext/redeventvenue/fields</addfieldpath>
+			<addfieldpath>/plugins/josetta_ext/redeventevent/fields</addfieldpath>
 			<display>yes</display>
-			<option value=""></option>
 			<require>no</require>
 		</field>
 		

@@ -94,14 +94,11 @@ class JFormFieldRELanguageCategory extends JFormFieldCategory {
 		}
 
 		// Filter over published state or not depending upon if it is present.
-		// include k2item helper, which has the method we want
-		require_once dirname(__DIR__) . '/helpers/helper.php';
 		if ($published) {
 			$categoriesoptions = $this->getCategoryOptionsPerLanguage( array( 'filter.published' => explode(',', $published), 'filter.languages' => explode( ',', $languages)));
 		} else {
 			$categoriesoptions = $this->getCategoryOptionsPerLanguage( array( 'filter.languages' => explode( ',', $languages)));
 		}
-		//     echo '<pre>';print_r($categoriesoptions); echo '</pre>';exit;
 
 		$options = array_merge( $options, $categoriesoptions);
 
