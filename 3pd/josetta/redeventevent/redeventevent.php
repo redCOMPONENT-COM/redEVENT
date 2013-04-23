@@ -327,6 +327,26 @@ class plgJosetta_extRedeventevent extends JosettaClassesExtensionplugin
 			$displayText = $res;
 		}
 
+		if ($field->type == 'recustom')
+		{
+			// Find if there is an associated custom field in original language
+			$customid = substr($field->fieldname, 6);
+			$db      = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			$query->select('ja.id');
+			$query->from('#__josetta_associations AS ja');
+			$query->join('INNER', '#__josetta_associations AS jorg ON jorg.key = ja.key');
+			$query->where('jorg.id = ' . $customid);
+			$query->where('jorg.context = ' . $db->Quote('com_redevent_customfield'));
+			$query->where('ja.language = ' . $db->Quote($originalItem->language));
+
+			$db->setQuery($query);
+			$resu = $db->loadResult();
+
+			$displayText = $originalItem->{'custom' . $resu} ? $originalItem->{'custom' . $resu} : '';
+		}
+
 		return $displayText;
 	}
 
@@ -350,7 +370,10 @@ class plgJosetta_extRedeventevent extends JosettaClassesExtensionplugin
 
 		foreach ($res as $field)
 		{
-			$xml .= $this->getRedeventCustomFieldXml($field);
+			if ($field->language == $targetLanguage)
+			{
+				$xml .= $this->getRedeventCustomFieldXml($field);
+			}
 		}
 
 		return $xml;
@@ -412,19 +435,6 @@ class plgJosetta_extRedeventevent extends JosettaClassesExtensionplugin
 		// compute change detection event
 		$onChange = ' onchange="Josetta.itemChanged(this);"';
 
-		$multiple = '';
-
-// 		switch ($field->type)
-// 		{
-// 			case 'select_multiple':
-// 				$multiple = ' multiple="multiple"';
-// 				break;
-
-// 			case 'checkbox':
-// 				$multiple = ' multiple="multiple"';
-// 				break;
-// 		}
-
 		$type = 'recustom';
 		$xmlData->addFieldPath = 'addfieldpath="/plugins/josetta_ext/redeventevent/fields"';
 
@@ -433,7 +443,7 @@ class plgJosetta_extRedeventevent extends JosettaClassesExtensionplugin
 		. (string) $field->name . '"   ' . $xmlData->isRequired . ' '
 		. $xmlData->maxLength . ' ' . $xmlData->other . ' ' . $xmlData->description
 		. ' ' . $xmlData->addFieldPath
-		. ' ' . $xmlData->default . ' ' . $multiple . ' ></field>' . "\n";
+		. ' ' . $xmlData->default . ' ></field>' . "\n";
 
 		return $xml;
 	}
