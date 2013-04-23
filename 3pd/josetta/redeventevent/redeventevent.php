@@ -39,6 +39,8 @@ class plgJosetta_extRedeventevent extends JosettaClassesExtensionplugin
 
 	protected $_defaultTable = 'redevent_events';
 
+	protected $customfields = null;
+
 	/**
 	 * constructor
 	 *
@@ -207,7 +209,6 @@ class plgJosetta_extRedeventevent extends JosettaClassesExtensionplugin
 			$item->categories_names[] = $r->text;
 		}
 
-
 		return $item;
 	}
 
@@ -289,7 +290,6 @@ class plgJosetta_extRedeventevent extends JosettaClassesExtensionplugin
 			$displayText = $type->input;
 		}
 
-
 		return $displayText;
 	}
 
@@ -328,5 +328,113 @@ class plgJosetta_extRedeventevent extends JosettaClassesExtensionplugin
 		}
 
 		return $displayText;
+	}
+
+
+	/**
+	 * Hook for module to add raw fields definitions
+	 * to the form xml
+	 *
+	 * @return string
+	 */
+	protected function _createFormAddCustomFields($targetLanguage)
+	{
+		$res = $this->getcustomfields();
+
+		if (!$res)
+		{
+			return '';
+		}
+
+		$xml = '';
+
+		foreach ($res as $field)
+		{
+			$xml .= $this->getRedeventCustomFieldXml($field);
+		}
+
+		return $xml;
+	}
+
+	/**
+	 * returns cutom fields objects
+	 *
+	 * @return array
+	 */
+	protected function getcustomfields()
+	{
+		if (!$this->customfields)
+		{
+			$db      = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			$query->select('f.*');
+			$query->from('#__redevent_fields AS f');
+			$query->where('f.object_key = "redevent.event"');
+			$query->order('f.ordering');
+
+			$db->setQuery($query);
+			$this->customfields = $db->loadObjectList('id');
+		}
+
+		return $this->customfields;
+	}
+
+	/**
+	 * get xml for redevent custom fields
+	 *
+	 * @param   object  $field  field data
+	 *
+	 * @return string xml
+	 */
+	protected function getRedeventCustomFieldXml($field)
+	{
+		$xmlData = new stdclass;
+
+		// get description, if any
+		$xmlData->description = empty($field->tips) ? '' : (string) $field->tips;
+		$xmlData->description = empty($xmlData->description) ? '' : 'description="' . $xmlData->description . '"';
+
+		// default value
+		$xmlData->default = is_null($field->default_value) ? '' : (string) $field->default_value;
+		$xmlData->default = empty($xmlData->default) ? '' : 'default="' . (string) $field->default_value . '"';
+
+		//get the value of  <length> tag
+		$xmlData->maxLength = (string) $field->max == '0' ? '' : 'maxlength="' . (string) $field->max . '"';
+
+		$xmlData->subfield = '';
+		$xmlData->other = '';
+		$xmlData->class = 'class="josetta"';
+
+		//if <require> tag is present in <field> in context.xml
+		$xmlData->isRequired = $field->required ? 'required="true"' : '';
+
+		// compute change detection event
+		$onChange = ' onchange="Josetta.itemChanged(this);"';
+
+		$multiple = '';
+
+// 		switch ($field->type)
+// 		{
+// 			case 'select_multiple':
+// 				$multiple = ' multiple="multiple"';
+// 				break;
+
+// 			case 'checkbox':
+// 				$multiple = ' multiple="multiple"';
+// 				break;
+// 		}
+
+		$type = 'recustom';
+		$xmlData->addFieldPath = 'addfieldpath="/plugins/josetta_ext/redeventevent/fields"';
+
+		//Build xml node for jforms
+		$xml = ' <field  name="custom' . (string) $field->id . '" ' . $xmlData->class . $onChange . ' type="' . $type . '" label="'
+		. (string) $field->name . '"   ' . $xmlData->isRequired . ' '
+		. $xmlData->maxLength . ' ' . $xmlData->other . ' ' . $xmlData->description
+		. ' ' . $xmlData->addFieldPath
+		. ' ' . $xmlData->default . ' ' . $multiple . ' ></field>' . "\n";
+
+		return $xml;
 	}
 }

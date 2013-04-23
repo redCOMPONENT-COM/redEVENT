@@ -134,7 +134,41 @@ class RedEvent_events extends JTable
 			$this->setRules($rules);
 		}
 
+		// Custom fields
+		$customs = $this->_getCustomFieldsColumns();
+
+		foreach ($customs as $c)
+		{
+			if (isset($array[$c]))
+			{
+				$array[$c] = is_array($array[$c]) ? implode("\n", $array[$c]) : $array[$c];
+			}
+			else {
+				$array[$c] = '';
+			}
+		}
+
 		return parent::bind($array, $ignore);
+	}
+
+	/**
+	 * get custom fields for table
+	 *
+	 * @return array
+	 */
+	protected function _getCustomFieldsColumns()
+	{
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('CONCAT("custom", id)');
+		$query->from('#__redevent_fields');
+		$query->where('object_key = ' . $db->Quote('redevent.event'));
+
+		$db->setQuery($query);
+		$res = $db->loadColumn();
+
+		return $res;
 	}
 
 	/**

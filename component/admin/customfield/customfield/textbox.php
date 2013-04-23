@@ -32,7 +32,7 @@ defined('JPATH_BASE') or die();
 */
 
 class TCustomfieldTextbox extends TCustomfield {
- 
+
   /**
   * Element name
   *
@@ -49,7 +49,7 @@ class TCustomfieldTextbox extends TCustomfield {
    */
   function render($attributes = array())
   {
-  	if ($this->required) 
+  	if ($this->required)
   	{
   		if (isset($attributes['class'])) {
   			$attributes['class'] .= ' required';
@@ -58,7 +58,7 @@ class TCustomfieldTextbox extends TCustomfield {
   			$attributes['class'] = 'required';
   		}
   	}
-  	
+
   	/*
   	 * Required to avoid a cycle of encoding &
   	 * html_entity_decode was used in place of htmlspecialchars_decode because
@@ -72,22 +72,22 @@ class TCustomfieldTextbox extends TCustomfield {
   	}
     $value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-    return '<input type="text" name="custom'.$this->id.'" id="custom'.$this->id.'" value="'.$value.'" '.$this->attributesToString($attributes).'/>';
+    return '<input type="text" name="'.$this->fieldname.'" id="'.$this->fieldid.'" value="'.$value.'" '.$this->attributesToString($attributes).'/>';
   }
 
-  function renderFilter($attributes = array(), $selected = null) 
+  function renderFilter($attributes = array(), $selected = null)
   {
     $app = & JFactory::getApplication();
-  
+
     if ($selected) {
       $value = $selected;
     }
     else {
       $value = '';
     }
-  	
+
     $value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-    return '<input type="text" name="filtercustom['.$this->id.']" id="filtercustom['.$this->id.']" value="'.$value.'" '.$this->attributesToString($attributes).'/>'; 
+    return '<input type="text" name="filtercustom['.$this->id.']" id="filtercustom['.$this->id.']" value="'.$value.'" '.$this->attributesToString($attributes).'/>';
   }
 }

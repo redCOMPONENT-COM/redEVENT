@@ -31,7 +31,7 @@ defined('JPATH_BASE') or die();
 */
 
 class TCustomfieldDate extends TCustomfield {
- 
+
   /**
   * Element name
   *
@@ -48,7 +48,7 @@ class TCustomfieldDate extends TCustomfield {
    */
   function render($attributes = array())
   {
-  	if ($this->required) 
+  	if ($this->required)
   	{
   		if (isset($attributes['class'])) {
   			$attributes['class'] .= ' required';
@@ -57,7 +57,7 @@ class TCustomfieldDate extends TCustomfield {
   			$attributes['class'] = 'required';
   		}
   	}
-  
+
     if (!is_null($this->value))
     {
     	$selected = $this->value;
@@ -66,6 +66,6 @@ class TCustomfieldDate extends TCustomfield {
     {
     	$selected = $this->default_value;
     }
-    return JHTML::calendar( $selected, 'custom'.$this->id, 'custom'.$this->id, '%Y-%m-%d', $this->attributesToString($attributes) );
+    return JHTML::calendar($selected, $this->fieldname, $this->fieldid, '%Y-%m-%d', $this->attributesToString($attributes) );
   }
 }

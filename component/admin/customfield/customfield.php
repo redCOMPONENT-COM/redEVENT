@@ -25,11 +25,11 @@
 defined('JPATH_BASE') or die();
 
 /**
-* Renders a Custom field, generic class
-*
-* @author Julien Vonthron <jlv@jlv-solutions.com>
-* @package redevent
-* @since 2.0
+ * Renders a Custom field, generic class
+ *
+ * @author Julien Vonthron <jlv@jlv-solutions.com>
+ * @package redevent
+ * @since 2.0
 */
 
 class TCustomfield extends JObject {
@@ -38,86 +38,100 @@ class TCustomfield extends JObject {
 	 *
 	 * @var int
 	 */
-  var $id;
-  /**
-   * name to display as label
-   *
-   * @var string
-   */
-  var $name;
-  /**
-   * name to display as tag
-   *
-   * @var string
-   */
-  var $tag;
-  /**
-   * type of field
-   *
-   * @var string
-   */
-  var $type;
-  /**
-   * tooltip
-   *
-   * @var string
-   */
-  var $tips;
-  /**
-   * tooltip
-   *
-   * @var string
-   */
-  var $required;
-  /**
-   * options
-   *
-   * @var string
-   */
-  var $options;
-  /**
-   * min lenght
-   *
-   * @var int
-   */
-  var $min;
-  /**
-   * max length
-   *
-   * @var int
-   */
-  var $max;
-  /**
-   * value
-   *
-   * @var string
-   */
-  var $value = null;
-  /**
-   * value
-   *
-   * @var string
-   */
-  var $default_value;
-  
- /**
-   * Constructor
-   *
-   * @access protected
-   */
-  function __construct() {  	
-  	
-  }
-  
-  /**
-   * returns element form html code
-   *
-   * @param array $attributes
-   */
-  function render($attributes = array()) {
+	var $id;
+	/**
+	 * name to display as label
+	 *
+	 * @var string
+	 */
+	var $name;
+	/**
+	 * name to display field id
+	 *
+	 * @var string
+	 */
+	var $fieldid;
+	/**
+	 * name to display field name
+	 *
+	 * @var string
+	 */
+	var $fieldname;
+	/**
+	 * name to display as tag
+	 *
+	 * @var string
+	 */
+	var $tag;
+	/**
+	 * type of field
+	 *
+	 * @var string
+	 */
+	var $type;
+	/**
+	 * tooltip
+	 *
+	 * @var string
+	 */
+	var $tips;
+	/**
+	 * tooltip
+	 *
+	 * @var string
+	 */
+	var $required;
+	/**
+	 * options
+	 *
+	 * @var string
+	 */
+	var $options;
+	/**
+	 * min lenght
+	 *
+	 * @var int
+	 */
+	var $min;
+	/**
+	 * max length
+	 *
+	 * @var int
+	 */
+	var $max;
+	/**
+	 * value
+	 *
+	 * @var string
+	 */
+	var $value = null;
+	/**
+	 * value
+	 *
+	 * @var string
+	 */
+	var $default_value;
+
+	/**
+	 * Constructor
+	 *
+	 * @access protected
+	 */
+	function __construct()
+	{
+
+	}
+
+	/**
+	 * returns element form html code
+	 *
+	 * @param array $attributes
+	 */
+	function render($attributes = array())
+	{
 		return;
 	}
-	
+
 	/**
 	 * bind properties to an object or array
 	 *
@@ -129,27 +143,33 @@ class TCustomfield extends JObject {
 		{
 			$source = get_object_vars($source);
 		}
+
 		if (is_array($source))
 		{
-  		$obj_keys = array_keys(get_object_vars($this));
+			$obj_keys = array_keys(get_object_vars($this));
 			foreach ($source AS $key => $value)
 			{
-				if (in_array($key, $obj_keys)) {
+				if (in_array($key, $obj_keys))
+				{
 					$this->$key = $value;
 				}
 			}
 		}
+
+		$this->fieldname = 'custom' . $this->id;
+		$this->fieldid   = 'custom' . $this->id;
 	}
-	
+
 	/**
 	 * returns form field for filtering
 	 *
 	 * @param unknown_type $attributes
 	 */
-	function renderFilter($attributes = array(), $selected = null) {
+	function renderFilter($attributes = array(), $selected = null)
+	{
 		return 'no filter';
 	}
-	
+
 	/**
 	 * returns the value
 	 *
@@ -158,7 +178,7 @@ class TCustomfield extends JObject {
 	{
 		return $this->value;
 	}
-	
+
 	/**
 	 * return the attributes array as a html tag property string
 	 * @param $attributes
@@ -167,31 +187,36 @@ class TCustomfield extends JObject {
 	function attributesToString($attributes)
 	{
 		$res = array();
-		foreach ((array) $attributes as $k => $v) {
+		foreach ((array) $attributes as $k => $v)
+		{
 			$res[] = $k.'="'.$v.'"';
 		}
 		return implode(' ', $res);
 	}
-	
+
 	/**
 	 * return an object with label and value property for an option (value;label)
-	 * 
+	 *
 	 * @param string $option
 	 * @return object
 	 */
 	function getOptionLabelValue($option)
-	{		
+	{
 		$res = new stdClass();
 		$opt = trim($option);
 		$parts = explode(";", $opt);
-		if (count($parts) == 2) {
+
+		if (count($parts) == 2)
+		{
 			$res->label = trim($parts[1]);
 			$res->value = trim($parts[0]);
 		}
-		else {
+		else
+		{
 			$res->label = trim($parts[0]);
-			$res->value = trim($parts[0]);			
+			$res->value = trim($parts[0]);
 		}
+
 		return $res;
 	}
 }

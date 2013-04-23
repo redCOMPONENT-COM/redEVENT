@@ -34,16 +34,21 @@ jimport( 'joomla.application.component.view');
 */
 class RedEventViewEvent extends JView {
 
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
 		$mainframe = &JFactory::getApplication();
 
-		if($this->getLayout() == 'editxref') {
+		if($this->getLayout() == 'editxref')
+		{
 			$this->_displayeditxref($tpl);
+
 			return;
 		}
-		else if($this->getLayout() == 'closexref') {
+
+		else if($this->getLayout() == 'closexref')
+		{
 			$this->_displayclosexref($tpl);
+
 			return;
 		}
 
@@ -57,10 +62,10 @@ class RedEventViewEvent extends JView {
 		require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'output.class.php');
 
 		//initialise variables
-		$editor 	= & JFactory::getEditor();
-		$document	= & JFactory::getDocument();
-		$pane 		= & JPane::getInstance('tabs');
-		$user 		= & JFactory::getUser();
+		$editor 	= JFactory::getEditor();
+		$document	= JFactory::getDocument();
+		$pane 		= JPane::getInstance('tabs');
+		$user 		= JFactory::getUser();
 		$params   = JComponentHelper::getParams('com_redevent');
 
 		//get vars
@@ -79,34 +84,43 @@ class RedEventViewEvent extends JView {
 		$document->addScriptDeclaration('var removemsg = "'.JText::_('COM_REDEVENT_ATTACHMENT_CONFIRM_MSG').'";' );
 
 		//get data from model
-		$form = $this->get('form');
-		$model		= & $this->getModel();
+		$form  = $this->get('form');
+		$model = $this->getModel();
 
-
-		if ($task == 'add') {
+		if ($task == 'add')
+		{
 			$model->setId($params->get('default_content'));
 		}
-		$row     	= & $this->get('Data');
+
+		$row     	= $this->get('Data');
+
 		if ($task == 'copy')
 		{
 			$row->id = null;
 			$row->title .= ' '.JText::_('COM_REDEVENT_copy');
 			$row->alias = '';
 		}
+
 		if ($task == 'add')
 		{
 			$row->id = null;
 			$row->title = '';
 			$row->alias = '';
 		}
-		$customfields =& $this->get('Customfields');
+
+		$customfields = $this->get('Customfields');
 
 		/* Check if we have a redFORM id */
-		if (empty($row->redform_id)) $row->redform_id = $params->get('defaultredformid', 1);
+		if (empty($row->redform_id))
+		{
+			$row->redform_id = $params->get('defaultredformid', 1);
+		}
 
 		// fail if checked out not by 'me'
-		if ($row->id) {
-			if ($model->isCheckedOut( $user->get('id') )) {
+		if ($row->id)
+		{
+			if ($model->isCheckedOut($user->get('id')))
+			{
 				JError::raiseWarning( 'REDEVENT_GENERIC_ERROR', $row->titel.' '.JText::_('COM_REDEVENT_EDITED_BY_ANOTHER_ADMIN' ));
 				$mainframe->redirect( 'index.php?option=com_redevent&view=events' );
 			}
@@ -125,7 +139,9 @@ class RedEventViewEvent extends JView {
 
 		// categories selector
 		$selected = array();
-		foreach ((array) $row->categories_ids as $cat) {
+
+		foreach ((array) $row->categories_ids as $cat)
+		{
 			$selected[] = $cat;
 		}
 		$lists['categories'] = JHTML::_('select.genericlist', (array) $this->get('Categories'), 'categories[]', 'class="inputbox required validate-categories" multiple="multiple" size="10"', 'value', 'text', $selected);
@@ -165,27 +181,32 @@ class RedEventViewEvent extends JView {
 				{ // can't reassign the form in that case !
 					foreach ($redforms as $aform)
 					{
-						if ($aform->id == $row->redform_id) {
+						if ($aform->id == $row->redform_id)
+						{
 							$lists['redforms'] = $aform->formname.'<input type="hidden" name="redform_id" value="'.$row->redform_id.'"/>';
 							break;
 						}
 					}
 				}
-				else {
+				else
+				{
 					$lists['redforms'] = JHTML::_('select.genericlist', $redforms, 'redform_id', '', 'id', 'formname', $row->redform_id );
 				}
 			}
-			else {
+			else
+			{
 				$lists['redforms'] = '';
 			}
 
 			/* Check if a redform ID exists, if so, get the fields */
-			if (isset($row->redform_id) && $row->redform_id > 0) {
+			if (isset($row->redform_id) && $row->redform_id > 0)
+			{
 				$formfields = $this->get('formfields');
 				if (!$formfields) $formfields = array();
 			}
 		}
-		else {
+		else
+		{
 			$lists['redforms'] = '';
 			$formfields = '';
 		}
@@ -194,11 +215,16 @@ class RedEventViewEvent extends JView {
 		JHTML::stylesheet('modal.css');
 
 		//build toolbar
-		if ($task == 'copy') {
+		if ($task == 'copy')
+		{
 			JToolBarHelper::title( JText::_('COM_REDEVENT_COPY_EVENT'), 'eventedit');
-		} elseif ( $cid ) {
+		}
+		elseif ($cid)
+		{
 			JToolBarHelper::title( JText::_('COM_REDEVENT_EDIT_EVENT' ).' - '.$row->title, 'eventedit' );
-		} else {
+		}
+		else
+		{
 			JToolBarHelper::title( JText::_('COM_REDEVENT_ADD_EVENT' ), 'eventedit' );
 
 			//set the submenu
@@ -208,7 +234,8 @@ class RedEventViewEvent extends JView {
 			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_CATEGORIES' ), 'index.php?option=com_redevent&view=categories');
 			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_ARCHIVESCREEN' ), 'index.php?option=com_redevent&view=archive');
 			JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_HELP' ), 'index.php?option=com_redevent&view=help');
-			if ($user->get('gid') > 24) {
+			if ($user->get('gid') > 24)
+			{
 				JSubMenuHelper::addEntry( JText::_('COM_REDEVENT_SETTINGS' ), 'index.php?option=com_redevent&controller=settings&task=edit');
 			}
 		}
@@ -222,12 +249,15 @@ class RedEventViewEvent extends JView {
 			// Ignore warnings because component may not be installed
 			$warnHandlers = JERROR::getErrorHandling( E_WARNING );
 			JERROR::setErrorHandling( E_WARNING, 'ignore' );
+
 			if (JComponentHelper::isEnabled('com_autotweet', true) && !$row->id )
 			{
 				JToolBarHelper::save('saveAndTwit', 'Save & twit');
 			}
+
 			// Reset the warning handler(s)
-			foreach( $warnHandlers as $mode ) {
+			foreach( $warnHandlers as $mode )
+			{
 				JERROR::setErrorHandling( E_WARNING, $mode );
 			}
 		}
@@ -247,7 +277,6 @@ class RedEventViewEvent extends JView {
 		$this->assignRef('pane'			, $pane);
 		$this->assignRef('task'			, $task);
 		$this->assignRef('params'	,   $params);
-		$this->assignRef('formfields'	, $formfields);
 		$this->assignRef('venueslist'	, $venueslist);
 		$this->assignRef('redform_install'	, $redform_install);
 		$this->assignRef('customfields'  , $customfields);
@@ -255,7 +284,8 @@ class RedEventViewEvent extends JView {
 		$this->assignRef('xrefs'  , $xrefs);
 		$this->assignRef('form',    $form);
 
-		if (!$row->id) {
+		if (!$row->id)
+		{
 			$this->_prepareSessionTab();
 		}
 
@@ -335,9 +365,9 @@ class RedEventViewEvent extends JView {
 		parent::display($tpl);
 	}
 
-	function _displayclosexref($tpl)
+	protected function _displayclosexref($tpl)
 	{
-		$document = & JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$params   = JComponentHelper::getParams('com_redevent');
 
 		$xref = $this->get('xref');
@@ -345,18 +375,20 @@ class RedEventViewEvent extends JView {
 		$date = (!redEVENTHelper::isValidDate($xref->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $xref->dates )));
 		$enddate  = (!redEVENTHelper::isValidDate($xref->enddates) || $xref->enddates == $xref->dates) ? '' : strftime( $params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $xref->enddates ));
 
-		$displaydate = $date. ($enddate ? ' - '.$enddate: '');
+		$displaydate = $date . ($enddate ? ' - '.$enddate: '');
 
 		$displaytime = '';
 		/* Get the time */
-		if (isset($xref->times) && $xref->times != '00:00:00') {
+		if (isset($xref->times) && $xref->times != '00:00:00')
+		{
 			$displaytime = strftime( $params->get('formattime', '%H:%M'), strtotime( $xref->times ));
 
-			if (isset($xref->endtimes) && $xref->endtimes != '00:00:00') {
+			if (isset($xref->endtimes) && $xref->endtimes != '00:00:00')
+			{
 				$displaytime .= ' - '.strftime( $params->get('formattime', '%H:%M'), strtotime( $xref->endtimes ));
-
 			}
 		}
+
 		$json_data = array( 'id'        => $xref->id,
 				'venue'     => $xref->venue,
 				'date'      => $displaydate,
@@ -365,13 +397,17 @@ class RedEventViewEvent extends JView {
 				'note'      => $xref->note,
 				'featured'  => $xref->featured,
 		);
-		if (function_exists('json_encode')) {
+
+		if (function_exists('json_encode'))
+		{
 			$js = 'window.parent.updatexref('.json_encode($json_data).');';
 			$document->addScriptDeclaration($js);
 		}
-		else {
+		else
+		{
 			echo JText::_('COM_REDEVENT_ERROR_JSON_IS_NOT_ENABLED');
 		}
+
 		return;
 	}
 
@@ -380,7 +416,7 @@ class RedEventViewEvent extends JView {
 	 *
 	 * @param array tags to exclude from printing
 	 */
-	function printTags($field = '')
+	protected function printTags($field = '')
 	{
 		?>
 <div class="tagsdiv">
@@ -398,30 +434,32 @@ class RedEventViewEvent extends JView {
 	 * @param string  The date format
 	 * @param array Additional html attributes
 	 */
-	function calendar($value, $name, $id, $format = '%Y-%m-%d', $onUpdate = null, $attribs = null)
+	protected function calendar($value, $name, $id, $format = '%Y-%m-%d', $onUpdate = null, $attribs = null)
 	{
 		JHTML::_('behavior.calendar'); //load the calendar behavior
 
-		if (is_array($attribs)) {
-      $attribs = JArrayHelper::toString( $attribs );
-    }
-    $document =& JFactory::getDocument();
-    $document->addScriptDeclaration('window.addEvent(\'domready\', function() {Calendar.setup({
-        inputField     :    "'.$id.'",     // id of the input field
-        ifFormat       :    "'.$format.'",      // format of the input field
-        button         :    "'.$id.'_img",  // trigger for the calendar (button ID)
-        align          :    "Tl",           // alignment (defaults to "Bl")
-        onUpdate       :    '.($onUpdate ? $onUpdate : 'null').',
-        singleClick    :    true
-	});});');
+		if (is_array($attribs))
+		{
+			$attribs = JArrayHelper::toString( $attribs );
+		}
 
-    return '<input type="text" name="'.$name.'" id="'.$id.'" value="'.htmlspecialchars($value, ENT_COMPAT, 'UTF-8').'" '.$attribs.' />'.
-    '<img class="calendar" src="'.JURI::root(true).'/templates/system/images/calendar.png" alt="calendar" id="'.$id.'_img" />';
+		$document = JFactory::getDocument();
+		$document->addScriptDeclaration('window.addEvent(\'domready\', function() {Calendar.setup({
+        	inputField     :    "'.$id.'",     // id of the input field
+        	ifFormat       :    "'.$format.'",      // format of the input field
+        	button         :    "'.$id.'_img",  // trigger for the calendar (button ID)
+        	align          :    "Tl",           // alignment (defaults to "Bl")
+        	onUpdate       :    '.($onUpdate ? $onUpdate : 'null').',
+        	singleClick    :    true
+		});});');
+
+    	return '<input type="text" name="'.$name.'" id="'.$id.'" value="'.htmlspecialchars($value, ENT_COMPAT, 'UTF-8').'" '.$attribs.' />'.
+    		'<img class="calendar" src="'.JURI::root(true).'/templates/system/images/calendar.png" alt="calendar" id="'.$id.'_img" />';
 	}
 
 	protected function _prepareSessionTab()
 	{
-		$document = &JFactory::getDocument();
+		$document = JFactory::getDocument();
 
 		$document->addScript(JURI::root().'components/com_redevent/assets/js/xref_recurrence.js');
 		$document->addScript(JURI::root().'components/com_redevent/assets/js/xref_roles.js');
@@ -430,7 +468,7 @@ class RedEventViewEvent extends JView {
 
 		$model = JModel::getInstance('Session', 'RedeventModel');
 
-		$customfields =& $model->getXrefCustomfields();
+		$customfields = $model->getXrefCustomfields();
 
 		// venues selector
 		$venues = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_Select_Venue')));

@@ -32,7 +32,7 @@ defined('JPATH_BASE') or die();
 */
 
 class TCustomfieldSelect extends TCustomfield {
- 
+
   /**
   * Element name
   *
@@ -48,8 +48,8 @@ class TCustomfieldSelect extends TCustomfield {
    * @return string
    */
   function render($attributes = array())
-  {    
-  	if ($this->required) 
+  {
+  	if ($this->required)
   	{
   		if (isset($attributes['class'])) {
   			$attributes['class'] .= ' required';
@@ -58,17 +58,17 @@ class TCustomfieldSelect extends TCustomfield {
   			$attributes['class'] = 'required';
   		}
   	}
-  	
+
     $option_list = array();
     $options = explode("\n", $this->options);
-    if ($options) 
+    if ($options)
     {
     	foreach ($options as $opt) {
     		$option = $this->getOptionLabelValue($opt);
     		$option_list[] = JHTML::_('select.option', $option->value, $option->label);
-    	}    	
+    	}
     }
-  
+
     // selected option
     if (!is_null($this->value))
     {
@@ -78,31 +78,31 @@ class TCustomfieldSelect extends TCustomfield {
     {
     	$selected = $this->default_value;
     }
-    return JHTML::_('select.genericlist', $option_list, 'custom'.$this->id, $this->attributesToString($attributes), 'value', 'text', $selected);
+    return JHTML::_('select.genericlist', $option_list, $this->fieldname, $this->attributesToString($attributes), 'value', 'text', $selected, $this->fieldid);
   }
-  
-  
-  function renderFilter($attributes = array(), $selected = null) 
+
+
+  function renderFilter($attributes = array(), $selected = null)
   {
   	$app = & JFactory::getApplication();
-  
+
     if ($selected) {
       $value = $selected;
     }
   	else {
   		$value = '';
   	}
-  	
+
     $option_list = array();
     $option_list[] = JHTML::_('select.option', '', JText::_('COM_REDEVENT_Select'));
     $options = explode("\n", $this->options);
-    if ($options) 
+    if ($options)
     {
       foreach ($options as $opt) {
     		$option = $this->getOptionLabelValue($opt);
     		$option_list[] = JHTML::_('select.option', $option->value, $option->label);
-      }     
+      }
     }
-    return JHTML::_('select.genericlist', $option_list, 'filtercustom['.$this->id.']', $this->attributesToString($attributes), 'value', 'text', $value);  
+    return JHTML::_('select.genericlist', $option_list, 'filtercustom['.$this->id.']', $this->attributesToString($attributes), 'value', 'text', $value);
   }
 }
