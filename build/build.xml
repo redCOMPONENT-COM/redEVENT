@@ -86,6 +86,7 @@
 		
 		<!-- modules -->
 		<foreach param="dirname" absparam="absname" target="zipfolder">
+			<property name="myp" value="modules" />
 		  <fileset dir="${dirs.modules}">
 		  	<type type="dir"/>
 	        <depth max="0" min="0" />
@@ -94,6 +95,7 @@
 		
 		<!-- languages -->
 		<foreach param="dirname" absparam="absname" target="zipfolder">
+			<property name="myp" value="language" />
 		  <fileset dir="${dirs.languages}">
 		  	<type type="dir"/>
 	        <depth max="0" min="0" />
@@ -102,6 +104,7 @@
 		
 		<!-- josetta -->
 		<foreach param="dirname" absparam="absname" target="zipfolder">
+			<property name="myp" value="josetta" />
 		  <fileset dir="${dirs.3pd}/josetta">
 		  	<type type="dir"/>
 	        <depth max="0" min="0" />
@@ -124,7 +127,8 @@
 				</replacetokens>
 			</filterchain>
 		</copy>
+		<mkdir dir="${dirs.release}/${myp}" />
 		<!-- Create the package -->
-		<tar basedir="${dirs.tmp}/${dirname}" destfile="${dirs.release}/${dirname}-${version}.tar.gz" includeemptydirs="true" compression="gzip" />
+		<tar basedir="${dirs.tmp}/${dirname}" destfile="${dirs.release}/${myp}/${dirname}-${version}.tar.gz" includeemptydirs="true" compression="gzip" />
 	</target>
 </project>

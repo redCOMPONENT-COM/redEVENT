@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="1.7" type="plugin" group="josetta_ext">
+<extension version="1.7" type="plugin" group="josetta_ext" method="upgrade">
 	<name>Josetta redEVENT Text snippets plugin</name>
 	<creationDate>mar, 2013</creationDate>
 	<author>redWEB Aps</author>
