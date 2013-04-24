@@ -354,7 +354,7 @@ class UserAcl
 	{
 		if (!$this->_userid)
 		{
-			return false;
+			return array();
 		}
 
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
@@ -362,7 +362,7 @@ class UserAcl
 
 		if ((!$canEdit) || !count($cats))
 		{
-			return false;
+			return array();
 		}
 
 		$db      = JFactory::getDbo();
@@ -392,7 +392,7 @@ class UserAcl
 	{
 		if (!$this->_userid)
 		{
-			return false;
+			return array();
 		}
 
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
@@ -403,7 +403,7 @@ class UserAcl
 
 		if ((!$canEdit && !$canAdd) || !count($cats) || (!count($venuescats) && !count($venues)))
 		{
-			return false;
+			return array();
 		}
 
 		$db      = JFactory::getDbo();
@@ -454,7 +454,7 @@ class UserAcl
 	{
 		if (!$this->_userid)
 		{
-			return false;
+			return array();
 		}
 
 		$cats    = $this->getAuthorisedCategories('re.manageevents');
@@ -778,6 +778,7 @@ class UserAcl
 		$query->from('#__redevent_venues AS v');
 		$query->join('LEFT', '#__redevent_venue_category_xref as xcat ON xcat.venue_id = v.id');
 		$query->where('v.created_by = ' . $this->_userid, 'OR');
+
 		if ($cats && count($cats))
 		{
 			$query->where('xcat.category_id IN (' . implode($glue, $cats) . ')');
