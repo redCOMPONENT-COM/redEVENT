@@ -79,7 +79,7 @@ class plgJosetta_extRedeventsession extends JosettaClassesExtensionplugin
 	 */
 	public function onJosettaGetTypes()
 	{
-		$item = array( self::$this->_context => 'redEVENT - ' . JText::_('COM_REDEVENT_sessionS'));
+		$item = array( self::$this->_context => 'redEVENT - ' . JText::_('COM_REDEVENT_sessions'));
 		$items[] = $item;
 
 		return $items;
@@ -100,6 +100,52 @@ class plgJosetta_extRedeventsession extends JosettaClassesExtensionplugin
 	}
 
 	/**
+	 * Method to build a list filter for the main translator view
+	 * Used when such filter is not one of the Josetta built in filters type
+	 *
+	 * @return array
+	 *
+	 */
+	public function onJosettaGet3rdPartyFilter( $context, $filterType, $filterName, $current) {
+
+		if( !empty( $context) && ( $context != $this->_context)) {
+			return;
+		}
+
+		$filterHtml = '';
+
+		switch( $filterType) {
+
+			case 'reevent':
+				// this is a category, so use Joomla html helper to build the drop down
+				$filterHtml = '';
+				$filterHtml .= JText::_('COM_REDEVENT_EVENT');
+				$filterHtml .= '<select name="' . $filterName . '" id="' . $filterName . '" class="inputbox" onchange="this.form.submit()">' . "\n";
+				$filterHtml .= '<option value="0">' . JText::_('COM_REDEVENT_SELECT_EVENT') . '</option>' . "\n";
+
+				$db      = JFactory::getDbo();
+				$query = $db->getQuery(true);
+
+				$query->select('id AS value, title AS text');
+				$query->from('#__redevent_events');
+				$query->where('published > -1');
+				$query->order('title');
+
+				$db->setQuery($query);
+				$options = $db->loadObjectList();
+
+				$filterHtml .= JHtml::_('select.options', $options, 'value', 'text', (int)($current) ) . "\n";
+				$filterHtml .= "</select>\n";
+				break;
+
+			default:
+				break;
+		}
+
+		return empty( $filterHtml) ? null : $filterHtml;
+	}
+
+	/**
 	 * Hook for module to add their own fields processing
 	 * to the form xml
 	 *
@@ -107,22 +153,6 @@ class plgJosetta_extRedeventsession extends JosettaClassesExtensionplugin
 	 */
 	protected function _output3rdPartyFieldsXml($xmlData, $field, $itemType, $item, $originalItem, $targetLanguage)
 	{
-		switch ($xmlData->fieldType)
-		{
-			case 'relanguagecategory':
-				$options = $this->getOptions($field);
-
-				foreach ($options as $option)
-				{
-					$xmlData->subfield .= '<option value="' . (string) $option->value . '">' . (string) $option->text . '</option>';
-				}
-
-				$xmlData->other .= ' languages="' . $targetLanguage . '"';
-				$multiple = !empty($field->multiple) && (string) $field->multiple == 'yes';
-				$xmlData->other .= $multiple ? ' multiple="true"' : '';
-				break;
-		}
-
 		return $xmlData;
 	}
 
