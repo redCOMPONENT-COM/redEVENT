@@ -35,594 +35,616 @@ require_once('baseeventslist.php');
  * @package Joomla
  * @subpackage Redevent
  * @since   2.0
- */
+*/
 class RedeventModelMyevents extends RedeventModelBaseEventList
 {
-    /**
-     * Events data array
-     *
-     * @var array
-     */
-    var $_events = null;
-
-    /**
-     * Events total
-     *
-     * @var integer
-     */
-    var $_total_events = null;
-
-    var $_venues = null;
-
-    var $_total_venues = null;
-
-    var $_attending = null;
-
-    var $_total_attending = null;
-
-    /**
-     * Pagination object
-     *
-     * @var object
-     */
-    var $_pagination_events = null;
-
-    /**
-     * Pagination object
-     *
-     * @var object
-     */
-    var $_pagination_venues = null;
-
-    /**
-     * Constructor
-     *
-     * @since 0.9
-     */
-    function __construct()
-    {
-        parent::__construct();
-
-        $mainframe = &JFactory::getApplication();
-
-        // Get the paramaters of the active menu item
-        $params = & $mainframe->getParams('com_redevent');
-
-        //get the number of events from database
-        $limit 					= $mainframe->getUserStateFromRequest('com_redevent.myevents.limit', 'limit', $params->def('display_num', 0), 'int');
-        $limitstart_events 		= JRequest::getVar('limitstart_events', 0, '', 'int');
-        $limitstart_venues 		= JRequest::getVar('limitstart_venues', 0, '', 'int');
-        $limitstart_attending 	= JRequest::getVar('limitstart_attending', 0, '', 'int');
-
-        $this->setState('limit', $limit);
-        $this->setState('limitstart_events', $limitstart_events);
-        $this->setState('limitstart_venues', $limitstart_venues);
-        $this->setState('limitstart_attending', $limitstart_attending);
-
-        // Get the filter request variables
-        $this->setState('filter_order', JRequest::getCmd('filter_order', 'x.dates'));
-        $this->setState('filter_order_dir', JRequest::getCmd('filter_order_Dir', 'ASC'));
-    }
-
-    /**
-     * Method to get the Events
-     *
-     * @access public
-     * @return array
-     */
-    function & getEvents()
-    {
-        $pop = JRequest::getBool('pop');
-
-        // Lets load the content if it doesn't already exist
-        if ( empty($this->_events))
-        {
-            $query = $this->_buildQueryEvents();
-            $pagination = $this->getEventsPagination();
-
-            if ($pop)
-            {
-                $this->_events = $this->_getList($query);
-            } else
-            {
-                $this->_events = $this->_getList($query, $pagination->limitstart, $pagination->limit);
-            }
-            $this->_events = $this->_categories($this->_events);
-            $this->_events = $this->_getPlacesLeft($this->_events);
-        }
-
-        return $this->_events;
-    }
-
-    /**
-     * Method to get the Events user is attending
-     *
-     * @access public
-     * @return array
-     */
-    function & getAttending()
-    {
-        $pop = JRequest::getBool('pop');
-
-        // Lets load the content if it doesn't already exist
-        if ( empty($this->_attending))
-        {
-            $query = $this->_buildQueryAttending();
-            $pagination = $this->getAttendingPagination();
-
-            if ($pop)
-            {
-                $this->_attending = $this->_getList($query);
-            } else
-            {
-                $this->_attending = $this->_getList($query, $pagination->limitstart, $pagination->limit);
-            }
-        }
-        $this->_attending = $this->_categories($this->_attending);
-        $this->_attending = $this->_getPlacesLeft($this->_attending);
-        $this->_attending = $this->_getPrices($this->_attending);
-        return $this->_attending;
-    }
-
-    /**
-     * Method to get the Venues
-     *
-     * @access public
-     * @return array
-     */
-    function & getVenues()
-    {
-        $pop = JRequest::getBool('pop');
-
-        // Lets load the content if it doesn't already exist
-        if ( empty($this->_venues))
-        {
-            $query = $this->_buildQueryVenues();
-            $pagination = $this->getVenuesPagination();
-
-            if ($pop)
-            {
-                $this->_venues = $this->_getList($query);
-            } else
-            {
-                $this->_venues = $this->_getList($query, $pagination->limitstart, $pagination->limit);
-            }
-        }
-
-        return $this->_venues;
-    }
-
-    /**
-     * Total nr of events
-     *
-     * @access public
-     * @return integer
-     */
-    function getTotalEvents()
-    {
-        // Lets load the total nr if it doesn't already exist
-        if ( empty($this->_total_events))
-        {
-            $query = $this->_buildQueryEvents();
-            $this->_total_events = $this->_getListCount($query);
-        }
-
-        return $this->_total_events;
-    }
-
-    /**
-     * Total nr of events
-     *
-     * @access public
-     * @return integer
-     */
-    function getTotalAttending()
-    {
-        // Lets load the total nr if it doesn't already exist
-        if ( empty($this->_total_attending))
-        {
-            $query = $this->_buildQueryAttending();
-            $this->_total_attending = $this->_getListCount($query);
-        }
-
-        return $this->_total_attending;
-    }
-
-    /**
-     * Total nr of events
-     *
-     * @access public
-     * @return integer
-     */
-    function getTotalVenues()
-    {
-        // Lets load the total nr if it doesn't already exist
-        if ( empty($this->_total_venues))
-        {
-            $query = $this->_buildQueryVenues();
-            $this->_total_venues = $this->_getListCount($query);
-        }
-
-        return $this->_total_venues;
-    }
-
-    /**
-     * Method to get a pagination object for the events
-     *
-     * @access public
-     * @return integer
-     */
-    function getEventsPagination()
-    {
-        // Lets load the content if it doesn't already exist
-        if ( empty($this->_pagination_events))
-        {
-            jimport('joomla.html.pagination');
-            $this->_pagination_events = new MyEventsPagination($this->getTotalEvents(), $this->getState('limitstart_events'), $this->getState('limit'));
-        }
-
-        return $this->_pagination_events;
-    }
-
-    /**
-     * Method to get a pagination object for the venues
-     *
-     * @access public
-     * @return integer
-     */
-    function getVenuesPagination()
-    {
-        // Lets load the content if it doesn't already exist
-        if ( empty($this->_pagination_venues))
-        {
-            jimport('joomla.html.pagination');
-            $this->_pagination_venues = new MyVenuesPagination($this->getTotalVenues(), $this->getState('limitstart_venues'), $this->getState('limit'));
-        }
-
-        return $this->_pagination_venues;
-    }
-
-    /**
-     * Method to get a pagination object for the attending events
-     *
-     * @access public
-     * @return integer
-     */
-    function getAttendingPagination()
-    {
-        // Lets load the content if it doesn't already exist
-        if ( empty($this->_pagination_attending))
-        {
-            jimport('joomla.html.pagination');
-            $this->_pagination_attending = new MyAttendingPagination($this->getTotalAttending(), $this->getState('limitstart_attending'), $this->getState('limit'));
-        }
-
-        return $this->_pagination_attending;
-    }
-
-    /**
-     * Build the query
-     *
-     * @access private
-     * @return string
-     */
-    function _buildQueryEvents()
-    {
-        // Get the WHERE and ORDER BY clauses for the query
-        $where = $this->_buildEventListWhere();
-        $orderby = $this->_buildEventListOrderBy();
-
-        //Get Events from Database
-        $query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published, '
-        . ' a.id, a.title, a.created, a.datdescription, a.registra, a.course_code, '
-        . ' l.venue, l.city, l.state, l.url, l.id as locid, '
-        . ' c.catname, c.id AS catid, '
-        . ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
-        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
-        . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
-        . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
-        . ' FROM #__redevent_event_venue_xref AS x'
-        . ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
-        . ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-        . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-        . $where
-        . ' GROUP BY (x.id) '
-        . $orderby
-        ;
-
-        return $query;
-    }
-
-    /**
-     * Build the query
-     *
-     * @access private
-     * @return string
-     */
-    function _buildQueryAttending()
-    {
-        // Get the WHERE and ORDER BY clauses for the query
-        $where = $this->_buildEventListAttendingWhere();
-        $orderby = $this->_buildEventListOrderBy();
-
-        //Get Events from Database
-        $query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, '
-        . ' a.id, a.title, a.created, a.datdescription, a.registra, '
-        . ' l.venue, l.city, l.state, l.url, l.id as locid, l.street, l.country, '
-        . ' c.catname, c.id AS catid,'
-        . ' x.featured, '
-        . ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
-        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
-        . ' CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug, '
-        . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
-        . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
-        . ' FROM #__redevent_event_venue_xref AS x'
-        . ' INNER JOIN #__redevent_register AS r ON r.xref = x.id '
-        . ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
-        . ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-        . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-        . $where
-        . ' GROUP BY (x.id) '
-        . $orderby
-        ;
-
-        return $query;
-    }
-
-    /**
-     * Build the query
-     *
-     * @access private
-     * @return string
-     */
-    function _buildQueryVenues()
-    {
-    	if (!$allowed = UserAcl::getInstance()->getAllowedForEventsVenues())
-    	{
-    		return false;
-    	}
-
-        $user = & JFactory::getUser();
-        //Get Events from Database
-        $query = ' SELECT l.id, l.venue, l.city, l.state, l.url, l.published, '
-               . ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug'
-               . ' FROM #__redevent_venues AS l '
-               . ' WHERE l.id IN (' . implode(',', $allowed) . ') '
-               . ' GROUP BY (l.id) '
-               . ' ORDER BY l.venue ASC '
-               ;
-
-        return $query;
-    }
-
-    /**
-     * Build the order clause
-     *
-     * @access private
-     * @return string
-     */
-    function _buildEventListOrderBy()
-    {
-        $filter_order = $this->getState('filter_order');
-        $filter_order_dir = $this->getState('filter_order_dir');
-
-        $orderby = ' ORDER BY '.$filter_order.' '.$filter_order_dir.', x.dates, x.times';
-
-        return $orderby;
-    }
-
-    /**
-     * Build the where clause
-     *
-     * @access private
-     * @return string
-     */
-    function _buildEventListWhere()
-    {
-        $mainframe = &JFactory::getApplication();
-
-        $user = JFactory::getUser();
-        $gid = (int) max($user->getAuthorisedViewLevels());
-
-        // Get the paramaters of the active menu item
-        $params = $mainframe->getParams();
-
-        $task = JRequest::getWord('task');
-
-        $where = array();
-
-        $where[] = ' x.published > -1 ';
-
-        $acl = UserAcl::getInstance();
-        if (!$acl->superuser())
-        {
-        	$xrefs = $acl->getCanEditXrefs();
-        	$xrefs = array_merge($acl->getXrefsCanViewAttendees(), $xrefs);
-        	$xrefs = array_unique($xrefs);
-        	if ($xrefs && count($xrefs)) {
-        		$where[] = ' x.id IN ('.implode(",", $xrefs).')';
-        	}
-        	else {
-        		$where[] = '0';
-        	}
-        }
-
-        if ($params->get('showopendates', 1) == 0) {
-        	$where[] = ' x.dates IS NOT NULL AND x.dates > 0 ';
-        }
-
-        if ($params->get('shownonbookable', 1) == 0) {
-        	$where[] = ' a.registra > 0 ';
-        }
-
-        /*
-         * If we have a filter, and this is enabled... lets tack the AND clause
-         * for the filter onto the WHERE clause of the item query.
-         */
-        if ($params->get('filter_text'))
-        {
-            $filter = JRequest::getString('filter', '', 'request');
-            $filter_type = JRequest::getWord('filter_type', '', 'request');
-
-            if ($filter)
-            {
-                // clean filter variables
-                $filter = JString::strtolower($filter);
-                $filter = $this->_db->Quote('%'.$this->_db->getEscaped($filter, true).'%', false);
-                $filter_type = JString::strtolower($filter_type);
-
-                switch($filter_type)
-                {
-                    case 'title':
-                        $where[] = ' LOWER( a.title ) LIKE '.$filter;
-                        break;
-
-                    case 'venue':
-                        $where[] = ' LOWER( l.venue ) LIKE '.$filter;
-                        break;
-
-                    case 'city':
-                        $where[] = ' LOWER( l.city ) LIKE '.$filter;
-                        break;
-
-                    case 'type':
-                        $where[] = ' LOWER( c.catname ) LIKE '.$filter;
-                        break;
-                }
-            }
-        }
-        if (JRequest::getInt('filter_event')) {
-        	$where[] = ' a.id = '.JRequest::getInt('filter_event');
-        }
-
-        $where = ' WHERE '. implode(' AND ', $where);
-        return $where;
-    }
-/**
-     * Build the where clause
-     *
-     * @access private
-     * @return string
-     */
-    function _buildEventsOptionsWhere()
-    {
-        $mainframe = &JFactory::getApplication();
-
-        $user = & JFactory::getUser();
-        $gid = (int)max($user->getAuthorisedViewLevels());
-
-        // Get the paramaters of the active menu item
-        $params = & $mainframe->getParams();
-
-        $task = JRequest::getWord('task');
-
-        $where = array();
-
-        // First thing we need to do is to select only needed events
-        if ($task == 'archive')
-        {
-            $where[] = ' x.published = -1 ';
-        } else
-        {
-            $where[] = ' x.published > -1 ';
-        }
-
-        $acl = UserAcl::getInstance();
-        if (!$acl->superuser())
-        {
-        	$xrefs = $acl->getCanEditXrefs();
-        	$xrefs = array_merge($acl->getXrefsCanViewAttendees(), $xrefs);
-        	$xrefs = array_unique($xrefs);
-        	if ($xrefs && count($xrefs)) {
-        		$where[] = ' x.id IN ('.implode(",", $xrefs).')';
-        	}
-        	else {
-        		$where[] = '0';
-        	}
-        }
-
-        if ($params->get('showopendates', 1) == 0) {
-        	$where[] = ' x.dates IS NOT NULL AND x.dates > 0 ';
-        }
-
-        if ($params->get('shownonbookable', 1) == 0) {
-        	$where[] = ' a.registra > 0 ';
-        }
-
-        /*
-         * If we have a filter, and this is enabled... lets tack the AND clause
-         * for the filter onto the WHERE clause of the item query.
-         */
-        if ($params->get('filter_text'))
-        {
-            $filter = JRequest::getString('filter', '', 'request');
-            $filter_type = JRequest::getWord('filter_type', '', 'request');
-
-            if ($filter)
-            {
-                // clean filter variables
-                $filter = JString::strtolower($filter);
-                $filter = $this->_db->Quote('%'.$this->_db->getEscaped($filter, true).'%', false);
-                $filter_type = JString::strtolower($filter_type);
-
-                switch($filter_type)
-                {
-                    case 'title':
-                        $where[] = ' LOWER( a.title ) LIKE '.$filter;
-                        break;
-
-                    case 'venue':
-                        $where[] = ' LOWER( l.venue ) LIKE '.$filter;
-                        break;
-
-                    case 'city':
-                        $where[] = ' LOWER( l.city ) LIKE '.$filter;
-                        break;
-
-                    case 'type':
-                        $where[] = ' LOWER( c.catname ) LIKE '.$filter;
-                        break;
-                }
-            }
-        }
-
-        $where = ' WHERE '. implode(' AND ', $where);
-        return $where;
-    }
-
-    /**
-     * Build the where clause
-     *
-     * @access private
-     * @return string
-     */
-    function _buildEventListAttendingWhere()
-    {
-        $mainframe = &JFactory::getApplication();
-
-        $user = & JFactory::getUser();
-
-        // Get the paramaters of the active menu item
-        $params = & $mainframe->getParams();
-
-        $task = JRequest::getWord('task');
-
-        // First thing we need to do is to select only needed events
-        if ($task == 'archive')
-        {
-            $where = ' WHERE x.published = -1';
-        } else
-        {
-            $where = ' WHERE x.published = 1';
-        }
-
-        // then if the user is attending the event
-        $where .= ' AND r.uid = '.$this->_db->Quote($user->id);
-
-        return $where;
-    }
+	/**
+	 * Events data array
+	 *
+	 * @var array
+	 */
+	var $_events = null;
+
+	/**
+	 * Events total
+	 *
+	 * @var integer
+	 */
+	var $_total_events = null;
+
+	var $_venues = null;
+
+	var $_total_venues = null;
+
+	var $_attending = null;
+
+	var $_total_attending = null;
+
+	/**
+	 * Pagination object
+	 *
+	 * @var object
+	 */
+	var $_pagination_events = null;
+
+	/**
+	 * Pagination object
+	 *
+	 * @var object
+	 */
+	var $_pagination_venues = null;
+
+	/**
+	 * Constructor
+	 *
+	 * @since 0.9
+	 */
+	function __construct()
+	{
+		parent::__construct();
+
+		$mainframe = JFactory::getApplication();
+
+		// Get the paramaters of the active menu item
+		$params = $mainframe->getParams('com_redevent');
+
+		//get the number of events from database
+		$limit 					= $mainframe->getUserStateFromRequest('com_redevent.myevents.limit', 'limit', $params->def('display_num', 0), 'int');
+		$limitstart_events 		= JRequest::getVar('limitstart_events', 0, '', 'int');
+		$limitstart_venues 		= JRequest::getVar('limitstart_venues', 0, '', 'int');
+		$limitstart_attending 	= JRequest::getVar('limitstart_attending', 0, '', 'int');
+
+		$this->setState('limit', $limit);
+		$this->setState('limitstart_events', $limitstart_events);
+		$this->setState('limitstart_venues', $limitstart_venues);
+		$this->setState('limitstart_attending', $limitstart_attending);
+
+		// Get the filter request variables
+		$this->setState('filter_order', JRequest::getCmd('filter_order', 'x.dates'));
+		$this->setState('filter_order_dir', JRequest::getCmd('filter_order_Dir', 'ASC'));
+	}
+
+	/**
+	 * Method to get the Events
+	 *
+	 * @access public
+	 * @return array
+	 */
+	function & getEvents()
+	{
+		$pop = JRequest::getBool('pop');
+
+		// Lets load the content if it doesn't already exist
+		if (empty($this->_events))
+		{
+			$query = $this->_buildQueryEvents();
+			$pagination = $this->getEventsPagination();
+
+			if ($pop)
+			{
+				$this->_events = $this->_getList($query);
+			}
+			else
+			{
+				$this->_events = $this->_getList($query, $pagination->limitstart, $pagination->limit);
+			}
+
+			$this->_events = $this->_categories($this->_events);
+			$this->_events = $this->_getPlacesLeft($this->_events);
+		}
+
+		return $this->_events;
+	}
+
+	/**
+	 * Method to get the Events user is attending
+	 *
+	 * @access public
+	 * @return array
+	 */
+	function & getAttending()
+	{
+		$pop = JRequest::getBool('pop');
+
+		// Lets load the content if it doesn't already exist
+		if (empty($this->_attending))
+		{
+			$query = $this->_buildQueryAttending();
+			$pagination = $this->getAttendingPagination();
+
+			if ($pop)
+			{
+				$this->_attending = $this->_getList($query);
+			}
+			else
+			{
+				$this->_attending = $this->_getList($query, $pagination->limitstart, $pagination->limit);
+			}
+		}
+
+		$this->_attending = $this->_categories($this->_attending);
+		$this->_attending = $this->_getPlacesLeft($this->_attending);
+		$this->_attending = $this->_getPrices($this->_attending);
+
+		return $this->_attending;
+	}
+
+	/**
+	 * Method to get the Venues
+	 *
+	 * @access public
+	 * @return array
+	 */
+	function & getVenues()
+	{
+		$pop = JRequest::getBool('pop');
+
+		// Lets load the content if it doesn't already exist
+		if (empty($this->_venues))
+		{
+			$query = $this->_buildQueryVenues();
+			$pagination = $this->getVenuesPagination();
+
+			if ($pop)
+			{
+				$this->_venues = $this->_getList($query);
+			}
+			else
+			{
+				$this->_venues = $this->_getList($query, $pagination->limitstart, $pagination->limit);
+			}
+		}
+
+		return $this->_venues;
+	}
+
+	/**
+	 * Total nr of events
+	 *
+	 * @access public
+	 * @return integer
+	 */
+	function getTotalEvents()
+	{
+		// Lets load the total nr if it doesn't already exist
+		if (empty($this->_total_events))
+		{
+			$query = $this->_buildQueryEvents();
+			$this->_total_events = $this->_getListCount($query);
+		}
+
+		return $this->_total_events;
+	}
+
+	/**
+	 * Total nr of events
+	 *
+	 * @access public
+	 * @return integer
+	 */
+	function getTotalAttending()
+	{
+		// Lets load the total nr if it doesn't already exist
+		if (empty($this->_total_attending))
+		{
+			$query = $this->_buildQueryAttending();
+			$this->_total_attending = $this->_getListCount($query);
+		}
+
+		return $this->_total_attending;
+	}
+
+	/**
+	 * Total nr of events
+	 *
+	 * @access public
+	 * @return integer
+	 */
+	function getTotalVenues()
+	{
+		// Lets load the total nr if it doesn't already exist
+		if (empty($this->_total_venues))
+		{
+			$query = $this->_buildQueryVenues();
+			$this->_total_venues = $this->_getListCount($query);
+		}
+
+		return $this->_total_venues;
+	}
+
+	/**
+	 * Method to get a pagination object for the events
+	 *
+	 * @access public
+	 * @return integer
+	 */
+	function getEventsPagination()
+	{
+		// Lets load the content if it doesn't already exist
+		if (empty($this->_pagination_events))
+		{
+			jimport('joomla.html.pagination');
+			$this->_pagination_events = new MyEventsPagination($this->getTotalEvents(), $this->getState('limitstart_events'), $this->getState('limit'));
+		}
+
+		return $this->_pagination_events;
+	}
+
+	/**
+	 * Method to get a pagination object for the venues
+	 *
+	 * @access public
+	 * @return integer
+	 */
+	function getVenuesPagination()
+	{
+		// Lets load the content if it doesn't already exist
+		if (empty($this->_pagination_venues))
+		{
+			jimport('joomla.html.pagination');
+			$this->_pagination_venues = new MyVenuesPagination($this->getTotalVenues(), $this->getState('limitstart_venues'), $this->getState('limit'));
+		}
+
+		return $this->_pagination_venues;
+	}
+
+	/**
+	 * Method to get a pagination object for the attending events
+	 *
+	 * @access public
+	 * @return integer
+	 */
+	function getAttendingPagination()
+	{
+		// Lets load the content if it doesn't already exist
+		if (empty($this->_pagination_attending))
+		{
+			jimport('joomla.html.pagination');
+			$this->_pagination_attending = new MyAttendingPagination($this->getTotalAttending(), $this->getState('limitstart_attending'), $this->getState('limit'));
+		}
+
+		return $this->_pagination_attending;
+	}
+
+	/**
+	 * Build the query
+	 *
+	 * @access private
+	 * @return string
+	 */
+	function _buildQueryEvents()
+	{
+		// Get the WHERE and ORDER BY clauses for the query
+		$where = $this->_buildEventListWhere();
+		$orderby = $this->_buildEventListOrderBy();
+
+		//Get Events from Database
+		$query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published, '
+		. ' a.id, a.title, a.created, a.datdescription, a.registra, a.course_code, '
+		. ' l.venue, l.city, l.state, l.url, l.id as locid, '
+		. ' c.catname, c.id AS catid, '
+		. ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
+		. ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
+		. ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
+		. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
+		. ' FROM #__redevent_event_venue_xref AS x'
+		. ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
+		. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
+		. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+		. ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+		. $where
+		. ' GROUP BY (x.id) '
+		. $orderby
+		;
+
+		return $query;
+	}
+
+	/**
+	 * Build the query
+	 *
+	 * @access private
+	 * @return string
+	 */
+	function _buildQueryAttending()
+	{
+		// Get the WHERE and ORDER BY clauses for the query
+		$where = $this->_buildEventListAttendingWhere();
+		$orderby = $this->_buildEventListOrderBy();
+
+		//Get Events from Database
+		$query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, '
+		. ' a.id, a.title, a.created, a.datdescription, a.registra, '
+		. ' l.venue, l.city, l.state, l.url, l.id as locid, l.street, l.country, '
+		. ' c.catname, c.id AS catid,'
+		. ' x.featured, '
+		. ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
+		. ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
+		. ' CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug, '
+		. ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
+		. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
+		. ' FROM #__redevent_event_venue_xref AS x'
+		. ' INNER JOIN #__redevent_register AS r ON r.xref = x.id '
+		. ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
+		. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
+		. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+		. ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+		. $where
+		. ' GROUP BY (x.id) '
+		. $orderby
+		;
+
+		return $query;
+	}
+
+	/**
+	 * Build the query
+	 *
+	 * @access private
+	 * @return string
+	 */
+	function _buildQueryVenues()
+	{
+		if (!$allowed = UserAcl::getInstance()->getAllowedForEventsVenues())
+		{
+			return false;
+		}
+
+		$user = JFactory::getUser();
+		//Get Events from Database
+		$query = ' SELECT l.id, l.venue, l.city, l.state, l.url, l.published, '
+		. ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug'
+		. ' FROM #__redevent_venues AS l '
+		. ' WHERE l.id IN (' . implode(',', $allowed) . ') '
+		. ' GROUP BY (l.id) '
+		. ' ORDER BY l.venue ASC '
+		;
+
+		return $query;
+	}
+
+	/**
+	 * Build the order clause
+	 *
+	 * @access private
+	 * @return string
+	 */
+	function _buildEventListOrderBy()
+	{
+		$filter_order = $this->getState('filter_order');
+		$filter_order_dir = $this->getState('filter_order_dir');
+
+		$orderby = ' ORDER BY '.$filter_order.' '.$filter_order_dir.', x.dates, x.times';
+
+		return $orderby;
+	}
+
+	/**
+	 * Build the where clause
+	 *
+	 * @access private
+	 * @return string
+	 */
+	function _buildEventListWhere()
+	{
+		$mainframe = JFactory::getApplication();
+
+		$user = JFactory::getUser();
+		$gid = (int) max($user->getAuthorisedViewLevels());
+
+		// Get the paramaters of the active menu item
+		$params = $mainframe->getParams();
+
+		$task = JRequest::getWord('task');
+
+		$where = array();
+
+		$where[] = ' x.published > -1 ';
+
+		$acl = UserAcl::getInstance();
+		if (!$acl->superuser())
+		{
+			$xrefs = $acl->getCanEditXrefs();
+			$xrefs = @array_merge($acl->getXrefsCanViewAttendees(), $xrefs);
+			$xrefs = @array_unique($xrefs);
+
+			if ($xrefs && count($xrefs))
+			{
+				$where[] = ' x.id IN ('.implode(",", $xrefs).')';
+			}
+			else
+			{
+				$where[] = '0';
+			}
+		}
+
+		if ($params->get('showopendates', 1) == 0) {
+			$where[] = ' x.dates IS NOT NULL AND x.dates > 0 ';
+		}
+
+		if ($params->get('shownonbookable', 1) == 0) {
+			$where[] = ' a.registra > 0 ';
+		}
+
+		/*
+		 * If we have a filter, and this is enabled... lets tack the AND clause
+		* for the filter onto the WHERE clause of the item query.
+		*/
+		if ($params->get('filter_text'))
+		{
+			$filter = JRequest::getString('filter', '', 'request');
+			$filter_type = JRequest::getWord('filter_type', '', 'request');
+
+			if ($filter)
+			{
+				// clean filter variables
+				$filter = JString::strtolower($filter);
+				$filter = $this->_db->Quote('%'.$this->_db->getEscaped($filter, true).'%', false);
+				$filter_type = JString::strtolower($filter_type);
+
+				switch($filter_type)
+				{
+					case 'title':
+						$where[] = ' LOWER( a.title ) LIKE '.$filter;
+						break;
+
+					case 'venue':
+						$where[] = ' LOWER( l.venue ) LIKE '.$filter;
+						break;
+
+					case 'city':
+						$where[] = ' LOWER( l.city ) LIKE '.$filter;
+						break;
+
+					case 'type':
+						$where[] = ' LOWER( c.catname ) LIKE '.$filter;
+						break;
+				}
+			}
+		}
+
+		if (JRequest::getInt('filter_event'))
+		{
+			$where[] = ' a.id = '.JRequest::getInt('filter_event');
+		}
+
+		$where = ' WHERE '. implode(' AND ', $where);
+
+		return $where;
+	}
+
+	/**
+	 * Build the where clause
+	 *
+	 * @access private
+	 * @return string
+	 */
+	function _buildEventsOptionsWhere()
+	{
+		$mainframe = JFactory::getApplication();
+
+		$user = JFactory::getUser();
+		$gid = (int) max($user->getAuthorisedViewLevels());
+
+		// Get the paramaters of the active menu item
+		$params = $mainframe->getParams();
+
+		$task = JRequest::getWord('task');
+
+		$where = array();
+
+		// First thing we need to do is to select only needed events
+		if ($task == 'archive')
+		{
+			$where[] = ' x.published = -1 ';
+		}
+		else
+		{
+			$where[] = ' x.published > -1 ';
+		}
+
+		$acl = UserAcl::getInstance();
+
+		if (!$acl->superuser())
+		{
+			$xrefs = $acl->getCanEditXrefs();
+			$xrefs = array_merge($acl->getXrefsCanViewAttendees(), $xrefs);
+			$xrefs = array_unique($xrefs);
+
+			if ($xrefs && count($xrefs))
+			{
+				$where[] = ' x.id IN ('.implode(",", $xrefs).')';
+			}
+			else
+			{
+				$where[] = '0';
+			}
+		}
+
+		if ($params->get('showopendates', 1) == 0)
+		{
+			$where[] = ' x.dates IS NOT NULL AND x.dates > 0 ';
+		}
+
+		if ($params->get('shownonbookable', 1) == 0)
+		{
+			$where[] = ' a.registra > 0 ';
+		}
+
+		/*
+		 * If we have a filter, and this is enabled... lets tack the AND clause
+		* for the filter onto the WHERE clause of the item query.
+		*/
+		if ($params->get('filter_text'))
+		{
+			$filter = JRequest::getString('filter', '', 'request');
+			$filter_type = JRequest::getWord('filter_type', '', 'request');
+
+			if ($filter)
+			{
+				// clean filter variables
+				$filter = JString::strtolower($filter);
+				$filter = $this->_db->Quote('%'.$this->_db->getEscaped($filter, true).'%', false);
+				$filter_type = JString::strtolower($filter_type);
+
+				switch($filter_type)
+				{
+					case 'title':
+						$where[] = ' LOWER( a.title ) LIKE '.$filter;
+						break;
+
+					case 'venue':
+						$where[] = ' LOWER( l.venue ) LIKE '.$filter;
+						break;
+
+					case 'city':
+						$where[] = ' LOWER( l.city ) LIKE '.$filter;
+						break;
+
+					case 'type':
+						$where[] = ' LOWER( c.catname ) LIKE '.$filter;
+						break;
+				}
+			}
+		}
+
+		$where = ' WHERE '. implode(' AND ', $where);
+
+		return $where;
+	}
+
+	/**
+	 * Build the where clause
+	 *
+	 * @access private
+	 * @return string
+	 */
+	function _buildEventListAttendingWhere()
+	{
+		$mainframe = JFactory::getApplication();
+
+		$user = JFactory::getUser();
+
+		// Get the paramaters of the active menu item
+		$params = & $mainframe->getParams();
+
+		$task = JRequest::getWord('task');
+
+		// First thing we need to do is to select only needed events
+		if ($task == 'archive')
+		{
+			$where = ' WHERE x.published = -1';
+		}
+		else
+		{
+			$where = ' WHERE x.published = 1';
+		}
+
+		// then if the user is attending the event
+		$where .= ' AND r.uid = '.$this->_db->Quote($user->id);
+
+		return $where;
+	}
 
 
 
@@ -633,105 +655,109 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 
 		//Get Events from Database
 		$query = ' SELECT a.id AS value, a.title as text '
-		       . ' FROM #__redevent_event_venue_xref AS x'
-		       . ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
-		       . ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-		       . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-		       . ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-		       . $where
-		       . ' GROUP BY (a.id) '
-		       . ' ORDER BY a.title '
-		       ;
+		. ' FROM #__redevent_event_venue_xref AS x'
+		. ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
+		. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
+		. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
+		. ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
+		. $where
+		. ' GROUP BY (a.id) '
+		. ' ORDER BY a.title '
+		;
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
+
 		return $res;
 	}
 }
 
 class MyEventsPagination extends JPagination
 {
-    /**
-     * Create and return the pagination data object
-     *
-     * @access  public
-     * @return  object  Pagination data object
-     * @since 1.5
-     */
-    function _buildDataObject()
-    {
-        // Initialize variables
-        $data = new stdClass ();
+	/**
+	 * Create and return the pagination data object
+	 *
+	 * @access  public
+	 * @return  object  Pagination data object
+	 * @since 1.5
+	 */
+	function _buildDataObject()
+	{
+		// Initialize variables
+		$data = new stdClass ();
 
-        $data->all = new JPaginationObject(JText::_('COM_REDEVENT_View_All'));
-        if (!$this->_viewall)
-        {
-            $data->all->base = '0';
-            $data->all->link = JRoute::_("&limitstart_events=");
-        }
+		$data->all = new JPaginationObject(JText::_('COM_REDEVENT_View_All'));
 
-        // Set the start and previous data objects
-        $data->start = new JPaginationObject(JText::_('COM_REDEVENT_Start'));
-        $data->previous = new JPaginationObject(JText::_('COM_REDEVENT_Prev'));
+		if (!$this->_viewall)
+		{
+			$data->all->base = '0';
+			$data->all->link = JRoute::_("&limitstart_events=");
+		}
 
-        if ($this->get('pages.current') > 1)
-        {
-            $page = ($this->get('pages.current')-2)*$this->limit;
+		// Set the start and previous data objects
+		$data->start = new JPaginationObject(JText::_('COM_REDEVENT_Start'));
+		$data->previous = new JPaginationObject(JText::_('COM_REDEVENT_Prev'));
 
-            $page = $page == 0?'':$page; //set the empty for removal from route
+		if ($this->get('pages.current') > 1)
+		{
+			$page = ($this->get('pages.current')-2)*$this->limit;
 
-            $data->start->base = '0';
-            $data->start->link = JRoute::_("&limitstart_events=");
-            $data->previous->base = $page;
-            $data->previous->link = JRoute::_("&limitstart_events=".$page);
-        }
+			$page = $page == 0?'':$page; //set the empty for removal from route
 
-        // Set the next and end data objects
-        $data->next = new JPaginationObject(JText::_('COM_REDEVENT_Next'));
-        $data->end = new JPaginationObject(JText::_('COM_REDEVENT_End'));
+			$data->start->base = '0';
+			$data->start->link = JRoute::_("&limitstart_events=");
+			$data->previous->base = $page;
+			$data->previous->link = JRoute::_("&limitstart_events=".$page);
+		}
 
-        if ($this->get('pages.current') < $this->get('pages.total'))
-        {
-            $next = $this->get('pages.current')*$this->limit;
-            $end = ($this->get('pages.total')-1)*$this->limit;
+		// Set the next and end data objects
+		$data->next = new JPaginationObject(JText::_('COM_REDEVENT_Next'));
+		$data->end = new JPaginationObject(JText::_('COM_REDEVENT_End'));
 
-            $data->next->base = $next;
-            $data->next->link = JRoute::_("&limitstart_events=".$next);
-            $data->end->base = $end;
-            $data->end->link = JRoute::_("&limitstart_events=".$end);
-        }
+		if ($this->get('pages.current') < $this->get('pages.total'))
+		{
+			$next = $this->get('pages.current')*$this->limit;
+			$end = ($this->get('pages.total')-1)*$this->limit;
 
-        $data->pages = array ();
-        $stop = $this->get('pages.stop');
-        for ($i = $this->get('pages.start'); $i <= $stop; $i++)
-        {
-            $offset = ($i-1)*$this->limit;
+			$data->next->base = $next;
+			$data->next->link = JRoute::_("&limitstart_events=".$next);
+			$data->end->base = $end;
+			$data->end->link = JRoute::_("&limitstart_events=".$end);
+		}
 
-            $offset = $offset == 0?'':$offset; //set the empty for removal from route
+		$data->pages = array ();
+		$stop = $this->get('pages.stop');
 
-            $data->pages[$i] = new JPaginationObject($i);
-            if ($i != $this->get('pages.current') || $this->_viewall)
-            {
-                $data->pages[$i]->base = $offset;
-                $data->pages[$i]->link = JRoute::_("&limitstart_events=".$offset);
-            }
-        }
-        return $data;
-    }
+		for ($i = $this->get('pages.start'); $i <= $stop; $i++)
+		{
+			$offset = ($i-1)*$this->limit;
 
-    function _list_footer($list)
-    {
-        // Initialize variables
-        $html = "<div class=\"list-footer\">\n";
+			$offset = $offset == 0?'':$offset; //set the empty for removal from route
 
-        $html .= "\n<div class=\"limit\">".JText::_('COM_REDEVENT_Display_Num').$list['limitfield']."</div>";
-        $html .= $list['pageslinks'];
-        $html .= "\n<div class=\"counter\">".$list['pagescounter']."</div>";
+			$data->pages[$i] = new JPaginationObject($i);
 
-        $html .= "\n<input type=\"hidden\" name=\"limitstart_events\" value=\"".$list['limitstart']."\" />";
-        $html .= "\n</div>";
+			if ($i != $this->get('pages.current') || $this->_viewall)
+			{
+				$data->pages[$i]->base = $offset;
+				$data->pages[$i]->link = JRoute::_("&limitstart_events=".$offset);
+			}
+		}
+		return $data;
+	}
 
-        return $html;
-    }
+	function _list_footer($list)
+	{
+		// Initialize variables
+		$html = "<div class=\"list-footer\">\n";
+
+		$html .= "\n<div class=\"limit\">".JText::_('COM_REDEVENT_Display_Num').$list['limitfield']."</div>";
+		$html .= $list['pageslinks'];
+		$html .= "\n<div class=\"counter\">".$list['pagescounter']."</div>";
+
+		$html .= "\n<input type=\"hidden\" name=\"limitstart_events\" value=\"".$list['limitstart']."\" />";
+		$html .= "\n</div>";
+
+		return $html;
+	}
 
 }
 
@@ -739,174 +765,182 @@ class MyEventsPagination extends JPagination
 class MyAttendingPagination extends JPagination
 {
 
-    /**
-     * Create and return the pagination data object
-     *
-     * @access  public
-     * @return  object  Pagination data object
-     * @since 1.5
-     */
-    function _buildDataObject()
-    {
-        // Initialize variables
-        $data = new stdClass ();
+	/**
+	 * Create and return the pagination data object
+	 *
+	 * @access  public
+	 * @return  object  Pagination data object
+	 * @since 1.5
+	 */
+	function _buildDataObject()
+	{
+		// Initialize variables
+		$data = new stdClass ();
 
-        $data->all = new JPaginationObject(JText::_('COM_REDEVENT_View_All'));
-        if (!$this->_viewall)
-        {
-            $data->all->base = '0';
-            $data->all->link = JRoute::_("&limitstart_attending=");
-        }
+		$data->all = new JPaginationObject(JText::_('COM_REDEVENT_View_All'));
 
-        // Set the start and previous data objects
-        $data->start = new JPaginationObject(JText::_('COM_REDEVENT_Start'));
-        $data->previous = new JPaginationObject(JText::_('COM_REDEVENT_Prev'));
+		if (!$this->_viewall)
+		{
+			$data->all->base = '0';
+			$data->all->link = JRoute::_("&limitstart_attending=");
+		}
 
-        if ($this->get('pages.current') > 1)
-        {
-            $page = ($this->get('pages.current')-2)*$this->limit;
+		// Set the start and previous data objects
+		$data->start = new JPaginationObject(JText::_('COM_REDEVENT_Start'));
+		$data->previous = new JPaginationObject(JText::_('COM_REDEVENT_Prev'));
 
-            $page = $page == 0?'':$page; //set the empty for removal from route
+		if ($this->get('pages.current') > 1)
+		{
+			$page = ($this->get('pages.current')-2)*$this->limit;
 
-            $data->start->base = '0';
-            $data->start->link = JRoute::_("&limitstart_attending=");
-            $data->previous->base = $page;
-            $data->previous->link = JRoute::_("&limitstart_attending=".$page);
-        }
+			$page = $page == 0?'':$page; //set the empty for removal from route
 
-        // Set the next and end data objects
-        $data->next = new JPaginationObject(JText::_('COM_REDEVENT_Next'));
-        $data->end = new JPaginationObject(JText::_('COM_REDEVENT_End'));
+			$data->start->base = '0';
+			$data->start->link = JRoute::_("&limitstart_attending=");
+			$data->previous->base = $page;
+			$data->previous->link = JRoute::_("&limitstart_attending=".$page);
+		}
 
-        if ($this->get('pages.current') < $this->get('pages.total'))
-        {
-            $next = $this->get('pages.current')*$this->limit;
-            $end = ($this->get('pages.total')-1)*$this->limit;
+		// Set the next and end data objects
+		$data->next = new JPaginationObject(JText::_('COM_REDEVENT_Next'));
+		$data->end = new JPaginationObject(JText::_('COM_REDEVENT_End'));
 
-            $data->next->base = $next;
-            $data->next->link = JRoute::_("&limitstart_attending=".$next);
-            $data->end->base = $end;
-            $data->end->link = JRoute::_("&limitstart_attending=".$end);
-        }
+		if ($this->get('pages.current') < $this->get('pages.total'))
+		{
+			$next = $this->get('pages.current')*$this->limit;
+			$end = ($this->get('pages.total')-1)*$this->limit;
 
-        $data->pages = array ();
-        $stop = $this->get('pages.stop');
-        for ($i = $this->get('pages.start'); $i <= $stop; $i++)
-        {
-            $offset = ($i-1)*$this->limit;
+			$data->next->base = $next;
+			$data->next->link = JRoute::_("&limitstart_attending=".$next);
+			$data->end->base = $end;
+			$data->end->link = JRoute::_("&limitstart_attending=".$end);
+		}
 
-            $offset = $offset == 0?'':$offset; //set the empty for removal from route
+		$data->pages = array ();
+		$stop = $this->get('pages.stop');
 
-            $data->pages[$i] = new JPaginationObject($i);
-            if ($i != $this->get('pages.current') || $this->_viewall)
-            {
-                $data->pages[$i]->base = $offset;
-                $data->pages[$i]->link = JRoute::_("&limitstart_attending=".$offset);
-            }
-        }
-        return $data;
-    }
+		for ($i = $this->get('pages.start'); $i <= $stop; $i++)
+		{
+			$offset = ($i-1) * $this->limit;
 
-    function _list_footer($list)
-    {
-        // Initialize variables
-        $html = "<div class=\"list-footer\">\n";
+			$offset = $offset == 0 ? '' : $offset; //set the empty for removal from route
 
-        $html .= "\n<div class=\"limit\">".JText::_('COM_REDEVENT_Display_Num').$list['limitfield']."</div>";
-        $html .= $list['pageslinks'];
-        $html .= "\n<div class=\"counter\">".$list['pagescounter']."</div>";
+			$data->pages[$i] = new JPaginationObject($i);
 
-        $html .= "\n<input type=\"hidden\" name=\"limitstart_attending\" value=\"".$list['limitstart']."\" />";
-        $html .= "\n</div>";
+			if ($i != $this->get('pages.current') || $this->_viewall)
+			{
+				$data->pages[$i]->base = $offset;
+				$data->pages[$i]->link = JRoute::_("&limitstart_attending=".$offset);
+			}
+		}
 
-        return $html;
-    }
+		return $data;
+	}
+
+	function _list_footer($list)
+	{
+		// Initialize variables
+		$html = "<div class=\"list-footer\">\n";
+
+		$html .= "\n<div class=\"limit\">" . JText::_('COM_REDEVENT_Display_Num') . $list['limitfield']."</div>";
+		$html .= $list['pageslinks'];
+		$html .= "\n<div class=\"counter\">" . $list['pagescounter'] . "</div>";
+
+		$html .= "\n<input type=\"hidden\" name=\"limitstart_attending\" value=\"" . $list['limitstart'] . "\" />";
+		$html .= "\n</div>";
+
+		return $html;
+	}
 
 }
 
 class MyVenuesPagination extends JPagination
 {
 
-    /**
-     * Create and return the pagination data object
-     *
-     * @access  public
-     * @return  object  Pagination data object
-     * @since 1.5
-     */
-    function _buildDataObject()
-    {
-        // Initialize variables
-        $data = new stdClass ();
+	/**
+	 * Create and return the pagination data object
+	 *
+	 * @access  public
+	 * @return  object  Pagination data object
+	 * @since 1.5
+	 */
+	function _buildDataObject()
+	{
+		// Initialize variables
+		$data = new stdClass ();
 
-        $data->all = new JPaginationObject(JText::_('COM_REDEVENT_View_All'));
-        if (!$this->_viewall)
-        {
-            $data->all->base = '0';
-            $data->all->link = JRoute::_("&limitstart_venues=");
-        }
+		$data->all = new JPaginationObject(JText::_('COM_REDEVENT_View_All'));
 
-        // Set the start and previous data objects
-        $data->start = new JPaginationObject(JText::_('COM_REDEVENT_Start'));
-        $data->previous = new JPaginationObject(JText::_('COM_REDEVENT_Prev'));
+		if (!$this->_viewall)
+		{
+			$data->all->base = '0';
+			$data->all->link = JRoute::_("&limitstart_venues=");
+		}
 
-        if ($this->get('pages.current') > 1)
-        {
-            $page = ($this->get('pages.current')-2)*$this->limit;
+		// Set the start and previous data objects
+		$data->start = new JPaginationObject(JText::_('COM_REDEVENT_Start'));
+		$data->previous = new JPaginationObject(JText::_('COM_REDEVENT_Prev'));
 
-            $page = $page == 0?'':$page; //set the empty for removal from route
+		if ($this->get('pages.current') > 1)
+		{
+			$page = ($this->get('pages.current')-2) * $this->limit;
 
-            $data->start->base = '0';
-            $data->start->link = JRoute::_("&limitstart_venues=");
-            $data->previous->base = $page;
-            $data->previous->link = JRoute::_("&limitstart_venues=".$page);
-        }
+			$page = $page == 0?'':$page; //set the empty for removal from route
 
-        // Set the next and end data objects
-        $data->next = new JPaginationObject(JText::_('COM_REDEVENT_Next'));
-        $data->end = new JPaginationObject(JText::_('COM_REDEVENT_End'));
+			$data->start->base = '0';
+			$data->start->link = JRoute::_("&limitstart_venues=");
+			$data->previous->base = $page;
+			$data->previous->link = JRoute::_("&limitstart_venues=".$page);
+		}
 
-        if ($this->get('pages.current') < $this->get('pages.total'))
-        {
-            $next = $this->get('pages.current')*$this->limit;
-            $end = ($this->get('pages.total')-1)*$this->limit;
+		// Set the next and end data objects
+		$data->next = new JPaginationObject(JText::_('COM_REDEVENT_Next'));
+		$data->end = new JPaginationObject(JText::_('COM_REDEVENT_End'));
 
-            $data->next->base = $next;
-            $data->next->link = JRoute::_("&limitstart_venues=".$next);
-            $data->end->base = $end;
-            $data->end->link = JRoute::_("&limitstart_venues=".$end);
-        }
+		if ($this->get('pages.current') < $this->get('pages.total'))
+		{
+			$next = $this->get('pages.current') * $this->limit;
+			$end = ($this->get('pages.total')-1) * $this->limit;
 
-        $data->pages = array ();
-        $stop = $this->get('pages.stop');
-        for ($i = $this->get('pages.start'); $i <= $stop; $i++)
-        {
-            $offset = ($i-1)*$this->limit;
+			$data->next->base = $next;
+			$data->next->link = JRoute::_("&limitstart_venues=".$next);
+			$data->end->base = $end;
+			$data->end->link = JRoute::_("&limitstart_venues=".$end);
+		}
 
-            $offset = $offset == 0?'':$offset; //set the empty for removal from route
+		$data->pages = array ();
+		$stop = $this->get('pages.stop');
 
-            $data->pages[$i] = new JPaginationObject($i);
-            if ($i != $this->get('pages.current') || $this->_viewall)
-            {
-                $data->pages[$i]->base = $offset;
-                $data->pages[$i]->link = JRoute::_("&limitstart_venues=".$offset);
-            }
-        }
-        return $data;
-    }
+		for ($i = $this->get('pages.start'); $i <= $stop; $i++)
+		{
+			$offset = ($i-1) * $this->limit;
 
-    function _list_footer($list)
-    {
-        // Initialize variables
-        $html = "<div class=\"list-footer\">\n";
+			$offset = $offset == 0 ? '' : $offset; //set the empty for removal from route
 
-        $html .= "\n<div class=\"limit\">".JText::_('COM_REDEVENT_Display_Num').$list['limitfield']."</div>";
-        $html .= $list['pageslinks'];
-        $html .= "\n<div class=\"counter\">".$list['pagescounter']."</div>";
+			$data->pages[$i] = new JPaginationObject($i);
 
-        $html .= "\n<input type=\"hidden\" name=\"limitstart_venues\" value=\"".$list['limitstart']."\" />";
-        $html .= "\n</div>";
+			if ($i != $this->get('pages.current') || $this->_viewall)
+			{
+				$data->pages[$i]->base = $offset;
+				$data->pages[$i]->link = JRoute::_("&limitstart_venues=".$offset);
+			}
+		}
 
-        return $html;
-    }
+		return $data;
+	}
+
+	function _list_footer($list)
+	{
+		// Initialize variables
+		$html = "<div class=\"list-footer\">\n";
+
+		$html .= "\n<div class=\"limit\">" . JText::_('COM_REDEVENT_Display_Num') . $list['limitfield']."</div>";
+		$html .= $list['pageslinks'];
+		$html .= "\n<div class=\"counter\">" . $list['pagescounter'] . "</div>";
+
+		$html .= "\n<input type=\"hidden\" name=\"limitstart_venues\" value=\"" . $list['limitstart'] . "\" />";
+		$html .= "\n</div>";
+
+		return $html;
+	}
 }

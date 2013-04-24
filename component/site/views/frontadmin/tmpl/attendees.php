@@ -51,9 +51,9 @@ defined('_JEXEC') or die('Restricted access');
 			<?php if ($a->registered): ?>
 			<?php
 			$imgstatus = $a->registered->waitinglist ?
-				JHtml::image('media/com_redevent/images/waiting-16.png', 'waiting',
+				JHtml::image('media/com_redevent/images/b2b-waiting.png', 'waiting',
 					array('class' => "hasTip", 'title' => JText::_('COM_REDEVENT_WAITING_LIST'))) :
-				JHtml::image('media/com_redevent/images/attending-16.png', 'attending',
+				JHtml::image('media/com_redevent/images/b2b-attending.png', 'attending',
 					array('class' => "hasTip", 'title' => JText::_('COM_REDEVENT_ATTENDING')));
 			?>
 			<td><?php echo $imgstatus; ?></td>
@@ -64,11 +64,11 @@ defined('_JEXEC') or die('Restricted access');
 			<td></td>
 			<td></td>
 			<?php endif; ?>
-			<td><?php echo JHTML::image('media/com_redevent/images/icon-16-edit.png', 'edit'
+			<td><?php echo JHTML::image('media/com_redevent/images/b2b-edit.png', 'edit'
 				, array('class' => 'hasTip editmember'
 						, 'title' => JText::_('COM_REDEVENT_EDIT_PARTICIPANT')
 						,  'tip' => JText::_('COM_REDEVENT_EDIT_PARTICIPANT_TIP')))
-				. ($a->registered ? ' '	. JHTML::image('media/com_redevent/images/icon-16-delete.png', 'remove'
+				. ($a->registered ? ' '	. JHTML::image('media/com_redevent/images/b2b-delete.png', 'remove'
 					, array('class' => 'unregister hasTip'
 							, 'title' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CANCEL_REGISTRATION')
 							, 'tip' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CANCEL_REGISTRATION_TIP'))) : ''); ?>
