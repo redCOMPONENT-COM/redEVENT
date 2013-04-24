@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<josetta>
+	<context>redevent_session</context>
+	<name>Redevent session</name>
+	<table>#__redevent_eventvenuexref</table>
+	<reference>
+		<id>
+			<column>id</column>
+			<type>int</type>
+			<size>10</size>
+		</id>
+		<title>
+			<column>date</column>
+			<type>josettatext</type>
+			<size>100</size>
+		</title>
+		<title>
+			<column>title</column>
+			<type>josettatext</type>
+			<size>100</size>
+		</title>
+	</reference>
+		
+</josetta>
