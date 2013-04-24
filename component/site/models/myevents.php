@@ -385,20 +385,25 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 */
 	function _buildQueryVenues()
 	{
-		if (!$allowed = UserAcl::getInstance()->getAllowedForEventsVenues())
-		{
-			return false;
-		}
+		$allowed = UserAcl::getInstance()->getAllowedForEventsVenues();
 
-		$user = JFactory::getUser();
-		//Get Events from Database
-		$query = ' SELECT l.id, l.venue, l.city, l.state, l.url, l.published, '
-		. ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug'
-		. ' FROM #__redevent_venues AS l '
-		. ' WHERE l.id IN (' . implode(',', $allowed) . ') '
-		. ' GROUP BY (l.id) '
-		. ' ORDER BY l.venue ASC '
-		;
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('l.id, l.venue, l.city, l.state, l.url, l.published');
+		$query->select('CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug');
+		$query->from('#__redevent_venues AS l');
+		$query->group('l.id');
+		$query->order('l.venue ASC');
+
+		if ($allowed && count($allowed))
+		{
+			$query->where('l.id IN (' . implode(',', $allowed) . ') ');
+		}
+		else
+		{
+			$query->where('0');
+		}
 
 		return $query;
 	}
