@@ -106,16 +106,17 @@ class plgJosetta_extRedeventsession extends JosettaClassesExtensionplugin
 	 * @return array
 	 *
 	 */
-	public function onJosettaGet3rdPartyFilter( $context, $filterType, $filterName, $current) {
-
-		if( !empty( $context) && ( $context != $this->_context)) {
+	public function onJosettaGet3rdPartyFilter( $context, $filterType, $filterName, $current)
+	{
+		if (!empty( $context) && ( $context != $this->_context))
+		{
 			return;
 		}
 
 		$filterHtml = '';
 
-		switch( $filterType) {
-
+		switch ($filterType)
+		{
 			case 'reevent':
 				// this is a category, so use Joomla html helper to build the drop down
 				$filterHtml = '';
@@ -142,7 +143,7 @@ class plgJosetta_extRedeventsession extends JosettaClassesExtensionplugin
 				break;
 		}
 
-		return empty( $filterHtml) ? null : $filterHtml;
+		return empty($filterHtml) ? null : $filterHtml;
 	}
 
 	/**
@@ -153,6 +154,15 @@ class plgJosetta_extRedeventsession extends JosettaClassesExtensionplugin
 	 */
 	protected function _output3rdPartyFieldsXml($xmlData, $field, $itemType, $item, $originalItem, $targetLanguage)
 	{
+		switch ($field->type)
+		{
+			case 'reevent':
+				$xmlData->value = '555';
+				break;
+		}
+
+		echo '<pre>';print_r($xmlData); echo '</pre>';exit;
+
 		return $xmlData;
 	}
 
@@ -267,9 +277,11 @@ class plgJosetta_extRedeventsession extends JosettaClassesExtensionplugin
 	{
 		$displayText = null;
 
-		if ($type->type == 'RELanguageCategory')
+		if ($type->type == 'reevent')
 		{
+			//$displayText = 'test event';
 
+			$displayText = $type->input;
 		}
 
 		return $displayText;
@@ -289,13 +301,13 @@ class plgJosetta_extRedeventsession extends JosettaClassesExtensionplugin
 
 		if ($field->type == 'reevent')
 		{
-			$val = (int) $field->value;
+			$val = $originalItem->eventid;
 
 			$db      = JFactory::getDbo();
 			$query = $db->getQuery(true);
 
 			$query->select('title');
-			$query->from('#__redevent_event');
+			$query->from('#__redevent_events');
 			$query->where('id = ' . $val);
 
 			$db->setQuery($query);
@@ -370,7 +382,7 @@ class plgJosetta_extRedeventsession extends JosettaClassesExtensionplugin
 
 			$query->select('f.*');
 			$query->from('#__redevent_fields AS f');
-			$query->where('f.object_key = "redevent.session"');
+			$query->where('f.object_key = "redevent.xref"');
 			$query->order('f.ordering');
 
 			$db->setQuery($query);
