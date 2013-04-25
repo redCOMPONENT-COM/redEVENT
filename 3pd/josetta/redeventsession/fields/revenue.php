@@ -26,10 +26,10 @@ jimport('joomla.form.formfield');
  * @subpackage  Form
  * @since       11.1
 */
-class JFormFieldREEvent extends JFormField {
+class JFormFieldREVenue extends JFormField {
 
 
-	public $type = 'reevent';
+	public $type = 'revenue';
 
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
@@ -67,13 +67,13 @@ class JFormFieldREEvent extends JFormField {
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('ja.id, e.title');
+		$query->select('ja.id, v.venue');
 		$query->from('#__josetta_associations AS ja');
 		$query->join('INNER', '#__josetta_associations AS jorg ON jorg.key = ja.key');
-		$query->join('INNER', '#__redevent_event_venue_xref AS x ON jorg.id = x.eventid');
-		$query->join('INNER', '#__redevent_events AS e ON e.id = ja.id');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x ON jorg.id = x.venueid');
+		$query->join('INNER', '#__redevent_venues AS v ON v.id = ja.id');
 		$query->where('x.id = ' . $ref_id);
-		$query->where('jorg.context = ' . $db->Quote('com_redevent_event'));
+		$query->where('jorg.context = ' . $db->Quote('com_redevent_venue'));
 		$query->where('ja.language = ' . $db->Quote($lang));
 
 		$db->setQuery($query);
@@ -83,14 +83,15 @@ class JFormFieldREEvent extends JFormField {
 
 		if (!$resu)
 		{
-			$html[] = '<div class="error">' . Jtext::_('COM_REDEVENT_JOSETTA_TRANSLATE_EVENT_FIRST') . '</div>';
+			$html[] = '<div class="error">' . Jtext::_('COM_REDEVENT_JOSETTA_TRANSLATE_VENUE_FIRST') . '</div>';
 		}
 		else
 		{
-			$html[] = $resu->title;
+			$html[] = $resu->venue;
 		}
 
 		$html[] = '<input type="hidden" name="' . $this->name . '" id="' . $this->id . '" value="' . ($resu ? $resu->id : 0) . '"/>';
+
 
 		return implode("\n", $html);
 	}

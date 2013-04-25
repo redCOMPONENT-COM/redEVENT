@@ -33,7 +33,7 @@
 			<length>255</length>
 			<translate>yes</translate>
 			<display>yes</display>
-			<require>yes</require>
+			<require>no</require>
 		</field>
 		
 		<field>
@@ -57,7 +57,7 @@
 			<addfieldpath>/plugins/josetta_ext/redeventsession/fields</addfieldpath>
 			<translate>yes</translate>
 			<display>yes</display>
-			<require>no</require>
+			<require>yes</require>
 		</field>
 		
 		<field>
@@ -69,7 +69,7 @@
 			<addfieldpath>/plugins/josetta_ext/redeventsession/fields</addfieldpath>
 			<translate>yes</translate>
 			<display>yes</display>
-			<require>no</require>
+			<require>yes</require>
 		</field>
 		
 		<field>
@@ -145,7 +145,7 @@
 			<length>255</length>
 			<translate>yes</translate>
 			<display>yes</display>
-			<require>yes</require>
+			<require>no</require>
 		</field>
 				
 		<field>

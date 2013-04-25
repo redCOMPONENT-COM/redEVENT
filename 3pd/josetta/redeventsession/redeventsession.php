@@ -41,6 +41,8 @@ class plgJosetta_extRedeventsession extends JosettaClassesExtensionplugin
 
 	protected $customfields = null;
 
+	protected $origineventid = 0;
+
 	/**
 	 * constructor
 	 *
@@ -52,6 +54,7 @@ class plgJosetta_extRedeventsession extends JosettaClassesExtensionplugin
 		include_once JPATH_LIBRARIES . '/fof/include.php';
 		parent::__construct($subject, $config);
 		$this->loadLanguages();
+		$this->loadLanguage();
 	}
 
 	/**
@@ -147,23 +150,36 @@ class plgJosetta_extRedeventsession extends JosettaClassesExtensionplugin
 	}
 
 	/**
-	 * Hook for module to add their own fields processing
-	 * to the form xml
+	 * Get html for buttons to be offered to users, to carry over
+	 * translation: normally a copy button, and optionnally a suggest
+	 * translation button
+	 * Basic types fields display is builtin, but plugins can/will add
+	 * their own fields, for which they should provide buttons
 	 *
-	 * @return string
+	 * Note: plugin can make use of JosettaHelper::getCopyButton()
+	 * and JosesttaHelper::getSuggestButton() methods to add
+	 * the common default buttons
+	 * In the latter case, use also the @link JosettaHelper::canSuggestTranslation()
+	 * method before adding the suggest button code, to
+	 *
+	 * @param object $form the Joomla! form object to which the field belongs
+	 * @param object $field the Joomla! field object
+	 * @param string $language target translation language
+	 * @return string the formatted, ready to display, string
 	 */
-	protected function _output3rdPartyFieldsXml($xmlData, $field, $itemType, $item, $originalItem, $targetLanguage)
+	public function onJosettaGet3rdPartycreateButton($form, $field, $language)
 	{
+		$buttonsHtml = null;
+
 		switch ($field->type)
 		{
 			case 'reevent':
-				$xmlData->value = '555';
+			case 'revenue':
+				$buttonsHtml = '&nbsp;';
 				break;
 		}
 
-		echo '<pre>';print_r($xmlData); echo '</pre>';exit;
-
-		return $xmlData;
+		return $buttonsHtml;
 	}
 
 	/**
@@ -277,11 +293,12 @@ class plgJosetta_extRedeventsession extends JosettaClassesExtensionplugin
 	{
 		$displayText = null;
 
-		if ($type->type == 'reevent')
+		switch ($type->type)
 		{
-			//$displayText = 'test event';
-
-			$displayText = $type->input;
+			case'reevent':
+			case'revenue':
+				$displayText = $type->input;
+				break;
 		}
 
 		return $displayText;
@@ -302,12 +319,31 @@ class plgJosetta_extRedeventsession extends JosettaClassesExtensionplugin
 		if ($field->type == 'reevent')
 		{
 			$val = $originalItem->eventid;
+			$this->origineventid = $val;
 
 			$db      = JFactory::getDbo();
 			$query = $db->getQuery(true);
 
 			$query->select('title');
 			$query->from('#__redevent_events');
+			$query->where('id = ' . $val);
+
+			$db->setQuery($query);
+			$res = $db->loadResult();
+
+			$displayText = $res;
+		}
+
+		if ($field->type == 'revenue')
+		{
+			$val = $originalItem->venueid;
+			$this->originvenueid = $val;
+
+			$db      = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			$query->select('venue');
+			$query->from('#__redevent_venues');
 			$query->where('id = ' . $val);
 
 			$db->setQuery($query);
