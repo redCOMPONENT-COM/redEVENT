@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package Joomla
  * @subpackage redEVENT
  * @since 0.9
- */
+*/
 class RedEvent_eventvenuexref extends JTable
 {
 	public function __construct(& $db) {
@@ -141,7 +141,7 @@ class RedEvent_eventvenuexref extends JTable
 		}
 
 		$query = 'DELETE FROM '.$this->_db->nameQuote( $this->_tbl ).
-				' WHERE '.$this->_tbl_key.' = '. $this->_db->Quote($this->$k);
+		' WHERE '.$this->_tbl_key.' = '. $this->_db->Quote($this->$k);
 		$this->_db->setQuery( $query );
 
 		if ($this->_db->query())
@@ -217,8 +217,8 @@ class RedEvent_eventvenuexref extends JTable
 	public function _getCustomFieldsColumns()
 	{
 		$query = ' SELECT CONCAT("custom", id) '
-		       . ' FROM #__redevent_fields '
-		       . ' WHERE object_key = ' . $this->_db->Quote('redevent.xref');
+		. ' FROM #__redevent_fields '
+		. ' WHERE object_key = ' . $this->_db->Quote('redevent.xref');
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadResultArray();
 		return $res;
@@ -226,29 +226,61 @@ class RedEvent_eventvenuexref extends JTable
 
 	public function setPrices($prices = array())
 	{
-    // first remove current rows
-    $query = ' DELETE FROM #__redevent_sessions_pricegroups '
-           . ' WHERE xref = ' . $this->_db->Quote($this->id);
-    $this->_db->setQuery($query);
-    if (!$this->_db->query()) {
-    	$this->setError($this->_db->getErrorMsg());
-    	return false;
-    }
+		// first remove current rows
+		$query = ' DELETE FROM #__redevent_sessions_pricegroups '
+		. ' WHERE xref = ' . $this->_db->Quote($this->id);
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) {
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
 
-    // then recreate them if any
-    foreach ((array) $prices as $k => $price)
-    {
-    	if (!isset($price->pricegroup_id) || !isset($price->price)) {
-    		continue;
-    	}
-      $new = & JTable::getInstance('RedEvent_sessions_pricegroups', '');
-      $new->set('xref',    $this->id);
-      $new->set('pricegroup_id', $price->pricegroup_id);
-      $new->set('price', $price->price);
-      if (!($new->check() && $new->store())) {
-      	$this->setError($new->getError());
-      	return false;
-      }
-    }
+		// then recreate them if any
+		foreach ((array) $prices as $k => $price)
+		{
+			if (!isset($price->pricegroup_id) || !isset($price->price)) {
+				continue;
+			}
+			$new = & JTable::getInstance('RedEvent_sessions_pricegroups', '');
+			$new->set('xref',    $this->id);
+			$new->set('pricegroup_id', $price->pricegroup_id);
+			$new->set('price', $price->price);
+			if (!($new->check() && $new->store())) {
+				$this->setError($new->getError());
+				return false;
+			}
+		}
+	}
+
+	/**
+	 * Method to store a row in the database from the JTable instance properties.
+	 * If a primary key value is set the row with that primary key value will be
+	 * updated with the instance property values.  If no primary key value is set
+	 * a new row will be inserted into the database with the properties from the
+	 * JTable instance.
+	 *
+	 * @param   boolean  $updateNulls  True to update fields even if they are null.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @link	http://docs.joomla.org/JTable/store
+	 * @since   11.1
+	 */
+	public function store($updateNulls = false)
+	{
+		// Make sure the language is same as event
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('language');
+		$query->from('#__redevent_events');
+		$query->where('id = ' . $this->eventid);
+
+		$db->setQuery($query);
+		$res = $db->loadResult();
+
+		$this->language = $res;
+
+		return parent::store($updateNulls);
 	}
 }

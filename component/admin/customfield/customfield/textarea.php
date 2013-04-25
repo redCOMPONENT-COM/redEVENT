@@ -32,7 +32,7 @@ defined('JPATH_BASE') or die();
 */
 
 class TCustomfieldTextarea extends TCustomfield {
- 
+
   /**
   * Element name
   *
@@ -49,7 +49,7 @@ class TCustomfieldTextarea extends TCustomfield {
    */
   function render($attributes = array())
   {
-  	if ($this->required) 
+  	if ($this->required)
   	{
   		if (isset($attributes['class'])) {
   			$attributes['class'] .= ' required';
@@ -71,22 +71,22 @@ class TCustomfieldTextarea extends TCustomfield {
   	}
     $value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-    return '<textarea name="custom'.$this->id.'" id="custom'.$this->id.'" '.$this->attributesToString($attributes).'>'.$value.'</textarea>';
+    return '<textarea name="'.$this->fieldname.'" id="'.$this->fieldid.'" '.$this->attributesToString($attributes).'>'.$value.'</textarea>';
   }
 
-  function renderFilter($attributes = array(), $selected = null) 
+  function renderFilter($attributes = array(), $selected = null)
   {
     $app = & JFactory::getApplication();
-  
+
     if ($selected) {
       $value = $selected;
     }
     else {
       $value = '';
     }
-    
+
     $value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-    return '<input type="text" name="filtercustom['.$this->id.']" id="filtercustom['.$this->id.']" value="'.$value.'" '.$this->attributesToString($attributes).'/>'; 
+    return '<input type="text" name="filtercustom['.$this->id.']" id="filtercustom['.$this->id.']" value="'.$value.'" '.$this->attributesToString($attributes).'/>';
   }
 }

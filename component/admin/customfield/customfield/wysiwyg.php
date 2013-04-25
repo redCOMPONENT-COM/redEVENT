@@ -32,7 +32,7 @@ defined('JPATH_BASE') or die();
 */
 
 class TCustomfieldWysiwyg extends TCustomfield {
- 
+
   /**
   * Element name
   *
@@ -49,7 +49,7 @@ class TCustomfieldWysiwyg extends TCustomfield {
    */
   function render($attributes = array())
   {
-  	if ($this->required) 
+  	if ($this->required)
   	{
   		if (isset($attributes['class'])) {
   			$attributes['class'] .= ' required';
@@ -71,25 +71,25 @@ class TCustomfieldWysiwyg extends TCustomfield {
   	}
     $value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-		$editor 	= & JFactory::getEditor();
-		
-		$html = $editor->display( 'custom'.$this->id,  $value, '100%;', '350', '75', '20', array('pagebreak', 'readmore') ) ;
+		$editor 	= JFactory::getEditor();
+
+		$html = $editor->display($this->fieldname,  $value, '100%;', '350', '75', '20', array('pagebreak', 'readmore')) ;
     return $html;
   }
 
-  function renderFilter($attributes = array(), $selected = null) 
+  function renderFilter($attributes = array(), $selected = null)
   {
-    $app = & JFactory::getApplication();
-  
+    $app = JFactory::getApplication();
+
     if ($selected) {
       $value = $selected;
     }
     else {
       $value = '';
     }
-    
+
     $value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-    return '<input type="text" name="filtercustom['.$this->id.']" id="filtercustom['.$this->id.']" value="'.$value.'" '.$this->attributesToString($attributes).'/>'; 
+    return '<input type="text" name="filtercustom['.$this->id.']" id="filtercustom['.$this->id.']" value="'.$value.'" '.$this->attributesToString($attributes).'/>';
   }
 }

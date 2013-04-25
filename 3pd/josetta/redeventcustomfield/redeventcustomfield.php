@@ -35,7 +35,7 @@ require_once JPATH_ADMINISTRATOR . '/components/com_josetta/classes/extensionplu
 class plgJosetta_extRedeventcustomfield extends JosettaClassesExtensionplugin
 {
 	protected $_context = 'com_redevent_customfield';
-	protected $_defaultTable = 'redevent_customfields';
+	protected $_defaultTable = 'redevent_fields';
 
 	public function __construct(&$subject, $config = array())
 	{
@@ -138,7 +138,9 @@ class plgJosetta_extRedeventcustomfield extends JosettaClassesExtensionplugin
 					JError::raiseWarning(0, 'failed adding custom field to table');
 				}
 			}
-			return true;
+			return $id;
 		}
+
+		return false;
 	}
 }

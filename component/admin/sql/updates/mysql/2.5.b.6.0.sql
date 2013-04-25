@@ -16,3 +16,11 @@ ALTER TABLE `#__redevent_venues_categories` ADD INDEX `idx_language` (`language`
 ALTER TABLE `#__redevent_fields` ADD INDEX `idx_language` (`language`);
 ALTER TABLE `#__redevent_textlibrary` ADD INDEX `idx_language` (`language`);
 
+UPDATE `#__redevent_categories` SET language = '*';
+UPDATE `#__redevent_venues` SET language = '*';
+UPDATE `#__redevent_events` SET language = '*';
+UPDATE `#__redevent_roles` SET language = '*';
+UPDATE `#__redevent_pricegroups` SET language = '*';
+UPDATE `#__redevent_venues_categories` SET language = '*';
+UPDATE `#__redevent_fields` SET language = '*';
+UPDATE `#__redevent_textlibrary` SET language = '*';

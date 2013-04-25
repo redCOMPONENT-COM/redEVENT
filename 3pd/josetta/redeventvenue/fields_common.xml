@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<josetta>
+	<fields>
+
+		<field>
+			<id>language</id>
+			<name>language</name>
+			<column>language</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+			<grid>yes</grid>
+		</field>
+
+		<field>
+			<id>id</id>
+			<name>JGLOBAL_FIELD_ID_LABEL</name>
+			<description>JGLOBAL_FIELD_ID_DESC</description>
+			<translate>yes</translate>
+			<type>integer</type>
+			<display>yes</display>
+			<require>no</require>
+			<readonly>true</readonly>
+		</field>
+		
+		<field>
+			<id>categories</id>
+			<name>COM_REDEVENT_CATEGORIES</name>
+			<column>categories</column>
+			<description>COM_REDEVENT_CATEGORIES</description>
+			<translate>yes</translate>
+			<type>relanguagevenuecategory</type>
+			<multiple>yes</multiple>
+			<addfieldpath>/plugins/josetta_ext/redeventvenue/fields</addfieldpath>
+			<display>yes</display>
+			<option value=""></option>
+		</field>
+		
+		<field>
+			<id>venue</id>
+			<name>COM_REDEVENT_NAME</name>
+			<description>COM_REDEVENT_NAME</description>
+			<column>venue</column>
+			<type>josettatext</type>
+			<size>60</size>
+			<length>255</length>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>yes</require>
+		</field>
+		
+		<field>
+			<id>alias</id>
+			<name>JFIELD_ALIAS_LABEL</name>
+			<description>JFIELD_ALIAS_DESC</description>
+			<column>alias</column>
+			<type>josettatext</type>
+			<size>60</size>
+			<length>255</length>
+			<translate>yes</translate>
+			<display>yes</display>
+		</field>
+		
+		<field>
+			<id>url</id>
+			<column>url</column>
+			<translate>no</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>email</id>
+			<column>email</column>
+			<translate>no</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>company</id>
+			<column>company</column>
+			<translate>no</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>street</id>
+			<column>street</column>
+			<translate>no</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>plz</id>
+			<column>plz</column>
+			<translate>no</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>city</id>
+			<column>city</column>
+			<translate>no</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>state</id>
+			<column>state</column>
+			<translate>no</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>country</id>
+			<column>country</column>
+			<translate>no</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>latitude</id>
+			<column>latitude</column>
+			<translate>no</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>longitude</id>
+			<column>longitude</column>
+			<translate>no</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+
+		<field>
+			<id>locdescription</id>
+			<name>COM_REDEVENT_DESCRIPTION</name>
+			<description>COM_REDEVENT_DESCRIPTION</description>
+			<column>description</column>
+			<type>editor</type>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+				
+	    <field>
+	      <id>meta_description</id>
+	      <name>JFIELD_META_DESCRIPTION_LABEL</name>
+	      <description>JFIELD_META_DESCRIPTION_DESC</description>
+	      <column>meta_description</column>
+	      <type>textarea</type>
+	      <size>0</size>
+	      <length>0</length>
+	      <translate>yes</translate>
+	      <display>yes</display>
+	    </field>
+	    
+	    <field>
+	      <id>meta_keywords</id>
+	      <name>JFIELD_META_KEYWORDS_LABEL</name>
+	      <description>JFIELD_META_KEYWORDS_DESC</description>
+	      <column>meta_keywords</column>
+	      <type>textarea</type>
+	      <size>0</size>
+	      <length>0</length>
+	      <translate>yes</translate>
+	      <display>yes</display>
+	    </field>
+		
+		<field>
+			<id>locimage</id>
+			<column>image</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>map</id>
+			<column>map</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>  
+		
+	    <field>
+	      <id>access</id>
+	      <name>access</name>
+	      <column>access</column>
+	      <translate>no</translate>
+	      <display>no</display>
+	      <require>no</require>
+	      <grid>no</grid>
+	    </field>
+	    
+	</fields>
+</josetta>

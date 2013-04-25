@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<josetta>
+	<fields>
+
+		<field>
+			<id>language</id>
+			<name>language</name>
+			<column>language</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+			<grid>yes</grid>
+		</field>
+
+		<field>
+			<id>id</id>
+			<name>JGLOBAL_FIELD_ID_LABEL</name>
+			<description>JGLOBAL_FIELD_ID_DESC</description>
+			<translate>yes</translate>
+			<type>integer</type>
+			<display>yes</display>
+			<require>no</require>
+			<readonly>true</readonly>
+		</field>
+				
+		<field>
+			<id>title</id>
+			<name>COM_REDEVENT_SESSION_TITLE_LABEL</name>
+			<description>COM_REDEVENT_SESSION_TITLE_TIP</description>
+			<column>title</column>
+			<type>josettatext</type>
+			<size>60</size>
+			<length>255</length>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>alias</id>
+			<name>COM_REDEVENT_SESSION_ALIAS_LABEL</name>
+			<description>COM_REDEVENT_SESSION_ALIAS_TIP</description>
+			<column>alias</column>
+			<type>josettatext</type>
+			<size>60</size>
+			<length>255</length>
+			<translate>yes</translate>
+			<display>yes</display>
+		</field>
+		
+		<field>
+			<id>eventid</id>
+			<name>COM_REDEVENT_EVENT</name>
+			<column>eventid</column>
+			<description>COM_REDEVENT_EVENT</description>
+			<type>reevent</type>
+			<addfieldpath>/plugins/josetta_ext/redeventsession/fields</addfieldpath>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>yes</require>
+		</field>
+		
+		<field>
+			<id>venueid</id>
+			<name>COM_REDEVENT_Venue</name>
+			<column>venueid</column>
+			<description>COM_REDEVENT_XREF_VENUE_TIP</description>
+			<type>revenue</type>
+			<addfieldpath>/plugins/josetta_ext/redeventsession/fields</addfieldpath>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>yes</require>
+		</field>
+		
+		<field>
+			<id>dates</id>
+			<name>COM_REDEVENT_DATE</name>
+			<column>dates</column>
+			<description>COM_REDEVENT_XREF_START_DATE_TIP</description>
+			<type>calendar</type>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>times</id>
+			<name>COM_REDEVENT_TIME</name>
+			<column>times</column>
+			<description>COM_REDEVENT_XREF_START_TIME_TIP</description>
+			<type>josettatext</type>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>enddates</id>
+			<name>COM_REDEVENT_ENDDATE</name>
+			<column>enddates</column>
+			<description>COM_REDEVENT_XREF_END_DATE_TIP</description>
+			<type>calendar</type>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>endtimes</id>
+			<name>COM_REDEVENT_ENDTIMES</name>
+			<column>endtimes</column>
+			<description>COM_REDEVENT_XREF_END_TIME_TIP</description>
+			<type>josettatext</type>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>registrationend</id>
+			<name>COM_REDEVENT_XREF_REGISTRATION_END</name>
+			<column>registrationend</column>
+			<description>COM_REDEVENT_XREF_REGISTRATION_END_TIP</description>
+			<type>calendar</type>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>external_registration_url</id>
+			<column>external_registration_url</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>
+						
+		<field>
+			<id>note</id>
+			<name>COM_REDEVENT_XREF_NOTE</name>
+			<column>note</column>
+			<description>COM_REDEVENT_XREF_NOTE_TIP</description>
+			<type>josettatext</type>
+			<size>60</size>
+			<length>255</length>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+				
+		<field>
+			<id>details</id>
+			<column>details</column>
+			<name>COM_REDEVENT_Details</name>
+			<description>COM_REDEVENT_XREF_DETAILS_INFO</description>
+			<type>editor</type>
+			<translate>yes</translate>
+			<display>yes</display>
+		</field>
+				
+		<field>
+			<id>icaldetails</id>
+			<column>icaldetails</column>
+			<name>COM_REDEVENT_XREF_ICALDETAILS_INFO</name>
+			<description>COM_REDEVENT_XREF_ICALDETAILS_INFO</description>
+			<type>editor</type>
+			<translate>yes</translate>
+			<display>yes</display>
+		</field>
+				
+		<field>
+			<id>icalvenue</id>
+			<column>icalvenue</column>
+			<name>COM_REDEVENT_XREF_ICALDETAILS_VENUE</name>
+			<description>COM_REDEVENT_XREF_ICALDETAILS_VENUE</description>
+			<type>editor</type>
+			<translate>yes</translate>
+			<display>yes</display>
+		</field>
+		
+		<field>
+			<id>maxattendees</id>
+			<column>maxattendees</column>
+			<translate>no</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>maxwaitinglist</id>
+			<column>maxwaitinglist</column>
+			<translate>no</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+		
+		<field>
+			<id>featured</id>
+			<column>featured</column>
+			<translate>no</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+			    
+	</fields>
+</josetta>

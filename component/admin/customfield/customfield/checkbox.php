@@ -31,7 +31,7 @@ defined('JPATH_BASE') or die();
 */
 
 class TCustomfieldCheckbox extends TCustomfield {
- 
+
   /**
   * Element name
   *
@@ -48,11 +48,11 @@ class TCustomfieldCheckbox extends TCustomfield {
    */
   function render($attributes = array())
   {
-  	$html = '';    
+  	$html = '';
     $option_list = array();
     $options = explode("\n", $this->options);
     $values = explode("\n", $this->value);
-    
+
     $default_values = explode("\n", $this->default_value);
     $default = array();
     foreach ($default_values as $d)
@@ -70,32 +70,32 @@ class TCustomfieldCheckbox extends TCustomfield {
     {
     	$selected = $default;
     }
-    
-    if ($options) 
+
+    if ($options)
     {
     	foreach ($options as $opt) {
     		$option = $this->getOptionLabelValue($opt);
-    		$html .= '<input type="checkbox" name="custom'.$this->id.'[]" value="'.$option->value.'"'.(in_array($option->value, $selected) ? ' checked="checked"':'').' '.$this->attributesToString($attributes) .'/>'.$option->label;
+    		$html .= '<input type="checkbox" name="'.$this->fieldname.'[]" value="'.$option->value.'"'.(in_array($option->value, $selected) ? ' checked="checked"':'').' '.$this->attributesToString($attributes) .'/>'.$option->label;
     	}
     }
     return $html;
   }
-  
-  function renderFilter($attributes = array(), $selected = null) 
+
+  function renderFilter($attributes = array(), $selected = null)
   {
     $app = & JFactory::getApplication();
-    
+
     if ($selected) {
       $value = $selected;
     }
     else {
       $value = array();
     }
-        
-    $html = '';    
+
+    $html = '';
     $option_list = array();
     $options = explode("\n", $this->options);
-    if ($options) 
+    if ($options)
     {
       foreach ($options as $opt) {
     		$option = $this->getOptionLabelValue($opt);
