@@ -19,6 +19,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 defined('_JEXEC') or die('Restricted access');
+
+// Google analytics integration
+if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
+{
+	$doc = JFactory::getDocument();
+
+	$doc->addScriptDeclaration(
+	'window.addEvent("domready", function() {
+			$$(".mod_redevent_search_submit").addEvent("click", function() {
+				ga("send", "pageview", "/virtual/moduleEventSearch");
+			});
+		});'
+	);
+}
 ?>
 <form action="<?php echo $action; ?>" method="post" id="redeventsearchform">
 
@@ -26,12 +40,12 @@ defined('_JEXEC') or die('Restricted access');
 			<?php if ($params->get('filter_text', 1)) : ?>
 		  <div class="rssm_filter_row">
 		  	<label for="filter_type"><?php echo $lists['filter_types']; ?></label>
-		  	<span class="rssm_filter">					
+		  	<span class="rssm_filter">
 	      	<input type="text" name="filter" value="<?php echo $lists['filter'];?>" class="inputbox text_filter"/>
 	      </span>
 			</div>
     	<?php endif; ?>
-    	
+
 	    <?php if ($params->get('show_filter_venue', 0)): ?>
 		  <div class="rssm_filter_row">
 		  	<label for="filter_type"><?php echo JText::_('MOD_REDEVENT_SEARCH_VENUE_LABEL');  ?></label>
@@ -40,7 +54,7 @@ defined('_JEXEC') or die('Restricted access');
 				</span>
 			</div>
     	<?php endif; ?>
-    	
+
 	    <?php if (isset($lists['categories']) && $params->get('show_filter_category', 0)): ?>
 		  <div class="rssm_filter_row">
 		  	<label for="filter_type"><?php echo JText::_('MOD_REDEVENT_SEARCH_CATEGORY_LABEL');  ?></label>
@@ -49,7 +63,7 @@ defined('_JEXEC') or die('Restricted access');
 				</span>
 			</div>
     	<?php endif; ?>
-    	
+
 	    <?php if ($params->get('show_filter_date', 0)): ?>
 		  <div class="rssm_filter_row">
 		  	<label for="filter_type"><?php echo JText::_('MOD_REDEVENT_SEARCH_DATE_FROM_LABEL');  ?></label>
@@ -64,7 +78,7 @@ defined('_JEXEC') or die('Restricted access');
 				</span>
 			</div>
     	<?php endif; ?>
-    	
+
 	    <?php if ($params->get('show_filter_custom', 0)): ?>
 				<?php if ($customsfilters && count($customsfilters)): ?>
 	    	<?php foreach ($customsfilters as $custom): ?>
@@ -76,8 +90,8 @@ defined('_JEXEC') or die('Restricted access');
 	      </div>
 	    	<?php endforeach; ?>
 	    	<?php endif; ?>
-	    <?php endif; ?>	    	
-	    	
+	    <?php endif; ?>
+
   </div>
-	<button onclick="document.getElementById('redeventsearchform').submit();"><?php echo JText::_( 'MOD_REDEVENT_SEARCH_SEARCH_LABEL' ); ?></button>
+	<button type="submit" class="mod_redevent_search_submit"><?php echo JText::_( 'MOD_REDEVENT_SEARCH_SEARCH_LABEL' ); ?></button>
 </form>

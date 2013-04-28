@@ -20,11 +20,22 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-$document =& JFactory::getDocument();
+$document = JFactory::getDocument();
 // Add Javascript
 $document->addScriptDeclaration("window.MOD_REDEVENT_SEARCH_SELECT_EVENT = '" . JText::_('MOD_REDEVENT_SEARCH_SELECT_EVENT') . "';");
 JHTML::_('behavior.modal');
 
+// Google analytics integration
+if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
+{
+	$document->addScriptDeclaration(
+	'window.addEvent("domready", function() {
+			$$(".mod_redevent_search_submit").addEvent("click", function() {
+				ga("send", "pageview", "/virtual/moduleEventSearch");
+			});
+		});'
+	);
+}
 ?>
 <form accept-charset="UTF-8" action="<?php echo $action; ?>" method="get" id="redeventsearchform">
 
@@ -93,7 +104,7 @@ JHTML::_('behavior.modal');
   <div class="main-button">
 	  	<div class="green-left"></div>
 	  	<div class="green-center">
-	  		<button type="submit" ><?php echo JText::_( 'MOD_REDEVENT_SEARCH_SEARCH_LABEL' ); ?></button>
+	  		<button type="submit" class="mod_redevent_search_submit"><?php echo JText::_( 'MOD_REDEVENT_SEARCH_SEARCH_LABEL' ); ?></button>
 	  	</div>
 	  	<div class="green-right"></div>
   	</div>
