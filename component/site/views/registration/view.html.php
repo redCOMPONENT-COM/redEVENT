@@ -43,15 +43,15 @@ class RedeventViewRegistration extends JView
 	function display($tpl = null)
 	{
 		$mainframe  = &Jfactory::getApplication();
-		$document 	= &JFactory::getDocument();
-		$user		    = &JFactory::getUser();
+		$document 	= JFactory::getDocument();
+		$user		    = JFactory::getUser();
 		$dispatcher = &JDispatcher::getInstance();
-		
+
 		$config     = redEVENTHelper::config();
 		$acl        = UserAcl::getInstance();
-				
-		$event = $this->get('SessionDetails');	
-	
+
+		$event = $this->get('SessionDetails');
+
 		if ($this->getLayout() == 'confirmed')
 		{
 			$message = $event->confirmation_message;
@@ -73,14 +73,14 @@ class RedeventViewRegistration extends JView
 		else {
 			echo 'layout not defined';
 			return;
-		}		
+		}
 		/* This loads the tags replacer */
 		JView::loadHelper('tags');
 		/* Start the tag replacer */
 		$tags = new redEVENT_tags();
 		$tags->setXref(JRequest::getInt('xref'));
 		$message = $tags->ReplaceTags($message);
-		
+
 		$this->assignRef('tags',    $tags);
 		$this->assignRef('message', $message);
 		$this->assignRef('event',   $event);
@@ -89,8 +89,8 @@ class RedeventViewRegistration extends JView
 
 	function _displayEdit($tpl = null)
 	{
-		$user = &JFactory::getUser();
-		$acl  = new UserAcl();
+		$user = JFactory::getUser();
+		$acl  = UserAcl::getInstance();
 		$xref = JRequest::getInt('xref');
 		$submitter_id = JRequest::getInt('submitter_id');
 		if (!$submitter_id) {
@@ -100,13 +100,13 @@ class RedeventViewRegistration extends JView
 		$model  = $this->getModel();
 		$model->setXref($xref);
 		$course = $this->get('SessionDetails');
-		
+
 		$registration = $model->getRegistration($submitter_id);
 		if (!$registration) {
 			JError::raise(0,$model->getError);
 			return false;
 		}
-		
+
 		if ($acl->canManageAttendees($registration->xref) && JRequest::getVar('task') == 'manageredit') {
 			$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute($xref, 'managerupdate'));
 		}
@@ -117,50 +117,50 @@ class RedeventViewRegistration extends JView
 			JError::raiseError(403,'NOT AUTHORIZED');
 			return false;
 		}
-		
+
 		$rfoptions = array();
-		
+
 		$prices = $this->get('Pricegroups');
 		$field = array();
 		$field['label'] = '<label for="pricegroup_id">'.JText::_('COM_REDEVENT_REGISTRATION_PRICE').'</label>';
 		$field['field'] = redEVENTHelper::getRfPricesSelect($prices, $registration->pricegroup_id);
 		$rfoptions['extrafields'][] = $field;
-	  		
+
 		$rfcore = new RedformCore();
-		$rfields = $rfcore->getFormFields($course->redform_id, array($submitter_id), 1, $rfoptions);		
-		
-		
+		$rfields = $rfcore->getFormFields($course->redform_id, array($submitter_id), 1, $rfoptions);
+
+
 		$this->assign('action' ,  $action);
-		$this->assign('rfields',  $rfields);	
-		$this->assign('xref',     $xref);		
+		$this->assign('rfields',  $rfields);
+		$this->assign('xref',     $xref);
 		parent::display($tpl);
 	}
-	
+
 	function _displayCancel($tpl)
 	{
-		$user = &JFactory::getUser();
-		$uri  = &JFactory::getURI();
-		
+		$user = JFactory::getUser();
+		$uri  = JFactory::getURI();
+
 		$xref = JRequest::getInt('xref');
 		$rid  = JRequest::getInt('rid');
 		$key  = JRequest::getVar('submit_key', '', 'request', 'string');
-		
-		$document 	= &JFactory::getDocument();
+
+		$document 	= JFactory::getDocument();
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_CANCEL_REGISTRATION'));
-		
+
 		$model  = $this->getModel();
 		$model->setXref($xref);
 		$course = $this->get('SessionDetails');
 		$course->dateinfo = REOutput::formatdate($course->dates, $course->times);
-		
+
 		$cancellink = JRoute::_(RedeventHelperRoute::getDetailsRoute($course->slug, $course->xref) .'&task=delreguser&rid=' .$rid);
-		
+
 		$this->assignRef('course',     $course);
 		$this->assignRef('xref',       $xref);
 		$this->assignRef('rid',        $rid);
 		$this->assignRef('cancellink', $cancellink);
 		$this->assignRef('action',     JRoute::_('index.php?option=com_redevent&xref='.$xref.'&rid='.$rid));
-				
+
 		parent::display($tpl);
 	}
 }

@@ -599,7 +599,7 @@ class RedeventController extends JController
 
 	function publishxref()
 	{
-		$acl = new UserAcl();
+		$acl  = UserAcl::getInstance();
 		$xref = JRequest::getInt('xref');
 
 		if (!$acl->canPublishXref($xref)) {
@@ -635,7 +635,7 @@ class RedeventController extends JController
 
 	function deletexref()
 	{
-		$acl = new UserAcl();
+		$acl  = UserAcl::getInstance();
 		$xref = JRequest::getInt('xref');
 
 		if (!$acl->canEditXref($xref)) {
