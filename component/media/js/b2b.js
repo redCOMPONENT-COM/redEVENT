@@ -222,6 +222,34 @@ var redb2b = {
 			document.id('redevent-admin').addEvent('click:relay(.add-employee)', function(e){
 				redb2b.editmember(0);
 			});
+
+            /**
+             * update member
+             */
+            document.id('redevent-admin').addEvent('click:relay(.update-employee)', function(e){
+                var user_id       = document.id('member_id').value;
+                var user_username = document.id('member_username').value;
+                var user_name     = document.id('member_name').value;
+                var user_email    = document.id('member_email').value;
+                req = new Request.JSON({
+                    url : 'index.php?option=com_redevent&controller=frontadmin&task=update_user&tmpl=component',
+                    data : {'id' : user_id, 'username' : user_username, 'name' : user_name, 'email' : user_email},
+                    method : 'post',
+                    onRequest: function(){
+
+                    },
+                    onSuccess : function(response){
+                        if (response.status == 1) {
+                            document.id('editmemberscreen').dispose();
+                            document.id('redadmin-main').show();
+                        }
+                        else {
+                            alert(response.error);
+                        }
+                    }
+                });
+                req.send();
+            });
 						
 			/**
 			 * remove registration

@@ -435,4 +435,39 @@ class RedeventControllerFrontadmin extends FOFController
 		echo json_encode($resp);
 		JFactory::getApplication()->close();
 	}
+
+	/**
+	 * ajax update user
+	 *
+	 * @return void
+	 */
+	public function update_user()
+	{
+		$app      = JFactory::getApplication();
+		$id       = $app->input->get('id', 0, 'int');
+		$username = $app->input->get('username', '', 'string');
+		$name     = $app->input->get('name', '', 'string');
+		$email    = $app->input->get('email', '', 'string');
+
+		$user = JFactory::getUser($id);
+
+		$user->username = $username;
+		$user->name  = $name;
+		$user->email = $email;
+
+		$resp = new stdclass;
+
+		if($user->save())
+		{
+			$resp->status = 1; //echo JText::_('COM_USERS_USER_SAVE_SUCCESS');
+		}
+		else
+		{
+			$resp->status = 0;
+			$resp->error  = JText::_('COM_USERS_USER_SAVE_FAILED');
+		}
+
+		echo json_encode($resp);
+		JFactory::getApplication()->close();
+	}
 }
