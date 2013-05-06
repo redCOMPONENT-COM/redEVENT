@@ -30,7 +30,7 @@ if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
 		$doc->addScriptDeclaration(
 		'window.addEvent("domready", function() {
 				$$(".mod_redevent_search_submit").addEvent("click", function() {
-					ga("send", "pageview", "/virtual/moduleEventSearch");
+					 _gaq.push(["_trackPageview", "/virtual/moduleEventSearch"]);
 				});
 			});'
 		);
@@ -40,7 +40,7 @@ if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
 		$doc->addScriptDeclaration(
 		'window.addEvent("domready", function() {
 				$$(".mod_redevent_search_submit").addEvent("click", function() {
-					 _gaq.push(["_trackPageview", "/virtual/moduleEventSearch"]);
+					ga("send", "pageview", "/virtual/moduleEventSearch");
 				});
 			});'
 		);
