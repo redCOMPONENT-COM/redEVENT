@@ -44,6 +44,8 @@ class REAjaxPagination extends JPagination
 	 */
 	protected function _item_active(&$item)
 	{
+		FOFTemplateUtils::addJS('media://com_redevent/js/ajaxnav.js');
+
 		$app = JFactory::getApplication();
 		if ($item->base > 0)
 		{

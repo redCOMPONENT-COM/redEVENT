@@ -43,106 +43,40 @@ class RedeventViewMyevents extends JView
 	 */
 	public function display($tpl = null)
 	{
-		$mainframe = JFactory::getApplication();
+		switch ($this->getLayout())
+		{
+			case 'managedevents':
+				return $this->displayEvents($tpl);
+			default:
+				echo 'Error: unkown layout ' . $this->getLayout();
+		}
+	}
 
-		$user = JFactory::getUser();
+	protected function displayEvents($tpl)
+	{
+		$user      = JFactory::getUser();
+		$mainframe = JFactory::getApplication();
+		$params    = $mainframe->getParams();
 
 		if (!$user->get('id'))
 		{
-			$mainframe->redirect('index.php', JText::_('COM_REDEVENT_Only_logged_users_can_access_this_page'), 'error');
+			return false;
 		}
 
-		// Initialize variables
-		$document   = JFactory::getDocument();
-		$elsettings = redEVENTHelper::config();
-		$pathway    = $mainframe->getPathWay();
-		$params     = $mainframe->getParams();
-		$uri        = JFactory::getURI();
-		$acl        = UserACl::getInstance();
+		$acl = UserACl::getInstance();
 
-		$menu = JSite::getMenu();
-		$item = $menu->getActive();
-
-		// Add css file
-		if (!$params->get('custom_css'))
-		{
-			$document->addStyleSheet($this->baseurl . '/components/com_redevent/assets/css/redevent.css');
-		}
-		else
-		{
-			$document->addStyleSheet($params->get('custom_css'));
-		}
-
-		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
-
-		JHTML::_('behavior.mootools');
-
-		FOFTemplateUtils::addJS('media://com_redevent/js/myevents.js');
-
-		$js = "
-			window.addEvent('domready', function(){
-				$$('.deletelink').addEvent('click', function(event){
-					if (confirm('" . JText::_('COM_REDEVENT_CONFIRM_DELETE_DATE') . "')) {
-						return true;
-					}
-					else {
-						if (event.preventDefault) {
-							event.preventDefault();
-						} else {
-						event.returnValue = false;
-						}
-						return false;
-					}
-				});
-			}); ";
-		$document->addScriptDeclaration($js);
-
-		// Get variables
-		$limitstart   = JRequest::getVar('limitstart', 0, '', 'int');
-		$limit        = $mainframe->getUserStateFromRequest('com_redevent.myevents.limit', 'limit', $params->def('display_num', 5), 'int');
-		$filter_event = $mainframe->getUserStateFromRequest('com_redevent.myevents.filter_event', 'filter_event', 0, 'int');
-		$task = JRequest::getWord('task');
-		$pop = JRequest::getBool('pop');
+		$state = $this->get('state');
+		$limitstart   = $state->get('limitstart');
+		$limit        = $state->get('limit');
+		$filter_event = $state->get('filter_event');
 
 		// Get data from model
 		$events = $this->get('Events');
-		$venues = $this->get('Venues');
-		$attending = $this->get('Attending');
-
-		// Paginations
 		$events_pageNav = $this->get('EventsPagination');
-		$venues_pageNav = $this->get('VenuesPagination');
-		$attending_pageNav = $this->get('AttendingPagination');
 
-		// Params
-		$params->def('page_title', $item ? $item->title : 'COM_REDEVENT_VIEW_MYEVENTS_TITLE');
-
-		if ($pop)
-		{
-			// If printpopup set true
-			$params->set('popup', 1);
-		}
-
-		// Set Page title
-		$pagetitle = $params->get('page_title', JText::_('COM_REDEVENT_MY_EVENTS'));
-		$this->document->setTitle($pagetitle);
-
-		// Create select lists
+		// Sorting and filtering
 		$lists = $this->_buildSortLists();
 
-		if ($lists['filter'])
-		{
-			$uri->setVar('filter', $lists['filter']);
-			$uri->setVar('filter_type', JRequest::getString('filter_type'));
-		}
-		else
-		{
-			$uri->delVar('filter');
-			$uri->delVar('filter_type');
-		}
-
-		// Events filter
-		$hasManagedEvents = false;
 		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_select_event')));
 
 		if ($ev = $this->get('EventsOptions'))
@@ -156,29 +90,19 @@ class RedeventViewMyevents extends JView
 		$this->assign('action', JRoute::_(RedeventHelperRoute::getMyeventsRoute()));
 
 		$this->assignRef('events', $events);
-		$this->assignRef('venues', $venues);
-		$this->assignRef('attending', $attending);
-		$this->assignRef('task', $task);
-		$this->assignRef('print_link', $print_link);
 		$this->assignRef('params', $params);
-		$this->assignRef('dellink', $dellink);
 		$this->assignRef('events_pageNav', $events_pageNav);
-		$this->assignRef('venues_pageNav', $venues_pageNav);
-		$this->assignRef('attending_pageNav', $attending_pageNav);
-		$this->assignRef('elsettings', $elsettings);
-		$this->assignRef('pagetitle',  $pagetitle);
-		$this->assignRef('lists',      $lists);
 		$this->assignRef('acl',         $acl);
-		$this->assignRef('hasManagedEvents', $hasManagedEvents);
-		$this->assignRef('canAddXref',  $acl->canAddXref());
-		$this->assignRef('canAddEvent', $acl->canAddEvent());
-		$this->assignRef('canAddVenue', $acl->canAddVenue());
+		$this->assignRef('lists',      $lists);
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
 		$cols = redEVENTHelper::validateColumns($cols);
 		$this->assign('columns',        $cols);
 
-		parent::display($tpl);
+		$this->setLayout('default');
+		echo $this->loadTemplate('events');
+
+		return true;
 	}
 
 	/**

@@ -130,7 +130,6 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 
 		$this->uid = $app->input->get('uid', 0, 'int');
 		$this->setState('uid', $this->uid);
-
 	}
 
 	public function getUseracl()

@@ -43,43 +43,43 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 *
 	 * @var array
 	 */
-	var $_events = null;
+	protected $_events = null;
 
 	/**
 	 * Events total
 	 *
 	 * @var integer
 	 */
-	var $_total_events = null;
+	protected $_total_events = null;
 
-	var $_venues = null;
+	protected $_venues = null;
 
-	var $_total_venues = null;
+	protected $_total_venues = null;
 
-	var $_attending = null;
+	protected $_attending = null;
 
-	var $_total_attending = null;
-
-	/**
-	 * Pagination object
-	 *
-	 * @var object
-	 */
-	var $_pagination_events = null;
+	protected $_total_attending = null;
 
 	/**
 	 * Pagination object
 	 *
 	 * @var object
 	 */
-	var $_pagination_venues = null;
+	protected $_pagination_events = null;
+
+	/**
+	 * Pagination object
+	 *
+	 * @var object
+	 */
+	protected $_pagination_venues = null;
 
 	/**
 	 * Constructor
 	 *
 	 * @since 0.9
 	 */
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 
@@ -90,9 +90,9 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 
 		//get the number of events from database
 		$limit 					= $mainframe->getUserStateFromRequest('com_redevent.myevents.limit', 'limit', $params->def('display_num', 0), 'int');
-		$limitstart_events 		= JRequest::getVar('limitstart_events', 0, '', 'int');
-		$limitstart_venues 		= JRequest::getVar('limitstart_venues', 0, '', 'int');
-		$limitstart_attending 	= JRequest::getVar('limitstart_attending', 0, '', 'int');
+		$limitstart_events 		= $mainframe->input->get('limitstart', 0, '', 'int');
+		$limitstart_venues 		= $mainframe->input->get('limitstart_venues', 0, '', 'int');
+		$limitstart_attending 	= $mainframe->input->get('limitstart_attending', 0, '', 'int');
 
 		$this->setState('limit', $limit);
 		$this->setState('limitstart_events', $limitstart_events);
@@ -100,8 +100,8 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 		$this->setState('limitstart_attending', $limitstart_attending);
 
 		// Get the filter request variables
-		$this->setState('filter_order', JRequest::getCmd('filter_order', 'x.dates'));
-		$this->setState('filter_order_dir', JRequest::getCmd('filter_order_Dir', 'ASC'));
+		$this->setState('filter_order', $mainframe->input->getCmd('filter_order', 'x.dates'));
+		$this->setState('filter_order_dir', $mainframe->input->getCmd('filter_order_Dir', 'ASC'));
 	}
 
 	/**
@@ -110,7 +110,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 * @access public
 	 * @return array
 	 */
-	function & getEvents()
+	public function & getEvents()
 	{
 		$pop = JRequest::getBool('pop');
 
@@ -142,7 +142,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 * @access public
 	 * @return array
 	 */
-	function & getAttending()
+	public function & getAttending()
 	{
 		$pop = JRequest::getBool('pop');
 
@@ -175,7 +175,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 * @access public
 	 * @return array
 	 */
-	function & getVenues()
+	public function & getVenues()
 	{
 		$pop = JRequest::getBool('pop');
 
@@ -204,7 +204,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 * @access public
 	 * @return integer
 	 */
-	function getTotalEvents()
+	public function getTotalEvents()
 	{
 		// Lets load the total nr if it doesn't already exist
 		if (empty($this->_total_events))
@@ -222,7 +222,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 * @access public
 	 * @return integer
 	 */
-	function getTotalAttending()
+	public function getTotalAttending()
 	{
 		// Lets load the total nr if it doesn't already exist
 		if (empty($this->_total_attending))
@@ -240,7 +240,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 * @access public
 	 * @return integer
 	 */
-	function getTotalVenues()
+	public function getTotalVenues()
 	{
 		// Lets load the total nr if it doesn't already exist
 		if (empty($this->_total_venues))
@@ -258,13 +258,13 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 * @access public
 	 * @return integer
 	 */
-	function getEventsPagination()
+	public function getEventsPagination()
 	{
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_pagination_events))
 		{
 			jimport('joomla.html.pagination');
-			$this->_pagination_events = new MyEventsPagination($this->getTotalEvents(), $this->getState('limitstart_events'), $this->getState('limit'));
+			$this->_pagination_events = new REAjaxPagination($this->getTotalEvents(), $this->getState('limitstart_events'), $this->getState('limit'));
 		}
 
 		return $this->_pagination_events;
@@ -276,13 +276,13 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 * @access public
 	 * @return integer
 	 */
-	function getVenuesPagination()
+	public function getVenuesPagination()
 	{
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_pagination_venues))
 		{
 			jimport('joomla.html.pagination');
-			$this->_pagination_venues = new MyVenuesPagination($this->getTotalVenues(), $this->getState('limitstart_venues'), $this->getState('limit'));
+			$this->_pagination_venues = new REAjaxPagination($this->getTotalVenues(), $this->getState('limitstart_venues'), $this->getState('limit'));
 		}
 
 		return $this->_pagination_venues;
@@ -294,13 +294,13 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 * @access public
 	 * @return integer
 	 */
-	function getAttendingPagination()
+	public function getAttendingPagination()
 	{
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_pagination_attending))
 		{
 			jimport('joomla.html.pagination');
-			$this->_pagination_attending = new MyAttendingPagination($this->getTotalAttending(), $this->getState('limitstart_attending'), $this->getState('limit'));
+			$this->_pagination_attending = new REAjaxPagination($this->getTotalAttending(), $this->getState('limitstart_attending'), $this->getState('limit'));
 		}
 
 		return $this->_pagination_attending;
@@ -312,7 +312,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 * @access private
 	 * @return string
 	 */
-	function _buildQueryEvents()
+	protected function _buildQueryEvents()
 	{
 		// Get the WHERE and ORDER BY clauses for the query
 		$where = $this->_buildEventListWhere();
@@ -346,7 +346,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 * @access private
 	 * @return string
 	 */
-	function _buildQueryAttending()
+	protected function _buildQueryAttending()
 	{
 		// Get the WHERE and ORDER BY clauses for the query
 		$where = $this->_buildEventListAttendingWhere();
@@ -383,7 +383,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 * @access private
 	 * @return string
 	 */
-	function _buildQueryVenues()
+	protected function _buildQueryVenues()
 	{
 		$allowed = UserAcl::getInstance()->getAllowedForEventsVenues();
 
@@ -414,7 +414,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 * @access private
 	 * @return string
 	 */
-	function _buildEventListOrderBy()
+	protected function _buildEventListOrderBy()
 	{
 		$filter_order = $this->getState('filter_order');
 		$filter_order_dir = $this->getState('filter_order_dir');
@@ -430,7 +430,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 * @access private
 	 * @return string
 	 */
-	function _buildEventListWhere()
+	protected function _buildEventListWhere()
 	{
 		$mainframe = JFactory::getApplication();
 
@@ -524,7 +524,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 * @access private
 	 * @return string
 	 */
-	function _buildEventsOptionsWhere()
+	protected function _buildEventsOptionsWhere()
 	{
 		$mainframe = JFactory::getApplication();
 
@@ -624,7 +624,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 * @access private
 	 * @return string
 	 */
-	function _buildEventListAttendingWhere()
+	protected function _buildEventListAttendingWhere()
 	{
 		$mainframe = JFactory::getApplication();
 
@@ -651,9 +651,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 		return $where;
 	}
 
-
-
-	function getEventsOptions()
+	public function getEventsOptions()
 	{
 		// Get the WHERE and ORDER BY clauses for the query
 		$where = $this->_buildEventsOptionsWhere();
@@ -673,279 +671,5 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 		$res = $this->_db->loadObjectList();
 
 		return $res;
-	}
-}
-
-class MyEventsPagination extends JPagination
-{
-	/**
-	 * Create and return the pagination data object
-	 *
-	 * @access  public
-	 * @return  object  Pagination data object
-	 * @since 1.5
-	 */
-	function _buildDataObject()
-	{
-		// Initialize variables
-		$data = new stdClass ();
-
-		$data->all = new JPaginationObject(JText::_('COM_REDEVENT_View_All'));
-
-		if (!$this->_viewall)
-		{
-			$data->all->base = '0';
-			$data->all->link = JRoute::_("&limitstart_events=");
-		}
-
-		// Set the start and previous data objects
-		$data->start = new JPaginationObject(JText::_('COM_REDEVENT_Start'));
-		$data->previous = new JPaginationObject(JText::_('COM_REDEVENT_Prev'));
-
-		if ($this->get('pages.current') > 1)
-		{
-			$page = ($this->get('pages.current')-2)*$this->limit;
-
-			$page = $page == 0?'':$page; //set the empty for removal from route
-
-			$data->start->base = '0';
-			$data->start->link = JRoute::_("&limitstart_events=");
-			$data->previous->base = $page;
-			$data->previous->link = JRoute::_("&limitstart_events=".$page);
-		}
-
-		// Set the next and end data objects
-		$data->next = new JPaginationObject(JText::_('COM_REDEVENT_Next'));
-		$data->end = new JPaginationObject(JText::_('COM_REDEVENT_End'));
-
-		if ($this->get('pages.current') < $this->get('pages.total'))
-		{
-			$next = $this->get('pages.current')*$this->limit;
-			$end = ($this->get('pages.total')-1)*$this->limit;
-
-			$data->next->base = $next;
-			$data->next->link = JRoute::_("&limitstart_events=".$next);
-			$data->end->base = $end;
-			$data->end->link = JRoute::_("&limitstart_events=".$end);
-		}
-
-		$data->pages = array ();
-		$stop = $this->get('pages.stop');
-
-		for ($i = $this->get('pages.start'); $i <= $stop; $i++)
-		{
-			$offset = ($i-1)*$this->limit;
-
-			$offset = $offset == 0?'':$offset; //set the empty for removal from route
-
-			$data->pages[$i] = new JPaginationObject($i);
-
-			if ($i != $this->get('pages.current') || $this->_viewall)
-			{
-				$data->pages[$i]->base = $offset;
-				$data->pages[$i]->link = JRoute::_("&limitstart_events=".$offset);
-			}
-		}
-		return $data;
-	}
-
-	function _list_footer($list)
-	{
-		// Initialize variables
-		$html = "<div class=\"list-footer\">\n";
-
-		$html .= "\n<div class=\"limit\">".JText::_('COM_REDEVENT_Display_Num').$list['limitfield']."</div>";
-		$html .= $list['pageslinks'];
-		$html .= "\n<div class=\"counter\">".$list['pagescounter']."</div>";
-
-		$html .= "\n<input type=\"hidden\" name=\"limitstart_events\" value=\"".$list['limitstart']."\" />";
-		$html .= "\n</div>";
-
-		return $html;
-	}
-
-}
-
-
-class MyAttendingPagination extends JPagination
-{
-
-	/**
-	 * Create and return the pagination data object
-	 *
-	 * @access  public
-	 * @return  object  Pagination data object
-	 * @since 1.5
-	 */
-	function _buildDataObject()
-	{
-		// Initialize variables
-		$data = new stdClass ();
-
-		$data->all = new JPaginationObject(JText::_('COM_REDEVENT_View_All'));
-
-		if (!$this->_viewall)
-		{
-			$data->all->base = '0';
-			$data->all->link = JRoute::_("&limitstart_attending=");
-		}
-
-		// Set the start and previous data objects
-		$data->start = new JPaginationObject(JText::_('COM_REDEVENT_Start'));
-		$data->previous = new JPaginationObject(JText::_('COM_REDEVENT_Prev'));
-
-		if ($this->get('pages.current') > 1)
-		{
-			$page = ($this->get('pages.current')-2)*$this->limit;
-
-			$page = $page == 0?'':$page; //set the empty for removal from route
-
-			$data->start->base = '0';
-			$data->start->link = JRoute::_("&limitstart_attending=");
-			$data->previous->base = $page;
-			$data->previous->link = JRoute::_("&limitstart_attending=".$page);
-		}
-
-		// Set the next and end data objects
-		$data->next = new JPaginationObject(JText::_('COM_REDEVENT_Next'));
-		$data->end = new JPaginationObject(JText::_('COM_REDEVENT_End'));
-
-		if ($this->get('pages.current') < $this->get('pages.total'))
-		{
-			$next = $this->get('pages.current')*$this->limit;
-			$end = ($this->get('pages.total')-1)*$this->limit;
-
-			$data->next->base = $next;
-			$data->next->link = JRoute::_("&limitstart_attending=".$next);
-			$data->end->base = $end;
-			$data->end->link = JRoute::_("&limitstart_attending=".$end);
-		}
-
-		$data->pages = array ();
-		$stop = $this->get('pages.stop');
-
-		for ($i = $this->get('pages.start'); $i <= $stop; $i++)
-		{
-			$offset = ($i-1) * $this->limit;
-
-			$offset = $offset == 0 ? '' : $offset; //set the empty for removal from route
-
-			$data->pages[$i] = new JPaginationObject($i);
-
-			if ($i != $this->get('pages.current') || $this->_viewall)
-			{
-				$data->pages[$i]->base = $offset;
-				$data->pages[$i]->link = JRoute::_("&limitstart_attending=".$offset);
-			}
-		}
-
-		return $data;
-	}
-
-	function _list_footer($list)
-	{
-		// Initialize variables
-		$html = "<div class=\"list-footer\">\n";
-
-		$html .= "\n<div class=\"limit\">" . JText::_('COM_REDEVENT_Display_Num') . $list['limitfield']."</div>";
-		$html .= $list['pageslinks'];
-		$html .= "\n<div class=\"counter\">" . $list['pagescounter'] . "</div>";
-
-		$html .= "\n<input type=\"hidden\" name=\"limitstart_attending\" value=\"" . $list['limitstart'] . "\" />";
-		$html .= "\n</div>";
-
-		return $html;
-	}
-
-}
-
-class MyVenuesPagination extends JPagination
-{
-
-	/**
-	 * Create and return the pagination data object
-	 *
-	 * @access  public
-	 * @return  object  Pagination data object
-	 * @since 1.5
-	 */
-	function _buildDataObject()
-	{
-		// Initialize variables
-		$data = new stdClass ();
-
-		$data->all = new JPaginationObject(JText::_('COM_REDEVENT_View_All'));
-
-		if (!$this->_viewall)
-		{
-			$data->all->base = '0';
-			$data->all->link = JRoute::_("&limitstart_venues=");
-		}
-
-		// Set the start and previous data objects
-		$data->start = new JPaginationObject(JText::_('COM_REDEVENT_Start'));
-		$data->previous = new JPaginationObject(JText::_('COM_REDEVENT_Prev'));
-
-		if ($this->get('pages.current') > 1)
-		{
-			$page = ($this->get('pages.current')-2) * $this->limit;
-
-			$page = $page == 0?'':$page; //set the empty for removal from route
-
-			$data->start->base = '0';
-			$data->start->link = JRoute::_("&limitstart_venues=");
-			$data->previous->base = $page;
-			$data->previous->link = JRoute::_("&limitstart_venues=".$page);
-		}
-
-		// Set the next and end data objects
-		$data->next = new JPaginationObject(JText::_('COM_REDEVENT_Next'));
-		$data->end = new JPaginationObject(JText::_('COM_REDEVENT_End'));
-
-		if ($this->get('pages.current') < $this->get('pages.total'))
-		{
-			$next = $this->get('pages.current') * $this->limit;
-			$end = ($this->get('pages.total')-1) * $this->limit;
-
-			$data->next->base = $next;
-			$data->next->link = JRoute::_("&limitstart_venues=".$next);
-			$data->end->base = $end;
-			$data->end->link = JRoute::_("&limitstart_venues=".$end);
-		}
-
-		$data->pages = array ();
-		$stop = $this->get('pages.stop');
-
-		for ($i = $this->get('pages.start'); $i <= $stop; $i++)
-		{
-			$offset = ($i-1) * $this->limit;
-
-			$offset = $offset == 0 ? '' : $offset; //set the empty for removal from route
-
-			$data->pages[$i] = new JPaginationObject($i);
-
-			if ($i != $this->get('pages.current') || $this->_viewall)
-			{
-				$data->pages[$i]->base = $offset;
-				$data->pages[$i]->link = JRoute::_("&limitstart_venues=".$offset);
-			}
-		}
-
-		return $data;
-	}
-
-	function _list_footer($list)
-	{
-		// Initialize variables
-		$html = "<div class=\"list-footer\">\n";
-
-		$html .= "\n<div class=\"limit\">" . JText::_('COM_REDEVENT_Display_Num') . $list['limitfield']."</div>";
-		$html .= $list['pageslinks'];
-		$html .= "\n<div class=\"counter\">" . $list['pagescounter'] . "</div>";
-
-		$html .= "\n<input type=\"hidden\" name=\"limitstart_venues\" value=\"" . $list['limitstart'] . "\" />";
-		$html .= "\n</div>";
-
-		return $html;
 	}
 }

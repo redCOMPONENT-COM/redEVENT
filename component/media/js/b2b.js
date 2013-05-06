@@ -292,8 +292,8 @@ var redb2b = {
 						document.id('selected_users').set('spinner').spin();
 				    },
 					onSuccess : function(response){
-						document.id('attendees-tbl').set('spinner').unspin();
-						document.id('selected_users').set('spinner').unspin();
+						document.id('attendees-tbl').unspin();
+						document.id('selected_users').unspin();
 						if (response.status == 1) {
 							alert('all booked !');		
 							redb2b.getMembersList();

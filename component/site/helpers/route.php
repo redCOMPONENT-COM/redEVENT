@@ -242,7 +242,8 @@ class RedeventHelperRoute
 	public static function getMyeventsRoute()
 	{
 		$parts = array( "option" => "com_redevent",
-		                "view"   => "myevents" );
+		                "view"   => "myevents",
+		                "controller" => "myevents");
 		return self::buildUrl( $parts );
 	}
 
