@@ -81,12 +81,11 @@ $customsfilters = $helper->getCustomFilters();
 $post = JRequest::get('post');
 $search = isset($post['search']) ? $post['search'] : '';
 
-if($search =='ajax')
+if ($search =='ajax')
 {
 	$helper->getAjaxSearch($post['query']);
 	$app->close();
 }
-
 
 // DISPLAY
 require(JModuleHelper::getLayoutPath('mod_redevent_search', $params->get('layout', 'default')));

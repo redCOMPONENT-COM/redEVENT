@@ -5,9 +5,8 @@ var j = jQuery.noConflict();
 j(function () {
     'use strict';
 
-    // Load countries then initialize plugin:
+    // Load events then initialize plugin:
     j.ajax({
-        //url: 'modules/mod_redevent_search/lib/content/countries.txt',
 		url: window.location,
 		type : 'POST',
         dataType: 'json',

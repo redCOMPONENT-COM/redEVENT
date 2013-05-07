@@ -379,7 +379,8 @@ class redEVENTHelper {
 	 */
 	public static function getEventsCatOptions($show_empty = true, $show_unpublished = false, $enabled = false)
 	{
-		$db   = & JFactory::getDBO();
+		$app = JFactory::getApplication();
+		$db  = JFactory::getDBO();
 
 		if ($show_empty == false)
 		{
@@ -406,13 +407,22 @@ class redEVENTHelper {
 		;
 
 		$where = array();
+
 		if ($show_empty == false)
 		{
 			$where[] = ' c.id IN (' . implode(', ', $notempty) . ')';
 		}
+
 		if (!$show_unpublished) {
 			$where[] = ' c.published = 1 ';
 		}
+
+		if ($app->getLanguageFilter())
+		{
+			$where[] = '(c.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR c.language IS NULL)';
+		}
+
+
 		if (count($where)) {
 			$query .= ' WHERE ' . implode(' AND ', $where);
 		}
@@ -441,7 +451,8 @@ class redEVENTHelper {
 	 */
 	public static function getVenuesCatOptions($show_empty = true, $show_unpublished = false)
 	{
-		$db   = JFactory::getDBO();
+		$app = JFactory::getApplication();
+		$db  = JFactory::getDBO();
 
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
@@ -492,6 +503,11 @@ class redEVENTHelper {
 
 		if (!$show_unpublished) {
 			$where[] = ' c.published = 1 ';
+		}
+
+		if ($app->getLanguageFilter())
+		{
+			$where[] = '(c.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR c.language IS NULL)';
 		}
 
 		if (count($where)) {

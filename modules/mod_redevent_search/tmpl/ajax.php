@@ -23,6 +23,12 @@ defined('_JEXEC') or die('Restricted access');
 $document = JFactory::getDocument();
 // Add Javascript
 $document->addScriptDeclaration("window.MOD_REDEVENT_SEARCH_SELECT_EVENT = '" . JText::_('MOD_REDEVENT_SEARCH_SELECT_EVENT') . "';");
+$document->addScript('modules/mod_redevent_search/lib/scripts/jquery-1.8.2.min.js');
+$document->addScript('modules/mod_redevent_search/lib/scripts/jquery.mockjax.js');
+$document->addScript('modules/mod_redevent_search/lib/scripts/jquery.autocomplete.js');
+$document->addScript('modules/mod_redevent_search/lib/scripts/search.js');
+$document->addStyleSheet('modules/mod_redevent_search/lib/content/styles.css');
+
 JHTML::_('behavior.modal');
 
 // Google analytics integration
@@ -50,6 +56,7 @@ if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
 	}
 }
 ?>
+
 <form accept-charset="UTF-8" action="<?php echo $action; ?>" method="get" id="redeventsearchform">
 
   <div class="mod_redevent_search">
@@ -123,8 +130,3 @@ if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
   	</div>
   	<div class="cleared"></div>
 </form>
-<link href="modules/mod_redevent_search/lib/content/styles.css" rel="stylesheet" />
-
-<script type="text/javascript" src="modules/mod_redevent_search/lib/scripts/jquery.mockjax.js"></script>
-<script type="text/javascript" src="modules/mod_redevent_search/lib/scripts/jquery.autocomplete.js"></script>
-<script type="text/javascript" src="modules/mod_redevent_search/lib/scripts/demo.js"></script>

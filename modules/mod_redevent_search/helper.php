@@ -37,7 +37,7 @@ class modRedEventSearchHelper
 
 	public function __construct()
 	{
-		$this->_db = &Jfactory::getDBO();
+		$this->_db = JFactory::getDBO();
 	}
 
 	/**
@@ -45,14 +45,14 @@ class modRedEventSearchHelper
 	 *
 	 * @return array
 	 */
-	function getCategoriesOptions()
+	public function getCategoriesOptions()
 	{
 		$app = JFactory::getApplication();
 
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
 
-		//Get Events from Database
+		// Get categories from database
 		$query  = ' SELECT c.id '
 		. ' FROM #__redevent_event_venue_xref AS x'
 		. ' INNER JOIN #__redevent_events AS a ON a.id = x.eventid'
@@ -92,9 +92,9 @@ class modRedEventSearchHelper
 	 *
 	 * @return array
 	 */
-	function getVenuesOptions()
+	public function getVenuesOptions()
 	{
-		$app = &JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
@@ -117,69 +117,114 @@ class modRedEventSearchHelper
 		}
 
 		if (count($where)) {
-			$query .= ' WHERE '. implode(' AND ', $where);
+			$query .= ' WHERE ' . implode(' AND ', $where);
 		}
 		$query .= ' ORDER BY v.venue ';
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
+
 		return $res;
 	}
 
-	function getCustomFilters()
+	public function getCustomFilters()
 	{
-		$query = ' SELECT f.* FROM #__redevent_fields AS f '
-		. ' WHERE f.published = 1 '
-		. '   AND f.searchable = 1 '
-		. ' ORDER BY f.ordering ASC '
-		;
-		$this->_db->setQuery($query);
-		$rows = $this->_db->loadObjectList();
+		$app = JFactory::getApplication();
+
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('f.*');
+		$query->from('#__redevent_fields AS f');
+		$query->where('f.published = 1');
+		$query->where('f.searchable = 1');
+		$query->order('f.ordering');
+
+		if ($app->getLanguageFilter())
+		{
+			$query->where('(f.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR f.language IS NULL)');
+		}
+
+		$db->setQuery($query);
+		$rows = $db->loadObjectList();
 
 		$filters = array();
+
 		foreach ($rows as $r)
 		{
 			$field = redEVENTcustomHelper::getCustomField($r->type);
 			$field->bind($r);
 			$filters[] = $field;
 		}
+
 		return $filters;
 	}
-	
-	function getAjaxSearch($string){
-		$db =& JFactory::getDBO();
-		$query = ' SELECT e.id, e.title FROM #__redevent_events AS e '
-			. ' WHERE e.published = 1 AND e.title  LIKE "%'.$string.'%" '
-			. ' ORDER BY e.title ASC '
-			;
-			//print_r($string);exit;
-			$db->setQuery($query);
-			$rows = $db->loadObjectList();
-			$i = 1;
-			if($string==''){
-				$tags = '{';
-				foreach ($rows AS $row){
-					if($i < count($rows)){
-						$tags .= ' "'.$row->id.'": "'.$row->title.'",';
-					}else{
-						$tags .= ' "'.$row->id.'": "'.$row->title.'"';
-					}
-					$i ++;
+
+	/**
+	 * ajax search of events
+	 *
+	 * @param   string  $string  string that should be search
+	 *
+	 * @return array
+	 */
+	public function getAjaxSearch($string)
+	{
+		$app = JFactory::getApplication();
+
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('e.id, e.title ');
+		$query->from('#__redevent_events AS e');
+		$query->where('e.published = 1');
+		$query->where('e.title  LIKE "%'.$string.'%"');
+		$query->order('e.title');
+
+		if ($app->getLanguageFilter())
+		{
+			$query->where('(e.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR e.language IS NULL)');
+		}
+
+		$db->setQuery($query);
+		$rows = $db->loadObjectList();
+
+		$i = 1;
+		if ($string == '')
+		{
+			$tags = '{';
+			foreach ($rows AS $row)
+			{
+				if ($i < count($rows))
+				{
+					$tags .= ' "' . $row->id . '": "' . $row->title . '",';
 				}
-				$tags .= " } ";
-			}else{
-				$tags = '';
-				foreach ($rows AS $row){
-					if($i < count($rows)){
-						$tags .= '"'.$row->title.'",';
-					}else{
-						$tags .= '"'.$row->title.'"';
-					}
-					$i ++;
+				else
+				{
+					$tags .= ' "' . $row->id . '": "' . $row->title . '"';
 				}
+
+				$i ++;
 			}
-			print_r($tags);exit;
-			
-			$result = $db->loadAssocList();
-			echo json_encode($result);exit;
+			$tags .= " } ";
+		}
+		else
+		{
+			$tags = '';
+			foreach ($rows AS $row)
+			{
+				if ($i < count($rows))
+				{
+					$tags .= '"'.$row->title.'",';
+				}
+				else
+				{
+					$tags .= '"'.$row->title.'"';
+				}
+				$i ++;
+			}
+		}
+		print_r($tags);exit;
+
+		$result = $db->loadAssocList();
+		echo json_encode($result);exit;
 	}
 }
