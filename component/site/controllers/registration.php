@@ -443,39 +443,44 @@ class RedEventControllerRegistration extends RedEventController
 	/**
 	 * create user from posted data
 	 *
-	 * @param int $sid redform submission id
+	 * @param   int  $sid  redform submission id
+	 *
 	 * @return object|false created user
 	 */
-	function _createUser($sid)
+	protected function _createUser($sid)
 	{
-		// 		require_once(JPATH_SITE.DS.'components'.DS.'com_user'.DS.'controller.php');
 		jimport('joomla.user.helper');
 
 		$db		=& JFactory::getDBO();
 		$rfcore = new redformCore();
 		$answers = $rfcore->getSidContactEmails($sid);
 
-		if (!$answers) {
+		if (!$answers)
+		{
 			throw new Exception(JText::_('COM_REDEVENT_NO_ANSWERS_FOUND_FOR_SID').' '.$sid);
 		}
 
 		$details = current($answers);
 
-		if (!$details['email']) {
+		if (!$details['email'])
+		{
 			//throw new Exception(JText::_('COM_REDEVENT_NEED_MISSING_EMAIL_TO_CREATE_USER'));
 			RedeventError::raiseWarning('', JText::_('COM_REDEVENT_NEED_MISSING_EMAIL_TO_CREATE_USER'));
 			return false;
 		}
 
-		if ($uid = $this->_getUserIdFromEmail($details['email'])) {
+		if ($uid = $this->_getUserIdFromEmail($details['email']))
+		{
 			return JFactory::getUser($uid);
 		}
 
-		if (!$details['username'] && !$details['fullname']) {
+		if (!$details['username'] && !$details['fullname'])
+		{
 			$username = 'redeventuser'.$sid;
 			$details['fullname'] = $username;
 		}
-		else {
+		else
+		{
 			$username = $details['username'] ? $details['username'] : $details['fullname'];
 			$details['fullname'] = $details['fullname'] ? $details['fullname'] : $username;
 		}
@@ -486,11 +491,13 @@ class RedEventControllerRegistration extends RedEventController
 		{
 			$query = 'SELECT id FROM #__users WHERE username = ' . $db->Quote( $username );
 			$db->setQuery($query, 0, 1);
-			if ($db->loadResult()) {
+			if ($db->loadResult())
+			{
 				// username exists, add a suffix
-				$username = $details['username'].'_'.$i++;
+				$username = $username . '_' . $i++;
 			}
-			else {
+			else
+			{
 				break;
 			}
 		}
@@ -498,7 +505,7 @@ class RedEventControllerRegistration extends RedEventController
 		jimport('joomla.application.component.helper');
 		// Get required system objects
 		$user 		= clone(JFactory::getUser(0));
-		$usersParams = &JComponentHelper::getParams( 'com_users' ); // load the Params
+		$usersParams = JComponentHelper::getParams( 'com_users' ); // load the Params
 		$password   = JUserHelper::genRandomPassword();
 
 		$config = JComponentHelper::getParams('com_users');
@@ -512,37 +519,41 @@ class RedEventControllerRegistration extends RedEventController
 		$user->set('email', $details['email']);
 		$user->set('groups', array($defaultUserGroup));
 		$user->set('password', md5($password));
+
 		if (!$user->save())
 		{
 			RedeventError::raiseWarning('', JText::_($user->getError()));
 			return false;
 		}
 
-		// send email using juser controller
+		// Send email using juser controller
 		$this->_sendUserCreatedMail($user, $password);
+
 		return $user;
 	}
 
 	/**
 	 * inspired from com_user controller function
 	 *
-	 * @param object $user
-	 * @param string $password
+	 * @param   object  $user  user object
+	 * @param   string  $password  user password
+	 *
+	 * @return void
 	 */
-	function _sendUserCreatedMail(&$user, $password)
+	protected function _sendUserCreatedMail(&$user, $password)
 	{
-		$lang = &JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$lang->load('com_user');
 
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
-		$db		=& JFactory::getDBO();
+		$db		= JFactory::getDBO();
 
 		$name 		= $user->get('name');
 		$email 		= $user->get('email');
 		$username 	= $user->get('username');
 
-		$usersConfig 	= &JComponentHelper::getParams( 'com_users' );
+		$usersConfig 	= JComponentHelper::getParams( 'com_users' );
 		$sitename 		= $mainframe->getCfg( 'sitename' );
 		$mailfrom 		= $mainframe->getCfg( 'mailfrom' );
 		$fromname 		= $mainframe->getCfg( 'fromname' );
@@ -558,7 +569,7 @@ class RedEventControllerRegistration extends RedEventController
 
 		$message = html_entity_decode($message, ENT_QUOTES);
 
-		//get all super administrator
+		// Get all super administrator
 		$query = 'SELECT name, email, sendEmail' .
 		' FROM #__users' .
 		' WHERE LOWER( usertype ) = "super administrator"';
@@ -566,7 +577,8 @@ class RedEventControllerRegistration extends RedEventController
 		$rows = $db->loadObjectList();
 
 		// Send email to user
-		if ( ! $mailfrom  || ! $fromname ) {
+		if ( ! $mailfrom  || ! $fromname )
+		{
 			$fromname = $rows[0]->name;
 			$mailfrom = $rows[0]->email;
 		}
@@ -592,10 +604,11 @@ class RedEventControllerRegistration extends RedEventController
 	/**
 	 * Returns userid if a user exists
 	 *
-	 * @param string The email to search on
+	 * @param   string  $email  The email to search on
+	 *
 	 * @return int The user id or 0 if not found
 	 */
-	function _getUserIdFromEmail($email)
+	protected function _getUserIdFromEmail($email)
 	{
 		// Initialize some variables
 		$db = & JFactory::getDBO();
