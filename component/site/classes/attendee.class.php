@@ -273,6 +273,7 @@ class REattendee extends JObject {
 	 */
 	public function sendWaitinglistStatusEmail($waiting = 0)
 	{
+		$app = JFactory::getApplication();
 		$data = $this->load();
 		$session = $this->getSessionDetails();
 
@@ -319,7 +320,8 @@ class REattendee extends JObject {
 			$subject = $this->taghelper->ReplaceTags($subject);
 		}
 
-		if (empty($subject)) {
+		if (empty($subject))
+		{
 			// not sending !
 			throw new Exception(JText::_('COM_REDEVENT_WL_NOTIFICATION_MISSING_SUBJECT'));
 			return false;
@@ -329,6 +331,10 @@ class REattendee extends JObject {
 		$body = REOutput::ImgRelAbs($body);
 
 		$mailer = JFactory::getMailer();
+
+		$sender = array($app->getCfg('mailfrom'), $app->getCfg('sitename'));
+		$mailer->setSender($sender);
+		$mailer->addReplyTo($sender);
 
 		$rfcore = new RedFormCore();
 		$emails = $rfcore->getSidContactEmails($sid);
