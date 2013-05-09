@@ -47,6 +47,10 @@ class RedeventViewMyevents extends JView
 		{
 			case 'managedevents':
 				return $this->displayEvents($tpl);
+
+			case 'managedvenues':
+				return $this->displayVenues($tpl);
+
 			default:
 				echo 'Error: unkown layout ' . $this->getLayout();
 		}
@@ -101,6 +105,46 @@ class RedeventViewMyevents extends JView
 
 		$this->setLayout('default');
 		echo $this->loadTemplate('events');
+
+		return true;
+	}
+
+	protected function displayVenues($tpl)
+	{
+		$user      = JFactory::getUser();
+		$mainframe = JFactory::getApplication();
+		$params    = $mainframe->getParams();
+
+		if (!$user->get('id'))
+		{
+			return false;
+		}
+
+		$acl = UserACl::getInstance();
+
+		$state = $this->get('state');
+		$limitstart   = $state->get('limitstart_venues');
+		$limit        = $state->get('limit');
+
+		// Get data from model
+		$venues = $this->get('Venues');
+		$pageNav = $this->get('VenuesPagination');
+
+		// Sorting and filtering
+		$lists = $this->_buildSortLists();
+
+		$lists['limitstart_venues'] = $state->get('limitstart_venues');
+
+		$this->assign('action', JRoute::_(RedeventHelperRoute::getMyeventsRoute()));
+
+		$this->assignRef('venues', $venues);
+		$this->assignRef('params', $params);
+		$this->assignRef('venues_pageNav', $pageNav);
+		$this->assignRef('acl',         $acl);
+		$this->assignRef('lists',      $lists);
+
+		$this->setLayout('default');
+		echo $this->loadTemplate('venues');
 
 		return true;
 	}

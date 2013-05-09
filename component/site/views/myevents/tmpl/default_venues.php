@@ -25,10 +25,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 
-<?php if (count((array)$this->venues)) : ?>
-
-<h2><?php echo JText::_('COM_REDEVENT_Manage_Venues'); ?></h2>
-
+<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="my-managed-venues">
 <table class="eventtable" summary="venues list">
 	<thead>
 		<tr>
@@ -39,21 +36,21 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		</tr>
 	</thead>
 	<tbody>
-  <?php 
+  <?php
   $i = 0;
-  foreach ((array) $this->venues as $row) : 
+  foreach ((array) $this->venues as $row) :
   ?>
   <?php $link = JRoute::_('index.php?option=com_redevent&view=venueevents&id=' . $row->venueslug); ?>
     <tr class="sectiontableentry<?php echo $i + 1 . $this->params->get( 'pageclass_sfx' ); ?>" >
       <td headers="el_title" align="left" valign="top"><?php echo JHTML::link($link, $row->venue); ?></td>
       <td headers="el_city" align="left" valign="top"><?php echo $row->city ? $row->city : '-'; ?></td>
       <td headers="el_published" align="center" valign="top">
-      	<?php echo $row->published ? JHTML::image('components/com_redevent/assets/images/ok.png', JText::_('COM_REDEVENT_Published' )) 
+      	<?php echo $row->published ? JHTML::image('components/com_redevent/assets/images/ok.png', JText::_('COM_REDEVENT_Published' ))
       	                           : JHTML::image('components/com_redevent/assets/images/no.png', JText::_('COM_REDEVENT_Unpublished' )) ; ?>
-      </td>   
-      <td headers="el_edit" align="left" valign="top"><?php echo $this->venueeditbutton($row->id); ?></td>      
+      </td>
+      <td headers="el_edit" align="left" valign="top"><?php echo $this->venueeditbutton($row->id); ?></td>
     </tr>
-  <?php 
+  <?php
   $i = 1 - $i;
   endforeach;
   ?>
@@ -67,15 +64,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<p class="counter">
 				<?php echo $this->venues_pageNav->getPagesCounter(); ?>
 		</p>
-	
+
 		<?php endif; ?>
 	<?php echo $this->venues_pageNav->getPagesLinks(); ?>
 </div>
 <?php  endif; ?>
 <!-- pagination end -->
 
-<?php endif; ?>
+<input type="hidden" name="limitstart_venues" value="<?php echo $this->lists['limitstart_venues']; ?>" class="redajax_limitstart" />
+<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" class="redajax_order"/>
+<input type="hidden" name="filter_order_Dir" value="" class="redajax_order_dir"/>
+<input type="hidden" name="task" value="managedvenues" />
 
-<?php if ($this->canAddVenue): ?>
-<div><?php echo JHTML::link(RedeventHelperRoute::getEditVenueRoute(), JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_VENUE')); ?></div>
-<?php endif; ?>
+</form>

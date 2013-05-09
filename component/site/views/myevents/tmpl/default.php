@@ -48,7 +48,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<div><?php echo JHTML::link(RedeventHelperRoute::getEditEventRoute(), JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_EVENT')); ?></div>
 <?php endif; ?>
 
-<?php echo $this->loadTemplate('venues'); ?>
+<?php if (count((array)$this->venues)) : ?>
+	<h2><?php echo JText::_('COM_REDEVENT_Manage_Venues'); ?></h2>
+	<?php echo $this->loadTemplate('venues'); ?>
+<?php endif; ?>
+
+<?php if ($this->canAddVenue): ?>
+	<div><?php echo JHTML::link(RedeventHelperRoute::getEditVenueRoute(), JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_VENUE')); ?></div>
+<?php endif; ?>
 
 <?php echo $this->loadTemplate('attending'); ?>
 

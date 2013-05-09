@@ -44,7 +44,20 @@ class RedeventControllerMyevents extends FOFController
 		$this->layout    = 'managedevents';
 
 		$this->display();
+	}
 
+	/**
+	 * return venues html table
+	 *
+	 * @return void
+	 */
+	public function managedvenues()
+	{
+		$this->viewName  = 'myevents';
+		$this->modelName = 'myevents';
+		$this->layout    = 'managedvenues';
+
+		$this->display();
 	}
 
 	/**

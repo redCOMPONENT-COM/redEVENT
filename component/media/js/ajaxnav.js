@@ -13,11 +13,7 @@ var red_ajaxnav = {
 	navigate : function(e) {
 		e.stop();
 		var form = this.getParent('form');
-		
-		if (!form.limitstart) {
-			new Element('input', {'name' : 'limitstart', 'value': '', 'type' : 'hidden'}).inject(form);
-		}
-		form.limitstart.value = this.getProperty('startvalue');
+		form.getElement('.redajax_limitstart').set('value', this.getProperty('startvalue'));
 				
 		red_ajaxnav.submitForm(form);
 	},
