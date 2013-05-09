@@ -59,7 +59,7 @@ class RedeventViewCalendar extends JView
         $pathway 	= & $app->getPathWay();
 
         //add css file
-        $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
+        $document->addStyleSheet('media/com_redevent/css/redevent.css');
         $document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #redevent dd { height: 1%; }</style><![endif]-->');
         $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redeventcalendar.css');
         

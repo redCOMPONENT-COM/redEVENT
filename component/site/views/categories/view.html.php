@@ -48,7 +48,7 @@ class RedeventViewCategories extends JView
 
 		//add css file
 		if (!$params->get('custom_css')) {
-			$document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
+			$document->addStyleSheet('media/com_redevent/css/redevent.css');
 		}
 		else {
 			$document->addStyleSheet($params->get('custom_css'));
