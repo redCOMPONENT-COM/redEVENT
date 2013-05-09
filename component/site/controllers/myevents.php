@@ -61,6 +61,20 @@ class RedeventControllerMyevents extends FOFController
 	}
 
 	/**
+	 * return attending html table
+	 *
+	 * @return void
+	 */
+	public function attending()
+	{
+		$this->viewName  = 'myevents';
+		$this->modelName = 'myevents';
+		$this->layout    = 'attending';
+
+		$this->display();
+	}
+
+	/**
 	 * ajax publish/unpublish a session
 	 *
 	 * @return void

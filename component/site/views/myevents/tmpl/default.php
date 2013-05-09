@@ -57,6 +57,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<div><?php echo JHTML::link(RedeventHelperRoute::getEditVenueRoute(), JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_VENUE')); ?></div>
 <?php endif; ?>
 
-<?php echo $this->loadTemplate('attending'); ?>
+<?php if (count((array)$this->attending)) : ?>
+	<h2><?php echo JText::_('COM_REDEVENT_ATTENDING'); ?></h2>
+	<?php echo $this->loadTemplate('attending'); ?>
+<?php endif; ?>
 
 </div>

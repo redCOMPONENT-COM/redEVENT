@@ -97,10 +97,14 @@ class RedeventViewMyevents extends JView
 			}); ";
 		$document->addScriptDeclaration($js);
 
+		$state = $this->get('state');
+
 		// Get variables
-		$limitstart   = JRequest::getVar('limitstart', 0, '', 'int');
-		$limit        = $mainframe->getUserStateFromRequest('com_redevent.myevents.limit', 'limit', $params->def('display_num', 5), 'int');
-		$filter_event = $mainframe->getUserStateFromRequest('com_redevent.myevents.filter_event', 'filter_event', 0, 'int');
+		$limitstart   = $state->get('limitstart');
+		$limitstart_venues   = $state->get('limitstart_venues');
+		$limitstart_attending   = $state->get('limitstart_attending');
+		$limit        = $state->get('limit');
+		$filter_event = $state->get('filter_event');
 		$task = JRequest::getWord('task');
 		$pop = JRequest::getBool('pop');
 
@@ -140,6 +144,10 @@ class RedeventViewMyevents extends JView
 			$uri->delVar('filter');
 			$uri->delVar('filter_type');
 		}
+
+		$lists['limitstart'] = $state->get('limitstart');
+		$lists['limitstart_venues'] = $state->get('limitstart_venues');
+		$lists['limitstart_attending'] = $state->get('limitstart_attending');
 
 		// Events filter
 		$hasManagedEvents = false;
