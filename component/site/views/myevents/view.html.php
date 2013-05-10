@@ -112,11 +112,13 @@ class RedeventViewMyevents extends JView
 		$events = $this->get('Events');
 		$venues = $this->get('Venues');
 		$attending = $this->get('Attending');
+		$attended = $this->get('Attended');
 
 		// Paginations
 		$events_pageNav = $this->get('EventsPagination');
 		$venues_pageNav = $this->get('VenuesPagination');
 		$attending_pageNav = $this->get('AttendingPagination');
+		$attended_pageNav = $this->get('AttendedPagination');
 
 		// Params
 		$params->def('page_title', $item ? $item->title : 'COM_REDEVENT_VIEW_MYEVENTS_TITLE');
@@ -148,6 +150,7 @@ class RedeventViewMyevents extends JView
 		$lists['limitstart'] = $state->get('limitstart');
 		$lists['limitstart_venues'] = $state->get('limitstart_venues');
 		$lists['limitstart_attending'] = $state->get('limitstart_attending');
+		$lists['limitstart_attended'] = $state->get('limitstart_attended');
 
 		// Events filter
 		$hasManagedEvents = false;
@@ -166,6 +169,7 @@ class RedeventViewMyevents extends JView
 		$this->assignRef('events', $events);
 		$this->assignRef('venues', $venues);
 		$this->assignRef('attending', $attending);
+		$this->assignRef('attended', $attended);
 		$this->assignRef('task', $task);
 		$this->assignRef('print_link', $print_link);
 		$this->assignRef('params', $params);
@@ -173,6 +177,7 @@ class RedeventViewMyevents extends JView
 		$this->assignRef('events_pageNav', $events_pageNav);
 		$this->assignRef('venues_pageNav', $venues_pageNav);
 		$this->assignRef('attending_pageNav', $attending_pageNav);
+		$this->assignRef('attended_pageNav', $attended_pageNav);
 		$this->assignRef('elsettings', $elsettings);
 		$this->assignRef('pagetitle',  $pagetitle);
 		$this->assignRef('lists',      $lists);

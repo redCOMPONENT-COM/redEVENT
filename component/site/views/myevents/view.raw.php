@@ -54,6 +54,9 @@ class RedeventViewMyevents extends JView
 			case 'attending':
 				return $this->displayAttending($tpl);
 
+			case 'attended':
+				return $this->displayAttended($tpl);
+
 			default:
 				echo 'Error: unkown layout ' . $this->getLayout();
 		}
@@ -186,6 +189,44 @@ class RedeventViewMyevents extends JView
 
 		$this->setLayout('default');
 		echo $this->loadTemplate('attending');
+
+		return true;
+	}
+
+	protected function displayAttended($tpl)
+	{
+		$user      = JFactory::getUser();
+		$mainframe = JFactory::getApplication();
+		$params    = $mainframe->getParams();
+
+		if (!$user->get('id'))
+		{
+			return false;
+		}
+
+		$acl = UserACl::getInstance();
+
+		$state = $this->get('state');
+
+		// Get data from model
+		$attended = $this->get('Attended');
+		$pageNav = $this->get('AttendedPagination');
+
+		// Sorting and filtering
+		$lists = $this->_buildSortLists();
+
+		$lists['limitstart_attended'] = $state->get('limitstart_attended');
+
+		$this->assign('action', JRoute::_(RedeventHelperRoute::getMyeventsRoute()));
+
+		$this->assignRef('attended', $attended);
+		$this->assignRef('params', $params);
+		$this->assignRef('attended_pageNav', $pageNav);
+		$this->assignRef('acl',         $acl);
+		$this->assignRef('lists',      $lists);
+
+		$this->setLayout('default');
+		echo $this->loadTemplate('attended');
 
 		return true;
 	}

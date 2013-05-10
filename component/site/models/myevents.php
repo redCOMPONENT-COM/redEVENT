@@ -44,22 +44,12 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 * @var array
 	 */
 	protected $_events = null;
-
 	/**
 	 * Events total
 	 *
 	 * @var integer
 	 */
 	protected $_total_events = null;
-
-	protected $_venues = null;
-
-	protected $_total_venues = null;
-
-	protected $_attending = null;
-
-	protected $_total_attending = null;
-
 	/**
 	 * Pagination object
 	 *
@@ -67,12 +57,30 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 */
 	protected $_pagination_events = null;
 
+	protected $_venues = null;
+
+	protected $_total_venues = null;
+
 	/**
 	 * Pagination object
 	 *
 	 * @var object
 	 */
 	protected $_pagination_venues = null;
+
+
+	protected $_attending = null;
+
+	protected $_total_attending = null;
+
+	protected $_pagination_attending = null;
+
+	protected $_attended = null;
+
+	protected $_total_attended = null;
+
+	protected $_pagination_attended = null;
+
 
 	/**
 	 * Constructor
@@ -93,11 +101,13 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 		$limitstart_events 		= $mainframe->input->get('limitstart', 0, '', 'int');
 		$limitstart_venues 		= $mainframe->input->get('limitstart_venues', 0, '', 'int');
 		$limitstart_attending 	= $mainframe->input->get('limitstart_attending', 0, '', 'int');
+		$limitstart_attended 	= $mainframe->input->get('limitstart_attended', 0, '', 'int');
 
 		$this->setState('limit', $limit);
 		$this->setState('limitstart_events', $limitstart_events);
 		$this->setState('limitstart_venues', $limitstart_venues);
 		$this->setState('limitstart_attending', $limitstart_attending);
+		$this->setState('limitstart_attended', $limitstart_attended);
 
 		// Get the filter request variables
 		$this->setState('filter_order', $mainframe->input->getCmd('filter_order', 'x.dates'));
@@ -170,6 +180,39 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	}
 
 	/**
+	 * Method to get the Events user attended
+	 *
+	 * @access public
+	 * @return array
+	 */
+	public function & getAttended()
+	{
+		$pop = JRequest::getBool('pop');
+
+		// Lets load the content if it doesn't already exist
+		if (empty($this->_attended))
+		{
+			$query = $this->_buildQueryAttended();
+			$pagination = $this->getAttendedPagination();
+
+			if ($pop)
+			{
+				$this->_attended = $this->_getList($query);
+			}
+			else
+			{
+				$this->_attended = $this->_getList($query, $pagination->limitstart, $pagination->limit);
+			}
+		}
+
+		$this->_attended = $this->_categories($this->_attended);
+		$this->_attended = $this->_getPlacesLeft($this->_attended);
+		$this->_attended = $this->_getPrices($this->_attended);
+
+		return $this->_attended;
+	}
+
+	/**
 	 * Method to get the Venues
 	 *
 	 * @access public
@@ -232,6 +275,24 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 		}
 
 		return $this->_total_attending;
+	}
+
+	/**
+	 * Total nr of events
+	 *
+	 * @access public
+	 * @return integer
+	 */
+	public function getTotalAttended()
+	{
+		// Lets load the total nr if it doesn't already exist
+		if (empty($this->_total_attended))
+		{
+			$query = $this->_buildQueryAttended();
+			$this->_total_attended = $this->_getListCount($query);
+		}
+
+		return $this->_total_attended;
 	}
 
 	/**
@@ -307,37 +368,21 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	}
 
 	/**
-	 * Build the query
+	 * Method to get a pagination object for the attended events
 	 *
-	 * @access private
-	 * @return string
+	 * @access public
+	 * @return integer
 	 */
-	protected function _buildQueryEvents()
+	public function getAttendedPagination()
 	{
-		// Get the WHERE and ORDER BY clauses for the query
-		$where = $this->_buildEventListWhere();
-		$orderby = $this->_buildEventListOrderBy();
+		// Lets load the content if it doesn't already exist
+		if (empty($this->_pagination_attended))
+		{
+			jimport('joomla.html.pagination');
+			$this->_pagination_attended = new REAjaxPagination($this->getTotalAttended(), $this->getState('limitstart_attending'), $this->getState('limit'));
+		}
 
-		//Get Events from Database
-		$query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published, '
-		. ' a.id, a.title, a.created, a.datdescription, a.registra, a.course_code, '
-		. ' l.venue, l.city, l.state, l.url, l.id as locid, '
-		. ' c.catname, c.id AS catid, '
-		. ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
-		. ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
-		. ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
-		. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
-		. ' FROM #__redevent_event_venue_xref AS x'
-		. ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
-		. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-		. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-		. ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-		. $where
-		. ' GROUP BY (x.id) '
-		. $orderby
-		;
-
-		return $query;
+		return $this->_pagination_attended;
 	}
 
 	/**
@@ -346,33 +391,76 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 * @access private
 	 * @return string
 	 */
+	protected function _buildQueryEvents()
+	{
+		$query = $this->_buildQueryEventsSelect();
+
+		// Get the WHERE and ORDER BY clauses for the query
+		$query = $this->_buildEventListWhere($query);
+		$query = $this->_buildEventListOrderBy($query);
+
+		return $query;
+	}
+
+	/**
+	 * Build the query
+	 *
+	 * @return string
+	 */
 	protected function _buildQueryAttending()
 	{
-		// Get the WHERE and ORDER BY clauses for the query
-		$where = $this->_buildEventListAttendingWhere();
-		$orderby = $this->_buildEventListOrderBy();
+		$query = $this->_buildQueryEventsSelect();
 
-		//Get Events from Database
-		$query = 'SELECT x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, '
-		. ' a.id, a.title, a.created, a.datdescription, a.registra, '
-		. ' l.venue, l.city, l.state, l.url, l.id as locid, l.street, l.country, '
-		. ' c.catname, c.id AS catid,'
-		. ' x.featured, '
-		. ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
-		. ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
-		. ' CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug, '
-		. ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug, '
-		. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
-		. ' FROM #__redevent_event_venue_xref AS x'
-		. ' INNER JOIN #__redevent_register AS r ON r.xref = x.id '
-		. ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
-		. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-		. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-		. ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-		. $where
-		. ' GROUP BY (x.id) '
-		. $orderby
-		;
+		// Get the WHERE and ORDER BY clauses for the query
+		$query = $this->_buildEventListAttendingWhere($query);
+		$query = $this->_buildEventListOrderBy($query);
+
+		return $query;
+	}
+
+	/**
+	 * Build the query
+	 *
+	 * @return string
+	 */
+	protected function _buildQueryAttended()
+	{
+		$query = $this->_buildQueryEventsSelect();
+
+		// Get the WHERE and ORDER BY clauses for the query
+		$query = $this->_buildEventListAttendedWhere($query);
+		$query = $this->_buildEventListOrderBy($query);
+
+		return $query;
+	}
+
+	/**
+	 * build base select and joins for sessions queries
+	 *
+	 * @return JDatabaseQuery
+	 */
+	protected function _buildQueryEventsSelect()
+	{
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published');
+		$query->select('a.id, a.title, a.created, a.datdescription, a.registra, a.course_code');
+		$query->select('l.venue, l.city, l.state, l.url, l.id as locid, l.street, l.country');
+		$query->select('c.catname, c.id AS catid');
+		$query->select('x.featured');
+		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
+		$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
+		$query->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug');
+		$query->select('CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug');
+		$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug');
+		$query->from('#__redevent_event_venue_xref AS x');
+		$query->join('INNER', '#__redevent_register AS r ON r.xref = x.id');
+		$query->join('LEFT', '#__redevent_events AS a ON a.id = x.eventid');
+		$query->join('LEFT', '#__redevent_venues AS l ON l.id = x.venueid');
+		$query->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
+		$query->join('LEFT', '#__redevent_categories AS c ON c.id = xcat.category_id');
+		$query->group('x.id');
 
 		return $query;
 	}
@@ -414,14 +502,14 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 * @access private
 	 * @return string
 	 */
-	protected function _buildEventListOrderBy()
+	protected function _buildEventListOrderBy($query)
 	{
 		$filter_order = $this->getState('filter_order');
 		$filter_order_dir = $this->getState('filter_order_dir');
 
-		$orderby = ' ORDER BY '.$filter_order.' '.$filter_order_dir.', x.dates, x.times';
+		$query->order($filter_order.' '.$filter_order_dir.', x.dates, x.times');
 
-		return $orderby;
+		return $query;
 	}
 
 	/**
@@ -430,7 +518,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 * @access private
 	 * @return string
 	 */
-	protected function _buildEventListWhere()
+	protected function _buildEventListWhere($query)
 	{
 		$mainframe = JFactory::getApplication();
 
@@ -513,9 +601,9 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 			$where[] = ' a.id = '.JRequest::getInt('filter_event');
 		}
 
-		$where = ' WHERE '. implode(' AND ', $where);
+		$query->where(implode(' AND ', $where));
 
-		return $where;
+		return $query;
 	}
 
 	/**
@@ -624,31 +712,42 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 	 * @access private
 	 * @return string
 	 */
-	protected function _buildEventListAttendingWhere()
+	protected function _buildEventListAttendingWhere($query)
 	{
-		$mainframe = JFactory::getApplication();
-
 		$user = JFactory::getUser();
 
-		// Get the paramaters of the active menu item
-		$params = & $mainframe->getParams();
+		$query->where('x.published > -1');
 
-		$task = JRequest::getWord('task');
-
-		// First thing we need to do is to select only needed events
-		if ($task == 'archive')
-		{
-			$where = ' WHERE x.published = -1';
-		}
-		else
-		{
-			$where = ' WHERE x.published = 1';
-		}
+		// Upcoming !
+		$now = strftime('%Y-%m-%d %H:%M');
+		$query->where('(x.dates = 0 OR (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > ' . $this->_db->Quote($now) . ')');
 
 		// then if the user is attending the event
-		$where .= ' AND r.uid = '.$this->_db->Quote($user->id);
+		$query->where('r.uid = '.$this->_db->Quote($user->id));
 
-		return $where;
+		return $query;
+	}
+
+	/**
+	 * Build the where clause
+	 *
+	 * @access private
+	 * @return string
+	 */
+	protected function _buildEventListAttendedWhere($query)
+	{
+		$user = JFactory::getUser();
+
+		$query->where('x.published > -1');
+
+		// Upcoming !
+		$now = strftime('%Y-%m-%d %H:%M');
+		$query->where('x.dates > 0 AND (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) <= ' . $this->_db->Quote($now));
+
+		// then if the user is attending the event
+		$query->where('r.uid = '.$this->_db->Quote($user->id));
+
+		return $query;
 	}
 
 	public function getEventsOptions()

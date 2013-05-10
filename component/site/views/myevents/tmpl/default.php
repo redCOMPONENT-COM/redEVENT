@@ -62,4 +62,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<?php echo $this->loadTemplate('attending'); ?>
 <?php endif; ?>
 
+<?php if (count((array)$this->attended)) : ?>
+	<h2><?php echo JText::_('COM_REDEVENT_BOOKING_HISTORY'); ?></h2>
+	<?php echo $this->loadTemplate('attended'); ?>
+<?php endif; ?>
+
 </div>
