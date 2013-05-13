@@ -173,7 +173,7 @@ $pane =& JPane::getInstance('tabs');
 					<label for="title"><?php echo JText::_('COM_REDEVENT_TITLE' ).':'; ?></label>
 				</td>
 				<td>
-					<input class="inputbox required" type="text" id="title"
+					<input class="inputbox required" type="text" id="ev-title"
 					name="title" value="<?php echo $this->row->title; ?>" size="65" maxlength="60" />
 				</td>
 			</tr>
