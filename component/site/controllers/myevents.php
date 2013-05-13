@@ -33,6 +33,33 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 class RedeventControllerMyevents extends FOFController
 {
 	/**
+	 * Class constructor, overridden in descendant classes.
+	 *
+	 * @param   mixed  $properties  Either and associative array or another
+	 *                              object to set the initial properties of the object.
+	 *
+	 * @since   11.1
+	 */
+	public function __construct($properties = array())
+	{
+		parent::__construct($properties);
+		$this->registerDefaultTask('myevents');
+	}
+	/**
+	 * return sessions html table
+	 *
+	 * @return void
+	 */
+	public function myevents()
+	{
+		$this->viewName  = 'myevents';
+		$this->modelName = 'myevents';
+		$this->layout    = 'default';
+
+		$this->display();
+	}
+
+	/**
 	 * return sessions html table
 	 *
 	 * @return void

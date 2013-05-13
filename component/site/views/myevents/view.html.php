@@ -132,7 +132,7 @@ class RedeventViewMyevents extends JView
 
 		// Set Page title
 		$pagetitle = $params->get('page_title', JText::_('COM_REDEVENT_MY_EVENTS'));
-		$this->document->setTitle($pagetitle);
+		JFactory::getDocument()->setTitle($pagetitle);
 
 		// Create select lists
 		$lists = $this->_buildSortLists();
