@@ -78,6 +78,7 @@ class RedeventViewMyevents extends JView
 		JHTML::_('behavior.mootools');
 
 		FOFTemplateUtils::addJS('media://com_redevent/js/myevents.js');
+		FOFTemplateUtils::addJS('media://com_redevent/js/ajaxnav.js');
 
 		$js = "
 			window.addEvent('domready', function(){
