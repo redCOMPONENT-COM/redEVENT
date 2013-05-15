@@ -455,7 +455,7 @@ class RedeventModelMyevents extends RedeventModelBaseEventList
 		$query->select('CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug');
 		$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug');
 		$query->from('#__redevent_event_venue_xref AS x');
-		$query->join('INNER', '#__redevent_register AS r ON r.xref = x.id');
+		$query->join('LEFT', '#__redevent_register AS r ON r.xref = x.id');
 		$query->join('LEFT', '#__redevent_events AS a ON a.id = x.eventid');
 		$query->join('LEFT', '#__redevent_venues AS l ON l.id = x.venueid');
 		$query->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
