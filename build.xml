@@ -57,7 +57,7 @@
 	
 	<target name="release" description="Installation Package for Joomla! 1.6+"
 		depends="new-release,setup-properties">
-
+		
 		<copy todir="${dirs.tmp}/component" >
 			<fileset dir="${dirs.root}/component">
 				<include name="**" />
@@ -94,27 +94,38 @@
 		<!-- languages -->
 		<foreach param="dirname" absparam="absname" target="zipfolder">
 			<property name="myp" value="language" />
-		  <fileset dir="${dirs.root}/languages">
-		  	<type type="dir"/>
-	        <depth max="0" min="0" />
-		  </fileset>
+	  		<fileset dir="${dirs.root}/languages">
+			  	<type type="dir"/>
+		        <depth max="0" min="0" />
+			  </fileset>
 		</foreach>
 		
 		<!-- plugins -->
-		<foreach param="dirname" absparam="absname" target="zipfolder">
-			<property name="myp" value="plugins" />
-		  <fileset dir="${dirs.root}/plugins">
-		  	<type type="dir"/>
-	        <depth max="0" min="0" />
-		  </fileset>
+		<foreach param="pdirname" absparam="pabsname" target="zipplugins">
+			<fileset dir="${dirs.root}/plugins">
+				<type type="dir"/>
+				<depth max="0" min="0" />
+			</fileset>
 		</foreach>
 		
 		<delete dir="${dirs.tmp}" quiet="yes" includeemptydirs="false" />
 	</target>
 	
+	<target name="zipplugins">
+	    <echo msg="handling plugins group ${pdirname}" />
+		<foreach param="dirname" absparam="absname" target="zipfolder">
+			<property name="myp" value="plugins" />
+			<fileset dir="${pabsname}">
+				<type type="dir"/>
+				<depth max="0" min="0" />
+			</fileset>
+		</foreach>
+	</target>
+	 
+	
 	<target name="zipfolder">
 	    <echo msg="packaging ${dirname} ${absname}" />
-		<copy todir="${dirs.tmp}/${dirname}" >
+		<copy todir="${dirs.tmp}/${myp}/${dirname}" >
 			<fileset dir="${absname}">
 				<include name="**" />
 			</fileset>
@@ -127,7 +138,7 @@
 		</copy>
 		<mkdir dir="${dirs.release}/${myp}" />
 		<!-- Create the package -->
-		<tar basedir="${dirs.tmp}/${dirname}" destfile="${dirs.release}/${myp}/${dirname}-${version}.tar.gz" includeemptydirs="true" compression="gzip" />
+		<tar basedir="${dirs.tmp}/${myp}/${dirname}" destfile="${dirs.release}/${myp}/${dirname}-${version}.tar.gz" includeemptydirs="true" compression="gzip" />
 	</target>
 
 	<!--
