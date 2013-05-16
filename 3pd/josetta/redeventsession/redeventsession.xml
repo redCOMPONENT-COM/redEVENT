@@ -16,6 +16,7 @@
 		<filename plugin="redeventsession">redeventsession.php</filename>
 		<filename>index.html</filename>
 		<folder>language</folder>
+		<folder>fields</folder>
 	</files>
 
 </extension>
