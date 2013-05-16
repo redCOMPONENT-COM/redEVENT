@@ -2,7 +2,7 @@
 <joomfish type="contentelement">
   <name>redEVENT - Events</name>
   <author>redCOMPONENT</author>
-  <version>1.0</version>
+  <version>##VERSION##</version>
   <description>Definition for redEVENT component, "Events" section</description>
   <reference>
   	<table name="redevent_events">

@@ -2,12 +2,12 @@
 <extension type="plugin" group="xmap" version="1.7">
 	<name>PLG_XMAP_REDEVENT</name>
 	<author>redCOMPONENT / adapted from Eventlist plugin by Guillermo Vargas</author>
-	<creationDate>2011-04-29</creationDate>
+	<creationDate>##DATE##</creationDate>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>email@redweb.dk</authorEmail>
 	<authorUrl>www.redweb.dk</authorUrl>
 	<copyright>(c) 2011 Redweb.dk</copyright>
-	<version>2.5.0</version>
+	<version>##VERSION##</version>
 	<description>PLG_XMAP_REDEVENT_DESC</description>
 	
 	<files>
