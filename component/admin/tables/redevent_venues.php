@@ -110,23 +110,11 @@ class RedEvent_venues extends JTable
 
 		$this->country = strip_tags($this->country);
 		$countrylength = JString::strlen($this->country);
-		if ($countrylength > 2) {
+
+		if ($countrylength > 2)
+		{
      	 	$this->setError(JText::_('COM_REDEVENT_ERROR_COUNTRY_LONG' ));
      	 	return false;
-		}
-
-		/** check for existing venue */
-		$query = ' SELECT id FROM #__redevent_venues'
-		       . ' WHERE venue = ' . $this->_db->Quote($this->venue)
-		       . '   AND street = ' . $this->_db->Quote($this->street)
-           . '   AND city = ' . $this->_db->Quote($this->city)
-		       ;
-		$this->_db->setQuery($query);
-
-		$xid = intval($this->_db->loadResult());
-		if ($xid && $xid != intval($this->id)) {
-			$this->setError(JText::sprintf('COM_REDEVENT_VENUE_S_ALREADY_EXIST', $this->venue));
-			return false;
 		}
 
 		return true;
