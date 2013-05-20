@@ -12,7 +12,8 @@
 	
 	
 	<!-- Runs on install/uninstall/update -->
-	<scriptfile>install.redevent.php</scriptfile>
+	<scriptfile>install.php</scriptfile>
+	
   <!-- Install Database Section -->
  	<install>
  		  <sql>
