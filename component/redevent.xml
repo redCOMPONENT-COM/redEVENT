@@ -97,6 +97,6 @@
 		
 	<!-- Plugins here -->
 	<plugins>
-		<plugin folder="admin/extras/redform" plugin="redevent" group="redform_integration" />
+		<plugin folder="admin/extras/plugins/redform" plugin="redevent" group="redform_integration" />
 	</plugins>
 </extension>
