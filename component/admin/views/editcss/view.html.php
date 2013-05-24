@@ -67,7 +67,7 @@ class RedEventViewEditcss extends JView {
 		JRequest::setVar( 'hidemainmenu', 1 );
 
 		//add css to document
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
 
 		//read the the stylesheet
 		jimport('joomla.filesystem.file');

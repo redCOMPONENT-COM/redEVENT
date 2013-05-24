@@ -60,7 +60,7 @@ class RedEventViewEvents extends JView {
 
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EVENTS'));
 		//add css and submenu to document
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
 
 		//Create Submenu
 		ELAdmin::setMenu();
@@ -131,7 +131,7 @@ class RedEventViewEvents extends JView {
 		$document	= & JFactory::getDocument();
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EVENTS_EXPORT'));
 		//add css and submenu to document
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
 
 		//Create Submenu
     ELAdmin::setMenu();

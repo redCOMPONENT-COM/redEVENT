@@ -83,7 +83,7 @@ class RedEventViewImagehandler extends JView  {
 		JResponse::allowCache(false);
 
 		//add css
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
 
 		//get images
 		$images = $this->get('images');
@@ -134,7 +134,7 @@ class RedEventViewImagehandler extends JView  {
 		$task 		= JRequest::getVar( 'task' );
 
 		//add css
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
 		
 		jimport('joomla.client.helper');
 		$ftp =& JClientHelper::setCredentialsFromRequest('ftp');

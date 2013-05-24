@@ -55,7 +55,7 @@ class RedEventViewVenuesCategories extends JView {
 
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_VENUESCATEGORIES'));
 		//add css and submenu to document
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
 
 		//Create Submenu
 		ELAdmin::setMenu();

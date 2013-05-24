@@ -48,7 +48,7 @@ class RedEventViewAttendee extends JView {
 		
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITATTENDEE'));
     //add css to document
-    $document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+    FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
 		
     $row = & $this->get('data');
 		//make data safe

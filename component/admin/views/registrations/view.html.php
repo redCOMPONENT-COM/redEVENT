@@ -56,7 +56,7 @@ class RedEventViewRegistrations extends JView {
 
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_REGISTRATIONS'));
 		//add css and submenu to document
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
 		
 		// add javascript
 		JHTML::_('behavior.modal', 'a.answersmodal');

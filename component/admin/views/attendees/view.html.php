@@ -65,7 +65,7 @@ class RedEventViewAttendees extends JView {
 
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_ATTENDEES'));
 		//add css and submenu to document
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
 		
 		// add javascript
 		JHTML::_('behavior.modal', 'a.answersmodal');
@@ -188,7 +188,7 @@ class RedEventViewAttendees extends JView {
 	{
 		$elsettings = JComponentHelper::getParams('com_redevent');
 		$document	= & JFactory::getDocument();
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
 
 		$rows      	= & $this->get( 'Data');
 		$event 		= & $this->get( 'Event' );
@@ -217,7 +217,7 @@ class RedEventViewAttendees extends JView {
 	{
 		$elsettings = JComponentHelper::getParams('com_redevent');
 		$document	= & JFactory::getDocument();
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
 		
 		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
 

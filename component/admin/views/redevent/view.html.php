@@ -57,7 +57,7 @@ class RedEventViewRedEvent extends JViewLegacy {
 
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_REDEVENT'));
 		//add css and submenu to document
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
 
 		//Create Submenu
 		ELAdmin::setMenu();

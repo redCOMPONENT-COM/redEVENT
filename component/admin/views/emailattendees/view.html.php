@@ -40,7 +40,7 @@ class RedEventViewEmailattendees extends JView {
 		$document = JFactory::getDocument();
 		
 		$document->setTitle(JText::_('COM_REDEVENT_EMAIL_ATTENDEES_TITLE'));
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
 		JHTML::_('behavior.tooltip');
 		
 		$editor 	= & JFactory::getEditor();

@@ -59,7 +59,7 @@ class RedEventViewSession extends JView {
 		if ($standalone)
 		{
 			$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITSESSION'));
-			$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+			FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
 
 			// Set toolbar items for the page
 			$edit		= JRequest::getVar('edit',true);

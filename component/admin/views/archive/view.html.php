@@ -56,8 +56,8 @@ class RedEventViewArchive extends JView {
 
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_ARCHIVE'));
 		//add css and submenu to document
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
-		
+		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
+
     //Create Submenu
     ELAdmin::setMenu();
 
@@ -75,7 +75,7 @@ class RedEventViewArchive extends JView {
 
 		// Get data from the model
 		$rows      	= & $this->get( 'Data');
-		
+
 		//$total      = & $this->get( 'Total');
 		$pageNav 	= & $this->get( 'Pagination' );
 
@@ -90,10 +90,10 @@ class RedEventViewArchive extends JView {
 		// table ordering
 		$lists['order_Dir'] = $filter_order_Dir;
 		$lists['order'] = $filter_order;
-		
+
 		/* Venue and time details */
 		$eventvenues = $this->get('ArchiveEventVenues');
-		
+
 		// search filter
 		$lists['search']= $search;
 

@@ -47,7 +47,7 @@ class RedEventViewAttendeeanswers extends JView {
 		$user 		= & JFactory::getUser();
 		
     //add css to document
-    $document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+    FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
 		
     $row = & $this->get('data');
 		

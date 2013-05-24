@@ -54,7 +54,7 @@ class RedEventViewSelectUser extends JView {
 
 		//prepare the document
 		$document->setTitle(JText::_( 'COM_REDEVENT_SELECT_USER' ));
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
 
 		//Get data from the model
 		$rows      	= & $this->get( 'Data');
