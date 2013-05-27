@@ -86,15 +86,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_('COM_REDEVENT_RESET' ); ?></button>
 			</div>
 			<?php endif; ?>
-				
+
 			<?php if ($this->params->get('lists_filter_event', 0)): ?>
 			<div id="event-filter"><?php echo $this->lists['eventfilter']; ?></div>
     	<?php endif; ?>
-    	
+
 			<?php if ($this->params->get('lists_filter_venue', 1)): ?>
 			<div id="venue-filter"><?php echo $this->lists['venuefilter']; ?></div>
     	<?php endif; ?>
-			
+
 			<?php if ($this->customsfilters && count($this->customsfilters)): ?>
     	<?php foreach ($this->customsfilters as $custom): ?>
       <div class="custom-filter" id="filter<?php echo $custom->id; ?>">
@@ -106,7 +106,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		</div>
    	<input type="hidden" id="f-showfilters" name="showfilters" value="<?php echo $toggle == 0 ? '1' : JRequest::getInt('showfilters', $toggle != 3 ? 1 : 0); ?>"/>
 		<?php endif; ?>
-		
+
 		<?php if ($this->params->get('display_limit_select')) : ?>
 		<div class="el_fright">
 			<?php
@@ -120,7 +120,23 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <!-- end filters -->
 
 <!--table-->
-<?php echo $this->loadTemplate('table'); ?>
+<?php
+if ($this->state->get('results_type') == 0)
+{
+	$allowed = array(
+			'title',
+			'venue',
+			'category',
+			'picture',
+	);
+	$this->columns = redEVENTHelper::validateColumns($this->columns, $allowed);
+	echo $this->loadTemplate('eventstable');
+}
+else
+{
+	echo $this->loadTemplate('table');
+}
+?>
 
 <p>
 <input type="hidden" name="option" value="com_redevent" />
@@ -141,7 +157,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<p class="counter">
 				<?php echo $this->pageNav->getPagesCounter(); ?>
 		</p>
-	
+
 		<?php endif; ?>
 	<?php echo $this->pageNav->getPagesLinks(); ?>
 </div>

@@ -528,6 +528,10 @@
 	      <option value="0">COM_REDEVENT_EVENTS</option>
 	      <option value="1">COM_REDEVENT_SESSIONS</option>
 	    </field> 
+	    <field name="default_categoryevents_results_type" type="radio" default="1" label="COM_REDEVENT_SETTINGS_DEFAULT_CATEGORYEVENTS_RESULTS_TYPE_LABEL" description="COM_REDEVENT_SETTINGS_DEFAULT_CATEGORYEVENTS_RESULTS_TYPE_DESC">
+	      <option value="0">COM_REDEVENT_EVENTS</option>
+	      <option value="1">COM_REDEVENT_SESSIONS</option>
+	    </field> 
  	</fieldset>
  	
  	<fieldset name="COM_REDEVENT_SETTINGS_SOCIAL" label="COM_REDEVENT_SETTINGS_SOCIAL" description="COM_REDEVENT_SETTINGS_SOCIAL">

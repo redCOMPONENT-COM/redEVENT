@@ -175,6 +175,7 @@ class RedeventViewCategoryevents extends JView
 		$this->assignRef('thumb_link',  $thumb_link);
 		$this->assignRef('list_link',   $list_link);
 		$this->assignRef('customsfilters',     $customsfilters);
+		$this->assignRef('state',                   $state);
 		$this->assign('filter_customs',      $filter_customs);
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
