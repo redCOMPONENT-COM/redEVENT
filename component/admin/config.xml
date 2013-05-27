@@ -343,6 +343,10 @@
       <option value="0">No</option>
       <option value="1">Yes</option>
     </field>
+    <field name="edit_session_details" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_SESSION_DESCRIPTION" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_SESSION_DESCRIPTION_TIP">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </field>
     <field name="edit_description_allow_editor" type="radio" default="1" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_DESCRIPTION_ALLOW_EDITOR" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_DESCRIPTION_ALLOW_EDITOR_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>

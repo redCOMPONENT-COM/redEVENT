@@ -34,11 +34,11 @@ JHTML::_('behavior.calendar');
 			<td>
 				<input type="text" id="a_name" value="<?php echo $this->row->venue; ?>" disabled="disabled" />
 				<div class='re_buttons floattext'>
-					<a class="re_venue_select vmodal" title="<?php echo JText::_('COM_REDEVENT_SELECT'); ?>" 
+					<a class="re_venue_select vmodal" title="<?php echo JText::_('COM_REDEVENT_SELECT'); ?>"
 					   href="<?php echo JRoute::_('index.php?view=editevent&layout=selectvenue&tmpl=component'); ?>"
 					   rel="{handler: 'iframe', size: {x: 650, y: 375}}">
 					   	<span><?php echo JText::_('COM_REDEVENT_SELECT')?></span>
-					</a> 
+					</a>
 					<input class="inputbox required" type="hidden" id="a_id" name="venueid" value="<?php echo $this->row->venueid; ?>" />
 				</div>
 			</td>
@@ -96,7 +96,7 @@ JHTML::_('behavior.calendar');
 	      <label for="maxattendees"><?php echo JText::_('COM_REDEVENT_EDIT_XREF_MAXIMUM_ATTENDEES' ) .': '; ?></label>
 	    </td>
 	    <td>
-	      <input type="text" size="8" maxlength="8" name="maxattendees" id="maxattendees" value="<?php echo $this->row->maxattendees; ?>" /> 
+	      <input type="text" size="8" maxlength="8" name="maxattendees" id="maxattendees" value="<?php echo $this->row->maxattendees; ?>" />
 	    </td>
 	  </tr>
 	  <tr>
@@ -104,7 +104,7 @@ JHTML::_('behavior.calendar');
 	      <label for="maxwaitinglist"><?php echo JText::_('COM_REDEVENT_EDIT_XREF_MAXIMUM_WAITINGLIST' ) .': '; ?></label>
 	    </td>
 	    <td>
-	      <input type="text" size="8" maxlength="8" name="maxwaitinglist" id="maxwaitinglist" value="<?php echo $this->row->maxwaitinglist; ?>" /> 
+	      <input type="text" size="8" maxlength="8" name="maxwaitinglist" id="maxwaitinglist" value="<?php echo $this->row->maxwaitinglist; ?>" />
 	    </td>
 	  </tr>
 		<?php endif; ?>
@@ -124,7 +124,7 @@ JHTML::_('behavior.calendar');
 				  <?php endforeach; ?>
 				  <tr id="trnewprice">
 				  	<td><?php echo JHTML::_('select.genericlist', $this->pricegroupsoptions, 'pricegroup[]', array('id' => 'newprice', 'class' => 'newprice')); ?></td>
-				  	<td><input type="text" name="price[]" class="price-val" value="0.00" size="10" /> <button type="button" class="price-button" id="add-price"><?php echo JText::_('COM_REDEVENT_add'); ?></button></td>  	
+				  	<td><input type="text" name="price[]" class="price-val" value="0.00" size="10" /> <button type="button" class="price-button" id="add-price"><?php echo JText::_('COM_REDEVENT_add'); ?></button></td>
 				  </tr>
 		    </table>
 			</td>
@@ -141,7 +141,7 @@ JHTML::_('behavior.calendar');
 			</td>
 		</tr>
 		<?php endif; ?>
-		
+
 		<?php if ($this->params->get('edit_customs', 0) && count($this->xcustoms)): ?>
     <?php foreach ($this->xcustoms as $field): ?>
     <tr>
@@ -153,11 +153,12 @@ JHTML::_('behavior.calendar');
       <td>
         <?php echo $field->render(); ?>
         <?php echo ($field->required? ' '.JText::_('COM_REDEVENT_Required') : '' ); ?>
-      </td>   
+      </td>
     </tr>
     <?php endforeach; ?>
 		<?php endif; ?>
-		
+
+		<?php if ($this->params->get('edit_session_details', 1)): ?>
 		  <tr>
 		    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_SESSION_DETAILS'); ?>::<?php echo JText::_('COM_REDEVENT_SESSION_DETAILS_DESC'); ?>">
 		      <label for="summary"><?php echo JText::_( 'COM_REDEVENT_SESSION_DETAILS' ) .': '; ?></label>
@@ -166,6 +167,7 @@ JHTML::_('behavior.calendar');
 		      <?php echo $this->editor->display('details', $this->row->details, '100%', '100', '70', '5', array('pagebreak', 'readmore') ); ?>
 		    </td>
 		  </tr>
+		<?php endif; ?>
 	</tbody>
 </table>
 
