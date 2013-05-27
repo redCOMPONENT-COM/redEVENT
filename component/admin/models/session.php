@@ -32,7 +32,7 @@ jimport('joomla.application.component.model');
  * @package Joomla
  * @subpackage redEVENT
  * @since		0.9
- */
+*/
 class RedEventModelSession extends JModel
 {
 	/**
@@ -72,14 +72,17 @@ class RedEventModelSession extends JModel
 	{
 		parent::__construct();
 
+		$array = JRequest::getVar('cid', array(), '', 'array');
 
-    $array = JRequest::getVar('cid', array(), '', 'array');
-    if (count($array)) {
-    	$xref = $array[0];
-    }
-    else {
+		if (count($array))
+		{
+			$xref = $array[0];
+		}
+		else
+		{
 			$xref = JRequest::getVar('xref', 0, 'request', 'int');
-    }
+		}
+
 		$this->setId($xref);
 	}
 
@@ -169,45 +172,45 @@ class RedEventModelSession extends JModel
 	{
 		$db = JFactory::getDBO();
 		$q = "SELECT id, venue
-			FROM #__redevent_venues
-			ORDER BY venue";
+		FROM #__redevent_venues
+		ORDER BY venue";
 		$db->setQuery($q);
 		return $db->loadObjectList();
 	}
 
-  /**
-   * get custom fields
-   *
-   * @return objects array
-   */
-  function getXrefCustomfields()
-  {
-  	$xref = JRequest::getVar('xref', 0, 'request', 'int');
-    $query = ' SELECT f.* '
-           . ' FROM #__redevent_fields AS f '
-           . ' WHERE f.object_key = '. $this->_db->Quote("redevent.xref")
-           . ' ORDER BY f.ordering '
-           ;
-    $this->_db->setQuery($query);
-    $result = $this->_db->loadObjectList();
+	/**
+	 * get custom fields
+	 *
+	 * @return objects array
+	 */
+	function getXrefCustomfields()
+	{
+		$xref = JRequest::getVar('xref', 0, 'request', 'int');
+		$query = ' SELECT f.* '
+		. ' FROM #__redevent_fields AS f '
+		. ' WHERE f.object_key = '. $this->_db->Quote("redevent.xref")
+		. ' ORDER BY f.ordering '
+		;
+		$this->_db->setQuery($query);
+		$result = $this->_db->loadObjectList();
 
-    if (!$result) {
-      return array();
-    }
-    $fields = array();
-    $data = $this->getXref();
-    foreach ($result as $c)
-    {
-      $field =& redEVENTHelper::getCustomField($c->type);
-      $field->bind($c);
-      $prop = 'custom'.$c->id;
-      if ($data && isset($data->$prop)) {
-      	$field->value = $data->$prop;
-      }
-      $fields[] = $field;
-    }
-    return $fields;
-  }
+		if (!$result) {
+			return array();
+		}
+		$fields = array();
+		$data = $this->getXref();
+		foreach ($result as $c)
+		{
+			$field =& redEVENTHelper::getCustomField($c->type);
+			$field->bind($c);
+			$prop = 'custom'.$c->id;
+			if ($data && isset($data->$prop)) {
+				$field->value = $data->$prop;
+			}
+			$fields[] = $field;
+		}
+		return $fields;
+	}
 
 	/**
 	 * return xref from request
@@ -231,10 +234,10 @@ class RedEventModelSession extends JModel
 			}
 
 			$query .= ' FROM #__redevent_event_venue_xref AS x '
-			        . ' INNER JOIN #__redevent_events AS e on e.id = x.eventid '
-			        . ' LEFT JOIN #__redevent_venues AS v on v.id = x.venueid '
-			        . ' LEFT JOIN #__redevent_repeats AS rp on rp.xref_id = x.id '
-			        . ' LEFT JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
+			. ' INNER JOIN #__redevent_events AS e on e.id = x.eventid '
+			. ' LEFT JOIN #__redevent_venues AS v on v.id = x.venueid '
+			. ' LEFT JOIN #__redevent_repeats AS rp on rp.xref_id = x.id '
+			. ' LEFT JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
 			;
 
 			$query .= ' WHERE x.id = '. $this->_db->Quote($xref);
@@ -243,7 +246,8 @@ class RedEventModelSession extends JModel
 			$object = $this->_db->loadObject();
 			$object->rrules = RedeventHelperRecurrence::getRule($object->rrule);
 		}
-		else {
+		else
+		{
 			$object = JTable::getInstance('RedEvent_eventvenuexref', '');
 			$object->id    = null;
 			$object->venue = 0;
@@ -251,275 +255,291 @@ class RedEventModelSession extends JModel
 			$object->rrule = '';
 			$object->count = 0;
 			$object->rrules = RedeventHelperRecurrence::getRule();
+
+			// event title and id from request
+			$object->event_id = JFactory::getApplication()->input->getInt('eventid');
+			$db      = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			$query->select('title');
+			$query->from('#__redevent_events');
+			$query->where('id = ' . $object->event_id);
+
+			$db->setQuery($query);
+
+			if (!$object->event_title = $db->loadResult())
+			{
+				throw new Exception('Undefined event id for new session');
+			}
 		}
 
 		return $object;
 	}
 
-  /**
-   * return list of venues as options
-   *
-   * @return array
-   */
-  function getVenuesOptions()
-  {
+	/**
+	 * return list of venues as options
+	 *
+	 * @return array
+	 */
+	function getVenuesOptions()
+	{
 		$query = ' SELECT id AS value, '
-		       . ' CASE WHEN CHAR_LENGTH(city) THEN CONCAT_WS(\' - \', venue, city) ELSE venue END as text '
-  	       . ' FROM #__redevent_venues AS v'
-  	       . ' ORDER BY venue, city '
-  	       ;
-    $this->_db->setQuery($query);
-    return $this->_db->loadObjectList();
-  }
+		. ' CASE WHEN CHAR_LENGTH(city) THEN CONCAT_WS(\' - \', venue, city) ELSE venue END as text '
+		. ' FROM #__redevent_venues AS v'
+		. ' ORDER BY venue, city '
+		;
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
 
-  /**
-   * save xref data
-   *
-   * @param array $data
-   * @return boolean true on success
-   */
-  function savexref($data)
-  {
-  	$id = (int) $data['id'];
+	/**
+	 * save xref data
+	 *
+	 * @param array $data
+	 * @return boolean true on success
+	 */
+	function savexref($data)
+	{
+		$id = (int) $data['id'];
 
-  	$object = & JTable::getInstance('RedEvent_eventvenuexref', '');
+		$object = & JTable::getInstance('RedEvent_eventvenuexref', '');
 
-  	if ($id) {
-  		$object->load($id);
-  	}
+		if ($id) {
+			$object->load($id);
+		}
 
-  	if (!$object->bind($data)) {
-  		$this->setError($object->getError());
-  		return false;
-  	}
+		if (!$object->bind($data)) {
+			$this->setError($object->getError());
+			return false;
+		}
 
-    if (!$object->check()) {
-      $this->setError($object->getError());
-      return false;
-    }
+		if (!$object->check()) {
+			$this->setError($object->getError());
+			return false;
+		}
 
-    if (!$object->store(true)) {
-      $this->setError($object->getError());
-      return false;
-    }
+		if (!$object->store(true)) {
+			$this->setError($object->getError());
+			return false;
+		}
 
-    // we need to save the recurrence too
-    $recurrence = & JTable::getInstance('RedEvent_recurrences', '');
-    if (!$data['recurrenceid'])
-    {
-      $rrule = RedeventHelperRecurrence::parsePost($data);
-      if (!empty($rrule))
-      {
-	      // new recurrence
-	      $recurrence->rrule = $rrule;
-	      if (!$recurrence->store())
-	      {
-	        $this->setError($recurrence->getError());
-	        return false;
-	      }
+		// we need to save the recurrence too
+		$recurrence = & JTable::getInstance('RedEvent_recurrences', '');
+		if (!$data['recurrenceid'])
+		{
+			$rrule = RedeventHelperRecurrence::parsePost($data);
+			if (!empty($rrule))
+			{
+				// new recurrence
+				$recurrence->rrule = $rrule;
+				if (!$recurrence->store())
+				{
+					$this->setError($recurrence->getError());
+					return false;
+				}
 
-	      // add repeat record
-	      $repeat = & JTable::getInstance('RedEvent_repeats', '');
-	      $repeat->set('xref_id', $object->id);
-	      $repeat->set('recurrence_id', $recurrence->id);
-	      $repeat->set('count', 0);
-	      if (!$repeat->store()) {
-	        $this->setError($repeat->getError());
-	        return false;
-	      }
-      }
-    }
-    else
-    {
-      if ($data['repeat'] == 0) // only update if it's the first xref.
-      {
-        $recurrence->load($data['recurrenceid']);
-        // reset the status
-        $recurrence->ended = 0;
-        // TODO: maybe add a check to have a choice between updating rrule or not...
-        $rrule = RedeventHelperRecurrence::parsePost($data);
-        $recurrence->rrule = $rrule;
-        if (!$recurrence->store()) {
-          $this->setError($recurrence->getError());
-          return false;
-        }
-      }
-    }
-    if ($recurrence->id) {
-    	redEVENTHelper::generaterecurrences($recurrence->id);
-    }
+				// add repeat record
+				$repeat = & JTable::getInstance('RedEvent_repeats', '');
+				$repeat->set('xref_id', $object->id);
+				$repeat->set('recurrence_id', $recurrence->id);
+				$repeat->set('count', 0);
+				if (!$repeat->store()) {
+					$this->setError($repeat->getError());
+					return false;
+				}
+			}
+		}
+		else
+		{
+			if ($data['repeat'] == 0) // only update if it's the first xref.
+			{
+				$recurrence->load($data['recurrenceid']);
+				// reset the status
+				$recurrence->ended = 0;
+				// TODO: maybe add a check to have a choice between updating rrule or not...
+				$rrule = RedeventHelperRecurrence::parsePost($data);
+				$recurrence->rrule = $rrule;
+				if (!$recurrence->store()) {
+					$this->setError($recurrence->getError());
+					return false;
+				}
+			}
+		}
+		if ($recurrence->id) {
+			redEVENTHelper::generaterecurrences($recurrence->id);
+		}
 
-    /** roles **/
-    // first remove current rows
-    $query = ' DELETE FROM #__redevent_sessions_roles '
-           . ' WHERE xref = ' . $this->_db->Quote($object->id);
-    $this->_db->setQuery($query);
-    if (!$this->_db->query()) {
-    	$this->setError($this->_db->getErrorMsg());
-    	return false;
-    }
+		/** roles **/
+		// first remove current rows
+		$query = ' DELETE FROM #__redevent_sessions_roles '
+		. ' WHERE xref = ' . $this->_db->Quote($object->id);
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) {
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
 
-    // then recreate them if any
-    foreach ((array) $data['rrole'] as $k => $r)
-    {
-    	if (!($data['rrole'][$k] && $data['urole'][$k])) {
-    		continue;
-    	}
-      $new = & JTable::getInstance('RedEvent_sessions_roles', '');
-      $new->set('xref',    $object->id);
-      $new->set('role_id', $r);
-      $new->set('user_id', $data['urole'][$k]);
-      if (!($new->check() && $new->store())) {
-      	$this->setError($new->getError());
-      	return false;
-      }
-    }
-    /** roles END **/
+		// then recreate them if any
+		foreach ((array) $data['rrole'] as $k => $r)
+		{
+			if (!($data['rrole'][$k] && $data['urole'][$k])) {
+				continue;
+			}
+			$new = & JTable::getInstance('RedEvent_sessions_roles', '');
+			$new->set('xref',    $object->id);
+			$new->set('role_id', $r);
+			$new->set('user_id', $data['urole'][$k]);
+			if (!($new->check() && $new->store())) {
+				$this->setError($new->getError());
+				return false;
+			}
+		}
+		/** roles END **/
 
-    /** prices **/
-    // first remove current rows
-    $query = ' DELETE FROM #__redevent_sessions_pricegroups '
-           . ' WHERE xref = ' . $this->_db->Quote($object->id);
-    $this->_db->setQuery($query);
-    if (!$this->_db->query()) {
-    	$this->setError($this->_db->getErrorMsg());
-    	return false;
-    }
+		/** prices **/
+		// first remove current rows
+		$query = ' DELETE FROM #__redevent_sessions_pricegroups '
+		. ' WHERE xref = ' . $this->_db->Quote($object->id);
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) {
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
 
-    // then recreate them if any
-    foreach ((array) $data['pricegroup'] as $k => $r)
-    {
-    	if (!($data['pricegroup'][$k])) {
-    		continue;
-    	}
-      $new = & JTable::getInstance('RedEvent_sessions_pricegroups', '');
-      $new->set('xref',    $object->id);
-      $new->set('pricegroup_id', $r);
-      $new->set('price', $data['price'][$k]);
-      if (!($new->check() && $new->store())) {
-      	$this->setError($new->getError());
-      	return false;
-      }
-    }
-    /** prices END **/
+		// then recreate them if any
+		foreach ((array) $data['pricegroup'] as $k => $r)
+		{
+			if (!($data['pricegroup'][$k])) {
+				continue;
+			}
+			$new = & JTable::getInstance('RedEvent_sessions_pricegroups', '');
+			$new->set('xref',    $object->id);
+			$new->set('pricegroup_id', $r);
+			$new->set('price', $data['price'][$k]);
+			if (!($new->check() && $new->store())) {
+				$this->setError($new->getError());
+				return false;
+			}
+		}
+		/** prices END **/
 
-    return $object->id;
-  }
+		return $object->id;
+	}
 
-  /**
-   * remove xref if there is no attendees
-   *
-   * @param int xref_id
-   * @return boolean result true on success
-   */
-  function removexref($id)
-  {
-  	// do not delete xref if there are attendees
-  	$query = ' SELECT COUNT(*) FROM #__redevent_register WHERE xref = '. $this->_db->Quote((int)$id);
-  	$this->_db->setQuery($query);
-  	if ($this->_db->loadResult()) {
-  		$this->setError(JText::_('COM_REDEVENT_CANNOT_DELETE_XREF_HAS_REGISTRATIONS'));
-  		return false;
-  	}
+	/**
+	 * remove xref if there is no attendees
+	 *
+	 * @param int xref_id
+	 * @return boolean result true on success
+	 */
+	function removexref($id)
+	{
+		// do not delete xref if there are attendees
+		$query = ' SELECT COUNT(*) FROM #__redevent_register WHERE xref = '. $this->_db->Quote((int)$id);
+		$this->_db->setQuery($query);
+		if ($this->_db->loadResult()) {
+			$this->setError(JText::_('COM_REDEVENT_CANNOT_DELETE_XREF_HAS_REGISTRATIONS'));
+			return false;
+		}
 
 
-  	$q = "DELETE FROM #__redevent_event_venue_xref WHERE id =". $this->_db->Quote((int)$id);
-    $this->_db->setQuery($q);
-    if (!$this->_db->query()) {
-      $this->setError(JText::_('COM_REDEVENT_DB_ERROR_DELETING_XREF'));
-      return false;
-    }
+		$q = "DELETE FROM #__redevent_event_venue_xref WHERE id =". $this->_db->Quote((int)$id);
+		$this->_db->setQuery($q);
+		if (!$this->_db->query()) {
+			$this->setError(JText::_('COM_REDEVENT_DB_ERROR_DELETING_XREF'));
+			return false;
+		}
 
-    // delete corresponding roles
-    $q = "DELETE FROM #__redevent_sessions_roles WHERE xref =". $this->_db->Quote((int)$id);
-    $this->_db->setQuery($q);
-    if (!$this->_db->query()) {
-      $this->setError(JText::_('COM_REDEVENT_DB_ERROR_DELETING_XREF_ROLES'));
-      return false;
-    }
+		// delete corresponding roles
+		$q = "DELETE FROM #__redevent_sessions_roles WHERE xref =". $this->_db->Quote((int)$id);
+		$this->_db->setQuery($q);
+		if (!$this->_db->query()) {
+			$this->setError(JText::_('COM_REDEVENT_DB_ERROR_DELETING_XREF_ROLES'));
+			return false;
+		}
 
-    // delete corresponding prices
-    $q = "DELETE FROM #__redevent_sessions_pricegroups WHERE xref =". $this->_db->Quote((int)$id);
-    $this->_db->setQuery($q);
-    if (!$this->_db->query()) {
-      $this->setError(JText::_('COM_REDEVENT_DB_ERROR_DELETING_XREF_ROLES'));
-      return false;
-    }
+		// delete corresponding prices
+		$q = "DELETE FROM #__redevent_sessions_pricegroups WHERE xref =". $this->_db->Quote((int)$id);
+		$this->_db->setQuery($q);
+		if (!$this->_db->query()) {
+			$this->setError(JText::_('COM_REDEVENT_DB_ERROR_DELETING_XREF_ROLES'));
+			return false;
+		}
 
-    // delete corresponding record in repeats table in case of recurrences
-    $q = "DELETE FROM #__redevent_repeats WHERE xref_id =". $this->_db->Quote((int)$id);
-    $this->_db->setQuery($q);
-    if (!$this->_db->query()) {
-      $this->setError(JText::_('COM_REDEVENT_DB_ERROR_DELETING_XREF_REPEAT'));
-      return false;
-    }
+		// delete corresponding record in repeats table in case of recurrences
+		$q = "DELETE FROM #__redevent_repeats WHERE xref_id =". $this->_db->Quote((int)$id);
+		$this->_db->setQuery($q);
+		if (!$this->_db->query()) {
+			$this->setError(JText::_('COM_REDEVENT_DB_ERROR_DELETING_XREF_REPEAT'));
+			return false;
+		}
 
-    return true;
-  }
+		return true;
+	}
 
-  /**
-   * returns all custom fields for xrefs
-   *
-   * @return array
-   */
-  function _getXCustomFields()
-  {
-  	if (empty($this->_xrefcustomfields))
-  	{
-	  	$query = ' SELECT f.id, f.name, f.in_lists, f.searchable '
-	  	       . ' FROM #__redevent_fields AS f'
-	  	       . ' WHERE f.published = 1'
-	  	       . '   AND f.object_key = '. $this->_db->Quote('redevent.xref')
-	  	       . ' ORDER BY f.ordering ASC '
-	  	       ;
-	  	$this->_db->setQuery($query);
-	  	$this->_xrefcustomfields = $this->_db->loadObjectList();
-  	}
-  	return $this->_xrefcustomfields;
-  }
+	/**
+	 * returns all custom fields for xrefs
+	 *
+	 * @return array
+	 */
+	function _getXCustomFields()
+	{
+		if (empty($this->_xrefcustomfields))
+		{
+			$query = ' SELECT f.id, f.name, f.in_lists, f.searchable '
+			. ' FROM #__redevent_fields AS f'
+			. ' WHERE f.published = 1'
+			. '   AND f.object_key = '. $this->_db->Quote('redevent.xref')
+			. ' ORDER BY f.ordering ASC '
+			;
+			$this->_db->setQuery($query);
+			$this->_xrefcustomfields = $this->_db->loadObjectList();
+		}
+		return $this->_xrefcustomfields;
+	}
 
-  function getRolesOptions()
-  {
-  	$query = ' SELECT id AS value, name AS text '
-  	       . ' FROM #__redevent_roles '
-  	       . ' ORDER BY ordering ASC ';
-  	$this->_db->setQuery($query);
-  	$res = $this->_db->loadObjectList();
-  	return $res;
-  }
+	function getRolesOptions()
+	{
+		$query = ' SELECT id AS value, name AS text '
+		. ' FROM #__redevent_roles '
+		. ' ORDER BY ordering ASC ';
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadObjectList();
+		return $res;
+	}
 
-  function getPricegroupsOptions()
-  {
-  	$query = ' SELECT id AS value, name AS text '
-  	       . ' FROM #__redevent_pricegroups '
-  	       . ' ORDER BY ordering ASC ';
-  	$this->_db->setQuery($query);
-  	$res = $this->_db->loadObjectList();
-  	return $res;
-  }
+	function getPricegroupsOptions()
+	{
+		$query = ' SELECT id AS value, name AS text '
+		. ' FROM #__redevent_pricegroups '
+		. ' ORDER BY ordering ASC ';
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadObjectList();
+		return $res;
+	}
 
-  function getSessionRoles()
-  {
-  	$query = ' SELECT sr.* '
-  	       . ' FROM #__redevent_sessions_roles AS sr '
-  	       . ' INNER JOIN #__redevent_roles AS r ON r.id = sr.role_id '
-  	       . ' WHERE sr.xref = ' . $this->_db->Quote($this->_id)
-  	       . ' ORDER BY r.ordering '
-  	       ;
-  	$this->_db->setQuery($query);
-  	$res = $this->_db->loadObjectList();
-  	return $res;
-  }
+	function getSessionRoles()
+	{
+		$query = ' SELECT sr.* '
+		. ' FROM #__redevent_sessions_roles AS sr '
+		. ' INNER JOIN #__redevent_roles AS r ON r.id = sr.role_id '
+		. ' WHERE sr.xref = ' . $this->_db->Quote($this->_id)
+		. ' ORDER BY r.ordering '
+		;
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadObjectList();
+		return $res;
+	}
 
-  function getSessionPrices()
-  {
-  	$query = ' SELECT r.* '
-  	       . ' FROM #__redevent_sessions_pricegroups AS r '
-  	       . ' INNER JOIN #__redevent_pricegroups AS pg ON pg.id = r.pricegroup_id '
-  	       . ' WHERE xref = ' . $this->_db->Quote($this->_id)
-  	       . ' ORDER BY pg.ordering ';
-  	$this->_db->setQuery($query);
-  	$res = $this->_db->loadObjectList();
-  	return $res;
-  }
+	function getSessionPrices()
+	{
+		$query = ' SELECT r.* '
+		. ' FROM #__redevent_sessions_pricegroups AS r '
+		. ' INNER JOIN #__redevent_pricegroups AS pg ON pg.id = r.pricegroup_id '
+		. ' WHERE xref = ' . $this->_db->Quote($this->_id)
+		. ' ORDER BY pg.ordering ';
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadObjectList();
+		return $res;
+	}
 }

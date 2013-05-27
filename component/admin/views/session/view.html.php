@@ -51,7 +51,8 @@ class RedEventViewSession extends JView {
 		// ajax in event form, or standalone ?
 		$standalone = Jrequest::getVar('standalone', 0);
 
-		if (!$standalone && $this->getLayout() == 'closexref') {
+		if (!$standalone && $this->getLayout() == 'closexref')
+		{
 			$this->_displayclosexref($tpl);
 			return;
 		}
@@ -64,7 +65,7 @@ class RedEventViewSession extends JView {
 			// Set toolbar items for the page
 			$edit		= JRequest::getVar('edit',true);
 			$text = !$xref->id ? JText::_('COM_REDEVENT_New' ) : JText::_('COM_REDEVENT_Edit' );
-			JToolBarHelper::title(   JText::sprintf( 'COM_REDEVENT_SESSION_FOR_S',$xref->event_title ).': <small><small>[ ' . $text.' ]</small></small>' );
+			JToolBarHelper::title(JText::sprintf( 'COM_REDEVENT_SESSION_FOR_S',$xref->event_title ).': <small><small>[ ' . $text.' ]</small></small>');
 			JToolBarHelper::save();
 			JToolBarHelper::apply();
 
