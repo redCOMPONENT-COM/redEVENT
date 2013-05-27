@@ -86,6 +86,7 @@ class RedeventViewMyevents extends JView
 
 		// Sorting and filtering
 		$lists = $this->_buildSortLists();
+		$lists['limitstart'] = $state->get('limitstart');
 
 		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_select_event')));
 

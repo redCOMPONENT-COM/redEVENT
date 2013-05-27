@@ -81,7 +81,7 @@ $customsfilters = $helper->getCustomFilters();
 $post = JRequest::get('post');
 $search = isset($post['search']) ? $post['search'] : '';
 
-if ($search =='ajax')
+if ($search =='ajax' && isset($post['query']))
 {
 	$helper->getAjaxSearch($post['query']);
 	$app->close();

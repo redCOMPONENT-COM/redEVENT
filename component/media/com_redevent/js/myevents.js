@@ -12,8 +12,14 @@ window.addEvent('domready', function() {
 		e.stop();
 		red_ajaxnav.submitForm(this.getParent('form'));
 	});
-	document.id('redevent').addEvent('click:relay(filter-go)', function(e) {
+	document.id('redevent').addEvent('click:relay(#filter-go)', function(e) {
 		e.stop();
+		red_ajaxnav.submitForm(this.getParent('form'));
+	});
+	document.id('redevent').addEvent('click:relay(#filter-reset)', function(e) {
+		e.stop();
+		$$('#el_filter select').set('value', '0');
+		$$('#el_filter input').set('value', '');
 		red_ajaxnav.submitForm(this.getParent('form'));
 	});
 	

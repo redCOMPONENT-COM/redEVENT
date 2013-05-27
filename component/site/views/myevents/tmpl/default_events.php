@@ -40,7 +40,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
       ?>
       <input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" />
       <button type="button" id="filter-go"><?php echo JText::_('COM_REDEVENT_GO' ); ?></button>
-      <button type="reset"><?php echo JText::_('COM_REDEVENT_RESET' ); ?></button>
+      <button type="reset" id="filter-reset"><?php echo JText::_('COM_REDEVENT_RESET' ); ?></button>
     </div>
     <?php endif; ?>
     <?php if ($this->params->get('display_limit_select')) : ?>
