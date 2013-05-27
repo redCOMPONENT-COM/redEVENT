@@ -63,17 +63,22 @@ class redEVENTHelper {
 	 */
 	public static function cleanup($forced = 0)
 	{
-		$db			= & JFactory::getDBO();
+		$db			= JFactory::getDBO();
 
-		$elsettings = & redEVENTHelper::config();
-		$params = &JComponentHelper::getParams('com_redevent');
+		$elsettings = redEVENTHelper::config();
+		$params = JComponentHelper::getParams('com_redevent');
 
 		$now 		= time();
+		$cronfile   = JPATH_COMPONENT . '/recron.txt';
 
-		$query = ' SELECT lastupdate '
-		. ' FROM #__redevent_settings ';
-		$db->setQuery($query);
-		$lastupdate = $db->loadResult();
+		if (file_exists($cronfile))
+		{
+			$lastupdate = file_get_contents($cronfile);
+		}
+		else
+		{
+			$lastupdate = 0;
+		}
 
 		//last update later then 24h?
 		//$difference = $now - $lastupdate;
@@ -84,7 +89,7 @@ class redEVENTHelper {
 		$nrdaysnow = floor($now / 86400);
 		$nrdaysupdate = floor($lastupdate / 86400);
 
-		if ( $nrdaysnow > $nrdaysupdate || $forced)
+		if ($nrdaysnow > $nrdaysupdate || $forced)
 		{
 			$nulldate = '0000-00-00';
 			$limit_date = strftime('%Y-%m-%d', time() - $params->get('pastevents_delay', 3) * 3600 * 24);
@@ -118,29 +123,26 @@ class redEVENTHelper {
 				$db->SetQuery( $query );
 				$event_ids = $db->loadResultArray();
 
-				if (!count($event_ids)) {
-					return true;
-				}
-
-				$query = ' DELETE x FROM #__redevent_event_venue_xref AS x '
-				. ' WHERE '. $where_date;
-				;
-				$db->SetQuery( $query );
-				if (!$db->Query()) {
-					RedeventHelperLog::simpleLog('CLEANUP Error while deleting old xrefs: '. $db->getErrorMsg());
-				}
-
-				if ($params->get('pastevents_events_action', 1))
+				// If we deleted some sessions, check if we now have events without sesssion, and take actions accordingly
+				if (count($event_ids))
 				{
-					// now delete the events with no more xref
-					$query = ' DELETE e FROM #__redevent_events AS e '
-					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
-					. ' WHERE x.id IS NULL '
-					. '   AND e.id IN (' . implode(', ', $event_ids) . ')'
+					$query = ' DELETE x FROM #__redevent_event_venue_xref AS x '
+					. ' WHERE '. $where_date;
 					;
 					$db->SetQuery( $query );
 					if (!$db->Query()) {
-						RedeventHelperLog::simpleLog('CLEANUP Error while deleting old events with no more xrefs: '. $db->getErrorMsg());
+						RedeventHelperLog::simpleLog('CLEANUP Error while deleting old xrefs: '. $db->getErrorMsg());
+					}
+
+					// now delete the events with no more xref
+					if ($params->get('pastevents_events_action', 1))
+					{
+						require_once(JPATH_COMPONENT_ADMINISTRATOR . '/models/events.php');
+						$model = JModel::getInstance('events', 'redeventmodel');
+						if (!$model->delete($event_ids))
+						{
+							RedeventHelperLog::simpleLog('CLEANUP Error while deleting old events with no more xrefs: '. $model->getError());
+						}
 					}
 				}
 			}
@@ -157,51 +159,49 @@ class redEVENTHelper {
 				$db->SetQuery( $query );
 				$xrefs = $db->loadObjectList();
 
-				if (empty($xrefs)) {
-					return true;
-				}
-
-				// build list of xref and corresponding events
-				$event_ids = array();
-				$xref_ids  = array();
-				foreach ($xrefs AS $xref)
+				// If we deleted some sessions, check if we now have events without sesssion, and take actions accordingly
+				if (!empty($xrefs))
 				{
-					$event_ids[] = $db->Quote($xref->eventid);
-					$xref_ids[]  = $db->Quote($xref->id);
-				}
-				// filter duplicates
-				$event_ids = array_unique($event_ids);
+					// build list of xref and corresponding events
+					$event_ids = array();
+					$xref_ids  = array();
+					foreach ($xrefs AS $xref)
+					{
+						$event_ids[] = $db->Quote($xref->eventid);
+						$xref_ids[]  = $db->Quote($xref->id);
+					}
+					// filter duplicates
+					$event_ids = array_unique($event_ids);
 
-				// update xref to archive
-				$query = ' UPDATE #__redevent_event_venue_xref AS x '
-				. ' SET x.published = -1 '
-				. ' WHERE x.id IN ('. implode(', ', $xref_ids) .')'
-				;
-				$db->SetQuery( $query );
-				if (!$db->Query()) {
-					RedeventHelperLog::simpleLog('CLEANUP Error while archiving old xrefs: '. $db->getErrorMsg());
-				}
-
-				if ($params->get('pastevents_events_action', 1))
-				{
-					// update events to archive (if no more published xref)
-					$query = ' UPDATE #__redevent_events AS e '
-					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id AND x.published <> -1 '
-					. ' SET e.published = -1 '
-					. ' WHERE x.id IS NULL '
-					. '   AND e.id IN (' . implode(', ', $event_ids) . ')'
+					// update xref to archive
+					$query = ' UPDATE #__redevent_event_venue_xref AS x '
+					. ' SET x.published = -1 '
+					. ' WHERE x.id IN ('. implode(', ', $xref_ids) .')'
 					;
 					$db->SetQuery( $query );
 					if (!$db->Query()) {
-						RedeventHelperLog::simpleLog('CLEANUP Error while archiving events with only archived xrefs: '. $db->getErrorMsg());
+						RedeventHelperLog::simpleLog('CLEANUP Error while archiving old xrefs: '. $db->getErrorMsg());
+					}
+
+					if ($params->get('pastevents_events_action', 1))
+					{
+						// update events to archive (if no more published xref)
+						$query = ' UPDATE #__redevent_events AS e '
+						. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id AND x.published <> -1 '
+						. ' SET e.published = -1 '
+						. ' WHERE x.id IS NULL '
+						. '   AND e.id IN (' . implode(', ', $event_ids) . ')'
+						;
+						$db->SetQuery( $query );
+						if (!$db->Query()) {
+							RedeventHelperLog::simpleLog('CLEANUP Error while archiving events with only archived xrefs: '. $db->getErrorMsg());
+						}
 					}
 				}
 			}
 
-			//Set timestamp of last cleanup
-			$query = 'UPDATE #__redevent_settings SET lastupdate = '.time().' WHERE id = 1';
-			$db->SetQuery( $query );
-			$db->Query();
+			// update recron file with latest update
+			JFile::write($cronfile, $now);
 		}
 	}
 
