@@ -97,7 +97,7 @@ class RedeventTableVenueCategory extends FOFTable
 		return true;
 	}
 
-	protected function rebuildTree()
+	public function rebuildTree()
 	{
 		$this->_rebuildTree(0, 0);
 	}

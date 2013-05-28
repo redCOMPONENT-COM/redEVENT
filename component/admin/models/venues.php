@@ -432,7 +432,8 @@ class RedEventModelVenues extends JModel
 		{
 			$cids = implode( ',', $cid );
 
-			$query = 'DELETE FROM #__redevent_venues'
+			$query = 'DELETE v.* xvc.* FROM #__redevent_venues AS v'
+			        . ' LEFT JOIN #__redevent_venue_category_xref AS xvc ON xvc.venue_id = v.id '
 					. ' WHERE id IN ('. $cids .')'
 					;
 
@@ -444,7 +445,8 @@ class RedEventModelVenues extends JModel
 			}
 		}
 
-		if (count( $err )) {
+		if (count( $err ))
+		{
 			$cids 	= implode( ', ', $err );
     		$msg 	= JText::sprintf( 'COM_REDEVENT_VENUE_ASSIGNED_EVENT_S', $cids );
     		return $msg;

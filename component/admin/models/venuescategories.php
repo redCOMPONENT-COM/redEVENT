@@ -394,38 +394,44 @@ class RedeventModelVenuescategories extends JModel
 	{
 		$cids = implode( ',', $cid );
 
-		$query = 'SELECT c.id, c.name, COUNT( xv.category_id ) AS numvenues'
+		$query =  ' SELECT c.id, c.name, COUNT( xv.category_id ) AS numvenues'
 				. ' FROM #__redevent_venues_categories AS c'
 				. ' LEFT JOIN #__redevent_venue_category_xref AS xv ON xv.category_id = c.id'
-				. ' WHERE c.id IN ('. $cids .')'
+				. ' WHERE c.id IN (' . $cids . ')'
 				. ' GROUP BY c.id'
 				;
 		$this->_db->setQuery( $query );
 
-		if (!($rows = $this->_db->loadObjectList())) {
+		if (!($rows = $this->_db->loadObjectList()))
+		{
 			RedeventError::raiseError( 500, $this->_db->stderr() );
 			return false;
 		}
 
 		$err = array();
 		$cid = array();
-		foreach ($rows as $row) {
-			if ($row->numvenues == 0) {
+		foreach ($rows as $row)
+		{
+			if ($row->numvenues == 0)
+			{
 				$cid[] = $row->id;
-			} else {
+			}
+			else
+			{
 				$err[] = $row->name;
 			}
 		}
 
-		if (count( $cid ))
+		if (count($cid))
 		{
 			$cids = implode( ',', $cid );
 			$query = 'DELETE FROM #__redevent_venues_categories'
-					. ' WHERE id IN ('. $cids .')';
+					. ' WHERE id IN (' .  $cids . ')';
 
 			$this->_db->setQuery( $query );
 
-			if(!$this->_db->query()) {
+			if(!$this->_db->query())
+			{
 				$this->setError($this->_db->getErrorMsg());
 				return false;
 			}
@@ -434,13 +440,16 @@ class RedeventModelVenuescategories extends JModel
 			$table->rebuildTree();
 		}
 
-		if (count( $err )) {
-			$cids 	= implode( ', ', $err );
+		if (count($err))
+		{
+			$cids 	= implode(', ', $err);
     		$msg 	= JText::sprintf( 'COM_REDEVENT_VENUES_ASSIGNED_CATEGORY_S', $cids );
     		return $msg;
-		} else {
-			$total 	= count( $cid );
-			$msg 	= $total.' '.JText::_('COM_REDEVENT_CATEGORIES_DELETED');
+		}
+		else
+		{
+			$total 	= count($cid);
+			$msg 	= $total . ' ' . JText::_('COM_REDEVENT_CATEGORIES_DELETED');
 			return $msg;
 		}
 	}
