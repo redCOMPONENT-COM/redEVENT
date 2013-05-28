@@ -41,48 +41,48 @@ class RedeventViewDetails extends JView
  	 * @since 0.9
 	 */
 	function display($tpl = null)
-	{		
+	{
 		$mainframe = &JFactory::getApplication();
 		$uri       = &JFactory::getUri();
 		/* Set which page to show */
 		$tpl = JRequest::getVar('page', null);
 		$params 	= & $mainframe->getParams('com_redevent');
-		
+
 		$document 	= JFactory::getDocument();
 		$user		= JFactory::getUser();
 		$dispatcher = JDispatcher::getInstance();
 		$elsettings = redEVENTHelper::config();
 		$acl        = UserAcl::getInstance();
-		
+
 		if ($params->get('gplusone', 1)) {
 			$document->addScript('https://apis.google.com/js/plusone.js');
 		}
 		if ($params->get('tweet', 1)) {
 			$document->addScript('http://platform.twitter.com/widgets.js');
 		}
-		
+
 		$row         = $this->get('Details');
 		$registers   = $this->get('Registers');
 		$roles       = $this->get('Roles');
 		$prices      = $this->get('Prices');
 		$register_fields	= $this->get('FormFields');
 		$regcheck	        = $this->get('Usercheck');
-		
+
 		/* Get the venues information */
 		$this->_venues = $this->get('Venues');
-		
+
 		/* This loads the tags replacer */
 		JView::loadHelper('tags');
 		$tags = new redEVENT_tags();
 		$tags->setEventId(JRequest::getInt('id'));
 		$tags->setXref(JRequest::getInt('xref'));
 		$this->assignRef('tags', $tags);
-		
+
 		//get menu information
 		$menu		= & JSite::getMenu();
 		$item    	= $menu->getActive();
 		if (!$item) $item = $menu->getDefault();
-		
+
 		//Check if the id exists
 		if ($row->did == 0)
 		{
@@ -99,7 +99,7 @@ class RedeventViewDetails extends JView
       $document->addStyleSheet('media/com_redevent/css/redevent.css');
     }
     else {
-      $document->addStyleSheet($params->get('custom_css'));     
+      $document->addStyleSheet($params->get('custom_css'));
     }
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
@@ -117,16 +117,16 @@ class RedeventViewDetails extends JView
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
 		$pathway->addItem( $row->full_title, JRoute::_('index.php?option=com_redevent&view=details&id='.$row->slug));
-		
+
 		//Check user if he can edit
 		$allowedtoeditevent = $acl->canEditEvent($row->did);
-		
+
 		//Timecheck for registration
 		$jetzt = date("Y-m-d");
 		$now = strtotime($jetzt);
 		$date = strtotime($row->dates);
 		$timecheck = $now - $date;
-				
+
 		//is the user allready registered at the event
 		if ( $regcheck ) {
 			// add javascript code for cancel button on attendees layout.
@@ -144,11 +144,11 @@ class RedeventViewDetails extends JView
 												}
 												return false;
                     	}
-		            });		            
+		            });
 		        }); ";
       $document->addScriptDeclaration($js);
-		}		
-		
+		}
+
 		//Generate Eventdescription
 		if (($row->datdescription == '') || ($row->datdescription == '<br />')) {
 			$row->datdescription = JText::_('COM_REDEVENT_NO_DESCRIPTION' ) ;
@@ -200,8 +200,8 @@ class RedeventViewDetails extends JView
 		$document->setTitle( $row->full_title );
 		$document->setMetadata('keywords', $meta_keywords_content );
 		$document->setDescription( strip_tags($description_content) );
-		
-		// more metadata		
+
+		// more metadata
 		$document->addCustomTag('<meta property="og:title" content="'.$row->full_title.'"/>');
 		$document->addCustomTag('<meta property="og:type" content="event"/>');
 		$document->addCustomTag('<meta property="og:url" content="'.htmlspecialchars($uri->toString()).'"/>');
@@ -215,10 +215,10 @@ class RedeventViewDetails extends JView
 		if(!empty($row->url) && strtolower(substr($row->url, 0, 7)) != "http://") {
 			$row->url = 'http://'.$row->url;
 		}
-		
+
 		/* Get the Venue Dates */
 		$venuedates = $this->get('VenueDates');
-				
+
     //add alternate feed link
     $link    = 'index.php?option=com_redevent&view=details&format=feed';
     if (!empty($row->slug)) {
@@ -229,16 +229,16 @@ class RedeventViewDetails extends JView
     $document->addHeadLink(JRoute::_($link.'&type=rss'), 'alternate', 'rel', $attribs);
     $attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
     $document->addHeadLink(JRoute::_($link.'&type=atom'), 'alternate', 'rel', $attribs);
-    
+
     // check unregistration rights
     $unreg_check = redEVENTHelper::canUnregister($row->xref);
-    
+
     //manages attendees
     $manage_attendees  = $this->get('ManageAttendees') || $this->get('ViewFullAttendees');
     $candeleteattendees  = $this->get('ManageAttendees');
-    $view_attendees_list = $row->show_names 
+    $view_attendees_list = $row->show_names
                        && in_array($params->get('frontend_view_attendees_access'), JFactory::getUser()->getAuthorisedViewLevels());
-    
+
 		//assign vars to jview
 		$this->assignRef('row',              $row);
 		$this->assignRef('params',           $params);
@@ -259,24 +259,24 @@ class RedeventViewDetails extends JView
     $this->assignRef('prices',           $prices);
     $this->assignRef('uri',              $uri);
     $this->assignRef('lang',             JFactory::getLanguage());
-	
+
     if ($params->get('fbopengraph', 1)) {
     	$this->_opengraph();
     }
-    
+
 		$tpl = JRequest::getVar('tpl', $tpl);
     if ($tpl == '')
-    { 
+    {
     	switch ($row->details_layout)
     	{
     		case 2:
     			$this->setLayout('fixed');
     			break;
-    			
+
     		case 1:
     			$this->setLayout('default');
     			break;
-    			
+
     		case 0:
     			$this->setLayout($params->get('details_layout', 'fixed'));
     			break;
@@ -284,23 +284,28 @@ class RedeventViewDetails extends JView
     }
 		parent::display($tpl);
 	}
-	
+
 	/**
 	 * structures the keywords
 	 *
  	 * @since 0.9
 	 */
-	function keyword_switcher($keyword, $row, $formattime, $formatdate) {
-		switch ($keyword) {
+	protected function keyword_switcher($keyword, $row, $formattime, $formatdate)
+	{
+		$content = '';
+		switch ($keyword)
+		{
 			case "catsid":
-        // TODO: fix for multiple cats
-        //$content = $row->catname;
-        $content = '';
+				// TODO: fix for multiple cats
+				//$content = $row->catname;
+				$content = '';
 				break;
+
 			case "a_name":
 				// $content = $row->venue;
 				$content = '';
 				break;
+
 			case "times":
 			case "endtimes":
 				$content = '';
@@ -310,6 +315,7 @@ class RedeventViewDetails extends JView
 					}
 				}
 				break;
+
 			case "dates":
 			case "enddates":
 				$content = '';
@@ -317,13 +323,21 @@ class RedeventViewDetails extends JView
 					$content .= strftime( $formatdate ,strtotime( $venue->$keyword ) ).' ';
 				}
 				break;
+
 			default:
-				$content = $row->$keyword;
-				break;
+				if (!isset($row->$keyword))
+				{
+					JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_REDEVENT_UNDEFINED_META_KEYWORD_S', $keyword));
+				}
+				else
+				{
+					$content .= $row->$keyword;
+				}
 		}
+
 		return $content;
 	}
-	
+
 	function showRoles()
 	{
 		if (file_exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_redmember') && JComponentHelper::isEnabled('com_redmember'))
@@ -333,24 +347,24 @@ class RedeventViewDetails extends JView
 			echo $this->loadTemplate('rmroles');
 			$this->setLayout($layout);
 		}
-		else 
+		else
 		{
 			$layout = $this->getLayout();
 			$this->setLayout('default');
 			echo $this->loadTemplate('roles');
-			$this->setLayout($layout);			
+			$this->setLayout($layout);
 		}
 	}
-	
+
 	protected function _opengraph()
 	{
 		$app      = &JFactory::getApplication();
 		$document = &Jfactory::getDocument();
 		$uri      = &JFactory::getUri();
 		$params   = $app->getParams('com_redevent');
-		
-		$row = $this->row;		
-	
+
+		$row = $this->row;
+
 		if ($params->get('fbadmin')) {
 			$document->addCustomTag('<meta property="fb:admins" content="'.$params->get('fbadmin').'"/>');
 		}
