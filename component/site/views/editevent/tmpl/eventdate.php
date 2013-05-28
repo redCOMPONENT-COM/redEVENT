@@ -206,10 +206,12 @@ function updateend(cal)
 </tbody>
 </table>
 
-<fieldset class="adminform">
-<legend><?php echo JText::_('COM_REDEVENT_Details'); ?></legend>
-<?php echo $this->editor->display('details', $this->xref->details, '100%;', '300', '100', '20', array('pagebreak', 'readmore')); ?>
-</fieldset>
+<?php if ($this->params->get('edit_session_details', 1)): ?>
+	<fieldset class="adminform">
+	<legend><?php echo JText::_('COM_REDEVENT_Details'); ?></legend>
+	<?php echo $this->editor->display('details', $this->xref->details, '100%;', '300', '100', '20', array('pagebreak', 'readmore')); ?>
+	</fieldset>
+<?php endif;?>
 
 <?php echo $pane->endPanel(); ?>
 
