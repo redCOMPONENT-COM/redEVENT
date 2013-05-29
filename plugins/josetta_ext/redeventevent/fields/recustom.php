@@ -17,6 +17,7 @@
 defined('JPATH_PLATFORM') or die;
 
 jimport('joomla.form.formfield');
+include_once(JPATH_SITE . '/components/com_redevent/helpers/helper.php');
 
 /**
  * Form Field class for the Joomla Platform.

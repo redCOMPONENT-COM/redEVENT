@@ -139,7 +139,6 @@ class plgJosetta_extRedeventVenueCategory extends JosettaClassesExtensionplugin
 
 		switch ($originalFieldTitle)
 		{
-
 			case 'parent_id':
 				$table = FOFTable::getAnInstance('venuecategory', 'RedeventTable');
 				$table->load($originalItem->parent_id);

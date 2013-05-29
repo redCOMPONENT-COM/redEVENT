@@ -27,10 +27,10 @@ JFormHelper::loadFieldClass( 'category');
  * @subpackage  Form
  * @since       11.1
 */
-class JFormFieldRELanguageCategory extends JFormFieldCategory {
+class JFormFieldRELanguageCategorycat extends JFormFieldCategory {
 
 
-	public $type = 'RELanguageCategory';
+	public $type = 'RELanguageCategorycat';
 
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.

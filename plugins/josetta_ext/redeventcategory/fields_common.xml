@@ -29,7 +29,7 @@
 			<column>parent_id</column>
 			<description>COM_REDEVENT_PARENT_CATEGORY</description>
 			<translate>yes</translate>
-			<type>relanguagecategory</type>
+			<type>relanguagecategorycat</type>
 			<addfieldpath>/plugins/josetta_ext/redeventcategory/fields</addfieldpath>
 			<display>yes</display>
 			<option value=""></option>
@@ -111,7 +111,7 @@
 			<display>no</display>
 			<require>no</require>
 		</field>
-			    
+			    <!-- 
 		<field>
 			<id>published</id>
 			<column>published</column>
@@ -119,7 +119,7 @@
 			<display>no</display>
 			<require>no</require>
 		</field>
-		
+		 -->
 	    <field>
 	      <id>access</id>
 	      <name>access</name>

@@ -167,4 +167,29 @@ class plgJosetta_extRedeventcategory extends JosettaClassesExtensionplugin
 
 		return $options;
 	}
+
+	/**
+	 * Format a the original field value for display on the translate view
+	 *
+	 * @param   object  $originalItem        the actual data of the original item
+	 * @param   string  $originalFieldTitle  the field title
+	 * @param   object  $field               the Joomla! field object
+	 *
+	 * @return   string the formatted, ready to display, string
+	 */
+	public function onJosettaGet3rdPartyFormatOriginalField($originalItem, $originalFieldTitle, $field)
+	{
+		$displayText = null;
+
+		switch ($originalFieldTitle)
+		{
+			case 'parent_id':
+				$table = FOFTable::getAnInstance('category', 'RedeventTable');
+				$table->load($originalItem->parent_id);
+				$displayText = $table->catname;
+				break;
+		}
+
+		return $displayText;
+	}
 }
