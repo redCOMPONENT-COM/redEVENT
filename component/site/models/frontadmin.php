@@ -951,7 +951,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 
 		if (!$result)
 		{
-			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED').' - '.$rfcore->getError());
+			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED') . ' - ' . $redform->getError());
 
 			return false;
 		}
