@@ -158,41 +158,44 @@ class RedeventViewDetails extends JView
 		}
 
 		// generate Metatags
-		$meta_keywords_content = "";
-		if (!empty($row->meta_keywords)) {
+		$meta_keywords_content = array();
+		if (!empty($row->meta_keywords))
+		{
 			$keywords = explode(",",$row->meta_keywords);
-			foreach($keywords as $keyword) {
-				if ($meta_keywords_content != "") {
-					$meta_keywords_content .= ", ";
+			foreach($keywords as $keyword)
+			{
+				if (preg_match("#\[([^\]]*)\]#",$keyword, $match))
+				{
+					$replace = $this->keyword_switcher($match[1], $row, $elsettings->get('formattime', '%H:%M'), $elsettings->get('formatdate', '%d.%m.%Y'));
+
+					$keyword = str_replace('[' . $match[1] .']', $replace, $keyword);
+					$meta_keywords_content[] = trim($keyword);
 				}
-				if (preg_match("/[\/[\/]/",$keyword)) {
-					$keyword = trim(str_replace("[","",str_replace("]","",$keyword)));
-					$buffer = $this->keyword_switcher($keyword, $row, $elsettings->get('formattime', '%H:%M'), $elsettings->get('formatdate', '%d.%m.%Y'));
-					if ($buffer != "") {
-						$meta_keywords_content .= $buffer;
-					} else {
-						$meta_keywords_content = substr($meta_keywords_content,0,strlen($meta_keywords_content) - 2);	// remove the comma and the white space
-					}
-				} else {
-					$meta_keywords_content .= $keyword;
+				else
+				{
+					$meta_keywords_content[] = trim($keyword);
+				}
+			}
+			$meta_keywords_content = implode(',', $meta_keywords_content);
+		}
+		if (!empty($row->meta_description))
+		{
+			if (preg_match_all("#\[([^\]]*)\]#", $row->meta_description, $match))
+			{
+				$search = array();
+				$replace = array();
+
+				foreach ($match[1] as $keyword)
+				{
+					$search[] = '[' . $keyword . ']';
+					$replace[] = $this->keyword_switcher($keyword, $row, $elsettings->get('formattime', '%H:%M'), $elsettings->get('formatdate', '%d.%m.%Y'));
 				}
 
+				$description_content = str_replace($search, $replace, $row->meta_description);
 			}
 		}
-		if (!empty($row->meta_description)) {
-			$description = explode("[",$row->meta_description);
-			$description_content = "";
-			foreach($description as $desc) {
-					$keyword = substr($desc, 0, strpos($desc,"]",0));
-					if ($keyword != "") {
-						$description_content .= $this->keyword_switcher($keyword, $row, $elsettings->get('formattime', '%H:%M'), $elsettings->get('formatdate', '%d.%m.%Y'));
-						$description_content .= substr($desc, strpos($desc,"]",0)+1);
-					} else {
-						$description_content .= $desc;
-					}
-
-			}
-		} else {
+		else
+		{
 			$description_content = "";
 		}
 
@@ -309,8 +312,10 @@ class RedeventViewDetails extends JView
 			case "times":
 			case "endtimes":
 				$content = '';
-				foreach ($this->_venues as $key => $venue) {
-					if ($venue->$keyword) {
+				foreach ($this->_venues as $key => $venue)
+				{
+					if ($venue->$keyword)
+					{
 						$content .= strftime( $formattime ,strtotime( $venue->$keyword ) ).' ';
 					}
 				}
@@ -319,8 +324,16 @@ class RedeventViewDetails extends JView
 			case "dates":
 			case "enddates":
 				$content = '';
-				foreach ($this->_venues as $key => $venue) {
-					$content .= strftime( $formatdate ,strtotime( $venue->$keyword ) ).' ';
+				foreach ($this->_venues as $key => $venue)
+				{
+					if (redEVENTHelper::isValidDate($venue->$keyword))
+					{
+						$content .= strftime($formatdate, strtotime($venue->$keyword)) . ' ';
+					}
+					else
+					{
+						$content .= Jtext::_('COM_REDEVENT_OPEN_DATE');
+					}
 				}
 				break;
 
