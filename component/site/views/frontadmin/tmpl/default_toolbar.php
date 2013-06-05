@@ -20,13 +20,13 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-$myevents = RedeventHelperRoute::getMyeventsRoute();
+$my = JRoute::_('index.php?option=com_redmember&view=userdetail&layout=alterdetail&tmpl=component');
 ?>
 <ul class="inline">
-	<li><?php echo JHtml::link($myevents, JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_HELLO_USER_S', JFactory::getUser()->get('name'))); ?></li>
+	<li><?php echo JHtml::link($my, JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_HELLO_USER_S', JFactory::getUser()->get('name')), array('class' => 'modal')); ?></li>
 	<li><?php echo JHTML::link('index.php?option=com_users&task=user.logout', JText::_('COM_REDEVENT_FRONTEND_ADMIN_LOGOUT')); ?></li>
-	<li><?php echo JHTML::link($myevents, JText::_('COM_REDEVENT_FRONTEND_ADMIN_MY_ACCOUNT'), array('class' => 'btn')); ?></li>
-	<li><?php echo JHTML::link('#', JText::_('COM_REDEVENT_FRONTEND_ADMIN_FILE_ARCHIVE'), array('class' => 'btn')); ?></li>
+	<li><?php echo JHTML::link($my, JText::_('COM_REDEVENT_FRONTEND_ADMIN_MY_ACCOUNT'), array('class' => 'btn modal')); ?></li>
+	<li><?php echo JHTML::link(JRoute::_('index.php?option=com_redmember&view=filemanager'), JText::_('COM_REDEVENT_FRONTEND_ADMIN_FILE_ARCHIVE'), array('class' => 'btn')); ?></li>
 	<li><?php echo JHTML::link('#', JText::_('COM_REDEVENT_FRONTEND_ADMIN_SUPPORT'), array('class' => 'btn')); ?></li>
 	<li><?php echo JHTML::link('#', JText::_('COM_REDEVENT_FRONTEND_ADMIN_CONTACT'), array('class' => 'btn')); ?></li>
 </ul>
