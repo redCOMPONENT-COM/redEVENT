@@ -293,6 +293,8 @@ class RedeventViewFrontadmin extends JView
 
 	protected function displayEditMember($tpl= null)
 	{
+		$document = JFactory::getDocument();
+
 		$member = $this->get('MemberInfo');
 		$booked = $this->get('MemberBooked');
 		$previous = $this->get('MemberPrevious');
@@ -300,9 +302,28 @@ class RedeventViewFrontadmin extends JView
 
 		$this->params = JFactory::getApplication()->getParams('com_redevent');
 
+		$modal = JFactory::getApplication()->input->get('modal');
+
+		if ($modal)
+		{
+			// Add css file
+			if (!$this->params->get('custom_css'))
+			{
+				$document->addStyleSheet('media/com_redevent/css/redevent.css');
+				$document->addStyleSheet($this->baseurl . '/media/com_redevent/css/redevent-b2b.css');
+			}
+			else
+			{
+				$document->addStyleSheet($this->params->get('custom_css'));
+			}
+
+			FOFTemplateUtils::addJS('media://com_redevent/js/b2b.js');
+		}
+
 		$this->assignRef('member',     $member);
 		$this->assignRef('booked',     $booked);
 		$this->assignRef('previous',   $previous);
+		$this->assignRef('modal',      $modal);
 		$this->uid       = $state->get('uid');
 
 		$this->booked_order = $state->get('booked_order');

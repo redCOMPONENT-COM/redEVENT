@@ -21,7 +21,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
+<?php if (!$this->modal): ?>
 <div id="closeeditmember"><?php echo "< " . JText::_('COM_REDEVENT_BACK'); ?></div>
+<?php endif; ?>
 
 <div id="editmember-menu">
 	<div class="editmember-breadcrumbs"></div>
