@@ -333,6 +333,11 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 			$query->where('x.venueid = ' . $this->getState('filter_venue'));
 		}
 
+		if ($this->getState('filter.language'))
+		{
+			$query->where('(a.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR a.language IS NULL)');
+		}
+
 		$query->group('a.id');
 
 		$db->setQuery($query);
@@ -409,6 +414,11 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 			$query->where('x.eventid = ' . $this->getState('filter_event'));
 		}
 
+		if ($this->getState('filter.language'))
+		{
+			$query->where('(v.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR v.language IS NULL)');
+		}
+
 		$query->group('v.id');
 
 		$db->setQuery($query);
@@ -444,6 +454,12 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		{
 			$query->where('xcat.event_id = ' . $this->getState('filter_event'));
 		}
+
+		if ($this->getState('filter.language'))
+		{
+			$query->where('(c.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR c.language IS NULL)');
+		}
+
 		$query->group('c.id');
 
 		$db->setQuery($query);
