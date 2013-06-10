@@ -347,6 +347,10 @@ class RedeventControllerFrontadmin extends FOFController
 		}
 
 		echo json_encode($resp);
+
+		$cancelled = new REattendee($rid);
+		$cancelled->notifyManagers(true);
+
 		JFactory::getApplication()->close();
 	}
 
