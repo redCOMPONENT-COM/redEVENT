@@ -97,7 +97,7 @@ var redb2b = {
 			/**
 			 * update organization bookings when selecting person
 			 */
-			document.id('filter_person').removeEvents().addEvent('change', function(){
+			document.id('search_person').addEvent('click', function(){
 				redb2b.searchBookings();
 				// Display organization users ?
 				redb2b.getMembersList();
