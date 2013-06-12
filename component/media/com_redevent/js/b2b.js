@@ -486,7 +486,7 @@ var redb2b = {
 			});
 			
 			// For edit events and sessions
-			SqueezeBox.initialize({handler: 'iframe', size: {x: 600, y: 500}});
+			SqueezeBox.initialize({handler: 'iframe', size: {x: 750, y: 500}});
 			document.id('redevent-admin').addEvent('click:relay(.xrefmodal)', function(e) {
 				e.stop();
 				SqueezeBox.fromElement(this);
