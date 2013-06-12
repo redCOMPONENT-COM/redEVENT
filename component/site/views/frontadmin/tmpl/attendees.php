@@ -47,7 +47,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td class="attendee-name"><?php echo $a->name; ?></td>
 			<td><?php echo $a->username; ?></td>
 			<td><?php echo $a->email; ?></td>
-			<td><?php echo JFactory::getUser($a->id)->getParameters()->get('language'); ?></td>
+			<td><?php echo JFactory::getUser($a->id)->getParameters()->get('language', JFactory::getLanguage()->getTag()); ?></td>
 			<?php if ($a->registered): ?>
 			<?php
 			$imgstatus = $a->registered->waitinglist ?
