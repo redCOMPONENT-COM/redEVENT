@@ -315,6 +315,8 @@ class RedeventViewFrontadmin extends JView
 		$this->previous_pagination = $this->get('MemberPreviousPagination');
 		$this->previous_limitstart = $state->get('previous_limitstart');
 
+		$this->organizations_options = $this->get('OrganizationsOptions');
+
 		parent::display($tpl);
 	}
 

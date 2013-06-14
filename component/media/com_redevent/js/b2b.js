@@ -231,9 +231,11 @@ var redb2b = {
                 var user_username = document.id('member_username').value;
                 var user_name     = document.id('member_name').value;
                 var user_email    = document.id('member_email').value;
+                var orgs          = document.id('organizations').value;
                 req = new Request.JSON({
                     url : 'index.php?option=com_redevent&controller=frontadmin&task=update_user&tmpl=component',
-                    data : {'id' : user_id, 'username' : user_username, 'name' : user_name, 'email' : user_email},
+                    data : document.id('member-update'),
+                    format: 'raw',
                     method : 'post',
                     onRequest: function(){
 
