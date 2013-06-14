@@ -274,7 +274,7 @@ class RedeventViewFrontadmin extends JView
 
 		$overlib = JText::_('COM_REDEVENT_BOOK_EVENT_DESC' );
 		$text = JText::_('COM_REDEVENT_BOOK_EVENT' );
-		$output	= '<a href="#" id="bookid' . $id . '" class="bookthis hasTip" title="'.$text.'" tip="'.$overlib.'">'.$image.'</a>';
+		$output	= '<a href="#" xref="' . $id . '" class="bookthis hasTip" title="'.$text.'" tip="'.$overlib.'">'.$image.'</a>';
 
 		return $output;
 	}

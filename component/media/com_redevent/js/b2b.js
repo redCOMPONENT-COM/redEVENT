@@ -141,7 +141,7 @@ var redb2b = {
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.bookthis)', function(e){
 				e.stop();				
-				var id = this.id.substr('6');
+				var id = this.getProperty('xref');
 				redb2b.selectSession(id);
 			});
 			
