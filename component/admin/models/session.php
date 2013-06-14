@@ -256,20 +256,22 @@ class RedEventModelSession extends JModel
 			$object->count = 0;
 			$object->rrules = RedeventHelperRecurrence::getRule();
 
-			// event title and id from request
-			$object->event_id = JFactory::getApplication()->input->getInt('eventid');
-			$db      = JFactory::getDbo();
-			$query = $db->getQuery(true);
-
-			$query->select('title');
-			$query->from('#__redevent_events');
-			$query->where('id = ' . $object->event_id);
-
-			$db->setQuery($query);
-
-			if (!$object->event_title = $db->loadResult())
+			// event title and id from request, if event is already created
+			if ($object->event_id = JFactory::getApplication()->input->getInt('eventid'))
 			{
-				throw new Exception('Undefined event id for new session');
+				$db      = JFactory::getDbo();
+				$query = $db->getQuery(true);
+
+				$query->select('title');
+				$query->from('#__redevent_events');
+				$query->where('id = ' . $object->event_id);
+
+				$db->setQuery($query);
+
+				if (!$object->event_title = $db->loadResult())
+				{
+					throw new Exception('Undefined event id for new session');
+				}
 			}
 		}
 

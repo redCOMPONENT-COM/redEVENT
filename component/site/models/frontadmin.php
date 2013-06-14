@@ -1128,9 +1128,29 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		return $nextvalue;
 	}
 
+	/**
+	 * returns user info
+	 *
+	 * @todo: get info from redmember !!
+	 *
+	 * @return object
+	 */
 	public function getMemberInfo()
 	{
 		$user = JFactory::getUser($this->uid);
+
+		// Company
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('organization_id');
+		$query->from('#__redmember_user_organization_xref');
+		$query->where('user_id = ' . $this->uid);
+
+		$db->setQuery($query);
+		$res = $db->loadColumn();
+
+		$user->organizations = $res;
 
 		return $user;
 	}

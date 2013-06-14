@@ -222,7 +222,7 @@ var redb2b = {
 			document.id('redevent-admin').addEvent('click:relay(.add-employee)', function(e){
 				redb2b.editmember(0);
 			});
-
+ 
             /**
              * update member
              */
@@ -231,9 +231,11 @@ var redb2b = {
                 var user_username = document.id('member_username').value;
                 var user_name     = document.id('member_name').value;
                 var user_email    = document.id('member_email').value;
+                var orgs          = document.id('organizations').value;
                 req = new Request.JSON({
                     url : 'index.php?option=com_redevent&controller=frontadmin&task=update_user&tmpl=component',
-                    data : {'id' : user_id, 'username' : user_username, 'name' : user_name, 'email' : user_email},
+                    data : document.id('member-update'),
+                    format: 'raw',
                     method : 'post',
                     onRequest: function(){
 
@@ -242,6 +244,34 @@ var redb2b = {
                         if (response.status == 1) {
                             document.id('editmemberscreen').dispose();
                             document.id('redadmin-main').show();
+                        }
+                        else {
+                            alert(response.error);
+                        }
+                    }
+                });
+                req.send();
+            });
+
+            /**
+             * update member
+             */
+            document.addEvent('click:relay(#sbox-content .update-employee)', function(e){
+                var user_id       = document.id('member_id').value;
+                var user_username = document.id('member_username').value;
+                var user_name     = document.id('member_name').value;
+                var user_email    = document.id('member_email').value;
+                req = new Request.JSON({
+                    url : 'index.php?option=com_redevent&controller=frontadmin&task=update_user&tmpl=component',
+                    data : document.id('member-update'),
+                    format: 'raw',
+                    method : 'post',
+                    onRequest: function(){
+
+                    },
+                    onSuccess : function(response){
+                        if (response.status == 1) {
+                            document.id('sbox-window').close();
                         }
                         else {
                             alert(response.error);

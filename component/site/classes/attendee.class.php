@@ -279,6 +279,25 @@ class REattendee extends JObject {
 
 		$sid = $data->sid;
 
+		$rfcore = new RedFormCore();
+		$emails = $rfcore->getSidContactEmails($sid);
+
+		$valid_emails = false;
+		foreach ($emails as $e)
+		{
+			if (JMailHelper::isEmailAddress($e))
+			{
+				$valid_emails = true;
+				break;
+			}
+		}
+
+		// Stop if no valid emails
+		if (!$valid_emails)
+		{
+			return true;
+		}
+
 		if (empty($this->taghelper)) {
 			$this->taghelper = new redEVENT_tags();
 			$this->taghelper->setXref($data->xref);
@@ -336,8 +355,6 @@ class REattendee extends JObject {
 		$mailer->setSender($sender);
 		$mailer->addReplyTo($sender);
 
-		$rfcore = new RedFormCore();
-		$emails = $rfcore->getSidContactEmails($sid);
 		foreach ($emails as $email)
 		{
 			/* Add the email address */

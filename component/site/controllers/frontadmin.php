@@ -453,6 +453,9 @@ class RedeventControllerFrontadmin extends FOFController
 		$name     = $app->input->get('name', '', 'string');
 		$email    = $app->input->get('email', '', 'string');
 
+		$organizations = $app->input->get('organizations', array(), 'array');
+		JArrayHelper::toInteger($organizations);
+
 		$user = JFactory::getUser($id);
 
 		$user->username = $username;
@@ -461,8 +464,34 @@ class RedeventControllerFrontadmin extends FOFController
 
 		$resp = new stdclass;
 
-		if($user->save())
+		if ($user->save())
 		{
+			// Update organizations
+			$db      = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			$query->delete('#__redmember_user_organization_xref');
+			$query->where('user_id = ' . $user->id);
+
+			$db->setQuery($query);
+			$res = $db->query();
+
+			if ($organizations)
+			{
+				$query = $db->getQuery(true);
+
+				$query->insert('#__redmember_user_organization_xref');
+				$query->columns('user_id, organization_id');
+
+				foreach ($organizations as $o)
+				{
+					$query->values($user->id . ', ' . $o);
+				}
+
+				$db->setQuery($query);
+				$res = $db->query();
+			}
+
 			$resp->status = 1; //echo JText::_('COM_USERS_USER_SAVE_SUCCESS');
 		}
 		else
