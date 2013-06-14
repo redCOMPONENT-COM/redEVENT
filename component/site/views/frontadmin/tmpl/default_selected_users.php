@@ -24,8 +24,6 @@ defined('_JEXEC') or die('Restricted access');
 $add_link = JRoute::_('index.php?option=com_redevent&controller=frontadmin&task=editmember&tmpl=component&modal=1');
 $add_handler = "{handler: 'ajax',"
  . " size: {x: 800, y: 400},"
- . " onClose: function() {alert('closing');},"
-//  . " onAjax: function() { SqueezeBox.assign($$('a.lightbox2'), {parse: 'rel'});},"
  . " ajaxOptions: {method: 'post'}}";
 ?>
 <form id="selected_users">

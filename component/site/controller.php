@@ -892,4 +892,10 @@ class RedeventController extends JController
 	{
 		redEVENTHelper::registrationexpiration();
 	}
+
+	public function dbgajax()
+	{
+		echo 'test';
+		JFactory::getApplication()->close();
+	}
 }
