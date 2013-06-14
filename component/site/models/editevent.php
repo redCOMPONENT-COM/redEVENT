@@ -470,7 +470,7 @@ class RedeventModelEditevent extends JModel
 
 		//get the maintained categories and the categories whithout any group
 		//or just get all if somebody have edit rights
-    $query = ' SELECT c.id, c.catname, (COUNT(parent.catname) - 1) AS depth, c.event_template, c.ordering '
+    $query = ' SELECT c.id, c.catname, c.language, (COUNT(parent.catname) - 1) AS depth, c.event_template, c.ordering '
            . ' FROM #__redevent_categories AS c, '
            . ' #__redevent_categories AS parent '
            . $cwhere
@@ -485,7 +485,7 @@ class RedeventModelEditevent extends JModel
     $options = array();
     foreach((array) $results as $cat)
     {
-      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->catname);
+      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->catname . ($cat->language ? '(' . $cat->language . ')' : ''));
     }
 
     $this->_categories = $options;
@@ -510,7 +510,7 @@ class RedeventModelEditevent extends JModel
 		$limit			= $app->getUserStateFromRequest('com_redevent.selectvenue.limit', 'limit', $params->def('display_num', 0), 'int');
 		$limitstart = JRequest::getInt('limitstart');
 
-		$query = 'SELECT l.id, l.venue, l.city, l.country, l.published'
+		$query = 'SELECT l.id, l.venue, l.city, l.country, l.published, l.language '
 				.' FROM #__redevent_venues AS l'
 				. $where
 				. $orderby
@@ -1151,7 +1151,7 @@ class RedeventModelEditevent extends JModel
 
 		$superuser	= UserAcl::superuser();
 
-		$query = ' SELECT v.id AS value, '
+		$query = ' SELECT v.id AS value, v.language, '
 		       . ' CASE WHEN CHAR_LENGTH(v.city) THEN CONCAT_WS(\' - \', v.venue, v.city) ELSE v.venue END as text '
 		       . ' FROM #__redevent_venues AS v '
 		       ;
@@ -1179,6 +1179,18 @@ class RedeventModelEditevent extends JModel
 
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
+
+		$options = array();
+
+		foreach ($res as $r)
+		{
+			if ($r->language)
+			{
+				$r->text .= '(' . $r->language . ')';
+			}
+			$options[] = $r;
+		}
+
 		return $res;
 	}
 
@@ -1193,7 +1205,7 @@ class RedeventModelEditevent extends JModel
 		$app = &JFactory::getApplication();
 		$params = $app->getParams();
 
-		$query = ' SELECT e.id AS value, e.title AS text '
+		$query = ' SELECT e.id AS value, CONCAT(e.title, " (", e.language, ")") AS text '
 		       . ' FROM #__redevent_events AS e '
 		       . ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
 		       ;

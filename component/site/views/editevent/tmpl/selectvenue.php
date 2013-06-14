@@ -75,6 +75,7 @@ defined('_JEXEC') or die('Restricted access');
 			<th align="left" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_VENUE', 'l.venue', $this->lists['order_Dir'], $this->lists['order'], 'selectvenue' ); ?></th>
 			<th align="left" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_CITY', 'l.city', $this->lists['order_Dir'], $this->lists['order'], 'selectvenue' ); ?></th>
 			<th align="left" class="sectiontableheader" align="left"><?php echo JText::_('COM_REDEVENT_COUNTRY' ); ?></th>
+			<th align="left" class="sectiontableheader" align="left"><?php echo JText::_('JGRID_HEADING_LANGUAGE' ); ?></th>
 		</tr>
 	</thead>
 
@@ -93,6 +94,7 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td align="left"><?php echo $this->escape($row->city); ?></td>
 			<td align="left"><?php echo $row->country; ?></td>
+			<td align="left"><?php echo $row->language; ?></td>
 		</tr>
 		<?php $k = 1 - $k; } ?>
 	</tbody>
@@ -113,7 +115,7 @@ defined('_JEXEC') or die('Restricted access');
 		<p class="counter">
 				<?php echo $this->pageNav->getPagesCounter(); ?>
 		</p>
-	
+
 	<?php echo $this->pageNav->getPagesLinks(); ?>
 </div>
 <?php  endif; ?>
