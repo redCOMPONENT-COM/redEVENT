@@ -651,6 +651,12 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 			$query->where('(' . implode(' OR ', $matching) . ')');
 		}
 
+		// Language filter
+		if ($this->getState('filter.language'))
+		{
+			$query->where('(c.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR c.language IS NULL)');
+		}
+
 		$filter_order = $this->getState('bookings_order');
 		$filter_order_dir = $this->getState('bookings_order_dir');
 
