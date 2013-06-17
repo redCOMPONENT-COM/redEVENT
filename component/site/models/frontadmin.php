@@ -626,6 +626,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$query->join('INNER', '#__redmember_user_organization_xref AS rmuo ON rmuo.user_id = rmu.user_id');
 		$query->join('INNER', '#__users AS u ON u.id = rmu.user_id');
 		$query->where('rmuo.organization_id = ' . $this->getState('filter_organization'));
+		$query->where('r.cancelled = 0');
 
 		$session_state = array();
 
