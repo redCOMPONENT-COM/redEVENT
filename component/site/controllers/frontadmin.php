@@ -275,6 +275,11 @@ class RedeventControllerFrontadmin extends FOFController
 				if ($res)
 				{
 					$regresp->status = 1;
+
+					if (redFORMHelperAnalytics::isEnabled())
+					{
+						$regresp->analytics = redFORMHelperAnalytics::recordTrans($res, array('affiliation' => 'redevent-b2b'));
+					}
 				}
 				else
 				{

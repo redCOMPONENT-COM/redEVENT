@@ -327,6 +327,10 @@ var redb2b = {
 						if (response.status == 1) {
 							alert('all booked !');		
 							redb2b.getMembersList();
+							
+							if (response.analytics) {
+								eval(response.analytics);
+							}
 						}
 						else if (response.regs.length) {
 							var errors = new Array();

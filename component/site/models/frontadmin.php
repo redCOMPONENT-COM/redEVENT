@@ -935,7 +935,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	 * @param   int  $user_id  user id
 	 * @param   int  $xref     session id
 	 *
-	 * @return boolean true on success
+	 * @return  string  submit key on success, else false
 	 */
 	public function quickbook($user_id, $xref)
 	{
@@ -998,7 +998,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		}
 		$mail = $registrationmodel->notifyManagers($submit_key);
 
-		return true;
+		return $submit_key;
 	}
 
 	/**
