@@ -327,6 +327,10 @@ var redb2b = {
 						if (response.status == 1) {
 							alert('all booked !');		
 							redb2b.getMembersList();
+							
+							if (response.analytics) {
+								eval(response.analytics);
+							}
 						}
 						else if (response.regs.length) {
 							var errors = new Array();
@@ -526,7 +530,10 @@ var redb2b = {
 				redb2b.getSessions();
 			});
 		},
-		
+
+    /**
+     * get sessions according to search filter
+     */
 		getSessions : function() {
 			var req = new Request({
 				url: 'index.php?option=com_redevent&controller=frontadmin&task=searchsessions&tmpl=component',
@@ -599,7 +606,7 @@ var redb2b = {
 					}
 					sel.set('value', current);
 					
-					redb2b.getMembersList();
+					// redb2b.getMembersList();
 				}
 			});
 			req.send();
@@ -676,11 +683,11 @@ var redb2b = {
 				onSuccess : function(session){
 					document.id('filter_event').set('value', session.did);
 					document.id('filter_session').empty();
-					thereq = redb2b.updateSessionField(false);
+					redb2b.updateSessionField(false);
 					document.id('filter_session').set('value', id);
 					document.id('book-xref').set('value', id);
 					redb2b.getMembersList();
-					redb2b.getSessions();
+					// redb2b.getSessions();
 				}
 			});
 			req.send();			

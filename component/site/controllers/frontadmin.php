@@ -236,8 +236,16 @@ class RedeventControllerFrontadmin extends FOFController
 		JFactory::getApplication()->close();
 	}
 
+	/**
+	 * book users to event
+	 *
+	 * @return void
+	 */
 	public function quickbook()
 	{
+		// Can't display warnings before json...
+		$err_reporting = error_reporting(E_ERROR | E_PARSE);
+
 		$app = JFactory::getApplication();
 
 		$xref = $app->input->get('xref', 0, 'int');
@@ -267,6 +275,11 @@ class RedeventControllerFrontadmin extends FOFController
 				if ($res)
 				{
 					$regresp->status = 1;
+
+					if (redFORMHelperAnalytics::isEnabled())
+					{
+						$regresp->analytics = redFORMHelperAnalytics::recordTrans($res, array('affiliation' => 'redevent-b2b'));
+					}
 				}
 				else
 				{

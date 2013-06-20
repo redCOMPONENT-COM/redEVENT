@@ -56,6 +56,13 @@ class RedeventViewRegistration extends JView
 		{
 			$message = $event->confirmation_message;
 			$document->setTitle($event->title.' - '.JText::_('COM_REDEVENT_REGISTRATION_CONFIRMED_PAGE_TITLE'));
+
+			// Google analytics
+			if (redFORMHelperAnalytics::isEnabled())
+			{
+				$key = JFactory::getApplication()->input->get('submit_key');
+				redFORMHelperAnalytics::recordTrans($key, array('affiliate' => 'redevent web'));
+			}
 		}
 		else if ($this->getLayout() == 'review')
 		{

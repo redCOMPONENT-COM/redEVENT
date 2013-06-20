@@ -626,6 +626,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$query->join('INNER', '#__redmember_user_organization_xref AS rmuo ON rmuo.user_id = rmu.user_id');
 		$query->join('INNER', '#__users AS u ON u.id = rmu.user_id');
 		$query->where('rmuo.organization_id = ' . $this->getState('filter_organization'));
+		$query->where('r.cancelled = 0');
 
 		$session_state = array();
 
@@ -648,6 +649,12 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 			$matching[] = 'u.username LIKE (' . $db->Quote('%' . $this->getState('filter_person') . '%') . ')';
 			$matching[] = 'u.email LIKE (' . $db->Quote('%' . $this->getState('filter_person') . '%') . ')';
 			$query->where('(' . implode(' OR ', $matching) . ')');
+		}
+
+		// Language filter
+		if ($this->getState('filter.language'))
+		{
+			$query->where('(c.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR c.language IS NULL)');
 		}
 
 		$filter_order = $this->getState('bookings_order');
@@ -928,7 +935,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	 * @param   int  $user_id  user id
 	 * @param   int  $xref     session id
 	 *
-	 * @return boolean true on success
+	 * @return  string  submit key on success, else false
 	 */
 	public function quickbook($user_id, $xref)
 	{
@@ -991,7 +998,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		}
 		$mail = $registrationmodel->notifyManagers($submit_key);
 
-		return true;
+		return $submit_key;
 	}
 
 	/**
