@@ -325,7 +325,7 @@ var redb2b = {
 						document.id('attendees-tbl').unspin();
 						document.id('selected_users').unspin();
 						if (response.status == 1) {
-							alert('all booked !');		
+							alert(response.message);		
 							redb2b.getMembersList();
 							
 							for (var i = 0; i < response.regs.length; i++) {

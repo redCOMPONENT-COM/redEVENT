@@ -266,6 +266,7 @@ class RedeventControllerFrontadmin extends FOFController
 		else
 		{
 			$model = $this->getModel('frontadmin');
+			$added = 0;
 
 			foreach ($regs as $user_id)
 			{
@@ -280,6 +281,7 @@ class RedeventControllerFrontadmin extends FOFController
 					{
 						$regresp->analytics = redFORMHelperAnalytics::recordTrans($res, array('affiliation' => 'redevent-b2b'));
 					}
+					$added++;
 				}
 				else
 				{
@@ -288,6 +290,7 @@ class RedeventControllerFrontadmin extends FOFController
 					$regresp->error = $model->getError();
 				}
 
+				$resp->message = JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_D_MEMBERS_BOOKED', $added);
 				$resp->regs[] = $regresp;
 			}
 		}
