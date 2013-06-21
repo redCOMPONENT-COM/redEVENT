@@ -286,12 +286,22 @@ class RedEventModelSession extends JModel
 	function getVenuesOptions()
 	{
 		$query = ' SELECT id AS value, '
-		. ' CASE WHEN CHAR_LENGTH(city) THEN CONCAT_WS(\' - \', venue, city) ELSE venue END as text '
+		. ' CASE WHEN CHAR_LENGTH(city) THEN CONCAT_WS(\' - \', venue, city) ELSE venue END as text, language '
 		. ' FROM #__redevent_venues AS v'
 		. ' ORDER BY venue, city '
 		;
 		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		$res = $this->_db->loadObjectList();
+
+		foreach ($res as &$r)
+		{
+			if ($r->language && $r->language != '*')
+			{
+				$r->text .= ' (' . $r->language . ')';
+			}
+		}
+
+		return $res;
 	}
 
 	/**
