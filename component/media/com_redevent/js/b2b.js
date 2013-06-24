@@ -128,7 +128,8 @@ var redb2b = {
 			 * update organization bookings when resetting filter person field
 			 */
 			document.id('reset_person').addEvent('click', function(){
-				document.id('filter_person').set('value', '').fireEvent('change');
+				document.id('filter_person').set('value', '');
+				document.id('filter_organization').set('value', '').fireEvent('change');
 			});
 			
 			/**
