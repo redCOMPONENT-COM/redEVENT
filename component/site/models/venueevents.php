@@ -75,6 +75,14 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 			$results_type = $params->get('default_categoryevents_results_type', 1);
 		}
 
+		// If searching for events
+		if ($results_type == 0)
+		{
+			// Get the filter request variables
+			$this->setState('filter_order',     JRequest::getCmd('filter_order', 'a.title'));
+			$this->setState('filter_order_Dir', strtoupper(JRequest::getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC');
+		}
+
 		$this->setState('results_type', $results_type);
 	}
 
