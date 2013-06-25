@@ -91,6 +91,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues` (
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
 `ordering` int(11) NOT NULL default '0',
 `language` char(7) NOT NULL,
+`params` TEXT NOT NULL,
 PRIMARY KEY  (`id`)
 ) DEFAULT CHARSET=utf8;
 

@@ -179,6 +179,22 @@
 			class="inputbox" />
 	</fieldset>
 	
+	<fields name="params">
+		<fieldset
+			name="extra">
+
+			<field
+				name="allowed_gateways"
+				type="redformgateway"
+				label="COM_REDEVENT_VENUE_ALLOWED_GATEWAYS"
+				description="COM_REDEVENT_VENUE_ALLOWED_GATEWAYS_DESC"
+				multiple="multiple"
+				size="10"
+				/>
+				
+		</fieldset>
+	</fields>
+	
 	<fieldset name="acl">		
 	
 		<field name="asset_id" type="hidden" filter="unset" />
