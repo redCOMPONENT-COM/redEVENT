@@ -25,7 +25,7 @@ $my = JRoute::_('index.php?option=com_redmember&view=userdetail&layout=alterdeta
 // $support = 'index.php?option=com_content&view=article&id=353&catid=73&tmpl=component';
 $support = 'http://www.maersktraining.com/b2b-support?tmpl=component';
 $contact = 'http://www.maersktraining.com/b2b-contact?tmpl=component';
-$filemanager =  'http://www.maersktraining.com/filemanager?tmpl=component';
+$filemanager =  'http://www.maersktraining.com/filemanager/file-are?tmpl=component';
 ?>
 <div id="logo" class="span4">
 	<a class="image" href="">
@@ -38,7 +38,7 @@ $filemanager =  'http://www.maersktraining.com/filemanager?tmpl=component';
 			  echo JHTML::link('index.php?option=com_users&task=user.logout', JText::_('COM_REDEVENT_FRONTEND_ADMIN_LOGOUT'));
 	?></li>
 	<li><?php echo JHTML::link($my, JText::_('COM_REDEVENT_FRONTEND_ADMIN_MY_ACCOUNT'), array('class' => 'btn modal')); ?></li>
-	<li><?php echo JHTML::link($filemanager, JText::_('COM_REDEVENT_FRONTEND_ADMIN_FILE_ARCHIVE'), array('class' => 'btn modal', 'rel' => "{size: {x: 780, y:600}}")); ?></li>
+	<li><?php echo JHTML::link($filemanager, JText::_('COM_REDEVENT_FRONTEND_ADMIN_FILE_ARCHIVE'), array('class' => 'btn modal', 'rel' => "{size: {x: 980, y:600}}")); ?></li>
 	<li><?php echo JHTML::link($support, JText::_('COM_REDEVENT_FRONTEND_ADMIN_SUPPORT'), array('class' => 'btn modal', 'rel' => "{size: {x: 780, y:600}}")); ?></li>
 	<li><?php echo JHTML::link($contact, JText::_('COM_REDEVENT_FRONTEND_ADMIN_CONTACT'), array('class' => 'btn modal', 'rel' => "{size: {x: 780, y:600}}")); ?></li>
 </ul>
