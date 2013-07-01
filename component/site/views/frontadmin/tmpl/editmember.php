@@ -58,7 +58,7 @@ defined('_JEXEC') or die('Restricted access');
         <div class="control-group">
             <label class="control-label" for="member_password2"><?php echo JText::_('COM_REDEVENT_PASSWORD_REPEAT'); ?></label>
             <div class="controls">
-                <input id="member_password2" name="password2" type="text" placeholder="<?php echo JText::_('COM_REDEVENT_PASSWORD_REPEAT'); ?>" value="">
+                <input id="member_password2" name="password2" type="password" placeholder="<?php echo JText::_('COM_REDEVENT_PASSWORD_REPEAT'); ?>" value="">
             </div>
         </div>
         <div class="control-group">
