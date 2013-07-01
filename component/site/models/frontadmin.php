@@ -320,7 +320,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
 
 		$query->where('a.id IN(' . implode(',', $ids) . ')');
-		$query->where('a.published > -1');
+		$query->where('a.published = 1');
 		$query->order('a.title');
 
 		if ($this->getState('filter_category'))
@@ -370,7 +370,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 
 		$query->where('x.id IN(' . implode(',', $ids) . ')');
 		$query->where('x.eventid = ' . $this->getState('filter_event'));
-		$query->where('x.published > -1');
+		$query->where('x.published = 1');
 
 		if ($this->getState('filter_venue'))
 		{
@@ -778,7 +778,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$db = JFactory::getDbo();
 		$acl = UserAcl::getInstance();
 
-		$query->where('x.published > -1');
+		$query->where('x.published = 1');
 
 		if (!$acl->superuser())
 		{
