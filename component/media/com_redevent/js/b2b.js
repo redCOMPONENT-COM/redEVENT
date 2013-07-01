@@ -134,13 +134,6 @@ var redb2b = {
             });
 
 			/**
-			 * update organization bookings when selecting session status archived
-			 */
-			document.id('filter_person_archive').addEvent('change', function(){
-				redb2b.searchBookings();
-			});
-
-			/**
 			 * update organization bookings when resetting filter person field
 			 */
 			document.id('reset_person').addEvent('click', function(){
