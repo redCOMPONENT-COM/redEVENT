@@ -1,5 +1,5 @@
 /**
- * @version    2.5 
+ * @version    2.5
  * @package    redEVENT
  * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
  * @license GNU/GPL, see LICENSE.php
@@ -23,22 +23,22 @@
  * this file manages the js script for b2b interface
  */
 
-window.addEvent('domready', function() {	
-	
+window.addEvent('domready', function() {
+
 	redb2b.init();
-	
+
 });
 
 var redb2b = {
-			
+
 		/** selected users for booking **/
 		selected : new Array(),
-		
+
 		/**
 		 * init events
 		 */
 		init : function() {
-			
+
 			/**
 			 * update sessions options when selecting event
 			 */
@@ -73,7 +73,7 @@ var redb2b = {
 			 */
 			document.id('filter_organization').addEvent('change', function(){
 				redb2b.searchBookings();
-				
+
 				var person_req = new Request.JSON({
 					url : 'index.php?option=com_redevent&controller=frontadmin&task=getusers&tmpl=component',
 					data : document.id('org-form'),
@@ -86,7 +86,7 @@ var redb2b = {
 							options.each(function(el){
 								new Element('option', {'value': el.value}).set('text', el.text).inject(sel);
 							});
-						}			
+						}
 					}
 				});
 				person_req.send();
@@ -110,12 +110,28 @@ var redb2b = {
 				e.stop();
 			});
 
+            /**
+             * update organization bookings when selecting member
+             */
+            document.id('filter_person').addEvent('keydown', function(event){
+                if (event.key == 'enter') {
+                    redb2b.searchBookings();
+                }
+            });
+
 			/**
 			 * update organization bookings when selecting session status active
 			 */
-			document.id('filter_person_active').addEvent('change', function(){
+			document.id('filter_person_active0').addEvent('change', function(){
 				redb2b.searchBookings();
 			});
+
+            /**
+             * update organization bookings when selecting session status active
+             */
+            document.id('filter_person_active1').addEvent('change', function(){
+                redb2b.searchBookings();
+            });
 
 			/**
 			 * update organization bookings when selecting session status archived
@@ -131,21 +147,21 @@ var redb2b = {
 				document.id('filter_person').set('value', '');
 				document.id('filter_organization').set('value', '').fireEvent('change');
 			});
-			
+
 			/**
 			 * search for sessions
 			 */
 			document.id('search-course').addEvent('click', redb2b.getSessions);
-			
+
 			/**
 			 * update course search when clicking on book session button in lists
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.bookthis)', function(e){
-				e.stop();				
+				e.stop();
 				var id = this.getProperty('xref');
 				redb2b.selectSession(id);
 			});
-			
+
 			document.id('search-course-reset').addEvent('click', function(){
 				document.id('filter_event').set('value', '');
 				document.id('filter_session').empty();
@@ -156,7 +172,7 @@ var redb2b = {
 				redb2b.getMembersList();
 				redb2b.getSessions();
 			});
-			
+
 			/**
 			 * add checked attendee
 			 */
@@ -164,12 +180,12 @@ var redb2b = {
 				var id = this.id.substr('3');
 				var name = this.getParent('tr').getElement('.attendee-name').get('text');
 				var div = document.id('select-list');
-				
+
 				if (this.getProperty('checked')) {
 					if (!redb2b.selected.contains(id)) {
 						div.removeClass('nouser');
 						div.getElement(".notice").set('styles', {display:'none'});
-						
+
 						var newrow = new Element('div#member'+id, {'class' : 'selectedmember'});
 						var img = new Element('img', {
 							'src' : 'media/com_redevent/images/icon-16-delete.png',
@@ -186,16 +202,16 @@ var redb2b = {
 							}
 						});
 						var imgspan = new Element('span.member-remove');
-						var input = new Element('input', {'name' : 'reg[]', 'value' : id, 'type' : 'hidden'});				
+						var input = new Element('input', {'name' : 'reg[]', 'value' : id, 'type' : 'hidden'});
 						var inputspan = new Element('span.member-name').set('text', name);
-						
+
 						newrow.adopt(imgspan.adopt(img));
-						newrow.adopt(inputspan.adopt(input));					
-						
+						newrow.adopt(inputspan.adopt(input));
+
 						newrow.inject(div);
-						
+
 						redb2b.selected.push(id);
-						
+
 						document.id('book-course').set('styles', {'display' :'block'});
 					}
 				}
@@ -208,7 +224,7 @@ var redb2b = {
 					}
 				}
 			});
-			
+
 			/**
 			 * edit member
 			 */
@@ -223,7 +239,7 @@ var redb2b = {
 			document.id('redevent-admin').addEvent('click:relay(.add-employee)', function(e){
 				redb2b.editmember(0);
 			});
- 
+
             /**
              * update member
              */
@@ -281,7 +297,7 @@ var redb2b = {
                 });
                 req.send();
             });
-						
+
 			/**
 			 * remove registration
 			 */
@@ -298,7 +314,7 @@ var redb2b = {
 						onSuccess : function(response){
 							document.id('attendees-tbl').set('spinner').unspin();
 							if (response.status == 1) {
-								redb2b.getMembersList();	
+								redb2b.getMembersList();
 							}
 							else {
 								alert(response.error);
@@ -308,7 +324,7 @@ var redb2b = {
 					req.send();
 				}
 			});
-			
+
 			document.id('book-course').addEvent('click', function(){
 				if (!document.id('book-xref').get('value')) {
 					alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_SELECT_SESSION_FIRST"));
@@ -326,14 +342,14 @@ var redb2b = {
 						document.id('attendees-tbl').unspin();
 						document.id('selected_users').unspin();
 						if (response.status == 1) {
-							alert(response.message);		
+							alert(response.message);
 							redb2b.getMembersList();
-							
+
 							for (var i = 0; i < response.regs.length; i++) {
 								var r = response.regs[i];
 								if (r.analytics) {
 									eval(r.analytics);
-								}			
+								}
 							}
 						}
 						else if (response.regs.length) {
@@ -353,7 +369,7 @@ var redb2b = {
 				});
 				req.send();
 			});
-			
+
 			/**
 			 * remove session
 			 */
@@ -362,28 +378,28 @@ var redb2b = {
 					return;
 				}
 			});
-			
+
 			/**
 			 * publish session
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.publishxref)', function(e){
 				redb2b.publishSession(this.getParent('tr').getProperty('xref'), 1);
 			});
-			
+
 			/**
 			 * unpublish session
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.unpublishxref)', function(e){
 				redb2b.publishSession(this.getParent('tr').getProperty('xref'), 0);
 			});
-			
+
 			/**
 			 * edit event
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.editevent)', function(e){
-				alert('non implemented yet');		
+				alert('non implemented yet');
 			});
-			
+
 			window.addEvent('beforeunload', function() {
 				return confirm(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_CONFIRM_CLOSE"));
 			});
@@ -410,7 +426,7 @@ var redb2b = {
 				});
 				req.send();
 			});
-			
+
 			/**
 			 * edit comments
 			 */
@@ -469,15 +485,15 @@ var redb2b = {
 				redb2b.updateFormList(form);
 				redb2b.refreshTips();
 			});
-			
+
 			document.id('redevent-admin').addEvent('click:relay(#editmemberscreen .itemnav)', function(e){
 				e.stop();
 				var form = this.getParent('form');
 				form.getElement('.redajax_limitstart').set('value', this.getProperty('startvalue'));
-				redb2b.updateFormList(form);	
-				redb2b.refreshTips();			
+				redb2b.updateFormList(form);
+				redb2b.refreshTips();
 			});
-			
+
 			document.id('main-course-results').addEvent('click:relay(.ajaxsortcolumn)', function(e){
 				e.stop();
 				var form = document.id('course-search-form');
@@ -485,14 +501,14 @@ var redb2b = {
 				form.filter_order_Dir.value = this.getProperty('orderdir');
 				redb2b.getSessions();
 			});
-			
+
 			document.id('main-course-results').addEvent('click:relay(.itemnav)', function(e){
 				e.stop();
 				var form = document.id('course-search-form');
 				form.limitstart.value = this.getProperty('startvalue');
 				redb2b.getSessions();
 			});
-			
+
 			document.id('main-bookings').addEvent('click:relay(.ajaxsortcolumn)', function(e){
 				e.stop();
 				var form = document.id('org-form');
@@ -500,14 +516,14 @@ var redb2b = {
 				form.bookings_order_dir.value = this.getProperty('orderdir');
 				redb2b.searchBookings();
 			});
-			
+
 			document.id('main-bookings').addEvent('click:relay(.itemnav)', function(e){
 				e.stop();
 				var form = document.id('org-form');
 				form.bookings_limitstart.value = this.getProperty('startvalue');
 				redb2b.searchBookings();
 			});
-			
+
 			document.id('main-attendees').addEvent('click:relay(.ajaxsortcolumn)', function(e){
 				e.stop();
 				var form = document.id('org-form');
@@ -515,21 +531,21 @@ var redb2b = {
 				form.members_order_dir.value = this.getProperty('orderdir');
 				redb2b.getMembersList();
 			});
-			
+
 			document.id('main-attendees').addEvent('click:relay(.itemnav)', function(e){
 				e.stop();
 				var form = document.id('org-form');
 				form.attendees_limitstart.value = this.getProperty('startvalue');
 				redb2b.getMembersList();
 			});
-			
+
 			// For edit events and sessions
 			SqueezeBox.initialize({handler: 'iframe', size: {x: 750, y: 500}});
 			document.id('redevent-admin').addEvent('click:relay(.xrefmodal)', function(e) {
 				e.stop();
 				SqueezeBox.fromElement(this);
 			});
-		      
+
 			$('sbox-btn-close').addEvent('click', function() {
 				redb2b.getSessions();
 			});
@@ -553,7 +569,7 @@ var redb2b = {
 			});
 			req.send();
 		},
-		
+
 		updateSessionSearchFields : function() {
 			redb2b.updateEventField();
 			redb2b.updateSessionField();
@@ -561,7 +577,7 @@ var redb2b = {
 			redb2b.updateCategoryField();
 			redb2b.getSessions();
 		},
-				
+
 		updateEventField : function(async) {
 			async = typeof async !== 'undefined' ? async : true;
 			var req = new Request.JSON({
@@ -574,20 +590,20 @@ var redb2b = {
 				onSuccess : function(options) {
 					var sel = document.id('filter_event').unspin();
 					var current = sel.get('value');
-					
+
 					sel.empty();
 					new Element('option', {'value': ''}).set('text', Joomla.JText._("COM_REDEVENT_FILTER_SELECT_EVENT")).inject(sel);
 					if (options.length) {
 						options.each(function(el){
 							new Element('option', {'value': el.value}).set('text', el.text).inject(sel);
 						});
-					}					
+					}
 					sel.set('value', current);
 				}
 			});
 			req.send();
 		},
-				
+
 		updateSessionField : function(async) {
 			async = typeof async !== 'undefined' ? async : true;
 			var req = new Request.JSON({
@@ -600,7 +616,7 @@ var redb2b = {
 				onSuccess : function(options) {
 					var sel = document.id('filter_session').unspin();
 					var current = sel.get('value');
-					
+
 					sel.empty();
 					new Element('option', {'value': ''}).set('text', Joomla.JText._("COM_REDEVENT_FILTER_SELECT_SESSION")).inject(sel);
 					if (options.length) {
@@ -609,13 +625,13 @@ var redb2b = {
 						});
 					}
 					sel.set('value', current);
-					
+
 					// redb2b.getMembersList();
 				}
 			});
 			req.send();
 		},
-				
+
 		updateVenueField : function(async) {
 			async = typeof async !== 'undefined' ? async : true;
 			var req = new Request.JSON({
@@ -628,7 +644,7 @@ var redb2b = {
 				onSuccess : function(options) {
 					var sel = document.id('filter_venue').unspin();
 					var current = sel.get('value');
-					
+
 					sel.empty();
 					new Element('option', {'value': ''}).set('text', Joomla.JText._("COM_REDEVENT_FILTER_SELECT_VENUE")).inject(sel);
 					if (options.length) {
@@ -641,7 +657,7 @@ var redb2b = {
 			});
 			req.send();
 		},
-				
+
 		updateCategoryField : function(async) {
 			async = typeof async !== 'undefined' ? async : true;
 			var req = new Request.JSON({
@@ -654,7 +670,7 @@ var redb2b = {
 				onSuccess : function(options) {
 					var sel = document.id('filter_category').unspin();
 					var current = sel.get('value');
-					
+
 					sel.empty();
 					new Element('option', {'value': ''}).set('text', Joomla.JText._("COM_REDEVENT_FILTER_SELECT_CATEGORY")).inject(sel);
 					if (options.length) {
@@ -667,20 +683,20 @@ var redb2b = {
 			});
 			req.send();
 		},
-		
+
 		searchBookings : function() {
 			req = new Request({
 				url : 'index.php?option=com_redevent&controller=frontadmin&task=getbookings&tmpl=component',
 				data : document.id('org-form'),
 				method : 'post',
 				onSuccess : function(responseText){
-					document.id('main-bookings').set('html', responseText);	
+					document.id('main-bookings').set('html', responseText);
 					redb2b.refreshTips();
 				}
 			});
 			req.send();
 		},
-		
+
 		selectSession : function(id) {
 			var req = new Request.JSON({
 				url : 'index.php?option=com_redevent&controller=frontadmin&task=getsession&tmpl=component&id=' + id,
@@ -694,9 +710,9 @@ var redb2b = {
 					// redb2b.getSessions();
 				}
 			});
-			req.send();			
+			req.send();
 		},
-		
+
 		/**
 		 * return list of organization members to select for booking
 		 */
@@ -729,16 +745,16 @@ var redb2b = {
 				req.send();
 			}
 		},
-		
+
 		resetSelected : function() {
 			redb2b.selected = new Array();
 			var div = document.id('select-list');
 			div.getElement(".notice").set('styles', {display:'block'});
 			div.addClass('nouser');
 			div.getElements('.selectedmember').dispose();
-			document.id('book-course').set('styles', {'display' :'none'});			
+			document.id('book-course').set('styles', {'display' :'none'});
 		},
-		
+
 		publishSession : function(xref, state) {
 			var req = new Request.JSON({
 				url: 'index.php?option=com_redevent&controller=frontadmin&task=publishxref&tmpl=component',
@@ -756,7 +772,7 @@ var redb2b = {
 			});
 			req.send();
 		},
-		
+
 		editmember : function(id) {
 			req = new Request({
 				url : 'index.php?option=com_redevent&controller=frontadmin&task=editmember&tmpl=component',
@@ -776,24 +792,24 @@ var redb2b = {
 					redb2b.refreshTips();
 				}
 			});
-			req.send();			
+			req.send();
 		},
-		
+
 		updateFormList : function(form) {
 			var req = new Request.HTML({
 				url: 'index.php?option=com_redevent',
 				data : form,
 				onRequest : function(){
-					form.set('spinner').spin();						
+					form.set('spinner').spin();
 				},
 				onSuccess : function(text) {
 					form.empty().adopt(text).unspin();
 					redb2b.refreshTips();
 				}
 			});
-			req.send();			
+			req.send();
 		},
-				
+
 		refreshTips : function(){
 			myTips = new Tips(".hasTip", {text : 'tip'});
 		}
