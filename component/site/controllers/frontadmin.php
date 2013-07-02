@@ -483,7 +483,7 @@ class RedeventControllerFrontadmin extends FOFController
 		if ($user->save())
 		{
 			// Update organizations
-			$db      = JFactory::getDbo();
+			$db    = JFactory::getDbo();
 			$query = $db->getQuery(true);
 
 			$query->delete('#__redmember_user_organization_xref');
@@ -508,7 +508,7 @@ class RedeventControllerFrontadmin extends FOFController
 				$res = $db->query();
 			}
 
-			$resp->status = 1; //echo JText::_('COM_USERS_USER_SAVE_SUCCESS');
+			$resp->status = 1;
 		}
 		else
 		{

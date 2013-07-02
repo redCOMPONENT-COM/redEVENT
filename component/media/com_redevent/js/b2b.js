@@ -242,8 +242,13 @@ var redb2b = {
                 var user_name     = document.id('member_name').value;
                 var user_email    = document.id('member_email').value;
                 var orgs          = document.id('organizations').value;
+                if (!user_id) {
+                    // Init some values in the form for new user
+                    new Element('input', {'type': 'hidden', 'name': ''})
+
+                }
                 req = new Request.JSON({
-                    url : 'index.php?option=com_redevent&controller=frontadmin&task=update_user&tmpl=component',
+                    url : 'index.php?option=com_redmember&view=userdetail&task=save&format=json',
                     data : document.id('member-update'),
                     format: 'raw',
                     method : 'post',
@@ -256,7 +261,7 @@ var redb2b = {
                             document.id('redadmin-main').show();
                         }
                         else {
-                            alert(response.error);
+                            alert(response.message);
                         }
                     }
                 });
