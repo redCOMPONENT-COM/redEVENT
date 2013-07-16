@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<falang type="contentelement">
+	<name>redEVENT - Events</name>
+	<author>redCOMPONENT</author>
+	<version>##VERSION##</version>
+	<description>Definition for redEVENT component, "Events" section</description>
+	<reference>
+		<table name="redevent_events">
+			<field type="referenceid" name="id" translate="0">ID</field>
+			<field type="titletext" name="title" translate="1">Event</field>
+			<field type="htmltext" name="datdescription" translate="1">Description</field>
+			<field type="htmltext" name="summary" translate="1">Summary</field>
+			<field type="text" name="notify_subject" translate="1">Notify subject</field>
+			<field type="htmltext" name="notify_body" translate="1">Notify body</field>
+			<field type="text" name="notify_on_list_subject" translate="1">Notify on list subject</field>
+			<field type="htmltext" name="notify_on_list_body" translate="1">Notify on list body</field>
+			<field type="text" name="notify_off_list_subject" translate="1">Notify off list subject</field>
+			<field type="htmltext" name="notify_off_list_body" translate="1">Notify off list body</field>
+			<field type="text" name="notify_confirm_subject" translate="1">Notify confirm subject</field>
+			<field type="htmltext" name="notify_confirm_body" translate="1">Notify confirm body</field>
+			<field type="htmltext" name="confirmation_message" translate="1">confirmation message</field>
+			<field type="htmltext" name="submission_type_email" translate="1">submission type email</field>
+			<field type="htmltext" name="submission_type_external" translate="1">submission type external</field>
+			<field type="htmltext" name="submission_type_phone" translate="1">submission type phone</field>
+			<field type="htmltext" name="submission_type_formal_offer" translate="1">submission type formal offer</field>
+			<field type="text" name="submission_type_formal_offer_subject" translate="1">submission type_formal_offer_subject type email</field>
+			<field type="htmltext" name="submission_type_webform" translate="1">submission type_webform</field>
+			<field type="htmltext" name="submission_type_formal_offer_body" translate="1">submission type_formal_offer_body</field>
+			<field type="htmltext" name="submission_type_email_body" translate="1">submission type_email_body</field>
+			<field type="htmltext" name="submission_type_formal_offer_pdf" translate="1">submission type_formal_offer_pdf</field>
+			<field type="htmltext" name="submission_type_email_pdf" translate="1">submission type_email_pdf</field>
+			<field type="text" name="submission_type_email_subject" translate="1">submission type_email_subject</field>
+			<field type="htmltext" name="review_message" translate="1">review message</field>
+			<field type="htmltext" name="submission_type_webform_formal_offer" translate="1">submission type_webform_formal_offer</field>
+			<field type="htmltext" name="paymentaccepted" translate="1">payment accepted</field>
+			<field type="htmltext" name="paymentprocessing" translate="1">payment processing</field>
+			<field type="htmltext" name="submission_type_email" translate="1">submission type_email</field>
+			<field type="created_date" name="created" translate="0">Created</field>
+			<field type="checked_out_by" name="checked_out" translate="0">Checked out by</field>
+			<field type="checked_out_time" name="checked_out_time" translate="0">Checked out time</field>
+		</table>
+
+		<component>
+			<form>com_redevent#redevent_events#cid#view#product#task#!edit</form>
+		</component>
+
+	</reference>
+	<translationfilters>
+		<keyword>title</keyword>
+		<published>published</published>
+	</translationfilters>
+</falang>

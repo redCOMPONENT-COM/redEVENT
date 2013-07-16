@@ -155,7 +155,7 @@ class RedeventModelDetails extends JModel
 			. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone, a.review_message, '
 			. ' x.title as session_title, '
 			. ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
-			. ' v.venue, v.city, v.locimage, v.map, v.country, v.street, v.plz, v.state, v.locdescription, v.url, '
+			. ' v.venue, v.id AS venue_id, v.city, v.locimage, v.map, v.country, v.street, v.plz, v.state, v.locdescription, v.url, '
 			. ' u.name AS creator_name, u.email AS creator_email, '
 			. " a.confirmation_message, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.catname, c.published, c.access,"
 			. ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
