@@ -35,46 +35,26 @@ defined('_JEXEC') or die('Restricted access');
 </div>
 
 <div id="editmember-info">
-    <h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_MEMBER_INFO'); ?></h2>
-    <form class="form-horizontal" id="member-update">
-        <div class="control-group">
-            <label class="control-label" for="member_name"><?php echo JText::_('COM_REDEVENT_NAME'); ?></label>
-            <div class="controls">
-                <input id="member_name" name="name" type="text" placeholder="<?php echo JText::_('COM_REDEVENT_NAME'); ?>" value="<?php echo $this->member->name; ?>">
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="member_username"><?php echo JText::_('COM_REDEVENT_USERNAME'); ?></label>
-            <div class="controls">
-                <input id="member_username" name="username" type="text" placeholder="<?php echo JText::_('COM_REDEVENT_USERNAME'); ?>" value="<?php echo $this->member->username; ?>">
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="member_password"><?php echo JText::_('JGLOBAL_PASSWORD'); ?></label>
-            <div class="controls">
-                <input id="member_password" name="password" type="password" placeholder="<?php echo JText::_('JGLOBAL_PASSWORD'); ?>" value="">
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="member_password2"><?php echo JText::_('COM_REDEVENT_PASSWORD_REPEAT'); ?></label>
-            <div class="controls">
-                <input id="member_password2" name="password2" type="password" placeholder="<?php echo JText::_('COM_REDEVENT_PASSWORD_REPEAT'); ?>" value="">
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="member_email"><?php echo JText::_('COM_REDEVENT_EMAIL'); ?></label>
-            <div class="controls">
-                <input id="member_email" name="email" type="text" placeholder="<?php echo JText::_('COM_REDEVENT_EMAIL'); ?>" value="<?php echo $this->member->email; ?>">
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="organizations"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ORGANIZATION'); ?></label>
-            <div class="controls">
-                <?php $selected = $this->member->organizations ?>
-                <?php echo JHtml::_('select.genericlist', $this->organizations_options, 'organizations[]', array('multiple' => 'multiple'), 'value', 'text', $selected); ?>
-            </div>
-        </div>
-        <input id="member_id" name="id" type="hidden" value="<?php echo $this->member->id; ?>"/>
+	<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_MEMBER_INFO'); ?></h2>
+
+	<form class="form-horizontal" id="member-update">
+		<?php foreach ($this->tabs as $t): ?>
+			<fieldset>
+				<legend><?php echo $t->tab_name; ?></legend>
+				<?php foreach ($t->fields as $field): ?>
+					<?php if (!$field->hidden) : ?>
+					<div class="control-group">
+						<?php echo $field->getLabel(array('class' => 'control-label')); ?>
+						<div class="controls">
+							<?php echo $field->getInput(); ?>
+						</div>
+					</div>
+					<?php else: ?>
+						<?php echo $field->getInput(); ?>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</fieldset>
+		<?php endforeach; ?>
         <button type="button" class="update-employee btn"><?php echo $this->uid ? JText::_('COM_REDEVENT_UPDATE') : JText::_('COM_REDEVENT_CREATE'); ?></button>
     </form>
 </div>

@@ -229,7 +229,7 @@ var redb2b = {
 			/**
 			 * add member
 			 */
-			document.id('redevent-admin').addEvent('click:relay(.add-employee)', function(e){
+			document.id('redevent-admin').addEvent('click:relay(#add-employee)', function(e){
 				redb2b.editmember(0);
 			});
 
@@ -237,18 +237,8 @@ var redb2b = {
              * update member
              */
             document.id('redevent-admin').addEvent('click:relay(.update-employee)', function(e){
-                var user_id       = document.id('member_id').value;
-                var user_username = document.id('member_username').value;
-                var user_name     = document.id('member_name').value;
-                var user_email    = document.id('member_email').value;
-                var orgs          = document.id('organizations').value;
-                if (!user_id) {
-                    // Init some values in the form for new user
-                    new Element('input', {'type': 'hidden', 'name': ''})
-
-                }
                 req = new Request.JSON({
-                    url : 'index.php?option=com_redmember&view=userdetail&task=save&format=json',
+                    url : 'index.php?option=com_redevent&controller=frontadmin&task=update_user&format=json',
                     data : document.id('member-update'),
                     format: 'raw',
                     method : 'post',
@@ -261,7 +251,7 @@ var redb2b = {
                             document.id('redadmin-main').show();
                         }
                         else {
-                            alert(response.message);
+                            alert(response.error);
                         }
                     }
                 });

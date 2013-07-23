@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Tracks" default="site" basedir=".">
 	<property file="build/build.properties" />
-	
+
 	<!-- Default properties, set only if not already assigned in the build.properties file -->
 	<property name="dirs.root" value="." />
 	<property name="dirs.tmp" value="tmp" />
@@ -10,17 +10,17 @@
 
 	<taskdef name="gitversion" classname="build.phingext.GitVersionTask" />
 	<taskdef name="gitdate" classname="build.phingext.GitDateTask" />
-		
+
 	<!--
 	====================================================================================================
 	Tasks - General
 	====================================================================================================
 	-->
-	
+
 	<target name="all" description="Makes everything"
 		depends="dev-release">
 	</target>
-	
+
 	<target name="dev-release" description="Makes the release"
 		depends="new-release,setup-properties,release">
 	</target>
@@ -30,7 +30,7 @@
 		<delete dir="${dirs.release}" quiet="yes" includeemptydirs="false" />
 		<mkdir dir="${dirs.release}" />
 	</target>
-	
+
 	<target name="setup-properties" description="Set up version and build properties">
 		<!-- Initialize the build.date timestamp -->
 		<tstamp>
@@ -48,16 +48,16 @@
 			</then>
 		</if>
 	</target>
-	
+
 	<!--
 	====================================================================================================
 	Tasks - Joomla! packages
 	====================================================================================================
 	-->
-	
+
 	<target name="release" description="Installation Package for Joomla! 1.6+"
 		depends="new-release,setup-properties">
-		
+
 		<copy todir="${dirs.tmp}/component" >
 			<fileset dir="${dirs.root}/component">
 				<include name="**" />
@@ -69,10 +69,10 @@
 				</replacetokens>
 			</filterchain>
 		</copy>
-		
+
 		<!-- Create the package -->
 		<tar basedir="${dirs.tmp}/component" destfile="${dirs.release}/com_${comp.name}-${version}.tar.gz" includeemptydirs="true" compression="gzip" />
-		
+
 		<!-- admin modules -->
 		<foreach param="dirname" absparam="absname" target="zipfolder">
 			<property name="myp" value="modules/admin" />
@@ -81,7 +81,7 @@
 	        <depth max="0" min="0" />
 		  </fileset>
 		</foreach>
-		
+
 		<!-- site modules -->
 		<foreach param="dirname" absparam="absname" target="zipfolder">
 			<property name="myp" value="modules/site" />
@@ -90,7 +90,7 @@
 	        <depth max="0" min="0" />
 		  </fileset>
 		</foreach>
-		
+
 		<!-- languages -->
 		<foreach param="dirname" absparam="absname" target="zipfolder">
 			<property name="myp" value="language" />
@@ -99,7 +99,7 @@
 		        <depth max="0" min="0" />
 			  </fileset>
 		</foreach>
-		
+
 		<!-- plugins -->
 		<foreach param="pdirname" absparam="pabsname" target="zipplugins">
 			<fileset dir="${dirs.root}/plugins">
@@ -107,10 +107,10 @@
 				<depth max="0" min="0" />
 			</fileset>
 		</foreach>
-		
+
 		<delete dir="${dirs.tmp}" quiet="yes" includeemptydirs="false" />
 	</target>
-	
+
 	<target name="zipplugins">
 	    <echo msg="handling plugins group ${pdirname}" />
 		<foreach param="dirname" absparam="absname" target="zipfolder">
@@ -121,8 +121,8 @@
 			</fileset>
 		</foreach>
 	</target>
-	 
-	
+
+
 	<target name="zipfolder">
 	    <echo msg="packaging ${dirname} ${absname}" />
 		<copy todir="${dirs.tmp}/${myp}/${dirname}" >
@@ -146,10 +146,12 @@
 	Tasks - copy to your test site
 	====================================================================================================
 	-->
-	
+
 	<target name="site" description="Copies files to a existing joomla site" depends="setup-properties">
         <echo message="Copying administrator component..." />
 
+		<!-- clean up existing files and folders -->
+		<delete dir="${www.dir}/administrator/components/com_${comp.name}" quiet="yes" includeemptydirs="false" />
         <!-- Manifest & install script -->
         <echo message="Copying manifest..." />
         <copy file="${dirs.root}/component/${comp.name}.xml"

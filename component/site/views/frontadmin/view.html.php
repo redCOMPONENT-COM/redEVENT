@@ -293,6 +293,8 @@ class RedeventViewFrontadmin extends JView
 
 	protected function displayEditMember($tpl= null)
 	{
+		require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
+
 		$document = JFactory::getDocument();
 
 		$member = $this->get('MemberInfo');
@@ -303,6 +305,10 @@ class RedeventViewFrontadmin extends JView
 		$this->params = JFactory::getApplication()->getParams('com_redevent');
 
 		$modal = JFactory::getApplication()->input->get('modal');
+
+		$rmu_fields = RedmemberLib::getUserFields(JFactory::getApplication()->input->get('uid'));
+
+		$this->assignRef('tabs', $rmu_fields);
 
 		if ($modal)
 		{

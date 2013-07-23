@@ -37,5 +37,7 @@ $add_handler = "{handler: 'ajax',"
 	</div>
 	<input name="xref" type="hidden" id="book-xref" value="" />
 	<button type="button" id="book-course" style="display: none" class="btn"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_BUTTON_BOOK'); ?></button>
-	<a href="<?php echo $add_link; ?>" class="modal btn" rel="<?php echo $add_handler; ?>"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ADD_EMPLOYEE')?></a>
+<!--	<a href="--><?php //echo $add_link; ?><!--" class="modal btn" rel="--><?php //echo $add_handler; ?><!--">--><?php //echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ADD_EMPLOYEE')?><!--</a>-->
+	<button type="button" id="add-employee" class="btn"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ADD_EMPLOYEE')?></button>
+
 </form>

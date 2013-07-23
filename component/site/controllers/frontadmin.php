@@ -463,57 +463,18 @@ class RedeventControllerFrontadmin extends FOFController
 	 */
 	public function update_user()
 	{
-		$app      = JFactory::getApplication();
-		$id       = $app->input->get('id', 0, 'int');
-		$username = $app->input->get('username', '', 'string');
-		$name     = $app->input->get('name', '', 'string');
-		$email    = $app->input->get('email', '', 'string');
+		require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
+		$resp = new stdClass();
 
-		$organizations = $app->input->get('organizations', array(), 'array');
-		JArrayHelper::toInteger($organizations);
-
-		$user = JFactory::getUser($id);
-
-		$user->username = $username;
-		$user->name  = $name;
-		$user->email = $email;
-
-		$resp = new stdclass;
-
-		if ($user->save())
+		try
 		{
-			// Update organizations
-			$db    = JFactory::getDbo();
-			$query = $db->getQuery(true);
-
-			$query->delete('#__redmember_user_organization_xref');
-			$query->where('user_id = ' . $user->id);
-
-			$db->setQuery($query);
-			$res = $db->query();
-
-			if ($organizations)
-			{
-				$query = $db->getQuery(true);
-
-				$query->insert('#__redmember_user_organization_xref');
-				$query->columns('user_id, organization_id');
-
-				foreach ($organizations as $o)
-				{
-					$query->values($user->id . ', ' . $o);
-				}
-
-				$db->setQuery($query);
-				$res = $db->query();
-			}
-
+			$user = RedmemberLib::saveUser(true);
 			$resp->status = 1;
 		}
-		else
+		catch (Exception $e)
 		{
 			$resp->status = 0;
-			$resp->error  = JText::_('COM_USERS_USER_SAVE_FAILED');
+			$resp->error  = JText::_('COM_USERS_USER_SAVE_FAILED') . ': ' . $e->getMessage();
 		}
 
 		echo json_encode($resp);
