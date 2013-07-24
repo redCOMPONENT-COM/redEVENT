@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="1.7.0" method="upgrade">
+<extension type="component" version="1.7.0" method="upgrade"
+           xsi:noNamespaceSchemaLocation="http://raw.github.com/cedricwalter/joomla-xsd/master/component.xsd"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<name>COM_REDEVENT</name>
 	<creationDate>##DATE##</creationDate>
 	<author>redWEB Aps</author>
@@ -9,11 +11,11 @@
 	<license>GNU/GPL</license>
 	<version>##VERSION##</version>
 	<description>COM_REDEVENT_XML_DESCRIPTION</description>
-	
-	
+
+
 	<!-- Runs on install/uninstall/update -->
 	<scriptfile>install.php</scriptfile>
-	
+
   <!-- Install Database Section -->
  	<install>
  		  <sql>
@@ -25,13 +27,13 @@
 		  <sql>
            <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
 		  </sql>
- 	</uninstall>	
+ 	</uninstall>
 	<update> <!-- Runs on update; New in 1.6 -->
 		<schemas>
 			<schemapath type="mysql">sql/updates/mysql</schemapath>
 		</schemas>
 	</update>
-	
+
 	<files folder="site">
 		<filename>index.html</filename>
 		<filename>redevent.php</filename>
@@ -51,7 +53,7 @@
 	<media folder="media">
 		<folder>com_redevent</folder>
 	</media>
-	
+
 	<administration>
 
 		<menu img="../media/com_redevent/images/redevent.png">redEVENT</menu>
@@ -64,7 +66,7 @@
 			<menu img="../media/com_redevent/images/icon-16-library.png" view="textlibrary">COM_REDEVENT_MENU_TAGS_LIBRARY</menu>
 			<menu img="../media/com_redevent/images/icon-16-customfields.png" view="customfields">COM_REDEVENT_MENU_CUSTOMFIELDS</menu>
 		</submenu>
-	
+
 		<files folder="admin">
 			<filename>access.xml</filename>
 			<filename>changelog.txt</filename>
@@ -86,15 +88,15 @@
 			<folder>language</folder>
 			<folder>tables</folder>
 		</files>
-		
+
 	</administration>
-	
+
 	<!-- UPDATESERVER DEFINITION -->
 	<updateservers>
 		<!-- Note: No spaces or linebreaks allowed between the server tags -->
 		<server type="extension" priority="1" name="redEVENT Update Site">http://www.redcomponent.com/updates/redevent-update.xml</server>
 	</updateservers>
-		
+
 	<!-- Plugins here -->
 	<plugins>
 		<plugin folder="admin/extras/plugins/redform_integration" plugin="redevent" group="redform_integration" />
