@@ -8,7 +8,7 @@
 		<table name="redevent_event_venue_xref">
 			<field type="referenceid" name="id" translate="0">ID</field>
 			<field type="titletext" name="title" translate="1">Session title</field>
-			<field type="text" name="dates" translate="0">Date</field>
+			<field type="listtitle" name="dates" translate="0">Date</field>
 			<field type="htmltext" name="details" translate="1">Details</field>
 			<field type="text" name="note" translate="1">Note</field>
 			<field type="text" name="icaldetails" translate="1">Ical details</field>
