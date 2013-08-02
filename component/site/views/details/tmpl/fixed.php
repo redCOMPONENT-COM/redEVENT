@@ -43,14 +43,15 @@ if ($this->row->venueid != 0) {
 
 <?php if ($this->params->def( 'show_page_title', 1 )) : ?>
 	<h1 class="componentheading">
-		<?php echo $this->row->full_title; ?>
+		<?php //echo redEVENTHelper::getSessionFullTitle($this->row); ?>
+		<?php echo $this->row->event_title; ?>
 	</h1>
 <?php endif; ?>
 
 <!-- Details EVENT -->
 	<h2 class="redevent">
 		<?php
-    	echo $this->row->full_title;
+    	echo $this->row->event_title;
     	echo '&nbsp;'.REOutput::editbutton($this->item->id, $this->row->did, $this->params, $this->allowedtoeditevent, 'editevent' );
     	?>
 	</h2>
@@ -63,7 +64,7 @@ if ($this->row->venueid != 0) {
 	<dl class="event_info floattext">
 
 		<dt class="title"><?php echo JText::_('COM_REDEVENT_TITLE' ).':'; ?></dt>
-    <dd class="title"><?php echo $this->escape($this->row->full_title); ?></dd>
+    <dd class="title"><?php echo $this->escape(redEVENTHelper::getSessionFullTitle($this->row)); ?></dd>
 
   	<dt class="when"><?php echo JText::_('COM_REDEVENT_WHEN' ).':'; ?></dt>
 		<dd class="when">
@@ -322,7 +323,7 @@ if ($this->row->venueid != 0) {
 				<div>
 					<a href="http://twitter.com/share"
 					   class="twitter-share-button"
-					   data-text="<?php echo $this->row->full_title; ?>"
+					   data-text="<?php echo redEVENTHelper::getSessionFullTitle($this->row); ?>"
 					   data-count="horizontal"
 					   <?php echo ($this->params->get('tweet_recommend') ? 'data-via="'.$this->params->get('tweet_recommend').'"' : ''); ?>
 					   <?php if ($this->params->get('tweet_recommend2')) {

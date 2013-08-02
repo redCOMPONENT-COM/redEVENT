@@ -30,29 +30,29 @@ $edit_image   = JHTML::_('image', 'components/com_redevent/assets/images/calenda
 $remove_image = JHTML::_('image', 'components/com_redevent/assets/images/no.png', JText::_('COM_REDEVENT_Delete' ), 'class="hasTip" title="'.JText::_('COM_REDEVENT_Delete' ).'::"');
 
 if ($this->manage_attendees) {
-	?>	
+	?>
 	<script language="javascript" type="text/javascript">
 	function tableOrdering( order, dir, task )
 	{
 	        var form = document.manageform;
-	 
+
 	        form.filter_order.value = order;
 	        form.filter_order_Dir.value = dir;
 	        form.submit( task );
 	}
 	</script>
-	
-	
+
+
 	<form action="<?php echo JRoute::_($this->action); ?>" method="post" name="manageform">
 	<div id="redevent" class="event_id<?php echo $this->row->eventid; ?> el_details">
-		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).': '.$this->row->full_title; ?></h2>
-		
+		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).': '.redEVENTHelper::getSessionFullTitle($this->row); ?></h2>
+
 		<?php echo JHTML::link('index.php?option=com_redevent&controller=attendees&task=exportattendees&format=csv&xref='. $this->row->xref, JText::_('COM_REDEVENT_CSV_export'));?>
-						
+
 		<?php if (count($this->roles)): ?>
 		<?php $this->showRoles(); ?>
 		<?php endif; ?>
-		
+
 		<div class="register">
 			<?php	if (!empty($this->registers)):	?>
 			<table class="registered">
@@ -68,7 +68,7 @@ if ($this->manage_attendees) {
   			</tr>
 			</thead>
 			<tbody>
-  			<?php 
+  			<?php
     			//loop through attendees
    				$n = 1;
     			foreach ($this->registers as $key => $register):
@@ -77,13 +77,13 @@ if ($this->manage_attendees) {
     				  	<td><?php echo $n++; ?></td>
      				    <?php	foreach ($register->answers as $k => $name): ?>
       				  <td class='userfield <?php echo strtolower($k); ?>'>
-      				    <?php 
+      				    <?php
       						if (stristr($name, '~~~')) $name = str_replace('~~~', '<br />', $name).'<br />';
         						echo $name;
       				  ?>
       				  </td>
       				  <?php endforeach; ?>
-      				  
+
       				  <?php $edit_url = JRoute::_('index.php?option=com_redevent&controller=registration&task=manageredit&xref='. $this->row->xref .'&submitter_id='. $register->id); ?>
                 <td class="edit">
                   <?php echo JHTML::link($edit_url, $edit_image, array('class' => 'editlink')); ?>
@@ -101,10 +101,10 @@ if ($this->manage_attendees) {
 			</table>
 			<?php endif; ?>
 		</div>
-		
+
 		<?php if ($waiting_count): ?>
 		<h2 class="register"><?php echo JText::_('COM_REDEVENT_WAITING_LIST' ); ?></h2>
-    
+
     <div class="register">
       <table class="registered">
       <thead>
@@ -119,7 +119,7 @@ if ($this->manage_attendees) {
         </tr>
       </thead>
       <tbody>
-        <?php 
+        <?php
           //loop through attendees
    				$n = 1;
           foreach ($this->registers as $key => $register):
@@ -128,13 +128,13 @@ if ($this->manage_attendees) {
     				  	<td><?php echo $n++; ?></td>
                 <?php foreach ($register->answers as $k => $name): ?>
                 <td class='userfield <?php echo strtolower($k); ?>'>
-                  <?php 
+                  <?php
                   if (stristr($name, '~~~')) $name = str_replace('~~~', '<br />', $name).'<br />';
                     echo $name;
                 ?>
                 </td>
                 <?php endforeach; ?>
-                
+
       				  <?php $edit_url = JRoute::_('index.php?option=com_redevent&view=signup&task=manageredit&xref='. $this->row->xref .'&submitter_id='. $register->id); ?>
                 <td class="edit">
                   <?php echo JHTML::link($edit_url, $edit_image, array('class' => 'editlink')); ?>
@@ -149,7 +149,7 @@ if ($this->manage_attendees) {
           <?php endforeach; ?>
       </tbody>
       </table>
-    </div>    
+    </div>
     <?php endif; ?>
 	</div>
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />

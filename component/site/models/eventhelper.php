@@ -150,7 +150,7 @@ class RedeventModelEventhelper extends JModelLegacy
           . ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
 					. ' a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
 					. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone, a.review_message, '
-					. ' v.venue, v.city AS location, v.country, v.locimage, v.street, v.plz, v.state, v.locdescription as venue_description, v.map, v.url as venueurl,'
+					. ' v.id AS venue_id, v.venue, v.city AS location, v.country, v.locimage, v.street, v.plz, v.state, v.locdescription as venue_description, v.map, v.url as venueurl,'
 					. ' v.city, v.latitude, v.longitude, v.company AS venue_company, v.venue_code, '
 					. ' u.name AS creator_name, u.email AS creator_email, '
 					. ' f.formname, '
@@ -170,6 +170,7 @@ class RedeventModelEventhelper extends JModelLegacy
 					;
     	$this->_db->setQuery($query);
 			$this->_event = $this->_db->loadObject();
+
 			if ($this->_event) {
         $this->_details = $this->_getEventCategories($this->_event);
 				$this->_details->attachments = REAttach::getAttachments('event'.$this->_details->did, $user->getAuthorisedViewLevels());

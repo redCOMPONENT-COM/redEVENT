@@ -80,6 +80,7 @@
 			<folder>customfield</folder>
 			<folder>assets</folder>
 			<folder>extras</folder>
+			<folder>falang</folder>
 			<folder>views</folder>
 			<folder>models</folder>
 			<folder>controllers</folder>

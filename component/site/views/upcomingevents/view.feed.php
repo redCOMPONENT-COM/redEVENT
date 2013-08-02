@@ -42,37 +42,37 @@ class RedeventViewUpcomingevents extends JView
 	 */
 	function display()
 	{
-		
+
 		$document	=& JFactory::getDocument();
 		$document->link = JRoute::_('index.php?option=com_redevent&view=upcomingevents');
 		$upcomingevents = $this->get('UpcomingEvents');
 		$elsettings = redEVENTHelper::config();
 		$imagepath = JURI::root().'administrator/components/com_redevent/assets/images/';
-		
+
 		foreach ($upcomingevents as $key => $event) {
-			
+
 			$event_url = RedeventHelperRoute::getDetailsRoute($event->slug, $event->xslug);
 			$venue_url = RedeventHelperRoute::getVenueEventsRoute($event->venueslug);
 			$description = '<table>
 			<tbody>
 			<tr>
-				<td width="100">Course:</td><td>'.JHTML::_('link', $event_url, $event->full_title, 'target="_blank"').'</td>
+				<td width="100">Course:</td><td>'.JHTML::_('link', $event_url, redEVENTHelper::getSessionFullTitle($event), 'target="_blank"').'</td>
 			</tr><tr>
 				<td>Where:</td><td>'.$event->location.' &nbsp; '.REOutput::getFlag( $event->country ).'</td>
-			</tr><tr>				
+			</tr><tr>
 				<td>Date:</td><td>'.REOutput::formatdate($event->dates, $event->times).'</td>
-			</tr><tr>				
+			</tr><tr>
 				<td>Duration:</td><td>'.redEVENTHelper::getEventDuration($event);
 			$description .= '</td>
-			</tr><tr>			
+			</tr><tr>
 				<td>Venue:</td><td>'.JHTML::_('link', $venue_url, $event->venue, 'target="_blank"').'</td>
-			</tr><tr>				
+			</tr><tr>
 				<td>Price:</td><td class="re-price">'.REOutput::formatListPrices($event->prices).'</td>
 			</tr><tr>
 				<td>Credits:</td><td>'.$event->course_credit.'</td>
-			</tr><tr>			
+			</tr><tr>
 				<td>Signup:</td><td>';
-				
+
 				/* Get the different submission types */
 				$submissiontypes = explode(',', $event->submission_types);
 				$venues_html = '';
@@ -90,12 +90,12 @@ class RedeventViewUpcomingevents extends JView
 						case 'webform':
 							if ($event->prices && count($event->prices))
 							{
-								foreach ($event->prices as $p) 
+								foreach ($event->prices as $p)
 								{
 									$img = empty($p->image) ? JHTML::_('image', $imagepath.$elsettings->get('signup_webform_img'),  JText::_($elsettings->get('signup_webform_text')))
 									                        : JHTML::_('image', $imagepath.$p->image,  JText::_($p->name));
 									$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->slug, $event->xslug, $p->slug));
-									
+
 									$venues_html .= '&nbsp;'.JHTML::_('link', $link, $img).'&nbsp; ';
 								}
 							}
@@ -110,16 +110,16 @@ class RedeventViewUpcomingevents extends JView
 				}
 			$description .= $venues_html;
 			$description .= '</td></tr></tbody></table>';
-			
-			
+
+
 			$item = new JFeedItem();
-			$item->title 		= $event->full_title;
+			$item->title 		= redEVENTHelper::getSessionFullTitle($event);
 			$item->link 		= $event_url;
 			$item->description 	= $description;
 			$item->date			= '';
 			$item->category   	= $event->venue;
 			// loads item info into rss array
-			$document->addItem( $item ); 
+			$document->addItem( $item );
 		}
 	}
 }

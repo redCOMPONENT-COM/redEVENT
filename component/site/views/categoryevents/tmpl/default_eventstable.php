@@ -81,7 +81,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			<?php switch ($col):
 
 					case 'title': ?>
-					<td class="re_title" itemprop="name"><a href="<?php echo $detaillink ; ?>" itemprop="url"><?php echo $this->escape($row->full_title); ?></a></td>
+					<td class="re_title" itemprop="name"><a href="<?php echo $detaillink ; ?>" itemprop="url"><?php echo $this->escape(redEVENTHelper::getSessionFullTitle($row)); ?></a></td>
 				<?php break;?>
 
 				<?php case 'venue': ?>

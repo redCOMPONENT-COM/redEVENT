@@ -54,18 +54,18 @@ class RedeventViewVenuecategory extends JView
 		foreach ( $rows as $row )
 		{
 			// strip html from feed item title
-			$title = $this->escape( $row->full_title );
+			$title = $this->escape( redEVENTHelper::getSessionFullTitle($row) );
 			$title = html_entity_decode( $title );
 
 			// strip html from feed item category
-			if (!empty($row->categories)) 
+			if (!empty($row->categories))
 			{
 				$category = array();
 				foreach ($row->categories AS $cat) {
 					$category[] = $cat->catname;
 				}
 				$category = $this->escape( implode(', ', $category) );
-				$category = html_entity_decode( $category );				
+				$category = html_entity_decode( $category );
 			}
 			else {
 				$category = '';
@@ -98,7 +98,7 @@ class RedeventViewVenuecategory extends JView
 
 			// url link to article
 			// & used instead of &amp; as this is converted by feed creator
-			
+
 			$link = RedeventHelperRoute::getDetailsRoute($row->slug, $row->xslug);
 			$link = JRoute::_( $link );
 

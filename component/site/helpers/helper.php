@@ -1123,7 +1123,7 @@ class redEVENTHelper {
 				$dateendparam['TZID'] = $timezone_name;
 			}
 		}
-		$title = (isset($event->full_title) ? $event->full_title : $event->title);
+		$title = redEVENTHelper::getSessionFullTitle($event);
 		// item description text
 		$description = $title.'\\n';
 		$description .= JText::_('COM_REDEVENT_CATEGORY' ).': '.implode(', ', $categories).'\\n';
@@ -1540,5 +1540,27 @@ class redEVENTHelper {
 		$img = JHtml::image('media/com_redevent/images/' . $src, $src, $options);
 
 		return $img;
+	}
+
+	/**
+	 * returns full title for session (event + session title if exists)
+	 *
+	 * @param   object  $object  object containing title/event_title and session_title
+	 *
+	 * @return string
+	 */
+	public static function getSessionFullTitle($object)
+	{
+		$event_title = isset($object->event_title) ? $object->event_title : $object->title;
+
+		if (isset($object->session_title) && $object->session_title)
+		{
+			return $event_title . ' - ' . $object->session_title;
+		}
+		else
+		{
+			return $event_title;
+		}
+
 	}
 }

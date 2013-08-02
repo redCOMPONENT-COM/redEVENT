@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 				<tr>
 					<td><?php echo REOutput::formatEventDateTime($row, false); ?></td>
 					<td><?php echo redEVENTHelper::getEventDuration($row); ?></td>
-					<td><?php echo $row->full_title; ?></td>
+					<td><?php echo redEVENTHelper::getSessionFullTitle($row); ?></td>
 					<td><?php echo $row->venue; ?></td>
 					<td><?php echo $row->city; ?></td>
 					<td class="re_category">
