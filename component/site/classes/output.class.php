@@ -86,7 +86,7 @@ class REOutput {
     if (!$params->get( 'show_thumb_icon', 1)) {
       return '';
     }
-    
+
 		JHTML::_('behavior.tooltip');
 
 		if ( $params->get('icons', 1) ) {
@@ -122,10 +122,10 @@ class REOutput {
 
 		return $output;
 	}
-	
+
 	/**
 	 * returns html code for edit venue button
-	 * 
+	 *
 	 * @param $id venue id/slug
 	 * @return html
 	 */
@@ -151,9 +151,9 @@ class REOutput {
     if (!$params->get( 'show_gotoarchive_icon', 1)) {
       return '';
     }
-    		
-		JHTML::_('behavior.tooltip');				
-			
+
+		JHTML::_('behavior.tooltip');
+
 		if ( $params->get('icons', 1) ) {
 			$image = JHTML::_('image', 'components/com_redevent/assets/images/archive_front.png', JText::_('COM_REDEVENT_SHOW_ARCHIVE' ));
 		} else {
@@ -161,17 +161,17 @@ class REOutput {
 		}
 		$overlib 	= JText::_('COM_REDEVENT_SHOW_ARCHIVE_TIP' );
 		$title 		= JText::_('COM_REDEVENT_SHOW_ARCHIVE' );
-			
+
 		$link		= JRoute::_('index.php?option=com_redevent&view=archive');
 
 		$output = '<a href="'.$link.'" class="editlinktip hasTip" title="'.$title.'::'.$overlib.'">'.$image.'</a>';
 
 		return $output;
 	}
-	
+
 	/**
 	 * display a button for current events
-	 * 
+	 *
 	 * @param array $params
 	 * @param string $link
 	 * @return html
@@ -194,7 +194,7 @@ class REOutput {
 	function editbutton( $Itemid, $id, &$params, $allowedtoedit, $view)
 	{
 
-		if ( $allowedtoedit ) 
+		if ( $allowedtoedit )
 		{
 
 			JHTML::_('behavior.tooltip');
@@ -252,14 +252,14 @@ class REOutput {
 
 		return $output;
 	}
-	
+
 	/**
 	 * Creates the print button
 	 *
 	 * @param string $print_link
 	 * @param array $params
 	 * @since 0.9
-	 */	
+	 */
 	function printbutton( $print_link, &$params )
 	{
 		if ($params->get( 'show_print_icon' )) {
@@ -336,7 +336,7 @@ class REOutput {
 	function mapicon($data, $attributes = array())
 	{
 		$settings = & redEVENTHelper::config();
-		
+
 		//Link to map
 		$mapimage = JHTML::image(JURI::root().'components/com_redevent/assets/images/mapsicon.png', JText::_('COM_REDEVENT_MAP' ) );
 
@@ -347,9 +347,9 @@ class REOutput {
 		if (!$data->map) {
 			return $output;
 		}
-		
+
 		$data->country = JString::strtoupper($data->country);
-	
+
 		if (isset($attributes['class'])) {
 			$attributes['class'] .= ' venuemap';
 		}
@@ -359,7 +359,7 @@ class REOutput {
 		$attributes['handler'] = 'iframe';
 
 		JHTML::_('behavior.modal', 'a.venuemap');
-		
+
 		foreach ($attributes as $k => $v) {
 			$attributes[$k] = $k.'="'.$v.'"';
 		}
@@ -368,7 +368,7 @@ class REOutput {
 
 		return $output;
 	}
-		
+
 	function map($data, $attributes = array())
 	{
 		$output = '';
@@ -397,7 +397,7 @@ class REOutput {
 		$output		= '<div id="venue-location" '.$attributes.'></div>';
 		return $output;
 	}
-  
+
   /**
   * Creates the map button
   *
@@ -416,33 +416,33 @@ class REOutput {
     JText::script("COM_REDEVENT_APPLY");
     JText::script("COM_REDEVENT_CLOSE");
     $document->addScriptDeclaration('mymap.defaultaddress = "'.$params->get('pinpoint_defaultaddress', 'usa').'";');
-    
+
     $document->addStyleSheet(JURI::root().'components/com_redevent/assets/css/gmapsoverlay.css', 'text/css');
 
     //Link to map
     $mapimage = JHTML::image(JURI::root().'components/com_redevent/assets/images/marker.png', JText::_( 'COM_REDEVENT_PINPOINTLOCATION_ALT' ), array('class' => 'pinpoint'));
-      
+
   	$data->country = JString::strtoupper($data->country);
-  
+
   	if (isset($attributes['class'])) {
   	$attributes['class'] .= ' venuemap';
   	}
   		else {
   			$attributes['class'] = 'venuemap';
   	}
-    		
+
   	foreach ($attributes as $k => $v) {
   		$attributes[$k] = $k.'="'.$v.'"';
   	}
   	$attributes = implode(' ', $attributes);
   	$output = '<span title="'.JText::_('COM_REDEVENT_MAP' ).'" '.$attributes.'>'.$mapimage.'</span>';
-  
+
   	return $output;
 	}
-  
+
   /**
    * returns moreinfo link
-   * 
+   *
    * @param string $text the content of the link tag
    * @param unknown_type $title the 'title' for the link
    * @return string
@@ -456,14 +456,14 @@ class REOutput {
   		$title = JText::_('COM_REDEVENT_DETAILS_MOREINFO_BUTTON_LABEL');
   	}
 		JHTML::_('behavior.modal', 'a.moreinfo');
-		$link = JRoute::_(RedeventHelperRoute::getMoreInfoRoute($xref_slug, 
+		$link = JRoute::_(RedeventHelperRoute::getMoreInfoRoute($xref_slug,
 		                                                        array('tmpl' =>'component')));
 		$text = '<a class="moreinfo" title="'.$title
 		      .  '" href="'.$link.'" rel="{handler: \'iframe\', size: {x: 400, y: 500}}">'
 		      . $text
 		      . ' </a>'
 		      ;
-		return $text;  	
+		return $text;
   }
 
 	/**
@@ -553,7 +553,7 @@ class REOutput {
 
         return null;
 	}
-	
+
   /**
    * Creates the country flag
    *
@@ -573,13 +573,13 @@ class REOutput {
 
         return null;
   }
-	
+
 	/**
 	 * Formats date
 	 *
 	 * @param string $date
 	 * @param string $time
-	 * 
+	 *
 	 * @return string $formatdate
 	 *
 	 * @since 0.9
@@ -587,27 +587,27 @@ class REOutput {
 	function formatdate($date, $time)
 	{
 		$settings = & redEVENTHelper::config();
-		
+
 		if(!redEVENTHelper::isValidDate($date)) {
 			return JText::_('COM_REDEVENT_OPEN_DATE');
 		}
-		
+
 		if(!$time) {
 			$time = '00:00:00';
 		}
-		
+
 		//Format date
 		$formatdate = strftime( $settings->get('formatdate', '%d.%m.%Y'), strtotime( $date.' '.$time ));
-		
+
 		return $formatdate;
 	}
-	
+
 	/**
 	 * Formats time
 	 *
 	 * @param string $date
 	 * @param string $time
-	 * 
+	 *
 	 * @return string $formattime
 	 *
 	 * @since 0.9
@@ -615,19 +615,19 @@ class REOutput {
 	public static function formattime($date, $time)
 	{
 		$settings = & redEVENTHelper::config();
-		
+
 		if(!$time) {
 			return;
 		}
-		
+
 		//Format time
-		$formattime = strftime( $settings->get('formattime', '%H:%M'), strtotime( $date.' '.$time ));	
+		$formattime = strftime( $settings->get('formattime', '%H:%M'), strtotime( $date.' '.$time ));
 		return $formattime;
 	}
-	
+
 	/**
 	 * return formatted event date and time (start and end), or false if open date
-	 * 
+	 *
 	 * @param object $event
 	 * @return string or false for open date
 	 */
@@ -639,52 +639,76 @@ class REOutput {
 		}
 		$settings = & redEVENTHelper::config();
 		$showend = $settings->get('lists_showend', 1);
-		
+
+		$date_start = self::formatdate($event->dates, $event->times);
+		$time_start = '';
+		$date_end   = '';
+		$time_end   = '';
+
 		// is this a full day(s) event ?
 		$allday = '00:00:00' == $event->times && '00:00:00' == $event->endtimes;
 
-		$date = '<span class="event-date">';
-		$date .= '<span class="event-start">';
-		$date .= '<span class="event-day">'.self::formatdate($event->dates, $event->times).'</span>';
-		if (!$allday && $settings->get('lists_show_time', 0) == 1) {
-			$date .= ' <span class="event-time">'.self::formattime($event->dates, $event->times).'</span>';
+		if (!$allday )
+		{
+			$time_start = self::formattime($event->dates, $event->times);
 		}
-		$date .= '</span>';
-		
-		if ($allday) 
+
+		if ($allday)
 		{
 			if ($showend && redEVENTHelper::isValidDate($event->enddates))
 			{
 				if ( strtotime($event->enddates. ' -1 day') != strtotime($event->dates)
 				    && strtotime($event->enddates) != strtotime($event->dates) ) // all day is written as midnight to midnight, so remove last day
 				{
-					$date .= ' <span class="event-end"><span class="event-day">'.self::formatdate(strftime('%Y-%m-%d', strtotime($event->enddates. ' -1 day')), $event->endtimes).'</span></span>';
+					$date_end = self::formatdate(strftime('%Y-%m-%d', strtotime($event->enddates. ' -1 day')), $event->endtimes);
 				}
 			}
 		}
-		else if ($showend)
+		elseif ($showend)
 		{
-			if (redEVENTHelper::isValidDate($event->enddates) && strtotime($event->enddates) != strtotime($event->dates)) 
+			if (redEVENTHelper::isValidDate($event->enddates) && strtotime($event->enddates) != strtotime($event->dates))
 			{
-				$date .= ' <span class="event-end"><span class="event-day">'.self::formatdate($event->enddates, $event->endtimes).'</span>';
-				if ($settings->get('lists_show_time', 0) == 1) {
-					$date .= ' <span class="event-time">'.self::formattime($event->dates, $event->endtimes).'</span>';
-				}
-				$date .= '</span>';
+				$date_end = self::formatdate($event->enddates, $event->endtimes);
+				$time_end = self::formattime($event->dates, $event->endtimes);
 			}
-			else if ($settings->get('lists_show_time', 0) == 1)
+			else
 			{
-				$date .= ' <span class="event-time">'.self::formattime($event->dates, $event->endtimes).'</span>';				
+				// Same day, just display end time after start time
+				$time_start .= ' ' . self::formattime($event->dates, $event->endtimes);
 			}
 		}
+
+		$date = '<span class="event-date">';
+		$date .= '<span class="event-start">';
+		$date .= '<span class="event-day">' . $date_start .'</span>';
+
+		if ($settings->get('lists_show_time', 0) == 1 && $time_start)
+		{
+			$date .= ' <span class="event-time">' . $time_start . '</span>';
+		}
+
 		$date .= '</span>';
-		
+
+		if ($date_end)
+		{
+			$date .= ' <span class="event-end"><span class="event-day">' . $date_end . '</span>';
+
+			if ($settings->get('lists_show_time', 0) == 1 && $time_end)
+			{
+				$date .= ' <span class="event-time">' . $time_end . '</span>';
+			}
+
+			$date .= '</span>';
+		}
+
+		$date .= '</span>';
+
 		return $date;
 	}
-	
+
 	/**
 	 * returns iso date
-	 * 
+	 *
 	 * @param string $date
 	 * @param string $time
 	 * @return string
@@ -703,7 +727,7 @@ class REOutput {
 		}
 		return $txt;
 	}
-	
+
 	/**
 	 * Returns an array for ical formatting
 	 * @param string date
@@ -716,21 +740,21 @@ class REOutput {
 			$sec = strtotime($date. ' ' .$time);
 		}
 		else {
-			$sec = strtotime($date);			
+			$sec = strtotime($date);
 		}
 		if (!$sec) {
 			return false;
 		}
-		
+
 		//Format date
 		$parsed = strftime('%Y-%m-%d %H:%M:%S', $sec);
 
-		$date = array( 'year'  => (int) substr($parsed, 0, 4), 
-		               'month' => (int) substr($parsed, 5, 2), 
+		$date = array( 'year'  => (int) substr($parsed, 0, 4),
+		               'month' => (int) substr($parsed, 5, 2),
 		               'day'   => (int) substr($parsed, 8, 2) );
-			
+
 		//Format time
-		if (substr($parsed, 11, 8) != '00:00:00') 
+		if (substr($parsed, 11, 8) != '00:00:00')
 		{
 			$date['hour'] = substr($parsed, 11, 2);
 			$date['min'] = substr($parsed, 14, 2);
@@ -738,13 +762,13 @@ class REOutput {
 		}
 		return $date;
 	}
-	
+
 	/**
 	 * Formats time
 	 *
 	 * @param string $date
 	 * @param string $time
-	 * 
+	 *
 	 * @return string $formattime
 	 *
 	 * @since 0.9
@@ -752,11 +776,11 @@ class REOutput {
 	function formatprice($price, $currency = null)
 	{
 		$settings = & redEVENTHelper::config();
-		
+
 		if(!$price) {
 			return JText::_('COM_REDEVENT_EVENT_PRICE_FREE');
 		}
-		
+
 		switch ($settings->get('currency_decimals', 'decimals')) {
 			case 'decimals':
 				//Format price
@@ -777,19 +801,19 @@ class REOutput {
 		else {
 			return $formatprice;
 		}
-	}	
+	}
 
 	function formatPrices($prices)
 	{
 		if (!is_array($prices)) {
 			return;
 		}
-		
+
 		if (count($prices) == 1) {
 			return self::formatprice($prices[0]->price, $prices[0]->currency);
 		}
 		$res = array();
-		foreach ($prices as $p) 
+		foreach ($prices as $p)
 		{
 			$res[] = self::formatprice($p->price, $p->currency);
 		}
@@ -801,18 +825,18 @@ class REOutput {
 		if (!is_array($prices)) {
 			return;
 		}
-		
+
 		if (count($prices) == 1) {
 			return self::formatprice($prices[0]->price, $prices[0]->currency);
 		}
 		$res = array();
-		foreach ($prices as $p) 
+		foreach ($prices as $p)
 		{
 			$res[] = $p->name.' '.self::formatprice($p->price, $p->currency);
 		}
 		return implode('<br/>', $res);
 	}
-	
+
 	/**
 	  * Change images from relative to absolute URLs
 	  */
