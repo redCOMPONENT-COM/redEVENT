@@ -66,6 +66,8 @@ class RedeventsyncModelAbstractmessage extends FOFModel
 	{
 		if ($this->response)
 		{
+			$this->validate($this->response->asXML());
+
 			return $this->response->asXML();
 		}
 		else
@@ -174,13 +176,18 @@ class RedeventsyncModelAbstractmessage extends FOFModel
 	 * @return bool
 	 * @throws Exception
 	 */
-	public function validate($xml, $schema)
+	public function validate($xml, $schema = null)
 	{
 		// Enable user error handling
 		$prev = libxml_use_internal_errors(true);
 
 		$dom = new DOMDocument();
 		$dom->loadXML($xml);
+
+		if (!$schema)
+		{
+			$schema = $dom->firstChild->nodeName;
+		}
 
 		// Validate
 		if (! $dom->schemaValidate(JPATH_SITE . '/components/com_redeventsync/schemas/' . $schema . '.xsd'))

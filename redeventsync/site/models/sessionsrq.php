@@ -54,6 +54,7 @@ class RedeventsyncModelSessionsrq extends RedeventsyncModelAbstractmessage
 			$response = new SimpleXMLElement('<SessionRS/>');
 			$response->addChild('TransactionId', $transaction_id);
 			$response->addChild('Success', '');
+			$response->addChild('SessionCode', $row->session_code);
 			$this->addResponse($response);
 
 			// Log
@@ -143,6 +144,7 @@ class RedeventsyncModelSessionsrq extends RedeventsyncModelAbstractmessage
 		$response = new SimpleXMLElement('<SessionRS/>');
 		$response->addChild('TransactionId', $transaction_id);
 		$response->addChild('Success', '');
+		$response->addChild('SessionCode', $row->session_code);
 
 		$this->addResponse($response);
 
@@ -208,6 +210,7 @@ class RedeventsyncModelSessionsrq extends RedeventsyncModelAbstractmessage
 		$response = new SimpleXMLElement('<SessionRS/>');
 		$response->addChild('TransactionId', $transaction_id);
 		$response->addChild('Success', '');
+		$response->addChild('SessionCode', $row->session_code);
 
 		$this->addResponse($response);
 
@@ -295,7 +298,7 @@ class RedeventsyncModelSessionsrq extends RedeventsyncModelAbstractmessage
 	 */
 	protected function initResponse()
 	{
-		$this->response = new SimpleXMLElement('<SessionsRS/>');
+		$this->response = new SimpleXMLElement('<SessionsRS xmlns="http://www.redcomponent.com/redevent"/>');
 	}
 
 	/**
