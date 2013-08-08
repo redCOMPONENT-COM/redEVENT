@@ -293,7 +293,7 @@ class RedEventControllerEvents extends RedEventController
 			// Event saved, trigger plugins
 			JPluginHelper::importPlugin('redevent');
 			$dispatcher =& JDispatcher::getInstance();
-			$res = $dispatcher->trigger('onAfterEventSave', array($returnid));
+			$res = $dispatcher->trigger('onAfterEventSaved', array($returnid));
 
 			$msg = JText::_('COM_REDEVENT_EVENT_SAVED');
 
@@ -308,7 +308,7 @@ class RedEventControllerEvents extends RedEventController
 				// Session saved, trigger plugins
 				JPluginHelper::importPlugin('redevent');
 				$dispatcher =& JDispatcher::getInstance();
-				$res = $dispatcher->trigger('onAfterSessionSave', array($xref));
+				$res = $dispatcher->trigger('onAfterSessionSaved', array($xref));
 
 				// Specific for autotweet
 				if ($task == 'saveAndTwit')
