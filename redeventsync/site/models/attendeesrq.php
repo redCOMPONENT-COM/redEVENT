@@ -81,9 +81,14 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 	{
 		$xml = new SimpleXMLElement('<AttendeesRQ xmlns="http://www.redcomponent.com/redevent"/>');
 
+		$attendee = $this->getAttendee($attendee_id);
+
 		$message = new SimpleXMLElement('<DeleteAttendeeRQ/>');
 		$message->addChild('TransactionId', $this->getNextTransactionId());
-		$message->addChild('AttendeeId', $attendee_id);
+		$message->addChild('AttendeeId',    $attendee_id);
+		$message->addChild('SessionCode',   $attendee->session_code);
+		$message->addChild('VenueCode',     $attendee->venue_code);
+		$message->addChild('UserEmail',     $attendee->email);
 
 		$this->appendElement($xml, $message);
 
@@ -502,23 +507,7 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 	{
 		$message->addChild('TransactionId', $this->getNextTransactionId());
 
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select('r.*');
-		$query->select('x.session_code');
-		$query->select('v.venue_code');
-		$query->select('e.redform_id');
-		$query->select('u.email');
-		$query->from('#__redevent_register AS r');
-		$query->join('INNER', '#__redevent_event_venue_xref AS x on x.id = r.xref');
-		$query->join('INNER', '#__redevent_events AS e on e.id = x.eventid');
-		$query->join('INNER', '#__redevent_venues AS v on v.id = x.venueid');
-		$query->join('LEFT', '#__users AS u on u.id = r.uid');
-		$query->where('r.id = ' . $db->quote($attendee_id));
-
-		$db->setQuery($query);
-		$attendee = $db->loadObject();
+		$attendee = $this->getAttendee($attendee_id);
 
 		$message->addChild('AttendeeId',    $attendee->id);
 		$message->addChild('SessionCode',   $attendee->session_code);
@@ -553,5 +542,35 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 		$this->appendElement($message, $answers);
 
 		return $message;
+	}
+
+	/**
+	 * returns attendee info
+	 *
+	 * @param   int  $attendee_id  attendee id
+	 *
+	 * @return object
+	 */
+	protected function getAttendee($attendee_id)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('r.*');
+		$query->select('x.session_code');
+		$query->select('v.venue_code');
+		$query->select('e.redform_id');
+		$query->select('u.email');
+		$query->from('#__redevent_register AS r');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x on x.id = r.xref');
+		$query->join('INNER', '#__redevent_events AS e on e.id = x.eventid');
+		$query->join('INNER', '#__redevent_venues AS v on v.id = x.venueid');
+		$query->join('LEFT', '#__users AS u on u.id = r.uid');
+		$query->where('r.id = ' . $db->quote($attendee_id));
+
+		$db->setQuery($query);
+		$attendee = $db->loadObject();
+
+		return $attendee;
 	}
 }

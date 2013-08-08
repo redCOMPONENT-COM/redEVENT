@@ -140,6 +140,21 @@
 									<xs:documentation>Id of the Attendee to delete.</xs:documentation>
 								</xs:annotation>
 							</xs:element>
+							<xs:element type="xs:string" name="SessionCode">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Must match an existing redEVENT Session code</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:string" name="VenueCode">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Must match an existing redEVENT Venue code</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:string" name="UserEmail" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Must match an existing Joomla user Email</xs:documentation>
+								</xs:annotation>
+							</xs:element>
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
