@@ -250,28 +250,38 @@ class RedEventControllerEvents extends RedEventController
 	function save()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
-		$db = JFactory::getDBO();
-		$task		= JRequest::getVar('task');
+		JSession::checkToken() or die( 'Invalid Token' );
+		$db   = JFactory::getDBO();
+		$app  = JFactory::getApplication();
+		$task = $app->input->get('task');
 
 		$post = JRequest::get( 'post', 4 );
 
 		/* Get the form fields to display */
-		$showfields = '';
-		foreach ($post as $field => $value) {
-			if (substr($field, 0, 9) == 'showfield' && $value == "1") {
-				$showfields .= substr($field, 9).",";
+		$showfields = array();
+
+		foreach ($post as $field => $value)
+		{
+			if (substr($field, 0, 9) == 'showfield' && $value == "1")
+			{
+				$showfields[] = substr($field, 9);
 			}
 		}
 
-		$post['showfields'] = substr($showfields, 0, -1);
-		if (!isset($post['checked_out'])) $post['checked_out'] = 0;
+		$post['showfields'] = implode(',', $showfields);
+
+		if (!isset($post['checked_out']))
+		{
+			$post['checked_out'] = 0;
+		}
 
 		/* Fix the submission types */
-		if (!$post['submission_types']) {
+		if (!$post['submission_types'])
+		{
 			$post['submission_types'] = array();
 		}
-		else {
+		else
+		{
 			$post['submission_types'] = implode(',', $post['submission_types']);
 		}
 
@@ -280,25 +290,34 @@ class RedEventControllerEvents extends RedEventController
 
 		if ($returnid = $model->store($post))
 		{
-			$msg	= JText::_('COM_REDEVENT_EVENT_SAVED');
-
-			if (isset($post['venueid']) && $post['venueid'])
-			{
-				if (!$xref = $this->_saveInitialSession($returnid)) {
-					$msg .= "\n".JTExt::_('COM_REDEVENT_EVENT_FAILED_SAVING_INITIAL_SESSION').': '.$this->getError();
-				}
-				if (JRequest::getVar('task') == 'saveAndTwit')
-				{
-					JPluginHelper::importPlugin( 'system', 'autotweetredevent');
-					$dispatcher =& JDispatcher::getInstance();
-					$res = $dispatcher->trigger( 'onAfterRedeventSessionSave', array( $xref ) );
-				}
-			}
-
-			// Trigger event for plugins
+			// Event saved, trigger plugins
 			JPluginHelper::importPlugin('redevent');
 			$dispatcher =& JDispatcher::getInstance();
-			$res = $dispatcher->trigger('onAfterSessionSave', array($xref));
+			$res = $dispatcher->trigger('onAfterEventSave', array($returnid));
+
+			$msg = JText::_('COM_REDEVENT_EVENT_SAVED');
+
+			// Check if we have session info, which only happens when creating the event the first time (other sessions have to be added in sessions view)
+			if (isset($post['venueid']) && $post['venueid'])
+			{
+				if (!$xref = $this->_saveInitialSession($returnid))
+				{
+					$msg .= "\n".JTExt::_('COM_REDEVENT_EVENT_FAILED_SAVING_INITIAL_SESSION').': '.$this->getError();
+				}
+
+				// Session saved, trigger plugins
+				JPluginHelper::importPlugin('redevent');
+				$dispatcher =& JDispatcher::getInstance();
+				$res = $dispatcher->trigger('onAfterSessionSave', array($xref));
+
+				// Specific for autotweet
+				if ($task == 'saveAndTwit')
+				{
+					JPluginHelper::importPlugin('system', 'autotweetredevent');
+					$dispatcher =& JDispatcher::getInstance();
+					$res = $dispatcher->trigger('onAfterRedeventSessionSave', array($xref));
+				}
+			}
 
 			switch ($task)
 			{
@@ -315,7 +334,7 @@ class RedEventControllerEvents extends RedEventController
 			$cache->clean();
 
 		} else {
-			$msg 	= $model->getError();
+			$msg  = $model->getError();
 			$link = 'index.php?option=com_redevent&view=events';
 
 		}
@@ -361,7 +380,7 @@ class RedEventControllerEvents extends RedEventController
 		{
 			JPluginHelper::importPlugin('redevent');
 			$dispatcher =& JDispatcher::getInstance();
-			$res = $dispatcher->trigger('onAfterEventREmoved', array($id));
+			$res = $dispatcher->trigger('onAfterEventRemoved', array($id));
 		}
 
 		$this->setRedirect( 'index.php?option=com_redevent&view=events', $msg, $msgtype);
