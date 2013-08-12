@@ -996,7 +996,13 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		}
 		$mail = $registrationmodel->notifyManagers($submit_key);
 
-		return $reg->id;
+		// For tracking
+		$reg->event_name   = $details->event_name;
+		$reg->session_name = $details->session_name;
+		$reg->venue        = $details->venue;
+		$reg->categories   = $details->categories;
+
+		return $reg;
 	}
 
 	/**
