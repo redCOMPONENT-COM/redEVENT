@@ -515,6 +515,7 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 		$message->addChild('UserEmail',     $attendee->email);
 		$message->addChild('Cancelled',     $attendee->cancelled);
 		$message->addChild('PriceGroupId',  $attendee->pricegroup_id);
+		$message->addChild('WaitingList',   $attendee->waitinglist);
 		$message->addChild('Confirmed',     $attendee->confirmed);
 		$message->addChild('ConfirmDate',   str_replace(' ', 'T', $attendee->confirmdate));
 		$message->addChild('PaymentStart',  str_replace(' ', 'T', $attendee->paymentstart));
