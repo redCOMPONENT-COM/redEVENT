@@ -122,16 +122,16 @@ var redb2b = {
 			/**
 			 * update organization bookings when selecting session status active
 			 */
-			document.id('filter_person_active').addEvent('change', function(){
+			document.id('filter_person_active0').addEvent('change', function(){
 				redb2b.searchBookings();
 			});
 
-            /**
-             * update organization bookings when selecting session status active
-             */
-            document.id('filter_person_archive').addEvent('change', function(){
-                redb2b.searchBookings();
-            });
+			/**
+			 * update organization bookings when selecting session status active
+			 */
+			document.id('filter_person_active1').addEvent('change', function(){
+				redb2b.searchBookings();
+			});
 
 			/**
 			 * update organization bookings when resetting filter person field
