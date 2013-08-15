@@ -2025,17 +2025,22 @@ class redEVENT_tags {
 
 	function _getTag_paymentrequestlink()
 	{
-		$link = '';
+		$app = JFactory::getApplication();
+		$lang = $app->input->get('lang');
+
 		if (!empty($this->_submitkey))
 		{
 			$title = urlencode($this->getEvent()->getData()->title
 			               .' '
 			               .REOutput::formatdate($this->getEvent()->getData()->dates,
 			                                     $this->getEvent()->getData()->times));
-			$link = $this->absoluteUrls(
-			             'index.php?option=com_redform&controller=payment&task=select&source=redevent&key='
-			                .$this->_submitkey.'&paymenttitle='.$title,
-			             false);
+			$link = 'index.php?option=com_redform&controller=payment&task=select&source=redevent&key='
+				. $this->_submitkey.'&paymenttitle='.$title;
+			if ($lang)
+			{
+				$link .= '&lang=' . $lang;
+			}
+			$link = $this->absoluteUrls($link, false);
 		}
 		return $link;
 	}
