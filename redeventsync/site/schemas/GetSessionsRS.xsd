@@ -6,6 +6,11 @@
 	<xs:element name="GetSessionsRS">
 		<xs:complexType>
 			<xs:sequence>
+				<xs:element type="xs:positiveInteger" name="TransactionId">
+					<xs:annotation>
+						<xs:documentation source="Description" xml:lang="en">this Id, unique in the message, will allow to identify the RS corresponding to this session in the RS message</xs:documentation>
+					</xs:annotation>
+				</xs:element>
 
 				<xs:element name="Session" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
@@ -90,12 +95,6 @@
 							<xs:element name="SessionIcal" type="re:SessionIcal" minOccurs="0" />
 						</xs:sequence>
 					</xs:complexType>
-				</xs:element>
-
-				<xs:element type="xs:positiveInteger" name="TransactionId">
-					<xs:annotation>
-						<xs:documentation source="Description" xml:lang="en">this Id, unique in the message, will allow to identify the RS corresponding to this session in the RS message</xs:documentation>
-					</xs:annotation>
 				</xs:element>
 			</xs:sequence>
 		</xs:complexType>
