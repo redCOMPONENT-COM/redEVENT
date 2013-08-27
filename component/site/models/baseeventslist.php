@@ -577,6 +577,8 @@ class RedeventModelBaseEventList extends JModel
 			$query->group('r.waitinglist');
 			$db->setQuery($query);
 
+			$res = $db->loadObjectList();
+
 			$rows[$k]->registered = (isset($res[0]) ? $res[0]->total : 0);
 			$rows[$k]->waiting = (isset($res[1]) ? $res[1]->total : 0);
 		}
