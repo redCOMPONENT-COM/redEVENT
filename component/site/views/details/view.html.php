@@ -298,6 +298,10 @@ class RedeventViewDetails extends JView
 		$content = '';
 		switch ($keyword)
 		{
+			case "title":
+				$content = $row->event_title;
+				break;
+
 			case "catsid":
 				// TODO: fix for multiple cats
 				//$content = $row->catname;
