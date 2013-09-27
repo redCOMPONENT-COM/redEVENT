@@ -834,33 +834,44 @@ class RedeventController extends JController
 		JFile::write($file, time());
 	}
 
-
-
 	/**
 	 * for attachement downloads
 	 *
+	 * @return void
 	 */
-	function getfile()
+	public function getfile()
 	{
-		$id = JRequest::getInt('file');
-		$user = &JFactory::getUser();
+		$app  = JFactory::getApplication();
+		$id   = $app->input->getInt('file', 0);
+		$user = JFactory::getUser();
 		$path = REAttach::getAttachmentPath($id, max($user->getAuthorisedViewLevels()));
 
-		$mime = redEVENTHelper::getMimeType($path);
+		// The header is fine tuned to work with grump ie8... if you modify a property, make sure it's still ok !
+		header('Content-Description: File Transfer');
 
-		$doc =& JFactory::getDocument();
+		// Mime
+		$mime = redEVENTHelper::getMimeType($path);
+		$doc = JFactory::getDocument();
 		$doc->setMimeEncoding($mime);
-		header('Content-Disposition: attachment; filename="'.basename($path).'"');
+
+		header('Content-Disposition: attachment; filename="'. basename($path) .'"');
+		header('Content-Transfer-Encoding: binary');
+		header('Expires: 0');
+		header('Cache-Control: no-store, no-cache');
+		header('Pragma: no-cache');
+
 		if ($fd = fopen ($path, "r"))
 		{
 			$fsize = filesize($path);
 			header("Content-length: $fsize");
-			header("Cache-control: private"); //use this to open files directly
-			while(!feof($fd)) {
+
+			while(!feof($fd))
+			{
 				$buffer = fread($fd, 2048);
 				echo $buffer;
 			}
 		}
+
 		fclose ($fd);
 		return;
 	}
