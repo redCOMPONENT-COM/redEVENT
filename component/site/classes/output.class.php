@@ -375,7 +375,7 @@ class REOutput {
 		$document 	= & JFactory::getDocument();
 		JHTML::_('behavior.mootools');
 
-		$document->addScript('http://maps.google.com/maps/api/js?sensor=false');
+		$document->addScript('https://maps.google.com/maps/api/js?sensor=false');
 		$document->addScript(JURI::root().'/components/com_redevent/assets/js/venuemap.js');
 		$document->addScriptDeclaration('
 			var basepath = "'.JURI::root().'";
@@ -411,7 +411,7 @@ class REOutput {
 		JHTML::_('behavior.framework');
 		$params = JComponentHelper::getParams('com_redevent');
 		$document 	= & JFactory::getDocument();
-		$document->addScript('http://maps.google.com/maps/api/js?sensor=false');
+		$document->addScript('https://maps.google.com/maps/api/js?sensor=false');
 		FOFTemplateUtils::addJS('media://com_redevent/js/pinpoint.js');
 		JText::script("COM_REDEVENT_APPLY");
 		JText::script("COM_REDEVENT_CLOSE");
