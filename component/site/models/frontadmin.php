@@ -57,6 +57,10 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	 */
 	protected $form;
 
+	/**
+	 * user acl object
+	 * @var UserAcl
+	 */
 	protected $useracl = null;
 
 	public function __construct($config = array())
@@ -306,7 +310,9 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$ids = $this->useracl->getCanEditEvents();
+		$ids = array_merge($this->useracl->getCanEditEvents(),
+			$this->useracl->getEventsCanViewAttendees());
+		$ids = array_unique($ids);
 
 		if (!$ids)
 		{
