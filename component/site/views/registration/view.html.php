@@ -65,7 +65,8 @@ class RedeventViewRegistration extends JView
 				$options = array();
 				$options['affiliation'] = 'redevent-b2b';
 				$options['sku']         = $event->event_name;
-				$options['productname'] = $event->venue . ' - ' . $event->xref . ' ' . $event->session_title;
+				$options['productname'] = $event->venue . ' - ' . $event->xref . ' ' . $event->event_name
+					. ($event->session_name ? ' / ' . $event->session_name : '');
 
 				$cats = array();
 				foreach ($event->categories as $c)

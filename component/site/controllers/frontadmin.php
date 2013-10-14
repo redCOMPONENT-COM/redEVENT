@@ -282,7 +282,8 @@ class RedeventControllerFrontadmin extends FOFController
 						$options = array();
 						$options['affiliation'] = 'redevent-b2b';
 						$options['sku']         = $attendee->event_name;
-						$options['productname'] = $attendee->venue . ' - ' . $attendee->xref . ' ' . $attendee->session_title;
+						$options['productname'] = $attendee->venue . ' - ' . $attendee->xref . ' ' . $attendee->event_name
+							. ($attendee->session_name ? ' / ' . $attendee->session_name : '');
 
 						$cats = array();
 						foreach ($attendee->categories as $c)
