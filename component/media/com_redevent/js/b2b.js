@@ -122,16 +122,20 @@ var redb2b = {
 			/**
 			 * update organization bookings when selecting session status active
 			 */
-			document.id('filter_person_active0').addEvent('change', function(){
-				redb2b.searchBookings();
-			});
+			if (document.id('filter_person_active0')) {
+				document.id('filter_person_active0').addEvent('change', function(){
+					redb2b.searchBookings();
+				});
+			}
 
 			/**
 			 * update organization bookings when selecting session status active
 			 */
-			document.id('filter_person_active1').addEvent('change', function(){
-				redb2b.searchBookings();
-			});
+			if (document.id('filter_person_active1')) {
+				document.id('filter_person_active1').addEvent('change', function(){
+					redb2b.searchBookings();
+				});
+			}
 
 			/**
 			 * update organization bookings when resetting filter person field
@@ -216,6 +220,15 @@ var redb2b = {
 						redb2b.resetSelected();
 					}
 				}
+			});
+
+			/**
+			 * edit own account
+			 */
+			$$('#redevent-admin .myaccount').addEvent('click', function(e){
+				e.stop();
+				var id = this.getProperty('uid');
+				redb2b.editmember(id);
 			});
 
 			/**
