@@ -26,10 +26,11 @@ defined('_JEXEC') or die('Restricted access');
 
 class com_redeventInstallerScript
 {
-    private $installed_mods             = array();
-    private $installed_plugs            = array();
-
 	protected $_is15update = false;
+
+	private $installed_mods             = array();
+
+	private $installed_plugs            = array();
 
 	/** @var array Obsolete files and folders to remove */
 	private $removeFiles = array(
@@ -47,30 +48,47 @@ class com_redeventInstallerScript
 	 */
 	public function preflight($type, $parent)
 	{
-		// in the case of an update from 1.5 version (2.0 stable), we might have just the tables without the extension being registered
-		// in that case, we will need to run the mysql updates sql 2.5.b.2  , which was the same db as 2.0 stable
+		// In the case of an update from 1.5 version (2.0 stable), we might have just the tables without the extension being registered
+		// In that case, we will need to run the mysql updates sql 2.5.b.2  , which was the same db as 2.0 stable
 		$row = JTable::getInstance('extension');
 		$eid = $row->find(array('element' => 'com_redevent', 'type' => 'component'));
-		if ($eid) { // version 2.5 already installed, or migrated from jupgrade
+
+		if ($eid)
+		{
+			// Version 2.5 already installed, or migrated from jupgrade
 			$row->load($eid);
-			if ($row->manifest_cache) { // it's really an update...
+
+			if ($row->manifest_cache)
+			{
+				// It's really an update...
 				return true;
 			}
-			// no manifest means it was migrated from 2.0 from jupgrade, be we still need to update the table from 2.0 structure
+
+			// No manifest means it was migrated from 2.0 from jupgrade, be we still need to update the table from 2.0 structure
 		}
-		else {
-			// not installed, do we have a redevent table ?
+		else
+		{
+			// Not installed, do we have a redevent table ?
 			$tables = JFactory::getDbo()->getTableList();
-			if (!in_array(JFactory::getDbo()->getPrefix().'redevent_settings', $tables)) {
-				// it s a clean install;
+
+			if (!in_array(JFactory::getDbo()->getPrefix() . 'redevent_settings', $tables))
+			{
+				// It s a clean install;
 				return true;
 			}
 		}
-		// still here... means this is an update from 2.0
+
+		// Still here... means this is an update from 2.0
 		$this->_is15update = true;
+
 		return true;
 	}
 
+	/**
+	 * Performs install
+	 *
+	 * @return void
+	 */
 	public function install()
 	{
 		if ($this->_is15update)
@@ -79,135 +97,16 @@ class com_redeventInstallerScript
 		}
 	}
 
-	public function update()
-	{
-		if ($this->_is15update) {
-			$this->updateFrom20();
-		}
-	}
-
-	/**
-	* method to run after an install/update/uninstall method
-	*
-	* @return void
-	*/
-	public function postflight($type, $parent)
-	{
-        // Remove obsolete files and folders
-        $this->_removeObsoleteFilesAndFolders($this->removeFiles);
-
-		$this->installModsPlugs($parent);
-		if (count($this->installed_plugs)) {
-			echo '<div>
-                          <table class="adminlist" cellspacing="1">
-                            <thead>
-                                <tr>
-                                    <th>'.JText::_('Plugin').'</th>
-                                    <th>'.JText::_('Group').'</th>
-                                    <th>'.JText::_('Status').'</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="3">&nbsp;</td>
-                                </tr>
-                            </tfoot>
-                            <tbody>';
-			foreach ($this->installed_plugs as $plugin) :
-			$pstatus    = ($plugin['upgrade']) ? JHtml::_('image','admin/tick.png', '', NULL, true) : JHtml::_('image','admin/publish_x.png', '', NULL, true);
-			echo '<tr>
-                                            <td>'.$plugin['plugin'].'</td>
-                                            <td>'.$plugin['group'].'</td>
-                                            <td style="text-align: center;">'.$pstatus.'</td>
-                                          </tr>';
-			endforeach;
-			echo '   </tbody>
-                         </table>
-                         </div>';
-		}
-
-		if (count($this->installed_mods)) {
-			echo '<div>
-                          <table class="adminlist" cellspacing="1">
-                            <thead>
-                                <tr>
-                                    <th>'.JText::_('Module').'</th>
-                                    <th>'.JText::_('Status').'</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="2">&nbsp;</td>
-                                </tr>
-                            </tfoot>
-                            <tbody>';
-			foreach ($this->installed_mods as $module) :
-			$mstatus    = ($module['upgrade']) ? JHtml::_('image','admin/tick.png', '', NULL, true) : JHtml::_('image','admin/publish_x.png', '', NULL, true);
-			echo '<tr>
-                                            <td>'.$module['module'].'</td>
-                                            <td style="text-align: center;">'.$mstatus.'</td>
-                                          </tr>';
-			endforeach;
-			echo '   </tbody>
-            	</table>
-			</div>';
-		}
-	}
-
-	protected function installModsPlugs($parent)
-	{
-		$manifest       = $parent->get("manifest");
-		$parent         = $parent->getParent();
-		$source         = $parent->getPath("source");
-		$db = JFactory::getDbo();
-
-		//**********************************************************************
-		// DO THIS IF WE DECIDE TO AUTOINSTALL PLUGINS/MODULES
-		//**********************************************************************
-		// install plugins and modules
-		$installer = new JInstaller();
-
-		// Install plugins
-		foreach($manifest->plugins->plugin as $plugin) {
-			$attributes                 = $plugin->attributes();
-			$plg                        = $source . '/' . $attributes['folder'].'/'.$attributes['plugin'];
-			// 			echo '<pre>';print_r($plg); echo '</pre>';exit;
-			$new                        = ($attributes['new']) ? '&nbsp;(<span class="green">New in v.'.$attributes['new'].'!</span>)' : '';
-			if ($installer->install($plg)) {
-				// autopublish the plugin
-				$query = ' UPDATE #__extensions SET enabled = 1 WHERE folder = '. $db->Quote($attributes['group']) . ' AND element = '.$db->Quote($attributes['plugin']);
-				$db->setQuery($query);
-				$db->query();
-				$this->installed_plugs[]    = array('plugin' => $attributes['plugin'].$new, 'group'=> $attributes['group'], 'upgrade' => true);
-			} else {
-				$this->installed_plugs[]    = array('plugin' => $attributes['plugin'], 'group'=> $attributes['group'], 'upgrade' => false);
-				$this->iperror[] = JText::_('Error installing plugin').': '.$attributes['plugin'];
-			}
-		}
-		return true;
-
-		// Install modules
-		foreach($manifest->modules->module as $module) {
-			$attributes             = $module->attributes();
-			$mod                    = $source . '/' . $attributes['folder'].'/'.$attributes['module'];
-			$new                    = ($attributes['new']) ? '&nbsp;(<span class="green">New in v.'.$attributes['new'].'!</span>)' : '';
-			if($installer->install($mod)){
-				$this->installed_mods[] = array('module' => $attributes['module'].$new, 'upgrade' => true);
-			}else{
-				$this->installed_mods[] = array('module' => $attributes['module'], 'upgrade' => false);
-				$this->iperror[] = JText::_('Error installing module').': '.$attributes['module'];
-			}
-		}
-	}
-
 	/**
 	 * method to update the database structure from a 2.0 version
 	 *
+	 * @return void
 	 */
 	public function updateFrom20()
 	{
 		$db = &JFactory::getDbo();
 		$dbDriver = strtolower($db->name);
+
 		if ($dbDriver == 'mysqli')
 		{
 			$dbDriver = 'mysql';
@@ -216,7 +115,8 @@ class com_redeventInstallerScript
 		{
 			$dbDriver = 'sqlazure';
 		}
-		$basepath = JPATH_ADMINISTRATOR.'/components/com_redevent/sql/updates/'.$dbDriver;
+
+		$basepath = JPATH_ADMINISTRATOR . '/components/com_redevent/sql/updates/' . $dbDriver;
 		$files = str_replace('.sql', '', JFolder::files($basepath, '\.sql$'));
 		usort($files, 'version_compare');
 
@@ -225,7 +125,7 @@ class com_redeventInstallerScript
 			return false;
 		}
 
-		// equivalent version
+		// Equivalent version
 		$version = '2.5.b.3.0';
 
 		// We have a version!
@@ -256,6 +156,7 @@ class com_redeventInstallerScript
 				foreach ($queries as $query)
 				{
 					$query = trim($query);
+
 					if ($query != '' && $query{0} != '#')
 					{
 						$db->setQuery($query);
@@ -268,9 +169,219 @@ class com_redeventInstallerScript
 						}
 					}
 				}
-				echo Jtext::sprintf('COM_REDEVENT_UPDATED_DB_TO', $file).'<br/>';
+
+				echo Jtext::sprintf('COM_REDEVENT_UPDATED_DB_TO', $file) . '<br/>';
 			}
 		}
+	}
+
+	/**
+	 * performs update
+	 *
+	 * @return void
+	 */
+	public function update()
+	{
+		if ($this->_is15update) {
+			$this->updateFrom20();
+		}
+	}
+
+	/**
+	 * method to run after an install/update/uninstall method
+	 *
+	 * @param   string  $type    type
+	 * @param   object  $parent  parent
+	 *
+	 * @return void
+	 */
+	public function postflight($type, $parent)
+	{
+		// Check for FOF
+		$fofInstallationStatus = $this->_installFOF($parent);
+
+		// Remove obsolete files and folders
+		$this->_removeObsoleteFilesAndFolders($this->removeFiles);
+
+		$this->installModsPlugs($parent);
+
+		if (count($this->installed_plugs))
+		{
+			echo '<div>
+					<table class="adminlist" cellspacing="1">
+						<thead>
+							<tr>
+								<th>' . JText::_('Plugin') . '</th>
+								<th>' . JText::_('Group') . '</th>
+								<th>' . JText::_('Status') . '</th>
+							</tr>
+						</thead>
+						<tfoot>
+							<tr>
+								<td colspan="3">&nbsp;</td>
+							</tr>
+						</tfoot>
+						<tbody>';
+
+			foreach ($this->installed_plugs as $plugin) :
+				$pstatus = ($plugin['upgrade']) ? JHtml::_('image', 'admin/tick.png', '', null, true) : JHtml::_('image', 'admin/publish_x.png', '', null, true);
+				echo '<tr>
+					<td>' . $plugin['plugin'] . '</td>
+					<td>' . $plugin['group'] . '</td>
+					<td style="text-align: center;">' . $pstatus . '</td>
+				</tr>';
+			endforeach;
+			echo '</tbody>
+				</table>
+			</div>';
+		}
+
+		if (count($this->installed_mods))
+		{
+			echo '<div>
+				<table class="adminlist" cellspacing="1">
+					<thead>
+						<tr>
+							<th>' . JText::_('Module') . '</th>
+							<th>' . JText::_('Status') . '</th>
+						</tr>
+					</thead>
+					<tfoot>
+						<tr>
+							<td colspan="2">&nbsp;</td>
+						</tr>
+					</tfoot>
+					<tbody>';
+
+			foreach ($this->installed_mods as $module) :
+			$mstatus = ($module['upgrade']) ? JHtml::_('image', 'admin/tick.png', '', null, true) : JHtml::_('image', 'admin/publish_x.png', '', null, true);
+			echo '<tr>
+				<td>' . $module['module'] . '</td>
+				<td style="text-align: center;">' . $mstatus . '</td>
+			</tr>';
+			endforeach;
+			echo '</tbody>
+				</table>
+			</div>';
+		}
+	}
+
+	/**
+	 * Check if FoF is already installed and install if not
+	 *
+	 * @param   object  $parent  class calling this method
+	 *
+	 * @return  array            Array with performed actions summary
+	 */
+	private function _installFOF($parent)
+	{
+		$src = $parent->getParent()->getPath('source');
+
+		// Load dependencies
+		JLoader::import('joomla.filesystem.file');
+		JLoader::import('joomla.utilities.date');
+		$source = $src . '/fof';
+
+		if (!defined('JPATH_LIBRARIES'))
+		{
+			$target = JPATH_ROOT . '/libraries/fof';
+		}
+		else
+		{
+			$target = JPATH_LIBRARIES . '/fof';
+		}
+
+		$haveToInstallFOF = false;
+
+		if (!is_dir($target))
+		{
+			$haveToInstallFOF = true;
+		}
+		else
+		{
+			$fofVersion = array();
+
+			if (file_exists($target . '/version.txt'))
+			{
+				$rawData = JFile::read($target . '/version.txt');
+				$info    = explode("\n", $rawData);
+				$fofVersion['installed'] = array(
+					'version'   => trim($info[0]),
+					'date'      => new JDate(trim($info[1]))
+				);
+			}
+			else
+			{
+				$fofVersion['installed'] = array(
+					'version'   => '0.0',
+					'date'      => new JDate('2011-01-01')
+				);
+			}
+
+			$rawData = JFile::read($source . '/version.txt');
+			$info    = explode("\n", $rawData);
+			$fofVersion['package'] = array(
+				'version'   => trim($info[0]),
+				'date'      => new JDate(trim($info[1]))
+			);
+
+			$haveToInstallFOF = $fofVersion['package']['date']->toUNIX() > $fofVersion['installed']['date']->toUNIX();
+		}
+
+		$installedFOF = false;
+
+		if ($haveToInstallFOF)
+		{
+			$versionSource = 'package';
+			$installer = new JInstaller;
+			$installedFOF = $installer->install($source);
+		}
+		else
+		{
+			$versionSource = 'installed';
+		}
+
+		if (!isset($fofVersion))
+		{
+			$fofVersion = array();
+
+			if (file_exists($target . '/version.txt'))
+			{
+				$rawData = JFile::read($target . '/version.txt');
+				$info    = explode("\n", $rawData);
+				$fofVersion['installed'] = array(
+					'version'   => trim($info[0]),
+					'date'      => new JDate(trim($info[1]))
+				);
+			}
+			else
+			{
+				$fofVersion['installed'] = array(
+					'version'   => '0.0',
+					'date'      => new JDate('2011-01-01')
+				);
+			}
+
+			$rawData = JFile::read($source . '/version.txt');
+			$info    = explode("\n", $rawData);
+			$fofVersion['package'] = array(
+				'version'   => trim($info[0]),
+				'date'      => new JDate(trim($info[1]))
+			);
+			$versionSource = 'installed';
+		}
+
+		if (!($fofVersion[$versionSource]['date'] instanceof JDate))
+		{
+			$fofVersion[$versionSource]['date'] = new JDate;
+		}
+
+		return array(
+			'required'  => $haveToInstallFOF,
+			'installed' => $installedFOF,
+			'version'   => $fofVersion[$versionSource]['version'],
+			'date'      => $fofVersion[$versionSource]['date']->format('Y-m-d'),
+		);
 	}
 
 	/**
@@ -282,18 +393,99 @@ class com_redeventInstallerScript
 	{
 		// Remove files
 		JLoader::import('joomla.filesystem.file');
-		if(!empty($files['files'])) foreach($files['files'] as $file) {
-			$f = JPATH_ROOT.'/'.$file;
-			if(!JFile::exists($f)) continue;
-			JFile::delete($f);
+
+		if (!empty($files['files']))
+		{
+			foreach($files['files'] as $file)
+			{
+				$f = JPATH_ROOT . '/' . $file;
+
+				if(!JFile::exists($f))
+				{
+					continue;
+				}
+
+				JFile::delete($f);
+			}
 		}
 
-		// Remove folders
-		JLoader::import('joomla.filesystem.file');
-		if(!empty($files['folders'])) foreach($files['folders'] as $folder) {
-			$f = JPATH_ROOT.'/'.$folder;
-			if(!JFolder::exists($f)) continue;
-			JFolder::delete($f);
+		if (!empty($files['folders']))
+		{
+			foreach($files['folders'] as $folder)
+			{
+				$f = JPATH_ROOT . '/' . $folder;
+
+				if(!JFolder::exists($f))
+				{
+					continue;
+				}
+
+				JFolder::delete($f);
+			}
+		}
+	}
+
+	/**
+	 * install modules
+	 *
+	 * @param   object  $parent  parent
+	 *
+	 * @return bool
+	 */
+	protected function installModsPlugs($parent)
+	{
+		$manifest       = $parent->get("manifest");
+		$parent         = $parent->getParent();
+		$source         = $parent->getPath("source");
+		$db = JFactory::getDbo();
+
+		/**********************************************************************
+		 * DO THIS IF WE DECIDE TO AUTOINSTALL PLUGINS/MODULES
+		 **********************************************************************/
+
+		// Install plugins and modules
+		$installer = new JInstaller();
+
+		// Install plugins
+		foreach ($manifest->plugins->plugin as $plugin)
+		{
+			$attributes                 = $plugin->attributes();
+			$plg                        = $source . '/' . $attributes['folder'] . '/' . $attributes['plugin'];
+			$new                        = ($attributes['new']) ? '&nbsp;(<span class="green">New in v.' . $attributes['new'] . '!</span>)' : '';
+
+			if ($installer->install($plg))
+			{
+				// Autopublish the plugin
+				$query = ' UPDATE #__extensions SET enabled = 1 WHERE folder = ' . $db->Quote($attributes['group']) . ' AND element = ' . $db->Quote($attributes['plugin']);
+				$db->setQuery($query);
+				$db->query();
+				$this->installed_plugs[]    = array('plugin' => $attributes['plugin'] . $new, 'group'=> $attributes['group'], 'upgrade' => true);
+			}
+			else
+			{
+				$this->installed_plugs[]    = array('plugin' => $attributes['plugin'], 'group' => $attributes['group'], 'upgrade' => false);
+				$this->iperror[] = JText::_('Error installing plugin') . ': ' . $attributes['plugin'];
+			}
+		}
+
+		return true;
+
+		// Install modules
+		foreach($manifest->modules->module as $module)
+		{
+			$attributes             = $module->attributes();
+			$mod                    = $source . '/' . $attributes['folder'] . '/' . $attributes['module'];
+			$new                    = ($attributes['new']) ? '&nbsp;(<span class="green">New in v.' . $attributes['new'] . '!</span>)' : '';
+
+			if ($installer->install($mod))
+			{
+				$this->installed_mods[] = array('module' => $attributes['module'] . $new, 'upgrade' => true);
+			}
+			else
+			{
+				$this->installed_mods[] = array('module' => $attributes['module'], 'upgrade' => false);
+				$this->iperror[] = JText::_('Error installing module') . ': ' . $attributes['module'];
+			}
 		}
 	}
 }

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Tracks" default="site" basedir=".">
+
+	<!--<import file="./fof/build/build.xml"/>-->
+
 	<property file="build/build.properties" />
 
 	<!-- Default properties, set only if not already assigned in the build.properties file -->
@@ -16,20 +19,6 @@
 	Tasks - General
 	====================================================================================================
 	-->
-
-	<target name="all" description="Makes everything"
-		depends="dev-release">
-	</target>
-
-	<target name="dev-release" description="Makes the release"
-		depends="new-release,setup-properties,release">
-	</target>
-
-	<target name="new-release" description="Create the release directory afresh">
-		<!-- Recreate the release directory -->
-		<delete dir="${dirs.release}" quiet="yes" includeemptydirs="false" />
-		<mkdir dir="${dirs.release}" />
-	</target>
 
 	<target name="setup-properties" description="Set up version and build properties">
 		<!-- Initialize the build.date timestamp -->
@@ -56,7 +45,10 @@
 	-->
 
 	<target name="release" description="Installation Package for Joomla! 1.6+"
-		depends="new-release,setup-properties">
+		depends="setup-properties">
+
+		<delete dir="${dirs.release}" quiet="yes" includeemptydirs="false" />
+		<mkdir dir="${dirs.release}" />
 
 		<copy todir="${dirs.tmp}/component" >
 			<fileset dir="${dirs.root}/component">
@@ -68,6 +60,11 @@
 					<token key="VERSION" value="${version}" />
 				</replacetokens>
 			</filterchain>
+		</copy>
+		<copy todir="${dirs.tmp}/component/fof" >
+			<fileset dir="${dirs.root}/fof/fof">
+				<include name="**" />
+			</fileset>
 		</copy>
 
 		<!-- Create the package -->

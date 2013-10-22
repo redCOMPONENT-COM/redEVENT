@@ -7,28 +7,26 @@
 	<author>redWEB Aps</author>
 	<authorEmail>email@redweb.dk</authorEmail>
 	<authorUrl>www.redcomponent.com</authorUrl>
-	<copyright>(C) 2008 - 2012 redCOMPONENT.com</copyright>
+	<copyright>(C) 2008 - 2013 redCOMPONENT.com</copyright>
 	<license>GNU/GPL</license>
 	<version>##VERSION##</version>
 	<description>COM_REDEVENT_XML_DESCRIPTION</description>
 
-
-	<!-- Runs on install/uninstall/update -->
 	<scriptfile>install.php</scriptfile>
 
-  <!-- Install Database Section -->
  	<install>
- 		  <sql>
-           <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
- 		  </sql>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+ 		</sql>
  	</install>
-  <!-- Uninstall Database Section -->
+
  	<uninstall>
-		  <sql>
-           <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
-		  </sql>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+		</sql>
  	</uninstall>
-	<update> <!-- Runs on update; New in 1.6 -->
+
+	<update>
 		<schemas>
 			<schemapath type="mysql">sql/updates/mysql</schemapath>
 		</schemas>
@@ -91,11 +89,11 @@
 
 	</administration>
 
-	<!-- UPDATESERVER DEFINITION -->
-	<updateservers>
-		<!-- Note: No spaces or linebreaks allowed between the server tags -->
-		<server type="extension" priority="1" name="redEVENT Update Site">http://www.redcomponent.com/updates/redevent-update.xml</server>
-	</updateservers>
+	<!--&lt;!&ndash; UPDATESERVER DEFINITION &ndash;&gt;-->
+	<!--<updateservers>-->
+		<!--&lt;!&ndash; Note: No spaces or linebreaks allowed between the server tags &ndash;&gt;-->
+		<!--<server type="extension" priority="1" name="redEVENT Update Site">http://www.redcomponent.com/updates/redevent-update.xml</server>-->
+	<!--</updateservers>-->
 
 	<!-- Plugins here -->
 	<plugins>
