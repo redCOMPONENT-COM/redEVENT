@@ -51,8 +51,8 @@ if ($this->row->venueid != 0) {
 	<h2 class="redevent">
 		<?php
 		echo Jtext::_('COM_REDEVENT_VIEW_DETAILS_FIXED_SUMMARY_SECTION_TITLE');
-		echo '&nbsp;'.REOutput::editbutton($this->item->id, $this->row->did, $this->params, $this->allowedtoeditevent, 'editevent' );
-		?>
+    	echo '&nbsp;'.REOutput::editbutton($this->item->id, $this->row->did, $this->params, $this->allowedtoeditevent, 'editevent' );
+    	?>
 	</h2>
 
 	<?php //flyer
@@ -63,9 +63,9 @@ if ($this->row->venueid != 0) {
 	<dl class="event_info floattext">
 
 		<dt class="title"><?php echo JText::_('COM_REDEVENT_TITLE' ).':'; ?></dt>
-		<dd class="title"><?php echo $this->escape($this->row->full_title); ?></dd>
+    <dd class="title"><?php echo $this->escape($this->row->full_title); ?></dd>
 
-		<dt class="when"><?php echo JText::_('COM_REDEVENT_WHEN' ).':'; ?></dt>
+  	<dt class="when"><?php echo JText::_('COM_REDEVENT_WHEN' ).':'; ?></dt>
 		<dd class="when">
 			<?php
 			$tmp = REOutput::formatdate($this->row->dates, $this->row->times);

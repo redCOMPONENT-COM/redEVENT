@@ -1,5 +1,5 @@
 <?php // no direct access
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 
 $document = &JFactory::getDocument();
 $document->addStyleSheet( JURI::base() . '/modules/mod_redeventcal/mod_redeventcal.css' );
@@ -44,27 +44,27 @@ else {
 <div class='redeventcal<?php echo $toggleclass; ?>' align='center'>
 
 <div class="cal_content">
-<?php	
+<?php
 
 // where do we start => first weekday of the month
 $weekday = $firstofthemonth->format('w', true);
 $weekday = ($weekday + 7 - $first_day) % 7; #adjust for $first_day
 ?>
-<table class="mod_redeventcal_calendar" cellspacing="0" cellpadding="0">
+<table class="mod_redeventcal_calendar">
 	<caption class="mod_redeventcal_calendar-month"><?php echo $caption; ?></caption>
 	<tr>
 		<?php if ($show_weeknb): ?>
 		<th class="mod_redeventcal_wk"><?php echo JText::_('MOD_REDEVENTCAL_WK'); ?></th>
 		<?php endif; ?>
-		
+
 		<?php foreach ($day_names as $k => $full): ?>
-			<?php 
+			<?php
 				// day name
 				if ($day_name_length >3) {
 					$day_name = $full;
 				}
 				else
-				{					
+				{
 					if (function_exists('mb_substr'))
 					{
 						$day_name = mb_substr($full,0,$day_name_length, 'UTF-8');
@@ -79,17 +79,17 @@ $weekday = ($weekday + 7 - $first_day) % 7; #adjust for $first_day
 		<?php endforeach; ?>
 	</tr>
 
-	<tr>	
+	<tr>
 		<?php if ($show_weeknb): ?>
 			<td class="mod_redeventcal_wk"><?php echo $first_week++; ?></th>
 		<?php endif; ?>
-		
+
 		<?php for ($counti = 0; $counti < $weekday; $counti++): // initial 'empty' days ?>
 			<td class="mod_redeventcal">&nbsp;</td>
 		<?php endfor; ?>
-		
+
 		<?php for ($day = 1, $days_in_month = gmdate('t', $uxtime_first_of_month); $day <= $days_in_month; $day++, $weekday++): ?>
-			
+
 			<?php if ($weekday == 7):
 				$weekday   = 0; #start a new week
 				?>
@@ -99,8 +99,8 @@ $weekday = ($weekday + 7 - $first_day) % 7; #adjust for $first_day
 					<td class="mod_redeventcal_wk"><?php echo $first_week++; ?></td>
 				<?php endif; ?>
 			<?php endif; ?>
-				
-			<?php 
+
+			<?php
 			if (($day == $today) & ($currmonth == $month) & ($curryear == $year)) {
 				$tdbaseclass = 'mod_redeventcal_caltoday';
 			} else {
@@ -124,15 +124,15 @@ $weekday = ($weekday + 7 - $first_day) % 7; #adjust for $first_day
 					$tip = $params->get('events_tip') ? $events[0]->title.' @ '.$events[0]->venue : $events[0]->title;
 				}
 				$text = count( $events ) . ' ' . JText::_($CalTooltipsTitle);
-									
+
 				if ($Show_Tooltips==1): ?>
 					<td class="<?php  echo $tdbaseclass; ?>link">
 					<?php echo JHTML::tooltip($tip, $text, 'tooltip.png', $day, $link); ?>
 					</td>
 				<?php else: ?>
-					<td class="<?php  echo $tdbaseclass; ?>link"><?php echo $day; ?></td>
+					<td class="<?php  echo $tdbaseclass; ?>link"><?php echo JHTML::link($link, $day); ?></td>
 				<?php endif; ?>
-				
+
 			<?php else: ?>
 				<td class="<?php  echo $tdbaseclass; ?>"><?php echo $day; ?></td>
 			<?php endif; ?>

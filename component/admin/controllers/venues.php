@@ -71,6 +71,14 @@ class RedEventControllerVenues extends RedEventController
 			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
 		}
 
+		// Trigger plugins
+		foreach ($cid as $id)
+		{
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAfterVenueSaved', array($id));
+		}
+
 		$total = count( $cid );
 		$msg 	= $total.' '.JText::_('COM_REDEVENT_VENUE_PUBLISHED');
 
@@ -114,7 +122,7 @@ class RedEventControllerVenues extends RedEventController
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or die( 'Invalid Token' );
-		
+
 		$venue = & JTable::getInstance('redevent_venues', '');
 		$venue->bind(JRequest::get('post'));
 		$venue->checkin();
@@ -142,6 +150,14 @@ class RedEventControllerVenues extends RedEventController
 		$model = $this->getModel('venues');
 
 		$msg = $model->delete($cid);
+
+		// Trigger plugins
+		foreach ($cid as $id)
+		{
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAfterVenueRemoved', array($id));
+		}
 
 		$cache = &JFactory::getCache('com_redevent');
 		$cache->clean();
@@ -200,7 +216,7 @@ class RedEventControllerVenues extends RedEventController
 		}
 
 		$model->checkout();
-		
+
 		parent::display();
 	}
 
@@ -215,7 +231,7 @@ class RedEventControllerVenues extends RedEventController
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or die( 'Invalid Token' );
-		
+
 		$task		= JRequest::getVar('task');
 
 		// Sanitize
@@ -239,6 +255,10 @@ class RedEventControllerVenues extends RedEventController
 					break;
 			}
 			$msg	= JText::_('COM_REDEVENT_VENUE_SAVED');
+
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAfterVenueSaved', array($returnid));
 
 			$cache = &JFactory::getCache('com_redevent');
 			$cache->clean();
@@ -270,20 +290,25 @@ class RedEventControllerVenues extends RedEventController
 
 
 		$model = $this->getModel('venue');
-		$model->store($post);
+		$id = $model->store($post);
 		$model->checkin();
 
 		$msg	= JText::_('COM_REDEVENT_VENUE_SAVED');
 		$link 	= 'index.php?option=com_redevent&view=event&layout=addvenue&tmpl=component';
 
+		// Trigger event for plugins
+		JPluginHelper::importPlugin('redevent');
+		$dispatcher =& JDispatcher::getInstance();
+		$res = $dispatcher->trigger('onAfterVenueSaved', array($id));
+
 		$this->setRedirect( $link, $msg );
 	}
-	
 
-	
+
+
 	/**
 	 * start venues export screens
-	 * 
+	 *
 	 */
 	public function importexport()
 	{
@@ -291,14 +316,14 @@ class RedEventControllerVenues extends RedEventController
 		JRequest::setVar( 'layout', 'importexport' );
 		parent::display();
 	}
-	
+
 	public function doexport()
 	{
 		$app			=& JFactory::getApplication();
-		
+
 		$cats = JRequest::getVar('categories', null, 'request', 'array');
 		JArrayHelper::toInteger($cats);
-		
+
 		$model = $this->getModel('venues');
 		$rows = $model->export($cats);
 
@@ -310,24 +335,24 @@ class RedEventControllerVenues extends RedEventController
 		$k = 0;
 		$export = '';
 		$col = array();
-				
+
 		if (count($rows))
-		{		
+		{
 			$header = current($rows);
 			$export .= redEVENTHelper::writecsvrow(array_keys($header));
 
 			$current = 0; // current event
 			foreach($rows as $data)
-			{			
+			{
 				$export .= redEVENTHelper::writecsvrow($data);
 			}
-	
+
 			echo $export;
 		}
 
 		$app->close();
 	}
-	
+
 	/**
 	 * do the csv import
 	 */
@@ -335,7 +360,7 @@ class RedEventControllerVenues extends RedEventController
 	{
 		$input = JFactory::getApplication()->input;
 		$duplicate_method = $input->get('duplicate_method', 'ignore', 'word');
-		
+
 		$msg = '';
 		if ( $file = $input->files->get( 'import' ) )
 		{
@@ -346,7 +371,7 @@ class RedEventControllerVenues extends RedEventController
 				$this->setRedirect( 'index.php?option=com_redevent&controller=venues&task=importexport', $msg, 'error' );
 				return;
 			}
-			 
+
 			// get fields, on first row of the file
 			$fields = array();
 			if ( ($data = fgetcsv($handle, 0, ',', '"')) !== FALSE )
@@ -388,7 +413,7 @@ class RedEventControllerVenues extends RedEventController
 			}
 			fclose($handle);
 			$msg .= "<p>total records found: ".count($records)."<br /></p>\n";
-			 
+
 			// database update
 			if (count($records))
 			{
@@ -404,7 +429,7 @@ class RedEventControllerVenues extends RedEventController
 			parent::display();
 		}
 	}
-  
+
   /**
    * handle specific fields conversion if needed
    *

@@ -328,6 +328,11 @@ class RedEventModelImport extends JModel
 					continue;
 				}
 
+				// Trigger plugins
+				JPluginHelper::importPlugin('redevent');
+				$dispatcher =& JDispatcher::getInstance();
+				$res = $dispatcher->trigger('onAfterEventSaved', array($ev->id));
+
 				// categories relations
 				$cats = explode('#!#', $r->categories_names);
 				$cats_ids = array();
@@ -380,6 +385,11 @@ class RedEventModelImport extends JModel
 					$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$session->getError(), 'error');
 					continue;
 				}
+
+				// Trigger plugins
+				JPluginHelper::importPlugin('redevent');
+				$dispatcher =& JDispatcher::getInstance();
+				$res = $dispatcher->trigger('onAfterSessionSaved', array($session->id));
 
 				// import pricegroups
 				$pgs = explode('#!#', $r->pricegroups_names);

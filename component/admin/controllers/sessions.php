@@ -69,45 +69,44 @@ class RedEventControllerSessions extends RedEventController
 		}
 
 		parent::display();
-	}
+  }
 
-	/**
-	 * save the event session
-	 */
+  /**
+   * save the event session
+   */
 	public function save()
 	{
-		// Check for request forgeries
-		JRequest::checkToken() or die('Invalid Token');
+    // Check for request forgeries
+    JRequest::checkToken() or die( 'Invalid Token' );
 
-		$post = JRequest::get('post');
+    $post = JRequest::get( 'post' );
 
 		$isNew = JFactory::getApplication()->input->getInt('id', 0) == 0;
 
-		$model = $this->getModel('session');
+    $model = $this->getModel('session');
 
-		$customs = $model->getXrefCustomfields();
-		foreach ($customs as $c)
-		{
-			if ($c->type == 'wysiwyg')
-			{
-				$post['custom' . $c->id] = JRequest::getVar('custom' . $c->id, '', 'post', 'string', JREQUEST_ALLOWRAW);
-			}
-		}
+    $customs = $model->getXrefCustomfields();
+    foreach ($customs as $c)
+    {
+    	if ($c->type == 'wysiwyg') {
+    		$post['custom'.$c->id] = JRequest::getVar('custom'.$c->id, '', 'post', 'string', JREQUEST_ALLOWRAW);
+    	}
+    }
 
-		$post['details'] = JRequest::getVar('details', '', 'post', 'string', JREQUEST_ALLOWRAW);
-		$post['icaldetails'] = JRequest::getVar('icaldetails', '', 'post', 'string', JREQUEST_ALLOWRAW);
+    $post['details'] = JRequest::getVar('details', '', 'post', 'string', JREQUEST_ALLOWRAW);
+    $post['icaldetails'] = JRequest::getVar('icaldetails', '', 'post', 'string', JREQUEST_ALLOWRAW);
 
-		$eventid = JRequest::getInt('eventid');
+    $eventid = JRequest::getInt('eventid');
 
-		$model = $this->getModel('session');
-		if ($returnid = $model->savexref($post))
-		{
+    $model = $this->getModel('session');
+    if ($returnid = $model->savexref($post))
+    {
 			/* Check if people need to be moved on or off the waitinglist */
 			$model_wait = $this->getModel('waitinglist');
 			$model_wait->setXrefId($returnid);
 			$model_wait->UpdateWaitingList();
 
-			$cache = & JFactory::getCache('com_redevent');
+			$cache = &JFactory::getCache('com_redevent');
 			$cache->clean();
 
 			if (JRequest::getVar('task') == 'saveAndTwit')
@@ -122,22 +121,20 @@ class RedEventControllerSessions extends RedEventController
 			$dispatcher =& JDispatcher::getInstance();
 			$res = $dispatcher->trigger('onAfterSessionSave', array($returnid, $isNew));
 
-			$msg = 'saved session';
+      $msg = 'saved session';
 			if (JRequest::getVar('task') == 'apply')
 			{
 				$this->setRedirect('index.php?option=com_redevent&view=session&cid[]=' . $returnid, $msg);
-			}
-			else
-			{
-				$this->setRedirect('index.php?option=com_redevent&view=sessions', $msg);
-			}
-		}
-		else
-		{
-			$msg = 'error saving: ' . $model->getError();
-			$this->setRedirect('index.php?option=com_redevent&view=sessions', $msg, 'error');
-		}
-		return true;
+      }
+      else {
+      	$this->setRedirect('index.php?option=com_redevent&view=sessions', $msg);
+      }
+    }
+    else {
+    	$msg = 'error saving: '. $model->getError() ;
+      $this->setRedirect('index.php?option=com_redevent&view=sessions',  $msg, 'error');
+    }
+    return true;
 	}
 
 	public function cancel()
@@ -169,8 +166,17 @@ class RedEventControllerSessions extends RedEventController
 			echo "<script> alert('" . $model->getError() . "'); window.history.go(-1); </script>\n";
 		}
 
-		$total = count($cid);
-		$msg = $total . ' ' . JText::_('COM_REDEVENT_SESSIONS_PUBLISHED');
+		// Trigger plugins
+		foreach ($cid as $id)
+		{
+			// Trigger event for plugins
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAfterSessionSaved', array($id));
+		}
+
+		$total = count( $cid );
+		$msg 	= $total.' '.JText::_('COM_REDEVENT_SESSIONS_PUBLISHED');
 
 		$eventid = JRequest::getInt('eventid');
 		$this->setRedirect('index.php?option=com_redevent&view=sessions', $msg);
@@ -199,8 +205,17 @@ class RedEventControllerSessions extends RedEventController
 			echo "<script> alert('" . $model->getError() . "'); window.history.go(-1); </script>\n";
 		}
 
-		$total = count($cid);
-		$msg = $total . ' ' . JText::_('COM_REDEVENT_SESSIONS_UNPUBLISHED');
+		// Trigger plugins
+		foreach ($cid as $id)
+		{
+			// Trigger event for plugins
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAfterSessionSaved', array($id));
+		}
+
+		$total = count( $cid );
+		$msg 	= $total.' '.JText::_('COM_REDEVENT_SESSIONS_UNPUBLISHED');
 
 		$eventid = JRequest::getInt('eventid');
 		$this->setRedirect('index.php?option=com_redevent&view=sessions', $msg);
@@ -229,8 +244,17 @@ class RedEventControllerSessions extends RedEventController
 			echo "<script> alert('" . $model->getError() . "'); window.history.go(-1); </script>\n";
 		}
 
-		$total = count($cid);
-		$msg = $total . ' ' . JText::_('COM_REDEVENT_SESSIONS_ARCHIVED');
+		// Trigger plugins
+		foreach ($cid as $id)
+		{
+			// Trigger event for plugins
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAfterSessionSaved', array($id));
+		}
+
+		$total = count( $cid );
+		$msg 	= $total.' '.JText::_('COM_REDEVENT_SESSIONS_ARCHIVED');
 
 		$eventid = JRequest::getInt('eventid');
 		$this->setRedirect('index.php?option=com_redevent&view=sessions', $msg);
@@ -262,8 +286,7 @@ class RedEventControllerSessions extends RedEventController
 			$session = $model->getXref();
 			$session_code = $session->session_code;
 
-			// Get code
-			if (!$model->removexref($xref))
+			if(!$model->removexref($xref))
 			{
 				$msg = $model->getError();
 				$this->setRedirect('index.php?option=com_redevent&view=sessions', $msg, 'error');
@@ -272,7 +295,7 @@ class RedEventControllerSessions extends RedEventController
 
 			// Trigger event
 			JPluginHelper::importPlugin('redevent');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$res = $dispatcher->trigger('onAfterSessionDelete', array($session_code));
 		}
 
@@ -284,7 +307,6 @@ class RedEventControllerSessions extends RedEventController
 		$eventid = JRequest::getInt('eventid');
 		$this->setRedirect('index.php?option=com_redevent&view=sessions', $msg);
 	}
-
 
 	/**
 	 * Logic to set as featured
@@ -309,8 +331,17 @@ class RedEventControllerSessions extends RedEventController
 			echo "<script> alert('" . $model->getError() . "'); window.history.go(-1); </script>\n";
 		}
 
-		$total = count($cid);
-		$msg = JText::sprintf('COM_REDEVENT_SESSIONS_SET_AS_FEATURED', $total);
+		// Trigger plugins
+		foreach ($cid as $id)
+		{
+			// Trigger event for plugins
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAfterSessionSaved', array($id));
+		}
+
+		$total = count( $cid );
+		$msg 	= JText::sprintf( 'COM_REDEVENT_SESSIONS_SET_AS_FEATURED', $total);
 
 		$eventid = JRequest::getInt('eventid');
 		$this->setRedirect('index.php?option=com_redevent&view=sessions', $msg);
@@ -334,9 +365,17 @@ class RedEventControllerSessions extends RedEventController
 
 		$model = $this->getModel('sessions');
 
-		if (!$model->featured($cid, 0))
+		if(!$model->featured($cid, 0)) {
+			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
+		}
+
+		// Trigger plugins
+		foreach ($cid as $id)
 		{
-			echo "<script> alert('" . $model->getError() . "'); window.history.go(-1); </script>\n";
+			// Trigger event for plugins
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAfterSessionSaved', array($id));
 		}
 
 		$total = count($cid);

@@ -398,16 +398,16 @@ class REOutput {
 		return $output;
 	}
 
-	/**
-	 * Creates the map button
-	 *
-	 * @param obj $data
-	 * @param obj $settings
-	 *
-	 * @since 0.9
-	 */
-	function pinpointicon($data, $attributes = array())
-	{
+  /**
+  * Creates the map button
+  *
+  * @param obj $data
+  * @param obj $settings
+  *
+  * @since 0.9
+  */
+  function pinpointicon($data, $attributes = array())
+  {
 		JHTML::_('behavior.framework');
 		$params = JComponentHelper::getParams('com_redevent');
 		$document 	= & JFactory::getDocument();
@@ -630,24 +630,27 @@ class REOutput {
 	 * @param object $event
 	 * @return string or false for open date
 	 */
-	function formatEventDateTime($event, $showend = true)
+	function formatEventDateTime($event, $show_end = true)
 	{
 		if (!redEVENTHelper::isValidDate($event->dates)) { // open dates
 			$date = '<span class="event-date open-date">'.JText::_('COM_REDEVENT_OPEN_DATE').'</span>';
 			return $date;
 		}
 		$settings = & redEVENTHelper::config();
+		$showend = $settings->get('lists_showend', 1);
+
+		$date_start = self::formatdate($event->dates, $event->times);
+		$time_start = '';
+		$date_end   = '';
+		$time_end   = '';
 
 		// is this a full day(s) event ?
 		$allday = '00:00:00' == $event->times && '00:00:00' == $event->endtimes;
 
-		$date = '<span class="event-date">';
-		$date .= '<span class="event-start">';
-		$date .= '<span class="event-day">'.self::formatdate($event->dates, $event->times).'</span>';
-		if (!$allday && $settings->get('lists_show_time', 0) == 1) {
-			$date .= ' <span class="event-time">'.self::formattime($event->dates, $event->times).'</span>';
+		if (!$allday )
+		{
+			$time_start = self::formattime($event->dates, $event->times);
 		}
-		$date .= '</span>';
 
 		if ($allday)
 		{
@@ -656,25 +659,47 @@ class REOutput {
 				if ( strtotime($event->enddates. ' -1 day') != strtotime($event->dates)
 				    && strtotime($event->enddates) != strtotime($event->dates) ) // all day is written as midnight to midnight, so remove last day
 				{
-					$date .= ' <span class="event-end"><span class="event-day">'.self::formatdate(strftime('%Y-%m-%d', strtotime($event->enddates. ' -1 day')), $event->endtimes).'</span></span>';
+					$date_end = self::formatdate(strftime('%Y-%m-%d', strtotime($event->enddates. ' -1 day')), $event->endtimes);
 				}
 			}
 		}
-		else if ($showend)
+		elseif ($showend)
 		{
 			if (redEVENTHelper::isValidDate($event->enddates) && strtotime($event->enddates) != strtotime($event->dates))
 			{
-				$date .= ' <span class="event-end"><span class="event-day">'.self::formatdate($event->enddates, $event->endtimes).'</span>';
-				if ($settings->get('lists_show_time', 0) == 1) {
-					$date .= ' <span class="event-time">'.self::formattime($event->dates, $event->endtimes).'</span>';
-				}
-				$date .= '</span>';
+				$date_end = self::formatdate($event->enddates, $event->endtimes);
+				$time_end = self::formattime($event->dates, $event->endtimes);
 			}
-			else if ($settings->get('lists_show_time', 0) == 1)
+			else
 			{
-				$date .= ' <span class="event-time">'.self::formattime($event->dates, $event->endtimes).'</span>';
+				// Same day, just display end time after start time
+				$time_start .= ' ' . self::formattime($event->dates, $event->endtimes);
 			}
 		}
+
+		$date = '<span class="event-date">';
+		$date .= '<span class="event-start">';
+		$date .= '<span class="event-day">' . $date_start .'</span>';
+
+		if ($settings->get('lists_show_time', 0) == 1 && $time_start)
+		{
+			$date .= ' <span class="event-time">' . $time_start . '</span>';
+		}
+
+		$date .= '</span>';
+
+		if ($date_end)
+		{
+			$date .= ' <span class="event-end"><span class="event-day">' . $date_end . '</span>';
+
+			if ($settings->get('lists_show_time', 0) == 1 && $time_end)
+			{
+				$date .= ' <span class="event-time">' . $time_end . '</span>';
+			}
+
+			$date .= '</span>';
+		}
+
 		$date .= '</span>';
 
 		return $date;
@@ -814,7 +839,8 @@ class REOutput {
 	/**
 	  * Change images from relative to absolute URLs
 	  */
-	public function ImgRelAbs($text) {
+	public function ImgRelAbs($text)
+	{
 		$find = ("/ src=\"/");
 		$replace = " src=\"".JURI::root();
 		$newtext = preg_replace($find, $replace, $text);

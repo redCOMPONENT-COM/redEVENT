@@ -72,6 +72,15 @@ class RedEventControllerEvents extends RedEventController
 			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
 		}
 
+		// Trigger plugins
+		foreach ($cid as $eventid)
+		{
+			// Trigger event for plugins
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAfterEventSaved', array($eventid));
+		}
+
 		$total = count( $cid );
 		$msg 	= $total.' '.JText::_('COM_REDEVENT_EVENT_PUBLISHED');
 
@@ -96,6 +105,15 @@ class RedEventControllerEvents extends RedEventController
 		$model = $this->getModel('events');
 		if(!$model->publish($cid, 0)) {
 			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
+		}
+
+		// Trigger plugins
+		foreach ($cid as $eventid)
+		{
+			// Trigger event for plugins
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAfterEventSaved', array($eventid));
 		}
 
 		$total = count( $cid );
@@ -124,6 +142,15 @@ class RedEventControllerEvents extends RedEventController
 			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
 		}
 
+		// Trigger plugins
+		foreach ($cid as $eventid)
+		{
+			// Trigger event for plugins
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAfterEventSaved', array($eventid));
+		}
+
 		$total = count( $cid );
 		$msg 	= $total.' '.JText::_('COM_REDEVENT_OLD_EVENT_DATE_ARCHIVED');
 
@@ -149,6 +176,15 @@ class RedEventControllerEvents extends RedEventController
     if(!$model->archive($cid)) {
       echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
     }
+
+	  // Trigger plugins
+	  foreach ($cid as $eventid)
+	  {
+		  // Trigger event for plugins
+		  JPluginHelper::importPlugin('redevent');
+		  $dispatcher =& JDispatcher::getInstance();
+		  $res = $dispatcher->trigger('onAfterEventSaved', array($eventid));
+	  }
 
     $total = count( $cid );
     $msg  = $total.' '.JText::_('COM_REDEVENT_OLD_EVENT_DATE_ARCHIVED');
@@ -214,28 +250,38 @@ class RedEventControllerEvents extends RedEventController
 	function save()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
-		$db = JFactory::getDBO();
-		$task		= JRequest::getVar('task');
+		JSession::checkToken() or die( 'Invalid Token' );
+		$db   = JFactory::getDBO();
+		$app  = JFactory::getApplication();
+		$task = $app->input->get('task');
 
 		$post = JRequest::get( 'post', 4 );
 
 		/* Get the form fields to display */
-		$showfields = '';
-		foreach ($post as $field => $value) {
-			if (substr($field, 0, 9) == 'showfield' && $value == "1") {
-				$showfields .= substr($field, 9).",";
+		$showfields = array();
+
+		foreach ($post as $field => $value)
+		{
+			if (substr($field, 0, 9) == 'showfield' && $value == "1")
+			{
+				$showfields[] = substr($field, 9);
 			}
 		}
 
-		$post['showfields'] = substr($showfields, 0, -1);
-		if (!isset($post['checked_out'])) $post['checked_out'] = 0;
+		$post['showfields'] = implode(',', $showfields);
+
+		if (!isset($post['checked_out']))
+		{
+			$post['checked_out'] = 0;
+		}
 
 		/* Fix the submission types */
-		if (!$post['submission_types']) {
+		if (!$post['submission_types'])
+		{
 			$post['submission_types'] = array();
 		}
-		else {
+		else
+		{
 			$post['submission_types'] = implode(',', $post['submission_types']);
 		}
 
@@ -244,14 +290,27 @@ class RedEventControllerEvents extends RedEventController
 
 		if ($returnid = $model->store($post))
 		{
+			// Event saved, trigger plugins
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAfterEventSaved', array($returnid));
+
 			$msg	= JText::_('COM_REDEVENT_EVENT_SAVED');
 
+			// Check if we have session info, which only happens when creating the event the first time (other sessions have to be added in sessions view)
 			if (isset($post['venueid']) && $post['venueid'])
 			{
 				if (!$xref = $this->_saveInitialSession($returnid)) {
 					$msg .= "\n".JTExt::_('COM_REDEVENT_EVENT_FAILED_SAVING_INITIAL_SESSION').': '.$this->getError();
 				}
-				if (JRequest::getVar('task') == 'saveAndTwit')
+
+				// Session saved, trigger plugins
+				JPluginHelper::importPlugin('redevent');
+				$dispatcher =& JDispatcher::getInstance();
+				$res = $dispatcher->trigger('onAfterSessionSaved', array($xref));
+
+				// Specific for autotweet
+				if ($task == 'saveAndTwit')
 				{
 					JPluginHelper::importPlugin( 'system', 'autotweetredevent');
 					$dispatcher =& JDispatcher::getInstance();
@@ -315,6 +374,14 @@ class RedEventControllerEvents extends RedEventController
 			$cache->clean();
 		}
 
+		// Trigger plugins
+		foreach ($cid as $id)
+		{
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAfterEventRemoved', array($id));
+		}
+
 		$this->setRedirect( 'index.php?option=com_redevent&view=events', $msg, $msgtype);
 	}
 
@@ -330,6 +397,11 @@ class RedEventControllerEvents extends RedEventController
 			$model = $this->getModel('session');
 			if ($model->removexref($id)) {
 				echo '1' .':'. JText::_('COM_REDEVENT_DATE_DELETED');
+
+				JPluginHelper::importPlugin('redevent');
+				$dispatcher =& JDispatcher::getInstance();
+				$res = $dispatcher->trigger('onAfterSessionRemoved', array($id));
+
         return true;
 			}
 			else {
