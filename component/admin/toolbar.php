@@ -41,7 +41,10 @@ class RedeventToolbar extends FOFToolbar
 			$this->renderSubmenu();
 		}
 
-		if(!$isAdmin && !$this->renderFrontendButtons) return;
+		if (!$isAdmin && !$this->renderFrontendButtons)
+		{
+			return;
+		}
 
 		JToolBarHelper::title(JText::_('COM_REDEVENT_MENU_ROLES'), 'roles');
 		JToolBarHelper::addNewX();
@@ -97,7 +100,10 @@ class RedeventToolbar extends FOFToolbar
 		// Set toolbar title
 		$option = 'com_redevent';
 		$subtitle_key = strtoupper($option . '_TITLE_' . $this->input->getCmd('view', 'cpanel'));
-		JToolBarHelper::title(JText::_(strtoupper($option)) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>', $this->input->getCmd('view', 'cpanel'));
+		JToolBarHelper::title(
+			JText::_(strtoupper($option)) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>',
+			$this->input->getCmd('view', 'cpanel')
+		);
 		JToolBarHelper::addNewX();
 		JToolBarHelper::editListX();
 		JToolBarHelper::custom('export', 'csvexport', 'csvexport', JText::_('COM_REDEVENT_BUTTON_EXPORT'), false);
@@ -122,7 +128,10 @@ class RedeventToolbar extends FOFToolbar
 		// Set toolbar title
 		$option = 'com_redevent';
 		$subtitle_key = strtoupper($option . '_TITLE_' . $this->input->getCmd('view', 'cpanel'));
-		JToolBarHelper::title(JText::_(strtoupper($option)) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>', $this->input->getCmd('view', 'cpanel'));
+		JToolBarHelper::title(
+			JText::_(strtoupper($option)) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>',
+			$this->input->getCmd('view', 'cpanel')
+		);
 	}
 
 	/**
@@ -137,7 +146,10 @@ class RedeventToolbar extends FOFToolbar
 		// Set toolbar title
 		$option = 'com_redevent';
 		$subtitle_key = strtoupper($option . '_TITLE_' . $this->input->getCmd('view', 'cpanel') . '_READ');
-		JToolBarHelper::title(JText::_(strtoupper($option)) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>', FOFInflector::pluralize($this->input->getCmd('view', 'cpanel')));
+		JToolBarHelper::title(
+			JText::_(strtoupper($option)) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>',
+			FOFInflector::pluralize($this->input->getCmd('view', 'cpanel'))
+		);
 	}
 
 	/**
@@ -154,6 +166,9 @@ class RedeventToolbar extends FOFToolbar
 
 		// Set toolbar title
 		$subtitle_key = strtoupper($option . '_TITLE_' . FOFInflector::pluralize($this->input->getCmd('view', 'cpanel'))) . '_EDIT';
-		JToolBarHelper::title(JText::_(strtoupper($option)) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>', FOFInflector::pluralize($this->input->getCmd('view', 'cpanel')));
+		JToolBarHelper::title(
+			JText::_(strtoupper($option)) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>',
+			FOFInflector::pluralize($this->input->getCmd('view', 'cpanel'))
+		);
 	}
 }
