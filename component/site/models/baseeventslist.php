@@ -287,7 +287,21 @@ class RedeventModelBaseEventList extends JModel
 			$filter_order = 'c' . $regs[1] . '.value';
 		}
 
-		$query->order($filter_order . ' ' . $filter_order_dir . ', x.dates, x.times');
+		$open_order = JComponentHelper::getParams('com_redevent')->get('open_dates_ordering', 0);
+		$ordering_def = $open_order ? 'x.dates = 0 ' . $filter_order_dir . ', x.dates ' . $filter_order_dir
+			: 'x.dates > 0 ' . $filter_order_dir . ', x.dates ' . $filter_order_dir;
+
+		switch ($filter_order)
+		{
+			case 'x.dates':
+				$ordering = $ordering_def;
+				break;
+
+			default:
+				$ordering = $filter_order . ' ' . $filter_order_dir . ', ' . $ordering_def;
+		}
+
+		$query->order($ordering);
 
 		return $query;
 	}

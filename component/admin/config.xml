@@ -197,8 +197,7 @@
 			   label="COM_REDEVENT_SETTINGS_LISTS_OPEN_DATES_ORDERING"
 			   description="COM_REDEVENT_SETTINGS_LISTS_OPEN_DATES_ORDERING_DESC">
 			<option value="0">COM_REDEVENT_SETTINGS_LISTS_OPEN_DATES_ORDERING_BEFORE</option>
-			<option value="0">COM_REDEVENT_SETTINGS_LISTS_OPEN_DATES_ORDERING_AFTER</option>
-			<option value="1">JSHOW</option>
+			<option value="1">COM_REDEVENT_SETTINGS_LISTS_OPEN_DATES_ORDERING_AFTER</option>
 		</field>
 
 		<field name="default_list_layout"
