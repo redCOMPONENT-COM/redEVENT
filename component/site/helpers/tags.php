@@ -35,7 +35,7 @@ class redEVENT_tags {
 	private $_submitkey;
 	private $_maxattendees;
 	private $_maxwaitinglist;
-  private $_published;
+	private $_published;
 	protected $_eventlinks = null;
 	private $_libraryTags = null;
 	private $_customfields = null;
@@ -469,52 +469,73 @@ class redEVENT_tags {
 	{
 		if (empty($this->_eventlinks))
 		{
+			// TODO: should be moved to a model
 			$xcustoms = $this->getXrefCustomFields();
 
 			$order_Dir = JRequest::getWord('filter_order_Dir', 'ASC');
-			$order 		 = JRequest::getCmd('filter_order', 'x.dates');
+			$order = JRequest::getCmd('filter_order', 'x.dates');
 
-			$db = JFactory::getDBO();
-			$query = ' SELECT e.*, IF (x.course_credit = 0, "", x.course_credit) AS course_credit, '
-			   . ' x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, x.maxattendees, x.maxwaitinglist, v.venue, x.venueid, x.details, x.registrationend, '
-         . ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', e.title, x.title) ELSE e.title END as full_title, '
-			   . ' x.external_registration_url, '
-			. ' v.id AS venue_id, v.city AS location, v.state, v.url as venueurl, v.locdescription as venue_description, '
-			   . ' v.country, v.locimage, v.street, v.plz, v.map, '
-			. ' f.id AS form_id, f.formname, '
-			   . ' UNIX_TIMESTAMP(x.dates) AS unixdates, '
-			   . ' CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(":", e.id, e.alias) ELSE e.id END as slug, '
-         . ' CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug, '
-			   . ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(":", v.id, v.alias) ELSE v.id END as venueslug '
-			   ;
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			$query->select('e.*');
+			$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', e.title, x.title) ELSE e.title END as full_title');
+
+			$query->select('IF (x.course_credit = 0, "", x.course_credit) AS course_credit');
+			$query->select('x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, x.venueid, x.details');
+			$query->select('x.maxattendees, x.maxwaitinglist, x.registrationend, x.external_registration_url');
+			$query->select('UNIX_TIMESTAMP(x.dates) AS unixdates');
+
+			$query->select('v.venue, v.id AS venue_id, v.city AS location, v.state, v.url as venueurl, v.locdescription as venue_description');
+			$query->select('v.country, v.locimage, v.street, v.plz, v.map');
+
+			$query->select('f.id AS form_id, f.formname');
+
+			$query->select('CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(":", e.id, e.alias) ELSE e.id END as slug');
+			$query->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug');
+			$query->select('CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(":", v.id, v.alias) ELSE v.id END as venueslug');
 
 			// add the custom fields
 			foreach ((array) $xcustoms as $c)
 			{
-				$query .= ', x.custom'. $c->id;
+				$query->select('x.custom' . $c->id);
 			}
 
+			$query->from('#__redevent_events AS e');
+			$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.eventid = e.id');
+			$query->join('INNER', '#__redevent_venues AS v ON x.venueid = v.id');
+			$query->join('LEFT', '#__rwf_forms AS f ON f.id = e.redform_id');
+			$query->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
+			$query->join('LEFT', '#__redevent_categories AS c ON xcat.category_id = c.id');
+			$query->join('LEFT', '#__users AS u ON u.id = e.created_by');
 
-			$query .= ' FROM #__redevent_events AS e '
-			   . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
-			   . ' INNER JOIN #__redevent_venues AS v ON x.venueid = v.id '
-			   . ' LEFT JOIN #__rwf_forms AS f ON f.id = e.redform_id '
-			   . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
-			   . ' LEFT JOIN #__redevent_categories AS c ON xcat.category_id = c.id '
-			   . ' LEFT JOIN #__users AS u ON u.id = e.created_by '
-			   ;
+			$query->where('x.published = ' . $db->Quote($this->getEvent()->getData()->published));
+			$query->where('e.id = ' . $this->_eventid);
+			$query->where('');
 
-			$query .= ' WHERE x.published = '. $db->Quote($this->getEvent()->getData()->published)
-			   . ' AND e.id = '.$this->_eventid
-			   . ' GROUP BY x.id '
-			   . ' ORDER BY '.$order.' '.$order_Dir.', x.dates, x.times '
-			   ;
+			$query->group('x.id');
+
+			$open_order = JComponentHelper::getParams('com_redevent')->get('open_dates_ordering', 0);
+			$ordering_def = $open_order ? 'x.dates = 0 ' . $order_Dir . ', x.dates ' . $order_Dir
+				: 'x.dates > 0 ' . $order_Dir . ', x.dates ' . $order_Dir;
+
+			switch ($order)
+			{
+				case 'x.dates':
+					$ordering = $ordering_def;
+					break;
+
+				default:
+					$ordering = $order . ' ' . $order_Dir . ', ' . $ordering_def;
+			}
+			$query->order($ordering);
+
 			$db->setQuery($query);
 			$this->_eventlinks = $db->loadObjectList();
-	    $this->_eventlinks = $this->_getPlacesLeft($this->_eventlinks);
+			$this->_eventlinks = $this->_getPlacesLeft($this->_eventlinks);
 			$this->_eventlinks = $this->_getCategories($this->_eventlinks);
-	    $this->_eventlinks = $this->_getUserRegistrations($this->_eventlinks);
-	    $this->_eventlinks = $this->_getPrices($this->_eventlinks);
+			$this->_eventlinks = $this->_getUserRegistrations($this->_eventlinks);
+			$this->_eventlinks = $this->_getPrices($this->_eventlinks);
 		}
 		return $this->_eventlinks;
 	}

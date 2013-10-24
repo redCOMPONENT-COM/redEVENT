@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config addfieldpath="/administrator/components/com_redevent/models/fields">
 
-	<fieldset name="general" label="COM_REDEVENT_SETTINGS_GENERAL_LABEL" description="COM_REDEVENT_SETTINGS_GENERAL_DESC">			
+	<fieldset name="general" label="COM_REDEVENT_SETTINGS_GENERAL_LABEL" description="COM_REDEVENT_SETTINGS_GENERAL_DESC">
 		<field type="spacer" label="COM_REDEVENT_DISPLAY_SETTINGS" />
 		<field name="showdetails" type="list" default="1" label="COM_REDEVENT_SHOW_DETAILS" description="COM_REDEVENT_SHOW_DETAILS_TIP">
 			<option value="0">COM_REDEVENT_DETAILS_OFF</option>
@@ -19,8 +19,8 @@
 		<field name="storeip" type="radio" default="1" label="COM_REDEVENT_STORE_IP" description="COM_REDEVENT_STORE_IP_TIP">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
-		</field>		
-		
+		</field>
+
 		<field type="spacer" label="COM_REDEVENT_MAIL_HANDLING" />
 		<field name="mailinform" type="list" default="1" label="COM_REDEVENT_MAIL_NEW_SUBMISSION" description="COM_REDEVENT_MAIL_NEW_SUBMISSION_TIP">
 			<option value="0">COM_REDEVENT_DISABLED</option>
@@ -29,14 +29,14 @@
 			<option value="3">COM_REDEVENT_BOTH</option>
 		</field>
 		<field name="mailinformrec" type="text" default="" label="COM_REDEVENT_MAIL_RECIPIENT" description="COM_REDEVENT_MAIL_RECIPIENT_TIP" />
-		
+
 		<field name="mailinformuser" type="list" default="1" label="COM_REDEVENT_MAIL_NEW_USER_SUBMISSION" description="COM_REDEVENT_MAIL_NEW_USER_SUBMISSION_TIP">
 			<option value="0">COM_REDEVENT_DISABLED</option>
 			<option value="1">COM_REDEVENT_ONLY_NEW_EVENT</option>
 			<option value="2">COM_REDEVENT_ONLY_NEW_VENUE</option>
 			<option value="3">COM_REDEVENT_BOTH</option>
 		</field>
-		
+
 		<field type="spacer" label="COM_REDEVENT_IMAGE_HANDLING" />
 		<field name="sizelimit" type="text" default="100" label="COM_REDEVENT_IMAGE_FILESIZE" description="COM_REDEVENT_IMAGE_FILESIZE_TIP" />
 		<field name="imageheight" type="text" default="100" label="COM_REDEVENT_IMAGE_HEIGHT" description="COM_REDEVENT_IMAGE_HEIGHT_TIP" />
@@ -44,12 +44,12 @@
 		<field name="gddisabled" type="radio" default="1" label="COM_REDEVENT_GD_LIBRARY" description="COM_REDEVENT_GD_LIBRARY_TIP">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
-		</field>		
+		</field>
 		<field name="lightbox" type="radio" default="1" label="COM_REDEVENT_IMAGE_LIGHTBOX" description="COM_REDEVENT_IMAGE_LIGHTBOX_TIP">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
-		</field>	
-		
+		</field>
+
 		<field type="spacer" label="COM_REDEVENT_META_HANDLING" />
 		<field name="meta_keywords" type="list" default="[title],[a_name],[catsid],[dates]" label="COM_REDEVENT_META_KEYWORDS" description="COM_REDEVENT_META_KEYWORDS_TIP">
 			<option value="[title]">COM_REDEVENT_EVENT_TITLE</option>
@@ -59,72 +59,72 @@
 			<option value="[times]">COM_REDEVENT_EVENT_TIME</option>
 			<option value="[enddates]">COM_REDEVENT_ENDDATE</option>
 			<option value="[endtimes]">COM_REDEVENT_END_TIME</option>
-		</field>	
-		<field name="meta_description" type="textarea" rows="10" cols="50" 
+		</field>
+		<field name="meta_description" type="textarea" rows="10" cols="50"
 		       translate_default="true"
-		       default="COM_REDEVENT_META_DESCRIPTION_STANDARD" 
-		       label="COM_REDEVENT_META_DESCRIPTION" 
+		       default="COM_REDEVENT_META_DESCRIPTION_STANDARD"
+		       label="COM_REDEVENT_META_DESCRIPTION"
 		       description="COM_REDEVENT_META_DESCRIPTION_TIP" />
-		
+
 		<field type="spacer" label="COM_REDEVENT_SIGNUP_LINKS" />
-		<field name="signup_external_text" type="text" 
+		<field name="signup_external_text" type="text"
 		       translate_default="true"
-		       default="COM_REDEVENT_SETTING_SIGNUP_EXTERNAL_TEXT_DEFAULT" 
-		       label="COM_REDEVENT_SETTING_SIGNUP_EXTERNAL_TEXT" 
+		       default="COM_REDEVENT_SETTING_SIGNUP_EXTERNAL_TEXT_DEFAULT"
+		       label="COM_REDEVENT_SETTING_SIGNUP_EXTERNAL_TEXT"
 		       description="COM_REDEVENT_SETTING_SIGNUP_EXTERNAL_TEXT_DESC" />
-		<field name="signup_external_img" type="imagelist" 
-		       label="COM_REDEVENT_SETTING_SIGNUP_EXTERNAL_IMAGE" 
+		<field name="signup_external_img" type="imagelist"
+		       label="COM_REDEVENT_SETTING_SIGNUP_EXTERNAL_IMAGE"
 		       description="COM_REDEVENT_SETTING_SIGNUP_EXTERNAL_IMAGE_DESC"
 		       directory="/administrator/components/com_redevent/assets/images"
 		       default="external_icon.gif" />
-		       
-		<field name="signup_webform_text" type="text" 
+
+		<field name="signup_webform_text" type="text"
 		       translate_default="true"
-		       default="COM_REDEVENT_SETTING_SIGNUP_WEBFORM_TEXT_DEFAULT" 
-		       label="COM_REDEVENT_SETTING_SIGNUP_WEBFORM_TEXT" 
+		       default="COM_REDEVENT_SETTING_SIGNUP_WEBFORM_TEXT_DEFAULT"
+		       label="COM_REDEVENT_SETTING_SIGNUP_WEBFORM_TEXT"
 		       description="COM_REDEVENT_SETTING_SIGNUP_WEBFORM_TEXT_DESC" />
-		<field name="signup_webform_img" type="imagelist" 
-		       label="COM_REDEVENT_SETTING_SIGNUP_webform_IMAGE" 
+		<field name="signup_webform_img" type="imagelist"
+		       label="COM_REDEVENT_SETTING_SIGNUP_webform_IMAGE"
 		       description="COM_REDEVENT_SETTING_SIGNUP_webform_IMAGE_DESC"
 		       directory="/administrator/components/com_redevent/assets/images"
 		       default="form_icon.gif" />
-		       
-		<field name="signup_email_text" type="text" 
+
+		<field name="signup_email_text" type="text"
 		       translate_default="true"
-		       default="COM_REDEVENT_SETTING_SIGNUP_email_TEXT_DEFAULT" 
-		       label="COM_REDEVENT_SETTING_SIGNUP_email_TEXT" 
+		       default="COM_REDEVENT_SETTING_SIGNUP_email_TEXT_DEFAULT"
+		       label="COM_REDEVENT_SETTING_SIGNUP_email_TEXT"
 		       description="COM_REDEVENT_SETTING_SIGNUP_email_TEXT_DESC" />
-		<field name="signup_email_img" type="imagelist" 
-		       label="COM_REDEVENT_SETTING_SIGNUP_email_IMAGE" 
+		<field name="signup_email_img" type="imagelist"
+		       label="COM_REDEVENT_SETTING_SIGNUP_email_IMAGE"
 		       description="COM_REDEVENT_SETTING_SIGNUP_email_IMAGE_DESC"
 		       directory="/administrator/components/com_redevent/assets/images"
 		       default="email_icon.gif" />
-		       
-		<field name="signup_formal_offer_text" type="text" 
+
+		<field name="signup_formal_offer_text" type="text"
 		       translate_default="true"
-		       default="COM_REDEVENT_SETTING_SIGNUP_formal_offer_TEXT_DEFAULT" 
-		       label="COM_REDEVENT_SETTING_SIGNUP_formal_offer_TEXT" 
+		       default="COM_REDEVENT_SETTING_SIGNUP_formal_offer_TEXT_DEFAULT"
+		       label="COM_REDEVENT_SETTING_SIGNUP_formal_offer_TEXT"
 		       description="COM_REDEVENT_SETTING_SIGNUP_formal_offer_TEXT_DESC" />
-		<field name="signup_formal_offer_img" type="imagelist" 
-		       label="COM_REDEVENT_SETTING_SIGNUP_formal_offer_IMAGE" 
+		<field name="signup_formal_offer_img" type="imagelist"
+		       label="COM_REDEVENT_SETTING_SIGNUP_formal_offer_IMAGE"
 		       description="COM_REDEVENT_SETTING_SIGNUP_formal_offer_IMAGE_DESC"
 		       directory="/administrator/components/com_redevent/assets/images"
 		       default="formal_icon.gif" />
-		       
-		<field name="signup_phone_text" type="text" 
+
+		<field name="signup_phone_text" type="text"
 		       translate_default="true"
-		       default="COM_REDEVENT_SETTING_SIGNUP_phone_TEXT_DEFAULT" 
-		       label="COM_REDEVENT_SETTING_SIGNUP_phone_TEXT" 
+		       default="COM_REDEVENT_SETTING_SIGNUP_phone_TEXT_DEFAULT"
+		       label="COM_REDEVENT_SETTING_SIGNUP_phone_TEXT"
 		       description="COM_REDEVENT_SETTING_phone_EXTERNAL_TEXT_DESC" />
-		<field name="signup_phone_img" type="imagelist" 
-		       label="COM_REDEVENT_SETTING_SIGNUP_phone_IMAGE" 
+		<field name="signup_phone_img" type="imagelist"
+		       label="COM_REDEVENT_SETTING_SIGNUP_phone_IMAGE"
 		       description="COM_REDEVENT_SETTING_SIGNUP_phone_IMAGE_DESC"
 		       directory="/administrator/components/com_redevent/assets/images"
 		       default="phone_icon.gif" />
-		
-		
+
+
 		<field type="spacer" hr="true" />
-		<field name="cat_num" type="text" size="2" default="4" label="COM_REDEVENT_CAT_DISPLAY" description="COM_REDEVENT_CAT_DISPLAY_DESC" />	
+		<field name="cat_num" type="text" size="2" default="4" label="COM_REDEVENT_CAT_DISPLAY" description="COM_REDEVENT_CAT_DISPLAY_DESC" />
 		<field name="details_layout" type="list" default="fixed" label="COM_REDEVENT_SETTINGS_DETAILS_LAYOUT" description="COM_REDEVENT_SETTINGS_DETAILS_LAYOUT_DESC">
 			<option value="default">COM_REDEVENT_SETTINGS_DETAILS_LAYOUT_TAGS</option>
 			<option value="fixed">COM_REDEVENT_SETTINGS_DETAILS_LAYOUT_FIXED</option>
@@ -152,22 +152,22 @@
 	    <field name="details_attendees_links" type="list" default="0" label="COM_REDEVENT_SETTINGS_DETAILS_SHOW_ATTENDEES_LINKS_LABEL" description="COM_REDEVENT_SETTINGS_DETAILS_SHOW_ATTENDEES_LINKS_DESC">
 	      <option value="0">COM_REDEVENT_SETTINGS_DETAILS_SHOW_ATTENDEES_LINKS_CURRENT_SESSION</option>
 	      <option value="1">COM_REDEVENT_SETTINGS_DETAILS_SHOW_ATTENDEES_LINKS_ALL_SESSIONS</option>
-	    </field> 	 
+	    </field>
 	    <field name="details_attendees_layout" type="list" default="0" label="COM_REDEVENT_DETAILS_ATTENDEES_LAYOUT" description="COM_REDEVENT_DETAILS_ATTENDEES_LAYOUT_TIP">
 	      <option value="0">Table</option>
 	      <option value="1">List</option>
-	    </field> 	  
+	    </field>
 	    <field name="custom_css" type="text" default="" size="60" label="COM_REDEVENT_CUSTOM_CSS_PATH" description="COM_REDEVENT_CUSTOM_CSS_PATH_DESC"/>
 	    <field name="event_ics" type="radio" default="1" label="COM_REDEVENT_SETTINGS_SHOW_EVENT_ICAL" description="COM_REDEVENT_SETTINGS_SHOW_EVENT_ICAL_DESC">
 	      <option value="0">No</option>
 	      <option value="1">Yes</option>
 	    </field>
-	    
+
 	    <field name="use_default_picture" type="radio" default="1" label="COM_REDEVENT_SETTINGS_USE_DEFAULT_PICTURE" description="COM_REDEVENT_SETTINGS_USE_DEFAULT_PICTURE_DESC">
 	      <option value="0">No</option>
 	      <option value="1">Yes</option>
 	    </field>
-	    
+
 	    <field name="showmapserv" type="radio" default="1" label="COM_REDEVENT_SETTINGS_ACTIVATE_VENUE_MAP_LABEL" description="COM_REDEVENT_SETTINGS_ACTIVATE_VENUE_MAP_DESC">
 	      <option value="0">No</option>
 	      <option value="1">Yes</option>
@@ -189,8 +189,17 @@
 			<option value="50">50</option>
 			<option value="100">100</option>
 			<option value="200">200</option>
-		</field>	
-		
+		</field>
+
+		<field name="open_dates_ordering"
+			   type="list"
+			   default="0"
+			   label="COM_REDEVENT_SETTINGS_LISTS_OPEN_DATES_ORDERING"
+			   description="COM_REDEVENT_SETTINGS_LISTS_OPEN_DATES_ORDERING_DESC">
+			<option value="0">COM_REDEVENT_SETTINGS_LISTS_OPEN_DATES_ORDERING_BEFORE</option>
+			<option value="1">COM_REDEVENT_SETTINGS_LISTS_OPEN_DATES_ORDERING_AFTER</option>
+		</field>
+
 		<field name="default_list_layout"
 			type="list"
 			default="table"
@@ -199,7 +208,7 @@
 				<option value="default">COM_REDEVENT_SETTINGS_LISTS_DEFAULT_LAYOUT_TABLE</option>
 				<option value="thumb">COM_REDEVENT_SETTINGS_LISTS_DEFAULT_LAYOUT_THUMBNAILS</option>
 		</field>
-		
+
 		<field name="show_pagination"
 			type="list"
 			default="2"
@@ -218,7 +227,7 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 		</field>
-		
+
 	  	<field name="filter_toggle" type="list" default="3" label="COM_REDEVENT_SETTINGS_FILTER_TOGGLE" description="COM_REDEVENT_SETTINGS_FILTER_TOGGLE_DESC">
 				<option value="0">COM_REDEVENT_SETTINGS_FILTER_TOGGLE_OPTION_OFF_SHOW_FILTERS</option>
 				<option value="1">COM_REDEVENT_SETTINGS_FILTER_TOGGLE_OPTION_OFF_HIDE_FILTERS</option>
@@ -257,11 +266,11 @@
 				<option value="0">COM_REDEVENT_Hide</option>
 				<option value="1">COM_REDEVENT_Show</option>
 			</field>
-			
-			
+
+
 		<field name="lists_columns" type="text" size="80" default="date, title, venue, city, category" label="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_DESC" />
 		<field name="lists_columns_names" type="text" size="80" default="date, title, venue, city, category" label="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_NAMES_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_COLUMNS_NAMES_DESC" />
-	
+
 	  	<field name="catlinklist" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_CATEGORY_LINK_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_CATEGORY_LINK_DESC">
 				<option value="0">No</option>
 				<option value="1">Yes</option>
@@ -274,22 +283,22 @@
 				<option value="0">No</option>
 				<option value="1">Yes</option>
 			</field>
-			
+
 	  	<field name="lists_show_time" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_SHOW_TIME_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_SHOW_TIME_DESC">
 				<option value="0">COM_REDEVENT_Hide</option>
 				<option value="1">COM_REDEVENT_Show</option>
 			</field>
-	    
+
 	    <field name="lists_show_custom_tip" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_SHOW_CUSTOM_TIP_LABEL" description="COM_REDEVENT_SETTINGS_LISTS_SHOW_CUSTOM_TIP_DESC">
 	      <option value="0">No</option>
 	      <option value="1">Yes</option>
 	    </field>
-	    
+
 	    <field name="lists_showend" type="radio" default="1" label="COM_REDEVENT_SETTINGS_LISTS_SHOW_END" description="COM_REDEVENT_SETTINGS_LISTS_SHOW_END_DESC">
 	      <option value="0">No</option>
 	      <option value="1">Yes</option>
 	    </field>
-	    
+
 	    <field name="events_rsscal" type="radio" default="0" label="COM_REDEVENT_SETTINGS_SHOW_EVENTS_RSSCAL" description="COM_REDEVENT_SETTINGS_SHOW_EVENTS_RSSCAL_DESC">
 	      <option value="0">No</option>
 	      <option value="1">Yes</option>
@@ -299,9 +308,9 @@
 	      <option value="1">Yes</option>
 	    </field>
 	    <field name="ical_max_items" type="text" default="100" label="COM_REDEVENT_SETTINGS_ICAL_MAX_ITEMS" description="COM_REDEVENT_SETTINGS_ICAL_MAX_ITEMS_DESC" />
-	    
+
  	</fieldset>
- 	
+
  	<fieldset name="COM_REDEVENT_pasteventssettings" label="COM_REDEVENT_pasteventssettings" description="COM_REDEVENT_pasteventssettings">
 	    <field name="pastevents_action" type="list" default="0" label="COM_REDEVENT_PAST_EVENTS_ACTION" description="COM_REDEVENT_PAST_EVENTS_ACTION_TIP">
 	      <option value="0">COM_REDEVENT_DO_NOTHING</option>
@@ -315,7 +324,7 @@
 	      <option value="registration">COM_REDEVENT_REGISTRATION_DATE</option>
 	    </field>
  	</fieldset>
- 	
+
  	<fieldset name="COM_REDEVENT_frontendeventsubmit" label="COM_REDEVENT_frontendeventsubmit" description="COM_REDEVENT_SETTINGS_FRONTEND_TIP">
 		<field name="event_template" type="session" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EVENT_TEMPLATE" description="COM_REDEVENT_SETTINGS_FRONTEND_EVENT_TEMPLATE_TIP" />
 	    <field name="edit_categories" type="radio" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_CATEGORY" description="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_CATEGORY_TIP">
@@ -389,7 +398,7 @@
 	      <option value="1">Yes</option>
 	    </field>
  	</fieldset>
- 	
+
  	<fieldset name="COM_REDEVENT_registration" label="COM_REDEVENT_registration" description="COM_REDEVENT_registration">
  	  <field type="spacer" label="COM_REDEVENT_SETTINGS_TAGS_LINK"/>
     <field name="registration_default_recipients" type="text" default="" size="80" label="COM_REDEVENT_SETTINGS_REGISTRATION_DEFAULT_RECIPIENTS" description="COM_REDEVENT_SETTINGS_REGISTRATION_DEFAULT_RECIPIENTS_TIP"/>
@@ -399,54 +408,54 @@
     </field>
  		<field name="registration_notification_subject" type="text" size="80" default="New registration for event [event_title] on [date]" label="COM_REDEVENT_SETTINGS_REGISTRATION_NOTIFICATION_SUBJECT" description="COM_REDEVENT_SETTINGS_REGISTRATION_NOTIFICATION_SUBJECT_TIP" />
  		<field name="registration_notification_body" type="textarea" cols="80" rows="5" default="registration details&lt;br /&gt;&lt;br /&gt;[answers]" label="COM_REDEVENT_SETTINGS_REGISTRATION_NOTIFICATION_BODY" description="COM_REDEVENT_SETTINGS_REGISTRATION_NOTIFICATION_BODY_TIP" />
- 		
+
     <field name="registration_notification_attach_rfuploads" type="radio" default="1" label="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_LABEL" description="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
     </field>
     <field name="registration_notification_attach_rfuploads_maxsize" type="text" size="20" default="2000" label="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_MAXSIZE_LABEL" description="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_MAXSIZE_DESC" />
-    
+
  		<field name="unregistration_notification_subject" type="text" size="80" default="Cancelled registration for event [event_title] on [date]" label="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_SUBJECT" description="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_SUBJECT_DESC" />
  		<field name="unregistration_notification_body" type="textarea" cols="80" rows="5" default="registration details were &lt;br /&gt;&lt;br /&gt;[answers]" label="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_BODY" description="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_BODY_DESC" />
- 	
+
  		<field type="spacer" hr="true"/>
- 		
+
     <field name="wl_notify_admin" type="list" default="0" label="COM_REDEVENT_SETTINGS_REGISTRATION_ADMIN_WAITING_LIST_NOTIFICATION_LABEL" description="COM_REDEVENT_SETTINGS_REGISTRATION_ADMIN_WAITING_LIST_NOTIFICATION_DESC">
       <option value="0">COM_REDEVENT_SETTINGS_REGISTRATION_ADMIN_WAITING_LIST_NOTIFICATION_NEVER</option>
       <option value="1">COM_REDEVENT_SETTINGS_REGISTRATION_ADMIN_WAITING_LIST_NOTIFICATION_ATTENDING</option>
       <option value="2">COM_REDEVENT_SETTINGS_REGISTRATION_ADMIN_WAITING_LIST_NOTIFICATION_WAITING</option>
       <option value="3">COM_REDEVENT_SETTINGS_REGISTRATION_ADMIN_WAITING_LIST_NOTIFICATION_ALWAYS</option>
     </field>
- 		
- 		<field name="wl_notify_admin_waiting_subject" 
- 		       type="text" size="80" default="[event_title]: attendee added to waiting list" 
- 		       label="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_WAITING_ADMIN_NOTIFICATION_SUBJECT" 
+
+ 		<field name="wl_notify_admin_waiting_subject"
+ 		       type="text" size="80" default="[event_title]: attendee added to waiting list"
+ 		       label="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_WAITING_ADMIN_NOTIFICATION_SUBJECT"
  		       description="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_WAITING_ADMIN_NOTIFICATION_SUBJECT_DESC" />
  		<field name="wl_notify_admin_waiting_body" type="textarea" cols="80" rows="5" default="registration details&lt;br /&gt;&lt;br /&gt;[answers]" label="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_WAITING_ADMIN_NOTIFICATION_BODY" description="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_WAITING_ADMIN_NOTIFICATION_BODY_TIP" />
- 		
+
  		<field name="wl_notify_admin_attending_subject" type="text" size="80" default="[event_title]: attendee added to attending list" label="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_ATTENDING_ADMIN_NOTIFICATION_SUBJECT" description="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_ATTENDING_ADMIN_NOTIFICATION_SUBJECT_TIP" />
  		<field name="wl_notify_admin_attending_body" type="textarea" cols="80" rows="5" default="registration details&lt;br /&gt;&lt;br /&gt;[answers]" label="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_ATTENDING_ADMIN_NOTIFICATION_BODY" description="COM_REDEVENT_SETTINGS_REGISTRATION_WAITING_LIST_ATTENDING_ADMIN_NOTIFICATION_BODY_TIP" />
- 
+
  		<field type="spacer" hr="true"/>
  		<field type="spacer" label="COM_REDEVENT_SETTINGS_REGISTRATION_EXPIRATION_DESC" />
  	 	<field name="registration_expiration" type="text" size="80" default="" label="COM_REDEVENT_SETTINGS_REGISTRATION_EXPIRATION_LABEL" description="COM_REDEVENT_SETTINGS_REGISTRATION_EXPIRATION_DESC" />
- 	 	 	 	
+
  		<field type="spacer" hr="true"/>
  		<field name="frontend_view_attendees_access"
  		       type="accesslevel"
- 		       label="COM_REDEVENT_SETTINGS_REGISTRATION_FRONTEND_VIEW_ATTENDEES_ACCESS" 
- 		       description="COM_REDEVENT_SETTINGS_REGISTRATION_FRONTEND_VIEW_ATTENDEES_ACCESS_DESC" 			
+ 		       label="COM_REDEVENT_SETTINGS_REGISTRATION_FRONTEND_VIEW_ATTENDEES_ACCESS"
+ 		       description="COM_REDEVENT_SETTINGS_REGISTRATION_FRONTEND_VIEW_ATTENDEES_ACCESS_DESC"
  		/>
- 		
-    <field name="price_select_layout" type="list" default="0" 
-           label="COM_REDEVENT_SETTINGS_REGISTRATION_PRICE_SELECT_LAYOUT_LABEL" 
+
+    <field name="price_select_layout" type="list" default="0"
+           label="COM_REDEVENT_SETTINGS_REGISTRATION_PRICE_SELECT_LAYOUT_LABEL"
            description="COM_REDEVENT_SETTINGS_REGISTRATION_PRICE_SELECT_LAYOUT_DESC">
       <option value="select">COM_REDEVENT_SETTINGS_REGISTRATION_PRICE_SELECT_LAYOUT_SELECT</option>
       <option value="radio">COM_REDEVENT_SETTINGS_REGISTRATION_PRICE_SELECT_LAYOUT_RADIO</option>
     </field>
- 	
+
  	</fieldset>
- 	
+
  	<fieldset name="COM_REDEVENT_SETTINGS_REMINDER" label="COM_REDEVENT_SETTINGS_REMINDER" description="COM_REDEVENT_SETTINGS_REMINDER_STATUS_DESC">
  	  <field type="spacer" label="COM_REDEVENT_SETTINGS_TAGS_LINK"/>
 		<field name="reminder_status" type="list" default="1" label="COM_REDEVENT_SETTINGS_REMINDER_STATUS_LABEL" description="COM_REDEVENT_SETTINGS_REMINDER_STATUS_DESC">
@@ -461,16 +470,16 @@
 		<field name="reminder_subject" type="text" size="80" default="Reminder: you are registered to [event_title]@[venue_title] on [date]" label="COM_REDEVENT_SETTINGS_REMINDER_SUBJECT_LABEL" description="COM_REDEVENT_SETTINGS_REMINDER_SUBJECT_DESC" />
 		<field name="reminder_body" type="textarea" cols="80" rows="5" default="You are registered to [event_title]@[venue_title] on [date]" label="COM_REDEVENT_SETTINGS_REMINDER_BODY_LABEL" description="COM_REDEVENT_SETTINGS_REMINDER_BODY_DESC" />
  	</fieldset>
- 	
+
  	<fieldset name="COM_REDEVENT_SETTINGS_ATTACHMENTS" label="COM_REDEVENT_SETTINGS_ATTACHMENTS" description="COM_REDEVENT_SETTINGS_ATTACHMENTS">
     <field name="attachments_path" type="text" size="100" default="media/com_redevent/attachments" label="COM_REDEVENT_SETTINGS_ATTACHMENT_PATH" description="COM_REDEVENT_SETTINGS_ATTACHMENT_PATH_DESC" />
     <field name="attachments_maxsize" type="text" size="15" default="1000" label="COM_REDEVENT_SETTINGS_ATTACHMENT_MAXSIZE" description="COM_REDEVENT_SETTINGS_ATTACHMENT_MAXSIZE_DESC" />
     <field name="attachments_types" type="text" size="100" default="txt,csv,htm,html,xml,css,doc,xls,rtf,ppt,pdf,swf,flv,avi,wmv,mov,jpg,jpeg,gif,png,zip,tar.gz" label="COM_REDEVENT_SETTINGS_ATTACHMENT_TYPES" description="COM_REDEVENT_SETTINGS_ATTACHMENT_TYPES_DESC" />
  	</fieldset>
- 	
+
  	<fieldset name="COM_REDEVENT_SETTINGS_SEO" label="COM_REDEVENT_SETTINGS_SEO" description="COM_REDEVENT_SETTINGS_SEO">
     <field name="default_itemid" type="text" default="" label="COM_REDEVENT_SETTINGS_DEFAULT_ITEMID" description="COM_REDEVENT_SETTINGS_DEFAULT_ITEMID_DESC"/>
-		<field type="spacer" label="COM_REDEVENT_SETTINGS_SEO_SEPARATOR_sh404sef"/>    
+		<field type="spacer" label="COM_REDEVENT_SETTINGS_SEO_SEPARATOR_sh404sef"/>
     <field name="sh404sef_always_include_menu_title" type="radio" default="0" label="COM_REDEVENT_SH404SEF_ALWAYS_INSERT_MENU_TITLE" description="COM_REDEVENT_SH404SEF_ALWAYS_INSERT_MENU_TITLE_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
@@ -480,11 +489,11 @@
       <option value="1">Yes</option>
     </field>
  	</fieldset>
- 	
+
  	<fieldset name="COM_REDEVENT_SETTINGS_MISC" label="COM_REDEVENT_SETTINGS_MISC" description="COM_REDEVENT_SETTINGS_MISC">
  		<field name="defaultredformid" type="text" default="1" label="COM_REDEVENT_DEFAULT_FORM_ID" description="COM_REDEVENT_DEFAULT_FORM_ID_TIP" />
-    <field name="default_image_path" type="text" 
-           label="COM_REDEVENT_SETTINGS_DEFAULT_IMAGE_PATH_LABEL" description="COM_REDEVENT_SETTINGS_DEFAULT_IMAGE_PATH_DESC" 
+    <field name="default_image_path" type="text"
+           label="COM_REDEVENT_SETTINGS_DEFAULT_IMAGE_PATH_LABEL" description="COM_REDEVENT_SETTINGS_DEFAULT_IMAGE_PATH_DESC"
            default="redevent"/>
 		<field name="backend_formatdate" type="text" default="%d.%m.%Y" label="COM_REDEVENT_DATE_STRFTIME_BACKEND" description="COM_REDEVENT_DATE_STRFTIME_BACKEND_TIP" />
  		<field name="ical_timezone" type="timezones" default="0" label="COM_REDEVENT_SETTINGS_MISC_TIMEZONE_LABEL" description="COM_REDEVENT_SETTINGS_MISC_TIMEZONE_DESC" />
@@ -501,42 +510,42 @@
     <field name="allow_email_aliasing" type="radio" default="1" label="COM_REDEVENT_SETTINGS_MISC_ALLOW_EMAIL_ALIASING" description="COM_REDEVENT_SETTINGS_MISC_ALLOW_EMAIL_ALIASING_TIP">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </field> 	
+    </field>
     <field name="csv_export_strip_linebreaks" type="radio" default="0" label="COM_REDEVENT_SETTINGS_CSV_EXPORT_STRIP_LINEBREAKS_LABEL" description="COM_REDEVENT_SETTINGS_CSV_EXPORT_STRIP_LINEBREAKS_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </field> 
+    </field>
     <field name="cat_select_ordering" type="list" default="0" label="COM_REDEVENT_SETTINGS_CAT_SELECT_ORDERING_LABEL" description="COM_REDEVENT_SETTINGS_CAT_SELECT_ORDERING_DESC">
       <option value="0">COM_REDEVENT_SETTINGS_CAT_SELECT_ORDERING_PARENT</option>
       <option value="1">COM_REDEVENT_SETTINGS_CAT_SELECT_ORDERING_NAME</option>
-    </field> 
+    </field>
     <field name="pinpoint_defaultaddress" type="text" default="usa" label="COM_REDEVENT_SETTINGS_PINPOINT_DEFAULT_ADDRESS_LABEL" description="COM_REDEVENT_SETTINGS_PINPOINT_DEFAULT_ADDRESS_LABEL" />
     <field name="enable_moreinfo" type="radio" default="1" label="COM_REDEVENT_SETTINGS_MISC_ENABLE_MOREINFO" description="COM_REDEVENT_SETTINGS_MISC_ENABLE_MOREINFO_DESC">
       <option value="0">JNo</option>
       <option value="1">JYes</option>
-    </field> 
-    
+    </field>
+
     <field type="spacer" hr="true"/>
     <field type="spacer" label="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SPACER"/>
     <field name="attendees_table_show_ip" type="radio" default="0" label="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SHOW_IP_LABEL" description="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SHOW_IP_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </field> 
+    </field>
     <field name="attendees_table_show_uniqueid" type="radio" default="1" label="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SHOW_UNIQUEID_LABEL" description="COM_REDEVENT_SETTINGS_ATTENDEES_TABLE_SHOW_UNIQUEID_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </field> 
+    </field>
     <field type="spacer" hr="true"/>
 	    <field name="default_search_results_type" type="radio" default="1" label="COM_REDEVENT_SETTINGS_DEFAULT_SEARCH_RESULTS_TYPE_LABEL" description="COM_REDEVENT_SETTINGS_DEFAULT_SEARCH_RESULTS_TYPE_DESC">
 	      <option value="0">COM_REDEVENT_EVENTS</option>
 	      <option value="1">COM_REDEVENT_SESSIONS</option>
-	    </field> 
+	    </field>
 	    <field name="default_categoryevents_results_type" type="radio" default="1" label="COM_REDEVENT_SETTINGS_DEFAULT_CATEGORYEVENTS_RESULTS_TYPE_LABEL" description="COM_REDEVENT_SETTINGS_DEFAULT_CATEGORYEVENTS_RESULTS_TYPE_DESC">
 	      <option value="0">COM_REDEVENT_EVENTS</option>
 	      <option value="1">COM_REDEVENT_SESSIONS</option>
-	    </field> 
+	    </field>
  	</fieldset>
- 	
+
  	<fieldset name="COM_REDEVENT_SETTINGS_SOCIAL" label="COM_REDEVENT_SETTINGS_SOCIAL" description="COM_REDEVENT_SETTINGS_SOCIAL">
     <field name="gplusone" type="radio" default="0" label="COM_REDEVENT_SETTINGS_SOCIAL_GOOGLEPLUSONE_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_GOOGLEPLUSONE_DESC">
       <option value="0">No</option>
@@ -546,7 +555,7 @@
     <field name="fbopengraph" type="radio" default="0" label="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_DESC">
       <option value="0">No</option>
       <option value="1">Yes</option>
-    </field>    
+    </field>
     <field name="fbadmin" type="text" default="" label="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_ADMIN_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_FBOPENGRAPH_ADMIN_DESC"/>
     <field type="divider" />
     <field name="tweet" type="radio" default="0" label="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_BUTTON_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_BUTTON_DESC">
@@ -557,7 +566,7 @@
     <field name="tweet_recommend2" type="text" default="" label="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_DESC"/>
     <field name="tweet_recommend2_text" type="text" default="" label="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_TEXT_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_TEXT_DESC"/>
  	</fieldset>
- 	
+
 	<fieldset	name="permissions"
 		label="JCONFIG_PERMISSIONS_LABEL"
 		description="JCONFIG_PERMISSIONS_DESC">
