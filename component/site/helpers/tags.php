@@ -35,7 +35,7 @@ class redEVENT_tags {
 	private $_submitkey;
 	private $_maxattendees;
 	private $_maxwaitinglist;
-  private $_published;
+	private $_published;
 	protected $_eventlinks = null;
 	private $_libraryTags = null;
 	private $_customfields = null;

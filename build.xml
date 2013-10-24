@@ -164,8 +164,8 @@
 		<delete dir="${www.dir}/administrator/components/com_${comp.name}" quiet="yes" includeemptydirs="false" />
         <!-- Manifest & install script -->
         <echo message="Copying manifest..." />
-        <copy file="${dirs.root}/component/${comp.name}.xml"
-            tofile="${www.dir}/administrator/components/com_${comp.name}/${comp.name}.xml" overwrite="true">
+        <copy file="${dirs.root}/component/com_${comp.name}.xml"
+            tofile="${www.dir}/administrator/components/com_${comp.name}/com_${comp.name}.xml" overwrite="true">
             <!-- trick to replace extension folders in the manifest-->
             <filterchain>
         	  <replaceregexp>
@@ -188,7 +188,7 @@
             <fileset dir="${dirs.root}/component/admin">
                 <include name="**" />
                 <!-- Exclude the manifest to avoid overwriting the previously copied -->
-                <exclude name="${comp.name}.xml" />
+                <exclude name="com_${comp.name}.xml" />
             </fileset>
         </copy>
 
