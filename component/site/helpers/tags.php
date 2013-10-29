@@ -511,7 +511,6 @@ class redEVENT_tags {
 
 			$query->where('x.published = ' . $db->Quote($this->getEvent()->getData()->published));
 			$query->where('e.id = ' . $this->_eventid);
-			$query->where('');
 
 			$query->group('x.id');
 
