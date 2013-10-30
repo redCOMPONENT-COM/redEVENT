@@ -493,6 +493,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		{
 			$query->join('INNER', '#__redmember_user_organization_xref AS x ON x.organization_id = o.organization_id');
 			$query->where('x.user_id = ' . $user->get('id'));
+			$query->where('x.level > 1');
 		}
 
 		$query->group('o.organization_id');
