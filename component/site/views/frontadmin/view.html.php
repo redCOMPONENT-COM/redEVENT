@@ -255,7 +255,9 @@ class RedeventViewFrontadmin extends JView
 
 		$left = max(array($row->maxattendees - $row->registered, 0));
 
-		return $row->maxattendees . '/' . ($left > 6 ? '6+' : $left);
+		$img = JHTML::image('media/com_redevent/images/b2b-users.png', JText::_('COM_REDEVENT_PLACES_BOOKED_LEFT'));
+
+		return $img . $row->maxattendees . '/' . ($left > 6 ? '6+' : $left);
 	}
 
 
@@ -270,7 +272,7 @@ class RedeventViewFrontadmin extends JView
 	{
 		JHTML::_('behavior.tooltip');
 
-		$image = JHTML::image('media/com_redevent/images/b2b-users.png', JText::_('COM_REDEVENT_BOOK_EVENT' ));
+		$image = JHTML::image('media/com_redevent/images/b2b-edit.png', JText::_('COM_REDEVENT_BOOK_EVENT' ));
 
 		$overlib = JText::_('COM_REDEVENT_BOOK_EVENT_DESC' );
 		$text = JText::_('COM_REDEVENT_BOOK_EVENT' );
