@@ -66,6 +66,7 @@ var redb2b = {
 			document.id('filter_session').addEvent('change', function(){
 				document.id('book-xref').set('value', this.get('value'));
 				redb2b.getMembersList();
+				redb2b.getSessions();
 			});
 
 			/**
