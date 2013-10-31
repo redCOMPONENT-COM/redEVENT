@@ -447,6 +447,8 @@ var redb2b = {
 						if (!result.status) {
 							alert(result.error);
 						}
+						el.set('tip', el.get('value'));
+						redb2b.refreshTips();
 					}
 				});
 				req.send();

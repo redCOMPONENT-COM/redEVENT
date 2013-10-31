@@ -48,22 +48,32 @@ defined('_JEXEC') or die('Restricted access');
 			<td><?php echo $a->username; ?></td>
 			<td><?php echo $a->email; ?></td>
 			<td><?php echo JFactory::getUser($a->id)->getParameters()->get('language', JFactory::getLanguage()->getTag()); ?></td>
+
 			<?php if ($a->registered): ?>
-			<?php
-			$imgstatus = $a->registered->waitinglist ?
-				JHtml::image('media/com_redevent/images/b2b-waiting.png', 'waiting',
-					array('class' => "hasTip", 'title' => JText::_('COM_REDEVENT_WAITING_LIST'))) :
-				JHtml::image('media/com_redevent/images/b2b-attending.png', 'attending',
-					array('class' => "hasTip", 'title' => JText::_('COM_REDEVENT_ATTENDING')));
-			?>
-			<td><?php echo $imgstatus; ?></td>
-			<td><input name="ponumber[]" class="input-small ponumber" type="text" value="<?php echo $a->registered->ponumber; ?>" /></td>
-			<td><input name="comments[]" class="input-small comments" type="text" value="<?php echo $a->registered->comments; ?>" /></td>
+				<?php
+				$imgstatus = $a->registered->waitinglist ?
+					JHtml::image('media/com_redevent/images/b2b-waiting.png', 'waiting',
+						array('class' => "hasTip", 'title' => JText::_('COM_REDEVENT_WAITING_LIST'))) :
+					JHtml::image('media/com_redevent/images/b2b-attending.png', 'attending',
+						array('class' => "hasTip", 'title' => JText::_('COM_REDEVENT_ATTENDING')));
+				?>
+				<td><?php echo $imgstatus; ?></td>
+				<td>
+					<input name="ponumber[]" class="input-small ponumber" type="text" value="<?php echo $a->registered->ponumber; ?>" />
+				</td>
+				<td>
+					<input name="comments[]" class="input-small comments hasTip"
+						title="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_COMMENTS'); ?>"
+						type="text"
+						tip="<?php echo $a->registered->comments; ?>"
+						value="<?php echo $a->registered->comments; ?>" />
+				</td>
 			<?php else: ?>
-			<td></td>
-			<td></td>
-			<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
 			<?php endif; ?>
+
 			<td><?php echo JHTML::image('media/com_redevent/images/b2b-edit.png', 'edit'
 				, array('class' => 'hasTip editmember'
 						, 'title' => JText::_('COM_REDEVENT_EDIT_PARTICIPANT')
