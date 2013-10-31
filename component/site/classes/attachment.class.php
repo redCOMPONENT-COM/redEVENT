@@ -29,8 +29,8 @@ defined('_JEXEC') or die('Restricted access');
  * @package Joomla
  * @subpackage redEVENT
  */
-class REAttach extends JObject {
-
+class REAttach extends JObject
+{
 	/**
 	 * upload files for the specified object
 	 *
@@ -139,39 +139,49 @@ class REAttach extends JObject {
 	 *
 	 * @return array
 	 */
-	function getAttachments($object, $aid = null)
+	public static function getAttachments($object, $aid = null)
 	{
 		jimport('joomla.filesystem.file');
 		jimport('joomla.filesystem.folder');
-		$app = &JFactory::getApplication();
-		$params = JComponentHelper::getParams('com_redevent');
 
-		$path = self::getBasePath().DS.$object;
+		$db = JFactory::getDbo();
 
-		if (!file_exists($path)) {
+		$path = self::getBasePath() . '/' . $object;
+
+		if (!file_exists($path))
+		{
 			return array();
 		}
-		// first list files in the folder
+
+		// First list files in the folder
 		$files = JFolder::files($path, null, false, false, array('index.html'));
 
-		// then get info for files from db
-		$db = &JFactory::getDBO();
+		// Then get info for files from db
 		$fnames = array();
-		foreach ($files as $f) {
-			$fnames[] = $db->Quote($f);
+
+		foreach ($files as $f)
+		{
+			$fnames[] = $db->quote($f);
 		}
-		if (!count($fnames)) {
+
+		if (!count($fnames))
+		{
 			return array();
 		}
 
-		$query = ' SELECT * '
-		       . ' FROM #__redevent_attachments '
-		       . ' WHERE file IN ('. implode(',', $fnames) .')'
-		       . '   AND object = '. $db->Quote($object);
-		if (!is_null($aid) && count($aid)) {
-			$query .= ' AND access IN (' . implode(',', $aid) . ')';
+		$query = $db->getQuery(true);
+
+		$query->select('*');
+		$query->from('#__redevent_attachments');
+		$query->where('file IN (' . implode(',', $fnames) . ')');
+		$query->where('object = '. $db->Quote($object));
+
+		if (!is_null($aid) && count($aid))
+		{
+			$query->where('access IN (' . implode(',', $aid) . ')');
 		}
-		$query .= ' ORDER BY ordering ASC ';
+
+		$query->order('ordering ASC');
 
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
@@ -214,41 +224,46 @@ class REAttach extends JObject {
 	/**
 	 * remove attachment for objects
 	 *
-	 * @param id from db
-	 * @param string object identification (should be event<eventid>, category<categoryid>, etc...)
+	 * @param   int  $id  id from db
+	 *
 	 * @return boolean
 	 */
-	function remove($id)
+	public static function remove($id)
 	{
 		jimport('joomla.filesystem.file');
 		jimport('joomla.filesystem.folder');
-		$app = &JFactory::getApplication();
+
+		$app    = JFactory::getApplication();
 		$params = JComponentHelper::getParams('com_redevent');
 
-
 		// then get info for files from db
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$query = ' SELECT file, object '
-		       . ' FROM #__redevent_attachments '
-		       . ' WHERE id = ' . $db->Quote($id);
+			. ' FROM #__redevent_attachments '
+			. ' WHERE id = ' . $db->Quote($id);
 		$db->setQuery($query);
 		$res = $db->loadObject();
+
 		if (!$res)
 		{
 			return false;
 		}
 
-		$path = self::getBasePath().DS.$res->object.DS.$res->file;
-		if (file_exists($path)) {
+		$path = self::getBasePath() . '/' . $res->object . '/' . $res->file;
+
+		if (file_exists($path))
+		{
 			JFile::delete($path);
 		}
 
 		$query = ' DELETE FROM #__redevent_attachments '
-		       . ' WHERE id = '. $db->Quote($id);
+			. ' WHERE id = '. $db->Quote($id);
 		$db->setQuery($query);
 		$res = $db->query();
-		if (!$res) {
+
+		if (!$res)
+		{
 			return false;
 		}
 
