@@ -147,7 +147,7 @@ class RedeventModelEventhelper extends JModelLegacy
 			$query->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug');
 			$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug');
 			$query->select('CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(":", v.id, v.alias) ELSE v.id END as venueslug');
-			$query->select('');
+
 			$query->from('#__redevent_events AS a');
 			$query->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = a.id');
 			$query->join('LEFT', '#__redevent_venues AS v ON x.venueid = v.id');
