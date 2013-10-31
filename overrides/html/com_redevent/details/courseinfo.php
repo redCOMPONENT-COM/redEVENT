@@ -75,7 +75,8 @@ else
 			<td class="courseinfo_date"><?php echo REOutput::formatdate($event->dates, $event->times); ?></td>
 			<td class="courseinfo_duration"><?php echo redEVENTHelper::getEventDuration($event); ?></td>
 			<td class="courseinfo_venue"><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
-			<td class="courseinfo_country"><?php echo REOutput::getFlag( $event->country ); ?></td>
+			<td class="courseinfo_country"><?php echo REOutput::getFlag($event->country)
+					. ($event->currency ? '(' . $event->currency . ')' : ''); ?></td>
 			<td class="courseinfo_prices re-price"><?php echo REOutput::formatListPrices($event->prices); ?></td>
 			<td class="courseinfo_credit"><?php echo $placesleft;?></td>
 		<td class="courseinfo_signup" width="*">
@@ -96,7 +97,7 @@ else
 				echo $event->venue_description;
 			echo '</div>';
 			echo '</div>';
-		
+
 		}
 		else
 		{
