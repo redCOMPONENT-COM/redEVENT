@@ -76,7 +76,7 @@ else
 			<td class="courseinfo_duration"><?php echo redEVENTHelper::getEventDuration($event); ?></td>
 			<td class="courseinfo_venue"><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
 			<td class="courseinfo_country"><?php echo REOutput::getFlag($event->country)
-					. ($event->currency ? '(' . $event->currency . ')' : ''); ?></td>
+					. ($event->custom2 ? '(' . $event->custom2 . ')' : ''); ?></td>
 			<td class="courseinfo_prices re-price"><?php echo REOutput::formatListPrices($event->prices); ?></td>
 			<td class="courseinfo_credit"><?php echo $placesleft;?></td>
 		<td class="courseinfo_signup" width="*">
