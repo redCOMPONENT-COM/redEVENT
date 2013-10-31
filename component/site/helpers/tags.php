@@ -489,7 +489,7 @@ class redEVENT_tags {
 			$query->select('v.venue, v.id AS venue_id, v.city AS location, v.state, v.url as venueurl, v.locdescription as venue_description');
 			$query->select('v.country, v.locimage, v.street, v.plz, v.map');
 
-			$query->select('f.id AS form_id, f.formname');
+			$query->select('f.id AS form_id, f.formname, f.currency');
 
 			$query->select('CASE WHEN CHAR_LENGTH(e.alias) THEN CONCAT_WS(":", e.id, e.alias) ELSE e.id END as slug');
 			$query->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug');
