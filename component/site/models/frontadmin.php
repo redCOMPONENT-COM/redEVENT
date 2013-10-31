@@ -57,6 +57,10 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	 */
 	protected $form;
 
+	/**
+	 * user acl object
+	 * @var UserAcl
+	 */
 	protected $useracl = null;
 
 	public function __construct($config = array())
@@ -81,8 +85,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		// Bookings filter
 		$this->setState('filter_organization',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_organization',    'filter_organization',    0, 'int'));
 		$this->setState('filter_person',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_person',    'filter_person',    '', 'string'));
-		$this->setState('filter_person_active',    $app->input->get('filter_person_active',    0, 'int'));
-		$this->setState('filter_person_archive',   $app->input->get('filter_person_archive',    0, 'int'));
+		$this->setState('filter_person_active',    $app->input->get('filter_person_active',    1, 'int'));
 
 		// Manage sessions filters
 		$this->setState('filter_session',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_session',    'filter_session',    0, 'int'));
@@ -307,7 +310,9 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$ids = $this->useracl->getCanEditEvents();
+		$ids = array_merge($this->useracl->getCanEditEvents(),
+			$this->useracl->getEventsCanViewAttendees());
+		$ids = array_unique($ids);
 
 		if (!$ids)
 		{
@@ -320,7 +325,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
 
 		$query->where('a.id IN(' . implode(',', $ids) . ')');
-		$query->where('a.published > -1');
+		$query->where('a.published = 1');
 		$query->order('a.title');
 
 		if ($this->getState('filter_category'))
@@ -370,7 +375,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 
 		$query->where('x.id IN(' . implode(',', $ids) . ')');
 		$query->where('x.eventid = ' . $this->getState('filter_event'));
-		$query->where('x.published > -1');
+		$query->where('x.published = 1');
 
 		if ($this->getState('filter_venue'))
 		{
@@ -488,6 +493,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		{
 			$query->join('INNER', '#__redmember_user_organization_xref AS x ON x.organization_id = o.organization_id');
 			$query->where('x.user_id = ' . $user->get('id'));
+			$query->where('x.level > 1');
 		}
 
 		$query->group('o.organization_id');
@@ -630,12 +636,11 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 
 		$session_state = array();
 
-		if ($this->getState('filter_person_archive'))
+		if ($this->getState('filter_person_active') == 0)
 		{
 			$session_state[] = 'x.published = -1';
 		}
-
-		if (!count($session_state) || $this->getState('filter_person_active'))
+		else
 		{
 			$session_state[] = 'x.published = 1';
 		}
@@ -778,7 +783,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$db = JFactory::getDbo();
 		$acl = UserAcl::getInstance();
 
-		$query->where('x.published > -1');
+		$query->where('x.published = 1');
 
 		if (!$acl->superuser())
 		{
@@ -935,7 +940,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	 * @param   int  $user_id  user id
 	 * @param   int  $xref     session id
 	 *
-	 * @return  string  submit key on success, else false
+	 * @return  object  attendee
 	 */
 	public function quickbook($user_id, $xref)
 	{
@@ -998,7 +1003,13 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		}
 		$mail = $registrationmodel->notifyManagers($submit_key);
 
-		return $submit_key;
+		// For tracking
+		$reg->event_name   = $details->event_name;
+		$reg->session_name = $details->session_name;
+		$reg->venue        = $details->venue;
+		$reg->categories   = $details->categories;
+
+		return $reg;
 	}
 
 	/**

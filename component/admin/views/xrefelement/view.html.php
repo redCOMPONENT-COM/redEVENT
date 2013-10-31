@@ -44,7 +44,7 @@ class RedEventViewxrefelement extends JView {
 		$params   = &JComponentHelper::getParams('com_redevent');
 		$document	= & JFactory::getDocument();
 		$fieldname = JRequest::getVar('field');
-		
+
 		JHTML::_('behavior.tooltip');
 		JHTML::_('behavior.modal');
 
@@ -58,7 +58,7 @@ class RedEventViewxrefelement extends JView {
 		$template 			= $mainframe->getTemplate();
 
 		//prepare the document
-		$document->setTitle(JText::_('COM_REDEVENT_SELECTEVENT' ));
+		$document->setTitle(JText::_('COM_REDEVENT_SELECT_SESSION' ));
 		$document->addStyleSheet('templates/'.$template.'/css/general.css');
 
 		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');

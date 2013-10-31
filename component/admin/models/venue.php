@@ -104,24 +104,32 @@ class RedEventModelVenue extends JModelAdmin
 		if (empty($this->_data))
 		{
 			$query = 'SELECT *'
-					. ' FROM #__redevent_venues'
-					. ' WHERE id = '.$this->_id
-					;
+			. ' FROM #__redevent_venues'
+			. ' WHERE id = '.$this->_id
+			;
 
 			$this->_db->setQuery($query);
 
 			$this->_data = $this->_db->loadObject();
-		
-      if ($this->_data) {
-        $this->_data->categories = $this->getVenueCategories();
+
+			if ($this->_data)
+			{
+				$this->_data->categories = $this->getVenueCategories();
 				$this->_data->attachments = REAttach::getAttachments('venue'.$this->_data->id);
-      }
-      
+
+				if (property_exists($this->_data, 'params'))
+				{
+					$registry = new JRegistry;
+					$registry->loadString($this->_data->params);
+					$this->_data->params = $registry->toArray();
+				}
+			}
+
 			return (boolean) $this->_data;
 		}
 		return true;
 	}
-	
+
   /**
    * Method to get the category data
    *
@@ -272,13 +280,13 @@ class RedEventModelVenue extends JModelAdmin
 		$tzoffset 	= $config->getValue('config.offset');
 
 		$row  =& $this->getTable('redevent_venues', '');
-		
+
 		// triggers for smart search
 		$dispatcher	= JDispatcher::getInstance();
 		JPluginHelper::importPlugin('finder');
-		
-		
-		
+
+
+
 		// bind it to the table
 		if (!$row->bind($data)) {
 			RedeventError::raiseError(500, $this->_db->getErrorMsg() );
@@ -333,51 +341,51 @@ class RedEventModelVenue extends JModelAdmin
 			$this->setError($row->getError());
 			return false;
 		}
-		
+
 		// Trigger the onFinderBeforeSave event.
 		$results = $dispatcher->trigger('onFinderBeforeSave', array($this->option . '.' . $this->name, $row, $isNew));
-		
+
 		// Store it in the db
 		if (!$row->store()) {
 			RedeventError::raiseError(500, $this->_db->getErrorMsg() );
 			return false;
 		}
-		
+
     // update the venue category xref
     // first, delete current rows for this event
     $query = ' DELETE FROM #__redevent_venue_category_xref WHERE venue_id = ' . $this->_db->Quote($row->id);
     $this->_db->setQuery($query);
     if (!$this->_db->query()) {
       $this->setError($this->_db->getErrorMsg());
-      return false;     
+      return false;
     }
-    
+
     // insert new ref
     if (isset($data['categories']))
     {
-	    foreach ((array) $data['categories'] as $cat_id) 
+	    foreach ((array) $data['categories'] as $cat_id)
 	    {
 	      $query = ' INSERT INTO #__redevent_venue_category_xref (venue_id, category_id) VALUES (' . $this->_db->Quote($row->id) . ', '. $this->_db->Quote($cat_id) . ')';
 	      $this->_db->setQuery($query);
 	      if (!$this->_db->query()) {
 	        $this->setError($this->_db->getErrorMsg());
-	        return false;     
-	      }     
-	    }  
+	        return false;
+	      }
+	    }
     }
-    
+
 		// attachments
 		REAttach::store('venue'.$row->id);
-		
+
 		// Trigger the onFinderAfterSave event.
 		$results = $dispatcher->trigger('onFinderAfterSave', array($this->option . '.' . $this->name, $row, $isNew));
 		return $row->id;
 	}
-	
+
   /**
    * Get a option list of all categories
    */
-  public function getCategories() 
+  public function getCategories()
   {
    $query = ' SELECT c.id, c.name, (COUNT(parent.name) - 1) AS depth '
            . ' FROM #__redevent_venues_categories AS c, '
@@ -387,9 +395,9 @@ class RedEventModelVenue extends JModelAdmin
            . ' ORDER BY c.lft;'
            ;
     $this->_db->setQuery($query);
-    
+
     $results = $this->_db->loadObjectList();
-    
+
     $options = array();
     foreach((array) $results as $cat)
     {
@@ -397,8 +405,8 @@ class RedEventModelVenue extends JModelAdmin
     }
     return $options;
   }
-  
-  
+
+
   /**
   * Returns a Table object, always creating it
   *
@@ -412,7 +420,7 @@ class RedEventModelVenue extends JModelAdmin
   {
 		return JTable::getInstance($type, $prefix, $config);
   }
-  
+
   /**
   * Method to get the record form.
   *
@@ -432,7 +440,7 @@ class RedEventModelVenue extends JModelAdmin
 	  }
 	  return $form;
   }
-  
+
   /**
   * Method to get the data that should be injected in the form.
   *

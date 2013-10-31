@@ -450,7 +450,7 @@ class UserAcl
 	 *
 	 * @return array int xrefs
 	 */
-	public function getXrefsCanViewAttendees()
+	private function getSessionsCanViewAttendees()
 	{
 		if (!$this->_userid)
 		{
@@ -470,7 +470,7 @@ class UserAcl
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('x.id');
+		$query->select('x.id AS xref, e.id AS event_id');
 		$query->from('#__redevent_events AS e');
 		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.eventid = e.id');
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
@@ -495,10 +495,56 @@ class UserAcl
 		}
 
 		$db->setQuery($query);
-		$res = $db->loadColumn();
+		$res = $db->loadObjectList();
 
 		return $res;
 	}
+
+
+	/**
+	 * get array of all the events ids the user can view attendees from
+	 *
+	 * @return array int event ids
+	 */
+	public function getEventsCanViewAttendees()
+	{
+		if (!$obj = $this->getSessionsCanViewAttendees())
+		{
+			return $obj;
+		}
+
+		$res = array();
+
+		foreach ($obj as $o)
+		{
+			$res[] = $o->event_id;
+		}
+
+		return array_unique($res);
+	}
+
+	/**
+	 * get array of all the xrefs the user can view attendees from
+	 *
+	 * @return array int xrefs
+	 */
+	public function getXrefsCanViewAttendees()
+	{
+		if (!$obj = $this->getSessionsCanViewAttendees())
+		{
+			return $obj;
+		}
+
+		$res = array();
+
+		foreach ($obj as $o)
+		{
+			$res[] = $o->xref;
+		}
+
+		return $res;
+	}
+
 
 	/**
 	 * check if user is allowed to addxrefs

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SessionsRQ
+	xmlns="http://www.redcomponent.com/redevent">
+	<CreateSessionRQ>
+		<TransactionId>12323</TransactionId>
+		<SessionDetails>
+			<SessionCode>xml 1</SessionCode>
+			<CourseCode>test-1</CourseCode>
+			<VenueCode>vtest-1</VenueCode>
+			<Title>a session from xml</Title>
+			<Alias>xml-test</Alias>
+			<Date>2014-05-09</Date>
+			<Time>13:45:00</Time>
+			<EndDate>2014-05-10</EndDate>
+			<EndTime>17:18:00</EndTime>
+			<EndOfRegistration>2013-05-08T17:16:00</EndOfRegistration>
+			<Note>23</Note>
+			<ExternalRegistrationUrl>http://www.w3.org/TR/xmlschema-0</ExternalRegistrationUrl>
+			<Published>1</Published>
+			<Featured>1</Featured>
+			<CustomFields>
+				<CustomField>
+					<CustomFieldId>28</CustomFieldId>
+					<CustomFieldType>select</CustomFieldType>
+					<CustomFieldValue>night</CustomFieldValue>
+				</CustomField>
+			</CustomFields>
+			<Details>bla bla bla</Details>
+		</SessionDetails>
+	</CreateSessionRQ>
+	<CreateSessionRQ>
+		<TransactionId>123456</TransactionId>
+		<SessionDetails>
+			<SessionCode>xml 2</SessionCode>
+			<CourseCode>test-1</CourseCode>
+			<VenueCode>vtest-1</VenueCode>
+			<Title>a session from xml</Title>
+			<Alias>xml-test</Alias>
+			<Date>2014-06-09</Date>
+			<Time>13:45:00</Time>
+			<EndDate>2014-06-10</EndDate>
+			<EndTime>17:18:00</EndTime>
+			<EndOfRegistration>2013-05-08T17:16:00</EndOfRegistration>
+			<Note>23</Note>
+			<ExternalRegistrationUrl>http://www.w3.org/TR/xmlschema-0</ExternalRegistrationUrl>
+			<Published>1</Published>
+			<Featured>1</Featured>
+			<CustomFields>
+				<CustomField>
+					<CustomFieldId>28</CustomFieldId>
+					<CustomFieldType>select</CustomFieldType>
+					<CustomFieldValue>night</CustomFieldValue>
+				</CustomField>
+			</CustomFields>
+			<Details>bla bla bla</Details>
+		</SessionDetails>
+	</CreateSessionRQ>
+	<CreateSessionRQ>
+		<TransactionId>1234455456</TransactionId>
+		<SessionDetails>
+			<SessionCode>xml 3</SessionCode>
+			<CourseCode>test-1</CourseCode>
+			<VenueCode>vtest-1</VenueCode>
+			<Title>a session from xml</Title>
+			<Alias>xml-test</Alias>
+			<Date>2014-07-09</Date>
+			<Time>13:45:00</Time>
+			<EndDate>2014-07-10</EndDate>
+			<EndTime>17:18:00</EndTime>
+			<EndOfRegistration>2014-07-08T17:16:00</EndOfRegistration>
+			<Note>23</Note>
+			<ExternalRegistrationUrl>http://www.w3.org/TR/xmlschema-0</ExternalRegistrationUrl>
+			<Published>1</Published>
+			<Featured>1</Featured>
+			<CustomFields>
+				<CustomField>
+					<CustomFieldId>28</CustomFieldId>
+					<CustomFieldType>select</CustomFieldType>
+					<CustomFieldValue>night</CustomFieldValue>
+				</CustomField>
+			</CustomFields>
+			<Details>bla bla bla</Details>
+		</SessionDetails>
+	</CreateSessionRQ>
+	<ModifySessionRQ>
+		<TransactionId>123457</TransactionId>
+		<SessionDetails>
+			<SessionCode>xml 22323</SessionCode>
+			<CourseCode>test-1</CourseCode>
+			<VenueCode>vtest-1</VenueCode>
+			<Title>a session from xml</Title>
+			<Alias>xml-test</Alias>
+			<Date>2014-06-09</Date>
+			<Time>13:45:00</Time>
+			<EndDate>2014-06-10</EndDate>
+			<EndTime>17:18:00</EndTime>
+			<EndOfRegistration>2013-05-08T17:16:00</EndOfRegistration>
+			<Note>23</Note>
+			<ExternalRegistrationUrl>http://www.w3.org/TR/xmlschema-0</ExternalRegistrationUrl>
+			<Published>1</Published>
+			<Featured>1</Featured>
+			<CustomFields>
+				<CustomField>
+					<CustomFieldId>28</CustomFieldId>
+					<CustomFieldType>select</CustomFieldType>
+					<CustomFieldValue>night</CustomFieldValue>
+				</CustomField>
+			</CustomFields>
+			<Details>bla bla bla should fail</Details>
+		</SessionDetails>
+	</ModifySessionRQ>
+	<ModifySessionRQ>
+		<TransactionId>123458</TransactionId>
+		<SessionDetails>
+			<SessionCode>xml 2</SessionCode>
+			<CourseCode>test-1</CourseCode>
+			<VenueCode>vtest-1</VenueCode>
+			<Title>a session from xml</Title>
+			<Alias>xml-test-modified</Alias>
+			<Date>2014-06-09</Date>
+			<Time>13:45:00</Time>
+			<EndDate>2014-06-10</EndDate>
+			<EndTime>17:18:00</EndTime>
+			<EndOfRegistration>2013-05-08T17:16:00</EndOfRegistration>
+			<Note>23</Note>
+			<ExternalRegistrationUrl>http://www.w3.org/TR/xmlschema-0</ExternalRegistrationUrl>
+			<Published>1</Published>
+			<Featured>1</Featured>
+			<CustomFields>
+				<CustomField>
+					<CustomFieldId>28</CustomFieldId>
+					<CustomFieldType>select</CustomFieldType>
+					<CustomFieldValue>night</CustomFieldValue>
+				</CustomField>
+			</CustomFields>
+			<Details>bla bla bla should fail</Details>
+		</SessionDetails>
+	</ModifySessionRQ>
+
+	<DeleteSessionRQ>
+		<TransactionId>1232133434</TransactionId>
+		<SessionCode>sdfdsfd</SessionCode>
+	</DeleteSessionRQ>
+
+	<DeleteSessionRQ>
+		<TransactionId>123213454553434</TransactionId>
+		<SessionCode>xml 1</SessionCode>
+	</DeleteSessionRQ>
+
+</SessionsRQ>

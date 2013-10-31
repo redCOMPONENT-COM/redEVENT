@@ -29,6 +29,14 @@
 			class="inputbox" />
 		
 		<field
+			name="venue_code"
+			type="text"
+			default=""
+			label="COM_REDEVENT_VENUE_CODE"
+			description ="COM_REDEVENT_VENUE_CODE_DESC"
+			class="inputbox" />
+		
+		<field
 			name="published"
 			type="list"
 			class="inputbox"
@@ -178,6 +186,22 @@
 			description ="COM_REDEVENT_LONGITUDE_TIP" 
 			class="inputbox" />
 	</fieldset>
+	
+	<fields name="params">
+		<fieldset
+			name="extra">
+
+			<field
+				name="allowed_gateways"
+				type="redformgateway"
+				label="COM_REDEVENT_VENUE_ALLOWED_GATEWAYS"
+				description="COM_REDEVENT_VENUE_ALLOWED_GATEWAYS_DESC"
+				multiple="multiple"
+				size="10"
+				/>
+				
+		</fieldset>
+	</fields>
 	
 	<fieldset name="acl">		
 	

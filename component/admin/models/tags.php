@@ -34,9 +34,9 @@ jimport('joomla.application.component.model');
  * @since		2.0
  */
 class RedEventModelTags extends FOFModel
-{	
+{
 	var $field = null;
-	
+
 	/**
 	 * Constructor
 	 *
@@ -48,21 +48,22 @@ class RedEventModelTags extends FOFModel
 
 		$this->field = JRequest::getVar('field',  null, '', 'string');
 	}
-	
+
 	function getData()
 	{
-		$tags = array_merge($this->_getStandardTags(), $this->_getLibraryTags(), $this->_getCustomTags());		
-		
+		$tags = array_merge($this->_getStandardTags(), $this->_getLibraryTags(), $this->_getCustomTags());
+
 		return $this->_tagsBySection($tags);
 	}
-	
+
 	function _getStandardTags()
 	{
 		// tags
-		$tags = array();	
+		$tags = array();
 		$tags[] = new TagsModelTag('event_title', JText::_('COM_REDEVENT_SUBMISSION_EVENT_TITLE'));
 		$tags[] = new TagsModelTag('event_full_title', JText::_('COM_REDEVENT_TAG_DESC_SUBMISSION_EVENT_FULLTITLE'));
 		$tags[] = new TagsModelTag('code', JText::_('COM_REDEVENT_SUBMISSION_EVENT_CODE'));
+		$tags[] = new TagsModelTag('session_code', JText::_('COM_REDEVENT_SESSION_CODE'));
 		$tags[] = new TagsModelTag('category', JText::_('COM_REDEVENT_SUBMISSION_CATEGORY'));
 		$tags[] = new TagsModelTag('date', JText::_('COM_REDEVENT_SUBMISSION_EVENT_DATE'));
 		$tags[] = new TagsModelTag('enddate', JText::_('COM_REDEVENT_SUBMISSION_EVENT_ENDDATE'));
@@ -88,8 +89,9 @@ class RedEventModelTags extends FOFModel
 		$tags[] = new TagsModelTag('attachments', JText::_('COM_REDEVENT_TAG_ATTACHMENTS'));
 		$tags[] = new TagsModelTag('author_name', JText::_('COM_REDEVENT_TAG_AUTHOR_NAME'));
 		$tags[] = new TagsModelTag('author_email', JText::_('COM_REDEVENT_TAG_AUTHOR_EMAIL'));
-		
+
 		$tags[] = new TagsModelTag('venue_title', JText::_('COM_REDEVENT_SUBMISSION_EVENT_VENUE'), 'venue');
+		$tags[] = new TagsModelTag('venue_code', JText::_('COM_REDEVENT_VENUE_CODE'), 'venue');
 		$tags[] = new TagsModelTag('venue_link', JText::_('COM_REDEVENT_SUBMISSION_EVENT_VENUELINK'), 'venue');
 		$tags[] = new TagsModelTag('venue_company', JText::_('COM_REDEVENT_TAGS_VENUE_COMPANY_DESC'), 'venue');
 		$tags[] = new TagsModelTag('venue_city', JText::_('COM_REDEVENT_SUBMISSION_EVENT_CITY'), 'venue');
@@ -105,7 +107,7 @@ class RedEventModelTags extends FOFModel
 		$tags[] = new TagsModelTag('venue_mapicon', JText::_('COM_REDEVENT_TAGS_VENUE_MAPICON_DESC'), 'venue');
 		$tags[] = new TagsModelTag('venue_map', JText::_('COM_REDEVENT_TAGS_VENUE_MAP_DESC'), 'venue');
 		$tags[] = new TagsModelTag('latlong', JText::_('COM_REDEVENT_TAGS_VENUE_LATLONG_DESC'), 'venue');
-		
+
 		$tags[] = new TagsModelTag('redform', JText::_('COM_REDEVENT_SUBMISSION_EVENT_REDFORM'), 'registration');
 		$tags[] = new TagsModelTag('redform_title', JText::_('COM_REDEVENT_SUBMISSION_EVENT_REDFORM_TITLE'), 'registration');
 		$tags[] = new TagsModelTag('answers', JText::_('COM_REDEVENT_SUBMISSION_TAG_ANSWERS_DESC'), 'registration');
@@ -132,42 +134,42 @@ class RedEventModelTags extends FOFModel
 		$tags[] = new TagsModelTag('username', JText::_('COM_REDEVENT_SUBMISSION_TAG_USERNAME_DESC'), 'registration');
 		$tags[] = new TagsModelTag('useremail', JText::_('COM_REDEVENT_SUBMISSION_TAG_USEREMAIL_DESC'), 'registration');
 		$tags[] = new TagsModelTag('answer_<field id>', JText::_('COM_REDEVENT_SUBMISSION_TAG_REDFORM_FIELD_DESC'), 'registration');
-		
+
 		$tags[] = new TagsModelTag('paymentrequest', JText::_('COM_REDEVENT_SUBMISSION_EVENT_PAYMENTREQUEST'), 'payment');
 		$tags[] = new TagsModelTag('paymentrequestlink', JText::_('COM_REDEVENT_SUBMISSION_EVENT_PAYMENTREQUESTLINK'), 'payment');
 		$tags[] = new TagsModelTag('registrationid', JText::_('COM_REDEVENT_SUBMISSION_EVENT_REGISTRATIONID'), 'payment');
 		$tags[] = new TagsModelTag('total_price', JText::_('COM_REDEVENT_SUBMISSION_TAG_REDFORM_TOTAL_PRICE_DESC'), 'payment');
 		return $tags;
 	}
-	
+
 	function _getLibraryTags()
 	{
 		$query = ' SELECT id, text_description, text_name FROM #__redevent_textlibrary ';
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
-		
+
 		$tags = array();
 		foreach ((array) $res as $r)
 		{
-			$tags[] = new TagsModelTag($r->text_name, $r->text_description, 'library', $r->id);			
+			$tags[] = new TagsModelTag($r->text_name, $r->text_description, 'library', $r->id);
 		}
 		return $tags;
 	}
-	
+
 	function _getCustomTags()
 	{
 		$query = ' SELECT id, tag, name FROM #__redevent_fields ORDER BY ordering ';
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
-		
+
 		$tags = array();
 		foreach ((array) $res as $r)
 		{
-			$tags[] = new TagsModelTag($r->tag, $r->name, 'custom', $r->id);			
+			$tags[] = new TagsModelTag($r->tag, $r->name, 'custom', $r->id);
 		}
 		return $tags;
 	}
-	
+
 	function _tagsBySection($tags)
 	{
 		$res = array();
@@ -184,7 +186,7 @@ class TagsModelTag {
 	var $description;
 	var $section;
 	var $id = 0; // for custom and text library
-	
+
 	function __construct($name, $desc, $section = 'General', $id = 0)
 	{
 		$name = trim($name);

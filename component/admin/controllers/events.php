@@ -33,7 +33,7 @@ jimport('joomla.application.component.controller');
  * @since 0.9
  */
 class RedEventControllerEvents extends RedEventController
-{	
+{
 	/**
 	 * Constructor
 	 *
@@ -48,7 +48,7 @@ class RedEventControllerEvents extends RedEventController
 		$this->registerTask( 'saveAndTwit', 'save' );
 		$this->registerTask( 'copy',	 	'edit' );
 		$this->registerTask( 'add',	 	'edit' );
-		
+
 		$this->twit = false;
 	}
 
@@ -70,6 +70,15 @@ class RedEventControllerEvents extends RedEventController
 		$model = $this->getModel('events');
 		if(!$model->publish($cid, 1)) {
 			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
+		}
+
+		// Trigger plugins
+		foreach ($cid as $eventid)
+		{
+			// Trigger event for plugins
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAfterEventSaved', array($eventid));
 		}
 
 		$total = count( $cid );
@@ -98,6 +107,15 @@ class RedEventControllerEvents extends RedEventController
 			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
 		}
 
+		// Trigger plugins
+		foreach ($cid as $eventid)
+		{
+			// Trigger event for plugins
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAfterEventSaved', array($eventid));
+		}
+
 		$total = count( $cid );
 		$msg 	= $total.' '.JText::_('COM_REDEVENT_EVENT_UNPUBLISHED');
 
@@ -124,12 +142,21 @@ class RedEventControllerEvents extends RedEventController
 			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
 		}
 
+		// Trigger plugins
+		foreach ($cid as $eventid)
+		{
+			// Trigger event for plugins
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAfterEventSaved', array($eventid));
+		}
+
 		$total = count( $cid );
 		$msg 	= $total.' '.JText::_('COM_REDEVENT_OLD_EVENT_DATE_ARCHIVED');
 
 		$this->setRedirect( 'index.php?option=com_redevent&view=events', $msg );
 	}
-	
+
   /**
    * Logic to archive events
    *
@@ -150,6 +177,15 @@ class RedEventControllerEvents extends RedEventController
       echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
     }
 
+	  // Trigger plugins
+	  foreach ($cid as $eventid)
+	  {
+		  // Trigger event for plugins
+		  JPluginHelper::importPlugin('redevent');
+		  $dispatcher =& JDispatcher::getInstance();
+		  $res = $dispatcher->trigger('onAfterEventSaved', array($eventid));
+	  }
+
     $total = count( $cid );
     $msg  = $total.' '.JText::_('COM_REDEVENT_OLD_EVENT_DATE_ARCHIVED');
 
@@ -167,7 +203,7 @@ class RedEventControllerEvents extends RedEventController
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or die( 'Invalid Token' );
-		
+
 		$group = & JTable::getInstance('redevent_events', '');
 		$group->bind(JRequest::get('post'));
 		$group->checkin();
@@ -193,7 +229,7 @@ class RedEventControllerEvents extends RedEventController
 		if ($task == 'copy' || $task == 'add') {
 			JRequest::setVar( 'task', $task );
 		} else {
-			
+
 			$user	=& JFactory::getUser();
 			// Error if checkedout by another administrator
 			if ($model->isCheckedOut( $user->get('id') )) {
@@ -211,47 +247,70 @@ class RedEventControllerEvents extends RedEventController
 	 * @return void
 	 * @since 0.9
 	 */
-	function save() 
+	function save()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
-		$db = JFactory::getDBO();
-		$task		= JRequest::getVar('task');
-		
+		JSession::checkToken() or die( 'Invalid Token' );
+		$db   = JFactory::getDBO();
+		$app  = JFactory::getApplication();
+		$task = $app->input->get('task');
+
 		$post = JRequest::get( 'post', 4 );
-		
+
 		/* Get the form fields to display */
-		$showfields = '';
-		foreach ($post as $field => $value) {
-			if (substr($field, 0, 9) == 'showfield' && $value == "1") {
-				$showfields .= substr($field, 9).",";
+		$showfields = array();
+
+		foreach ($post as $field => $value)
+		{
+			if (substr($field, 0, 9) == 'showfield' && $value == "1")
+			{
+				$showfields[] = substr($field, 9);
 			}
 		}
-		
-		$post['showfields'] = substr($showfields, 0, -1);
-		if (!isset($post['checked_out'])) $post['checked_out'] = 0;
-		
+
+		$post['showfields'] = implode(',', $showfields);
+
+		if (!isset($post['checked_out']))
+		{
+			$post['checked_out'] = 0;
+		}
+
 		/* Fix the submission types */
-		if (!$post['submission_types']) {
+		if (!$post['submission_types'])
+		{
 			$post['submission_types'] = array();
 		}
-		else {
+		else
+		{
 			$post['submission_types'] = implode(',', $post['submission_types']);
 		}
-		
+
 		$model = $this->getModel('event');
 		$model_wait = $this->getModel('waitinglist');
-		
-		if ($returnid = $model->store($post)) 
+
+		if ($returnid = $model->store($post))
 		{
+			// Event saved, trigger plugins
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAfterEventSaved', array($returnid));
+
 			$msg	= JText::_('COM_REDEVENT_EVENT_SAVED');
-			
+
+			// Check if we have session info, which only happens when creating the event the first time (other sessions have to be added in sessions view)
 			if (isset($post['venueid']) && $post['venueid'])
 			{
 				if (!$xref = $this->_saveInitialSession($returnid)) {
 					$msg .= "\n".JTExt::_('COM_REDEVENT_EVENT_FAILED_SAVING_INITIAL_SESSION').': '.$this->getError();
-				} 
-				if (JRequest::getVar('task') == 'saveAndTwit')
+				}
+
+				// Session saved, trigger plugins
+				JPluginHelper::importPlugin('redevent');
+				$dispatcher =& JDispatcher::getInstance();
+				$res = $dispatcher->trigger('onAfterSessionSaved', array($xref));
+
+				// Specific for autotweet
+				if ($task == 'saveAndTwit')
 				{
 					JPluginHelper::importPlugin( 'system', 'autotweetredevent');
 					$dispatcher =& JDispatcher::getInstance();
@@ -269,7 +328,7 @@ class RedEventControllerEvents extends RedEventController
 					$link = 'index.php?option=com_redevent&view=events';
 					break;
 			}
-						
+
 			$cache = &JFactory::getCache('com_redevent');
 			$cache->clean();
 
@@ -280,7 +339,7 @@ class RedEventControllerEvents extends RedEventController
 		}
 
 		$model->checkin();
-		
+
 		$this->setRedirect( $link, $msg );
  	}
 
@@ -298,7 +357,7 @@ class RedEventControllerEvents extends RedEventController
 		$total = count( $cid );
 
 		$msgtype = "message";
-		
+
 		if (!is_array( $cid ) || count( $cid ) < 1) {
 			$msg = JText::_('COM_REDEVENT_Select_an_item_to_delete' );
 			$msgtype = 'error';
@@ -314,34 +373,47 @@ class RedEventControllerEvents extends RedEventController
 			$cache = &JFactory::getCache('com_redevent');
 			$cache->clean();
 		}
-		
+
+		// Trigger plugins
+		foreach ($cid as $id)
+		{
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAfterEventRemoved', array($id));
+		}
+
 		$this->setRedirect( 'index.php?option=com_redevent&view=events', $msg, $msgtype);
 	}
-	
+
 	function removexref()
 	{
 		$id = JRequest::getVar('xref', 0, 'request', 'int');
-		
+
 		if (!$id) {
 			echo '0' .':'. JText::_('COM_REDEVENT_NO_XREF_ID');
       return true;
 		}
-		else { 
+		else {
 			$model = $this->getModel('session');
 			if ($model->removexref($id)) {
 				echo '1' .':'. JText::_('COM_REDEVENT_DATE_DELETED');
+
+				JPluginHelper::importPlugin('redevent');
+				$dispatcher =& JDispatcher::getInstance();
+				$res = $dispatcher->trigger('onAfterSessionRemoved', array($id));
+
         return true;
 			}
 			else {
         echo '0' .':'. JText::_('COM_REDEVENT_COULDNT_DELETE_DATE') .' - '. $model->getError() ;
-        return true;				
+        return true;
 			}
 		}
 	}
-	
+
 	/**
 	 * start events export screens
-	 * 
+	 *
 	 */
 	function export()
 	{
@@ -349,15 +421,15 @@ class RedEventControllerEvents extends RedEventController
 		JRequest::setVar( 'layout', 'export' );
 		parent::display();
 	}
-	
+
 	function doexport()
 	{
 		$app			=& JFactory::getApplication();
-		
+
 		$cats = JRequest::getVar('categories', null, 'request', 'array');
 		JArrayHelper::toInteger($cats);
 		$venues = JRequest::getVar('venues', null, 'request', 'array');
-		JArrayHelper::toInteger($venues);		
+		JArrayHelper::toInteger($venues);
 
 		$model = $this->getModel('events');
 		$events = $model->exportEvents($cats, $venues);
@@ -370,32 +442,32 @@ class RedEventControllerEvents extends RedEventController
 		$k = 0;
 		$export = '';
 		$col = array();
-		
-		$eventtablefields = array('id', 'title', 'alias', 'created_by', 'modified', 'modified_by', 
-		                          'summary', 'datdescription', 'details_layout', 'meta_description', 
-		                          'meta_keywords', 'datimage', 'author_ip', 'created', 'published', 
-		                          'registra', 'unregistra', 'checked_out', 'checked_out_time', 'notify', 
-		                          'notify_subject', 'notify_body', 'redform_id', 'juser', 'notify_on_list_body', 
-		                          'notify_off_list_body', 'notify_on_list_subject', 'notify_off_list_subject', 
-		                          'show_names', 'notify_confirm_subject', 'notify_confirm_body', 'review_message', 
-		                          'confirmation_message', 'activate', 'showfields', 'submission_types', 'course_code', 
-		                          'submission_type_email', 'submission_type_external', 'submission_type_phone', 'submission_type_webform', 
-		                          'show_submission_type_webform_formal_offer', 'submission_type_webform_formal_offer', 
-		                          'max_multi_signup', 'submission_type_formal_offer', 'submission_type_formal_offer_subject', 
-		                          'submission_type_formal_offer_body', 'submission_type_email_body', 'submission_type_email_subject', 
-		                          'submission_type_email_pdf', 'submission_type_formal_offer_pdf', 'send_pdf_form', 'pdf_form_data', 
+
+		$eventtablefields = array('id', 'title', 'alias', 'created_by', 'modified', 'modified_by',
+		                          'summary', 'datdescription', 'details_layout', 'meta_description',
+		                          'meta_keywords', 'datimage', 'author_ip', 'created', 'published',
+		                          'registra', 'unregistra', 'checked_out', 'checked_out_time', 'notify',
+		                          'notify_subject', 'notify_body', 'redform_id', 'juser', 'notify_on_list_body',
+		                          'notify_off_list_body', 'notify_on_list_subject', 'notify_off_list_subject',
+		                          'show_names', 'notify_confirm_subject', 'notify_confirm_body', 'review_message',
+		                          'confirmation_message', 'activate', 'showfields', 'submission_types', 'course_code',
+		                          'submission_type_email', 'submission_type_external', 'submission_type_phone', 'submission_type_webform',
+		                          'show_submission_type_webform_formal_offer', 'submission_type_webform_formal_offer',
+		                          'max_multi_signup', 'submission_type_formal_offer', 'submission_type_formal_offer_subject',
+		                          'submission_type_formal_offer_body', 'submission_type_email_body', 'submission_type_email_subject',
+		                          'submission_type_email_pdf', 'submission_type_formal_offer_pdf', 'send_pdf_form', 'pdf_form_data',
 		                          'paymentaccepted', 'paymentprocessing', 'enable_ical', '_tbl', '_tbl_key', '_db', '_errors');
-		
+
 		if (count($events))
-		{		
+		{
 			$header = current($events);
 			$export .= redEVENTHelper::writecsvrow(array_keys($header));
 
 			$current = 0; // current event
 			foreach($events as $data)
-			{			
-				if ($current == $data['id']) // not the first session, do not repeat event data 
-				{ 
+			{
+				if ($current == $data['id']) // not the first session, do not repeat event data
+				{
 					foreach ($data as $k => $v)
 					{
 						if (in_array($k, $eventtablefields)) {
@@ -404,17 +476,17 @@ class RedEventControllerEvents extends RedEventController
 					}
 				}
 				else {
-					$current = $data['id']; // first event id				
+					$current = $data['id']; // first event id
 				}
 				$export .= redEVENTHelper::writecsvrow($data);
 			}
-	
+
 			echo $export;
 		}
 
 		$app->close();
 	}
-	
+
 	/**
 	 * import event
 	 */
@@ -422,7 +494,7 @@ class RedEventControllerEvents extends RedEventController
 	{
 		$input = JFactory::getApplication()->input;
 		$duplicate_method = $input->get('duplicate_method', 'ignore', 'word');
-		
+
 		$msg = '';
 		if ( $file = $input->files->get( 'import' ) )
 		{
@@ -433,7 +505,7 @@ class RedEventControllerEvents extends RedEventController
 				$this->setRedirect( 'index.php?option=com_redevent&controller=events&task=export', $msg, 'error' );
 				return;
 			}
-			 
+
 			// get fields, on first row of the file
 			$fields = array();
 			if ( ($data = fgetcsv($handle, 0, ',', '"')) !== FALSE )
@@ -479,7 +551,7 @@ class RedEventControllerEvents extends RedEventController
 			}
 			fclose($handle);
 			$msg .= "<p>total records found: ".count($records)."<br /></p>\n";
-			 
+
 			// database update
 			if (count($records))
 			{
@@ -495,7 +567,7 @@ class RedEventControllerEvents extends RedEventController
 			parent::display();
 		}
 	}
-  
+
   /**
    * handle specific fields conversion if needed
    *
@@ -524,17 +596,17 @@ class RedEventControllerEvents extends RedEventController
     }
     return $field;
   }
-  
+
   /**
    * save data of first session associated to newly created event
-   * 
+   *
    * @param int $eventid
    * @return mixed xref id on success, else false
    */
   protected function _saveInitialSession($eventid)
   {
   	$model = $this->getModel('Session', 'RedeventModel');
-  	
+
   	$post = JRequest::get( 'post' );
   	$post['eventid'] = $eventid;
     $post['details'] = JRequest::getVar('session_details', '', 'post', 'string', JREQUEST_ALLOWRAW);
@@ -545,14 +617,14 @@ class RedEventControllerEvents extends RedEventController
     		$post[substr($key, 8)] = $val;
     	}
     }
-        
+
     $model = $this->getModel('session');
-    if (!$returnid = $model->savexref($post)) 
+    if (!$returnid = $model->savexref($post))
     {
     	$this->setError($model->getError());
     	return false;
     }
     return $returnid;
-  	
+
   }
 }

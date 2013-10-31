@@ -230,11 +230,11 @@ class RedeventModelBaseEventList extends JModel
 		$db = &JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref');
+		$query->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.session_code');
 		$query->select('x.maxattendees, x.maxwaitinglist, x.course_credit, x.featured, x.icaldetails, x.icalvenue, x.title as session_title');
 		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
 		$query->select('a.id, a.title, a.created, a.datdescription, a.registra, a.datimage, a.summary, a.submission_type_external');
-		$query->select('l.venue, l.city, l.state, l.url, l.street, l.country, l.locdescription');
+		$query->select('l.venue, l.city, l.state, l.url, l.street, l.country, l.locdescription, l.venue_code, l.id AS venue_id');
 		$query->select('c.catname, c.id AS catid');
 		$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
 		$query->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug');
@@ -287,7 +287,21 @@ class RedeventModelBaseEventList extends JModel
 			$filter_order = 'c' . $regs[1] . '.value';
 		}
 
-		$query->order($filter_order . ' ' . $filter_order_dir . ', x.dates, x.times');
+		$open_order = JComponentHelper::getParams('com_redevent')->get('open_dates_ordering', 0);
+		$ordering_def = $open_order ? 'x.dates = 0 ' . $filter_order_dir . ', x.dates ' . $filter_order_dir
+			: 'x.dates > 0 ' . $filter_order_dir . ', x.dates ' . $filter_order_dir;
+
+		switch ($filter_order)
+		{
+			case 'x.dates':
+				$ordering = $ordering_def;
+				break;
+
+			default:
+				$ordering = $filter_order . ' ' . $filter_order_dir . ', ' . $ordering_def;
+		}
+
+		$query->order($ordering);
 
 		return $query;
 	}
@@ -576,6 +590,8 @@ class RedeventModelBaseEventList extends JModel
 			$query->where('r.cancelled = 0');
 			$query->group('r.waitinglist');
 			$db->setQuery($query);
+
+			$res = $db->loadObjectList();
 
 			$rows[$k]->registered = (isset($res[0]) ? $res[0]->total : 0);
 			$rows[$k]->waiting = (isset($res[1]) ? $res[1]->total : 0);

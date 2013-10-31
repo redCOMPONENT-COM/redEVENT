@@ -64,7 +64,7 @@ defined('_JEXEC') or die('Restricted access');
 				<tr xref="<?php echo $row->xref; ?>">
 					<td><?php echo $editsessionlink; ?></td>
 					<td><?php echo redEVENTHelper::getEventDuration($row); ?></td>
-					<td><?php echo $row->full_title; ?></td>
+					<td><?php echo redEVENTHelper::getSessionFullTitle($row); ?></td>
 					<td><?php echo $row->venue; ?></td>
 					<td><?php echo $row->city; ?></td>
 					<td class="re_category">
@@ -84,7 +84,7 @@ defined('_JEXEC') or die('Restricted access');
 						?>
 					</td>
 					<td><?php echo $row->language_sef; ?></td>
-					<td><?php echo $this->bookbutton($row->xref); ?><?php echo $this->printPlaces($row); ?>
+					<td><?php echo $this->printPlaces($row); ?>
 						<button type="button" xref="<?php echo $row->xref; ?>" class="bookthis"><?php echo JText::_('COM_REDEVENT_ADD'); ?></button></td>
 					<td>
 					<?php if ($this->useracl->canEditEvent((int) $row->slug)): ?>

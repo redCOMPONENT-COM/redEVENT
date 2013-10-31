@@ -266,20 +266,39 @@ class RedeventControllerFrontadmin extends FOFController
 		else
 		{
 			$model = $this->getModel('frontadmin');
+			$added = 0;
 
 			foreach ($regs as $user_id)
 			{
-				$res = $model->quickbook($user_id, $xref);
+				$attendee = $model->quickbook($user_id, $xref);
 				$regresp = new stdclass;
 
-				if ($res)
+				if ($attendee)
 				{
 					$regresp->status = 1;
 
 					if (redFORMHelperAnalytics::isEnabled())
 					{
-						$regresp->analytics = redFORMHelperAnalytics::recordTrans($res, array('affiliation' => 'redevent-b2b'));
+						$options = array();
+						$options['affiliation'] = 'redevent-b2b';
+						$options['sku']         = $attendee->event_name;
+						$options['productname'] = $attendee->venue . ' - ' . $attendee->xref . ' ' . $attendee->event_name
+							. ($attendee->session_name ? ' / ' . $attendee->session_name : '');
+
+						$cats = array();
+						foreach ($attendee->categories as $c)
+						{
+							$cats[] = $c->catname;
+						}
+						$options['category'] = implode(', ', $cats);
+
+						$regresp->analytics = redFORMHelperAnalytics::recordTrans($attendee->submit_key, $options);
 					}
+					$added++;
+
+					JPluginHelper::importPlugin( 'redevent' );
+					$dispatcher =& JDispatcher::getInstance();
+					$res = $dispatcher->trigger('onAttendeeCreated', array($attendee->id));
 				}
 				else
 				{
@@ -288,6 +307,7 @@ class RedeventControllerFrontadmin extends FOFController
 					$regresp->error = $model->getError();
 				}
 
+				$resp->message = JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_D_MEMBERS_BOOKED', $added);
 				$resp->regs[] = $regresp;
 			}
 		}
@@ -352,6 +372,10 @@ class RedeventControllerFrontadmin extends FOFController
 		if ($res = $model->cancelregistration($rid))
 		{
 			$resp->status = 1;
+
+			JPluginHelper::importPlugin( 'redevent' );
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAttendeeCancelled', array($rid));
 		}
 		else
 		{
@@ -460,57 +484,18 @@ class RedeventControllerFrontadmin extends FOFController
 	 */
 	public function update_user()
 	{
-		$app      = JFactory::getApplication();
-		$id       = $app->input->get('id', 0, 'int');
-		$username = $app->input->get('username', '', 'string');
-		$name     = $app->input->get('name', '', 'string');
-		$email    = $app->input->get('email', '', 'string');
+		require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
+		$resp = new stdClass();
 
-		$organizations = $app->input->get('organizations', array(), 'array');
-		JArrayHelper::toInteger($organizations);
-
-		$user = JFactory::getUser($id);
-
-		$user->username = $username;
-		$user->name  = $name;
-		$user->email = $email;
-
-		$resp = new stdclass;
-
-		if ($user->save())
+		try
 		{
-			// Update organizations
-			$db      = JFactory::getDbo();
-			$query = $db->getQuery(true);
-
-			$query->delete('#__redmember_user_organization_xref');
-			$query->where('user_id = ' . $user->id);
-
-			$db->setQuery($query);
-			$res = $db->query();
-
-			if ($organizations)
-			{
-				$query = $db->getQuery(true);
-
-				$query->insert('#__redmember_user_organization_xref');
-				$query->columns('user_id, organization_id');
-
-				foreach ($organizations as $o)
-				{
-					$query->values($user->id . ', ' . $o);
-				}
-
-				$db->setQuery($query);
-				$res = $db->query();
-			}
-
-			$resp->status = 1; //echo JText::_('COM_USERS_USER_SAVE_SUCCESS');
+			$user = RedmemberLib::saveUser(true);
+			$resp->status = 1;
 		}
-		else
+		catch (Exception $e)
 		{
 			$resp->status = 0;
-			$resp->error  = JText::_('COM_USERS_USER_SAVE_FAILED');
+			$resp->error  = JText::_('COM_USERS_USER_SAVE_FAILED') . ': ' . $e->getMessage();
 		}
 
 		echo json_encode($resp);

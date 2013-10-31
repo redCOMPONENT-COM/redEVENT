@@ -153,6 +153,18 @@ class RedEvent_venues extends JTable
 
 	public function bind($array, $ignore = '')
 	{
+		// Extra params
+		if (isset($array['params']) && is_array($array['params']))
+		{
+			if (!isset($array['params']['allowed_gateways']))
+			{
+				$array['params']['allowed_gateways'] = array();
+			}
+			$registry = new JRegistry;
+			$registry->loadArray($array['params']);
+			$array['params'] = (string) $registry;
+		}
+
 		// Bind the rules.
 		if (isset($array['rules']) && is_array($array['rules']))
 		{

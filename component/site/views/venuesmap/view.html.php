@@ -51,7 +51,7 @@ class RedeventViewVenuesmap extends JView
 		$item    	= $menu->getActive();
 		$params 	= & $mainframe->getParams();
     $task       = JRequest::getWord('task');
-    	
+
     if ($item) {
       $title = $item->title;
     }
@@ -65,20 +65,20 @@ class RedeventViewVenuesmap extends JView
       $document->addStyleSheet('media/com_redevent/css/redevent.css');
     }
     else {
-      $document->addStyleSheet($params->get('custom_css'));     
+      $document->addStyleSheet($params->get('custom_css'));
     }
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
 		// specific for eventsmap
     JHTML::_('behavior.mootools');
-		$document->addScript('http://maps.google.com/maps/api/js?sensor=false');
+		$document->addScript('https://maps.google.com/maps/api/js?sensor=false');
     $document->addScript($this->baseurl.'/components/com_redevent/assets/js/markermanager.js');
     $document->addScript($this->baseurl.'/components/com_redevent/assets/js/venuesmap.js');
-    
+
     // filters
     $vcat = $mainframe->getUserStateFromRequest('com_redevent.venuesmap.vcat', 'vcat', $params->def('vcat', 0), 'int');
     $cat = $mainframe->getUserStateFromRequest('com_redevent.venuesmap.cat', 'cat', $params->def('cat', 0), 'int');
-    $custom = $this->get('CustomFilters'); 
+    $custom = $this->get('CustomFilters');
     $filter_customs   = $mainframe->getUserStateFromRequest('com_redevent.venuesmap.filter_customs', 'filtercustom', array(), 'array');
 
 		$rows 		= & $this->get('Data');
@@ -89,7 +89,7 @@ class RedeventViewVenuesmap extends JView
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
-		
+
 	  if ( $task == 'archive' ) {
       $pathway->addItem(JText::_('COM_REDEVENT_ARCHIVE' ), JRoute::_('index.php?view=venues&task=archive') );
       $pagetitle = $params->get('page_title').' - '.JText::_('COM_REDEVENT_ARCHIVE' );
@@ -98,25 +98,25 @@ class RedeventViewVenuesmap extends JView
       $pagetitle = $params->get('page_title');
       $print_link = JRoute::_('index.php?view=venues&pop=1&tmpl=component');
     }
-    
+
     $lists = array();
-    
+
     // venues categories
     $vcat_options = redEVENTHelper::getVenuesCatOptions(false);
     array_unshift($vcat_options, JHTML::_('select.option', 0, JText::_('COM_REDEVENT_ALL')));
     $lists['venuescats'] = JHTML::_('select.genericlist', $vcat_options, 'vcat', '', 'value', 'text', $vcat);
-    
+
     // events categories
     $cat_options = redEVENTHelper::getEventsCatOptions(false);
     array_unshift($cat_options, JHTML::_('select.option', 0, JText::_('COM_REDEVENT_ALL')));
     $lists['eventscats'] = JHTML::_('select.genericlist', $cat_options, 'cat', '', 'value', 'text', $cat);
-    
+
     $lists['customfilters'] = $custom;
-    
+
 		//Set Page title
 		$this->document->setTitle($pagetitle);
    	$document->setMetadata('keywords', $pagetitle );
-   	
+
    	$ajaxurl = 'index.php?option=com_redevent&view=venue&tmpl=component';
    	if ($vcat) {
    		$ajaxurl .= '&vcat=' . $vcat;

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Tracks" default="site" basedir=".">
+
+	<!--<import file="./fof/build/build.xml"/>-->
+
 	<property file="build/build.properties" />
-	
+
 	<!-- Default properties, set only if not already assigned in the build.properties file -->
 	<property name="dirs.root" value="." />
 	<property name="dirs.tmp" value="tmp" />
@@ -10,27 +13,13 @@
 
 	<taskdef name="gitversion" classname="build.phingext.GitVersionTask" />
 	<taskdef name="gitdate" classname="build.phingext.GitDateTask" />
-		
+
 	<!--
 	====================================================================================================
 	Tasks - General
 	====================================================================================================
 	-->
-	
-	<target name="all" description="Makes everything"
-		depends="dev-release">
-	</target>
-	
-	<target name="dev-release" description="Makes the release"
-		depends="new-release,setup-properties,release">
-	</target>
 
-	<target name="new-release" description="Create the release directory afresh">
-		<!-- Recreate the release directory -->
-		<delete dir="${dirs.release}" quiet="yes" includeemptydirs="false" />
-		<mkdir dir="${dirs.release}" />
-	</target>
-	
 	<target name="setup-properties" description="Set up version and build properties">
 		<!-- Initialize the build.date timestamp -->
 		<tstamp>
@@ -48,16 +37,19 @@
 			</then>
 		</if>
 	</target>
-	
+
 	<!--
 	====================================================================================================
 	Tasks - Joomla! packages
 	====================================================================================================
 	-->
-	
+
 	<target name="release" description="Installation Package for Joomla! 1.6+"
-		depends="new-release,setup-properties">
-		
+		depends="setup-properties">
+
+		<delete dir="${dirs.release}" quiet="yes" includeemptydirs="false" />
+		<mkdir dir="${dirs.release}" />
+
 		<copy todir="${dirs.tmp}/component" >
 			<fileset dir="${dirs.root}/component">
 				<include name="**" />
@@ -69,10 +61,28 @@
 				</replacetokens>
 			</filterchain>
 		</copy>
-		
+		<copy todir="${dirs.tmp}/component/fof" >
+			<fileset dir="${dirs.root}/fof/fof">
+				<include name="**" />
+			</fileset>
+		</copy>
+
 		<!-- Create the package -->
 		<tar basedir="${dirs.tmp}/component" destfile="${dirs.release}/com_${comp.name}-${version}.tar.gz" includeemptydirs="true" compression="gzip" />
-		
+
+		<copy todir="${dirs.tmp}/redeventsync" >
+			<fileset dir="${dirs.root}/redeventsync">
+				<include name="**" />
+			</fileset>
+			<filterchain>
+				<replacetokens begintoken="##" endtoken="##">
+					<token key="DATE" value="${build.date}" />
+					<token key="VERSION" value="${version}" />
+				</replacetokens>
+			</filterchain>
+		</copy>
+		<tar basedir="${dirs.tmp}/redeventsync" destfile="${dirs.release}/com_redeventsync-${version}.tar.gz" includeemptydirs="true" compression="gzip" />
+
 		<!-- admin modules -->
 		<foreach param="dirname" absparam="absname" target="zipfolder">
 			<property name="myp" value="modules/admin" />
@@ -81,7 +91,7 @@
 	        <depth max="0" min="0" />
 		  </fileset>
 		</foreach>
-		
+
 		<!-- site modules -->
 		<foreach param="dirname" absparam="absname" target="zipfolder">
 			<property name="myp" value="modules/site" />
@@ -90,7 +100,7 @@
 	        <depth max="0" min="0" />
 		  </fileset>
 		</foreach>
-		
+
 		<!-- languages -->
 		<foreach param="dirname" absparam="absname" target="zipfolder">
 			<property name="myp" value="language" />
@@ -99,7 +109,7 @@
 		        <depth max="0" min="0" />
 			  </fileset>
 		</foreach>
-		
+
 		<!-- plugins -->
 		<foreach param="pdirname" absparam="pabsname" target="zipplugins">
 			<fileset dir="${dirs.root}/plugins">
@@ -107,10 +117,10 @@
 				<depth max="0" min="0" />
 			</fileset>
 		</foreach>
-		
+
 		<delete dir="${dirs.tmp}" quiet="yes" includeemptydirs="false" />
 	</target>
-	
+
 	<target name="zipplugins">
 	    <echo msg="handling plugins group ${pdirname}" />
 		<foreach param="dirname" absparam="absname" target="zipfolder">
@@ -121,8 +131,8 @@
 			</fileset>
 		</foreach>
 	</target>
-	 
-	
+
+
 	<target name="zipfolder">
 	    <echo msg="packaging ${dirname} ${absname}" />
 		<copy todir="${dirs.tmp}/${myp}/${dirname}" >
@@ -146,14 +156,16 @@
 	Tasks - copy to your test site
 	====================================================================================================
 	-->
-	
+
 	<target name="site" description="Copies files to a existing joomla site" depends="setup-properties">
         <echo message="Copying administrator component..." />
 
+		<!-- clean up existing files and folders -->
+		<delete dir="${www.dir}/administrator/components/com_${comp.name}" quiet="yes" includeemptydirs="false" />
         <!-- Manifest & install script -->
         <echo message="Copying manifest..." />
-        <copy file="${dirs.root}/component/${comp.name}.xml"
-            tofile="${www.dir}/administrator/components/com_${comp.name}/${comp.name}.xml" overwrite="true">
+        <copy file="${dirs.root}/component/com_${comp.name}.xml"
+            tofile="${www.dir}/administrator/components/com_${comp.name}/com_${comp.name}.xml" overwrite="true">
             <!-- trick to replace extension folders in the manifest-->
             <filterchain>
         	  <replaceregexp>
@@ -176,7 +188,7 @@
             <fileset dir="${dirs.root}/component/admin">
                 <include name="**" />
                 <!-- Exclude the manifest to avoid overwriting the previously copied -->
-                <exclude name="${comp.name}.xml" />
+                <exclude name="com_${comp.name}.xml" />
             </fileset>
         </copy>
 
@@ -249,5 +261,73 @@
 			</filterchain>
         </copy>
 
+
+		<!-- redeventsync -->
+
+        <!-- Manifest & install script -->
+		<delete dir="${www.dir}/administrator/components/com_redeventsync" quiet="yes" includeemptydirs="false" />
+		<delete dir="${www.dir}/components/com_redeventsync" quiet="yes" includeemptydirs="false" />
+        <echo message="Copying manifest..." />
+        <copy file="${dirs.root}/redeventsync/redeventsync.xml"
+            tofile="${www.dir}/administrator/components/com_redeventsync/redeventsync.xml" overwrite="true">
+            <!-- trick to replace extension folders in the manifest-->
+            <filterchain>
+        	  <replaceregexp>
+        		<regexp pattern="folder=&quot;admin&quot;" replace="folder=&quot;administrator/components/com_redeventsync&quot;"/>
+        	  </replaceregexp>
+          	  <replaceregexp>
+          		<regexp pattern="folder=&quot;site&quot;" replace="folder=&quot;components/com_redeventsync&quot;"/>
+          	  </replaceregexp>
+				<replacetokens begintoken="##" endtoken="##">
+					<token key="DATE" value="${build.date}" />
+					<token key="VERSION" value="${version}" />
+				</replacetokens>
+            </filterchain>
+        </copy>
+        <copy file="${dirs.root}/redeventsync/install.php"
+            tofile="${www.dir}/administrator/components/com_redeventsync/install.php" overwrite="true" />
+
+        <!-- Backend component -->
+        <copy todir="${www.dir}/administrator/components/com_redeventsync" overwrite="true">
+            <fileset dir="${dirs.root}/redeventsync/admin">
+                <include name="**" />
+                <!-- Exclude the manifest to avoid overwriting the previously copied -->
+                <exclude name="redeventsync.xml" />
+            </fileset>
+        </copy>
+
+        <!-- Frontend component -->
+        <echo message="Copying frontend component..." />
+        <copy todir="${www.dir}/components/com_redeventsync" overwrite="true">
+            <fileset dir="${dirs.root}/redeventsync/site" />
+        </copy>
+
+        <!-- Media -->
+        <copy todir="${www.dir}/media" overwrite="true">
+            <fileset dir="${dirs.root}/redeventsync/media">
+                <include name="**" />
+            </fileset>
+        </copy>
+
+		<!-- included Plugins -->
+		<copy todir="${www.dir}/plugins" overwrite="true">
+			<fileset dir="${dirs.root}/redeventsync/admin/plugins">
+				<include name="**" />
+			</fileset>
+
+			<filterchain>
+				<replacetokens begintoken="##" endtoken="##">
+					<token key="DATE" value="${build.date}" />
+					<token key="VERSION" value="${version}" />
+				</replacetokens>
+			</filterchain>
+		</copy>
+
+		<!-- Test -->
+		<copy todir="${www.dir}/test" overwrite="true">
+			<fileset dir="${dirs.root}/redeventsync/test">
+				<include name="**" />
+			</fileset>
+		</copy>
     </target>
 </project>

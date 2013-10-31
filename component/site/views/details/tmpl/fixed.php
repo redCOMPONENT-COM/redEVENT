@@ -50,7 +50,7 @@ if ($this->row->venueid != 0) {
 <!-- Details EVENT -->
 	<h2 class="redevent">
 		<?php
-    	echo $this->row->full_title;
+		echo Jtext::_('COM_REDEVENT_VIEW_DETAILS_FIXED_SUMMARY_SECTION_TITLE');
     	echo '&nbsp;'.REOutput::editbutton($this->item->id, $this->row->did, $this->params, $this->allowedtoeditevent, 'editevent' );
     	?>
 	</h2>

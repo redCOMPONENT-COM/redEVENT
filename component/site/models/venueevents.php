@@ -63,6 +63,27 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 
 		$id = JRequest::getInt('id');
 		$this->setId((int) $id);
+
+		$params    = $mainframe->getParams('com_redevent');
+
+		if ($params->exists('results_type'))
+		{
+			$results_type = $params->get('results_type', $params->get('default_categoryevents_results_type', 1));
+		}
+		else
+		{
+			$results_type = $params->get('default_categoryevents_results_type', 1);
+		}
+
+		// If searching for events
+		if ($results_type == 0)
+		{
+			// Get the filter request variables
+			$this->setState('filter_order',     JRequest::getCmd('filter_order', 'a.title'));
+			$this->setState('filter_order_Dir', strtoupper(JRequest::getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC');
+		}
+
+		$this->setState('results_type', $results_type);
 	}
 
 	/**
@@ -82,6 +103,31 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 	}
 
 	/**
+	 * override to take into account search type
+	 * @see RedeventModelBaseEventList::getData()
+	 */
+	public function &getData()
+	{
+		if ($this->getState('results_type', 1) == 1)
+		{
+			return parent::getData();
+		}
+
+		// Lets load the content if it doesn't already exist
+		if (empty($this->_data))
+		{
+			$query = $this->_buildQuery();
+
+			$pagination = $this->getPagination();
+			$this->_data = $this->_getList($query, $pagination->limitstart, $pagination->limit);
+			$this->_data = $this->_categories($this->_data);
+			$this->_data = $this->_getSessions($this->_data);
+		}
+
+		return $this->_data;
+	}
+
+	/**
 	 * (non-PHPdoc)
 	 * @see RedeventModelBaseEventList::_buildWhere()
 	 */
@@ -93,6 +139,12 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 		if ($this->_id > 0)
 		{
 			$query->where('x.venueid = ' . $this->_id);
+		}
+
+		if ($this->getState('results_type') == 0)
+		{
+			$query->clear('group');
+			$query->group('a.id');
 		}
 
 		return $query;
@@ -125,5 +177,48 @@ class RedeventModelVenueevents extends RedeventModelBaseEventList
 		$_venue->attachments = REAttach::getAttachments('venue' . $_venue->id, $user->getAuthorisedViewLevels());
 
 		return $_venue;
+	}
+	/**
+	 * get Sessions associated to events data
+	 *
+	 * @param   array  $data  event data objects
+	 *
+	 * @return array
+	 */
+	protected function _getSessions($data)
+	{
+		if (!$data || ! count($data))
+		{
+			return $data;
+		}
+
+		$event_ids = array();
+
+		foreach ($data as $k => $ev)
+		{
+			$event_ids[] = $ev->id;
+			$map[$ev->id] = $k;
+		}
+
+		$query = parent::_buildQuery();
+		$query->clear('order');
+		$query->where('a.id IN (' . implode(",", $event_ids) . ')');
+
+		$this->_db->setQuery($query);
+		$sessions = $this->_db->loadObjectList();
+
+		foreach ($sessions as $s)
+		{
+			if (!isset($data[$map[$s->id]]))
+			{
+				$data[$map[$s->id]]->sessions = array($s);
+			}
+			else
+			{
+				$data[$map[$s->id]]->sessions[] = $s;
+			}
+		}
+
+		return $data;
 	}
 }

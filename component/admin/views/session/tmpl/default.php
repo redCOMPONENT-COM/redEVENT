@@ -100,6 +100,14 @@ function updateend(cal)
       <input type="text" size="20" maxlength="255" name="alias" id="alias" value="<?php echo $this->xref->alias; ?>" />
     </td>
   </tr>
+  <tr>
+    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_SESSION_CODE_DESC'); ?>">
+      <label for="alias"><?php echo JText::_( 'COM_REDEVENT_SESSION_CODE' ) .': '; ?></label>
+    </td>
+    <td>
+      <input type="text" size="20" maxlength="255" name="session_code" id="session_code" value="<?php echo $this->xref->session_code; ?>" />
+    </td>
+  </tr>
 	<tr>
     <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_START_DATE_TIP'); ?>">
       <label for="dates"><?php echo JText::_('COM_REDEVENT_DATE') .': '; ?></label>

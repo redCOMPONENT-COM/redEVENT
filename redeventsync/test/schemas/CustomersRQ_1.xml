@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CustomersRQ
+	xmlns="http://www.redcomponent.com/redevent">
+	<CustomerRQ>
+		<TransactionId>11</TransactionId>
+		<Emailaddress>julv@free.fr</Emailaddress>
+	</CustomerRQ>
+	<CustomerRQ>
+		<TransactionId>666</TransactionId>
+		<Emailaddress>notregistered@bala.com</Emailaddress>
+	</CustomerRQ>
+</CustomersRQ>

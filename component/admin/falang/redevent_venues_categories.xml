@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<falang type="contentelement">
+	<name>redEVENT - Venue Categories</name>
+	<author>redCOMPONENT</author>
+	<version>##VERSION##</version>
+	<description>Definition for redEVENT component, "Venue Categories" section</description>
+	<reference>
+		<table name="redevent_venues_categories">
+			<field type="referenceid" name="id" translate="0">ID</field>
+			<field type="titletext" name="name" translate="1">Venue Category</field>
+			<field type="htmltext" name="description" translate="1">Description</field>
+		</table>
+
+		<component>
+			!
+			<form>com_redevent#redevent_venues_categories#cid#view#category#task#!edit</form>
+		</component>
+	</reference>
+</falang>

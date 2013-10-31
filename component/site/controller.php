@@ -59,15 +59,24 @@ class RedeventController extends JController
 			return $this->$method();
 		}
 
-		// default list layout for certain views
+		$input = JFactory::getApplication()->input;
+
+		// Default list layout for certain views
 		switch ($view)
 		{
 			case 'categoryevents':
 			case 'simplelist':
 			case 'venueevents':
-				$input = JFactory::getApplication()->input;
-				if (!$input->get('layout')) {
+				if (!$input->get('layout'))
+				{
 					$input->def('layout', JFactory::getApplication()->getParams('com_redevent')->get('default_list_layout', 'table'));
+				}
+				break;
+
+			case 'frontadmin':
+				if (!$input->get('tmpl'))
+				{
+					$input->set('tmpl', 'component');
 				}
 				break;
 		}
@@ -524,7 +533,7 @@ class RedeventController extends JController
 		$v = new vCal();
 
 		$v->setTimeZone($user_offset);
-		$v->setSummary($row->venue.'-'.$row->catname.'-'.$row->full_title);
+		$v->setSummary($row->venue.'-'.$row->catname.'-'.redEVENTHelper::getSessionFullTitle($row));
 		$v->setDescription($row->datdescription);
 		$v->setStartDate($Start);
 		$v->setEndDate($End);
@@ -788,7 +797,7 @@ class RedeventController extends JController
 
 			foreach ($events as $event)
 			{
-				echo "sending reminder for event: ".$event->full_title."<br>";
+				echo "sending reminder for event: ".redEVENTHelper::getSessionFullTitle($event)."<br>";
 
 				$tags = new redEVENT_tags();
 				$tags->setXref($event->id);
@@ -825,33 +834,44 @@ class RedeventController extends JController
 		JFile::write($file, time());
 	}
 
-
-
 	/**
 	 * for attachement downloads
 	 *
+	 * @return void
 	 */
-	function getfile()
+	public function getfile()
 	{
-		$id = JRequest::getInt('file');
-		$user = &JFactory::getUser();
+		$app  = JFactory::getApplication();
+		$id   = $app->input->getInt('file', 0);
+		$user = JFactory::getUser();
 		$path = REAttach::getAttachmentPath($id, max($user->getAuthorisedViewLevels()));
 
-		$mime = redEVENTHelper::getMimeType($path);
+		// The header is fine tuned to work with grump ie8... if you modify a property, make sure it's still ok !
+		header('Content-Description: File Transfer');
 
-		$doc =& JFactory::getDocument();
+		// Mime
+		$mime = redEVENTHelper::getMimeType($path);
+		$doc = JFactory::getDocument();
 		$doc->setMimeEncoding($mime);
-		header('Content-Disposition: attachment; filename="'.basename($path).'"');
+
+		header('Content-Disposition: attachment; filename="'. basename($path) .'"');
+		header('Content-Transfer-Encoding: binary');
+		header('Expires: 0');
+		header('Cache-Control: no-store, no-cache');
+		header('Pragma: no-cache');
+
 		if ($fd = fopen ($path, "r"))
 		{
 			$fsize = filesize($path);
 			header("Content-length: $fsize");
-			header("Cache-control: private"); //use this to open files directly
-			while(!feof($fd)) {
+
+			while(!feof($fd))
+			{
 				$buffer = fread($fd, 2048);
 				echo $buffer;
 			}
 		}
+
 		fclose ($fd);
 		return;
 	}

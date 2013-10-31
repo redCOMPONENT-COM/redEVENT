@@ -46,9 +46,9 @@ class RedeventViewAttendees extends JView
 		{
 			return $this->_displayManageAttendees($tpl);
 		}
-		
+
 		$mainframe = &JFactory::getApplication();
-		
+
 		$document 	= JFactory::getDocument();
 		$user		= JFactory::getUser();
 		$elsettings = redEVENTHelper::config();
@@ -64,12 +64,12 @@ class RedeventViewAttendees extends JView
 		$registers        = $model->getRegisters();
 		$register_fields  = $model->getFormFields();
 		$roles            = $this->get('Roles');
-				
+
 		//get menu information
 		$menu		= & JSite::getMenu();
 		$item    	= $menu->getActive();
 		if (!$item) $item = $menu->getDefault();
-		
+
 		$params 	= & $mainframe->getParams('com_redevent');
 
 		//Check if the id exists
@@ -81,7 +81,7 @@ class RedeventViewAttendees extends JView
 		//Print
 		$pop	= JRequest::getBool('pop');
 
-		$params->def( 'page_title', $row->full_title. ' - '. JText::_('COM_REDEVENT_ATTENDEES' ));
+		$params->def( 'page_title', redEVENTHelper::getSessionFullTitle($row). ' - '. JText::_('COM_REDEVENT_ATTENDEES' ));
 
 		if ( $pop ) {
 			$params->set( 'popup', 1 );
@@ -92,10 +92,10 @@ class RedeventViewAttendees extends JView
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
 		$pathway->addItem( JText::_('COM_REDEVENT_ATTENDEES' ), JRoute::_('index.php?option=com_redevent&view=attendees&xref='.$row->slug));
-		
+
 		//set page title and meta stuff
-		$document->setTitle( $item->title.' - '.$row->full_title );
-		            
+		$document->setTitle($item->title.' - '.redEVENTHelper::getSessionFullTitle($row));
+
 		$unreg_check = redEVENTHelper::canUnregister($row->xref);
 
 		// lists
@@ -107,7 +107,7 @@ class RedeventViewAttendees extends JView
 		/* Get the values from the state object that were inserted in the model's construct function */
 		$lists['order_Dir'] = $state->get( 'filter_order_Dir' );
 		$lists['order']     = $state->get( 'filter_order' );
-		
+
 		//assign vars to jview
 		$this->assignRef('row',              $row);
 		$this->assignRef('params',           $params);
@@ -123,9 +123,9 @@ class RedeventViewAttendees extends JView
 		$this->assignRef('unreg_check',      $unreg_check);
 		$this->assignRef('action',           JRoute::_('index.php?option=com_redevent&view=attendees&xref='.$row->slug));
 		$this->assignRef('lists',            $lists);
-		
+
 		$tpl = JRequest::getVar('tpl', $tpl);
-		
+
 		parent::display($tpl);
 	}
 
@@ -135,8 +135,8 @@ class RedeventViewAttendees extends JView
  	 * @since 2.0
 	 */
 	function _displayManageAttendees($tpl = null)
-	{	
-		$mainframe = &JFactory::getApplication();			
+	{
+		$mainframe = &JFactory::getApplication();
 		$document 	= JFactory::getDocument();
 		$user		= JFactory::getUser();
 		$elsettings = redEVENTHelper::config();
@@ -145,12 +145,12 @@ class RedeventViewAttendees extends JView
 		$registers	= $this->get('Registers');
 		$regcheck	= $this->get('ManageAttendees');
 		$roles            = $this->get('Roles');
-				
+
 		//get menu information
 		$menu		= & JSite::getMenu();
 		$item    	= $menu->getActive();
 		if (!$item) $item = $menu->getDefault();
-		
+
 		$params 	= & $mainframe->getParams('com_redevent');
 
 		//Check if the session exists
@@ -169,7 +169,7 @@ class RedeventViewAttendees extends JView
       $document->addStyleSheet('media/com_redevent/css/redevent.css');
     }
     else {
-      $document->addStyleSheet($params->get('custom_css'));     
+      $document->addStyleSheet($params->get('custom_css'));
     }
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
@@ -177,12 +177,12 @@ class RedeventViewAttendees extends JView
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
-		$pathway->addItem( JText::_('COM_REDEVENT_Manage_attendees' ). ' - '.$row->full_title, JRoute::_('index.php?option=com_redevent&view=attendees&layout=manageattendees&id='.$row->slug));
-		
+		$pathway->addItem( JText::_('COM_REDEVENT_Manage_attendees' ). ' - '.redEVENTHelper::getSessionFullTitle($row), JRoute::_('index.php?option=com_redevent&view=attendees&layout=manageattendees&id='.$row->slug));
+
 		//Check user if he can edit
 		$manage_attendees  = $this->get('ManageAttendees');
 		$view_full_attendees = $this->get('ViewAttendees');
-		
+
 			// add javascript code for cancel button on attendees layout.
 			JHTML::_('behavior.mootools');
 			$js = " window.addEvent('domready', function(){
@@ -198,12 +198,12 @@ class RedeventViewAttendees extends JView
 												}
 												return false;
                     	}
-		            });		            
+		            });
 		        }); ";
 			$document->addScriptDeclaration($js);
 
 			//set page title and meta stuff
-			$document->setTitle( JText::_('COM_REDEVENT_Manage_attendees' ). ' - '.$row->full_title );
+			$document->setTitle( JText::_('COM_REDEVENT_Manage_attendees' ). ' - '.redEVENTHelper::getSessionFullTitle($row) );
 
 			// lists
 			$lists = array();
@@ -231,7 +231,7 @@ class RedeventViewAttendees extends JView
 		parent::display($tpl);
 	}
 
-	
+
 	function showRoles()
 	{
 		if (file_exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_redmember'))
@@ -241,12 +241,12 @@ class RedeventViewAttendees extends JView
 			echo $this->loadTemplate('rmroles');
 			$this->setLayout($layout);
 		}
-		else 
+		else
 		{
 			$layout = $this->getLayout();
 			$this->setLayout('default');
 			echo $this->loadTemplate('roles');
-			$this->setLayout($layout);			
+			$this->setLayout($layout);
 		}
 	}
 }

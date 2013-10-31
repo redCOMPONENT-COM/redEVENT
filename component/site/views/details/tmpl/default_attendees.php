@@ -27,7 +27,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 if ($this->view_attendees_list && $this->registers) {
 	?>
 	<div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
-		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).': '.$this->row->full_title; ?>
+		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).': '.redEVENTHelper::getSessionFullTitle($this->row); ?>
 		<?php if ($this->manage_attendees): ?>
     <?php echo REOutput::xrefattendeesbutton($this->row->xref); ?>
 		<?php endif; ?></h2>

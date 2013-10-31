@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 				<tr>
 					<td><?php echo REOutput::formatEventDateTime($row, false); ?></td>
 					<td><?php echo redEVENTHelper::getEventDuration($row); ?></td>
-					<td><?php echo $row->full_title; ?></td>
+					<td><?php echo redEVENTHelper::getSessionFullTitle($row); ?></td>
 					<td><?php echo $row->venue; ?></td>
 					<td><?php echo $row->city; ?></td>
 					<td class="re_category">
@@ -62,7 +62,9 @@ defined('_JEXEC') or die('Restricted access');
 						?>
 					</td>
 					<td><?php echo $row->language_sef; ?></td>
-					<td><?php echo $this->bookbutton($row->xref); ?><?php echo $this->printPlaces($row); ?></td>
+					<td><?php echo $this->bookbutton($row->xref); ?>
+						<?php echo $this->printPlaces($row); ?>
+					</td>
 				</tr>
 			<?php endforeach;?>
 		</tbody>

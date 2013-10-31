@@ -29,14 +29,14 @@ defined('_JEXEC') or die('Restricted access');
 			, 'value', 'text', $this->state->get('filter_event')); ?>
 	</div>
 	<div>
-		<?php echo JHtml::_('select.genericlist', $this->sessions_options, 'filter_session'
-			, array('class' => 'input-medium')
-			, 'value', 'text', $this->state->get('filter_session')); ?>
-	</div>
-	<div>
 		<?php echo JHtml::_('select.genericlist', $this->venues_options, 'filter_venue'
 			, array('class' => 'input-medium')
 			, 'value', 'text', $this->state->get('filter_venue')); ?>
+	</div>
+	<div>
+		<?php echo JHtml::_('select.genericlist', $this->sessions_options, 'filter_session'
+			, array('class' => 'input-medium')
+			, 'value', 'text', $this->state->get('filter_session')); ?>
 	</div>
 	<div>
 		<?php echo JHtml::_('select.genericlist', $this->categories_options, 'filter_category'

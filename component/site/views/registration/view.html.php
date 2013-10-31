@@ -61,7 +61,21 @@ class RedeventViewRegistration extends JView
 			if (redFORMHelperAnalytics::isEnabled())
 			{
 				$key = JFactory::getApplication()->input->get('submit_key');
-				redFORMHelperAnalytics::recordTrans($key, array('affiliate' => 'redevent web'));
+
+				$options = array();
+				$options['affiliation'] = 'redevent-b2b';
+				$options['sku']         = $event->event_name;
+				$options['productname'] = $event->venue . ' - ' . $event->xref . ' ' . $event->event_name
+					. ($event->session_name ? ' / ' . $event->session_name : '');
+
+				$cats = array();
+				foreach ($event->categories as $c)
+				{
+					$cats[] = $c->catname;
+				}
+				$options['category'] = implode(', ', $cats);
+
+				redFORMHelperAnalytics::recordTrans($key, $options);
 			}
 		}
 		else if ($this->getLayout() == 'review')

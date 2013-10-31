@@ -286,12 +286,22 @@ class RedEventModelSession extends JModel
 	function getVenuesOptions()
 	{
 		$query = ' SELECT id AS value, '
-		. ' CASE WHEN CHAR_LENGTH(city) THEN CONCAT_WS(\' - \', venue, city) ELSE venue END as text '
+		. ' CASE WHEN CHAR_LENGTH(city) THEN CONCAT_WS(\' - \', venue, city) ELSE venue END as text, language '
 		. ' FROM #__redevent_venues AS v'
 		. ' ORDER BY venue, city '
 		;
 		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		$res = $this->_db->loadObjectList();
+
+		foreach ($res as &$r)
+		{
+			if ($r->language && $r->language != '*')
+			{
+				$r->text .= ' (' . $r->language . ')';
+			}
+		}
+
+		return $res;
 	}
 
 	/**
@@ -443,7 +453,6 @@ class RedEventModelSession extends JModel
 			$this->setError(JText::_('COM_REDEVENT_CANNOT_DELETE_XREF_HAS_REGISTRATIONS'));
 			return false;
 		}
-
 
 		$q = "DELETE FROM #__redevent_event_venue_xref WHERE id =". $this->_db->Quote((int)$id);
 		$this->_db->setQuery($q);

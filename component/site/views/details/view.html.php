@@ -106,7 +106,7 @@ class RedeventViewDetails extends JView
 		//Print
 		$pop	= JRequest::getBool('pop');
 
-		$params->def( 'page_title', $row->full_title);
+		$params->def( 'page_title', redEVENTHelper::getSessionFullTitle($row));
 
 		if ( $pop ) {
 			$params->set( 'popup', 1 );
@@ -116,7 +116,7 @@ class RedeventViewDetails extends JView
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
-		$pathway->addItem( $row->full_title, JRoute::_('index.php?option=com_redevent&view=details&id='.$row->slug));
+		$pathway->addItem( redEVENTHelper::getSessionFullTitle($row), JRoute::_('index.php?option=com_redevent&view=details&id='.$row->slug));
 
 		//Check user if he can edit
 		$allowedtoeditevent = $acl->canEditEvent($row->did);
@@ -200,12 +200,12 @@ class RedeventViewDetails extends JView
 		}
 
 		//set page title and meta stuff
-		$document->setTitle( $row->full_title );
+		$document->setTitle( redEVENTHelper::getSessionFullTitle($row) );
 		$document->setMetadata('keywords', $meta_keywords_content );
 		$document->setDescription( strip_tags($description_content) );
 
 		// more metadata
-		$document->addCustomTag('<meta property="og:title" content="'.$row->full_title.'"/>');
+		$document->addCustomTag('<meta property="og:title" content="'.redEVENTHelper::getSessionFullTitle($row).'"/>');
 		$document->addCustomTag('<meta property="og:type" content="event"/>');
 		$document->addCustomTag('<meta property="og:url" content="'.htmlspecialchars($uri->toString()).'"/>');
 		if ($row->datimage) {
@@ -298,6 +298,10 @@ class RedeventViewDetails extends JView
 		$content = '';
 		switch ($keyword)
 		{
+			case "title":
+				$content = $row->event_title;
+				break;
+
 			case "catsid":
 				// TODO: fix for multiple cats
 				//$content = $row->catname;

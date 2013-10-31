@@ -108,7 +108,7 @@ class RedEventModelRegistration extends JModel
 	function register($user, $sid, $submit_key, $pricegroup_id)
 	{
 		$config  = redEventHelper::config();
-		$session = &$this->getSessionDetails();
+		$session = $this->getSessionDetails();
 
 		if (!$sid) {
 			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_UPDATE_XREF_REQUIRED'));
@@ -139,6 +139,7 @@ class RedEventModelRegistration extends JModel
 		{
 			$this->confirm($obj->id);
 		}
+
 		return $obj;
 	}
 
@@ -203,11 +204,11 @@ class RedEventModelRegistration extends JModel
 				$this->setError(JText::_('COM_REDEVENT_missing_xref_for_session'));
 				return false;
 			}
-			$query = 'SELECT a.id AS did, x.id AS xref, a.title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, '
+			$query = 'SELECT a.id AS did, x.id AS xref, a.title as event_name, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, '
 			. ' a.registra, a.unregistra, a.activate, a.notify, a.redform_id as form_id, '
 			. ' a.enable_activation_confirmation, a.notify_confirm_body, a.notify_confirm_subject, a.notify_subject, a.notify_body, '
 			. ' a.notify_off_list_subject, a.notify_off_list_body, a.notify_on_list_subject, a.notify_on_list_body, '
-			. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
+			. ' x.*, x.title as session_name, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
 			. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone,'
 			. ' v.venue,'
 			. ' u.name AS creator_name, u.email AS creator_email, '

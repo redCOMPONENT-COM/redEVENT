@@ -86,7 +86,7 @@ class RedEventModelAttendees extends JModel
 
 		$limit		= $mainframe->getUserStateFromRequest( $option.'limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
 		$limitstart = $mainframe->getUserStateFromRequest( $option.'limitstart', 'limitstart', 0, 'int' );
-		
+
 		$filter_confirmed = $mainframe->getUserStateFromRequest( $option.'.attendees.filter_confirmed', 'filter_confirmed', 0, 'int' );
 		$filter_waiting   = $mainframe->getUserStateFromRequest( $option.'.attendees.filter_waiting',   'filter_waiting'  , 0, 'int' );
 		$filter_cancelled = $mainframe->getUserStateFromRequest( $option.'.attendees.filter_cancelled', 'filter_cancelled', 0, 'int' );
@@ -102,7 +102,7 @@ class RedEventModelAttendees extends JModel
 
 		$eventid = JRequest::getInt('eventid');
 		$this->setId($eventid);
-		
+
 		$xref = JRequest::getInt('xref');
 		if ($xref) {
 			$this->setXref($xref);
@@ -121,13 +121,13 @@ class RedEventModelAttendees extends JModel
 		$this->_eventid	    = $eventid;
 		$this->_data 	= null;
 	}
-	
+
 	function setXref($xref)
 	{
 		// Set id and wipe data
 		$this->_xref	    = $xref;
 		$this->_data 	= null;
-		
+
 		// set eventid
 		$query = ' SELECT eventid FROM #__redevent_event_venue_xref WHERE id = '. $this->_db->Quote($xref);
 		$this->_db->setQuery($query);
@@ -154,7 +154,7 @@ class RedEventModelAttendees extends JModel
 		}
 		return $this->_data;
 	}
-	
+
 	/**
 	 * Method to get the total nr of the attendees
 	 *
@@ -165,7 +165,7 @@ class RedEventModelAttendees extends JModel
 		// Lets load the content if it doesn't already exist
 		$query = $this->_buildQuery();
 		$this->_total = $this->_getListCount($query);
-		
+
 		return $this->_total;
 	}
 
@@ -203,9 +203,9 @@ class RedEventModelAttendees extends JModel
 		   ;
 		$this->_db->setQuery($q, 0, 1);
 		$res = $this->_db->loadObject();
-		
+
 		$rfields = array();
-		if ($res && !empty($res->showfields)) 
+		if ($res && !empty($res->showfields))
 		{
 			$fields = explode(',', $res->showfields);
 			foreach ($fields as $f) {
@@ -219,7 +219,7 @@ class RedEventModelAttendees extends JModel
 			$rfields       = '';
 			$join_rwftable = '';
 		}
-		
+
 		// Get the ORDER BY clause for the query
 		$orderby	= $this->_buildContentOrderBy();
 		$where		= $this->_buildContentWhere();
@@ -243,7 +243,7 @@ class RedEventModelAttendees extends JModel
 		       . $orderby;
 		return $query;
 	}
-	
+
 	function getRedFormFrontFields()
 	{
 		// get redform form and fields to show
@@ -272,7 +272,7 @@ class RedEventModelAttendees extends JModel
 		//echo '<pre>';print_r($res); echo '</pre>';exit;
 		return $res;
 	}
-	
+
 	/**
 	 * Method to build the orderby clause of the query for the attendees
 	 *
@@ -280,17 +280,17 @@ class RedEventModelAttendees extends JModel
 	 * @return integer
 	 * @since 0.9
 	 */
-	function _buildContentOrderBy() 
+	function _buildContentOrderBy()
 	{
 		$mainframe = &JFactory::getApplication();
 		$option = JRequest::getCmd('option');
-		
+
 		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.attendees.filter_order', 'filter_order', 'r.confirmdate', 'cmd' );
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.attendees.filter_order_Dir',	'filter_order_Dir',	'', 'word' );
 		return ' ORDER BY '.$filter_order.' '.$filter_order_Dir.', r.confirmdate DESC';
-		
+
 	}
-	
+
 	/**
 	 * Method to build the where clause of the query for the attendees
 	 *
@@ -316,7 +316,7 @@ class RedEventModelAttendees extends JModel
 		else if (!is_null($this->_eventid) && $this->_eventid > 0) {
 			$where[] = ' x.eventid = '.$this->_eventid;
 		}
-	
+
 		switch ($this->getState('filter_confirmed', 0))
 		{
 			case 1:
@@ -346,7 +346,7 @@ class RedEventModelAttendees extends JModel
 		}
 
 		$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
-		
+
 		return $where;
 	}
 
@@ -369,12 +369,12 @@ class RedEventModelAttendees extends JModel
 			       ;
 			if (!is_null($this->_xref) && $this->_xref > 0) {
 				$query .= ' WHERE x.id = '.$this->_xref;
-			}		
-	
+			}
+
 			$this->_db->setQuery( $query );
 			$this->_event = $this->_db->loadObject();
 		}
-		
+
 		return $this->_event;
 	}
 
@@ -390,18 +390,47 @@ class RedEventModelAttendees extends JModel
 		if (count( $cid ))
 		{
 			$ids = implode(',', $cid);
-						
+
 			$query = ' UPDATE #__redevent_register AS r '
-             . '   SET r.cancelled = 1 '
+             . '   SET r.cancelled = 1, r.waitinglist = 1 '
              . ' WHERE r.id IN ('.implode(', ', $cid).')'
              ;
 			$this->_db->setQuery( $query );
-			
-			if (!$this->_db->query()) {
+
+			if (!$this->_db->query())
+			{
 				RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
 				return false;
 			}
+
+			// Upate waiting list for all cancelled regs
+			$db      = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			$query->select('xref');
+			$query->from('#__redevent_register');
+			$query->where('id IN (' . implode(', ', $cid) . ')');
+
+			$db->setQuery($query);
+			$xrefs = $db->loadColumn();
+
+			$xrefs = array_unique($xrefs);
+
+			// now update waiting list for all updated sessions
+			foreach ($xrefs as $xref)
+			{
+				$model_wait = JModel::getInstance('waitinglist', 'RedeventModel');
+				$model_wait->setXrefId($xref);
+
+				if (!$model_wait->UpdateWaitingList())
+				{
+					$this->setError($model_wait->getError());
+
+					return false;
+				}
+			}
 		}
+
 		return true;
 	}
 
@@ -417,16 +446,43 @@ class RedEventModelAttendees extends JModel
 		if (count( $cid ))
 		{
 			$ids = implode(',', $cid);
-						
+
 			$query = ' UPDATE #__redevent_register AS r '
-             . '   SET r.cancelled = 0 '
+             . '   SET r.cancelled = 0, r.waitinglist = 1 ' // We put user on waiting list, to make sure they won't take back places from no cancelled attendees
              . ' WHERE r.id IN ('.implode(', ', $cid).')'
              ;
 			$this->_db->setQuery( $query );
-			
+
 			if (!$this->_db->query()) {
 				RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
 				return false;
+			}
+
+			// Upate waiting list for all un-cancelled regs
+			$db      = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			$query->select('xref');
+			$query->from('#__redevent_register');
+			$query->where('id IN (' . implode(', ', $cid) . ')');
+
+			$db->setQuery($query);
+			$xrefs = $db->loadColumn();
+
+			$xrefs = array_unique($xrefs);
+
+			// Now update waiting list for all updated sessions
+			foreach ($xrefs as $xref)
+			{
+				$model_wait = JModel::getInstance('waitinglist', 'RedeventModel');
+				$model_wait->setXrefId($xref);
+
+				if (!$model_wait->UpdateWaitingList())
+				{
+					$this->setError($model_wait->getError());
+
+					return false;
+				}
 			}
 		}
 		return true;
@@ -445,7 +501,7 @@ class RedEventModelAttendees extends JModel
 		{
 			$ids = implode(',', $cid);
 			$form = $this->getForm();
-						
+
 			$query = ' DELETE s, f, r '
         . ' FROM #__redevent_register AS r '
         . ' LEFT JOIN #__rwf_submitters AS s ON r.sid = s.id '
@@ -454,7 +510,7 @@ class RedEventModelAttendees extends JModel
         . '   AND r.cancelled = 1 ';
         ;
 			$this->_db->setQuery( $query );
-			
+
 			if (!$this->_db->query()) {
 				RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
 				return false;
@@ -478,12 +534,12 @@ class RedEventModelAttendees extends JModel
 		{
 			$ids = implode(',', $cid);
 			$form = $this->getForm();
-						
+
 			$query = ' UPDATE #__redevent_register SET xref = '.$dest
 			       . ' WHERE id IN ('.implode(', ', $cid).')'
 			       ;
 			$this->_db->setQuery( $query );
-			
+
 			if (!$this->_db->query()) {
 				RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
 				return false;
@@ -491,10 +547,10 @@ class RedEventModelAttendees extends JModel
 		}
 		return true;
 	}
-				
+
 	/**
 	 * confirm attendees
-	 * 
+	 *
 	 * @param $cid array of attendees id to confirm
 	 * @return boolean true on success
 	 */
@@ -504,10 +560,10 @@ class RedEventModelAttendees extends JModel
     {
       $ids = implode(',', $cid);
       $date = JFactory::getDate();
-            
+
       $query = 'UPDATE #__redevent_register SET confirmed = 1, confirmdate = '.$this->_db->Quote($date->toSql()).' WHERE id IN ('. $ids .') ';
       $this->_db->setQuery( $query );
-      
+
       if (!$this->_db->query()) {
         RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
         return false;
@@ -515,11 +571,11 @@ class RedEventModelAttendees extends JModel
     }
     return true;
   }
-  
+
 
   /**
    * unconfirm attendees
-   * 
+   *
    * @param $cid array of attendees id to unconfirm
    * @return boolean true on success
    */
@@ -528,10 +584,10 @@ class RedEventModelAttendees extends JModel
     if (count( $cid ))
     {
       $ids = implode(',', $cid);
-            
+
       $query = 'UPDATE #__redevent_register SET confirmed = 0 WHERE id IN ('. $ids .') ';
       $this->_db->setQuery( $query );
-      
+
       if (!$this->_db->query()) {
         RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
         return false;
@@ -539,7 +595,7 @@ class RedEventModelAttendees extends JModel
     }
     return true;
   }
-  
+
   function getForm()
   {
   	if ($this->_eventid)
@@ -558,7 +614,7 @@ class RedEventModelAttendees extends JModel
 	  	       . ' INNER JOIN #__rwf_forms AS f ON e.redform_id = f.id '
 	  	       . ' WHERE x.id = '. $this->_db->Quote($this->_xref)
 	  	       ;
-  		
+
   	}
   	else
   	{
@@ -571,7 +627,7 @@ class RedEventModelAttendees extends JModel
 		return $res;
   }
 
-	function getDateTimeLocation() 
+	function getDateTimeLocation()
 	{
 		$q = ' SELECT x.*, v.venue '
 		   . ' FROM #__redevent_event_venue_xref x '
@@ -587,7 +643,7 @@ class RedEventModelAttendees extends JModel
 		$this->_db->setQuery($q);
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * returns redform fields
 	 * @param boolean $all set true to return all fields
@@ -597,9 +653,9 @@ class RedEventModelAttendees extends JModel
 	{
 		$event = $this->getEvent();
 		$rfcore = new RedFormCore();
-		return $rfcore->getFields($event->redform_id); 
+		return $rfcore->getFields($event->redform_id);
 	}
-	
+
 /**
 	 * Method to get the registered users
 	 *
@@ -608,12 +664,12 @@ class RedEventModelAttendees extends JModel
 	 * @since	0.9
 	 * @todo Complete CB integration
 	 */
-	function getRegisters($all_fields = false, $admin = false) 
+	function getRegisters($all_fields = false, $admin = false)
 	{
 		// make sure the init is done
 		$this->getEvent();
-	  
-		// first, get all submissions			
+
+		// first, get all submissions
 		$query = ' SELECT r.*, r.waitinglist, r.confirmed, r.confirmdate, r.submit_key, r.cancelled, u.name, pg.name as pricegroup '
 						. ' FROM #__redevent_register AS r '
 						. ' INNER JOIN #__rwf_submitters AS s ON s.id = r.sid '
@@ -623,12 +679,12 @@ class RedEventModelAttendees extends JModel
 		$query .= $this->_buildContentWhere();
 		$this->_db->setQuery($query);
 		$submitters = $this->_db->loadObjectList();
-		
+
 		// get answers
 		$sids = array();
-		if (count($submitters)) 
+		if (count($submitters))
 		{
-			foreach ($submitters as $s) 
+			foreach ($submitters as $s)
 			{
 				$sids[] = $s->sid;
 			}
@@ -636,7 +692,7 @@ class RedEventModelAttendees extends JModel
 		$event = $this->getEvent();
 		$rfcore = new RedFormCore();
 		$answers = $rfcore->getSidsAnswers($sids);
-		
+
 		// add answers to registers
 		foreach ($submitters as $k => $s)
 		{
@@ -649,17 +705,17 @@ class RedEventModelAttendees extends JModel
 		}
 		return $submitters;
 	}
-	
+
 	function getEmails($cids = null)
-	{				
-		$where = array( 'r.xref = ' . $this->_xref);		
+	{
+		$where = array( 'r.xref = ' . $this->_xref);
 		if (is_array($cids) && !empty($cids)) {
 			$where[] = ' r.id IN ('.implode(',', $cids).')';
 		}
 		else {
 			$where[] = ' r.confirmed = 1 ';
 		}
-		
+
 		// need to get sids for redform core
 		$query = ' SELECT r.sid '
 						. ' FROM #__redevent_register AS r '
@@ -668,15 +724,15 @@ class RedEventModelAttendees extends JModel
 						;
 		$this->_db->setQuery($query);
 		$sids = $this->_db->loadResultArray();
-		
+
 		if (empty($sids)) {
 			return false;
 		}
 		$rfcore = new RedFormCore();
 		$answers = $rfcore->getSidsFieldsAnswers($sids);
-				
+
 		$emails = array();
-		foreach ($answers as $fields) 
+		foreach ($answers as $fields)
 		{
 			$res = array();
 			foreach ($fields as $field)
@@ -686,11 +742,11 @@ class RedEventModelAttendees extends JModel
 					case 'username':
 						$res['username'] = $field->answer;
 						break;
-						
+
 					case 'fullname':
 						$res['fullname'] = $field->answer;
 						break;
-						
+
 					case 'email':
 						$res['email'] = $field->answer;
 						break;
@@ -708,10 +764,10 @@ class RedEventModelAttendees extends JModel
 //		echo '<pre>';print_r($emails); echo '</pre>';exit;
 		return $emails;
 	}
-	
+
 	/**
 	 * send mail to selected attendees
-	 * 
+	 *
 	 * @param array $cid attendee ids
 	 * @param string $subject
 	 * @param string $body
@@ -724,7 +780,7 @@ class RedEventModelAttendees extends JModel
 	{
 		$app = &JFactory::getApplication();
 		$emails = $this->getEmails($cid);
-		
+
 		$taghelper = new redEVENT_tags();
 		$taghelper->setXref($this->_xref);
   	$subject = $taghelper->ReplaceTags($subject);
@@ -733,16 +789,16 @@ class RedEventModelAttendees extends JModel
   	$mailer = & JFactory::getMailer();
   	$mailer->setSubject($subject);
   	$mailer->MsgHTML('<html><body>'.$body.'</body></html>');
-  	
-  	
-  	if (!empty($from) && JMailHelper::isEmailAddress($from)) 
+
+
+  	if (!empty($from) && JMailHelper::isEmailAddress($from))
   	{
   		$fromname = !empty($fromname) ? $fromname : $app->getCfg('sitename');
   		$mailer->setSender(array($from, $fromname));
   	}
-  	
+
   	$res = true;
-  	
+
   	foreach ($emails as $e)
   	{
 			$mailer->clearAllRecipients();
@@ -752,13 +808,13 @@ class RedEventModelAttendees extends JModel
 			else {
 				$mailer->addAddress( $e['email'] );
 			}
-			
+
 	  	if (!$mailer->send())
 	  	{
 	  		JError::raiseWarning(JText::sprintf('COM_REDEVENT_EMAIL_ATTENDEES_ERROR_SENDING_EMAIL_TO'), $e['email']);
 	  		$res = false;
 	  	}
   	}
-  	return true;  	
+  	return true;
 	}
 }

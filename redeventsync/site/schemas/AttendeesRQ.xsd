@@ -1,0 +1,192 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		   targetNamespace="http://www.redcomponent.com/redevent"
+		   xmlns:re="http://www.redcomponent.com/redevent"
+		   elementFormDefault="qualified">
+	<xs:element name="AttendeesRQ">
+		<xs:complexType>
+			<xs:sequence>
+
+				<xs:element name="CreateAttendeeRQ" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element type="xs:positiveInteger" name="TransactionId">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">this Id, unique in the message, will allow to identify the RS corresponding to this session in the RS message</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:nonNegativeInteger" name="AttendeeId">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">this Id should be left to 0 if the attendee is not created from redEVENT, as it will anyway be ignore otherwise, and as the external system can't guess which Id will be assigned by redEVENT.
+									the external system must then keep track of the AttendeeId returned in the RS message for further modifications/deletion requests.
+									</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:string" name="SessionCode">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Must match an existing redEVENT Session code</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:string" name="VenueCode">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Must match an existing redEVENT Venue code</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:string" name="UserEmail">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Must match an existing Joomla user Email</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:boolean" name="Cancelled" />
+							<xs:element type="xs:nonNegativeInteger" name="PriceGroupId" minOccurs="0"/>
+							<xs:element type="xs:boolean" name="WaitingList">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Set to 1 if attendee is on waiting list</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:boolean" name="Confirmed">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Set to 1 if registration considered as confirmed</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:dateTime" name="ConfirmDate" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">if not present, and confirmed is set to 1, will be set to current date</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:dateTime" name="PaymentStart" minOccurs="0" />
+							<xs:element type="xs:dateTime" name="RegistrationDate" minOccurs="0" />
+							<xs:element type="xs:string" name="IP" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">the IP used by the attendee on registration</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Answers" type="re:rwfAnswers" minOccurs="0" >
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">the form answers for this attendee</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+
+				<xs:element name="ModifyAttendeeRQ" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element type="xs:positiveInteger" name="TransactionId">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">this Id, unique in the message, will allow to identify the RS corresponding to this session in the RS message</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:nonNegativeInteger" name="AttendeeId">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Must match an existing redEVENT attendee Id
+									</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:string" name="SessionCode">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Must match an existing redEVENT Session code</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:string" name="VenueCode">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Must match an existing redEVENT Venue code</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:string" name="UserEmail" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Must match an existing Joomla user Email</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:boolean" name="Cancelled"  minOccurs="0"/>
+							<xs:element type="xs:nonNegativeInteger" name="PriceGroupId" minOccurs="0"/>
+							<xs:element type="xs:boolean" name="WaitingList" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Set to 1 if attendee is on waiting list</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:boolean" name="Confirmed" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Set to 1 if registration considered as confirmed</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:dateTime" name="ConfirmDate" minOccurs="0" />
+							<xs:element type="xs:dateTime" name="PaymentStart" minOccurs="0" />
+							<xs:element type="xs:dateTime" name="RegistrationDate" minOccurs="0" />
+							<xs:element type="xs:string" name="IP" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">the IP used by the attendee on registration</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Answers" type="re:rwfAnswers" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">the form answers for this attendee</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+
+				<xs:element name="DeleteAttendeeRQ" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element type="xs:positiveInteger" name="TransactionId">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">this Id, unique in the message, will allow to identify the RS corresponding to this attendee in the RS message</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:positiveInteger" name="AttendeeId" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Id of the Attendee to delete.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:string" name="SessionCode">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Must match an existing redEVENT Session code</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:string" name="VenueCode">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Must match an existing redEVENT Venue code</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:string" name="UserEmail" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Must match an existing Joomla user Email</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+
+			</xs:sequence>
+		</xs:complexType>
+
+		<xs:unique name="TransactionIdUnique">
+			<xs:selector xpath="re:DeleteAttendeeRQ | re:ModifyAttendeeRQ | re:CreateAttendeeRQ" />
+			<xs:field xpath="re:TransactionId" />
+		</xs:unique>
+
+	</xs:element>
+
+	<xs:complexType name="rwfAnswers">
+		<xs:sequence>
+			<xs:element name="Answer" maxOccurs="unbounded" minOccurs="1">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute type="xs:positiveInteger" name="FieldId" use="required">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Must match an exiting redFORM field id</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+							<xs:attribute type="xs:string" name="FieldName" use="required" />
+							<xs:attribute type="xs:string" name="FieldType" use="required" />
+							<xs:attribute type="xs:string" name="FieldValue" use="required" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

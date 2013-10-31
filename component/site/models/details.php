@@ -146,36 +146,50 @@ class RedeventModelDetails extends JModel
 		if (empty($this->_details))
 		{
 			$user	= & JFactory::getUser();
-			// Get the WHERE clause
-			$where	= $this->_buildDetailsWhere();
 
-			$query = 'SELECT a.id AS did, x.id AS xref, x.*, a.title, a.datdescription, '
-			. ' a.meta_keywords, a.meta_description, a.datimage, a.registra, a.unregistra, a.summary, a.details_layout, '
-			. ' a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, a.enable_ical, '
-			. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone, a.review_message, '
-			. ' x.title as session_title, '
-			. ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
-			. ' v.venue, v.city, v.locimage, v.map, v.country, v.street, v.plz, v.state, v.locdescription, v.url, '
-			. ' u.name AS creator_name, u.email AS creator_email, '
-			. " a.confirmation_message, IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.catname, c.published, c.access,"
-			. ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
-			. ' CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug, '
-			. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug, '
-			. ' CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as venueslug '
-			. ' FROM #__redevent_events AS a'
-			. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
-			. ' LEFT JOIN #__redevent_venues AS v ON x.venueid = v.id'
-			. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-			. ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-			. ' LEFT JOIN #__users AS u ON a.created_by = u.id '
-			. $where
-			;
-			$this->_db->setQuery($query);
-			$this->_details = $this->_db->loadObject();
-			if ($this->_details) {
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			// Get the WHERE clause
+			$query	= $this->_buildDetailsWhere($query);
+
+			$query->select('a.id AS did, a.title AS event_title, a.datdescription');
+			$query->select('a.meta_keywords, a.meta_description, a.datimage, a.registra, a.unregistra, a.summary, a.details_layout');
+			$query->select('a.created_by, a.redform_id, a.juser, a.show_names, a.showfields, a.enable_ical');
+			$query->select('a.submission_type_email, a.submission_type_external, a.submission_type_phone, a.review_message');
+			$query->select('a.confirmation_message, a.course_code, a.submission_types');
+
+			$query->select('x.id AS xref, x.title as session_title');
+			$query->select('x.*');
+
+			$query->select('v.venue, v.id AS venue_id, v.city, v.locimage, v.map, v.country, v.street, v.plz, v.state, v.locdescription, v.url');
+
+			$query->select('c.catname, c.published, c.access');
+
+			$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
+			$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
+			$query->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug');
+			$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug');
+			$query->select('CASE WHEN CHAR_LENGTH(v.alias) THEN CONCAT_WS(\':\', v.id, v.alias) ELSE v.id END as venueslug');
+
+			$query->select('u.name AS creator_name, u.email AS creator_email');
+
+			$query->from('#__redevent_events AS a');
+			$query->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = a.id');
+			$query->join('LEFT', '#__redevent_venues AS v ON x.venueid = v.id');
+			$query->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
+			$query->join('LEFT', '#__redevent_categories AS c ON c.id = xcat.category_id');
+			$query->join('LEFT', '#__users AS u ON a.created_by = u.id');
+
+			$db->setQuery($query);
+			$this->_details = $db->loadObject();
+
+			if ($this->_details)
+			{
 				$this->_details = $this->_getEventCategories($this->_details);
 				$this->_details->attachments = REAttach::getAttachments('event'.$this->_details->did, $user->getAuthorisedViewLevels());
 			}
+
 			return (boolean) $this->_details;
 		}
 		return true;
@@ -230,18 +244,22 @@ class RedeventModelDetails extends JModel
 
 	/**
 	 * Method to build the WHERE clause of the query to select the details
+	 * @param JDatabaseQuery $query
 	 *
-	 * @access	private
-	 * @return	string	WHERE clause
-	 * @since	0.9
+	 * @return JDatabaseQuery
 	 */
-	function _buildDetailsWhere()
+	protected function _buildDetailsWhere(JDatabaseQuery $query)
 	{
-		$where = '';
-		if ($this->_xref) $where = ' WHERE x.id = '.$this->_xref;
-		else if ($this->_id) $where = ' WHERE x.eventid = '.$this->_id;
+		if ($this->_xref)
+		{
+			$query->where('x.id = ' . $this->_xref);
+		}
+		elseif ($this->_id)
+		{
+			$query->where('x.eventid = ' . $this->_id);
+		}
 
-		return $where;
+		return $query;
 	}
 
 	/**

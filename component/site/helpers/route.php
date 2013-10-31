@@ -297,9 +297,29 @@ class RedeventHelperRoute
 		                "controller" => "registration",
 		                "xref" => $xref,
 		                "task"   => $task, );
-		if (!empty($submit_key)) {
+		if (!empty($submit_key))
+		{
 			$parts['submit_key'] = $submit_key;
 		}
+
+		if (JLanguageMultilang::isEnabled())
+		{
+			$db		= JFactory::getDBO();
+			$query	= $db->getQuery(true);
+			$query->select('a.sef AS sef');
+			$query->select('a.lang_code AS lang_code');
+			$query->from('#__redevent_event_venue_xref AS x');
+			$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
+			$query->join('INNER', '#__languages AS a ON a.lang_code = e.language');
+			$query->where('x.id = ' . (int) $xref);
+
+			$db->setQuery($query);
+			if ($lang = $db->loadObject())
+			{
+				$parts['lang'] = $lang->sef;
+			}
+		}
+
 		return self::buildUrl( $parts );
 	}
 
@@ -327,15 +347,21 @@ class RedeventHelperRoute
 
 	protected static function buildUrl($parts)
 	{
-		if($item = self::_findItem($parts)) {
+		if ($item = self::_findItem($parts))
+		{
 			$parts['Itemid'] = $item->id;
 		}
-		else {
+		else
+		{
 			$params = JComponentHelper::getParams('com_redevent');
-			if ($params->get('default_itemid')) {
+			if ($params->get('default_itemid'))
+			{
 				$parts['Itemid'] = intval($params->get('default_itemid'));
 			}
 		}
+
+		// Language filter ?
+
 
 		return 'index.php?'.JURI::buildQuery( $parts );
 	}
@@ -354,9 +380,9 @@ class RedeventHelperRoute
 	protected static function _findItem($query)
 	{
 		$component =& JComponentHelper::getComponent('com_redevent');
-		$menus	= & JApplication::getMenu('site');
+		$menus	= JApplication::getMenu('site');
 		$items	= $menus->getItems('component_id', $component->id);
-		$user 	= & JFactory::getUser();
+		$user 	= JFactory::getUser();
 
 		$view = isset($query['view']) ? $query['view'] : null;
 		if (!$view && isset($query['controller']) && $query['controller'] == 'registration') {
@@ -372,13 +398,15 @@ class RedeventHelperRoute
 					switch ($view)
 					{
 						case 'details':
-							if (isset($query['xref']) && (int) $query['xref'] == (int) @$item->query['xref']) {
+							if (isset($query['xref']) && (int) $query['xref'] == (int) @$item->query['xref'])
+							{
 								return $item;
 							}
 							// needs a second round to check just for 'id'
 							break;
 						default:
-							if (!isset($query['id']) || (int) @$item->query['id'] == (int) @$query['id']) {
+							if (!isset($query['id']) || (int) @$item->query['id'] == (int) @$query['id'])
+							{
 								return $item;
 							}
 					}
@@ -396,13 +424,44 @@ class RedeventHelperRoute
 							if (isset($query['id']) && (int) $query['id'] == (int) @$item->query['id']) {
 								return $item;
 							}
-							// needs a second round to check just for 'id'
 							break;
 					}
 				}
 			}
 		}
 
-		return false;
+		// Still here..
+		$active = $menus->getActive();
+		if ($active && $active->component == 'com_redevent')
+		{
+			return $active;
+		}
+
+		return null;
+	}
+
+	public static function addLanguageFilter($parts)
+	{
+		static $filter;
+
+		if ($filter === null)
+		{
+			if (!JLanguageMultilang::isEnabled())
+			{
+				$filter = false;
+			}
+			else
+			{
+
+			}
+
+		}
+
+		if ($filter)
+		{
+			$parts['lang'] = $filter;
+		}
+
+		return $parts;
 	}
 }

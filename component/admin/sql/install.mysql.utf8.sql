@@ -66,6 +66,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues` (
 `id` int(11) unsigned NOT NULL auto_increment,
 `venue` varchar(50) NOT NULL default '',
 `alias` varchar(100) NOT NULL default '',
+`venue_code` varchar(100) NOT NULL default '',
 `url` varchar(200)  NOT NULL default '',
 `company` varchar(200) default NULL,
 `street` varchar(50) default NULL,
@@ -91,6 +92,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues` (
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
 `ordering` int(11) NOT NULL default '0',
 `language` char(7) NOT NULL,
+`params` TEXT NOT NULL,
 PRIMARY KEY  (`id`)
 ) DEFAULT CHARSET=utf8;
 
@@ -208,6 +210,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_event_venue_xref` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `title` varchar(255) default NULL,
   `alias` varchar(255) default NULL,
+  `session_code` varchar(100) NOT NULL,
   `eventid` int(11) unsigned NOT NULL,
   `venueid` int(11) unsigned NOT NULL,
   `dates` date NULL default NULL,
