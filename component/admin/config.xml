@@ -567,6 +567,16 @@
     <field name="tweet_recommend2_text" type="text" default="" label="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_TEXT_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_TEXT_DESC"/>
  	</fieldset>
 
+	<fieldset name="COM_REDEVENT_SETTINGS_B2B" label="COM_REDEVENT_SETTINGS_B2B" description="COM_REDEVENT_SETTINGS_B2B_DESC">
+		<field name="b2b_show_open" type="list"
+			   label="COM_REDEVENT_SETTINGS_B2B_SHOW_OPEN"
+			   description="COM_REDEVENT_SETTINGS_B2B_SHOW_OPEN_DESC"
+			   default="1">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	</fieldset>
+
 	<fieldset	name="permissions"
 		label="JCONFIG_PERMISSIONS_LABEL"
 		description="JCONFIG_PERMISSIONS_DESC">

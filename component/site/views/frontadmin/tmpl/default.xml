@@ -5,10 +5,8 @@
 			<![CDATA[COM_REDEVENT_FRONTEND_ADMIN_LAYOUT_DESC]]>
 		</message>
 	</layout>
-	<state>
-		<name>COM_REDEVENT_FRONTEND_ADMIN_LAYOUT</name>
-		<description>COM_REDEVENT_FRONTEND_ADMIN_LAYOUT_DESC</description>
-		<params>
-		</params>
-	</state>
+	<fields name="params" addfieldpath="/administrator/components/com_redevent/models/fields">
+		<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
+		</fieldset>
+	</fields>
 </metadata>

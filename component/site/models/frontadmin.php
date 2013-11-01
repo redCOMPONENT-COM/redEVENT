@@ -782,7 +782,6 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	{
 		$db = JFactory::getDbo();
 		$acl = UserAcl::getInstance();
-
 		$query->where('x.published = 1');
 
 		if (!$acl->superuser())
@@ -829,6 +828,11 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		if ($to = $this->getState('filter_to') && redEVENTHelper::isValidDate($this->getState('filter_to')))
 		{
 			$query->where('x.dates > 0 AND DATE(x.dates) <= ' . $db->quote($this->getState('filter_to')));
+		}
+
+		if (JComponentHelper::getParams('com_redevent')->get('b2b_show_open', 1) == 0)
+		{
+			$query->where('x.dates > 0');
 		}
 
 		return $query;
