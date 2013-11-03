@@ -40,17 +40,14 @@ class redEVENTHelper {
 	 */
 	public static function config()
 	{
-		return JComponentHelper::getParams('com_redevent');
-		static $config;
+		$params = JComponentHelper::getParams('com_redevent');
 
-		if (!$config)
-		{
-			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_redevent'.DS.'tables'.DS.'redevent_settings.php');
-			$config = JTable::getInstance('RedEvent_settings', '');
-			$config->load(1);
-			$config->params = JComponentHelper::getParams('com_redevent'); // redundant, but for legacy
-		}
-		return $config;
+		// See if there are any plugins that wish to alter the configuration (client specific demands !)
+		JPluginHelper::importPlugin('redevent_config');
+		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher->trigger('onGetRedeventConfig', array(&$params));
+
+		return $params;
 	}
 
 	/**
