@@ -44,7 +44,7 @@ class redEVENTHelper {
 
 		// See if there are any plugins that wish to alter the configuration (client specific demands !)
 		JPluginHelper::importPlugin('redevent_config');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onGetRedeventConfig', array(&$params));
 
 		return $params;
