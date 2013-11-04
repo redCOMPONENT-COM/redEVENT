@@ -441,55 +441,84 @@ class REattendee extends JObject {
 	protected function getAdminEmails()
 	{
 		$params = JComponentHelper::getParams('com_redevent');
-  	$event  = $this->getSessionDetails();
+		$event  = $this->getSessionDetails();
 
 		$recipients = array();
-		// default recipients
+
+		// Default recipients
 		$default = $params->get('registration_default_recipients');
+
 		if (!empty($default))
 		{
-			if (strstr($default, ';')) {
+			if (strstr($default, ';'))
+			{
 				$addresses = explode(";", $default);
 			}
-			else {
+			else
+			{
 				$addresses = explode(",", $default);
 			}
+
 			foreach ($addresses as $a)
 			{
 				$a = trim($a);
-				if (JMailHelper::isEmailAddress($a)) {
+
+				if (JMailHelper::isEmailAddress($a))
+				{
 					$recipients[] = array('email' => $a, 'name' => '');
 				}
 			}
 		}
 
-		// creator
-		if ($params->get('registration_notify_creator', 1)) {
-			if (JMailHelper::isEmailAddress($event->creator_email)) {
+		// Creator
+		if ($params->get('registration_notify_creator', 1))
+		{
+			if (JMailHelper::isEmailAddress($event->creator_email))
+			{
 				$recipients[] = array('email' => $event->creator_email, 'name' => $event->creator_name);
 			}
 		}
 
-		// group recipients
+		// Group recipients
 		$gprecipients = $this->getXrefRegistrationRecipients();
+
 		if ($gprecipients)
 		{
 			foreach ($gprecipients AS $r)
 			{
-				if (JMailHelper::isEmailAddress($r->email)) {
+				if (JMailHelper::isEmailAddress($r->email))
+				{
 					$recipients[] =  array('email' => $r->email, 'name' => $r->name);
 				}
 			}
 		}
 
-		// redform recipients
+		// Redform recipients
 		$rfrecipients = $this->getRFRecipients();
+
 		foreach ((array) $rfrecipients as $r)
 		{
-			if (JMailHelper::isEmailAddress($r)) {
+			if (JMailHelper::isEmailAddress($r))
+			{
 				$recipients[] =  array('email' => $r, 'name' => '');
 			}
 		}
+
+		// Custom recipients
+		$customrecipients = array();
+
+		JPluginHelper::importPlugin('redevent');
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('onGetRegistrationAdminEmails', array($this->_id, &$customrecipients));
+
+		foreach ((array) $customrecipients as $r)
+		{
+			if (JMailHelper::isEmailAddress($r))
+			{
+				$recipients[] =  array('email' => $r, 'name' => '');
+			}
+		}
+
 		return $recipients;
 	}
 
