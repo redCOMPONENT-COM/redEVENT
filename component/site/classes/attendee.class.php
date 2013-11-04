@@ -513,9 +513,9 @@ class REattendee extends JObject {
 
 		foreach ((array) $customrecipients as $r)
 		{
-			if (JMailHelper::isEmailAddress($r))
+			if (JMailHelper::isEmailAddress($r['email']))
 			{
-				$recipients[] =  array('email' => $r, 'name' => '');
+				$recipients[] =  array('email' => $r['email'], 'name' => $r['name']);
 			}
 		}
 
