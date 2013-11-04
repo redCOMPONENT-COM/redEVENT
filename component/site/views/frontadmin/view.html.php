@@ -257,7 +257,7 @@ class RedeventViewFrontadmin extends JView
 
 		$img = JHTML::image('media/com_redevent/images/b2b-users.png', JText::_('COM_REDEVENT_PLACES_BOOKED_LEFT'));
 
-		return $img . $row->maxattendees . '/' . ($left > 6 ? '6+' : $left);
+		return $img . $row->registered . '/' . ($left > 6 ? '6+' : $left);
 	}
 
 
