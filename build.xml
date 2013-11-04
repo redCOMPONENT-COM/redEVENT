@@ -86,6 +86,7 @@
 		<!-- admin modules -->
 		<foreach param="dirname" absparam="absname" target="zipfolder">
 			<property name="myp" value="modules/admin" />
+			<property name="prefix" value="" />
 		  	<fileset dir="${dirs.root}/modules/admin">
 		  	<type type="dir"/>
 	        <depth max="0" min="0" />
@@ -95,6 +96,7 @@
 		<!-- site modules -->
 		<foreach param="dirname" absparam="absname" target="zipfolder">
 			<property name="myp" value="modules/site" />
+			<property name="prefix" value="" />
 		  	<fileset dir="${dirs.root}/modules/site">
 		  	<type type="dir"/>
 	        <depth max="0" min="0" />
@@ -104,6 +106,7 @@
 		<!-- languages -->
 		<foreach param="dirname" absparam="absname" target="zipfolder">
 			<property name="myp" value="language" />
+			<property name="prefix" value="" />
 	  		<fileset dir="${dirs.root}/languages">
 			  	<type type="dir"/>
 		        <depth max="0" min="0" />
@@ -125,6 +128,7 @@
 	    <echo msg="handling plugins group ${pdirname}" />
 		<foreach param="dirname" absparam="absname" target="zipfolder">
 			<property name="myp" value="plugins" />
+			<property name="prefix" value="plg_${pdirname}_" />
 			<fileset dir="${pabsname}">
 				<type type="dir"/>
 				<depth max="0" min="0" />
@@ -148,7 +152,7 @@
 		</copy>
 		<mkdir dir="${dirs.release}/${myp}" />
 		<!-- Create the package -->
-		<tar basedir="${dirs.tmp}/${myp}/${dirname}" destfile="${dirs.release}/${myp}/${dirname}-${version}.tar.gz" includeemptydirs="true" compression="gzip" />
+		<tar basedir="${dirs.tmp}/${myp}/${dirname}" destfile="${dirs.release}/${myp}/${prefix}${dirname}-${version}.tar.gz" includeemptydirs="true" compression="gzip" />
 	</target>
 
 	<!--
