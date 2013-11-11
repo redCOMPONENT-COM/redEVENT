@@ -26,11 +26,22 @@ $my = JRoute::_('index.php?option=com_redmember&view=userdetail&layout=alterdeta
 $support = 'https://www.maersktraining.com/b2b-support?tmpl=component';
 $contact = 'https://www.maersktraining.com/b2b-contact?tmpl=component';
 $filemanager =  'https://www.maersktraining.com/filemanager/file-are?tmpl=component';
+
+$script = <<<JS
+	window.addEvent('domready', function(){
+
+		document.id('logo').addEvent('click', function(){
+			document.id('search-course-reset').fireEvent('click');
+			document.id('reset_person').fireEvent('click');
+		});
+
+	});
+JS;
+
+JFactory::getDocument()->addScriptDeclaration($script);
 ?>
 <div id="logo" class="span4">
-	<a class="image" href="">
-		<img title="" alt="" src="<?php echo JURI::root()?>templates/redweb/images/redadmin-logo.jpg">
-	</a>
+	<img title="" alt="" src="<?php echo JURI::root()?>templates/redweb/images/redadmin-logo.jpg">
 </div>
 <ul class="inline">
 	<li><?php echo JHtml::link($my, JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_HELLO_USER_S', JFactory::getUser()->get('name')), array('class' => 'modal'));
