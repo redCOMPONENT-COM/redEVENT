@@ -393,20 +393,84 @@ class RedeventController extends JController
 	 */
 	function delreguser()
 	{
-		$mainframe = & JFactory::getApplication();
-		$msg = '';
+		$app = JFactory::getApplication();
+
 		$msgtype = 'message';
-		$task = JRequest::getVar('task');
+		$task    = $app->input->getCmd('task');
+		$id      = $app->input->getInt('id', 0);
+		$xref    = $app->input->getInt('xref', 0);
 
-		$params  = & $mainframe->getParams('com_redevent');
+		$params  = $app->getParams('com_redevent');
 
-		// Check for request forgeries
-		//JRequest::checkToken() or die( 'Invalid Token' );
+		if ($this->cancelRegistration())
+		{
+			if ($task == 'managedelreguser')
+			{
+				$msg = JText::_('COM_REDEVENT_REGISTRATION_REMOVAL_SUCCESSFULL');
+			}
+			else
+			{
+				$msg = JText::_('COM_REDEVENT_UNREGISTERED_SUCCESSFULL');
+			}
+		}
+		else
+		{
+			$msg = $this->getError();
+			$msgtype = 'error';
+		}
 
-		$id 	= JRequest::getInt( 'id', 0 );
-		$rid 	= JRequest::getInt( 'rid' );
+		// Redirect
+		if ($task == 'managedelreguser')
+		{
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getManageAttendees($xref, 'manageattendees'), false), $msg, $msgtype);
+		}
+		else
+		{
+			if ($params->get('details_attendees_layout', 0))
+			{
+				$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=details&id=' . $id . '&tpl=attendees&xref=' . $xref, false), $msg, $msgtype);
+			}
+			else
+			{
+				$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=details&id=' . $id . '&tpl=attendees_table&xref=' . $xref, false), $msg, $msgtype);
+			}
+		}
+	}
 
-		$xref   = JRequest::getInt( 'xref', 0 );
+	/**
+	 * Ajax cancel registration
+	 *
+	 * @return void
+	 */
+	public function ajaxcancelregistration()
+	{
+		$resp = new stdClass();
+
+		if ($this->cancelRegistration())
+		{
+			$resp->status = 1;
+		}
+		else
+		{
+			$resp->status = 0;
+			$resp->error = $this->getError();
+		}
+
+		echo json_encode($resp);
+		JFactory::getApplication()->close();
+	}
+
+	/**
+	 * Actually do the cancel work (with notifications)
+	 *
+	 * @return bool
+	 */
+	protected function cancelRegistration()
+	{
+		$app = JFactory::getApplication();
+
+		$rid  = $app->input->getInt('rid', 0);
+		$xref = $app->input->getInt('xref', 0);
 
 		// Get/Create the model
 		$model = $this->getModel('Registration', 'RedeventModel');
@@ -414,51 +478,28 @@ class RedeventController extends JController
 		if (!$model->cancelregistration($rid, $xref))
 		{
 			$msg = $model->getError();
-			$msgtype = 'error';
-		}
-		else
-		{
-			/* Check if we have space on the waiting list */
-			$this->addModelPath(JPATH_BASE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'models');
-			$model_wait = $this->getModel('waitinglist');
-			$model_wait->setXrefId($xref);
-			$model_wait->UpdateWaitingList();
-
-			//		JPluginHelper::importPlugin( 'redevent' );
-			//		$dispatcher =& JDispatcher::getInstance();
-			//		$res = $dispatcher->trigger( 'onEventUserUnregistered', array( $xref ) );
-
-			$cache = JFactory::getCache('com_redevent');
-			$cache->clean();
-
-			if ($task == 'managedelreguser')
-			{
-				$msg = JText::_('COM_REDEVENT_REGISTRATION_REMOVAL_SUCCESSFULL' );
-			}
-			else
-			{
-				$msg = JText::_('COM_REDEVENT_UNREGISTERED_SUCCESSFULL' );
-			}
-
-			// send unreg notification email
-			$key = redEVENTHelper::getAttendeeSubmitKey($rid);
-			$sid = redEVENTHelper::getAttendeeSid($rid);
-			$model->notifyManagers($key, true, $rid);
+			$this->setError($msg);
+			return false;
 		}
 
-		if ($task == 'managedelreguser')
-		{
-			$this->setRedirect( JRoute::_(RedeventHelperRoute::getManageAttendees($xref, 'manageattendees'), false), $msg, $msgtype );
-		}
-		else
-		{
-			if ($params->get('details_attendees_layout', 0)) {
-				$this->setRedirect( JRoute::_('index.php?option=com_redevent&view=details&id='.$id.'&tpl=attendees&xref=' . $xref, false), $msg, $msgtype );
-			}
-			else {
-				$this->setRedirect( JRoute::_('index.php?option=com_redevent&view=details&id='.$id.'&tpl=attendees_table&xref=' . $xref, false), $msg, $msgtype );
-			}
-		}
+		/* Check if we have space on the waiting list */
+		$this->addModelPath(JPATH_BASE . '/administrator/components/com_redevent/models');
+		$model_wait = $this->getModel('waitinglist');
+		$model_wait->setXrefId($xref);
+		$model_wait->UpdateWaitingList();
+
+		//		JPluginHelper::importPlugin( 'redevent' );
+		//		$dispatcher =& JDispatcher::getInstance();
+		//		$res = $dispatcher->trigger( 'onEventUserUnregistered', array( $xref ) );
+
+		$cache = JFactory::getCache('com_redevent');
+		$cache->clean();
+
+		// Send unreg notification email
+		$key = redEVENTHelper::getAttendeeSubmitKey($rid);
+		$model->notifyManagers($key, true, $rid);
+
+		return true;
 	}
 
 	/**

@@ -93,7 +93,7 @@ defined('_JEXEC') or die('Restricted access');
 					</td>
 					<td>
 					<?php if ($row->published == '1'): ?>
-						<?php if ($this->useracl->canEditXref($row->xref)): ?>
+						<?php if ($this->useracl->canPublishXref($row->xref)): ?>
 							<?php echo JHTML::image('media/com_redevent/images/b2b-published.png', JText::_('COM_REDEVENT_Published')
 								, array('class' => 'unpublishxref hasTip'
 									, 'title' => JText::_('COM_REDEVENT_Published')
@@ -104,7 +104,7 @@ defined('_JEXEC') or die('Restricted access');
 									, 'title' => JText::_('COM_REDEVENT_Published'))); ?>
 						<?php endif; ?>
 					<?php elseif ($row->published == '0'):?>
-						<?php if ($this->useracl->canEditXref($row->xref)): ?>
+						<?php if ($this->useracl->canPublishXref($row->xref)): ?>
 							<?php echo JHTML::image('media/com_redevent/images/b2b-unpublished.png', JText::_('COM_REDEVENT_unPublished')
 								, array('class' => 'publishxref hasTip'
 									, 'title' => JText::_('COM_REDEVENT_unPublished')

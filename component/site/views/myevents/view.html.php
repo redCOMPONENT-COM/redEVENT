@@ -79,6 +79,7 @@ class RedeventViewMyevents extends JView
 
 		FOFTemplateUtils::addJS('media://com_redevent/js/myevents.js');
 		FOFTemplateUtils::addJS('media://com_redevent/js/ajaxnav.js');
+		JText::script("COM_REDEVENT_MYEVENTS_CANCEL_REGISTRATION_WARNING");
 
 		$js = "
 			window.addEvent('domready', function(){

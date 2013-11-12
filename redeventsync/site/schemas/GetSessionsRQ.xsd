@@ -21,6 +21,11 @@
 						<xs:documentation source="Description" xml:lang="en">Returns sessions until this date</xs:documentation>
 					</xs:annotation>
 				</xs:element>
+				<xs:element type="xs:string" name="VenueCode" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation source="Description" xml:lang="en">Which Venue we want sessions from. All Venues if not present. Must match an existing redEVENT Venue code</xs:documentation>
+					</xs:annotation>
+				</xs:element>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
