@@ -46,6 +46,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<?php if ($this->params->get('showcat', 1)) : ?>
 					<th id="el_category" class="sectiontableheader" align="left"><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_CATEGORY'), 'c.catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php endif; ?>
+
+				<th id="cancelcol">&nbsp;</th>
 			</tr>
 		</thead>
 
@@ -102,6 +104,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	          <?php endforeach; ?>
 	          </td>
 	        <?php endif; ?>
+
+				<td class="cancel-reg">
+					<?php if ($row->unregistra): ?>
+						<button type="button" id="unreg-<?php echo $row->attendee_id; ?>" class="unreg-btn" xref="<?php echo $row->xref; ?>">
+							<?php echo Jtext::_('COM_REDEVENT_MYEVENTS_CANCEL_REGISTRATION'); ?>
+						</button>
+					<?php else: ?>
+						&nbsp;
+					<?php endif; ?>
+				</td>
 
 			</tr>
 
