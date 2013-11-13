@@ -385,14 +385,18 @@ var redb2b = {
 			 * publish session
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.publishxref)', function(e){
-				redb2b.publishSession(this.getParent('tr').getProperty('xref'), 1);
+				if (confirm(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_CONFIRM_PUBLISH"))) {
+					redb2b.publishSession(this.getParent('tr').getProperty('xref'), 1);
+				}
 			});
 
 			/**
 			 * unpublish session
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.unpublishxref)', function(e){
-				redb2b.publishSession(this.getParent('tr').getProperty('xref'), 0);
+				if (confirm(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_CONFIRM_UNPUBLISH"))) {
+					redb2b.publishSession(this.getParent('tr').getProperty('xref'), 0);
+				}
 			});
 
 			/**
