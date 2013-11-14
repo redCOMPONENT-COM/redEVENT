@@ -297,7 +297,7 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 			$this->log(REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
 				$xml, 'error');
 
-			$response = new SimpleXMLElement('<AttendeeRS xmlns="http://www.redcomponent.com/redevent"/>');
+			$response = new SimpleXMLElement('<AttendeeRS/>');
 			$response->addChild('TransactionId', $transaction_id);
 
 			$errors = new SimpleXMLElement('<Errors/>');
