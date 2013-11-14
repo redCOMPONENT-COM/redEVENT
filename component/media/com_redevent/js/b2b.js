@@ -160,6 +160,9 @@ var redb2b = {
 				redb2b.selectSession(id);
 			});
 
+			/**
+			 * Reset sessions search
+			 */
 			document.id('search-course-reset').addEvent('click', function(){
 				document.id('filter_event').set('value', '');
 				document.id('filter_session').empty();
@@ -247,30 +250,30 @@ var redb2b = {
 				redb2b.editmember(0);
 			});
 
-            /**
-             * update member
-             */
-            document.id('redevent-admin').addEvent('click:relay(.update-employee)', function(e){
-                req = new Request.JSON({
-                    url : 'index.php?option=com_redevent&controller=frontadmin&task=update_user&format=json',
-                    data : document.id('member-update'),
-                    format: 'raw',
-                    method : 'post',
-                    onRequest: function(){
+			/**
+			 * update member
+			 */
+			document.id('redevent-admin').addEvent('click:relay(.update-employee)', function (e) {
+				req = new Request.JSON({
+					url: 'index.php?option=com_redevent&controller=frontadmin&task=update_user&format=json',
+					data: document.id('member-update'),
+					format: 'raw',
+					method: 'post',
+					onRequest: function () {
 
-                    },
-                    onSuccess : function(response){
-                        if (response.status == 1) {
-                            document.id('editmemberscreen').dispose();
-                            document.id('redadmin-main').show();
-                        }
-                        else {
-                            alert(response.error);
-                        }
-                    }
-                });
-                req.send();
-            });
+					},
+					onSuccess: function (response) {
+						if (response.status == 1) {
+							document.id('editmemberscreen').dispose();
+							document.id('redadmin-main').show();
+						}
+						else {
+							alert(response.error);
+						}
+					}
+				});
+				req.send();
+			});
 
             /**
              * update member
