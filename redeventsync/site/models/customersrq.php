@@ -60,7 +60,7 @@ class RedeventsyncModelCustomersrq extends RedeventsyncModelAbstractmessage
 		}
 		catch (Exception $e)
 		{
-			$response = new SimpleXMLElement('<SessionRS/>');
+			$response = new SimpleXMLElement('<CustomerRS/>');
 			$response->addChild('TransactionId', $transaction_id);
 
 			$errors = new SimpleXMLElement('<Errors/>');
@@ -77,13 +77,13 @@ class RedeventsyncModelCustomersrq extends RedeventsyncModelAbstractmessage
 		}
 
 		// Generate xml from user data
-		$response = new SimpleXMLElement('<SessionRS/>');
+		$response = new SimpleXMLElement('<CustomerRS/>');
 		$response->addChild('TransactionId', $transaction_id);
 
 		$success = new SimpleXMLElement('<Success/>');
 		$success->addChild('Emailaddress', $user->email);
 		$success->addChild('Firstname',    '');
-		$success->addChild('Lastname',     '');
+		$success->addChild('Lastname',     $user->name);
 		$success->addChild('Address1',     '');
 		$success->addChild('Address2',     '');
 		$success->addChild('Address3',     '');
@@ -115,6 +115,6 @@ class RedeventsyncModelCustomersrq extends RedeventsyncModelAbstractmessage
 	 */
 	protected function initResponse()
 	{
-		$this->response = new SimpleXMLElement('<CustomersRS/>');
+		$this->response = new SimpleXMLElement('<CustomersRS xmlns="http://www.redcomponent.com/redevent"/>');
 	}
 }

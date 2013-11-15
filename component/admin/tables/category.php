@@ -78,18 +78,25 @@ class RedeventTableCategory extends FOFTable
 	/**
 	 * override bind function
 	 *
-	 * @param   array   $array   data
+	 * @param   mixed   $src     data
 	 * @param   string  $ignore  An optional array or space separated list of properties to ignore while binding.
 	 *
 	 * @return boolean
 	 */
-	public function bind($array, $ignore = '')
+	public function bind($src, $ignore = '')
 	{
+		// If the source value is an object, get its accessible properties.
+		if (is_object($src))
+		{
+			$src = get_object_vars($src);
+		}
+
 		// Bind the rules.
-		if (isset($array['rules']) && is_array($array['rules']))
+
+		if (isset($src['rules']) && is_array($src['rules']))
 		{
 			$filtered = array();
-			foreach ((array) $array['rules'] as $action => $ids)
+			foreach ((array) $src['rules'] as $action => $ids)
 			{
 				// Build the rules array.
 				$filtered[$action] = array();
@@ -105,7 +112,7 @@ class RedeventTableCategory extends FOFTable
 			$this->setRules($rules);
 		}
 
-		return parent::bind($array, $ignore);
+		return parent::bind($src, $ignore);
 	}
 
 	/**

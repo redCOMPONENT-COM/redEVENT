@@ -14,6 +14,9 @@ switch ($_GET['test'])
 	case 4:
 		$file = 'schemas/SessionsRS_1.xml';
 		break;
+	case 5:
+		$file = 'schemas/AttendeesRQ_mae.xml';
+		break;
 }
 
 if (!file_exists($file))

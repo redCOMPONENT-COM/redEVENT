@@ -322,7 +322,7 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 	 */
 	protected function initResponse()
 	{
-		$this->response = new SimpleXMLElement('<AttendeesRS/>');
+		$this->response = new SimpleXMLElement('<AttendeesRS xmlns="http://www.redcomponent.com/redevent"/>');
 	}
 
 	/**
