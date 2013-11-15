@@ -85,6 +85,11 @@ class RedeventTableCategory extends FOFTable
 	 */
 	public function bind($src, $ignore = '')
 	{
+		if (!$res = parent::bind($src, $ignore))
+		{
+			return $res;
+		}
+
 		// If the source value is an object, get its accessible properties.
 		if (is_object($src))
 		{
@@ -92,7 +97,6 @@ class RedeventTableCategory extends FOFTable
 		}
 
 		// Bind the rules.
-
 		if (isset($src['rules']) && is_array($src['rules']))
 		{
 			$filtered = array();
@@ -112,7 +116,26 @@ class RedeventTableCategory extends FOFTable
 			$this->setRules($rules);
 		}
 
-		return parent::bind($src, $ignore);
+		return true;
+	}
+
+	/**
+	 * Method to set rules for the record.
+	 *
+	 * @param   mixed  $input  A JAccessRules object, JSON string, or array.
+	 *
+	 * @return  void
+	 */
+	public function setRules($input)
+	{
+		if ($input instanceof JAccessRules)
+		{
+			$this->_rules = $input;
+		}
+		else
+		{
+			$this->_rules = new JAccessRules($input);
+		}
 	}
 
 	/**
