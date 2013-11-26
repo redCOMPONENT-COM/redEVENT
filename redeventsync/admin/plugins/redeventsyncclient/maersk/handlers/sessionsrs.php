@@ -11,12 +11,12 @@ defined('_JEXEC') or die();
 require_once 'abstractmessage.php';
 
 /**
- * redEVENT sync Sessionsrs Model
+ * redEVENT sync Sessionsrs Handler
  *
  * @package  RED.redeventsync
  * @since    2.5
  */
-class RedeventsyncModelSessionsrs extends RedeventsyncModelAbstractmessage
+class RedeventsyncHandlerSessionsrs extends RedeventsyncHandlerAbstractmessage
 {
 	/**
 	 * process CreateAttendeeRQ request
@@ -32,26 +32,18 @@ class RedeventsyncModelSessionsrs extends RedeventsyncModelAbstractmessage
 		if (isset($xml->Success))
 		{
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
 				$xml, 'ok');
 		}
 		else
 		{
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
 				$xml, 'error');
 		}
 
 		return true;
-	}
-
-	/**
-	 * Init response message if applicable
-	 *
-	 * @return void
-	 */
-	protected function initResponse()
-	{
-
 	}
 }

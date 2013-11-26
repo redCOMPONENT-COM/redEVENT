@@ -3,10 +3,12 @@
 	xmlns="http://www.redcomponent.com/redevent">
 	<CustomerRQ>
 		<TransactionId>11</TransactionId>
-		<Emailaddress>julv@free.fr</Emailaddress>
+		<Emailaddress>julien@redweb.dk</Emailaddress>
+		<VenueCode></VenueCode>
 	</CustomerRQ>
 	<CustomerRQ>
 		<TransactionId>666</TransactionId>
 		<Emailaddress>notregistered@bala.com</Emailaddress>
+		<VenueCode></VenueCode>
 	</CustomerRQ>
 </CustomersRQ>

@@ -14,13 +14,6 @@
 									<xs:documentation source="Description" xml:lang="en">this Id, unique in the message, will allow to identify the RS corresponding to this session in the RS message</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element type="xs:nonNegativeInteger" name="AttendeeId">
-								<xs:annotation>
-									<xs:documentation source="Description" xml:lang="en">this Id should be left to 0 if the attendee is not created from redEVENT, as it will anyway be ignore otherwise, and as the external system can't guess which Id will be assigned by redEVENT.
-									the external system must then keep track of the AttendeeId returned in the RS message for further modifications/deletion requests.
-									</xs:documentation>
-								</xs:annotation>
-							</xs:element>
 							<xs:element type="xs:string" name="SessionCode">
 								<xs:annotation>
 									<xs:documentation source="Description" xml:lang="en">Must match an existing redEVENT Session code</xs:documentation>
@@ -77,12 +70,6 @@
 									<xs:documentation source="Description" xml:lang="en">this Id, unique in the message, will allow to identify the RS corresponding to this session in the RS message</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element type="xs:nonNegativeInteger" name="AttendeeId">
-								<xs:annotation>
-									<xs:documentation source="Description" xml:lang="en">Must match an existing redEVENT attendee Id
-									</xs:documentation>
-								</xs:annotation>
-							</xs:element>
 							<xs:element type="xs:string" name="SessionCode">
 								<xs:annotation>
 									<xs:documentation source="Description" xml:lang="en">Must match an existing redEVENT Session code</xs:documentation>
@@ -93,7 +80,7 @@
 									<xs:documentation source="Description" xml:lang="en">Must match an existing redEVENT Venue code</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element type="xs:string" name="UserEmail" minOccurs="0">
+							<xs:element type="xs:string" name="UserEmail">
 								<xs:annotation>
 									<xs:documentation source="Description" xml:lang="en">Must match an existing Joomla user Email</xs:documentation>
 								</xs:annotation>
@@ -135,11 +122,6 @@
 									<xs:documentation source="Description" xml:lang="en">this Id, unique in the message, will allow to identify the RS corresponding to this attendee in the RS message</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element type="xs:positiveInteger" name="AttendeeId" minOccurs="0" maxOccurs="unbounded">
-								<xs:annotation>
-									<xs:documentation>Id of the Attendee to delete.</xs:documentation>
-								</xs:annotation>
-							</xs:element>
 							<xs:element type="xs:string" name="SessionCode">
 								<xs:annotation>
 									<xs:documentation source="Description" xml:lang="en">Must match an existing redEVENT Session code</xs:documentation>
@@ -150,7 +132,7 @@
 									<xs:documentation source="Description" xml:lang="en">Must match an existing redEVENT Venue code</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element type="xs:string" name="UserEmail" minOccurs="0">
+							<xs:element type="xs:string" name="UserEmail">
 								<xs:annotation>
 									<xs:documentation source="Description" xml:lang="en">Must match an existing Joomla user Email</xs:documentation>
 								</xs:annotation>

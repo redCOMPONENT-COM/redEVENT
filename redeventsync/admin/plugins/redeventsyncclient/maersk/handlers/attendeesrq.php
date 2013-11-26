@@ -11,12 +11,12 @@ defined('_JEXEC') or die();
 require_once 'abstractmessage.php';
 
 /**
- * redEVENT sync Attendeesrq Model
+ * redEVENT sync Attendeesrq Handler
  *
  * @package  RED.redeventsync
  * @since    2.5
  */
-class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
+class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 {
 	/**
 	 * send createattendeeRQ
@@ -38,6 +38,8 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 		$this->validate($xml->asXML(), 'AttendeesRQ');
 
 		$this->writeFile($xml);
+
+		$this->send($xml);
 
 		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, (int) $message->TransactionId, $xml, 'ok');
 
@@ -65,6 +67,8 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 
 		$this->writeFile($xml);
 
+		$this->send($xml);
+
 		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, (int) $message->TransactionId, $xml, 'ok');
 
 		return true;
@@ -81,11 +85,10 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 	{
 		$xml = new SimpleXMLElement('<AttendeesRQ xmlns="http://www.redcomponent.com/redevent"/>');
 
-		$attendee = $this->getAttendee($attendee_id);
+		$attendee = RedeventsyncclientMaerskHelper::getAttendee($attendee_id);
 
 		$message = new SimpleXMLElement('<DeleteAttendeeRQ/>');
 		$message->addChild('TransactionId', $this->getNextTransactionId());
-		$message->addChild('AttendeeId',    $attendee_id);
 		$message->addChild('SessionCode',   $attendee->session_code);
 		$message->addChild('VenueCode',     $attendee->venue_code);
 		$message->addChild('UserEmail',     $attendee->email);
@@ -95,6 +98,8 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 		$this->validate($xml->asXML(), 'AttendeesRQ');
 
 		$this->writeFile($xml);
+
+		$this->send($xml);
 
 		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, (int) $message->TransactionId, $xml, 'ok');
 
@@ -121,18 +126,35 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 			// Create attendee from the xml info
 			$attendee = $this->parseAttendeeXml($xml);
 
-			if ($attendee->id)
+			// Try to find attendee
+			$existing = RedeventsyncclientMaerskHelper::findAttendee($attendee->user_email, $attendee->session_code, $attendee->venue_code);
+
+			if ($existing)
 			{
-				$row->load($attendee->id);
-				if (!$row->id)
+				$row->bind($existing);
+			}
+			else
+			{
+				if (!isset($attendee->waitinglist))
 				{
-					throw new Exception('Attendee id not found');
+					$attendee->waitinglist = 0;
 				}
 			}
 
+
+			// Make sure we have an user !
+			$userid = RedeventsyncclientMaerskHelper::getUser($attendee->user_email);
+
+			if (!$userid)
+			{
+				// We need an user, trigger a special Exception to force getting one
+				throw new MissingUserException($attendee->user_email, $attendee->venue_code);
+			}
+
+
 			// We will first add to redform submitters, then to corresponding redform form,
 			// and then to register table
-			$session_details = $this->getSessionDetails($attendee->session_code);
+			$session_details = RedeventsyncclientMaerskHelper::getSessionDetails($attendee->session_code, $attendee->venue_code);
 
 			// Post to redform
 			require_once JPATH_SITE . '/components/com_redform/redform.core.php';
@@ -150,13 +172,21 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 				$data['submit_key'] = $row->submit_key;
 			}
 
-			foreach ($attendee->answers as $a)
+			if (isset($attendee->answers))
 			{
-				$field = "field" . $a->id;
-				$data[$field] = $a->value;
-			}
+				foreach ($attendee->answers as $a)
+				{
+					$field = "field" . $a->id;
+					$data[$field] = $a->value;
+				}
 
-			$result = $rfcore->saveAnswers('redevent', null, $data);
+				$result = $rfcore->saveAnswers('redevent', null, $data);
+			}
+			else
+			{
+				// Use quickSubmit method
+				$result = $rfcore->quickSubmit($userid, 'redevent');
+			}
 
 			if (!$result)
 			{
@@ -169,12 +199,7 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 			$row->xref = $session_details->session_id;
 			$row->sid = $sid;
 			$row->submit_key = $result->submit_key;
-
-			// Get user
-			if (!$attendee->id)
-			{
-				$row->uid = $this->getUser($attendee->user_email);
-			}
+			$row->uid = RedeventsyncclientMaerskHelper::getUser($attendee->user_email);
 
 			// Now save !
 			if (!($row->check() && $row->store()))
@@ -183,7 +208,8 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 			}
 
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
 				$xml, 'ok');
 
 			// Response
@@ -193,13 +219,20 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 			$this->addResponse($response);
 
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
 				$response, 'ok');
+		}
+		catch (MissingUserException $e)
+		{
+			// bubble !
+			throw $e;
 		}
 		catch (Exception $e)
 		{
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
 				$xml, 'error');
 
 			$response = new SimpleXMLElement('<AttendeeRS/>');
@@ -212,11 +245,14 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 			$this->addResponse($response);
 
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
 				$response, 'error');
 
 			return false;
 		}
+
+		return true;
 	}
 
 	/**
@@ -267,9 +303,8 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 			$query = ' DELETE s, f, r '
 				. ' FROM #__redevent_register AS r '
 				. ' LEFT JOIN #__rwf_submitters AS s ON r.sid = s.id '
-				. ' LEFT JOIN #__rwf_forms_'.$attendee->redform_id .' AS f ON f.id = s.answer_id '
-				. ' WHERE r.id = ' . $attendee_id
-			;
+				. ' LEFT JOIN #__rwf_forms_' . $attendee->redform_id . ' AS f ON f.id = s.answer_id '
+				. ' WHERE r.id = ' . $attendee_id;
 			$db->setQuery($query);
 
 			if (!$db->query())
@@ -278,7 +313,8 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 			}
 
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
 				$xml, 'ok');
 
 			// Response
@@ -288,13 +324,15 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 			$this->addResponse($response);
 
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
 				$response, 'ok');
 		}
 		catch (Exception $e)
 		{
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
 				$xml, 'error');
 
 			$response = new SimpleXMLElement('<AttendeeRS/>');
@@ -307,12 +345,12 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 			$this->addResponse($response);
 
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
 				$response, 'error');
 
 			return false;
 		}
-
 	}
 
 	/**
@@ -336,17 +374,11 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 	{
 		$object = new stdClass;
 
-		if (isset($xml->AttendeeId))
-		{
-			$object->id    = (int) $xml->AttendeeId;
-		}
-
 		$object->session_code   = (string) $xml->SessionCode;
 
-		if (isset($xml->UserEmail))
-		{
-			$object->user_email    = (string) $xml->UserEmail;
-		}
+		$object->venue_code   = (string) $xml->VenueCode;
+
+		$object->user_email    = (string) $xml->UserEmail;
 
 		if (isset($xml->Cancelled))
 		{
@@ -370,17 +402,20 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 
 		if (isset($xml->ConfirmDate))
 		{
-			$object->confirmdate    = (int) $xml->ConfirmDate;
+			$date = JDate::getInstance((string) $xml->ConfirmDate);
+			$object->confirmdate    = $date->toSql();
 		}
 
 		if (isset($xml->PaymentStart))
 		{
-			$object->paymentstart      = (int) $xml->PaymentStart;
+			$date = JDate::getInstance((string) $xml->PaymentStart);
+			$object->paymentstart    = $date->toSql();
 		}
 
 		if (isset($xml->RegistrationDate))
 		{
-			$object->uregdate      = (string) $xml->RegistrationDate;
+			$date = JDate::getInstance((string) $xml->RegistrationDate);
+			$object->uregdate    = $date->toSql();
 		}
 
 		if (isset($xml->IP))
@@ -403,96 +438,12 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 			}
 			$object->answers = $answers;
 		}
+		else
+		{
+			$object->answers = null;
+		}
 
 		return $object;
-	}
-
-	/**
-	 * return session details
-	 *
-	 * @param   string  $code  session code
-	 *
-	 * @return object
-	 *
-	 * @throws Exception
-	 */
-	protected function getSessionDetails($code)
-	{
-		if (!$code)
-		{
-			throw new Exception('Session code is required');
-		}
-
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select('x.id AS session_id');
-		$query->select('e.redform_id');
-		$query->from('#__redevent_event_venue_xref AS x');
-		$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
-		$query->where('x.session_code = ' . $db->quote($code));
-
-		$db->setQuery($query);
-		$res = $db->loadObject();
-
-		if (!$res)
-		{
-			throw new Exception('Session not found');
-		}
-
-		return $res;
-	}
-
-	/**
-	 * Get user associated to email, creating if requested
-	 *
-	 * @param   string  $email   user email
-	 * @param   bool    $create  create user
-	 *
-	 * @return int user id
-	 *
-	 * @throws Exception
-	 */
-	protected function getUser($email, $create = false)
-	{
-		if (!$email || !JMailHelper::isEmailAddress($email))
-		{
-			throw new Exception('Empty or invalid email');
-		}
-
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select('id');
-		$query->from('#__users');
-		$query->where('email = ' . $db->quote($email));
-
-		$db->setQuery($query);
-		$user_id = $db->loadResult();
-
-		if ($user_id)
-		{
-			return $user_id;
-		}
-
-		// User not found, create if needed
-		if ($create)
-		{
-			$new = JFactory::getUser(0);
-			$new->email = $email;
-			$new->username = $email;
-			$new->name = $email;
-
-			// Do this thing
-			if (!$new->save())
-			{
-				throw new Exception($new->getError());
-			}
-
-			$user_id = $new->id;
-		}
-
-		return $user_id;
 	}
 
 	/**
@@ -507,9 +458,8 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 	{
 		$message->addChild('TransactionId', $this->getNextTransactionId());
 
-		$attendee = $this->getAttendee($attendee_id);
+		$attendee = RedeventsyncclientMaerskHelper::getAttendee($attendee_id);
 
-		$message->addChild('AttendeeId',    $attendee->id);
 		$message->addChild('SessionCode',   $attendee->session_code);
 		$message->addChild('VenueCode',     $attendee->venue_code);
 		$message->addChild('UserEmail',     $attendee->email);
@@ -543,35 +493,5 @@ class RedeventsyncModelAttendeesrq extends RedeventsyncModelAbstractmessage
 		$this->appendElement($message, $answers);
 
 		return $message;
-	}
-
-	/**
-	 * returns attendee info
-	 *
-	 * @param   int  $attendee_id  attendee id
-	 *
-	 * @return object
-	 */
-	protected function getAttendee($attendee_id)
-	{
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select('r.*');
-		$query->select('x.session_code');
-		$query->select('v.venue_code');
-		$query->select('e.redform_id');
-		$query->select('u.email');
-		$query->from('#__redevent_register AS r');
-		$query->join('INNER', '#__redevent_event_venue_xref AS x on x.id = r.xref');
-		$query->join('INNER', '#__redevent_events AS e on e.id = x.eventid');
-		$query->join('INNER', '#__redevent_venues AS v on v.id = x.venueid');
-		$query->join('LEFT', '#__users AS u on u.id = r.uid');
-		$query->where('r.id = ' . $db->quote($attendee_id));
-
-		$db->setQuery($query);
-		$attendee = $db->loadObject();
-
-		return $attendee;
 	}
 }

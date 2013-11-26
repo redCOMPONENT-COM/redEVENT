@@ -3,7 +3,6 @@
 	xmlns="http://www.redcomponent.com/redevent">
 	<CreateAttendeeRQ>
 		<TransactionId>12323</TransactionId>
-		<AttendeeId>2</AttendeeId>
 		<SessionCode>xml 2</SessionCode>
 		<VenueCode>V1</VenueCode>
 		<UserEmail>julv@free.fr</UserEmail>
@@ -18,7 +17,6 @@
 
 	<CreateAttendeeRQ>
 		<TransactionId>1232345</TransactionId>
-		<AttendeeId>0</AttendeeId>
 		<SessionCode>xml 2</SessionCode>
 		<VenueCode>V1</VenueCode>
 		<UserEmail>julv@free.fr</UserEmail>
@@ -33,7 +31,6 @@
 
 	<ModifyAttendeeRQ>
 		<TransactionId>123234567</TransactionId>
-		<AttendeeId>94</AttendeeId>
 		<SessionCode>xml 2</SessionCode>
 		<VenueCode>V1</VenueCode>
 		<UserEmail>julv@free.fr</UserEmail>
@@ -48,6 +45,8 @@
 
 	<DeleteAttendeeRQ>
 		<TransactionId>898989</TransactionId>
-		<AttendeeId>96</AttendeeId>
+		<SessionCode>xml 2</SessionCode>
+		<VenueCode>V1</VenueCode>
+		<UserEmail>julv@free.fr</UserEmail>
 	</DeleteAttendeeRQ>
 </AttendeesRQ>

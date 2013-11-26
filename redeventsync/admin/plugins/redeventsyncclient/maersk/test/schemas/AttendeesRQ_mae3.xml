@@ -1,7 +1,7 @@
+<?xml version="1.0"?>
 <AttendeesRQ xmlns="http://www.redcomponent.com/redevent">
 	<CreateAttendeeRQ>
 		<TransactionId>999</TransactionId>
-		<AttendeeId>1</AttendeeId>
 		<SessionCode>4643</SessionCode>
 		<VenueCode>MAERSKESBJERG</VenueCode>
 		<UserEmail>relax29@privat.dk</UserEmail>

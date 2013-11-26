@@ -11,12 +11,12 @@ defined('_JEXEC') or die();
 require_once 'abstractmessage.php';
 
 /**
- * redEVENT sync Sessionsrq Model
+ * redEVENT sync Sessionsrq Handler
  *
  * @package  RED.redeventsync
  * @since    2.5
  */
-class RedeventsyncModelSessionsrq extends RedeventsyncModelAbstractmessage
+class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 {
 	/**
 	 * process CreateAttendeeRQ request
@@ -47,7 +47,8 @@ class RedeventsyncModelSessionsrq extends RedeventsyncModelAbstractmessage
 			}
 
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
 				$xml, 'ok');
 
 			// Response
@@ -58,13 +59,15 @@ class RedeventsyncModelSessionsrq extends RedeventsyncModelAbstractmessage
 			$this->addResponse($response);
 
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
 				$response, 'ok');
 		}
 		catch (Exception $e)
 		{
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
 				$xml, 'error');
 
 			$response = new SimpleXMLElement('<SessionRS/>');
@@ -77,7 +80,8 @@ class RedeventsyncModelSessionsrq extends RedeventsyncModelAbstractmessage
 			$this->addResponse($response);
 
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
 				$response, 'error');
 
 			return false;
@@ -120,7 +124,8 @@ class RedeventsyncModelSessionsrq extends RedeventsyncModelAbstractmessage
 			}
 
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
 				$xml, 'ok');
 		}
 		catch (Exception $e)
@@ -135,7 +140,8 @@ class RedeventsyncModelSessionsrq extends RedeventsyncModelAbstractmessage
 			$this->addResponse($response);
 
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
 				$response, 'error');
 
 			return false;
@@ -149,7 +155,8 @@ class RedeventsyncModelSessionsrq extends RedeventsyncModelAbstractmessage
 		$this->addResponse($response);
 
 		// Log
-		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
+		$this->log(
+			REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
 			$response, 'ok');
 
 		return true;
@@ -186,7 +193,8 @@ class RedeventsyncModelSessionsrq extends RedeventsyncModelAbstractmessage
 			}
 
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
 				$xml, 'ok');
 		}
 		catch (Exception $e)
@@ -201,7 +209,8 @@ class RedeventsyncModelSessionsrq extends RedeventsyncModelAbstractmessage
 			$this->addResponse($response);
 
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
 				$response, 'error');
 
 			return false;
@@ -215,7 +224,8 @@ class RedeventsyncModelSessionsrq extends RedeventsyncModelAbstractmessage
 		$this->addResponse($response);
 
 		// Log
-		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
+		$this->log(
+			REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
 			$response, 'ok');
 
 		return true;
@@ -234,7 +244,7 @@ class RedeventsyncModelSessionsrq extends RedeventsyncModelAbstractmessage
 
 		$message = new SimpleXMLElement('<CreateSessionRQ/>');
 
-		$this->addSessionXml($message, $session_id);
+		$message = $this->addSessionXml($message, $session_id);
 
 		$this->appendElement($xml, $message);
 
@@ -258,11 +268,19 @@ class RedeventsyncModelSessionsrq extends RedeventsyncModelAbstractmessage
 
 		$message = new SimpleXMLElement('<ModifySessionRQ/>');
 
-		$this->addSessionXml($message, $session_id);
+		$message = $this->addSessionXml($message, $session_id);
 
 		$this->appendElement($xml, $message);
 
-		$this->validate($xml->asXML(), 'SessionsRQ');
+		try
+		{
+			$this->validate($xml->asXML(), 'SessionsRQ');
+		}
+		catch (Exception $e)
+		{
+			$app = JFactory::getApplication();
+			$app->enqueueMessage('redeventsync plugin validation failed: ' . $e->getMessage(), 'notice');
+		}
 
 		$this->writeFile($xml);
 
@@ -307,6 +325,7 @@ class RedeventsyncModelSessionsrq extends RedeventsyncModelAbstractmessage
 	 * @param   string  $code  session code
 	 *
 	 * @return int
+	 *
 	 * @throws Exception
 	 */
 	protected function getSessionId($code)
@@ -337,6 +356,7 @@ class RedeventsyncModelSessionsrq extends RedeventsyncModelAbstractmessage
 	 * @param   string  $code  event code
 	 *
 	 * @return int
+	 *
 	 * @throws Exception
 	 */
 	protected function getEventId($code)
@@ -372,6 +392,7 @@ class RedeventsyncModelSessionsrq extends RedeventsyncModelAbstractmessage
 	 * @param   string  $code  venue code
 	 *
 	 * @return int
+	 *
 	 * @throws Exception
 	 */
 	protected function getVenueId($code)
@@ -625,7 +646,7 @@ class RedeventsyncModelSessionsrq extends RedeventsyncModelAbstractmessage
 			$sessiondetails->addChild('EndOfRegistration', str_replace(' ', 'T', $session->registrationend));
 		}
 
-		$sessiondetails->addChild('Note', $session->note);
+		$sessiondetails->addChild('Note', htmlentities($session->note, ENT_XML1));
 		$sessiondetails->addChild('ExternalRegistrationUrl', $session->external_registration_url);
 		$sessiondetails->addChild('Published', $session->published);
 		$sessiondetails->addChild('Featured', $session->featured);
@@ -645,7 +666,7 @@ class RedeventsyncModelSessionsrq extends RedeventsyncModelAbstractmessage
 
 		$this->appendElement($sessiondetails, $custom_fields);
 
-		$sessiondetails->addChild('Details', $session->details);
+		$sessiondetails->addChild('Details', htmlentities($session->details, ENT_XML1));
 
 		$this->appendElement($message, $sessiondetails);
 
