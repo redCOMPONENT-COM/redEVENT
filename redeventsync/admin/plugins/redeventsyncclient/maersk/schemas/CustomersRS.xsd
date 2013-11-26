@@ -21,7 +21,7 @@
 										</xs:annotation>
 										<xs:complexType>
 											<xs:sequence>
-												<xs:element type="xs:string" name="Emailaddress" minOccurs="1">
+												<xs:element type="xs:string" name="Emailaddress">
 													<xs:annotation>
 														<xs:documentation source="Description" xml:lang="en">Customer Email address. This is an unique identifier in redEVENT database</xs:documentation>
 													</xs:annotation>
@@ -117,11 +117,6 @@
 												</xs:element>
 											</xs:sequence>
 										</xs:complexType>
-									</xs:element>
-									<xs:element type="xs:string" name="Emailaddress">
-										<xs:annotation>
-											<xs:documentation source="Description" xml:lang="en">Customer Email address. This is an unique identifier in redEVENT database</xs:documentation>
-										</xs:annotation>
 									</xs:element>
 								</xs:sequence>
 								<xs:element name="Errors">

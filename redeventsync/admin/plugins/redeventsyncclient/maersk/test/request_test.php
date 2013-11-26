@@ -17,7 +17,26 @@ switch ($_GET['test'])
 	case 5:
 		$file = 'schemas/AttendeesRQ_mae.xml';
 		break;
+	case 6:
+		$file = 'schemas/AttendeesRQ_mae2.xml';
+		break;
+	case 7:
+		$file = 'schemas/AttendeesRQ_mae3.xml';
+		break;
 }
+
+switch ($_GET['target'])
+{
+	case 'julmaersk':
+		$target = "http://juldevmaersk.com.web14.redhost.dk";
+		break;
+
+	default:
+		$target = "http://localhost/jl25";
+		break;
+}
+
+$debug = isset($_GET['debug']) ? 1 : 0;
 
 if (!file_exists($file))
 {
@@ -26,7 +45,7 @@ if (!file_exists($file))
 
 $xml_builder = file_get_contents($file);
 
-$ch = curl_init('http://localhost/jl25/index.php?option=com_redeventsync');
+$ch = curl_init($target . '/index.php?option=com_redeventsync&client=maersk' . ($debug ? '&debug=1' : ''));
 curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'));
 curl_setopt($ch, CURLOPT_HEADER, 0);
 curl_setopt($ch, CURLOPT_POST, 1);

@@ -11,12 +11,12 @@ defined('_JEXEC') or die();
 require_once 'abstractmessage.php';
 
 /**
- * redEVENT sync Customersrq Model
+ * redEVENT sync Customersrq Handler
  *
  * @package  RED.redeventsync
  * @since    2.5
  */
-class RedeventsyncModelCustomersrq extends RedeventsyncModelAbstractmessage
+class RedeventsyncHandlerCustomersrq extends RedeventsyncHandlerAbstractmessage
 {
 	/**
 	 * process CreateAttendeeRQ request
@@ -82,25 +82,36 @@ class RedeventsyncModelCustomersrq extends RedeventsyncModelAbstractmessage
 
 		$success = new SimpleXMLElement('<Success/>');
 		$success->addChild('Emailaddress', $user->email);
-		$success->addChild('Firstname',    '');
-		$success->addChild('Lastname',     $user->name);
-		$success->addChild('Address1',     '');
-		$success->addChild('Address2',     '');
-		$success->addChild('Address3',     '');
-		$success->addChild('City',         '');
-		$success->addChild('Zipcode',      '');
-		$success->addChild('Countrycode',  '');
-		$success->addChild('Phonenumber',  '');
-		$success->addChild('Mobilephonenumber', '');
-		$success->addChild('Company',      '');
-		$success->addChild('PointOfSales', '');
-		$success->addChild('Salesman',     '');
-		$success->addChild('Description',  '');
+		$success->addChild('Firstname',    $user->rm_firstname);
+		$success->addChild('Lastname',     $user->rm_lastname);
+		$success->addChild('Address1',     $user->rm_address1);
+		$success->addChild('Address2',     $user->rm_address2);
+		$success->addChild('Address3',     $user->rm_address3);
+		$success->addChild('City',         $user->rm_city);
+		$success->addChild('Zipcode',      $user->rm_zipcode);
+		$success->addChild('Countrycode',  $user->rm_countrycode);
+		$success->addChild('Phonenumber',  $user->rm_phone);
+		$success->addChild('Mobilephonenumber', $user->rm_mobile);
+		$success->addChild('Company',      $user->rm_company);
+
+		if ($user->rm_segment)
+		{
+			$success->addChild('Segment',      $user->rm_segment);
+		}
+
+		$success->addChild('PointOfSales', $user->rm_pointofsales);
+		$success->addChild('Salesman',     $user->rm_salesman);
+
+		if ($user->rm_customerid)
+		{
+			$success->addChild('CustomerID',      $user->rm_customerid);
+		}
 
 		$this->appendElement($response, $success);
 
 		// Log
-		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
+		$this->log(
+			REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
 			$response, 'ok');
 
 		$this->addResponse($response);

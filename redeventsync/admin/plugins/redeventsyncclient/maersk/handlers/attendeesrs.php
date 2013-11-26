@@ -11,12 +11,12 @@ defined('_JEXEC') or die();
 require_once 'abstractmessage.php';
 
 /**
- * redEVENT sync Attendeers Model
+ * redEVENT sync Attendeers Handler
  *
  * @package  RED.redeventsync
  * @since    2.5
  */
-class RedeventsyncModelAttendeesrs extends RedeventsyncModelAbstractmessage
+class RedeventsyncHandlerAttendeesrs extends RedeventsyncHandlerAbstractmessage
 {
 	/**
 	 * process CreateAttendeeRQ request
@@ -32,13 +32,15 @@ class RedeventsyncModelAttendeesrs extends RedeventsyncModelAbstractmessage
 		if (isset($xml->Success))
 		{
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
 				$xml, 'ok');
 		}
 		else
 		{
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
 				$xml, 'error');
 		}
 

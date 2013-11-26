@@ -1,7 +1,7 @@
 <?php
 /**
- * @package		redcomponent.redeventsync
- * @subpackage	com_redeventsync
+ * @package     Redcomponent.redeventsync
+ * @subpackage  plugins.redeventsyncclient
  * @copyright	Copyright (C) 2013 redCOMPONENT.com
  * @license		GNU General Public License version 2 or later
  */
@@ -11,24 +11,45 @@ defined('_JEXEC') or die();
 require_once JPATH_ADMINISTRATOR . '/components/com_redeventsync/defines.php';
 
 /**
- * redEVENT sync Abstractmessage Model
+ * redEVENT sync Abstractmessage
  *
- * @package  RED.redeventsync
+ * @package     Redcomponent.redeventsync
+ * @subpackage  plugins.redeventsyncclient
+ *
  * @since    2.5
  */
-class RedeventsyncModelAbstractmessage extends FOFModel
+class RedeventsyncHandlerAbstractmessage
 {
 	/**
 	 * @var SimpleXMLElement response message
 	 */
 	protected $response;
 
+	protected $messages;
+
 	/**
-	 * handle nodes from xml
+	 * the parent calling this handler
 	 *
-	 * @param   string  $xml  the dom node
+	 * @var object
+	 */
+	protected $parent;
+
+	/**
+	 * Constructor
 	 *
-	 * @return string xml
+	 * @param   object  $parent  the calling object
+	 */
+	public function __construct($parent)
+	{
+		$this->parent = $parent;
+	}
+
+	/**
+	 * Handle nodes from xml
+	 *
+	 * @param   string  $xml_post  the data to parse
+	 *
+	 * @return  boolean true on success
 	 *
 	 * @throws Exception
 	 */
@@ -40,21 +61,15 @@ class RedeventsyncModelAbstractmessage extends FOFModel
 
 		foreach ($xml->children() as $node)
 		{
-			try
+			if (!method_exists($this, 'process' . $node->getName()))
 			{
-				if (!method_exists($this, 'process' . $node->getName()))
-				{
-					throw new Exception('handle error - Unknown node: ' . $node->getName());
-				}
+				throw new Exception('handle error - Unknown node: ' . $node->getName());
+			}
 
-				$this->{'process' . $node->getName()}($node);
-			}
-			catch (Exception $e)
-			{
-				echo $e->getMessage();
-				JFactory::getApplication()->close();
-			}
+			$this->{'process' . $node->getName()}($node);
 		}
+
+		return true;
 	}
 
 	/**
@@ -72,7 +87,7 @@ class RedeventsyncModelAbstractmessage extends FOFModel
 		}
 		else
 		{
-			return true;
+			return '';
 		}
 	}
 
@@ -83,7 +98,7 @@ class RedeventsyncModelAbstractmessage extends FOFModel
 	 */
 	protected function initResponse()
 	{
-
+		return;
 	}
 
 	/**
@@ -138,6 +153,33 @@ class RedeventsyncModelAbstractmessage extends FOFModel
 	}
 
 	/**
+	 * log message for display
+	 *
+	 * @param   string  $message  message
+	 *
+	 * @return void
+	 */
+	protected function enqueueMessage($message)
+	{
+		if (is_null($this->messages))
+		{
+			$this->messages = array();
+		}
+
+		$this->messages[] = $message;
+	}
+
+	/**
+	 * Get messages for debug
+	 *
+	 * @return array messages
+	 */
+	public function getMessages()
+	{
+		return $this->messages;
+	}
+
+	/**
 	 * return next transaction id
 	 *
 	 * @return int
@@ -153,6 +195,8 @@ class RedeventsyncModelAbstractmessage extends FOFModel
 	 * @param   SimpleXMLElement  $xml  xml data to write
 	 *
 	 * @return true on success
+	 *
+	 * @throws Exception
 	 */
 	protected function writeFile(SimpleXMLElement $xml)
 	{
@@ -174,6 +218,7 @@ class RedeventsyncModelAbstractmessage extends FOFModel
 	 * @param   string  $schema  message name
 	 *
 	 * @return bool
+	 *
 	 * @throws Exception
 	 */
 	public function validate($xml, $schema = null)
@@ -181,7 +226,7 @@ class RedeventsyncModelAbstractmessage extends FOFModel
 		// Enable user error handling
 		$prev = libxml_use_internal_errors(true);
 
-		$dom = new DOMDocument();
+		$dom = new DOMDocument;
 		$dom->loadXML($xml);
 
 		if (!$schema)
@@ -190,23 +235,40 @@ class RedeventsyncModelAbstractmessage extends FOFModel
 		}
 
 		// Validate
-		if (! $dom->schemaValidate(JPATH_SITE . '/components/com_redeventsync/schemas/' . $schema . '.xsd'))
+		if (! $dom->schemaValidate(dirname(dirname(__FILE__)) . '/schemas/' . $schema . '.xsd'))
 		{
 			$error = "Invalid xml data !\n";
 
 			foreach (libxml_get_errors() as $e)
 			{
-				$error .= $e->message . "\n";
+				$error .= 'line ' . $e->line . ': '. $e->message . "\n";
 			}
 
-			throw new Exception($error);
-
 			libxml_clear_errors();
-			JFactory::getApplication()->close();
+			throw new Exception($error);
 		}
 
 		libxml_clear_errors();
 		libxml_use_internal_errors($prev);
+
+		return true;
+	}
+
+	/**
+	 * Sends xml message through client
+	 *
+	 * @param   string  $message  message to send
+	 *
+	 * @return response
+	 */
+	protected function send($message)
+	{
+		$resp = $this->parent->getClient()->send($message);
+
+		if ($resp)
+		{
+			$this->parent->onHandle('maersk', $resp);
+		}
 
 		return true;
 	}

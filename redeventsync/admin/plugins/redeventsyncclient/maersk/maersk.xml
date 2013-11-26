@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.7" type="plugin" group="redeventsyncclient" method="upgrade">
+	<name>PLG_REDEVENTSYNCCLIENT_MAERSK_PLUGIN</name>
+	<creationDate>##DATE##</creationDate>
+	<author>redWEB Aps</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>(C) 2013 redCOMPONENT.com</copyright>
+	<license>GNU/GPL</license>
+	<version>##VERSION##</version>
+	<description>PLG_REDEVENTSYNCCLIENT_MAERSK_PLUGIN_DESC</description>
+
+	<files>
+		<filename plugin="maersk">maersk.php</filename>
+		<filename>client.php</filename>
+		<filename>helper.php</filename>
+		<filename>index.html</filename>
+		<folder>handlers</folder>
+		<folder>language</folder>
+		<folder>schemas</folder>
+	</files>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+
+			</fieldset>
+		</fields>
+	</config>
+
+</extension>
