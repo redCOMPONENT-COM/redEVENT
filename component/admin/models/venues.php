@@ -257,8 +257,9 @@ class RedEventModelVenues extends JModel
 		/*
 		* Search venues
 		*/
-		if ($search && $filter == 1) {
-			$query->where(' LOWER(l.venue) LIKE \'%'.$search.'%\' ');
+		if ($search && $filter == 1)
+		{
+			$query->where(' LOWER(l.venue) LIKE \'%' . $search . '%\' OR LOWER(l.venue_code) LIKE \'%' . $search . '%\'');
 		}
 
 		/*

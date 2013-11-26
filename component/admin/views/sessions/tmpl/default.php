@@ -93,6 +93,7 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 			</th>
 			<th><?php echo JHTML::_('grid.sort',  JText::_('COM_REDEVENT_DATE'), 'obj.dates', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th><?php echo JText::_('COM_REDEVENT_TIME'); ?></th>
+			<th><?php echo JHTML::_('grid.sort',  JText::_('COM_REDEVENT_SESSIONS_SESSION_CODE'), 'obj.session_code', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<?php if (!$this->event): ?>
 			<th><?php echo JHTML::_('grid.sort',  JText::_('COM_REDEVENT_EVENT'), 'e.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<?php endif; ?>
@@ -148,7 +149,7 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo $this->pagination->getRowOffset( $i ); ?></td>
 				<td><?php echo $checked; ?></td>
-	      <td>
+				<td>
 					<?php
 					if (  JTable::isCheckedOut($this->user->get ('id'), $row->checked_out ) ) {
 						echo $displaydate;
@@ -165,7 +166,8 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 					                         JText::_('COM_REDEVENT_EVENT_FRONTEND_LINK'))); ?>
 					</span>
 				</td>
-	      <td><?php echo $displaytime; ?></td>
+				<td><?php echo $displaytime; ?></td>
+				<td><?php echo $row->session_code; ?></td>
 
 			<?php if (!$this->event): ?>
 				<td>

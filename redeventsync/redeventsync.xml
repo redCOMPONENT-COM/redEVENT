@@ -13,12 +13,11 @@
 	<!-- Public front end files -->
 	<files folder="site">
 		<filename>index.html</filename>
+		<filename>dispatcher.php</filename>
 		<filename>redeventsync.php</filename>
 
 		<folder>controllers</folder>
 		<folder>language</folder>
-		<folder>models</folder>
-		<folder>schemas</folder>
 		<folder>views</folder>
 	</files>
 
@@ -70,6 +69,7 @@
 			<filename>redeventsync.php</filename>
 
 			<folder>controllers</folder>
+			<folder>models</folder>
 			<folder>language</folder>
 			<folder>plugins</folder>
 			<folder>sql</folder>
@@ -77,6 +77,11 @@
 		</files>
 
 	</administration>
+
+	<!-- Libraries to install -->
+	<libraries>
+		<library name="redeventsync"/>
+	</libraries>
 
 	<!-- Installation / uninstallation script file -->
 	<scriptfile>install.php</scriptfile>
@@ -91,5 +96,6 @@
 	<!-- Plugins here -->
 	<plugins>
 		<plugin folder="admin/plugins/redevent" plugin="redeventsync" group="redevent" />
+		<plugin folder="admin/plugins/redeventsyncclient" plugin="maersk" group="redeventsyncclient" />
 	</plugins>
 </extension>

@@ -15,6 +15,7 @@
 
 // Extension toolbar icon (big badge)
 .icon-48-redeventsync { background: transparent url(../../com_redeventsync/images/icon-48-redeventsync.png) no-repeat !important; }
+.icon-48-sync { background: transparent url(../../com_redeventsync/images/icon-48-sync.png) no-repeat !important; }
 
 // Due date styling
 span {
@@ -33,3 +34,23 @@ div.xxxx-clear { clear: left; }
 }
 
 .xxxx-title-field { display: block; font-size: x-large; font-weight: bold; border-bottom: thin solid gray; }
+
+.spinner {
+  position: absolute;
+  opacity: 0.9;
+  filter: alpha(opacity=90);
+  z-index: 999;
+  background: #fff;
+}
+
+.spinner-msg {
+  text-align: center;
+  font-weight: bold;
+}
+
+.spinner-img {
+  background: url(../images/spinner.gif) no-repeat;
+  width: 24px;
+  height: 24px;
+  margin: 0 auto;
+}
