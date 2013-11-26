@@ -134,6 +134,10 @@ $app = &JFactory::getApplication();
 						echo htmlspecialchars($row->alias, ENT_QUOTES, 'UTF-8');
 					}
 					?>
+					<?php if ($row->course_code): ?>
+						<br/>
+						<?php echo $row->course_code; ?>
+					<?php endif; ?>
 					</div>
 					<div class="linkfront"><?php echo JHTML::link(JURI::root().RedeventHelperRoute::getDetailsRoute($row->id),
 					                        JHTML::image('administrator/components/com_redevent/assets/images/linkfront.png',

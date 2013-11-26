@@ -25,5 +25,29 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class RedeventsyncToolbar extends FOFToolbar
 {
+	/**
+	 * Renders the toolbar for the component's sync page
+	 *
+	 * @return void
+	 */
+	public function onSyncsBrowse()
+	{
+		// On frontend, buttons must be added specifically
+		list($isCli, $isAdmin) = FOFDispatcher::isCliAdmin();
 
+		exit('test');
+
+		if ($isAdmin || $this->renderFrontendSubmenu)
+		{
+			$this->renderSubmenu();
+		}
+
+		if (!$isAdmin && !$this->renderFrontendButtons)
+		{
+			return;
+		}
+
+		JToolBarHelper::title(JText::_('COM_REDEVENTSYNC_MENU_SYNC'), 'sync');
+		JToolBarHelper::back();
+	}
 }

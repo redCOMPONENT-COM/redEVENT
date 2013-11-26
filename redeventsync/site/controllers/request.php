@@ -33,82 +33,40 @@ class RedeventsyncControllerRequest extends FOFController
 	public function add()
 	{
 		$this->input->set('tmpl', 'component');
-		$xml_post = file_get_contents('php://input');
+		$debug = $this->input->getInt('debug', 0);
+		$data = file_get_contents('php://input');
 
-		if ($xml_post)
+		$client = $this->input->get('client');
+
+		if (!$client)
 		{
-			// Enable user error handling
-			$prev = libxml_use_internal_errors(true);
+			echo 'Client is required';
+			JFactory::getApplication()->close();
+		}
 
-			$xml = new DOMDocument;
-
-			if (!$xml->loadXml($xml_post))
+		if ($data)
+		{
+			// For a proper xml response, turn off error reporting
+			if (!$debug)
 			{
-				foreach (libxml_get_errors() as $error)
-				{
-					echo $error->message . "\n";
-				}
-
-				libxml_clear_errors();
-				JFactory::getApplication()->close();
+				error_reporting(0);
 			}
 
-			$xml->preserveWhiteSpace = false;
-
-			$type = $xml->firstChild->nodeName;
-
-			$supported = array(
-					'AttendeesRQ', 'AttendeesRS',
-					'CustomersRQ', 'CustomersRS',
-					'SessionsRQ', 'SessionsRS',
-			);
-
-			// Check if it's a supported type
-			if (! in_array($type, $supported))
-			{
-				echo 'Unsupported schema: ' . $type;
-				JFactory::getApplication()->close();
-			}
-
-			// Validate
-			if (! $xml->schemaValidate(JPATH_COMPONENT_SITE . '/schemas/' . $type . '.xsd'))
-			{
-				echo "Invalid xml data !\n";
-
-				foreach (libxml_get_errors() as $error)
-				{
-					echo $error->message . "\n";
-				}
-
-				libxml_clear_errors();
-				JFactory::getApplication()->close();
-			}
-
-			// Get the model for the message type
-			$model = FOFModel::getTmpInstance($type, 'RedeventsyncModel');
+			JPluginHelper::importPlugin('redeventsyncclient');
+			$dispatcher = JDispatcher::getInstance();
 
 			try
 			{
-				$model->handle($xml_post);
-
-				if ($msg = $model->getResponseMessage())
-				{
-					echo $msg;
-				}
-
-				JFactory::getApplication()->close();
+				$dispatcher->trigger('onHandle', array($client, $data));
 			}
 			catch (Exception $e)
 			{
-				echo $e->getMessage();
-				JFactory::getApplication()->close();
+				echo 'Error: ' . $e->getMessage();
 			}
-
-			libxml_use_internal_errors($prev);
 		}
 		else
 		{
-			echo 'error no xml received';
+			echo 'error no data received';
 		}
 
 		JFactory::getApplication()->close();

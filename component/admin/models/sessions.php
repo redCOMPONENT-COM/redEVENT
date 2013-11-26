@@ -94,7 +94,7 @@ class RedeventModelSessions extends JModel
     $filter_featured  = $app->getUserStateFromRequest( 'com_redevent.sessions.filter_featured', 'filter_featured', '', 'cmd' );
     $filter_group  = $app->getUserStateFromRequest( 'com_redevent.sessions.filter_group', 'filter_group', 0, 'int' );
     $filter_group_manage  = $app->getUserStateFromRequest( 'com_redevent.sessions.filter_group_manage', 'filter_group_manage', 1, 'int' );
-    
+
     $this->setState('filter_order',      $filter_order);
     $this->setState('filter_order_Dir',  $filter_order_Dir);
     $this->setState('filter_state',      $filter_state);
@@ -190,9 +190,11 @@ class RedeventModelSessions extends JModel
 			$where[] = ' obj.eventid = '. $this->_eventid;
 		}
 
-		if ($search) {
-			$where[] = '(LOWER(e.title) LIKE '.$this->_db->Quote('%'.$search.'%').' OR '
-			         . ' LOWER(obj.title) LIKE '.$this->_db->Quote('%'.$search.'%').')';
+		if ($search)
+		{
+			$where[] = '(LOWER(e.title) LIKE ' . $this->_db->Quote('%' . $search . '%') . ' OR '
+				. ' LOWER(obj.title) LIKE ' . $this->_db->Quote('%'.$search.'%') . ' OR '
+				. ' LOWER(obj.session_code) LIKE ' . $this->_db->Quote('%'.$search.'%') . ')';
 		}
 
 		switch ($this->getState('filter_state'))
@@ -409,15 +411,15 @@ class RedeventModelSessions extends JModel
 		}
 		return true;
 	}
-	
+
 	/**
 	 * returns groups as options
 	 * @return array
 	 */
 	function getGroupsOptions()
 	{
-		$query = ' SELECT g.id AS value, g.title AS text ' 
-		       . ' FROM #__usergroups AS g ' 
+		$query = ' SELECT g.id AS value, g.title AS text '
+		       . ' FROM #__usergroups AS g '
 		       . ' ORDER BY g.title ';
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();

@@ -7,7 +7,7 @@
  */
 
 // No direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 // Import library dependencies
 jimport('joomla.plugin.plugin');
@@ -42,17 +42,16 @@ class plgRedeventRedeventsync extends JPlugin
 	 */
 	public function onAfterSessionSave($session_id, $isNew = false)
 	{
-		require_once JPATH_SITE . '/components/com_redeventsync/models/sessionsrq.php';
+		JPluginHelper::importPlugin('redeventsyncclient');
+		$dispatcher = JDispatcher::getInstance();
 
-		$model = JModel::getInstance('Sessionsrq', 'RedeventsyncModel');
-
-		if ($isNew)
+		try
 		{
-			$model->sendCreateSessionRq($session_id);
+			$dispatcher->trigger('onHandleAfterSessionSave', array($session_id, $isNew));
 		}
-		else
+		catch (Exception $e)
 		{
-			$model->sendModifySessionRq($session_id);
+			echo $e->getMessage();
 		}
 
 		return true;
@@ -67,40 +66,68 @@ class plgRedeventRedeventsync extends JPlugin
 	 */
 	public function onAfterSessionDelete($session_code)
 	{
-		require_once JPATH_SITE . '/components/com_redeventsync/models/sessionsrq.php';
+		JPluginHelper::importPlugin('redeventsyncclient');
+		$dispatcher = JDispatcher::getInstance();
 
-		$model = JModel::getInstance('Sessionsrq', 'RedeventsyncModel');
-		$model->sendDeleteSessionRQ($session_code);
+		try
+		{
+			$dispatcher->trigger('onHandleAfterSessionDelete', array($session_code));
+		}
+		catch (Exception $e)
+		{
+			echo $e->getMessage();
+		}
 
 		return true;
 	}
 
 	public function onAttendeeCreated($attendee_id)
 	{
-		require_once JPATH_SITE . '/components/com_redeventsync/models/attendeesrq.php';
+		JPluginHelper::importPlugin('redeventsyncclient');
+		$dispatcher = JDispatcher::getInstance();
 
-		$model = JModel::getInstance('Attendeesrq', 'RedeventsyncModel');
-		$model->sendCreateAttendeeRQ($attendee_id);
+		try
+		{
+			$dispatcher->trigger('onHandleAttendeeCreated', array($attendee_id));
+		}
+		catch (Exception $e)
+		{
+			echo $e->getMessage();
+		}
 
 		return true;
 	}
 
 	public function onAttendeeModified($attendee_id)
 	{
-		require_once JPATH_SITE . '/components/com_redeventsync/models/attendeesrq.php';
+		JPluginHelper::importPlugin('redeventsyncclient');
+		$dispatcher = JDispatcher::getInstance();
 
-		$model = JModel::getInstance('Attendeesrq', 'RedeventsyncModel');
-		$model->sendModifyAttendeeRQ($attendee_id);
+		try
+		{
+			$dispatcher->trigger('onHandleAttendeeModified', array($attendee_id));
+		}
+		catch (Exception $e)
+		{
+			echo $e->getMessage();
+		}
 
 		return true;
 	}
 
 	public function onAttendeeDeleted($attendee_id)
 	{
-		require_once JPATH_SITE . '/components/com_redeventsync/models/attendeesrq.php';
+		JPluginHelper::importPlugin('redeventsyncclient');
+		$dispatcher = JDispatcher::getInstance();
 
-		$model = JModel::getInstance('Attendeesrq', 'RedeventsyncModel');
-		$model->sendDeleteAttendeeRQ($attendee_id);
+		try
+		{
+			$dispatcher->trigger('onHandleAttendeeDeleted', array($attendee_id));
+		}
+		catch (Exception $e)
+		{
+			echo $e->getMessage();
+		}
 
 		return true;
 	}

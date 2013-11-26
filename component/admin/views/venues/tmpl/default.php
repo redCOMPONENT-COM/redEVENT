@@ -50,7 +50,7 @@ defined('_JEXEC') or die('Restricted access');
 			<th width="5">#</th>
 			<th width="5"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
 			<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_VENUE', 'l.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			<th width="20%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ALIAS', 'l.alias', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+			<th width="20%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_VENUES_VENUE_CODE', 'l.venue_code', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th width="20%"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_COMPANY', 'l.company', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th><?php echo JText::_('COM_REDEVENT_WEBSITE' ); ?></th>
 			<th><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_CITY', 'l.city', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
@@ -99,8 +99,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php
 				}
 				?>
-			</td>
-			<td>
+				<br />
 				<?php
 				if (JString::strlen($row->alias) > 25) {
 					echo JString::substr( htmlspecialchars($row->alias, ENT_QUOTES, 'UTF-8'), 0 , 25).'...';
@@ -109,6 +108,7 @@ defined('_JEXEC') or die('Restricted access');
 				}
 				?>
 			</td>
+			<td><?php echo $row->venue_code; ?></td>
 			<td><?php echo $row->company; ?></td>
 			<td align="left">
 				<?php
