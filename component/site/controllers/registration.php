@@ -39,7 +39,8 @@ class RedEventControllerRegistration extends RedEventController
 	 *
 	 * @since 2.0
 	 */
-	function __construct() {
+	function __construct()
+	{
 		parent::__construct();
 		$this->registerTask( 'manageredit',   'edit' );
 		$this->registerTask( 'managerupdate', 'update' );
@@ -49,17 +50,20 @@ class RedEventControllerRegistration extends RedEventController
 	/**
 	 * handle registration
 	 *
+	 * @return void
 	 */
 	public function register()
 	{
-		if (JRequest::getVar('cancel', '', 'post')) {
+		if (JRequest::getVar('cancel', '', 'post'))
+		{
 			return $this->cancelreg();
 		}
+
 		$app = &JFactory::getApplication();
 		$msg = 'OK';
 
 		$xref        = JRequest::getInt('xref');
-		$pricegroups = JRequest::getVar('pricegroup_id', array(), 'post', 'array');
+		$pricegroups = JRequest::getVar('sessionpricegroup_id', array(), 'post', 'array');
 		$review      = JRequest::getVar('hasreview', 0);
 		$isedit      = JRequest::getVar('isedit', 0);
 		JArrayHelper::toInteger($pricegroups);
@@ -68,93 +72,117 @@ class RedEventControllerRegistration extends RedEventController
 		{
 			$msg = JText::_('COM_REDEVENT_REGISTRATION_MISSING_XREF');
 			$this->setRedirect('index.php', $msg, 'error');
-			return;
-		}
 
-		$status = redEVENTHelper::canRegister($xref);
-		if (!$status->canregister) {
-			$msg = $status->status;
-			$this->setRedirect('index.php', $msg, 'error');
 			return false;
 		}
 
-		$model       = $this->getModel('registration');
+		$status = redEVENTHelper::canRegister($xref);
+
+		if (!$status->canregister)
+		{
+			$msg = $status->status;
+			$this->setRedirect('index.php', $msg, 'error');
+
+			return false;
+		}
+
+		$model = $this->getModel('registration');
 		$model->setXref($xref);
 
 		$details = $model->getSessionDetails();
 
-		// get prices associated to pricegroups
+		// Get prices associated to pricegroups
 		$prices = array();
+
 		foreach ($pricegroups as $p)
 		{
-			$price = $model->getRegistrationPrice($p);
-			if ($price === false)
+			$regPricegroup = $model->getRegistrationPrice($p);
+
+			if (!$regPricegroup)
 			{
 				$msg = JText::_('COM_REDEVENT_REGISTRATION_MISSING_PRICE');
 				$this->setRedirect('index.php', $msg, 'error');
-				return;
+
+				return false;
 			}
+
+			$price = redEVENTHelper::convertPrice($regPricegroup->price, $regPricegroup->currency, $regPricegroup->form_currency);
 			$prices[] = $price;
 		}
 
 
-		// first, ask redform to save it's fields, and return the corresponding sids.
+		// First, ask redform to save it's fields, and return the corresponding sids.
 		$options = array('baseprice' => $prices);
-		if ($review) {
+
+		if ($review)
+		{
 			$options['savetosession'] = 1;
 		}
-		$rfcore = new redFormCore();
+
+		$rfcore = new redFormCore;
 		$result = $rfcore->saveAnswers('redevent', $options);
-		if (!$result)  // redform saving failed
+
+		if (!$result)
 		{
-			$msg = JText::_('COM_REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED').' - '.$rfcore->getError();
+			// Redform saving failed
+			$msg = JText::_('COM_REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED') . ' - ' . $rfcore->getError();
 			$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($details->did, $xref)), $msg, 'error');
-			return;
+
+			return false;
 		}
+
 		$submit_key = $result->submit_key;
 		JRequest::setVar('submit_key', $submit_key);
 
-		if ($review) { // remember set prices groups
-			$app->setUserState('pgids'.$submit_key, $pricegroups);
+		if ($review)
+		{
+			// Remember set prices groups
+			$app->setUserState('spgids' . $submit_key, $pricegroups);
 		}
-		else {
-			$app->setUserState('pgids'.$submit_key, null);
+		else
+		{
+			$app->setUserState('spgids' . $submit_key, null);
 		}
 
 		if (!$isedit && !$review)
 		{
-			// redform saved fine, now add the attendees
-
+			// Redform saved fine, now add the attendees
 			$user = JFactory::getUser();
-			if (!$user->get('id') && $details->juser) {
-				if ($new = $this->_createUser($result->posts[0]['sid'])) {
+
+			if (!$user->get('id') && $details->juser)
+			{
+				if ($new = $this->_createUser($result->posts[0]['sid']))
+				{
 					$user = $new;
 				}
 			}
 
 			$k = 0;
+
 			foreach ($result->posts as $rfpost)
 			{
 				if (!$res = $model->register($user, $rfpost['sid'], $result->submit_key, $pricegroups[$k++]))
 				{
 					$msg = JText::_('COM_REDEVENT_REGISTRATION_REGISTRATION_FAILED');
 					$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($details->did, $xref)), $msg, 'error');
-					return;
+
+					return false;
 				}
 
-				JPluginHelper::importPlugin( 'redevent' );
-				$dispatcher =& JDispatcher::getInstance();
+				JPluginHelper::importPlugin('redevent');
+				$dispatcher = JDispatcher::getInstance();
 				$res = $dispatcher->trigger('onAttendeeCreated', array($res->id));
 			}
 
-			JPluginHelper::importPlugin( 'redevent' );
-			$dispatcher =& JDispatcher::getInstance();
-			$res = $dispatcher->trigger( 'onEventUserRegistered', array( $xref ) );
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher = JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onEventUserRegistered', array($xref));
 
 			if ($details->notify)
 			{
 				$mail = $model->sendNotificationEmail($submit_key);
 			}
+
 			$mail = $model->notifyManagers($submit_key);
 		}
 
@@ -164,6 +192,7 @@ class RedEventControllerRegistration extends RedEventController
 			$cache->clean();
 
 			$rfredirect = $rfcore->getFormRedirect($details->redform_id);
+
 			if ($rfredirect)
 			{
 				$link = $rfredirect;
@@ -178,7 +207,7 @@ class RedEventControllerRegistration extends RedEventController
 			$link = RedeventHelperRoute::getRegistrationRoute($xref, 'review', $submit_key);
 		}
 
-		// redirect to prevent resending the form on refresh
+		// Redirect to prevent resending the form on refresh
 		$this->setRedirect(JRoute::_($link, false));
 	}
 
@@ -251,13 +280,18 @@ class RedEventControllerRegistration extends RedEventController
 		$prices = array();
 		foreach ($pricegroups as $p)
 		{
-			$price = $model->getRegistrationPrice($p);
-			if ($price === false)
+			$regPricegroup = $model->getRegistrationPrice($p);
+
+			if (!$regPricegroup)
 			{
 				$msg = JText::_('COM_REDEVENT_REGISTRATION_MISSING_PRICE');
 				$this->setRedirect('index.php', $msg, 'error');
+
 				return;
 			}
+
+			$price = redEVENTHelper::convertPrice($regPricegroup->price, $regPricegroup->currency, $regPricegroup->form_currency);
+
 			$prices[] = $price;
 		}
 

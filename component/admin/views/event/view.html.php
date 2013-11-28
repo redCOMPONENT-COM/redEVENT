@@ -506,10 +506,15 @@ class RedEventViewEvent extends JView {
 		$pricegroupsoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_PRICEGROUP')));
 		$pricegroupsoptions = array_merge($pricegroupsoptions, $model->getPricegroupsOptions());
 
+		include_once JPATH_SITE . '/components/com_redform/helpers/currency.php';
+		$currencyoptions = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_CURRENCY')));
+		$currencyoptions = array_merge($currencyoptions, RedformHelperLogCurrency::getCurrencyOptions());
+
 		$this->assign('roles'        , false);
 		$this->assign('rolesoptions' , $rolesoptions);
 		$this->assign('prices'       , false);
 		$this->assign('pricegroupsoptions' , $pricegroupsoptions);
+		$this->assign('currencyoptions' ,    $currencyoptions);
 		$this->assignRef('xrefcustomfields' , $customfields);
 	}
 }

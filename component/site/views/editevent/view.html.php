@@ -313,7 +313,7 @@ class RedeventViewEditevent extends JView
 		$params 	= $mainframe->getParams();
 
 		$editor 	= JFactory::getEditor();
-		
+
 		$useracl = UserAcl::getInstance();
 
 		JHTML::_('behavior.mootools');
@@ -330,7 +330,7 @@ class RedeventViewEditevent extends JView
 		$prices   = $this->get('SessionPrices');
 
 		$canpublish = $useracl->canPublishEvent($xref->eventid);
-		
+
 		// Form elements
 		$lists = array();
 
@@ -367,6 +367,10 @@ class RedeventViewEditevent extends JView
 		$pricegroupsoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_PRICEGROUP')));
 		$pricegroupsoptions = array_merge($pricegroupsoptions, $this->get('PricegroupsOptions'));
 
+		include_once JPATH_SITE . '/components/com_redform/helpers/currency.php';
+		$currencyoptions = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_CURRENCY')));
+		$currencyoptions = array_merge($currencyoptions, RedformHelperLogCurrency::getCurrencyOptions());
+
 		if ($params->get('edit_recurrence', 0))
 		{
 			$document->addScript('components/com_redevent/assets/js/xref_recurrence.js');
@@ -390,8 +394,9 @@ class RedeventViewEditevent extends JView
 		$this->assignRef('rolesoptions', $rolesoptions);
 		$this->assignRef('prices',       $prices);
 		$this->assignRef('pricegroupsoptions', $pricegroupsoptions);
+		$this->assignRef('currencyoptions',    $currencyoptions);
 		$this->assign('canpublish', $canpublish);
-		
+
 		parent::display($tpl);
 	}
 

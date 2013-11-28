@@ -135,35 +135,39 @@ class RedEventModelAttendees extends JModel
 	}
 
 	/**
-	 * Method to get categories item data
+	 * Method to get attendees list data
 	 *
-	 * @access public
 	 * @return array
 	 */
-	function getData() {
+	public function getData()
+	{
 		$db = JFactory::getDBO();
 		// Lets load the content if it doesn't already exist
-		$query = $this->_buildQuery();
+		$query = $this->buildQuery();
 
-		if ($this->getState('unlimited') == '') {
+		if ($this->getState('unlimited') == '')
+		{
 			$db->setQuery($query, $this->getState('limitstart'), $this->getState('limit'));
 			$this->_data = $db->loadObjectList();
-		} else {
+		}
+		else
+		{
 			$db->setQuery($query);
 			$this->_data = $db->loadObjectList();
 		}
+
 		return $this->_data;
 	}
 
 	/**
 	 * Method to get the total nr of the attendees
 	 *
-	 * @access public
 	 * @return integer
 	 */
-	function getTotal() {
+	function getTotal()
+	{
 		// Lets load the content if it doesn't already exist
-		$query = $this->_buildQuery();
+		$query = $this->buildQuery();
 		$this->_total = $this->_getListCount($query);
 
 		return $this->_total;
@@ -190,57 +194,63 @@ class RedEventModelAttendees extends JModel
 	/**
 	 * Method to build the query for the attendees
 	 *
-	 * @access private
 	 * @return integer
-	 * @since 0.9
 	 */
-	function _buildQuery()
+	protected function buildQuery()
 	{
-		// get redform form and fields to show
-		$q = ' SELECT e.redform_id, e.showfields '
-		   . ' FROM #__redevent_events AS e '
-		   . ' WHERE e.id = '. $this->_db->Quote($this->_eventid)
-		   ;
-		$this->_db->setQuery($q, 0, 1);
-		$res = $this->_db->loadObject();
+		$db = JFactory::getDbo();
 
-		$rfields = array();
-		if ($res && !empty($res->showfields))
+		// Build attendees list query
+		$query = $db->getQuery(true);
+
+		$query->select('r.*, r.id as attendee_id');
+		$query->select('s.answer_id, s.id AS submitter_id, s.price');
+		$query->select('a.id AS eventid, a.course_code');
+		$query->select('pg.name as pricegroup');
+		$query->select('fo.activatepayment');
+		$query->select('p.paid, p.status');
+		$query->select('u.username, u.name, u.email');
+		$query->from('#__redevent_register AS r');
+		$query->join('LEFT', '#__redevent_sessions_pricegroups AS spg ON spg.id = r.sessionpricegroup_id');
+		$query->join('LEFT', '#__redevent_pricegroups AS pg ON pg.id = spg.pricegroup_id');
+		$query->join('LEFT', '#__redevent_event_venue_xref AS x ON r.xref = x.id');
+		$query->join('LEFT', '#__redevent_events AS a ON x.eventid = a.id');
+		$query->join('LEFT', '#__users AS u ON r.uid = u.id');
+		$query->join('LEFT', '#__rwf_submitters AS s ON r.sid = s.id');
+		$query->join('LEFT', '#__rwf_forms AS fo ON fo.id = s.form_id');
+		$query->join('LEFT', '(SELECT MAX(id) as id, submit_key FROM #__rwf_payment GROUP BY submit_key) AS latest_payment ON latest_payment.submit_key = s.submit_key');
+		$query->join('LEFT', '#__rwf_payment AS p ON p.id = latest_payment.id');
+		$query->group('r.id');
+
+		// Add associated form fields
+		$query_fields = $db->getQuery(true);
+
+		$query_fields->select('e.redform_id, e.showfields');
+		$query_fields->from('#__redevent_events AS e');
+		$query_fields->where('e.id = '. $db->Quote($this->_eventid));
+
+		$db->setQuery($query_fields, 0, 1);
+		$formFields = $db->loadObject();
+
+		if ($formFields && !empty($formFields->showfields))
 		{
-			$fields = explode(',', $res->showfields);
-			foreach ($fields as $f) {
-				$rfields[] = 'f.field_'.trim($f);
+			// Join
+			$query->join('LEFT', '#__rwf_forms_'.$formFields->redform_id.' AS f ON s.answer_id = f.id');
+
+			$fields = explode(',', $formFields->showfields);
+
+			// Add each field in select
+			foreach ($fields as $f)
+			{
+				$column = 'f.field_'.trim($f);
+				$query->select($column);
 			}
-			$rfields = ', '.implode(',', $rfields);
-			$join_rwftable  = ' LEFT JOIN #__rwf_forms_'.$res->redform_id.' AS f ON s.answer_id = f.id ';
-		}
-		else
-		{
-			$rfields       = '';
-			$join_rwftable = '';
 		}
 
-		// Get the ORDER BY clause for the query
-		$orderby	= $this->_buildContentOrderBy();
-		$where		= $this->_buildContentWhere();
+		// Get the ORDER BY and WHERE clause for the query
+		$query = $this->buildContentOrderBy($query);
+		$query = $this->buildContentWhere($query);
 
-		$query = ' SELECT r.*, r.id as attendee_id, u.username, u.name, a.id AS eventid, u.email '
-		       . ', s.answer_id, r.waitinglist, r.confirmdate, r.confirmed, s.id AS submitter_id, s.price, pg.name as pricegroup, fo.activatepayment, p.paid, p.status '
-		       . ', a.course_code '
-		       . $rfields
-		       . ' FROM #__redevent_register AS r '
-		       . ' LEFT JOIN #__redevent_pricegroups AS pg ON pg.id = r.pricegroup_id '
-		       . ' LEFT JOIN #__redevent_event_venue_xref AS x ON r.xref = x.id '
-		       . ' LEFT JOIN #__redevent_events AS a ON x.eventid = a.id '
-		       . ' LEFT JOIN #__users AS u ON r.uid = u.id '
-		       . ' LEFT JOIN #__rwf_submitters AS s ON r.sid = s.id '
-		       . ' LEFT JOIN #__rwf_forms AS fo ON fo.id = s.form_id '
-		       . ' LEFT JOIN (SELECT MAX(id) as id, submit_key FROM #__rwf_payment GROUP BY submit_key) AS latest_payment ON latest_payment.submit_key = s.submit_key'
-		       . ' LEFT JOIN #__rwf_payment AS p ON p.id = latest_payment.id '
-		       . $join_rwftable
-		       . $where
-		       . ' GROUP BY r.id '
-		       . $orderby;
 		return $query;
 	}
 
@@ -276,78 +286,81 @@ class RedEventModelAttendees extends JModel
 	/**
 	 * Method to build the orderby clause of the query for the attendees
 	 *
-	 * @access private
-	 * @return integer
-	 * @since 0.9
+	 * @param   JDatabaseQuery  $query  the query
+	 *
+	 * @return JDatabaseQuery
 	 */
-	function _buildContentOrderBy()
+	protected function buildContentOrderBy($query)
 	{
-		$mainframe = &JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$mainframe = JFactory::getApplication();
+		$option    = JRequest::getCmd('option');
 
-		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.attendees.filter_order', 'filter_order', 'r.confirmdate', 'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.attendees.filter_order_Dir',	'filter_order_Dir',	'', 'word' );
-		return ' ORDER BY '.$filter_order.' '.$filter_order_Dir.', r.confirmdate DESC';
+		$filter_order     = $mainframe->getUserStateFromRequest($option . '.attendees.filter_order', 'filter_order', 'r.confirmdate', 'cmd');
+		$filter_order_Dir = $mainframe->getUserStateFromRequest($option . '.attendees.filter_order_Dir', 'filter_order_Dir', 'ASC', 'word');
 
+		$query->order($filter_order.' '.$filter_order_Dir.', r.confirmdate DESC');
+
+		return $query;
 	}
 
 	/**
 	 * Method to build the where clause of the query for the attendees
 	 *
-	 * @access private
-	 * @return string
-	 * @since 0.9
+	 * @param   JDatabaseQuery  $query  the query
+	 *
+	 * @return JDatabaseQuery
 	 */
-	function _buildContentWhere()
+	protected function buildContentWhere($query)
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 
 		$xref = JRequest::getInt('xref');
 
-		$where = array();
-
-		if ($xref) {
-			$where[] = ' r.xref = '. $xref;
+		if ($xref)
+		{
+			$query->where('r.xref = ' . $xref);
 		}
-		else if (!is_null($this->_xref) && $this->_xref > 0) {
-			$where[] = 'r.xref = '.$this->_xref;
+		elseif (!is_null($this->_xref) && $this->_xref > 0)
+		{
+			$query->where('r.xref = ' . $this->_xref);
 		}
-		else if (!is_null($this->_eventid) && $this->_eventid > 0) {
-			$where[] = ' x.eventid = '.$this->_eventid;
+		elseif (!is_null($this->_eventid) && $this->_eventid > 0)
+		{
+			$query->where('x.eventid = ' . $this->_eventid);
 		}
 
 		switch ($this->getState('filter_confirmed', 0))
 		{
 			case 1:
-				$where[] = ' r.confirmed = 1 ';
+				$query->where('r.confirmed = 1');
 				break;
 			case 2:
-				$where[] = ' r.confirmed = 0 ';
+				$query->where('r.confirmed = 0');
 				break;
 		}
+
 		switch ($this->getState('filter_waiting', 0))
 		{
 			case 1:
-				$where[] = ' r.waitinglist = 0 ';
+				$query->where('r.waitinglist = 0');
 				break;
 			case 2:
-				$where[] = ' r.waitinglist = 1 ';
+				$query->where('r.waitinglist = 1');
 				break;
 		}
+
 		switch ($this->getState('filter_cancelled', 0))
 		{
 			case 0:
-				$where[] = ' r.cancelled = 0 ';
+				$query->where('r.cancelled = 0');
 				break;
 			case 1:
-				$where[] = ' r.cancelled = 1 ';
+				$query->where('r.cancelled = 1');
 				break;
 		}
 
-		$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
-
-		return $where;
+		return $query;
 	}
 
 	/**

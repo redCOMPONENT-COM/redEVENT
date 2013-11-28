@@ -931,7 +931,9 @@ class RedeventModelEditevent extends JModel
 		    $query = ' DELETE FROM #__redevent_sessions_pricegroups '
 		           . ' WHERE xref = ' . $this->_db->Quote($xref->id);
 		    $this->_db->setQuery($query);
-		    if (!$this->_db->query()) {
+
+			if (!$this->_db->query())
+		    {
 		    	$this->setError($this->_db->getErrorMsg());
 		    	return false;
 		    }
@@ -939,15 +941,19 @@ class RedeventModelEditevent extends JModel
 		    // then recreate them if any
 		    foreach ((array) $data['pricegroup'] as $k => $r)
 		    {
-		    	if (!($data['pricegroup'][$k])) {
+		    	if (!($data['pricegroup'][$k]))
+			    {
 		    		continue;
 		    	}
-		      $new = & JTable::getInstance('RedEvent_sessions_pricegroups', '');
+		      $new = JTable::getInstance('RedEvent_sessions_pricegroups', '');
 		      $new->set('xref',    $xref->id);
 		      $new->set('pricegroup_id', $r);
 		      $new->set('price', $data['price'][$k]);
-		      if (!($new->check() && $new->store())) {
+		      $new->set('currency', $data['currency'][$k]);
+		      if (!($new->check() && $new->store()))
+		      {
 		      	$this->setError($new->getError());
+
 		      	return false;
 		      }
 		    }
@@ -1310,22 +1316,29 @@ class RedeventModelEditevent extends JModel
     $query = ' DELETE FROM #__redevent_sessions_pricegroups '
            . ' WHERE xref = ' . $this->_db->Quote($row->id);
     $this->_db->setQuery($query);
-    if (!$this->_db->query()) {
+
+    if (!$this->_db->query())
+    {
     	$this->setError($this->_db->getErrorMsg());
+
     	return false;
     }
 
     // then recreate them if any
     foreach ((array) $data['pricegroup'] as $k => $r)
     {
-    	if (!($data['pricegroup'][$k])) {
+    	if (!($data['pricegroup'][$k]))
+	    {
     		continue;
     	}
-      $new = & JTable::getInstance('RedEvent_sessions_pricegroups', '');
+      $new = JTable::getInstance('RedEvent_sessions_pricegroups', '');
       $new->set('xref',    $row->id);
       $new->set('pricegroup_id', $r);
       $new->set('price', $data['price'][$k]);
-      if (!($new->check() && $new->store())) {
+	    $new->set('currency', $data['currency'][$k]);
+	    
+      if (!($new->check() && $new->store()))
+      {
       	$this->setError($new->getError());
       	return false;
       }

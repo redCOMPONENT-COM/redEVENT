@@ -20,14 +20,14 @@
  * along with redEVENT; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
- 
-defined('_JEXEC') or die('Restricted access'); 
+
+defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.tooltip');
 $colspan = 13;
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-	
+
 	<table class="adminform">
 		<tr>
 			<td style="text-align:left;">
@@ -35,11 +35,11 @@ $colspan = 13;
 			</td>
 		</tr>
 	</table>
-	
+
 	<?php if ($this->cancelled): ?>
 	<div class="cancelled-notice"><?php echo ($this->cancelled == 1 ? JTExt::_('COM_REDEVENT_CANCELLED_REGISTRATIONS') : JTExt::_('COM_REDEVENT_ALL_REGISTRATIONS')); ?></div>
 	<?php endif; ?>
-	
+
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -67,16 +67,16 @@ $colspan = 13;
 		<tbody>
 			<?php
 			$k = 0;
-			for($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+			for($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			{
 				$row = &$this->rows[$i];
-				
+
 				$link 		= 'index.php?option=com_redevent&view=attendee&xref='. $row->xref.'&cid[]='.$row->id;
 				$checked 	= JHTML::_('grid.checkedout', $row, $i );
-				
+
 				$eventdate = (!redEVENTHelper::isValidDate($row->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $this->settings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->dates )));
-				$sessionlink = JHTML::link('index.php?option=com_redevent&view=attendees&xref='.$row->xref, 
-				                           $row->title . '<br/>'.$eventdate, 
+				$sessionlink = JHTML::link('index.php?option=com_redevent&view=attendees&xref='.$row->xref,
+				                           $row->title . '<br/>'.$eventdate,
 				                           'class="hasTip" title="'.JText::_('COM_REDEVENT_VIEW_REGISTRATIONS_CLICK_TO_MANAGE').'::"').'<br/>@'.$row->venue.'</br>'.JText::_('COM_REDEVENT_AUTHOR').': '.$row->creator;
    			?>
 			<tr class="<?php echo "row$k"; ?>">
@@ -98,25 +98,25 @@ $colspan = 13;
 				<td><?php echo $row->course_code .'-'. $row->xref .'-'. $row->attendee_id; ?></td>
 				<td><?php echo $row->name; ?></td>
 				<td>
-				  <?php 
-				  if (!$row->confirmed) 
+				  <?php
+				  if (!$row->confirmed)
 				  {
-            echo JHTML::link('javascript: void(0);', 
-            		             JHTML::_('image', 'admin/publish_x.png', JText::_('JNO'), null, true), 
+            echo JHTML::link('javascript: void(0);',
+            		             JHTML::_('image', 'admin/publish_x.png', JText::_('JNO'), null, true),
             		             array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'confirmattendees\');',
             		                   'class' => 'hasTip',
             		             		   'title' => Jtext::_('COM_REDEVENT_REGISTRATION_NOT_ACTIVATED')
             		             		              .'::'.Jtext::_('COM_REDEVENT_CLICK_TO_ACTIVATE'))
             		);
-            
+
 				  }
-          else 
+          else
           {
           	$tip = Jtext::_('COM_REDEVENT_REGISTRATION_ACTIVATED')
             		   .'::'.Jtext::sprintf('COM_REDEVENT_REGISTRATION_ACTIVATED_ON_S'
             		   		                  ,JHTML::Date( $row->confirmdate, JText::_('DATE_FORMAT_LC2' )));
-          	echo JHTML::link('javascript: void(0);', 
-          			             JHTML::_('image', 'admin/tick.png', JText::_('JYES'), null, true), 
+          	echo JHTML::link('javascript: void(0);',
+          			             JHTML::_('image', 'admin/tick.png', JText::_('JYES'), null, true),
           			             array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'unconfirmattendees\');',
             		                   'class' => 'hasTip',
             		             		   'title' => $tip
@@ -126,14 +126,14 @@ $colspan = 13;
 				</td>
 				<td>
 					<?php if (!$row->maxattendees): // no waiting list ?>
-					<?php echo '-'; ?>					
+					<?php echo '-'; ?>
           <?php else:
           if (!$row->waitinglist) // attending
           {
           	$tip = Jtext::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ATTENDING')
             		   .'::'.Jtext::_('COM_REDEVENT_REGISTRATION_CLICK_TO_PUT_ON_WAITING_LIST');
-            echo JHTML::link('javascript: void(0);', 
-                              JHTML::_('image', 'administrator/components/com_redevent/assets/images/attending-16.png', JText::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ATTENDING'), null, false), 
+            echo JHTML::link('javascript: void(0);',
+                              JHTML::_('image', 'administrator/components/com_redevent/assets/images/attending-16.png', JText::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ATTENDING'), null, false),
                               array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'onwaiting\');',
             		                   'class' => 'hasTip',
             		             		   'title' => $tip
@@ -143,8 +143,8 @@ $colspan = 13;
           {
           	$tip = Jtext::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ON_WAITING_LIST')
             		   .'::'.Jtext::_('COM_REDEVENT_REGISTRATION_CLICK_TO_TAKE_OFF_WAITING_LIST');
-            echo JHTML::link( 'javascript: void(0);', 
-                              JHTML::_('image', 'administrator/components/com_redevent/assets/images/enumList.png', JText::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ON_WAITING_LIST'), null, false), 
+            echo JHTML::link( 'javascript: void(0);',
+                              JHTML::_('image', 'administrator/components/com_redevent/assets/images/enumList.png', JText::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ON_WAITING_LIST'), null, false),
                               array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'offwaiting\');',
             		                   'class' => 'hasTip',
             		             		   'title' => $tip
@@ -152,9 +152,9 @@ $colspan = 13;
           }
           endif; ?>
         </td>
-        
+
         <td><a href="<?php echo JRoute::_('index.php?option=com_redevent&view=attendeeanswers&tmpl=component&submitter_id='. $row->submitter_id); ?>" class="answersmodal" rel="{handler: 'iframe'}"><?php echo JText::_('COM_REDEVENT_view')?></a></td>
-				
+
 					<td>
 						<?php echo $row->price; ?>
 					</td>
@@ -168,7 +168,7 @@ $colspan = 13;
 						<?php echo ' '.JHTML::link(JURI::root().'/index.php?option=com_redform&controller=payment&task=select&key='.$row->submit_key, JText::_('COM_REDEVENT_link')); ?>
 						<?php else: ?>
 						<span class="hasTip" title="<?php echo JText::_('COM_REDEVENT_REGISTRATION_PAID').'::'.$row->status; ?>"><?php echo JHTML::_('image', 'admin/tick.png', 'Paid', null, true); ?><?php echo $link; ?></span>
-						<?php endif; ?>						
+						<?php endif; ?>
 					</td>
 			</tr>
 			<?php $k = 1 - $k; } ?>

@@ -276,8 +276,8 @@ class redEVENTHelper {
 					}
 
 					// copy the prices
-					$query = ' INSERT INTO #__redevent_sessions_pricegroups (xref, pricegroup_id, price) '
-					. ' SELECT '.$object->id.', pricegroup_id, price '
+					$query = ' INSERT INTO #__redevent_sessions_pricegroups (xref, pricegroup_id, price, currency) '
+					. ' SELECT '.$object->id.', pricegroup_id, price, currency '
 					. ' FROM #__redevent_sessions_pricegroups '
 					. ' WHERE xref = ' . $db->Quote($r->xref_id);
 					$db->setQuery($query);
@@ -1202,44 +1202,96 @@ class redEVENTHelper {
 	}
 
 	/**
-	 * generates the html for price group selection for redform
+	 * Generates the html for price group selection for redform
+	 *
 	 * @TODO doesn't work with multiple forms !!!
 	 *
-	 * @param array session pricegroups objects
-	 * @param int selected pricegroup id
+	 * @param   array  $sessionpricegroups  session pricegroups objects
+	 * @param   int    $selected            selected session_pricegroup id
+	 *
 	 * @return string html
 	 */
 	public static function getRfPricesSelect($sessionpricegroups, $selected = null)
 	{
 		$layout = JComponentHelper::getParams('com_redevent')->get('price_select_layout', 'select');
 		$html = array();
+
 		if ($layout == 'radio')
 		{
 			$html[] = '<fieldset class="price-select">';
-			foreach ((array)$sessionpricegroups as $i => $p)
+
+			foreach ((array) $sessionpricegroups as $i => $p)
 			{
-				$selected = $selected == null ? $p->pricegroup_id : $selected; // force at least one radio to be selected
-				$html[] = '<input type="radio" name="pricegroup_id" value="'.$p->pricegroup_id.'" price="'.$p->price.'"'
-				. 'id="pricegroup_id'.$i.'"'
-				. ($p->pricegroup_id == $selected ? ' checked="checked"' : '')
+				$price = self::convertPrice($p->price, $p->currency, $p->form_currency);
+
+				$selected = $selected == null ? $p->id : $selected; // force at least one radio to be selected
+				$html[] = '<input type="radio" name="sessionpricegroup_id" value="' . $p->id . '" price="' . $price . '"'
+				. 'id="sessionpricegroup_id' . $i . '"'
+				. ($p->id == $selected ? ' checked="checked"' : '')
 				. '/>';
 
-				$html[] = '<label for="pricegroup_id' . $i . '">'
-				. $p->price.' ('.$p->name.')' . '</label>';
+				$html[] = '<label for="sessionpricegroup_id' . $i . '">'
+					. $p->currency . ' ' . $p->price . ' (' . $p->name . ')' . '</label>';
 			}
 
 			$html[] = '</fieldset>';
 		}
 		else
 		{
-			$html[] = '<select name="pricegroup_id">';
-			foreach ((array)$sessionpricegroups as $p)
+			$html[] = '<select name="sessionpricegroup_id">';
+
+			foreach ((array) $sessionpricegroups as $p)
 			{
-				$html[] = '<option value="'.$p->pricegroup_id.'" price="'.$p->price.'"'.($p->pricegroup_id == $selected ? ' selected="selected"' : '').'>'.$p->price.' ('.$p->name.')'.'</option>';
+				$price = self::convertPrice($p->price, $p->currency, $p->form_currency);
+
+				$html[] = '<option value="' . $p->id . '"
+					price="'  . $price . '"'
+					. ($p->id == $selected ? ' selected="selected"' : '') . '>'
+					. $p->currency . ' ' . $p->price . ' (' . $p->name . ')'
+					. '</option>';
 			}
+
 			$html[] = '</select>';
 		}
+
 		return implode($html);
+	}
+
+	/**
+	 * Convert a price between 2 currencies
+	 *
+	 * @param   float   $amount        the amount to convert
+	 * @param   string  $currencyFrom  the currency code to convert from
+	 * @param   string  $currencyTo    the currency code to convert to
+	 *
+	 * @return float converted price
+	 */
+	public static function convertPrice($amount, $currencyFrom, $currencyTo)
+	{
+		if ($currencyFrom == $currencyTo || !$amount)
+		{
+			return $amount;
+		}
+
+		JPluginHelper::importPlugin('currencyconverter');
+		$dispatcher = JDispatcher::getInstance();
+
+		$price = false;
+		$dispatcher->trigger('onCurrencyConvert', array($amount, $currencyFrom, $currencyTo, &$price));
+
+		return $price;
+	}
+
+	/**
+	 * Get the price associated to a session price group in form currency
+	 *
+	 * @param   object   $pricegroup   the pricegroups object (price, currency, form_currency)
+	 *
+	 * @return float converted price
+	 */
+	public static function getFormCurrencyPrice($pricegroup)
+	{
+		return self::convertPrice($pricegroup->price, $pricegroup->currency, $pricegroup->form_currency);
 	}
 
 	/**

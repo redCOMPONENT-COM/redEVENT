@@ -291,8 +291,9 @@ class RedeventModelEventhelper extends JModelLegacy
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('sp.*, p.name, p.alias, p.image, p.tooltip, f.currency');
-		$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug');
+		$query->select('sp.*, p.name, p.alias, p.image, p.tooltip, f.currency AS form_currency');
+		$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', sp.id, p.alias) ELSE sp.id END as slug');
+		$query->select('CASE WHEN CHAR_LENGTH(sp.currency) THEN sp.currency ELSE f.currency END as currency');
 		$query->from('#__redevent_sessions_pricegroups AS sp');
 		$query->join('INNER', '#__redevent_pricegroups AS p on p.id = sp.pricegroup_id');
 		$query->join('INNER', '#__redevent_event_venue_xref AS x on x.id = sp.xref');

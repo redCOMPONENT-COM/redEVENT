@@ -225,7 +225,7 @@ class RedeventHelperRoute
 		return self::buildUrl( $parts );
 	}
 
-	public static function getSignupRoute($type, $id, $xref, $pricegroup = null)
+	public static function getSignupRoute($type, $id, $xref, $sessionpricegroup = null)
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "signup",
@@ -233,8 +233,9 @@ class RedeventHelperRoute
 		                "task"   => "signup",
 		                "id"   => $id,
 		                "xref"   => $xref);
-		if ($pricegroup) {
-			$parts['pg'] = $pricegroup;
+		if ($sessionpricegroup)
+		{
+			$parts['pg'] = $sessionpricegroup;
 		}
 		return self::buildUrl( $parts );
 	}
