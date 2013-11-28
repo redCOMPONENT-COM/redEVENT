@@ -772,11 +772,12 @@ class REOutput {
 	 *
 	 * @since 0.9
 	 */
-	function formatprice($price, $currency = null)
+	public static function formatprice($price, $currency = null)
 	{
-		$settings = & redEVENTHelper::config();
+		$settings = redEVENTHelper::config();
 
-		if(!$price) {
+		if (!$price)
+		{
 			return JText::_('COM_REDEVENT_EVENT_PRICE_FREE');
 		}
 

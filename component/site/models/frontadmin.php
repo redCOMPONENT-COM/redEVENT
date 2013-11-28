@@ -977,8 +977,9 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$details = $registrationmodel->getSessionDetails();
 
 		$pricegroup = $this->getPricegroup($xref);
+		$price = redEVENTHelper::getFormCurrencyPrice($pricegroup);
 
-		$options = array('baseprice' => $pricegroup ? $pricegroup->price : 0);
+		$options = array('baseprice' => $price ? $price : 0);
 
 		$redform = RedFormCore::getInstance($details->redform_id);
 		$result = $redform->quickSubmit($user_id, 'redevent', $options);
@@ -1030,7 +1031,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('pricegroup_id AS id, price');
+		$query->select('id, price');
 		$query->from('#__redevent_sessions_pricegroups');
 		$query->where('xref = ' . $xref);
 

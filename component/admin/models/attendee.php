@@ -40,26 +40,34 @@ class RedEventModelAttendee extends JModel
 	 *
 	 * @var int
 	 */
-	var $_id = null;
+	protected $_id = null;
 
 	/**
 	 * xref
 	 * @var int
 	 */
-	var $_xref = null;
+	protected $_xref = null;
+
 	/**
 	 * Booking data array
 	 *
 	 * @var array
 	 */
-	var $_data = null;
+	protected $_data = null;
+
+	/**
+	 * Caching for price groups
+	 *
+	 * @var array
+	 */
+	protected $pricegroups = null;
 
 	/**
 	 * Constructor
 	 *
 	 * @since 0.9
 	 */
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 
@@ -77,7 +85,7 @@ class RedEventModelAttendee extends JModel
 	 * @access	public
 	 * @param	int ac identifier
 	 */
-	function setId($id)
+	public function setId($id)
 	{
 		// Set ac id and wipe data
 		$this->_id	    = $id;
@@ -90,7 +98,7 @@ class RedEventModelAttendee extends JModel
 	 * @access	public
 	 * @param	int ac identifier
 	 */
-	function setXref($xref)
+	public function setXref($xref)
 	{
 		// Set ac id
 		$this->_xref	= intval($xref);
@@ -100,7 +108,7 @@ class RedEventModelAttendee extends JModel
 	 * Logic for the Group edit screen
 	 *
 	 */
-	function &getData()
+	public function &getData()
 	{
 
 		if ($this->_loadData())
@@ -116,7 +124,7 @@ class RedEventModelAttendee extends JModel
 	function _initData()
 	{
 		$obj = & JTable::getInstance('redevent_register', '');
-		
+
 	  // get form id and answer id
 		$query = ' SELECT a.redform_id as form_id, a.course_code, x.id as xref '
 		       . ' FROM #__redevent_event_venue_xref AS x '
@@ -133,41 +141,45 @@ class RedEventModelAttendee extends JModel
 		$this->_data = $obj;
     return true;
 	}
-	
+
 	/**
 	 * Method to load content data
 	 *
-	 * @access	private
-	 * @return	boolean	True on success
-	 * @since	0.9
+	 * @return boolean True on success
 	 */
-	function _loadData()
+	protected function _loadData()
 	{
-		//Lets load the content if it doesn't already exist
-		if (!$this->_id) {
+		// Lets load the content if it doesn't already exist
+		if (!$this->_id)
+		{
 			return false;
 		}
+
 		if (empty($this->_data))
 		{
-		  // get form id and answer id
-			$query = ' SELECT r.*, s.form_id, a.course_code, sp.price, sp.pricegroup_id '
-			       . ' FROM #__redevent_register AS r '
-			       . ' INNER JOIN #__rwf_submitters AS s ON s.id =  r.sid '
-			       . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.id =  r.xref '
-			       . ' INNER JOIN #__redevent_events AS a ON a.id =  x.eventid '
-			       . ' LEFT JOIN #__redevent_sessions_pricegroups AS sp ON sp.xref =  x.id AND sp.pricegroup_id = r.pricegroup_id'
-			       . ' WHERE r.id = '.$this->_id
-					;
-			$this->_db->setQuery($query);
-			$this->_data = $this->_db->loadObject();
-			
-			if (!$this->_data) {
-			  echo $this->_db->getErrorMsg();
+			// Get form id and answer id
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			$query->select('r.*, s.form_id, a.course_code, sp.price, sp.id AS sessionpricegroup_id');
+			$query->from('#__redevent_register AS r');
+			$query->join('INNER', '#__rwf_submitters AS s ON s.id =  r.sid');
+			$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id =  r.xref');
+			$query->join('INNER', '#__redevent_events AS a ON a.id =  x.eventid');
+			$query->join('LEFT', '#__redevent_sessions_pricegroups AS sp ON sp.id =  x.sessionpricegroup_id');
+			$query->where('r.id = ' . $this->_id);
+
+			$db->setQuery($query);
+			$this->_data = $db->loadObject();
+
+			if (!$this->_data)
+			{
+				echo $this->_db->getErrorMsg();
 			}
-			
+
 			return (boolean) $this->_data;
-			
 		}
+
 		return true;
 	}
 
@@ -240,81 +252,103 @@ class RedEventModelAttendee extends JModel
 	/**
 	 * Method to store the attendee
 	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	1.5
+	 * @param   array  $data  the attendee data to save from post
+	 *
+	 * @return  boolean  True on success
 	 */
-	function store($data)
-	{	
+	public function store($data)
+	{
 		$xref = intval($data['xref']);
 		$pricegroup = intval($data['pricegroup_id']);
 		$id = JRequest::getInt('id');
-		
-	  // get price
-		$query = ' SELECT pg.price, a.activate '
-		       . ' FROM #__redevent_event_venue_xref AS x '
-		       . ' INNER JOIN #__redevent_events AS a ON a.id =  x.eventid '
-		       . ' LEFT JOIN #__redevent_sessions_pricegroups AS pg ON pg.xref =  x.id AND pg.pricegroup_id = '.$pricegroup
-		       . ' WHERE x.id = '.$xref
-				   ;
-		$this->_db->setQuery($query);
-		$details = $this->_db->loadObject();
-				
-		// first save redform data	
+
+		// Get price and activate
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('pg.price, a.activate, f.currency AS form_currency');
+		$query->select('CASE WHEN CHAR_LENGTH(pg.currency) THEN pg.currency ELSE f.currency END as currency');
+		$query->from('#__redevent_event_venue_xref AS x');
+		$query->join('INNER', '#__redevent_events AS a ON a.id =  x.eventid');
+		$query->join('LEFT', '#__redevent_sessions_pricegroups AS pg ON pg.id = ' . $pricegroup);
+		$query->join('LEFT', '#__rwf_forms AS f on f.id = a.redform_id');
+		$query->where('x.id = ' . $xref);
+
+		$db->setQuery($query);
+		$details = $db->loadObject();
+
+		// First save redform data
+		// Session registration price
+		$price = redEVENTHelper::convertPrice($details->price, $details->currency, $details->form_currency);
+
 		$rfcore = new redFormCore();
-		$result = $rfcore->saveAnswers('redevent', array('baseprice' => $details->price, 'edit' => 1));	
-  	if (!$result) {
-  		$msg = JText::_('COM_REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED');
-  		$this->setError($msg.' - '.$rfcore->getError());
-  		return false;
-  	}
-  	// adding to data for register saving
-  	$data['submit_key'] = $result->submit_key;
-  	$data['sid'] = $result->posts[0]['sid'];
-  	
-		if ($details->activate == 0) // no activation 
+		$result = $rfcore->saveAnswers('redevent', array('baseprice' => $price, 'edit' => 1));
+
+		if (!$result)
 		{
+			$msg = JText::_('COM_REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED');
+			$this->setError($msg.' - '.$rfcore->getError());
+
+			return false;
+		}
+
+		// Adding to data for register saving
+		$data['submit_key'] = $result->submit_key;
+		$data['sid'] = $result->posts[0]['sid'];
+
+		if ($details->activate == 0)
+		{
+			// No activation
 			$data['confirmed'] = 1;
 			$data['confirmdate'] = gmdate('Y-m-d H:i:s');
 			$data['paymentstart'] = gmdate('Y-m-d H:i:s');
 		}
-  	
-		$row =& JTable::getInstance('redevent_register', '');
-		if ($id) {
+
+		$row = JTable::getInstance('redevent_register', '');
+
+		if ($id)
+		{
 			$row->load($id);
 		}
-				
-		//Bind the form fields to the table
-		if (!$row->bind($data)) {
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-		
-		// Make sure the data is valid
-		if (!$row->check()) {
+
+		// Save data
+		if (!$row->save($data))
+		{
 			$this->setError($row->getError());
+
 			return false;
 		}
 
-		//Store the table to the database
-		if (!$row->store()) {
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-		
 		return $row->id;
 	}
-	
-	function getPricegroups()
+
+	/**
+	 * Get attendee session price groups
+	 *
+	 * @return array
+	 */
+	public function getPricegroups()
 	{
-		$query = ' SELECT sp.*, p.name ' 
-		       . ' FROM #__redevent_sessions_pricegroups AS sp '
-		       . ' INNER JOIN #__redevent_pricegroups AS p ON p.id = sp.pricegroup_id ' 
-		       . ' WHERE sp.xref = ' . $this->_db->Quote($this->_xref)
-		       . ' ORDER BY p.ordering '
-		       ;
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadObjectList();
-		return $res;
+		if (!$this->pricegroups)
+		{
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			$query->select('sp.*, p.name, p.alias, p.tooltip, f.currency AS form_currency');
+			$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug');
+			$query->select('CASE WHEN CHAR_LENGTH(sp.currency) THEN sp.currency ELSE f.currency END as currency');
+			$query->from('#__redevent_sessions_pricegroups AS sp');
+			$query->join('INNER', '#__redevent_pricegroups AS p on p.id = sp.pricegroup_id');
+			$query->join('INNER', '#__redevent_event_venue_xref AS x on x.id = sp.xref');
+			$query->join('INNER', '#__redevent_events AS e on e.id = x.eventid');
+			$query->join('LEFT', '#__rwf_forms AS f on e.redform_id = f.id');
+			$query->where('sp.xref = ' . $db->Quote($this->_xref));
+			$query->order('p.ordering ASC');
+
+			$db->setQuery($query);
+			$this->pricegroups = $db->loadObjectList();
+		}
+
+		return $this->pricegroups;
 	}
 }

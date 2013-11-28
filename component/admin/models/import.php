@@ -394,6 +394,7 @@ class RedEventModelImport extends JModel
 				// import pricegroups
 				$pgs = explode('#!#', $r->pricegroups_names);
 				$prices = explode('#!#', $r->prices);
+				$currencies = explode('#!#', $r->currencies);
 				$pricegroups = array();
 				foreach ($pgs as $k => $v)
 				{
@@ -403,6 +404,7 @@ class RedEventModelImport extends JModel
 					$price = new stdclass();
 					$price->pricegroup_id    = $this->_getPgId($v);
 					$price->price = $prices[$k];
+					$price->currency = $prices[$k];
 					$pricegroups[] = $price;
 				}
 				$session->setPrices($pricegroups);

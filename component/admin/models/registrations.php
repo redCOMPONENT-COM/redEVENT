@@ -78,15 +78,15 @@ class RedEventModelRegistrations extends JModel
 
 		$limit		  = $mainframe->getUserStateFromRequest( $option.'limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
 		$limitstart = $mainframe->getUserStateFromRequest( $option.'limitstart', 'limitstart', 0, 'int' );
-				
+
 		$filter_order		  = $mainframe->getUserStateFromRequest( $option.'.registrations.filter_order', 'filter_order', 'r.uregdate', 'cmd' );
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.registrations.filter_order_Dir',	'filter_order_Dir',	'desc', 'word' );
-		
+
 		$filter_confirmed = $mainframe->getUserStateFromRequest( $option.'.registrations.filter_confirmed', 'filter_confirmed', 0, 'int' );
 		$filter_waiting   = $mainframe->getUserStateFromRequest( $option.'.registrations.filter_waiting',   'filter_waiting'  , 0, 'int' );
 		$filter_cancelled = $mainframe->getUserStateFromRequest( $option.'.registrations.filter_cancelled', 'filter_cancelled', 0, 'int' );
 
-		
+
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
 		$this->setState('filter_order', $filter_order);
@@ -105,7 +105,7 @@ class RedEventModelRegistrations extends JModel
 	 * @access public
 	 * @return array
 	 */
-	function getData() 
+	function getData()
 	{
 		// Lets load the content if it doesn't already exist
 		$query = $this->_buildQuery();
@@ -119,19 +119,19 @@ class RedEventModelRegistrations extends JModel
 		}
 		return $this->_data;
 	}
-	
+
 	/**
 	 * Method to get the total nr of the attendees
 	 *
 	 * @access public
 	 * @return integer
 	 */
-	function getTotal() 
+	function getTotal()
 	{
 		// Lets load the content if it doesn't already exist
 		$query = $this->_buildQuery();
 		$this->_total = $this->_getListCount($query);
-		
+
 		return $this->_total;
 	}
 
@@ -161,7 +161,7 @@ class RedEventModelRegistrations extends JModel
 	 * @since 0.9
 	 */
 	function _buildQuery()
-	{		
+	{
 		// Get the ORDER BY clause for the query
 		$orderby	= $this->_buildContentOrderBy();
 		$where		= $this->_buildContentWhere();
@@ -171,7 +171,8 @@ class RedEventModelRegistrations extends JModel
 		       . ', e.course_code, e.title, x.dates, x.times, v.venue, x.maxattendees '
 		       . ', auth.username AS creator '
 		       . ' FROM #__redevent_register AS r '
-		       . ' LEFT JOIN #__redevent_pricegroups AS pg ON pg.id = r.pricegroup_id '
+		       . ' LEFT JOIN #__redevent_sessions_pricegroups AS spg ON spg.id = r.sessionpricegroup_id '
+		       . ' LEFT JOIN #__redevent_pricegroups AS pg ON pg.id = spg.pricegroup_id '
 		       . ' LEFT JOIN #__redevent_event_venue_xref AS x ON r.xref = x.id '
 		       . ' LEFT JOIN #__redevent_venues AS v ON x.venueid = v.id '
 		       . ' LEFT JOIN #__redevent_events AS e ON x.eventid = e.id '
@@ -186,7 +187,7 @@ class RedEventModelRegistrations extends JModel
 		       . $orderby;
 		return $query;
 	}
-	
+
 	/**
 	 * Method to build the orderby clause of the query for the attendees
 	 *
@@ -194,11 +195,11 @@ class RedEventModelRegistrations extends JModel
 	 * @return integer
 	 * @since 0.9
 	 */
-	function _buildContentOrderBy() 
+	function _buildContentOrderBy()
 	{
 		$mainframe = &JFactory::getApplication();
 		$option = JRequest::getCmd('option');
-		
+
 		$filter_order		  = $this->getState('filter_order');
 		$filter_order_Dir	= $this->getState('filter_order_Dir');
 		switch ($filter_order)
@@ -208,9 +209,9 @@ class RedEventModelRegistrations extends JModel
 			default:
 				return ' ORDER BY '.$filter_order.' '.$filter_order_Dir.', r.confirmdate DESC';
 		}
-		
+
 	}
-	
+
 	/**
 	 * Method to build the where clause of the query for the attendees
 	 *
@@ -224,7 +225,7 @@ class RedEventModelRegistrations extends JModel
 		$option = JRequest::getCmd('option');
 
 		$where = array();
-	
+
 		switch ($this->getState('filter_confirmed', 0))
 		{
 			case 1:
@@ -254,11 +255,11 @@ class RedEventModelRegistrations extends JModel
 		}
 
 		$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
-		
+
 		return $where;
 	}
-	
-	
+
+
 	/**
 	 * Delete registered users
 	 *
@@ -280,7 +281,7 @@ class RedEventModelRegistrations extends JModel
 		{
 			$db = &JFactory::getDbo();
 			$query = $db->getQuery(true);
-			
+
 			$query->select('e.redform_id,r.xref AS xref_id');
 			$query->from('#__redevent_register AS r');
 			$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = r.xref');
@@ -289,7 +290,7 @@ class RedEventModelRegistrations extends JModel
 			$db->setQuery($query);
 			$res = $db->loadObject();
 			$xrefs[] = $res->xref_id;
-	
+
 			$query = ' DELETE s, f, r '
 			. ' FROM #__redevent_register AS r '
 			. ' LEFT JOIN #__rwf_submitters AS s ON r.sid = s.id '
@@ -298,7 +299,7 @@ class RedEventModelRegistrations extends JModel
 			. '   AND r.cancelled = 1 ';
 			;
 			$this->_db->setQuery( $query );
-				
+
 			if (!$this->_db->query()) {
 				RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
 				return false;
@@ -306,7 +307,7 @@ class RedEventModelRegistrations extends JModel
 		}
 		// now update waiting list for all updated sessions
 		foreach ($xrefs as $xref)
-		{			
+		{
 			$model_wait = JModel::getInstance('waitinglist', 'RedeventModel');
 			$model_wait->setXrefId($xref);
 			if (!$model_wait->UpdateWaitingList()) {
@@ -316,7 +317,7 @@ class RedEventModelRegistrations extends JModel
 		}
 		return true;
 	}
-	
+
 	/**
 	 * toggle registrations on and off the wainting list
 	 * @param array $cid register_ids
@@ -330,7 +331,7 @@ class RedEventModelRegistrations extends JModel
 		// we need to group by xref
 		$db = &JFactory::getDbo();
 		$query = $db->getQuery(true);
-		
+
 		$query->select('r.id AS rid, e.redform_id,r.xref AS xref_id');
 		$query->from('#__redevent_register AS r');
 		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = r.xref');
@@ -338,15 +339,15 @@ class RedEventModelRegistrations extends JModel
 		$query->where('r.id IN ('.implode(',', $cid).')');
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
-		
+
 		// let's group
 		$xrefs = array();
 		foreach ($res as $r) {
 			@$xrefs[$r->xref_id][] = $r->rid;
 		}
-		// let's do the thing	
+		// let's do the thing
 		foreach ($xrefs as $xref => $rids)
-		{	
+		{
 			$model = JModel::getInstance('waitinglist', 'RedeventModel');
 			$model->setXrefId($xref);
 			if ($on)
@@ -355,7 +356,7 @@ class RedEventModelRegistrations extends JModel
 			}
 			else
 			{
-				$res = $model->putOffWaitingList($rids);				
+				$res = $model->putOffWaitingList($rids);
 			}
 			if (!$res) {
 				$this->setError($model->getError());

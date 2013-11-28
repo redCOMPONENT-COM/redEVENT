@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_register` (
 `uid` int(11) NOT NULL default '0',
 `sid` int(11) NOT NULL default '0',
 `cancelled` tinyint(1) NOT NULL default '0',
-`pricegroup_id` int(11) NOT NULL default '0',
+`sessionpricegroup_id` int(11) NOT NULL default '0',
 `waitinglist` tinyint(2) NOT NULL default '0',
 `confirmed` tinyint(2) NOT NULL default '0',
 `confirmdate` datetime NULL default NULL,
@@ -195,13 +195,14 @@ CREATE TABLE IF NOT EXISTS `#__redevent_sessions_pricegroups` (
 `xref` int(11) NOT NULL default '0',
 `pricegroup_id` int(11) NOT NULL default '0',
 `price` float NOT NULL,
+`currency` VARCHAR(10) NOT NULL,
 PRIMARY KEY  (`id`),
 KEY  (`xref`),
 KEY  (`pricegroup_id`)
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_settings` (
-  `id` int(11) NOT NULL,  
+  `id` int(11) NOT NULL,
   `lastupdate` varchar(20) NOT NULL default '',
   UNIQUE KEY `id` (`id`)
 ) DEFAULT CHARSET=utf8;

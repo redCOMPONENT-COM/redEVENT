@@ -230,23 +230,32 @@ class RedEvent_eventvenuexref extends JTable
 		$query = ' DELETE FROM #__redevent_sessions_pricegroups '
 		. ' WHERE xref = ' . $this->_db->Quote($this->id);
 		$this->_db->setQuery($query);
-		if (!$this->_db->query()) {
+
+		if (!$this->_db->query())
+		{
 			$this->setError($this->_db->getErrorMsg());
+
 			return false;
 		}
 
 		// then recreate them if any
 		foreach ((array) $prices as $k => $price)
 		{
-			if (!isset($price->pricegroup_id) || !isset($price->price)) {
+			if (!isset($price->pricegroup_id) || !isset($price->price))
+			{
 				continue;
 			}
-			$new = & JTable::getInstance('RedEvent_sessions_pricegroups', '');
-			$new->set('xref',    $this->id);
+
+			$new = JTable::getInstance('RedEvent_sessions_pricegroups', '');
+			$new->set('xref',          $this->id);
 			$new->set('pricegroup_id', $price->pricegroup_id);
-			$new->set('price', $price->price);
-			if (!($new->check() && $new->store())) {
+			$new->set('price',         $price->price);
+			$new->set('currency',      $price->currency);
+
+			if (!($new->check() && $new->store()))
+			{
 				$this->setError($new->getError());
+
 				return false;
 			}
 		}

@@ -677,8 +677,9 @@ class RedeventModelDetails extends JModel
 	{
 		$event = $this->getDetails();
 
-		$query = ' SELECT sp.*, p.name, p.alias, p.image, p.tooltip, f.currency, '
-		. ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug '
+		$query = ' SELECT sp.*, p.name, p.alias, p.image, p.tooltip, '
+		. ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', sp.id, p.alias) ELSE sp.id END as slug, '
+		. ' CASE WHEN CHAR_LENGTH(sp.currency) THEN sp.currency ELSE f.currency END as currency'
 		. ' FROM #__redevent_sessions_pricegroups AS sp '
 		. ' INNER JOIN #__redevent_pricegroups AS p on p.id = sp.pricegroup_id '
 		. ' INNER JOIN #__redevent_event_venue_xref AS x on x.id = sp.xref '
@@ -689,6 +690,7 @@ class RedeventModelDetails extends JModel
 		;
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
+
 		return $res;
 	}
 
@@ -699,26 +701,31 @@ class RedeventModelDetails extends JModel
 	 */
 	private function _getPrices($rows)
 	{
-		if (!count($rows)) {
+		if (!count($rows))
+		{
 			return $rows;
 		}
+
 		$db = JFactory::getDBO();
 		$ids = array();
+
 		foreach ($rows as $k => $r)
 		{
 			$ids[$r->xref] = $k;
 		}
 
-		$query = ' SELECT sp.*, p.name, p.alias, p.image, p.tooltip, f.currency, '
-		. ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug '
-		. ' FROM #__redevent_sessions_pricegroups AS sp '
-		. ' INNER JOIN #__redevent_pricegroups AS p on p.id = sp.pricegroup_id '
-		. ' INNER JOIN #__redevent_event_venue_xref AS x on x.id = sp.xref '
-		. ' INNER JOIN #__redevent_events AS e on e.id = x.eventid '
-		. ' LEFT JOIN #__rwf_forms AS f on e.redform_id = f.id '
-		. ' WHERE sp.xref IN (' . implode(",", array_keys($ids)).')'
-		. ' ORDER BY p.ordering ASC '
-		;
+		$query = $db->getQuery(true);
+
+		$query->select('sp.*, p.name, p.alias, p.image, p.tooltip');
+		$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', sp.id, p.alias) ELSE sp.id END as slug');
+		$query->select('CASE WHEN CHAR_LENGTH(sp.currency) THEN sp.currency ELSE f.currency END as currency');
+		$query->from('#__redevent_sessions_pricegroups AS sp');
+		$query->join('INNER', '#__redevent_pricegroups AS p on p.id = sp.pricegroup_id');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x on x.id = sp.xref');
+		$query->join('INNER', '#__redevent_events AS e on e.id = x.eventid');
+		$query->join('LEFT', '#__rwf_forms AS f on e.redform_id = f.id');
+		$query->where('sp.xref IN (' . implode(",", array_keys($ids)) . ')');
+		$query->order('p.ordering ASC');
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
 

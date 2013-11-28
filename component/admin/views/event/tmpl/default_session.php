@@ -218,7 +218,11 @@ function updateend(cal)
 	    <table>
 			  <tr id="trnewprice">
 			  	<td><?php echo JHTML::_('select.genericlist', $this->pricegroupsoptions, 'pricegroup[]', array('id' => 'newprice', 'class' => 'newprice')); ?></td>
-			  	<td><input type="text" name="price[]" class="price-val" value="0.00" size="10" /> <button type="button" class="price-button" id="add-price"><?php echo JText::_('COM_REDEVENT_add'); ?></button></td>
+			  	<td>
+					<input type="text" name="price[]" class="price-val" value="0.00" size="10" />
+					<?php echo JHTML::_('select.genericlist', $this->currencyoptions, 'currency[]', '', 'value', 'text'); ?>
+					<button type="button" class="price-button" id="add-price"><?php echo JText::_('COM_REDEVENT_add'); ?></button>
+			    </td>
 			  </tr>
 	    </table>
     </td>

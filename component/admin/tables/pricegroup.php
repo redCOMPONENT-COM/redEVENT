@@ -38,7 +38,8 @@ class RedeventTablePricegroup extends FOFTable
 	 * @param object Database connector object
 	 * @since 1.0
 	 */
-	public function __construct( $table, $key, &$db ) {
+	public function __construct($table, $key, &$db)
+	{
 		parent::__construct('#__redevent_pricegroups', 'id', $db);
 	}
 
@@ -51,35 +52,41 @@ class RedeventTablePricegroup extends FOFTable
 	 */
 	public function check()
 	{
-		if (empty($this->name)) {
+		if (empty($this->name))
+		{
 			$this->setError(JText::_('COM_REDEVENT_TABLE_PRICEGROUPS_CHECK_NAME_IS_REQUIRED'));
+
 			return false;
 		}
-		
+
 		$alias = JFilterOutput::stringURLSafe($this->name);
 
-		if(empty($this->alias) || $this->alias === $alias ) {
+		if( empty($this->alias) || $this->alias === $alias)
+		{
 			$this->alias = $alias;
-		}		
+		}
+
 		return true;
 	}
-	
+
 	public function onBeforeDelete($oid)
 	{
 		// make sure it's not being used in sessions
-		$db = &JFactory::getDbo();
+		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
-		
+
 		$query->select('r.id');
 		$query->from('#__redevent_sessions_pricegroups AS r');
 		$query->where('r.pricegroup_id = '.$oid);
 		$db->setQuery($query);
 		$res = $db->loadObject();
-			
-		if ($res) {
+
+		if ($res)
+		{
 			$this->setError(Jtext::_('COM_REDEVENT_PRICEGROUPS_DELETE_ERROR_PRICEGROUP_ASSIGNED'));
 			return false;
 		}
+
 		return true;
 	}
 }

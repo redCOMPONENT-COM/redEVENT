@@ -247,25 +247,37 @@ function updateend(cal)
     </td>
   </tr>
 
-  <tr>
-    <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_COURSE_PRICE_TIP'); ?>">
-      <label for="course_price"><?php echo JText::_('COM_REDEVENT_COURSE_PRICE' ) .': '; ?></label>
-    </td>
-    <td>
-	    <table>
+	<tr>
+		<td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_COURSE_PRICE_TIP'); ?>">
+			<label for="course_price"><?php echo JText::_('COM_REDEVENT_COURSE_PRICE' ) .': '; ?></label>
+		</td>
+		<td>
+			<table>
 				<?php foreach ((array)$this->prices as $k => $r): ?>
-			  <tr>
-			  	<td><?php echo JHTML::_('select.genericlist', $this->pricegroupsoptions, 'pricegroup[]', '', 'value', 'text', $r->pricegroup_id); ?></td>
-			  	<td><input type="text" name="price[]" class="price-val" value="<?php echo $r->price; ?>"/> <button type="button" class="price-button remove-price"><?php echo Jtext::_('COM_REDEVENT_REMOVE'); ?></button></td>
-			  </tr>
-			  <?php endforeach; ?>
-			  <tr id="trnewprice">
-			  	<td><?php echo JHTML::_('select.genericlist', $this->pricegroupsoptions, 'pricegroup[]', array('id' => 'newprice', 'class' => 'newprice')); ?></td>
-			  	<td><input type="text" name="price[]" class="price-val" value="0.00" size="10" /> <button type="button" class="price-button" id="add-price"><?php echo JText::_('COM_REDEVENT_add'); ?></button></td>
-			  </tr>
-	    </table>
-    </td>
-  </tr>
+				<tr>
+					<td>
+						<?php echo JHTML::_('select.genericlist', $this->pricegroupsoptions, 'pricegroup[]', '', 'value', 'text', $r->pricegroup_id); ?>
+					</td>
+				<td>
+					<input type="text" name="price[]" class="price-val" value="<?php echo $r->price; ?>"/>
+					<?php echo JHTML::_('select.genericlist', $this->currencyoptions, 'currency[]', '', 'value', 'text', $r->currency); ?>
+					<button type="button" class="price-button remove-price"><?php echo Jtext::_('COM_REDEVENT_REMOVE'); ?></button>
+				</td>
+				</tr>
+				<?php endforeach; ?>
+				<tr id="trnewprice">
+					<td>
+						<?php echo JHTML::_('select.genericlist', $this->pricegroupsoptions, 'pricegroup[]', array('id' => 'newprice', 'class' => 'newprice')); ?>
+					</td>
+					<td>
+						<input type="text" name="price[]" class="price-val" value="0.00" size="10" />
+						<?php echo JHTML::_('select.genericlist', $this->currencyoptions, 'currency[]', '', 'value', 'text'); ?>
+						<button type="button" class="price-button" id="add-price"><?php echo JText::_('COM_REDEVENT_add'); ?></button>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
 
 </tbody>
 </table>

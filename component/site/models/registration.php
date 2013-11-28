@@ -105,7 +105,7 @@ class RedEventModelRegistration extends JModel
 	 * @param int $pricegroup_id
 	 * @return boolean|object attendee row or false if failed
 	 */
-	function register($user, $sid, $submit_key, $pricegroup_id)
+	function register($user, $sid, $submit_key, $sessionpricegroup_id)
 	{
 		$config  = redEventHelper::config();
 		$session = $this->getSessionDetails();
@@ -119,7 +119,7 @@ class RedEventModelRegistration extends JModel
 		$obj->loadBySid($sid);
 		$obj->sid        = $sid;
 		$obj->xref       = $this->_xref;
-		$obj->pricegroup_id = $pricegroup_id;
+		$obj->sessionpricegroup_id = $sessionpricegroup_id;
 		$obj->submit_key = $submit_key;
 		$obj->uid        = $user ? $user->get('id') : 0;
 		$obj->uregdate 	 = gmdate('Y-m-d H:i:s');
@@ -161,7 +161,7 @@ class RedEventModelRegistration extends JModel
 		$obj = $this->getTable('Redevent_register', '');
 		$obj->loadBySid($sid);
 		$obj->sid        = $sid;
-		$obj->pricegroup_id = $pricegroup_id;
+		$obj->sessionpricegroup_id = $pricegroup_id;
 		$obj->submit_key = $submit_key;
 
 		if (!$obj->check()) {
@@ -352,7 +352,7 @@ class RedEventModelRegistration extends JModel
 
 	function getRegistration($submitter_id)
 	{
-		$query =' SELECT s.*, r.uid, r.xref, r.pricegroup_id, e.unregistra '
+		$query =' SELECT s.*, r.uid, r.xref, r.sessionpricegroup_id, e.unregistra '
 		. ' FROM #__rwf_submitters AS s '
 		. ' INNER JOIN #__redevent_register AS r ON r.sid = s.id '
 		. ' INNER JOIN #__redevent_event_venue_xref AS x ON x.id = r.xref '
@@ -362,8 +362,10 @@ class RedEventModelRegistration extends JModel
 		$this->_db->setQuery($query);
 		$registration = $this->_db->loadObject();
 
-		if (!$registration) {
+		if (!$registration)
+		{
 			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_NOT_VALID'));
+
 			return false;
 		}
 
@@ -373,66 +375,69 @@ class RedEventModelRegistration extends JModel
 		;
 		$this->_db->setQuery($query);
 		$registration->answers = $this->_db->loadObject();
+
 		return $registration;
 	}
 
 	/**
-	 * get price according to pricegroup
+	 * Get session pricegroup according to sessionpricegroup_id
 	 *
-	 * @param unknown_type $pricegroup
+	 * @param   int  $sessionpricegroup_id  session pricegroup id
+	 *
+	 * @return object session price group
 	 */
-	function getRegistrationPrice($pricegroup)
+	public function getRegistrationPrice($sessionpricegroup_id)
 	{
-		if (is_null($this->_prices))
-		{
-			$event = $this->getSessionDetails();
-			$query = ' SELECT * '
-			. ' FROM #__redevent_sessions_pricegroups '
-			. ' WHERE xref = ' . $event->xref
-			. ' ORDER BY price DESC '
-			;
-			$this->_db->setQuery($query);
-			$res = $this->_db->loadObjectList();
-			$this->_prices = $res ? $res : array();
-		}
+		$pricegoups = $this->getPricegroups();
 
-		if (!count($this->_prices)) {
+		if (!count($pricegoups))
+		{
 			return 0;
 		}
-		foreach ($this->_prices as $p)
+
+		foreach ($pricegoups as $p)
 		{
-			if ($p->pricegroup_id == $pricegroup)
+			if ($p->id == $sessionpricegroup_id)
 			{
-				return $p->price;
-				break;
+				return $p;
 			}
 		}
-		//pricegroup not found... not good at all !
+
+		// Session pricegroup not found... not good at all !
 		$this->setError(JText::_('COM_REDEVENT_Pricegroup_not_found'));
+
 		return false;
 	}
 
 	/**
-	 * get current session prices
+	 * Get current session price groups
 	 *
 	 * @return array
 	 */
-	function getPricegroups()
+	public function getPricegroups()
 	{
-		$event = $this->getSessionDetails();
-		$query = ' SELECT sp.*, p.name, p.alias, p.tooltip, f.currency, '
-		. ' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug '
-		. ' FROM #__redevent_sessions_pricegroups AS sp '
-		. ' INNER JOIN #__redevent_pricegroups AS p on p.id = sp.pricegroup_id '
-		. ' INNER JOIN #__redevent_event_venue_xref AS x on x.id = sp.xref '
-		. ' INNER JOIN #__redevent_events AS e on e.id = x.eventid '
-		. ' LEFT JOIN #__rwf_forms AS f on e.redform_id = f.id '
-		. ' WHERE sp.xref = ' . $this->_db->Quote($event->xref)
-		. ' ORDER BY p.ordering ASC '
-		;
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadObjectList();
-		return $res;
+		if (!$this->_prices)
+		{
+			$event = $this->getSessionDetails();
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			$query->select('sp.*, p.name, p.alias, p.tooltip, f.currency AS form_currency');
+			$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\', p.id, p.alias) ELSE p.id END as slug');
+			$query->select('CASE WHEN CHAR_LENGTH(sp.currency) THEN sp.currency ELSE f.currency END as currency');
+			$query->from('#__redevent_sessions_pricegroups AS sp');
+			$query->join('INNER', '#__redevent_pricegroups AS p on p.id = sp.pricegroup_id');
+			$query->join('INNER', '#__redevent_event_venue_xref AS x on x.id = sp.xref');
+			$query->join('INNER', '#__redevent_events AS e on e.id = x.eventid');
+			$query->join('LEFT', '#__rwf_forms AS f on e.redform_id = f.id');
+			$query->where('sp.xref = ' . $db->Quote($event->xref));
+			$query->order('p.ordering ASC');
+
+			$db->setQuery($query);
+			$this->_prices = $db->loadObjectList();
+		}
+
+		return $this->_prices;
 	}
 
 
