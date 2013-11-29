@@ -23,6 +23,9 @@ switch ($_GET['test'])
 	case 7:
 		$file = 'schemas/AttendeesRQ_mae3.xml';
 		break;
+	case 8:
+		$file = 'schemas/AttendeesRQ_mae4.xml';
+		break;
 }
 
 switch ($_GET['target'])

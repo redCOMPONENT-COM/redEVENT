@@ -226,7 +226,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 	/**
 	 * return client to post data to
 	 *
-	 * @return object|null
+	 * @return RedeventsyncClientMaersk
 	 */
 	public function getClient()
 	{
