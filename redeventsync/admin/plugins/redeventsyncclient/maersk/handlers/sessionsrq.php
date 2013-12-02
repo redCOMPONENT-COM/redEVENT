@@ -543,6 +543,7 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 					$p = new stdClass;
 					$p->pricegroup_id = (int) $price->PriceGroupId;
 					$p->price         = (float) $price->PriceGroupPrice;
+					$p->currency      = (float) $price->Currency;
 					$prices[] = $p;
 				}
 
@@ -554,12 +555,12 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 		{
 			$roles = array();
 
-			foreach ($el->EventPrice->children() as $price)
+			foreach ($el->EventPrice->children() as $ob)
 			{
 				$p = new stdClass;
-				$p->RoleId    = (int) $price->RoleId;
-				$p->RoleName  = (string) $price->RoleName;
-				$p->RoleUser  = (string) $price->RoleUser;
+				$p->RoleId    = (int) $ob->RoleId;
+				$p->RoleName  = (string) $ob->RoleName;
+				$p->RoleUser  = (string) $ob->RoleUser;
 				$roles[] = $p;
 			}
 
@@ -684,6 +685,7 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 				$xml_pg->addChild('PriceGroupId', $pg->id);
 				$xml_pg->addChild('PriceGroupName', $pg->name);
 				$xml_pg->addChild('PriceGroupPrice', $pg->price);
+				$xml_pg->addChild('Currency', $pg->currency);
 
 				$this->appendElement($xml_prices, $xml_pg);
 			}
@@ -735,7 +737,7 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('xpg.price');
+		$query->select('xpg.price, xpg.currency');
 		$query->select('pg.id, pg.name');
 		$query->from('#__redevent_sessions_pricegroups AS xpg');
 		$query->join('INNER', '#__redevent_pricegroups AS pg ON xpg.pricegroup_id = pg.id');

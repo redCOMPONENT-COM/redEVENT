@@ -215,7 +215,7 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 
 		if (isset($xml->PriceGroupId))
 		{
-			$object->pricegroup_id    = (int) $xml->PriceGroupId;
+			$object->sessionpricegroup_id    = (int) $xml->PriceGroupId;
 		}
 
 		if (isset($xml->waitinglist))

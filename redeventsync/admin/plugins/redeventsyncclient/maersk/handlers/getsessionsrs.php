@@ -335,6 +335,7 @@ class RedeventsyncHandlerGetsessionsrs extends RedeventsyncHandlerAbstractmessag
 					$p = new stdClass;
 					$p->pricegroup_id = (int) $price->PriceGroupId;
 					$p->price         = (float) $price->PriceGroupPrice;
+					$p->currency      = (string) $price->Currency;
 					$prices[] = $p;
 				}
 
@@ -346,12 +347,12 @@ class RedeventsyncHandlerGetsessionsrs extends RedeventsyncHandlerAbstractmessag
 		{
 			$roles = array();
 
-			foreach ($el->Role->children() as $price)
+			foreach ($el->Role->children() as $ob)
 			{
 				$p = new stdClass;
-				$p->RoleId    = (int) $price->RoleId;
-				$p->RoleName  = (string) $price->RoleName;
-				$p->RoleUser  = (string) $price->RoleUser;
+				$p->RoleId    = (int) $ob->RoleId;
+				$p->RoleName  = (string) $ob->RoleName;
+				$p->RoleUser  = (string) $ob->RoleUser;
 				$roles[] = $p;
 			}
 
