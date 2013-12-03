@@ -25,8 +25,8 @@
 			   label="COM_REDEVENTSYNC_LOGS_DIRECTION"
 			   labelclass="redeventsync-label"
 				>
-			<option value="0">COM_REDEVENTSYNC_LOGS_DIRECTION_INCOMING</option>
-			<option value="1">COM_REDEVENTSYNC_LOGS_DIRECTION_OUTGOING</option>
+			<option value="0">COM_REDEVENTSYNC_LOGS_DIRECTION_RECEIVED</option>
+			<option value="1">COM_REDEVENTSYNC_LOGS_DIRECTION_SENT</option>
 		</field>
 
 		<field name="type" type="text"
