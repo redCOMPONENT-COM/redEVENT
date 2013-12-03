@@ -12,9 +12,12 @@
 		<header name="date" type="fieldsearchable" sortable="true"
 			buttons="yes" buttonclass="btn"
 		/>
-		<header name="direction" type="field" sortable="true" tdwidth="12%" />
-		<header name="transactionid" type="field" sortable="true" tdwidth="12%" />
-		<header name="type" type="field" sortable="true" tdwidth="10%" />
+		<header name="direction" type="fieldselectable" sortable="true" tdwidth="12%">
+			<option value="0">COM_REDEVENTSYNC_LOGS_DIRECTION_RECEIVED</option>
+			<option value="1">COM_REDEVENTSYNC_LOGS_DIRECTION_SENT</option>
+		</header>
+		<header name="transactionid" type="fieldsearchable" sortable="true" tdwidth="12%" />
+		<header name="type" type="fieldsearchable" sortable="true" tdwidth="10%" />
 		<header name="status" type="field" sortable="true" tdwidth="10%" />
 	</headerset>
 
@@ -28,7 +31,7 @@
 			empty_replacement="(no title)"
 		 />
 
-		<field name="direction" type="text"/>
+		<field name="direction" type="resdirection"/>
 		<field name="transactionid" type="text"/>
 		<field name="type" type="text"/>
 
