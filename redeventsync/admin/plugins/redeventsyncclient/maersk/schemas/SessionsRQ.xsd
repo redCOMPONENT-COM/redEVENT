@@ -260,7 +260,7 @@
 									</xs:element>
 									<xs:element type="xs:string" name="PriceGroupName" />
 									<xs:element type="xs:float" name="PriceGroupPrice" />
-									<xs:element type="xs:string" name="Currency">
+									<xs:element type="xs:string" name="CurrencyCode">
 										<xs:annotation>
 											<xs:documentation source="Description" xml:lang="en">Empty for default value, or an iso-3 currency code</xs:documentation>
 										</xs:annotation>

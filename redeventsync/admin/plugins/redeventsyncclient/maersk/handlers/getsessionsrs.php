@@ -335,7 +335,7 @@ class RedeventsyncHandlerGetsessionsrs extends RedeventsyncHandlerAbstractmessag
 					$p = new stdClass;
 					$p->pricegroup_id = (int) $price->PriceGroupId;
 					$p->price         = (float) $price->PriceGroupPrice;
-					$p->currency      = (string) $price->Currency;
+					$p->currency      = (string) $price->CurrencyCode;
 					$prices[] = $p;
 				}
 

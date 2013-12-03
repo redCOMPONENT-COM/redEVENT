@@ -543,7 +543,7 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 					$p = new stdClass;
 					$p->pricegroup_id = (int) $price->PriceGroupId;
 					$p->price         = (float) $price->PriceGroupPrice;
-					$p->currency      = (float) $price->Currency;
+					$p->currency      = (float) $price->CurrencyCode;
 					$prices[] = $p;
 				}
 
@@ -685,7 +685,7 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 				$xml_pg->addChild('PriceGroupId', $pg->id);
 				$xml_pg->addChild('PriceGroupName', $pg->name);
 				$xml_pg->addChild('PriceGroupPrice', $pg->price);
-				$xml_pg->addChild('Currency', $pg->currency);
+				$xml_pg->addChild('CurrencyCode', $pg->currency);
 
 				$this->appendElement($xml_prices, $xml_pg);
 			}
