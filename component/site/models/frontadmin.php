@@ -23,6 +23,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once 'baseeventslist.php';
+require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
 
 /**
  * Redevents Component events list Model
@@ -70,6 +71,9 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$app = JFactory::getApplication();
 		$params = $app->getParams('com_redevent');
 
+		$this->uid = $app->input->get('uid', 0, 'int');
+		$this->setState('uid', $this->uid);
+
 		$this->useracl = UserAcl::getInstance();
 
 		// Get the number of events from database
@@ -83,8 +87,11 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$this->setState('limitstart_sessions', $limitstart);
 
 		// Bookings filter
-		$this->setState('filter_organization',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_organization',    'filter_organization',    0, 'int'));
-		$this->setState('filter_person',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_person',    'filter_person',    '', 'string'));
+		$this->setState(
+			'filter_organization',
+			$app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_organization',    'filter_organization',    $this->getUserDefaultOrganization(), 'int')
+		);
+		$this->setState('filter_person', $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_person',    'filter_person',    '', 'string'));
 		$this->setState('filter_person_active',    $app->input->get('filter_person_active',    1, 'int'));
 
 		// Manage sessions filters
@@ -130,9 +137,6 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		// In case limit has been changed, adjust it
 		$previous_limitstart = ($limit != 0 ? (floor($previous_limitstart / $limit) * $limit) : 0);
 		$this->setState('previous_limitstart', $previous_limitstart);
-
-		$this->uid = $app->input->get('uid', 0, 'int');
-		$this->setState('uid', $this->uid);
 	}
 
 	public function getUseracl()
@@ -1160,9 +1164,14 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	 *
 	 * @return object
 	 */
-	public function getMemberInfo()
+	public function getMemberInfo($uid = null)
 	{
-		$user = JFactory::getUser($this->uid);
+		if (!$uid)
+		{
+			$uid = $this->uid;
+		}
+
+		$user = JFactory::getUser($uid);
 
 		// Company
 		$db      = JFactory::getDbo();
@@ -1170,7 +1179,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 
 		$query->select('organization_id');
 		$query->from('#__redmember_user_organization_xref');
-		$query->where('user_id = ' . $this->uid);
+		$query->where('user_id = ' . $uid);
 
 		$db->setQuery($query);
 		$res = $db->loadColumn();
@@ -1178,5 +1187,31 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$user->organizations = $res;
 
 		return $user;
+	}
+
+	/**
+	 * Get default organization for user (first one...)
+	 *
+	 * @param   int  $uid  uid, null for current user
+	 *
+	 * @return int
+	 */
+	public function getUserDefaultOrganization($uid = null)
+	{
+		if (!$uid)
+		{
+			$uid = JFactory::getUser()->get('id');
+		}
+
+		$data = RedmemberLib::getUserData($uid);
+
+		if (count($data->organizations))
+		{
+			$orgId = reset(array_keys($data->organizations));
+
+			return $orgId;
+		}
+
+		return false;
 	}
 }
