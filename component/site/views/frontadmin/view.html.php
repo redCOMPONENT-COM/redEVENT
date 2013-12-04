@@ -27,6 +27,7 @@ defined('_JEXEC') or die ('Restricted access');
 jimport('joomla.application.component.view');
 
 require_once JPATH_SITE . '/components/com_redevent/views/myevents/view.html.php';
+require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
 
 /**
  * HTML View class for the frontend admin View
@@ -297,8 +298,6 @@ class RedeventViewFrontadmin extends JView
 
 	protected function displayEditMember($tpl= null)
 	{
-		require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
-
 		$document = JFactory::getDocument();
 
 		$member = $this->get('MemberInfo');
