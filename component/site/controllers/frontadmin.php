@@ -203,7 +203,10 @@ class RedeventControllerFrontadmin extends FOFController
 
 		$this->display();
 
-		JFactory::getApplication()->close();
+		if (!$this->input->get('modal'))
+		{
+			JFactory::getApplication()->close();
+		}
 	}
 
 	public function getmemberbooked()
@@ -485,7 +488,9 @@ class RedeventControllerFrontadmin extends FOFController
 	public function update_user()
 	{
 		require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
-		$resp = new stdClass();
+		$app = JFactory::getApplication();
+
+		$resp = new stdClass;
 
 		try
 		{
@@ -498,7 +503,24 @@ class RedeventControllerFrontadmin extends FOFController
 			$resp->error  = JText::_('COM_USERS_USER_SAVE_FAILED') . ': ' . $e->getMessage();
 		}
 
-		echo json_encode($resp);
-		JFactory::getApplication()->close();
+		if ($this->input->get('format') == 'json')
+		{
+			echo json_encode($resp);
+			$app->close();
+		}
+		else
+		{
+			if ($resp->status)
+			{
+				$app->input->set('uid', $user->get('id'));
+				$app->enqueueMessage(Jtext::_('COM_REDEVENT_FRONTEND_ADMIN_MEMBER_SAVED'));
+			}
+			else
+			{
+				$app->enqueueMessage($resp->error, 'error');
+			}
+
+			$this->editmember();
+		}
 	}
 }
