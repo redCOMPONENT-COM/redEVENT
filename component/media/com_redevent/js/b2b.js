@@ -93,7 +93,7 @@ var redb2b = {
 				person_req.send();
 				// Display organization users ?
 				redb2b.getMembersList();
-			});
+			}).fireEvent('change');
 
 			/**
 			 * update organization bookings when selecting person

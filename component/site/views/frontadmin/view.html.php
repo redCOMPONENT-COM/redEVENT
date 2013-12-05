@@ -251,16 +251,23 @@ class RedeventViewFrontadmin extends JView
 	 */
 	protected function printPlaces($row)
 	{
+		$maxLeftDisplay = 6;
+
 		if (!$row->maxattendees)
 		{
-			return '-';
+			$tip = JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_PLACES_BOOKED_D', $row->registered);
+			return '<span class="hasTip" title="' . $tip . '">' . $row->registered . '</span>';
 		}
+		else
+		{
+			// Only display up to $maxLeftDisplay left places
+			$left = max(array($row->maxattendees - $row->registered, 0));
+			$left = $left > $maxLeftDisplay ? $maxLeftDisplay . '+' : $left;
 
-		$left = max(array($row->maxattendees - $row->registered, 0));
+			$tip = JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_PLACES_BOOKED_D_LEFT_S', $row->registered, $left);
 
-		$img = JHTML::image('media/com_redevent/images/b2b-users.png', JText::_('COM_REDEVENT_PLACES_BOOKED_LEFT'));
-
-		return $img . $row->registered . '/' . ($left > 6 ? '6+' : $left);
+			return '<span class="hasTip" title="' . $tip . '">' . $row->registered . '/' . $left . '</span>';
+		}
 	}
 
 
@@ -269,17 +276,25 @@ class RedeventViewFrontadmin extends JView
 	 *
 	 * @param   int  $id  xref id
 	 *
-	 * @since 2.0
+	 * @return string html
 	 */
 	public static function bookbutton($id)
 	{
 		JHTML::_('behavior.tooltip');
 
-		$image = JHTML::image('media/com_redevent/images/b2b-edit.png', JText::_('COM_REDEVENT_BOOK_EVENT' ));
+		$image = JHTML::image('media/com_redevent/images/b2b-users.png', JText::_('COM_REDEVENT_BOOK_EVENT'));
 
-		$overlib = JText::_('COM_REDEVENT_BOOK_EVENT_DESC' );
-		$text = JText::_('COM_REDEVENT_BOOK_EVENT' );
-		$output	= '<a href="#" xref="' . $id . '" class="bookthis hasTip" title="'.$text.'" tip="'.$overlib.'">'.$image.'</a>';
+		$tip  = JText::_('COM_REDEVENT_BOOK_EVENT_DESC');
+		$text = JText::_('COM_REDEVENT_BOOK_EVENT');
+
+		$attribs = array(
+			'xref' => $id,
+			'class' => 'bookthis hasTip',
+			'title' => $text,
+			'tip' => $tip,
+		);
+
+		$output = JHtml::link('#', $image, $attribs);
 
 		return $output;
 	}
