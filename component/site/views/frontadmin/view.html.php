@@ -335,6 +335,10 @@ class RedeventViewFrontadmin extends JView
 
 		if ($modal)
 		{
+			// Load Akeeba Strapper
+			include_once JPATH_ROOT . '/media/akeeba_strapper/strapper.php';
+			AkeebaStrapper::bootstrap();
+
 			// Add css file
 			if (!$this->params->get('custom_css'))
 			{
