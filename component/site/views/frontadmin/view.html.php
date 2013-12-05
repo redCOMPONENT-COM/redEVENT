@@ -345,8 +345,6 @@ class RedeventViewFrontadmin extends JView
 			{
 				$document->addStyleSheet($this->params->get('custom_css'));
 			}
-
-			FOFTemplateUtils::addJS('media://com_redevent/js/b2b.js');
 		}
 
 		$this->assignRef('member',     $member);
