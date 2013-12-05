@@ -39,6 +39,8 @@ var redb2b = {
 		 */
 		init : function() {
 
+			redb2b.updateBreadCrumbs();
+
 			/**
 			 * update sessions options when selecting event
 			 */
@@ -67,6 +69,7 @@ var redb2b = {
 				document.id('book-xref').set('value', this.get('value'));
 				redb2b.getMembersList();
 				redb2b.getSessions();
+				redb2b.updateBreadCrumbs();
 			});
 
 			/**
@@ -576,6 +579,7 @@ var redb2b = {
 					document.id('main-course-results').empty().set('html', response).unspin();
 					redb2b.refreshTips();
 					redb2b.getMembersList();
+					redb2b.updateBreadCrumbs();
 				}
 			});
 			req.send();
@@ -587,6 +591,7 @@ var redb2b = {
 			redb2b.updateVenueField();
 			redb2b.updateCategoryField();
 			redb2b.getSessions();
+			redb2b.updateBreadCrumbs();
 		},
 
 		updateEventField : function(async) {
@@ -718,7 +723,7 @@ var redb2b = {
 					document.id('filter_session').set('value', id);
 					document.id('book-xref').set('value', id);
 					redb2b.getMembersList();
-					// redb2b.getSessions();
+					redb2b.updateBreadCrumbs();
 				}
 			});
 			req.send();
@@ -823,5 +828,37 @@ var redb2b = {
 
 		refreshTips : function(){
 			myTips = new Tips(".hasTip", {text : 'tip'});
+		},
+
+		updateBreadCrumbs : function() {
+			var elements = new Array();
+			elements.push(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_BREADCRUMB_YOU_ARE_HERE"));
+			elements.push(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_BREADCRUMB_OVERVIEW"));
+
+			if (document.id('filter_session').get('value')) {
+				elements.push(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_BREADCRUMB_BOOK"));
+			}
+			else if (document.id('filter_event').get('value')
+				|| document.id('filter_venue').get('value')
+				|| document.id('filter_category').get('value')
+				|| document.id('filter_from').get('value')
+				|| document.id('filter_to').get('value')
+				) {
+				elements.push(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_BREADCRUMB_SEARCH_RESULTS"));
+			}
+
+			var bc = document.id('main-breadcrumb');
+			bc.empty();
+
+			var separator = ' <span class="divider">></span>';
+
+			Array.each(elements, function(val) {
+				var text = val;
+				if (val != elements.getLast()) {
+					text += separator;
+				}
+				var el = new Element('li').set('html', text);
+				el.inject(bc);
+			});
 		}
 };
