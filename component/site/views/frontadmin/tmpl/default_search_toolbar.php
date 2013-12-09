@@ -22,7 +22,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <script type="application/javascript">
-	<?php JHtml::script('com_finder/autocompleter.js', false, true); ?>
+	<?php JHtml::script('com_redevent/autocompleter.js', false, true); ?>
 	window.addEvent('domready', function(){
 		var url = '<?php echo JRoute::_('index.php?option=com_redevent&controller=frontadmin&task=personsuggestions&tmpl=component', false); ?>';
 		var completer = new Autocompleter.Request.JSON(document.id('filter_person'), url, {'postVar': 'q', 'autoSubmit': true});
