@@ -523,4 +523,44 @@ class RedeventControllerFrontadmin extends FOFController
 			$this->editmember();
 		}
 	}
+
+	/**
+	 * Print person suggestions as json
+	 *
+	 * @return void
+	 */
+	public function personsuggestions()
+	{
+		require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
+
+		$return = array();
+
+		$search       = $this->input->get('q', '', 'string');
+		$organization = $this->input->getint('org', 0);
+
+		if ($search && $organization)
+		{
+			$res = RedmemberLib::searchMember($search, $organization);
+
+			// Check the data.
+			if (empty($res))
+			{
+				$return = array();
+			}
+			else
+			{
+				foreach ($res as $member)
+				{
+					$return[] = $member->name;
+				}
+			}
+		}
+
+		// Use the correct json mime-type
+		header('Content-Type: application/json');
+
+		// Send the response.
+		echo json_encode($return);
+		JFactory::getApplication()->close();
+	}
 }
