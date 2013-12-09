@@ -21,6 +21,22 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
+<script type="application/javascript">
+	<?php JHtml::script('com_finder/autocompleter.js', false, true); ?>
+	window.addEvent('domready', function(){
+		var url = '<?php echo JRoute::_('index.php?option=com_redevent&controller=frontadmin&task=personsuggestions&tmpl=component', false); ?>';
+		var completer = new Autocompleter.Request.JSON(document.id('filter_person'), url, {'postVar': 'q', 'autoSubmit': true});
+
+		completer.addEvent('onRequest', function(element, request, data){
+			data['org'] = document.id('filter_organization').get('value');
+		});
+
+		completer.addEvent('onSelection', function(element, selected){
+			document.id('filter_organization').fireEvent('change');
+		});
+	});
+</script>
+
 <form name="org-form" id="org-form" method="post" action="index.php?option=com_redevent&controller=frontadmin&task=getbookings">
 <ul class="inline">
 	<li>
@@ -31,7 +47,7 @@ defined('_JEXEC') or die('Restricted access');
 	<li>
 		<input name="filter_person" id="filter_person" type="text"
 			class="input-medium" placeholder="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_PERSON'); ?>"
-		/> 
+		/>
 			<button type="button" id="search_person" class="btn"><i class="icon-search"></i></button>
 <button type="button" id="reset_person" class="btn"><?php echo JText::_('COM_REDEVENT_RESET');?></button>
 	</li>
