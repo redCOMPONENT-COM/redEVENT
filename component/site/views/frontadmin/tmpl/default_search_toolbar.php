@@ -21,6 +21,22 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
+<script type="application/javascript">
+	<?php JHtml::script('com_finder/autocompleter.js', false, true); ?>
+	window.addEvent('domready', function(){
+		var url = '<?php echo JRoute::_('index.php?option=com_redevent&controller=frontadmin&task=personsuggestions&tmpl=component', false); ?>';
+		var completer = new Autocompleter.Request.JSON(document.id('filter_person'), url, {'postVar': 'q', 'autoSubmit': true});
+
+		completer.addEvent('onRequest', function(element, request, data){
+			data['org'] = document.id('filter_organization').get('value');
+		});
+
+		completer.addEvent('onSelection', function(element, selected){
+			document.id('filter_organization').fireEvent('change');
+		});
+	});
+</script>
+
 <div class="search-toolbar">
 	<form name="org-form" id="org-form" method="post">
 		<ul class="inline">

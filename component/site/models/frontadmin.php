@@ -1214,4 +1214,28 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 
 		return false;
 	}
+
+	/**
+	 * Search for person within current organization
+	 *
+	 * @param   string  $input  the string to search for
+	 *
+	 * @return array
+	 */
+	public function searchPerson($input)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('');
+		$query->from('#__ AS ');
+		$query->join('INNER', '#__');
+		$query->join('LEFT', '#__');
+		$query->where('');
+		$query->group('');
+		$query->order('');
+
+		$db->setQuery($query);
+		$res = $db->loadObjectList();
+	}
 }

@@ -146,7 +146,7 @@ var redb2b = {
 			 */
 			document.id('reset_person').addEvent('click', function(){
 				document.id('filter_person').set('value', '');
-				document.id('filter_organization').set('value', '').fireEvent('change');
+				document.id('filter_organization').fireEvent('change');
 			});
 
 			/**
