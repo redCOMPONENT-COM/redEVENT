@@ -67,6 +67,7 @@
 			<filename>dispatcher.php</filename>
 			<filename>index.html</filename>
 			<filename>redeventsync.php</filename>
+			<filename>toolbar.php</filename>
 
 			<folder>controllers</folder>
 			<folder>models</folder>
