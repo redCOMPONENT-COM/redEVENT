@@ -380,6 +380,16 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 
 		$object->user_email    = (string) $xml->UserEmail;
 
+		if (isset($xml->PoNumber))
+		{
+			$object->ponumber    = (string) $xml->PoNumber;
+		}
+
+		if (isset($xml->Comments))
+		{
+			$object->comments    = (string) $xml->Comments;
+		}
+
 		if (isset($xml->Cancelled))
 		{
 			$object->cancelled    = (int) $xml->Cancelled;
@@ -463,6 +473,8 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 		$message->addChild('SessionCode',   $attendee->session_code);
 		$message->addChild('VenueCode',     $attendee->venue_code);
 		$message->addChild('UserEmail',     $attendee->email);
+		$message->addChild('PoNumber',      $attendee->ponumber);
+		$message->addChild('Comments',      $attendee->comments);
 		$message->addChild('Cancelled',     $attendee->cancelled);
 		$message->addChild('PriceGroupId',  $attendee->sessionpricegroup_id);
 		$message->addChild('WaitingList',   $attendee->waitinglist);
