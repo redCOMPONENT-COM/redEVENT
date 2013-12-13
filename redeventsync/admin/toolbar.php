@@ -50,4 +50,15 @@ class RedeventsyncToolbar extends FOFToolbar
 		JToolBarHelper::title(JText::_('COM_REDEVENTSYNC_MENU_SYNC'), 'sync');
 		JToolBarHelper::back();
 	}
+
+	/**
+	 * Renders the toolbar for the component's sync page
+	 *
+	 * @return void
+	 */
+	public function onLogsBrowse()
+	{
+		parent::onBrowse();
+		JToolBarHelper::custom('clear', 'trash', 'trash', Jtext::_('COM_REDEVENTSYNC_BUTTON_LOGS_CLEAR'), false);
+	}
 }
