@@ -35,8 +35,6 @@ class RedeventsyncToolbar extends FOFToolbar
 		// On frontend, buttons must be added specifically
 		list($isCli, $isAdmin) = FOFDispatcher::isCliAdmin();
 
-		exit('test');
-
 		if ($isAdmin || $this->renderFrontendSubmenu)
 		{
 			$this->renderSubmenu();
@@ -47,7 +45,7 @@ class RedeventsyncToolbar extends FOFToolbar
 			return;
 		}
 
-		JToolBarHelper::title(JText::_('COM_REDEVENTSYNC_MENU_SYNC'), 'sync');
+		JToolBarHelper::title(JText::_('COM_REDEVENTSYNC_MENU_SYNC'), 'redeventsync');
 		JToolBarHelper::back();
 	}
 
