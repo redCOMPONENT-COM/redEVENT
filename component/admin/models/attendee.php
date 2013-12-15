@@ -166,7 +166,7 @@ class RedEventModelAttendee extends JModel
 			$query->join('INNER', '#__rwf_submitters AS s ON s.id =  r.sid');
 			$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id =  r.xref');
 			$query->join('INNER', '#__redevent_events AS a ON a.id =  x.eventid');
-			$query->join('LEFT', '#__redevent_sessions_pricegroups AS sp ON sp.id =  x.sessionpricegroup_id');
+			$query->join('LEFT', '#__redevent_sessions_pricegroups AS sp ON sp.id =  r.sessionpricegroup_id');
 			$query->where('r.id = ' . $this->_id);
 
 			$db->setQuery($query);

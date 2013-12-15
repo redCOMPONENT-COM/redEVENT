@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redcomponent.redeventsync
+ * @package     Redcomponent.redeventsync
  * @subpackage  com_redeventsync
  * @copyright   Copyright (C) 2013 redCOMPONENT.com
  * @license     GNU General Public License version 2 or later
@@ -11,8 +11,7 @@ defined('_JEXEC') or die();
 require_once JPATH_ADMINISTRATOR . '/components/com_redeventsync/defines.php';
 
 /**
- * redEVENT sync logger session
- *
+ * RedEVENT sync logger session
  *
  * @package  RED.redeventsync
  * @since    2.5

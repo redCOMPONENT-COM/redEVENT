@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS `#__redeventsync_logs` (
   `direction` tinyint NOT NULL,
   `type` varchar(50) NOT NULL,
   `message` text NOT NULL,
+  `debug` text NOT NULL,
   `status` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`redeventsync_log_id`),
   KEY `transactionid` (`transactionid`)

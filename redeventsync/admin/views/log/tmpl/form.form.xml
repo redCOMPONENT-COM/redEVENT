@@ -40,12 +40,21 @@
 			label="COM_REDEVENTSYNC_LOGS_FIELD_REQUEST_MESSAGE"
 			labelclass="redeventsync-label"
 			rows="15"
+			cols="80"
 		 />
 
 		<field name="status" type="text"
 			class="inputbox"
 			label="COM_REDEVENTSYNC_LOGS_FIELD_STATUS"
 			labelclass="redeventsync-label"
+		 />
+
+		<field name="debug" type="textarea"
+			class="inputbox"
+			label="COM_REDEVENTSYNC_LOGS_FIELD_DEBUG"
+			labelclass="redeventsync-label"
+			rows="15"
+			cols="80"
 		 />
 	</fieldset>
 </form>
