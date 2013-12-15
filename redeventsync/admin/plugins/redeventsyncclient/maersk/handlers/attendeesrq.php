@@ -233,7 +233,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 			// Log
 			$this->log(
 				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
-				$xml, 'error');
+				$xml, 'error', $e->getMessage());
 
 			$response = new SimpleXMLElement('<AttendeeRS/>');
 			$response->addChild('TransactionId', $transaction_id);
@@ -247,7 +247,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 			// Log
 			$this->log(
 				REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
-				$response, 'error');
+				$response, 'error response');
 
 			return false;
 		}
@@ -333,7 +333,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 			// Log
 			$this->log(
 				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
-				$xml, 'error');
+				$xml, 'error', $e->getMessage());
 
 			$response = new SimpleXMLElement('<AttendeeRS/>');
 			$response->addChild('TransactionId', $transaction_id);
@@ -347,7 +347,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 			// Log
 			$this->log(
 				REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
-				$response, 'error');
+				$response, 'error response');
 
 			return false;
 		}

@@ -93,7 +93,8 @@ class RedeventsyncHandlerGetsessionsrs extends RedeventsyncHandlerAbstractmessag
 			// Log
 			$this->log(
 				REDEVENTSYNC_LOG_DIRECTION_INCOMING, 0,
-				$xml, 'error');
+				$xml, 'error', $e->getMessage()
+			);
 			$this->enqueueMessage($e->getMessage());
 
 			return false;

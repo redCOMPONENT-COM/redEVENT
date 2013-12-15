@@ -60,6 +60,10 @@ class RedeventsyncHandlerCustomersrq extends RedeventsyncHandlerAbstractmessage
 		}
 		catch (Exception $e)
 		{
+			// Log
+			$this->log(REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
+				$xml, 'error', $e->getMessage());
+
 			$response = new SimpleXMLElement('<CustomerRS/>');
 			$response->addChild('TransactionId', $transaction_id);
 
@@ -71,7 +75,7 @@ class RedeventsyncHandlerCustomersrq extends RedeventsyncHandlerAbstractmessage
 
 			// Log
 			$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
-				$response, 'error');
+				$response, 'error response');
 
 			return false;
 		}

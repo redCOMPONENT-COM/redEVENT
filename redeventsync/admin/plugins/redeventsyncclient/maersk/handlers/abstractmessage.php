@@ -137,19 +137,13 @@ class RedeventsyncHandlerAbstractmessage
 	 * @param   int               $transactionid  transaction id
 	 * @param   SimpleXMLElement  $xml            xml message
 	 * @param   string            $status         status
+	 * @param   string            $debug          debug info
 	 *
 	 * @return void
 	 */
-	protected function log($direction, $transactionid, SimpleXMLElement $xml, $status)
+	protected function log($direction, $transactionid, SimpleXMLElement $xml, $status, $debug = null)
 	{
-		$log = FOFTable::getAnInstance('logs', 'RedeventsyncTable');
-		$log->direction = $direction;
-		$log->transactionid = $transactionid;
-		$log->type = $xml->getName();
-		$log->message = $xml->asXML();
-		$log->status = $status;
-		$log->date = JFactory::getDate()->toSql(true);
-		$log->store();
+		RedeventsyncHelperMessagelog::log($direction, $xml->getName(), $transactionid, $xml->asXML(), $status, $debug);
 	}
 
 	/**

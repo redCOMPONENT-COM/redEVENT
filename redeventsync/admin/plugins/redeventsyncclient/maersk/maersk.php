@@ -12,6 +12,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 // Import library dependencies
 jimport('joomla.plugin.plugin');
 
+// Register library prefix
+JLoader::registerPrefix('Redeventsync', JPATH_LIBRARIES . '/redeventsync');
+
 require_once 'helper.php';
 require_once 'client.php';
 
@@ -128,6 +131,14 @@ class plgRedeventsyncclientMaersk extends JPlugin
 			}
 
 			libxml_clear_errors();
+			RedeventsyncHelperMessagelog::log(
+				REDEVENTSYNC_LOG_DIRECTION_INCOMING,
+				'',
+				0,
+				$data,
+				'error',
+				'Parsing error: ' . implode("\n", $errors) . "\n"
+			);
 			throw new Exception('Parsing error: ' . implode("\n", $errors));
 		}
 
@@ -146,6 +157,14 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		// Check if it's a supported type
 		if (! in_array($type, $supported))
 		{
+			RedeventsyncHelperMessagelog::log(
+				REDEVENTSYNC_LOG_DIRECTION_INCOMING,
+				'',
+				0,
+				$data,
+				'error',
+				'Parsing error: Unsupported schema ' . $type
+			);
 			throw new Exception('Parsing error: Unsupported schema ' . $type);
 		}
 		else
@@ -166,6 +185,14 @@ class plgRedeventsyncclientMaersk extends JPlugin
 			}
 
 			libxml_clear_errors();
+			RedeventsyncHelperMessagelog::log(
+				REDEVENTSYNC_LOG_DIRECTION_INCOMING,
+				'',
+				0,
+				$data,
+				'error',
+				'Parsing error: ' . implode("\n", $errors)
+			);
 			throw new Exception('Parsing error: ' . implode("\n", $errors));
 		}
 

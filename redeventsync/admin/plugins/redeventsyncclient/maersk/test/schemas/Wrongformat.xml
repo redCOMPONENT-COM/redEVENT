@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AttendeesRQ
+	xmlns="http://www.redcomponent.com/redevent">
+	<CreateAttendeeRQ>
+		<TTransactionId>12323</TTransactionId>
+		<SessionCode>xml 2</SessionCode>
+		<VenueCode>V1</VenueCode>
+		<UserEmail>julv@free.fr</UserEmail>
+		<Cancelled>0</Cancelled>
+		<WaitingList>0</WaitingList>
+		<Confirmed>1</Confirmed>
+		<Answers>
+			<Answer FieldId="3" FieldName="erter" FieldType="ertret" FieldValue="juxml"></Answer>
+			<Answer FieldId="4" FieldName="erter" FieldType="ertret" FieldValue="xml@noemail.frfr"></Answer>
+		</Answers>
+	</CreateAttendeeRQ>
+
+	<CreateAttendeeRQ>
+		<TransactionId>1232345</TransactionId>
+		<SessionCode>xml 2</SessionCode>
+		<VenueCode>V1</VenueCode>
+		<UserEmail>julv@free.fr</UserEmail>
+		<Cancelled>0</Cancelled>
+		<WaitingList>0</WaitingList>
+		<Confirmed>1</Confirmed>
+		<Answers>
+			<Answer FieldId="3" FieldName="erter" FieldType="ertret" FieldValue="juxml"></Answer>
+			<Answer FieldId="4" FieldName="erter" FieldType="ertret" FieldValue="xml@noemail.frfr"></Answer>
+		</Answers>
+	</CreateAttendeeRQ>
+
+	<ModifyAttendeeRQ>
+		<TransactionId>123234567</TransactionId>
+		<SessionCode>xml 2</SessionCode>
+		<VenueCode>V1</VenueCode>
+		<UserEmail>julv@free.fr</UserEmail>
+		<Cancelled>0</Cancelled>
+		<WaitingList>0</WaitingList>
+		<Confirmed>1</Confirmed>
+		<Answers>
+			<Answer FieldId="3" FieldName="erter" FieldType="ertret" FieldValue="juxml"></Answer>
+			<Answer FieldId="4" FieldName="erter" FieldType="ertret" FieldValue="xml2@noemail.frfr"></Answer>
+		</Answers>
+	</ModifyAttendeeRQ>
+
+	<DeleteAttendeeRQ>
+		<TransactionId>898989</TransactionId>
+		<SessionCode>xml 2</SessionCode>
+		<VenueCode>V1</VenueCode>
+		<UserEmail>julv@free.fr</UserEmail>
+	</DeleteAttendeeRQ>
+</AttendeesRQ>
