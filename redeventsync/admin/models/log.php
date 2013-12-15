@@ -13,6 +13,8 @@ class RedeventsyncModelLog extends FOFModel
 	/**
 	 * Clear logs
 	 *
+	 * @throws Exception
+	 *
 	 * @return boolean
 	 */
 	public function clear()
@@ -24,6 +26,7 @@ class RedeventsyncModelLog extends FOFModel
 		$query->from('#__redeventsync_logs');
 
 		$db->setQuery($query);
+
 		if (!$db->query())
 		{
 			throw new Exception('Error deleting logs: ' . $db->getErrorMsg());

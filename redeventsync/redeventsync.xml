@@ -70,6 +70,7 @@
 			<filename>toolbar.php</filename>
 
 			<folder>controllers</folder>
+			<folder>fields</folder>
 			<folder>models</folder>
 			<folder>language</folder>
 			<folder>plugins</folder>
