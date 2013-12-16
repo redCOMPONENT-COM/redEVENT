@@ -530,6 +530,18 @@ class plgRedeventsyncclientMaersk extends JPlugin
 	}
 
 	/**
+	 * handles attendee cancellation
+	 *
+	 * @param   int  $attendee_id  attendee id
+	 *
+	 * @return bool
+	 */
+	public function onHandleAttendeeCancelled($attendee_id)
+	{
+		return $this->onHandleAttendeeModified($attendee_id);
+	}
+
+	/**
 	 * handles attendee deletion
 	 *
 	 * @param   int  $attendee_id  attendee id
