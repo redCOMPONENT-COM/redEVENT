@@ -35,23 +35,22 @@ class plgRedeventRedeventsync extends JPlugin
 	/**
 	 * handles session save to generate Create/Modify SessionRQ
 	 *
-	 * @param   int  $session_id  session id
-	 * @param   bool $isNew       is new session
+	 * @param   int   $session_id  session id
+	 * @param   bool  $isNew       is new session
 	 *
 	 * @return bool
 	 */
 	public function onAfterSessionSave($session_id, $isNew = false)
 	{
-		JPluginHelper::importPlugin('redeventsyncclient');
-		$dispatcher = JDispatcher::getInstance();
-
 		try
 		{
+			JPluginHelper::importPlugin('redeventsyncclient');
+			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onHandleAfterSessionSave', array($session_id, $isNew));
 		}
 		catch (Exception $e)
 		{
-			echo $e->getMessage();
+			RedeventsyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAfterSessionSave', 0, null, $e->getMessage());
 		}
 
 		return true;
@@ -60,73 +59,90 @@ class plgRedeventRedeventsync extends JPlugin
 	/**
 	 * handles session delete to generate DeleteSessionRQ
 	 *
-	 * @param $session_code
+	 * @param   string  $session_code  session code
 	 *
 	 * @return bool
 	 */
 	public function onAfterSessionDelete($session_code)
 	{
-		JPluginHelper::importPlugin('redeventsyncclient');
-		$dispatcher = JDispatcher::getInstance();
-
 		try
 		{
+			JPluginHelper::importPlugin('redeventsyncclient');
+			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onHandleAfterSessionDelete', array($session_code));
 		}
 		catch (Exception $e)
 		{
-			echo $e->getMessage();
+			RedeventsyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAfterSessionDelete', 0, null, $e->getMessage());
 		}
 
 		return true;
 	}
 
+	/**
+	 * handles attendee created
+	 *
+	 * @param   int  $attendee_id  attendee id
+	 *
+	 * @return bool
+	 */
 	public function onAttendeeCreated($attendee_id)
 	{
-		JPluginHelper::importPlugin('redeventsyncclient');
-		$dispatcher = JDispatcher::getInstance();
-
 		try
 		{
+			JPluginHelper::importPlugin('redeventsyncclient');
+			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onHandleAttendeeCreated', array($attendee_id));
 		}
 		catch (Exception $e)
 		{
-			echo $e->getMessage();
+			RedeventsyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeCreated', 0, null, $e->getMessage());
 		}
 
 		return true;
 	}
 
+	/**
+	 * handles attendee modified
+	 *
+	 * @param   int  $attendee_id  attendee id
+	 *
+	 * @return bool
+	 */
 	public function onAttendeeModified($attendee_id)
 	{
-		JPluginHelper::importPlugin('redeventsyncclient');
-		$dispatcher = JDispatcher::getInstance();
-
 		try
 		{
+			JPluginHelper::importPlugin('redeventsyncclient');
+			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onHandleAttendeeModified', array($attendee_id));
 		}
 		catch (Exception $e)
 		{
-			echo $e->getMessage();
+			RedeventsyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeModified', 0, null, $e->getMessage());
 		}
 
 		return true;
 	}
 
+	/**
+	 * handles attendee deleted
+	 *
+	 * @param   int  $attendee_id  attendee id
+	 *
+	 * @return bool
+	 */
 	public function onAttendeeDeleted($attendee_id)
 	{
-		JPluginHelper::importPlugin('redeventsyncclient');
-		$dispatcher = JDispatcher::getInstance();
-
 		try
 		{
+			JPluginHelper::importPlugin('redeventsyncclient');
+			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onHandleAttendeeDeleted', array($attendee_id));
 		}
 		catch (Exception $e)
 		{
-			echo $e->getMessage();
+			RedeventsyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeDeleted', 0, null, $e->getMessage());
 		}
 
 		return true;
