@@ -88,6 +88,8 @@ class RedeventsyncClientMaersk
 
 		$this->validate($xml->asXML(), 'GetSessionsRQ');
 
+		RedeventsyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'GetSessionsRQ', $transaction_id, $xml->asXML(), 'sending');
+
 		$resp = $this->send($xml->asXML());
 
 		return $resp;
@@ -110,6 +112,8 @@ class RedeventsyncClientMaersk
 		$xml->addChild('VenueCode',     $venueCode);
 
 		$this->validate($xml->asXML(), 'GetSessionAttendeesRQ');
+
+		RedeventsyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'GetSessionAttendeesRQ', $transaction_id, $xml->asXML(), 'sending');
 
 		$resp = $this->send($xml->asXML());
 

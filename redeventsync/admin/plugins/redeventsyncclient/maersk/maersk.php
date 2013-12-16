@@ -322,6 +322,12 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		{
 			$this->logger->write('Syncing ' . $venue);
 			$resp = $client->getSessions(time(), $this->getOption('from'), $this->getOption('to'), $venue);
+
+			if (!$resp)
+			{
+				return false;
+			}
+
 			$this->handle($resp);
 		}
 		else
@@ -332,6 +338,12 @@ class plgRedeventsyncclientMaersk extends JPlugin
 			{
 				$this->logger->write('Syncing ' . $venue);
 				$resp = $client->getSessions(time(), $this->getOption('from'), $this->getOption('to'), $venue);
+
+				if (!$resp)
+				{
+					return false;
+				}
+
 				$this->handle($resp);
 			}
 		}
