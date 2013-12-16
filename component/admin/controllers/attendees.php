@@ -175,7 +175,7 @@ class RedEventControllerAttendees extends RedEventController
 		foreach($cid as $attendee_id)
 		{
 			JPluginHelper::importPlugin('redevent');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
 		}
 
@@ -220,7 +220,7 @@ class RedEventControllerAttendees extends RedEventController
 	    foreach($cid as $attendee_id)
 	    {
 		    JPluginHelper::importPlugin('redevent');
-		    $dispatcher =& JDispatcher::getInstance();
+		    $dispatcher = JDispatcher::getInstance();
 		    $res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
 	    }
 
@@ -252,7 +252,7 @@ class RedEventControllerAttendees extends RedEventController
 	    foreach($cid as $attendee_id)
 	    {
 		    JPluginHelper::importPlugin('redevent');
-		    $dispatcher =& JDispatcher::getInstance();
+		    $dispatcher = JDispatcher::getInstance();
 		    $res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
 	    }
 
@@ -287,7 +287,7 @@ class RedEventControllerAttendees extends RedEventController
 		foreach($cid as $attendee_id)
 		{
 			JPluginHelper::importPlugin('redevent');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 		    $res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
 		}
     }
@@ -316,7 +316,7 @@ class RedEventControllerAttendees extends RedEventController
 	    foreach($cid as $attendee_id)
 	    {
 		    JPluginHelper::importPlugin('redevent');
-		    $dispatcher =& JDispatcher::getInstance();
+		    $dispatcher = JDispatcher::getInstance();
 		    $res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
 	    }
 
@@ -344,7 +344,7 @@ class RedEventControllerAttendees extends RedEventController
 	    foreach($cid as $attendee_id)
 	    {
 		    JPluginHelper::importPlugin('redevent');
-		    $dispatcher =& JDispatcher::getInstance();
+		    $dispatcher = JDispatcher::getInstance();
 		    $res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
 	    }
 
@@ -372,7 +372,7 @@ class RedEventControllerAttendees extends RedEventController
 	    foreach($cid as $attendee_id)
 	    {
 		    JPluginHelper::importPlugin('redevent');
-		    $dispatcher =& JDispatcher::getInstance();
+		    $dispatcher = JDispatcher::getInstance();
 		    $res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
 	    }
 
@@ -517,7 +517,7 @@ class RedEventControllerAttendees extends RedEventController
 			$cache->clean();
 
 			JPluginHelper::importPlugin('redevent');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$res = $dispatcher->trigger('onAttendeeModified', array($returnid));
 
 			switch ($task)
