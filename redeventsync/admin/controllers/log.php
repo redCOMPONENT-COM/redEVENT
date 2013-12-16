@@ -18,7 +18,7 @@ class RedeventsyncControllerLog extends FOFController
 {
 	public function clear()
 	{
-		$model = $this->getModel('Log');
+		$model = $this->getModel('Logs');
 
 		try
 		{
