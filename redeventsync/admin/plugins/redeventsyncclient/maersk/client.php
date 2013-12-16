@@ -137,6 +137,8 @@ class RedeventsyncClientMaersk
 
 		$this->validate($xml->asXML(), 'CustomersRQ');
 
+		RedeventsyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'CustomersRQ', $transaction_id, $xml->asXML(), 'sending');
+
 		$resp = $this->send($xml->asXML());
 
 		return $resp;
