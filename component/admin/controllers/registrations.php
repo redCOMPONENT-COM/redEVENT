@@ -39,11 +39,11 @@ class RedEventControllerRegistrations extends RedEventController
 	 *
 	 *@since 0.9
 	 */
-	public function __construct() 
+	public function __construct()
 	{
 		parent::__construct();
 	}
-	
+
 	/**
 	 * set cancelled status to an attendee registration
 	 *
@@ -52,13 +52,20 @@ class RedEventControllerRegistrations extends RedEventController
 	public function cancelreg()
 	{
 		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
-	
+
 		$model = $this->getModel('attendees');
-	
+
 		if ($model->cancelreg($cid))
 		{
 			$msg = JText::_( 'COM_REDEVENT_ATTENDEES_REGISTRATION_CANCELLED');
 			$this->setRedirect( 'index.php?option=com_redevent&view=registrations&filter_cancelled=1', $msg );
+
+			foreach($cid as $attendee_id)
+			{
+				JPluginHelper::importPlugin('redevent');
+				$dispatcher = JDispatcher::getInstance();
+				$res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
+			}
 		}
 		else
 		{
@@ -67,7 +74,7 @@ class RedEventControllerRegistrations extends RedEventController
 		}
 		return true;
 	}
-	
+
 	/**
 	 * remove cancelled status from an attendee registration
 	 *
@@ -76,13 +83,20 @@ class RedEventControllerRegistrations extends RedEventController
 	public function uncancelreg()
 	{
 		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
-	
+
 		$model = $this->getModel('attendees');
-	
+
 		if ($model->uncancelreg($cid))
 		{
 			$msg = JText::_( 'COM_REDEVENT_ATTENDEES_REGISTRATION_UNCANCELLED');
 			$this->setRedirect( 'index.php?option=com_redevent&view=registrations&filter_cancelled=0', $msg );
+
+			foreach($cid as $attendee_id)
+			{
+				JPluginHelper::importPlugin('redevent');
+				$dispatcher =& JDispatcher::getInstance();
+				$res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
+			}
 		}
 		else
 		{
@@ -91,8 +105,8 @@ class RedEventControllerRegistrations extends RedEventController
 		}
 		return true;
 	}
-	
-	 
+
+
 	/**
 	 * Delete attendees
 	 *
@@ -101,23 +115,33 @@ class RedEventControllerRegistrations extends RedEventController
 	 * @since 2.5
 	 */
 	public function remove($cid = array())
-	{		
+	{
 		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
-		
+
 		/* Check if anything is selected */
-		if (!is_array( $cid ) || count( $cid ) < 1) {
+		if (!is_array( $cid ) || count( $cid ) < 1)
+		{
 			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_delete' ) );
 		}
 		$total 	= count( $cid );
-		
+
 		/* Get all submitter ID's */
 		$model = $this->getModel('registrations');
-				
-		if(!$model->remove($cid)) {
-      RedEventError::raiseWarning(0, JText::_( "COM_REDEVENT_CANT_DELETE_REGISTRATIONS" ) . ': ' . $model->getError() );
+
+		if (!$model->remove($cid))
+		{
+			RedEventError::raiseWarning(0, JText::_( "COM_REDEVENT_CANT_DELETE_REGISTRATIONS" ) . ': ' . $model->getError() );
+
 			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
 		}
-				
+
+		foreach($cid as $attendee_id)
+		{
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAttendeeDeleted', array($attendee_id));
+		}
+
 		$cache = JFactory::getCache('com_redevent');
 		$cache->clean();
 
@@ -125,7 +149,7 @@ class RedEventControllerRegistrations extends RedEventController
 
 		$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg );
 	}
-	
+
 	/**
 	 * confirm an attendee registration
 	 *
@@ -134,13 +158,20 @@ class RedEventControllerRegistrations extends RedEventController
 	public function confirmattendees()
 	{
 		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
-	
+
 		$model = $this->getModel('attendees');
-	
+
 		if ($model->confirmattendees($cid))
 		{
 			$msg = JText::_('COM_REDEVENT_REGISTRATION_CONFIRMED');
-		$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg );
+			$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg );
+
+			foreach($cid as $attendee_id)
+			{
+				JPluginHelper::importPlugin('redevent');
+				$dispatcher = JDispatcher::getInstance();
+				$res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
+			}
 		}
 		else
 		{
@@ -149,7 +180,7 @@ class RedEventControllerRegistrations extends RedEventController
 		}
 		return true;
 	}
-	
+
 	/**
 	 * remove confirm status from an attendee registration
 	 *
@@ -158,13 +189,20 @@ class RedEventControllerRegistrations extends RedEventController
 	public function unconfirmattendees()
 	{
 		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
-	
+
 		$model = $this->getModel('attendees');
-	
+
 		if ($model->unconfirmattendees($cid))
 		{
 			$msg = JText::_('COM_REDEVENT_REGISTRATION_UNCONFIRMED');
 			$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg );
+
+			foreach($cid as $attendee_id)
+			{
+				JPluginHelper::importPlugin('redevent');
+				$dispatcher =& JDispatcher::getInstance();
+				$res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
+			}
 		}
 		else
 		{
@@ -173,23 +211,30 @@ class RedEventControllerRegistrations extends RedEventController
 		}
 		return true;
 	}
-	
+
 	/**
 	 * puts attendees on the waiting list of the session
-	 * 
+	 *
 	 * @return boolean true on success
 	 */
 	public function onwaiting()
 	{
 		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
 		$count = count($cid);
-		
+
 		$model = $this->getModel('registrations');
-	
+
 		if ($model->togglewaiting($cid, 1))
 		{
 			$msg = $count.' '.JText::_('COM_REDEVENT_PUT_ON_WAITING_SUCCESS');
 			$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg );
+
+			foreach($cid as $attendee_id)
+			{
+				JPluginHelper::importPlugin('redevent');
+				$dispatcher = JDispatcher::getInstance();
+				$res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
+			}
 		}
 		else
 		{
@@ -198,7 +243,7 @@ class RedEventControllerRegistrations extends RedEventController
 		}
 		return true;
 	}
-	
+
 	/**
 	 * puts attendees off the waiting list of the session
 	 *
@@ -208,13 +253,20 @@ class RedEventControllerRegistrations extends RedEventController
 	{
 		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
 		$count = count($cid);
-		
+
 		$model = $this->getModel('registrations');
-		
+
 		if ($model->togglewaiting($cid, 0))
 		{
 			$msg = $count.' '.JText::_('COM_REDEVENT_PUT_OFF_WAITING_SUCCESS');
 			$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg );
+
+			foreach($cid as $attendee_id)
+			{
+				JPluginHelper::importPlugin('redevent');
+				$dispatcher = JDispatcher::getInstance();
+				$res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
+			}
 		}
 		else
 		{
