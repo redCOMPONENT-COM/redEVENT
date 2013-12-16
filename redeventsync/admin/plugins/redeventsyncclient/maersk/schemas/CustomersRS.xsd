@@ -21,9 +21,9 @@
 										</xs:annotation>
 										<xs:complexType>
 											<xs:sequence>
-												<xs:element type="xs:string" name="Emailaddress">
+												<xs:element type="xs:nonNegativeInteger" name="CustomerID" minOccurs="0">
 													<xs:annotation>
-														<xs:documentation source="Description" xml:lang="en">Customer Email address. This is an unique identifier in redEVENT database</xs:documentation>
+														<xs:documentation source="Description" xml:lang="en">Customer CustomerID</xs:documentation>
 													</xs:annotation>
 												</xs:element>
 												<xs:element type="xs:string" name="Firstname">
@@ -66,6 +66,26 @@
 														<xs:documentation source="Description" xml:lang="en">Customer Address country code</xs:documentation>
 													</xs:annotation>
 												</xs:element>
+												<xs:element type="xs:string" name="Emailaddress">
+													<xs:annotation>
+														<xs:documentation source="Description" xml:lang="en">Customer Email address. This is an unique identifier in redEVENT database</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element type="xs:string" name="Nationality" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation source="Description" xml:lang="en">Customer Nationality country code</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element type="xs:string" name="TitleRank" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation source="Description" xml:lang="en">Customer Title/Rank</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element type="xs:string" name="Birthdate" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation source="Description" xml:lang="en">Customer birthdate</xs:documentation>
+													</xs:annotation>
+												</xs:element>
 												<xs:element type="xs:string" name="Phonenumber" minOccurs="0">
 													<xs:annotation>
 														<xs:documentation source="Description" xml:lang="en">Customer Phone number</xs:documentation>
@@ -76,29 +96,34 @@
 														<xs:documentation source="Description" xml:lang="en">Customer Mobile Phone number</xs:documentation>
 													</xs:annotation>
 												</xs:element>
-												<xs:element type="xs:string" name="Company" minOccurs="0">
+												<xs:element type="xs:string" name="CompanyCvrNr" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation source="Description" xml:lang="en">Customer Company CVR number</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element type="xs:string" name="CompanyName" minOccurs="0">
 													<xs:annotation>
 														<xs:documentation source="Description" xml:lang="en">Customer Company</xs:documentation>
 													</xs:annotation>
 												</xs:element>
-												<xs:element type="xs:string" name="Segment" minOccurs="0">
+												<xs:element type="xs:string" name="CompanyZip" minOccurs="0">
 													<xs:annotation>
-														<xs:documentation source="Description" xml:lang="en">Customer Segment</xs:documentation>
+														<xs:documentation source="Description" xml:lang="en">Customer Company Zipcode</xs:documentation>
 													</xs:annotation>
 												</xs:element>
-												<xs:element type="xs:string" name="PointOfSales" minOccurs="0">
+												<xs:element type="xs:string" name="CompanyAddress" minOccurs="0">
 													<xs:annotation>
-														<xs:documentation source="Description" xml:lang="en">Customer PointOfSales</xs:documentation>
+														<xs:documentation source="Description" xml:lang="en">Customer Company Address</xs:documentation>
 													</xs:annotation>
 												</xs:element>
-												<xs:element type="xs:string" name="Salesman" minOccurs="0">
+												<xs:element type="xs:string" name="CompanyPhone" minOccurs="0">
 													<xs:annotation>
-														<xs:documentation source="Description" xml:lang="en">Customer Salesman</xs:documentation>
+														<xs:documentation source="Description" xml:lang="en">Customer Company Phone</xs:documentation>
 													</xs:annotation>
 												</xs:element>
-												<xs:element type="xs:nonNegativeInteger" name="CustomerID" minOccurs="0">
+												<xs:element type="xs:string" name="CompanySegmentPos" minOccurs="0">
 													<xs:annotation>
-														<xs:documentation source="Description" xml:lang="en">Customer CustomerID</xs:documentation>
+														<xs:documentation source="Description" xml:lang="en">Customer Company segment/pos</xs:documentation>
 													</xs:annotation>
 												</xs:element>
 											</xs:sequence>

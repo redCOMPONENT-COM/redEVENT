@@ -83,6 +83,11 @@
 									<xs:documentation source="Description" xml:lang="en">the form answers for this attendee</xs:documentation>
 								</xs:annotation>
 							</xs:element>
+							<xs:element name="Payment" type="re:rwfPayment" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Payment information</xs:documentation>
+								</xs:annotation>
+							</xs:element>
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
@@ -160,6 +165,11 @@
 									<xs:documentation source="Description" xml:lang="en">the form answers for this attendee</xs:documentation>
 								</xs:annotation>
 							</xs:element>
+							<xs:element name="Payment" type="re:rwfPayment" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Payment information</xs:documentation>
+								</xs:annotation>
+							</xs:element>
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
@@ -228,6 +238,31 @@
 						</xs:extension>
 					</xs:simpleContent>
 				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="rwfPayment">
+		<xs:sequence>
+			<xs:element type="xs:string" name="Plateform">
+				<xs:annotation>
+					<xs:documentation source="Description" xml:lang="en">Name of the payment plateform (e.g: epay, paypal, etc...)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element type="xs:string" name="TransactionId">
+				<xs:annotation>
+					<xs:documentation source="Description" xml:lang="en">Payment transaction id</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element type="xs:string" name="OrderId">
+				<xs:annotation>
+					<xs:documentation source="Description" xml:lang="en">Payment order id</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element type="xs:string" name="CvrNo">
+				<xs:annotation>
+					<xs:documentation source="Description" xml:lang="en">Cvr Number used for payment</xs:documentation>
+				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
