@@ -126,16 +126,25 @@ class RedeventsyncClientMaersk
 	 * @param   string  $transaction_id  transaction id
 	 * @param   string  $email           user email
 	 * @param   string  $venueCode       venue code
+	 * @param   string  $firstname       first name
+	 * @param   string  $lastname        lastname
 	 *
 	 * @return  SimpleXMLElement|boolean  The result or FALSE.
 	 */
-	public function getCustomer($transaction_id, $email, $venueCode)
+	public function getCustomer($transaction_id, $email, $venueCode, $firstname = null, $lastname = null)
 	{
 		$xml = new SimpleXMLElement('<CustomersRQ xmlns="http://www.redcomponent.com/redevent" />');
 		$req = new SimpleXMLElement('<CustomerRQ/>');
-		$req->addChild('TransactionId', $transaction_id);
-		$req->addChild('Emailaddress',         $email);
-		$req->addChild('VenueCode',         $venueCode);
+		$req->addChild('TransactionId',    $transaction_id);
+		$req->addChild('Emailaddress',     $email);
+
+		if ($firstname || $lastname)
+		{
+			$req->addChild('CurrentFirstname', $firstname);
+			$req->addChild('CurrentLastname',  $lastname);
+		}
+		
+		$req->addChild('VenueCode',        $venueCode);
 
 		$this->appendElement($xml, $req);
 

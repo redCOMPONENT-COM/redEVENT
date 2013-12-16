@@ -88,10 +88,10 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		{
 			$this->handle($data);
 		}
-		catch (MissingUserException $e)
+		catch (MismatchUserException $e)
 		{
-			// Try to create user from Customer
-			$res = $this->getCustomer($e->email, $e->venueCode);
+			// Try to update/create user from Customer
+			$res = $this->getCustomer($e->email, $e->venueCode, $e->firstname, $e->lastname);
 
 			if (!$res)
 			{
@@ -392,10 +392,10 @@ class plgRedeventsyncclientMaersk extends JPlugin
 			{
 				$this->handle($resp);
 			}
-			catch (MissingUserException $e)
+			catch (MismatchUserException $e)
 			{
-				// Try to create user from Customer
-				$res = $this->getCustomer($e->email, $e->venueCode);
+				// Try to update/create user from Customer
+				$res = $this->getCustomer($e->email, $e->venueCode, $e->firstname, $e->lastname);
 
 				if (!$res)
 				{
@@ -413,13 +413,15 @@ class plgRedeventsyncclientMaersk extends JPlugin
 	 *
 	 * @param   string  $email      email
 	 * @param   string  $venueCode  venue code
+	 * @param   string  $firstname  first name
+	 * @param   string  $lastname   lastname
 	 *
 	 * @return int the id of the new user
 	 */
-	protected function getCustomer($email, $venueCode)
+	protected function getCustomer($email, $venueCode, $firstname = null, $lastname = null)
 	{
 		$client = $this->getClient();
-		$response = $client->getCustomer(time(), $email, $venueCode);
+		$response = $client->getCustomer(time(), $email, $venueCode, $firstname, $lastname);
 
 		$this->handle($response);
 
@@ -586,9 +588,33 @@ class plgRedeventsyncclientMaersk extends JPlugin
 	}
 }
 
-class MissingUserException extends Exception
+class MismatchUserException extends Exception
 {
 	public $email;
+
+	public $venueCode;
+
+	public $firstname;
+
+	public $lastname;
+
+	// Redefine the exception to include
+	public function __construct($email, $venueCode, $firstname = null, $lastname = null)
+	{
+		$this->email = $email;
+		$this->venueCode = $venueCode;
+		$this->firstname = $firstname;
+		$this->lastname = $lastname;
+
+		// make sure everything is assigned properly
+		parent::__construct('missing user, or mismatch firstname/lastname, for user for email ' . $email . ' at venue ' . $venueCode);
+	}
+}
+
+class MissingUserException extends MismatchUserException
+{
+	public $email;
+
 	public $venueCode;
 
 	// Redefine the exception to include
@@ -597,8 +623,7 @@ class MissingUserException extends Exception
 		$this->email = $email;
 		$this->venueCode = $venueCode;
 
-		// make sure everything is assigned properly
-		parent::__construct('No user found for email ' . $email . ' at venue ' . $venueCode);
+		parent::__construct($email, $venueCode);
 	}
 }
 

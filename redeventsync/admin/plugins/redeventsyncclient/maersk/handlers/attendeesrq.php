@@ -143,12 +143,16 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 
 
 			// Make sure we have an user !
-			$userid = RedeventsyncclientMaerskHelper::getUser($attendee->user_email);
+			$user = RedeventsyncclientMaerskHelper::getUser($attendee->user_email);
 
-			if (!$userid)
+			if (!$user->id)
 			{
 				// We need an user, trigger a special Exception to force getting one
 				throw new MissingUserException($attendee->user_email, $attendee->venue_code);
+			}
+			elseif ($attendee->firstname != $user->rm_firstname || $attendee->lastname != $user->rm_lastname)
+			{
+				throw new MismatchUserException($attendee->user_email, $attendee->venue_code, $user->rm_firstname, $user->rm_lastname);
 			}
 
 
@@ -199,7 +203,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 			$row->xref = $session_details->session_id;
 			$row->sid = $sid;
 			$row->submit_key = $result->submit_key;
-			$row->uid = RedeventsyncclientMaerskHelper::getUser($attendee->user_email);
+			$row->uid = $user->id;
 
 			// Now save !
 			if (!($row->check() && $row->store()))
@@ -379,6 +383,16 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 		$object->venue_code   = (string) $xml->VenueCode;
 
 		$object->user_email    = (string) $xml->UserEmail;
+
+		if (isset($xml->Firstname))
+		{
+			$object->firstname    = (string) $xml->Firstname;
+		}
+
+		if (isset($xml->Lastname))
+		{
+			$object->lastname    = (string) $xml->Lastname;
+		}
 
 		if (isset($xml->PoNumber))
 		{

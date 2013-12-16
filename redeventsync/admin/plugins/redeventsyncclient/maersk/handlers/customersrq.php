@@ -34,7 +34,6 @@ class RedeventsyncHandlerCustomersrq extends RedeventsyncHandlerAbstractmessage
 		try
 		{
 			$email = (string) $xml->Emailaddress;
-			$row = JTable::getInstance('RedEvent_eventvenuexref', '');
 
 			// Find user
 			$db = JFactory::getDbo();

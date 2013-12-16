@@ -13,7 +13,7 @@ class RedeventsyncclientMaerskHelper
 	 *
 	 * @param   string  $email  user email
 	 *
-	 * @return mixed int user id  or false if not found
+	 * @return mixed object user id and firstname/lastname or false if not found
 	 *
 	 * @throws Exception
 	 */
@@ -27,15 +27,18 @@ class RedeventsyncclientMaerskHelper
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('id');
-		$query->from('#__users');
-		$query->where('email = ' . $db->quote($email));
+		$query->select('u.id');
+		$query->select('rm.rm_firstname, rm.rm_lastname');
+		$query->from('#__users AS u');
+		$query->join('LEFT', '#__redmember_users AS rm ON rm.user_id = u.id');
+		$query->where('u.email = ' . $db->quote($email));
 
 		$db->setQuery($query);
-		$user_id = $db->loadResult();
+		$user = $db->loadObject();
 
-		return $user_id;
+		return $user;
 	}
+
 	/**
 	 * return session details
 	 *

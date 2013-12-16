@@ -69,12 +69,16 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 		{
 			$parsed = $this->parseAttendeeXml($xml);
 
-			$userid = RedeventsyncclientMaerskHelper::getUser($parsed->user_email);
+			$user = RedeventsyncclientMaerskHelper::getUser($parsed->user_email);
 
-			if (!$userid)
+			if (!$user->id)
 			{
 				// We need an user, trigger a special Exception to force getting one
 				throw new MissingUserException($parsed->user_email, $parsed->venue_code);
+			}
+			elseif ($parsed->firstname != $user->rm_firstname || $parsed->lastname != $user->rm_lastname)
+			{
+				throw new MismatchUserException($parsed->user_email, $parsed->venue_code, $user->rm_firstname, $user->rm_lastname);
 			}
 
 			// Store the attendee
@@ -136,12 +140,14 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 		// Get user
 		if (!$attendee->id)
 		{
-			$row->uid = $this->getUser($attendee->user_email);
+			$user = $this->getUser($attendee->user_email);
 
-			if (!$row->uid)
+			if (!$user->id)
 			{
 				throw new Exception('No user associated to attendee');
 			}
+
+			$row->uid = $user->id;
 		}
 
 		if ($attendee->answers)
@@ -216,6 +222,16 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 		if (isset($xml->UserEmail))
 		{
 			$object->user_email    = (string) $xml->UserEmail;
+		}
+
+		if (isset($xml->Firstname))
+		{
+			$object->firstname    = (string) $xml->Firstname;
+		}
+
+		if (isset($xml->Lastname))
+		{
+			$object->lastname    = (string) $xml->Lastname;
 		}
 
 		if (isset($xml->Cancelled))
