@@ -126,6 +126,29 @@ class plgRedeventRedeventsync extends JPlugin
 	}
 
 	/**
+	 * handles attendee cancelled
+	 *
+	 * @param   int  $attendee_id  attendee id
+	 *
+	 * @return bool
+	 */
+	public function onAttendeeCancelled($attendee_id)
+	{
+		try
+		{
+			JPluginHelper::importPlugin('redeventsyncclient');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('onHandleAttendeeCancelled', array($attendee_id));
+		}
+		catch (Exception $e)
+		{
+			RedeventsyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeCancelled', 0, null, $e->getMessage());
+		}
+
+		return true;
+	}
+
+	/**
 	 * handles attendee deleted
 	 *
 	 * @param   int  $attendee_id  attendee id
