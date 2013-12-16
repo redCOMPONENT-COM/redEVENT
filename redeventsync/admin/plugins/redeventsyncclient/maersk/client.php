@@ -143,7 +143,7 @@ class RedeventsyncClientMaersk
 			$req->addChild('CurrentFirstname', $firstname);
 			$req->addChild('CurrentLastname',  $lastname);
 		}
-		
+
 		$req->addChild('VenueCode',        $venueCode);
 
 		$this->appendElement($xml, $req);

@@ -219,6 +219,11 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 			$object->comments    = (string) $xml->Comments;
 		}
 
+		if (isset($xml->Status))
+		{
+			$object->status    = (int) $xml->Status;
+		}
+
 		if (isset($xml->UserEmail))
 		{
 			$object->user_email    = (string) $xml->UserEmail;
