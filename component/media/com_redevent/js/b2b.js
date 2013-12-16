@@ -346,6 +346,12 @@ var redb2b = {
 						document.id('attendees-tbl').set('spinner').spin();
 						document.id('selected_users').set('spinner').spin();
 				    },
+					onFailure : function() {
+						alert('Something went wrong');
+						document.id('attendees-tbl').unspin();
+						document.id('selected_users').unspin();
+						redb2b.getMembersList();
+					},
 					onSuccess : function(response){
 						document.id('attendees-tbl').unspin();
 						document.id('selected_users').unspin();
