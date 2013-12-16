@@ -36,6 +36,16 @@
 									<xs:documentation source="Description" xml:lang="en">Must match an existing Joomla user Email</xs:documentation>
 								</xs:annotation>
 							</xs:element>
+							<xs:element type="xs:string" name="Firstname">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Customer firstname</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:string" name="Lastname">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Customer lastname</xs:documentation>
+								</xs:annotation>
+							</xs:element>
 							<xs:element type="xs:string" name="PoNumber" minOccurs="0">
 								<xs:annotation>
 									<xs:documentation source="Description" xml:lang="en">P.O. number</xs:documentation>

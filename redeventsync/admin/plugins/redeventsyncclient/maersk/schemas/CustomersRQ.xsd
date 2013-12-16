@@ -19,6 +19,16 @@
 									<xs:documentation source="Description" xml:lang="en">Customer Email address to retrieve information from</xs:documentation>
 								</xs:annotation>
 							</xs:element>
+							<xs:element type="xs:string" name="CurrentFirstname" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Customer current firstname on redweb system</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element type="xs:string" name="CurrentLastname" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation source="Description" xml:lang="en">Customer current lastname on redweb system</xs:documentation>
+								</xs:annotation>
+							</xs:element>
 							<xs:element type="xs:string" name="VenueCode">
 								<xs:annotation>
 									<xs:documentation source="Description" xml:lang="en">Required by biztalk, as customers are stored per venue</xs:documentation>
