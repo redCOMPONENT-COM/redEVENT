@@ -84,7 +84,12 @@ class RedeventsyncHandlerCustomersrq extends RedeventsyncHandlerAbstractmessage
 		$response->addChild('TransactionId', $transaction_id);
 
 		$success = new SimpleXMLElement('<Success/>');
-		$success->addChild('CustomerId',   $user->rm_firstname);
+
+		if ($user->rm_customerid)
+		{
+			$success->addChild('CustomerID',      $user->rm_customerid);
+		}
+
 		$success->addChild('Firstname',    $user->rm_firstname);
 		$success->addChild('Lastname',     $user->rm_lastname);
 		$success->addChild('Address1',     $user->rm_address1);
@@ -105,19 +110,6 @@ class RedeventsyncHandlerCustomersrq extends RedeventsyncHandlerAbstractmessage
 		$success->addChild('CompanyAddress',      $user->rm_companyaddress);
 		$success->addChild('CompanyPhone',      $user->rm_companyphone);
 		$success->addChild('CompanySegmentPos',      $user->rm_companysegmentpos);
-
-		if ($user->rm_segment)
-		{
-			$success->addChild('Segment',      $user->rm_segment);
-		}
-
-		$success->addChild('PointOfSales', $user->rm_pointofsales);
-		$success->addChild('Salesman',     $user->rm_salesman);
-
-		if ($user->rm_customerid)
-		{
-			$success->addChild('CustomerID',      $user->rm_customerid);
-		}
 
 		$this->appendElement($response, $success);
 
