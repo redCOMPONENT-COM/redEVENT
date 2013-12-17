@@ -227,9 +227,9 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 				REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
 				$response, 'ok');
 		}
-		catch (MissingUserException $e)
+		catch (MismatchUserException $e)
 		{
-			// bubble !
+			// Bubble !
 			throw $e;
 		}
 		catch (Exception $e)

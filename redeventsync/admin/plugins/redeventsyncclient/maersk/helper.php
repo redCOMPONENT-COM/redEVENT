@@ -13,12 +13,14 @@ class RedeventsyncclientMaerskHelper
 	 *
 	 * @param   string  $email  user email
 	 *
-	 * @return mixed object user id and firstname/lastname or false if not found
+	 * @return mixed object user with redmember data or false if not found
 	 *
 	 * @throws Exception
 	 */
 	public static function getUser($email)
 	{
+		require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
+
 		if (!$email || !JMailHelper::isEmailAddress($email))
 		{
 			throw new InvalidEmailException('Empty or invalid email');
@@ -28,13 +30,16 @@ class RedeventsyncclientMaerskHelper
 		$query = $db->getQuery(true);
 
 		$query->select('u.id');
-		$query->select('rm.rm_firstname, rm.rm_lastname');
 		$query->from('#__users AS u');
-		$query->join('LEFT', '#__redmember_users AS rm ON rm.user_id = u.id');
 		$query->where('u.email = ' . $db->quote($email));
 
 		$db->setQuery($query);
-		$user = $db->loadObject();
+		$user_id = $db->loadResult();
+
+		if ($user_id)
+		{
+			$user = redmemberlib::getUserData($user_id);
+		}
 
 		return $user;
 	}
