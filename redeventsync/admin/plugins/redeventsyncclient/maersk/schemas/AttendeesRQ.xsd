@@ -29,16 +29,6 @@
 									<xs:documentation source="Description" xml:lang="en">Must match an existing Joomla user Email</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element type="xs:string" name="PoNumber" minOccurs="0">
-								<xs:annotation>
-									<xs:documentation source="Description" xml:lang="en">P.O. number</xs:documentation>
-								</xs:annotation>
-							</xs:element>
-							<xs:element type="xs:string" name="Comments" minOccurs="0">
-								<xs:annotation>
-									<xs:documentation source="Description" xml:lang="en">Comments</xs:documentation>
-								</xs:annotation>
-							</xs:element>
 							<xs:element type="xs:boolean" name="Cancelled" />
 							<xs:element type="xs:nonNegativeInteger" name="PriceGroupId" minOccurs="0"/>
 							<xs:element type="xs:boolean" name="WaitingList">
@@ -93,16 +83,6 @@
 							<xs:element type="xs:string" name="UserEmail">
 								<xs:annotation>
 									<xs:documentation source="Description" xml:lang="en">Must match an existing Joomla user Email</xs:documentation>
-								</xs:annotation>
-							</xs:element>
-							<xs:element type="xs:string" name="PoNumber" minOccurs="0">
-								<xs:annotation>
-									<xs:documentation source="Description" xml:lang="en">P.O. number</xs:documentation>
-								</xs:annotation>
-							</xs:element>
-							<xs:element type="xs:string" name="Comments" minOccurs="0">
-								<xs:annotation>
-									<xs:documentation source="Description" xml:lang="en">Comments</xs:documentation>
 								</xs:annotation>
 							</xs:element>
 							<xs:element type="xs:boolean" name="Cancelled"  minOccurs="0"/>

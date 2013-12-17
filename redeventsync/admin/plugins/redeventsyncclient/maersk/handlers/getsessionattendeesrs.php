@@ -203,16 +203,6 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 
 		$object->venue_code   = (string) $xml->VenueCode;
 
-		if (isset($xml->PoNumber))
-		{
-			$object->ponumber    = (string) $xml->PoNumber;
-		}
-
-		if (isset($xml->Comments))
-		{
-			$object->comments    = (string) $xml->Comments;
-		}
-
 		if (isset($xml->UserEmail))
 		{
 			$object->user_email    = (string) $xml->UserEmail;
