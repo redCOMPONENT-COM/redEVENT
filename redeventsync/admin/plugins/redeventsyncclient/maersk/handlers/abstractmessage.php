@@ -238,6 +238,15 @@ class RedeventsyncHandlerAbstractmessage
 				$error .= 'line ' . $e->line . ': '. $e->message . "\n";
 			}
 
+			RedeventsyncHelperMessagelog::log(
+				REDEVENTSYNC_LOG_DIRECTION_OUTGOING,
+				'',
+				0,
+				$xml,
+				'error',
+				'Parsing error: ' . $error . "\n"
+			);
+
 			libxml_clear_errors();
 			throw new Exception($error);
 		}
