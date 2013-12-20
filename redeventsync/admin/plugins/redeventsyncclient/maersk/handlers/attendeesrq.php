@@ -41,7 +41,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 
 		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, (int) $message->TransactionId, $xml, 'sending');
 
-		$this->send($xml);
+		$this->send($xml->asXML());
 
 		return true;
 	}
@@ -69,7 +69,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 
 		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, (int) $message->TransactionId, $xml, 'sending');
 
-		$this->send($xml);
+		$this->send($xml->asXML());
 
 		return true;
 	}
@@ -101,7 +101,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 
 		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, (int) $message->TransactionId, $xml, 'sending');
 
-		$this->send($xml);
+		$this->send($xml->asXML());
 
 		return true;
 	}
