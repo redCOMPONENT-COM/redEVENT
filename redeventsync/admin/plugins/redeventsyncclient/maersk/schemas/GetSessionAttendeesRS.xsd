@@ -127,7 +127,7 @@
 
 	<xs:complexType name="rwfPayment">
 		<xs:sequence>
-			<xs:element type="xs:string" name="Plateform">
+			<xs:element type="xs:string" name="Plateform" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation source="Description" xml:lang="en">Name of the payment plateform (e.g: epay, paypal, etc...)</xs:documentation>
 				</xs:annotation>
@@ -137,12 +137,12 @@
 					<xs:documentation source="Description" xml:lang="en">Payment transaction id</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element type="xs:string" name="OrderId">
+			<xs:element type="xs:string" name="OrderId" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation source="Description" xml:lang="en">Payment order id</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element type="xs:string" name="CvrNo">
+			<xs:element type="xs:string" name="CvrNo" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation source="Description" xml:lang="en">Cvr Number used for payment</xs:documentation>
 				</xs:annotation>
