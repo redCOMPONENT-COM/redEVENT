@@ -20,6 +20,9 @@ var redeventsync = {
 			onRequest : function() {
 				document.id('results').empty();
 			},
+			onFailure : function() {
+				alert('Something went wrong, please check logs');
+			},
 			onSuccess : function(json_resp) {
 				var res = document.id('results');
 				res.empty();
@@ -42,6 +45,9 @@ var redeventsync = {
 			useSpinner: true,
 			spinnerTarget: document.id('theform'),
 			method : 'post',
+			onFailure : function() {
+				alert('Something went wrong, please check logs');
+			},
 			onSuccess : function(json_resp) {
 				var res = document.id('results');
 

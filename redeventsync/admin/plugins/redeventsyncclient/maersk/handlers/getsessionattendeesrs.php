@@ -136,7 +136,7 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 		// Get user
 		if (!$attendee->id)
 		{
-			$row->uid = $this->getUser($attendee->user_email);
+			$row->uid = RedeventsyncclientMaerskHelper::getUser($attendee->user_email);
 
 			if (!$row->uid)
 			{
