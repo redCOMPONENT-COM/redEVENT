@@ -41,7 +41,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 
 		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, (int) $message->TransactionId, $xml, 'sending');
 
-		$this->send($xml);
+		$this->send($xml->asXML());
 
 		return true;
 	}
@@ -69,7 +69,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 
 		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, (int) $message->TransactionId, $xml, 'sending');
 
-		$this->send($xml);
+		$this->send($xml->asXML());
 
 		return true;
 	}
@@ -101,7 +101,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 
 		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, (int) $message->TransactionId, $xml, 'sending');
 
-		$this->send($xml);
+		$this->send($xml->asXML());
 
 		return true;
 	}
@@ -499,9 +499,25 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 		$message->addChild('PriceGroupId',  $attendee->sessionpricegroup_id);
 		$message->addChild('WaitingList',   $attendee->waitinglist);
 		$message->addChild('Confirmed',     $attendee->confirmed);
-		$message->addChild('ConfirmDate',   str_replace(' ', 'T', $attendee->confirmdate));
-		$message->addChild('PaymentStart',  str_replace(' ', 'T', $attendee->paymentstart));
-		$message->addChild('RegistrationDate', str_replace(' ', 'T', $attendee->uregdate));
+
+		if ($attendee->confirmdate)
+		{
+			$date = JDate::getInstance($attendee->confirmdate);
+			$message->addChild('ConfirmDate',   str_replace(' ', 'T', $date->toSql()));
+		}
+
+		if ($attendee->paymentstart)
+		{
+			$date = JDate::getInstance($attendee->paymentstart);
+			$message->addChild('PaymentStart',   str_replace(' ', 'T', $date->toSql()));
+		}
+
+		if ($attendee->uregdate)
+		{
+			$date = JDate::getInstance($attendee->uregdate);
+			$message->addChild('RegistrationDate',   str_replace(' ', 'T', $date->toSql()));
+		}
+
 		$message->addChild('IP',            $attendee->id);
 
 		$answers = new SimpleXMLElement('<Answers/>');

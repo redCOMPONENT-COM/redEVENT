@@ -60,9 +60,9 @@ class RedEventControllerRegistrations extends RedEventController
 			$msg = JText::_( 'COM_REDEVENT_ATTENDEES_REGISTRATION_CANCELLED');
 			$this->setRedirect( 'index.php?option=com_redevent&view=registrations&filter_cancelled=1', $msg );
 
-			foreach($cid as $attendee_id)
+			JPluginHelper::importPlugin('redevent');
+			foreach ($cid as $attendee_id)
 			{
-				JPluginHelper::importPlugin('redevent');
 				$dispatcher = JDispatcher::getInstance();
 				$res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
 			}
@@ -91,10 +91,11 @@ class RedEventControllerRegistrations extends RedEventController
 			$msg = JText::_( 'COM_REDEVENT_ATTENDEES_REGISTRATION_UNCANCELLED');
 			$this->setRedirect( 'index.php?option=com_redevent&view=registrations&filter_cancelled=0', $msg );
 
-			foreach($cid as $attendee_id)
+			JPluginHelper::importPlugin('redevent');
+
+			foreach ($cid as $attendee_id)
 			{
-				JPluginHelper::importPlugin('redevent');
-				$dispatcher =& JDispatcher::getInstance();
+				$dispatcher = JDispatcher::getInstance();
 				$res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
 			}
 		}
@@ -105,7 +106,6 @@ class RedEventControllerRegistrations extends RedEventController
 		}
 		return true;
 	}
-
 
 	/**
 	 * Delete attendees
@@ -135,11 +135,12 @@ class RedEventControllerRegistrations extends RedEventController
 			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
 		}
 
-		foreach($cid as $attendee_id)
+		JPluginHelper::importPlugin('redevent');
+
+		foreach ($cid as $attendee_id)
 		{
-			JPluginHelper::importPlugin('redevent');
-			$dispatcher =& JDispatcher::getInstance();
-			$res = $dispatcher->trigger('onAttendeeDeleted', array($attendee_id));
+			$dispatcher = JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
 		}
 
 		$cache = JFactory::getCache('com_redevent');
@@ -164,11 +165,12 @@ class RedEventControllerRegistrations extends RedEventController
 		if ($model->confirmattendees($cid))
 		{
 			$msg = JText::_('COM_REDEVENT_REGISTRATION_CONFIRMED');
-			$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg );
+		$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg );
 
-			foreach($cid as $attendee_id)
+			JPluginHelper::importPlugin('redevent');
+
+			foreach ($cid as $attendee_id)
 			{
-				JPluginHelper::importPlugin('redevent');
 				$dispatcher = JDispatcher::getInstance();
 				$res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
 			}
@@ -197,10 +199,11 @@ class RedEventControllerRegistrations extends RedEventController
 			$msg = JText::_('COM_REDEVENT_REGISTRATION_UNCONFIRMED');
 			$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg );
 
-			foreach($cid as $attendee_id)
+			JPluginHelper::importPlugin('redevent');
+
+			foreach ($cid as $attendee_id)
 			{
-				JPluginHelper::importPlugin('redevent');
-				$dispatcher =& JDispatcher::getInstance();
+				$dispatcher = JDispatcher::getInstance();
 				$res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
 			}
 		}
@@ -229,9 +232,10 @@ class RedEventControllerRegistrations extends RedEventController
 			$msg = $count.' '.JText::_('COM_REDEVENT_PUT_ON_WAITING_SUCCESS');
 			$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg );
 
-			foreach($cid as $attendee_id)
+			JPluginHelper::importPlugin('redevent');
+
+			foreach ($cid as $attendee_id)
 			{
-				JPluginHelper::importPlugin('redevent');
 				$dispatcher = JDispatcher::getInstance();
 				$res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
 			}
@@ -261,9 +265,10 @@ class RedEventControllerRegistrations extends RedEventController
 			$msg = $count.' '.JText::_('COM_REDEVENT_PUT_OFF_WAITING_SUCCESS');
 			$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg );
 
-			foreach($cid as $attendee_id)
+			JPluginHelper::importPlugin('redevent');
+
+			foreach ($cid as $attendee_id)
 			{
-				JPluginHelper::importPlugin('redevent');
 				$dispatcher = JDispatcher::getInstance();
 				$res = $dispatcher->trigger('onAttendeeModified', array($attendee_id));
 			}

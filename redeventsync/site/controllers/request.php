@@ -73,6 +73,43 @@ class RedeventsyncControllerRequest extends FOFController
 	}
 
 	/**
+	 * Just a way to test our own requests...
+	 *
+	 * @throws Exception
+	 *
+	 * @return void
+	 */
+	public function test()
+	{
+		echo 'testing for posted data' . "\n";
+
+		$tmp_path = JFactory::getApplication()->getCfg('tmp_path') . '/resync';
+		JFolder::create($tmp_path);
+
+		echo "Will save in " . $tmp_path;
+
+		$this->input->set('tmpl', 'component');
+		$debug = $this->input->getInt('debug', 0);
+		$data = file_get_contents('php://input');
+
+		if ($data)
+		{
+			$filename = $tmp_path . '/received' . time();
+
+			if (!file_put_contents($filename, $data))
+			{
+				throw new Exception('error writing posted file');
+			}
+		}
+		else
+		{
+			echo 'error no data received';
+		}
+
+		JFactory::getApplication()->close();
+	}
+
+	/**
 	 * ACL check before adding a new record; override to customise
 	 *
 	 * @return  boolean  True to allow the method to run

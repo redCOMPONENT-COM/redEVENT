@@ -19,6 +19,10 @@ require_once 'abstractmessage.php';
 class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstractmessage
 {
 	/**
+	 * @var int
+	 */
+	protected $transactionId = 0;
+	/**
 	 * Handle nodes from xml
 	 *
 	 * @param   string  $xml_post  the data to parse
@@ -40,7 +44,9 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 			switch ($node->getName())
 			{
 				case 'TransactionId':
-					$transactionId = (int) $xml->TransactionId;
+					$this->transactionId = (int) $xml->TransactionId;
+
+					$this->log(REDEVENTSYNC_LOG_DIRECTION_INCOMING, $this->transactionId, $xml, '');
 					break;
 
 				default:
@@ -140,7 +146,7 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 		// Get user
 		if (!$attendee->id)
 		{
-			$user = $this->getUser($attendee->user_email);
+			$user = RedeventsyncclientMaerskHelper::getUser($attendee->user_email);
 
 			if (!$user->id)
 			{

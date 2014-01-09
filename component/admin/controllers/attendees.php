@@ -111,7 +111,7 @@ class RedEventControllerAttendees extends RedEventController
 		foreach($cid as $attendee_id)
 		{
 			JPluginHelper::importPlugin('redevent');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$res = $dispatcher->trigger('onAttendeeDeleted', array($attendee_id));
 		}
 

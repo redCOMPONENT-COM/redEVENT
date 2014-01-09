@@ -448,6 +448,8 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		$query->from('#__redevent_event_venue_xref AS x');
 		$query->join('INNER', '#__redevent_venues AS v ON v.id = x.venueid');
 		$query->where('x.dates BETWEEN ' . $db->quote($fromDate->toSql()) . ' AND ' . $db->quote($toDate->toSql()));
+		$query->where('CHAR_LENGTH(x.session_code) > 0');
+		$query->where('CHAR_LENGTH(v.venue_code) > 0');
 
 		$db->setQuery($query);
 		$sessions = $db->loadObjectList();

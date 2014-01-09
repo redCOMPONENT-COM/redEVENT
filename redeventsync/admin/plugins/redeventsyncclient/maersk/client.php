@@ -34,11 +34,12 @@ class RedeventsyncClientMaersk
 	 * @param   string  $url      The wsdl url
 	 * @param   array   $options  The options for the soap client
 	 */
-	private function __construct($url, array $options = array())
+	private function __construct($url = null, array $options = array())
 	{
 		if (!$url)
 		{
-			$url = self::TEST_URL;
+			// Loopback to our test log
+			$url = JURI::root() . '/index.php?option=com_redeventsync&controller=request&task=test';
 		}
 
 		$this->url = $url;
