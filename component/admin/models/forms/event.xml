@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form>
-	
-	<fieldset name="event">
+
+	<fieldset name="event"
+			  addfieldpath="/administrator/components/com_redmailflow/models/fields">
 	<field
 		name="id"
 		type="text"
@@ -10,16 +11,16 @@
 		description ="JGLOBAL_FIELD_ID_DESC"
 		class="readonly"
 		readonly="true"	/>
-	
+
 	<field
 		name="title"
 		type="text"
 		default=""
 		label="COM_REDEVENT_EVENT_TITLE"
-		description ="COM_REDEVENT_EVENT_TITLE" 
-		required="true" 
+		description ="COM_REDEVENT_EVENT_TITLE"
+		required="true"
 		class="inputbox" />
-	
+
 	<field
 		name="alias"
 		type="text"
@@ -27,15 +28,15 @@
 		label="COM_REDEVENT_Alias"
 		description ="COM_REDEVENT_Alias"
 		class="inputbox" />
-	
+
 	<field
 		name="course_code"
 		type="text"
 		default=""
 		label="COM_REDEVENT_COURSE_CODE"
-		description ="COM_REDEVENT_COURSE_CODE" 
+		description ="COM_REDEVENT_COURSE_CODE"
 		class="inputbox" />
-	
+
 	<field
 		name="published"
 		type="list"
@@ -63,7 +64,7 @@
 		class="inputbox">
 		<option value="*">JALL</option>
 	</field>
-	
+
 	<field
 		name="created_by"
 		type="user"
@@ -71,7 +72,7 @@
 		description="JGLOBAL_FIELD_CREATED_BY_DESC"
 		class="inputbox"
 		/>
-	
+
 	<field
 		name="details_layout"
 		type="list"
@@ -84,7 +85,7 @@
 		<option	value="1">COM_REDEVENT_EVENT_LAYOUT_TAGS</option>
 		<option	value="2">COM_REDEVENT_EVENT_LAYOUT_FIXED</option>
 	</field>
-		
+
 	<field
 		name="datdescription"
 		type="editor"
@@ -94,7 +95,7 @@
 		filter="safehtml"
 		buttons="true"
 		hide="readmore,pagebreak"/>
-		
+
 	<field
 		name="summary"
 		type="editor"
@@ -103,7 +104,7 @@
 		class="inputbox"
 		filter="safehtml"
 		buttons="false"/>
-		
+
 	<field
 		name="datimage"
 		type="media"
@@ -111,11 +112,20 @@
 		description="COM_REDEVENT_CHOOSE_IMAGE"
 		class="inputbox"
 		directory="redevent/events"/>
-		
+
+
+		<field
+			name="mailflow_id"
+			type="mailflows"
+			label="COM_REDEVENT_XML_FORM_EVENT_SELECT_MAILFLOW"
+			description="COM_REDEVENT_XML_FORM_EVENT_SELECT_MAILFLOW_DESC"
+			>
+			<option value="0">COM_REDEVENT_XML_FORM_EVENT_SELECT_MAILFLOW_SELECT</option>
+		</field>
 	</fieldset>
-	
+
 	<fieldset name="activation">
-		
+
 		<field
 			name="notify"
 			type="radio"
@@ -127,7 +137,7 @@
 			<option	value="0">JNO</option>
 			<option	value="1">JYES</option>
 		</field>
-	
+
 		<field
 			name="activate"
 			type="radio"
@@ -139,7 +149,7 @@
 			<option	value="0">JNO</option>
 			<option	value="1">JYES</option>
 		</field>
-		
+
 		<field
 			name="notify_subject"
 			type="text"
@@ -147,7 +157,7 @@
 			label="COM_REDEVENT_NOTIFY_SUBJECT"
 			description=""
 			class="inputbox" />
-			
+
 		<field
 			name="notify_body"
 			type="editor"
@@ -159,7 +169,7 @@
 			buttons="true"
 			hide="readmore,pagebreak"
 			/>
-			
+
 		<field
 			name="enable_activation_confirmation"
 			type="radio"
@@ -171,7 +181,7 @@
 			<option	value="0">JNO</option>
 			<option	value="1">JYES</option>
 		</field>
-			
+
 		<field
 			name="notify_confirm_subject"
 			type="text"
@@ -179,7 +189,7 @@
 			label="COM_REDEVENT_NOTIFY_CONFIRM_SUBJECT"
 			description=""
 			class="inputbox" />
-			
+
 		<field
 			name="notify_confirm_body"
 			type="editor"
@@ -190,6 +200,6 @@
 			buttons="true"
 			hide="readmore,pagebreak"
 			/>
-			
+
 	</fieldset>
 </form>
