@@ -279,24 +279,6 @@ class RedeventControllerFrontadmin extends FOFController
 				if ($attendee)
 				{
 					$regresp->status = 1;
-
-					if (redFORMHelperAnalytics::isEnabled())
-					{
-						$options = array();
-						$options['affiliation'] = 'redevent-b2b';
-						$options['sku']         = $attendee->event_name;
-						$options['productname'] = $attendee->venue . ' - ' . $attendee->xref . ' ' . $attendee->event_name
-							. ($attendee->session_name ? ' / ' . $attendee->session_name : '');
-
-						$cats = array();
-						foreach ($attendee->categories as $c)
-						{
-							$cats[] = $c->catname;
-						}
-						$options['category'] = implode(', ', $cats);
-
-						$regresp->analytics = redFORMHelperAnalytics::recordTrans($attendee->submit_key, $options);
-					}
 					$added++;
 
 					JPluginHelper::importPlugin( 'redevent' );

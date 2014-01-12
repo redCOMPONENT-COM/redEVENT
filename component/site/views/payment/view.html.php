@@ -41,31 +41,31 @@ class RedeventViewPayment extends JView
  	 * @since 0.9
 	 */
 	function display($tpl = null)
-	{		
+	{
 		$mainframe = &JFactory::getApplication();
 		/* Set which page to show */
 		$state      = JRequest::getVar('state', '');
 		$submit_key = JRequest::getVar('submit_key', '');
-		
+
 		$document 	= JFactory::getDocument();
 		$dispatcher = JDispatcher::getInstance();
 		$elsettings = redEVENTHelper::config();
     $uri 		= & JFactory::getURI();
-		
+
 		$row		= $this->get('Event');
-		
+
 		/* This loads the tags replacer */
 		JView::loadHelper('tags');
 		JRequest::setVar('xref', $row->xref); // neede for tag constructor
 		$tags = new redEVENT_tags();
 		$tags->setXref($row->xref);
 		$tags->setSubmitkey($submit_key);
-		
+
 		//get menu information
 		$menu		= & JSite::getMenu();
 		$item    	= $menu->getActive();
 		if (!$item) $item = $menu->getDefault();
-		
+
 		$params 	= & $mainframe->getParams('com_redevent');
 
 		//Check if the id exists
@@ -79,7 +79,7 @@ class RedeventViewPayment extends JView
       $document->addStyleSheet('media/com_redevent/css/redevent.css');
     }
     else {
-      $document->addStyleSheet($params->get('custom_css'));     
+      $document->addStyleSheet($params->get('custom_css'));
     }
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
@@ -102,12 +102,14 @@ class RedeventViewPayment extends JView
 		{
 			case 'processing':
 				$text = $tags->ReplaceTags($row->paymentprocessing);
+				$this->addTracking();
 				break;
-				
+
 			case 'accepted':
 				$text = $tags->ReplaceTags($row->paymentaccepted);
+				$this->addTracking();
 				break;
-				
+
 			case 'refused':
 				$text = JText::_('COM_REDEVENT_PAYMENT_PAYMENT_REFUSED');
 				break;
@@ -116,7 +118,7 @@ class RedeventViewPayment extends JView
 				$text = JText::_('COM_REDEVENT_PAYMENT_UNKNOWN_PAYMENT_STATUS');
 				break;
 		}
-		
+
 		//assign vars to jview
 		$this->assignRef('row',           $row);
 		$this->assign(   'text',          $text);
@@ -125,9 +127,38 @@ class RedeventViewPayment extends JView
 		$this->assignRef('elsettings',    $elsettings);
 		$this->assignRef('item',          $item);
 		$this->assignRef('tags', $tags);
-		
+
 		$tpl = JRequest::getVar('tpl', $tpl);
-		
+
 		parent::display($tpl);
+	}
+
+	/**
+	 * Add google analytics
+	 *
+	 * @return void
+	 */
+	protected function addTracking()
+	{
+		if (redFORMHelperAnalytics::isEnabled() || 1)
+		{
+			$submit_key = JFactory::getApplication()->input->get('submit_key');
+			$details = $this->get('Event');
+
+			$options = array();
+			$options['affiliation'] = 'redevent-b2b';
+			$options['sku']         = $details->title;
+			$options['productname'] = $details->venue . ' - ' . $details->xref . ' ' . $details->title
+				. ($details->session_title ? ' / ' . $details->session_title : '');
+
+			$cats = array();
+			foreach ($details->categories as $c)
+			{
+				$cats[] = $c->catname;
+			}
+			$options['category'] = implode(', ', $cats);
+
+			redFORMHelperAnalytics::recordTrans($submit_key, $options);
+		}
 	}
 }
