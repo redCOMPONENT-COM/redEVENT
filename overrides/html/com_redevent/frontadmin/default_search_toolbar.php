@@ -41,7 +41,12 @@ defined('_JEXEC') or die('Restricted access');
 <ul class="inline">
 	<li>
 		<div class="styled-select">
-			<?php echo JHtml::_('select.genericlist', $this->organizations_options, 'filter_organization', '', 'value', 'text', $this->state->get('filter_organization')); ?>
+			<?php if (count($this->organizations_options) > 2): ?>
+				<?php echo JHtml::_('select.genericlist', $this->organizations_options, 'filter_organization', '', 'value', 'text', $this->state->get('filter_organization')); ?>
+			<?php else: ?>
+				<input type="hidden" name="filter_organization" id="filter_organization" value="<?php echo $this->organizations_options[1]->value; ?>" />
+				<?php echo $this->organizations_options[1]->text; ?>
+			<?php endif; ?>
 		</div>
 	</li>
 	<li>
