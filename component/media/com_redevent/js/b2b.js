@@ -361,9 +361,6 @@ var redb2b = {
 
 							for (var i = 0; i < response.regs.length; i++) {
 								var r = response.regs[i];
-								if (r.analytics) {
-									eval(r.analytics);
-								}
 							}
 						}
 						else if (response.regs.length) {
