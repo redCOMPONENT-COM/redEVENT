@@ -333,12 +333,5 @@
 				</replacetokens>
 			</filterchain>
 		</copy>
-
-		<!-- Test -->
-		<copy todir="${www.dir}/test" overwrite="true">
-			<fileset dir="redeventsync/admin/plugins/redeventsyncclient/maersk/test">
-				<include name="**" />
-			</fileset>
-		</copy>
     </target>
 </project>

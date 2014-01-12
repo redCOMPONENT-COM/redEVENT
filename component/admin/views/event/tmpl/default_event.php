@@ -35,6 +35,11 @@
 			<div class="clear"></div>
 			<div id="imagelib"></div>
 		</li>
+		<?php if (file_exists(JPATH_SITE . '/administrator/components/com_redmailflow')): ?>
+			<li>
+				<?php echo $this->form->getLabel('mailflow_id').$this->form->getInput('mailflow_id'); ?>
+			</li>
+		<?php endif; ?>
 	</ul>
 </fieldset>
 
@@ -57,4 +62,3 @@
 	<?php echo $this->printTags('summary'); ?>
 	<?php echo $this->form->getInput('summary'); ?>
 </fieldset>
-	
