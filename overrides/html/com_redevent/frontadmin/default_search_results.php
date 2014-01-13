@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 				<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CATEGORY'), 'c.catname', $this->order_Dir, $this->order); ?></th>
 				<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_LANGUAGE'), 'a.language', $this->order_Dir, $this->order); ?></th>
 				<th><?php echo JText::_('COM_REDEVENT_BOOKED'); ?></th>
-				<th colspan="3"><?php echo JText::_('COM_REDEVENT_ACTIONS'); ?></th>
+				<th><?php echo JText::_('COM_REDEVENT_FRONTEND_BOOKINGS_EDIT_PARTICIPANTS'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -87,41 +87,21 @@ defined('_JEXEC') or die('Restricted access');
 						<?php echo $this->printPlaces($row); ?>
 					</td>
 					<td>
-					<?php if ($this->useracl->canEditEvent((int) $row->slug)): ?>
-						<?php echo $eventeditlink; ?>
-					<?php endif; ?>
-					</td>
-					<td>
-					<?php if ($row->published == '1'): ?>
-						<?php if ($this->useracl->canEditXref($row->xref)): ?>
-							<?php echo JHTML::image('com_redevent/b2b-published.png', JText::_('COM_REDEVENT_Published')
-								, array('class' => 'unpublishxref hasTip'
-									, 'title' => JText::_('COM_REDEVENT_Published')
-									, 'tip' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CLICK_TO_UNPUBLISH')), true); ?>
-						<?php else: ?>
-							<?php echo JHTML::image('com_redevent/b2b-published.png', JText::_('COM_REDEVENT_Published')
-								, array('class' => 'hasTip'
-									, 'title' => JText::_('COM_REDEVENT_Published')), true); ?>
-						<?php endif; ?>
-					<?php elseif ($row->published == '0'):?>
-						<?php if ($this->useracl->canEditXref($row->xref)): ?>
-							<?php echo JHTML::image('com_redevent/b2b-unpublished.png', JText::_('COM_REDEVENT_unPublished')
-								, array('class' => 'publishxref hasTip'
-									, 'title' => JText::_('COM_REDEVENT_unPublished')
-									, 'tip' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CLICK_TO_PUBLISH')), true); ?>
-						<?php else: ?>
-							<?php echo JHTML::image('com_redevent/b2b-unpublished.png', JText::_('COM_REDEVENT_unPublished')
-								, array('class' => 'hasTip'
-									, 'title' => JText::_('COM_REDEVENT_unPublished')), true); ?>
-						<?php endif; ?>
-					<?php endif;?>
-					</td>
-					<td>
-						<?php if ($this->useracl->canEditXref($row->xref)): ?>
-							<?php echo JHTML::image('com_redevent/b2b-delete.png', JText::_('COM_REDEVENT_DELETE'), array('class' => 'deletexref hasTip'
-									, 'title' => JText::_('COM_REDEVENT_DELETE')
-									, 'tip' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CLICK_TO_DELETE_SESSION')), true); ?>
-						<?php endif; ?>
+						<?php
+							$image = JHTML::image('media/com_redevent/images/b2b-edit.png', JText::_('COM_REDEVENT_BOOK_EVENT'));
+
+							$tip  = JText::_('COM_REDEVENT_FRONTEND_BOOKINGS_EDIT_PARTICIPANTS_DESC');
+							$text = JText::_('COM_REDEVENT_FRONTEND_BOOKINGS_EDIT_PARTICIPANTS');
+
+							$attribs = array(
+								'xref' => $id,
+								'class' => 'bookthis hasTip',
+								'title' => $text,
+								'tip' => $tip,
+							);
+
+							echo JHtml::link('#', $image, $attribs);
+						?>
 					</td>
 				</tr>
 			<?php endforeach;?>

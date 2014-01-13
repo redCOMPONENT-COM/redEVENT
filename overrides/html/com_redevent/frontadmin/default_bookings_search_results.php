@@ -34,6 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 				<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CATEGORY'), 'c.catname', $this->bookings_order_dir, $this->bookings_order); ?></th>
 				<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_LANGUAGE'), 'a.language', $this->bookings_order_dir, $this->bookings_order); ?></th>
 				<th><?php echo JText::_('COM_REDEVENT_BOOKED'); ?></th>
+				<th><?php echo JText::_('COM_REDEVENT_FRONTEND_BOOKINGS_EDIT_PARTICIPANTS'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -61,6 +62,23 @@ defined('_JEXEC') or die('Restricted access');
 					</td>
 					<td><?php echo $row->language_sef; ?></td>
 					<td><?php echo $this->bookbutton($row->xref); ?><?php echo $this->printPlaces($row); ?></td>
+					<td>
+						<?php
+						$image = JHTML::image('media/com_redevent/images/b2b-edit.png', JText::_('COM_REDEVENT_BOOK_EVENT'));
+
+						$tip  = JText::_('COM_REDEVENT_FRONTEND_BOOKINGS_EDIT_PARTICIPANTS_DESC');
+						$text = JText::_('COM_REDEVENT_FRONTEND_BOOKINGS_EDIT_PARTICIPANTS');
+
+						$attribs = array(
+							'xref' => $id,
+							'class' => 'bookthis hasTip',
+							'title' => $text,
+							'tip' => $tip,
+						);
+
+						echo JHtml::link('#', $image, $attribs);
+						?>
+					</td>
 				</tr>
 			<?php endforeach;?>
 		</tbody>
