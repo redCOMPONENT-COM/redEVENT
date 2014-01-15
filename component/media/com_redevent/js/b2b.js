@@ -258,9 +258,9 @@ var redb2b = {
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.update-employee)', function (e) {
 				req = new Request.JSON({
-					url: 'index.php?option=com_redevent&controller=frontadmin&task=update_user&format=json',
+					url: 'index.php?option=com_redevent&controller=frontadmin&task=update_user&tmpl=component',
 					data: document.id('member-update'),
-					format: 'raw',
+					format: 'json',
 					method: 'post',
 					onRequest: function () {
 
@@ -289,7 +289,7 @@ var redb2b = {
                 req = new Request.JSON({
                     url : 'index.php?option=com_redevent&controller=frontadmin&task=update_user&tmpl=component',
                     data : document.id('member-update'),
-                    format: 'raw',
+                    format: 'json',
                     method : 'post',
                     onRequest: function(){
 
