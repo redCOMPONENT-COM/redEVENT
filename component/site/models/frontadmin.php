@@ -693,6 +693,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$query = $this->_buildQueryBookings();
 		$query->clear('where');
 		$query->where('r.uid = ' . $this->uid);
+		$query->where('r.cancelled = 0');
 
 		$now = strftime('%Y-%m-%d %H:%M');
  		$query->where('(x.dates = 0 OR (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > ' . $this->_db->Quote($now) . ')');
