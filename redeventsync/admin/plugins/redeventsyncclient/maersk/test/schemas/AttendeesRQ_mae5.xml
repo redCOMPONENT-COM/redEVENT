@@ -2,13 +2,21 @@
 <AttendeesRQ xmlns="http://www.redcomponent.com/redevent">
 	<CreateAttendeeRQ>
 		<TransactionId>999</TransactionId>
-		<SessionCode>4349</SessionCode>
-		<VenueCode>Esbjerg</VenueCode>
-		<UserEmail>rn@privat.dk</UserEmail>
-		<Cancelled>false</Cancelled>
-		<WaitingList>false</WaitingList>
+		<SessionCode>4643</SessionCode>
+		<VenueCode>MAERSKESBJERG</VenueCode>
+		<UserEmail>relax29@privat.dk</UserEmail>
+		<Firstname>Realx</Firstname>
+		<Lastname>Relax</Lastname>
+		<PoNumber>Po123</PoNumber>
+		<Comments>Comments</Comments>
+		<Status>0</Status>
+		<Cancelled>true</Cancelled>
+		<WaitingList>true</WaitingList>
 		<Confirmed>true</Confirmed>
 		<ConfirmDate>1999-05-31T13:20:00.000-05:00</ConfirmDate>
 		<RegistrationDate>1999-05-31T13:20:00.000-05:00</RegistrationDate>
+		<Payment>
+			<TransactionId>123456</TransactionId>
+		</Payment>
 	</CreateAttendeeRQ>
 </AttendeesRQ>

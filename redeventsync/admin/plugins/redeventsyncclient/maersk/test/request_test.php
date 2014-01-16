@@ -1,5 +1,4 @@
 <?php
-
 switch ($_GET['test'])
 {
 	case 1:
@@ -25,6 +24,9 @@ switch ($_GET['test'])
 		break;
 	case 8:
 		$file = 'schemas/AttendeesRQ_mae4.xml';
+		break;
+	case 'mae5':
+		$file = 'schemas/AttendeesRQ_mae5.xml';
 		break;
 	case 9:
 		$file = 'schemas/Wrongformat.xml';
@@ -60,7 +62,7 @@ curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 0);
 // curl_setopt($ch, CURLOPT_REFERER, '');
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-if(! $ch_result = curl_exec($ch))
+if(!$ch_result = curl_exec($ch))
 {
 	trigger_error(curl_error($ch));
 }
