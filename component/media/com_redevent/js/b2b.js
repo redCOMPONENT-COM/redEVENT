@@ -269,6 +269,7 @@ var redb2b = {
 						if (response.status == 1) {
 							document.id('editmemberscreen').dispose();
 							document.id('redadmin-main').show();
+							redb2b.getMembersList();
 						}
 						else {
 							alert(response.error);
@@ -297,6 +298,7 @@ var redb2b = {
                     onSuccess : function(response){
                         if (response.status == 1) {
                             document.id('sbox-window').close();
+                            redb2b.getMembersList();
                         }
                         else {
                             alert(response.error);
