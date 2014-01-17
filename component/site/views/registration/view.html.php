@@ -1,10 +1,8 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
+ * @package    RedEvent
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  * redEVENT is based on EventList made by Christoph Lukes from schlu.net
  * redEVENT can be downloaded from www.redcomponent.com
  * redEVENT is free software; you can redistribute it and/or
@@ -21,47 +19,45 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.view');
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * HTML registration View class of the redEvent component
  *
- * @package Joomla
- * @subpackage redEvent
- * @since 1.5
+ * @package  RedEvent
+ * @since    1.5
  */
-class RedeventViewRegistration extends JView
+class RedeventViewRegistration extends JViewLegacy
 {
 	/**
-	 * Creates the output for the registration view
+	 * Execute and display a template script.
 	 *
- 	 * @since 1.5
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
-		$mainframe  = &Jfactory::getApplication();
-		$document 	= JFactory::getDocument();
-		$user		    = JFactory::getUser();
-		$dispatcher = &JDispatcher::getInstance();
+		$app        = JFactory::getApplication();
+		$document   = JFactory::getDocument();
+		$user       = JFactory::getUser();
+		$dispatcher = JDispatcher::getInstance();
 
 		$config     = redEVENTHelper::config();
 		$acl        = UserAcl::getInstance();
+
+		$submit_key = JFactory::getApplication()->input->get('submit_key');
 
 		$event = $this->get('SessionDetails');
 
 		if ($this->getLayout() == 'confirmed')
 		{
 			$message = $event->confirmation_message;
-			$document->setTitle($event->title.' - '.JText::_('COM_REDEVENT_REGISTRATION_CONFIRMED_PAGE_TITLE'));
+			$document->setTitle($event->title . ' - ' . JText::_('COM_REDEVENT_REGISTRATION_CONFIRMED_PAGE_TITLE'));
 
 			// Google analytics
 			if (redFORMHelperAnalytics::isEnabled())
 			{
-				$key = JFactory::getApplication()->input->get('submit_key');
-
 				$options = array();
 				$options['affiliation'] = 'redevent-b2b';
 				$options['sku']         = $event->event_name;
@@ -69,36 +65,42 @@ class RedeventViewRegistration extends JView
 					. ($event->session_name ? ' / ' . $event->session_name : '');
 
 				$cats = array();
+
 				foreach ($event->categories as $c)
 				{
 					$cats[] = $c->catname;
 				}
+
 				$options['category'] = implode(', ', $cats);
 
-				redFORMHelperAnalytics::recordTrans($key, $options);
+				redFORMHelperAnalytics::recordTrans($submit_key, $options);
 			}
 		}
-		else if ($this->getLayout() == 'review')
+		elseif ($this->getLayout() == 'review')
 		{
 			$message = $event->review_message;
-			$document->setTitle($event->title.' - '.JText::_('COM_REDEVENT_REGISTRATION_REVIEW_PAGE_TITLE'));
+			$document->setTitle($event->title . ' - ' . JText::_('COM_REDEVENT_REGISTRATION_REVIEW_PAGE_TITLE'));
 		}
-		else if ($this->getLayout() == 'edit')
+		elseif ($this->getLayout() == 'edit')
 		{
 			return $this->_displayEdit($tpl);
 		}
-		else if ($this->getLayout() == 'cancel')
+		elseif ($this->getLayout() == 'cancel')
 		{
 			return $this->_displayCancel($tpl);
 		}
-		else {
+		else
+		{
 			echo 'layout not defined';
+
 			return;
 		}
+
 		/* This loads the tags replacer */
 		JView::loadHelper('tags');
+
 		/* Start the tag replacer */
-		$tags = new redEVENT_tags();
+		$tags = new redEVENT_tags;
 		$tags->setXref(JRequest::getInt('xref'));
 		$message = $tags->ReplaceTags($message);
 
@@ -108,34 +110,52 @@ class RedeventViewRegistration extends JView
 		parent::display($tpl);
 	}
 
-	function _displayEdit($tpl = null)
+	/**
+	 * Display edit form
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a Error object.
+	 */
+	protected function _displayEdit($tpl = null)
 	{
 		$user = JFactory::getUser();
 		$acl  = UserAcl::getInstance();
 		$xref = JRequest::getInt('xref');
 		$submitter_id = JRequest::getInt('submitter_id');
-		if (!$submitter_id) {
-			JError::raise(0,'Registration id required');
+
+		if (!$submitter_id)
+		{
+			JError::raiseError(0, 'Registration id required');
+
 			return false;
 		}
+
 		$model  = $this->getModel();
 		$model->setXref($xref);
 		$course = $this->get('SessionDetails');
 
 		$registration = $model->getRegistration($submitter_id);
-		if (!$registration) {
-			JError::raise(0,$model->getError);
+
+		if (!$registration)
+		{
+			JError::raiseError(0, $model->getError());
+
 			return false;
 		}
 
-		if ($acl->canManageAttendees($registration->xref) && JRequest::getVar('task') == 'manageredit') {
+		if ($acl->canManageAttendees($registration->xref) && JRequest::getVar('task') == 'manageredit')
+		{
 			$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute($xref, 'managerupdate'));
 		}
-		else if ($registration->uid == $user->get('id')) {
+		elseif ($registration->uid == $user->get('id'))
+		{
 			$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute($xref, 'update'));
 		}
-		else {
-			JError::raiseError(403,'NOT AUTHORIZED');
+		else
+		{
+			JError::raiseError(403, 'NOT AUTHORIZED');
+
 			return false;
 		}
 
@@ -143,21 +163,29 @@ class RedeventViewRegistration extends JView
 
 		$prices = $this->get('Pricegroups');
 		$field = array();
-		$field['label'] = '<label for="pricegroup_id">'.JText::_('COM_REDEVENT_REGISTRATION_PRICE').'</label>';
+		$field['label'] = '<label for="pricegroup_id">' . JText::_('COM_REDEVENT_REGISTRATION_PRICE') . '</label>';
 		$field['field'] = redEVENTHelper::getRfPricesSelect($prices, $registration->pricegroup_id);
 		$rfoptions['extrafields'][] = $field;
 
-		$rfcore = new RedformCore();
+		$rfcore = new RedformCore;
 		$rfields = $rfcore->getFormFields($course->redform_id, array($submitter_id), 1, $rfoptions);
 
 
-		$this->assign('action' ,  $action);
+		$this->assign('action',   $action);
 		$this->assign('rfields',  $rfields);
 		$this->assign('xref',     $xref);
+
 		parent::display($tpl);
 	}
 
-	function _displayCancel($tpl)
+	/**
+	 * Display cancel form
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a Error object.
+	 */
+	protected function _displayCancel($tpl)
 	{
 		$user = JFactory::getUser();
 		$uri  = JFactory::getURI();
@@ -174,13 +202,13 @@ class RedeventViewRegistration extends JView
 		$course = $this->get('SessionDetails');
 		$course->dateinfo = REOutput::formatdate($course->dates, $course->times);
 
-		$cancellink = JRoute::_(RedeventHelperRoute::getDetailsRoute($course->slug, $course->xref) .'&task=delreguser&rid=' .$rid);
+		$cancellink = JRoute::_(RedeventHelperRoute::getDetailsRoute($course->slug, $course->xref) . '&task=delreguser&rid=' . $rid);
 
 		$this->assignRef('course',     $course);
 		$this->assignRef('xref',       $xref);
 		$this->assignRef('rid',        $rid);
 		$this->assignRef('cancellink', $cancellink);
-		$this->assignRef('action',     JRoute::_('index.php?option=com_redevent&xref='.$xref.'&rid='.$rid));
+		$this->assignRef('action',     JRoute::_('index.php?option=com_redevent&xref=' . $xref . '&rid=' . $rid));
 
 		parent::display($tpl);
 	}
