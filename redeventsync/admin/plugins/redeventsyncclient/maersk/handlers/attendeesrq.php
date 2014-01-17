@@ -211,6 +211,12 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 				throw new Exception($row->getError());
 			}
 
+			// Save payment if there is one
+			if ($attendee->payment)
+			{
+				RedeventsyncclientMaerskHelper::recordPayment($result->submit_key, $attendee->payment);
+			}
+
 			// Log
 			$this->log(
 				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
@@ -472,6 +478,8 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 			$object->answers = null;
 		}
 
+		$object->payment = RedeventsyncclientMaerskHelper::parsePayment($xml);
+
 		return $object;
 	}
 
@@ -539,6 +547,30 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 		}
 
 		$this->appendElement($message, $answers);
+
+		// Payment
+		if ($attendee->payment_status == 'Completed')
+		{
+			// Extract transaction id
+			if (preg_match('/tid:([^\n]+)/', $attendee->payment_data, $matches))
+			{
+				$transactionId = $matches[1];
+			}
+			elseif (preg_match('/transactionId:([^\n]+)/', $attendee->payment_data, $matches))
+			{
+				$transactionId = $matches[1];
+			}
+			else
+			{
+				$transactionId = 'not found';
+			}
+
+			$a = new SimpleXMLElement('<Payment/>');
+			$a->addChild('Plateform', $attendee->payment_gateway);
+			$a->addChild('TransactionId', $transactionId);
+
+			$this->appendElement($message, $a);
+		}
 
 		return $message;
 	}

@@ -190,6 +190,12 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 			throw new Exception($row->getError());
 		}
 
+		// Save payment if there is one
+		if ($attendee->payment)
+		{
+			RedeventsyncclientMaerskHelper::recordPayment($result->submit_key, $attendee->payment);
+		}
+
 		$this->enqueueMessage(sprintf('Registered %s to session %s', $attendee->user_email,  $attendee->session_code));
 
 		return true;
@@ -301,6 +307,8 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 
 			$object->answers = $answers;
 		}
+
+		$object->payment = RedeventsyncclientMaerskHelper::parsePayment($xml);
 
 		return $object;
 	}

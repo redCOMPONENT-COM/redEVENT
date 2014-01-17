@@ -180,7 +180,11 @@ class RedeventsyncClientMaersk
 
 		if (!$ch_result = curl_exec($ch))
 		{
-			throw new RuntimeException(curl_error($ch));
+			$msg = 'Biztalk returned following error for request ';
+			$msg .= htmlentities($xml);
+			$msg .= ': ' . curl_error($ch);
+
+			throw new RuntimeException($msg);
 		}
 
 		curl_close($ch);
