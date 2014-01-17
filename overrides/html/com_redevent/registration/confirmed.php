@@ -25,19 +25,31 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 ?>
+<?php
+	$prices = RedFormCore::getSubmissionPrice(JFactory::getApplication()->input->get('submit_key'));
+
+	$total = 0;
+	$currency = 'DKK';
+
+	if ($prices)
+	{
+		foreach ($prices as $p)
+		{
+			$total += $p->price;
+			$currency = $p->currency;
+		}
+	}
+?>
 <script type="text/javascript">
-var fb_param = {};
-fb_param.pixel_id = '6006880430408';
-fb_param.value = '0.00';
-(function(){
-  var fpw = document.createElement('script');
-  fpw.async = true;
-  fpw.src = '//connect.facebook.net/en_US/fp.js';
-  var ref = document.getElementsByTagName('script')[0];
-  ref.parentNode.insertBefore(fpw, ref);
-})();
+	var fb_param = {};
+	fb_param.pixel_id = '6016529007931';
+	fb_param.value = '<?php echo $total; ?>';
+	fb_param.currency = '<?php echo $currency; ?>';
+	(function() {
+		var fpw = document.createElement('script'); fpw.async = true; fpw.src = '//connect.facebook.net/en_US/fp.js'; var ref = document.getElementsByTagName('script')[0]; ref.parentNode.insertBefore(fpw, ref);
+	})();
 </script>
-<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/offsite_event.php?id=6006880430408&amp;value=0" /></noscript>
+<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/offsite_event.php?id=6016529007931&value=<?php echo $total; ?>&currency=<?php echo $currency; ?>" /></noscript>
 <div id="confirmation_message">
 	<?php echo $this->message; ?>
 </div>
