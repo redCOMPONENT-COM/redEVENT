@@ -476,7 +476,7 @@ class RedeventControllerFrontadmin extends FOFController
 
 		try
 		{
-			$user = RedmemberLib::saveUser(true);
+			$user = RedmemberLib::saveUser(true, null, false, array('assign_organization' => $app->input->getInt('assign_org')));
 			$resp->status = 1;
 		}
 		catch (Exception $e)
