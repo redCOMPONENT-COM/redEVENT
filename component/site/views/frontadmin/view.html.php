@@ -329,7 +329,8 @@ class RedeventViewFrontadmin extends JView
 
 		$modal = JFactory::getApplication()->input->get('modal');
 
-		$rmu_fields = RedmemberLib::getUserFields(JFactory::getApplication()->input->get('uid'));
+		$rmu_fields = RedmemberLib::getUserFields(JFactory::getApplication()->input->get('uid'),
+			array('assign_organization' => JFactory::getApplication()->input->get('orgId')));
 
 		$this->assignRef('tabs', $rmu_fields);
 

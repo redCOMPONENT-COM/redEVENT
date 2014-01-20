@@ -795,9 +795,16 @@ var redb2b = {
 		},
 
 		editmember : function(id) {
+			var orgId = document.id('filter_organization').get('value');
+
+			if (!orgId)
+			{
+				alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_EDIT_MEMBER_MUST_SELECT_ORGANIZATION"));
+				return;
+			}
 			req = new Request({
 				url : 'index.php?option=com_redevent&controller=frontadmin&task=editmember&tmpl=component',
-				data : {'uid' : id},
+				data : {'uid' : id, 'orgId': orgId},
 				method : 'post',
 				onSuccess : function(responseText){
 					document.id('redadmin-main').hide();
