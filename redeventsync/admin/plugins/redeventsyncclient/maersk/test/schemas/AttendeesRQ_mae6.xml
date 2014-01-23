@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<AttendeesRQ xmlns="http://www.redcomponent.com/redevent">
+
+	<CreateAttendeeRQ>
+
+		<TransactionId>999</TransactionId>
+
+		<SessionCode>11499</SessionCode>
+
+		<VenueCode>Esbjerg</VenueCode>
+
+		<UserEmail>zz@techotel.dk</UserEmail>
+
+		<Firstname>Axel</Firstname>
+
+		<Lastname>Magnusson</Lastname>
+
+		<PoNumber></PoNumber>
+
+		<Comments>Hej med dig</Comments>
+
+		<Status>2</Status>
+
+		<Cancelled>0</Cancelled>
+
+		<WaitingList>0</WaitingList>
+
+		<Confirmed>1</Confirmed>
+
+		<RegistrationDate>2013-10-12T00:23:45</RegistrationDate>
+
+		<IP></IP>
+
+		<Payment>
+
+			<TransactionId>1234567</TransactionId>
+
+		</Payment>
+
+	</CreateAttendeeRQ>
+
+</AttendeesRQ>

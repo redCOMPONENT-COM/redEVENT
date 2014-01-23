@@ -28,6 +28,9 @@ switch ($_GET['test'])
 	case 'mae5':
 		$file = 'schemas/AttendeesRQ_mae5.xml';
 		break;
+	case 'mae6':
+		$file = 'schemas/AttendeesRQ_mae6.xml';
+		break;
 	case 9:
 		$file = 'schemas/Wrongformat.xml';
 		break;
