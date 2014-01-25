@@ -21,6 +21,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once JPATH_SITE . '/components/com_redevent/helpers/route.php';
+require_once JPATH_SITE . '/components/com_redevent/models/baseeventslist.php';
 require_once JPATH_SITE . '/components/com_redform/redform.core.php';
 
 /**
@@ -39,9 +40,10 @@ class ModRedeventQuickbookHelper
 	 *
 	 * @return mixed
 	 */
-	public function getForm(JRegistry $params)
+	public function getData(JRegistry $params)
 	{
 		$input = JFactory::getApplication()->input;
+		$result = new stdclass;
 
 		if ($input->get('option') == 'com_redevent'
 			&& $input ->get('view') == 'details'
@@ -53,21 +55,112 @@ class ModRedeventQuickbookHelper
 		else
 		{
 			// We are only displaying this module whe user is viewing an event details page
-			return;
+			return false;
 		}
 
-		$db = JFactory::getDBO();
-
-		$query = $db->getQuery(true);
-
-		$db->setQuery($query);
-		$res = $db->loadObjectList();
-
-		if ($params->get('mode', 0))
-		{ // tree display
-			$res = self::_getTree($res);
+		// Allowed formIds
+		if ($allowed = trim($params->get('formIds')))
+		{
+			$allowed = explode(',', $allowed);
+			JArrayHelper::toInteger($allowed);
 		}
 
-		return $res;
+		// Get the model to get the sessions of the event
+		$model = JModel::getInstance('BaseEventList', 'RedeventModel');
+		$model->setState('filter_event', $eventId);
+		$model->setState('limit', 0);
+
+		if (!$sessions = $model->getData())
+		{
+			return false;
+		}
+		elseif ($allowed && !in_array(reset($sessions)->redform_id, $allowed))
+		{
+			// Form id is not in allowed list
+			return false;
+		}
+
+		$result->sessions = $sessions;
+
+		// Let's get the form
+		$formId = reset($sessions)->redform_id;
+
+		$rfcore = new RedFormCore;
+
+		if (!$rfcore->getFormStatus($formId))
+		{
+			return false;
+		}
+
+		$result->form = $rfcore->getForm($formId);
+
+		$result->action = RedeventHelperRoute::getRegistrationRoute(reset($sessions)->xslug, 'register');
+
+		$result->sessionsOptions = self::getSessionsOptions($sessions, $params);
+
+		$result->pricegroupjs = self::jsPriceGroups($sessions);
+
+		return $result;
+	}
+
+	/**
+	 * Returns sessions as options
+	 *
+	 * @param   array      $sessions  sessions
+	 * @param   JRegistry  $params    plugin params
+	 *
+	 * @return array
+	 */
+	protected function getSessionsOptions($sessions, JRegistry $params)
+	{
+		$options = array();
+
+		foreach ($sessions as $s)
+		{
+			$value = $s->xref;
+
+			if (!redEVENTHelper::isValidDate($s->dates))
+			{
+				$date = JText::_('COM_REDEVENT_OPEN_DATE');
+			}
+			else
+			{
+				$date = strftime($params->get('formatdate', '%d/%m/%Y'), strtotime($s->dates . ' ' . $s->times));
+			}
+
+			$text = $date . ' - ' . $s->venue;
+
+			$options[] = JHtml::_('select.option', $value, $text);
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Returns js for sessions prices
+	 *
+	 * @param   array  $sessions  sessions
+	 *
+	 * @return array
+	 */
+	protected function jsPriceGroups($sessions)
+	{
+		$js = array();
+
+		foreach ($sessions as $s)
+		{
+			if ($s->prices && is_array($s->prices))
+			{
+				foreach ($s->prices as $p)
+				{
+					$js[] = "var prices[] = {'xref' => '" . $p->xref . "'"
+						. ", 'name' => '" . $p->name . "'"
+						. ", 'id' => '" . $p->id . "'"
+						. "}";
+				}
+			}
+		}
+
+		return implode("\n", $js);
 	}
 }

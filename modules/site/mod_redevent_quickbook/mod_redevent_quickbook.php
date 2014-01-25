@@ -28,10 +28,10 @@ require_once JPATH_SITE . '/components/com_redevent/helpers/helper.php';
 require_once JPATH_SITE . '/components/com_redevent/classes/image.class.php';
 require_once JPATH_SITE . '/components/com_redevent/classes/useracl.class.php';
 
-$form = modRedEventQuickbookHelper::getForm($params);
+$data = modRedEventQuickbookHelper::getData($params);
 
 // Check if any results returned
-if (!$form) {
+if (!$data) {
 	return;
 }
 
