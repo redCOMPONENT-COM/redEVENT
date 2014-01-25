@@ -145,7 +145,7 @@ class ModRedeventQuickbookHelper
 	 */
 	protected function jsPriceGroups($sessions)
 	{
-		$js = array();
+		$js = array('var prices = new Array();');
 
 		foreach ($sessions as $s)
 		{
@@ -153,10 +153,10 @@ class ModRedeventQuickbookHelper
 			{
 				foreach ($s->prices as $p)
 				{
-					$js[] = "var prices[] = {'xref' => '" . $p->xref . "'"
-						. ", 'name' => '" . $p->name . "'"
-						. ", 'id' => '" . $p->id . "'"
-						. "}";
+					$js[] = "prices.push({'xref': '" . $p->xref . "'"
+						. ", 'name': '" . $p->name . "'"
+						. ", 'id': '" . $p->id . "'"
+						. "});";
 				}
 			}
 		}

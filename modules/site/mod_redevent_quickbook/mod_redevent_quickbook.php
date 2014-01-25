@@ -36,7 +36,9 @@ if (!$data) {
 }
 
 $document = JFactory::getDocument();
-$document->addStyleSheet( JURI::base() . '/modules/mod_redevent_quickbook/mod_redevent_quickbook.css' );
-$document->addScript(JURI::base() . '/modules/mod_redevent_quickbook/mod_redevent_quickbook.js' );
+$document->addStyleSheet( JURI::base() . '/modules/mod_redevent_quickbook/mod_redevent_quickbook.css');
+$document->addScript(JURI::base() . '/modules/mod_redevent_quickbook/mod_redevent_quickbook.js');
+
+$document->addScriptDeclaration($data->pricegroupjs);
 
 require(JModuleHelper::getLayoutPath('mod_redevent_quickbook'));
