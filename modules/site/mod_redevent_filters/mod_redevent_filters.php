@@ -21,19 +21,20 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Get helper
-require_once (dirname(__FILE__) . '/helper.php');
+require_once dirname(__FILE__) . '/helper.php';
 
 $data = modRedEventFiltersHelper::getData($params);
 
 // Check if any results returned
-if (!$data) {
+if (!$data)
+{
 	return;
 }
 
 $model = modRedEventFiltersHelper::getModel();;
 
 $document = JFactory::getDocument();
-$document->addStyleSheet( JURI::base() . '/modules/mod_redevent_filters/mod_redevent_filters.css');
-$document->addScript(JURI::base() . '/modules/mod_redevent_filters/mod_redevent_filters.js');
+$document->addStyleSheet(JURI::base() . 'modules/mod_redevent_filters/mod_redevent_filters.css');
+$document->addScript(JURI::base() . 'modules/mod_redevent_filters/mod_redevent_filters.js');
 
 require(JModuleHelper::getLayoutPath('mod_redevent_filters'));
