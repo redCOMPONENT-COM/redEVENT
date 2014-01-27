@@ -98,12 +98,14 @@ class RedeventController extends JController
 			switch ($filter)
 			{
 				case 'filter_category':
+				case 'filter_multicategory':
 				case 'filter_venuecategory':
 				case 'filter_order':
 				case 'filter_order_Dir':
 				case 'filter':
 				case 'filter_type':
 				case 'filter_venue':
+				case 'filter_multivenue':
 				case 'layout':
 				case 'task':
 					if ($v)
