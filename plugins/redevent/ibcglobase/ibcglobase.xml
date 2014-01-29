@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="redevent" method="upgrade">
+	<name>PLG_REDEVENT_IBCGLOBASE_PLUGIN</name>
+	<creationDate>##DATE##</creationDate>
+	<author>redWEB Aps</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>(C) 2014 redCOMPONENT.com</copyright>
+	<license>GNU/GPL</license>
+	<version>##VERSION##</version>
+	<description>PLG_REDEVENT_IBCGLOBASE_PLUGIN_DESC</description>
+
+	<files>
+		<filename plugin="ibcglobase">ibcglobase.php</filename>
+		<filename>index.html</filename>
+		<folder>language</folder>
+	</files>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field type="text" name="listFieldId"
+					label="PLG_REDEVENT_IBCGLOBASE_XML_LISTID_LABEL"
+					description="PLG_REDEVENT_IBCGLOBASE_XML_LISTID_DESCRIPTION"
+					/>
+				<field type="text" name="uddannelseFieldId"
+					   label="PLG_REDEVENT_IBCGLOBASE_XML_UDDANNELSEFIELDID_LABEL"
+					   description="PLG_REDEVENT_IBCGLOBASE_XML_UDDANNELSEFIELDID_DESCRIPTION"
+						/>
+				<field type="text" name="nyhedsbrevFieldId"
+					   label="PLG_REDEVENT_IBCGLOBASE_XML_NYHEDSBREVFIELDID_LABEL"
+					   description="PLG_REDEVENT_IBCGLOBASE_XML_NYHEDSBREVFIELDID_DESCRIPTION"
+						/>
+			</fieldset>
+		</fields>
+	</config>
+
+</extension>
