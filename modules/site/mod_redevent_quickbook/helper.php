@@ -45,16 +45,21 @@ class ModRedeventQuickbookHelper
 		$input = JFactory::getApplication()->input;
 		$result = new stdclass;
 
-		if ($input->get('option') == 'com_redevent'
+		$eventId = 0;
+
+		if ($params->get('eventid'))
+		{
+			$eventId = (int) $params->get('eventid');
+		}
+		elseif ($input->get('option') == 'com_redevent'
 			&& $input ->get('view') == 'details'
 		)
 		{
 			$eventId = $input->getInt('id', 0);
-			$xref    = $input->getInt('xref', 0);
 		}
-		else
+
+		if (!$eventId)
 		{
-			// We are only displaying this module whe user is viewing an event details page
 			return false;
 		}
 
