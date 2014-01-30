@@ -283,9 +283,10 @@ class REattendee extends JObject {
 		$emails = $rfcore->getSidContactEmails($sid);
 
 		$valid_emails = false;
+
 		foreach ($emails as $e)
 		{
-			if (JMailHelper::isEmailAddress($e))
+			if (JMailHelper::isEmailAddress($e['email']))
 			{
 				$valid_emails = true;
 				break;
@@ -298,7 +299,8 @@ class REattendee extends JObject {
 			return true;
 		}
 
-		if (empty($this->taghelper)) {
+		if (empty($this->taghelper))
+		{
 			$this->taghelper = new redEVENT_tags();
 			$this->taghelper->setXref($data->xref);
 		}
@@ -310,7 +312,7 @@ class REattendee extends JObject {
 				$subject = $session->notify_off_list_subject;
 				$body    = $session->notify_off_list_body;
 			}
-			else if ($session->notify_subject)
+			elseif ($session->notify_subject)
 			{
 				$subject = $session->notify_subject;
 				$body    = $session->notify_body;
@@ -320,6 +322,7 @@ class REattendee extends JObject {
 				$subject = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_OFF_SUBJECT');
 				$body    = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_OFF_BODY');
 			}
+
 			$body    = $this->taghelper->ReplaceTags($body);
 			$subject = $this->taghelper->ReplaceTags($subject);
 		}
@@ -335,6 +338,7 @@ class REattendee extends JObject {
 				$subject = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_ON_SUBJECT');
 				$body    = JText::_('COM_REDEVENT_WL_DEFAULT_NOTIFY_ON_BODY');
 			}
+
 			$body    = $this->taghelper->ReplaceTags($body);
 			$subject = $this->taghelper->ReplaceTags($subject);
 		}
@@ -343,7 +347,6 @@ class REattendee extends JObject {
 		{
 			// not sending !
 			throw new Exception(JText::_('COM_REDEVENT_WL_NOTIFICATION_MISSING_SUBJECT'));
-			return false;
 		}
 
 		// update image paths in body
