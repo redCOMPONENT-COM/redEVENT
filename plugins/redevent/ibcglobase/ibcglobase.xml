@@ -19,17 +19,34 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field type="text" name="listFieldId"
+				<field type="text" name="ws_username"
+					label="PLG_REDEVENT_IBCGLOBASE_XML_WS_USERNAME_LABEL"
+					description="PLG_REDEVENT_IBCGLOBASE_XML_WS_USERNAME_DESCRIPTION"
+					/>
+				<field type="password" name="ws_password"
+					   label="PLG_REDEVENT_IBCGLOBASE_XML_WS_PASSWORD_LABEL"
+					   description="PLG_REDEVENT_IBCGLOBASE_XML_WS_PASSWORD_DESCRIPTION"
+						/>
+				<field type="text" name="subscribeFieldId"
+					label="PLG_REDEVENT_IBCGLOBASE_XML_SUBSCRIBEFIELDID_LABEL"
+					description="PLG_REDEVENT_IBCGLOBASE_XML_SUBSCRIBEFIELDID_DESCRIPTION"
+					/>
+				<field type="text" name="listId"
 					label="PLG_REDEVENT_IBCGLOBASE_XML_LISTID_LABEL"
 					description="PLG_REDEVENT_IBCGLOBASE_XML_LISTID_DESCRIPTION"
 					/>
 				<field type="text" name="uddannelseFieldId"
-					   label="PLG_REDEVENT_IBCGLOBASE_XML_UDDANNELSEFIELDID_LABEL"
-					   description="PLG_REDEVENT_IBCGLOBASE_XML_UDDANNELSEFIELDID_DESCRIPTION"
-						/>
+					label="PLG_REDEVENT_IBCGLOBASE_XML_UDDANNELSEFIELDID_LABEL"
+					description="PLG_REDEVENT_IBCGLOBASE_XML_UDDANNELSEFIELDID_DESCRIPTION"
+					/>
 				<field type="text" name="nyhedsbrevFieldId"
-					   label="PLG_REDEVENT_IBCGLOBASE_XML_NYHEDSBREVFIELDID_LABEL"
-					   description="PLG_REDEVENT_IBCGLOBASE_XML_NYHEDSBREVFIELDID_DESCRIPTION"
+					label="PLG_REDEVENT_IBCGLOBASE_XML_NYHEDSBREVFIELDID_LABEL"
+					description="PLG_REDEVENT_IBCGLOBASE_XML_NYHEDSBREVFIELDID_DESCRIPTION"
+					/>
+				<field type="textarea" name="redformMapping"
+					   label="PLG_REDEVENT_IBCGLOBASE_XML_REDFORMMAPPING_LABEL"
+					   description="PLG_REDEVENT_IBCGLOBASE_XML_REDFORMMAPPING_DESCRIPTION"
+					   rows="10" cols="50"
 						/>
 			</fieldset>
 		</fields>
