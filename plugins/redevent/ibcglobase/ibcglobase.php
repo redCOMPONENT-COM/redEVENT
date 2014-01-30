@@ -106,6 +106,8 @@ class plgRedeventIbcglobase extends JPlugin
 		$this->ws_password = $this->params->get('ws_password');
 		$this->listId      = (int) $this->params->get('listId');
 
+		$specials = $this->getSpecialFields();
+
 		$details = $this->getAttendeeDetails($attendeeId);
 
 		if (!$this->listId)
@@ -125,18 +127,18 @@ class plgRedeventIbcglobase extends JPlugin
 
 		$profileFields = $client->GetListFields($this->ws_username, $this->ws_password, $this->listId);
 
-		$xmlFields = array('customfield_15' => array($details->formname));
+		$xmlFields = array($specials->Formularnavn->name => array($details->formname));
 
 		if ($details->uddannelse)
 		{
 			$parts = explode("\n", $details->uddannelse);
-			$xmlFields['customfield_18'] = $parts;
+			$xmlFields[$specials->Uddannelse->name] = $parts;
 		}
 
 		if ($details->nyhedsbrev)
 		{
 			$parts = explode("\n", $details->nyhedsbrev);
-			$xmlFields['customfield_19'] = $parts;
+			$xmlFields[$specials->Nyhedsbrev->name] = $parts;
 		}
 
 		foreach ($profileFields as $pf)
@@ -170,7 +172,7 @@ class plgRedeventIbcglobase extends JPlugin
 
 			foreach ($previousValues->fields as $field)
 			{
-				if ($field->name == 'customfield_18' || $field->name == 'customfield_19')
+				if ($field->name == $specials->Nyhedsbrev->name || $field->name == $specials->Uddannelse->name)
 				{
 					$xmlFields[$field->name][] = $field->value;
 				}
@@ -193,6 +195,8 @@ class plgRedeventIbcglobase extends JPlugin
 		$resp = $client->SaveProfileV2(
 			$this->ws_username, $this->ws_password, $this->listId, $xml, 'email'
 		);
+
+		return true;
 	}
 
 	/**
@@ -245,6 +249,40 @@ class plgRedeventIbcglobase extends JPlugin
 
 		$db->setQuery($query);
 		$res = $db->loadObject();
+
+		return $res;
+	}
+
+	/**
+	 * return special fields
+	 *
+	 * @return object
+	 */
+	protected function getSpecialFields()
+	{
+		$client = $this->getClient();
+
+		$fields = $client->GetListFields($this->ws_username, $this->ws_password, $this->listId);
+
+		$res = new stdclass;
+
+		foreach ($fields as $f)
+		{
+			switch ($f->nicename)
+			{
+				case 'Formularnavn':
+					$res->Formularnavn = $f;
+					break;
+
+				case 'Uddannelse':
+					$res->Uddannelse = $f;
+					break;
+
+				case 'Nyhedsbrev':
+					$res->Nyhedsbrev = $f;
+					break;
+			}
+		}
 
 		return $res;
 	}
