@@ -15,6 +15,8 @@ jimport('joomla.plugin.plugin');
 // Register library prefix
 JLoader::registerPrefix('Redeventsync', JPATH_LIBRARIES . '/redeventsync');
 
+require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
+
 require_once 'helper.php';
 require_once 'client.php';
 

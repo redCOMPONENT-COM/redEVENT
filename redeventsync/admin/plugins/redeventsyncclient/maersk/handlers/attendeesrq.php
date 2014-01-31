@@ -500,6 +500,8 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 		$message->addChild('SessionCode',   $attendee->session_code);
 		$message->addChild('VenueCode',     $attendee->venue_code);
 		$message->addChild('UserEmail',     $attendee->email);
+		$message->addChild('Firstname',     $attendee->redmember->rm_firstname);
+		$message->addChild('Lastname',      $attendee->redmember->rm_lastname);
 		$message->addChild('PoNumber',      $attendee->ponumber);
 		$message->addChild('Comments',      $attendee->comments);
 		$message->addChild('Status',        $attendee->status);

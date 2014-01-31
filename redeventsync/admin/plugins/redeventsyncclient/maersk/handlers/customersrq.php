@@ -27,8 +27,6 @@ class RedeventsyncHandlerCustomersrq extends RedeventsyncHandlerAbstractmessage
 	 */
 	protected function processCustomerRQ(SimpleXMLElement $xml)
 	{
-		require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
-
 		$transaction_id = (int) $xml->TransactionId;
 
 		try

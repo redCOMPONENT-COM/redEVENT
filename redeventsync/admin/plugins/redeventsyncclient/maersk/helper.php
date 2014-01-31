@@ -19,8 +19,6 @@ class RedeventsyncclientMaerskHelper
 	 */
 	public static function getUser($email)
 	{
-		require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
-
 		if (!$email || !JMailHelper::isEmailAddress($email))
 		{
 			throw new InvalidEmailException('Empty or invalid email');
@@ -116,6 +114,11 @@ class RedeventsyncclientMaerskHelper
 
 		$db->setQuery($query);
 		$attendee = $db->loadObject();
+
+		if ($attendee)
+		{
+			$attendee->redmember = redmemberlib::getUserData($attendee->uid);
+		}
 
 		return $attendee;
 	}
