@@ -575,6 +575,18 @@ class plgRedeventsyncclientMaersk extends JPlugin
 	}
 
 	/**
+	 * handles attendee paid
+	 *
+	 * @param   int  $attendee_id  attendee id
+	 *
+	 * @return bool
+	 */
+	public function onHandleAttendeePaid($attendee_id)
+	{
+		return $this->onHandleAttendeeModified($attendee_id);
+	}
+
+	/**
 	 * Returns the handler
 	 *
 	 * @param   string  $type  handler name
