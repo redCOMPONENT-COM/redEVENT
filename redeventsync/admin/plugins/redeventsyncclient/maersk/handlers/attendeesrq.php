@@ -504,7 +504,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 		$message->addChild('Lastname',      $attendee->redmember->rm_lastname);
 		$message->addChild('PoNumber',      $attendee->ponumber);
 		$message->addChild('Comments',      $attendee->comments);
-		$message->addChild('Status',        $attendee->status);
+		$message->addChild('Status',        (int) $attendee->status);
 		$message->addChild('Cancelled',     $attendee->cancelled);
 		$message->addChild('PriceGroupId',  $attendee->sessionpricegroup_id);
 		$message->addChild('WaitingList',   $attendee->waitinglist);
