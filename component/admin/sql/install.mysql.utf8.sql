@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_register` (
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
 PRIMARY KEY  (`id`),
 KEY `xref` (`xref`),
-KEY `pricegroup_id` (`pricegroup_id`),
+KEY `sessionpricegroup_id` (`sessionpricegroup_id`),
 KEY `submit_key` (`submit_key`),
 KEY `sid` (`sid`)
 ) DEFAULT CHARSET=utf8;
