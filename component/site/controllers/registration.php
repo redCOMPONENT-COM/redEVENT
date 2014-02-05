@@ -161,7 +161,10 @@ class RedEventControllerRegistration extends RedEventController
 
 			foreach ($result->posts as $rfpost)
 			{
-				if (!$res = $model->register($user, $rfpost['sid'], $result->submit_key, $pricegroups[$k++]))
+				$pricegroup = isset($pricegroups[$k]) ? $pricegroups[$k] : null;
+				$k++;
+
+				if (!$res = $model->register($user, $rfpost['sid'], $result->submit_key, $pricegroup))
 				{
 					$msg = JText::_('COM_REDEVENT_REGISTRATION_REGISTRATION_FAILED');
 					$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($details->did, $xref)), $msg, 'error');
