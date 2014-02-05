@@ -393,6 +393,10 @@ class RedeventControllerFrontadmin extends FOFController
 		if ($res = $model->updateponumber($rid, $value))
 		{
 			$resp->status = 1;
+
+			JPluginHelper::importPlugin( 'redevent' );
+			$dispatcher = JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAttendeeModified', array($rid));
 		}
 		else
 		{
@@ -421,6 +425,10 @@ class RedeventControllerFrontadmin extends FOFController
 		if ($res = $model->updatecomments($rid, $value))
 		{
 			$resp->status = 1;
+
+			JPluginHelper::importPlugin( 'redevent' );
+			$dispatcher = JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAttendeeModified', array($rid));
 		}
 		else
 		{
@@ -451,6 +459,10 @@ class RedeventControllerFrontadmin extends FOFController
 		{
 			$resp->status = 1;
 			$resp->html = redEVENTHelper::getStatusIcon($res);
+
+			JPluginHelper::importPlugin( 'redevent' );
+			$dispatcher = JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onAttendeeModified', array($rid));
 		}
 		else
 		{

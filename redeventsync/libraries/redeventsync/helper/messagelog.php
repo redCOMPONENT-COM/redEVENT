@@ -40,6 +40,10 @@ class RedeventsyncHelperMessagelog
 		$log->status = $status;
 		$log->debug = $debug;
 		$log->date = JFactory::getDate()->toSql(true);
-		$log->store();
+
+		if (!$log->store())
+		{
+			throw new Exception($log->getError());
+		}
 	}
 }

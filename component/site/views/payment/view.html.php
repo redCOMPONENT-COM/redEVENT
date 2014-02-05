@@ -108,6 +108,11 @@ class RedeventViewPayment extends JView
 			case 'accepted':
 				$text = $tags->ReplaceTags($row->paymentaccepted);
 				$this->addTracking();
+
+				// Trigger event for custom handling
+				JPluginHelper::importPlugin('redevent');
+				$dispatcher = JDispatcher::getInstance();
+				$dispatcher->trigger('onAfterPaymentVerified', array($submit_key));
 				break;
 
 			case 'refused':
