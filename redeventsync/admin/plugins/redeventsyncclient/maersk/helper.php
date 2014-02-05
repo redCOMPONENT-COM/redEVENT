@@ -103,12 +103,12 @@ class RedeventsyncclientMaerskHelper
 		$query->select('v.venue_code');
 		$query->select('e.redform_id');
 		$query->select('u.email');
-		$query->select('p.date AS payment_date, p.gateway AS payment_gateway, p.status AS payment_status, p.data AS payment_data');
+		$query->select('p.date AS payment_date, p.gateway AS payment_gateway, p.status AS payment_status, p.data AS payment_data, p.paid');
 		$query->from('#__redevent_register AS r');
 		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = r.xref');
 		$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
 		$query->join('INNER', '#__redevent_venues AS v ON v.id = x.venueid');
-		$query->join('LEFT', '#__rwf_payment AS p ON p.submit_key = r.submit_key AND p.status = ' . $db->q('Completed'));
+		$query->join('LEFT', '#__rwf_payment AS p ON p.submit_key = r.submit_key AND p.paid = 1');
 		$query->join('LEFT', '#__users AS u ON u.id = r.uid');
 		$query->where('r.id = ' . $db->quote($attendee_id));
 

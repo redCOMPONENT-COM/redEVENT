@@ -551,7 +551,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 		$this->appendElement($message, $answers);
 
 		// Payment
-		if ($attendee->payment_status == 'Completed')
+		if ($attendee->paid)
 		{
 			// Extract transaction id
 			if (preg_match('/tid:([^\n]+)/', $attendee->payment_data, $matches))
