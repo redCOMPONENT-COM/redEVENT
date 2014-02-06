@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension
+	type="module"
+	version="2.5"
+	client="site"
+	method="upgrade">
+	<name>mod_redevent_quickbook</name>
+	<creationDate>##DATE##</creationDate>
+	<author>redWEB Aps</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>(C) 2014 redCOMPONENT.com</copyright>
+	<license>GNU/GPL</license>
+	<version>##VERSION##</version>
+	<description>MOD_REDEVENT_QUICKBOOK_XML_DESCRIPTION</description>
+
+	<files>
+		<filename module="mod_redevent_quickbook">mod_redevent_quickbook.php</filename>
+		<filename>mod_redevent_quickbook.css</filename>
+		<filename>mod_redevent_quickbook.js</filename>
+		<filename>index.html</filename>
+		<filename>helper.php</filename>
+    <folder>tmpl</folder>
+    <folder>images</folder>
+    <folder>language</folder>
+	</files>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic" addfieldpath="/administrator/components/com_redevent/models/fields">
+				<field name="eventid" type="reevent" default=""
+					label="MOD_REDEVENT_QUICKBOOK_XML_EVENTID_LABEL"
+					description="MOD_REDEVENT_QUICKBOOK_XML_EVENTID_DESCRIPTION"
+					reset="1" size="20"
+					>
+				</field>
+				<field name="formIds" type="textarea" default=""
+					label="MOD_REDEVENT_QUICKBOOK_XML_ALLOWED_FORM_IDS_LABEL"
+					description="MOD_REDEVENT_QUICKBOOK_XML_ALLOWED_FORM_IDS_DESCRIPTION">
+				</field>
+			</fieldset>
+
+			<fieldset
+				name="advanced">
+				<field
+					name="layout"
+					type="modulelayout"
+					label="JFIELD_ALT_LAYOUT_LABEL"
+					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+				<field
+					name="moduleclass_sfx"
+					type="text"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+				<field
+					name="cache"
+					type="list"
+					default="0"
+					label="COM_MODULES_FIELD_CACHING_LABEL"
+					description="COM_MODULES_FIELD_CACHING_DESC">
+					<option
+						value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+
+</extension>

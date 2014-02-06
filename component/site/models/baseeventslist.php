@@ -85,7 +85,7 @@ class RedeventModelBaseEventList extends JModel
 
 		// Get the number of events from database
 		$limit       	= $app->getUserStateFromRequest('com_redevent.limit', 'limit', $params->def('display_num', 0), 'int');
-		$limitstart		= JRequest::getVar('limitstart', 0, '', 'int');
+		$limitstart		= $app->input->getInt('limitstart', 0);
 
 		// In case limit has been changed, adjust it
 		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
@@ -94,8 +94,8 @@ class RedeventModelBaseEventList extends JModel
 		$this->setState('limitstart', $limitstart);
 
 		// Get the filter request variables
-		$this->setState('filter_order',     JRequest::getCmd('filter_order', 'x.dates'));
-		$this->setState('filter_order_Dir', strtoupper(JRequest::getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC');
+		$this->setState('filter_order',     $app->input->getCmd('filter_order', 'x.dates'));
+		$this->setState('filter_order_Dir', strtoupper($app->input->getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC');
 
 		$this->setState('filter',      $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter',      'filter', '', 'string'));
 		$this->setState('filter_type', $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_type', 'filter_type', '', 'string'));
@@ -104,7 +104,10 @@ class RedeventModelBaseEventList extends JModel
 		$this->setState('filter_category', $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_category', 'filter_category', 0, 'int'));
 		$this->setState('filter_venue',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_venue',    'filter_venue',    0, 'int'));
 
-		$customs      = $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_customs', 'filtercustom', array(), 'array');
+		$this->setState('filter_multicategory', $app->input->get('filter_multicategory', null, 'array'));
+		$this->setState('filter_multivenue',    $app->input->get('filter_multivenue',    null, 'array'));
+
+		$customs      = $app->input->get('filtercustom', array(), 'array');
 		$this->setState('filter_customs', $customs);
 
 		$this->setState('filter.language', $app->getLanguageFilter());
@@ -324,7 +327,16 @@ class RedeventModelBaseEventList extends JModel
 		// Get the paramaters of the active menu item
 		$params 	= $app->getParams();
 
-		$query->where('x.published = 1');
+		// First thing we need to do is to select only needed events
+		if ($app->input->getCmd('task') == 'archive')
+		{
+			$query->where(' x.published = -1');
+		}
+		else
+		{
+			$query->where(' x.published = 1');
+		}
+
 		$query->where('a.published <> 0');
 
 		/*
@@ -364,7 +376,18 @@ class RedeventModelBaseEventList extends JModel
 			}
 		}
 
-		if ($filter_venue = $this->getState('filter_venue'))
+		if ($filter_multivenue = $this->getState('filter_multivenue'))
+		{
+			$or = array();
+
+			foreach ($filter_multivenue as $v)
+			{
+				$or[] = ' l.id = ' . (int) $v;
+			}
+
+			$query->where('(' . implode(' OR ', $or) . ')');
+		}
+		elseif ($filter_venue = $this->getState('filter_venue'))
 		{
 			$query->where(' l.id = ' . $this->_db->Quote($filter_venue));
 		}
@@ -374,13 +397,29 @@ class RedeventModelBaseEventList extends JModel
 			$query->where('a.id = ' . $this->_db->Quote($ev));
 		}
 
-		if ($cat = $this->getState('filter_category'))
+		if ($filter_multicategory = $this->getState('filter_multicategory'))
+		{
+			$or = array();
+
+			foreach ($filter_multicategory as $cat)
+			{
+				$category = $this->getCategory((int) $cat);
+
+				if ($category)
+				{
+					$or[] = '(c.id = ' . (int) $category->id . ' OR (c.lft > ' . (int) $category->lft . ' AND c.rgt < ' . (int) $category->rgt . '))';
+				}
+			}
+
+			$query->where('(' . implode(' OR ', $or) . ')');
+		}
+		elseif ($cat = $this->getState('filter_category'))
 		{
 			$category = $this->getCategory((int) $cat);
 
 			if ($category)
 			{
-				$query->where('(c.id = ' . $this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))');
+				$query->where('(c.id = ' . (int) $category->id . ' OR (c.lft > ' . (int) $category->lft . ' AND c.rgt < ' . (int) $category->rgt . '))');
 			}
 		}
 
@@ -410,16 +449,26 @@ class RedeventModelBaseEventList extends JModel
 
 		$customs = $this->getState('filter_customs');
 
+//		echo '<pre>'; echo print_r($customs, true); echo '</pre>'; exit;
 		foreach ((array) $customs as $key => $custom)
 		{
-			if ($custom != '')
+			if ($custom)
 			{
 				if (is_array($custom))
 				{
-					$custom = implode("/n", $custom);
-				}
+					$or = array();
 
-				$query->where('custom' . $key . ' LIKE ' . $this->_db->Quote('%' . $custom . '%'));
+					foreach ($custom as $c)
+					{
+						$or[] = 'custom' . $key . ' LIKE ' . $this->_db->Quote('%' . $c . '%');
+					}
+
+					$query->where('(' . implode(" OR ", $or) . ')');
+				}
+				else
+				{
+					$query->where('custom' . $key . ' LIKE ' . $this->_db->Quote('%' . $custom . '%'));
+				}
 			}
 		}
 

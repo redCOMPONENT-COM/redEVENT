@@ -170,6 +170,10 @@ class RedeventControllerMyevents extends FOFController
 		if ($res = $model->cancelregistration($rid))
 		{
 			$resp->status = 1;
+
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('onAttendeeCancelled', array($rid));
 		}
 		else
 		{
