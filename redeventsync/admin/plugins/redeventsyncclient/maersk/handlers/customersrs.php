@@ -87,6 +87,11 @@ class RedeventsyncHandlerCustomersrs extends RedeventsyncHandlerAbstractmessage
 		try
 		{
 			redmemberlib::saveUser(false, $data);
+
+			// Log
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
+				$xml, 'ok');
 		}
 		catch (Exception $e)
 		{
