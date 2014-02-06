@@ -358,9 +358,9 @@ class RedeventControllerFrontadmin extends FOFController
 		{
 			$resp->status = 1;
 
-			JPluginHelper::importPlugin( 'redevent' );
-			$dispatcher =& JDispatcher::getInstance();
-			$res = $dispatcher->trigger('onAttendeeCancelled', array($rid));
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('onAttendeeCancelled', array($rid));
 		}
 		else
 		{
