@@ -58,6 +58,11 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 			$response->addChild('SessionCode', $row->session_code);
 			$this->addResponse($response);
 
+			if (isset($object->prices))
+			{
+				$row->setPrices($object->prices);
+			}
+
 			// Log
 			$this->log(
 				REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
@@ -121,6 +126,11 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 			if (!($row->check() && $row->store()))
 			{
 				throw new Exception($row->getError());
+			}
+
+			if (isset($object->prices))
+			{
+				$row->setPrices($object->prices);
 			}
 
 			// Log
@@ -554,7 +564,7 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 					$p = new stdClass;
 					$p->pricegroup_id = (int) $price->PriceGroupId;
 					$p->price         = (float) $price->PriceGroupPrice;
-					$p->currency      = (float) $price->CurrencyCode;
+					$p->currency      = (string) $price->CurrencyCode;
 					$prices[] = $p;
 				}
 
@@ -566,7 +576,7 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 		{
 			$roles = array();
 
-			foreach ($el->EventPrice->children() as $ob)
+			foreach ($el->SessionRole->children() as $ob)
 			{
 				$p = new stdClass;
 				$p->RoleId    = (int) $ob->RoleId;

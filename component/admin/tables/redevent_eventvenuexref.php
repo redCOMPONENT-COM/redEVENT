@@ -23,6 +23,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+require_once __DIR__ . '/redevent_sessions_pricegroups.php';
+
 /**
  * EventList registration Model class
  *
@@ -246,7 +248,7 @@ class RedEvent_eventvenuexref extends JTable
 				continue;
 			}
 
-			$new = JTable::getInstance('RedEvent_sessions_pricegroups', '');
+			$new = JTable::getInstance('Redevent_sessions_pricegroups', '');
 			$new->set('xref',          $this->id);
 			$new->set('pricegroup_id', $price->pricegroup_id);
 			$new->set('price',         $price->price);
