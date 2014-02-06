@@ -23,7 +23,7 @@ class RedeventsyncHelperMessagelog
 	 *
 	 * @param   int     $direction      up or down
 	 * @param   string  $type           message type
-	 * @param   int     $transactionid  transaction id
+	 * @param   string  $transactionid  transaction id
 	 * @param   string  $message        xml message
 	 * @param   string  $status         status
 	 * @param   string  $debug          debug info

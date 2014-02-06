@@ -134,7 +134,7 @@ class RedeventsyncHandlerAbstractmessage
 	 * log transaction
 	 *
 	 * @param   int               $direction      up or down
-	 * @param   int               $transactionid  transaction id
+	 * @param   string            $transactionid  transaction id
 	 * @param   SimpleXMLElement  $xml            xml message
 	 * @param   string            $status         status
 	 * @param   string            $debug          debug info

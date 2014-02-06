@@ -144,6 +144,15 @@ class plgRedeventsyncclientMaersk extends JPlugin
 			throw new Exception('Parsing error: ' . implode("\n", $errors));
 		}
 
+		// Log the whole message
+		RedeventsyncHelperMessagelog::log(
+			REDEVENTSYNC_LOG_DIRECTION_INCOMING,
+			$xml->firstChild->nodeName,
+			null,
+			$data,
+			'received'
+		);
+
 		$xml->preserveWhiteSpace = false;
 
 		$type = $xml->firstChild->nodeName;

@@ -10,6 +10,15 @@ defined('_JEXEC') or die();
 
 class RedeventsyncModelLogs extends FOFModel
 {
+	protected function populateState()
+	{
+		$order = $this->getUserStateFromRequest($this->getHash() . 'filter_order', 'filter_order', 'date', 'none', true);
+		$order_Dir = $this->getUserStateFromRequest($this->getHash() . 'filter_order_Dir', 'filter_order_Dir', 'DESC', 'none', true);
+
+		$this->setState('filter_order', $order);
+		$this->setState('filter_order_Dir', $order_Dir);
+	}
+
 	/**
 	 * Clear logs
 	 *
