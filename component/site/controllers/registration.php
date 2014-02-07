@@ -210,6 +210,11 @@ class RedEventControllerRegistration extends RedEventController
 			$link = RedeventHelperRoute::getRegistrationRoute($xref, 'review', $submit_key);
 		}
 
+		if ($app->input->getInt('modal', 0))
+		{
+			$link .= '&tmpl=component';
+		}
+
 		// Redirect to prevent resending the form on refresh
 		$this->setRedirect(JRoute::_($link, false));
 	}

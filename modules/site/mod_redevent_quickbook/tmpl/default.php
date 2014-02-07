@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 $rfcore = new RedFormCore;
 ?>
 <div class="modRedeventQuickbook">
-<form action="index.php?option=com_redevent&controller=registration&task=register"
+<form action="<?php echo $action; ?>"
       method="post" name="redform" enctype="multipart/form-data" onsubmit="return CheckSubmit(this);">
 	<?php echo JHtml::_('select.genericlist', $data->sessionsOptions, 'xref', null, 'value', 'text', JFactory::getApplication()->input->getInt('xref', 0)); ?>
 	<?php echo $rfcore->getFormFields($data->form->id); ?>

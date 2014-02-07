@@ -38,6 +38,13 @@
 					label="MOD_REDEVENT_QUICKBOOK_XML_ALLOWED_FORM_IDS_LABEL"
 					description="MOD_REDEVENT_QUICKBOOK_XML_ALLOWED_FORM_IDS_DESCRIPTION">
 				</field>
+				<field name="target" type="radio" default="post"
+					label="MOD_REDEVENT_QUICKBOOK_XML_TARGET_LABEL"
+					description="MOD_REDEVENT_QUICKBOOK_XML_TARGET_DESCRIPTION"
+					>
+					<option value="post">MOD_REDEVENT_QUICKBOOK_XML_TARGET_OPTION_POST</option>
+					<option value="modal">MOD_REDEVENT_QUICKBOOK_XML_TARGET_OPTION_MODAL</option>
+				</field>
 			</fieldset>
 
 			<fieldset
