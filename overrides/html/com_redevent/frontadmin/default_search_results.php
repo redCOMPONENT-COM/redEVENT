@@ -94,7 +94,7 @@ defined('_JEXEC') or die('Restricted access');
 							$text = JText::_('COM_REDEVENT_FRONTEND_BOOKINGS_EDIT_PARTICIPANTS');
 
 							$attribs = array(
-								'xref' => $id,
+								'xref' => $row->xref,
 								'class' => 'bookthis hasTip',
 								'title' => $text,
 								'tip' => $tip,
