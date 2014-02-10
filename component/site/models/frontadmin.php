@@ -364,6 +364,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 	{
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
+		$config = redEVENTHelper::config();
 
 		$ids = $this->useracl->getXrefsCanViewAttendees();
 
@@ -387,6 +388,11 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		}
 
 		$query->order('x.dates');
+
+		if ($config->get('b2b_show_open', 1) == 0)
+		{
+			$query->where('x.dates > 0');
+		}
 
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
