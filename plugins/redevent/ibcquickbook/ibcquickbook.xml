@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="redevent" method="upgrade">
+	<name>PLG_REDEVENT_IBCQUICKBOOK_PLUGIN</name>
+	<creationDate>##DATE##</creationDate>
+	<author>redWEB Aps</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>(C) 2014 redCOMPONENT.com</copyright>
+	<license>GNU/GPL</license>
+	<version>##VERSION##</version>
+	<description>PLG_REDEVENT_IBCQUICKBOOK_PLUGIN_DESC</description>
+
+	<files>
+		<filename plugin="ibcquickbook">ibcquickbook.php</filename>
+		<filename>index.html</filename>
+		<folder>language</folder>
+	</files>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field type="text" name="employedFieldMapping"
+					label="PLG_REDEVENT_IBCQUICKBOOK_XML_EMPLOYEDFIELDMAPPING_LABEL"
+					description="PLG_REDEVENT_IBCQUICKBOOK_XML_EMPLOYEDFIELDMAPPING_DESCRIPTION"
+					size="30"
+					/>
+
+				<field type="textarea" name="redformMapping"
+					label="PLG_REDEVENT_IBCQUICKBOOK_XML_REDFORMMAPPING_LABEL"
+					description="PLG_REDEVENT_IBCQUICKBOOK_XML_REDFORMMAPPING_DESCRIPTION"
+					rows="10" cols="50"
+					/>
+
+				<field type="textarea" name="notification"
+					   label="PLG_REDEVENT_IBCQUICKBOOK_XML_NOTIFICATION_LABEL"
+					   description="PLG_REDEVENT_IBCQUICKBOOK_XML_NOTIFICATION_DESCRIPTION"
+					   rows="10" cols="50"
+						/>
+			</fieldset>
+		</fields>
+	</config>
+
+</extension>
