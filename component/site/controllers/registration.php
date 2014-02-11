@@ -59,8 +59,10 @@ class RedEventControllerRegistration extends RedEventController
 			return $this->cancelreg();
 		}
 
-		$app = &JFactory::getApplication();
-		$msg = 'OK';
+		JPluginHelper::importPlugin('redevent');
+		$dispatcher = JDispatcher::getInstance();
+
+		$app = JFactory::getApplication();
 
 		$xref        = JRequest::getInt('xref');
 		$pricegroups = JRequest::getVar('sessionpricegroup_id', array(), 'post', 'array');
@@ -110,7 +112,6 @@ class RedEventControllerRegistration extends RedEventController
 			$prices[] = $price;
 		}
 
-
 		// First, ask redform to save it's fields, and return the corresponding sids.
 		$options = array('baseprice' => $prices);
 
@@ -130,6 +131,8 @@ class RedEventControllerRegistration extends RedEventController
 
 			return false;
 		}
+
+		$dispatcher->trigger('onBeforeRegistration', array($xref, &$result));
 
 		$submit_key = $result->submit_key;
 		JRequest::setVar('submit_key', $submit_key);
@@ -172,21 +175,17 @@ class RedEventControllerRegistration extends RedEventController
 					return false;
 				}
 
-				JPluginHelper::importPlugin('redevent');
-				$dispatcher = JDispatcher::getInstance();
-				$res = $dispatcher->trigger('onAttendeeCreated', array($res->id));
+				$dispatcher->trigger('onAttendeeCreated', array($res->id));
 			}
 
-			JPluginHelper::importPlugin('redevent');
-			$dispatcher = JDispatcher::getInstance();
-			$res = $dispatcher->trigger('onEventUserRegistered', array($xref));
+			$dispatcher->trigger('onEventUserRegistered', array($xref));
 
 			if ($details->notify)
 			{
-				$mail = $model->sendNotificationEmail($submit_key);
+				$model->sendNotificationEmail($submit_key);
 			}
 
-			$mail = $model->notifyManagers($submit_key);
+			$model->notifyManagers($submit_key);
 		}
 
 		if (!$review)
@@ -208,6 +207,11 @@ class RedEventControllerRegistration extends RedEventController
 		else
 		{
 			$link = RedeventHelperRoute::getRegistrationRoute($xref, 'review', $submit_key);
+		}
+
+		if ($app->input->getInt('modal', 0))
+		{
+			$link .= '&tmpl=component';
 		}
 
 		// Redirect to prevent resending the form on refresh
