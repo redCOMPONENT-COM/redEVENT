@@ -61,8 +61,8 @@ class plgRedeventIbcquickbook extends JPlugin
 
 		if ($status == 'unemployed' || $status == 'other')
 		{
+			$this->triggerGlobase();
 			$this->triggerMailflow($status, $redformResponse);
-			$this->triggerGlobase($redformResponse);
 
 			return $this->notifyAndStop($notification);
 		}
@@ -217,7 +217,9 @@ class plgRedeventIbcquickbook extends JPlugin
 
 	private function triggerGlobase()
 	{
-
+		JPluginHelper::importPlugin('redevent', 'ibcglobase');
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('onGlobaseAddProfile', array($this->xref, $this->getAnswers()));
 	}
 
 	private function notifyAndStop(&$notification)

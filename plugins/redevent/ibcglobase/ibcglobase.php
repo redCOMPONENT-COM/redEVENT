@@ -31,6 +31,10 @@ class plgRedeventIbcglobase extends JPlugin
 
 	private $mapping;
 
+	private $redFormCore;
+
+	private $answers;
+
 	/**
 	 * constructor
 	 *
@@ -52,7 +56,7 @@ class plgRedeventIbcglobase extends JPlugin
 	 */
 	public function onAttendeeCreated($attendee_id)
 	{
-		return $this->saveProfile($attendee_id);
+		return $this->saveAttendeeProfile($attendee_id);
 	}
 
 	/**
@@ -64,7 +68,7 @@ class plgRedeventIbcglobase extends JPlugin
 	 */
 	public function onAttendeeModified($attendee_id)
 	{
-		return $this->saveProfile($attendee_id);
+		return $this->saveAttendeeProfile($attendee_id);
 	}
 
 	/**
@@ -92,52 +96,105 @@ class plgRedeventIbcglobase extends JPlugin
 	}
 
 	/**
+	 * Handles adding with session id and answers
+	 *
+	 * @param   int    $xref     session id
+	 * @param   array  $answers  answers from redFORM
+	 *
+	 * @return bool
+	 */
+	public function onGlobaseAddProfile($xref, $answers)
+	{
+		if (!$this->init())
+		{
+			return true;
+		}
+
+		try
+		{
+			$sessionDetails = $this->getSessionDetails($xref);
+
+			return $this->saveProfile($sessionDetails, $answers);
+		}
+		catch (Exception $e)
+		{
+			$app = JFactory::getApplication();
+			$app->enqueueMessage($e->getMessage(), 'error');
+
+			return false;
+		}
+	}
+
+	/**
+	 * Save profile to globase
+	 *
+	 * @param   int  $attendeeId  attendee id
+	 *
+	 * @return true on success
+	 */
+	protected function saveAttendeeProfile($attendeeId)
+	{
+		if (!$this->init())
+		{
+			return true;
+		}
+
+		try
+		{
+			$sessionDetails = $this->getAttendeeDetails($attendeeId);
+			$answers = $this->getAnswers($sessionDetails->sid);
+
+			return $this->saveProfile($sessionDetails, $answers);
+		}
+		catch (Exception $e)
+		{
+			$app = JFactory::getApplication();
+			$app->enqueueMessage($e->getMessage(), 'error');
+
+			return false;
+		}
+	}
+
+	/**
+	 * init and return true if there is a list configured
+	 *
+	 * @return bool
+	 */
+	private function init()
+	{
+		$this->ws_username = $this->params->get('ws_username');
+		$this->ws_password = $this->params->get('ws_password');
+		$this->listId      = (int) $this->params->get('listId');
+
+		return $this->listId ? true : false;
+	}
+
+	/**
 	 * Save profile to globase
 	 *
 	 * @param   int $attendeeId attendee id
 	 *
 	 * @return true on success
 	 */
-	protected function saveProfile($attendeeId)
+	protected function saveProfile($sessionDetails, $answers)
 	{
-		require_once JPATH_SITE . '/components/com_redform/redform.core.php';
-
-		$this->ws_username = $this->params->get('ws_username');
-		$this->ws_password = $this->params->get('ws_password');
-		$this->listId      = (int) $this->params->get('listId');
-
 		$specials = $this->getSpecialFields();
-
-		$details = $this->getAttendeeDetails($attendeeId);
-
-		if (!$this->listId)
-		{
-			return true;
-		}
-
-		$rfcore = new RedFormCore;
-		$answers = $rfcore->getSidsFieldsAnswers(array($details->sid));
-
-		if ($answers)
-		{
-			$answers = reset($answers);
-		}
 
 		$client = $this->getClient();
 
 		$profileFields = $client->GetListFields($this->ws_username, $this->ws_password, $this->listId);
 
-		$xmlFields = array($specials->Formularnavn->name => array($details->formname));
+		$xmlFields = array($specials->Formularnavn->name => array($sessionDetails->formname));
 
-		if ($details->uddannelse)
+		if ($sessionDetails->uddannelse)
 		{
-			$parts = explode("\n", $details->uddannelse);
+			$parts = explode("\n", $sessionDetails->uddannelse);
 			$xmlFields[$specials->Uddannelse->name] = $parts;
 		}
 
-		if ($details->nyhedsbrev)
+		if ($sessionDetails->nyhedsbrev)
 		{
-			$parts = explode("\n", $details->nyhedsbrev);
+			$parts = explode("\n", $sessionDetails->nyhedsbrev);
 			$xmlFields[$specials->Nyhedsbrev->name] = $parts;
 		}
 
@@ -200,6 +257,105 @@ class plgRedeventIbcglobase extends JPlugin
 	}
 
 	/**
+	 * Return answers for sid
+	 *
+	 * @param   int  $sid  sid
+	 *
+	 * @return mixed
+	 */
+	private function getAnswers($sid)
+	{
+		if (!isset($this->answers[$sid]))
+		{
+			$answers = $this->getRedFormCore()->getSidsFieldsAnswers(array($sid));
+
+			if ($answers)
+			{
+				$answers = reset($answers);
+			}
+
+			if (!$this->answers)
+			{
+				$this->answers = array();
+			}
+
+			$this->answers[$sid] = $answers;
+		}
+
+		return $this->answers[$sid];
+	}
+
+	private function getRedFormCore()
+	{
+		if (!$this->redFormCore)
+		{
+			require_once JPATH_SITE . '/components/com_redform/redform.core.php';
+			$this->redFormCore = new RedFormCore;
+		}
+
+		return $this->redFormCore;
+	}
+
+	private function getUddannelseFieldId()
+	{
+		$uddannelseFieldId = (int) $this->params->get('uddannelseFieldId');
+
+		if (!$uddannelseFieldId)
+		{
+			throw new Exception('ibcglobase plugin: missing uddannelse field id');
+		}
+
+		return $uddannelseFieldId;
+	}
+
+	private function getNyhedsbrevFieldId()
+	{
+		$nyhedsbrevFieldId = (int) $this->params->get('nyhedsbrevFieldId', 'error');
+
+		if (!$nyhedsbrevFieldId)
+		{
+			throw new Exception('ibcglobase plugin: missing nyhedsbrev field id');
+		}
+
+		return $nyhedsbrevFieldId;
+	}
+
+	/**
+	 * Get session details
+	 *
+	 * @param   int  $xref  session id
+	 *
+	 * @return bool|mixed
+	 */
+	private function getSessionDetails($xref)
+	{
+		$uddannelseFieldId = $this->getUddannelseFieldId();
+		$nyhedsbrevFieldId = $this->getNyhedsbrevFieldId();
+
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('e.title');
+		$query->select('f.formname');
+
+		// Custom fields for integration
+		$query->select(array(
+			'e.custom' . $uddannelseFieldId . ' AS uddannelse',
+			'e.custom' . $nyhedsbrevFieldId . ' AS nyhedsbrev'
+		));
+
+		$query->from('#__redevent_event_venue_xref AS x');
+		$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
+		$query->join('INNER', '#__rwf_forms AS f ON f.id = e.redform_id');
+		$query->where('x.id = ' . $xref);
+
+		$db->setQuery($query);
+		$res = $db->loadObject();
+
+		return $res;
+	}
+
+	/**
 	 * Get attendees details
 	 *
 	 * @param   int  $attendeeId  attendee id
@@ -208,25 +364,8 @@ class plgRedeventIbcglobase extends JPlugin
 	 */
 	protected function getAttendeeDetails($attendeeId)
 	{
-		$app = JFactory::getApplication();
-
-		$uddannelseFieldId = (int) $this->params->get('uddannelseFieldId');
-
-		if (!$uddannelseFieldId)
-		{
-			$app->enqueueMessage('ibcglobase plugin: missing uddannelse field id', 'error');
-
-			return false;
-		}
-
-		$nyhedsbrevFieldId = (int) $this->params->get('nyhedsbrevFieldId', 'error');
-
-		if (!$nyhedsbrevFieldId)
-		{
-			$app->enqueueMessage('ibcglobase plugin: missing nyhedsbrev field id');
-
-			return false;
-		}
+		$uddannelseFieldId = $this->getUddannelseFieldId();
+		$nyhedsbrevFieldId = $this->getNyhedsbrevFieldId();
 
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
@@ -285,6 +424,11 @@ class plgRedeventIbcglobase extends JPlugin
 		}
 
 		return $res;
+	}
+
+	protected function getProfileFields()
+	{
+
 	}
 
 	/**
