@@ -31,6 +31,7 @@ class plgRedeventIbcquickbook extends JPlugin
 
 	private $sessionFormId;
 	private $sessionFormFields;
+	private $sessionDetails;
 
 	/**
 	 * constructor
@@ -58,23 +59,16 @@ class plgRedeventIbcquickbook extends JPlugin
 
 		$status = $this->getEmploymentStatus();
 
-		if ($status == 'unemployed')
+		if ($status == 'unemployed' || $status == 'other')
 		{
-			$this->triggerUnemployedMailflowAndGlobase($redformResponse);
+			$this->triggerMailflow($status, $redformResponse);
+			$this->triggerGlobase($redformResponse);
 
 			return $this->notifyAndStop($notification);
 		}
-		elseif ($status == 'senior')
-		{
-			$this->triggerSeniorMailflowAndGlobase($redformResponse);
 
-			return $this->notifyAndStop($notification);
-		}
-		else
-		{
-			// In that case, we need to match response to real registration form
-			$redformResponse = $this->newRedFormResponse();
-		}
+		// We need to match response to real registration form, if not the same as submitted form
+		$redformResponse = $this->newRedFormResponse();
 
 		return true;
 	}
@@ -146,14 +140,84 @@ class plgRedeventIbcquickbook extends JPlugin
 		return in_array($field->id, $this->employmentStatusFieldIds);
 	}
 
-	private function triggerUnemployedMailflowAndGlobase($redformResponse)
+	private function triggerMailflow($status)
 	{
-		throw new Exception('triggerUnemployedMailflowAndGlobase not implemented');
+		$mailflowId = $this->getMailflowId($status);
+		$email = $this->getSubmissionEmail();
+		$registrationId = 0;
+		$startDate = $this->getEventStartDate();
+
+		include_once JPATH_SITE . '/cli/newsletter/add-event-attendees-to-queue.php';
+
+		$mailflow = new mailflow($mailflowId, $email, $registrationId, $startDate);
+		$mailflow->start();
 	}
 
-	private function triggerSeniorMailflowAndGlobase($redformResponse)
+	private function getMailFlowId($status)
 	{
-		throw new Exception('triggerSeniorMailflowAndGlobase not implemented');
+		$session = $this->getSessionDetails();
+
+		switch ($status)
+		{
+			case 'unemployed':
+				$customId = (int) $this->params->get('unemployedMailflowFieldId');
+				break;
+
+			case 'other':
+				$customId = (int) $this->params->get('otherMailflowFieldId');
+				break;
+		}
+
+		if (!$customId)
+		{
+			throw new Exception('Missing mailflow id for status ' . $status);
+		}
+
+		$mailflowId = $session->{'custom' . $customId};
+
+		return $mailflowId;
+	}
+
+	private function getSubmissionEmail()
+	{
+		foreach ($this->getAnswers() as $field)
+		{
+			if ($field->fieldtype == 'email')
+			{
+				return $field->answer;
+			}
+		}
+	}
+
+	private function getEventStartDate()
+	{
+		$session = $this->getSessionDetails();
+
+		return $session->dates;
+	}
+
+	private function getSessionDetails()
+	{
+		if (!$this->sessionDetails)
+		{
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			$query->select('e.*, x.dates');
+			$query->from('#__redevent_events AS e');
+			$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.eventid = e.id');
+			$query->where('x.id = ' . $this->xref);
+
+			$db->setQuery($query);
+			$this->sessionDetails = $db->loadObject();
+		}
+
+		return $this->sessionDetails;
+	}
+
+	private function triggerGlobase()
+	{
+
 	}
 
 	private function notifyAndStop(&$notification)

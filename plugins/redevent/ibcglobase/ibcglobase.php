@@ -1,4 +1,4 @@
-63<?php
+<?php
 /**
  * @package     Redcomponent
  * @subpackage  ibc

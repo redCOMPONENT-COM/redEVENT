@@ -19,22 +19,32 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field type="text" name="employedFieldMapping"
+				<field name="employedFieldMapping" type="text"
 					label="PLG_REDEVENT_IBCQUICKBOOK_XML_EMPLOYEDFIELDMAPPING_LABEL"
 					description="PLG_REDEVENT_IBCQUICKBOOK_XML_EMPLOYEDFIELDMAPPING_DESCRIPTION"
 					size="30"
 					/>
 
-				<field type="textarea" name="redformMapping"
+				<field name="redformMapping" type="textarea"
 					label="PLG_REDEVENT_IBCQUICKBOOK_XML_REDFORMMAPPING_LABEL"
 					description="PLG_REDEVENT_IBCQUICKBOOK_XML_REDFORMMAPPING_DESCRIPTION"
 					rows="10" cols="50"
 					/>
 
-				<field type="textarea" name="notification"
+				<field name="notification" type="textarea"
 					   label="PLG_REDEVENT_IBCQUICKBOOK_XML_NOTIFICATION_LABEL"
 					   description="PLG_REDEVENT_IBCQUICKBOOK_XML_NOTIFICATION_DESCRIPTION"
 					   rows="10" cols="50"
+						/>
+
+				<field name="unemployedMailflowFieldId" type="text"
+					   label="PLG_REDEVENT_IBCQUICKBOOK_XML_UNEMPLOYEDMAILFLOWID_LABEL"
+					   description="PLG_REDEVENT_IBCQUICKBOOK_XML_UNEMPLOYEDMAILFLOWID_DESCRIPTION"
+						/>
+
+				<field name="otherMailflowFieldId" type="text"
+					   label="PLG_REDEVENT_IBCQUICKBOOK_XML_OTHERMAILFLOWID_LABEL"
+					   description="PLG_REDEVENT_IBCQUICKBOOK_XML_OTHERMAILFLOWID_DESCRIPTION"
 						/>
 			</fieldset>
 		</fields>
