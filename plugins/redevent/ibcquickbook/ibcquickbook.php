@@ -26,6 +26,11 @@ class plgRedeventIbcquickbook extends JPlugin
 	private $employmentStatusFieldIds;
 
 	private $xref;
+	private $sid;
+	private $answers;
+
+	private $sessionFormId;
+	private $sessionFormFields;
 
 	/**
 	 * constructor
@@ -49,14 +54,9 @@ class plgRedeventIbcquickbook extends JPlugin
 	public function onBeforeRegistration($xref, &$redformResponse, &$notification)
 	{
 		$this->xref = $xref;
+		$this->setSidFromResponse($redformResponse);
 
-		if (!$sid = $this->getSid($redformResponse))
-		{
-			return false;
-		}
-
-		$answers = $this->getAnswers($sid);
-		$status = $this->getEmploymentStatus($answers);
+		$status = $this->getEmploymentStatus();
 
 		if ($status == 'unemployed')
 		{
@@ -70,40 +70,60 @@ class plgRedeventIbcquickbook extends JPlugin
 
 			return $this->notifyAndStop($notification);
 		}
-		elseif ($status == 'employed') // In that case, we need to match response to real registration form
+		else
 		{
-			$redformResponse = $this->updateRedFormResponse($redformResponse);
+			// In that case, we need to match response to real registration form
+			$redformResponse = $this->newRedFormResponse();
 		}
 
 		return true;
 	}
 
-	private function getSid($redformResponse)
+	private function setSidFromResponse($redformResponse)
 	{
 		if (!isset($redformResponse->posts[0]['sid']))
 		{
-			return false;
+			throw new Exception('Invalid redform response');
 		}
 
-		return $redformResponse->posts[0]['sid'];
+		$this->sid = $redformResponse->posts[0]['sid'];
+
+		return $this->sid;
 	}
 
-	private function getAnswers($sid)
+	private function getSid()
 	{
-		$rfcore = $this->getRedFormCore();
-		$answers = $rfcore->getSidsFieldsAnswers(array($sid));
-
-		if (!isset($answers[$sid]))
+		if (!$this->sid)
 		{
-			throw new Exception('Invalid sid');
+			throw new Exception('Sid not initialized');
 		}
 
-		return $answers[$sid];
+		return $this->sid;
 	}
 
-	private function getEmploymentStatus($answers)
+	private function getAnswers()
 	{
-		foreach ($answers as $field)
+		if (!$this->answers)
+		{
+			$rfcore = $this->getRedFormCore();
+
+			$sid = $this->getSid();
+			$answers = $rfcore->getSidsFieldsAnswers(array($sid));
+
+			if (!isset($answers[$sid]))
+			{
+				throw new Exception('Invalid sid');
+			}
+
+			$this->answers = $answers[$sid];
+		}
+
+		return $this->answers;
+	}
+
+	private function getEmploymentStatus()
+	{
+		foreach ($this->getAnswers() as $field)
 		{
 			if ($this->isEmployementStatusField($field))
 			{
@@ -143,9 +163,130 @@ class plgRedeventIbcquickbook extends JPlugin
 		return true;
 	}
 
-	private function updateRedformResponse($redformResponse)
+	/**
+	 * Replace data from module redform submission to actual registration form response
+	 *
+	 * @return void
+	 */
+	private function newRedFormResponse()
 	{
+		$xrefFormId = $this->getXrefFormId();
+		$submittedFormId = JFactory::getApplication()->input->getInt('form_id', 0);
 
+		// Nothing to do if same form
+		if ($xrefFormId == $submittedFormId)
+		{
+			return true;
+		}
+
+		// Prepare data for redformcore
+		$data = array(
+			'form_id' => $xrefFormId,
+			'curform' => 1,
+			'submit_key' => false,
+			JSession::getFormToken() => 1
+		);
+
+		// Map fields to data, if match is found
+		foreach ($this->getAnswers() as $field)
+		{
+			$data = $this->map($data, $field);
+		}
+
+		// Get new response
+		return $this->getRedFormCore()->saveAnswers('redevent', null, $data);
+	}
+
+	private function map($data, $field)
+	{
+		if (!$mapped = $this->getFieldsMappedTo($field->id))
+		{
+			return $data;
+		}
+
+		foreach ($this->getSessionFormFields() as $registrationField)
+		{
+			if (in_array($registrationField->id, $mapped))
+			{
+				$data['field' . $registrationField->id] = $field->answer;
+				break;
+			}
+		}
+
+		return $data;
+	}
+
+	private function getSessionFormFields()
+	{
+		if (!$this->sessionFormFields)
+		{
+			$formId = $this->getXrefFormId();
+			$this->sessionFormFields = $this->getRedFormCore()->getFields($formId);
+		}
+
+		return $this->sessionFormFields;
+	}
+
+	private function getFieldsMappedTo($fieldId)
+	{
+		$mapping = $this->getMapping();
+
+		if (!isset($mapping[$fieldId]))
+		{
+			return false;
+		}
+
+		return $mapping[$fieldId];
+	}
+
+	private function getMapping()
+	{
+		if (!$this->mapping)
+		{
+			$lines = explode("\n", $this->params->get('redformMapping'));
+
+			$mapping = array();
+
+			foreach ($lines as $l)
+			{
+				if (strpos($l, '#') !== 0 && strpos($l, ',') > 0)
+				{
+					$parts = explode(",", $l);
+					$moduleField = (int) $parts[0];
+					$registrationField = (int) $parts[1];
+
+					if (!isset($mapping[$moduleField]))
+					{
+						$mapping[$moduleField] = array();
+					}
+
+					$mapping[$moduleField][] = $registrationField;
+				}
+			}
+
+			$this->mapping = $mapping;
+		}
+
+		return $this->mapping;
+	}
+
+	private function getXrefFormId()
+	{
+		if (!$this->sessionFormId)
+		{
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			$query->select('e.redform_id');
+			$query->from('#__redevent_event_venue_xref AS x');
+			$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
+			$query->where('x.id = ' . $this->xref);
+
+			$db->setQuery($query);
+			$this->sessionFormId = $db->loadResult();
+		}
+
+		return $this->sessionFormId;
 	}
 
 	private function getRedFormCore()
