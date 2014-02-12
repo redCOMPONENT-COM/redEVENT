@@ -28,17 +28,20 @@
 	</files>
 
 	<config>
-		<fields name="params">
-			<fieldset name="basic" addfieldpath="/administrator/components/com_redevent/models/fields">
+		<fields name="params" addfieldpath="/administrator/components/com_redevent/models/fields">
+			<fieldset name="basic"
+				addfieldpath="/libraries/redform/form/fields"
+				>
 				<field name="eventid" type="reevent" default=""
 					label="MOD_REDEVENT_QUICKBOOK_XML_EVENTID_LABEL"
 					description="MOD_REDEVENT_QUICKBOOK_XML_EVENTID_DESCRIPTION"
 					reset="1" size="20"
 					>
 				</field>
-				<field name="formIds" type="textarea" default=""
-					label="MOD_REDEVENT_QUICKBOOK_XML_ALLOWED_FORM_IDS_LABEL"
-					description="MOD_REDEVENT_QUICKBOOK_XML_ALLOWED_FORM_IDS_DESCRIPTION">
+				<field name="formId" type="rfform" default=""
+					label="MOD_REDEVENT_QUICKBOOK_XML_FORMID_LABEL"
+					description="MOD_REDEVENT_QUICKBOOK_XML_FORMID_DESCRIPTION"
+					>
 				</field>
 				<field name="target" type="radio" default="post"
 					label="MOD_REDEVENT_QUICKBOOK_XML_TARGET_LABEL"

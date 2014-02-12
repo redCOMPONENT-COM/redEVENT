@@ -88,7 +88,7 @@ class ModRedeventQuickbookHelper
 		$result->sessions = $sessions;
 
 		// Let's get the form
-		$formId = reset($sessions)->redform_id;
+		$formId = $params->get('formId');
 
 		$rfcore = new RedFormCore;
 
