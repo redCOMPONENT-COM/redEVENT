@@ -73,7 +73,17 @@ class RedeventCustomfieldSelect extends RedeventAbstractCustomfield
 			$value = '';
 		}
 
-		$option_list = $this->getOptions();
+		$option_list = array();
+		$option_list[] = JHTML::_('select.option', '', JText::_('COM_REDEVENT_Select'));
+		$options = explode("\n", $this->options);
+		if ($options)
+		{
+			foreach ($options as $opt)
+			{
+				$option = $this->getOptionLabelValue($opt);
+				$option_list[] = JHTML::_('select.option', $option->value, $option->label);
+			}
+		}
 		return JHTML::_('select.genericlist', $option_list, 'filtercustom[' . $this->id . ']', $this->attributesToString($attributes), 'value', 'text', $value);
 	}
 
@@ -94,7 +104,5 @@ class RedeventCustomfieldSelect extends RedeventAbstractCustomfield
 				$option_list[] = JHTML::_('select.option', $option->value, $option->label);
 			}
 		}
-
-		return $options;
 	}
 }
