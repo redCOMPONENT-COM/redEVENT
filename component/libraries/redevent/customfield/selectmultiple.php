@@ -15,7 +15,7 @@ defined('JPATH_BASE') or die();
  * @since          2.0
  */
 
-class RedeventCustomfieldSelectmultiple extends RedeventAbstractCustomfield
+class RedeventCustomfieldSelectmultiple extends RedeventCustomfieldSelect
 {
 
 	/**
@@ -24,7 +24,7 @@ class RedeventCustomfieldSelectmultiple extends RedeventAbstractCustomfield
 	 * @access protected
 	 * @var    string
 	 */
-	var $_name = 'select';
+	var $_name = 'selectmultiple';
 
 	/**
 	 * returns the html code for the form element
@@ -47,16 +47,7 @@ class RedeventCustomfieldSelectmultiple extends RedeventAbstractCustomfield
 			}
 		}
 
-		$option_list = array();
-		$options = explode("\n", $this->options);
-		if ($options)
-		{
-			foreach ($options as $opt)
-			{
-				$option = $this->getOptionLabelValue($opt);
-				$option_list[] = JHTML::_('select.option', $option->value, $option->label);
-			}
-		}
+		$option_list = $this->getOptions();
 
 		// selected options
 		$values = explode("\n", $this->value);
