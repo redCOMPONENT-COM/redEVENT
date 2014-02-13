@@ -75,7 +75,6 @@
 			<filename>redevent.php</filename>
 			<filename>toolbar.php</filename>
 			<folder>classes</folder>
-			<folder>customfield</folder>
 			<folder>assets</folder>
 			<folder>extras</folder>
 			<folder>falang</folder>
@@ -99,4 +98,9 @@
 	<plugins>
 		<plugin folder="admin/extras/plugins/redform_integration" plugin="redevent" group="redform_integration" />
 	</plugins>
+
+	<!-- Libraries to install -->
+	<libraries>
+		<library name="redevent"/>
+	</libraries>
 </extension>

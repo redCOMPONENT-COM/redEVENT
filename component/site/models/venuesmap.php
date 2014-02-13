@@ -275,7 +275,7 @@ class RedEventModelVenuesmap extends JModel
 
 		$filters = array();
 		foreach ($rows as $r) {
-			$field = redEVENTcustomHelper::getCustomField($r->type);
+			$field = RedeventFactoryCustomfield::getField($r->type);
 			$field->bind($r);
 			$filters[] = $field;
 		}

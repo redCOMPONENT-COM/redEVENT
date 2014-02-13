@@ -7,6 +7,7 @@
 		label="COM_REDEVENT_CUSTOM_FIELD"
 		description="COM_REDEVENT_CUSTOM_FIELD"
 		class="span6"
+		addfieldpath="/libraries/redevent/form/fields"
 	>
 		<field
 			name="name"
@@ -14,20 +15,20 @@
 			default=""
 			label="COM_REDEVENT_Name"
 			labelclass="redevent-label redevent-label-main"
-			description ="COM_REDEVENT_Name" 
-			required="true" 
+			description ="COM_REDEVENT_Name"
+			required="true"
 			class="inputbox" />
-	
+
 		<field
 			name="tag"
 			type="text"
 			default=""
 			label="COM_REDEVENT_Custom_field_Tag"
 			labelclass="redevent-label redevent-label-main"
-			description ="COM_REDEVENT_Custom_field_Tag" 
-			required="true" 
+			description ="COM_REDEVENT_Custom_field_Tag"
+			required="true"
 			class="inputbox" />
-		
+
 		<field
 			name="language"
 			type="contentlanguage"
@@ -37,7 +38,7 @@
 			class="inputbox">
 			<option value="*">JALL</option>
 		</field>
-			
+
 		<field
 			name="object_key"
 			type="list"
@@ -50,26 +51,17 @@
 			<option	value="redevent.event">COM_REDEVENT_EVENT</option>
 			<option	value="redevent.xref">COM_REDEVENT_SESSION</option>
 		</field>
-			
+
 		<field
 			name="type"
-			type="list"
+			type="recustomfieldtype"
 			class="inputbox"
-			default="redevent.event"
 			size="1"
 			label="COM_REDEVENT_custom_field_type"
 			labelclass="redevent-label redevent-label-main"
 			description="COM_REDEVENT_custom_field_type_tip">
-			<option	value="text">COM_REDEVENT_custom_field_type_option_text</option>
-			<option	value="textarea">COM_REDEVENT_custom_field_type_option_textarea</option>
-			<option	value="select">COM_REDEVENT_custom_field_type_option_select</option>
-			<option	value="select_multiple">COM_REDEVENT_custom_field_type_option_select_multiple</option>
-			<option	value="radio">COM_REDEVENT_custom_field_type_option_radio</option>
-			<option	value="checkbox">COM_REDEVENT_custom_field_type_option_checkbox</option>
-			<option	value="date">COM_REDEVENT_custom_field_type_option_date</option>
-			<option	value="wysiwyg">COM_REDEVENT_custom_field_type_option_wysiwyg</option>
 		</field>
-		
+
 		<field
 			name="published"
 			type="list"
@@ -89,16 +81,16 @@
 				value="-1">
 				JARCHIVED</option> -->
 		</field>
-			
+
 		<field
 			name="tips"
 			type="textarea"
 			label="COM_REDEVENT_Custom_field_Tooltip"
 			labelclass="redevent-label redevent-label-main"
-			description ="COM_REDEVENT_Custom_field_Tooltip_tip" 
+			description ="COM_REDEVENT_Custom_field_Tooltip_tip"
 			class="inputbox">
 		</field>
-		
+
 		<field
 			name="searchable"
 			type="list"
@@ -115,7 +107,7 @@
 				value="1">
 				JYES</option>
 		</field>
-		
+
 		<field
 			name="in_lists"
 			type="list"
@@ -132,7 +124,7 @@
 				value="1">
 				JYES</option>
 		</field>
-		
+
 		<field
 			name="frontend_edit"
 			type="list"
@@ -149,7 +141,7 @@
 				value="1">
 				JYES</option>
 		</field>
-		
+
 		<field
 			name="required"
 			type="list"
@@ -166,43 +158,43 @@
 				value="1">
 				JYES</option>
 		</field>
-		
-		
+
+
 		<field
 			name="min"
 			type="text"
 			default=""
 			label="COM_REDEVENT_Min_characters"
 			labelclass="redevent-label redevent-label-main"
-			description ="COM_REDEVENT_Min_characters_tip" 
+			description ="COM_REDEVENT_Min_characters_tip"
 			class="inputbox" />
-			
+
 		<field
 			name="max"
 			type="text"
 			default=""
 			label="COM_REDEVENT_Max_characters"
 			labelclass="redevent-label redevent-label-main"
-			description ="COM_REDEVENT_Max_characters_tip" 
+			description ="COM_REDEVENT_Max_characters_tip"
 			class="inputbox" />
-					
+
 		<field
 			name="options"
 			type="textarea"
 			label="COM_REDEVENT_CUSTOM_FIELD_OPTIONS"
 			labelclass="redevent-label redevent-label-main"
-			description ="COM_REDEVENT_CUSTOM_FIELD_OPTIONS_DESC" 
+			description ="COM_REDEVENT_CUSTOM_FIELD_OPTIONS_DESC"
 			class="inputbox">
 		</field>
-			
+
 		<field
 			name="default_value"
 			type="textarea"
 			label="COM_REDEVENT_CUSTOM_FIELD_DEFAULT_LABEL"
 			labelclass="redevent-label redevent-label-main"
-			description ="COM_REDEVENT_CUSTOM_FIELD_DEFAULT_DESC" 
+			description ="COM_REDEVENT_CUSTOM_FIELD_DEFAULT_DESC"
 			class="inputbox">
 		</field>
-			
+
 	</fieldset>
 </form>

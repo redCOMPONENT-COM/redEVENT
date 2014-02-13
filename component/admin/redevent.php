@@ -20,6 +20,9 @@ if (!defined('FOF_INCLUDED'))
 	JError::raiseError('500', 'FOF is not installed');
 }
 
+// Register library prefix
+JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+
 //Require classes
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'log.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'helper.php');
@@ -35,7 +38,6 @@ require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'attendee.class.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'useracl.class.php');
 require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'admin.class.php');
 require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'error.class.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'customfield'.DS.'includes.php');
 
 // redform
 if (!file_exists(JPATH_SITE.DS.'components'.DS.'com_redform'.DS.'redform.core.php')) {
