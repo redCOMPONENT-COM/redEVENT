@@ -86,6 +86,7 @@ class RedeventCustomfieldSelect extends RedeventAbstractCustomfield
 	{
 		$option_list = array();
 		$options = explode("\n", $this->options);
+
 		if ($options)
 		{
 			foreach ($options as $opt)
@@ -95,6 +96,6 @@ class RedeventCustomfieldSelect extends RedeventAbstractCustomfield
 			}
 		}
 
-		return $options;
+		return $option_list;
 	}
 }
