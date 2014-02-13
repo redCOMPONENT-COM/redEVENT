@@ -144,12 +144,10 @@ class plgRedeventIbcquickbook extends JPlugin
 	{
 		$mailflowId = $this->getMailflowId($status);
 		$email = $this->getSubmissionEmail();
-		$registrationId = 0;
-		$startDate = $this->getEventStartDate();
 
 		include_once JPATH_SITE . '/cli/newsletter/add-event-attendees-to-queue.php';
 
-		$mailflow = new mailflow($mailflowId, $email, $registrationId, $startDate);
+		$mailflow = new mailflow($mailflowId, $email, $this->xref);
 		$mailflow->start();
 	}
 
