@@ -173,6 +173,7 @@ var redb2b = {
 				document.id('filter_category').set('value', '');
 				document.id('filter_from').set('value', '');
 				document.id('filter_to').set('value', '');
+				redb2b.updateSessionSearchFields();
 				redb2b.getMembersList();
 				redb2b.getSessions();
 			});
