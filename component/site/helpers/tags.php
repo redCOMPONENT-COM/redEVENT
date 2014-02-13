@@ -880,9 +880,13 @@ class redEVENT_tags
 				{
 					$field->value = null;
 				}
-				$obj = new stdclass();
-				$obj->text_name = $field->tag;
-				$obj->text_field = redEVENTHelper::renderFieldValue($field);
+
+				$fieldInstance = RedeventFactoryCustomfield::getField($field->type);
+				$fieldInstance->bind($field);
+
+				$obj = new stdclass;
+				$obj->text_name = $fieldInstance->tag;
+				$obj->text_field = $fieldInstance->renderValue();
 				$replace[$field->tag] = $obj;
 			}
 			$this->_customfields = $replace;

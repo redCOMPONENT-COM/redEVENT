@@ -32,14 +32,100 @@ class com_redeventInstallerScript
 
 	private $installed_plugs            = array();
 
-	/** @var array Obsolete files and folders to remove */
+	/**
+	 * @var array Obsolete files and folders to remove
+	 */
 	private $removeFiles = array(
-			'files'    => array(
-					'administrator/components/com_redevent/views/customfield/tmpl/form.php',
-			),
-			'folders'  => array(
-			)
+		'files'    => array(
+			'administrator/components/com_redevent/views/customfield/tmpl/form.php',
+		),
+		'folders'  => array(
+			'administrator/components/com_redevent/customfield',
+		)
 	);
+
+	public $installer = null;
+
+	/**
+	 * Get the common JInstaller instance used to install all the extensions
+	 *
+	 * @return JInstaller The JInstaller object
+	 */
+	public function getInstaller()
+	{
+		if (is_null($this->installer))
+		{
+			$this->installer = new JInstaller;
+		}
+
+		return $this->installer;
+	}
+
+	/**
+	 * Shit happens. Patched function to bypass bug in package uninstaller
+	 *
+	 * @param   JInstaller  $parent  Parent object
+	 *
+	 * @return  SimpleXMLElement
+	 */
+	protected function getManifest($parent)
+	{
+		$element = strtolower(str_replace('InstallerScript', '', __CLASS__));
+		$elementParts = explode('_', $element);
+
+		if (count($elementParts) == 2)
+		{
+			$extType = $elementParts[0];
+
+			if ($extType == 'pkg')
+			{
+				$rootPath = $parent->getParent()->getPath('extension_root');
+				$manifestPath = dirname($rootPath);
+				$manifestFile = $manifestPath . '/' . $element . '.xml';
+
+				if (file_exists($manifestFile))
+				{
+					return JFactory::getXML($manifestFile);
+				}
+			}
+		}
+
+		return $parent->get('manifest');
+	}
+
+	/**
+	 * Search a extension in the database
+	 *
+	 * @param   string  $element  Extension technical name/alias
+	 * @param   string  $type     Type of extension (component, file, language, library, module, plugin)
+	 * @param   string  $state    State of the searched extension
+	 * @param   string  $folder   Folder name used mainly in plugins
+	 *
+	 * @return  integer           Extension identifier
+	 */
+	protected function searchExtension($element, $type, $state = null, $folder = null)
+	{
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true)
+			->select('extension_id')
+			->from($db->quoteName("#__extensions"))
+			->where("type = " . $db->quote($type))
+			->where("element = " . $db->quote($element));
+
+		if (!is_null($state))
+		{
+			$query->where("state = " . (int) $state);
+		}
+
+		if (!is_null($folder))
+		{
+			$query->where("folder = " . $db->quote($folder));
+		}
+
+		$db->setQuery($query);
+
+		return $db->loadResult();
+	}
 
 	/**
 	 * method to run before an install/update/uninstall method
@@ -202,6 +288,8 @@ class com_redeventInstallerScript
 
 		// Remove obsolete files and folders
 		$this->_removeObsoleteFilesAndFolders($this->removeFiles);
+
+		$this->installLibraries($parent);
 
 		$this->installModsPlugs($parent);
 
@@ -485,6 +573,85 @@ class com_redeventInstallerScript
 			{
 				$this->installed_mods[] = array('module' => $attributes['module'], 'upgrade' => false);
 				$this->iperror[] = JText::_('Error installing module') . ': ' . $attributes['module'];
+			}
+		}
+	}
+
+	/**
+	 * Install the package libraries
+	 *
+	 * @param   object  $parent  class calling this method
+	 *
+	 * @return  void
+	 */
+	private function installLibraries($parent)
+	{
+		// Required objects
+		$installer = $this->getInstaller();
+		$manifest  = $parent->get('manifest');
+		$src       = $parent->getParent()->getPath('source');
+
+		if ($nodes = $manifest->libraries->library)
+		{
+			foreach ($nodes as $node)
+			{
+				$extName = $node->attributes()->name;
+				$extPath = $src . '/libraries/' . $extName;
+				$result  = 0;
+
+				// Standard install
+				if (is_dir($extPath))
+				{
+					$result = $installer->install($extPath);
+				}
+				elseif ($extId = $this->searchExtension($extName, 'library', '-1'))
+					// Discover install
+				{
+					$result = $installer->discover_install($extId);
+				}
+			}
+		}
+	}
+
+	/**
+	 * method to uninstall the component
+	 *
+	 * @param   object  $parent  class calling this method
+	 *
+	 * @return  void
+	 *
+	 * @throws  RuntimeException
+	 */
+	public function uninstall($parent)
+	{
+		// Uninstall extensions
+		$this->uninstallLibraries($parent);
+	}
+
+	/**
+	 * Uninstall the package libraries
+	 *
+	 * @param   object  $parent  class calling this method
+	 *
+	 * @return  void
+	 */
+	protected function uninstallLibraries($parent)
+	{
+		// Required objects
+		$installer = $this->getInstaller();
+		$manifest  = $this->getManifest($parent);
+
+		if ($nodes = $manifest->libraries->library)
+		{
+			foreach ($nodes as $node)
+			{
+				$extName = $node->attributes()->name;
+				$result  = 0;
+
+				if ($extId = $this->searchExtension($extName, 'library', 0))
+				{
+					$result = $installer->uninstall('library', $extId);
+				}
 			}
 		}
 	}

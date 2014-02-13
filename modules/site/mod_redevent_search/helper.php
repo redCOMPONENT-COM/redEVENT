@@ -22,7 +22,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once JPATH_SITE . '/components/com_redevent/helpers/route.php';
-require_once JPATH_SITE . '/components/com_redevent/helpers/customfields.php';
+
+JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
 
 /**
  * RedEvent Module Search helper
@@ -151,7 +152,7 @@ class modRedEventSearchHelper
 
 		foreach ($rows as $r)
 		{
-			$field = redEVENTcustomHelper::getCustomField($r->type);
+			$field = RedeventFactoryCustomfield::getField($r->type);
 			$field->bind($r);
 			$filters[] = $field;
 		}
