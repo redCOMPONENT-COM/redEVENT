@@ -142,6 +142,13 @@ class plgRedeventIbcquickbook extends JPlugin
 
 	private function triggerMailflow($status)
 	{
+		$path = JPATH_SITE . '/cli/newsletter/add-event-attendees-to-queue.php';
+
+		if (!file_exists($path))
+		{
+			return;
+		}
+
 		$mailflowId = $this->getMailflowId($status);
 		$email = $this->getSubmissionEmail();
 

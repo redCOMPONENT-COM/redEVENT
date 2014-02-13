@@ -192,7 +192,6 @@ class RedEventControllerRegistration extends RedEventController
 
 			if ($details->notify)
 			{
-				echo '<pre>'; echo print_r($submit_key, true); echo '</pre>'; exit;
 				$model->sendNotificationEmail($submit_key);
 			}
 
