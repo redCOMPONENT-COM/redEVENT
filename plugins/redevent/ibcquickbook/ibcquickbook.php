@@ -187,13 +187,6 @@ class plgRedeventIbcquickbook extends JPlugin
 		}
 	}
 
-	private function getEventStartDate()
-	{
-		$session = $this->getSessionDetails();
-
-		return $session->dates;
-	}
-
 	private function getSessionDetails()
 	{
 		if (!$this->sessionDetails)
