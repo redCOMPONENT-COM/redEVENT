@@ -14,7 +14,7 @@ defined('JPATH_BASE') or die();
  * @package  Redevent.Library
  * @since    2.0
  */
-class RedeventCustomfieldSelect extends RedeventAbstractCustomfield
+class RedeventCustomfieldMailflow extends RedeventCustomfieldSelect
 {
 
 	/**
@@ -23,69 +23,7 @@ class RedeventCustomfieldSelect extends RedeventAbstractCustomfield
 	 * @access protected
 	 * @var    string
 	 */
-	var $_name = 'select';
-
-	/**
-	 * returns the html code for the form element
-	 *
-	 * @param array $attributes
-	 *
-	 * @return string
-	 */
-	public function render($attributes = array())
-	{
-		if ($this->required)
-		{
-			if (isset($attributes['class']))
-			{
-				$attributes['class'] .= ' required';
-			}
-			else
-			{
-				$attributes['class'] = 'required';
-			}
-		}
-
-		$option_list = $this->getOptions();
-
-		// selected option
-		if (!is_null($this->value))
-		{
-			$selected = $this->value;
-		}
-		else
-		{
-			$selected = $this->default_value;
-		}
-		return JHTML::_('select.genericlist', $option_list, $this->fieldname, $this->attributesToString($attributes), 'value', 'text', $selected, $this->fieldid);
-	}
-
-	public function renderFilter($attributes = array(), $selected = null)
-	{
-		$app = & JFactory::getApplication();
-
-		if ($selected)
-		{
-			$value = $selected;
-		}
-		else
-		{
-			$value = '';
-		}
-
-		$option_list = array();
-		$option_list[] = JHTML::_('select.option', '', JText::_('COM_REDEVENT_Select'));
-		$options = explode("\n", $this->options);
-		if ($options)
-		{
-			foreach ($options as $opt)
-			{
-				$option = $this->getOptionLabelValue($opt);
-				$option_list[] = JHTML::_('select.option', $option->value, $option->label);
-			}
-		}
-		return JHTML::_('select.genericlist', $option_list, 'filtercustom[' . $this->id . ']', $this->attributesToString($attributes), 'value', 'text', $value);
-	}
+	var $_name = 'mailflow';
 
 	/**
 	 * return options
@@ -94,15 +32,18 @@ class RedeventCustomfieldSelect extends RedeventAbstractCustomfield
 	 */
 	protected function getOptions()
 	{
-		$option_list = array();
-		$options = explode("\n", $this->options);
-		if ($options)
-		{
-			foreach ($options as $opt)
-			{
-				$option = $this->getOptionLabelValue($opt);
-				$option_list[] = JHTML::_('select.option', $option->value, $option->label);
-			}
-		}
+		$db = JFactory::getDbo();
+
+		$query = $db->getQuery(true)
+			->select('m.id AS value, m.name AS text')
+			->from('#__redmailflow_mailflows AS m')
+			->order('m.name');
+
+		$db->setQuery($query);
+		$options = $db->loadObjectList();
+
+		$options = array_merge(parent::getOptions(), $options);
+
+		return $options;
 	}
 }
