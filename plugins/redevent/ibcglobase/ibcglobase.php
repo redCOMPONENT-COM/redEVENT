@@ -172,17 +172,16 @@ class plgRedeventIbcglobase extends JPlugin
 	/**
 	 * Save profile to globase
 	 *
-	 * @param   int $attendeeId attendee id
+	 * @param   object  $sessionDetails  session details
+	 * @params  array   $answers         submitter answers
 	 *
 	 * @return true on success
 	 */
 	protected function saveProfile($sessionDetails, $answers)
 	{
-		$specials = $this->getSpecialFields();
-
 		$client = $this->getClient();
-
-		$profileFields = $client->GetListFields($this->ws_username, $this->ws_password, $this->listId);
+		$specials = $this->getSpecialFields();
+		$profileFields = $this->getListProfileFields();
 
 		$xmlFields = array($specials->Formularnavn->name => array($sessionDetails->formname));
 
@@ -426,9 +425,16 @@ class plgRedeventIbcglobase extends JPlugin
 		return $res;
 	}
 
-	protected function getProfileFields()
+	/**
+	 * Return plfile fields for the list
+	 *
+	 * @return mixed
+	 */
+	protected function getListProfileFields()
 	{
+		$client = $this->getClient();
 
+		return $client->GetListFields($this->ws_username, $this->ws_password, $this->listId);
 	}
 
 	/**
