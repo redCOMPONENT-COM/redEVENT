@@ -20,11 +20,6 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-$document =& JFactory::getDocument();
-// Add Javascript
-$document->addScriptDeclaration("window.MOD_REDEVENT_SEARCH_SELECT_EVENT = '" . JText::_('MOD_REDEVENT_SEARCH_SELECT_EVENT') . "';");
-JHTML::_('behavior.modal');
-
 // Google analytics integration
 if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
 {
@@ -50,23 +45,32 @@ if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
 	}
 }
 ?>
-<form accept-charset="UTF-8" action="<?php echo $action; ?>" method="get" id="redeventsearchform">
 
-  <div class="mod_redevent_search">
-			<?php if ($params->get('filter_text', 1)) : ?>
+<script type="application/javascript">
+	<?php JHtml::script('com_redevent/autocompleter.js', false, true); ?>
+	window.addEvent('domready', function(){
+		var url = 'index.php?option=com_redevent&controller=ajax&task=eventsuggestions&tmpl=component';
+		var completer = new Autocompleter.Request.JSON(document.id('modres_text_filter'), url, {'postVar': 'q', 'autoSubmit': true});
+	});
+</script>
 
-			<?php
-				$value = $lists['filter'];
-			?>
+<style>
+	ul.autocompleter-choices li {
+		border-bottom: 1px dotted #1D4B59;
+	}
+</style>
 
-		  <div class="rssm_filter_row">
-		  	<label for="filter_type" style="display: none;"><?php echo $lists['filter_types']; ?></label>
-		  	<span class="rssm_filter">
-	      	<input type="text" id="filter_text" name="filter" value="<?php echo $value;?>" class="inputbox text_filter" placeholder="<?php echo JText::_('MOD_REDEVENT_SEARCH_SELECT_EVENT') ?>"/>
-	      </span>
+<form action="<?php echo $action; ?>" method="post" id="redeventsearchform">
+
+	<div class="mod_redevent_search">
+		<?php if ($params->get('filter_text', 1)) : ?>
+			<div class="rssm_filter_row">
+				<span class="rssm_filter">
+					<input type="text" name="filter" value="<?php echo $lists['filter'];?>" class="inputbox text_filter" id="modres_text_filter"
+						placeholder="<?php echo JText::_('MOD_REDEVENT_SEARCH_SELECT_EVENT') ?>"/>
+				</span>
 			</div>
-			<div id="selction-ajax"></div>
-    	<?php endif; ?>
+		<?php endif; ?>
 
 	    <?php if ($params->get('show_filter_venue', 0)): ?>
 		  <div class="rssm_filter_row">
@@ -114,13 +118,6 @@ if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
 
   </div>
 
-   <div class="button-left">
-	  	<!-- <div class="blue-left"></div> -->
-	  	<div class="blue-center help">
-	  		<a class="modal" rel="{handler: 'iframe', size: {x: 800, y: 500}}"  href="<?php echo JRoute::_("index.php?option=com_content&view=article&id=237&Itemid=320&tmpl=component") ?>">?</a>
-	  	</div>
-	  	<!-- <div class="blue-right"></div> -->
-  	</div>
   <div class="main-button">
 	  	<div class="green-left"></div>
 	  	<div class="green-center">
@@ -129,12 +126,4 @@ if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
 	  	<div class="green-right"></div>
   	</div>
   	<div class="cleared"></div>
-	<input type="hidden" value="search" name="view">
-	<input type="hidden" value="com_redevent" name="option">
-	<input type="hidden" value="<?php echo $mitemid; ?>" name="Itemid">
 </form>
-<link href="modules/mod_redevent_search/lib/content/styles.css" rel="stylesheet" />
-
-<script type="text/javascript" src="modules/mod_redevent_search/lib/scripts/jquery.mockjax.js"></script>
-<script type="text/javascript" src="modules/mod_redevent_search/lib/scripts/jquery.autocomplete.js"></script>
-<script type="text/javascript" src="modules/mod_redevent_search/lib/scripts/demo.js"></script>
