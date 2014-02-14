@@ -357,10 +357,6 @@ class RedeventModelBaseEventList extends JModel
 
 				switch ($filter_type)
 				{
-					case 'title' :
-						$query->where(' LOWER( a.title ) LIKE ' . $filter);
-						break;
-
 					case 'venue' :
 						$query->where(' LOWER( l.venue ) LIKE ' . $filter);
 						break;
@@ -371,6 +367,11 @@ class RedeventModelBaseEventList extends JModel
 
 					case 'type' :
 						$query->where('  LOWER( c.catname ) LIKE ' . $filter);
+						break;
+
+					case 'title' :
+					default:
+						$query->where(' LOWER( a.title ) LIKE ' . $filter);
 						break;
 				}
 			}
