@@ -40,5 +40,6 @@ class plgRedevent_configMaersk extends JPlugin
 	public function onGetRedeventConfig(&$params)
 	{
 		$params->set('b2b_show_open', 0);
+		$params->set('redirect_search_unique_result_to_details', 1);
 	}
 }
