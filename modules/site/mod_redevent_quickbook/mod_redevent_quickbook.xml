@@ -18,11 +18,13 @@
 		<filename module="mod_redevent_quickbook">mod_redevent_quickbook.php</filename>
 		<filename>mod_redevent_quickbook.css</filename>
 		<filename>mod_redevent_quickbook.js</filename>
+		<filename>mod_redevent_quickbook_modal.js</filename>
+		<filename>mod_redevent_quickbook_post.js</filename>
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
-    <folder>tmpl</folder>
-    <folder>images</folder>
-    <folder>language</folder>
+		<folder>images</folder>
+		<folder>language</folder>
+		<folder>tmpl</folder>
 	</files>
 
 	<config>
@@ -37,6 +39,13 @@
 				<field name="formIds" type="textarea" default=""
 					label="MOD_REDEVENT_QUICKBOOK_XML_ALLOWED_FORM_IDS_LABEL"
 					description="MOD_REDEVENT_QUICKBOOK_XML_ALLOWED_FORM_IDS_DESCRIPTION">
+				</field>
+				<field name="target" type="radio" default="post"
+					label="MOD_REDEVENT_QUICKBOOK_XML_TARGET_LABEL"
+					description="MOD_REDEVENT_QUICKBOOK_XML_TARGET_DESCRIPTION"
+					>
+					<option value="post">MOD_REDEVENT_QUICKBOOK_XML_TARGET_OPTION_POST</option>
+					<option value="modal">MOD_REDEVENT_QUICKBOOK_XML_TARGET_OPTION_MODAL</option>
 				</field>
 			</fieldset>
 

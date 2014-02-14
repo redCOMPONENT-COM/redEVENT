@@ -1,11 +1,64 @@
 @CHARSET "UTF-8";
 
-div.mod_redevent_search .inputbox {
+div.inputbox {
 	 width: 140px;
 }
-	
-div.mod_redevent_search label {
+
+divlabel {
 	float: left;
 	width: 7em;
 	margin-right: 0.5em;
 }
+
+/* Autocompleter css */
+#highlighter-start, #highlighter-end {
+    display: none;
+    height: 0;
+    opacity: 0;
+}
+span.highlight {
+    background-color: #FFFFCC;
+    font-weight: bold;
+    padding: 1px 4px;
+}
+ul.autocompleter-choices {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #FFFFFF;
+    border-color: #EEEEEE #DDDDDD #DDDDDD #EEEEEE;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px;
+    font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    text-align: left;
+    z-index: 50;
+}
+ul.autocompleter-choices li {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: normal;
+    padding: 0.1em 1.5em 0.1em 1em;
+    position: relative;
+}
+ul.autocompleter-choices li.autocompleter-selected {
+    background-color: #444444;
+    color: #FFFFFF;
+}
+ul.autocompleter-choices span.autocompleter-queried {
+    font-weight: bold;
+}
+ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried {
+    color: #9FCFFF;
+}
+ul#finder-filter-select-list {
+    top: 4em !important;
+}
+
+/* autocompleter css end */

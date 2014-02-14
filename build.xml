@@ -209,6 +209,13 @@
             </fileset>
         </copy>
 
+		<!-- Library -->
+		<copy todir="${www.dir}/libraries" overwrite="true">
+			<fileset dir="${dirs.root}/component/libraries">
+				<include name="**" />
+			</fileset>
+		</copy>
+
         <!-- included Plugins -->
         <copy todir="${www.dir}/plugins" overwrite="true">
             <fileset dir="${dirs.root}/component/admin/extras/plugins">

@@ -858,7 +858,7 @@ class RedeventModelBaseEventList extends JModel
 
 		foreach ($rows as $r)
 		{
-			$field = redEVENTcustomHelper::getCustomField($r->type);
+			$field = RedeventFactoryCustomfield::getField($r->type);
 			$field->bind($r);
 			$filters[] = $field;
 		}

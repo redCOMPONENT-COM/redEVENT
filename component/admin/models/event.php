@@ -573,7 +573,7 @@ class RedEventModelEvent extends JModelAdmin
 
 		foreach ($result as $c)
 		{
-			$field = redEVENTHelper::getCustomField($c->type);
+			$field = RedeventFactoryCustomfield::getField($c->type);
 			$field->bind($c);
 			$prop = 'custom'.$c->id;
 

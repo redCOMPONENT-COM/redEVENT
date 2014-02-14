@@ -90,7 +90,7 @@ class JFormFieldRECustom extends JFormField {
 			$db->setQuery($query);
 			$field = $db->loadObject();
 
-			$customfield = redEVENTHelper::getCustomField($field->type);
+			$customfield = RedeventFactoryCustomfield::getField($field->type);
 			$customfield->bind($field);
 			$customfield->value = $this->value;
 			$customfield->fieldname = $this->name;

@@ -1336,7 +1336,7 @@ class RedeventModelEditevent extends JModel
       $new->set('pricegroup_id', $r);
       $new->set('price', $data['price'][$k]);
 	    $new->set('currency', $data['currency'][$k]);
-	    
+
       if (!($new->check() && $new->store()))
       {
       	$this->setError($new->getError());
@@ -1513,7 +1513,7 @@ class RedeventModelEditevent extends JModel
     $data = $this->getSessionDetails(true);
     foreach ($result as $c)
     {
-      $field =& redEVENTHelper::getCustomField($c->type);
+      $field =& RedeventFactoryCustomfield::getField($c->type);
       $field->bind($c);
       $prop = 'custom'.$c->id;
       if (isset($data->$prop)) {
@@ -1548,7 +1548,7 @@ class RedeventModelEditevent extends JModel
     $data = $this->getEvent();
     foreach ($result as $c)
     {
-      $field =& redEVENTHelper::getCustomField($c->type);
+      $field =& RedeventFactoryCustomfield::getField($c->type);
       $field->bind($c);
       $prop = 'custom'.$c->id;
       if (isset($data->$prop)) {

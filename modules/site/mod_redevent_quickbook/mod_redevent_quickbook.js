@@ -3,13 +3,6 @@
  */
 
 document.addEvent('domready', function(){
-	document.id('qbsubmit-btn').addEvent('click', function() {
-		var form = this.getParent('form');
-		if (CheckSubmit(form)) {
-			form.submit();
-		}
-	});
-
 	document.id('xref').addEvent('change', function() {
 		var xref = this.get('value');
 		var options = new Array();

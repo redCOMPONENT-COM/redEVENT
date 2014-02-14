@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="library" method="upgrade" version="2.5">
+	<name>redEVENT - Libraries</name>
+	<libraryname>redevent</libraryname>
+	<creationDate>##DATE##</creationDate>
+	<author>redCOMPONENT</author>
+	<authorEmail>email@redcomponent.com</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>Copyright (C) 2014 redCOMPONENT.com. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later, see LICENSE.</license>
+	<version>##VERSION##</version>
+	<description>redEVENT library</description>
+	<files>
+		<folder>abstract</folder>
+		<folder>customfield</folder>
+		<folder>factory</folder>
+		<folder>form</folder>
+	</files>
+</extension>

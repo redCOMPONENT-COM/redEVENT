@@ -528,46 +528,6 @@ class redEVENTHelper {
 		return $options;
 	}
 
-	public static function getCustomField($type)
-	{
-		require_once (JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_redevent'.DS.'customfield'.DS.'includes.php');
-
-		if (class_exists('TCustomfield'.ucfirst($type))) {
-			$class = 'TCustomfield'.ucfirst($type);
-			return new $class();
-		}
-
-		switch ($type)
-		{
-			case 'select_multiple':
-				return new TCustomfieldSelectmultiple();
-				break;
-
-			default:
-				return new TCustomfieldTextbox();
-				break;
-		}
-	}
-
-	public static function renderFieldValue($field)
-	{
-		switch ($field->type)
-		{
-			case 'select_multiple':
-			case 'checkbox':
-				return str_replace("\n", "<br/>", $field->value);
-			case 'textarea':
-				return str_replace("\n", "<br/>", htmlspecialchars($field->value));
-			case 'date':
-				return strftime(($field->options ? $field->options : '%Y-%m-%d'), strtotime($field->value));
-			case 'wysiwyg':
-				return $field->value;
-			case 'textbox':
-			default:
-				return htmlspecialchars($field->value);
-		}
-	}
-
 	/**
 	 * Check if the user can register to the specified xref.
 	 *
