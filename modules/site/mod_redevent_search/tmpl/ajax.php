@@ -49,7 +49,7 @@ if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
 <script type="application/javascript">
 	<?php JHtml::script('com_redevent/autocompleter.js', false, true); ?>
 	window.addEvent('domready', function(){
-		var url = '<?php echo JRoute::_('index.php?option=com_redevent&controller=ajax&task=eventsuggestions&tmpl=component', false); ?>';
+		var url = 'index.php?option=com_redevent&controller=ajax&task=eventsuggestions&tmpl=component';
 		var completer = new Autocompleter.Request.JSON(document.id('modres_text_filter'), url, {'postVar': 'q', 'autoSubmit': true});
 	});
 </script>
