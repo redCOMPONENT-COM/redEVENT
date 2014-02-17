@@ -132,7 +132,16 @@ class RedEventControllerRegistration extends RedEventController
 			return false;
 		}
 
-		$dispatcher->trigger('onBeforeRegistration', array($xref, &$result));
+		// Trigger before registration plugin, that can alter redform data, or even stop the registration process
+		$notification = false;
+		$dispatcher->trigger('onBeforeRegistration', array($xref, &$result, &$notification));
+
+		if ($notification)
+		{
+			echo $notification;
+
+			return;
+		}
 
 		$submit_key = $result->submit_key;
 		JRequest::setVar('submit_key', $submit_key);
