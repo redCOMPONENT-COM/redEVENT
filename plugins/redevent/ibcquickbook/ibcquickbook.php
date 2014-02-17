@@ -68,7 +68,7 @@ class plgRedeventIbcquickbook extends JPlugin
 		}
 
 		// We need to match response to real registration form, if not the same as submitted form
-		$redformResponse = $this->newRedFormResponse();
+		$redformResponse = $this->newRedFormResponse($redformResponse);
 
 		return true;
 	}
@@ -232,7 +232,7 @@ class plgRedeventIbcquickbook extends JPlugin
 	 *
 	 * @return void
 	 */
-	private function newRedFormResponse()
+	private function newRedFormResponse($redformResponse)
 	{
 		$xrefFormId = $this->getXrefFormId();
 		$submittedFormId = JFactory::getApplication()->input->getInt('form_id', 0);
@@ -240,7 +240,7 @@ class plgRedeventIbcquickbook extends JPlugin
 		// Nothing to do if same form
 		if ($xrefFormId == $submittedFormId)
 		{
-			return true;
+			return $redformResponse;
 		}
 
 		// Prepare data for redformcore
