@@ -146,7 +146,7 @@ class RedeventViewRegistration extends JViewLegacy
 		$field['field'] = redEVENTHelper::getRfPricesSelect($prices, $registration->pricegroup_id);
 		$rfoptions['extrafields'][] = $field;
 
-		$rfcore = new RedformCore;
+		$rfcore = new RedFormCore;
 		$rfields = $rfcore->getFormFields($course->redform_id, array($submitter_id), 1, $rfoptions);
 
 

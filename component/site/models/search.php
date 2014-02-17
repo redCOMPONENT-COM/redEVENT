@@ -222,16 +222,17 @@ class RedeventModelSearch extends RedeventModelBaseEventList
 
 				switch ($filter_type)
 				{
-					case 'title' :
-						$where[] = ' LOWER( a.title ) LIKE '.$filter;
-						break;
-
 					case 'venue' :
 						$where[] = ' LOWER( l.venue ) LIKE '.$filter;
 						break;
 
 					case 'city' :
 						$where[] = ' LOWER( l.city ) LIKE '.$filter;
+						break;
+
+					case 'title' :
+					default:
+						$where[] = ' LOWER( a.title ) LIKE '.$filter;
 						break;
 				}
 			}

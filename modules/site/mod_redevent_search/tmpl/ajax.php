@@ -20,17 +20,6 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-$document = JFactory::getDocument();
-// Add Javascript
-$document->addScriptDeclaration("window.MOD_REDEVENT_SEARCH_SELECT_EVENT = '" . JText::_('MOD_REDEVENT_SEARCH_SELECT_EVENT') . "';");
-$document->addScript('modules/mod_redevent_search/lib/scripts/jquery-1.8.2.min.js');
-$document->addScript('modules/mod_redevent_search/lib/scripts/jquery.mockjax.js');
-$document->addScript('modules/mod_redevent_search/lib/scripts/jquery.autocomplete.js');
-$document->addScript('modules/mod_redevent_search/lib/scripts/search.js');
-$document->addStyleSheet('modules/mod_redevent_search/lib/content/styles.css');
-
-JHTML::_('behavior.modal');
-
 // Google analytics integration
 if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
 {
@@ -57,23 +46,25 @@ if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
 }
 ?>
 
-<form accept-charset="UTF-8" action="<?php echo $action; ?>" method="get" id="redeventsearchform">
+<script type="application/javascript">
+	<?php JHtml::script('com_redevent/autocompleter.js', false, true); ?>
+	window.addEvent('domready', function(){
+		var url = 'index.php?option=com_redevent&controller=ajax&task=eventsuggestions&tmpl=component';
+		var completer = new Autocompleter.Request.JSON(document.id('modres_text_filter'), url, {'postVar': 'q', 'autoSubmit': true});
+	});
+</script>
 
-  <div class="mod_redevent_search">
-			<?php if ($params->get('filter_text', 1)) : ?>
+<form action="<?php echo $action; ?>" method="post" id="redeventsearchform">
 
-			<?php
-				$value = $lists['filter'];
-			?>
-
-		  <div class="rssm_filter_row">
-		  	<label for="filter_type" style="display: none;"><?php echo $lists['filter_types']; ?></label>
-		  	<span class="rssm_filter">
-	      	<input type="text" id="filter_text" name="filter" value="<?php echo $value;?>" class="inputbox text_filter" placeholder="<?php echo JText::_('MOD_REDEVENT_SEARCH_SELECT_EVENT') ?>"/>
-	      </span>
+	<div class="mod_redevent_search">
+		<?php if ($params->get('filter_text', 1)) : ?>
+			<div class="rssm_filter_row">
+				<span class="rssm_filter">
+					<input type="text" name="filter" value="<?php echo $lists['filter'];?>" class="inputbox text_filter" id="modres_text_filter"
+						placeholder="<?php echo JText::_('MOD_REDEVENT_SEARCH_SELECT_EVENT') ?>"/>
+				</span>
 			</div>
-			<div id="selction-ajax"></div>
-    	<?php endif; ?>
+		<?php endif; ?>
 
 	    <?php if ($params->get('show_filter_venue', 0)): ?>
 		  <div class="rssm_filter_row">

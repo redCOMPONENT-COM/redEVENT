@@ -46,7 +46,7 @@ class RedeventViewSearch extends JView
 
 		//initialize variables
 		$document 	= JFactory::getDocument();
-		$elsettings = redEVENTHelper::config();
+		$config = redEVENTHelper::config();
 		$menu		= JSite::getMenu();
 		$item    	= $menu->getActive();
 		$params 	= $mainframe->getParams();
@@ -106,6 +106,8 @@ class RedeventViewSearch extends JView
 			$noevents = 0;
 			$nofilter = 0;
 		}
+
+		$this->checkDirectRedirect($rows);
 
 		//params
 		$params->def( 'page_title', $item->title);
@@ -209,7 +211,7 @@ class RedeventViewSearch extends JView
 		$this->assignRef('params' , 				$params);
 		$this->assignRef('dellink' , 				$dellink);
 		$this->assignRef('pageNav' , 				$pageNav);
-		$this->assignRef('elsettings' , 			$elsettings);
+		$this->assignRef('elsettings' , 			$config);
 		$this->assignRef('pagetitle' , 				$pagetitle);
 		$this->assign('filter_country',        $filter_country);
 		$this->assign('filter_state',        $filter_state);
@@ -245,10 +247,8 @@ class RedeventViewSearch extends JView
 	 * @return array
 	 * @since 0.9
 	 */
-	function _buildSortLists()
+	protected function _buildSortLists()
 	{
-		$elsettings = & redEVENTHelper::config();
-
 		$filter_order		= JRequest::getCmd('filter_order', 'x.dates');
 		$filter_order_Dir	= JRequest::getWord('filter_order_Dir', 'ASC');
 
@@ -268,5 +268,31 @@ class RedeventViewSearch extends JView
 		$lists['filter_types'] 	= $sortselect;
 
 		return $lists;
+	}
+
+	/**
+	 * Potentially redirect to details if only one result
+	 *
+	 * @param   array  $rows  result rows
+	 *
+	 * @return void
+	 */
+	protected function checkDirectRedirect($rows)
+	{
+		$config = redEVENTHelper::config();
+
+		if (count($rows) == 1 && $config->get('redirect_search_unique_result_to_details', 0))
+		{
+			if ($this->get('state')->get('results_type') == 0)
+			{
+				$route = RedeventHelperRoute::getDetailsRoute($rows[0]->slug);
+			}
+			else
+			{
+				$route = RedeventHelperRoute::getDetailsRoute($rows[0]->slug, $rows[0]->xslug);
+			}
+
+			JFactory::getApplication()->redirect($route);
+		}
 	}
 }

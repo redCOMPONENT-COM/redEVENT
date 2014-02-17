@@ -47,16 +47,17 @@ if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
 	}
 }
 ?>
+
 <form action="<?php echo $action; ?>" method="post" id="redeventsearchform">
 
   <div class="mod_redevent_search">
-			<?php if ($params->get('filter_text', 1)) : ?>
+		<?php if ($params->get('filter_text', 1)) : ?>
 		  <div class="rssm_filter_row">
 		  	<label for="filter_type"><?php echo $lists['filter_types']; ?></label>
 		  	<span class="rssm_filter">
-	      	<input type="text" name="filter" value="<?php echo $lists['filter'];?>" class="inputbox text_filter"/>
+	      	<input type="text" name="filter" value="<?php echo $lists['filter'];?>" class="inputbox text_filter" id="modres_text_filter"/>
 	      </span>
-			</div>
+		</div>
     	<?php endif; ?>
 
 	    <?php if ($params->get('show_filter_venue', 0)): ?>
