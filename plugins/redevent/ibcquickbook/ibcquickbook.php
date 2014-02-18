@@ -153,7 +153,7 @@ class plgRedeventIbcquickbook extends JPlugin
 		$email = $this->getSubmissionEmail();
 
 		include_once $path;
-		$mailflow = new Mailflow($mailflowId, $email, $this->xref);
+		$mailflow = new Mailflow($mailflowId, $email, $this->xref, false);
 		$mailflow->start();
 	}
 
