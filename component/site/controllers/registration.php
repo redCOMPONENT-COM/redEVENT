@@ -120,7 +120,7 @@ class RedEventControllerRegistration extends RedEventController
 			$options['savetosession'] = 1;
 		}
 
-		$rfcore = new redFormCore;
+		$rfcore = new RedFormCore;
 		$result = $rfcore->saveAnswers('redevent', $options);
 
 		if (!$result)
@@ -132,7 +132,16 @@ class RedEventControllerRegistration extends RedEventController
 			return false;
 		}
 
-		$dispatcher->trigger('onBeforeRegistration', array($xref, &$result));
+		// Trigger before registration plugin, that can alter redform data, or even stop the registration process
+		$notification = false;
+		$dispatcher->trigger('onBeforeRegistration', array($xref, &$result, &$notification));
+
+		if ($notification)
+		{
+			echo $notification;
+
+			return;
+		}
 
 		$submit_key = $result->submit_key;
 		JRequest::setVar('submit_key', $submit_key);
@@ -310,7 +319,7 @@ class RedEventControllerRegistration extends RedEventController
 
 		// first, ask redform to save it's fields, and return the corresponding sids.
 		$options = array('baseprice' => $prices);
-		$rfcore = new redFormCore();
+		$rfcore = new RedFormCore();
 		$result = $rfcore->saveAnswers('redevent', $options);
 		if (!$result) {
 			$msg = JText::_('COM_REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED').' - '.$rfcore->getError();
@@ -502,7 +511,7 @@ class RedEventControllerRegistration extends RedEventController
 		jimport('joomla.user.helper');
 
 		$db		=& JFactory::getDBO();
-		$rfcore = new redformCore();
+		$rfcore = new RedFormCore();
 		$answers = $rfcore->getSidContactEmails($sid);
 
 		if (!$answers)

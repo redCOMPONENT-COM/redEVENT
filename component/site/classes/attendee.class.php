@@ -555,7 +555,7 @@ class REattendee extends JObject {
 	{
 		if (empty($this->_answers))
 		{
-			$rfcore  = new redformcore();
+			$rfcore  = new RedFormCore();
 			$sid = $this->load()->sid;
 			$sidsanswers =  $rfcore->getSidsFieldsAnswers(array($sid));
 			$this->_answers = $sidsanswers[$sid];

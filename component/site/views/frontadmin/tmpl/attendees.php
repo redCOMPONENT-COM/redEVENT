@@ -63,11 +63,10 @@ defined('_JEXEC') or die('Restricted access');
 					<input name="ponumber[]" class="input-small ponumber" type="text" value="<?php echo $a->registered->ponumber; ?>" />
 				</td>
 				<td>
-					<input name="comments[]" class="input-small comments hasTip"
-						title="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_COMMENTS'); ?>"
-						type="text"
-						tip="<?php echo $a->registered->comments; ?>"
-						value="<?php echo $a->registered->comments; ?>" />
+					<textarea name="comments[]" class="input-medium comments hasTip"
+					          title="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_COMMENTS'); ?>"
+					          tip="<?php echo nl2br($a->registered->comments); ?>"
+					          rows="1" cols="30"><?php echo trim($a->registered->comments); ?></textarea>
 				</td>
 			<?php else: ?>
 				<td></td>

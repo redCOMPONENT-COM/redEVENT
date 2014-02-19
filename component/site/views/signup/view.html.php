@@ -40,52 +40,52 @@ class RedeventViewSignup extends JView
 	 *
  	 * @since 0.9
 	 */
-	function display($tpl = null) 
+	function display($tpl = null)
 	{
 		if (JRequest::getVar('layout') == 'edit') {
 			return $this->_displayEdit();
 		}
 		$mainframe = & JFactory::getApplication();
-		
+
 		$document 	= & JFactory::getDocument();
     $params   = & $mainframe->getParams();
     $menu   = & JSite::getMenu();
     $item     = $menu->getActive();
-		
+
 		/* Load the event details */
 		$course = $this->get('Details');
 		$venue = $this->get('Venue');
-				
+
     $pagetitle = $params->set('page_title', JText::_('COM_REDEVENT_SIGNUP_PAGE_TITLE'));
 		$document->setTitle($pagetitle);
-    
+
     //Print
     $params->def( 'print', !$mainframe->getCfg( 'hidePrint' ) );
     $params->def( 'icons', $mainframe->getCfg( 'icons' ) );
-		
+
     //add css file
     if (!$params->get('custom_css')) {
       $document->addStyleSheet('media/com_redevent/css/redevent.css');
     }
     else {
-      $document->addStyleSheet($params->get('custom_css'));     
+      $document->addStyleSheet($params->get('custom_css'));
     }
     $document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
-		
+
     $canRegister = $this->get('RegistrationStatus');
     if ($canRegister->canregister == 0) {
       echo '<span class="registration_error">'.$canRegister->status.'</span>';
       echo '<br/>';
       echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&xref='.JRequest::getInt('xref').'&id='.JRequest::getInt('id')), JText::_('COM_REDEVENT_RETURN_EVENT_DETAILS'));
-      return;    	
+      return;
     }
-    
+
 		/* This loads the tags replacer */
 		JView::loadHelper('tags');
 		$tags = new redEVENT_tags();
 		$tags->setXref(JRequest::getInt('xref'));
 		$this->assignRef('tags', $tags);
-		
+
 		switch (JRequest::getCmd('subtype', 'webform')) {
 			case 'email':
 				if (JRequest::getVar('sendmail') == '1') {
@@ -129,30 +129,30 @@ class RedeventViewSignup extends JView
 			default:
 				$this->tmp_xref = JRequest::getInt('xref');
 				$this->tmp_id = JRequest::getInt('id');
-				
+
 				$review_txt =  trim(strip_tags($course->review_message));
-				
+
 				$page = $tags->ReplaceTags($course->submission_type_webform, array('hasreview' => (!empty($review_txt))) );
     		$print_link = JRoute::_( 'index.php?option=com_redevent&view=signup&subtype=webform&task=signup&xref='.$this->tmp_xref.'&id='.$this->tmp_id.'&pop=1&tmpl=component' );
-				
+
     		$this->assign('page', $page);
         $this->assign('print_link', $print_link);
 				break;
 		}
-		
+
 		// The replaceTag function can sometime call the layout directly. This variable allows to make the difference with regular
 		// call
 		$fullpage = true;
-		
+
 		$this->assignRef('course', $course);
 		$this->assignRef('venue',  $venue);
     $this->assignRef('params', $params);
     $this->assignRef('pagetitle', $pagetitle);
     $this->assignRef('fullpage', $fullpage);
-		
+
 		parent::display($tpl);
 	}
-	
+
 	function _displayEdit($tpl = null)
 	{
 		$user = &JFactory::getUser();
@@ -163,18 +163,18 @@ class RedeventViewSignup extends JView
 		}
 		$course = $this->get('Details');
 		$model = $this->getModel();
-		
+
 		$registration = $model->getRegistration($submitter_id);
 		if (!$registration) {
 			JError::raise(0,$model->getError);
 			return false;
-		}		
-		
-		$rfcore = new RedformCore();
+		}
+
+		$rfcore = new RedFormCore();
 		$rfields = $rfcore->getFormFields($course->redform_id, array($submitter_id), 1);
-				
+
 		$this->assign('rfields',  $rfields);
-		
+
 		if ($model->getManageAttendees($registration->xref) && JRequest::getVar('task') == 'manageredit') {
 			$this->assign('edittask',  'manageredit');
 		}
