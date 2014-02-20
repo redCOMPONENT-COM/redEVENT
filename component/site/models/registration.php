@@ -137,7 +137,16 @@ class RedEventModelRegistration extends JModel
 
 		if ($session->activate == 0) // no activation
 		{
-			$this->confirm($obj->id);
+			$doConfirm = true;
+
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('onBeforeAutoConfirm', array($obj->id, &$doConfirm));
+
+			if ($doConfirm)
+			{
+				$this->confirm($obj->id);
+			}
 		}
 
 		return $obj;
