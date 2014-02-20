@@ -275,7 +275,7 @@ class REattendee extends JObject {
 	{
 		$config = redEVENTHelper::config();
 
-		if (!$config->get('disable_waitinglist_status_email', 0))
+		if ($config->get('disable_waitinglist_status_email', 0))
 		{
 			return true;
 		}
