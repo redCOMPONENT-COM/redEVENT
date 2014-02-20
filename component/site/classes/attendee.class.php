@@ -277,7 +277,7 @@ class REattendee extends JObject {
 
 		if (!$config->get('disable_waitinglist_status_email', 0))
 		{
-			return false;
+			return true;
 		}
 
 		$app = JFactory::getApplication();
