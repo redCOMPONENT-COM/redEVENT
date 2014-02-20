@@ -273,6 +273,13 @@ class REattendee extends JObject {
 	 */
 	public function sendWaitinglistStatusEmail($waiting = 0)
 	{
+		$config = redEVENTHelper::config();
+
+		if (!$config->get('disable_waitinglist_status_email', 0))
+		{
+			return false;
+		}
+
 		$app = JFactory::getApplication();
 		$data = $this->load();
 		$session = $this->getSessionDetails();
