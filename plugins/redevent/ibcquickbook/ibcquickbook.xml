@@ -35,6 +35,7 @@
 					   label="PLG_REDEVENT_IBCQUICKBOOK_XML_NOTIFICATION_LABEL"
 					   description="PLG_REDEVENT_IBCQUICKBOOK_XML_NOTIFICATION_DESCRIPTION"
 					   rows="10" cols="50"
+					   filter="raw"
 						/>
 
 				<field name="unemployedMailflowFieldId" type="text"
