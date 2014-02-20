@@ -33,6 +33,8 @@ class plgRedeventIbcquickbook extends JPlugin
 	private $sessionFormFields;
 	private $sessionDetails;
 
+	private $isQuickbookRegistration = false;
+
 	/**
 	 * constructor
 	 *
@@ -66,9 +68,32 @@ class plgRedeventIbcquickbook extends JPlugin
 
 			return $this->notifyAndStop($notification);
 		}
+		elseif ($status == 'employed')
+		{
+			// We need to match response to real registration form, if not the same as submitted form
+			$redformResponse = $this->newRedFormResponse($redformResponse);
 
-		// We need to match response to real registration form, if not the same as submitted form
-		$redformResponse = $this->newRedFormResponse($redformResponse);
+			// Keep track !
+			$this->isQuickbookRegistration = true;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Do not auto-confirm if it's from quickbook module
+	 *
+	 * @param $attendee_id
+	 * @param $doConfirm
+	 *
+	 * @return bool
+	 */
+	public function onBeforeAutoConfirm($attendee_id, &$doConfirm)
+	{
+		if ($this->isQuickbookRegistration)
+		{
+			$doConfirm = false;
+		}
 
 		return true;
 	}
