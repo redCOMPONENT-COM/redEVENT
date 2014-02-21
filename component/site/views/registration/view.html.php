@@ -56,7 +56,7 @@ class RedeventViewRegistration extends JViewLegacy
 			$document->setTitle($event->title . ' - ' . JText::_('COM_REDEVENT_REGISTRATION_CONFIRMED_PAGE_TITLE'));
 
 			// Google analytics
-			if (redFORMHelperAnalytics::isEnabled())
+			if (RedFormHelperAnalytics::isEnabled())
 			{
 				$key = JFactory::getApplication()->input->get('submit_key');
 
@@ -73,7 +73,7 @@ class RedeventViewRegistration extends JViewLegacy
 				}
 				$options['category'] = implode(', ', $cats);
 
-				redFORMHelperAnalytics::recordTrans($key, $options);
+				RedFormHelperAnalytics::recordTrans($key, $options);
 			}
 		}
 		elseif ($this->getLayout() == 'review')
