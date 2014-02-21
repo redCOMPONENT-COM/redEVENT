@@ -1215,7 +1215,7 @@ class redEVENT_tags
 		$html .= '</div>';
 		$html .= '</form>';
 
-		if (redFORMHelperAnalytics::isEnabled())
+		if (RedFormHelperAnalytics::isEnabled())
 		{
 			if ($this->getOption('hasreview'))
 			{
@@ -1231,7 +1231,7 @@ class redEVENT_tags
 			$event->action = 'display';
 			$event->label = $label;
 			$event->value = null;
-			redFORMHelperAnalytics::trackEvent($event);
+			RedFormHelperAnalytics::trackEvent($event);
 		}
 
 		return $html;
