@@ -754,7 +754,7 @@ var redb2b = {
 						document.id('main-attendees').set('spinner').spin();
 					},
 					onSuccess : function(text) {
-						resdiv = document.id('main-attendees').adopt(text).set('styles', {'display' : 'block'}).unspin();
+						resdiv = document.id('main-attendees').empty().adopt(text).set('styles', {'display' : 'block'}).unspin();
 						Array.each(redb2b.selected, function(val) {
 							var cid = document.id('cid' + val);
 							if (cid) {
