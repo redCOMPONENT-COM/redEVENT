@@ -173,7 +173,9 @@ class plgRedeventIbcglobase extends JPlugin
 	 * Save profile to globase
 	 *
 	 * @param   object  $sessionDetails  session details
-	 * @params  array   $answers         submitter answers
+	 * @param   array   $answers         submitter answers
+	 *
+	 * @throws Exception
 	 *
 	 * @return true on success
 	 */
@@ -197,6 +199,8 @@ class plgRedeventIbcglobase extends JPlugin
 			$xmlFields[$specials->Nyhedsbrev->name] = $parts;
 		}
 
+		$isMapped = false;
+
 		foreach ($profileFields as $pf)
 		{
 			foreach ($answers as $a)
@@ -208,15 +212,21 @@ class plgRedeventIbcglobase extends JPlugin
 						$xmlFields[$pf->name] = array();
 					}
 
+					$isMapped = true;
 					$xmlFields[$pf->name][] = $a->answer;
 					break;
 				}
 			}
 		}
 
+		if (!$isMapped)
+		{
+			throw new Exception('Globase: no map fields found for this form');
+		}
+
 		if (!isset($xmlFields['email']) || !reset($xmlFields['email']))
 		{
-			throw new Exception('email is required');
+			throw new Exception('Globase: email is required');
 		}
 
 		$email = reset($xmlFields['email']);
