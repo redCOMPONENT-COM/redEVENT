@@ -270,7 +270,8 @@ class plgRedeventsyncclientMaersk extends JPlugin
 	{
 		if (!$this->client)
 		{
-			$this->client = RedeventsyncClientMaersk::getInstance(RedeventsyncClientMaersk::TEST_URL);
+			$client_url = $this->params->get('client_url', RedeventsyncClientMaersk::TEST_URL);
+			$this->client = RedeventsyncClientMaersk::getInstance($client_url);
 		}
 
 		return $this->client;

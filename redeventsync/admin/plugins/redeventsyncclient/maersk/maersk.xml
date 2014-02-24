@@ -23,7 +23,12 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-
+				<field
+					name="client_url"
+					type="text"
+					label="PLG_REDEVENTSYNCCLIENT_MAERSK_PLUGIN_XML_CLIENT_URL_LABEL"
+					description="PLG_REDEVENTSYNCCLIENT_MAERSK_PLUGIN_XML_CLIENT_URL_DESC"
+					/>
 			</fieldset>
 		</fields>
 	</config>
