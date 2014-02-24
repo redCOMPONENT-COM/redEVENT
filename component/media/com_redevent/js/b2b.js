@@ -251,7 +251,7 @@ var redb2b = {
 			 * add member
 			 */
 			document.id('redevent-admin').addEvent('click:relay(#add-employee)', function(e){
-				redb2b.editmember(0);
+				redb2b.addmember();
 			});
 
 			/**
@@ -793,6 +793,22 @@ var redb2b = {
 				}
 			});
 			req.send();
+		},
+
+		addmember : function() {
+			var orgId = document.id('filter_organization').get('value');
+
+			if (!orgId)
+			{
+				alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_EDIT_MEMBER_MUST_SELECT_ORGANIZATION"));
+				return;
+			}
+
+			var dummylink = new Element('a', {
+				href: "index.php?option=com_redevent&controller=frontadmin&task=editmember&tmpl=component&modal=1&orgId=" + orgId,
+				rel: "{handler: 'iframe', size: {x: 800, y: 400}, onClose: redb2b.getMembersList}"
+			});
+			SqueezeBox.fromElement(dummylink);
 		},
 
 		editmember : function(id) {
