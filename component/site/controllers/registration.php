@@ -187,14 +187,14 @@ class RedEventControllerRegistration extends RedEventController
 				$dispatcher->trigger('onAttendeeCreated', array($res->id));
 			}
 
-			$dispatcher->trigger('onEventUserRegistered', array($xref));
-
 			if ($details->notify)
 			{
 				$model->sendNotificationEmail($submit_key);
 			}
 
 			$model->notifyManagers($submit_key);
+
+			$dispatcher->trigger('onEventUserRegistered', array($xref));
 		}
 
 		if (!$review)
