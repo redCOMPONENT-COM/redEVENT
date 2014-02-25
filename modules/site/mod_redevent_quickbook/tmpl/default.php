@@ -28,6 +28,7 @@ $rfcore = new RedFormCore;
 	<?php echo JHtml::_('select.genericlist', $data->sessionsOptions, 'xref', null, 'value', 'text', JFactory::getApplication()->input->getInt('xref', 0)); ?>
 	<?php echo $rfcore->getFormFields($data->form->id); ?>
 
+	<input name="fromQuickbook" type="hidden" value="1" />
 	<div id="qbsubmit">
 		<button type="button" id="qbsubmit-btn"><?php echo JText::_('MOD_REDEVENT_QUICKBOOK_BUTTON_BOOK_LABEL'); ?></button>
 	</div>

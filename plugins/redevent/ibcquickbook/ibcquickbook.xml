@@ -38,6 +38,11 @@
 					   filter="raw"
 						/>
 
+				<field name="employedMailflowFieldId" type="text"
+					   label="PLG_REDEVENT_IBCQUICKBOOK_XML_EMPLOYEDMAILFLOWID_LABEL"
+					   description="PLG_REDEVENT_IBCQUICKBOOK_XML_EMPLOYEDMAILFLOWID_DESCRIPTION"
+						/>
+
 				<field name="unemployedMailflowFieldId" type="text"
 					   label="PLG_REDEVENT_IBCQUICKBOOK_XML_UNEMPLOYEDMAILFLOWID_LABEL"
 					   description="PLG_REDEVENT_IBCQUICKBOOK_XML_UNEMPLOYEDMAILFLOWID_DESCRIPTION"
@@ -47,6 +52,14 @@
 					   label="PLG_REDEVENT_IBCQUICKBOOK_XML_OTHERMAILFLOWID_LABEL"
 					   description="PLG_REDEVENT_IBCQUICKBOOK_XML_OTHERMAILFLOWID_DESCRIPTION"
 						/>
+
+				<field name="enableLog" type="radio" default="0"
+					   label="PLG_REDEVENT_IBCQUICKBOOK_XML_ENABLELOG_LABEL"
+					   description="PLG_REDEVENT_IBCQUICKBOOK_XML_ENABLELOG_DESCRIPTION"
+						>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>

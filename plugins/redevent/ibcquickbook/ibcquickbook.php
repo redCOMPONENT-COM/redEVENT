@@ -35,6 +35,8 @@ class plgRedeventIbcquickbook extends JPlugin
 
 	private $isQuickbookRegistration = false;
 
+	private $logEnabled = 0;
+
 	/**
 	 * constructor
 	 *
@@ -45,6 +47,8 @@ class plgRedeventIbcquickbook extends JPlugin
 	{
 		parent::__construct($subject, $params);
 		$this->loadLanguage();
+
+		$this->logEnabled = $this->params->get('enableLog', 0);
 	}
 
 	/**
@@ -64,7 +68,7 @@ class plgRedeventIbcquickbook extends JPlugin
 		if ($status == 'unemployed' || $status == 'other')
 		{
 			$this->triggerGlobase();
-			$this->triggerMailflow($status, $redformResponse);
+			$this->triggerMailflow($status);
 
 			return $this->notifyAndStop($notification);
 		}
@@ -72,12 +76,37 @@ class plgRedeventIbcquickbook extends JPlugin
 		{
 			// We need to match response to real registration form, if not the same as submitted form
 			$redformResponse = $this->newRedFormResponse($redformResponse);
-
-			// Keep track !
-			$this->isQuickbookRegistration = true;
 		}
 
+		// Keep track !
+		$this->isQuickbookRegistration = JFactory::getApplication()->input->getInt('fromQuickbook', 0);
+
 		return true;
+	}
+
+	/**
+	 * Always trigger mailflow after registration
+	 *
+	 * @param   int  $attendee_id  attendee id
+	 *
+	 * @return void
+	 */
+	public function onAttendeeCreated($attendee_id)
+	{
+		$status = $this->getEmploymentStatus();
+		$this->triggerMailflow($status);
+
+		return true;
+	}
+
+	public function onEventUserRegistered($xref)
+	{
+		if ($this->isQuickbookRegistration)
+		{
+			echo $this->params->get('notification');
+
+			JFactory::getApplication()->close();
+		}
 	}
 
 	/**
@@ -178,8 +207,15 @@ class plgRedeventIbcquickbook extends JPlugin
 		$email = $this->getSubmissionEmail();
 
 		include_once $path;
+
 		$mailflow = new Mailflow($mailflowId, $email, $this->xref, false);
 		$mailflow->start();
+
+		$this->debugLog(sprintf('triggered mailflow id %d, email %s, session %d',
+			$mailflowId,
+			$email,
+			$this->xref
+		));
 	}
 
 	private function getMailFlowId($status)
@@ -189,20 +225,22 @@ class plgRedeventIbcquickbook extends JPlugin
 		switch ($status)
 		{
 			case 'unemployed':
-				$customId = (int) $this->params->get('unemployedMailflowFieldId');
+				$property = 'custom' . (int) $this->params->get('unemployedMailflowFieldId');
 				break;
 
 			case 'other':
-				$customId = (int) $this->params->get('otherMailflowFieldId');
+				$property = 'custom' . (int) $this->params->get('otherMailflowFieldId');
 				break;
+
+			case 'employed':
+				$property = 'custom' . (int) $this->params->get('employedMailflowFieldId');
+				break;
+
+			default:
+				$property = 'mailflow_id';
 		}
 
-		if (!$customId)
-		{
-			throw new Exception('Missing mailflow id for status ' . $status);
-		}
-
-		$mailflowId = $session->{'custom' . $customId};
+		$mailflowId = $session->{$property};
 
 		return $mailflowId;
 	}
@@ -387,5 +425,23 @@ class plgRedeventIbcquickbook extends JPlugin
 		}
 
 		return $this->rfcore;
+	}
+
+	private function debugLog($text)
+	{
+		if ($this->logEnabled)
+		{
+			$this->log($text);
+		}
+	}
+
+	private function log($text)
+	{
+		JLog::addLogger(
+			array('text_file' => 'plg_quickbook'),
+			JLog::DEBUG,
+			'com_redevent'
+		);
+		JLog::add($text, JLog::DEBUG, 'com_redevent');
 	}
 }
