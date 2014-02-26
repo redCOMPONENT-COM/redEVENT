@@ -126,20 +126,9 @@ var redb2b = {
 			/**
 			 * update organization bookings when selecting session status active
 			 */
-			if (document.id('filter_person_active0')) {
-				document.id('filter_person_active0').addEvent('change', function(){
-					redb2b.searchBookings();
-				});
-			}
-
-			/**
-			 * update organization bookings when selecting session status active
-			 */
-			if (document.id('filter_person_active1')) {
-				document.id('filter_person_active1').addEvent('change', function(){
-					redb2b.searchBookings();
-				});
-			}
+			$$('[id^=filter_person_]').addEvent('change', function(){
+				redb2b.searchBookings();
+			});
 
 			/**
 			 * update organization bookings when resetting filter person field

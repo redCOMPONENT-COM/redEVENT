@@ -58,8 +58,8 @@ defined('_JEXEC') or die('Restricted access');
 			<li><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SEARCH_IN'); ?></li>
 			<li><label class="checkbox"><input name="filter_person_active" id="filter_person_active0" type="radio" value="1"
 				<?php echo $this->state->get('filter_person_active') == 1 ? ' checked="checked"' : ''; ?>/> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ACTIVE_COURSES'); ?></label></li>
-			<li><label class="checkbox"><input name="filter_person_active" id="filter_person_active1" type="radio" value="0"
-				<?php echo $this->state->get('filter_person_active' == 0) ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSES_HISTORY'); ?></label></li>
+			<li><label class="checkbox"><input name="filter_person_active" id="filter_person_active1" type="radio" value="-1"
+				<?php echo $this->state->get('filter_person_active' == -1) ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSES_HISTORY'); ?></label></li>
 		</ul>
 
 		<input type="hidden" name="bookings_order" value="<?php echo $this->bookings_order; ?>"/>
