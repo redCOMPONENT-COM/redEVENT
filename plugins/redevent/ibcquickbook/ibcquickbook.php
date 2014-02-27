@@ -211,10 +211,11 @@ class plgRedeventIbcquickbook extends JPlugin
 		$mailflow = new Mailflow($mailflowId, $email, $this->xref, false);
 		$mailflow->start();
 
-		$this->debugLog(sprintf('triggered mailflow id %d, email %s, session %d',
+		$this->debugLog(sprintf('triggered mailflow id %d, email %s, session %d, status %s',
 			$mailflowId,
 			$email,
-			$this->xref
+			$this->xref,
+			$status ? $status : 'N/A'
 		));
 	}
 
