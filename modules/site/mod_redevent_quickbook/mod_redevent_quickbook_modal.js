@@ -6,6 +6,12 @@ document.addEvent('domready', function(){
 
 	document.id('qbsubmit-btn').addEvent('click', function(){
 		var el = this;
+
+		if (!CheckSubmit(el.getParent('form')))
+		{
+			return false;
+		}
+
 		var req = new Request({
 			url: el.getParent('form').getProperty('action'),
 			data: el.getParent('form'),
