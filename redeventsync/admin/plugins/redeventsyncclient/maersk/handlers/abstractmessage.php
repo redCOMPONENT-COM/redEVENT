@@ -87,7 +87,24 @@ class RedeventsyncHandlerAbstractmessage
 		}
 		else
 		{
-			return '';
+			return false;
+		}
+	}
+
+	/**
+	 * returns the response message type, if applicable, false otherwise
+	 *
+	 * @return string
+	 */
+	public function getResponseMessageType()
+	{
+		if ($this->response)
+		{
+			return $this->response->getName();
+		}
+		else
+		{
+			return false;
 		}
 	}
 

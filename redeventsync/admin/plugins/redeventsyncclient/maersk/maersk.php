@@ -213,6 +213,14 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		// Display response to request
 		if ($msg = $handler->getResponseMessage())
 		{
+			RedeventsyncHelperMessagelog::log(
+				REDEVENTSYNC_LOG_DIRECTION_OUTGOING,
+				$handler->getResponseMessageType(),
+				0,
+				$msg,
+				'see message'
+			);
+
 			echo $msg;
 		}
 
@@ -601,7 +609,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 	 *
 	 * @param   string  $type  handler name
 	 *
-	 * @return object
+	 * @return RedeventsyncHandlerAbstractmessage
 	 */
 	protected function getHandler($type)
 	{
