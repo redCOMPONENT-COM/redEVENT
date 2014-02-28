@@ -86,7 +86,7 @@ class RedeventsyncHandlerCustomersrs extends RedeventsyncHandlerAbstractmessage
 
 		try
 		{
-			redmemberlib::saveUser(false, $data);
+			redmemberlib::saveUser(false, $data, false, array('no_check' => 1));
 
 			// Log
 			$this->log(
