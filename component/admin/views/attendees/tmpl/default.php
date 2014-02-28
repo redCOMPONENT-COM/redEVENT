@@ -20,8 +20,8 @@
  * along with redEVENT; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
- 
-defined('_JEXEC') or die('Restricted access'); 
+
+defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.tooltip');
 $colspan = 8;
 if ($this->params->get('attendees_table_show_ip', 0)) {
@@ -29,9 +29,6 @@ if ($this->params->get('attendees_table_show_ip', 0)) {
 }
 if ($this->params->get('attendees_table_show_uniqueid', 0)) {
 	$colspan += 1;
-}
-if ($this->event->activate) {
-	$colspan += 2;
 }
 if ($this->event->maxattendees) {
 	$colspan += 1;
@@ -53,7 +50,7 @@ if ($this->event->maxattendees) {
 		  </tr>
 	</table>
 	<br />
-	
+
 	<table class="adminform">
 		<tr>
 			 <td width="100%">
@@ -67,20 +64,18 @@ if ($this->event->maxattendees) {
 			</td>
 		</tr>
 	</table>
-	
+
 	<?php if ($this->cancelled): ?>
 	<div class="cancelled-notice"><?php echo ($this->cancelled == 1 ? JTExt::_('COM_REDEVENT_CANCELLED_REGISTRATIONS') : JTExt::_('COM_REDEVENT_ALL_REGISTRATIONS')); ?></div>
 	<?php endif; ?>
-	
+
 	<table id="attendees" class="adminlist">
 		<thead>
 			<tr>
 				<th width="5">#</th>
 				<th width="5"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_REGDATE', 'r.uregdate', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<?php if ($this->event->activate): ?>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ACTIVATIONDATE', 'r.confirmdate', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<?php endif; ?>
 				<?php if ($this->params->get('attendees_table_show_ip', 0)): ?>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_IP_ADDRESS', 'r.uip', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php endif; ?>
@@ -88,9 +83,7 @@ if ($this->event->maxattendees) {
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_UNIQUE_ID', 'r.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php endif; ?>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_REGISTERED_BY', 'u.username', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<?php if ($this->event->activate): ?>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ACTIVATED', 'r.confirmed', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<?php endif; ?>
 				<?php if ($this->event->maxattendees): ?>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_WAITINGLIST', 'r.waitinglist', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php endif; ?>
@@ -117,17 +110,17 @@ if ($this->event->maxattendees) {
 		<tbody>
 			<?php
 			$k = 0;
-			for($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+			for($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			{
 				$row = &$this->rows[$i];
-				
+
 				$link 		= 'index.php?option=com_redevent&controller=attendees&task=edit&xref='. $row->xref.'&cid[]='.$row->id;
 				$checked 	= JHTML::_('grid.checkedout', $row, $i );
 				if ($this->cancelled == 2 && $row->cancelled) {
 					$cancelclass = " cancelled";
 				}
 				else {
-					$cancelclass = "";					
+					$cancelclass = "";
 				}
    			?>
 			<tr class="<?php echo "row$k".$cancelclass; ?>">
@@ -145,9 +138,7 @@ if ($this->event->maxattendees) {
 					</a></span>
 					<?php } ?>
 				</td>
-				<?php if ($this->event->activate): ?>
 				<td><?php echo ($row->confirmdate) ? JHTML::Date( $row->confirmdate, JText::_('DATE_FORMAT_LC2' ) ) : '-'; ?></td>
-        <?php endif; ?>
 				<?php if ($this->params->get('attendees_table_show_ip', 0)): ?>
 				<td><?php echo $row->uip == 'DISABLED' ? JText::_('COM_REDEVENT_DISABLED' ) : $row->uip; ?></td>
         <?php endif; ?>
@@ -155,10 +146,9 @@ if ($this->event->maxattendees) {
 				<td><?php echo $row->course_code .'-'. $row->xref .'-'. $row->attendee_id; ?></td>
         <?php endif; ?>
 				<td><?php echo $row->name; ?></td>
-				<?php if ($this->event->activate): ?>
 				<td>
-				  <?php 
-				  //echo $row->confirmed == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES'); 
+				  <?php
+				  //echo $row->confirmed == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES');
 				  if (!$row->confirmed) {
             echo JHTML::link('javascript: void(0);', JHTML::_('image', 'admin/publish_x.png', JText::_('JNO'), null, true), array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'confirmattendees\');'));
 				  }
@@ -167,17 +157,16 @@ if ($this->event->maxattendees) {
           }
 				  ?>
 				</td>
-        <?php endif; ?>
-        
+
 				<?php if ($this->event->maxattendees): ?>
 				<td>
-          <?php 
+          <?php
           if (!$row->waitinglist) // attending
           {
           	$tip = Jtext::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ATTENDING')
             		   .'::'.Jtext::_('COM_REDEVENT_REGISTRATION_CLICK_TO_PUT_ON_WAITING_LIST');
-            echo JHTML::link('javascript: void(0);', 
-                              JHTML::_('image', 'administrator/components/com_redevent/assets/images/attending-16.png', JText::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ATTENDING'), null, false), 
+            echo JHTML::link('javascript: void(0);',
+                              JHTML::_('image', 'administrator/components/com_redevent/assets/images/attending-16.png', JText::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ATTENDING'), null, false),
                               array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'onwaiting\');',
             		                   'class' => 'hasTip',
             		             		   'title' => $tip
@@ -187,8 +176,8 @@ if ($this->event->maxattendees) {
           {
           	$tip = Jtext::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ON_WAITING_LIST')
             		   .'::'.Jtext::_('COM_REDEVENT_REGISTRATION_CLICK_TO_TAKE_OFF_WAITING_LIST');
-            echo JHTML::link( 'javascript: void(0);', 
-                              JHTML::_('image', 'administrator/components/com_redevent/assets/images/enumList.png', JText::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ON_WAITING_LIST'), null, false), 
+            echo JHTML::link( 'javascript: void(0);',
+                              JHTML::_('image', 'administrator/components/com_redevent/assets/images/enumList.png', JText::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ON_WAITING_LIST'), null, false),
                               array('onclick' => 'return listItemTask(\'cb'.$i.'\', \'offwaiting\');',
             		                   'class' => 'hasTip',
             		             		   'title' => $tip
@@ -197,14 +186,14 @@ if ($this->event->maxattendees) {
           ?>
         </td>
         <?php endif; ?>
-				
+
         <?php foreach ((array) $this->rf_fields as $f):?>
 					<?php $fname = 'field_'.$f->id; ?>
 					<td><?php echo $row->$fname; ?></td>
 				<?php endforeach;?>
-        
+
         <td><a href="<?php echo JRoute::_('index.php?option=com_redevent&view=attendeeanswers&tmpl=component&submitter_id='. $row->submitter_id); ?>" class="answersmodal" rel="{handler: 'iframe'}"><?php echo JText::_('COM_REDEVENT_view')?></a></td>
-				
+
 				<?php if ($this->form->activatepayment): ?>
 					<td>
 						<?php echo $row->price; ?>
@@ -219,7 +208,7 @@ if ($this->event->maxattendees) {
 						<?php echo ' '.JHTML::link(JURI::root().'/index.php?option=com_redform&controller=payment&task=select&key='.$row->submit_key, JText::_('COM_REDEVENT_link')); ?>
 						<?php else: ?>
 						<span class="hasTip" title="<?php echo JText::_('COM_REDEVENT_REGISTRATION_PAID').'::'.$row->status; ?>"><?php echo JHTML::_('image', 'admin/tick.png', JText::_('COM_REDEVENT_REGISTRATION_PAID'), null, true); ?><?php echo $link; ?></span>
-						<?php endif; ?>						
+						<?php endif; ?>
 					</td>
 				<?php endif; ?>
 			</tr>
