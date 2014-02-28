@@ -23,10 +23,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$app = &JFactory::getApplication();
-$colspan = 9;
-if (!$this->event) $colspan++;
-if (!$this->event || $this->event->registra) $colspan += 2;
+$app = JFactory::getApplication();
+
 ?>
 <script type="text/javascript">
  /**
@@ -110,7 +108,7 @@ if (!$this->event || $this->event->registra) $colspan += 2;
 	</thead>
 	<tfoot>
 		<tr>
-			<td colspan="<?php echo $colspan; ?>">
+			<td colspan="50">
 				<?php echo $this->pagination->getListFooter(); ?>
 			</td>
 		</tr>

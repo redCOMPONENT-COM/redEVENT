@@ -211,13 +211,13 @@ class RedEventModelAttendees extends JModel
 		$query->select('p.paid, p.status');
 		$query->select('u.username, u.name, u.email');
 		$query->from('#__redevent_register AS r');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x ON r.xref = x.id');
+		$query->join('INNER', '#__redevent_events AS a ON x.eventid = a.id');
+		$query->join('INNER', '#__rwf_submitters AS s ON r.sid = s.id');
+		$query->join('INNER', '#__rwf_forms AS fo ON fo.id = a.redform_id');
 		$query->join('LEFT', '#__redevent_sessions_pricegroups AS spg ON spg.id = r.sessionpricegroup_id');
 		$query->join('LEFT', '#__redevent_pricegroups AS pg ON pg.id = spg.pricegroup_id');
-		$query->join('LEFT', '#__redevent_event_venue_xref AS x ON r.xref = x.id');
-		$query->join('LEFT', '#__redevent_events AS a ON x.eventid = a.id');
 		$query->join('LEFT', '#__users AS u ON r.uid = u.id');
-		$query->join('LEFT', '#__rwf_submitters AS s ON r.sid = s.id');
-		$query->join('LEFT', '#__rwf_forms AS fo ON fo.id = s.form_id');
 		$query->join('LEFT', '(SELECT MAX(id) as id, submit_key FROM #__rwf_payment GROUP BY submit_key) AS latest_payment ON latest_payment.submit_key = s.submit_key');
 		$query->join('LEFT', '#__rwf_payment AS p ON p.id = latest_payment.id');
 		$query->group('r.id');
@@ -235,7 +235,7 @@ class RedEventModelAttendees extends JModel
 		if ($formFields && !empty($formFields->showfields))
 		{
 			// Join
-			$query->join('LEFT', '#__rwf_forms_'.$formFields->redform_id.' AS f ON s.answer_id = f.id');
+			$query->join('INNER', '#__rwf_forms_'.$formFields->redform_id.' AS f ON s.answer_id = f.id');
 
 			$fields = explode(',', $formFields->showfields);
 

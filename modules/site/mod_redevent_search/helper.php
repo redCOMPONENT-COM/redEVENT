@@ -77,9 +77,12 @@ class modRedEventSearchHelper
 			$where[] = '(c.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR c.language IS NULL)';
 		}
 
-		if (count($where)) {
+		if (count($where))
+		{
 			$query .= ' WHERE '. implode(' AND ', $where);
 		}
+
+		$query .= ' ORDER BY c.ordering';
 		$query .= ' GROUP BY c.id ';
 
 		$this->_db->setQuery($query);
