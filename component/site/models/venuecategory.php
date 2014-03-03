@@ -25,8 +25,6 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-require_once 'baseeventslist.php';
-
 /**
  * redevent Component venue category events Model
  *
@@ -34,7 +32,7 @@ require_once 'baseeventslist.php';
  * @subpackage  redevent
  * @since       2.0
  */
-class RedeventModelVenuecategory extends RedeventModelBaseEventList
+class RedeventModelVenuecategory extends RedeventModelBaseeventlist
 {
 	/**
 	 * category id
@@ -81,7 +79,7 @@ class RedeventModelVenuecategory extends RedeventModelBaseEventList
 
 	/**
 	 * (non-PHPdoc)
-	 * @see RedeventModelBaseEventList::_buildWhere()
+	 * @see RedeventModelBaseeventlist::_buildWhere()
 	 */
 	protected function _buildWhere($query)
 	{

@@ -306,11 +306,12 @@ class RedeventViewFrontadmin extends JView
 
 	protected function displayAttendees($tpl= null)
 	{
-		$state = $this->get('state');
+		$model = $this->getModel('FrontadminMembers');
+		$state = $model->getState();
 
 		$this->members_order = $state->get('members_order');
 		$this->members_order_dir = $state->get('members_order_dir');
-		$this->members_pagination = $this->get('membersPagination');
+		$this->members_pagination = $model->getPagination();
 		$this->members_limitstart = $state->get('members_limitstart');
 
 		parent::display($tpl);

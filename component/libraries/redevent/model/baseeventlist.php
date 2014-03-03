@@ -32,7 +32,7 @@ jimport('joomla.application.component.model');
  * @subpackage  redevent
  * @since       2.0
  */
-class RedeventModelBaseEventList extends JModel
+class RedeventModelBaseeventlist extends JModel
 {
 	/**
 	 * Events data array
@@ -792,7 +792,7 @@ class RedeventModelBaseEventList extends JModel
 
 		if (!empty($fields))
 		{
-			uasort($fields, array('RedeventModelBaseEventList', '_cmpCustomFields'));
+			uasort($fields, array('RedeventModelBaseeventlist', '_cmpCustomFields'));
 
 			foreach ((array) $fields as $f)
 			{

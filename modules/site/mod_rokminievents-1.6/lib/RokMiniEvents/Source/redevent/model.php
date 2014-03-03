@@ -23,12 +23,13 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-include_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'models'.DS.'baseeventslist.php');
+// Register library prefix
+JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
 
-class RokMiniEventsSourceRedEventModel extends RedeventModelBaseEventList {
+class RokMiniEventsSourceRedEventModel extends RedeventModelBaseeventlist {
 
 	protected $_params = null;
-	
+
 	/**
 	 * Constructor
 	 *
@@ -37,12 +38,12 @@ class RokMiniEventsSourceRedEventModel extends RedeventModelBaseEventList {
 	function __construct($params)
 	{
 		parent::__construct();
-		
+
 		$this->_params = $params;
 		$this->setState('limit', $params->get('redevent_total',10));
 		$this->setState('limitstart', 0);
 	}
-	
+
 	/**
 	 * Build the where clause
 	 *
@@ -52,37 +53,37 @@ class RokMiniEventsSourceRedEventModel extends RedeventModelBaseEventList {
 	function _buildWhere()
 	{
 		$user		= & JFactory::getUser();
-		
+
 		$where = array();
-		
+
 		// First thing we need to do is to select only needed events
 		if ($this->_params->get('redevent_include_archived', 0)) {
 			$where[] = ' (x.published = 1 OR x.published = -1) ';
-		} 
+		}
 		else {
 			$where[] = ' x.published = 1 ';
 		}
-		
+
 		if ($this->_params->get('redevent_featured', 0)) {
 			$where[] = ' x.featured = 1 ';
 		}
-	    
-		if ($cat = $this->_params->get('redevent_category')) 
-		{		
+
+		if ($cat = $this->_params->get('redevent_category'))
+		{
     	$category = $this->getCategory((int) $cat);
     	if ($category) {
 				$where[] = '(c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
     	}
 		}
-	    
-		if ($v = $this->_params->get('redevent_venue')) 
-		{		
-    	$where[] = ' l.id = ' . $this->_db->Quote($v);    
+
+		if ($v = $this->_params->get('redevent_venue'))
+		{
+    	$where[] = ' l.id = ' . $this->_db->Quote($v);
 		}
-		
+
 		$query_start_date = null;
 		$query_end_date = null;
-		
+
 		if ($this->_params->get('time_range') == 'time_span' || $this->_params->get('rangespan') != 'all_events')
 		{
 			$query_start_date = $this->_params->get('startmin');
@@ -92,7 +93,7 @@ class RokMiniEventsSourceRedEventModel extends RedeventModelBaseEventList {
 				$query_end_date = $startMax;
 			}
 		}
-		
+
 		$dates_start='';
 		if (!empty($query_start_date)) {
 			$where[] = ' x.dates >= ' . $this->_db->Quote($query_start_date);
@@ -101,8 +102,8 @@ class RokMiniEventsSourceRedEventModel extends RedeventModelBaseEventList {
 		if (!empty($query_end_date)) {
 			$where[] = ' x.enddates <= ' . $this->_db->Quote($query_end_date);
 		}
-		
+
 		return ' WHERE '.implode(' AND ', $where);
 	}
-	
+
 }

@@ -20,9 +20,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+
+// Register library prefix
+JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+JLoader::registerPrefix('RedForm', JPATH_LIBRARIES . '/redform');
+
 require_once JPATH_SITE . '/components/com_redevent/helpers/route.php';
-require_once JPATH_SITE . '/components/com_redevent/models/baseeventslist.php';
-require_once JPATH_SITE . '/components/com_redform/redform.core.php';
 
 /**
  * RedEvent Categories Module helper

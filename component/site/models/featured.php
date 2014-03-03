@@ -25,8 +25,6 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-require_once 'baseeventslist.php';
-
 /**
  * Redevents Component featured events list Model
  *
@@ -34,11 +32,11 @@ require_once 'baseeventslist.php';
  * @subpackage  Redevent
  * @since       2.5
  */
-class RedeventModelFeatured extends RedeventModelBaseEventList
+class RedeventModelFeatured extends RedeventModelBaseeventlist
 {
 	/**
 	 * (non-PHPdoc)
-	 * @see RedeventModelBaseEventList::_buildWhere()
+	 * @see RedeventModelBaseeventlist::_buildWhere()
 	 */
 	protected function _buildWhere($query)
 	{

@@ -166,6 +166,7 @@
 
 		<!-- clean up existing files and folders -->
 		<delete dir="${www.dir}/administrator/components/com_${comp.name}" quiet="yes" includeemptydirs="false" />
+        <delete dir="${www.dir}/components/com_${comp.name}" quiet="yes" includeemptydirs="false" />
         <!-- Manifest & install script -->
         <echo message="Copying manifest..." />
         <copy file="${dirs.root}/component/com_${comp.name}.xml"
