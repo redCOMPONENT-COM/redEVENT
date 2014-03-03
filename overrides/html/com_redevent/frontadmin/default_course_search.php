@@ -24,6 +24,16 @@ defined('_JEXEC') or die('Restricted access');
 <h2 id="session-form-title"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_SEARCH_TITLE')?></h2>
 <form id="course-search-form" name="course-search-form" action="index.php?option=com_redevent&controller=frontadmin&task=searchsessions" method="post">
 	<div class="styled-select-admin">
+		<?php echo JHtml::_('select.genericlist', $this->categories_options, 'filter_category'
+			, array('class' => 'input-medium')
+			, 'value', 'text', $this->state->get('filter_category')); ?>
+	</div>
+	<div class="styled-select-admin">
+		<?php echo JHtml::_('select.genericlist', $this->venues_options, 'filter_venue'
+			, array('class' => 'input-medium')
+			, 'value', 'text', $this->state->get('filter_venue')); ?>
+	</div>
+	<div class="styled-select-admin">
 		<?php echo JHtml::_('select.genericlist', $this->events_options, 'filter_event'
 			, array('class' => 'input-medium')
 			, 'value', 'text', $this->state->get('filter_event')); ?>
@@ -32,16 +42,6 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JHtml::_('select.genericlist', $this->sessions_options, 'filter_session'
 			, array('class' => 'input-medium')
 			, 'value', 'text', $this->state->get('filter_session')); ?>
-	</div>
-	<div class="styled-select-admin">
-		<?php echo JHtml::_('select.genericlist', $this->venues_options, 'filter_venue'
-			, array('class' => 'input-medium')
-			, 'value', 'text', $this->state->get('filter_venue')); ?>
-	</div>
-	<div class="styled-select-admin">
-		<?php echo JHtml::_('select.genericlist', $this->categories_options, 'filter_category'
-			, array('class' => 'input-medium')
-			, 'value', 'text', $this->state->get('filter_category')); ?>
 	</div>
 	<div>
 		<?php echo JHtml::calendar($this->filter_from, 'filter_from', 'filter_from', '%Y-%m-%d', array('class' => 'input-small')); ?>

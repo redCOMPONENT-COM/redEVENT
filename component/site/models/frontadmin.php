@@ -464,7 +464,6 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		$query->from('#__redevent_categories AS c');
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.category_id = c.id');
 		$query->where('c.id IN (' . implode(',', $allowed) . ')');
-		$query->order('c.catname');
 
 		if ($this->getState('filter_event'))
 		{
@@ -475,6 +474,8 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		{
 			$query->where('(c.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR c.language IS NULL)');
 		}
+
+		$query->order('c.ordering ASC');
 
 		$query->group('c.id');
 
