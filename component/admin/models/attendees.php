@@ -235,7 +235,7 @@ class RedEventModelAttendees extends JModel
 		if ($formFields && !empty($formFields->showfields))
 		{
 			// Join
-			$query->join('INNER', '#__rwf_forms_'.$formFields->redform_id.' AS f ON s.answer_id = f.id');
+			$query->join('LEFT', '#__rwf_forms_'.$formFields->redform_id.' AS f ON s.answer_id = f.id');
 
 			$fields = explode(',', $formFields->showfields);
 
