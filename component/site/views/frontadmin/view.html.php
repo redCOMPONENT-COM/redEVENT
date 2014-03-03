@@ -102,6 +102,7 @@ class RedeventViewFrontadmin extends JView
 		$pathway    = $mainframe->getPathWay();
 		$params     = $mainframe->getParams();
 		$uri        = JFactory::getURI();
+		$modelAttendees = FOFModel::getAnInstance('FrontadminMembers', 'RedeventModel');
 
 		$menu = JSite::getMenu();
 		$item = $menu->getActive();
@@ -157,9 +158,9 @@ class RedeventViewFrontadmin extends JView
 		$this->order     = $state->get('filter_order');
 		$this->order_Dir = $state->get('filter_order_Dir');
 
-		$this->members_limitstart = $state->get('members_limitstart');
-		$this->members_order = $state->get('members_order');
-		$this->members_order_dir = $state->get('members_order_dir');
+		$this->members_limitstart = $modelAttendees->getState('members_limitstart');
+		$this->members_order = $modelAttendees->getState('members_order');
+		$this->members_order_dir = $modelAttendees->getState('members_order_dir');
 
 		$this->bookings_limitstart = $state->get('bookings_limitstart');
 		$this->bookings_order = $state->get('bookings_order');

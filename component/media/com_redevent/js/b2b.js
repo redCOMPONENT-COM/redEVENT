@@ -554,7 +554,7 @@ var redb2b = {
 			document.id('main-attendees').addEvent('click:relay(.itemnav)', function(e){
 				e.stop();
 				var form = document.id('org-form');
-				form.attendees_limitstart.value = this.getProperty('startvalue');
+				form.members_limitstart.value = this.getProperty('startvalue');
 				redb2b.getMembersList();
 			});
 
@@ -747,7 +747,8 @@ var redb2b = {
 						'org' : document.id('filter_organization').get('value'),
 						'filter_person' : document.id('filter_person').get('value'),
 						'members_order' : orgform.members_order.value,
-						'members_order_dir' : orgform.members_order_dir.value
+						'members_order_dir' : orgform.members_order_dir.value,
+						'members_limitstart' : orgform.members_limitstart.value
 					},
 					onRequest : function(){
 						document.id('main-attendees').set('spinner').spin();
