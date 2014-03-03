@@ -72,11 +72,10 @@ class plgRedeventIbcquickbook extends JPlugin
 
 			return $this->notifyAndStop($notification);
 		}
-		elseif ($status == 'employed')
-		{
-			// We need to match response to real registration form, if not the same as submitted form
-			$redformResponse = $this->newRedFormResponse($redformResponse);
-		}
+
+		// We need to match response to real registration form, if not the same as submitted form
+		$redformResponse = $this->newRedFormResponse($redformResponse);
+
 
 		// Keep track !
 		$this->isQuickbookRegistration = JFactory::getApplication()->input->getInt('fromQuickbook', 0);
