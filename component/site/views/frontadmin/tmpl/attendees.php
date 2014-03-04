@@ -20,7 +20,6 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
 ?>
 <h2 id="attendees-title"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ATTENDEES_TITLE')?></h2>
 <table id="attendees-tbl" class="table">
@@ -87,3 +86,11 @@ defined('_JEXEC') or die('Restricted access');
 		<?php endforeach;?>
 	</tbody>
 </table>
+
+<!--pagination-->
+<?php if (($this->members_pagination->get('pages.total') > 1)) : ?>
+	<div class="pagination">
+		<?php echo $this->members_pagination->getPagesLinks(); ?>
+	</div>
+<?php  endif; ?>
+<!-- pagination end -->

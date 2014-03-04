@@ -82,8 +82,8 @@ class modRedEventSearchHelper
 			$query .= ' WHERE '. implode(' AND ', $where);
 		}
 
-		$query .= ' ORDER BY c.ordering';
 		$query .= ' GROUP BY c.id ';
+		$query .= ' ORDER BY c.ordering';
 
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadResultArray();

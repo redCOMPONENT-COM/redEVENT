@@ -2,10 +2,10 @@
  * javascript for ajax navigation
  */
 
-window.addEvent('domready', function() {	
-	
+window.addEvent('domready', function() {
+
 	$$('.itemnav').addEvent('click', red_ajaxnav.navigate);
-	
+
 	$$('.ajaxsortcolumn').addEvent('click', red_ajaxnav.sortcolumn);
 });
 
@@ -13,20 +13,27 @@ var red_ajaxnav = {
 	navigate : function(e) {
 		e.stop();
 		var form = this.getParent('form');
-		form.getElement('.redajax_limitstart').set('value', this.getProperty('startvalue'));
-				
-		red_ajaxnav.submitForm(form);
+
+		if (form)
+		{
+			form.getElement('.redajax_limitstart').set('value', this.getProperty('startvalue'));
+			red_ajaxnav.submitForm(form);
+		}
 	},
-	
+
 	sortcolumn : function(e) {
 		e.stop();
 		var form = this.getParent('form');
-		form.getElement('.redajax_order').set('value', this.getProperty('ordercol'));
-		form.getElement('.redajax_order_dir').set('value', this.getProperty('orderdir'));
-		
-		red_ajaxnav.submitForm(form);	
+
+		if (form)
+		{
+			form.getElement('.redajax_order').set('value', this.getProperty('ordercol'));
+			form.getElement('.redajax_order_dir').set('value', this.getProperty('orderdir'));
+
+			red_ajaxnav.submitForm(form);
+		}
 	},
-	
+
 	submitForm : function(form)
 	{
 		if (!form.format) {
@@ -42,10 +49,10 @@ var red_ajaxnav = {
 			onSuccess : function(response) {
 				form.unspin();
 				var newdiv = new Element('div').set('html', response).replaces(form);
-				newdiv.getElements('.itemnav').addEvent('click', red_ajaxnav.navigate);	
-				newdiv.getElements('.ajaxsortcolumn').addEvent('click', red_ajaxnav.sortcolumn);			
+				newdiv.getElements('.itemnav').addEvent('click', red_ajaxnav.navigate);
+				newdiv.getElements('.ajaxsortcolumn').addEvent('click', red_ajaxnav.sortcolumn);
 			}
 		});
-		req.send();		
+		req.send();
 	}
 };
