@@ -55,7 +55,7 @@ class RedeventModelFrontadminMembers extends RedeventModelBaseeventlist
 		$app = JFactory::getApplication();
 		$params = $app->getParams('com_redevent');
 
-		$limit = $app->getUserStateFromRequest('com_redevent.limit', 'limit', $params->def('display_num', 0), 'int');
+		$limit = $app->getUserStateFromRequest('com_redevent.limit', 'limit', $params->def('b2b_members_display_num', 20), 'int');
 		$this->setState('limit', $limit);
 
 		// Members list
