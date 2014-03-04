@@ -68,7 +68,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		parent::__construct($config);
 
 		$app = JFactory::getApplication();
-		$params = $app->getParams('com_redevent');
+		$params = redEVENTHelper::config();
 
 		$this->uid = $app->input->get('uid', 0, 'int');
 		$this->setState('uid', $this->uid);
