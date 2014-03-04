@@ -25,8 +25,6 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-require_once 'baseeventslist.php';
-
 /**
  * Redevent Model Category events
  *
@@ -34,7 +32,7 @@ require_once 'baseeventslist.php';
  * @subpackage  redEVENT
  * @since       0.9
 */
-class RedeventModelCategoryevents extends RedeventModelBaseEventList
+class RedeventModelCategoryevents extends RedeventModelBaseeventlist
 {
 	/**
 	 * category data array
@@ -99,7 +97,7 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList
 	}
 
 	/**
-	 * @see RedeventModelBaseEventList::_buildWhere()
+	 * @see RedeventModelBaseeventlist::_buildWhere()
 	 */
 	protected function _buildWhere($query)
 	{
@@ -153,7 +151,7 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList
 
 	/**
 	 * override to take into account search type
-	 * @see RedeventModelBaseEventList::getData()
+	 * @see RedeventModelBaseeventlist::getData()
 	 */
 	public function &getData()
 	{
@@ -178,7 +176,7 @@ class RedeventModelCategoryevents extends RedeventModelBaseEventList
 
 	/**
 	 * override to take into account search type
-	 * @see RedeventModelBaseEventList::_buildQuery()
+	 * @see RedeventModelBaseeventlist::_buildQuery()
 	 */
 	protected function _buildQuery()
 	{

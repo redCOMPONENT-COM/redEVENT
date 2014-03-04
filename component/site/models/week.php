@@ -23,8 +23,6 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once 'baseeventslist.php';
-
 /**
  * RedEvent Component Week Model
  *
@@ -32,7 +30,7 @@ require_once 'baseeventslist.php';
  * @subpackage  redEVENT
  * @since       2.0
  */
-class RedEventModelWeek extends RedeventModelBaseEventList
+class RedEventModelWeek extends RedeventModelBaseeventlist
 {
 	protected $_week;
 
@@ -98,7 +96,7 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 
 	/**
 	 * (non-PHPdoc)
-	 * @see RedeventModelBaseEventList::getData()
+	 * @see RedeventModelBaseeventlist::getData()
 	 */
 	public function &getData()
 	{
@@ -120,7 +118,7 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 
 	/**
 	 * (non-PHPdoc)
-	 * @see RedeventModelBaseEventList::_buildWhere()
+	 * @see RedeventModelBaseeventlist::_buildWhere()
 	 */
 	protected function _buildWhere($query)
 	{
@@ -239,7 +237,7 @@ class RedEventModelWeek extends RedeventModelBaseEventList
 
 		return date('YW', $prev);
 	}
-	
+
 	/**
 	 * returns the date for monday in current week, to be safe to use for week calculations
 	 * as first day can be msunday or monday

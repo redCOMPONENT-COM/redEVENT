@@ -22,7 +22,6 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once 'baseeventslist.php';
 require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
 
 /**
@@ -31,7 +30,7 @@ require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
  * @package  Redevent
  * @since    2.5
  */
-class RedeventModelFrontadmin extends RedeventModelBaseEventList
+class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 {
 	/**
 	 * caching for sessions
@@ -112,15 +111,6 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		// In case limit has been changed, adjust it
 		$bookings_limitstart = ($limit != 0 ? (floor($bookings_limitstart / $limit) * $limit) : 0);
 		$this->setState('bookings_limitstart', $bookings_limitstart);
-
-		// Members list
-		$this->setState('members_order',     JRequest::getCmd('members_order', 'u.name'));
-		$this->setState('members_order_dir', strtoupper(JRequest::getCmd('members_order_dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC');
-
-		$members_limitstart		= JRequest::getVar('members_limitstart', 0, '', 'int');
-		// In case limit has been changed, adjust it
-		$members_limitstart = ($limit != 0 ? (floor($members_limitstart / $limit) * $limit) : 0);
-		$this->setState('members_limitstart', $members_limitstart);
 
 		// Editmember
 		$this->setState('booked_order',     JRequest::getCmd('booked_order', 'x.dates'));
@@ -861,81 +851,6 @@ class RedeventModelFrontadmin extends RedeventModelBaseEventList
 		}
 
 		return $query;
-	}
-
-	/**
-	 * return organization members and their booking status for the session
-	 *
-	 * @param   int     $xref          session id
-	 * @param   int     $organization  organization id
-	 * @param   string  $filter_user   filter user
-	 *
-	 * @return array
-	 */
-	public function getAttendees($xref, $organization, $filter_user)
-	{
-		// Get organization members
-		$db      = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select('u.*');
-		$query->from('#__redmember_user_organization_xref AS rmuo');
-		$query->join('INNER', '#__redmember_users AS rmu ON rmuo.user_id = rmu.user_id');
-		$query->join('INNER', '#__users AS u ON u.id = rmu.user_id');
-		$query->where('rmuo.organization_id = ' . (int) $organization);
-
-		$query->order($this->getState('members_order') . ' ' . $this->getState('members_order_dir') . ', u.name');
-
-		if ($filter_user)
-		{
-			$like = $db->Quote("%{$filter_user}%");
-			$cond = array();
-			$cond[] = 'u.username LIKE ' . $like;
-			$cond[] = 'u.name LIKE ' . $like;
-			$cond[] = 'u.email LIKE ' . $like;
-			$query->where('(' . implode(' OR ', $cond) . ')');
-		}
-
-		$db->setQuery($query);
-		$users = $db->loadObjectList();
-
-		if (!$users)
-		{
-			return array();
-		}
-
-		// Now get the one registered for the session
-		// Get the ids first
-		$ids = array();
-		foreach ($users as $u)
-		{
-			$ids[] = $u->id;
-		}
-
-		$query = $db->getQuery(true);
-
-		$query->select('r.*');
-		$query->from('#__redevent_register AS r');
-		$query->where('r.xref = ' . $xref);
-		$query->where('r.uid IN (' . implode(',', $ids) . ')');
-		$query->where('r.cancelled = 0');
-
-		$db->setQuery($query);
-		$regs = $db->loadObjectList('uid');
-
-		foreach ($users as &$u)
-		{
-			if (isset($regs[$u->id]))
-			{
-				$u->registered = $regs[$u->id];
-			}
-			else
-			{
-				$u->registered =null;
-			}
-		}
-
-		return $users;
 	}
 
 	/**

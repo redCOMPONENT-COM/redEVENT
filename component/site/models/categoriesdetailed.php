@@ -25,8 +25,6 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-require_once 'baseeventslist.php';
-
 /**
  * Redevent Model Categories detailed
  *
@@ -34,7 +32,7 @@ require_once 'baseeventslist.php';
  * @subpackage  redEVENT
  * @since       0.9
  */
-class RedeventModelCategoriesdetailed extends RedeventModelBaseEventList
+class RedeventModelCategoriesdetailed extends RedeventModelBaseeventlist
 {
 	/**
 	 * Top category for the view.
