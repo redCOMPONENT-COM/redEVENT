@@ -734,56 +734,6 @@ class RedEventModelAttendees extends JModel
 		return $rfcore->getFields($event->redform_id);
 	}
 
-/**
-	 * Method to get the registered users
-	 *
-	 * @access	public
-	 * @return	object
-	 * @since	0.9
-	 * @todo Complete CB integration
-	 */
-	function getRegisters($all_fields = false, $admin = false)
-	{
-		// make sure the init is done
-		$this->getEvent();
-
-		// first, get all submissions
-		$query = ' SELECT r.*, r.waitinglist, r.confirmed, r.confirmdate, r.submit_key, r.cancelled, u.name, pg.name as pricegroup '
-						. ' FROM #__redevent_register AS r '
-						. ' INNER JOIN #__rwf_submitters AS s ON s.id = r.sid '
-		        . ' LEFT JOIN #__redevent_pricegroups AS pg ON pg.id = r.pricegroup_id '
-						. ' LEFT JOIN #__users AS u ON r.uid = u.id '
-						;
-		$query .= $this->_buildContentWhere();
-		$this->_db->setQuery($query);
-		$submitters = $this->_db->loadObjectList();
-
-		// get answers
-		$sids = array();
-		if (count($submitters))
-		{
-			foreach ($submitters as $s)
-			{
-				$sids[] = $s->sid;
-			}
-		}
-		$event = $this->getEvent();
-		$rfcore = new RedFormCore();
-		$answers = $rfcore->getSidsAnswers($sids);
-
-		// add answers to registers
-		foreach ($submitters as $k => $s)
-		{
-			if (isset($answers[$s->sid])) {
-				$submitters[$k]->answers = $answers[$s->sid];
-			}
-			else {
-				$submitters[$k]->answers = null;
-			}
-		}
-		return $submitters;
-	}
-
 	function getEmails($cids = null)
 	{
 		$where = array( 'r.xref = ' . $this->_xref);
