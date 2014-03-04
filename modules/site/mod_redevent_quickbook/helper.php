@@ -74,7 +74,7 @@ class ModRedeventQuickbookHelper
 		}
 
 		// Get the model to get the sessions of the event
-		$model = JModel::getInstance('BaseEventList', 'RedeventModel');
+		$model = JModel::getInstance('Baseeventlist', 'RedeventModel');
 		$model->setState('filter_event', $eventId);
 		$model->setState('limit', 0);
 
