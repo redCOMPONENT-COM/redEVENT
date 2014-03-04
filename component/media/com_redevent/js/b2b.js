@@ -513,7 +513,7 @@ var redb2b = {
 				redb2b.refreshTips();
 			});
 
-			document.id('main-course-results').addEvent('click:relay(.ajaxsortcolumn)', function(e){
+			document.id('redevent-admin').addEvent('click:relay(#main-course-results .ajaxsortcolumn)', function(e){
 				e.stop();
 				var form = document.id('course-search-form');
 				form.filter_order.value = this.getProperty('ordercol');
@@ -521,7 +521,22 @@ var redb2b = {
 				redb2b.getSessions();
 			});
 
-			document.id('main-course-results').addEvent('click:relay(.itemnav)', function(e){
+			$$('#main-course-results .ajaxsortcolumn').addEvent('click', function(e){
+				e.stop();
+				var form = document.id('course-search-form');
+				form.filter_order.value = this.getProperty('ordercol');
+				form.filter_order_Dir.value = this.getProperty('orderdir');
+				redb2b.getSessions();
+			});
+
+			document.id('redevent-admin').addEvent('click:relay(#main-course-results .itemnav)', function(e){
+				e.stop();
+				var form = document.id('course-search-form');
+				form.limitstart.value = this.getProperty('startvalue');
+				redb2b.getSessions();
+			});
+
+			$$('#main-course-results .itemnav').addEvent('click', function(e){
 				e.stop();
 				var form = document.id('course-search-form');
 				form.limitstart.value = this.getProperty('startvalue');
