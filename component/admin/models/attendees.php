@@ -223,6 +223,78 @@ class RedEventModelAttendees extends JModel
 		$query->group('r.id');
 
 		// Add associated form fields
+		$query = $this->queryAddFormFields($query);
+
+		// Get the ORDER BY and WHERE clause for the query
+		$query = $this->buildContentOrderBy($query);
+		$query = $this->buildContentWhere($query);
+
+		return $query;
+	}
+
+	/**
+	 * Add form fields to the query
+	 *
+	 * @param   JDatabaseQuery  $query  the query
+	 *
+	 * @return JDatabaseQuery
+	 */
+	protected function queryAddFormFields(JDatabaseQuery $query)
+	{
+		// Join the form table
+		$event = $this->getEvent();
+		$query->join('INNER', '#__rwf_forms_' . $event->redform_id . ' AS f ON s.answer_id = f.id');
+
+		// Add fields
+		if ($this->getState('getAllFormFields', false))
+		{
+			return $this->queryAddAllFormFields($query);
+		}
+		else
+		{
+			return $this->queryAddEventShowFormFields($query);
+		}
+	}
+
+	/**
+	 * Add all form fields to the query
+	 *
+	 * @param   JDatabaseQuery  $query  the query
+	 *
+	 * @return JDatabaseQuery
+	 */
+	protected function queryAddAllFormFields(JDatabaseQuery $query)
+	{
+		$db = JFactory::getDbo();
+		$query_fields = $db->getQuery(true);
+
+		$query_fields->select('f.id');
+		$query_fields->from('#__redevent_events AS e');
+		$query_fields->join('INNER', '#__rwf_fields AS f ON f.form_id = e.redform_id');
+		$query_fields->where('e.id = '. $db->Quote($this->_eventid));
+
+		$db->setQuery($query_fields);
+		$formFields = $db->loadColumn();
+
+		foreach ($formFields as $fieldId)
+		{
+			$column = 'f.field_' . trim($fieldId);
+			$query->select($column);
+		}
+
+		return $query;
+	}
+
+	/**
+	 * Add all form fields to the query
+	 *
+	 * @param   JDatabaseQuery  $query  the query
+	 *
+	 * @return JDatabaseQuery
+	 */
+	protected function queryAddEventShowFormFields(JDatabaseQuery $query)
+	{
+		$db = JFactory::getDbo();
 		$query_fields = $db->getQuery(true);
 
 		$query_fields->select('e.redform_id, e.showfields');
@@ -234,22 +306,15 @@ class RedEventModelAttendees extends JModel
 
 		if ($formFields && !empty($formFields->showfields))
 		{
-			// Join
-			$query->join('INNER', '#__rwf_forms_'.$formFields->redform_id.' AS f ON s.answer_id = f.id');
-
 			$fields = explode(',', $formFields->showfields);
 
 			// Add each field in select
 			foreach ($fields as $f)
 			{
-				$column = 'f.field_'.trim($f);
+				$column = 'f.field_' . trim($f);
 				$query->select($column);
 			}
 		}
-
-		// Get the ORDER BY and WHERE clause for the query
-		$query = $this->buildContentOrderBy($query);
-		$query = $this->buildContentWhere($query);
 
 		return $query;
 	}
