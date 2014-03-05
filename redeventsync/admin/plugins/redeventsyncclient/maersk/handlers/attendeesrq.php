@@ -145,23 +145,22 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 			// Make sure we have an user !
 			$user = RedeventsyncclientMaerskHelper::getUser($attendee->user_email);
 
-			if (!$user->id)
+			if (!$user)
 			{
 				// We need an user, trigger a special Exception to force getting one
 				throw new MissingUserException($attendee->user_email, $attendee->venue_code);
 			}
 			elseif ($attendee->firstname != $user->rm_firstname || $attendee->lastname != $user->rm_lastname)
 			{
-				throw new MismatchUserException($attendee->user_email, $attendee->venue_code, $user->rm_firstname, $user->rm_lastname);
+				// Just try to update it
+				$this->parent->getCustomer($attendee->user_email, $attendee->venue_code, $user->rm_firstname, $user->rm_lastname);
 			}
-
 
 			// We will first add to redform submitters, then to corresponding redform form,
 			// and then to register table
 			$session_details = RedeventsyncclientMaerskHelper::getSessionDetails($attendee->session_code, $attendee->venue_code);
 
 			// Post to redform
-			require_once JPATH_SITE . '/components/com_redform/redform.core.php';
 			$rfcore = new RedFormCore;
 			$rfcore->setFormId($session_details->redform_id);
 

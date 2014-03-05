@@ -95,8 +95,9 @@ class RedeventsyncHandlerCustomersrs extends RedeventsyncHandlerAbstractmessage
 		}
 		catch (Exception $e)
 		{
-			echo $e->getMessage();
-
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
+				$xml, 'failed', $e->getMessage());
 			return false;
 		}
 

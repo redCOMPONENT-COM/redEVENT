@@ -42,6 +42,10 @@ switch ($_GET['target'])
 		$target = "http://juldevmaersk.com.web14.redhost.dk";
 		break;
 
+	case 'internmaersk':
+		$target = "http://maerskdev.com.intern.redweb.dk";
+		break;
+
 	default:
 		$target = "http://localhost/jl25";
 		break;

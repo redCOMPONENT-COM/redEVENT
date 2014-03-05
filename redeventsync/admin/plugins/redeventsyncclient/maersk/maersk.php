@@ -14,6 +14,8 @@ jimport('joomla.plugin.plugin');
 
 // Register library prefix
 JLoader::registerPrefix('Redeventsync', JPATH_LIBRARIES . '/redeventsync');
+JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+JLoader::registerPrefix('RedForm', JPATH_LIBRARIES . '/redform');
 
 require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
 
@@ -436,16 +438,14 @@ class plgRedeventsyncclientMaersk extends JPlugin
 	 * @param   string  $firstname  first name
 	 * @param   string  $lastname   lastname
 	 *
-	 * @return int the id of the new user
+	 * @return boolean true on success
 	 */
-	protected function getCustomer($email, $venueCode, $firstname = null, $lastname = null)
+	public function getCustomer($email, $venueCode, $firstname = null, $lastname = null)
 	{
 		$client = $this->getClient();
 		$response = $client->getCustomer(time(), $email, $venueCode, $firstname, $lastname);
 
-		$this->handle($response);
-
-		return true;
+		return $this->handle($response);
 	}
 
 	/**

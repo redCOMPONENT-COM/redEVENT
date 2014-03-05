@@ -37,9 +37,11 @@ class RedeventsyncclientMaerskHelper
 		if ($user_id)
 		{
 			$user = redmemberlib::getUserData($user_id);
+
+			return $user;
 		}
 
-		return $user;
+		return false;
 	}
 
 	/**
