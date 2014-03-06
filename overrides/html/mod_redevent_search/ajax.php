@@ -118,6 +118,13 @@ if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
 
   </div>
 
+	<div class="button-left">
+		<!-- <div class="blue-left"></div> -->
+		<div class="blue-center help">
+			<a class="modal" rel="{handler: 'iframe', size: {x: 800, y: 500}}"  href="<?php echo JRoute::_("index.php?option=com_content&view=article&id=237&Itemid=320&tmpl=component") ?>">?</a>
+		</div>
+		<!-- <div class="blue-right"></div> -->
+	</div>
   <div class="main-button">
 	  	<div class="green-left"></div>
 	  	<div class="green-center">
