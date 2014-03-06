@@ -310,50 +310,76 @@ class RedeventModelSessions extends JModel
   	return $res;
   }
 
-  /**
-   * adds attendees stats to session
-   *
-   * @return boolean true on success
-   */
-  private function _addAttendeesStats()
-  {
-  	if (!count($this->_data)) {
-  		return false;
-  	}
+	/**
+	 * adds attendees stats to session
+	 *
+	 * @return boolean true on success
+	 */
+	private function _addAttendeesStats()
+	{
+		if (!count($this->_data))
+		{
+			return false;
+		}
 
-  	$ids = array();
+		$ids = array();
 		foreach ($this->_data as $session)
 		{
 			$ids[] = $session->id;
 		}
 
-		$query = ' SELECT x.id, COUNT(*) AS total, SUM(r.waitinglist) AS waiting, SUM(1-r.waitinglist) AS attending '
-		       . ' FROM #__redevent_event_venue_xref AS x'
-		       . ' LEFT JOIN #__redevent_register AS r ON x.id = r.xref '
-		       . ' WHERE x.id IN ('.implode(', ', $ids).')'
-		       . ' AND r.confirmed = 1 '
-		       . ' AND r.cancelled = 0 '
-		       . ' GROUP BY r.xref ';
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadObjectList('id');
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
 
-		$noreg = new stdclass();
-		$noreg->total = 0;
-		$noreg->waiting = 0;
-		$noreg->attending = 0;
+		$query->select('r.xref, r.waitinglist, r.confirmed');
+		$query->from('#__redevent_event_venue_xref AS x');
+		$query->join('LEFT', '#__redevent_register AS r ON x.id = r.xref');
+		$query->where('x.id IN (' . implode(', ', $ids) . ')');
+		$query->where('r.cancelled = 0');
+
+		$db->setQuery($query);
+		$attendees = $db->loadObjectList();
+
+		$stats = array();
+
+		foreach ($attendees as $attendee)
+		{
+			if (!isset($stats[$attendee->xref]))
+			{
+				$obj = new RedeventSessionAttendeesStats;
+				$stats[$attendee->xref] = $obj;
+			}
+
+			$stats[$attendee->xref]->total++;
+
+			if (!$attendee->confirmed)
+			{
+				$stats[$attendee->xref]->unconfirmed++;
+			}
+			elseif ($attendee->waitinglist)
+			{
+				$stats[$attendee->xref]->waiting++;
+			}
+			else
+			{
+				$stats[$attendee->xref]->attending++;
+			}
+		}
 
 		foreach ($this->_data as &$session)
 		{
-			if (isset($res[$session->id]))
+			if (isset($stats[$session->id]))
 			{
-				$session->attendees = $res[$session->id];
+				$session->attendees = $stats[$session->id];
 			}
-			else {
-				$session->attendees = $noreg;
+			else
+			{
+				$session->attendees = new RedeventSessionAttendeesStats;
 			}
 		}
+
 		return true;
-  }
+	}
 
 	/**
 	 * Method to (un)publish/archive
@@ -424,4 +450,13 @@ class RedeventModelSessions extends JModel
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
+}
+
+class RedeventSessionAttendeesStats
+{
+	public $xref;
+	public $total;
+	public $attending;
+	public $waiting;
+	public $unconfirmed;
 }
