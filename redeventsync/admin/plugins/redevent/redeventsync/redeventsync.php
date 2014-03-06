@@ -50,7 +50,7 @@ class plgRedeventRedeventsync extends JPlugin
 		}
 		catch (Exception $e)
 		{
-			RedeventsyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAfterSessionSave', 0, $e->getMessage(), 'error');
+			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAfterSessionSave', 0, $e->getMessage(), 'error');
 		}
 
 		return true;
@@ -73,7 +73,7 @@ class plgRedeventRedeventsync extends JPlugin
 		}
 		catch (Exception $e)
 		{
-			RedeventsyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAfterSessionDelete', 0, $e->getMessage(), 'error');
+			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAfterSessionDelete', 0, $e->getMessage(), 'error');
 		}
 
 		return true;
@@ -96,7 +96,7 @@ class plgRedeventRedeventsync extends JPlugin
 		}
 		catch (Exception $e)
 		{
-			RedeventsyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeCreated', 0, $e->getMessage(), 'error');
+			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeCreated', 0, $e->getMessage(), 'error');
 		}
 
 		return true;
@@ -119,7 +119,7 @@ class plgRedeventRedeventsync extends JPlugin
 		}
 		catch (Exception $e)
 		{
-			RedeventsyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeModified', 0, $e->getMessage(), 'error');
+			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeModified', 0, $e->getMessage(), 'error');
 		}
 
 		return true;
@@ -142,7 +142,7 @@ class plgRedeventRedeventsync extends JPlugin
 		}
 		catch (Exception $e)
 		{
-			RedeventsyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeCancelled', 0, $e->getMessage(), 'error');
+			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeCancelled', 0, $e->getMessage(), 'error');
 		}
 
 		return true;
@@ -165,7 +165,7 @@ class plgRedeventRedeventsync extends JPlugin
 		}
 		catch (Exception $e)
 		{
-			RedeventsyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeDeleted', 0, $e->getMessage(), 'error');
+			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeDeleted', 0, $e->getMessage(), 'error');
 		}
 
 		return true;
@@ -202,7 +202,7 @@ class plgRedeventRedeventsync extends JPlugin
 		}
 		catch (Exception $e)
 		{
-			RedeventsyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onAfterPaymentVerified', 0, $e->getMessage(), 'error');
+			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onAfterPaymentVerified', 0, $e->getMessage(), 'error');
 		}
 
 		return true;

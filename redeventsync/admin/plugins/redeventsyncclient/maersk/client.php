@@ -89,7 +89,7 @@ class RedeventsyncClientMaersk
 
 		$this->validate($xml->asXML(), 'GetSessionsRQ');
 
-		RedeventsyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'GetSessionsRQ', $transaction_id, $xml->asXML(), 'sending');
+		RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'GetSessionsRQ', $transaction_id, $xml->asXML(), 'sending');
 
 		$resp = $this->send($xml->asXML());
 
@@ -114,7 +114,7 @@ class RedeventsyncClientMaersk
 
 		$this->validate($xml->asXML(), 'GetSessionAttendeesRQ');
 
-		RedeventsyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'GetSessionAttendeesRQ', $transaction_id, $xml->asXML(), 'sending');
+		RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'GetSessionAttendeesRQ', $transaction_id, $xml->asXML(), 'sending');
 
 		$resp = $this->send($xml->asXML());
 
@@ -151,7 +151,7 @@ class RedeventsyncClientMaersk
 
 		$this->validate($xml->asXML(), 'CustomersRQ');
 
-		RedeventsyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'CustomersRQ', $transaction_id, $xml->asXML(), 'sending');
+		RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'CustomersRQ', $transaction_id, $xml->asXML(), 'sending');
 
 		$resp = $this->send($xml->asXML());
 
