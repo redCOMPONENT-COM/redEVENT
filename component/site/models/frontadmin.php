@@ -365,7 +365,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		}
 
 		$query->select('x.id AS value');
-		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE x.dates END as text');
+		$query->select('x.dates as text');
 		$query->from('#__redevent_event_venue_xref AS x');
 		$query->join('INNER', '#__redevent_events AS a ON x.eventid = a.id');
 
