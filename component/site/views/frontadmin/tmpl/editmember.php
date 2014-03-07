@@ -97,7 +97,7 @@ defined('_JEXEC') or die('Restricted access');
 			$this->pagination = $this->booked_pagination;
 			$this->limitstart_name = "booked_limitstart";
 			$this->limitstart = $this->booked_limitstart;
-			$this->allow_edit_session = true;
+			$this->allow_edit_sessions = true;
 		?>
 		<?php echo $this->loadTemplate('sessions'); ?>
 	</form>
@@ -116,7 +116,7 @@ defined('_JEXEC') or die('Restricted access');
 			$this->pagination = $this->previous_pagination;
 			$this->limitstart_name = "previous_limitstart";
 			$this->limitstart = $this->previous_limitstart;
-			$this->allow_edit_session = false;
+			$this->allow_edit_sessions = false;
 		?>
 		<?php echo $this->loadTemplate('sessions'); ?>
 	</form>
