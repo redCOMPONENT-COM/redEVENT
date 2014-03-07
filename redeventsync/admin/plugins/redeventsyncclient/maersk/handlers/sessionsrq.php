@@ -401,7 +401,7 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 
 		if (!$res)
 		{
-			throw new Exception('Unkown Course code: ' . $code);
+			throw new Exception('This course is not ready for online. Please contact Group Marketing to have it published.');
 		}
 
 		return $res;
@@ -437,7 +437,7 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 
 		if (!$res)
 		{
-			throw new Exception('Unkown Venue code: ' . $code);
+			throw new Exception('This venue is not ready for online. Please contact Group Marketing to have it published.');
 		}
 
 		return $res;
