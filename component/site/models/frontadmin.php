@@ -68,7 +68,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		parent::__construct($config);
 
 		$app = JFactory::getApplication();
-		$params = $app->getParams('com_redevent');
+		$params = redEVENTHelper::config();
 
 		$this->uid = $app->input->get('uid', 0, 'int');
 		$this->setState('uid', $this->uid);
@@ -76,7 +76,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		$this->useracl = UserAcl::getInstance();
 
 		// Get the number of events from database
-		$limit       	= $app->getUserStateFromRequest('com_redevent.limit', 'limit', $params->def('display_num', 0), 'int');
+		$limit       	= $app->getUserStateFromRequest('com_redevent.limit', 'limit', $params->def('b2b_sessions_display_num', 20), 'int');
 		$limitstart		= JRequest::getVar('limitstart', 0, '', 'int');
 
 		// In case limit has been changed, adjust it

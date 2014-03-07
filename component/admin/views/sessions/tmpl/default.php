@@ -184,9 +184,12 @@ $app = JFactory::getApplication();
 
 			  <td>
 					<?php
-					if (  JTable::isCheckedOut($this->user->get ('id'), $row->venue_checked_out ) ) {
+					if (JTable::isCheckedOut($this->user->get('id'), $row->venue_checked_out))
+					{
 						echo $row->venue;
-					} else {
+					}
+					else
+					{
 					?>
 						<a href="<?php echo $venuelink; ?>" title="<?php echo JText::_('COM_REDEVENT_EDIT_VENUE' ); ?>">
 							<?php echo $row->venue; ?></a>
@@ -209,7 +212,8 @@ $app = JFactory::getApplication();
 	      <?php if (!$this->event || $row->registra): ?>
 	      <td><?php echo $endreg; ?></td>
 	      <td><?php echo ($row->registra ?
-	                      JHTML::link('index.php?option=com_redevent&view=attendees&xref='.$row->id, intval($row->attendees->attending). ' / '. intval($row->attendees->waiting)) : '-'); ?></td>
+	                      JHTML::link('index.php?option=com_redevent&view=attendees&xref=' . $row->id,
+		                      (int) $row->attendees->attending . ' / ' . (int) $row->attendees->waiting . ($row->attendees->unconfirmed ? ' / ' . $row->attendees->unconfirmed : '')) : '-'); ?></td>
 	      <?php endif; ?>
 	    </tr>
 	    <?php
