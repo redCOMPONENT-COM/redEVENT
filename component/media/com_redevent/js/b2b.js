@@ -463,6 +463,8 @@ var redb2b = {
 			 * edit status
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.statusicon)', function(e){
+				// Disable for maersk
+				return;
 				var current = this.getProperty('current');
 				var rid = this.getParent('tr').getProperty('rid');
 				var el = this;
