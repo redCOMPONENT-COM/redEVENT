@@ -28,11 +28,53 @@ class plgRedeventNotifyCompanyAdmin extends JPlugin
 	 * @param   int    $attendee_id  attendee id from register table
 	 * @param   array  &$emails      array of emails to add to
 	 *
+	 * @return void
+	 */
+	public function onGetRegistrationAdminEmails($attendee_id, &$emails)
+	{
+		$fromB2b = JFactory::getApplication()->input->get('from') == 'b2b';
+
+		if ($fromB2b)
+		{
+			// Add user making the reservation
+			$this->addCurrentUser($emails);
+		}
+		else
+		{
+			$this->addOrganizationAdmins($attendee_id, $emails);
+		}
+	}
+
+	/**
+	 * add current user email
+	 *
+	 * @param   array  &$emails  admin emails
+	 *
+	 * @return void
+	 */
+	protected function addCurrentUser(&$emails)
+	{
+		$user = JFactory::getUser();
+
+		if (!$user)
+		{
+			return;
+		}
+
+		$emails[] = array('name' => $user->get('name'), 'email' => $user->get('email'));
+	}
+
+	/**
+	 * add organization admin users emails
+	 *
+	 * @param   int    $attendee_id  attendee id from register table
+	 * @param   array  &$emails  admin emails
+	 *
 	 * @throws Exception
 	 *
 	 * @return void
 	 */
-	public function onGetRegistrationAdminEmails($attendee_id, &$emails)
+	protected function addOrganizationAdmins($attendee_id, &$emails)
 	{
 		// Make sure redMEMBER is installed !
 		if (!file_exists(JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php'))

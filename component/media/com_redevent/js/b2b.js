@@ -331,7 +331,7 @@ var redb2b = {
 					return false;
 				}
 				req = new Request.JSON({
-					url : 'index.php?option=com_redevent&controller=frontadmin&task=quickbook&tmpl=component',
+					url : 'index.php?option=com_redevent&controller=frontadmin&task=quickbook&tmpl=component&from=b2b',
 					data : document.id('selected_users'),
 					method : 'post',
 					onRequest: function(){
