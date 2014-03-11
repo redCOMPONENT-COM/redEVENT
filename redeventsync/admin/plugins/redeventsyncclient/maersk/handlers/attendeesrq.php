@@ -37,8 +37,6 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 
 		$this->validate($xml->asXML(), 'AttendeesRQ');
 
-		$this->writeFile($xml);
-
 		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, (int) $message->TransactionId, $xml, 'sending');
 
 		$this->send($xml->asXML());
@@ -64,8 +62,6 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 		$this->appendElement($xml, $message);
 
 		$this->validate($xml->asXML(), 'AttendeesRQ');
-
-		$this->writeFile($xml);
 
 		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, (int) $message->TransactionId, $xml, 'sending');
 
@@ -96,8 +92,6 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 		$this->appendElement($xml, $message);
 
 		$this->validate($xml->asXML(), 'AttendeesRQ');
-
-		$this->writeFile($xml);
 
 		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, (int) $message->TransactionId, $xml, 'sending');
 
