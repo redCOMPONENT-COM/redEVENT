@@ -32,7 +32,9 @@ defined('_JEXEC') or die('Restricted access');
 				<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CITY'), 'l.city', $this->order_dir, $this->order); ?></th>
 				<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CATEGORY'), 'c.catname', $this->order_dir, $this->order); ?></th>
 				<th><?php echo JText::_('COM_REDEVENT_STATUS'); ?></th>
+				<?php if ($this->allow_edit_sessions): ?>
 				<th colspan="3"><?php echo JText::_('COM_REDEVENT_ACTIONS'); ?></th>
+				<?php endif; ?>
 			</tr>
 		</thead>
 		<tbody>
@@ -60,11 +62,13 @@ defined('_JEXEC') or die('Restricted access');
 					?>
 				</td>
 				<td><?php echo redEVENTHelper::getStatusIcon($row->status); ?></td>
+				<?php if ($this->allow_edit_sessions): ?>
 				<td><?php echo JHTML::image('com_redevent/b2b-delete.png', 'remove'
 						, array('class' => 'unregister hasTip'
 								, 'title' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CANCEL_REGISTRATION')
 								, 'tip' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CANCEL_REGISTRATION_TIP')), true); ?>
 				</td>
+				<?php  endif; ?>
 			</tr>
 			<?php endforeach;?>
 		</tbody>

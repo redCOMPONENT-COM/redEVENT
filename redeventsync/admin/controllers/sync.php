@@ -49,7 +49,7 @@ class RedeventsyncControllerSync extends FOFController
 		JPluginHelper::importPlugin('redeventsyncclient');
 		$dispatcher = JDispatcher::getInstance();
 
-		$logger = new RedeventsyncLoggerSession;
+		$logger = new RESyncLoggerSession;
 		$logger->init();
 
 		try
@@ -86,7 +86,7 @@ class RedeventsyncControllerSync extends FOFController
 		JPluginHelper::importPlugin('redeventsyncclient');
 		$dispatcher = JDispatcher::getInstance();
 
-		$logger = new RedeventsyncLoggerSession;
+		$logger = new RESyncLoggerSession;
 		$logger->init();
 
 		try

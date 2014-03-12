@@ -82,7 +82,7 @@ class RedeventModelFrontadminMembers extends RedeventModelBaseeventlist
 	{
 		$this->xref = (int) $xref;
 		$this->organizationId = (int) $organization;
-		$this->filter_user = (int) $filter_user;
+		$this->filter_user = $filter_user;
 
 		// Get organization members
 		$this->getMembers();

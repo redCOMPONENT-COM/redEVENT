@@ -43,7 +43,9 @@
 		<folder>controllers</folder>
 		<folder>helpers</folder>
 		<folder>language</folder>
+        <folder>meta_ext</folder>
 		<folder>models</folder>
+		<folder>sef_ext</folder>
 		<folder>views</folder>
 	</files>
 
