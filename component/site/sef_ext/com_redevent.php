@@ -74,7 +74,7 @@ if ($dosef == false) return;
 // ------------------  standard plugin initialize function - don't change ---------------------------
 
 // ------------------  load language file - adjust as needed ----------------------------------------
-$shLangIso = shLoadPluginLanguage('com_redevent', $shLangIso, '_COM_SEF_REDEVENT');
+require_once 'language.php';
 // ------------------  load language file - adjust as needed ----------------------------------------
 $shHomePageFlag = false;
 
