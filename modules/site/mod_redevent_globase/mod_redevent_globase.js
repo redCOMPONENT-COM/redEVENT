@@ -1,0 +1,4 @@
+/**
+ * redevent globase module javascript
+ */
+

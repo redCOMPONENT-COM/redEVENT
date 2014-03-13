@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension
+	type="module"
+	version="2.5"
+	client="site"
+	method="upgrade">
+	<name>mod_redevent_globase</name>
+	<creationDate>##DATE##</creationDate>
+	<author>redWEB Aps</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>(C) 2014 redCOMPONENT.com</copyright>
+	<license>GNU/GPL</license>
+	<version>##VERSION##</version>
+	<description>MOD_REDEVENT_GLOBASE_XML_DESCRIPTION</description>
+
+	<files>
+		<filename module="mod_redevent_globase">mod_redevent_globase.php</filename>
+		<filename>mod_redevent_globase.css</filename>
+		<filename>mod_redevent_globase.js</filename>
+		<filename>mod_redevent_globase_modal.js</filename>
+		<filename>mod_redevent_globase_post.js</filename>
+		<filename>index.html</filename>
+		<filename>helper.php</filename>
+		<folder>images</folder>
+		<folder>language</folder>
+		<folder>tmpl</folder>
+	</files>
+
+	<config>
+		<fields name="params" addfieldpath="/administrator/components/com_redevent/models/fields">
+			<fieldset name="basic"
+				addfieldpath="/libraries/redform/form/fields"
+				>
+				<field name="formId" type="rfform" default=""
+					label="MOD_REDEVENT_GLOBASE_XML_FORMID_LABEL"
+					description="MOD_REDEVENT_GLOBASE_XML_FORMID_DESCRIPTION"
+					>
+				</field>
+				<field name="target" type="radio" default="post"
+					label="MOD_REDEVENT_GLOBASE_XML_TARGET_LABEL"
+					description="MOD_REDEVENT_GLOBASE_XML_TARGET_DESCRIPTION"
+					>
+					<option value="post">MOD_REDEVENT_GLOBASE_XML_TARGET_OPTION_POST</option>
+					<option value="modal">MOD_REDEVENT_GLOBASE_XML_TARGET_OPTION_MODAL</option>
+				</field>
+                <field name="uddannelse" type="textarea"
+                       label="MOD_REDEVENT_GLOBASE_XML_UDDANNELSE_LABEL"
+                       description="MOD_REDEVENT_GLOBASE_XML_UDDANNELSE_DESCRIPTION" />
+                <field name="nyhedsbrev" type="textarea"
+                       label="MOD_REDEVENT_GLOBASE_XML_NYHEDSBREV_LABEL"
+                       description="MOD_REDEVENT_GLOBASE_XML_NYHEDSBREV_DESCRIPTION" />
+			</fieldset>
+
+			<fieldset
+				name="advanced">
+				<field
+					name="layout"
+					type="modulelayout"
+					label="JFIELD_ALT_LAYOUT_LABEL"
+					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+				<field
+					name="moduleclass_sfx"
+					type="text"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+				<field
+					name="cache"
+					type="list"
+					default="0"
+					label="COM_MODULES_FIELD_CACHING_LABEL"
+					description="COM_MODULES_FIELD_CACHING_DESC">
+					<option
+						value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+
+</extension>
