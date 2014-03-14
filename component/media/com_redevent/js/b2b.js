@@ -305,7 +305,7 @@ var redb2b = {
 				if (confirm(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_CONFIRM"))) {
 					var register_id = this.getParent('tr').getProperty('rid');
 					req = new Request.JSON({
-						url : 'index.php?option=com_redevent&controller=frontadmin&task=cancelreg&tmpl=component',
+						url : 'index.php?option=com_redevent&controller=frontadmin&task=cancelreg&tmpl=component&from=b2b',
 						data : {'rid' : register_id},
 						method : 'post',
 						onRequest: function(){
