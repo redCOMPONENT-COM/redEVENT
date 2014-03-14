@@ -648,7 +648,7 @@ class RedEventControllerRegistration extends RedEventController
 					$data['username'] = $a->answer;
 
 				case 'email':
-					if ($a->parameters->get('notify'))
+					if ($a->parameters->get('notify') && $a->answer)
 					{
 						$data['email'] = $a->answer;
 					}
@@ -669,6 +669,11 @@ class RedEventControllerRegistration extends RedEventController
 			return false;
 		}
 
+		if ($uid = $this->_getUserIdFromEmail($data['email']))
+		{
+			return JFactory::getUser($uid);
+		}
+
 		if (!isset($data['username']) || !$data['username'])
 		{
 			$data['username'] = $data['email'];
@@ -685,6 +690,22 @@ class RedEventControllerRegistration extends RedEventController
 			else
 			{
 				$data['name'] = $data['username'];
+			}
+		}
+
+		if (!isset($data['rm_firstname']) && !isset($data['rm_lastname']) && $data['name'])
+		{
+			$parts = explode(' ', $data['name']);
+
+			if (count($parts) > 1)
+			{
+				$data['rm_lastname'] = array_pop($parts);
+				$data['rm_firstname'] = implode(' ', $parts);
+			}
+			else
+			{
+				$data['rm_lastname'] = $data['name'];
+				$data['rm_firstname'] = '';
 			}
 		}
 
