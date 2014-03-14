@@ -498,7 +498,6 @@ class RedEventControllerRegistration extends RedEventController
 		return $this->mailer;
 	}
 
-
 	/**
 	 * create user from posted data
 	 *
@@ -507,6 +506,28 @@ class RedEventControllerRegistration extends RedEventController
 	 * @return object|false created user
 	 */
 	protected function _createUser($sid)
+	{
+		if (file_exists(JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php'))
+		{
+			require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
+
+			return $this->createRedmemberUser($sid);
+		}
+		else
+		{
+			return $this->createJoomlaUser($sid);
+		}
+	}
+
+	/**
+	 * Create a Joomla user from form data
+	 *
+	 * @param   $sid
+	 *
+	 * @return bool|JUser
+	 * @throws Exception
+	 */
+	protected function createJoomlaUser($sid)
 	{
 		jimport('joomla.user.helper');
 
@@ -544,22 +565,7 @@ class RedEventControllerRegistration extends RedEventController
 			$details['fullname'] = $details['fullname'] ? $details['fullname'] : $username;
 		}
 
-		// check unicity
-		$i = 2;
-		while (true)
-		{
-			$query = 'SELECT id FROM #__users WHERE username = ' . $db->Quote( $username );
-			$db->setQuery($query, 0, 1);
-			if ($db->loadResult())
-			{
-				// username exists, add a suffix
-				$username = $username . '_' . $i++;
-			}
-			else
-			{
-				break;
-			}
-		}
+		$username = $this->getUniqueUsername($username);
 
 		jimport('joomla.application.component.helper');
 		// Get required system objects
@@ -587,6 +593,102 @@ class RedEventControllerRegistration extends RedEventController
 
 		// Send email using juser controller
 		$this->_sendUserCreatedMail($user, $password);
+
+		return $user;
+	}
+
+	/**
+	 * Make sure username is unique, adding suffix if necessary
+	 *
+	 * @param   string  $username  the username to check
+	 *
+	 * @return string
+	 */
+	protected function getUniqueUsername($username)
+	{
+		$db = JFactory::getDBO();
+
+		$i = 2;
+		while (true)
+		{
+			$query = 'SELECT id FROM #__users WHERE username = ' . $db->Quote($username);
+			$db->setQuery($query, 0, 1);
+
+			if ($db->loadResult())
+			{
+				// username exists, add a suffix
+				$username = $username . '_' . $i++;
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		return $username;
+	}
+
+	protected function createRedmemberUser($sid)
+	{
+		$rfcore = new RedFormCore;
+
+		$answers = $rfcore->getSidsFieldsAnswers(array($sid));
+		$answers = $answers[$sid];
+
+		$data = array();
+
+		foreach ($answers as $a)
+		{
+			switch ($a->fieldtype)
+			{
+				case 'fullname':
+					$data['name'] = $a->answer;
+
+				case 'username':
+					$data['username'] = $a->answer;
+
+				case 'email':
+					if ($a->parameters->get('notify'))
+					{
+						$data['email'] = $a->answer;
+					}
+
+				default:
+					if ($a->redmember_field)
+					{
+						$data[$a->redmember_field] = $a->answer;
+					}
+			}
+
+		}
+
+		if (!isset($data['email']) || !$data['email'])
+		{
+			//throw new Exception(JText::_('COM_REDEVENT_NEED_MISSING_EMAIL_TO_CREATE_USER'));
+			RedeventError::raiseWarning('', JText::_('COM_REDEVENT_NEED_MISSING_EMAIL_TO_CREATE_USER'));
+			return false;
+		}
+
+		if (!isset($data['username']) || !$data['username'])
+		{
+			$data['username'] = $data['email'];
+		}
+
+		if (!isset($data['name']) || !$data['name'])
+		{
+			// Using rm_firstname and rm_lastname if exists
+			if (isset($data['rm_firstname']) && $data['rm_firstname']
+				&& isset($data['rm_lastname']) && $data['rm_lastname'])
+			{
+				$data['name'] = trim($data['rm_firstname'] . ' ' . $data['rm_lastname']);
+			}
+			else
+			{
+				$data['name'] = $data['username'];
+			}
+		}
+
+		$user = RedmemberLib::saveUser(false, $data);
 
 		return $user;
 	}
