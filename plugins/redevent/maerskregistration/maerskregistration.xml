@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.7" type="plugin" group="redevent" method="upgrade">
+	<name>PLG_REDEVENT_MAERSKREGISTRATION</name>
+	<creationDate>##DATE##</creationDate>
+	<author>redWEB Aps</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>(C) 2013 redCOMPONENT.com</copyright>
+	<license>GNU/GPL</license>
+	<version>##VERSION##</version>
+	<description>PLG_REDEVENT_MAERSKREGISTRATION_XML_PLUGIN_DESC</description>
+
+	<files>
+		<filename plugin="maerskregistration">maerskregistration.php</filename>
+		<filename>index.html</filename>
+		<folder>language</folder>
+	</files>
+
+	<config>
+		<fields name="params">
+            <fieldset name="basic">
+                <field name="ponumberFieldIds" type="textarea"
+                       label="PLG_REDEVENT_MAERSKREGISTRATION_XML_PONUMBERFIELDIDS_LABEL"
+                       description="PLG_REDEVENT_MAERSKREGISTRATION_XML_PONUMBERFIELDIDS_DESCRIPTION"
+                       />
+                <field name="commentsFieldIds" type="textarea"
+                       label="PLG_REDEVENT_MAERSKREGISTRATION_XML_COMMENTSFIELDIDS_LABEL"
+                       description="PLG_REDEVENT_MAERSKREGISTRATION_XML_COMMENTSFIELDIDS_DESCRIPTION"
+                        />
+            </fieldset>
+ 		</fields>
+	</config>
+
+</extension>
