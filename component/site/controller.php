@@ -490,9 +490,9 @@ class RedeventController extends JController
 		$model_wait->setXrefId($xref);
 		$model_wait->UpdateWaitingList();
 
-		//		JPluginHelper::importPlugin( 'redevent' );
-		//		$dispatcher =& JDispatcher::getInstance();
-		//		$res = $dispatcher->trigger( 'onEventUserUnregistered', array( $xref ) );
+		JPluginHelper::importPlugin('redevent');
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('onAttendeeCancelled', array($rid));
 
 		$cache = JFactory::getCache('com_redevent');
 		$cache->clean();
