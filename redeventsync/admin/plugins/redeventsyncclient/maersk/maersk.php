@@ -17,6 +17,8 @@ JLoader::registerPrefix('RESync', JPATH_LIBRARIES . '/redeventsync');
 JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
 JLoader::registerPrefix('RedForm', JPATH_LIBRARIES . '/redform');
 
+JLoader::registerPrefix('Plgresyncmaersk', __DIR__);
+
 require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
 
 require_once 'helper.php';
@@ -92,7 +94,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		{
 			$this->handle($data);
 		}
-		catch (MismatchUserException $e)
+		catch (PlgresyncmaerskExceptionMismatchuser $e)
 		{
 			// Try to update/create user from Customer
 			$res = $this->getCustomer($e->email, $e->venueCode, $e->firstname, $e->lastname);
@@ -414,7 +416,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 			{
 				$this->handle($resp);
 			}
-			catch (MismatchUserException $e)
+			catch (PlgresyncmaerskExceptionMismatchuser $e)
 			{
 				// Try to update/create user from Customer
 				$res = $this->getCustomer($e->email, $e->venueCode, $e->firstname, $e->lastname);
@@ -621,44 +623,3 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		return $handler;
 	}
 }
-
-class MismatchUserException extends Exception
-{
-	public $email;
-
-	public $venueCode;
-
-	public $firstname;
-
-	public $lastname;
-
-	// Redefine the exception to include
-	public function __construct($email, $venueCode, $firstname = null, $lastname = null)
-	{
-		$this->email = $email;
-		$this->venueCode = $venueCode;
-		$this->firstname = $firstname;
-		$this->lastname = $lastname;
-
-		// make sure everything is assigned properly
-		parent::__construct('missing user, or mismatch firstname/lastname, for user for email ' . $email . ' at venue ' . $venueCode);
-	}
-}
-
-class MissingUserException extends MismatchUserException
-{
-	public $email;
-
-	public $venueCode;
-
-	// Redefine the exception to include
-	public function __construct($email, $venueCode)
-	{
-		$this->email = $email;
-		$this->venueCode = $venueCode;
-
-		parent::__construct($email, $venueCode);
-	}
-}
-
-class InvalidEmailException extends Exception {}

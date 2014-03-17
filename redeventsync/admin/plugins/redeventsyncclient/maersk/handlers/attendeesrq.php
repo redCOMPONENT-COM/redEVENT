@@ -142,7 +142,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 			if (!$user)
 			{
 				// We need an user, trigger a special Exception to force getting one
-				throw new MissingUserException($attendee->user_email, $attendee->venue_code);
+				throw new PlgresyncmaerskExceptionMissinguser($attendee->user_email, $attendee->venue_code);
 			}
 			elseif ($attendee->firstname != $user->rm_firstname || $attendee->lastname != $user->rm_lastname)
 			{
@@ -226,7 +226,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 				REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
 				$response, 'ok');
 		}
-		catch (MismatchUserException $e)
+		catch (PlgresyncmaerskExceptionMismatchuser $e)
 		{
 			// Bubble !
 			throw $e;
@@ -490,6 +490,8 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 
 		$attendee = RedeventsyncclientMaerskHelper::getAttendee($attendee_id);
 
+		$this->validateAddAttendeeFields($attendee);
+
 		$message->addChild('SessionCode',   $attendee->session_code);
 		$message->addChild('VenueCode',     $attendee->venue_code);
 		$message->addChild('UserEmail',     $attendee->email);
@@ -526,7 +528,6 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 		$answers = new SimpleXMLElement('<Answers/>');
 
 		// Redform data
-		require_once JPATH_SITE . '/components/com_redform/redform.core.php';
 		$rfcore = new RedFormCore;
 		$rf_fields = $rfcore->getSidsFieldsAnswers(array($attendee->sid));
 
@@ -568,5 +569,25 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 		}
 
 		return $message;
+	}
+
+	protected function validateAddAttendeeFields($attendee)
+	{
+		if (!$attendee->session_code)
+		{
+			throw new PlgresyncmaerskExceptionInvalidattendee('Missing Session Code');
+		}
+
+		if (!$attendee->venue_code)
+		{
+			throw new PlgresyncmaerskExceptionInvalidattendee('Missing Venue Code');
+		}
+
+		if (!$attendee->email)
+		{
+			throw new PlgresyncmaerskExceptionInvalidattendee('Missing Attendee email');
+		}
+
+		return true;
 	}
 }

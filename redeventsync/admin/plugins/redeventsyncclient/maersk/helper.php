@@ -21,7 +21,7 @@ class RedeventsyncclientMaerskHelper
 	{
 		if (!$email || !JMailHelper::isEmailAddress($email))
 		{
-			throw new InvalidEmailException('Empty or invalid email');
+			throw new PlgresyncmaerskExceptionInvalidemail('Empty or invalid email');
 		}
 
 		$db = JFactory::getDbo();

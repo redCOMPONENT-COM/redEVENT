@@ -80,17 +80,17 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 			if (!$user->id)
 			{
 				// We need an user, trigger a special Exception to force getting one
-				throw new MissingUserException($parsed->user_email, $parsed->venue_code);
+				throw new PlgresyncmaerskExceptionMissinguser($parsed->user_email, $parsed->venue_code);
 			}
 			elseif ($parsed->firstname != $user->rm_firstname || $parsed->lastname != $user->rm_lastname)
 			{
-				throw new MismatchUserException($parsed->user_email, $parsed->venue_code, $user->rm_firstname, $user->rm_lastname);
+				throw new PlgresyncmaerskExceptionMismatchuser($parsed->user_email, $parsed->venue_code, $user->rm_firstname, $user->rm_lastname);
 			}
 
 			// Store the attendee
 			$this->storeAttendee($parsed);
 		}
-		catch (InvalidEmailException $e)
+		catch (PlgresyncmaerskExceptionInvalidemail $e)
 		{
 			$this->enqueueMessage(sprintf('Error handling attendee for session %s: %s', $parsed->session_code, $e->getMessage()));
 		}
