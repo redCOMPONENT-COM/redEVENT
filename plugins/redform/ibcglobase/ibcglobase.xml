@@ -27,10 +27,6 @@
 					   label="PLG_REDFORM_IBCGLOBASE_XML_WS_PASSWORD_LABEL"
 					   description="PLG_REDFORM_IBCGLOBASE_XML_WS_PASSWORD_DESCRIPTION"
 						/>
-				<field type="text" name="subscribeFieldId"
-					label="PLG_REDFORM_IBCGLOBASE_XML_SUBSCRIBEFIELDID_LABEL"
-					description="PLG_REDFORM_IBCGLOBASE_XML_SUBSCRIBEFIELDID_DESCRIPTION"
-					/>
 				<field type="text" name="listId"
 					label="PLG_REDFORM_IBCGLOBASE_XML_LISTID_LABEL"
 					description="PLG_REDFORM_IBCGLOBASE_XML_LISTID_DESCRIPTION"
