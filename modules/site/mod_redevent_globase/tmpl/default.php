@@ -28,13 +28,17 @@ $rfcore = new RedFormCore;
 
 	<?php echo $rfcore->getFormFields($params->get('formId')); ?>
 
-	<?php foreach ($uddannelse as $opt): ?>
-		<input name="uddannelse[]" type="hidden" value="<?php echo $opt->value; ?>" />
-	<?php endforeach; ?>
-
-	<?php foreach ($nyhedsbrev as $opt): ?>
-		<input name="nyhedsbrev[]" type="hidden" value="<?php echo $opt->value; ?>" />
-	<?php endforeach; ?>
+	<div class="globase-categories">
+		<div class="globase-categories-label">
+			<?php echo JText::_('MOD_REDEVENT_GLOBASE_SELECT_NEWSLETTER_CATEGORIES_LABEL'); ?>
+		</div>
+		<div class="globase-categories-boxes">
+			<?php foreach ($nyhedsbrev as $opt): ?>
+				<input name="nyhedsbrev[]" type="checkbox" value="<?php echo $opt->value; ?>" />
+				<label><?php echo $opt->value; ?></label>
+			<?php endforeach; ?>
+		</div>
+	</div>
 
 	<input name="pureGlobase" type="hidden" value="1" />
 	<div id="globasesubmit">
