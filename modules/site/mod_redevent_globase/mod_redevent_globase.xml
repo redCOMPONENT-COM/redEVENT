@@ -44,10 +44,7 @@
 					<option value="post">MOD_REDEVENT_GLOBASE_XML_TARGET_OPTION_POST</option>
 					<option value="modal">MOD_REDEVENT_GLOBASE_XML_TARGET_OPTION_MODAL</option>
 				</field>
-                <field name="uddannelse" type="textarea"
-                       label="MOD_REDEVENT_GLOBASE_XML_UDDANNELSE_LABEL"
-                       description="MOD_REDEVENT_GLOBASE_XML_UDDANNELSE_DESCRIPTION" />
-                <field name="nyhedsbrev" type="textarea"
+                <field name="nyhedsbrev" type="textarea" rows="15"
                        label="MOD_REDEVENT_GLOBASE_XML_NYHEDSBREV_LABEL"
                        description="MOD_REDEVENT_GLOBASE_XML_NYHEDSBREV_DESCRIPTION" />
 			</fieldset>

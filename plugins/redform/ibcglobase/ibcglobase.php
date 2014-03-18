@@ -58,6 +58,11 @@ class plgRedformIbcglobase extends JPlugin
 	 */
 	public function onAfterRedformSavedSubmission($result)
 	{
+		if (!JFactory::getApplication()->input->getInt('pureGlobase'))
+		{
+			return true;
+		}
+
 		if (!$this->init())
 		{
 			return true;
@@ -101,7 +106,7 @@ class plgRedformIbcglobase extends JPlugin
 	/**
 	 * Save profile to globase
 	 *
-	 * @param   array   $answers         submitter answers
+	 * @param   array  $answers  submitter answers
 	 *
 	 * @throws Exception
 	 *
@@ -176,16 +181,17 @@ class plgRedformIbcglobase extends JPlugin
 
 		foreach ($xmlFields as $name => $values)
 		{
+			$name = trim($name);
 			$values = array_unique($values);
 
 			foreach ($values as $v)
 			{
-				$xml .= '<' . $name  . '>' . $v . '</' . $name  . '>';
+				$xml .= '<' . $name  . '>' . trim($v) . '</' . $name  . '>';
 			}
 		}
 
 		// Do the update
-		$resp = $client->SaveProfileV2(
+		$client->SaveProfileV2(
 			$this->ws_username, $this->ws_password, $this->listId, $xml, 'email'
 		);
 

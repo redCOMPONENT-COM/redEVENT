@@ -34,15 +34,17 @@ $rfcore = new RedFormCore;
 		</div>
 		<div class="globase-categories-boxes">
 			<?php foreach ($nyhedsbrev as $opt): ?>
-				<input name="nyhedsbrev[]" type="checkbox" value="<?php echo $opt->value; ?>" />
-				<label><?php echo $opt->value; ?></label>
+				<div class="globase-cat">
+					<input name="nyhedsbrev[]" type="checkbox" value="<?php echo $opt->value; ?>" />
+					<label><?php echo $opt->value; ?></label>
+				</div>
 			<?php endforeach; ?>
 		</div>
 	</div>
 
 	<input name="pureGlobase" type="hidden" value="1" />
 	<div id="globasesubmit">
-		<button type="button" class="globasesubmit-btn"><?php echo JText::_('MOD_REDEVENT_GLOBASE_BUTTON_BOOK_LABEL'); ?></button>
+		<button type="button" class="globasesubmit-btn"><?php echo JText::_('MOD_REDEVENT_GLOBASE_BUTTON_SUBMIT_LABEL'); ?></button>
 	</div>
 </form>
 </div>
