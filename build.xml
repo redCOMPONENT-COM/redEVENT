@@ -139,7 +139,7 @@
 
 	<target name="zipfolder">
 	    <echo msg="packaging ${dirname} ${absname}" />
-		<copy todir="${dirs.tmp}/${myp}/${dirname}" >
+		<copy todir="${dirs.tmp}/${myp}/${prefix}${dirname}" >
 			<fileset dir="${absname}">
 				<include name="**" />
 			</fileset>
@@ -152,7 +152,7 @@
 		</copy>
 		<mkdir dir="${dirs.release}/${myp}" />
 		<!-- Create the package -->
-		<tar basedir="${dirs.tmp}/${myp}/${dirname}" destfile="${dirs.release}/${myp}/${prefix}${dirname}-${version}.tar.gz" includeemptydirs="true" compression="gzip" />
+		<tar basedir="${dirs.tmp}/${myp}/${prefix}${dirname}" destfile="${dirs.release}/${myp}/${prefix}${dirname}-${version}.tar.gz" includeemptydirs="true" compression="gzip" />
 	</target>
 
 	<!--
