@@ -399,11 +399,13 @@
 	    </field>
  	</fieldset>
 
- 	<fieldset name="COM_REDEVENT_registration" label="COM_REDEVENT_registration" description="COM_REDEVENT_registration">
- 	  <field type="spacer" label="COM_REDEVENT_SETTINGS_TAGS_LINK"/>
+    <fieldset name="COM_REDEVENT_registration" label="COM_REDEVENT_registration" description="COM_REDEVENT_registration">
+
+        <field type="spacer" label="COM_REDEVENT_SETTINGS_TAGS_LINK"/>
+
         <field name="payBeforeConfirm" type="radio" default="0"
-            label="COM_REDEVENT_SETTINGS_REGISTRATION_PAYBEFORECONFIRM_LABEL"
-            description="COM_REDEVENT_SETTINGS_REGISTRATION_PAYBEFORECONFIRM_DESC">
+            label="COM_REDEVENT_SETTINGS_REGISTRATION_PAYONREGISTRATION_LABEL"
+            description="COM_REDEVENT_SETTINGS_REGISTRATION_PAYONREGISTRATION_DESC">
             <option value="0">JNo</option>
             <option value="1">JYes</option>
          </field>

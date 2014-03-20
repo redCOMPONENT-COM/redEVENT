@@ -1097,13 +1097,15 @@ class redEVENT_tags
 	 */
 	function getForm()
 	{
-		$app = & JFactory::getApplication();
+		$app = JFactory::getApplication();
+		$config = redEVENTHelper::config();
+
 		$submit_key = JRequest::getVar('submit_key');
 
 		$details = $this->getEvent()->getData();
 		$prices = $this->getEvent()->getPrices();
 		$options = array('extrafields' => array());
-		$user = & JFactory::getUser();
+		$user = JFactory::getUser();
 
 		$rfcore = $this->_getRFCore();
 		if (!$rfcore->getFormStatus($this->getEvent()->getData()->redform_id))
@@ -1189,6 +1191,11 @@ class redEVENT_tags
 					. '<input type="hidden" name="sessionpricegroup_id[]" class="fixedprice" value="' . $selpg->id . '" price="' . $converted_price . '" />';
 				$field['class'] = 'reg-price pg' . $selpg->id;
 				$options['extrafields'][] = $field;
+			}
+
+			if ($config->get('payBeforeConfirm'))
+			{
+				$options['selectPaymentGateway'] = 1;
 			}
 		}
 
