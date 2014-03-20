@@ -145,7 +145,7 @@ class RedeventViewPayment extends JView
 	 */
 	protected function addTracking()
 	{
-		if (RedFormHelperAnalytics::isEnabled())
+		if (RedformHelperAnalytics::isEnabled())
 		{
 			$submit_key = JFactory::getApplication()->input->get('submit_key');
 			$details = $this->get('Event');
@@ -163,7 +163,7 @@ class RedeventViewPayment extends JView
 			}
 			$options['category'] = implode(', ', $cats);
 
-			RedFormHelperAnalytics::recordTrans($submit_key, $options);
+			RedformHelperAnalytics::recordTrans($submit_key, $options);
 		}
 	}
 }

@@ -286,7 +286,7 @@ class REattendee extends JObject {
 
 		$sid = $data->sid;
 
-		$rfcore = new RedFormCore();
+		$rfcore = new RedformCore();
 		$emails = $rfcore->getSidContactEmails($sid);
 
 		$valid_emails = false;
@@ -562,7 +562,7 @@ class REattendee extends JObject {
 	{
 		if (empty($this->_answers))
 		{
-			$rfcore  = new RedFormCore();
+			$rfcore  = new RedformCore();
 			$sid = $this->load()->sid;
 			$sidsanswers =  $rfcore->getSidsFieldsAnswers(array($sid));
 			$this->_answers = $sidsanswers[$sid];
@@ -724,7 +724,7 @@ class REattendee extends JObject {
 			$tags->setXref($this->getXref());
 			$tags->addOptions(array('sids' => array($this->load()->sid)));
 
-			$rfcore = new RedFormCore();
+			$rfcore = new RedformCore();
 			$emails = $rfcore->getSidContactEmails($this->load()->sid);
 
 			/* build activation link */

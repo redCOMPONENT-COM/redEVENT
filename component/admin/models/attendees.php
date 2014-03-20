@@ -730,7 +730,7 @@ class RedEventModelAttendees extends JModel
 	function getFields($all = false)
 	{
 		$event = $this->getEvent();
-		$rfcore = new RedFormCore();
+		$rfcore = new RedformCore();
 		return $rfcore->getFields($event->redform_id);
 	}
 
@@ -756,7 +756,7 @@ class RedEventModelAttendees extends JModel
 		if (empty($sids)) {
 			return false;
 		}
-		$rfcore = new RedFormCore();
+		$rfcore = new RedformCore();
 		$answers = $rfcore->getSidsFieldsAnswers($sids);
 
 		$emails = array();

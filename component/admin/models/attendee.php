@@ -281,7 +281,7 @@ class RedEventModelAttendee extends JModel
 		// Session registration price
 		$price = redEVENTHelper::convertPrice($details->price, $details->currency, $details->form_currency);
 
-		$rfcore = new RedFormCore();
+		$rfcore = new RedformCore();
 		$result = $rfcore->saveAnswers('redevent', array('baseprice' => $price, 'edit' => 1));
 
 		if (!$result)

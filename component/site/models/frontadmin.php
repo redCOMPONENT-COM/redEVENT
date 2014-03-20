@@ -901,7 +901,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 
 		$options = array('baseprice' => $price ? $price : 0);
 
-		$redform = RedFormCore::getInstance($details->redform_id);
+		$redform = RedformCore::getInstance($details->redform_id);
 		$result = $redform->quickSubmit($user_id, 'redevent', $options);
 
 		if (!$result)

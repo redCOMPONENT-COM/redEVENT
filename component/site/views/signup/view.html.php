@@ -170,7 +170,7 @@ class RedeventViewSignup extends JView
 			return false;
 		}
 
-		$rfcore = new RedFormCore();
+		$rfcore = new RedformCore();
 		$rfields = $rfcore->getFormFields($course->redform_id, array($submitter_id), 1);
 
 		$this->assign('rfields',  $rfields);

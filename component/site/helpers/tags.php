@@ -1062,7 +1062,7 @@ class redEVENT_tags
 	{
 		if (empty($this->_rfcore))
 		{
-			$this->_rfcore = new RedFormCore();
+			$this->_rfcore = new RedformCore();
 		}
 		return $this->_rfcore;
 	}
@@ -1215,7 +1215,7 @@ class redEVENT_tags
 		$html .= '</div>';
 		$html .= '</form>';
 
-		if (RedFormHelperAnalytics::isEnabled())
+		if (RedformHelperAnalytics::isEnabled())
 		{
 			if ($this->getOption('hasreview'))
 			{
@@ -1231,7 +1231,7 @@ class redEVENT_tags
 			$event->action = 'display';
 			$event->label = $label;
 			$event->value = null;
-			RedFormHelperAnalytics::trackEvent($event);
+			RedformHelperAnalytics::trackEvent($event);
 		}
 
 		return $html;
