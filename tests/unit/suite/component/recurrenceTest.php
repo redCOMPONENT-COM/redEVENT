@@ -18,12 +18,11 @@ require_once (BASEPATH.DS.'component'.DS.'site'.DS.'helpers'.DS.'recurrence.php'
  * @package	redFORM.UnitTest
  */
 class recurrenceTest extends JoomlaTestCase
-{	
-	
+{
 	public function getTestGetNextData()
 	{
 		$data = array();
-		
+
 		// first
 		$rrule = 'RRULE:FREQ=MONTHLY;INTERVAL=1;UNTIL=20200901T000000;WKST=MO;';
 		$xref = new stdclass();
@@ -32,20 +31,21 @@ class recurrenceTest extends JoomlaTestCase
 		$xref->times = '14:00';
 		$xref->endtimes = '16:00';
 		$xref->registrationend = null;
-				
+		$xref->count = 0;
+
 		$expect = clone $xref;
 		$expect->dates = '2013-01-04';
-		$expect->enddates = '2013-01-04';		
-		
+		$expect->enddates = '2013-01-04';
+
 		$data['first'] = array($rrule, $xref, $expect, 'should be one month from initial');
-		
+
 		// continuing
 		$expect2 = clone $expect;
 		$expect2->dates = '2013-02-04';
-		$expect2->enddates = '2013-02-04';		
-		
+		$expect2->enddates = '2013-02-04';
+
 		$data['second'] = array($rrule, $expect, $expect2, 'should be one month from initial');
-		
+
 		// weekly
 		$rrule = 'RRULE:FREQ=WEEKLY;INTERVAL=1;COUNT=999;WKST=MO;';
 		$xref_3 = new stdclass();
@@ -55,19 +55,19 @@ class recurrenceTest extends JoomlaTestCase
 		$xref_3->endtimes = '16:00';
 		$xref_3->registrationend = null;
 		$xref_3->count = 0;
-				
+
 		$expect_3 = clone $xref_3;
 		$expect_3->dates = '2012-10-21';
-		$expect_3->enddates = '2012-10-21';	
-		
+		$expect_3->enddates = '2012-10-21';
+
 		$data['weekly'] = array($rrule, $xref_3, $expect_3, 'should be one week from initial');
-		
+
 		return $data;
 	}
-	
+
 	/**
 	 * test get country name function
-	 * 
+	 *
 	 * @param string $iso
 	 * @return void
 	 * @dataProvider getTestGetNextData
@@ -76,9 +76,9 @@ class recurrenceTest extends JoomlaTestCase
 	{
 		$params = new JRegistry();
 		$params->setValue('week_start', 'MO');
-		
+
 		$next = RedeventHelperRecurrence::getNext($rrule, $xref_data, $params);
- 
+
 		if ($expect_next === false) {
 			$this->assertFalse($next);
 		}

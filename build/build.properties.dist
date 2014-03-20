@@ -1,2 +1,8 @@
+# extension name
 comp.name=redevent
+
+# your local test site
 www.dir=/var/www/joomla
+
+# clean install for unit tests
+www.dirtest=/var/www/joomla_test
