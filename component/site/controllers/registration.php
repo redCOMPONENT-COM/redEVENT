@@ -202,11 +202,17 @@ class RedEventControllerRegistration extends RedEventController
 			$cache = JFactory::getCache('com_redevent');
 			$cache->clean();
 
+			$gateway = $app->input->get('gw');
+
 			$rfredirect = $rfcore->getFormRedirect($details->redform_id);
 
 			if ($rfredirect)
 			{
 				$link = $rfredirect;
+			}
+			elseif ($gateway)
+			{
+				$link = RedformHelperRoute::getPaymentProcessRoute($submit_key, $gateway);
 			}
 			else
 			{
