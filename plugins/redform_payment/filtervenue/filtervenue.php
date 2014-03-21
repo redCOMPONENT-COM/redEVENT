@@ -29,27 +29,75 @@ jimport('joomla.event.plugin');
 
 class plgRedform_PaymentFiltervenue extends JPlugin {
 
-	public function __construct(&$subject, $config = array())
-	{
-		parent::__construct($subject, $config);
-	}
+	private $gateways;
+
+	private $details;
 
 	/**
 	 * filters available gateways based on venue
 	 *
-	 * @param   array   $gateways  current allowed gateways
-	 * @param   object  $details   submission details
+	 * @param   array   &$gateways  current allowed gateways
+	 * @param   object  $details    submission details
 	 *
 	 * @return boolean
 	 */
 	public function onFilterGateways(&$gateways, $details)
 	{
+		$this->gateways = $gateways;
+		$this->details = $details;
+
+		if ($this->isRedformSelectPage())
+		{
+			$this->filterRedformSelectPage();
+		}
+		elseif ($this->isRegistrationForm())
+		{
+			$this->filterRegistrationPage();
+		}
+
+		$gateways = $this->gateways;
+
+		return true;
+	}
+
+	/**
+	 * Return true is current page is redFORM payment select
+	 *
+	 * @return bool
+	 */
+	protected function isRedformSelectPage()
+	{
+		$input = JFactory::getApplication()->input;
+
+		return $input->get('option') == 'com_redform'
+			&& $input->get('controller') == 'payment'
+			&& $input->get('task') == 'select';
+	}
+
+	/**
+	 * Filter for redFORM select payment page
+	 *
+	 * @return void
+	 */
+	protected function filterRedformSelectPage()
+	{
 		// First check that if this is redEVENT submission
-		if (!$details->integration == 'redevent')
+		if (!$this->details->integration == 'redevent')
 		{
 			return true;
 		}
 
+		$allowed = $this->getAttendeesVenueAllowedGateways();
+		$this->keepAllowed($allowed);
+	}
+
+	/**
+	 * Return allowed gateways for venue associated to registration
+	 *
+	 * @return mixed
+	 */
+	protected function getAttendeesVenueAllowedGateways()
+	{
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
@@ -57,7 +105,7 @@ class plgRedform_PaymentFiltervenue extends JPlugin {
 		$query->from('#__redevent_register AS r');
 		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = r.xref');
 		$query->join('INNER', '#__redevent_venues AS v ON v.id = x.venueid');
-		$query->where('r.submit_key = ' . $db->quote($details->key));
+		$query->where('r.submit_key = ' . $db->quote($this->details->key));
 
 		$db->setQuery($query);
 		$res = $db->loadResult();
@@ -65,24 +113,97 @@ class plgRedform_PaymentFiltervenue extends JPlugin {
 		$registry = new JRegistry;
 		$registry->loadString($res);
 
-		$allowed = $registry->get('allowed_gateways');
+		return $registry->get('allowed_gateways');
+	}
 
-		if (!$allowed || !count($allowed))
+	/**
+	 * Return true is current page is redFORM payment select
+	 *
+	 * @return bool
+	 */
+	protected function isRegistrationForm()
+	{
+		$input = JFactory::getApplication()->input;
+
+		if (isset($this->details->xref) && $this->details->xref)
 		{
 			return true;
 		}
 
-		// Intersect !
+		return $input->get('option') == 'com_redevent'
+			&& ($input->get('view') == 'details' || $input->get('view') == 'signup')
+			&& $input->getInt('xref');
+	}
+
+	/**
+	 * Filter for session registration page
+	 *
+	 * @return void
+	 */
+	protected function filterRegistrationPage()
+	{
+		$allowed = $this->getSessionVenueAllowedGateways();
+		$this->keepAllowed($allowed);
+	}
+
+	/**
+	 * Return allowed gateways for venue associated to session
+	 *
+	 * @return mixed
+	 */
+	protected function getSessionVenueAllowedGateways()
+	{
+		if (isset($this->details->xref) && $this->details->xref)
+		{
+			$xref = $this->details->xref;
+		}
+		else
+		{
+			$xref = JFactory::getApplication()->input->getInt('xref');
+		}
+
+		$db      = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('v.params');
+		$query->from('#__redevent_event_venue_xref AS x');
+		$query->join('INNER', '#__redevent_venues AS v ON v.id = x.venueid');
+		$query->where('x.id = ' . $db->quote($xref));
+
+		$db->setQuery($query);
+		$res = $db->loadResult();
+
+		$registry = new JRegistry;
+		$registry->loadString($res);
+
+		return $registry->get('allowed_gateways');
+	}
+
+	/**
+	 * Intersect allowed gateways with current gateways
+	 *
+	 * @param   array  $allowed  allowed gateways
+	 *
+	 * @return void
+	 */
+	protected function keepAllowed($allowed)
+	{
+		if (!$allowed || !count($allowed)) // Not set or empty, so all is allowed
+		{
+			return true;
+		}
+
+		// Else intersect !
 		$filtered = array();
-		foreach ($gateways as $g)
+
+		foreach ($this->gateways as $g)
 		{
 			if (in_array($g->value, $allowed))
 			{
 				$filtered[] = $g;
 			}
 		}
-		$gateways = $filtered;
 
-		return true;
+		$this->gateways = $filtered;
 	}
 }
