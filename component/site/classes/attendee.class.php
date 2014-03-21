@@ -189,6 +189,13 @@ class REattendee extends JObject {
 	 */
 	public function confirm()
 	{
+		$current = $this->load();
+
+		if ($current->confirmed)
+		{
+			return true;
+		}
+
 		// first, changed status to confirmed
 		$query = ' UPDATE #__redevent_register '
 		       . ' SET confirmed = 1, confirmdate = ' .$this->_db->Quote(gmdate('Y-m-d H:i:s'))
@@ -204,6 +211,7 @@ class REattendee extends JObject {
 
 		// now, handle waiting list
 		$session = $this->getSessionDetails();
+
 		if ($session->maxattendees == 0) { // no waiting list
 			// send attending email
 			$this->sendWaitinglistStatusEmail(0);
@@ -212,6 +220,7 @@ class REattendee extends JObject {
 		}
 
 		$attendees = $this->getAttending();
+
 		if (count($attendees) > $session->maxattendees)
 		{
 			// put this attendee on WL
@@ -225,6 +234,7 @@ class REattendee extends JObject {
 			$this->sendWaitinglistStatusEmail(0);
 			$this->sendWLAdminNotification(0);
 		}
+
 		return true;
 	}
 
@@ -286,7 +296,7 @@ class REattendee extends JObject {
 
 		$sid = $data->sid;
 
-		$rfcore = new RedFormCore();
+		$rfcore = new RedformCore();
 		$emails = $rfcore->getSidContactEmails($sid);
 
 		$valid_emails = false;
@@ -562,7 +572,7 @@ class REattendee extends JObject {
 	{
 		if (empty($this->_answers))
 		{
-			$rfcore  = new RedFormCore();
+			$rfcore  = new RedformCore();
 			$sid = $this->load()->sid;
 			$sidsanswers =  $rfcore->getSidsFieldsAnswers(array($sid));
 			$this->_answers = $sidsanswers[$sid];
@@ -724,7 +734,7 @@ class REattendee extends JObject {
 			$tags->setXref($this->getXref());
 			$tags->addOptions(array('sids' => array($this->load()->sid)));
 
-			$rfcore = new RedFormCore();
+			$rfcore = new RedformCore();
 			$emails = $rfcore->getSidContactEmails($this->load()->sid);
 
 			/* build activation link */

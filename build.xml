@@ -139,7 +139,7 @@
 
 	<target name="zipfolder">
 	    <echo msg="packaging ${dirname} ${absname}" />
-		<copy todir="${dirs.tmp}/${myp}/${dirname}" >
+		<copy todir="${dirs.tmp}/${myp}/${prefix}${dirname}" >
 			<fileset dir="${absname}">
 				<include name="**" />
 			</fileset>
@@ -152,7 +152,7 @@
 		</copy>
 		<mkdir dir="${dirs.release}/${myp}" />
 		<!-- Create the package -->
-		<tar basedir="${dirs.tmp}/${myp}/${dirname}" destfile="${dirs.release}/${myp}/${prefix}${dirname}-${version}.tar.gz" includeemptydirs="true" compression="gzip" />
+		<tar basedir="${dirs.tmp}/${myp}/${prefix}${dirname}" destfile="${dirs.release}/${myp}/${prefix}${dirname}-${version}.tar.gz" includeemptydirs="true" compression="gzip" />
 	</target>
 
 	<!--
@@ -349,4 +349,27 @@
 			</fileset>
 		</copy>
     </target>
+
+    <!--
+    ====================================================================================================
+    Tasks - Unit tests
+    ====================================================================================================
+    -->
+    <target name="unit-test" description="Copy to test site"
+            depends="setup-test, site">
+        <phpunit configuration="tests/unit/phpunit.xml"
+                 printsummary="true" haltonfailure="true" haltonerror="true">
+            <batchtest>
+                <fileset dir="tests/unit/suite">
+                    <include name="**/*Test.php"/>
+                </fileset>
+            </batchtest>
+        </phpunit>
+    </target>
+
+    <target name="setup-test" description="Init to copy to test site"
+            depends="setup-properties">
+        <property name="www.dir" value="${www.dirtest}" override="true"/>
+    </target>
+
 </project>
