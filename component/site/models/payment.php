@@ -149,7 +149,7 @@ class RedeventModelPayment extends JModel
 
 		$query->select('r.id');
 		$query->from('#__redevent_register AS r');
-		$query->where('r.submit_key = ' . $this->_submit_key);
+		$query->where('r.submit_key = ' . $db->quote($this->_submit_key));
 
 		$db->setQuery($query);
 		$res = $db->loadColumn();

@@ -24,7 +24,6 @@ JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
 
 //Require helperfile
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'helper.php');
-require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'log.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'route.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'recurrence.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'tags.php');
