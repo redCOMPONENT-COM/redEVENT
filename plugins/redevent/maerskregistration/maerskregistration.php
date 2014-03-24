@@ -55,7 +55,7 @@ class plgRedeventMaerskregistration extends JPlugin
 			$db->setQuery($query);
 			$registration = $db->loadObject();
 
-			$rfcore = new RedFormCore;
+			$rfcore = new RedformCore;
 			$answers = $rfcore->getSidsFieldsAnswers(array($registration->sid));
 			$this->answers = $answers[$registration->sid];
 		}

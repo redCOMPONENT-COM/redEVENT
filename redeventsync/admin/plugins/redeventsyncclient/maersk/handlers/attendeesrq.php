@@ -155,7 +155,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 			$session_details = RedeventsyncclientMaerskHelper::getSessionDetails($attendee->session_code, $attendee->venue_code);
 
 			// Post to redform
-			$rfcore = new RedFormCore;
+			$rfcore = new RedformCore;
 			$rfcore->setFormId($session_details->redform_id);
 
 			$data = array();
@@ -528,7 +528,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 		$answers = new SimpleXMLElement('<Answers/>');
 
 		// Redform data
-		$rfcore = new RedFormCore;
+		$rfcore = new RedformCore;
 		$rf_fields = $rfcore->getSidsFieldsAnswers(array($attendee->sid));
 
 		foreach ($rf_fields[$attendee->sid] as $f)

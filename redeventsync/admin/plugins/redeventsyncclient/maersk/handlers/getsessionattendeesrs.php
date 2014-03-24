@@ -129,7 +129,7 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 
 		// Post to redform
 		require_once JPATH_SITE . '/components/com_redform/redform.core.php';
-		$rfcore = new RedFormCore;
+		$rfcore = new RedformCore;
 		$rfcore->setFormId($session_details->redform_id);
 
 		$data = array();
