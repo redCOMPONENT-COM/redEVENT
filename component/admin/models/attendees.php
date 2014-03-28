@@ -204,7 +204,7 @@ class RedEventModelAttendees extends JModel
 		$query = $db->getQuery(true);
 
 		$query->select('r.*, r.id as attendee_id');
-		$query->select('s.answer_id, s.id AS submitter_id, s.price');
+		$query->select('s.answer_id, s.id AS submitter_id, s.price, s.currency');
 		$query->select('a.id AS eventid, a.course_code');
 		$query->select('pg.name as pricegroup');
 		$query->select('fo.activatepayment');

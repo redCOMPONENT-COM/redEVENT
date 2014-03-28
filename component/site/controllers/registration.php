@@ -108,12 +108,11 @@ class RedEventControllerRegistration extends RedEventController
 				return false;
 			}
 
-			$price = redEVENTHelper::convertPrice($regPricegroup->price, $regPricegroup->currency, $regPricegroup->form_currency);
-			$prices[] = $price;
+			$prices[] = $regPricegroup->price;
 		}
 
 		// First, ask redform to save it's fields, and return the corresponding sids.
-		$options = array('baseprice' => $prices);
+		$options = array('baseprice' => $prices, $regPricegroup->currency);
 
 		if ($review)
 		{
@@ -312,9 +311,7 @@ class RedEventControllerRegistration extends RedEventController
 				return;
 			}
 
-			$price = redEVENTHelper::convertPrice($regPricegroup->price, $regPricegroup->currency, $regPricegroup->form_currency);
-
-			$prices[] = $price;
+			$prices[] = $regPricegroup->price;
 		}
 
 		if (!$xref) {
@@ -324,7 +321,7 @@ class RedEventControllerRegistration extends RedEventController
 		}
 
 		// first, ask redform to save it's fields, and return the corresponding sids.
-		$options = array('baseprice' => $prices);
+		$options = array('baseprice' => $prices, 'currency' => $regPricegroup->currency);
 		$rfcore = new RedformCore();
 		$result = $rfcore->saveAnswers('redevent', $options);
 		if (!$result) {

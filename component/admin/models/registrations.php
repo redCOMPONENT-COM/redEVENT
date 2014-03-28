@@ -167,7 +167,7 @@ class RedEventModelRegistrations extends JModel
 		$where		= $this->_buildContentWhere();
 
 		$query = ' SELECT r.*, r.id as attendee_id, u.username, u.name, e.id AS eventid, u.email '
-		       . ', s.answer_id, r.waitinglist, r.confirmdate, r.confirmed, s.id AS submitter_id, s.price, pg.name as pricegroup, fo.activatepayment, p.paid, p.status '
+		       . ', s.answer_id, r.waitinglist, r.confirmdate, r.confirmed, s.id AS submitter_id, s.price, s.currency, pg.name as pricegroup, fo.activatepayment, p.paid, p.status '
 		       . ', e.course_code, e.title, x.dates, x.times, v.venue, x.maxattendees '
 		       . ', auth.username AS creator '
 		       . ' FROM #__redevent_register AS r '

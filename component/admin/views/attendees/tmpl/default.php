@@ -195,8 +195,8 @@ if ($this->event->maxattendees) {
         <td><a href="<?php echo JRoute::_('index.php?option=com_redevent&view=attendeeanswers&tmpl=component&submitter_id='. $row->submitter_id); ?>" class="answersmodal" rel="{handler: 'iframe'}"><?php echo JText::_('COM_REDEVENT_view')?></a></td>
 
 				<?php if ($this->form->activatepayment): ?>
-					<td>
-						<?php echo $row->price; ?>
+					<td class="attendeePrice">
+						<?php echo $row->price ? $row->currency . ' ' . $row->price : ''; ?>
 					</td>
 					<td>
 						<?php echo $row->pricegroup; ?>

@@ -352,7 +352,7 @@ class modRedEventAttendingHelper
 		}
 
 		$db = & JFactory::getDBO();
-		$query =  ' SELECT SUM(s.price) as price, r.id, f.currency AS currency '
+		$query =  ' SELECT SUM(s.price) as price, r.id, s.currency AS currency '
 		. ' FROM #__redevent_register AS r '
 		. ' INNER JOIN #__rwf_submitters AS s ON s.id = r.sid '
 		. ' INNER JOIN #__rwf_forms AS f ON f.id = s.form_id '
