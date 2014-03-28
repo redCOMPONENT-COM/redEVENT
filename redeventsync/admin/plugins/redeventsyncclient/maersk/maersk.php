@@ -15,7 +15,7 @@ jimport('joomla.plugin.plugin');
 // Register library prefix
 JLoader::registerPrefix('RESync', JPATH_LIBRARIES . '/redeventsync');
 JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
-JLoader::registerPrefix('RedForm', JPATH_LIBRARIES . '/redform');
+JLoader::registerPrefix('Redform', JPATH_LIBRARIES . '/redform');
 
 JLoader::registerPrefix('Plgresyncmaersk', __DIR__);
 
