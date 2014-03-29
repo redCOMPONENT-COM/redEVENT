@@ -13,9 +13,11 @@ window.addEvent('domready', function() {
 
 	$$('input.updateCurrency').addEvent('click', function(){
 		document.id(this.form).getElement('[name=currency]').set('value', this.getProperty('currency'));
+		redformPrice.updatePrice(this.form);
 	});
 
 	$$('select.updateCurrency').addEvent('change', function(){
 		document.id(this.form).getElement('[name=currency]').set('value', this.getProperty('currency'));
+		redformPrice.updatePrice(this.form);
 	});
 });
