@@ -1176,18 +1176,22 @@ class redEVENTHelper {
 		$layout = JComponentHelper::getParams('com_redevent')->get('price_select_layout', 'select');
 		$html = array();
 
+		JHtml::_('behavior.mootools');
+		$document = JFactory::getDocument();
+		$document->addScript(JURI::root() . 'media/com_redevent/js/updateformprice.js');
+
 		if ($layout == 'radio')
 		{
 			$html[] = '<fieldset class="price-select">';
 
 			foreach ((array) $sessionpricegroups as $i => $p)
 			{
-				$price = self::convertPrice($p->price, $p->currency, $p->form_currency);
-
 				$selected = $selected == null ? $p->id : $selected; // force at least one radio to be selected
-				$html[] = '<input type="radio" name="sessionpricegroup_id" value="' . $p->id . '" price="' . $price . '"'
-				. 'id="sessionpricegroup_id' . $i . '"'
+				$html[] = '<input type="radio" name="sessionpricegroup_id" value="' . $p->id . '" price="' . $p->price . '"'
+				. ' currency="' . $p->currency . '"'
+				. ' id="sessionpricegroup_id' . $i . '"'
 				. ($p->id == $selected ? ' checked="checked"' : '')
+				. ' class="updateCurrency"'
 				. '/>';
 
 				$html[] = '<label for="sessionpricegroup_id' . $i . '">'
@@ -1198,14 +1202,15 @@ class redEVENTHelper {
 		}
 		else
 		{
-			$html[] = '<select name="sessionpricegroup_id">';
+			$html[] = '<select name="sessionpricegroup_id" class="updateCurrency">';
 
 			foreach ((array) $sessionpricegroups as $p)
 			{
 				$price = self::convertPrice($p->price, $p->currency, $p->form_currency);
 
 				$html[] = '<option value="' . $p->id . '"
-					price="'  . $price . '"'
+					price="'  . $p->price . '"'
+					. ' currency="' . $p->currency . '"'
 					. ($p->id == $selected ? ' selected="selected"' : '') . '>'
 					. $p->currency . ' ' . $p->price . ' (' . $p->name . ')'
 					. '</option>';

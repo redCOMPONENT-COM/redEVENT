@@ -1144,7 +1144,7 @@ class redEVENT_tags
 		$selpg = null;
 		if (count($prices))
 		{
-			$currency = current($prices)->form_currency ? current($prices)->form_currency : null;
+			$currency = current($prices)->currency;
 
 			// is pricegroup already selected ?
 			// if a review, we already have pricegroup_id in session
@@ -1161,6 +1161,7 @@ class redEVENT_tags
 			if (count($prices) == 1)
 			{
 				$selpg = current($prices);
+				$currency = $selpg->currency;
 			}
 			else if ($pg)
 			{
@@ -1169,6 +1170,7 @@ class redEVENT_tags
 					if ($p->id == $pg)
 					{
 						$selpg = $p;
+						$currency = $selpg->currency;
 						break;
 					}
 				}
@@ -1177,21 +1179,22 @@ class redEVENT_tags
 			if (($multi > 1 && count($prices) > 1) || !$selpg) // multiple selection
 			{
 				$field = array();
-				$field['label'] = '<label for="sessionpricegroup_id">' . JText::_('COM_REDEVENT_REGISTRATION_PRICE') . ($currency ? ' <span class="price-currency">(' . $currency . ')</span>' : '') . '</label>';
+				$field['label'] = '<label for="sessionpricegroup_id">' . JText::_('COM_REDEVENT_REGISTRATION_PRICE') . '</label>';
 				$field['field'] = redEVENTHelper::getRfPricesSelect($prices);
 				$field['class'] = 'reg-price';
 				$options['extrafields'][] = $field;
 			}
 			else // single selection => hidden field
 			{
-				$converted_price = redEVENTHelper::convertPrice($selpg->price, $selpg->currency, $selpg->form_currency);
 				$field = array();
 				$field['label'] = '<label for="sessionpricegroup_id">' . JText::_('COM_REDEVENT_REGISTRATION_PRICE') . '</label>';
 				$field['field'] = REOutput::formatprice($selpg->price, $selpg->currency) . (count($prices) > 1 ? ' (' . $selpg->name . ')' : '')
-					. '<input type="hidden" name="sessionpricegroup_id[]" class="fixedprice" value="' . $selpg->id . '" price="' . $converted_price . '" />';
+					. '<input type="hidden" name="sessionpricegroup_id[]" class="fixedprice" value="' . $selpg->id . '" price="' . $selpg->price . '" />';
 				$field['class'] = 'reg-price pg' . $selpg->id;
 				$options['extrafields'][] = $field;
 			}
+
+			$options['currency'] = $currency;
 
 			if ($config->get('payBeforeConfirm'))
 			{
