@@ -52,11 +52,13 @@ class JFormFieldRedformgateway extends JFormFieldList
 		$results = $dispatcher->trigger('onGetGateway', array(&$gateways));
 
 		$options = array();
+
 		if (count($gateways))
 		{
 			foreach ($gateways as $g)
 			{
-				$options[] = JHtml::_('select.option', $g['name'], isset($g['label']) ? $g['label'] : $g['name']);
+				$label = isset($g['label']) ? $g['label'] . '(' . $g['name'] . ')': $g['name'];
+				$options[] = JHtml::_('select.option', $g['name'], $label);
 			}
 		}
 
