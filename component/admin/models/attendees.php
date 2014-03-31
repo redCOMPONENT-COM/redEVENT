@@ -567,6 +567,41 @@ class RedEventModelAttendees extends JModel
 	}
 
 	/**
+	 * Check if we are allowed to delete those registrations
+	 *
+	 * @param   array  $cid  registrations ids
+	 *
+	 * @return bool
+	 */
+	public function canDelete($cid = array())
+	{
+		if (count($cid))
+		{
+			$ids = implode(',', $cid);
+			$form = $this->getForm();
+
+			$query = ' SELECT r.id '
+				. ' FROM #__redevent_register AS r '
+				. ' LEFT JOIN #__rwf_submitters AS s ON r.sid = s.id '
+				. ' LEFT JOIN #__rwf_forms_'.$form->id .' AS f ON f.id = s.answer_id '
+				. ' WHERE r.id IN (' . implode(', ', $cid) . ')'
+				. '   AND r.cancelled = 1 ';
+			;
+			$this->_db->setQuery($query);
+			$res = $this->_db->loadColumn();
+
+			if (!$res || !count($res) == count($cid))
+			{
+				$this->setError(JText::_('COM_REDEVENT_CANT_DELETE_REGISTRATIONS'));
+				return false;
+			}
+
+			return true;
+		}
+		return true;
+	}
+
+	/**
 	 * Delete registered users
 	 *
 	 * @access public
