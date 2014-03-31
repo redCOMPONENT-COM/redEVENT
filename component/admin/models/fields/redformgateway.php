@@ -57,7 +57,7 @@ class JFormFieldRedformgateway extends JFormFieldList
 		{
 			foreach ($gateways as $g)
 			{
-				$label = isset($g['label']) ? $g['label'] . '(' . $g['name'] . ')': $g['name'];
+				$label = isset($g['label']) ? $g['label'] . ' (' . $g['name'] . ')': $g['name'];
 				$options[] = JHtml::_('select.option', $g['name'], $label);
 			}
 		}
