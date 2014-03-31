@@ -63,16 +63,6 @@ class plgRedeventIbcquickbook extends JPlugin
 		$this->xref = $xref;
 		$this->setSidFromResponse($redformResponse);
 
-		$status = $this->getEmploymentStatus();
-
-		if ($status == 'unemployed' || $status == 'other')
-		{
-			$this->triggerGlobase();
-			$this->triggerMailflow($status);
-
-			return $this->notifyAndStop($notification);
-		}
-
 		// We need to match response to real registration form, if not the same as submitted form
 		$redformResponse = $this->newRedFormResponse($redformResponse);
 
@@ -93,6 +83,7 @@ class plgRedeventIbcquickbook extends JPlugin
 	public function onAttendeeCreated($attendee_id)
 	{
 		$status = $this->getEmploymentStatus();
+		$this->triggerGlobase();
 		$this->triggerMailflow($status);
 
 		return true;
