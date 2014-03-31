@@ -24,7 +24,6 @@ if (!defined('FOF_INCLUDED'))
 JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
 
 //Require classes
-require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'log.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'helper.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'recurrence.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'route.php');

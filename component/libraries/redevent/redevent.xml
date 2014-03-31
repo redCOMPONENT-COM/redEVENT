@@ -15,6 +15,7 @@
 		<folder>customfield</folder>
 		<folder>factory</folder>
 		<folder>form</folder>
+        <folder>helper</folder>
         <folder>model</folder>
 	</files>
 </extension>

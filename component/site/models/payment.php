@@ -103,4 +103,57 @@ class RedeventModelPayment extends JModel
 
 		return $this->_event;
 	}
+
+	/**
+	 * Check that the registration was indeed paid, and confirm the attendee if not yet done
+	 *
+	 * @return true on success
+	 */
+	public function checkAndConfirm()
+	{
+		$rfcore = new RedformCore;
+
+		if ($rfcore->isPaidSubmitkey($this->_submit_key))
+		{
+			$this->confirmAttendees();
+		}
+	}
+
+	/**
+	 * Confirm attendees for this registration
+	 *
+	 * @return bool
+	 */
+	protected function confirmAttendees()
+	{
+		$attendeeIds = $this->getAttendeeIds();
+
+		foreach ($attendeeIds as $attendeeId)
+		{
+			$attendee = new REattendee($attendeeId);
+			$attendee->confirm();
+		}
+
+		return true;
+	}
+
+	/**
+	 * Get id of attendees associated to this payment
+	 *
+	 * @return mixed
+	 */
+	protected function getAttendeeIds()
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('r.id');
+		$query->from('#__redevent_register AS r');
+		$query->where('r.submit_key = ' . $db->quote($this->_submit_key));
+
+		$db->setQuery($query);
+		$res = $db->loadColumn();
+
+		return $res;
+	}
 }

@@ -56,7 +56,7 @@ class JFormFieldRedformgateway extends JFormFieldList
 		{
 			foreach ($gateways as $g)
 			{
-				$options[] = JHtml::_('select.option', isset($g['label']) ? $g['label'] : $g['name'], $g['name']);
+				$options[] = JHtml::_('select.option', $g['name'], isset($g['label']) ? $g['label'] : $g['name']);
 			}
 		}
 
@@ -65,6 +65,9 @@ class JFormFieldRedformgateway extends JFormFieldList
 		return $options;
 	}
 
+	/**
+	 * @return string
+	 */
 	protected function getInput()
 	{
 		$text = parent::getInput();

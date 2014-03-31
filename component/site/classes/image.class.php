@@ -23,8 +23,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-require_once (JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'log.php');
-
 /**
  * Holds the logic for image manipulation
  *

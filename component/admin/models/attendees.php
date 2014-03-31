@@ -204,7 +204,7 @@ class RedEventModelAttendees extends JModel
 		$query = $db->getQuery(true);
 
 		$query->select('r.*, r.id as attendee_id');
-		$query->select('s.answer_id, s.id AS submitter_id, s.price');
+		$query->select('s.answer_id, s.id AS submitter_id, s.price, s.currency');
 		$query->select('a.id AS eventid, a.course_code');
 		$query->select('pg.name as pricegroup');
 		$query->select('fo.activatepayment');
@@ -567,6 +567,41 @@ class RedEventModelAttendees extends JModel
 	}
 
 	/**
+	 * Check if we are allowed to delete those registrations
+	 *
+	 * @param   array  $cid  registrations ids
+	 *
+	 * @return bool
+	 */
+	public function canDelete($cid = array())
+	{
+		if (count($cid))
+		{
+			$ids = implode(',', $cid);
+			$form = $this->getForm();
+
+			$query = ' SELECT r.id '
+				. ' FROM #__redevent_register AS r '
+				. ' LEFT JOIN #__rwf_submitters AS s ON r.sid = s.id '
+				. ' LEFT JOIN #__rwf_forms_'.$form->id .' AS f ON f.id = s.answer_id '
+				. ' WHERE r.id IN (' . implode(', ', $cid) . ')'
+				. '   AND r.cancelled = 1 ';
+			;
+			$this->_db->setQuery($query);
+			$res = $this->_db->loadColumn();
+
+			if (!$res || !count($res) == count($cid))
+			{
+				$this->setError(JText::_('COM_REDEVENT_CANT_DELETE_REGISTRATIONS'));
+				return false;
+			}
+
+			return true;
+		}
+		return true;
+	}
+
+	/**
 	 * Delete registered users
 	 *
 	 * @access public
@@ -730,7 +765,7 @@ class RedEventModelAttendees extends JModel
 	function getFields($all = false)
 	{
 		$event = $this->getEvent();
-		$rfcore = new RedFormCore();
+		$rfcore = new RedformCore();
 		return $rfcore->getFields($event->redform_id);
 	}
 
@@ -756,7 +791,7 @@ class RedEventModelAttendees extends JModel
 		if (empty($sids)) {
 			return false;
 		}
-		$rfcore = new RedFormCore();
+		$rfcore = new RedformCore();
 		$answers = $rfcore->getSidsFieldsAnswers($sids);
 
 		$emails = array();

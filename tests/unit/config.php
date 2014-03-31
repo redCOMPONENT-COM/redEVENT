@@ -13,8 +13,8 @@ class JTestConfig
 	public $ftp_pass	= '';
 	public $ftp_root	= '';
 	public $ftp_enable	= 0;
-	public $log_path = '/opt/lampp/htdocs/jl25_test/logs';
-	public $tmp_path = '/opt/lampp/htdocs/jl25_test/tmp';
+	public $log_path = '/opt/www/public_html/jl25_test/logs';
+	public $tmp_path = '/opt/www/public_html/jl25_test/tmp';
 	public $mailer		= 'mail';
 	public $mailfrom = 'julv@free.fr';
 	public $fromname = 'jl25 test';
@@ -33,5 +33,5 @@ class JTestConfig
 	public $editor		= 'none';
 	public $offset		= 0;
 	public $lifetime	= 15;
-	public $joomla_basepath	= '/opt/lampp/htdocs/jl25_test';
+	public $joomla_basepath	= '/opt/www/public_html/jl25_test';
 }

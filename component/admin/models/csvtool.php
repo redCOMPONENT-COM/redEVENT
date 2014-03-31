@@ -91,7 +91,7 @@ class RedEventModelcsvtool extends JModel
 
 	function getFields($form_id)
 	{
-		$rfcore = new RedFormCore();
+		$rfcore = new RedformCore();
 		return $rfcore->getFields($form_id);
 	}
 
@@ -172,7 +172,7 @@ class RedEventModelcsvtool extends JModel
 			}
 		}
 
-		$rfcore = new RedFormCore();
+		$rfcore = new RedformCore();
 		$answers = $rfcore->getSidsAnswers($sids);
 
 		// add answers to registers

@@ -90,42 +90,56 @@ class RedEventControllerAttendees extends RedEventController
 	 */
 	function remove($cid = array())
 	{
-		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
-		$xref 	= JRequest::getInt('xref');
-		$total 	= count( $cid );
-		$formid = JRequest::getInt('form_id');
+		$app = JFactory::getApplication();
+		$cid = $app->input->get( 'cid', array(), 'post', 'array' );
+		$xref 	= $app->input->getInt('xref');
+		$total 	= count($cid);
 
-		/* Check if anything is selected */
-		if (!is_array( $cid ) || count( $cid ) < 1) {
-			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_delete' ) );
-		}
-
-		/* Get all submitter ID's */
-		$model = $this->getModel('attendees');
-
-		if(!$model->remove($cid)) {
-      RedEventError::raiseWarning(0, JText::_( "COM_REDEVENT_CANT_DELETE_REGISTRATIONS" ) . ': ' . $model->getError() );
-			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
-		}
-
-		foreach($cid as $attendee_id)
+		try
 		{
-			JPluginHelper::importPlugin('redevent');
-			$dispatcher =& JDispatcher::getInstance();
-			$res = $dispatcher->trigger('onAttendeeDeleted', array($attendee_id));
+			/* Check if anything is selected */
+			if (!is_array($cid) || count($cid) < 1)
+			{
+				throw new Exception(JText::_('COM_REDEVENT_SELECT_AN_ITEM_TO_DELETE'));
+			}
+
+			/* Get all submitter ID's */
+			$model = $this->getModel('attendees');
+
+			if (!$model->canDelete($cid))
+			{
+				throw new Exception($model->getError());
+			}
+
+			foreach ($cid as $attendee_id)
+			{
+				JPluginHelper::importPlugin('redevent');
+				$dispatcher = JDispatcher::getInstance();
+				$dispatcher->trigger('onAttendeeDeleted', array($attendee_id));
+			}
+
+			if (!$model->remove($cid))
+			{
+				throw new Exception($model->getError());
+			}
+
+			/* Check if we have space on the waiting list */
+			$model_wait = $this->getModel('waitinglist');
+			$model_wait->setXrefId($xref);
+			$model_wait->UpdateWaitingList();
+
+			$cache = JFactory::getCache('com_redevent');
+			$cache->clean();
+
+			$msg = $total . ' ' . JText::_('COM_REDEVENT_REGISTERED_USERS_DELETED');
+		}
+		catch (Exception $e)
+		{
+			$msg = $e->getMessage();
+			$msgType = 'errror';
 		}
 
-		/* Check if we have space on the waiting list */
-		$model_wait = $this->getModel('waitinglist');
-		$model_wait->setXrefId($xref);
-		$model_wait->UpdateWaitingList();
-
-		$cache = JFactory::getCache('com_redevent');
-		$cache->clean();
-
-		$msg = $total.' '.JText::_('COM_REDEVENT_REGISTERED_USERS_DELETED');
-
-		$this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$xref, $msg );
+		$this->setRedirect('index.php?option=com_redevent&view=attendees&xref=' . $xref, $msg, $msgType);
 	}
 
 	/**

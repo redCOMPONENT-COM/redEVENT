@@ -342,4 +342,27 @@
 			</filterchain>
 		</copy>
     </target>
+
+    <!--
+    ====================================================================================================
+    Tasks - Unit tests
+    ====================================================================================================
+    -->
+    <target name="unit-test" description="Copy to test site"
+            depends="setup-test, site">
+        <phpunit configuration="tests/unit/phpunit.xml"
+                 printsummary="true" haltonfailure="true" haltonerror="true">
+            <batchtest>
+                <fileset dir="tests/unit/suite">
+                    <include name="**/*Test.php"/>
+                </fileset>
+            </batchtest>
+        </phpunit>
+    </target>
+
+    <target name="setup-test" description="Init to copy to test site"
+            depends="setup-properties">
+        <property name="www.dir" value="${www.dirtest}" override="true"/>
+    </target>
+
 </project>

@@ -266,7 +266,7 @@ class RedEventModelAttendee extends JModel
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('pg.price, a.activate, f.currency AS form_currency');
+		$query->select('pg.price, a.activate');
 		$query->select('CASE WHEN CHAR_LENGTH(pg.currency) THEN pg.currency ELSE f.currency END as currency');
 		$query->from('#__redevent_event_venue_xref AS x');
 		$query->join('INNER', '#__redevent_events AS a ON a.id =  x.eventid');
@@ -278,11 +278,8 @@ class RedEventModelAttendee extends JModel
 		$details = $db->loadObject();
 
 		// First save redform data
-		// Session registration price
-		$price = redEVENTHelper::convertPrice($details->price, $details->currency, $details->form_currency);
-
-		$rfcore = new RedFormCore();
-		$result = $rfcore->saveAnswers('redevent', array('baseprice' => $price, 'edit' => 1));
+		$rfcore = new RedformCore;
+		$result = $rfcore->saveAnswers('redevent', array('baseprice' => $details->price, 'currency' => $details->currency, 'edit' => 1));
 
 		if (!$result)
 		{

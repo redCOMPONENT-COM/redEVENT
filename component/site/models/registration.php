@@ -99,10 +99,11 @@ class RedEventModelRegistration extends JModel
 	/**
 	 * create a new attendee
 	 *
-	 * @param object user performing the registration
-	 * @param int $sid associated redform submitter id
-	 * @param string $submit_key associated redform submit key
-	 * @param int $pricegroup_id
+	 * @param   object  $user                  performing the registration
+	 * @param   int     $sid                   associated redform submitter id
+	 * @param   string  $submit_key            associated redform submit key
+	 * @param   int     $sessionpricegroup_id  pricegroup id for registration
+	 *
 	 * @return boolean|object attendee row or false if failed
 	 */
 	function register($user, $sid, $submit_key, $sessionpricegroup_id)
@@ -110,8 +111,10 @@ class RedEventModelRegistration extends JModel
 		$config  = redEventHelper::config();
 		$session = $this->getSessionDetails();
 
-		if (!$sid) {
+		if (!$sid)
+		{
 			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_UPDATE_XREF_REQUIRED'));
+
 			return false;
 		}
 
@@ -135,7 +138,8 @@ class RedEventModelRegistration extends JModel
 			return false;
 		}
 
-		if ($session->activate == 0) // no activation
+		if ($session->activate == 0 // No activation
+			&& !$this->confirmOnPayment($obj))
 		{
 			$doConfirm = true;
 
@@ -150,6 +154,26 @@ class RedEventModelRegistration extends JModel
 		}
 
 		return $obj;
+	}
+
+	/**
+	 * Check if we should only confirm on payment
+	 *
+	 * @param   object  $registration  registration data
+	 *
+	 * @return bool
+	 */
+	protected function confirmOnPayment($registration)
+	{
+		if (!$registration->sessionpricegroup_id)
+		{
+			// Session is free
+			return false;
+		}
+
+		$config = redEventHelper::config();
+
+		return $config->get('payBeforeConfirm', 0);
 	}
 
 	/**

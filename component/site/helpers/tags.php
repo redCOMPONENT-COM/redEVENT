@@ -77,14 +77,10 @@ class redEVENT_tags
 
 		if ($this->_xref)
 		{
-			$db = & JFactory::getDBO();
+			$db = JFactory::getDBO();
 			$q = "SELECT eventid, venueid, maxattendees, maxwaitinglist, published FROM #__redevent_event_venue_xref WHERE id = " . $this->_xref;
 			$db->setQuery($q);
 			list($this->_eventid, $this->_venueid, $this->_maxattendees, $this->_maxwaitinglist, $this->_published) = $db->loadRow();
-			if (!$this->_published)
-			{
-				JError::raiseError(404, JText::_('COM_REDEVENT_This_event_is_not_published'), 'this xref is not published, can\'t be displayed in venues');
-			}
 		}
 	}
 
@@ -1062,7 +1058,7 @@ class redEVENT_tags
 	{
 		if (empty($this->_rfcore))
 		{
-			$this->_rfcore = new RedFormCore();
+			$this->_rfcore = new RedformCore();
 		}
 		return $this->_rfcore;
 	}
@@ -1097,13 +1093,15 @@ class redEVENT_tags
 	 */
 	function getForm()
 	{
-		$app = & JFactory::getApplication();
+		$app = JFactory::getApplication();
+		$config = redEVENTHelper::config();
+
 		$submit_key = JRequest::getVar('submit_key');
 
 		$details = $this->getEvent()->getData();
 		$prices = $this->getEvent()->getPrices();
 		$options = array('extrafields' => array());
-		$user = & JFactory::getUser();
+		$user = JFactory::getUser();
 
 		$rfcore = $this->_getRFCore();
 		if (!$rfcore->getFormStatus($this->getEvent()->getData()->redform_id))
@@ -1142,7 +1140,7 @@ class redEVENT_tags
 		$selpg = null;
 		if (count($prices))
 		{
-			$currency = current($prices)->form_currency ? current($prices)->form_currency : null;
+			$currency = current($prices)->currency;
 
 			// is pricegroup already selected ?
 			// if a review, we already have pricegroup_id in session
@@ -1159,6 +1157,7 @@ class redEVENT_tags
 			if (count($prices) == 1)
 			{
 				$selpg = current($prices);
+				$currency = $selpg->currency;
 			}
 			else if ($pg)
 			{
@@ -1167,6 +1166,7 @@ class redEVENT_tags
 					if ($p->id == $pg)
 					{
 						$selpg = $p;
+						$currency = $selpg->currency;
 						break;
 					}
 				}
@@ -1175,20 +1175,26 @@ class redEVENT_tags
 			if (($multi > 1 && count($prices) > 1) || !$selpg) // multiple selection
 			{
 				$field = array();
-				$field['label'] = '<label for="sessionpricegroup_id">' . JText::_('COM_REDEVENT_REGISTRATION_PRICE') . ($currency ? ' <span class="price-currency">(' . $currency . ')</span>' : '') . '</label>';
+				$field['label'] = '<label for="sessionpricegroup_id">' . JText::_('COM_REDEVENT_REGISTRATION_PRICE') . '</label>';
 				$field['field'] = redEVENTHelper::getRfPricesSelect($prices);
 				$field['class'] = 'reg-price';
 				$options['extrafields'][] = $field;
 			}
 			else // single selection => hidden field
 			{
-				$converted_price = redEVENTHelper::convertPrice($selpg->price, $selpg->currency, $selpg->form_currency);
 				$field = array();
 				$field['label'] = '<label for="sessionpricegroup_id">' . JText::_('COM_REDEVENT_REGISTRATION_PRICE') . '</label>';
 				$field['field'] = REOutput::formatprice($selpg->price, $selpg->currency) . (count($prices) > 1 ? ' (' . $selpg->name . ')' : '')
-					. '<input type="hidden" name="sessionpricegroup_id[]" class="fixedprice" value="' . $selpg->id . '" price="' . $converted_price . '" />';
+					. '<input type="hidden" name="sessionpricegroup_id[]" class="fixedprice" value="' . $selpg->id . '" price="' . $selpg->price . '" />';
 				$field['class'] = 'reg-price pg' . $selpg->id;
 				$options['extrafields'][] = $field;
+			}
+
+			$options['currency'] = $currency;
+
+			if ($config->get('payBeforeConfirm'))
+			{
+				$options['selectPaymentGateway'] = 1;
 			}
 		}
 
@@ -1215,7 +1221,7 @@ class redEVENT_tags
 		$html .= '</div>';
 		$html .= '</form>';
 
-		if (RedFormHelperAnalytics::isEnabled())
+		if (RedformHelperAnalytics::isEnabled())
 		{
 			if ($this->getOption('hasreview'))
 			{
@@ -1231,7 +1237,7 @@ class redEVENT_tags
 			$event->action = 'display';
 			$event->label = $label;
 			$event->value = null;
-			RedFormHelperAnalytics::trackEvent($event);
+			RedformHelperAnalytics::trackEvent($event);
 		}
 
 		return $html;
