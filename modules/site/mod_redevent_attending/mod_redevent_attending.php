@@ -22,13 +22,14 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+
 // get helper
 require_once (dirname(__FILE__).DS.'helper.php');
 
 require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'route.php');
 require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'helper.php');
 require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'classes'.DS.'image.class.php');
-require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'classes'.DS.'useracl.class.php');
 
 $user		=& JFactory::getUser();
 if (!$user->get('id')) {
@@ -46,7 +47,7 @@ $document->addScript('modules/mod_redevent_attending/mod_redevent_attending.js')
 
 $offset = JRequest::getInt('reattoffset', (int) $params->get( 'offset', '0' ));
 $type   = JRequest::getInt('reattspan', $params->get( 'type', '0' ));
-$uri    = &JFactory::getUri(); 
+$uri    = &JFactory::getUri();
 
 $curi = clone $uri;
 $curi->setVar('reattoffset', $offset);
@@ -63,7 +64,7 @@ $nexturi = clone $curi;
 $nexturi->setVar('reattoffset', $offset+1);
 $next     = htmlspecialchars($nexturi->toString());
 
-$document = &JFactory::getDocument(); 
+$document = &JFactory::getDocument();
 $document->addStyleSheet( JURI::base() . '/modules/mod_redevent_attending/mod_redevent_attending.css' );
 
 require(JModuleHelper::getLayoutPath('mod_redevent_attending', $params->get('layout', 'table')));

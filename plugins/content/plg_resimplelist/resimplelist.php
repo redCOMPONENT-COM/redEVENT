@@ -24,6 +24,8 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+
 // Import library dependencies
 jimport('joomla.plugin.plugin');
 
@@ -32,7 +34,6 @@ if (!defined('REDEVENT_PATH_SITE')) DEFINE('REDEVENT_PATH_SITE', JPATH_SITE.DS.'
 include_once(REDEVENT_PATH_SITE.DS.'classes'.DS.'output.class.php');
 include_once(REDEVENT_PATH_SITE.DS.'helpers'.DS.'route.php');
 include_once(REDEVENT_PATH_SITE.DS.'helpers'.DS.'helper.php');
-include_once(REDEVENT_PATH_SITE.DS.'classes'.DS.'useracl.class.php');
 include_once('resimplelist'.DS.'model.php');
 
 class plgContentRESimplelist extends JPlugin {

@@ -487,13 +487,13 @@ class RedeventModelDetails extends JModel
 
 	function getManageAttendees()
 	{
-		$acl = UserAcl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 		return $acl->canManageAttendees($this->_xref);
 	}
 
 	function getViewFullAttendees()
 	{
-		$acl = UserAcl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 		return $acl->canViewAttendees($this->_xref);
 	}
 
@@ -576,7 +576,7 @@ class RedeventModelDetails extends JModel
 		$event = $this->getDetails();
 
 		$event = $this->getSessionDetails();
-		$usersIds = UserAcl::getXrefRegistrationRecipients($event->xref);
+		$usersIds = RedeventUserAcl::getXrefRegistrationRecipients($event->xref);
 
 		if (!$usersIds)
 		{

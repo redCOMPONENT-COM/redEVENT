@@ -39,7 +39,7 @@ class RedeventControllerTest extends FOFController
 		{
 			exit('xref needed');
 		}
-		$res = UserAcl::getXrefRegistrationRecipients($xref);
+		$res = RedeventUserAcl::getXrefRegistrationRecipients($xref);
 		echo '<pre>';print_r($res); echo '</pre>';
 	}
 }

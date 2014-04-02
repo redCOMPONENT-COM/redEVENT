@@ -68,7 +68,7 @@ class RedeventViewEditevent extends JView
 			return;
 		}
 
-		$useracl = UserAcl::getInstance();
+		$useracl = RedeventUserAcl::getInstance();
 
 		if (!$useracl->canAddEvent())
 		{
@@ -314,7 +314,7 @@ class RedeventViewEditevent extends JView
 
 		$editor 	= JFactory::getEditor();
 
-		$useracl = UserAcl::getInstance();
+		$useracl = RedeventUserAcl::getInstance();
 
 		JHTML::_('behavior.mootools');
 

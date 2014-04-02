@@ -10,8 +10,8 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * attendee class - helper for managing attendees
  *
- * @package    Redevent.Library
- * @since      2.5
+ * @package  Redevent.Library
+ * @since    2.5
  */
 class RedeventAttendee extends JObject
 {
@@ -803,7 +803,7 @@ class RedeventAttendee extends JObject
 	protected function getXrefRegistrationRecipients()
 	{
 		$event = $this->getSessionDetails();
-		$usersIds = UserAcl::getXrefRegistrationRecipients($event->xref);
+		$usersIds = RedeventUserAcl::getXrefRegistrationRecipients($event->xref);
 
 		if (!$usersIds)
 		{

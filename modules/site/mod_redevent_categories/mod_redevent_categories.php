@@ -21,13 +21,14 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+
 // get helper
 require_once (dirname(__FILE__).DS.'helper.php');
 
 require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'route.php');
 require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'helper.php');
 require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'classes'.DS.'image.class.php');
-require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'classes'.DS.'useracl.class.php');
 
 $list = modRedEventCategoriesHelper::getList($params);
 
@@ -37,7 +38,7 @@ if (!$items) {
  return;
 }
 
-$document = &JFactory::getDocument(); 
+$document = &JFactory::getDocument();
 $document->addStyleSheet( JURI::base() . '/modules/mod_redevent_categories/mod_redevent_categories.css' );
 $document->addScript(JURI::base() . '/modules/mod_redevent_categories/mod_redevent_categories.js' );
 

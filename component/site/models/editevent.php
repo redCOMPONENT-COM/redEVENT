@@ -137,7 +137,7 @@ class RedeventModelEditevent extends JModel
 		// Initialize variables
 		$user		= JFactory::getUser();
 		$elsettings = redEVENTHelper::config();
-		$acl = UserAcl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 
 		$view		= JRequest::getWord('view');
 
@@ -371,7 +371,7 @@ class RedeventModelEditevent extends JModel
 		$app = &JFactory::getApplication();
 		if (empty($this->_xrefdata))
 		{
-			$acl = &UserAcl::getInstance();
+			$acl = &RedeventUserAcl::getInstance();
 			if ($this->_xref)
 			{
 				if (!$no_check && !$acl->canEditXref($this->_xref)) {
@@ -452,7 +452,7 @@ class RedeventModelEditevent extends JModel
 		$user = &JFactory::getUser();
 		$app = &JFactory::getApplication();
 		$params = $app->getParams();
-		$superuser	= UserAcl::superuser();
+		$superuser	= RedeventUserAcl::superuser();
 
 		//administrators or superadministrators have access to all categories, also maintained ones
 		if($superuser) {
@@ -460,7 +460,7 @@ class RedeventModelEditevent extends JModel
 		}
 		else
 		{
-			$acl = UserACl::getInstance();
+			$acl = RedeventUserAcl::getInstance();
 			$managed = $acl->getManagedCategories();
 			if (!$managed || !count($managed)) {
 				return false;
@@ -561,7 +561,7 @@ class RedeventModelEditevent extends JModel
 		$app    = &JFactory::getApplication();
 		$params = $app->getParams();
 
-		$superuser	= UserAcl::superuser();
+		$superuser	= RedeventUserAcl::superuser();
 
 
 		$where = array();
@@ -569,7 +569,7 @@ class RedeventModelEditevent extends JModel
 		//administrators or superadministrators have access to all venues, also maintained ones
 		if (!$superuser)
 		{
-			$acl = UserACl::getInstance();
+			$acl = RedeventUserAcl::getInstance();
 			$managed = $acl->getAllowedForEventsVenues();
 			if ($managed && count($managed)) {
 				$where[] = ' l.id IN ('.implode(',', $managed).')';
@@ -696,7 +696,7 @@ class RedeventModelEditevent extends JModel
 		$user 		  = & JFactory::getUser();
 		$elsettings = & redEVENTHelper::config();
 		$params     = $mainframe->getParams();
-		$acl        = UserAcl::getInstance();
+		$acl        = RedeventUserAcl::getInstance();
 
 		//Get mailinformation
 		$SiteName 		= $mainframe->getCfg('sitename');
@@ -1155,7 +1155,7 @@ class RedeventModelEditevent extends JModel
 		$app  = &JFactory::getApplication();
 		$params = $app->getParams();
 
-		$superuser	= UserAcl::superuser();
+		$superuser	= RedeventUserAcl::superuser();
 
 		$query = ' SELECT v.id AS value, v.language, '
 		       . ' CASE WHEN CHAR_LENGTH(v.city) THEN CONCAT_WS(\' - \', v.venue, v.city) ELSE v.venue END as text '
@@ -1167,7 +1167,7 @@ class RedeventModelEditevent extends JModel
 		//administrators or superadministrators have access to all venues, also maintained ones
 		if (!$superuser)
 		{
-			$acl = UserACl::getInstance();
+			$acl = RedeventUserAcl::getInstance();
 			$managed = $acl->getAllowedForEventsVenues();
 			if ($managed && count($managed)) {
 				$where[] = ' v.id IN (' . implode(',', $managed) . ')';
@@ -1221,9 +1221,9 @@ class RedeventModelEditevent extends JModel
 		$where[] = ' e.published = 1 ';
 
 		// filtering if not superuser
-		if (!UserAcl::superuser())
+		if (!RedeventUserAcl::superuser())
 		{
-			$cats = UserAcl::getInstance()->getAuthorisedCategories('re.manageevents');
+			$cats = RedeventUserAcl::getInstance()->getAuthorisedCategories('re.manageevents');
 			if (!$cats || !count($cats))
 			{
 				return false;
@@ -1432,7 +1432,7 @@ class RedeventModelEditevent extends JModel
   	if (!$xref_id) {
   		return false;
   	}
-		$acl = UserAcl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 
   	return $acl->canEditXref($xref_id);
   }
@@ -1443,7 +1443,7 @@ class RedeventModelEditevent extends JModel
    */
 	function getCanAddXref()
   {
-		$acl = UserAcl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
   	return $acl->canAddXref();
   }
 

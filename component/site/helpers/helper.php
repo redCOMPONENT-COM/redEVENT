@@ -552,7 +552,7 @@ class redEVENTHelper {
 		$result = new stdclass();
 		$result->canregister = 1;
 
-		$acl = UserAcl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 		if ($acl->canManageAttendees($xref_id)) {
 			return $result;
 		}

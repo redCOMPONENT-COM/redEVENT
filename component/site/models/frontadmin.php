@@ -59,7 +59,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 
 	/**
 	 * user acl object
-	 * @var UserAcl
+	 * @var RedeventUserAcl
 	 */
 	protected $useracl = null;
 
@@ -73,7 +73,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		$this->uid = $app->input->get('uid', 0, 'int');
 		$this->setState('uid', $this->uid);
 
-		$this->useracl = UserAcl::getInstance();
+		$this->useracl = RedeventUserAcl::getInstance();
 
 		// Get the number of events from database
 		$limit       	= $app->getUserStateFromRequest('com_redevent.limit', 'limit', $params->def('b2b_sessions_display_num', 20), 'int');
@@ -794,7 +794,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 	protected function _buildSessionsListWhere(JDatabaseQuery $query)
 	{
 		$db = JFactory::getDbo();
-		$acl = UserAcl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 		$config = redEVENTHelper::config();
 
 		$query->where('x.published = 1');
@@ -1013,7 +1013,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 			return false;
 		}
 
-		$useracl = UserAcl::getInstance();
+		$useracl = RedeventUserAcl::getInstance();
 
 		if (!$useracl->canManageAttendees($res->xref) or 1)
 		{

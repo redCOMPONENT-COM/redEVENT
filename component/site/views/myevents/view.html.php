@@ -58,7 +58,7 @@ class RedeventViewMyevents extends JView
 		$pathway    = $mainframe->getPathWay();
 		$params     = $mainframe->getParams();
 		$uri        = JFactory::getURI();
-		$acl        = UserACl::getInstance();
+		$acl        = RedeventUserAcl::getInstance();
 
 		$menu = JSite::getMenu();
 		$item = $menu->getActive();
@@ -237,7 +237,7 @@ class RedeventViewMyevents extends JView
 	 */
 	public static function xrefeditbutton($id, $xref)
 	{
-		$acl = &UserAcl::getInstance();
+		$acl = &RedeventUserAcl::getInstance();
 
 		if (!$acl->canEditXref($xref))
 		{
@@ -267,7 +267,7 @@ class RedeventViewMyevents extends JView
 	 */
 	public static function eventeditbutton($id, $xref)
 	{
-		$acl = &UserAcl::getInstance();
+		$acl = &RedeventUserAcl::getInstance();
 
 		if (!$acl->canEditEvent($id))
 		{

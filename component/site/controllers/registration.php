@@ -255,7 +255,7 @@ class RedEventControllerRegistration extends RedEventController
 
 	function manageattendees()
 	{
-		$acl = UserAcl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 		$xref = JRequest::getInt('xref');
 		if ($acl->canManageAttendees($xref)) {
 			$layout = 'manageattendees';

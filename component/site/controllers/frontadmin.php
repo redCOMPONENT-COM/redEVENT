@@ -260,7 +260,7 @@ class RedeventControllerFrontadmin extends FOFController
 		$resp->status = 1;
 		$resp->regs = array();
 
-		$acl = UserAcl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 
 		if (!$acl->canManageAttendees($xref))
 		{
@@ -314,11 +314,11 @@ class RedeventControllerFrontadmin extends FOFController
 		$xref  = $input->get('xref', 0, 'int');
 		$state = $input->get('state', 0, 'int');
 
-		$useracl = UserAcl::getInstance();
+		$RedeventUserAcl = RedeventUserAcl::getInstance();
 
 		$resp = new stdclass();
 
-		if (!$useracl->canPublishXref($xref)) {
+		if (!$RedeventUserAcl->canPublishXref($xref)) {
 			$resp->status = 0;
 			$resp->error  = JText::_('COM_REDEVENT_USER_ACTION_NOT_ALLOWED');
 		}

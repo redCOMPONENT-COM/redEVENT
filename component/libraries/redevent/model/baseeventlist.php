@@ -225,7 +225,7 @@ class RedeventModelBaseeventlist extends JModel
 		// Get the WHERE and ORDER BY clauses for the query
 		$customs = $this->getCustomFields();
 		$xcustoms = $this->getXrefCustomFields();
-		$acl = UserAcl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);

@@ -52,7 +52,7 @@ class RedeventViewDetails extends JView
 		$user		= JFactory::getUser();
 		$dispatcher = JDispatcher::getInstance();
 		$elsettings = redEVENTHelper::config();
-		$acl        = UserAcl::getInstance();
+		$acl        = RedeventUserAcl::getInstance();
 
 		if ($params->get('gplusone', 1)) {
 			$document->addScript('https://apis.google.com/js/plusone.js');

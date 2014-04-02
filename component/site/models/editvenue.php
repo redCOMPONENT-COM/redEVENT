@@ -145,7 +145,7 @@ class RedeventModelEditvenue extends JModel
 		$user = &JFactory::getUser();
 		$app = &JFactory::getApplication();
 		$params = $app->getParams();
-		$superuser	= UserAcl::superuser();
+		$superuser	= RedeventUserAcl::superuser();
 
 		//administrators or superadministrators have access to all categories, also maintained ones
 		if($superuser)
@@ -154,7 +154,7 @@ class RedeventModelEditvenue extends JModel
 		}
 		else
 		{
-			$acl = UserACl::getInstance();
+			$acl = RedeventUserAcl::getInstance();
 			$managed = $acl->getManagedVenuesCategories();
 			if (!$managed || !count($managed))
 			{
@@ -461,6 +461,6 @@ class RedeventModelEditvenue extends JModel
 	{
 		$venue = $this->_loadVenue();
 
-		return UserAcl::getInstance()->canEditVenue($venue->id);
+		return RedeventUserAcl::getInstance()->canEditVenue($venue->id);
 	}
 }

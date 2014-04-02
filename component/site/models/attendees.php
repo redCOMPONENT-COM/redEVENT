@@ -306,7 +306,7 @@ class RedEventModelAttendees extends JModel
 	 */
   function getManageAttendees()
   {
-  	$acl = UserAcl::getInstance();
+  	$acl = RedeventUserAcl::getInstance();
   	return $acl->canManageAttendees($this->_xref);
   }
 
@@ -317,7 +317,7 @@ class RedEventModelAttendees extends JModel
 	 */
   function getViewAttendees()
   {
-  	$acl = UserAcl::getInstance();
+  	$acl = RedeventUserAcl::getInstance();
   	return $acl->canViewAttendees($this->_xref);
   }
 

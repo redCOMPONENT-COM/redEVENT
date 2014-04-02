@@ -22,12 +22,13 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+
 // get helper
 require_once (dirname(__FILE__).DS.'helper.php');
 
 require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'route.php');
 require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'helper.php');
-require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'classes'.DS.'useracl.class.php');
 
 $app = JFactory::getApplication();
 

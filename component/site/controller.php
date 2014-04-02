@@ -272,7 +272,7 @@ class RedeventController extends JController
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or die( 'Invalid Token' );
-		$acl        = UserAcl::getInstance();
+		$acl        = RedeventUserAcl::getInstance();
 
 		//Sanitize
 		$post = JRequest::get( 'post' );
@@ -651,7 +651,7 @@ class RedeventController extends JController
 
 	function publishxref()
 	{
-		$acl  = UserAcl::getInstance();
+		$acl  = RedeventUserAcl::getInstance();
 		$xref = JRequest::getInt('xref');
 
 		if (!$acl->canPublishXref($xref)) {
@@ -687,7 +687,7 @@ class RedeventController extends JController
 
 	function deletexref()
 	{
-		$acl  = UserAcl::getInstance();
+		$acl  = RedeventUserAcl::getInstance();
 		$xref = JRequest::getInt('xref');
 
 		if (!$acl->canEditXref($xref)) {

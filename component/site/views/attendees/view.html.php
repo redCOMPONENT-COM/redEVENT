@@ -52,7 +52,7 @@ class RedeventViewAttendees extends JView
 		$document 	= JFactory::getDocument();
 		$user		= JFactory::getUser();
 		$elsettings = redEVENTHelper::config();
-		$acl        = UserAcl::getInstance();
+		$acl        = RedeventUserAcl::getInstance();
 		$uri        = & JFactory::getURI();
 		$model      = &$this->getModel();
 
