@@ -124,16 +124,16 @@ $colnames = array_map('trim', $colnames);
 				case 'date': ?>
 	    		<td class="re_date">
 	    			<?php if ($row->dates && strtotime($row->dates)): ?>
-	    			<meta itemprop="startDate" content="<?php echo REOutput::getIsoDate($row->dates, $row->times); ?>">
+	    			<meta itemprop="startDate" content="<?php echo RedeventHelperOutput::getIsoDate($row->dates, $row->times); ?>">
 	    			<?php endif; ?>
 	    			<?php if ($row->enddates && strtotime($row->enddates)): ?>
-	    			<meta itemprop="endDate" content="<?php echo REOutput::getIsoDate($row->enddates, $row->endtimes); ?>">
+	    			<meta itemprop="endDate" content="<?php echo RedeventHelperOutput::getIsoDate($row->enddates, $row->endtimes); ?>">
 	    			<?php endif; ?>
 
 						<?php if ($this->params->get('link_date', 0)): ?>
-			    			<?php echo JHTML::link($detaillink, REOutput::formatEventDateTime($row));	?>
+			    			<?php echo JHTML::link($detaillink, RedeventHelperOutput::formatEventDateTime($row));	?>
 						<?php else: ?>
-			    			<?php echo REOutput::formatEventDateTime($row);	?>
+			    			<?php echo RedeventHelperOutput::formatEventDateTime($row);	?>
 						<?php endif; ?>
 					</td>
 				<?php break;?>
@@ -207,7 +207,7 @@ $colnames = array_map('trim', $colnames);
 				<?php break;?>
 
 				<?php case 'price': ?>
-					<td class="re_prices"><?php echo REOutput::formatListPrices($row->prices); ?></td>
+					<td class="re_prices"><?php echo RedeventHelperOutput::formatListPrices($row->prices); ?></td>
 				<?php break;?>
 
 				<?php case 'credits': ?>

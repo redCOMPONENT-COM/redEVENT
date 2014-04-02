@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tbody>
 			<?php foreach ($this->bookings as $row): ?>
 				<tr>
-					<td><?php echo REOutput::formatdate($row->dates, false); ?></td>
+					<td><?php echo RedeventHelperOutput::formatdate($row->dates, false); ?></td>
 					<td><?php echo RedeventHelper::getEventDuration($row); ?></td>
 					<td><?php echo $row->full_title; ?></td>
 					<td><?php echo $row->venue; ?></td>

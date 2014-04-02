@@ -29,7 +29,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div id="redevent" class="el_webformsignup">
 	<p class="buttons">
 	  <?php
-	    echo REOutput::printbutton( $this->print_link, $this->params );
+	    echo RedeventHelperOutput::printbutton( $this->print_link, $this->params );
 	  ?>
 	</p>
 
@@ -43,7 +43,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php endif; ?>
 <div class="bookevent_detail">
 	<h2><?php echo $this->course->title?></h2>
-	<p><?php echo REOutput::formatdate($this->course->dates, $this->course->times); ?><br><?php echo $this->course->location?></p>
+	<p><?php echo RedeventHelperOutput::formatdate($this->course->dates, $this->course->times); ?><br><?php echo $this->course->location?></p>
 </div>
 
 <?php

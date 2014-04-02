@@ -56,13 +56,13 @@ foreach ($this->upcomingvenueevents as $key => $event) {
 	$venue_url = JRoute::_('index.php?option=com_redevent&view=venueevents&id='.$event->venueslug);
 	?>
 	<tr>
-		<td class="courseinfo_date"><?php echo REOutput::formatdate($event->dates, $event->times); ?></td>
+		<td class="courseinfo_date"><?php echo RedeventHelperOutput::formatdate($event->dates, $event->times); ?></td>
 		<td class="courseinfo_title"><?php echo JHTML::_('link', $event_url, $event->full_title); ?></td>
 			<td class="courseinfo_duration"><?php echo RedeventHelper::getEventDuration($event); ?></td>
 
 			<td class="courseinfo_venue"><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
-			<td class="courseinfo_country"><?php echo REOutput::getFlag( $event->country ); ?></td>
-			<td class="courseinfo_prices re-price"><?php echo REOutput::formatListPrices($event->prices); ?></td>
+			<td class="courseinfo_country"><?php echo RedeventHelperOutput::getFlag( $event->country ); ?></td>
+			<td class="courseinfo_prices re-price"><?php echo RedeventHelperOutput::formatListPrices($event->prices); ?></td>
 			<td class="courseinfo_credit"><?php echo ($event->maxattendees == 0 ? JText::_('COM_REDEVENT_EVENT_NOLIMIT') : $event->maxattendees);?></td>
 		<td class="courseinfo_signup" width="*">
 		<?php
@@ -73,7 +73,7 @@ foreach ($this->upcomingvenueevents as $key => $event) {
 		  $img = JHTML::_('image', JURI::base() . $imgpath,
 		                          $registration_status->status,
 		                          array('class' => 'hasTip', 'title' => $registration_status->status));
-			echo REOutput::moreInfoIcon($event->xslug, $img, $registration_status->status);
+			echo RedeventHelperOutput::moreInfoIcon($event->xslug, $img, $registration_status->status);
 		}
 		else
 		{

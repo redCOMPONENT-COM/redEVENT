@@ -28,10 +28,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <p class="buttons">
 	<?php
 		if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup
-			echo REOutput::submitbutton( $this->dellink, $this->params );
+			echo RedeventHelperOutput::submitbutton( $this->dellink, $this->params );
 		endif;
-		echo REOutput::mailbutton( $this->venue->slug, 'venueevents', $this->params );
-		echo REOutput::printbutton( $this->print_link, $this->params );
+		echo RedeventHelperOutput::mailbutton( $this->venue->slug, 'venueevents', $this->params );
+		echo RedeventHelperOutput::printbutton( $this->print_link, $this->params );
 	?>
 </p>
 <?php if ($this->params->def('show_page_title', 1)) : ?>
@@ -43,7 +43,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<!--Venue-->
 	<?php //flyer
 	echo redEVENTImage::modalimage($this->venue->locimage, $this->venue->venue);
-	echo REOutput::mapicon( $this->venue, array('class' => 'map'));
+	echo RedeventHelperOutput::mapicon( $this->venue, array('class' => 'map'));
 	?>
 
 	<dl class="location floattext">
