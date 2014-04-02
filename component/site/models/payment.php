@@ -130,7 +130,7 @@ class RedeventModelPayment extends JModel
 
 		foreach ($attendeeIds as $attendeeId)
 		{
-			$attendee = new REattendee($attendeeId);
+			$attendee = new RedeventAttendee($attendeeId);
 			$attendee->confirm();
 		}
 

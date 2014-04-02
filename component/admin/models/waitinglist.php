@@ -219,7 +219,7 @@ class RedEventModelWaitinglist extends JModel {
 
 		foreach ($this->move_off_ids as $rid)
 		{
-			$attendee = new REattendee($rid);
+			$attendee = new RedeventAttendee($rid);
 			if (!$attendee->toggleWaitingListStatus(0)) {
 				$this->setError($attendee->getError());
 				return false;
@@ -252,7 +252,7 @@ class RedEventModelWaitinglist extends JModel {
 
 		foreach ($this->move_on_ids as $rid)
 		{
-			$attendee = new REattendee($rid);
+			$attendee = new RedeventAttendee($rid);
 			if (!$attendee->toggleWaitingListStatus(1)) {
 				$this->setError($attendee->getError());
 				return false;
@@ -319,7 +319,7 @@ class RedEventModelWaitinglist extends JModel {
 
       foreach ($this->move_off_ids as $rid)
       {
-      	$attendee = new REattendee($rid);
+      	$attendee = new RedeventAttendee($rid);
 				if (!$attendee->toggleWaitingListStatus(0)) {
 					$this->setError($attendee->getError());
 					return false;
@@ -346,7 +346,7 @@ class RedEventModelWaitinglist extends JModel {
     {
       foreach ($register_ids as $rid)
       {
-      	$attendee = new REattendee($rid);
+      	$attendee = new RedeventAttendee($rid);
 				if (!$attendee->toggleWaitingListStatus(1)) {
 					$this->setError($attendee->getError());
 					return false;

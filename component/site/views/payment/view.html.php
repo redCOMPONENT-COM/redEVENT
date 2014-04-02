@@ -116,6 +116,7 @@ class RedeventViewPayment extends JView
 				JPluginHelper::importPlugin('redevent');
 				$dispatcher = JDispatcher::getInstance();
 				$dispatcher->trigger('onAfterPaymentVerified', array($submit_key));
+
 				break;
 
 			case 'refused':
