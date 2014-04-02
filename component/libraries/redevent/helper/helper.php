@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent.Library
  * @since    2.5
 */
-class redEVENTHelper
+class RedeventHelper
 {
 	/**
 	 * Pulls settings from database and stores in an static object
