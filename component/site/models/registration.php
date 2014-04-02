@@ -217,7 +217,7 @@ class RedEventModelRegistration extends JModel
 	 */
 	function confirm($rid)
 	{
-		$attendee = new REattendee($rid);
+		$attendee = new RedeventAttendee($rid);
 
 		// first, changed status to confirmed
 		if (!$attendee->confirm())
@@ -338,7 +338,7 @@ class RedEventModelRegistration extends JModel
 
 		foreach ($registrations as $rid)
 		{
-			$attendee = new REattendee($rid);
+			$attendee = new RedeventAttendee($rid);
 			if (!$attendee->sendNotificationEmail()) {
 				$this->setError($attendee->getError());
 				return false;
@@ -374,7 +374,7 @@ class RedEventModelRegistration extends JModel
 
 		foreach ($registrations as $rid)
 		{
-			$attendee = new REattendee($rid);
+			$attendee = new RedeventAttendee($rid);
 			if (!$attendee->notifyManagers($unreg)) {
 				$this->setError($attendee->getError());
 				return false;
