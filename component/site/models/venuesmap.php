@@ -246,18 +246,18 @@ class RedEventModelVenuesmap extends JModel
 
 		$countries = array_unique($countries);
 
-		$countrycoords = redEVENTHelperCountries::getCountrycoordArray();
+		$countrycoords = RedeventHelperCountries::getCountrycoordArray();
 
 		$res = array();
 
 		foreach ($countries as $c)
 		{
 			$country = new stdclass();
-			$country->name      = redEVENTHelperCountries::getCountryName($c);
-			$country->flag      = redEVENTHelperCountries::getCountryFlag($c);
-			$country->flagurl   = redEVENTHelperCountries::getIsoFlag($c);
-			$country->latitude  = redEVENTHelperCountries::getLatitude($c);
-			$country->longitude = redEVENTHelperCountries::getLongitude($c);
+			$country->name      = RedeventHelperCountries::getCountryName($c);
+			$country->flag      = RedeventHelperCountries::getCountryFlag($c);
+			$country->flagurl   = RedeventHelperCountries::getIsoFlag($c);
+			$country->latitude  = RedeventHelperCountries::getLatitude($c);
+			$country->longitude = RedeventHelperCountries::getLongitude($c);
 			$res[] = $country;
 		}
 

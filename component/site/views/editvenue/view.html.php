@@ -120,7 +120,7 @@ class RedeventViewEditvenue extends JView
                                     'value', 'text', $selected);
 
     // country
-    $options = redEVENTHelperCountries::getCountryOptions('value', 'text', true);
+    $options = RedeventHelperCountries::getCountryOptions('value', 'text', true);
     $lists['country'] = JHTML::_('select.genericlist', $options, 'country', '', 'value', 'text', $row->country);
 
     // published state selector

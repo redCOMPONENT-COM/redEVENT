@@ -506,7 +506,7 @@ class RedeventModelDetails extends JModel
 
 		$event = $this->getDetails();
 
-		$tags   = new redEVENT_tags();
+		$tags   = new RedeventTags();
 		$tags->setXref($this->_xref);
 		$tags->setSubmitkey(JRequest::getVar('submit_key'));
 

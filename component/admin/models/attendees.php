@@ -844,7 +844,7 @@ class RedEventModelAttendees extends JModel
 		$app = &JFactory::getApplication();
 		$emails = $this->getEmails($cid);
 
-		$taghelper = new redEVENT_tags();
+		$taghelper = new RedeventTags();
 		$taghelper->setXref($this->_xref);
   	$subject = $taghelper->ReplaceTags($subject);
   	$body    = $taghelper->ReplaceTags($body);

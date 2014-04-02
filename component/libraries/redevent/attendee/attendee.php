@@ -392,7 +392,7 @@ class RedeventAttendee extends JObject
 
 		if (empty($this->taghelper))
 		{
-			$this->taghelper = new redEVENT_tags;
+			$this->taghelper = new RedeventTags;
 			$this->taghelper->setXref($data->xref);
 		}
 
@@ -501,7 +501,7 @@ class RedeventAttendee extends JObject
 		}
 
 		$app = JFactory::getApplication();
-		$tags = new redEVENT_tags;
+		$tags = new RedeventTags;
 		$tags->setXref($this->getXref());
 		$tags->addOptions(array('sids' => array($this->load()->sid)));
 		$event = $this->getSessionDetails();
@@ -639,7 +639,7 @@ class RedeventAttendee extends JObject
 
 	public function replaceTags($text)
 	{
-		$tags = new redEVENT_tags;
+		$tags = new RedeventTags;
 		$tags->setXref($this->getXref());
 		$tags->addOptions(array('sids' => array($this->load()->sid)));
 
@@ -846,7 +846,7 @@ class RedeventAttendee extends JObject
 			$mailer->FromName = $mainframe->getCfg('sitename');
 			$mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
 
-			$tags = new redEVENT_tags;
+			$tags = new RedeventTags;
 			$tags->setXref($this->getXref());
 			$tags->addOptions(array('sids' => array($this->load()->sid)));
 
@@ -913,7 +913,7 @@ class RedeventAttendee extends JObject
 		$app = JFactory::getApplication();
 		$params = $app->getParams('com_redevent');
 
-		$tags = new redEVENT_tags;
+		$tags = new RedeventTags;
 		$tags->setXref($this->getXref());
 		$tags->setSubmitkey($this->load()->submit_key);
 		$tags->addOptions(array('sids' => array($this->load()->sid)));

@@ -46,7 +46,7 @@ class JFormFieldRecountry extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$options = array_merge(parent::getOptions(), redEVENTHelperCountries::getCountryOptions());
+		$options = array_merge(parent::getOptions(), RedeventHelperCountries::getCountryOptions());
 
 		return $options;
 	}

@@ -22,10 +22,9 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_SITE . DS . 'components' . DS . 'com_redevent' . DS . 'helpers' . DS . 'countries.php');
 require_once(JPATH_SITE . '/components/com_redevent/models/eventhelper.php');
 
-class redEVENT_tags
+class RedeventTags
 {
 
 	private $_xref;
@@ -1790,12 +1789,12 @@ class redEVENT_tags
 
 	function _getTag_venue_country()
 	{
-		return redEVENTHelperCountries::getCountryName($this->getEvent()->getData()->country);
+		return RedeventHelperCountries::getCountryName($this->getEvent()->getData()->country);
 	}
 
 	function _getTag_venue_countryflag()
 	{
-		return redEVENTHelperCountries::getCountryFlag($this->getEvent()->getData()->country);
+		return RedeventHelperCountries::getCountryFlag($this->getEvent()->getData()->country);
 	}
 
 	function _getTag_venue_mapicon()

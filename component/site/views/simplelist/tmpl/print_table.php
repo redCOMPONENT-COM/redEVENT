@@ -135,11 +135,11 @@ $colnames = array_map('trim', $colnames);
 				<?php break;?>
 
 				<?php case 'country': ?>
-					<td class="re_country"><?php echo $row->country ? redEVENTHelperCountries::getShortCountryName($row->country) : ''; ?></td>
+					<td class="re_country"><?php echo $row->country ? RedeventHelperCountries::getShortCountryName($row->country) : ''; ?></td>
 				<?php break;?>
 
 				<?php case 'countryflag': ?>
-					<td class="re_countryflag"><?php echo $row->country ? redEVENTHelperCountries::getCountryFlag($row->country) : ''; ?></td>
+					<td class="re_countryflag"><?php echo $row->country ? RedeventHelperCountries::getCountryFlag($row->country) : ''; ?></td>
 				<?php break;?>
 
 				<?php case 'state': ?>

@@ -93,7 +93,7 @@ class RedeventViewVenue extends JView
 			$address[] = $row->city;
 		}
 		if ($row->country) {
-			$address[] = redEVENTHelperCountries::getCountryName($row->country);
+			$address[] = RedeventHelperCountries::getCountryName($row->country);
 		}
 		$address = implode(',', $address);
 		JFilterOutput::objectHTMLSafe( $row, ENT_QUOTES, array('locdescription','locmage', 'countryimg', 'targetlink') );

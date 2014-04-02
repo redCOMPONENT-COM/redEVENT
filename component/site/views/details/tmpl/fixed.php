@@ -218,7 +218,7 @@ if ($this->row->venueid != 0) {
 				<?php if ( $this->row->country ) : ?>
 				<dt class="venue_country"><?php echo JText::_('COM_REDEVENT_COUNTRY' ).':'; ?></dt>
     			<dd class="venue_country">
-    				<?php echo redEVENTHelperCountries::getCountryFlag( $this->row->country ); ?>
+    				<?php echo RedeventHelperCountries::getCountryFlag( $this->row->country ); ?>
     			</dd>
     		<?php endif; ?>
 		</dl>

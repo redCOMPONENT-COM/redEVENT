@@ -42,10 +42,10 @@ class RedeventViewVenue extends JView
 	 * @param int $tpl
 	 */
 	function display( $tpl=null )
-	{		
+	{
     return $this->_displayGmap($tpl);
 	}
-	
+
 	function _displayGmap( $tpl=null )
 	{
 		$row 		= $this->Get('Data');
@@ -59,10 +59,10 @@ class RedeventViewVenue extends JView
 			$address[] = $row->city;
 		}
 		if ($row->country) {
-			$address[] = redEVENTHelperCountries::getCountryName($row->country);
+			$address[] = RedeventHelperCountries::getCountryName($row->country);
 		}
 		$address = implode(',', $address);
-		
+
 		$resp = new stdclass();
 		$resp->name = $row->venue;
 		$resp->address = $address;

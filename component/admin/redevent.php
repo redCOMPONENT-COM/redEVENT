@@ -27,8 +27,6 @@ JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'helper.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'recurrence.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'route.php');
-require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'tags.php');
-require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'countries.php');
 require_once (JPATH_COMPONENT_SITE.DS.'models'.DS.'eventhelper.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'image.class.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'output.class.php');

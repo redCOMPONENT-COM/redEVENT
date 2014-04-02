@@ -842,7 +842,7 @@ class RedeventController extends JController
 			{
 				echo "sending reminder for event: ".redEVENTHelper::getSessionFullTitle($event)."<br>";
 
-				$tags = new redEVENT_tags();
+				$tags = new RedeventTags();
 				$tags->setXref($event->id);
 
 				// get attendees

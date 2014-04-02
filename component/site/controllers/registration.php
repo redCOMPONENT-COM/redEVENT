@@ -402,8 +402,7 @@ class RedEventControllerRegistration extends RedEventController
 
 		/* This loads the tags replacer */
 		JRequest::setVar('xref', $xref);
-		require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'tags.php');
-		$tags = new redEVENT_tags();
+		$tags = new RedeventTags;
 		$tags->setXref($xref);
 		$tags->setSubmitkey($submit_key);
 

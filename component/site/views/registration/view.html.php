@@ -75,11 +75,8 @@ class RedeventViewRegistration extends JViewLegacy
 			return;
 		}
 
-		/* This loads the tags replacer */
-		JView::loadHelper('tags');
-
 		/* Start the tag replacer */
-		$tags = new redEVENT_tags;
+		$tags = new RedeventTags;
 		$tags->setXref(JRequest::getInt('xref'));
 		$message = $tags->ReplaceTags($message);
 

@@ -72,8 +72,7 @@ class RedeventViewDetails extends JView
 		$this->_venues = $this->get('Venues');
 
 		/* This loads the tags replacer */
-		JView::loadHelper('tags');
-		$tags = new redEVENT_tags();
+		$tags = new RedeventTags;
 		$tags->setEventId(JRequest::getInt('id'));
 		$tags->setXref(JRequest::getInt('xref'));
 		$this->assignRef('tags', $tags);

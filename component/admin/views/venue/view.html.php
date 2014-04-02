@@ -117,7 +117,7 @@ class RedEventViewVenue extends JView
 
 	    $countries = array();
 	    $countries[] = JHTML::_('select.option', '', JText::_('COM_REDEVENT_Select_country'));
-	    $countries = array_merge($countries, redEVENTHelperCountries::getCountryOptions());
+	    $countries = array_merge($countries, RedeventHelperCountries::getCountryOptions());
 	    $lists['countries'] = JHTML::_('select.genericlist', $countries, 'country', 'class="inputbox"', 'value', 'text', $row->country );
 	    unset($countries);
 
