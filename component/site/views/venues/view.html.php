@@ -45,7 +45,7 @@ class RedeventViewVenues extends JView
 		$mainframe = &JFactory::getApplication();
 
 		$document 	= & JFactory::getDocument();
-		$elsettings = & redEVENTHelper::config();
+		$elsettings = & RedeventHelper::config();
 
 		//get menu information
 		$menu		= & JSite::getMenu();

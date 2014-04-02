@@ -193,7 +193,7 @@ class redEVENTImage
 	*/
 	public static function flyercreator($image)
 	{
-		$settings = & redEVENTHelper::config();
+		$settings = & RedeventHelper::config();
 
 		jimport('joomla.filesystem.file');
 
@@ -288,7 +288,7 @@ class redEVENTImage
 	{
 		jimport('joomla.filesystem.file');
 		$app = &JFactory::getApplication();
-		$settings = redEVENTHelper::config();
+		$settings = RedeventHelper::config();
 
 		if ($maxdim)
 		{

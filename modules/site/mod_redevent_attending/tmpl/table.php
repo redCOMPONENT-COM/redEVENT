@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 		<th class="event-date"><?php echo JText::_('MOD_REDEVENT_ATTENDING_HEADER_DATE'); ?></th>
 		<th class="event-title"><?php echo JText::_('MOD_REDEVENT_ATTENDING_HEADER_TITLE'); ?></th>
-		<?php if ($params->get('showvenue', 1)): ?>	
+		<?php if ($params->get('showvenue', 1)): ?>
 		<th class="event-venue"><?php echo JText::_('MOD_REDEVENT_ATTENDING_HEADER_VENUE'); ?></th>
 		<?php	endif; ?>
 		<?php if ($params->get('show_picture', 1)):?>
@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
 </thead>
 <tbody>
 <?php foreach ($list as $item) :  ?>
-	<?php $isover = (redEVENTHelper::isOver($item) ? ' isover' : ''); ?>
+	<?php $isover = (RedeventHelper::isOver($item) ? ' isover' : ''); ?>
 	<tr class="<?php echo $isover; ?>">
 		<td class="event-date">
 			<?php echo $item->dateinfo; ?>
@@ -59,9 +59,9 @@ defined('_JEXEC') or die('Restricted access');
 			<?php else : ?>
 				<?php echo $item->title_short; ?>
 			<?php endif; ?>
-		</td>			
-		
-		<?php if ($params->get('showvenue', 1)): ?>		
+		</td>
+
+		<?php if ($params->get('showvenue', 1)): ?>
 		<td class="event-venue">
 			<?php if ($params->get('linkloc', 1)) : ?>
 				<?php echo JHTML::link($item->venueurl, $item->venue_short);?>
@@ -70,14 +70,14 @@ defined('_JEXEC') or die('Restricted access');
 			<?php	endif; ?>
 		</td>
 		<?php	endif; ?>
-		
+
 		<?php if ($params->get('show_picture', 1)):?>
 		<td class="event-thumb">
 				<?php $img = redEVENTImage::modalimage($item->datimage, $item->title_short, intval($params->get('picture_size', 30)));
 							echo $img; ?>
 		</td>
 		<?php endif;?>
-		
+
 		<?php if ($params->get('show_price_column', 1)):?>
 		<td class="event-price"><?php echo $item->price ? modRedEventAttendingHelper::printPrice($item->price, $item->currency) : '-'; ?></td>
 		<?php	endif; ?>

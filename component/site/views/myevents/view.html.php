@@ -54,7 +54,7 @@ class RedeventViewMyevents extends JView
 
 		// Initialize variables
 		$document   = JFactory::getDocument();
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 		$pathway    = $mainframe->getPathWay();
 		$params     = $mainframe->getParams();
 		$uri        = JFactory::getURI();
@@ -190,7 +190,7 @@ class RedeventViewMyevents extends JView
 		$this->assignRef('canAddVenue', $acl->canAddVenue());
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
-		$cols = redEVENTHelper::validateColumns($cols);
+		$cols = RedeventHelper::validateColumns($cols);
 		$this->assign('columns',        $cols);
 
 		parent::display($tpl);
@@ -203,7 +203,7 @@ class RedeventViewMyevents extends JView
 	 */
 	protected function _buildSortLists()
 	{
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 
 		$filter_order = JRequest::getCmd('filter_order', 'x.dates');
 		$filter_order_Dir = JRequest::getWord('filter_order_Dir', 'ASC');

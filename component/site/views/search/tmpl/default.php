@@ -69,7 +69,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		    <td>
 			    <label for="filter_type"><?php echo JText::_('COM_REDEVENT_FILTER');  ?></label>
 			  </td>
-			  <td>			
+			  <td>
 				<?php echo  $this->lists['filter_types']; ?>
 	      <input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" />
 	      <button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_('COM_REDEVENT_GO' ); ?></button>
@@ -144,9 +144,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
           <?php echo '<label for="filter_date">'.JText::_('COM_REDEVENT_Date').'</label>&nbsp;'; ?>
         </td>
         <td>
-          <?php echo redEVENTHelper::calendar($this->filter_date_from, 'filter_date_from', 'filter_date_from', '%Y-%m-%d', 'OnUpdateDate', 'class="inputbox dynfilter"');?>
-           <?php echo JText::_('COM_REDEVENT_DATE_TO'); ?> 
-          <?php echo redEVENTHelper::calendar($this->filter_date_to, 'filter_date_to', 'filter_date_to', '%Y-%m-%d', 'OnUpdateDate', 'class="inputbox dynfilter"');?>
+          <?php echo RedeventHelper::calendar($this->filter_date_from, 'filter_date_from', 'filter_date_from', '%Y-%m-%d', 'OnUpdateDate', 'class="inputbox dynfilter"');?>
+           <?php echo JText::_('COM_REDEVENT_DATE_TO'); ?>
+          <?php echo RedeventHelper::calendar($this->filter_date_to, 'filter_date_to', 'filter_date_to', '%Y-%m-%d', 'OnUpdateDate', 'class="inputbox dynfilter"');?>
         </td>
       </tr>
     	<?php endif; ?>
@@ -160,7 +160,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         </td>
       </tr>
     	<?php endif; ?>
-    	
+
     	<?php foreach ($this->customsfilters as $custom): ?>
       <tr>
         <td>
@@ -169,11 +169,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         <td>
           <?php echo $custom->renderFilter(array('class' => "inputbox dynfilter"), isset($this->filter_customs[$custom->id]) ? $this->filter_customs[$custom->id] : null); ?>
         </td>
-      </tr>    	
+      </tr>
     	<?php endforeach; ?>
-    </table>	
+    </table>
   </div>
-  
+
   <?php if ($this->params->get('display_limit_select')) : ?>
 	<div class="el_fright">
 		<?php	echo '<label for="limit">'.JText::_('COM_REDEVENT_DISPLAY_NUM').'</label>&nbsp;';
@@ -181,7 +181,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		?>
 	</div>
   <?php endif; ?>
-  
+
 </div>
 
 <?php if ($this->nofilter): ?>
@@ -206,7 +206,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<p class="counter">
 				<?php echo $this->pageNav->getPagesCounter(); ?>
 		</p>
-	
+
 		<?php endif; ?>
 	<?php echo $this->pageNav->getPagesLinks(); ?>
 </div>

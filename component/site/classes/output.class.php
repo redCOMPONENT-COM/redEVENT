@@ -335,7 +335,7 @@ class REOutput {
 	 */
 	function mapicon($data, $attributes = array())
 	{
-		$settings = & redEVENTHelper::config();
+		$settings = & RedeventHelper::config();
 
 		//Link to map
 		$mapimage = JHTML::image(JURI::root().'components/com_redevent/assets/images/mapsicon.png', JText::_('COM_REDEVENT_MAP' ) );
@@ -477,7 +477,7 @@ class REOutput {
 	 */
 	function flyer( $data, $image, $type = 'venue' )
 	{
-		$settings = & redEVENTHelper::config();
+		$settings = & RedeventHelper::config();
 
 		//define the environment based on the type
 		if ($type == 'event') {
@@ -585,9 +585,9 @@ class REOutput {
 	 */
 	function formatdate($date, $time)
 	{
-		$settings = & redEVENTHelper::config();
+		$settings = & RedeventHelper::config();
 
-		if(!redEVENTHelper::isValidDate($date)) {
+		if(!RedeventHelper::isValidDate($date)) {
 			return JText::_('COM_REDEVENT_OPEN_DATE');
 		}
 
@@ -613,7 +613,7 @@ class REOutput {
 	 */
 	public static function formattime($date, $time)
 	{
-		$settings = & redEVENTHelper::config();
+		$settings = & RedeventHelper::config();
 
 		if(!$time) {
 			return;
@@ -632,11 +632,11 @@ class REOutput {
 	 */
 	function formatEventDateTime($event, $show_end = true)
 	{
-		if (!redEVENTHelper::isValidDate($event->dates)) { // open dates
+		if (!RedeventHelper::isValidDate($event->dates)) { // open dates
 			$date = '<span class="event-date open-date">'.JText::_('COM_REDEVENT_OPEN_DATE').'</span>';
 			return $date;
 		}
-		$settings = & redEVENTHelper::config();
+		$settings = & RedeventHelper::config();
 		$showend = $settings->get('lists_showend', 1);
 
 		$date_start = self::formatdate($event->dates, $event->times);
@@ -654,7 +654,7 @@ class REOutput {
 
 		if ($allday)
 		{
-			if ($showend && redEVENTHelper::isValidDate($event->enddates))
+			if ($showend && RedeventHelper::isValidDate($event->enddates))
 			{
 				if ( strtotime($event->enddates. ' -1 day') != strtotime($event->dates)
 				    && strtotime($event->enddates) != strtotime($event->dates) ) // all day is written as midnight to midnight, so remove last day
@@ -665,7 +665,7 @@ class REOutput {
 		}
 		elseif ($showend)
 		{
-			if (redEVENTHelper::isValidDate($event->enddates) && strtotime($event->enddates) != strtotime($event->dates))
+			if (RedeventHelper::isValidDate($event->enddates) && strtotime($event->enddates) != strtotime($event->dates))
 			{
 				$date_end = self::formatdate($event->enddates, $event->endtimes);
 				$time_end = self::formattime($event->dates, $event->endtimes);
@@ -774,7 +774,7 @@ class REOutput {
 	 */
 	public static function formatprice($price, $currency = null)
 	{
-		$settings = redEVENTHelper::config();
+		$settings = RedeventHelper::config();
 
 		if (!$price)
 		{

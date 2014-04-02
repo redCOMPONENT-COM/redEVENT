@@ -103,7 +103,7 @@ class RedeventViewCategory extends FOFViewForm {
 		$this->assignRef('row'      	, $row);
 		$this->assignRef('form'      	, $form);
 		$this->assignRef('editor'		, $editor);
-		$this->assignRef('access'	, redEVENTHelper::getAccesslevelOptions());
+		$this->assignRef('access'	, RedeventHelper::getAccesslevelOptions());
 
 		JHTML::_('behavior.tooltip');
 

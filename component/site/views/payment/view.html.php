@@ -47,7 +47,7 @@ class RedeventViewPayment extends JView
 
 		$document = JFactory::getDocument();
 		$dispatcher = JDispatcher::getInstance();
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 		$uri = JFactory::getURI();
 
 		$row = $this->get('Event');

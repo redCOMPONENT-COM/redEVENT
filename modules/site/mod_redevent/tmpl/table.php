@@ -26,7 +26,7 @@ $class_prefix = 'mre-';
 	<thead>
 	<tr>
 		<?php foreach ($cols as $c): ?>
-		<?php 
+		<?php
 		switch ($c)
 		{
 			case 'date':
@@ -67,7 +67,7 @@ $class_prefix = 'mre-';
 					$customid = intval(substr($c, 6));
 					if (isset($customfields[$customid])) {
 						$thtxt = $customfields[$customid]->name;
-						$tdclass = $class_prefix .  'custom'.$customid;						
+						$tdclass = $class_prefix .  'custom'.$customid;
 					}
 				}
 		}?>
@@ -77,11 +77,11 @@ $class_prefix = 'mre-';
 	</thead>
 	<tbody>
 	<?php foreach ($list as $item) :  ?>
-		<?php $isover = (redEVENTHelper::isOver($item) ? ' isover' : ''); ?>
+		<?php $isover = (RedeventHelper::isOver($item) ? ' isover' : ''); ?>
 		<tr class="sectiontableentry<?php echo ($i+1).$isover; ?>">
-			
+
 			<?php foreach ($cols as $c): ?>
-			<?php 
+			<?php
 			switch ($c)
 			{
 				case 'date':
@@ -93,7 +93,7 @@ $class_prefix = 'mre-';
 						$tdtext = $item->dateinfo;
 					}
 					break;
-					
+
 				case 'title':
 					$tdclass = $class_prefix .  'title';
 					if ($params->get('linkdet', 2) == 2) {
@@ -103,12 +103,12 @@ $class_prefix = 'mre-';
 						$tdtext = $item->title_short;
 					}
 					break;
-					
+
 				case 'category':
 					$tdclass = $class_prefix .  'category';
 					$tdtext = modRedEventHelper::displayCats($item->categories);
 					break;
-					
+
 				case 'venue':
 					$tdclass = $class_prefix .  'venue';
 					if ($params->get('linkloc', 1) == 1) {
@@ -118,30 +118,30 @@ $class_prefix = 'mre-';
 						$tdtext = $item->venue_short;
 					}
 					break;
-					
+
 				case 'city':
 					$tdclass = $class_prefix .  'city';
 					$tdtext = $item->city;
 					break;
-					
+
 				case 'state':
 					$tdclass = $class_prefix .  'state';
 					$tdtext = $item->state;
 					break;
-					
+
 				case 'picture':
 					$tdclass = $class_prefix .  'picture';
 					$tdtext = redEVENTImage::modalimage($item->datimage, $item->title_short, intval($params->get('picture_size', 30)));
 					break;
-					
-						
+
+
 				case 'webform':
 					$tdclass = $class_prefix .  'webform';
 					$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $item->slug, $item->xslug));
 					$img = JHTML::image('modules/mod_redevent/webform_icon.gif', 'register');
 					$tdtext = JHTML::link($link, $img, 'class="webform-icon"');
 					break;
-						
+
 				default:
 					if (strpos($c, 'custom') === 0)
 					{
@@ -151,7 +151,7 @@ $class_prefix = 'mre-';
 							$tdtext = str_replace("\n", "<br/>", $item->$c);
 						}
 					}
-			}?>			
+			}?>
 			<td class="<?php echo $tdclass; ?>">
 				<?php echo $tdtext; ?>
 			</td>

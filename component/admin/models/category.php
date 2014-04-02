@@ -111,7 +111,7 @@ class RedEventModelCategory extends FOFModel
 			$this->_db->setQuery($query);
 			$this->_data = $this->_db->loadObject();
 			if ($this->_data) {
-				$files = REAttach::getAttachments('category'.$this->_data->id);
+				$files = RedeventHelperAttachment::getAttachments('category'.$this->_data->id);
 				$this->_data->attachments = $files;
 			}
 
@@ -196,7 +196,7 @@ class RedEventModelCategory extends FOFModel
 		}
 
 		// attachments
-		REAttach::store('category'.$row->id);
+		RedeventHelperAttachment::store('category'.$row->id);
 
 		// Trigger the onFinderAfterSave event.
 		$results = $dispatcher->trigger('onFinderAfterSave', array($this->option . '.' . $this->name, $row, $isNew));

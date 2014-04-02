@@ -43,7 +43,7 @@ class RedeventViewRegistration extends JViewLegacy
 		$user       = JFactory::getUser();
 		$dispatcher = JDispatcher::getInstance();
 
-		$config     = redEVENTHelper::config();
+		$config     = RedeventHelper::config();
 		$acl        = RedeventUserAcl::getInstance();
 
 		$submit_key = JFactory::getApplication()->input->get('submit_key');
@@ -140,7 +140,7 @@ class RedeventViewRegistration extends JViewLegacy
 		$prices = $this->get('Pricegroups');
 		$field = array();
 		$field['label'] = '<label for="pricegroup_id">' . JText::_('COM_REDEVENT_REGISTRATION_PRICE') . '</label>';
-		$field['field'] = redEVENTHelper::getRfPricesSelect($prices, $registration->pricegroup_id);
+		$field['field'] = RedeventHelper::getRfPricesSelect($prices, $registration->pricegroup_id);
 		$rfoptions['extrafields'][] = $field;
 
 		$rfcore = new RedformCore;

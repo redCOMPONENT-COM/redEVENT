@@ -46,21 +46,21 @@ class RedeventViewDetails extends JView
 	{
 		$mainframe = &JFactory::getApplication();
 		$id = JRequest::getInt('id');
-    		
-		$settings = redEVENTHelper::config();
-		
+
+		$settings = RedeventHelper::config();
+
 		// Get data from the model
 		$row     = $this->get('Details');
-				
+
     // initiate new CALENDAR
-		$vcal = redEVENTHelper::getCalendarTool();
+		$vcal = RedeventHelper::getCalendarTool();
 		$vcal->setProperty('unique_id', 'session'.$row->xref.'@'.$mainframe->getCfg('sitename'));
 		$vcal->setConfig( "filename", "event".$row->xref.".ics" );
-		
-		redEVENTHelper::icalAddEvent($vcal, $row);
-		
+
+		RedeventHelper::icalAddEvent($vcal, $row);
+
 		$vcal->returnCalendar();                       // generate and redirect output to user browser
 //		echo $vcal->createCalendar(); // debug
-		$mainframe->close();		
+		$mainframe->close();
 	}
 }

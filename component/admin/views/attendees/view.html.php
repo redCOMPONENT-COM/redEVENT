@@ -48,7 +48,7 @@ class RedEventViewAttendees extends JView {
 			$this->_displaymove($tpl);
 			return;
 		}
-		
+
 		//initialise variables
 		$db = JFactory::getDBO();
 		$elsettings = JComponentHelper::getParams('com_redevent');
@@ -66,7 +66,7 @@ class RedEventViewAttendees extends JView {
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_ATTENDEES'));
 		//add css and submenu to document
 		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
-		
+
 		// add javascript
 		JHTML::_('behavior.modal', 'a.answersmodal');
 
@@ -102,16 +102,16 @@ class RedEventViewAttendees extends JView {
 		$event     = $this->get( 'Event' );
 		$form      = $this->get( 'Form' );
 		$rf_fields = $this->get( 'RedFormFrontFields' );
-		
-		$event->dates = redEVENTHelper::isValidDate($event->dates) ? strftime($elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $event->dates )) : JText::_('COM_REDEVENT_OPEN_DATE');
-		
+
+		$event->dates = RedeventHelper::isValidDate($event->dates) ? strftime($elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $event->dates )) : JText::_('COM_REDEVENT_OPEN_DATE');
+
 		//build filter selectlist
 		$datetimelocation = $this->get('DateTimeLocation');
 		$filters = array();
-		foreach ($datetimelocation as $key => $value) 
+		foreach ($datetimelocation as $key => $value)
 		{
 			/* Get the date */
-			if (redEVENTHelper::isValidDate($value->dates))
+			if (RedeventHelper::isValidDate($value->dates))
 			{
 				$date = strftime( $elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $value->dates ));
 				$enddate 	= strftime( $elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $value->enddates ));
@@ -120,11 +120,11 @@ class RedEventViewAttendees extends JView {
 			else {
 				$displaydate = JText::_('COM_REDEVENT_OPEN_DATE');
 			}
-			
+
 			/* Get the time */
-			if ($value->times) 
+			if ($value->times)
 			{
-				$time = strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $value->times ));	
+				$time = strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $value->times ));
 				$displaydate .= ' '. $time;
 				if ($value->endtimes) {
 					$endtimes = strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $value->endtimes ));
@@ -134,28 +134,28 @@ class RedEventViewAttendees extends JView {
 			$filters[] = JHTML::_('select.option', $value->id, $value->venue.' '.$displaydate );
 		}
 		$lists['filter'] = JHTML::_('select.genericlist', $filters, 'xref', 'class="inputbox"', 'value', 'text', $event->xref );
-		
+
 		// search filter
 		// $lists['search'] = $search;
-		
+
 		// confirmed filter
 		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CONFIRMED_ALL')),
-		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CONFIRMED_CONFIRMED')), 
-		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CONFIRMED_UNCONFIRMED')), 
+		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CONFIRMED_CONFIRMED')),
+		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CONFIRMED_UNCONFIRMED')),
 		                 );
 		$lists['filter_confirmed'] =  JHTML::_('select.genericlist', $options, 'filter_confirmed', 'class="inputbox" onchange="this.form.submit();"', 'value', 'text', $state->get('filter_confirmed') );
-		
+
 		// waiting list filter
 		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_ATTENDEES_FILTER_WAITING_ALL')),
-		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_ATTENDEES_FILTER_WAITING_ATTENDING')), 
-		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_ATTENDEES_FILTER_WAITING_WAITING')), 
+		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_ATTENDEES_FILTER_WAITING_ATTENDING')),
+		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_ATTENDEES_FILTER_WAITING_WAITING')),
 		                 );
 		$lists['filter_waiting'] =  JHTML::_('select.genericlist', $options, 'filter_waiting', 'class="inputbox" onchange="this.form.submit();"', 'value', 'text', $state->get('filter_waiting') );
-		
+
 		// cancelled filter
 		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CANCELLED_NOT_CANCELLED')),
-		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CANCELLED_CANCELLED')), 
-		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CANCELLED_ALL')), 
+		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CANCELLED_CANCELLED')),
+		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CANCELLED_ALL')),
 		                 );
 		$lists['filter_cancelled'] =  JHTML::_('select.genericlist', $options, 'filter_cancelled', 'class="inputbox" onchange="this.form.submit();"', 'value', 'text', $state->get('filter_cancelled') );
 
@@ -173,7 +173,7 @@ class RedEventViewAttendees extends JView {
 		$this->assignRef('user',      $user);
 		$this->assignRef('params',    $params);
 		$this->assignRef('cancelled', $state->get('filter_cancelled'));
-		
+
 		parent::display($tpl);
 	}
 
@@ -195,7 +195,7 @@ class RedEventViewAttendees extends JView {
 		$rf_fields = $this->get( 'RedFormFrontFields' );
 		$form      = $this->get( 'Form' );
 
-		$event->dates = redEVENTHelper::isValidDate($event->dates) ? strftime($elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $event->dates )) : JText::_('COM_REDEVENT_OPEN_DATE');
+		$event->dates = RedeventHelper::isValidDate($event->dates) ? strftime($elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $event->dates )) : JText::_('COM_REDEVENT_OPEN_DATE');
 
 		//assign data to template
 		$this->assignRef('rows'      	, $rows);
@@ -218,21 +218,21 @@ class RedEventViewAttendees extends JView {
 		$elsettings = JComponentHelper::getParams('com_redevent');
 		$document	= & JFactory::getDocument();
 		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
-		
+
 		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
 
-		$event 		= & $this->get( 'Event' );		
-		
+		$event 		= & $this->get( 'Event' );
+
 		//add toolbar
 		JToolBarHelper::title( JText::_('COM_REDEVENT_REGISTRATIONS' ), 'users' );
 		JToolBarHelper::apply('applymove');
 		JToolBarHelper::cancel('cancelmove');
-		
+
 		//assign data to template
 		$this->assignRef('form_id',  JRequest::getInt('form_id'));
 		$this->assignRef('cid',      $cid);
 		$this->assignRef('session',  $event);
-		
+
 		parent::display($tpl);
 	}
 }

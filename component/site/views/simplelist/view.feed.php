@@ -51,7 +51,7 @@ class RedeventViewSimpleList extends JView
 		}
 
 		$doc 		= & JFactory::getDocument();
-		$elsettings = & redEVENTHelper::config();
+		$elsettings = & RedeventHelper::config();
 
 		// Get some data from the model
 		JRequest::setVar('limit', $mainframe->getCfg('feed_limit'));
@@ -60,7 +60,7 @@ class RedeventViewSimpleList extends JView
 		foreach ( $rows as $row )
 		{
 			// strip html from feed item title
-			$title = $this->escape( redEVENTHelper::getSessionFullTitle($row) );
+			$title = $this->escape( RedeventHelper::getSessionFullTitle($row) );
 			$title = html_entity_decode( $title );
 
 		  // handle categories
@@ -78,10 +78,10 @@ class RedeventViewSimpleList extends JView
       }
 
 			//Format date
-			if (redEVENTHelper::isValidDate($row->dates))
+			if (RedeventHelper::isValidDate($row->dates))
 			{
 				$date = strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $row->dates ));
-				if (!redEVENTHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) {
+				if (!RedeventHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) {
 					$displaydate = $date;
 				} else {
 					$enddate 	= strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $row->enddates ));
@@ -135,7 +135,7 @@ class RedeventViewSimpleList extends JView
 		define( 'CACHE', './cache' );
 
 		$mainframe  = &JFactory::getApplication();
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 
 		$offset = (float) $mainframe->getCfg('offset');
 		$hours = ($offset >= 0) ? floor($offset) : ceil($offset);
@@ -153,7 +153,7 @@ class RedeventViewSimpleList extends JView
 		foreach ( $rows as $row )
 		{
 			// strip html from feed item title
-			$title = $this->escape( redEVENTHelper::getSessionFullTitle($row) );
+			$title = $this->escape( RedeventHelper::getSessionFullTitle($row) );
 			$title = html_entity_decode( $title );
 
 			// strip html from feed item category
@@ -172,11 +172,11 @@ class RedeventViewSimpleList extends JView
 
 			//Format date
 			//Format date
-			if (redEVENTHelper::isValidDate($row->dates))
+			if (RedeventHelper::isValidDate($row->dates))
 			{
 				$date = strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $row->dates ));
 				$rssstartdate = $row->dates;
-				if (!redEVENTHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) {
+				if (!RedeventHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) {
 					$displaydate = $date;
 					$rssenddate = $row->dates;
 				}
@@ -206,13 +206,13 @@ class RedeventViewSimpleList extends JView
 			$link = JURI::base().RedeventHelperRoute::getDetailsRoute($row->id);
 			$link = JRoute::_( $link );
 
-			$item = new rsscalItem(redEVENTHelper::getSessionFullTitle($row), $link);
+			$item = new rsscalItem(RedeventHelper::getSessionFullTitle($row), $link);
 			$item->addElement( 'ev:type',      $category );
 //			$item->addElement( 'ev:organizer', "" );
 			$item->addElement( 'ev:location',  $row->venue );
 			$item->addElement( 'ev:startdate', $rssstartdate );
 			$item->addElement( 'ev:enddate',   $rssenddate );
-			$item->addElement( 'dc:subject',   redEVENTHelper::getSessionFullTitle($row) );
+			$item->addElement( 'dc:subject',   RedeventHelper::getSessionFullTitle($row) );
 
 			$feed->addItem( $item );
 		}

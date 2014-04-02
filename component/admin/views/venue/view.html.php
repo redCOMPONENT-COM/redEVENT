@@ -138,7 +138,7 @@ class RedEventViewVenue extends JView
 		$this->assignRef('lists'      , $lists);
 		$this->assignRef('imageselect' 	, $imageselect);
 		$this->assignRef('pinpointicon', $pinpointicon);
-		$this->assignRef('access'	, redEVENTHelper::getAccesslevelOptions());
+		$this->assignRef('access'	, RedeventHelper::getAccesslevelOptions());
 		$this->assignRef('form'      	, $this->get('form'));
 
 		parent::display($tpl);

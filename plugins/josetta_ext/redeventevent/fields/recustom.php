@@ -17,7 +17,8 @@
 defined('JPATH_PLATFORM') or die;
 
 jimport('joomla.form.formfield');
-include_once(JPATH_SITE . '/components/com_redevent/helpers/helper.php');
+
+JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
 
 /**
  * Form Field class for the Joomla Platform.

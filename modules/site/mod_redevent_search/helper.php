@@ -88,7 +88,7 @@ class modRedEventSearchHelper
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadResultArray();
 
-		return redEVENTHelper::getEventsCatOptions(true, false, $res);
+		return RedeventHelper::getEventsCatOptions(true, false, $res);
 	}
 
 	/**

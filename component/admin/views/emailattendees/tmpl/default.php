@@ -30,23 +30,23 @@ $app = &JFactory::getApplication();
 function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
-	
+
 	if (pressbutton == 'cancelemail') {
 		submitform( pressbutton );
 		return;
 	}
-	
+
 	if (document.formvalidator.isValid(form)) {
 		<?php echo $this->editor->save( 'body' ); ?>
 		submitform( pressbutton );
-	  return true; 
+	  return true;
 	}
 	else {
 	  var msg = "<?php echo JText::_('COM_REDEVENT_EMAIL_ATTENDEES_VAILDATION_FAILED'); ?>";
-	 
+
 	  //Example on how to test specific fields
 	   if($('subject').hasClass('invalid')){msg += '\n\n\t* <?php echo JText::_('COM_REDEVENT_EMAIL_ATTENDEES_SUBJECT_REQUIRED'); ?>';}
-	 
+
 	   alert(msg);
 	 }
 	 return false;
@@ -54,7 +54,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<h2><?php echo $this->event->title. '@'. $this->event->venue. ' ' . (redEVENTHelper::isValidDate($this->event->dates) ? strftime($this->settings->get('formatdate', '%d.%m.%Y'), strtotime($this->event->dates)) : ''); ?></h2>
+<h2><?php echo $this->event->title. '@'. $this->event->venue. ' ' . (RedeventHelper::isValidDate($this->event->dates) ? strftime($this->settings->get('formatdate', '%d.%m.%Y'), strtotime($this->event->dates)) : ''); ?></h2>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
 	<table>
@@ -116,7 +116,7 @@ function submitbutton(pressbutton)
 			</td>
 		</tr>
 	</table>
-	
+
 	<?php echo JHTML::_( 'form.token' ); ?>
 	<?php foreach ($this->cids as $cid) :?>
 	<input type="hidden" name="cid[]" value="<?php echo $cid; ?>"/>

@@ -46,7 +46,7 @@ class RedeventViewUpcomingVenueevents extends JView
 		$document	=& JFactory::getDocument();
 		$document->link = JRoute::_('index.php?option=com_redevent&view=upcomingvenueevents');
 		$upcomingevents = $this->get('UpcomingVenueEvents');
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 		$imagepath = JURI::root().'administrator/components/com_redevent/assets/images/';
 
 		foreach ((array) $upcomingevents as $key => $event) {
@@ -55,7 +55,7 @@ class RedeventViewUpcomingVenueevents extends JView
 			$description = '<table>
 			<tbody>
 			<tr>
-				<td width="100">Course:</td><td>'.JHTML::_('link', $event_url, redEVENTHelper::getSessionFullTitle($event), 'target="_blank"').'</td>
+				<td width="100">Course:</td><td>'.JHTML::_('link', $event_url, RedeventHelper::getSessionFullTitle($event), 'target="_blank"').'</td>
 			</tr><tr>
 				<td>Where:</td><td>'.$event->location.' &nbsp; '.REOutput::getFlag( $event->country ).'</td>
 			</tr><tr>
@@ -114,7 +114,7 @@ class RedeventViewUpcomingVenueevents extends JView
 
 
 			$item = new JFeedItem();
-			$item->title 		= redEVENTHelper::getSessionFullTitle($event);
+			$item->title 		= RedeventHelper::getSessionFullTitle($event);
 			$item->link 		= $event_url;
 			$item->description 	= $description;
 			$item->date			= '';

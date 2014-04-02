@@ -48,7 +48,7 @@ class RedeventViewVenuecategory extends JView
 		//initialize variables
 		$document 	= & JFactory::getDocument();
 		$menu		= & JSite::getMenu();
-		$elsettings = & redEVENTHelper::config();
+		$elsettings = & RedeventHelper::config();
 		$item    	= $menu->getActive();
 		$params 	= & $mainframe->getParams();
 		$uri 		= & JFactory::getURI();
@@ -163,7 +163,7 @@ class RedeventViewVenuecategory extends JView
 		$this->assignRef('item' , 					$item);
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
-		$cols = redEVENTHelper::validateColumns($cols);
+		$cols = RedeventHelper::validateColumns($cols);
 		$this->assign('columns',        $cols);
 
 		parent::display($tpl);

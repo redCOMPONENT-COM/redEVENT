@@ -51,7 +51,7 @@ class RedeventViewDetails extends JView
 		$document 	= JFactory::getDocument();
 		$user		= JFactory::getUser();
 		$dispatcher = JDispatcher::getInstance();
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 		$acl        = RedeventUserAcl::getInstance();
 
 		if ($params->get('gplusone', 1)) {
@@ -105,7 +105,7 @@ class RedeventViewDetails extends JView
 		//Print
 		$pop	= JRequest::getBool('pop');
 
-		$params->def( 'page_title', redEVENTHelper::getSessionFullTitle($row));
+		$params->def( 'page_title', RedeventHelper::getSessionFullTitle($row));
 
 		if ( $pop ) {
 			$params->set( 'popup', 1 );
@@ -115,7 +115,7 @@ class RedeventViewDetails extends JView
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
-		$pathway->addItem( redEVENTHelper::getSessionFullTitle($row), JRoute::_('index.php?option=com_redevent&view=details&id='.$row->slug));
+		$pathway->addItem( RedeventHelper::getSessionFullTitle($row), JRoute::_('index.php?option=com_redevent&view=details&id='.$row->slug));
 
 		//Check user if he can edit
 		$allowedtoeditevent = $acl->canEditEvent($row->did);
@@ -199,12 +199,12 @@ class RedeventViewDetails extends JView
 		}
 
 		//set page title and meta stuff
-		$document->setTitle( redEVENTHelper::getSessionFullTitle($row) );
+		$document->setTitle( RedeventHelper::getSessionFullTitle($row) );
 		$document->setMetadata('keywords', $meta_keywords_content );
 		$document->setDescription( strip_tags($description_content) );
 
 		// more metadata
-		$document->addCustomTag('<meta property="og:title" content="'.redEVENTHelper::getSessionFullTitle($row).'"/>');
+		$document->addCustomTag('<meta property="og:title" content="'.RedeventHelper::getSessionFullTitle($row).'"/>');
 		$document->addCustomTag('<meta property="og:type" content="event"/>');
 		$document->addCustomTag('<meta property="og:url" content="'.htmlspecialchars($uri->toString()).'"/>');
 		if ($row->datimage) {
@@ -233,7 +233,7 @@ class RedeventViewDetails extends JView
     $document->addHeadLink(JRoute::_($link.'&type=atom'), 'alternate', 'rel', $attribs);
 
     // check unregistration rights
-    $unreg_check = redEVENTHelper::canUnregister($row->xref);
+    $unreg_check = RedeventHelper::canUnregister($row->xref);
 
     //manages attendees
     $manage_attendees  = $this->get('ManageAttendees') || $this->get('ViewFullAttendees');
@@ -329,7 +329,7 @@ class RedeventViewDetails extends JView
 				$content = '';
 				foreach ($this->_venues as $key => $venue)
 				{
-					if (redEVENTHelper::isValidDate($venue->$keyword))
+					if (RedeventHelper::isValidDate($venue->$keyword))
 					{
 						$content .= strftime($formatdate, strtotime($venue->$keyword)) . ' ';
 					}

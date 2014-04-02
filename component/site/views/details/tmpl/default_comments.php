@@ -33,7 +33,7 @@ switch ($this->elsettings->get('commentsystem')) {
 	case 1:
 		if (file_exists(JPATH_SITE.DS.'components'.DS.'com_jcomments'.DS.'jcomments.php')) :
 			require_once(JPATH_SITE.DS.'components'.DS.'com_jcomments'.DS.'jcomments.php');
-			echo JComments::showComments($this->row->did, 'com_redevent', redEVENTHelper::getSessionFullTitle($this->row));
+			echo JComments::showComments($this->row->did, 'com_redevent', RedeventHelper::getSessionFullTitle($this->row));
 		endif;
 	break;
 

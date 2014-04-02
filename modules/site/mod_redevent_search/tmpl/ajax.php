@@ -86,13 +86,13 @@ if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
 		  <div class="rssm_filter_row">
 		  	<label for="filter_type"><?php echo JText::_('MOD_REDEVENT_SEARCH_DATE_FROM_LABEL');  ?></label>
 		  	<span class="rssm_filter">
-          <?php echo redEVENTHelper::calendar($filter_date_from, 'filter_date_from', 'rssm_filter_date_from', '%Y-%m-%d', null, 'class="inputbox date-field"');?>
+          <?php echo RedeventHelper::calendar($filter_date_from, 'filter_date_from', 'rssm_filter_date_from', '%Y-%m-%d', null, 'class="inputbox date-field"');?>
 				</span>
 			</div>
 		  <div class="rssm_filter_row">
 		  	<label for="filter_type"><?php echo JText::_('MOD_REDEVENT_SEARCH_DATE_TO_LABEL');  ?></label>
 		  	<span class="rssm_filter">
-          <?php echo redEVENTHelper::calendar($filter_date_to, 'filter_date_to', 'rssm_filter_date_to', '%Y-%m-%d', null, 'class="inputbox date-field"');?>
+          <?php echo RedeventHelper::calendar($filter_date_to, 'filter_date_to', 'rssm_filter_date_to', '%Y-%m-%d', null, 'class="inputbox date-field"');?>
 				</span>
 			</div>
     	<?php endif; ?>

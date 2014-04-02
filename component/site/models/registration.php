@@ -508,7 +508,7 @@ class RedEventModelRegistration extends JModel
 		// or be allowed to manage attendees
 		$manager = $acl->canManageAttendees($submitterinfo->xref);
 
-		if (!redEVENTHelper::canUnregister($submitterinfo->xref) && !$manager) {
+		if (!RedeventHelper::canUnregister($submitterinfo->xref) && !$manager) {
 			$this->setError(JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED'));
 			return false;
 		}

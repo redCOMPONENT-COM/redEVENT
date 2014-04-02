@@ -38,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 				return false;
 			}
 		</script>
-		
+
 <form action="index.php?option=com_redevent&amp;task=insertevent&amp;tmpl=component" method="post" name="adminForm" id="adminForm">
 
 <table class="adminform">
@@ -87,7 +87,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td><?php echo $this->pageNav->getRowOffset( $i ); ?></td>
 			<td>
 				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_REDEVENT_SELECT' );?>::<?php echo $row->title; ?>">
-				<a style="cursor:pointer" 
+				<a style="cursor:pointer"
 					 onclick="insertEvent('<?php echo $row->id; ?>', '<?php echo str_replace( array("'", "\""), array("\\'", ""), $row->title ); ?>', '<?php echo JURI::root().RedeventHelperRoute::getDetailsRoute($row->slug, $row->xref); ?>');">
 					<?php echo htmlspecialchars($row->title, ENT_QUOTES, 'UTF-8'); ?>
 				</a></span>
@@ -95,8 +95,8 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 					//Format date
-					$date = redEVENTHelper::isValidDate($row->dates) ? strftime( $this->elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->dates )) : JText::_('COM_REDEVENT_OPEN_DATE');
-					if ( !redEVENTHelper::isValidDate($row->enddates) ) {
+					$date = RedeventHelper::isValidDate($row->dates) ? strftime( $this->elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->dates )) : JText::_('COM_REDEVENT_OPEN_DATE');
+					if ( !RedeventHelper::isValidDate($row->enddates) ) {
 						$displaydate = $date;
 					} else {
 						$enddate 	= strftime( $this->elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->enddates ));
@@ -122,7 +122,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td><?php echo $row->city ? htmlspecialchars($row->city, ENT_QUOTES, 'UTF-8') : '-'; ?></td>
 			<td><?php echo $row->catname ? htmlspecialchars($row->catname, ENT_QUOTES, 'UTF-8') : '-'; ?></td>
 			<td align="center">
-				<?php $img = $row->published ? 'tick.png' : 'publish_x.png'; 
+				<?php $img = $row->published ? 'tick.png' : 'publish_x.png';
 				$alt = $row->published ? 'Published' : 'Unpublished';
 				echo JHTML::_('image', 'admin/'.$img, $alt, '', true);?>
 			</td>

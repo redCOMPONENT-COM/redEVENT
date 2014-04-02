@@ -339,12 +339,12 @@ class RedEventControllerVenues extends RedEventController
 		if (count($rows))
 		{
 			$header = current($rows);
-			$export .= redEVENTHelper::writecsvrow(array_keys($header));
+			$export .= RedeventHelper::writecsvrow(array_keys($header));
 
 			$current = 0; // current event
 			foreach($rows as $data)
 			{
-				$export .= redEVENTHelper::writecsvrow($data);
+				$export .= RedeventHelper::writecsvrow($data);
 			}
 
 			echo $export;

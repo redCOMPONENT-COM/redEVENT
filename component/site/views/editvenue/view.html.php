@@ -47,7 +47,7 @@ class RedeventViewEditvenue extends JView
 
 		$editor 	  = & JFactory::getEditor();
 		$document 	= & JFactory::getDocument();
-		$elsettings = & redEVENTHelper::config();
+		$elsettings = & RedeventHelper::config();
 		$params 	  = & $mainframe->getParams();
 		$acl        = RedeventUserAcl::getInstance();
 
@@ -98,7 +98,7 @@ class RedeventViewEditvenue extends JView
 		$document->setTitle($title);
 
 		//editor user
-		$row->locdescription = redEVENTHelper::br2break($row->locdescription);
+		$row->locdescription = RedeventHelper::br2break($row->locdescription);
 
 		//Get image
 		$limage = redEVENTImage::flyercreator($row->locimage);
@@ -140,7 +140,7 @@ class RedeventViewEditvenue extends JView
 		$this->assignRef('item' , 					$item);
 		$this->assignRef('params',      $params);
 		$this->assignRef('canpublish',  $canpublish);
-		$this->assignRef('access'	, redEVENTHelper::getAccesslevelOptions());
+		$this->assignRef('access'	, RedeventHelper::getAccesslevelOptions());
 
 		parent::display($tpl);
 

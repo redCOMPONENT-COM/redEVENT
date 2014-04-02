@@ -127,7 +127,7 @@ class ModRedeventQuickbookHelper
 		{
 			$value = $s->xref;
 
-			if (!redEVENTHelper::isValidDate($s->dates))
+			if (!RedeventHelper::isValidDate($s->dates))
 			{
 				$date = JText::_('COM_REDEVENT_OPEN_DATE');
 			}

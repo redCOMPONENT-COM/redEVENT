@@ -461,7 +461,7 @@ class RedEventControllerEvents extends RedEventController
 		if (count($events))
 		{
 			$header = current($events);
-			$export .= redEVENTHelper::writecsvrow(array_keys($header));
+			$export .= RedeventHelper::writecsvrow(array_keys($header));
 
 			$current = 0; // current event
 			foreach($events as $data)
@@ -478,7 +478,7 @@ class RedEventControllerEvents extends RedEventController
 				else {
 					$current = $data['id']; // first event id
 				}
-				$export .= redEVENTHelper::writecsvrow($data);
+				$export .= RedeventHelper::writecsvrow($data);
 			}
 
 			echo $export;

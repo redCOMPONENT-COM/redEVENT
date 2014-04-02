@@ -66,7 +66,7 @@ defined('_JEXEC') or die('Restricted access');
 			for($i=0, $n=count( $this->rows ); $i < $n; $i++) {
 				$row = $this->rows[$i];
 				$link 			= 'index.php?option=com_redevent&view=event&cid[]='.$row->id;
-	
+
 				$checked 	= JHTML::_('grid.checkedout', $row, $i );
 				?>
 				<tr class="<?php echo "row$k"; ?>">
@@ -88,16 +88,16 @@ defined('_JEXEC') or die('Restricted access');
 						<?php
 							foreach ($this->eventvenues[$row->id] as $key => $eventdetails) {
 								/* Get the date */
-								if (redEVENTHelper::isValidDate($eventdetails->dates)) 
+								if (RedeventHelper::isValidDate($eventdetails->dates))
 								{
-									$date = strftime( $this->elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $eventdetails->dates )); 
+									$date = strftime( $this->elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $eventdetails->dates ));
 									$enddate 	= strftime( $this->elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $eventdetails->enddates ));
 									$displaydate = $date.' - '.$enddate;
 								}
 								else {
 									$displaydate = JText::_('COM_REDEVENT_OPEN_DATE');
 								}
-									
+
 								/* Get the time */
 								$time = strftime( $this->elsettings->get('formattime', '%H:%M'), strtotime( $eventdetails->times ));
 								$endtimes = strftime( $this->elsettings->get('formattime', '%H:%M'), strtotime( $eventdetails->endtimes ));
@@ -113,12 +113,12 @@ defined('_JEXEC') or die('Restricted access');
 	      						  $linkreg  = 'index.php?option=com_redevent&amp;view=attendees&eventid='.$row->id.'&xref='.$eventdetails->id;
 	      						  ?>
 	      						  <a href="<?php echo $linkreg; ?>" title="Edit Users"><?php echo $eventdetails->regcount; ?></a>
-	      						<?php else: ?> 
+	      						<?php else: ?>
 	      						  -
 	      						<?php endif; ?>
 	    						</td>
 								</tr>
-								<?php 
+								<?php
 							}
 							?>
 						</tbody>
@@ -138,9 +138,9 @@ defined('_JEXEC') or die('Restricted access');
 							<?php
 						}
 						?>
-	
+
 						<br />
-	
+
 						<?php
 						if (JString::strlen($row->alias) > 25) {
 							echo JString::substr( htmlspecialchars($row->alias, ENT_QUOTES, 'UTF-8'), 0 , 25).'...';
@@ -153,7 +153,7 @@ defined('_JEXEC') or die('Restricted access');
 						<?php
 						if ($row->catname) {
 								echo htmlspecialchars($row->catname, ENT_QUOTES, 'UTF-8');
-							} 
+							}
 						else {
 							echo '-';
 						}

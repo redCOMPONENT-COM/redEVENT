@@ -43,7 +43,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <?php if ($this->params->def( 'show_page_title', 1 )) : ?>
 	<h1 class="componentheading">
-		<?php echo redEVENTHelper::getSessionFullTitle($this->row); ?>
+		<?php echo RedeventHelper::getSessionFullTitle($this->row); ?>
 	</h1>
 <?php endif; ?>
 
@@ -65,8 +65,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					continue;
 				}
         /* Get the date */
-        $date = (!redEVENTHelper::isValidDate($venuedate->dates)  ? JText::_('COM_REDEVENT_Open_date') : strftime( $this->elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $venuedate->dates )));
-        $enddate  = (!redEVENTHelper::isValidDate($venuedate->enddates) || $venuedate->enddates == '0000-00-00' || $venuedate->enddates == $venuedate->dates) ? '' : strftime( $this->elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $venuedate->enddates ));
+        $date = (!RedeventHelper::isValidDate($venuedate->dates)  ? JText::_('COM_REDEVENT_Open_date') : strftime( $this->elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $venuedate->dates )));
+        $enddate  = (!RedeventHelper::isValidDate($venuedate->enddates) || $venuedate->enddates == '0000-00-00' || $venuedate->enddates == $venuedate->dates) ? '' : strftime( $this->elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $venuedate->enddates ));
         $displaydate = $date. ($enddate ? ' - '.$enddate: '');
 
         $displaytime = '';
@@ -104,7 +104,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<div>
 					<a href="http://twitter.com/share"
 					   class="twitter-share-button"
-					   data-text="<?php echo redEVENTHelper::getSessionFullTitle($this->row); ?>"
+					   data-text="<?php echo RedeventHelper::getSessionFullTitle($this->row); ?>"
 					   data-count="horizontal"
 					   <?php echo ($this->params->get('tweet_recommend') ? 'data-via="'.$this->params->get('tweet_recommend').'"' : ''); ?>
 					   <?php if ($this->params->get('tweet_recommend2')) {

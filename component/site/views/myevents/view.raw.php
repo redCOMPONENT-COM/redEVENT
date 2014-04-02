@@ -107,7 +107,7 @@ class RedeventViewMyevents extends JView
 		$this->assignRef('lists',      $lists);
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
-		$cols = redEVENTHelper::validateColumns($cols);
+		$cols = RedeventHelper::validateColumns($cols);
 		$this->assign('columns',        $cols);
 
 		$this->setLayout('default');
@@ -239,7 +239,7 @@ class RedeventViewMyevents extends JView
 	 */
 	protected function _buildSortLists()
 	{
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 
 		$filter_order = JRequest::getCmd('filter_order', 'x.dates');
 		$filter_order_Dir = JRequest::getWord('filter_order_Dir', 'ASC');

@@ -78,7 +78,7 @@ class RedEventControllerRegistration extends RedEventController
 			return false;
 		}
 
-		$status = redEVENTHelper::canRegister($xref);
+		$status = RedeventHelper::canRegister($xref);
 
 		if (!$status->canregister)
 		{

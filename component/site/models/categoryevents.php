@@ -143,7 +143,7 @@ class RedeventModelCategoryevents extends RedeventModelBaseeventlist
 				JError::raiseError(403, JText::_('COM_REDEVENT_ACCESS_NOT_ALLOWED'));
 			}
 
-			$this->_category->attachments = REAttach::getAttachments('category' . $this->_category->id, $user->getAuthorisedViewLevels());
+			$this->_category->attachments = RedeventHelperAttachment::getAttachments('category' . $this->_category->id, $user->getAuthorisedViewLevels());
 		}
 
 		return $this->_category;

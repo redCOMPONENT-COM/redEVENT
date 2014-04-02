@@ -112,7 +112,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseeventlist
 		$mainframe = JFactory::getApplication();
 
 		$params 	= $mainframe->getParams();
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_categories))

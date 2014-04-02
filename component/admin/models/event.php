@@ -129,7 +129,7 @@ class RedEventModelEvent extends JModelAdmin
 			if ($this->_data) {
 				$categories = & $this->getEventCategories();
 				$this->_data->categories_ids = array_keys($categories);
-				$this->_data->attachments = REAttach::getAttachments('event'.$this->_data->id);
+				$this->_data->attachments = RedeventHelperAttachment::getAttachments('event'.$this->_data->id);
 			}
 			return (boolean) $this->_data;
 		}
@@ -451,7 +451,7 @@ class RedEventModelEvent extends JModelAdmin
 		}
 
 		// attachments
-		REAttach::store('event'.$row->id);
+		RedeventHelperAttachment::store('event'.$row->id);
 
 		// Trigger the onFinderAfterSave event.
 		$results = $dispatcher->trigger('onFinderAfterSave', array($this->option . '.' . $this->name, $row, $isNew));

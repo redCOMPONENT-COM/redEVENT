@@ -357,7 +357,7 @@ class RedeventAttendee extends JObject
 	 */
 	public function sendWaitinglistStatusEmail($waiting = 0)
 	{
-		$config = redEVENTHelper::config();
+		$config = RedeventHelper::config();
 
 		if ($config->get('disable_waitinglist_status_email', 0))
 		{

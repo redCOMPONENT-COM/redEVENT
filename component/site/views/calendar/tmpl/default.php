@@ -49,7 +49,7 @@ foreach ($this->rows as $row)
 		}
 	}
 
-	$eventname = '<div class="eventName">'.$this->escape(redEVENTHelper::getSessionFullTitle($row)).'</div>';
+	$eventname = '<div class="eventName">'.$this->escape(RedeventHelper::getSessionFullTitle($row)).'</div>';
 
 	//initialize variables
 	$colorpic = '';
@@ -124,18 +124,18 @@ foreach ($this->rows as $row)
 	// Text to display in calendar
 	if ($this->params->get('session_display', 0) == 0 || !$row->datimage)
 	{
-		$text = redEVENTHelper::getSessionFullTitle($row);
+		$text = RedeventHelper::getSessionFullTitle($row);
 	}
 	elseif ($this->params->get('session_display', 0) == 1)
 	{
 		$img = redEVENTImage::getThumbUrl($row->datimage, $this->params->get('pic_size', 20));
-		$text = '<span class="session-image">' . JHTML::image($img, redEVENTHelper::getSessionFullTitle($row)) . '</span>';
+		$text = '<span class="session-image">' . JHTML::image($img, RedeventHelper::getSessionFullTitle($row)) . '</span>';
 	}
 	else
 	{
 		$img = redEVENTImage::getThumbUrl($row->datimage, $this->params->get('pic_size', 20));
-		$text = '<span class="session-image">' . JHTML::image($img, redEVENTHelper::getSessionFullTitle($row)) . '</span>';
-		$text .= redEVENTHelper::getSessionFullTitle($row);
+		$text = '<span class="session-image">' . JHTML::image($img, RedeventHelper::getSessionFullTitle($row)) . '</span>';
+		$text .= RedeventHelper::getSessionFullTitle($row);
 	}
 
 	$content .= $this->caltooltip($catname.$eventname.$timehtml.$venue, $eventdate, $text, $detaillink, 'eventTip');

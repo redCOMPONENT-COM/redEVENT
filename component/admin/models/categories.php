@@ -205,7 +205,7 @@ class RedeventModelCategories extends FOFModel
 	{
 		if ($record)
 		{
-			$files = REAttach::getAttachments('category' . $record->id);
+			$files = RedeventHelperAttachment::getAttachments('category' . $record->id);
 			$record->attachments = $files;
 		}
 	}
@@ -220,7 +220,7 @@ class RedeventModelCategories extends FOFModel
 		parent::onAfterSave($table);
 
 		// Attachments
-		REAttach::store('category' . $table->id);
+		RedeventHelperAttachment::store('category' . $table->id);
 
 		// Trigger the onFinderAfterSave event.
 		$dispatcher = JDispatcher::getInstance();

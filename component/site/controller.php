@@ -498,7 +498,7 @@ class RedeventController extends JController
 		$cache->clean();
 
 		// Send unreg notification email
-		$key = redEVENTHelper::getAttendeeSubmitKey($rid);
+		$key = RedeventHelper::getAttendeeSubmitKey($rid);
 		$model->notifyManagers($key, true, $rid);
 
 		return true;
@@ -511,7 +511,7 @@ class RedeventController extends JController
 	function cancelreg()
 	{
 		$xref = JRequest::getInt('xref');
-		if (!redEVENTHelper::canUnregister($xref)) {
+		if (!RedeventHelper::canUnregister($xref)) {
 			echo JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED');
 			return;
 		}
@@ -576,7 +576,7 @@ class RedeventController extends JController
 		$v = new vCal();
 
 		$v->setTimeZone($user_offset);
-		$v->setSummary($row->venue.'-'.$row->catname.'-'.redEVENTHelper::getSessionFullTitle($row));
+		$v->setSummary($row->venue.'-'.$row->catname.'-'.RedeventHelper::getSessionFullTitle($row));
 		$v->setDescription($row->datdescription);
 		$v->setStartDate($Start);
 		$v->setEndDate($End);
@@ -840,7 +840,7 @@ class RedeventController extends JController
 
 			foreach ($events as $event)
 			{
-				echo "sending reminder for event: ".redEVENTHelper::getSessionFullTitle($event)."<br>";
+				echo "sending reminder for event: ".RedeventHelper::getSessionFullTitle($event)."<br>";
 
 				$tags = new RedeventTags();
 				$tags->setXref($event->id);
@@ -887,13 +887,13 @@ class RedeventController extends JController
 		$app  = JFactory::getApplication();
 		$id   = $app->input->getInt('file', 0);
 		$user = JFactory::getUser();
-		$path = REAttach::getAttachmentPath($id, max($user->getAuthorisedViewLevels()));
+		$path = RedeventHelperAttachment::getAttachmentPath($id, max($user->getAuthorisedViewLevels()));
 
 		// The header is fine tuned to work with grump ie8... if you modify a property, make sure it's still ok !
 		header('Content-Description: File Transfer');
 
 		// Mime
-		$mime = redEVENTHelper::getMimeType($path);
+		$mime = RedeventHelper::getMimeType($path);
 		$doc = JFactory::getDocument();
 		$doc->setMimeEncoding($mime);
 
@@ -931,7 +931,7 @@ class RedeventController extends JController
 		$mainframe = & JFactory::getApplication();
 		$id     = JRequest::getVar( 'id', 0, 'request', 'int' );
 
-		$res = REAttach::remove($id);
+		$res = RedeventHelperAttachment::remove($id);
 		if (!$res) {
 			echo 0;
 			$mainframe->close();
@@ -953,7 +953,7 @@ class RedeventController extends JController
 
 	function registrationexpiration()
 	{
-		redEVENTHelper::registrationexpiration();
+		RedeventHelper::registrationexpiration();
 	}
 
 	public function dbgajax()

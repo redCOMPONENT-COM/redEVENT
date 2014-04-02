@@ -164,7 +164,7 @@ class RedeventModelEventhelper extends JModelLegacy
 			if ($this->event)
 			{
 				$this->event = $this->_getEventCategories($this->event);
-				$this->event->attachments = REAttach::getAttachments('event' . $this->event->did, $user->getAuthorisedViewLevels());
+				$this->event->attachments = RedeventHelperAttachment::getAttachments('event' . $this->event->did, $user->getAuthorisedViewLevels());
 			}
 
 			return (boolean) $this->event;

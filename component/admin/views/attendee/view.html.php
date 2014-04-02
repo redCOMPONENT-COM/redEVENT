@@ -69,7 +69,7 @@ class RedEventViewAttendee extends JView
 		$lists['user'] = JHTML::_('list.users', 'uid', $row->uid, 1, null, 'name', 0);
 
 		$sessionpricegroups = $this->get('Pricegroups');
-		$lists['pricegroup_id'] = redEVENTHelper::getRfPricesSelect($sessionpricegroups, $row->pricegroup_id);
+		$lists['pricegroup_id'] = RedeventHelper::getRfPricesSelect($sessionpricegroups, $row->pricegroup_id);
 
 		// Build toolbar
 		if (!empty($cid))

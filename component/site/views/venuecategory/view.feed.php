@@ -45,7 +45,7 @@ class RedeventViewVenuecategory extends JView
 		$mainframe = &JFactory::getApplication();
 
 		$doc 		= & JFactory::getDocument();
-		$elsettings = & redEVENTHelper::config();
+		$elsettings = & RedeventHelper::config();
 
 		// Get some data from the model
 		JRequest::setVar('limit', $mainframe->getCfg('feed_limit'));
@@ -54,7 +54,7 @@ class RedeventViewVenuecategory extends JView
 		foreach ( $rows as $row )
 		{
 			// strip html from feed item title
-			$title = $this->escape( redEVENTHelper::getSessionFullTitle($row) );
+			$title = $this->escape( RedeventHelper::getSessionFullTitle($row) );
 			$title = html_entity_decode( $title );
 
 			// strip html from feed item category
@@ -72,10 +72,10 @@ class RedeventViewVenuecategory extends JView
 			}
 
 			//Format date
-			if (redEVENTHelper::isValidDate($row->dates))
+			if (RedeventHelper::isValidDate($row->dates))
 			{
 				$date = strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $row->dates ));
-				if (!redEVENTHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) {
+				if (!RedeventHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) {
 					$displaydate = $date;
 				} else {
 					$enddate 	= strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $row->enddates ));

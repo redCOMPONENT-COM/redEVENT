@@ -144,7 +144,7 @@ class RedEventControllerRedevent extends FOFController
 	 */
 	function autoarchive()
 	{
-		$res = redEVENTHelper::cleanup(1);
+		$res = RedeventHelper::cleanup(1);
 		$msg = JText::_('COM_REDEVENT_AUTOARCHIVE_DONE');
 		$link = 'index.php?option=com_redevent&view=tools';
 		$this->setRedirect( $link, $msg );
@@ -178,7 +178,7 @@ class RedEventControllerRedevent extends FOFController
 		$mainframe = & JFactory::getApplication();
 		$id     = JRequest::getVar( 'id', 0, 'request', 'int' );
 
-		$res = REAttach::remove($id);
+		$res = RedeventHelperAttachment::remove($id);
 		if (!$res) {
 			echo 0;
 			exit();

@@ -72,7 +72,7 @@ class RedEventModelVenuesmap extends JModel
 		$item    	= $menu->getActive();
 		$params		= $menu->getParams($item->id);
 
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_data))

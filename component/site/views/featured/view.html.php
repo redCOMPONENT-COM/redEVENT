@@ -43,10 +43,10 @@ class RedeventViewFeatured extends JViewLegacy
 	function display( $tpl = null )
 	{
 		$mainframe = &JFactory::getApplication();
-		
+
 		//initialize variables
 		$document 	= & JFactory::getDocument();
-		$elsettings = & redEVENTHelper::config();
+		$elsettings = & RedeventHelper::config();
 		$menu		  = & JSite::getMenu();
 		$item    	= $menu->getActive();
 		$params 	= & $mainframe->getParams();
@@ -60,10 +60,10 @@ class RedeventViewFeatured extends JViewLegacy
       $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/featured.css');
     }
     else {
-      $document->addStyleSheet($params->get('custom_css'));     
+      $document->addStyleSheet($params->get('custom_css'));
     }
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
-		
+
 		// add js
     JHTML::_('behavior.mootools');
     // for filter hint
@@ -71,7 +71,7 @@ class RedeventViewFeatured extends JViewLegacy
 
 		// get variables
 		$task 		= JRequest::getWord('task');
-		$pop		= JRequest::getBool('pop');		
+		$pop		= JRequest::getBool('pop');
 
 		//get data from model
 		$rows 	= & $this->get('Data');
@@ -79,7 +79,7 @@ class RedeventViewFeatured extends JViewLegacy
 		$customsfilters 	= & $this->get('CustomFilters');
 		$pagination =& $this->get('Pagination');
 
-		
+
 		//are events available?
 		if (!$rows) {
 			$noevents = 1;
@@ -94,12 +94,12 @@ class RedeventViewFeatured extends JViewLegacy
 			$params->set( 'popup', 1 );
 			$This->setLayout('print');
 		}
-		
+
 		$print_link = JRoute::_('index.php?option=com_redevent&view=featured&tmpl=component&pop=1');
 		$pagetitle = $params->get('page_title');
-			
+
 		$list_link = RedeventHelperRoute::getFeaturedRoute();
-		
+
 		//Set Page title
 		$this->document->setTitle($pagetitle);
 
@@ -109,12 +109,12 @@ class RedeventViewFeatured extends JViewLegacy
 		$document->addHeadLink(JRoute::_($link.'&type=rss'), 'alternate', 'rel', $attribs);
 		$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
 		$document->addHeadLink(JRoute::_($link.'&type=atom'), 'alternate', 'rel', $attribs);
-		
+
 		//create select lists
 		$lists	= $this->_buildSortLists();
-		
+
     $filter_customs   = $state->get('filter_customs');
-				
+
 		$this->assign('lists',  $lists);
 
 		$this->assignRef('rows',        $rows);
@@ -132,9 +132,9 @@ class RedeventViewFeatured extends JViewLegacy
 		$this->assignRef('thumb_link',  $thumb_link);
 		$this->assignRef('list_link',   $list_link);
 		$this->assign('filter_customs',      $filter_customs);
-		
+
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
-		$cols = redEVENTHelper::validateColumns($cols);
+		$cols = RedeventHelper::validateColumns($cols);
 		$this->assign('columns',        $cols);
 
 		parent::display($tpl);
@@ -151,24 +151,24 @@ class RedeventViewFeatured extends JViewLegacy
 	{
 		$app = & JFactory::getApplication();
 		$uri = & JFactory::getURI();
-		
+
 		// remove previously set filter in get
 		$uri->delVar('filter');
 		$uri->delVar('filter_type');
 		$uri->delVar('filter_category');
 		$uri->delVar('filter_venuecategory');
 		$uri->delVar('filter_venue');
-		$uri->delVar('filter_event');	  
+		$uri->delVar('filter_event');
 		$uri->delVar('filtercustom');
-		
-		$elsettings = & redEVENTHelper::config();
+
+		$elsettings = & RedeventHelper::config();
 		$params     = $app->getParams();
-		
+
 		$filter_order		= JRequest::getCmd('filter_order', 'x.dates');
 		$filter_order_Dir	= JRequest::getWord('filter_order_Dir', 'ASC');
 
 		$state = $this->get('state');
-		
+
 		$filter          = $state->get('filter');
 		$filter_type     = $state->get('filter_type');
 		$filter_category = $state->get('filter_category');
@@ -176,13 +176,13 @@ class RedeventViewFeatured extends JViewLegacy
 		$filter_event    = $state->get('filter_event');
 
 		$this->assign('action', JRoute::_(RedeventHelperRoute::getFeaturedRoute()));
-      
+
 		$sortselects = array();
 		if ($params->get('filter_type_event', 1))	$sortselects[]	= JHTML::_('select.option', 'title', JText::_('COM_REDEVENT_FILTER_SELECT_EVENT') );
 		if ($params->get('filter_type_venue', 1))	$sortselects[] 	= JHTML::_('select.option', 'venue', JText::_('COM_REDEVENT_FILTER_SELECT_VENUE') );
 		if ($params->get('filter_type_city', 1))	$sortselects[] 	= JHTML::_('select.option', 'city', JText::_('COM_REDEVENT_FILTER_SELECT_CITY') );
 		if ($params->get('filter_type_category', 1))	$sortselects[] 	= JHTML::_('select.option', 'type', JText::_('COM_REDEVENT_FILTER_SELECT_CATEGORY') );
-		
+
 		if (count($sortselects) == 0) {
 			$sortselect = false;
 		}
@@ -196,20 +196,20 @@ class RedeventViewFeatured extends JViewLegacy
 		$options = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_FILTER_SELECT_CATEGORY') ));
 		$options = array_merge($options, $this->get('CategoriesOptions'));
 		$lists['categoryfilter'] = JHTML::_('select.genericlist', $options, 'filter_category', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_category );
-		
+
 		// venue filter
 		$options = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_FILTER_SELECT_VENUE') ));
 		$options = array_merge($options, $this->get('VenuesOptions'));
 		$lists['venuefilter'] = JHTML::_('select.genericlist', $options, 'filter_venue', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_venue );
-		
+
 		// events filter
 		if ($params->get('lists_filter_event', 0))
 		{
 			$options = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_FILTER_SELECT_EVENT') ));
 			$options = array_merge($options, $this->get('EventsOptions'));
-			$lists['eventfilter'] = JHTML::_('select.genericlist', $options, 'filter_event', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_event );			
+			$lists['eventfilter'] = JHTML::_('select.genericlist', $options, 'filter_event', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_event );
 		}
-		
+
 		$lists['order_Dir']   = $filter_order_Dir;
 		$lists['order']       = $filter_order;
 		$lists['filter']      = $filter;

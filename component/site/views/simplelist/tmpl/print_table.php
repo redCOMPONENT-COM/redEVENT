@@ -107,7 +107,7 @@ $colnames = array_map('trim', $colnames);
 
 	$k = 0;
 	foreach ($this->rows as $row) :
-		$isover = (redEVENTHelper::isOver($row) ? ' isover' : '');
+		$isover = (RedeventHelper::isOver($row) ? ' isover' : '');
 
 		?>
   	<tr class="sectiontableentry<?php echo ($k + 1) . $this->params->get( 'pageclass_sfx' ). ($row->featured ? ' featured' : ''); ?><?php echo $isover; ?>">
@@ -121,7 +121,7 @@ $colnames = array_map('trim', $colnames);
 				<?php break;?>
 
 				<?php case 'title': ?>
-					<td class="re_title" itemprop="name"><?php echo $this->escape(redEVENTHelper::getSessionFullTitle($row)); ?></td>
+					<td class="re_title" itemprop="name"><?php echo $this->escape(RedeventHelper::getSessionFullTitle($row)); ?></td>
 				<?php break;?>
 
 				<?php case 'venue': ?>
@@ -163,7 +163,7 @@ $colnames = array_map('trim', $colnames);
 				<?php break;?>
 
 				<?php case 'places': ?>
-          <td class="re_places"><?php echo redEVENTHelper::getRemainingPlaces($row); ?></td>
+          <td class="re_places"><?php echo RedeventHelper::getRemainingPlaces($row); ?></td>
 				<?php break;?>
 
 				<?php case 'price': ?>

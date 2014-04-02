@@ -378,7 +378,7 @@ class RedEventModelSession extends JModel
 			}
 		}
 		if ($recurrence->id) {
-			redEVENTHelper::generaterecurrences($recurrence->id);
+			RedeventHelper::generaterecurrences($recurrence->id);
 		}
 
 		/** roles **/

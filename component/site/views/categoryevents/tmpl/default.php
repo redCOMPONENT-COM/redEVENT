@@ -129,7 +129,7 @@ if ($this->state->get('results_type') == 0)
 			'category',
 			'picture',
 	);
-	$this->columns = redEVENTHelper::validateColumns($this->columns, $allowed);
+	$this->columns = RedeventHelper::validateColumns($this->columns, $allowed);
 	echo $this->loadTemplate('eventstable');
 }
 else

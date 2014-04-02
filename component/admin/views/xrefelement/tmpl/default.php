@@ -78,8 +78,8 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 					//Format date
-					$date = redEVENTHelper::isValidDate($row->dates) ? strftime( $this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->dates )) : JText::_('COM_REDEVENT_OPEN_DATE');
-					if ( !redEVENTHelper::isValidDate($row->enddates) ) {
+					$date = RedeventHelper::isValidDate($row->dates) ? strftime( $this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->dates )) : JText::_('COM_REDEVENT_OPEN_DATE');
+					if ( !RedeventHelper::isValidDate($row->enddates) ) {
 						$displaydate = $date;
 					} else {
 						$enddate 	= strftime( $this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->enddates ));
@@ -106,7 +106,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td><?php echo $row->city ? htmlspecialchars($row->city, ENT_QUOTES, 'UTF-8') : '-'; ?></td>
 			<td><?php echo $row->catname ? htmlspecialchars($row->catname, ENT_QUOTES, 'UTF-8') : '-'; ?></td>
 			<td align="center">
-				<?php $img = $row->session_published ? 'tick.png' : 'publish_x.png'; 
+				<?php $img = $row->session_published ? 'tick.png' : 'publish_x.png';
 				$alt = $row->published ? 'Published' : 'Unpublished';
 				echo JHTML::_('image', 'admin/'.$img, $alt, '', true);
 				?>

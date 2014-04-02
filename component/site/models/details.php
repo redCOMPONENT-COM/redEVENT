@@ -187,7 +187,7 @@ class RedeventModelDetails extends JModel
 			if ($this->_details)
 			{
 				$this->_details = $this->_getEventCategories($this->_details);
-				$this->_details->attachments = REAttach::getAttachments('event'.$this->_details->did, $user->getAuthorisedViewLevels());
+				$this->_details->attachments = RedeventHelperAttachment::getAttachments('event'.$this->_details->did, $user->getAuthorisedViewLevels());
 			}
 
 			return (boolean) $this->_details;

@@ -136,7 +136,7 @@ class RedeventModelEditevent extends JModel
 
 		// Initialize variables
 		$user		= JFactory::getUser();
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 		$acl = RedeventUserAcl::getInstance();
 
 		$view		= JRequest::getWord('view');
@@ -351,7 +351,7 @@ class RedeventModelEditevent extends JModel
 	      $this->_db->setQuery( $query );
 
 	      $this->_event->categories = $this->_db->loadObjectList();
-				$this->_event->attachments = REAttach::getAttachments('event'.$this->_event->id, $user->getAuthorisedViewLevels());
+				$this->_event->attachments = RedeventHelperAttachment::getAttachments('event'.$this->_event->id, $user->getAuthorisedViewLevels());
   			$this->_event->rrules = RedeventHelperRecurrence::getRule($this->_event->rrule);
 			}
 
@@ -694,7 +694,7 @@ class RedeventModelEditevent extends JModel
 		$mainframe =& JFactory::getApplication();
 
 		$user 		  = & JFactory::getUser();
-		$elsettings = & redEVENTHelper::config();
+		$elsettings = & RedeventHelper::config();
 		$params     = $mainframe->getParams();
 		$acl        = RedeventUserAcl::getInstance();
 
@@ -1003,14 +1003,14 @@ class RedeventModelEditevent extends JModel
 				}
 			}
 			if ($recurrence->id) {
-				redEVENTHelper::generaterecurrences($recurrence->id);
+				RedeventHelper::generaterecurrences($recurrence->id);
 			}
 
 		}	/** session end **/
 
 		// attachments
 		if ($params->get('allow_attachments', 1)) {
-			REAttach::store('event'.$row->id);
+			RedeventHelperAttachment::store('event'.$row->id);
 		}
 
 
@@ -1248,7 +1248,7 @@ class RedeventModelEditevent extends JModel
 	function storeXref($data)
 	{
 		$user 		= & JFactory::getUser();
-		$settings = & redEVENTHelper::config();
+		$settings = & RedeventHelper::config();
 
 		// TODO : check user group access ?
 		$row = & JTable::getInstance('RedEvent_eventvenuexref', '');
@@ -1388,7 +1388,7 @@ class RedeventModelEditevent extends JModel
     	}
     }
     if ($recurrence->id) {
-    	redEVENTHelper::generaterecurrences($recurrence->id);
+    	RedeventHelper::generaterecurrences($recurrence->id);
     }
 
 		return true;

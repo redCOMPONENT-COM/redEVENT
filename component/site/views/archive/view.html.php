@@ -46,7 +46,7 @@ class RedeventViewArchive extends JViewLegacy
 
 		//initialize variables
 		$document 	= & JFactory::getDocument();
-		$elsettings = & redEVENTHelper::config();
+		$elsettings = & RedeventHelper::config();
 		$menu		  = & JSite::getMenu();
 		$item    	= $menu->getActive();
 		$params 	= & $mainframe->getParams();
@@ -126,7 +126,7 @@ class RedeventViewArchive extends JViewLegacy
 		$this->assign('filter_customs',      $filter_customs);
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
-		$cols = redEVENTHelper::validateColumns($cols);
+		$cols = RedeventHelper::validateColumns($cols);
 		$this->assign('columns',        $cols);
 
 		parent::display($tpl);
@@ -153,7 +153,7 @@ class RedeventViewArchive extends JViewLegacy
 		$uri->delVar('filter_event');
 		$uri->delVar('filtercustom');
 
-		$elsettings = & redEVENTHelper::config();
+		$elsettings = & RedeventHelper::config();
 		$params     = $app->getParams();
 
 		$filter_order		= JRequest::getCmd('filter_order', 'x.dates');

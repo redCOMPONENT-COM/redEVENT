@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <ul class="redeventmod">
 <?php foreach ($list as $item) :  ?>
-	<?php $isover = (redEVENTHelper::isOver($item) ? ' isover' : ''); ?>
+	<?php $isover = (RedeventHelper::isOver($item) ? ' isover' : ''); ?>
 	<li class="<?php echo $isover; ?>">
 		<span class="event-title">
 			<?php if ($params->get('linkdet', 2) == 2) : ?>

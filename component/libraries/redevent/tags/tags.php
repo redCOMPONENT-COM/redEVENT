@@ -213,14 +213,14 @@ class RedeventTags
 			$this->addOptions($options);
 		}
 
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 		$this->_submitkey = $this->_submitkey ? $this->_submitkey : JRequest::getVar('submit_key');
 
 		$text = $this->_replace($text);
 		/* Include redFORM */
 		if (strstr($text, '[redform]') && $this->getEvent()->getData()->redform_id > 0)
 		{
-			$status = redEVENTHelper::canRegister($this->_xref);
+			$status = RedeventHelper::canRegister($this->_xref);
 			if ($status->canregister)
 			{
 				$redform = $this->getForm($this->getEvent()->getData()->redform_id);
@@ -786,7 +786,7 @@ class RedeventTags
 		$contents = '';
 		$this->row = $event;
 		$this->row->did = $event->id;
-		$this->elsettings = & redEVENTHelper::config();
+		$this->elsettings = & RedeventHelper::config();
 		if (JRequest::getVar('format') != 'raw')
 		{
 			ob_start();
@@ -1093,7 +1093,7 @@ class RedeventTags
 	function getForm()
 	{
 		$app = JFactory::getApplication();
-		$config = redEVENTHelper::config();
+		$config = RedeventHelper::config();
 
 		$submit_key = JRequest::getVar('submit_key');
 
@@ -1175,7 +1175,7 @@ class RedeventTags
 			{
 				$field = array();
 				$field['label'] = '<label for="sessionpricegroup_id">' . JText::_('COM_REDEVENT_REGISTRATION_PRICE') . '</label>';
-				$field['field'] = redEVENTHelper::getRfPricesSelect($prices);
+				$field['field'] = RedeventHelper::getRfPricesSelect($prices);
 				$field['class'] = 'reg-price';
 				$options['extrafields'][] = $field;
 			}
@@ -1366,7 +1366,7 @@ class RedeventTags
 	{
 		if ($this->_canregister === null)
 		{
-			$this->_canregister = redEVENTHelper::canRegister($this->getXref());
+			$this->_canregister = RedeventHelper::canRegister($this->getXref());
 		}
 		return $this->_canregister;
 	}
@@ -1411,7 +1411,7 @@ class RedeventTags
 
 	function _getTag_event_full_title()
 	{
-		return redEVENTHelper::getSessionFullTitle($this->getEvent()->getData());
+		return RedeventHelper::getSessionFullTitle($this->getEvent()->getData());
 	}
 
 	function _getTag_session_code()
@@ -1499,7 +1499,7 @@ class RedeventTags
 
 	function _getTag_duration()
 	{
-		return redEVENTHelper::getEventDuration($this->getEvent()->getData());
+		return RedeventHelper::getEventDuration($this->getEvent()->getData());
 	}
 
 	function _getTag_event_image()
@@ -1843,7 +1843,7 @@ class RedeventTags
 		$res = '';
 		if (strtotime($this->getEvent()->getData()->registrationend))
 		{
-			$elsettings = redEVENTHelper::config();
+			$elsettings = RedeventHelper::config();
 			$res = strftime($elsettings->get('formatdate', '%d.%m.%Y') . ' ' . $elsettings->get('formattime', '%H:%M'),
 				strtotime($this->getEvent()->getData()->registrationend));
 		}
@@ -1929,7 +1929,7 @@ class RedeventTags
 		$mainframe = & JFactory::getApplication();
 		$base_url = JURI::root();
 		$iconspath = $base_url . 'administrator/components/com_redevent/assets/images/';
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 		$text = '<span class="vlink webform">'
 			. JHTML::_('link',
 				$this->absoluteUrls(RedeventHelperRoute::getSignupRoute('webform',
@@ -1954,7 +1954,7 @@ class RedeventTags
 		$mainframe = & JFactory::getApplication();
 		$base_url = JURI::root();
 		$iconspath = $base_url . 'administrator/components/com_redevent/assets/images/';
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 		$text = '<span class="vlink email">'
 			. JHTML::_('link',
 				$this->absoluteUrls(RedeventHelperRoute::getSignupRoute('email', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)),
@@ -1978,7 +1978,7 @@ class RedeventTags
 		$mainframe = & JFactory::getApplication();
 		$base_url = JURI::root();
 		$iconspath = $base_url . 'administrator/components/com_redevent/assets/images/';
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 		$text = '<span class="vlink formaloffer">'
 			. JHTML::_('link',
 				$this->absoluteUrls(RedeventHelperRoute::getSignupRoute('formaloffer', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)),
@@ -2002,7 +2002,7 @@ class RedeventTags
 		$mainframe = & JFactory::getApplication();
 		$base_url = JURI::root();
 		$iconspath = $base_url . 'administrator/components/com_redevent/assets/images/';
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 		if (!empty($this->getEvent()->getData()->external_registration_url))
 		{
 			$link = $this->getEvent()->getData()->external_registration_url;
@@ -2034,7 +2034,7 @@ class RedeventTags
 		$mainframe = & JFactory::getApplication();
 		$base_url = JURI::root();
 		$iconspath = $base_url . 'administrator/components/com_redevent/assets/images/';
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 		$text = '<span class="vlink phone">'
 			. JHTML::_('link',
 				$this->absoluteUrls(RedeventHelperRoute::getSignupRoute('phone', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)),
