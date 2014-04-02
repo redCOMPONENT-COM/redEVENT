@@ -25,7 +25,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 <div id="redevent" class="el_eventlist print">
 <p class="buttons">
-	<?php	echo REOutput::printbutton( $this->print_link, $this->params );
+	<?php	echo RedeventHelperOutput::printbutton( $this->print_link, $this->params );
 	?>
 </p>
 
@@ -57,7 +57,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 		<p class="counter">
 				<?php echo $this->pageNav->getPagesCounter(); ?>
 		</p>
-	
+
 		<?php endif; ?>
 	<?php echo $this->pageNav->getPagesLinks(); ?>
 </div>

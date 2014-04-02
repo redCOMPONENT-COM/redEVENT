@@ -28,9 +28,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <p class="buttons">
 	<?php
 		if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup
-			echo REOutput::submitbutton( $this->dellink, $this->params );
+			echo RedeventHelperOutput::submitbutton( $this->dellink, $this->params );
 		endif;
-		echo REOutput::printbutton( $this->print_link, $this->params );
+		echo RedeventHelperOutput::printbutton( $this->print_link, $this->params );
 	?>
 </p>
 

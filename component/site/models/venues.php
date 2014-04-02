@@ -173,7 +173,7 @@ class RedeventModelVenues extends JModel
 				// Create flag
 				if ($venue->country)
 				{
-					$venue->countryimg = REOutput::getFlag($venue->country);
+					$venue->countryimg = RedeventHelperOutput::getFlag($venue->country);
 				}
 
 				// Create target link

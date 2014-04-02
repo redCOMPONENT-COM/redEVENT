@@ -67,7 +67,7 @@ class RedeventViewSignup extends JView
     $message = $tags->ReplaceTags($course->submission_type_email_pdf);
 
 		// convert urls
-		$htmlmsg = REOutput::ImgRelAbs($message);
+		$htmlmsg = RedeventHelperOutput::ImgRelAbs($message);
     $pdf->WriteHTML($message, true);
 
     // add the form data if requested

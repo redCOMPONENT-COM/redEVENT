@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package Joomla
  * @subpackage redEVENT
  */
-class REOutput {
+class RedeventHelperOutput {
 
 	/**
 	* Writes footer. Official copyright! Do not remove!

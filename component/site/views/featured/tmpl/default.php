@@ -27,7 +27,7 @@ $toggle = $this->params->get('filter_toggle', 3);
 ?>
 <div id="redevent" class="el_eventlist">
 <p class="buttons">
-	<?php	echo REOutput::printbutton( $this->print_link, $this->params );	?>
+	<?php	echo RedeventHelperOutput::printbutton( $this->print_link, $this->params );	?>
 </p>
 
 <?php if ($this->params->def( 'show_page_title', 1 )) : ?>
@@ -50,7 +50,7 @@ $toggle = $this->params->get('filter_toggle', 3);
 
 <!-- filters  -->
 <?php if ($this->params->get('display_limit_select')) : ?>
-<div id="el_filter" class="floattext">		
+<div id="el_filter" class="floattext">
 		<?php if ($this->params->get('display_limit_select')) : ?>
 		<div class="el_fright">
 			<?php
@@ -82,7 +82,7 @@ $toggle = $this->params->get('filter_toggle', 3);
 		<p class="counter">
 				<?php echo $this->pageNav->getPagesCounter(); ?>
 		</p>
-	
+
 		<?php endif; ?>
 	<?php echo $this->pageNav->getPagesLinks(); ?>
 </div>

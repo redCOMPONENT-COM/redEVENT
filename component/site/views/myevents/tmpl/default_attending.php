@@ -59,7 +59,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		foreach ((array) $this->attending as $row) : ?>
 	  		<tr class="sectiontableentry<?php echo $i +1 . $this->params->get( 'pageclass_sfx' ); ?>" >
 	  			<td align="left">
-	   				<?php echo REOutput::formatEventDateTime($row);	?>
+	   				<?php echo RedeventHelperOutput::formatEventDateTime($row);	?>
 				</td>
 
 				<?php

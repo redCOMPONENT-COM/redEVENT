@@ -51,14 +51,14 @@ defined('_JEXEC') or die('Restricted access');
 				if ($this->useracl->canEditXref($row->xref))
 				{
 					$editsessionlink = JHtml::link(RedeventHelperRoute::getEditXrefRoute($row->id, $row->xref).'&tmpl=component'
-						, REOutput::formatEventDateTime($row, false)
+						, RedeventHelperOutput::formatEventDateTime($row, false)
 						, array('class' => 'xrefmodal hasTip',
 							'title' => JText::_('COM_REDEVENT_EDIT_XREF'),
 							'tip' => JText::_('COM_REDEVENT_EDIT_XREF_TIP')));
 				}
 				else
 				{
-					$editsessionlink = REOutput::formatEventDateTime($row, false);
+					$editsessionlink = RedeventHelperOutput::formatEventDateTime($row, false);
 				}
 			?>
 				<tr xref="<?php echo $row->xref; ?>">

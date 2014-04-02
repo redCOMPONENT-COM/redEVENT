@@ -116,7 +116,7 @@ $colnames = array_map('trim', $colnames);
 			<?php switch ($col):
 				case 'date': ?>
 	    		<td class="re_date">
-			    	<?php echo REOutput::formatEventDateTime($row);	?>
+			    	<?php echo RedeventHelperOutput::formatEventDateTime($row);	?>
 					</td>
 				<?php break;?>
 
@@ -167,7 +167,7 @@ $colnames = array_map('trim', $colnames);
 				<?php break;?>
 
 				<?php case 'price': ?>
-					<td class="re_prices"><?php echo REOutput::formatListPrices($row->prices); ?></td>
+					<td class="re_prices"><?php echo RedeventHelperOutput::formatListPrices($row->prices); ?></td>
 				<?php break;?>
 
 				<?php case 'credits': ?>

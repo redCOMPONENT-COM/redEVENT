@@ -46,7 +46,6 @@ if (!JComponentHelper::getComponent('com_redevent', true)->enabled)
 
 // Redevent
 include_once JPATH_SITE . '/components/com_redevent/helpers/route.php';
-require_once JPATH_SITE . '/components/com_redevent/classes/output.class.php';
 require_once JPATH_SITE . '/administrator/components/com_redevent/classes/error.class.php';
 
 JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
@@ -156,13 +155,13 @@ class PlgSystemAutotweetRedevent extends plgAutotweetBase
 
 		if (RedeventHelper::isValidDate($event->dates))
 		{
-			$date = REOutput::formattime($event->dates, $event->times);
+			$date = RedeventHelperOutput::formattime($event->dates, $event->times);
 			$ev['start_time'] = $date;
 		}
 
 		if (RedeventHelper::isValidDate($event->enddates))
 		{
-			$date = REOutput::formattime($event->enddates, $event->endtimes);
+			$date = RedeventHelperOutput::formattime($event->enddates, $event->endtimes);
 			$ev['end_time'] = $date;
 		}
 

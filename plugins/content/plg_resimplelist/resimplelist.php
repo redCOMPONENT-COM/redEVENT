@@ -31,7 +31,6 @@ jimport('joomla.plugin.plugin');
 
 if (!defined('REDEVENT_PATH_SITE')) DEFINE('REDEVENT_PATH_SITE', JPATH_SITE.DS.'components'.DS.'com_redevent');
 
-include_once(REDEVENT_PATH_SITE.DS.'classes'.DS.'output.class.php');
 include_once(REDEVENT_PATH_SITE.DS.'helpers'.DS.'route.php');
 include_once('resimplelist'.DS.'model.php');
 
@@ -232,7 +231,7 @@ class plgContentRESimplelist extends JPlugin {
 							echo '<td>'.RedeventHelper::getRemainingPlaces($event).'</td>';
 							break;
 						case 'price':
-							echo '<td>'.REOutput::formatListPrices($event->prices).'</td>';
+							echo '<td>'.RedeventHelperOutput::formatListPrices($event->prices).'</td>';
 							break;
 						default:
 							if (strstr($c, 'custom') && $f = $this->_getCustom($c)) {

@@ -441,7 +441,7 @@ class RedeventAttendee extends JObject
 		}
 
 		// Update image paths in body
-		$body = REOutput::ImgRelAbs($body);
+		$body = RedeventHelperOutput::ImgRelAbs($body);
 
 		$mailer = JFactory::getMailer();
 
@@ -526,7 +526,7 @@ class RedeventAttendee extends JObject
 
 		$subject = $tags->ReplaceTags($waiting ? $params->get('wl_notify_admin_waiting_subject') : $params->get('wl_notify_admin_attending_subject'));
 		$body = $tags->ReplaceTags($waiting ? $params->get('wl_notify_admin_waiting_body') : $params->get('wl_notify_admin_attending_body'));
-		$body = REOutput::ImgRelAbs($body);
+		$body = RedeventHelperOutput::ImgRelAbs($body);
 
 		$mailer->setSubject($subject);
 		$mailer->MsgHTML($body);
@@ -876,7 +876,7 @@ class RedeventAttendee extends JObject
 			$htmlmsg = str_replace('[fullname]', $this->getFullname(), $htmlmsg);
 
 			// Convert urls
-			$htmlmsg = REOutput::ImgRelAbs($htmlmsg);
+			$htmlmsg = RedeventHelperOutput::ImgRelAbs($htmlmsg);
 
 			$mailer->setBody($htmlmsg);
 			$subject = $tags->ReplaceTags($eventsettings->notify_subject);
@@ -978,7 +978,7 @@ class RedeventAttendee extends JObject
 			</html>';
 
 		// Convert urls
-		$mail = REOutput::ImgRelAbs($mail);
+		$mail = RedeventHelperOutput::ImgRelAbs($mail);
 
 		if (!$unreg && $params->get('registration_notification_attach_rfuploads', 1))
 		{

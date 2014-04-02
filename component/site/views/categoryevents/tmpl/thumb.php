@@ -31,11 +31,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <p class="buttons">
 	<?php
 		if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup
-			echo REOutput::listbutton( $this->list_link, $this->params );
-			echo REOutput::submitbutton( $this->dellink, $this->params );
+			echo RedeventHelperOutput::listbutton( $this->list_link, $this->params );
+			echo RedeventHelperOutput::submitbutton( $this->dellink, $this->params );
 		endif;
-		echo REOutput::mailbutton( $this->category->slug, 'categoryevents', $this->params );
-		echo REOutput::printbutton( $this->print_link, $this->params );
+		echo RedeventHelperOutput::mailbutton( $this->category->slug, 'categoryevents', $this->params );
+		echo RedeventHelperOutput::printbutton( $this->print_link, $this->params );
 	?>
 </p>
 
@@ -86,15 +86,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_('COM_REDEVENT_RESET' ); ?></button>
 			</div>
 			<?php endif; ?>
-			    					
+
 				<?php if ($this->params->get('lists_filter_event', 0)): ?>
 				<div id="event-filter"><?php echo $this->lists['eventfilter']; ?></div>
 	    	<?php endif; ?>
-	    	
+
 			<?php if ($this->params->get('lists_filter_venue', 1)): ?>
 			<div id="venue-filter"><?php echo $this->lists['venuefilter']; ?></div>
     	<?php endif; ?>
-			
+
 			<?php if ($this->customsfilters && count($this->customsfilters)): ?>
     	<?php foreach ($this->customsfilters as $custom): ?>
       <div class="custom-filter" id="filter<?php echo $custom->id; ?>">
@@ -106,7 +106,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		</div>
    	<input type="hidden" id="f-showfilters" name="showfilters" value="<?php echo $toggle == 0 ? '1' : JRequest::getInt('showfilters', $toggle != 3 ? 1 : 0); ?>"/>
 		<?php endif; ?>
-		
+
 		<?php if ($this->params->get('display_limit_select')) : ?>
 		<div class="el_fright">
 			<?php
@@ -138,7 +138,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<p class="counter">
 				<?php echo $this->pageNav->getPagesCounter(); ?>
 		</p>
-	
+
 		<?php endif; ?>
 	<?php echo $this->pageNav->getPagesLinks(); ?>
 </div>

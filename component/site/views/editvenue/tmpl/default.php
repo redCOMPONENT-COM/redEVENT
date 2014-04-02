@@ -319,7 +319,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 							        </div>
 						        </div>
 										<div class="coords-pinpoint">
-								          <?php echo $pinpointicon = REOutput::pinpointicon( $this->row ); ?>
+								          <?php echo $pinpointicon = RedeventHelperOutput::pinpointicon( $this->row ); ?>
 										</div>
 						      </td>
 						    </tr>

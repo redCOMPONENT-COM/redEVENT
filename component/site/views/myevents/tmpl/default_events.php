@@ -138,11 +138,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     			<td headers="el_date" align="left">
     				<?php if ($this->acl->canEditXref($row->xref)): ?>
    					<?php echo JHTML::link('index.php?option=com_redevent&view=editevent&layout=eventdate&id='.$row->slug.'&xref='.$row->xref,
-   					                       REOutput::formatEventDateTime($row),
+   					                       RedeventHelperOutput::formatEventDateTime($row),
    					                       array('class' => 'hasTip',
    					                             'title' => JText::_('COM_REDEVENT_EDIT_XREF' ).'::'.JText::_('COM_REDEVENT_EDIT_XREF_TIP' )));	?>
     				<?php else: ?>
-   					<?php echo REOutput::formatEventDateTime($row);	?>
+   					<?php echo RedeventHelperOutput::formatEventDateTime($row);	?>
    					<?php endif; ?>
 					</td>
 

@@ -45,11 +45,11 @@ foreach ($this->upcomingvenueevents as $key => $event) {
 	<tr>
 		<td><?php echo JHTML::_('link', $event_url, RedeventHelper::getSessionFullTitle($event)); ?></td>
 		<td><?php echo $event->venue; ?></td>
-		<td><?php echo REOutput::getFlag( $event->country ); ?></td>
-		<td><?php echo REOutput::formatdate($event->dates, $event->times); ?></td>
+		<td><?php echo RedeventHelperOutput::getFlag( $event->country ); ?></td>
+		<td><?php echo RedeventHelperOutput::formatdate($event->dates, $event->times); ?></td>
 		<td><?php echo RedeventHelper::getEventDuration($event); ?></td>
 		<td><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
-		<td class="re-price"><?php echo REOutput::formatListPrices($event->prices); ?></td>
+		<td class="re-price"><?php echo RedeventHelperOutput::formatListPrices($event->prices); ?></td>
 		<td>
 		<?php
 		/* Get the different submission types */

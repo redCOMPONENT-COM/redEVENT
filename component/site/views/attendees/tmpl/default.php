@@ -41,7 +41,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<div id="redevent" class="el_details">
 		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).': '.RedeventHelper::getSessionFullTitle($this->row); ?>
 		<?php if ($this->manage_attendees): ?>
-    <?php echo REOutput::xrefattendeesbutton($this->row->xref); ?>
+    <?php echo RedeventHelperOutput::xrefattendeesbutton($this->row->xref); ?>
 		<?php endif; ?></h2>
 		<?php echo JHTML::link('index.php?option=com_redevent&controller=attendees&task=exportattendees&format=csv&xref='. $this->row->xref, JText::_('COM_REDEVENT_CSV_export'));?>
 
