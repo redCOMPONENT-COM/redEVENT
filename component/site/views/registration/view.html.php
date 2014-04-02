@@ -176,7 +176,7 @@ class RedeventViewRegistration extends JViewLegacy
 		$model  = $this->getModel();
 		$model->setXref($xref);
 		$course = $this->get('SessionDetails');
-		$course->dateinfo = REOutput::formatdate($course->dates, $course->times);
+		$course->dateinfo = RedeventHelperOutput::formatdate($course->dates, $course->times);
 
 		$cancellink = JRoute::_(RedeventHelperRoute::getDetailsRoute($course->slug, $course->xref) . '&task=delreguser&rid=' . $rid);
 

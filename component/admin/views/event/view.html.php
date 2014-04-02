@@ -58,8 +58,6 @@ class RedEventViewEvent extends JView {
 		JHTML::_('behavior.formvalidation');
 		JHTML::_('behavior.mootools');
 
-		require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'output.class.php');
-
 		//initialise variables
 		$editor 	= JFactory::getEditor();
 		$document	= JFactory::getDocument();

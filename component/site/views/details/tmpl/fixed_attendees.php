@@ -29,7 +29,7 @@ if ($this->view_attendees_list && $this->registers) {
 	<div class="event_id<?php echo $this->row->did; ?> el_details">
 		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ); ?>
 		<?php if ($this->manage_attendees): ?>
-    <?php echo REOutput::xrefattendeesbutton($this->row->xref); ?>
+    <?php echo RedeventHelperOutput::xrefattendeesbutton($this->row->xref); ?>
 		<?php endif; ?></h2>
 
 		<?php if (count($this->roles)): ?>

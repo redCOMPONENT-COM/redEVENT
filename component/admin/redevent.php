@@ -28,7 +28,6 @@ require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'recurrence.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'route.php');
 require_once (JPATH_COMPONENT_SITE.DS.'models'.DS.'eventhelper.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'image.class.php');
-require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'output.class.php');
 require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'admin.class.php');
 require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'error.class.php');
 

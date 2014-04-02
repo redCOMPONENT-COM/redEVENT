@@ -29,11 +29,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <p class="buttons">
 	<?php
 		if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup
-			echo REOutput::thumbbutton( $this->thumb_link, $this->params );
-			echo REOutput::submitbutton( $this->dellink, $this->params );
+			echo RedeventHelperOutput::thumbbutton( $this->thumb_link, $this->params );
+			echo RedeventHelperOutput::submitbutton( $this->dellink, $this->params );
 		endif;
-		echo REOutput::mailbutton( $this->category->slug, 'categoryevents', $this->params );
-		echo REOutput::printbutton( $this->print_link, $this->params );
+		echo RedeventHelperOutput::mailbutton( $this->category->slug, 'categoryevents', $this->params );
+		echo RedeventHelperOutput::printbutton( $this->print_link, $this->params );
 	?>
 </p>
 

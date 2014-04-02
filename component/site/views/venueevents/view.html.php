@@ -158,7 +158,7 @@ class RedeventViewVenueevents extends JView
 
         //create flag
         if ($venue->country) {
-        	$venue->countryimg = REOutput::getFlag( $venue->country );
+        	$venue->countryimg = RedeventHelperOutput::getFlag( $venue->country );
         }
 
 		// Create the pagination object

@@ -31,11 +31,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <p class="buttons">
 	<?php
 		if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup
-			if ($this->editlink) echo REOutput::editVenueButton($this->venue->slug);
-			echo REOutput::listbutton( $this->list_link, $this->params );
+			if ($this->editlink) echo RedeventHelperOutput::editVenueButton($this->venue->slug);
+			echo RedeventHelperOutput::listbutton( $this->list_link, $this->params );
 		endif;
-		echo REOutput::mailbutton( $this->venue->slug, 'venueevents', $this->params );
-		echo REOutput::printbutton( $this->print_link, $this->params );
+		echo RedeventHelperOutput::mailbutton( $this->venue->slug, 'venueevents', $this->params );
+		echo RedeventHelperOutput::printbutton( $this->print_link, $this->params );
 	?>
 </p>
 <?php if ($this->params->def('show_page_title', 1)) : ?>
@@ -47,7 +47,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<!--Venue-->
 	<?php //flyer
 	echo redEVENTImage::modalimage($this->venue->locimage, $this->venue->venue);
-	echo REOutput::mapicon( $this->venue , array('class' => 'map'));
+	echo RedeventHelperOutput::mapicon( $this->venue , array('class' => 'map'));
 	?>
 
 	<dl class="location floattext">
@@ -92,7 +92,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     			<?php echo $this->venue->countryimg ? $this->venue->countryimg : $this->venue->country; ?>
     		</dd>
     		<?php endif; ?>
-    		
+
 	</dl>
 
 	<?php
@@ -108,7 +108,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 	<!-- use form for filters and pagination -->
 	<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="adminForm">
-	
+
 	<!-- filters  -->
 	<?php $toggle = $this->params->get('filter_toggle', 3); ?>
 	<?php if ($toggle != 1 || $this->params->get('display_limit_select')) : ?>
@@ -129,15 +129,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_('COM_REDEVENT_RESET' ); ?></button>
 				</div>
 				<?php endif; ?>
-				
+
 			<?php if ($this->params->get('lists_filter_event', 0)): ?>
 			<div id="event-filter"><?php echo $this->lists['eventfilter']; ?></div>
     	<?php endif; ?>
-				
+
 				<?php if ($this->params->get('lists_filter_category', 1)): ?>
 				<div id="category-filter"><?php echo $this->lists['categoryfilter']; ?></div>
 	    	<?php endif; ?>
-				
+
 				<?php if ($this->customsfilters && count($this->customsfilters)): ?>
 	    	<?php foreach ($this->customsfilters as $custom): ?>
 	      <div class="custom-filter" id="filter<?php echo $custom->id; ?>">
@@ -149,7 +149,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			</div>
    	<input type="hidden" id="f-showfilters" name="showfilters" value="<?php echo $toggle == 0 ? '1' : JRequest::getInt('showfilters', $toggle != 3 ? 1 : 0); ?>"/>
 			<?php endif; ?>
-			
+
 			<?php if ($this->params->get('display_limit_select')) : ?>
 			<div class="el_fright">
 				<?php
@@ -161,7 +161,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	</div>
 	<?php endif; ?>
 	<!-- end filters -->
-	
+
 	<!--table-->
 	<?php echo $this->loadTemplate('items'); ?>
 
@@ -184,7 +184,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<p class="counter">
 				<?php echo $this->pageNav->getPagesCounter(); ?>
 		</p>
-	
+
 		<?php endif; ?>
 	<?php echo $this->pageNav->getPagesLinks(); ?>
 </div>

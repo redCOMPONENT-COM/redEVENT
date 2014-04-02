@@ -248,7 +248,7 @@ class RedeventModelSignup extends JModel
 		$message = $tags->ReplaceTags($email_settings->submission_type_email_body);
 
 		// convert urls
-		$message = REOutput::ImgRelAbs($message);
+		$message = RedeventHelperOutput::ImgRelAbs($message);
 
 		$this->mailer->setBody($message);
 
@@ -299,7 +299,7 @@ class RedeventModelSignup extends JModel
 		/* Read the template */
 		$message = $tags->ReplaceTags($details->submission_type_formal_offer_body);
 		// convert urls
-		$message = REOutput::ImgRelAbs($message);
+		$message = RedeventHelperOutput::ImgRelAbs($message);
 		$this->mailer->setBody($message);
 
 		/* Sent out the mail */

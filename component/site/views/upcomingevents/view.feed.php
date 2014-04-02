@@ -58,16 +58,16 @@ class RedeventViewUpcomingevents extends JView
 			<tr>
 				<td width="100">Course:</td><td>'.JHTML::_('link', $event_url, RedeventHelper::getSessionFullTitle($event), 'target="_blank"').'</td>
 			</tr><tr>
-				<td>Where:</td><td>'.$event->location.' &nbsp; '.REOutput::getFlag( $event->country ).'</td>
+				<td>Where:</td><td>'.$event->location.' &nbsp; '.RedeventHelperOutput::getFlag( $event->country ).'</td>
 			</tr><tr>
-				<td>Date:</td><td>'.REOutput::formatdate($event->dates, $event->times).'</td>
+				<td>Date:</td><td>'.RedeventHelperOutput::formatdate($event->dates, $event->times).'</td>
 			</tr><tr>
 				<td>Duration:</td><td>'.RedeventHelper::getEventDuration($event);
 			$description .= '</td>
 			</tr><tr>
 				<td>Venue:</td><td>'.JHTML::_('link', $venue_url, $event->venue, 'target="_blank"').'</td>
 			</tr><tr>
-				<td>Price:</td><td class="re-price">'.REOutput::formatListPrices($event->prices).'</td>
+				<td>Price:</td><td class="re-price">'.RedeventHelperOutput::formatListPrices($event->prices).'</td>
 			</tr><tr>
 				<td>Credits:</td><td>'.$event->course_credit.'</td>
 			</tr><tr>

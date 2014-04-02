@@ -1183,7 +1183,7 @@ class RedeventTags
 			{
 				$field = array();
 				$field['label'] = '<label for="sessionpricegroup_id">' . JText::_('COM_REDEVENT_REGISTRATION_PRICE') . '</label>';
-				$field['field'] = REOutput::formatprice($selpg->price, $selpg->currency) . (count($prices) > 1 ? ' (' . $selpg->name . ')' : '')
+				$field['field'] = RedeventHelperOutput::formatprice($selpg->price, $selpg->currency) . (count($prices) > 1 ? ' (' . $selpg->name . ')' : '')
 					. '<input type="hidden" name="sessionpricegroup_id[]" class="fixedprice" value="' . $selpg->id . '" price="' . $selpg->price . '" />';
 				$field['class'] = 'reg-price pg' . $selpg->id;
 				$options['extrafields'][] = $field;
@@ -1316,14 +1316,14 @@ class RedeventTags
 
 		if (count($prices) == 1)
 		{
-			return REOutput::formatprice($prices[0]->price);
+			return RedeventHelperOutput::formatprice($prices[0]->price);
 		}
 
 		$res = array();
 
 		foreach ($prices as $p)
 		{
-			$res[] = REOutput::formatprice($p->price) . ' (' . $p->name . ')';
+			$res[] = RedeventHelperOutput::formatprice($p->price) . ' (' . $p->name . ')';
 		}
 
 		return implode(' / ', $res);
@@ -1436,12 +1436,12 @@ class RedeventTags
 
 	function _getTag_date()
 	{
-		return REOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+		return RedeventHelperOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 	}
 
 	function _getTag_enddate()
 	{
-		return REOutput::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+		return RedeventHelperOutput::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
 	}
 
 	function _getTag_time()
@@ -1449,11 +1449,11 @@ class RedeventTags
 		$tmp = "";
 		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
 		{
-			$tmp = REOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+			$tmp = RedeventHelperOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 
 			if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes))
 			{
-				$tmp .= ' - ' . REOutput::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+				$tmp .= ' - ' . RedeventHelperOutput::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
 			}
 		}
 		return $tmp;
@@ -1464,7 +1464,7 @@ class RedeventTags
 		$tmp = "";
 		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
 		{
-			$tmp = REOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+			$tmp = RedeventHelperOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 		}
 		return $tmp;
 	}
@@ -1474,25 +1474,25 @@ class RedeventTags
 		$tmp = "";
 		if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes))
 		{
-			$tmp = REOutput::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+			$tmp = RedeventHelperOutput::formattime($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
 		}
 		return $tmp;
 	}
 
 	function _getTag_startenddatetime()
 	{
-		$tmp = REOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+		$tmp = RedeventHelperOutput::formatdate($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 		if (!empty($this->getEvent()->getData()->times) && strcasecmp('00:00:00', $this->getEvent()->getData()->times))
 		{
-			$tmp .= ' ' . REOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
+			$tmp .= ' ' . RedeventHelperOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->times);
 		}
 		if (!empty($this->getEvent()->getData()->enddates) && $this->getEvent()->getData()->enddates != $this->getEvent()->getData()->dates)
 		{
-			$tmp .= ' - ' . REOutput::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
+			$tmp .= ' - ' . RedeventHelperOutput::formatdate($this->getEvent()->getData()->enddates, $this->getEvent()->getData()->endtimes);
 		}
 		if (!empty($this->getEvent()->getData()->endtimes) && strcasecmp('00:00:00', $this->getEvent()->getData()->endtimes))
 		{
-			$tmp .= ' ' . REOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->endtimes);
+			$tmp .= ' ' . RedeventHelperOutput::formattime($this->getEvent()->getData()->dates, $this->getEvent()->getData()->endtimes);
 		}
 		return $tmp;
 	}
@@ -1799,12 +1799,12 @@ class RedeventTags
 
 	function _getTag_venue_mapicon()
 	{
-		return REOutput::mapicon($this->getEvent()->getData(), array('class' => 'event-map'));
+		return RedeventHelperOutput::mapicon($this->getEvent()->getData(), array('class' => 'event-map'));
 	}
 
 	function _getTag_venue_map()
 	{
-		return REOutput::map($this->getEvent()->getData(), array('class' => 'event-full-map'));
+		return RedeventHelperOutput::map($this->getEvent()->getData(), array('class' => 'event-full-map'));
 	}
 
 	/**************  registration tags ******************/
@@ -2157,7 +2157,7 @@ class RedeventTags
 		{
 			$title = urlencode($this->getEvent()->getData()->title
 				. ' '
-				. REOutput::formatdate($this->getEvent()->getData()->dates,
+				. RedeventHelperOutput::formatdate($this->getEvent()->getData()->dates,
 					$this->getEvent()->getData()->times));
 			$link = 'index.php?option=com_redform&controller=payment&task=select&source=redevent&key='
 				. $this->_submitkey . '&paymenttitle=' . $title;

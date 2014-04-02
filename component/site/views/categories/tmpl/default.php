@@ -27,7 +27,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div id="redevent" class="el_categoriesview">
 <p class="buttons">
 	<?php
-		echo REOutput::submitbutton( $this->dellink, $this->params );
+		echo RedeventHelperOutput::submitbutton( $this->dellink, $this->params );
 	?>
 </p>
 
@@ -77,7 +77,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<p class="counter">
 				<?php echo $this->pageNav->getPagesCounter(); ?>
 		</p>
-	
+
 		<?php endif; ?>
 	<?php echo $this->pageNav->getPagesLinks(); ?>
 </div>

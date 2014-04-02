@@ -856,7 +856,7 @@ class RedeventController extends JController
 					$mbody    = '<html><body>'.$tags->ReplaceTags($body).'</body></html>';
 
 					// convert urls
-					$mbody = REOutput::ImgRelAbs($mbody);
+					$mbody = RedeventHelperOutput::ImgRelAbs($mbody);
 
 					$mailer->setSubject($msubject);
 					$mailer->setBody($mbody);
