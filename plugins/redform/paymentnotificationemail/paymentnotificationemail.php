@@ -20,7 +20,7 @@ jimport('joomla.plugin.plugin');
  * @subpackage  paymentnotificationemail
  * @since       2.5
  */
-class plgRedeventPaymentnotificationemail extends JPlugin
+class plgRedformPaymentnotificationemail extends JPlugin
 {
 	/**
 	 * The plugin identifier.

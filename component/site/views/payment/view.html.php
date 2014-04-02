@@ -115,7 +115,7 @@ class RedeventViewPayment extends JView
 				// Trigger event for custom handling
 				JPluginHelper::importPlugin('redevent');
 				$dispatcher = JDispatcher::getInstance();
-				$dispatcher->trigger('onAfterPaymentVerified', array($submit_key));
+				$dispatcher->trigger('onAfterPaymentVerifiedRedevent', array($submit_key));
 
 				break;
 
