@@ -34,18 +34,18 @@ class RedeventControllerCategories extends FOFController
 {
 	/**
 	 * start categories import screens
-	 * 
+	 *
 	 */
 	function importexport()
 	{
 		$this->layout = 'importexport';
 		$this->add();
 	}
-	
+
 	function doexport()
 	{
 		$app			=& JFactory::getApplication();
-				
+
 		$model = $this->getModel('categories');
 		$rows = $model->export();
 
@@ -57,24 +57,24 @@ class RedeventControllerCategories extends FOFController
 		$k = 0;
 		$export = '';
 		$col = array();
-				
+
 		if (count($rows))
-		{		
+		{
 			$header = current($rows);
-			$export .= redEVENTHelper::writecsvrow(array_keys($header));
+			$export .= RedeventHelper::writecsvrow(array_keys($header));
 
 			$current = 0; // current event
 			foreach($rows as $data)
-			{			
-				$export .= redEVENTHelper::writecsvrow($data);
+			{
+				$export .= RedeventHelper::writecsvrow($data);
 			}
-	
+
 			echo $export;
 		}
 
 		$app->close();
 	}
-	
+
 	public function import()
 	{
 		$input = JFactory::getApplication()->input;
@@ -90,7 +90,7 @@ class RedeventControllerCategories extends FOFController
 				$this->setRedirect( 'index.php?option=com_redevent&view=categories&task=importexport', $msg, 'error' );
 				return;
 			}
-			 
+
 			// get fields, on first row of the file
 			$fields = array();
 			if ( ($data = fgetcsv($handle, 0, ',', '"')) !== FALSE )
@@ -132,7 +132,7 @@ class RedeventControllerCategories extends FOFController
 			}
 			fclose($handle);
 			$msg .= "<p>total records found: ".count($records)."<br /></p>\n";
-			 
+
 			// database update
 			if (count($records))
 			{

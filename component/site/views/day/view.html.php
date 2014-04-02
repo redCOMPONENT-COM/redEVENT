@@ -46,7 +46,7 @@ class RedeventViewDay extends JView
 
 		//initialize variables
 		$document 	= & JFactory::getDocument();
-		$elsettings = & redEVENTHelper::config();
+		$elsettings = & RedeventHelper::config();
 		$menu		= & JSite::getMenu();
 		$item    	= $menu->getActive();
 		$params 	= & $mainframe->getParams();
@@ -141,7 +141,7 @@ class RedeventViewDay extends JView
 		$this->assign('action',   JRoute::_(RedeventHelperRoute::getDayRoute(JRequest::getInt('id'))));
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
-		$cols = redEVENTHelper::validateColumns($cols);
+		$cols = RedeventHelper::validateColumns($cols);
 		$this->assign('columns',        $cols);
 
 		parent::display($tpl);
@@ -159,7 +159,7 @@ class RedeventViewDay extends JView
 	{
     $app = & JFactory::getApplication();
 
-		$elsettings = & redEVENTHelper::config();
+		$elsettings = & RedeventHelper::config();
 
 		$filter_order		= JRequest::getCmd('filter_order', 'x.dates');
 		$filter_order_Dir	= JRequest::getWord('filter_order_Dir', 'ASC');

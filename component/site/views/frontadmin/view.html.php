@@ -98,7 +98,7 @@ class RedeventViewFrontadmin extends JView
 
 		// Initialize variables
 		$document   = JFactory::getDocument();
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 		$pathway    = $mainframe->getPathWay();
 		$params     = $mainframe->getParams();
 		$uri        = JFactory::getURI();

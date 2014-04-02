@@ -45,7 +45,7 @@ if ($this->manage_attendees) {
 
 	<form action="<?php echo JRoute::_($this->action); ?>" method="post" name="manageform">
 	<div id="redevent" class="event_id<?php echo $this->row->eventid; ?> el_details">
-		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).': '.redEVENTHelper::getSessionFullTitle($this->row); ?></h2>
+		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).': '.RedeventHelper::getSessionFullTitle($this->row); ?></h2>
 
 		<?php echo JHTML::link('index.php?option=com_redevent&controller=attendees&task=exportattendees&format=csv&xref='. $this->row->xref, JText::_('COM_REDEVENT_CSV_export'));?>
 

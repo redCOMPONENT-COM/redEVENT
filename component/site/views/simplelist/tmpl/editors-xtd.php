@@ -136,21 +136,21 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     			<td headers="el_date" align="left">
     				<strong>
     					<?php echo REOutput::formatdate($row->dates, $row->times); ?>
-    					
+
     					<?php
-    					if (redEVENTHelper::isValidDate($row->enddates) && $row->enddates != $row->dates) :
+    					if (RedeventHelper::isValidDate($row->enddates) && $row->enddates != $row->dates) :
     						echo ' - '.REOutput::formatdate($row->enddates, $row->endtimes);
     					endif;
     					?>
     				</strong>
-    				
+
 					<?php
 					if ($this->params->get('showtime', 1)) :
 					?>
 						<br />
 						<?php
 						echo REOutput::formattime($row->dates, $row->times);
-						
+
 						if ($row->endtimes) :
 							echo ' - '.REOutput::formattime($row->enddates, $row->endtimes);
 						endif;
@@ -205,7 +205,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					      }
 					      echo implode("<br/>", $cats);
 					?>
-					</td>	
+					</td>
 				<?php endif; ?>
 			</tr>
 
@@ -233,7 +233,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<p class="counter">
 				<?php echo $this->pageNav->getPagesCounter(); ?>
 		</p>
-	
+
 		<?php endif; ?>
 	<?php echo $this->pageNav->getPagesLinks(); ?>
 </div>

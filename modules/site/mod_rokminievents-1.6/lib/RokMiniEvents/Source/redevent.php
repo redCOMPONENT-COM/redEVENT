@@ -18,7 +18,6 @@ class RokMiniEventsSourceRedEvent extends RokMiniEvents_SourceBase
     {
     	include_once(REDEVENT_PATH_SITE.DS.'classes'.DS.'output.class.php');
     	include_once(REDEVENT_PATH_SITE.DS.'helpers'.DS.'route.php');
-    	include_once(REDEVENT_PATH_SITE.DS.'helpers'.DS.'helper.php');
     	include_once('redevent'.DS.'model.php');
 
         // load language file

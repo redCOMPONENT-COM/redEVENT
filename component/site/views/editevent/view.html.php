@@ -80,7 +80,7 @@ class RedeventViewEditevent extends JView
 		// Initialize variables
 		$editor 	= JFactory::getEditor();
 		$document 	= JFactory::getDocument();
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 		$params     = $mainframe->getParams();
 
 		// Get Data from the model
@@ -141,7 +141,7 @@ class RedeventViewEditevent extends JView
 		// Transform <br /> and <br> back to \r\n for non editorusers
 		if (!$editoruser)
 		{
-			$row->datdescription = redEVENTHelper::br2break($row->datdescription);
+			$row->datdescription = RedeventHelper::br2break($row->datdescription);
 		}
 
 		// Get image information
@@ -225,7 +225,7 @@ class RedeventViewEditevent extends JView
 		$this->assignRef('canpublish', $canpublish);
 		$this->assignRef('referer',    JRequest::getWord('referer'));
 		$this->assign('title',         $title);
-		$this->assignRef('access', redEVENTHelper::getAccesslevelOptions());
+		$this->assignRef('access', RedeventHelper::getAccesslevelOptions());
 		$this->assignRef('roles', $roles);
 		$this->assignRef('rolesoptions', $rolesoptions);
 		$this->assignRef('prices', $prices);

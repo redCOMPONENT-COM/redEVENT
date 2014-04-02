@@ -26,7 +26,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <ul class="rf_thumbevents vcalendar">
 	<?php foreach ($this->rows as $row): ?>
 	<?php $img = redEVENTImage::getThumbUrl($row->datimage);
-				$img = ($img ? JHTML::image($img, redEVENTHelper::getSessionFullTitle($row)) : false);
+				$img = ($img ? JHTML::image($img, RedeventHelper::getSessionFullTitle($row)) : false);
 				$detaillink = JRoute::_( RedeventHelperRoute::getDetailsRoute($row->slug, $row->xslug) );
 				$venuelink  = JRoute::_( RedeventHelperRoute::getVenueEventsRoute($row->venueslug) );
 	?>
@@ -37,12 +37,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<div class="rf_img"></div>
 		<?php endif; ?>
 		<p class="rf_thumbevent_title">
-		<span class="summary"><?php echo JHTML::_('link', JRoute::_($detaillink), redEVENTHelper::getSessionFullTitle($row)); ?></span> @ <span class="location"><?php echo JHTML::_('link', JRoute::_($venuelink), $row->venue); ?></span>
+		<span class="summary"><?php echo JHTML::_('link', JRoute::_($detaillink), RedeventHelper::getSessionFullTitle($row)); ?></span> @ <span class="location"><?php echo JHTML::_('link', JRoute::_($venuelink), $row->venue); ?></span>
 		</p>
 		<p class="rf_thumbevent_date">
     	<span class="dtstart"><?php echo REOutput::formatdate($row->dates, $row->times); ?></span>
     	<?php
-    	if (redEVENTHelper::isValidDate($row->enddates) && $row->enddates != $row->dates) :
+    	if (RedeventHelper::isValidDate($row->enddates) && $row->enddates != $row->dates) :
     		echo ' - <span class="dtend">'.REOutput::formatdate($row->enddates, $row->endtimes).'</span>';
     	endif;
     	?>

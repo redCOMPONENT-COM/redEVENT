@@ -120,10 +120,10 @@ $app = JFactory::getApplication();
 		foreach ((array) $this->items as $i => $row)
 		{
 			/* Get the date */
-			$date = (!redEVENTHelper::isValidDate($row->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->dates )));
-			$enddate  = (!redEVENTHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) ? '' : strftime( $this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->enddates ));
+			$date = (!RedeventHelper::isValidDate($row->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->dates )));
+			$enddate  = (!RedeventHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) ? '' : strftime( $this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->enddates ));
 			$displaydate = $date. ($enddate ? ' - '.$enddate: '');
-			$endreg = (!redEVENTHelper::isValidDate($row->registrationend) ? '-' : strftime( $this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->registrationend )));
+			$endreg = (!RedeventHelper::isValidDate($row->registrationend) ? '-' : strftime( $this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->registrationend )));
 
 
 			$displaytime = '';

@@ -31,10 +31,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * @since 0.9
  */
 class RedeventControllerTextsnippets extends FOFController {
-  
+
 	/**
 	 * start export screens
-	 * 
+	 *
 	 */
 	function import()
 	{
@@ -45,7 +45,7 @@ class RedeventControllerTextsnippets extends FOFController {
 	function export()
 	{
 		$app			=& JFactory::getApplication();
-				
+
 		$model = $this->getModel('textsnippets');
 		$rows = $model->export();
 
@@ -57,24 +57,24 @@ class RedeventControllerTextsnippets extends FOFController {
 		$k = 0;
 		$export = '';
 		$col = array();
-				
+
 		if (count($rows))
-		{		
+		{
 			$header = current($rows);
-			$export .= redEVENTHelper::writecsvrow(array_keys($header));
+			$export .= RedeventHelper::writecsvrow(array_keys($header));
 
 			$current = 0; // current event
 			foreach($rows as $data)
-			{			
-				$export .= redEVENTHelper::writecsvrow($data);
+			{
+				$export .= RedeventHelper::writecsvrow($data);
 			}
-	
+
 			echo $export;
 		}
 
 		$app->close();
 	}
-	
+
 	function doimport()
 	{
 		$replace = JRequest::getVar('replace', 0, 'post', 'int');
@@ -89,7 +89,7 @@ class RedeventControllerTextsnippets extends FOFController {
 				$this->setRedirect( 'index.php?option=com_redevent&view=textsnippets&task=import', $msg, 'error' );
 				return;
 			}
-			 
+
 			// get fields, on first row of the file
 			$fields = array();
 			if ( ($data = fgetcsv($handle, 0, ',', '"')) !== FALSE )
@@ -131,7 +131,7 @@ class RedeventControllerTextsnippets extends FOFController {
 			}
 			fclose($handle);
 			$msg .= "<p>total records found: ".count($records)."<br /></p>\n";
-			 
+
 			// database update
 			if (count($records))
 			{

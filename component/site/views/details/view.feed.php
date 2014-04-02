@@ -51,7 +51,7 @@ class RedeventViewDetails extends JView
     $xreflinks = $this->get('XrefLinks');
     $this->_eventlinks = $xreflinks;
 
-    $document->setTitle($this->escape(redEVENTHelper::getSessionFullTitle($row)));
+    $document->setTitle($this->escape(RedeventHelper::getSessionFullTitle($row)));
     $document->setDescription('');
 
     ob_start();
@@ -64,7 +64,7 @@ class RedeventViewDetails extends JView
 
 		// load individual item creator class
 		$item = new JFeedItem();
-		$item->title    = redEVENTHelper::getSessionFullTitle($row);
+		$item->title    = RedeventHelper::getSessionFullTitle($row);
 		$item->link     = JRoute::_($link);
 		$item->description  = $contents;
 		$item->date     = '';

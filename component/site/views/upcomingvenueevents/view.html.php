@@ -48,7 +48,7 @@ class RedeventViewUpcomingvenueevents extends JView
 		//initialize variables
 		$document 	= & JFactory::getDocument();
 		$menu		= & JSite::getMenu();
-		$elsettings = & redEVENTHelper::config();
+		$elsettings = & RedeventHelper::config();
 		$item    	= $menu->getActive();
 		$params 	= & $mainframe->getParams('com_redevent');
 		$uri 		= & JFactory::getURI();

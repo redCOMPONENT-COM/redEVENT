@@ -51,7 +51,7 @@ class RedeventViewVenueevents extends JView
 		}
 
 		$doc 		= & JFactory::getDocument();
-		$elsettings = & redEVENTHelper::config();
+		$elsettings = & RedeventHelper::config();
 
 		// Get some data from the model
 		JRequest::setVar('limit', $mainframe->getCfg('feed_limit'));
@@ -60,7 +60,7 @@ class RedeventViewVenueevents extends JView
 		foreach ( $rows as $row )
 		{
 			// strip html from feed item title
-			$title = $this->escape( redEVENTHelper::getSessionFullTitle($row) );
+			$title = $this->escape( RedeventHelper::getSessionFullTitle($row) );
 			$title = html_entity_decode( $title );
 
 
@@ -130,7 +130,7 @@ class RedeventViewVenueevents extends JView
 		define( 'CACHE', './cache' );
 
 		$mainframe  = &JFactory::getApplication();
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 
 		$id = JRequest::getInt('id');
 
@@ -149,7 +149,7 @@ class RedeventViewVenueevents extends JView
 		foreach ( $rows as $row )
 		{
 			// strip html from feed item title
-			$title = $this->escape( redEVENTHelper::getSessionFullTitle($row) );
+			$title = $this->escape( RedeventHelper::getSessionFullTitle($row) );
 			$title = html_entity_decode( $title );
 
 			// strip html from feed item category
@@ -194,13 +194,13 @@ class RedeventViewVenueevents extends JView
 			$link = JURI::base().RedeventHelperRoute::getDetailsRoute($row->id);
 			$link = JRoute::_( $link );
 
-			$item = new rsscalItem(redEVENTHelper::getSessionFullTitle($row), $link);
+			$item = new rsscalItem(RedeventHelper::getSessionFullTitle($row), $link);
 			$item->addElement( 'ev:type',      $category );
 //			$item->addElement( 'ev:organizer', "" );
 			$item->addElement( 'ev:location',  $row->venue );
 			$item->addElement( 'ev:startdate', $rssstartdate );
 			$item->addElement( 'ev:enddate',   $rssenddate );
-			$item->addElement( 'dc:subject',   redEVENTHelper::getSessionFullTitle($row) );
+			$item->addElement( 'dc:subject',   RedeventHelper::getSessionFullTitle($row) );
 
 			$feed->addItem( $item );
 		}

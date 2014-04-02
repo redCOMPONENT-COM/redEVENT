@@ -46,7 +46,7 @@ class RedeventViewSearch extends JView
 
 		//initialize variables
 		$document 	= JFactory::getDocument();
-		$config = redEVENTHelper::config();
+		$config = RedeventHelper::config();
 		$menu		= JSite::getMenu();
 		$item    	= $menu->getActive();
 		$params 	= $mainframe->getParams();
@@ -141,7 +141,7 @@ class RedeventViewSearch extends JView
 
 		$vcatoptions = array();
 		$vcatoptions[] = JHTML::_('select.option', '0', JText::_('COM_REDEVENT_Select_venue_category'));
-		$vcatoptions = array_merge($vcatoptions, redEVENTHelper::getVenuesCatOptions());
+		$vcatoptions = array_merge($vcatoptions, RedeventHelper::getVenuesCatOptions());
 		$selectedcats = ($filter_venuecategory) ? array($filter_venuecategory) : array();
 		//build select
 		$lists['vcategories'] =  JHTML::_('select.genericlist', $vcatoptions, 'filter_venuecategory', 'size="1" class="inputbox dynfilter"', 'value', 'text', $selectedcats);
@@ -220,7 +220,7 @@ class RedeventViewSearch extends JView
 		$this->assign('filter_customs',      $filter_customs);
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
-		$cols = redEVENTHelper::validateColumns($cols);
+		$cols = RedeventHelper::validateColumns($cols);
 		$this->assign('columns',        $cols);
 
 		if ($state->get('results_type') == 0)
@@ -232,7 +232,7 @@ class RedeventViewSearch extends JView
 					'category',
 					'picture',
 			);
-			$cols = redEVENTHelper::validateColumns($cols, $allowed);
+			$cols = RedeventHelper::validateColumns($cols, $allowed);
 		}
 
 		$this->assign('columns',        $cols);
@@ -279,7 +279,7 @@ class RedeventViewSearch extends JView
 	 */
 	protected function checkDirectRedirect($rows)
 	{
-		$config = redEVENTHelper::config();
+		$config = RedeventHelper::config();
 
 		if (count($rows) == 1 && $config->get('redirect_search_unique_result_to_details', 0))
 		{

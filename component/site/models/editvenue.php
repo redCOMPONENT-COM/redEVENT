@@ -81,7 +81,7 @@ class RedeventModelEditvenue extends JModel
 
 		// Initialize variables
 		$user       = JFactory::getUser();
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 
 		$view		= JRequest::getWord('view');
 
@@ -212,7 +212,7 @@ class RedeventModelEditvenue extends JModel
 				$this->_db->setQuery( $query );
 
 				$this->_venue->categories = $this->_db->loadResultArray();
-				$this->_venue->attachments = REAttach::getAttachments('venue'.$this->_venue->id, $user->getAuthorisedViewLevels());
+				$this->_venue->attachments = RedeventHelperAttachment::getAttachments('venue'.$this->_venue->id, $user->getAuthorisedViewLevels());
 			}
 		}
 		return $this->_venue;
@@ -250,7 +250,7 @@ class RedeventModelEditvenue extends JModel
 		$mainframe = &JFactory::getApplication();
 
 		$user 		= & JFactory::getUser();
-		$elsettings = & redEVENTHelper::config();
+		$elsettings = & RedeventHelper::config();
 
 		//Get mailinformation
 		$SiteName 		= $mainframe->getCfg('sitename');
@@ -381,7 +381,7 @@ class RedeventModelEditvenue extends JModel
 
 		// attachments
 		if ($params->get('allow_attachments', 1)) {
-			REAttach::store('venue'.$row->id);
+			RedeventHelperAttachment::store('venue'.$row->id);
 		}
 
 		jimport('joomla.utilities.mail');

@@ -39,7 +39,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 	<form action="<?php echo JRoute::_($this->action); ?>" method="post" name="manageform">
 	<div id="redevent" class="el_details">
-		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).': '.redEVENTHelper::getSessionFullTitle($this->row); ?>
+		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).': '.RedeventHelper::getSessionFullTitle($this->row); ?>
 		<?php if ($this->manage_attendees): ?>
     <?php echo REOutput::xrefattendeesbutton($this->row->xref); ?>
 		<?php endif; ?></h2>

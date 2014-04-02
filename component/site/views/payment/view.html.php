@@ -47,15 +47,14 @@ class RedeventViewPayment extends JView
 
 		$document = JFactory::getDocument();
 		$dispatcher = JDispatcher::getInstance();
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 		$uri = JFactory::getURI();
 
 		$row = $this->get('Event');
 
 		/* This loads the tags replacer */
-		JView::loadHelper('tags');
 		JRequest::setVar('xref', $row->xref); // neede for tag constructor
-		$tags = new redEVENT_tags();
+		$tags = new RedeventTags;
 		$tags->setXref($row->xref);
 		$tags->setSubmitkey($submit_key);
 

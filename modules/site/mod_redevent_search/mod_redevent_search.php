@@ -28,7 +28,6 @@ JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
 require_once (dirname(__FILE__).DS.'helper.php');
 
 require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'route.php');
-require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'helper.php');
 
 $app = JFactory::getApplication();
 
@@ -37,7 +36,7 @@ $document->addStyleSheet( JURI::base() . 'modules/mod_redevent_search/mod_redeve
 
 $helper = new modRedEventSearchHelper();
 
-$elsettings = redEVENTHelper::config();
+$elsettings = RedeventHelper::config();
 
 $action = JRoute::_(RedeventHelperRoute::getSearchRoute());
 

@@ -125,7 +125,7 @@ class RedeventModelCategories extends JModel
 	 */
 	public function &getData( )
 	{
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_data))

@@ -346,7 +346,7 @@ class RedeventModelSignup extends JModel
 	 */
 	function getRegistrationStatus()
 	{
-	  return redEVENTHelper::canRegister($this->_xref);
+	  return RedeventHelper::canRegister($this->_xref);
 	}
 
 	function getRegistration($submitter_id)

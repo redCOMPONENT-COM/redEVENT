@@ -29,22 +29,22 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<table class="eventtable" summary="attending">
 		<thead>
 			<tr>
-				<th class="sectiontableheader" align="left"><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_DATE'), 'x.dates', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-				<th class="sectiontableheader" align="left"><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_TITLE'), 'a.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_DATE'), 'x.dates', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_TITLE'), 'a.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php if ($this->params->get('showlocate', 1)) :?>
-					<th class="sectiontableheader" align="left"><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_VENUE'), 'l.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+					<th class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_VENUE'), 'l.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php endif; ?>
 
 				<?php if ($this->params->get('showcity', 0)) : ?>
-					<th class="sectiontableheader" align="left"><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_CITY'), 'l.city', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+					<th class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_CITY'), 'l.city', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php endif; ?>
 
 				<?php if ($this->params->get('showstate', 0)) : ?>
-					<th class="sectiontableheader" align="left"><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_STATE'), 'l.state', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+					<th class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_STATE'), 'l.state', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php endif; ?>
 
 				<?php if ($this->params->get('showcat', 1)) : ?>
-					<th id="el_category" class="sectiontableheader" align="left"><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_CATEGORY'), 'c.catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+					<th id="el_category" class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_CATEGORY'), 'c.catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php endif; ?>
 			</tr>
 		</thead>
@@ -66,7 +66,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				//title
 				?>
 				<td headers="el_title" align="left" valign="top">
-					<a href="<?php echo $detaillink ; ?>"> <?php echo $this->escape(redEVENTHelper::getSessionFullTitle($row)); ?></a>
+					<a href="<?php echo $detaillink ; ?>"> <?php echo $this->escape(RedeventHelper::getSessionFullTitle($row)); ?></a>
 				</td>
 
 				<?php if ($this->params->get('showlocate', 1)) : ?>

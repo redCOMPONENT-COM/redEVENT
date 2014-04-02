@@ -46,7 +46,7 @@ class RedeventViewWeek extends JView
 
 		//initialize variables
 		$document = JFactory::getDocument();
-		$settings = redEVENTHelper::config();
+		$settings = RedeventHelper::config();
 		$menu		  =  JSite::getMenu();
 		$item    	= $menu->getActive();
 		$params 	= $application->getParams();
@@ -105,7 +105,7 @@ class RedeventViewWeek extends JView
 		$exclude = array('date');
 		$cols = array_diff($cols, $exclude);
 
-		$cols = redEVENTHelper::validateColumns($cols);
+		$cols = RedeventHelper::validateColumns($cols);
 		$this->assign('columns',        $cols);
 		$start = JComponentHelper::getParams('com_redevent')->get('week_start') == 'MO' ? 1 : 0;
 		$this->assign('start',        $start);

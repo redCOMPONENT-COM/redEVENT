@@ -43,7 +43,7 @@ class RedeventViewVenuesmap extends JView
 		$mainframe = & JFactory::getApplication();
 
 		$document 	= & JFactory::getDocument();
-		$elsettings = & redEVENTHelper::config();
+		$elsettings = & RedeventHelper::config();
     $uri        = & JFactory::getURI();
 
 		//get menu information
@@ -102,12 +102,12 @@ class RedeventViewVenuesmap extends JView
     $lists = array();
 
     // venues categories
-    $vcat_options = redEVENTHelper::getVenuesCatOptions(false);
+    $vcat_options = RedeventHelper::getVenuesCatOptions(false);
     array_unshift($vcat_options, JHTML::_('select.option', 0, JText::_('COM_REDEVENT_ALL')));
     $lists['venuescats'] = JHTML::_('select.genericlist', $vcat_options, 'vcat', '', 'value', 'text', $vcat);
 
     // events categories
-    $cat_options = redEVENTHelper::getEventsCatOptions(false);
+    $cat_options = RedeventHelper::getEventsCatOptions(false);
     array_unshift($cat_options, JHTML::_('select.option', 0, JText::_('COM_REDEVENT_ALL')));
     $lists['eventscats'] = JHTML::_('select.genericlist', $cat_options, 'cat', '', 'value', 'text', $cat);
 

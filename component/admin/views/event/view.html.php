@@ -58,7 +58,6 @@ class RedEventViewEvent extends JView {
 		JHTML::_('behavior.formvalidation');
 		JHTML::_('behavior.mootools');
 
-		require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'helper.php');
 		require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'output.class.php');
 
 		//initialise variables
@@ -280,7 +279,7 @@ class RedEventViewEvent extends JView {
 		$this->assignRef('venueslist'	, $venueslist);
 		$this->assignRef('redform_install'	, $redform_install);
 		$this->assignRef('customfields'  , $customfields);
-		$this->assignRef('access'	, redEVENTHelper::getAccesslevelOptions());
+		$this->assignRef('access'	, RedeventHelper::getAccesslevelOptions());
 		$this->assignRef('xrefs'  , $xrefs);
 		$this->assignRef('form',    $form);
 
@@ -372,8 +371,8 @@ class RedEventViewEvent extends JView {
 
 		$xref = $this->get('xref');
 
-		$date = (!redEVENTHelper::isValidDate($xref->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $xref->dates )));
-		$enddate  = (!redEVENTHelper::isValidDate($xref->enddates) || $xref->enddates == $xref->dates) ? '' : strftime( $params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $xref->enddates ));
+		$date = (!RedeventHelper::isValidDate($xref->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $xref->dates )));
+		$enddate  = (!RedeventHelper::isValidDate($xref->enddates) || $xref->enddates == $xref->dates) ? '' : strftime( $params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $xref->enddates ));
 
 		$displaydate = $date . ($enddate ? ' - '.$enddate: '');
 

@@ -459,7 +459,7 @@ class RedeventControllerFrontadmin extends FOFController
 		if ($res !== false)
 		{
 			$resp->status = 1;
-			$resp->html = redEVENTHelper::getStatusIcon($res);
+			$resp->html = RedeventHelper::getStatusIcon($res);
 
 			JPluginHelper::importPlugin( 'redevent' );
 			$dispatcher = JDispatcher::getInstance();

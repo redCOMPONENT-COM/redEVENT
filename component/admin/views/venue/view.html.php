@@ -117,7 +117,7 @@ class RedEventViewVenue extends JView
 
 	    $countries = array();
 	    $countries[] = JHTML::_('select.option', '', JText::_('COM_REDEVENT_Select_country'));
-	    $countries = array_merge($countries, redEVENTHelperCountries::getCountryOptions());
+	    $countries = array_merge($countries, RedeventHelperCountries::getCountryOptions());
 	    $lists['countries'] = JHTML::_('select.genericlist', $countries, 'country', 'class="inputbox"', 'value', 'text', $row->country );
 	    unset($countries);
 
@@ -138,7 +138,7 @@ class RedEventViewVenue extends JView
 		$this->assignRef('lists'      , $lists);
 		$this->assignRef('imageselect' 	, $imageselect);
 		$this->assignRef('pinpointicon', $pinpointicon);
-		$this->assignRef('access'	, redEVENTHelper::getAccesslevelOptions());
+		$this->assignRef('access'	, RedeventHelper::getAccesslevelOptions());
 		$this->assignRef('form'      	, $this->get('form'));
 
 		parent::display($tpl);

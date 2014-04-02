@@ -68,6 +68,14 @@ class plgRedformPaymentnotificationemail extends JPlugin
 	{
 		$mailer = $this->getMailer();
 		$attendee_id = $this->getAnAttendeeId();
+
+		if (!$attendee_id)
+		{
+			// Not a redevent registration
+
+			return;
+		}
+
 		$attendee = new RedeventAttendee($attendee_id);
 
 		$recipients = $attendee->getAdminEmails();

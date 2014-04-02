@@ -27,13 +27,13 @@ defined('_JEXEC') or die('Restricted access');
 	<table class="table">
 		<thead>
 			<tr>
-				<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_DATE'), 'x.dates', $this->bookings_order_dir, $this->bookings_order); ?></th>
+				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_DATE'), 'x.dates', $this->bookings_order_dir, $this->bookings_order); ?></th>
 				<th><?php echo JText::_('COM_REDEVENT_EVENT_DURATION'); ?></th>
-				<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TITLE'), 'a.title', $this->bookings_order_dir, $this->bookings_order); ?></th>
-				<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_VENUE'), 'l.venue', $this->bookings_order_dir, $this->bookings_order); ?></th>
-				<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CITY'), 'l.city', $this->bookings_order_dir, $this->bookings_order); ?></th>
-				<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CATEGORY'), 'c.catname', $this->bookings_order_dir, $this->bookings_order); ?></th>
-				<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_LANGUAGE'), 'a.language', $this->bookings_order_dir, $this->bookings_order); ?></th>
+				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TITLE'), 'a.title', $this->bookings_order_dir, $this->bookings_order); ?></th>
+				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_VENUE'), 'l.venue', $this->bookings_order_dir, $this->bookings_order); ?></th>
+				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CITY'), 'l.city', $this->bookings_order_dir, $this->bookings_order); ?></th>
+				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CATEGORY'), 'c.catname', $this->bookings_order_dir, $this->bookings_order); ?></th>
+				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_LANGUAGE'), 'a.language', $this->bookings_order_dir, $this->bookings_order); ?></th>
 				<th><?php echo JText::_('COM_REDEVENT_BOOKED'); ?></th>
 			</tr>
 		</thead>
@@ -41,8 +41,8 @@ defined('_JEXEC') or die('Restricted access');
 			<?php foreach ($this->bookings as $row): ?>
 				<tr>
 					<td><?php echo REOutput::formatEventDateTime($row, false); ?></td>
-					<td><?php echo redEVENTHelper::getEventDuration($row); ?></td>
-					<td><?php echo redEVENTHelper::getSessionFullTitle($row); ?></td>
+					<td><?php echo RedeventHelper::getEventDuration($row); ?></td>
+					<td><?php echo RedeventHelper::getSessionFullTitle($row); ?></td>
 					<td><?php echo $row->venue; ?></td>
 					<td><?php echo $row->city; ?></td>
 					<td class="re_category">

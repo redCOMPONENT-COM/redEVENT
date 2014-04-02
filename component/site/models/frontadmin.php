@@ -68,7 +68,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		parent::__construct($config);
 
 		$app = JFactory::getApplication();
-		$params = redEVENTHelper::config();
+		$params = RedeventHelper::config();
 
 		$this->uid = $app->input->get('uid', 0, 'int');
 		$this->setState('uid', $this->uid);
@@ -795,7 +795,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 	{
 		$db = JFactory::getDbo();
 		$acl = RedeventUserAcl::getInstance();
-		$config = redEVENTHelper::config();
+		$config = RedeventHelper::config();
 
 		$query->where('x.published = 1');
 
@@ -835,12 +835,12 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 			$query->where('c.id = ' . JRequest::getInt('filter_category'));
 		}
 
-		if ($from = $this->getState('filter_from') && redEVENTHelper::isValidDate($this->getState('filter_from')))
+		if ($from = $this->getState('filter_from') && RedeventHelper::isValidDate($this->getState('filter_from')))
 		{
 			$query->where('DATE(x.dates) >= ' . $db->quote($this->getState('filter_from')));
 		}
 
-		if ($to = $this->getState('filter_to') && redEVENTHelper::isValidDate($this->getState('filter_to')))
+		if ($to = $this->getState('filter_to') && RedeventHelper::isValidDate($this->getState('filter_to')))
 		{
 			$query->where('x.dates > 0 AND DATE(x.dates) <= ' . $db->quote($this->getState('filter_to')));
 		}
@@ -915,7 +915,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		$details = $registrationmodel->getSessionDetails();
 
 		$pricegroup = $this->getPricegroup($xref);
-		$price = redEVENTHelper::getFormCurrencyPrice($pricegroup);
+		$price = RedeventHelper::getFormCurrencyPrice($pricegroup);
 
 		$options = array('baseprice' => $price ? $price : 0);
 

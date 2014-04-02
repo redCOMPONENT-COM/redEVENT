@@ -51,7 +51,7 @@ class RedeventViewAttendees extends JView
 
 		$document 	= JFactory::getDocument();
 		$user		= JFactory::getUser();
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 		$acl        = RedeventUserAcl::getInstance();
 		$uri        = & JFactory::getURI();
 		$model      = &$this->getModel();
@@ -81,7 +81,7 @@ class RedeventViewAttendees extends JView
 		//Print
 		$pop	= JRequest::getBool('pop');
 
-		$params->def( 'page_title', redEVENTHelper::getSessionFullTitle($row). ' - '. JText::_('COM_REDEVENT_ATTENDEES' ));
+		$params->def( 'page_title', RedeventHelper::getSessionFullTitle($row). ' - '. JText::_('COM_REDEVENT_ATTENDEES' ));
 
 		if ( $pop ) {
 			$params->set( 'popup', 1 );
@@ -94,9 +94,9 @@ class RedeventViewAttendees extends JView
 		$pathway->addItem( JText::_('COM_REDEVENT_ATTENDEES' ), JRoute::_('index.php?option=com_redevent&view=attendees&xref='.$row->slug));
 
 		//set page title and meta stuff
-		$document->setTitle($item->title.' - '.redEVENTHelper::getSessionFullTitle($row));
+		$document->setTitle($item->title.' - '.RedeventHelper::getSessionFullTitle($row));
 
-		$unreg_check = redEVENTHelper::canUnregister($row->xref);
+		$unreg_check = RedeventHelper::canUnregister($row->xref);
 
 		// lists
 		$lists = array();
@@ -139,7 +139,7 @@ class RedeventViewAttendees extends JView
 		$mainframe = &JFactory::getApplication();
 		$document 	= JFactory::getDocument();
 		$user		= JFactory::getUser();
-		$elsettings = redEVENTHelper::config();
+		$elsettings = RedeventHelper::config();
 		$uri        = & JFactory::getURI();
 		$row		= $this->get('Session');
 		$registers	= $this->get('Registers');
@@ -177,7 +177,7 @@ class RedeventViewAttendees extends JView
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
-		$pathway->addItem( JText::_('COM_REDEVENT_Manage_attendees' ). ' - '.redEVENTHelper::getSessionFullTitle($row), JRoute::_('index.php?option=com_redevent&view=attendees&layout=manageattendees&id='.$row->slug));
+		$pathway->addItem( JText::_('COM_REDEVENT_Manage_attendees' ). ' - '.RedeventHelper::getSessionFullTitle($row), JRoute::_('index.php?option=com_redevent&view=attendees&layout=manageattendees&id='.$row->slug));
 
 		//Check user if he can edit
 		$manage_attendees  = $this->get('ManageAttendees');
@@ -203,7 +203,7 @@ class RedeventViewAttendees extends JView
 			$document->addScriptDeclaration($js);
 
 			//set page title and meta stuff
-			$document->setTitle( JText::_('COM_REDEVENT_Manage_attendees' ). ' - '.redEVENTHelper::getSessionFullTitle($row) );
+			$document->setTitle( JText::_('COM_REDEVENT_Manage_attendees' ). ' - '.RedeventHelper::getSessionFullTitle($row) );
 
 			// lists
 			$lists = array();

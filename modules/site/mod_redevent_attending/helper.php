@@ -173,7 +173,7 @@ class modRedEventAttendingHelper
 	 */
 	protected function _builddateinfo($row, &$params)
 	{
-		if (!redEVENTHelper::isValidDate($row->dates)) {
+		if (!RedeventHelper::isValidDate($row->dates)) {
 			return JText::_('MOD_REDEVENT_ATTENDING_OPEN_DATE');
 		}
 		if ($params->get('show_enddate', 1) && strtotime($row->enddates) && $row->dates != $row->enddates) {

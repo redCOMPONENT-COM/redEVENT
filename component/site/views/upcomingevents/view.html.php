@@ -44,33 +44,33 @@ class RedeventViewUpcomingevents extends JView
 	{
 		$mainframe = &JFactory::getApplication();
 		$option = JRequest::getCmd('option');
-		
+
 		//initialize variables
 		$document 	= & JFactory::getDocument();
 		$menu		= & JSite::getMenu();
-		$elsettings = & redEVENTHelper::config();
+		$elsettings = & RedeventHelper::config();
 		$item    	= $menu->getActive();
 		$params 	= & $mainframe->getParams('com_redevent');
 		$uri 		= & JFactory::getURI();
 		$upcomingevents = $this->get('UpcomingEvents');
-		
+
 		//add css file
     if (!$params->get('custom_css')) {
       $document->addStyleSheet('media/com_redevent/css/redevent.css');
     }
     else {
-      $document->addStyleSheet($params->get('custom_css'));     
+      $document->addStyleSheet($params->get('custom_css'));
     }
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
-		
+
 		//params
 		$params->def( 'page_title', JText::_('COM_REDEVENT_UPCOMING_EVENTS_TITLE'));
-		
+
 		/* Add rss link */
 		$link	= '&format=feed';
 		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
 		$document->addHeadLink(JRoute::_($link.'&type=rss'), 'alternate', 'rel', $attribs);
-		
+
 		$this->assignRef('upcomingevents' , $upcomingevents);
     $this->assignRef('params' , $params);
     $this->assign('action',   JRoute::_('index.php?option=com_redevent&view=upcomingevents'));

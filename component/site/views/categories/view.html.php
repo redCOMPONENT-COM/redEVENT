@@ -40,7 +40,7 @@ class RedeventViewCategories extends JView
 		$mainframe = &JFactory::getApplication();
 
 		$document 	= & JFactory::getDocument();
-		$elsettings = & redEVENTHelper::config();
+		$elsettings = & RedeventHelper::config();
 		$params   = & $mainframe->getParams();
 
 		$rows 		= & $this->get('Data');

@@ -107,7 +107,7 @@ $colnames = array_map('trim', $colnames);
 
 	$k = 0;
 	foreach ($this->rows as $row) :
-		$isover = (redEVENTHelper::isOver($row) ? ' isover' : '');
+		$isover = (RedeventHelper::isOver($row) ? ' isover' : '');
 
 		//Link to details
 		$detaillink = JRoute::_( RedeventHelperRoute::getDetailsRoute($row->slug, $row->xslug) );
@@ -136,7 +136,7 @@ $colnames = array_map('trim', $colnames);
 				<?php break;?>
 
 				<?php case 'title': ?>
-					<td class="re_title" itemprop="name"><a href="<?php echo $detaillink ; ?>" itemprop="url"><?php echo $this->escape(redEVENTHelper::getSessionFullTitle($row)); ?></a></td>
+					<td class="re_title" itemprop="name"><a href="<?php echo $detaillink ; ?>" itemprop="url"><?php echo $this->escape(RedeventHelper::getSessionFullTitle($row)); ?></a></td>
 				<?php break;?>
 
 				<?php case 'venue': ?>
@@ -166,11 +166,11 @@ $colnames = array_map('trim', $colnames);
 				<?php break;?>
 
 				<?php case 'country': ?>
-					<td class="re_country"><?php echo $row->country ? redEVENTHelperCountries::getShortCountryName($row->country) : ''; ?></td>
+					<td class="re_country"><?php echo $row->country ? RedeventHelperCountries::getShortCountryName($row->country) : ''; ?></td>
 				<?php break;?>
 
 				<?php case 'countryflag': ?>
-					<td class="re_countryflag"><?php echo $row->country ? redEVENTHelperCountries::getCountryFlag($row->country) : ''; ?></td>
+					<td class="re_countryflag"><?php echo $row->country ? RedeventHelperCountries::getCountryFlag($row->country) : ''; ?></td>
 				<?php break;?>
 
 				<?php case 'state': ?>
@@ -199,7 +199,7 @@ $colnames = array_map('trim', $colnames);
 				<?php break;?>
 
 				<?php case 'places': ?>
-          <td class="re_places"><?php echo redEVENTHelper::getRemainingPlaces($row); ?></td>
+          <td class="re_places"><?php echo RedeventHelper::getRemainingPlaces($row); ?></td>
 				<?php break;?>
 
 				<?php case 'price': ?>

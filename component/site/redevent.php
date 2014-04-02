@@ -23,19 +23,15 @@ JLoader::registerPrefix('Redform', JPATH_LIBRARIES . '/redform');
 JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
 
 //Require helperfile
-require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'helper.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'route.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'recurrence.php');
-require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'tags.php');
-require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'countries.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'image.class.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'output.class.php');
-require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'attachment.class.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'ajaxpagination.php');
 require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'error.class.php');
 
 //perform cleanup if it wasn't done today (archive, delete, recurrence)
-redEVENTHelper::cleanup();
+RedeventHelper::cleanup();
 
 // Require the controller
 require_once (JPATH_COMPONENT.DS.'controller.php');

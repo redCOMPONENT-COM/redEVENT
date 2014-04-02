@@ -32,7 +32,7 @@ $colnames = array_map('trim', $colnames);
 	foreach ($this->rows as $row) :
 		//Link to details
 		$detaillink = JRoute::_( RedeventHelperRoute::getDetailsRoute($row->slug, $row->xslug) );
-		if (redEVENTHelper::isValidDate($row->dates))
+		if (RedeventHelper::isValidDate($row->dates))
 		{
 			$date = JFactory::getDate($row->times ? $row->dates.' '.$row->times : $row->dates);
 		}
@@ -41,7 +41,7 @@ $colnames = array_map('trim', $colnames);
 			$date = false;
 		}
 		$img = redEVENTImage::getThumbUrl($row->datimage, 150);
-		$img = ($img ? JHTML::image($img, redEVENTHelper::getSessionFullTitle($row)) : false);
+		$img = ($img ? JHTML::image($img, RedeventHelper::getSessionFullTitle($row)) : false);
 		?>
   	<div class="event row<?php echo ($k + 1); ?>"
   	    itemscope itemtype="http://schema.org/Event">
@@ -76,7 +76,7 @@ $colnames = array_map('trim', $colnames);
 
 			<div class="description">
 				<div class="event-title" itemprop="name">
-					<a href="<?php echo $detaillink ; ?>" itemprop="url"><?php echo $this->escape(redEVENTHelper::getSessionFullTitle($row)); ?></a>
+					<a href="<?php echo $detaillink ; ?>" itemprop="url"><?php echo $this->escape(RedeventHelper::getSessionFullTitle($row)); ?></a>
 				</div>
 
 				<div class="event-venue" itemprop="location" itemscope itemtype="http://schema.org/Place">

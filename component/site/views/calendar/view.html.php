@@ -52,7 +52,7 @@ class RedeventViewCalendar extends JView
         //initialize variables
         $document 	= & JFactory::getDocument();
         $menu 		= & JSite::getMenu();
-        $settings = & redEVENTHelper::config();
+        $settings = & RedeventHelper::config();
         $item 		= $menu->getActive();
         $params 	= & $app->getParams();
         $uri 		= & JFactory::getURI();
@@ -62,7 +62,7 @@ class RedeventViewCalendar extends JView
         $document->addStyleSheet('media/com_redevent/css/redevent.css');
         $document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #redevent dd { height: 1%; }</style><![endif]-->');
         $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redeventcalendar.css');
-        
+
         // add javascript
         $document->addScript($this->baseurl.'/components/com_redevent/assets/js/calendar.js');
 
@@ -87,12 +87,12 @@ class RedeventViewCalendar extends JView
     		$cal->enableMonthNav('index.php?option=com_redevent&view=calendar');
     		$cal->setFirstWeekDay(($params->get('week_start', "SU") == 'SU' ? 0 : 1));
     		$cal->enableDayLinks(false);
-    		
+
         $this->assignRef('rows', 		$rows);
         $this->assignRef('params', 		$params);
         $this->assignRef('settings', 	$settings);
         $this->assignRef('cal', 		$cal);
-        
+
         parent::display($tpl);
     }
 
@@ -112,7 +112,7 @@ class RedeventViewCalendar extends JView
     {
         $tooltip = (htmlspecialchars($tooltip));
         $title = (htmlspecialchars($title));
-        
+
         if ($href) {
             $href = JRoute::_($href);
             $style = '';
@@ -120,7 +120,7 @@ class RedeventViewCalendar extends JView
         } else {
             $tip = '<span class="'.$class.'" title="'.$title.'" rel="'.$tooltip.'">'.$text.'</span>';
         }
-    
+
         return $tip;
     }
 }

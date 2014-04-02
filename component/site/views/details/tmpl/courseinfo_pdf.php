@@ -39,10 +39,10 @@ foreach ($this->_eventlinks as $key => $event) {
 	$venue_url = JURI::current().JRoute::_('index.php?option=com_redevent&view=venueevents&id='.$event->venueid);
 	?>
 	<tr>
-		<td><?php echo JHTML::_('link', $event_url, redEVENTHelper::getSessionFullTitle($event)); ?></td>
+		<td><?php echo JHTML::_('link', $event_url, RedeventHelper::getSessionFullTitle($event)); ?></td>
 		<td><?php echo $event->location; ?></td>
 		<td><?php echo REOutput::formatdate($event->dates, $event->times); ?>
-		<?php echo redEVENTHelper::getEventDuration($event); ?>
+		<?php echo RedeventHelper::getEventDuration($event); ?>
 		<?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
 		<td class="re-price"><?php echo REOutput::formatListPrices($event->prices); ?></td>
 	</tr>
