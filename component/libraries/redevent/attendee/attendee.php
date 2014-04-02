@@ -639,9 +639,12 @@ class RedeventAttendee extends JObject
 
 	public function replaceTags($text)
 	{
+		$data = $this->load();
+
 		$tags = new RedeventTags;
+		$tags->setSubmitkey($data->submit_key);
 		$tags->setXref($this->getXref());
-		$tags->addOptions(array('sids' => array($this->load()->sid)));
+		$tags->addOptions(array('sids' => array($data->sid)));
 
 		$text = $tags->ReplaceTags($text);
 

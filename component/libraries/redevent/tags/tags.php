@@ -910,6 +910,26 @@ class RedeventTags
 		return $this->_xrefcustomfields;
 	}
 
+	protected function getSubmissionUser($submit_key)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('uid');
+		$query->from('#__redevent_register');
+		$query->where('submit_key = ' . $db->quote($submit_key));
+
+		$db->setQuery($query);
+		if ($id = $db->loadResult())
+		{
+			$user = JUser::getInstance($id);
+
+			return $user;
+		}
+
+		return false;
+	}
+
 	function getAttendeeUniqueId($submit_key)
 	{
 		$db = & JFactory::getDBO();
@@ -1852,6 +1872,11 @@ class RedeventTags
 
 	function _getTag_username()
 	{
+		if ($user = $this->getSubmissionUser($this->_submitkey))
+		{
+			return $user->get('username');
+		}
+
 		$res = '';
 		$emails = $this->_getRFCore()->getSubmissionContactEmail($this->_submitkey, false);
 		if (is_array($emails) && count($emails))
@@ -1864,6 +1889,11 @@ class RedeventTags
 
 	function _getTag_useremail()
 	{
+		if ($user = $this->getSubmissionUser($this->_submitkey))
+		{
+			return $user->get('email');
+		}
+
 		$res = '';
 		$emails = $this->_getRFCore()->getSubmissionContactEmail($this->_submitkey, true);
 		if (is_array($emails) && count($emails))
@@ -1876,6 +1906,11 @@ class RedeventTags
 
 	function _getTag_userfullname()
 	{
+		if ($user = $this->getSubmissionUser($this->_submitkey))
+		{
+			return $user->get('name');
+		}
+
 		$res = '';
 		$emails = $this->_getRFCore()->getSubmissionContactEmail($this->_submitkey, true);
 		if (is_array($emails) && count($emails))
