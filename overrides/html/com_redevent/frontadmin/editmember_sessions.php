@@ -25,11 +25,11 @@ defined('_JEXEC') or die('Restricted access');
 	<table class="table">
 		<thead>
 			<tr>
-				<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_DATE'), 'x.dates', $this->order_dir, $this->order); ?></th>
+				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_DATE'), 'x.dates', $this->order_dir, $this->order); ?></th>
 				<th><?php echo JText::_('COM_REDEVENT_EVENT_DURATION'); ?></th>
-				<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TITLE'), 'a.title', $this->order_dir, $this->order); ?></th>
-				<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_VENUE'), 'l.venue', $this->order_dir, $this->order); ?></th>
-				<th><?php echo redEVENTHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CATEGORY'), 'c.catname', $this->order_dir, $this->order); ?></th>
+				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TITLE'), 'a.title', $this->order_dir, $this->order); ?></th>
+				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_VENUE'), 'l.venue', $this->order_dir, $this->order); ?></th>
+				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CATEGORY'), 'c.catname', $this->order_dir, $this->order); ?></th>
 				<th><?php echo JText::_('COM_REDEVENT_STATUS'); ?></th>
 				<th colspan="3"><?php echo JText::_('COM_REDEVENT_ACTIONS'); ?></th>
 			</tr>
@@ -38,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php foreach ($this->sessions as $row): ?>
 			<tr xref="<?php echo $row->xref; ?>" rid="<?php echo $row->rid; ?>">
 				<td><?php echo REOutput::formatEventDateTime($row, false); ?></td>
-				<td><?php echo redEVENTHelper::getEventDuration($row); ?></td>
+				<td><?php echo RedeventHelper::getEventDuration($row); ?></td>
 				<td><?php echo $row->full_title; ?></td>
 				<td><?php echo $row->venue; ?></td>
 				<td class="re_category">
@@ -57,7 +57,7 @@ defined('_JEXEC') or die('Restricted access');
 					echo implode("<br/>", $cats);
 					?>
 				</td>
-				<td><?php echo redEVENTHelper::getStatusIcon($row->status); ?></td>
+				<td><?php echo RedeventHelper::getStatusIcon($row->status); ?></td>
 				<td><?php echo JHTML::image('com_redevent/b2b-delete.png', 'remove'
 						, array('class' => 'unregister hasTip'
 								, 'title' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CANCEL_REGISTRATION')

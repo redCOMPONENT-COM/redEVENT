@@ -38,7 +38,7 @@ function tableOrdering( order, dir, view )
 <thead>
 	<tr>
 			<th class="courseinfo_titledate"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_EVENT_DATE', 'x.dates', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
-			<th class="courseinfo_title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_TITLE', 'a.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>	
+			<th class="courseinfo_title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_TITLE', 'a.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th class="courseinfo_titleduration"><?php echo JText::_('COM_REDEVENT_EVENT_DURATION'); ?></th>
 			<th class="courseinfo_titlevenue" colspan="2"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_LOCATION', 'v.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th class="courseinfo_titleprice"><?php echo JText::_('COM_REDEVENT_EVENT_PRICE'); ?></th>
@@ -48,7 +48,7 @@ function tableOrdering( order, dir, view )
 </thead>
 <tbody>
 <?php
-$elsettings = redEVENTHelper::config();
+$elsettings = RedeventHelper::config();
 $imagepath = JURI::root().'administrator/components/com_redevent/assets/images/';
 foreach ($this->upcomingvenueevents as $key => $event) {
 	//print_r($event);
@@ -58,15 +58,15 @@ foreach ($this->upcomingvenueevents as $key => $event) {
 	<tr>
 		<td class="courseinfo_date"><?php echo REOutput::formatdate($event->dates, $event->times); ?></td>
 		<td class="courseinfo_title"><?php echo JHTML::_('link', $event_url, $event->full_title); ?></td>
-			<td class="courseinfo_duration"><?php echo redEVENTHelper::getEventDuration($event); ?></td>
-				
+			<td class="courseinfo_duration"><?php echo RedeventHelper::getEventDuration($event); ?></td>
+
 			<td class="courseinfo_venue"><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
 			<td class="courseinfo_country"><?php echo REOutput::getFlag( $event->country ); ?></td>
 			<td class="courseinfo_prices re-price"><?php echo REOutput::formatListPrices($event->prices); ?></td>
 			<td class="courseinfo_credit"><?php echo ($event->maxattendees == 0 ? JText::_('COM_REDEVENT_EVENT_NOLIMIT') : $event->maxattendees);?></td>
 		<td class="courseinfo_signup" width="*">
 		<?php
-		$registration_status = redEVENTHelper::canRegister($event->xref);
+		$registration_status = RedeventHelper::canRegister($event->xref);
 		if (!$registration_status->canregister)
 		{
 			$imgpath = 'components/com_redevent/assets/images/'.$registration_status->error.'.png';

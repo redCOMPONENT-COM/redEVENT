@@ -355,7 +355,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 	{
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
-		$config = redEVENTHelper::config();
+		$config = RedeventHelper::config();
 
 		$ids = $this->useracl->getXrefsCanViewAttendees();
 
