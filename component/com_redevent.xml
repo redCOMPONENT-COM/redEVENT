@@ -60,10 +60,11 @@
 		<submenu>
 			<menu img="../media/com_redevent/images/icon-16-events.png" view="events">COM_REDEVENT_MENU_EVENTS</menu>
 			<menu img="../media/com_redevent/images/icon-16-sessions.png" view="sessions">COM_REDEVENT_MENU_SESSIONS</menu>
-			<menu img="../media/com_redevent/images/icon-16-venues.png" view="venues">COM_REDEVENT_MENU_VENUES</menu>
+            <menu img="../media/com_redevent/images/icon-16-venues.png" view="venues">COM_REDEVENT_MENU_VENUES</menu>
+			<menu img="../media/com_redevent/images/attending-16.png" view="venues">COM_REDEVENT_MENU_REGISTRATIONS</menu>
 			<menu img="../media/com_redevent/images/icon-16-categories.png" view="categories">COM_REDEVENT_MENU_CATEGORIES</menu>
 			<menu img="../media/com_redevent/images/icon-16-venuescategories.png" view="venuescategories">COM_REDEVENT_MENU_VENUES_CATEGORIES</menu>
-			<menu img="../media/com_redevent/images/icon-16-library.png" view="textlibrary">COM_REDEVENT_MENU_TAGS_LIBRARY</menu>
+			<menu img="../media/com_redevent/images/icon-16-library.png" view="textsnippets">COM_REDEVENT_MENU_TAGS_LIBRARY</menu>
 			<menu img="../media/com_redevent/images/icon-16-customfields.png" view="customfields">COM_REDEVENT_MENU_CUSTOMFIELDS</menu>
 		</submenu>
 
