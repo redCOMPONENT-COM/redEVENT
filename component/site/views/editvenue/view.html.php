@@ -49,7 +49,7 @@ class RedeventViewEditvenue extends JView
 		$document 	= & JFactory::getDocument();
 		$elsettings = & redEVENTHelper::config();
 		$params 	  = & $mainframe->getParams();
-		$acl        = UserAcl::getInstance();
+		$acl        = RedeventUserAcl::getInstance();
 
 		// Get requests
 		$id				= JRequest::getInt('id');

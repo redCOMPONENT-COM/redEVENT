@@ -473,7 +473,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 	 */
 	protected function _buildQueryVenues()
 	{
-		$allowed = UserAcl::getInstance()->getAllowedForEventsVenues();
+		$allowed = RedeventUserAcl::getInstance()->getAllowedForEventsVenues();
 
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
@@ -534,7 +534,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 
 		$where[] = ' x.published > -1 ';
 
-		$acl = UserAcl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 		if (!$acl->superuser())
 		{
 			$xrefs = $acl->getCanEditXrefs();
@@ -636,7 +636,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 			$where[] = ' x.published > -1 ';
 		}
 
-		$acl = UserAcl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 
 		if (!$acl->superuser())
 		{

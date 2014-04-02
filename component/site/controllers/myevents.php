@@ -126,7 +126,7 @@ class RedeventControllerMyevents extends FOFController
 		$xref  = $input->get('xref', 0, 'int');
 		$state = $input->get('state', 0, 'int');
 
-		$useracl = UserAcl::getInstance();
+		$useracl = RedeventUserAcl::getInstance();
 
 		$resp = new stdclass();
 

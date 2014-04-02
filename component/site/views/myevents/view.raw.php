@@ -73,7 +73,7 @@ class RedeventViewMyevents extends JView
 			return false;
 		}
 
-		$acl = UserACl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 
 		$state = $this->get('state');
 		$limitstart   = $state->get('limitstart');
@@ -127,7 +127,7 @@ class RedeventViewMyevents extends JView
 			return false;
 		}
 
-		$acl = UserACl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 
 		$state = $this->get('state');
 		$limitstart   = $state->get('limitstart_venues');
@@ -167,7 +167,7 @@ class RedeventViewMyevents extends JView
 			return false;
 		}
 
-		$acl = UserACl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 
 		$state = $this->get('state');
 
@@ -205,7 +205,7 @@ class RedeventViewMyevents extends JView
 			return false;
 		}
 
-		$acl = UserACl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 
 		$state = $this->get('state');
 
@@ -273,7 +273,7 @@ class RedeventViewMyevents extends JView
 	 */
 	public static function xrefeditbutton($id, $xref)
 	{
-		$acl = &UserAcl::getInstance();
+		$acl = &RedeventUserAcl::getInstance();
 
 		if (!$acl->canEditXref($xref))
 		{
@@ -303,7 +303,7 @@ class RedeventViewMyevents extends JView
 	 */
 	public static function eventeditbutton($id, $xref)
 	{
-		$acl = &UserAcl::getInstance();
+		$acl = &RedeventUserAcl::getInstance();
 
 		if (!$acl->canEditEvent($id))
 		{

@@ -378,6 +378,6 @@ class RedeventModelSignup extends JModel
 
   function getManageAttendees($xref_id)
   {
-  	return UserAcl::getInstance()->canManageAttendees($xref_id);
+  	return RedeventUserAcl::getInstance()->canManageAttendees($xref_id);
   }
 }

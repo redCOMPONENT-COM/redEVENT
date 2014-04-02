@@ -8,25 +8,26 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+
 if (!defined('REDEVENT_PATH_SITE')) DEFINE('REDEVENT_PATH_SITE', JPATH_SITE.DS.'components'.DS.'com_redevent');
 
 class RokMiniEventsSourceRedEvent extends RokMiniEvents_SourceBase
 {
     function getEvents(&$params)
-    {    	
+    {
     	include_once(REDEVENT_PATH_SITE.DS.'classes'.DS.'output.class.php');
     	include_once(REDEVENT_PATH_SITE.DS.'helpers'.DS.'route.php');
     	include_once(REDEVENT_PATH_SITE.DS.'helpers'.DS.'helper.php');
-    	include_once(REDEVENT_PATH_SITE.DS.'classes'.DS.'useracl.class.php');
     	include_once('redevent'.DS.'model.php');
-    	
+
         // load language file
         $language = JFactory::getLanguage();
         $language->load('com_redevent', JPATH_ROOT);
 
-	    	$model = new RokMiniEventsSourceRedEventModel($params);	    	
+	    	$model = new RokMiniEventsSourceRedEventModel($params);
 	    	$rows = $model->getData();
-	    	
+
         $total_count = 1;
         $total_max = $params->get('redevent_total',10);
         $events = array();
@@ -51,7 +52,7 @@ class RokMiniEventsSourceRedEvent extends RokMiniEvents_SourceBase
                 $timezone = $conf->getValue('config.offset') ;
                 $offset = $timezone * 3600 * -1;
             }
-	        
+
 	        $startdate = strtotime($row->dates . ' ' . $row->times)+$offset;
             $enddate = $row->enddates ? strtotime($row->enddates . ' ' . $row->endtimes)+$offset : strtotime($row->dates . ' ' . $row->endtimes)+$offset;
             $event = new RokMiniEvents_Event($startdate, $enddate, $row->title, $row->summary, $link);
@@ -78,5 +79,5 @@ class RokMiniEventsSourceRedEvent extends RokMiniEvents_SourceBase
             return true;
 
         return false;
-    }   
+    }
 }

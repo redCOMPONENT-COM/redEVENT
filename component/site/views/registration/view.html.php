@@ -44,7 +44,7 @@ class RedeventViewRegistration extends JViewLegacy
 		$dispatcher = JDispatcher::getInstance();
 
 		$config     = redEVENTHelper::config();
-		$acl        = UserAcl::getInstance();
+		$acl        = RedeventUserAcl::getInstance();
 
 		$submit_key = JFactory::getApplication()->input->get('submit_key');
 
@@ -99,7 +99,7 @@ class RedeventViewRegistration extends JViewLegacy
 	protected function _displayEdit($tpl = null)
 	{
 		$user = JFactory::getUser();
-		$acl  = UserAcl::getInstance();
+		$acl  = RedeventUserAcl::getInstance();
 		$xref = JRequest::getInt('xref');
 		$submitter_id = JRequest::getInt('submitter_id');
 

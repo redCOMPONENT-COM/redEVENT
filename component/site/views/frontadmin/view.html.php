@@ -122,7 +122,7 @@ class RedeventViewFrontadmin extends JView
 
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
-		$useracl = UserAcl::getInstance();
+		$useracl = RedeventUserAcl::getInstance();
 
 		$state = $this->get('state');
 
@@ -201,7 +201,7 @@ class RedeventViewFrontadmin extends JView
 
 	protected function displaySearchSessions($tpl = null)
 	{
-		$useracl = UserAcl::getInstance();
+		$useracl = RedeventUserAcl::getInstance();
 		$params = JFactory::getApplication()->getParams('com_redevent');
 		$state = $this->get('state');
 
@@ -226,7 +226,7 @@ class RedeventViewFrontadmin extends JView
 
 	protected function displayBookings($tpl = null)
 	{
-		$useracl = UserAcl::getInstance();
+		$useracl = RedeventUserAcl::getInstance();
 		$params = JFactory::getApplication()->getParams('com_redevent');
 		$state = $this->get('state');
 

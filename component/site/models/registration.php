@@ -486,7 +486,7 @@ class RedEventModelRegistration extends JModel
 	{
 		$user =  JFactory::getUser();
 		$userid = $user->get('id');
-		$acl = UserAcl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 
 		if ($userid < 1) {
 			JError::raiseError( 403, JText::_('COM_REDEVENT_ALERTNOTAUTH') );

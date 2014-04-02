@@ -52,7 +52,7 @@ class RedeventViewVenueevents extends JView
 		$item    	  = $menu->getActive();
 		$params 	  = & $mainframe->getParams('com_redevent');
 		$uri 		    = & JFactory::getURI();
-		$acl        = UserAcl::getInstance();
+		$acl        = RedeventUserAcl::getInstance();
 
 		//add css file
     if (!$params->get('custom_css')) {

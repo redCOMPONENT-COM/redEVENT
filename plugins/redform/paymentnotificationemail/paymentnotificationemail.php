@@ -13,6 +13,8 @@ defined('JPATH_BASE') or die;
 // Import library dependencies
 jimport('joomla.plugin.plugin');
 
+JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+
 /**
  * Specific parameters for redEVENT.
  *

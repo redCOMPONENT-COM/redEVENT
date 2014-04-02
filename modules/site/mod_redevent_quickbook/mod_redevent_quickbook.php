@@ -20,13 +20,14 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+
 // Get helper
 require_once (dirname(__FILE__) . '/helper.php');
 
 require_once JPATH_SITE . '/components/com_redevent/helpers/route.php';
 require_once JPATH_SITE . '/components/com_redevent/helpers/helper.php';
 require_once JPATH_SITE . '/components/com_redevent/classes/image.class.php';
-require_once JPATH_SITE . '/components/com_redevent/classes/useracl.class.php';
 
 $data = modRedEventQuickbookHelper::getData($params);
 
