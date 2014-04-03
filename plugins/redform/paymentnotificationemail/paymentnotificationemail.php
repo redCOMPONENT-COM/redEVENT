@@ -35,7 +35,7 @@ class plgRedformPaymentnotificationemail extends JPlugin
 	private $submitkey;
 
 	/**
-	 * Send an email to admins for payments
+	 * Send an email to attendee for payment accepted
 	 *
 	 * @param   string  $submit_key  submit key associated to payment
 	 *
@@ -78,12 +78,9 @@ class plgRedformPaymentnotificationemail extends JPlugin
 
 		$attendee = new RedeventAttendee($attendee_id);
 
-		$recipients = $attendee->getAdminEmails();
+		$recipient = $attendee->getEmail();
 
-		foreach ($recipients as $r)
-		{
-			$mailer->addAddress($r['email'], $r['name']);
-		}
+		$mailer->addAddress($recipient);
 
 		$subject = $attendee->replaceTags($this->params->get('subject'));
 		$body = $attendee->replaceTags($this->params->get('body'));
