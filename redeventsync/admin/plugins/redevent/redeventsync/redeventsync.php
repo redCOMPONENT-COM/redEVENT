@@ -172,4 +172,41 @@ class plgRedeventRedeventsync extends JPlugin
 
 		return true;
 	}
+
+	/**
+	 * handles payment verified
+	 *
+	 * @param   string  $submit_key  submit key
+	 *
+	 * @return bool
+	 */
+	public function onAfterPaymentVerifiedRedevent($submit_key)
+	{
+		try
+		{
+			JPluginHelper::importPlugin('redeventsyncclient');
+			$dispatcher = JDispatcher::getInstance();
+
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			$query->select('id');
+			$query->from('#__redevent_register');
+			$query->where('submit_key = ' . $db->quote($submit_key));
+
+			$db->setQuery($query);
+			$res = $db->loadColumn();
+
+			foreach ($res as $attendee_id)
+			{
+				$dispatcher->trigger('onHandleAttendeePaid', array($attendee_id));
+			}
+		}
+		catch (Exception $e)
+		{
+			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onAfterPaymentVerified', 0, null, $e->getMessage());
+		}
+
+		return true;
+	}
 }
