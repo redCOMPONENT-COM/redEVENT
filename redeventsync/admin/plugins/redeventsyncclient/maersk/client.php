@@ -53,7 +53,7 @@ class RedeventsyncClientMaersk
 		{
 			$this->timeout = (int) $options['timeout'];
 		}
-echo '<pre>'; echo print_r($this, true); echo '</pre>'; exit;
+
 		$this->url = $url;
 	}
 
@@ -73,7 +73,6 @@ echo '<pre>'; echo print_r($this, true); echo '</pre>'; exit;
 		{
 			self::$instance[$hash] = new static($url, $options);
 		}
-		echo '<pre>'; echo print_r($options, true); echo '</pre>'; exit;
 
 		return self::$instance[$hash];
 	}
