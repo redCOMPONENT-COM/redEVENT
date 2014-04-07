@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form>
-	
+<form addfieldpath="/libraries/redform/form/fields">
+
 	<fieldset name="venue">
 		<field
 			name="id"
@@ -10,16 +10,16 @@
 			description ="JGLOBAL_FIELD_ID_DESC"
 			class="readonly"
 			readonly="true"	/>
-		
+
 		<field
 			name="venue"
 			type="text"
 			default=""
 			label="COM_REDEVENT_VENUE"
-			description ="COM_REDEVENT_VENUE" 
-			required="true" 
+			description ="COM_REDEVENT_VENUE"
+			required="true"
 			class="inputbox" />
-		
+
 		<field
 			name="alias"
 			type="text"
@@ -27,7 +27,7 @@
 			label="COM_REDEVENT_Alias"
 			description ="COM_REDEVENT_Alias"
 			class="inputbox" />
-		
+
 		<field
 			name="venue_code"
 			type="text"
@@ -35,7 +35,7 @@
 			label="COM_REDEVENT_VENUE_CODE"
 			description ="COM_REDEVENT_VENUE_CODE_DESC"
 			class="inputbox" />
-		
+
 		<field
 			name="published"
 			type="list"
@@ -51,7 +51,7 @@
 				value="0">
 				JUNPUBLISHED</option>
 		</field>
-	
+
 		<field
 			name="language"
 			type="contentlanguage"
@@ -60,24 +60,24 @@
 			class="inputbox">
 			<option value="*">JALL</option>
 		</field>
-				
+
 		<field
 			name="company"
 			type="text"
 			default=""
 			label="COM_REDEVENT_VENUE_EDIT_COMPANY_LABEL"
-			description ="COM_REDEVENT_VENUE_EDIT_COMPANY_TIP" 
+			description ="COM_REDEVENT_VENUE_EDIT_COMPANY_TIP"
 			class="inputbox" />
-			
+
 		<field
 			name="categories"
 			type="revenuecategory"
 			default=""
 			label="COM_REDEVENT_CATEGORY"
-			description ="COM_REDEVENT_CATEGORY" 
-			required="true" 
+			description ="COM_REDEVENT_CATEGORY"
+			required="true"
 			class="inputbox" />
-			
+
 		<field
 			name="locdescription"
 			type="editor"
@@ -87,7 +87,7 @@
 			filter="safehtml"
 			buttons="true"
 			hide="readmore,pagebreak"/>
-			
+
 		<field
 			name="locimage"
 			type="media"
@@ -95,7 +95,7 @@
 			description="COM_REDEVENT_CHOOSE_IMAGE"
 			class="inputbox"
 			directory="redevent/categories"/>
-			
+
 		<field
 			name="access"
 			type="accesslevel"
@@ -103,49 +103,49 @@
 			description="JFIELD_ACCESS_DESC"
 			class="span12 small"/>
 	</fieldset>
-	
+
 	<fieldset name="address">
 		<field
 			name="street"
 			type="text"
 			default=""
 			label="COM_REDEVENT_STREET"
-			description ="COM_REDEVENT_STREET" 
+			description ="COM_REDEVENT_STREET"
 			class="inputbox" />
 		<field
 			name="plz"
 			type="text"
 			default=""
 			label="COM_REDEVENT_ZIP"
-			description ="COM_REDEVENT_ZIP" 
+			description ="COM_REDEVENT_ZIP"
 			class="inputbox" />
 		<field
 			name="city"
 			type="text"
 			default=""
 			label="COM_REDEVENT_CITY"
-			description ="COM_REDEVENT_CITY" 
+			description ="COM_REDEVENT_CITY"
 			class="inputbox" />
 		<field
 			name="state"
 			type="text"
 			default=""
 			label="COM_REDEVENT_STATE"
-			description ="COM_REDEVENT_STREET" 
+			description ="COM_REDEVENT_STREET"
 			class="inputbox" />
 		<field
 			name="country"
 			type="recountry"
 			default=""
 			label="COM_REDEVENT_COUNTRY"
-			description ="COM_REDEVENT_COUNTRY_HINT" 
+			description ="COM_REDEVENT_COUNTRY_HINT"
 			class="inputbox" />
 		<field
 			name="url"
 			type="url"
 			default=""
 			label="COM_REDEVENT_WEBSITE"
-			description ="COM_REDEVENT_WEBSITE_HINT" 
+			description ="COM_REDEVENT_WEBSITE_HINT"
 			class="inputbox" />
 
         <field
@@ -155,7 +155,7 @@
             label="COM_REDEVENT_ADMIN_EMAIL"
             description ="COM_REDEVENT_ADMIN_EMAIL_HINT"
             class="inputbox" />
-	
+
 		<field
 			name="map"
 			type="list"
@@ -176,17 +176,17 @@
 			type="text"
 			default=""
 			label="COM_REDEVENT_LATITUDE"
-			description ="COM_REDEVENT_LATITUDE_TIP" 
+			description ="COM_REDEVENT_LATITUDE_TIP"
 			class="inputbox" />
 		<field
 			name="longitude"
 			type="text"
 			default=""
 			label="COM_REDEVENT_LONGITUDE"
-			description ="COM_REDEVENT_LONGITUDE_TIP" 
+			description ="COM_REDEVENT_LONGITUDE_TIP"
 			class="inputbox" />
 	</fieldset>
-	
+
 	<fields name="params">
 		<fieldset
 			name="extra">
@@ -199,14 +199,14 @@
 				multiple="multiple"
 				size="10"
 				/>
-				
+
 		</fieldset>
 	</fields>
-	
-	<fieldset name="acl">		
-	
+
+	<fieldset name="acl">
+
 		<field name="asset_id" type="hidden" filter="unset" />
-		
+
 		<field name="rules"
 		       type="rules"
 		       label="COM_REDEVENT_EVENTS_MANAGE_RULES_LABEL"
