@@ -29,6 +29,13 @@ class RedeventsyncClientMaersk
 	protected static $instance = array();
 
 	/**
+	 * timeout in seconds
+	 *
+	 * @var int
+	 */
+	protected $timeout = 20;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param   string  $url      The wsdl url
@@ -40,6 +47,11 @@ class RedeventsyncClientMaersk
 		{
 			// Loopback to our test log
 			$url = JURI::root() . '/index.php?option=com_redeventsync&controller=request&task=test';
+		}
+
+		if (isset($options['timeout']) && (int) $options['timeout'])
+		{
+			$this->timeout = (int) $options['timeout'];
 		}
 
 		$this->url = $url;
@@ -178,7 +190,7 @@ class RedeventsyncClientMaersk
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_FAILONERROR, 1);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+		curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
 
 		if (!$ch_result = curl_exec($ch))
 		{

@@ -30,6 +30,13 @@
 					label="PLG_REDEVENTSYNCCLIENT_MAERSK_PLUGIN_XML_CLIENT_URL_LABEL"
 					description="PLG_REDEVENTSYNCCLIENT_MAERSK_PLUGIN_XML_CLIENT_URL_DESC"
 					/>
+				<field
+					name="timeout"
+					type="text"
+					label="PLG_REDEVENTSYNCCLIENT_MAERSK_PLUGIN_XML_TIMEOUT_LABEL"
+					description="PLG_REDEVENTSYNCCLIENT_MAERSK_PLUGIN_XML_TIMEOUT_DESC"
+                    default="20"
+					/>
 			</fieldset>
 		</fields>
 	</config>
