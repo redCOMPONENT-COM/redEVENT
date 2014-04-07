@@ -194,11 +194,19 @@ class RedeventsyncClientMaersk
 
 		if (!$ch_result = curl_exec($ch))
 		{
-			$msg = 'Biztalk returned following error for request ';
-			$msg .= htmlentities($xml);
-			$msg .= ': ' . curl_error($ch);
+			$debug = 'Biztalk error for request: ';
+			$debug .= $xml;
 
-			throw new RuntimeException($msg);
+			if (strstr(curl_error($ch), 'Operation timed out'))
+			{
+				$status = 'Biztalk server timeout';
+			}
+			else
+			{
+				$status = 'error';
+			}
+
+			throw new RESyncException(curl_error($ch), $status, $debug);
 		}
 
 		curl_close($ch);

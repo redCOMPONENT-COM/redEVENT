@@ -83,11 +83,15 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 
 		$attendee = RedeventsyncclientMaerskHelper::getAttendee($attendee_id);
 
+		$this->validateAddAttendeeFields($attendee);
+
 		$message = new SimpleXMLElement('<DeleteAttendeeRQ/>');
 		$message->addChild('TransactionId', $this->getNextTransactionId());
 		$message->addChild('SessionCode',   $attendee->session_code);
 		$message->addChild('VenueCode',     $attendee->venue_code);
 		$message->addChild('UserEmail',     $attendee->email);
+		$message->addChild('Firstname',     $attendee->redmember->rm_firstname);
+		$message->addChild('Lastname',      $attendee->redmember->rm_lastname);
 
 		$this->appendElement($xml, $message);
 
