@@ -13,7 +13,7 @@
  * @subpackage  plugins.redeventsyncclient
  * @since       1.0
  */
-class PlgresyncmaerskExceptionInvalidattendee extends Exception
+class PlgresyncmaerskExceptionInvalidattendee extends RESyncException
 {
 
 }

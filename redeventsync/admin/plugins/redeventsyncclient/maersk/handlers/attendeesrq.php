@@ -575,17 +575,17 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 	{
 		if (!$attendee->session_code)
 		{
-			throw new PlgresyncmaerskExceptionInvalidattendee('Missing Session Code');
+			throw new PlgresyncmaerskExceptionInvalidattendee('Missing Session Code', 'Missing Session Code', print_r($attendee, true));
 		}
 
 		if (!$attendee->venue_code)
 		{
-			throw new PlgresyncmaerskExceptionInvalidattendee('Missing Venue Code');
+			throw new PlgresyncmaerskExceptionInvalidattendee('Missing Venue Code', 'Missing Venue Code', print_r($attendee, true));
 		}
 
 		if (!$attendee->email)
 		{
-			throw new PlgresyncmaerskExceptionInvalidattendee('Missing Attendee email');
+			throw new PlgresyncmaerskExceptionInvalidattendee('Missing Attendee email', 'Missing Attendee email', print_r($attendee, true));
 		}
 
 		return true;
