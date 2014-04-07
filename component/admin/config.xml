@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config addfieldpath="/administrator/components/com_redevent/models/fields">
 
-	<fieldset name="general" label="COM_REDEVENT_SETTINGS_GENERAL_LABEL" description="COM_REDEVENT_SETTINGS_GENERAL_DESC">
+	<fieldset name="general" label="COM_REDEVENT_SETTINGS_GENERAL_LABEL" description="COM_REDEVENT_SETTINGS_GENERAL_DESC" addfieldpath="/libraries/redform/form/fields">
 		<field type="spacer" label="COM_REDEVENT_DISPLAY_SETTINGS" />
 		<field name="showdetails" type="list" default="1" label="COM_REDEVENT_SHOW_DETAILS" description="COM_REDEVENT_SHOW_DETAILS_TIP">
 			<option value="0">COM_REDEVENT_DETAILS_OFF</option>
@@ -500,7 +500,7 @@
  	</fieldset>
 
  	<fieldset name="COM_REDEVENT_SETTINGS_MISC" label="COM_REDEVENT_SETTINGS_MISC" description="COM_REDEVENT_SETTINGS_MISC">
- 		<field name="defaultredformid" type="text" default="1" label="COM_REDEVENT_DEFAULT_FORM_ID" description="COM_REDEVENT_DEFAULT_FORM_ID_TIP" />
+ 		<field name="defaultredformid" type="RFForm" default="1" label="COM_REDEVENT_DEFAULT_FORM_ID" description="COM_REDEVENT_DEFAULT_FORM_ID_TIP" />
     <field name="default_image_path" type="text"
            label="COM_REDEVENT_SETTINGS_DEFAULT_IMAGE_PATH_LABEL" description="COM_REDEVENT_SETTINGS_DEFAULT_IMAGE_PATH_DESC"
            default="redevent"/>
