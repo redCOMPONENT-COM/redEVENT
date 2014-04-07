@@ -11,6 +11,7 @@
     <version>##VERSION##</version>
     <description>redEVENT Sync library</description>
     <files>
+        <folder>exception</folder>
         <folder>helper</folder>
 		<folder>logger</folder>
     </files>
