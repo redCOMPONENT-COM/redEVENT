@@ -259,7 +259,16 @@ class RedEventModelAttendee extends JModel
 	public function store($data)
 	{
 		$xref = intval($data['xref']);
-		$pricegroup = intval($data['pricegroup_id']);
+
+		if (isset($data['pricegroup_id']))
+		{
+			$pricegroup = intval($data['pricegroup_id']);
+		}
+		else
+		{
+			$pricegroup = 0;
+		}
+
 		$id = JRequest::getInt('id');
 
 		// Get price and activate
