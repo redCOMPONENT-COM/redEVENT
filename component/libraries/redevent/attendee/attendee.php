@@ -180,9 +180,9 @@ class RedeventAttendee extends JObject
 
 			foreach ($answers as $a)
 			{
-				if ($a->fieldtype == 'email' && JMailHelper::isEmailAddress($a->answer))
+				if ($a->fieldtype == 'email' && JMailHelper::isEmailAddress($a->getValue()))
 				{
-					$this->_email = $a->answer;
+					$this->_email = $a->getValue();
 
 					return $this->_email;
 				}

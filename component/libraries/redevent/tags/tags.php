@@ -974,7 +974,7 @@ class RedeventTags
 			{
 				$res .= '<tr>';
 				$res .= '<th align="left">' . $field->field . '</th>';
-				$res .= '<td>' . str_replace('~~~', '<br/>', $field->answer) . '</td>';
+				$res .= '<td>' . str_replace('~~~', '<br/>', $field->getDatabaseValue()) . '</td>';
 				$res .= '</tr>';
 			}
 			$res .= '</table>';
