@@ -95,6 +95,7 @@ class RedEventControllerRegistration extends RedEventController
 
 		// Get prices associated to pricegroups
 		$prices = array();
+		$currency = null;
 
 		foreach ($pricegroups as $p)
 		{
@@ -109,10 +110,11 @@ class RedEventControllerRegistration extends RedEventController
 			}
 
 			$prices[] = $regPricegroup->price;
+			$currency = $regPricegroup->currency;
 		}
 
 		// First, ask redform to save it's fields, and return the corresponding sids.
-		$options = array('baseprice' => $prices, $regPricegroup->currency);
+		$options = array('baseprice' => $prices, $currency);
 
 		if ($review)
 		{
