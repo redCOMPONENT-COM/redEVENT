@@ -588,6 +588,8 @@ class plgRedeventsyncclientMaersk extends JPlugin
 	 */
 	public function onHandleAttendeeDeleted($attendee_id)
 	{
+		// Disabling this as techotel doesn't handle it
+		return true;
 		$model = $this->getHandler('Attendeesrq');
 		$model->sendDeleteAttendeeRQ($attendee_id);
 
