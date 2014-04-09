@@ -25,7 +25,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <div id="redevent">
-	<form action="<?php echo JRoute::_($this->action); ?>" method="post" name="redform" enctype="multipart/form-data" onsubmit="return CheckSubmit(this);">
+	<form action="<?php echo JRoute::_($this->action); ?>" method="post" name="redform" enctype="multipart/form-data" class="form-validate">
 		<?php echo $this->rfields; ?>
 		<input type="hidden" name="xref" value="<?php echo $this->xref; ?>"/>
 		<div id="submit_button" style="display: block;">
