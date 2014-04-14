@@ -974,7 +974,7 @@ class RedeventTags
 			{
 				$res .= '<tr>';
 				$res .= '<th align="left">' . $field->field . '</th>';
-				$res .= '<td>' . str_replace('~~~', '<br/>', $field->answer) . '</td>';
+				$res .= '<td>' . str_replace('~~~', '<br/>', $field->getDatabaseValue()) . '</td>';
 				$res .= '</tr>';
 			}
 			$res .= '</table>';
@@ -1220,7 +1220,7 @@ class RedeventTags
 		$details->course_price = null;
 		$options['booking'] = $details;
 
-		$html = '<form action="' . $action . '" method="post" name="redform" enctype="multipart/form-data" onsubmit="return CheckSubmit(this);">';
+		$html = '<form action="' . $action . '" class="form-validate" method="post" name="redform" enctype="multipart/form-data">';
 		$html .= $rfcore->getFormFields($this->getEvent()->getData()->redform_id, $submit_key, $multi, $options);
 		$html .= '<input type="hidden" name="xref" value="' . $this->_xref . '"/>';
 		if ($this->getOption('hasreview'))
