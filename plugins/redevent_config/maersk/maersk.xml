@@ -51,6 +51,15 @@
                     <option value="100">100</option>
                     <option value="0">PLG_REDEVENT_CONFIG_MAERSK_ALL</option>
                 </field>
+                <field name="disable_waitinglist_status_email"
+                       type="radio"
+                       default="1"
+                       label="PLG_REDEVENT_CONFIG_MAERSK_DISABLE_WAITING_LIST_NOTIFICATION"
+                       description="PLG_REDEVENT_CONFIG_MAERSK_DISABLE_WAITING_LIST_NOTIFICATION_DESC"
+                        >
+                    <option value="0">JNo</option>
+                    <option value="1">JYes</option>
+                </field>
             </fieldset>
         </fields>
     </config>
