@@ -84,12 +84,7 @@ class RedEventViewEvent extends JView {
 		$form  = $this->get('form');
 		$model = $this->getModel();
 
-		if ($task == 'add')
-		{
-			$model->setId($params->get('default_content'));
-		}
-
-		$row     	= $this->get('Data');
+		$row = $this->get('Data');
 
 		if ($task == 'copy')
 		{

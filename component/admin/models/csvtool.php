@@ -173,18 +173,14 @@ class RedEventModelcsvtool extends JModel
 		}
 
 		$rfcore = RdfCore::getInstance();
-		$answers = $rfcore->getSidsAnswers($sids);
+		$answers = $rfcore->getAnswers($sids);
 
 		// add answers to registers
 		foreach ($submitters as $k => $s)
 		{
-			if (isset($answers[$s->sid])) {
-				$submitters[$k]->answers = $answers[$s->sid];
-			}
-			else {
-				$submitters[$k]->answers = null;
-			}
+			$submitters[$k]->answers = $answers->getSubmissionBySid();
 		}
+
 		return $submitters;
 	}
 }

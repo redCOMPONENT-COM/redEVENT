@@ -24,7 +24,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Register library prefix
-JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
+RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 
 class plgReSimplistModel extends RedeventModelBaseeventlist {
 

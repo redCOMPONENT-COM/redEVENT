@@ -2194,7 +2194,7 @@ class RedeventTags
 				. ' '
 				. RedeventHelperOutput::formatdate($this->getEvent()->getData()->dates,
 					$this->getEvent()->getData()->times));
-			$link = 'index.php?option=com_redform&controller=payment&task=select&source=redevent&key='
+			$link = 'index.php?option=com_redform&task=payment.select&source=redevent&key='
 				. $this->_submitkey . '&paymenttitle=' . $title;
 			if ($lang)
 			{

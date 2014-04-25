@@ -13,7 +13,10 @@ defined('JPATH_BASE') or die;
 // Import library dependencies
 jimport('joomla.plugin.plugin');
 
-JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+// Register library prefix
+JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
+RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 
 /**
  * Specific parameters for redEVENT.

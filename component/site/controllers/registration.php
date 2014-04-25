@@ -646,21 +646,21 @@ class RedEventControllerRegistration extends RedEventController
 			switch ($a->fieldtype)
 			{
 				case 'fullname':
-					$data['name'] = $a->answer;
+					$data['name'] = $a->getValue();
 
 				case 'username':
-					$data['username'] = $a->answer;
+					$data['username'] = $a->getValue();
 
 				case 'email':
-					if ($a->parameters->get('notify') && $a->answer)
+					if ($a->getParam('notify') && $a->getValue())
 					{
-						$data['email'] = $a->answer;
+						$data['email'] = $a->getValue();
 					}
 
 				default:
 					if ($a->redmember_field)
 					{
-						$data[$a->redmember_field] = $a->answer;
+						$data[$a->redmember_field] = $a->getValue();
 					}
 			}
 

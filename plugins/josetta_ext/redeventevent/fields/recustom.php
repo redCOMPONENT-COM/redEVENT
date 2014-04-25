@@ -18,7 +18,10 @@ defined('JPATH_PLATFORM') or die;
 
 jimport('joomla.form.formfield');
 
-JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+// Register library prefix
+JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
+RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 
 /**
  * Form Field class for the Joomla Platform.

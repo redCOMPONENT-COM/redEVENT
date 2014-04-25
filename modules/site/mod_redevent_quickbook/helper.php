@@ -22,8 +22,9 @@ defined('_JEXEC') or die('Restricted access');
 
 
 // Register library prefix
-JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
-JLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
+JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
+RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 
 require_once JPATH_SITE . '/components/com_redevent/helpers/route.php';
 

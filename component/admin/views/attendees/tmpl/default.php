@@ -205,7 +205,7 @@ if ($this->event->maxattendees) {
 						<?php $link = JHTML::link(JRoute::_('index.php?option=com_redform&view=payments&submit_key='.$row->submit_key), JText::_('COM_REDEVENT_history')); ?>
 						<?php if (!$row->paid): ?>
 						<span class="hasTip" title="<?php echo JText::_('COM_REDEVENT_REGISTRATION_NOT_PAID').'::'.$row->status; ?>"><?php echo JHTML::_('image', 'admin/publish_x.png', JText::_('COM_REDEVENT_REGISTRATION_NOT_PAID'), null, true); ?><?php echo $link; ?></span>
-						<?php echo ' '.JHTML::link(JURI::root().'/index.php?option=com_redform&controller=payment&task=select&key='.$row->submit_key, JText::_('COM_REDEVENT_link')); ?>
+						<?php echo ' '.JHTML::link(JURI::root().'/index.php?option=com_redform&task=payment.select&key='.$row->submit_key, JText::_('COM_REDEVENT_link')); ?>
 						<?php else: ?>
 						<span class="hasTip" title="<?php echo JText::_('COM_REDEVENT_REGISTRATION_PAID').'::'.$row->status; ?>"><?php echo JHTML::_('image', 'admin/tick.png', JText::_('COM_REDEVENT_REGISTRATION_PAID'), null, true); ?><?php echo $link; ?></span>
 						<?php endif; ?>

@@ -21,8 +21,9 @@ if (!defined('FOF_INCLUDED'))
 }
 
 // Register library prefix
-JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
-JLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
+JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
+RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 
 //Require classes
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'recurrence.php');

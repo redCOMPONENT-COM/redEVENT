@@ -23,7 +23,10 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+// Register library prefix
+JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
+RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 
 // get module helper
 require_once (dirname(__FILE__).DS.'helper.php');

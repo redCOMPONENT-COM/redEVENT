@@ -16,8 +16,9 @@ if (!defined('FOF_INCLUDED'))
 }
 
 // Register library prefix
-JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
-JLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
+JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
+RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 
 // Set the table directory
 JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');

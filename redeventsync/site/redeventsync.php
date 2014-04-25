@@ -17,6 +17,7 @@ if(!defined('FOF_INCLUDED'))
 
 include_once JPATH_ADMINISTRATOR . '/components/com_redeventsync/defines.php';
 
-JLoader::registerPrefix('RESync', JPATH_LIBRARIES . '/redeventsync');
+JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
+RLoader::registerPrefix('RESync', JPATH_LIBRARIES . '/redeventsync');
 
 FOFDispatcher::getTmpInstance('com_redeventsync')->dispatch();

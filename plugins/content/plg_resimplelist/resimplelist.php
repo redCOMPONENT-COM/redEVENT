@@ -24,7 +24,10 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+// Register library prefix
+JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
+RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 
 // Import library dependencies
 jimport('joomla.plugin.plugin');

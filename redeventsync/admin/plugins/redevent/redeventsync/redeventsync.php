@@ -12,7 +12,8 @@ defined('_JEXEC') or die('Restricted access');
 // Import library dependencies
 jimport('joomla.plugin.plugin');
 
-JLoader::registerPrefix('RESync', JPATH_LIBRARIES . '/redeventsync');
+JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
+RLoader::registerPrefix('RESync', JPATH_LIBRARIES . '/redeventsync');
 
 /**
  * Class plgRedeventRedeventsync

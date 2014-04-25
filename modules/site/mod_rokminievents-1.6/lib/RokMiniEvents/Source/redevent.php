@@ -8,7 +8,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+// Register library prefix
+JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
+RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 
 if (!defined('REDEVENT_PATH_SITE')) DEFINE('REDEVENT_PATH_SITE', JPATH_SITE.DS.'components'.DS.'com_redevent');
 

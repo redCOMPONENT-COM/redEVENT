@@ -48,7 +48,10 @@ if (!JComponentHelper::getComponent('com_redevent', true)->enabled)
 include_once JPATH_SITE . '/components/com_redevent/helpers/route.php';
 require_once JPATH_SITE . '/administrator/components/com_redevent/classes/error.class.php';
 
-JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+// Register library prefix
+JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
+RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 
 /**
  * redEVENT extension plugin for AutoTweet.

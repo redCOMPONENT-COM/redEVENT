@@ -89,7 +89,6 @@ class RedEventModelEvent extends JModelAdmin
 	 */
 	function &getData()
 	{
-
 		if ($this->_loadData())
 		{
 
@@ -177,7 +176,7 @@ class RedEventModelEvent extends JModelAdmin
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_data))
 		{
-			$params = &JComponentHelper::getParams( 'com_redevent' );
+			$params = JComponentHelper::getParams( 'com_redevent' );
 
 			if ($params->get('default_content', 0))
 			{
@@ -188,6 +187,7 @@ class RedEventModelEvent extends JModelAdmin
 				;
 				$this->_db->setQuery($query);
 				$event = $this->_db->loadObject();
+
 				if (!empty($event))
 				{
 					$event->id              = 0;
@@ -199,6 +199,7 @@ class RedEventModelEvent extends JModelAdmin
 					$event->author_ip					= null;
 					$event->created_by					= null;
 					$this->_data = $event;
+
 					return (boolean) $this->_data;
 				}
 			}
@@ -271,6 +272,7 @@ class RedEventModelEvent extends JModelAdmin
 			$this->_data						= $event;
 			return (boolean) $this->_data;
 		}
+
 		return true;
 	}
 
