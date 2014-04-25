@@ -20,7 +20,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$rfcore = new RedformCore;
+$rfcore = RdfCore::getInstance();
 ?>
 <div class="modRedeventQuickbook">
 <form action="<?php echo $action; ?>"

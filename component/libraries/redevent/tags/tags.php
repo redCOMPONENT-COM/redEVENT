@@ -1077,7 +1077,7 @@ class RedeventTags
 	{
 		if (empty($this->_rfcore))
 		{
-			$this->_rfcore = new RedformCore();
+			$this->_rfcore = RdfCore::getInstance();
 		}
 		return $this->_rfcore;
 	}
@@ -1240,7 +1240,7 @@ class RedeventTags
 		$html .= '</div>';
 		$html .= '</form>';
 
-		if (RedformHelperAnalytics::isEnabled())
+		if (RdfHelperAnalytics::isEnabled())
 		{
 			if ($this->getOption('hasreview'))
 			{
@@ -1256,7 +1256,7 @@ class RedeventTags
 			$event->action = 'display';
 			$event->label = $label;
 			$event->value = null;
-			RedformHelperAnalytics::trackEvent($event);
+			RdfHelperAnalytics::trackEvent($event);
 		}
 
 		return $html;

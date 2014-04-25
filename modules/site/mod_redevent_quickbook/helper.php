@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // Register library prefix
 JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
-JLoader::registerPrefix('Redform', JPATH_LIBRARIES . '/redform');
+JLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 
 require_once JPATH_SITE . '/components/com_redevent/helpers/route.php';
 
@@ -93,7 +93,7 @@ class ModRedeventQuickbookHelper
 		// Let's get the form
 		$formId = reset($sessions)->redform_id;
 
-		$rfcore = new RedformCore;
+		$rfcore = RdfCore::getInstance();
 
 		if (!$rfcore->getFormStatus($formId))
 		{

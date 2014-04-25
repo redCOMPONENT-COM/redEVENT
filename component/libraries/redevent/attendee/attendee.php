@@ -370,7 +370,7 @@ class RedeventAttendee extends JObject
 
 		$sid = $data->sid;
 
-		$rfcore = new RedformCore;
+		$rfcore = RdfCore::getInstance();
 		$emails = $rfcore->getSidContactEmails($sid);
 
 		$valid_emails = false;
@@ -683,7 +683,7 @@ class RedeventAttendee extends JObject
 	{
 		if (empty($this->_answers))
 		{
-			$rfcore = new RedformCore;
+			$rfcore = RdfCore::getInstance();
 			$sid = $this->load()->sid;
 			$sidsanswers = $rfcore->getSidsFieldsAnswers(array($sid));
 			$this->_answers = $sidsanswers[$sid];
@@ -853,7 +853,7 @@ class RedeventAttendee extends JObject
 			$tags->setXref($this->getXref());
 			$tags->addOptions(array('sids' => array($this->load()->sid)));
 
-			$rfcore = new RedformCore;
+			$rfcore = RdfCore::getInstance();
 			$emails = $rfcore->getSidContactEmails($this->load()->sid);
 
 			/* build activation link */

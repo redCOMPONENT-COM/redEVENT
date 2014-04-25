@@ -910,7 +910,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 			$options['currency'] = $pricegroup->currency;
 		}
 
-		$redform = RedformCore::getInstance($details->redform_id);
+		$redform = RdfCore::getInstance($details->redform_id);
 		$result = $redform->quickSubmit($user_id, 'redevent', $options);
 
 		if (!$result)

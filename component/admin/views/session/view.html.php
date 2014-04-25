@@ -160,9 +160,9 @@ class RedEventViewSession extends JView
 		$pricegroupsoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_PRICEGROUP')));
 		$pricegroupsoptions = array_merge($pricegroupsoptions, $this->get('PricegroupsOptions'));
 
-		include_once JPATH_SITE . '/components/com_redform/helpers/currency.php';
+		JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
 		$currencyoptions = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_CURRENCY')));
-		$currencyoptions = array_merge($currencyoptions, RedformHelperLogCurrency::getCurrencyOptions());
+		$currencyoptions = array_merge($currencyoptions, RHelperCurrency::getCurrencyOptions());
 
 		if (JRequest::getVar('task') == 'copy')
 		{

@@ -121,7 +121,7 @@ class RedEventControllerRegistration extends RedEventController
 			$options['savetosession'] = 1;
 		}
 
-		$rfcore = new RedformCore;
+		$rfcore = RdfCore::getInstance();
 		$result = $rfcore->saveAnswers('redevent', $options);
 
 		if (!$result)
@@ -213,7 +213,7 @@ class RedEventControllerRegistration extends RedEventController
 			}
 			elseif ($gateway)
 			{
-				$link = RedformHelperRoute::getPaymentProcessRoute($submit_key, $gateway);
+				$link = RdfHelperRoute::getPaymentProcessRoute($submit_key, $gateway);
 			}
 			else
 			{
@@ -324,7 +324,7 @@ class RedEventControllerRegistration extends RedEventController
 
 		// first, ask redform to save it's fields, and return the corresponding sids.
 		$options = array('baseprice' => $prices, 'currency' => $regPricegroup->currency);
-		$rfcore = new RedformCore();
+		$rfcore = RdfCore::getInstance();
 		$result = $rfcore->saveAnswers('redevent', $options);
 		if (!$result) {
 			$msg = JText::_('COM_REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED').' - '.$rfcore->getError();
@@ -429,7 +429,7 @@ class RedEventControllerRegistration extends RedEventController
 			{
 				$this->_Mailer();
 
-				$rfcore = new RedformCore();
+				$rfcore = RdfCore::getInstance();
 				$addresses = $rfcore->getSubmissionContactEmail($submit_key);
 
 				/* Check if there are any addresses to be mailed */
@@ -536,7 +536,7 @@ class RedEventControllerRegistration extends RedEventController
 		jimport('joomla.user.helper');
 
 		$db		=& JFactory::getDBO();
-		$rfcore = new RedformCore();
+		$rfcore = RdfCore::getInstance();
 		$answers = $rfcore->getSidContactEmails($sid);
 
 		if (!$answers)
@@ -634,7 +634,7 @@ class RedEventControllerRegistration extends RedEventController
 
 	protected function createRedmemberUser($sid)
 	{
-		$rfcore = new RedformCore;
+		$rfcore = RdfCore::getInstance();
 
 		$answers = $rfcore->getSidsFieldsAnswers(array($sid));
 		$answers = $answers[$sid];

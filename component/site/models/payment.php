@@ -111,7 +111,7 @@ class RedeventModelPayment extends JModel
 	 */
 	public function checkAndConfirm()
 	{
-		$rfcore = new RedformCore;
+		$rfcore = RdfCore::getInstance();
 
 		if ($rfcore->isPaidSubmitkey($this->_submit_key))
 		{

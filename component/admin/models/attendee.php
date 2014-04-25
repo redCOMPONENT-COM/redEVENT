@@ -287,7 +287,7 @@ class RedEventModelAttendee extends JModel
 		$details = $db->loadObject();
 
 		// First save redform data
-		$rfcore = new RedformCore;
+		$rfcore = RdfCore::getInstance();
 		$result = $rfcore->saveAnswers('redevent', array('baseprice' => $details->price, 'currency' => $details->currency, 'edit' => 1));
 
 		if (!$result)

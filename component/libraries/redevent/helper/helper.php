@@ -523,13 +523,6 @@ class RedeventHelper
 	 */
 	public static function canRegister($xref_id, $user_id = null)
 	{
-		if (!file_exists(JPATH_SITE.DS.'components'.DS.'com_redform'.DS.'redform.core.php')) {
-			JError::raiseWarning(0,JText::_('COM_REDEVENT_REGISTRATION_NOT_ALLOWED_REDFORMCORE_NOT_FOUND'));
-			$result->canregister = 0;
-			$result->status = JText::_('COM_REDEVENT_REGISTRATION_NOT_ALLOWED_REDFORMCORE_NOT_FOUND');
-			return $result;
-		}
-
 		$app =& JFactory::getApplication();
 		$db = & JFactory::getDBO();
 		$user = & JFactory::getUser($user_id);
