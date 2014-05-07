@@ -1011,7 +1011,8 @@ class RedeventTags
 		}
 
 		$rfcore = $this->_getRFCore();
-		return $rfcore->getSidsFieldsAnswers($sids);
+
+		return $rfcore->getAnswers($sids);
 	}
 
 	private function _getSubmissionTotalPrice()
@@ -1878,12 +1879,13 @@ class RedeventTags
 		}
 
 		$res = '';
-		$emails = $this->_getRFCore()->getSubmissionContactEmail($this->_submitkey, false);
-		if (is_array($emails) && count($emails))
+		$email = $this->_getRFCore()->getSubmissionContactEmail($this->_submitkey, false);
+
+		if ($email)
 		{
-			$contact = current(current($emails));
-			$res = isset($contact['username']) ? $contact['username'] : '';
+			$res = isset($email['username']) ? $email['username'] : '';
 		}
+
 		return $res;
 	}
 
@@ -1895,12 +1897,13 @@ class RedeventTags
 		}
 
 		$res = '';
-		$emails = $this->_getRFCore()->getSubmissionContactEmail($this->_submitkey, true);
-		if (is_array($emails) && count($emails))
+		$email = $this->_getRFCore()->getSubmissionContactEmail($this->_submitkey, true);
+
+		if ($email)
 		{
-			$contact = current(current($emails));
-			$res = isset($contact['email']) ? $contact['email'] : '';
+			$res = isset($email['email']) ? $email['email'] : '';
 		}
+
 		return $res;
 	}
 
@@ -1912,11 +1915,11 @@ class RedeventTags
 		}
 
 		$res = '';
-		$emails = $this->_getRFCore()->getSubmissionContactEmail($this->_submitkey, true);
-		if (is_array($emails) && count($emails))
+		$email = $this->_getRFCore()->getSubmissionContactEmail($this->_submitkey, true);
+
+		if ($email)
 		{
-			$contact = current(current($emails));
-			$res = isset($contact['fullname']) ? $contact['fullname'] : '';
+			$res = isset($email['fullname']) ? $email['fullname'] : '';
 		}
 		return $res;
 	}

@@ -788,43 +788,27 @@ class RedEventModelAttendees extends JModel
 		$this->_db->setQuery($query);
 		$sids = $this->_db->loadResultArray();
 
-		if (empty($sids)) {
+		if (empty($sids))
+		{
 			return false;
 		}
+
 		$rfcore = RdfCore::getInstance();
-		$answers = $rfcore->getSidsFieldsAnswers($sids);
+		$submissionemails = $rfcore->getSubmissionContactEmails($sids);
 
 		$emails = array();
-		foreach ($answers as $fields)
+
+		foreach ($submissionemails as $sub)
 		{
-			$res = array();
-			foreach ($fields as $field)
+			foreach ($sub as $e)
 			{
-				switch ($field->fieldtype)
+				if (!isset($emails[$e['email']]))
 				{
-					case 'username':
-						$res['username'] = $field->answer;
-						break;
-
-					case 'fullname':
-						$res['fullname'] = $field->answer;
-						break;
-
-					case 'email':
-						$res['email'] = $field->answer;
-						break;
+					$emails[$e['email']] = $e;
 				}
 			}
-			if (!isset($res['email'])) {
-				JError::raiseWarning(0, JText::_('COM_REDEVENT_EMAIL_ATTENDEES_NO_EMAIL_FIELD'));
-				return false;
-			}
-			if ( (!isset($res['fullname']) || empty($res['fullname'])) && isset($res['username'])) {
-				$res['fullname'] = $res['username'];
-			}
-			$emails[] = $res;
 		}
-//		echo '<pre>';print_r($emails); echo '</pre>';exit;
+
 		return $emails;
 	}
 

@@ -116,18 +116,8 @@ class RedEventModelAttendees extends JModel
 
 		$emails = array();
 		$rfcore = RdfCore::getInstance();
-		$answers = $rfcore->getSidsFieldsAnswers($res);
-		foreach ($answers as $sid => $a)
-		{
-			foreach ($a as $field)
-			{
-				if ($field->fieldtype == 'email')
-				{
-					$emails[$sid] = $field->answer;
-					break;
-				}
-			}
-		}
+		$emails = $rfcore->getSubmissionContactEmails($res);
+
 		return $emails;
 	}
 

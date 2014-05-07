@@ -685,8 +685,8 @@ class RedeventAttendee extends JObject
 		{
 			$rfcore = RdfCore::getInstance();
 			$sid = $this->load()->sid;
-			$sidsanswers = $rfcore->getSidsFieldsAnswers(array($sid));
-			$this->_answers = $sidsanswers[$sid];
+			$sidsanswers = $rfcore->getAnswers(array($sid));
+			$this->_answers = $sidsanswers->getSubmissionBySid($sid);
 		}
 
 		return $this->_answers;

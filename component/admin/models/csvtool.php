@@ -178,7 +178,7 @@ class RedEventModelcsvtool extends JModel
 		// add answers to registers
 		foreach ($submitters as $k => $s)
 		{
-			$submitters[$k]->answers = $answers->getSubmissionBySid();
+			$submitters[$k]->answers = $answers->getSubmissionBySid($s->sid);
 		}
 
 		return $submitters;

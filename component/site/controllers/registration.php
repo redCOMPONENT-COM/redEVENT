@@ -430,7 +430,7 @@ class RedEventControllerRegistration extends RedEventController
 				$this->_Mailer();
 
 				$rfcore = RdfCore::getInstance();
-				$addresses = $rfcore->getSubmissionContactEmail($submit_key);
+				$addresses = $rfcore->getSubmissionContactEmails($submit_key);
 
 				/* Check if there are any addresses to be mailed */
 				if (count($addresses) > 0)
@@ -636,8 +636,8 @@ class RedEventControllerRegistration extends RedEventController
 	{
 		$rfcore = RdfCore::getInstance();
 
-		$answers = $rfcore->getSidsFieldsAnswers(array($sid));
-		$answers = $answers[$sid];
+		$answers = $rfcore->getAnswers(array($sid));
+		$answers = $answers->getSubmissionBySid($sid);
 
 		$data = array();
 
