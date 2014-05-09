@@ -91,7 +91,7 @@ class RedeventCustomfieldSelect extends RedeventAbstractCustomfield
 		{
 			foreach ($options as $opt)
 			{
-				$option = $this->getOptionLabelValue($opt);
+				$option = $this->getOptionLreabelValue($opt);
 				$option_list[] = JHTML::_('select.option', $option->value, $option->label);
 			}
 		}

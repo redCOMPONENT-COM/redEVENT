@@ -69,11 +69,13 @@ else
 {
 	$placesleft = JText::_('COM_REDEVENT_EVENT_NOLIMIT');
 }
+	$startEnd = RedeventHelperOutput::formatEventDateTime($event, true);
+	$duration = JHtml::tooltip($startEnd, '', '', RedeventHelper::getEventDuration($event));
 	?>
 	<tr>
 			<!--<td class="courseinfo_name"><?php echo JHTML::_('link', $event_url, $event->full_title); ?></td>-->
 			<td class="courseinfo_date"><?php echo RedeventHelperOutput::formatdate($event->dates, $event->times); ?></td>
-			<td class="courseinfo_duration"><?php echo RedeventHelper::getEventDuration($event); ?></td>
+			<td class="courseinfo_duration"><?php echo $duration; ?></td>
 			<td class="courseinfo_venue"><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
 			<td class="courseinfo_country"><?php echo RedeventHelperOutput::getFlag($event->country); ?></td>
 			<td class="courseinfo_prices re-price"><?php echo RedeventHelperOutput::formatListPrices($event->prices); ?></td>

@@ -630,14 +630,14 @@ class RedeventHelperOutput {
 	 * @param object $event
 	 * @return string or false for open date
 	 */
-	function formatEventDateTime($event, $show_end = true)
+	public static function formatEventDateTime($event, $show_end = null)
 	{
 		if (!RedeventHelper::isValidDate($event->dates)) { // open dates
 			$date = '<span class="event-date open-date">'.JText::_('COM_REDEVENT_OPEN_DATE').'</span>';
 			return $date;
 		}
 		$settings = & RedeventHelper::config();
-		$showend = $settings->get('lists_showend', 1);
+		$showend = is_null($show_end) ? $settings->get('lists_showend', 1) : $show_end;
 
 		$date_start = self::formatdate($event->dates, $event->times);
 		$time_start = '';
