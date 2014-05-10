@@ -102,6 +102,7 @@ defined('_JEXEC') or die('Restricted access');
 			$this->limitstart_name = "booked_limitstart";
 			$this->limitstart = $this->booked_limitstart;
 			$this->allow_edit_sessions = true;
+			$this->show_action_column = true;
 		?>
 		<?php echo $this->loadTemplate('sessions'); ?>
 	</form>
@@ -121,6 +122,7 @@ defined('_JEXEC') or die('Restricted access');
 			$this->limitstart_name = "previous_limitstart";
 			$this->limitstart = $this->previous_limitstart;
 			$this->allow_edit_sessions = false;
+			$this->show_action_column = false;
 		?>
 		<?php echo $this->loadTemplate('sessions'); ?>
 	</form>
