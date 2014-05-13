@@ -43,5 +43,6 @@ class plgRedevent_configMaersk extends JPlugin
 		$params->set('redirect_search_unique_result_to_details', 1);
 		$params->set('b2b_sessions_display_num', $this->params->get('b2b_sessions_display_num', 20));
 		$params->set('b2b_members_display_num', $this->params->get('b2b_members_display_num', 20));
+		$params->set('disable_waitinglist_status_email', $this->params->get('disable_waitinglist_status_email', 0));
 	}
 }
