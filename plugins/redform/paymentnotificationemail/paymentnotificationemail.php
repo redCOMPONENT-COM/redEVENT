@@ -47,6 +47,11 @@ class plgRedformPaymentnotificationemail extends JPlugin
 
 		try
 		{
+			if ($this->isCustomPayment())
+			{
+				return true;
+			}
+
 			$this->sendNotificationEmail();
 		}
 		catch (Exception $e)
@@ -55,6 +60,45 @@ class plgRedformPaymentnotificationemail extends JPlugin
 		}
 
 		return true;
+	}
+
+	/**
+	 * Check if this is a custom payment
+	 *
+	 * @return bool
+	 *
+	 * @throws Exception
+	 */
+	private function isCustomPayment()
+	{
+		if (!$payment = $this->getPayment())
+		{
+			throw new Exception('No payment found');
+		}
+
+		return strcasecmp($payment->gateway, 'custom') == 0;
+	}
+
+	/**
+	 * Get latest payment info
+	 *
+	 * @return mixed
+	 */
+	private function getPayment()
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('p.*');
+		$query->from('#__rwf_payment AS p');
+		$query->where('p.submit_key = ' . $this->submitkey);
+		$query->where('p.paid = 1');
+		$query->order('p.id DESC');
+
+		$db->setQuery($query);
+		$res = $db->loadObject();
+
+		return $res;
 	}
 
 	/**
