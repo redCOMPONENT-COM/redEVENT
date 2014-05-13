@@ -20,7 +20,14 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+JText::script('COM_REDEVENT_FRONTEND_ADMIN_CONFIRM_LEAVE_PAGE');
 ?>
+<script>
+	window.onbeforeunload = function(e) {
+		return Joomla.JText._('COM_REDEVENT_FRONTEND_ADMIN_CONFIRM_LEAVE_PAGE');
+	};
+</script>
 <div id="search-toolbar">
 	<?php echo $this->loadTemplate('search_toolbar'); ?>
 </div>
