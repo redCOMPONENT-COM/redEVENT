@@ -16,6 +16,7 @@ $targetBranch = 'maersk-overrides';
 $cmd = 'cd /home/staging/git/redEVENT2.5; git fetch --all; ';
 $cmd .= 'git reset --hard origin/' . $targetBranch . '; ';
 $cmd .= 'git submodule update; ';
+$cmd .= 'git describe; ';
 
 // Build
 $cmd .= 'phing 2<&1; ';
