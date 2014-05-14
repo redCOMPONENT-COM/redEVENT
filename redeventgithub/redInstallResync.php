@@ -78,7 +78,7 @@ class RedInstall extends JApplicationCli
 
 		$this->dbUpdate();
 
-		if ($newVersion > $oldVersion)
+		if (version_compare($newVersion, $oldVersion) > 0)
 		{
 			$manifestCache->version = $newVersion;
 			$newManifestCache = json_encode($manifestCache);
@@ -108,11 +108,12 @@ class RedInstall extends JApplicationCli
 		$oldVersion = $this->getCurrentDbSchemaVersion();
 
 		$path = $this->getPath();
-		$sql = JFolder::files($path . '/sql/updates/mysql', '.sql');
+		$files = JFolder::files($path . '/sql/updates/mysql', '.sql');
+		usort($files, 'version_compare');
 
-		foreach ($sql as $queryFile)
+		foreach ($files as $queryFile)
 		{
-			if (JFile::stripExt($queryFile) > $oldVersion)
+			if (version_compare(JFile::stripExt($queryFile), $oldVersion) > 0)
 			{
 				$queryString = file_get_contents($path . '/sql/updates/mysql/' . $queryFile);
 				$queries = JInstallerHelper::splitSql($queryString);
