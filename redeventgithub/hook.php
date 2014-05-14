@@ -21,7 +21,8 @@ $cmd .= 'git submodule update; ';
 $cmd .= 'phing 2<&1; ';
 
 // Update db
-$cmd .= 'php /home/staging/public_html/redInstall.php; ';
+$cmd .= 'php /home/staging/public_html/redeventgithub/redInstall.php; ';
+$cmd .= 'php /home/staging/public_html/redeventgithub/redInstallResync.php; ';
 
 $output = shell_exec($cmd);
 
