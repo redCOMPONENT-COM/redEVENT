@@ -13,10 +13,9 @@ parse_str($convert);
 $targetBranch = 'maersk-overrides';
 
 // Update repo
-$cmd = 'cd /home/staging/git/redEVENT2.5; git fetch --all; ';
+$cmd = 'cd /home/staging/git/redEVENT2.5; git fetch --all 2<&1; ';
 $cmd .= 'git reset --hard origin/' . $targetBranch . '; ';
 $cmd .= 'git submodule update; ';
-$cmd .= 'git describe; ';
 
 // Build
 $cmd .= 'phing 2<&1; ';
