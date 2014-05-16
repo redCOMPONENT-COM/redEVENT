@@ -273,6 +273,12 @@
 			</filterchain>
         </copy>
 
+        <!-- Templates -->
+        <copy todir="${www.dir}/templates/redweb" overwrite="true">
+            <fileset dir="${dirs.root}/overrides">
+                <include name="**" />
+            </fileset>
+        </copy>
 
 		<!-- redeventsync -->
 
