@@ -13,16 +13,16 @@ parse_str($convert);
 $targetBranch = 'maersk-overrides';
 
 // Update repo
-$cmd = 'cd /home/staging/git/redEVENT2.5; git fetch --all 2<&1; ';
-$cmd .= 'git reset --hard origin/' . $targetBranch . '; ';
-$cmd .= 'git submodule update; ';
+$cmd = 'cd /home/staging/git/redEVENT2.5 2<&1; git fetch --all 2<&1; ';
+$cmd .= 'git reset --hard origin/' . $targetBranch . ' 2<&1; ';
+$cmd .= 'git submodule update 2<&1; ';
 
 // Build
 $cmd .= 'phing 2<&1; ';
 
 // Update db
-$cmd .= 'php /home/staging/public_html/redeventgithub/redInstall.php; ';
-$cmd .= 'php /home/staging/public_html/redeventgithub/redInstallResync.php; ';
+$cmd .= 'php /home/staging/public_html/redeventgithub/redInstall.php --extension=redevent; ';
+$cmd .= 'php /home/staging/public_html/redeventgithub/redInstall.php --extension=redeventsync; ';
 
 $output = shell_exec($cmd);
 
