@@ -42,14 +42,34 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<?php endif; ?>
 <?php endif; ?>
 <div class="bookevent_detail">
-	<h2><?php echo $this->course->title?></h2>
-	<p><?php echo RedeventHelperOutput::formatEventDateTime($this->course, true); ?><br><?php echo $this->course->location?></p>
+	<h2><?php echo JText::sprintf('COM_REDEVENT_MAERSK_SIGNUP_TITLE', $this->course->title, $this->course->location); ?></h2>
+
+	<?php if (RedeventHelper::isValidDate($this->course->dates)): ?>
+		<div class="signup-date-time">
+			<div class="signup-date-title"><?php echo JText::_('COM_REDEVENT_MAERSK_SIGNUP_DATE_AND_TIME'); ?></div>
+			<div class="signup-date">
+				<span class="label"><?php echo JText::_('COM_REDEVENT_FROM'); ?></span>
+				<?php echo RedeventHelperOutput::formatdate($this->course->dates, $this->course->times) . ' ' . RedeventHelperOutput::formattime($this->course->dates,$this->course->times); ?>
+			</div>
+
+			<?php if (RedeventHelper::isValidDate($this->course->enddates)): ?>
+				<div class="signup-date">
+					<span class="label"><?php echo JText::_('COM_REDEVENT_TO'); ?></span>
+					<?php echo RedeventHelperOutput::formatdate($this->course->enddates, $this->course->endtimes) . ' ' . RedeventHelperOutput::formattime($this->course->enddates,$this->course->endtimes); ?>
+				</div>
+			<?php endif; ?>
+
+		</div>
+	<?php else: ?>
+		<?php echo JText::_('COM_REDEVENT_OPEN_DATE'); ?>
+	<?php endif; ?>
 </div>
 
-<?php
-echo $this->page;
-echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&id='.$this->course->did.'&xref='.$this->course->xref), JText::_('COM_REDEVENT_RETURN_EVENT_DETAILS'));
-?>
+<?php echo $this->page; ?>
+
+	<div class="price-note"><?php echo JText::_('COM_REDEVENT_MAERSK_SIGNUP_PRICE_NOTE'); ?></div>
+
+<?php echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=details&id='.$this->course->did.'&xref='.$this->course->xref), JText::_('COM_REDEVENT_RETURN_EVENT_DETAILS')); ?>
 <?php if (isset($this->fullpage)): ?>
 </div>
 <?php endif; ?>
