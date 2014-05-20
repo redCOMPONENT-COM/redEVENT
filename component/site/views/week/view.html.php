@@ -100,9 +100,8 @@ class RedeventViewWeek extends JView
 		$this->assign('previous',   $this->get('previousweek'));
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
-		array_unshift($cols, 'time');
 		array_unique($cols);
-		$exclude = array('date');
+		$exclude = array('date', 'time');
 		$cols = array_diff($cols, $exclude);
 
 		$cols = RedeventHelper::validateColumns($cols);
