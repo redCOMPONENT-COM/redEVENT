@@ -10,7 +10,7 @@ $convert = rawurldecode($str);
 
 parse_str($convert);
 
-$targetBranch = 'maersk-overrides';
+$targetBranch = 'maersk-main';
 
 // Update repo
 $cmd = 'cd /home/staging/git/redEVENT2.5 2<&1; git fetch --all 2<&1; ';
