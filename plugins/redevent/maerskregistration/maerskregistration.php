@@ -255,7 +255,7 @@ class plgRedeventMaerskregistration extends JPlugin
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('CASE WHEN v.contactAdminEmail THEN v.contactAdminEmail ELSE v.email END AS adminEmail');
+		$query->select('CASE WHEN CHAR_LENGTH(v.contactAdminEmail) THEN v.contactAdminEmail ELSE v.email END AS adminEmail');
 		$query->from('#__redevent_register AS r');
 		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = r.xref');
 		$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
