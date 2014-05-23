@@ -154,6 +154,9 @@ JHtml::_('behavior.formvalidation');
 
                     <li><?php echo $this->form->getLabel('email'); ?>
                     <?php echo $this->form->getInput('email'); ?></li>
+
+					<li><?php echo $this->form->getLabel('contactAdminEmail'); ?>
+						<?php echo $this->form->getInput('contactAdminEmail'); ?></li>
 				</ul>
 			</fieldset>
 			<?php if ( $this->params->get('showmapserv',1)): ?>

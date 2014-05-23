@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 // Import library dependencies
 jimport('joomla.plugin.plugin');
 
-JLoader::registerPrefix('RESync', JPATH_LIBRARIES . '/redeventsync');
+JLoader::registerPrefix('Resync', JPATH_LIBRARIES . '/redeventsync');
 
 /**
  * Class plgRedeventRedeventsync
@@ -50,13 +50,13 @@ class plgRedeventRedeventsync extends JPlugin
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onHandleAfterSessionSave', array($session_id, $isNew));
 		}
-		catch (RESyncException $e)
+		catch (ResyncException $e)
 		{
-			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAfterSessionSave', 0, $e->getMessage(), $e->status, $e->debug);
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAfterSessionSave', 0, $e->getMessage(), $e->status, $e->debug);
 		}
 		catch (Exception $e)
 		{
-			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAfterSessionSave', 0, $e->getMessage(), 'error');
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAfterSessionSave', 0, $e->getMessage(), 'error');
 		}
 
 		return true;
@@ -77,13 +77,13 @@ class plgRedeventRedeventsync extends JPlugin
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onHandleAfterSessionDelete', array($session_code));
 		}
-		catch (RESyncException $e)
+		catch (ResyncException $e)
 		{
-			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAfterSessionDelete', 0, $e->getMessage(), $e->status, $e->debug);
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAfterSessionDelete', 0, $e->getMessage(), $e->status, $e->debug);
 		}
 		catch (Exception $e)
 		{
-			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAfterSessionDelete', 0, $e->getMessage(), 'error');
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAfterSessionDelete', 0, $e->getMessage(), 'error');
 		}
 
 		return true;
@@ -104,13 +104,13 @@ class plgRedeventRedeventsync extends JPlugin
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onHandleAttendeeCreated', array($attendee_id));
 		}
-		catch (RESyncException $e)
+		catch (ResyncException $e)
 		{
-			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeCreated', 0, $e->getMessage(), $e->status, $e->debug);
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeCreated', 0, $e->getMessage(), $e->status, $e->debug);
 		}
 		catch (Exception $e)
 		{
-			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeCreated', 0, $e->getMessage(), 'error');
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeCreated', 0, $e->getMessage(), 'error');
 		}
 
 		return true;
@@ -131,13 +131,13 @@ class plgRedeventRedeventsync extends JPlugin
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onHandleAttendeeModified', array($attendee_id));
 		}
-		catch (RESyncException $e)
+		catch (ResyncException $e)
 		{
-			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeModified', 0, $e->getMessage(), $e->status, $e->debug);
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeModified', 0, $e->getMessage(), $e->status, $e->debug);
 		}
 		catch (Exception $e)
 		{
-			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeModified', 0, $e->getMessage(), 'error');
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeModified', 0, $e->getMessage(), 'error');
 		}
 
 		return true;
@@ -158,13 +158,13 @@ class plgRedeventRedeventsync extends JPlugin
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onHandleAttendeeCancelled', array($attendee_id));
 		}
-		catch (RESyncException $e)
+		catch (ResyncException $e)
 		{
-			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeCancelled', 0, $e->getMessage(), $e->status, $e->debug);
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeCancelled', 0, $e->getMessage(), $e->status, $e->debug);
 		}
 		catch (Exception $e)
 		{
-			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeCancelled', 0, $e->getMessage(), 'error');
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeCancelled', 0, $e->getMessage(), 'error');
 		}
 
 		return true;
@@ -185,13 +185,13 @@ class plgRedeventRedeventsync extends JPlugin
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onHandleAttendeeDeleted', array($attendee_id));
 		}
-		catch (RESyncException $e)
+		catch (ResyncException $e)
 		{
-			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeDeleted', 0, $e->getMessage(), $e->status, $e->debug);
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeDeleted', 0, $e->getMessage(), $e->status, $e->debug);
 		}
 		catch (Exception $e)
 		{
-			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeDeleted', 0, $e->getMessage(), 'error');
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleAttendeeDeleted', 0, $e->getMessage(), 'error');
 		}
 
 		return true;
@@ -226,13 +226,13 @@ class plgRedeventRedeventsync extends JPlugin
 				$dispatcher->trigger('onHandleAttendeePaid', array($attendee_id));
 			}
 		}
-		catch (RESyncException $e)
+		catch (ResyncException $e)
 		{
-			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onAfterPaymentVerified', 0, $e->getMessage(), $e->status, $e->debug);
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onAfterPaymentVerified', 0, $e->getMessage(), $e->status, $e->debug);
 		}
 		catch (Exception $e)
 		{
-			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onAfterPaymentVerified', 0, $e->getMessage(), 'error');
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onAfterPaymentVerified', 0, $e->getMessage(), 'error');
 		}
 
 		return true;
@@ -267,13 +267,13 @@ class plgRedeventRedeventsync extends JPlugin
 				$dispatcher->trigger('onHandleAttendeePaid', array($attendee_id));
 			}
 		}
-		catch (RESyncException $e)
+		catch (ResyncException $e)
 		{
-			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onAfterPaymentVerified', 0, $e->getMessage(), $e->status, $e->debug);
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onAfterPaymentVerified', 0, $e->getMessage(), $e->status, $e->debug);
 		}
 		catch (Exception $e)
 		{
-			RESyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onAfterPaymentVerified', 0, $e->getMessage(), 'error');
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onAfterPaymentVerified', 0, $e->getMessage(), 'error');
 		}
 
 		return true;

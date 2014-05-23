@@ -14,7 +14,7 @@ defined('_JEXEC') or die();
  * @package  RED.redeventsync
  * @since    2.5
  */
-class RESyncException extends Exception
+class ResyncException extends Exception
 {
 	public $status;
 

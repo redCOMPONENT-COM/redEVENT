@@ -23,7 +23,24 @@ jimport('joomla.plugin.plugin');
 class plgRedeventMaerskregistration extends JPlugin
 {
 	protected $registrationId;
+
 	protected $answers;
+
+	/**
+	 * Constructor
+	 *
+	 * @param   object  &$subject  The object to observe
+	 * @param   array   $config    An optional associative array of configuration settings.
+	 *                             Recognized key values include 'name', 'group', 'params', 'language'
+	 *                             (this list is not meant to be comprehensive).
+	 *
+	 * @since   11.1
+	 */
+	public function __construct(&$subject, $config = array())
+	{
+		parent::__construct($subject, $config);
+		$this->loadLanguage();
+	}
 
 	/**
 	 * intercepts onAttendeeCreated
@@ -41,6 +58,11 @@ class plgRedeventMaerskregistration extends JPlugin
 		return true;
 	}
 
+	/**
+	 * Get answers for current registration id
+	 *
+	 * @return mixed
+	 */
 	protected function getAnswers()
 	{
 		if (!$this->answers)
@@ -63,6 +85,11 @@ class plgRedeventMaerskregistration extends JPlugin
 		return $this->answers;
 	}
 
+	/**
+	 * Update PO number from B2C registration
+	 *
+	 * @return bool
+	 */
 	protected function updatePoNumber()
 	{
 		// Get ids for ponumber
@@ -91,6 +118,11 @@ class plgRedeventMaerskregistration extends JPlugin
 		return true;
 	}
 
+	/**
+	 * Update comments from B2C registration
+	 *
+	 * @return bool
+	 */
 	protected function updateComments()
 	{
 		// Get ids for ponumber
@@ -119,6 +151,13 @@ class plgRedeventMaerskregistration extends JPlugin
 		return true;
 	}
 
+	/**
+	 * Return clean array of ids
+	 *
+	 * @param   string  $text  comma separated list of ids
+	 *
+	 * @return array
+	 */
 	protected function cleanIds($text)
 	{
 		$ids = array();
@@ -140,5 +179,92 @@ class plgRedeventMaerskregistration extends JPlugin
 		}
 
 		return $ids;
+	}
+
+	/**
+	 * handles attendee modified
+	 *
+	 * @param   int  $attendee_id  attendee id
+	 *
+	 * @return bool
+	 */
+	public function onAttendeeModified($attendee_id)
+	{
+		$input = JFactory::getApplication()->input;
+
+		// See if the comments were modified
+		if (!strstr('updatecomments', $input->get('task')))
+		{
+			return true;
+		}
+
+		return $this->emailCommentUpdated($attendee_id);
+	}
+
+	/**
+	 * Send comment updated notification
+	 *
+	 * @param   int  $attendee_id  attendee id
+	 *
+	 * @return bool
+	 */
+	private function emailCommentUpdated($attendee_id)
+	{
+		$app = JFactory::getApplication();
+		$mailer = JFactory::getMailer();
+		$mailer->IsHTML(true);
+
+		if (!$recipient = $this->getVenueContactAdminEmail($attendee_id))
+		{
+			return true;
+		}
+
+		$attendee = new RedeventAttendee($attendee_id);
+
+		$sender = array($app->getCfg('mailfrom'), $app->getCfg('sitename'));
+		$mailer->setSender($sender);
+		$mailer->addReplyTo($sender);
+		$mailer->addAddress($recipient);
+
+		$subject = $attendee->replaceTags(JText::_('PLG_REDEVENT_MAERSKREGISTRATION_COMMENT_UPDATED_NOTIFICATION_EMAIL_SUBJECT'));
+
+		$comment = $app->input->get('value', '', 'string');
+		$body = $attendee->replaceTags(JText::_('PLG_REDEVENT_MAERSKREGISTRATION_COMMENT_UPDATED_NOTIFICATION_EMAIL_BODY'));
+		$body = str_replace('[comment]', $comment, $body);
+
+		$mailer->setSubject($subject);
+		$mailer->setBody($body);
+
+		if (!$mailer->send())
+		{
+			RedeventHelperLog::simplelog(JText::_('PLG_REDEVENT_MAERSKREGISTRATION_COMMENT_UPDATED_NOTIFICATION_EMAIL_FAILED'));
+
+			return false;
+		}
+	}
+
+	/**
+	 * Get admin email for comment notification email
+	 *
+	 * @param   int  $attendee_id  attendee id
+	 *
+	 * @return mixed
+	 */
+	private function getVenueContactAdminEmail($attendee_id)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('CASE WHEN v.contactAdminEmail THEN v.contactAdminEmail ELSE v.email END AS adminEmail');
+		$query->from('#__redevent_register AS r');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = r.xref');
+		$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
+		$query->join('INNER', '#__redevent_venues AS v ON v.id = x.venueid');
+		$query->where('r.id = ' . $db->quote($attendee_id));
+
+		$db->setQuery($query);
+		$data = $db->loadResult();
+
+		return $data;
 	}
 }

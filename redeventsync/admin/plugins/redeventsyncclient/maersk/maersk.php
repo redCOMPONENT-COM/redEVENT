@@ -13,7 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport('joomla.plugin.plugin');
 
 // Register library prefix
-JLoader::registerPrefix('RESync', JPATH_LIBRARIES . '/redeventsync');
+JLoader::registerPrefix('Resync', JPATH_LIBRARIES . '/redeventsync');
 JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
 JLoader::registerPrefix('Redform', JPATH_LIBRARIES . '/redform');
 
@@ -137,7 +137,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 			}
 
 			libxml_clear_errors();
-			RESyncHelperMessagelog::log(
+			ResyncHelperMessagelog::log(
 				REDEVENTSYNC_LOG_DIRECTION_INCOMING,
 				'',
 				0,
@@ -149,7 +149,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		}
 
 		// Log the whole message
-		RESyncHelperMessagelog::log(
+		ResyncHelperMessagelog::log(
 			REDEVENTSYNC_LOG_DIRECTION_INCOMING,
 			$xml->firstChild->nodeName,
 			null,
@@ -172,7 +172,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		// Check if it's a supported type
 		if (! in_array($type, $supported))
 		{
-			RESyncHelperMessagelog::log(
+			ResyncHelperMessagelog::log(
 				REDEVENTSYNC_LOG_DIRECTION_INCOMING,
 				'',
 				0,
@@ -200,7 +200,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 			}
 
 			libxml_clear_errors();
-			RESyncHelperMessagelog::log(
+			ResyncHelperMessagelog::log(
 				REDEVENTSYNC_LOG_DIRECTION_INCOMING,
 				'',
 				0,
@@ -217,7 +217,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		// Display response to request
 		if ($msg = $handler->getResponseMessage())
 		{
-			RESyncHelperMessagelog::log(
+			ResyncHelperMessagelog::log(
 				REDEVENTSYNC_LOG_DIRECTION_OUTGOING,
 				$handler->getResponseMessageType(),
 				0,

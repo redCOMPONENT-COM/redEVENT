@@ -12,7 +12,7 @@ defined('_JEXEC') or die();
 include_once JPATH_LIBRARIES . '/fof/include.php';
 
 // Register library prefix
-JLoader::registerPrefix('RESync', JPATH_LIBRARIES . '/redeventsync');
+JLoader::registerPrefix('Resync', JPATH_LIBRARIES . '/redeventsync');
 
 if (!defined('FOF_INCLUDED'))
 {

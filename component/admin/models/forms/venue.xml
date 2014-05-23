@@ -156,6 +156,14 @@
             description ="COM_REDEVENT_ADMIN_EMAIL_HINT"
             class="inputbox" />
 
+        <field
+            name="contactAdminEmail"
+            type="email"
+            default=""
+            label="COM_REDEVENT_CONTACT_ADMIN_EMAIL"
+            description ="COM_REDEVENT_CONTACT_ADMIN_EMAIL_DESC"
+            class="inputbox" />
+
 		<field
 			name="map"
 			type="list"
@@ -190,6 +198,14 @@
 	<fields name="params">
 		<fieldset
 			name="extra">
+
+            <field
+                    name="adminEmail"
+                    type="adminEmail"
+                    default=""
+                    label="COM_REDEVENT_ADMIN_EMAIL"
+                    description ="COM_REDEVENT_ADMIN_EMAIL_HINT"
+                    class="inputbox" />
 
 			<field
 				name="allowed_gateways"

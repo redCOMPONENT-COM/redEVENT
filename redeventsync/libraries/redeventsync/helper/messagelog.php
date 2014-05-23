@@ -16,7 +16,7 @@ require_once JPATH_ADMINISTRATOR . '/components/com_redeventsync/defines.php';
  * @package  RED.redeventsync
  * @since    2.5
  */
-class RESyncHelperMessagelog
+class ResyncHelperMessagelog
 {
 	/**
 	 * log transaction

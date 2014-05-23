@@ -389,13 +389,13 @@ class RedeventControllerFrontadmin extends FOFController
 		$value = $app->input->get('value', '', 'string');
 		$model = $this->getModel('frontadmin');
 
-		$resp = new stdClass();
+		$resp = new stdClass;
 
 		if ($res = $model->updateponumber($rid, $value))
 		{
 			$resp->status = 1;
 
-			JPluginHelper::importPlugin( 'redevent' );
+			JPluginHelper::importPlugin('redevent');
 			$dispatcher = JDispatcher::getInstance();
 			$res = $dispatcher->trigger('onAttendeeModified', array($rid));
 		}
@@ -421,15 +421,15 @@ class RedeventControllerFrontadmin extends FOFController
 		$value = $app->input->get('value', '', 'string');
 		$model = $this->getModel('frontadmin');
 
-		$resp = new stdClass();
+		$resp = new stdClass;
 
 		if ($res = $model->updatecomments($rid, $value))
 		{
 			$resp->status = 1;
 
-			JPluginHelper::importPlugin( 'redevent' );
+			JPluginHelper::importPlugin('redevent');
 			$dispatcher = JDispatcher::getInstance();
-			$res = $dispatcher->trigger('onAttendeeModified', array($rid));
+			$dispatcher->trigger('onAttendeeModified', array($rid));
 		}
 		else
 		{
@@ -453,7 +453,7 @@ class RedeventControllerFrontadmin extends FOFController
 		$value = $app->input->get('value', '', 'string');
 		$model = $this->getModel('frontadmin');
 
-		$resp = new stdClass();
+		$resp = new stdClass;
 		$res = $model->updatestatus($rid, $value);
 
 		if ($res !== false)
@@ -461,7 +461,7 @@ class RedeventControllerFrontadmin extends FOFController
 			$resp->status = 1;
 			$resp->html = RedeventHelper::getStatusIcon($res);
 
-			JPluginHelper::importPlugin( 'redevent' );
+			JPluginHelper::importPlugin('redevent');
 			$dispatcher = JDispatcher::getInstance();
 			$res = $dispatcher->trigger('onAttendeeModified', array($rid));
 		}
