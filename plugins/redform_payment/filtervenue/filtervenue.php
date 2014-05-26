@@ -130,9 +130,7 @@ class plgRedform_PaymentFiltervenue extends JPlugin {
 			return true;
 		}
 
-		return $input->get('option') == 'com_redevent'
-			&& ($input->get('view') == 'details' || $input->get('view') == 'signup')
-			&& $input->getInt('xref');
+		return $input->get('option') == 'com_redevent' && $input->getInt('xref');
 	}
 
 	/**
