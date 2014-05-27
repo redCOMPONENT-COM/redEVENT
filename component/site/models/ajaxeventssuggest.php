@@ -122,6 +122,26 @@ class RedeventModelAjaxeventssuggest extends JModelList
 			$query->where('(e.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR e.language IS NULL)');
 		}
 
+		$category = $this->getState('filter.category');
+
+		if (is_numeric($category))
+		{
+			$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
+			$query->where('xcat.category_id = ' . $category);
+		}
+
+		$venue = $this->getState('filter.venue');
+
+		if (is_numeric($venue))
+		{
+			$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.eventid = e.id');
+			$query->where('x.venueid = ' . $venue);
+		}
+
+		$query->group('e.id');
+
+		$query->order($this->getState('list.ordering') . ' ' . $this->getState('list.direction'));
+
 		return $query;
 	}
 

@@ -21,6 +21,7 @@
 		<filename>mod_redevent_search.css</filename>
 		<folder>language</folder>
 		<folder>tmpl</folder>
+        <folder>select2</folder>
 	</files>
 
 	<config>

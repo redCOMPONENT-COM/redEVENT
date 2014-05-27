@@ -44,43 +44,70 @@ if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
 		);
 	}
 }
+
+$doc = JFactory::getDocument();
+$doc->addScript('modules/mod_redevent_search/select2/select2.js');
+$doc->addStyleSheet('modules/mod_redevent_search/select2/select2.css');
 ?>
+<script>
+	(function($) {
+		$(document).ready(function() {
+			var sel = $('<select>')
+				.attr('id', 'modres_text_filter')
+				.attr('name', 'filter')
+				.attr('style', 'width:100%')
+				.addClass('noselectbox')
+				.attr('placeholder', $('#modres_text_filter').attr('placeholder'));
 
-<script type="application/javascript">
-	<?php JHtml::script('com_redevent/autocompleter.js', false, true); ?>
-	window.addEvent('domready', function() {
-		$$('form#redeventsearchform select').addEvent('change', setCompleter);
-		setCompleter();
-	});
+			$('.mod_redevent_search select').change(updateFilter);
+			$('#modres_text_filter').replaceWith(sel);
 
-	function setCompleter() {
-		var url = 'index.php?option=com_redevent&controller=ajax&task=eventsuggestions&tmpl=component';
+			var sel = $('#modres_text_filter');
+			sel.select2();
 
-		var catfilter = document.id('filter_category');
-		if (catfilter && catfilter.get('value')) {
-			url = url + '&filter_category=' + catfilter.get('value');
-		}
+			updateFilter();
+		});
 
-		var venuefilter = document.id('filter_venue');
-		if (venuefilter && venuefilter.get('value')) {
-			url = url + '&filter_venue=' + venuefilter.get('value');
-		}
+		function updateFilter() {
+			var url = 'index.php?option=com_redevent&controller=ajax&task=eventsuggestions&tmpl=component';
 
-		completer = new Autocompleter.Request.JSON(document.id('modres_text_filter'), url, {'postVar': 'q', 'autoSubmit': true, 'minLength': 0, 'maxChoices': 25});
-	}
+			var catfilter = document.id('filter_category');
+			if (catfilter && catfilter.get('value')) {
+				url = url + '&filter_category=' + catfilter.get('value');
+			}
+
+			var venuefilter = document.id('filter_venue');
+			if (venuefilter && venuefilter.get('value')) {
+				url = url + '&filter_venue=' + venuefilter.get('value');
+			}
+
+			$.ajax({
+				dataType : 'json',
+				url : url,
+				success : function(data) {
+					var sel = $('#modres_text_filter');
+					sel.select2('val', null);
+					sel.empty();
+					$.each(data, function(i, item) {
+						var option = $('<option>').val(item).text(item);
+						sel.append(option);
+					});
+				}
+			});
+		};
+	})(jQuery);
 </script>
 
 <form action="<?php echo $action; ?>" method="post" id="redeventsearchform">
 
 	<div class="mod_redevent_search">
-		<?php if ($params->get('filter_text', 1)) : ?>
 			<div class="rssm_filter_row">
 				<span class="rssm_filter">
-					<input type="text" name="filter" value="<?php echo $lists['filter'];?>" class="inputbox text_filter" id="modres_text_filter"
-						placeholder="<?php echo JText::_('MOD_REDEVENT_SEARCH_SELECT_EVENT') ?>"/>
+					<input type="text" name="filter" value="<?php echo $lists['filter'];?>" class="noselectbox text_filter" id="modres_text_filter"
+						placeholder="<?php echo JText::_('MOD_REDEVENT_SEARCH_SELECT_EVENT') ?>">
+					</select>
 				</span>
 			</div>
-		<?php endif; ?>
 
 	    <?php if ($params->get('show_filter_venue', 0)): ?>
 		  <div class="rssm_filter_row">
@@ -128,6 +155,13 @@ if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
 
   </div>
 
+	<div class="button-left">
+		<!-- <div class="blue-left"></div> -->
+		<div class="blue-center help">
+			<a class="modal" rel="{handler: 'iframe', size: {x: 800, y: 500}}"  href="<?php echo JRoute::_("index.php?option=com_content&view=article&id=237&Itemid=320&tmpl=component") ?>">?</a>
+		</div>
+		<!-- <div class="blue-right"></div> -->
+	</div>
   <div class="main-button">
 	  	<div class="green-left"></div>
 	  	<div class="green-center">
