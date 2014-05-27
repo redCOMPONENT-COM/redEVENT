@@ -1332,6 +1332,7 @@ class RedeventHelper
 					'credits',
 					'country',
 					'countryflag',
+					'enddate',
 			);
 		}
 

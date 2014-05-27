@@ -37,6 +37,10 @@ $colnames = array_map('trim', $colnames);
 				<th id="el_date" class="sectiontableheader"><?php echo isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_DATE'); ?></th>
 				<?php break;?>
 
+				<?php case 'enddate': ?>
+					<th id="el_title" class="sectiontableheader"><?php echo isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_ENDDATE'); ?></th>
+					<?php break;?>
+
 				<?php case 'title': ?>
 				<th id="el_title" class="sectiontableheader"><?php echo isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_TITLE'); ?></th>
 				<?php break;?>
@@ -146,6 +150,15 @@ $colnames = array_map('trim', $colnames);
 						<?php endif; ?>
 					</td>
 				<?php break;?>
+
+				<?php case 'enddate': ?>
+					<td class="re_title" itemprop="enddate">
+						<?php if ($row->enddates && strtotime($row->enddates)): ?>
+							<meta itemprop="endDate" content="<?php echo RedeventHelperOutput::getIsoDate($row->enddates, $row->endtimes); ?>">
+							<?php echo RedeventHelperOutput::formatdate($row->enddates, $row->endtimes); ?>
+						<?php endif; ?>
+					</td>
+					<?php break;?>
 
 				<?php case 'title': ?>
 					<td class="re_title" itemprop="name"><a href="<?php echo $detaillink ; ?>" itemprop="url"><?php echo $this->escape(RedeventHelper::getSessionFullTitle($row)); ?></a></td>
