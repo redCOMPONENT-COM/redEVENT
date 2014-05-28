@@ -41,65 +41,65 @@ $colnames = array_map('trim', $colnames);
 					<?php break;?>
 
 				<?php case 'title': ?>
-				<th id="el_title" class="sectiontableheader"><?php echo JHTML::_('grid.sort', isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_TITLE'), 'a.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+					<th id="el_title" class="sectiontableheader"><?php echo JHTML::_('grid.sort', isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_TITLE'), 'a.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php break;?>
 
 				<?php case 'venue': ?>
-				<th id="el_location" class="sectiontableheader"><?php echo JHTML::_('grid.sort', isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_VENUE'), 'l.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+					<th id="el_location" class="sectiontableheader"><?php echo JHTML::_('grid.sort', isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_VENUE'), 'l.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php break;?>
 
 				<?php case 'city': ?>
-				<th id="el_city" class="sectiontableheader"><?php echo JHTML::_('grid.sort', isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_CITY'), 'l.city', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+					<th id="el_city" class="sectiontableheader"><?php echo JHTML::_('grid.sort', isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_CITY'), 'l.city', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php break;?>
 
 				<?php case 'country': ?>
 				<?php case 'countryflag': ?>
-				<th id="el_country" class="sectiontableheader"><?php echo JHTML::_('grid.sort', isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_COUNTRY'), 'l.country', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+					<th id="el_country" class="sectiontableheader"><?php echo JHTML::_('grid.sort', isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_COUNTRY'), 'l.country', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php break;?>
 
 				<?php case 'state': ?>
-				<th id="el_state" class="sectiontableheader"><?php echo JHTML::_('grid.sort', isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_STATE'), 'l.state', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+					<th id="el_state" class="sectiontableheader"><?php echo JHTML::_('grid.sort', isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_STATE'), 'l.state', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php break;?>
 
 				<?php case 'category': ?>
-				<th id="el_category" class="sectiontableheader"><?php echo JHTML::_('grid.sort', isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_CATEGORY'), 'c.catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+					<th id="el_category" class="sectiontableheader"><?php echo JHTML::_('grid.sort', isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_CATEGORY'), 'c.catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php break;?>
 
 				<?php case 'picture': ?>
-				<th id="el_picture" class="sectiontableheader"><?php echo isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_TABLE_HEADER_PICTURE'); ?></th>
+					<th id="el_picture" class="sectiontableheader"><?php echo isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_TABLE_HEADER_PICTURE'); ?></th>
 				<?php break;?>
 
 				<?php case 'places': ?>
-        <th id="el_places" class="sectiontableheader"><?php echo isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_Places'); ?></th>
+					<th id="el_places" class="sectiontableheader"><?php echo isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_Places'); ?></th>
 				<?php break;?>
 
 				<?php case 'price': ?>
-				<th id="el_prices" class="sectiontableheader"><?php echo isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_PRICE'); ?></th>
+					<th id="el_prices" class="sectiontableheader"><?php echo isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_PRICE'); ?></th>
 				<?php break;?>
 
 				<?php case 'credits': ?>
-				<th id="el_credits" class="sectiontableheader"><?php echo isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_CREDITS'); ?></th>
+					<th id="el_credits" class="sectiontableheader"><?php echo isset($colnames[$k]) ? $colnames[$k] : JText::_('COM_REDEVENT_CREDITS'); ?></th>
 				<?php break;?>
 
 				<?php default: ?>
 					<?php if (strpos($col, 'custom') === 0): ?>
 						<?php $c = $this->customs[intval(substr($col, 6))]; ?>
-	        	<th id="el_custom_<?php echo $c->id; ?>" class="sectiontableheader re_custom">
-	        	<?php echo JHTML::_('grid.sort', isset($colnames[$k]) ? $colnames[$k] : $this->escape($c->name), 'custom'. $c->id, $this->lists['order_Dir'], $this->lists['order'] ); ?>
-	        	<?php if ($c->tips && $this->params->get('lists_show_custom_tip', 1)):?>
-	        	<?php echo JHTML::tooltip(str_replace("\n", "<br/>", $c->tips), '', 'tooltip.png', '', '', false); ?>
-	        	<?php endif; ?>
-	        	</th>
+						<th id="el_custom_<?php echo $c->id; ?>" class="sectiontableheader re_custom">
+							<?php echo JHTML::_('grid.sort', isset($colnames[$k]) ? $colnames[$k] : $this->escape($c->name), 'custom'. $c->id, $this->lists['order_Dir'], $this->lists['order'] ); ?>
+							<?php if ($c->tips && $this->params->get('lists_show_custom_tip', 1)):?>
+								<?php echo JHTML::tooltip(str_replace("\n", "<br/>", $c->tips), '', 'tooltip.png', '', '', false); ?>
+							<?php endif; ?>
+						</th>
 					<?php else: ?>
-	        	<th id="el_custom_<?php echo $c->id; ?>" class="sectiontableheader re_custom">
-	        	<?php echo $col; ?>
-	        	</th>
+						<th class="sectiontableheader re_col">
+							<?php echo $col; ?>
+						</th>
 					<?php endif; ?>
-				<?php break;?>
+					<?php break;?>
 
 				<?php endswitch;?>
-    	<?php endforeach;?>
-			</tr>
+			<?php endforeach;?>
+		</tr>
 	</thead>
 	<tbody>
 	<?php

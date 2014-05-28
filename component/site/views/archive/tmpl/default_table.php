@@ -87,7 +87,7 @@ $colnames = array_map('trim', $colnames);
 	        	<?php endif; ?>
 	        	</th>
 					<?php else: ?>
-	        	<th id="el_custom_<?php echo $c->id; ?>" class="sectiontableheader re_custom">
+	        	<th class="sectiontableheader re_col">
 	        	<?php echo $col; ?>
 	        	</th>
 					<?php endif; ?>
