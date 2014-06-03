@@ -234,13 +234,16 @@ class RedeventHelperRecurrence
 		}
 
 		$parts = explode(';', $rrule);
+
 		foreach ($parts as $p)
 		{
 			if (!strpos($p, '='))
 			{
 				continue;
 			}
+
 			list($element, $value) = explode('=', $p);
+
 			switch ($element)
 			{
 				case 'RRULE:FREQ':
@@ -354,20 +357,25 @@ class RedeventHelperRecurrence
 		}
 	}
 
+	/**
+	 * Get next date
+	 *
+	 * @param   object     $recurrence  recurrence
+	 * @param   int        $last_xref   last xref
+	 * @param   JRegistry  $params      parameters
+	 *
+	 * @return bool
+	 */
 	public static function getnext($recurrence, $last_xref, JRegistry $params = null)
 	{
 		$rule = self::getRule($recurrence);
 
 		if ($params === null)
 		{
-			$params = & JComponentHelper::getParams('com_redevent');
+			$params = JComponentHelper::getParams('com_redevent');
 		}
+
 		$week_start = $params->get('week_start', 'SU');
-
-//     echo '<pre>';print_r($rule); echo '</pre>';exit;
-//    print_r($last_xref);
-
-		$new = false;
 
 		// check the count
 		if ($rule->until_type == 'count' && $last_xref->count >= $rule->count)
@@ -376,10 +384,9 @@ class RedeventHelperRecurrence
 		}
 
 		$days_name = array('SU' => 'sunday', 'MO' => 'monday', 'TU' => 'tuesday', 'WE' => 'wednesday', 'TH' => 'thursday', 'FR' => 'friday', 'SA' => 'saturday');
-		$days_number = array('SU' => 0, 'MO' => 1, 'TU' => 2, 'WE' => 3, 'TH' => 4, 'FR' => 5, 'SA' => 6, 'SU' => 7);
 		$xref_start = strtotime($last_xref->dates);
 
-		// get the next start timestamp
+		// Get the next start timestamp
 		switch ($rule->type)
 		{
 			case 'DAILY':
@@ -387,35 +394,44 @@ class RedeventHelperRecurrence
 				break;
 
 			case 'WEEKLY':
-				// calculate next dates for all set weekdays
+				// Calculate next dates for all set weekdays
 				$next = array();
+
+				if ($week_start == 'SU')
+				{
+					$current = strftime('%w', $xref_start);
+					$days_number = array('SU' => 0, 'MO' => 1, 'TU' => 2, 'WE' => 3, 'TH' => 4, 'FR' => 5, 'SA' => 6);
+				}
+				else
+				{
+					$current = strftime('%u', $xref_start);
+					$days_number = array('MO' => 1, 'TU' => 2, 'WE' => 3, 'TH' => 4, 'FR' => 5, 'SA' => 6, 'SU' => 7);
+				}
+
 				if (!$rule->weekdays || !count($rule->weekdays))
-				{ // force to the day of previous session
+				{
+					// Force to the day of previous session
 					$rule->weekdays = array(array_search(date('N', strtotime($last_xref->dates)), $days_number));
 				}
+
 				foreach ($rule->weekdays as $d)
 				{
-					if ($week_start == 'SU')
-					{
-						$current = strftime('%w', $xref_start);
-					}
-					else
-					{
-						$current = strftime('%u', $xref_start);
-					}
 					if ($days_number[$d] > $current)
 					{
 						$next[] = strtotime('+1 ' . $days_name[$d], strtotime($last_xref->dates));
 					}
-					else if ($days_number[$d] == $current)
-					{ // same day, look in next intervall, after this day
+					elseif ($days_number[$d] == $current)
+					{
+						// same day, look in next intervall, after this day
 						$next[] = strtotime('+' . $rule->interval . ' ' . $days_name[$d], strtotime($last_xref->dates) + 3600 * 24);
 					}
 					else
-					{ // in next intervall
+					{
+						// in next intervall
 						$next[] = strtotime('+' . $rule->interval . ' ' . $days_name[$d], strtotime($last_xref->dates));
 					}
 				}
+
 				// the next one is the lowest value
 				$next_start = min($next);
 				break;
@@ -607,8 +623,10 @@ class RedeventHelperRecurrence
 		}
 
 		$delta = $next_start - strtotime($last_xref->dates);
+
 		if (!$delta)
-		{ // no delta, so same session...
+		{
+			// no delta, so same session...
 			return false;
 		}
 

@@ -314,32 +314,41 @@ class RedEventModelSession extends JModel
 	{
 		$id = (int) $data['id'];
 
-		$object = & JTable::getInstance('RedEvent_eventvenuexref', '');
+		$object = JTable::getInstance('RedEvent_eventvenuexref', '');
 
-		if ($id) {
+		if ($id)
+		{
 			$object->load($id);
 		}
 
-		if (!$object->bind($data)) {
+		if (!$object->bind($data))
+		{
 			$this->setError($object->getError());
+
 			return false;
 		}
 
-		if (!$object->check()) {
+		if (!$object->check())
+		{
 			$this->setError($object->getError());
+
 			return false;
 		}
 
-		if (!$object->store(true)) {
+		if (!$object->store(true))
+		{
 			$this->setError($object->getError());
+
 			return false;
 		}
 
 		// we need to save the recurrence too
 		$recurrence = & JTable::getInstance('RedEvent_recurrences', '');
+
 		if (!$data['recurrenceid'])
 		{
 			$rrule = RedeventHelperRecurrence::parsePost($data);
+
 			if (!empty($rrule))
 			{
 				// new recurrence
@@ -347,6 +356,7 @@ class RedEventModelSession extends JModel
 				if (!$recurrence->store())
 				{
 					$this->setError($recurrence->getError());
+
 					return false;
 				}
 
@@ -355,8 +365,11 @@ class RedEventModelSession extends JModel
 				$repeat->set('xref_id', $object->id);
 				$repeat->set('recurrence_id', $recurrence->id);
 				$repeat->set('count', 0);
-				if (!$repeat->store()) {
+
+				if (!$repeat->store())
+				{
 					$this->setError($repeat->getError());
+
 					return false;
 				}
 			}
@@ -371,13 +384,17 @@ class RedEventModelSession extends JModel
 				// TODO: maybe add a check to have a choice between updating rrule or not...
 				$rrule = RedeventHelperRecurrence::parsePost($data);
 				$recurrence->rrule = $rrule;
-				if (!$recurrence->store()) {
+
+				if (!$recurrence->store())
+				{
 					$this->setError($recurrence->getError());
 					return false;
 				}
 			}
 		}
-		if ($recurrence->id) {
+
+		if ($recurrence->id)
+		{
 			RedeventHelper::generaterecurrences($recurrence->id);
 		}
 

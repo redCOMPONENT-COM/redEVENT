@@ -193,7 +193,7 @@ class RedeventHelper
 	 */
 	public static function generaterecurrences($recurrence_id = null)
 	{
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$nulldate = '0000-00-00';
 
@@ -210,22 +210,29 @@ class RedeventHelper
 		. ' WHERE r.ended = 0 '
 		. '   AND x.dates > 0 '
 		;
-		if ($recurrence_id) {
+
+		if ($recurrence_id)
+		{
 			$query .= ' AND r.id = '. $db->Quote($recurrence_id);
 		}
+
 		$query .= ' GROUP BY rp.recurrence_id ';
 		$db->setQuery($query);
 		$recurrences = $db->loadObjectList();
 
-		if (empty($recurrences)) {
+		if (empty($recurrences))
+		{
 			return true;
 		}
 
 		// get corresponding xrefs
 		$rids = array();
-		foreach ($recurrences as $r) {
+
+		foreach ($recurrences as $r)
+		{
 			$rids[] = $r->xref_id;
 		}
+
 		$query = ' SELECT x.*, rp.count '
 		. ' FROM #__redevent_event_venue_xref AS x '
 		. ' INNER JOIN #__redevent_repeats AS rp ON rp.xref_id = x.id '
@@ -238,15 +245,18 @@ class RedeventHelper
 		foreach ($recurrences as $r)
 		{
 			$next = RedeventHelperRecurrence::getnext($r->rrule, $xrefs[$r->xref_id]);
+
 			while ($next)
 			{
-				if (strtotime($next->dates) > $limit_date_int) {
+				if (strtotime($next->dates) > $limit_date_int)
+				{
 					break;
 				}
 
 				//record xref
-				$object = & JTable::getInstance('RedEvent_eventvenuexref', '');
+				$object = JTable::getInstance('RedEvent_eventvenuexref', '');
 				$object->bind($next);
+
 				if ($object->store())
 				{
 					// copy the roles
@@ -255,7 +265,9 @@ class RedeventHelper
 					. ' FROM #__redevent_sessions_roles '
 					. ' WHERE xref = ' . $db->Quote($r->xref_id);
 					$db->setQuery($query);
-					if (!$db->query()) {
+
+					if (!$db->query())
+					{
 						RedeventHelperLog::simpleLog('recurrence copying roles error: '.$db->getErrorMsg());
 					}
 
@@ -265,7 +277,9 @@ class RedeventHelper
 					. ' FROM #__redevent_sessions_pricegroups '
 					. ' WHERE xref = ' . $db->Quote($r->xref_id);
 					$db->setQuery($query);
-					if (!$db->query()) {
+
+					if (!$db->query())
+					{
 						RedeventHelperLog::simpleLog('recurrence copying prices error: '.$db->getErrorMsg());
 					}
 
@@ -276,17 +290,20 @@ class RedeventHelper
 					. '   , count = '. $db->Quote($next->count)
 					;
 					$db->setQuery($query);
-					if (!$db->query()) {
+
+					if (!$db->query())
+					{
 						RedeventHelperLog::simpleLog('saving repeat error: '.$db->getErrorMsg());
 					}
-					//           echo "added xref $object->id / count $next->count";
-					//           echo '<br>';
 				}
-				else {
+				else
+				{
 					RedeventHelperLog::simpleLog('saving recurrence xref error: '.$db->getErrorMsg());
 				}
+
 				$next = RedeventHelperRecurrence::getnext($r->rrule, $next);
 			}
+
 			if (!$next)
 			{
 				// no more events to generate, we can disable the rule
@@ -295,6 +312,7 @@ class RedeventHelper
 				$db->query();
 			}
 		}
+
 		return true;
 	}
 
