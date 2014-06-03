@@ -30,11 +30,11 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventHelperRecurrence
 {
-  
+
   /**
    * parses the data from editxref form, and returns the corresponding rrule
-   * 
-   * @param array posted data 
+   *
+   * @param array posted data
    * @return string rrule
    */
   function parsePost($data)
@@ -58,52 +58,52 @@ class RedeventHelperRecurrence
       default:
         $rrule = '';
         break;
-    } 
-    
+    }
+
     return $rrule;
   }
-  
+
   /**
    * returns daily parsed rule
-   * 
+   *
    * @param array posted data
    * @return string rrule
    */
   function _parseDaily($data)
   {
     $rrule = "RRULE:FREQ=DAILY;INTERVAL=" .$data['recurrence_interval'].';';
-    
+
     if ($data['rutype'] == 'count')
     {
       $rrule .= "COUNT=". $data['recurrence_repeat_count'];
     }
-    else 
+    else
     {
-      $rrule .= "UNTIL=". RedeventHelperRecurrence::convertDate($data['recurrence_repeat_until']);      
+      $rrule .= "UNTIL=". RedeventHelperRecurrence::convertDate($data['recurrence_repeat_until']);
     }
     return $rrule;
   }
 
   /**
    * returns weekly parsed rule
-   * 
+   *
    * @param array posted data
    * @return string rrule
    */
   function _parseWeekly($data)
   {
     $params   = & JComponentHelper::getParams('com_redevent');
-    
+
     $rrule = "RRULE:FREQ=WEEKLY;INTERVAL=" .$data['recurrence_interval'].';';
-    
+
     // limit
     if ($data['rutype'] == 'count')
     {
       $rrule .= "COUNT=". $data['recurrence_repeat_count'].';';
     }
-    else 
+    else
     {
-      $rrule .= "UNTIL=". RedeventHelperRecurrence::convertDate($data['recurrence_repeat_until']).';';    
+      $rrule .= "UNTIL=". RedeventHelperRecurrence::convertDate($data['recurrence_repeat_until']).';';
     }
     // week start
     $rrule .= "WKST=". $params->get('week_start', 'MO').';';
@@ -116,26 +116,26 @@ class RedeventHelperRecurrence
 
   /**
    * returns monthly parsed rule
-   * 
+   *
    * @param array posted data
    * @return string rrule
    */
   function _parseMonthly($data)
   {
     $params   = & JComponentHelper::getParams('com_redevent');
-    
+
     $rrule = "RRULE:FREQ=MONTHLY;INTERVAL=" .$data['recurrence_interval'].';';
-    
+
     // limit
     if ($data['rutype'] == 'count')
     {
       $rrule .= "COUNT=". $data['recurrence_repeat_count'].';';
     }
-    else 
+    else
     {
-      $rrule .= "UNTIL=". RedeventHelperRecurrence::convertDate($data['recurrence_repeat_until']).';';    
+      $rrule .= "UNTIL=". RedeventHelperRecurrence::convertDate($data['recurrence_repeat_until']).';';
     }
-    
+
     if ($data['monthtype'] == 'byday')
     {
       // week start
@@ -166,9 +166,9 @@ class RedeventHelperRecurrence
       	$rrule .= "BYDAY=". implode(',', $days).';';
       }
     }
-  
+
     if ($data['monthtype'] == 'bymonthday')
-    {      
+    {
       $days = array();
       $reverse = (isset($data['reverse_bymonthday'])) ? true : false;
       foreach(explode(',', $data['bymonthdays']) as $day)
@@ -177,32 +177,32 @@ class RedeventHelperRecurrence
       }
       $rrule .= "BYDAY=". implode(',', $days).';';
     }
-    
+
     return $rrule;
   }
-  
+
 /**
    * returns monthly parsed rule
-   * 
+   *
    * @param array posted data
    * @return string rrule
    */
   function _parseYearly($data)
   {
     $params   = & JComponentHelper::getParams('com_redevent');
-    
+
     $rrule = "RRULE:FREQ=YEARLY;INTERVAL=" .$data['recurrence_interval'].';';
-    
+
     // limit
     if ($data['rutype'] == 'count')
     {
       $rrule .= "COUNT=". $data['recurrence_repeat_count'].';';
     }
-    else 
+    else
     {
-      $rrule .= "UNTIL=". RedeventHelperRecurrence::convertDate($data['recurrence_repeat_until']).';';    
+      $rrule .= "UNTIL=". RedeventHelperRecurrence::convertDate($data['recurrence_repeat_until']).';';
     }
-         
+
       $days = array();
       $reverse = (isset($data['reverse_byyearday'])) ? true : false;
       foreach(explode(',', $data['byyeardays']) as $day)
@@ -210,24 +210,24 @@ class RedeventHelperRecurrence
           $days[] = ($reverse ? '-' : '').((int) $day);
       }
       $rrule .= "BYDAY=". implode(',', $days).';';
-    
+
     return $rrule;
   }
-  
+
   /**
    * return rrule as fields to be put in form
-   * 
+   *
    * @param string $rrule
    * @return array fields
    */
   function getRule($rrule = null)
   {
     $rules = new rruleFields();
-    
+
     if (!$rrule) {
       return $rules;
     }
-    
+
     $parts = explode(';', $rrule);
     foreach ($parts as $p)
     {
@@ -253,7 +253,7 @@ class RedeventHelperRecurrence
           break;
         case 'BYDAY':
           $days = explode(',', $value);
-          foreach ($days as $d) 
+          foreach ($days as $d)
           {
             preg_match('/([-]*)([0-9]*)([A-Z]*)/', $d, $res);
             $revert = ($res[1] == '-');
@@ -275,7 +275,7 @@ class RedeventHelperRecurrence
                 }
                 if (!in_array($res[3], $rules->weekdays)) {
                   $rules->weekdays[] = $res[3];
-                }              
+                }
               }
             }
             else if ($res[2]) { // only number
@@ -299,8 +299,8 @@ class RedeventHelperRecurrence
               else {
                 if (!in_array($res[3], $rules->weekdays)) {
                   $rules->weekdays[] = $res[3];
-                }                  
-              }             
+                }
+              }
             }
           }
           break;
@@ -311,13 +311,13 @@ class RedeventHelperRecurrence
 //     echo '<pre>';print_r($rules); echo '</pre>';exit;
     return $rules;
   }
-  
+
   function convertDate($date)
   {
     $convert = strftime('%Y%m%dT%H%M%S', strtotime($date));
     return $convert;
   }
-  
+
   function icalDatetotime($date)
   {
     if (preg_match('/([0-9]{4})([0-9]{2})([0-9]{2})T([0-9]{2})([0-9]{2})([0-9]{2})(Z?)/', $date, $res))
@@ -329,11 +329,11 @@ class RedeventHelperRecurrence
       return false;
     }
   }
-  
+
   function getnext($recurrence, $last_xref, JRegistry $params = null)
   {
     $rule = RedeventHelperRecurrence::getRule($recurrence);
-    
+
     if ($params === null) {
     	$params = & JComponentHelper::getParams('com_redevent');
     }
@@ -341,14 +341,14 @@ class RedeventHelperRecurrence
 
 //     echo '<pre>';print_r($rule); echo '</pre>';exit;
 //    print_r($last_xref);
-        
+
     $new = false;
-    
+
     // check the count
     if ($rule->until_type == 'count' && $last_xref->count >= $rule->count) {
-      return false;          
+      return false;
     }
-    
+
     $days_name = array('SU' => 'sunday', 'MO' => 'monday', 'TU' => 'tuesday', 'WE' => 'wednesday', 'TH' => 'thursday', 'FR' => 'friday', 'SA' => 'saturday');
     $days_number = array('SU' => 0, 'MO' => 1, 'TU' => 2, 'WE' => 3, 'TH' => 4, 'FR' => 5, 'SA' => 6, 'SU' => 7);
     $xref_start = strtotime($last_xref->dates);
@@ -359,37 +359,41 @@ class RedeventHelperRecurrence
       case 'DAILY':
         $next_start = strtotime($last_xref->dates." +". $rule->interval ." day");
         break;
-        
+
       case 'WEEKLY':
         // calculate next dates for all set weekdays
         $next = array();
+
+	      if ($week_start == 'SU') {
+		      $current = strftime('%w', $xref_start);
+		      $days_number = array('SU' => 0, 'MO' => 1, 'TU' => 2, 'WE' => 3, 'TH' => 4, 'FR' => 5, 'SA' => 6);
+	      }
+	      else {
+		      $current = strftime('%u', $xref_start);
+		      $days_number = array('MO' => 1, 'TU' => 2, 'WE' => 3, 'TH' => 4, 'FR' => 5, 'SA' => 6, 'SU' => 7);
+	      }
+
         if (!$rule->weekdays || !count($rule->weekdays)) { // force to the day of previous session
         	$rule->weekdays = array(array_search(date('N', strtotime($last_xref->dates)), $days_number));
         }
-        foreach ($rule->weekdays as $d) 
+        foreach ($rule->weekdays as $d)
         {
-          if ($week_start == 'SU') {
-            $current = strftime('%w', $xref_start);
-          }
-          else {
-            $current = strftime('%u', $xref_start);
-          }
           if ($days_number[$d] > $current) {
             $next[] = strtotime('+1 '. $days_name[$d], strtotime($last_xref->dates));
           }
           else if ($days_number[$d] == $current) { // same day, look in next intervall, after this day
-            $next[] = strtotime('+'. $rule->interval .' '. $days_name[$d], strtotime($last_xref->dates)+3600*24); 
-          }  
+            $next[] = strtotime('+'. $rule->interval .' '. $days_name[$d], strtotime($last_xref->dates)+3600*24);
+          }
           else { // in next intervall
-            $next[] = strtotime('+'. $rule->interval .' '. $days_name[$d], strtotime($last_xref->dates));   
-          }          
+            $next[] = strtotime('+'. $rule->interval .' '. $days_name[$d], strtotime($last_xref->dates));
+          }
         }
         // the next one is the lowest value
-        $next_start = min($next);               
+        $next_start = min($next);
         break;
-        
+
       case 'MONTHLY':
-        if ($rule->monthtype == 'byday') 
+        if ($rule->monthtype == 'byday')
         {
         		// first day of this month
         		$first_this = mktime(0, 0, 0, strftime('%m', $xref_start), 1, strftime('%Y', $xref_start));
@@ -399,7 +403,7 @@ class RedeventHelperRecurrence
         		$first_next_interval = mktime(0, 0, 0, strftime('%m', $xref_start) + $rule->interval, 1, strftime('%Y', $xref_start));
         		// last day of this month
         		$last_next_interval = mktime(0, 0, 0, strftime('%m', $xref_start)+1 + $rule->interval, 0, strftime('%Y', $xref_start));
-        		
+
         		$days = array();
         		//          print_r($rule);
         		foreach ($rule->weeks as $week)
@@ -432,14 +436,14 @@ class RedeventHelperRecurrence
         		}
         		$next_start = min($days);
         }
-        else 
+        else
         {
           $current = strftime('%d', strtotime($last_xref->dates));
-          
+
           if (!$rule->bydays || !count($rule->bydays)) { // force to the day of previous session
           	$rule->bydays = array(date('d', strtotime($last_xref->dates)));
           }
-          
+
           if (!$rule->reverse_bydays)
           {
             sort($rule->bydays);
@@ -451,7 +455,7 @@ class RedeventHelperRecurrence
                 break;
               }
             }
-            
+
             if ($next_day == null) // not this month => this month + interval month!
             {
               $year_month = strftime('%Y-%m', strtotime(date("Y-m-1", strtotime($last_xref->dates)) .' + '. $rule->interval ." months"));
@@ -459,15 +463,15 @@ class RedeventHelperRecurrence
             }
             else {
               $year_month = strftime('%Y-%m', strtotime($last_xref->dates));
-              $next_start = strtotime($year_month.'-'.$next_day);            
-            }     
+              $next_start = strtotime($year_month.'-'.$next_day);
+            }
           }
-          else 
+          else
           {
             $current_sec = strtotime($last_xref->dates);
             $next = array();
-            
-            foreach ($rule->bydays as $day) 
+
+            foreach ($rule->bydays as $day)
             {
               // we need to check the dates for this month, and the +interval month
               $dd = strtotime(date("Y-m-1", strtotime($last_xref->dates)) .' + 1 months -'.$day. ' day');
@@ -480,17 +484,17 @@ class RedeventHelperRecurrence
               }
             }
             // the next is the closest, lower value
-            $next_start = min($next);            
-          }       
+            $next_start = min($next);
+          }
         }
         break;
-        
+
       case 'YEARLY':
         $current = strtotime($last_xref->dates);
-        
+
         if (empty($rule->bydays)) // in that case, use current date, plus a year
         {
-          $next_start = mktime(0, 0, 0, strftime('%m', $current), strftime('%d', $current), strftime('%Y',  $current) + $rule->interval);        	
+          $next_start = mktime(0, 0, 0, strftime('%m', $current), strftime('%d', $current), strftime('%Y',  $current) + $rule->interval);
         }
         else
         {
@@ -515,7 +519,7 @@ class RedeventHelperRecurrence
 	        }
 	        else
 	        {
-	          // total days in this year          
+	          // total days in this year
 	          $total = strftime('%j', mktime(0, 0, 0, 1, 0, strftime('%Y', strtotime($last_xref->dates)) + 1));
 	          $rev_days = array();
 	          // get number in proper order
@@ -523,7 +527,7 @@ class RedeventHelperRecurrence
 	          foreach ($rule->bydays as $day) {
 	            $rev_days[] = $total - $day + 1;
 	          }
-	          
+
 	          $next_day = null;
 	          foreach ($rev_days as $day)
 	          {
@@ -532,7 +536,7 @@ class RedeventHelperRecurrence
 	              break;
 	            }
 	          }
-	          
+
 	          if ($next_day == null) // not this year => this year + interval year!
 	          {
 	            $next_start = mktime(0, 0, 0, 1, -$rule->bydays[0], strftime('%Y', strtotime($last_xref->dates)) + 1 + $rule->interval);
@@ -543,31 +547,31 @@ class RedeventHelperRecurrence
 	        }
         }
         break;
-        
+
       case 'NONE':
       default:
         break;
     }
-    
+
     if (!isset($next_start) || !$next_start) {
       return false;
     }
-    
+
     // check the until rule
     if ($rule->until_type == 'until' && strtotime(strftime('%Y-%m-%d', $next_start).' '.$last_xref->times) > strtotime($rule->until)) {
       return false;
     }
-    
+
     $delta = $next_start - strtotime($last_xref->dates);
     if (!$delta) { // no delta, so same session...
     	return false;
     }
-    
+
     // return the new occurence
     $new = clone $last_xref;
-    
+
     unset($new->id);
-    
+
     $new->dates = strftime('%Y-%m-%d', $next_start);
     if (strtotime($last_xref->enddates)) {
       $new->enddates = strftime('%Y-%m-%d', strtotime($last_xref->enddates) + $delta);
@@ -576,47 +580,47 @@ class RedeventHelperRecurrence
       $new->registrationend = strftime('%Y-%m-%d', strtotime($last_xref->registrationend) + $delta);
     }
     $new->count++;
-    
+
 //     echo '<pre>';print_r($new); echo '</pre>';exit;
-//    print_r($new); 
+//    print_r($new);
 //    exit;
     return $new;
   }
-  
+
 }
 
 class rruleFields {
-  
+
   /**
    * type of recurence: NONE, DAILY,WEEKLY, MONTHLY, YEARLY
    * @var string
    */
   var $type = 'NONE';
-  
+
   /**
    * interval of repeatition
    * @var int
    */
   var $interval = 1;
-  
+
   /**
    * type of repeatition limit: count (count), or until date (until)
    * @var unknown_type
    */
   var $until_type = 'count';
-  
+
   /**
    * number of repeats
    * @var int
    */
   var $count = 10;
-  
+
   /**
    * repeat limit date
    * @var string
    */
   var $until = null;
-  
+
   /**
    * selected days for weekly repeat (list SU, MO, ...)
    * @var array
@@ -627,36 +631,36 @@ class rruleFields {
    * @var array
    */
   var $rweekdays = array();
-  
+
   /**
    * type of rule for month freq: bymonthday (int list: bymonthday), or by weekdays (byday)
    * @var string
    */
   var $monthtype = 'bymonthday';
-  
+
   /**
    * array of days number
    * @var array
    */
   var $bydays = array();
-  
+
   /**
    * count days from end
    * @var int
    */
   var $reverse_bydays = 0;
-    
+
   /**
    * array of weeks numbers (1, 2, ...)
    * @var string
    */
   var $weeks = array();
-  
+
   /**
    * array of weeks numbers (1, 2, ...), counted from end of the month
    * @var string
    */
   var $rweeks = array();
-      
+
 }
 
