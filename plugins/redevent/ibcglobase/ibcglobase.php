@@ -187,12 +187,6 @@ class plgRedeventIbcglobase extends JPlugin
 
 		$xmlFields = array($specials->Formularnavn->name => array($sessionDetails->formname));
 
-		if ($sessionDetails->uddannelse)
-		{
-			$parts = explode("\n", $sessionDetails->uddannelse);
-			$xmlFields[$specials->Uddannelse->name] = $parts;
-		}
-
 		if ($sessionDetails->nyhedsbrev)
 		{
 			$parts = explode("\n", $sessionDetails->nyhedsbrev);
@@ -231,14 +225,14 @@ class plgRedeventIbcglobase extends JPlugin
 
 		$email = reset($xmlFields['email']);
 
-		// Is there already a profile for the email, merge special fields (Uddannelse & Nyhedsbrev)
+		// Is there already a profile for the email, merge special fields (Nyhedsbrev)
 		if ($exists = $client->FindProfiles($this->ws_username, $this->ws_password, $this->listId, 'email', $email))
 		{
 			$previousValues = $client->GetProfileInformation($this->ws_username, $this->ws_password, $exists[0]->guid);
 
 			foreach ($previousValues->fields as $field)
 			{
-				if ($field->name == $specials->Nyhedsbrev->name || $field->name == $specials->Uddannelse->name)
+				if ($field->name == $specials->Nyhedsbrev->name)
 				{
 					$xmlFields[$field->name][] = $field->value;
 				}
@@ -305,18 +299,6 @@ class plgRedeventIbcglobase extends JPlugin
 		return $this->redFormCore;
 	}
 
-	private function getUddannelseFieldId()
-	{
-		$uddannelseFieldId = (int) $this->params->get('uddannelseFieldId');
-
-		if (!$uddannelseFieldId)
-		{
-			throw new Exception('ibcglobase plugin: missing uddannelse field id');
-		}
-
-		return $uddannelseFieldId;
-	}
-
 	private function getNyhedsbrevFieldId()
 	{
 		$nyhedsbrevFieldId = (int) $this->params->get('nyhedsbrevFieldId', 'error');
@@ -338,7 +320,6 @@ class plgRedeventIbcglobase extends JPlugin
 	 */
 	private function getSessionDetails($xref)
 	{
-		$uddannelseFieldId = $this->getUddannelseFieldId();
 		$nyhedsbrevFieldId = $this->getNyhedsbrevFieldId();
 
 		$db = JFactory::getDbo();
@@ -349,7 +330,6 @@ class plgRedeventIbcglobase extends JPlugin
 
 		// Custom fields for integration
 		$query->select(array(
-			'e.custom' . $uddannelseFieldId . ' AS uddannelse',
 			'e.custom' . $nyhedsbrevFieldId . ' AS nyhedsbrev'
 		));
 
@@ -373,7 +353,6 @@ class plgRedeventIbcglobase extends JPlugin
 	 */
 	protected function getAttendeeDetails($attendeeId)
 	{
-		$uddannelseFieldId = $this->getUddannelseFieldId();
 		$nyhedsbrevFieldId = $this->getNyhedsbrevFieldId();
 
 		$db = JFactory::getDbo();
@@ -385,7 +364,6 @@ class plgRedeventIbcglobase extends JPlugin
 
 		// Custom fields for integration
 		$query->select(array(
-			'e.custom' . $uddannelseFieldId . ' AS uddannelse',
 			'e.custom' . $nyhedsbrevFieldId . ' AS nyhedsbrev'
 		));
 
@@ -420,10 +398,6 @@ class plgRedeventIbcglobase extends JPlugin
 			{
 				case 'Formularnavn':
 					$res->Formularnavn = $f;
-					break;
-
-				case 'Uddannelse':
-					$res->Uddannelse = $f;
 					break;
 
 				case 'Nyhedsbrev':

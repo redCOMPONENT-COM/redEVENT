@@ -32,7 +32,6 @@ require_once JPATH_SITE . '/components/com_redevent/helpers/helper.php';
 require_once JPATH_SITE . '/components/com_redevent/classes/image.class.php';
 require_once JPATH_SITE . '/components/com_redevent/classes/useracl.class.php';
 
-$uddannelse = modRedEventGlobaseHelper::getUddannelseOptions($params);
 $nyhedsbrev = modRedEventGlobaseHelper::getNyhedsbrevOptions($params);
 
 $document = JFactory::getDocument();

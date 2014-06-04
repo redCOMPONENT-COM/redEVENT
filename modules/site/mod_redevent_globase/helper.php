@@ -37,20 +37,6 @@ require_once JPATH_SITE . '/components/com_redevent/helpers/route.php';
 class ModRedeventGlobaseHelper
 {
 	/**
-	 * Return options for uddannelse
-	 *
-	 * @param   JRegistry  $params  plugin params
-	 *
-	 * @return array|mixed
-	 */
-	public static function getUddannelseOptions(JRegistry $params)
-	{
-		$text = $params->get('uddannelse');
-
-		return self::cleanTextOptions($text);
-	}
-
-	/**
 	 * Return options for nyhedsbrev
 	 *
 	 * @param   JRegistry  $params  plugin params

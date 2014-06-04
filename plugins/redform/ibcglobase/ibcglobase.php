@@ -121,11 +121,6 @@ class plgRedformIbcglobase extends JPlugin
 
 		$xmlFields = array($specials->Formularnavn->name => array($this->form->formname));
 
-		if ($val = $input->get('uddannelse', array(), 'array'))
-		{
-			$xmlFields[$specials->Uddannelse->name] = $val;
-		}
-
 		if ($val = $input->get('nyhedsbrev', array(), 'array'))
 		{
 			$xmlFields[$specials->Nyhedsbrev->name] = $val;
@@ -163,14 +158,14 @@ class plgRedformIbcglobase extends JPlugin
 
 		$email = reset($xmlFields['email']);
 
-		// Is there already a profile for the email, merge special fields (Uddannelse & Nyhedsbrev)
+		// Is there already a profile for the email, merge special fields (Nyhedsbrev)
 		if ($exists = $client->FindProfiles($this->ws_username, $this->ws_password, $this->listId, 'email', $email))
 		{
 			$previousValues = $client->GetProfileInformation($this->ws_username, $this->ws_password, $exists[0]->guid);
 
 			foreach ($previousValues->fields as $field)
 			{
-				if ($field->name == $specials->Nyhedsbrev->name || $field->name == $specials->Uddannelse->name)
+				if ($field->name == $specials->Nyhedsbrev->name)
 				{
 					$xmlFields[$field->name][] = $field->value;
 				}
@@ -237,18 +232,6 @@ class plgRedformIbcglobase extends JPlugin
 		return $this->redFormCore;
 	}
 
-	private function getUddannelseFieldId()
-	{
-		$uddannelseFieldId = (int) $this->params->get('uddannelseFieldId');
-
-		if (!$uddannelseFieldId)
-		{
-			throw new Exception('ibcglobase plugin: missing uddannelse field id');
-		}
-
-		return $uddannelseFieldId;
-	}
-
 	private function getNyhedsbrevFieldId()
 	{
 		$nyhedsbrevFieldId = (int) $this->params->get('nyhedsbrevFieldId', 'error');
@@ -280,10 +263,6 @@ class plgRedformIbcglobase extends JPlugin
 			{
 				case 'Formularnavn':
 					$res->Formularnavn = $f;
-					break;
-
-				case 'Uddannelse':
-					$res->Uddannelse = $f;
 					break;
 
 				case 'Nyhedsbrev':
