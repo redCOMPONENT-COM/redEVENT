@@ -348,12 +348,9 @@ var redb2b = {
 						document.id('attendees-tbl').unspin();
 						document.id('selected_users').unspin();
 						if (response.status == 1) {
-							alert(response.message);
 							redb2b.getMembersList();
-
-							for (var i = 0; i < response.regs.length; i++) {
-								var r = response.regs[i];
-							}
+							redb2b.addGoogleAnalyticsTrans(response);
+							alert(response.message);
 						}
 						else if (response.regs.length) {
 							var errors = new Array();
@@ -896,5 +893,41 @@ var redb2b = {
 				var el = new Element('li').set('html', text);
 				el.inject(bc);
 			});
+		},
+
+	addGoogleAnalyticsTrans : function(response) {
+		if (!ga)
+		{
+			return;
 		}
+
+		ga('ecommerce:addTransaction', {
+			'id' : response.submit_key, // transaction ID - required
+			'affiliation' : gaAffiliation // affiliation or store name
+		});
+
+		for (var i = 0; i < response.regs.length; i++) {
+			var r = response.regs[i];
+			ga('ecommerce:addItem', {
+				'id' : response.submit_key,
+				'name' : r.details.event_name + ' @ ' + r.details.venue + '(session ' + r.details.xref + ')',
+				'sku' :r.details.event_name,
+				'category' : redb2b.gaJoinCategoyNames(r.details.categories),
+				'price' : r.details.price,    // Unit price.
+				'currency' :r.details.currency,
+				'quantity' : 1    // Unit quantity.
+			});
+		}
+
+		ga('ecommerce:send');
+	},
+
+	gaJoinCategoyNames : function(categories) {
+		var names = [];
+		for (var i = 0; i < categories.length; i++) {
+			names.push(categories[i].catname);
+		}
+		return names.join(',');
+	}
+
 };

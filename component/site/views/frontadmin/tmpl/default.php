@@ -21,9 +21,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$gacode = JFactory::getApplication()->getParams()->get('gacode');
+$params = JFactory::getApplication()->getParams();
+$gaCode = trim($params->get('gacode'));
+$gaAffiliation = $params->get('gaaffiliation');
 
-if (trim($gacode))
+if ($gaCode)
 {
 	$script = <<<JS
 	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -31,8 +33,11 @@ if (trim($gacode))
 	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-	  ga('create', '$gacode', 'maersktraining.com');
+	  ga('create', '$gaCode', 'maersktraining.com');
 	  ga('send', 'pageview');
+	  ga('require', 'ecommerce', 'ecommerce.js');
+
+	  var gaAffiliation = '$gaAffiliation';
 JS;
 
 	JFactory::getDocument()->addScriptDeclaration($script);

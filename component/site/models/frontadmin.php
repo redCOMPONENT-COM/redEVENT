@@ -915,9 +915,9 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		$details = $registrationmodel->getSessionDetails();
 
 		$pricegroup = $this->getPricegroup($xref);
-		$price = RedeventHelper::getFormCurrencyPrice($pricegroup);
+		$currency = $pricegroup->currency ? $pricegroup->currency : $pricegroup->form_currency;
 
-		$options = array('baseprice' => $price ? $price : 0);
+		$options = array('baseprice' => $pricegroup->price, 'currency' => $currency);
 
 		$redform = RedformCore::getInstance($details->redform_id);
 		$result = $redform->quickSubmit($user_id, 'redevent', $options);
@@ -946,6 +946,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		{
 			$mail = $registrationmodel->sendNotificationEmail($submit_key);
 		}
+
 		$mail = $registrationmodel->notifyManagers($submit_key);
 
 		// For tracking
@@ -953,6 +954,8 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		$reg->session_name = $details->session_name;
 		$reg->venue        = $details->venue;
 		$reg->categories   = $details->categories;
+		$reg->price = $pricegroup->price;
+		$reg->currency = $currency;
 
 		return $reg;
 	}
@@ -969,9 +972,13 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('id, price');
-		$query->from('#__redevent_sessions_pricegroups');
-		$query->where('xref = ' . $xref);
+		$query->select('spg.id, spg.price, spg.currency');
+		$query->select('f.currency AS form_currency');
+		$query->from('#__redevent_sessions_pricegroups AS spg');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = spg.xref');
+		$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
+		$query->join('INNER', '#__rwf_forms AS f ON f.id = e.redform_id');
+		$query->where('spg.xref = ' . $xref);
 
 		$db->setQuery($query, 0, 1);
 		$res = $db->loadObject();
