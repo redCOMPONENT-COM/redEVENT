@@ -7,6 +7,7 @@
 	</layout>
 	<fields name="params" addfieldpath="/administrator/components/com_redevent/models/fields">
 		<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
+            <field name="gacode" type="text" label="COM_REDEVENT_FRONTEND_ADMIN_GACODE" description="COM_REDEVENT_FRONTEND_ADMIN_GACODE_DESC" />
 		</fieldset>
 	</fields>
 </metadata>
