@@ -46,6 +46,17 @@ var redb2b = {
 			 */
 			document.id('filter_event').addEvent('change', function(){
 				redb2b.updateSessionSearchFields();
+
+				if (ga)
+				{
+					ga('send',{
+						'hitType': 'event',          // Required.
+						'eventCategory': 'b2b course search',   // Required.
+						'eventAction': 'filter',      // Required.
+						'eventLabel': 'filter event',
+						'eventValue': this.getSelected().get("text")
+					});
+				}
 			});
 
 			/**
@@ -53,6 +64,17 @@ var redb2b = {
 			 */
 			document.id('filter_venue').addEvent('change', function(){
 				redb2b.updateSessionSearchFields();
+
+				if (ga)
+				{
+					ga('send',{
+						'hitType': 'event',          // Required.
+						'eventCategory': 'b2b course search',   // Required.
+						'eventAction': 'filter',      // Required.
+						'eventLabel': 'filter venue',
+						'eventValue': this.getSelected().get("text")
+					});
+				}
 			});
 
 			/**
@@ -60,6 +82,17 @@ var redb2b = {
 			 */
 			document.id('filter_category').addEvent('change', function(){
 				redb2b.updateSessionSearchFields();
+
+				if (ga)
+				{
+					ga('send',{
+						'hitType': 'event',          // Required.
+						'eventCategory': 'b2b course search',   // Required.
+						'eventAction': 'filter',      // Required.
+						'eventLabel': 'filter category',
+						'eventValue': this.getSelected().get("text")
+					});
+				}
 			});
 
 			/**
@@ -70,6 +103,17 @@ var redb2b = {
 				redb2b.getMembersList();
 				redb2b.getSessions();
 				redb2b.updateBreadCrumbs();
+
+				if (ga)
+				{
+					ga('send',{
+						'hitType': 'event',          // Required.
+						'eventCategory': 'b2b course search',   // Required.
+						'eventAction': 'filter',      // Required.
+						'eventLabel': 'filter session',
+						'eventValue': this.getSelected().get("text")
+					});
+				}
 			});
 
 			/**
@@ -105,6 +149,17 @@ var redb2b = {
 				redb2b.searchBookings();
 				// Display organization users ?
 				redb2b.getMembersList();
+
+				if (ga)
+				{
+					ga('send',{
+						'hitType': 'event',          // Required.
+						'eventCategory': 'b2b',   // Required.
+						'eventAction': 'select person',      // Required.
+						'eventLabel': 'select person',
+						'eventValue': this.get("value")
+					});
+				}
 			});
 
 			/**
@@ -141,7 +196,19 @@ var redb2b = {
 			/**
 			 * search for sessions
 			 */
-			document.id('search-course').addEvent('click', redb2b.getSessions);
+			document.id('search-course').addEvent('click', function() {
+				redb2b.getSessions();
+
+				if (ga)
+				{
+					ga('send',{
+						'hitType': 'event',          // Required.
+						'eventCategory': 'b2b',   // Required.
+						'eventAction': 'search course',      // Required.
+						'eventLabel': 'submit'
+					});
+				}
+			});
 
 			/**
 			 * update course search when clicking on book session button in lists
@@ -150,6 +217,15 @@ var redb2b = {
 				e.stop();
 				var id = this.getProperty('xref');
 				redb2b.selectSession(id);
+
+				if (ga)
+				{
+					ga('send',{
+						'hitType': 'event',          // Required.
+						'eventCategory': 'b2b',   // Required.
+						'eventAction': 'select book session'      // Required.
+					});
+				}
 			});
 
 			/**
