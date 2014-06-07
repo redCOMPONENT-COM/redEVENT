@@ -576,6 +576,11 @@
     <field name="tweet_recommend2_text" type="text" default="" label="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_TEXT_LABEL" description="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_TEXT_DESC"/>
  	</fieldset>
 
+    <fieldset name="COM_REDEVENT_SETTINGS_B2B" label="COM_REDEVENT_SETTINGS_B2B" description="COM_REDEVENT_SETTINGS_B2B_DESC">
+        <field name="gacode" type="text" label="COM_REDEVENT_FRONTEND_ADMIN_GACODE" description="COM_REDEVENT_FRONTEND_ADMIN_GACODE_DESC" />
+        <field name="gaaffiliation" type="text" label="COM_REDEVENT_FRONTEND_ADMIN_GAAFFILIATION" description="COM_REDEVENT_FRONTEND_ADMIN_GAAFFILIATION_DESC" />
+    </fieldset>
+
 	<fieldset	name="permissions"
 		label="JCONFIG_PERMISSIONS_LABEL"
 		description="JCONFIG_PERMISSIONS_DESC">

@@ -21,7 +21,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$params = JFactory::getApplication()->getParams();
+$params = JFactory::getApplication()->getParams('com_redevent');
 $gaCode = trim($params->get('gacode'));
 $gaAffiliation = $params->get('gaaffiliation');
 

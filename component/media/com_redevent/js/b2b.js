@@ -45,18 +45,18 @@ var redb2b = {
 			 * update sessions options when selecting event
 			 */
 			document.id('filter_event').addEvent('change', function(){
-				redb2b.updateSessionSearchFields();
 
 				if (ga)
 				{
 					ga('send',{
-						'hitType': 'event',          // Required.
-						'eventCategory': 'b2b course search',   // Required.
-						'eventAction': 'filter',      // Required.
-						'eventLabel': 'filter event',
-						'eventValue': this.getSelected().get("text")
+						'hitType': 'event',
+						'eventCategory': 'b2b course search',
+						'eventAction': 'select',
+						'eventLabel': 'filter event'
 					});
 				}
+
+				//redb2b.updateSessionSearchFields();
 			});
 
 			/**
@@ -68,11 +68,10 @@ var redb2b = {
 				if (ga)
 				{
 					ga('send',{
-						'hitType': 'event',          // Required.
-						'eventCategory': 'b2b course search',   // Required.
-						'eventAction': 'filter',      // Required.
-						'eventLabel': 'filter venue',
-						'eventValue': this.getSelected().get("text")
+						'hitType': 'event',
+						'eventCategory': 'b2b course search',
+						'eventAction': 'select',
+						'eventLabel': 'filter venue'
 					});
 				}
 			});
@@ -86,11 +85,10 @@ var redb2b = {
 				if (ga)
 				{
 					ga('send',{
-						'hitType': 'event',          // Required.
-						'eventCategory': 'b2b course search',   // Required.
-						'eventAction': 'filter',      // Required.
-						'eventLabel': 'filter category',
-						'eventValue': this.getSelected().get("text")
+						'hitType': 'event',
+						'eventCategory': 'b2b course search',
+						'eventAction': 'select',
+						'eventLabel': 'filter category'
 					});
 				}
 			});
@@ -107,11 +105,10 @@ var redb2b = {
 				if (ga)
 				{
 					ga('send',{
-						'hitType': 'event',          // Required.
-						'eventCategory': 'b2b course search',   // Required.
-						'eventAction': 'filter',      // Required.
-						'eventLabel': 'filter session',
-						'eventValue': this.getSelected().get("text")
+						'hitType': 'event',
+						'eventCategory': 'b2b course search',
+						'eventAction': 'select',
+						'eventLabel': 'filter session'
 					});
 				}
 			});
@@ -120,6 +117,16 @@ var redb2b = {
 			 * update organization bookings when selecting organization
 			 */
 			document.id('filter_organization').addEvent('change', function(){
+				if (ga)
+				{
+					ga('send',{
+						'hitType': 'event',
+						'eventCategory': 'b2b organization',
+						'eventAction': 'select',
+						'eventLabel': 'organization'
+					});
+				}
+
 				redb2b.searchBookings();
 
 				var person_req = new Request.JSON({
@@ -153,11 +160,10 @@ var redb2b = {
 				if (ga)
 				{
 					ga('send',{
-						'hitType': 'event',          // Required.
-						'eventCategory': 'b2b',   // Required.
-						'eventAction': 'select person',      // Required.
-						'eventLabel': 'select person',
-						'eventValue': this.get("value")
+						'hitType': 'event',
+						'eventCategory': 'b2b organization',
+						'eventAction': 'select',
+						'eventLabel': 'person'
 					});
 				}
 			});
@@ -176,6 +182,16 @@ var redb2b = {
                 if (event.key == 'enter') {
                     redb2b.searchBookings();
                 }
+
+				if (ga)
+				{
+					ga('send',{
+						'hitType': 'event',
+						'eventCategory': 'b2b organization',
+						'eventAction': 'select',
+						'eventLabel': 'person'
+					});
+				}
             });
 
 			/**
@@ -191,6 +207,15 @@ var redb2b = {
 			document.id('reset_person').addEvent('click', function(){
 				document.id('filter_person').set('value', '');
 				document.id('filter_organization').fireEvent('change');
+
+				if (ga)
+				{
+					ga('send',{
+						'hitType': 'event',
+						'eventCategory': 'b2b organization',
+						'eventAction': 'reset'
+					});
+				}
 			});
 
 			/**
@@ -202,10 +227,9 @@ var redb2b = {
 				if (ga)
 				{
 					ga('send',{
-						'hitType': 'event',          // Required.
-						'eventCategory': 'b2b',   // Required.
-						'eventAction': 'search course',      // Required.
-						'eventLabel': 'submit'
+						'hitType': 'event',
+						'eventCategory': 'b2b',
+						'eventAction': 'search course'
 					});
 				}
 			});
@@ -221,9 +245,9 @@ var redb2b = {
 				if (ga)
 				{
 					ga('send',{
-						'hitType': 'event',          // Required.
-						'eventCategory': 'b2b',   // Required.
-						'eventAction': 'select book session'      // Required.
+						'hitType': 'event',
+						'eventCategory': 'b2b',
+						'eventAction': 'select book session'
 					});
 				}
 			});
@@ -283,6 +307,15 @@ var redb2b = {
 						redb2b.selected.push(id);
 
 						document.id('book-course').set('styles', {'display' :'block'});
+
+						if (ga)
+						{
+							ga('send',{
+								'hitType': 'event',
+								'eventCategory': 'b2b booking',
+								'eventAction': 'selected user'
+							});
+						}
 					}
 				}
 				else {
@@ -291,6 +324,15 @@ var redb2b = {
 					redb2b.selected.erase(id);
 					if (!redb2b.selected.length) {
 						redb2b.resetSelected();
+					}
+
+					if (ga)
+					{
+						ga('send',{
+							'hitType': 'event',
+							'eventCategory': 'b2b booking',
+							'eventAction': 'unselected user'
+						});
 					}
 				}
 			});
@@ -394,6 +436,15 @@ var redb2b = {
 							}
 							else {
 								alert(response.error);
+							}
+
+							if (ga)
+							{
+								ga('send',{
+									'hitType': 'event',
+									'eventCategory': 'b2b booking',
+									'eventAction': 'unregistered user'
+								});
 							}
 						}
 					});
