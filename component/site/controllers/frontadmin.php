@@ -280,6 +280,8 @@ class RedeventControllerFrontadmin extends FOFController
 				if ($attendee)
 				{
 					$regresp->status = 1;
+					$regresp->details = $attendee;
+					$resp->submit_key = $attendee->submit_key;
 					$added++;
 
 					JPluginHelper::importPlugin( 'redevent' );

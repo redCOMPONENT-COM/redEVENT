@@ -154,7 +154,7 @@ class RedeventViewPayment extends JView
 			$details = $this->get('Event');
 
 			$options = array();
-			$options['affiliation'] = 'redevent-b2b';
+			$options['affiliation'] = 'redevent-b2c';
 			$options['sku'] = $details->title;
 			$options['productname'] = $details->venue . ' - ' . $details->xref . ' ' . $details->title
 				. ($details->session_title ? ' / ' . $details->session_title : '');

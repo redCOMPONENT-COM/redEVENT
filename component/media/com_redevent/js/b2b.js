@@ -45,7 +45,18 @@ var redb2b = {
 			 * update sessions options when selecting event
 			 */
 			document.id('filter_event').addEvent('change', function(){
-				redb2b.updateSessionSearchFields();
+
+				if (ga)
+				{
+					ga('send',{
+						'hitType': 'event',
+						'eventCategory': 'b2b course search',
+						'eventAction': 'select',
+						'eventLabel': 'filter event'
+					});
+				}
+
+				//redb2b.updateSessionSearchFields();
 			});
 
 			/**
@@ -53,6 +64,16 @@ var redb2b = {
 			 */
 			document.id('filter_venue').addEvent('change', function(){
 				redb2b.updateSessionSearchFields();
+
+				if (ga)
+				{
+					ga('send',{
+						'hitType': 'event',
+						'eventCategory': 'b2b course search',
+						'eventAction': 'select',
+						'eventLabel': 'filter venue'
+					});
+				}
 			});
 
 			/**
@@ -60,6 +81,16 @@ var redb2b = {
 			 */
 			document.id('filter_category').addEvent('change', function(){
 				redb2b.updateSessionSearchFields();
+
+				if (ga)
+				{
+					ga('send',{
+						'hitType': 'event',
+						'eventCategory': 'b2b course search',
+						'eventAction': 'select',
+						'eventLabel': 'filter category'
+					});
+				}
 			});
 
 			/**
@@ -70,12 +101,32 @@ var redb2b = {
 				redb2b.getMembersList();
 				redb2b.getSessions();
 				redb2b.updateBreadCrumbs();
+
+				if (ga)
+				{
+					ga('send',{
+						'hitType': 'event',
+						'eventCategory': 'b2b course search',
+						'eventAction': 'select',
+						'eventLabel': 'filter session'
+					});
+				}
 			});
 
 			/**
 			 * update organization bookings when selecting organization
 			 */
 			document.id('filter_organization').addEvent('change', function(){
+				if (ga)
+				{
+					ga('send',{
+						'hitType': 'event',
+						'eventCategory': 'b2b organization',
+						'eventAction': 'select',
+						'eventLabel': 'organization'
+					});
+				}
+
 				redb2b.searchBookings();
 
 				var person_req = new Request.JSON({
@@ -105,6 +156,16 @@ var redb2b = {
 				redb2b.searchBookings();
 				// Display organization users ?
 				redb2b.getMembersList();
+
+				if (ga)
+				{
+					ga('send',{
+						'hitType': 'event',
+						'eventCategory': 'b2b organization',
+						'eventAction': 'select',
+						'eventLabel': 'person'
+					});
+				}
 			});
 
 			/**
@@ -121,6 +182,16 @@ var redb2b = {
                 if (event.key == 'enter') {
                     redb2b.searchBookings();
                 }
+
+				if (ga)
+				{
+					ga('send',{
+						'hitType': 'event',
+						'eventCategory': 'b2b organization',
+						'eventAction': 'select',
+						'eventLabel': 'person'
+					});
+				}
             });
 
 			/**
@@ -136,12 +207,32 @@ var redb2b = {
 			document.id('reset_person').addEvent('click', function(){
 				document.id('filter_person').set('value', '');
 				document.id('filter_organization').fireEvent('change');
+
+				if (ga)
+				{
+					ga('send',{
+						'hitType': 'event',
+						'eventCategory': 'b2b organization',
+						'eventAction': 'reset'
+					});
+				}
 			});
 
 			/**
 			 * search for sessions
 			 */
-			document.id('search-course').addEvent('click', redb2b.getSessions);
+			document.id('search-course').addEvent('click', function() {
+				redb2b.getSessions();
+
+				if (ga)
+				{
+					ga('send',{
+						'hitType': 'event',
+						'eventCategory': 'b2b',
+						'eventAction': 'search course'
+					});
+				}
+			});
 
 			/**
 			 * update course search when clicking on book session button in lists
@@ -150,6 +241,15 @@ var redb2b = {
 				e.stop();
 				var id = this.getProperty('xref');
 				redb2b.selectSession(id);
+
+				if (ga)
+				{
+					ga('send',{
+						'hitType': 'event',
+						'eventCategory': 'b2b',
+						'eventAction': 'select book session'
+					});
+				}
 			});
 
 			/**
@@ -207,6 +307,15 @@ var redb2b = {
 						redb2b.selected.push(id);
 
 						document.id('book-course').set('styles', {'display' :'block'});
+
+						if (ga)
+						{
+							ga('send',{
+								'hitType': 'event',
+								'eventCategory': 'b2b booking',
+								'eventAction': 'selected user'
+							});
+						}
 					}
 				}
 				else {
@@ -215,6 +324,15 @@ var redb2b = {
 					redb2b.selected.erase(id);
 					if (!redb2b.selected.length) {
 						redb2b.resetSelected();
+					}
+
+					if (ga)
+					{
+						ga('send',{
+							'hitType': 'event',
+							'eventCategory': 'b2b booking',
+							'eventAction': 'unselected user'
+						});
 					}
 				}
 			});
@@ -319,6 +437,15 @@ var redb2b = {
 							else {
 								alert(response.error);
 							}
+
+							if (ga)
+							{
+								ga('send',{
+									'hitType': 'event',
+									'eventCategory': 'b2b booking',
+									'eventAction': 'unregistered user'
+								});
+							}
 						}
 					});
 					req.send();
@@ -348,12 +475,9 @@ var redb2b = {
 						document.id('attendees-tbl').unspin();
 						document.id('selected_users').unspin();
 						if (response.status == 1) {
-							alert(response.message);
 							redb2b.getMembersList();
-
-							for (var i = 0; i < response.regs.length; i++) {
-								var r = response.regs[i];
-							}
+							redb2b.addGoogleAnalyticsTrans(response);
+							alert(response.message);
 						}
 						else if (response.regs.length) {
 							var errors = new Array();
@@ -896,5 +1020,41 @@ var redb2b = {
 				var el = new Element('li').set('html', text);
 				el.inject(bc);
 			});
+		},
+
+	addGoogleAnalyticsTrans : function(response) {
+		if (!ga)
+		{
+			return;
 		}
+
+		ga('ecommerce:addTransaction', {
+			'id' : response.submit_key, // transaction ID - required
+			'affiliation' : gaAffiliation // affiliation or store name
+		});
+
+		for (var i = 0; i < response.regs.length; i++) {
+			var r = response.regs[i];
+			ga('ecommerce:addItem', {
+				'id' : response.submit_key,
+				'name' : r.details.event_name + ' @ ' + r.details.venue + '(session ' + r.details.xref + ')',
+				'sku' :r.details.event_name,
+				'category' : redb2b.gaJoinCategoyNames(r.details.categories),
+				'price' : r.details.price,    // Unit price.
+				'currency' :r.details.currency,
+				'quantity' : 1    // Unit quantity.
+			});
+		}
+
+		ga('ecommerce:send');
+	},
+
+	gaJoinCategoyNames : function(categories) {
+		var names = [];
+		for (var i = 0; i < categories.length; i++) {
+			names.push(categories[i].catname);
+		}
+		return names.join(',');
+	}
+
 };
