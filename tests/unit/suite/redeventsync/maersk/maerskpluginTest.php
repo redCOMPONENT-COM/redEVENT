@@ -55,19 +55,43 @@ class maerskpluginTest extends JoomlaTestCase
 	}
 
 	/**
-	 * Test supported schema
+	 * Content provider
+	 *
+	 * @return array
+	 */
+	public function getTestSupportedInputSchemaData()
+	{
+		return array(
+			array('<AttendeesRQ />'),
+			array('<AttendeesRS />'),
+			array('<CustomersCRMRQ />'),
+			array('<CustomersRQ />'),
+			array('<CustomersRS />'),
+			array('<GetSessionAttendeesRS />'),
+			array('<GetSessionsRS />'),
+			array('<SessionsRQ />'),
+			array('<SessionsRS />'),
+		);
+	}
+
+	/**
+	 * Test supported schema. Just test the top element
+	 *
+	 * @param   string  $schema  xml data
 	 *
 	 * @return void
 	 *
 	 * @throws Exception
+	 *
+	 * @dataProvider getTestSupportedInputSchemaData
 	 */
-	public function testSupportedSchema()
+	public function testSupportedInputSchema($schema)
 	{
 		$plugin = $this->getPlugin();
 
 		try
 		{
-			$plugin->onHandle('maersk', '<AttendeesRQ></AttendeesRQ>');
+			$plugin->onHandle('maersk', $schema);
 		}
 		catch (Exception $e)
 		{
@@ -118,6 +142,8 @@ class maerskpluginTest extends JoomlaTestCase
 			{
 				throw new Exception('bad exception:' . $e->getMessage());
 			}
+
+			return;
 		}
 
 		$this->fail('An expected exception has not been raised.');
@@ -136,7 +162,6 @@ class maerskpluginTest extends JoomlaTestCase
 		jimport('joomla.event.dispatcher');
 
 		$dispatcher = JDispatcher::getInstance();
-		$params = array();
 		$plugin = new plgRedeventsyncclientMaersk($dispatcher, $params);
 
 		$logger = $this->getMock('ResyncHelperMessagelog');

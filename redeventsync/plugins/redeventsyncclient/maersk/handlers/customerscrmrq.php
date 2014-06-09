@@ -16,16 +16,16 @@ require_once 'abstractmessage.php';
  * @package  RED.redeventsync
  * @since    2.5
  */
-class RedeventsyncHandlerCustomerscrmrs extends RedeventsyncHandlerAbstractmessage
+class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessage
 {
 	/**
-	 * process CreateAttendeeRQ request
+	 * process CreateCustomerCRMRQ request
 	 *
 	 * @param   SimpleXMLElement  $xml  xml data for the object
 	 *
 	 * @return boolean
 	 */
-	protected function processCustomerCRMRS(SimpleXMLElement $xml)
+	protected function processCreateCustomerCRMRQ(SimpleXMLElement $xml)
 	{
 		require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
 
@@ -59,7 +59,7 @@ class RedeventsyncHandlerCustomerscrmrs extends RedeventsyncHandlerAbstractmessa
 		$user_id = $db->loadResult();
 
 		// Fields should match the actual fields db_name from maersk redmember
-		$data['id'] = $user_id;
+		$data['id'] = (int) $user_id;
 		$data['rm_customerid'] = (string) $customer->CustomerID;
 		$data['rm_firstname'] = (string) $customer->Firstname;
 		$data['rm_lastname'] = (string) $customer->Lastname;
@@ -92,15 +92,81 @@ class RedeventsyncHandlerCustomerscrmrs extends RedeventsyncHandlerAbstractmessa
 			$this->log(
 				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
 				$xml, 'ok');
+
+			// Response
+			$response = new SimpleXMLElement('<AttendeeRS/>');
+			$response->addChild('TransactionId', $transaction_id);
+			$response->addChild('Success', '');
+			$this->addResponse($response);
 		}
 		catch (Exception $e)
 		{
 			$this->log(
 				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
-				$xml, 'failed', $e->getMessage());
+				$xml, 'failed', $e->getMessage()
+			);
+
 			return false;
 		}
 
 		return true;
+	}
+
+	/**
+	 * process ModifyCustomerCRMRQ request
+	 *
+	 * @param   SimpleXMLElement  $xml  xml data for the object
+	 *
+	 * @return boolean
+	 */
+	protected function processModifyCustomerCRMRQ(SimpleXMLElement $xml)
+	{
+		return $this->processCreateCustomerCRMRQ($xml);
+	}
+
+	/**
+	 * Init response message if applicable
+	 *
+	 * @return void
+	 */
+	protected function initResponse()
+	{
+		$this->response = new SimpleXMLElement('<CustomersCRMRS xmlns="http://www.redcomponent.com/redevent"/>');
+	}
+
+	/**
+	 * build success message
+	 *
+	 * @param   string  $transactionId  transaction id
+	 *
+	 * @return void
+	 */
+	protected function sendSuccess($transactionId)
+	{
+		$message = new SimpleXMLElement('<CustomersCRMRS xmlns="http://www.redcomponent.com/redevent"/>');
+		$message->addChild('TransactionId', $transactionId);
+		$message->addChild('Success', '');
+
+		$this->response = $message;
+	}
+
+	/**
+	 * build error message
+	 *
+	 * @param   string  $transactionId  transaction id
+	 * @param   string  $error          error message
+	 *
+	 * @return void
+	 */
+	protected function sendError($transactionId, $error)
+	{
+		$message = new SimpleXMLElement('<CustomersCRMRS xmlns="http://www.redcomponent.com/redevent"/>');
+		$message->addChild('TransactionId', $transactionId);
+
+		$errors = new SimpleXMLElement('<Errors/>');
+		$errors->addChild('Error', $error);
+		$this->appendElement($message, $errors);
+
+		$this->response = $message;
 	}
 }
