@@ -350,7 +350,7 @@
 
 		<!-- Test -->
 		<copy todir="${www.dir}/test" overwrite="true">
-			<fileset dir="redeventsync/admin/plugins/redeventsyncclient/maersk/test">
+			<fileset dir="redeventsync/plugins/redeventsyncclient/maersk/test">
 				<include name="**" />
 			</fileset>
 		</copy>
