@@ -97,7 +97,7 @@
 
 	<!-- Plugins here -->
 	<plugins>
-		<plugin folder="admin/plugins/redevent" plugin="redeventsync" group="redevent" />
-		<plugin folder="admin/plugins/redeventsyncclient" plugin="maersk" group="redeventsyncclient" />
+		<plugin folder="plugins/redevent" plugin="redeventsync" group="redevent" />
+		<plugin folder="plugins/redeventsyncclient" plugin="maersk" group="redeventsyncclient" />
 	</plugins>
 </extension>

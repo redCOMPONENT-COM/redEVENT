@@ -336,7 +336,7 @@
 
 		<!-- included Plugins -->
 		<copy todir="${www.dir}/plugins" overwrite="true">
-			<fileset dir="${dirs.root}/redeventsync/admin/plugins">
+			<fileset dir="${dirs.root}/redeventsync/plugins">
 				<include name="**" />
 			</fileset>
 
