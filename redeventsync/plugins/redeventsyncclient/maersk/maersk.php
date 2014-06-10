@@ -126,6 +126,18 @@ class plgRedeventsyncclientMaersk extends JPlugin
 	}
 
 	/**
+	 * set client (for test unit...)
+	 *
+	 * @param   object  $client  client object
+	 *
+	 * @return void
+	 */
+	public function setClient($client)
+	{
+		$this->client = $client;
+	}
+
+	/**
 	 * Handle data posted to sync engine
 	 *
 	 * @param   string  $data  the posted data

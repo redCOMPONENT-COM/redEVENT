@@ -167,8 +167,12 @@ class maerskpluginTest extends JoomlaTestCase
 		$logger = $this->getMock('ResyncHelperMessagelog');
 		$logger->expects($this->any())
 			->method('log');
-
 		$plugin->setDbLogger($logger);
+
+		$client = $this->getMock('RedeventsyncClientMaersk');
+		$client->expects($this->any())
+			->method('send');
+		$plugin->setClient($client);
 
 		return $plugin;
 	}
