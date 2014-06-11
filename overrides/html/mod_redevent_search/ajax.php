@@ -44,62 +44,14 @@ if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
 		);
 	}
 }
-
-JHtml::script('com_redevent/autocompleter.js', false, true);
 ?>
 
 <script type="application/javascript">
-	var placeholder, completer;
-
-	window.addEvent('domready', function() {
-		$$('form#redeventsearchform select').addEvent('change', setCompleter);
-		setCompleter();
-
-		baseplaceholder = document.id('modres_text_filter').get('placeholder');
-	});
-
-	function setCompleter() {
+	<?php JHtml::script('com_redevent/autocompleter.js', false, true); ?>
+	window.addEvent('domready', function(){
 		var url = 'index.php?option=com_redevent&controller=ajax&task=eventsuggestions&tmpl=component';
-
-		var catfilter = document.id('filter_category');
-		if (catfilter && catfilter.get('value')) {
-			url = url + '&filter_category=' + catfilter.get('value');
-		}
-
-		var venuefilter = document.id('filter_venue');
-		if (venuefilter && venuefilter.get('value')) {
-			url = url + '&filter_venue=' + venuefilter.get('value');
-		}
-
-		var req = new Request.JSON({
-			url : url,
-			onRequest: function(){
-				document.id('modres_text_filter').set('spinner').spin();
-			},
-			onSuccess : function(result) {
-				document.id('modres_text_filter').unspin();
-				if (!result.status) {
-					alert(result.error);
-				}
-
-				document.id('modres_text_filter').set('placeholder', baseplaceholder + ' (' + result.length + ')');
-			}
-		});
-		req.send();
-
-		if (completer) {
-			completer.destroy();
-		}
-		completer = new Autocompleter.Request.JSON(document.id('modres_text_filter'), url, {'postVar': 'q', 'autoSubmit': true, 'minLength': 0, 'maxChoices': 25});
-	}
-
-	(function( $ ) {
-		$( document ).ready(function() {
-			$('.mod_redevent_search select').selectBox().change(function () {
-				setCompleter();
-			});
-		});
-	})(jQuery);
+		var completer = new Autocompleter.Request.JSON(document.id('modres_text_filter'), url, {'postVar': 'q', 'autoSubmit': true});
+	});
 </script>
 
 <style>
