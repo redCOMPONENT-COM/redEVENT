@@ -60,6 +60,15 @@
                     <option value="0">JNo</option>
                     <option value="1">JYes</option>
                 </field>
+                <field name="disable_frontend_session_title"
+                       type="radio"
+                       default="0"
+                       label="PLG_REDEVENT_CONFIG_MAERSK_DISABLE_FRONTEND_SESSION_TITLE"
+                       description="PLG_REDEVENT_CONFIG_MAERSK_DISABLE_FRONTEND_SESSION_TITLE_DESC"
+                        >
+                    <option value="0">JNo</option>
+                    <option value="1">JYes</option>
+                </field>
             </fieldset>
         </fields>
     </config>

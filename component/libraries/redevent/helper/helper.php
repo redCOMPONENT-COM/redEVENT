@@ -1550,7 +1550,14 @@ class RedeventHelper
 	 */
 	public static function getSessionFullTitle($object)
 	{
+		$config = RedeventHelper::config();
+
 		$event_title = isset($object->event_title) ? $object->event_title : $object->title;
+
+		if ($config->get('disable_frontend_session_title', 0))
+		{
+			return $event_title;
+		}
 
 		if (isset($object->session_title) && $object->session_title)
 		{
