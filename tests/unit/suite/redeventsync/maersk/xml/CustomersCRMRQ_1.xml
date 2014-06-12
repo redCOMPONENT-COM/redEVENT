@@ -1,0 +1,10 @@
+<CustomersCRMRQ xmlns="http://www.redcomponent.com/redevent">
+    <TransactionId>11</TransactionId>
+	<CreateCustomerCRMRQ>
+        <VenueCode></VenueCode>
+        <CustomerID>123</CustomerID>
+        <Firstname>unit</Firstname>
+        <Lastname>test</Lastname>
+        <Emailaddress>julien@redweb.dk</Emailaddress>
+	</CreateCustomerCRMRQ>
+</CustomersCRMRQ>

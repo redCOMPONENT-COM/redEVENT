@@ -19,6 +19,19 @@ require_once (BASEPATH.DS.'component'.DS.'site'.DS.'helpers'.DS.'recurrence.php'
  */
 class maerskpluginTest extends JoomlaTestCase
 {
+	protected $plugin;
+
+	/**
+	 * Setup tests
+	 *
+	 * @return void
+	 */
+	protected function setUp()
+	{
+		parent::setUp();
+		$this->plugin = $this->getPlugin();
+	}
+
 	/**
 	 * test load plugin
 	 *
@@ -26,8 +39,7 @@ class maerskpluginTest extends JoomlaTestCase
 	 */
 	public function testLoadplugin()
 	{
-		$plugin = $this->getPlugin();
-		$this->assertInstanceOf('JPlugin', $plugin);
+		$this->assertInstanceOf('JPlugin', $this->plugin);
 	}
 
 	/**
@@ -39,11 +51,9 @@ class maerskpluginTest extends JoomlaTestCase
 	 */
 	public function testUnsupportedSchema()
 	{
-		$plugin = $this->getPlugin();
-
 		try
 		{
-			$plugin->onHandle('maersk', '<RERERE></RERERE>');
+			$this->plugin->onHandle('maersk', '<RERERE></RERERE>');
 		}
 		catch (Exception $e)
 		{
@@ -87,11 +97,9 @@ class maerskpluginTest extends JoomlaTestCase
 	 */
 	public function testSupportedInputSchema($schema)
 	{
-		$plugin = $this->getPlugin();
-
 		try
 		{
-			$plugin->onHandle('maersk', $schema);
+			$this->plugin->onHandle('maersk', $schema);
 		}
 		catch (Exception $e)
 		{
@@ -130,11 +138,9 @@ class maerskpluginTest extends JoomlaTestCase
 	 */
 	public function testNotXmlData($data)
 	{
-		$plugin = $this->getPlugin();
-
 		try
 		{
-			$plugin->onHandle('maersk', $data);
+			$this->plugin->onHandle('maersk', $data);
 		}
 		catch (Exception $e)
 		{
@@ -147,6 +153,20 @@ class maerskpluginTest extends JoomlaTestCase
 		}
 
 		$this->fail('An expected exception has not been raised.');
+	}
+
+	public function testCustomersCRMRQCreate()
+	{
+		$xml = file_get_contents(__DIR__ . '/xml/CustomersCRMRQ_1.xml');
+
+		try
+		{
+			$this->plugin->onHandle('maersk', $xml);
+		}
+		catch(JDatabaseException $e)
+		{
+			// We should implement a database stub...
+		}
 	}
 
 	/**
@@ -164,14 +184,10 @@ class maerskpluginTest extends JoomlaTestCase
 		$dispatcher = JDispatcher::getInstance();
 		$plugin = new plgRedeventsyncclientMaersk($dispatcher, $params);
 
-		$logger = $this->getMock('ResyncHelperMessagelog');
-		$logger->expects($this->any())
-			->method('log');
+		$logger = $this->getMock('ResyncHelperMessagelog', array('log'));
 		$plugin->setDbLogger($logger);
 
-		$client = $this->getMock('RedeventsyncClientMaersk');
-		$client->expects($this->any())
-			->method('send');
+		$client = $this->getMock('RedeventsyncClientMaersk', array('send'), array('http://mock.redweb.dk'));
 		$plugin->setClient($client);
 
 		return $plugin;

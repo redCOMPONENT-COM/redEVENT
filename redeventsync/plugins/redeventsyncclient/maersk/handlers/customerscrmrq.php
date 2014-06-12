@@ -18,30 +18,18 @@ require_once 'abstractmessage.php';
  */
 class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessage
 {
+	protected $transactionId;
+
 	/**
 	 * process CreateCustomerCRMRQ request
 	 *
-	 * @param   SimpleXMLElement  $xml  xml data for the object
+	 * @param   SimpleXMLElement  $customer  xml data for the object
 	 *
 	 * @return boolean
 	 */
-	protected function processCreateCustomerCRMRQ(SimpleXMLElement $xml)
+	protected function processCreateCustomerCRMRQ(SimpleXMLElement $customer)
 	{
 		require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
-
-		$transaction_id = (int) $xml->TransactionId;
-
-		if (isset($xml->Errors))
-		{
-			// Log
-			$this->log(
-				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
-				$xml, 'error');
-
-			return true;
-		}
-
-		$customer = $xml->Success;
 
 		$data = array();
 
@@ -90,26 +78,38 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 
 			// Log
 			$this->log(
-				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
-				$xml, 'ok');
+				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $this->transactionId,
+				$customer, 'ok');
 
 			// Response
 			$response = new SimpleXMLElement('<AttendeeRS/>');
-			$response->addChild('TransactionId', $transaction_id);
+			$response->addChild('TransactionId', $this->transactionId);
 			$response->addChild('Success', '');
 			$this->addResponse($response);
 		}
 		catch (Exception $e)
 		{
 			$this->log(
-				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
-				$xml, 'failed', $e->getMessage()
+				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $this->transactionId,
+				$customer, 'failed', $e->getMessage()
 			);
 
 			return false;
 		}
 
 		return true;
+	}
+
+	/**
+	 * process TransactionId
+	 *
+	 * @param   SimpleXMLElement  $xml  xml data for the object
+	 *
+	 * @return boolean
+	 */
+	protected function processTransactionId(SimpleXMLElement $xml)
+	{
+		$this->transactionId = strip_tags($xml->asXML());
 	}
 
 	/**
