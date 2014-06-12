@@ -160,7 +160,7 @@ class RedeventsyncHandlerAbstractmessage
 	 */
 	protected function log($direction, $transactionid, SimpleXMLElement $xml, $status, $debug = null)
 	{
-		ResyncHelperMessagelog::log($direction, $xml->getName(), $transactionid, $xml->asXML(), $status, $debug);
+		$this->parent->dblog($direction, $xml->getName(), $transactionid, $xml->asXML(), $status, $debug);
 	}
 
 	/**
@@ -255,7 +255,7 @@ class RedeventsyncHandlerAbstractmessage
 				$error .= 'line ' . $e->line . ': '. $e->message . "\n";
 			}
 
-			ResyncHelperMessagelog::log(
+			$this->parent->dblog(
 				REDEVENTSYNC_LOG_DIRECTION_OUTGOING,
 				'',
 				0,

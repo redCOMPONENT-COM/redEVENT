@@ -1,13 +1,8 @@
 <phpunit
-	bootstrap="bootstrap.php"
-	colors="false"
-	stopOnFailure="false"
-	testdox="true"
-	verbose="true"
-	backupStaticAttributes="false"
-	backupGlobals="false">
-	<testsuite name="AllTests">
-		<directory>suite</directory>
-	</testsuite>
+    bootstrap="/opt/www/public_html/jl25_test/tests/unit/bootstrap.php"
+    >
+    <testsuite name="Redevent">
+        <directory>/opt/www/public_html/jl25_test/tests/unit/suite/redevent</directory>
+    </testsuite>
 
 </phpunit>

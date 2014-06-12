@@ -9,6 +9,8 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die;
 
+jimport('joomla.environment.uri');
+
 class RedeventsyncClientMaersk
 {
 	const LIVE_URL = 'http://ota.test.techosting.dk:8080/RedWeb/BTSHTTPReceive.dll';
@@ -41,7 +43,7 @@ class RedeventsyncClientMaersk
 	 * @param   string  $url      The wsdl url
 	 * @param   array   $options  The options for the soap client
 	 */
-	private function __construct($url = null, array $options = array())
+	public function __construct($url = null, array $options = array())
 	{
 		if (!$url)
 		{

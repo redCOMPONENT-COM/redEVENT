@@ -19,7 +19,10 @@ JLoader::registerPrefix('Redform', JPATH_LIBRARIES . '/redform');
 
 JLoader::registerPrefix('Plgresyncmaersk', __DIR__);
 
-require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
+if (!class_exists('RedmemberLib'))
+{
+	require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
+}
 
 require_once 'helper.php';
 require_once 'client.php';
@@ -60,6 +63,8 @@ class plgRedeventsyncclientMaersk extends JPlugin
 	 * @var object
 	 */
 	protected $client = null;
+
+	protected $dblogger = null;
 
 	/**
 	 * constructor
@@ -112,6 +117,30 @@ class plgRedeventsyncclientMaersk extends JPlugin
 	}
 
 	/**
+	 * set database logger (for test unit...)
+	 *
+	 * @param   object  $logger  logger object, must implement log method
+	 *
+	 * @return void
+	 */
+	public function setDbLogger($logger)
+	{
+		$this->dblogger = $logger;
+	}
+
+	/**
+	 * set client (for test unit...)
+	 *
+	 * @param   object  $client  client object
+	 *
+	 * @return void
+	 */
+	public function setClient($client)
+	{
+		$this->client = $client;
+	}
+
+	/**
 	 * Handle data posted to sync engine
 	 *
 	 * @param   string  $data  the posted data
@@ -137,7 +166,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 			}
 
 			libxml_clear_errors();
-			ResyncHelperMessagelog::log(
+			$this->dblog(
 				REDEVENTSYNC_LOG_DIRECTION_INCOMING,
 				'',
 				0,
@@ -149,7 +178,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		}
 
 		// Log the whole message
-		ResyncHelperMessagelog::log(
+		$this->dblog(
 			REDEVENTSYNC_LOG_DIRECTION_INCOMING,
 			$xml->firstChild->nodeName,
 			null,
@@ -161,18 +190,10 @@ class plgRedeventsyncclientMaersk extends JPlugin
 
 		$type = $xml->firstChild->nodeName;
 
-		$supported = array(
-			'AttendeesRQ', 'AttendeesRS',
-			'CustomersRQ', 'CustomersRS',
-			'GetSessionAttendeesRQ', 'GetSessionAttendeesRS',
-			'GetSessionsRQ', 'GetSessionsRS',
-			'SessionsRQ', 'SessionsRS',
-		);
-
 		// Check if it's a supported type
-		if (! in_array($type, $supported))
+		if (!$this->isSupportedSchema($type))
 		{
-			ResyncHelperMessagelog::log(
+			$this->dblog(
 				REDEVENTSYNC_LOG_DIRECTION_INCOMING,
 				'',
 				0,
@@ -200,7 +221,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 			}
 
 			libxml_clear_errors();
-			ResyncHelperMessagelog::log(
+			$this->dblog(
 				REDEVENTSYNC_LOG_DIRECTION_INCOMING,
 				'',
 				0,
@@ -217,7 +238,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		// Display response to request
 		if ($msg = $handler->getResponseMessage())
 		{
-			ResyncHelperMessagelog::log(
+			$this->dblog(
 				REDEVENTSYNC_LOG_DIRECTION_OUTGOING,
 				$handler->getResponseMessageType(),
 				0,
@@ -623,5 +644,61 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		$handler = new $class($this);
 
 		return $handler;
+	}
+
+	/**
+	 * Check if a schema is supported
+	 *
+	 * @param   string  $schema  schema (tag) name
+	 *
+	 * @return bool
+	 */
+	private function isSupportedSchema($schema)
+	{
+		$supported = $this->getSupportedSchema();
+
+		return in_array($schema, $supported);
+	}
+
+	/**
+	 * return supported schemas
+	 *
+	 * @return array
+	 */
+	private function getSupportedSchema()
+	{
+		jimport('joomla.filesystem.folder');
+		$files = JFolder::files(dirname(__FILE__) . '/schemas/', '.xsd');
+
+		foreach ($files as &$file)
+		{
+			$file = substr($file, 0, -4);
+		}
+
+		return $files;
+	}
+
+	/**
+	 * log transaction
+	 *
+	 * @param   int     $direction      up or down
+	 * @param   string  $type           message type
+	 * @param   string  $transactionid  transaction id
+	 * @param   string  $message        xml message
+	 * @param   string  $status         status
+	 * @param   string  $debug          debug info
+	 *
+	 * @return void
+	 */
+	public function dblog($direction, $type, $transactionid, $message, $status, $debug = null)
+	{
+		if ($this->dblogger)
+		{
+			$this->dblogger->log($direction, $type, $transactionid, $message, $status, $debug);
+		}
+		else
+		{
+			ResyncHelperMessagelog::log($direction, $type, $transactionid, $message, $status, $debug);
+		}
 	}
 }

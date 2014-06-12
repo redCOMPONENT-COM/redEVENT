@@ -1,0 +1,27 @@
+<CustomersCRMRQ xmlns="http://www.redcomponent.com/redevent">
+    <TransactionId>11</TransactionId>
+	<ModifyCustomerCRMRQ>
+        <VenueCode></VenueCode>
+        <CustomerID>123</CustomerID>
+        <Firstname>unit</Firstname>
+        <Lastname>test</Lastname>
+        <Address1>address 1</Address1>
+        <Address2>address 2</Address2>
+        <Address3>address 3</Address3>
+        <City>odense</City>
+        <Zipcode>123456</Zipcode>
+        <Countrycode>DK</Countrycode>
+        <Emailaddress>julien@redweb.dk</Emailaddress>
+        <Nationality>FR</Nationality>
+        <TitleRank>Dictator</TitleRank>
+        <Birthdate>01/01/1984</Birthdate>
+        <Phonenumber>0123456</Phonenumber>
+        <Mobilephonenumber>6543210</Mobilephonenumber>
+        <CompanyCvrNr>00007788</CompanyCvrNr>
+        <CompanyName>redweb</CompanyName>
+        <CompanyZip>123456</CompanyZip>
+        <CompanyAddress>3 long street</CompanyAddress>
+        <CompanyPhone>0123456</CompanyPhone>
+        <CompanySegmentPos>segment</CompanySegmentPos>
+	</ModifyCustomerCRMRQ>
+</CustomersCRMRQ>
