@@ -1,6 +1,6 @@
 <CustomersCRMRQ xmlns="http://www.redcomponent.com/redevent">
     <TransactionId>11</TransactionId>
-	<CreateCustomerCRMRQ>
+	<ModifyCustomerCRMRQ>
         <VenueCode></VenueCode>
         <CustomerID>123</CustomerID>
         <Firstname>unit</Firstname>
@@ -23,5 +23,5 @@
         <CompanyAddress>3 long street</CompanyAddress>
         <CompanyPhone>0123456</CompanyPhone>
         <CompanySegmentPos>segment</CompanySegmentPos>
-	</CreateCustomerCRMRQ>
+	</ModifyCustomerCRMRQ>
 </CustomersCRMRQ>

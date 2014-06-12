@@ -348,7 +348,6 @@
 			</filterchain>
 		</copy>
 
-		<!-- Test -->
 		<copy todir="${www.dir}/test" overwrite="true">
 			<fileset dir="redeventsync/plugins/redeventsyncclient/maersk/test">
 				<include name="**" />
@@ -376,6 +375,13 @@
     <target name="setup-test" description="Init to copy to test site"
             depends="setup-properties">
         <property name="www.dir" value="${www.dirtest}" override="true"/>
+
+        <!-- Test -->
+        <copy todir="${www.dir}/tests/unit/suite/redevent" overwrite="true">
+            <fileset dir="tests/unit/suite">
+                <include name="**" />
+            </fileset>
+        </copy>
     </target>
 
 </project>

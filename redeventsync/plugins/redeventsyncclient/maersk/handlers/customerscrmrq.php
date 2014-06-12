@@ -29,7 +29,10 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 	 */
 	protected function processCreateCustomerCRMRQ(SimpleXMLElement $customer)
 	{
-		require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
+		if (!class_exists('RedmemberLib'))
+		{
+			require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
+		}
 
 		$data = array();
 
@@ -82,10 +85,7 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 				$customer, 'ok');
 
 			// Response
-			$response = new SimpleXMLElement('<AttendeeRS/>');
-			$response->addChild('TransactionId', $this->transactionId);
-			$response->addChild('Success', '');
-			$this->addResponse($response);
+			$this->sendSuccess($this->transactionId);
 		}
 		catch (Exception $e)
 		{
@@ -93,6 +93,8 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $this->transactionId,
 				$customer, 'failed', $e->getMessage()
 			);
+
+			$this->sendError($this->transactionId, $e->getMessage());
 
 			return false;
 		}

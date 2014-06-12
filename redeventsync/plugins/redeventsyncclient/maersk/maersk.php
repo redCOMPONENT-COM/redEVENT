@@ -19,7 +19,10 @@ JLoader::registerPrefix('Redform', JPATH_LIBRARIES . '/redform');
 
 JLoader::registerPrefix('Plgresyncmaersk', __DIR__);
 
-require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
+if (!class_exists('RedmemberLib'))
+{
+	require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
+}
 
 require_once 'helper.php';
 require_once 'client.php';
@@ -687,7 +690,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 	 *
 	 * @return void
 	 */
-	private function dblog($direction, $type, $transactionid, $message, $status, $debug = null)
+	public function dblog($direction, $type, $transactionid, $message, $status, $debug = null)
 	{
 		if ($this->dblogger)
 		{

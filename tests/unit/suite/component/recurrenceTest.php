@@ -9,7 +9,7 @@
 //require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Autoload.php';
 
-require_once (BASEPATH.DS.'component'.DS.'site'.DS.'helpers'.DS.'recurrence.php');
+require_once (JPATH_BASE . '/components/com_redevent/helpers/recurrence.php');
 
 /**
  * Test class for currency.
