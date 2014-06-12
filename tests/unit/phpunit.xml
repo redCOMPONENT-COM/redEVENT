@@ -1,8 +1,0 @@
-<phpunit
-    bootstrap="/opt/www/public_html/jl25_test/tests/unit/bootstrap.php"
-    >
-    <testsuite name="Redevent">
-        <directory>/opt/www/public_html/jl25_test/tests/unit/suite/redevent</directory>
-    </testsuite>
-
-</phpunit>
