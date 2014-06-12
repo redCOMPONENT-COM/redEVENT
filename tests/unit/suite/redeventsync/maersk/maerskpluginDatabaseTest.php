@@ -34,29 +34,13 @@ class maerskpluginDatabaseTest extends JoomlaDatabaseTestCase
 	public function testCustomersCRMRQCreate()
 	{
 		$xml = file_get_contents(__DIR__ . '/xml/CustomersCRMRQ_1.xml');
-
-		try
-		{
-			$this->plugin->onHandle('maersk', $xml);
-		}
-		catch(JDatabaseException $e)
-		{
-			// We should implement a database stub...
-		}
+		$this->plugin->onHandle('maersk', $xml);
 	}
 
 	public function testCustomersCRMRQModify()
 	{
 		$xml = file_get_contents(__DIR__ . '/xml/CustomersCRMRQ_2.xml');
-
-		try
-		{
-			$this->plugin->onHandle('maersk', $xml);
-		}
-		catch(JDatabaseException $e)
-		{
-			// We should implement a database stub...
-		}
+		$this->plugin->onHandle('maersk', $xml);
 	}
 
 	/**
