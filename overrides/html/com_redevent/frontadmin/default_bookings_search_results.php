@@ -59,7 +59,7 @@ defined('_JEXEC') or die('Restricted access');
 						echo implode("<br/>", $cats);
 						?>
 					</td>
-					<td><?php echo $this->bookbutton($row->xref); ?><?php echo $this->printPlaces($row); ?></td>
+					<td><?php echo $this->bookbutton($row->xref); ?><?php echo $this->printPlaces($row, false); ?></td>
 					<td>
 						<?php
 						$image = JHTML::image('media/com_redevent/images/b2b-edit.png', JText::_('COM_REDEVENT_BOOK_EVENT'));
