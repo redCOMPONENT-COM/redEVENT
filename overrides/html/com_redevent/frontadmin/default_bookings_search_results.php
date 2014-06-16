@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TITLE'), 'a.title', $this->bookings_order_dir, $this->bookings_order); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_VENUE'), 'l.venue', $this->bookings_order_dir, $this->bookings_order); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CATEGORY'), 'c.catname', $this->bookings_order_dir, $this->bookings_order); ?></th>
-				<th><?php echo JText::_('COM_REDEVENT_BOOKED'); ?></th>
+				<th><?php echo JText::_('COM_REDEVENT_B2B_SEATS'); ?></th>
 				<th><?php echo JText::_('COM_REDEVENT_FRONTEND_BOOKINGS_EDIT_PARTICIPANTS'); ?></th>
 			</tr>
 		</thead>

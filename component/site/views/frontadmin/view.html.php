@@ -251,18 +251,27 @@ class RedeventViewFrontadmin extends JView
 	/**
 	 * returns string for available places display
 	 *
-	 * @param   object  $row  session data
+	 * @param   object  $row         session data
+	 * @param   bool    $showBooked  show number of booked places
 	 *
 	 * @return string
 	 */
-	protected function printPlaces($row)
+	protected function printPlaces($row, $showBooked = true)
 	{
 		$maxLeftDisplay = 6;
 
 		if (!$row->maxattendees)
 		{
-			$tip = JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_PLACES_BOOKED_D', $row->registered);
-			return '<span class="hasTip" title="' . $tip . '">' . $row->registered . '</span>';
+			if ($showBooked)
+			{
+				$tip = JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_PLACES_BOOKED_D', $row->registered);
+
+				return '<span class="hasTip" title="' . $tip . '">' . $row->registered . '</span>';
+			}
+			else
+			{
+				return '';
+			}
 		}
 		else
 		{
@@ -272,7 +281,14 @@ class RedeventViewFrontadmin extends JView
 
 			$tip = JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_PLACES_BOOKED_D_LEFT_S', $row->registered, $left);
 
-			return '<span class="hasTip" title="' . $tip . '">' . $row->registered . '/' . $left . '</span>';
+			if ($showBooked)
+			{
+				return '<span class="hasTip" title="' . $tip . '">' . $row->registered . '/' . $left . '</span>';
+			}
+			else
+			{
+				return '<span class="hasTip" title="' . $tip . '">' . $left . '</span>';
+			}
 		}
 	}
 
