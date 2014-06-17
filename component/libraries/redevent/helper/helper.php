@@ -1567,6 +1567,27 @@ class RedeventHelper
 		{
 			return $event_title;
 		}
+	}
 
+	/**
+	 * Generate unique id from registration data
+	 *
+	 * @param   object  $data  data
+	 *
+	 * @return string
+	 *
+	 * @throws Exception
+	 */
+	public static function getRegistrationUniqueId($data)
+	{
+		if (!is_object($data)
+			|| !isset($data->course_code)
+			|| !isset($data->xref)
+			|| !isset($data->attendee_id))
+		{
+			throw new InvalidArgumentException('Cannot generate registration unique id from data');
+		}
+
+		return $data->course_code .'-'. $data->xref .'-'. $data->attendee_id;
 	}
 }

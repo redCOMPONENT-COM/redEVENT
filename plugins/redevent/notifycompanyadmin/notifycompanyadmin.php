@@ -68,7 +68,7 @@ class plgRedeventNotifyCompanyAdmin extends JPlugin
 	 * add organization admin users emails
 	 *
 	 * @param   int    $attendee_id  attendee id from register table
-	 * @param   array  &$emails  admin emails
+	 * @param   array  &$emails      admin emails
 	 *
 	 * @throws Exception
 	 *

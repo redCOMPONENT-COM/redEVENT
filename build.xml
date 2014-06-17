@@ -360,8 +360,8 @@
     Tasks - Unit tests
     ====================================================================================================
     -->
-    <target name="unit-test" description="Copy to test site"
-            depends="setup-test, site">
+    <target name="unit-test" description="Run test suite"
+            depends="unit-test-prepare">
         <phpunit configuration="tests/unit/phpunit.xml"
                  printsummary="true" haltonfailure="true" haltonerror="true">
             <batchtest>
@@ -370,6 +370,11 @@
                 </fileset>
             </batchtest>
         </phpunit>
+    </target>
+
+    <target name="unit-test-prepare" description="Copy to test site"
+            depends="setup-test, site">
+
     </target>
 
     <target name="setup-test" description="Init to copy to test site"

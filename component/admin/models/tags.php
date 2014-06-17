@@ -134,6 +134,7 @@ class RedEventModelTags extends FOFModel
 		$tags[] = new TagsModelTag('username', JText::_('COM_REDEVENT_SUBMISSION_TAG_USERNAME_DESC'), 'registration');
 		$tags[] = new TagsModelTag('useremail', JText::_('COM_REDEVENT_SUBMISSION_TAG_USEREMAIL_DESC'), 'registration');
 		$tags[] = new TagsModelTag('answer_<field id>', JText::_('COM_REDEVENT_SUBMISSION_TAG_REDFORM_FIELD_DESC'), 'registration');
+		$tags[] = new TagsModelTag('b2bprefix', JText::_('COM_REDEVENT_SUBMISSION_TAG_B2BPREFIX_DESC'), 'registration');
 
 		$tags[] = new TagsModelTag('paymentrequest', JText::_('COM_REDEVENT_SUBMISSION_EVENT_PAYMENTREQUEST'), 'payment');
 		$tags[] = new TagsModelTag('paymentrequestlink', JText::_('COM_REDEVENT_SUBMISSION_EVENT_PAYMENTREQUESTLINK'), 'payment');

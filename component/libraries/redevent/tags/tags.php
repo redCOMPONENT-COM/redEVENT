@@ -930,24 +930,26 @@ class RedeventTags
 		return false;
 	}
 
-	function getAttendeeUniqueId($submit_key)
+	private function getAttendeeUniqueId($submit_key)
 	{
 		$db = & JFactory::getDBO();
-		$query = ' SELECT e.title, e.alias, e.course_code, r.xref, r.id '
+		$query = ' SELECT e.title, e.alias, e.course_code, r.xref, r.id AS attendee_id'
 			. ' FROM #__redevent_register AS r '
 			. ' INNER JOIN #__redevent_event_venue_xref AS x ON x.id = r.xref '
 			. ' INNER JOIN #__redevent_events AS e ON e.id = x.eventid '
 			. ' WHERE r.submit_key = ' . $db->Quote($submit_key);
 		$db->setQuery($query, 0, 1);
 		$obj = $db->loadObject();
+
 		if ($obj)
 		{
-			$code = $obj->course_code . '-' . $obj->xref . '-' . $obj->id;
+			$code = RedeventHelper::getRegistrationUniqueId($obj);
 		}
 		else
 		{
 			$code = '';
 		}
+
 		return $code;
 	}
 
@@ -2242,6 +2244,28 @@ class RedeventTags
 			return $session->latitude . ',' . $session->longitude;
 		}
 		return '';
+	}
+
+	/**
+	 * returns gps position of the venue
+	 *
+	 * @return string
+	 */
+	private function _getTag_b2bprefix()
+	{
+		$fromB2b = JFactory::getApplication()->input->get('from') == 'b2b';
+
+		if ($fromB2b)
+		{
+			return '[B2B]';
+		}
+
+		return '';
+	}
+
+	private function _getTag_uniqueid()
+	{
+
 	}
 }
 
