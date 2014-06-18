@@ -52,14 +52,17 @@ class RedeventsyncHandlerCustomersrq extends RedeventsyncHandlerAbstractmessage
 			$user = redmemberlib::getUserData($user_id);
 
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
 				$xml, 'ok');
 		}
 		catch (Exception $e)
 		{
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
-				$xml, 'error', $e->getMessage());
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
+				$xml, 'error', $e->getMessage()
+			);
 
 			$response = new SimpleXMLElement('<CustomerRS/>');
 			$response->addChild('TransactionId', $transaction_id);
@@ -71,7 +74,8 @@ class RedeventsyncHandlerCustomersrq extends RedeventsyncHandlerAbstractmessage
 			$this->addResponse($response);
 
 			// Log
-			$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
+			$this->log(
+				REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $transaction_id,
 				$response, 'error response');
 
 			return false;

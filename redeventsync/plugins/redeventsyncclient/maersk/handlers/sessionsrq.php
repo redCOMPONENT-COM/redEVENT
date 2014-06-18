@@ -73,7 +73,8 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 			// Log
 			$this->log(
 				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
-				$xml, 'error', $e->getMessage());
+				$xml, 'error', $e->getMessage()
+			);
 
 			$response = new SimpleXMLElement('<SessionRS/>');
 			$response->addChild('TransactionId', $transaction_id);
@@ -143,7 +144,8 @@ class RedeventsyncHandlerSessionsrq extends RedeventsyncHandlerAbstractmessage
 			// Log
 			$this->log(
 				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
-				$xml, 'error', $e->getMessage());
+				$xml, 'error', $e->getMessage()
+			);
 
 			$response = new SimpleXMLElement('<SessionRS/>');
 			$response->addChild('TransactionId', $transaction_id);

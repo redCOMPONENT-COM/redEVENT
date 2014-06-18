@@ -252,7 +252,7 @@ class RedeventsyncHandlerAbstractmessage
 
 			foreach (libxml_get_errors() as $e)
 			{
-				$error .= 'line ' . $e->line . ': '. $e->message . "\n";
+				$error .= 'line ' . $e->line . ': ' . $e->message . "\n";
 			}
 
 			$this->parent->dblog(
@@ -291,5 +291,17 @@ class RedeventsyncHandlerAbstractmessage
 		}
 
 		return true;
+	}
+
+	/**
+	 * Enqueue message for asynchronuous messaging
+	 *
+	 * @param   string  $message  xml message to enqueue
+	 *
+	 * @return void
+	 */
+	protected function enqueue($message)
+	{
+		ResyncHelperQueue::add($message, 'maersk');
 	}
 }

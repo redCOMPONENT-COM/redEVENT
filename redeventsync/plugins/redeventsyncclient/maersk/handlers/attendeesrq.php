@@ -39,7 +39,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 
 		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, (int) $message->TransactionId, $xml, 'sending');
 
-		$this->send($xml->asXML());
+		$this->enqueue($xml->asXML());
 
 		return true;
 	}
@@ -65,7 +65,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 
 		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, (int) $message->TransactionId, $xml, 'sending');
 
-		$this->send($xml->asXML());
+		$this->enqueue($xml->asXML());
 
 		return true;
 	}
@@ -99,7 +99,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 
 		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, (int) $message->TransactionId, $xml, 'sending');
 
-		$this->send($xml->asXML());
+		$this->enqueue($xml->asXML());
 
 		return true;
 	}
@@ -575,6 +575,15 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 		return $message;
 	}
 
+	/**
+	 * Validate AddAttendee required fields
+	 *
+	 * @param   object  $attendee  attendee object
+	 *
+	 * @return bool
+	 *
+	 * @throws PlgresyncmaerskExceptionInvalidattendee
+	 */
 	protected function validateAddAttendeeFields($attendee)
 	{
 		if (!$attendee->session_code)
