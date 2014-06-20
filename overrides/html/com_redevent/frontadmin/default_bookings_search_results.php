@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 				<tr>
 					<td><?php echo RedeventHelperOutput::formatdate($row->dates, false); ?></td>
 					<td><?php echo RedeventHelper::getEventDuration($row); ?></td>
-					<td><?php echo $row->full_title; ?></td>
+					<td><?php echo $row->title; ?></td>
 					<td><?php echo $row->venue; ?></td>
 					<td class="re_category">
 						<?php $cats = array();
