@@ -30,7 +30,7 @@ class ResyncHelperQueue
 	 */
 	public static function add($message, $plugin)
 	{
-		$log = FOFTable::getAnInstance('Queue', 'RedeventsyncTable');
+		$log = FOFTable::getAnInstance('Queuedmessages', 'RedeventsyncTable');
 		$log->queued = JFactory::getDate()->toSql(true);
 		$log->plugin = $plugin;
 		$log->message = $message;
