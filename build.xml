@@ -334,6 +334,13 @@
             </fileset>
         </copy>
 
+        <!-- Cli -->
+        <copy todir="${www.dir}/cli" overwrite="true">
+            <fileset dir="${dirs.root}/redeventsync/cli">
+                <include name="**" />
+            </fileset>
+        </copy>
+
 		<!-- included Plugins -->
 		<copy todir="${www.dir}/plugins" overwrite="true">
 			<fileset dir="${dirs.root}/redeventsync/plugins">
