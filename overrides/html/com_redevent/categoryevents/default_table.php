@@ -146,7 +146,7 @@ $colnames = array_map('trim', $colnames);
 			<?php break;?>
 
 			<?php case 'title': ?>
-			<td class="re_title" itemprop="name"><a href="<?php echo $detaillink ; ?>" itemprop="url"><?php echo $this->escape($row->full_title); ?></a></td>
+			<td class="re_title" itemprop="name"><a href="<?php echo $detaillink ; ?>" itemprop="url"><?php echo $this->escape($row->title); ?></a></td>
 			<?php break;?>
 
 			<?php case 'venue': ?>
