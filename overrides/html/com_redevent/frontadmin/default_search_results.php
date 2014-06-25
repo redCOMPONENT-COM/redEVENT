@@ -86,7 +86,7 @@ defined('_JEXEC') or die('Restricted access');
 					</td>
 					<td>
 						<?php
-							$image = JHTML::image('media/com_redevent/images/b2b-edit.png', JText::_('COM_REDEVENT_BOOK_EVENT'));
+							$image = JHTML::image('media/com_redevent/images/b2b-selectbooksession.png', JText::_('COM_REDEVENT_BOOK_EVENT'));
 
 							$tip  = JText::_('COM_REDEVENT_FRONTEND_BOOKINGS_EDIT_PARTICIPANTS_DESC');
 							$text = JText::_('COM_REDEVENT_FRONTEND_BOOKINGS_EDIT_PARTICIPANTS');
