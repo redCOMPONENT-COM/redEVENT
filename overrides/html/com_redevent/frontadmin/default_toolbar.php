@@ -44,8 +44,8 @@ JFactory::getDocument()->addScriptDeclaration($script);
 	<img title="" alt="" src="<?php echo JURI::root()?>templates/redweb/images/redadmin-logo.jpg">
 </div>
 <ul class="inline">
-	<li><?php echo JHtml::link($my, JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_HELLO_USER_S', JFactory::getUser()->get('name')), array('class' => 'modal'));
-			  echo " <a>-</a> ";
+	<li><?php echo JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_HELLO_USER_S', JFactory::getUser()->get('name'));
+			  echo " - ";
 			  echo JHTML::link('index.php?option=com_users&task=user.logout&' . JSession::getFormToken() . '=1', JText::_('COM_REDEVENT_FRONTEND_ADMIN_LOGOUT'));
 	?></li>
 	<li><?php echo JHTML::link('#', JText::_('COM_REDEVENT_FRONTEND_ADMIN_MY_ACCOUNT'), array('class' => 'btn myaccount', 'uid' => JFactory::getUser()->get('id'))); ?></li>
