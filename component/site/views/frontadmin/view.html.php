@@ -304,7 +304,7 @@ class RedeventViewFrontadmin extends JView
 	{
 		JHTML::_('behavior.tooltip');
 
-		$image = JHTML::image('media/com_redevent/images/b2b-users.png', JText::_('COM_REDEVENT_BOOK_EVENT'));
+		$image = JHTML::image('media/com_redevent/images/b2b-bookuser.png', JText::_('COM_REDEVENT_BOOK_EVENT'));
 
 		$tip  = JText::_('COM_REDEVENT_BOOK_EVENT_DESC');
 		$text = JText::_('COM_REDEVENT_BOOK_EVENT');
