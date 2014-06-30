@@ -56,7 +56,7 @@ var redb2b = {
 					});
 				}
 
-				//redb2b.updateSessionSearchFields();
+				redb2b.updateSessionSearchFields();
 			});
 
 			/**
