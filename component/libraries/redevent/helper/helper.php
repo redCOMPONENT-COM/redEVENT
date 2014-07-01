@@ -1590,4 +1590,14 @@ class RedeventHelper
 
 		return $data->course_code .'-'. $data->xref .'-'. $data->attendee_id;
 	}
+
+	/**
+	 * Check if redMEMBER is installed
+	 *
+	 * @return bool
+	 */
+	public static function isInstalledRedmember()
+	{
+		return file_exists(JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php');
+	}
 }

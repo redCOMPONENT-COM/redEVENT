@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+        lessfiles="media://com_redevent/css/backend.less||media://com_redevent/css/backend.css"
+        validate="true"
+        >
+    <fieldset name="basic_configuration"
+              label="COM_REDEVENT_ORGANIZATION"
+              description="COM_REDEVENT_ORGANIZATION_SETTINGS"
+              class="span6"
+            >
+        <field name="b2b_admin_notification_mailflow" type="list"
+               label="COM_REDEVENT_ORGANIZATION_B2B_ADMIN_NOTIFICATION_MAILFLOW"
+               description="COM_REDEVENT_ORGANIZATION_B2B_ADMIN_NOTIFICATION_MAILFLOW_DESC"
+               labelclass="redevent-label redevent-label-main"
+               default="0"
+                >
+            <option value="0">COM_REDEVENT_ORGANIZATION_B2B_ADMIN_NOTIFICATION_MAILFLOW_ALL_ORG_ADMIN</option>
+            <option value="1">COM_REDEVENT_ORGANIZATION_B2B_ADMIN_NOTIFICATION_MAILFLOW_LOCATION_ADMIN</option>
+            <option value="2">COM_REDEVENT_ORGANIZATION_B2B_ADMIN_NOTIFICATION_MAILFLOW_BOTH</option>
+        </field>
+
+        <field name="disable_all_attendee_notifications" type="list"
+               label="COM_REDEVENT_ORGANIZATION_DISABLE_ALL_ATTENDEE_NOTIFICATIONS"
+               description="COM_REDEVENT_ORGANIZATION_DISABLE_ALL_ATTENDEE_NOTIFICATIONS_DESC"
+               labelclass="redevent-label redevent-label-main"
+               default="0"
+                >
+            <option value="0">Jno</option>
+            <option value="1">Jyes</option>
+        </field>
+
+        <field name="cancellation_period" type="text"
+               label="COM_REDEVENT_ORGANIZATION_CANCELLATION_PERIOD"
+               description="COM_REDEVENT_ORGANIZATION_CANCELLATION_PERIOD_DESC"
+               labelclass="redevent-label redevent-label-main"
+               default="15" />
+    </fieldset>
+</form>

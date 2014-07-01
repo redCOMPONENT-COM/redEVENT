@@ -78,6 +78,31 @@ class RedeventToolbar extends FOFToolbar
 	}
 
 	/**
+	 * Renders the toolbar for the component's Textsnippets page
+	 *
+	 * @return void
+	 */
+	public function onOrganizationsBrowse()
+	{
+		$this->renderSubmenu();
+
+		// Set toolbar title
+		$option = 'com_redevent';
+		$subtitle_key = strtoupper($option . '_TITLE_' . $this->input->getCmd('view', 'cpanel'));
+		JToolBarHelper::title(
+			JText::_(strtoupper($option)) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>',
+			$this->input->getCmd('view', 'cpanel')
+		);
+		JToolBarHelper::editListX();
+		JToolBarHelper::custom('sync', 'sync', 'sync', JText::_('COM_REDEVENT_ORGANIZATIONS_SYNC'), false);
+
+		if (JFactory::getUser()->authorise('core.admin', 'com_redevent'))
+		{
+			JToolBarHelper::preferences('com_redevent', '600', '600');
+		}
+	}
+
+	/**
 	 * adds import/export buttons to regular onBrowse toolbar
 	 *
 	 * @return void
@@ -170,5 +195,46 @@ class RedeventToolbar extends FOFToolbar
 			JText::_(strtoupper($option)) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>',
 			FOFInflector::pluralize($this->input->getCmd('view', 'cpanel'))
 		);
+	}
+
+	/**
+	 * Renders the toolbar for the component's Add pages
+	 *
+	 * @return  void
+	 */
+	public function onOrganizationsEdit()
+	{
+		parent::onEdit();
+
+		$orgId = $this->input->get('id');
+		$orgName = $this->getOrgName($orgId);
+
+		// Set toolbar title
+		JToolBarHelper::title(
+			JText::sprintf('COM_REDEVENT_ORGANIZATIONS_EDIT_ORG_S_TITLE', $orgName),
+			FOFInflector::pluralize($this->input->getCmd('view', 'cpanel'))
+		);
+	}
+
+	/**
+	 * Get organization name
+	 *
+	 * @param   int  $id  id
+	 *
+	 * @return mixed
+	 */
+	private function getOrgName($id)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('rmo.organization_name')
+			->from('#__redmember_organization AS rmo')
+			->join('INNER', '#__redevent_organizations AS reo ON reo.organization_id = rmo.organization_id')
+			->where('reo.id = ' . (int) $id);
+
+		$db->setQuery($query);
+		$res = $db->loadResult();
+
+		return $res;
 	}
 }

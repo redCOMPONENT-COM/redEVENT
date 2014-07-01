@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+	lessfiles="media://com_redevent/css/backend.less||media://com_redevent/css/backend.css"
+	type="browse"
+	show_header="1"
+	show_filters="1"
+	show_pagination="1"
+	norows_placeholder="COM_redevent_COMMON_NORECORDS"
+>
+	<headerset>
+		<header name="id" type="rowselect" tdwidth="20" />
+		<header name="organization_name" type="fieldsearchable" sortable="true"
+			buttons="yes" buttonclass="btn"
+		/>
+	</headerset>
+
+	<fieldset name="items">
+		<field name="id" type="selectrow"/>
+
+		<field name="name" type="text"
+			show_link="true"
+			url="index.php?option=com_redevent&amp;view=organization&amp;id=[ITEM:ID]"
+			class="redeventrole"
+			empty_replacement="(no title)"
+		 />
+	</fieldset>
+</form>
