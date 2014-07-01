@@ -41,4 +41,18 @@ class RedeventHelperOrganization
 
 		return $res;
 	}
+
+	/**
+	 * Return array of user organizations as orgId => level
+	 *
+	 * @param   int  $userId  user id
+	 *
+	 * @return array
+	 */
+	public static function getUserOrganizations($userId)
+	{
+		$userData = Redmemberlib::getUserData($userId);
+
+		return $userData->organizations;
+	}
 }

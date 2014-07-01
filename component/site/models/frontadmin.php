@@ -942,7 +942,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		// Force confirm
 		$registrationmodel->confirm($reg->id);
 
-		if ($details->notify)
+		if ($details->notify && !$this->organizationDenyNotifyAttendee($user))
 		{
 			$mail = $registrationmodel->sendNotificationEmail($submit_key);
 		}
@@ -958,6 +958,30 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		$reg->currency = $currency;
 
 		return $reg;
+	}
+
+	/**
+	 * Check if user organizations deny to notify attendee
+	 *
+	 * @param   JUser  $user  juser
+	 *
+	 * @return bool
+	 */
+	private function organizationDenyNotifyAttendee($user)
+	{
+		$orgs = RedeventHelperOrganization::getUserOrganizations($user->id);
+
+		foreach ($orgs as $orgId => $level)
+		{
+			$settings = RedeventHelperOrganization::getSettings($orgId);
+
+			if ($settings->disable_all_attendee_notifications)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
