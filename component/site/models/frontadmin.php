@@ -975,7 +975,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		{
 			$settings = RedeventHelperOrganization::getSettings($orgId);
 
-			if ($settings->disable_all_attendee_notifications)
+			if ($settings->b2b_disable_all_attendee_notifications)
 			{
 				return true;
 			}
