@@ -19,9 +19,9 @@
             <option value="2">COM_REDEVENT_ORGANIZATION_B2B_ADMIN_NOTIFICATION_MAILFLOW_BOTH</option>
         </field>
 
-        <field name="disable_all_attendee_notifications" type="list"
-               label="COM_REDEVENT_ORGANIZATION_DISABLE_ALL_ATTENDEE_NOTIFICATIONS"
-               description="COM_REDEVENT_ORGANIZATION_DISABLE_ALL_ATTENDEE_NOTIFICATIONS_DESC"
+        <field name="b2b_disable_all_attendee_notifications" type="list"
+               label="COM_REDEVENT_ORGANIZATION_B2B_DISABLE_ALL_ATTENDEE_NOTIFICATIONS"
+               description="COM_REDEVENT_ORGANIZATION_B2B_DISABLE_ALL_ATTENDEE_NOTIFICATIONS_DESC"
                labelclass="redevent-label redevent-label-main"
                default="0"
                 >
@@ -29,9 +29,9 @@
             <option value="1">Jyes</option>
         </field>
 
-        <field name="cancellation_period" type="text"
-               label="COM_REDEVENT_ORGANIZATION_CANCELLATION_PERIOD"
-               description="COM_REDEVENT_ORGANIZATION_CANCELLATION_PERIOD_DESC"
+        <field name="b2b_cancellation_period" type="text"
+               label="COM_REDEVENT_ORGANIZATION_B2B_CANCELLATION_PERIOD"
+               description="COM_REDEVENT_ORGANIZATION_B2B_CANCELLATION_PERIOD_DESC"
                labelclass="redevent-label redevent-label-main"
                default="15" />
     </fieldset>

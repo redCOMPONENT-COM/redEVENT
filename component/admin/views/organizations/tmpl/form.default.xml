@@ -9,9 +9,24 @@
 >
 	<headerset>
 		<header name="id" type="rowselect" tdwidth="20" />
-		<header name="organization_name" type="fieldsearchable" sortable="true"
+
+		<header name="organization_name" type="fieldsearchable" label="COM_REDEVENT_NAME"
+                sortable="true"
 			buttons="yes" buttonclass="btn"
 		/>
+
+        <header name="b2b_admin_notification_mailflow" type="fieldselectable" sortable="true" label="COM_REDEVENT_ORGANIZATION_B2B_ADMIN_MAILFLOW_HEADER">
+            <option value="0">COM_REDEVENT_ORGANIZATION_B2B_ADMIN_NOTIFICATION_MAILFLOW_ALL_ORG_ADMIN</option>
+            <option value="1">COM_REDEVENT_ORGANIZATION_B2B_ADMIN_NOTIFICATION_MAILFLOW_LOCATION_ADMIN</option>
+            <option value="2">COM_REDEVENT_ORGANIZATION_B2B_ADMIN_NOTIFICATION_MAILFLOW_BOTH</option>
+        </header>
+
+        <header name="b2b_disable_all_attendee_notifications" type="fieldselectable" sortable="true" label="COM_REDEVENT_ORGANIZATION_B2B_DISABLE_ALL_ATTENDEE_NOTIFICATIONS">
+            <option value="0">Jno</option>
+            <option value="1">Jyes</option>
+        </header>
+
+        <header name="b2b_cancellation_period" type="text" sortable="true" label="COM_REDEVENT_ORGANIZATION_B2B_CANCELLATION_PERIOD"/>
 	</headerset>
 
 	<fieldset name="items">
@@ -23,5 +38,18 @@
 			class="redeventrole"
 			empty_replacement="(no title)"
 		 />
-	</fieldset>
+
+        <field name="b2b_admin_notification_mailflow" type="list">
+            <option value="0">COM_REDEVENT_ORGANIZATION_B2B_ADMIN_NOTIFICATION_MAILFLOW_ALL_ORG_ADMIN</option>
+            <option value="1">COM_REDEVENT_ORGANIZATION_B2B_ADMIN_NOTIFICATION_MAILFLOW_LOCATION_ADMIN</option>
+            <option value="2">COM_REDEVENT_ORGANIZATION_B2B_ADMIN_NOTIFICATION_MAILFLOW_BOTH</option>
+        </field>
+
+        <field name="b2b_disable_all_attendee_notifications" type="list">
+            <option value="0">Jno</option>
+            <option value="1">Jyes</option>
+        </field>
+
+        <field name="b2b_cancellation_period" type="text"/>
+    </fieldset>
 </form>
