@@ -33,9 +33,7 @@ class RedeventModelOrganizations extends FOFModel
 		$query->select(
 			$this->getState(
 				'list.select',
-				'a.id AS id,' .
-				'a.checked_out AS checked_out,' .
-				'a.checked_out_time AS checked_out_time,' .
+				'a.*, ' .
 				'o.organization_name AS name'
 			)
 		);
