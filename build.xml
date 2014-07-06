@@ -68,7 +68,7 @@
 		</copy>
 
 		<!-- Create the package -->
-		<tar basedir="${dirs.tmp}/component" destfile="${dirs.release}/com_${comp.name}-${version}.tar.gz" includeemptydirs="true" compression="gzip" />
+		<zip basedir="${dirs.tmp}/component" destfile="${dirs.release}/com_${comp.name}-${version}.zip" includeemptydirs="true" />
 
 		<copy todir="${dirs.tmp}/redeventsync" >
 			<fileset dir="${dirs.root}/redeventsync">
@@ -81,7 +81,7 @@
 				</replacetokens>
 			</filterchain>
 		</copy>
-		<tar basedir="${dirs.tmp}/redeventsync" destfile="${dirs.release}/com_redeventsync-${version}.tar.gz" includeemptydirs="true" compression="gzip" />
+		<zip basedir="${dirs.tmp}/redeventsync" destfile="${dirs.release}/com_redeventsync-${version}.zip" includeemptydirs="true" />
 
 		<!-- admin modules -->
 		<foreach param="dirname" absparam="absname" target="zipfolder">
@@ -152,7 +152,7 @@
 		</copy>
 		<mkdir dir="${dirs.release}/${myp}" />
 		<!-- Create the package -->
-		<tar basedir="${dirs.tmp}/${myp}/${prefix}${dirname}" destfile="${dirs.release}/${myp}/${prefix}${dirname}-${version}.tar.gz" includeemptydirs="true" compression="gzip" />
+		<zip basedir="${dirs.tmp}/${myp}/${prefix}${dirname}" destfile="${dirs.release}/${myp}/${prefix}${dirname}-${version}.zip" includeemptydirs="true" />
 	</target>
 
 	<!--
@@ -363,7 +363,8 @@
     <target name="unit-test" description="Run test suite"
             depends="unit-test-prepare">
         <phpunit configuration="tests/unit/phpunit.xml"
-                 printsummary="true" haltonfailure="true" haltonerror="true">
+                 printsummary="true" haltonfailure="true" haltonerror="true"
+                 pharlocation="/usr/local/bin/phpunit">
             <batchtest>
                 <fileset dir="tests/unit/suite">
                     <include name="**/*Test.php"/>
@@ -374,7 +375,6 @@
 
     <target name="unit-test-prepare" description="Copy to test site"
             depends="setup-test, site">
-
     </target>
 
     <target name="setup-test" description="Init to copy to test site"
@@ -382,7 +382,7 @@
         <property name="www.dir" value="${www.dirtest}" override="true"/>
 
         <!-- Test -->
-        <copy todir="${www.dir}/tests/unit/suite/redevent" overwrite="true">
+        <copy todir="${www.dir}/redunittests/unit/suite/redevent" overwrite="true">
             <fileset dir="tests/unit/suite">
                 <include name="**" />
             </fileset>

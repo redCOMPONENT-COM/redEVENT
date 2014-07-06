@@ -7,8 +7,6 @@
  * @license    GNU General Public License version 2 or later
  */
 
-require_once 'PHPUnit/Autoload.php';
-
 require_once 'stubs/redmemberlib.php';
 
 /**
@@ -52,13 +50,15 @@ class maerskpluginDatabaseTest extends JoomlaDatabaseTestCase
 	 */
 	private function getPlugin($params = null)
 	{
-		require_once JPATH_SITE . '/plugins/redeventsyncclient/maersk/maersk.php';
 		jimport('joomla.event.dispatcher');
+		require_once JPATH_SITE . '/plugins/redeventsyncclient/maersk/maersk.php';
 
 		$dispatcher = JDispatcher::getInstance();
 		$plugin = new plgRedeventsyncclientMaersk($dispatcher, $params);
 
-		$logger = $this->getMock('ResyncHelperMessagelog', array('log'));
+		require_once 'stubs/helpermessagelog.php';
+		$logger = new ResyncHelperMessagelogStub;
+
 		$plugin->setDbLogger($logger);
 
 		$client = $this->getMock('RedeventsyncClientMaersk', array('send'), array('http://mock.redweb.dk'));
