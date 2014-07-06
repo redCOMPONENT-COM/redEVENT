@@ -277,7 +277,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues_categories` (
   `lft` int(11) NOT NULL default '0',
   `rgt` int(11) NOT NULL default '0',
   `language` char(7) NOT NULL,
-  `asset_id` INT(10) NOT NULL DEFAULT '0'
+  `asset_id` INT(10) NOT NULL DEFAULT '0',
   PRIMARY KEY  (`id`)
 ) DEFAULT CHARSET=utf8;
 
