@@ -80,9 +80,11 @@ class RedeventsyncHandlerCustomersrs extends RedeventsyncHandlerAbstractmessage
 		$data['rm_companyaddress'] = (string) $customer->CompanyAddress;
 		$data['rm_companyphone'] = (string) $customer->CompanyPhone;
 		$data['rm_companysegmentpos'] = (string) $customer->CompanySegmentPos;
-		$data['username'] = trim((string) $customer->Firstname) . trim((string) $customer->Lastname);
 		$data['name'] = trim((string) $customer->Firstname) . ' ' . trim((string) $customer->Lastname);
 		$data['email'] = (string) $customer->Emailaddress;
+
+		$data['username'] = trim((string) $customer->Firstname) . trim((string) $customer->Lastname);
+		$data['username'] = $this->getUniqueUsername($data['username']);
 
 		try
 		{
@@ -97,10 +99,32 @@ class RedeventsyncHandlerCustomersrs extends RedeventsyncHandlerAbstractmessage
 		{
 			$this->log(
 				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
-				$xml, 'failed', $e->getMessage());
+				$xml, 'failed', $e->getMessage()
+			);
+
 			return false;
 		}
 
 		return true;
+	}
+
+	/**
+	 * Returns unique username
+	 *
+	 * @param   string  $username  username
+	 *
+	 * @return string
+	 */
+	private function getUniqueUsername($username)
+	{
+		$res = $username;
+		$i = 1;
+
+		while (JUserHelper::getUserId($res))
+		{
+			$res = $username . '_' . ($i++);
+		}
+
+		return $res;
 	}
 }
