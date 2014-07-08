@@ -117,7 +117,7 @@ class RedeventsyncHandlerCustomersrs extends RedeventsyncHandlerAbstractmessage
 	 */
 	private function getUniqueUsername($username)
 	{
-		$res = $username;
+		$res = str_replace("'", "", $username);
 		$i = 1;
 
 		while (JUserHelper::getUserId($res))
