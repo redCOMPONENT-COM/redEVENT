@@ -330,6 +330,7 @@ class RedeventViewFrontadmin extends JView
 		$this->members_order_dir = $state->get('members_order_dir');
 		$this->members_pagination = $model->getPagination();
 		$this->members_limitstart = $state->get('members_limitstart');
+		$this->state = $state;
 
 		parent::display($tpl);
 	}

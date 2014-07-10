@@ -73,7 +73,7 @@ class RedeventModelOrganizations extends FOFModel
 			return true;
 		}
 
-		$table = FOFTable::getInstance('Organization', 'RedeventTable');
+		$table = FOFTable::getAnInstance('Organization', 'RedeventTable');
 
 		foreach ($missing as $mid)
 		{

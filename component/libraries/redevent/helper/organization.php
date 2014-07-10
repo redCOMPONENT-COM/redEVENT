@@ -32,14 +32,16 @@ class RedeventHelperOrganization
 		$query->where('organization_id = ' . (int) $orgId);
 
 		$db->setQuery($query);
-		$res = $db->loadObject();
 
-		unset($res->id);
-		unset($res->organization_id);
-		unset($res->checked_out);
-		unset($res->checked_out_time);
+		if ($res = $db->loadObject())
+		{
+			unset($res->id);
+			unset($res->organization_id);
+			unset($res->checked_out);
+			unset($res->checked_out_time);
+		}
 
-		return $res;
+		return new JRegistry($res);
 	}
 
 	/**

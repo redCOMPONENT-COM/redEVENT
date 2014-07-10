@@ -182,10 +182,13 @@ class RedeventControllerFrontadmin extends FOFController
 
 		$model = $this->getModel('FrontadminMembers');
 
-		$att = $model->getAttendees($app->input->get('xref', 0, 'int'), $app->input->get('org', 0, 'int'), $app->input->get('filter_person', '', 'string'));
+		$orgId = $app->input->get('org', 0, 'int');
+
+		$att = $model->getAttendees($app->input->get('xref', 0, 'int'), $orgId, $app->input->get('filter_person', '', 'string'));
 
 		$view = $this->getThisView();
 		$view->assignRef('attendees', $att);
+		$view->assign('orgId', $orgId);
 		$view->setModel($model, false);
 		$this->display();
 

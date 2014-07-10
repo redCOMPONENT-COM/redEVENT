@@ -420,7 +420,8 @@ var redb2b = {
 			 * remove registration
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.unregister)', function(e){
-				if (confirm(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_CONFIRM"))) {
+				var confirmText = this.getProperty('confirmtext');
+				if (confirm(confirmText)) {
 					var register_id = this.getParent('tr').getProperty('rid');
 					req = new Request.JSON({
 						url : 'index.php?option=com_redevent&controller=frontadmin&task=cancelreg&tmpl=component&from=b2b',
