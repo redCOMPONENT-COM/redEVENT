@@ -23,6 +23,8 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+JHtml::_('behavior.tooltip');
 ?>
 <div id="redevent" class="event_id<?php echo $this->row->did; ?> el_details">
 <div class="event-header">
