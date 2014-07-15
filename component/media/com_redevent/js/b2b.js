@@ -1029,9 +1029,20 @@ var redb2b = {
 			return;
 		}
 
+		var currency;
+		var total = 0.0;
+
+		for (var i = 0; i < response.regs.length; i++) {
+			var r = response.regs[i];
+			currency = r.details.currency;
+			total += parseFloat(r.details.price);
+		}
+
 		ga('ecommerce:addTransaction', {
 			'id' : response.submit_key, // transaction ID - required
-			'affiliation' : gaAffiliation // affiliation or store name
+			'affiliation' : gaAffiliation, // affiliation or store name
+			'revenue' :total,
+			'currency': currency
 		});
 
 		for (var i = 0; i < response.regs.length; i++) {
