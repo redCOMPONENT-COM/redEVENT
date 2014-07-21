@@ -913,9 +913,17 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		}
 
 		$details = $registrationmodel->getSessionDetails();
-
 		$pricegroup = $this->getPricegroup($xref);
-		$currency = $pricegroup->currency ? $pricegroup->currency : $pricegroup->form_currency;
+
+		if (!$pricegroup)
+		{
+			$pricegroup->price = 0;
+			$currency = '';
+		}
+		else
+		{
+			$currency = $pricegroup->currency ? $pricegroup->currency : $pricegroup->form_currency;
+		}
 
 		$options = array('baseprice' => $pricegroup->price, 'currency' => $currency);
 
