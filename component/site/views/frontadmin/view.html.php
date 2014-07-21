@@ -118,7 +118,7 @@ class RedeventViewFrontadmin extends JView
 			$document->addStyleSheet($params->get('custom_css'));
 		}
 
-		FOFTemplateUtils::addJS('media://com_redevent/js/b2b.js');
+		$document->addScript('media/com_redevent/js/b2b.js?v=' . uniqid());
 
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
