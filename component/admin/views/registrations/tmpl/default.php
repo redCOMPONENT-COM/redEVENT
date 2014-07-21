@@ -95,7 +95,7 @@ $colspan = 13;
 					<?php } ?>
 				</td>
 				<td><?php echo $sessionlink; ?></td>
-				<td><?php echo $row->course_code .'-'. $row->xref .'-'. $row->attendee_id; ?></td>
+				<td><?php echo $row->course_code .'-'. $row->xref .'-'. $row->attendee_id; ?><p class="smallsub"><?php echo $row->submit_key;?></p></td>
 				<td><?php echo $row->name; ?></td>
 				<td>
 				  <?php
