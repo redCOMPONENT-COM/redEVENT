@@ -33,6 +33,12 @@ if ($this->params->get('attendees_table_show_uniqueid', 0)) {
 if ($this->event->maxattendees) {
 	$colspan += 1;
 }
+
+$sessionUrl = JRoute::_('index.php?option=com_redevent&view=session&cid[]=' . $this->event->xref);
+$date = RedeventHelper::isValidDate($this->event->dates)
+	? $this->event->dates
+	: JText::_('COM_REDEVENT_OPEN_DATE');
+$sessionLink = JHtml::_('link', $sessionUrl, $date);
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -40,8 +46,8 @@ if ($this->event->maxattendees) {
 	<table class="adminlist" cellspacing="1">
 		<tr>
 		  	<td width="80%">
-				<b><?php echo JText::_('COM_REDEVENT_DATE' ).':'; ?></b>&nbsp;<?php echo (RedeventHelper::isValidDate($this->event->dates) ? $this->event->dates : JText::_('COM_REDEVENT_OPEN_DATE')); ?><br />
-				<b><?php echo JText::_('COM_REDEVENT_EVENT_TITLE' ).':'; ?></b>&nbsp;<?php echo htmlspecialchars($this->event->title, ENT_QUOTES, 'UTF-8'); ?>
+				<b><?php echo JText::_('COM_REDEVENT_DATE' ).': '; ?></b><?php echo $sessionLink; ?><br />
+				<b><?php echo JText::_('COM_REDEVENT_EVENT_TITLE' ).': '; ?></b><?php echo htmlspecialchars($this->event->title, ENT_QUOTES, 'UTF-8'); ?>
 			</td>
 			<td width="20%">
 				<div class="button2-left"><div class="blank"><a title="<?php echo JText::_('COM_REDEVENT_PRINT'); ?>" onclick="window.open('index.php?option=com_redevent&amp;view=attendees&amp;layout=print&amp;task=print&amp;tmpl=component&amp;xref=<?php echo $this->event->xref; ?>', 'popup', 'width=750,height=400,scrollbars=yes,toolbar=no,status=no,resizable=yes,menubar=no,location=no,directories=no,top=10,left=10')"><?php echo JText::_('COM_REDEVENT_PRINT'); ?></a></div></div>
