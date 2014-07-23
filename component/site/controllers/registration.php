@@ -54,6 +54,8 @@ class RedEventControllerRegistration extends RedEventController
 	 */
 	public function register()
 	{
+		$input = JFactory::getApplication()->input;
+
 		if (JRequest::getVar('cancel', '', 'post'))
 		{
 			return $this->cancelreg();
@@ -189,6 +191,12 @@ class RedEventControllerRegistration extends RedEventController
 			if ($details->notify)
 			{
 				$model->sendNotificationEmail($submit_key);
+			}
+
+			if (RedformHelperAnalytics::isEnabled())
+			{
+				$helper = new RedeventAnalytics;
+				$helper->addTransactionMeasurementProtocol($submit_key);
 			}
 
 			$model->notifyManagers($submit_key);

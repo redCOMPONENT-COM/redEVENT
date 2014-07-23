@@ -54,27 +54,6 @@ class RedeventViewRegistration extends JViewLegacy
 		{
 			$message = $event->confirmation_message;
 			$document->setTitle($event->title . ' - ' . JText::_('COM_REDEVENT_REGISTRATION_CONFIRMED_PAGE_TITLE'));
-
-			// Google analytics
-			if (RedformHelperAnalytics::isEnabled())
-			{
-				$key = JFactory::getApplication()->input->get('submit_key');
-
-				$options = array();
-				$options['affiliation'] = 'redevent-b2b';
-				$options['sku']         = $event->event_name;
-				$options['productname'] = $event->venue . ' - ' . $event->xref . ' ' . $event->event_name
-					. ($event->session_name ? ' / ' . $event->session_name : '');
-
-				$cats = array();
-				foreach ($event->categories as $c)
-				{
-					$cats[] = $c->catname;
-				}
-				$options['category'] = implode(', ', $cats);
-
-				RedformHelperAnalytics::recordTrans($key, $options);
-			}
 		}
 		elseif ($this->getLayout() == 'review')
 		{

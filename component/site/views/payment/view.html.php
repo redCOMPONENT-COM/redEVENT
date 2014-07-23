@@ -108,7 +108,6 @@ class RedeventViewPayment extends JView
 
 			case 'accepted':
 				$text = $tags->ReplaceTags($row->paymentaccepted);
-				$this->addTracking();
 				$model->checkAndConfirm();
 
 				// Trigger event for custom handling
@@ -139,34 +138,5 @@ class RedeventViewPayment extends JView
 		$tpl = JRequest::getVar('tpl', $tpl);
 
 		parent::display($tpl);
-	}
-
-	/**
-	 * Add google analytics
-	 *
-	 * @return void
-	 */
-	protected function addTracking()
-	{
-		if (RedformHelperAnalytics::isEnabled())
-		{
-			$submit_key = JFactory::getApplication()->input->get('submit_key');
-			$details = $this->get('Event');
-
-			$options = array();
-			$options['affiliation'] = 'redevent-b2c';
-			$options['sku'] = $details->title;
-			$options['productname'] = $details->venue . ' - ' . $details->xref . ' ' . $details->title
-				. ($details->session_title ? ' / ' . $details->session_title : '');
-
-			$cats = array();
-			foreach ($details->categories as $c)
-			{
-				$cats[] = $c->catname;
-			}
-			$options['category'] = implode(', ', $cats);
-
-			RedformHelperAnalytics::recordTrans($submit_key, $options);
-		}
 	}
 }
