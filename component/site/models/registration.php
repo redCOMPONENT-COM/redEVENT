@@ -103,10 +103,11 @@ class RedEventModelRegistration extends JModel
 	 * @param   int     $sid                   associated redform submitter id
 	 * @param   string  $submit_key            associated redform submit key
 	 * @param   int     $sessionpricegroup_id  pricegroup id for registration
+	 * @param   int     $fromb2b               is this coming from b2b
 	 *
 	 * @return boolean|object attendee row or false if failed
 	 */
-	function register($user, $sid, $submit_key, $sessionpricegroup_id)
+	function register($user, $sid, $submit_key, $sessionpricegroup_id, $fromb2b = 0)
 	{
 		$config  = redEventHelper::config();
 		$session = $this->getSessionDetails();
@@ -127,6 +128,7 @@ class RedEventModelRegistration extends JModel
 		$obj->uid        = $user ? $user->get('id') : 0;
 		$obj->uregdate 	 = gmdate('Y-m-d H:i:s');
 		$obj->uip        = $config->get('storeip', '1') ? getenv('REMOTE_ADDR') : 'DISABLED';
+		$obj->fromb2b    = $fromb2b;
 
 		if (!$obj->check()) {
 			$this->setError($obj->getError());
