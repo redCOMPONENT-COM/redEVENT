@@ -458,8 +458,9 @@ var redb2b = {
 					alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_SELECT_SESSION_FIRST"));
 					return false;
 				}
+				var orgId = document.id('filter_organization').get('value');
 				req = new Request.JSON({
-					url : 'index.php?option=com_redevent&controller=frontadmin&task=quickbook&tmpl=component&from=b2b',
+					url : 'index.php?option=com_redevent&controller=frontadmin&task=quickbook&tmpl=component&from=b2b&org=' + orgId,
 					data : document.id('selected_users'),
 					method : 'post',
 					onRequest: function(){

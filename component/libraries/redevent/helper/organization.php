@@ -20,7 +20,7 @@ class RedeventHelperOrganization
 	 *
 	 * @param   int  $orgId  org id
 	 *
-	 * @return object
+	 * @return JRegistry
 	 */
 	public static function getSettings($orgId)
 	{

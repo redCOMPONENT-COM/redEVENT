@@ -500,12 +500,6 @@ class RedeventAttendee extends JObject
 			return true;
 		}
 
-		$app = JFactory::getApplication();
-		$tags = new RedeventTags;
-		$tags->setXref($this->getXref());
-		$tags->addOptions(array('sids' => array($this->load()->sid)));
-		$event = $this->getSessionDetails();
-
 		// Recipients
 		$recipients = $this->getAdminEmails();
 
@@ -514,22 +508,19 @@ class RedeventAttendee extends JObject
 			return true;
 		}
 
-		$mailer = JFactory::getMailer();
-		$sender = array($app->getCfg('mailfrom'), $app->getCfg('sitename'));
-		$mailer->setSender($sender);
-		$mailer->addReplyTo($sender);
+		$subject = $waiting
+			? $params->get('wl_notify_admin_waiting_subject')
+			: $params->get('wl_notify_admin_attending_subject');
+		$body = $waiting
+			? $params->get('wl_notify_admin_waiting_body')
+			: $params->get('wl_notify_admin_attending_body');
+
+		$mailer = $this->prepareEmail($subject, $body);
 
 		foreach ($recipients as $r)
 		{
 			$mailer->addAddress($r['email'], $r['name']);
 		}
-
-		$subject = $tags->ReplaceTags($waiting ? $params->get('wl_notify_admin_waiting_subject') : $params->get('wl_notify_admin_attending_subject'));
-		$body = $tags->ReplaceTags($waiting ? $params->get('wl_notify_admin_waiting_body') : $params->get('wl_notify_admin_attending_body'));
-		$body = RedeventHelperOutput::ImgRelAbs($body);
-
-		$mailer->setSubject($subject);
-		$mailer->MsgHTML($body);
 
 		if (!$mailer->send())
 		{
@@ -833,7 +824,6 @@ class RedeventAttendee extends JObject
 	 */
 	public function sendNotificationEmail()
 	{
-		$mainframe = JFactory::getApplication();
 		$eventsettings = $this->getSessionDetails();
 
 		/**
@@ -842,48 +832,16 @@ class RedeventAttendee extends JObject
 		 **/
 		if (isset($eventsettings->notify) && $eventsettings->notify)
 		{
-			/* Load the mailer */
-			$mailer = JFactory::getMailer();
-			$mailer->isHTML(true);
-			$mailer->From = $mainframe->getCfg('mailfrom');
-			$mailer->FromName = $mainframe->getCfg('sitename');
-			$mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
+			$subject = $eventsettings->notify_subject;
+			$body = '<html><head><title></title></title></head><body>';
+			$body .= $eventsettings->notify_body;
+			$body .= '</body></html>';
 
-			$tags = new RedeventTags;
-			$tags->setXref($this->getXref());
-			$tags->addOptions(array('sids' => array($this->load()->sid)));
+			/* Load the mailer */
+			$mailer = $this->prepareEmail($subject, $body);
 
 			$rfcore = new RedformCore;
 			$emails = $rfcore->getSidContactEmails($this->load()->sid);
-
-			/* build activation link */
-			// TODO: use the route helper !
-			$url = JRoute::_(JURI::root() . 'index.php?option=com_redevent&controller=registration&task=activate'
-				. '&confirmid=' . str_replace(".", "_", $this->_data->uip)
-				. 'x' . $this->_data->xref
-				. 'x' . $this->_data->uid
-				. 'x' . $this->_data->id
-				. 'x' . $this->_data->submit_key);
-			$activatelink = '<a href="' . $url . '">' . JText::_('COM_REDEVENT_Activate') . '</a>';
-			$cancellink = JRoute::_(JURI::root() . 'index.php?option=com_redevent&task=cancelreg'
-				. '&rid=' . $this->_data->id . '&xref=' . $this->_data->xref . '&submit_key=' . $this->_data->submit_key);
-
-			/* Mail attendee */
-			$htmlmsg = '<html><head><title></title></title></head><body>';
-			$htmlmsg .= $eventsettings->notify_body;
-			$htmlmsg .= '</body></html>';
-
-			$htmlmsg = $tags->ReplaceTags($htmlmsg);
-			$htmlmsg = str_replace('[activatelink]', $activatelink, $htmlmsg);
-			$htmlmsg = str_replace('[cancellink]', $cancellink, $htmlmsg);
-			$htmlmsg = str_replace('[fullname]', $this->getFullname(), $htmlmsg);
-
-			// Convert urls
-			$htmlmsg = RedeventHelperOutput::ImgRelAbs($htmlmsg);
-
-			$mailer->setBody($htmlmsg);
-			$subject = $tags->ReplaceTags($eventsettings->notify_subject);
-			$mailer->setSubject($subject);
 
 			foreach ($emails as $email)
 			{
@@ -912,16 +870,8 @@ class RedeventAttendee extends JObject
 	 */
 	public function notifyManagers($unreg = false)
 	{
-		jimport('joomla.mail.helper');
 		$app = JFactory::getApplication();
 		$params = $app->getParams('com_redevent');
-
-		$tags = new RedeventTags;
-		$tags->setXref($this->getXref());
-		$tags->setSubmitkey($this->load()->submit_key);
-		$tags->addOptions(array('sids' => array($this->load()->sid)));
-
-		$event = $this->getSessionDetails();
 
 		$recipients = $this->getAdminEmails();
 
@@ -930,27 +880,11 @@ class RedeventAttendee extends JObject
 			return true;
 		}
 
-		$mailer = JFactory::getMailer();
+		$subject = $unreg ?
+			$params->get('unregistration_notification_subject')
+			: $params->get('registration_notification_subject');
 
-		if ($this->getEmail() && $params->get('allow_email_aliasing', 1))
-		{
-			$sender = array($this->getEmail(), $this->getFullname());
-		}
-		else
-		{
-			// Default to site settings
-			$sender = array($app->getCfg('mailfrom'), $app->getCfg('sitename'));
-		}
-
-		$mailer->setSender($sender);
-		$mailer->addReplyTo($sender);
-
-		foreach ($recipients as $r)
-		{
-			$mailer->addAddress($r['email'], $r['name']);
-		}
-
-		$mail = '<HTML><HEAD>
+		$body = '<HTML><HEAD>
 			<STYLE TYPE="text/css">
 			<!--
 			  table.formanswers , table.formanswers td, table.formanswers th
@@ -976,12 +910,31 @@ class RedeventAttendee extends JObject
 			</STYLE>
 			</head>
 			<BODY bgcolor="#FFFFFF">
-			' . $tags->ReplaceTags($unreg ? $params->get('unregistration_notification_body') : $params->get('registration_notification_body')) . '
+			' . ($unreg ? $params->get('unregistration_notification_body') : $params->get('registration_notification_body')) . '
 			</body>
 			</html>';
 
-		// Convert urls
-		$mail = RedeventHelperOutput::ImgRelAbs($mail);
+		/* Load the mailer */
+		$mailer = $this->prepareEmail($subject, $body);
+
+		if ($this->getEmail() && $params->get('allow_email_aliasing', 1))
+		{
+			$sender = array($this->getEmail(), $this->getFullname());
+		}
+		else
+		{
+			// Default to site settings
+			$sender = array($app->getCfg('mailfrom'), $app->getCfg('sitename'));
+		}
+
+		$mailer->setSender($sender);
+		$mailer->ClearReplyTos();
+		$mailer->addReplyTo($sender);
+
+		foreach ($recipients as $r)
+		{
+			$mailer->addAddress($r['email'], $r['name']);
+		}
 
 		if (!$unreg && $params->get('registration_notification_attach_rfuploads', 1))
 		{
@@ -1003,9 +956,6 @@ class RedeventAttendee extends JObject
 			}
 		}
 
-		$mailer->setSubject($tags->ReplaceTags($unreg ? $params->get('unregistration_notification_subject') : $params->get('registration_notification_subject')));
-		$mailer->MsgHTML($mail);
-
 		if (!$mailer->send())
 		{
 			RedeventHelperLog::simplelog(JText::_('COM_REDEVENT_ERROR_REGISTRATION_MANAGERS_NOTIFICATION_FAILED'));
@@ -1015,5 +965,66 @@ class RedeventAttendee extends JObject
 		}
 
 		return true;
+	}
+
+	/**
+	 * Prepare email, with tag replacements done
+	 *
+	 * @param   string  $subject  email subject
+	 * @param   string  $body     email body
+	 *
+	 * @return JMail
+	 */
+	public function prepareEmail($subject, $body)
+	{
+		$mainframe = JFactory::getApplication();
+
+		/* Load the mailer */
+		$mailer = JFactory::getMailer();
+		$mailer->isHTML(true);
+		$mailer->From = $mainframe->getCfg('mailfrom');
+		$mailer->FromName = $mainframe->getCfg('sitename');
+		$mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
+
+		$tags = new RedeventTags;
+		$tags->setXref($this->getXref());
+		$tags->addOptions(array('sids' => array($this->load()->sid)));
+		$tags->setSubmitkey($this->load()->submit_key);
+
+		/* build activation link */
+		// TODO: use the route helper !
+		$url = JRoute::_(
+			JURI::root()
+			. 'index.php?option=com_redevent&controller=registration&task=activate'
+			. '&confirmid=' . str_replace(".", "_", $this->_data->uip)
+			. 'x' . $this->_data->xref
+			. 'x' . $this->_data->uid
+			. 'x' . $this->_data->id
+			. 'x' . $this->_data->submit_key
+		);
+		$activatelink = '<a href="' . $url . '">' . JText::_('COM_REDEVENT_Activate') . '</a>';
+
+		$cancellinkurl = JRoute::_(
+			JURI::root()
+			. 'index.php?option=com_redevent&task=cancelreg'
+			. '&rid=' . $this->_data->id
+			. '&xref=' . $this->_data->xref
+			. '&submit_key=' . $this->_data->submit_key
+		);
+		$cancellink = '<a href="' . $cancellinkurl . '">' . JText::_('COM_REDEVENT_CANCEL') . '</a>';
+
+		$htmlmsg = $tags->ReplaceTags($body);
+		$htmlmsg = str_replace('[activatelink]', $activatelink, $htmlmsg);
+		$htmlmsg = str_replace('[cancellink]', $cancellink, $htmlmsg);
+		$htmlmsg = str_replace('[fullname]', $this->getFullname(), $htmlmsg);
+
+		// Convert urls
+		$htmlmsg = RedeventHelperOutput::ImgRelAbs($htmlmsg);
+		$mailer->setBody($htmlmsg);
+
+		$subject = $tags->ReplaceTags($subject);
+		$mailer->setSubject($subject);
+
+		return $mailer;
 	}
 }

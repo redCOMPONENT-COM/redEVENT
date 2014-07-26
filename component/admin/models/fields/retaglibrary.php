@@ -53,7 +53,7 @@ class JFormFieldRetaglibrary extends JFormFieldList
 
 		foreach ($tags as $t)
 		{
-			$options[] = JHtml::_('select.option', $t->id, $t->text_name);
+			$options[] = JHtml::_('select.option', $t->text_name, $t->text_name);
 		}
 
 		return $options;

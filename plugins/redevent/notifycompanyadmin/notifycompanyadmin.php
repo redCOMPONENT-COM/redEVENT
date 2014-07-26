@@ -93,7 +93,7 @@ class plgRedeventNotifyCompanyAdmin extends JPlugin
 		$db->setQuery($query);
 		$user_id = $db->loadResult();
 
-		$ids = RedmemberLib::getOrganizationManagers($user_id);
+		$ids = RedmemberLib::getUserOrganizationManagers($user_id);
 
 		foreach ($ids as $admin_id)
 		{
