@@ -57,7 +57,7 @@ foreach ($this->upcomingvenueevents as $key => $event) {
 	?>
 	<tr>
 		<td class="courseinfo_date"><?php echo RedeventHelperOutput::formatdate($event->dates, $event->times); ?></td>
-		<td class="courseinfo_title"><?php echo JHTML::_('link', $event_url, $event->full_title); ?></td>
+		<td class="courseinfo_title"><?php echo JHTML::_('link', $event_url, $event->title); ?></td>
 			<td class="courseinfo_duration"><?php echo RedeventHelper::getEventDuration($event); ?></td>
 
 			<td class="courseinfo_venue"><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>

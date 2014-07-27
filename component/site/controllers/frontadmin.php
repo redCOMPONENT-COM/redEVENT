@@ -182,10 +182,13 @@ class RedeventControllerFrontadmin extends FOFController
 
 		$model = $this->getModel('FrontadminMembers');
 
-		$att = $model->getAttendees($app->input->get('xref', 0, 'int'), $app->input->get('org', 0, 'int'), $app->input->get('filter_person', '', 'string'));
+		$orgId = $app->input->get('org', 0, 'int');
+
+		$att = $model->getAttendees($app->input->get('xref', 0, 'int'), $orgId, $app->input->get('filter_person', '', 'string'));
 
 		$view = $this->getThisView();
 		$view->assignRef('attendees', $att);
+		$view->assign('orgId', $orgId);
 		$view->setModel($model, false);
 		$this->display();
 
@@ -254,6 +257,7 @@ class RedeventControllerFrontadmin extends FOFController
 
 		$xref = $app->input->get('xref', 0, 'int');
 		$regs = $app->input->get('reg', array(), 'array');
+		$orgId = $app->input->get('org', 0, 'int');
 		JArrayHelper::toInteger($regs);
 
 		$resp = new stdclass;
@@ -269,12 +273,12 @@ class RedeventControllerFrontadmin extends FOFController
 		}
 		else
 		{
-			$model = $this->getModel('frontadmin');
 			$added = 0;
 
 			foreach ($regs as $user_id)
 			{
-				$attendee = $model->quickbook($user_id, $xref);
+				$model = $this->getModel('Frontadminregistration', 'RedeventModel');
+				$attendee = $model->book($user_id, $xref, $orgId);
 				$regresp = new stdclass;
 
 				if ($attendee)

@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TITLE'), 'a.title', $this->order_Dir, $this->order); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_VENUE'), 'l.venue', $this->order_Dir, $this->order); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CATEGORY'), 'c.catname', $this->order_Dir, $this->order); ?></th>
-				<th><?php echo JText::_('COM_REDEVENT_BOOKED'); ?></th>
+				<th><?php echo JText::_('COM_REDEVENT_B2B_SEATS'); ?></th>
 				<th><?php echo JText::_('COM_REDEVENT_FRONTEND_BOOKINGS_EDIT_PARTICIPANTS'); ?></th>
 			</tr>
 		</thead>
@@ -62,7 +62,7 @@ defined('_JEXEC') or die('Restricted access');
 				<tr xref="<?php echo $row->xref; ?>">
 					<td><?php echo $editsessionlink; ?></td>
 					<td><?php echo RedeventHelper::getEventDuration($row); ?></td>
-					<td><?php echo $row->full_title; ?></td>
+					<td><?php echo $row->title; ?></td>
 					<td><?php echo $row->venue; ?></td>
 					<td class="re_category">
 						<?php $cats = array();
@@ -82,11 +82,11 @@ defined('_JEXEC') or die('Restricted access');
 					</td>
 					<td>
 						<?php echo $this->bookbutton($row->xref); ?>
-						<?php echo $this->printPlaces($row); ?>
+						<?php echo $this->printPlaces($row, false); ?>
 					</td>
 					<td>
 						<?php
-							$image = JHTML::image('media/com_redevent/images/b2b-edit.png', JText::_('COM_REDEVENT_BOOK_EVENT'));
+							$image = JHTML::image('media/com_redevent/images/b2b-selectbooksession.png', JText::_('COM_REDEVENT_BOOK_EVENT'));
 
 							$tip  = JText::_('COM_REDEVENT_FRONTEND_BOOKINGS_EDIT_PARTICIPANTS_DESC');
 							$text = JText::_('COM_REDEVENT_FRONTEND_BOOKINGS_EDIT_PARTICIPANTS');

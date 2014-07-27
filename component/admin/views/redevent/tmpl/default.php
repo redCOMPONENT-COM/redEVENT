@@ -58,6 +58,12 @@ $options = array(
 						$link = 'index.php?option='.$option.'&amp;view=venuescategories';
 						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-venuescategories.png', JText::_('COM_REDEVENT_VENUES_CATEGORIES' ) );
 
+						if (RedeventHelper::isInstalledRedmember())
+						{
+							$link = 'index.php?option=' . $option . '&amp;view=organizations';
+							RedEventViewRedEvent::quickiconButton($link, 'icon-48-organizations.png', JText::_('COM_REDEVENT_CPANEL_ORGANIZATIONS'));
+						}
+
 						$link = 'index.php?option='.$option.'&amp;view=registrations';
 						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-registrations.png', JText::_('COM_REDEVENT_REGISTRATIONS' ) );
 

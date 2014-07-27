@@ -13,6 +13,8 @@ defined('JPATH_BASE') or die;
 // Import library dependencies
 jimport('joomla.plugin.plugin');
 
+require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
+
 /**
  * Specific parameters for redEVENT.
  *
@@ -232,6 +234,8 @@ class plgRedeventMaerskregistration extends JPlugin
 		$body = $attendee->replaceTags(JText::_('PLG_REDEVENT_MAERSKREGISTRATION_COMMENT_UPDATED_NOTIFICATION_EMAIL_BODY'));
 		$body = str_replace('[comment]', $comment, $body);
 
+		$body .= $this->getAdminInfo();
+
 		$mailer->setSubject($subject);
 		$mailer->setBody($body);
 
@@ -241,6 +245,33 @@ class plgRedeventMaerskregistration extends JPlugin
 
 			return false;
 		}
+	}
+
+	/**
+	 * Get html admin info
+	 *
+	 * @return string
+	 *
+	 * @throws Exception
+	 */
+	private function getAdminInfo()
+	{
+		$user = JFactory::getUser();
+
+		$data = RedmemberLib::getUserData($user->get('id'));
+
+		if (!$data)
+		{
+			throw new Exception('Missing redmember data for admin');
+		}
+
+		$text = JText::sprintf('PLG_REDEVENT_MAERSKREGISTRATION_COMMENT_UPDATED_NOTIFICATION_EMAIL_BODY_ADMININFO',
+			$data->name,
+			$data->email,
+			isset($data->rm_mobile) && $data->rm_mobile ? $data->rm_mobile : '-'
+		);
+
+		return $text;
 	}
 
 	/**

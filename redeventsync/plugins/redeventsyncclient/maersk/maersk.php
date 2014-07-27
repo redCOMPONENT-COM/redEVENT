@@ -9,15 +9,14 @@
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-// Import library dependencies
-jimport('joomla.plugin.plugin');
-
 // Register library prefix
 JLoader::registerPrefix('Resync', JPATH_LIBRARIES . '/redeventsync');
 JLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
 JLoader::registerPrefix('Redform', JPATH_LIBRARIES . '/redform');
 
 JLoader::registerPrefix('Plgresyncmaersk', __DIR__);
+
+require_once JPATH_SITE . '/administrator/components/com_redeventsync/defines.php';
 
 if (!class_exists('RedmemberLib'))
 {

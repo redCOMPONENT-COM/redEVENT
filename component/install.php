@@ -284,7 +284,7 @@ class com_redeventInstallerScript
 	public function postflight($type, $parent)
 	{
 		// Check for FOF
-		$fofInstallationStatus = $this->_installFOF($parent);
+		//$fofInstallationStatus = $this->_installFOF($parent);
 
 		// Remove obsolete files and folders
 		$this->_removeObsoleteFilesAndFolders($this->removeFiles);

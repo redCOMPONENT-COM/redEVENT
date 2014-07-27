@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+        lessfiles="media://com_redevent/css/backend.less||media://com_redevent/css/backend.css"
+        validate="true"
+        >
+    <fieldset name="basic_configuration"
+              label="COM_REDEVENT_ORGANIZATION"
+              description="COM_REDEVENT_ORGANIZATION_SETTINGS"
+              class="span6"
+            >
+        <field name="b2b_attendee_notification_mailflow" type="list"
+               label="COM_REDEVENT_B2B_ATTENDEE_NOTIFICATION_MAILFLOW"
+               description="COM_REDEVENT_B2B_ATTENDEE_NOTIFICATION_MAILFLOW_DESC"
+               labelclass="redevent-label redevent-label-main"
+               default="0"
+                >
+            <option value="0">COM_REDEVENT_B2B_ATTENDEE_NOTIFICATION_MAILFLOW_ATTENDEE</option>
+            <option value="1">COM_REDEVENT_B2B_ATTENDEE_NOTIFICATION_MAILFLOW_ORG_ADMINS</option>
+            <option value="2">COM_REDEVENT_B2B_ATTENDEE_NOTIFICATION_MAILFLOW_BOTH</option>
+        </field>
+
+        <field name="b2b_attendee_notification_mailflow_orgadmin_confirmation_tag" type="retaglibrary"
+               label="COM_REDEVENT_b2b_attendee_notification_mailflow_orgadmin_confirmation_tag_label"
+               description="COM_REDEVENT_b2b_attendee_notification_mailflow_orgadmin_confirmation_tag_DESC"
+               labelclass="redevent-label redevent-label-main"
+               >
+                <option value="">COM_REDEVENT_DEFAULT</option>
+        </field>
+
+        <field name="b2b_attendee_notification_mailflow_orgadmin_cancellation_tag" type="retaglibrary"
+               label="COM_REDEVENT_b2b_attendee_notification_mailflow_orgadmin_cancellation_tag_label"
+               description="COM_REDEVENT_b2b_attendee_notification_mailflow_orgadmin_cancellation_tag_DESC"
+               labelclass="redevent-label redevent-label-main"
+                >
+            <option value="">COM_REDEVENT_DEFAULT</option>
+        </field>
+
+        <field name="b2b_cancellation_period" type="text"
+               label="COM_REDEVENT_ORGANIZATION_B2B_CANCELLATION_PERIOD"
+               description="COM_REDEVENT_ORGANIZATION_B2B_CANCELLATION_PERIOD_DESC"
+               labelclass="redevent-label redevent-label-main"
+               default="15" />
+    </fieldset>
+</form>

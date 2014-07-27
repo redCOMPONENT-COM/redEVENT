@@ -19,7 +19,7 @@
  * along with redEVENT; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
- 
+
 /** header icons **/
 .icon-48-archive			{ background-image: url(../images/icon-48-archive.png); }
 .icon-48-elcategories 		{ background-image: url(../images/icon-48-categories.png); }
@@ -35,7 +35,6 @@
 .icon-48-eventedit 			{ background-image: url(../images/icon-48-eventedit.png); }
 .icon-48-events 			{ background-image: url(../images/icon-48-events.png); }
 .icon-48-re-sessions			{ background-image: url(../images/icon-48-events.png); }
-.icon-48-groups				{ background-image: url(../images/icon-48-groups.png); }
 .icon-48-groupedit			{ background-image: url(../images/icon-48-groupedit.png); }
 .icon-48-help 				{ background-image: url(../images/icon-48-help.png); }
 .icon-48-home 				{ background-image: url(../images/icon-48-home.png); }
@@ -51,6 +50,7 @@
 .icon-32-redevent_import		{ background-image: url(../images/redevent_import_32.png); }
 .icon-32-exportevents		{ background-image: url(../images/icon-32-export.png); }
 .icon-32-csvexport		{ background-image: url(../images/icon-32-export.png); }
+.icon-32-sync		{ background-image: url(../images/redevent_sync_32.png); }
 .icon-32-csvimport		{ background-image: url(../images/icon-32-import.png); }
 .icon-32-redevent_submitters	{ background-image: url(../images/redevent_submitters_32.png); }
 .icon-32-redevent_archive			{ background-image: url(../images/redevent_archive_32.png); }
@@ -329,5 +329,5 @@ div.current div.type-params textarea {
 img.re-image-preview {
 	border:2px solid black;
 	max-height:80px;
-	max-width:150px;	
+	max-width:150px;
 }

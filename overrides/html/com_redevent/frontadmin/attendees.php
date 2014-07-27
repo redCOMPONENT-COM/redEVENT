@@ -71,14 +71,29 @@ defined('_JEXEC') or die('Restricted access');
 				<td></td>
 			<?php endif; ?>
 
-			<td><?php echo JHTML::image('com_redevent/b2b-edit.png', 'edit'
+			<td>
+				<?php
+				if ($a->pastCancellationPeriod)
+				{
+					$cancelTip = JText::sprintf(
+						'COM_REDEVENT_FRONTEND_ADMIN_PAST_CANCEL_REGISTRATION_PERIOD_D_TIP',
+						$a->cancellationPeriod
+					);
+				}
+				else
+				{
+					$cancelTip = JText::_('COM_REDEVENT_FRONTEND_ADMIN_CONFIRM');
+				}
+				?>
+				<?php echo JHTML::image('com_redevent/b2b-edit.png', 'edit'
 				, array('class' => 'hasTip editmember'
 						, 'title' => JText::_('COM_REDEVENT_EDIT_PARTICIPANT')
 						,  'tip' => JText::_('COM_REDEVENT_EDIT_PARTICIPANT_TIP')), true)
 				. ($a->registered ? ' '	. JHTML::image('com_redevent/b2b-delete.png', 'remove'
 					, array('class' => 'unregister hasTip'
 							, 'title' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CANCEL_REGISTRATION')
-							, 'tip' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CANCEL_REGISTRATION_TIP')), true) : ''); ?>
+							, 'tip' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CANCEL_REGISTRATION_TIP')
+							, 'confirmtext' => $cancelTip), true) : ''); ?>
 			</td>
 		</tr>
 		<?php endforeach;?>

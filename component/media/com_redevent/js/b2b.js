@@ -46,7 +46,7 @@ var redb2b = {
 			 */
 			document.id('filter_event').addEvent('change', function(){
 
-				if (ga)
+				if (typeof ga !== 'undefined')
 				{
 					ga('send',{
 						'hitType': 'event',
@@ -56,7 +56,7 @@ var redb2b = {
 					});
 				}
 
-				//redb2b.updateSessionSearchFields();
+				redb2b.updateSessionSearchFields();
 			});
 
 			/**
@@ -65,7 +65,7 @@ var redb2b = {
 			document.id('filter_venue').addEvent('change', function(){
 				redb2b.updateSessionSearchFields();
 
-				if (ga)
+				if (typeof ga !== 'undefined')
 				{
 					ga('send',{
 						'hitType': 'event',
@@ -82,7 +82,7 @@ var redb2b = {
 			document.id('filter_category').addEvent('change', function(){
 				redb2b.updateSessionSearchFields();
 
-				if (ga)
+				if (typeof ga !== 'undefined')
 				{
 					ga('send',{
 						'hitType': 'event',
@@ -102,7 +102,7 @@ var redb2b = {
 				redb2b.getSessions();
 				redb2b.updateBreadCrumbs();
 
-				if (ga)
+				if (typeof ga !== 'undefined')
 				{
 					ga('send',{
 						'hitType': 'event',
@@ -117,7 +117,7 @@ var redb2b = {
 			 * update organization bookings when selecting organization
 			 */
 			document.id('filter_organization').addEvent('change', function(){
-				if (ga)
+				if (typeof ga !== 'undefined')
 				{
 					ga('send',{
 						'hitType': 'event',
@@ -157,7 +157,7 @@ var redb2b = {
 				// Display organization users ?
 				redb2b.getMembersList();
 
-				if (ga)
+				if (typeof ga !== 'undefined')
 				{
 					ga('send',{
 						'hitType': 'event',
@@ -183,7 +183,7 @@ var redb2b = {
                     redb2b.searchBookings();
                 }
 
-				if (ga)
+				if (typeof ga !== 'undefined')
 				{
 					ga('send',{
 						'hitType': 'event',
@@ -208,7 +208,7 @@ var redb2b = {
 				document.id('filter_person').set('value', '');
 				document.id('filter_organization').fireEvent('change');
 
-				if (ga)
+				if (typeof ga !== 'undefined')
 				{
 					ga('send',{
 						'hitType': 'event',
@@ -224,7 +224,7 @@ var redb2b = {
 			document.id('search-course').addEvent('click', function() {
 				redb2b.getSessions();
 
-				if (ga)
+				if (typeof ga !== 'undefined')
 				{
 					ga('send',{
 						'hitType': 'event',
@@ -242,7 +242,7 @@ var redb2b = {
 				var id = this.getProperty('xref');
 				redb2b.selectSession(id);
 
-				if (ga)
+				if (typeof ga !== 'undefined')
 				{
 					ga('send',{
 						'hitType': 'event',
@@ -308,7 +308,7 @@ var redb2b = {
 
 						document.id('book-course').set('styles', {'display' :'block'});
 
-						if (ga)
+						if (typeof ga !== 'undefined')
 						{
 							ga('send',{
 								'hitType': 'event',
@@ -326,7 +326,7 @@ var redb2b = {
 						redb2b.resetSelected();
 					}
 
-					if (ga)
+					if (typeof ga !== 'undefined')
 					{
 						ga('send',{
 							'hitType': 'event',
@@ -420,7 +420,8 @@ var redb2b = {
 			 * remove registration
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.unregister)', function(e){
-				if (confirm(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_CONFIRM"))) {
+				var confirmText = this.getProperty('confirmtext');
+				if (confirm(confirmText)) {
 					var register_id = this.getParent('tr').getProperty('rid');
 					req = new Request.JSON({
 						url : 'index.php?option=com_redevent&controller=frontadmin&task=cancelreg&tmpl=component&from=b2b',
@@ -438,7 +439,7 @@ var redb2b = {
 								alert(response.error);
 							}
 
-							if (ga)
+							if (typeof ga !== 'undefined')
 							{
 								ga('send',{
 									'hitType': 'event',
@@ -457,8 +458,9 @@ var redb2b = {
 					alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_SELECT_SESSION_FIRST"));
 					return false;
 				}
+				var orgId = document.id('filter_organization').get('value');
 				req = new Request.JSON({
-					url : 'index.php?option=com_redevent&controller=frontadmin&task=quickbook&tmpl=component&from=b2b',
+					url : 'index.php?option=com_redevent&controller=frontadmin&task=quickbook&tmpl=component&from=b2b&org=' + orgId,
 					data : document.id('selected_users'),
 					method : 'post',
 					onRequest: function(){
@@ -1028,9 +1030,20 @@ var redb2b = {
 			return;
 		}
 
+		var currency;
+		var total = 0.0;
+
+		for (var i = 0; i < response.regs.length; i++) {
+			var r = response.regs[i];
+			currency = r.details.currency;
+			total += parseFloat(r.details.price);
+		}
+
 		ga('ecommerce:addTransaction', {
 			'id' : response.submit_key, // transaction ID - required
-			'affiliation' : gaAffiliation // affiliation or store name
+			'affiliation' : gaAffiliation, // affiliation or store name
+			'revenue' :total,
+			'currency': currency
 		});
 
 		for (var i = 0; i < response.regs.length; i++) {

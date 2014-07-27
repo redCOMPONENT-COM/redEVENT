@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 				<tr>
 					<td><?php echo RedeventHelperOutput::formatdate($row->dates, false); ?></td>
 					<td><?php echo RedeventHelper::getEventDuration($row); ?></td>
-					<td><?php echo $row->full_title; ?></td>
+					<td><?php echo $row->title; ?></td>
 					<td><?php echo $row->venue; ?></td>
 					<td class="re_category">
 						<?php $cats = array();
@@ -62,7 +62,7 @@ defined('_JEXEC') or die('Restricted access');
 					<td><?php echo $this->bookbutton($row->xref); ?><?php echo $this->printPlaces($row, false); ?></td>
 					<td>
 						<?php
-						$image = JHTML::image('media/com_redevent/images/b2b-edit.png', JText::_('COM_REDEVENT_BOOK_EVENT'));
+						$image = JHTML::image('media/com_redevent/images/b2b-selectbooksession.png', JText::_('COM_REDEVENT_BOOK_EVENT'));
 
 						$tip  = JText::_('COM_REDEVENT_FRONTEND_BOOKINGS_EDIT_PARTICIPANTS_DESC');
 						$text = JText::_('COM_REDEVENT_FRONTEND_BOOKINGS_EDIT_PARTICIPANTS');

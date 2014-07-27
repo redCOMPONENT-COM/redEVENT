@@ -73,7 +73,6 @@
 			<folder>fields</folder>
 			<folder>models</folder>
 			<folder>language</folder>
-			<folder>plugins</folder>
 			<folder>sql</folder>
 			<folder>views</folder>
 		</files>

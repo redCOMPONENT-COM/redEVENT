@@ -645,15 +645,18 @@ class RedEventControllerRegistration extends RedEventController
 			{
 				case 'fullname':
 					$data['name'] = $a->answer;
+					break;
 
 				case 'username':
 					$data['username'] = $a->answer;
+					break;
 
 				case 'email':
 					if ($a->parameters->get('notify') && $a->answer)
 					{
 						$data['email'] = $a->answer;
 					}
+					break;
 
 				default:
 					if ($a->redmember_field)

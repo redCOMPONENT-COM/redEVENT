@@ -164,12 +164,20 @@ class RedeventModelFrontadminMembers extends RedeventModelBaseeventlist
 		}
 
 		$memberIds = $this->getMemberIds();
+		$orgSettings = RedeventHelperOrganization::getSettings($this->organizationId);
+		$cancellationPeriod = $orgSettings->get('b2b_cancellation_period', 15);
 
 		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('r.*');
+		$query->select(
+			' CASE WHEN x.dates '
+			. ' THEN DATEDIFF(x.dates, NOW()) < ' . $cancellationPeriod
+			. ' ELSE 0 END AS pastCancellationPeriod '
+		);
 		$query->from('#__redevent_register AS r');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = r.xref');
 		$query->where('r.xref = ' . $this->xref);
 		$query->where('r.uid IN (' . implode(',', $memberIds) . ')');
 		$query->where('r.cancelled = 0');
@@ -185,6 +193,8 @@ class RedeventModelFrontadminMembers extends RedeventModelBaseeventlist
 			if (isset($regs[$member->id]))
 			{
 				$member->registered = $regs[$member->id];
+				$member->pastCancellationPeriod = $regs[$member->id]->pastCancellationPeriod;
+				$member->cancellationPeriod = $cancellationPeriod;
 				$booked[] = $member;
 			}
 			else

@@ -19,7 +19,7 @@
  * along with redEVENT; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
- 
+
 /** header icons **/
 .icon-48-archive			{ background-image: url(../images/icon-48-archive.png); }
 .icon-48-elcategories 		{ background-image: url(../images/icon-48-categories.png); }
@@ -58,6 +58,7 @@
 .icon-32-featured	{ background-image: url(../images/icon-32-featured.png); }
 .icon-32-unfeatured	{ background-image: url(../images/icon-32-unfeatured.png); }
 .icon-32-redrestore			{ background-image: url(../images/icon-32-refresh.png); }
+.icon-32-sync		{ background-image: url(../images/redevent_sync_32.png); }
 
 /** linkicons **/
 div.linkicon {
@@ -328,7 +329,7 @@ div.current div.type-params textarea {
 img.re-image-preview {
 	border:2px solid black;
 	max-height:80px;
-	max-width:150px;	
+	max-width:150px;
 }
 
 .spinner {

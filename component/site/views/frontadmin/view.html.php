@@ -118,7 +118,7 @@ class RedeventViewFrontadmin extends JView
 			$document->addStyleSheet($params->get('custom_css'));
 		}
 
-		FOFTemplateUtils::addJS('media://com_redevent/js/b2b.js');
+		$document->addScript('media/com_redevent/js/b2b.js?v=' . uniqid());
 
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
@@ -304,7 +304,7 @@ class RedeventViewFrontadmin extends JView
 	{
 		JHTML::_('behavior.tooltip');
 
-		$image = JHTML::image('media/com_redevent/images/b2b-users.png', JText::_('COM_REDEVENT_BOOK_EVENT'));
+		$image = JHTML::image('media/com_redevent/images/b2b-bookuser.png', JText::_('COM_REDEVENT_BOOK_EVENT'));
 
 		$tip  = JText::_('COM_REDEVENT_BOOK_EVENT_DESC');
 		$text = JText::_('COM_REDEVENT_BOOK_EVENT');
@@ -330,6 +330,7 @@ class RedeventViewFrontadmin extends JView
 		$this->members_order_dir = $state->get('members_order_dir');
 		$this->members_pagination = $model->getPagination();
 		$this->members_limitstart = $state->get('members_limitstart');
+		$this->state = $state;
 
 		parent::display($tpl);
 	}

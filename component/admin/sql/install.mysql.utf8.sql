@@ -95,6 +95,8 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues` (
 `ordering` int(11) NOT NULL default '0',
 `language` char(7) NOT NULL,
 `params` TEXT NOT NULL,
+`access` INT(10) NOT NULL DEFAULT '1',
+`asset_id` INT(10) NOT NULL DEFAULT '0',
 PRIMARY KEY  (`id`)
 ) DEFAULT CHARSET=utf8;
 
@@ -117,6 +119,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_categories` (
 `rgt` int(11) NOT NULL default '0',
 `event_template` int(11) NOT NULL default '0',
 `language` char(7) NOT NULL,
+`asset_id` INT(10) NOT NULL DEFAULT '0',
 PRIMARY KEY  (`id`)
 ) DEFAULT CHARSET=utf8;
 
@@ -124,7 +127,8 @@ CREATE TABLE IF NOT EXISTS `#__redevent_register` (
 `id` int(11) unsigned NOT NULL auto_increment,
 `xref` int(11) NOT NULL default '0',
 `uid` int(11) NOT NULL default '0',
-`sid` int(11) NOT NULL default '0',
+`fromb2b` tinyint(1) NOT NULL default '0',
+`cancelled` tinyint(1) NOT NULL default '0',
 `cancelled` tinyint(1) NOT NULL default '0',
 `sessionpricegroup_id` int(11) NOT NULL default '0',
 `waitinglist` tinyint(2) NOT NULL default '0',
@@ -274,6 +278,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues_categories` (
   `lft` int(11) NOT NULL default '0',
   `rgt` int(11) NOT NULL default '0',
   `language` char(7) NOT NULL,
+  `asset_id` INT(10) NOT NULL DEFAULT '0',
   PRIMARY KEY  (`id`)
 ) DEFAULT CHARSET=utf8;
 
@@ -350,6 +355,18 @@ CREATE TABLE IF NOT EXISTS `#__redevent_attachments` (
   `added` datetime NOT NULL default '0000-00-00 00:00:00',
   `added_by` int(11) NOT NULL default '0',
   PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__redevent_organizations` (
+`id` int(11) unsigned NOT NULL auto_increment,
+`organization_id` int(11) NOT NULL,
+`b2b_attendee_notification_mailflow` tinyint(4) NOT NULL DEFAULT '0',
+`b2b_attendee_notification_mailflow_orgadmin_confirmation_tag` VARCHAR(30),
+`b2b_attendee_notification_mailflow_orgadmin_cancellation_tag` VARCHAR(30),
+`b2b_cancellation_period` tinyint(4) NOT NULL DEFAULT '15',
+`checked_out` int(11) NOT NULL default '0',
+`checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
+PRIMARY KEY  (`id`)
 ) DEFAULT CHARSET=utf8;
 
 INSERT IGNORE INTO `#__redevent_countries` (`id`, `continent`, `iso2`, `iso3`, `un`, `name`) VALUES
