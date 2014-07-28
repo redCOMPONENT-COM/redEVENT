@@ -14,5 +14,6 @@
         <folder>exception</folder>
         <folder>helper</folder>
 		<folder>logger</folder>
+        <folder>queue</folder>
     </files>
 </extension>

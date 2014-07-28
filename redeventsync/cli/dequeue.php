@@ -56,7 +56,8 @@ require_once JPATH_BASE . '/administrator/components/com_redeventsync/defines.ph
 // Load FOF
 include_once JPATH_LIBRARIES . '/fof/include.php';
 
-require_once __DIR__ . '/redeventsyncdequeue/message.php';
+// Register library prefix
+JLoader::registerPrefix('Resync', JPATH_LIBRARIES . '/redeventsync');
 
 /**
  * This script will checkin all checked out items in database
@@ -124,7 +125,7 @@ class RedeventsyncDequeue extends JApplicationCli
 		{
 			$this->dequeueMessage($message);
 
-			$msg = new RedeventsyncdequeueMessage($message->message);
+			$msg = new ResyncQueueMessage($message->message);
 
 			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $msg->getType(), $msg->getTransactionId(), $message->message, 'dequeued');
 			$this->out('Send message ' . $message->redeventsync_queuedmessage_id . ': success');

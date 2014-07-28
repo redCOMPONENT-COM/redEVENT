@@ -1,6 +1,6 @@
 <?php
 /**
- * @package    Redeventsync.Cli
+ * @package    Redeventsync.lib
  * @copyright  Copyright (C) 2013 redCOMPONENT.com
  * @license    GNU General Public License version 2 or later
  */
@@ -9,12 +9,12 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 /**
- * Class RedeventsyncdequeueMessage
+ * Class RedeventsyncQueueMessage
  *
- * @package  Redeventsync.Cli
+ * @package  Redeventsync.lib
  * @since    2.5
  */
-class RedeventsyncdequeueMessage
+class ResyncQueueMessage
 {
 	/**
 	 * @var SimpleXMLElement

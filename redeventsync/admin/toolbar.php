@@ -59,4 +59,17 @@ class RedeventsyncToolbar extends FOFToolbar
 		parent::onBrowse();
 		JToolBarHelper::custom('clear', 'trash', 'trash', Jtext::_('COM_REDEVENTSYNC_BUTTON_LOGS_CLEAR'), false);
 	}
+
+	public function onQueuedMessagesBrowse()
+	{
+		$this->renderSubmenu();
+
+		// Set toolbar title
+		$option = $this->input->getCmd('option', 'com_foobar');
+		$subtitle_key = strtoupper($option . '_TITLE_' . $this->input->getCmd('view', 'cpanel'));
+		JToolBarHelper::title(JText::_(strtoupper($option)) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>', str_replace('com_', '', $option));
+
+		JToolbarHelper::custom('process', 'sendqm', 'sendqm', JText::_('COM_REDEVENTSYNC_BUTTON_QUEUED_MESSAGES_SEND'), true);
+		JToolbarHelper::deleteList();
+	}
 }
