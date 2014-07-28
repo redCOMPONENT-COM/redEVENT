@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @version 1.0 $Id$
  * @package Joomla
@@ -20,7 +21,7 @@
  * along with redEVENT; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
- 
+
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -44,12 +45,14 @@ class RedeventViewSimpleList extends JView
 	 */
 	function display( )
 	{
+		setlocale(LC_ALL, "da_DK.UTF-8");
 		$mainframe = &JFactory::getApplication();
-	
-		if ($this->getLayout() == 'rsscal') {
+
+		if ($this->getLayout() == 'rsscal')
+		{
 			return $this->_displayRssCal();
 		}
-		
+
 		$doc 		= & JFactory::getDocument();
 		$elsettings = & redEVENTHelper::config();
 
@@ -57,25 +60,45 @@ class RedeventViewSimpleList extends JView
 		JRequest::setVar('limit', $mainframe->getCfg('feed_limit'));
 		$rows = & $this->get('Data');
 
+		// Get custom fields list
+		$xcustoms = $this->get('XrefCustomFields');
+		$sessionField = '';
+
+		foreach ($xcustoms as $custom)
+		{
+			if ($custom->name == 'Type for session')
+			{
+				$sessionField = 'custom' . $custom->id;
+			}
+		}
+
 		foreach ( $rows as $row )
 		{
 			// strip html from feed item title
 			$title = $this->escape( $row->full_title );
 			$title = html_entity_decode( $title );
 
-		  // handle categories
-      if (!empty($row->categories)) 
-      {
-        $category = array();
-        foreach ($row->categories AS $cat) {
-          $category[] = $cat->catname;
-        }
-        $category = $this->escape( implode(', ', $category) );
-        $category = html_entity_decode( $category );        
-      }
-      else {
-        $category = '';
-      }
+			// handle categories
+			/*if (!empty($row->categories))
+			{
+				$category = array();
+				foreach ($row->categories AS $cat)
+				{
+					$category[] = $cat->catname;
+				}
+				$category = $this->escape( implode(', ', $category) );
+				$category = html_entity_decode( $category );
+			}
+			else
+			{
+				$category = '';
+			}*/
+			$category = '';
+
+			if (($sessionField) && isset($row->$sessionField))
+			{
+				$category = $row->$sessionField;
+			}
 
 			//Format date
 			if (redEVENTHelper::isValidDate($row->dates))
@@ -107,64 +130,70 @@ class RedeventViewSimpleList extends JView
 			$link = RedeventHelperRoute::getDetailsRoute($row->slug, $row->xslug);
 			$link = JRoute::_( $link );
 
+			// Process on event description
+			$eventTag = array('[title]', '[a_name]', '[catsid]', '[dates]', '[times]', '[enddates]', '[endtimes]', '[venues]', '[info]');
+			$eventDesc = str_replace($eventTag, '', $row->datdescription);
+
 			// feed item description text
-			$description = JText::_('COM_REDEVENT_TITLE' ).': '.$title.'<br />';
-			$description .= JText::_('COM_REDEVENT_VENUE' ).': '.$row->venue.' / '.$row->city.'<br />';
-			$description .= JText::_('COM_REDEVENT_CATEGORY' ).': '.$category.'<br />';
-			$description .= JText::_('COM_REDEVENT_DATE' ).': '.$displaydate.'<br />';
+			$description = '<p><img src="' . JUri::root() . $row->datimage . '" /></p>';
+			$description .= JText::_('COM_REDEVENT_SESSION') . ': ' . $row->session_title . '<br />';
+			$description .= JText::_('COM_REDEVENT_PRICE') . ': ' . $this->formatPrice($row) . '<br />';
+			$description .= JText::_('COM_REDEVENT_VENUE').': '.$row->venue.' / ' . $row->street . ', ' . $row->city . ', ' . $row->plz . '<br />';
+			$description .= JText::_('COM_REDEVENT_CATEGORY' ).': '. $category .'<br />';
+			$description .= JText::_('COM_REDEVENT_DATE' ).': ' . ucfirst($displaydate) . '<br />';
 			$description .= JText::_('COM_REDEVENT_TIME' ).': '.$displaytime.'<br />';
-			//$description .= JText::_('COM_REDEVENT_DESCRIPTION' ).': '.$row->datdescription;
+			$description .= JText::_('COM_REDEVENT_DESCRIPTION' ).': '.$eventDesc;
 
 			@$created = ( $row->created ? date( 'r', strtotime($row->created) ) : '' );
 
 			// load individual item creator class
 			$item = new JFeedItem();
-			$item->title 		= $title;
-			$item->link 		= $link;
-			$item->description 	= $description;
+			$item->title		= $row->title;
+			$item->link			= $link;
+			$item->description	= $description;
 			$item->date			= $created;
-			$item->category   	= $category;
+			$item->category		= $category;
 
 			// loads item info into rss array
 			$doc->addItem( $item );
 		}
 	}
-	
+
 	function _displayRssCal()
 	{
-		define( 'CACHE', './cache' ); 
-		
-		$mainframe  = &JFactory::getApplication();		
+		define( 'CACHE', './cache' );
+
+		$mainframe  = &JFactory::getApplication();
 		$elsettings = redEVENTHelper::config();
-				
+
 		$offset = (float) $mainframe->getCfg('offset');
 		$hours = ($offset >= 0) ? floor($offset) : ceil($offset);
 		$mins = abs($offset - $hours) * 60;
 		$utcoffset = sprintf('%+03d:%02d', $hours, $mins);
-		
+
 		$feed = new rsscalCreator( 'redEVENT feed', JURI::base(), 'Test feed' );
-		$feed->setFilename( CACHE, 'events.rss' ); 
-		
+		$feed->setFilename( CACHE, 'events.rss' );
+
 		// get data
 		$model = $this->getModel();
 		$model->setLimit($elsettings->get('ical_max_items', 100));
 		$model->setLimitstart(0);
 		$rows = & $this->get('Data');
 		foreach ( $rows as $row )
-		{			
+		{
 			// strip html from feed item title
 			$title = $this->escape( $row->full_title );
 			$title = html_entity_decode( $title );
 
 			// strip html from feed item category
-			if (!empty($row->categories)) 
+			if (!empty($row->categories))
 			{
 				$category = array();
 				foreach ($row->categories AS $cat) {
 					$category[] = $cat->catname;
 				}
 				$category = $this->escape( implode(', ', $category) );
-				$category = html_entity_decode( $category );				
+				$category = html_entity_decode( $category );
 			}
 			else {
 				$category = '';
@@ -179,7 +208,7 @@ class RedeventViewSimpleList extends JView
 				if (!redEVENTHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) {
 					$displaydate = $date;
 					$rssenddate = $row->dates;
-				} 
+				}
 				else {
 					$enddate 	= strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $row->enddates ));
 					$rssenddate = $row->enddates;
@@ -194,18 +223,18 @@ class RedeventViewSimpleList extends JView
 			if ($row->times) {
 				$time = strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $row->times ));
 				$displaytime = $time;
-				$rssstartdate .= 'T'.$row->times.$utcoffset;	
+				$rssstartdate .= 'T'.$row->times.$utcoffset;
 			}
 			if ($row->endtimes) {
 				$endtime = strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $row->endtimes ));
 				$displaytime = $time.' - '.$endtime;
-				$rssenddate .= 'T'.$row->endtimes.$utcoffset;	
+				$rssenddate .= 'T'.$row->endtimes.$utcoffset;
 			}
 
 			// url link to event
 			$link = JURI::base().RedeventHelperRoute::getDetailsRoute($row->id);
 			$link = JRoute::_( $link );
-			
+
 			$item = new rsscalItem($row->full_title, $link);
 			$item->addElement( 'ev:type',      $category );
 //			$item->addElement( 'ev:organizer', "" );
@@ -213,10 +242,34 @@ class RedeventViewSimpleList extends JView
 			$item->addElement( 'ev:startdate', $rssstartdate );
 			$item->addElement( 'ev:enddate',   $rssenddate );
 			$item->addElement( 'dc:subject',   $row->full_title );
-			
+
 			$feed->addItem( $item );
-		}		
-		
-		$feed->returnRSS( CACHE ); 
+		}
+
+		$feed->returnRSS( CACHE );
+	}
+
+	private function formatPrice($row)
+	{
+		if (!$row->prices)
+		{
+			return JText::_('COM_REDEVENT_EVENT_PRICE_FREE');
+		}
+
+		$prices = array();
+
+		foreach ($row->prices as $price)
+		{
+			if (!$price->price)
+			{
+				$prices[] = JText::_('COM_REDEVENT_EVENT_PRICE_FREE');
+			}
+			else
+			{
+				$prices[] = $price->currency ? $price->currency . ' ' . $price->price : $price->price;
+			}
+		}
+
+		return implode(' / ', $prices);
 	}
 }
