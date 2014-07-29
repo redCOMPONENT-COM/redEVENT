@@ -56,9 +56,10 @@ class RedeventViewSimpleList extends JView
 		$doc 		= & JFactory::getDocument();
 		$elsettings = & redEVENTHelper::config();
 
-		// Get some data from the model
-		JRequest::setVar('limit', $mainframe->getCfg('feed_limit'));
-		$rows = & $this->get('Data');
+		// Get data from the model
+		$model = $this->getModel();
+		$model->setLimit(0);
+		$rows = $model->getData();
 
 		// Get custom fields list
 		$xcustoms = $this->get('XrefCustomFields');
