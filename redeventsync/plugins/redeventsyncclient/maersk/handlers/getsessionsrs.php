@@ -33,8 +33,6 @@ class RedeventsyncHandlerGetsessionsrs extends RedeventsyncHandlerAbstractmessag
 
 		$xml = new SimpleXMLElement($xml_post);
 
-		$transactionId = 0;
-
 		foreach ($xml->children() as $node)
 		{
 			switch ($node->getName())

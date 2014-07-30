@@ -21,6 +21,14 @@ FOFTemplateUtils::addCSS('media://com_redeventsync/css/backend.css');
 	</div>
 	<div class="icon">
 		<?php
+		$href = JRoute::_('index.php?option=com_redeventsync&view=queuedmessages');
+		$img = JHtml::image(JURI::root() . 'media/com_redeventsync/images/icon-48-log.png', JText::_('COM_REDEVENTSYNC_NAME_CPANEL_QUEUEDMESSAGES_ALT'));
+		$txt = $img . '<span>' . JText::_('COM_REDEVENTSYNC_NAME_CPANEL_QUEUEDMESSAGES') . '</span>';
+		echo JHtml::link($href, $txt);
+		?>
+	</div>
+	<div class="icon">
+		<?php
 		$href = JRoute::_('index.php?option=com_redeventsync&view=logs');
 		$img = JHtml::image(JURI::root() . 'media/com_redeventsync/images/icon-48-log.png', JText::_('COM_REDEVENTSYNC_NAME_CPANEL_LOGS_ALT'));
 		$txt = $img . '<span>' . JText::_('COM_REDEVENTSYNC_NAME_CPANEL_LOGS') . '</span>';

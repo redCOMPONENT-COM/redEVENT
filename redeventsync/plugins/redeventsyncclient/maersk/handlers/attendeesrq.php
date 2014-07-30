@@ -37,9 +37,9 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 
 		$this->validate($xml->asXML(), 'AttendeesRQ');
 
-		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, (int) $message->TransactionId, $xml, 'sending');
+		$this->enqueue($xml->asXML());
 
-		$this->send($xml->asXML());
+		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, (int) $message->TransactionId, $xml, 'queued');
 
 		return true;
 	}
@@ -63,9 +63,9 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 
 		$this->validate($xml->asXML(), 'AttendeesRQ');
 
-		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, (int) $message->TransactionId, $xml, 'sending');
+		$this->enqueue($xml->asXML());
 
-		$this->send($xml->asXML());
+		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, (int) $message->TransactionId, $xml, 'queued');
 
 		return true;
 	}
@@ -97,9 +97,9 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 
 		$this->validate($xml->asXML(), 'AttendeesRQ');
 
-		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, (int) $message->TransactionId, $xml, 'sending');
+		$this->enqueue($xml->asXML());
 
-		$this->send($xml->asXML());
+		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, (int) $message->TransactionId, $xml, 'queued');
 
 		return true;
 	}
@@ -138,7 +138,6 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 					$attendee->waitinglist = 0;
 				}
 			}
-
 
 			// Make sure we have an user !
 			$user = RedeventsyncclientMaerskHelper::getUser($attendee->user_email);
@@ -575,6 +574,15 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 		return $message;
 	}
 
+	/**
+	 * Validate AddAttendee required fields
+	 *
+	 * @param   object  $attendee  attendee object
+	 *
+	 * @return bool
+	 *
+	 * @throws PlgresyncmaerskExceptionInvalidattendee
+	 */
 	protected function validateAddAttendeeFields($attendee)
 	{
 		if (!$attendee->session_code)

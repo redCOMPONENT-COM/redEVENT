@@ -22,6 +22,7 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 	 * @var int
 	 */
 	protected $transactionId = 0;
+
 	/**
 	 * Handle nodes from xml
 	 *
@@ -36,8 +37,6 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 		$this->initResponse();
 
 		$xml = new SimpleXMLElement($xml_post);
-
-		$transactionId = 0;
 
 		foreach ($xml->children() as $node)
 		{
@@ -68,6 +67,9 @@ class RedeventsyncHandlerGetSessionAttendeesrs extends RedeventsyncHandlerAbstra
 	 * @param   SimpleXMLElement  $xml  xml data for the object
 	 *
 	 * @return boolean
+	 *
+	 * @throws PlgresyncmaerskExceptionMissinguser
+	 * @throws PlgresyncmaerskExceptionMismatchuser
 	 */
 	protected function processAttendee(SimpleXMLElement $xml)
 	{

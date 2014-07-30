@@ -8,25 +8,31 @@
               description="COM_REDEVENT_ORGANIZATION_SETTINGS"
               class="span6"
             >
-        <field name="b2b_admin_notification_mailflow" type="list"
-               label="COM_REDEVENT_ORGANIZATION_B2B_ADMIN_NOTIFICATION_MAILFLOW"
-               description="COM_REDEVENT_ORGANIZATION_B2B_ADMIN_NOTIFICATION_MAILFLOW_DESC"
+        <field name="b2b_attendee_notification_mailflow" type="list"
+               label="COM_REDEVENT_B2B_ATTENDEE_NOTIFICATION_MAILFLOW"
+               description="COM_REDEVENT_B2B_ATTENDEE_NOTIFICATION_MAILFLOW_DESC"
                labelclass="redevent-label redevent-label-main"
                default="0"
                 >
-            <option value="0">COM_REDEVENT_ORGANIZATION_B2B_ADMIN_NOTIFICATION_MAILFLOW_ALL_ORG_ADMIN</option>
-            <option value="1">COM_REDEVENT_ORGANIZATION_B2B_ADMIN_NOTIFICATION_MAILFLOW_LOCATION_ADMIN</option>
-            <option value="2">COM_REDEVENT_ORGANIZATION_B2B_ADMIN_NOTIFICATION_MAILFLOW_BOTH</option>
+            <option value="0">COM_REDEVENT_B2B_ATTENDEE_NOTIFICATION_MAILFLOW_ATTENDEE</option>
+            <option value="1">COM_REDEVENT_B2B_ATTENDEE_NOTIFICATION_MAILFLOW_ORG_ADMINS</option>
+            <option value="2">COM_REDEVENT_B2B_ATTENDEE_NOTIFICATION_MAILFLOW_BOTH</option>
         </field>
 
-        <field name="b2b_disable_all_attendee_notifications" type="list"
-               label="COM_REDEVENT_ORGANIZATION_B2B_DISABLE_ALL_ATTENDEE_NOTIFICATIONS"
-               description="COM_REDEVENT_ORGANIZATION_B2B_DISABLE_ALL_ATTENDEE_NOTIFICATIONS_DESC"
+        <field name="b2b_attendee_notification_mailflow_orgadmin_confirmation_tag" type="retaglibrary"
+               label="COM_REDEVENT_b2b_attendee_notification_mailflow_orgadmin_confirmation_tag_label"
+               description="COM_REDEVENT_b2b_attendee_notification_mailflow_orgadmin_confirmation_tag_DESC"
                labelclass="redevent-label redevent-label-main"
-               default="0"
+               >
+                <option value="">COM_REDEVENT_DEFAULT</option>
+        </field>
+
+        <field name="b2b_attendee_notification_mailflow_orgadmin_cancellation_tag" type="retaglibrary"
+               label="COM_REDEVENT_b2b_attendee_notification_mailflow_orgadmin_cancellation_tag_label"
+               description="COM_REDEVENT_b2b_attendee_notification_mailflow_orgadmin_cancellation_tag_DESC"
+               labelclass="redevent-label redevent-label-main"
                 >
-            <option value="0">Jno</option>
-            <option value="1">Jyes</option>
+            <option value="">COM_REDEVENT_DEFAULT</option>
         </field>
 
         <field name="b2b_cancellation_period" type="text"

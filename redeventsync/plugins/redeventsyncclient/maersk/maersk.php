@@ -116,6 +116,36 @@ class plgRedeventsyncclientMaersk extends JPlugin
 	}
 
 	/**
+	 * Send a message through the plugin
+	 *
+	 * @param   string  $plugin     plugin name
+	 * @param   string  $message    message to send
+	 * @param   bool    &$response  true if message was successfully sent
+	 *
+	 * @return void
+	 */
+	public function onSend($plugin, $message, &$response)
+	{
+		if (!strstr($plugin, $this->name))
+		{
+			return;
+		}
+
+		$client = $this->getClient();
+
+		try
+		{
+			$client->send($message);
+		}
+		catch (ResyncException $e)
+		{
+			$response = false;
+		}
+
+		$response = true;
+	}
+
+	/**
 	 * set database logger (for test unit...)
 	 *
 	 * @param   object  $logger  logger object, must implement log method
