@@ -84,10 +84,22 @@ $doc->addStyleSheet('modules/mod_redevent_search/select2/select2.css');
 			$.ajax({
 				dataType : 'json',
 				url : url,
+				beforeSend: function() {
+					$('#mrsLoader').show();
+				},
+				complete: function(){
+					$('#mrsLoader').hide();
+				},
 				success : function(data) {
 					var sel = $('#modres_text_filter');
 					sel.select2('val', null);
 					sel.empty();
+
+					if (data && data.length)
+					{
+						sel.append($('<option>').val('').text('-'));
+					}
+
 					$.each(data, function(i, item) {
 						var option = $('<option>').val(item).text(item);
 						sel.append(option);
@@ -101,6 +113,7 @@ $doc->addStyleSheet('modules/mod_redevent_search/select2/select2.css');
 <form action="<?php echo $action; ?>" method="post" id="redeventsearchform">
 
 	<div class="mod_redevent_search">
+		<div id='mrsLoader' style="display:none;"><?php echo JHtml::image('media/com_redevent/images/spinner.gif', 'loading...'); ?></div>
 			<div class="rssm_filter_row">
 				<span class="rssm_filter">
 					<input type="text" name="filter" value="<?php echo $lists['filter'];?>" class="noselectbox text_filter" id="modres_text_filter"

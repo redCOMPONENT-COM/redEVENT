@@ -62,3 +62,10 @@ ul#finder-filter-select-list {
 }
 
 /* autocompleter css end */
+
+/** for maersk select2 **/
+.mod_redevent_search .select2-container .select2-choice {
+    color: #1d4b59;
+    line-height: 26px;
+    width: 190px;
+}
