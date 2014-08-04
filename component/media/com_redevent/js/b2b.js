@@ -31,6 +31,8 @@ window.addEvent('domready', function() {
 
 var redb2b = {
 
+		placesleft : 0,
+
 		/** selected users for booking **/
 		selected : new Array(),
 
@@ -276,6 +278,13 @@ var redb2b = {
 				var div = document.id('select-list');
 
 				if (this.getProperty('checked')) {
+					if (redb2b.selected.length >= redb2b.placesleft)
+					{
+						alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_NO_MORE_PLACES_LEFT"));
+						this.setProperty('checked', null);
+						return;
+					}
+
 					if (!redb2b.selected.contains(id)) {
 						div.removeClass('nouser');
 						div.getElement(".notice").set('styles', {display:'none'});
@@ -862,6 +871,17 @@ var redb2b = {
 					document.id('book-xref').set('value', id);
 					redb2b.getMembersList();
 					redb2b.updateBreadCrumbs();
+
+					if (session.placesleft == -1)
+					{
+						redb2b.placesleft = 1000;
+					}
+					else
+					{
+						redb2b.placesleft = session.placesleft;
+					}
+
+					redb2b.resetSelected();
 				}
 			});
 			req.send();

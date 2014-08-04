@@ -167,6 +167,15 @@ class RedeventControllerFrontadmin extends FOFController
 		$model->setXref($app->input->get('id'));
 		$data  = $model->getData();
 
+		if ($data && $data->maxattendees)
+		{
+			$data->placesleft = $model->getPlacesLeft();
+		}
+		elseif ($data)
+		{
+			$data->placesleft = -1;
+		}
+
 		echo json_encode($data);
 
 		$app->close();
