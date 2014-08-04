@@ -73,16 +73,19 @@ defined('_JEXEC') or die('Restricted access');
 
 			<td>
 				<?php
-				if ($a->pastCancellationPeriod)
+				if ($a->registered)
 				{
-					$cancelTip = JText::sprintf(
-						'COM_REDEVENT_FRONTEND_ADMIN_PAST_CANCEL_REGISTRATION_PERIOD_D_TIP',
-						$a->cancellationPeriod
-					);
-				}
-				else
-				{
-					$cancelTip = JText::_('COM_REDEVENT_FRONTEND_ADMIN_CONFIRM');
+					if ($a->pastCancellationPeriod)
+					{
+						$cancelTip = JText::sprintf(
+							'COM_REDEVENT_FRONTEND_ADMIN_PAST_CANCEL_REGISTRATION_PERIOD_D_TIP',
+							$a->cancellationPeriod
+						);
+					}
+					else
+					{
+						$cancelTip = JText::_('COM_REDEVENT_FRONTEND_ADMIN_CONFIRM');
+					}
 				}
 				?>
 				<?php echo JHTML::image('com_redevent/b2b-edit.png', 'edit'
