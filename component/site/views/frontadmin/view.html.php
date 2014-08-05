@@ -349,8 +349,10 @@ class RedeventViewFrontadmin extends JView
 
 		$modal = JFactory::getApplication()->input->get('modal');
 
-
-
+		if (!$orgId = JFactory::getApplication()->input->get('orgId'))
+		{
+			RedeventHelperLog::simpleLog('edit member view missing orgid');
+		}
 
 		$rmu_fields = RedmemberLib::getUserFields(JFactory::getApplication()->input->get('uid'),
 			array('assign_organization' => JFactory::getApplication()->input->get('orgId')));
