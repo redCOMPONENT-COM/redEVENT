@@ -1514,11 +1514,11 @@ class RedeventHelper
 				$src = 'status_passed.png';
 				$tip = JText::_('COM_REDEVENT_ATTENDEE_STATUS_PASSED');
 				break;
-
-			case 2:
-				$src = 'status_failed.png';
-				$tip = JText::_('COM_REDEVENT_ATTENDEE_STATUS_FAILED');
-				break;
+// FIXME: temporary fix to workaround missing 'not available' status in picasso
+//			case 2:
+//				$src = 'status_failed.png';
+//				$tip = JText::_('COM_REDEVENT_ATTENDEE_STATUS_FAILED');
+//				break;
 
 			case 3:
 				$src = 'status_dnp.png';
