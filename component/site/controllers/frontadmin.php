@@ -533,6 +533,7 @@ class RedeventControllerFrontadmin extends FOFController
 			}
 			else
 			{
+				$app->input->set('orgId', $orgId);
 				$app->enqueueMessage($resp->error, 'error');
 			}
 
