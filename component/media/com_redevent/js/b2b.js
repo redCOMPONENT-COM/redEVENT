@@ -278,7 +278,7 @@ var redb2b = {
 				var div = document.id('select-list');
 
 				if (this.getProperty('checked')) {
-					if (redb2b.selected.length >= redb2b.placesleft)
+					if (document.id('book-xref').get('value') && redb2b.selected.length >= redb2b.placesleft)
 					{
 						alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_NO_MORE_PLACES_LEFT"));
 						this.setProperty('checked', null);
