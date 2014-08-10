@@ -31,7 +31,7 @@ jimport('joomla.application.component.model');
  * @subpackage redEVENT
  * @since		0.9
  */
-class RedEventModelSample extends JModel
+class RedeventModelSample extends JModel
 {
 	/**
 	 * creates sample data for redevent
@@ -45,7 +45,7 @@ class RedEventModelSample extends JModel
 		$xref     = $this->_createXref($event, $venue);
 		return true;
 	}
-	
+
 	/**
 	 * return a category id
 	 * @return int
@@ -58,7 +58,7 @@ class RedEventModelSample extends JModel
 		       ;
 		$this->_db->setQuery($query, 0, 1);
 		$res = $this->_db->loadResult();
-		
+
 		if (!$res) {
 			return $this->_createCategory();
 		}
@@ -66,10 +66,10 @@ class RedEventModelSample extends JModel
 			return $res;
 		}
 	}
-	
+
 	/**
 	 * creates a sample category
-	 * 
+	 *
 	 * @return category id
 	 */
 	function _createCategory()
@@ -79,7 +79,7 @@ class RedEventModelSample extends JModel
 		$row->catdescription = 'Sample category';
 		$row->color          = '#00DD00';
 		$row->published      = 1;
-		
+
 		if ($row->check() && $row->store()) {
 			return $row->id;
 		}
@@ -89,7 +89,7 @@ class RedEventModelSample extends JModel
 		}
 	}
 
-	
+
 	/**
 	 * return a venue id
 	 * @return int
@@ -102,7 +102,7 @@ class RedEventModelSample extends JModel
 		       ;
 		$this->_db->setQuery($query, 0, 1);
 		$res = $this->_db->loadResult();
-		
+
 		if (!$res) {
 			return $this->_createVenue();
 		}
@@ -110,10 +110,10 @@ class RedEventModelSample extends JModel
 			return $res;
 		}
 	}
-	
+
 	/**
 	 * creates a sample venue
-	 * 
+	 *
 	 * @return venue id
 	 */
 	function _createVenue()
@@ -122,7 +122,7 @@ class RedEventModelSample extends JModel
 		$row->venue        = 'Venue S1';
 		$row->locdescription = 'Sample venue';
 		$row->published      = 1;
-		
+
 		if ($row->check() && $row->store()) {
 			return $row->id;
 		}
@@ -131,10 +131,10 @@ class RedEventModelSample extends JModel
 			return false;
 		}
 	}
-	
+
 	/**
 	 * creates a sample event
-	 * @param int $category 
+	 * @param int $category
 	 * @return unknown_type
 	 */
 	function _createEvent($category)
@@ -144,29 +144,29 @@ class RedEventModelSample extends JModel
 		$event->datdescription = JText::_('COM_REDEVENT_SAMPLE_EVENT_DESCRIPTION');
 		$event->published      = 1;
 		$event->redform_id     = 1;
-		
+
 		$event->registra       = 1;
 		$event->unregistra     = 0;
 		$event->juser          = 0;
-		
+
 		$event->notify_on_list_subject    = JText::_('COM_REDEVENT_SAMPLE_EVENT_NOTIFY_ON_LIST_SUBJECT');
 		$event->notify_on_list_body       = JText::_('COM_REDEVENT_SAMPLE_EVENT_NOTIFY_ON_LIST_BODY');
 		$event->notify_off_list_subject   = JText::_('COM_REDEVENT_SAMPLE_EVENT_NOTIFY_OFF_LIST_SUBJECT');
 		$event->notify_off_list_body      = JText::_('COM_REDEVENT_SAMPLE_EVENT_NOTIFY_OFF_LIST_BODY');
-		
+
 		$event->notify                 = 1;
 		$event->activate               = 0;
 		$event->notify_subject         = JText::_('COM_REDEVENT_SAMPLE_EVENT_NOTIFY_SUBJECT');
 		$event->notify_body            = JText::_('COM_REDEVENT_SAMPLE_EVENT_NOTIFY_BODY');
 		$event->notify_confirm_subject = JText::_('COM_REDEVENT_SAMPLE_EVENT_NOTIFY_CONFIRM_SUBJECT');
 		$event->notify_confirm_body    = JText::_('COM_REDEVENT_SAMPLE_EVENT_NOTIFY_CONFIRM_BODY');
-		
+
 		$event->review_message       = JText::_('COM_REDEVENT_SAMPLE_EVENT_REVIEW_MESSAGE');
 		$event->confirmation_message = JText::_('COM_REDEVENT_SAMPLE_EVENT_CONFIRMATION_MESSAGE');
-		
+
 		$event->show_names           = 0;
 		$event->showfields           = '';
-		
+
 		$event->submission_types         = 'webform';
 		$event->submission_type_email    = null;
 		$event->submission_type_external = null;
@@ -182,21 +182,21 @@ class RedEventModelSample extends JModel
 		$event->submission_type_email_subject        = null;
 		$event->submission_type_webform_formal_offer = null;
 // 		$event->show_submission_type_webform_formal_offer = 0;
-		
+
 		$event->send_pdf_form = 0;
 		$event->pdf_form_data = 0;
-		
+
 		$event->paymentaccepted   = JText::_('COM_REDEVENT_SAMPLE_EVENT_PAYMENTACCEPTED');
 		$event->paymentprocessing = JText::_('COM_REDEVENT_SAMPLE_EVENT_PAYMENTPROCESSING');
-		
-		if ($event->check() && $event->store()) 
+
+		if ($event->check() && $event->store())
 		{
 		  $query = ' INSERT INTO #__redevent_event_category_xref (event_id, category_id) VALUES (' . $this->_db->Quote($event->id) . ', '. $this->_db->Quote($category) . ')';
 		  $this->_db->setQuery($query);
 	    if (!$this->_db->query()) {
 	      $this->setError($this->_db->getErrorMsg());
-	      return false;     
-	    }		  
+	      return false;
+	    }
 			return $event->id;
 		}
 		else {
@@ -204,10 +204,10 @@ class RedEventModelSample extends JModel
 			return false;
 		}
 	}
-	
+
 	/**
 	 * creates a sample event
-	 * 
+	 *
 	 * @return xref id
 	 */
 	function _createXref($event, $venue)
@@ -221,8 +221,8 @@ class RedEventModelSample extends JModel
 		$row->enddates       = strftime('%Y-%m-%d', strtotime('+4 days'));
 		$row->endtimes       = '15:00';
 		$row->published      = 1;
-		
-		if ($row->check() && $row->store()) 
+
+		if ($row->check() && $row->store())
 		{
 			return $row->id;
 		}

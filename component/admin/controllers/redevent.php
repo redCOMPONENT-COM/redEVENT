@@ -161,9 +161,9 @@ class RedEventControllerRedevent extends FOFController
 
 	function sampledata()
 	{
-		$model = &JModel::getInstance('sample',  'RedEventModel');
+		$model = $this->getModel('sample',  'RedeventModel');
 		$model->create();
-		$this->setRedirect( 'index.php?option=com_redevent', JText::_('COM_REDEVENT_Sample_data_created') );
+		$this->setRedirect('index.php?option=com_redevent', JText::_('COM_REDEVENT_Sample_data_created'));
 	}
 
 	/**
