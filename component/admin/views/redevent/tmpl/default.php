@@ -47,49 +47,49 @@ $options = array(
 						$option = JRequest::getCmd('option');
 
 						$link = 'index.php?option='.$option.'&amp;view=events';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-events.png', JText::_('COM_REDEVENT_EVENTS' ) );
+						$this->quickiconButton( $link, 'icon-48-events.png', JText::_('COM_REDEVENT_EVENTS' ) );
 
 						$link = 'index.php?option='.$option.'&amp;view=venues';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-venues.png', JText::_('COM_REDEVENT_VENUES' ) );
+						$this->quickiconButton( $link, 'icon-48-venues.png', JText::_('COM_REDEVENT_VENUES' ) );
 
 						$link = 'index.php?option='.$option.'&amp;view=categories';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-categories.png', JText::_('COM_REDEVENT_CATEGORIES' ) );
+						$this->quickiconButton( $link, 'icon-48-categories.png', JText::_('COM_REDEVENT_CATEGORIES' ) );
 
 						$link = 'index.php?option='.$option.'&amp;view=venuescategories';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-venuescategories.png', JText::_('COM_REDEVENT_VENUES_CATEGORIES' ) );
+						$this->quickiconButton( $link, 'icon-48-venuescategories.png', JText::_('COM_REDEVENT_VENUES_CATEGORIES' ) );
 
 						$link = 'index.php?option='.$option.'&amp;view=registrations';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-registrations.png', JText::_('COM_REDEVENT_REGISTRATIONS' ) );
+						$this->quickiconButton( $link, 'icon-48-registrations.png', JText::_('COM_REDEVENT_REGISTRATIONS' ) );
 
 						$link = 'index.php?option='.$option.'&amp;view=textsnippets';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-library.png', JText::_('COM_REDEVENT_TEXT_LIBRARY' ) );
+						$this->quickiconButton( $link, 'icon-48-library.png', JText::_('COM_REDEVENT_TEXT_LIBRARY' ) );
 
 						$link = 'index.php?option='.$option.'&amp;view=customfields';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-customfields.png', JText::_('COM_REDEVENT_CUSTOM_FIELDS' ) );
+						$this->quickiconButton( $link, 'icon-48-customfields.png', JText::_('COM_REDEVENT_CUSTOM_FIELDS' ) );
 
 						$link = 'index.php?option='.$option.'&amp;view=roles';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-roles.png', JText::_('COM_REDEVENT_ROLES' ) );
+						$this->quickiconButton( $link, 'icon-48-roles.png', JText::_('COM_REDEVENT_ROLES' ) );
 
 						$link = 'index.php?option='.$option.'&amp;view=pricegroups';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-pricegroups.png', JText::_('COM_REDEVENT_MENU_PRICEGROUPS' ) );
+						$this->quickiconButton( $link, 'icon-48-pricegroups.png', JText::_('COM_REDEVENT_MENU_PRICEGROUPS' ) );
 
 						$link = 'index.php?option='.$option.'&amp;view=archive';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-archive.png', JText::_('COM_REDEVENT_ARCHIVESCREEN' ) );
+						$this->quickiconButton( $link, 'icon-48-archive.png', JText::_('COM_REDEVENT_ARCHIVESCREEN' ) );
 
 						//only admins should be able to see this items
 						if ($this->user->authorise('com_redevent', 'manage')) {
 							$link = 'index.php?option='.$option.'&amp;view=editcss';
-							RedEventViewRedEvent::quickiconButton( $link, 'icon-48-cssedit.png', JText::_('COM_REDEVENT_EDIT_CSS' ) );
+							$this->quickiconButton( $link, 'icon-48-cssedit.png', JText::_('COM_REDEVENT_EDIT_CSS' ) );
 
 							$link = 'index.php?option='.$option.'&amp;view=tools';
-							RedEventViewRedEvent::quickiconButton( $link, 'icon-48-housekeeping.png', JText::_('COM_REDEVENT_TOOLS' ) );
+							$this->quickiconButton( $link, 'icon-48-housekeeping.png', JText::_('COM_REDEVENT_TOOLS' ) );
 
 							$link = 'index.php?option='.$option.'&amp;view=logs';
-							RedEventViewRedEvent::quickiconButton( $link, 'icon-48-log.png', JText::_('COM_REDEVENT_LOG' ) );
+							$this->quickiconButton( $link, 'icon-48-log.png', JText::_('COM_REDEVENT_LOG' ) );
 						}
 
 						$link = 'index.php?option='.$option.'&amp;view=help';
-						RedEventViewRedEvent::quickiconButton( $link, 'icon-48-help.png', JText::_('COM_REDEVENT_HELP' ) );
+						$this->quickiconButton( $link, 'icon-48-help.png', JText::_('COM_REDEVENT_HELP' ) );
 						?>
 						</div>
 					</td>
