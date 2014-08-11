@@ -32,7 +32,7 @@ jimport('joomla.application.component.controller');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedEventControllerVenues extends RedEventController
+class RedeventControllerVenues extends RedeventController
 {
 	/**
 	 * Constructor

@@ -32,7 +32,7 @@ jimport('joomla.application.component.controller');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedEventControllerVenuescategories extends RedEventController
+class RedeventControllerVenuescategories extends RedeventController
 {
 	/**
 	 * Constructor
@@ -62,7 +62,7 @@ class RedEventControllerVenuescategories extends RedEventController
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or die( 'Invalid Token' );
-		
+
 		$task		= JRequest::getVar('task');
 
 		//Sanitize
@@ -242,7 +242,7 @@ class RedEventControllerVenuescategories extends RedEventController
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or die( 'Invalid Token' );
-		
+
 		$category = & JTable::getInstance('redevent_venues_categories', '');
 		$category->bind(JRequest::get('post'));
 		$category->checkin();
@@ -300,7 +300,7 @@ class RedEventControllerVenuescategories extends RedEventController
 		}
 
 		$model->checkout();
-		
+
 		parent::display();
 	}
 }

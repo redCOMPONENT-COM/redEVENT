@@ -32,7 +32,7 @@ jimport('joomla.application.component.controller');
  * @subpackage redevent
  * @since 0.9
  */
-class RedEventControllerTools extends RedEventController
+class RedeventControllerTools extends RedeventController
 {
 	/**
 	 * Constructor
@@ -75,15 +75,15 @@ class RedEventControllerTools extends RedEventController
 
 		$this->setRedirect( $link, $msg );
  	}
- 	
+
  	function checkdb()
  	{
 		$model = $this->getModel('tools');
-		
+
 		$res = $model->checkdb();
-		
+
 		$link = 'index.php?option=com_redevent&view=tools';
-		
+
 		if ($res) {
 			$msg  = JText::_('COM_REDEVENT_DB_TEST_OK');
 			$type = 'message';
@@ -92,18 +92,18 @@ class RedEventControllerTools extends RedEventController
 			$msg  = JText::_('COM_REDEVENT_DB_TEST_KO').': '.$model->getError();
 			$type = 'error';
 		}
-		
-		$this->setRedirect( $link, $msg, $type ); 		
+
+		$this->setRedirect( $link, $msg, $type );
  	}
- 	
+
  	function fixdb()
  	{
 		$model = $this->getModel('tools');
-		
+
 		$res = $model->fixdb();
-		
+
 		$link = 'index.php?option=com_redevent&view=tools';
-		
+
 		if ($res) {
 			$msg  = JText::_('COM_REDEVENT_DB_FIX_OK');
 			$type = 'message';
@@ -112,7 +112,7 @@ class RedEventControllerTools extends RedEventController
 			$msg  = JText::_('COM_REDEVENT_DB_FIX_KO').': '.$model->getError();
 			$type = 'error';
 		}
-		
-		$this->setRedirect( $link, $msg, $type ); 		
+
+		$this->setRedirect( $link, $msg, $type );
  	}
 }

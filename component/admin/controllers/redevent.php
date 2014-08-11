@@ -33,7 +33,7 @@ jimport('joomla.application.component.controller');
  * @subpackage redEVENT
  * @since 2.0
  */
-class RedEventControllerRedevent extends FOFController
+class RedeventControllerRedevent extends FOFController
 {
 	public function __construct($config = array())
 	{

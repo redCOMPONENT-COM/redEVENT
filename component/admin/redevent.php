@@ -49,7 +49,7 @@ if( $controller = JRequest::getWord('controller') ) {
 	}
 
 	//Create the controller
-	$classname  = 'RedEventController'.$controller;
+	$classname  = 'RedeventController' . $controller;
 	$controller = new $classname( );
 
 	// Perform the Request task

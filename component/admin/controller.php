@@ -32,7 +32,7 @@ jimport('joomla.application.component.controller');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedEventController extends JControllerLegacy
+class RedeventController extends JControllerLegacy
 {
 	function __construct()
 	{
@@ -100,7 +100,7 @@ class RedEventController extends JControllerLegacy
 	{
 		throw new Exception('deprecated, use the function from controllers/redevent');
 	}
-	
+
 	function selectuser()
 	{
 		throw new Exception('deprecated, use the function from controllers/redevent');
