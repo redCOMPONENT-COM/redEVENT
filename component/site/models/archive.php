@@ -35,17 +35,17 @@ require_once('baseeventslist.php');
  */
 class RedeventModelArchive extends RedeventModelBaseEventList
 {
-	
+
 	function __construct()
-	{		
+	{
 		parent::__construct();
-		
+
 		$mainframe = & JFactory::getApplication();
-		
+
 		$filter 		  = $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter', 'filter', '', 'string');
 		$filter_type 	= $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter_type', 'filter_type', '', 'string');
     $customs      = $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter_customs', 'filtercustom', array(), 'array');
-    
+
     $category = $mainframe->getParams('com_redevent')->get('category_id');
     $filter_category = $mainframe->getUserStateFromRequest('com_redevent.'.$this->getName().'.filter_category', 'filter_category', 0, 'int');
     if ($category && !$filter_category) {
@@ -59,16 +59,16 @@ class RedeventModelArchive extends RedeventModelBaseEventList
     	$filter_venue = $venue;
     }
 		$this->setState('filter_venue',   $filter_venue);
-    
+
     // Get the filter request variables
     $this->setState('filter_order',     JRequest::getCmd('filter_order', 'x.dates'));
     $this->setState('filter_order_dir', JRequest::getCmd('filter_order_Dir', $mainframe->getParams('com_redevent')->get('archive_ordering', 'ASC')));
-    
+
 		$this->setState('filter',         $filter);
 		$this->setState('filter_type',    $filter_type);
 		$this->setState('filter_customs', $customs);
 	}
-	
+
 	/**
 	 * Build the where clause
 	 *
@@ -86,10 +86,10 @@ class RedeventModelArchive extends RedeventModelBaseEventList
 		$params 	= & $mainframe->getParams();
 
 		$task 		= JRequest::getWord('task');
-		
+
 		$where = array();
 		$where[] = ' x.published = -1';
-				
+
 		// Second is to only select events assigned to category the user has access to
 		$where[] = ' c.access <= '.$gid;
 
@@ -101,7 +101,7 @@ class RedeventModelArchive extends RedeventModelBaseEventList
 		{
 			$filter 		  = $this->getState('filter');
 			$filter_type 	= $this->getState('filter_type');
-			
+
 			if ($filter)
 			{
 				// clean filter variables
@@ -122,54 +122,54 @@ class RedeventModelArchive extends RedeventModelBaseEventList
 					case 'city' :
 						$where[] = ' LOWER( l.city ) LIKE '.$filter;
 						break;
-						
+
 					case 'type' :
 						$where[] = ' LOWER( c.catname ) LIKE '.$filter;
 						break;
 				}
 			}
 		}
-	    
-		if ($ev = $this->getState('filter_event')) 
-		{		
+
+		if ($ev = $this->getState('filter_event'))
+		{
 			$where[] = 'a.id = '.$this->_db->Quote($ev);
 		}
-		
+
     if ($filter_venue = $this->getState('filter_venue'))
     {
-    	$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);    	
+    	$where[] = ' l.id = ' . $this->_db->Quote($filter_venue);
     }
-	    
-		if ($cat = $this->getState('filter_category')) 
-		{		
+
+		if ($cat = $this->getState('filter_category'))
+		{
     	$category = $this->getCategory((int) $cat);
     	if ($category) {
 				$where[] = '(c.id = '.$this->_db->Quote($category->id) . ' OR (c.lft > ' . $this->_db->Quote($category->lft) . ' AND c.rgt < ' . $this->_db->Quote($category->rgt) . '))';
     	}
 		}
-		
+
 		// more filters
 		if ($state = JRequest::getVar('state', '', 'request', 'string')) {
 			$where[] = ' STRCMP(l.state, '.$this->_db->Quote($state).') = 0 ';
-		}		
+		}
 		if ($country = JRequest::getVar('country', '', 'request', 'string')) {
 			$where[] = ' STRCMP(l.country, '.$this->_db->Quote($country).') = 0 ';
 		}
-	
+
 		$sstate = $params->get( 'session_state', '0' );
 		if ($sstate == 1)
 		{
 			$now = strftime('%Y-%m-%d %H:%M');
 			$where[] = '(CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > '.$this->_db->Quote($now);
-		} 
+		}
 		else if ($sstate == 2) {
 			$where[] = 'x.dates = 0';
 		}
-		
-    $customs = $this->getState('filter_customs');	
+
+    $customs = $this->getState('filter_customs');
     foreach ((array) $customs as $key => $custom)
     {
-      if ($custom != '') 
+      if ($custom != '')
       {
       	if (is_array($custom)) {
       		$custom = implode("/n", $custom);
@@ -177,14 +177,14 @@ class RedeventModelArchive extends RedeventModelBaseEventList
         $where[] = ' custom'.$key.' LIKE ' . $this->_db->Quote('%'.$custom.'%');
       }
     }
-    
+
     $day_limit = trim($params->get('display_limit')) == '' ? false : (int) $params->get('display_limit');
     if ($day_limit) {
 			$limit = strftime('%Y-%m-%d %H:%M', strtotime("- $day_limit days"));
 			$where[] = '(CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > '.$this->_db->Quote($limit);
     }
-		
+
 		return ' WHERE '.implode(' AND ', $where);
 	}
-	
+
 }
