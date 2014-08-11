@@ -165,7 +165,7 @@ class RedeventViewArchive extends JViewLegacy
 		$filter_event    = $state->get('filter_event');
 
 		$filter_order		= $state->get('filter_order');
-		$filter_order_Dir	= $state->get('filter_order_Dir');
+		$filter_order_Dir	= $state->get('filter_order_dir');
 
 		$this->assign('action', JRoute::_(RedeventHelperRoute::getArchiveRoute()));
 
