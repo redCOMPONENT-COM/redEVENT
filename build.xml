@@ -121,6 +121,14 @@
 			</fileset>
 		</foreach>
 
+        <!-- global zip -->
+        <zip destfile="${dirs.release}/redevent-all-unzip-first-${version}.zip">
+            <fileset dir="${dirs.release}">
+                <exclude name="com_redeventsync**"/>
+            </fileset>
+        </zip>
+
+
 		<delete dir="${dirs.tmp}" quiet="yes" includeemptydirs="false" />
 	</target>
 
