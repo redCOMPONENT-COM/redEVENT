@@ -25,13 +25,12 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.model');
 
 /**
- * EventList Component Home Model
+ * Redevent Component Home Model
  *
- * @package Joomla
- * @subpackage redEVENT
- * @since		0.9
+ * @package  Redevent
+ * @since    0.9
  */
-class RedEventModelRedEvent extends JModel
+class RedeventModelRedevent extends FOFModel
 {
 	/**
 	 * Events data in array
