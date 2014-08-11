@@ -1,9 +1,9 @@
 <?php
-/** 
- * @copyright Copyright (C) 2008 redCOMPONENT.com. All rights reserved. 
- * @license can be read in this package of software in the file license.txt or 
- * read on http://redcomponent.com/license.txt  
- * Developed by email@recomponent.com - redCOMPONENT.com 
+/**
+ * @copyright Copyright (C) 2008 redCOMPONENT.com. All rights reserved.
+ * @license can be read in this package of software in the file license.txt or
+ * read on http://redcomponent.com/license.txt
+ * Developed by email@recomponent.com - redCOMPONENT.com
  */
 function RedEventBuildRoute(&$query)
 {
@@ -18,9 +18,9 @@ function RedEventBuildRoute(&$query)
 	else {
 	  $view = '';
 	}
-		
+
 	switch ($view) {
-	  
+
 	  case 'confirmation':
 	    break;
 	  case 'editevent':
@@ -35,7 +35,8 @@ function RedEventBuildRoute(&$query)
     		unset($query['xref']);
     	};
 	  	break;
-	  	
+
+		case 'archive':
 	  case 'calendar':
 	  case 'categoryevents':
 	  case 'details':
@@ -61,58 +62,58 @@ function RedEventBuildRoute(&$query)
     		$segments[] = $query['id'];
     		unset($query['id']);
     	};
-    
+
     	if(isset($query['task']))
     	{
     		$segments[] = $query['task'];
     		unset($query['task']);
     	};
-    
+
     	if(isset($query['returnid']))
     	{
     		$segments[] = $query['returnid'];
     		unset($query['returnid']);
     	};
     	break;
-    	    	
+
 	  case 'signup':
     	if(isset($query['subtype']))
     	{
     		$segments[] = $query['subtype'];
     		unset($query['subtype']);
     	};
-    
+
     	if(isset($query['task']))
     	{
     		$segments[] = $query['task'];
     		unset($query['task']);
     	};
-    
+
     	if(isset($query['id']))
     	{
     		$segments[] = $query['id'];
     		unset($query['id']);
     	};
-    
+
     	if(isset($query['xref']))
     	{
     		$segments[] = $query['xref'];
     		unset($query['xref']);
     	};
-    	
+
     	if(isset($query['pg']))
     	{
     		$segments[] = $query['pg'];
     		unset($query['pg']);
     	};
     	break;
-    	
-	  case 'attendees':	  	
+
+	  case 'attendees':
     	if(isset($query['controller']))
     	{
     		$segments[] = $query['controller'];
     		unset($query['controller']);
-    	};	
+    	};
     	if(isset($query['task']))
     	{
     		$segments[] = $query['task'];
@@ -165,7 +166,7 @@ function RedEventParseRoute($segments)
 			}
 
 		} break;
-		
+
 		case 'venue':
 		{
 			if (isset($segments[1])) {
@@ -179,7 +180,7 @@ function RedEventParseRoute($segments)
 		{
 			$vars['view'] = 'details';
       $count = count($segments);
-			if ($count > 1) 
+			if ($count > 1)
 			{
 				$id = explode(':', $segments[1]);
 				$vars['id'] = $id[0];
@@ -189,7 +190,7 @@ function RedEventParseRoute($segments)
 			}
 
 		} break;
-		
+
 		case 'venueevents':
 		{
 			$id = explode(':', $segments[1]);
@@ -205,7 +206,7 @@ function RedEventParseRoute($segments)
 		case 'editevent':
 		{
 			$count = count($segments);
-			
+
 			$vars['view'] = 'editevent';
 
 			if ($count > 1) {
@@ -223,7 +224,7 @@ function RedEventParseRoute($segments)
 			$count = count($segments);
 
 			$vars['view'] = 'editvenue';
-			
+
 			if($count > 1) {
 				$vars['id'] = $segments[1];
 			}
@@ -236,7 +237,7 @@ function RedEventParseRoute($segments)
 		case 'simplelist':
 		{
 			$vars['view'] = 'simplelist';
-			
+
 			$count = count($segments);
 			if($count == 2) {
 				$vars['task'] = $segments[1];
@@ -247,7 +248,7 @@ function RedEventParseRoute($segments)
 		case 'categoriesdetailed':
 		{
 			$vars['view'] = 'categoriesdetailed';
-			
+
 			$count = count($segments);
 			if($count == 2) {
 				$vars['task'] = $segments[1];
@@ -269,40 +270,40 @@ function RedEventParseRoute($segments)
 		case 'venues':
 		{
 			$vars['view'] = 'venues';
-			
+
 			$count = count($segments);
 			if($count == 2) {
 				$vars['task'] = $segments[1];
 			}
 
 		} break;
-		
+
 		case 'day':
 		{
 			$vars['view'] = 'day';
-			
+
 			$count = count($segments);
 			if($count == 2) {
 				$vars['id'] = $segments[1];
 			}
 
 		} break;
-		
+
     case 'upcomingvenueevents':
     {
       $vars['view'] = 'upcomingvenueevents';
-      
+
       $count = count($segments);
       if($count == 2) {
         $vars['id'] = $segments[1];
       }
 
     } break;
-		
+
     case 'attendees':
     {
       $vars['view'] = 'attendees';
-      
+
       $count = count($segments);
       if($count > 1) {
         $vars['controller'] = $segments[1];
@@ -315,10 +316,10 @@ function RedEventParseRoute($segments)
       }
 
     } break;
-    
+
     case 'signup':
       $vars['view'] = 'signup';
-      
+
       $count = count($segments);
       if($count > 1) {
         $vars['subtype'] = $segments[1];
@@ -336,18 +337,19 @@ function RedEventParseRoute($segments)
         $vars['pg'] = $segments[5];
       }
     	break;
-    	
+
     case 'moreinfo':
       $vars['view'] = $segments[0];
-			$vars['xref'] = $segments[1]; 
-			$vars['tmpl'] = 'component'; 
+			$vars['xref'] = $segments[1];
+			$vars['tmpl'] = 'component';
     	break;
-    	
+
     case 'week':
       $vars['view'] = $segments[0];
 			$vars['week'] = $segments[1];
     	break;
-    
+
+	case 'archive':
     case 'confirmation':
     case 'calendar':
     case 'payment':
@@ -358,16 +360,16 @@ function RedEventParseRoute($segments)
     case 'venuesmap':
     case 'myevents':
     case 'featured':
-      $vars['view'] = $segments[0];      
+      $vars['view'] = $segments[0];
       break;
-      
+
 //    case 'cregistration':
 //    	$vars['controller'] = $segments[0];
 //    	break;
-    	
+
 //		default:
 //      $vars['view'] = $segments[0];
-//			
+//
 //			break;
 	}
 
