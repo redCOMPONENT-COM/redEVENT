@@ -86,6 +86,8 @@ class RedEventModelRegistrations extends JModel
 		$filter_waiting   = $mainframe->getUserStateFromRequest( $option.'.registrations.filter_waiting',   'filter_waiting'  , 0, 'int' );
 		$filter_cancelled = $mainframe->getUserStateFromRequest( $option.'.registrations.filter_cancelled', 'filter_cancelled', 0, 'int' );
 
+		$search = $mainframe->getUserStateFromRequest($option . '.registrations.search', 'search', '', 'string');
+		$this->setState('search', $search);
 
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
@@ -252,6 +254,11 @@ class RedEventModelRegistrations extends JModel
 			case 1:
 				$where[] = ' r.cancelled = 1 ';
 				break;
+		}
+
+		if ($search = $this->getState('search'))
+		{
+			$where[] = '(u.username LIKE "%' . $search . '%" OR u.name LIKE "%' . $search . '%" OR u.email LIKE "%' . $search . '%")';
 		}
 
 		$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );

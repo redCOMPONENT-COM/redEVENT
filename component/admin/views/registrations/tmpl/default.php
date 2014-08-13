@@ -34,6 +34,14 @@ $colspan = 13;
 				<?php echo $this->lists['filter_confirmed']; ?> <?php echo $this->lists['filter_waiting']; ?> <?php echo $this->lists['filter_cancelled']; ?>
 			</td>
 		</tr>
+		<tr>
+			<td>
+				<?php echo JText::_('COM_REDEVENT_SEARCH_USER' ); ?>
+				<input type="text" name="search" id="search" value="<?php echo $this->lists['search']; ?>" class="text_area" onChange="document.adminForm.submit();" />
+				<button onclick="this.form.submit();"><?php echo JText::_('COM_REDEVENT_Go' ); ?></button>
+				<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo JText::_('COM_REDEVENT_Reset' ); ?></button>
+			</td>
+		</tr>
 	</table>
 
 	<?php if ($this->cancelled): ?>
@@ -182,6 +190,6 @@ $colspan = 13;
 		<input type="hidden" name="view" value="registrations" />
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
-		<input type="hidden" name="filter_order_Dir" value="" />
+		<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
 
 </form>

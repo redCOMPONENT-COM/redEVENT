@@ -38,7 +38,7 @@ class RedEventViewRegistrations extends JView {
 	{
 		$mainframe = &JFactory::getApplication();
 		$option = JRequest::getCmd('option');
-		
+
 		//initialise variables
 		$db = JFactory::getDBO();
 		$settings = JComponentHelper::getParams('com_redevent');
@@ -49,7 +49,7 @@ class RedEventViewRegistrations extends JView {
 		//get vars
 		$filter_order		= $state->get('filter_order');
 		$filter_order_Dir	= $state->get('filter_order_Dir');
-		
+
 		$xref = JRequest::getInt('xref');
 		// $search 			= $mainframe->getUserStateFromRequest( $option.'.attendees.search', 'search', '', 'string' );
 		// $search 			= $db->getEscaped( trim(JString::strtolower( $search ) ) );
@@ -57,7 +57,7 @@ class RedEventViewRegistrations extends JView {
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_REGISTRATIONS'));
 		//add css and submenu to document
 		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
-		
+
 		// add javascript
 		JHTML::_('behavior.modal', 'a.answersmodal');
 
@@ -75,7 +75,7 @@ class RedEventViewRegistrations extends JView {
 		}
 		JToolBarHelper::spacer();
 		JToolBarHelper::back();
-	
+
 		if ($user->authorise('core.admin', 'com_redevent')) {
 			JToolBarHelper::preferences('com_redevent', '600', '800');
 		}
@@ -83,37 +83,39 @@ class RedEventViewRegistrations extends JView {
 		// Get data from the model
 		$rows      = $this->get( 'Data');
 		$pageNav   = $this->get( 'Pagination' );
-				
+
 		//build filter selectlist
 		$filters = array();
-		
+
 		// search filter
 		// $lists['search'] = $search;
-		
+
 		// confirmed filter
 		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CONFIRMED_ALL')),
-		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CONFIRMED_CONFIRMED')), 
-		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CONFIRMED_UNCONFIRMED')), 
+		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CONFIRMED_CONFIRMED')),
+		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CONFIRMED_UNCONFIRMED')),
 		                 );
 		$lists['filter_confirmed'] =  JHTML::_('select.genericlist', $options, 'filter_confirmed', 'class="inputbox" onchange="this.form.submit();"', 'value', 'text', $state->get('filter_confirmed') );
-		
+
 		// waiting list filter
 		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_ATTENDEES_FILTER_WAITING_ALL')),
-		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_ATTENDEES_FILTER_WAITING_ATTENDING')), 
-		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_ATTENDEES_FILTER_WAITING_WAITING')), 
+		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_ATTENDEES_FILTER_WAITING_ATTENDING')),
+		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_ATTENDEES_FILTER_WAITING_WAITING')),
 		                 );
 		$lists['filter_waiting'] =  JHTML::_('select.genericlist', $options, 'filter_waiting', 'class="inputbox" onchange="this.form.submit();"', 'value', 'text', $state->get('filter_waiting') );
-		
+
 		// cancelled filter
 		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CANCELLED_NOT_CANCELLED')),
-		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CANCELLED_CANCELLED')), 
-		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CANCELLED_ALL')), 
+		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CANCELLED_CANCELLED')),
+		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CANCELLED_ALL')),
 		                 );
 		$lists['filter_cancelled'] =  JHTML::_('select.genericlist', $options, 'filter_cancelled', 'class="inputbox" onchange="this.form.submit();"', 'value', 'text', $state->get('filter_cancelled') );
 
 		// table ordering
 		$lists['order_Dir'] = $filter_order_Dir;
 		$lists['order']		= $filter_order;
+
+		$lists['search'] = $state->get('search');
 
 		//assign to template
 		$this->assignRef('lists',     $lists);
@@ -122,7 +124,7 @@ class RedEventViewRegistrations extends JView {
 		$this->assignRef('user',      $user);
 		$this->assignRef('settings',  $settings);
 		$this->assignRef('cancelled', $state->get('filter_cancelled'));
-		
+
 		parent::display($tpl);
 	}
 }
