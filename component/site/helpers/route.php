@@ -433,7 +433,12 @@ class RedeventHelperRoute
 
 		// Still here..
 		$active = $menus->getActive();
-		if ($active && $active->component == 'com_redevent')
+
+		// Check for guest access for default itemid
+		$guest = JUser::getInstance(0);
+		$guestAllowedViewLevels = $guest->getAuthorisedViewLevels();
+
+		if ($active && $active->component == 'com_redevent' && in_array($active->access, $guestAllowedViewLevels))
 		{
 			return $active;
 		}
