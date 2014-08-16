@@ -9,8 +9,7 @@ $str = file_get_contents("php://input");
 $convert = rawurldecode($str);
 
 parse_str($convert);
-
-echo 'payload: ' . print_r($payload);
+$payload = json_decode($convert);
 
 if (strstr($_SERVER['SERVER_NAME'], 'play'))
 {
@@ -21,6 +20,17 @@ else
 {
 	$targetBranch = 'maersk-main';
 	$basepath = '/home/staging';
+}
+
+if (!strstr($payload->ref, $targetBranch))
+{
+	echo 'Another branch was updated';
+
+	return true;
+}
+else
+{
+	echo $targetBranch . ' was updated';
 }
 
 // Update repo
