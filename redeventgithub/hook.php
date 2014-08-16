@@ -10,7 +10,7 @@ $convert = rawurldecode($str);
 
 parse_str($convert);
 
-print_r($payload);
+echo 'payload: ' . print_r($payload);
 
 if (strstr($_SERVER['SERVER_NAME'], 'play'))
 {
