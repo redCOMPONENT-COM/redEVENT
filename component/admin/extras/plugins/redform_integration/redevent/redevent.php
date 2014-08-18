@@ -1,37 +1,25 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redFORM
- * @copyright redFORM (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.integration
+ * @copyright  redEVENT (C) 2008-2013 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 // Import library dependencies
 jimport('joomla.plugin.plugin');
 
 RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
 
-class plgRedform_integrationRedevent extends JPlugin {
-
-	private $_db = null;
-
+/**
+ * Class plgRedform_integrationRedevent
+ *
+ * @package  Redevent.integration
+ * @since    2.5
+ */
+class plgRedform_integrationRedevent extends JPlugin
+{
 	private $rfcore;
 
 	/**
@@ -44,8 +32,6 @@ class plgRedform_integrationRedevent extends JPlugin {
 	{
 		parent::__construct($subject, $config);
 		$this->loadLanguage();
-
-		$this->_db = Jfactory::getDBO();
 	}
 
 	/**
@@ -66,17 +52,19 @@ class plgRedform_integrationRedevent extends JPlugin {
 			return false;
 		}
 
-		$paymentDetailFields = new stdclass;
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
 
-		$query = ' SELECT e.title, x.dates, x.enddates, x.times, x.endtimes, e.course_code, r.id AS attendee_id'
-		       . ' , v.venue, x.id AS xref '
-		       . ' FROM #__redevent_event_venue_xref AS x '
-		       . ' INNER JOIN #__redevent_events AS e ON e.id = x.eventid '
-		       . ' LEFT JOIN #__redevent_venues AS v ON v.id = x.venueid '
-		       . ' INNER JOIN #__redevent_register AS r ON r.xref = x.id '
-		       . ' WHERE r.submit_key = ' . $this->_db->Quote($submit_key);
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadObject();
+		$query->select('e.title, x.dates, x.enddates, x.times, x.endtimes, e.course_code, r.id AS attendee_id');
+		$query->select('v.venue, x.id AS xref');
+		$query->from('#__redevent_event_venue_xref AS x');
+		$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
+		$query->join('INNER', '#__redevent_register AS r ON r.xref = x.id');
+		$query->join('LEFT', '#__redevent_venues AS v ON v.id = x.venueid');
+		$query->where('r.submit_key = ' . $db->Quote($submit_key));
+
+		$db->setQuery($query);
+		$res = $db->loadObject();
 
 		if (!$res)
 		{
@@ -99,6 +87,7 @@ class plgRedform_integrationRedevent extends JPlugin {
 			$date = JText::_('PLG_REDFORM_INTEGRATION_REDFORM_OPEN_DATE');
 		}
 
+		$paymentDetailFields = new stdclass;
 		$paymentDetailFields->title = JText::sprintf('PLG_REDFORM_INTEGRATION_REDFORM_TITLE',
 			$res->title,
 			$res->venue,
@@ -128,56 +117,19 @@ class plgRedform_integrationRedevent extends JPlugin {
 	 */
 	private function getFullname($submit_key)
 	{
-		$sids = $this->getSids($submit_key);
-
-		$sidsAnswers = $this->getRedformCore()->getSidsFieldsAnswers($sids);
+		$submissions = $this->getRedformCore()->getAnswers($submit_key)->getSingleSubmissions();
 
 		$fullnames = array();
 
-		foreach ($sidsAnswers as $answers)
+		foreach ($submissions as $answers)
 		{
-			if ($fullname = $this->getAnswerFullname($answers))
+			if ($fullname = $answers->getFullname())
 			{
 				$fullnames[] = $fullname;
 			}
 		}
 
 		return implode(', ', $fullnames);
-	}
-
-	/**
-	 * Return fullname for answers
-	 *
-	 * @param   array  $answers  answers from redform
-	 *
-	 * @return bool
-	 */
-	private function getAnswerFullname($answers)
-	{
-		foreach ($answers as $field)
-		{
-			if ($field->fieldtype == 'fullname')
-			{
-				return $field->answer;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Sids for submit_key
-	 *
-	 * @param   string  $submit_key  submit key
-	 *
-	 * @return mixed
-	 */
-	private function getSids($submit_key)
-	{
-		$rfcore = $this->getRedformCore();
-		$sids = $rfcore->getSids($submit_key);
-
-		return $sids;
 	}
 
 	/**
@@ -189,7 +141,7 @@ class plgRedform_integrationRedevent extends JPlugin {
 	{
 		if (!$this->rfcore)
 		{
-			$this->rfcore = new RedformCore;
+			$this->rfcore = new RdfCore;
 		}
 
 		return $this->rfcore;
