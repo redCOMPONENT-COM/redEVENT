@@ -17,6 +17,21 @@ class RedeventsyncModelLogs extends FOFModel
 
 		$this->setState('filter_order', $order);
 		$this->setState('filter_order_Dir', $order_Dir);
+
+		$filter = $this->getUserStateFromRequest($this->getHash() . 'type', 'type', '');
+		$this->setState('type', $filter);
+
+		$filter = $this->getUserStateFromRequest($this->getHash() . 'date', 'date', '');
+		$this->setState('date', $filter);
+
+		$filter = $this->getUserStateFromRequest($this->getHash() . 'direction', 'direction', '');
+		$this->setState('direction', $filter);
+
+		$filter = $this->getUserStateFromRequest($this->getHash() . 'transactionid', 'transactionid', '');
+		$this->setState('transactionid', $filter);
+
+		$filter = $this->getUserStateFromRequest($this->getHash() . 'status', 'status', '');
+		$this->setState('status', $filter);
 	}
 
 	/**
@@ -53,10 +68,43 @@ class RedeventsyncModelLogs extends FOFModel
 	 */
 	public function buildQuery($overrideLimits = false)
 	{
-		$query = parent::buildQuery($overrideLimits);
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('*');
+		$query->from('#__redeventsync_logs');
+
+		if ($filter = $this->getState('type'))
+		{
+			$search = $db->quote('%' . $filter . '%');
+			$query->where('type LIKE ' . $search);
+		}
+
+		if ($filter = $this->getState('date'))
+		{
+			$search = $db->quote('%' . $filter . '%');
+			$query->where('date LIKE ' . $search);
+		}
+
+		if ($filter = $this->getState('direction'))
+		{
+			$query->where('direction = ' . (int) $filter);
+		}
+
+		if ($filter = $this->getState('transactionid'))
+		{
+			$search = $db->quote('%' . $filter . '%');
+			$query->where('transactionid LIKE ' . $search);
+		}
+
+		if ($filter = $this->getState('status'))
+		{
+			$search = $db->quote('%' . $filter . '%');
+			$query->where('status LIKE ' . $search);
+		}
+
 		$table = $this->getTable();
 		$tableKey = $table->getKeyName();
-		$db = JFactory::getDbo();
 
 		if (!$overrideLimits)
 		{
