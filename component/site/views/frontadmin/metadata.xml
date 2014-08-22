@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<view title="COM_REDEVENT_FRONTEND_ADMIN_VIEW">
+	<view title="COM_REDEVENT_FRONTEND_ADMIN_VIEW" hidden="true">
 		<message>
 			<![CDATA[COM_REDEVENT_FRONTEND_ADMIN_VIEW_MSG]]>
 		</message>
