@@ -98,8 +98,12 @@ var redb2b = {
 			/**
 			 * update sessions options when selecting venue
 			 */
-			document.id('filter_session').addEvent('change', function(){
-				document.id('book-xref').set('value', this.get('value'));
+			document.id('filter_session').addEvent('change', function() {
+				var selected = this.get('value');
+				document.id('book-xref').set('value', selected);
+				if (selected) {
+					redb2b.selectSession(id);
+				}
 				redb2b.getMembersList();
 				redb2b.getSessions();
 				redb2b.updateBreadCrumbs();
@@ -273,12 +277,19 @@ var redb2b = {
 			 * add checked attendee
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.attendee-sel)', function(e){
+
+				if (!document.id('book-xref').get('value')) {
+					alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_PLEASE_SELECT_SESSION_FIRST"));
+					this.setProperty('checked', null);
+					return;
+				}
+
 				var id = this.id.substr('3');
 				var name = this.getParent('tr').getElement('.attendee-name').get('text');
 				var div = document.id('select-list');
 
 				if (this.getProperty('checked')) {
-					if (document.id('book-xref').get('value') && redb2b.selected.length >= redb2b.placesleft)
+					if (redb2b.selected.length >= redb2b.placesleft)
 					{
 						alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_NO_MORE_PLACES_LEFT"));
 						this.setProperty('checked', null);
