@@ -68,7 +68,7 @@
 		</copy>
 
 		<!-- Create the package -->
-		<tar basedir="${dirs.tmp}/component" destfile="${dirs.release}/com_${comp.name}-${version}.tar.gz" includeemptydirs="true" compression="gzip" />
+		<zip basedir="${dirs.tmp}/component" destfile="${dirs.release}/com_${comp.name}-${version}.zip" includeemptydirs="true"/>
 
 		<copy todir="${dirs.tmp}/redeventsync" >
 			<fileset dir="${dirs.root}/redeventsync">
@@ -81,7 +81,7 @@
 				</replacetokens>
 			</filterchain>
 		</copy>
-		<tar basedir="${dirs.tmp}/redeventsync" destfile="${dirs.release}/com_redeventsync-${version}.tar.gz" includeemptydirs="true" compression="gzip" />
+		<zip basedir="${dirs.tmp}/redeventsync" destfile="${dirs.release}/com_redeventsync-${version}.zip" includeemptydirs="true" />
 
 		<!-- admin modules -->
 		<foreach param="dirname" absparam="absname" target="zipfolder">
@@ -160,7 +160,7 @@
 		</copy>
 		<mkdir dir="${dirs.release}/${myp}" />
 		<!-- Create the package -->
-		<tar basedir="${dirs.tmp}/${myp}/${prefix}${dirname}" destfile="${dirs.release}/${myp}/${prefix}${dirname}-${version}.tar.gz" includeemptydirs="true" compression="gzip" />
+		<zip basedir="${dirs.tmp}/${myp}/${prefix}${dirname}" destfile="${dirs.release}/${myp}/${prefix}${dirname}-${version}.zip" includeemptydirs="true" />
 	</target>
 
 	<!--
