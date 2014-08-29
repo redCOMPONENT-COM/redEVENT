@@ -9,15 +9,22 @@
  * this file manages updating redform form price when selecting session price
  */
 
-window.addEvent('domready', function() {
+(function($) {
 
-	$$('input.updateCurrency').addEvent('click', function(){
-		document.id(this.form).getElement('[name=currency]').set('value', this.getProperty('currency'));
-		redformPrice.updatePrice(this.form);
+	$(function(){
+		$('.updateCurrency').click(function() {
+			// Get currency associated to this pricegroup
+			var currency = $(this).attr('currency');
+
+			// Set to form currency
+			var currencyField = $(this).parents('form').find('input[name="currency"]');
+
+			if (currencyField.val() != currency) {
+				currencyField.val(currency);
+				// Trigger event for redformPrice update
+				$(this).change();
+			}
+		});
 	});
 
-	$$('select.updateCurrency').addEvent('change', function(){
-		document.id(this.form).getElement('[name=currency]').set('value', this.getProperty('currency'));
-		redformPrice.updatePrice(this.form);
-	});
-});
+})(jQuery);

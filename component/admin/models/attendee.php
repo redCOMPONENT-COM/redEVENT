@@ -161,7 +161,7 @@ class RedEventModelAttendee extends JModel
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 
-			$query->select('r.*, s.form_id, a.course_code, sp.price, sp.id AS sessionpricegroup_id');
+			$query->select('r.*, s.form_id, a.course_code, sp.price, sp.id AS sessionpricegroup_id, sp.currency');
 			$query->from('#__redevent_register AS r');
 			$query->join('INNER', '#__rwf_submitters AS s ON s.id =  r.sid');
 			$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id =  r.xref');

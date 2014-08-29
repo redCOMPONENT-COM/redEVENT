@@ -22,6 +22,13 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+$options = array(
+	'extrafields' => array(
+		array('label' => JText::_('COM_REDEVENT_REGISTRATION_PRICE'), 'field' => $this->lists['pricegroup_id'])
+	),
+	'currency' => $this->row->currency
+);
 ?>
 
 <script language="javascript" type="text/javascript">
@@ -92,7 +99,6 @@ defined('_JEXEC') or die('Restricted access');
 </fieldset>
 
 <fieldset class="adminform editevent"><legend><?php echo JText::_('COM_REDEVENT_Answers' ); ?></legend>
-<?php $options = array('extrafields' => array(array('label' => JText::_('COM_REDEVENT_REGISTRATION_PRICE'), 'field' => $this->lists['pricegroup_id']))); ?>
 <?php
 	$rfcore = RdfCore::getInstance();
 	echo $rfcore->getFormFields($this->row->form_id, ($this->row->sid ? array($this->row->sid) : null), 1, $options);

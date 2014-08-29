@@ -1171,7 +1171,6 @@ class RedeventHelper
 		$layout = JComponentHelper::getParams('com_redevent')->get('price_select_layout', 'select');
 		$html = array();
 
-		JHtml::_('behavior.mootools');
 		$document = JFactory::getDocument();
 		$document->addScript(JURI::root() . 'media/com_redevent/js/updateformprice.js');
 
