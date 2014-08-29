@@ -1116,7 +1116,9 @@ class RedeventTags
 		$app = JFactory::getApplication();
 		$config = RedeventHelper::config();
 
-		$submit_key = JRequest::getVar('submit_key');
+		$isReview = $app->input->get('task') == 'review';
+
+		$submit_key = $app->input->get('submit_key');
 
 		$details = $this->getEvent()->getData();
 		$prices = $this->getEvent()->getPrices();
@@ -1164,7 +1166,8 @@ class RedeventTags
 
 			// is pricegroup already selected ?
 			// if a review, we already have pricegroup_id in session
-			$pgids = $app->getUserState('spgids' . $submit_key);
+			$pgids = $isReview ? $app->getUserState('spgids' . $submit_key) : null;
+
 			if (!empty($pgids))
 			{
 				$pg = intval($pgids[0]);
@@ -1222,7 +1225,7 @@ class RedeventTags
 		$options['booking'] = $details;
 
 		$html = '<form action="' . $action . '" class="form-validate" method="post" name="redform" enctype="multipart/form-data">';
-		$html .= $rfcore->getFormFields($this->getEvent()->getData()->redform_id, $submit_key, $multi, $options);
+		$html .= $rfcore->getFormFields($this->getEvent()->getData()->redform_id, $isReview ? null : $submit_key, $multi, $options);
 		$html .= '<input type="hidden" name="xref" value="' . $this->_xref . '"/>';
 		if ($this->getOption('hasreview'))
 		{
@@ -1243,7 +1246,7 @@ class RedeventTags
 
 		if (RdfHelperAnalytics::isEnabled())
 		{
-			if ($this->getOption('hasreview'))
+			if ($isReview)
 			{
 				$label = "display review registration form for event " . $this->getEvent()->getData()->title;
 			}

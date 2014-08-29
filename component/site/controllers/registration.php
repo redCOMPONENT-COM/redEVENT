@@ -535,7 +535,6 @@ class RedeventControllerRegistration extends RedeventController
 	{
 		jimport('joomla.user.helper');
 
-		$db		=& JFactory::getDBO();
 		$rfcore = RdfCore::getInstance();
 		$answers = $rfcore->getSidContactEmails($sid);
 
@@ -548,7 +547,6 @@ class RedeventControllerRegistration extends RedeventController
 
 		if (!$details['email'])
 		{
-			//throw new Exception(JText::_('COM_REDEVENT_NEED_MISSING_EMAIL_TO_CREATE_USER'));
 			RedeventError::raiseWarning('', JText::_('COM_REDEVENT_NEED_MISSING_EMAIL_TO_CREATE_USER'));
 			return false;
 		}
@@ -572,12 +570,13 @@ class RedeventControllerRegistration extends RedeventController
 		$username = $this->getUniqueUsername($username);
 
 		jimport('joomla.application.component.helper');
+
 		// Get required system objects
 		$user 		= clone(JFactory::getUser(0));
-		$usersParams = JComponentHelper::getParams( 'com_users' ); // load the Params
 		$password   = JUserHelper::genRandomPassword();
 
 		$config = JComponentHelper::getParams('com_users');
+
 		// Default to Registered.
 		$defaultUserGroup = $config->get('new_usertype', 2);
 
@@ -592,6 +591,7 @@ class RedeventControllerRegistration extends RedeventController
 		if (!$user->save())
 		{
 			RedeventError::raiseWarning('', JText::_($user->getError()));
+
 			return false;
 		}
 

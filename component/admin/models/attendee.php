@@ -260,9 +260,9 @@ class RedEventModelAttendee extends JModel
 	{
 		$xref = intval($data['xref']);
 
-		if (isset($data['pricegroup_id']))
+		if (isset($data['sessionpricegroup_id']))
 		{
-			$pricegroup = intval($data['pricegroup_id']);
+			$pricegroup = intval($data['sessionpricegroup_id']);
 		}
 		else
 		{
