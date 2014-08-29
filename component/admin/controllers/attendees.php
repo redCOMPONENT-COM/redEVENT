@@ -491,13 +491,12 @@ class RedeventControllerAttendees extends RedeventController
 		// Check for request forgeries
 		JRequest::checkToken() or die( 'Invalid Token' );
 
-		$xref = JRequest::getVar('xref', 0, '', 'int') or die( 'Missing xref' );
-
-		$row = & JTable::getInstance('redevent_register', '');
+		$row = JTable::getInstance('redevent_register', '');
 		$row->bind(JRequest::get('post'));
 		$row->checkin();
 
-		$this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='. $xref );
+		$link = $this->getRedirectToList();
+		$this->setRedirect($link);
 	}
 
 	/**
@@ -509,10 +508,12 @@ class RedeventControllerAttendees extends RedeventController
 	 */
 	function save()
 	{
+		$app = JFactory::getApplication();
+
 		// Check for request forgeries
 		JRequest::checkToken() or die( 'Invalid Token' );
-		$xref = JRequest::getVar('xref', 0, '', 'int') or die( 'Missing xref' );
-		$task		= JRequest::getVar('task');
+		$xref = $app->input->getInt('xref', 0) or die( 'Missing xref' );
+		$task = $app->input->getCmd('task');
 
 		$post 	= JRequest::get( 'post' );
 
@@ -537,18 +538,19 @@ class RedeventControllerAttendees extends RedeventController
 			switch ($task)
 			{
 				case 'apply' :
-					$link = 'index.php?option=com_redevent&controller=attendees&view=attendee&xref='. $xref.'&hidemainmenu=1&cid[]='.$returnid;
+					$link = 'index.php?option=com_redevent&controller=attendees&view=attendee&xref=' . $xref . '&hidemainmenu=1&cid[]=' . $returnid;
 					break;
 
 				default :
-					$link 	= 'index.php?option=com_redevent&view=attendees&xref='. $xref;
-					break;
+					$link = $this->getRedirectToList();
 			}
+
 			$msg	= JText::_('COM_REDEVENT_REGISTRATION_SAVED');
 
-		} else {
-
-			$link 	= 'index.php?option=com_redevent&view=attendees&xref='. $xref;
+		}
+		else
+		{
+			$link = $this->getRedirectToList();
 			$msg	= $model->getError();
 			$mtype= 'error';
 		}
@@ -557,6 +559,23 @@ class RedeventControllerAttendees extends RedeventController
 
 		$this->setRedirect( $link, $msg, $mtype );
  	}
+
+	protected function getRedirectToList()
+	{
+		$app = JFactory::getApplication();
+		$xref = $app->input->getInt('xref', 0) or die( 'Missing xref' );
+
+		if ($app->input->get('return'))
+		{
+			$link = base64_decode($app->input->get('return'));
+		}
+		else
+		{
+			$link = 'index.php?option=com_redevent&view=attendees&xref='. $xref;
+		}
+
+		return $link;
+	}
 
  	function email()
  	{

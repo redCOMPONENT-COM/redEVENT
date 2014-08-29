@@ -114,7 +114,7 @@ if ($this->event->maxattendees) {
 			{
 				$row = &$this->rows[$i];
 
-				$link 		= 'index.php?option=com_redevent&controller=attendees&task=edit&xref='. $row->xref.'&cid[]='.$row->id;
+				$link = 'index.php?option=com_redevent&controller=attendees&task=edit&xref='. $row->xref.'&cid[]='.$row->id;
 				$checked 	= JHTML::_('grid.checkedout', $row, $i );
 				if ($this->cancelled == 2 && $row->cancelled) {
 					$cancelclass = " cancelled";

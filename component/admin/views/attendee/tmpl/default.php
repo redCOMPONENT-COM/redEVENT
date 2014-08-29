@@ -115,6 +115,7 @@ $options = array(
 <input type="hidden" name="sid" value="<?php echo $this->row->sid; ?>" />
 <input type="hidden" name="submit_key" value="<?php echo $this->row->submit_key; ?>" />
 <input type="hidden" name="task" value="" />
+<input type="hidden" name="return" value="<?php echo $this->returnUrl; ?>" />
 </form>
 
 <?php

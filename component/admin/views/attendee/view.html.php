@@ -41,15 +41,13 @@ class RedEventViewAttendee extends JView
 	 */
 	public function display($tpl = null)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		// Load pane behavior
 		jimport('joomla.html.pane');
 
 		// Initialise variables
-		$editor   = JFactory::getEditor();
 		$document = JFactory::getDocument();
-		$user     = JFactory::getUser();
 		$cid      = JRequest::getVar('cid');
 
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITATTENDEE'));
@@ -89,8 +87,9 @@ class RedEventViewAttendee extends JView
 		JToolBarHelper::cancel();
 		JToolBarHelper::spacer();
 
-		$this->assignRef('row', $row);
-		$this->assignRef('lists', $lists);
+		$this->row = $row;
+		$this->lists = $lists;
+		$this->returnUrl = $app->input->get('return');
 
 		parent::display($tpl);
 	}
