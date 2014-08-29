@@ -537,7 +537,7 @@ class RedeventControllerRegistration extends RedeventController
 
 		$rfcore = RdfCore::getInstance();
 		$answers = $rfcore->getSidContactEmails($sid);
-
+echo '<pre>'; echo print_r($answers, true); echo '</pre>'; exit;
 		if (!$answers)
 		{
 			throw new Exception(JText::_('COM_REDEVENT_NO_ANSWERS_FOUND_FOR_SID').' '.$sid);
@@ -640,36 +640,27 @@ class RedeventControllerRegistration extends RedeventController
 		$answers = $answers->getSubmissionBySid($sid);
 
 		$data = array();
+		$data['name'] = $answers->getFullname();
+		$data['username'] = $answers->getUsername();
+		$emails = $answers->getSubmitterEmails();
 
-		foreach ($answers as $a)
+		if ($emails)
 		{
-			switch ($a->fieldtype)
+			$data['email'] = reset($emails);
+		}
+
+		foreach ($answers->getFields() as $field)
+		{
+			if ($field->redmember_field)
 			{
-				case 'fullname':
-					$data['name'] = $a->getValue();
-
-				case 'username':
-					$data['username'] = $a->getValue();
-
-				case 'email':
-					if ($a->getParam('notify') && $a->getValue())
-					{
-						$data['email'] = $a->getValue();
-					}
-
-				default:
-					if ($a->redmember_field)
-					{
-						$data[$a->redmember_field] = $a->getValue();
-					}
+				$data[$field->redmember_field] = $field->getValue();
 			}
-
 		}
 
 		if (!isset($data['email']) || !$data['email'])
 		{
-			//throw new Exception(JText::_('COM_REDEVENT_NEED_MISSING_EMAIL_TO_CREATE_USER'));
 			RedeventError::raiseWarning('', JText::_('COM_REDEVENT_NEED_MISSING_EMAIL_TO_CREATE_USER'));
+
 			return false;
 		}
 
