@@ -20,6 +20,16 @@ if (!defined('FOF_INCLUDED'))
 	JError::raiseError('500', 'FOF is not installed');
 }
 
+$redcoreLoader = JPATH_LIBRARIES . '/redcore/bootstrap.php';
+
+if (!file_exists($redcoreLoader) || !JPluginHelper::isEnabled('system', 'redcore'))
+{
+	throw new Exception(JText::_('COM_REDEVENT_REDFORM_REDCORE_REQUIRED'), 404);
+}
+
+// Bootstraps redCORE
+RBootstrap::bootstrap();
+
 // Register library prefix
 JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
 RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
