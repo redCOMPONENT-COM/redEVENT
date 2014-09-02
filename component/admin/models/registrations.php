@@ -258,10 +258,16 @@ class RedEventModelRegistrations extends JModel
 
 		if ($search = $this->getState('search'))
 		{
-			$where[] = '(u.username LIKE "%' . $search . '%" OR u.name LIKE "%' . $search . '%" OR u.email LIKE "%' . $search . '%")';
+			$where_search = array(
+				'u.username LIKE "%' . $search . '%"',
+				'u.name LIKE "%' . $search . '%"',
+				'u.email LIKE "%' . $search . '%"',
+				'r.submit_key LIKE "%' . $search . '%"',
+			);
+			$where[] = '(' . implode(' OR ', $where_search) . ')';
 		}
 
-		$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
+		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
 
 		return $where;
 	}

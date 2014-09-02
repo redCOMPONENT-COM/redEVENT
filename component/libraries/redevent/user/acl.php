@@ -47,7 +47,7 @@ class RedeventUserAcl
 	 *
 	 * @access 	public
 	 * @param 	int 	$id 	The user to load - Can be an integer or string - If string, it is converted to ID automatically.
-	 * @return 	UserAcl		The User object.
+	 * @return 	RedeventUserAcl		The User object.
 	 * @since 	1.5
 	 */
 	public static function &getInstance($id = 0)
