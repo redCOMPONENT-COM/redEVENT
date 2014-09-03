@@ -19,9 +19,10 @@
 		<filename module="mod_redevent_search">mod_redevent_search.php</filename>
 		<filename>helper.php</filename>
 		<filename>mod_redevent_search.css</filename>
+        <folder>ajaxquery</folder>
 		<folder>language</folder>
-		<folder>tmpl</folder>
         <folder>select2</folder>
+        <folder>tmpl</folder>
 	</files>
 
 	<config>
