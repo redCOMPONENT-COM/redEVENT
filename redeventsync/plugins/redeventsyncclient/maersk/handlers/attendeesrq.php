@@ -172,6 +172,11 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 				$data['submit_key'] = $row->submit_key;
 			}
 
+			if ($row->sid)
+			{
+				$data['sid'] = $row->sid;
+			}
+
 			if (isset($attendee->answers))
 			{
 				foreach ($attendee->answers as $a)
@@ -185,7 +190,7 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 			else
 			{
 				// Use quickSubmit method
-				$result = $rfcore->quickSubmit($user->id, 'redevent');
+				$result = $rfcore->quickSubmit($user->id, 'redevent', $data);
 			}
 
 			if (!$result)
