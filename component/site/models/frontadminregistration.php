@@ -286,7 +286,10 @@ class RedeventModelFrontadminregistration extends JModelLegacy
 
 		$orgSettings = RedeventHelperOrganization::getSettings($this->organizationId);
 
-		$subject = JText::_('COM_REDEVENT_ATTENDEE_NOTIFICATION_MAILFLOW_ORGADMIN_CONFIRMATION_DEFAULT_SUBJECT');
+		$subject = $orgSettings->get('b2b_attendee_notification_mailflow_orgadmin_confirmation_subject_tag')
+			? '[' . $orgSettings->get('b2b_attendee_notification_mailflow_orgadmin_confirmation_subject_tag') . ']'
+			: JText::_('COM_REDEVENT_ATTENDEE_NOTIFICATION_MAILFLOW_ORGADMIN_CONFIRMATION_DEFAULT_SUBJECT');
+
 		$body = $orgSettings->get('b2b_attendee_notification_mailflow_orgadmin_confirmation_tag')
 			? '[' . $orgSettings->get('b2b_attendee_notification_mailflow_orgadmin_confirmation_tag') . ']'
 			: JText::_('COM_REDEVENT_ATTENDEE_NOTIFICATION_MAILFLOW_ORGADMIN_CONFIRMATION_DEFAULT_BODY');
