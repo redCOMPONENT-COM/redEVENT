@@ -44,35 +44,44 @@ if (JFactory::getApplication()->getParams('com_redform')->get('enable_ga', 0))
 		);
 	}
 }
+
+$doc = JFactory::getDocument();
+$doc->addScript('modules/mod_redevent_search/ajaxjquery/jquery.autocomplete.js');
+$doc->addStyleSheet('modules/mod_redevent_search/ajaxjquery/ajaxjquery.css');
 ?>
-
 <script type="application/javascript">
-	<?php JHtml::script('com_redevent/autocompleter.js', false, true); ?>
-	window.addEvent('domready', function() {
-		$$('form#redeventsearchform select').addEvent('change', setCompleter);
-		setCompleter();
-	});
-
-	function setCompleter() {
+	(function($){
 		var url = 'index.php?option=com_redevent&controller=ajax&task=eventsuggestions&tmpl=component';
 
-		var catfilter = document.id('filter_category');
-		if (catfilter && catfilter.get('value')) {
-			url = url + '&filter_category=' + catfilter.get('value');
-		}
+		$(function(){
+			var el = $('#modres_text_filter');
 
-		var venuefilter = document.id('filter_venue');
-		if (venuefilter && venuefilter.get('value')) {
-			url = url + '&filter_venue=' + venuefilter.get('value');
-		}
+			$('#modres_text_filter').autocomplete({
+				serviceUrl: (function(){
+					var updateUrl = url;
 
-		completer = new Autocompleter.Request.JSON(document.id('modres_text_filter'), url, {
-			'postVar': 'q',
-			'autoSubmit': true,
-			'minLength': 0,
-			'maxChoices': 25}
-		);
-	}
+					if ($('#filter_category') && $('#filter_category').val()) {
+						updateUrl = updateUrl + '&filter_category=' + $('#filter_category').val();
+					}
+
+					if ($('#filter_venue') && $('#filter_venue').val()) {
+						updateUrl = updateUrl + '&filter_venue=' + $('#filter_venue').val();
+					}
+
+					return updateUrl;
+				}),
+				paramName: 'q',
+				minChars: 0,
+				transformResult: function(response){
+					var jsonresp = JSON.parse(response);
+
+					return {
+						suggestions: jsonresp
+					}
+				}
+			});
+		});
+	}(jQuery));
 </script>
 
 <form action="<?php echo $action; ?>" method="post" id="redeventsearchform">

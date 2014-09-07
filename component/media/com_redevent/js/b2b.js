@@ -442,10 +442,11 @@ var redb2b = {
 			document.id('redevent-admin').addEvent('click:relay(.unregister)', function(e){
 				var confirmText = this.getProperty('confirmtext');
 				if (confirm(confirmText)) {
-					var register_id = this.getParent('tr').getProperty('rid');
+					var registerId = this.getParent('tr').getProperty('rid');
+					var orgId = document.id('filter_organization').get('value');
 					req = new Request.JSON({
 						url : 'index.php?option=com_redevent&controller=frontadmin&task=cancelreg&tmpl=component&from=b2b',
-						data : {'rid' : register_id},
+						data : {'rid' : registerId, 'org' : orgId},
 						method : 'post',
 						onRequest: function(){
 							document.id('attendees-tbl').set('spinner').spin();
