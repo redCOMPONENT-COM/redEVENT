@@ -365,10 +365,12 @@ class RedeventControllerFrontadmin extends FOFController
 	public function cancelreg()
 	{
 		$app = JFactory::getApplication();
-		$rid = $app->input->get('rid');
+		$rid = $app->input->get('rid', 0, 'int');
+		$orgId = $app->input->get('org', 0, 'int');
+
 		$model = $this->getModel('registration');
 
-		$resp = new stdClass();
+		$resp = new stdClass;
 
 		if ($res = $model->cancelregistration($rid))
 		{
@@ -377,6 +379,8 @@ class RedeventControllerFrontadmin extends FOFController
 			JPluginHelper::importPlugin('redevent');
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onAttendeeCancelled', array($rid));
+
+			$this->sendCancellationNotifications($rid, $orgId);
 		}
 		else
 		{
@@ -386,10 +390,15 @@ class RedeventControllerFrontadmin extends FOFController
 
 		echo json_encode($resp);
 
-		$cancelled = new RedeventAttendee($rid);
-		$cancelled->notifyManagers(true);
-
 		JFactory::getApplication()->close();
+	}
+
+	private function sendCancellationNotifications($rid, $orgId)
+	{
+		$model = $this->getModel('Frontadmincancellationnotification');
+		$model->setAttendeeId($rid)
+			->setOrganizationId($orgId);
+		$model->notify();
 	}
 
 	/**

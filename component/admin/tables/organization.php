@@ -16,6 +16,26 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventTableOrganization extends FOFTable
 {
+	public $id;
+
+	public $organization_id;
+
+	public $b2b_attendee_notification_mailflow;
+
+	public $b2b_orgadmin_mailflow_confirmation_subject_tag;
+
+	public $b2b_orgadmin_mailflow_cancellation_subject_tag;
+
+	public $b2b_orgadmin_mailflow_confirmation_body_tag;
+
+	public $b2b_orgadmin_mailflow_cancellation_body_tag;
+
+	public $b2b_cancellation_period;
+
+	public $checked_out;
+
+	public $checked_out_time;
+
 	/**
 	 * Class Constructor.
 	 *
