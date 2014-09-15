@@ -215,16 +215,14 @@ class RedEventViewAttendees extends JView {
 	 */
 	function _displaymove($tpl = null)
 	{
-		$elsettings = JComponentHelper::getParams('com_redevent');
-		$document	= & JFactory::getDocument();
 		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
 
-		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
+		$cid = JRequest::getVar('cid', array(), 'post', 'array');
 
-		$event 		= & $this->get( 'Event' );
+		$event = $this->get('Event');
 
 		//add toolbar
-		JToolBarHelper::title( JText::_('COM_REDEVENT_REGISTRATIONS' ), 'users' );
+		JToolBarHelper::title(JText::_('COM_REDEVENT_REGISTRATIONS' ), 'users');
 		JToolBarHelper::apply('applymove');
 		JToolBarHelper::cancel('cancelmove');
 
