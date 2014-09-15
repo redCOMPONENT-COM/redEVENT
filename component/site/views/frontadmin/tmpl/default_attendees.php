@@ -21,101 +21,30 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
+
 <div id="employees-header">
-<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ORG_MEMBERS_TITLE')?></h2>
+	<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ORG_MEMBERS_TITLE')?></h2>
 	<div id="search-member">
 		<input name="filter_person" id="filter_person" type="text"
 			class="input-medium form-control" placeholder="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_PERSON'); ?>"
 			/>
-	</li>
-</div>
-<table id="members-tbl" class="table">
-	<thead>
-		<tr>
-			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SELECT_MEMBER'); ?></th>
-			<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_NAME'), 'u.name', $this->members_order_dir, $this->members_order); ?></th>
-			<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_USERNAME'), 'u.username', $this->members_order_dir, $this->members_order); ?></th>
-			<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_EMAIL'), 'u.email', $this->members_order_dir, $this->members_order); ?></th>
-			<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_LANGUAGE'), 'l.name', $this->members_order_dir, $this->members_order); ?></th>
-			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_STATUS'); ?></th>
-			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_PO_NUMBER'); ?></th>
-			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_COMMENTS'); ?></th>
-			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_EDIT_MEMBER'); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-		<?php foreach($this->attendees as $a): ?>
-		<tr<?php echo ($a->registered ? ' class="registered"' : ''); ?> rid="<?php echo $a->registered ? $a->registered->id : ''; ?>" uid="<?php echo $a->id; ?>">
-			<td>
-				<?php if (!$a->registered): ?>
-				<input name="cid[]" id="cid<?php echo $a->id; ?>" class="attendee-sel" type="checkbox"/>
-				<?php endif; ?>
-			</td>
-			<td class="attendee-name"><?php echo $a->name; ?></td>
-			<td><?php echo $a->username; ?></td>
-			<td><?php echo $a->email; ?></td>
-			<td><?php echo JFactory::getUser($a->id)->getParameters()->get('language', JFactory::getLanguage()->getTag()); ?></td>
-
-			<?php if ($a->registered): ?>
-				<?php
-				$imgstatus = $a->registered->waitinglist ?
-					JHtml::image('com_redevent/b2b-waiting.png', 'waiting',
-						array('class' => "hasTip", 'title' => JText::_('COM_REDEVENT_WAITING_LIST')), true) :
-					JHtml::image('com_redevent/b2b-attending.png', 'attending',
-						array('class' => "hasTip", 'title' => JText::_('COM_REDEVENT_ATTENDING')), true);
-				?>
-				<td><?php echo $imgstatus; ?></td>
-				<td>
-					<input name="ponumber[]" class="input-small ponumber" type="text" value="<?php echo $a->registered->ponumber; ?>" />
-				</td>
-				<td>
-					<textarea name="comments[]" class="input-medium comments hasTip"
-					          title="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_COMMENTS'); ?>"
-					          tip="<?php echo nl2br($a->registered->comments); ?>"
-					          rows="1" cols="30"><?php echo trim($a->registered->comments); ?></textarea>
-				</td>
-			<?php else: ?>
-				<td></td>
-				<td></td>
-				<td></td>
-			<?php endif; ?>
-
-			<td>
-				<?php
-					if ($a->registered)
-					{
-						if ($a->pastCancellationPeriod)
-						{
-							$cancelTip = JText::sprintf(
-								'COM_REDEVENT_FRONTEND_ADMIN_PAST_CANCEL_REGISTRATION_PERIOD_D_TIP',
-								$a->cancellationPeriod
-							);
-						}
-						else
-						{
-							$cancelTip = JText::_('COM_REDEVENT_FRONTEND_ADMIN_CONFIRM');
-						}
-					}
-				?>
-				<?php echo JHTML::image('com_redevent/b2b-edit.png', 'edit'
-				, array('class' => 'hasTip editmember'
-						, 'title' => JText::_('COM_REDEVENT_EDIT_PARTICIPANT')
-						,  'tip' => JText::_('COM_REDEVENT_EDIT_PARTICIPANT_TIP')), true)
-				. ($a->registered ? ' '	. JHTML::image('com_redevent/b2b-delete.png', 'remove'
-					, array('class' => 'unregister hasTip'
-							, 'title' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CANCEL_REGISTRATION')
-							, 'tip' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CANCEL_REGISTRATION_TIP')
-							, 'confirmtext' => $cancelTip), true) : ''); ?>
-			</td>
-		</tr>
-		<?php endforeach;?>
-	</tbody>
-</table>
-
-<!--pagination-->
-<?php if (($this->members_pagination->get('pages.total') > 1)) : ?>
-	<div class="pagination">
-		<?php echo $this->members_pagination->getPagesLinks(); ?>
 	</div>
-<?php  endif; ?>
-<!-- pagination end -->
+</div>
+
+<div id="employees-result"></div>
+
+<script type="application/javascript">
+	<?php JHtml::script('com_redevent/autocompleter.js', false, true); ?>
+	(function(){
+		var url = '<?php echo JRoute::_('index.php?option=com_redevent&controller=frontadmin&task=personsuggestions&tmpl=component', false); ?>';
+		var completer = new Autocompleter.Request.JSON(document.id('filter_person'), url, {'postVar': 'q', 'autoSubmit': true});
+
+		completer.addEvent('onRequest', function(element, request, data){
+			data['org'] = document.id('filter_organization').get('value');
+		});
+
+		completer.addEvent('onSelection', function(element, selected){
+			document.id('filter_organization').fireEvent('change');
+		});
+	})();
+</script>

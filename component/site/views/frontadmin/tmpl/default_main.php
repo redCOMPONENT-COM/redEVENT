@@ -29,11 +29,8 @@ defined('_JEXEC') or die('Restricted access');
 <div id="main-content" class="row-fluid">
 	<div id="main-results" class="span9">
 
-		<ul id="main-breadcrumb" class="breadcrumb">
-		</ul>
-
-		<div id="main-attendees" style="display:none">
-
+		<div id="main-attendees">
+			<?php echo $this->loadTemplate('attendees'); ?>
 		</div>
 
 		<div id="main-bookings">

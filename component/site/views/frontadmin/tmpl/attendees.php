@@ -21,15 +21,13 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<h2 id="attendees-title"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ATTENDEES_TITLE')?></h2>
-<table id="attendees-tbl" class="table">
+<table id="members-tbl" class="table">
 	<thead>
 		<tr>
 			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SELECT_MEMBER'); ?></th>
 			<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_NAME'), 'u.name', $this->members_order_dir, $this->members_order); ?></th>
 			<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_USERNAME'), 'u.username', $this->members_order_dir, $this->members_order); ?></th>
 			<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_EMAIL'), 'u.email', $this->members_order_dir, $this->members_order); ?></th>
-			<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_LANGUAGE'), 'l.name', $this->members_order_dir, $this->members_order); ?></th>
 			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_STATUS'); ?></th>
 			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_PO_NUMBER'); ?></th>
 			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_COMMENTS'); ?></th>
@@ -47,7 +45,6 @@ defined('_JEXEC') or die('Restricted access');
 			<td class="attendee-name"><?php echo $a->name; ?></td>
 			<td><?php echo $a->username; ?></td>
 			<td><?php echo $a->email; ?></td>
-			<td><?php echo JFactory::getUser($a->id)->getParameters()->get('language', JFactory::getLanguage()->getTag()); ?></td>
 
 			<?php if ($a->registered): ?>
 				<?php

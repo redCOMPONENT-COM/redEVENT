@@ -165,6 +165,7 @@ class RedeventViewFrontadmin extends JView
 		$this->bookings_limitstart = $state->get('bookings_limitstart');
 		$this->bookings_order = $state->get('bookings_order');
 		$this->bookings_order_dir = $state->get('bookings_order_dir');
+		$this->bookings_pagination = $this->get('BookingsPagination');
 
 		$this->useracl = $useracl;
 		$this->params  = $params;

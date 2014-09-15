@@ -91,8 +91,9 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 			$app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_organization',    'filter_organization',    $this->getUserDefaultOrganization(), 'int')
 		);
 		$this->setState('filter_person', $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_person',    'filter_person',    '', 'string'));
-		$this->setState('filter_person_active',    $app->input->get('filter_person_active',    0, 'int'));
-		$this->setState('filter_person_archive',    $app->input->get('filter_person_archive',    0, 'int'));
+
+		$this->setState('filter_person_active',    $app->input->get('filter_person_active', null, 'int'));
+		$this->setState('filter_person_archive',    $app->input->get('filter_person_archive', null, 'int'));
 
 		// Manage sessions filters
 		$this->setState('filter_session',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_session',    'filter_session',    0, 'int'));
@@ -645,6 +646,10 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		elseif ($this->getState('filter_person_active') == -1)
 		{
 			$session_state[] = 'x.published = -1';
+		}
+		else
+		{
+			$session_state[] = '0';
 		}
 
 		if ($this->getState('filter_person_archive') == 1)

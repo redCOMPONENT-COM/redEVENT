@@ -43,11 +43,14 @@ defined('_JEXEC') or die('Restricted access');
 			, array('class' => 'input-medium')
 			, 'value', 'text', $this->state->get('filter_category')); ?>
 	</div>
+	<div class="date-filter-label"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_SEARCH_DATE_FILTER'); ?></div>
 	<div>
-		<?php echo JHtml::calendar($this->filter_from, 'filter_from', 'filter_from', '%Y-%m-%d', array('class' => 'input-small')); ?>
+		<?php echo JHtml::calendar($this->filter_from, 'filter_from', 'filter_from', '%Y-%m-%d',
+			array('class' => 'input-small', 'placeholder' => JText::_('COM_REDEVENT_FROM'))); ?>
 	</div>
 	<div>
-		<?php echo JHTML::calendar($this->filter_to, 'filter_to', 'filter_to', '%Y-%m-%d', array('class' => 'input-small')); ?>
+		<?php echo JHTML::calendar($this->filter_to, 'filter_to', 'filter_to', '%Y-%m-%d',
+			array('class' => 'input-small', 'placeholder' => JText::_('COM_REDEVENT_TO'))); ?>
 	</div>
 
 	<input type="hidden" name="filter_order" value="<?php echo $this->order; ?>"/>

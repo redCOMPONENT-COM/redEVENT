@@ -21,8 +21,18 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<?php if ($this->bookings): ?>
+<div id="bookings-header">
 	<h2><?php echo JText::sprintf('COM_REDEVENT_FRONTEND_ORGANIZATION_S_BOOKINGS', $this->organization); ?></h2>
+
+	<ul class="inline bookings-filter">
+		<li><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SEARCH_IN'); ?></li>
+		<li><label class="checkbox"><input name="filter_person_active" id="filter_person_active0" type="checkbox" value="1"
+			<?php echo $this->state->get('filter_person_active') ? ' checked="checked"' : ''; ?>/> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ACTIVE_COURSES'); ?></label></li>
+		<li><label class="checkbox"><input name="filter_person_active" id="filter_person_active1" type="checkbox" value="-1"
+			<?php echo $this->state->get('filter_person_archive') ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSES_HISTORY'); ?></label></li>
+	</ul>
+</div>
+
 
 	<table class="table">
 		<thead>
@@ -33,11 +43,11 @@ defined('_JEXEC') or die('Restricted access');
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_VENUE'), 'l.venue', $this->bookings_order_dir, $this->bookings_order); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CITY'), 'l.city', $this->bookings_order_dir, $this->bookings_order); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CATEGORY'), 'c.catname', $this->bookings_order_dir, $this->bookings_order); ?></th>
-				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_LANGUAGE'), 'a.language', $this->bookings_order_dir, $this->bookings_order); ?></th>
 				<th><?php echo JText::_('COM_REDEVENT_BOOKED'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
+		<?php if ($this->bookings): ?>
 			<?php foreach ($this->bookings as $row): ?>
 				<tr>
 					<td><?php echo RedeventHelperOutput::formatEventDateTime($row, false); ?></td>
@@ -61,12 +71,12 @@ defined('_JEXEC') or die('Restricted access');
 						echo implode("<br/>", $cats);
 						?>
 					</td>
-					<td><?php echo $row->language_sef; ?></td>
 					<td><?php echo $this->bookbutton($row->xref); ?>
 						<?php echo $this->printPlaces($row); ?>
 					</td>
 				</tr>
 			<?php endforeach;?>
+		<?php endif; ?>
 		</tbody>
 	</table>
 
@@ -77,4 +87,3 @@ defined('_JEXEC') or die('Restricted access');
 	</div>
 	<?php  endif; ?>
 	<!-- pagination end -->
-<?php endif; ?>
