@@ -150,6 +150,22 @@ class maerskpluginTest extends JoomlaTestCase
 		$this->fail('An expected exception has not been raised.');
 	}
 
+	public function testAttendeesRSMissingResponse()
+	{
+		try
+		{
+			$this->plugin->onHandle('maersk', '<AttendeesRS xmlns="http://www.redcomponent.com/redevent"><AttendeeRS><TransactionId>998</TransactionId></AttendeeRS></AttendeesRS>');
+		}
+		catch (Exception $e)
+		{
+			if (!strstr($e->getMessage(), 'Parsing error: Invalid xml data'))
+			{
+				throw new Exception('bad exception:' . $e->getMessage());
+			}
+		}
+
+	}
+
 	/**
 	 * Return plugin
 	 *
