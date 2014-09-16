@@ -37,6 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 	<table class="table">
 		<thead>
 			<tr>
+				<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SELECT_SESSION'); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_DATE'), 'x.dates', $this->bookings_order_dir, $this->bookings_order); ?></th>
 				<th><?php echo JText::_('COM_REDEVENT_EVENT_DURATION'); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TITLE'), 'a.title', $this->bookings_order_dir, $this->bookings_order); ?></th>
@@ -50,6 +51,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php if ($this->bookings): ?>
 			<?php foreach ($this->bookings as $row): ?>
 				<tr>
+					<td><input type="radio" name="select-session" value="<?php echo $row->xref; ?>" class="select-session-radio"/></td>
 					<td><?php echo RedeventHelperOutput::formatEventDateTime($row, false); ?></td>
 					<td><?php echo RedeventHelper::getEventDuration($row); ?></td>
 					<td><?php echo RedeventHelper::getSessionFullTitle($row); ?></td>

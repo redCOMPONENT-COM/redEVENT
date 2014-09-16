@@ -104,7 +104,6 @@ var redb2b = {
 				}
 				redb2b.getMembersList();
 				redb2b.getSessions();
-				redb2b.updateBreadCrumbs();
 
 				if (typeof ga !== 'undefined')
 				{
@@ -181,7 +180,7 @@ var redb2b = {
 			/**
 			 * update organization bookings when selecting session status active
 			 */
-			document.id('main-bookings').addEvent('click:relay([id^=filter_person_]', function(){
+			document.id('main-bookings').addEvent('click:relay([id^=filter_person_])', function(){
 				redb2b.searchBookings();
 			});
 
@@ -207,6 +206,25 @@ var redb2b = {
 			document.id('redevent-admin').addEvent('click:relay(.bookthis)', function(e){
 				e.stop();
 				var id = this.getProperty('xref');
+				this.getParent('tr').getElement('.select-session-radio').set('checked', 'checked');
+				redb2b.selectSession(id);
+
+				if (typeof ga !== 'undefined')
+				{
+					ga('send',{
+						'hitType': 'event',
+						'eventCategory': 'b2b',
+						'eventAction': 'select book session'
+					});
+				}
+			});
+
+			/**
+			 * update course search when clicking on book session button in lists
+			 */
+			document.id('redevent-admin').addEvent('click:relay(.select-session-radio)', function(e){
+//				e.stop();
+				var id = this.get('value');
 				redb2b.selectSession(id);
 
 				if (typeof ga !== 'undefined')
@@ -699,7 +717,6 @@ var redb2b = {
 					document.id('main-course-results').empty().set('html', response).unspin();
 					redb2b.refreshTips();
 					redb2b.getMembersList();
-					redb2b.updateBreadCrumbs();
 				}
 			});
 			req.send();
@@ -711,7 +728,6 @@ var redb2b = {
 			redb2b.updateVenueField();
 			redb2b.updateCategoryField();
 			redb2b.getSessions();
-			redb2b.updateBreadCrumbs();
 		},
 
 		updateEventField : function(async) {
@@ -834,9 +850,6 @@ var redb2b = {
 				method : 'post',
 				onSuccess : function(responseText){
 					document.id('main-bookings').set('html', responseText);
-					$$('[id^=filter_person_]').addEvent('click', function(){
-						redb2b.searchBookings();
-					});
 					redb2b.refreshTips();
 				}
 			});
@@ -853,7 +866,6 @@ var redb2b = {
 					document.id('filter_session').set('value', id);
 					document.id('book-xref').set('value', id);
 					redb2b.getMembersList();
-					redb2b.updateBreadCrumbs();
 
 					if (session.placesleft == -1)
 					{
