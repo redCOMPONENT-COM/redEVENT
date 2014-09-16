@@ -839,14 +839,7 @@ var redb2b = {
 		searchBookings : function() {
 			req = new Request({
 				url : 'index.php?option=com_redevent&controller=frontadmin&task=getbookings&tmpl=component',
-				data : {
-					'filter_person' : document.id('filter_person').get('value'),
-					'filter_person_active' : document.id('filter_person_active0').get('checked') ? 1 : 0,
-					'filter_person_archive' : document.id('filter_person_active1').get('checked') ? 1 : 0,
-					'bookings_order' : document.id('bookings_order').get('value'),
-					'bookings_order_dir' : document.id('bookings_order_dir').get('value'),
-					'bookings_limitstart' : document.id('bookings_limitstart').get('value')
-				},
+				data : document.id('org-form'),
 				method : 'post',
 				onSuccess : function(responseText){
 					document.id('main-bookings').set('html', responseText);

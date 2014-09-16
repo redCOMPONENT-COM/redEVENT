@@ -28,10 +28,6 @@ JText::script('COM_REDEVENT_FRONTEND_ADMIN_CONFIRM_LEAVE_PAGE');
 		return Joomla.JText._('COM_REDEVENT_FRONTEND_ADMIN_CONFIRM_LEAVE_PAGE');
 	};
 </script>
-<div id="search-toolbar">
-	<?php echo $this->loadTemplate('search_toolbar'); ?>
-</div>
-<div class="clear"></div>
 
 <div id="main-content" class="row-fluid">
 	<div id="main-results" class="span10">
