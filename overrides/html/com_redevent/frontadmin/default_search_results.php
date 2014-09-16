@@ -27,13 +27,13 @@ defined('_JEXEC') or die('Restricted access');
 	<table class="table">
 		<thead>
 			<tr>
+				<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SELECT_SESSION'); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_DATE'), 'x.dates', $this->order_Dir, $this->order); ?></th>
 				<th><?php echo JText::_('COM_REDEVENT_EVENT_DURATION'); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TITLE'), 'a.title', $this->order_Dir, $this->order); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_VENUE'), 'l.venue', $this->order_Dir, $this->order); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CATEGORY'), 'c.catname', $this->order_Dir, $this->order); ?></th>
 				<th><?php echo JText::_('COM_REDEVENT_B2B_SEATS'); ?></th>
-				<th><?php echo JText::_('COM_REDEVENT_FRONTEND_BOOKINGS_EDIT_PARTICIPANTS'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -60,6 +60,7 @@ defined('_JEXEC') or die('Restricted access');
 				}
 			?>
 				<tr xref="<?php echo $row->xref; ?>">
+					<td><input type="radio" name="select-session" value="<?php echo $row->xref; ?>" class="select-session-radio"/></td>
 					<td><?php echo $editsessionlink; ?></td>
 					<td><?php echo RedeventHelper::getEventDuration($row); ?></td>
 					<td><?php echo $row->title; ?></td>
@@ -83,23 +84,6 @@ defined('_JEXEC') or die('Restricted access');
 					<td>
 						<?php echo $this->bookbutton($row->xref); ?>
 						<?php echo $this->printPlaces($row, false); ?>
-					</td>
-					<td>
-						<?php
-							$image = JHTML::image('media/com_redevent/images/b2b-selectbooksession.png', JText::_('COM_REDEVENT_BOOK_EVENT'));
-
-							$tip  = JText::_('COM_REDEVENT_FRONTEND_BOOKINGS_EDIT_PARTICIPANTS_DESC');
-							$text = JText::_('COM_REDEVENT_FRONTEND_BOOKINGS_EDIT_PARTICIPANTS');
-
-							$attribs = array(
-								'xref' => $row->xref,
-								'class' => 'bookthis hasTip',
-								'title' => $text,
-								'tip' => $tip,
-							);
-
-							echo JHtml::link('#', $image, $attribs);
-						?>
 					</td>
 				</tr>
 			<?php endforeach;?>

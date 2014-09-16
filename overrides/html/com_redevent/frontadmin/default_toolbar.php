@@ -44,12 +44,21 @@ JFactory::getDocument()->addScriptDeclaration($script);
 	<img title="" alt="" src="<?php echo JURI::root()?>templates/redweb/images/redadmin-logo.jpg">
 </div>
 <ul class="inline">
-	<li><?php echo JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_HELLO_USER_S', JFactory::getUser()->get('name'));
-			  echo " - ";
-			  echo JHTML::link('index.php?option=com_users&task=user.logout&' . JSession::getFormToken() . '=1', JText::_('COM_REDEVENT_FRONTEND_ADMIN_LOGOUT'));
-	?></li>
+	<li>
+		<?php if (count($this->organizations_options) > 2): ?>
+			<?php echo JHtml::_('select.genericlist', $this->organizations_options, 'filter_organization', '', 'value', 'text', $this->state->get('filter_organization')); ?>
+		<?php else: ?>
+			<input type="hidden" name="filter_organization" id="filter_organization" value="<?php echo $this->organizations_options[1]->value; ?>" />
+			<?php echo $this->organizations_options[1]->text; ?>
+		<?php endif; ?>
+	</li>
 	<li><?php echo JHTML::link('#', JText::_('COM_REDEVENT_FRONTEND_ADMIN_MY_ACCOUNT'), array('class' => 'btn myaccount', 'uid' => JFactory::getUser()->get('id'))); ?></li>
 	<li><?php echo JHTML::link($support, JText::_('COM_REDEVENT_FRONTEND_ADMIN_SUPPORT'), array('class' => 'btn modal', 'rel' => "{size: {x: 780, y:600}}")); ?></li>
-	<li><?php echo JHTML::link($contact, JText::_('COM_REDEVENT_FRONTEND_ADMIN_CONTACT'), array('class' => 'btn modal', 'rel' => "{size: {x: 780, y:600}}")); ?></li>
+	<li><?php echo JHTML::link($contact, JText::_('COM_REDEVENT_FRONTEND_ADMIN_CONTACT'), array('class' => 'btn modal', 'rel' => "{size: {x: 780, y:600}}")); ?></li>	<li>
+		<?php
+		echo JHTML::link('index.php?option=com_users&task=user.logout&' . JSession::getFormToken() . '=1',
+			JText::_('COM_REDEVENT_FRONTEND_ADMIN_LOGOUT'), array('class' => 'btn'));
+		?>
+	</li>
 </ul>
 <div class="clear"></div>
