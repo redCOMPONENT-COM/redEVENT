@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
 <div id="employees-header" class="panel-heading">
 	<h2 class="panel-title">
 		<a data-toggle="collapse" data-parent="#main-results" href="#employees-result">
-			<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ORG_MEMBERS_TITLE')?>
+			<span class="open openclose">+</span> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ORG_MEMBERS_TITLE')?>
 		</a>
 	</h2>
 	<div id="search-member">
