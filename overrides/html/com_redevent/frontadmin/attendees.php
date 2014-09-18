@@ -21,7 +21,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<h2 id="attendees-title"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ATTENDEES_TITLE')?></h2>
+<h2 id="attendees-title"><span class="open openclose">+</span> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ATTENDEES_TITLE')?></h2>
 <table id="attendees-tbl" class="table">
 	<thead>
 		<tr>
