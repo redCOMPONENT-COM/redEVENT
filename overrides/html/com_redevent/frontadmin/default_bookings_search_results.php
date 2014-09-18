@@ -23,8 +23,8 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <div id="bookings-header" class="panel-heading">
 	<h2 class="panel-title">
-		<span class="open openclose">+</span> <a data-toggle="collapse" data-parent="#main-results" href="#bookings-result">
-			<?php echo JText::sprintf('COM_REDEVENT_FRONTEND_ORGANIZATION_S_BOOKINGS', $this->organization); ?>
+		<a data-toggle="collapse" data-parent="#main-results" href="#bookings-result">
+			<span class="open openclose">+</span> <?php echo JText::sprintf('COM_REDEVENT_FRONTEND_ORGANIZATION_S_BOOKINGS', $this->organization); ?>
 		</a>
 	</h2>
 

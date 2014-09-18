@@ -25,8 +25,9 @@ defined('_JEXEC') or die('Restricted access');
 
 <div id="sessions-header" class="panel-heading">
 	<h2 class="panel-title">
-		<span class="open openclose">+</span>
-		<a data-toggle="collapse" data-parent="#main-results" href="#sessions-result"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ALL_EVENTS'); ?>
+		<a data-toggle="collapse" data-parent="#main-results" href="#sessions-result">
+			<span class="open openclose">+</span> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ALL_EVENTS'); ?>
+		</a>
 	</h2>
 </div>
 
