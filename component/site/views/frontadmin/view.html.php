@@ -261,7 +261,7 @@ class RedeventViewFrontadmin extends JView
 	 */
 	protected function printPlaces($row, $showBooked = true)
 	{
-		$maxLeftDisplay = 6;
+		$maxLeftDisplay = 2000;
 
 		if (!$row->maxattendees)
 		{
