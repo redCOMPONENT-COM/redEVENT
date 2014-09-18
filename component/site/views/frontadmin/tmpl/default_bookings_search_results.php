@@ -53,7 +53,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php foreach ($this->bookings as $row): ?>
 				<tr>
 					<td><input type="radio" name="select-session" value="<?php echo $row->xref; ?>" class="select-session-radio"/></td>
-					<td><?php echo RedeventHelperOutput::formatEventDateTime($row, false); ?></td>
+					<td><?php echo RedeventHelperOutput::formatdate($row->dates, false); ?></td>
 					<td><?php echo RedeventHelperOutput::formattime($row->dates, $row->times); ?></td>
 					<td><?php echo RedeventHelper::getEventDuration($row); ?></td>
 					<td><?php echo RedeventHelper::getSessionFullTitle($row); ?></td>
