@@ -22,8 +22,14 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <?php if ($this->sessions): ?>
-	<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ALL_EVENTS'); ?></h2>
 
+<div id="sessions-header" class="panel-heading">
+	<h2 class="panel-title">
+		<a data-toggle="collapse" data-parent="#main-results" href="#sessions-result"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ALL_EVENTS'); ?>
+	</h2>
+</div>
+
+<div id="sessions-result" class="panel-collapse collapse in">
 	<table class="table">
 		<thead>
 			<tr>
@@ -142,5 +148,6 @@ defined('_JEXEC') or die('Restricted access');
 	</div>
 	<?php  endif; ?>
 	<!-- pagination end -->
+</div>
 
 <?php endif; ?>

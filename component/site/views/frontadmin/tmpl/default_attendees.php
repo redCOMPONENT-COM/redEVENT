@@ -22,16 +22,20 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<div id="employees-header">
-	<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ORG_MEMBERS_TITLE')?></h2>
+<div id="employees-header" class="panel-heading">
+	<h2 class="panel-title">
+		<a data-toggle="collapse" data-parent="#main-results" href="#employees-result">
+			<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ORG_MEMBERS_TITLE')?>
+		</a>
+	</h2>
 	<div id="search-member">
 		<input name="filter_person" id="filter_person" type="text"
-			class="input-medium form-control" placeholder="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_PERSON'); ?>"
+		       class="input-medium form-control" placeholder="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_PERSON'); ?>"
 			/>
 	</div>
 </div>
 
-<div id="employees-result"></div>
+<div id="employees-result" class="panel-collapse collapse in"></div>
 
 <script type="application/javascript">
 	<?php JHtml::script('com_redevent/autocompleter.js', false, true); ?>

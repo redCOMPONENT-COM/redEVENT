@@ -30,17 +30,17 @@ JText::script('COM_REDEVENT_FRONTEND_ADMIN_CONFIRM_LEAVE_PAGE');
 </script>
 
 <div id="main-content" class="row-fluid">
-	<div id="main-results" class="span10">
+	<div id="main-results" class="span10 panel-group">
 
-		<div id="main-attendees">
+		<div id="main-attendees" class="panel panel-default">
 			<?php echo $this->loadTemplate('attendees'); ?>
 		</div>
 
-		<div id="main-bookings">
+		<div id="main-bookings" class="panel panel-default">
 			<?php echo $this->loadTemplate('bookings_search_results'); ?>
 		</div>
 
-		<div id="main-course-results">
+		<div id="main-course-results" class="panel panel-default">
 			<?php echo $this->loadTemplate('search_results'); ?>
 		</div>
 	</div>

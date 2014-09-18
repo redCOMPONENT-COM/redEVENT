@@ -21,19 +21,24 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<div id="bookings-header">
-	<h2><?php echo JText::sprintf('COM_REDEVENT_FRONTEND_ORGANIZATION_S_BOOKINGS', $this->organization); ?></h2>
+<div id="bookings-header" class="panel-heading">
+	<h2 class="panel-title">
+		<a data-toggle="collapse" data-parent="#main-results" href="#bookings-result">
+			<?php echo JText::sprintf('COM_REDEVENT_FRONTEND_ORGANIZATION_S_BOOKINGS', $this->organization); ?>
+		</a>
+	</h2>
 
 	<ul class="inline bookings-filter">
 		<li><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SEARCH_IN'); ?></li>
 		<li><label class="checkbox"><input name="filter_person_active" id="filter_person_active0" type="checkbox" value="1"
-			<?php echo $this->state->get('filter_person_active') ? ' checked="checked"' : ''; ?>/> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ACTIVE_COURSES'); ?></label></li>
+					<?php echo $this->state->get('filter_person_active') ? ' checked="checked"' : ''; ?>/> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ACTIVE_COURSES'); ?></label></li>
 		<li><label class="checkbox"><input name="filter_person_active" id="filter_person_active1" type="checkbox" value="-1"
-			<?php echo $this->state->get('filter_person_archive') ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSES_HISTORY'); ?></label></li>
+					<?php echo $this->state->get('filter_person_archive') ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSES_HISTORY'); ?></label></li>
 	</ul>
 </div>
 
 
+<div id="bookings-result" class="panel-collapse collapse in">
 	<table class="table">
 		<thead>
 			<tr>
@@ -91,3 +96,4 @@ defined('_JEXEC') or die('Restricted access');
 	</div>
 	<?php  endif; ?>
 	<!-- pagination end -->
+</div>
