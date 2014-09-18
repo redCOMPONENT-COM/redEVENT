@@ -295,6 +295,44 @@ class RedeventViewFrontadmin extends JView
 		}
 	}
 
+	/**
+	 * returns string for info icon when session is full
+	 *
+	 * @param   object  $row  session data
+	 *
+	 * @return string
+	 */
+	protected function printInfoIcon($row)
+	{
+		// No limit
+		if (!$row->maxattendees)
+		{
+			return '';
+		}
+
+		// Not full
+		if (!($row->registered >= $row->maxattendees))
+		{
+			return '';
+		}
+
+		$image = JHTML::image('media/com_redevent/images/b2b-getinfo.gif', JText::_('COM_REDEVENT_FRONTEND_ADMIN_QUERY_INFO_SESSION_FULL'));
+
+		$tip  = JText::_('COM_REDEVENT_FRONTEND_ADMIN_QUERY_INFO_SESSION_FULL_DESC');
+		$text = JText::_('COM_REDEVENT_FRONTEND_ADMIN_QUERY_INFO_SESSION_FULL');
+
+		$attribs = array(
+			'xref' => $row->xref,
+			'class' => 'getinfo hasTip',
+			'title' => $text,
+			'tip' => $tip,
+		);
+
+		$output = JHtml::link('#', $image, $attribs);
+
+		return $output;
+	}
+
 
 	/**
 	 * Creates the attendees edit button
