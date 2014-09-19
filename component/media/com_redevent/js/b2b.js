@@ -340,6 +340,18 @@ var redb2b = {
 			});
 
 			/**
+			 * get info
+			 */
+			document.id('redevent-admin').addEvent('click:relay(.getinfo)', function(e){
+				e.stop();
+				var dummylink = new Element('a', {
+					href: "index.php?option=com_redevent&controller=frontadmin&task=getinfoform&tmpl=component&modal=1&xref=" + this.getProperty('xref'),
+					rel: "{handler: 'iframe', size: {x: 600, y: 400}}"
+				});
+				SqueezeBox.fromElement(dummylink);
+			});
+
+			/**
 			 * update member
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.update-employee)', function (e) {

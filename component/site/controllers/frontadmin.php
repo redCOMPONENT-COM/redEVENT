@@ -590,4 +590,41 @@ class RedeventControllerFrontadmin extends FOFController
 		echo json_encode($return);
 		JFactory::getApplication()->close();
 	}
+
+	/**
+	 * display session info form
+	 *
+	 * @return void
+	 */
+	public function getinfoform()
+	{
+		$app = JFactory::getApplication();
+		$app->input->set('tmpl', 'component');
+
+		$this->viewName  = 'frontadmin';
+		$this->modelName = 'frontadmin';
+		$this->layout    = 'infoform';
+
+		$this->display();
+	}
+
+	/**
+	 * display session info form
+	 *
+	 * @return void
+	 */
+	public function submitinfoform()
+	{
+		$app = JFactory::getApplication();
+
+		$this->viewName  = 'frontadmin';
+		$this->modelName = 'frontadmin';
+		$this->layout    = 'infoform';
+
+		$model = $this->getModel('frontadmin');
+
+		$this->display();
+
+		JFactory::getApplication()->close();
+	}
 }
