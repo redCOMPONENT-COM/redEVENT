@@ -47,7 +47,9 @@ JFactory::getDocument()->addScriptDeclaration($script);
 	<li>
 		<form name="org-form" id="org-form" method="post">
 			<?php if (count($this->organizations_options) > 2): ?>
-				<?php echo JHtml::_('select.genericlist', $this->organizations_options, 'filter_organization', '', 'value', 'text', $this->state->get('filter_organization')); ?>
+				<div class="styled-select-admin">
+					<?php echo JHtml::_('select.genericlist', $this->organizations_options, 'filter_organization', '', 'value', 'text', $this->state->get('filter_organization')); ?>
+				</div>
 			<?php else: ?>
 				<input type="hidden" name="filter_organization" id="filter_organization" value="<?php echo $this->organizations_options[1]->value; ?>" />
 				<?php echo $this->organizations_options[1]->text; ?>
