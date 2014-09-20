@@ -28,24 +28,6 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <?php if (!$this->modal): ?>
 	<div id="closeeditmember"><?php echo "< " . JText::_('COM_REDEVENT_BACK'); ?></div>
-
-	<div id="editmember-menu">
-		<div class="editmember-breadcrumbs">
-			<ul class="breadcrumb">
-				<li><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_BREADCRUMB_YOU_ARE_HERE'); ?> <span class="divider">></span></li>
-				<?php if ($this->uid): ?>
-					<li><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_BREADCRUMB_EDIT_MEMBER'); ?></li>
-				<?php else: ?>
-					<li><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_BREADCRUMB_ADD_MEMBER'); ?></li>
-				<?php endif; ?>
-			</ul>
-		</div>
-		<?php if ($this->uid): ?>
-		<div class="editmember-addnew">
-			<button type="button" class="add-employee btn"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ADD_EMPLOYEE'); ?></button>
-		</div>
-		<?php endif; ?>
-	</div>
 <?php else: ?>
 	<?php if ($this->uid): ?>
 		<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_TITLE_EDIT_MEMBER'); ?></h2>
