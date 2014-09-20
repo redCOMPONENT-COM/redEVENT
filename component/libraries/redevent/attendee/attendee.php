@@ -540,77 +540,20 @@ class RedeventAttendee extends JObject
 	 */
 	public function getAdminEmails()
 	{
-		$params = JComponentHelper::getParams('com_redevent');
-		$event = $this->getSessionDetails();
+		$helper = new RedeventHelperSessionadmins;
+		$adminEmails = $helper->getAdminEmails($this->getXref());
 
-		$recipients = array();
-
-		// Default recipients
-		$default = $params->get('registration_default_recipients');
-
-		if (!empty($default))
+		if ($rfRecipients = $this->getRFRecipients())
 		{
-			if (strstr($default, ';'))
+			foreach ((array) $rfRecipients as $r)
 			{
-				$addresses = explode(";", $default);
-			}
-			else
-			{
-				$addresses = explode(",", $default);
-			}
-
-			foreach ($addresses as $a)
-			{
-				$a = trim($a);
-
-				if (JMailHelper::isEmailAddress($a))
+				if (JMailHelper::isEmailAddress($r))
 				{
-					$recipients[] = array('email' => $a, 'name' => '');
+					$adminEmails[] = array('email' => $r, 'name' => '');
 				}
 			}
 		}
 
-		// Creator
-		if ($params->get('registration_notify_creator', 1))
-		{
-			if (JMailHelper::isEmailAddress($event->creator_email))
-			{
-				$recipients[] = array('email' => $event->creator_email, 'name' => $event->creator_name);
-			}
-		}
-
-		// Venue recipients
-		if (!empty($event->venue_email))
-		{
-			$recipients[] = array('email' => $event->venue_email, 'name' => $event->venue);
-		}
-
-		// Group recipients
-		$gprecipients = $this->getXrefRegistrationRecipients();
-
-		if ($gprecipients)
-		{
-			foreach ($gprecipients AS $r)
-			{
-				if (JMailHelper::isEmailAddress($r->email))
-				{
-					$recipients[] = array('email' => $r->email, 'name' => $r->name);
-				}
-			}
-		}
-
-		// Redform recipients
-		$rfrecipients = $this->getRFRecipients();
-
-		foreach ((array) $rfrecipients as $r)
-		{
-			if (JMailHelper::isEmailAddress($r))
-			{
-				$recipients[] = array('email' => $r, 'name' => '');
-			}
-		}
-
-		// Custom recipients
 		$customrecipients = array();
 
 		JPluginHelper::importPlugin('redevent');
@@ -621,11 +564,11 @@ class RedeventAttendee extends JObject
 		{
 			if (JMailHelper::isEmailAddress($r['email']))
 			{
-				$recipients[] = array('email' => $r['email'], 'name' => $r['name']);
+				$adminEmails = array('email' => $r['email'], 'name' => $r['name']);
 			}
 		}
 
-		return $recipients;
+		return $adminEmails;
 	}
 
 	public function replaceTags($text)
@@ -647,7 +590,7 @@ class RedeventAttendee extends JObject
 	 *
 	 * @return string
 	 */
-	protected function getRFRecipients()
+	private function getRFRecipients()
 	{
 		$answers = $this->getAnswers();
 
@@ -787,34 +730,6 @@ class RedeventAttendee extends JObject
 	protected function addToAttending()
 	{
 		self::$attending[$this->getXref()][] = $this->_id;
-	}
-
-	/**
-	 * returns registration recipients from groups acl
-	 *
-	 * @return array
-	 */
-	protected function getXrefRegistrationRecipients()
-	{
-		$event = $this->getSessionDetails();
-		$usersIds = RedeventUserAcl::getXrefRegistrationRecipients($event->xref);
-
-		if (!$usersIds)
-		{
-			return false;
-		}
-
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select('u.name, u.email');
-		$query->from('#__users AS u');
-		$query->where('u.id IN (' . implode(",", $usersIds) . ')');
-
-		$db->setQuery($query);
-		$xref_group_recipients = $db->loadObjectList();
-
-		return $xref_group_recipients;
 	}
 
 	/**

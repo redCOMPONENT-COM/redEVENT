@@ -94,6 +94,7 @@ defined('_JEXEC') or die('Restricted access');
 					<td>
 						<?php echo $this->bookbutton($row->xref); ?>
 						<?php echo $this->printPlaces($row, false); ?>
+						<?php echo $this->printInfoIcon($row); ?>
 					</td>
 				</tr>
 			<?php endforeach;?>

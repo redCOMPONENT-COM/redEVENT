@@ -78,7 +78,8 @@ defined('_JEXEC') or die('Restricted access');
 						echo implode("<br/>", $cats);
 						?>
 					</td>
-					<td><?php echo $this->bookbutton($row->xref); ?><?php echo $this->printPlaces($row, false); ?></td>
+					<td><?php echo $this->bookbutton($row->xref); ?><?php echo $this->printPlaces($row, false); ?>
+						<?php echo $this->printInfoIcon($row); ?></td>
 				</tr>
 			<?php endforeach;?>
 		<?php endif; ?>

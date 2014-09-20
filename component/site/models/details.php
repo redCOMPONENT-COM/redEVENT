@@ -162,7 +162,7 @@ class RedeventModelDetails extends JModel
 			$query->select('x.id AS xref, x.title as session_title');
 			$query->select('x.*');
 
-			$query->select('v.venue, v.id AS venue_id, v.city, v.locimage, v.map, v.country, v.street, v.plz, v.state, v.locdescription, v.url');
+			$query->select('v.venue, v.id AS venue_id, v.city, v.locimage, v.map, v.country, v.street, v.plz, v.state, v.locdescription, v.url, v.email AS venue_email');
 
 			$query->select('c.catname, c.published, c.access');
 
