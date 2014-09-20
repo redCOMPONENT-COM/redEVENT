@@ -22,39 +22,29 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <div class="akeeba-bootstrap">
-<?php if (!$this->modal): ?>
-	<div id="closeeditmember"><?php echo "< " . JText::_('COM_REDEVENT_BACK'); ?></div>
-
-	<div id="editmember-menu">
-		<div class="editmember-breadcrumbs">
-			<ul class="breadcrumb">
-				<li><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_BREADCRUMB_YOU_ARE_HERE'); ?> <span class="divider">></span></li>
-				<?php if ($this->uid): ?>
-					<li><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_BREADCRUMB_EDIT_MEMBER'); ?></li>
-				<?php else: ?>
-					<li><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_BREADCRUMB_ADD_MEMBER'); ?></li>
-				<?php endif; ?>
-			</ul>
-		</div>
-		<?php if ($this->uid): ?>
-		<div class="editmember-addnew">
-			<button type="button" class="add-employee btn"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ADD_EMPLOYEE'); ?></button>
-		</div>
-		<?php endif; ?>
-	</div>
-<?php else: ?>
-	<?php if ($this->uid): ?>
-		<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_TITLE_EDIT_MEMBER'); ?></h2>
-	<?php else: ?>
-		<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_TITLE_CREATE_MEMBER'); ?></h2>
+	<?php if (!$this->modal): ?>
+		<div id="closeeditmember"><?php echo "< " . JText::_('COM_REDEVENT_BACK'); ?></div>
 	<?php endif; ?>
-<?php endif; ?>
 
 <jdoc:include type="message" />
 
 <div id="editmember-info">
 
+	<?php if ($this->uid): ?>
+		<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_TITLE_MEMBER_INFO'); ?></h2>
+	<?php else: ?>
+		<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_TITLE_CREATE_MEMBER'); ?></h2>
+	<?php endif; ?>
+
 	<form class="form-horizontal" id="member-update" method="post" action="index.php?option=com_redevent&controller=frontadmin&task=update_user&tmpl=component" enctype="multipart/form-data">
+
+		<div id="employee-submit">
+		<?php if (!$this->modal): ?>
+			<button type="button" class="update-employee btn"><?php echo $this->uid ? JText::_('COM_REDEVENT_UPDATE') : JText::_('COM_REDEVENT_CREATE'); ?></button>
+		<?php else: ?>
+			<button type="submit" class="update-employee btn"><?php echo $this->uid ? JText::_('COM_REDEVENT_UPDATE') : JText::_('COM_REDEVENT_CREATE'); ?></button>
+		<?php endif; ?>
+		</div>
 
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs" role="tablist">
@@ -90,12 +80,6 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 
 		<input type="hidden" name="modal" value="<?php echo $this->modal; ?>" />
-
-		<?php if (!$this->modal): ?>
-            <button type="button" class="update-employee btn"><?php echo $this->uid ? JText::_('COM_REDEVENT_UPDATE') : JText::_('COM_REDEVENT_CREATE'); ?></button>
-		<?php else: ?>
-			<button type="submit" class="update-employee btn"><?php echo $this->uid ? JText::_('COM_REDEVENT_UPDATE') : JText::_('COM_REDEVENT_CREATE'); ?></button>
-		<?php endif; ?>
     </form>
 </div>
 

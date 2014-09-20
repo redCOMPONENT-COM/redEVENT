@@ -26,21 +26,30 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
+<div class="akeeba-bootstrap">
 <?php if (!$this->modal): ?>
 	<div id="closeeditmember"><?php echo "< " . JText::_('COM_REDEVENT_BACK'); ?></div>
-<?php else: ?>
-	<?php if ($this->uid): ?>
-		<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_TITLE_EDIT_MEMBER'); ?></h2>
-	<?php else: ?>
-		<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_TITLE_CREATE_MEMBER'); ?></h2>
-	<?php endif; ?>
 <?php endif; ?>
 
 <jdoc:include type="message" />
 
 <div id="editmember-info">
 
+	<?php if ($this->uid): ?>
+		<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_TITLE_MEMBER_INFO'); ?></h2>
+	<?php else: ?>
+		<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_TITLE_CREATE_MEMBER'); ?></h2>
+	<?php endif; ?>
+
 	<form class="form-horizontal" id="member-update" method="post" action="index.php?option=com_redevent&controller=frontadmin&task=update_user&tmpl=component" enctype="multipart/form-data">
+
+		<div id="employee-submit">
+		<?php if (!$this->modal): ?>
+			<button type="button" class="update-employee btn"><?php echo $this->uid ? JText::_('COM_REDEVENT_UPDATE') : JText::_('COM_REDEVENT_CREATE'); ?></button>
+		<?php else: ?>
+			<button type="submit" class="update-employee btn"><?php echo $this->uid ? JText::_('COM_REDEVENT_UPDATE') : JText::_('COM_REDEVENT_CREATE'); ?></button>
+		<?php endif; ?>
+		</div>
 
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs" role="tablist">
@@ -77,11 +86,6 @@ defined('_JEXEC') or die('Restricted access');
 
 		<input type="hidden" name="modal" value="<?php echo $this->modal; ?>" />
 
-		<?php if (!$this->modal): ?>
-            <button type="button" class="update-employee btn"><?php echo $this->uid ? JText::_('COM_REDEVENT_UPDATE') : JText::_('COM_REDEVENT_CREATE'); ?></button>
-		<?php else: ?>
-			<button type="submit" class="update-employee btn"><?php echo $this->uid ? JText::_('COM_REDEVENT_UPDATE') : JText::_('COM_REDEVENT_CREATE'); ?></button>
-		<?php endif; ?>
     </form>
 </div>
 
@@ -126,3 +130,4 @@ defined('_JEXEC') or die('Restricted access');
 	</form>
 </div>
 <?php endif; ?>
+</div>
