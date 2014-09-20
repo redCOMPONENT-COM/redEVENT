@@ -385,6 +385,8 @@ function RedEventParseRoute($segments)
 		case 'venuesmap':
 		case 'myevents':
 		case 'featured':
+		case 'frontadmin':
+		case 'frontadminlogin':
 			$vars['view'] = $segments[0];
 			break;
 

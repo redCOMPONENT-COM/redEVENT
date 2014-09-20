@@ -346,6 +346,22 @@ class RedeventHelperRoute
 		return self::buildUrl( $parts );
 	}
 
+	public static function getFrontadminRoute()
+	{
+		$parts = array( "option" => "com_redevent",
+			"view"   => 'frontadmin'
+		);
+		return self::buildUrl( $parts );
+	}
+
+	public static function getFrontadminloginRoute()
+	{
+		$parts = array( "option" => "com_redevent",
+			"view"   => 'frontadminlogin'
+		);
+		return self::buildUrl( $parts );
+	}
+
 	protected static function buildUrl($parts)
 	{
 		if ($item = self::_findItem($parts))
