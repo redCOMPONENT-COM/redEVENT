@@ -637,11 +637,11 @@ class RedeventAttendee extends JObject
 
 		if (!isset(self::$sessions[$xref]))
 		{
-			$query = 'SELECT a.id AS did, x.id AS xref, a.title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, '
+			$query = 'SELECT a.id AS did, x.id AS xref, a.title, a.title AS event_title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, '
 				. ' a.registra, a.unregistra, a.activate, a.notify, a.redform_id as form_id, '
 				. ' a.notify_confirm_body, a.notify_confirm_subject, a.notify_subject, a.notify_body, '
 				. ' a.notify_off_list_subject, a.notify_off_list_body, a.notify_on_list_subject, a.notify_on_list_body, '
-				. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
+				. ' x.*, x.title AS session_title, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
 				. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone,'
 				. ' v.venue, v.email as venue_email,'
 				. ' u.name AS creator_name, u.email AS creator_email, '
@@ -747,6 +747,8 @@ class RedeventAttendee extends JObject
 		 **/
 		if (isset($eventsettings->notify) && $eventsettings->notify)
 		{
+			$params = JComponentHelper::getParams('com_redevent');
+
 			$subject = $eventsettings->notify_subject;
 			$body = '<html><head><title></title></title></head><body>';
 			$body .= $eventsettings->notify_body;
@@ -762,6 +764,12 @@ class RedeventAttendee extends JObject
 			{
 				/* Add the email address */
 				$mailer->AddAddress($email['email'], $email['fullname']);
+			}
+
+			if ($params->get(registration_notification_attach_ics, 0))
+			{
+				$ics = $this->getIcs();
+				$mailer->addAttachment($ics);
 			}
 
 			/* send */
@@ -941,5 +949,34 @@ class RedeventAttendee extends JObject
 		$mailer->setSubject($subject);
 
 		return $mailer;
+	}
+
+	/**
+	 * return ics file for session
+	 *
+	 * @return bool|string
+	 */
+	private function getIcs()
+	{
+		$app = JFactory::getApplication();
+
+		// Get data from the model
+		$row = $this->getSessionDetails();
+
+		// initiate new CALENDAR
+		$vcal = RedeventHelper::getCalendarTool();
+		$vcal->setProperty('unique_id', 'session' . $row->xref . '@' . $app->getCfg('sitename'));
+		$vcal->setConfig( "filename", "event".$row->xref.".ics" );
+
+		RedeventHelper::icalAddEvent($vcal, $row);
+
+		if ($vcal->saveCalendar($app->getCfg('tmp_path'), "event" . $row->xref . ".ics"))
+		{
+			return $app->getCfg('tmp_path') . "/event" . $row->xref . ".ics";
+		}
+		else
+		{
+			return false;
+		}
 	}
 }

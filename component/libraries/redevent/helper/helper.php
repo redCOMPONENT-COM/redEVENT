@@ -930,7 +930,11 @@ class RedeventHelper
 		$title = RedeventHelper::getSessionFullTitle($event);
 		// item description text
 		$description = $title.'\\n';
-		$description .= JText::_('COM_REDEVENT_CATEGORY' ).': '.implode(', ', $categories).'\\n';
+
+		if (count($categories))
+		{
+			$description .= JText::_('COM_REDEVENT_CATEGORY' ).': '.implode(', ', $categories).'\\n';
+		}
 		//		if (isset($event->summary) && $event->summary) {
 		//			$description .= $event->summary.'\\n';
 		//		}

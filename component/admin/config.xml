@@ -419,10 +419,16 @@
  		<field name="registration_notification_body" type="textarea" cols="80" rows="5" default="registration details&lt;br /&gt;&lt;br /&gt;[answers]" label="COM_REDEVENT_SETTINGS_REGISTRATION_NOTIFICATION_BODY" description="COM_REDEVENT_SETTINGS_REGISTRATION_NOTIFICATION_BODY_TIP" />
 
     <field name="registration_notification_attach_rfuploads" type="radio" default="1" label="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_LABEL" description="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_DESC">
-      <option value="0">No</option>
-      <option value="1">Yes</option>
+        <option value="0">JNo</option>
+        <option value="1">JYes</option>
     </field>
     <field name="registration_notification_attach_rfuploads_maxsize" type="text" size="20" default="2000" label="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_MAXSIZE_LABEL" description="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_RF_UPLOADS_MAXSIZE_DESC" />
+
+
+        <field name="registration_notification_attach_ics" type="radio" default="0" label="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_ICS_LABEL" description="COM_REDEVENT_SETTINGS_REGISTRATION_ATTACH_ICS_DESC">
+            <option value="0">JNo</option>
+            <option value="1">JYes</option>
+        </field>
 
  		<field name="unregistration_notification_subject" type="text" size="80" default="Cancelled registration for event [event_title] on [date]" label="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_SUBJECT" description="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_SUBJECT_DESC" />
  		<field name="unregistration_notification_body" type="textarea" cols="80" rows="5" default="registration details were &lt;br /&gt;&lt;br /&gt;[answers]" label="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_BODY" description="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_BODY_DESC" />
