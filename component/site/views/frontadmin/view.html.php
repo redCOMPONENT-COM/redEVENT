@@ -385,6 +385,10 @@ class RedeventViewFrontadmin extends JView
 	{
 		$document = JFactory::getDocument();
 
+		// Load Akeeba Strapper
+		include_once JPATH_ROOT . '/media/akeeba_strapper/strapper.php';
+		AkeebaStrapper::bootstrap();
+
 		$member = $this->get('MemberInfo');
 		$booked = $this->get('MemberBooked');
 		$previous = $this->get('MemberPrevious');

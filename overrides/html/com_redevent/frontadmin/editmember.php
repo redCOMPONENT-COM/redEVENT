@@ -59,23 +59,39 @@ defined('_JEXEC') or die('Restricted access');
 <div id="editmember-info">
 
 	<form class="form-horizontal" id="member-update" method="post" action="index.php?option=com_redevent&controller=frontadmin&task=update_user&tmpl=component" enctype="multipart/form-data">
-		<?php foreach ($this->tabs as $t): ?>
-			<fieldset>
-				<legend><?php echo $t->tab_name; ?></legend>
-				<?php foreach ($t->fields as $field): ?>
-					<?php if (!$field->hidden) : ?>
-					<div class="control-group">
-						<?php echo $field->getLabel(array('class' => 'control-label')); ?>
-						<div class="controls">
-							<?php echo $field->getInput(); ?>
+
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs" role="tablist">
+			<?php $i = 0; ?>
+			<?php foreach ($this->tabs as $t): ?>
+				<li class="<?php echo $i ? '' : 'active'; ?>"><a href="#tab<?php echo $i; ?>" role="tab" data-toggle="tab"><?php echo $t->tab_name; ?></a></li>
+				<?php $i++; ?>
+			<?php endforeach; ?>
+		</ul>
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<?php $i = 0; ?>
+			<?php foreach ($this->tabs as $t): ?>
+				<div class="tab-pane<?php echo $i ? '' : ' active'; ?>" id="tab<?php echo $i; ?>">
+				<fieldset>
+					<?php foreach ($t->fields as $field): ?>
+						<?php if (!$field->hidden) : ?>
+						<div class="control-group">
+							<?php echo $field->getLabel(array('class' => 'control-label')); ?>
+							<div class="controls">
+								<?php echo $field->getInput(); ?>
+							</div>
 						</div>
-					</div>
-					<?php else: ?>
-						<?php echo $field->getInput(); ?>
-					<?php endif; ?>
-				<?php endforeach; ?>
-			</fieldset>
-		<?php endforeach; ?>
+						<?php else: ?>
+							<?php echo $field->getInput(); ?>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</fieldset>
+				</div>
+				<?php $i++; ?>
+			<?php endforeach; ?>
+		</div>
 
 		<input type="hidden" name="modal" value="<?php echo $this->modal; ?>" />
 
