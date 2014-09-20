@@ -79,6 +79,11 @@ class RedeventViewFrontadmin extends JView
 			return $this->displayMemberPrevious($tpl);
 		}
 
+		if ($this->getLayout() == 'infoform')
+		{
+			return $this->displayInfoform($tpl);
+		}
+
 		JHTML::_('behavior.framework');
 		JHtml::_('behavior.tooltip');
 		JHtml::_('behavior.modal');
@@ -261,7 +266,7 @@ class RedeventViewFrontadmin extends JView
 	 */
 	protected function printPlaces($row, $showBooked = true)
 	{
-		$maxLeftDisplay = 6;
+		$maxLeftDisplay = 2000;
 
 		if (!$row->maxattendees)
 		{
@@ -293,6 +298,44 @@ class RedeventViewFrontadmin extends JView
 				return '<span class="hasTip" title="' . $tip . '">' . $left . '</span>';
 			}
 		}
+	}
+
+	/**
+	 * returns string for info icon when session is full
+	 *
+	 * @param   object  $row  session data
+	 *
+	 * @return string
+	 */
+	protected function printInfoIcon($row)
+	{
+		// No limit
+		if (!$row->maxattendees)
+		{
+			return '';
+		}
+
+		// Not full
+		if (!($row->registered >= $row->maxattendees))
+		{
+			return '';
+		}
+
+		$image = JHTML::image('media/com_redevent/images/b2b-getinfo.gif', JText::_('COM_REDEVENT_FRONTEND_ADMIN_QUERY_INFO_SESSION_FULL'));
+
+		$tip  = JText::_('COM_REDEVENT_FRONTEND_ADMIN_QUERY_INFO_SESSION_FULL_DESC');
+		$text = JText::_('COM_REDEVENT_FRONTEND_ADMIN_QUERY_INFO_SESSION_FULL');
+
+		$attribs = array(
+			'xref' => $row->xref,
+			'class' => 'getinfo hasTip',
+			'title' => $text,
+			'tip' => $tip,
+		);
+
+		$output = JHtml::link('#', $image, $attribs);
+
+		return $output;
 	}
 
 
@@ -443,6 +486,25 @@ class RedeventViewFrontadmin extends JView
 		$this->limitstart = $state->get('previous_limitstart');
 
 		$this->setLayout('editmember_sessions');
+		parent::display($tpl);
+	}
+
+	/**
+	 * Display info form
+	 *
+	 * @param   string  $tpl  template to display
+	 *
+	 * @return void
+	 */
+	protected function displayInfoForm($tpl= null)
+	{
+		// Load Akeeba Strapper
+		include_once JPATH_ROOT . '/media/akeeba_strapper/strapper.php';
+		AkeebaStrapper::bootstrap();
+
+		$this->action = 'index.php?option=com_redevent&controller=frontadmin';
+		$this->xref = JFactory::getApplication()->input->getInt('xref', 0);
+
 		parent::display($tpl);
 	}
 }

@@ -96,6 +96,7 @@ defined('_JEXEC') or die('Restricted access');
 					</td>
 					<td><?php echo $this->bookbutton($row->xref); ?>
 						<?php echo $this->printPlaces($row); ?>
+						<?php echo $this->printInfoIcon($row); ?>
 					</td>
 					<td>
 					<?php if ($this->useracl->canEditEvent((int) $row->slug)): ?>
