@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<div id="b2b-login" class="">
+<div id="b2b-login" class="akeeba-bootstrap">
 	<h2>Login</h2>
 
 	<form action="<?php echo JRoute::_('index.php', true, $this->params->get('secure', 0)); ?>" method="post" id="login-form" >
