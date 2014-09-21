@@ -29,7 +29,6 @@ class RedeventviewFrontadminlogin extends JView
 	 */
 	public function display($tpl = null)
 	{
-
 		$app = JFactory::getApplication();
 		$app->input->set('tmpl', 'component');
 
@@ -43,6 +42,10 @@ class RedeventviewFrontadminlogin extends JView
 
 			return;
 		}
+
+		// Load Akeeba Strapper
+		include_once JPATH_ROOT.'/media/akeeba_strapper/strapper.php';
+		AkeebaStrapper::bootstrap();
 
 		$params = $app->getParams();
 		$document  = JFactory::getDocument();
