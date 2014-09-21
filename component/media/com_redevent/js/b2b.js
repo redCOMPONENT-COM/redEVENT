@@ -41,6 +41,8 @@ var redb2b = {
 		 */
 		init : function() {
 
+			SqueezeBox.initialize();
+
 			/**
 			 * update sessions options when selecting event
 			 */
@@ -569,6 +571,10 @@ var redb2b = {
 						if (!result.status) {
 							alert(result.error);
 						}
+						else {
+							var element = new Element('span', {'class': 'comment-emailed'}).appendText(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_COMMENT_EMAIL_SENT"));
+							SqueezeBox.open(element, {handler: 'adopt', size: {x: 400, y: 100}});
+						}
 						el.set('tip', el.get('value'));
 						redb2b.refreshTips();
 					}
@@ -683,10 +689,9 @@ var redb2b = {
 			});
 
 			// For edit events and sessions
-			SqueezeBox.initialize({handler: 'iframe', size: {x: 750, y: 500}});
 			document.id('redevent-admin').addEvent('click:relay(.xrefmodal)', function(e) {
 				e.stop();
-				SqueezeBox.fromElement(this);
+				SqueezeBox.open(this, {handler: 'iframe', size: {x: 750, y: 500}});
 			});
 
 			$('sbox-btn-close').addEvent('click', function() {
@@ -929,10 +934,9 @@ var redb2b = {
 			}
 
 			var dummylink = new Element('a', {
-				href: "index.php?option=com_redevent&controller=frontadmin&task=editmember&tmpl=component&modal=1&orgId=" + orgId,
-				rel: "{handler: 'iframe', size: {x: 800, y: 400}, onClose: redb2b.getMembersList}"
+				href: "index.php?option=com_redevent&controller=frontadmin&task=editmember&tmpl=component&modal=1&orgId=" + orgId
 			});
-			SqueezeBox.fromElement(dummylink);
+			SqueezeBox.open(dummylink, {handler: 'iframe', size: {x: 800, y: 400}, onClose: redb2b.getMembersList});
 		},
 
 		editmember : function(id) {
