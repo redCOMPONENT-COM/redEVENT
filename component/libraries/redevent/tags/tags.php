@@ -494,6 +494,9 @@ class RedeventTags
 	{
 		if (empty($this->_eventlinks))
 		{
+			$gids = JFactory::getUser()->getAuthorisedViewLevels();
+			$gids = implode(',', $gids);
+
 			// TODO: should be moved to a model
 			$xcustoms = $this->getXrefCustomFields();
 
@@ -529,6 +532,8 @@ class RedeventTags
 			$query->from('#__redevent_events AS e');
 			$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.eventid = e.id');
 			$query->join('INNER', '#__redevent_venues AS v ON x.venueid = v.id');
+			$query->join('LEFT', '#__redevent_venue_category_xref AS xvcat ON v.id = xvcat.venue_id');
+			$query->join('LEFT', '#__redevent_venues_categories AS vc ON xvcat.category_id = vc.id');
 			$query->join('LEFT', '#__rwf_forms AS f ON f.id = e.redform_id');
 			$query->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id');
 			$query->join('LEFT', '#__redevent_categories AS c ON xcat.category_id = c.id');
@@ -536,6 +541,11 @@ class RedeventTags
 
 			$query->where('x.published = ' . $db->Quote($this->getEvent()->getData()->published));
 			$query->where('e.id = ' . $this->_eventid);
+
+			// Acl view restriction
+			$query->where('(v.access IN (' . $gids . '))');
+			$query->where('(c.access IN (' . $gids . '))');
+			$query->where('(vc.id IS NULL OR vc.access IN (' . $gids . '))');
 
 			$query->group('x.id');
 
