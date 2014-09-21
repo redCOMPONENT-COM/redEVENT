@@ -29,6 +29,7 @@ class RedeventviewFrontadminlogin extends JView
 	 */
 	public function display($tpl = null)
 	{
+
 		$app = JFactory::getApplication();
 		$app->input->set('tmpl', 'component');
 
@@ -41,6 +42,20 @@ class RedeventviewFrontadminlogin extends JView
 			$app->redirect($frontadminRoute);
 
 			return;
+		}
+
+		$params = $app->getParams();
+		$document  = JFactory::getDocument();
+
+		// Add css file
+		if (!$params->get('custom_css'))
+		{
+			$document->addStyleSheet('media/com_redevent/css/redevent.css');
+			$document->addStyleSheet($this->baseurl . '/media/com_redevent/css/redevent-b2b.css');
+		}
+		else
+		{
+			$document->addStyleSheet($params->get('custom_css'));
 		}
 
 		$this->return = base64_encode($frontadminRoute);
