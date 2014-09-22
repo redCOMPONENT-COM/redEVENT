@@ -64,7 +64,6 @@ JHtml::_('behavior.formvalidation')
 			<div class="tab-pane<?php echo $i ? '' : ' active'; ?>" id="tab<?php echo $i; ?>">
 			<fieldset>
 				<?php foreach ($t->fields as $field): ?>
-					<?php if ($field->id == 'name') continue; ?>
 					<?php if (!$field->hidden) : ?>
 					<div class="control-group">
 						<?php echo $field->getLabel(array('class' => 'control-label')); ?>
