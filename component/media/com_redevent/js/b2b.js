@@ -102,7 +102,7 @@ var redb2b = {
 				var selected = this.get('value');
 				document.id('book-xref').set('value', selected);
 				if (selected) {
-					redb2b.selectSession(id);
+					redb2b.selectSession(selected);
 				}
 				redb2b.getMembersList();
 				redb2b.getSessions();
@@ -136,7 +136,7 @@ var redb2b = {
 
 				redb2b.updateOrganizationUserOptions();
 
-				// Display organization users ?
+				// Display organization users
 				redb2b.getMembersList();
 			}).fireEvent('change');
 
@@ -257,6 +257,7 @@ var redb2b = {
 					}
 
 					if (!redb2b.selected.contains(id)) {
+						document.id('cid'+id).getParent('tr').addClass('selected');
 						div.removeClass('nouser');
 						div.getElement(".notice").set('styles', {display:'none'});
 
@@ -268,6 +269,7 @@ var redb2b = {
 							newrow.dispose();
 							if (document.id('cid'+id)) {
 								document.id('cid'+id).removeProperty('checked');
+								document.id('cid'+id).getParent('tr').removeClass('selected');
 							}
 							redb2b.selected.erase(id);
 							if (!redb2b.selected.length) {
@@ -301,6 +303,7 @@ var redb2b = {
 				else {
 					/** remove from selected list **/
 					document.id('member'+id).dispose();
+					document.id('cid'+id).getParent('tr').removeClass('selected');
 					redb2b.selected.erase(id);
 					if (!redb2b.selected.length) {
 						redb2b.resetSelected();
@@ -884,6 +887,7 @@ var redb2b = {
 							var cid = document.id('cid' + val);
 							if (cid) {
 								cid.setProperty('checked', 'checked');
+								cid.getParent('tr').addClass('selected');
 							}
 						});
 						redb2b.refreshTips();
