@@ -329,10 +329,10 @@ class RedeventViewFrontadmin extends JView
 			'xref' => $row->xref,
 			'class' => 'getinfo hasTip',
 			'title' => $text,
-			'tip' => $tip,
+			'tip' => $tip
 		);
 
-		$output = JHtml::link('#', $image, $attribs);
+		$output = JHtml::link('index.php?option=com_redevent&controller=frontadmin&task=getinfoform&tmpl=component&modal=1&xref=' . $row->xref, $image, $attribs);
 
 		return $output;
 	}
