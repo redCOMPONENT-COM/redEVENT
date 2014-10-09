@@ -42,12 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 			</li>
 			<?php
 			$usersConfig = JComponentHelper::getParams('com_users');
-			if ($usersConfig->get('allowUserRegistration')) : ?>
-				<li>
-					<a href="<?php echo JRoute::_('index.php?option=com_users&view=registration'); ?>">
-						<?php echo JText::_('COM_REDEVENT_B2B_LOGIN_REGISTER'); ?></a>
-				</li>
-			<?php endif; ?>
+			?>
 		</ul>
 	</form>
 </div>
