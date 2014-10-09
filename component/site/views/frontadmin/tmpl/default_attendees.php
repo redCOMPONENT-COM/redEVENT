@@ -33,6 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 		       class="input-medium form-control" placeholder="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_PERSON'); ?>"
 			/>
 	</div>
+
+	<button type="button" id="add-employee" class="btn"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ADD_EMPLOYEE'); ?></button>
 </div>
 
 <div id="employees-result" class="panel-collapse collapse in"></div>
