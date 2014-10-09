@@ -90,7 +90,12 @@ class RedeventModelFrontadminMembers extends RedeventModelBaseeventlist
 		// Return with bookings
 		$all = $this->getBooked();
 
-		return array_slice($all, $this->getState('members_limitstart'), $this->getState('limit'));
+		if (is_array($all))
+		{
+			return array_slice($all, $this->getState('members_limitstart'), $this->getState('limit'));
+		}
+
+		return false;
 	}
 
 	/**
@@ -132,16 +137,20 @@ class RedeventModelFrontadminMembers extends RedeventModelBaseeventlist
 		$query->join('INNER', '#__redmember_users AS rmu ON rmuo.user_id = rmu.user_id');
 		$query->join('INNER', '#__users AS u ON u.id = rmu.user_id');
 		$query->where('rmuo.organization_id = ' . $this->organizationId);
+		$query->group('u.id');
 
 		$query->order($this->getState('members_order') . ' ' . $this->getState('members_order_dir') . ', u.name');
 
 		if ($this->filter_user)
 		{
+			$query->join('LEFT', '#__redmember_fields_values AS v ON v.entity_id = u.id');
+
 			$like = $db->Quote("%{$this->filter_user}%");
 			$cond = array();
 			$cond[] = 'u.username LIKE ' . $like;
 			$cond[] = 'u.name LIKE ' . $like;
 			$cond[] = 'u.email LIKE ' . $like;
+			$cond[] = 'v.field_value LIKE ' . $like;
 			$query->where('(' . implode(' OR ', $cond) . ')');
 		}
 
