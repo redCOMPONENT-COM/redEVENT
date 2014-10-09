@@ -57,6 +57,7 @@ JHtml::_('behavior.formvalidation')
 			<?php foreach ($this->tabs as $t): ?>
 					<?php foreach ($t->fields as $field): ?>
 						<?php if ($field->id == 'name') continue; ?>
+						<?php if ($field->id == 'password' || $field->id == 'password2') continue; ?>
 						<?php if (!$field->hidden) : ?>
 						<div class="control-group field-<?php echo $field->id; ?>">
 							<?php echo $field->getLabel(array('class' => 'control-label')); ?>
