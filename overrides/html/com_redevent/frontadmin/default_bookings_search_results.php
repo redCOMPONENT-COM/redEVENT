@@ -38,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 		<li><label class="checkbox"><input name="filter_person_active" id="filter_person_active1" type="checkbox" value="-1"
 					<?php echo $this->state->get('filter_person_archive') ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSES_HISTORY'); ?></label></li>
 	</ul>
-	
+
 	<table class="table">
 		<thead>
 			<tr>
@@ -78,8 +78,12 @@ defined('_JEXEC') or die('Restricted access');
 						echo implode("<br/>", $cats);
 						?>
 					</td>
-					<td><?php echo $this->bookbutton($row->xref); ?><?php echo $this->printPlaces($row, false); ?>
-						<?php echo $this->printInfoIcon($row); ?></td>
+					<td><?php if (!$this->isFull($row)): ?>
+							<?php echo $this->bookbutton($row->xref); ?><?php echo $this->printPlaces($row, false); ?>
+					<?php else: ?>
+						<?php echo $this->printInfoIcon($row); ?>
+					<?php endif; ?>
+					</td>
 				</tr>
 			<?php endforeach;?>
 		<?php endif; ?>

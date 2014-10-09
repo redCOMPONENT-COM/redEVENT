@@ -267,6 +267,11 @@ class RedeventViewFrontadmin extends JView
 	 */
 	protected function printPlaces($row, $showBooked = true)
 	{
+		if ($this->isFull($row))
+		{
+			return '';
+		}
+
 		$maxLeftDisplay = 2000;
 
 		if (!$row->maxattendees)
@@ -310,14 +315,7 @@ class RedeventViewFrontadmin extends JView
 	 */
 	protected function printInfoIcon($row)
 	{
-		// No limit
-		if (!$row->maxattendees)
-		{
-			return '';
-		}
-
-		// Not full
-		if (!($row->registered >= $row->maxattendees))
+		if (!$this->isFull($row))
 		{
 			return '';
 		}
@@ -337,6 +335,30 @@ class RedeventViewFrontadmin extends JView
 		$output = JHtml::link('#', $image, $attribs);
 
 		return $output;
+	}
+
+	/**
+	 * Check if event is full
+	 *
+	 * @param $row
+	 *
+	 * @return bool
+	 */
+	protected function isFull($row)
+	{
+		// No limit
+		if (!$row->maxattendees)
+		{
+			return false;
+		}
+
+		// Not full
+		if ($row->registered >= $row->maxattendees)
+		{
+			return true;
+		}
+
+		return false;
 	}
 
 
