@@ -24,19 +24,23 @@ defined('_JEXEC') or die('Restricted access');
 
 <div id="employees-header" class="panel-heading">
     <h2 class="panel-title">
-        <a data-toggle="collapse" data-parent="#main-results" href="#employees-result">
+        <a data-toggle="collapse" data-parent="#main-results" href="#employees-result-panel">
             <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ORG_MEMBERS_TITLE')?>
         </a>
     </h2>
-    <div id="search-member">
-        <input name="filter_person" id="filter_person" type="text"
-               class="input-medium form-control" placeholder="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_PERSON'); ?>"
-            /><button class="btn" id="search_person" type="button"><i class="icon-search"></i></button>
-    </div>
-	<button type="button" id="add-employee" class="btn"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ADD_EMPLOYEE'); ?></button>
 </div>
 
-<div id="employees-result" class="panel-collapse collapse in"></div>
+<div id="employees-result-panel" class="panel-collapse collapse in">
+	<div id="search-member">
+		<input name="filter_person" id="filter_person" type="text"
+		       class="input-medium form-control" placeholder="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_PERSON'); ?>"
+			/><button class="btn" id="search_person" type="button"><i class="icon-search"></i></button>
+		<button class="btn" id="reset_search_person" type="button"><i class="icon-remove"></i></button>
+	</div>
+	<button type="button" id="add-employee" class="btn"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ADD_EMPLOYEE'); ?></button>
+
+	<div id="employees-result"></div>
+</div>
 
 <script type="application/javascript">
     <?php JHtml::script('com_redevent/autocompleter.js', false, true); ?>

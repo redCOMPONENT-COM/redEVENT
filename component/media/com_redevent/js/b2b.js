@@ -144,18 +144,15 @@ var redb2b = {
 			 * update organization bookings when selecting member
 			 */
 			document.id('redevent-admin').addEvent('change:relay(#filter_person)', function(event){
-				redb2b.getMembersList();
-				redb2b.searchBookings();
+				redb2b.filterPerson();
+			});
 
-				if (typeof ga !== 'undefined')
-				{
-					ga('send',{
-						'hitType': 'event',
-						'eventCategory': 'b2b organization',
-						'eventAction': 'search',
-						'eventLabel': 'person'
-					});
-				}
+			/**
+			 * update organization bookings when selecting member
+			 */
+			document.id('redevent-admin').addEvent('click:relay(#reset_search_person)', function(event){
+				document.id('filter_person').set('value', '');
+				redb2b.filterPerson();
 			});
 
 			/**
@@ -1056,7 +1053,22 @@ var redb2b = {
 			return data;
 		},
 
-	addGoogleAnalyticsTrans : function(response) {
+		filterPerson : function() {
+			redb2b.getMembersList();
+			redb2b.searchBookings();
+
+			if (typeof ga !== 'undefined')
+			{
+				ga('send',{
+					'hitType': 'event',
+					'eventCategory': 'b2b organization',
+					'eventAction': 'search',
+					'eventLabel': 'person'
+				});
+			}
+		},
+
+		addGoogleAnalyticsTrans : function(response) {
 		if (!ga)
 		{
 			return;
