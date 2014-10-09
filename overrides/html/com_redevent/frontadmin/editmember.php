@@ -52,25 +52,13 @@ JHtml::_('behavior.formvalidation')
 		<?php endif; ?>
 		</div>
 
-		<!-- Nav tabs -->
-		<ul class="nav nav-tabs" role="tablist">
-			<?php $i = 0; ?>
-			<?php foreach ($this->tabs as $t): ?>
-				<li class="<?php echo $i ? '' : 'active'; ?>"><a href="#tab<?php echo $i; ?>" role="tab" data-toggle="tab"><?php echo $t->tab_name; ?></a></li>
-				<?php $i++; ?>
-			<?php endforeach; ?>
-		</ul>
-
 		<!-- Tab panes -->
-		<div class="tab-content">
-			<?php $i = 0; ?>
+		<div>
 			<?php foreach ($this->tabs as $t): ?>
-				<div class="tab-pane<?php echo $i ? '' : ' active'; ?>" id="tab<?php echo $i; ?>">
-				<fieldset>
 					<?php foreach ($t->fields as $field): ?>
 						<?php if ($field->id == 'name') continue; ?>
 						<?php if (!$field->hidden) : ?>
-						<div class="control-group">
+						<div class="control-group field-<?php echo $field->id; ?>">
 							<?php echo $field->getLabel(array('class' => 'control-label')); ?>
 							<div class="controls">
 								<?php echo $field->getInput(); ?>
@@ -80,9 +68,6 @@ JHtml::_('behavior.formvalidation')
 							<?php echo $field->getInput(); ?>
 						<?php endif; ?>
 					<?php endforeach; ?>
-				</fieldset>
-				</div>
-				<?php $i++; ?>
 			<?php endforeach; ?>
 		</div>
 
