@@ -91,7 +91,8 @@ defined('_JEXEC') or die('Restricted access');
 						echo implode("<br/>", $cats);
 						?>
 					</td>
-					<td><?php if (!$this->isFull($row)): ?>
+					<td>
+						<?php if (!$this->isFull($row)): ?>
 							<?php echo $this->bookbutton($row->xref); ?><?php echo $this->printPlaces($row, false); ?>
 						<?php else: ?>
 							<?php echo $this->printInfoIcon($row); ?>

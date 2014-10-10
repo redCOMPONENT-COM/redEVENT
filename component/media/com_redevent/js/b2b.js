@@ -182,37 +182,16 @@ var redb2b = {
 			 * update course search when clicking on book session button in lists
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.bookthis)', function(e){
-				e.stop();
 				var id = this.getProperty('xref');
-				this.getParent('tr').getElement('.select-session-radio').set('checked', 'checked');
 				redb2b.selectSession(id);
-
-				if (typeof ga !== 'undefined')
-				{
-					ga('send',{
-						'hitType': 'event',
-						'eventCategory': 'b2b',
-						'eventAction': 'select book session'
-					});
-				}
 			});
 
 			/**
 			 * update course search when clicking on book session button in lists
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.select-session-radio)', function(e){
-//				e.stop();
 				var id = this.get('value');
 				redb2b.selectSession(id);
-
-				if (typeof ga !== 'undefined')
-				{
-					ga('send',{
-						'hitType': 'event',
-						'eventCategory': 'b2b',
-						'eventAction': 'select book session'
-					});
-				}
 			});
 
 			/**
@@ -854,7 +833,8 @@ var redb2b = {
 
 					if (session.placesleft == -1)
 					{
-						redb2b.placesleft = 1000;
+						// A bit ugly...
+						redb2b.placesleft = 10000;
 					}
 					else
 					{
@@ -862,6 +842,18 @@ var redb2b = {
 					}
 
 					redb2b.resetSelected();
+
+					redb2b.highlightSelectedSession(id, 'bookings-result');
+					redb2b.highlightSelectedSession(id, 'sessions-result');
+
+					if (typeof ga !== 'undefined')
+					{
+						ga('send',{
+							'hitType': 'event',
+							'eventCategory': 'b2b',
+							'eventAction': 'select book session'
+						});
+					}
 				}
 			});
 			req.send();
@@ -1066,6 +1058,21 @@ var redb2b = {
 					'eventLabel': 'person'
 				});
 			}
+		},
+
+		highlightSelectedSession : function(id, parentElementId) {
+			document.id(parentElementId).getElements('tr').each(function(row){
+				if (!row.getElement('.select-session-radio')) {
+					return;
+				}
+
+				if (row.getElement('.select-session-radio').get('value') == id) {
+					row.addClass('selected');
+				}
+				else {
+					row.removeClass('selected');
+				}
+			});
 		},
 
 		addGoogleAnalyticsTrans : function(response) {

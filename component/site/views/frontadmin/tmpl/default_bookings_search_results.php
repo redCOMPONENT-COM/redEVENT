@@ -57,7 +57,11 @@ defined('_JEXEC') or die('Restricted access');
 		<?php if ($this->bookings): ?>
 			<?php foreach ($this->bookings as $row): ?>
 				<tr>
-					<td><input type="radio" name="select-session" value="<?php echo $row->xref; ?>" class="select-session-radio"/></td>
+					<td>
+						<input type="radio" name="select-session" value="<?php echo $row->xref; ?>"
+						       class="select-session-radio"
+							<?php echo $this->isFull($row) ? 'disabled="disabled"' : ''; ?>/>
+					</td>
 					<td><?php echo RedeventHelperOutput::formatdate($row->dates, false); ?></td>
 					<td><?php echo RedeventHelperOutput::formattime($row->dates, $row->times); ?></td>
 					<td><?php echo RedeventHelper::getEventDuration($row); ?></td>
@@ -80,9 +84,12 @@ defined('_JEXEC') or die('Restricted access');
 						echo implode("<br/>", $cats);
 						?>
 					</td>
-					<td><?php echo $this->bookbutton($row->xref); ?>
-						<?php echo $this->printPlaces($row); ?>
-						<?php echo $this->printInfoIcon($row); ?>
+					<td>
+						<?php if (!$this->isFull($row)): ?>
+							<?php echo $this->bookbutton($row->xref); ?><?php echo $this->printPlaces($row, false); ?>
+						<?php else: ?>
+							<?php echo $this->printInfoIcon($row); ?>
+						<?php endif; ?>
 					</td>
 				</tr>
 			<?php endforeach;?>
