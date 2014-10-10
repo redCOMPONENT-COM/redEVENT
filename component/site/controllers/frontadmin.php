@@ -222,6 +222,15 @@ class RedeventControllerFrontadmin extends FOFController
 		}
 	}
 
+	public function closemodalmember()
+	{
+		$this->viewName  = 'frontadmin';
+		$this->modelName = 'frontadmin';
+		$this->layout    = 'closemodalmember';
+
+		$this->display();
+	}
+
 	public function getmemberbooked()
 	{
 		$app = JFactory::getApplication();
@@ -540,14 +549,22 @@ class RedeventControllerFrontadmin extends FOFController
 			if ($resp->status)
 			{
 				$app->input->set('uid', $user->get('id'));
-				$app->enqueueMessage(Jtext::_('COM_REDEVENT_FRONTEND_ADMIN_MEMBER_SAVED'));
+
+				if ($app->input->get('modal'))
+				{
+					$this->closemodalmember();
+				}
+				else
+				{
+					$app->enqueueMessage(Jtext::_('COM_REDEVENT_FRONTEND_ADMIN_MEMBER_SAVED'));
+					$this->editmember();
+				}
 			}
 			else
 			{
 				$app->enqueueMessage($resp->error, 'error');
+				$this->editmember();
 			}
-
-			$this->editmember();
 		}
 	}
 

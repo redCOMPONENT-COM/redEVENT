@@ -84,6 +84,11 @@ class RedeventViewFrontadmin extends JView
 			return $this->displayInfoform($tpl);
 		}
 
+		if ($this->getLayout() == 'closemodalmember')
+		{
+			return $this->displayCloseModalMember($tpl);
+		}
+
 		JHTML::_('behavior.framework');
 		JHtml::_('behavior.tooltip');
 		JHtml::_('behavior.modal');
@@ -204,6 +209,7 @@ class RedeventViewFrontadmin extends JView
 		JText::script("COM_REDEVENT_FRONTEND_ADMIN_NO_MORE_PLACES_LEFT");
 		JText::script("COM_REDEVENT_FRONTEND_ADMIN_PLEASE_SELECT_SESSION_FIRST");
 		JText::script("COM_REDEVENT_FRONTEND_ADMIN_COMMENT_EMAIL_SENT");
+		JText::script("COM_REDEVENT_FRONTEND_ADMIN_MEMBER_SAVED");
 
 		parent::display($tpl);
 	}
@@ -531,6 +537,21 @@ class RedeventViewFrontadmin extends JView
 
 		$this->action = 'index.php?option=com_redevent&controller=frontadmin';
 		$this->xref = JFactory::getApplication()->input->getInt('xref', 0);
+
+		parent::display($tpl);
+	}
+
+	/**
+	 * Display close modal edit member window
+	 *
+	 * @param   string  $tpl  template to display
+	 *
+	 * @return void
+	 */
+	protected function displayCloseModalMember($tpl= null)
+	{
+		$app = JFactory::getApplication();
+		$this->uid = $app->input->get('uid');
 
 		parent::display($tpl);
 	}

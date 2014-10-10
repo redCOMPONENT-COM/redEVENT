@@ -1099,6 +1099,12 @@ var redb2b = {
 			});
 		},
 
+		closeModalMember : function(uid) {
+			SqueezeBox.close();
+			alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_MEMBER_SAVED"));
+			redb2b.editmember(uid);
+		},
+
 		addGoogleAnalyticsTrans : function(response) {
 		if (!ga)
 		{
