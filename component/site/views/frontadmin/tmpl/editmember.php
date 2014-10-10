@@ -23,6 +23,18 @@ defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('behavior.formvalidation')
 ?>
+
+
+<?php if ($this->modal): ?>
+	<script type="text/javascript">
+		window.addEvent('domready', function() {
+			document.id('cancel-employee').addEvent('click', function(){
+				window.parent.SqueezeBox.close();
+			});
+		});
+	</script>
+<?php endif; ?>
+
 <div class="akeeba-bootstrap">
 	<?php if (!$this->modal): ?>
 		<div id="closeeditmember"><?php echo "< " . JText::_('COM_REDEVENT_BACK'); ?></div>
@@ -45,6 +57,7 @@ JHtml::_('behavior.formvalidation')
 			<button type="button" class="update-employee btn"><?php echo $this->uid ? JText::_('COM_REDEVENT_UPDATE') : JText::_('COM_REDEVENT_CREATE'); ?></button>
 		<?php else: ?>
 			<button type="submit" class="update-employee btn"><?php echo $this->uid ? JText::_('COM_REDEVENT_UPDATE') : JText::_('COM_REDEVENT_CREATE'); ?></button>
+			<button type="button" id="cancel-employee" class="btn"><?php echo JText::_('COM_REDEVENT_CANCEL'); ?></button>
 		<?php endif; ?>
 		</div>
 
