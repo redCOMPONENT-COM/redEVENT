@@ -62,6 +62,8 @@ JFactory::getDocument()->addScriptDeclaration($script);
 			<input type="hidden" id="members_order" name="members_order" value="<?php echo $this->members_order; ?>"/>
 			<input type="hidden" id="members_order_dir" name="members_order_dir" value="<?php echo $this->members_order_dir; ?>"/>
 			<input type="hidden" id="members_limitstart" name="members_limitstart" value="<?php echo $this->members_limitstart; ?>"/>
+
+			<input type="hidden" name="limit" value="<?php echo $this->state->get('limit'); ?>"/>
 		</form>
 	</li>
 	<li><?php echo JHTML::link('#', JText::_('COM_REDEVENT_FRONTEND_ADMIN_MY_ACCOUNT'), array('class' => 'btn myaccount', 'uid' => JFactory::getUser()->get('id'))); ?></li>

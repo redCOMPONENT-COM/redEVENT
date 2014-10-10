@@ -91,9 +91,12 @@ defined('_JEXEC') or die('Restricted access');
 </table>
 
 <!--pagination-->
-<?php if (($this->members_pagination->get('pages.total') > 1)) : ?>
-	<div class="pagination">
-		<?php echo $this->members_pagination->getPagesLinks(); ?>
+<div class="pagination">
+	<div class="limit"><?php echo JText::_('COM_REDEVENT_FRONTADMIN_PAGINATION_SELECT_LIMIT'); ?>
+		<?php echo $this->getLimitBox(); ?>
 	</div>
-<?php  endif; ?>
+	<?php if (($this->members_pagination->get('pages.total') > 1)) : ?>
+		<?php echo $this->members_pagination->getPagesLinks(); ?>
+	<?php  endif; ?>
+</div>
 <!-- pagination end -->

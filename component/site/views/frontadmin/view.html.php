@@ -534,4 +534,25 @@ class RedeventViewFrontadmin extends JView
 
 		parent::display($tpl);
 	}
+
+	/**
+	 * return html for limit box
+	 *
+	 * @return string html
+	 */
+	protected function getLimitBox()
+	{
+		$state = $this->get('state');
+
+		$options = array(
+			JHtml::_('select.option', 5, 5),
+			JHtml::_('select.option', 25, 25),
+			JHtml::_('select.option', 50, 50)
+		);
+		$html = JHtml::_('select.genericlist', $options, 'limit',
+			array('class' => 'inputbox ajaxlimit'), 'value', 'text', $state->get('limit')
+		);
+
+		return $html;
+	}
 }
