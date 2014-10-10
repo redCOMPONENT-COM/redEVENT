@@ -25,7 +25,17 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-JHtml::_('behavior.formvalidation')
+JHtml::_('behavior.formvalidation');
+
+$fieldsOrdering = array(
+	'id',
+	'rm_firstname',
+	'rm_lastname',
+	'email',
+	'rm_birthday',
+	'rm_note',
+	'organizations'
+);
 ?>
 <?php if ($this->modal): ?>
 	<script type="text/javascript">
@@ -63,21 +73,22 @@ JHtml::_('behavior.formvalidation')
 
 		<!-- Tab panes -->
 		<div>
-			<?php foreach ($this->tabs as $t): ?>
-					<?php foreach ($t->fields as $field): ?>
-						<?php if ($field->id == 'name') continue; ?>
-						<?php if ($field->id == 'password' || $field->id == 'password2') continue; ?>
-						<?php if (!$field->hidden) : ?>
-						<div class="control-group field-<?php echo $field->id; ?>">
-							<?php echo $field->getLabel(array('class' => 'control-label')); ?>
-							<div class="controls">
-								<?php echo $field->getInput(); ?>
+			<?php foreach ($fieldsOrdering as $lookup): ?>
+				<?php foreach ($this->tabs as $t): ?>
+						<?php foreach ($t->fields as $field): ?>
+							<?php if ($field->id !== $lookup) continue; ?>
+							<?php if (!$field->hidden) : ?>
+							<div class="control-group field-<?php echo $field->id; ?>">
+								<?php echo $field->getLabel(array('class' => 'control-label')); ?>
+								<div class="controls">
+									<?php echo $field->getInput(); ?>
+								</div>
 							</div>
-						</div>
-						<?php else: ?>
-							<?php echo $field->getInput(); ?>
-						<?php endif; ?>
-					<?php endforeach; ?>
+							<?php else: ?>
+								<?php echo $field->getInput(); ?>
+							<?php endif; ?>
+						<?php endforeach; ?>
+				<?php endforeach; ?>
 			<?php endforeach; ?>
 		</div>
 
