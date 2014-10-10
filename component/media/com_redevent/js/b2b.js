@@ -613,6 +613,7 @@ var redb2b = {
 				e.stop();
 				var form = document.id('course-search-form');
 				form.limit.value = this.get('value');
+				form.limitstart.value = 0;
 				redb2b.getSessions();
 			});
 
@@ -650,6 +651,7 @@ var redb2b = {
 				e.stop();
 				var form = document.id('org-form');
 				form.limit.value = this.get('value');
+				form.bookings_limitstart.value = 0;
 				redb2b.searchBookings();
 			});
 
@@ -672,6 +674,7 @@ var redb2b = {
 				e.stop();
 				var form = document.id('org-form');
 				form.limit.value = this.get('value');
+				form.members_limitstart.value = 0;
 				redb2b.getMembersList();
 			});
 

@@ -545,7 +545,7 @@ class RedeventViewFrontadmin extends JView
 		$state = $this->get('state');
 
 		$options = array(
-			JHtml::_('select.option', 5, 5),
+			JHtml::_('select.option', 15, 15),
 			JHtml::_('select.option', 25, 25),
 			JHtml::_('select.option', 50, 50)
 		);
