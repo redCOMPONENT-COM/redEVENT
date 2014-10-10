@@ -28,11 +28,9 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.formvalidation')
 ?>
 <div class="akeeba-bootstrap">
-<?php if (!$this->modal): ?>
-	<div id="closeeditmember"><?php echo "< " . JText::_('COM_REDEVENT_BACK'); ?></div>
-<?php endif; ?>
 
-<jdoc:include type="message" />
+
+<jdoc:include type="message" /> 
 
 <div id="editmember-info">
 
@@ -47,6 +45,8 @@ JHtml::_('behavior.formvalidation')
 		<div id="employee-submit">
 		<?php if (!$this->modal): ?>
 			<button type="button" class="update-employee btn"><?php echo $this->uid ? JText::_('COM_REDEVENT_UPDATE') : JText::_('COM_REDEVENT_CREATE'); ?></button>
+            <button id="closeeditmember" type="button" class="cancel-employee btn"> <?php echo JText::_('COM_REDEVENT_BACK'); ?> </button>
+
 		<?php else: ?>
 			<button type="submit" class="update-employee btn"><?php echo $this->uid ? JText::_('COM_REDEVENT_UPDATE') : JText::_('COM_REDEVENT_CREATE'); ?></button>
 		<?php endif; ?>
