@@ -29,6 +29,7 @@ JHtml::_('behavior.formvalidation');
 
 $fieldsOrdering = array(
 	'id',
+	'username',
 	'rm_firstname',
 	'rm_lastname',
 	'email',
