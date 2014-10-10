@@ -26,8 +26,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	<div id="select-list" class="nouser">
 		<div class="notice">
-			<div><i class="icon-info-sign"></i> <strong><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SELECT_COURSE_TO_SELECT_USERS')?></strong></div>
-			<div><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SELECT_COURSE_TO_SELECT_USERS_DESC')?></div>
+			<div><i class="icon-info-sign"></i> <strong><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_NO_PARTICIPANT_SELECTED')?></strong></div>
 		</div>
 	</div>
 	<input name="xref" type="hidden" id="book-xref" value="" />
