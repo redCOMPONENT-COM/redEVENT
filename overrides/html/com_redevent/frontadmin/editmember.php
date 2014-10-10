@@ -38,9 +38,6 @@ JHtml::_('behavior.formvalidation')
 <?php endif; ?>
 
 <div class="akeeba-bootstrap">
-<?php if (!$this->modal): ?>
-	<div id="closeeditmember"><?php echo "< " . JText::_('COM_REDEVENT_BACK'); ?></div>
-<?php endif; ?>
 
 <jdoc:include type="message" />
 
@@ -57,6 +54,7 @@ JHtml::_('behavior.formvalidation')
 		<div id="employee-submit">
 		<?php if (!$this->modal): ?>
 			<button type="button" class="update-employee btn"><?php echo $this->uid ? JText::_('COM_REDEVENT_UPDATE') : JText::_('COM_REDEVENT_CREATE'); ?></button>
+			<button type="button" id="closeeditmember" class="btn"><?php echo JText::_('COM_REDEVENT_CANCEL'); ?></button>
 		<?php else: ?>
 			<button type="submit" class="update-employee btn"><?php echo $this->uid ? JText::_('COM_REDEVENT_UPDATE') : JText::_('COM_REDEVENT_CREATE'); ?></button>
 			<button type="button" id="cancel-employee" class="btn"><?php echo JText::_('COM_REDEVENT_CANCEL'); ?></button>
