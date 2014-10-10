@@ -238,10 +238,7 @@ var redb2b = {
 						div.getElement(".notice").set('styles', {display:'none'});
 
 						var newrow = new Element('div#member'+id, {'class' : 'selectedmember'});
-						var img = new Element('img', {
-							'src' : 'media/com_redevent/images/icon-16-delete.png',
-							'alt': 'delete'
-						}).addEvent('click', function(){
+						var imgspan = new Element('span.member-remove').addEvent('click', function(){
 							newrow.dispose();
 							if (document.id('cid'+id)) {
 								document.id('cid'+id).removeProperty('checked');
@@ -253,11 +250,12 @@ var redb2b = {
 								div.addClass('nouser');
 							}
 						});
-						var imgspan = new Element('span.member-remove');
 						var input = new Element('input', {'name' : 'reg[]', 'value' : id, 'type' : 'hidden'});
 						var inputspan = new Element('span.member-name').set('text', name);
 
-						newrow.adopt(imgspan.adopt(img));
+						newrow.adopt(imgspan.adopt(new Element('i', {
+							'class' : 'icon-remove'
+						})));
 						newrow.adopt(inputspan.adopt(input));
 
 						newrow.inject(div);
