@@ -132,6 +132,8 @@ var redb2b = {
 					});
 				}
 
+				redb2b.resetSelected();
+
 				redb2b.searchBookings();
 
 				redb2b.updateOrganizationUserOptions();
@@ -214,23 +216,11 @@ var redb2b = {
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.attendee-sel)', function(e){
 
-				if (!document.id('book-xref').get('value')) {
-					alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_PLEASE_SELECT_SESSION_FIRST"));
-					this.setProperty('checked', null);
-					return;
-				}
-
 				var id = this.id.substr('3');
 				var name = this.getParent('tr').getElement('.attendee-name').get('text');
 				var div = document.id('select-list');
 
 				if (this.getProperty('checked')) {
-					if (redb2b.selected.length >= redb2b.placesleft)
-					{
-						alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_NO_MORE_PLACES_LEFT"));
-						this.setProperty('checked', null);
-						return;
-					}
 
 					if (!redb2b.selected.contains(id)) {
 						document.id('cid'+id).getParent('tr').addClass('selected');
@@ -246,8 +236,7 @@ var redb2b = {
 							}
 							redb2b.selected.erase(id);
 							if (!redb2b.selected.length) {
-								div.getElement(".notice").set('styles', {display:'block'});
-								div.addClass('nouser');
+								redb2b.resetSelected();
 							}
 						});
 						var input = new Element('input', {'name' : 'reg[]', 'value' : id, 'type' : 'hidden'});
@@ -424,6 +413,13 @@ var redb2b = {
 					alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_SELECT_SESSION_FIRST"));
 					return false;
 				}
+
+				if (redb2b.selected.length >= redb2b.placesleft)
+				{
+					alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_NOT_ENOUGH_PLACES_LEFT") + " (" + redb2b.placesleft + ")");
+					return;
+				}
+
 				var orgId = document.id('filter_organization').get('value');
 				req = new Request.JSON({
 					url : 'index.php?option=com_redevent&controller=frontadmin&task=quickbook&tmpl=component&from=b2b&org=' + orgId,
@@ -445,6 +441,7 @@ var redb2b = {
 						if (response.status == 1) {
 							redb2b.getMembersList();
 							redb2b.addGoogleAnalyticsTrans(response);
+							redb2b.resetSelected();
 							alert(response.message);
 						}
 						else if (response.regs.length) {
@@ -862,8 +859,6 @@ var redb2b = {
 					{
 						redb2b.placesleft = session.placesleft;
 					}
-
-					redb2b.resetSelected();
 
 					redb2b.highlightSelectedSession(id, 'bookings-result');
 					redb2b.highlightSelectedSession(id, 'sessions-result');
