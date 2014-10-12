@@ -218,68 +218,12 @@ var redb2b = {
 
 				var id = this.id.substr('3');
 				var name = this.getParent('tr').getElement('.attendee-name').get('text');
-				var div = document.id('select-list');
 
 				if (this.getProperty('checked')) {
-
-					if (!redb2b.selected.contains(id)) {
-						document.id('cid'+id).getParent('tr').addClass('selected');
-						div.removeClass('nouser');
-						div.getElement(".notice").set('styles', {display:'none'});
-
-						var newrow = new Element('div#member'+id, {'class' : 'selectedmember'});
-						var imgspan = new Element('span.member-remove').addEvent('click', function(){
-							newrow.dispose();
-							if (document.id('cid'+id)) {
-								document.id('cid'+id).removeProperty('checked');
-								document.id('cid'+id).getParent('tr').removeClass('selected');
-							}
-							redb2b.selected.erase(id);
-							if (!redb2b.selected.length) {
-								redb2b.resetSelected();
-							}
-						});
-						var input = new Element('input', {'name' : 'reg[]', 'value' : id, 'type' : 'hidden'});
-						var inputspan = new Element('span.member-name').set('text', name);
-
-						newrow.adopt(imgspan.adopt(new Element('i', {
-							'class' : 'icon-remove'
-						})));
-						newrow.adopt(inputspan.adopt(input));
-
-						newrow.inject(div);
-
-						redb2b.selected.push(id);
-
-						document.id('book-course').set('styles', {'display' :'block'});
-
-						if (typeof ga !== 'undefined')
-						{
-							ga('send',{
-								'hitType': 'event',
-								'eventCategory': 'b2b booking',
-								'eventAction': 'selected user'
-							});
-						}
-					}
+					redb2b.selectMember(id, name);
 				}
 				else {
-					/** remove from selected list **/
-					document.id('member'+id).dispose();
-					document.id('cid'+id).getParent('tr').removeClass('selected');
-					redb2b.selected.erase(id);
-					if (!redb2b.selected.length) {
-						redb2b.resetSelected();
-					}
-
-					if (typeof ga !== 'undefined')
-					{
-						ga('send',{
-							'hitType': 'event',
-							'eventCategory': 'b2b booking',
-							'eventAction': 'unselected user'
-						});
-					}
+					redb2b.unSelectMember(id);
 				}
 			});
 
@@ -1094,10 +1038,87 @@ var redb2b = {
 			});
 		},
 
-		closeModalMember : function(uid) {
+		selectMember : function(id, name) {
+			// Check if already added
+			if (redb2b.selected.contains(id)) {
+				return;
+			}
+
+			// Prepare selected employee box
+			var div = document.id('select-list');
+			div.removeClass('nouser');
+			div.getElement(".notice").set('styles', {display:'none'});
+
+			// Highlight in employee list
+			if (document.id('cid'+id)) {
+				document.id('cid'+id).setProperty('checked', 'checked');
+				document.id('cid'+id).getParent('tr').addClass('selected');
+			}
+
+			// Add new row in selected box
+			var newrow = new Element('div#member'+id, {'class' : 'selectedmember'});
+			var imgspan = new Element('span.member-remove').addEvent('click', function(){
+				newrow.dispose();
+				if (document.id('cid'+id)) {
+					document.id('cid'+id).removeProperty('checked');
+					document.id('cid'+id).getParent('tr').removeClass('selected');
+				}
+				redb2b.selected.erase(id);
+				if (!redb2b.selected.length) {
+					redb2b.resetSelected();
+				}
+			});
+			var input = new Element('input', {'name' : 'reg[]', 'value' : id, 'type' : 'hidden'});
+			var inputspan = new Element('span.member-name').set('text', name);
+
+			newrow.adopt(imgspan.adopt(new Element('i', {
+				'class' : 'icon-remove'
+			})));
+			newrow.adopt(inputspan.adopt(input));
+
+			newrow.inject(div);
+
+			// Add to selected array
+			redb2b.selected.push(id);
+
+			// Show book button
+			document.id('book-course').set('styles', {'display' :'block'});
+
+			if (typeof ga !== 'undefined')
+			{
+				ga('send',{
+					'hitType': 'event',
+					'eventCategory': 'b2b booking',
+					'eventAction': 'selected user'
+				});
+			}
+		},
+
+		unSelectMember : function(id) {
+			/** remove from selected list **/
+			document.id('member'+id).dispose();
+			document.id('cid'+id).getParent('tr').removeClass('selected');
+
+			redb2b.selected.erase(id);
+
+			if (!redb2b.selected.length) {
+				redb2b.resetSelected();
+			}
+
+			if (typeof ga !== 'undefined')
+			{
+				ga('send',{
+					'hitType': 'event',
+					'eventCategory': 'b2b booking',
+					'eventAction': 'unselected user'
+				});
+			}
+		},
+
+		closeModalMember : function(uid, name) {
 			SqueezeBox.close();
 			alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_MEMBER_SAVED"));
-			redb2b.editmember(uid);
+			redb2b.selectMember(uid, name);
 		},
 
 		addGoogleAnalyticsTrans : function(response) {

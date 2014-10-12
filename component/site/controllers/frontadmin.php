@@ -549,6 +549,7 @@ class RedeventControllerFrontadmin extends FOFController
 			if ($resp->status)
 			{
 				$app->input->set('uid', $user->get('id'));
+				$app->input->set('uname', $user->get('name'));
 
 				if ($app->input->get('modal'))
 				{

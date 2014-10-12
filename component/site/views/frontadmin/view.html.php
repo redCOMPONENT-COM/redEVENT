@@ -552,6 +552,7 @@ class RedeventViewFrontadmin extends JView
 	{
 		$app = JFactory::getApplication();
 		$this->uid = $app->input->get('uid');
+		$this->name = $app->input->get('uname');
 
 		parent::display($tpl);
 	}

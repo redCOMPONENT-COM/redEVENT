@@ -22,5 +22,5 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <script type="text/javascript">
-	window.parent.redb2b.closeModalMember(<?php echo $this->uid; ?>);
+	window.parent.redb2b.closeModalMember(<?php echo $this->uid; ?>, '<?php echo $this->name; ?>');
 </script>
