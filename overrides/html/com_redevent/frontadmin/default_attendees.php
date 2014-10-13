@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 <div id="employees-result-panel" class="panel-collapse collapse in">
 	<div id="search-member">
 		<input name="filter_person" id="filter_person" type="text"
-		       class="input-medium form-control" placeholder="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_PERSON'); ?>"
+		       class="input-medium form-control" placeholder="Search <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_PERSON'); ?>"
 			/><button class="btn" id="search_person" type="button"><i class="icon-search"></i></button>
 		<button class="btn" id="reset_search_person" type="button"><i class="icon-remove"></i></button>
 	</div>
