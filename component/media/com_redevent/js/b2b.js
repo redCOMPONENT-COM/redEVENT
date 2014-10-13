@@ -358,9 +358,11 @@ var redb2b = {
 					return false;
 				}
 
-				if (redb2b.selected.length >= redb2b.placesleft)
+				if (redb2b.selected.length > redb2b.placesleft)
 				{
-					alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_NOT_ENOUGH_PLACES_LEFT") + " (" + redb2b.placesleft + ")");
+					var text = Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_NOT_ENOUGH_PLACES_LEFT");
+					text = text.substitute({'left': redb2b.placesleft, 'selected': redb2b.selected.length, 'remove': redb2b.selected.length - redb2b.placesleft});
+					alert(text);
 					return;
 				}
 
@@ -383,6 +385,7 @@ var redb2b = {
 						document.id('attendees-tbl').unspin();
 						document.id('selected_users').unspin();
 						if (response.status == 1) {
+							redb2b.placesleft -= redb2b.selected.length;
 							redb2b.getMembersList();
 							redb2b.addGoogleAnalyticsTrans(response);
 							redb2b.resetSelected();
