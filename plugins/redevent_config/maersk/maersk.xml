@@ -47,6 +47,13 @@
                     <option value="0">JNo</option>
                     <option value="1">JYes</option>
                 </field>
+                <field name="language_flags"
+                       type="textarea"
+                       label="PLG_REDEVENT_CONFIG_MAERSK_LANGUAGE_FLAGS"
+                       description="PLG_REDEVENT_CONFIG_MAERSK_LANGUAGE_FLAGS_DESC"
+                       rows="10" cols="50"
+                        >
+                </field>
             </fieldset>
         </fields>
     </config>

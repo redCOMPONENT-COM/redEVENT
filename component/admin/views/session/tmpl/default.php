@@ -108,6 +108,14 @@ function updateend(cal)
       <input type="text" size="20" maxlength="255" name="session_code" id="session_code" value="<?php echo $this->xref->session_code; ?>" />
     </td>
   </tr>
+  <tr>
+	  <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_SESSION_LANGUAGE_DESC'); ?>">
+		  <label for="session_language"><?php echo JText::_( 'COM_REDEVENT_SESSION_LANGUAGE' ) .': '; ?></label>
+	  </td>
+	  <td>
+		  <?php echo $this->sessionLanguage; ?>
+	  </td>
+  </tr>
 	<tr>
     <td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_XREF_START_DATE_TIP'); ?>">
       <label for="dates"><?php echo JText::_('COM_REDEVENT_DATE') .': '; ?></label>

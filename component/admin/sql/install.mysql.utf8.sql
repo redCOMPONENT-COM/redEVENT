@@ -236,6 +236,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_event_venue_xref` (
   `course_price` decimal(12,2) default '0.00',
   `published` tinyint(1) NOT NULL default '0',
   `featured` tinyint(1) NOT NULL default '0',
+  `session_language` VARCHAR(3) DEFAULT 'eng',
   `language` char(7) NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `eventid` (`eventid`),
