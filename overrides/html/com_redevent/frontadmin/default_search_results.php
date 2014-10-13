@@ -42,6 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TITLE'), 'a.title', $this->order_Dir, $this->order); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_VENUE'), 'l.venue', $this->order_Dir, $this->order); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CATEGORY'), 'c.catname', $this->order_Dir, $this->order); ?></th>
+				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_LANGUAGE'), 'x.session_language', $this->bookings_order_dir, $this->bookings_order); ?></th>
 				<th><?php echo JText::_('COM_REDEVENT_B2B_SEATS'); ?></th>
 			</tr>
 		</thead>
@@ -91,6 +92,7 @@ defined('_JEXEC') or die('Restricted access');
 						echo implode("<br/>", $cats);
 						?>
 					</td>
+					<td><?php echo RedeventHelperLanguages::getFlag($row->session_language); ?></td>
 					<td>
 						<?php if (!$this->isFull($row)): ?>
 							<?php echo $this->bookbutton($row->xref); ?><?php echo $this->printPlaces($row, false); ?>

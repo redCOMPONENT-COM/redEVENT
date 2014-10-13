@@ -61,7 +61,6 @@ defined('_JEXEC') or die('Restricted access');
 					<td><?php echo RedeventHelperOutput::formatdate($row->dates, false); ?></td>
 					<td><?php echo RedeventHelperOutput::formattime($row->dates, $row->times); ?></td>
 					<td><?php echo RedeventHelper::getEventDuration($row); ?></td>
-					<td><?php echo RedeventHelperLanguages::getFlag($row->session_language); ?></td>
 					<td><?php echo $row->title; ?></td>
 					<td><?php echo $row->venue; ?></td>
 					<td class="re_category">
@@ -80,6 +79,7 @@ defined('_JEXEC') or die('Restricted access');
 						echo implode("<br/>", $cats);
 						?>
 					</td>
+					<td><?php echo RedeventHelperLanguages::getFlag($row->session_language); ?></td>
 					<td>
 						<?php if (!$this->isFull($row)): ?>
 							<?php echo $this->bookbutton($row->xref); ?><?php echo $this->printPlaces($row, false); ?>
