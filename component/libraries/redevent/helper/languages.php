@@ -464,7 +464,7 @@ class RedeventHelperLanguages
 			// Parse definitions
 			foreach (explode("\n", $def) as $line)
 			{
-				if (strlen($line) && strstr($line, ';') && !strstr($line, '#') == 0)
+				if (strlen($line) && strpos($line, ';') && !(strpos($line, '#') === 0))
 				{
 					list($code, $url) = explode(';', $line);
 					$flags[$code] = $url;
