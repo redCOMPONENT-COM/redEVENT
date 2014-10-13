@@ -510,7 +510,7 @@ class RedeventTags
 			$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', e.title, x.title) ELSE e.title END as full_title');
 
 			$query->select('IF (x.course_credit = 0, "", x.course_credit) AS course_credit');
-			$query->select('x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, x.venueid, x.details');
+			$query->select('x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, x.venueid, x.details, x.session_language');
 			$query->select('x.maxattendees, x.maxwaitinglist, x.registrationend, x.external_registration_url');
 			$query->select('UNIX_TIMESTAMP(x.dates) AS unixdates');
 
