@@ -333,6 +333,7 @@ var redb2b = {
 							document.id('attendees-tbl').set('spinner').unspin();
 							if (response.status == 1) {
 								redb2b.getMembersList();
+								redb2b.placesleft++;
 							}
 							else {
 								alert(response.error);
