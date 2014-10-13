@@ -92,10 +92,11 @@ defined('_JEXEC') or die('Restricted access');
 	</table>
 
 	<!--pagination-->
-	<div class="pagination">
-		<div class="limit"><?php echo JText::_('COM_REDEVENT_FRONTADMIN_PAGINATION_SELECT_LIMIT'); ?>
-			<?php echo $this->getLimitBox(); ?>
-		</div>
+    <div class="pagination">
+        <div class="pagination-label"><?php echo JText::_('COM_REDEVENT_FRONTADMIN_PAGINATION_SELECT_LIMIT'); ?></div>
+        <div class="styled-select-admin">
+            <?php echo $this->getLimitBox(); ?>
+        </div>
 		<?php if (($this->bookings_pagination->get('pages.total') > 1)) : ?>
 			<?php echo $this->bookings_pagination->getPagesLinks(); ?>
 		<?php  endif; ?>
