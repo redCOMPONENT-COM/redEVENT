@@ -160,7 +160,7 @@ var redb2b = {
 			/**
 			 * update organization bookings when selecting session status active
 			 */
-			document.id('main-bookings').addEvent('click:relay([id^=filter_person_])', function(){
+			document.id('main-bookings').addEvent('click:relay(input[name=filter_bookings_state])', function(){
 				redb2b.searchBookings();
 			});
 
@@ -1001,12 +1001,12 @@ var redb2b = {
 				data.bookings_limitstart = document.id('bookings_limitstart').get('value');
 			}
 
-			if (document.id('filter_person_active0') && document.id('filter_person_active0').getProperty('checked')) {
-				data.filter_person_active = 1;
+			if (document.id('filter_bookings_state0') && document.id('filter_bookings_state0').getProperty('checked')) {
+				data.filter_bookings_state = 1;
 			}
 
-			if (document.id('filter_person_active1') && document.id('filter_person_active1').getProperty('checked')) {
-				data.filter_person_archive = 1;
+			if (document.id('filter_bookings_state1') && document.id('filter_bookings_state1').getProperty('checked')) {
+				data.filter_bookings_state = -1;
 			}
 
 			data.limit = document.id('org-form').limit.value;

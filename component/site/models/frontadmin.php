@@ -92,20 +92,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		);
 		$this->setState('filter_person', $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_person',    'filter_person',    '', 'string'));
 
-		$filter_person_active = $app->input->get('filter_person_active', null);
-		$filter_person_archive = $app->input->get('filter_person_archive', null);
-
-		if (is_null($filter_person_active) && is_null($filter_person_archive))
-		{
-			$this->setState('filter_person_active', 1);
-			$this->setState('filter_person_archive', 0);
-		}
-		else
-		{
-			$this->setState('filter_person_active', (int) $filter_person_active);
-			$this->setState('filter_person_archive', (int) $filter_person_archive);
-		}
-
+		$this->setState('filter_bookings_state', $app->input->get('filter_bookings_state', 1));
 
 		// Manage sessions filters
 		$this->setState('filter_session',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_session',    'filter_session',    0, 'int'));
@@ -652,30 +639,14 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 
 		$session_state = array();
 
-		if ($this->getState('filter_person_active') == 1)
+		if ($this->getState('filter_bookings_state') == -1)
 		{
-			$session_state[] = 'x.published = 1';
-		}
-		elseif ($this->getState('filter_person_active') == -1)
-		{
-			$session_state[] = 'x.published = -1';
+			$query->where('x.published = -1');
 		}
 		else
 		{
-			$session_state[] = '0';
+			$query->where('x.published = 1');
 		}
-
-		if ($this->getState('filter_person_archive') == 1)
-		{
-			$session_state[] = 'x.published = -1';
-		}
-
-		if (!count($session_state))
-		{
-			$session_state[] = 'x.published <> 0';
-		}
-
-		$query->where('(' . implode(' OR ', $session_state) . ')');
 
 		if ($this->getState('filter_person'))
 		{
