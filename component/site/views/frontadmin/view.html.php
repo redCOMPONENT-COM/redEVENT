@@ -130,6 +130,9 @@ class RedeventViewFrontadmin extends JView
 
 		$document->addScript('media/com_redevent/js/b2b.js?v=' . uniqid());
 
+		// For redmember
+		$document->addScript('components/com_redmember/assets/js/threeselectdate.js');
+
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
 		$useracl = RedeventUserAcl::getInstance();

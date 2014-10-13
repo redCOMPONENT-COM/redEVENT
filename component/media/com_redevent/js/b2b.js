@@ -916,6 +916,8 @@ var redb2b = {
 						document.id('redadmin-main').show();
 					});
 					editdiv.inject('redadmin-toolbar', 'after');
+					// load js
+					eval(editdiv);
 					redb2b.refreshTips();
 				}
 			});
