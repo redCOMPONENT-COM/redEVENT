@@ -32,6 +32,8 @@ $fieldsOrdering = array(
 	'rm_firstname',
 	'rm_lastname',
 	'email',
+	'password',
+	'password2',
 	'rm_birthday',
 	'rm_note',
 	'organizations'
