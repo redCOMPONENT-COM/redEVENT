@@ -39,7 +39,7 @@ JFactory::getDocument()->addScript('//ajax.googleapis.com/ajax/libs/jquery/2.1.1
 		<input name="filter_person" id="filter_person" type="text"
 		       class="input-medium form-control" value="Search Employee" placeholder="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SEARCH_PERSON_PLACEHOLDER'); ?>"
 			/><button class="btn" id="search_person" type="button"><i class="icon-search"></i></button>
-		<button class="btn" id="reset_search_person" type="button"><i class="icon-remove"></i></button>
+		<button class="btn" id="reset_search_person" type="button">X</button>
 	</div>
 	<button type="button" id="add-employee" class="btn"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ADD_EMPLOYEE'); ?></button>
 
