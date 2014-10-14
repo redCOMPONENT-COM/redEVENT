@@ -20,6 +20,10 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+JFactory::getDocument()->addScript('templates/redweb/js/b2b-custom.js');
+JFactory::getDocument()->addScript('//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js');
+
 ?>
 
 <div id="employees-header" class="panel-heading">
@@ -33,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 <div id="employees-result-panel" class="panel-collapse collapse in">
 	<div id="search-member">
 		<input name="filter_person" id="filter_person" type="text"
-		       class="input-medium form-control" placeholder="Search <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_PERSON'); ?>"
+		       class="input-medium form-control" value="Search Employee" placeholder="<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SEARCH_PERSON_PLACEHOLDER'); ?>"
 			/><button class="btn" id="search_person" type="button"><i class="icon-search"></i></button>
 		<button class="btn" id="reset_search_person" type="button"><i class="icon-remove"></i></button>
 	</div>
