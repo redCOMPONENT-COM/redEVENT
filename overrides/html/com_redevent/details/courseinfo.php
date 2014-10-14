@@ -77,7 +77,7 @@ else
 			<!--<td class="courseinfo_name"><?php echo JHTML::_('link', $event_url, $event->title); ?></td>-->
 			<td class="courseinfo_date"><?php echo RedeventHelperOutput::formatdate($event->dates, $event->times); ?></td>
 			<td class="courseinfo_duration"><?php echo $duration; ?></td>
-			<td><?php echo RedeventHelperLanguages::getFlag($event->session_language); ?></td>
+			<td><?php echo RedeventHelperLanguages::getIso1($event->session_language); ?></td>
 			<td class="courseinfo_venue"><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
 			<td class="courseinfo_country"><?php echo RedeventHelperOutput::getFlag($event->country); ?></td>
 			<td class="courseinfo_prices re-price"><?php echo RedeventHelperOutput::formatListPrices($event->prices); ?></td>
