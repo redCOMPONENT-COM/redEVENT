@@ -160,7 +160,7 @@ class RedeventHelperLanguages
 
 		$attributes['title'] = self::getName($code);
 
-		return '<span ' . JArrayHelper::toString($attributes) . '>[' . $code . ']</span>';
+		return '<span ' . JArrayHelper::toString($attributes) . '>[' . self::getIso1($code) . ']</span>';
 	}
 
 	/**
