@@ -645,7 +645,7 @@ var redb2b = {
 				SqueezeBox.open(this, {handler: 'iframe', size: {x: 750, y: 500}});
 			});
 
-			$('sbox-btn-close').addEvent('click', function() {
+			document.id(document.body).addEvent('click:relay(#sbox-btn-close)', function() {
 				redb2b.getSessions();
 			});
 		},
