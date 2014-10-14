@@ -92,7 +92,7 @@ defined('_JEXEC') or die('Restricted access');
 						echo implode("<br/>", $cats);
 						?>
 					</td>
-					<td><?php echo RedeventHelperLanguages::getIso1($row->session_language); ?></td>
+					<td><?php echo RedeventHelperLanguages::getFormattedIso1($row->session_language); ?></td>
 					<td>
 						<?php if (!$this->isFull($row)): ?>
 							<?php echo $this->bookbutton($row->xref); ?><?php echo $this->printPlaces($row, false); ?>

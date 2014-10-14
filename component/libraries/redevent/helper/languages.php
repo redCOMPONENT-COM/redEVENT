@@ -142,6 +142,28 @@ class RedeventHelperLanguages
 	}
 
 	/**
+	 * example: echo self::getFlag($code);
+	 *
+	 * @param   string  $code        iso code
+	 * @param   array   $attributes  additional html attributes for the img tag
+	 *
+	 * @return   string: html code for the flag image
+	 */
+	public static function getFormattedIso1($code, $attributes = array())
+	{
+		$code = self::convertToIso2($code);
+
+		if (!$code)
+		{
+			return '';
+		}
+
+		$attributes['title'] = self::getName($code);
+
+		return '<span ' . JArrayHelper::toString($attributes) . '>[' . $code . ']</span>';
+	}
+
+	/**
 	 * Get translated name (if not found in translation, fall back to english)
 	 *
 	 * @param   string  $iso  an iso code, e.g ENG
