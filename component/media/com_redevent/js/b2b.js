@@ -145,6 +145,22 @@ var redb2b = {
 			/**
 			 * update organization bookings when selecting member
 			 */
+			document.id('redevent-admin').addEvent('input:relay(#filter_person)', function(event){
+				if (this.get('value').length)
+				{
+					document.id('search_person').addClass('hide')
+					document.id('reset_search_person').addClass('show')
+				}
+				else
+				{
+					document.id('search_person').addClass('show')
+					document.id('reset_search_person').addClass('hide')
+				}
+			});
+
+			/**
+			 * update organization bookings when selecting member
+			 */
 			document.id('redevent-admin').addEvent('change:relay(#filter_person)', function(event){
 				redb2b.filterPerson();
 			});
@@ -154,6 +170,8 @@ var redb2b = {
 			 */
 			document.id('redevent-admin').addEvent('click:relay(#reset_search_person)', function(event){
 				document.id('filter_person').set('value', '');
+				document.id('search_person').addClass('show')
+				document.id('reset_search_person').addClass('hide')
 				redb2b.filterPerson();
 			});
 
