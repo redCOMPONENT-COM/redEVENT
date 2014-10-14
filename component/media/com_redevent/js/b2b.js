@@ -263,6 +263,15 @@ var redb2b = {
 			 * update member
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.update-employee)', function (e) {
+				e.stop();
+				var form = document.id('member-update');
+
+				if (!form.validate())
+				{
+					alert('Please fix errors to submit');
+					return false;
+				}
+
 				req = new Request.JSON({
 					url: 'index.php?option=com_redevent&controller=frontadmin&task=update_user&tmpl=component',
 					data: document.id('member-update'),
