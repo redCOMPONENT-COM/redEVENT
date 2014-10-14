@@ -34,7 +34,7 @@ $fieldsOrdering = array(
 	'email',
 );
 
-if (!$this->uid)
+if ($this->uid)
 {
 	$fieldsOrdering[] = 'password';
 	$fieldsOrdering[] = 'password2';
