@@ -32,12 +32,17 @@ $fieldsOrdering = array(
 	'rm_firstname',
 	'rm_lastname',
 	'email',
-	'password',
-	'password2',
-	'rm_birthday',
-	'rm_note',
-	'organizations'
 );
+
+if (!$this->uid)
+{
+	$fieldsOrdering[] = 'password';
+	$fieldsOrdering[] = 'password2';
+}
+
+$fieldsOrdering[] = 'rm_birthday';
+$fieldsOrdering[] = 'rm_note';
+$fieldsOrdering[] = 'organizations';
 ?>
 <?php if ($this->modal): ?>
 	<script type="text/javascript">
