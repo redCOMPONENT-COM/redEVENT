@@ -510,7 +510,7 @@ class RedeventHelperLanguages
 	/**
 	 * Get translated name
 	 *
-	 * @param   string  $iso  an iso code, e.g AUT
+	 * @param   string  $iso  an iso code, e.g ENG
 	 *
 	 * @return string: a language name
 	 */
