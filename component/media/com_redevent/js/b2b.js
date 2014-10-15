@@ -148,13 +148,13 @@ var redb2b = {
 			document.id('redevent-admin').addEvent('input:relay(#filter_person)', function(event){
 				if (this.get('value').length)
 				{
-					document.id('search_person').addClass('hide')
-					document.id('reset_search_person').addClass('show')
+					document.id('search_person').addClass('hide');
+					document.id('reset_search_person').removeClass('hide');
 				}
 				else
 				{
-					document.id('search_person').addClass('show')
-					document.id('reset_search_person').addClass('hide')
+					document.id('search_person').removeClass('hide');
+					document.id('reset_search_person').addClass('hide');
 				}
 			});
 
@@ -170,8 +170,8 @@ var redb2b = {
 			 */
 			document.id('redevent-admin').addEvent('click:relay(#reset_search_person)', function(event){
 				document.id('filter_person').set('value', '');
-				document.id('search_person').addClass('show')
-				document.id('reset_search_person').addClass('hide')
+				document.id('search_person').removeClass('hide');
+				document.id('reset_search_person').addClass('hide');
 				redb2b.filterPerson();
 			});
 
