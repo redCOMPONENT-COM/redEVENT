@@ -82,7 +82,10 @@ class RedeventModelFrontadmininfo extends JModelLegacy
 				RedeventHelperOutput::formatdate($details->dates, false)
 			)
 		);
-		$mailer->setBody($this->question);
+
+		$posterInfo = $this->getPosterInfo();
+		$body = $posterInfo . $this->question;
+		$mailer->setBody($body);
 
 		$recipientsHelper = new RedeventHelperSessionadmins;
 		$recipients = $recipientsHelper->getAdminEmails($this->xref);
@@ -116,5 +119,32 @@ class RedeventModelFrontadmininfo extends JModelLegacy
 		}
 
 		return $this->sessionDetails;
+	}
+
+	/**
+	 * Get html admin info
+	 *
+	 * @return string
+	 *
+	 * @throws Exception
+	 */
+	private function getPosterInfo()
+	{
+		$user = JFactory::getUser();
+
+		$data = RedmemberLib::getUserData($user->get('id'));
+
+		if (!$data)
+		{
+			throw new Exception('Missing redmember data for admin');
+		}
+
+		$text = JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_SESSION_INFO_POSTER_DETAILS',
+			$data->name,
+			$data->email,
+			isset($data->rm_mobile) && $data->rm_mobile ? $data->rm_mobile : '-'
+		);
+
+		return $text;
 	}
 }
