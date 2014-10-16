@@ -416,7 +416,6 @@ var redb2b = {
 							redb2b.placesleft -= redb2b.selected.length;
 							redb2b.getMembersList();
 							redb2b.addGoogleAnalyticsTrans(response);
-							redb2b.resetSelected();
 							alert(response.message);
 						}
 						else if (response.regs.length) {
