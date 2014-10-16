@@ -89,7 +89,7 @@ class RedeventViewFrontadmin extends JView
 			return $this->displayCloseModalMember($tpl);
 		}
 
-		JHTML::_('behavior.framework');
+		JHtml::_('behavior.framework');
 		JHtml::_('behavior.tooltip');
 		JHtml::_('behavior.modal');
 

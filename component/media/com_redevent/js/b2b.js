@@ -666,6 +666,8 @@ var redb2b = {
 			document.id(document.body).addEvent('click:relay(#sbox-btn-close)', function() {
 				redb2b.getSessions();
 			});
+
+			redb2b.refreshTips();
 		},
 
     /**
