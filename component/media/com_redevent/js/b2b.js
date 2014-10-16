@@ -998,6 +998,7 @@ var redb2b = {
 			}
 
 			if (document.id('filter_organization')) {
+				data.filter_organization = document.id('filter_organization').get('value');
 				data.org = document.id('filter_organization').get('value');
 			}
 
