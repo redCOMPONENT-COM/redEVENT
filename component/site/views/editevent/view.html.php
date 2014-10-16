@@ -210,6 +210,13 @@ class RedeventViewEditevent extends JView
 		$pricegroupsoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_PRICEGROUP')));
 		$pricegroupsoptions = array_merge($pricegroupsoptions, $this->get('PricegroupsOptions'));
 
+		$this->sessionLanguage = JHtml::_(
+			'select.genericlist',
+			RedeventHelperLanguages::getOptions(),
+			'session_language', null, 'value', 'text',
+			$row->session_language
+		);
+
 		$this->assignRef('row',        $row);
 		$this->assignRef('customs',    $customs);
 		$this->assignRef('xcustoms',   $xcustoms);
@@ -384,6 +391,13 @@ class RedeventViewEditevent extends JView
 			);
 			$lists['recurrence_type'] = JHTML::_('select.radiolist', $recur_type, 'recurrence_type', '', 'value', 'text', ($xref->rrules->type ? $xref->rrules->type : 'NONE'));
 		}
+
+		$this->sessionLanguage = JHtml::_(
+			'select.genericlist',
+			RedeventHelperLanguages::getOptions(),
+			'session_language', null, 'value', 'text',
+			$xref->session_language
+		);
 
 		$this->assignRef('params',       $params);
 		$this->assignRef('editor',       $editor);

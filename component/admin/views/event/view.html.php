@@ -507,6 +507,13 @@ class RedEventViewEvent extends JView {
 		$currencyoptions = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_CURRENCY')));
 		$currencyoptions = array_merge($currencyoptions, RedformHelperLogCurrency::getCurrencyOptions());
 
+		$this->sessionLanguage = JHtml::_(
+			'select.genericlist',
+			RedeventHelperLanguages::getOptions(),
+			'session_language', null, 'value', 'text',
+			'eng'
+		);
+
 		$this->assign('roles'        , false);
 		$this->assign('rolesoptions' , $rolesoptions);
 		$this->assign('prices'       , false);

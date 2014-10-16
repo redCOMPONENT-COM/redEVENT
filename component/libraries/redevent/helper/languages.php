@@ -22,7 +22,7 @@ class RedeventHelperLanguages
 		if (is_null($codes))
 		{
 			$codes = array();
-			$list = file_get_contents(__DIR__ . '/ISO-639-2_utf-8.txt');
+			$list = file_get_contents(__DIR__ . '/ISO-639-2_8859-1.txt');
 
 			foreach (explode("\n", $list) as $line)
 			{
@@ -174,7 +174,9 @@ class RedeventHelperLanguages
 	{
 		$code = self::convertToIso2($iso);
 
-		if ('COM_REDEVENT_LANGUAGES_ISO_' . $code == JText::_('COM_REDEVENT_LANGUAGES_ISO_' . $code))
+		$languageString = strtoupper('COM_REDEVENT_LANGUAGES_ISO_' . $code);
+
+		if ($languageString == JText::_($languageString))
 		{
 			$codes = self::getAllCodes();
 
@@ -184,7 +186,7 @@ class RedeventHelperLanguages
 			}
 		}
 
-		return JText::_('COM_REDEVENT_LANGUAGES_ISO_' . $iso);
+		return JText::_($languageString);
 	}
 
 	/**

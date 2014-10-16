@@ -282,6 +282,8 @@ class RedeventModelEditevent extends JModel
 		$this->_event->endtimes = null;
 		$this->_event->registrationend = null;
 		$this->_event->course_credit   = 0;
+		$this->_event->session_language   = 'eng';
+
 		return (boolean) $this->_event;
 	}
 
@@ -313,7 +315,7 @@ class RedeventModelEditevent extends JModel
 
 			$query = ' SELECT e.*, v.venue, x.id AS xref, x.eventid, x.venueid, '
 			       . ' x.dates, x.enddates, x.times, x.endtimes, x.maxattendees, x.details, '
-			       . ' x.maxwaitinglist, x.course_credit, x.registrationend, x.title as session_title, '
+			       . ' x.maxwaitinglist, x.course_credit, x.registrationend, x.title as session_title, x.session_language, '
 			       . ' r.id as recurrence_id, r.rrule, rp.count '
 			       . (count($xfields) ? ', '.implode(', ', $xfields) : '')
 					   ;
