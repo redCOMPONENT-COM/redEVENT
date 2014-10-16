@@ -12,15 +12,14 @@
 	<copyright>(C) 2008 - 2012 redCOMPONENT.com</copyright>
 	<license>GNU/GPL</license>
 	<version>##VERSION##</version>
-	<version>##VERSION##</version>
 	<description>MOD_REDEVENT_SEARCH_DESCRIPTION</description>
 
 	<files>
 		<filename module="mod_redevent_search">mod_redevent_search.php</filename>
 		<filename>helper.php</filename>
 		<filename>mod_redevent_search.css</filename>
-        <folder>ajaxquery</folder>
-		<folder>language</folder>
+        <folder>ajaxjquery</folder>
+        <folder>language</folder>
         <folder>select2</folder>
         <folder>tmpl</folder>
 	</files>
