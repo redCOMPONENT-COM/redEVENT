@@ -59,6 +59,7 @@ class RedeventHelperSessionadmins
 	 */
 	public function getVenueContactEmail($xref)
 	{
+		$this->xref = $xref;
 		$event = $this->getSessionDetails();
 
 		return $event->contactAdminEmail;
