@@ -72,6 +72,7 @@ class RedeventModelFrontadmininfo extends JModelLegacy
 		$details = $this->getSessionDetails();
 
 		$mailer = JFactory::getMailer();
+		$mailer->IsHTML(true);
 		$mailer->AddReplyTo(array($user->get('email'), $user->get('name')));
 
 		$mailer->setSubject(
@@ -94,8 +95,6 @@ class RedeventModelFrontadmininfo extends JModelLegacy
 		{
 			$mailer->addAddress($r['email'], $r['name']);
 		}
-
-		$mailer->addRecipient('julv@free.fr');
 
 		if (!$mailer->send())
 		{
