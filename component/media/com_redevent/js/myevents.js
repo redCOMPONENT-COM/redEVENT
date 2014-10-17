@@ -14,16 +14,21 @@ window.addEvent('domready', function() {
 		red_ajaxnav.submitForm(this.getParent('form'));
 	});
 
-	document.id('redevent').addEvent('click:relay(#filter-go)', function(e) {
-		e.stop();
-		red_ajaxnav.submitForm(this.getParent('form'));
-	});
-
 	document.id('redevent').addEvent('click:relay(#filter-reset)', function(e) {
 		e.stop();
 		$$('#el_filter select').set('value', '0');
 		$$('#el_filter input').set('value', '');
 		red_ajaxnav.submitForm(this.getParent('form'));
+	});
+
+	document.id('redevent').addEvent('click:relay(#filter-go)', function(e) {
+		e.stop();
+		red_ajaxnav.submitForm(this.getParent('form'));
+	});
+
+	document.id('redevent').addEvent('submit:relay(#my-managed-events)', function(e) {
+		e.stop();
+		red_ajaxnav.submitForm(this);
 	});
 
 	$$('.unreg-btn').addEvent('click', function(){
