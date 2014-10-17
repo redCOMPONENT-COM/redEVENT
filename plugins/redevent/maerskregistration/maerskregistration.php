@@ -203,6 +203,123 @@ class plgRedeventMaerskregistration extends JPlugin
 		return $this->emailCommentUpdated($attendee_id);
 	}
 
+	public function onB2BRegistrationNotifyAdmins($registrationId)
+	{
+		$app = JFactory::getApplication();
+		$params = $app->getParams('com_redevent');
+
+		$attendee = new RedeventAttendee($registrationId);
+
+		$recipients = $attendee->getAdminEmails();
+
+		if (!count($recipients))
+		{
+			return true;
+		}
+
+		$subject = $params->get('registration_notification_subject');
+
+		$attendeeInfo = RedmemberLib::getUserData($attendee->getUserId());
+
+		$booker = JFactory::getUser();
+		$bookerInfo = RedmemberLib::getUserData($booker->get('id'));
+
+		$body = '<HTML><HEAD>
+			<STYLE TYPE="text/css">
+			<!--
+			  table.formanswers , table.formanswers td, table.formanswers th
+				{
+				    border-color: darkgrey;
+				    border-style: solid;
+				    text-align:left;
+				}
+				table.formanswers
+				{
+				    border-width: 0 0 1px 1px;
+				    border-spacing: 0;
+				    border-collapse: collapse;
+				    padding: 5px;
+				}
+				table.formanswers td, table.formanswers th
+				{
+				    margin: 0;
+				    padding: 4px;
+				    border-width: 1px 1px 0 0;
+				}
+			-->
+			</STYLE>
+			</head>
+			<BODY bgcolor="#FFFFFF">';
+
+			$body .= '<h2>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_DELEGATE_HEADER') . '</h2>';
+			$body .= '<ul>';
+			$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_DELEGATE_LABEL_FIRST_NAME') .': ' . $attendeeInfo->rm_firstname . '</li>';
+		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_DELEGATE_LABEL_LAST_NAME') .': ' . $attendeeInfo->rm_lastname . '</li>';
+		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_DELEGATE_LABEL_EMAIL') .': ' . $attendeeInfo->email . '</li>';
+		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_DELEGATE_LABEL_BIRTHDAY') .': ' . $attendeeInfo->rm_birthday . '</li>';
+		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_DELEGATE_LABEL_NOTE') .': ' . $attendeeInfo->rm_note . '</li>';
+			$body .= '</ul>';
+
+		$body .= '<h2>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_BOOKER_HEADER') . '</h2>';
+		$body .= '<ul>';
+		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_DELEGATE_LABEL_FIRST_NAME') .': ' . $bookerInfo->rm_firstname . '</li>';
+		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_DELEGATE_LABEL_LAST_NAME') .': ' . $bookerInfo->rm_lastname . '</li>';
+		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_DELEGATE_LABEL_MOBILE') .': ' . $bookerInfo->rm_mobile . '</li>';
+		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_DELEGATE_LABEL_EMAIL') .': ' . $bookerInfo->email . '</li>';
+		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_DELEGATE_LABEL_CERTIFICATE_EMAIL') .': ' . $bookerInfo->rm_certificate_email . '</li>';
+		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_DELEGATE_LABEL_INVOICE_EMAIL') .': ' . $bookerInfo->rm_invoice_email . '</li>';
+		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_DELEGATE_LABEL_INVOICE_CONTACT') .': ' . $bookerInfo->rm_invoice_contact . '</li>';
+		$body .= '</ul>';
+
+		$body .= '<h2>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_HEADER') . '</h2>';
+		$body .= '<ul>';
+		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_COMPANY_NAME') .': ' . $attendeeInfo->organization_name . '</li>';
+		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_ADDRESS1') .': ' . $attendeeInfo->organization_address1 . '</li>';
+		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_ADDRESS2') .': ' . $attendeeInfo->organization_address2 . '</li>';
+		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_ADDRESS3') .': ' . $attendeeInfo->organization_address3 . '</li>';
+		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_ZIP') .': ' . $attendeeInfo->organization_zip . '</li>';
+		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_COUNTRY') .': ' . $attendeeInfo->organization_country . '</li>';
+		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_COMPANY_PHONE') .': ' . $attendeeInfo->organization_phone . '</li>';
+		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_VAT') .': ' . $attendeeInfo->organization_vat . '</li>';
+		$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_NOTE') .': ' . $attendeeInfo->organization_note . '</li>';
+		$body .= '</ul>';
+
+			$body .= '</body>
+			</html>';
+
+		/* Load the mailer */
+		$mailer = $attendee->prepareEmail($subject, $body);
+
+		if ($attendee->getEmail() && $params->get('allow_email_aliasing', 1))
+		{
+			$sender = array($attendee->getEmail(), $attendee->getFullname());
+		}
+		else
+		{
+			// Default to site settings
+			$sender = array($app->getCfg('mailfrom'), $app->getCfg('sitename'));
+		}
+
+		$mailer->setSender($sender);
+		$mailer->ClearReplyTos();
+		$mailer->addReplyTo($sender);
+
+		foreach ($recipients as $r)
+		{
+			$mailer->addAddress($r['email'], $r['name']);
+		}
+
+		if (!$mailer->send())
+		{
+			RedeventHelperLog::simplelog(JText::_('COM_REDEVENT_ERROR_REGISTRATION_MANAGERS_NOTIFICATION_FAILED'));
+			$this->setError(JText::_('COM_REDEVENT_ERROR_REGISTRATION_MANAGERS_NOTIFICATION_FAILED'));
+
+			return false;
+		}
+
+		return true;
+	}
+
 	/**
 	 * Send comment updated notification
 	 *

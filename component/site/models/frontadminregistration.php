@@ -255,7 +255,10 @@ class RedeventModelFrontadminregistration extends JModelLegacy
 		}
 
 		// Notify managers
-		$this->getRegistrationModel()->notifyManagers($registration->submit_key);
+
+		JPluginHelper::importPlugin( 'redevent' );
+		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher->trigger('onB2BRegistrationNotifyAdmins', array($registration->id));
 	}
 
 	/**

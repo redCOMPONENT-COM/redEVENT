@@ -111,6 +111,21 @@ class RedeventAttendee extends JObject
 	}
 
 	/**
+	 * Get user id for this attendee
+	 *
+	 * @return bool
+	 */
+	public function getUserId()
+	{
+		if ($this->load()->uid)
+		{
+			return $this->load()->uid;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Set Fullname
 	 *
 	 * @param   string  $name  Fullname
