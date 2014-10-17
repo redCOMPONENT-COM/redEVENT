@@ -516,8 +516,7 @@ var redb2b = {
 							alert(result.error);
 						}
 						else {
-							var element = new Element('span', {'class': 'comment-emailed'}).appendText(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_COMMENT_EMAIL_SENT"));
-							SqueezeBox.open(element, {handler: 'adopt', size: {x: 400, y: 100}});
+							alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_COMMENT_EMAIL_SENT"));
 						}
 						el.set('tip', el.get('value'));
 						redb2b.refreshTips();
