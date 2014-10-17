@@ -564,7 +564,7 @@ class RedeventAttendee extends JObject
 		{
 			if (JMailHelper::isEmailAddress($r['email']))
 			{
-				$adminEmails = array('email' => $r['email'], 'name' => $r['name']);
+				$adminEmails[] = array('email' => $r['email'], 'name' => $r['name']);
 			}
 		}
 
