@@ -34,12 +34,7 @@ class plgRedeventNotifyCompanyAdmin extends JPlugin
 	{
 		$fromB2b = JFactory::getApplication()->input->get('from') == 'b2b';
 
-		if ($fromB2b)
-		{
-			// Add user making the reservation
-			$this->addCurrentUser($emails);
-		}
-		else
+		if (!$fromB2b)
 		{
 			$this->addOrganizationAdmins($attendee_id, $emails);
 		}
