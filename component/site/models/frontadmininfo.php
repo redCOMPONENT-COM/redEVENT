@@ -89,12 +89,14 @@ class RedeventModelFrontadmininfo extends JModelLegacy
 		$mailer->setBody($body);
 
 		$recipientsHelper = new RedeventHelperSessionadmins;
-		$recipients = $recipientsHelper->getAdminEmails($this->xref);
+		$recipient = $recipientsHelper->getVenueContactEmail($this->xref);
 
-		foreach ($recipients as $r)
+		if (!JMailHelper::isEmailAddress($recipient))
 		{
-			$mailer->addAddress($r['email'], $r['name']);
+			throw new RuntimeException('Invalid venue admin contact email');
 		}
+
+		$mailer->addAddress($recipient);
 
 		if (!$mailer->send())
 		{

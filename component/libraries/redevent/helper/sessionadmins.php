@@ -51,6 +51,20 @@ class RedeventHelperSessionadmins
 	}
 
 	/**
+	 * Return venue contact email for this session
+	 *
+	 * @param   int  $xref  session id
+	 *
+	 * @return mixed
+	 */
+	public function getVenueContactEmail($xref)
+	{
+		$event = $this->getSessionDetails();
+
+		return $event->contactAdminEmail;
+	}
+
+	/**
 	 * Add default recipients from options
 	 *
 	 * @return void
