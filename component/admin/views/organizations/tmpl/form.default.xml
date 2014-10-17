@@ -40,11 +40,6 @@
             <option value="2">COM_REDEVENT_B2B_ATTENDEE_NOTIFICATION_MAILFLOW_BOTH</option>
         </field>
 
-        <field name="b2b_disable_all_attendee_notifications" type="list">
-            <option value="0">Jno</option>
-            <option value="1">Jyes</option>
-        </field>
-
         <field name="b2b_cancellation_period" type="text"/>
     </fieldset>
 </form>
