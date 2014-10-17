@@ -282,8 +282,6 @@ class RedeventModelFrontadminregistration extends JModelLegacy
 	 */
 	private function notifyOrganizationAdmins()
 	{
-		$orgAdmins = RedmemberLib::getOrganizationManagers($this->organizationId);
-
 		$registration = $this->getRegistration();
 		$attendee = new RedeventAttendee($registration->id);
 
@@ -298,11 +296,8 @@ class RedeventModelFrontadminregistration extends JModelLegacy
 			: JText::_('COM_REDEVENT_ATTENDEE_NOTIFICATION_MAILFLOW_ORGADMIN_CONFIRMATION_DEFAULT_BODY');
 		$email = $attendee->prepareEmail($subject, $body);
 
-		foreach ($orgAdmins as $id)
-		{
-			$user = JUser::getInstance($id);
-			$email->addRecipient($user->get('email'));
-		}
+		$user = JFactory::getUser();
+		$email->addRecipient($user->get('email'));
 
 		if (!$email->send())
 		{
