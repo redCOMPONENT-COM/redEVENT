@@ -142,18 +142,24 @@ class plgRedeventsyncclientMaersk extends JPlugin
 
 		try
 		{
-			$client->send($message);
-			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $this->getType($message), '', $message, 'sent');
+			$res = $client->send($message);
+			$this->dblog(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $this->getType($message), '', $message, 'sent', $res ? 'response: ' . $res : null);
+
+			if ($this->getType($res))
+			{
+				$this->handle($res);
+			}
+
 			$response = true;
 		}
 		catch (ResyncException $e)
 		{
-			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $this->getType($message), '', $message, $e->status, $e->debug);
+			$this->dblog(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $this->getType($message), '', $message, $e->status, $e->debug);
 			$response = false;
 		}
 		catch (Exception $e)
 		{
-			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $this->getType($message), '', $message, 'error');
+			$this->dblog(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $this->getType($message), '', $message, 'error');
 			$response = false;
 		}
 	}
