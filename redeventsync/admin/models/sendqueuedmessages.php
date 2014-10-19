@@ -36,7 +36,7 @@ class RedeventsyncModelSendqueuedmessages extends FOFModel
 			}
 			else
 			{
-				$app->enqueueMessage('Send message ' . $message->redeventsync_queuedmessage_id . ': error', 'error');
+				$app->enqueueMessage('Error Sending message ' . $message->redeventsync_queuedmessage_id . ': error', 'error');
 			}
 		}
 

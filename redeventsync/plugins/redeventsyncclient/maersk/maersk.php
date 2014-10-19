@@ -123,6 +123,8 @@ class plgRedeventsyncclientMaersk extends JPlugin
 	 * @param   bool    &$response  true if message was successfully sent
 	 *
 	 * @return void
+	 *
+	 * @throws LogicException
 	 */
 	public function onSend($plugin, $message, &$response)
 	{
@@ -133,16 +135,27 @@ class plgRedeventsyncclientMaersk extends JPlugin
 
 		$client = $this->getClient();
 
+		if (!$this->getType($message))
+		{
+			throw new LogicException('Undefined message type');
+		}
+
 		try
 		{
 			$client->send($message);
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $this->getType($message), '', $message, 'sent');
+			$response = true;
 		}
 		catch (ResyncException $e)
 		{
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $this->getType($message), '', $message, $e->status, $e->debug);
 			$response = false;
 		}
-
-		$response = true;
+		catch (Exception $e)
+		{
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $this->getType($message), '', $message, 'error');
+			$response = false;
+		}
 	}
 
 	/**
