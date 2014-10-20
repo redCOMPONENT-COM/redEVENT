@@ -25,12 +25,7 @@ $my = JRoute::_('index.php?option=com_redmember&view=userdetail&layout=alterdeta
 <ul class="inline">
 	<li>
 		<form name="org-form" id="org-form" method="post">
-			<?php if (count($this->organizations_options) > 2): ?>
-				<?php echo JHtml::_('select.genericlist', $this->organizations_options, 'filter_organization', '', 'value', 'text', $this->state->get('filter_organization')); ?>
-			<?php else: ?>
-				<input type="hidden" name="filter_organization" id="filter_organization" value="<?php echo $this->organizations_options[1]->value; ?>" />
-				<?php echo $this->organizations_options[1]->text; ?>
-			<?php endif; ?>
+			<?php echo JHtml::_('select.genericlist', $this->organizations_options, 'filter_organization', '', 'value', 'text', $this->state->get('filter_organization')); ?>
 
 			<input type="hidden" id="bookings_order" name="bookings_order" value="<?php echo $this->bookings_order; ?>"/>
 			<input type="hidden" id="bookings_order_dir" name="bookings_order_dir" value="<?php echo $this->bookings_order_dir; ?>"/>
