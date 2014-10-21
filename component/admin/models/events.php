@@ -161,7 +161,7 @@ class RedEventModelEvents extends JModel
 	 */
 	function _buildQuery()
 	{
-		$db = &JFactory::getDbo();
+		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('a.*, u.email, u.name AS author, u2.name as editor, x.id AS xref');

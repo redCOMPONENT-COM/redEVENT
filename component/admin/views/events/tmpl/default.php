@@ -22,7 +22,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-$app = &JFactory::getApplication();
+$app = JFactory::getApplication();
 ?>
 <?php if (!count( $this->rows )):?>
 <p><?php echo JHTML::link('index.php?option=com_redevent&task=sampledata', JText::_('COM_REDEVENT_Add_sample_data')); ?></p>

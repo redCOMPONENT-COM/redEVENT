@@ -36,17 +36,17 @@ class RedEventViewEvents extends JView {
 
 	function display($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
-		
+
 		if ($this->getLayout() == 'export') {
 			return $this->_displayExport($tpl);
 		}
 
 		//initialise variables
-		$user 		= & JFactory::getUser();
-		$document	= & JFactory::getDocument();
-		$db  		= & JFactory::getDBO();
+		$user 		= JFactory::getUser();
+		$document	= JFactory::getDocument();
+		$db  		= JFactory::getDBO();
 		$elsettings = JComponentHelper::getParams('com_redevent');
 
 		//get vars
@@ -86,9 +86,9 @@ class RedEventViewEvents extends JView {
 		}
 
 		// Get data from the model
-		$rows      	= & $this->get( 'Data');
+		$rows      	= $this->get( 'Data');
 		//$total      = & $this->get( 'Total');
-		$pageNav 	= & $this->get( 'Pagination' );
+		$pageNav 	= $this->get( 'Pagination' );
 
 		//publish unpublished filter
 		$lists['state']	= JHTML::_('grid.state', $filter_state );
@@ -96,10 +96,10 @@ class RedEventViewEvents extends JView {
 		// table ordering
 		$lists['order_Dir'] = $filter_order_Dir;
 		$lists['order'] = $filter_order;
-		
+
 		/* Venue and time details */
 		$eventvenues = $this->get('EventVenues');
-		
+
 		//search filter
 		$filters = array();
 		$filters[] = JHTML::_('select.option', '1', JText::_('COM_REDEVENT_EVENT_TITLE' ) );
@@ -119,16 +119,16 @@ class RedEventViewEvents extends JView {
 		$this->assignRef('template'		, $template);
 		$this->assignRef('elsettings'	, $elsettings);
 		$this->assignRef('eventvenues'	, $eventvenues);
-		$this->assignRef('state'        , $this->get('State'));
-		
+		$this->assign('state'        , $this->get('State'));
+
 // 		echo '<pre>';print_r($this->state); echo '</pre>';exit;
 
 		parent::display($tpl);
 	}
-		
+
 	function _displayExport($tpl = null)
 	{
-		$document	= & JFactory::getDocument();
+		$document	= JFactory::getDocument();
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EVENTS_EXPORT'));
 		//add css and submenu to document
 		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
@@ -140,20 +140,20 @@ class RedEventViewEvents extends JView {
 
 		//create the toolbar
 		JToolBarHelper::title( JText::_( 'COM_REDEVENT_PAGETITLE_EVENTS_EXPORT' ), 'events' );
-		
+
 		JToolBarHelper::back();
 		JToolBarHelper::custom('doexport', 'exportevents', 'exportevents', JText::_('COM_REDEVENT_BUTTON_EXPORT'), false);
-		
+
 		$lists = array();
-		
+
 		$lists['categories'] = JHTML::_('select.genericlist', $this->get('CategoriesOptions'), 'categories[]'
 		                                        , 'size="15" multiple="multiple"', 'value', 'text');
 		$lists['venues'] = JHTML::_('select.genericlist', $this->get('VenuesOptions'), 'venues[]'
 		                                        , 'size="15" multiple="multiple"', 'value', 'text');
-		
+
 		//assign data to template
 		$this->assignRef('lists'      	, $lists);
-		
+
 		parent::display($tpl);
 	}
 }

@@ -36,11 +36,11 @@ class RedEventViewTools extends JView {
 
 	function display($tpl = null) {
 
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		//initialise variables
-		$document		= & JFactory::getDocument();
-		$user			= & JFactory::getUser();
+		$document		= JFactory::getDocument();
+		$user			= JFactory::getUser();
 
 		//only admins have access to this view
 		if (!$user->authorise('com_redevent', 'manage')) {

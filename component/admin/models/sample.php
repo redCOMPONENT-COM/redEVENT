@@ -74,17 +74,20 @@ class RedeventModelSample extends JModel
 	 */
 	function _createCategory()
 	{
-		$row = &JTable::getInstance('redevent_categories', '');
+		$row = FOFTable::getAnInstance('Category', 'RedeventTable');
 		$row->catname        = 'Category S1';
 		$row->catdescription = 'Sample category';
 		$row->color          = '#00DD00';
 		$row->published      = 1;
 
-		if ($row->check() && $row->store()) {
+		if ($row->check() && $row->store())
+		{
 			return $row->id;
 		}
-		else {
+		else
+		{
 			$this->setError(JText::_('COM_REDEVENT_Error_creating_sample_category'));
+
 			return false;
 		}
 	}
