@@ -43,6 +43,7 @@ if ($this->uid)
 $fieldsOrdering[] = 'rm_birthday';
 $fieldsOrdering[] = 'rm_note';
 $fieldsOrdering[] = 'organizations';
+$fieldsOrdering[] = 'rm_mobile';
 $fieldsOrdering[] = 'rm_certificate_email';
 $fieldsOrdering[] = 'rm_invoice_email';
 ?>
