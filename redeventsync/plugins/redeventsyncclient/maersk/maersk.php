@@ -152,14 +152,8 @@ class plgRedeventsyncclientMaersk extends JPlugin
 
 			$response = true;
 		}
-		catch (ResyncException $e)
-		{
-			$this->dblog(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $this->getType($message), $this->getTransactionId($message), $message, $e->status, $e->debug);
-			$response = false;
-		}
 		catch (Exception $e)
 		{
-			$this->dblog(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $this->getType($message), $this->getTransactionId($message), $message, 'error');
 			$response = false;
 		}
 	}
@@ -219,7 +213,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 				'',
 				0,
 				$data,
-				'error',
+				'Parsing error',
 				'Parsing error: ' . implode("\n", $errors) . "\n"
 			);
 			throw new Exception('Parsing error: ' . implode("\n", $errors));
