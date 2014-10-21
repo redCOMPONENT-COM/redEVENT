@@ -143,7 +143,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		try
 		{
 			$res = $client->send($message);
-			$this->dblog(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $this->getType($message), '', $message, 'sent', $res ? 'response: ' . $res : null);
+			$this->dblog(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $this->getType($message), $this->getTransactionId($message), $message, 'sent', $res ? 'response: ' . $res : null);
 
 			if ($this->getType($res))
 			{
@@ -154,12 +154,12 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		}
 		catch (ResyncException $e)
 		{
-			$this->dblog(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $this->getType($message), '', $message, $e->status, $e->debug);
+			$this->dblog(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $this->getType($message), $this->getTransactionId($message), $message, $e->status, $e->debug);
 			$response = false;
 		}
 		catch (Exception $e)
 		{
-			$this->dblog(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $this->getType($message), '', $message, 'error');
+			$this->dblog(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $this->getType($message), $this->getTransactionId($message), $message, 'error');
 			$response = false;
 		}
 	}
@@ -229,7 +229,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		$this->dblog(
 			REDEVENTSYNC_LOG_DIRECTION_INCOMING,
 			$xml->firstChild->nodeName,
-			null,
+			$this->getTransactionId($data),
 			$data,
 			'received'
 		);
@@ -250,10 +250,6 @@ class plgRedeventsyncclientMaersk extends JPlugin
 				'Parsing error: Unsupported schema ' . $type
 			);
 			throw new Exception('Parsing error: Unsupported schema ' . $type);
-		}
-		else
-		{
-			$handler = $this->getHandler($type);
 		}
 
 		// Validate
@@ -281,6 +277,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		}
 
 		// Process !
+		$handler = $this->getHandler($type);
 		$handler->handle($data);
 
 		// Display response to request
@@ -288,8 +285,8 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		{
 			$this->dblog(
 				REDEVENTSYNC_LOG_DIRECTION_OUTGOING,
-				$handler->getResponseMessageType(),
-				0,
+				$this->getType($msg),
+				$this->getTransactionId($msg),
 				$msg,
 				'see message'
 			);
@@ -748,5 +745,33 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		{
 			ResyncHelperMessagelog::log($direction, $type, $transactionid, $message, $status, $debug);
 		}
+	}
+
+	/**
+	 * Return first found transaction id
+	 *
+	 * @param   string  $xml  xml
+	 *
+	 * @return int|string
+	 */
+	public function getTransactionId($xml)
+	{
+		$simpleXml = new SimpleXMLElement($xml);
+		$simpleXml->registerXPathNamespace('re', 'http://www.redcomponent.com/redevent');
+		$result = $simpleXml->xpath('//re:TransactionId');
+
+		if ($result)
+		{
+			$all = array();
+
+			foreach ($result as $tid)
+			{
+				$all[] = (int) $tid;
+			}
+
+			return implode(', ', $all);
+		}
+
+		return '0';
 	}
 }
