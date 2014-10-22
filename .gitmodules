@@ -1,3 +1,6 @@
 [submodule "fof"]
 	path = fof
 	url = git@github.com:akeeba/fof.git
+[submodule "redCORE"]
+	path = redCORE
+	url = git@github.com:redCOMPONENT-COM/redCORE.git
