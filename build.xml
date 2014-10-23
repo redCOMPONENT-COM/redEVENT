@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="redEVENT" default="site" basedir=".">
 
-	<!--<import file="./fof/build/build.xml"/>-->
-
 	<property file="build/build.properties" />
 
 	<!-- Default properties, set only if not already assigned in the build.properties file -->
@@ -60,11 +58,6 @@
 					<token key="VERSION" value="${version}" />
 				</replacetokens>
 			</filterchain>
-		</copy>
-		<copy todir="${dirs.tmp}/component/fof" >
-			<fileset dir="${dirs.root}/fof/fof">
-				<include name="**" />
-			</fileset>
 		</copy>
 
 		<!-- Create the package -->

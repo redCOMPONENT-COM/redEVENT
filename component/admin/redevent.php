@@ -8,65 +8,39 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-if (!defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
-}
-
-// Load FOF
-include_once JPATH_LIBRARIES . '/fof/include.php';
-if (!defined('FOF_INCLUDED'))
-{
-	JError::raiseError('500', 'FOF is not installed');
-}
-
 $redcoreLoader = JPATH_LIBRARIES . '/redcore/bootstrap.php';
 
 if (!file_exists($redcoreLoader) || !JPluginHelper::isEnabled('system', 'redcore'))
 {
-	throw new Exception(JText::_('COM_REDEVENT_REDFORM_REDCORE_REQUIRED'), 404);
+	throw new Exception(JText::_('COM_REDEVENT_REDCORE_REQUIRED'), 404);
 }
+
+include_once $redcoreLoader;
 
 // Bootstraps redCORE
 RBootstrap::bootstrap();
 
-// Register library prefix
-JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
-RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
-RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
+// Bootstraps Redevent application
+$redEVENTLoader = JPATH_LIBRARIES . '/redevent/bootstrap.php';
+require_once $redEVENTLoader;
 
-//Require classes
-require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'recurrence.php');
-require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'route.php');
-require_once (JPATH_COMPONENT_SITE.DS.'models'.DS.'eventhelper.php');
-require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'image.class.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'admin.class.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'error.class.php');
+RedeventBootstrap::bootstrap();
 
-// Set the table directory
-JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
+// Register backend prefix
+RLoader::registerPrefix('Redevent', __DIR__);
 
-// Require the base controller
-require_once (JPATH_COMPONENT.DS.'controller.php');
+$app = JFactory::getApplication();
 
-// Require specific controller if requested (non fof !)
-if( $controller = JRequest::getWord('controller') ) {
-	$path = JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php';
-	if (file_exists($path)) {
-		require_once $path;
-	} else {
-		$controller = '';
-	}
+// Instanciate and execute the front controller.
+$controller = JControllerLegacy::getInstance('Redevent');
 
-	//Create the controller
-	$classname  = 'RedeventController' . $controller;
-	$controller = new $classname( );
-
-	// Perform the Request task
-	$controller->execute( JRequest::getWord('task', 'redevent'));
-	$controller->redirect();
-}
-else
+// Check access.
+if (!JFactory::getUser()->authorise('core.manage', 'com_redevent'))
 {
-	FOFDispatcher::getTmpInstance('com_redevent')->dispatch();
+	$app->enqueueMessage(JText::_('JERROR_ALERTNOAUTHOR'), 'error');
+
+	return false;
 }
+
+$controller->execute($app->input->get('task'));
+$controller->redirect();

@@ -15,7 +15,7 @@ jimport('joomla.application.component.view');
  * @package  Redevent.admin
  * @since    0.9
  */
-class RedeventViewRedevent extends JViewLegacy
+class RedeventViewDashboard extends JViewLegacy
 {
 	/**
 	 * Execute and display a template script.
