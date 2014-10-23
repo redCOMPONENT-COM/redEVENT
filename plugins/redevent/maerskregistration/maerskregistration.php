@@ -227,29 +227,12 @@ class plgRedeventMaerskregistration extends JPlugin
 		$body = '<HTML><HEAD>
 			<STYLE TYPE="text/css">
 			<!--
-			  table.formanswers , table.formanswers td, table.formanswers th
-				{
-				    border-color: darkgrey;
-				    border-style: solid;
-				    text-align:left;
-				}
-				table.formanswers
-				{
-				    border-width: 0 0 1px 1px;
-				    border-spacing: 0;
-				    border-collapse: collapse;
-				    padding: 5px;
-				}
-				table.formanswers td, table.formanswers th
-				{
-				    margin: 0;
-				    padding: 4px;
-				    border-width: 1px 1px 0 0;
-				}
 			-->
 			</STYLE>
 			</head>
 			<BODY bgcolor="#FFFFFF">';
+
+			$body .= '<p>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_BODY_INTRO') . '</p>';
 
 			$body .= '<h2>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_DELEGATE_HEADER') . '</h2>';
 			$body .= '<ul>';
@@ -278,7 +261,7 @@ class plgRedeventMaerskregistration extends JPlugin
 			$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_ADDRESS2') .': ' . $attendeeInfo->organization_address2 . '</li>';
 			$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_ADDRESS3') .': ' . $attendeeInfo->organization_address3 . '</li>';
 			$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_ZIP') .': ' . $attendeeInfo->organization_zip . '</li>';
-			$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_COUNTRY') .': ' . $attendeeInfo->organization_country . '</li>';
+			$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_COUNTRY') .': ' . RedmemberLib::getCountryName($attendeeInfo->organization_country) . '</li>';
 			$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_COMPANY_PHONE') .': ' . $attendeeInfo->organization_phone . '</li>';
 			$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_VAT') .': ' . $attendeeInfo->organization_vat . '</li>';
 			$body .= '<li>' . JText::_('PLG_REDEVENT_MAERSKREGISTRATION_B2B_ADMIN_NOTIFICATION_COMPANY_LABEL_NOTE') .': ' . $attendeeInfo->organization_note . '</li>';
