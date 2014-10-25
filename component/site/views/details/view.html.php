@@ -157,9 +157,9 @@ class RedeventViewDetails extends JView
 		}
 
 		// generate Metatags
-		$meta_keywords_content = array();
 		if (!empty($row->meta_keywords))
 		{
+			$meta_keywords_content = array();
 			$keywords = explode(",",$row->meta_keywords);
 			foreach($keywords as $keyword)
 			{
@@ -177,6 +177,11 @@ class RedeventViewDetails extends JView
 			}
 			$meta_keywords_content = implode(',', $meta_keywords_content);
 		}
+		else
+		{
+			$meta_keywords_content = $row->title;
+		}
+
 		if (!empty($row->meta_description))
 		{
 			if (preg_match_all("#\[([^\]]*)\]#", $row->meta_description, $match))
