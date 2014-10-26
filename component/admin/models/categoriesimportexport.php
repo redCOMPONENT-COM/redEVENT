@@ -37,26 +37,31 @@ class RedeventModelCategories extends RModelList
 	protected $limitstartField = 'auto';
 
 	/**
-	 * Constructor.
+	 * constructor
 	 *
-	 * @param   array  $config  Configs
-	 *
-	 * @see     JController
+	 * @param   array  $config  config
 	 */
 	public function __construct($config = array())
 	{
-		if (empty($config['filter_fields']))
-		{
-			$config['filter_fields'] = array(
-				'name', 'c.name',
-				'ordering', 'c.ordering',
-				'published', 'c.published',
-				'id', 'c.id',
-				'access', 'c.access'
-			);
-		}
-
 		parent::__construct($config);
+
+		$app    = JFactory::getApplication();
+		$db     = JFactory::getDbo();
+		$option = $this->input->get('option');
+
+		// Get vars
+		$filter_order		= $app->getUserStateFromRequest($option . '.categories.filter_order', 		'filter_order', 	'c.lft', 'cmd');
+		$this->setState('filter_order', $filter_order);
+
+		$filter_order_Dir	= $app->getUserStateFromRequest($option . '.categories.filter_order_Dir',	'filter_order_Dir',	'', 'word');
+		$this->setState('filter_order_Dir', $filter_order_Dir);
+
+		$filter_state 		= $app->getUserStateFromRequest($option . '.categories.filter_state', 		'filter_state', 	'*', 'word');
+		$this->setState('filter_state', $filter_state);
+
+		$search 			= $app->getUserStateFromRequest($option . '.categories.search', 			'search', 			'', 'string');
+		$search 			= $db->getEscaped(trim(JString::strtolower($search)));
+		$this->setState('search', $search);
 	}
 
 	/**
@@ -85,47 +90,18 @@ class RedeventModelCategories extends RModelList
 	}
 
 	/**
-	 * Gets an array of objects from the results of database query.
+	 * Method to build the query for the categories
 	 *
-	 * @param   string   $query       The query.
-	 * @param   integer  $limitstart  Offset.
-	 * @param   integer  $limit       The number of records.
+	 * @param   boolean  $overrideLimits  true to override limits
 	 *
-	 * @return  array  An array of results.
-	 *
-	 * @since   11.1
+	 * @return integer
 	 */
-	protected function _getList($query, $limitstart = 0, $limit = 0)
+	public function buildQuery($overrideLimits = false)
 	{
-		$result = parent::_getList($query, $limitstart, $limit);
-
-		if (!$result)
-		{
-			return $result;
-		}
-
-		for ($i = 0, $count = count($result); $i < $count; $i++)
-		{
-			$category =& $result[$i];
-			$category->assignedevents = $this->countCategoryEvents($category->id);
-		}
-
-		return $result;
-	}
-
-	/**
-	 * Method to cache the last query constructed.
-	 *
-	 * This method ensures that the query is constructed only once for a given state of the model.
-	 *
-	 * @return JDatabaseQuery A JDatabaseQuery object
-	 */
-	protected function getListQuery()
-	{
-		$db = JFactory::getDbo();
+		$db = &JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('c.*, (COUNT(parent.name) - 1) AS depth, p.name as parent_name');
+		$query->select('c.*, (COUNT(parent.catname) - 1) AS depth, p.catname as parent_name');
 		$query->select('u.name AS editor');
 		$query->select('g.title AS groupname');
 		$query->from('#__redevent_categories AS parent, #__redevent_categories AS c');
@@ -144,13 +120,15 @@ class RedeventModelCategories extends RModelList
 		$query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = c.language');
 
 		// Get the WHERE clause for the query
-		$query = $this->buildContentWhere($query);
+		$query = $this->_buildContentWhere($query);
 
-		$order = $this->getState('filter_order', 'c.lft', 'cmd');
+		if (!$overrideLimits)
+		{
+			$order = $this->getState('filter_order', 'c.lft', 'cmd');
 
-		$dir = $this->getState('filter_order_Dir', '', 'cmd');
-		$query->order($db->qn($order) . ' ' . $dir);
-
+			$dir = $this->getState('filter_order_Dir', '', 'cmd');
+			$query->order($db->qn($order) . ' ' . $dir);
+		}
 
 		return $query;
 	}
@@ -162,14 +140,15 @@ class RedeventModelCategories extends RModelList
 	 *
 	 * @return  JDatabaseQuery
 	 */
-	protected function buildContentWhere($query)
+	protected function _buildContentWhere($query)
 	{
-		$db = JFactory::getDbo();
+		$mainframe = &JFactory::getApplication();
+		$option = JRequest::getCmd('option');
 		$search = $this->getState('search');
 
-		if ($filter_state = $this->getState('filter.published', ''))
+		if ($filter_state = $this->getState('filter_state', ''))
 		{
-			if ($filter_state == '1')
+			if ($filter_state == 'P')
 			{
 				$query->where('c.published = 1');
 			}
@@ -179,16 +158,17 @@ class RedeventModelCategories extends RModelList
 			}
 		}
 
-		$filter_language = $this->getState('filter_language');
+		$filter_language = $this->getState('language');
 
 		if ($filter_language)
 		{
-			$query->where('c.language = ' . $db->quote($filter_language));
+			$this->setState('language', $filter_language);
+			$query->where('c.language = ' . $this->_db->quote($filter_language));
 		}
 
 		if ($search)
 		{
-			$query->where('LOWER(c.name) LIKE \'%' . $search . '%\'');
+			$query->where('LOWER(c.catname) LIKE \'%' . $search . '%\'');
 		}
 
 		return $query;
@@ -251,26 +231,22 @@ class RedeventModelCategories extends RModelList
 	}
 
 	/**
-	 * Method to count the number of assigned events to the category
+	 * Method to count the nr of assigned events to the category
 	 *
-	 * @param   int  $id  category id
-	 *
-	 * @return int
+	 * @access	public
+	 * @return	boolean	True on success
+	 * @since	0.9
 	 */
-	protected function countCategoryEvents($id)
+	protected function _countcatevents($id)
 	{
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
+		$query = 'SELECT COUNT( * )'
+		. ' FROM #__redevent_event_category_xref AS x'
+		. ' WHERE x.category_id = ' . (int) $id;
 
-		$query->select('COUNT(*)');
-		$query->from('#__redevent_event_category_xref');
-		$query->where('category_id = ' . (int) $id);
-		$query->group('id');
+		$this->_db->setQuery($query);
+		$number = $this->_db->loadResult();
 
-		$db->setQuery($query);
-		$res = $db->loadResult();
-
-		return $res;
+		return $number;
 	}
 
 
@@ -355,55 +331,104 @@ class RedeventModelCategories extends RModelList
 	}
 
 	/**
-	 * Method to get a store id based on model configuration state.
+	 * export venues
 	 *
-	 * This is necessary because the model is used by the component and
-	 * different modules that might need different sets of data or different
-	 * ordering requirements.
+	 * @param   array  $categories  filter
 	 *
-	 * @param   string  $id  A prefix for the store id.
-	 *
-	 * @return	string  A store id.
+	 * @return array
 	 */
-	protected function getStoreId($id = '')
+	public function export($categories = null)
 	{
-		// Compile the store id.
-		$id	.= ':' . $this->getState('filter.search');
-		$id .= ':' . $this->getState('filter.language');
-		$id	.= ':' . $this->getState('filter.published');
+		$where = array();
 
-		return parent::getStoreId($id);
+		if (count($where))
+		{
+			$where = ' WHERE ' . implode(' AND ', $where);
+		}
+		else
+		{
+			$where = '';
+		}
+
+		$query = ' SELECT c.id, c.catname, c.alias, c.catdescription, c.meta_description, c.meta_keywords,  '
+		. ' c.color, c.image, c.published, c.access,  '
+		. ' c.event_template, c.ordering  '
+		. ' FROM #__redevent_categories AS c '
+		. $where;
+		$this->_db->setQuery($query);
+
+		$results = $this->_db->loadAssocList();
+
+		return $results;
 	}
 
 	/**
-	 * Method to auto-populate the model state.
+	 * import categories in database
 	 *
-	 * @param   string  $ordering   Ordering column
-	 * @param   string  $direction  Direction
-	 *
-	 * @return  void
+	 * @param array $records
+	 * @param string $duplicate_method method for handling duplicate record (ignore, create_new, update)
+	 * @return boolean true on success
 	 */
-	public function populateState($ordering = 'f.ordering', $direction = 'asc')
+	public function import($records, $duplicate_method = 'ignore')
 	{
 		$app = JFactory::getApplication();
+		$count = array('added' => 0, 'updated' => 0, 'ignored' => 0);
 
-		$filterSearch = $this->getUserStateFromRequest($this->context . '.filter_search', 'search');
-		$this->setState('filter.search', $filterSearch);
+		foreach ($records as $r)
+		{
+			$v = $this->getTable();
+			$v->bind($r);
 
-		$published = $this->getUserStateFromRequest($this->context . '.filter_published', 'published', 1);
-		$this->setState('filter.published', $published);
+			if (isset($r->id) && $r->id)
+			{
+				// Load existing data
+				$found = $v->load($r->id);
 
-		$language = $this->getUserStateFromRequest($this->context . '.filter_language', 'language');
-		$this->setState('filter.language', $language);
+				// Discard if set to ignore duplicate
+				if ($found && $duplicate_method == 'ignore')
+				{
+					$count['ignored']++;
+					continue;
+				}
+			}
 
-		$value = $app->getUserStateFromRequest('global.list.limit', $this->paginationPrefix . 'limit', $app->getCfg('list_limit'), 'uint');
-		$limit = $value;
-		$this->setState('list.limit', $limit);
+			// Bind submitted data
+			$v->bind($r);
 
-		$value = $app->getUserStateFromRequest($this->context . '.limitstart', $this->paginationPrefix . 'limitstart', 0);
-		$limitstart = ($limit != 0 ? (floor($value / $limit) * $limit) : 0);
-		$this->setState('list.start', $limitstart);
+			if ($duplicate_method == 'update' && $found)
+			{
+				$updating = 1;
+			}
+			else
+			{
+				// To be sure to create a new record
+				$v->id = null;
+				$updating = 0;
+			}
 
-		parent::populateState($ordering, $direction);
+			// Store !
+			if (!$v->check())
+			{
+				$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR') . ': ' . $v->getError(), 'error');
+				continue;
+			}
+
+			if (!$v->store())
+			{
+				$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR') . ': ' . $v->getError(), 'error');
+				continue;
+			}
+
+			if ($updating)
+			{
+				$count['updated']++;
+			}
+			else
+			{
+				$count['added']++;
+			}
+		}
+
+		return $count;
 	}
 }

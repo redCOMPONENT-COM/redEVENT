@@ -39,7 +39,7 @@ Joomla.submitbutton = function (pressbutton) {
 		<p></p>
 		<div class="row-fluid">
 			<?php foreach ($row as $icon) : ?>
-			<?php if ($this->user->authorise($icon['access'], 'ccom_redevent')): ?>
+			<?php if ($this->user->authorise($icon['access'], 'com_redevent')): ?>
 				<div class="span2">
 					<a class="reDashboardIcons" href="<?php echo JRoute::_($icon['link']); ?>">
 						<div class="row-fluid pagination-centered">
