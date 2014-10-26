@@ -20,5 +20,6 @@
         <folder>model</folder>
         <folder>tags</folder>
         <folder>user</folder>
+        <folder>view</folder>
 	</files>
 </extension>

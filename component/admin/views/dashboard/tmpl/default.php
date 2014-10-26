@@ -1,205 +1,155 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
 defined('_JEXEC') or die('Restricted access');
 
-$options = array(
-		'onActive' => 'function(title, description){
-        description.setStyle("display", "block");
-        title.addClass("open").removeClass("closed");
-    }',
-		'onBackground' => 'function(title, description){
-        description.setStyle("display", "none");
-        title.addClass("closed").removeClass("open");
-    }',
-		'startOffset' => 0,  // 0 starts on the first tab, 1 starts the second, etc...
-		'useCookie' => true, // this must not be a string. Don't use quotes.
+$return = base64_encode('index.php?option=com_redevent');
+
+$icons = array(
+	array('link' => 'index.php?option=com_redevent&view=events', 'icon' => 'icon-48-events.png', 'text' => JText::_('COM_REDEVENT_EVENTS'), 'access' => 'core.edit'),
+	array('link' => 'index.php?option=com_redevent&view=venues', 'icon' => 'icon-48-venues.png', 'text' => JText::_('COM_REDEVENT_VENUES'), 'access' => 'core.edit'),
+	array('link' => 'index.php?option=com_redevent&view=categories', 'icon' => 'icon-48-categories.png', 'text' => JText::_('COM_REDEVENT_CATEGORIES'), 'access' => 'core.edit'),
+	array('link' => 'index.php?option=com_redevent&view=venuescategories', 'icon' => 'icon-48-venuescategories.png', 'text' => JText::_('COM_REDEVENT_VENUES_CATEGORIES'), 'access' => 'core.edit'),
+	array('link' => 'index.php?option=com_redevent&view=registrations', 'icon' => 'icon-48-registrations.png', 'text' => JText::_('COM_REDEVENT_REGISTRATIONS'), 'access' => 'core.edit'),
+	array('link' => 'index.php?option=com_redevent&view=textsnippets', 'icon' => 'icon-48-library.png', 'text' => JText::_('COM_REDEVENT_TEXT_LIBRARY'), 'access' => 'core.edit'),
+	array('link' => 'index.php?option=com_redevent&view=customfields', 'icon' => 'icon-48-customfields.png', 'text' => JText::_('COM_REDEVENT_CUSTOM_FIELDS'), 'access' => 'core.edit'),
+	array('link' => 'index.php?option=com_redevent&view=roles', 'icon' => 'icon-48-roles.png', 'text' => JText::_('COM_REDEVENT_ROLES'), 'access' => 'core.edit'),
+	array('link' => 'index.php?option=com_redevent&view=pricegroups', 'icon' => 'icon-48-pricegroups.png', 'text' => JText::_('COM_REDEVENT_MENU_PRICEGROUPS'), 'access' => 'core.edit'),
+	array('link' => 'index.php?option=com_redevent&view=archive', 'icon' => 'icon-48-archive.png', 'text' => JText::_('COM_REDEVENT_ARCHIVESCREEN'), 'access' => 'core.edit'),
+	array('link' => 'index.php?option=com_redevent&view=tools', 'icon' => 'icon-48-housekeeping.png', 'text' => JText::_('COM_REDEVENT_TOOLS'), 'access' => 'core.manage'),
+	array('link' => 'index.php?option=com_redevent&view=logs', 'icon' => 'icon-48-log.png', 'text' => JText::_('COM_REDEVENT_LOG'), 'access' => 'core.manage'),
+	array('link' => 'index.php?option=com_redcore&view=config&layout=edit&component=com_redevent&return=' . $return, 'icon' => 'icon-48-settings.png', 'text' => JText::_('COM_REDEVENT_SETTINGS'), 'access' => 'core.manage'),
 );
 ?>
-	<table id="recevent-cpanel">
-		<tr>
-			<td valign="top">
-			<table class="adminlist">
-				<tr>
-					<td>
-						<div id="cpanel">
-						<?php
-						$option = JRequest::getCmd('option');
 
-						$link = 'index.php?option='.$option.'&amp;view=events';
-						$this->quickiconButton( $link, 'icon-48-events.png', JText::_('COM_REDEVENT_EVENTS' ) );
+<script type="text/javascript">
+Joomla.submitbutton = function (pressbutton) {
+	submitbutton(pressbutton);
+};
+</script>
 
-						$link = 'index.php?option='.$option.'&amp;view=venues';
-						$this->quickiconButton( $link, 'icon-48-venues.png', JText::_('COM_REDEVENT_VENUES' ) );
-
-						$link = 'index.php?option='.$option.'&amp;view=categories';
-						$this->quickiconButton( $link, 'icon-48-categories.png', JText::_('COM_REDEVENT_CATEGORIES' ) );
-
-						$link = 'index.php?option='.$option.'&amp;view=venuescategories';
-						$this->quickiconButton( $link, 'icon-48-venuescategories.png', JText::_('COM_REDEVENT_VENUES_CATEGORIES' ) );
-
-						$link = 'index.php?option='.$option.'&amp;view=registrations';
-						$this->quickiconButton( $link, 'icon-48-registrations.png', JText::_('COM_REDEVENT_REGISTRATIONS' ) );
-
-						$link = 'index.php?option='.$option.'&amp;view=textsnippets';
-						$this->quickiconButton( $link, 'icon-48-library.png', JText::_('COM_REDEVENT_TEXT_LIBRARY' ) );
-
-						$link = 'index.php?option='.$option.'&amp;view=customfields';
-						$this->quickiconButton( $link, 'icon-48-customfields.png', JText::_('COM_REDEVENT_CUSTOM_FIELDS' ) );
-
-						$link = 'index.php?option='.$option.'&amp;view=roles';
-						$this->quickiconButton( $link, 'icon-48-roles.png', JText::_('COM_REDEVENT_ROLES' ) );
-
-						$link = 'index.php?option='.$option.'&amp;view=pricegroups';
-						$this->quickiconButton( $link, 'icon-48-pricegroups.png', JText::_('COM_REDEVENT_MENU_PRICEGROUPS' ) );
-
-						$link = 'index.php?option='.$option.'&amp;view=archive';
-						$this->quickiconButton( $link, 'icon-48-archive.png', JText::_('COM_REDEVENT_ARCHIVESCREEN' ) );
-
-						//only admins should be able to see this items
-						if ($this->user->authorise('com_redevent', 'manage')) {
-							$link = 'index.php?option='.$option.'&amp;view=editcss';
-							$this->quickiconButton( $link, 'icon-48-cssedit.png', JText::_('COM_REDEVENT_EDIT_CSS' ) );
-
-							$link = 'index.php?option='.$option.'&amp;view=tools';
-							$this->quickiconButton( $link, 'icon-48-housekeeping.png', JText::_('COM_REDEVENT_TOOLS' ) );
-
-							$link = 'index.php?option='.$option.'&amp;view=logs';
-							$this->quickiconButton( $link, 'icon-48-log.png', JText::_('COM_REDEVENT_LOG' ) );
-						}
-
-						$link = 'index.php?option='.$option.'&amp;view=help';
-						$this->quickiconButton( $link, 'icon-48-help.png', JText::_('COM_REDEVENT_HELP' ) );
-						?>
+<div id="reDashboard-main-container" class="row-fluid">
+	<div class="span9 reDashboardMainIcons">
+		<?php $iconsRow = array_chunk($icons, 6); ?>
+		<?php foreach ($iconsRow as $row) : ?>
+		<p></p>
+		<div class="row-fluid">
+			<?php foreach ($row as $icon) : ?>
+			<?php if ($this->user->authorise($icon['access'], 'ccom_redevent')): ?>
+				<div class="span2">
+					<a class="reDashboardIcons" href="<?php echo JRoute::_($icon['link']); ?>">
+						<div class="row-fluid pagination-centered">
+							<span class="dashboard-icon-link-icon">
+								<?php echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/' . $icon['icon'], $icon['text']); ?>
+							</span>
 						</div>
-					</td>
-				</tr>
-			</table>
-			</td>
-			<td valign="top" width="320px" style="padding: 7px 0 0 5px">
-			<?php
-			echo JHtml::_('sliders.start', 'tab_group_id', $options);
-			echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_EVENT_STATS'), 'events');
-
-				?>
-				<table class="adminlist">
-					<tr>
-						<td>
-							<?php echo JText::_('COM_REDEVENT_EVENTS_PUBLISHED' ).': '; ?>
-						</td>
-						<td>
-							<b><?php echo $this->events[0]; ?></b>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<?php echo JText::_('COM_REDEVENT_EVENTS_UNPUBLISHED' ).': '; ?>
-						</td>
-						<td>
-							<b><?php echo $this->events[1]; ?></b>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<?php echo JText::_('COM_REDEVENT_EVENTS_ARCHIVED' ).': '; ?>
-						</td>
-						<td>
-							<b><?php echo $this->events[2]; ?></b>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<?php echo JText::_('COM_REDEVENT_EVENTS_TOTAL' ).': '; ?>
-						</td>
-						<td>
-							<b><?php echo $this->events[3]; ?></b>
-						</td>
-					</tr>
-				</table>
-				<?php
-
-				echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_VENUE_STATS'), 'venues');
-				?>
-				<table class="adminlist">
-					<tr>
-						<td>
-							<?php echo JText::_('COM_REDEVENT_VENUES_PUBLISHED' ).': '; ?>
-						</td>
-						<td>
-							<b><?php echo $this->venue[0]; ?></b>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<?php echo JText::_('COM_REDEVENT_VENUES_UNPUBLISHED' ).': '; ?>
-						</td>
-						<td>
-							<b><?php echo $this->venue[1]; ?></b>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<?php echo JText::_('COM_REDEVENT_VENUES_TOTAL' ).': '; ?>
-						</td>
-						<td>
-							<b><?php echo $this->venue[2]; ?></b>
-						</td>
-					</tr>
-				</table>
-				<?php
-
-				echo JHtml::_('sliders.panel', JText::_('COM_REDEVENT_CATEGORY_STATS'), 'categories');
-				?>
-				<table class="adminlist">
-					<tr>
-						<td>
-							<?php echo JText::_('COM_REDEVENT_CATEGORIES_PUBLISHED' ).': '; ?>
-						</td>
-						<td>
-							<b><?php echo $this->category[0]; ?></b>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<?php echo JText::_('COM_REDEVENT_CATEGORIES_UNPUBLISHED' ).': '; ?>
-						</td>
-						<td>
-							<b><?php echo $this->category[1]; ?></b>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<?php echo JText::_('COM_REDEVENT_CATEGORIES_TOTAL' ).': '; ?>
-						</td>
-						<td>
-							<b><?php echo $this->category[2]; ?></b>
-						</td>
-					</tr>
-				</table>
-				<?php
-				echo JHtml::_('sliders.end');
-				?>
-			</td>
-		</tr>
-		</table>
-
+						<div class="row-fluid pagination-centered">
+							<p class="dashboard-icon-link-text">
+								<strong><?php echo $icon['text']; ?></strong>
+							</p>
+						</div>
+					</a>
+				</div>
+			<?php endif; ?>
+			<?php endforeach; ?>
+		</div>
+		<?php endforeach; ?>
+	</div>
+	<div class="span3 reDashboardSideIcons">
+		<div class="well">
+			<div>
+				<strong class="row-title">
+					<?php echo JText::_('COM_REDEVENT_VERSION'); ?>
+				</strong>
+				<span class="badge badge-success pull-right" title="<?php echo JText::_('COM_REDEVENT_VERSION'); ?>">
+					<?php echo $this->version; ?>
+				</span>
+			</div>
+		</div>
+		<div class="well">
+			<div>
+				<strong class="row-title">
+					<?php echo JText::_('COM_REDEVENT_EVENT_STATS'); ?>
+				</strong>
+				<div>
+					<?php echo JText::_('COM_REDEVENT_EVENTS_PUBLISHED'); ?>
+					<span class="badge badge-success pull-right" title="<?php echo JText::_('COM_REDEVENT_EVENTS_PUBLISHED'); ?>">
+						<?php echo $this->eventsStats ? $this->eventsStats['published'] : 0; ?>
+					</span>
+				</div>
+				<div>
+					<?php echo JText::_('COM_REDEVENT_EVENTS_UNPUBLISHED'); ?>
+					<span class="badge badge-success pull-right" title="<?php echo JText::_('COM_REDEVENT_EVENTS_UNPUBLISHED'); ?>">
+						<?php echo $this->eventsStats ? $this->eventsStats['unpublished'] : 0; ?>
+					</span>
+				</div>
+				<div>
+					<?php echo JText::_('COM_REDEVENT_EVENTS_ARCHIVED'); ?>
+					<span class="badge badge-success pull-right" title="<?php echo JText::_('COM_REDEVENT_EVENTS_ARCHIVED'); ?>">
+						<?php echo $this->eventsStats ? $this->eventsStats['archived'] : 0; ?>
+					</span>
+				</div>
+				<div>
+					<?php echo JText::_('COM_REDEVENT_EVENTS_TOTAL'); ?>
+					<span class="badge badge-success pull-right" title="<?php echo JText::_('COM_REDEVENT_EVENTS_TOTAL'); ?>">
+						<?php echo $this->eventsStats ? $this->eventsStats['total'] : 0; ?>
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="well">
+			<div>
+				<strong class="row-title">
+					<?php echo JText::_('COM_REDEVENT_VENUE_STATS'); ?>
+				</strong>
+				<div>
+					<?php echo JText::_('COM_REDEVENT_VENUES_PUBLISHED'); ?>
+					<span class="badge badge-success pull-right" title="<?php echo JText::_('COM_REDEVENT_VENUES_PUBLISHED'); ?>">
+						<?php echo $this->venuesStats ? $this->venuesStats['published'] : 0; ?>
+					</span>
+				</div>
+				<div>
+					<?php echo JText::_('COM_REDEVENT_VENUES_UNPUBLISHED'); ?>
+					<span class="badge badge-success pull-right" title="<?php echo JText::_('COM_REDEVENT_VENUES_UNPUBLISHED'); ?>">
+						<?php echo $this->venuesStats ? $this->venuesStats['unpublished'] : 0; ?>
+					</span>
+				</div>
+				<div>
+					<?php echo JText::_('COM_REDEVENT_VENUES_TOTAL'); ?>
+					<span class="badge badge-success pull-right" title="<?php echo JText::_('COM_REDEVENT_VENUES_TOTAL'); ?>">
+						<?php echo $this->venuesStats ? $this->venuesStats['total'] : 0; ?>
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="well">
+			<div>
+				<strong class="row-title">
+					<?php echo JText::_('COM_REDEVENT_CATEGORY_STATS'); ?>
+				</strong>
+				<div>
+					<?php echo JText::_('COM_REDEVENT_CATEGORIES_PUBLISHED'); ?>
+					<span class="badge badge-success pull-right" title="<?php echo JText::_('COM_REDEVENT_CATEGORIES_PUBLISHED'); ?>">
+						<?php echo $this->categoriesStats ? $this->categoriesStats['published'] : 0; ?>
+					</span>
+				</div>
+				<div>
+					<?php echo JText::_('COM_REDEVENT_CATEGORIES_UNPUBLISHED'); ?>
+					<span class="badge badge-success pull-right" title="<?php echo JText::_('COM_REDEVENT_CATEGORIES_UNPUBLISHED'); ?>">
+						<?php echo $this->categoriesStats ? $this->categoriesStats['unpublished'] : 0; ?>
+					</span>
+				</div>
+				<div>
+					<?php echo JText::_('COM_REDEVENT_CATEGORIES_TOTAL'); ?>
+					<span class="badge badge-success pull-right" title="<?php echo JText::_('COM_REDEVENT_CATEGORIES_TOTAL'); ?>">
+						<?php echo $this->categoriesStats ? $this->categoriesStats['total'] : 0; ?>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -7,103 +7,40 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
-
 /**
  * View class for the redEVENT home screen
  *
  * @package  Redevent.admin
  * @since    0.9
  */
-class RedeventViewDashboard extends JViewLegacy
+class RedeventViewDashboard extends RedeventViewAdmin
 {
 	/**
-	 * Execute and display a template script.
+	 * Hide sidebar in cPanel
 	 *
-	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 * @var  boolean
+	 */
+	protected $displaySidebar = false;
+
+	/**
+	 * Display the control panel
 	 *
-	 * @return  mixed  A string if successful, otherwise a Error object.
+	 * @param   string  $tpl  The template file to use
+	 *
+	 * @return   string
+	 *
+	 * @since   2.0
 	 */
 	public function display($tpl = null)
 	{
-		// Load pane behavior
-		jimport('joomla.html.pane');
+		$this->user = JFactory::getUser();
 
-		// Initialise variables
-		$document = JFactory::getDocument();
-		$user = JFactory::getUser();
-
-		// Build toolbar
-		JToolBarHelper::title( JText::_('COM_REDEVENT'), 'home');
-
-		if ($user->authorise('core.admin', 'com_redevent'))
-		{
-			JToolBarHelper::preferences('com_redevent', '600', '800');
-		}
-
-		$model = FOFModel::getTmpInstance('Redevent', 'RedeventModel');
-
-		// Get data from the model
-		$events = $model->getEventsdata();
-		$venue = $model->getVenuesdata();
-		$category = $model->getCategoriesdata();
-
-		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_REDEVENT'));
-
-		// Add css and submenu to document
-		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
-
-		// Create Submenu
-		ELAdmin::setMenu();
-
-		// Assign vars to the template
-		$this->events = $events;
-		$this->venue = $venue;
-		$this->category = $category;
-		$this->user = $user;
+		// Get stats
+		$this->version = $this->get('Version');
+		$this->eventsStats = $this->get('EventsStats');
+		$this->venuesStats = $this->get('VenuesStats');
+		$this->categoriesStats = $this->get('CategoriesStats');
 
 		parent::display($tpl);
-	}
-
-	/**
-	 * Creates the buttons view
-	 *
-	 * @param   string   $link   targeturl
-	 * @param   string   $image  path to image
-	 * @param   string   $text   image description
-	 * @param   boolean  $modal  1 for loading in modal
-	 *
-	 * @return void
-	 */
-	protected function quickiconButton($link, $image, $text, $modal = 0)
-	{
-		// Initialise variables
-		$lang = JFactory::getLanguage();
-  		?>
-
-		<div style="float:<?php echo ($lang->isRTL()) ? 'right' : 'left'; ?>;">
-			<div class="icon">
-				<?php
-				if ($modal == 1)
-				{
-					JHTML::_('behavior.modal');
-				?>
-					<a href="<?php echo $link . '&amp;tmpl=component'; ?>" style="cursor:pointer" class="modal" rel="{handler: 'iframe', size: {x: 650, y: 400}}">
-				<?php
-				}
-				else
-				{
-				?>
-					<a href="<?php echo $link; ?>">
-				<?php
-				}
-
-					echo JHTML::_('image', 'administrator/components/com_redevent/assets/images/' . $image, $text);
-				?>
-					<span><?php echo $text; ?></span>
-				</a>
-			</div>
-		</div>
-		<?php
 	}
 }
