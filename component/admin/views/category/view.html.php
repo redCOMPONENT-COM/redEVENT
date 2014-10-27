@@ -36,8 +36,6 @@ class RedeventViewCategory extends RedeventViewAdmin
 
 		// Attachments
 		JHtml::_('behavior.framework');
-		RHelperAsset::load('attachments.js');
-		JText::script('COM_REDEVENT_ATTACHMENT_CONFIRM_MSG');
 
 		$this->canConfig = false;
 

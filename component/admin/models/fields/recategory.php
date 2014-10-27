@@ -82,7 +82,7 @@ class JFormFieldRECategory extends JFormField
 		$link = 'index.php?option=com_redevent&amp;view=categories&amp;layout=element&amp;tmpl=component'
 			. '&amp;function=jSelectCategory_' . $this->id;
 
-		$tmp = RTable::getAdminInstance('Category');
+		$tmp = RTable::getInstance('Category', 'RedeventTable');
 		$category = clone $tmp;
 
 		if ($this->value)

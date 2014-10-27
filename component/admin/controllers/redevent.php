@@ -166,31 +166,6 @@ class RedeventControllerRedevent extends FOFController
 		$this->setRedirect('index.php?option=com_redevent', JText::_('COM_REDEVENT_Sample_data_created'));
 	}
 
-	/**
-	 * Delete attachment
-	 *
-	 * @return true on sucess
-	 * @access private
-	 * @since 1.1
-	 */
-	function ajaxattachremove()
-	{
-		$mainframe = & JFactory::getApplication();
-		$id     = JRequest::getVar( 'id', 0, 'request', 'int' );
-
-		$res = RedeventHelperAttachment::remove($id);
-		if (!$res) {
-			echo 0;
-			exit();
-		}
-
-		$cache = &JFactory::getCache('com_redevent');
-		$cache->clean();
-
-		echo 1;
-		$mainframe->close();
-	}
-
 	function selectuser()
 	{
 		JRequest::setVar( 'view', 'selectuser' );

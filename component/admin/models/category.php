@@ -52,7 +52,8 @@ class RedEventModelCategory extends RModelAdmin
 
 		if ($result)
 		{
-			$files = RedeventHelperAttachment::getAttachments('category' . $result->id);
+			$helper = new RedeventHelperAttachment;
+			$files = $helper->getAttachments('category' . $result->id);
 			$result->attachments = $files;
 		}
 
@@ -73,7 +74,8 @@ class RedEventModelCategory extends RModelAdmin
 		if ($result)
 		{
 			// Attachments
-			RedeventHelperAttachment::store('category' . $this->getState($this->getName() . '.id'));
+			$helper = new RedeventHelperAttachment;
+			$helper->store('category' . $this->getState($this->getName() . '.id'));
 		}
 
 		return $result;

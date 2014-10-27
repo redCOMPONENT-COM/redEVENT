@@ -23,76 +23,81 @@ class RedeventHelperAttachment extends JObject
 	 *
 	 * @return bool
 	 */
-	private static function postUpload($post_files, $object)
+	private function postUpload($post_files, $object)
 	{
 		jimport('joomla.filesystem.file');
 		jimport('joomla.filesystem.folder');
 
+		$app = JFactory::getApplication();
+
 		$user = JFactory::getUser();
 		$params = JComponentHelper::getParams('com_redevent');
 
-		$path = self::getBasePath() . '/' . $object;
+		$path = $this->getBasePath() . '/' . $object;
 
-		if (!(is_array($post_files) && count($post_files)))
+		if (!JFolder::exists($path))
+		{
+			// Try to create it
+			$res = JFolder::create($path);
+
+			if (!$res)
+			{
+				$app->enqueueMessage(JText::_('COM_REDEVENT_ERROR_COULD_NOT_CREATE_FOLDER') . ': ' . $path, 'warning');
+
+				return false;
+			}
+
+			$txt = '<html><body bgcolor="#FFFFFF"></body></html>';
+			JFile::write($path . '/index.html', $txt, false);
+		}
+
+		if (!(is_array($post_files) && count($post_files['files'])))
 		{
 			return false;
 		}
 
 		$allowed = explode(",", $params->get('attachments_types', 'txt,csv,htm,html,xml,css,doc,xls,rtf,ppt,pdf,swf,flv,avi,wmv,mov,jpg,jpeg,gif,png,zip,tar.gz'));
-
-		foreach ($allowed as $k => $v)
-		{
-			$allowed[$k] = trim($v);
-		}
+		array_walk($allowed, 'trim');
 
 		$maxsize = $params->get('attachments_maxsize', 1000) * 1000;
 
-		if (!isset($post_files['name']))
+		if (!isset($post_files['files']))
 		{
 			return true;
 		}
 
-		foreach ($post_files['name'] as $k => $file)
+		foreach ($post_files['files'] as $k => $file)
 		{
-			if (empty($file))
+			if (empty($file['name']))
 			{
 				continue;
 			}
 
 			// Check extension
-			if (!in_array(end(explode(".", strtolower($file))), $allowed))
+			if (!in_array(end(explode(".", strtolower($file['name']))), $allowed))
 			{
-				JError::raiseWarning(0, JText::_('COM_REDEVENT_ERROR_ATTACHMENT_EXTENSION_NOT_ALLOWED') . ': ' . $file);
+				$app->enqueueMessage(JText::_('COM_REDEVENT_ERROR_ATTACHMENT_EXTENSION_NOT_ALLOWED') . ': ' . $file['name'], 'warning');
+
 				continue;
 			}
 
 			// Check size
-			if ($post_files['size'][$k] > $maxsize)
+			if ($file['size'] > $maxsize)
 			{
-				JError::raiseWarning(0, JText::sprintf('COM_REDEVENT_ERROR_ATTACHMENT_FILE_TOO_BIG', $file, $post_files['size'][$k], $maxsize));
+				$app->enqueueMessage(JText::sprintf('COM_REDEVENT_ERROR_ATTACHMENT_FILE_TOO_BIG', $file['name'], $file['size'], $maxsize), 'warning');
+
 				continue;
 			}
 
-			if (!JFolder::exists($path))
+			if (!JFile::copy($file['tmp_name'], $path . '/' . $file['name']))
 			{
-				// Try to create it
-				$res = JFolder::create($path);
+				$app->enqueueMessage(JText::sprintf('COM_REDEVENT_ERROR_STORING_ATTACHMENT', $file['name'], $path), 'warning');
 
-				if (!$res)
-				{
-					JError::raiseWarning(0, JText::_('COM_REDEVENT_ERROR_COULD_NOT_CREATE_FOLDER') . ': ' . $path);
-
-					return false;
-				}
-
-				$txt = '<html><body bgcolor="#FFFFFF"></body></html>';
-				JFile::write($path . '/index.html', $txt, false);
+				continue;
 			}
 
-			JFile::copy($post_files['tmp_name'][$k], $path . '/' . $file);
-
-			$table = JTable::getInstance('redevent_attachments', '');
-			$table->file = $file;
+			$table = RTable::getAdminInstance('Attachments');
+			$table->file = $file['name'];
 			$table->object = $object;
 
 			if (isset($post_files['customname'][$k]) && !empty($post_files['customname'][$k]))
@@ -115,7 +120,7 @@ class RedeventHelperAttachment extends JObject
 
 			if (!($table->check() && $table->store()))
 			{
-				JError::raiseWarning(0, JText::_('COM_REDEVENT_ATTACHMENT_ERROR_SAVING_TO_DB') . ': ' . $table->getError());
+				$app->enqueueMessage(JText::_('COM_REDEVENT_ATTACHMENT_ERROR_SAVING_TO_DB') . ': ' . $table->getError(), 'warning');
 			}
 		}
 
@@ -129,20 +134,20 @@ class RedeventHelperAttachment extends JObject
 	 *
 	 * @return bool
 	 */
-	private static function update($attach)
+	private function update($attach)
 	{
 		if (!is_array($attach) || !isset($attach['id']) || !(intval($attach['id'])))
 		{
 			return false;
 		}
 
-		$table = JTable::getInstance('redevent_attachments', '');
+		$table = RTable::getInstance('Attachments', 'RedeventTable');
 		$table->load($attach['id']);
 		$table->bind($attach);
 
 		if (!($table->check() && $table->store()))
 		{
-			JError::raiseWarning(0, JText::_('COM_REDEVENT_ATTACHMENT_ERROR_UPDATING_RECORD') . ': ' . $table->getError());
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_REDEVENT_ATTACHMENT_ERROR_UPDATING_RECORD') . ': ' . $table->getError(), 'warning');
 
 			return false;
 		}
@@ -158,14 +163,14 @@ class RedeventHelperAttachment extends JObject
 	 *
 	 * @return array
 	 */
-	public static function getAttachments($object, $aid = null)
+	public function getAttachments($object, $aid = null)
 	{
 		jimport('joomla.filesystem.file');
 		jimport('joomla.filesystem.folder');
 
 		$db = JFactory::getDbo();
 
-		$path = self::getBasePath() . '/' . $object;
+		$path = $this->getBasePath() . '/' . $object;
 
 		if (!file_exists($path))
 		{
@@ -215,8 +220,10 @@ class RedeventHelperAttachment extends JObject
 	 * @param   int  $aid  access id
 	 *
 	 * @return string path
+	 *
+	 * @throws Exception
 	 */
-	public static function getAttachmentPath($id, $aid = null)
+	public function getAttachmentPath($id, $aid = null)
 	{
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
@@ -230,19 +237,19 @@ class RedeventHelperAttachment extends JObject
 
 		if (!$res)
 		{
-			JError::raiseError(404, JText::_('COM_REDEVENT_FILE_UNKNOWN'));
+			throw new Exception(JText::_('COM_REDEVENT_FILE_UNKNOWN'), 404);
 		}
 
 		if (!is_null($aid) && $res->access > $aid)
 		{
-			JError::raiseError(403, JText::_('COM_REDEVENT_YOU_DONT_HAVE_ACCESS_TO_THIS_FILE'));
+			throw new Exception(JText::_('COM_REDEVENT_YOU_DONT_HAVE_ACCESS_TO_THIS_FILE'), 403);
 		}
 
 		$path = self::getBasePath() . '/' . $res->object . '/' . $res->file;
 
 		if (!file_exists($path))
 		{
-			JError::raiseError(404, JText::_('COM_REDEVENT_FILE_NOT_FOUND'));
+			throw new Exception(JText::_('COM_REDEVENT_FILE_NOT_FOUND'), 404);
 		}
 
 		return $path;
@@ -256,13 +263,12 @@ class RedeventHelperAttachment extends JObject
 	 *
 	 * @return boolean
 	 */
-	public static function remove($id)
+	public function remove($id)
 	{
 		jimport('joomla.filesystem.file');
 		jimport('joomla.filesystem.folder');
 
 		// Get info for files from db
-		$db = JFactory::getDBO();
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
@@ -275,10 +281,12 @@ class RedeventHelperAttachment extends JObject
 
 		if (!$res)
 		{
+			$this->setError(JText::_('COM_REDEVENT_ATTACHMENTS_FAILED_REMOVING_ATTACHEMENT_NOT_FOUND'));
+
 			return false;
 		}
 
-		$path = self::getBasePath() . '/' . $res->object . '/' . $res->file;
+		$path = $this->getBasePath() . '/' . $res->object . '/' . $res->file;
 
 		if (file_exists($path))
 		{
@@ -295,6 +303,8 @@ class RedeventHelperAttachment extends JObject
 
 		if (!$res)
 		{
+			$this->setError(JText::_('COM_REDEVENT_ATTACHMENTS_FAILED_REMOVING_ATTACHEMENT'));
+
 			return false;
 		}
 
@@ -308,23 +318,23 @@ class RedeventHelperAttachment extends JObject
 	 *
 	 * @return boolean true on success
 	 */
-	public static function store($key)
+	public function store($key)
 	{
 		$app = JFactory::getApplication();
 
 		// New ones first
-		$attachments = $app->input->get('attach', array(), 'files', 'array');
+		$attachments = array();
+		$attachments['files'] = $app->input->files->get('attach');
 		$attachments['customname'] = $app->input->get('attach-name', array(), 'post', 'array');
 		$attachments['description'] = $app->input->get('attach-desc', array(), 'post', 'array');
 		$attachments['access'] = $app->input->get('attach-access', array(), 'post', 'array');
 
-		if (!self::postUpload($attachments, $key))
+		if (!$this->postUpload($attachments, $key))
 		{
 			return false;
 		}
 
 		// And update old ones
-		$attachments = array();
 		$old['id'] = $app->input->get('attached-id', array(), 'post', 'array');
 		$old['name'] = $app->input->get('attached-name', array(), 'post', 'array');
 		$old['description'] = $app->input->get('attached-desc', array(), 'post', 'array');
@@ -338,7 +348,7 @@ class RedeventHelperAttachment extends JObject
 			$attach['description'] = $old['description'][$k];
 			$attach['access'] = $old['access'][$k];
 
-			if (!self::update($attach))
+			if (!$this->update($attach))
 			{
 				return false;
 			}
@@ -352,7 +362,7 @@ class RedeventHelperAttachment extends JObject
 	 *
 	 * @return string path
 	 */
-	private static function getBasePath()
+	private function getBasePath()
 	{
 		$params = JComponentHelper::getParams('com_redevent');
 
@@ -364,7 +374,7 @@ class RedeventHelperAttachment extends JObject
 
 			if (!JFolder::create($path))
 			{
-				JError::raiseWarning(0, Jtext::_('COM_REDEVENT_ATTACHMENTS_ERROR_CANNOT_CREATE_BASE_FOLDER'));
+				JFactory::getApplication()->enqueueMessage(Jtext::_('COM_REDEVENT_ATTACHMENTS_ERROR_CANNOT_CREATE_BASE_FOLDER'), 'warning');
 
 				return false;
 			}

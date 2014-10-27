@@ -78,7 +78,7 @@ class JFormFieldSession extends JFormField
 		$link = 'index.php?option=com_redevent&controller=sessions&amp;view=xrefelement&amp;tmpl=component'
 		. '&amp;function=jSelectSession_' . $this->id;
 
-		$event = RTable::getAutoInstance('Events');
+		$event = RTable::getInstance('Events', 'RedeventTable');
 
 		if ($this->value)
 		{

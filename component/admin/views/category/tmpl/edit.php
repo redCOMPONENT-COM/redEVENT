@@ -145,7 +145,7 @@ JHtml::_('rjquery.chosen', 'select');
 
 		<div class="tab-pane" id="attachments">
 			<div class="row-fluid">
-				<?php echo $this->loadTemplate('attachments'); ?>
+				<?php echo RLayoutHelper::render('attachments.edit', $this, null, array('component' => 'com_redevent')); ?>
 			</div>
 		</div>
 	</div>
