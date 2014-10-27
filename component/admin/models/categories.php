@@ -140,21 +140,23 @@ class RedeventModelCategories extends RModelList
 	protected function buildContentWhere($query)
 	{
 		$db = JFactory::getDbo();
-		$search = $this->getState('search');
+		$search = $this->getState('filter.search');
 
-		if ($filter_state = $this->getState('filter.published', ''))
+		$filter_state = $this->getState('filter.published', '');
+
+		if (is_numeric($filter_state))
 		{
 			if ($filter_state == '1')
 			{
 				$query->where('c.published = 1');
 			}
-			elseif ($filter_state == 'U' )
+			elseif ($filter_state == '0' )
 			{
 				$query->where('c.published = 0');
 			}
 		}
 
-		$filter_language = $this->getState('filter_language');
+		$filter_language = $this->getState('filter.language');
 
 		if ($filter_language)
 		{
@@ -328,25 +330,6 @@ class RedeventModelCategories extends RModelList
 	 */
 	public function populateState($ordering = 'c.lft', $direction = 'asc')
 	{
-		$app = JFactory::getApplication();
-
-		$filterSearch = $this->getUserStateFromRequest($this->context . '.filter_search', 'search');
-		$this->setState('filter.search', $filterSearch);
-
-		$published = $this->getUserStateFromRequest($this->context . '.filter_published', 'published', 1);
-		$this->setState('filter.published', $published);
-
-		$language = $this->getUserStateFromRequest($this->context . '.filter_language', 'language');
-		$this->setState('filter.language', $language);
-
-		$value = $app->getUserStateFromRequest('global.list.limit', $this->paginationPrefix . 'limit', $app->getCfg('list_limit'), 'uint');
-		$limit = $value;
-		$this->setState('list.limit', $limit);
-
-		$value = $app->getUserStateFromRequest($this->context . '.limitstart', $this->paginationPrefix . 'limitstart', 0);
-		$limitstart = ($limit != 0 ? (floor($value / $limit) * $limit) : 0);
-		$this->setState('list.start', $limitstart);
-
 		parent::populateState($ordering, $direction);
 	}
 }
