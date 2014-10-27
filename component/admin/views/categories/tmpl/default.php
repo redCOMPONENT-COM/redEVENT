@@ -15,7 +15,7 @@ JHtml::_('rjquery.chosen', 'select');
 $saveOrderUrl = 'index.php?option=com_redevent&task=categories.saveOrderAjax&tmpl=component';
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn = $this->escape($this->state->get('list.direction'));
-$saveOrder = ($listOrder == 'f.ordering' && strtolower($listDirn) == 'asc');
+$saveOrder = ($listOrder == 'c.ordering' && strtolower($listDirn) == 'asc');
 $user = JFactory::getUser();
 $userId = $user->id;
 $search = $this->state->get('filter.search');

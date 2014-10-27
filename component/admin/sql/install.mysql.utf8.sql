@@ -120,7 +120,8 @@ CREATE TABLE IF NOT EXISTS `#__redevent_categories` (
 `event_template` int(11) NOT NULL default '0',
 `language` char(7) NOT NULL,
 `asset_id` int(10) NOT NULL DEFAULT '0',
-PRIMARY KEY  (`id`)
+PRIMARY KEY  (`id`),
+KEY `parent_id` (`parent_id`)
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_register` (

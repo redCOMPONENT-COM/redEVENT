@@ -121,11 +121,11 @@ class RedeventModelCategories extends RModelList
 		// Get the WHERE clause for the query
 		$query = $this->buildContentWhere($query);
 
-		$order = $this->getState('filter_order', 'c.lft', 'cmd');
+		$order = $this->getState('list.ordering');
 
-		$dir = $this->getState('filter_order_Dir', '', 'cmd');
+		$dir = $this->getState('list.direction');
+
 		$query->order($db->qn($order) . ' ' . $dir);
-
 
 		return $query;
 	}
@@ -326,7 +326,7 @@ class RedeventModelCategories extends RModelList
 	 *
 	 * @return  void
 	 */
-	public function populateState($ordering = 'f.ordering', $direction = 'asc')
+	public function populateState($ordering = 'c.lft', $direction = 'asc')
 	{
 		$app = JFactory::getApplication();
 
