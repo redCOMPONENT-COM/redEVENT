@@ -78,25 +78,25 @@ Joomla.submitbutton = function (pressbutton) {
 				<div>
 					<?php echo JText::_('COM_REDEVENT_EVENTS_PUBLISHED'); ?>
 					<span class="badge badge-success pull-right" title="<?php echo JText::_('COM_REDEVENT_EVENTS_PUBLISHED'); ?>">
-						<?php echo $this->eventsStats ? $this->eventsStats['published'] : 0; ?>
+						<?php echo $this->eventsStats['published'] ? $this->eventsStats['published'] : 0; ?>
 					</span>
 				</div>
 				<div>
 					<?php echo JText::_('COM_REDEVENT_EVENTS_UNPUBLISHED'); ?>
 					<span class="badge badge-success pull-right" title="<?php echo JText::_('COM_REDEVENT_EVENTS_UNPUBLISHED'); ?>">
-						<?php echo $this->eventsStats ? $this->eventsStats['unpublished'] : 0; ?>
+						<?php echo $this->eventsStats['unpublished'] ? $this->eventsStats['unpublished'] : 0; ?>
 					</span>
 				</div>
 				<div>
 					<?php echo JText::_('COM_REDEVENT_EVENTS_ARCHIVED'); ?>
 					<span class="badge badge-success pull-right" title="<?php echo JText::_('COM_REDEVENT_EVENTS_ARCHIVED'); ?>">
-						<?php echo $this->eventsStats ? $this->eventsStats['archived'] : 0; ?>
+						<?php echo $this->eventsStats['archived'] ? $this->eventsStats['archived'] : 0; ?>
 					</span>
 				</div>
 				<div>
 					<?php echo JText::_('COM_REDEVENT_EVENTS_TOTAL'); ?>
 					<span class="badge badge-success pull-right" title="<?php echo JText::_('COM_REDEVENT_EVENTS_TOTAL'); ?>">
-						<?php echo $this->eventsStats ? $this->eventsStats['total'] : 0; ?>
+						<?php echo $this->eventsStats['total'] ? $this->eventsStats['total'] : 0; ?>
 					</span>
 				</div>
 			</div>
@@ -109,19 +109,19 @@ Joomla.submitbutton = function (pressbutton) {
 				<div>
 					<?php echo JText::_('COM_REDEVENT_VENUES_PUBLISHED'); ?>
 					<span class="badge badge-success pull-right" title="<?php echo JText::_('COM_REDEVENT_VENUES_PUBLISHED'); ?>">
-						<?php echo $this->venuesStats ? $this->venuesStats['published'] : 0; ?>
+						<?php echo $this->venuesStats['published'] ? $this->venuesStats['published'] : 0; ?>
 					</span>
 				</div>
 				<div>
 					<?php echo JText::_('COM_REDEVENT_VENUES_UNPUBLISHED'); ?>
 					<span class="badge badge-success pull-right" title="<?php echo JText::_('COM_REDEVENT_VENUES_UNPUBLISHED'); ?>">
-						<?php echo $this->venuesStats ? $this->venuesStats['unpublished'] : 0; ?>
+						<?php echo $this->venuesStats['unpublished'] ? $this->venuesStats['unpublished'] : 0; ?>
 					</span>
 				</div>
 				<div>
 					<?php echo JText::_('COM_REDEVENT_VENUES_TOTAL'); ?>
 					<span class="badge badge-success pull-right" title="<?php echo JText::_('COM_REDEVENT_VENUES_TOTAL'); ?>">
-						<?php echo $this->venuesStats ? $this->venuesStats['total'] : 0; ?>
+						<?php echo $this->venuesStats['total'] ? $this->venuesStats['total'] : 0; ?>
 					</span>
 				</div>
 			</div>
@@ -134,19 +134,19 @@ Joomla.submitbutton = function (pressbutton) {
 				<div>
 					<?php echo JText::_('COM_REDEVENT_CATEGORIES_PUBLISHED'); ?>
 					<span class="badge badge-success pull-right" title="<?php echo JText::_('COM_REDEVENT_CATEGORIES_PUBLISHED'); ?>">
-						<?php echo $this->categoriesStats ? $this->categoriesStats['published'] : 0; ?>
+						<?php echo $this->categoriesStats['published'] ? $this->categoriesStats['published'] : 0; ?>
 					</span>
 				</div>
 				<div>
 					<?php echo JText::_('COM_REDEVENT_CATEGORIES_UNPUBLISHED'); ?>
 					<span class="badge badge-success pull-right" title="<?php echo JText::_('COM_REDEVENT_CATEGORIES_UNPUBLISHED'); ?>">
-						<?php echo $this->categoriesStats ? $this->categoriesStats['unpublished'] : 0; ?>
+						<?php echo $this->categoriesStats['unpublished'] ? $this->categoriesStats['unpublished'] : 0; ?>
 					</span>
 				</div>
 				<div>
 					<?php echo JText::_('COM_REDEVENT_CATEGORIES_TOTAL'); ?>
 					<span class="badge badge-success pull-right" title="<?php echo JText::_('COM_REDEVENT_CATEGORIES_TOTAL'); ?>">
-						<?php echo $this->categoriesStats ? $this->categoriesStats['total'] : 0; ?>
+						<?php echo $this->categoriesStats['total'] ? $this->categoriesStats['total'] : 0; ?>
 					</span>
 				</div>
 			</div>

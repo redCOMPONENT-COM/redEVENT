@@ -51,10 +51,9 @@ class RedeventModelDashboard extends RModelAdmin
 		$query->select('SUM(IF(published = 0, 1, 0)) AS unpublished');
 		$query->select('SUM(IF(published = -1, 1, 0)) AS archived');
 		$query->from('#__redevent_events');
-		$query->group('id');
 
 		$db->setQuery($query);
-		$res = $db->loadColumn();
+		$res = $db->loadAssoc();
 
 		return $res;
 	}
@@ -73,10 +72,9 @@ class RedeventModelDashboard extends RModelAdmin
 		$query->select('SUM(IF(published = 1, 1, 0)) AS published');
 		$query->select('SUM(IF(published = 0, 1, 0)) AS unpublished');
 		$query->from('#__redevent_venues');
-		$query->group('id');
 
 		$db->setQuery($query);
-		$res = $db->loadColumn();
+		$res = $db->loadAssoc();
 
 		return $res;
 	}
@@ -95,10 +93,9 @@ class RedeventModelDashboard extends RModelAdmin
 		$query->select('SUM(IF(published = 1, 1, 0)) AS published');
 		$query->select('SUM(IF(published = 0, 1, 0)) AS unpublished');
 		$query->from('#__redevent_categories');
-		$query->group('id');
 
 		$db->setQuery($query);
-		$res = $db->loadColumn();
+		$res = $db->loadAssoc();
 
 		return $res;
 	}
