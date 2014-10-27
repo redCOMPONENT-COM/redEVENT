@@ -60,31 +60,6 @@ class RedeventModelCategories extends RModelList
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see FOFModel::getItemList()
-	 */
-	public function &getItemList($overrideLimits = false, $group = '')
-	{
-		$list = parent::getItemList($overrideLimits, $group);
-
-		if (!$list || !count($list))
-		{
-			return $this->list;
-		}
-
-		// Assigned events count
-		$count = count($this->list);
-
-		for($i = 0; $i < $count; $i++)
-		{
-			$category =& $this->list[$i];
-			$category->assignedevents = $this->_countcatevents($category->id);
-		}
-
-		return $this->list;
-	}
-
-	/**
 	 * Gets an array of objects from the results of database query.
 	 *
 	 * @param   string   $query       The query.
@@ -195,7 +170,7 @@ class RedeventModelCategories extends RModelList
 	}
 
 	/**
-	 * overide to add an integration to finder
+	 * override to add an integration to finder
 	 *
 	 * @see FOFModel::publish()
 	 */
@@ -220,37 +195,6 @@ class RedeventModelCategories extends RModelList
 	}
 
 	/**
-	 * get attachements
-	 *
-	 * @see FOFModel::onAfterGetItem()
-	 */
-	protected function onAfterGetItem(&$record)
-	{
-		if ($record)
-		{
-			$files = RedeventHelperAttachment::getAttachments('category' . $record->id);
-			$record->attachments = $files;
-		}
-	}
-
-	/**
-	 * add attachements
-	 *
-	 * @see FOFModel::onAfterSave()
-	 */
-	protected function onAfterSave(&$table)
-	{
-		parent::onAfterSave($table);
-
-		// Attachments
-		RedeventHelperAttachment::store('category' . $table->id);
-
-		// Trigger the onFinderAfterSave event.
-		$dispatcher = JDispatcher::getInstance();
-		$results = $dispatcher->trigger('onFinderAfterSave', array($this->option . '.' . $this->name, $table, $this->_isNewRecord));
-	}
-
-	/**
 	 * Method to count the number of assigned events to the category
 	 *
 	 * @param   int  $id  category id
@@ -265,7 +209,6 @@ class RedeventModelCategories extends RModelList
 		$query->select('COUNT(*)');
 		$query->from('#__redevent_event_category_xref');
 		$query->where('category_id = ' . (int) $id);
-		$query->group('id');
 
 		$db->setQuery($query);
 		$res = $db->loadResult();

@@ -24,13 +24,6 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.form.formfield');
 
-// Load FOF
-include_once JPATH_LIBRARIES . '/fof/include.php';
-if (!defined('FOF_INCLUDED'))
-{
-	JError::raiseError('500', 'FOF is not installed');
-}
-
 /**
  * Session form field class
  *
@@ -85,13 +78,11 @@ class JFormFieldSession extends JFormField
 		$link = 'index.php?option=com_redevent&controller=sessions&amp;view=xrefelement&amp;tmpl=component'
 		. '&amp;function=jSelectSession_' . $this->id;
 
-		JTable::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_redevent' . DS . 'tables');
-
-		$event =& JTable::getInstance('redevent_events', '');
+		$event = RTable::getAutoInstance('Events');
 
 		if ($this->value)
 		{
-			$event->xload($this->value);
+			$event->loadBySessionId($this->value);
 		}
 		else
 		{

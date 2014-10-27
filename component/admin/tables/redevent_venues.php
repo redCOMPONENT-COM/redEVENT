@@ -125,7 +125,7 @@ class RedEvent_venues extends JTable
 	 * @param array $catids
 	 * @return boolean true on success
 	 */
-	function setCats($catids = array())
+	function setCategories($catids = array())
 	{
 		if (!$this->id) {
 			$this->setError('COM_REDEVENT_VENUE_TABLE_NOT_INITIALIZED');

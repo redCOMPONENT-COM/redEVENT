@@ -35,7 +35,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach ($this->row->attachments as $file): ?>
+		<?php foreach ($this->item->attachments as $file): ?>
 		<tr>
 			<td><?php echo $file->file; ?><input type="hidden" name="attached-id[]" value="<?php echo $file->id; ?>"/></td>
 			<td><input type="text" name="attached-name[]" style="width: 100%" value="<?php echo $file->name; ?>" /></td>
@@ -62,4 +62,3 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 		</tr>
 	</tbody>
 </table>
-			

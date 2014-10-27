@@ -340,7 +340,7 @@ class RedEventModelImport extends JModel
 				{
 					$cats_ids[] = $this->_getCatId($c);
 				}
-				$ev->setCats($cats_ids);
+				$ev->setCategories($cats_ids);
 
 				($updating ? $count['updated']++ : $count['added']++);
 				$current = $ev;

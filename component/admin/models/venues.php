@@ -606,7 +606,7 @@ class RedEventModelVenues extends JModel
 			{
 				$cats_ids[] = $this->_getCatId($c);
 			}
-			$v->setCats($cats_ids);
+			$v->setCategories($cats_ids);
 
 			if ($updating) {
 				$count['updated']++;
