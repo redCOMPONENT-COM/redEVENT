@@ -65,7 +65,7 @@ class RedeventTableCategory extends RTable
 			$this->alias = $alias;
 		}
 
-		return true;
+		return parent::check();
 	}
 
 	/**
@@ -90,6 +90,69 @@ class RedeventTableCategory extends RTable
 
 		return true;
 	}
+
+	/**
+	 * Called before delete().
+	 *
+	 * @param   mixed  $pk  An optional primary key value to delete.  If not set the instance property value is used.
+	 *
+	 * @return  boolean  True on success.
+	 */
+	protected function beforeDelete($pk = null)
+	{
+		// Initialise variables.
+		$k = $this->_tbl_key;
+
+		// Received an array of ids?
+		if (is_array($pk))
+		{
+			// Sanitize input.
+			JArrayHelper::toInteger($pk);
+			$pk = RHelperArray::quote($pk);
+			$pk = implode(',', $pk);
+		}
+
+		$pk = (is_null($pk)) ? $this->$k : $pk;
+
+		// If no primary key is given, return false.
+		if ($pk === null)
+		{
+			return false;
+		}
+
+		// Check if there are events assigned to these categories
+		if (!$this->haveNoEvents($pk))
+		{
+			$this->setError('COM_REDEVENT_CATEGORY_DELETE_ERROR_HAS_EVENTS');
+
+			return false;
+		}
+
+		// Check if there are subcategories to these categories
+		if (!$this->haveNoChildren($pk))
+		{
+			$this->setError('COM_REDEVENT_CATEGORY_DELETE_ERROR_HAS_SUBCATEGORIES');
+
+			return false;
+		}
+
+		return parent::beforeDelete($pk);
+	}
+
+	/**
+	 * Called after delete().
+	 *
+	 * @param   mixed  $pk  An optional primary key value to delete.  If not set the instance property value is used.
+	 *
+	 * @return  boolean  True on success.
+	 */
+	protected function afterDelete($pk = null)
+	{
+		$this->rebuildTree();
+
+		return parent::afterDelete($pk);
+	}
+
 
 	/**
 	 * rebuild category tree
@@ -151,5 +214,49 @@ class RedeventTableCategory extends RTable
 
 		// Return the right value of this node + 1
 		return $right + 1;
+	}
+
+	/**
+	 * Check that specified categogries have no events assigned
+	 *
+	 * @param   array  $quotedIds  quoted ids
+	 *
+	 * @return bool
+	 */
+	private function haveNoEvents($quotedIds)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('COUNT(*)');
+		$query->from('#__redevent_event_category_xref');
+		$query->where('category_id IN (' . $quotedIds . ')');
+
+		$db->setQuery($query);
+		$res = $db->loadResult();
+
+		return $res ? false : true;
+	}
+
+	/**
+	 * Check that specified categogies have subcategories
+	 *
+	 * @param   array  $quotedIds  quoted ids
+	 *
+	 * @return bool
+	 */
+	private function haveNoChildren($quotedIds)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('COUNT(*)');
+		$query->from('#__redevent_categories');
+		$query->where('parent_id IN (' . $quotedIds . ')');
+
+		$db->setQuery($query);
+		$res = $db->loadResult();
+
+		return $res ? false : true;
 	}
 }

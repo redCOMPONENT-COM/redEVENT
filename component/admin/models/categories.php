@@ -27,7 +27,7 @@ class RedeventModelCategories extends RModelList
 	 *
 	 * @var  string
 	 */
-	protected $limitField = 'fields_limit';
+	protected $limitField = 'categories_limit';
 
 	/**
 	 * Limitstart field used by the pagination
@@ -172,25 +172,28 @@ class RedeventModelCategories extends RModelList
 	}
 
 	/**
-	 * override to add an integration to finder
+	 * Publish/Unpublish items
 	 *
-	 * @see FOFModel::publish()
+	 * @param   mixed    $pks    id or array of ids of items to be published/unpublished
+	 * @param   integer  $state  New desired state
+	 *
+	 * @return  boolean
 	 */
-	public function publish($publish = 1, $user = null)
+	public function publish($pks = null, $state = 1)
 	{
-		if (!parent::publish($publish, $user))
+		if (!parent::publish($pks, $state))
 		{
 			return false;
 		}
 
-		if (is_array($this->id_list) && !empty($this->id_list))
+		if (is_array($pks) && !empty($pks))
 		{
 			// For finder plugins
 			$dispatcher	= JDispatcher::getInstance();
 			JPluginHelper::importPlugin('finder');
 
 			// Trigger the onFinderCategoryChangeState event.
-			$dispatcher->trigger('onFinderCategoryChangeState', array('com_redevent.category', $this->id_list, $publish));
+			$dispatcher->trigger('onFinderCategoryChangeState', array('com_redevent.category', $pks, $state));
 		}
 
 		return true;
@@ -216,87 +219,6 @@ class RedeventModelCategories extends RModelList
 		$res = $db->loadResult();
 
 		return $res;
-	}
-
-
-	/**
-	 * Method to remove a category
-	 *
-	 * @access	public
-	 * @return	string $msg
-	 * @since	0.9
-	 */
-	public function delete()
-	{
-		if (!is_array($this->id_list) || empty($this->id_list))
-		{
-			return true;
-		}
-		$cids = implode(',', $this->id_list);
-
-		$query = 'SELECT c.id, c.catname, COUNT( xcat.event_id ) AS numcat'
-		. ' FROM #__redevent_categories AS c'
-		. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = c.id'
-		. ' WHERE c.id IN (' . $cids . ')'
-		. ' GROUP BY c.id';
-		$this->_db->setQuery($query);
-
-		if (!($rows = $this->_db->loadObjectList()))
-		{
-			RedeventError::raiseError(500, $this->_db->stderr());
-
-			return false;
-		}
-
-		$err = array();
-		$cid = array();
-
-		foreach ($rows as $row)
-		{
-			if ($row->numcat == 0)
-			{
-				$cid[] = $row->id;
-			}
-			else
-			{
-				$err[] = $row->catname;
-			}
-		}
-
-		if (count($cid))
-		{
-			$cids = implode(',', $cid);
-			$query = 'DELETE FROM #__redevent_categories'
-			. ' WHERE id IN (' . $cids . ')';
-
-			$this->_db->setQuery($query);
-
-			if (!$this->_db->query())
-			{
-				$this->setError($this->_db->getErrorMsg());
-
-				return false;
-			}
-
-			// Rebuild the tree
-			$table = $this->getTable();
-			$table->rebuildTree();
-		}
-
-		if (count($err))
-		{
-			$cids 	= implode(', ', $err);
-			$msg 	= JText::sprintf('COM_REDEVENT_EVENT_ASSIGNED_CATEGORY_S', $cids);
-
-			return $msg;
-		}
-		else
-		{
-			$total 	= count($cid);
-			$msg 	= $total . ' ' . JText::_('COM_REDEVENT_CATEGORIES_DELETED');
-
-			return $msg;
-		}
 	}
 
 	/**

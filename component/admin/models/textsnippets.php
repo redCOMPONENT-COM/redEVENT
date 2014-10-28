@@ -1,56 +1,131 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * RedEvent Model Textsnippets
+ * redEVENT Component textsnippets Model
  *
- * @package Joomla
- * @subpackage redEVENT
- * @since		2.0
+ * @package  Redevent.admin
+ * @since    2.0
  */
-class RedEventModelTextsnippets extends FOFModel
+class RedeventModelTextsnippets extends RModelList
 {
 	/**
-	 * Public class constructor
+	 * Name of the filter form to load
 	 *
-	 * @param type $config
+	 * @var  string
+	 */
+	protected $filterFormName = 'filter_textsnippets';
+
+	/**
+	 * Limitstart field used by the pagination
+	 *
+	 * @var  string
+	 */
+	protected $limitField = 'textsnippets_limit';
+
+	/**
+	 * Limitstart field used by the pagination
+	 *
+	 * @var  string
+	 */
+	protected $limitstartField = 'auto';
+
+	/**
+	 * Constructor.
+	 *
+	 * @param   array  $config  Configs
+	 *
+	 * @see     JController
 	 */
 	public function __construct($config = array())
 	{
+		if (empty($config['filter_fields']))
+		{
+			$config['filter_fields'] = array(
+				'text_name', 'obj.text_name',
+				'id', 'c.id',
+				'language', 'obj.language'
+			);
+		}
+
 		parent::__construct($config);
-		$this->table = "textsnippet";
 	}
-	
+
+	/**
+	 * Method to get a store id based on model configuration state.
+	 *
+	 * @param   string  $id  A prefix for the store id.
+	 *
+	 * @return  string       A store id.
+	 */
+	protected function getStoreId($id = '')
+	{
+		// Compile the store id.
+		$id .= ':' . $this->getState('filter.search');
+		$id	.= ':' . $this->getState('filter.language');
+
+		return parent::getStoreId($id);
+	}
+
+	/**
+	 * Build an SQL query to load the list data.
+	 *
+	 * @return  object  Query object
+	 */
+	protected function getListQuery()
+	{
+		// Create a new query object.
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
+
+		// Select the required fields from the table.
+		$query->select($this->getState('list.select', 'obj.*'));
+		$query->from($db->qn('#__redevent_textlibrary', 'obj'));
+
+
+		// Filter by language
+		$language = $this->getState('filter.usergroups');
+
+		if ($language && $language != '*')
+		{
+			$query->where($db->qn('language') . ' = ' . $db->quote($language));
+		}
+
+		// Filter: like / search
+		$search = $this->getState('filter.search', '');
+
+		if (!empty($search))
+		{
+			if (stripos($search, 'id:') === 0)
+			{
+				$query->where('obj.id = ' . (int) substr($search, 3));
+			}
+			else
+			{
+				$search = $db->Quote('%' . $db->escape($search, true) . '%');
+				$query->where('(obj.text_name LIKE ' . $search . ' OR obj.text_description LIKE ' . $search . ')');
+			}
+		}
+
+		// Add the list ordering clause.
+		$query->order($db->escape($this->getState('list.ordering', 'obj.text_name')) . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
+
+		return $query;
+	}
+
 	/**
 	 * export
 	 *
 	 * @return array
 	 */
 	public function export()
-	{				
+	{
 		$query = ' SELECT t.id, t.text_name, t.text_description, t.text_field, t.language  '
 		       . ' FROM #__redevent_textlibrary AS t '
 		;
@@ -60,7 +135,7 @@ class RedEventModelTextsnippets extends FOFModel
 
 		return $results;
 	}
-	
+
 	/**
 	 * import in database
 	 *
@@ -71,11 +146,11 @@ class RedEventModelTextsnippets extends FOFModel
 	public function import($records, $replace = 0)
 	{
 		$count = array('added' => 0, 'updated' => 0);
-		
+
 		$current = null; // current event for sessions
 		foreach ($records as $r)
-		{			
-			$v = $this->getTable();	
+		{
+			$v = $this->getTable();
 			$v->bind($r);
 			if (!$replace) {
 				$v->id = null;
