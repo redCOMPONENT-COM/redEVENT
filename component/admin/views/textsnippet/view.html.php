@@ -65,8 +65,6 @@ class RedeventViewTextsnippet extends RedeventViewAdmin
 	/**
 	 * Get the toolbar to render.
 	 *
-	 * @todo	We have setup ACL requirements for redMEMBER
-	 *
 	 * @return  RToolbar
 	 */
 	public function getToolbar()

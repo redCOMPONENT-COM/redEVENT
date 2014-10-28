@@ -8,12 +8,13 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * View class for categories screen
+ * View class for Roles list
  *
+/**
  * @package  Redevent.admin
- * @since    0.9
+ * @since    2.5
  */
-class RedEventViewCategories extends RedeventViewAdmin
+class RedEventViewRoles extends RedeventViewAdmin
 {
 	/**
 	 * Execute and display a template script.
@@ -27,12 +28,12 @@ class RedEventViewCategories extends RedeventViewAdmin
 		$user = JFactory::getUser();
 
 		$this->items = $this->get('Items');
-		$this->state = $this->get('State');
 		$this->pagination = $this->get('Pagination');
 		$this->filterForm = $this->get('Form');
 		$this->activeFilters = $this->get('ActiveFilters');
+		$this->state = $this->get('State');
 
-		// Fields ordering
+		// Ordering
 		$this->ordering = array();
 
 		if ($this->items)
@@ -51,14 +52,6 @@ class RedEventViewCategories extends RedeventViewAdmin
 			$this->canEdit = true;
 		}
 
-		// Edit state permission
-		$this->canEditState = false;
-
-		if ($user->authorise('core.edit.state', 'com_redevent'))
-		{
-			$this->canEditState = true;
-		}
-
 		parent::display($tpl);
 	}
 
@@ -71,7 +64,7 @@ class RedEventViewCategories extends RedeventViewAdmin
 	 */
 	public function getTitle()
 	{
-		return JText::_('COM_REDEVENT_PAGETITLE_CATEGORIES');
+		return JText::_('COM_REDEVENT_ROLES');
 	}
 
 	/**
@@ -90,31 +83,19 @@ class RedEventViewCategories extends RedeventViewAdmin
 
 		if ($user->authorise('core.create', 'com_redevent'))
 		{
-			$new = RToolbarBuilder::createNewButton('category.add');
+			$new = RToolbarBuilder::createNewButton('role.add');
 			$firstGroup->addButton($new);
 		}
 
 		if ($user->authorise('core.edit', 'com_redevent'))
 		{
-			$edit = RToolbarBuilder::createEditButton('category.edit');
+			$edit = RToolbarBuilder::createEditButton('role.edit');
 			$secondGroup->addButton($edit);
-
-			$importExport = RToolbarBuilder::createStandardButton('categoryimportexport.display', 'csvexport', 'csvexport', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), false);
-			$secondGroup->addButton($importExport);
-		}
-
-		if ($user->authorise('core.edit.state', 'com_redevent'))
-		{
-			$publish = RToolbarBuilder::createPublishButton('categories.publish');
-			$thirdGroup->addButton($publish);
-
-			$unPublish = RToolbarBuilder::createUnpublishButton('categories.unpublish');
-			$thirdGroup->addButton($unPublish);
 		}
 
 		if ($user->authorise('core.delete', 'com_redevent'))
 		{
-			$delete = RToolbarBuilder::createDeleteButton('categories.delete');
+			$delete = RToolbarBuilder::createDeleteButton('roles.delete');
 			$fourthGroup->addButton($delete);
 		}
 

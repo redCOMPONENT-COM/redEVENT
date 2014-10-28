@@ -8,26 +8,26 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * redEVENT Component textsnippets Model
+ * redEVENT Component Roles Model
  *
  * @package  Redevent.admin
  * @since    2.0
  */
-class RedeventModelTextsnippets extends RModelList
+class RedeventModelRoles extends RModelList
 {
 	/**
 	 * Name of the filter form to load
 	 *
 	 * @var  string
 	 */
-	protected $filterFormName = 'filter_textsnippets';
+	protected $filterFormName = 'filter_roles';
 
 	/**
 	 * Limitstart field used by the pagination
 	 *
 	 * @var  string
 	 */
-	protected $limitField = 'textsnippets_limit';
+	protected $limitField = 'roles_limit';
 
 	/**
 	 * Limitstart field used by the pagination
@@ -48,9 +48,10 @@ class RedeventModelTextsnippets extends RModelList
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
-				'text_name', 'obj.text_name',
-				'id', 'c.id',
-				'language', 'obj.language'
+				'name', 'obj.name',
+				'id', 'obj.id',
+				'language', 'obj.language',
+				'ordering', 'obj.ordering',
 			);
 		}
 
@@ -86,7 +87,7 @@ class RedeventModelTextsnippets extends RModelList
 
 		// Select the required fields from the table.
 		$query->select($this->getState('list.select', 'obj.*'));
-		$query->from($db->qn('#__redevent_textlibrary', 'obj'));
+		$query->from($db->qn('#__redevent_roles', 'obj'));
 
 
 		// Filter by language
@@ -109,66 +110,13 @@ class RedeventModelTextsnippets extends RModelList
 			else
 			{
 				$search = $db->Quote('%' . $db->escape($search, true) . '%');
-				$query->where('(obj.text_name LIKE ' . $search . ' OR obj.text_description LIKE ' . $search . ')');
+				$query->where('obj.name LIKE ' . $search);
 			}
 		}
 
 		// Add the list ordering clause.
-		$query->order($db->escape($this->getState('list.ordering', 'obj.text_name')) . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
+		$query->order($db->escape($this->getState('list.ordering', 'obj.name')) . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
 
 		return $query;
-	}
-
-	/**
-	 * export
-	 *
-	 * @return array
-	 */
-	public function export()
-	{
-		$query = ' SELECT t.id, t.text_name, t.text_description, t.text_field, t.language  '
-		       . ' FROM #__redevent_textlibrary AS t '
-		;
-		$this->_db->setQuery($query);
-
-		$results = $this->_db->loadAssocList();
-
-		return $results;
-	}
-
-	/**
-	 * import in database
-	 *
-	 * @param array $records
-	 * @param boolean $replace existing events with same id
-	 * @return boolean true on success
-	 */
-	public function import($records, $replace = 0)
-	{
-		$count = array('added' => 0, 'updated' => 0);
-
-		$current = null; // current event for sessions
-		foreach ($records as $r)
-		{
-			$v = $this->getTable();
-			$v->bind($r);
-			if (!$replace) {
-				$v->id = null;
-				$update = 0;
-			}
-			else if ($v->id) {
-				$update = 1;
-			}
-			// store !
-			if (!$v->check()) {
-				JError::raiseWarning(0, JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$v->getError());
-				continue;
-			}
-			if (!$v->store()) {
-				JError::raiseWarning(0, JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$v->getError());
-				continue;
-			}
-		}
-		return $count;
 	}
 }

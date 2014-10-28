@@ -19,7 +19,7 @@
 	</fields>
 	<fields name="list">
 		<field
-			name="textsnippets_limit"
+			name="roles_limit"
 			type="rlimitbox"
 			class="inputbox input-mini chzn"
 			default="25"

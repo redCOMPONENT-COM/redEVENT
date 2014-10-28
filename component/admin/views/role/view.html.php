@@ -8,12 +8,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Category edit view
+ * Role edit view
  *
  * @package  Redevent.admin
- * @since    0.9
+ * @since    2.0
  */
-class RedeventViewCategory extends RedeventViewAdmin
+class RedeventViewRole extends RedeventViewAdmin
 {
 	/**
 	 * @var  boolean
@@ -31,11 +31,8 @@ class RedeventViewCategory extends RedeventViewAdmin
 	{
 		$user = JFactory::getUser();
 
-		$this->form	= $this->get('Form');
-		$this->item	= $this->get('Item');
-
-		// Attachments
-		JHtml::_('behavior.framework');
+		$this->form = $this->get('Form');
+		$this->item = $this->get('Item');
 
 		$this->canConfig = false;
 
@@ -62,7 +59,7 @@ class RedeventViewCategory extends RedeventViewAdmin
 			$subTitle = ' <small>' . JText::_('COM_REDEVENT_EDIT') . '</small>';
 		}
 
-		return JText::_('COM_REDEVENT_PAGETITLE_EDITCATEGORY') . $subTitle;
+		return JText::_('COM_REDEVENT_PAGETITLE_EDIT_ROLE') . $subTitle;
 	}
 
 	/**
@@ -74,10 +71,10 @@ class RedeventViewCategory extends RedeventViewAdmin
 	{
 		$group = new RToolbarButtonGroup;
 
-		$save = RToolbarBuilder::createSaveButton('category.apply');
-		$saveAndClose = RToolbarBuilder::createSaveAndCloseButton('category.save');
-		$saveAndNew = RToolbarBuilder::createSaveAndNewButton('category.save2new');
-		$save2Copy = RToolbarBuilder::createSaveAsCopyButton('category.save2copy');
+		$save = RToolbarBuilder::createSaveButton('role.apply');
+		$saveAndClose = RToolbarBuilder::createSaveAndCloseButton('role.save');
+		$saveAndNew = RToolbarBuilder::createSaveAndNewButton('role.save2new');
+		$save2Copy = RToolbarBuilder::createSaveAsCopyButton('role.save2copy');
 
 		$group->addButton($save)
 			->addButton($saveAndClose)
@@ -86,11 +83,11 @@ class RedeventViewCategory extends RedeventViewAdmin
 
 		if (empty($this->item->id))
 		{
-			$cancel = RToolbarBuilder::createCancelButton('category.cancel');
+			$cancel = RToolbarBuilder::createCancelButton('role.cancel');
 		}
 		else
 		{
-			$cancel = RToolbarBuilder::createCloseButton('category.cancel');
+			$cancel = RToolbarBuilder::createCloseButton('role.cancel');
 		}
 
 		$group->addButton($cancel);
