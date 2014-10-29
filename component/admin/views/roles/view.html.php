@@ -10,7 +10,6 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * View class for Roles list
  *
-/**
  * @package  Redevent.admin
  * @since    2.5
  */

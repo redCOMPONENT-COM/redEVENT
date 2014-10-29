@@ -8,12 +8,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * View class for textsnippets list
+ * View class for Pricegroups list
  *
  * @package  Redevent.admin
  * @since    2.5
  */
-class RedEventViewTextsnippets extends RedeventViewAdmin
+class RedEventViewPricegroups extends RedeventViewAdmin
 {
 	/**
 	 * Execute and display a template script.
@@ -24,11 +24,6 @@ class RedEventViewTextsnippets extends RedeventViewAdmin
 	 */
 	public function display($tpl = null)
 	{
-		if ($this->getLayout() == 'import')
-		{
-			return $this->_displayImport($tpl);
-		}
-
 		$user = JFactory::getUser();
 
 		$this->items = $this->get('Items');
@@ -36,6 +31,17 @@ class RedEventViewTextsnippets extends RedeventViewAdmin
 		$this->filterForm = $this->get('Form');
 		$this->activeFilters = $this->get('ActiveFilters');
 		$this->state = $this->get('State');
+
+		// Ordering
+		$this->ordering = array();
+
+		if ($this->items)
+		{
+			foreach ($this->items as &$item)
+			{
+				$this->ordering[0][] = $item->id;
+			}
+		}
 
 		// Edit permission
 		$this->canEdit = false;
@@ -57,7 +63,7 @@ class RedEventViewTextsnippets extends RedeventViewAdmin
 	 */
 	public function getTitle()
 	{
-		return JText::_('COM_REDEVENT_TEXT_LIBRARY');
+		return JText::_('COM_REDEVENT_PAGETITLE_PRICEGROUPS');
 	}
 
 	/**
@@ -76,25 +82,19 @@ class RedEventViewTextsnippets extends RedeventViewAdmin
 
 		if ($user->authorise('core.create', 'com_redevent'))
 		{
-			$new = RToolbarBuilder::createNewButton('textsnippet.add');
+			$new = RToolbarBuilder::createNewButton('pricegroup.add');
 			$firstGroup->addButton($new);
 		}
 
 		if ($user->authorise('core.edit', 'com_redevent'))
 		{
-			$edit = RToolbarBuilder::createEditButton('textsnippet.edit');
+			$edit = RToolbarBuilder::createEditButton('pricegroup.edit');
 			$secondGroup->addButton($edit);
-
-			$export = RToolbarBuilder::createStandardButton('textsnippet.export', 'csvexport', 'csvexport', JText::_('COM_REDEVENT_BUTTON_EXPORT'), false);
-			$secondGroup->addButton($export);
-
-			$import = RToolbarBuilder::createStandardButton('textsnippet.import', 'csvimport', 'csvimport', JText::_('COM_REDEVENT_BUTTON_IMPORT'), false);
-			$secondGroup->addButton($import);
 		}
 
 		if ($user->authorise('core.delete', 'com_redevent'))
 		{
-			$delete = RToolbarBuilder::createDeleteButton('textsnippets.delete');
+			$delete = RToolbarBuilder::createDeleteButton('pricegroups.delete');
 			$fourthGroup->addButton($delete);
 		}
 
@@ -102,30 +102,5 @@ class RedEventViewTextsnippets extends RedeventViewAdmin
 		$toolbar->addGroup($firstGroup)->addGroup($secondGroup)->addGroup($thirdGroup)->addGroup($fourthGroup);
 
 		return $toolbar;
-	}
-
-	protected function _displayImport($tpl = null)
-	{
-		$document	= & JFactory::getDocument();
-		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_TEXTLIBRARY_IMPORT'));
-		//add css to document
-		FOFTemplateUtils::addJS("media://com_redevent/css/backend.less||media://com_redevent/css/backend.css");
-
-		//Create Submenu
-		ELAdmin::setMenu();
-
-		JHTML::_('behavior.tooltip');
-
-		//create the toolbar
-		JToolBarHelper::title( JText::_( 'COM_REDEVENT_PAGETITLE_TEXTLIBRARY_IMPORT' ), 'events' );
-
-		JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_redevent&view=textsnippets');
-
-		$lists = array();
-
-		//assign data to template
-		$this->assignRef('lists'      	, $lists);
-
-		parent::display($tpl);
 	}
 }
