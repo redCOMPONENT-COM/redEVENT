@@ -12,7 +12,7 @@ JHtml::_('rdropdown.init');
 JHtml::_('rbootstrap.tooltip');
 JHtml::_('rjquery.chosen', 'select');
 
-$saveOrderUrl = 'index.php?option=com_redevent&task=roles.saveOrderAjax&tmpl=component';
+$saveOrderUrl = 'index.php?option=com_redevent&task=customfields.saveOrderAjax&tmpl=component';
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn = $this->escape($this->state->get('list.direction'));
 $saveOrder = ($listOrder == 'obj.ordering' && strtolower($listDirn) == 'asc');
@@ -39,16 +39,16 @@ if (($saveOrder) && ($this->canEdit))
 			form.task.value = pressbutton;
 		}
 
-		if (pressbutton == 'roles.delete')
+		if (pressbutton == 'customfields.delete')
 		{
-			var r = confirm('<?php echo JText::_("COM_REDEVENT_ROLE_DELETE_COMFIRM")?>');
+			var r = confirm('<?php echo JText::_("COM_REDEVENT_CUSTOMFIELD_DELETE_COMFIRM")?>');
 			if (r == true)    form.submit();
 			else return false;
 		}
 		form.submit();
 	}
 </script>
-<form action="index.php?option=com_redevent&view=roles" class="admin" id="adminForm" method="post" name="adminForm">
+<form action="index.php?option=com_redevent&view=customfields" class="admin" id="adminForm" method="post" name="adminForm">
 	<?php
 	echo RLayoutHelper::render(
 		'searchtools.default',
@@ -86,6 +86,9 @@ if (($saveOrder) && ($this->canEdit))
 						<?php echo JHTML::_('grid.checkall'); ?>
 					<?php endif; ?>
 				</th>
+				<th width="30" nowrap="nowrap">
+					<?php echo JHTML::_('rsearchtools.sort', 'JSTATUS', 'obj.published', $listDirn, $listOrder); ?>
+				</th>
 				<?php if ($this->canEdit) : ?>
 					<th width="1" nowrap="nowrap">
 					</th>
@@ -97,6 +100,24 @@ if (($saveOrder) && ($this->canEdit))
 				<?php endif; ?>
 				<th class="title" width="auto">
 					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_NAME', 'obj.name', $listDirn, $listOrder); ?>
+				</th>
+				<th width="50">
+					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_Tag', 'obj.tag', $listDirn, $listOrder); ?>
+				</th>
+				<th width="50">
+					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_Assigned', 'obj.object_key', $listDirn, $listOrder); ?>
+				</th>
+				<th width="50">
+					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_Type', 'obj.type', $listDirn, $listOrder); ?>
+				</th>
+				<th width="10">
+					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_Searchable', 'obj.searchable', $listDirn, $listOrder); ?>
+				</th>
+				<th width="10">
+					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_In_lists', 'obj.in_lists', $listDirn, $listOrder); ?>
+				</th>
+				<th width="10">
+					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_Frontend_edit', 'obj.frontend_edit', $listDirn, $listOrder); ?>
 				</th>
 				<th width="150">
 					<?php echo JHTML::_('rsearchtools.sort', 'JGRID_HEADING_LANGUAGE', 'obj.language', $listDirn, $listOrder); ?>
@@ -117,13 +138,24 @@ if (($saveOrder) && ($this->canEdit))
 					<td>
 						<?php echo JHtml::_('grid.id', $i, $row->id); ?>
 					</td>
+					<td>
+						<?php if ($this->canEditState) : ?>
+							<?php echo JHtml::_('rgrid.published', $row->published, $i, 'categories.', true, 'cb'); ?>
+						<?php else : ?>
+							<?php if ($row->published) : ?>
+								<a class="btn btn-small disabled"><i class="icon-ok-sign icon-green"></i></a>
+							<?php else : ?>
+								<a class="btn btn-small disabled"><i class="icon-remove-sign icon-red"></i></a>
+							<?php endif; ?>
+						<?php endif; ?>
+					</td>
 					<?php if ($this->canEdit) : ?>
 						<td>
 							<?php if ($row->checked_out) : ?>
 								<?php
 								$editor = JFactory::getUser($row->checked_out);
 								$canCheckin = $row->checked_out == $userId || $row->checked_out == 0;
-								echo JHtml::_('rgrid.checkedout', $i, $editor->name, $row->checked_out_time, 'roles.', $canCheckin);
+								echo JHtml::_('rgrid.checkedout', $i, $editor->name, $row->checked_out_time, 'customfields.', $canCheckin);
 								?>
 							<?php endif; ?>
 						</td>
@@ -141,7 +173,41 @@ if (($saveOrder) && ($this->canEdit))
 						<?php if (($row->checked_out) || (!$this->canEdit)) : ?>
 							<?php echo $itemTitle; ?>
 						<?php else : ?>
-							<?php echo JHtml::_('link', 'index.php?option=com_redevent&task=role.edit&id=' . $row->id, $itemTitle); ?>
+							<?php echo JHtml::_('link', 'index.php?option=com_redevent&task=customfield.edit&id=' . $row->id, $itemTitle); ?>
+						<?php endif; ?>
+					</td>
+					<td>
+						<?php echo $row->tag; ?>
+					</td>
+					<td>
+						<?php if ($row->object_key == 'redevent.event'): ?>
+							<?php echo JText::_('COM_REDEVENT_EVENT'); ?>
+						<?php elseif ($row->object_key == 'redevent.xref'): ?>
+							<?php echo JText::_('COM_REDEVENT_SESSION'); ?>
+						<?php endif; ?>
+					</td>
+					<td>
+						<?php echo $row->type; ?>
+					</td>
+					<td>
+						<?php if ($row->searchable) : ?>
+							<a class="btn btn-small disabled"><i class="icon-ok-sign icon-green"></i></a>
+						<?php else : ?>
+							<a class="btn btn-small disabled"><i class="icon-remove-sign icon-red"></i></a>
+						<?php endif; ?>
+					</td>
+					<td>
+						<?php if ($row->in_lists) : ?>
+							<a class="btn btn-small disabled"><i class="icon-ok-sign icon-green"></i></a>
+						<?php else : ?>
+							<a class="btn btn-small disabled"><i class="icon-remove-sign icon-red"></i></a>
+						<?php endif; ?>
+					</td>
+					<td>
+						<?php if ($row->frontend_edit) : ?>
+							<a class="btn btn-small disabled"><i class="icon-ok-sign icon-green"></i></a>
+						<?php else : ?>
+							<a class="btn btn-small disabled"><i class="icon-remove-sign icon-red"></i></a>
 						<?php endif; ?>
 					</td>
 					<td>

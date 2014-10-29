@@ -149,7 +149,7 @@ if (($saveOrder) && ($this->canEditState))
 								<?php
 								$editor = JFactory::getUser($row->checked_out);
 								$canCheckin = $row->checked_out == $userId || $row->checked_out == 0;
-								echo JHtml::_('rgrid.checkedout', $i, $editor->name, $row->checked_out_time, 'rmadminfields.', $canCheckin);
+								echo JHtml::_('rgrid.checkedout', $i, $editor->name, $row->checked_out_time, 'categories.', $canCheckin);
 								?>
 							<?php endif; ?>
 						</td>

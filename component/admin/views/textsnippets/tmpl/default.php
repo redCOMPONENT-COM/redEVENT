@@ -113,7 +113,7 @@ $search = $this->state->get('filter.search');
 								<?php
 								$editor = JFactory::getUser($row->checked_out);
 								$canCheckin = $row->checked_out == $userId || $row->checked_out == 0;
-								echo JHtml::_('rgrid.checkedout', $i, $editor->text_name, $row->checked_out_time, 'rmadminfields.', $canCheckin);
+								echo JHtml::_('rgrid.checkedout', $i, $editor->name, $row->checked_out_time, 'textsnippets.', $canCheckin);
 								?>
 							<?php endif; ?>
 						</td>

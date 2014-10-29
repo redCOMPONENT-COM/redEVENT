@@ -1,102 +1,134 @@
 <?php
 /**
- * @version 1.0 $Id: cleanup.php 298 2009-06-24 07:42:35Z julien $
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Joomla Redevent Component Model
+ * redEVENT Component Custom fields Model
  *
- * @package		Redevent
- * @since 2.0
+ * @package  Redevent.admin
+ * @since    2.0
  */
-class RedeventModelCustomfields extends FOFModel 
+class RedeventModelCustomfields extends RModelList
 {
-	protected function onBeforeDelete(&$id, &$table)
+	/**
+	 * Name of the filter form to load
+	 *
+	 * @var  string
+	 */
+	protected $filterFormName = 'filter_customfields';
+
+	/**
+	 * Limitstart field used by the pagination
+	 *
+	 * @var  string
+	 */
+	protected $limitField = 'customfields_limit';
+
+	/**
+	 * Limitstart field used by the pagination
+	 *
+	 * @var  string
+	 */
+	protected $limitstartField = 'auto';
+
+	/**
+	 * Constructor.
+	 *
+	 * @param   array  $config  Configs
+	 *
+	 * @see     JController
+	 */
+	public function __construct($config = array())
 	{
-		if (!parent::onBeforeDelete($id, $table)) {
-			return false;
-		}
-		
-		$query = ' SELECT object_key ' 
-		       . ' FROM #__redevent_fields ' 
-		       . ' WHERE id = ' . $this->_db->Quote($id);
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadResult();
-		
-		switch($res)
+		if (empty($config['filter_fields']))
 		{
-			case 'redevent.event':
-				$tablename = '#__redevent_events';
-				break;
-			case 'redevent.xref':
-				$tablename = '#__redevent_event_venue_xref';
-				break;
-			default:
-				continue;
+			$config['filter_fields'] = array(
+				'name', 'obj.name',
+				'id', 'obj.id',
+				'language', 'obj.language',
+				'ordering', 'obj.ordering',
+				'type', 'obj.type',
+			);
 		}
-		$query = ' ALTER TABLE '.$tablename.' DROP custom'.$id;
-		$this->_db->setQuery($query);
-		$res = $this->_db->query();
-		return true;
+
+		parent::__construct($config);
 	}
 
-	protected function onAfterSave(&$row)
+	/**
+	 * Method to get a store id based on model configuration state.
+	 *
+	 * @param   string  $id  A prefix for the store id.
+	 *
+	 * @return  string       A store id.
+	 */
+	protected function getStoreId($id = '')
 	{
-		parent::onAfterSave($row);
-		
-		// add the field to the object table
-		switch ($row->object_key)
-		{
-			case 'redevent.event':
-				$table = '#__redevent_events';
-				break;
-			case 'redevent.xref':
-				$table = '#__redevent_event_venue_xref';
-				break;
-			default:
-				JError::raiseWarning(0, 'undefined custom field object_key');
-				break;
-		}
-		$tables = $this->_db->getTableFields(array($table), false);
-		$cols = $tables[$table];
+		// Compile the store id.
+		$id .= ':' . $this->getState('filter.search');
+		$id	.= ':' . $this->getState('filter.language');
+		$id	.= ':' . $this->getState('filter.type');
 
-		if (!array_key_exists('custom'.$row->id, $cols))
+		return parent::getStoreId($id);
+	}
+
+	/**
+	 * Build an SQL query to load the list data.
+	 *
+	 * @return  object  Query object
+	 */
+	protected function getListQuery()
+	{
+		// Create a new query object.
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
+
+		// Select the required fields from the table.
+		$query->select($this->getState('list.select', 'obj.*'));
+		$query->from($db->qn('#__redevent_fields', 'obj'));
+
+		// Filter by language
+		$language = $this->getState('filter.language');
+
+		if ($language && $language != '*')
 		{
-			switch ($row->type)
+			$query->where($db->qn('obj.language') . ' = ' . $db->quote($language));
+		}
+
+		// Filter by type
+		$type = $this->getState('filter.type');
+
+		if ($type)
+		{
+			$query->where($db->qn('obj.type') . ' = ' . $db->quote($type));
+		}
+
+		// Filter: like / search
+		$search = $this->getState('filter.search', '');
+
+		if (!empty($search))
+		{
+			if (stripos($search, 'id:') === 0)
 			{
-				default: // for now, let's not restrict the type...
-					$columntype = 'TEXT';
+				$query->where('obj.id = ' . (int) substr($search, 3));
 			}
-			$q = 'ALTER IGNORE TABLE '.$table.' ADD COLUMN custom'.$row->id.' '.$columntype;
-			$this->_db->setQuery($q);
-			if (!$this->_db->query()) {
-				JError::raiseWarning(0, 'failed adding custom field to table');
+			else
+			{
+				$search = $db->Quote('%' . $db->escape($search, true) . '%');
+				$query->where('obj.name LIKE ' . $search);
 			}
 		}
-		return true;
+
+		// Add the list ordering clause.
+		$query->order($db->escape($this->getState('list.ordering', 'obj.ordering')) . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
+
+		return $query;
 	}
-	
+
 	/**
 	 * export
 	 *
@@ -106,30 +138,33 @@ class RedeventModelCustomfields extends FOFModel
 	{
 		$db = &JFactory::getDbo();
 		$query = $db->getQuery(true);
-		
+
 		$query->select('t.id, t.name, t.tag, t.type, t.tips, t.searchable');
 		$query->select('t.in_lists, t.frontend_edit, t.required, t.object_key');
 		$query->select('t.options, t.min, t.max, t.ordering, t.published, t.language');
 		$query->from('#__redevent_fields AS t');
 		$db->setQuery($query);
 		$res = $db->loadAssocList();
+
 		return $res;
 	}
-	
+
 	/**
 	 * import in database
-	 * 
-	 * @param array $records
-	 * @param boolean $replace existing events with same id
-	 * @return boolean true on success
+	 *
+	 * @param   array  $records records
+	 * @param   bool   $replace existing events with same id
+	 *
+	 * @return int count
 	 */
-	public function import($records, $replace = 0)
+	public function import($records, $replace = false)
 	{
 		$count = array('added' => 0, 'updated' => 0);
 
 		$tables = $this->_db->getTableFields(array('#__redevent_events', '#__redevent_event_venue_xref'), false);
-	  
+
 		$current = null; // current event for sessions
+
 		foreach ($records as $r)
 		{
 			$row = $this->getTable();
@@ -165,7 +200,7 @@ class RedeventModelCustomfields extends FOFModel
 					break;
 			}
 			$cols = $tables[$table];
-			 
+
 			if (!array_key_exists('custom'.$row->id, $cols))
 			{
 				switch ($row->type)

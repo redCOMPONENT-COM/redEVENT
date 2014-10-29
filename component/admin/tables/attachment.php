@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent.admin
  * @since    2.5
  */
-class RedeventTableAttachments extends RTable
+class RedeventTableAttachment extends RTable
 {
 	/**
 	 * The name of the table with category
