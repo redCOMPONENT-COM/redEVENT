@@ -122,9 +122,7 @@ class RedeventModelCategories extends RModelList
 		$query = $this->buildContentWhere($query);
 
 		$order = $this->getState('list.ordering');
-
 		$dir = $this->getState('list.direction');
-
 		$query->order($db->qn($order) . ' ' . $dir);
 
 		return $query;

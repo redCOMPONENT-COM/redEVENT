@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent.admin
  * @since    0.9
  */
-class RedEventModelCategory extends RModelAdmin
+class RedeventModelCategory extends RModelAdmin
 {
 	/**
 	 * Method for getting the form from the model.
@@ -37,7 +37,6 @@ class RedEventModelCategory extends RModelAdmin
 
 		return $form;
 	}
-
 
 	/**
 	 * Method to get a single record.

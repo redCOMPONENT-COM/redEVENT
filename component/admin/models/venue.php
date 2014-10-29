@@ -1,268 +1,71 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage EventList
- * @copyright (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * EventList is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * EventList is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with EventList; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.modeladmin');
-
 /**
- * EventList Component Venue Model
+ * RedEvent Model Venue
  *
- * @package Joomla
- * @subpackage EventList
- * @since		0.9
+ * @package  Redevent.admin
+ * @since    0.9
  */
-class RedEventModelVenue extends JModelAdmin
+class RedeventModelVenue extends RModelAdmin
 {
 	/**
-	 * venue id
+	 * Method to get a single record.
 	 *
-	 * @var int
-	 */
-	var $_id = null;
-
-	/**
-	 * venue data array
+	 * @param   int  $pk  Record Id
 	 *
-	 * @var array
+	 * @return  mixed
 	 */
-	var $_data = null;
-
-	/**
-	 * Constructor
-	 *
-	 * @since 0.9
-	 */
-	function __construct()
+	public function getItem($pk = null)
 	{
-		parent::__construct();
+		$result = parent::getItem($pk);
 
-		$id = JRequest::getVar('id',  0, '', 'int');
-		$this->setId($id);
-	}
-
-	/**
-	 * Method to set the identifier
-	 *
-	 * @access	public
-	 * @param	int event identifier
-	 */
-	function setId($id)
-	{
-		// Set venue id and wipe data
-		$this->_id	    = $id;
-		$this->_data	= null;
-	}
-
-	/**
-	 * Logic for the event edit screen
-	 *
-	 * @access public
-	 * @return array
-	 * @since 0.9
-	 */
-	function &getData()
-	{
-		if ($this->_loadData())
+		if ($result && $result->id)
 		{
+			$helper = new RedeventHelperAttachment;
+			$files = $helper->getAttachments('venue' . $result->id);
+			$result->attachments = $files;
 
+			$result->categories = $this->getVenueCategories($result);
 		}
-		else  $this->_initData();
+		else
+		{
+			$result->attachments = array();
+			$result->categories = array();
+		}
 
-		return $this->_data;
+		return $result;
 	}
 
 	/**
-	 * Method to load content event data
+	 * Method to get the category data
 	 *
-	 * @access	private
-	 * @return	boolean	True on success
-	 * @since	0.9
+	 * @param   object  $result  result to get categories from
+	 *
+	 * @return  array
 	 */
-	function _loadData()
+	private function getVenueCategories($result)
 	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_data))
-		{
-			$query = 'SELECT *'
-			. ' FROM #__redevent_venues'
-			. ' WHERE id = '.$this->_id
-			;
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
 
-			$this->_db->setQuery($query);
+		$query->select('c.id');
+		$query->from('#__redevent_venues_categories AS c');
+		$query->join('INNER', '#__redevent_venue_category_xref AS x ON x.category_id = c.id');
+		$query->where('x.venue_id = ' . $result->id);
 
-			$this->_data = $this->_db->loadObject();
+		$db->setQuery($query);
+		$res = $db->loadColumn();
 
-			if ($this->_data)
-			{
-				$this->_data->categories = $this->getVenueCategories();
-				$this->_data->attachments = RedeventHelperAttachment::getAttachments('venue'.$this->_data->id);
-
-				if (property_exists($this->_data, 'params'))
-				{
-					$registry = new JRegistry;
-					$registry->loadString($this->_data->params);
-					$this->_data->params = $registry->toArray();
-				}
-			}
-
-			return (boolean) $this->_data;
-		}
-		return true;
+		return $res;
 	}
 
-  /**
-   * Method to get the category data
-   *
-   * @access  public
-   * @return  boolean True on success
-   * @since 0.9
-   */
-  function &getVenueCategories()
-  {
-    $query = ' SELECT c.id '
-        . ' FROM #__redevent_venues_categories as c '
-        . ' INNER JOIN #__redevent_venue_category_xref as x ON x.category_id = c.id '
-        . ' WHERE x.venue_id = ' . $this->_db->Quote($this->_id)
-        ;
-    $this->_db->setQuery( $query );
-
-    $this->_categories = $this->_db->loadResultArray();
-
-    return $this->_categories;
-  }
-
-	/**
-	 * Method to initialise the venue data
-	 *
-	 * @access	private
-	 * @return	boolean	True on success
-	 * @since	0.9
-	 */
-	function _initData()
-	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_data))
-		{
-			$venue = new stdClass();
-			$venue->id          = 0;
-			$venue->venue       = null;
-			$venue->alias       = null;
-			$venue->company     = null;
-			$venue->url         = null;
-			$venue->street      = null;
-			$venue->city        = null;
-			$venue->plz					= null;
-			$venue->state				= null;
-			$venue->country				= null;
-			$venue->locimage			= null;
-			$venue->map					= 1;
-      $venue->latitude      = null;
-      $venue->longitude     = null;
-			$venue->published			= 1;
-			$venue->locdescription		= null;
-			$venue->meta_keywords		= null;
-			$venue->meta_description	= null;
-			$venue->created				= null;
-			$venue->author_ip			= null;
-			$venue->created_by			= null;
-			$venue->dates 				= null;
-			$venue->enddates			= null;
-			$venue->times 				= null;
-			$venue->endtimes			= null;
-      $venue->categories    = null;
-			$venue->private			= 0;
-			$venue->attachments = array();
-			$this->_data				= $venue;
-			return (boolean) $this->_data;
-		}
-		return true;
-	}
-
-	/**
-	 * Method to checkin/unlock the item
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	0.9
-	 */
-	function checkin()
-	{
-		if ($this->_id)
-		{
-			$venue = & JTable::getInstance('redevent_venues', '');
-			return $venue->checkin($this->_id);
-		}
-		return false;
-	}
-
-	/**
-	 * Method to checkout/lock the item
-	 *
-	 * @access	public
-	 * @param	int	$uid	User ID of the user checking the item out
-	 * @return	boolean	True on success
-	 * @since	0.9
-	 */
-	function checkout($uid = null)
-	{
-		if ($this->_id)
-		{
-			// Make sure we have a user id to checkout the venue with
-			if (is_null($uid)) {
-				$user	=& JFactory::getUser();
-				$uid	= $user->get('id');
-			}
-			// Lets get to it and checkout the thing...
-			$venue = & JTable::getInstance('redevent_venues', '');
-			return $venue->checkout($uid, $this->_id);
-		}
-		return false;
-	}
-
-	/**
-	 * Tests if the venue is checked out
-	 *
-	 * @access	public
-	 * @param	int	A user id
-	 * @return	boolean	True if checked out
-	 * @since	0.9
-	 */
-	function isCheckedOut( $uid=0 )
-	{
-		if ($this->_loadData())
-		{
-			if ($uid) {
-				return ($this->_data->checked_out && $this->_data->checked_out != $uid);
-			} else {
-				return $this->_data->checked_out;
-			}
-		} elseif ($this->_id < 1) {
-			return false;
-		} else {
-			RedeventError::raiseWarning( 0, 'Unable to Load Data');
-			return false;
-		}
-	}
 
 	/**
 	 * Method to store the venue
@@ -381,81 +184,4 @@ class RedEventModelVenue extends JModelAdmin
 		$results = $dispatcher->trigger('onFinderAfterSave', array($this->option . '.' . $this->name, $row, $isNew));
 		return $row->id;
 	}
-
-  /**
-   * Get a option list of all categories
-   */
-  public function getCategories()
-  {
-   $query = ' SELECT c.id, c.name, (COUNT(parent.name) - 1) AS depth '
-           . ' FROM #__redevent_venues_categories AS c, '
-           . ' #__redevent_venues_categories AS parent '
-           . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
-           . ' GROUP BY c.id '
-           . ' ORDER BY c.lft;'
-           ;
-    $this->_db->setQuery($query);
-
-    $results = $this->_db->loadObjectList();
-
-    $options = array();
-    foreach((array) $results as $cat)
-    {
-      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->name);
-    }
-    return $options;
-  }
-
-
-  /**
-  * Returns a Table object, always creating it
-  *
-  * @param	type	The table type to instantiate
-  * @param	string	A prefix for the table class name. Optional.
-  * @param	array	Configuration array for model. Optional.
-  * @return	JTable	A database object
-  * @since	1.6
-  */
-  public function getTable($type = 'redevent_venues', $prefix = '', $config = array())
-  {
-		return JTable::getInstance($type, $prefix, $config);
-  }
-
-  /**
-  * Method to get the record form.
-  *
-  * @param	array	$data		Data for the form.
-  * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-  * @return	mixed	A JForm object on success, false on failure
-  * @since	1.7
-  */
-  public function getForm($data = array(), $loadData = true)
-  {
-	  // Get the form.
-	  $form = $this->loadForm('com_redevent.venue', 'venue',
-	  array('load_data' => $loadData) );
-	  		if (empty($form))
-	  		{
-	  			return false;
-	  }
-	  return $form;
-  }
-
-  /**
-  * Method to get the data that should be injected in the form.
-  *
-  * @return	mixed	The data for the form.
-  * @since	1.7
-  */
-  protected function loadFormData()
-  {
-	  // Check the session for previously entered form data.
-	  $data = JFactory::getApplication()->getUserState('com_redevent.edit.venue.data', array());
-	  if (empty($data))
-	  {
-	  	$data = $this->getData();
-	  }
-	  return $data;
-  }
 }
-?>

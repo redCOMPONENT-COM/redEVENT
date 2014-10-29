@@ -2,14 +2,12 @@
 <form addfieldpath="/libraries/redform/form/fields">
 
 	<fieldset name="venue">
-		<field
-			name="id"
-			type="text"
-			default="0"
-			label="JGLOBAL_FIELD_ID_LABEL"
-			description ="JGLOBAL_FIELD_ID_DESC"
-			class="readonly"
-			readonly="true"	/>
+        <field name="id"
+               type="hidden"
+               default="0"
+               class="readonly"
+               readonly="true"
+                />
 
 		<field
 			name="venue"
@@ -101,7 +99,7 @@
 			type="accesslevel"
 			label="JFIELD_ACCESS_LABEL"
 			description="JFIELD_ACCESS_DESC"
-			class="span12 small"/>
+			class="inputbox"/>
 	</fieldset>
 
 	<fieldset name="address">
@@ -135,11 +133,13 @@
 			class="inputbox" />
 		<field
 			name="country"
-			type="recountry"
+			type="rcountry"
 			default=""
 			label="COM_REDEVENT_COUNTRY"
 			description ="COM_REDEVENT_COUNTRY_HINT"
-			class="inputbox" />
+			class="inputbox" >
+            <option value="">COM_REDEVENT_SELECT_COUNTRY</option>
+        </field>
 		<field
 			name="url"
 			type="url"

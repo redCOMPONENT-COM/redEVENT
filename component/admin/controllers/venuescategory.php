@@ -8,12 +8,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Redevent Component Venues categories Controller
+ * Redevent Component Venues Category Controller
  *
  * @package  Redevent.admin
  * @since    0.9
  */
-class RedeventControllerVenuescategories extends RControllerAdmin
+class RedeventControllerVenuescategory extends RControllerForm
 {
 
 }

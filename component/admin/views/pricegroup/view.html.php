@@ -21,7 +21,7 @@ class RedeventViewPricegroup extends RedeventViewAdmin
 	protected $displaySidebar = false;
 
 	/**
-	 * Display the category edit page
+	 * Display the edit page
 	 *
 	 * @param   string  $tpl  The template file to use
 	 *
