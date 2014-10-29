@@ -32,32 +32,57 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedEventViewLogs extends JView {
-
-	function display($tpl = null)
+class RedEventViewLogs extends RedeventViewAdmin
+{
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a Error object.
+	 */
+	public function display($tpl = null)
 	{
-		//initialise variables
-		$document	= & JFactory::getDocument();
-		$user 		= & JFactory::getUser();
+		$user = JFactory::getUser();
 
-		//build toolbar
-		JToolBarHelper::title( JText::_('COM_REDEVENT_LOG' ), 'log' );
-		JToolBarHelper::custom('clearlog', 'delete', 'delete', 'Clear Log', false);
-		//JToolBarHelper::help( 'el.intro', true );
-
-		// Get data from the model
-		$log      = & $this->get( 'Data');
-
-		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_LOG'));
-		//add css and submenu to document
-		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
-
-		//Create Submenu
-		ELAdmin::setMenu();
-
-		//assign vars to the template
-		$this->assignRef('log'		, $log);
+		$this->items = $this->get('Items');
+		$this->state = $this->get('State');
 
 		parent::display($tpl);
+	}
+
+	/**
+	 * Get the page title
+	 *
+	 * @return  string  The title to display
+	 *
+	 * @since   0.9.1
+	 */
+	public function getTitle()
+	{
+		return JText::_('COM_REDEVENT_PAGETITLE_LOG');
+	}
+
+	/**
+	 * Get the tool-bar to render.
+	 *
+	 * @return  RToolbar
+	 */
+	public function getToolbar()
+	{
+		$user = JFactory::getUser();
+
+		$firstGroup		= new RToolbarButtonGroup;
+
+		if ($user->authorise('core.manage', 'com_redevent'))
+		{
+			$delete = RToolbarBuilder::createStandardButton('logs.clearlog', 'delete', 'delete', 'Clear Log', false);
+			$firstGroup->addButton($delete);
+		}
+
+		$toolbar = new RToolbar;
+		$toolbar->addGroup($firstGroup);
+
+		return $toolbar;
 	}
 }
