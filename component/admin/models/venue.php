@@ -75,26 +75,6 @@ class RedeventModelVenue extends RModelAdmin
 	 */
 	public function save($data)
 	{
-
-		// Are we saving from an item edit?
-		if (!$data['id'])
-		{
-			$row->modified 		= gmdate('Y-m-d H:i:s');
-			$row->modified_by 	= $user->get('id');
-			$isNew = false;
-		} else {
-			$row->modified 		= $nullDate;
-			$row->modified_by 	= '';
-
-			//get IP, time and userid
-			$row->created 			= gmdate('Y-m-d H:i:s');
-
-			$row->author_ip 		= $elsettings->get('storeip', '1') ? getenv('REMOTE_ADDR') : 'DISABLED';
-			$row->created_by		= $user->get('id');
-			$isNew = true;
-		}
-
-
 		$result = parent::save($data);
 
 		if ($result)

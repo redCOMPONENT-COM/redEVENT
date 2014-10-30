@@ -153,7 +153,6 @@ class RedeventTableCategory extends RTable
 		return parent::afterDelete($pk);
 	}
 
-
 	/**
 	 * rebuild category tree
 	 *

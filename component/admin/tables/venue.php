@@ -39,6 +39,13 @@ class RedeventTableVenue extends RTable
 	protected $_tableFieldState = 'published';
 
 	/**
+	 * Categories
+	 *
+	 * @var array
+	 */
+	public $categories;
+
+	/**
 	 * Checks that the object is valid and able to be stored.
 	 *
 	 * This method checks that the parent_id is non-zero and exists in the database.
@@ -52,6 +59,13 @@ class RedeventTableVenue extends RTable
 		if (!trim($this->venue))
 		{
 			$this->setError(JText::_('COM_REDEVENT_ADD_VENUE'));
+
+			return false;
+		}
+
+		if (!$this->categories)
+		{
+			$this->setError(JText::_('COM_REDEVENT_TABLE_VENUE_CHECK_CATEGORIES_REQUIRED'));
 
 			return false;
 		}
@@ -75,6 +89,75 @@ class RedeventTableVenue extends RTable
 
 		return true;
 	}
+
+	/**
+	 * Method to bind an associative array or object to the JTable instance.This
+	 * method only binds properties that are publicly accessible and optionally
+	 * takes an array of properties to ignore when binding.
+	 *
+	 * @param   mixed  $src     An associative array or object to bind to the JTable instance.
+	 * @param   mixed  $ignore  An optional array or space separated list of properties to ignore while binding.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @throws  InvalidArgumentException
+	 */
+	public function bind($src, $ignore = array())
+	{
+		if (isset($src['categories']) && is_array($src['categories']))
+		{
+			$categories = $src['categories'];
+			JArrayHelper::toInteger($categories);
+			$this->categories = $categories;
+		}
+
+		return parent::bind($src, $ignore);
+	}
+
+	/**
+	 * Called before store().
+	 *
+	 * @param   boolean  $updateNulls  True to update null values as well.
+	 *
+	 * @return  boolean  True on success.
+	 */
+	protected function beforeStore($updateNulls = false)
+	{
+		$user = JFactory::getUser();
+
+		// Get the current time in the database format.
+		$time = JFactory::getDate()->toSql();
+
+		$this->modified = $time;
+		$this->modified_by = $user->get('id');
+
+		if (!$this->id)
+		{
+			$params = JComponentHelper::getParams('com_redevent');
+
+			// Get IP, time and user id
+			$this->created = $time;
+			$this->created_by = $user->get('id');
+			$this->author_ip = $params->get('storeip', '1') ? getenv('REMOTE_ADDR') : 'DISABLED';
+		}
+
+		return parent::beforeStore($updateNulls);
+	}
+
+	/**
+	 * Called after store().
+	 *
+	 * @param   boolean  $updateNulls  True to update null values as well.
+	 *
+	 * @return  boolean  True on success.
+	 */
+	protected function afterStore($updateNulls = false)
+	{
+		$this->setCategories($this->categories);
+
+		return parent::afterStore($updateNulls);
+	}
+
 
 	/**
 	 * Sets categories of venue

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form addfieldpath="/libraries/redform/form/fields">
+<form addfieldpath="/libraries/redevent/form/fields">
 
 	<fieldset name="venue">
         <field name="id"
@@ -69,11 +69,13 @@
 
 		<field
 			name="categories"
-			type="revenuecategory"
+			type="revenuecategorylist"
 			default=""
 			label="COM_REDEVENT_CATEGORY"
 			description ="COM_REDEVENT_CATEGORY"
 			required="true"
+            multiple="true"
+            size="10"
 			class="inputbox" />
 
 		<field
