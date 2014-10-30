@@ -170,7 +170,7 @@ class RedEventModelSession extends JModel
 	 */
 	public function getVenues()
 	{
-		$db = JFactory::getDBO();
+		$db = $this->_db;
 		$q = "SELECT id, venue
 		FROM #__redevent_venues
 		ORDER BY venue";
@@ -259,7 +259,7 @@ class RedEventModelSession extends JModel
 			// event title and id from request, if event is already created
 			if ($object->event_id = JFactory::getApplication()->input->getInt('eventid'))
 			{
-				$db      = JFactory::getDbo();
+				$db      = $this->_db;
 				$query = $db->getQuery(true);
 
 				$query->select('title');

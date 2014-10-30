@@ -52,7 +52,7 @@ class RedeventModelVenue extends RModelAdmin
 	 */
 	private function getVenueCategories($result)
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('c.id');
@@ -66,6 +66,46 @@ class RedeventModelVenue extends RModelAdmin
 		return $res;
 	}
 
+	/**
+	 * Method to save the form data.
+	 *
+	 * @param   array  $data  The form data.
+	 *
+	 * @return  boolean  True on success, False on error.
+	 */
+	public function save($data)
+	{
+
+		// Are we saving from an item edit?
+		if (!$data['id'])
+		{
+			$row->modified 		= gmdate('Y-m-d H:i:s');
+			$row->modified_by 	= $user->get('id');
+			$isNew = false;
+		} else {
+			$row->modified 		= $nullDate;
+			$row->modified_by 	= '';
+
+			//get IP, time and userid
+			$row->created 			= gmdate('Y-m-d H:i:s');
+
+			$row->author_ip 		= $elsettings->get('storeip', '1') ? getenv('REMOTE_ADDR') : 'DISABLED';
+			$row->created_by		= $user->get('id');
+			$isNew = true;
+		}
+
+
+		$result = parent::save($data);
+
+		if ($result)
+		{
+			// Attachments
+			$helper = new RedeventHelperAttachment;
+			$helper->store('venue' . $this->getState($this->getName() . '.id'));
+		}
+
+		return $result;
+	}
 
 	/**
 	 * Method to store the venue

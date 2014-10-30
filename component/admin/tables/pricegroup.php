@@ -88,7 +88,7 @@ class RedeventTablePricegroup extends RTable
 		}
 
 		// Make sure it's not being used in sessions
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('r.id');

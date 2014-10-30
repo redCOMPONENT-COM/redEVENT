@@ -65,7 +65,7 @@ class RedeventTableTextsnippet extends RTable
 	 */
 	private function checkTagExists()
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('text_name');

@@ -8,12 +8,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * redEVENT Component textsnippets Model
+ * redEVENT Component venues Model
  *
  * @package  Redevent.admin
  * @since    0.9
  */
-class RedEventModelVenues extends RModelList
+class RedeventModelVenues extends RModelList
 {
 	/**
 	 * Name of the filter form to load
@@ -54,11 +54,12 @@ class RedEventModelVenues extends RModelList
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
-				'name', 'c.name',
-				'ordering', 'c.ordering',
-				'published', 'c.published',
-				'id', 'c.id',
-				'access', 'c.access'
+				'venue', 'obj.venue',
+				'ordering', 'obj.ordering',
+				'published', 'obj.published',
+				'id', 'obj.id',
+				'access', 'obj.access',
+				'venue_code', 'obj.venue_code',
 			);
 		}
 
@@ -85,7 +86,7 @@ class RedEventModelVenues extends RModelList
 			return $result;
 		}
 
-		$result = $this->_additionals($result);
+		$result = $this->additionals($result);
 
 		return $result;
 	}
@@ -99,20 +100,21 @@ class RedEventModelVenues extends RModelList
 	 */
 	protected function getListQuery()
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
-		$query->select('l.*, u.email, u.name AS author');
-		$query->from('#__redevent_venues AS l');
-		$query->join('LEFT', '#__users AS u ON u.id = l.created_by');
+		$query->select('obj.*, u.email, u.name AS author, umodified.name AS editor');
+		$query->from('#__redevent_venues AS obj');
+		$query->join('LEFT', '#__users AS u ON u.id = obj.created_by');
+		$query->join('LEFT', '#__users AS umodified ON umodified.id = obj.modified_by');
 
 		// Join over the asset groups.
 		$query->select('ag.title AS access_level');
-		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = l.access');
+		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = obj.access');
 
 		// Join over the language
 		$query->select('lg.title AS language_title');
-		$query->join('LEFT', $db->quoteName('#__languages') . ' AS lg ON lg.lang_code = l.language');
+		$query->join('LEFT', $db->quoteName('#__languages') . ' AS lg ON lg.lang_code = obj.language');
 
 		// Get the WHERE and ORDER BY clauses for the query
 		$query = $this->buildContentWhere($query);
@@ -133,93 +135,77 @@ class RedEventModelVenues extends RModelList
 	 */
 	protected function buildContentWhere($query)
 	{
-		$filter_state 		= $this->getState('filter_state');
-		$filter 			= $this->getState('filter');
-		$search 			= $this->getState('search');
+		$db = $this->_db;
 
-		/*
-		* Filter state
-		*/
-		if ( $filter_state ) {
-			if ($filter_state == 'P') {
-				$query->where('l.published = 1');
-			} else if ($filter_state == 'U') {
-				$query->where('l.published = 0');
-			} else {
-				$query->where('l.published >= 0');
+		$filter_state = $this->getState('filter.published', '');
+
+		if (is_numeric($filter_state))
+		{
+			if ($filter_state == '1')
+			{
+				$query->where('obj.published = 1');
+			}
+			elseif ($filter_state == '0' )
+			{
+				$query->where('obj.published = 0');
 			}
 		}
 
-		/*
-		* Search venues
-		*/
-		if ($search && $filter == 1)
+		$filter_language = $this->getState('filter.language');
+
+		if ($filter_language)
 		{
-			$query->where(' LOWER(l.venue) LIKE \'%' . $search . '%\' OR LOWER(l.venue_code) LIKE \'%' . $search . '%\'');
+			$query->where('obj.language = ' . $db->quote($filter_language));
 		}
 
-		/*
-		* Search city
-		*/
-		if ($search && $filter == 2) {
-			$query->where(' LOWER(l.city) LIKE \'%'.$search.'%\' ');
-		}
+		$search = $this->getState('filter.search');
 
-		$filter_language = $this->getState('filter_language');
-		if ($filter_language) {
-			// 			$this->setState('filter_language', $filter_language);
-			$query->where('l.language = '.$this->_db->quote($filter_language));
+		if ($search)
+		{
+			$like = $db->quote('%' . $search . '%');
+			$query->where('(LOWER(obj.name) LIKE ' . $like . ' OR LOWER(obj.city) LIKE ' . $like . ')');
 		}
 
 		return $query;
 	}
 
 	/**
-	 * Method to get the userinformation of edited/submitted venues
+	 * Method to get additional informations
 	 *
-	 * @access private
-	 * @return object
-	 * @since 0.9
+	 * @param   array  $rows  rows
+	 *
+	 * @return array
 	 */
-	function _additionals($rows)
+	private function additionals($rows)
 	{
 		/*
 		* Get editor name
 		*/
 		$count = count($rows);
 
-		for ($i=0, $n=$count; $i < $n; $i++) {
+		for ($i = 0, $n = $count; $i < $n; $i++)
+		{
+			$db = $this->_db;
+			$query = $db->getQuery(true);
 
-			$query = 'SELECT name'
-				. ' FROM #__users'
-				. ' WHERE id = '.$rows[$i]->modified_by
-				;
+			$query->select('COUNT(id)');
+			$query->from('#__redevent_event_venue_xref');
+			$query->where('venueid = ' . (int) $rows[$i]->id);
 
-			$this->_db->setQuery( $query );
-			$rows[$i]->editor = $this->_db->loadResult();
+			$db->setQuery($query);
+			$rows[$i]->assignedevents = $db->loadResult();
 
-			/*
-			* Get nr of assigned events
-			*/
-			$query = 'SELECT COUNT( id )'
-				.' FROM #__redevent_event_venue_xref'
-				.' WHERE venueid = ' . (int)$rows[$i]->id
-				;
+			$query = $db->getQuery(true);
 
-			$this->_db->setQuery($query);
-			$rows[$i]->assignedevents = $this->_db->loadResult();
+			$query->select('c.id, c.name, c.checked_out');
+			$query->from('#__redevent_venues_categories AS c');
+			$query->join('INNER', '#__redevent_venue_category_xref as x ON x.category_id = c.id');
+			$query->where('c.published = 1');
+			$query->where('x.venue_id = ' . (int) $rows[$i]->id);
+			$query->order('c.ordering');
 
-			// get categories
-			$query =  ' SELECT c.id, c.name, c.checked_out '
-              . ' FROM #__redevent_venues_categories as c '
-              . ' INNER JOIN #__redevent_venue_category_xref as x ON x.category_id = c.id '
-              . ' WHERE c.published = 1 '
-              . '   AND x.venue_id = ' . $this->_db->Quote($rows[$i]->id)
-              . ' ORDER BY c.ordering'
-              ;
-      $this->_db->setQuery( $query );
-
-      $rows[$i]->categories = $this->_db->loadObjectList();
+			$db->setQuery($query);
+			$rows[$i]->categories = $db->loadObjectList();
 		}
 
 		return $rows;
@@ -259,6 +245,40 @@ class RedEventModelVenues extends RModelList
 			$dispatcher->trigger('onFinderChangeState', array('com_redevent.venue', $id, $state));
 			$dispatcher->trigger('onAfterVenueSaved', array($id));
 		}
+	}
+
+	/**
+	 * Method to get a store id based on model configuration state.
+	 *
+	 * This is necessary because the model is used by the component and
+	 * different modules that might need different sets of data or different
+	 * ordering requirements.
+	 *
+	 * @param   string  $id  A prefix for the store id.
+	 *
+	 * @return	string  A store id.
+	 */
+	protected function getStoreId($id = '')
+	{
+		// Compile the store id.
+		$id	.= ':' . $this->getState('filter.search');
+		$id .= ':' . $this->getState('filter.language');
+		$id	.= ':' . $this->getState('filter.published');
+
+		return parent::getStoreId($id);
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * @param   string  $ordering   Ordering column
+	 * @param   string  $direction  Direction
+	 *
+	 * @return  void
+	 */
+	public function populateState($ordering = 'obj.venue', $direction = 'asc')
+	{
+		parent::populateState($ordering, $direction);
 	}
 
 	/**

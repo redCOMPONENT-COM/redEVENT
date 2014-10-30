@@ -158,7 +158,7 @@ class RedEventModelAttendee extends JModel
 		if (empty($this->_data))
 		{
 			// Get form id and answer id
-			$db = JFactory::getDbo();
+			$db = $this->_db;
 			$query = $db->getQuery(true);
 
 			$query->select('r.*, s.form_id, a.course_code, sp.price, sp.id AS sessionpricegroup_id, sp.currency');
@@ -272,7 +272,7 @@ class RedEventModelAttendee extends JModel
 		$id = JRequest::getInt('id');
 
 		// Get price and activate
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('pg.price, a.activate');
@@ -337,7 +337,7 @@ class RedEventModelAttendee extends JModel
 	{
 		if (!$this->pricegroups)
 		{
-			$db = JFactory::getDbo();
+			$db = $this->_db;
 			$query = $db->getQuery(true);
 
 			$query->select('sp.*, p.name, p.alias, p.tooltip, f.currency AS form_currency');

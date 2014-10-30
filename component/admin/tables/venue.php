@@ -192,7 +192,7 @@ class RedeventTableVenue extends RTable
 			return false;
 		}
 
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->delete('#__redevent_venue_category_xref');
@@ -226,7 +226,7 @@ class RedeventTableVenue extends RTable
 	 */
 	private function haveNoSessions($quotedIds)
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('COUNT(*)');

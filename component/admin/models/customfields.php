@@ -136,7 +136,7 @@ class RedeventModelCustomfields extends RModelList
 	 */
 	public function export()
 	{
-		$db = &JFactory::getDbo();
+		$db = &$this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('t.id, t.name, t.tag, t.type, t.tips, t.searchable');

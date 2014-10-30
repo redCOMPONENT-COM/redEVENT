@@ -30,7 +30,7 @@ class RedEventModelRole extends RModelAdmin
 
 		if ($pk > 0)
 		{
-			$db = JFactory::getDbo();
+			$db = $this->_db;
 			$query = $db->getQuery(true);
 
 			$query->select('r.*');

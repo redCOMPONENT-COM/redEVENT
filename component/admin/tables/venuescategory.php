@@ -147,7 +147,7 @@ class RedeventTableVenuesCategory extends RTable
 	 */
 	private function haveNoVenues($quotedIds)
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('COUNT(*)');
@@ -169,7 +169,7 @@ class RedeventTableVenuesCategory extends RTable
 	 */
 	private function haveNoChildren($quotedIds)
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('COUNT(*)');

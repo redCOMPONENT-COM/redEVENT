@@ -279,7 +279,7 @@ class RedEventModelRegistrations extends JModel
 		$xrefs = array();
 		foreach ($cid as $register_id)
 		{
-			$db = &JFactory::getDbo();
+			$db = &$this->_db;
 			$query = $db->getQuery(true);
 
 			$query->select('e.redform_id,r.xref AS xref_id');
@@ -329,7 +329,7 @@ class RedEventModelRegistrations extends JModel
 			return true;
 		}
 		// we need to group by xref
-		$db = &JFactory::getDbo();
+		$db = &$this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('r.id AS rid, e.redform_id,r.xref AS xref_id');

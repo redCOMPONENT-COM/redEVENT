@@ -99,7 +99,7 @@ class RedeventModelVenuescategories extends RModelList
 	 */
 	protected function getListQuery()
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('c.*, (COUNT(parent.name) - 1) AS depth, c.access, u.name AS editor');
@@ -135,7 +135,7 @@ class RedeventModelVenuescategories extends RModelList
 	 */
 	private function buildContentWhere($query)
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$search = $this->getState('filter.search');
 
 		$filter_state = $this->getState('filter.published', '');
@@ -176,7 +176,7 @@ class RedeventModelVenuescategories extends RModelList
 	 */
 	private function buildContentOrderBy($query)
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 
 		$order = $this->getState('list.ordering');
 		$dir = $this->getState('list.direction');
@@ -194,7 +194,7 @@ class RedeventModelVenuescategories extends RModelList
 	 */
 	private function countCategoryVenues($id)
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('COUNT(*)');

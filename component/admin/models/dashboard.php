@@ -43,7 +43,7 @@ class RedeventModelDashboard extends RModelAdmin
 	 */
 	public function getEventsStats()
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('COUNT(*) AS total');
@@ -65,7 +65,7 @@ class RedeventModelDashboard extends RModelAdmin
 	 */
 	public function getVenuesStats()
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('COUNT(*) AS total');
@@ -86,7 +86,7 @@ class RedeventModelDashboard extends RModelAdmin
 	 */
 	public function getCategoriesStats()
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('COUNT(*) AS total');

@@ -61,7 +61,7 @@ class RedeventTableRole extends RTable
 		}
 
 		// Make sure it's not being used in sessions
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('r.id');
@@ -109,7 +109,7 @@ class RedeventTableRole extends RTable
 			return false;
 		}
 
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->delete('#__redevent_roles_redmember');

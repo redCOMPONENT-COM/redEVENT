@@ -161,7 +161,7 @@ class RedEventModelEvents extends JModel
 	 */
 	function _buildQuery()
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('a.*, u.email, u.name AS author, u2.name as editor, x.id AS xref');
@@ -458,7 +458,7 @@ class RedEventModelEvents extends JModel
 	    return false;
 	  }
 
-		$db = JFactory::getDBO();
+		$db = $this->_db;
 		$q = ' SELECT x.eventid, COUNT(*) AS total, SUM(CASE WHEN x.published = 1 THEN 1 ELSE 0 END) as published,   '
 		   . ' SUM(CASE WHEN x.published = 0 THEN 1 ELSE 0 END) as unpublished,'
 		   . ' SUM(CASE WHEN x.published = -1 THEN 1 ELSE 0 END) as archived,'

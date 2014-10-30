@@ -113,7 +113,7 @@ class RedEventModelEvent extends JModelAdmin
 			if (!$this->_id) {
 				return false;
 			}
-			$db = &JFactory::getDbo();
+			$db = &$this->_db;
 			$query = $db->getQuery(true);
 
 			$query->select('e.*, v.venue');
@@ -474,7 +474,7 @@ class RedEventModelEvent extends JModelAdmin
 	 */
 	function getFormFields()
 	{
-		$db = JFactory::getDBO();
+		$db = $this->_db;
 		$q = "SELECT id, field
 		, CASE WHEN (CHAR_LENGTH(field_header) > 0) THEN field_header ELSE field END AS field_header
 		FROM #__rwf_fields
@@ -491,7 +491,7 @@ class RedEventModelEvent extends JModelAdmin
 	 */
 	function getRedForms()
 	{
-		$db = JFactory::getDBO();
+		$db = $this->_db;
 		$q = "SELECT id, formname
 		FROM #__rwf_forms
 		ORDER BY formname";
@@ -505,7 +505,7 @@ class RedEventModelEvent extends JModelAdmin
 	 */
 	public function getVenues()
 	{
-		$db = JFactory::getDBO();
+		$db = $this->_db;
 		$q = "SELECT id, venue
 		FROM #__redevent_venues
 		ORDER BY venue";
@@ -518,7 +518,7 @@ class RedEventModelEvent extends JModelAdmin
 	 */
 	public function getEventVenue()
 	{
-		$db = JFactory::getDBO();
+		$db = $this->_db;
 		$q = "SELECT x.*
 		FROM #__redevent_event_venue_xref x
 		WHERE eventid = ".$this->_id."

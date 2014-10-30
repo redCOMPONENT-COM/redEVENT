@@ -46,7 +46,7 @@ class RedeventModelCategories extends RModelList
 		parent::__construct($config);
 
 		$app    = JFactory::getApplication();
-		$db     = JFactory::getDbo();
+		$db     = $this->_db;
 		$option = $this->input->get('option');
 
 		// Get vars
@@ -98,7 +98,7 @@ class RedeventModelCategories extends RModelList
 	 */
 	public function buildQuery($overrideLimits = false)
 	{
-		$db = &JFactory::getDbo();
+		$db = &$this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('c.*, (COUNT(parent.catname) - 1) AS depth, p.catname as parent_name');

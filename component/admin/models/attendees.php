@@ -141,7 +141,7 @@ class RedEventModelAttendees extends JModel
 	 */
 	public function getData()
 	{
-		$db = JFactory::getDBO();
+		$db = $this->_db;
 		// Lets load the content if it doesn't already exist
 		$query = $this->buildQuery();
 
@@ -198,7 +198,7 @@ class RedEventModelAttendees extends JModel
 	 */
 	protected function buildQuery()
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 
 		// Build attendees list query
 		$query = $db->getQuery(true);
@@ -265,7 +265,7 @@ class RedEventModelAttendees extends JModel
 	 */
 	protected function queryAddAllFormFields(JDatabaseQuery $query)
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query_fields = $db->getQuery(true);
 
 		$query_fields->select('f.id');
@@ -294,7 +294,7 @@ class RedEventModelAttendees extends JModel
 	 */
 	protected function queryAddEventShowFormFields(JDatabaseQuery $query)
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query_fields = $db->getQuery(true);
 
 		$query_fields->select('e.redform_id, e.showfields');
@@ -482,7 +482,7 @@ class RedEventModelAttendees extends JModel
 			}
 
 			// Upate waiting list for all cancelled regs
-			$db      = JFactory::getDbo();
+			$db      = $this->_db;
 			$query = $db->getQuery(true);
 
 			$query->select('xref');
@@ -537,7 +537,7 @@ class RedEventModelAttendees extends JModel
 			}
 
 			// Upate waiting list for all un-cancelled regs
-			$db      = JFactory::getDbo();
+			$db      = $this->_db;
 			$query = $db->getQuery(true);
 
 			$query->select('xref');

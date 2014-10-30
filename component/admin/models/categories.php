@@ -97,7 +97,7 @@ class RedeventModelCategories extends RModelList
 	 */
 	protected function getListQuery()
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('c.*, (COUNT(parent.name) - 1) AS depth, p.name as parent_name');
@@ -137,7 +137,7 @@ class RedeventModelCategories extends RModelList
 	 */
 	protected function buildContentWhere($query)
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$search = $this->getState('filter.search');
 
 		$filter_state = $this->getState('filter.published', '');
@@ -206,7 +206,7 @@ class RedeventModelCategories extends RModelList
 	 */
 	protected function countCategoryEvents($id)
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('COUNT(*)');

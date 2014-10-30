@@ -178,7 +178,7 @@ class RedeventTableCategory extends RTable
 		$right = $left + 1;
 
 		// Get all children of this node
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('id');
@@ -201,7 +201,7 @@ class RedeventTableCategory extends RTable
 
 		// We've got the left value, and now that we've processed
 		// the children of this node we also know the right value
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->update('#__redevent_categories');
@@ -225,7 +225,7 @@ class RedeventTableCategory extends RTable
 	 */
 	private function haveNoEvents($quotedIds)
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('COUNT(*)');
@@ -247,7 +247,7 @@ class RedeventTableCategory extends RTable
 	 */
 	private function haveNoChildren($quotedIds)
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('COUNT(*)');

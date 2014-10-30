@@ -99,7 +99,7 @@ if (($saveOrder) && ($this->canEdit))
 					</th>
 				<?php endif; ?>
 				<th class="title" width="auto">
-					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_NAME', 'obj.name', $listDirn, $listOrder); ?>
+					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_NAME', 'obj.venue', $listDirn, $listOrder); ?>
 				</th>
 				<th width="50">
 					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_VENUES_VENUE_CODE', 'obj.venue_code', $listDirn, $listOrder); ?>
@@ -133,6 +133,7 @@ if (($saveOrder) && ($this->canEdit))
 			<?php $n = count($this->items); ?>
 			<?php foreach ($this->items as $i => $row) : ?>
 				<?php $orderkey = array_search($row->id, $this->ordering[0]); ?>
+				<?php $sessionslink = 'index.php?option=com_redevent&view=sessions&venueid=' . $row->id; ?>
 				<tr>
 					<td>
 						<?php echo $this->pagination->getRowOffset($i); ?>
@@ -238,10 +239,12 @@ if (($saveOrder) && ($this->canEdit))
 						$delivertime 	= JHTML::Date($row->created, JText::_('DATE_FORMAT_LC2'));
 						$edittime 		= JHTML::Date($row->modified, JText::_('DATE_FORMAT_LC2'));
 						$ip				= $row->author_ip == 'DISABLED' ? JText::_('COM_REDEVENT_DISABLED' ) : $row->author_ip;
-						$image 			= JHTML::_('image', 'administrator/templates/'. $this->template .'/images/menu/icon-16-info.png', JText::_('COM_REDEVENT_NOTES') );
+						$image 			= '<i class="icon-info-sign" /> ';
 						$overlib 		= JText::_('COM_REDEVENT_CREATED_AT' ).': '.$delivertime.'<br />';
 						$overlib		.= JText::_('COM_REDEVENT_WITH_IP' ).': '.$ip.'<br />';
-						if ($row->modified != '0000-00-00 00:00:00') {
+
+						if ($row->modified != '0000-00-00 00:00:00')
+						{
 							$overlib 	.= JText::_('COM_REDEVENT_EDITED_AT' ).': '.$edittime.'<br />';
 							$overlib 	.= JText::_('COM_REDEVENT_EDITED_FROM' ).': '.$row->editor.'<br />';
 						}

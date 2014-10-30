@@ -120,7 +120,7 @@ class RedeventTableEvent extends RTable
 	{
 		$this->reset();
 
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('e.*');
@@ -180,7 +180,7 @@ class RedeventTableEvent extends RTable
 	 */
 	protected function _getCustomFieldsColumns()
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('CONCAT("custom", id)');
@@ -211,7 +211,7 @@ class RedeventTableEvent extends RTable
 
 		// Update the event category xref
 		// First, delete current rows for this event
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->delete('#__redevent_event_category_xref');

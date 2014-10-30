@@ -66,7 +66,7 @@ class RedeventTableCustomfield extends RTable
 	 */
 	private function checkTagExists()
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('tag');
@@ -113,7 +113,7 @@ class RedeventTableCustomfield extends RTable
 			return false;
 		}
 
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('id, object_key');
@@ -204,7 +204,7 @@ class RedeventTableCustomfield extends RTable
 				throw new Exception('undefined custom field object_key');
 		}
 
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 
 		$query = 'ALTER IGNORE TABLE ' . $db->qn($table) . ' ADD COLUMN ' . $db->qn('custom' . $this->id) . ' TEXT';
 		$db->setQuery($query);
@@ -237,7 +237,7 @@ class RedeventTableCustomfield extends RTable
 				return;
 		}
 
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = ' ALTER TABLE ' . $tablename . ' DROP custom' . $customId;
 		$db->setQuery($query);
 
