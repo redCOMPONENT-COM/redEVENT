@@ -1,81 +1,75 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.Library
+ * @copyright  Copyright (C) 2008 - 2014 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
 defined('_JEXEC') or die('Restricted access');
 
-// Component Helper
-jimport('joomla.application.component.helper');
-
 /**
- * EventList Component Route Helper
- * based on Joomla ContentHelperRoute
+ * Redevent Component Route Helper
  *
- * @static
- * @package		Joomla
- * @subpackage	EventList
- * @since 0.9
+ * @package  Redevent.Library
+ * @since    0.9
  */
 class RedeventHelperRoute
 {
 	/**
 	 * return link to details view of specified event
-	 * @param int $id
-	 * @param int $xref
+	 *
+	 * @param   int     $id    event id
+	 * @param   int     $xref  session id
+	 * @param   string  $task  task
+	 *
 	 * @return url
 	 */
 	public static function getDetailsRoute($id = 0, $xref = 0, $task = null)
 	{
-		$parts = array( "option" => "com_redevent",
-		                "view"   => "details" );
-		if ($id) {
+		$parts = array("option" => "com_redevent",
+			"view"   => "details"
+		);
+
+		if ($id)
+		{
 			$parts['id'] = $id;
 		}
-		if ($xref) {
+
+		if ($xref)
+		{
 			$parts['xref'] = $xref;
 		}
-		if ($task) {
+
+		if ($task)
+		{
 			$parts['task'] = $task;
 		}
-		return self::buildUrl( $parts );
+
+		return self::buildUrl($parts);
 	}
 
 
 	/**
 	 * returns link to moreinfo view
 	 *
-	 * @param int or slug $xref
+	 * @param   int    $xref     int or slug
+	 * @param   array  $options  options array
+	 *
 	 * @return string url
 	 */
 	public static function getMoreInfoRoute($xref, $options = null)
 	{
 		$parts = array( "option" => "com_redevent",
-		                "view"   => "moreinfo",
-		                "xref"   => $xref,
-		              );
-		if ($options) {
+			"view"   => "moreinfo",
+			"xref"   => $xref,
+		);
+
+		if ($options)
+		{
 			$parts = array_merge($parts, $options);
 		}
-		return self::buildUrl( $parts );
+
+		return self::buildUrl($parts);
 	}
 
 	/**

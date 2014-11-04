@@ -143,7 +143,7 @@ class RedeventModelSignup extends JModel
 
 			$query = 'SELECT a.id AS did, x.dates, x.enddates, a.title, x.times, x.endtimes, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, a.registra, a.unregistra,'
 					. ' a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
-					. ' a.max_multi_signup, a.confirmation_message, a.review_message, x.course_credit, a.course_code, c.catname, c.published, c.access, a.submission_type_phone,'
+					. ' a.max_multi_signup, a.confirmation_message, a.review_message, x.course_credit, a.course_code, c.name AS catname, c.published, c.access, a.submission_type_phone,'
 					. ' a.submission_type_webform, a.submission_type_formal_offer, a.submission_type_email, v.venue, v.city AS location, '
 					. ' a.submission_type_email_pdf, a.submission_type_formal_offer_pdf, a.send_pdf_form, a.pdf_form_data, '
 					. ' x.registrationend, x.id as xref, '
@@ -160,7 +160,7 @@ class RedeventModelSignup extends JModel
 			$this->_details = $this->_db->loadObject();
 
       if ($this->_details->did) {
-        $query =  ' SELECT c.id, c.catname, c.access, '
+        $query =  ' SELECT c.id, c.name AS catname, c.access, '
               . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
               . ' FROM #__redevent_categories as c '
               . ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '

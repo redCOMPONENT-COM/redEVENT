@@ -246,7 +246,7 @@ class RedEventModelRegistration extends JModel
 			. ' v.venue,'
 			. ' u.name AS creator_name, u.email AS creator_email, '
 			. ' a.confirmation_message, a.review_message, '
-			. " IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.catname, c.published, c.access,"
+			. " IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.name AS catname, c.published, c.access,"
 			. ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
 			. ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
 			. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
@@ -275,7 +275,7 @@ class RedEventModelRegistration extends JModel
 	 */
 	function _getEventCategories($row)
 	{
-		$query =  ' SELECT c.id, c.catname, c.access, '
+		$query =  ' SELECT c.id, c.name AS catname, c.access, '
 		. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
 		. ' FROM #__redevent_categories as c '
 		. ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '

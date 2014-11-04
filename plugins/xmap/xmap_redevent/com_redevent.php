@@ -214,7 +214,7 @@ class xmap_com_redevent {
 		$db = &JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('c.id , c.catname, c.alias');
+		$query->select('c.id , c.name AS catname, c.alias');
 		$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug');
 		$query->from('#__redevent_categories AS c');
 		$query->where('c.published = 1');

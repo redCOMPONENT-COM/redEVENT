@@ -140,7 +140,7 @@ class modRedEventCategoriesHelper
 		switch ($params->get('ordering', 0))
 		{
 			case 1:
-				$query .= ' ORDER BY c.catname ';
+				$query .= ' ORDER BY c.name ';
 				break;
 			case 0:
 			default:

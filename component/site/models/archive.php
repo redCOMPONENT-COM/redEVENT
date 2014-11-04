@@ -120,7 +120,7 @@ class RedeventModelArchive extends RedeventModelBaseeventlist
 						break;
 
 					case 'type' :
-						$where[] = ' LOWER( c.catname ) LIKE '.$filter;
+						$where[] = ' LOWER( c.name ) LIKE '.$filter;
 						break;
 				}
 			}

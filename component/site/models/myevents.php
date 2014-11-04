@@ -446,7 +446,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		$query->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published');
 		$query->select('a.id, a.title, a.created, a.datdescription, a.registra, a.unregistra, a.course_code');
 		$query->select('l.venue, l.city, l.state, l.url, l.id as locid, l.street, l.country');
-		$query->select('c.catname, c.id AS catid');
+		$query->select('c.name AS catname, c.id AS catid');
 		$query->select('x.featured');
 		$query->select('r.id AS attendee_id');
 		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
@@ -590,7 +590,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 						break;
 
 					case 'type':
-						$where[] = ' LOWER( c.catname ) LIKE '.$filter;
+						$where[] = ' LOWER( c.name ) LIKE '.$filter;
 						break;
 				}
 			}
@@ -695,7 +695,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 						break;
 
 					case 'type':
-						$where[] = ' LOWER( c.catname ) LIKE '.$filter;
+						$where[] = ' LOWER( c.name ) LIKE '.$filter;
 						break;
 				}
 			}

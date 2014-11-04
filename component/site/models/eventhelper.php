@@ -141,7 +141,7 @@ class RedeventModelEventhelper extends JModelLegacy
 			$query->select('u.name AS creator_name, u.email AS creator_email');
 			$query->select('f.formname, f.currency');
 			$query->select('IF (x.course_credit = 0, "", x.course_credit) AS course_credit');
-			$query->select('c.catname, c.access');
+			$query->select('c.name AS catname, c.access');
 			$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
 			$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
 			$query->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug');
@@ -206,7 +206,7 @@ class RedeventModelEventhelper extends JModelLegacy
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('c.id, c.catname, c.access, c.image');
+		$query->select('c.id, c.name AS catname, c.access, c.image');
 		$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug');
 		$query->from('#__redevent_categories as c');
 		$query->join('INNER', '#__redevent_event_category_xref as x ON x.category_id = c.id');

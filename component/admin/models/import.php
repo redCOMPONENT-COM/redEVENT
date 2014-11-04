@@ -125,8 +125,8 @@ class RedEventModelImport extends JModel
 	  $nb_venues = $this->_db->getAffectedRows();
 
     // import categories
-    $query = ' INSERT IGNORE INTO #__redevent_categories (id, catname, alias, published, catdescription, image, meta_description, meta_keywords) '
-           . ' SELECT id, catname, alias, published, catdescription, concat("images/redevent/categories/", image) AS image, meta_description, meta_keywords FROM #__eventlist_categories '
+    $query = ' INSERT IGNORE INTO #__redevent_categories (id, name, alias, published, catdescription, image, meta_description, meta_keywords) '
+           . ' SELECT id, name AS catname, alias, published, catdescription, concat("images/redevent/categories/", image) AS image, meta_description, meta_keywords FROM #__eventlist_categories '
            ;
     $this->_db->setQuery($query);
     if (!$this->_db->query()) {
@@ -200,9 +200,9 @@ class RedEventModelImport extends JModel
 
     // import categories
     $query = ' INSERT IGNORE INTO #__redevent_categories (
-                 id, parent_id, catname, alias, published, catdescription, image, ordering,
+                 id, parent_id, name AS catname, alias, published, catdescription, image, ordering,
                  meta_description, meta_keywords) '
-           . ' SELECT id, parent_id, catname, alias, published, catdescription, concat("images/redevent/categories/", image) AS image, ordering,
+           . ' SELECT id, parent_id, name AS catname, alias, published, catdescription, concat("images/redevent/categories/", image) AS image, ordering,
                  meta_description, meta_keywords FROM #__eventlist_categories '
            ;
     $this->_db->setQuery($query);
@@ -425,7 +425,7 @@ class RedEventModelImport extends JModel
 		if ($id === false) // doesn't exist, create it
 		{
 			$new = JTable::getInstance('RedEvent_categories', '');
-			$new->catname = $name;
+			$new->name = $name;
 			$new->store();
 			$id = $new->id;
 			$this->_cats[$id] = $name;
@@ -443,12 +443,12 @@ class RedEventModelImport extends JModel
 		if (empty($this->_cats))
 		{
 			$this->_cats = array();
-			$query = ' SELECT id, catname FROM #__redevent_categories ';
+			$query = ' SELECT id, name FROM #__redevent_categories ';
 			$this->_db->setQuery($query);
 			$res = $this->_db->loadObjectList();
 			foreach ((array) $res as $r)
 			{
-				$this->_cats[$r->id] = $r->catname;
+				$this->_cats[$r->id] = $r->name;
 			}
 		}
 		return $this->_cats;

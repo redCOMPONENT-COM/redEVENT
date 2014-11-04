@@ -1,203 +1,121 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
-
 /**
- * EventList Component Events Model
+ * redEVENT Component events Model
  *
- * @package Joomla
- * @subpackage redEVENT
- * @since		0.9
+ * @package  Redevent.admin
+ * @since    2.0
  */
-class RedEventModelEvents extends JModel
+class RedeventModelEvents extends RModelList
 {
 	/**
-	 * Events data array
+	 * Name of the filter form to load
 	 *
-	 * @var array
+	 * @var  string
 	 */
-	var $_data = null;
+	protected $filterFormName = 'filter_events';
 
 	/**
-	 * Events total
+	 * Limitstart field used by the pagination
 	 *
-	 * @var integer
+	 * @var  string
 	 */
-	var $_total = null;
+	protected $limitField = 'events_limit';
 
 	/**
-	 * Pagination object
+	 * Limitstart field used by the pagination
 	 *
-	 * @var object
+	 * @var  string
 	 */
-	var $_pagination = null;
+	protected $limitstartField = 'auto';
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 *
-	 * @since 0.9
+	 * @param   array  $config  Configs
+	 *
+	 * @see     JController
 	 */
-	function __construct()
+	public function __construct($config = array())
 	{
-		parent::__construct();
-
-		$mainframe = JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-
-		$limit      = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-		$limitstart = $mainframe->getUserStateFromRequest( $option.'.events.limitstart', 'limitstart', 0, '', 'int' );
-
-		// In case limit has been changed, adjust it
-		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
-
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-
-		$filter_state = $mainframe->getUserStateFromRequest( $option.'.filter_state', 'filter_state', '', 'word' );
-		$this->setState('filter_state', $filter_state);
-
-		$filter       = $mainframe->getUserStateFromRequest( $option.'.filter', 'filter', '', 'int' );
-		$this->setState('filter', $filter);
-
-		$search       = $mainframe->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
-		$search       = $this->_db->getEscaped( trim(JString::strtolower( $search ) ) );
-		$this->setState('search', $search);
-
-		$filter_language = $mainframe->getUserStateFromRequest( $option.'.filter_language', 'filter_language', '', 'string' );
-		$this->setState('filter_language', $filter_language);
-
-		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.events.filter_order', 'filter_order', 'a.title', 'cmd' );
-		$this->setState('filter_order', $filter_order);
-
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.events.filter_order_Dir', 'filter_order_Dir', '', 'word' );
-		$this->setState('filter_order_Dir', $filter_order_Dir);
-	}
-
-	/**
-	 * Method to get event item data
-	 *
-	 * @access public
-	 * @return array
-	 */
-	function getData()
-	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_data))
+		if (empty($config['filter_fields']))
 		{
-			$query = $this->_buildQuery();
-			$pagination = $this->getPagination();
-			$this->_data = $this->_getList($query, $pagination->limitstart, $pagination->limit);
-			$this->_data = $this->_categories($this->_data);
+			$config['filter_fields'] = array(
+				'title', 'obj.title',
+				'published', 'obj.published',
+				'id', 'obj.id',
+				'language', 'obj.language',
+			);
 		}
 
-		return $this->_data;
+		parent::__construct($config);
 	}
 
 	/**
-	 * Total nr of events
+	 * Gets an array of objects from the results of database query.
 	 *
-	 * @access public
-	 * @return integer
+	 * @param   string   $query       The query.
+	 * @param   integer  $limitstart  Offset.
+	 * @param   integer  $limit       The number of records.
+	 *
+	 * @return  array  An array of results.
+	 *
+	 * @since   11.1
 	 */
-	function getTotal()
+	protected function _getList($query, $limitstart = 0, $limit = 0)
 	{
-		// Lets load the total nr if it doesn't already exist
-		if (empty($this->_total))
+		$result = parent::_getList($query, $limitstart, $limit);
+
+		if (!$result)
 		{
-			$query = $this->_buildQuery();
-			$this->_total = $this->_getListCount($query);
+			return $result;
 		}
 
-		return $this->_total;
+		$result = $this->getCategories($result);
+
+		return $result;
 	}
 
 	/**
-	 * Method to get a pagination object for the events
+	 * Method to get a JDatabaseQuery object for retrieving the data set from a database.
 	 *
-	 * @access public
-	 * @return integer
-	 */
-	function getPagination()
-	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_pagination))
-		{
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
-		}
-
-		return $this->_pagination;
-	}
-
-	/**
-	 * Build the query
+	 * @return  JDatabaseQuery   A JDatabaseQuery object to retrieve the data set.
 	 *
-	 * @access private
-	 * @return string
+	 * @since   12.2
 	 */
-	function _buildQuery()
+	protected function getListQuery()
 	{
 		$db = $this->_db;
 		$query = $db->getQuery(true);
 
-		$query->select('a.*, u.email, u.name AS author, u2.name as editor, x.id AS xref');
-		$query->select('cat.checked_out AS cchecked_out, cat.catname');
-		$query->from('#__redevent_events AS a ');
-		$query->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id');
+		$query->select('obj.*, u.email, u.name AS author, u2.name as editor, x.id AS xref');
+		$query->select('cat.checked_out AS cchecked_out, cat.name AS catname');
+		$query->from('#__redevent_events AS obj ');
+		$query->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = obj.id');
 		$query->join('LEFT', '#__redevent_categories AS cat ON cat.id = xcat.category_id');
-		$query->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = a.id');
+		$query->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = obj.id');
 		$query->join('LEFT', '#__redevent_venues AS loc ON loc.id = x.venueid');
-		$query->join('LEFT', '#__users AS u ON u.id = a.created_by');
-		$query->join('LEFT', '#__users AS u2 ON u2.id = a.modified_by');
-		$query->group('a.id');
+		$query->join('LEFT', '#__users AS u ON u.id = obj.created_by');
+		$query->join('LEFT', '#__users AS u2 ON u2.id = obj.modified_by');
+		$query->group('obj.id');
 
 		// Join over the language
 		$query->select('l.title AS language_title');
-		$query->join('LEFT', $db->quoteName('#__languages').' AS l ON l.lang_code = a.language');
+		$query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = obj.language');
 
 		// Get the WHERE and ORDER BY clauses for the query
-		$query	= $this->_buildContentWhere($query);
-		$query	= $this->_buildContentOrderBy($query);
+		$query = $this->buildContentWhere($query);
 
-		return $query;
-	}
-
-	/**
-	 * Build the order clause
-	 *
-	 * @access private
-	 * @return string
-	 */
-	function _buildContentOrderBy($query)
-	{
-		$filter_order = $this->getState('filter_order');
-		$filter_order_Dir = $this->getState('filter_order_Dir');
-
-		$query->order($filter_order.' '.$filter_order_Dir.', a.title');
+		$order = $this->getState('list.ordering');
+		$dir = $this->getState('list.direction');
+		$query->order($db->qn($order) . ' ' . $dir);
 
 		return $query;
 	}
@@ -205,61 +123,55 @@ class RedEventModelEvents extends JModel
 	/**
 	 * Build the where clause
 	 *
-	 * @access private
-	 * @return string
+	 * @param   JDatabaseQuery  $query  query
+	 *
+	 * @return  JDatabaseQuery
 	 */
-	function _buildContentWhere($query)
+	private function buildContentWhere($query)
 	{
-		$filter_state = $this->getState('filter_state');
-		if ($filter_state)
+		$filter_state = $this->getState('filter.published', '');
+
+		if (is_numeric($filter_state))
 		{
-			if ($filter_state == 'P')
+			if ($filter_state == '1')
 			{
-				$query->where('a.published = 1');
+				$query->where('obj.published = 1');
 			}
-			elseif ($filter_state == 'U')
+			elseif ($filter_state == '0' )
 			{
-				$query->where('a.published = 0');
+				$query->where('obj.published = 0');
 			}
 			else
 			{
-				$query->where('a.published >= 0');
+				$query->where('obj.published >= 0');
 			}
 		}
 		else
 		{
-			$query->where('a.published >= 0');
+			$query->where('obj.published >= 0');
 		}
 
-		$search = $this->getState('search');
-		$filter = $this->getState('filter');
-
-		if ($search && $filter == 1)
-		{
-			$query->where(' LOWER(a.title) LIKE \'%' . $search . '%\' OR a.course_code LIKE \'%' . $search . '%\'');
-		}
-
-		if ($search && $filter == 2)
-		{
-			$query->where(' LOWER(loc.venue) LIKE \'%'.$search.'%\' ');
-		}
-
-		if ($search && $filter == 3)
-		{
-			$query->where(' LOWER(loc.city) LIKE \'%'.$search.'%\' ');
-		}
-
-		if ($search && $filter == 4)
-		{
-			$query->where(' LOWER(cat.catname) LIKE \'%'.$search.'%\' ');
-		}
-
-		$filter_language = $this->getState('filter_language');
+		$filter_language = $this->getState('filter.language');
 
 		if ($filter_language)
 		{
-// 			$this->setState('filter_language', $filter_language);
-			$query->where('a.language = '.$this->_db->quote($filter_language));
+			$query->where('obj.language = ' . $db->quote($filter_language));
+		}
+
+		$search = $this->getState('filter.search');
+
+		if ($search)
+		{
+			$like = $db->quote('%' . $search . '%');
+
+			$parts = array();
+			$parts[] = 'LOWER(obj.title) LIKE ' . $like;
+			$parts[] = 'obj.course_code LIKE ' . $like;
+			$parts[] = 'LOWER(loc.venue) LIKE ' . $like;
+			$parts[] = 'LOWER(loc.city) LIKE ' . $like;
+			$parts[] = 'LOWER(cat.name) LIKE ' . $like;
+
+			$query->where(implode(' OR ', $parts));
 		}
 
 		return $query;
@@ -268,25 +180,62 @@ class RedEventModelEvents extends JModel
 	/**
 	 * adds categories property to event rows
 	 *
-	 * @param array $rows of events
+	 * @param   array  $rows  rows of events
+	 *
 	 * @return array
 	 */
-	function _categories($rows)
+	private function getCategories($rows)
 	{
-		for ($i=0, $n=count($rows); $i < $n; $i++) {
-			$query =  ' SELECT c.id, c.catname, c.checked_out '
-							. ' FROM #__redevent_categories as c '
-							. ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
-							. ' WHERE c.published = 1 '
-							. '   AND x.event_id = ' . $this->_db->Quote($rows[$i]->id)
-							. ' ORDER BY c.ordering'
-							;
-			$this->_db->setQuery( $query );
+		for ($i = 0, $n = count($rows); $i < $n; $i++)
+		{
+			$query = $this->_db->getQuery(true);
 
+			$query->select('c.id, c.name, c.checked_out')
+				->from('#__redevent_categories as c')
+				->join('INNER', '#__redevent_event_category_xref as x ON x.category_id = c.id')
+				->where('c.published = 1')
+				->where('x.event_id = ' . $this->_db->Quote($rows[$i]->id))
+				->order('c.ordering');
+
+			$this->_db->setQuery($query);
 			$rows[$i]->categories = $this->_db->loadObjectList();
 		}
 
-    return $rows;
+		return $rows;
+	}
+
+	/**
+	 * Method to get a store id based on model configuration state.
+	 *
+	 * This is necessary because the model is used by the component and
+	 * different modules that might need different sets of data or different
+	 * ordering requirements.
+	 *
+	 * @param   string  $id  A prefix for the store id.
+	 *
+	 * @return	string  A store id.
+	 */
+	protected function getStoreId($id = '')
+	{
+		// Compile the store id.
+		$id	.= ':' . $this->getState('filter.search');
+		$id .= ':' . $this->getState('filter.language');
+		$id	.= ':' . $this->getState('filter.published');
+
+		return parent::getStoreId($id);
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * @param   string  $ordering   Ordering column
+	 * @param   string  $direction  Direction
+	 *
+	 * @return  void
+	 */
+	public function populateState($ordering = 'obj.title', $direction = 'asc')
+	{
+		parent::populateState($ordering, $direction);
 	}
 
 	/**
@@ -477,36 +426,6 @@ class RedEventModelEvents extends JModel
 		return $ardatetimes;
 	}
 
-
-	/**
-	 * Get a option list of all categories
-	 */
-	public function getCategoriesOptions()
-	{
-		return ELAdmin::getCategoriesOptions();
-	}
-
-	/**
-	 * Get a option list of all categories
-	 */
-	public function getVenuesOptions()
-	{
-	 $query = ' SELECT v.id, v.venue '
-           . ' FROM #__redevent_venues AS v '
-           . ' ORDER BY v.venue'
-           ;
-    $this->_db->setQuery($query);
-
-    $results = $this->_db->loadObjectList();
-
-    $options = array();
-    foreach((array) $results as $r)
-    {
-      $options[] = JHTML::_('select.option', $r->id, $r->venue);
-    }
-		return $options;
-	}
-
 	public function exportEvents($categories = null, $venues = null)
 	{
 		$where = array();
@@ -577,7 +496,7 @@ class RedEventModelEvents extends JModel
 
     $results = $this->_db->loadAssocList();
 
-    $query = ' SELECT xc.event_id, GROUP_CONCAT(c.catname SEPARATOR "#!#") AS categories_names '
+    $query = ' SELECT xc.event_id, GROUP_CONCAT(c.name SEPARATOR "#!#") AS categories_names '
 		      . ' FROM #__redevent_event_category_xref AS xc '
 		      . ' LEFT JOIN #__redevent_categories AS c ON c.id = xc.category_id '
 		      . ' GROUP BY xc.event_id '
@@ -650,4 +569,4 @@ class RedEventModelEvents extends JModel
 		$res = $this->_db->loadObjectList();
 		return $res;
 	}
-}//Class end
+}

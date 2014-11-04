@@ -249,7 +249,7 @@ if (!$shHomePageFlag)
 					break;
 
 				case 'categoryevents':
-					$q = "SELECT catname FROM #__redevent_categories WHERE id = " . $db->Quote((int) $id);
+					$q = "SELECT name AS catname FROM #__redevent_categories WHERE id = " . $db->Quote((int) $id);
 					$db->setQuery($q);
 					$title[] = $db->loadResult();
 					//$title[] = $id;
@@ -262,7 +262,7 @@ if (!$shHomePageFlag)
 					if ($menuparams && $menuparams->get('parentcategory', 0))
 					{
 						$vcat = $menuparams->get('parentcategory', 0);
-						$q = "SELECT catname FROM #__redevent_categories WHERE id = " . $db->Quote((int) $vcat);
+						$q = "SELECT name AS catname FROM #__redevent_categories WHERE id = " . $db->Quote((int) $vcat);
 						$db->setQuery($q);
 						$title[] = $db->loadResult();
 					}
@@ -272,7 +272,7 @@ if (!$shHomePageFlag)
 					if ($menuparams && $menuparams->get('parentcategory', 0))
 					{
 						$vcat = $menuparams->get('parentcategory', 0);
-						$q = "SELECT catname FROM #__redevent_categories WHERE id = " . $db->Quote((int) $vcat);
+						$q = "SELECT name AS catname FROM #__redevent_categories WHERE id = " . $db->Quote((int) $vcat);
 						$db->setQuery($q);
 						$title[] = $db->loadResult();
 					}

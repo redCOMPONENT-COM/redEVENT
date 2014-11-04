@@ -443,11 +443,11 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('c.id as value, c.catname as text');
+		$query->select('c.id as value, c.name as text');
 		$query->from('#__redevent_categories AS c');
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.category_id = c.id');
 		$query->where('c.id IN (' . implode(',', $allowed) . ')');
-		$query->order('c.catname');
+		$query->order('c.name');
 
 		if ($this->getState('filter_event'))
 		{

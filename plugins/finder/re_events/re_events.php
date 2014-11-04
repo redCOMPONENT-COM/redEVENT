@@ -502,7 +502,7 @@ class plgFinderRe_events extends FinderIndexerAdapter
 		$db = &JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('c.catname, c.access, c.published AS state');
+		$query->select('c.name, c.access, c.published AS state');
 		$query->from('#__redevent_categories AS c');
 		$query->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.category_id = c.id');
 		$query->where('xcat.event_id = '.$item->id);

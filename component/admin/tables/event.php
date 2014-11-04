@@ -110,6 +110,50 @@ class RedeventTableEvent extends RTable
 	}
 
 	/**
+	 * Called before store().
+	 *
+	 * @param   boolean  $updateNulls  True to update null values as well.
+	 *
+	 * @return  boolean  True on success.
+	 */
+	protected function beforeStore($updateNulls = false)
+	{
+		$user = JFactory::getUser();
+
+		// Get the current time in the database format.
+		$time = JFactory::getDate()->toSql();
+
+		$this->modified = $time;
+		$this->modified_by = $user->get('id');
+
+		if (!$this->id)
+		{
+			$params = JComponentHelper::getParams('com_redevent');
+
+			// Get IP, time and user id
+			$this->created = $time;
+			$this->created_by = $user->get('id');
+			$this->author_ip = $params->get('storeip', '1') ? getenv('REMOTE_ADDR') : 'DISABLED';
+		}
+
+		return parent::beforeStore($updateNulls);
+	}
+
+	/**
+	 * Called after store().
+	 *
+	 * @param   boolean  $updateNulls  True to update null values as well.
+	 *
+	 * @return  boolean  True on success.
+	 */
+	protected function afterStore($updateNulls = false)
+	{
+		$this->setCategories($this->categories);
+
+		return parent::afterStore($updateNulls);
+	}
+
+	/**
 	 * Load by session id
 	 *
 	 * @param   int  $xref  session id
@@ -155,6 +199,13 @@ class RedeventTableEvent extends RTable
 	 */
 	public function bind($src, $ignore = array())
 	{
+		if (isset($src['categories']) && is_array($src['categories']))
+		{
+			$categories = $src['categories'];
+			JArrayHelper::toInteger($categories);
+			$this->categories = $categories;
+		}
+
 		// Custom fields
 		$customs = $this->_getCustomFieldsColumns();
 

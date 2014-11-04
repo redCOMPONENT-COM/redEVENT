@@ -569,7 +569,7 @@ class RedeventTags
 		$db = JFactory::getDBO();
 		foreach ($rows as $k => $r)
 		{
-			$query = ' SELECT c.id, c.catname, c.image, '
+			$query = ' SELECT c.id, c.name AS catname, c.image, '
 				. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(":", c.id, c.alias) ELSE c.id END as slug '
 				. ' FROM #__redevent_categories AS c '
 				. ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = c.id '

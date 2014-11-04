@@ -71,8 +71,8 @@ class RedEventModelArchive extends JModel
 	function __construct()
 	{
 		parent::__construct();
-		
-		$mainframe = &JFactory::getApplication();		
+
+		$mainframe = &JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 
 		$limit		= $mainframe->getUserStateFromRequest( $option.'.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
@@ -165,7 +165,7 @@ class RedEventModelArchive extends JModel
 		// Get the WHERE and ORDER BY clauses for the query
 		$where		= $this->_buildContentWhere();
 		$orderby	= $this->_buildContentOrderBy();
-		$query = 'SELECT a.*, cat.checked_out AS cchecked_out, cat.catname, u.email, u.name AS author, x.id AS xref'
+		$query = 'SELECT a.*, cat.checked_out AS cchecked_out, cat.name AS catname, u.email, u.name AS author, x.id AS xref'
 					. ' FROM #__redevent_events AS a'
 					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
 					. ' LEFT JOIN #__redevent_venues AS loc ON x.venueid = loc.id'
@@ -187,7 +187,7 @@ class RedEventModelArchive extends JModel
 	 */
 	function _buildContentOrderBy()
 	{
-		$mainframe = &JFactory::getApplication();		
+		$mainframe = &JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 
 		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.archive.filter_order', 		'filter_order', 	'x.dates', 'cmd' );
@@ -206,7 +206,7 @@ class RedEventModelArchive extends JModel
 	 */
 	function _buildContentWhere()
 	{
-		$mainframe = &JFactory::getApplication();		
+		$mainframe = &JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 
 		$filter 			= $mainframe->getUserStateFromRequest( $option.'.archive.filter', 'filter', '', 'int' );
@@ -228,7 +228,7 @@ class RedEventModelArchive extends JModel
 		}
 
 		if ($search && $filter == 4) {
-			$where[] = ' LOWER(cat.catname) LIKE \'%'.$this->_db->getEscaped($search).'%\' ';
+			$where[] = ' LOWER(cat.name) LIKE \'%'.$this->_db->getEscaped($search).'%\' ';
 		}
 
 
@@ -327,11 +327,11 @@ class RedEventModelArchive extends JModel
 
 		return true;
 	}
-	
+
 	/**
 	 * Retrieve a list of events, venues and times
 	 */
-	public function getArchiveEventVenues() 
+	public function getArchiveEventVenues()
 	{
 	  $events_id = array();
 	  foreach ((array) $this->getData() as $e) {
@@ -340,7 +340,7 @@ class RedEventModelArchive extends JModel
 	  if (empty($events_id)) {
 	    return false;
 	  }
-	  
+
 		$q = ' SELECT count(r.id) AS regcount, x.*, v.venue, v.city '
 		   . ' FROM #__redevent_event_venue_xref AS x '
        . ' LEFT JOIN #__redevent_venues AS v ON x.venueid = v.id '

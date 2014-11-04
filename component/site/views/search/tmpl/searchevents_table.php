@@ -38,7 +38,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<?php break;?>
 
 				<?php case 'category': ?>
-				<th id="el_category" class="sectiontableheader"><?php echo JHTML::_('grid.sort', JText::_('COM_REDEVENT_CATEGORY'), 'c.catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th id="el_category" class="sectiontableheader"><?php echo JHTML::_('grid.sort', JText::_('COM_REDEVENT_CATEGORY'), 'c.name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php break;?>
 
 				<?php case 'picture': ?>

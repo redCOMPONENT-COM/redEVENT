@@ -10,9 +10,9 @@
   		<field type="titletext" name="venue" translate="1">Location</field>
   		<field type="htmltext" name="locdescription" translate="1">Description</field>
   	</table>
-  	
+
   	<component>
-        !<form>com_redevent#redevent_venues#cid#view#category#task#!edit</form>
+        <form>com_redevent#redevent_venues#cid#view#category#task#!edit</form>
   	</component>
   </reference>
 </joomfish>

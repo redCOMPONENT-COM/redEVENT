@@ -400,7 +400,7 @@ class RedeventHelper
 			}
 		}
 
-		$query =  ' SELECT c.id, c.catname, (COUNT(parent.catname) - 1) AS depth '
+		$query =  ' SELECT c.id, c.name AS catname, (COUNT(parent.name) - 1) AS depth '
 		. ' FROM #__redevent_categories AS c '
 		. ' INNER JOIN #__redevent_categories AS parent ON c.lft BETWEEN parent.lft AND parent.rgt '
 		;

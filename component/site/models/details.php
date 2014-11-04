@@ -164,7 +164,7 @@ class RedeventModelDetails extends JModel
 
 			$query->select('v.venue, v.id AS venue_id, v.city, v.locimage, v.map, v.country, v.street, v.plz, v.state, v.locdescription, v.url');
 
-			$query->select('c.catname, c.published, c.access');
+			$query->select('c.name AS catname, c.published, c.access');
 
 			$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
 			$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
@@ -226,7 +226,7 @@ class RedeventModelDetails extends JModel
 
 			foreach ((array)$rows as $k => $r)
 			{
-				$query = ' SELECT c.id, c.catname, c.image, '
+				$query = ' SELECT c.id, c.name AS catname, c.image, '
 				. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(":", c.id, c.alias) ELSE c.id END as slug '
 				. ' FROM #__redevent_categories AS c '
 				. ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = c.id '
@@ -470,7 +470,7 @@ class RedeventModelDetails extends JModel
 		if (!$row) {
 			return false;
 		}
-		$query =  ' SELECT c.id, c.catname, c.access, '
+		$query =  ' SELECT c.id, c.name AS catname, c.access, '
 		. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
 		. ' FROM #__redevent_categories as c '
 		. ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '

@@ -101,7 +101,7 @@ class RedeventModelCategories extends RModelList
 		$db = &$this->_db;
 		$query = $db->getQuery(true);
 
-		$query->select('c.*, (COUNT(parent.catname) - 1) AS depth, p.catname as parent_name');
+		$query->select('c.*, (COUNT(parent.name) - 1) AS depth, p.name as parent_name');
 		$query->select('u.name AS editor');
 		$query->select('g.title AS groupname');
 		$query->from('#__redevent_categories AS parent, #__redevent_categories AS c');
@@ -168,7 +168,7 @@ class RedeventModelCategories extends RModelList
 
 		if ($search)
 		{
-			$query->where('LOWER(c.catname) LIKE \'%' . $search . '%\'');
+			$query->where('LOWER(c.name) LIKE \'%' . $search . '%\'');
 		}
 
 		return $query;
@@ -265,7 +265,7 @@ class RedeventModelCategories extends RModelList
 		}
 		$cids = implode(',', $this->id_list);
 
-		$query = 'SELECT c.id, c.catname, COUNT( xcat.event_id ) AS numcat'
+		$query = 'SELECT c.id, c.name AS catname, COUNT( xcat.event_id ) AS numcat'
 		. ' FROM #__redevent_categories AS c'
 		. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = c.id'
 		. ' WHERE c.id IN (' . $cids . ')'
@@ -350,7 +350,7 @@ class RedeventModelCategories extends RModelList
 			$where = '';
 		}
 
-		$query = ' SELECT c.id, c.catname, c.alias, c.catdescription, c.meta_description, c.meta_keywords,  '
+		$query = ' SELECT c.id, c.name AS catname, c.alias, c.description AS catdescription, c.meta_description, c.meta_keywords,  '
 		. ' c.color, c.image, c.published, c.access,  '
 		. ' c.event_template, c.ordering  '
 		. ' FROM #__redevent_categories AS c '

@@ -340,7 +340,7 @@ class RedeventModelEditevent extends JModel
 
 			if ($this->_event->id)
 			{
-				$query =  ' SELECT c.id, c.catname, '
+				$query =  ' SELECT c.id, c.name AS catname, '
               . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
               . ' FROM #__redevent_categories as c '
               . ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
@@ -470,13 +470,13 @@ class RedeventModelEditevent extends JModel
 
 		//get the maintained categories and the categories whithout any group
 		//or just get all if somebody have edit rights
-    $query = ' SELECT c.id, c.catname, c.language, (COUNT(parent.catname) - 1) AS depth, c.event_template, c.ordering '
+    $query = ' SELECT c.id, c.name AS catname, c.language, (COUNT(parent.name) - 1) AS depth, c.event_template, c.ordering '
            . ' FROM #__redevent_categories AS c, '
            . ' #__redevent_categories AS parent '
            . $cwhere
            . ' AND c.lft BETWEEN parent.lft AND parent.rgt '
            . ' GROUP BY c.id '
-           . ' ORDER BY c.catname'
+           . ' ORDER BY c.name'
            ;
     $this->_db->setQuery($query);
 
@@ -1575,7 +1575,7 @@ class RedeventModelEditevent extends JModel
   	if (is_array($categories) && count($categories))
   	{
 	  	// get all categories
-	    $query = ' SELECT c.id, c.catname, (COUNT(parent.catname) - 1) AS depth, c.event_template, c.ordering '
+	    $query = ' SELECT c.id, c.name AS catname, (COUNT(parent.name) - 1) AS depth, c.event_template, c.ordering '
 	           . ' FROM #__redevent_categories AS c, '
 	           . ' #__redevent_categories AS parent '
 	           . ' WHERE c.lft BETWEEN parent.lft AND parent.rgt '
