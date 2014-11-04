@@ -41,6 +41,13 @@ class RedeventBootstrap
 			// Bootstraps redCORE
 			RBootstrap::bootstrap();
 
+			// Bootstraps redFORM
+			/**
+			 * @todo: check why this doesnt work: RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
+			 */
+			require_once JPATH_LIBRARIES . '/redform/bootstrap.php';
+			RdfBootstrap::bootstrap();
+
 			// Register library prefix
 			RLoader::registerPrefix('Redevent', __DIR__);
 
@@ -49,12 +56,6 @@ class RedeventBootstrap
 
 			// Make available the form rules
 			JFormHelper::addRulePath(JPATH_LIBRARIES . '/redevent/form/rules');
-
-			// Add the include path for html
-			JHtml::addIncludePath(JPATH_LIBRARIES . '/redevent/html');
-
-			// Register redFORM lib
-			RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 		}
 	}
 }

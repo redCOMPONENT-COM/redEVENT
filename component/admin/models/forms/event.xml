@@ -133,6 +133,81 @@
         </field>
     </fieldset>
 
+    <fieldset name="registra">
+        <field
+                name="registra"
+                type="radio"
+                class="inputbox"
+                default="0"
+                size="1"
+                label="COM_REDEVENT_ENABLE_REGISTRATION"
+                description="COM_REDEVENT_ENABLE_REGISTRATION_TIP">
+            <option	value="0">JNO</option>
+            <option	value="1">JYES</option>
+        </field>
+        <field
+                name="unregistra"
+                type="radio"
+                class="inputbox"
+                default="0"
+                size="1"
+                label="COM_REDEVENT_ENABLE_UNREGISTRATION"
+                description="COM_REDEVENT_ENABLE_UNREGISTRATION_TIP">
+            <option	value="0">JNO</option>
+            <option	value="1">JYES</option>
+        </field>
+        <field
+                name="juser"
+                type="radio"
+                class="inputbox"
+                default="0"
+                size="1"
+                label="COM_REDEVENT_CREATE_JOOMLA_USER"
+                description="COM_REDEVENT_CREATE_JOOMLA_USER_TIP">
+            <option	value="0">JNO</option>
+            <option	value="1">JYES</option>
+        </field>
+
+        <field
+                name="redform_id"
+                type="RedformForm"
+                class="inputbox"
+                default="0"
+                size="1"
+                label="COM_REDEVENT_REDFORM_FORM_ID"
+                description="COM_REDEVENT_REDFORM_FORM_ID"
+                />
+        <field
+                name="max_multi_signup"
+                type="text"
+                class="inputbox validate-integer"
+                default="0"
+                size="15"
+                label="COM_REDEVENT_MAX_MULTI_SIGNUP"
+                description="COM_REDEVENT_MAX_MULTI_SIGNUP_TIP"
+                />
+        <field
+                name="show_names"
+                type="radio"
+                class="inputbox"
+                default="0"
+                size="1"
+                label="COM_REDEVENT_SHOW_REGISTERED_FRONTEND"
+                description="COM_REDEVENT_SHOW_REGISTERED_FRONTEND_TIP">
+            <option	value="0">JNO</option>
+            <option	value="1">JYES</option>
+        </field>
+
+        <field
+                name="showfields"
+                type="RedformField"
+                class="inputbox"
+                multiple="true"
+                label="COM_REDEVENT_REDFORM_FORM_SELECT_FIELDS"
+                description="COM_REDEVENT_REDFORM_FORM_SELECT_FIELDS_TIP"
+                />
+    </fieldset>
+
     <fieldset name="activation">
 
         <field

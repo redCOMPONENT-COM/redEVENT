@@ -200,7 +200,7 @@ $fieldSets = $this->form->getFieldsets('params');
 
 		<div class="tab-pane" id="registration">
 			<div class="row-fluid">
-				<?php //echo $this->loadTemplate('registration'); ?>
+				<?php echo $this->loadTemplate('registration'); ?>
 			</div>
 		</div>
 

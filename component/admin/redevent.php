@@ -20,11 +20,15 @@ include_once $redcoreLoader;
 // Bootstraps redCORE
 RBootstrap::bootstrap();
 
+// Register redFORM
+RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
+
 // Bootstraps Redevent application
 $redEVENTLoader = JPATH_LIBRARIES . '/redevent/bootstrap.php';
 require_once $redEVENTLoader;
 
 RedeventBootstrap::bootstrap();
+
 
 // Register backend prefix
 RLoader::registerPrefix('Redevent', __DIR__);

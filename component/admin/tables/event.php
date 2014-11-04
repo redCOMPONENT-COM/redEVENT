@@ -211,6 +211,11 @@ class RedeventTableEvent extends RTable
 			$this->categories = $categories;
 		}
 
+		if (isset($src['showfields']) && is_array($src['showfields']))
+		{
+			$this->showfields = implode(',', $src['showfields']);
+		}
+
 		// Custom fields
 		$customs = $this->_getCustomFieldsColumns();
 
