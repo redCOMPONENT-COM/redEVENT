@@ -85,11 +85,6 @@ $search = $this->state->get('filter.search');
 					<th width="1" nowrap="nowrap">
 					</th>
 				<?php endif; ?>
-				<?php if (($search == '') && ($this->canEditState)) : ?>
-					<th width="40">
-						<?php echo JHTML::_('rsearchtools.sort', '<i class=\'icon-sort\'></i>', 'c.ordering', $listDirn, $listOrder); ?>
-					</th>
-				<?php endif; ?>
 				<th class="title" width="auto">
 					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_EVENT_TITLE', 'obj.title', $listDirn, $listOrder); ?>
 				</th>

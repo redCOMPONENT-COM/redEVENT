@@ -199,6 +199,11 @@ class RedeventTableEvent extends RTable
 	 */
 	public function bind($src, $ignore = array())
 	{
+		if (!parent::bind($src, $ignore))
+		{
+			return false;
+		}
+
 		if (isset($src['categories']) && is_array($src['categories']))
 		{
 			$categories = $src['categories'];
@@ -221,7 +226,7 @@ class RedeventTableEvent extends RTable
 			}
 		}
 
-		return parent::bind($src, $ignore);
+		return true;
 	}
 
 	/**

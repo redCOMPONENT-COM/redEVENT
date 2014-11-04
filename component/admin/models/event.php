@@ -83,6 +83,40 @@ class RedeventModelEvent extends RModelAdmin
 	}
 
 	/**
+	 * Override for custom fields
+	 *
+	 * @param   JForm   $form   The form to validate against.
+	 * @param   array   $data   The data to validate.
+	 * @param   string  $group  The name of the field group to validate.
+	 *
+	 * @return  mixed  Array of filtered data if valid, false otherwise.
+	 */
+	public function validate($form, $data, $group = null)
+	{
+		// First get the data from form itself
+		if (!$validData = parent::validate($form, $data, $group))
+		{
+			return false;
+		}
+
+		// Now add custom fields
+		$fields = $this->getEventCustomFieldsFromDb();
+
+		foreach ($fields as $field)
+		{
+			$dbname = 'custom' . $field->id;
+
+			if (isset($data[$dbname]))
+			{
+				$validData[$dbname] = $data[$dbname];
+			}
+		}
+
+		return $validData;
+	}
+
+
+	/**
 	 * Method to store the event
 	 *
 	 * @access	public
@@ -297,21 +331,10 @@ class RedeventModelEvent extends RModelAdmin
 	 */
 	public function getCustomfields()
 	{
-		$query = ' SELECT f.* '
-		. ' FROM #__redevent_fields AS f '
-		. ' WHERE f.object_key = '. $this->_db->Quote("redevent.event")
-		. ' ORDER BY f.ordering '
-		;
-		$this->_db->setQuery($query);
-		$result = $this->_db->loadObjectList();
-
-		if (!$result)
-		{
-			return array();
-		}
+		$result = $this->getEventCustomFieldsFromDb();
 
 		$fields = array();
-		$data = $this->getData();
+		$data = $this->getItem();
 
 		foreach ($result as $c)
 		{
@@ -326,7 +349,33 @@ class RedeventModelEvent extends RModelAdmin
 
 			$fields[] = $field;
 		}
+
 		return $fields;
+	}
+
+	/**
+	 * Get custom field raw object from db
+	 *
+	 * @return array|mixed
+	 */
+	protected function getEventCustomFieldsFromDb()
+	{
+		$query = $this->_db->getQuery(true);
+
+		$query->select('f.*')
+			->from('#__redevent_fields AS f')
+			->where('f.object_key = '. $this->_db->Quote("redevent.event"))
+			->order('f.ordering');
+
+		$this->_db->setQuery($query);
+		$result = $this->_db->loadObjectList();
+
+		if (!$result)
+		{
+			return array();
+		}
+
+		return $result;
 	}
 
 	/**

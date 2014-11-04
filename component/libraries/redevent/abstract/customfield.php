@@ -124,6 +124,20 @@ abstract class RedeventAbstractCustomfield extends JObject
 	}
 
 	/**
+	 * Return field html label
+	 *
+	 * to be adapted with layout ?
+	 *
+	 * @return string html
+	 */
+	public function getLabel()
+	{
+		$label = RLayoutHelper::render('customfields.label', $this, null, array('component' => 'com_redevent'));
+
+		return $label;
+	}
+
+	/**
 	 * returns form field for filtering
 	 *
 	 * @param   array  $attributes  attributes

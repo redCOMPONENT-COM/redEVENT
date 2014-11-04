@@ -54,6 +54,6 @@ class RedeventCustomfieldDate extends RedeventAbstractCustomfield
 		{
 			$selected = $this->default_value;
 		}
-		return JHTML::calendar($selected, $this->fieldname, $this->fieldid, '%Y-%m-%d', $this->attributesToString($attributes));
+		return JHTML::calendar($selected, 'jform[' . $this->fieldname . ']', $this->fieldid, '%Y-%m-%d', $this->attributesToString($attributes));
 	}
 }

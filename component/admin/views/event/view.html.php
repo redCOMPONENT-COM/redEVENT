@@ -33,6 +33,7 @@ class RedeventViewEvent extends RedeventViewAdmin
 
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
+		$this->customfields = $this->get('Customfields');
 
 		$this->canConfig = false;
 
