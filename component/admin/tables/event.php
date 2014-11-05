@@ -136,6 +136,11 @@ class RedeventTableEvent extends RTable
 			$this->author_ip = $params->get('storeip', '1') ? getenv('REMOTE_ADDR') : 'DISABLED';
 		}
 
+		if (is_array($this->submission_types))
+		{
+			$this->submission_types = implode(',', $this->submission_types);
+		}
+
 		return parent::beforeStore($updateNulls);
 	}
 
