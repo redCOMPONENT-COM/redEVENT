@@ -208,6 +208,191 @@
                 />
     </fieldset>
 
+    <fieldset name="submission_types">
+
+        <field
+                name="submission_types"
+                type="checkboxes"
+                class="inputbox"
+                multiple="true"
+                label="COM_REDEVENT_SUBMISSION_TYPES"
+                description="COM_REDEVENT_SUBMISSION_TYPES_TIP"
+                >
+            <option value="external">COM_REDEVENT_EXTERNAL</option>
+            <option value="phone">COM_REDEVENT_PHONE</option>
+            <option value="webform">COM_REDEVENT_WEBFORM</option>
+            <option value="email">COM_REDEVENT_EMAIL</option>
+            <option value="formaloffer">COM_REDEVENT_FORMALOFFER</option>
+        </field>
+
+        <field
+                name="submission_type_external"
+                type="text"
+                class="inputbox validate-url"
+                label="COM_REDEVENT_EXTERNAL_URL_LABEL"
+                description="COM_REDEVENT_EXTERNAL_URL_LABEL_TIP"/>
+
+        <field
+                name="submission_type_phone"
+                type="editor"
+                label="COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL"
+                description="COM_REDEVENT_TYPES_PARAMS_SCREEN_TIP"
+                class="inputbox"
+                filter="safehtml"
+                buttons="true"
+                hide="readmore,pagebreak"
+                />
+
+        <field
+                name="submission_type_webform"
+                type="editor"
+                label="COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL"
+                description="COM_REDEVENT_TYPES_PARAMS_SCREEN_TIP"
+                class="inputbox"
+                filter="safehtml"
+                buttons="true"
+                hide="readmore,pagebreak"
+                />
+
+        <field
+                name="review_message"
+                type="editor"
+                label="COM_REDEVENT_REVIEW_SCREEN"
+                description="COM_REDEVENT_REVIEW_SCREEN_INFO"
+                class="inputbox"
+                filter="safehtml"
+                buttons="true"
+                hide="readmore,pagebreak"
+                />
+
+        <field
+                name="confirmation_message"
+                type="editor"
+                label="COM_REDEVENT_CONFIRMATION"
+                description="COM_REDEVENT_CONFIRMATION_INFO"
+                class="inputbox"
+                filter="safehtml"
+                buttons="true"
+                hide="readmore,pagebreak"
+                />
+
+        <field
+                name="submission_type_email"
+                type="editor"
+                label="COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL"
+                description="COM_REDEVENT_TYPES_PARAMS_SCREEN_TIP"
+                class="inputbox"
+                filter="safehtml"
+                buttons="true"
+                hide="readmore,pagebreak"
+                />
+
+        <field
+                name="submission_type_email_subject"
+                type="text"
+                size="80"
+                label="COM_REDEVENT_EMAIL_SUBJECT"
+                description=""
+                class="inputbox" />
+
+        <field
+                name="submission_type_email_body"
+                type="editor"
+                label="COM_REDEVENT_SUBMISSION_EMAIL_EMAIL_BODY"
+                description="COM_REDEVENT_SUBMISSION_EMAIL_EMAIL_BODY"
+                class="inputbox"
+                filter="safehtml"
+                buttons="true"
+                hide="readmore,pagebreak"
+                />
+
+        <field
+                name="send_pdf_form"
+                type="radio"
+                class="inputbox"
+                default="0"
+                label="COM_REDEVENT_SEND_PDF_FORM"
+                description="COM_REDEVENT_SEND_PDF_FORM_TIP">
+            <option	value="0">JNO</option>
+            <option	value="1">JYES</option>
+        </field>
+
+        <field
+                name="pdf_form_data"
+                type="radio"
+                class="inputbox"
+                default="0"
+                label="COM_REDEVENT_PDF_FORM_DATA"
+                description="COM_REDEVENT_PDF_FORM_DATA_TIP">
+            <option	value="0">JNO</option>
+            <option	value="1">JYES</option>
+        </field>
+
+        <field
+                name="submission_type_email_pdf"
+                type="editor"
+                label="COM_REDEVENT_SUBMISSION_EMAIL_PDF_CONTENT"
+                description="COM_REDEVENT_SUBMISSION_EMAIL_PDF_CONTENT_TIP"
+                class="inputbox"
+                filter="safehtml"
+                buttons="true"
+                hide="readmore,pagebreak"
+                />
+
+        <field
+                name="submission_type_formal_offer"
+                type="editor"
+                label="COM_REDEVENT_TYPES_PARAMS_SCREEN_LABEL"
+                description="COM_REDEVENT_TYPES_PARAMS_SCREEN_TIP"
+                class="inputbox"
+                filter="safehtml"
+                buttons="true"
+                hide="readmore,pagebreak"
+                />
+
+        <field
+                name="submission_type_formal_offer_subject"
+                type="text"
+                size="80"
+                label="COM_REDEVENT_EMAIL_SUBJECT"
+                description=""
+                class="inputbox" />
+
+        <field
+                name="submission_type_formal_offer_body"
+                type="editor"
+                label="COM_REDEVENT_FORMAL_OFFER_BODY"
+                description="COM_REDEVENT_FORMAL_OFFER_BODY"
+                class="inputbox"
+                filter="safehtml"
+                buttons="true"
+                hide="readmore,pagebreak"
+                />
+
+        <field
+                name="show_submission_type_webform_formal_offer"
+                type="radio"
+                class="inputbox"
+                default="0"
+                label="COM_REDEVENT_SHOW_SUBMIT_AND_PRINT_BUTTON"
+                description="COM_REDEVENT_SHOW_SUBMIT_AND_PRINT_BUTTON_TIP">
+            <option	value="0">JNO</option>
+            <option	value="1">JYES</option>
+        </field>
+
+        <field
+                name="submission_type_webform_input"
+                type="editor"
+                label="COM_REDEVENT_WEBFORM_PRINT_FORMAL_OFFER"
+                description="COM_REDEVENT_WEBFORM_PRINT_FORMAL_OFFER_TIP"
+                class="inputbox"
+                filter="safehtml"
+                buttons="true"
+                hide="readmore,pagebreak"
+                />
+
+    </fieldset>
+
     <fieldset name="activation">
 
         <field
@@ -215,7 +400,6 @@
             type="radio"
             class="inputbox"
             default="0"
-            size="1"
             label="COM_REDEVENT_ENABLE_NOTIFICATION"
             description="COM_REDEVENT_ENABLE_NOTIFICATION_TIP">
             <option	value="0">JNO</option>

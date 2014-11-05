@@ -206,7 +206,7 @@ $fieldSets = $this->form->getFieldsets('params');
 
 		<div class="tab-pane" id="submission_types">
 			<div class="row-fluid">
-				<?php //echo $this->loadTemplate('submission_types'); ?>
+				<?php echo $this->loadTemplate('submission_types'); ?>
 			</div>
 		</div>
 
