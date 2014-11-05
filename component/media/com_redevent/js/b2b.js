@@ -1177,18 +1177,16 @@ var redb2b = {
 			'currency': currency
 		});
 
-		for (var i = 0; i < response.regs.length; i++) {
-			var r = response.regs[i];
-			ga('ecommerce:addItem', {
-				'id' : response.submit_key,
-				'name' : r.details.event_name + ' @ ' + r.details.venue + '(session ' + r.details.xref + ')',
-				'sku' :r.details.event_name,
-				'category' : redb2b.gaJoinCategoyNames(r.details.categories),
-				'price' : r.details.price,    // Unit price.
-				'currency' :r.details.currency,
-				'quantity' : 1    // Unit quantity.
-			});
-		}
+		var r = response.regs[0];
+		ga('ecommerce:addItem', {
+			'id' : response.submit_key,
+			'name' : r.details.event_name + ' @ ' + r.details.venue + '(session ' + r.details.xref + ')',
+			'sku' :r.details.event_name,
+			'category' : redb2b.gaJoinCategoyNames(r.details.categories),
+			'price' : r.details.price,    // Unit price.
+			'currency' :r.details.currency,
+			'quantity' : response.regs.length    // Unit quantity.
+		});
 
 		ga('ecommerce:send');
 	},
