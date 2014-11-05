@@ -73,6 +73,18 @@
             />
 
         <field
+                name="enable_ical"
+                type="radio"
+                class="inputbox"
+                default="0"
+                size="1"
+                label="COM_REDEVENT_EVENT_ENABLE_ICAL_LABEL"
+                description="">
+            <option	value="0">JNO</option>
+            <option	value="1">JYES</option>
+        </field>
+
+        <field
                 name="categories"
                 type="recategorylist"
                 label="COM_REDEVENT_CATEGORY"
@@ -390,11 +402,9 @@
                 buttons="true"
                 hide="readmore,pagebreak"
                 />
-
     </fieldset>
 
     <fieldset name="activation">
-
         <field
             name="notify"
             type="radio"
@@ -468,6 +478,73 @@
             buttons="true"
             hide="readmore,pagebreak"
             />
+    </fieldset>
 
+    <fieldset name="confirmation">
+        <field
+                name="notify_off_list_subject"
+                type="text"
+                size="80"
+                label="COM_REDEVENT_NOTIFY_ATTENDING_SUBJECT"
+                description=""
+                class="inputbox" />
+
+        <field
+                name="notify_off_list_body"
+                type="editor"
+                size="80"
+                label="COM_REDEVENT_NOTIFY_ATTENDING_BODY"
+                description="COM_REDEVENT_NOTIFY_ATTENDING_NOTE"
+                class="inputbox"
+                filter="safehtml"
+                buttons="true"
+                hide="readmore,pagebreak"
+                />
+
+        <field
+                name="notify_on_list_subject"
+                type="text"
+                size="80"
+                label="COM_REDEVENT_NOTIFY_ON_LIST_SUBJECT"
+                description=""
+                class="inputbox" />
+
+        <field
+                name="notify_on_list_body"
+                type="editor"
+                size="80"
+                label="COM_REDEVENT_NOTIFY_ON_LIST_BODY"
+                description="COM_REDEVENT_NOTIFY_ON_LIST_NOTE"
+                class="inputbox"
+                filter="safehtml"
+                buttons="true"
+                hide="readmore,pagebreak"
+                />
+    </fieldset>
+
+    <fieldset name="payment">
+        <field
+                name="paymentprocessing"
+                type="editor"
+                size="80"
+                label="COM_REDEVENT_PAYMENTPROCESSING"
+                description="COM_REDEVENT_PAYMENTPROCESSING_TIP"
+                class="inputbox"
+                filter="safehtml"
+                buttons="true"
+                hide="readmore,pagebreak"
+                />
+
+        <field
+                name="paymentaccepted"
+                type="editor"
+                size="80"
+                label="COM_REDEVENT_PAYMENTACCEPTED"
+                description="COM_REDEVENT_PAYMENTACCEPTED_INFO"
+                class="inputbox"
+                filter="safehtml"
+                buttons="true"
+                hide="readmore,pagebreak"
+                />
     </fieldset>
 </form>

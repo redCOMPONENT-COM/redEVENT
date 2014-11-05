@@ -1,6 +1,13 @@
-<?php $infoimage = JHTML::image('components/com_redevent/assets/images/icon-16-hint.png', JText::_('COM_REDEVENT_NOTES' ) ); ?>
-<?php $k = 0; ?>
-	<?php foreach ($this->customfields as $field): ?>
+<?php
+/**
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
+ */
+
+defined('_JEXEC') or die('Restricted access');
+?>
+<?php foreach ($this->customfields as $field): ?>
 
 	<div class="control-group">
 		<div class="control-label">
@@ -11,5 +18,4 @@
 		</div>
 	</div>
 
-	<?php endforeach; ?>
-<?php
+<?php endforeach;

@@ -96,7 +96,7 @@ class RedeventHelperAttachment extends JObject
 				continue;
 			}
 
-			$table = RTable::getAdminInstance('Attachments');
+			$table = RTable::getInstance('Attachment', 'RedeventTable');
 			$table->file = $file['name'];
 			$table->object = $object;
 
@@ -141,7 +141,7 @@ class RedeventHelperAttachment extends JObject
 			return false;
 		}
 
-		$table = RTable::getInstance('Attachments', 'RedeventTable');
+		$table = RTable::getInstance('Attachment', 'RedeventTable');
 		$table->load($attach['id']);
 		$table->bind($attach);
 

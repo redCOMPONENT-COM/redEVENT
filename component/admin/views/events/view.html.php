@@ -39,6 +39,7 @@ class RedeventViewEvents extends RedeventViewAdmin
 		$this->pagination = $this->get('Pagination');
 		$this->filterForm = $this->get('Form');
 		$this->activeFilters = $this->get('ActiveFilters');
+		$this->user = JFactory::getUser();
 
 		// Fields ordering
 		$this->ordering = array();
