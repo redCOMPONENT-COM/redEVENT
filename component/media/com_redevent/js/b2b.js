@@ -1183,7 +1183,7 @@ var redb2b = {
 			'name' : r.details.event_name + ' @ ' + r.details.venue + '(session ' + r.details.xref + ')',
 			'sku' :r.details.event_name,
 			'category' : redb2b.gaJoinCategoyNames(r.details.categories),
-			'price' : r.details.price,    // Unit price.
+			'price' : total,    // Unit price.
 			'currency' :r.details.currency,
 			'quantity' : response.regs.length    // Unit quantity.
 		});
