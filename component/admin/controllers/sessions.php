@@ -1,76 +1,20 @@
 <?php
 /**
- * @version     1.0 $Id$
- * @package     Joomla
- * @subpackage  redEVENT
- * @copyright   redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license     GNU/GPL, see LICENSE.php
- *              redEVENT is based on EventList made by Christoph Lukes from schlu.net
- *              redEVENT can be downloaded from www.redcomponent.com
- *              redEVENT is free software; you can redistribute it and/or
- *              modify it under the terms of the GNU General Public License 2
- *              as published by the Free Software Foundation.
- *              redEVENT is distributed in the hope that it will be useful,
- *              but WITHOUT ANY WARRANTY; without even the implied warranty of
- *              MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *              GNU General Public License for more details.
- *              You should have received a copy of the GNU General Public License
- *              along with redEVENT; if not, write to the Free Software
- *              Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.controller');
-
 /**
- * EventList Component Events Controller
+ * Redevent Component sessions Controller
  *
- * @package     Joomla
- * @subpackage  redEVENT
- * @since       0.9
+ * @package  Redevent.admin
+ * @since    0.9
  */
-class RedeventControllerSessions extends RedeventController
+class RedeventControllerSessions extends RControllerAdmin
 {
-	/**
-	 * Constructor
-	 *
-	 * @since 0.9
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-
-		// Register Extra task
-		$this->registerTask('apply', 'save');
-		$this->registerTask('saveAndTwit', 'save');
-		$this->registerTask('copy', 'edit');
-		$this->registerTask('add', 'edit');
-	}
-
-	public function back()
-	{
-		$this->setRedirect('index.php?option=com_redevent&view=events');
-	}
-
-	public function edit()
-	{
-		JRequest::setVar('hidemainmenu', 1);
-		JRequest::setVar('layout', 'default');
-		JRequest::setVar('view', 'session');
-		JRequest::setVar('standalone', true);
-		if (Jrequest::getVar('task') == 'edit')
-		{
-			JRequest::setVar('edit', true);
-		}
-		else
-		{
-			JRequest::setVar('edit', false);
-		}
-
-		parent::display();
-  }
-
   /**
    * save the event session
    */

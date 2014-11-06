@@ -35,7 +35,7 @@ class RedeventControllerVenues extends RControllerAdmin
 
 		foreach ($id as $cid)
 		{
-			 $dispatcher->trigger('onAfterVenueRemoved', array($id));
+			$dispatcher->trigger('onAfterVenueRemoved', array($id));
 		}
 	}
 

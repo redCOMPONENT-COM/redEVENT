@@ -1,118 +1,62 @@
 <?php
 /**
- * @version 2.0
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008,2009,2010,2011 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
-
-jimport('joomla.application.component.model');
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Joomla Redevent Component Model
+ * redEVENT Component sessions Model
  *
- * @package		Redevent
- * @since 2.0
+ * @package  Redevent.admin
+ * @since    2.0
  */
 class RedeventModelSessions extends JModel
 {
 	/**
-	 * event id
-	 * @var int
+	 * Name of the filter form to load
+	 *
+	 * @var  string
 	 */
-	var $_eventid = 0;
-   /**
-   * list data array
-   *
-   * @var array
-   */
-  var $_data = null;
+	protected $filterFormName = 'filter_sessions';
 
-  /**
-   * total
-   *
-   * @var integer
-   */
-  var $_total = null;
+	/**
+	 * Limitstart field used by the pagination
+	 *
+	 * @var  string
+	 */
+	protected $limitField = 'sessions_limit';
 
-  /**
-   * Pagination object
-   *
-   * @var object
-   */
-  var $_pagination = null;
+	/**
+	 * Limitstart field used by the pagination
+	 *
+	 * @var  string
+	 */
+	protected $limitstartField = 'auto';
 
-  /**
-   * Constructor
-   *
-   * @since 0.1
-   */
-  function __construct()
-  {
-    parent::__construct();
+	/**
+	 * Constructor.
+	 *
+	 * @param   array  $config  Configs
+	 *
+	 * @see     JController
+	 */
+	public function __construct($config = array())
+	{
+		if (empty($config['filter_fields']))
+		{
+			$config['filter_fields'] = array(
+				'title', 'obj.title',
+				'published', 'obj.published',
+				'id', 'obj.id',
+				'language', 'obj.language',
+			);
+		}
 
-    $app    = &JFactory::getApplication();
-    $option = Jrequest::getCmd('option');
-
-    // Get the pagination request variables
-    $limit      = $app->getUserStateFromRequest( 'global.list.limit', 'limit', $app->getCfg('list_limit'), 'int' );
-    $limitstart = JRequest::getVar('limitstart', 0, '', 'int');
-
-		// In case limit has been changed, adjust it
-		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
-
-    $this->setState('limit', $limit);
-    $this->setState('limitstart', $limitstart);
-
-    // filters and ordering
-    $filter_order     = $app->getUserStateFromRequest( 'com_redevent.sessions.filter_order', 'filter_order', 'obj.dates', 'cmd' );
-    $filter_order_Dir = $app->getUserStateFromRequest( 'com_redevent.sessions.filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
-
-    $search  = $app->getUserStateFromRequest( 'com_redevent.sessions.search', 'search', '', 'string' );
-    $eventid = $app->getUserStateFromRequest( 'com_redevent.sessions.eventid', 'eventid', 0, 'int');
-    $venueid = $app->getUserStateFromRequest( 'com_redevent.sessions.venueid', 'venueid', 0, 'int');
-
-    $filter_state     = $app->getUserStateFromRequest( 'com_redevent.sessions.filter_state', 'filter_state', 'notarchived', 'cmd' );
-    $filter_featured  = $app->getUserStateFromRequest( 'com_redevent.sessions.filter_featured', 'filter_featured', '', 'cmd' );
-    $filter_group  = $app->getUserStateFromRequest( 'com_redevent.sessions.filter_group', 'filter_group', 0, 'int' );
-    $filter_group_manage  = $app->getUserStateFromRequest( 'com_redevent.sessions.filter_group_manage', 'filter_group_manage', 1, 'int' );
-
-    $this->setState('filter_order',      $filter_order);
-    $this->setState('filter_order_Dir',  $filter_order_Dir);
-    $this->setState('filter_state',      $filter_state);
-    $this->setState('filter_featured',   $filter_featured);
-    $this->setState('filter_group',      $filter_group);
-    $this->setState('filter_group_manage', $filter_group_manage);
-    $this->setState('search',            strtolower($search));
-    $this->setState('eventid',           $eventid);
-    $this->setState('venueid',           $venueid);
-
-    $this->setEventId($eventid);
-  }
-
-  function setEventId($id)
-  {
-  	$this->_eventid = (int) $id;
-  	$this->_data = null;
-  }
+		parent::__construct($config);
+	}
 
   /**
    * Method to get List data
@@ -238,79 +182,6 @@ class RedeventModelSessions extends JModel
 	}
 
   /**
-   * Method to get a pagination object
-   *
-   * @access public
-   * @return integer
-   */
-  function getPagination()
-  {
-    // Lets load the content if it doesn't already exist
-    if (empty($this->_pagination))
-    {
-      jimport('joomla.html.pagination');
-      $this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
-    }
-
-    return $this->_pagination;
-  }
-
-
-  /**
-   * Total nr of items
-   *
-   * @access public
-   * @return integer
-   */
-  function getTotal()
-  {
-    // Lets load the total nr if it doesn't already exist
-    if (empty($this->_total))
-    {
-      $query = $this->_buildQuery();
-      $this->_total = $this->_getListCount($query);
-    }
-
-    return $this->_total;
-  }
-
-  /**
-   * returns event data
-   *
-   * @return object event
-   */
-  function getEvent()
-  {
-  	if (!$this->_eventid) {
-  		return false;
-  	}
-  	$query = ' SELECT e.id, e.title, e.registra '
-  	       . ' FROM #__redevent_events AS e '
-  	       . ' WHERE id = ' . $this->_db->Quote($this->_eventid);
-  	$this->_db->setQuery($query);
-  	$res = $this->_db->loadObject();
-  	return $res;
-  }
-
-  /**
-   * returns venue data
-   *
-   * @return object event
-   */
-  function getVenue()
-  {
-  	if (!$this->getState('venueid')) {
-  		return false;
-  	}
-  	$query = ' SELECT v.id, v.venue '
-  	       . ' FROM #__redevent_venues AS v '
-  	       . ' WHERE id = ' . $this->getState('venueid');
-  	$this->_db->setQuery($query);
-  	$res = $this->_db->loadObject();
-  	return $res;
-  }
-
-  /**
    * adds attendees stats to session
    *
    * @return boolean true on success
@@ -356,35 +227,6 @@ class RedeventModelSessions extends JModel
   }
 
 	/**
-	 * Method to (un)publish/archive
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	0.9
-	 */
-	function publish($cid = array(), $publish = 1)
-	{
-		$user 	=& JFactory::getUser();
-
-		if (count( $cid ))
-		{
-			$cids = implode( ',', $cid );
-
-			$query = 'UPDATE #__redevent_event_venue_xref'
-				. ' SET published = ' . (int) $publish
-				. ' WHERE id IN ('. $cids .')'
-//				. ' AND ( checked_out = 0 OR ( checked_out = ' . (int) $user->get('id'). ' ) )'
-			;
-			$this->_db->setQuery( $query );
-			if (!$this->_db->query()) {
-				$this->setError($this->_db->getErrorMsg());
-				return false;
-			}
-		}
-		return true;
-	}
-
-	/**
 	 * Method to (un)feature
 	 *
 	 * @access	public
@@ -393,7 +235,7 @@ class RedeventModelSessions extends JModel
 	 */
 	function featured($cid = array(), $featured = 1)
 	{
-		$user 	=& JFactory::getUser();
+		$user = JFactory::getUser();
 
 		if (count( $cid ))
 		{
@@ -410,18 +252,5 @@ class RedeventModelSessions extends JModel
 			}
 		}
 		return true;
-	}
-
-	/**
-	 * returns groups as options
-	 * @return array
-	 */
-	function getGroupsOptions()
-	{
-		$query = ' SELECT g.id AS value, g.title AS text '
-		       . ' FROM #__usergroups AS g '
-		       . ' ORDER BY g.title ';
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
 	}
 }
