@@ -25,6 +25,8 @@ defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.formvalidation');
 $app = &JFactory::getApplication();
+jimport('joomla.html.pane');
+JHTML::_('behavior.mootools');
 ?>
 <script language="javascript" type="text/javascript">
 function submitbutton(pressbutton)
@@ -52,6 +54,8 @@ function submitbutton(pressbutton)
 	 return false;
 
 }
+
+SqueezeBox.initialize({handler: 'iframe', size: {x: 600, y: 500}});
 </script>
 
 <h2><?php echo $this->event->title. '@'. $this->event->venue. ' ' . (RedeventHelper::isValidDate($this->event->dates) ? strftime($this->settings->get('formatdate', '%d.%m.%Y'), strtotime($this->event->dates)) : ''); ?></h2>
@@ -109,6 +113,9 @@ function submitbutton(pressbutton)
 							<br/><?php echo JText::_('COM_REDEVENT_EMAIL_ATTENDEES_BODY_NOTE'); ?>
 						</td>
 						<td>
+							<div class="tagsdiv">
+								<?php echo JHTML::link('index.php?option=com_redevent&view=tags&tmpl=component&field=emailattendees', JText::_('COM_REDEVENT_TAGS'), 'class="modal"'); ?>
+							</div>
 							<?php echo $this->editor->display('body', '', '100%', '350', '75', '20'); ?>
 						</td>
 					</tr>
