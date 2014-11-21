@@ -120,10 +120,10 @@ class RedeventViewEvents extends RedeventViewAdmin
 			$unPublish = RToolbarBuilder::createUnpublishButton('events.unpublish');
 			$thirdGroup->addButton($unPublish);
 
-			$button = RToolbarBuilder::createStandardButton('events.archive','redevent_archive', 'redevent_archive', JText::_('COM_REDEVENT_ARCHIVE'), true);
+			$button = RToolbarBuilder::createStandardButton('events.archive', JText::_('COM_REDEVENT_ARCHIVE'),'', 'icon-archive', true);
 			$thirdGroup->addButton($button);
 
-			$button = RToolbarBuilder::createStandardButton('events.archivepast', 'redevent_archive', 'redevent_archive', JText::_('COM_REDEVENT_ARCHIVE_OLD_EVENTS'), true);
+			$button = RToolbarBuilder::createStandardButton('events.archivepast', JText::_('COM_REDEVENT_ARCHIVE_OLD_EVENTS'), '', 'icon-archive', true);
 			$thirdGroup->addButton($button);
 		}
 

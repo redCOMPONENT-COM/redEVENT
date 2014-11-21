@@ -145,16 +145,16 @@ $search = $this->state->get('filter.search');
 						<?php else : ?>
 							<?php echo JHtml::_('link', 'index.php?option=com_redevent&task=event.edit&id=' . $row->id, $itemTitle); ?>
 						<?php endif; ?>
+						<span class="linkfront"><?php echo JHTML::link(JURI::root().RedeventHelperRoute::getDetailsRoute($row->id),
+								JHTML::image('administrator/components/com_redevent/assets/images/linkfront.png',
+									JText::_('COM_REDEVENT_EVENT_FRONTEND_LINK'))); ?>
+						</span>
 						<br />
 						<?php echo JHTML::_('string.truncate', $row->alias, 50, true, false); ?>
 						<?php if ($row->course_code): ?>
 							<br/>
 							<?php echo $row->course_code; ?>
 						<?php endif; ?>
-						</div>
-						<div class="linkfront"><?php echo JHTML::link(JURI::root().RedeventHelperRoute::getDetailsRoute($row->id),
-								JHTML::image('administrator/components/com_redevent/assets/images/linkfront.png',
-									JText::_('COM_REDEVENT_EVENT_FRONTEND_LINK'))); ?>
 						</div>
 					</td>
 					<td>
