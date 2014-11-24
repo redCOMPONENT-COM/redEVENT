@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent.admin
  * @since    2.0
  */
-class RedeventModelSessions extends JModel
+class RedeventModelSessions extends RModelList
 {
 	/**
 	 * Name of the filter form to load
@@ -58,153 +58,192 @@ class RedeventModelSessions extends JModel
 		parent::__construct($config);
 	}
 
-  /**
-   * Method to get List data
-   *
-   * @access public
-   * @return array
-   */
-  function getData()
-  {
-    // Lets load the content if it doesn't already exist
-    if (empty($this->_data))
-    {
-      $query = $this->_buildQuery();
-      $pagination = $this->getPagination();
-      $res = $this->_getList($query, $pagination->limitstart, $pagination->limit);
-
-      if (!$res) {
-   	  	echo $this->_db->getErrorMsg();
-   	  	return false;
-  		}
-
-  		$this->_data = $res;
-  		$this->_addAttendeesStats();
-    }
-    return $this->_data;
-  }
-
-	function _buildQuery()
+	/**
+	 * Method to get a store id based on model configuration state.
+	 *
+	 * @param   string  $id  A prefix for the store id.
+	 *
+	 * @return  string       A store id.
+	 */
+	protected function getStoreId($id = '')
 	{
-		// Get the WHERE and ORDER BY clauses for the query
-		$where		= $this->_buildContentWhere();
-		$orderby	= $this->_buildContentOrderBy();
+		// Compile the store id.
+		$id .= ':' . $this->getState('filter.search');
+		$id	.= ':' . $this->getState('filter.language');
 
-		$query = ' SELECT obj.*, 0 AS checked_out, '
-		  . ' e.title AS event_title, e.checked_out as event_checked_out, e.registra, '
-		  . ' v.venue, v.checked_out as venue_checked_out '
-			. ' FROM #__redevent_event_venue_xref AS obj '
-			. ' INNER JOIN #__redevent_events AS e ON obj.eventid = e.id '
-		  . ' LEFT JOIN #__redevent_venues AS v ON v.id = obj.venueid '
-		  ;
+		return parent::getStoreId($id);
+	}
 
-		$query .= $where;
-		$query .= $orderby;
+	/**
+	 * Gets an array of objects from the results of database query.
+	 *
+	 * @param   string   $query       The query.
+	 * @param   integer  $limitstart  Offset.
+	 * @param   integer  $limit       The number of records.
+	 *
+	 * @return  array  An array of results.
+	 *
+	 * @since   11.1
+	 */
+	protected function _getList($query, $limitstart = 0, $limit = 0)
+	{
+		$result = parent::_getList($query, $limitstart, $limit);
+
+		if (!$result)
+		{
+			return $result;
+		}
+
+		$this->addAttendeesStats($result);
+
+		return $result;
+	}
+
+	/**
+	 * Build an SQL query to load the list data.
+	 *
+	 * @return  object  Query object
+	 */
+	protected function getListQuery()
+	{
+		$query = $this->_db->getQuery(true);
+
+		$query->select('obj.*, 0 AS checked_out')
+			->select('e.title AS event_title, e.checked_out as event_checked_out, e.registra')
+			->select('v.venue, v.checked_out as venue_checked_out')
+			->select('')
+			->from('#__redevent_event_venue_xref AS obj')
+			->join('INNER', '#__redevent_events AS e ON obj.eventid = e.id')
+			->join('LEFT', '#__redevent_venues AS v ON v.id = obj.venueid');
+
+		$this->buildContentWhere($query);
+
+		// Add the list ordering clause.
+		$query->order($this->_db->escape($this->getState('list.ordering', 'obj.dates')) . ' ' . $this->_db->escape($this->getState('list.direction', 'ASC')));
 
 		return $query;
 	}
 
-	function _buildContentOrderBy()
+	/**
+	 * Method to build the where clause of the query
+	 *
+	 * @param   JDatabaseQuery  $query  query
+	 *
+	 * @return  JDatabaseQuery
+	 */
+	protected function buildContentWhere($query)
 	{
-		$mainframe = &JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$filter_eventid = $this->getState('filter.eventid', '');
 
-		$filter_order		  = $this->getState('filter_order');
-		$filter_order_Dir	= $this->getState('filter_order_Dir');
-
-		if ($filter_order == 'obj.dates'){
-			$orderby 	= ' ORDER BY obj.dates '.$filter_order_Dir;
-		} else {
-			$orderby 	= ' ORDER BY '.$filter_order.' '.$filter_order_Dir.' , obj.dates ';
-		}
-
-		return $orderby;
-	}
-
-	function _buildContentWhere()
-	{
-		$mainframe = &JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-
-		$search				= $this->getState('search');
-
-		$where = array();
-
-		if ($this->_eventid) {
-			$where[] = ' obj.eventid = '. $this->_eventid;
-		}
-
-		if ($search)
+		if (is_numeric($filter_eventid))
 		{
-			$where[] = '(LOWER(e.title) LIKE ' . $this->_db->Quote('%' . $search . '%') . ' OR '
-				. ' LOWER(obj.title) LIKE ' . $this->_db->Quote('%'.$search.'%') . ' OR '
-				. ' LOWER(obj.session_code) LIKE ' . $this->_db->Quote('%'.$search.'%') . ')';
+			$query->where('obj.eventid = ' . $filter_eventid);
 		}
 
-		switch ($this->getState('filter_state'))
+		// Filter: like / search
+		$search = $this->getState('filter.search', '');
+
+		if (!empty($search))
 		{
-			case 'unpublished':
-				$where[] = ' obj.published = 0 ';
+			if (stripos($search, 'id:') === 0)
+			{
+				$query->where('obj.id = ' . (int) substr($search, 3));
+			}
+			else
+			{
+				$search = $this->_db->Quote('%' . $this->_db->escape($search, true) . '%');
+				$query->where('(LOWER(e.title) LIKE ' . $search . ' OR '
+					. ' LOWER(obj.title) LIKE ' . $search . ' OR '
+					. ' LOWER(obj.session_code) LIKE ' . $search . ')');
+			}
+		}
+
+		$filter_state = $this->getState('filter.published', '');
+
+		if (is_numeric($filter_state))
+		{
+			if ($filter_state == '1')
+			{
+				$query->where('obj.published = 1');
+			}
+			elseif ($filter_state == '0' )
+			{
+				$query->where('obj.published = 0');
+			}
+		}
+
+		$filter_state = $this->getState('filter.published');
+
+		switch ($filter_state)
+		{
+			case '0':
+			case '1':
+			case '-1':
+				$query->where('obj.published = ' . $filter_state);
 				break;
 
-			case 'published':
-				$where[] = ' obj.published = 1 ';
+			case '*':
 				break;
 
-			case 'archived':
-				$where[] = ' obj.published = -1 ';
-				break;
-
-			case 'notarchived':
-				$where[] = ' obj.published >= 0 ';
-				break;
+			default:
+				// Not archived
+				$query->where('obj.published = 0 OR obj.published = 1');
 		}
 
 		switch ($this->getState('filter_featured'))
 		{
 			case 'featured':
-				$where[] = ' obj.featured = 1 ';
+				$query->where('obj.featured = 1');
 				break;
 
 			case 'unfeatured':
-				$where[] = ' obj.featured = 0 ';
+				$query->where('obj.featured = 0');
 				break;
 		}
 
-		if ($this->getState('venueid'))
+		$filter_language = $this->getState('filter.language');
+
+		if ($filter_language)
 		{
-			$where[] = ' obj.venueid = '.$this->getState('venueid');
+			$query->where('obj.language = ' . $this->_db->quote($filter_language));
 		}
 
-		$where 		= ( count( $where ) ? ' WHERE '. implode( ' AND ', $where ) : '' );
+		$filter_venueid = $this->getState('filter.venueid', '');
 
-		return $where;
+		if (is_numeric($filter_venueid))
+		{
+			$query->where('obj.venueid = ' . $filter_venueid);
+		}
+
+		return $query;
 	}
 
-  /**
-   * adds attendees stats to session
-   *
-   * @return boolean true on success
-   */
-  private function _addAttendeesStats()
-  {
-  	if (!count($this->_data)) {
-  		return false;
-  	}
+	/**
+	 * adds attendees stats to session
+	 *
+	 * @param   array $result rows to add stats to
+	 *
+	 * @return array
+	 */
+	private function addAttendeesStats($result)
+	{
+		$ids = array();
 
-  	$ids = array();
-		foreach ($this->_data as $session)
+		foreach ($result as $session)
 		{
 			$ids[] = $session->id;
 		}
 
-		$query = ' SELECT x.id, COUNT(*) AS total, SUM(r.waitinglist) AS waiting, SUM(1-r.waitinglist) AS attending '
-		       . ' FROM #__redevent_event_venue_xref AS x'
-		       . ' LEFT JOIN #__redevent_register AS r ON x.id = r.xref '
-		       . ' WHERE x.id IN ('.implode(', ', $ids).')'
-		       . ' AND r.confirmed = 1 '
-		       . ' AND r.cancelled = 0 '
-		       . ' GROUP BY r.xref ';
+		$query = $this->_db->getQuery(true);
+
+		$query->select('x.id, COUNT(*) AS total, SUM(r.waitinglist) AS waiting, SUM(1-r.waitinglist) AS attending')
+			->from('#__redevent_event_venue_xref AS x')
+			->join('LEFT', '#__redevent_register AS r ON x.id = r.xref')
+			->where('x.id IN (' . implode(', ', $ids) . ')')
+			->where('r.confirmed = 1')
+			->where('r.cancelled = 0')
+			->group('r.xref');
+
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList('id');
 
@@ -213,40 +252,42 @@ class RedeventModelSessions extends JModel
 		$noreg->waiting = 0;
 		$noreg->attending = 0;
 
-		foreach ($this->_data as &$session)
+		foreach ($result as &$session)
 		{
 			if (isset($res[$session->id]))
 			{
 				$session->attendees = $res[$session->id];
 			}
-			else {
+			else
+			{
 				$session->attendees = $noreg;
 			}
 		}
-		return true;
-  }
+
+		return $result;
+	}
 
 	/**
 	 * Method to (un)feature
 	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	0.9
+	 * @access    public
+	 * @return    boolean    True on success
+	 * @since     0.9
 	 */
 	function featured($cid = array(), $featured = 1)
 	{
 		$user = JFactory::getUser();
 
-		if (count( $cid ))
+		if (count($cid))
 		{
-			$cids = implode( ',', $cid );
+			$cids = implode(',', $cid);
 
 			$query = 'UPDATE #__redevent_event_venue_xref'
 				. ' SET featured = ' . (int) $featured
-				. ' WHERE id IN ('. $cids .')'
-			;
-			$this->_db->setQuery( $query );
-			if (!$this->_db->query()) {
+				. ' WHERE id IN (' . $cids . ')';
+			$this->_db->setQuery($query);
+			if (!$this->_db->query())
+			{
 				$this->setError($this->_db->getErrorMsg());
 				return false;
 			}

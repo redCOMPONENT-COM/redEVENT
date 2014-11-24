@@ -1,56 +1,72 @@
 <?php
 /**
- * @version 1.0 $Id: archive.php 30 2009-05-08 10:22:21Z roland $
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
-
-jimport( 'joomla.application.component.view');
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * HTML View class for redevent component
+ * View class for Venues screen
  *
- * @static
- * @package		redevent
- * @since 2.0
+ * @package  Redevent.admin
+ * @since    2.0
  */
-class RedeventViewSessions extends JView
+class RedeventViewSessions extends RedeventViewAdmin
 {
-	function display($tpl = null)
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
+	 */
+	public function display($tpl = null)
+	{
+		$user = JFactory::getUser();
+
+		$this->items = $this->get('Items');
+		$this->state = $this->get('State');
+		$this->pagination = $this->get('Pagination');
+		$this->filterForm = $this->get('Form');
+		$this->activeFilters = $this->get('ActiveFilters');
+
+		// Edit permission
+		$this->canEdit = false;
+
+		if ($user->authorise('core.edit', 'com_redevent'))
+		{
+			$this->canEdit = true;
+		}
+
+		// Edit state permission
+		$this->canEditState = false;
+
+		if ($user->authorise('core.edit.state', 'com_redevent'))
+		{
+			$this->canEditState = true;
+		}
+
+		parent::display($tpl);
+	}
+
+	function old_display($tpl = null)
 	{
 		$mainframe = &JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 		$user 		= & JFactory::getUser();
 
 		$document = &JFactory::getDocument();
-		
-		
+
+
 		ELAdmin::setMenu();
-        
+
 		$db		 = &JFactory::getDBO();
 		$uri	 = &JFactory::getURI();
 		$state = &$this->get('state');
 		$params = JComponentHelper::getParams('com_redevent');
-		
+
 		$filter_order		= $state->get('filter_order');
 		$filter_order_Dir	= $state->get('filter_order_Dir');
 		$search          = $state->get('search');
@@ -65,14 +81,14 @@ class RedeventViewSessions extends JView
 		$venue		= & $this->get( 'Venue' );
 		$total		= & $this->get( 'Total' );
 		$pagination = & $this->get( 'Pagination' );
-		
+
 		// table ordering
 		$lists['order_Dir'] = $filter_order_Dir;
 		$lists['order']     = $filter_order;
 
 		// search filter
 		$lists['search']= $search;
-		
+
 		//publish unpublished filter
 		$options = array( JHTML::_('select.option', '', ' - '.JText::_('COM_REDEVENT_Select_state').' - '),
 		                  JHTML::_('select.option', 'published', JText::_('COM_REDEVENT_Published')),
@@ -81,24 +97,24 @@ class RedeventViewSessions extends JView
 		                  JHTML::_('select.option', 'notarchived', JText::_('COM_REDEVENT_Not_archived')),
 		                  );
 		$lists['state']	= JHTML::_('select.genericlist', $options, 'filter_state', 'class="inputbox" onchange="submitform();" size="1"', 'value', 'text', $filter_state );
-		
+
 		//featured filter
 		$options = array( JHTML::_('select.option', '', ' - '.JText::_('COM_REDEVENT_Select_featured').' - '),
 		                  JHTML::_('select.option', 'featured', JText::_('Com_redevent_Featured')),
 		                  JHTML::_('select.option', 'unfeatured', JText::_('Com_redevent_not_Featured')),
 		                  );
 		$lists['featured']	= JHTML::_('select.genericlist', $options, 'filter_featured', 'class="inputbox" onchange="submitform();" size="1"', 'value', 'text', $filter_featured );
-		
+
 		$options = $this->get('groupsoptions');
 		$options = array_merge(array(JHTML::_('select.option', '', ' - '.JText::_('COM_REDEVENT_SESSIONS_filter_group_select').' - ')), $options);
 		$lists['filter_group']	= JHTML::_('select.genericlist', $options, 'filter_group', 'class="inputbox" onchange="submitform();" size="1"', 'value', 'text', $state->get('filter_group'));
-		
-		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_SESSIONS_filter_group_select_view')), 
+
+		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_SESSIONS_filter_group_select_view')),
 		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_SESSIONS_filter_group_select_manage')), );
 		$lists['filter_group_manage']	= JHTML::_('select.genericlist', $options, 'filter_group_manage', 'class="inputbox" onchange="submitform();" size="1"', 'value', 'text', $state->get('filter_group_manage'));
-		
+
 		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
-		
+
 		// Set toolbar items for the page
 		if ($eventid) {
 			$document->setTitle(JText::sprintf('COM_REDEVENT_PAGETITLE_SESSIONS_EVENT', $event->title));
@@ -106,7 +122,7 @@ class RedeventViewSessions extends JView
 		}
 		else {
 			$document->setTitle(JText::sprintf('COM_REDEVENT_PAGETITLE_SESSIONS'));
-			JToolBarHelper::title(   JText::sprintf( 'COM_REDEVENT_TITLE_SESSIONS'), 're-sessions' );			
+			JToolBarHelper::title(   JText::sprintf( 'COM_REDEVENT_TITLE_SESSIONS'), 're-sessions' );
 		}
 		if ($event && $event->id) {
 			JToolBarHelper::addNewX();
@@ -127,33 +143,33 @@ class RedeventViewSessions extends JView
 			JToolBarHelper::spacer();
 			JToolBarHelper::preferences('com_redevent', '600', '800');
 		}
-		
-		// event 
+
+		// event
 		JHTML::_('behavior.modal', 'a.modal');
 		$js = "
 		window.addEvent('domready', function(){
-		
+
 			document.id('ev-reset-button').addEvent('click', function(){
 				document.id('eventid').value = 0;
 				document.id('eventid_name').value = '".JText::_('COM_REDEVENT_SESSIONS_EVENT_FILTER_ALL')."';
 				document.id('adminForm').submit();
 			});
-			
+
 			document.id('venue-reset-button').addEvent('click', function(){
 				document.id('venueid').value = 0;
 				document.id('venueid_name').value = '".JText::_('COM_REDEVENT_SESSIONS_VENUE_FILTER_ALL')."';
 				document.id('adminForm').submit();
 			});
-			
+
 		});
-		
+
 		function elSelectEvent(id, title, field) {
 			document.id('eventid').value = id;
 			document.id('eventid_name').value = title;
 			SqueezeBox.close();
 			document.id('adminForm').submit();
 		}
-		
+
 		function elSelectVenue(id, title, field) {
 			document.id('venueid').value = id;
 			document.id('venueid_name').value = title;
@@ -161,7 +177,7 @@ class RedeventViewSessions extends JView
 			document.id('adminForm').submit();
 		}";
 		$document->addScriptDeclaration($js);
-		
+
 		$uri->delVar('eventid');
 		$uri->delVar('venueid');
 		$this->assignRef('user',		JFactory::getUser());
@@ -177,10 +193,10 @@ class RedeventViewSessions extends JView
 
 		parent::display($tpl);
 	}
-	
+
 	/**
 	 * returns toggle image link for session feature
-	 * 
+	 *
 	 * @param object $row
 	 * @param int $i
 	 * @return string html
