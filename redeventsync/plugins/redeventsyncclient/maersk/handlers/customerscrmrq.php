@@ -65,19 +65,30 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 		$data['rm_birthdate'] = (string) $customer->Birthdate;
 		$data['rm_phone'] = (string) $customer->Phonenumber;
 		$data['rm_mobile'] = (string) $customer->Mobilephonenumber;
-		$data['rm_companycvr'] = (string) $customer->CompanyCvrNr;
-		$data['rm_company'] = (string) $customer->CompanyName;
-		$data['rm_companyzip'] = (string) $customer->CompanyZip;
-		$data['rm_companyaddress'] = (string) $customer->CompanyAddress;
-		$data['rm_companyphone'] = (string) $customer->CompanyPhone;
-		$data['rm_companysegmentpos'] = (string) $customer->CompanySegmentPos;
 		$data['username'] = trim((string) $customer->Firstname) . trim((string) $customer->Lastname);
 		$data['name'] = trim((string) $customer->Firstname) . ' ' . trim((string) $customer->Lastname);
 		$data['email'] = (string) $customer->Emailaddress;
 
+		$companyData = array(
+			'organization_name' => (string) $customer->CompanyName,
+			'vat' => (string) $customer->CompanyCvrNr,
+			'zip' => (string) $customer->CompanyZip,
+			'address1' => (string) $customer->CompanyAddress,
+			'phone' => (string) $customer->CompanyPhone
+		);
+
+		$orgId = $this->getCompanyId($companyData);
+
+		$options = array('no_check' => 1);
+
+		if ($orgId)
+		{
+			$options['assign_organization'] = $orgId;
+		}
+
 		try
 		{
-			redmemberlib::saveUser(false, $data, false, array('no_check' => 1));
+			redmemberlib::saveUser(false, $data, false, $options);
 
 			// Log
 			$this->log(
