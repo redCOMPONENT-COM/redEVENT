@@ -114,6 +114,82 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 	}
 
 	/**
+	 * Get company id
+	 *
+	 * @param   array  $data  data
+	 *
+	 * @return int|mixed
+	 */
+	private function getCompanyId($data)
+	{
+		if (!isset($data['organization_name']) || !$data['organization_name'])
+		{
+			return 0;
+		}
+
+		if ($id = $this->findCompanyIdByName($data['organization_name']))
+		{
+			return $id;
+		}
+
+		return $this->createCompany($data);
+	}
+
+	/**
+	 * find company id
+	 *
+	 * @param   string  $name  name
+	 *
+	 * @return int
+	 */
+	private function findCompanyIdByName($name)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('organization_id')
+			->from('#__redmember_organization')
+			->where('organization_name = ' . $db->quote($name));
+
+		$db->setQuery($query);
+		$res = $db->loadResult();
+
+		return $res;
+	}
+
+	/**
+	 * Create company from data
+	 *
+	 * @param   array  $data  data
+	 *
+	 * @return int|mixed
+	 *
+	 * @throws Exception
+	 */
+	private function createCompany($data)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->insert('#__redmember_organization')
+			->set('organization_name = ' . $db->quote($data['organization_name']))
+			->set('address1 = ' . $db->quote($data['address1']))
+			->set('zip = ' . $db->quote($data['zip']))
+			->set('phone = ' . $db->quote($data['phone']))
+			->set('vat = ' . $db->quote($data['vat']))
+			->set('published = 1');
+
+		$db->setQuery($query);
+
+		if (!$db->execute())
+		{
+			throw new Exception($db->getErrorMsg());
+		}
+
+		return $db->insertid();
+	}
+
+	/**
 	 * process TransactionId
 	 *
 	 * @param   SimpleXMLElement  $xml  xml data for the object
