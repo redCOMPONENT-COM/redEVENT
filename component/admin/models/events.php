@@ -113,8 +113,8 @@ class RedeventModelEvents extends RModelList
 		// Get the WHERE and ORDER BY clauses for the query
 		$query = $this->buildContentWhere($query);
 
-		$order = $this->getState('list.ordering');
-		$dir = $this->getState('list.direction');
+		$order = $this->getState('list.ordering', 'obj.title');
+		$dir = $this->getState('list.direction', 'asc');
 		$query->order($db->qn($order) . ' ' . $dir);
 
 		return $query;

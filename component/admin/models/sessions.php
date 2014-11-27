@@ -94,7 +94,7 @@ class RedeventModelSessions extends RModelList
 			return $result;
 		}
 
-		$this->addAttendeesStats($result);
+		$result = $this->addAttendeesStats($result);
 
 		return $result;
 	}
@@ -111,7 +111,6 @@ class RedeventModelSessions extends RModelList
 		$query->select('obj.*, 0 AS checked_out')
 			->select('e.title AS event_title, e.checked_out as event_checked_out, e.registra')
 			->select('v.venue, v.checked_out as venue_checked_out')
-			->select('')
 			->from('#__redevent_event_venue_xref AS obj')
 			->join('INNER', '#__redevent_events AS e ON obj.eventid = e.id')
 			->join('LEFT', '#__redevent_venues AS v ON v.id = obj.venueid');

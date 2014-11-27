@@ -31,6 +31,7 @@ class RedeventViewSessions extends RedeventViewAdmin
 		$this->pagination = $this->get('Pagination');
 		$this->filterForm = $this->get('Form');
 		$this->activeFilters = $this->get('ActiveFilters');
+		$this->event = $this->get('Event');
 
 		// Edit permission
 		$this->canEdit = false;
@@ -49,6 +50,26 @@ class RedeventViewSessions extends RedeventViewAdmin
 		}
 
 		parent::display($tpl);
+	}
+
+	/**
+	 * Get the page title
+	 *
+	 * @return  string  The title to display
+	 *
+	 * @since   0.9.1
+	 */
+	public function getTitle()
+	{
+		// Set toolbar items for the page
+		if ($this->event)
+		{
+			return JText::sprintf('COM_REDEVENT_PAGETITLE_SESSIONS_EVENT', $this->event->title);
+		}
+		else
+		{
+			return JText::_('COM_REDEVENT_PAGETITLE_SESSIONS');
+		}
 	}
 
 	function old_display($tpl = null)
