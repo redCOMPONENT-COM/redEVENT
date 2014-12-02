@@ -65,9 +65,14 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 		$data['rm_birthdate'] = (string) $customer->Birthdate;
 		$data['rm_phone'] = (string) $customer->Phonenumber;
 		$data['rm_mobile'] = (string) $customer->Mobilephonenumber;
-		$data['username'] = trim((string) $customer->Firstname) . trim((string) $customer->Lastname);
-		$data['name'] = trim((string) $customer->Firstname) . ' ' . trim((string) $customer->Lastname);
-		$data['email'] = (string) $customer->Emailaddress;
+
+		if (!$user_id)
+		{
+			$data['name'] = trim((string) $customer->Firstname) . ' ' . trim((string) $customer->Lastname);
+			$data['email'] = (string) $customer->Emailaddress;
+			$data['username'] = trim((string) $customer->Firstname) . trim((string) $customer->Lastname);
+			$data['username'] = $this->getUniqueUsername($data['username']);
+		}
 
 		$companyData = array(
 			'organization_name' => (string) $customer->CompanyName,
@@ -257,5 +262,25 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 		$this->appendElement($message, $errors);
 
 		$this->response = $message;
+	}
+
+	/**
+	 * Returns unique username
+	 *
+	 * @param   string  $username  username
+	 *
+	 * @return string
+	 */
+	private function getUniqueUsername($username)
+	{
+		$res = str_replace("'", "", $username);
+		$i = 1;
+
+		while (JUserHelper::getUserId($res))
+		{
+			$res = $username . '_' . ($i++);
+		}
+
+		return $res;
 	}
 }

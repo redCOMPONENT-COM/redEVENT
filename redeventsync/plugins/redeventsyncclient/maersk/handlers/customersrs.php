@@ -74,11 +74,14 @@ class RedeventsyncHandlerCustomersrs extends RedeventsyncHandlerAbstractmessage
 		$data['rm_birthdate'] = (string) $customer->Birthdate;
 		$data['rm_phone'] = (string) $customer->Phonenumber;
 		$data['rm_mobile'] = (string) $customer->Mobilephonenumber;
-		$data['name'] = trim((string) $customer->Firstname) . ' ' . trim((string) $customer->Lastname);
-		$data['email'] = (string) $customer->Emailaddress;
 
-		$data['username'] = trim((string) $customer->Firstname) . trim((string) $customer->Lastname);
-		$data['username'] = $this->getUniqueUsername($data['username']);
+		if (!$user_id)
+		{
+			$data['name'] = trim((string) $customer->Firstname) . ' ' . trim((string) $customer->Lastname);
+			$data['email'] = (string) $customer->Emailaddress;
+			$data['username'] = trim((string) $customer->Firstname) . trim((string) $customer->Lastname);
+			$data['username'] = $this->getUniqueUsername($data['username']);
+		}
 
 		$companyData = array(
 			'organization_name' => (string) $customer->CompanyName,
