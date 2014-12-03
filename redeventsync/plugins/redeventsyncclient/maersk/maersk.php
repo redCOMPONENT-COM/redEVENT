@@ -669,6 +669,22 @@ class plgRedeventsyncclientMaersk extends JPlugin
 	}
 
 	/**
+	 * handle user saved
+	 *
+	 * @param   int   $userId  user id
+	 * @param   bool  $isNew   true if new user
+	 *
+	 * @return bool
+	 */
+	public function onHandleUserSaved($userId, $isNew)
+	{
+		$model = $this->getHandler('Customerscrmrq');
+		$model->sendCustomersCRMRQ($userId, $isNew);
+
+		return true;
+	}
+
+	/**
 	 * Returns the handler
 	 *
 	 * @param   string  $type  handler name

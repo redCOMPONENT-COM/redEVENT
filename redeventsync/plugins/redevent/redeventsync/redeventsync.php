@@ -278,4 +278,32 @@ class plgRedeventRedeventsync extends JPlugin
 
 		return true;
 	}
+
+	/**
+	 * handle user saved
+	 *
+	 * @param   int   $userId  user id
+	 * @param   bool  $isNew   is it inew ?
+	 *
+	 * @return bool
+	 */
+	public function onUserSaved($userId, $isNew)
+	{
+		try
+		{
+			JPluginHelper::importPlugin('redeventsyncclient');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('onHandleUserSaved', array($userId, $isNew));
+		}
+		catch (ResyncException $e)
+		{
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleUserSaved', 0, $e->getMessage(), $e->status, $e->debug);
+		}
+		catch (Exception $e)
+		{
+			ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, 'onHandleUserSaved', 0, $e->getMessage(), 'error');
+		}
+
+		return true;
+	}
 }

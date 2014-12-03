@@ -21,6 +21,41 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 	protected $transactionId;
 
 	/**
+	 * send CreateCustomerCRMRQ
+	 *
+	 * @param   int   $userId  user id
+	 * @param   bool  $isNew   true if new user
+	 *
+	 * @return bool
+	 */
+	public function sendCustomersCRMRQ($userId, $isNew)
+	{
+		$xml = new SimpleXMLElement('<CustomersCRMRQ xmlns="http://www.redcomponent.com/redevent"/>');
+		$xml->addChild('TransactionId', $this->getNextTransactionId());
+
+		if ($isNew)
+		{
+			$message = new SimpleXMLElement('<CreateCustomerCRMRQ/>');
+		}
+		else
+		{
+			$message = new SimpleXMLElement('<ModifyCustomerCRMRQ/>');
+		}
+
+		$this->addUserXml($message, $userId);
+
+		$this->appendElement($xml, $message);
+
+		$this->validate($xml->asXML(), 'CustomersCRMRQ');
+
+		$this->enqueue($xml->asXML());
+
+		$this->log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, (int) $message->TransactionId, $xml, 'queued');
+
+		return true;
+	}
+
+	/**
 	 * process CreateCustomerCRMRQ request
 	 *
 	 * @param   SimpleXMLElement  $customer  xml data for the object
@@ -282,5 +317,64 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 		}
 
 		return $res;
+	}
+
+	/**
+	 * Build user data in xml
+	 *
+	 * @param   SimpleXMLElement  $message  message to add info to
+	 * @param   int               $userId   user id
+	 *
+	 * @return mixed
+	 */
+	private function addUserXml($message, $userId)
+	{
+		$user = redmemberlib::getUserData($userId);
+
+		$companyAddress = array();
+
+		if ($user->organization_address1)
+		{
+			$companyAddress[] = $user->organization_address1;
+		}
+
+		if ($user->organization_address2)
+		{
+			$companyAddress[] = $user->organization_address1;
+		}
+
+		if ($user->organization_address3)
+		{
+			$companyAddress[] = $user->organization_address3;
+		}
+
+		$message->addChild('VenueCode', '');
+
+		if ($user->rm_customerid)
+		{
+			$message->addChild('CustomerID',      $user->rm_customerid);
+		}
+
+		$message->addChild('Firstname',    $user->rm_firstname);
+		$message->addChild('Lastname',     $user->rm_lastname);
+		$message->addChild('Address1',     $user->rm_address1);
+		$message->addChild('Address2',     $user->rm_address2);
+		$message->addChild('Address3',     $user->rm_address3);
+		$message->addChild('City',         $user->rm_city);
+		$message->addChild('Zipcode',      $user->rm_zipcode);
+		$message->addChild('Countrycode',  $user->rm_countrycode);
+		$message->addChild('Emailaddress', $user->email);
+		$message->addChild('Nationality', $user->rm_nationality);
+		$message->addChild('TitleRank', $user->titlerank);
+		$message->addChild('Birthdate', $user->birthdate);
+		$message->addChild('Phonenumber',  $user->rm_phone);
+		$message->addChild('Mobilephonenumber', $user->rm_mobile);
+		$message->addChild('CompanyCvrNr',      $user->organization_vat);
+		$message->addChild('CompanyName',      $user->organization_name);
+		$message->addChild('CompanyZip',      $user->organization_zip);
+		$message->addChild('CompanyAddress',      implode(', ', $companyAddress));
+		$message->addChild('CompanyPhone',      $user->organization_phone);
+
+		return $message;
 	}
 }
