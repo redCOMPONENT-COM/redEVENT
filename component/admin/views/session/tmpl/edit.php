@@ -49,14 +49,14 @@ JHtml::_('rjquery.chosen', 'select');
 		</li>
 
 		<li>
-			<a href="#registration" data-toggle="tab">
-				<strong><?php echo JText::_('COM_REDEVENT_SESSION_TAB_REGISTRATION'); ?></strong>
+			<a href="#prices" data-toggle="tab">
+				<strong><?php echo JText::_('COM_REDEVENT_SESSION_TAB_PRICES'); ?></strong>
 			</a>
 		</li>
 
 		<li>
-			<a href="#prices" data-toggle="tab">
-				<strong><?php echo JText::_('COM_REDEVENT_SESSION_TAB_PRICES'); ?></strong>
+			<a href="#recurrence" data-toggle="tab">
+				<strong><?php echo JText::_('COM_REDEVENT_SESSION_TAB_RECURRENCE'); ?></strong>
 			</a>
 		</li>
 
@@ -83,26 +83,53 @@ JHtml::_('rjquery.chosen', 'select');
 		<?php if (count($this->customfields)):?>
 			<div class="tab-pane" id="customfields">
 				<div class="row-fluid">
-					<?php //echo $this->loadTemplate('customfields'); ?>
+					<?php echo $this->loadTemplate('customfields'); ?>
 				</div>
 			</div>
 		<?php endif; ?>
 
 		<div class="tab-pane" id="registration">
 			<div class="row-fluid">
-				<?php //echo $this->loadTemplate('registration'); ?>
-			</div>
-		</div>
+				<div class="span9">
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('maxattendees'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('maxattendees'); ?>
+						</div>
+					</div>
 
-		<div class="tab-pane" id="recurrence">
-			<div class="row-fluid">
-				<?php //echo $this->loadTemplate('recurrence'); ?>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('maxwaitinglist'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('maxwaitinglist'); ?>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('course_credit'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('course_credit'); ?>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 
 		<div class="tab-pane" id="prices">
 			<div class="row-fluid">
 				<?php echo $this->loadTemplate('prices'); ?>
+			</div>
+		</div>
+
+		<div class="tab-pane" id="recurrence">
+			<div class="row-fluid">
+				<?php //echo $this->loadTemplate('recurrence'); ?>
 			</div>
 		</div>
 
@@ -114,7 +141,25 @@ JHtml::_('rjquery.chosen', 'select');
 
 		<div class="tab-pane" id="ical">
 			<div class="row-fluid">
-				<?php //echo $this->loadTemplate('ical'); ?>
+				<div class="span9">
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('icaldetails'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('icaldetails'); ?>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('icalvenue'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('icalvenue'); ?>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
