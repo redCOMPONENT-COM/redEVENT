@@ -49,8 +49,14 @@ JHtml::_('rjquery.chosen', 'select');
 		</li>
 
 		<li>
-			<a href="#recurrence" data-toggle="tab">
-				<strong><?php echo JText::_('COM_REDEVENT_SESSION_TAB_RECURRENCE'); ?></strong>
+			<a href="#registration" data-toggle="tab">
+				<strong><?php echo JText::_('COM_REDEVENT_SESSION_TAB_REGISTRATION'); ?></strong>
+			</a>
+		</li>
+
+		<li>
+			<a href="#prices" data-toggle="tab">
+				<strong><?php echo JText::_('COM_REDEVENT_SESSION_TAB_PRICES'); ?></strong>
 			</a>
 		</li>
 
@@ -91,6 +97,12 @@ JHtml::_('rjquery.chosen', 'select');
 		<div class="tab-pane" id="recurrence">
 			<div class="row-fluid">
 				<?php //echo $this->loadTemplate('recurrence'); ?>
+			</div>
+		</div>
+
+		<div class="tab-pane" id="prices">
+			<div class="row-fluid">
+				<?php echo $this->loadTemplate('prices'); ?>
 			</div>
 		</div>
 

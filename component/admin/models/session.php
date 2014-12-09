@@ -243,10 +243,10 @@ class RedeventModelSession extends RModelAdmin
 			return false;
 		}
 //
-//		if (!$this->savePrices($data))
-//		{
-//			return false;
-//		}
+		if (!$this->savePrices($data))
+		{
+			return false;
+		}
 
 		return true;
 	}
@@ -416,7 +416,7 @@ class RedeventModelSession extends RModelAdmin
 				continue;
 			}
 
-			$new = RTable::getInstance('SessionsPricegroup', 'RedeventTable');
+			$new = RTable::getInstance('Sessionpricegroup', 'RedeventTable');
 			$new->set('xref', $sessionId);
 			$new->set('pricegroup_id', $r);
 			$new->set('price', $data['price'][$k]);

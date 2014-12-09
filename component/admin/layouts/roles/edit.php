@@ -9,7 +9,7 @@
 defined('JPATH_REDCORE') or die;
 
 RHelperAsset::load('xref_roles.js');
-JText::script('COM_REDEVENT_LAYOUT_ROLES_REMOVE_CONFIRM_MSG');
+JText::script('COM_REDEVENT_REMOVE');
 
 $data = $displayData;
 

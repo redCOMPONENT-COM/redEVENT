@@ -39,8 +39,15 @@ class RedeventViewSession extends RedeventViewAdmin
 		$this->customfields = $this->get('Customfields');
 		$this->roles = $this->get('SessionRoles');
 		$this->prices = $this->get('SessionPrices');
-		$this->rolesoptions = $this->get('RolesOptions');
-		$this->pricesoptions = $this->get('PricegroupsOptions');
+
+		$rolesoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_Select_role')));
+		$this->rolesoptions = array_merge($rolesoptions, $this->get('RolesOptions'));
+
+		$pricegroupsoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_PRICEGROUP')));
+		$this->pricegroupsoptions = array_merge($pricegroupsoptions, $this->get('PricegroupsOptions'));
+
+		$currencyoptions = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_CURRENCY')));
+		$this->currencyoptions = array_merge($currencyoptions, RHelperCurrency::getCurrencyOptions());
 
 		$this->canConfig = false;
 

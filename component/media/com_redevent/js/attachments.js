@@ -8,10 +8,6 @@
  * this file manages the js script for adding/removing attachements in event
  */
 (function($){
-
-	var addattach = function(){
-	};
-
 	$(document).ready(function () {
 		var tbody = $('#re-attachments').find('tbody');
 

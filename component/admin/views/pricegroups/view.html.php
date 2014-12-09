@@ -82,7 +82,7 @@ class RedEventViewPricegroups extends RedeventViewAdmin
 
 		if ($user->authorise('core.create', 'com_redevent'))
 		{
-			$new = RToolbarBuilder::createNewButton('venue.add');
+			$new = RToolbarBuilder::createNewButton('pricegroup.add');
 			$firstGroup->addButton($new);
 		}
 
