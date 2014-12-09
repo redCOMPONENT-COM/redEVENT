@@ -1,181 +1,100 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
-
 /**
- * EventList Component session Model
+ * RedEvent Model Session
  *
- * @package Joomla
- * @subpackage redEVENT
- * @since		0.9
-*/
-class RedEventModelSession extends JModel
+ * @package  Redevent.admin
+ * @since    0.9
+ */
+class RedeventModelSession extends RModelAdmin
 {
 	/**
-	 * Session id (xref)
+	 * Method to get a single record.
 	 *
-	 * @var int
-	 */
-	var $_id = null;
-
-	/**
-	 * Event data array
+	 * @param   integer  $pk  The id of the primary key.
 	 *
-	 * @var array
+	 * @return  mixed    Object on success, false on failure.
 	 */
-	var $_data = null;
-
-	/**
-	 * Categories data array
-	 *
-	 * @var array
-	 */
-	var $_categories = null;
-
-	/**
-	 * Xrefs custom fields data array
-	 *
-	 * @var array
-	 */
-	var $_xrefcustomfields = null;
-
-	/**
-	 * Constructor
-	 *
-	 * @since 0.9
-	 */
-	function __construct()
+	public function getItem($pk = null)
 	{
-		parent::__construct();
+		$item = parent::getItem($pk);
 
-		$array = JRequest::getVar('cid', array(), '', 'array');
-
-		if (count($array))
+		if ($item && $item->id)
 		{
-			$xref = $array[0];
-		}
-		else
-		{
-			$xref = JRequest::getVar('xref', 0, 'request', 'int');
+			// Get additional data
+			$query = $this->_db->getQuery(true);
+
+			$query->select('e.title AS event_title')
+				->from('#__redevent_events AS e')
+				->where('e.id = ' . $item->eventid);
+
+			$this->_db->setQuery($query);
+			$res = $this->_db->loadObject();
+
+			$item->event_title = $res->event_title;
 		}
 
-		$this->setId($xref);
+		return $item;
 	}
 
 	/**
-	 * Method to set the identifier
+	 * Method for getting the form from the model.
 	 *
-	 * @access	public
-	 * @param	int event identifier
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 *
+	 * @return  mixed  A JForm object on success, false on failure
 	 */
-	function setId($id)
+	public function getForm($data = array(), $loadData = true)
 	{
-		// Set event id and wipe data
-		$this->_id	    = $id;
-		$this->_data	= null;
-	}
+		$form = parent::getForm($data, $loadData);
 
-	/**
-	 * Method to checkin/unlock the item
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	0.9
-	 */
-	function checkin()
-	{
-		if ($this->_id)
+		if ($this->getState('session.id'))
 		{
-			$event = & JTable::getInstance('redevent_event_venue_xref', '');
-			return $event->checkin($this->_id);
+			$form->setFieldAttribute('eventid', 'readonly', '1');
 		}
-		return false;
+
+		return $form;
 	}
 
 	/**
-	 * Method to checkout/lock the item
+	 * Override for custom fields
 	 *
-	 * @access	public
-	 * @param	int	$uid	User ID of the user checking the item out
-	 * @return	boolean	True on success
-	 * @since	0.9
-	 */
-	function checkout($uid = null)
-	{
-		if ($this->_id)
-		{
-			// Make sure we have a user id to checkout the event with
-			if (is_null($uid)) {
-				$user	=& JFactory::getUser();
-				$uid	= $user->get('id');
-			}
-			// Lets get to it and checkout the thing...
-			$event = & JTable::getInstance('redevent_event_venue_xref', '');
-			return $event->checkout($uid, $this->_id);
-		}
-		return false;
-	}
-
-	/**
-	 * Tests if the event is checked out
+	 * @param   JForm   $form   The form to validate against.
+	 * @param   array   $data   The data to validate.
+	 * @param   string  $group  The name of the field group to validate.
 	 *
-	 * @access	public
-	 * @param	int	A user id
-	 * @return	boolean	True if checked out
-	 * @since	0.9
+	 * @return  mixed  Array of filtered data if valid, false otherwise.
 	 */
-	function isCheckedOut( $uid=0 )
+	public function validate($form, $data, $group = null)
 	{
-		if ($this->_loadData())
+		// First get the data from form itself
+		if (!$validData = parent::validate($form, $data, $group))
 		{
-			if ($uid) {
-				return ($this->_data->checked_out && $this->_data->checked_out != $uid);
-			} else {
-				return $this->_data->checked_out;
-			}
-		} elseif ($this->_id < 1) {
-			return false;
-		} else {
-			RedeventError::raiseWarning( 0, 'Unable to Load Data');
 			return false;
 		}
-	}
 
-	/**
-	 * Retrieve a list of venues
-	 */
-	public function getVenues()
-	{
-		$db = $this->_db;
-		$q = "SELECT id, venue
-		FROM #__redevent_venues
-		ORDER BY venue";
-		$db->setQuery($q);
-		return $db->loadObjectList();
+		// Now add custom fields
+		$fields = $this->getSessionCustomFieldsFromDb();
+
+		foreach ($fields as $field)
+		{
+			$dbname = 'custom' . $field->id;
+
+			if (isset($data[$dbname]))
+			{
+				$validData[$dbname] = $data[$dbname];
+			}
+		}
+
+		return $validData;
 	}
 
 	/**
@@ -183,33 +102,53 @@ class RedEventModelSession extends JModel
 	 *
 	 * @return objects array
 	 */
-	function getXrefCustomfields()
+	public function getCustomfields()
 	{
-		$xref = JRequest::getVar('xref', 0, 'request', 'int');
-		$query = ' SELECT f.* '
-		. ' FROM #__redevent_fields AS f '
-		. ' WHERE f.object_key = '. $this->_db->Quote("redevent.xref")
-		. ' ORDER BY f.ordering '
-		;
+		$result = $this->getSessionCustomFieldsFromDb();
+
+		$fields = array();
+		$data = $this->getItem();
+
+		foreach ($result as $c)
+		{
+			$field = RedeventFactoryCustomfield::getField($c->type);
+			$field->bind($c);
+			$prop = 'custom' . $c->id;
+
+			if (isset($data->$prop))
+			{
+				$field->value = $data->$prop;
+			}
+
+			$fields[] = $field;
+		}
+
+		return $fields;
+	}
+
+	/**
+	 * Get custom field raw object from db
+	 *
+	 * @return array|mixed
+	 */
+	protected function getSessionCustomFieldsFromDb()
+	{
+		$query = $this->_db->getQuery(true);
+
+		$query->select('f.*')
+			->from('#__redevent_fields AS f')
+			->where('f.object_key = ' . $this->_db->Quote("redevent.xref"))
+			->order('f.ordering');
+
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 
-		if (!$result) {
+		if (!$result)
+		{
 			return array();
 		}
-		$fields = array();
-		$data = $this->getXref();
-		foreach ($result as $c)
-		{
-			$field =& RedeventFactoryCustomfield::getField($c->type);
-			$field->bind($c);
-			$prop = 'custom'.$c->id;
-			if ($data && isset($data->$prop)) {
-				$field->value = $data->$prop;
-			}
-			$fields[] = $field;
-		}
-		return $fields;
+
+		return $result;
 	}
 
 	/**
@@ -279,71 +218,54 @@ class RedEventModelSession extends JModel
 	}
 
 	/**
-	 * return list of venues as options
+	 * Method to save the form data.
 	 *
-	 * @return array
+	 * @param   array  $data  The form data.
+	 *
+	 * @return  boolean  True on success, False on error.
+	 *
+	 * @since   12.2
 	 */
-	function getVenuesOptions()
+	public function save($data)
 	{
-		$query = ' SELECT id AS value, '
-		. ' CASE WHEN CHAR_LENGTH(city) THEN CONCAT_WS(\' - \', venue, city) ELSE venue END as text, language '
-		. ' FROM #__redevent_venues AS v'
-		. ' ORDER BY venue, city '
-		;
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadObjectList();
-
-		foreach ($res as &$r)
+		if (!parent::save($data))
 		{
-			if ($r->language && $r->language != '*')
-			{
-				$r->text .= ' (' . $r->language . ')';
-			}
+			return false;
 		}
 
-		return $res;
+//		if (!$this->saveRecurrence($data))
+//		{
+//			return false;
+//		}
+//
+		if (!$this->saveRoles($data))
+		{
+			return false;
+		}
+//
+//		if (!$this->savePrices($data))
+//		{
+//			return false;
+//		}
+
+		return true;
 	}
 
 	/**
-	 * save xref data
+	 * Save recurrence data
 	 *
-	 * @param array $data
-	 * @return boolean true on success
+	 * @param   array  $data  post data
+	 *
+	 * @return bool
 	 */
-	function savexref($data)
+	private function saveRecurrence($data)
 	{
-		$id = (int) $data['id'];
-
-		$object = JTable::getInstance('RedEvent_eventvenuexref', '');
-
-		if ($id)
+		if (!$sessionId = $this->getState('session.id'))
 		{
-			$object->load($id);
-		}
-
-		if (!$object->bind($data))
-		{
-			$this->setError($object->getError());
-
 			return false;
 		}
 
-		if (!$object->check())
-		{
-			$this->setError($object->getError());
-
-			return false;
-		}
-
-		if (!$object->store(true))
-		{
-			$this->setError($object->getError());
-
-			return false;
-		}
-
-		// we need to save the recurrence too
-		$recurrence = & JTable::getInstance('RedEvent_recurrences', '');
+		$recurrence = RTable::getInstance('Recurrence', 'RedeventTable');
 
 		if (!$data['recurrenceid'])
 		{
@@ -351,8 +273,9 @@ class RedEventModelSession extends JModel
 
 			if (!empty($rrule))
 			{
-				// new recurrence
+				// New recurrence
 				$recurrence->rrule = $rrule;
+
 				if (!$recurrence->store())
 				{
 					$this->setError($recurrence->getError());
@@ -360,9 +283,9 @@ class RedEventModelSession extends JModel
 					return false;
 				}
 
-				// add repeat record
-				$repeat = & JTable::getInstance('RedEvent_repeats', '');
-				$repeat->set('xref_id', $object->id);
+				// Add repeat record
+				$repeat = RTable::getInstance('Repeat', 'RedeventTable');
+				$repeat->set('xref_id', $sessionId);
 				$repeat->set('recurrence_id', $recurrence->id);
 				$repeat->set('count', 0);
 
@@ -376,11 +299,14 @@ class RedEventModelSession extends JModel
 		}
 		else
 		{
-			if ($data['repeat'] == 0) // only update if it's the first xref.
+			// Only update if it's the first session of the 'recurrence'.
+			if ($data['repeat'] == 0)
 			{
 				$recurrence->load($data['recurrenceid']);
-				// reset the status
+
+				// Reset the status
 				$recurrence->ended = 0;
+
 				// TODO: maybe add a check to have a choice between updating rrule or not...
 				$rrule = RedeventHelperRecurrence::parsePost($data);
 				$recurrence->rrule = $rrule;
@@ -388,6 +314,7 @@ class RedEventModelSession extends JModel
 				if (!$recurrence->store())
 				{
 					$this->setError($recurrence->getError());
+
 					return false;
 				}
 			}
@@ -398,44 +325,90 @@ class RedEventModelSession extends JModel
 			RedeventHelper::generaterecurrences($recurrence->id);
 		}
 
-		/** roles **/
-		// first remove current rows
-		$query = ' DELETE FROM #__redevent_sessions_roles '
-		. ' WHERE xref = ' . $this->_db->Quote($object->id);
-		$this->_db->setQuery($query);
-		if (!$this->_db->query()) {
-			$this->setError($this->_db->getErrorMsg());
+		return true;
+	}
+
+	/**
+	 * Save roles data
+	 *
+	 * @param   array  $data  post data
+	 *
+	 * @return bool
+	 */
+	private function saveRoles($data)
+	{
+		if (!$sessionId = $this->getState('session.id'))
+		{
 			return false;
 		}
 
-		// then recreate them if any
+		// First remove current rows
+		$query = $this->_db->getQuery(true);
+
+		$query->delete('#__redevent_sessions_roles')
+			->where('xref = ' . $sessionId);
+		$this->_db->setQuery($query);
+
+		if (!$this->_db->execute())
+		{
+			$this->setError($this->_db->getErrorMsg());
+
+			return false;
+		}
+
+		// Then recreate them if any
 		foreach ((array) $data['rrole'] as $k => $r)
 		{
-			if (!($data['rrole'][$k] && $data['urole'][$k])) {
+			if (!($data['rrole'][$k] && $data['urole'][$k]))
+			{
 				continue;
 			}
-			$new = & JTable::getInstance('RedEvent_sessions_roles', '');
-			$new->set('xref',    $object->id);
+
+			$new = RTable::getAdminInstance('Sessionrole');
+			$new->set('xref', $sessionId);
 			$new->set('role_id', $r);
 			$new->set('user_id', $data['urole'][$k]);
-			if (!($new->check() && $new->store())) {
+
+			if (!($new->check() && $new->store()))
+			{
 				$this->setError($new->getError());
+
 				return false;
 			}
 		}
-		/** roles END **/
 
-		/** prices **/
-		// first remove current rows
-		$query = ' DELETE FROM #__redevent_sessions_pricegroups '
-		. ' WHERE xref = ' . $this->_db->Quote($object->id);
-		$this->_db->setQuery($query);
-		if (!$this->_db->query()) {
-			$this->setError($this->_db->getErrorMsg());
+		return true;
+	}
+
+	/**
+	 * Save prices data
+	 *
+	 * @param   array  $data  post data
+	 *
+	 * @return bool
+	 */
+	private function savePrices($data)
+	{
+		if (!$sessionId = $this->getState('session.id'))
+		{
 			return false;
 		}
 
-		// then recreate them if any
+		// First remove current rows
+		$query = $this->_db->getQuery(true);
+
+		$query->delete('#__redevent_sessions_pricegroups')
+			->where('xref = ' . $sessionId);
+		$this->_db->setQuery($query);
+
+		if (!$this->_db->execute())
+		{
+			$this->setError($this->_db->getErrorMsg());
+
+			return false;
+		}
+
+		// Then recreate them if any
 		foreach ((array) $data['pricegroup'] as $k => $r)
 		{
 			if (!($data['pricegroup'][$k]))
@@ -443,8 +416,8 @@ class RedEventModelSession extends JModel
 				continue;
 			}
 
-			$new = JTable::getInstance('RedEvent_sessions_pricegroups', '');
-			$new->set('xref',    $object->id);
+			$new = RTable::getInstance('SessionsPricegroup', 'RedeventTable');
+			$new->set('xref', $sessionId);
 			$new->set('pricegroup_id', $r);
 			$new->set('price', $data['price'][$k]);
 			$new->set('currency', $data['currency'][$k]);
@@ -452,12 +425,12 @@ class RedEventModelSession extends JModel
 			if (!($new->check() && $new->store()))
 			{
 				$this->setError($new->getError());
+
 				return false;
 			}
 		}
-		/** prices END **/
 
-		return $object->id;
+		return true;
 	}
 
 	/**
@@ -531,48 +504,93 @@ class RedEventModelSession extends JModel
 		return $this->_xrefcustomfields;
 	}
 
-	function getRolesOptions()
+	/**
+	 * Return session roles
+	 *
+	 * @return mixed
+	 */
+	public function getSessionRoles()
 	{
-		$query = ' SELECT id AS value, name AS text '
-		. ' FROM #__redevent_roles '
-		. ' ORDER BY ordering ASC ';
+		if (!$this->getState('session.id'))
+		{
+			return false;
+		}
+
+		$query = $this->_db->getQuery(true);
+
+		$query->select('sr.*')
+			->from('#__redevent_sessions_roles AS sr')
+			->join('INNER', '#__redevent_roles AS r ON r.id = sr.role_id')
+			->where('sr.xref = ' . $this->_db->Quote($this->getState('session.id')))
+			->order('r.ordering');
+
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
+
 		return $res;
 	}
 
-	function getPricegroupsOptions()
+	/**
+	 * Return session price groups
+	 *
+	 * @return mixed
+	 */
+	public function getSessionPrices()
 	{
-		$query = ' SELECT id AS value, name AS text '
-		. ' FROM #__redevent_pricegroups '
-		. ' ORDER BY ordering ASC ';
+		if (!$this->getState('session.id'))
+		{
+			return false;
+		}
+
+		$query = $this->_db->getQuery(true);
+
+		$query->select('r.*')
+			->from('#__redevent_sessions_pricegroups AS r')
+			->join('INNER', '#__redevent_pricegroups AS pg ON pg.id = r.pricegroup_id')
+			->where('r.xref = ' . $this->_db->Quote($this->getState('session.id')))
+			->order('pg.ordering');
+
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
+
 		return $res;
 	}
 
-	function getSessionRoles()
+	/**
+	 * Return Roles types
+	 *
+	 * @return mixed
+	 */
+	public function getRolesOptions()
 	{
-		$query = ' SELECT sr.* '
-		. ' FROM #__redevent_sessions_roles AS sr '
-		. ' INNER JOIN #__redevent_roles AS r ON r.id = sr.role_id '
-		. ' WHERE sr.xref = ' . $this->_db->Quote($this->_id)
-		. ' ORDER BY r.ordering '
-		;
+		$query = $this->_db->getQuery(true);
+
+		$query->select('id AS value, name AS text')
+			->from('#__redevent_roles')
+			->order('ordering ASC');
+
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
+
 		return $res;
 	}
 
-	function getSessionPrices()
+	/**
+	 * Return price groups names
+	 *
+	 * @return mixed
+	 */
+	public function getPricegroupsOptions()
 	{
-		$query = ' SELECT r.* '
-		. ' FROM #__redevent_sessions_pricegroups AS r '
-		. ' INNER JOIN #__redevent_pricegroups AS pg ON pg.id = r.pricegroup_id '
-		. ' WHERE xref = ' . $this->_db->Quote($this->_id)
-		. ' ORDER BY pg.ordering ';
+		$query = $this->_db->getQuery(true);
+
+		$query->select('id AS value, name AS text')
+			->from('#__redevent_pricegroups')
+			->order('ordering ASC');
+
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
+
 		return $res;
 	}
 }

@@ -32,6 +32,8 @@ class RedeventViewSessions extends RedeventViewAdmin
 		$this->filterForm = $this->get('Form');
 		$this->activeFilters = $this->get('ActiveFilters');
 		$this->event = $this->get('Event');
+		$this->user = $user;
+		$this->params = JComponentHelper::getParams('com_redform');
 
 		// Edit permission
 		$this->canEdit = false;
@@ -53,6 +55,67 @@ class RedeventViewSessions extends RedeventViewAdmin
 	}
 
 	/**
+	 * Get the tool-bar to render.
+	 *
+	 * @return  RToolbar
+	 */
+	public function getToolbar()
+	{
+		$user = JFactory::getUser();
+
+		$firstGroup		= new RToolbarButtonGroup;
+		$secondGroup	= new RToolbarButtonGroup;
+		$thirdGroup		= new RToolbarButtonGroup;
+		$fourthGroup		= new RToolbarButtonGroup;
+
+		if ($user->authorise('core.create', 'com_redevent'))
+		{
+			$new = RToolbarBuilder::createNewButton('session.add');
+			$copy = RToolbarBuilder::createCopyButton('session.copy');
+
+			$firstGroup->addButton($new);
+			$firstGroup->addButton($copy);
+		}
+
+		if ($user->authorise('core.edit', 'com_redevent'))
+		{
+			$edit = RToolbarBuilder::createEditButton('session.edit');
+
+			$secondGroup->addButton($edit);
+		}
+
+		if ($user->authorise('core.edit.state', 'com_redevent'))
+		{
+			$publish = RToolbarBuilder::createPublishButton('sessions.publish');
+			$thirdGroup->addButton($publish);
+
+			$unPublish = RToolbarBuilder::createUnpublishButton('sessions.unpublish');
+			$thirdGroup->addButton($unPublish);
+
+			$archive = RToolbarBuilder::createStandardButton('sessions.archive', JText::_('COM_REDEVENT_ARCHIVE'), '', 'icon-archive', true);
+			$thirdGroup->addButton($archive);
+
+			$button = RToolbarBuilder::createStandardButton('sessions.featured', JText::_('COM_REDEVENT_FEATURE'), '', 'icon-star', true);
+			$thirdGroup->addButton($button);
+
+			$button = RToolbarBuilder::createStandardButton('sessions.unfeatured', JText::_('COM_REDEVENT_UNFEATURE'), '', 'icon-star-empty', true);
+			$thirdGroup->addButton($button);
+		}
+
+		if ($user->authorise('core.delete', 'com_redevent'))
+		{
+			$delete = RToolbarBuilder::createDeleteButton('sessions.delete');
+
+			$fourthGroup->addButton($delete);
+		}
+
+		$toolbar = new RToolbar;
+		$toolbar->addGroup($firstGroup)->addGroup($secondGroup)->addGroup($thirdGroup)->addGroup($fourthGroup);
+
+		return $toolbar;
+	}
+
+	/**
 	 * Get the page title
 	 *
 	 * @return  string  The title to display
@@ -70,149 +133,6 @@ class RedeventViewSessions extends RedeventViewAdmin
 		{
 			return JText::_('COM_REDEVENT_PAGETITLE_SESSIONS');
 		}
-	}
-
-	function old_display($tpl = null)
-	{
-		$mainframe = &JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-		$user 		= & JFactory::getUser();
-
-		$document = &JFactory::getDocument();
-
-
-		ELAdmin::setMenu();
-
-		$db		 = &JFactory::getDBO();
-		$uri	 = &JFactory::getURI();
-		$state = &$this->get('state');
-		$params = JComponentHelper::getParams('com_redevent');
-
-		$filter_order		= $state->get('filter_order');
-		$filter_order_Dir	= $state->get('filter_order_Dir');
-		$search          = $state->get('search');
-		$filter_state    = $state->get('filter_state');
-		$filter_featured = $state->get('filter_featured');
-		$eventid         = $state->get('eventid');
-		$venueid         = $state->get('venueid');
-
-		// Get data from the model
-		$items		= & $this->get( 'Data' );
-		$event		= & $this->get( 'Event' );
-		$venue		= & $this->get( 'Venue' );
-		$total		= & $this->get( 'Total' );
-		$pagination = & $this->get( 'Pagination' );
-
-		// table ordering
-		$lists['order_Dir'] = $filter_order_Dir;
-		$lists['order']     = $filter_order;
-
-		// search filter
-		$lists['search']= $search;
-
-		//publish unpublished filter
-		$options = array( JHTML::_('select.option', '', ' - '.JText::_('COM_REDEVENT_Select_state').' - '),
-		                  JHTML::_('select.option', 'published', JText::_('COM_REDEVENT_Published')),
-		                  JHTML::_('select.option', 'unpublished', JText::_('COM_REDEVENT_Unpublished')),
-		                  JHTML::_('select.option', 'archived', JText::_('COM_REDEVENT_Archived')),
-		                  JHTML::_('select.option', 'notarchived', JText::_('COM_REDEVENT_Not_archived')),
-		                  );
-		$lists['state']	= JHTML::_('select.genericlist', $options, 'filter_state', 'class="inputbox" onchange="submitform();" size="1"', 'value', 'text', $filter_state );
-
-		//featured filter
-		$options = array( JHTML::_('select.option', '', ' - '.JText::_('COM_REDEVENT_Select_featured').' - '),
-		                  JHTML::_('select.option', 'featured', JText::_('Com_redevent_Featured')),
-		                  JHTML::_('select.option', 'unfeatured', JText::_('Com_redevent_not_Featured')),
-		                  );
-		$lists['featured']	= JHTML::_('select.genericlist', $options, 'filter_featured', 'class="inputbox" onchange="submitform();" size="1"', 'value', 'text', $filter_featured );
-
-		$options = $this->get('groupsoptions');
-		$options = array_merge(array(JHTML::_('select.option', '', ' - '.JText::_('COM_REDEVENT_SESSIONS_filter_group_select').' - ')), $options);
-		$lists['filter_group']	= JHTML::_('select.genericlist', $options, 'filter_group', 'class="inputbox" onchange="submitform();" size="1"', 'value', 'text', $state->get('filter_group'));
-
-		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_SESSIONS_filter_group_select_view')),
-		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_SESSIONS_filter_group_select_manage')), );
-		$lists['filter_group_manage']	= JHTML::_('select.genericlist', $options, 'filter_group_manage', 'class="inputbox" onchange="submitform();" size="1"', 'value', 'text', $state->get('filter_group_manage'));
-
-		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
-
-		// Set toolbar items for the page
-		if ($eventid) {
-			$document->setTitle(JText::sprintf('COM_REDEVENT_PAGETITLE_SESSIONS_EVENT', $event->title));
-			JToolBarHelper::title(   JText::sprintf( 'COM_REDEVENT_TITLE_SESSIONS_EVENT', $event->title ), 're-sessions' );
-		}
-		else {
-			$document->setTitle(JText::sprintf('COM_REDEVENT_PAGETITLE_SESSIONS'));
-			JToolBarHelper::title(   JText::sprintf( 'COM_REDEVENT_TITLE_SESSIONS'), 're-sessions' );
-		}
-		if ($event && $event->id) {
-			JToolBarHelper::addNewX();
-		}
-		JToolBarHelper::custom('copy', 'copy', 'copy', 'copy', true);
-		JToolBarHelper::editListX();
-		JToolBarHelper::deleteList(JText::_('COM_REDEVENT_SESSIONS_REMOVE_CONFIRM_MESSAGE'));
-		JToolBarHelper::spacer();
-		JToolBarHelper::publish();
-		JToolBarHelper::unpublish();
-		JToolBarHelper::archiveList();
-		JToolBarHelper::spacer();
-		JToolBarHelper::custom('featured', 'featured', 'featured', 'COM_REDEVENT_FEATURE', true);
-		JToolBarHelper::custom('unfeatured', 'unfeatured', 'unfeatured', 'COM_REDEVENT_UNFEATURE', true);
-		JToolBarHelper::spacer();
-		JToolBarHelper::custom('back', 'back', 'back', 'COM_REDEVENT_BACK', false);
-		if ($user->authorise('core.admin', 'com_redevent')) {
-			JToolBarHelper::spacer();
-			JToolBarHelper::preferences('com_redevent', '600', '800');
-		}
-
-		// event
-		JHTML::_('behavior.modal', 'a.modal');
-		$js = "
-		window.addEvent('domready', function(){
-
-			document.id('ev-reset-button').addEvent('click', function(){
-				document.id('eventid').value = 0;
-				document.id('eventid_name').value = '".JText::_('COM_REDEVENT_SESSIONS_EVENT_FILTER_ALL')."';
-				document.id('adminForm').submit();
-			});
-
-			document.id('venue-reset-button').addEvent('click', function(){
-				document.id('venueid').value = 0;
-				document.id('venueid_name').value = '".JText::_('COM_REDEVENT_SESSIONS_VENUE_FILTER_ALL')."';
-				document.id('adminForm').submit();
-			});
-
-		});
-
-		function elSelectEvent(id, title, field) {
-			document.id('eventid').value = id;
-			document.id('eventid_name').value = title;
-			SqueezeBox.close();
-			document.id('adminForm').submit();
-		}
-
-		function elSelectVenue(id, title, field) {
-			document.id('venueid').value = id;
-			document.id('venueid_name').value = title;
-			SqueezeBox.close();
-			document.id('adminForm').submit();
-		}";
-		$document->addScriptDeclaration($js);
-
-		$uri->delVar('eventid');
-		$uri->delVar('venueid');
-		$this->assignRef('user',		JFactory::getUser());
-		$this->assignRef('lists',		$lists);
-		$this->assignRef('items',		$items);
-		$this->assignRef('event',		$event);
-		$this->assignRef('venue',		$venue);
-		$this->assignRef('eventid',		$eventid);
-		$this->assignRef('venueid',		$venueid);
-		$this->assignRef('params',    $params);
-		$this->assignRef('pagination',	$pagination);
-		$this->assignRef('request_url',	$uri->toString());
-
-		parent::display($tpl);
 	}
 
 	/**

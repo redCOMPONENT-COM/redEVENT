@@ -7,4 +7,4 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<?php echo RLayoutHelper::render('attachments.edit', $this, null, array('component' => 'com_redevent')); ?>
+<?php echo RLayoutHelper::render('roles.edit', $this, null, array('component' => 'com_redevent')); ?>

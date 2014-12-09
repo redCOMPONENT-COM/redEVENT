@@ -342,7 +342,7 @@ class RedeventModelEvent extends RModelAdmin
 		{
 			$field = RedeventFactoryCustomfield::getField($c->type);
 			$field->bind($c);
-			$prop = 'custom'.$c->id;
+			$prop = 'custom' . $c->id;
 
 			if (isset($data->$prop))
 			{
@@ -366,7 +366,7 @@ class RedeventModelEvent extends RModelAdmin
 
 		$query->select('f.*')
 			->from('#__redevent_fields AS f')
-			->where('f.object_key = '. $this->_db->Quote("redevent.event"))
+			->where('f.object_key = ' . $this->_db->Quote("redevent.event"))
 			->order('f.ordering');
 
 		$this->_db->setQuery($query);

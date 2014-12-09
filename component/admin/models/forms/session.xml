@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+
+	<fieldset name="main">
+
+        <field name="id"
+               type="hidden"
+               default="0"
+               class="readonly"
+               readonly="true"
+                />
+
+        <field
+            name="eventid"
+            type="reeventlist"
+            label="COM_REDEVENT_SESSION_EVENT_LABEL"
+            description ="COM_REDEVENT_SESSION_EVENT_DESC"
+            required="true"
+            class="inputbox" />
+
+        <field
+            name="venueid"
+            type="revenuelist"
+            label="COM_REDEVENT_SESSION_VENUE_LABEL"
+            description ="COM_REDEVENT_SESSION_VENUE_DESC"
+            required="true"
+            class="inputbox" />
+
+        <field
+            name="title"
+            type="text"
+            default=""
+            label="COM_REDEVENT_SESSION_TITLE_LABEL"
+            description ="COM_REDEVENT_SESSION_TITLE_TIP"
+            class="inputbox" />
+
+        <field
+            name="alias"
+            type="text"
+            default=""
+            label="COM_REDEVENT_SESSION_ALIAS_LABEL"
+            description ="COM_REDEVENT_SESSION_ALIAS_TIP"
+            class="inputbox" />
+
+        <field
+            name="session_code"
+            type="text"
+            default=""
+            label="COM_REDEVENT_SESSION_CODE"
+            description ="COM_REDEVENT_SESSION_CODE_DESC"
+            class="inputbox" />
+
+        <field
+            name="dates"
+            type="calendar"
+            format="%Y-%m-%d"
+            label="COM_REDEVENT_DATE"
+            description ="COM_REDEVENT_XREF_START_DATE_TIP"
+            class="inputbox" />
+
+        <field
+            name="times"
+            type="text"
+            default=""
+            label="COM_REDEVENT_TIME"
+            description ="COM_REDEVENT_XREF_START_TIME_TIP"
+            size="8"
+            maxlength="8"
+            class="inputbox" />
+
+        <field
+            name="enddates"
+            type="calendar"
+            format="%Y-%m-%d"
+            label="COM_REDEVENT_ENDDATE"
+            description ="COM_REDEVENT_XREF_END_DATE_TIP"
+            class="inputbox" />
+
+        <field
+            name="endtimes"
+            type="text"
+            default=""
+            label="COM_REDEVENT_ENDTIMES"
+            description ="COM_REDEVENT_XREF_END_TIME_TIP"
+            size="8"
+            maxlength="8"
+            class="inputbox" />
+
+        <field
+            name="registrationend"
+            type="calendar"
+            format="%Y-%m-%d %H:%M"
+            label="COM_REDEVENT_XREF_REGISTRATION_END"
+            description ="COM_REDEVENT_XREF_REGISTRATION_END_TIP"
+            class="inputbox" />
+
+        <field
+            name="note"
+            type="text"
+            default=""
+            label="COM_REDEVENT_XREF_NOTE"
+            description ="COM_REDEVENT_XREF_NOTE_TIP"
+            size="50" maxlength="50"
+            class="inputbox" />
+
+        <field
+            name="external_registration_url"
+            type="text"
+            default=""
+            label="COM_REDEVENT_XREF_EXTERNAL_REGISTRATION"
+            description ="COM_REDEVENT_XREF_EXTERNAL_REGISTRATION_TIP"
+            size="50" maxlength="50"
+            class="inputbox validate-url" />
+
+        <field
+            name="published"
+            type="list"
+            class="inputbox"
+            default="1"
+            size="1"
+            label="JSTATUS"
+            description="JFIELD_PUBLISHED_DESC">
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+            <option value="-1">JARCHIVED</option>
+        </field>
+
+        <field
+            name="featured"
+            type="list"
+            class="inputbox"
+            default="0"
+            size="1"
+            label="COM_REDEVENT_SESSION_FEATURED"
+            description="COM_REDEVENT_SESSION_FEATURED_DESC">
+            <option value="1">JYes</option>
+            <option value="0">JNo</option>
+        </field>
+
+        <field
+            name="details"
+            type="editor"
+            label="COM_REDEVENT_Details"
+            description="COM_REDEVENT_XREF_DETAILS_INFO"
+            class="inputbox"
+            filter="safehtml"
+            buttons="true"
+            hide="readmore,pagebreak"
+            />
+
+        <field
+            name="language"
+            type="contentlanguage"
+            label="JFIELD_LANGUAGE_LABEL"
+            description="COM_REDEVENT_FIELD_LANGUAGE_DESC"
+            class="inputbox">
+            <option value="*">JALL</option>
+        </field>
+    </fieldset>
+
+    <fieldset name="registration">
+
+        <field
+            name="maxattendees"
+            type="text"
+            default=""
+            label="COM_REDEVENT_MAXIMUM_ATTENDEES"
+            description ="COM_REDEVENT_XREF_MAX_ATTENDEES_TIP"
+            size="8" maxlength="8"
+            class="inputbox" />
+        <field
+            name="maxwaitinglist"
+            type="text"
+            default=""
+            label="COM_REDEVENT_MAXIMUM_WAITINGLIST"
+            description ="COM_REDEVENT_XREF_MAX_WAITING_TIP"
+            size="8" maxlength="8"
+            class="inputbox" />
+        <field
+            name="course_credit"
+            type="text"
+            default=""
+            label="COM_REDEVENT_COURSE_CREDIT"
+            description ="COM_REDEVENT_XREF_COURSE_CREDIT_TIP"
+            size="8" maxlength="8"
+            class="inputbox" />
+        <field
+            name="pricegroup"
+            type="hidden"
+            />
+        <field
+            name="price"
+            type="hidden"
+            />
+        <field
+            name="currency"
+            type="hidden"
+            />
+    </fieldset>
+
+    <fieldset name="recurrence">
+        <field
+                name="recurrence_type"
+                type="radio"
+                class="inputbox"
+                label="COM_REDEVENT_RECURRENCE_TYPE"
+                description="COM_REDEVENT_RECURRENCE_TYPE_DESC">
+            <option value="NONE">COM_REDEVENT_NO_REPEAT</option>
+            <option value="DAILY">COM_REDEVENT_DAILY</option>
+            <option value="WEEKLY">COM_REDEVENT_WEEKLY</option>
+            <option value="MONTHLY">COM_REDEVENT_MONTHLY</option>
+            <option value="YEARLY">COM_REDEVENT_YEARLY</option>
+        </field>
+        <field
+                name="recurrence_interval"
+                type="text"
+                default=""
+                label="COM_REDEVENT_REPEAT_INTERVAL"
+                description ="COM_REDEVENT_REPEAT_INTERVAL_TIP"
+                size="4" maxlength="4"
+                class="inputbox" />
+        <field
+                name="recurrence_repeat_type"
+                type="radio"
+                default=""
+                label="COM_REDEVENT_REPEAT_TYPE"
+                description ="COM_REDEVENT_REPEAT_TYPE_DESC"
+                class="inputbox" />
+        <field
+                name="recurrence_repeat_until_count"
+                type="text"
+                label="COM_REDEVENT_REPEAT_COUNT"
+                description ="COM_REDEVENT_REPEAT_COUNT_TIP"
+                class="inputbox" />
+        <field
+                name="recurrence_repeat_until_date"
+                type="calendar"
+                format="Y-m-d"
+                label="COM_REDEVENT_REPEAT_UNTIL"
+                description ="COM_REDEVENT_REPEAT_UNTIL_TIP"
+                class="inputbox" />
+        <field
+                name="recurrence_wweekdays"
+                type="checkboxes"
+                class="inputbox"
+                label="COM_REDEVENT_RECURRENCE_TYPE"
+                description="COM_REDEVENT_RECURRENCE_TYPE_DESC">
+            <option value="SU">COM_REDEVENT_SUNDAY_S</option>
+            <option value="MO">COM_REDEVENT_MONDAY_M</option>
+            <option value="TU">COM_REDEVENT_TUESDAY_T</option>
+            <option value="WE">COM_REDEVENT_WEDNESDAY_W</option>
+            <option value="TH">COM_REDEVENT_THURSDAY_T</option>
+            <option value="FR">COM_REDEVENT_FRIDAY_F</option>
+            <option value="SA">COM_REDEVENT_SATURDAY_S</option>
+        </field>
+        <field
+                name="recurrence_month_type"
+                type="radio"
+                default=""
+                label="COM_REDEVENT_RECURRENCE_MONTH_TYPE"
+                description ="COM_REDEVENT_RECURRENCE_MONTH_TYPE_DESC"
+                class="inputbox">
+            <option value="bymonthday">COM_REDEVENT_RECURRENCE_MONTH_BY_MONTHDAY</option>
+            <option value="byday">COM_REDEVENT_RECURRENCE_MONTH_BY_DAY</option>
+        </field>
+
+        <field
+                name="recurrence_bymonthdays"
+                type="text"
+                label="COM_REDEVENT_BY_MONTH_DAY_COMMA_LIST"
+                description ="COM_REDEVENT_BY_MONTH_DAY_COMMA_LIST_DESC"
+                />
+        <field
+                name="recurrence_reverse_bymonthday"
+                type="checkbox"
+                label="COM_REDEVENT_REVERSE_BY_MONTH_DAY"
+                description ="COM_REDEVENT_REVERSE_BY_MONTH_DAY_DESC"
+                />
+
+        <field
+                name="recurrence_mweeks"
+                type="checkboxes"
+                class="inputbox"
+                label="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY"
+                description="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY_DESC">
+            <option value="1">COM_REDEVENT_WEEK_1</option>
+            <option value="2">COM_REDEVENT_WEEK_2</option>
+            <option value="3">COM_REDEVENT_WEEK_3</option>
+            <option value="4">COM_REDEVENT_WEEK_4</option>
+            <option value="5">COM_REDEVENT_WEEK_5</option>
+        </field>
+        <field
+                name="recurrence_mweekdays"
+                type="checkboxes"
+                class="inputbox"
+                label="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY"
+                description="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY_DESC">
+            <option value="SU">COM_REDEVENT_SUNDAY_S</option>
+            <option value="MO">COM_REDEVENT_MONDAY_M</option>
+            <option value="TU">COM_REDEVENT_TUESDAY_T</option>
+            <option value="WE">COM_REDEVENT_WEDNESDAY_W</option>
+            <option value="TH">COM_REDEVENT_THURSDAY_T</option>
+            <option value="FR">COM_REDEVENT_FRIDAY_F</option>
+            <option value="SA">COM_REDEVENT_SATURDAY_S</option>
+        </field>
+
+        <field
+                name="recurrence_reverse_bymonthday"
+                type="checkbox"
+                label="COM_REDEVENT_REVERSE_BY_MONTH_DAY"
+                description ="COM_REDEVENT_REVERSE_BY_MONTH_DAY_DESC"
+                />
+
+        <field
+                name="recurrence_mrweeks"
+                type="checkboxes"
+                class="inputbox"
+                label="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY"
+                description="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY_DESC">
+            <option value="1">COM_REDEVENT_WEEK_1</option>
+            <option value="2">COM_REDEVENT_WEEK_2</option>
+            <option value="3">COM_REDEVENT_WEEK_3</option>
+            <option value="4">COM_REDEVENT_WEEK_4</option>
+            <option value="5">COM_REDEVENT_WEEK_5</option>
+        </field>
+        <field
+                name="recurrence_mrweekdays"
+                type="checkboxes"
+                class="inputbox"
+                label="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY"
+                description="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY_DESC">
+            <option value="SU">COM_REDEVENT_SUNDAY_S</option>
+            <option value="MO">COM_REDEVENT_MONDAY_M</option>
+            <option value="TU">COM_REDEVENT_TUESDAY_T</option>
+            <option value="WE">COM_REDEVENT_WEDNESDAY_W</option>
+            <option value="TH">COM_REDEVENT_THURSDAY_T</option>
+            <option value="FR">COM_REDEVENT_FRIDAY_F</option>
+            <option value="SA">COM_REDEVENT_SATURDAY_S</option>
+        </field>
+
+        <field
+                name="recurrence_byyeardays"
+                type="text"
+                label="COM_REDEVENT_BY_YEAR_DAY_COMMA_LIST"
+                description ="COM_REDEVENT_BY_YEAR_DAY_COMMA_LIST_DESC"
+                />
+        <field
+                name="recurrence_reverse_byyearday"
+                type="checkbox"
+                label="COM_REDEVENT_REVERSE_BY_YEAR_DAY"
+                description ="COM_REDEVENT_REVERSE_BY_YEAR_DAY_DESC"
+                />
+
+        <field
+                name="recurrenceid"
+                type="hidden"
+                />
+        <field
+                name="repeat"
+                type="hidden"
+                />
+    </fieldset>
+
+    <fieldset name="roles">
+        <field
+                name="rrole"
+                type="rerole"
+                label="COM_REDEVENT_SESSION_ROLE_SELECT"
+                description="COM_REDEVENT_SESSION_ROLE_SELECT_DESC">
+            <option value="">COM_REDEVENT_Select_role</option>
+        </field>
+        <field
+                name="urole"
+                type="user"
+                label="COM_REDEVENT_SESSION_ROLE_USER"
+                description="COM_REDEVENT_SESSION_ROLE_USER_DESC"/>
+
+    </fieldset>
+
+    <fieldset name="ical">
+        <field
+                name="icaldetails"
+                type="textarea"
+                label="COM_REDEVENT_XREF_ICALDETAILS_INFO"
+                description="COM_REDEVENT_XREF_ICALDETAILS_INFO_TIP"/>
+        <field
+                name="icalvenue"
+                type="text"
+                label="COM_REDEVENT_XREF_ICALDETAILS_VENUE"
+                description="COM_REDEVENT_XREF_ICALDETAILS_VENUE_TIP"/>
+
+    </fieldset>
+
+
+</form>

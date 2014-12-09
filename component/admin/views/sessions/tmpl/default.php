@@ -126,11 +126,10 @@ $search = $this->state->get('filter.search');
 			<?php $n = count($this->items); ?>
 			<?php foreach ($this->items as $i => $row) :
 				/* Get the date */
-				$date = (!RedeventHelper::isValidDate($row->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime( $this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->dates )));
-				$enddate  = (!RedeventHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) ? '' : strftime( $this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->enddates ));
+				$date = (!RedeventHelper::isValidDate($row->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime($this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime($row->dates)));
+				$enddate  = (!RedeventHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) ? '' : strftime($this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime($row->enddates));
 				$displaydate = $date. ($enddate ? ' - '.$enddate: '');
 				$endreg = (!RedeventHelper::isValidDate($row->registrationend) ? '-' : strftime( $this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime( $row->registrationend )));
-
 
 				$displaytime = '';
 				/* Get the time */
@@ -147,13 +146,23 @@ $search = $this->state->get('filter.search');
 				$venuelink = JRoute::_( 'index.php?option=com_redevent&task=venue.edit&id=' . $row->venueid);
 				$eventlink = JRoute::_( 'index.php?option=com_redevent&task=event.edit&id=' . $row->eventid);
 				?>
-				<?php $orderkey = array_search($row->id, $this->ordering[0]); ?>
 				<tr>
 					<td>
 						<?php echo $this->pagination->getRowOffset($i); ?>
 					</td>
 					<td>
 						<?php echo JHtml::_('grid.id', $i, $row->id); ?>
+					</td>
+					<td>
+						<?php if ($this->canEditState) : ?>
+							<?php echo JHtml::_('rgrid.published', $row->published, $i, 'sessions.', true, 'cb'); ?>
+						<?php else : ?>
+							<?php if ($row->published) : ?>
+								<a class="btn btn-small disabled"><i class="icon-ok-sign icon-green"></i></a>
+							<?php else : ?>
+								<a class="btn btn-small disabled"><i class="icon-remove-sign icon-red"></i></a>
+							<?php endif; ?>
+						<?php endif; ?>
 					</td>
 					<?php if ($this->canEdit) : ?>
 						<td>

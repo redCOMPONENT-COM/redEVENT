@@ -16,8 +16,95 @@ jimport('joomla.application.component.view');
  * @package  Redevent.Admin
  * @since    0.9
  */
-class RedEventViewSession extends JView
+class RedeventViewSession extends RedeventViewAdmin
 {
+	/**
+	 * @var  boolean
+	 */
+	protected $displaySidebar = false;
+
+	/**
+	 * Display the edit page
+	 *
+	 * @param   string  $tpl  The template file to use
+	 *
+	 * @return   string
+	 */
+	public function display($tpl = null)
+	{
+		$user = JFactory::getUser();
+
+		$this->form = $this->get('Form');
+		$this->item = $this->get('Item');
+		$this->customfields = $this->get('Customfields');
+		$this->roles = $this->get('SessionRoles');
+		$this->prices = $this->get('SessionPrices');
+		$this->rolesoptions = $this->get('RolesOptions');
+		$this->pricesoptions = $this->get('PricegroupsOptions');
+
+		$this->canConfig = false;
+
+		if ($user->authorise('core.admin', 'com_redevent'))
+		{
+			$this->canConfig = true;
+		}
+
+		// Display the template
+		parent::display($tpl);
+	}
+
+	/**
+	 * Get the view title.
+	 *
+	 * @return  string  The view title.
+	 */
+	public function getTitle()
+	{
+		$subTitle = ' <small>' . JText::_('COM_REDEVENT_NEW') . '</small>';
+
+		if ($this->item->id)
+		{
+			$subTitle = ' <small>' . $this->item->event_title . '</small>';
+		}
+
+		return JText::_('COM_REDEVENT_PAGETITLE_EDITSESSION') . $subTitle;
+	}
+
+	/**
+	 * Get the toolbar to render.
+	 *
+	 * @return  RToolbar
+	 */
+	public function getToolbar()
+	{
+		$group = new RToolbarButtonGroup;
+
+		$save = RToolbarBuilder::createSaveButton('session.apply');
+		$saveAndClose = RToolbarBuilder::createSaveAndCloseButton('session.save');
+		$saveAndNew = RToolbarBuilder::createSaveAndNewButton('session.save2new');
+		$save2Copy = RToolbarBuilder::createSaveAsCopyButton('session.save2copy');
+
+		$group->addButton($save)
+			->addButton($saveAndClose)
+			->addButton($saveAndNew)
+			->addButton($save2Copy);
+
+		if (empty($this->item->id))
+		{
+			$cancel = RToolbarBuilder::createCancelButton('session.cancel');
+		}
+		else
+		{
+			$cancel = RToolbarBuilder::createCloseButton('session.cancel');
+		}
+
+		$group->addButton($cancel);
+
+		$toolbar = new RToolbar;
+		$toolbar->addGroup($group);
+
+		return $toolbar;
+	}
 
 	/**
 	 * Execute and display a template script.
@@ -29,7 +116,7 @@ class RedEventViewSession extends JView
 	 * @see     fetch()
 	 * @since   11.1
 	 */
-	public function display($tpl = null)
+	public function _old_display($tpl = null)
 	{
 		// Initialise variables
 		$editor   = JFactory::getEditor();

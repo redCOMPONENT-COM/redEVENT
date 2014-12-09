@@ -18,7 +18,7 @@ class RedeventControllerSession extends RControllerForm
   /**
    * save the event session
    */
-	public function save()
+	public function _save()
 	{
     // Check for request forgeries
     JRequest::checkToken() or die( 'Invalid Token' );
@@ -81,9 +81,44 @@ class RedeventControllerSession extends RControllerForm
     return true;
 	}
 
-	public function cancel()
+	/**
+	 * Function that allows child controller access to model data
+	 * after the data has been saved.
+	 *
+	 * @param   RModel  &$model     The data model object.
+	 * @param   array   $validData  The validated data.
+	 *
+	 * @return  void
+	 */
+	protected function postSaveHook(RModelAdmin &$model, $validData = array())
 	{
-		$eventid = JRequest::getInt('eventid');
-		$this->setRedirect('index.php?option=com_redevent&view=sessions');
+		parent::postSaveHook($model, $validData);
+
+		$input = JFactory::getApplication()->input;
+		$sessionId = $model->getState($this->context . '.id');
+
+		if ($sessionId)
+		{
+			return;
+		}
+
+		/* Check if people need to be moved on or off the waitinglist */
+		$model_wait = $this->getModel('waitinglist');
+		$model_wait->setXrefId($model->getState($sessionId));
+		$model_wait->UpdateWaitingList();
+
+		if ($input->get('task') == 'saveAndTwit')
+		{
+			JPluginHelper::importPlugin('system', 'autotweetredevent');
+			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher->trigger('onAfterRedeventSessionSave', array($sessionId));
+		}
+echo '<pre>'; echo print_r($validData, true); echo '</pre>'; exit;
+		// Trigger event
+		JPluginHelper::importPlugin('redevent');
+		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher->trigger('onAfterSessionSave', array($sessionId, $isNew));
 	}
+
+
 }

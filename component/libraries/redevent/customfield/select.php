@@ -16,7 +16,6 @@ defined('JPATH_BASE') or die();
  */
 class RedeventCustomfieldSelect extends RedeventAbstractCustomfield
 {
-
 	/**
 	 * Element name
 	 *
@@ -48,7 +47,7 @@ class RedeventCustomfieldSelect extends RedeventAbstractCustomfield
 
 		$option_list = $this->getOptions();
 
-		// selected option
+		// Selected option
 		if (!is_null($this->value))
 		{
 			$selected = $this->value;
@@ -57,6 +56,7 @@ class RedeventCustomfieldSelect extends RedeventAbstractCustomfield
 		{
 			$selected = $this->default_value;
 		}
+
 		return JHTML::_('select.genericlist', $option_list, 'jform[' . $this->fieldname . ']', $this->attributesToString($attributes), 'value', 'text', $selected, $this->fieldid);
 	}
 
@@ -74,6 +74,7 @@ class RedeventCustomfieldSelect extends RedeventAbstractCustomfield
 		}
 
 		$option_list = $this->getOptions();
+
 		return JHTML::_('select.genericlist', $option_list, 'filtercustom[' . $this->id . ']', $this->attributesToString($attributes), 'value', 'text', $value);
 	}
 
