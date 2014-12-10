@@ -8,7 +8,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 RHelperAsset::load('xref_prices.js');
-//echo '<pre>'; echo print_r($this->pricegroupsoptions, true); echo '</pre>'; exit;
 ?>
 <table class="adminform" id="re-prices">
 	<?php foreach ((array) $this->prices as $k => $r): ?>

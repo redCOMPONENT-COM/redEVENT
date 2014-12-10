@@ -198,168 +198,174 @@
             />
     </fieldset>
 
-    <fieldset name="recurrence">
-        <field
-                name="recurrence_type"
-                type="radio"
-                class="inputbox"
-                label="COM_REDEVENT_RECURRENCE_TYPE"
-                description="COM_REDEVENT_RECURRENCE_TYPE_DESC">
-            <option value="NONE">COM_REDEVENT_NO_REPEAT</option>
-            <option value="DAILY">COM_REDEVENT_DAILY</option>
-            <option value="WEEKLY">COM_REDEVENT_WEEKLY</option>
-            <option value="MONTHLY">COM_REDEVENT_MONTHLY</option>
-            <option value="YEARLY">COM_REDEVENT_YEARLY</option>
-        </field>
-        <field
-                name="recurrence_interval"
-                type="text"
-                default=""
-                label="COM_REDEVENT_REPEAT_INTERVAL"
-                description ="COM_REDEVENT_REPEAT_INTERVAL_TIP"
-                size="4" maxlength="4"
-                class="inputbox" />
-        <field
-                name="recurrence_repeat_type"
-                type="radio"
-                default=""
-                label="COM_REDEVENT_REPEAT_TYPE"
-                description ="COM_REDEVENT_REPEAT_TYPE_DESC"
-                class="inputbox" />
-        <field
-                name="recurrence_repeat_until_count"
-                type="text"
-                label="COM_REDEVENT_REPEAT_COUNT"
-                description ="COM_REDEVENT_REPEAT_COUNT_TIP"
-                class="inputbox" />
-        <field
-                name="recurrence_repeat_until_date"
-                type="calendar"
-                format="Y-m-d"
-                label="COM_REDEVENT_REPEAT_UNTIL"
-                description ="COM_REDEVENT_REPEAT_UNTIL_TIP"
-                class="inputbox" />
-        <field
-                name="recurrence_wweekdays"
-                type="checkboxes"
-                class="inputbox"
-                label="COM_REDEVENT_RECURRENCE_TYPE"
-                description="COM_REDEVENT_RECURRENCE_TYPE_DESC">
-            <option value="SU">COM_REDEVENT_SUNDAY_S</option>
-            <option value="MO">COM_REDEVENT_MONDAY_M</option>
-            <option value="TU">COM_REDEVENT_TUESDAY_T</option>
-            <option value="WE">COM_REDEVENT_WEDNESDAY_W</option>
-            <option value="TH">COM_REDEVENT_THURSDAY_T</option>
-            <option value="FR">COM_REDEVENT_FRIDAY_F</option>
-            <option value="SA">COM_REDEVENT_SATURDAY_S</option>
-        </field>
-        <field
-                name="recurrence_month_type"
-                type="radio"
-                default=""
-                label="COM_REDEVENT_RECURRENCE_MONTH_TYPE"
-                description ="COM_REDEVENT_RECURRENCE_MONTH_TYPE_DESC"
-                class="inputbox">
-            <option value="bymonthday">COM_REDEVENT_RECURRENCE_MONTH_BY_MONTHDAY</option>
-            <option value="byday">COM_REDEVENT_RECURRENCE_MONTH_BY_DAY</option>
-        </field>
+    <fields name="recurrence">
+        <fieldset name="recurrence">
+            <field
+                    name="type"
+                    type="radio"
+                    class="inputbox"
+                    label="COM_REDEVENT_RECURRENCE_TYPE"
+                    description="COM_REDEVENT_RECURRENCE_TYPE_DESC"
+                    default="NONE">
+                <option value="NONE">COM_REDEVENT_NO_REPEAT</option>
+                <option value="DAILY">COM_REDEVENT_DAILY</option>
+                <option value="WEEKLY">COM_REDEVENT_WEEKLY</option>
+                <option value="MONTHLY">COM_REDEVENT_MONTHLY</option>
+                <option value="YEARLY">COM_REDEVENT_YEARLY</option>
+            </field>
+            <field
+                    name="interval"
+                    type="text"
+                    default=""
+                    label="COM_REDEVENT_REPEAT_INTERVAL"
+                    description ="COM_REDEVENT_REPEAT_INTERVAL_TIP"
+                    size="4" maxlength="4"
+                    class="inputbox" />
+            <field
+                    name="repeat_type"
+                    type="radio"
+                    default=""
+                    label="COM_REDEVENT_REPEAT_TYPE"
+                    description ="COM_REDEVENT_REPEAT_TYPE_DESC"
+                    class="inputbox">
+                <option value="count">COM_REDEVENT_REPEAT_TYPE_COUNT</option>
+                <option value="until">COM_REDEVENT_REPEAT_TYPE_UNTIL</option>
+            </field>
+            <field
+                    name="repeat_until_count"
+                    type="text"
+                    label="COM_REDEVENT_REPEAT_COUNT"
+                    description ="COM_REDEVENT_REPEAT_COUNT_TIP"
+                    class="inputbox" />
+            <field
+                    name="repeat_until_date"
+                    type="calendar"
+                    format="Y-m-d"
+                    label="COM_REDEVENT_REPEAT_UNTIL"
+                    description ="COM_REDEVENT_REPEAT_UNTIL_TIP"
+                    class="inputbox" />
+            <field
+                    name="wweekdays"
+                    type="checkboxes"
+                    class="inputbox"
+                    label="COM_REDEVENT_RECURRENCE_TYPE"
+                    description="COM_REDEVENT_RECURRENCE_TYPE_DESC">
+                <option value="SU">COM_REDEVENT_SUNDAY_S</option>
+                <option value="MO">COM_REDEVENT_MONDAY_M</option>
+                <option value="TU">COM_REDEVENT_TUESDAY_T</option>
+                <option value="WE">COM_REDEVENT_WEDNESDAY_W</option>
+                <option value="TH">COM_REDEVENT_THURSDAY_T</option>
+                <option value="FR">COM_REDEVENT_FRIDAY_F</option>
+                <option value="SA">COM_REDEVENT_SATURDAY_S</option>
+            </field>
+            <field
+                    name="month_type"
+                    type="radio"
+                    default=""
+                    label="COM_REDEVENT_RECURRENCE_MONTH_TYPE"
+                    description ="COM_REDEVENT_RECURRENCE_MONTH_TYPE_DESC"
+                    class="inputbox">
+                <option value="bymonthday">COM_REDEVENT_RECURRENCE_MONTH_BY_MONTHDAY</option>
+                <option value="byday">COM_REDEVENT_RECURRENCE_MONTH_BY_DAY</option>
+            </field>
 
-        <field
-                name="recurrence_bymonthdays"
-                type="text"
-                label="COM_REDEVENT_BY_MONTH_DAY_COMMA_LIST"
-                description ="COM_REDEVENT_BY_MONTH_DAY_COMMA_LIST_DESC"
-                />
-        <field
-                name="recurrence_reverse_bymonthday"
-                type="checkbox"
-                label="COM_REDEVENT_REVERSE_BY_MONTH_DAY"
-                description ="COM_REDEVENT_REVERSE_BY_MONTH_DAY_DESC"
-                />
+            <field
+                    name="bymonthdays"
+                    type="text"
+                    label="COM_REDEVENT_BY_MONTH_DAY_COMMA_LIST"
+                    description ="COM_REDEVENT_BY_MONTH_DAY_COMMA_LIST_DESC"
+                    />
+            <field
+                    name="reverse_bymonthday"
+                    type="checkbox"
+                    label="COM_REDEVENT_REVERSE_BY_MONTH_DAY"
+                    description ="COM_REDEVENT_REVERSE_BY_MONTH_DAY_DESC"
+                    />
 
-        <field
-                name="recurrence_mweeks"
-                type="checkboxes"
-                class="inputbox"
-                label="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY"
-                description="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY_DESC">
-            <option value="1">COM_REDEVENT_WEEK_1</option>
-            <option value="2">COM_REDEVENT_WEEK_2</option>
-            <option value="3">COM_REDEVENT_WEEK_3</option>
-            <option value="4">COM_REDEVENT_WEEK_4</option>
-            <option value="5">COM_REDEVENT_WEEK_5</option>
-        </field>
-        <field
-                name="recurrence_mweekdays"
-                type="checkboxes"
-                class="inputbox"
-                label="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY"
-                description="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY_DESC">
-            <option value="SU">COM_REDEVENT_SUNDAY_S</option>
-            <option value="MO">COM_REDEVENT_MONDAY_M</option>
-            <option value="TU">COM_REDEVENT_TUESDAY_T</option>
-            <option value="WE">COM_REDEVENT_WEDNESDAY_W</option>
-            <option value="TH">COM_REDEVENT_THURSDAY_T</option>
-            <option value="FR">COM_REDEVENT_FRIDAY_F</option>
-            <option value="SA">COM_REDEVENT_SATURDAY_S</option>
-        </field>
+            <field
+                    name="mweeks"
+                    type="checkboxes"
+                    class="inputbox"
+                    label="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY"
+                    description="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY_DESC">
+                <option value="1">COM_REDEVENT_WEEK_1</option>
+                <option value="2">COM_REDEVENT_WEEK_2</option>
+                <option value="3">COM_REDEVENT_WEEK_3</option>
+                <option value="4">COM_REDEVENT_WEEK_4</option>
+                <option value="5">COM_REDEVENT_WEEK_5</option>
+            </field>
+            <field
+                    name="mweekdays"
+                    type="checkboxes"
+                    class="inputbox"
+                    label="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY"
+                    description="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY_DESC">
+                <option value="SU">COM_REDEVENT_SUNDAY_S</option>
+                <option value="MO">COM_REDEVENT_MONDAY_M</option>
+                <option value="TU">COM_REDEVENT_TUESDAY_T</option>
+                <option value="WE">COM_REDEVENT_WEDNESDAY_W</option>
+                <option value="TH">COM_REDEVENT_THURSDAY_T</option>
+                <option value="FR">COM_REDEVENT_FRIDAY_F</option>
+                <option value="SA">COM_REDEVENT_SATURDAY_S</option>
+            </field>
 
-        <field
-                name="recurrence_reverse_bymonthday"
-                type="checkbox"
-                label="COM_REDEVENT_REVERSE_BY_MONTH_DAY"
-                description ="COM_REDEVENT_REVERSE_BY_MONTH_DAY_DESC"
-                />
+            <field
+                    name="reverse_bymonthday"
+                    type="checkbox"
+                    label="COM_REDEVENT_REVERSE_BY_MONTH_DAY"
+                    description ="COM_REDEVENT_REVERSE_BY_MONTH_DAY_DESC"
+                    />
 
-        <field
-                name="recurrence_mrweeks"
-                type="checkboxes"
-                class="inputbox"
-                label="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY"
-                description="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY_DESC">
-            <option value="1">COM_REDEVENT_WEEK_1</option>
-            <option value="2">COM_REDEVENT_WEEK_2</option>
-            <option value="3">COM_REDEVENT_WEEK_3</option>
-            <option value="4">COM_REDEVENT_WEEK_4</option>
-            <option value="5">COM_REDEVENT_WEEK_5</option>
-        </field>
-        <field
-                name="recurrence_mrweekdays"
-                type="checkboxes"
-                class="inputbox"
-                label="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY"
-                description="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY_DESC">
-            <option value="SU">COM_REDEVENT_SUNDAY_S</option>
-            <option value="MO">COM_REDEVENT_MONDAY_M</option>
-            <option value="TU">COM_REDEVENT_TUESDAY_T</option>
-            <option value="WE">COM_REDEVENT_WEDNESDAY_W</option>
-            <option value="TH">COM_REDEVENT_THURSDAY_T</option>
-            <option value="FR">COM_REDEVENT_FRIDAY_F</option>
-            <option value="SA">COM_REDEVENT_SATURDAY_S</option>
-        </field>
+            <field
+                    name="mrweeks"
+                    type="checkboxes"
+                    class="inputbox"
+                    label="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY"
+                    description="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY_DESC">
+                <option value="1">COM_REDEVENT_WEEK_1</option>
+                <option value="2">COM_REDEVENT_WEEK_2</option>
+                <option value="3">COM_REDEVENT_WEEK_3</option>
+                <option value="4">COM_REDEVENT_WEEK_4</option>
+                <option value="5">COM_REDEVENT_WEEK_5</option>
+            </field>
+            <field
+                    name="mrweekdays"
+                    type="checkboxes"
+                    class="inputbox"
+                    label="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY"
+                    description="COM_REDEVENT_RECURRENCE_MONTH_BY_DAY_DESC">
+                <option value="SU">COM_REDEVENT_SUNDAY_S</option>
+                <option value="MO">COM_REDEVENT_MONDAY_M</option>
+                <option value="TU">COM_REDEVENT_TUESDAY_T</option>
+                <option value="WE">COM_REDEVENT_WEDNESDAY_W</option>
+                <option value="TH">COM_REDEVENT_THURSDAY_T</option>
+                <option value="FR">COM_REDEVENT_FRIDAY_F</option>
+                <option value="SA">COM_REDEVENT_SATURDAY_S</option>
+            </field>
 
-        <field
-                name="recurrence_byyeardays"
-                type="text"
-                label="COM_REDEVENT_BY_YEAR_DAY_COMMA_LIST"
-                description ="COM_REDEVENT_BY_YEAR_DAY_COMMA_LIST_DESC"
-                />
-        <field
-                name="recurrence_reverse_byyearday"
-                type="checkbox"
-                label="COM_REDEVENT_REVERSE_BY_YEAR_DAY"
-                description ="COM_REDEVENT_REVERSE_BY_YEAR_DAY_DESC"
-                />
+            <field
+                    name="byyeardays"
+                    type="text"
+                    label="COM_REDEVENT_BY_YEAR_DAY_COMMA_LIST"
+                    description ="COM_REDEVENT_BY_YEAR_DAY_COMMA_LIST_DESC"
+                    />
+            <field
+                    name="reverse_byyearday"
+                    type="checkbox"
+                    label="COM_REDEVENT_REVERSE_BY_YEAR_DAY"
+                    description ="COM_REDEVENT_REVERSE_BY_YEAR_DAY_DESC"
+                    />
 
-        <field
-                name="recurrenceid"
-                type="hidden"
-                />
-        <field
-                name="repeat"
-                type="hidden"
-                />
-    </fieldset>
+            <field
+                    name="recurrenceid"
+                    type="hidden"
+                    />
+            <field
+                    name="repeat"
+                    type="hidden"
+                    />
+        </fieldset>
+    </fields>
 
     <fieldset name="roles">
         <field

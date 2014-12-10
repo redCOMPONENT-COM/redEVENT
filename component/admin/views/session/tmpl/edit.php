@@ -129,7 +129,7 @@ JHtml::_('rjquery.chosen', 'select');
 
 		<div class="tab-pane" id="recurrence">
 			<div class="row-fluid">
-				<?php //echo $this->loadTemplate('recurrence'); ?>
+				<?php echo $this->loadTemplate('recurrence'); ?>
 			</div>
 		</div>
 

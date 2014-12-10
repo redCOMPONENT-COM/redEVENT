@@ -233,16 +233,16 @@ class RedeventModelSession extends RModelAdmin
 			return false;
 		}
 
-//		if (!$this->saveRecurrence($data))
-//		{
-//			return false;
-//		}
-//
+		if (!$this->saveRecurrence($data))
+		{
+			return false;
+		}
+
 		if (!$this->saveRoles($data))
 		{
 			return false;
 		}
-//
+
 		if (!$this->savePrices($data))
 		{
 			return false;
@@ -266,7 +266,7 @@ class RedeventModelSession extends RModelAdmin
 		}
 
 		$recurrence = RTable::getInstance('Recurrence', 'RedeventTable');
-
+echo '<pre>'; echo print_r($data, true); echo '</pre>'; exit;
 		if (!$data['recurrenceid'])
 		{
 			$rrule = RedeventHelperRecurrence::parsePost($data);
