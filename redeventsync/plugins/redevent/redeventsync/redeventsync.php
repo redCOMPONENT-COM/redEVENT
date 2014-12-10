@@ -32,6 +32,9 @@ class plgRedeventRedeventsync extends JPlugin
 	{
 		parent::__construct($subject, $params);
 		$this->loadLanguage();
+
+		// Load FOF
+		include_once JPATH_LIBRARIES . '/fof/include.php';
 	}
 
 	/**
