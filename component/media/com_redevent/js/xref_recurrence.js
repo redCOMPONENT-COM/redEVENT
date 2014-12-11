@@ -1,95 +1,76 @@
 /**
- * @version 2.5
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.js
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
+(function($){
+	$(document).ready(function() {
+		$('#recurrence input[name*="[type]"]').click(function() {
+			toggleRecurrenceType($(this).val());
+		})
 
-window.addEvent('domready', function() {
+		$('#recurrence input[name*="[type]"]:checked').each(function(index, element){
+			toggleRecurrenceType($(element).val());
+		});
 
-  $$('input[name="recurrence_type"]').each(function(el) {
-	  el.addEvent('change', toggleRtype.bind(el));
-  });
+		$('#recurrence input[name*="[repeat_type]"]').click(function() {
+			toggleLimitType($(this).val());
+		})
 
-  $('recurrence_repeat_until').addEvent('click', function(){
-	  $('rcount').removeProperty('checked');
-	  $('runtil').setProperty('checked', 'checked');
-  });
+		$('#recurrence input[name*="[repeat_type]"]:checked').each(function(index, element){
+			toggleLimitType($(element).val());
+		});
 
-  if ($('recurrence_repeat_until_img')) {
-	  $('recurrence_repeat_until_img').addEvent('click', function(){
-		  $('rcount').removeProperty('checked');
-		  $('runtil').setProperty('checked', 'checked');
-	  });
-  }
-  
-  $('recurrence_repeat_count').addEvent('click', function(){
-	  $('runtil').removeProperty('checked');
-	  $('rcount').setProperty('checked', 'checked');
-  });
+		$('#recurrence input[name*="[month_type]"]').click(function() {
+			toggleMonthDaysSelect($(this).val());
+		})
 
-  if ($('repeat').value > 0) {
-	  $('recurrence').getElements('input').each(function(el){
-		  el.setProperty('disabled', 'disabled');
-	  });
-  }
-  
-  toggleRtype();
-  
-});
+		$('#recurrence input[name*="[month_type]"]:checked').each(function(index, element){
+			toggleMonthDaysSelect($(element).val())
+		});
+	});
 
-function toggleRtype()
-{
-	var elements = $$('input[name=recurrence_type]');
-	hideall();
-	var selected = getRadioCheckedValue(elements);
-	
-	if (selected == 'DAILY') {
-		$('xref_recurrence_repeat_common').setStyle('display', 'block');
-	}
-	if (selected == 'WEEKLY') {
-		$('xref_recurrence_repeat_common').setStyle('display', 'block');
-		$('recurrence_repeat_weekly').setStyle('display', 'block');
-	}
-	if (selected == 'MONTHLY') {
-		$('xref_recurrence_repeat_common').setStyle('display', 'block');
-		$('recurrence_repeat_monthly').setStyle('display', 'block');
-	}
-	if (selected == 'YEARLY') {
-		$('xref_recurrence_repeat_common').setStyle('display', 'block');
-		$('recurrence_repeat_yearly').setStyle('display', 'block');
-	}
-}
+	var toggleRecurrenceType = function(type)
+	{
+		if (type == 'NONE') {
+			$('#recurrence-settings').hide();
 
-function getRadioCheckedValue(elements) 
-{
-	for(var i = 0; i < elements.length; i++) {
-
-		if(elements[i].checked) {
-		return elements[i].value;
+			return;
 		}
-	}
-	return '';
-} 
 
-function hideall() {
-	$('xref_recurrence_repeat_common').setStyle('display', 'none');
-	$('recurrence_repeat_weekly').setStyle('display', 'none');
-	$('recurrence_repeat_monthly').setStyle('display', 'none');
-	$('recurrence_repeat_yearly').setStyle('display', 'none');
-}
+		$('#recurrence-settings .recurrence-type-options').hide();
+		$('#recurrence-settings').show();
+
+		if (type == 'WEEKLY') {
+			$('#recurrence_repeat_weekly').show();
+		}
+		else if (type == 'MONTHLY') {
+			$('#recurrence_repeat_monthly').show();
+		}
+		else if (type == 'YEARLY') {
+			$('#recurrence_repeat_yearly').show();
+		}
+	};
+
+	var toggleLimitType = function(type)
+	{
+		$('.repeat_type_option').hide();
+		if (type == 'count') {
+			$('#repeat_type_count').show();
+		}
+		else {
+			$('#repeat_type_date').show();
+		}
+	};
+
+	var toggleMonthDaysSelect = function(type)
+	{
+		$('.month-type-options').hide();
+		if (type == 'bymonthday') {
+			$('.month-type-options.bymonthdays').show();
+		}
+		else {
+			$('.month-type-options.byweeks').show();
+		}
+	};
+})(jQuery);

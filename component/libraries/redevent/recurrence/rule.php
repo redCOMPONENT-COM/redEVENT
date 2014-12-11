@@ -92,33 +92,32 @@ class RedeventRecurrenceRule
 	 *
 	 * the form reuse same property for different fields (for clarity)
 	 *
-	 * @return array
+	 * @return Object
 	 */
 	public function getFormData()
 	{
-		$data = array();
-		$data['type'] = $this->type;
-		$data['interval'] = $this->interval;
-		$data['repeat_type'] = $this->repeat_type;
-		$data['repeat_until_count'] = $this->repeat_until_count;
-		$data['repeat_until_date'] = $this->repeat_until_date;
+		$data = new stdClass;
+		$data->type = $this->type;
+		$data->interval = $this->interval;
+		$data->repeat_type = $this->repeat_type;
+		$data->repeat_until_count = $this->repeat_until_count;
+		$data->repeat_until_date = $this->repeat_until_date;
 
 		// Weekly recurrence
-		$data['wweekdays'] = $this->weekdays;
+		$data->wweekdays = $this->weekdays;
 
 		// Monthly recurrence
-		$data['month_type'] = $this->monthtype;
-		$data['bymonthdays'] = $this->bydays;
-		$data['reverse_bymonthday'] = $this->reverse_bydays;
-		$data['mweeks'] = $this->weeks;
-		$data['mweekdays'] = $this->weekdays;
-		$data['mrweeks'] = $this->rweeks;
-		$data['mrweekdays'] = $this->rweekdays;
+		$data->month_type = $this->monthtype;
+		$data->bymonthdays = implode(',', $this->bydays);
+		$data->reverse_bymonthday = $this->reverse_bydays;
+		$data->mweeks = $this->weeks;
+		$data->mweekdays = $this->weekdays;
+		$data->mrweeks = $this->rweeks;
+		$data->mrweekdays = $this->rweekdays;
 
 		// Yearly recurrence
-		$data['byyeardays'] = $this->bydays;
-		$data['reverse_byyearday'] = $this->reverse_bydays;
-
+		$data->byyeardays = implode(',', $this->bydays);
+		$data->reverse_byyearday = $this->reverse_bydays;
 
 		return $data;
 	}
