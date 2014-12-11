@@ -2,3 +2,4 @@ reminder.txt
 release
 
 build/build.properties
+tests/unit/phpunit.xml

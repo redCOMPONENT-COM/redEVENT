@@ -248,8 +248,8 @@
                     name="wweekdays"
                     type="checkboxes"
                     class="inputbox"
-                    label="COM_REDEVENT_RECURRENCE_TYPE"
-                    description="COM_REDEVENT_RECURRENCE_TYPE_DESC">
+                    label="COM_REDEVENT_WEEKLY_WEEKDAYS"
+                    description="COM_REDEVENT_WEEKLY_WEEKDAYS_DESC">
                 <option value="SU">COM_REDEVENT_SUNDAY_S</option>
                 <option value="MO">COM_REDEVENT_MONDAY_M</option>
                 <option value="TU">COM_REDEVENT_TUESDAY_T</option>

@@ -352,7 +352,10 @@ class RedeventModelEditevent extends JModel
 
 	      $this->_event->categories = $this->_db->loadObjectList();
 				$this->_event->attachments = RedeventHelperAttachment::getAttachments('event'.$this->_event->id, $user->getAuthorisedViewLevels());
-  			$this->_event->rrules = RedeventHelperRecurrence::getRule($this->_event->rrule);
+
+				$recurrenceHelper = new RedeventRecurrenceHelper;
+				$rule = $recurrenceHelper->getRule($this->_event->rrule);
+				$this->_event->rrules = $rule->getFormData();
 			}
 
 			return (boolean) $this->_event;
@@ -414,7 +417,10 @@ class RedeventModelEditevent extends JModel
 				$this->_xrefdata = $obj;
 			}
 		}
-  	$this->_xrefdata->rrules = RedeventHelperRecurrence::getRule($this->_xrefdata->rrule);
+
+		$recurrenceHelper = new RedeventRecurrenceHelper;
+		$rule = $recurrenceHelper->getRule($this->_xrefdata->rrule);
+		$this->_xrefdata->rrules = $rule->getFormData();
 		return $this->_xrefdata;
 	}
 
@@ -961,10 +967,12 @@ class RedeventModelEditevent extends JModel
     	/** prices END **/
 
 			// we need to save the recurrence too
-			$recurrence = & JTable::getInstance('RedEvent_recurrences', '');
+			$recurrence = JTable::getInstance('RedEvent_recurrences', '');
+			$recurrenceHelper = new RedeventRecurrenceParser;
+
 			if (!isset($data['recurrenceid']) || !$data['recurrenceid'])
 			{
-				$rrule = RedeventHelperRecurrence::parsePost($data);
+				$rrule = $recurrenceHelper->parsePost($data);
 				if (!empty($rrule))
 				{
 					// new recurrence
@@ -994,7 +1002,7 @@ class RedeventModelEditevent extends JModel
 					// reset the status
 					$recurrence->ended = 0;
 					// TODO: maybe add a check to have a choice between updating rrule or not...
-					$rrule = RedeventHelperRecurrence::parsePost($data);
+					$rrule = $recurrenceHelper->parsePost($data);
 					$recurrence->rrule = $rrule;
 					if (!$recurrence->store()) {
 						$this->setError($recurrence->getError());
@@ -1347,9 +1355,10 @@ class RedeventModelEditevent extends JModel
 
     // we need to save the recurrence too
     $recurrence = & JTable::getInstance('RedEvent_recurrences', '');
+		$recurrenceHelper = new RedeventRecurrenceParser;
     if (!isset($data['recurrenceid']) || !$data['recurrenceid'])
     {
-    	$rrule = RedeventHelperRecurrence::parsePost($data);
+    	$rrule = $recurrenceHelper->parsePost($data);
     	if (!empty($rrule))
     	{
     		// new recurrence
@@ -1379,7 +1388,7 @@ class RedeventModelEditevent extends JModel
     		// reset the status
     		$recurrence->ended = 0;
     		// TODO: maybe add a check to have a choice between updating rrule or not...
-    		$rrule = RedeventHelperRecurrence::parsePost($data);
+    		$rrule = $recurrenceHelper->parsePost($data);
     		$recurrence->rrule = $rrule;
     		if (!$recurrence->store()) {
     			$this->setError($recurrence->getError());

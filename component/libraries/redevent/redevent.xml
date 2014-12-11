@@ -18,6 +18,7 @@
 		<folder>form</folder>
         <folder>helper</folder>
         <folder>model</folder>
+        <folder>recurrence</folder>
         <folder>tags</folder>
         <folder>user</folder>
         <folder>view</folder>

@@ -50,6 +50,19 @@ RHelperAsset::load('xref_recurrence.js');
 			<?php echo $this->form->getInput('repeat_until_date', 'recurrence'); ?>
 		</div>
 	</div>
+
+	<div id="recurrence_repeat_weekly">
+		<fieldset class="adminform editevent">
+			<legend><?php echo JText::_('COM_REDEVENT_RECURRENCE_WEEK_BY_DAY'); ?></legend>
+			<div class="control-label">
+				<?php echo $this->form->getLabel('wweekdays', 'recurrence'); ?>
+			</div>
+			<div class="controls">
+				<?php echo $this->form->getInput('wweekdays', 'recurrence'); ?>
+			</div>
+		</fieldset>
+	</div>
+
 	<?php echo $this->form->getInput('recurrenceid', 'recurrence'); ?>
 	<?php echo $this->form->getInput('repeat', 'recurrence'); ?>
 </div>

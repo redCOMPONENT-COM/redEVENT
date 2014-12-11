@@ -349,21 +349,30 @@
     Tasks - Unit tests
     ====================================================================================================
     -->
-    <target name="unit-test" description="Copy to test site"
-            depends="setup-test, site">
+    <target name="unit-test-prepare" description="Copy to test site"
+            depends="unit-test-setup-properties, site">
+        <delete dir="${www.dir}/redunittests/unit/suite/redevent" quiet="true" includeemptydirs="false" />
+        <copy todir="${www.dir}/redunittests/unit/suite" overwrite="true">
+            <fileset dir="${dirs.root}/tests/unit/suite">
+                <include name="**" />
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="unit-test-setup-properties" description="prepare properties">
+        <property name="www.dir" value="${www.dirtest}" override="true"/>
+    </target>
+
+    <target name="unit-test" description="Run test suite"
+            depends="unit-test-prepare">
         <phpunit configuration="tests/unit/phpunit.xml"
-                 printsummary="true" haltonfailure="true" haltonerror="true">
+                 printsummary="true" haltonfailure="true" haltonerror="true"
+                 pharlocation="/usr/local/bin/phpunit">
             <batchtest>
-                <fileset dir="tests/unit/suite">
+                <fileset dir="tests/unit/suite/redevent">
                     <include name="**/*Test.php"/>
                 </fileset>
             </batchtest>
         </phpunit>
     </target>
-
-    <target name="setup-test" description="Init to copy to test site"
-            depends="setup-properties">
-        <property name="www.dir" value="${www.dirtest}" override="true"/>
-    </target>
-
 </project>

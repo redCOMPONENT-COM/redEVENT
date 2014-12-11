@@ -26,19 +26,36 @@ class RedeventModelSession extends RModelAdmin
 	{
 		$item = parent::getItem($pk);
 
+		$recurrenceHelper = new RedeventRecurrenceHelper;
+
 		if ($item && $item->id)
 		{
 			// Get additional data
 			$query = $this->_db->getQuery(true);
 
 			$query->select('e.title AS event_title')
-				->from('#__redevent_events AS e')
-				->where('e.id = ' . $item->eventid);
+				->select('r.id as recurrence_id, r.rrule, rp.count')
+				->from('#__redevent_event_venue_xref AS x')
+				->innerJoin('#__redevent_events AS e on x.eventid = e.id')
+				->leftJoin('#__redevent_repeats AS rp on rp.xref_id = x.id')
+				->leftJoin('#__redevent_recurrences AS r on r.id = rp.recurrence_id')
+				->where('x.id = ' . $item->id);
 
 			$this->_db->setQuery($query);
 			$res = $this->_db->loadObject();
 
 			$item->event_title = $res->event_title;
+			$rule = $recurrenceHelper->getRule($res->rrule);
+			$item->recurrence = $rule->getFormData();
+			$item->recurrence->recurrenceid = $res->recurrence_id;
+			$item->recurrence->repeat = $res->count;
+		}
+		else
+		{
+			$rule = $recurrenceHelper->getRule();
+			$item->recurrence = $rule->getFormData();
+			$item->recurrence->recurrenceid = 0;
+			$item->recurrence->repeat = 0;
 		}
 
 		return $item;
@@ -183,7 +200,7 @@ class RedeventModelSession extends RModelAdmin
 
 			$this->_db->setQuery($query);
 			$object = $this->_db->loadObject();
-			$object->rrules = RedeventHelperRecurrence::getRule($object->rrule);
+			$object->rrules = $recurrenceHelper->getRule($object->rrule);
 		}
 		else
 		{
@@ -193,7 +210,7 @@ class RedeventModelSession extends RModelAdmin
 			$object->recurrence_id = 0;
 			$object->rrule = '';
 			$object->count = 0;
-			$object->rrules = RedeventHelperRecurrence::getRule();
+			$object->rrules = $recurrenceHelper->getRule();
 
 			// event title and id from request, if event is already created
 			if ($object->event_id = JFactory::getApplication()->input->getInt('eventid'))
@@ -266,10 +283,11 @@ class RedeventModelSession extends RModelAdmin
 		}
 
 		$recurrence = RTable::getInstance('Recurrence', 'RedeventTable');
-echo '<pre>'; echo print_r($data, true); echo '</pre>'; exit;
-		if (!$data['recurrenceid'])
+		$recurrenceHelper = new RedeventRecurrenceParser;
+
+		if (!$data['recurrence']['recurrenceid'])
 		{
-			$rrule = RedeventHelperRecurrence::parsePost($data);
+			$rrule = $recurrenceHelper->parsePost($data['recurrence']);
 
 			if (!empty($rrule))
 			{
@@ -297,26 +315,22 @@ echo '<pre>'; echo print_r($data, true); echo '</pre>'; exit;
 				}
 			}
 		}
-		else
+		elseif ($data['recurrence']['recurrenceid'] && $data['recurrence']['repeat'] == 0)
 		{
 			// Only update if it's the first session of the 'recurrence'.
-			if ($data['repeat'] == 0)
+			$recurrence->load($data['recurrence']['recurrenceid']);
+
+			// Reset the status
+			$recurrence->ended = 0;
+
+			$rrule = $recurrenceHelper->parsePost($data['recurrence']);
+			$recurrence->rrule = $rrule;
+
+			if (!$recurrence->store())
 			{
-				$recurrence->load($data['recurrenceid']);
+				$this->setError($recurrence->getError());
 
-				// Reset the status
-				$recurrence->ended = 0;
-
-				// TODO: maybe add a check to have a choice between updating rrule or not...
-				$rrule = RedeventHelperRecurrence::parsePost($data);
-				$recurrence->rrule = $rrule;
-
-				if (!$recurrence->store())
-				{
-					$this->setError($recurrence->getError());
-
-					return false;
-				}
+				return false;
 			}
 		}
 

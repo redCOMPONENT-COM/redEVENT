@@ -198,7 +198,7 @@ class RedeventHelper
 		$nulldate = '0000-00-00';
 
 		// generate until limit
-		$params = & JComponentHelper::getParams('com_redevent');
+		$params = JComponentHelper::getParams('com_redevent');
 		$limit = $params->get('recurrence_limit', 30);
 		$limit_date_int = time() + $limit*3600*24;
 
@@ -241,10 +241,14 @@ class RedeventHelper
 		$db->setQuery($query);
 		$xrefs = $db->loadObjectList('id');
 
+		$recurrenceHelper = new RedeventRecurrenceHelper;
+		$rule = $recurrenceHelper->getRule($r->rrule);
+		$nextHelper = new RedeventRecurrenceNext($rule);
+
 		// now, do the job...
 		foreach ($recurrences as $r)
 		{
-			$next = RedeventHelperRecurrence::getnext($r->rrule, $xrefs[$r->xref_id]);
+			$next = $nextHelper->getNext($xrefs[$r->xref_id]);
 
 			while ($next)
 			{
@@ -254,7 +258,7 @@ class RedeventHelper
 				}
 
 				//record xref
-				$object = JTable::getInstance('RedEvent_eventvenuexref', '');
+				$object = RTable::getInstance('Session', 'RedeventTable');
 				$object->bind($next);
 
 				if ($object->store())
@@ -266,7 +270,7 @@ class RedeventHelper
 					. ' WHERE xref = ' . $db->Quote($r->xref_id);
 					$db->setQuery($query);
 
-					if (!$db->query())
+					if (!$db->execute())
 					{
 						RedeventHelperLog::simpleLog('recurrence copying roles error: '.$db->getErrorMsg());
 					}
@@ -278,7 +282,7 @@ class RedeventHelper
 					. ' WHERE xref = ' . $db->Quote($r->xref_id);
 					$db->setQuery($query);
 
-					if (!$db->query())
+					if (!$db->execute())
 					{
 						RedeventHelperLog::simpleLog('recurrence copying prices error: '.$db->getErrorMsg());
 					}
@@ -291,7 +295,7 @@ class RedeventHelper
 					;
 					$db->setQuery($query);
 
-					if (!$db->query())
+					if (!$db->execute())
 					{
 						RedeventHelperLog::simpleLog('saving repeat error: '.$db->getErrorMsg());
 					}
@@ -301,7 +305,7 @@ class RedeventHelper
 					RedeventHelperLog::simpleLog('saving recurrence xref error: '.$db->getErrorMsg());
 				}
 
-				$next = RedeventHelperRecurrence::getnext($r->rrule, $next);
+				$next = $nextHelper->getNext($r->rrule);
 			}
 
 			if (!$next)
@@ -309,7 +313,7 @@ class RedeventHelper
 				// no more events to generate, we can disable the rule
 				$query = ' UPDATE #__redevent_recurrences SET ended = 1 WHERE id = '. $db->Quote($r->recurrence_id);
 				$db->setQuery($query);
-				$db->query();
+				$db->execute();
 			}
 		}
 
