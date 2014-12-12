@@ -46,7 +46,7 @@ class RedeventControllerSessions extends RControllerAdmin
 	 *
 	 * @return  void
 	 */
-	public function featured()
+	public function feature()
 	{
 		$cid = JFactory::getApplication()->input->get('cid', array(), 'array');
 
@@ -87,7 +87,7 @@ class RedeventControllerSessions extends RControllerAdmin
 	 *
 	 * @return  void
 	 */
-	public function unfeatured()
+	public function unfeature()
 	{
 		$cid = JFactory::getApplication()->input->get('cid', array(), 'array');
 

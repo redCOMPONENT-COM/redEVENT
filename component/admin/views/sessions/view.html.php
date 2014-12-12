@@ -95,10 +95,10 @@ class RedeventViewSessions extends RedeventViewAdmin
 			$archive = RToolbarBuilder::createStandardButton('sessions.archive', JText::_('COM_REDEVENT_ARCHIVE'), '', 'icon-archive', true);
 			$thirdGroup->addButton($archive);
 
-			$button = RToolbarBuilder::createStandardButton('sessions.featured', JText::_('COM_REDEVENT_FEATURE'), '', 'icon-star', true);
+			$button = RToolbarBuilder::createStandardButton('sessions.feature', JText::_('COM_REDEVENT_FEATURE'), '', 'icon-star', true);
 			$thirdGroup->addButton($button);
 
-			$button = RToolbarBuilder::createStandardButton('sessions.unfeatured', JText::_('COM_REDEVENT_UNFEATURE'), '', 'icon-star-empty', true);
+			$button = RToolbarBuilder::createStandardButton('sessions.unfeature', JText::_('COM_REDEVENT_UNFEATURE'), '', 'icon-star-empty', true);
 			$thirdGroup->addButton($button);
 		}
 
@@ -142,19 +142,13 @@ class RedeventViewSessions extends RedeventViewAdmin
 	 * @param int $i
 	 * @return string html
 	 */
-	function featured( &$row, $i )
+	public function featured($row, $i)
 	{
-		$params = array('border' => 0);
-		$img 	= $row->featured ? JHTML::image('administrator/components/com_redevent/assets/images/icon-16-featured.png', JText::_('COM_REDEVENT_SESSION_FEATURED'), array('border' => 0))
-		                       : JHTML::image('administrator/components/com_redevent/assets/images/icon-16-unfeatured.png', JText::_('COM_REDEVENT_SESSION_NOT_FEATURED'), array('border' => 0));
-		$task 	= $row->featured ? 'unfeatured' : 'featured';
-		$action = $row->featured ? JText::_( 'COM_REDEVENT_FEATURE' ) : JText::_( 'COM_REDEVENT_UNFEATURE' );
+		$states = array(
+			1 => array('unfeature', 'COM_REDEVENT_FEATURED', 'COM_REDEVENT_SESSION_UNFEATURE_SESSION', '', false, 'star', 'star'),
+			0 => array('feature', '', 'COM_REDEVENT_SESSION_FEATURE_SESSION', '', false, 'star-empty', 'star-empty'),
+		);
 
-		$href = '
-		<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">
-		'. $img .'</a>'
-		;
-
-		return $href;
+		return JHtml::_('rgrid.state', $states, $row->featured, $i, 'sessions.', $this->canEditState, true);
 	}
 }
