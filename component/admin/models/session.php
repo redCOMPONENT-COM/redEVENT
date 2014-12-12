@@ -73,9 +73,22 @@ class RedeventModelSession extends RModelAdmin
 	{
 		$form = parent::getForm($data, $loadData);
 
-		if ($this->getState('session.id'))
+		// Do not allow to modify the session event once created
+		if ($form->getValue('id'))
 		{
 			$form->setFieldAttribute('eventid', 'readonly', '1');
+		}
+
+		// Only allow to modify the recurrence if this is the first session in it
+		if ($form->getValue('recurrenceid', 'recurrence') && $form->getValue('repeat', 'recurrence') > 0)
+		{
+			foreach ($form->getFieldset('recurrence') as $field)
+			{
+				if ($field->fieldname != 'recurrenceid' && $field->fieldname != 'repeat')
+				{
+					$form->setFieldAttribute($field->fieldname, 'disabled', '1', 'recurrence');
+				}
+			}
 		}
 
 		return $form;
@@ -166,72 +179,6 @@ class RedeventModelSession extends RModelAdmin
 		}
 
 		return $result;
-	}
-
-	/**
-	 * return xref from request
-	 *
-	 * @return unknown
-	 */
-	public function getXref()
-	{
-		$xref = $this->_id;
-
-		if ($xref)
-		{
-			$customs = $this->_getXCustomFields();
-
-			$query = ' SELECT x.*, v.venue, r.id as recurrence_id, r.rrule, rp.count ';
-			$query .= ' , e.title as event_title ';
-			// add the custom fields
-			foreach ((array) $customs as $c)
-			{
-				$query .= ', x.custom'. $c->id;
-			}
-
-			$query .= ' FROM #__redevent_event_venue_xref AS x '
-			. ' INNER JOIN #__redevent_events AS e on e.id = x.eventid '
-			. ' LEFT JOIN #__redevent_venues AS v on v.id = x.venueid '
-			. ' LEFT JOIN #__redevent_repeats AS rp on rp.xref_id = x.id '
-			. ' LEFT JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
-			;
-
-			$query .= ' WHERE x.id = '. $this->_db->Quote($xref);
-
-			$this->_db->setQuery($query);
-			$object = $this->_db->loadObject();
-			$object->rrules = $recurrenceHelper->getRule($object->rrule);
-		}
-		else
-		{
-			$object = JTable::getInstance('RedEvent_eventvenuexref', '');
-			$object->id    = null;
-			$object->venue = 0;
-			$object->recurrence_id = 0;
-			$object->rrule = '';
-			$object->count = 0;
-			$object->rrules = $recurrenceHelper->getRule();
-
-			// event title and id from request, if event is already created
-			if ($object->event_id = JFactory::getApplication()->input->getInt('eventid'))
-			{
-				$db      = $this->_db;
-				$query = $db->getQuery(true);
-
-				$query->select('title');
-				$query->from('#__redevent_events');
-				$query->where('id = ' . $object->event_id);
-
-				$db->setQuery($query);
-
-				if (!$object->event_title = $db->loadResult())
-				{
-					throw new Exception('Undefined event id for new session');
-				}
-			}
-		}
-
-		return $object;
 	}
 
 	/**
@@ -495,27 +442,6 @@ class RedeventModelSession extends RModelAdmin
 		}
 
 		return true;
-	}
-
-	/**
-	 * returns all custom fields for xrefs
-	 *
-	 * @return array
-	 */
-	function _getXCustomFields()
-	{
-		if (empty($this->_xrefcustomfields))
-		{
-			$query = ' SELECT f.id, f.name, f.in_lists, f.searchable '
-			. ' FROM #__redevent_fields AS f'
-			. ' WHERE f.published = 1'
-			. '   AND f.object_key = '. $this->_db->Quote('redevent.xref')
-			. ' ORDER BY f.ordering ASC '
-			;
-			$this->_db->setQuery($query);
-			$this->_xrefcustomfields = $this->_db->loadObjectList();
-		}
-		return $this->_xrefcustomfields;
 	}
 
 	/**
