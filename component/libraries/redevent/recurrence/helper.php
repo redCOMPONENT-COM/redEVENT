@@ -15,6 +15,25 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventRecurrenceHelper
 {
+	private $params;
+
+	/**
+	 * Constructor
+	 *
+	 * @param   array  $config  optional config
+	 */
+	public function __construct($config = null)
+	{
+		if (is_array($config) && isset($config['params']))
+		{
+			$this->params = $config['params'];
+		}
+		else
+		{
+			$this->params = JComponentHelper::getParams('com_redevent');
+		}
+	}
+
 	/**
 	 * Parse an ical recurrence rule, and return a RedeventRecurrenceRule object
 	 *
@@ -139,6 +158,145 @@ class RedeventRecurrenceHelper
 		}
 
 		return $rule;
+	}
+
+
+	/**
+	 * adds xref repeats to the database.
+	 *
+	 * @param   int  $recurrence_id  recurrence id
+	 *
+	 * @return bool true on success
+	 *
+	 * @TODO: refactor !
+	 */
+	public function generaterecurrences($recurrence_id = null)
+	{
+		$db = JFactory::getDBO();
+
+		$nulldate = '0000-00-00';
+
+		// generate until limit
+		$params = $this->params;
+		$limit = $params->get('recurrence_limit', 30);
+		$limit_date_int = time() + $limit*3600*24;
+
+		// get active recurrences
+		$query = ' SELECT MAX(rp.xref_id) as xref_id, r.rrule, r.id as recurrence_id '
+			. ' FROM #__redevent_repeats AS rp '
+			. ' INNER JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
+			. ' INNER JOIN #__redevent_event_venue_xref AS x on x.id = rp.xref_id ' // make sure there are still events associated...
+			. ' WHERE r.ended = 0 '
+			. '   AND x.dates > 0 '
+		;
+
+		if ($recurrence_id)
+		{
+			$query .= ' AND r.id = '. $db->Quote($recurrence_id);
+		}
+
+		$query .= ' GROUP BY rp.recurrence_id ';
+		$db->setQuery($query);
+		$recurrences = $db->loadObjectList();
+
+		if (empty($recurrences))
+		{
+			return true;
+		}
+
+		// get corresponding xrefs
+		$rids = array();
+
+		foreach ($recurrences as $r)
+		{
+			$rids[] = $r->xref_id;
+		}
+
+		$query = ' SELECT x.*, rp.count '
+			. ' FROM #__redevent_event_venue_xref AS x '
+			. ' INNER JOIN #__redevent_repeats AS rp ON rp.xref_id = x.id '
+			. ' WHERE x.id IN ('. implode(",", $rids) .')'
+		;
+		$db->setQuery($query);
+		$xrefs = $db->loadObjectList('id');
+
+		$recurrenceHelper = new RedeventRecurrenceHelper;
+		$rule = $recurrenceHelper->getRule($r->rrule);
+		$nextHelper = new RedeventRecurrenceNext($rule);
+
+		// now, do the job...
+		foreach ($recurrences as $r)
+		{
+			$next = $nextHelper->getNext($xrefs[$r->xref_id]);
+
+			while ($next)
+			{
+				if (strtotime($next->dates) > $limit_date_int)
+				{
+					break;
+				}
+
+				//record xref
+				$object = RTable::getInstance('Session', 'RedeventTable');
+				$object->bind(get_object_vars($next));
+
+				if ($object->store())
+				{
+					// copy the roles
+					$query = ' INSERT INTO #__redevent_sessions_roles (xref, role_id, user_id) '
+						. ' SELECT '.$object->id.', role_id, user_id '
+						. ' FROM #__redevent_sessions_roles '
+						. ' WHERE xref = ' . $db->Quote($r->xref_id);
+					$db->setQuery($query);
+
+					if (!$db->execute())
+					{
+						RedeventHelperLog::simpleLog('recurrence copying roles error: '.$db->getErrorMsg());
+					}
+
+					// copy the prices
+					$query = ' INSERT INTO #__redevent_sessions_pricegroups (xref, pricegroup_id, price, currency) '
+						. ' SELECT '.$object->id.', pricegroup_id, price, currency '
+						. ' FROM #__redevent_sessions_pricegroups '
+						. ' WHERE xref = ' . $db->Quote($r->xref_id);
+					$db->setQuery($query);
+
+					if (!$db->execute())
+					{
+						RedeventHelperLog::simpleLog('recurrence copying prices error: '.$db->getErrorMsg());
+					}
+
+					// update repeats table
+					$query = ' INSERT INTO #__redevent_repeats '
+						. ' SET xref_id = '. $db->Quote($object->id)
+						. '   , recurrence_id = '. $db->Quote($r->recurrence_id)
+						. '   , count = '. $db->Quote($next->count)
+					;
+					$db->setQuery($query);
+
+					if (!$db->execute())
+					{
+						RedeventHelperLog::simpleLog('saving repeat error: '.$db->getErrorMsg());
+					}
+				}
+				else
+				{
+					RedeventHelperLog::simpleLog('saving recurrence xref error: '.$db->getErrorMsg());
+				}
+
+				$next = $nextHelper->getNext($next);
+			}
+
+			if (!$next)
+			{
+				// no more events to generate, we can disable the rule
+				$query = ' UPDATE #__redevent_recurrences SET ended = 1 WHERE id = '. $db->Quote($r->recurrence_id);
+				$db->setQuery($query);
+				$db->execute();
+			}
+		}
+
+		return true;
 	}
 
 	private function icalDatetotime($date)

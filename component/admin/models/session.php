@@ -230,11 +230,11 @@ class RedeventModelSession extends RModelAdmin
 		}
 
 		$recurrence = RTable::getInstance('Recurrence', 'RedeventTable');
-		$recurrenceHelper = new RedeventRecurrenceParser;
+		$recurrenceParser = new RedeventRecurrenceParser;
 
 		if (!$data['recurrence']['recurrenceid'])
 		{
-			$rrule = $recurrenceHelper->parsePost($data['recurrence']);
+			$rrule = $recurrenceParser->parsePost($data['recurrence']);
 
 			if (!empty($rrule))
 			{
@@ -270,7 +270,7 @@ class RedeventModelSession extends RModelAdmin
 			// Reset the status
 			$recurrence->ended = 0;
 
-			$rrule = $recurrenceHelper->parsePost($data['recurrence']);
+			$rrule = $recurrenceParser->parsePost($data['recurrence']);
 			$recurrence->rrule = $rrule;
 
 			if (!$recurrence->store())
@@ -283,7 +283,8 @@ class RedeventModelSession extends RModelAdmin
 
 		if ($recurrence->id)
 		{
-			RedeventHelper::generaterecurrences($recurrence->id);
+			$recurrenceHelper = new RedeventRecurrenceHelper;
+			$recurrenceHelper->generaterecurrences($recurrence->id);
 		}
 
 		return true;
@@ -389,56 +390,6 @@ class RedeventModelSession extends RModelAdmin
 
 				return false;
 			}
-		}
-
-		return true;
-	}
-
-	/**
-	 * remove xref if there is no attendees
-	 *
-	 * @param int xref_id
-	 * @return boolean result true on success
-	 */
-	function removexref($id)
-	{
-		// do not delete xref if there are attendees
-		$query = ' SELECT COUNT(*) FROM #__redevent_register WHERE xref = '. $this->_db->Quote((int)$id);
-		$this->_db->setQuery($query);
-		if ($this->_db->loadResult()) {
-			$this->setError(JText::_('COM_REDEVENT_CANNOT_DELETE_XREF_HAS_REGISTRATIONS'));
-			return false;
-		}
-
-		$q = "DELETE FROM #__redevent_event_venue_xref WHERE id =". $this->_db->Quote((int)$id);
-		$this->_db->setQuery($q);
-		if (!$this->_db->query()) {
-			$this->setError(JText::_('COM_REDEVENT_DB_ERROR_DELETING_XREF'));
-			return false;
-		}
-
-		// delete corresponding roles
-		$q = "DELETE FROM #__redevent_sessions_roles WHERE xref =". $this->_db->Quote((int)$id);
-		$this->_db->setQuery($q);
-		if (!$this->_db->query()) {
-			$this->setError(JText::_('COM_REDEVENT_DB_ERROR_DELETING_XREF_ROLES'));
-			return false;
-		}
-
-		// delete corresponding prices
-		$q = "DELETE FROM #__redevent_sessions_pricegroups WHERE xref =". $this->_db->Quote((int)$id);
-		$this->_db->setQuery($q);
-		if (!$this->_db->query()) {
-			$this->setError(JText::_('COM_REDEVENT_DB_ERROR_DELETING_XREF_ROLES'));
-			return false;
-		}
-
-		// delete corresponding record in repeats table in case of recurrences
-		$q = "DELETE FROM #__redevent_repeats WHERE xref_id =". $this->_db->Quote((int)$id);
-		$this->_db->setQuery($q);
-		if (!$this->_db->query()) {
-			$this->setError(JText::_('COM_REDEVENT_DB_ERROR_DELETING_XREF_REPEAT'));
-			return false;
 		}
 
 		return true;

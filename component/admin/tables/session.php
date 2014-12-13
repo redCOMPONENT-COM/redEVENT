@@ -8,7 +8,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Redevent sessions table class
+ * Redevent events table class
  *
  * @package  Redevent.admin
  * @since    0.9
@@ -37,12 +37,19 @@ class RedeventTableSession extends RTable
 	protected $_tableFieldState = 'published';
 
 	/**
-	 * Method to perform sanity checks on the JTable instance properties to ensure
-	 * they are safe to store in the database.  Child classes should override this
-	 * method to make sure the data they are storing in the database is safe and
-	 * as expected before storage.
+	 * Associated Session data
 	 *
-	 * @return  boolean  True if the instance is sane and able to be stored in the database.
+	 * @var object
+	 */
+	private $beforeDeleteSessions;
+
+	/**
+	 * Checks that the object is valid and able to be stored.
+	 *
+	 * This method checks that the parent_id is non-zero and exists in the database.
+	 * Note that the root node (parent_id = 0) cannot be manipulated with this class.
+	 *
+	 * @return  boolean  True if all checks pass.
 	 */
 	public function check()
 	{
@@ -79,20 +86,6 @@ class RedeventTableSession extends RTable
 		return true;
 	}
 
-	public function canDelete($id)
-	{
-		// can't delete if there are attendees
-		$query = ' SELECT COUNT(*) FROM #__redevent_register WHERE xref = '. intval( $id );
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadResult();
-
-		if ($res) {
-			$this->setError(JText::_('COM_REDEVENT_EVENT_DATE_HAS_ATTENDEES'));
-			return false;
-		}
-
-		return true;
-	}
 	/**
 	 * Method to bind an associative array or object to the JTable instance.This
 	 * method only binds properties that are publicly accessible and optionally
@@ -110,7 +103,6 @@ class RedeventTableSession extends RTable
 			return false;
 		}
 
-		// Custom fields
 		$customs = $this->_getCustomFieldsColumns();
 
 		foreach ($customs as $c)
@@ -151,11 +143,14 @@ class RedeventTableSession extends RTable
 	public function setPrices($prices = array())
 	{
 		// first remove current rows
-		$query = ' DELETE FROM #__redevent_sessions_pricegroups '
-		. ' WHERE xref = ' . $this->_db->Quote($this->id);
+		$query = $this->_db->getQuery(true);
+
+		$query->delete('#__redevent_sessions_pricegroups')
+			->where('xref = ' . $this->_db->Quote($this->id));
+
 		$this->_db->setQuery($query);
 
-		if (!$this->_db->query())
+		if (!$this->_db->execute())
 		{
 			$this->setError($this->_db->getErrorMsg());
 
@@ -170,7 +165,7 @@ class RedeventTableSession extends RTable
 				continue;
 			}
 
-			$new = JTable::getInstance('RedEvent_sessions_pricegroups', '');
+			$new = RTable::getInstance('Sessionspricegroups', 'RedeventTable');
 			$new->set('xref',          $this->id);
 			$new->set('pricegroup_id', $price->pricegroup_id);
 			$new->set('price',         $price->price);
@@ -201,19 +196,232 @@ class RedeventTableSession extends RTable
 	 */
 	public function store($updateNulls = false)
 	{
-		// Make sure the language is same as event
-		$db      = $this->_db;
-		$query = $db->getQuery(true);
+		if (!$this->language)
+		{
+			// Make sure the language is same as event
+			$db = $this->_db;
+			$query = $db->getQuery(true);
 
-		$query->select('language');
-		$query->from('#__redevent_events');
-		$query->where('id = ' . $this->eventid);
+			$query->select('language');
+			$query->from('#__redevent_events');
+			$query->where('id = ' . $this->eventid);
 
-		$db->setQuery($query);
-		$res = $db->loadResult();
+			$db->setQuery($query);
+			$res = $db->loadResult();
 
-		$this->language = $res;
+			$this->language = $res;
+		}
 
 		return parent::store($updateNulls);
+	}
+
+	/**
+	 * Called before delete().
+	 *
+	 * @param   mixed  $pk  An optional primary key value to delete.  If not set the instance property value is used.
+	 *
+	 * @return  boolean  True on success.
+	 */
+	protected function beforeDelete($pk = null)
+	{
+		$pk = $this->sanitizePk($pk);
+
+		if (!$this->checkNoAttendees($pk))
+		{
+			return false;
+		}
+
+		// Save sessions data for postDelete
+		$query = $this->_db->getQuery(true)
+			->select('*')
+			->from('#__redevent_event_venue_xref')
+			->where('id IN (' . $pk . ')');
+		$this->_db->setQuery($query);
+		$this->beforeDeleteSessions = $this->_db->loadObjectList();
+
+		return parent::beforeDelete($pk);
+	}
+
+	/**
+	 * Called after delete().
+	 *
+	 * @param   mixed  $pk  An optional primary key value to delete.  If not set the instance property value is used.
+	 *
+	 * @return  boolean  True on success.
+	 */
+	protected function afterDelete($pk = null)
+	{
+		$pk = $this->sanitizePk($pk);
+
+		$this->deleteRoles($pk);
+		$this->deletePricegroups($pk);
+		$this->deleteRepeats($pk);
+
+		// Trigger event
+		JPluginHelper::importPlugin('redevent');
+		$dispatcher = JDispatcher::getInstance();
+
+		foreach ($this->beforeDeleteSessions as $deleted)
+		{
+			$dispatcher->trigger('onAfterSessionDelete', array($deleted->session_code));
+		}
+
+		return parent::afterDelete($pk);
+	}
+
+	/**
+	 * Check that there are no attendees for sessions
+	 *
+	 * @param   string  $pk  imploded ids
+	 *
+	 * @return bool
+	 */
+	private function checkNoAttendees($pk)
+	{
+		$query = $this->_db->getQuery(true);
+
+		$query->select('COUNT(*)')
+			->from('#__redevent_register')
+			->where('xref IN (' . $pk . ')');
+
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadResult();
+
+		if ($res)
+		{
+			$this->setError(JText::_('COM_REDEVENT_EVENT_DATE_HAS_ATTENDEES'));
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Delete session(s) roles
+	 *
+	 * @param   string  $pk  imploded session ids
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 */
+	private function deleteRoles($pk)
+	{
+		// Get id of rows
+		$query = $this->_db->getQuery(true);
+
+		$query->select('id')
+			->from('#__redevent_sessions_roles')
+			->where('xref in (' . $pk . ')');
+
+		$this->_db->setQuery($query);
+		$ids = $this->_db->loadColumn();
+
+		if (!$ids)
+		{
+			return;
+		}
+
+		$table = RTable::getAdminInstance('Sessionrole');
+
+		if (!$table->delete($ids))
+		{
+			throw new Exception($table->getError());
+		}
+	}
+
+	/**
+	 * Delete session(s) roles
+	 *
+	 * @param   string  $pk  imploded session ids
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 */
+	private function deletePricegroups($pk)
+	{
+		// Get id of rows
+		$query = $this->_db->getQuery(true);
+
+		$query->select('id')
+			->from('#__redevent_sessions_pricegroups')
+			->where('xref in (' . $pk . ')');
+
+		$this->_db->setQuery($query);
+		$ids = $this->_db->loadColumn();
+
+		if (!$ids)
+		{
+			return;
+		}
+
+		$table = RTable::getAdminInstance('Sessionpricegroup');
+
+		if (!$table->delete($ids))
+		{
+			throw new Exception($table->getError());
+		}
+	}
+
+	/**
+	 * Delete session(s) roles
+	 *
+	 * @param   string  $pk  imploded session ids
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 */
+	private function deleteRepeats($pk)
+	{
+		// Get id of rows
+		$query = $this->_db->getQuery(true);
+
+		$query->select('id')
+			->from('#__redevent_repeats')
+			->where('xref_id in (' . $pk . ')');
+
+		$this->_db->setQuery($query);
+		$ids = $this->_db->loadColumn();
+
+		if (!$ids)
+		{
+			return;
+		}
+
+		$table = RTable::getAdminInstance('Repeat');
+
+		if (!$table->delete($ids))
+		{
+			throw new Exception($table->getError());
+		}
+	}
+
+	/**
+	 * Return pk for query
+	 *
+	 * @param $pk
+	 *
+	 * @return array|string
+	 */
+	protected function sanitizePk($pk)
+	{
+		// Initialise variables.
+		$k = $this->_tbl_key;
+
+		// Received an array of ids?
+		if (is_array($pk))
+		{
+			// Sanitize input.
+			JArrayHelper::toInteger($pk);
+			$pk = RHelperArray::quote($pk);
+			$pk = implode(',', $pk);
+		}
+
+		$pk = (is_null($pk)) ? $this->$k : $pk;
+
+		return $pk;
 	}
 }

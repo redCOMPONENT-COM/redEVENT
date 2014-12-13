@@ -1011,7 +1011,8 @@ class RedeventModelEditevent extends JModel
 				}
 			}
 			if ($recurrence->id) {
-				RedeventHelper::generaterecurrences($recurrence->id);
+				$recurrenceHelper = new RedeventRecurrenceHelper;
+				$recurrenceHelper->generaterecurrences($recurrence->id);
 			}
 
 		}	/** session end **/
@@ -1355,10 +1356,10 @@ class RedeventModelEditevent extends JModel
 
     // we need to save the recurrence too
     $recurrence = & JTable::getInstance('RedEvent_recurrences', '');
-		$recurrenceHelper = new RedeventRecurrenceParser;
+		$recurrenceParser = new RedeventRecurrenceParser;
     if (!isset($data['recurrenceid']) || !$data['recurrenceid'])
     {
-    	$rrule = $recurrenceHelper->parsePost($data);
+    	$rrule = $recurrenceParser->parsePost($data);
     	if (!empty($rrule))
     	{
     		// new recurrence
@@ -1388,7 +1389,7 @@ class RedeventModelEditevent extends JModel
     		// reset the status
     		$recurrence->ended = 0;
     		// TODO: maybe add a check to have a choice between updating rrule or not...
-    		$rrule = $recurrenceHelper->parsePost($data);
+    		$rrule = $recurrenceParser->parsePost($data);
     		$recurrence->rrule = $rrule;
     		if (!$recurrence->store()) {
     			$this->setError($recurrence->getError());
@@ -1397,7 +1398,8 @@ class RedeventModelEditevent extends JModel
     	}
     }
     if ($recurrence->id) {
-    	RedeventHelper::generaterecurrences($recurrence->id);
+	    $recurrenceHelper = new RedeventRecurrenceHelper;
+	    $recurrenceHelper->generaterecurrences($recurrence->id);
     }
 
 		return true;
