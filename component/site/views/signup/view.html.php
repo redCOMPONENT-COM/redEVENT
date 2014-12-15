@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedeventViewSignup extends JView
+class RedeventViewSignup extends JViewLegacy
 {
 	/**
 	 * Creates the output for the details view

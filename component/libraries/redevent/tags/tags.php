@@ -391,7 +391,7 @@ class RedeventTags
 	{
 		if (empty($this->_event))
 		{
-			$this->_event = JModel::getInstance('Eventhelper', 'RedeventModel');
+			$this->_event = RModel::getFrontInstance('Eventhelper');
 			$this->_event->setId($this->_eventid);
 			$this->_event->setXref($this->_xref);
 		}
@@ -416,7 +416,7 @@ class RedeventTags
 
 		$app = JFactory::getApplication();
 		$this->getEventLinks();
-		$template_path = JPATH_BASE . DS . 'templates' . DS . $app->getTemplate() . DS . 'html' . DS . 'com_redevent';
+		$template_path = JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/com_redevent';
 
 		$lists['order_Dir'] = JRequest::getWord('filter_order_Dir', 'ASC');
 		$lists['order'] = JRequest::getCmd('filter_order', 'x.dates');

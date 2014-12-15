@@ -17,7 +17,7 @@ jimport('joomla.application.component.controller');
  * @subpackage redEVENT
  * @since 0.9
 */
-class RedeventController extends JController
+class RedeventController extends JControllerLegacy
 {
 	/**
 	 * Constructor
@@ -887,7 +887,8 @@ class RedeventController extends JController
 		$app  = JFactory::getApplication();
 		$id   = $app->input->getInt('file', 0);
 		$user = JFactory::getUser();
-		$path = RedeventHelperAttachment::getAttachmentPath($id, max($user->getAuthorisedViewLevels()));
+		$helper = new RedeventHelperAttachment;
+		$path = $helper->getAttachmentPath($id, max($user->getAuthorisedViewLevels()));
 
 		// The header is fine tuned to work with grump ie8... if you modify a property, make sure it's still ok !
 		header('Content-Description: File Transfer');
@@ -931,7 +932,9 @@ class RedeventController extends JController
 		$mainframe = & JFactory::getApplication();
 		$id     = JRequest::getVar( 'id', 0, 'request', 'int' );
 
-		$res = RedeventHelperAttachment::remove($id);
+		$helper = new RedeventHelperAttachment;
+		$res = $helper->remove($id);
+
 		if (!$res) {
 			echo 0;
 			$mainframe->close();

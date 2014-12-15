@@ -534,44 +534,50 @@ class RedeventHelperOutput {
 	/**
 	 * Creates the country flag
 	 *
-	 * @param string $country
+	 * @param   string  $country  country code
 	 *
-	 * @since 0.9
+	 * @return string
 	 */
-	function getFlag($country)
+	public static function getFlag($country)
 	{
-        $country = JString::strtolower($country);
+		$country = JString::strtolower($country);
 
-        jimport('joomla.filesystem.file');
+		jimport('joomla.filesystem.file');
 
-        if (JFile::exists(JPATH_COMPONENT_SITE.DS.'assets'.DS.'images'.DS.'flags'.DS.$country.'.gif')) {
-        	$countryimg = '<img src="'.JURI::base(true).'/components/com_redevent/assets/images/flags/'.$country.'.gif" alt="'.JText::_('COM_REDEVENT_COUNTRY' ).': '.$country.'" width="16" height="11" />';
+		if (JFile::exists(JPATH_SITE . '/media/com_redevent/images/flags/' . $country . '.gif'))
+		{
+			$countryimg = JHtml::image(
+				JURI::base(true) . '/media/com_redevent/images/flags/' . $country . '.gif',
+				JText::_('COM_REDEVENT_COUNTRY' ).': '.$country,
+				array('width' => 16, 'height' => 11)
+			);
 
-        	return $countryimg;
-        }
+			return $countryimg;
+		}
 
-        return null;
+		return null;
 	}
 
-  /**
-   * Creates the country flag
-   *
-   * @param string $country
-   *
-   * @since 0.9
-   */
-  function getFlagUrl($country)
-  {
-        $country = JString::strtolower($country);
+	/**
+	 *
+	 * Get the country flag
+	 *
+	 * @param   string $country country code
+	 *
+	 * @return string
+	 */
+	public static function getFlagUrl($country)
+	{
+		$country = JString::strtolower($country);
+		jimport('joomla.filesystem.file');
 
-        jimport('joomla.filesystem.file');
+		if (JFile::exists(JPATH_SITE . '/media/com_redevent/images/flags/' . $country . '.gif'))
+		{
+			return '/media/com_redevent/images/flags/' . $country . '.gif';
+		}
 
-        if (JFile::exists(JPATH_COMPONENT_SITE.DS.'assets'.DS.'images'.DS.'flags'.DS.$country.'.gif')) {
-          return JURI::base(true).'/components/com_redevent/assets/images/flags/'.$country.'.gif';
-        }
-
-        return null;
-  }
+		return null;
+	}
 
 	/**
 	 * Formats date

@@ -172,7 +172,8 @@ class RedeventModelVenueevents extends RedeventModelBaseeventlist
 		$db->setQuery($query);
 		$_venue = $db->loadObject();
 
-		$_venue->attachments = RedeventHelperAttachment::getAttachments('venue' . $_venue->id, $user->getAuthorisedViewLevels());
+		$helper = new RedeventHelperAttachment;
+		$_venue->attachments = $helper->getAttachments('venue' . $_venue->id, $user->getAuthorisedViewLevels());
 
 		return $_venue;
 	}

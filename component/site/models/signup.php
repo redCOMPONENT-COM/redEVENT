@@ -24,8 +24,6 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
-
 /**
  * EventList Component Details Model
  *
@@ -33,7 +31,7 @@ jimport('joomla.application.component.model');
  * @subpackage redEVENT
  * @since		0.9
  */
-class RedeventModelSignup extends JModel
+class RedeventModelSignup extends RModel
 {
 	/**
 	 * Details data in details array

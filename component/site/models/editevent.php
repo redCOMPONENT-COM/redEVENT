@@ -351,7 +351,8 @@ class RedeventModelEditevent extends JModel
 	      $this->_db->setQuery( $query );
 
 	      $this->_event->categories = $this->_db->loadObjectList();
-				$this->_event->attachments = RedeventHelperAttachment::getAttachments('event'.$this->_event->id, $user->getAuthorisedViewLevels());
+				$helper = new RedeventHelperAttachment;
+				$this->_event->attachments = $helper->getAttachments('event'.$this->_event->id, $user->getAuthorisedViewLevels());
 
 				$recurrenceHelper = new RedeventRecurrenceHelper;
 				$rule = $recurrenceHelper->getRule($this->_event->rrule);
@@ -1018,8 +1019,10 @@ class RedeventModelEditevent extends JModel
 		}	/** session end **/
 
 		// attachments
-		if ($params->get('allow_attachments', 1)) {
-			RedeventHelperAttachment::store('event'.$row->id);
+		if ($params->get('allow_attachments', 1))
+		{
+			$helper = new RedeventHelperAttachment;
+			$helper->store('event'.$row->id);
 		}
 
 

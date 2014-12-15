@@ -8,6 +8,11 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+if (!defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
+}
+
 // Load FOF
 include_once JPATH_LIBRARIES . '/fof/include.php';
 if (!defined('FOF_INCLUDED'))
@@ -24,8 +29,6 @@ RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
 
 //Require helperfile
-require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'route.php');
-require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'recurrence.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'image.class.php');
 require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'ajaxpagination.php');
 require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'error.class.php');

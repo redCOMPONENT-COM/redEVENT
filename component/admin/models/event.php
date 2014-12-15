@@ -229,7 +229,8 @@ class RedeventModelEvent extends RModelAdmin
 		}
 
 		// attachments
-		RedeventHelperAttachment::store('event'.$row->id);
+		$helper = new RedeventHelperAttachment;
+		$helper->store('event'.$row->id);
 
 		// Trigger the onFinderAfterSave event.
 		$results = $dispatcher->trigger('onFinderAfterSave', array($this->option . '.' . $this->name, $row, $isNew));

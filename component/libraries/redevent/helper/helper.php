@@ -432,8 +432,7 @@ class RedeventHelper
 		$event = & $db->loadObject();
 
 		// we need to take into account the server offset into account for the registration dates
-		$now = JFactory::getDate();
-		$now->setOffset($app->getCfg('offset'));
+		$now = JFactory::getDate('now', new DateTimeZone($app->getCfg('offset')));
 		$now_unix = $now->toUnix('true');
 
 		// first, let's check the thing that don't need database queries

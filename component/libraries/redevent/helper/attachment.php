@@ -245,7 +245,7 @@ class RedeventHelperAttachment extends JObject
 			throw new Exception(JText::_('COM_REDEVENT_YOU_DONT_HAVE_ACCESS_TO_THIS_FILE'), 403);
 		}
 
-		$path = self::getBasePath() . '/' . $res->object . '/' . $res->file;
+		$path = $this->getBasePath() . '/' . $res->object . '/' . $res->file;
 
 		if (!file_exists($path))
 		{

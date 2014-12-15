@@ -9,8 +9,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
-
 /**
  * redEVENT Component Eventhelper Model
  *
@@ -18,7 +16,7 @@ jimport('joomla.application.component.model');
  * @subpackage  Models
  * @since       2.0
  */
-class RedeventModelEventhelper extends JModelLegacy
+class RedeventModelEventhelper extends RModel
 {
 	/**
 	 * event data caching
@@ -164,7 +162,8 @@ class RedeventModelEventhelper extends JModelLegacy
 			if ($this->event)
 			{
 				$this->event = $this->_getEventCategories($this->event);
-				$this->event->attachments = RedeventHelperAttachment::getAttachments('event' . $this->event->did, $user->getAuthorisedViewLevels());
+				$helper = new RedeventHelperAttachment;
+				$this->event->attachments = $helper->getAttachments('event' . $this->event->did, $user->getAuthorisedViewLevels());
 			}
 
 			return (boolean) $this->event;

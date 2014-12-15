@@ -208,7 +208,8 @@ class RedeventModelCategories extends RModelList
 	{
 		if ($record)
 		{
-			$files = RedeventHelperAttachment::getAttachments('category' . $record->id);
+			$helper = new RedeventHelperAttachment;
+			$files = $helper->getAttachments('category' . $record->id);
 			$record->attachments = $files;
 		}
 	}
@@ -223,7 +224,8 @@ class RedeventModelCategories extends RModelList
 		parent::onAfterSave($table);
 
 		// Attachments
-		RedeventHelperAttachment::store('category' . $table->id);
+		$helper = new RedeventHelperAttachment;
+		$helper->store('category' . $table->id);
 
 		// Trigger the onFinderAfterSave event.
 		$dispatcher = JDispatcher::getInstance();

@@ -30,7 +30,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * @subpackage  redEVENT
  * @since       2.5
  */
-class RedeventControllerAjax extends JController
+class RedeventControllerAjax extends JControllerLegacy
 {
 	/**
 	 * Print person suggestions as json

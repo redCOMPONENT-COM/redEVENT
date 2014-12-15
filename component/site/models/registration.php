@@ -24,8 +24,6 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
-
 /**
  * redEvent Component registration Model
  *
@@ -33,7 +31,7 @@ jimport('joomla.application.component.model');
  * @subpackage redevent
  * @since		2.0
 */
-class RedEventModelRegistration extends JModel
+class RedEventModelRegistration extends RModel
 {
 	/**
 	 * event session id
