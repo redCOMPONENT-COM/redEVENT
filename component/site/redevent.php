@@ -45,7 +45,7 @@ try
 }
 catch (Exception $e)
 {
-	if (JDEBUG)
+	if (JDEBUG || 1)
 	{
 		echo 'Exception:'. $e->getMessage();
 		echo "<pre>" . $e->getTraceAsString() . "</pre>";

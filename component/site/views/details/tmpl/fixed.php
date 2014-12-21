@@ -240,7 +240,7 @@ if ($this->row->venueid != 0) {
 		<div class="event-registration">
 		<?php
 		if (!$registration_status->canregister):
-			$imgpath = 'components/com_redevent/assets/images/'.$registration_status->error.'.png';
+			$imgpath = 'media/com_redevent/images/'.$registration_status->error.'.png';
 		  $img = JHTML::_('image', JURI::base() . $imgpath,
 		                          $registration_status->status,
 		                          array('class' => 'hasTip', 'title' => $registration_status->status));
@@ -249,7 +249,7 @@ if ($this->row->venueid != 0) {
 		<?php $venues_html = '';
 		/* Get the different submission types */
 		$submissiontypes = explode(',', $this->row->submission_types);
-		$imagepath = JURI::base() . 'administrator/components/com_redevent/assets/images/';
+		$imagepath = JURI::base() . 'media/com_redevent/images/';
 		foreach ($submissiontypes as $key => $subtype)
 		{
 			switch ($subtype) {

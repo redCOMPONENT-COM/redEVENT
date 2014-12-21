@@ -327,7 +327,7 @@ class RedEventModelRegistration extends RModel
 		FROM #__redevent_register r
 		WHERE submit_key = ".$db->Quote($submit_key);
 		$db->setQuery($q);
-		$registrations = $db->loadResultArray();
+		$registrations = $db->loadColumn();
 
 		if (!$registrations || !count($registrations)) {
 			JError::raiseError(0, JText::sprintf('COM_REDEVENT_notification_registration_not_found_for_key_s', $submit_key));
@@ -362,7 +362,7 @@ class RedEventModelRegistration extends RModel
 			FROM #__redevent_register r
 			WHERE submit_key = ".$db->Quote($submit_key);
 			$db->setQuery($q);
-			$registrations = $db->loadResultArray();
+			$registrations = $db->loadColumn();
 
 			if (!$registrations || !count($registrations)) {
 				JError::raiseError(0, JText::sprintf('COM_REDEVENT_notification_registration_not_found_for_key_s', $submit_key));

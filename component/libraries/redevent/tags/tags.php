@@ -1135,7 +1135,7 @@ class RedeventTags
 
 		$form = $rfcore->getForm($this->getEvent()->getData()->redform_id);
 
-		$action = RedeventHelperRoute::getRegistrationRoute($this->getEvent()->getData()->xslug, 'register');
+		$action = RedeventHelperRoute::getRegistrationRoute($this->getEvent()->getData()->xslug, 'registration.register');
 
 		// multiple signup ?
 		$single = JRequest::getInt('single', 0);

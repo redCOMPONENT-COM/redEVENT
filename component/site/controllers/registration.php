@@ -32,7 +32,7 @@ jimport('joomla.application.component.controller');
  * @subpackage redEVENT
  * @since 2.0
 */
-class RedeventControllerRegistration extends RedeventController
+class RedeventControllerRegistration extends RedeventControllerFront
 {
 	/**
 	 * Constructor
@@ -114,7 +114,7 @@ class RedeventControllerRegistration extends RedeventController
 		}
 
 		// First, ask redform to save it's fields, and return the corresponding sids.
-		$options = array('baseprice' => $prices, $currency);
+		$options = array('baseprice' => $prices, 'currency' => $currency);
 
 		if ($review)
 		{

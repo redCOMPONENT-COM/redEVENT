@@ -12,7 +12,7 @@
 	
 	<files>
 		<folder>language</folder>
-		<filename plugin="com_redevent">com_redevent.php</filename>
+		<filename plugin="redevent">redevent.php</filename>
 	</files>
         
 	<config>

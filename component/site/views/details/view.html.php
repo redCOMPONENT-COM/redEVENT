@@ -52,6 +52,7 @@ class RedeventViewDetails extends JViewLegacy
 		$user		= JFactory::getUser();
 		$dispatcher = JDispatcher::getInstance();
 		$elsettings = RedeventHelper::config();
+//		echo "<pre>" . print_r($elsettings, true) . "</pre>"; exit;
 		$acl        = RedeventUserAcl::getInstance();
 
 		if ($params->get('gplusone', 1)) {
