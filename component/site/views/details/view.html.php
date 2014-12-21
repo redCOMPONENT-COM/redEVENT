@@ -262,7 +262,7 @@ class RedeventViewDetails extends JViewLegacy
     $this->assignRef('uri',              $uri);
     $this->assignRef('lang',             JFactory::getLanguage());
 
-    if ($params->get('fbopengraph', 1)) {
+    if ($params->get('fbopengraph', 0)) {
     	$this->_opengraph();
     }
 

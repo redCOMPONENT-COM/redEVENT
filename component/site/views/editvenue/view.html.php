@@ -101,7 +101,7 @@ class RedeventViewEditvenue extends JView
 		$row->locdescription = RedeventHelper::br2break($row->locdescription);
 
 		//Get image
-		$limage = redEVENTImage::flyercreator($row->locimage);
+		$limage = RedeventImage::flyercreator($row->locimage);
 
 		//Set the info image
 		$infoimage = JHTML::_('image', 'components/com_redevent/assets/images/icon-16-hint.png', JText::_('COM_REDEVENT_NOTES' ) );

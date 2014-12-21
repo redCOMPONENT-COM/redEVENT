@@ -145,7 +145,7 @@ class RedeventModelVenues extends JModel
 				$venue =& $this->_data[$i];
 
 				// Create image information
-				$venue->limage = redEVENTImage::flyercreator($venue->locimage);
+				$venue->limage = RedeventImage::flyercreator($venue->locimage);
 
 				// Generate Venuedescription
 				if (!empty($venue->locdescription))

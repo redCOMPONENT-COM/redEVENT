@@ -235,7 +235,7 @@ $pane =& JPane::getInstance('tabs');
 <?php echo $pane->startPanel( JText::_('COM_REDEVENT_IMAGE'), 'ev-image' ); ?>
 <div class="editevent-image">
 <?php if ($this->row->datimage) :
-				echo redEVENTImage::modalimage( $this->row->datimage, $this->row->title);
+				echo RedeventImage::modalimage( $this->row->datimage, $this->row->title);
 			else :
 				echo JHTML::_('image', 'components/com_redevent/assets/images/noimage.png', JText::_('COM_REDEVENT_NO_IMAGE'), array('class' => 'modal'));
 			endif;?> <label for="userfile"><?php echo JText::_('COM_REDEVENT_IMAGE'); ?></label>

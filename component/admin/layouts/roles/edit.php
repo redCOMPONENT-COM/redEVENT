@@ -26,6 +26,7 @@ JHtml::_('rjquery.chosen', 'select');
 	</thead>
 
 	<tbody>
+		<?php if ($data->roles): ?>
 		<?php foreach ((array) $data->roles as $k => $r): ?>
 			<tr>
 				<td>
@@ -39,6 +40,7 @@ JHtml::_('rjquery.chosen', 'select');
 				</td>
 			</tr>
 		<?php endforeach; ?>
+		<?php endif; ?>
 
 		<tr id="trnewrole">
 			<td>

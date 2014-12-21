@@ -145,7 +145,7 @@ class RedeventViewEditevent extends JView
 		}
 
 		// Get image information
-		$dimage = $row ? redEVENTImage::flyercreator($row->datimage) : null;
+		$dimage = $row ? RedeventImage::flyercreator($row->datimage) : null;
 
 		// Set the info image
 		$infoimage = JHTML::_('image', 'components/com_redevent/assets/images/icon-16-hint.png', JText::_('COM_REDEVENT_NOTES'));

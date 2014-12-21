@@ -13,52 +13,44 @@ if (!defined('DS'))
 	define('DS', DIRECTORY_SEPARATOR);
 }
 
-// Load FOF
-include_once JPATH_LIBRARIES . '/fof/include.php';
-if (!defined('FOF_INCLUDED'))
+$redcoreLoader = JPATH_LIBRARIES . '/redcore/bootstrap.php';
+
+if (!file_exists($redcoreLoader) || !JPluginHelper::isEnabled('system', 'redcore'))
 {
-	JError::raiseError('500', 'FOF is not installed');
+	throw new Exception(JText::_('COM_REDEVENT_REDCORE_REQUIRED'), 404);
 }
 
-// Register library prefix
-JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
-RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
+include_once $redcoreLoader;
+
+// Bootstraps redCORE
+RBootstrap::bootstrap();
+
+// Register redFORM
 RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 
-// Set the table directory
-JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
+// Bootstraps Redevent application
+$redEVENTLoader = JPATH_LIBRARIES . '/redevent/bootstrap.php';
+require_once $redEVENTLoader;
 
-//Require helperfile
-require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'image.class.php');
-require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'ajaxpagination.php');
-require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'error.class.php');
+RedeventBootstrap::bootstrap();
 
-//perform cleanup if it wasn't done today (archive, delete, recurrence)
+// Perform cleanup if it wasn't done today (archive, delete, recurrence)
 RedeventHelper::cleanup();
 
-// Require the controller
-require_once (JPATH_COMPONENT.DS.'controller.php');
-
-// Require specific controller if requested
-if ($controller = JRequest::getWord('controller'))
+try
 {
-	$path = JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php';
-    if (file_exists($path))
-    {
-        require_once $path;
-    }
-    else
-    {
-        $controller = '';
-    }
+	$controller = JControllerLegacy::getInstance('Redevent');
+	$controller->execute(JFactory::getApplication()->input->get('task'));
+	$controller->redirect();
 }
+catch (Exception $e)
+{
+	if (JDEBUG)
+	{
+		echo 'Exception:'. $e->getMessage();
+		echo "<pre>" . $e->getTraceAsString() . "</pre>";
+		exit(0);
+	}
 
-// Create the controller
-$classname	= 'RedeventController'.ucfirst($controller);
-$controller = new $classname();
-
-// Perform the Request task
-$controller->execute(JRequest::getVar('task'));
-
-// Redirect if set by the controller
-$controller->redirect();
+	throw $e;
+}

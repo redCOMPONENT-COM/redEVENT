@@ -56,7 +56,7 @@ if ($this->row->venueid != 0) {
 	</h2>
 
 	<?php //flyer
-	$eventimage = redEVENTImage::modalimage($this->row->datimage, $this->row->title);
+	$eventimage = RedeventImage::modalimage($this->row->datimage, $this->row->title);
 	echo $eventimage;
 	?>
 
@@ -173,7 +173,7 @@ if ($this->row->venueid != 0) {
 		</h2>
 
 		<?php //flyer
-		echo redEVENTImage::modalimage($this->row->locimage, $this->row->venue);
+		echo RedeventImage::modalimage($this->row->locimage, $this->row->venue);
 		echo RedeventHelperOutput::mapicon($this->row, array('class' => 'event-map'));
 		?>
 

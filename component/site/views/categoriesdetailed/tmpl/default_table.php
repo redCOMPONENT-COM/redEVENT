@@ -190,7 +190,7 @@ $colnames = array_map('trim', $colnames);
 				<?php break;?>
 
 				<?php case 'picture': ?>
-          <td class="re_places" itemprop="image"><?php echo redEVENTImage::modalimage($row->datimage, $row->title, intval($this->params->get('lists_picture_size', 30))); ?></td>
+          <td class="re_places" itemprop="image"><?php echo RedeventImage::modalimage($row->datimage, $row->title, intval($this->params->get('lists_picture_size', 30))); ?></td>
 				<?php break;?>
 
 				<?php case 'places': ?>

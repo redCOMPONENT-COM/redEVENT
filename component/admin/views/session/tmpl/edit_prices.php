@@ -10,6 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 RHelperAsset::load('xref_prices.js');
 ?>
 <table class="adminform" id="re-prices">
+	<?php if ($this->prices): ?>
 	<?php foreach ((array) $this->prices as $k => $r): ?>
 		<tr>
 			<td>
@@ -24,6 +25,7 @@ RHelperAsset::load('xref_prices.js');
 			</td>
 		</tr>
 	<?php endforeach; ?>
+	<?php endif; ?>
 	<tr id="trnewprice">
 		<td>
 			<?php echo JHTML::_('select.genericlist', $this->pricegroupsoptions, 'jform[pricegroup][]', array('id' => 'newprice', 'class' => 'price-group'), 'value', 'text'); ?>

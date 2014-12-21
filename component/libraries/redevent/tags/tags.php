@@ -1543,7 +1543,7 @@ class RedeventTags
 
 	function _getTag_event_thumb()
 	{
-		$eventimage = redEVENTImage::modalimage($this->getEvent()->getData()->datimage, $this->getEvent()->getData()->title);
+		$eventimage = RedeventImage::modalimage($this->getEvent()->getData()->datimage, $this->getEvent()->getData()->title);
 		return $eventimage;
 	}
 
@@ -1552,7 +1552,7 @@ class RedeventTags
 		$cats_images = array();
 		foreach ($this->getEvent()->getData()->categories as $c)
 		{
-			$cats_images[] = redEVENTImage::getCategoryImage($c, false);
+			$cats_images[] = RedeventImage::getCategoryImage($c, false);
 		}
 		$categoryimage = '<span class="details-categories-images"><span class="details-categories-image">' . implode('</span><span class="details-categories-image">', $cats_images) . '</span></span>';
 
@@ -1569,7 +1569,7 @@ class RedeventTags
 		$cats_images = array();
 		foreach ($this->getEvent()->getData()->categories as $c)
 		{
-			$cats_images[] = redEVENTImage::getCategoryImage($c);
+			$cats_images[] = RedeventImage::getCategoryImage($c);
 		}
 		$categoryimage = '<span class="details-categories-images"><span class="details-categories-image">' . implode('</span><span class="details-categories-image">', $cats_images) . '</span></span>';
 
@@ -1801,7 +1801,7 @@ class RedeventTags
 
 	function _getTag_venue_thumb()
 	{
-		$venueimage = redEVENTImage::modalimage($this->getEvent()->getData()->locimage,
+		$venueimage = RedeventImage::modalimage($this->getEvent()->getData()->locimage,
 			$this->getEvent()->getData()->venue);
 		return $venueimage;
 	}

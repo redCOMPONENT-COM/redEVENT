@@ -801,7 +801,7 @@ class RedeventModelEditevent extends JModel
 			$base_Dir 		= JPATH_SITE.'/images/redevent/events/';
 
 			//check the image
-			$check = redEVENTImage::check($file, $elsettings);
+			$check = RedeventImage::check($file, $elsettings);
 
 			if ($check === false)
 			{
@@ -810,7 +810,7 @@ class RedeventModelEditevent extends JModel
 			else
 			{
 				//sanitize the image filename
-				$filename = redEVENTImage::sanitize($base_Dir, $file['name']);
+				$filename = RedeventImage::sanitize($base_Dir, $file['name']);
 				$filepath = $base_Dir . $filename;
 
 				if (!JFile::upload($file['tmp_name'], $filepath))

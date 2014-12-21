@@ -159,7 +159,7 @@ $colnames = array_map('trim', $colnames);
 				<?php break;?>
 
 				<?php case 'picture': ?>
-          <td class="re_places"><?php echo JHTML::image(redEVENTImage::getThumbUrl('events', $row->datimage, intval($this->params->get('lists_picture_size', 30))), $row->title); ?></td>
+          <td class="re_places"><?php echo JHTML::image(RedeventImage::getThumbUrl('events', $row->datimage, intval($this->params->get('lists_picture_size', 30))), $row->title); ?></td>
 				<?php break;?>
 
 				<?php case 'places': ?>

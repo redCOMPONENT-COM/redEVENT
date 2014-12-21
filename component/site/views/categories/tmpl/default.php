@@ -48,7 +48,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<div class="catimg">
 	  	<?php	if (!empty($row->image)): ?>
 	  	<span>
-	  	<?php $img = JHTML::image(redEVENTImage::getThumbUrl($row->image), $row->catname);
+	  	<?php $img = JHTML::image(RedeventImage::getThumbUrl($row->image), $row->catname);
 				echo JHTML::_('link', JRoute::_($row->linktarget), $img); ?>
 			</span>
 			<?php endif; ?>

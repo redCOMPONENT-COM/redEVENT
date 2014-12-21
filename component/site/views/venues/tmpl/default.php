@@ -49,7 +49,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		</h2>
 
 			<?php
-				echo redEVENTImage::modalimage($row->locimage, $row->venue);
+				echo RedeventImage::modalimage($row->locimage, $row->venue);
 				echo RedeventHelperOutput::mapicon( $row , array('class' => 'map'));
 			?>
 

@@ -128,12 +128,12 @@ foreach ($this->rows as $row)
 	}
 	elseif ($this->params->get('session_display', 0) == 1)
 	{
-		$img = redEVENTImage::getThumbUrl($row->datimage, $this->params->get('pic_size', 20));
+		$img = RedeventImage::getThumbUrl($row->datimage, $this->params->get('pic_size', 20));
 		$text = '<span class="session-image">' . JHTML::image($img, RedeventHelper::getSessionFullTitle($row)) . '</span>';
 	}
 	else
 	{
-		$img = redEVENTImage::getThumbUrl($row->datimage, $this->params->get('pic_size', 20));
+		$img = RedeventImage::getThumbUrl($row->datimage, $this->params->get('pic_size', 20));
 		$text = '<span class="session-image">' . JHTML::image($img, RedeventHelper::getSessionFullTitle($row)) . '</span>';
 		$text .= RedeventHelper::getSessionFullTitle($row);
 	}

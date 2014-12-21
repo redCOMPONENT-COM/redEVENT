@@ -71,7 +71,7 @@
 
 	<field
 		name="image"
-		type="media"
+		type="rmedia"
 		label="COM_REDEVENT_CHOOSE_IMAGE"
 		description="COM_REDEVENT_CHOOSE_IMAGE"
 		class="inputbox"

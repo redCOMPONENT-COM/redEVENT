@@ -63,24 +63,11 @@ class JFormFieldSession extends JFormField
 		$link = 'index.php?option=com_redevent&amp;view=sessions&amp;layout=element&amp;tmpl=component'
 		. '&amp;function=jSelectSession_' . $this->id;
 
-		$tmp = RTable::getInstance('Event', 'RedeventTable');
-		$event = clone $tmp;
-
 		if ($this->value)
 		{
-			$event->loadBySessionId($this->value);
+			$title = $this->getSessionTitle($this->value);
 		}
 		else
-		{
-			$event->title = JText::_('COM_REDEVENT_SELECT_SESSION');
-		}
-
-		if ($this->value)
-		{
-			$title = $event->title;
-		}
-
-		if (empty($title))
 		{
 			$title = JText::_('COM_REDEVENT_SELECT_SESSION');
 		}
@@ -125,5 +112,27 @@ class JFormFieldSession extends JFormField
 		$html[] = '<input type="hidden" id="' . $this->id . '_id"' . $class . ' name="' . $this->name . '" value="' . $value . '" />';
 
 		return implode("\n", $html);
+	}
+
+	/**
+	 * Get title
+	 *
+	 * @param   int  $sessionId  session if
+	 *
+	 * @return string
+	 */
+	private function getSessionTitle($sessionId)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('title');
+		$query->from('#__redevent_events AS e');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x');
+		$query->where('x.id = ' . (int) $sessionId);
+
+		$db->setQuery($query, 0, 1);
+
+		return $db->loadResult();
 	}
 }

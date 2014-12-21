@@ -139,8 +139,8 @@ class modRedeventTeaserHelper
 		foreach ( $rows as $k => $row )
 		{
 			//create thumbnails if needed and receive imagedata
-			$dimage = redEVENTImage::modalimage($row->datimage, $row->title, intval($params->get('picture_size', 30)));
-			$limage = redEVENTImage::modalimage($row->locimage, $row->venue, intval($params->get('picture_size', 30)));
+			$dimage = RedeventImage::modalimage($row->datimage, $row->title, intval($params->get('picture_size', 30)));
+			$limage = RedeventImage::modalimage($row->locimage, $row->venue, intval($params->get('picture_size', 30)));
 
 			//cut title
 			$length = mb_strlen( $row->title, 'UTF-8' );
