@@ -33,7 +33,7 @@ jimport('joomla.application.component.model');
  * @subpackage redEVENT
  * @since		0.9
  */
-class RedEventModelAttendees extends JModel
+class RedEventModelAttendees extends RModelList
 {
 	/**
 	 * Events data array
@@ -497,7 +497,7 @@ class RedEventModelAttendees extends JModel
 			// now update waiting list for all updated sessions
 			foreach ($xrefs as $xref)
 			{
-				$model_wait = JModel::getInstance('waitinglist', 'RedeventModel');
+				$model_wait = RModel::getAdminInstance('Waitinglist');
 				$model_wait->setXrefId($xref);
 
 				if (!$model_wait->UpdateWaitingList())
@@ -552,7 +552,7 @@ class RedEventModelAttendees extends JModel
 			// Now update waiting list for all updated sessions
 			foreach ($xrefs as $xref)
 			{
-				$model_wait = JModel::getInstance('waitinglist', 'RedeventModel');
+				$model_wait = RModel::getAdminInstance('Waitinglist');
 				$model_wait->setXrefId($xref);
 
 				if (!$model_wait->UpdateWaitingList())

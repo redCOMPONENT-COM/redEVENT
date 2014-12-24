@@ -24,6 +24,7 @@ $search = $this->state->get('filter.search');
 	{
 		submitbutton(pressbutton);
 	}
+
 	submitbutton = function (pressbutton)
 	{
 		var form = document.adminForm;
@@ -73,7 +74,7 @@ $search = $this->state->get('filter.search');
 					<?php echo '#'; ?>
 				</th>
 				<th width="10">
-					<?php if (version_compare(JVERSION, '3.0', 'lt')) : ?>
+					<?php if (version_compare(JVERSION, '3.0', 'lt')): ?>
 						<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 					<?php else : ?>
 						<?php echo JHTML::_('grid.checkall'); ?>
@@ -82,7 +83,7 @@ $search = $this->state->get('filter.search');
 				<th width="30" nowrap="nowrap">
 					<?php echo JHTML::_('rsearchtools.sort', 'JSTATUS', 'obj.published', $listDirn, $listOrder); ?>
 				</th>
-				<?php if ($this->canEdit) : ?>
+				<?php if ($this->canEdit): ?>
 					<th width="1" nowrap="nowrap">
 					</th>
 				<?php endif; ?>
@@ -124,7 +125,7 @@ $search = $this->state->get('filter.search');
 			</thead>
 			<tbody>
 			<?php $n = count($this->items); ?>
-			<?php foreach ($this->items as $i => $row) :
+			<?php foreach ($this->items as $i => $row):
 				/* Get the date */
 				$date = (!RedeventHelper::isValidDate($row->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime($this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime($row->dates)));
 				$enddate  = (!RedeventHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) ? '' : strftime($this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime($row->enddates));
@@ -133,18 +134,20 @@ $search = $this->state->get('filter.search');
 
 				$displaytime = '';
 				/* Get the time */
-				if (isset($row->times) && $row->times != '00:00:00') {
-					$displaytime = strftime( $this->params->get('formattime', '%H:%M'), strtotime( $row->times ));
+				if (isset($row->times) && $row->times != '00:00:00')
+				{
+					$displaytime = strftime($this->params->get('formattime', '%H:%M'), strtotime($row->times));
 
-					if (isset($row->endtimes) && $row->endtimes != '00:00:00') {
-						$displaytime .= ' - '.strftime( $this->params->get('formattime', '%H:%M'), strtotime( $row->endtimes ));
+					if (isset($row->endtimes) && $row->endtimes != '00:00:00')
+					{
+						$displaytime .= ' - ' . strftime($this->params->get('formattime', '%H:%M'), strtotime($row->endtimes));
 					}
 				}
 
 				$featured = $this->featured($row, $i);
 
-				$venuelink = JRoute::_( 'index.php?option=com_redevent&task=venue.edit&id=' . $row->venueid);
-				$eventlink = JRoute::_( 'index.php?option=com_redevent&task=event.edit&id=' . $row->eventid);
+				$venuelink = JRoute::_('index.php?option=com_redevent&task=venue.edit&id=' . $row->venueid);
+				$eventlink = JRoute::_('index.php?option=com_redevent&task=event.edit&id=' . $row->eventid);
 				?>
 				<tr>
 					<td>
@@ -156,17 +159,17 @@ $search = $this->state->get('filter.search');
 					<td>
 						<?php if ($this->canEditState) : ?>
 							<?php echo JHtml::_('rgrid.published', $row->published, $i, 'sessions.', true, 'cb'); ?>
-						<?php else : ?>
-							<?php if ($row->published) : ?>
+						<?php else: ?>
+							<?php if ($row->published): ?>
 								<a class="btn btn-small disabled"><i class="icon-ok-sign icon-green"></i></a>
-							<?php else : ?>
+							<?php else: ?>
 								<a class="btn btn-small disabled"><i class="icon-remove-sign icon-red"></i></a>
 							<?php endif; ?>
 						<?php endif; ?>
 					</td>
-					<?php if ($this->canEdit) : ?>
+					<?php if ($this->canEdit): ?>
 						<td>
-							<?php if ($row->checked_out) : ?>
+							<?php if ($row->checked_out): ?>
 								<?php
 								$editor = JFactory::getUser($row->checked_out);
 								$canCheckin = $row->checked_out == $userId || $row->checked_out == 0;
@@ -228,7 +231,7 @@ $search = $this->state->get('filter.search');
 					<?php if (!$this->event || $row->registra): ?>
 						<td><?php echo $endreg; ?></td>
 						<td><?php echo ($row->registra ?
-								JHTML::link('index.php?option=com_redevent&view=attendees&xref=' . $row->id, intval($row->attendees->attending). ' / '. intval($row->attendees->waiting)) : '-'); ?></td>
+								JHTML::link('index.php?option=com_redevent&view=attendees&session=' . $row->id, intval($row->attendees->attending). ' / '. intval($row->attendees->waiting)) : '-'); ?></td>
 					<?php endif; ?>
 
 					<td>

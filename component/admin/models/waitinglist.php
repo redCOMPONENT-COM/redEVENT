@@ -33,7 +33,7 @@ jimport('joomla.application.component.model');
  * @subpackage redEVENT
  * @since		0.9
  */
-class RedEventModelWaitinglist extends JModelLegacy {
+class RedeventModelWaitinglist extends RModel {
 
 	private $xref = null;
 	private $eventid = null;

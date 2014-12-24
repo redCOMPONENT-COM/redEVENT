@@ -70,6 +70,7 @@ class RedeventModelSessions extends RModelList
 		// Compile the store id.
 		$id .= ':' . $this->getState('filter.search');
 		$id	.= ':' . $this->getState('filter.language');
+		$id	.= ':' . $this->getState('filter.event');
 
 		return parent::getStoreId($id);
 	}
@@ -132,7 +133,7 @@ class RedeventModelSessions extends RModelList
 	 */
 	protected function buildContentWhere($query)
 	{
-		$filter_eventid = $this->getState('filter.eventid', '');
+		$filter_eventid = $this->getState('filter.event', '');
 
 		if (is_numeric($filter_eventid))
 		{
@@ -292,5 +293,45 @@ class RedeventModelSessions extends RModelList
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Override for eventid param in request
+	 *
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
+	 *
+	 * @return  void
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		parent::populateState($ordering, $direction);
+
+		$app = JFactory::getApplication();
+
+		if ($value = $app->getUserStateFromRequest($this->context . '.eventid', 'eventid', 0, 'int'))
+		{
+			$this->setState('filter.event', $value);
+		}
+	}
+
+	/**
+	 * Get the filter form
+	 *
+	 * @param   array    $data      data
+	 * @param   boolean  $loadData  load current data
+	 *
+	 * @return  JForm/false  the JForm object or false
+	 */
+	public function getForm($data = array(), $loadData = true)
+	{
+		$form = parent::getForm($data, $loadData);
+
+		if ($form && $this->getState('filter.event'))
+		{
+			$form->setValue('event', 'filter', $this->getState('filter.event'));
+		}
+
+		return $form;
 	}
 }

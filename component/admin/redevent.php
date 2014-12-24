@@ -46,5 +46,19 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_redevent'))
 	return false;
 }
 
-$controller->execute($app->input->get('task'));
-$controller->redirect();
+try
+{
+	$controller->execute($app->input->get('task'));
+	$controller->redirect();
+}
+catch (Exception $e)
+{
+	if (JDEBUG || 1)
+	{
+		echo 'Exception:'. $e->getMessage();
+		echo "<pre>" . $e->getTraceAsString() . "</pre>";
+		exit(0);
+	}
+
+	throw $e;
+}
