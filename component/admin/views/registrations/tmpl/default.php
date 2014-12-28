@@ -18,6 +18,8 @@ $listDirn = $this->escape($this->state->get('list.direction'));
 $user = JFactory::getUser();
 $userId = $user->id;
 $search = $this->state->get('filter.search');
+
+JHtml::_('behavior.modal', 'a.answersmodal');
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function (pressbutton)

@@ -29,7 +29,7 @@ class RedeventControllerRegistrations extends RControllerAdmin
 		if ($model->cancelreg($cid))
 		{
 			$msg = JText::_('COM_REDEVENT_ATTENDEES_REGISTRATION_CANCELLED');
-			$this->setRedirect('index.php?option=com_redevent&view=registrations&filter_cancelled=1', $msg);
+			$this->setRedirect('index.php?option=com_redevent&view=registrations&cancelled=1', $msg);
 
 			foreach ($cid as $attendee_id)
 			{
@@ -61,12 +61,12 @@ class RedeventControllerRegistrations extends RControllerAdmin
 		if ($model->uncancelreg($cid))
 		{
 			$msg = JText::_('COM_REDEVENT_ATTENDEES_REGISTRATION_UNCANCELLED');
-			$this->setRedirect('index.php?option=com_redevent&view=registrations&filter_cancelled=0', $msg);
+			$this->setRedirect('index.php?option=com_redevent&view=registrations&cancelled=0', $msg);
 
 			foreach ($cid as $attendee_id)
 			{
 				JPluginHelper::importPlugin('redevent');
-				$dispatcher =& JDispatcher::getInstance();
+				$dispatcher = JDispatcher::getInstance();
 				$dispatcher->trigger('onAttendeeModified', array($attendee_id));
 			}
 		}
@@ -79,48 +79,68 @@ class RedeventControllerRegistrations extends RControllerAdmin
 		return true;
 	}
 
+	/**
+	 * Removes an item.
+	 *
+	 * @return  void
+	 */
+	public function delete()
+	{
+		// Check for request forgeries
+		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+
+		// Get items to remove from the request.
+		$cid = JFactory::getApplication()->input->get('cid', array(), 'array');
+
+		// Get the model.
+		$model = $this->getModel('attendee');
+
+		if (!is_array($cid) || count($cid) < 1)
+		{
+			JLog::add(JText::_($this->text_prefix . '_NO_ITEM_SELECTED'), JLog::WARNING, 'jerror');
+		}
+		else
+		{
+			// Make sure the item ids are integers
+			jimport('joomla.utilities.arrayhelper');
+			JArrayHelper::toInteger($cid);
+
+			// Remove the items.
+			if ($model->delete($cid))
+			{
+				$this->setMessage(JText::plural($this->text_prefix . '_N_ITEMS_DELETED', count($cid)));
+			}
+			else
+			{
+				$this->setMessage($model->getError(), 'error');
+			}
+		}
+
+		// Set redirect
+		$this->setRedirect($this->getRedirectToListRoute());
+	}
 
 	/**
-	 * Delete attendees
+	 * Override to trigger plugins
 	 *
-	 * @return true on sucess
-	 * @access private
-	 * @since 2.5
+	 * @param   JModel  $model  The data model object.
+	 * @param   array   $cid    The validated data.
+	 *
+	 * @return  void
 	 */
-	public function remove($cid = array())
+	protected function postDeleteHook(JModel $model, $cid = null)
 	{
-		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
-
-		/* Check if anything is selected */
-		if (!is_array( $cid ) || count( $cid ) < 1)
+		if (!(is_array($cid) && count($cid)))
 		{
-			JError::raiseError(500, JText::_('COM_REDEVENT_Select_an_item_to_delete' ) );
-		}
-		$total 	= count( $cid );
-
-		/* Get all submitter ID's */
-		$model = $this->getModel('registrations');
-
-		if (!$model->remove($cid))
-		{
-			RedEventError::raiseWarning(0, JText::_( "COM_REDEVENT_CANT_DELETE_REGISTRATIONS" ) . ': ' . $model->getError() );
-
-			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
+			return false;
 		}
 
-		foreach($cid as $attendee_id)
+		foreach ($cid as $attendee_id)
 		{
 			JPluginHelper::importPlugin('redevent');
-			$dispatcher =& JDispatcher::getInstance();
-			$res = $dispatcher->trigger('onAttendeeDeleted', array($attendee_id));
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('onAttendeeDeleted', array($attendee_id));
 		}
-
-		$cache = JFactory::getCache('com_redevent');
-		$cache->clean();
-
-		$msg = $total.' '.JText::_('COM_REDEVENT_REGISTERED_USERS_DELETED');
-
-		$this->setRedirect( 'index.php?option=com_redevent&view=registrations', $msg );
 	}
 
 	/**

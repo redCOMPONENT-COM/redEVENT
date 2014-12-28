@@ -47,7 +47,7 @@ class plgRedform_integrationRedevent extends JPlugin
 	 */
 	public function getRFSubmissionPaymentDetailFields($object_key, $submit_key, &$paymentDetailFields)
 	{
-		if (!$object_key === 'redevent')
+		if ($object_key !== 'redevent')
 		{
 			return false;
 		}

@@ -396,34 +396,46 @@ class RedeventModelEvents extends RModelList
 
 	/**
 	 * Retrieve a list of events, venues and times
+	 *
+	 * @return array
 	 */
 	public function getEventVenues()
 	{
-	  $events_id = array();
-	  foreach ((array) $this->getData() as $e) {
-	    $events_id[] = $e->id;
-	  }
-	  if (empty($events_id)) {
-	    return false;
-	  }
+		$events_id = array();
 
-		$db = $this->_db;
-		$q = ' SELECT x.eventid, COUNT(*) AS total, SUM(CASE WHEN x.published = 1 THEN 1 ELSE 0 END) as published,   '
-		   . ' SUM(CASE WHEN x.published = 0 THEN 1 ELSE 0 END) as unpublished,'
-		   . ' SUM(CASE WHEN x.published = -1 THEN 1 ELSE 0 END) as archived,'
-		   . ' SUM(CASE WHEN x.featured = 1 THEN 1 ELSE 0 END) as featured'
-		   . ' FROM #__redevent_event_venue_xref AS x '
-       . ' WHERE x.eventid IN ('. implode(', ', $events_id) .')'
-       . ' GROUP BY x.eventid '
-       ;
-		$db->setQuery($q);
-		$datetimes = $db->loadObjectList();
-		$ardatetimes = array();
-		foreach ((array) $datetimes as $key => $datetime) {
-			$ardatetimes[$datetime->eventid] = $datetime;
+		foreach ((array) $this->getItems() as $e)
+		{
+			$events_id[] = $e->id;
 		}
 
-		return $ardatetimes;
+		if (empty($events_id))
+		{
+			return false;
+		}
+
+		$db = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->select('x.eventid, COUNT(*) AS total');
+		$query->select('SUM(CASE WHEN x.published = 1 THEN 1 ELSE 0 END) as published');
+		$query->select('SUM(CASE WHEN x.published = 0 THEN 1 ELSE 0 END) as unpublished');
+		$query->select('SUM(CASE WHEN x.published = -1 THEN 1 ELSE 0 END) as archived');
+		$query->select('SUM(CASE WHEN x.featured = 1 THEN 1 ELSE 0 END) as featured');
+		$query->from('#__redevent_event_venue_xref AS x');
+		$query->where('x.eventid IN (' . implode(', ', $events_id) . ')');
+		$query->group('x.eventid');
+
+		$db->setQuery($query);
+		$sessionStats = $db->loadObjectList();
+
+		$eventSessionsStats = array();
+
+		foreach ((array) $sessionStats as $stat)
+		{
+			$eventSessionsStats[$stat->eventid] = $stat;
+		}
+
+		return $eventSessionsStats;
 	}
 
 	public function exportEvents($categories = null, $venues = null)

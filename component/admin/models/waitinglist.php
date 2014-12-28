@@ -24,8 +24,6 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
-
 /**
  * EventList Component Event Model
  *

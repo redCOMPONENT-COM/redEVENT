@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent.admin
  * @since    0.9
  */
-class RedeventTableSession extends RTable
+class RedeventTableSession extends RedeventTable
 {
 	/**
 	 * The name of the table with category
@@ -397,31 +397,5 @@ class RedeventTableSession extends RTable
 		{
 			throw new Exception($table->getError());
 		}
-	}
-
-	/**
-	 * Return pk for query
-	 *
-	 * @param $pk
-	 *
-	 * @return array|string
-	 */
-	protected function sanitizePk($pk)
-	{
-		// Initialise variables.
-		$k = $this->_tbl_key;
-
-		// Received an array of ids?
-		if (is_array($pk))
-		{
-			// Sanitize input.
-			JArrayHelper::toInteger($pk);
-			$pk = RHelperArray::quote($pk);
-			$pk = implode(',', $pk);
-		}
-
-		$pk = (is_null($pk)) ? $this->$k : $pk;
-
-		return $pk;
 	}
 }

@@ -566,39 +566,61 @@ class RedEventModelAttendees extends RModelList
 		return true;
 	}
 
-	/**
-	 * Check if we are allowed to delete those registrations
-	 *
-	 * @param   array  $cid  registrations ids
-	 *
-	 * @return bool
-	 */
-	public function canDelete($cid = array())
+	public function delete($pks = null)
 	{
-		if (count($cid))
+		$sessionIds = $this->getAttendeesSessionIds($pks);
+
+		if (!parent::delete($pks))
 		{
-			$ids = implode(',', $cid);
-			$form = $this->getForm();
-
-			$query = ' SELECT r.id '
-				. ' FROM #__redevent_register AS r '
-				. ' LEFT JOIN #__rwf_submitters AS s ON r.sid = s.id '
-				. ' LEFT JOIN #__rwf_forms_'.$form->id .' AS f ON f.id = s.answer_id '
-				. ' WHERE r.id IN (' . implode(', ', $cid) . ')'
-				. '   AND r.cancelled = 1 ';
-			;
-			$this->_db->setQuery($query);
-			$res = $this->_db->loadColumn();
-
-			if (!$res || !count($res) == count($cid))
-			{
-				$this->setError(JText::_('COM_REDEVENT_CANT_DELETE_REGISTRATIONS'));
-				return false;
-			}
-
-			return true;
+			return false;
 		}
-		return true;
+
+		$this->updateWaitingLists($sessionIds);
+
+		foreach ($pks as $attendee_id)
+		{
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('onAttendeeDeleted', array($attendee_id));
+		}
+
+		return parent::delete($pks);
+	}
+
+	private function getAttendeesSessionIds($pks)
+	{
+		// Sanitize input.
+		JArrayHelper::toInteger($pks);
+		$pk = RHelperArray::quote($pks);
+		$pk = implode(',', $pk);
+
+		$query = $this->_db->getQuery(true);
+
+		$query->select('DISTINCT xref');
+		$query->from('#__redevent_register');
+		$query->where('id IN (' . $pk .  ')');
+
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadColumn();
+
+		return $res;
+	}
+
+	/**
+	 * Update sessions waiting list
+	 *
+	 * @param   array  $sessionIds  sessions ids
+	 *
+	 * @return void
+	 */
+	private function updateWaitingLists($sessionIds)
+	{
+		foreach ($sessionIds as $sessionId)
+		{
+			$model_wait = $this->getModel('waitinglist');
+			$model_wait->setXrefId($sessionId);
+			$model_wait->UpdateWaitingList();
+		}
 	}
 
 	/**

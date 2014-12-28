@@ -117,7 +117,7 @@ class RedEventModelRegistration extends RModel
 		}
 
 		$obj = $this->getTable('Redevent_register', '');
-		$obj->loadBySid($sid);
+		$obj->load(array('sid' => $sid));
 		$obj->sid        = $sid;
 		$obj->xref       = $this->_xref;
 		$obj->sessionpricegroup_id = $sessionpricegroup_id;
@@ -190,7 +190,7 @@ class RedEventModelRegistration extends RModel
 		}
 
 		$obj = $this->getTable('Redevent_register', '');
-		$obj->loadBySid($sid);
+		$obj->load(array('sid' => $sid));
 		$obj->sid        = $sid;
 		$obj->sessionpricegroup_id = $pricegroup_id;
 		$obj->submit_key = $submit_key;

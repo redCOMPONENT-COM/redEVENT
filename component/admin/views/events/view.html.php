@@ -35,6 +35,7 @@ class RedeventViewEvents extends RedeventViewAdmin
 		$user = JFactory::getUser();
 
 		$this->items = $this->get('Items');
+		$this->eventvenues = $this->get('eventvenues');
 		$this->state = $this->get('State');
 		$this->pagination = $this->get('Pagination');
 		$this->filterForm = $this->get('Form');

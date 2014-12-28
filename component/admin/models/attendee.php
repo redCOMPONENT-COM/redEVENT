@@ -1,108 +1,26 @@
 <?php
 /**
- * @version 1.0 $Id: group.php 298 2009-06-24 07:42:35Z julien $
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-//no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
-
 /**
- * redEvent Component attendee Model
+ * RedEvent Model Attendee
  *
- * @package Joomla
- * @subpackage redEvent
- * @since		2.0
+ * @package  Redevent.admin
+ * @since    2.0
  */
-class RedEventModelAttendee extends JModel
+class RedEventModelAttendee extends RModelAdmin
 {
-	/**
-	 * Booking id
-	 *
-	 * @var int
-	 */
-	protected $_id = null;
-
-	/**
-	 * xref
-	 * @var int
-	 */
-	protected $_xref = null;
-
-	/**
-	 * Booking data array
-	 *
-	 * @var array
-	 */
-	protected $_data = null;
-
 	/**
 	 * Caching for price groups
 	 *
 	 * @var array
 	 */
 	protected $pricegroups = null;
-
-	/**
-	 * Constructor
-	 *
-	 * @since 0.9
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-
-		$cid = JRequest::getVar( 'cid', array(0), '', 'array' );
-		JArrayHelper::toInteger($cid, array(0));
-		$this->setId($cid[0]);
-
-		$xref = JRequest::getVar( 'xref', 0, '', 'int' );
-		$this->setXref($xref);
-	}
-
-	/**
-	 * Method to set the identifier
-	 *
-	 * @access	public
-	 * @param	int ac identifier
-	 */
-	public function setId($id)
-	{
-		// Set ac id and wipe data
-		$this->_id	    = $id;
-		$this->_data	= null;
-	}
-
-	/**
-	 * Method to set the identifier
-	 *
-	 * @access	public
-	 * @param	int ac identifier
-	 */
-	public function setXref($xref)
-	{
-		// Set ac id
-		$this->_xref	= intval($xref);
-	}
 
 	/**
 	 * Logic for the Group edit screen
@@ -181,72 +99,6 @@ class RedEventModelAttendee extends JModel
 		}
 
 		return true;
-	}
-
-	/**
-	 * Tests if the row is checked out
-	 *
-	 * @access	public
-	 * @param	int	A user id
-	 * @return	boolean	True if checked out
-	 * @since	0.9
-	 */
-	function isCheckedOut( $uid=0 )
-	{
-		if ($this->_loadData())
-		{
-			if ($uid) {
-				return ($this->_data->checked_out && $this->_data->checked_out != $uid);
-			} else {
-				return $this->_data->checked_out;
-			}
-		} elseif ($this->_id < 1) {
-			return false;
-		} else {
-			RedEventError::raiseWarning( 0, 'Unable to Load Data');
-			return false;
-		}
-	}
-
-	/**
-	 * Method to checkin/unlock the item
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	0.9
-	 */
-	function checkin()
-	{
-		if ($this->_id)
-		{
-			$ac = & JTable::getInstance('redevent_register', '');
-			return $ac->checkin($this->_id);
-		}
-		return false;
-	}
-
-	/**
-	 * Method to checkout/lock the item
-	 *
-	 * @access	public
-	 * @param	int	$uid	User ID of the user checking the item out
-	 * @return	boolean	True on success
-	 * @since	0.9
-	 */
-	function checkout($uid = null)
-	{
-		if ($this->_id)
-		{
-			// Make sure we have a user id to checkout the ac with
-			if (is_null($uid)) {
-				$user	=& JFactory::getUser();
-				$uid	= $user->get('id');
-			}
-			// Lets get to it and checkout the thing...
-			$ac = & JTable::getInstance('redevent_register', '');
-			return $ac->checkout($uid, $this->_id);
-		}
-		return false;
 	}
 
 	/**
