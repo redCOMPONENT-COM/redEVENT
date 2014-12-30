@@ -123,12 +123,12 @@ class RedeventControllerRegistrations extends RControllerAdmin
 	/**
 	 * Override to trigger plugins
 	 *
-	 * @param   JModel  $model  The data model object.
-	 * @param   array   $cid    The validated data.
+	 * @param   RModelAdmin  $model  The data model object.
+	 * @param   array        $cid    The validated data.
 	 *
 	 * @return  void
 	 */
-	protected function postDeleteHook(JModel $model, $cid = null)
+	protected function postDeleteHook(RModelAdmin $model, $cid = null)
 	{
 		if (!(is_array($cid) && count($cid)))
 		{

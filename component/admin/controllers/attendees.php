@@ -1,145 +1,41 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport('joomla.application.component.controller');
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * EventList Component Attendees Controller
+ * Registrations Controller
  *
- * @package Joomla
- * @subpackage redEVENT
- * @since 0.9
+ * @package  Redevent.admin
+ * @since    0.9
  */
-class RedeventControllerAttendees extends RedeventController
+class RedeventControllerAttendees extends RControllerAdmin
 {
 	/**
-	 * Constructor
+	 * Override to trigger plugins
 	 *
-	 *@since 0.9
-	 */
-	function __construct()
-	{
-		parent::__construct();
-		$this->registerTask( 'addattendee', 'attendees' );
-		$this->registerTask( 'add',       'edit' );
-		$this->registerTask( 'apply',     'save' );
-		$this->registerTask( 'emailall',  'email' );
-		$this->registerTask( 'applymove', 'move' );
-	}
-
-	public function Attendees()
-	{
-		/* Create the view object */
-		$view = $this->getView('attendees', 'html');
-
-		/* Standard model */
-		$view->setModel( $this->getModel( 'attendees', 'RedeventModel' ), true );
-		$view->setModel( $this->getModel( 'waitinglist', 'RedeventModel' ) );
-		$view->setLayout('default');
-
-		/* Now display the view */
-		$view->display();
-	}
-
-	public function Submitters()
-	{
-		$mainframe = &JFactory::getApplication();
-		$mainframe->redirect('index.php?option=com_redform&controller=submitters&task=submitters&integration=redevent&xref='.JRequest::getInt('xref').'&form_id='.JRequest::getInt('form_id').'&filter='.JRequest::getInt('filter'));
-
-		/* Create the view object */
-		$view = $this->getView('submitters', 'html');
-
-		/* Standard model */
-		JController::addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_redform'.DS.'models');
-		$view->setModel( $this->getModel( 'submitters', 'RedformModel' ), true);
-		$view->setModel( $this->getModel( 'redform', 'RedformModel' ));
-		$view->setLayout('submitters');
-
-		/* Now display the view */
-		$view->display();
-	}
-
-	/**
-	 * Delete attendees
+	 * @param   RModelAdmin  $model  The data model object.
+	 * @param   array        $cid    The validated data.
 	 *
-	 * @return true on sucess
-	 * @access private
-	 * @since 0.9
+	 * @return  void
 	 */
-	function remove($cid = array())
+	protected function postDeleteHook(RModelAdmin $model, $cid = null)
 	{
-		$app = JFactory::getApplication();
-		$cid = $app->input->get( 'cid', array(), 'post', 'array' );
-		$xref 	= $app->input->getInt('xref');
-		$total 	= count($cid);
-
-		try
+		if (!(is_array($cid) && count($cid)))
 		{
-			/* Check if anything is selected */
-			if (!is_array($cid) || count($cid) < 1)
-			{
-				throw new Exception(JText::_('COM_REDEVENT_SELECT_AN_ITEM_TO_DELETE'));
-			}
-
-			/* Get all submitter ID's */
-			$model = $this->getModel('attendees');
-
-			if (!$model->canDelete($cid))
-			{
-				throw new Exception($model->getError());
-			}
-
-			foreach ($cid as $attendee_id)
-			{
-				JPluginHelper::importPlugin('redevent');
-				$dispatcher = JDispatcher::getInstance();
-				$dispatcher->trigger('onAttendeeDeleted', array($attendee_id));
-			}
-
-			if (!$model->remove($cid))
-			{
-				throw new Exception($model->getError());
-			}
-
-			/* Check if we have space on the waiting list */
-			$model_wait = $this->getModel('waitinglist');
-			$model_wait->setXrefId($xref);
-			$model_wait->UpdateWaitingList();
-
-			$cache = JFactory::getCache('com_redevent');
-			$cache->clean();
-
-			$msg = $total . ' ' . JText::_('COM_REDEVENT_REGISTERED_USERS_DELETED');
-		}
-		catch (Exception $e)
-		{
-			$msg = $e->getMessage();
-			$msgType = 'errror';
+			return false;
 		}
 
-		$this->setRedirect('index.php?option=com_redevent&view=attendees&xref=' . $xref, $msg, $msgType);
+		foreach ($cid as $attendee_id)
+		{
+			JPluginHelper::importPlugin('redevent');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('onAttendeeDeleted', array($attendee_id));
+		}
 	}
 
 	/**
@@ -450,56 +346,6 @@ class RedeventControllerAttendees extends RedeventController
 	}
 
 	/**
-	 * logic to create the edit screen
-	 *
-	 * @access public
-	 * @return void
-	 * @since 0.9
-	 */
-	function edit( )
-	{
-		JRequest::setVar( 'view', 'attendee' );
-		JRequest::setVar( 'hidemainmenu', 1 );
-
-		$model 	= $this->getModel('attendee');
-		$task 	= JRequest::getVar('task');
-
-		if ($task == 'copy' || $task == 'add') {
-			JRequest::setVar( 'task', $task );
-		}
-		else
-		{
-			$user	=& JFactory::getUser();
-			// Error if checkedout by another administrator
-			if ($model->isCheckedOut( $user->get('id') )) {
-				$this->setRedirect( 'index.php?option=com_redevent&view=attendees', JText::_('COM_REDEVENT_EDITED_BY_ANOTHER_ADMIN' ) );
-			}
-			$model->checkout();
-		}
-		parent::display();
-	}
-
-	/**
-	 * logic for cancel an action
-	 *
-	 * @access public
-	 * @return void
-	 * @since 0.9
-	 */
-	function cancel()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
-
-		$row = JTable::getInstance('redevent_register', '');
-		$row->bind(JRequest::get('post'));
-		$row->checkin();
-
-		$link = $this->getRedirectToList();
-		$this->setRedirect($link);
-	}
-
-	/**
 	 * logic to save an attendee
 	 *
 	 * @access public
@@ -563,7 +409,7 @@ class RedeventControllerAttendees extends RedeventController
 	protected function getRedirectToList()
 	{
 		$app = JFactory::getApplication();
-		$xref = $app->input->getInt('xref', 0) or die( 'Missing xref' );
+		$sessionId = $app->input->getInt('session', 0) or die( 'Missing session Id' );
 
 		if ($app->input->get('return'))
 		{
@@ -571,7 +417,7 @@ class RedeventControllerAttendees extends RedeventController
 		}
 		else
 		{
-			$link = 'index.php?option=com_redevent&view=attendees&xref='. $xref;
+			$link = 'index.php?option=com_redevent&view=attendees&session=' . $sessionId;
 		}
 
 		return $link;

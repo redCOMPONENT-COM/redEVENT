@@ -275,44 +275,4 @@ class RedeventModelRegistrations extends RModelList
 		}
 		return true;
 	}
-
-	/**
-	 * Override for xref param in request
-	 *
-	 * @param   string  $ordering   An optional ordering field.
-	 * @param   string  $direction  An optional direction (asc|desc).
-	 *
-	 * @return  void
-	 */
-	protected function populateState($ordering = null, $direction = null)
-	{
-		parent::populateState($ordering, $direction);
-
-		$app = JFactory::getApplication();
-
-		if ($value = $app->getUserStateFromRequest($this->context . '.session', 'session', 0, 'int'))
-		{
-			$this->setState('filter.session', $value);
-		}
-	}
-
-	/**
-	 * Get the filter form
-	 *
-	 * @param   array    $data      data
-	 * @param   boolean  $loadData  load current data
-	 *
-	 * @return  JForm/false  the JForm object or false
-	 */
-	public function getForm($data = array(), $loadData = true)
-	{
-		$form = parent::getForm($data, $loadData);
-
-		if ($form && $this->getState('filter.session'))
-		{
-			$form->setValue('session', 'filter', $this->getState('filter.session'));
-		}
-
-		return $form;
-	}
 }

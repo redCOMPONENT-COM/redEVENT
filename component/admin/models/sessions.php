@@ -187,7 +187,7 @@ class RedeventModelSessions extends RModelList
 
 			default:
 				// Not archived
-				$query->where('obj.published = 0 OR obj.published = 1');
+				$query->where('(obj.published = 0 OR obj.published = 1)');
 		}
 
 		switch ($this->getState('filter_featured'))
@@ -309,7 +309,7 @@ class RedeventModelSessions extends RModelList
 
 		$app = JFactory::getApplication();
 
-		if ($value = $app->getUserStateFromRequest($this->context . '.eventid', 'eventid', 0, 'int'))
+		if ($value = $app->input->getInt('eventid', 0))
 		{
 			$this->setState('filter.event', $value);
 		}

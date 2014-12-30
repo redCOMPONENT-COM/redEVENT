@@ -1,204 +1,108 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
-
 /**
- * EventList Component attendees Model
+ * redEVENT Component attendees Model
  *
- * @package Joomla
- * @subpackage redEVENT
- * @since		0.9
+ * @package  Redevent.admin
+ * @since    0.9
  */
-class RedEventModelAttendees extends RModelList
+class RedeventModelAttendees extends RModelList
 {
 	/**
-	 * Events data array
+	 * Name of the filter form to load
 	 *
-	 * @var array
+	 * @var  string
 	 */
-	var $_data = null;
+	protected $filterFormName = 'filter_attendees';
 
 	/**
-	 * Events total
+	 * Limitstart field used by the pagination
 	 *
-	 * @var integer
+	 * @var  string
 	 */
-	var $_total = null;
+	protected $limitField = 'attendees_limit';
 
 	/**
-	 * Events total
+	 * Limitstart field used by the pagination
 	 *
-	 * @var integer
+	 * @var  string
 	 */
-	var $_event = null;
+	protected $limitstartField = 'auto';
 
 	/**
-	 * Pagination object
+	 * Session data
 	 *
 	 * @var object
 	 */
-	var $_pagination = null;
+	var $session = null;
 
 	/**
-	 * Events id
+	 * redform fields
 	 *
-	 * @var int
+	 * @var array
 	 */
-	var $_eventid = null;
+	var $redformFields = null;
 
-	var $_xref = null;
 	/**
-	 * Constructor
+	 * Constructor.
 	 *
-	 * @since 0.9
+	 * @param   array  $config  Configs
+	 *
+	 * @see     JController
 	 */
-	function __construct()
+	public function __construct($config = array())
 	{
-		parent::__construct();
-
-		$mainframe = &JFactory::getApplication();
-
-		$option = JRequest::getCmd('option');
-
-		$limit		= $mainframe->getUserStateFromRequest( $option.'limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest( $option.'limitstart', 'limitstart', 0, 'int' );
-
-		$filter_confirmed = $mainframe->getUserStateFromRequest( $option.'.attendees.filter_confirmed', 'filter_confirmed', 0, 'int' );
-		$filter_waiting   = $mainframe->getUserStateFromRequest( $option.'.attendees.filter_waiting',   'filter_waiting'  , 0, 'int' );
-		$filter_cancelled = $mainframe->getUserStateFromRequest( $option.'.attendees.filter_cancelled', 'filter_cancelled', 0, 'int' );
-
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-		$this->setState('filter_confirmed', $filter_confirmed);
-		$this->setState('filter_waiting',   $filter_waiting);
-		$this->setState('filter_cancelled', $filter_cancelled);
-
-		//set unlimited if export or print action | task=export or task=print
-		$this->setState('unlimited', JRequest::getString('task'));
-
-		$eventid = JRequest::getInt('eventid');
-		$this->setId($eventid);
-
-		$xref = JRequest::getInt('xref');
-		if ($xref) {
-			$this->setXref($xref);
+		if (empty($config['filter_fields']))
+		{
+			$config['filter_fields'] = array(
+				'r.id', 'x.eventid', 'x.xref',
+				'r.confirmed', 'r.waiting', 'r.cancelled'
+			);
 		}
+
+		parent::__construct($config);
 	}
 
 	/**
-	 * Method to set the category identifier
+	 * Method to get a store id based on model configuration state.
 	 *
-	 * @access	public
-	 * @param	int Category identifier
+	 * @param   string  $id  A prefix for the store id.
+	 *
+	 * @return  string       A store id.
 	 */
-	function setId($eventid)
+	protected function getStoreId($id = '')
 	{
-		// Set id and wipe data
-		$this->_eventid	    = $eventid;
-		$this->_data 	= null;
-	}
+		// Compile the store id.
+		$id .= ':' . $this->getState('filter.session');
+		$id	.= ':' . $this->getState('filter.confirmed');
+		$id .= ':' . $this->getState('filter.waiting');
+		$id	.= ':' . $this->getState('filter.cancelled');
 
-	function setXref($xref)
-	{
-		// Set id and wipe data
-		$this->_xref	    = $xref;
-		$this->_data 	= null;
-
-		// set eventid
-		$query = ' SELECT eventid FROM #__redevent_event_venue_xref WHERE id = '. $this->_db->Quote($xref);
-		$this->_db->setQuery($query);
-		$this->setId($this->_db->loadResult());
+		return parent::getStoreId($id);
 	}
 
 	/**
-	 * Method to get attendees list data
+	 * Build an SQL query to load the list data.
 	 *
-	 * @return array
+	 * @return  object  Query object
+	 *
+	 * @throws RuntimeException
 	 */
-	public function getData()
+	protected function getListQuery()
 	{
 		$db = $this->_db;
-		// Lets load the content if it doesn't already exist
-		$query = $this->buildQuery();
 
-		if ($this->getState('unlimited') == '')
+		if (!$this->getState('filter.session'))
 		{
-			$db->setQuery($query, $this->getState('limitstart'), $this->getState('limit'));
-			$this->_data = $db->loadObjectList();
+			throw new RuntimeException('No session selected');
 		}
-		else
-		{
-			$db->setQuery($query);
-			$this->_data = $db->loadObjectList();
-		}
-
-		return $this->_data;
-	}
-
-	/**
-	 * Method to get the total nr of the attendees
-	 *
-	 * @return integer
-	 */
-	function getTotal()
-	{
-		// Lets load the content if it doesn't already exist
-		$query = $this->buildQuery();
-		$this->_total = $this->_getListCount($query);
-
-		return $this->_total;
-	}
-
-	/**
-	 * Method to get a pagination object for the events
-	 *
-	 * @access public
-	 * @return integer
-	 */
-	function getPagination()
-	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_pagination))
-		{
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
-		}
-
-		return $this->_pagination;
-	}
-
-	/**
-	 * Method to build the query for the attendees
-	 *
-	 * @return integer
-	 */
-	protected function buildQuery()
-	{
-		$db = $this->_db;
 
 		// Build attendees list query
 		$query = $db->getQuery(true);
@@ -225,9 +129,10 @@ class RedEventModelAttendees extends RModelList
 		// Add associated form fields
 		$query = $this->queryAddFormFields($query);
 
-		// Get the ORDER BY and WHERE clause for the query
-		$query = $this->buildContentOrderBy($query);
+		// Get the WHERE clause for the query
 		$query = $this->buildContentWhere($query);
+
+		$query->order($this->_db->escape($this->getState('list.ordering', 'r.confirmdate')) . ' ' . $this->_db->escape($this->getState('list.direction', 'DESC')));
 
 		return $query;
 	}
@@ -242,128 +147,15 @@ class RedEventModelAttendees extends RModelList
 	protected function queryAddFormFields(JDatabaseQuery $query)
 	{
 		// Join the form table
-		$event = $this->getEvent();
-		$query->join('INNER', '#__rwf_forms_' . $event->redform_id . ' AS f ON s.answer_id = f.id');
+		$session = $this->getSession();
+		$query->join('INNER', '#__rwf_forms_' . $session->redform_id . ' AS f ON s.answer_id = f.id');
 
-		// Add fields
-		if ($this->getState('getAllFormFields', false))
+		// Select fields
+		foreach ($this->getRedformFields() as $field)
 		{
-			return $this->queryAddAllFormFields($query);
-		}
-		else
-		{
-			return $this->queryAddEventShowFormFields($query);
-		}
-	}
-
-	/**
-	 * Add all form fields to the query
-	 *
-	 * @param   JDatabaseQuery  $query  the query
-	 *
-	 * @return JDatabaseQuery
-	 */
-	protected function queryAddAllFormFields(JDatabaseQuery $query)
-	{
-		$db = $this->_db;
-		$query_fields = $db->getQuery(true);
-
-		$query_fields->select('f.id');
-		$query_fields->from('#__redevent_events AS e');
-		$query_fields->join('INNER', '#__rwf_fields AS f ON f.form_id = e.redform_id');
-		$query_fields->where('e.id = '. $db->Quote($this->_eventid));
-
-		$db->setQuery($query_fields);
-		$formFields = $db->loadColumn();
-
-		foreach ($formFields as $fieldId)
-		{
-			$column = 'f.field_' . trim($fieldId);
+			$column = 'f.field_' . $field->fieldId;
 			$query->select($column);
 		}
-
-		return $query;
-	}
-
-	/**
-	 * Add all form fields to the query
-	 *
-	 * @param   JDatabaseQuery  $query  the query
-	 *
-	 * @return JDatabaseQuery
-	 */
-	protected function queryAddEventShowFormFields(JDatabaseQuery $query)
-	{
-		$db = $this->_db;
-		$query_fields = $db->getQuery(true);
-
-		$query_fields->select('e.redform_id, e.showfields');
-		$query_fields->from('#__redevent_events AS e');
-		$query_fields->where('e.id = '. $db->Quote($this->_eventid));
-
-		$db->setQuery($query_fields, 0, 1);
-		$formFields = $db->loadObject();
-
-		if ($formFields && !empty($formFields->showfields))
-		{
-			$fields = explode(',', $formFields->showfields);
-
-			// Add each field in select
-			foreach ($fields as $f)
-			{
-				$column = 'f.field_' . trim($f);
-				$query->select($column);
-			}
-		}
-
-		return $query;
-	}
-
-	function getRedFormFrontFields()
-	{
-		// get redform form and fields to show
-		$q = ' SELECT e.showfields '
-		   . ' FROM #__redevent_events AS e '
-		   . ' WHERE e.id = '. $this->_db->Quote($this->_eventid)
-		   ;
-		$this->_db->setQuery($q, 0, 1);
-		$res = $this->_db->loadResult();
-		if (empty($res)) {
-			return null;
-		}
-		$list = array();
-	  foreach (explode(',', $res) as $f) {
-	  	$list[] = $this->_db->Quote($f);
-	  }
-		// get redform form and fields to show
-		$q = ' SELECT f.id, f.field '
-		   . '      , CASE WHEN (CHAR_LENGTH(f.field_header) > 0) THEN f.field_header ELSE f.field END AS field_header '
-		   . ' FROM #__rwf_fields AS f '
-		   . ' WHERE f.id IN ('.implode(',', $list) .')'
-		   . ' ORDER BY f.ordering '
-		   ;
-		$this->_db->setQuery($q);
-		$res = $this->_db->loadObjectList();
-		//echo '<pre>';print_r($res); echo '</pre>';exit;
-		return $res;
-	}
-
-	/**
-	 * Method to build the orderby clause of the query for the attendees
-	 *
-	 * @param   JDatabaseQuery  $query  the query
-	 *
-	 * @return JDatabaseQuery
-	 */
-	protected function buildContentOrderBy($query)
-	{
-		$mainframe = JFactory::getApplication();
-		$option    = JRequest::getCmd('option');
-
-		$filter_order     = $mainframe->getUserStateFromRequest($option . '.attendees.filter_order', 'filter_order', 'r.confirmdate', 'cmd');
-		$filter_order_Dir = $mainframe->getUserStateFromRequest($option . '.attendees.filter_order_Dir', 'filter_order_Dir', 'ASC', 'word');
-
-		$query->order($filter_order.' '.$filter_order_Dir.', r.confirmdate DESC');
 
 		return $query;
 	}
@@ -377,25 +169,9 @@ class RedEventModelAttendees extends RModelList
 	 */
 	protected function buildContentWhere($query)
 	{
-		$mainframe = JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$query->where('r.xref = ' . $this->getState('filter.session'));
 
-		$xref = JRequest::getInt('xref');
-
-		if ($xref)
-		{
-			$query->where('r.xref = ' . $xref);
-		}
-		elseif (!is_null($this->_xref) && $this->_xref > 0)
-		{
-			$query->where('r.xref = ' . $this->_xref);
-		}
-		elseif (!is_null($this->_eventid) && $this->_eventid > 0)
-		{
-			$query->where('x.eventid = ' . $this->_eventid);
-		}
-
-		switch ($this->getState('filter_confirmed', 0))
+		switch ($this->getState('filter.confirmed', 0))
 		{
 			case 1:
 				$query->where('r.confirmed = 1');
@@ -405,7 +181,7 @@ class RedEventModelAttendees extends RModelList
 				break;
 		}
 
-		switch ($this->getState('filter_waiting', 0))
+		switch ($this->getState('filter.waiting', 0))
 		{
 			case 1:
 				$query->where('r.waitinglist = 0');
@@ -415,7 +191,7 @@ class RedEventModelAttendees extends RModelList
 				break;
 		}
 
-		switch ($this->getState('filter_cancelled', 0))
+		switch ($this->getState('filter.cancelled', 0))
 		{
 			case 0:
 				$query->where('r.cancelled = 0');
@@ -429,31 +205,82 @@ class RedEventModelAttendees extends RModelList
 	}
 
 	/**
-	 * Get event data
+	 * Get session data
 	 *
-	 * @access public
 	 * @return object
-	 * @since 0.9
 	 */
-	function getEvent()
+	public function getSession()
 	{
-		if (empty($this->_event))
+		if (empty($this->session))
 		{
-			$query = ' SELECT x.eventid, x.maxattendees, e.title, x.dates, e.redform_id , x.id AS xref, e.showfields, e.course_code  '
-			       . ' , e.activate, v.venue '
-			       . ' FROM #__redevent_events e '
-			       . ' LEFT JOIN #__redevent_event_venue_xref x	ON x.eventid = e.id '
-			       . ' LEFT JOIN #__redevent_venues AS v ON x.venueid = v.id '
-			       ;
-			if (!is_null($this->_xref) && $this->_xref > 0) {
-				$query .= ' WHERE x.id = '.$this->_xref;
-			}
+			$query = $this->_db->getQuery(true);
 
-			$this->_db->setQuery( $query );
-			$this->_event = $this->_db->loadObject();
+			$query->select('x.eventid, x.maxattendees, x.dates, x.id AS xref')
+				->select('e.title, e.redform_id, e.activate, e.showfields')
+				->select('v.venue');
+			$query->from('#__redevent_event_venue_xref AS x');
+			$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
+			$query->join('LEFT', '#__redevent_venues AS v ON x.venueid = v.id');
+			$query->where('x.id = ' . $this->getState('filter.session'));
+
+			$this->_db->setQuery($query);
+			$this->session = $this->_db->loadObject();
 		}
 
-		return $this->_event;
+		return $this->session;
+	}
+
+	/**
+	 * List of selected redform fields for frontend list
+	 *
+	 * @return array
+	 */
+	public function getSelectedFrontRedformFields()
+	{
+		$list = trim($this->getSession()->showfields);
+
+		return $list ? explode(',', $list) : array();
+	}
+
+	/**
+	 * Override for xref param in request
+	 *
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
+	 *
+	 * @return  void
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		parent::populateState($ordering, $direction);
+
+		$app = JFactory::getApplication();
+
+		if ($value = $app->input->getInt('session', 0))
+		{
+			$this->setState('filter.session', $value);
+		}
+	}
+
+	/**
+	 * Get the filter form
+	 *
+	 * @param   array    $data      data
+	 * @param   boolean  $loadData  load current data
+	 *
+	 * @return  JForm/false  the JForm object or false
+	 */
+	public function getForm($data = array(), $loadData = true)
+	{
+		$form = parent::getForm($data, $loadData);
+
+		if ($form && $this->getState('filter.session'))
+		{
+			$form->setValue('session', 'filter', $this->getState('filter.session'));
+			$form->setFieldAttribute('session', 'event', $this->getSession()->eventid, 'filter');
+		}
+
+		return $form;
 	}
 
 	/**
@@ -463,7 +290,7 @@ class RedEventModelAttendees extends RModelList
 	 * @return true on success
 	 * @since 0.9
 	 */
-	function cancelreg($cid = array())
+	public function cancelreg($cid = array())
 	{
 		if (count( $cid ))
 		{
@@ -519,7 +346,7 @@ class RedEventModelAttendees extends RModelList
 	 * @return true on success
 	 * @since 0.9
 	 */
-	function uncancelreg($cid = array())
+	public function uncancelreg($cid = array())
 	{
 		if (count( $cid ))
 		{
@@ -627,37 +454,6 @@ class RedEventModelAttendees extends RModelList
 	 * Delete registered users
 	 *
 	 * @access public
-	 * @return true on success
-	 * @since 0.9
-	 */
-	function remove($cid = array())
-	{
-		if (count( $cid ))
-		{
-			$ids = implode(',', $cid);
-			$form = $this->getForm();
-
-			$query = ' DELETE s, f, r '
-        . ' FROM #__redevent_register AS r '
-        . ' LEFT JOIN #__rwf_submitters AS s ON r.sid = s.id '
-        . ' LEFT JOIN #__rwf_forms_'.$form->id .' AS f ON f.id = s.answer_id '
-        . ' WHERE r.id IN ('.implode(', ', $cid).')'
-        . '   AND r.cancelled = 1 ';
-        ;
-			$this->_db->setQuery( $query );
-
-			if (!$this->_db->query()) {
-				RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
-				return false;
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * Delete registered users
-	 *
-	 * @access public
 	 * @param array int attendee ids
 	 * @param int id of xref destination
 	 * @return true on success
@@ -731,64 +527,32 @@ class RedEventModelAttendees extends RModelList
     return true;
   }
 
-  function getForm()
-  {
-  	if ($this->_eventid)
-  	{
-	  	$query = ' SELECT f.* '
-	  	       . ' FROM #__redevent_events AS e '
-	  	       . ' INNER JOIN #__rwf_forms AS f ON e.redform_id = f.id '
-	  	       . ' WHERE e.id = '. $this->_db->Quote($this->_eventid)
-	  	       ;
-  	}
-  	else if ($this->_xref)
-  	{
-	  	$query = ' SELECT f.* '
-	  	       . ' FROM #__redevent_events AS e '
-	  	       . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
-	  	       . ' INNER JOIN #__rwf_forms AS f ON e.redform_id = f.id '
-	  	       . ' WHERE x.id = '. $this->_db->Quote($this->_xref)
-	  	       ;
-
-  	}
-  	else
-  	{
-  		JError::raisewarning(0, 'No event or session id !');
-  		return false;
-  	}
-  	$this->_db->setQuery($query, 0, 1);
-  	$res = $this->_db->loadObject();
-//  	echo '<pre>';print_r($this->_db->getQuery()); echo '</pre>';exit;
-		return $res;
-  }
-
-	function getDateTimeLocation()
+	/**
+	 * returns redform fields
+	 *
+	 * @return array
+	 */
+	public function getRedformFields()
 	{
-		$q = ' SELECT x.*, v.venue '
-		   . ' FROM #__redevent_event_venue_xref x '
-		   . ' LEFT JOIN #__redevent_venues v ON v.id = x.venueid '
-		   ;
-		if (!is_null($this->_eventid) && $this->_eventid > 0) {
-			$q .= ' WHERE x.eventid = '.$this->_eventid;
+		if (!$this->redformFields)
+		{
+			$rfcore = RdfCore::getInstance();
+			$this->redformFields = $rfcore->getFields($this->getSession()->redform_id);
 		}
-		else if (!is_null($this->_xref) && $this->_xref > 0) {
-			$q .= ' WHERE x.id = '.$this->_xref;
-		}
-		$q .= '	ORDER BY v.venue, x.dates';
-		$this->_db->setQuery($q);
-		return $this->_db->loadObjectList();
+
+		return $this->redformFields;
 	}
 
 	/**
-	 * returns redform fields
-	 * @param boolean $all set true to return all fields
+	 * returns redform fields selected in event front fields
+	 *
 	 * @return array
 	 */
-	function getFields($all = false)
+	public function getFrontRedformFields()
 	{
-		$event = $this->getEvent();
 		$rfcore = RdfCore::getInstance();
-		return $rfcore->getFields($event->redform_id);
+
+		return $rfcore->getFields($this->getSession()->redform_id);
 	}
 
 	function getEmails($cids = null)

@@ -63,6 +63,11 @@ class JFormFieldSession extends JFormField
 		$link = 'index.php?option=com_redevent&amp;view=sessions&amp;layout=element&amp;tmpl=component'
 		. '&amp;function=jSelectSession_' . $this->id;
 
+		if ($this->element['event'])
+		{
+			$link .= '&jForm[filter.event]=' . $this->element['event'];
+		}
+
 		if ($this->value)
 		{
 			$title = $this->getSessionTitle($this->value);
@@ -126,13 +131,22 @@ class JFormFieldSession extends JFormField
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('title');
+		$query->select('e.title, x.dates');
 		$query->from('#__redevent_events AS e');
 		$query->join('INNER', '#__redevent_event_venue_xref AS x');
 		$query->where('x.id = ' . (int) $sessionId);
 
 		$db->setQuery($query, 0, 1);
 
-		return $db->loadResult();
+		$res = $db->loadObject();
+
+		if ($res->dates)
+		{
+			return $res->title . ' - ' . $res->dates;
+		}
+		else
+		{
+			return $res->title;
+		}
 	}
 }

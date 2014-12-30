@@ -1,40 +1,118 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.view');
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * View class for the EventList attendees screen
+ * View class for Attendees screen
  *
- * @package Joomla
- * @subpackage redEVENT
- * @since 0.9
+ * @package  Redevent.admin
+ * @since    0.9
  */
-class RedEventViewAttendees extends JView {
+class RedeventViewAttendees extends RedeventViewAdmin
+{
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a Error object.
+	 */
+	public function display($tpl = null)
+	{
+		$user = JFactory::getUser();
 
-	function display($tpl = null)
+		$this->items = $this->get('Items');
+		$this->session = $this->get('session');
+		$this->redformFields = $this->get('RedformFields');
+		$this->selectedRedformFields = $this->get('SelectedFrontRedformFields');
+		$this->pagination = $this->get('Pagination');
+		$this->filterForm = $this->get('Form');
+		$this->activeFilters = $this->get('ActiveFilters');
+		$this->state = $this->get('State');
+		$this->params = JComponentHelper::getParams('com_redevent');
+
+		// Edit permission
+		$this->canEdit = false;
+
+		if ($user->authorise('core.edit', 'com_redevent'))
+		{
+			$this->canEdit = true;
+		}
+
+		parent::display($tpl);
+	}
+
+	/**
+	 * Get the page title
+	 *
+	 * @return  string  The title to display
+	 *
+	 * @since   0.9.1
+	 */
+	public function getTitle()
+	{
+		return JText::sprintf('COM_REDEVENT_PAGETITLE_ATTENDEES', $this->session->title);
+	}
+
+	/**
+	 * Get the tool-bar to render.
+	 *
+	 * @return  RToolbar
+	 */
+	public function getToolbar()
+	{
+		$user = JFactory::getUser();
+
+		$firstGroup		= new RToolbarButtonGroup;
+		$secondGroup		= new RToolbarButtonGroup;
+
+		if ($user->authorise('core.edit', 'com_redevent'))
+		{
+			$firstGroup->addButton(
+				RToolbarBuilder::createStandardButton('attendees.emailall', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_ALL', 'send', 'icon-email')
+			);
+			$firstGroup->addButton(
+				RToolbarBuilder::createStandardButton('attendees.email', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_SELECTED', 'send', 'icon-email')
+			);
+
+			$secondGroup->addButton(
+				RToolbarBuilder::createNewButton('attendees.new')
+			);
+			$secondGroup->addButton(
+				RToolbarBuilder::createEditButton('attendees.edit')
+			);
+			$secondGroup->addButton(
+				RToolbarBuilder::createStandardButton('attendees.move', 'COM_REDEVENT_ATTENDEES_TOOLBAR_MOVE', '', 'icon-move')
+			);
+
+			if ($this->state->get('filter.cancelled') == 1)
+			{
+				$restore = RToolbarBuilder::createStandardButton('attendees.uncancelreg', 'COM_REDEVENT_ATTENDEES_TOOLBAR_RESTORE', '', ' icon-circle-arrow-left');
+				$secondGroup->addButton($restore);
+
+				$delete = RToolbarBuilder::createDeleteButton('attendees.delete');
+				$secondGroup->addButton($delete);
+			}
+
+			if ($this->state->get('filter.cancelled') == 0)
+			{
+				$cancel = RToolbarBuilder::createCancelButton('attendees.cancelreg', 'COM_REDEVENT_ATTENDEES_TOOLBAR_CANCEL');
+				$secondGroup->addButton($cancel);
+			}
+		}
+
+		$toolbar = new RToolbar;
+		$toolbar->addGroup($firstGroup)->addGroup($secondGroup);
+
+		return $toolbar;
+	}
+
+	function _display($tpl = null)
 	{
 		$mainframe = &JFactory::getApplication();
 		$option = JRequest::getCmd('option');

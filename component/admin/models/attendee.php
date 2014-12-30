@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent.admin
  * @since    2.0
  */
-class RedEventModelAttendee extends RModelAdmin
+class RedeventModelAttendee extends RModelAdmin
 {
 	/**
 	 * Caching for price groups
