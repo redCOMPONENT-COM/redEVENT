@@ -31,6 +31,7 @@ class RedeventViewRegistrations extends RedeventViewAdmin
 		$this->filterForm = $this->get('Form');
 		$this->activeFilters = $this->get('ActiveFilters');
 		$this->state = $this->get('State');
+		$this->params = RedeventHelper::config();
 
 		// Edit permission
 		$this->canEdit = false;
@@ -88,5 +89,49 @@ class RedeventViewRegistrations extends RedeventViewAdmin
 		$toolbar->addGroup($firstGroup);
 
 		return $toolbar;
+	}
+
+	/**
+	 * returns toggle image link for session feature
+	 *
+	 * @param   object  $row  item data
+	 * @param   int     $i    row number
+	 *
+	 * @return string html
+	 */
+	public function confirmed($row, $i)
+	{
+		$states = array(
+			1 => array('unconfirm', 'COM_REDEVENT_REGISTRATION_ACTIVATED',
+				Jtext::sprintf('COM_REDEVENT_REGISTRATION_ACTIVATED_ON_S',
+					JHTML::Date($row->confirmdate, JText::_('DATE_FORMAT_LC2'))
+				)
+				, '', false, 'ok', 'ok'),
+			0 => array('confirm', '', 'COM_REDEVENT_REGISTRATION_NOT_ACTIVATED', 'COM_REDEVENT_CLICK_TO_ACTIVATE', false, 'remove', 'remove'),
+		);
+
+		return JHtml::_('rgrid.state', $states, $row->confirmed, $i, 'registrations.', $this->canEdit, true);
+	}
+
+	/**
+	 * returns toggle image link for session feature
+	 *
+	 * @param   object  $row  item data
+	 * @param   int     $i    row number
+	 *
+	 * @return string html
+	 */
+	public function waitingStatus($row, $i)
+	{
+		$states = array(
+			1 => array('offwaiting', 'COM_REDEVENT_REGISTRATION_CURRENTLY_ON_WAITING_LIST',
+				Jtext::sprintf('COM_REDEVENT_REGISTRATION_CLICK_TO_TAKE_OFF_WAITING_LIST',
+					JHTML::Date($row->confirmdate, JText::_('DATE_FORMAT_LC2'))
+				)
+			, '', false, 'time', 'time'),
+			0 => array('onwaiting', '', 'COM_REDEVENT_REGISTRATION_CURRENTLY_ATTENDING', 'COM_REDEVENT_REGISTRATION_CLICK_TO_PUT_ON_WAITING_LIST', false, 'user', 'user'),
+		);
+
+		return JHtml::_('rgrid.state', $states, $row->waitinglist, $i, 'registrations.', $this->canEdit, true);
 	}
 }

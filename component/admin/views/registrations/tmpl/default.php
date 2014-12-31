@@ -118,7 +118,7 @@ echo RLayoutHelper::render(
 		<?php foreach ($this->items as $i => $row) :
 			$displaydate = JHTML::Date($row->uregdate, JText::_('DATE_FORMAT_LC2'));
 
-			$eventdate = (!RedeventHelper::isValidDate($row->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime($this->settings->get('backend_formatdate', '%d.%m.%Y'), strtotime($row->dates)));
+			$eventdate = (!RedeventHelper::isValidDate($row->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime($this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime($row->dates)));
 			$sessionlink = JHTML::link('index.php?option=com_redevent&view=attendees&session=' . $row->xref,
 					$row->title . '<br/>' . $eventdate,
 					'class="hasTip" title="' . JText::_('COM_REDEVENT_VIEW_REGISTRATIONS_CLICK_TO_MANAGE') . '::"') . '<br/>@' . $row->venue . '</br>' . JText::_('COM_REDEVENT_AUTHOR') . ': ' . $row->creator;
@@ -154,60 +154,9 @@ echo RLayoutHelper::render(
 				<td><?php echo $row->course_code . '-' . $row->xref . '-' . $row->attendee_id; ?></td>
 				<td><?php echo $row->name; ?></td>
 				<td>
-					<?php
-					if (!$row->confirmed)
-					{
-						echo JHTML::link('javascript: void(0);',
-							JHTML::_('image', 'admin/publish_x.png', JText::_('JNO'), null, true),
-							array('onclick' => 'return listItemTask(\'cb' . $i . '\', \'confirmattendees\');',
-							      'class' => 'hasTip',
-							      'title' => Jtext::_('COM_REDEVENT_REGISTRATION_NOT_ACTIVATED')
-								      . '::' . Jtext::_('COM_REDEVENT_CLICK_TO_ACTIVATE'))
-						);
-
-					}
-					else
-					{
-						$tip = Jtext::_('COM_REDEVENT_REGISTRATION_ACTIVATED')
-							. '::' . Jtext::sprintf('COM_REDEVENT_REGISTRATION_ACTIVATED_ON_S'
-								, JHTML::Date($row->confirmdate, JText::_('DATE_FORMAT_LC2')));
-						echo JHTML::link('javascript: void(0);',
-							JHTML::_('image', 'admin/tick.png', JText::_('JYES'), null, true),
-							array('onclick' => 'return listItemTask(\'cb' . $i . '\', \'unconfirmattendees\');',
-							      'class' => 'hasTip',
-							      'title' => $tip
-							));
-					}
-					?>
+					<?php echo $this->confirmed($row, $i); ?>
 				</td>
-				<td>
-					<?php if (!$row->maxattendees): // no waiting list ?>
-						<?php echo '-'; ?>
-					<?php
-					else:
-						if (!$row->waitinglist) // attending
-						{
-							$tip = Jtext::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ATTENDING')
-								. '::' . Jtext::_('COM_REDEVENT_REGISTRATION_CLICK_TO_PUT_ON_WAITING_LIST');
-							echo JHTML::link('javascript: void(0);',
-								JHTML::_('image', 'administrator/components/com_redevent/assets/images/attending-16.png', JText::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ATTENDING'), null, false),
-								array('onclick' => 'return listItemTask(\'cb' . $i . '\', \'onwaiting\');',
-								      'class' => 'hasTip',
-								      'title' => $tip
-								));
-						}
-						else // waiting
-						{
-							$tip = Jtext::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ON_WAITING_LIST')
-								. '::' . Jtext::_('COM_REDEVENT_REGISTRATION_CLICK_TO_TAKE_OFF_WAITING_LIST');
-							echo JHTML::link('javascript: void(0);',
-								JHTML::_('image', 'administrator/components/com_redevent/assets/images/enumList.png', JText::_('COM_REDEVENT_REGISTRATION_CURRENTLY_ON_WAITING_LIST'), null, false),
-								array('onclick' => 'return listItemTask(\'cb' . $i . '\', \'offwaiting\');',
-								      'class' => 'hasTip',
-								      'title' => $tip
-								));
-						}
-					endif; ?>
+				<td>zsd
 				</td>
 
 				<td>

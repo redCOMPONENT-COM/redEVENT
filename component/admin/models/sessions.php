@@ -221,7 +221,7 @@ class RedeventModelSessions extends RModelList
 	/**
 	 * adds attendees stats to session
 	 *
-	 * @param   array $result rows to add stats to
+	 * @param   array  $result  rows to add stats to
 	 *
 	 * @return array
 	 */

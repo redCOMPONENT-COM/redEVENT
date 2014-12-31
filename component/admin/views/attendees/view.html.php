@@ -112,147 +112,48 @@ class RedeventViewAttendees extends RedeventViewAdmin
 		return $toolbar;
 	}
 
-	function _display($tpl = null)
+	/**
+	 * returns toggle image link for session feature
+	 *
+	 * @param   object  $row  item data
+	 * @param   int     $i    row number
+	 *
+	 * @return string html
+	 */
+	public function confirmed($row, $i)
 	{
-		$mainframe = &JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-		$params = &JComponentHelper::getParams('com_redevent');
+		$states = array(
+			1 => array('unconfirm', 'COM_REDEVENT_REGISTRATION_ACTIVATED',
+				Jtext::sprintf('COM_REDEVENT_REGISTRATION_ACTIVATED_ON_S',
+					JHTML::Date($row->confirmdate, JText::_('DATE_FORMAT_LC2'))
+				)
+			, '', false, 'ok', 'ok'),
+			0 => array('confirm', '', 'COM_REDEVENT_REGISTRATION_NOT_ACTIVATED', 'COM_REDEVENT_CLICK_TO_ACTIVATE', false, 'remove', 'remove'),
+		);
 
-		if($this->getLayout() == 'print') {
-			$this->_displayprint($tpl);
-			return;
-		}
-		if($this->getLayout() == 'move') {
-			$this->_displaymove($tpl);
-			return;
-		}
+		return JHtml::_('rgrid.state', $states, $row->confirmed, $i, 'attendees.', $this->canEdit, true);
+	}
 
-		//initialise variables
-		$db = JFactory::getDBO();
-		$elsettings = JComponentHelper::getParams('com_redevent');
-		$document	= JFactory::getDocument();
-		$user = JFactory::getUser();
-		$state = &$this->get('State');
+	/**
+	 * returns toggle image link for session feature
+	 *
+	 * @param   object  $row  item data
+	 * @param   int     $i    row number
+	 *
+	 * @return string html
+	 */
+	public function waitingStatus($row, $i)
+	{
+		$states = array(
+			1 => array('offwaiting', 'COM_REDEVENT_REGISTRATION_CURRENTLY_ON_WAITING_LIST',
+				Jtext::sprintf('COM_REDEVENT_REGISTRATION_CLICK_TO_TAKE_OFF_WAITING_LIST',
+					JHTML::Date($row->confirmdate, JText::_('DATE_FORMAT_LC2'))
+				)
+			, '', false, 'time', 'time'),
+			0 => array('onwaiting', '', 'COM_REDEVENT_REGISTRATION_CURRENTLY_ATTENDING', 'COM_REDEVENT_REGISTRATION_CLICK_TO_PUT_ON_WAITING_LIST', false, 'user', 'user'),
+		);
 
-		//get vars
-		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.attendees.filter_order', 'filter_order', 'u.username', 'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.attendees.filter_order_Dir',	'filter_order_Dir',	'', 'word' );
-		$xref = JRequest::getInt('xref');
-		// $search 			= $mainframe->getUserStateFromRequest( $option.'.attendees.search', 'search', '', 'string' );
-		// $search 			= $db->getEscaped( trim(JString::strtolower( $search ) ) );
-
-		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_ATTENDEES'));
-		//add css and submenu to document
-		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
-
-		// add javascript
-		JHTML::_('behavior.modal', 'a.answersmodal');
-
-		//Create Submenu
-    ELAdmin::setMenu();
-
-		//add toolbar
-		JToolBarHelper::title( JText::_('COM_REDEVENT_REGISTRATIONS' ), 'registrations' );
-//		JToolBarHelper::custom('submitters', 'redevent_submitters', 'redevent_submitters', JText::_('COM_REDEVENT_Attendees'), false);
-		JToolBarHelper::custom('emailall', 'send.png', 'send.png', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_ALL', false, true);
-		JToolBarHelper::custom('email', 'send.png', 'send.png', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_SELECTED', true, true);
-		JToolBarHelper::spacer();
-		JToolBarHelper::addNew();
-		JToolBarHelper::editList();
-		JToolBarHelper::custom('move', 'move', 'move', 'COM_REDEVENT_ATTENDEES_TOOLBAR_MOVE', true, true);
-		if ($state->get('filter_cancelled', 0) == 0) {
-			JToolBarHelper::custom('cancelreg', 'cancel', 'cancel', 'COM_REDEVENT_ATTENDEES_TOOLBAR_CANCEL', true, true);
-		}
-		if ($state->get('filter_cancelled', 0) == 1) {
-			JToolBarHelper::custom('uncancelreg', 'redrestore', 'redrestore', 'COM_REDEVENT_ATTENDEES_TOOLBAR_RESTORE', true, true);
-			JToolBarHelper::deleteList(JText::_('COM_REDEVENT_ATTENDEES_DELETE_WARNING'));
-		}
-		JToolBarHelper::spacer();
-		JToolBarHelper::back();
-		JToolBarHelper::spacer();
-		if ($user->authorise('core.admin', 'com_redevent')) {
-			JToolBarHelper::preferences('com_redevent', '600', '800');
-		}
-
-		// Get data from the model
-		$rows      = $this->get( 'Data');
-		$pageNav   = $this->get( 'Pagination' );
-		$event     = $this->get( 'Event' );
-		$form      = $this->get( 'Form' );
-		$rf_fields = $this->get( 'RedFormFrontFields' );
-
-		$event->dates = RedeventHelper::isValidDate($event->dates) ? strftime($elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $event->dates )) : JText::_('COM_REDEVENT_OPEN_DATE');
-
-		//build filter selectlist
-		$datetimelocation = $this->get('DateTimeLocation');
-		$filters = array();
-		foreach ($datetimelocation as $key => $value)
-		{
-			/* Get the date */
-			if (RedeventHelper::isValidDate($value->dates))
-			{
-				$date = strftime( $elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $value->dates ));
-				$enddate 	= strftime( $elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $value->enddates ));
-				$displaydate = $date.' - '.$enddate;
-			}
-			else {
-				$displaydate = JText::_('COM_REDEVENT_OPEN_DATE');
-			}
-
-			/* Get the time */
-			if ($value->times)
-			{
-				$time = strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $value->times ));
-				$displaydate .= ' '. $time;
-				if ($value->endtimes) {
-					$endtimes = strftime( $elsettings->get('formattime', '%H:%M'), strtotime( $value->endtimes ));
-					$displaydate .= ' - '.$endtimes;
-				}
-			}
-			$filters[] = JHTML::_('select.option', $value->id, $value->venue.' '.$displaydate );
-		}
-		$lists['filter'] = JHTML::_('select.genericlist', $filters, 'xref', 'class="inputbox"', 'value', 'text', $event->xref );
-
-		// search filter
-		// $lists['search'] = $search;
-
-		// confirmed filter
-		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CONFIRMED_ALL')),
-		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CONFIRMED_CONFIRMED')),
-		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CONFIRMED_UNCONFIRMED')),
-		                 );
-		$lists['filter_confirmed'] =  JHTML::_('select.genericlist', $options, 'filter_confirmed', 'class="inputbox" onchange="this.form.submit();"', 'value', 'text', $state->get('filter_confirmed') );
-
-		// waiting list filter
-		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_ATTENDEES_FILTER_WAITING_ALL')),
-		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_ATTENDEES_FILTER_WAITING_ATTENDING')),
-		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_ATTENDEES_FILTER_WAITING_WAITING')),
-		                 );
-		$lists['filter_waiting'] =  JHTML::_('select.genericlist', $options, 'filter_waiting', 'class="inputbox" onchange="this.form.submit();"', 'value', 'text', $state->get('filter_waiting') );
-
-		// cancelled filter
-		$options = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CANCELLED_NOT_CANCELLED')),
-		                 JHTML::_('select.option', 1, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CANCELLED_CANCELLED')),
-		                 JHTML::_('select.option', 2, JText::_('COM_REDEVENT_ATTENDEES_FILTER_CANCELLED_ALL')),
-		                 );
-		$lists['filter_cancelled'] =  JHTML::_('select.genericlist', $options, 'filter_cancelled', 'class="inputbox" onchange="this.form.submit();"', 'value', 'text', $state->get('filter_cancelled') );
-
-		// table ordering
-		$lists['order_Dir'] = $filter_order_Dir;
-		$lists['order']		= $filter_order;
-
-		//assign to template
-		$this->assignRef('lists',     $lists);
-		$this->assignRef('rows',      $rows);
-		$this->assignRef('pageNav',   $pageNav);
-		$this->assignRef('event',     $event);
-		$this->assignRef('rf_fields', $rf_fields);
-		$this->assignRef('form',      $form);
-		$this->assignRef('user',      $user);
-		$this->assignRef('params',    $params);
-		$this->assignRef('cancelled', $state->get('filter_cancelled'));
-
-		parent::display($tpl);
+		return JHtml::_('rgrid.state', $states, $row->waitinglist, $i, 'attendees.', $this->canEdit, true);
 	}
 
 	/**

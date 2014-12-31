@@ -48,8 +48,8 @@ class RedeventModelRegistrations extends RModelList
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
-				'obj.id', 'obj.xref', 'obj.eventid',
-				'obj.confirmed', 'obj.waiting', 'obj.cancelled'
+				'r.id', 'r.xref', 'r.eventid', 'r.uregdate',
+				'r.confirmed', 'r.waiting', 'r.cancelled'
 			);
 		}
 
@@ -171,95 +171,46 @@ class RedeventModelRegistrations extends RModelList
 	}
 
 	/**
-	 * Delete registered users
-	 *
-	 * @access public
-	 * @return true on success
-	 * @since 2.5
-	 */
-	public function remove($cid = array())
-	{
-		if (!count($cid)) {
-			return true;
-		}
-		/**
-		 * track xrefs attendees are being cancelled from
-		 * @var array
-		 */
-		$xrefs = array();
-		foreach ($cid as $register_id)
-		{
-			$db = &$this->_db;
-			$query = $db->getQuery(true);
-
-			$query->select('e.redform_id,r.xref AS xref_id');
-			$query->from('#__redevent_register AS r');
-			$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = r.xref');
-			$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
-			$query->where('r.id = '.(int) $register_id);
-			$db->setQuery($query);
-			$res = $db->loadObject();
-			$xrefs[] = $res->xref_id;
-
-			$query = ' DELETE s, f, r '
-			. ' FROM #__redevent_register AS r '
-			. ' LEFT JOIN #__rwf_submitters AS s ON r.sid = s.id '
-			. ' LEFT JOIN #__rwf_forms_'.$res->redform_id .' AS f ON f.id = s.answer_id '
-			. ' WHERE r.id = '.$register_id
-			. '   AND r.cancelled = 1 ';
-			;
-			$this->_db->setQuery( $query );
-
-			if (!$this->_db->query()) {
-				RedeventError::raiseError( 1001, $this->_db->getErrorMsg() );
-				return false;
-			}
-		}
-		// now update waiting list for all updated sessions
-		foreach ($xrefs as $xref)
-		{
-			$model_wait = JModel::getInstance('waitinglist', 'RedeventModel');
-			$model_wait->setXrefId($xref);
-			if (!$model_wait->UpdateWaitingList()) {
-				$this->setError($model_wait->getError());
-				return false;
-			}
-		}
-		return true;
-	}
-
-	/**
 	 * toggle registrations on and off the wainting list
-	 * @param array $cid register_ids
-	 * @param boolean $on set true to put on waiting list, false to take off
+	 *
+	 * @param   array    $cid  register_ids
+	 * @param   boolean  $on   set true to put on waiting list, false to take off
+	 *
+	 * @return boolean
 	 */
 	public function togglewaiting($cid, $on)
 	{
-		if (!count($cid)) {
+		if (!count($cid))
+		{
 			return true;
 		}
-		// we need to group by xref
-		$db = &$this->_db;
+
+		// We need to group by xref
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('r.id AS rid, e.redform_id,r.xref AS xref_id');
 		$query->from('#__redevent_register AS r');
 		$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id = r.xref');
 		$query->join('INNER', '#__redevent_events AS e ON e.id = x.eventid');
-		$query->where('r.id IN ('.implode(',', $cid).')');
+		$query->where('r.id IN (' . implode(',', $cid) . ')');
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
 
-		// let's group
+		// Let's group
 		$xrefs = array();
-		foreach ($res as $r) {
+
+		foreach ($res as $r)
+		{
 			@$xrefs[$r->xref_id][] = $r->rid;
 		}
-		// let's do the thing
+
+		// Now call thje waiting list model per session
 		foreach ($xrefs as $xref => $rids)
 		{
-			$model = JModel::getInstance('waitinglist', 'RedeventModel');
+			$model = RModel::getAdminInstance('waitinglist');
 			$model->setXrefId($xref);
+
 			if ($on)
 			{
 				$res = $model->putOnWaitingList($rids);
@@ -268,11 +219,15 @@ class RedeventModelRegistrations extends RModelList
 			{
 				$res = $model->putOffWaitingList($rids);
 			}
-			if (!$res) {
+
+			if (!$res)
+			{
 				$this->setError($model->getError());
+
 				return false;
 			}
 		}
+
 		return true;
 	}
 }

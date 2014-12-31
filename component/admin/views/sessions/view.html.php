@@ -138,8 +138,9 @@ class RedeventViewSessions extends RedeventViewAdmin
 	/**
 	 * returns toggle image link for session feature
 	 *
-	 * @param object $row
-	 * @param int $i
+	 * @param   object  $row  item data
+	 * @param   int     $i    row number
+	 *
 	 * @return string html
 	 */
 	public function featured($row, $i)
