@@ -156,7 +156,8 @@ echo RLayoutHelper::render(
 				<td>
 					<?php echo $this->confirmed($row, $i); ?>
 				</td>
-				<td>zsd
+				<td>
+					<?php echo $this->waitingStatus($row, $i); ?>
 				</td>
 
 				<td>

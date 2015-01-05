@@ -474,19 +474,9 @@ class RedeventControllerAttendees extends RControllerAdmin
 		return $link;
 	}
 
- 	function email()
- 	{
-		$task = JRequest::getVar('task');
-
-		if ($task == 'email') {
-			$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
-		}
-		else {
-			$cid = null;
-		}
-		$xref 	= JRequest::getInt('xref');
-
-		JRequest::setVar('view', 'emailattendees');
+	public function email()
+	{
+		JFactory::getApplication()->input->set('view', 'emailattendees');
 
 		parent::display();
  	}

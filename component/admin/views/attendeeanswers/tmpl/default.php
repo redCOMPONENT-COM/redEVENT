@@ -12,7 +12,13 @@ defined('_JEXEC') or die('Restricted access');
 	<?php foreach ($this->data->getFields() as $field): ?>
 		<tr>
 			<th class="key"><?php echo $field->name; ?></th>
-			<td valign="top"><?php echo $field->value; ?></td>
+			<td valign="top">
+				<?php if (is_array($field->value)): ?>
+					<?php echo implode('<br>', $field->value); ?>
+				<?php else: ?>
+					<?php echo $field->getValueAsString(); ?>
+				<?php endif; ?>
+			</td>
 		</tr>
 	<?php endforeach; ?>
 	</tbody>

@@ -74,10 +74,10 @@ class RedeventViewAttendees extends RedeventViewAdmin
 		if ($user->authorise('core.edit', 'com_redevent'))
 		{
 			$firstGroup->addButton(
-				RToolbarBuilder::createStandardButton('attendees.emailall', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_ALL', 'send', 'icon-email')
+				RToolbarBuilder::createStandardButton('emailattendees.emailall', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_ALL', 'send', 'icon-email', false)
 			);
 			$firstGroup->addButton(
-				RToolbarBuilder::createStandardButton('attendees.email', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_SELECTED', 'send', 'icon-email')
+				RToolbarBuilder::createStandardButton('emailattendees.email', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_SELECTED', 'send', 'icon-email')
 			);
 
 			$secondGroup->addButton(
