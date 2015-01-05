@@ -174,8 +174,6 @@ class RedeventRecurrenceHelper
 	{
 		$db = JFactory::getDBO();
 
-		$nulldate = '0000-00-00';
-
 		// generate until limit
 		$params = $this->params;
 		$limit = $params->get('recurrence_limit', 30);
@@ -237,7 +235,7 @@ class RedeventRecurrenceHelper
 				}
 
 				//record xref
-				$object = RTable::getInstance('Session', 'RedeventTable');
+				$object = RTable::getAdminInstance('Session');
 				$object->bind(get_object_vars($next));
 
 				if ($object->store())
