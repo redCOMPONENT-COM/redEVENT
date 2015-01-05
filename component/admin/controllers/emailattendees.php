@@ -15,6 +15,11 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventControllerEmailattendees extends JControllerLegacy
 {
+	/**
+	 * Constructor
+	 *
+	 * @param   array  $config  config
+	 */
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
@@ -22,6 +27,11 @@ class RedeventControllerEmailattendees extends JControllerLegacy
 		$this->registerTask('emailall', 'email');
 	}
 
+	/**
+	 * Display email form
+	 *
+	 * @return void
+	 */
 	public function email()
 	{
 		$this->input->set('view', 'emailattendees');
@@ -29,8 +39,42 @@ class RedeventControllerEmailattendees extends JControllerLegacy
 		parent::display();
 	}
 
+	/**
+	 * Send email
+	 *
+	 * @return void
+	 */
 	public function send()
 	{
-		echo '<pre>'; echo print_r('send', true); echo '</pre>'; exit;
+		$subject = $this->input->get('subject', '', 'string');
+		$from = $this->input->get('from', '', 'string');
+		$fromname = $this->input->get('fromname', '', 'string');
+		$replyto  = $this->input->get('replyto', '', 'string');
+		$body = $this->input->get('body', '', 'raw');
+
+		$model = $this->getModel('Emailattendees');
+
+		if ($model->send($subject, $body, $from, $fromname, $replyto))
+		{
+			$this->setMessage(JText::_('COM_REDEVENT_EMAIL_ATTENDEES_SENT'));
+		}
+		else
+		{
+			$this->setMessage($model->getError(), 'error');
+		}
+
+		$this->setRedirect('index.php?option=com_redevent&view=attendees');
+	}
+
+	/**
+	 * Cancel sending
+	 *
+	 * @return void
+	 */
+	public function cancel()
+	{
+		$filters = $this->input->get('filter', array(), 'array');
+
+		$this->setRedirect( 'index.php?option=com_redevent&view=attendees&sessionId=' . $filters['session']);
 	}
 }

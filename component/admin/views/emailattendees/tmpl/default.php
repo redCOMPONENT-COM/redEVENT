@@ -24,36 +24,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.formvalidation');
+JHTML::_('behavior.tooltip');
 $app = JFactory::getApplication();
 ?>
-<script language="javascript" type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-
-	if (pressbutton == 'cancelemail') {
-		submitform( pressbutton );
-		return;
-	}
-
-	if (document.formvalidator.isValid(form)) {
-		<?php echo $this->editor->save( 'body' ); ?>
-		submitform( pressbutton );
-	  return true;
-	}
-	else {
-	  var msg = "<?php echo JText::_('COM_REDEVENT_EMAIL_ATTENDEES_VAILDATION_FAILED'); ?>";
-
-	  //Example on how to test specific fields
-	   if($('subject').hasClass('invalid')){msg += '\n\n\t* <?php echo JText::_('COM_REDEVENT_EMAIL_ATTENDEES_SUBJECT_REQUIRED'); ?>';}
-
-	   alert(msg);
-	 }
-	 return false;
-
-}
-</script>
-
 <h2><?php echo $this->session->title. '@'. $this->session->venue. ' ' . (RedeventHelper::isValidDate($this->session->dates) ? strftime($this->settings->get('formatdate', '%d.%m.%Y'), strtotime($this->session->dates)) : ''); ?></h2>
 <form action="index.php" method="post" name="adminForm" id="adminForm" class="form-validate form-horizontal" >
 
@@ -72,22 +45,22 @@ function submitbutton(pressbutton)
 		</div>
 		<div class="control-group">
 			<div class="control-label">
-				<label>
+				<label for="from">
 					<?php echo JText::_( 'COM_REDEVENT_EMAIL_ATTENDEES_FROM' ).':'; ?>
 				</label>
 			</div>
 			<div class="controls">
-					<input name="from" id="from" value="<?php echo $app->getCfg('mailfrom'); ?>" class="validate-email" size="50" maxlength="100" />
+					<input name="from" id="from" value="<?php echo $app->getCfg('mailfrom'); ?>" class="validate-email required" size="50" maxlength="100" />
 			</div>
 		</div>
 		<div class="control-group">
 			<div class="control-label">
-				<label>
+				<label for="fromname">
 					<?php echo JText::_( 'COM_REDEVENT_EMAIL_ATTENDEES_FROMNAME' ).':'; ?>
 				</label>
 			</div>
 			<div class="controls">
-				<input name="fromname" id="fromname" value="<?php echo $app->getCfg('sitename'); ?>" size="50" maxlength="100" />
+				<input name="fromname" id="fromname" value="<?php echo $app->getCfg('sitename'); ?>" size="50" maxlength="100" class="required"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -112,12 +85,15 @@ function submitbutton(pressbutton)
 		</div>
 	</div>
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 	<?php foreach ($this->state->get('cids') as $cid) :?>
 	<input type="hidden" name="cid[]" value="<?php echo $cid; ?>"/>
 	<?php endforeach; ?>
 	<input type="hidden" name="option" value="com_redevent" />
-	<input type="hidden" name="sessionId" value="<?php echo $this->state->get('sessionId'); ?>" />
-	<input type="hidden" name="view" value="attendees" />
+	<input type="hidden" name="filter[session]" value="<?php echo $this->state->get('sessionId'); ?>" />
+	<input type="hidden" name="filter[confirmed]" value="<?php echo $this->state->get('confirmed'); ?>" />
+	<input type="hidden" name="filter[cancelled]" value="<?php echo $this->state->get('cancelled'); ?>" />
+	<input type="hidden" name="filter[waiting]" value="<?php echo $this->state->get('waiting'); ?>" />
+	<input type="hidden" name="view" value="emailattendees" />
 	<input type="hidden" name="task" value="" />
 </form>

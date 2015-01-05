@@ -129,4 +129,64 @@ class RedeventModelEmailattendees extends RModel
 
 		return $db->loadColumn();
 	}
+
+	/**
+	 * send mail to selected attendees
+	 *
+	 * @param   string  $subject   subject
+	 * @param   string  $body      body
+	 * @param   string  $from      from email
+	 * @param   string  $fromname  from name
+	 * @param   string  $replyto   reply to email
+	 *
+	 * @return boolean
+	 */
+	public function send($subject, $body, $from = null, $fromname = null, $replyto = null)
+	{
+		$app = JFactory::getApplication();
+		$emails = $this->getEmails();
+
+		$taghelper = new RedeventTags;
+		$taghelper->setXref($this->getState('sessionId'));
+		$subject = $taghelper->ReplaceTags($subject);
+		$body    = $taghelper->ReplaceTags($body);
+
+		$mailer = JFactory::getMailer();
+		$mailer->setSubject($subject);
+		$mailer->MsgHTML('<html><body>' . $body . '</body></html>');
+
+		if (!empty($from) && JMailHelper::isEmailAddress($from))
+		{
+			$fromname = !empty($fromname) ? $fromname : $app->getCfg('sitename');
+			$mailer->setSender(array($from, $fromname));
+		}
+
+		if (!empty($replyto) && JMailHelper::isEmailAddress($replyto))
+		{
+			$mailer->addReplyTo($replyto);
+		}
+
+		foreach ($emails as $e)
+		{
+			$mailer->clearAllRecipients();
+
+			if (isset($e['fullname']))
+			{
+				$mailer->addAddress($e['email'], $e['fullname']);
+			}
+			else
+			{
+				$mailer->addAddress($e['email']);
+			}
+
+			if (!$mailer->send())
+			{
+				$this->setError(JText::sprintf('COM_REDEVENT_EMAIL_ATTENDEES_ERROR_SENDING_EMAIL_TO'), $e['email']);
+
+				return false;
+			}
+		}
+
+		return true;
+	}
 }

@@ -50,10 +50,10 @@ class RedeventViewEmailattendees extends RedeventViewAdmin
 		$firstGroup		= new RToolbarButtonGroup;
 
 		$firstGroup->addButton(
-			RToolbarBuilder::createStandardButton('emailattendees.send', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_SEND', 'send', 'icon-email')
+			RToolbarBuilder::createStandardButton('emailattendees.send', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_SEND', 'btn-success', 'icon-envelop', false)
 		);
 		$firstGroup->addButton(
-			RToolbarBuilder::createStandardButton('emailattendees.cancel', 'JCANCEL', 'cancel', 'icon-cancel')
+			RToolbarBuilder::createStandardButton('emailattendees.cancel', 'JCANCEL', 'btn-danger', 'icon-remove', false)
 		);
 
 		$toolbar = new RToolbar;

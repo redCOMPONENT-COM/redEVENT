@@ -105,13 +105,6 @@ class RedeventControllerAttendees extends RControllerAdmin
 		$this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='.$dest, $msg );
 	}
 
-	function selectXref()
-	{
-		JRequest::setVar('view', 'xrefelement');
-		JRequest::setVar('form_id', JRequest::getVar('form_id'));
-		parent::display();
-	}
-
 	/**
 	 * confirm an attendee registration
 	 *
@@ -473,53 +466,4 @@ class RedeventControllerAttendees extends RControllerAdmin
 
 		return $link;
 	}
-
-	public function email()
-	{
-		JFactory::getApplication()->input->set('view', 'emailattendees');
-
-		parent::display();
- 	}
-
- 	function sendemail()
- 	{
-		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
-		$xref = JRequest::getVar('xref', 0, '', 'int') or die( 'Missing xref' );
-		$task		= JRequest::getVar('task');
-
-		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
-		JArrayHelper::toInteger($cid);
-
-		$subject  = JRequest::getVar('subject', '', 'post', 'string');
-		$from     = JRequest::getVar('from', '', 'post', 'string');
-		$fromname = JRequest::getVar('fromname', '', 'post', 'string');
-		$replyto  = JRequest::getVar('replyto', '', 'post', 'string');
-		$body     = JRequest::getVar('body', '', 'post', 'string',  JREQUEST_ALLOWRAW );
-
-		$model = $this->getModel('attendees');
-		$model->setXref($xref);
-
-		$msg = '';
-		$mtype= 'message';
-
-		if ($model->sendMail($cid, $subject, $body, $from, $fromname, $replyto))
-		{
-			$msg = JText::_('COM_REDEVENT_EMAIL_ATTENDEES_SENT');
-		}
-		else
-		{
-			$msg = $model->getError();
-			$mtype = 'error';
-		}
-
-		$this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='. $xref, $msg, $mtype );
-		$this->redirect();
- 	}
-
- 	function cancelemail()
- 	{
-		$xref = JRequest::getVar('xref', 0, '', 'int') or die( 'Missing xref' );
-		$this->setRedirect( 'index.php?option=com_redevent&view=attendees&xref='. $xref );
- 	}
 }
