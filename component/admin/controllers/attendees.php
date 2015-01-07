@@ -389,67 +389,6 @@ class RedeventControllerAttendees extends RControllerAdmin
 		$mainframe->close();
 	}
 
-	/**
-	 * logic to save an attendee
-	 *
-	 * @access public
-	 * @return void
-	 * @since 0.9
-	 */
-	function save()
-	{
-		$app = JFactory::getApplication();
-
-		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
-		$xref = $app->input->getInt('xref', 0) or die( 'Missing xref' );
-		$task = $app->input->getCmd('task');
-
-		$post 	= JRequest::get( 'post' );
-
-		$model = $this->getModel('attendee');
-
-		$msg = '';
-		$mtype= 'message';
-
-		if ($returnid = $model->store($post))
-		{
-			$model_wait = $this->getModel('Waitinglist');
-			$model_wait->setXrefId($xref);
-			$model_wait->UpdateWaitingList();
-
-			$cache = JFactory::getCache('com_redevent');
-			$cache->clean();
-
-			JPluginHelper::importPlugin('redevent');
-			$dispatcher = JDispatcher::getInstance();
-			$res = $dispatcher->trigger('onAttendeeModified', array($returnid));
-
-			switch ($task)
-			{
-				case 'apply' :
-					$link = 'index.php?option=com_redevent&controller=attendees&view=attendee&xref=' . $xref . '&hidemainmenu=1&cid[]=' . $returnid;
-					break;
-
-				default :
-					$link = $this->getRedirectToList();
-			}
-
-			$msg	= JText::_('COM_REDEVENT_REGISTRATION_SAVED');
-
-		}
-		else
-		{
-			$link = $this->getRedirectToList();
-			$msg	= $model->getError();
-			$mtype= 'error';
-		}
-
-		$model->checkin();
-
-		$this->setRedirect( $link, $msg, $mtype );
- 	}
-
 	protected function getRedirectToList()
 	{
 		$app = JFactory::getApplication();

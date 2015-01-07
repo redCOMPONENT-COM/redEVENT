@@ -393,6 +393,13 @@ class RedeventModelAttendees extends RModelList
 		return true;
 	}
 
+	/**
+	 * Delete attendees
+	 *
+	 * @param   mixed  $pks  ids to delete
+	 *
+	 * @return bool
+	 */
 	public function delete($pks = null)
 	{
 		$sessionIds = $this->getAttendeesSessionIds($pks);
@@ -414,6 +421,13 @@ class RedeventModelAttendees extends RModelList
 		return parent::delete($pks);
 	}
 
+	/**
+	 * Get attendees sessions ids
+	 *
+	 * @param   mixed  $pks  ids
+	 *
+	 * @return mixed
+	 */
 	private function getAttendeesSessionIds($pks)
 	{
 		// Sanitize input.
@@ -425,7 +439,7 @@ class RedeventModelAttendees extends RModelList
 
 		$query->select('DISTINCT xref');
 		$query->from('#__redevent_register');
-		$query->where('id IN (' . $pk .  ')');
+		$query->where('id IN (' . $pk . ')');
 
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadColumn();
@@ -553,101 +567,5 @@ class RedeventModelAttendees extends RModelList
 		$rfcore = RdfCore::getInstance();
 
 		return $rfcore->getFields($this->getSession()->redform_id);
-	}
-
-	function getEmails($cids = null)
-	{
-		$where = array( 'r.xref = ' . $this->_xref);
-		if (is_array($cids) && !empty($cids)) {
-			$where[] = ' r.id IN ('.implode(',', $cids).')';
-		}
-		else {
-			$where[] = ' r.confirmed = 1 ';
-		}
-
-		// need to get sids for redform core
-		$query = ' SELECT r.sid '
-						. ' FROM #__redevent_register AS r '
-						. ' INNER JOIN #__rwf_submitters AS s ON s.id = r.sid '
-            . ' WHERE '.implode(' AND ', $where)
-						;
-		$this->_db->setQuery($query);
-		$sids = $this->_db->loadResultArray();
-
-		if (empty($sids))
-		{
-			return false;
-		}
-
-		$rfcore = RdfCore::getInstance();
-		$submissionemails = $rfcore->getSubmissionContactEmails($sids);
-
-		$emails = array();
-
-		foreach ($submissionemails as $sub)
-		{
-			foreach ($sub as $e)
-			{
-				if (!isset($emails[$e['email']]))
-				{
-					$emails[$e['email']] = $e;
-				}
-			}
-		}
-
-		return $emails;
-	}
-
-	/**
-	 * send mail to selected attendees
-	 *
-	 * @param array $cid attendee ids
-	 * @param string $subject
-	 * @param string $body
-	 * @param string $from
-	 * @param string $fromname
-	 * @param string $replyto
-	 * @return boolean
-	 */
-	function sendMail($cid, $subject, $body, $from = null, $fromname = null, $replyto = null)
-	{
-		$app = &JFactory::getApplication();
-		$emails = $this->getEmails($cid);
-
-		$taghelper = new RedeventTags();
-		$taghelper->setXref($this->_xref);
-  	$subject = $taghelper->ReplaceTags($subject);
-  	$body    = $taghelper->ReplaceTags($body);
-
-  	$mailer = & JFactory::getMailer();
-  	$mailer->setSubject($subject);
-  	$mailer->MsgHTML('<html><body>'.$body.'</body></html>');
-
-
-  	if (!empty($from) && JMailHelper::isEmailAddress($from))
-  	{
-  		$fromname = !empty($fromname) ? $fromname : $app->getCfg('sitename');
-  		$mailer->setSender(array($from, $fromname));
-  	}
-
-  	$res = true;
-
-  	foreach ($emails as $e)
-  	{
-			$mailer->clearAllRecipients();
-			if (isset($e['fullname'])) {
-				$mailer->addAddress( $e['email'], $e['fullname'] );
-			}
-			else {
-				$mailer->addAddress( $e['email'] );
-			}
-
-	  	if (!$mailer->send())
-	  	{
-	  		JError::raiseWarning(JText::sprintf('COM_REDEVENT_EMAIL_ATTENDEES_ERROR_SENDING_EMAIL_TO'), $e['email']);
-	  		$res = false;
-	  	}
-  	}
-  	return true;
 	}
 }

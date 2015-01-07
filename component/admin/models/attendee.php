@@ -22,42 +22,89 @@ class RedeventModelAttendee extends RModelAdmin
 	 */
 	protected $pricegroups = null;
 
+	private $data;
+
+	private $sessionId;
+
+	private $id;
+
+	public function __construct($config = array())
+	{
+		parent::__construct($config);
+
+		if ($this->id = JFactory::getApplication()->input->getInt('id', 0))
+		{
+			$this->getSessionId();
+		}
+		elseif ($sessionId = JFactory::getApplication()->input->getInt('filter[session]', 0))
+		{
+			$this->setSessionId($sessionId);
+		}
+	}
+
+	public function setSessionId($id)
+	{
+		$this->sessionId = (int) $id;
+	}
+
+	public function getSessionId()
+	{
+		if ((!$this->sessionId) && $this->id)
+		{
+			$attendee = $this->getData();
+
+			$this->sessionId = $attendee->xref;
+		}
+
+		return $this->sessionId;
+	}
+
+	public function getSession()
+	{
+		$model = RModel::getAdminInstance('Session', array('ignore_request' => true));
+		$session = $model->getItem($this->getSessionId());
+
+		return $session;
+	}
+
 	/**
 	 * Logic for the Group edit screen
 	 *
 	 */
-	public function &getData()
+	public function getData()
 	{
-
-		if ($this->_loadData())
+		if (!$this->loadData())
 		{
-
+			$this->initData();
 		}
-		else  $this->_initData();
 
-		//$this->_loadData();
-		return $this->_data;
+		return $this->data;
 	}
 
-	function _initData()
+	private function initData()
 	{
-		$obj = & JTable::getInstance('redevent_register', '');
+		$obj = RTable::getAdminInstance('Attendee');
 
-	  // get form id and answer id
-		$query = ' SELECT a.redform_id as form_id, a.course_code, x.id as xref '
-		       . ' FROM #__redevent_event_venue_xref AS x '
-		       . ' INNER JOIN #__redevent_events AS a ON a.id =  x.eventid '
-		       . ' WHERE x.id = '.$this->_xref
-				;
+		// Get form id and answer id
+		$query = $this->_db->getQuery(true);
+
+		$query->select('a.redform_id as form_id, a.course_code, x.id as xref')
+			->from('#__redevent_event_venue_xref AS x')
+			->join('INNER', '#__redevent_events AS a ON a.id =  x.eventid')
+			->join('LEFT', '#__')
+			->where('x.id = ' . $this->sessionId);
+
 		$this->_db->setQuery($query);
 		$ac = $this->_db->loadObject();
-		$obj->form_id      = $ac->form_id;
-		$obj->course_code  = $ac->course_code;
-		$obj->xref         = $this->_xref;
+
+		$obj->form_id = $ac->form_id;
+		$obj->course_code = $ac->course_code;
+		$obj->xref = $this->sessionId;
 		$obj->answers = null;
 
-		$this->_data = $obj;
-    return true;
+		$this->data = $obj;
+
+		return true;
 	}
 
 	/**
@@ -65,15 +112,15 @@ class RedeventModelAttendee extends RModelAdmin
 	 *
 	 * @return boolean True on success
 	 */
-	protected function _loadData()
+	private function loadData()
 	{
 		// Lets load the content if it doesn't already exist
-		if (!$this->_id)
+		if (!$this->id)
 		{
 			return false;
 		}
 
-		if (empty($this->_data))
+		if (empty($this->data))
 		{
 			// Get form id and answer id
 			$db = $this->_db;
@@ -85,17 +132,17 @@ class RedeventModelAttendee extends RModelAdmin
 			$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id =  r.xref');
 			$query->join('INNER', '#__redevent_events AS a ON a.id =  x.eventid');
 			$query->join('LEFT', '#__redevent_sessions_pricegroups AS sp ON sp.id =  r.sessionpricegroup_id');
-			$query->where('r.id = ' . $this->_id);
+			$query->where('r.id = ' . $this->id);
 
 			$db->setQuery($query);
-			$this->_data = $db->loadObject();
+			$this->data = $db->loadObject();
 
-			if (!$this->_data)
+			if (!$this->data)
 			{
 				echo $this->_db->getErrorMsg();
 			}
 
-			return (boolean) $this->_data;
+			return (boolean) $this->data;
 		}
 
 		return true;
@@ -110,7 +157,7 @@ class RedeventModelAttendee extends RModelAdmin
 	 */
 	public function store($data)
 	{
-		$xref = intval($data['xref']);
+		$xref = $data['xref'];
 
 		if (isset($data['sessionpricegroup_id']))
 		{
@@ -121,7 +168,7 @@ class RedeventModelAttendee extends RModelAdmin
 			$pricegroup = 0;
 		}
 
-		$id = JRequest::getInt('id');
+		$id = $data['id'];
 
 		// Get price and activate
 		$db = $this->_db;
@@ -200,7 +247,7 @@ class RedeventModelAttendee extends RModelAdmin
 			$query->join('INNER', '#__redevent_event_venue_xref AS x on x.id = sp.xref');
 			$query->join('INNER', '#__redevent_events AS e on e.id = x.eventid');
 			$query->join('LEFT', '#__rwf_forms AS f on e.redform_id = f.id');
-			$query->where('sp.xref = ' . $db->Quote($this->_xref));
+			$query->where('sp.xref = ' . $db->Quote($this->sessionId));
 			$query->order('p.ordering ASC');
 
 			$db->setQuery($query);
