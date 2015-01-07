@@ -81,10 +81,10 @@ class RedeventViewAttendees extends RedeventViewAdmin
 			);
 
 			$secondGroup->addButton(
-				RToolbarBuilder::createNewButton('attendees.new')
+				RToolbarBuilder::createNewButton('attendee.add')
 			);
 			$secondGroup->addButton(
-				RToolbarBuilder::createEditButton('attendees.edit')
+				RToolbarBuilder::createEditButton('attendee.edit')
 			);
 			$secondGroup->addButton(
 				RToolbarBuilder::createStandardButton('attendees.move', 'COM_REDEVENT_ATTENDEES_TOOLBAR_MOVE', '', 'icon-move')

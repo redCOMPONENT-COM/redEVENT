@@ -40,6 +40,10 @@ class RedeventModelAttendee extends RModelAdmin
 		{
 			$this->setSessionId($sessionId);
 		}
+		elseif ($sessionId = JFactory::getApplication()->input->getInt('sessionId', 0))
+		{
+			$this->setSessionId($sessionId);
+		}
 	}
 
 	public function setSessionId($id)
@@ -91,7 +95,6 @@ class RedeventModelAttendee extends RModelAdmin
 		$query->select('a.redform_id as form_id, a.course_code, x.id as xref')
 			->from('#__redevent_event_venue_xref AS x')
 			->join('INNER', '#__redevent_events AS a ON a.id =  x.eventid')
-			->join('LEFT', '#__')
 			->where('x.id = ' . $this->sessionId);
 
 		$this->_db->setQuery($query);
@@ -100,6 +103,7 @@ class RedeventModelAttendee extends RModelAdmin
 		$obj->form_id = $ac->form_id;
 		$obj->course_code = $ac->course_code;
 		$obj->xref = $this->sessionId;
+		$obj->currency = null;
 		$obj->answers = null;
 
 		$this->data = $obj;
