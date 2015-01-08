@@ -70,10 +70,10 @@ foreach ($this->rows as $row)
 
 		//attach category color if any in front of the catname
 		if ($category->color) {
-			$cat_names[] = '<span class="colorpic" style="background-color: '.$category->color.';"></span>'.$category->catname;
+			$cat_names[] = '<span class="colorpic" style="background-color: '.$category->color.';"></span>'.$category->name;
 		}
 		else {
-			$cat_names[] = $category->catname;
+			$cat_names[] = $category->name;
 		}
 
 		//attach category color if any in front of the event title in the calendar overview
@@ -199,7 +199,7 @@ foreach ($this->rows as $row)
         				if ( isset ($cat->color) && $cat->color) :
             				echo '<span class="colorpic" style="background-color: '.$cat->color.';"></span>';
         				endif;
-        				echo $cat->catname.' ('.$countcatevents[$cat->id].')';
+        				echo $cat->name.' ('.$countcatevents[$cat->id].')';
         				?>
     				</div>
     			<?php

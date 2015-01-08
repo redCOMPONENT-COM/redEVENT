@@ -492,7 +492,7 @@ class RedeventModelEditevent extends JModel
     $options = array();
     foreach((array) $results as $cat)
     {
-      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->catname . ($cat->language ? '(' . $cat->language . ')' : ''));
+      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->name . ($cat->language ? '(' . $cat->language . ')' : ''));
     }
 
     $this->_categories = $options;

@@ -151,7 +151,7 @@ $colnames = array_map('trim', $colnames);
 				  <?php $cats = array();
 					      foreach ($row->categories as $cat)
 					      {
-					      	$cats[] = $this->escape($cat->catname);
+					      	$cats[] = $this->escape($cat->name);
 					      }
 					      echo implode("<br/>", $cats);
 					?>

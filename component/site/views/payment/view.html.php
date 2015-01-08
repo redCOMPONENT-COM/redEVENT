@@ -162,7 +162,7 @@ class RedeventViewPayment extends JView
 			$cats = array();
 			foreach ($details->categories as $c)
 			{
-				$cats[] = $c->catname;
+				$cats[] = $c->name;
 			}
 			$options['category'] = implode(', ', $cats);
 

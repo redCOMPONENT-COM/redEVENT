@@ -32,7 +32,7 @@ jimport('joomla.application.component.model');
  * @subpackage  redevent
  * @since       0.9
  */
-class RedeventModelCalendar extends JModel
+class RedeventModelCalendar extends RModel
 {
 	/**
 	 * Events data array

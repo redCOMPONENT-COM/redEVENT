@@ -576,7 +576,7 @@ class RedeventController extends JControllerLegacy
 		$v = new vCal();
 
 		$v->setTimeZone($user_offset);
-		$v->setSummary($row->venue.'-'.$row->catname.'-'.RedeventHelper::getSessionFullTitle($row));
+		$v->setSummary($row->venue.'-'.$row->name.'-'.RedeventHelper::getSessionFullTitle($row));
 		$v->setDescription($row->datdescription);
 		$v->setStartDate($Start);
 		$v->setEndDate($End);

@@ -40,7 +40,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php if ($this->params->def( 'show_page_title', 1 )) : ?>
 
     <h1 class='componentheading'>
-		<?php echo $this->task == 'archive' ? $this->escape($this->category->catname.' - '.JText::_('COM_REDEVENT_ARCHIVE')) : $this->escape($this->category->catname); ?>
+		<?php echo $this->task == 'archive' ? $this->escape($this->category->name.' - '.JText::_('COM_REDEVENT_ARCHIVE')) : $this->escape($this->category->name); ?>
 	</h1>
 
 <?php endif; ?>
@@ -49,9 +49,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php if (!empty($this->category->image) || $this->params->get('use_default_picture', 1)): ?>
 <div class="catimg">
 	<?php if ($this->category->image): ?>
-	<?php echo RedeventImage::modalimage($this->category->image, $this->category->catname); ?>
+	<?php echo RedeventImage::modalimage($this->category->image, $this->category->name); ?>
 	<?php else: ?>
-	<?php echo JHTML::image('components/com_redevent/assets/images/noimage.png', $this->category->catname); ?>
+	<?php echo JHTML::image('components/com_redevent/assets/images/noimage.png', $this->category->name); ?>
 	<?php endif; ?>
 </div>
 <?php endif; ?>

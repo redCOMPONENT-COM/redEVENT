@@ -41,14 +41,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <div class="floattext">
 	<h2 class="eventlist cat<?php echo $row->id; ?>">
-		<?php echo $this->escape($row->catname); ?>
+		<?php echo $this->escape($row->name); ?>
 	</h2>
 
 	<?php if (!empty($row->image) || $this->params->get('use_default_picture', 1)):?>
 	<div class="catimg">
 	  	<?php	if (!empty($row->image)): ?>
 	  	<span>
-	  	<?php $img = JHTML::image(RedeventImage::getThumbUrl($row->image), $row->catname);
+	  	<?php $img = JHTML::image(RedeventImage::getThumbUrl($row->image), $row->name);
 				echo JHTML::_('link', JRoute::_($row->linktarget), $img); ?>
 			</span>
 			<?php endif; ?>
@@ -59,7 +59,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	</div>
 	<?php endif; ?>
 
-	<div class="catdescription cat<?php echo $row->id; ?>"><?php echo $row->catdescription ; ?>
+	<div class="catdescription cat<?php echo $row->id; ?>"><?php echo $row->description ; ?>
 	<p>
 		<?php
 			echo JHTML::_('link', JRoute::_($row->linktarget), $row->linktext);

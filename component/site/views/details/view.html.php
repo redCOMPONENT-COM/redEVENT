@@ -304,7 +304,7 @@ class RedeventViewDetails extends JViewLegacy
 
 			case "catsid":
 				// TODO: fix for multiple cats
-				//$content = $row->catname;
+				//$content = $row->name;
 				$content = '';
 				break;
 

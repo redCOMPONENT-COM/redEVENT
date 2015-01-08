@@ -35,7 +35,7 @@ require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'calendar.class.php');
  * @subpackage redEVENT
  * @since 1.1
  */
-class RedeventViewCalendar extends JView
+class RedeventViewCalendar extends RViewSite
 {
     /**
      * Creates the Calendar View

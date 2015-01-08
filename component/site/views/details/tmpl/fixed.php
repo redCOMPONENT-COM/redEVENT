@@ -107,7 +107,7 @@ if ($this->row->venueid != 0) {
     			<?php
 				$i = 0;
     			foreach ($this->row->categories as $category) :
-    				echo JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($category->slug), $this->escape($category->catname));
+    				echo JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($category->slug), $this->escape($category->name));
 						$i++;
 						if ($i != $n) :
 							echo ',';

@@ -429,14 +429,14 @@ class RedeventImage
 	 */
 	public static function getCategoryImage($category, $modal = true, $attribs = null)
 	{
-		$image_attribs = array('title' => $category->catname);
+		$image_attribs = array('title' => $category->name);
 
 		if ($attribs && is_array($attribs)) {
 			$image_attribs = array_merge( $image_attribs, $attribs);
 		}
 		if ($category->image) {
-		  return self::modalimage($category->image, $category->catname, null, $image_attribs);
+		  return self::modalimage($category->image, $category->name, null, $image_attribs);
 		}
-		else return $category->catname;
+		else return $category->name;
 	}
 }
