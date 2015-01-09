@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 2.0
 */
-class RedeventViewSearch extends JView
+class RedeventViewSearch extends RViewSite
 {
 	/**
 	 * Creates the search View
@@ -58,7 +58,7 @@ class RedeventViewSearch extends JView
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
 		// add javascript
-		JHTML::_('behavior.mootools');
+		JHTML::_('behavior.framework');
 		$document->addScript( $this->baseurl.'/components/com_redevent/assets/js/search.js' );
 
 		// get variables

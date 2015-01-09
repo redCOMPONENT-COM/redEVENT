@@ -23,7 +23,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 $row = & $this->row;
 
-JHTML::_('behavior.mootools');
+JHTML::_('behavior.framework');
 ?>
 <script type="text/javascript">
 var basepath = "<?php echo JURI::root(); ?>";

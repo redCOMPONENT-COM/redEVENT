@@ -32,7 +32,7 @@ jimport('joomla.application.component.view');
  * @subpackage  redevent
  * @since       2.0
 */
-class RedeventViewMyevents extends JView
+class RedeventViewMyevents extends RViewSite
 {
 	/**
 	 * Creates the MyItems View

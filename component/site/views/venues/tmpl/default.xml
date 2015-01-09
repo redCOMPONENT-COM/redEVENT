@@ -5,10 +5,10 @@
 			<![CDATA[COM_REDEVENT_VENUES_LAYOUT_DESC]]>
 		</message>
 	</layout>
-	
-	<fields name="params" addfieldpath="/administrator/components/com_redevent/models/fields">
+
+	<fields name="params" addfieldpath="/libraries/redevent/form/fields">
    	<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
-      <field name="categoryid" type="revenuecategory" default="0" reset="true" label="COM_REDEVENT_SELECT_VENUE_CATEGORY" description="COM_REDEVENT_SELECT_VENUE_CATEGORY_DESC" />
+      <field name="categoryid" type="revenuecategorylist" label="COM_REDEVENT_SELECT_VENUE_CATEGORY" description="COM_REDEVENT_SELECT_VENUE_CATEGORY_DESC"/>
 			<field name="display_venues_num" type="text" size="2" default="5" label="COM_REDEVENT_VENUE_NUMBER" description="COM_REDEVENT_VENUE_NUMBER_TIP" />
       <field name="display_all_venues" type="radio" default="1" label="COM_REDEVENT_DISPLAY_ALL_VENUES" description="COM_REDEVENT_DISPLAY_ALL_VENUES_TIP">
         <option value="0">No</option>

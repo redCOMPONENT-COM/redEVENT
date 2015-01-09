@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedeventViewEditvenue extends JView
+class RedeventViewEditvenue extends RViewSite
 {
 	/**
 	 * Creates the output for venue submissions
@@ -69,7 +69,7 @@ class RedeventViewEditvenue extends JView
 
 		JHTML::_('behavior.formvalidation');
 		JHTML::_('behavior.tooltip');
-		JHTML::_('behavior.mootools');
+		JHTML::_('behavior.framework');
 
 		//add css file
     if (!$params->get('custom_css')) {

@@ -1167,7 +1167,7 @@ class RedeventHelper
 		$db = &JFactory::getDBO();
 		$user = &JFactory::getUser($selected);
 
-		JHTML::_('behavior.mootools');
+		JHTML::_('behavior.framework');
 		$document->addScript(JURI::base().'components/com_redevent/assets/js/selectuser.js');
 		//		echo '<pre>';print_r(JURI::base().'components/com_redevent/assets/selectuser.js'); echo '</pre>';exit;
 

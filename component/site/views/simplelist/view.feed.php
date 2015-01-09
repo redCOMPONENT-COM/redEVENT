@@ -35,7 +35,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedeventViewSimpleList extends JView
+class RedeventViewSimpleList extends RViewSite
 {
 	/**
 	 * Creates the Event Feed

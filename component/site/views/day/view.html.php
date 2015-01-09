@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage Redevent
  * @since 0.9
  */
-class RedeventViewDay extends JView
+class RedeventViewDay extends RViewSite
 {
 	/**
 	 * Creates the Day View
@@ -62,7 +62,7 @@ class RedeventViewDay extends JView
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
     // add js
-    JHTML::_('behavior.mootools');
+    JHTML::_('behavior.framework');
     // for filter hint
     $document->addScript($this->baseurl.'/components/com_redevent/assets/js/eventslist.js');
 

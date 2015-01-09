@@ -41,18 +41,16 @@ class RedeventModelUpcomingevents extends RedeventModelBaseeventlist
 	 */
 	public function getUpcomingEvents()
 	{
-		$mainframe = &JFactory::getApplication();
-
+		$params = RedeventHelper::config();
 		$db = JFactory::getDBO();
-		$params = $mainframe->getParams();
 
 		$query = parent::_buildQuery();
 		$query->select('a.submission_types');
 
 		$upcoming_cond = '( ( CASE WHEN x.times THEN CONCAT(x.dates, " ", x.times) ELSE x.dates END > NOW() '
-		. ' AND x.dates < DATE_ADD(NOW(), INTERVAL ' . $params->getValue('upcoming_days_ahead', 30) . ' DAY) ) ';
+		. ' AND x.dates < DATE_ADD(NOW(), INTERVAL ' . $params->get('upcoming_days_ahead', 30) . ' DAY) ) ';
 
-		if ($params->getValue('show_days_no_date', 0) == 1)
+		if ($params->get('show_days_no_date', 0) == 1)
 		{
 			$upcoming_cond .= "       OR x.dates = '0000-00-00' ";
 		}
@@ -61,7 +59,7 @@ class RedeventModelUpcomingevents extends RedeventModelBaseeventlist
 
 		$query->where($upcoming_cond);
 
-		$db->setQuery($query, 0, $params->getValue('show_number_courses', 10));
+		$db->setQuery($query, 0, $params->get('show_number_courses', 10));
 		$rows = $db->loadObjectList();
 
 		$rows = $this->_getPrices($rows);

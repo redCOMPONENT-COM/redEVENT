@@ -23,7 +23,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JHTML::_('behavior.mootools');
+JHTML::_('behavior.framework');
 JHTML::_('behavior.tooltip');
 
 $options = array(

@@ -130,7 +130,7 @@ class RedeventViewDetails extends JViewLegacy
 		//is the user allready registered at the event
 		if ( $regcheck ) {
 			// add javascript code for cancel button on attendees layout.
-			JHTML::_('behavior.mootools');
+			JHTML::_('behavior.framework');
 			$js = " window.addEvent('domready', function(){
 		            $$('.unreglink').addEvent('click', function(event){
 		                  if (confirm('".JText::_('COM_REDEVENT_CONFIRM_CANCEL_REGISTRATION')."')) {

@@ -32,7 +32,7 @@ jimport('joomla.application.component.view');
  * @subpackage  redevent
  * @since       2.0
 */
-class RedeventViewMyevents extends JView
+class RedeventViewMyevents extends RViewSite
 {
 	/**
 	 * Creates the MyItems View
@@ -75,7 +75,7 @@ class RedeventViewMyevents extends JView
 
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
-		JHTML::_('behavior.mootools');
+		JHTML::_('behavior.framework');
 
 		FOFTemplateUtils::addJS('media://com_redevent/js/myevents.js');
 		FOFTemplateUtils::addJS('media://com_redevent/js/ajaxnav.js');

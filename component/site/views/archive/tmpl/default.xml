@@ -5,25 +5,27 @@
 			<![CDATA[COM_REDEVENT_ARCHIVE_LAYOUT_DESC]]>
 		</message>
 	</layout>
-	
-	<fields name="params" addfieldpath="/administrator/components/com_redevent/models/fields">
+
+	<fields name="params" addfieldpath="/libraries/redevent/form/fields">
    	<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
 			<field name="introtext" type="textarea" default="" />
 			<field name="showintrotext" type="radio" default="0" label="COM_REDEVENT_DISPLAY_INTROTEXT" description="COM_REDEVENT_DISPLAY_INTROTEXT_TIP">
 				<option value="0">COM_REDEVENT_Hide</option>
 				<option value="1">COM_REDEVENT_Show</option>
 			</field>
-			
-			<field name="category_id" type="recategory" default="0" label="COM_REDEVENT_SELECT_CATEGORY" description="COM_REDEVENT_SELECT_CATEGORY_DESC" />
+
+			<field name="category_id" type="recategorylist" default="0" label="COM_REDEVENT_SELECT_CATEGORY" description="COM_REDEVENT_SELECT_CATEGORY_DESC">
+                <option value="0">JSelect</option>
+            </field>
       <field name="venue_id" type="revenue" default="0" label="COM_REDEVENT_Select_Venue" description="COM_REDEVENT_SELECTVENUE" />
-			
-			<field name="display_limit" 
+
+			<field name="display_limit"
 			       type="text" size="5"
 			       default=""
-			       label="COM_REDEVENT_VIEW_ARCHIVE_FIELD_DISPLAY_LIMIT" 
+			       label="COM_REDEVENT_VIEW_ARCHIVE_FIELD_DISPLAY_LIMIT"
 			       description="COM_REDEVENT_VIEW_ARCHIVE_FIELD_DISPLAY_LIMIT_TIP"
 			       />
-			       
+
 			<field name="show_pagination" type="list"
 				description="JGLOBAL_PAGINATION_DESC"
 				label="JGLOBAL_PAGINATION_LABEL"
@@ -42,7 +44,7 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-			
+
 			<field name="archive_ordering" type="list" default="ASC" label="COM_REDEVENT_VIEW_ARCHIVE_FIELD_ORDERING" description="COM_REDEVENT_VIEW_ARCHIVE_FIELD_ORDERING_TIP">
 				<option value="ASC">COM_REDEVENT_VIEW_ARCHIVE_FIELD_ORDERING_OLDEST_FIRST</option>
 				<option value="DESC">COM_REDEVENT_VIEW_ARCHIVE_FIELD_ORDERING_RECENT_FIRST</option>

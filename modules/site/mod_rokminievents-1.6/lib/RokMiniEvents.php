@@ -16,7 +16,7 @@ class RokMiniEvents
 
     public function loadScripts(&$params)
     {
-        JHTML::_('behavior.mootools');
+        JHTML::_('behavior.framework');
         $doc = &JFactory::getDocument();
         $doc->addScript(JURI::Root(true) . '/modules/mod_rokminievents/tmpl/js/rokminievents' . self::_getJSVersion() . '.js');
         $doc->addScript(JURI::Root(true) . '/modules/mod_rokminievents/tmpl/js/rokslider' . self::_getJSVersion() . '.js');
@@ -308,12 +308,12 @@ class RokMiniEvents
         // length will be between 200 and 200-20=180 characters and the
         // character where the last tag ends
 
-    	//we decode the text in case it has been encoded 
+    	//we decode the text in case it has been encoded
     	//so it displays correctly and tags can be stripped
     	$posttext = html_entity_decode($posttext);
-    	
+
 		//$tags:
-		//allowed html tags, all others will be stripped out 
+		//allowed html tags, all others will be stripped out
     	if($tags_option){
 	    	$tags = explode(",", $tags_option);
 			$strip_tags = array();
@@ -321,11 +321,11 @@ class RokMiniEvents
 				$strip_tags[$i] = '<'.trim($tags[$i]).'>';
 			}
 			$tags = implode(',', $strip_tags);
-			
+
 			$posttext = preg_replace( '/{.+?}/', '', $posttext);
 			$posttext = strip_tags($posttext, $tags);
     	}
-		
+
         // Reset tag counter & quote checker
         $tag_counter = 0;
         $quotes_on = FALSE;

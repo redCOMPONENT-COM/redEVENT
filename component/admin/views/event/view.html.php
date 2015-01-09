@@ -121,7 +121,7 @@ class RedeventViewEvent extends RedeventViewAdmin
 		jimport('joomla.html.pane');
 		JHTML::_('behavior.tooltip');
 		JHTML::_('behavior.formvalidation');
-		JHTML::_('behavior.mootools');
+		JHTML::_('behavior.framework');
 
 		//initialise variables
 		$editor 	= JFactory::getEditor();

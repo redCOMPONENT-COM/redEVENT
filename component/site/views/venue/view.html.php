@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedeventViewVenue extends JView
+class RedeventViewVenue extends RViewSite
 {
 	/**
 	 * Creates the output for venue submissions
@@ -67,7 +67,7 @@ class RedeventViewVenue extends JView
 	{
 		$params 	= & JFactory::getApplication()->getParams();
 
-		JHTML::_('behavior.mootools');
+		JHTML::_('behavior.framework');
 		$document 	= & JFactory::getDocument();
 		$document->addScript('https://maps.google.com/maps/api/js?sensor=false');
 		$document->addScript(JURI::root().'/components/com_redevent/assets/js/venuemap.js');

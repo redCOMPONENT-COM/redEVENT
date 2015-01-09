@@ -373,7 +373,7 @@ class RedeventHelperOutput {
 	{
 		$output = '';
 		$document 	= & JFactory::getDocument();
-		JHTML::_('behavior.mootools');
+		JHTML::_('behavior.framework');
 
 		$document->addScript('https://maps.google.com/maps/api/js?sensor=false');
 		$document->addScript(JURI::root().'/components/com_redevent/assets/js/venuemap.js');

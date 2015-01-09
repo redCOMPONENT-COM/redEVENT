@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage Redevent
  * @since 2.0
  */
-class RedeventViewWeek extends JView
+class RedeventViewWeek extends RViewSite
 {
 	/**
 	 * Creates the week View
@@ -62,7 +62,7 @@ class RedeventViewWeek extends JView
     }
 
     // add js
-    JHTML::_('behavior.mootools');
+    JHTML::_('behavior.framework');
 
 		$pop      = JRequest::getBool('pop');
 		$pathway  = $application->getPathWay();

@@ -479,7 +479,7 @@ class RedeventModelDetails extends JModelLegacy
 		if (!$row) {
 			return false;
 		}
-		$query =  ' SELECT c.id, c.name AS catname, c.access, '
+		$query =  ' SELECT c.id, c.name, c.access, '
 		. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
 		. ' FROM #__redevent_categories as c '
 		. ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '

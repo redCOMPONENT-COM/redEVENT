@@ -32,7 +32,7 @@ jimport('joomla.application.component.view');
  * @subpackage  redEVENT
  * @since       0.9
 */
-class RedeventViewEditevent extends JView
+class RedeventViewEditevent extends RViewSite
 {
 	/**
 	 * Creates the output for event submissions
@@ -316,7 +316,7 @@ class RedeventViewEditevent extends JView
 
 		$useracl = RedeventUserAcl::getInstance();
 
-		JHTML::_('behavior.mootools');
+		JHTML::_('behavior.framework');
 
 		$document->addScript('components/com_redevent/assets/js/xref_roles.js');
 		$document->addScriptDeclaration('var txt_remove = "' . JText::_('COM_REDEVENT_REMOVE') . '";');

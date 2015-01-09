@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 2.0
  */
-class RedeventViewAttendees extends JView
+class RedeventViewAttendees extends RViewSite
 {
 	/**
 	 * Creates the output for the details view
@@ -184,7 +184,7 @@ class RedeventViewAttendees extends JView
 		$view_full_attendees = $this->get('ViewAttendees');
 
 			// add javascript code for cancel button on attendees layout.
-			JHTML::_('behavior.mootools');
+			JHTML::_('behavior.framework');
 			$js = " window.addEvent('domready', function(){
 		            $$('.unreglink').addEvent('click', function(event){
 		                  if (confirm('".JText::_('COM_REDEVENT_CONFIRM_CANCEL_REGISTRATION')."')) {

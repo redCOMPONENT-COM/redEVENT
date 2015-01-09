@@ -31,7 +31,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedeventViewVenuesmap extends JView
+class RedeventViewVenuesmap extends RViewSite
 {
 	/**
 	 * Creates the Venuesview
@@ -70,7 +70,7 @@ class RedeventViewVenuesmap extends JView
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
 		// specific for eventsmap
-    JHTML::_('behavior.mootools');
+    JHTML::_('behavior.framework');
 		$document->addScript('https://maps.google.com/maps/api/js?sensor=false');
     $document->addScript($this->baseurl.'/components/com_redevent/assets/js/markermanager.js');
     $document->addScript($this->baseurl.'/components/com_redevent/assets/js/venuesmap.js');

@@ -31,7 +31,7 @@ class JFormFieldRevenuecategorylist extends JFormFieldList
 	protected function getOptions()
 	{
 		$options = array();
-		$model = RModel::getAdminInstance('Venuescategories', array('ignore_request' => true));
+		$model = RModel::getAdminInstance('Venuescategories', array('ignore_request' => true), 'com_redevent');
 		$model->setState('list.ordering', 'name');
 		$model->setState('list.direction', 'asc');
 		$model->setState('list.limit', 0);

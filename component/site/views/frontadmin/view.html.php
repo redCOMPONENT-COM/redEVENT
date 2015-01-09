@@ -36,7 +36,7 @@ require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
  * @subpackage  redevent
  * @since       2.0
 */
-class RedeventViewFrontadmin extends JView
+class RedeventViewFrontadmin extends RViewSite
 {
 	/**
 	 * Creates the View

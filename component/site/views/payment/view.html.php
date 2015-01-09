@@ -29,7 +29,7 @@ jimport('joomla.application.component.view');
  * @subpackage  redevent
  * @since       2.0
  */
-class RedeventViewPayment extends JView
+class RedeventViewPayment extends RViewSite
 {
 	/**
 	 * Creates the output for the details view
