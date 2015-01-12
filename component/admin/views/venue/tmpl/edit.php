@@ -245,6 +245,9 @@ $pinpointicon = RedeventHelperOutput::pinpointicon($this->item);
 						<?php echo $this->form->getInput('longitude'); ?>
 					</div>
 				</div>
+				<div id="pinpointicon" style="height: 600px">
+					<?php echo RedeventHelperOutput::pinpointicon($this->item); ?>
+				</div>
 			</div>
 		</div>
 

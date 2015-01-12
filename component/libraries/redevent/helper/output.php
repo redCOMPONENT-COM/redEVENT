@@ -398,43 +398,64 @@ class RedeventHelperOutput {
 		return $output;
 	}
 
-  /**
-  * Creates the map button
-  *
-  * @param obj $data
-  * @param obj $settings
-  *
-  * @since 0.9
-  */
-  function pinpointicon($data, $attributes = array())
-  {
-		JHTML::_('behavior.framework');
-		$params = JComponentHelper::getParams('com_redevent');
-		$document 	= & JFactory::getDocument();
-		$document->addScript('https://maps.google.com/maps/api/js?sensor=false');
-		FOFTemplateUtils::addJS('media://com_redevent/js/pinpoint.js');
+	/**
+	 * Creates the map button
+	 *
+	 * @param   object   $data        venue data
+	 * @param   array    $attributes  special attributes
+	 *
+	 * @return string html
+	 */
+	public static function pinpointicon($data, $attributes = array())
+	{
+		$params = RedeventHelper::config();
+
+		if (!$key = $params->get('googlemapsApiKey'))
+		{
+			JFactory::getApplication()->enqueueMessage('Missing google map api key', 'notice');
+
+			return;
+		}
+		RHelperAsset::load('gmapsoverlay.css');
+
+		$document = JFactory::getDocument();
+		$document->addScript('https://maps.google.com/maps/api/js?key=' . $params->get('googlemapsApiKey'));
+
 		JText::script("COM_REDEVENT_APPLY");
 		JText::script("COM_REDEVENT_CLOSE");
-		$document->addScriptDeclaration('mymap.defaultaddress = "'.$params->get('pinpoint_defaultaddress', 'usa').'";');
-		FOFTemplateUtils::addCSS('media://com_redevent/js/css/gmapsoverlay.css');
+
+		$document->addScriptDeclaration('var mymapDefaultaddress = "' . $params->get('pinpoint_defaultaddress', 'usa') . '";');
+
+		RHelperAsset::load('pinpoint.js');
 
 		//Link to map
-		$mapimage = JHTML::image(JURI::root().'components/com_redevent/assets/images/marker.png', JText::_( 'COM_REDEVENT_PINPOINTLOCATION_ALT' ), array('class' => 'pinpoint'));
+		$mapimage = JHTML::image(JURI::root() . 'components/com_redevent/assets/images/marker.png', JText::_('COM_REDEVENT_PINPOINTLOCATION_ALT'),
+			array(
+				'class' => 'pinpoint',
+				'data-toggle' => 'modal',
+				'data-target' => '#myModal'
+			)
+		);
 
 		$data->country = JString::strtoupper($data->country);
 
-		if (isset($attributes['class'])) {
+		if (isset($attributes['class']))
+		{
 			$attributes['class'] .= ' venuemap';
 		}
-		else {
+		else
+		{
 			$attributes['class'] = 'venuemap';
 		}
 
-		foreach ($attributes as $k => $v) {
-			$attributes[$k] = $k.'="'.$v.'"';
+		foreach ($attributes as $k => $v)
+		{
+			$attributes[$k] = $k . '="' . $v . '"';
 		}
+
 		$attributes = implode(' ', $attributes);
-		$output = '<span title="'.JText::_('COM_REDEVENT_MAP' ).'" '.$attributes.'>'.$mapimage.'</span>';
+		$output = '<span title="' . JText::_('COM_REDEVENT_MAP') . '" ' . $attributes . '>' . $mapimage . '</span>';
+		$output .= RLayoutHelper::render('pinpoint', null, null, array('client' => 0));
 
 		return $output;
 	}
