@@ -154,6 +154,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		}
 		catch (Exception $e)
 		{
+			$this->dblog(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $this->getType($message), $this->getTransactionId($message), $message, 'error', $e->getMessage());
 			$response = false;
 		}
 	}
