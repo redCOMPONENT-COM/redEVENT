@@ -32,13 +32,20 @@
 		venue : null,
 		map : null,
 		marker : null,
-		infowindow: null,
 		defaultaddress: 'usa',
+		isInit: false,
 
 		init : function(element)
 		{
-			this.map = new google.maps.Map(element,
-				this.options);
+			if (!this.isInit) {
+				this.map = new google.maps.Map(element,
+					this.options);
+
+				$('#locationSave').click(this.updateclose.bind(this));
+
+				this.isInit = true;
+			}
+
 			this.initmarker();
 			this.map.setCenter(this.marker.getPosition());
 		},
@@ -46,16 +53,14 @@
 		initaddress : function()
 		{
 			var address = new Array();
-			if ($('#street').val()) {
-				address.push($('#street').val());
+			if ($('#jform_street').val()) {
+				address.push($('#jform_street').val());
 			}
-			if ($('#city').val()) {
-				address.push($('#city').val());
+			if ($('#jform_city').val()) {
+				address.push($('#jform_city').val());
 			}
-			if ($('#country').val()) {
-//			var sel = $('#country').getSelected();
-//			address.push(sel[0].get("text"));
-				address.push($('#country').val());
+			if ($('#jform_country').val()) {
+				address.push($('#jform_country').val());
 			}
 			address = address.join().toLowerCase();
 			return address;
@@ -66,7 +71,7 @@
 			var address = this.venue.address;
 			var finalzoom = 16;
 			if (address == "") {
-				address = this.defaultaddress;
+				address = mymapDefaultaddress ? mymapDefaultaddress : this.defaultaddress;
 				finalzoom = 3;
 			}
 			var geocoder = new google.maps.Geocoder();
@@ -84,31 +89,25 @@
 		initmarker : function()
 		{
 			this.venue = {
-				latitude: $('#latitude').val(),
-				longitude: $('#longitude').val(),
+				latitude: $('#jform_latitude').val(),
+				longitude: $('#jform_longitude').val(),
 				address: this.initaddress()
 			};
 
-			this.marker = new google.maps.Marker({
-				map: this.map,
-				position: new google.maps.LatLng(this.venue.latitude, this.venue.longitude),
-				draggable: true
-			});
-
-			google.maps.event.addListener(this.marker, "dragstart", function() {
-				if (this.infowindow) {
-					this.infowindow.close();
-				}
-			}.bind(this));
-
-			google.maps.event.addListener(this.marker, "dragend", this.markerShowInfo.bind(this));
+			if (!this.marker) {
+				this.marker = new google.maps.Marker({
+					map: this.map,
+					position: new google.maps.LatLng(this.venue.latitude, this.venue.longitude),
+					draggable: true
+				});
+			}
+			else {
+				this.marker.setPosition(new google.maps.LatLng(this.venue.latitude, this.venue.longitude));
+			}
 
 			// marker now set to default position, try to geocode if an address was provided and coordinates not set
 			if (! (this.marker.getPosition().lat() || this.marker.getPosition().lng()) ) {
 				this.codeadress();
-			}
-			else {
-				this.markerShowInfo();
 			}
 		},
 
@@ -119,62 +118,17 @@
 			this.marker.setPosition(latlng);
 		},
 
-
-		markerShowInfo: function()
-		{
-			var lat, lng;
-			var info = $('<div id="markerInfo"></div>');
-			info.html(this.venue.address ? this.venue.address : '');
-			$('<br>').appendTo(info);
-
-			var pos = this.marker.getPosition();
-			lat = pos.lat()+'';
-			lng = pos.lng()+'';
-
-			info.append('latitude' + ': ' + lat.substr(0,8) + '...');
-			$('<br>').appendTo(info);
-			info.append('longitude' + ': ' + lng.substr(0,8) + '...');
-			$('<br>').appendTo(info);
-
-			var apply = $('<span class="gmaplink">' + Joomla.JText._("COM_REDEVENT_APPLY") + '</span>');
-			apply.click(this.updateclose.bind(this));
-			apply.appendTo(info);
-
-			info.append(' - ');
-
-			var close = $('<span class="gmaplink">' + Joomla.JText._("COM_REDEVENT_CLOSE") + '</span>');
-			close.click(this.close.bind(this));
-			close.appendTo(info);
-
-			this.infowindow = new google.maps.InfoWindow({
-				content: info
-			});
-			this.infowindow.open(this.map, this.marker);
-		},
-
-		close: function()
-		{
-			alert('close');
-
-			return false;
-		},
-
 		updateclose: function()
 		{
-			$('#latitude').val(this.marker.getPosition().lat());
-			$('#longitude').val(this.marker.getPosition().lng());
-			this.close();
+			$('#jform_latitude').val(this.marker.getPosition().lat());
+			$('#jform_longitude').val(this.marker.getPosition().lng());
+			$('#pinpointModal').modal('hide');
 		}
 	};
 
 	$(document).ready(function() {
-//		$('#pinpointMapModal').on('show', function(){
-//			alert('event');
-//		});
-
-		$('.pinpoint').click(function(){
-			mymap.init(document.getElementById('pinpointMap'));
-//			$('#pinpointMapModal').modal('show');
+		$('#pinpointModal').on('show', function(){
+			mymap.init(document.getElementById('pinpointMapCanvas'));
 		});
 	});
 

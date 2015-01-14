@@ -36,6 +36,8 @@ class RedeventViewVenue extends RedeventViewAdmin
 
 		$this->canConfig = false;
 
+		$this->params = RedeventHelper::config();
+
 		if ($user->authorise('core.admin', 'com_redevent'))
 		{
 			$this->canConfig = true;

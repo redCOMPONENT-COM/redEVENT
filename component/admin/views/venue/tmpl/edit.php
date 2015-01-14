@@ -12,7 +12,6 @@ JHtml::_('behavior.formvalidation');
 JHtml::_('rjquery.chosen', 'select');
 
 $fieldSets = $this->form->getFieldsets('params');
-$pinpointicon = RedeventHelperOutput::pinpointicon($this->item);
 ?>
 
 <script type="text/javascript">
@@ -245,9 +244,13 @@ $pinpointicon = RedeventHelperOutput::pinpointicon($this->item);
 						<?php echo $this->form->getInput('longitude'); ?>
 					</div>
 				</div>
-				<div id="pinpointicon" style="height: 600px">
-					<?php echo RedeventHelperOutput::pinpointicon($this->item); ?>
+				<div class="control-group">
+					<div class="control-label"></div>
+					<div class="controls">
+						<?php echo RedeventHelperOutput::pinpointicon($this->item); ?>
+					</div>
 				</div>
+
 			</div>
 		</div>
 

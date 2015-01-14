@@ -401,61 +401,27 @@ class RedeventHelperOutput {
 	/**
 	 * Creates the map button
 	 *
-	 * @param   object   $data        venue data
-	 * @param   array    $attributes  special attributes
-	 *
 	 * @return string html
 	 */
-	public static function pinpointicon($data, $attributes = array())
+	public static function pinpointicon()
 	{
 		$params = RedeventHelper::config();
 
 		if (!$key = $params->get('googlemapsApiKey'))
 		{
-			JFactory::getApplication()->enqueueMessage('Missing google map api key', 'notice');
-
 			return;
 		}
+
 		RHelperAsset::load('gmapsoverlay.css');
 
 		$document = JFactory::getDocument();
 		$document->addScript('https://maps.google.com/maps/api/js?key=' . $params->get('googlemapsApiKey'));
 
-		JText::script("COM_REDEVENT_APPLY");
-		JText::script("COM_REDEVENT_CLOSE");
-
 		$document->addScriptDeclaration('var mymapDefaultaddress = "' . $params->get('pinpoint_defaultaddress', 'usa') . '";');
 
 		RHelperAsset::load('pinpoint.js');
 
-		//Link to map
-		$mapimage = JHTML::image(JURI::root() . 'components/com_redevent/assets/images/marker.png', JText::_('COM_REDEVENT_PINPOINTLOCATION_ALT'),
-			array(
-				'class' => 'pinpoint',
-				'data-toggle' => 'modal',
-				'data-target' => '#myModal'
-			)
-		);
-
-		$data->country = JString::strtoupper($data->country);
-
-		if (isset($attributes['class']))
-		{
-			$attributes['class'] .= ' venuemap';
-		}
-		else
-		{
-			$attributes['class'] = 'venuemap';
-		}
-
-		foreach ($attributes as $k => $v)
-		{
-			$attributes[$k] = $k . '="' . $v . '"';
-		}
-
-		$attributes = implode(' ', $attributes);
-		$output = '<span title="' . JText::_('COM_REDEVENT_MAP') . '" ' . $attributes . '>' . $mapimage . '</span>';
-		$output .= RLayoutHelper::render('pinpoint', null, null, array('client' => 0));
+		$output = RLayoutHelper::render('pinpoint', null, null, array('client' => 0));
 
 		return $output;
 	}
