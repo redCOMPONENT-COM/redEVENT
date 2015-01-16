@@ -1,55 +1,44 @@
 <?php
 /**
- * @version 0.9 $Id$
- * @package Joomla
- * @subpackage RedEvent
- * @copyright (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENCE.php
- * RedEvent is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * RedEvent is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with RedEvent; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package     Redevent.Frontend
+ * @subpackage  Modules
+ *
+ * @copyright   Copyright (C) 2008 - 2014 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later, see LICENSE.
  */
 
-// no direct access
+// No direct access
 defined('_JEXEC') or die('Restricted access');
 
-// Register library prefix
-JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
-RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
-RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
+// Load redEVENT library
+$redeventLoader = JPATH_LIBRARIES . '/redevent/bootstrap.php';
+
+if (!file_exists($redeventLoader))
+{
+	throw new Exception(JText::_('COM_REDEVENT_INIT_FAILED'), 404);
+}
+
+include_once $redeventLoader;
+
+RedeventBootstrap::bootstrap();
 
 // get helper
 require_once (dirname(__FILE__).'/helper.php');
 
-require_once(JPATH_SITE.'/components/com_redevent/helpers/route.php');
-require_once(JPATH_SITE.'/components/com_redevent/classes/image.class.php');
+$user = JFactory::getUser();
 
-$user		=& JFactory::getUser();
-if (!$user->get('id')) {
+if (!$user->get('id'))
+{
 	echo JText::_('MOD_REDEVENT_ATTENDING_MUST_BE_LOGGED');
+
 	return;
 }
 
 $list = modRedEventAttendingHelper::getList($params);
 
-// check if any results returned
-$items = count($list);
-
-$document = &Jfactory::getDocument();
-$document->addScript('modules/mod_redevent_attending/mod_redevent_attending.js');
-
-$offset = JRequest::getInt('reattoffset', (int) $params->get( 'offset', '0' ));
-$type   = JRequest::getInt('reattspan', $params->get( 'type', '0' ));
-$uri    = &JFactory::getUri();
+$offset = JFactory::getApplication()->input->getInt('reattoffset', (int) $params->get( 'offset', '0' ));
+$type = JFactory::getApplication()->input->getInt('reattspan', $params->get( 'type', '0' ));
+$uri = JFactory::getUri();
 
 $curi = clone $uri;
 $curi->setVar('reattoffset', $offset);
@@ -64,9 +53,10 @@ $previous = htmlspecialchars($prevuri->toString());
 
 $nexturi = clone $curi;
 $nexturi->setVar('reattoffset', $offset+1);
-$next     = htmlspecialchars($nexturi->toString());
+$next = htmlspecialchars($nexturi->toString());
 
-$document = &JFactory::getDocument();
+$document = Jfactory::getDocument();
+$document->addScript('modules/mod_redevent_attending/mod_redevent_attending.js');
 $document->addStyleSheet( JURI::base() . '/modules/mod_redevent_attending/mod_redevent_attending.css' );
 
 require(JModuleHelper::getLayoutPath('mod_redevent_attending', $params->get('layout', 'table')));
