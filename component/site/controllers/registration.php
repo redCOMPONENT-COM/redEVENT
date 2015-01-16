@@ -64,10 +64,10 @@ class RedeventControllerRegistration extends RedeventControllerFront
 
 		$app = JFactory::getApplication();
 
-		$xref        = JRequest::getInt('xref');
-		$pricegroups = JRequest::getVar('sessionpricegroup_id', array(), 'post', 'array');
-		$review      = JRequest::getVar('hasreview', 0);
-		$isedit      = JRequest::getVar('isedit', 0);
+		$xref        = $this->input->getInt('xref');
+		$review      = $this->input->getInt('hasreview', 0);
+		$isedit      = $this->input->getInt('isedit', 0);
+		$pricegroups = $this->input->get('sessionpricegroup_id', array(), 'post', 'array');
 		JArrayHelper::toInteger($pricegroups);
 
 		if (!$xref)
@@ -217,12 +217,12 @@ class RedeventControllerRegistration extends RedeventControllerFront
 			}
 			else
 			{
-				$link = RedeventHelperRoute::getRegistrationRoute($xref, 'confirm', $submit_key);
+				$link = RedeventHelperRoute::getRegistrationRoute($xref, 'registration.confirm', $submit_key);
 			}
 		}
 		else
 		{
-			$link = RedeventHelperRoute::getRegistrationRoute($xref, 'review', $submit_key);
+			$link = RedeventHelperRoute::getRegistrationRoute($xref, 'registration.review', $submit_key);
 		}
 
 		if ($app->input->getInt('modal', 0))

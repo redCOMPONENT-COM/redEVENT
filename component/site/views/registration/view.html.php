@@ -122,11 +122,11 @@ class RedeventViewRegistration extends JViewLegacy
 
 		if ($acl->canManageAttendees($registration->xref) && JRequest::getVar('task') == 'manageredit')
 		{
-			$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute($xref, 'managerupdate'));
+			$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute($xref, 'registration.managerupdate'));
 		}
 		elseif ($registration->uid == $user->get('id'))
 		{
-			$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute($xref, 'update'));
+			$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute($xref, 'registration.update'));
 		}
 		else
 		{
