@@ -28,9 +28,9 @@ RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
 RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 
 // get helper
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once (dirname(__FILE__).'/helper.php');
 
-require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'route.php');
+require_once(JPATH_SITE.'/components/com_redevent/helpers/route.php');
 
 $app = JFactory::getApplication();
 

@@ -5,7 +5,7 @@
 * @copyright (C) 2008 Toni Smillie www.qivva.com
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * Eventlist Calendar Q by Toni Smillie www.qivva.com
-* 
+*
  * Version 0.8
  * Changes for v0.8
  * 1. Roll over year end bug fixed
@@ -30,22 +30,22 @@
  * 4. Replace instead of concatenate month view changes
  * 5. Set $month_href = NULL; (bug fix)
  * 6. Use multibyte strings for days and months. Parameter overrides for locale and charset.
- * 
+ *
  * Version 0.4
  * Changes for v0.4
  * 1. New Parameters Category ID and Venue ID to allow for filtering of calendar module events
  * 2. Removed the 2 styling parameters form the parameter list. All styling is now done in the CSS
  * 3. Enhanced styling and new stylesheet
- * 
+ *
 * Changes for v0.3
 * 1. Fixed timeoffset properly for Joomla 1.5
 * 2. Fixed problem that caused "Notice: Undefined index:" with PHP5
-* 
+*
 * Changes for v0.2
 * 1. Added Title on Tooltips
 * 2. Fix for time offset
 * 3 Bug fix - not picking up all events when on the same day
-* 
+*
 * Original Eventlist calendar from Christoph Lukes www.schlu.net
 * PHP Calendar (version 2.3), written by Keith Devens
 * http://keithdevens.com/software/php_calendar
@@ -54,13 +54,13 @@
 */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-require_once( dirname(__FILE__).DS.'helper.php' );
-require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'route.php');
+require_once( dirname(__FILE__).'/helper.php' );
+require_once(JPATH_SITE.'/components/com_redevent/helpers/route.php');
 
 // include mootools tooltip
 JHTML::_('behavior.tooltip');
 
-$document = &JFactory::getDocument(); 
+$document = &JFactory::getDocument();
 $document->addScript( JURI::base() . 'modules/mod_redeventcal/mod_redeventcal.js' );
 
 $app = &JFactory::getApplication();
@@ -70,23 +70,23 @@ $app = &JFactory::getApplication();
 	$first_day			= $params->get( 'first_day', '1' );
 	$Year_length		= $params->get( 'Year_length', '1' );
 	$Month_length		= $params->get( 'Month_length', '0' );
-	$Month_offset		= $params->get( 'Month_offset', '0' );	
-	$Show_Tooltips		= $params->get( 'Show_Tooltips', '1' );	
+	$Month_offset		= $params->get( 'Month_offset', '0' );
+	$Show_Tooltips		= $params->get( 'Show_Tooltips', '1' );
 	$Remember			= $params->get( 'Remember', '1' );
-	$CalTooltipsTitle		= $params->get( 'recal_tooltips_title', 'Events' );	
-	$show_weeknb = $params->get( 'show_week_number', 1 );	
+	$CalTooltipsTitle		= $params->get( 'recal_tooltips_title', 'Events' );
+	$show_weeknb = $params->get( 'show_week_number', 1 );
 	$week_nb_format = $first_day ? '%W' : '%U';
-	
+
 	//get switch trigger
 	$req_month 		= JRequest::getVar( 're_mcal_month', '', 'request', 'int' );
-	$req_year       = JRequest::getVar( 're_mcal_year', '', 'request', 'int' );	
-	
+	$req_year       = JRequest::getVar( 're_mcal_year', '', 'request', 'int' );
+
 	if ($Remember == 1) // Remember which month / year is selected. Don't jump back to tday on page change
 	{
-		if ($req_month == 0) 
+		if ($req_month == 0)
 		{
 			$req_month = $app->getUserState("redeventcalmonth");
-			$req_year = $app->getUserState("redeventcalyear");	
+			$req_year = $app->getUserState("redeventcalyear");
 		}
 		else
 		{
@@ -94,7 +94,7 @@ $app = &JFactory::getApplication();
 			$app->setUserState("redeventcalyear",$req_year);
 		}
 	}
-	
+
 	//set now
 	$config =& JFactory::getConfig();
 	$tzoffset = $config->getValue('config.offset');
@@ -102,53 +102,53 @@ $app = &JFactory::getApplication();
 	$today_month 	= date( 'm', $time);
 	$today_year 	= date( 'Y', $time);
 	$today          = date( 'j',$time);
-	
+
 	if ($req_month == 0) {
 	  $req_month = $today_month + $Month_offset;
 	}
-	
+
 	if ($req_year == 0) {
 	  $req_year = $today_year;
 	}
-	if ($req_month >12) 
+	if ($req_month >12)
 	{
-		$req_month = $req_month -12; // Roll over year end	
+		$req_month = $req_month -12; // Roll over year end
 		$req_year = $req_year + 1;
 	}
-	
+
 	//Setting the previous and next month numbers
 	$prev_month_year = $req_year;
 	$next_month_year = $req_year;
-	
+
 	$prev_month = $req_month-1;
 	if($prev_month < 1){
 		$prev_month = 12;
 		$prev_month_year = $prev_month_year-1;
 	}
-	
+
 	$next_month = $req_month+1;
 	if($next_month > 12){
 		$next_month = 1;
 		$next_month_year = $next_month_year+1;
 	}
-	
+
 	//Requested URL
 	$uri    = & JURI::getInstance();
-	
+
 	// link for previous month
-	$prev = clone $uri;	
+	$prev = clone $uri;
   $prev->setVar('re_mcal_month', $prev_month);
   $prev->setVar('re_mcal_year', $prev_month_year);
   $prev_link = $prev->toString();
-  
+
   // link for next month
-  $next = clone $uri;  
+  $next = clone $uri;
   $next->setVar('re_mcal_month', $next_month);
   $next->setVar('re_mcal_year', $next_month_year);
   $next_link = $next->toString();
-	
+
 	$days = modredeventcalHelper::getdays($req_year, $req_month, $params);
-	
+
 	$day_names = array(
 			Jtext::_('SUNDAY'),
 			Jtext::_('MONDAY'),
@@ -156,8 +156,8 @@ $app = &JFactory::getApplication();
 			Jtext::_('WEDNESDAY'),
 			Jtext::_('THURSDAY'),
 			Jtext::_('FRIDAY'),
-			Jtext::_('SATURDAY'),	
-			Jtext::_('SUNDAY'),		
+			Jtext::_('SATURDAY'),
+			Jtext::_('SUNDAY'),
 			);
 	$day_names_short = array(
 			Jtext::_('SUN'),
@@ -166,19 +166,19 @@ $app = &JFactory::getApplication();
 			Jtext::_('WED'),
 			Jtext::_('THU'),
 			Jtext::_('FRI'),
-			Jtext::_('SAT'),	
-			Jtext::_('SUN'),		
+			Jtext::_('SAT'),
+			Jtext::_('SUN'),
 			);
-	
+
 	if ($first_day) {
 		array_shift($day_names);
 		array_shift($day_names_short);
 	}
 	else {
 		array_pop($day_names);
-		array_pop($day_names_short);		
+		array_pop($day_names_short);
 	}
-	
+
 	$month_names = array(
 			JText::_('JANUARY'),
 			JText::_('FEBRUARY'),
@@ -193,7 +193,7 @@ $app = &JFactory::getApplication();
 			JText::_('NOVEMBER'),
 			JText::_('DECEMBER'),
 			);
-	
+
 	$month_names_short = array(
 			JText::_('JANUARY_SHORT'),
 			JText::_('FEBRUARY_SHORT'),
@@ -208,5 +208,5 @@ $app = &JFactory::getApplication();
 			JText::_('NOVEMBER_SHORT'),
 			JText::_('DECEMBER_SHORT'),
 			);
-	
-	require( JModuleHelper::getLayoutPath( 'mod_redeventcal' ) );	
+
+	require( JModuleHelper::getLayoutPath( 'mod_redeventcal' ) );

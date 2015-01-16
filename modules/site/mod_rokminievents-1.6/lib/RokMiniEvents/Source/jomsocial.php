@@ -12,7 +12,7 @@ class RokMiniEventsSourceJomSocial extends RokMiniEvents_SourceBase
 {
     function getEvents(&$params)
     {
-        require_once( JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' . DS . 'core.php' );
+        require_once( JPATH_ROOT . '/components/com_community/libraries/core.php' );
         CFactory::load( 'helpers' , 'event' );
         CFactory::load( 'helpers' , 'string' );
         CFactory::load( 'helpers' , 'time' );
@@ -50,8 +50,8 @@ class RokMiniEventsSourceJomSocial extends RokMiniEvents_SourceBase
             $table		= JTable::getInstance( 'Event' , 'CTable' );
 	        $table->bind( $row );
             $handler	= CEventHelper::getHandler( $table );
-			
-			if ($params->get('jomsocial_links') != 'link_no'){ 
+
+			if ($params->get('jomsocial_links') != 'link_no'){
             	$link = array(
 					'internal' => ($params->get('jomsocial_links') == 'link_internal') ? true : false,
 					'link' => $handler->getFormattedLink( 'index.php?option=com_community&view=events&task=viewevent&eventid=' . $table->id )

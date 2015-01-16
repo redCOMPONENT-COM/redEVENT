@@ -8,14 +8,14 @@
 	<copyright>(C) 2008 - 2012 redCOMPONENT.com</copyright>
 	<license>GNU/GPL</license>
 	<version>##VERSION##</version>
-  <description>PLG_REDEVENT_SEARCH_XML_DESC</description>
-	
+	<description>PLG_REDEVENT_SEARCH_XML_DESC</description>
+
 	<files>
-    <filename plugin="redeventsearch">redeventsearch.php</filename>
-    <filename>index.html</filename>
-    <folder>language</folder>
+		<filename plugin="redevent">redevent.php</filename>
+		<filename>index.html</filename>
+		<folder>language</folder>
   </files>
-	
+
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
@@ -31,5 +31,4 @@
 	</config>
 
 </extension>
-	
-  
+

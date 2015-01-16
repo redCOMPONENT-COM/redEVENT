@@ -27,8 +27,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 // Import library dependencies
 jimport('joomla.plugin.plugin');
 
-class plgSearchRedeventSearch extends JPlugin {
-
+class plgSearchRedevent extends JPlugin
+{
 	/**
 	* Constructor
 	*

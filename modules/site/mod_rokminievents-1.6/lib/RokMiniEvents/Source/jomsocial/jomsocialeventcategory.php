@@ -19,7 +19,7 @@ class JElementJomSocialEventCategory extends JElement
 	function fetchElement($name, $value, &$node, $control_name)
 	{
 
-        require_once( JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' . DS . 'core.php' );
+        require_once( JPATH_ROOT . '/components/com_community/libraries/core.php' );
         CFactory::load( 'helpers' , 'event' );
         $model		= CFactory::getModel( 'events' );
 

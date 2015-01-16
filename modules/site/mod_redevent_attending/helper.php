@@ -22,7 +22,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once (JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'route.php');
+require_once (JPATH_SITE.'/components/com_redevent/helpers/route.php');
 
 /**
  * RedEvent Module helper

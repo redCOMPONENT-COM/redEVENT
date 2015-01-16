@@ -23,9 +23,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 // get helper
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once (dirname(__FILE__).'/helper.php');
 
-require_once(JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'route.php');
+require_once(JPATH_SITE.'/components/com_redevent/helpers/route.php');
 
 $list = modRedEventVenuesEventsHelper::getList($params);
 
@@ -36,7 +36,7 @@ if (!$items) {
 }
 
 JHTML::_('behavior.tooltip');
-$document = &JFactory::getDocument(); 
+$document = &JFactory::getDocument();
 $document->addStyleSheet( JURI::base() . 'modules/mod_redevent_venues_events/mod_redevent_venues_events.css' );
 $document->addScript( JURI::base() . 'modules/mod_redevent_venues_events/mod_redevent_venues_events.js' );
 

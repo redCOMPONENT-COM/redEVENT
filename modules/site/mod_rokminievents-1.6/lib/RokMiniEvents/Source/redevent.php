@@ -13,14 +13,14 @@ JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
 RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
 RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
 
-if (!defined('REDEVENT_PATH_SITE')) DEFINE('REDEVENT_PATH_SITE', JPATH_SITE.DS.'components'.DS.'com_redevent');
+if (!defined('REDEVENT_PATH_SITE')) DEFINE('REDEVENT_PATH_SITE', JPATH_SITE.'/components/com_redevent');
 
 class RokMiniEventsSourceRedEvent extends RokMiniEvents_SourceBase
 {
     function getEvents(&$params)
     {
-    	include_once(REDEVENT_PATH_SITE.DS.'helpers'.DS.'route.php');
-    	include_once('redevent'.DS.'model.php');
+    	include_once(REDEVENT_PATH_SITE.'/helpers/route.php');
+    	include_once('redevent/model.php');
 
         // load language file
         $language = JFactory::getLanguage();
