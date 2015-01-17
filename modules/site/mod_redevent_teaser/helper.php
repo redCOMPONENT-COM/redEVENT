@@ -1,135 +1,118 @@
 <?php
 /**
  * THIS FILE IS BASED mod_eventlist_teaser from ezuri.de, BASED ON MOD_EVENTLIST_WIDE FROM SCHLU.NET
- * @version 0.9 $Id$
- * @package Joomla
- * @subpackage RedEvent
- * @copyright (C) 2008 - 2011 redComponent
- * @license GNU/GPL, see LICENCE.php
- * RedEvent is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * RedEvent is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with RedEvent; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package     Redevent.Frontend
+ * @subpackage  Modules
+ *
+ * @copyright   Copyright (C) 2008 - 2014 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later, see LICENSE.
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Redevent Moduleteaser helper
+ * Redevent Module teaser helper
  *
- * @package Joomla
- * @subpackage Redevent Teaser Module
- * @since		1.0
+ * @package     Redevent.Frontend
+ * @subpackage  Modules
+ * @since       1.0
 */
 class modRedeventTeaserHelper
 {
-
 	/**
 	 * Method to get the events
 	 *
 	 * @access public
 	 * @return array
 	 */
-	function getList(&$params)
+	public function getList(&$params)
 	{
 		$mainframe = &Jfactory::getApplication();
 
 		$db			=& JFactory::getDBO();
 		$user		=& JFactory::getUser();
-		$user_gid	= (int) max($user->getAuthorisedViewLevels());
 
-		$where = array();
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
 
-		//all upcoming events
-		if ($params->get( 'type', 1 ) == 1) {
-			$where[]  = ' x.dates >= CURDATE()';
-			$where[]  = ' x.published = 1';
-			$order  = ' ORDER BY x.dates, x.times';
+		$query->select('a.*, x.eventid, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, l.venue, l.city, l.url , l.locimage, l.state')
+			->select('CONCAT_WS(",", c.image) AS categories_images')
+			->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug')
+			->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug')
+			->select('CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug')
+			->from('#__redevent_event_venue_xref AS x')
+			->join('INNER', '#__redevent_events AS a ON a.id = x.eventid')
+			->join('LEFT', '#__redevent_venues AS l ON l.id = x.venueid')
+			->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id')
+			->join('LEFT', '#__redevent_categories AS c ON c.id = xcat.category_id')
+			->join('LEFT', '#__redevent_repeats AS r ON r.xref_id = x.id')
+			->group('x.id');
+
+
+		// All upcoming events
+		if ($params->get( 'type', 1 ) == 1)
+		{
+			$query->where('x.dates >= CURDATE()')
+				->where('x.published = 1')
+				->order('x.dates, x.times');
 		}
 
-		//archived events only
-		if ($params->get( 'type', 1 ) == 2) {
-			$where[]  = ' x.published = -1';
-			$order = ' ORDER BY x.dates DESC, x.times DESC';
+		// Archived events only
+		if ($params->get( 'type', 1 ) == 2)
+		{
+			$query->where('x.published = 11')
+				->order('x.dates DESC, x.times DESC');
 		}
 
-		//currently running events only
-		if ($params->get( 'type', 1 ) == 3) {
-			$where[]  = ' x.published = 1 ';
-			$where[]  = ' ( x.dates = CURDATE() OR ( x.enddates >= CURDATE() AND x.dates <= CURDATE() ))';
-			$order  = ' ORDER BY x.dates, x.times';
+		// Currently running events only
+		if ($params->get( 'type', 1 ) == 3)
+		{
+			$query->where('(x.dates = CURDATE() OR (x.enddates >= CURDATE() AND x.dates <= CURDATE()))')
+				->where('x.published = 1')
+				->order('x.dates, x.times');
 		}
 
-		//clean parameter data
-		$catid 	= trim( $params->get('catid') );
-		$venid 	= trim( $params->get('venid') );
+		$catid = $params->get('catid');
+
+		if (is_array($catid) && count($catid))
+		{
+			JArrayHelper::toInteger($catid);
+			$query->where('c.id IN (' . implode(',', $catid) . ')');
+		}
+
+		$venid = $params->get('venid');
+
+		if (is_array($venid) && count($venid))
+		{
+			JArrayHelper::toInteger($venid);
+			$query->where('l.id IN (' . implode(',', $venid) . ')');
+		}
+
 		$state	= JString::strtolower(trim( $params->get('stateloc') ) );
 
-		//Build category selection query statement
-		if ($catid)
-		{
-			$ids = explode( ',', $catid );
-			JArrayHelper::toInteger( $ids );
-			$where[]  = ' (c.id=' . implode( ' OR c.id=', $ids ) . ')';
-		}
-
-		//Build venue selection query statement
-		if ($venid)
-		{
-			$ids = explode( ',', $venid );
-			JArrayHelper::toInteger( $ids );
-			$where[]  = ' (l.id=' . implode( ' OR l.id=', $ids ) . ')';
-		}
-
-		//Build state selection query statement
+		// Build state selection query statement
 		if ($state)
 		{
-			$rawstate = explode( ',', $state );
+			$rawstate = explode(',', $state);
 
 			foreach ($rawstate as $val)
 			{
-				if ($val) {
-					$states[] = '"'.trim($db->getEscaped($val)).'"';
+				if ($val)
+				{
+					$states[] = $db->quote(trim($val));
 				}
 			}
 
 			JArrayHelper::toString( $states );
-			$where[]  = ' (LOWER(l.state)='.implode(' OR LOWER(l.state)=',$states).')';
+			$query->where('(LOWER(l.state) IN ('.implode(',', $states) . ')');
 		}
 
 		if (JFactory::getApplication()->getLanguageFilter())
 		{
-			$where[] = '(a.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR a.language IS NULL)';
+			$query->where('(a.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR a.language IS NULL)');
 		}
 
-		//query
-		$query = 'SELECT a.*, x.eventid, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, l.venue, l.city, l.url , l.locimage, l.state, '
-		. ' CONCAT_WS(",", c.image) AS categories_images,'
-		. ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
-		. ' CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug, '
-		. ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug '
-		. ' FROM #__redevent_event_venue_xref AS x'
-		. ' INNER JOIN #__redevent_events AS a ON a.id = x.eventid'
-		. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-		. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-		. ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-		. ' LEFT JOIN #__redevent_repeats AS r ON r.xref_id = x.id '
-		. ' WHERE '.implode(' AND ', $where)
-		. ' GROUP BY x.id '
-		. $order
-		.' LIMIT '.(int)$params->get( 'count', '2' )
-		;
-
-		$db->setQuery($query);
+		$db->setQuery($query, 0, (int) $params->get('count', '2'));
 		$rows = $db->loadObjectList();
 		$rows = self::_categories($rows);
 
@@ -211,9 +194,9 @@ class modRedeventTeaserHelper
 	 * @param array $rows of events
 	 * @return array
 	 */
-	function _categories($rows)
+	private function _categories($rows)
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
@@ -228,23 +211,28 @@ class modRedeventTeaserHelper
 			return $rows;
 		}
 
-		$query = ' SELECT DISTINCT c.id, c.name, c.image, x.event_id, '
-		. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
-		. ' FROM #__redevent_categories as c '
-		. ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
-		. ' WHERE c.published = 1 '
-		. '   AND x.event_id IN (' . implode(", ", $events) .')'
-		. '   AND (c.access IN (' . $gids . ')) '
-		. ' ORDER BY c.ordering'
-		;
-		$db->setQuery( $query );
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('DISTINCT c.id, c.name, c.image, x.event_id')
+			->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug')
+			->from('#__redevent_categories as c')
+			->join('INNER', '#__redevent_event_category_xref as x ON x.category_id = c.id')
+			->where('c.published = 1')
+			->where('x.event_id IN (' . implode(", ", $events) .')')
+			->where('(c.access IN (' . $gids . '))')
+			->order('c.ordering');
+
+		$db->setQuery($query);
 		$res = $db->loadObjectList();
 
 		// get categories per events
 		$evcats = array();
+
 		foreach ($res as $r)
 		{
-			if (!isset($evcats[$r->event_id])) {
+			if (!isset($evcats[$r->event_id]))
+			{
 				$evcats[$r->event_id] = array();
 			}
 			$evcats[$r->event_id][] = $r;
@@ -252,10 +240,12 @@ class modRedeventTeaserHelper
 
 		foreach ($rows as $k => $r)
 		{
-			if (isset($evcats[$r->id])) {
+			if (isset($evcats[$r->id]))
+			{
 				$rows[$k]->categories = $evcats[$r->id];
 			}
-			else {
+			else
+			{
 				$rows[$k]->categories = array();
 			}
 		}
@@ -267,13 +257,13 @@ class modRedeventTeaserHelper
 	 * returns categories links
 	 * @param unknown_type $item
 	 */
-	function _getCatLinks($item)
+	private function _getCatLinks($item)
 	{
 		$links = array();
 		foreach ((array) $item->categories as $c)
 		{
 			$link = JRoute::_(RedeventHelperRoute::getCategoryEventsRoute($c->slug));
-			$links[] = JHTML::link($link, $c->catname);
+			$links[] = JHTML::link($link, $c->name);
 		}
 		return $links;
 	}
@@ -282,7 +272,7 @@ class modRedeventTeaserHelper
 	 *format days
 	 *
 	 */
-	function _format_day($row, &$params)
+	private function _format_day($row, &$params)
 	{
 		//Get needed timestamps and format
 		$yesterday_stamp	= mktime(0, 0, 0, date("m") , date("d")-1, date("Y"));
@@ -361,7 +351,7 @@ class modRedeventTeaserHelper
 	 * @access public
 	 * @return string
 	 */
-	function _format_date($row, &$params)
+	private function _format_date($row, &$params)
 	{
 		$enddates_stamp		= $row->enddates ? strtotime($row->enddates) : null;
 
@@ -379,13 +369,14 @@ class modRedeventTeaserHelper
 
 		return $result;
 	}
+
 	/**
 	 * Method to format time information
 	 *
 	 * @access public
 	 * @return string
 	 */
-	function _format_time($date, $time, &$params)
+	private function _format_time($date, $time, &$params)
 	{
 		$time = strftime( $params->get('formattime', '%H:%M'), strtotime( $date.' '.$time ));
 		$result = JText::sprintf('MOD_REDEVENT_TEASER_TIME_STRING', $time);
@@ -393,26 +384,28 @@ class modRedeventTeaserHelper
 	}
 
 	/*Calendar*/
-
-	function _format_dayname($row)
+	private function _format_dayname($row)
 	{
 		$date	  = strtotime($row->dates);
 		$result = strftime("%A", $date);
 		return $result;
 	}
-	function _format_daynum($row)
+
+	private function _format_daynum($row)
 	{
 		$date	  = strtotime($row->dates);
 		$result = strftime("%d", $date);
 		return $result;
 	}
-	function _format_year($row)
+
+	private function _format_year($row)
 	{
 		$date	  = strtotime($row->dates);
 		$result = strftime("%Y", $date);
 		return $result;
 	}
-	function _format_month($row)
+
+	private function _format_month($row)
 	{
 		$date	  = strtotime($row->dates);
 		$result = strftime("%B", $date);
