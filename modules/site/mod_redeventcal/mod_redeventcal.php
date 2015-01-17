@@ -1,85 +1,52 @@
 <?php
 /**
-* @version 0.8 $Id$
-* @package Eventlist CalModuleQ for Joomla 1.5
-* @copyright (C) 2008 Toni Smillie www.qivva.com
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* Eventlist Calendar Q by Toni Smillie www.qivva.com
-*
- * Version 0.8
- * Changes for v0.8
- * 1. Roll over year end bug fixed
- * 2. Check for mb_substr
- * 3. Removed hard coded text align center (Now uses stylesheet)
- * Version 0.7
- * Changes for v0.7
- * 1. Removed JDate again - causing too many date/time problems
- * 2. Better Tooltips
- * Version 0.6
- * Changes for v0.6
- * 1. Use JDate for month and day languages
- * 2. XHTML validation fixes
- * 3. Tests if mbstring functions are installed before using them, defaults to ucfirst if no mb_convert_case
- * 4. Allows a calendar offset so can have multiple calendars displaying different months
+ * @package     Redevent.Frontend
+ * @subpackage  Modules
  *
- * Version 0.5
- * Changes for v0.5
- * 1. Remember which month was being viewed, so doesn't revery back to "today" on a page change - controlled by Parameter
- * 2. Fix for Windows IIS servers
- * 3. Fix for SEF links
- * 4. Replace instead of concatenate month view changes
- * 5. Set $month_href = NULL; (bug fix)
- * 6. Use multibyte strings for days and months. Parameter overrides for locale and charset.
- *
- * Version 0.4
- * Changes for v0.4
- * 1. New Parameters Category ID and Venue ID to allow for filtering of calendar module events
- * 2. Removed the 2 styling parameters form the parameter list. All styling is now done in the CSS
- * 3. Enhanced styling and new stylesheet
- *
-* Changes for v0.3
-* 1. Fixed timeoffset properly for Joomla 1.5
-* 2. Fixed problem that caused "Notice: Undefined index:" with PHP5
-*
-* Changes for v0.2
-* 1. Added Title on Tooltips
-* 2. Fix for time offset
-* 3 Bug fix - not picking up all events when on the same day
-*
-* Original Eventlist calendar from Christoph Lukes www.schlu.net
-* PHP Calendar (version 2.3), written by Keith Devens
-* http://keithdevens.com/software/php_calendar
-* see example at http://keithdevens.com/weblog
-* License: http://keithdevens.com/software/license
-*/
-defined( '_JEXEC' ) or die( 'Restricted access' );
+ * @copyright   Copyright (C) 2008 - 2014 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later, see LICENSE.
+ */
 
-require_once( dirname(__FILE__).'/helper.php' );
-require_once(JPATH_SITE.'/components/com_redevent/helpers/route.php');
+// No direct access
+defined('_JEXEC') or die('Restricted access');
+
+// Load redEVENT library
+$redeventLoader = JPATH_LIBRARIES . '/redevent/bootstrap.php';
+
+if (!file_exists($redeventLoader))
+{
+	throw new Exception(JText::_('COM_REDEVENT_INIT_FAILED'), 404);
+}
+
+include_once $redeventLoader;
+
+RedeventBootstrap::bootstrap();
+
+require_once( dirname(__FILE__).'/helper.php');
 
 // include mootools tooltip
 JHTML::_('behavior.tooltip');
 
-$document = &JFactory::getDocument();
-$document->addScript( JURI::base() . 'modules/mod_redeventcal/mod_redeventcal.js' );
+$document = JFactory::getDocument();
+$document->addScript(JURI::base() . 'modules/mod_redeventcal/mod_redeventcal.js');
 
-$app = &JFactory::getApplication();
+$app = JFactory::getApplication();
 
 	// Parameters
-	$day_name_length	= $params->get( 'day_name_length', '2' );
-	$first_day			= $params->get( 'first_day', '1' );
-	$Year_length		= $params->get( 'Year_length', '1' );
-	$Month_length		= $params->get( 'Month_length', '0' );
-	$Month_offset		= $params->get( 'Month_offset', '0' );
-	$Show_Tooltips		= $params->get( 'Show_Tooltips', '1' );
-	$Remember			= $params->get( 'Remember', '1' );
-	$CalTooltipsTitle		= $params->get( 'recal_tooltips_title', 'Events' );
-	$show_weeknb = $params->get( 'show_week_number', 1 );
+	$day_name_length	= $params->get('day_name_length', '2');
+	$first_day			= $params->get('first_day', '1');
+	$Year_length		= $params->get('Year_length', '1');
+	$Month_length		= $params->get('Month_length', '0');
+	$Month_offset		= $params->get('Month_offset', '0');
+	$Show_Tooltips		= $params->get('Show_Tooltips', '1');
+	$Remember			= $params->get('Remember', '1');
+	$CalTooltipsTitle		= $params->get('recal_tooltips_title', 'Events');
+	$show_weeknb = $params->get('show_week_number', 1);
 	$week_nb_format = $first_day ? '%W' : '%U';
 
 	//get switch trigger
-	$req_month 		= JRequest::getVar( 're_mcal_month', '', 'request', 'int' );
-	$req_year       = JRequest::getVar( 're_mcal_year', '', 'request', 'int' );
+	$req_month 		= JRequest::getVar('re_mcal_month', '', 'request', 'int');
+	$req_year       = JRequest::getVar('re_mcal_year', '', 'request', 'int');
 
 	if ($Remember == 1) // Remember which month / year is selected. Don't jump back to tday on page change
 	{
@@ -96,12 +63,12 @@ $app = &JFactory::getApplication();
 	}
 
 	//set now
-	$config =& JFactory::getConfig();
-	$tzoffset = $config->getValue('config.offset');
+	$config = JFactory::getConfig();
+	$tzoffset = $config->get('config.offset');
 	$time 			= time()  + ($tzoffset*60*60); //25/2/08 Change for v 0.6 to incorporate server offset into time;
-	$today_month 	= date( 'm', $time);
-	$today_year 	= date( 'Y', $time);
-	$today          = date( 'j',$time);
+	$today_month 	= date('m', $time);
+	$today_year 	= date('Y', $time);
+	$today          = date('j',$time);
 
 	if ($req_month == 0) {
 	  $req_month = $today_month + $Month_offset;
@@ -209,4 +176,4 @@ $app = &JFactory::getApplication();
 			JText::_('DECEMBER_SHORT'),
 			);
 
-	require( JModuleHelper::getLayoutPath( 'mod_redeventcal' ) );
+	require( JModuleHelper::getLayoutPath('mod_redeventcal') );

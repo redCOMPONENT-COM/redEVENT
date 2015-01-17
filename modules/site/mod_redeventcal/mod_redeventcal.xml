@@ -12,9 +12,9 @@
 	<copyright>(C) 2008 - 2012 redCOMPONENT.com</copyright>
 	<license>GNU/GPL</license>
 	<version>##VERSION##</version>
-	
+
 	<description><![CDATA[MOD_REDEVENT_CALENDAR_DESC]]></description>
-	
+
 	<files>
 		<filename module="mod_redeventcal">mod_redeventcal.php</filename>
 		<filename>mod_redeventcal.css</filename>
@@ -26,15 +26,15 @@
     <filename>tmpl/index.html</filename>
     <folder>language</folder>
 	</files>
-	
-	<config>
+
+	<config addfieldpath="/libraries/redevent/form/fields">
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="recal_tooltips_title" type="text" default="Events" label="MOD_REDEVENT_CALENDAR_TOOLTIP_TITLE" description="MOD_REDEVENT_CALENDAR_TOOLTIP_TITLE_DESC" />	
+				<field name="recal_tooltips_title" type="text" default="Events" label="MOD_REDEVENT_CALENDAR_TOOLTIP_TITLE" description="MOD_REDEVENT_CALENDAR_TOOLTIP_TITLE_DESC" />
 				<field name="events_tip" type="list" default="0" label="MOD_REDEVENT_CALENDAR_EVENT_TIP" description="MOD_REDEVENT_CALENDAR_EVENT_TIP">
 					<option value="0">MOD_REDEVENT_CALENDAR_EVENT_TIP_EVENT</option>
 					<option value="1">MOD_REDEVENT_CALENDAR_EVENT_TIP_EVENT_VENUE</option>
-				</field>		
+				</field>
 		    <field name="day_name_length" type="list" default="2" label="MOD_REDEVENT_CALENDAR_DAY_NAME_LENGTH" description="MOD_REDEVENT_CALENDAR_DAY_NAME_LENGTH_DESC">
 					<option value="1">MOD_REDEVENT_CALENDAR_DAY_NAME_LENGTH_ONE</option>
 					<option value="2">MOD_REDEVENT_CALENDAR_DAY_NAME_LENGTH_TWO</option>
@@ -66,9 +66,9 @@
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
-				<field name="catid" type="text" default="" label="MOD_REDEVENT_CALENDAR_CATEGORY_ID" description="MOD_REDEVENT_CALENDAR_CATEGORY_ID_DESC" />
-				<field name="venid" type="text" default="" label="MOD_REDEVENT_CALENDAR_VENUE_ID" description="MOD_REDEVENT_CALENDAR_VENUE_ID_DESC" />		
-				
+				<field name="catid" type="recategorylist" multiple="1" label="MOD_REDEVENT_CALENDAR_CATEGORY_ID" description="MOD_REDEVENT_CALENDAR_CATEGORY_ID_DESC" />
+				<field name="venid" type="revenuelist" multiple="1" label="MOD_REDEVENT_CALENDAR_VENUE_ID" description="MOD_REDEVENT_CALENDAR_VENUE_ID_DESC" />
+
 				<field name="toggle" type="radio" default="0" label="MOD_REDEVENT_CALENDAR_TOGGLE_LABEL" description="MOD_REDEVENT_CALENDAR_TOGGLE_DESC">
 					<option value="0">No</option>
 					<option value="1">Yes</option>
@@ -77,9 +77,9 @@
 					<option value="0">MOD_REDEVENT_CALENDAR_TOGGLE_DEFAULT_HIDE</option>
 					<option value="1">MOD_REDEVENT_CALENDAR_TOGGLE_DEFAULT_SHOW</option>
 				</field>
-				
+
 			</fieldset>
-	
+
 			<fieldset
 				name="advanced">
 				<field

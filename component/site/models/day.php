@@ -104,11 +104,11 @@ class RedeventModelDay extends RedeventModelBaseeventlist
 	protected function _buildWhere($query)
 	{
 		$query = parent::_buildWhere($query);
-		$nulldate  = '0000-00-00';
 
 		// Only select events of the specified day
-		$query->where('(\'' . $this->_date . '\' BETWEEN (x.dates) AND (IF (x.enddates >= now(), x.enddates, \'' . $nulldate . '\')) '
-		. 'OR \'' . $this->_date . '\' = x.dates)');
+		$query->where('x.dates > 0');
+		$query->where('(' . $this->_db->quote($this->_date) . ' BETWEEN x.dates AND x.enddates '
+		. ' OR ' . $this->_db->quote($this->_date) . ' = x.dates)');
 
 		return $query;
 	}
