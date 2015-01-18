@@ -24,7 +24,7 @@
     <folder>tmpl</folder>
 	</files>
 
-	<config>
+	<config addfieldpath="/libraries/redevent/form/fields">
 		<fields name="params">
 			<fieldset name="basic">
 				<field name="count" type="text" default="5" label="MOD_REDEVENT_EVENTS_IN_MODULE" description="MOD_REDEVENT_EVENTS_IN_MODULE_DESC" />
@@ -43,7 +43,7 @@
 					<option value="3">MOD_REDEVENT_ORDERING_CREATED_DESC</option>
 					<option value="4">MOD_REDEVENT_ORDERING_TITLE_ASC</option>
 					<option value="5">MOD_REDEVENT_ORDERING_TITLE_DESC</option>
-				</field>	
+				</field>
 				<field name="featuredonly" type="list" default="0" label="MOD_REDEVENT_SHOW_FEATURED_ONLY" description="MOD_REDEVENT_SHOW_FEATURED_ONLY_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
@@ -55,16 +55,16 @@
 				<field name="showrecurring" type="list" default="1" label="MOD_REDEVENT_SHOW_RECURRING" description="MOD_REDEVENT_SHOW_RECURRING_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
-				</field>	
+				</field>
 				<field name="title_type" type="list" default="0" label="MOD_REDEVENT_TITLE_TYPE_LABEL" description="MOD_REDEVENT_TITLE_TYPE_DESC">
 					<option value="0">MOD_REDEVENT_TITLE_TYPE_EVENT</option>
 					<option value="1">MOD_REDEVENT_TITLE_TYPE_SESSION</option>
 					<option value="2">MOD_REDEVENT_TITLE_TYPE_FULL</option>
-				</field>	
+				</field>
 				<field name="cuttitle" type="text" default="18" label="MOD_REDEVENT_MAX_TITLE_LENGTH" description="MOD_REDEVENT_MAX_TITLE_LENGTH_DESC" />
 				<field name="picture_size" type="text" default="30" label="MOD_REDEVENT_PICTURE_SIZE" description="MOD_REDEVENT_PICTURE_SIZE_DESC" />
-				<field name="catid" type="text" default="" label="MOD_REDEVENT_CATEGORY_ID" description="MOD_REDEVENT_CATEGORY_ID_DESC" />
-				<field name="venid" type="text" default="" label="MOD_REDEVENT_VENUE_ID" description="MOD_REDEVENT_VENUE_ID_DESC" />
+				<field name="catid" type="recategorylist" multiple="1" label="MOD_REDEVENT_CATEGORY_ID" description="MOD_REDEVENT_CATEGORY_ID_DESC" />
+				<field name="venid" type="revenuelist" multiple="1" label="MOD_REDEVENT_VENUE_ID" description="MOD_REDEVENT_VENUE_ID_DESC" />
 				<field name="formatdate" type="text" default="%d.%m.%Y" label="MOD_REDEVENT_DATE_FORMAT" description="MOD_REDEVENT_DATE_FORMAT_DESC" />
 				<field name="formattime" type="text" default="%H.%M" label="MOD_REDEVENT_TIME_FORMAT" description="MOD_REDEVENT_TIME_FORMAT_DESC" />
 		    <field name="show_enddate" type="list" default="1" label="MOD_REDEVENT_SHOW_END_DATE" description="MOD_REDEVENT_SHOW_END_DATE_DESC">
@@ -75,7 +75,7 @@
 		      <option value="0">JNO</option>
 		      <option value="1">JYES</option>
 		    </field>
-		    
+
 				<field type="spacer" hr="true" />
 				<field type="spacer" label="MOD_REDEVENT_LAYOUT_ULLIST_SETTINGS"/>
 				<field name="showvenue" type="list" default="1" label="MOD_REDEVENT_SHOW_VENUE" description="MOD_REDEVENT_SHOW_VENUE_DESC">
@@ -95,13 +95,13 @@
 		      <option value="0">JNO</option>
 		      <option value="1">JYES</option>
 		    </field>
-		
+
 				<field type="spacer" hr="true" />
 				<field type="spacer" label="MOD_REDEVENT_LAYOUT_TABLE_SETTINGS"/>
 				<field name="table_cols" type="text" default="DATE, TITLE" label="MOD_REDEVENT_COLUMNS_LABEL" description="MOD_REDEVENT_COLUMNS_DESC" />
-				
+
 			</fieldset>
-	
+
 			<fieldset
 				name="advanced">
 				<field

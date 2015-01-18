@@ -1,33 +1,20 @@
 <?php
 /**
- * @package     Joomla
- * @subpackage  RedEvent
- * @copyright   (C) 2005 - 2008 Christoph Lukes
- * @license     GNU/GPL, see LICENCE.php
- * RedEvent is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * RedEvent is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with RedEvent; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package     Redevent.Frontend
+ * @subpackage  Modules
+ *
+ * @copyright   Copyright (C) 2008 - 2014 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later, see LICENSE.
  */
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once JPATH_SITE . '/components/com_redevent/helpers/route.php';
-
 /**
  * RedEvent Module helper
  *
- * @package     Joomla
- * @subpackage  RedEvent Module
+ * @package     Redevent.Frontend
+ * @subpackage  Modules
  * @since       0.9
 */
 class modRedEventHelper
@@ -105,21 +92,20 @@ class modRedEventHelper
 			$where[] = 'x.published = 1 AND (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) < ' . $db->Quote($ref);
 		}
 
-		$catid 	= trim($params->get('catid'));
-		$venid 	= trim($params->get('venid'));
+		$catid = $params->get('catid');
 
-		if ($catid)
+		if (is_array($catid) && count($catid))
 		{
-			$ids = explode(',', $catid);
-			JArrayHelper::toInteger($ids);
-			$where[] = ' c.id IN (' . implode(',', $ids) . ')';
+			JArrayHelper::toInteger($catid);
+			$query->where('c.id IN (' . implode(',', $catid) . ')');
 		}
 
-		if ($venid)
+		$venid = $params->get('venid');
+
+		if (is_array($venid) && count($venid))
 		{
-			$ids = explode(',', $venid);
-			JArrayHelper::toInteger($ids);
-			$where[] = ' l.id IN (' . implode(',', $ids) . ')';
+			JArrayHelper::toInteger($venid);
+			$query->where('l.id IN (' . implode(',', $venid) . ')');
 		}
 
 		if ($params->get('featuredonly', 0) == 1)

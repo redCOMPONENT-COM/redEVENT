@@ -84,7 +84,7 @@ class ModRedeventFiltersHelper
 			$input = JFactory::getApplication()->input;
 			$view = $input->getCmd('view', 'simplelist');
 
-			$model = JModel::getInstance(ucfirst($view), 'RedeventModel');
+			$model = RModel::getFrontInstance(ucfirst($view));
 		}
 
 		return $model;
