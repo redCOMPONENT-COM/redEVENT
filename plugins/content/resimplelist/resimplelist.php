@@ -1,41 +1,31 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008-2011 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package     Redevent.Frontend
+ * @subpackage  Plugins
+ *
+ * @copyright   Copyright (C) 2008 - 2014 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later, see LICENSE.
  */
 
-// no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+// No direct access
+defined('_JEXEC') or die('Restricted access');
 
-// Register library prefix
-JLoader::registerPrefix('R', JPATH_LIBRARIES . '/redcore');
-RLoader::registerPrefix('Redevent', JPATH_LIBRARIES . '/redevent');
-RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
+// Load redEVENT library
+$redeventLoader = JPATH_LIBRARIES . '/redevent/bootstrap.php';
+
+if (!file_exists($redeventLoader))
+{
+	throw new Exception(JText::_('COM_REDEVENT_INIT_FAILED'), 404);
+}
+
+include_once $redeventLoader;
+
+RedeventBootstrap::bootstrap();
 
 // Import library dependencies
 jimport('joomla.plugin.plugin');
 
-if (!defined('REDEVENT_PATH_SITE')) DEFINE('REDEVENT_PATH_SITE', JPATH_SITE.DS.'components'.DS.'com_redevent');
-
-include_once(REDEVENT_PATH_SITE.DS.'helpers'.DS.'route.php');
-include_once('resimplelist'.DS.'model.php');
+include_once('resimplelist/model.php');
 
 class plgContentRESimplelist extends JPlugin {
 
@@ -61,7 +51,7 @@ class plgContentRESimplelist extends JPlugin {
 	*/
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
-		$document = &JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('plugins/content/resimplelist/resimplelist.css');
 
 		// do we have matches for the plugin
@@ -208,7 +198,7 @@ class plgContentRESimplelist extends JPlugin {
 		</thead>
 		<tbody>
 		<?php foreach ($res as $event): ?>
-		<?php $link = JRoute::_(REdeventHelperRoute::getDetailsRoute($event->id, $event->xref)); ?>
+		<?php $link = JRoute::_(RedeventHelperRoute::getDetailsRoute($event->id, $event->xref)); ?>
 			<tr class="sectiontableentry<?php echo $i+1; ?>">
 				<?php
 				foreach ($cols as $c)
@@ -370,7 +360,7 @@ class plgContentRESimplelist extends JPlugin {
 		$cats = array();
 		foreach ($event->categories as $cat)
 		{
-			$cats[] = JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($cat->slug), $cat->catname);
+			$cats[] = JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($cat->slug), $cat->name);
 		}
 		return implode("<br/>", $cats);
 	}
