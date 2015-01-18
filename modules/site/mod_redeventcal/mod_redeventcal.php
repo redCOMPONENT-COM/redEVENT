@@ -22,7 +22,7 @@ include_once $redeventLoader;
 
 RedeventBootstrap::bootstrap();
 
-require_once( dirname(__FILE__).'/helper.php');
+require_once(dirname(__FILE__).'/helper.php');
 
 // include mootools tooltip
 JHTML::_('behavior.tooltip');

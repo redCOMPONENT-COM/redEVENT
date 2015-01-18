@@ -22,7 +22,8 @@ class modRedeventTeaserHelper
 	/**
 	 * Method to get the events
 	 *
-	 * @access public
+	 *
+	 *
 	 * @return array
 	 */
 	public function getList(&$params)
