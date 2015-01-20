@@ -271,11 +271,13 @@ class RedeventController extends JControllerLegacy
 	function savevenue()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'Invalid Token' );
-		$acl        = RedeventUserAcl::getInstance();
+		JSession::checkToken() or die( 'Invalid Token' );
+		$acl = RedeventUserAcl::getInstance();
 
 		//Sanitize
-		$post = JRequest::get( 'post' );
+		$post = $this->input->post;
+		echo '<pre>'; echo print_r($post, true); echo '</pre>'; exit;
+
 		$post['locdescription'] = JRequest::getVar( 'locdescription', '', 'post', 'string', JREQUEST_ALLOWRAW );
 
 		$isNew = ($post['id']) ? false : true;

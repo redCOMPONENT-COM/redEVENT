@@ -321,6 +321,4 @@ class RedeventTableVenue extends RedeventTable
 
 		return $res ? false : true;
 	}
-
-
 }

@@ -82,7 +82,7 @@ class RedeventHelperRoute
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "day",
 		                "id"     => $id );
-		return self::buildUrl( $parts );
+		return self::buildUrl($parts);
 	}
 
 
@@ -97,7 +97,7 @@ class RedeventHelperRoute
 		if ($layout) {
 			$parts['layout'] = $layout;
 		}
-		return self::buildUrl( $parts );
+		return self::buildUrl($parts);
 	}
 
 	public static function getVenueCategoryRoute($id)
@@ -105,7 +105,7 @@ class RedeventHelperRoute
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "venuecategory",
 		                "id"     => $id );
-		return self::buildUrl( $parts );
+		return self::buildUrl($parts);
 	}
 
 	public static function getUpcomingVenueEventsRoute($id, $task = null)
@@ -116,7 +116,20 @@ class RedeventHelperRoute
 		if ($task) {
 			$parts['task'] = $task;
 		}
-		return self::buildUrl( $parts );
+		return self::buildUrl($parts);
+	}
+
+	/**
+	 * Route to venues view
+	 *
+	 * @return string
+	 */
+	public static function getVenuesRoute()
+	{
+		$parts = array( "option" => "com_redevent",
+			"view"   => "venues");
+
+		return self::buildUrl($parts);
 	}
 
 	public static function getCategoryEventsRoute($id, $task = null, $layout = null)
@@ -130,7 +143,7 @@ class RedeventHelperRoute
 		if ($layout) {
 			$parts['layout'] = $layout;
 		}
-		return self::buildUrl( $parts );
+		return self::buildUrl($parts);
 	}
 
 	/**
@@ -149,7 +162,7 @@ class RedeventHelperRoute
 		if ($task) {
 			$parts['task'] = $task;
 		}
-		return self::buildUrl( $parts );
+		return self::buildUrl($parts);
 	}
 
 	/**
@@ -168,7 +181,7 @@ class RedeventHelperRoute
 		if ($task) {
 			$parts['task'] = $task;
 		}
-		return self::buildUrl( $parts );
+		return self::buildUrl($parts);
 	}
 
 	/**
@@ -186,7 +199,7 @@ class RedeventHelperRoute
 		if ($layout) {
 			$parts['layout'] = $layout;
 		}
-		return self::buildUrl( $parts );
+		return self::buildUrl($parts);
 	}
 
 	/**
@@ -198,7 +211,7 @@ class RedeventHelperRoute
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "archive" );
-		return self::buildUrl( $parts );
+		return self::buildUrl($parts);
 	}
 
 	/**
@@ -216,7 +229,7 @@ class RedeventHelperRoute
 		if ($layout) {
 			$parts['layout'] = $layout;
 		}
-		return self::buildUrl( $parts );
+		return self::buildUrl($parts);
 	}
 
 	public static function getSignupRoute($type, $id, $xref, $sessionpricegroup = null)
@@ -231,7 +244,7 @@ class RedeventHelperRoute
 		{
 			$parts['pg'] = $sessionpricegroup;
 		}
-		return self::buildUrl( $parts );
+		return self::buildUrl($parts);
 	}
 
 	public static function getMyeventsRoute()
@@ -239,14 +252,14 @@ class RedeventHelperRoute
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "myevents",
 		                "controller" => "myevents");
-		return self::buildUrl( $parts );
+		return self::buildUrl($parts);
 	}
 
 	public static function getSearchRoute()
 	{
 		$parts = array( "option" => "com_redevent",
 		                "view"   => "search" );
-		return self::buildUrl( $parts );
+		return self::buildUrl($parts);
 	}
 
 	public static function getEditEventRoute($id = null, $xref = 0)
@@ -259,7 +272,7 @@ class RedeventHelperRoute
 		if ($xref) {
 			$parts['xref'] = $xref;
 		}
-		return self::buildUrl( $parts );
+		return self::buildUrl($parts);
 	}
 
 	public static function getEditXrefRoute($id = null, $xref = 0)
@@ -273,17 +286,17 @@ class RedeventHelperRoute
 		if ($xref) {
 			$parts['xref'] = $xref;
 		}
-		return self::buildUrl( $parts );
+		return self::buildUrl($parts);
 	}
 
 	public static function getEditVenueRoute($id = null)
 	{
 		$parts = array( "option" => "com_redevent",
-		                "view"   => "editvenue" );
+		                "task"   => "editvenue.edit" );
 		if (!empty($id)) {
 			$parts['id'] = $id;
 		}
-		return self::buildUrl( $parts );
+		return self::buildUrl($parts);
 	}
 
 	public static function getRegistrationRoute($xref, $task, $submit_key = null)
@@ -314,7 +327,7 @@ class RedeventHelperRoute
 			}
 		}
 
-		return self::buildUrl( $parts );
+		return self::buildUrl($parts);
 	}
 
 	public static function getManageAttendees($xref, $task = 'manageattendees')
@@ -327,7 +340,7 @@ class RedeventHelperRoute
 		if (!empty($task)) {
 			$parts['task'] = $task;
 		}
-		return self::buildUrl( $parts );
+		return self::buildUrl($parts);
 	}
 
 	public static function getWeekRoute($week)
@@ -336,7 +349,7 @@ class RedeventHelperRoute
 		                "view"   => 'week',
 		                "week"   => $week,
 									);
-		return self::buildUrl( $parts );
+		return self::buildUrl($parts);
 	}
 
 	protected static function buildUrl($parts)
