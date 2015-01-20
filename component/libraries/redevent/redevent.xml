@@ -12,6 +12,7 @@
 	<description>redEVENT library</description>
 	<files>
 		<folder>abstract</folder>
+		<folder>ajax</folder>
         <folder>attendee</folder>
 		<folder>customfield</folder>
 		<folder>factory</folder>

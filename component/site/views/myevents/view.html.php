@@ -347,7 +347,7 @@ class RedeventViewMyevents extends RViewSite
 		$overlib = JText::_('COM_REDEVENT_EDIT_VENUE_TIP');
 		$text = JText::_('COM_REDEVENT_EDIT_VENUE');
 
-		$link 	= 'index.php?option=com_redevent&view=editvenue&id=' . $id;
+		$link = RedeventHelperRoute::getEditVenueRoute($id . '&return=' . base64_encode(RedeventHelperRoute::getMyeventsRoute()));
 		$output	= '<a href="' . JRoute::_($link) . '" class="editlinktip hasTip" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
 
 		return $output;

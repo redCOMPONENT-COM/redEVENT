@@ -323,7 +323,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		if (empty($this->_pagination_events))
 		{
 			jimport('joomla.html.pagination');
-			$this->_pagination_events = new REAjaxPagination($this->getTotalEvents(), $this->getState('limitstart_events'), $this->getState('limit'));
+			$this->_pagination_events = new RedeventAjaxPagination($this->getTotalEvents(), $this->getState('limitstart_events'), $this->getState('limit'));
 		}
 
 		return $this->_pagination_events;
@@ -341,7 +341,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		if (empty($this->_pagination_venues))
 		{
 			jimport('joomla.html.pagination');
-			$this->_pagination_venues = new REAjaxPagination($this->getTotalVenues(), $this->getState('limitstart_venues'), $this->getState('limit'));
+			$this->_pagination_venues = new RedeventAjaxPagination($this->getTotalVenues(), $this->getState('limitstart_venues'), $this->getState('limit'));
 		}
 
 		return $this->_pagination_venues;
@@ -359,7 +359,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		if (empty($this->_pagination_attending))
 		{
 			jimport('joomla.html.pagination');
-			$this->_pagination_attending = new REAjaxPagination($this->getTotalAttending(), $this->getState('limitstart_attending'), $this->getState('limit'));
+			$this->_pagination_attending = new RedeventAjaxPagination($this->getTotalAttending(), $this->getState('limitstart_attending'), $this->getState('limit'));
 		}
 
 		return $this->_pagination_attending;
@@ -377,7 +377,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		if (empty($this->_pagination_attended))
 		{
 			jimport('joomla.html.pagination');
-			$this->_pagination_attended = new REAjaxPagination($this->getTotalAttended(), $this->getState('limitstart_attending'), $this->getState('limit'));
+			$this->_pagination_attended = new RedeventAjaxPagination($this->getTotalAttended(), $this->getState('limitstart_attending'), $this->getState('limit'));
 		}
 
 		return $this->_pagination_attended;

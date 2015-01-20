@@ -130,6 +130,9 @@ JHtml::_('rjquery.chosen', 'select');
 		<?php echo $this->form->getInput('id'); ?>
 		<input type="hidden" name="option" value="com_redevent" />
 		<input type="hidden" name="task" value="" />
+		<?php if ($this->return): ?>
+			<input type="hidden" name="return" value="<?php echo $this->return; ?>" />
+		<?php endif; ?>
 		<?php echo JHtml::_('form.token'); ?>
 	</form>
 </div>

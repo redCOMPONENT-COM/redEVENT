@@ -30,6 +30,7 @@ class RedeventViewEditvenue extends RViewSite
 
 		$this->item = $this->get('Item');
 		$this->form     = $this->get('Form');
+		$this->return = $app->input->get('return');
 
 		if ($this->item->id && !$acl->canEditVenue($this->item->id))
 		{

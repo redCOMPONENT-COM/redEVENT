@@ -166,7 +166,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		if (empty($this->pagination_sessions))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination_sessions = new REAjaxPagination($this->getTotalSessions(), $this->getState('limitstart_sessions'), $this->getState('limit'));
+			$this->pagination_sessions = new RedeventAjaxPagination($this->getTotalSessions(), $this->getState('limitstart_sessions'), $this->getState('limit'));
 		}
 
 		return $this->pagination_sessions;
@@ -201,7 +201,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		if (empty($this->pagination_booked))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination_booked = new REAjaxPagination($this->getTotalBookings(), $this->getState('bookings_limitstart'), $this->getState('limit'));
+			$this->pagination_booked = new RedeventAjaxPagination($this->getTotalBookings(), $this->getState('bookings_limitstart'), $this->getState('limit'));
 		}
 
 		return $this->pagination_booked;
@@ -236,7 +236,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		if (empty($this->pagination_booked))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination_booked = new REAjaxPagination($this->getTotalMemberBooked(), $this->getState('booked_limitstart'), $this->getState('limit'));
+			$this->pagination_booked = new RedeventAjaxPagination($this->getTotalMemberBooked(), $this->getState('booked_limitstart'), $this->getState('limit'));
 		}
 
 		return $this->pagination_booked;
@@ -254,7 +254,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		if (empty($this->pagination_previous))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination_previous = new REAjaxPagination($this->getTotalMemberPrevious(), $this->getState('previous_limitstart'), $this->getState('limit'));
+			$this->pagination_previous = new RedeventAjaxPagination($this->getTotalMemberPrevious(), $this->getState('previous_limitstart'), $this->getState('limit'));
 		}
 
 		return $this->pagination_previous;

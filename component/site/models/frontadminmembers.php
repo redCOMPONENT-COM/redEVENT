@@ -105,7 +105,7 @@ class RedeventModelFrontadminMembers extends RedeventModelBaseeventlist
 		if (empty($this->pagination))
 		{
 			jimport('joomla.html.pagination');
-			$this->pagination = new REAjaxPagination($this->getTotal(), $this->getState('members_limitstart'), $this->getState('limit'));
+			$this->pagination = new RedeventAjaxPagination($this->getTotal(), $this->getState('members_limitstart'), $this->getState('limit'));
 		}
 
 		return $this->pagination;
