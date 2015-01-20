@@ -8,7 +8,7 @@
  */
 defined('JPATH_REDCORE') or die;
 
-RHelperAsset::load('roles.js');
+RHelperAsset::load('attachments.js');
 JText::script('COM_REDEVENT_ATTACHMENT_CONFIRM_MSG');
 
 $data = $displayData;
