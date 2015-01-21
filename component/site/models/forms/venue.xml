@@ -164,8 +164,8 @@
 			class="inputbox"
 			default="0"
 			size="1"
-			label="COM_REDEVENT_ENABLE_MAP"
-			description="COM_REDEVENT_ADDRESS_NOTICE">
+			label="COM_REDEVENT_VENUE_SHOW_ON_MAP"
+			description="COM_REDEVENT_VENUE_SHOW_ON_MAP_DESC">
 			<option
 				value="1">
 				JYES</option>
