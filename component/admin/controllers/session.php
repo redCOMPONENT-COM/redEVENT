@@ -19,8 +19,8 @@ class RedeventControllerSession extends RControllerForm
 	 * Function that allows child controller access to model data
 	 * after the data has been saved.
 	 *
-	 * @param   RModel  &$model     The data model object.
-	 * @param   array   $validData  The validated data.
+	 * @param   RModelAdmin  &$model     The data model object.
+	 * @param   array        $validData  The validated data.
 	 *
 	 * @return  void
 	 */
@@ -31,7 +31,7 @@ class RedeventControllerSession extends RControllerForm
 		$input = JFactory::getApplication()->input;
 		$sessionId = $model->getState($this->context . '.id');
 
-		if ($sessionId)
+		if (!$sessionId)
 		{
 			return;
 		}
@@ -44,13 +44,15 @@ class RedeventControllerSession extends RControllerForm
 		if ($input->get('task') == 'saveAndTwit')
 		{
 			JPluginHelper::importPlugin('system', 'autotweetredevent');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onAfterRedeventSessionSave', array($sessionId));
 		}
-echo '<pre>'; echo print_r($validData, true); echo '</pre>'; exit;
+
+		$isNew = isset($validData['id']) && $validData['id'] ? false : true;
+
 		// Trigger event
 		JPluginHelper::importPlugin('redevent');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onAfterSessionSave', array($sessionId, $isNew));
 	}
 }
