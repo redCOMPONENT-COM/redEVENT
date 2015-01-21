@@ -8,6 +8,12 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+/**
+ * Redevent Edit venue controller
+ *
+ * @package  Redevent.Site
+ * @since    3.0
+ */
 class RedeventControllerEditvenue extends RControllerForm
 {
 	/**
