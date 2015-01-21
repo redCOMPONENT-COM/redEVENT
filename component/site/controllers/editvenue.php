@@ -11,6 +11,26 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 class RedeventControllerEditvenue extends RControllerForm
 {
 	/**
+	 * Function that allows child controller access to model data
+	 * after the data has been saved.
+	 *
+	 * @param   RModelAdmin  $model      The data model object.
+	 * @param   array        $validData  The validated data.
+	 *
+	 * @return  void
+	 */
+	protected function postSaveHook(RModelAdmin $model, $validData = array())
+	{
+		$isNew = isset($validData['id']) && $validData['id'] ? false : true;
+
+		JPluginHelper::importPlugin('redevent');
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('onVenueEdited', array($model->getState($this->context . '.id'), $isNew));
+
+		parent::postSaveHook($model, $validData);
+	}
+
+	/**
 	 * Get the JRoute object for a redirect to list.
 	 *
 	 * @param   string  $append  An optionnal string to append to the route

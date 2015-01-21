@@ -264,65 +264,6 @@ class RedeventController extends JControllerLegacy
 	}
 
 	/**
-	 * Saves the submitted venue to the database
-	 *
-	 * @since 0.5
-	 */
-	function savevenue()
-	{
-		// Check for request forgeries
-		JSession::checkToken() or die( 'Invalid Token' );
-		$acl = RedeventUserAcl::getInstance();
-
-		//Sanitize
-		$post = $this->input->post;
-		echo '<pre>'; echo print_r($post, true); echo '</pre>'; exit;
-
-		$post['locdescription'] = JRequest::getVar( 'locdescription', '', 'post', 'string', JREQUEST_ALLOWRAW );
-
-		$isNew = ($post['id']) ? false : true;
-
-		if (!$isNew && !$acl->canEditVenue($post['id'])) {
-			$msg = JText::_('COM_REDEVENT_USER_NOT_ALLOWED_TO_EDIT_THIS_VENUE');
-			$this->setRedirect(JRoute::_(RedeventHelperRoute::getVenueEventsRoute($post['id'])), $msg, 'error' );
-			return;
-		}
-		else if ($isNew && !$acl->canAddVenue()) {
-			$msg =  JText::_('COM_REDEVENT_USER_NOT_ALLOWED_TO_ADD_VENUE');
-			$link = JRequest::getString('referer', JURI::base(), 'post');
-			$this->setRedirect($link, $msg, 'error' );
-			return;
-		}
-
-		$file 		= JRequest::getVar( 'userfile', '', 'files', 'array' );
-
-		$model = $this->getModel('editvenue');
-
-		if ($returnid = $model->store($post, $file)) {
-
-			$msg 	= JText::_('COM_REDEVENT_VENUE_SAVED' );
-
-			JPluginHelper::importPlugin( 'redevent' );
-			$dispatcher =& JDispatcher::getInstance();
-			$res = $dispatcher->trigger( 'onVenueEdited', array( $returnid, $isNew ) );
-
-			$cache = &JFactory::getCache('com_redevent');
-			$cache->clean();
-
-		} else {
-
-			$msg 		= '';
-
-			RedeventError::raiseWarning('REDEVENT_GENERIC_ERROR', $model->getError() );
-		}
-
-		$model->checkin();
-		$link = JRequest::getString('referer', RedeventHelperRoute::getMyeventsRoute());
-
-		$this->setRedirect($link, $msg );
-	}
-
-	/**
 	 * Cleanes and saves the submitted event to the database
 	 *
 	 * TODO: Check if the user is allowed to post events assigned to this category/venue
