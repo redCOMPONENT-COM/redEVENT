@@ -24,15 +24,28 @@ function RedEventBuildRoute(&$query)
 		case 'confirmation':
 			break;
 		case 'editevent':
-			if(isset($query['id']))
+			if(isset($query['e_id']))
 			{
-				$segments[] = $query['id'];
-				unset($query['id']);
+				$segments[] = $query['e_id'];
+				unset($query['e_id']);
 			};
-			if(isset($query['xref']))
+			if(isset($query['s_id']))
 			{
-				$segments[] = $query['xref'];
-				unset($query['xref']);
+				$segments[] = $query['s_id'];
+				unset($query['s_id']);
+			};
+			break;
+
+		case 'editsession':
+			if(isset($query['e_id']))
+			{
+				$segments[] = $query['e_id'];
+				unset($query['e_id']);
+			};
+			if(isset($query['s_id']))
+			{
+				$segments[] = $query['s_id'];
+				unset($query['s_id']);
 			};
 			break;
 
@@ -221,14 +234,30 @@ function RedEventParseRoute($segments)
 				$vars['view'] = 'editevent';
 
 				if ($count > 1) {
-					$vars['id'] = $segments[1];
+					$vars['e_id'] = $segments[1];
 				}
 
 				if($count > 2) {
-					$vars['xref'] = $segments[2];
+					$vars['s_id'] = $segments[2];
 				}
 
 			} break;
+
+		case 'editsession':
+		{
+			$count = count($segments);
+
+			$vars['view'] = 'editsession';
+
+			if ($count > 1) {
+				$vars['e_id'] = $segments[1];
+			}
+
+			if($count > 2) {
+				$vars['s_id'] = $segments[2];
+			}
+
+		} break;
 
 		case 'editvenue':
 			{

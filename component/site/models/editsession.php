@@ -13,8 +13,10 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent.admin
  * @since    0.9
  */
-class RedeventModelSession extends RModelAdmin
+class RedeventModelEditsession extends RModelAdmin
 {
+	protected $formName = 'session';
+
 	/**
 	 * Method to get a single record.
 	 *
@@ -157,6 +159,25 @@ class RedeventModelSession extends RModelAdmin
 	}
 
 	/**
+	 * Get the associated JTable
+	 *
+	 * @param   string  $name    Table name
+	 * @param   string  $prefix  Table prefix
+	 * @param   array   $config  Configuration array
+	 *
+	 * @return  JTable
+	 */
+	public function getTable($name = null, $prefix = '', $config = array())
+	{
+		if (empty($name))
+		{
+			$name = 'Session';
+		}
+
+		return parent::getTable($name, $prefix, $config);
+	}
+
+	/**
 	 * Get custom field raw object from db
 	 *
 	 * @return array|mixed
@@ -216,6 +237,28 @@ class RedeventModelSession extends RModelAdmin
 	}
 
 	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @return  void
+	 */
+	protected function populateState()
+	{
+		$app = JFactory::getApplication();
+
+		// Load state from the request.
+		$pk = $app->input->getInt('s_id');
+		$this->setState($this->getName() . '.id', $pk);
+
+		$this->setState($this->getName() . '.eventid', $app->input->getInt('e_id'));
+
+		$return = $app->input->get('return', null, 'base64');
+		$this->setState('return_page', base64_decode($return));
+	}
+
+
+	/**
 	 * Save recurrence data
 	 *
 	 * @param   array  $data  post data
@@ -224,7 +267,7 @@ class RedeventModelSession extends RModelAdmin
 	 */
 	private function saveRecurrence($data)
 	{
-		if (!$sessionId = $this->getState('session.id'))
+		if (!$sessionId = $this->getState($this->getName() . '.id'))
 		{
 			return false;
 		}
@@ -299,7 +342,7 @@ class RedeventModelSession extends RModelAdmin
 	 */
 	private function saveRoles($data)
 	{
-		if (!$sessionId = $this->getState('session.id'))
+		if (!$sessionId = $this->getState($this->getName() . '.id'))
 		{
 			return false;
 		}
@@ -351,7 +394,7 @@ class RedeventModelSession extends RModelAdmin
 	 */
 	private function savePrices($data)
 	{
-		if (!$sessionId = $this->getState('session.id'))
+		if (!$sessionId = $this->getState($this->getName() . '.id'))
 		{
 			return false;
 		}
@@ -402,7 +445,7 @@ class RedeventModelSession extends RModelAdmin
 	 */
 	public function getSessionRoles()
 	{
-		if (!$this->getState('session.id'))
+		if (!$this->getState($this->getName() . '.id'))
 		{
 			return false;
 		}
@@ -412,7 +455,7 @@ class RedeventModelSession extends RModelAdmin
 		$query->select('sr.*')
 			->from('#__redevent_sessions_roles AS sr')
 			->join('INNER', '#__redevent_roles AS r ON r.id = sr.role_id')
-			->where('sr.xref = ' . $this->_db->Quote($this->getState('session.id')))
+			->where('sr.xref = ' . $this->_db->Quote($this->getState($this->getName() . '.id')))
 			->order('r.ordering');
 
 		$this->_db->setQuery($query);
@@ -428,7 +471,7 @@ class RedeventModelSession extends RModelAdmin
 	 */
 	public function getSessionPrices()
 	{
-		if (!$this->getState('session.id'))
+		if (!$this->getState($this->getName() . '.id'))
 		{
 			return false;
 		}
@@ -438,7 +481,7 @@ class RedeventModelSession extends RModelAdmin
 		$query->select('r.*')
 			->from('#__redevent_sessions_pricegroups AS r')
 			->join('INNER', '#__redevent_pricegroups AS pg ON pg.id = r.pricegroup_id')
-			->where('r.xref = ' . $this->_db->Quote($this->getState('session.id')))
+			->where('r.xref = ' . $this->_db->Quote($this->getState($this->getName() . '.id')))
 			->order('pg.ordering');
 
 		$this->_db->setQuery($query);

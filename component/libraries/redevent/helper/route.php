@@ -265,27 +265,36 @@ class RedeventHelperRoute
 	public static function getEditEventRoute($id = null, $xref = 0)
 	{
 		$parts = array( "option" => "com_redevent",
-		                "view"   => "editevent" );
-		if ($id) {
-			$parts['id'] = $id;
+		                "task"   => "editevent.edit" );
+
+		if ($id)
+		{
+			$parts['e_id'] = $id;
 		}
-		if ($xref) {
-			$parts['xref'] = $xref;
+
+		if ($xref)
+		{
+			$parts['s_id'] = $xref;
 		}
+
 		return self::buildUrl($parts);
 	}
 
 	public static function getEditXrefRoute($id = null, $xref = 0)
 	{
 		$parts = array( "option" => "com_redevent",
-		                "view"   => "editevent",
-		                "layout" => "eventdate");
-		if (!empty($id)) {
-			$parts['id'] = $id;
+		                "task"   => "editsession.edit");
+
+		if (!empty($id))
+		{
+			$parts['e_id'] = $id;
 		}
-		if ($xref) {
-			$parts['xref'] = $xref;
+
+		if ($xref)
+		{
+			$parts['s_id'] = $xref;
 		}
+
 		return self::buildUrl($parts);
 	}
 
@@ -293,9 +302,12 @@ class RedeventHelperRoute
 	{
 		$parts = array( "option" => "com_redevent",
 		                "task"   => "editvenue.edit" );
-		if (!empty($id)) {
+
+		if (!empty($id))
+		{
 			$parts['id'] = $id;
 		}
+
 		return self::buildUrl($parts);
 	}
 

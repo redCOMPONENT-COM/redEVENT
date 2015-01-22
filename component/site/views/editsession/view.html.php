@@ -26,21 +26,35 @@ class RedeventViewEditsession extends RViewSite
 	{
 		$app = JFactory::getApplication();
 
-		$acl        = RedeventUserAcl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 
 		$this->item = $this->get('Item');
 		$this->form     = $this->get('Form');
 		$this->return = $app->input->get('return');
+		$this->customfields = $this->get('Customfields');
+		$this->roles = $this->get('SessionRoles');
+		$this->prices = $this->get('SessionPrices');
+		$this->params = RedeventHelper::config();
+		$this->canpublish = $acl->canPublishEvent($this->item->eventid);
 
-		if ($this->item->id && !$acl->canEditVenue($this->item->id))
+		$rolesoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_Select_role')));
+		$this->rolesoptions = array_merge($rolesoptions, $this->get('RolesOptions'));
+
+		$pricegroupsoptions = array(JHTML::_('select.option', 0, JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_PRICEGROUP')));
+		$this->pricegroupsoptions = array_merge($pricegroupsoptions, $this->get('PricegroupsOptions'));
+
+		$currencyoptions = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_CURRENCY')));
+		$this->currencyoptions = array_merge($currencyoptions, RHelperCurrency::getCurrencyOptions());
+
+		if ($this->item->id && !$acl->canEditXref($this->item->id))
 		{
-			echo JText::_('COM_REDEVENT_USER_NOT_ALLOWED_TO_EDIT_THIS_VENUE');
+			echo JText::_('COM_REDEVENT_USER_NOT_ALLOWED_TO_EDIT_THIS_SESSION');
 
 			return;
 		}
-		elseif (!$this->item->id && !$acl->canAddVenue())
+		elseif (!$this->item->id && !$acl->canAddSession())
 		{
-			echo JText::_('COM_REDEVENT_USER_NOT_ALLOWED_TO_ADD_VENUE');
+			echo JText::_('COM_REDEVENT_USER_NOT_ALLOWED_TO_ADD_SESSION');
 
 			return;
 		}
@@ -63,6 +77,6 @@ class RedeventViewEditsession extends RViewSite
 			$subTitle = ' <small>' . JText::_('COM_REDEVENT_EDIT') . '</small>';
 		}
 
-		return JText::_('COM_REDEVENT_PAGETITLE_EDITVENUE') . $subTitle;
+		return JText::_('COM_REDEVENT_PAGETITLE_EDITSESSION') . $subTitle;
 	}
 }
