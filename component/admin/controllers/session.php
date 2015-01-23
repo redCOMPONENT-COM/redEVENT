@@ -29,7 +29,7 @@ class RedeventControllerSession extends RControllerForm
 		parent::postSaveHook($model, $validData);
 
 		$input = JFactory::getApplication()->input;
-		$sessionId = $model->getState($this->context . '.id');
+		$sessionId = $model->getState($this->getName() . '.id');
 
 		if (!$sessionId)
 		{
@@ -38,7 +38,7 @@ class RedeventControllerSession extends RControllerForm
 
 		/* Check if people need to be moved on or off the waitinglist */
 		$model_wait = $this->getModel('waitinglist');
-		$model_wait->setXrefId($model->getState($sessionId));
+		$model_wait->setXrefId($sessionId);
 		$model_wait->UpdateWaitingList();
 
 		if ($input->get('task') == 'saveAndTwit')
