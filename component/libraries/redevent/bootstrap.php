@@ -41,9 +41,6 @@ class RedeventBootstrap
 			// Bootstraps redCORE
 			RBootstrap::bootstrap();
 
-			// Use bootstrap3
-//			RHtmlMedia::setFramework('bootstrap3');
-
 			// Bootstraps redFORM
 			/**
 			 * @todo: check why this doesnt work: RLoader::registerPrefix('Rdf', JPATH_LIBRARIES . '/redform');
@@ -59,6 +56,9 @@ class RedeventBootstrap
 
 			// Make available the form rules
 			JFormHelper::addRulePath(JPATH_LIBRARIES . '/redevent/form/rules');
+
+			// Use bootstrap3
+//			RHtmlMedia::setFramework('bootstrap3');
 		}
 	}
 }
