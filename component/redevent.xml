@@ -32,16 +32,17 @@
 	</update>
 
 	<files folder="site">
-		<filename>index.html</filename>
-		<filename>redevent.php</filename>
 		<filename>controller.php</filename>
-		<filename>router.php</filename>
+		<filename>index.html</filename>
 		<filename>LICENSE.php</filename>
+		<filename>redevent.php</filename>
+		<filename>router.php</filename>
 		<folder>assets</folder>
 		<folder>classes</folder>
 		<folder>controllers</folder>
 		<folder>helpers</folder>
 		<folder>language</folder>
+		<folder>layouts</folder>
         <folder>meta_ext</folder>
 		<folder>models</folder>
 		<folder>sef_ext</folder>
@@ -69,10 +70,8 @@
 
 		<files folder="admin">
 			<filename>access.xml</filename>
-			<filename>changelog.txt</filename>
 			<filename>config.xml</filename>
 			<filename>controller.php</filename>
-			<filename>dispatcher.php</filename>
 			<filename>index.html</filename>
 			<filename>redevent.php</filename>
 			<folder>assets</folder>
