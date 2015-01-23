@@ -30,7 +30,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * @subpackage  redEVENT
  * @since       2.5
  */
-class RedeventControllerFrontadmin extends FOFController
+class RedeventControllerFrontadmin extends RControllerAdmin
 {
 	/**
 	 * return sessions html table

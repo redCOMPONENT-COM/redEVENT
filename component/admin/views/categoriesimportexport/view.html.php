@@ -84,7 +84,7 @@ class RedEventViewCategories extends RedeventViewAdmin
 
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_CATEGORIES'));
 		//add css and submenu to document
-		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
+		RHelperAsset::load('backend.css');
 
 		//Create Submenu
 		ELAdmin::setMenu();
@@ -137,7 +137,7 @@ class RedEventViewCategories extends RedeventViewAdmin
 		$document	= & JFactory::getDocument();
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_CATEGORIES_EXPORT'));
 		//add css and submenu to document
-		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
+		RHelperAsset::load('backend.css');
 
 		//Create Submenu
 		ELAdmin::setMenu();

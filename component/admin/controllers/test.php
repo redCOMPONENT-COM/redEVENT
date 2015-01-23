@@ -30,7 +30,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * @subpackage redEVENT
  * @since 2.5
  */
-class RedeventControllerTest extends FOFController
+class RedeventControllerTest extends RControllerAdmin
 {
 	public function testnotif()
 	{

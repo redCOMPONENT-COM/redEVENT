@@ -30,7 +30,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * @subpackage  redEVENT
  * @since       2.5
  */
-class RedeventControllerMyevents extends FOFController
+class RedeventControllerMyevents extends JControllerLegacy
 {
 	/**
 	 * Class constructor, overridden in descendant classes.

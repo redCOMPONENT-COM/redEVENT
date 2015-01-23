@@ -30,7 +30,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedeventControllerCategories extends FOFController
+class RedeventControllerCategories extends RControllerAdmin
 {
 	/**
 	 * start categories import screens

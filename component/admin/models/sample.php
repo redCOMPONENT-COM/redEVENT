@@ -74,7 +74,7 @@ class RedeventModelSample extends JModel
 	 */
 	function _createCategory()
 	{
-		$row = FOFTable::getAnInstance('Category', 'RedeventTable');
+		$row = RTable::getAdminInstance('Category');
 		$row->catname        = 'Category S1';
 		$row->catdescription = 'Sample category';
 		$row->color          = '#00DD00';

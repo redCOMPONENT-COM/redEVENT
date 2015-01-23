@@ -64,13 +64,13 @@ class RedEventViewImagehandler extends JView  {
 				$task 	= 'eventimg';
 				$redi	= 'selecteventimg';
 				break;
-				
+
 			case 'selectvenueimg':
 				$folder	= 'venues';
 				$task	= 'venueimg';
 				$redi 	= 'selectvenueimg';
 				break;
-				
+
 			case 'selectcategoryimg':
 				$folder	= 'categories';
 				$task	= 'categoryimg';
@@ -83,7 +83,7 @@ class RedEventViewImagehandler extends JView  {
 		JResponse::allowCache(false);
 
 		//add css
-		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
+		RHelperAsset::load('backend.css');
 
 		//get images
 		$images = $this->get('images');
@@ -134,8 +134,8 @@ class RedEventViewImagehandler extends JView  {
 		$task 		= JRequest::getVar( 'task' );
 
 		//add css
-		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
-		
+		RHelperAsset::load('backend.css');
+
 		jimport('joomla.client.helper');
 		$ftp =& JClientHelper::setCredentialsFromRequest('ftp');
 

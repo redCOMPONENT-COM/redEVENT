@@ -27,13 +27,12 @@ jimport('joomla.application.component.controller');
 
 /**
  * Component default Controller
- * => because FOF default view is 'redevent'...
  *
  * @package Joomla
  * @subpackage redEVENT
  * @since 2.0
  */
-class RedeventControllerRedevent extends FOFController
+class RedeventControllerRedevent extends RControllerAdmin
 {
 	public function __construct($config = array())
 	{

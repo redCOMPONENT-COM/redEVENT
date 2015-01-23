@@ -167,7 +167,7 @@ class RedeventViewAttendees extends RedeventViewAdmin
 	{
 		$elsettings = JComponentHelper::getParams('com_redevent');
 		$document	= & JFactory::getDocument();
-		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
+		RHelperAsset::load('backend.css');
 
 		$rows      	= & $this->get( 'Data');
 		$event 		= & $this->get( 'Event' );
@@ -194,7 +194,7 @@ class RedeventViewAttendees extends RedeventViewAdmin
 	 */
 	function _displaymove($tpl = null)
 	{
-		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
+		RHelperAsset::load('backend.css');
 
 		$cid = JRequest::getVar('cid', array(), 'post', 'array');
 

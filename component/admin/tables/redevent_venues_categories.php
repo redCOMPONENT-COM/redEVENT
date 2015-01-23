@@ -78,8 +78,6 @@ class RedEvent_venues_categories extends JTable
 	/**
 	 * overrides check
 	 *
-	 * @see FOFTable::check()
-	 *
 	 * @return boolean
 	 */
 	public function check()
@@ -106,8 +104,6 @@ class RedEvent_venues_categories extends JTable
 	 * @param   boolean  $updateNulls  True to update fields even if they are null.
 	 *
 	 * @return boolean
-	 *
-	 * @see FOFTable::store()
 	 */
 	public function store($updateNulls = false)
 	{

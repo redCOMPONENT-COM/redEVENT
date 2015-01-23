@@ -61,7 +61,7 @@ class RedEventViewxrefelement extends JView {
 		$document->setTitle(JText::_('COM_REDEVENT_SELECT_SESSION' ));
 		$document->addStyleSheet('templates/'.$template.'/css/general.css');
 
-		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
+		RHelperAsset::load('backend.css');
 
 		//Get data from the model
 		$rows      	= & $this->get( 'Data');

@@ -36,7 +36,7 @@ require_once JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php';
  * @subpackage  redevent
  * @since       2.0
 */
-class RedeventViewFrontadmin extends RViewSite
+class RedeventViewFrontadmin extends JView
 {
 	/**
 	 * Creates the View
@@ -79,7 +79,17 @@ class RedeventViewFrontadmin extends RViewSite
 			return $this->displayMemberPrevious($tpl);
 		}
 
-		JHTML::_('behavior.framework');
+		if ($this->getLayout() == 'infoform')
+		{
+			return $this->displayInfoform($tpl);
+		}
+
+		if ($this->getLayout() == 'closemodalmember')
+		{
+			return $this->displayCloseModalMember($tpl);
+		}
+
+		JHtml::_('behavior.framework');
 		JHtml::_('behavior.tooltip');
 		JHtml::_('behavior.modal');
 
@@ -102,7 +112,7 @@ class RedeventViewFrontadmin extends RViewSite
 		$pathway    = $mainframe->getPathWay();
 		$params     = $mainframe->getParams();
 		$uri        = JFactory::getURI();
-		$modelAttendees = FOFModel::getAnInstance('FrontadminMembers', 'RedeventModel');
+		$modelAttendees = RModel::getAutoInstance('FrontadminMembers');
 
 		$menu = JSite::getMenu();
 		$item = $menu->getActive();
@@ -118,7 +128,10 @@ class RedeventViewFrontadmin extends RViewSite
 			$document->addStyleSheet($params->get('custom_css'));
 		}
 
-		FOFTemplateUtils::addJS('media://com_redevent/js/b2b.js');
+		$document->addScript('media/com_redevent/js/b2b.js?v=' . uniqid());
+
+		// For redmember
+		$document->addScript('components/com_redmember/assets/js/threeselectdate.js');
 
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
@@ -165,6 +178,7 @@ class RedeventViewFrontadmin extends RViewSite
 		$this->bookings_limitstart = $state->get('bookings_limitstart');
 		$this->bookings_order = $state->get('bookings_order');
 		$this->bookings_order_dir = $state->get('bookings_order_dir');
+		$this->bookings_pagination = $this->get('BookingsPagination');
 
 		$this->useracl = $useracl;
 		$this->params  = $params;
@@ -195,6 +209,10 @@ class RedeventViewFrontadmin extends RViewSite
 		JText::script("COM_REDEVENT_FRONTEND_ADMIN_BREADCRUMB_OVERVIEW");
 		JText::script("COM_REDEVENT_FRONTEND_ADMIN_BREADCRUMB_BOOK");
 		JText::script("COM_REDEVENT_FRONTEND_ADMIN_BREADCRUMB_SEARCH_RESULTS");
+		JText::script("COM_REDEVENT_FRONTEND_ADMIN_NOT_ENOUGH_PLACES_LEFT");
+		JText::script("COM_REDEVENT_FRONTEND_ADMIN_PLEASE_SELECT_SESSION_FIRST");
+		JText::script("COM_REDEVENT_FRONTEND_ADMIN_COMMENT_EMAIL_SENT");
+		JText::script("COM_REDEVENT_FRONTEND_ADMIN_MEMBER_SAVED");
 
 		parent::display($tpl);
 	}
@@ -251,18 +269,32 @@ class RedeventViewFrontadmin extends RViewSite
 	/**
 	 * returns string for available places display
 	 *
-	 * @param   object  $row  session data
+	 * @param   object  $row         session data
+	 * @param   bool    $showBooked  show number of booked places
 	 *
 	 * @return string
 	 */
-	protected function printPlaces($row)
+	protected function printPlaces($row, $showBooked = true)
 	{
-		$maxLeftDisplay = 6;
+		if ($this->isFull($row))
+		{
+			return '';
+		}
+
+		$maxLeftDisplay = 2000;
 
 		if (!$row->maxattendees)
 		{
-			$tip = JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_PLACES_BOOKED_D', $row->registered);
-			return '<span class="hasTip" title="' . $tip . '">' . $row->registered . '</span>';
+			if ($showBooked)
+			{
+				$tip = JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_PLACES_BOOKED_D', $row->registered);
+
+				return '<span class="hasTip" title="' . $tip . '">' . $row->registered . '</span>';
+			}
+			else
+			{
+				return '';
+			}
 		}
 		else
 		{
@@ -272,8 +304,70 @@ class RedeventViewFrontadmin extends RViewSite
 
 			$tip = JText::sprintf('COM_REDEVENT_FRONTEND_ADMIN_PLACES_BOOKED_D_LEFT_S', $row->registered, $left);
 
-			return '<span class="hasTip" title="' . $tip . '">' . $row->registered . '/' . $left . '</span>';
+			if ($showBooked)
+			{
+				return '<span class="hasTip" title="' . $tip . '">' . $row->registered . '/' . $left . '</span>';
+			}
+			else
+			{
+				return '<span class="hasTip" title="' . $tip . '">' . $left . '</span>';
+			}
 		}
+	}
+
+	/**
+	 * returns string for info icon when session is full
+	 *
+	 * @param   object  $row  session data
+	 *
+	 * @return string
+	 */
+	protected function printInfoIcon($row)
+	{
+		if (!$this->isFull($row))
+		{
+			return '';
+		}
+
+		$image = JHTML::image('media/com_redevent/images/b2b-getinfo.gif', JText::_('COM_REDEVENT_FRONTEND_ADMIN_QUERY_INFO_SESSION_FULL'));
+
+		$tip  = JText::_('COM_REDEVENT_FRONTEND_ADMIN_QUERY_INFO_SESSION_FULL_DESC');
+		$text = JText::_('COM_REDEVENT_FRONTEND_ADMIN_QUERY_INFO_SESSION_FULL');
+
+		$attribs = array(
+			'xref' => $row->xref,
+			'class' => 'getinfo hasTip',
+			'title' => $text,
+			'tip' => $tip
+		);
+
+		$output = JHtml::link('index.php?option=com_redevent&controller=frontadmin&task=getinfoform&tmpl=component&modal=1&xref=' . $row->xref, $image, $attribs);
+
+		return $output;
+	}
+
+	/**
+	 * Check if event is full
+	 *
+	 * @param $row
+	 *
+	 * @return bool
+	 */
+	protected function isFull($row)
+	{
+		// No limit
+		if (!$row->maxattendees)
+		{
+			return false;
+		}
+
+		// Not full
+		if ($row->registered >= $row->maxattendees)
+		{
+			return true;
+		}
+
+		return false;
 	}
 
 
@@ -288,7 +382,7 @@ class RedeventViewFrontadmin extends RViewSite
 	{
 		JHTML::_('behavior.tooltip');
 
-		$image = JHTML::image('media/com_redevent/images/b2b-users.png', JText::_('COM_REDEVENT_BOOK_EVENT'));
+		$image = JHTML::image('media/com_redevent/images/b2b-bookuser.png', JText::_('COM_REDEVENT_BOOK_EVENT'));
 
 		$tip  = JText::_('COM_REDEVENT_BOOK_EVENT_DESC');
 		$text = JText::_('COM_REDEVENT_BOOK_EVENT');
@@ -314,6 +408,7 @@ class RedeventViewFrontadmin extends RViewSite
 		$this->members_order_dir = $state->get('members_order_dir');
 		$this->members_pagination = $model->getPagination();
 		$this->members_limitstart = $state->get('members_limitstart');
+		$this->state = $state;
 
 		parent::display($tpl);
 	}
@@ -321,6 +416,10 @@ class RedeventViewFrontadmin extends RViewSite
 	protected function displayEditMember($tpl= null)
 	{
 		$document = JFactory::getDocument();
+
+		// Load Akeeba Strapper
+		include_once JPATH_ROOT . '/media/akeeba_strapper/strapper.php';
+		AkeebaStrapper::bootstrap();
 
 		$member = $this->get('MemberInfo');
 		$booked = $this->get('MemberBooked');
@@ -330,6 +429,13 @@ class RedeventViewFrontadmin extends RViewSite
 		$this->params = JFactory::getApplication()->getParams('com_redevent');
 
 		$modal = JFactory::getApplication()->input->get('modal');
+
+		if (!$orgId = JFactory::getApplication()->input->get('orgId'))
+		{
+			RedeventHelperLog::simpleLog('edit member view missing orgid');
+			echo 'edit member view missing orgid';
+			return;
+		}
 
 		$rmu_fields = RedmemberLib::getUserFields(JFactory::getApplication()->input->get('uid'),
 			array('assign_organization' => JFactory::getApplication()->input->get('orgId')));
@@ -417,5 +523,61 @@ class RedeventViewFrontadmin extends RViewSite
 
 		$this->setLayout('editmember_sessions');
 		parent::display($tpl);
+	}
+
+	/**
+	 * Display info form
+	 *
+	 * @param   string  $tpl  template to display
+	 *
+	 * @return void
+	 */
+	protected function displayInfoForm($tpl= null)
+	{
+		// Load Akeeba Strapper
+		include_once JPATH_ROOT . '/media/akeeba_strapper/strapper.php';
+		AkeebaStrapper::bootstrap();
+
+		$this->action = 'index.php?option=com_redevent&controller=frontadmin';
+		$this->xref = JFactory::getApplication()->input->getInt('xref', 0);
+
+		parent::display($tpl);
+	}
+
+	/**
+	 * Display close modal edit member window
+	 *
+	 * @param   string  $tpl  template to display
+	 *
+	 * @return void
+	 */
+	protected function displayCloseModalMember($tpl= null)
+	{
+		$app = JFactory::getApplication();
+		$this->uid = $app->input->get('uid');
+		$this->name = $app->input->get('uname');
+
+		parent::display($tpl);
+	}
+
+	/**
+	 * return html for limit box
+	 *
+	 * @return string html
+	 */
+	protected function getLimitBox()
+	{
+		$state = $this->get('state');
+
+		$options = array(
+			JHtml::_('select.option', 15, 15),
+			JHtml::_('select.option', 25, 25),
+			JHtml::_('select.option', 50, 50)
+		);
+		$html = JHtml::_('select.genericlist', $options, 'limit',
+			array('class' => 'inputbox ajaxlimit'), 'value', 'text', $state->get('limit')
+		);
+
+		return $html;
 	}
 }

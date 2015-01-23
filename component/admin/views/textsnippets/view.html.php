@@ -109,7 +109,7 @@ class RedEventViewTextsnippets extends RedeventViewAdmin
 		$document	= & JFactory::getDocument();
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_TEXTLIBRARY_IMPORT'));
 		//add css to document
-		FOFTemplateUtils::addJS("media://com_redevent/css/backend.less||media://com_redevent/css/backend.css");
+		RHelperAsset::load('backend.css');
 
 		//Create Submenu
 		ELAdmin::setMenu();

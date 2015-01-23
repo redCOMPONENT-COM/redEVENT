@@ -77,8 +77,8 @@ class RedeventViewMyevents extends RViewSite
 
 		JHTML::_('behavior.framework');
 
-		FOFTemplateUtils::addJS('media://com_redevent/js/myevents.js');
-		FOFTemplateUtils::addJS('media://com_redevent/js/ajaxnav.js');
+		RHelperAsset::load('myevents.js');
+		RHelperAsset::load('ajaxnav.js');
 		JText::script("COM_REDEVENT_MYEVENTS_CANCEL_REGISTRATION_WARNING");
 
 		$js = "

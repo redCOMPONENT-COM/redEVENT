@@ -134,7 +134,7 @@ class RedeventViewVenues extends RedeventViewAdmin
 		$document	= & JFactory::getDocument();
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_VENUES_EXPORT'));
 		//add css and submenu to document
-		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
+		RHelperAsset::load('backend.css');
 
 		//Create Submenu
     ELAdmin::setMenu();

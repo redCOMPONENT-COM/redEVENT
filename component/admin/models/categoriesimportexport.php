@@ -64,10 +64,6 @@ class RedeventModelCategories extends RModelList
 		$this->setState('search', $search);
 	}
 
-	/**
-	 * (non-PHPdoc)
-	 * @see FOFModel::getItemList()
-	 */
 	public function &getItemList($overrideLimits = false, $group = '')
 	{
 		$list = parent::getItemList($overrideLimits, $group);
@@ -174,11 +170,6 @@ class RedeventModelCategories extends RModelList
 		return $query;
 	}
 
-	/**
-	 * overide to add an integration to finder
-	 *
-	 * @see FOFModel::publish()
-	 */
 	public function publish($publish = 1, $user = null)
 	{
 		if (!parent::publish($publish, $user))
@@ -199,11 +190,6 @@ class RedeventModelCategories extends RModelList
 		return true;
 	}
 
-	/**
-	 * get attachements
-	 *
-	 * @see FOFModel::onAfterGetItem()
-	 */
 	protected function onAfterGetItem(&$record)
 	{
 		if ($record)
@@ -214,11 +200,6 @@ class RedeventModelCategories extends RModelList
 		}
 	}
 
-	/**
-	 * add attachements
-	 *
-	 * @see FOFModel::onAfterSave()
-	 */
 	protected function onAfterSave(&$table)
 	{
 		parent::onAfterSave($table);

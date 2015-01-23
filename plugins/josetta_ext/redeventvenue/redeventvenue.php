@@ -47,7 +47,6 @@ class plgJosetta_extRedeventvenue extends JosettaClassesExtensionplugin
 	 */
 	public function __construct(&$subject, $config = array())
 	{
-		include_once JPATH_LIBRARIES . '/fof/include.php';
 		parent::__construct($subject, $config);
 		$this->loadLanguages();
 	}

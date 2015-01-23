@@ -44,8 +44,6 @@ class RedeventTableCategory extends RedeventTable
 	/**
 	 * overrides check
 	 *
-	 * @see FOFTable::check()
-	 *
 	 * @return boolean
 	 */
 	public function check()
@@ -74,8 +72,6 @@ class RedeventTableCategory extends RedeventTable
 	 * @param   boolean  $updateNulls  True to update fields even if they are null.
 	 *
 	 * @return boolean
-	 *
-	 * @see FOFTable::store()
 	 */
 	public function store($updateNulls = false)
 	{
