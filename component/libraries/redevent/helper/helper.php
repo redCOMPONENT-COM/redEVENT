@@ -1221,7 +1221,7 @@ class RedeventHelper
 			$query = 'SELECT CONCAT("custom", f.id) FROM #__redevent_fields AS f WHERE f.published = 1';
 			$db->setQuery($query);
 
-			if ($res = $db->loadResultArray())
+			if ($res = $db->loadColumn())
 			{
 				$allowed = array_merge($allowed, $res);
 			}
