@@ -537,7 +537,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 
 		$rfcore = RdfCore::getInstance();
 		$answers = $rfcore->getSidContactEmails($sid);
-echo '<pre>'; echo print_r($answers, true); echo '</pre>'; exit;
+
 		if (!$answers)
 		{
 			throw new Exception(JText::_('COM_REDEVENT_NO_ANSWERS_FOUND_FOR_SID').' '.$sid);

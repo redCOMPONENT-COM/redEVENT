@@ -33,6 +33,75 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 class RedeventControllerMyevents extends JControllerLegacy
 {
 	/**
+	 * Class constructor, overridden in descendant classes.
+	 *
+	 * @param   mixed  $properties  Either and associative array or another
+	 *                              object to set the initial properties of the object.
+	 *
+	 * @since   11.1
+	 */
+	public function __construct($properties = array())
+	{
+		parent::__construct($properties);
+		$this->registerDefaultTask('myevents');
+	}
+
+	/**
+	 * return sessions html table
+	 *
+	 * @return void
+	 */
+	public function myevents()
+	{
+		$this->input->set('layout', 'default');
+		$this->display();
+	}
+
+	/**
+	 * return sessions html table
+	 *
+	 * @return void
+	 */
+	public function managedevents()
+	{
+		$this->input->set('layout', 'managedevents');
+		$this->display();
+	}
+
+	/**
+	 * return venues html table
+	 *
+	 * @return void
+	 */
+	public function managedvenues()
+	{
+		$this->input->set('layout', 'managedvenues');
+		$this->display();
+	}
+
+	/**
+	 * return attending html table
+	 *
+	 * @return void
+	 */
+	public function attending()
+	{
+		$this->input->set('layout', 'attending');
+		$this->display();
+	}
+
+	/**
+	 * return attended html table
+	 *
+	 * @return void
+	 */
+	public function attended()
+	{
+		$this->input->set('layout', 'attended');
+		$this->display();
+	}
+
+	/**
 	 * ajax publish/unpublish a session
 	 *
 	 * @return void

@@ -81,6 +81,11 @@ class RedeventModelEditsession extends RModelAdmin
 			$form->setFieldAttribute('eventid', 'readonly', '1');
 		}
 
+		if ($this->getState($this->getName() . '.eventid'))
+		{
+			$form->setValue('eventid', '', $this->getState($this->getName() . '.eventid'));
+		}
+
 		// Only allow to modify the recurrence if this is the first session in it
 		if ($form->getValue('recurrenceid', 'recurrence') && $form->getValue('repeat', 'recurrence') > 0)
 		{

@@ -12,7 +12,9 @@
 
         <field
             name="eventid"
-            type="hidden"
+            type="reeventlist"
+            label="COM_REDEVENT_SESSION_EVENT_LABEL"
+            description ="COM_REDEVENT_SESSION_EVENT_DESC"
             required="true"
             class="inputbox" />
 
