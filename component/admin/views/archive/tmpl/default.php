@@ -163,8 +163,8 @@ defined('_JEXEC') or die('Restricted access');
 						<?php echo JText::_('COM_REDEVENT_AUTHOR' ).': '; ?><a href="<?php echo 'index.php?option=com_users&amp;task=edit&amp;hidemainmenu=1&amp;cid[]='.$row->created_by; ?>"><?php echo $row->author; ?></a><br />
 						<?php echo JText::_('COM_REDEVENT_EMAIL' ).': '; ?><a href="mailto:<?php echo $row->email; ?>"><?php echo $row->email; ?></a><br />
 						<?php
-						$created	 	= JHTML::Date( $row->created, JText::_('DATE_FORMAT_LC2' ) );
-						$edited 		= JHTML::Date( $row->modified, JText::_('DATE_FORMAT_LC2' ) );
+						$created	 	= JHTML::Date( $row->created, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME' ) );
+						$edited 		= JHTML::Date( $row->modified, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME' ) );
 						$ip				= $row->author_ip == 'DISABLED' ? JText::_('COM_REDEVENT_DISABLED' ) : $row->author_ip;
 						$image 			= JHTML::_('image', 'administrator/templates/'. $this->template .'/images/menu/icon-16-info.png', JText::_('COM_REDEVENT_NOTES') );
 						$overlib 		= JText::_('COM_REDEVENT_CREATED_AT' ).': '.$created.'<br />';

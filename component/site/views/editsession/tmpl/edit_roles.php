@@ -1,6 +1,6 @@
 <?php
 /**
- * @package    Redevent.admin
+ * @package    Redevent.Site
  * @copyright  redEVENT (C) 2008-2014 redCOMPONENT.com
  * @license    GNU/GPL, see LICENSE.php
  */

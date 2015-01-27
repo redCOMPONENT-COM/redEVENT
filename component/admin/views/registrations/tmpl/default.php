@@ -116,7 +116,7 @@ echo RLayoutHelper::render(
 		<tbody>
 		<?php $n = count($this->items); ?>
 		<?php foreach ($this->items as $i => $row) :
-			$displaydate = JHTML::Date($row->uregdate, JText::_('DATE_FORMAT_LC2'));
+			$displaydate = JHTML::Date($row->uregdate, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'));
 
 			$eventdate = (!RedeventHelper::isValidDate($row->dates) ? JText::_('COM_REDEVENT_Open_date') : strftime($this->params->get('backend_formatdate', '%d.%m.%Y'), strtotime($row->dates)));
 			$sessionlink = JHTML::link('index.php?option=com_redevent&view=attendees&session=' . $row->xref,

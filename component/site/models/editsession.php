@@ -238,6 +238,10 @@ class RedeventModelEditsession extends RModelAdmin
 			return false;
 		}
 
+		$isNew = isset($data['id']) && $data['id'] ? false : true;
+		$notify = RModel::getFrontInstance('Editsessionnotify');
+		$notify->notify($this->getState($this->getName() . '.id'), $isNew);
+
 		return true;
 	}
 
@@ -364,6 +368,11 @@ class RedeventModelEditsession extends RModelAdmin
 			$this->setError($this->_db->getErrorMsg());
 
 			return false;
+		}
+
+		if (!isset($data['rrole']))
+		{
+			return true;
 		}
 
 		// Then recreate them if any

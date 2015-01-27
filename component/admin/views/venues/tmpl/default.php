@@ -236,8 +236,8 @@ if (($saveOrder) && ($this->canEdit))
 						<?php echo JText::_('COM_REDEVENT_AUTHOR' ).': '; ?><a href="<?php echo 'index.php?option=com_users&amp;task=edit&amp;hidemainmenu=1&amp;cid[]='.$row->created_by; ?>"><?php echo $row->author; ?></a><br />
 						<?php echo JText::_('COM_REDEVENT_EMAIL' ).': '; ?><a href="mailto:<?php echo $row->email; ?>"><?php echo $row->email; ?></a><br />
 						<?php
-						$delivertime 	= JHTML::Date($row->created, JText::_('DATE_FORMAT_LC2'));
-						$edittime 		= JHTML::Date($row->modified, JText::_('DATE_FORMAT_LC2'));
+						$delivertime 	= JHTML::Date($row->created, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'));
+						$edittime 		= JHTML::Date($row->modified, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'));
 						$ip				= $row->author_ip == 'DISABLED' ? JText::_('COM_REDEVENT_DISABLED' ) : $row->author_ip;
 						$image 			= '<i class="icon-info-sign" /> ';
 						$overlib 		= JText::_('COM_REDEVENT_CREATED_AT' ).': '.$delivertime.'<br />';

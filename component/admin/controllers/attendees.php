@@ -367,7 +367,7 @@ class RedeventControllerAttendees extends RControllerAdmin
     		$col[] = str_replace("\"", "\"\"", $data->name);
     		$col[] = str_replace("\"", "\"\"", $data->username);
     		$col[] = str_replace("\"", "\"\"", $data->email);
-    		$col[] = str_replace("\"", "\"\"", JHTML::Date( $data->uregdate, JText::_('DATE_FORMAT_LC2' ) ));
+    		$col[] = str_replace("\"", "\"\"", JHTML::Date( $data->uregdate, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME' ) ));
 
    	 		for($j = 0; $j < count($col); $j++)
     		{

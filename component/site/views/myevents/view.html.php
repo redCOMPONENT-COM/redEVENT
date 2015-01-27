@@ -267,7 +267,7 @@ class RedeventViewMyevents extends RViewSite
 	 */
 	public static function eventeditbutton($id, $xref)
 	{
-		$acl = &RedeventUserAcl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 
 		if (!$acl->canEditEvent($id))
 		{

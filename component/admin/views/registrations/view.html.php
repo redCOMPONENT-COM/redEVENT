@@ -104,7 +104,7 @@ class RedeventViewRegistrations extends RedeventViewAdmin
 		$states = array(
 			1 => array('unconfirm', 'COM_REDEVENT_REGISTRATION_ACTIVATED',
 				Jtext::sprintf('COM_REDEVENT_REGISTRATION_ACTIVATED_ON_S',
-					JHTML::Date($row->confirmdate, JText::_('DATE_FORMAT_LC2'))
+					JHTML::Date($row->confirmdate, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'))
 				)
 				, '', false, 'ok', 'ok'),
 			0 => array('confirm', '', 'COM_REDEVENT_REGISTRATION_NOT_ACTIVATED', 'COM_REDEVENT_CLICK_TO_ACTIVATE', false, 'remove', 'remove'),
@@ -126,7 +126,7 @@ class RedeventViewRegistrations extends RedeventViewAdmin
 		$states = array(
 			1 => array('offwaiting', 'COM_REDEVENT_REGISTRATION_CURRENTLY_ON_WAITING_LIST',
 				Jtext::sprintf('COM_REDEVENT_REGISTRATION_CLICK_TO_TAKE_OFF_WAITING_LIST',
-					JHTML::Date($row->confirmdate, JText::_('DATE_FORMAT_LC2'))
+					JHTML::Date($row->confirmdate, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'))
 				)
 			, '', false, 'time', 'time'),
 			0 => array('onwaiting', '', 'COM_REDEVENT_REGISTRATION_CURRENTLY_ATTENDING', 'COM_REDEVENT_REGISTRATION_CLICK_TO_PUT_ON_WAITING_LIST', false, 'user', 'user'),

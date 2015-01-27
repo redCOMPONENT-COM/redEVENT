@@ -145,7 +145,7 @@ RHelperAsset::load('redevent-backend.css', 'com_redevent');
 			<tbody>
 			<?php $n = count($this->items); ?>
 			<?php foreach ($this->items as $i => $row) :
-				$displaydate = JHTML::Date($row->uregdate, JText::_('DATE_FORMAT_LC2'));
+				$displaydate = JHTML::Date($row->uregdate, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'));
 				$trClass = $row->cancelled ? ' class="cancelled"' : '';
 				?>
 				<tr<?php echo $trClass; ?>>
@@ -173,7 +173,7 @@ RHelperAsset::load('redevent-backend.css', 'com_redevent');
 							<?php echo JHtml::_('link', 'index.php?option=com_redevent&task=attendee.edit&id=' . $row->id, $displaydate); ?>
 						<?php endif; ?>
 					</td>
-					<td><?php echo ($row->confirmdate) ? JHTML::Date( $row->confirmdate, JText::_('DATE_FORMAT_LC2' ) ) : '-'; ?></td>
+					<td><?php echo ($row->confirmdate) ? JHTML::Date( $row->confirmdate, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME' ) ) : '-'; ?></td>
 
 					<?php if ($this->params->get('attendees_table_show_ip', 0)): ?>
 						<td><?php echo $row->uip == 'DISABLED' ? JText::_('COM_REDEVENT_DISABLED' ) : $row->uip; ?></td>

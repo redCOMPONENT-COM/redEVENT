@@ -163,7 +163,7 @@ class RedeventModelEditvenue extends RModelAdmin
 			If (!$isNew)
 			{
 				$modified_ip = getenv('REMOTE_ADDR');
-				$edited = JHTML::Date($row->modified, JText::_('DATE_FORMAT_LC2'));
+				$edited = JHTML::Date($row->modified, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'));
 				$mailbody = JText::sprintf(
 					'COM_REDEVENT_MAIL_EDIT_VENUE',
 					$user->name,
@@ -185,7 +185,7 @@ class RedeventModelEditvenue extends RModelAdmin
 			}
 			else
 			{
-				$created = JHTML::Date($row->modified, JText::_('DATE_FORMAT_LC2'));
+				$created = JHTML::Date($row->modified, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'));
 				$mailbody = JText::sprintf(
 					'COM_REDEVENT_MAIL_NEW_VENUE',
 					$user->name,
@@ -247,7 +247,7 @@ class RedeventModelEditvenue extends RModelAdmin
 
 			if (!$isNew)
 			{
-				$edited = JHTML::Date($row->modified, JText::_('DATE_FORMAT_LC2'));
+				$edited = JHTML::Date($row->modified, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'));
 
 				$mailbody = JText::sprintf('COM_REDEVENT_USER_MAIL_EDIT_VENUE',
 					$user->name, $user->username, $edited, $row->venue, $row->url, $row->street,
@@ -258,7 +258,7 @@ class RedeventModelEditvenue extends RModelAdmin
 			}
 			else
 			{
-				$created = JHTML::Date($row->modified, JText::_('DATE_FORMAT_LC2'));
+				$created = JHTML::Date($row->modified, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'));
 
 				$mailbody = JText::sprintf('COM_REDEVENT_USER_MAIL_NEW_VENUE',
 					$user->name, $user->username, $created, $row->venue, $row->url, $row->street,
