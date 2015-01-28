@@ -147,7 +147,7 @@ echo RLayoutHelper::render(
 					<?php if (($row->checked_out) || (!$this->canEdit)) : ?>
 						<?php echo $displaydate; ?>
 					<?php else : ?>
-						<?php echo JHtml::_('link', 'index.php?option=com_redevent&task=attendee.edit&id=' . $row->id, $displaydate); ?>
+						<?php echo JHtml::_('link', 'index.php?option=com_redevent&task=attendee.edit&id=' . $row->id . '&return=' . $this->return, $displaydate); ?>
 					<?php endif; ?>
 				</td>
 				<td><?php echo $sessionlink; ?></td>

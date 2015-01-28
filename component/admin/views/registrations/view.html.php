@@ -32,6 +32,7 @@ class RedeventViewRegistrations extends RedeventViewAdmin
 		$this->activeFilters = $this->get('ActiveFilters');
 		$this->state = $this->get('State');
 		$this->params = RedeventHelper::config();
+		$this->return = base64_encode('index.php?option=com_redevent&view=registrations');
 
 		// Edit permission
 		$this->canEdit = false;

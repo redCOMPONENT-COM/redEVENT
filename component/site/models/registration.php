@@ -177,33 +177,41 @@ class RedEventModelRegistration extends RModel
 	/**
 	 * to update a registration
 	 *
-	 * @param int $sid associated redform submitter id
-	 * @param string $submit_key associated redform submit key
-	 * @param int $pricegroup_id
+	 * @param   int     $sid                   associated redform submitter id
+	 * @param   string  $submit_key            associated redform submit key
+	 * @param   int     $sessionpricegroup_id  session pricegroup id
+	 *
 	 * @return boolean|object attendee row or false if failed
 	 */
-	function update($sid, $submit_key, $pricegroup_id)
+	public function update($sid, $submit_key, $sessionpricegroup_id)
 	{
-		if (!$sid) {
+		if (!$sid)
+		{
 			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_UPDATE_XREF_REQUIRED'));
+
 			return false;
 		}
 
-		$obj = $this->getTable('Redevent_register', '');
+		$obj = RTable::getAdminInstance('Attendee');
 		$obj->load(array('sid' => $sid));
-		$obj->sid        = $sid;
-		$obj->sessionpricegroup_id = $pricegroup_id;
+		$obj->sid = $sid;
+		$obj->sessionpricegroup_id = $sessionpricegroup_id;
 		$obj->submit_key = $submit_key;
 
-		if (!$obj->check()) {
+		if (!$obj->check())
+		{
 			$this->setError($obj->getError());
+
 			return false;
 		}
 
-		if (!$obj->store()) {
+		if (!$obj->store())
+		{
 			$this->setError($obj->getError());
+
 			return false;
 		}
+
 		return $obj;
 	}
 
@@ -506,8 +514,10 @@ class RedEventModelRegistration extends RModel
 		// or be allowed to manage attendees
 		$manager = $acl->canManageAttendees($submitterinfo->xref);
 
-		if (!RedeventHelper::canUnregister($submitterinfo->xref) && !$manager) {
+		if (!RedeventHelper::canUnregister($submitterinfo->xref) && !$manager)
+		{
 			$this->setError(JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED'));
+
 			return false;
 		}
 

@@ -548,11 +548,12 @@ class RedeventHelper
 
 	public static function canUnregister($xref_id, $user_id = null)
 	{
-		$db = & JFactory::getDBO();
-		$user = & JFactory::getUser($user_id);
+		$db = JFactory::getDBO();
+		$user = JFactory::getUser($user_id);
 
-		// if user is not logged, he can't unregister
-		if (!$user->get('id')) {
+		// If user is not logged, he can't unregister
+		if (!$user->get('id'))
+		{
 			return false;
 		}
 
@@ -564,8 +565,9 @@ class RedeventHelper
 		$db->setQuery($query);
 		$event = & $db->loadObject();
 
-		// check if unregistration is allowed
-		if (!$event->unregistra) {
+		// Check if unregistration is allowed
+		if (!$event->unregistra)
+		{
 			return false;
 		}
 

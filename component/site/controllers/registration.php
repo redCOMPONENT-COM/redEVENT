@@ -39,12 +39,14 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	 *
 	 * @since 2.0
 	 */
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
-		$this->registerTask( 'manageredit',   'edit' );
-		$this->registerTask( 'managerupdate', 'update' );
-		$this->registerTask( 'review', 'confirm' );
+
+		$this->registerTask('manageredit', 'edit');
+		$this->registerTask('managerupdate', 'update');
+		$this->registerTask('managedelreguser', 'delreguser');
+		$this->registerTask('review', 'confirm');
 	}
 
 	/**
@@ -54,7 +56,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	 */
 	public function register()
 	{
-		if (JRequest::getVar('cancel', '', 'post'))
+		if ($this->input->get('cancel', '', 'post'))
 		{
 			return $this->cancelreg();
 		}
@@ -145,7 +147,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		}
 
 		$submit_key = $result->submit_key;
-		JRequest::setVar('submit_key', $submit_key);
+		$this->input->setVar('submit_key', $submit_key);
 
 		if ($review)
 		{
@@ -234,10 +236,61 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$this->setRedirect(JRoute::_($link, false));
 	}
 
+	/**
+	 * Deletes a registered user
+	 *
+	 * @since 0.7
+	 */
+	public function delreguser()
+	{
+		$app = JFactory::getApplication();
+
+		$msgtype = 'message';
+		$task    = $app->input->getCmd('task');
+		$id      = $app->input->getInt('id', 0);
+		$xref    = $app->input->getInt('xref', 0);
+
+		$params  = $app->getParams('com_redevent');
+
+		if ($this->cancelRegistration())
+		{
+			if ($task == 'managedelreguser')
+			{
+				$msg = JText::_('COM_REDEVENT_REGISTRATION_REMOVAL_SUCCESSFULL');
+			}
+			else
+			{
+				$msg = JText::_('COM_REDEVENT_UNREGISTERED_SUCCESSFULL');
+			}
+		}
+		else
+		{
+			$msg = $this->getError();
+			$msgtype = 'error';
+		}
+
+		// Redirect
+		if ($task == 'managedelreguser')
+		{
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getManageAttendees($xref, 'registration.manageattendees'), false), $msg, $msgtype);
+		}
+		else
+		{
+			if ($params->get('details_attendees_layout', 0))
+			{
+				$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=details&id=' . $id . '&tpl=attendees&xref=' . $xref, false), $msg, $msgtype);
+			}
+			else
+			{
+				$this->setRedirect(JRoute::_('index.php?option=com_redevent&view=details&id=' . $id . '&tpl=attendees_table&xref=' . $xref, false), $msg, $msgtype);
+			}
+		}
+	}
+
 	function cancelreg()
 	{
-		$submit_key = JRequest::getVar('submit_key');
-		$xref = JRequest::getInt('xref');
+		$submit_key = $this->input->get('submit_key');
+		$xref = $this->input->getInt('xref');
 
 		$model = $this->getModel('registration');
 		$model->setXref($xref);
@@ -248,136 +301,133 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($eventdata->did, $xref)), $msg);
 	}
 
-	function edit()
+	public function edit()
 	{
-		JRequest::setvar('view', 'registration');
-		JRequest::setvar('layout', 'edit');
+		$this->input->set('view', 'registration');
+		$this->input->set('layout', 'edit');
+
 		parent::display();
 	}
 
 	function manageattendees()
 	{
 		$acl = RedeventUserAcl::getInstance();
-		$xref = JRequest::getInt('xref');
-		if ($acl->canManageAttendees($xref)) {
+		$xref = $this->input->getInt('xref');
+
+		if ($acl->canManageAttendees($xref))
+		{
 			$layout = 'manageattendees';
 		}
-		else if ($acl->canViewAttendees($xref)){
+		elseif ($acl->canViewAttendees($xref))
+		{
 			$layout = 'default';
 		}
-		else {
+		else
+		{
 			$this->setRedirect(RedeventHelperRoute::getMyEventsRoute(), JText::_('COM_REDEVENT_ACCESS_NOT_ALLOWED'), 'error');
 			$this->redirect();
 		}
-		JRequest::setvar('view', 'attendees');
-		JRequest::setvar('layout', $layout);
+
+		$this->input->set('view', 'attendees');
+		$this->input->set('layout', $layout);
+
 		parent::display();
 	}
 
-	function update()
+	/**
+	 * Update a registration
+	 *
+	 * @return void
+	 */
+	public function update()
 	{
-		$xref = JRequest::getInt('xref');
-		$task = JRequest::getVar('task');
-		if (JRequest::getVar('cancel', '', 'post'))
+		$xref = $this->input->getInt('xref');
+		$task = $this->input->get('task');
+
+		if (!$xref)
 		{
-			$msg = JText::_('COM_REDEVENT_Registration_Edit_cancelled');
-			if ($task == 'managerupdate') {
-				$this->setRedirect(JRoute::_(RedeventHelperRoute::getManageAttendees($xref)), $msg);
-			}
-			else {
-				$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute(null, $xref), false), $msg);
-			}
+			$msg = JText::_('COM_REDEVENT_REGISTRATION_MISSING_XREF');
+			$this->setRedirect('index.php', $msg, 'error');
+
+			return;
+		}
+
+		if ($this->input->get('return'))
+		{
+			$this->setRedirect(base64_decode($this->input->get('return')));
+		}
+		elseif ($task == 'managerupdate')
+		{
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getManageAttendees($xref)));
+		}
+		else
+		{
+			$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute(null, $xref)));
+		}
+
+		if ($this->input->get('cancel', '', 'post'))
+		{
+			$this->setMessage(JText::_('COM_REDEVENT_Registration_Edit_cancelled'));
 			$this->redirect();
 		}
 
-		$xref = JRequest::getInt('xref');
-		$pricegroups = JRequest::getVar('pricegroup_id', array(), 'post', 'array');
-		JArrayHelper::toInteger($pricegroups);
 
 		$model = $this->getModel('registration');
-		$model->setXref(JRequest::getInt('xref'));
+		$model->setXref($this->input->getInt('xref'));
 		$details = $model->getSessionDetails();
 
-		$submit_key = JRequest::getVar('submit_key');
+		$submit_key = $this->input->get('submit_key');
 
-		$prices = array();
-		foreach ($pricegroups as $p)
+		$pricegroup = $this->input->getInt('sessionpricegroup_id');
+		$regPricegroup = $model->getRegistrationPrice($pricegroup);
+
+		if (!$regPricegroup)
 		{
-			$regPricegroup = $model->getRegistrationPrice($p);
-
-			if (!$regPricegroup)
-			{
-				$msg = JText::_('COM_REDEVENT_REGISTRATION_MISSING_PRICE');
-				$this->setRedirect('index.php', $msg, 'error');
-
-				return;
-			}
-
-			$prices[] = $regPricegroup->price;
+			$this->setMessage(JText::_('COM_REDEVENT_REGISTRATION_MISSING_PRICE'), 'error');
+			$this->redirect();
 		}
 
-		if (!$xref) {
-			$msg = JText::_('COM_REDEVENT_REGISTRATION_MISSING_XREF');
-			$this->setRedirect('index.php', $msg, 'error');
-			return;
-		}
+		$price = $regPricegroup->price;
 
-		// first, ask redform to save it's fields, and return the corresponding sids.
-		$options = array('baseprice' => $prices, 'currency' => $regPricegroup->currency);
+		// First, ask redform to save it's fields, and return the corresponding sids.
+		$options = array('baseprice' => $price, 'currency' => $regPricegroup->currency, 'edit' => 1);
 		$rfcore = RdfCore::getInstance();
 		$result = $rfcore->saveAnswers('redevent', $options);
-		if (!$result) {
-			$msg = JText::_('COM_REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED').' - '.$rfcore->getError();
-			if ($task == 'managerupdate') {
-				$this->setRedirect(JRoute::_(RedeventHelperRoute::getManageAttendees($xref)), $msg, 'error');
-			}
-			else {
-				$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute(null, $xref)), $msg, 'error');
-			}
-			return;
-		}
-		JRequest::setVar('submit_key', $result->submit_key);
 
-		// redform save fine, now save corresponding bookings
-		foreach ($result->posts as $rfpost)
+		if (!$result)
 		{
-			$k = 0;
-			if (!$res = $model->update($rfpost['sid'], $result->submit_key, $pricegroups[$k++])) {
-				$msg = JText::_('COM_REDEVENT_REGISTRATION_REGISTRATION_UPDATE_FAILED');
-				if ($task == 'managerupdate') {
-					$this->setRedirect(JRoute::_(RedeventHelperRoute::getManageAttendees($xref)), $msg, 'error');
-				}
-				else {
-					$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute(null, $xref)), $msg, 'error');
-				}
-				return;
-			}
+			$msg = JText::_('COM_REDEVENT_REGISTRATION_REDFORM_SAVE_FAILED') . ' - ' . $rfcore->getError();
+
+			$this->setMessage($msg, 'error');
+			$this->redirect();
 		}
 
-		//		$mail = $model->sendNotificationEmail();
-		//		$mail = $model->notifyManagers();
+		$this->input->set('submit_key', $result->submit_key);
+		$sid = $result->posts[0]['sid'];
+
+		// Redform save fine, now save corresponding bookings
+		if (!$model->update($sid, $result->submit_key, $regPricegroup->id))
+		{
+			$this->setMessage(JText::_('COM_REDEVENT_REGISTRATION_REGISTRATION_UPDATE_FAILED'), 'error');
+			$this->redirect();
+		}
 
 		$cache = JFactory::getCache('com_redevent');
 		$cache->clean();
 
-		$msg = JTEXT::_('COM_REDEVENT_REGISTRATION_UPDATED');
-		if ($task == 'managerupdate') {
-			$this->setRedirect(RedeventHelperRoute::getManageAttendees($xref), $msg);
-		}
-		else {
-			$this->setRedirect(RedeventHelperRoute::getDetailsRoute(null, $xref), $msg);
-		}
+		$this->setMessage(JText::_('COM_REDEVENT_REGISTRATION_UPDATED'));
+		$this->redirect();
 	}
 
 	function confirm()
 	{
-		if (JRequest::getVar('task') == 'review') {
-			JRequest::setVar('layout', 'review');
+		if ($this->input->get('task') == 'review') {
+			$this->input->set('layout', 'review');
 		}
 		else {
-			JRequest::setVar('layout', 'confirmed');
+			$this->input->set('layout', 'confirmed');
 		}
-		JRequest::setVar('view', 'registration');
+		$this->input->set('view', 'registration');
 		parent::display();
 	}
 
@@ -391,7 +441,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$msgtype = 'message';
 
 		/* Get the confirm ID */
-		$confirmid = JRequest::getVar('confirmid', '', 'get');
+		$confirmid = $this->input->get('confirmid', '', 'get');
 
 		/* Get the details out of the confirmid */
 		list($uip, $xref, $uid, $register_id, $submit_key) = explode("x", $confirmid);
@@ -403,7 +453,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$eventdata = $model->getSessionDetails();
 
 		/* This loads the tags replacer */
-		JRequest::setVar('xref', $xref);
+		$this->input->set('xref', $xref);
 		$tags = new RedeventTags;
 		$tags->setXref($xref);
 		$tags->setSubmitkey($submit_key);
@@ -482,6 +532,28 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$this->setRedirect(JRoute::_(RedeventHelperRoute::getDetailsRoute($eventdata->did, $xref)), $msg, $msgtype);
 	}
 
+	/**
+	 * Ajax cancel registration
+	 *
+	 * @return void
+	 */
+	public function ajaxcancelregistration()
+	{
+		$resp = new stdClass();
+
+		if ($this->cancelRegistration())
+		{
+			$resp->status = 1;
+		}
+		else
+		{
+			$resp->status = 0;
+			$resp->error = $this->getError();
+		}
+
+		echo json_encode($resp);
+		JFactory::getApplication()->close();
+	}
 
 	/**
 	 * Initialise the mailer object to start sending mails
@@ -793,5 +865,47 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$query = 'SELECT id FROM #__users WHERE email = ' . $db->Quote( $email );
 		$db->setQuery($query, 0, 1);
 		return $db->loadResult();
+	}
+
+	/**
+	 * Actually do the cancel work (with notifications)
+	 *
+	 * @return bool
+	 */
+	protected function cancelRegistration()
+	{
+		$app = JFactory::getApplication();
+
+		$rid  = $app->input->getInt('rid', 0);
+		$xref = $app->input->getInt('xref', 0);
+
+		// Get/Create the model
+		$model = $this->getModel('Registration', 'RedeventModel');
+
+		if (!$model->cancelregistration($rid, $xref))
+		{
+			$msg = $model->getError();
+			$this->setError($msg);
+			return false;
+		}
+
+		/* Check if we have space on the waiting list */
+		$this->addModelPath(JPATH_BASE . '/administrator/components/com_redevent/models');
+		$model_wait = $this->getModel('waitinglist');
+		$model_wait->setXrefId($xref);
+		$model_wait->UpdateWaitingList();
+
+		JPluginHelper::importPlugin('redevent');
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('onAttendeeCancelled', array($rid));
+
+		$cache = JFactory::getCache('com_redevent');
+		$cache->clean();
+
+		// Send unreg notification email
+		$key = RedeventHelper::getAttendeeSubmitKey($rid);
+		$model->notifyManagers($key, true, $rid);
+
+		return true;
 	}
 }

@@ -1,55 +1,48 @@
 /**
  * javascript for ajax navigation
  */
+(function($){
+	$(document).ready(function() {
+		$('#redevent').on('click' , '#el_filter input, #el_filter select, #filter-go', function(event){
+			event.preventDefault();
+			red_ajaxnav.submitForm($(this).parents('form'));
+		});
 
-window.addEvent('domready', function() {
+		$('#redevent').on('click' , '#filter-reset', function(event){
+			event.preventDefault();
+			$('#el_filter select').val('0');
+			$('#el_filter input').val('');
+			red_ajaxnav.submitForm($(this).parents('form'));
+		});
 
-	document.id('redevent').addEvent('change:relay(#el_filter input)', function(e) {
-		e.stop();
-		red_ajaxnav.submitForm(this.getParent('form'));
-	});
 
-	document.id('redevent').addEvent('change:relay(#el_filter select)', function(e) {
-		e.stop();
-		red_ajaxnav.submitForm(this.getParent('form'));
-	});
+		$('.unreg-btn').click(function() {
+			if (confirm(Joomla.JText._("COM_REDEVENT_MYEVENTS_CANCEL_REGISTRATION_WARNING")))
+			{
+				var id = $(this).attr('id').substr(6);
+				var xref = $(this).attr('xref');
+				var element = this;
 
-	document.id('redevent').addEvent('click:relay(#filter-go)', function(e) {
-		e.stop();
-		red_ajaxnav.submitForm(this.getParent('form'));
-	});
+				// Perform the ajax request
+				$.ajax({
+					url: 'index.php?option=com_redevent&task=registration.ajaxcancelregistration&tmpl=component',
+					data : {'rid': id, 'xref': xref},
+					dataType: 'json',
+					beforeSend: function (xhr) {
+						//element.find('.spinner').show();
+					}
+				}).done(function(data) {
+					//element.find('.spinner').hide();
 
-	document.id('redevent').addEvent('click:relay(#filter-reset)', function(e) {
-		e.stop();
-		$$('#el_filter select').set('value', '0');
-		$$('#el_filter input').set('value', '');
-		red_ajaxnav.submitForm(this.getParent('form'));
-	});
-
-	$$('.unreg-btn').addEvent('click', function(){
-		if (confirm(Joomla.JText._("COM_REDEVENT_MYEVENTS_CANCEL_REGISTRATION_WARNING"))) {
-			var id = this.id.substr(6);
-			var xref = this.getProperty('xref');
-			var element = this;
-
-			element.set('spinner').spin();
-
-			var req = new Request.JSON({
-				url : 'index.php?option=com_redevent&task=ajaxcancelregistration&tmpl=component',
-				data : {'rid': id, 'xref': xref},
-				method : 'post',
-				onSuccess : function(resp){
-					element.set('spinner').unspin();
-					if (resp.status == 1) {
-						element.getParent('tr').dispose();
+					if (data.status == 1) {
+						$(element).parents('tr').remove();
 					}
 					else {
-						alert(resp.error);
+						alert(data.error);
 					}
-				}
-			});
-			req.send();
-		};
+				});
+			};
+		});
 	});
-});
+})(jQuery);
 

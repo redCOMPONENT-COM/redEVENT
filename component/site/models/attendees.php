@@ -32,7 +32,7 @@ jimport('joomla.application.component.model');
  * @subpackage redEVENT
  * @since		2.0
  */
-class RedEventModelAttendees extends JModel
+class RedEventModelAttendees extends RModel
 {
 
 	protected $_xref = 0;
@@ -273,20 +273,30 @@ class RedEventModelAttendees extends JModel
 		// make sure the init is done
 		$session = $this->getSession();
 
-		if (empty($session->showfields)) {
+		if (empty($session->showfields))
+		{
 			return false;
 		}
-		// load form fields
-		$q = ' SELECT id, field, form_id '
-		   . '      , CASE WHEN (CHAR_LENGTH(field_header) > 0) THEN field_header ELSE field END AS field_header '
-			 . ' FROM #__rwf_fields '
-			 . ' WHERE form_id = '. $this->_db->Quote($session->redform_id)
-			 . ($all_fields ? '' : '   AND id in ('.$session->showfields. ')')
-			 . '   AND published = 1 '
-			 . ' ORDER BY ordering ';
-		$this->_db->setQuery($q);
 
-		return $this->_db->loadObjectList();
+		$query = $this->_db->getQuery(true);
+
+		$query->select('f.id, f.field, ff.form_id')
+			->select('CASE WHEN (CHAR_LENGTH(field_header) > 0) THEN field_header ELSE field END AS field_header')
+			->from('#__rwf_form_field AS ff')
+			->join('INNER', '#__rwf_fields AS f ON ff.field_id = f.id')
+			->where('form_id = '. $this->_db->Quote($session->redform_id))
+			->where('ff.published = 1')
+			->order('ff.ordering');
+
+		if (!$all_fields)
+		{
+			$query->where('f.id in ('.$session->showfields. ')');
+		}
+
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadObjectList();
+
+		return $res;
 	}
 
 	/**

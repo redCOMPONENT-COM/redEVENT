@@ -42,9 +42,9 @@ class RedeventControllerSignup extends RedeventController
 	function __construct()
 	{
 		parent::__construct();
-		$this->registerTask( 'signup', 'display' );
-		$this->registerTask( 'sendsignupemail', 'display' );
-		$this->registerTask( 'manageredit', 'edit' );
+		$this->registerTask('signup', 'display');
+		$this->registerTask('sendsignupemail', 'display');
+		$this->registerTask('manageredit', 'edit');
 	}
 
 	function Createpdfemail()

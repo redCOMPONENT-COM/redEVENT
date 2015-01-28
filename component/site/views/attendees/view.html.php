@@ -60,20 +60,20 @@ class RedeventViewAttendees extends RViewSite
 		$manage_attendees     = $this->get('ManageAttendees');
 		$view_full_attendees  = $this->get('ViewAttendees');
 
-		$row		= $this->get('Session');
+		$session		= $this->get('Session');
 		$registers        = $model->getRegisters();
 		$register_fields  = $model->getFormFields();
 		$roles            = $this->get('Roles');
 
 		//get menu information
-		$menu		= & JSite::getMenu();
+		$menu		= JSite::getMenu();
 		$item    	= $menu->getActive();
 		if (!$item) $item = $menu->getDefault();
 
 		$params 	= & $mainframe->getParams('com_redevent');
 
 		//Check if the id exists
-		if (!$row)
+		if (!$session)
 		{
 			return JError::raiseError( 404, JText::sprintf( 'COM_REDEVENT_Session_not_found' ) );
 		}
@@ -81,35 +81,35 @@ class RedeventViewAttendees extends RViewSite
 		//Print
 		$pop	= JRequest::getBool('pop');
 
-		$params->def( 'page_title', RedeventHelper::getSessionFullTitle($row). ' - '. JText::_('COM_REDEVENT_ATTENDEES' ));
+		$params->def( 'page_title', RedeventHelper::getSessionFullTitle($session). ' - '. JText::_('COM_REDEVENT_ATTENDEES' ));
 
 		if ( $pop ) {
 			$params->set( 'popup', 1 );
 		}
 
-		$print_link = JRoute::_('index.php?option=com_redevent&view=attendees&xref='.$row->slug.'&pop=1&tmpl=component');
+		$print_link = JRoute::_('index.php?option=com_redevent&view=attendees&xref='.$session->slug.'&pop=1&tmpl=component');
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
-		$pathway->addItem( JText::_('COM_REDEVENT_ATTENDEES' ), JRoute::_('index.php?option=com_redevent&view=attendees&xref='.$row->slug));
+		$pathway->addItem( JText::_('COM_REDEVENT_ATTENDEES' ), JRoute::_('index.php?option=com_redevent&view=attendees&xref='.$session->slug));
 
 		//set page title and meta stuff
-		$document->setTitle($item->title.' - '.RedeventHelper::getSessionFullTitle($row));
+		$document->setTitle($item->title.' - '.RedeventHelper::getSessionFullTitle($session));
 
-		$unreg_check = RedeventHelper::canUnregister($row->xref);
+		$unreg_check = RedeventHelper::canUnregister($session->xref);
 
 		// lists
 		$lists = array();
 
 		/* Call the state object */
-		$state =& $this->get( 'state' );
+		$state = $this->get( 'state' );
 
 		/* Get the values from the state object that were inserted in the model's construct function */
 		$lists['order_Dir'] = $state->get( 'filter_order_Dir' );
 		$lists['order']     = $state->get( 'filter_order' );
 
 		//assign vars to jview
-		$this->assignRef('row',              $row);
+		$this->assignRef('session',              $session);
 		$this->assignRef('params',           $params);
 		$this->assignRef('user',             $user);
 		$this->assignRef('manage_attendees', $manage_attendees);
@@ -121,7 +121,7 @@ class RedeventViewAttendees extends RViewSite
 		$this->assignRef('elsettings', 			 $elsettings);
 		$this->assignRef('item', 					   $item);
 		$this->assignRef('unreg_check',      $unreg_check);
-		$this->assignRef('action',           JRoute::_('index.php?option=com_redevent&view=attendees&xref='.$row->slug));
+		$this->assignRef('action',           JRoute::_('index.php?option=com_redevent&view=attendees&xref='.$session->slug));
 		$this->assignRef('lists',            $lists);
 
 		$tpl = JRequest::getVar('tpl', $tpl);
@@ -141,7 +141,7 @@ class RedeventViewAttendees extends RViewSite
 		$user		= JFactory::getUser();
 		$elsettings = RedeventHelper::config();
 		$uri        = & JFactory::getURI();
-		$row		= $this->get('Session');
+		$session		= $this->get('Session');
 		$registers	= $this->get('Registers');
 		$regcheck	= $this->get('ManageAttendees');
 		$roles            = $this->get('Roles');
@@ -154,7 +154,7 @@ class RedeventViewAttendees extends RViewSite
 		$params 	= & $mainframe->getParams('com_redevent');
 
 		//Check if the session exists
-		if (!$row)
+		if (!$session)
 		{
 			return JError::raiseError( 404, JText::sprintf( 'COM_REDEVENT_Session_not_found' ) );
 		}
@@ -177,7 +177,7 @@ class RedeventViewAttendees extends RViewSite
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
-		$pathway->addItem( JText::_('COM_REDEVENT_Manage_attendees' ). ' - '.RedeventHelper::getSessionFullTitle($row), JRoute::_('index.php?option=com_redevent&view=attendees&layout=manageattendees&id='.$row->slug));
+		$pathway->addItem( JText::_('COM_REDEVENT_Manage_attendees' ). ' - '.RedeventHelper::getSessionFullTitle($session), JRoute::_('index.php?option=com_redevent&view=attendees&layout=manageattendees&id='.$session->slug));
 
 		//Check user if he can edit
 		$manage_attendees  = $this->get('ManageAttendees');
@@ -203,30 +203,30 @@ class RedeventViewAttendees extends RViewSite
 			$document->addScriptDeclaration($js);
 
 			//set page title and meta stuff
-			$document->setTitle( JText::_('COM_REDEVENT_Manage_attendees' ). ' - '.RedeventHelper::getSessionFullTitle($row) );
+			$document->setTitle( JText::_('COM_REDEVENT_Manage_attendees' ). ' - '.RedeventHelper::getSessionFullTitle($session) );
 
 			// lists
 			$lists = array();
 
 			/* Call the state object */
-			$state =& $this->get( 'state' );
+			$state = $this->get( 'state' );
 
 			/* Get the values from the state object that were inserted in the model's construct function */
 			$lists['order_Dir'] = $state->get( 'filter_order_Dir' );
-			$lists['order']     = $state->get( 'filter_order' );
+			$lists['order'] = $state->get( 'filter_order' );
 
 			//assign vars to jview
-			$this->assignRef('row', 					$row);
-			$this->assignRef('params' , 				$params);
-			$this->assignRef('user' ,         $user);
-			$this->assignRef('registers' , 				$registers);
-			$this->assignRef('roles',            $roles);
-			$this->assignRef('elsettings' , 			$elsettings);
-			$this->assignRef('item' , 					$item);
-			$this->assignRef('manage_attendees' , $manage_attendees);
-			$this->assignRef('view_full_attendees' , $view_full_attendees);
-			$this->assignRef('action',           JROute::_('index.php?option=com_redevent&view=attendees&layout=manageattendees&id='.$row->slug));
-			$this->assignRef('lists',            $lists);
+			$this->assignRef('session', $session);
+			$this->assignRef('params', $params);
+			$this->assignRef('user', $user);
+			$this->assignRef('registers', $registers);
+			$this->assignRef('roles', $roles);
+			$this->assignRef('elsettings', $elsettings);
+			$this->assignRef('item', $item);
+			$this->assignRef('manage_attendees', $manage_attendees);
+			$this->assignRef('view_full_attendees', $view_full_attendees);
+			$this->assignRef('action', JRoute::_('index.php?option=com_redevent&view=attendees&layout=manageattendees&id='.$session->slug));
+			$this->assignRef('lists', $lists);
 
 		parent::display($tpl);
 	}

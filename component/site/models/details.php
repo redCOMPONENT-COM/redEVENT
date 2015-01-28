@@ -343,7 +343,9 @@ class RedeventModelDetails extends JModelLegacy
 			{
 				$table_fields = array();
 				$fields_names = array();
-				foreach ($fields as $key => $field) {
+
+				foreach ($fields as $key => $field)
+				{
 					$table_fields[] = 'a.field_'. $field->id;
 					$fields_names['field_'. $field->id] = $field->field_header;
 				}
@@ -399,21 +401,23 @@ class RedeventModelDetails extends JModelLegacy
 	/**
 	 * returns the fields to be shown in attendees list
 	 *
-	 * @param boolean get all fields
-	 * @return array;
+	 * @param   boolean   $all_fields  get all fields
+	 *
+	 * @return array
 	 */
-	function getFormFields($all_fields = false)
+	public function getFormFields($all_fields = false)
 	{
 		// make sure the init is done
 		$this->getDetails();
 
-		if (empty($this->_details->showfields)) {
+		if (empty($this->_details->showfields))
+		{
 			return false;
 		}
 
 		$query = $this->_db->getQuery(true);
 
-		$query->select('f.id, f.field, ff.form_id')
+		$query->select('f.id, f.field, ff.form_id, f.field_header')
 			->from('#__rwf_fields AS f')
 			->join('LEFT', '#__rwf_form_field AS ff ON ff.field_id = f.id')
 			->where('ff.form_id = '. $this->_db->Quote($this->_details->redform_id))

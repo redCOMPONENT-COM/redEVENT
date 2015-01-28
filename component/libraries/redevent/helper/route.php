@@ -342,10 +342,9 @@ class RedeventHelperRoute
 		return self::buildUrl($parts);
 	}
 
-	public static function getManageAttendees($xref, $task = 'manageattendees')
+	public static function getManageAttendees($xref, $task = 'registration.manageattendees')
 	{
 		$parts = array( "option" => "com_redevent",
-		                "controller" => "registration",
 		                "view"   => 'attendees',
 		                "xref"   => $xref,
 									);
