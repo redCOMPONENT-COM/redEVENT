@@ -11,7 +11,10 @@ var red_ajaxnav = (function($) {
 			url: form.action,
 			data: $(form).serialize(),
 			dataType: 'html',
-			type: 'post'
+			type: 'post',
+			beforeSend: function (xhr) {
+				$(form).addClass('loading');
+			}
 		}).done(function(data) {
 			var newdiv = $('<div/>').html(data);
 			form.replaceWith(newdiv);

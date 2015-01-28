@@ -118,7 +118,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 	 * @access public
 	 * @return array
 	 */
-	public function & getEvents()
+	public function getEvents()
 	{
 		$pop = JRequest::getBool('pop');
 
@@ -515,26 +515,23 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 	/**
 	 * Build the where clause
 	 *
-	 * @access private
+	 * @param   JDatabaseQuery  $query  query object
+	 *
 	 * @return string
 	 */
 	protected function _buildEventListWhere($query)
 	{
-		$mainframe = JFactory::getApplication();
-
-		$user = JFactory::getUser();
-		$gid = (int) max($user->getAuthorisedViewLevels());
+		$app = JFactory::getApplication();
 
 		// Get the paramaters of the active menu item
-		$params = $mainframe->getParams();
-
-		$task = JRequest::getWord('task');
+		$params = $app->getParams();
 
 		$where = array();
 
-		$where[] = ' x.published > -1 ';
+		$where[] = 'x.published > -1';
 
 		$acl = RedeventUserAcl::getInstance();
+
 		if (!$acl->superuser())
 		{
 			$xrefs = $acl->getCanEditXrefs();
@@ -543,7 +540,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 
 			if ($xrefs && count($xrefs))
 			{
-				$where[] = ' x.id IN ('.implode(",", $xrefs).')';
+				$where[] = ' x.id IN (' . implode(",", $xrefs) . ')';
 			}
 			else
 			{
@@ -551,11 +548,13 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 			}
 		}
 
-		if ($params->get('showopendates', 1) == 0) {
+		if ($params->get('showopendates', 1) == 0)
+		{
 			$where[] = ' x.dates IS NOT NULL AND x.dates > 0 ';
 		}
 
-		if ($params->get('shownonbookable', 1) == 0) {
+		if ($params->get('shownonbookable', 1) == 0)
+		{
 			$where[] = ' a.registra > 0 ';
 		}
 
@@ -565,40 +564,40 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		*/
 		if ($params->get('filter_text'))
 		{
-			$filter = JRequest::getString('filter', '', 'request');
-			$filter_type = JRequest::getWord('filter_type', '', 'request');
+			$filter = $app->input->getString('filter', '', 'request');
+			$filter_type = $app->input->getWord('filter_type', '', 'request');
 
 			if ($filter)
 			{
-				// clean filter variables
+				// Clean filter variables
 				$filter = JString::strtolower($filter);
-				$filter = $this->_db->Quote('%'.$this->_db->getEscaped($filter, true).'%', false);
+				$filter = $this->_db->Quote('%' . $this->_db->escape($filter, true) . '%', false);
 				$filter_type = JString::strtolower($filter_type);
 
-				switch($filter_type)
+				switch ($filter_type)
 				{
 					case 'title':
-						$where[] = ' LOWER( a.title ) LIKE '.$filter;
+						$where[] = ' LOWER( a.title ) LIKE ' . $filter;
 						break;
 
 					case 'venue':
-						$where[] = ' LOWER( l.venue ) LIKE '.$filter;
+						$where[] = ' LOWER( l.venue ) LIKE ' . $filter;
 						break;
 
 					case 'city':
-						$where[] = ' LOWER( l.city ) LIKE '.$filter;
+						$where[] = ' LOWER( l.city ) LIKE ' . $filter;
 						break;
 
 					case 'type':
-						$where[] = ' LOWER( c.name ) LIKE '.$filter;
+						$where[] = ' LOWER( c.name ) LIKE ' . $filter;
 						break;
 				}
 			}
 		}
 
-		if (JRequest::getInt('filter_event'))
+		if ($app->input->getInt('filter_event'))
 		{
-			$where[] = ' a.id = '.JRequest::getInt('filter_event');
+			$where[] = ' a.id = ' . $app->input->getInt('filter_event');
 		}
 
 		$query->where(implode(' AND ', $where));

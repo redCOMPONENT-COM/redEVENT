@@ -3,7 +3,12 @@
  */
 (function($){
 	$(document).ready(function() {
-		$('#redevent').on('click' , '#el_filter input, #el_filter select, #filter-go', function(event){
+		$('#redevent').on('click' , '#filter-go', function(event){
+			event.preventDefault();
+			red_ajaxnav.submitForm($(this).parents('form'));
+		});
+
+		$('#redevent').on('change' , '#filter_event, #limit', function(event){
 			event.preventDefault();
 			red_ajaxnav.submitForm($(this).parents('form'));
 		});
@@ -29,10 +34,10 @@
 					data : {'rid': id, 'xref': xref},
 					dataType: 'json',
 					beforeSend: function (xhr) {
-						//element.find('.spinner').show();
+						$(element).parents('tr').addClass('loading');
 					}
 				}).done(function(data) {
-					//element.find('.spinner').hide();
+					$(element).parents('tr').removeClass('loading');
 
 					if (data.status == 1) {
 						$(element).parents('tr').remove();
