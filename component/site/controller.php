@@ -258,7 +258,7 @@ class RedeventController extends JControllerLegacy
 	function publishxref()
 	{
 		$acl  = RedeventUserAcl::getInstance();
-		$xref = JRequest::getInt('xref');
+		$xref = $this->input->getInt('xref');
 
 		if (!$acl->canPublishXref($xref)) {
 			$msg = JText::_('COM_REDEVENT_MYEVENTS_CHANGE_PUBLISHED_STATE_NOTE_ALLOWED');
@@ -266,9 +266,9 @@ class RedeventController extends JControllerLegacy
 			return;
 		}
 
-		$model = $this->getModel('editevent');
-		$task = JRequest::getVar('task');
-		switch (JRequest::getVar('task'))
+		$model = $this->getModel('editsession');
+
+		switch ($this->input->get('task'))
 		{
 			case 'publishxref':
 				$newstate = 1;
@@ -281,7 +281,9 @@ class RedeventController extends JControllerLegacy
 				break;
 		}
 
-		if ($model->publishxref($xref, $newstate)) {
+		$pks = array($xref);
+
+		if ($model->publish($pks, $newstate)) {
 			$msg = JText::_('COM_REDEVENT_PUBLISHED_STATE_UPDATED');
 			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg);
 		}
@@ -302,7 +304,7 @@ class RedeventController extends JControllerLegacy
 			return;
 		}
 
-		$model = $this->getModel('editevent');
+		$model = $this->getModel('editsession');
 
 		if ($model->deletexref($xref)) {
 			$msg = JText::_('COM_REDEVENT_EVENT_DATE_DELETED');
