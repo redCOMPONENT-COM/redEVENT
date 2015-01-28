@@ -120,7 +120,7 @@ class RedeventsyncHandlerCustomersrq extends RedeventsyncHandlerAbstractmessage
 		$success->addChild('Emailaddress', $user->email);
 		$success->addChild('Nationality', $user->rm_nationality);
 		$success->addChild('TitleRank', $user->titlerank);
-		$success->addChild('Birthdate', $user->birthdate);
+		$success->addChild('Birthdate', $user->rm_birthday);
 		$success->addChild('Phonenumber',  $user->rm_phone);
 		$success->addChild('Mobilephonenumber', $user->rm_mobile);
 		$success->addChild('CompanyCvrNr',      $user->organization_vat);
