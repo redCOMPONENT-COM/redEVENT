@@ -255,15 +255,21 @@ class RedeventController extends JControllerLegacy
 		$this->mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
 	}
 
-	function publishxref()
+	/**
+	 * Publish a session
+	 *
+	 * @return void
+	 */
+	public function publishxref()
 	{
 		$acl  = RedeventUserAcl::getInstance();
 		$xref = $this->input->getInt('xref');
 
-		if (!$acl->canPublishXref($xref)) {
+		if (!$acl->canPublishXref($xref))
+		{
 			$msg = JText::_('COM_REDEVENT_MYEVENTS_CHANGE_PUBLISHED_STATE_NOTE_ALLOWED');
 			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');
-			return;
+			$this->redirect();
 		}
 
 		$model = $this->getModel('editsession');
@@ -283,34 +289,46 @@ class RedeventController extends JControllerLegacy
 
 		$pks = array($xref);
 
-		if ($model->publish($pks, $newstate)) {
+		if ($model->publish($pks, $newstate))
+		{
 			$msg = JText::_('COM_REDEVENT_PUBLISHED_STATE_UPDATED');
 			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg);
 		}
-		else {
+		else
+		{
 			$msg = JText::_('COM_REDEVENT_PUBLISHED_STATE_UPDATE_ERROR').'<br>'.$model->getError();
 			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');
 		}
 	}
 
-	function deletexref()
+
+	/**
+	 * Delete a session
+	 *
+	 * @return void
+	 */
+	public function deletexref()
 	{
 		$acl  = RedeventUserAcl::getInstance();
-		$xref = JRequest::getInt('xref');
+		$xref = $this->input->getInt('xref');
 
-		if (!$acl->canEditXref($xref)) {
+		if (!$acl->canEditXref($xref))
+		{
 			$msg = JText::_('COM_REDEVENT_MYEVENTS_DELETE_XREF_NOTE_ALLOWED');
 			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');
-			return;
+			$this->redirect();
 		}
 
 		$model = $this->getModel('editsession');
+		$pks = array($xref);
 
-		if ($model->deletexref($xref)) {
+		if ($model->delete($pks))
+		{
 			$msg = JText::_('COM_REDEVENT_EVENT_DATE_DELETED');
 			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg);
 		}
-		else {
+		else
+		{
 			$msg = JText::_('COM_REDEVENT_EVENT_DATE_DELETION_ERROR').'<br>'.$model->getError();
 			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');
 		}
