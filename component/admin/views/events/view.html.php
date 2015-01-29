@@ -27,11 +27,6 @@ class RedeventViewEvents extends RedeventViewAdmin
 	 */
 	public function display($tpl = null)
 	{
-		if ($this->getLayout() == 'export')
-		{
-			return $this->_displayExport($tpl);
-		}
-
 		$user = JFactory::getUser();
 
 		$this->items = $this->get('Items');
