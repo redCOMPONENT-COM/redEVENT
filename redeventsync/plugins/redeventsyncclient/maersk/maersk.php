@@ -679,8 +679,9 @@ class plgRedeventsyncclientMaersk extends JPlugin
 	 */
 	public function onHandleUserSaved($userId, $isNew)
 	{
-		$model = $this->getHandler('Customerscrmrq');
-		$model->sendCustomersCRMRQ($userId, $isNew);
+		// Not supported by picasso, so disable it
+//		$model = $this->getHandler('Customerscrmrq');
+//		$model->sendCustomersCRMRQ($userId, $isNew);
 
 		return true;
 	}
