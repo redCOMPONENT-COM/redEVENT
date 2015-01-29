@@ -105,8 +105,7 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 		{
 			$data['name'] = trim((string) $customer->Firstname) . ' ' . trim((string) $customer->Lastname);
 			$data['email'] = (string) $customer->Emailaddress;
-			$data['username'] = trim((string) $customer->Firstname) . trim((string) $customer->Lastname);
-			$data['username'] = $this->getUniqueUsername($data['username']);
+			$data['username'] = $data['email'];
 		}
 
 		$companyData = array(
