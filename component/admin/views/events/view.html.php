@@ -104,7 +104,7 @@ class RedeventViewEvents extends RedeventViewAdmin
 			$edit = RToolbarBuilder::createEditButton('event.edit');
 			$secondGroup->addButton($edit);
 
-			$importExport = RToolbarBuilder::createStandardButton('events.csvexport', 'csvexport', 'csvexport', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), false);
+			$importExport = RToolbarBuilder::createStandardButton('eventscsv.edit', 'csvexport', 'csvexport', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), false);
 			$secondGroup->addButton($importExport);
 		}
 
@@ -128,6 +128,8 @@ class RedeventViewEvents extends RedeventViewAdmin
 			$delete = RToolbarBuilder::createDeleteButton('events.delete');
 			$fourthGroup->addButton($delete);
 		}
+
+		$fourthGroup->addButton(RToolbarBuilder::createCsvButton());
 
 		$toolbar = new RToolbar;
 		$toolbar->addGroup($firstGroup)->addGroup($secondGroup)->addGroup($thirdGroup)->addGroup($fourthGroup);

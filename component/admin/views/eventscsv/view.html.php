@@ -24,6 +24,7 @@ class RedeventViewEventscsv extends RedeventViewAdmin
 	 */
 	public function display($tpl = null)
 	{
+		$this->form = $this->get('Form');
 
 		parent::display($tpl);
 	}
@@ -38,30 +39,5 @@ class RedeventViewEventscsv extends RedeventViewAdmin
 	public function getTitle()
 	{
 		return JText::_('COM_REDEVENT_PAGETITLE_EVENTS_EXPORT');
-	}
-
-	/**
-	 * Get the tool-bar to render.
-	 *
-	 * @return  RToolbar
-	 */
-	public function getToolbar()
-	{
-		$user = JFactory::getUser();
-
-		$firstGroup		= new RToolbarButtonGroup;
-
-		$firstGroup->addButton(RToolbarBuilder::createCancelButton('cancel'));
-
-		if ($user->authorise('core.create', 'com_redevent'))
-		{
-			$new = RToolbarBuilder::createStandardButton('events.doexport', 'icon-share', 'icon-share', JText::_('COM_REDEVENT_BUTTON_EXPORT'), false);
-			$firstGroup->addButton($new);
-		}
-
-		$toolbar = new RToolbar;
-		$toolbar->addGroup($firstGroup);
-
-		return $toolbar;
 	}
 }
