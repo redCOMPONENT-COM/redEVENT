@@ -230,4 +230,25 @@ class RedeventModelEventscsv extends RModelAdmin
 
 		return $pgs;
 	}
+
+	protected function populateState()
+	{
+		$filters = JFactory::getApplication()->input->get('jform', array(), 'array');
+
+		if (isset($filters['categories']) && is_array($filters['categories']))
+		{
+			$categories = $filters['categories'];
+			JArrayHelper::toInteger($categories);
+			$this->setState('categories', $categories);
+		}
+
+		if (isset($filters['venues']) && is_array($filters['venues']))
+		{
+			$venues = $filters['venues'];
+			JArrayHelper::toInteger($venues);
+			$this->setState('venues', $venues);
+		}
+	}
+
+
 }

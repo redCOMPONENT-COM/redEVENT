@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent.admin
  * @since    3.0
  */
-class RedeventControllerEventscsv extends RControllerForm
+class RedeventControllerEventscsv extends JControllerLegacy
 {
 	public function export()
 	{
