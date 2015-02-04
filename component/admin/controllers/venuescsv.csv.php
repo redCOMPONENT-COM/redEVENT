@@ -8,7 +8,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Redevent Component venues csv export/import Controller
+ * Redevent Component Venues csv export/import Controller
  *
  * @package  Redevent.admin
  * @since    3.0

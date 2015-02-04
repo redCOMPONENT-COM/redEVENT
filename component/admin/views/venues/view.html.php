@@ -24,11 +24,6 @@ class RedeventViewVenues extends RedeventViewAdmin
 	 */
 	public function display($tpl = null)
 	{
-		if ($this->getLayout() == 'importexport')
-		{
-			return $this->_displayExport($tpl);
-		}
-
 		$user = JFactory::getUser();
 
 		$this->items = $this->get('Items');
@@ -104,7 +99,7 @@ class RedeventViewVenues extends RedeventViewAdmin
 			$edit = RToolbarBuilder::createEditButton('venue.edit');
 			$secondGroup->addButton($edit);
 
-			$importExport = RToolbarBuilder::createStandardButton('venues.csvexport', 'csvexport', 'csvexport', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), false);
+			$importExport = RToolbarBuilder::createStandardButton('venuescsv.edit', 'csvexport', 'csvexport', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), false);
 			$secondGroup->addButton($importExport);
 		}
 
@@ -127,34 +122,5 @@ class RedeventViewVenues extends RedeventViewAdmin
 		$toolbar->addGroup($firstGroup)->addGroup($secondGroup)->addGroup($thirdGroup)->addGroup($fourthGroup);
 
 		return $toolbar;
-	}
-
-	function _displayExport($tpl = null)
-	{
-		$document	= & JFactory::getDocument();
-		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_VENUES_EXPORT'));
-		//add css and submenu to document
-		RHelperAsset::load('backend.css');
-
-		//Create Submenu
-    ELAdmin::setMenu();
-
-		JHTML::_('behavior.tooltip');
-
-		//create the toolbar
-		JToolBarHelper::title( JText::_( 'COM_REDEVENT_PAGETITLE_VENUES_EXPORT' ), 'events' );
-
-		JToolBarHelper::back();
-		JToolBarHelper::custom('doexport', 'exportevents', 'exportevents', JText::_('COM_REDEVENT_BUTTON_EXPORT'), false);
-
-		$lists = array();
-
-		$lists['categories'] = JHTML::_('select.genericlist', $this->get('CategoriesOptions'), 'categories[]'
-		                                        , 'size="15" multiple="multiple"', 'value', 'text');
-
-		//assign data to template
-		$this->assignRef('lists'      	, $lists);
-
-		parent::display($tpl);
 	}
 }

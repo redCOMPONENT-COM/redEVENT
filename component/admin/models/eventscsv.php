@@ -79,8 +79,6 @@ class RedeventModelEventscsv extends RModelAdmin
 			->group('x.id, e.id')
 			->order('e.id, x.dates');
 
-		$where = array();
-
 		if ($categories = $this->getState('categories'))
 		{
 			$query->where("(xc.category_id = " . implode(" OR xc.category_id = ", $categories) . ')');
