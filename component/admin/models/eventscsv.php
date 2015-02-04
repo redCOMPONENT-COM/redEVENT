@@ -130,11 +130,13 @@ class RedeventModelEventscsv extends RModelAdmin
 			{
 				$results[$k]['prices'] = $pgs[$r['xref']]->prices;
 				$results[$k]['pricegroups_names'] = $pgs[$r['xref']]->pricegroups_names;
+				$results[$k]['currencies'] = $pgs[$r['xref']]->currencies;
 			}
 			else
 			{
 				$results[$k]['prices'] = null;
 				$results[$k]['pricegroups_names'] = null;
+				$results[$k]['currencies'] = null;
 			}
 
 			foreach ($r as $col => $val)
@@ -221,6 +223,7 @@ class RedeventModelEventscsv extends RModelAdmin
 		$query->select('spg.xref')
 			->select('GROUP_CONCAT(spg.price SEPARATOR "#!#") AS prices')
 			->select('GROUP_CONCAT(pg.name SEPARATOR "#!#") AS pricegroups_names')
+			->select('GROUP_CONCAT(spg.currency SEPARATOR "#!#") AS currencies')
 			->from('#__redevent_sessions_pricegroups AS spg')
 			->join('INNER', '#__redevent_pricegroups AS pg ON pg.id = spg.pricegroup_id')
 			->group('spg.xref');
@@ -249,6 +252,4 @@ class RedeventModelEventscsv extends RModelAdmin
 			$this->setState('venues', $venues);
 		}
 	}
-
-
 }

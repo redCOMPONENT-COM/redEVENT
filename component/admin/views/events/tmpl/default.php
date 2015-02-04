@@ -101,7 +101,7 @@ $search = $this->state->get('filter.search');
 					<?php echo JHTML::_('rsearchtools.sort', 'JGRID_HEADING_LANGUAGE', 'c.language', $listDirn, $listOrder); ?>
 				</th>
 				<th width="10">
-					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_ID', 'c.id', $listDirn, $listOrder); ?>
+					<?php echo JHTML::_('rsearchtools.sort', 'COM_REDEVENT_ID', 'obj.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 			</thead>

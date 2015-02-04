@@ -140,9 +140,16 @@ class RedeventTableSession extends RedeventTable
 		return $res;
 	}
 
+	/**
+	 * Set prices
+	 *
+	 * @param   array  $prices  prices
+	 *
+	 * @return bool
+	 */
 	public function setPrices($prices = array())
 	{
-		// first remove current rows
+		// First remove current rows
 		$query = $this->_db->getQuery(true);
 
 		$query->delete('#__redevent_sessions_pricegroups')
@@ -157,7 +164,7 @@ class RedeventTableSession extends RedeventTable
 			return false;
 		}
 
-		// then recreate them if any
+		// Then recreate them if any
 		foreach ((array) $prices as $k => $price)
 		{
 			if (!isset($price->pricegroup_id) || !isset($price->price))
@@ -165,7 +172,7 @@ class RedeventTableSession extends RedeventTable
 				continue;
 			}
 
-			$new = RTable::getInstance('Sessionspricegroups', 'RedeventTable');
+			$new = RTable::getAdminInstance('Sessionpricegroup');
 			$new->set('xref',          $this->id);
 			$new->set('pricegroup_id', $price->pricegroup_id);
 			$new->set('price',         $price->price);
