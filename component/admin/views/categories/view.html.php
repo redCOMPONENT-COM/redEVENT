@@ -83,10 +83,10 @@ class RedeventViewCategories extends RedeventViewAdmin
 	{
 		$user = JFactory::getUser();
 
-		$firstGroup		= new RToolbarButtonGroup;
-		$secondGroup	= new RToolbarButtonGroup;
-		$thirdGroup		= new RToolbarButtonGroup;
-		$fourthGroup		= new RToolbarButtonGroup;
+		$firstGroup = new RToolbarButtonGroup;
+		$secondGroup = new RToolbarButtonGroup;
+		$thirdGroup = new RToolbarButtonGroup;
+		$fourthGroup = new RToolbarButtonGroup;
 
 		if ($user->authorise('core.create', 'com_redevent'))
 		{
@@ -99,7 +99,7 @@ class RedeventViewCategories extends RedeventViewAdmin
 			$edit = RToolbarBuilder::createEditButton('category.edit');
 			$secondGroup->addButton($edit);
 
-			$importExport = RToolbarBuilder::createStandardButton('categoryimportexport.display', 'csvexport', 'csvexport', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), false);
+			$importExport = RToolbarBuilder::createStandardButton('categoriescsv.edit', 'csvexport', 'csvexport', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), false);
 			$secondGroup->addButton($importExport);
 		}
 

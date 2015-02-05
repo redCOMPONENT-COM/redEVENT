@@ -168,7 +168,7 @@ class RedeventModelEventscsvimport extends RModel
 
 			$ev = RTable::getAdminInstance('Event');
 
-			if (isset($data['id']) && $data['id'])
+			if ($this->duplicateMethod !== 'create_new' && isset($data['id']) && $data['id'])
 			{
 				// Load existing data
 				$found = $ev->load($data['id']);

@@ -77,7 +77,7 @@ class RedeventModelVenuescsvimport extends RModel
 		{
 			$v = RTable::getAdminInstance('Venue');
 
-			if (isset($data['id']) && $data['id'])
+			if ($this->duplicateMethod !== 'create_new' && isset($data['id']) && $data['id'])
 			{
 				// Load existing data
 				$found = $v->load($data['id']);
