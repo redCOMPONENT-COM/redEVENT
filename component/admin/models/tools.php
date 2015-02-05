@@ -35,7 +35,7 @@ jimport('joomla.filesystem.file');
  * @subpackage redevent
  * @since		0.9
  */
-class RedEventModelTools extends JModel
+class RedEventModelTools extends JModelLegacy
 {
 	/**
 	 * target
@@ -141,19 +141,19 @@ class RedEventModelTools extends JModel
 
 		return $deleted;
 	}
-	
+
 	/**
 	 * perform integrity check on db
-	 * 
-	 * @return bool true if no problem 
+	 *
+	 * @return bool true if no problem
 	 */
 	function checkdb()
 	{
 		$errors = array();
 		$dbok   = true;
-		
+
 		/** check for registers without corresponding records in redform **/
-		
+
 		$query = ' SELECT r.id, r.xref, x.eventid '
 		       . ' FROM #__redevent_register AS r '
 		       . ' LEFT JOIN #__redevent_event_venue_xref AS x ON r.xref = x.id '
@@ -173,27 +173,27 @@ class RedEventModelTools extends JModel
 			}
 			$errors[] = implode('<br/>', $error);
 		}
-				
+
 		if (!$dbok) {
 			$this->setError(implode('<br/>', $errors));
 		}
 		return $dbok;
 	}
-	
+
 	/**
 	 * perform integrity fix on db
-	 * 
-	 * @return bool true if no problem 
+	 *
+	 * @return bool true if no problem
 	 */
 	function fixdb()
-	{		
+	{
 		// all the redevent_register records in redevent without an associated record in redform submitters can be deleted
 		$q =  ' SELECT r.id FROM #__redevent_register AS r '
         . ' LEFT JOIN #__rwf_submitters AS s ON s.id = r.sid '
         . ' WHERE s.id IS NULL '
         ;
     $this->_db->setQuery($q);
-    $register_ids = $this->_db->loadResultArray();		
+    $register_ids = $this->_db->loadResultArray();
     if (!empty($register_ids))
     {
 			$q =  ' DELETE r.* FROM #__redevent_register AS r '
@@ -201,14 +201,14 @@ class RedEventModelTools extends JModel
 	        . ' WHERE s.id IS NULL '
 	        ;
 			$this->_db->setQuery($q);
-			if(!$this->_db->query()) 
+			if(!$this->_db->query())
 			{
 	      RedeventError::raiseWarning(0, JText::_( "COM_REDEVENT_CANT_DELETE_REGISTRATIONS" ) . ': ' . $this->_db->getErrorMsg() );
 				$this->setError(JText::_( "COM_REDEVENT_CANT_DELETE_REGISTRATIONS" ) . ': '. $this->_db->getErrorMsg());
 				return false;
 			}
     }
-    
+
 		return true;
 	}
 

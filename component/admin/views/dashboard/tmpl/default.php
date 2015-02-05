@@ -32,7 +32,7 @@ Joomla.submitbutton = function (pressbutton) {
 };
 </script>
 
-<div id="reDashboard-main-container" class="row-fluid">
+<div z class="row-fluid">
 	<div class="span9 reDashboardMainIcons">
 		<?php $iconsRow = array_chunk($icons, 6); ?>
 		<?php foreach ($iconsRow as $row) : ?>
