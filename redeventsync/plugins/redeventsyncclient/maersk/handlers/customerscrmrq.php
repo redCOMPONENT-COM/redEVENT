@@ -97,7 +97,7 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 		$data['rm_countrycode'] = (string) $customer->Countrycode;
 		$data['rm_nationality'] = (string) $customer->Nationality;
 		$data['rm_titlerank'] = (string) $customer->TitleRank;
-		$data['rm_birthdate'] = (string) $customer->Birthdate;
+		$data['rm_birthday'] = (string) $customer->Birthdate;
 		$data['rm_phone'] = (string) $customer->Phonenumber;
 		$data['rm_mobile'] = (string) $customer->Mobilephonenumber;
 
@@ -364,8 +364,8 @@ class RedeventsyncHandlerCustomerscrmrq extends RedeventsyncHandlerAbstractmessa
 		$message->addChild('Countrycode',  $user->rm_countrycode);
 		$message->addChild('Emailaddress', $user->email);
 		$message->addChild('Nationality', $user->rm_nationality);
-		$message->addChild('TitleRank', $user->titlerank);
-		$message->addChild('Birthdate', $user->birthdate);
+		$message->addChild('TitleRank', $user->rm_titlerank);
+		$message->addChild('Birthdate', $user->rm_birthday);
 		$message->addChild('Phonenumber',  $user->rm_phone);
 		$message->addChild('Mobilephonenumber', $user->rm_mobile);
 		$message->addChild('CompanyCvrNr',      $user->organization_vat);
