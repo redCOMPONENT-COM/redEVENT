@@ -32,16 +32,12 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedEventViewCsvtool extends JView {
-
-	function display($tpl = null)
+class RedeventViewAttendeescsv extends RViewAdmin
+{
+	public function display($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-
 		//initialise variables
-		$document	= & JFactory::getDocument();
-		$db			= & JFactory::getDBO();
+		$document	= JFactory::getDocument();
     $url    = JURI::root();
 
 		JHTML::_('behavior.framework');
@@ -94,4 +90,11 @@ class RedEventViewCsvtool extends JView {
 
 		parent::display($tpl);
 	}
+
+	public function getTitle()
+	{
+		return JText::_( 'COM_REDEVENT_TOOLS_CSV' );
+	}
+
+
 }

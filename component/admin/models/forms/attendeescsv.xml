@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fieldset name="export"
+			  addfieldpath="/libraries/redevent/form/fields">
+		<field
+			name="parent"
+			type="recategorylist"
+			label="COM_REDEVENT_CATEGORIES_CSV_EXPORT_PARENT"
+			description ="COM_REDEVENT_CATEGORIES_CSV_EXPORT_PARENT_DESC"
+			multiple="false"
+			>
+			<option value=""></option>
+		</field>
+
+	</fieldset>
+</form>

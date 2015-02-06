@@ -32,13 +32,15 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedEventViewCsvtool extends JView {
-
-	function display($tpl = null)
+class RedEventViewCsvtool extends RViewCsv
+{
+	protected function getColumns()
 	{
-		jimport('joomla.filesystem.file');
+		return false;
+	}
 
-
+	public function display($tpl = null)
+	{
 		$model = $this->getModel();
 
 		$events = JRequest::getVar('events_filter', array(), 'post', 'array');
