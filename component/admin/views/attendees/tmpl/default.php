@@ -152,7 +152,7 @@ $sessionLink = JHtml::_('link', $sessionUrl, $date);
 				<?php if ($this->params->get('attendees_table_show_uniqueid', 1)): ?>
 				<td><?php echo $row->course_code .'-'. $row->xref .'-'. $row->attendee_id; ?></td>
         <?php endif; ?>
-				<td><?php echo $row->from_b2b ? JHTML::_('image', 'admin/tick.png', JText::_('JYES'), null, true) : JHTML::_('image', 'admin/publish_x.png', JText::_('JNO'), null, true); ?></td>
+				<td><?php echo $row->fromb2b ? JHTML::_('image', 'admin/tick.png', JText::_('JYES'), null, true) : JHTML::_('image', 'admin/publish_x.png', JText::_('JNO'), null, true); ?></td>
 				<td><?php echo $row->name; ?></td>
 				<td>
 				  <?php
