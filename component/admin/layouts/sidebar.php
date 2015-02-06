@@ -29,7 +29,7 @@ $icons = array(
 	array('view' => 'roles', 'icon' => 'icon-16-groups.png', 'text' => JText::_('COM_REDEVENT_ROLES'), 'access' => 'core.edit'),
 	array('view' => 'pricegroups', 'icon' => 'icon-16-featured.png', 'text' => JText::_('COM_REDEVENT_MENU_PRICEGROUPS'), 'access' => 'core.edit'),
 	array('view' => 'archive', 'icon' => 'icon-16-archive.png', 'text' => JText::_('COM_REDEVENT_ARCHIVESCREEN'), 'access' => 'core.edit'),
-	array('view' => 'view=tools', 'icon' => 'icon-16-settings.png', 'text' => JText::_('COM_REDEVENT_TOOLS'), 'access' => 'core.manage'),
+	array('view' => 'tools', 'icon' => 'icon-16-settings.png', 'text' => JText::_('COM_REDEVENT_TOOLS'), 'access' => 'core.manage'),
 	array('view' => 'logs', 'icon' => 'icon-16-events.png', 'text' => JText::_('COM_REDEVENT_LOG'), 'access' => 'core.manage'),
 	array('view' => 'configuration', 'icon' => 'icon-16-settings.png', 'text' => JText::_('COM_REDEVENT_SETTINGS'), 'access' => 'core.manage'),
 );

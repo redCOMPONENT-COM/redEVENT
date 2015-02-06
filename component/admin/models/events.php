@@ -174,6 +174,16 @@ class RedeventModelEvents extends RModelList
 			$query->where(implode(' OR ', $parts));
 		}
 
+		if ($category = $this->getState('filter.category'))
+		{
+			$query->where('cat.id = ' . (int) $category);
+		}
+
+		if ($venue = $this->getState('filter.venue'))
+		{
+			$query->where('loc.id = ' . (int) $venue);
+		}
+
 		return $query;
 	}
 

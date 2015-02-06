@@ -27,7 +27,7 @@ $icons = array(
         'desc' => JText::_('COM_REDEVENT_ADD_SAMPLE_DATA_DESC'),
         'access' => 'core.edit'),
     array(
-        'link' => 'index.php?option=com_redevent&view=tools.csvtools',
+        'link' => 'index.php?option=com_redevent&view=attendeescsv',
         'icon' => 'icon-48-cleaneventimg.png',
         'text' => JText::_('COM_REDEVENT_TOOLS_CSV'),
         'desc' => JText::_('COM_REDEVENT_TOOLS_CSV_DESC'),
