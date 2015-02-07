@@ -85,11 +85,11 @@ class RedEventViewTextsnippets extends RedeventViewAdmin
 			$edit = RToolbarBuilder::createEditButton('textsnippet.edit');
 			$secondGroup->addButton($edit);
 
-			$export = RToolbarBuilder::createStandardButton('textsnippet.export', 'csvexport', 'csvexport', JText::_('COM_REDEVENT_BUTTON_EXPORT'), false);
-			$secondGroup->addButton($export);
-
-			$import = RToolbarBuilder::createStandardButton('textsnippet.import', 'csvimport', 'csvimport', JText::_('COM_REDEVENT_BUTTON_IMPORT'), false);
-			$secondGroup->addButton($import);
+//			$export = RToolbarBuilder::createStandardButton('textsnippet.export', 'csvexport', 'csvexport', JText::_('COM_REDEVENT_BUTTON_EXPORT'), false);
+//			$secondGroup->addButton($export);
+//
+//			$import = RToolbarBuilder::createStandardButton('textsnippet.import', 'csvimport', 'csvimport', JText::_('COM_REDEVENT_BUTTON_IMPORT'), false);
+//			$secondGroup->addButton($import);
 		}
 
 		if ($user->authorise('core.delete', 'com_redevent'))

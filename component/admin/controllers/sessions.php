@@ -16,6 +16,17 @@ defined('_JEXEC') or die('Restricted access');
 class RedeventControllerSessions extends RControllerAdmin
 {
 	/**
+	 * The method => state map.
+	 *
+	 * @var  array
+	 */
+	protected $states = array(
+		'publish' => 1,
+		'unpublish' => 0,
+		'archive' => -1
+	);
+
+	/**
 	 * Method to publish a list of items
 	 *
 	 * @return  void

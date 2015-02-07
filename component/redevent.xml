@@ -40,7 +40,6 @@
 		<folder>assets</folder>
 		<folder>classes</folder>
 		<folder>controllers</folder>
-		<folder>helpers</folder>
 		<folder>language</folder>
 		<folder>layouts</folder>
         <folder>meta_ext</folder>

@@ -16,6 +16,17 @@ defined('_JEXEC') or die('Restricted access');
 class RedeventControllerVenues extends RControllerAdmin
 {
 	/**
+	 * The method => state map.
+	 *
+	 * @var  array
+	 */
+	protected $states = array(
+		'publish' => 1,
+		'unpublish' => 0,
+		'archive' => -1
+	);
+
+	/**
 	 * Function that allows child controller access to model data
 	 * after the item has been deleted.
 	 *

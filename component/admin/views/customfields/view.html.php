@@ -105,11 +105,11 @@ class RedeventViewCustomfields extends RedeventViewAdmin
 			$edit = RToolbarBuilder::createEditButton('customfield.edit');
 			$secondGroup->addButton($edit);
 
-			$export = RToolbarBuilder::createStandardButton('customfield.export', 'csvexport', 'csvexport', JText::_('COM_REDEVENT_BUTTON_EXPORT'), false);
-			$secondGroup->addButton($export);
-
-			$import = RToolbarBuilder::createStandardButton('customfield.import', 'csvimport', 'csvimport', JText::_('COM_REDEVENT_BUTTON_IMPORT'), false);
-			$secondGroup->addButton($import);
+//			$export = RToolbarBuilder::createStandardButton('customfield.export', JText::_('COM_REDEVENT_BUTTON_EXPORT'), '', 'icon-table', false);
+//			$secondGroup->addButton($export);
+//
+//			$import = RToolbarBuilder::createStandardButton('customfield.import', JText::_('COM_REDEVENT_BUTTON_IMPORT'), '', 'icon-table', false);
+//			$secondGroup->addButton($import);
 		}
 
 		if ($user->authorise('core.delete', 'com_redevent'))

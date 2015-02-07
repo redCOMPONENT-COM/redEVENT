@@ -19,7 +19,7 @@
         </field>
 		<field
 			name="published"
-			type="rpublished"
+			type="list"
 			onchange="this.form.submit();"
 			label="COM_REDEVENT_FILTER_PUBLISHED"
 		>
@@ -40,7 +40,7 @@
 	</fields>
 	<fields name="list">
 		<field
-			name="events_limit"
+			name="sessions_limit"
 			type="rlimitbox"
 			class="inputbox input-mini chzn"
 			default="25"

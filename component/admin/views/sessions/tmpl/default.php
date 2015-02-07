@@ -158,7 +158,7 @@ $search = $this->state->get('filter.search');
 					</td>
 					<td>
 						<?php if ($this->canEditState) : ?>
-							<?php echo JHtml::_('rgrid.published', $row->published, $i, 'sessions.', true, 'cb'); ?>
+							<?php echo $this->published($row, $i); ?>
 						<?php else: ?>
 							<?php if ($row->published): ?>
 								<a class="btn btn-small disabled"><i class="icon-ok-sign icon-green"></i></a>
@@ -173,7 +173,7 @@ $search = $this->state->get('filter.search');
 								<?php
 								$editor = JFactory::getUser($row->checked_out);
 								$canCheckin = $row->checked_out == $userId || $row->checked_out == 0;
-								echo JHtml::_('rgrid.checkedout', $i, $editor->name, $row->checked_out_time, 'roles.', $canCheckin);
+								echo JHtml::_('rgrid.checkedout', $i, $editor->name, $row->checked_out_time, 'sessions.', $canCheckin);
 								?>
 							<?php endif; ?>
 						</td>
