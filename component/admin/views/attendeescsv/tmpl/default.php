@@ -63,10 +63,10 @@ RHelperAsset::load('csvtool.js');
 
 			<div class="control-group" id="export-event-row">
 				<div class="control-label">
-					<?php echo $this->form->getLabel('event'); ?>
+					<?php echo $this->form->getLabel('events'); ?>
 				</div>
 				<div class="controls">
-					<?php echo $this->form->getInput('event'); ?>
+					<?php echo $this->form->getInput('events'); ?>
 				</div>
 			</div>
 
@@ -75,7 +75,7 @@ RHelperAsset::load('csvtool.js');
 			</div>
 		</div>
 
-		<input type="hidden" name="task" value="attendeescsv.import" />
+		<input type="hidden" name="task" value="attendeescsv.export" />
 		<input type="hidden" name="format" value="csv" />
 		<?php echo JHtml::_('form.token'); ?>
 	</form>

@@ -43,30 +43,126 @@ class RedeventModelAttendeescsv extends RModelAdmin
 	}
 
 	/**
-	 * Get rows
+	 * Get attendees according to filters
 	 *
-	 * @return mixed
+	 * @param   int    $form_id           form id
+	 * @param   array  $events            filter by events ids
+	 * @param   int    $category_id       filter by category
+	 * @param   int    $venue_id          filter by venue
+	 * @param   int    $state_filter      filter session state
+	 * @param   int    $filter_attending  filter attending state
+	 *
+	 * @return bool|mixed
 	 */
-	public function getItems()
+	public function getRegisters($form_id, $events = null, $category_id = 0, $venue_id = 0, $state_filter = 0, $filter_attending = 0)
 	{
 		$query = $this->_db->getQuery(true);
 
-		$query->select('c.id, c.name, c.alias, c.description')
-			->select('c.color, c.image, c.published, c.access')
-			->select('c.event_template, c.ordering, c.meta_description, c.meta_keywords')
-			->from('#__redevent_categories AS c')
-			->group('c.id');
+		$query->select('e.title, e.course_code, x.id as xref, x.dates, v.venue')
+			->select('r.*, r.waitinglist, r.confirmed, r.confirmdate, r.submit_key, u.name, pg.name as pricegroup')
+			->select('s.answer_id, s.id AS submitter_id, s.price, s.currency')
+			->select('p.paid, p.status')
+			->from('#__redevent_register AS r')
+			->join('INNER', '#__redevent_event_venue_xref AS x ON r.xref = x.id')
+			->join('INNER', '#__redevent_events AS e ON x.eventid = e.id')
+			->join('INNER', '#__rwf_forms AS fo ON fo.id = e.redform_id')
+			->join('INNER', '#__rwf_submitters AS s ON r.sid = s.id')
+			->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id')
+			->join('LEFT', '#__redevent_venues AS v ON v.id = x.venueid')
+			->join('LEFT', '#__redevent_sessions_pricegroups AS spg ON spg.id = r.sessionpricegroup_id')
+			->join('LEFT', '#__redevent_pricegroups AS pg ON pg.id = spg.pricegroup_id')
+			->join('LEFT', '#__users AS u ON r.uid = u.id')
+			->join('LEFT', '(SELECT MAX(id) as id, submit_key FROM #__rwf_payment GROUP BY submit_key) AS latest_payment ON latest_payment.submit_key = s.submit_key')
+			->join('LEFT', '#__rwf_payment AS p ON p.id = latest_payment.id')
+			->where('r.confirmed = 1')
+			->where('r.cancelled = 0')
+			->where('s.form_id = ' . (int) $form_id)
+			->group('r.id')
+			->order('e.title, x.dates');
 
-		if ($parent = $this->getState('parent'))
+		if ($events && count($events))
 		{
-			$query->join('INNER', '#__redevent_categories AS parent ON c.lft BETWEEN parent.lft AND parent.rgt');
-			$query->where("parent.id = " . (int) $parent);
+			$query->where('e.id in (' . implode(',', $events) . ')');
+		}
+
+		if ($category_id)
+		{
+			$query->where('xcat.category_id = ' . (int) $category_id);
+		}
+
+		if ($venue_id)
+		{
+			$query->where('x.venueid = ' . (int) $venue_id);
+		}
+
+		switch ($state_filter)
+		{
+			case 0:
+				$query->where('x.published = 1');
+				break;
+
+			case 1:
+				$query->where('x.published = -1');
+				break;
+
+			case 2:
+				$query->where('x.published <> 0');
+				break;
+		}
+
+		switch ($filter_attending)
+		{
+			case 1:
+				$query->where('r.waitinglist = 0');
+				break;
+
+			case 2:
+				$query->where('r.waitinglist = 1');
+				break;
 		}
 
 		$this->_db->setQuery($query);
-		$results = $this->_db->loadAssocList();
+		$submitters = $this->_db->loadObjectList();
 
-		return $results;
+		// Get answers
+		$sids = array();
+
+		if (count($submitters))
+		{
+			foreach ($submitters as $s)
+			{
+				$sids[] = $s->sid;
+			}
+		}
+		else
+		{
+			return false;
+		}
+
+		$rfcore = RdfCore::getInstance();
+		$answers = $rfcore->getAnswers($sids);
+
+		// Add answers to registers
+		foreach ($submitters as $k => $s)
+		{
+			$submitters[$k]->answers = $answers->getSubmissionBySid($s->sid);
+		}
+
+		return $submitters;
+	}
+
+	/**
+	 * Return redform fields
+	 *
+	 * @param   int  $form_id  form id
+	 *
+	 * @return array
+	 */
+	public function getFields($form_id)
+	{
+		$rfcore = RdfCore::getInstance();
+
+		return $rfcore->getFields($form_id);
 	}
 
 	/**

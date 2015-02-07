@@ -52,7 +52,7 @@
 		</field>
 
 		<field
-				name="event"
+				name="events"
 				type="list"
 				label="COM_REDEVENT_TOOLS_CSV_SELECT_EVENTS"
 				description ="COM_REDEVENT_TOOLS_CSV_SELECT_EVENTS"

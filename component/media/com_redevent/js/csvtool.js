@@ -21,7 +21,7 @@
 			data : {'venue_id':$('#jform_venue').val(), 'category_id': $('#jform_category').val()},
 			dataType: 'json'
 		}).done(function(data) {
-			var select = $('#jform_event');
+			var select = $('#jform_events');
 			select.empty();
 
 			for (var i = 0; i < data.length ; i++ ) {

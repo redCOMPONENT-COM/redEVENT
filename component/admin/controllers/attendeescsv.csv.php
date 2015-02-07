@@ -23,7 +23,6 @@ class RedeventControllerAttendeescsv extends JControllerLegacy
 	public function export()
 	{
 		$this->input->set('view', 'attendeescsv');
-		$this->input->set('format', 'csv');
 
 		parent::display();
 	}
