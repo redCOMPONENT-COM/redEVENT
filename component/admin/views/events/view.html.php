@@ -88,10 +88,10 @@ class RedeventViewEvents extends RedeventViewAdmin
 	{
 		$user = JFactory::getUser();
 
-		$firstGroup		= new RToolbarButtonGroup;
-		$secondGroup	= new RToolbarButtonGroup;
-		$thirdGroup		= new RToolbarButtonGroup;
-		$fourthGroup		= new RToolbarButtonGroup;
+		$firstGroup = new RToolbarButtonGroup;
+		$secondGroup = new RToolbarButtonGroup;
+		$thirdGroup = new RToolbarButtonGroup;
+		$fourthGroup = new RToolbarButtonGroup;
 
 		if ($user->authorise('core.create', 'com_redevent'))
 		{
@@ -102,21 +102,21 @@ class RedeventViewEvents extends RedeventViewAdmin
 		if ($user->authorise('core.edit', 'com_redevent'))
 		{
 			$edit = RToolbarBuilder::createEditButton('event.edit');
-			$secondGroup->addButton($edit);
+			$firstGroup->addButton($edit);
 
-			$importExport = RToolbarBuilder::createStandardButton('eventscsv.edit', 'csvexport', 'csvexport', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), false);
-			$secondGroup->addButton($importExport);
+			$importExport = RToolbarBuilder::createStandardButton('eventscsv.edit', JText::_('COM_REDEVENT_BUTTON_IMPORTEXPORT'), '', 'icon-table', false);
+			$fourthGroup->addButton($importExport);
 		}
 
 		if ($user->authorise('core.edit.state', 'com_redevent'))
 		{
 			$publish = RToolbarBuilder::createPublishButton('events.publish');
-			$thirdGroup->addButton($publish);
+			$secondGroup->addButton($publish);
 
 			$unPublish = RToolbarBuilder::createUnpublishButton('events.unpublish');
-			$thirdGroup->addButton($unPublish);
+			$secondGroup->addButton($unPublish);
 
-			$button = RToolbarBuilder::createStandardButton('events.archive', JText::_('COM_REDEVENT_ARCHIVE'),'', 'icon-archive', true);
+			$button = RToolbarBuilder::createStandardButton('events.archive', JText::_('COM_REDEVENT_ARCHIVE'), '', 'icon-archive', true);
 			$thirdGroup->addButton($button);
 
 			$button = RToolbarBuilder::createStandardButton('events.archivepast', JText::_('COM_REDEVENT_ARCHIVE_OLD_EVENTS'), '', 'icon-archive', true);
@@ -126,10 +126,8 @@ class RedeventViewEvents extends RedeventViewAdmin
 		if ($user->authorise('core.delete', 'com_redevent'))
 		{
 			$delete = RToolbarBuilder::createDeleteButton('events.delete');
-			$fourthGroup->addButton($delete);
+			$firstGroup->addButton($delete);
 		}
-
-		$fourthGroup->addButton(RToolbarBuilder::createCsvButton());
 
 		$toolbar = new RToolbar;
 		$toolbar->addGroup($firstGroup)->addGroup($secondGroup)->addGroup($thirdGroup)->addGroup($fourthGroup);

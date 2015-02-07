@@ -147,6 +147,36 @@ class RedeventModelEvent extends RModelAdmin
 	}
 
 	/**
+	 * Method to change the published state of one or more records.
+	 *
+	 * @param   array    &$pks   A list of the primary keys to change.
+	 * @param   integer  $value  The value of the published state.
+	 *
+	 * @return  boolean  True on success.
+	 */
+	public function publish(&$pks, $value = 1)
+	{
+		if (!parent::publish($pks, $value))
+		{
+			return false;
+		}
+
+		// Trigger event for plugins
+		JPluginHelper::importPlugin('redevent');
+		JPluginHelper::importPlugin('finder');
+		$dispatcher = JDispatcher::getInstance();
+
+		foreach ($pks as $eventid)
+		{
+			$dispatcher->trigger('onAfterEventSaved', array($eventid));
+			$dispatcher->trigger('onFinderChangeState', array('com_redevent.event', $eventid, $value));
+		}
+
+		return true;
+	}
+
+
+	/**
 	 * Get custom field raw object from db
 	 *
 	 * @return array|mixed

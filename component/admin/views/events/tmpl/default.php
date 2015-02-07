@@ -33,7 +33,7 @@ $search = $this->state->get('filter.search');
 
 		if (pressbutton == 'events.delete')
 		{
-			var r = confirm('<?php echo JText::_("COM_REDEVENT_CATEGORY_DELETE_COMFIRM")?>');
+			var r = confirm('<?php echo JText::_("COM_REDEVENT_EVENTS_REMOVE_CONFIRM_MESSAGE")?>');
 			if (r == true)    form.submit();
 			else return false;
 		}

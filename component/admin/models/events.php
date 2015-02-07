@@ -249,155 +249,100 @@ class RedeventModelEvents extends RModelList
 	}
 
 	/**
-	 * Method to (un)publish a event
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	1.5
-	 */
-	function publish($cid = array(), $publish = 1)
-	{
-		$user 	=& JFactory::getUser();
-		$userid = (int) $user->get('id');
-
-		if (count( $cid ))
-		{
-			$cids = implode( ',', $cid );
-
-			$query = 'UPDATE #__redevent_events'
-				. ' SET published = '. (int) $publish
-				. ' WHERE id IN ('. $cids .')'
-				. ' AND ( checked_out = 0 OR ( checked_out = ' .$userid. ' ) )'
-			;
-
-			$this->_db->setQuery( $query );
-
-			if (!$this->_db->query()) {
-				$this->setError($this->_db->getErrorMsg());
-				return false;
-			}
-			else {
-				$query = 'UPDATE #__redevent_event_venue_xref'
-					. ' SET published = '. (int) $publish
-					. ' WHERE eventid IN ('. $cids .')'
-					. '   AND published > -1 ' // do not change state of archived session
-				;
-				$this->_db->setQuery( $query );
-
-				if (!$this->_db->query()) {
-					$this->setError($this->_db->getErrorMsg());
-					return false;
-				}
-			}
-
-			// for finder plugins
-			$dispatcher	= JDispatcher::getInstance();
-			JPluginHelper::importPlugin('finder');
-			foreach ($cid as $row_id)
-			{
-				$obj = new stdclass;
-				$obj->id = $row_id;
-				// Trigger the onFinderAfterDelete event.
-				$dispatcher->trigger('onFinderChangeState', array('com_redevent.event', $cid, $publish));
-			}
-		}
-	}
-
-	/**
 	 * archive past xrefs
 	 *
-	 * @param $event_ids
+	 * @param   array  $event_ids  events ids to archive.
+	 *
 	 * @return unknown_type
 	 */
-	function archive($event_ids = array())
+	public function archivePast($event_ids = array())
 	{
-		if (!count($event_ids)) {
-			return true;
+		if (!count($event_ids))
+		{
+			return array('sessions' => 0, 'events' => 0);
 		}
 
-		$db = & $this->_db;
+		// First archive past sessions
+		$query = $this->_db->getQuery(true)
+			->update('#__redevent_event_venue_xref AS x')
+			->set('x.published = -1')
+			->where('DATE_SUB(NOW(), INTERVAL 1 DAY) > (IF (x.enddates > 0, x.enddates, x.dates))')
+			->where('x.eventid IN (' . implode(', ', $event_ids) . ')');
 
-    $nulldate = '0000-00-00';
+		$this->_db->setQuery($query);
+		$this->_db->execute();
 
-		// update xref to archive
-		$query = ' UPDATE #__redevent_event_venue_xref AS x '
-		. ' SET x.published = -1 '
-		. ' WHERE DATE_SUB(NOW(), INTERVAL 1 DAY) > (IF (x.enddates <> '.$nulldate.', x.enddates, x.dates))'
-		. '   AND x.eventid IN (' . implode(', ', $event_ids) . ')'
-		;
-		$db->SetQuery( $query );
-		$db->Query();
+		$archivedSessions = $this->_db->getAffectedRows();
 
-		// update events to archive (if no more published xref)
-		$query = ' UPDATE #__redevent_events AS e '
-		. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id AND x.published <> -1 '
-		. ' SET e.published = -1 '
-		. ' WHERE x.id IS NULL '
-		. '   AND e.id IN (' . implode(', ', $event_ids) . ')'
-		;
-		$db->SetQuery( $query );
-		$db->Query();
-		return true;
+		// Then archive events that don't have published sessions any more
+		$query = $this->_db->getQuery(true)
+			->update('#__redevent_events AS e')
+			->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = e.id AND x.published <> -1')
+			->set('e.published = -1')
+			->where('x.id IS NULL')
+			->where('e.id IN (' . implode(', ', $event_ids) . ')');
+
+		$this->_db->setQuery($query);
+		$this->_db->execute();
+
+		$archivedEvents = $this->_db->getAffectedRows();
+
+		return array('sessions' => $archivedSessions, 'events' => $archivedEvents);
 	}
 
 	/**
-	 * Method to remove a event
+	 * Delete items
 	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	0.9
+	 * @param   mixed  $pks  id or array of ids of items to be deleted
+	 *
+	 * @return  boolean
+	 *
+	 * @TODO: do all the chain deletion in table instead
 	 */
-	function delete($cid = array())
+	public function delete($pks = null)
 	{
 		$result = false;
 
-		if (count( $cid ))
+		if (count($pks))
 		{
-			// first, we don't delete events that have attendees, to preserve records integrity. admin should delete attendees separately first
-			$cids = implode( ',', $cid );
+			// First, we don't delete events that have attendees, to preserve records integrity. admin should delete attendees separately first
+			$cids = implode(',', $pks);
 
-			$query = ' SELECT e.id, e.title '
-			       . ' FROM #__redevent_events AS e '
-			       . ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
-			       . ' INNER JOIN #__redevent_register AS r ON r.xref = x.id '
-			       . ' WHERE e.id IN ('. $cids .')'
-			       ;
+			$query = $this->_db->getQuery(true);
+
+			$query->select('e.id, e.title')
+				->from('#__redevent_events AS e')
+				->join('INNER', '#__redevent_event_venue_xref AS x ON x.eventid = e.id')
+				->join('INNER', '#__redevent_register AS r ON r.xref = x.id')
+				->where('e.id IN (' . $cids . ')');
+
 			$this->_db->setQuery($query);
 			$res = $this->_db->loadObjectList();
+
 			if ($res || count($res))
 			{
-				// can't delete
 				$this->setError(Jtext::_('COM_REDEVENT_ERROR_EVENT_REMOVE_EVENT_HAS_ATTENDEES'));
+
 				return false;
 			}
 
 			$query = ' DELETE e.*, xcat.*, x.*, rp.*, r.*, sr.*, spg.* '
-			       . ' FROM #__redevent_events AS e '
-			       . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
-			       . ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
-			       . ' LEFT JOIN #__redevent_repeats AS rp on rp.xref_id = x.id '
-			       . ' LEFT JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
-			       . ' LEFT JOIN #__redevent_sessions_roles AS sr on sr.xref = x.id '
-			       . ' LEFT JOIN #__redevent_sessions_pricegroups AS spg on spg.xref = x.id '
-					   . ' WHERE e.id IN ('. $cids .')'
-					   ;
+				. ' FROM #__redevent_events AS e '
+				. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
+				. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
+				. ' LEFT JOIN #__redevent_repeats AS rp on rp.xref_id = x.id '
+				. ' LEFT JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
+				. ' LEFT JOIN #__redevent_sessions_roles AS sr on sr.xref = x.id '
+				. ' LEFT JOIN #__redevent_sessions_pricegroups AS spg on spg.xref = x.id '
+				. ' WHERE e.id IN (' . $cids . ')';
 
-			$this->_db->setQuery( $query );
+			$this->_db->setQuery($query);
 
-			if(!$this->_db->query()) {
-				$this->setError($this->_db->getErrorMsg());
-				return false;
-			}
-
-			// for finder plugins
-			$dispatcher	= JDispatcher::getInstance();
-			JPluginHelper::importPlugin('finder');
-			foreach ($cid as $row_id)
+			if (!$this->_db->execute())
 			{
-				$obj = new stdclass;
-				$obj->id = $row_id;
-				// Trigger the onFinderAfterDelete event.
-				$dispatcher->trigger('onFinderAfterDelete', array('com_redevent.event', $obj));
+				$this->setError($this->_db->getErrorMsg());
+
+				return false;
 			}
 		}
 
