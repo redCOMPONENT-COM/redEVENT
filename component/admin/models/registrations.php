@@ -66,6 +66,8 @@ class RedeventModelRegistrations extends RModelList
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
+		$id .= ':' . $this->getState('filter.search');
+		$id .= ':' . $this->getState('filter.search');
 		$id .= ':' . $this->getState('filter.xref');
 		$id	.= ':' . $this->getState('filter.confirmed');
 		$id .= ':' . $this->getState('filter.waiting');
@@ -160,6 +162,14 @@ class RedeventModelRegistrations extends RModelList
 					$query->where('r.cancelled = 1');
 					break;
 			}
+		}
+
+		if ($this->getState('filter.search'))
+		{
+			$query->where('(u.name LIKE "%' . $this->getState('filter.search') . '%"'
+				. ' OR u.username LIKE "%' . $this->getState('filter.search') . '%"'
+				. ' OR u.email LIKE "%' . $this->getState('filter.search') . '%"'
+			. ')');
 		}
 
 		if ($this->getState('filter.session'))
