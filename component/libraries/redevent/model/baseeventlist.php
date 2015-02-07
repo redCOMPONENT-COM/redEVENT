@@ -32,7 +32,7 @@ jimport('joomla.application.component.model');
  * @subpackage  redevent
  * @since       2.0
  */
-class RedeventModelBaseeventlist extends JModel
+class RedeventModelBaseeventlist extends RModel
 {
 	/**
 	 * Events data array
@@ -239,7 +239,7 @@ class RedeventModelBaseeventlist extends JModel
 		$query->select('a.id, a.title, a.created, a.datdescription, a.registra, a.datimage, a.summary, a.submission_type_external');
 		$query->select('a.redform_id');
 		$query->select('l.venue, l.city, l.state, l.url, l.street, l.country, l.locdescription, l.venue_code, l.id AS venue_id');
-		$query->select('c.catname, c.id AS catid');
+		$query->select('c.name AS catname, c.id AS catid');
 		$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
 		$query->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug');
 		$query->select('CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug');
@@ -366,7 +366,7 @@ class RedeventModelBaseeventlist extends JModel
 						break;
 
 					case 'type' :
-						$query->where('  LOWER( c.catname ) LIKE ' . $filter);
+						$query->where('  LOWER( c.name ) LIKE ' . $filter);
 						break;
 
 					case 'title' :
@@ -544,7 +544,7 @@ class RedeventModelBaseeventlist extends JModel
 						break;
 
 					case 'type' :
-						$where[] = '  LOWER( c.catname ) LIKE ' . $filter;
+						$where[] = '  LOWER( c.name ) LIKE ' . $filter;
 						break;
 				}
 			}
@@ -597,7 +597,7 @@ class RedeventModelBaseeventlist extends JModel
 			$db = &JFactory::getDbo();
 			$query = $db->getQuery(true);
 
-			$query->select('c.id, c.catname, c.color');
+			$query->select('c.id, c.name AS name, c.color');
 			$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug');
 			$query->from('#__redevent_categories as c');
 			$query->join('INNER', '#__redevent_event_category_xref as x ON x.category_id = c.id');
@@ -1047,7 +1047,7 @@ class RedeventModelBaseeventlist extends JModel
 	 */
 	public function getCategory($id)
 	{
-		$query = ' SELECT c.id, c.catname, c.lft, c.rgt '
+		$query = ' SELECT c.id, c.name AS catname, c.lft, c.rgt '
 		. ' FROM #__redevent_categories AS c '
 		. ' WHERE c.id = ' . $this->_db->Quote($id);
 		$this->_db->setQuery($query);

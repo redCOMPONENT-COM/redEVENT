@@ -70,10 +70,10 @@ foreach ($this->rows as $row)
 
 		//attach category color if any in front of the catname
 		if ($category->color) {
-			$cat_names[] = '<span class="colorpic" style="background-color: '.$category->color.';"></span>'.$category->catname;
+			$cat_names[] = '<span class="colorpic" style="background-color: '.$category->color.';"></span>'.$category->name;
 		}
 		else {
-			$cat_names[] = $category->catname;
+			$cat_names[] = $category->name;
 		}
 
 		//attach category color if any in front of the event title in the calendar overview
@@ -128,12 +128,12 @@ foreach ($this->rows as $row)
 	}
 	elseif ($this->params->get('session_display', 0) == 1)
 	{
-		$img = redEVENTImage::getThumbUrl($row->datimage, $this->params->get('pic_size', 20));
+		$img = RedeventImage::getThumbUrl($row->datimage, $this->params->get('pic_size', 20));
 		$text = '<span class="session-image">' . JHTML::image($img, RedeventHelper::getSessionFullTitle($row)) . '</span>';
 	}
 	else
 	{
-		$img = redEVENTImage::getThumbUrl($row->datimage, $this->params->get('pic_size', 20));
+		$img = RedeventImage::getThumbUrl($row->datimage, $this->params->get('pic_size', 20));
 		$text = '<span class="session-image">' . JHTML::image($img, RedeventHelper::getSessionFullTitle($row)) . '</span>';
 		$text .= RedeventHelper::getSessionFullTitle($row);
 	}
@@ -199,7 +199,7 @@ foreach ($this->rows as $row)
         				if ( isset ($cat->color) && $cat->color) :
             				echo '<span class="colorpic" style="background-color: '.$cat->color.';"></span>';
         				endif;
-        				echo $cat->catname.' ('.$countcatevents[$cat->id].')';
+        				echo $cat->name.' ('.$countcatevents[$cat->id].')';
         				?>
     				</div>
     			<?php

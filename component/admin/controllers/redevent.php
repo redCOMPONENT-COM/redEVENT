@@ -27,13 +27,12 @@ jimport('joomla.application.component.controller');
 
 /**
  * Component default Controller
- * => because FOF default view is 'redevent'...
  *
  * @package Joomla
  * @subpackage redEVENT
  * @since 2.0
  */
-class RedeventControllerRedevent extends FOFController
+class RedeventControllerRedevent extends RControllerAdmin
 {
 	public function __construct($config = array())
 	{
@@ -164,31 +163,6 @@ class RedeventControllerRedevent extends FOFController
 		$model = $this->getModel('sample',  'RedeventModel');
 		$model->create();
 		$this->setRedirect('index.php?option=com_redevent', JText::_('COM_REDEVENT_Sample_data_created'));
-	}
-
-	/**
-	 * Delete attachment
-	 *
-	 * @return true on sucess
-	 * @access private
-	 * @since 1.1
-	 */
-	function ajaxattachremove()
-	{
-		$mainframe = & JFactory::getApplication();
-		$id     = JRequest::getVar( 'id', 0, 'request', 'int' );
-
-		$res = RedeventHelperAttachment::remove($id);
-		if (!$res) {
-			echo 0;
-			exit();
-		}
-
-		$cache = &JFactory::getCache('com_redevent');
-		$cache->clean();
-
-		echo 1;
-		$mainframe->close();
 	}
 
 	function selectuser()

@@ -32,7 +32,7 @@ jimport('joomla.application.component.model');
  * @subpackage  redEVENT
  * @since       0.9
 */
-class RedEventModelVenuesmap extends JModel
+class RedeventModelVenuesmap extends RModel
 {
 	/**
 	 * Venues data array
@@ -91,7 +91,7 @@ class RedEventModelVenuesmap extends JModel
 				$venue =& $this->_data[$i];
 
 				// Create image information
-				$venue->limage = redEVENTImage::flyercreator($venue->locimage);
+				$venue->limage = RedeventImage::flyercreator($venue->locimage);
 
 				// Generate Venuedescription
 				if (!empty ($venue->locdescription))

@@ -1,127 +1,98 @@
 <?php
 /**
- * @version 0.9 $Id$
- * @package Joomla
- * @subpackage RedEvent
- * @copyright (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENCE.php
- * RedEvent is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * RedEvent is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with RedEvent; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package     Redevent.Frontend
+ * @subpackage  Modules
+ *
+ * @copyright   Copyright (C) 2008 - 2014 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later, see LICENSE.
  */
 
-// no direct access
+// No direct access
 defined('_JEXEC') or die('Restricted access');
-
-require_once (JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'route.php');
 
 /**
  * RedEvent Module helper
  *
- * @package Joomla
- * @subpackage RedEvent Module
- * @since		0.9
+ * @package     Redevent.Frontend
+ * @subpackage  Modules
+ * @since       0.9
 */
-class modRedEventAllEventsHelper
+class modRedeventAlleventsHelper
 {
-
 	/**
 	 * Method to get the events
 	 *
-	 * @access public
+	 * @param   JRegistry  &$params  params
+	 *
 	 * @return array
 	 */
-	function getList(&$params)
+	public function getList(&$params)
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
-		$db			= JFactory::getDBO();
-		$user		= JFactory::getUser();
-		$user_gid	= $user->getAuthorisedViewLevels();
+		$db = JFactory::getDBO();
+		$user = JFactory::getUser();
+		$user_gid = $user->getAuthorisedViewLevels();
 
-		$where = ' WHERE a.published = 1 ';
-		$order = ' ORDER BY a.title ASC ';
+		$query = $db->getQuery(true);
 
-		$catid 	= trim( $params->get('catid') );
-		$venid 	= trim( $params->get('venid') );
-
-		if ($catid)
-		{
-			$ids = explode( ',', $catid );
-			JArrayHelper::toInteger( $ids );
-			$categories = ' AND c.id IN (' . implode( ',', $ids ) . ')';
-		}
-		if ($venid)
-		{
-			$ids = explode( ',', $venid );
-			JArrayHelper::toInteger( $ids );
-			$venues = ' AND l.id IN (' . implode( ',', $ids ) . ')';
-		}
-
-		$query = 'SELECT a.*, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, l.venue, l.city, l.url ,'
-		. ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
-		. ' CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug '
-		. ' FROM #__redevent_event_venue_xref AS x'
-		. ' LEFT JOIN #__redevent_events AS a ON a.id = x.eventid'
-		. ' LEFT JOIN #__redevent_venues AS l ON l.id = x.venueid'
-		. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-		. ' LEFT JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-		. $where
-		.' AND c.access IN (' . implode(',', $user_gid) . ')'
-		.($catid ? $categories : '')
-		.($venid ? $venues : '');
+		$query->select('a.*, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes, l.venue, l.city, l.url')
+			->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug')
+			->select('CASE WHEN CHAR_LENGTH(l.alias) THEN CONCAT_WS(\':\', l.id, l.alias) ELSE l.id END as venueslug')
+			->from('#__redevent_event_venue_xref AS x')
+			->join('LEFT', '#__redevent_events AS a ON a.id = x.eventid')
+			->join('LEFT', '#__redevent_venues AS l ON l.id = x.venueid')
+			->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id')
+			->join('LEFT', '#__redevent_categories AS c ON c.id = xcat.category_id')
+			->where('a.published = 1')
+			->where('c.access IN (' . implode(',', $user_gid) . ')')
+			->group('a.id')
+			->order('a.title ASC');
 
 		if (JFactory::getApplication()->getLanguageFilter())
 		{
-			$query .= 'AND (a.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR a.language IS NULL)';
+			$query->where('(a.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR a.language IS NULL)');
 		}
 
-		$query .= ' GROUP BY a.id '
-		        . $order;
+		$catid = $params->get('catid');
+
+		if (is_array($catid) && count($catid))
+		{
+			JArrayHelper::toInteger($catid);
+			$query->where('c.id IN (' . implode(',', $catid) . ')');
+		}
+
+		$venid = $params->get('venid');
+
+		if (is_array($venid) && count($venid))
+		{
+			JArrayHelper::toInteger($venid);
+			$query->where('l.id IN (' . implode(',', $venid) . ')');
+		}
 
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
 
-		$i		= 0;
-		$lists	= array();
 		$title_length = $params->get('cuttitle', '18');
-		foreach ( $rows as $k => $row )
+
+		foreach ($rows as $k => $row)
 		{
-			//cut title
-			$length = strlen(htmlspecialchars( $row->title ));
-			if ($title_length && $length > $title_length) {
-				$rows[$k]->title_short = '<span class="hasTip" title="'.$row->title.'">'.htmlspecialchars(substr($row->title, 0, $title_length).'...', ENT_COMPAT, 'UTF-8').'</span>';
+			// Cut title
+			$length = strlen(htmlspecialchars($row->title));
+
+			if ($title_length && $length > $title_length)
+			{
+				$rows[$k]->title_short = '<span class="hasTip" title="' . $row->title . '">' . htmlspecialchars(substr($row->title, 0, $title_length) . '...', ENT_COMPAT, 'UTF-8') . '</span>';
 			}
-			else {
+			else
+			{
 				$rows[$k]->title_short = htmlspecialchars($row->title, ENT_COMPAT, 'UTF-8');
 			}
-			$rows[$k]->link		= JRoute::_(RedeventHelperRoute::getDetailsRoute($row->slug));
-			$rows[$k]->text		= $rows[$k]->title_short;
+
+			$rows[$k]->link = JRoute::_(RedeventHelperRoute::getDetailsRoute($row->slug));
+			$rows[$k]->text = $rows[$k]->title_short;
 		}
 
 		return $rows;
-	}
-
-	/**
-	 * Method to get a valid url
-	 *
-	 * @access public
-	 * @return string
-	 */
-	function _format_url($url)
-	{
-		if(!empty($url) && strtolower(substr($url, 0, 7)) != "http://") {
-			$url = 'http://'.$url;
-		}
-		return $url;
 	}
 }

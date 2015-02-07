@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="redEVENT" default="site" basedir=".">
 
-	<!--<import file="./fof/build/build.xml"/>-->
-
 	<property file="build/build.properties" />
 
 	<!-- Default properties, set only if not already assigned in the build.properties file -->
@@ -60,11 +58,6 @@
 					<token key="VERSION" value="${version}" />
 				</replacetokens>
 			</filterchain>
-		</copy>
-		<copy todir="${dirs.tmp}/component/fof" >
-			<fileset dir="${dirs.root}/fof/fof">
-				<include name="**" />
-			</fileset>
 		</copy>
 
 		<!-- Create the package -->
@@ -177,8 +170,8 @@
         <delete dir="${www.dir}/components/com_${comp.name}" quiet="yes" includeemptydirs="false" />
         <!-- Manifest & install script -->
         <echo message="Copying manifest..." />
-        <copy file="${dirs.root}/component/com_${comp.name}.xml"
-            tofile="${www.dir}/administrator/components/com_${comp.name}/com_${comp.name}.xml" overwrite="true">
+        <copy file="${dirs.root}/component/${comp.name}.xml"
+            tofile="${www.dir}/administrator/components/com_${comp.name}/${comp.name}.xml" overwrite="true">
             <!-- trick to replace extension folders in the manifest-->
             <filterchain>
         	  <replaceregexp>
@@ -201,7 +194,7 @@
             <fileset dir="${dirs.root}/component/admin">
                 <include name="**" />
                 <!-- Exclude the manifest to avoid overwriting the previously copied -->
-                <exclude name="com_${comp.name}.xml" />
+                <exclude name="${comp.name}.xml" />
             </fileset>
         </copy>
 
@@ -227,7 +220,7 @@
 
         <!-- included Plugins -->
         <copy todir="${www.dir}/plugins" overwrite="true">
-            <fileset dir="${dirs.root}/component/admin/extras/plugins">
+            <fileset dir="${dirs.root}/component/plugins">
                 <include name="**" />
             </fileset>
 
@@ -356,21 +349,30 @@
     Tasks - Unit tests
     ====================================================================================================
     -->
-    <target name="unit-test" description="Copy to test site"
-            depends="setup-test, site">
+    <target name="unit-test-prepare" description="Copy to test site"
+            depends="unit-test-setup-properties, site">
+        <delete dir="${www.dir}/redunittests/unit/suite/redevent" quiet="true" includeemptydirs="false" />
+        <copy todir="${www.dir}/redunittests/unit/suite" overwrite="true">
+            <fileset dir="${dirs.root}/tests/unit/suite">
+                <include name="**" />
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="unit-test-setup-properties" description="prepare properties">
+        <property name="www.dir" value="${www.dirtest}" override="true"/>
+    </target>
+
+    <target name="unit-test" description="Run test suite"
+            depends="unit-test-prepare">
         <phpunit configuration="tests/unit/phpunit.xml"
-                 printsummary="true" haltonfailure="true" haltonerror="true">
+                 printsummary="true" haltonfailure="true" haltonerror="true"
+                 pharlocation="/usr/local/bin/phpunit">
             <batchtest>
-                <fileset dir="tests/unit/suite">
+                <fileset dir="tests/unit/suite/redevent">
                     <include name="**/*Test.php"/>
                 </fileset>
             </batchtest>
         </phpunit>
     </target>
-
-    <target name="setup-test" description="Init to copy to test site"
-            depends="setup-properties">
-        <property name="www.dir" value="${www.dirtest}" override="true"/>
-    </target>
-
 </project>

@@ -32,7 +32,7 @@ jimport('joomla.application.component.model');
  * @subpackage  redEVENT
  * @since       0.9
 */
-class RedeventModelVenues extends JModel
+class RedeventModelVenues extends RModel
 {
 	/**
 	 * limit venues to a certain category
@@ -145,7 +145,7 @@ class RedeventModelVenues extends JModel
 				$venue =& $this->_data[$i];
 
 				// Create image information
-				$venue->limage = redEVENTImage::flyercreator($venue->locimage);
+				$venue->limage = RedeventImage::flyercreator($venue->locimage);
 
 				// Generate Venuedescription
 				if (!empty($venue->locdescription))

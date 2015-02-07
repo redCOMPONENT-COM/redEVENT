@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<extension type="plugin" group="xmap" version="1.7">
+	<name>PLG_XMAP_REDEVENT</name>
+	<author>redCOMPONENT / adapted from Eventlist plugin by Guillermo Vargas</author>
+	<creationDate>##DATE##</creationDate>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redweb.dk</authorUrl>
+	<copyright>(c) 2011 Redweb.dk</copyright>
+	<version>##VERSION##</version>
+	<description>PLG_XMAP_REDEVENT_DESC</description>
+	
+	<files>
+		<folder>language</folder>
+		<filename plugin="redevent">redevent.php</filename>
+	</files>
+        
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="include_events" type="list" default="1" label="PLG_XMAP_REDEVENT_SHOW_EVENTS_LABEL" description="Should we include events into the sitemap?">
+					<option value="0">PLG_XMAP_REDEVENT_SHOW_EVENTS_NEVER</option>
+					<option value="1">PLG_XMAP_REDEVENT_SHOW_EVENTS_ALWAYS</option>
+					<option value="2">PLG_XMAP_REDEVENT_SHOW_EVENTS_IN_XML_SITEMAP_ONLY</option>
+					<option value="3">PLG_XMAP_REDEVENT_SHOW_EVENTS_IN_SITE_SITEMAP_ONLY</option>
+				</field>
+				<field name="max_events" type="text" default="10" label="PLG_XMAP_REDEVENT_MAX_EVENTS_LABEL" description="PLG_XMAP_REDEVENT_MAX_EVENTS_DESC" />
+				<field name="dateformat" type="text" default="Y-m-d" label="PLG_XMAP_REDEVENT_DATE_FORMAT_LABEL" description="PLG_XMAP_REDEVENT_DATE_FORMAT_DESC" />
+				<field name="@spacer" type="spacer" default="" label="PLG_XMAP_REDEVENT_XML_SITEMAP_LABEL" description="PLG_XMAP_REDEVENT_XML_SITEMAP_DESC" />
+				<field name="cat_priority" type="list" default="-1" label="PLG_XMAP_REDEVENT_CATEGORY_PRIORITY_LABEL" description="PLG_XMAP_REDEVENT_CATEGORY_PRIORITY_DESC">
+					<option value="-1">PLG_XMAP_REDEVENT_USE_PARENT_MENU_SETTINGS</option>
+					<option value="0.0">0.0</option>
+					<option value="0.1">0.1</option>
+					<option value="0.2">0.2</option>
+					<option value="0.3">0.3</option>
+					<option value="0.4">0.4</option>
+					<option value="0.5">0.5</option>
+					<option value="0.6">0.6</option>
+					<option value="0.7">0.7</option>
+					<option value="0.8">0.8</option>
+					<option value="0.9">0.9</option>
+					<option value="1">1</option>
+				</field>
+				<field name="cat_changefreq" type="list" default="-1" label="PLG_XMAP_REDEVENT_CATEGORY_CHANGE_FREQ_LABEL" description="PLG_XMAP_REDEVENT_CATEGORY_CHANGE_FREQ_DESC">
+				        <option value="-1">PLG_XMAP_REDEVENT_USE_PARENT_MENU_SETTINGS</option>
+				        <option value="always">PLG_XMAP_REDEVENT_ALWAYS</option>
+				        <option value="hourly">PLG_XMAP_REDEVENT_HOURLY</option>
+				        <option value="daily">PLG_XMAP_REDEVENT_DAILY</option>
+				        <option value="weekly">PLG_XMAP_REDEVENT_WEEKLY</option>
+				        <option value="monthly">PLG_XMAP_REDEVENT_MONTHLY</option>
+				        <option value="yearly">PLG_XMAP_REDEVENT_YEARLY</option>
+				        <option value="never">PLG_XMAP_REDEVENT_NEVER</option>
+				</field>
+				<field name="venue_priority" type="list" default="-1" label="PLG_XMAP_REDEVENT_VENUE_PRIORITY_LABEL" description="PLG_XMAP_REDEVENT_VENUE_PRIORITY_DESC">
+				        <option value="-1">PLG_XMAP_REDEVENT_USE_PARENT_MENU_SETTINGS</option>
+				        <option value="0.0">0.0</option>
+				        <option value="0.1">0.1</option>
+				        <option value="0.2">0.2</option>
+				        <option value="0.3">0.3</option>
+				        <option value="0.4">0.4</option>
+				        <option value="0.5">0.5</option>
+				        <option value="0.6">0.6</option>
+				        <option value="0.7">0.7</option>
+				        <option value="0.8">0.8</option>
+				        <option value="0.9">0.9</option>
+				        <option value="1">1</option>
+				</field>
+				<field name="venue_changefreq" type="list" default="-1" label="PLG_XMAP_REDEVENT_VENUE_CHANGE_FREQ_LABEL" description="PLG_XMAP_REDEVENT_VENUE_CHANGE_FREQ_DESC">
+				        <option value="-1">PLG_XMAP_REDEVENT_USE_PARENT_MENU_SETTINGS</option>
+				        <option value="always">PLG_XMAP_REDEVENT_ALWAYS</option>
+				        <option value="hourly">PLG_XMAP_REDEVENT_HOURLY</option>
+				        <option value="daily">PLG_XMAP_REDEVENT_DAILY</option>
+				        <option value="weekly">PLG_XMAP_REDEVENT_WEEKLY</option>
+				        <option value="monthly">PLG_XMAP_REDEVENT_MONTHLY</option>
+				        <option value="yearly">PLG_XMAP_REDEVENT_YEARLY</option>
+				        <option value="never">PLG_XMAP_REDEVENT_NEVER</option>
+				</field>
+				<field name="event_priority" type="list" default="-1" label="PLG_XMAP_REDEVENT_EVENT_PRIORITY_LABEL" description="PLG_XMAP_REDEVENT_EVENT_PRIORITY_DESC">
+				        <option value="-1">PLG_XMAP_REDEVENT_USE_PARENT_MENU_SETTINGS</option>
+				        <option value="0.0">0.0</option>
+				        <option value="0.1">0.1</option>
+				        <option value="0.2">0.2</option>
+				        <option value="0.3">0.3</option>
+				        <option value="0.4">0.4</option>
+				        <option value="0.5">0.5</option>
+				        <option value="0.6">0.6</option>
+				        <option value="0.7">0.7</option>
+				        <option value="0.8">0.8</option>
+				        <option value="0.9">0.9</option>
+				        <option value="1">1</option>
+				</field>
+				<field name="event_changefreq" type="list" default="-1" label="PLG_XMAP_REDEVENT_EVENT_CHANGE_FREQ_LABEL" description="PLG_XMAP_REDEVENT_EVENT_CHANGE_FREQ_DESC">
+				        <option value="-1">PLG_XMAP_REDEVENT_USE_PARENT_MENU_SETTINGS</option>
+				        <option value="always">PLG_XMAP_REDEVENT_ALWAYS</option>
+				        <option value="hourly">PLG_XMAP_REDEVENT_HOURLY</option>
+				        <option value="daily">PLG_XMAP_REDEVENT_DAILY</option>
+				        <option value="weekly">PLG_XMAP_REDEVENT_WEEKLY</option>
+				        <option value="monthly">PLG_XMAP_REDEVENT_MONTHLY</option>
+				        <option value="yearly">PLG_XMAP_REDEVENT_YEARLY</option>
+				        <option value="never">PLG_XMAP_REDEVENT_NEVER</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

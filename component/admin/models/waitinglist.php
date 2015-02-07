@@ -24,8 +24,6 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
-
 /**
  * EventList Component Event Model
  *
@@ -33,7 +31,7 @@ jimport('joomla.application.component.model');
  * @subpackage redEVENT
  * @since		0.9
  */
-class RedEventModelWaitinglist extends JModel {
+class RedeventModelWaitinglist extends RModel {
 
 	private $xref = null;
 	private $eventid = null;
@@ -170,7 +168,7 @@ class RedEventModelWaitinglist extends JModel {
 	 */
 	private function getXrefIds()
 	{
-		$db = JFactory::getDBO();
+		$db = $this->_db;
 		$q = "SELECT id FROM #__redevent_event_venue_xref WHERE eventid = ".$this->eventid;
 		$db->setQuery($q);
 		return $db->loadResultArray();
@@ -184,7 +182,7 @@ class RedEventModelWaitinglist extends JModel {
 	 */
 	public function getWaitingList()
 	{
-		$db = JFactory::getDBO();
+		$db = $this->_db;
 		$q = ' SELECT r.waitinglist, COUNT(r.id) AS total '
 		   . ' FROM #__redevent_register AS r '
 		   . ' WHERE r.xref = '.$this->xref
@@ -201,7 +199,7 @@ class RedEventModelWaitinglist extends JModel {
 	 */
 	private function MoveOffWaitingList()
 	{
-		$db = JFactory::getDBO();
+		$db = $this->_db;
 		$q = "SELECT id
 			FROM #__redevent_register
 			WHERE xref = ".$this->xref."
@@ -233,7 +231,7 @@ class RedEventModelWaitinglist extends JModel {
 	 */
 	private function MoveOnWaitingList()
 	{
-		$db = JFactory::getDBO();
+		$db = $this->_db;
 		$q = "SELECT id
 			FROM #__redevent_register
 			WHERE xref = ".$this->xref."
@@ -274,7 +272,7 @@ class RedEventModelWaitinglist extends JModel {
 	  		$this->setError($error);
 	  		return false;
 	  	}
-  		$db = JFactory::getDBO();
+  		$db = $this->_db;
   		$q = ' SELECT x.maxattendees, x.maxwaitinglist, '
   		   . ' e.notify_off_list_body, e.notify_on_list_body, e.notify_off_list_subject, e.notify_on_list_subject, '
   		   . ' e.redform_id '

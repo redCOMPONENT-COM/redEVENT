@@ -45,7 +45,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 foreach($this->categories as $category) :
 ?>
 	<h2 class="eventlist cat<?php echo $category->id; ?>">
-		<?php echo $this->escape($category->catname); ?>
+		<?php echo $this->escape($category->name); ?>
 	</h2>
 
 <div class="cat<?php echo $category->id; ?> floattext">
@@ -54,10 +54,10 @@ foreach($this->categories as $category) :
 	<div class="catimg">
 	  	<?php
 	  	if ($category->image) {
-	  		$img = JHTML::image(redEVENTImage::getThumbUrl($category->image), $category->catname);
+	  		$img = JHTML::image(RedeventImage::getThumbUrl($category->image), $category->name);
 	  	}
 	  	else {
-	  		$img = JHTML::image('components/com_redevent/assets/images/noimage.png', $category->catname);
+	  		$img = JHTML::image('components/com_redevent/assets/images/noimage.png', $category->name);
 	  	}
 	  	echo JHTML::_('link', JRoute::_($category->linktarget), $img);
 		?>

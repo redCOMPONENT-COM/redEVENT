@@ -103,9 +103,9 @@ KEY `idx_language` (`language`)
 CREATE TABLE IF NOT EXISTS `#__redevent_categories` (
 `id` int(11) unsigned NOT NULL auto_increment,
 `parent_id` int(11) unsigned NOT NULL default '0',
-`catname` varchar(100) NOT NULL default '',
+`name` varchar(255) NOT NULL default '',
 `alias` varchar(100) NOT NULL default '',
-`catdescription` mediumtext NOT NULL,
+`description` mediumtext NOT NULL,
 `meta_keywords` text NOT NULL,
 `meta_description` text NOT NULL,
 `color` varchar(100) NOT NULL default '',
@@ -120,7 +120,8 @@ CREATE TABLE IF NOT EXISTS `#__redevent_categories` (
 `event_template` int(11) NOT NULL default '0',
 `language` char(7) NOT NULL,
 `asset_id` int(10) NOT NULL DEFAULT '0',
-PRIMARY KEY  (`id`)
+PRIMARY KEY  (`id`),
+KEY `parent_id` (`parent_id`)
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_register` (

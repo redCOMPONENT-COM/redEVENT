@@ -5,11 +5,11 @@
 			<![CDATA[COM_REDEVENT_CATEGORYEVENTS_THUMB_LAYOUT_DESC]]>
 		</message>
 	</layout>
-	<fields name="request" addfieldpath="/administrator/components/com_redevent/models/fields">
+	<fields name="request" addfieldpath="/libraries/redevent/form/fields">
    	<fieldset name="request" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
-			<field name="id" type="recategory" default="0" label="COM_REDEVENT_SELECT_CATEGORY" description="COM_REDEVENT_SELECT_CATEGORY_DESC" required="true"/>
+			<field name="id" type="recategorylist" default="0" label="COM_REDEVENT_SELECT_CATEGORY" description="COM_REDEVENT_SELECT_CATEGORY_DESC" required="true"/>
 		</fieldset>
-		
+
    	<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
 
 			<field name="show_pagination" type="list"
@@ -30,7 +30,7 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-			
+
    	</fieldset>
 	</fields>
 </metadata>

@@ -24,7 +24,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage	Content
  * @since 1.5
  */
-class RedeventViewSignup extends JView
+class RedeventViewSignup extends RViewSite
 {
 	function display($tpl = null)
 	{

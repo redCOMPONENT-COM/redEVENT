@@ -3,14 +3,12 @@
 
 	<fieldset name="customfield"
 			  addfieldpath="/libraries/redevent/form/fields">
-		<field
-			name="id"
-			type="text"
-			default="0"
-			label="JGLOBAL_FIELD_ID_LABEL"
-			description ="JGLOBAL_FIELD_ID_DESC"
-			class="readonly"
-			readonly="true"	/>
+        <field name="id"
+               type="hidden"
+               default="0"
+               class="readonly"
+               readonly="true"
+                />
 
 		<field
 			name="name"
@@ -151,14 +149,12 @@
 				JYES</option>
 		</field>
 
-
 		<field
 			name="min"
 			type="text"
 			default=""
 			label="COM_REDEVENT_Min_characters"
 			description ="COM_REDEVENT_Min_characters_tip"
-			required="true"
 			class="inputbox" />
 
 		<field
@@ -167,7 +163,6 @@
 			default=""
 			label="COM_REDEVENT_Max_characters"
 			description ="COM_REDEVENT_Max_characters_tip"
-			required="true"
 			class="inputbox" />
 
 		<field

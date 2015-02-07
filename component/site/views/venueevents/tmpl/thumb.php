@@ -46,7 +46,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 	<!--Venue-->
 	<?php //flyer
-	echo redEVENTImage::modalimage($this->venue->locimage, $this->venue->venue);
+	echo RedeventImage::modalimage($this->venue->locimage, $this->venue->venue);
 	echo RedeventHelperOutput::mapicon( $this->venue , array('class' => 'map'));
 	?>
 

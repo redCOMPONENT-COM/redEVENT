@@ -49,7 +49,6 @@ class plgJosetta_extRedeventevent extends JosettaClassesExtensionplugin
 	 */
 	public function __construct(&$subject, $config = array())
 	{
-		include_once JPATH_LIBRARIES . '/fof/include.php';
 		parent::__construct($subject, $config);
 		$this->loadLanguages();
 	}
@@ -192,7 +191,7 @@ class plgJosetta_extRedeventevent extends JosettaClassesExtensionplugin
 		$db      = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('c.id AS value, c.catname AS text');
+		$query->select('c.id AS value, c.name AS text');
 		$query->from('#__redevent_categories AS c');
 		$query->join('INNER', '#__redevent_event_category_xref AS x ON x.category_id = c.id');
 		$query->where('event_id = ' . $item->id);

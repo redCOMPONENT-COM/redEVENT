@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedeventViewCategoryevents extends JView
+class RedeventViewCategoryevents extends RViewSite
 {
 	/**
 	 * Creates the Categoryevents View
@@ -74,7 +74,7 @@ class RedeventViewCategoryevents extends JView
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
     // add js
-    JHTML::_('behavior.mootools');
+    JHTML::_('behavior.framework');
     // for filter hint
     $document->addScript($this->baseurl.'/components/com_redevent/assets/js/eventslist.js');
 		// Request variables
@@ -103,8 +103,8 @@ class RedeventViewCategoryevents extends JView
 		}
 
 		//Set Meta data
-		if (!$item->title) $document->setTitle( $category->catname );
-		else $document->setTitle( $item->title.' - '.$category->catname );
+		if (!$item->title) $document->setTitle( $category->name );
+		else $document->setTitle( $item->title.' - '.$category->name );
     	$document->setMetadata( 'keywords', $category->meta_keywords );
     	$document->setDescription( strip_tags($category->meta_description) );
 
@@ -125,11 +125,11 @@ class RedeventViewCategoryevents extends JView
 
 		if ($task == 'archive') {
 			$link = RedeventHelperRoute::getCategoryEventsRoute($category->slug, 'archive');
-			$pathway->addItem( JText::_('COM_REDEVENT_ARCHIVE' ).' - '.$category->catname, JRoute::_($link));
+			$pathway->addItem( JText::_('COM_REDEVENT_ARCHIVE' ).' - '.$category->name, JRoute::_($link));
 			$print_link = JRoute::_( $link.'&pop=1&tmpl=component');
 		} else {
 			$link = RedeventHelperRoute::getCategoryEventsRoute($category->slug);
-			$pathway->addItem( $category->catname, JRoute::_($link));
+			$pathway->addItem( $category->name, JRoute::_($link));
 			$print_link = JRoute::_( $link.'&pop=1&tmpl=component');
 		}
 		$thumb_link = RedeventHelperRoute::getCategoryEventsRoute($category->slug, null, 'thumb');

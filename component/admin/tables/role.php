@@ -1,76 +1,123 @@
 <?php
 /**
- * @version 1.0 $Id: cleanup.php 298 2009-06-24 07:42:35Z julien $
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 
 /**
-* Table class
-*
-* @package		Redevent
-* @since 2.0
-*/
-class RedeventTableRole extends FOFTable
+ * Redevent role Table class
+ *
+ * @package  Redevent.admin
+ * @since    2.0
+ */
+class RedeventTableRole extends RedeventTable
 {
 	/**
-	 * Constructor
+	 * The name of the table with category
 	 *
-	 * @param object Database connector object
-	 * @since 1.0
+	 * @var string
+	 * @since 0.9.1
 	 */
-	public function __construct( $table, $key, &$db ) {
-		parent::__construct('#__redevent_roles', 'id', $db);
+	protected $_tableName = 'redevent_roles';
+
+	/**
+	 * The primary key of the table
+	 *
+	 * @var string
+	 * @since 0.9.1
+	 */
+	protected $_tableKey = 'id';
+
+	/**
+	 * Called before delete().
+	 *
+	 * @param   mixed  $pk  An optional primary key value to delete.  If not set the instance property value is used.
+	 *
+	 * @return  boolean  True on success.
+	 */
+	protected function beforeDelete($pk = null)
+	{
+		// Initialise variables.
+		$k = $this->_tbl_key;
+
+		// Received an array of ids?
+		if (is_array($pk))
+		{
+			// Sanitize input.
+			JArrayHelper::toInteger($pk);
+			$pk = RHelperArray::quote($pk);
+			$pk = implode(',', $pk);
+		}
+
+		$pk = (is_null($pk)) ? $this->$k : $pk;
+
+		// If no primary key is given, return false.
+		if ($pk === null)
+		{
+			return false;
+		}
+
+		// Make sure it's not being used in sessions
+		$db = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->select('r.id');
+		$query->from('#__redevent_sessions_roles AS r');
+		$query->where('r.role_id IN (' . $pk . ')');
+		$db->setQuery($query);
+		$res = $db->loadObject();
+
+		if ($res)
+		{
+			$this->setError(Jtext::_('COM_REDEVENT_ROLE_DELETE_ERROR_ROLES_ASSIGNED'));
+
+			return false;
+		}
+
+		return parent::beforeDelete($pk);
 	}
 
 	/**
-	 * Overloaded check method to ensure data integrity
+	 * Called after delete().
 	 *
-	 * @access public
-	 * @return boolean True on success
-	 * @since 1.0
+	 * @param   mixed  $pk  An optional primary key value to delete.  If not set the instance property value is used.
+	 *
+	 * @return  boolean  True on success.
 	 */
-	public function check()
+	protected function afterDelete($pk = null)
 	{
-		// check that there is only alphanumerics in tag ?
-		return true;
-	}
-	
-	public function onBeforeDelete($oid)
-	{
-		// make sure it's not being used in sessions
-		$db = &JFactory::getDbo();
-		$query = $db->getQuery(true);
-		
-		$query->select('r.id');
-		$query->from('#__redevent_sessions_roles AS r');
-		$query->where('r.role_id = '.$oid);
-		$db->setQuery($query);
-		$res = $db->loadObject();
-			
-		if ($res) {
-			$this->setError(Jtext::_('COM_REDEVENT_ROLE_DELETE_ERROR_ROLES_ASSIGNED'));
+		// Initialise variables.
+		$k = $this->_tbl_key;
+
+		// Received an array of ids?
+		if (is_array($pk))
+		{
+			// Sanitize input.
+			JArrayHelper::toInteger($pk);
+			$pk = RHelperArray::quote($pk);
+			$pk = implode(',', $pk);
+		}
+
+		$pk = (is_null($pk)) ? $this->$k : $pk;
+
+		// If no primary key is given, return false.
+		if ($pk === null)
+		{
 			return false;
 		}
-		return true;
+
+		$db = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->delete('#__redevent_roles_redmember');
+		$query->where('role_id IN (' . $pk . ')');
+
+		$db->setQuery($query);
+		$db->execute();
+
+		return parent::afterDelete($pk);
 	}
 }

@@ -44,10 +44,10 @@ if ($this->manage_attendees) {
 
 
 	<form action="<?php echo JRoute::_($this->action); ?>" method="post" name="manageform">
-	<div id="redevent" class="event_id<?php echo $this->row->eventid; ?> el_details">
-		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).': '.RedeventHelper::getSessionFullTitle($this->row); ?></h2>
+	<div id="redevent" class="event_id<?php echo $this->session->eventid; ?> el_details">
+		<h2 class="register"><?php echo JText::_('COM_REDEVENT_REGISTERED_USERS' ).': '.RedeventHelper::getSessionFullTitle($this->session); ?></h2>
 
-		<?php echo JHTML::link('index.php?option=com_redevent&controller=attendees&task=exportattendees&format=csv&xref='. $this->row->xref, JText::_('COM_REDEVENT_CSV_export'));?>
+		<?php echo JHTML::link('index.php?option=com_redevent&controller=attendees&task=exportattendees&format=csv&xref='. $this->session->xref, JText::_('COM_REDEVENT_CSV_export'));?>
 
 		<?php if (count($this->roles)): ?>
 		<?php $this->showRoles(); ?>
@@ -84,15 +84,15 @@ if ($this->manage_attendees) {
       				  </td>
       				  <?php endforeach; ?>
 
-      				  <?php $edit_url = JRoute::_('index.php?option=com_redevent&controller=registration&task=manageredit&xref='. $this->row->xref .'&submitter_id='. $register->id); ?>
+      				  <?php $edit_url = JRoute::_('index.php?option=com_redevent&task=registration.manageredit&xref='. $this->session->xref .'&submitter_id='. $register->id); ?>
                 <td class="edit">
                   <?php echo JHTML::link($edit_url, $edit_image, array('class' => 'editlink')); ?>
                 </td>
-      				  <?php $unreg_url = JRoute::_(RedeventHelperRoute::getManageAttendees($this->row->xref, 'managedelreguser').'&rid=' .$register->attendee_id); ?>
+      				  <?php $unreg_url = JRoute::_(RedeventHelperRoute::getManageAttendees($this->session->xref, 'registration.managedelreguser').'&rid=' .$register->attendee_id); ?>
                 <td class="attendee">
                   <?php echo JHTML::link($unreg_url, $remove_image, array('class' => 'unreglink')); ?>
                 </td>
-                <td><?php echo $this->row->course_code .'-'. $this->row->xref .'-'. $register->attendee_id; ?></td>
+                <td><?php echo $this->session->course_code .'-'. $this->session->xref .'-'. $register->attendee_id; ?></td>
               </tr>
     				<?php else:	$waiting_count++; ?>
             <?php endif;?>
@@ -135,15 +135,15 @@ if ($this->manage_attendees) {
                 </td>
                 <?php endforeach; ?>
 
-      				  <?php $edit_url = JRoute::_('index.php?option=com_redevent&view=signup&task=manageredit&xref='. $this->row->xref .'&submitter_id='. $register->id); ?>
+      				  <?php $edit_url = JRoute::_('index.php?option=com_redevent&view=signup&task=registration.manageredit&xref='. $this->session->xref .'&submitter_id='. $register->id); ?>
                 <td class="edit">
                   <?php echo JHTML::link($edit_url, $edit_image, array('class' => 'editlink')); ?>
                 </td>
-      				  <?php $unreg_url = JRoute::_('index.php?option=com_redevent&view=details&id='. $this->row->slug .'&task=managedelreguser&xref='. $this->row->xref .'&rid=' .$register->attendee_id); ?>
+      				  <?php $unreg_url = JRoute::_('index.php?option=com_redevent&view=details&id='. $this->session->slug .'&task=registration.managedelreguser&xref='. $this->session->xref .'&rid=' .$register->attendee_id); ?>
                 <td class="attendee">
                   <?php echo JHTML::link($unreg_url, $remove_image, array('class' => 'unreglink')); ?>
                 </td>
-                <td><?php echo $this->row->course_code .'-'. $this->row->xref .'-'. $register->attendee_id; ?></td>
+                <td><?php echo $this->session->course_code .'-'. $this->session->xref .'-'. $register->attendee_id; ?></td>
               </tr>
             <?php endif;?>
           <?php endforeach; ?>

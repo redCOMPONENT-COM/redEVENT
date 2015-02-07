@@ -33,7 +33,7 @@ jimport('joomla.application.component.model');
  * @subpackage redEVENT
  * @since		2.0
  */
-class RedEventModelTags extends FOFModel
+class RedEventModelTags extends RModel
 {
 	var $field = null;
 

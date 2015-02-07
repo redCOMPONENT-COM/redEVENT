@@ -42,7 +42,7 @@ abstract class RedeventFactoryCustomfield
 	 */
 	public static function getTypes()
 	{
-		jimport('joomla.file.folder');
+		jimport('joomla.filesystem.folder');
 		$path = JPATH_SITE . '/libraries/redevent/customfield';
 
 		$files = JFolder::files($path, '.*php$');

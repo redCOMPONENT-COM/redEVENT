@@ -39,7 +39,6 @@ class plgJosetta_extRedeventrole extends JosettaClassesExtensionplugin
 
 	public function __construct(&$subject, $config = array())
 	{
-		include_once JPATH_LIBRARIES . '/fof/include.php';
 		parent::__construct($subject, $config);
 		$this->loadLanguages();
 	}
@@ -84,7 +83,7 @@ class plgJosetta_extRedeventrole extends JosettaClassesExtensionplugin
 	{
 		// Set the table directory
 		JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_redevent/tables');
-		$table = FOFTable::getAnInstance('Role', 'RedeventTable');
+		$table = RTable::getAdminInstance('Role');
 
 		return $table;
 	}

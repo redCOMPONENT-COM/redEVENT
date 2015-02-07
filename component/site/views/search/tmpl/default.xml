@@ -5,12 +5,12 @@
 			<![CDATA[COM_REDEVENT_SEARCH_DEFAULT_LAYOUT_TIP]]>
 		</message>
 	</layout>
-	
-	<fields name="params" addfieldpath="/administrator/components/com_redevent/models/fields">
+
+	<fields name="params" addfieldpath="/libraries/redevent/form/fields">
    	<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
-			<field name="introtext" 
-			       type="editor" 
-			       default="" 
+			<field name="introtext"
+			       type="editor"
+			       default=""
 			       label="COM_REDEVENT_INTROTEXT_FIELD"
 			       description="COM_REDEVENT_INTROTEXT_FIELD_TIP"
 			       filter="safehtml"/>
@@ -62,10 +62,14 @@
 				<option value="0">No</option>
 				<option value="1">Yes</option>
 			</field>
-			
+
 			<field type="spacer" default="0" label="" description="" />
-			<field name="category" type="recategory" default="0" reset="true" label="COM_REDEVENT_VIEW_SEARCH_SELECT_CATEGORY" description="COM_REDEVENT_VIEW_SEARCH_SELECT_CATEGORY_DESC" />
-			
+			<field name="category" type="recategorylist" default="0"
+                   label="COM_REDEVENT_VIEW_SEARCH_SELECT_CATEGORY"
+                   description="COM_REDEVENT_VIEW_SEARCH_SELECT_CATEGORY_DESC">
+                <option value="0">JSelect</option>
+            </field>
+
 			<field name="session_state" type="list" default="0" label="COM_REDEVENT_VIEW_FILTER_SESSION_STATE" description="COM_REDEVENT_VIEW_FILTER_SESSION_STATE_DESC">
 				<option value="0">COM_REDEVENT_VIEW_FILTER_EVENT_STATE_ALL</option>
 				<option value="1">COM_REDEVENT_VIEW_FILTER_EVENT_STATE_UPCOMINGS</option>

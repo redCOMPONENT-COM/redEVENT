@@ -62,7 +62,7 @@ class RedeventCustomfieldWysiwyg extends RedeventAbstractCustomfield
 
 		$editor = JFactory::getEditor();
 
-		$html = $editor->display($this->fieldname, $value, '100%;', '350', '75', '20', array('pagebreak', 'readmore'));
+		$html = $editor->display('jform[' . $this->fieldname . ']', $value, '100%;', '350', '75', '20', array('pagebreak', 'readmore'));
 		return $html;
 	}
 

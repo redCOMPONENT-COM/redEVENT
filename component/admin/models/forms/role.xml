@@ -1,13 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form>
-	
-	<field
-		name="language"
-		type="contentlanguage"
-		label="JFIELD_LANGUAGE_LABEL"
-		description="COM_REDEVENT_FIELD_LANGUAGE_DESC"
-		class="inputbox">
-		<option value="*">JALL</option>
-	</field>
-		
+    <field name="id"
+           type="hidden"
+           default="0"
+           class="readonly"
+           readonly="true"
+            />
+
+    <field name="name"
+           type="text"
+           class="inputbox validate-username"
+           label="COM_REDEVENT_Name"
+           required="true"
+           size="50"
+            />
+
+    <field name="description" type="editor"
+           label="COM_redevent_description"
+           description="COM_redevent_description"
+           required="false"
+           filter="JComponentHelper::filterText" buttons="true"
+            />
+
+    <field name="language"
+           type="contentlanguage"
+           label="JFIELD_LANGUAGE_LABEL"
+           description="COM_REDEVENT_FIELD_LANGUAGE_DESC">
+        <option value="*">JALL</option>
+    </field>
+
+    <field name="usertype" type="text"
+           label="COM_REDEVENT_REDMEMBER_USERTYPE_LABEL"
+           description="COM_REDEVENT_REDMEMBER_USERTYPE_DESC"
+           class="inputbox"
+            />
+
+    <field name="fields" type="text"
+           label="COM_REDEVENT_REDMEMBER_USERTYPE_FIELDS_LABEL"
+           description="COM_REDEVENT_REDMEMBER_USERTYPE_FIELDS_DESC"
+           class="inputbox"
+           />
 </form>

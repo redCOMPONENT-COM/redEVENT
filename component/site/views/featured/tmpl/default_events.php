@@ -40,7 +40,7 @@ $colnames = array_map('trim', $colnames);
 		{
 			$date = false;
 		}
-		$img = redEVENTImage::getThumbUrl($row->datimage, 150);
+		$img = RedeventImage::getThumbUrl($row->datimage, 150);
 		$img = ($img ? JHTML::image($img, RedeventHelper::getSessionFullTitle($row)) : false);
 		?>
   	<div class="event row<?php echo ($k + 1); ?>"

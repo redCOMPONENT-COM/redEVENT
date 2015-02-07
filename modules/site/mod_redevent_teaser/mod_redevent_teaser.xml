@@ -29,7 +29,7 @@
 		<filename>tmpl/img/index.html</filename>
 		<filename>tmpl/img/calendar_red.png</filename>
 		<filename>tmpl/img/calendar_blue.png</filename>
-		<filename>tmpl/img/calendar_green.png</filename>        
+		<filename>tmpl/img/calendar_green.png</filename>
 		<filename>tmpl/img/calendar_green2.png</filename>
 		<filename>tmpl/img/facebook.png</filename>
 		<filename>tmpl/img/twitter.png</filename>
@@ -37,7 +37,7 @@
     <folder>language</folder>
 	</files>
 
-	<config>
+	<config addfieldpath="/libraries/redevent/form/fields">
 		<fields name="params">
 			<fieldset name="basic">
 				<field name="type" type="list" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_EVENTS_STATE" description="MOD_REDEVENT_TEASER_SETTINGS_EVENTS_STATE_DESC">
@@ -49,14 +49,14 @@
 					<option value="1">MOD_REDEVENT_TEASER_SETTINGS_COLOR_RED</option>
 					<option value="2">MOD_REDEVENT_TEASER_SETTINGS_COLOR_BLUE</option>
 					<option value="3">MOD_REDEVENT_TEASER_SETTINGS_COLOR_GREEN</option>
-				</field>				
-				<field name="count" type="text" default="5" label="MOD_REDEVENT_TEASER_SETTINGS_EVENTS_IN_MODULE" description="MOD_REDEVENT_TEASER_SETTINGS_EVENTS_IN_MODULE_DESC" />				
+				</field>
+				<field name="count" type="text" default="5" label="MOD_REDEVENT_TEASER_SETTINGS_EVENTS_IN_MODULE" description="MOD_REDEVENT_TEASER_SETTINGS_EVENTS_IN_MODULE_DESC" />
 				<field name="cuttitle" type="text" default="35" label="MOD_REDEVENT_TEASER_SETTINGS_MAX_TITLE_LENGTH" description="MOD_REDEVENT_TEASER_SETTINGS_MAX_TITLE_LENGTH_DESC" />
-				<field name="descriptionlength" type="text" default="300" label="MOD_REDEVENT_TEASER_SETTINGS_MAX_DESCRIPTION_LENGTH" description="MOD_REDEVENT_TEASER_SETTINGS_MAX_DESCRIPTION_LENGTH_DESC" />		
+				<field name="descriptionlength" type="text" default="300" label="MOD_REDEVENT_TEASER_SETTINGS_MAX_DESCRIPTION_LENGTH" description="MOD_REDEVENT_TEASER_SETTINGS_MAX_DESCRIPTION_LENGTH_DESC" />
 				<field name="br" type="radio" default="0" label="MOD_REDEVENT_TEASER_SETTINGS_ALLOW_LINEBREAK" description="MOD_REDEVENT_TEASER_SETTINGS_ALLOW_LINEBREAK_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
-				</field>		
+				</field>
 				<field name="showtime" type="radio" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_SHOW_TIME" description="MOD_REDEVENT_TEASER_SETTINGS_SHOW_TIME_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
@@ -70,8 +70,8 @@
 					<option value="1">JYES</option>
 				</field>
 				<field name="showregister" type="radio" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_SHOW_REGISTER" description="MOD_REDEVENT_TEASER_SETTINGS_SHOW_REGISTER_DESC">
-					<option value="0">NO</option>
-					<option value="1">YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				<field name="linkfb" type="radio" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_LINK_TO_FB" description="MOD_REDEVENT_TEASER_SETTINGS_LINK_TO_FB_DESC">
 					<option value="0">JNO</option>
@@ -80,19 +80,19 @@
 				<field name="linktw" type="radio" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_LINK_TO_TWITTER" description="MOD_REDEVENT_TEASER_SETTINGS_LINK_TO_TWITTER_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
-				</field>		
+				</field>
 				<field name="linkdi" type="radio" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_LINK_TO_DIGG" description="MOD_REDEVENT_TEASER_SETTINGS_LINK_TO_DIGG_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
-				</field>	        		
-				<field name="catid" type="text" default="" label="MOD_REDEVENT_TEASER_SETTINGS_CATEGORY_ID" description="MOD_REDEVENT_TEASER_SETTINGS_CATEGORY_ID_DESC" />
-				<field name="venid" type="text" default="" label="MOD_REDEVENT_TEASER_SETTINGS_VENUE_ID" description="MOD_REDEVENT_TEASER_SETTINGS_VENUE_ID_DESC" />
-		
+				</field>
+				<field name="catid" type="recategorylist" multiple="1" label="MOD_REDEVENT_TEASER_SETTINGS_CATEGORY_ID" description="MOD_REDEVENT_TEASER_SETTINGS_CATEGORY_ID_DESC" />
+				<field name="venid" type="revenuelist" multiple="1" label="MOD_REDEVENT_TEASER_SETTINGS_VENUE_ID" description="MOD_REDEVENT_TEASER_SETTINGS_VENUE_ID_DESC" />
+
 				<field name="stateloc" type="text" default="" label="MOD_REDEVENT_TEASER_SETTINGS_STATE" description="MOD_REDEVENT_TEASER_SETTINGS_STATE_DESC" />
-				<field name="picture_size" type="text" default="30" label="MOD_REDEVENT_TEASER_PICTURE_SIZE" description="MOD_REDEVENT_TEASER_PICTURE_SIZE_DESC" />		
-				
+				<field name="picture_size" type="text" default="30" label="MOD_REDEVENT_TEASER_PICTURE_SIZE" description="MOD_REDEVENT_TEASER_PICTURE_SIZE_DESC" />
+
 			</fieldset>
-	
+
 			<fieldset
 				name="advanced">
 				<field

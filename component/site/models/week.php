@@ -43,16 +43,18 @@ class RedEventModelWeek extends RedeventModelBaseeventlist
 	public function __construct()
 	{
 		parent::__construct();
-		$week = JRequest::getVar('week');
+
+		$input = JFactory::getApplication()->input;
+		$week = $input->get('week');
 		$this->setWeek($week);
 
 		if (!$week) // Is there an offset in the view parameters ?
 		{
-			$offset = JRequest::getInt('weekoffset');
+			$offset = $input->getInt('weekoffset');
 
-			if (intval($offset))
+			if ($offset)
 			{
-				$this->addOffset(intval($offset));
+				$this->addOffset($offset);
 			}
 		}
 	}
@@ -98,9 +100,9 @@ class RedEventModelWeek extends RedeventModelBaseeventlist
 	 * (non-PHPdoc)
 	 * @see RedeventModelBaseeventlist::getData()
 	 */
-	public function &getData()
+	public function getData()
 	{
-		$pop	= JRequest::getBool('pop');
+		$pop = JRequest::getBool('pop');
 
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_data))
@@ -168,7 +170,7 @@ class RedEventModelWeek extends RedeventModelBaseeventlist
 	{
 		$week = $this->getWeek();
 
-		return substr($week, 5);
+		return (int) substr($week, 5);
 	}
 
 	/**
@@ -178,9 +180,9 @@ class RedEventModelWeek extends RedeventModelBaseeventlist
 	 */
 	public function getYear()
 	{
-		$week = $this->getWeek();
+		$year = substr($this->getWeek(), 0, 4);
 
-		return substr($week, 0, 4);
+		return (int) $year;
 	}
 
 	/**
@@ -190,23 +192,22 @@ class RedEventModelWeek extends RedeventModelBaseeventlist
 	 */
 	public function getWeekDays()
 	{
-		$week = $this->getWeek();
 		$week_number = $this->getWeekNumber();
 		$year = $this->getYear();
 
-		$days = array();
+		// First day of the week
+		$firstTimestamp = strtotime(sprintf("%04dW%02d", $year, $week_number));
+
 		if (JFactory::getApplication()->getParams()->get('week_start') == 'SU')
 		{
-			$offset = -1;
-		}
-		else
-		{
-			$offset = 0;
+			$firstTimestamp = strtotime('last sunday', $firstTimestamp);
 		}
 
-		for ($day = 1; $day <= 7; $day++)
+		$days = array();
+
+		for ($day = 0; $day < 7; $day++)
 		{
-			$days[] = date('Y-m-d', strtotime($year."W".$week_number.($day + $offset)));
+			$days[] = date('Y-m-d', strtotime(sprintf("+%d day", $day), $firstTimestamp));
 		}
 
 		return $days;
@@ -220,9 +221,18 @@ class RedEventModelWeek extends RedeventModelBaseeventlist
 	public function getPreviousWeek()
 	{
 		$aday = $this->getWeekMonday();
-		$prev = strtotime("$aday -7 days");
+		$prevWeekNumber = date('W', strtotime("-7 days", strtotime($aday)));
 
-		return date('YW', $prev);
+		if ($prevWeekNumber > $this->getWeekNumber())
+		{
+			$year = $this->getYear() - 1;
+		}
+		else
+		{
+			$year = $this->getYear();
+		}
+
+		return sprintf('%04d%02d', $year, $prevWeekNumber);
 	}
 
 	/**
@@ -233,9 +243,18 @@ class RedEventModelWeek extends RedeventModelBaseeventlist
 	public function getNextWeek()
 	{
 		$aday = $this->getWeekMonday();
-		$prev = strtotime("$aday +7 days");
+		$nextWeekNumber = date('W', strtotime("+7 days", strtotime($aday)));
 
-		return date('YW', $prev);
+		if ($nextWeekNumber < $this->getWeekNumber())
+		{
+			$year = $this->getYear() + 1;
+		}
+		else
+		{
+			$year = $this->getYear();
+		}
+
+		return sprintf('%04d%02d', $year, $nextWeekNumber);
 	}
 
 	/**

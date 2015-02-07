@@ -95,6 +95,7 @@ class RedeventViewRegistration extends JViewLegacy
 	 */
 	protected function _displayEdit($tpl = null)
 	{
+		$app = JFactory::getApplication();
 		$user = JFactory::getUser();
 		$acl  = RedeventUserAcl::getInstance();
 		$xref = JRequest::getInt('xref');
@@ -120,13 +121,15 @@ class RedeventViewRegistration extends JViewLegacy
 			return false;
 		}
 
-		if ($acl->canManageAttendees($registration->xref) && JRequest::getVar('task') == 'manageredit')
+		if ($acl->canManageAttendees($registration->xref) && $app->input->get('task') == 'manageredit')
 		{
-			$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute($xref, 'managerupdate'));
+			$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute($xref, 'registration.managerupdate'));
+			$this->return = base64_encode(RedeventHelperRoute::getManageAttendees($xref));
 		}
 		elseif ($registration->uid == $user->get('id'))
 		{
-			$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute($xref, 'update'));
+			$action = JRoute::_(RedeventHelperRoute::getRegistrationRoute($xref, 'registration.update'));
+			$this->return = base64_encode(RedeventHelperRoute::getDetailsRoute($xref));
 		}
 		else
 		{
@@ -140,7 +143,7 @@ class RedeventViewRegistration extends JViewLegacy
 		$prices = $this->get('Pricegroups');
 		$field = array();
 		$field['label'] = '<label for="pricegroup_id">' . JText::_('COM_REDEVENT_REGISTRATION_PRICE') . '</label>';
-		$field['field'] = RedeventHelper::getRfPricesSelect($prices, $registration->pricegroup_id);
+		$field['field'] = RedeventHelper::getRfPricesSelect($prices, $registration->sessionpricegroup_id);
 		$rfoptions['extrafields'][] = $field;
 
 		$rfcore = RdfCore::getInstance();

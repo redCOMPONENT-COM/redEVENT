@@ -69,9 +69,9 @@ $colspan = 10;
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo $i+1; ?></td>
 				<td>
-					<?php echo JHTML::Date( $row->uregdate, JText::_('DATE_FORMAT_LC2' ) ); ?>
+					<?php echo JHTML::Date( $row->uregdate, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME' ) ); ?>
 				</td>
-				<td><?php echo ($row->confirmdate) ? JHTML::Date( $row->confirmdate, JText::_('DATE_FORMAT_LC2' ) ) : '-'; ?></td>
+				<td><?php echo ($row->confirmdate) ? JHTML::Date( $row->confirmdate, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME' ) ) : '-'; ?></td>
 				<td><?php echo $row->course_code .'-'. $row->xref .'-'. $row->attendee_id; ?></td>
 				<td><?php echo $row->name; ?></td>
 				<td>

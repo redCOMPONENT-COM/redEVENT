@@ -57,7 +57,7 @@ class RedeventCustomfieldSelect extends RedeventAbstractCustomfield
 		{
 			$selected = $this->default_value;
 		}
-		return JHTML::_('select.genericlist', $option_list, $this->fieldname, $this->attributesToString($attributes), 'value', 'text', $selected, $this->fieldid);
+		return JHTML::_('select.genericlist', $option_list, 'jform[' . $this->fieldname . ']', $this->attributesToString($attributes), 'value', 'text', $selected, $this->fieldid);
 	}
 
 	public function renderFilter($attributes = array(), $selected = null)

@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedeventViewCategoriesdetailed extends JView
+class RedeventViewCategoriesdetailed extends RViewSite
 {
 	/**
 	 * Creates the Categoriesdetailed View

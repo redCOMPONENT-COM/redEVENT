@@ -25,14 +25,14 @@
     <folder>language</folder>
 	</files>
 
-	<config>
+	<config addfieldpath="/libraries/redevent/form/fields">
 		<fields name="params">
 			<fieldset name="basic">
 				<field name="cuttitle" type="text" default="18" label="MOD_REDEVENT_VENUES_EVENTS_TITLE_LENGTH" description="MOD_REDEVENT_VENUES_EVENTS_TITLE_LENGTH_DESC" />
-				<field name="catid" type="text" default="" label="MOD_REDEVENT_VENUES_EVENTS_CATEGORY_ID" description="MOD_REDEVENT_VENUES_EVENTS_CATEGORY_ID_DESC" />
-				<field name="venid" type="text" default="" label="MOD_REDEVENT_VENUES_EVENTS_VENUE_ID" description="MOD_REDEVENT_VENUES_EVENTS_VENUE_DESC" />
+				<field name="catid" type="recategorylist" multiple="1" label="MOD_REDEVENT_VENUES_EVENTS_CATEGORY_ID" description="MOD_REDEVENT_VENUES_EVENTS_CATEGORY_ID_DESC" />
+				<field name="venid" type="revenuelist" multiple="1" label="MOD_REDEVENT_VENUES_EVENTS_VENUE_ID" description="MOD_REDEVENT_VENUES_EVENTS_VENUE_DESC" />
 			</fieldset>
-	
+
 			<fieldset
 				name="advanced">
 				<field

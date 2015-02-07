@@ -107,10 +107,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					      foreach ($row->categories as $cat)
 					      {
 					      	if ($this->params->get('catlinklist', 1) == 1) {
-					      		$cats[] = JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($cat->slug), $cat->catname);
+					      		$cats[] = JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($cat->slug), $cat->name);
 					      	}
 					      	else {
-					      		$cats[] = $this->escape($cat->catname);
+					      		$cats[] = $this->escape($cat->name);
 					      	}
 					      }
 					      echo implode("<br/>", $cats);
@@ -119,7 +119,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<?php break;?>
 
 				<?php case 'picture': ?>
-          <td class="re_places" itemprop="image"><?php echo redEVENTImage::modalimage($row->datimage, $row->title, intval($this->params->get('lists_picture_size', 30))); ?></td>
+          <td class="re_places" itemprop="image"><?php echo RedeventImage::modalimage($row->datimage, $row->title, intval($this->params->get('lists_picture_size', 30))); ?></td>
 				<?php break;?>
 
 				<?php default: ?>

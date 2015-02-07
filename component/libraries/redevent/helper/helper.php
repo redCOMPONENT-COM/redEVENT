@@ -35,22 +35,23 @@ class RedeventHelper
 	}
 
 	/**
-	 * Performs dayly scheduled cleanups
+	 * Performs daily scheduled cleanups
 	 *
 	 * Currently it archives and removes outdated events
 	 * and takes care of the recurrence of events
 	 *
-	 * @since 0.9
+	 * @param   int  $forced  force cleanup
+	 *
+	 * @return bool
 	 */
 	public static function cleanup($forced = 0)
 	{
-		$db			= JFactory::getDBO();
+		$db = JFactory::getDBO();
 
-		$elsettings = RedeventHelper::config();
-		$params = JComponentHelper::getParams('com_redevent');
+		$params = self::config();
 
-		$now 		= time();
-		$cronfile   = JPATH_COMPONENT . '/recron.txt';
+		$now = time();
+		$cronfile = JPATH_COMPONENT . '/recron.txt';
 
 		if (file_exists($cronfile))
 		{
@@ -61,259 +62,141 @@ class RedeventHelper
 			$lastupdate = 0;
 		}
 
-		//last update later then 24h?
-		//$difference = $now - $lastupdate;
-
-		//if ( $difference > 86400 ) {
-
-		//better: new day since last update?
+		// Number of days since last update?
 		$nrdaysnow = floor($now / 86400);
 		$nrdaysupdate = floor($lastupdate / 86400);
 
 		if ($nrdaysnow > $nrdaysupdate || $forced)
 		{
-			$nulldate = '0000-00-00';
 			$limit_date = strftime('%Y-%m-%d', time() - $params->get('pastevents_delay', 3) * 3600 * 24);
 
-			RedeventHelper::generaterecurrences();
+			$recurrenceHelper = new RedeventRecurrenceHelper;
+			$recurrenceHelper->generaterecurrences();
 
-			// date filtering
+			// Date filtering
 			$where = array('x.dates IS NOT NULL');
+
 			switch ($params->get('pastevents_reference_date', 'end'))
 			{
 				case 'start':
-					$where[] = ' DATEDIFF('. $db->Quote($limit_date) .', x.dates) >= 0 ';
+					$where[] = ' DATEDIFF(' . $db->Quote($limit_date) . ', x.dates) >= 0 ';
 					break;
+
 				case 'registration':
-					$where[] = ' DATEDIFF('. $db->Quote($limit_date) .', (IF (x.registrationend <> '. $db->Quote($nulldate) .', x.registrationend, x.dates))) >= 0 ';
+					$where[] = ' DATEDIFF(' . $db->Quote($limit_date) . ', (IF (x.registrationend > 0, x.registrationend, x.dates))) >= 0 ';
 					break;
+
 				case 'end':
-					$where[] = ' DATEDIFF('. $db->Quote($limit_date) .', (IF (x.enddates <> '. $db->Quote($nulldate) .', x.enddates, x.dates))) >= 0 ';
+					$where[] = ' DATEDIFF(' . $db->Quote($limit_date) . ', (IF (x.enddates > 0, x.enddates, x.dates))) >= 0 ';
 					break;
 			}
+
 			$where_date = implode(' AND ', $where);
 
-			//delete outdated events
+			// Delete outdated events
 			if ($params->get('pastevents_action', 0) == 1)
 			{
+				// Lists event_id for which we are going to delete xrefs
+				$query = $db->getQuery(true)
+					->select('x.eventid')
+					->from('#__redevent_event_venue_xref')
+					->where($where_date);
 
-				// lists event_id for which we are going to delete xrefs
-				$query = ' SELECT x.eventid FROM #__redevent_event_venue_xref AS x ';
-				$query .= ' WHERE '. $where_date;
-
-				$db->SetQuery( $query );
-				$event_ids = $db->loadResultArray();
+				$db->setQuery($query);
+				$event_ids = $db->loadColumn();
 
 				// If we deleted some sessions, check if we now have events without sesssion, and take actions accordingly
 				if (count($event_ids))
 				{
-					$query = ' DELETE x FROM #__redevent_event_venue_xref AS x '
-					. ' WHERE '. $where_date;
-					;
-					$db->SetQuery( $query );
-					if (!$db->Query()) {
-						RedeventHelperLog::simpleLog('CLEANUP Error while deleting old xrefs: '. $db->getErrorMsg());
+					$query = $db->getQuery(true)
+						->delete('#__redevent_event_venue_xref')
+						->where($where_date);
+
+					$db->setQuery($query);
+
+					if (!$db->execute())
+					{
+						RedeventHelperLog::simpleLog('CLEANUP Error while deleting old xrefs: ' . $db->getErrorMsg());
 					}
 
-					// now delete the events with no more xref
+					// Now delete the events with no more xref
 					if ($params->get('pastevents_events_action', 1))
 					{
-						require_once(JPATH_COMPONENT_ADMINISTRATOR . '/models/events.php');
-						$model = JModel::getInstance('events', 'redeventmodel');
+						$model = RModel::getAdminInstance('events');
+
 						if (!$model->delete($event_ids))
 						{
-							RedeventHelperLog::simpleLog('CLEANUP Error while deleting old events with no more xrefs: '. $model->getError());
+							RedeventHelperLog::simpleLog('CLEANUP Error while deleting old events with no more xrefs: ' . $model->getError());
 						}
 					}
 				}
 			}
 
-			//Set state archived of outdated events
+			// Set state archived of outdated events
 			if ($params->get('pastevents_action', 0) == 2)
 			{
-				// lists xref_id and associated event_id for which we are going to be archived
-				$query = ' SELECT x.id, x.eventid '
-				. ' FROM #__redevent_event_venue_xref AS x '
-				. ' WHERE '. $where_date
-				. ' AND x.published = 1 '
-				;
-				$db->SetQuery( $query );
+				// Lists xref_id and associated event_id for which we are going to be archived
+				$query = $db->getQuery(true)
+					->select('x.id, x.eventid')
+					->from('#__redevent_event_venue_xref AS x')
+					->where($where_date)
+					->where('x.published = 1');
+
+				$db->setQuery($query);
 				$xrefs = $db->loadObjectList();
 
 				// If we deleted some sessions, check if we now have events without sesssion, and take actions accordingly
 				if (!empty($xrefs))
 				{
-					// build list of xref and corresponding events
+					// Build list of xref and corresponding events
 					$event_ids = array();
 					$xref_ids  = array();
+
 					foreach ($xrefs AS $xref)
 					{
 						$event_ids[] = $db->Quote($xref->eventid);
 						$xref_ids[]  = $db->Quote($xref->id);
 					}
-					// filter duplicates
+
+					// Filter duplicates
 					$event_ids = array_unique($event_ids);
 
-					// update xref to archive
-					$query = ' UPDATE #__redevent_event_venue_xref AS x '
-					. ' SET x.published = -1 '
-					. ' WHERE x.id IN ('. implode(', ', $xref_ids) .')'
-					;
-					$db->SetQuery( $query );
-					if (!$db->Query()) {
-						RedeventHelperLog::simpleLog('CLEANUP Error while archiving old xrefs: '. $db->getErrorMsg());
+					// Update xref to archive
+					$query = $db->getQuery(true)
+						->update('#__redevent_event_venue_xref')
+						->set('x.published = -1')
+						->where('x.id IN (' . implode(', ', $xref_ids) . ')');
+
+					$db->setQuery($query);
+
+					if (!$db->execute())
+					{
+						RedeventHelperLog::simpleLog('CLEANUP Error while archiving old xrefs: ' . $db->getErrorMsg());
 					}
 
 					if ($params->get('pastevents_events_action', 1))
 					{
-						// update events to archive (if no more published xref)
-						$query = ' UPDATE #__redevent_events AS e '
-						. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id AND x.published <> -1 '
-						. ' SET e.published = -1 '
-						. ' WHERE x.id IS NULL '
-						. '   AND e.id IN (' . implode(', ', $event_ids) . ')'
-						;
-						$db->SetQuery( $query );
-						if (!$db->Query()) {
-							RedeventHelperLog::simpleLog('CLEANUP Error while archiving events with only archived xrefs: '. $db->getErrorMsg());
+						// Update events to archive (if no more published xref)
+						$query = $db->getQuery(true)
+							->update('#__redevent_events AS e')
+							->join('LEFT', '#__redevent_event_venue_xref AS x ON x.eventid = e.id AND x.published <> -1')
+							->set('e.published = -1')
+							->where('x.id IS NULL')
+							->where('e.id IN (' . implode(', ', $event_ids) . ')');
+
+						$db->setQuery($query);
+
+						if (!$db->execute())
+						{
+							RedeventHelperLog::simpleLog('CLEANUP Error while archiving events with only archived xrefs: ' . $db->getErrorMsg());
 						}
 					}
 				}
 			}
 
-			// update recron file with latest update
+			// Update recron file with latest update
 			JFile::write($cronfile, $now);
 		}
-	}
-
-	/**
-	 * adds xref repeats to the database.
-	 *
-	 * @return bool true on success
-	 */
-	public static function generaterecurrences($recurrence_id = null)
-	{
-		$db = JFactory::getDBO();
-
-		$nulldate = '0000-00-00';
-
-		// generate until limit
-		$params = & JComponentHelper::getParams('com_redevent');
-		$limit = $params->get('recurrence_limit', 30);
-		$limit_date_int = time() + $limit*3600*24;
-
-		// get active recurrences
-		$query = ' SELECT MAX(rp.xref_id) as xref_id, r.rrule, r.id as recurrence_id '
-		. ' FROM #__redevent_repeats AS rp '
-		. ' INNER JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
-		. ' INNER JOIN #__redevent_event_venue_xref AS x on x.id = rp.xref_id ' // make sure there are still events associated...
-		. ' WHERE r.ended = 0 '
-		. '   AND x.dates > 0 '
-		;
-
-		if ($recurrence_id)
-		{
-			$query .= ' AND r.id = '. $db->Quote($recurrence_id);
-		}
-
-		$query .= ' GROUP BY rp.recurrence_id ';
-		$db->setQuery($query);
-		$recurrences = $db->loadObjectList();
-
-		if (empty($recurrences))
-		{
-			return true;
-		}
-
-		// get corresponding xrefs
-		$rids = array();
-
-		foreach ($recurrences as $r)
-		{
-			$rids[] = $r->xref_id;
-		}
-
-		$query = ' SELECT x.*, rp.count '
-		. ' FROM #__redevent_event_venue_xref AS x '
-		. ' INNER JOIN #__redevent_repeats AS rp ON rp.xref_id = x.id '
-		. ' WHERE x.id IN ('. implode(",", $rids) .')'
-		;
-		$db->setQuery($query);
-		$xrefs = $db->loadObjectList('id');
-
-		// now, do the job...
-		foreach ($recurrences as $r)
-		{
-			$next = RedeventHelperRecurrence::getnext($r->rrule, $xrefs[$r->xref_id]);
-
-			while ($next)
-			{
-				if (strtotime($next->dates) > $limit_date_int)
-				{
-					break;
-				}
-
-				//record xref
-				$object = JTable::getInstance('RedEvent_eventvenuexref', '');
-				$object->bind($next);
-
-				if ($object->store())
-				{
-					// copy the roles
-					$query = ' INSERT INTO #__redevent_sessions_roles (xref, role_id, user_id) '
-					. ' SELECT '.$object->id.', role_id, user_id '
-					. ' FROM #__redevent_sessions_roles '
-					. ' WHERE xref = ' . $db->Quote($r->xref_id);
-					$db->setQuery($query);
-
-					if (!$db->query())
-					{
-						RedeventHelperLog::simpleLog('recurrence copying roles error: '.$db->getErrorMsg());
-					}
-
-					// copy the prices
-					$query = ' INSERT INTO #__redevent_sessions_pricegroups (xref, pricegroup_id, price, currency) '
-					. ' SELECT '.$object->id.', pricegroup_id, price, currency '
-					. ' FROM #__redevent_sessions_pricegroups '
-					. ' WHERE xref = ' . $db->Quote($r->xref_id);
-					$db->setQuery($query);
-
-					if (!$db->query())
-					{
-						RedeventHelperLog::simpleLog('recurrence copying prices error: '.$db->getErrorMsg());
-					}
-
-					// update repeats table
-					$query = ' INSERT INTO #__redevent_repeats '
-					. ' SET xref_id = '. $db->Quote($object->id)
-					. '   , recurrence_id = '. $db->Quote($r->recurrence_id)
-					. '   , count = '. $db->Quote($next->count)
-					;
-					$db->setQuery($query);
-
-					if (!$db->query())
-					{
-						RedeventHelperLog::simpleLog('saving repeat error: '.$db->getErrorMsg());
-					}
-				}
-				else
-				{
-					RedeventHelperLog::simpleLog('saving recurrence xref error: '.$db->getErrorMsg());
-				}
-
-				$next = RedeventHelperRecurrence::getnext($r->rrule, $next);
-			}
-
-			if (!$next)
-			{
-				// no more events to generate, we can disable the rule
-				$query = ' UPDATE #__redevent_recurrences SET ended = 1 WHERE id = '. $db->Quote($r->recurrence_id);
-				$db->setQuery($query);
-				$db->query();
-			}
-		}
-
-		return true;
 	}
 
 	/**
@@ -400,7 +283,7 @@ class RedeventHelper
 			}
 		}
 
-		$query =  ' SELECT c.id, c.catname, (COUNT(parent.catname) - 1) AS depth '
+		$query =  ' SELECT c.id, c.name AS catname, (COUNT(parent.name) - 1) AS depth '
 		. ' FROM #__redevent_categories AS c '
 		. ' INNER JOIN #__redevent_categories AS parent ON c.lft BETWEEN parent.lft AND parent.rgt '
 		;
@@ -561,8 +444,7 @@ class RedeventHelper
 		$event = & $db->loadObject();
 
 		// we need to take into account the server offset into account for the registration dates
-		$now = JFactory::getDate();
-		$now->setOffset($app->getCfg('offset'));
+		$now = JFactory::getDate('now', new DateTimeZone($app->getCfg('offset')));
 		$now_unix = $now->toUnix('true');
 
 		// first, let's check the thing that don't need database queries
@@ -678,11 +560,12 @@ class RedeventHelper
 
 	public static function canUnregister($xref_id, $user_id = null)
 	{
-		$db = & JFactory::getDBO();
-		$user = & JFactory::getUser($user_id);
+		$db = JFactory::getDBO();
+		$user = JFactory::getUser($user_id);
 
-		// if user is not logged, he can't unregister
-		if (!$user->get('id')) {
+		// If user is not logged, he can't unregister
+		if (!$user->get('id'))
+		{
 			return false;
 		}
 
@@ -694,8 +577,9 @@ class RedeventHelper
 		$db->setQuery($query);
 		$event = & $db->loadObject();
 
-		// check if unregistration is allowed
-		if (!$event->unregistra) {
+		// Check if unregistration is allowed
+		if (!$event->unregistra)
+		{
 			return false;
 		}
 
@@ -1297,7 +1181,7 @@ class RedeventHelper
 		$db = &JFactory::getDBO();
 		$user = &JFactory::getUser($selected);
 
-		JHTML::_('behavior.mootools');
+		JHTML::_('behavior.framework');
 		$document->addScript(JURI::base().'components/com_redevent/assets/js/selectuser.js');
 		//		echo '<pre>';print_r(JURI::base().'components/com_redevent/assets/selectuser.js'); echo '</pre>';exit;
 
@@ -1351,7 +1235,7 @@ class RedeventHelper
 			$query = 'SELECT CONCAT("custom", f.id) FROM #__redevent_fields AS f WHERE f.published = 1';
 			$db->setQuery($query);
 
-			if ($res = $db->loadResultArray())
+			if ($res = $db->loadColumn())
 			{
 				$allowed = array_merge($allowed, $res);
 			}

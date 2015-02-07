@@ -13,8 +13,8 @@ class RokMiniEventsSourceRSEvents extends RokMiniEvents_SourceBase
 {
     function getEvents(&$params)
     {
-        require_once(JPATH_SITE.DS.'components'.DS.'com_rsevents'.DS.'helpers'.DS.'rsevents.php');
-        require_once(JPATH_SITE.DS.'components'.DS.'com_rsevents'.DS.'helpers'.DS.'events.php');
+        require_once(JPATH_SITE.'/components/com_rsevents/helpers/rsevents.php');
+        require_once(JPATH_SITE.'/components/com_rsevents/helpers/events.php');
 
         // Reuse existing language file from JomSocial
         $language = JFactory::getLanguage();

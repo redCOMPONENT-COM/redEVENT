@@ -6,7 +6,7 @@
 		</message>
 	</layout>
 	<fields name="params"
-		addfieldpath="/administrator/components/com_redevent/models/fields">
+		addfieldpath="/libraries/redevent/form/fields">
 		<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
 			<field name="session_display" type="list" default="0"
 				label="COM_REDEVENT_VIEW_CALENDAR_SESSION_DISPLAY_LABEL"
@@ -49,8 +49,10 @@
 				label="COM_REDEVENT_VIEW_CALENDAR_WEEK_COLUMN_NAME_LABEL"
 				description="COM_REDEVENT_VIEW_CALENDAR_WEEK_COLUMN_NAME_DESC" />
 
-			<field name="topcat" type="recategory" default="0" reset="true"
-				size="15" label="COM_REDEVENT_SELECT_CATEGORY" description="COM_REDEVENT_SELECT_CATEGORY_DESC" />
+			<field name="topcat" type="recategorylist" default="0" reset="true"
+				size="15" label="COM_REDEVENT_SELECT_CATEGORY" description="COM_REDEVENT_SELECT_CATEGORY_DESC">
+                <option value="">JALL</option>
+            </field>
 		</fieldset>
 	</fields>
 </metadata>

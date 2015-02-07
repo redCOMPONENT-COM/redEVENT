@@ -23,11 +23,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<?php foreach ($this->log as $line): ?>
+<?php foreach ($this->items as $line): ?>
 <?php echo $line . '<br/>'; ?>
 <?php endforeach; ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">  
+<form action="index.php" method="post" name="adminForm" id="adminForm">
   <input type="hidden" name="option" value="com_redevent" />
   <input type="hidden" name="view" value="log" />
   <input type="hidden" name="task" value="" />

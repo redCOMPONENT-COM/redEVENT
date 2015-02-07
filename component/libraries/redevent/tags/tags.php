@@ -391,7 +391,7 @@ class RedeventTags
 	{
 		if (empty($this->_event))
 		{
-			$this->_event = JModel::getInstance('Eventhelper', 'RedeventModel');
+			$this->_event = RModel::getFrontInstance('Eventhelper');
 			$this->_event->setId($this->_eventid);
 			$this->_event->setXref($this->_xref);
 		}
@@ -416,7 +416,7 @@ class RedeventTags
 
 		$app = JFactory::getApplication();
 		$this->getEventLinks();
-		$template_path = JPATH_BASE . DS . 'templates' . DS . $app->getTemplate() . DS . 'html' . DS . 'com_redevent';
+		$template_path = JPATH_BASE . '/templates/' . $app->getTemplate() . '/html/com_redevent';
 
 		$lists['order_Dir'] = JRequest::getWord('filter_order_Dir', 'ASC');
 		$lists['order'] = JRequest::getCmd('filter_order', 'x.dates');
@@ -569,7 +569,7 @@ class RedeventTags
 		$db = JFactory::getDBO();
 		foreach ($rows as $k => $r)
 		{
-			$query = ' SELECT c.id, c.catname, c.image, '
+			$query = ' SELECT c.id, c.name AS catname, c.image, '
 				. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(":", c.id, c.alias) ELSE c.id END as slug '
 				. ' FROM #__redevent_categories AS c '
 				. ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = c.id '
@@ -1135,7 +1135,7 @@ class RedeventTags
 
 		$form = $rfcore->getForm($this->getEvent()->getData()->redform_id);
 
-		$action = RedeventHelperRoute::getRegistrationRoute($this->getEvent()->getData()->xslug, 'register');
+		$action = RedeventHelperRoute::getRegistrationRoute($this->getEvent()->getData()->xslug, 'registration.register');
 
 		// multiple signup ?
 		$single = JRequest::getInt('single', 0);
@@ -1543,7 +1543,7 @@ class RedeventTags
 
 	function _getTag_event_thumb()
 	{
-		$eventimage = redEVENTImage::modalimage($this->getEvent()->getData()->datimage, $this->getEvent()->getData()->title);
+		$eventimage = RedeventImage::modalimage($this->getEvent()->getData()->datimage, $this->getEvent()->getData()->title);
 		return $eventimage;
 	}
 
@@ -1552,7 +1552,7 @@ class RedeventTags
 		$cats_images = array();
 		foreach ($this->getEvent()->getData()->categories as $c)
 		{
-			$cats_images[] = redEVENTImage::getCategoryImage($c, false);
+			$cats_images[] = RedeventImage::getCategoryImage($c, false);
 		}
 		$categoryimage = '<span class="details-categories-images"><span class="details-categories-image">' . implode('</span><span class="details-categories-image">', $cats_images) . '</span></span>';
 
@@ -1569,7 +1569,7 @@ class RedeventTags
 		$cats_images = array();
 		foreach ($this->getEvent()->getData()->categories as $c)
 		{
-			$cats_images[] = redEVENTImage::getCategoryImage($c);
+			$cats_images[] = RedeventImage::getCategoryImage($c);
 		}
 		$categoryimage = '<span class="details-categories-images"><span class="details-categories-image">' . implode('</span><span class="details-categories-image">', $cats_images) . '</span></span>';
 
@@ -1801,7 +1801,7 @@ class RedeventTags
 
 	function _getTag_venue_thumb()
 	{
-		$venueimage = redEVENTImage::modalimage($this->getEvent()->getData()->locimage,
+		$venueimage = RedeventImage::modalimage($this->getEvent()->getData()->locimage,
 			$this->getEvent()->getData()->venue);
 		return $venueimage;
 	}

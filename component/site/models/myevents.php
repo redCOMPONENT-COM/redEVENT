@@ -118,7 +118,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 	 * @access public
 	 * @return array
 	 */
-	public function & getEvents()
+	public function getEvents()
 	{
 		$pop = JRequest::getBool('pop');
 
@@ -323,7 +323,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		if (empty($this->_pagination_events))
 		{
 			jimport('joomla.html.pagination');
-			$this->_pagination_events = new REAjaxPagination($this->getTotalEvents(), $this->getState('limitstart_events'), $this->getState('limit'));
+			$this->_pagination_events = new RedeventAjaxPagination($this->getTotalEvents(), $this->getState('limitstart_events'), $this->getState('limit'));
 		}
 
 		return $this->_pagination_events;
@@ -341,7 +341,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		if (empty($this->_pagination_venues))
 		{
 			jimport('joomla.html.pagination');
-			$this->_pagination_venues = new REAjaxPagination($this->getTotalVenues(), $this->getState('limitstart_venues'), $this->getState('limit'));
+			$this->_pagination_venues = new RedeventAjaxPagination($this->getTotalVenues(), $this->getState('limitstart_venues'), $this->getState('limit'));
 		}
 
 		return $this->_pagination_venues;
@@ -359,7 +359,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		if (empty($this->_pagination_attending))
 		{
 			jimport('joomla.html.pagination');
-			$this->_pagination_attending = new REAjaxPagination($this->getTotalAttending(), $this->getState('limitstart_attending'), $this->getState('limit'));
+			$this->_pagination_attending = new RedeventAjaxPagination($this->getTotalAttending(), $this->getState('limitstart_attending'), $this->getState('limit'));
 		}
 
 		return $this->_pagination_attending;
@@ -377,7 +377,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		if (empty($this->_pagination_attended))
 		{
 			jimport('joomla.html.pagination');
-			$this->_pagination_attended = new REAjaxPagination($this->getTotalAttended(), $this->getState('limitstart_attending'), $this->getState('limit'));
+			$this->_pagination_attended = new RedeventAjaxPagination($this->getTotalAttended(), $this->getState('limitstart_attending'), $this->getState('limit'));
 		}
 
 		return $this->_pagination_attended;
@@ -446,7 +446,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		$query->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published');
 		$query->select('a.id, a.title, a.created, a.datdescription, a.registra, a.unregistra, a.course_code');
 		$query->select('l.venue, l.city, l.state, l.url, l.id as locid, l.street, l.country');
-		$query->select('c.catname, c.id AS catid');
+		$query->select('c.name AS catname, c.id AS catid');
 		$query->select('x.featured');
 		$query->select('r.id AS attendee_id');
 		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
@@ -515,26 +515,23 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 	/**
 	 * Build the where clause
 	 *
-	 * @access private
+	 * @param   JDatabaseQuery  $query  query object
+	 *
 	 * @return string
 	 */
 	protected function _buildEventListWhere($query)
 	{
-		$mainframe = JFactory::getApplication();
-
-		$user = JFactory::getUser();
-		$gid = (int) max($user->getAuthorisedViewLevels());
+		$app = JFactory::getApplication();
 
 		// Get the paramaters of the active menu item
-		$params = $mainframe->getParams();
-
-		$task = JRequest::getWord('task');
+		$params = $app->getParams();
 
 		$where = array();
 
-		$where[] = ' x.published > -1 ';
+		$where[] = 'x.published > -1';
 
 		$acl = RedeventUserAcl::getInstance();
+
 		if (!$acl->superuser())
 		{
 			$xrefs = $acl->getCanEditXrefs();
@@ -543,7 +540,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 
 			if ($xrefs && count($xrefs))
 			{
-				$where[] = ' x.id IN ('.implode(",", $xrefs).')';
+				$where[] = ' x.id IN (' . implode(",", $xrefs) . ')';
 			}
 			else
 			{
@@ -551,11 +548,13 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 			}
 		}
 
-		if ($params->get('showopendates', 1) == 0) {
+		if ($params->get('showopendates', 1) == 0)
+		{
 			$where[] = ' x.dates IS NOT NULL AND x.dates > 0 ';
 		}
 
-		if ($params->get('shownonbookable', 1) == 0) {
+		if ($params->get('shownonbookable', 1) == 0)
+		{
 			$where[] = ' a.registra > 0 ';
 		}
 
@@ -565,40 +564,40 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 		*/
 		if ($params->get('filter_text'))
 		{
-			$filter = JRequest::getString('filter', '', 'request');
-			$filter_type = JRequest::getWord('filter_type', '', 'request');
+			$filter = $app->input->getString('filter', '', 'request');
+			$filter_type = $app->input->getWord('filter_type', '', 'request');
 
 			if ($filter)
 			{
-				// clean filter variables
+				// Clean filter variables
 				$filter = JString::strtolower($filter);
-				$filter = $this->_db->Quote('%'.$this->_db->getEscaped($filter, true).'%', false);
+				$filter = $this->_db->Quote('%' . $this->_db->escape($filter, true) . '%', false);
 				$filter_type = JString::strtolower($filter_type);
 
-				switch($filter_type)
+				switch ($filter_type)
 				{
 					case 'title':
-						$where[] = ' LOWER( a.title ) LIKE '.$filter;
+						$where[] = ' LOWER( a.title ) LIKE ' . $filter;
 						break;
 
 					case 'venue':
-						$where[] = ' LOWER( l.venue ) LIKE '.$filter;
+						$where[] = ' LOWER( l.venue ) LIKE ' . $filter;
 						break;
 
 					case 'city':
-						$where[] = ' LOWER( l.city ) LIKE '.$filter;
+						$where[] = ' LOWER( l.city ) LIKE ' . $filter;
 						break;
 
 					case 'type':
-						$where[] = ' LOWER( c.catname ) LIKE '.$filter;
+						$where[] = ' LOWER( c.name ) LIKE ' . $filter;
 						break;
 				}
 			}
 		}
 
-		if (JRequest::getInt('filter_event'))
+		if ($app->input->getInt('filter_event'))
 		{
-			$where[] = ' a.id = '.JRequest::getInt('filter_event');
+			$where[] = ' a.id = ' . $app->input->getInt('filter_event');
 		}
 
 		$query->where(implode(' AND ', $where));
@@ -695,7 +694,7 @@ class RedeventModelMyevents extends RedeventModelBaseeventlist
 						break;
 
 					case 'type':
-						$where[] = ' LOWER( c.catname ) LIKE '.$filter;
+						$where[] = ' LOWER( c.name ) LIKE '.$filter;
 						break;
 				}
 			}

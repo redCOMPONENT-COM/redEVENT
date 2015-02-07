@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5.0" method="upgrade">
+	<name>COM_REDEVENT</name>
+	<creationDate>##DATE##</creationDate>
+	<author>redWEB Aps</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>(C) 2008 - 2014 redCOMPONENT.com</copyright>
+	<license>GNU/GPL</license>
+	<version>##VERSION##</version>
+    <redcore version="1.4.5" />
+	<description>COM_REDEVENT_XML_DESCRIPTION</description>
+
+	<scriptfile>install.php</scriptfile>
+
+ 	<install>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+ 		</sql>
+ 	</install>
+
+ 	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+		</sql>
+ 	</uninstall>
+
+	<update>
+		<schemas>
+			<schemapath type="mysql">sql/updates/mysql</schemapath>
+		</schemas>
+	</update>
+
+	<files folder="site">
+		<filename>controller.php</filename>
+		<filename>index.html</filename>
+		<filename>LICENSE.php</filename>
+		<filename>redevent.php</filename>
+		<filename>router.php</filename>
+		<folder>assets</folder>
+		<folder>classes</folder>
+		<folder>controllers</folder>
+		<folder>language</folder>
+		<folder>layouts</folder>
+        <folder>meta_ext</folder>
+		<folder>models</folder>
+		<folder>sef_ext</folder>
+		<folder>views</folder>
+	</files>
+
+	<!-- media files -->
+	<media folder="media">
+		<folder>com_redevent</folder>
+	</media>
+
+	<administration>
+
+		<menu img="../media/com_redevent/images/redevent.png">redEVENT</menu>
+		<submenu>
+			<menu img="../media/com_redevent/images/icon-16-events.png" view="events">COM_REDEVENT_MENU_EVENTS</menu>
+			<menu img="../media/com_redevent/images/icon-16-sessions.png" view="sessions">COM_REDEVENT_MENU_SESSIONS</menu>
+            <menu img="../media/com_redevent/images/icon-16-venues.png" view="venues">COM_REDEVENT_MENU_VENUES</menu>
+			<menu img="../media/com_redevent/images/attending-16.png" view="registrations">COM_REDEVENT_MENU_REGISTRATIONS</menu>
+			<menu img="../media/com_redevent/images/icon-16-categories.png" view="categories">COM_REDEVENT_MENU_CATEGORIES</menu>
+			<menu img="../media/com_redevent/images/icon-16-venuescategories.png" view="venuescategories">COM_REDEVENT_MENU_VENUES_CATEGORIES</menu>
+			<menu img="../media/com_redevent/images/icon-16-library.png" view="textsnippets">COM_REDEVENT_MENU_TAGS_LIBRARY</menu>
+			<menu img="../media/com_redevent/images/icon-16-customfields.png" view="customfields">COM_REDEVENT_MENU_CUSTOMFIELDS</menu>
+		</submenu>
+
+		<files folder="admin">
+			<filename>access.xml</filename>
+			<filename>config.xml</filename>
+			<filename>controller.php</filename>
+			<filename>index.html</filename>
+			<filename>redevent.php</filename>
+			<folder>assets</folder>
+			<folder>controllers</folder>
+			<folder>falang</folder>
+			<folder>language</folder>
+			<folder>layouts</folder>
+			<folder>models</folder>
+			<folder>sql</folder>
+			<folder>tables</folder>
+			<folder>views</folder>
+		</files>
+
+	</administration>
+
+	<!-- Plugins here -->
+	<plugins>
+		<plugin name="redevent" group="redform_integration" />
+	</plugins>
+
+	<!-- Libraries to install -->
+	<libraries>
+		<library name="redevent"/>
+	</libraries>
+</extension>

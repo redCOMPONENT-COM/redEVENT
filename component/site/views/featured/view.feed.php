@@ -68,7 +68,7 @@ class RedeventViewFeatured extends JViewLegacy
       {
         $category = array();
         foreach ($row->categories AS $cat) {
-          $category[] = $cat->catname;
+          $category[] = $cat->name;
         }
         $category = $this->escape( implode(', ', $category) );
         $category = html_entity_decode( $category );
@@ -161,7 +161,7 @@ class RedeventViewFeatured extends JViewLegacy
 			{
 				$category = array();
 				foreach ($row->categories AS $cat) {
-					$category[] = $cat->catname;
+					$category[] = $cat->name;
 				}
 				$category = $this->escape( implode(', ', $category) );
 				$category = html_entity_decode( $category );

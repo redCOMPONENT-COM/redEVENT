@@ -60,7 +60,7 @@ class RedeventCustomfieldTextarea extends RedeventAbstractCustomfield
 		}
 		$value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-		return '<textarea name="' . $this->fieldname . '" id="' . $this->fieldid . '" ' . $this->attributesToString($attributes) . '>' . $value . '</textarea>';
+		return '<textarea name="' . 'jform[' . $this->fieldname . ']' . '" id="' . $this->fieldid . '" ' . $this->attributesToString($attributes) . '>' . $value . '</textarea>';
 	}
 
 	public function renderFilter($attributes = array(), $selected = null)

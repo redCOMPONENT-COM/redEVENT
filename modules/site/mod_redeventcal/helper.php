@@ -1,81 +1,88 @@
 <?php
 /**
- * Helper class for mod_redeventcal module
+ * @package     Redevent.Frontend
+ * @subpackage  Modules
  *
- * @package    Eventlist CalModuleQ for Joomla 1.5
- * @subpackage Modules
- * @link http://extensions.qivva.com
- * @license        http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @copyright (C) 2008 Toni Smillie www.qivva.com
- *
- * Original Eventlist calendar from Christoph Lukes www.schlu.net
- * PHP Calendar (version 2.3), written by Keith Devens
- * http://keithdevens.com/software/php_calendar
- * see example at http://keithdevens.com/weblog
- * License: http://keithdevens.com/software/license
+ * @copyright   Copyright (C) 2008 - 2014 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later, see LICENSE.
  */
 
+// No direct access
+defined('_JEXEC') or die('Restricted access');
+
+/**
+ * Class module helper
+ *
+ * @package     Redevent.Frontend
+ * @subpackage  Modules
+ * @since       2.0
+ */
 class modredeventcalhelper
 {
-
+	/**
+	 * Get items
+	 *
+	 * @param   string     $greq_year   requested year
+	 * @param   string     $greq_month  requested month
+	 * @param   JRegistry  &$params     plugin params
+	 *
+	 * @return array
+	 */
 	public static function getdays ($greq_year, $greq_month, &$params)
 	{
-		$db			= JFactory::getDBO();
-		$user		= JFactory::getUser();
-
-		$catid 				= trim( $params->get('catid') );
-		$venid 				= trim( $params->get('venid') );
+		$user = JFactory::getUser();
 
 		$tz = new DatetimeZone(JFactory::getApplication()->getCfg('offset'));
 
-		$monthstart = date('Y-m-d', mktime(0,0,0, $greq_month, 1, $greq_year));
-		$monthend = date('Y-m-d', mktime(0,0,0, $greq_month+1, 1, $greq_year));
 		$monthstart = JFactory::getDate("$greq_month/1/$greq_year", $tz)->format('Y-m-d', true);
-		$nextm = $greq_month + 1;
 		$monthend   = JFactory::getDate("$greq_month/1/$greq_year next month", $tz)->format('Y-m-d', true);
 
-		//Get eventdates
-		if ($catid)
-		{
-			$ids = explode( ',', $catid );
-			JArrayHelper::toInteger( $ids );
-			$categories = ' AND (c.id=' . implode( ' OR c.id=', $ids ) . ')';
-		}
-		if ($venid)
-		{
-			$ids = explode( ',', $venid );
-			JArrayHelper::toInteger( $ids );
-			$venues = ' AND (l.id=' . implode( ' OR l.id=', $ids ) . ')';
-		}
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
 
-		$query = 'SELECT x.dates, x.times, x.enddates,a.title, DAYOFMONTH(x.dates) AS start_day, YEAR(x.dates) AS start_year, MONTH(x.dates) AS start_month'
-		. ' ,l.venue '
-		. ' ,CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug '
-		. ' ,CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug '
-		. ' FROM #__redevent_event_venue_xref AS x'
-		. ' INNER JOIN #__redevent_events AS a ON a.id = x.eventid'
-		. ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = a.id'
-		. ' INNER JOIN #__redevent_categories AS c ON c.id = xcat.category_id'
-		. ' INNER JOIN #__redevent_venues AS l ON l.id = x.venueid'
-		. ' WHERE x.published = 1'
-		. '   AND c.access IN (' . implode(',', $user->getAuthorisedViewLevels()) . ')'
-		. '   AND ( x.dates BETWEEN ' .$db->Quote($monthstart). ' AND ' .$db->Quote($monthend)
-		. '         OR (x.enddates IS NOT NULL and x.enddates > "0000-00-00" AND x.enddates BETWEEN ' .$db->Quote($monthstart). ' AND ' .$db->Quote($monthend).') ) '
-		.($catid ? $categories : '')
-		.($venid ? $venues : '');
+		$query->select('x.dates, x.times, x.enddates,a.title, DAYOFMONTH(x.dates) AS start_day, YEAR(x.dates) AS start_year, MONTH(x.dates) AS start_month')
+			->select('l.venue')
+			->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug')
+			->select('CASE WHEN CHAR_LENGTH(x.alias) THEN CONCAT_WS(\':\', x.id, x.alias) ELSE x.id END as xslug')
+			->from('#__redevent_event_venue_xref AS x')
+			->join('INNER', '#__redevent_events AS a ON a.id = x.eventid')
+			->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.event_id = a.id')
+			->join('INNER', '#__redevent_categories AS c ON c.id = xcat.category_id')
+			->join('INNER', '#__redevent_venues AS l ON l.id = x.venueid')
+			->where('x.published = 1')
+			->where('c.access IN (' . implode(',', $user->getAuthorisedViewLevels()) . ')')
+			->where('( x.dates BETWEEN ' .$db->Quote($monthstart). ' AND ' .$db->Quote($monthend)
+				. '         OR (x.enddates IS NOT NULL and x.enddates > "0000-00-00" AND x.enddates BETWEEN ' .$db->Quote($monthstart). ' AND ' .$db->Quote($monthend).') ) ')
+			->group('x.id');
 
 		if (JFactory::getApplication()->getLanguageFilter())
 		{
-			$query .= 'AND (a.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR a.language IS NULL)';
+			$query->where('(a.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR a.language IS NULL)');
 		}
-		$query .= ' GROUP BY x.id ';
 
-		$db->setQuery( $query );
+		$catid = $params->get('catid');
+
+		if (is_array($catid) && count($catid))
+		{
+			JArrayHelper::toInteger($catid);
+			$query->where('c.id IN (' . implode(',', $catid) . ')');
+		}
+
+		$venid = $params->get('venid');
+
+		if (is_array($venid) && count($venid))
+		{
+			JArrayHelper::toInteger($venid);
+			$query->where('l.id IN (' . implode(',', $venid) . ')');
+		}
+
+		$db->setQuery($query);
 		$events = $db->loadObjectList();
-		// 		echo '<pre>';print_r($events); echo '</pre>';exit;
-		// group events per days
+
+		// Group events per days
 		$days_events = array();
-		foreach ( $events as $event )
+
+		foreach ($events as $event)
 		{
 			// Cope with no end date set i.e. set it to same as start date
 			if  (($event->enddates == '0000-00-00') or (is_null($event->enddates)))
@@ -88,6 +95,7 @@ class modredeventcalhelper
 			{
 				list($eyear, $emonth, $eday) = explode('-', $event->enddates);
 			}
+
 			// The two cases for roll over the year end with an event that goes across the year boundary.
 			if ($greq_year < $eyear)
 			{
@@ -99,15 +107,15 @@ class modredeventcalhelper
 				$event->start_month = $event->start_month - 12;
 			}
 
-			if (  ($greq_year >= $event->start_year) && ($greq_year <= $eyear)
-			&& ($greq_month >= $event->start_month) && ($greq_month <= $emonth) )
+			if (($greq_year >= $event->start_year) && ($greq_year <= $eyear)
+				&& ($greq_month >= $event->start_month) && ($greq_month <= $emonth))
 			{
 				// Set end day for current month
 				if ($emonth > $greq_month)
 				{
 					$emonth = $greq_month;
 
-					$eday   = JFactory::getDate($greq_month."/1/$greq_year", $tz)->format('t', true);
+					$eday = JFactory::getDate($greq_month . "/1/$greq_year", $tz)->format('t', true);
 				}
 
 				// Set start day for current month
@@ -119,20 +127,18 @@ class modredeventcalhelper
 
 				for ($day = $event->start_day; $day <= $eday; $day++)
 				{
-					if (!isset($days_events[$day])) {
+					if (!isset($days_events[$day]))
+					{
 						$days_events[$day] = array($event);
 					}
-					else {
+					else
+					{
 						$days_events[$day][] = $event;
 					}
 				}
 			}
 		}
+
 		return $days_events;
-	} //End of function getdays
-
-	public function buidTip()
-	{
-
 	}
-} //End class
+}

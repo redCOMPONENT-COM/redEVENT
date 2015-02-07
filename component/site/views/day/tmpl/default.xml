@@ -2,7 +2,7 @@
 <metadata>
 	<layout title="COM_REDEVENT_Day_Layout">
 		<message>
-			<![CDATA[COM_REDEVENTDAY_LAYOUT_DESC]]>
+			<![CDATA[COM_REDEVENT_DAY_LAYOUT_DESC]]>
 		</message>
 	</layout>
 	<fields name="params" addfieldpath="/administrator/components/com_redevent/models/fields">

@@ -25,5 +25,5 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 ob_start();
-include(JPATH_COMPONENT_SITE.DS.'views'.DS.'simplelist'.DS.'tmpl'.DS.'print_table.php');
+include(JPATH_COMPONENT_SITE .'/views/simplelist/tmpl/print_table.php');
 ob_end_flush();

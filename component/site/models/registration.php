@@ -24,8 +24,6 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
-
 /**
  * redEvent Component registration Model
  *
@@ -33,7 +31,7 @@ jimport('joomla.application.component.model');
  * @subpackage redevent
  * @since		2.0
 */
-class RedEventModelRegistration extends JModel
+class RedEventModelRegistration extends RModel
 {
 	/**
 	 * event session id
@@ -119,7 +117,7 @@ class RedEventModelRegistration extends JModel
 		}
 
 		$obj = $this->getTable('Redevent_register', '');
-		$obj->loadBySid($sid);
+		$obj->load(array('sid' => $sid));
 		$obj->sid        = $sid;
 		$obj->xref       = $this->_xref;
 		$obj->sessionpricegroup_id = $sessionpricegroup_id;
@@ -179,33 +177,41 @@ class RedEventModelRegistration extends JModel
 	/**
 	 * to update a registration
 	 *
-	 * @param int $sid associated redform submitter id
-	 * @param string $submit_key associated redform submit key
-	 * @param int $pricegroup_id
+	 * @param   int     $sid                   associated redform submitter id
+	 * @param   string  $submit_key            associated redform submit key
+	 * @param   int     $sessionpricegroup_id  session pricegroup id
+	 *
 	 * @return boolean|object attendee row or false if failed
 	 */
-	function update($sid, $submit_key, $pricegroup_id)
+	public function update($sid, $submit_key, $sessionpricegroup_id)
 	{
-		if (!$sid) {
+		if (!$sid)
+		{
 			$this->setError(JText::_('COM_REDEVENT_REGISTRATION_UPDATE_XREF_REQUIRED'));
+
 			return false;
 		}
 
-		$obj = $this->getTable('Redevent_register', '');
-		$obj->loadBySid($sid);
-		$obj->sid        = $sid;
-		$obj->sessionpricegroup_id = $pricegroup_id;
+		$obj = RTable::getAdminInstance('Attendee');
+		$obj->load(array('sid' => $sid));
+		$obj->sid = $sid;
+		$obj->sessionpricegroup_id = $sessionpricegroup_id;
 		$obj->submit_key = $submit_key;
 
-		if (!$obj->check()) {
+		if (!$obj->check())
+		{
 			$this->setError($obj->getError());
+
 			return false;
 		}
 
-		if (!$obj->store()) {
+		if (!$obj->store())
+		{
 			$this->setError($obj->getError());
+
 			return false;
 		}
+
 		return $obj;
 	}
 
@@ -246,7 +252,7 @@ class RedEventModelRegistration extends JModel
 			. ' v.venue,'
 			. ' u.name AS creator_name, u.email AS creator_email, '
 			. ' a.confirmation_message, a.review_message, '
-			. " IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.catname, c.published, c.access,"
+			. " IF (x.course_credit = 0, '', x.course_credit) AS course_credit, a.course_code, a.submission_types, c.name AS catname, c.published, c.access,"
 			. ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title, '
 			. ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
 			. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as categoryslug '
@@ -275,7 +281,7 @@ class RedEventModelRegistration extends JModel
 	 */
 	function _getEventCategories($row)
 	{
-		$query =  ' SELECT c.id, c.catname, c.access, '
+		$query =  ' SELECT c.id, c.name AS catname, c.access, '
 		. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
 		. ' FROM #__redevent_categories as c '
 		. ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '
@@ -329,7 +335,7 @@ class RedEventModelRegistration extends JModel
 		FROM #__redevent_register r
 		WHERE submit_key = ".$db->Quote($submit_key);
 		$db->setQuery($q);
-		$registrations = $db->loadResultArray();
+		$registrations = $db->loadColumn();
 
 		if (!$registrations || !count($registrations)) {
 			JError::raiseError(0, JText::sprintf('COM_REDEVENT_notification_registration_not_found_for_key_s', $submit_key));
@@ -364,7 +370,7 @@ class RedEventModelRegistration extends JModel
 			FROM #__redevent_register r
 			WHERE submit_key = ".$db->Quote($submit_key);
 			$db->setQuery($q);
-			$registrations = $db->loadResultArray();
+			$registrations = $db->loadColumn();
 
 			if (!$registrations || !count($registrations)) {
 				JError::raiseError(0, JText::sprintf('COM_REDEVENT_notification_registration_not_found_for_key_s', $submit_key));
@@ -508,8 +514,10 @@ class RedEventModelRegistration extends JModel
 		// or be allowed to manage attendees
 		$manager = $acl->canManageAttendees($submitterinfo->xref);
 
-		if (!RedeventHelper::canUnregister($submitterinfo->xref) && !$manager) {
+		if (!RedeventHelper::canUnregister($submitterinfo->xref) && !$manager)
+		{
 			$this->setError(JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED'));
+
 			return false;
 		}
 

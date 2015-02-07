@@ -35,7 +35,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedeventViewDay extends JView
+class RedeventViewDay extends RViewSite
 {
 	/**
 	 * Creates the Event Feed
@@ -68,7 +68,7 @@ class RedeventViewDay extends JView
       {
         $category = array();
         foreach ($row->categories AS $cat) {
-          $category[] = $cat->catname;
+          $category[] = $cat->name;
         }
         $category = $this->escape( implode(', ', $category) );
         $category = html_entity_decode( $category );
@@ -161,7 +161,7 @@ class RedeventViewDay extends JView
 			{
 				$category = array();
 				foreach ($row->categories AS $cat) {
-					$category[] = $cat->catname;
+					$category[] = $cat->name;
 				}
 				$category = $this->escape( implode(', ', $category) );
 				$category = html_entity_decode( $category );

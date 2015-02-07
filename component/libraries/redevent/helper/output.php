@@ -373,7 +373,7 @@ class RedeventHelperOutput {
 	{
 		$output = '';
 		$document 	= & JFactory::getDocument();
-		JHTML::_('behavior.mootools');
+		JHTML::_('behavior.framework');
 
 		$document->addScript('https://maps.google.com/maps/api/js?sensor=false');
 		$document->addScript(JURI::root().'/components/com_redevent/assets/js/venuemap.js');
@@ -398,43 +398,30 @@ class RedeventHelperOutput {
 		return $output;
 	}
 
-  /**
-  * Creates the map button
-  *
-  * @param obj $data
-  * @param obj $settings
-  *
-  * @since 0.9
-  */
-  function pinpointicon($data, $attributes = array())
-  {
-		JHTML::_('behavior.framework');
-		$params = JComponentHelper::getParams('com_redevent');
-		$document 	= & JFactory::getDocument();
-		$document->addScript('https://maps.google.com/maps/api/js?sensor=false');
-		FOFTemplateUtils::addJS('media://com_redevent/js/pinpoint.js');
-		JText::script("COM_REDEVENT_APPLY");
-		JText::script("COM_REDEVENT_CLOSE");
-		$document->addScriptDeclaration('mymap.defaultaddress = "'.$params->get('pinpoint_defaultaddress', 'usa').'";');
-		FOFTemplateUtils::addCSS('media://com_redevent/js/css/gmapsoverlay.css');
+	/**
+	 * Creates the map button
+	 *
+	 * @return string html
+	 */
+	public static function pinpointicon()
+	{
+		$params = RedeventHelper::config();
 
-		//Link to map
-		$mapimage = JHTML::image(JURI::root().'components/com_redevent/assets/images/marker.png', JText::_( 'COM_REDEVENT_PINPOINTLOCATION_ALT' ), array('class' => 'pinpoint'));
-
-		$data->country = JString::strtoupper($data->country);
-
-		if (isset($attributes['class'])) {
-			$attributes['class'] .= ' venuemap';
-		}
-		else {
-			$attributes['class'] = 'venuemap';
+		if (!$key = $params->get('googlemapsApiKey'))
+		{
+			return;
 		}
 
-		foreach ($attributes as $k => $v) {
-			$attributes[$k] = $k.'="'.$v.'"';
-		}
-		$attributes = implode(' ', $attributes);
-		$output = '<span title="'.JText::_('COM_REDEVENT_MAP' ).'" '.$attributes.'>'.$mapimage.'</span>';
+		RHelperAsset::load('gmapsoverlay.css');
+
+		$document = JFactory::getDocument();
+		$document->addScript('https://maps.google.com/maps/api/js?key=' . $params->get('googlemapsApiKey'));
+
+		$document->addScriptDeclaration('var mymapDefaultaddress = "' . $params->get('pinpoint_defaultaddress', 'usa') . '";');
+
+		RHelperAsset::load('pinpoint.js');
+
+		$output = RLayoutHelper::render('pinpoint', null, null, array('client' => 0));
 
 		return $output;
 	}
@@ -534,44 +521,50 @@ class RedeventHelperOutput {
 	/**
 	 * Creates the country flag
 	 *
-	 * @param string $country
+	 * @param   string  $country  country code
 	 *
-	 * @since 0.9
+	 * @return string
 	 */
-	function getFlag($country)
+	public static function getFlag($country)
 	{
-        $country = JString::strtolower($country);
+		$country = JString::strtolower($country);
 
-        jimport('joomla.filesystem.file');
+		jimport('joomla.filesystem.file');
 
-        if (JFile::exists(JPATH_COMPONENT_SITE.DS.'assets'.DS.'images'.DS.'flags'.DS.$country.'.gif')) {
-        	$countryimg = '<img src="'.JURI::base(true).'/components/com_redevent/assets/images/flags/'.$country.'.gif" alt="'.JText::_('COM_REDEVENT_COUNTRY' ).': '.$country.'" width="16" height="11" />';
+		if (JFile::exists(JPATH_SITE . '/media/com_redevent/images/flags/' . $country . '.gif'))
+		{
+			$countryimg = JHtml::image(
+				JURI::base(true) . '/media/com_redevent/images/flags/' . $country . '.gif',
+				JText::_('COM_REDEVENT_COUNTRY' ).': '.$country,
+				array('width' => 16, 'height' => 11)
+			);
 
-        	return $countryimg;
-        }
+			return $countryimg;
+		}
 
-        return null;
+		return null;
 	}
 
-  /**
-   * Creates the country flag
-   *
-   * @param string $country
-   *
-   * @since 0.9
-   */
-  function getFlagUrl($country)
-  {
-        $country = JString::strtolower($country);
+	/**
+	 *
+	 * Get the country flag
+	 *
+	 * @param   string $country country code
+	 *
+	 * @return string
+	 */
+	public static function getFlagUrl($country)
+	{
+		$country = JString::strtolower($country);
+		jimport('joomla.filesystem.file');
 
-        jimport('joomla.filesystem.file');
+		if (JFile::exists(JPATH_SITE . '/media/com_redevent/images/flags/' . $country . '.gif'))
+		{
+			return '/media/com_redevent/images/flags/' . $country . '.gif';
+		}
 
-        if (JFile::exists(JPATH_COMPONENT_SITE.DS.'assets'.DS.'images'.DS.'flags'.DS.$country.'.gif')) {
-          return JURI::base(true).'/components/com_redevent/assets/images/flags/'.$country.'.gif';
-        }
-
-        return null;
-  }
+		return null;
+	}
 
 	/**
 	 * Formats date
@@ -630,13 +623,17 @@ class RedeventHelperOutput {
 	 * @param object $event
 	 * @return string or false for open date
 	 */
-	function formatEventDateTime($event, $show_end = true)
+	public static function formatEventDateTime($event, $show_end = true)
 	{
-		if (!RedeventHelper::isValidDate($event->dates)) { // open dates
+		if (!RedeventHelper::isValidDate($event->dates))
+		{
+			// Open dates
 			$date = '<span class="event-date open-date">'.JText::_('COM_REDEVENT_OPEN_DATE').'</span>';
+
 			return $date;
 		}
-		$settings = & RedeventHelper::config();
+
+		$settings = RedeventHelper::config();
 		$showend = $settings->get('lists_showend', 1);
 
 		$date_start = self::formatdate($event->dates, $event->times);

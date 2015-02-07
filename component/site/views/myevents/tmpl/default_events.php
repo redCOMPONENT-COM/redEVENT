@@ -24,7 +24,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
-<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="my-managed-events">
+<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="my-managed-events" class="redevent-ajaxnav">
 
 <?php if ($this->params->get('filter_text',1) || $this->params->get('display_limit_select') || $this->params->get('showeventfilter')) : ?>
 <div id="el_filter" class="floattext">
@@ -108,7 +108,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				endif;
 				if ($this->params->get('showcat', 1)) :
 				?>
-				<th id="el_category" class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_CATEGORY'), 'c.catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th id="el_category" class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_CATEGORY'), 'c.name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php
 				endif;
 				?>
@@ -137,7 +137,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
     			<td headers="el_date" align="left">
     				<?php if ($this->acl->canEditXref($row->xref)): ?>
-   					<?php echo JHTML::link('index.php?option=com_redevent&view=editevent&layout=eventdate&id='.$row->slug.'&xref='.$row->xref,
+   					<?php echo JHTML::link('index.php?option=com_redevent&task=editsession.edit&e_id=' . $row->slug . '&s_id=' . $row->xref,
    					                       RedeventHelperOutput::formatEventDateTime($row),
    					                       array('class' => 'hasTip',
    					                             'title' => JText::_('COM_REDEVENT_EDIT_XREF' ).'::'.JText::_('COM_REDEVENT_EDIT_XREF_TIP' )));	?>
@@ -191,10 +191,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
           <?php foreach ($row->categories as $k => $cat): ?>
             <?php if ($this->params->get('catlinklist', 1) == 1) : ?>
               <a href="<?php echo JRoute::_('index.php?option=com_redevent&view=categoryevents&id='.$cat->slug); ?>">
-                <?php echo $cat->catname ? $this->escape($cat->catname) : '-' ; ?>
+                <?php echo $cat->name ? $this->escape($cat->name) : '-' ; ?>
               </a>
             <?php else: ?>
-              <?php echo $cat->catname ? $this->escape($cat->catname) : '-'; ?>
+              <?php echo $cat->name ? $this->escape($cat->name) : '-'; ?>
             <?php endif; ?>
             <?php echo ($k < count($row->categories)) ? '<br/>' : '' ; ?>
           <?php endforeach; ?>
@@ -254,7 +254,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <input type="hidden" name="limitstart" value="<?php echo $this->lists['limitstart']; ?>" class="redajax_limitstart" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" class="redajax_order"/>
-<input type="hidden" name="filter_order_Dir" value="" class="redajax_order_dir"/>
-<input type="hidden" name="task" value="managedevents" />
+<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" class="redajax_order_dir"/>
+<input type="hidden" name="task" value="myevents.managedevents" />
 
 </form>

@@ -54,7 +54,7 @@ class RedeventCustomfieldRadio extends RedeventAbstractCustomfield
 		{
 			$selected = trim($this->default_value);
 		}
-		return JHTML::_('select.radiolist', $option_list, $this->fieldname, $this->attributesToString($attributes), 'value', 'text', $selected);
+		return JHTML::_('select.radiolist', $option_list, 'jform[' . $this->fieldname . ']', $this->attributesToString($attributes), 'value', 'text', $selected);
 	}
 
 	public function renderFilter($attributes = array(), $selected = null)

@@ -25,7 +25,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 
-<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="my-managed-venues">
+<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="my-managed-venues" class="redevent-ajaxnav">
 <table class="eventtable" summary="venues list">
 	<thead>
 		<tr>

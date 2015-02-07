@@ -1,108 +1,123 @@
 <?php
 /**
- * @version 1.0 $Id: view.html.php 30 2009-05-08 10:22:21Z roland $
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.view');
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * View class for the redevent venues categories screen
+ * View class for Venues categories screen
  *
- * @package Joomla
- * @subpackage redEVENT
- * @since 0.9
+ * @package  Redevent.admin
+ * @since    0.9
  */
-class RedEventViewVenuesCategories extends JView {
-
-	function display($tpl = null)
+class RedEventViewVenuescategories extends RedeventViewAdmin
+{
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a Error object.
+	 */
+	public function display($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$user = JFactory::getUser();
 
-		//initialise variables
-		$user 		= & JFactory::getUser();
-		$db  		= & JFactory::getDBO();
-		$document	= & JFactory::getDocument();
-		
-		JHTML::_('behavior.tooltip');
+		$this->items = $this->get('Items');
+		$this->state = $this->get('State');
+		$this->pagination = $this->get('Pagination');
+		$this->filterForm = $this->get('Form');
+		$this->activeFilters = $this->get('ActiveFilters');
 
-		//get vars
-		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.categories.filter_order', 		'filter_order', 	'c.lft', 'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.categories.filter_order_Dir',	'filter_order_Dir',	'', 'word' );
-		$filter_state 		= $mainframe->getUserStateFromRequest( $option.'.categories.filter_state', 		'filter_state', 	'*', 'word' );
-		$search 			= $mainframe->getUserStateFromRequest( $option.'.categories.search', 			'search', 			'', 'string' );
-		$search 			= $db->getEscaped( trim(JString::strtolower( $search ) ) );
+		// Fields ordering
+		$this->ordering = array();
 
-		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_VENUESCATEGORIES'));
-		//add css and submenu to document
-		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
-
-		//Create Submenu
-		ELAdmin::setMenu();
-
-		//create the toolbar
-		JToolBarHelper::title( JText::_('COM_REDEVENT_VENUES_CATEGORIES' ), 'venuescategories' );
-		JToolBarHelper::publishList();
-		JToolBarHelper::spacer();
-		JToolBarHelper::unpublishList();
-		JToolBarHelper::spacer();
-		JToolBarHelper::addNew();
-		JToolBarHelper::spacer();
-		JToolBarHelper::editList();
-		JToolBarHelper::spacer();
-		JToolBarHelper::deleteList();
-		JToolBarHelper::spacer();
-	
-		if ($user->authorise('core.admin', 'com_redevent')) {
-			JToolBarHelper::preferences('com_redevent', '600', '800');
+		if ($this->items)
+		{
+			foreach ($this->items as &$item)
+			{
+				$this->ordering[0][] = $item->id;
+			}
 		}
 
-		//Get data from the model
-		$rows      	= $this->get( 'Data');
-		//$total      = & $this->get( 'Total');
-		$pageNav 	= $this->get( 'Pagination' );
-		$state 	    = $this->get( 'State' );
+		// Edit permission
+		$this->canEdit = false;
 
-		//publish unpublished filter
-		$lists['state']	= JHTML::_('grid.state', $filter_state );
-		// search filter
-		$lists['search']= $search;
+		if ($user->authorise('core.edit', 'com_redevent'))
+		{
+			$this->canEdit = true;
+		}
 
-		// table ordering
-		$lists['order_Dir'] = $filter_order_Dir;
-		$lists['order'] = $filter_order;
+		// Edit state permission
+		$this->canEditState = false;
 
-		$ordering = ($lists['order'] == 'c.ordering');
-
-		//assign data to template
-		$this->assignRef('lists'      	, $lists);
-		$this->assignRef('rows'      	, $rows);
-		$this->assignRef('pageNav' 		, $pageNav);
-		$this->assignRef('ordering'		, $ordering);
-		$this->assignRef('user'			, $user);
-		$this->assignRef('filter_order'     , $filter_order);
-		$this->assignRef('state'        , $state);
+		if ($user->authorise('core.edit.state', 'com_redevent'))
+		{
+			$this->canEditState = true;
+		}
 
 		parent::display($tpl);
+	}
+
+	/**
+	 * Get the page title
+	 *
+	 * @return  string  The title to display
+	 *
+	 * @since   0.9.1
+	 */
+	public function getTitle()
+	{
+		return JText::_('COM_REDEVENT_PAGETITLE_VENUESCATEGORIES');
+	}
+
+	/**
+	 * Get the tool-bar to render.
+	 *
+	 * @return  RToolbar
+	 */
+	public function getToolbar()
+	{
+		$user = JFactory::getUser();
+
+		$firstGroup = new RToolbarButtonGroup;
+		$secondGroup = new RToolbarButtonGroup;
+		$thirdGroup = new RToolbarButtonGroup;
+		$fourthGroup = new RToolbarButtonGroup;
+
+		if ($user->authorise('core.create', 'com_redevent'))
+		{
+			$new = RToolbarBuilder::createNewButton('venuescategory.add');
+			$firstGroup->addButton($new);
+		}
+
+		if ($user->authorise('core.edit', 'com_redevent'))
+		{
+			$edit = RToolbarBuilder::createEditButton('venuescategory.edit');
+			$secondGroup->addButton($edit);
+		}
+
+		if ($user->authorise('core.edit.state', 'com_redevent'))
+		{
+			$publish = RToolbarBuilder::createPublishButton('venuescategories.publish');
+			$thirdGroup->addButton($publish);
+
+			$unPublish = RToolbarBuilder::createUnpublishButton('venuescategories.unpublish');
+			$thirdGroup->addButton($unPublish);
+		}
+
+		if ($user->authorise('core.delete', 'com_redevent'))
+		{
+			$delete = RToolbarBuilder::createDeleteButton('venuescategories.delete');
+			$fourthGroup->addButton($delete);
+		}
+
+		$toolbar = new RToolbar;
+		$toolbar->addGroup($firstGroup)->addGroup($secondGroup)->addGroup($thirdGroup)->addGroup($fourthGroup);
+
+		return $toolbar;
 	}
 }

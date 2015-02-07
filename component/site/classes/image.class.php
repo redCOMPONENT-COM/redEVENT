@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package Joomla
  * @subpackage redEVENT
  */
-class redEVENTImage
+class RedeventImage
 {
 	/**
 	* Creates a Thumbnail of an image
@@ -325,7 +325,7 @@ class redEVENTImage
 				RedeventHelperLog::simpleLog(sprintf('Can\'t create path for thumbnail: %s',dirname($thumb_path)));
 				return false;
 			}
-			if (redEVENTImage::thumb(JPATH_SITE.DS.$path, $thumb_path, $width, $height)) {
+			if (RedeventImage::thumb(JPATH_SITE.DS.$path, $thumb_path, $width, $height)) {
 				return $thumb_uri;
 			}
 		}
@@ -429,14 +429,14 @@ class redEVENTImage
 	 */
 	public static function getCategoryImage($category, $modal = true, $attribs = null)
 	{
-		$image_attribs = array('title' => $category->catname);
+		$image_attribs = array('title' => $category->name);
 
 		if ($attribs && is_array($attribs)) {
 			$image_attribs = array_merge( $image_attribs, $attribs);
 		}
 		if ($category->image) {
-		  return self::modalimage($category->image, $category->catname, null, $image_attribs);
+		  return self::modalimage($category->image, $category->name, null, $image_attribs);
 		}
-		else return $category->catname;
+		else return $category->name;
 	}
 }

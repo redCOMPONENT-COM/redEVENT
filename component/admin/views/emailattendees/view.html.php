@@ -1,72 +1,64 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.view');
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * View class for the email attendess screen
+ * View class for email attendees form
  *
- * @package Joomla
- * @subpackage redEVENT
- * @since 2.0
+ * @package  Redevent.admin
+ * @since    2.5
  */
-class RedEventViewEmailattendees extends JView {
-
-	function display($tpl = null)
+class RedeventViewEmailattendees extends RedeventViewAdmin
+{
+	public function display($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
-		$document = JFactory::getDocument();
-		
-		$document->setTitle(JText::_('COM_REDEVENT_EMAIL_ATTENDEES_TITLE'));
-		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
-		JHTML::_('behavior.tooltip');
-		
-		$editor 	= & JFactory::getEditor();
-		$settings = JComponentHelper::getParams('com_redevent');
-		
-		$cids = JRequest::getVar('cid', array(), 'post');
-		JArrayHelper::toInteger($cids);
-		
-		//add toolbar
-		JToolBarHelper::title( JText::_( 'COM_REDEVENT_EMAIL_ATTENDEES_TITLE' ), 'registrations' );
-		JToolBarHelper::custom('sendemail', 'send.png', 'send.png', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_SEND', false);
-		JToolBarHelper::cancel('cancelemail');
-		
-		$model = JModel::getInstance('attendees', 'redeventmodel');
-		
-		$emails = $model->getEmails($cids);
-		$event  = $model->getEvent();
-//		echo '<pre>';print_r($emails); echo '</pre>';exit;
-		
-		$this->assignRef('editor'		, $editor);
-		$this->assignRef('cids'		  , $cids);
-		$this->assignRef('emails'		, $emails);
-		$this->assignRef('event'		, $event);
-		$this->assignRef('settings'	, $settings);
-		$this->assignRef('xref'	    , JRequest::getInt('xref'));
-		
+		$this->emails = $this->get('Emails');
+		$this->session = $this->get('Session');
+		$this->state = $this->get('State');
+		$this->settings = RedeventHelper::config();
+		$this->editor = JFactory::getEditor();
+
 		parent::display($tpl);
   }
+
+	/**
+	 * Get the page title
+	 *
+	 * @return  string  The title to display
+	 *
+	 * @since   0.9.1
+	 */
+	public function getTitle()
+	{
+		return JText::sprintf('COM_REDEVENT_EMAIL_ATTENDEES_TITLE', $this->session->title);
+	}
+
+	/**
+	 * Get the tool-bar to render.
+	 *
+	 * @return  RToolbar
+	 */
+	public function getToolbar()
+	{
+		$user = JFactory::getUser();
+
+		$firstGroup		= new RToolbarButtonGroup;
+
+		$firstGroup->addButton(
+			RToolbarBuilder::createStandardButton('emailattendees.send', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_SEND', 'btn-success', 'icon-envelop', false)
+		);
+		$firstGroup->addButton(
+			RToolbarBuilder::createStandardButton('emailattendees.cancel', 'JCANCEL', 'btn-danger', 'icon-remove', false)
+		);
+
+		$toolbar = new RToolbar;
+		$toolbar->addGroup($firstGroup);
+
+		return $toolbar;
+	}
 }

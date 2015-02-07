@@ -20,7 +20,7 @@ class JElementEventListCategory extends JElement
 	{
 
         $db			=& JFactory::getDBO();
-        $query = 'SELECT id, catname as name from #__eventlist_categories where published = 1 order by ordering';
+        $query = 'SELECT id, name as name from #__eventlist_categories where published = 1 order by ordering';
 
         $db->setQuery($query);
 		$categories = $db->loadObjectList();

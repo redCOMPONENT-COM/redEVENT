@@ -35,7 +35,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 2.0
  */
-class RedeventViewSimpleList extends JView
+class RedeventViewSimpleList extends RViewSite
 {
 	/**
 	 * Creates the raw output for the simplelist view

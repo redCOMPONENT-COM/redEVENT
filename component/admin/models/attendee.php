@@ -1,60 +1,20 @@
 <?php
 /**
- * @version 1.0 $Id: group.php 298 2009-06-24 07:42:35Z julien $
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-//no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
-
 /**
- * redEvent Component attendee Model
+ * RedEvent Model Attendee
  *
- * @package Joomla
- * @subpackage redEvent
- * @since		2.0
+ * @package  Redevent.admin
+ * @since    2.0
  */
-class RedEventModelAttendee extends JModel
+class RedeventModelAttendee extends RModelAdmin
 {
-	/**
-	 * Booking id
-	 *
-	 * @var int
-	 */
-	protected $_id = null;
-
-	/**
-	 * xref
-	 * @var int
-	 */
-	protected $_xref = null;
-
-	/**
-	 * Booking data array
-	 *
-	 * @var array
-	 */
-	protected $_data = null;
-
 	/**
 	 * Caching for price groups
 	 *
@@ -62,84 +22,93 @@ class RedEventModelAttendee extends JModel
 	 */
 	protected $pricegroups = null;
 
-	/**
-	 * Constructor
-	 *
-	 * @since 0.9
-	 */
-	public function __construct()
+	private $data;
+
+	private $sessionId;
+
+	private $id;
+
+	public function __construct($config = array())
 	{
-		parent::__construct();
+		parent::__construct($config);
 
-		$cid = JRequest::getVar( 'cid', array(0), '', 'array' );
-		JArrayHelper::toInteger($cid, array(0));
-		$this->setId($cid[0]);
-
-		$xref = JRequest::getVar( 'xref', 0, '', 'int' );
-		$this->setXref($xref);
+		if ($this->id = JFactory::getApplication()->input->getInt('id', 0))
+		{
+			$this->getSessionId();
+		}
+		elseif ($sessionId = JFactory::getApplication()->input->getInt('filter[session]', 0))
+		{
+			$this->setSessionId($sessionId);
+		}
+		elseif ($sessionId = JFactory::getApplication()->input->getInt('sessionId', 0))
+		{
+			$this->setSessionId($sessionId);
+		}
 	}
 
-	/**
-	 * Method to set the identifier
-	 *
-	 * @access	public
-	 * @param	int ac identifier
-	 */
-	public function setId($id)
+	public function setSessionId($id)
 	{
-		// Set ac id and wipe data
-		$this->_id	    = $id;
-		$this->_data	= null;
+		$this->sessionId = (int) $id;
 	}
 
-	/**
-	 * Method to set the identifier
-	 *
-	 * @access	public
-	 * @param	int ac identifier
-	 */
-	public function setXref($xref)
+	public function getSessionId()
 	{
-		// Set ac id
-		$this->_xref	= intval($xref);
+		if ((!$this->sessionId) && $this->id)
+		{
+			$attendee = $this->getData();
+
+			$this->sessionId = $attendee->xref;
+		}
+
+		return $this->sessionId;
+	}
+
+	public function getSession()
+	{
+		$model = RModel::getAdminInstance('Session', array('ignore_request' => true));
+		$session = $model->getItem($this->getSessionId());
+
+		return $session;
 	}
 
 	/**
 	 * Logic for the Group edit screen
 	 *
 	 */
-	public function &getData()
+	public function getData()
 	{
-
-		if ($this->_loadData())
+		if (!$this->loadData())
 		{
-
+			$this->initData();
 		}
-		else  $this->_initData();
 
-		//$this->_loadData();
-		return $this->_data;
+		return $this->data;
 	}
 
-	function _initData()
+	private function initData()
 	{
-		$obj = & JTable::getInstance('redevent_register', '');
+		$obj = RTable::getAdminInstance('Attendee');
 
-	  // get form id and answer id
-		$query = ' SELECT a.redform_id as form_id, a.course_code, x.id as xref '
-		       . ' FROM #__redevent_event_venue_xref AS x '
-		       . ' INNER JOIN #__redevent_events AS a ON a.id =  x.eventid '
-		       . ' WHERE x.id = '.$this->_xref
-				;
+		// Get form id and answer id
+		$query = $this->_db->getQuery(true);
+
+		$query->select('a.redform_id as form_id, a.course_code, x.id as xref')
+			->from('#__redevent_event_venue_xref AS x')
+			->join('INNER', '#__redevent_events AS a ON a.id =  x.eventid')
+			->where('x.id = ' . $this->sessionId);
+
 		$this->_db->setQuery($query);
 		$ac = $this->_db->loadObject();
-		$obj->form_id      = $ac->form_id;
-		$obj->course_code  = $ac->course_code;
-		$obj->xref         = $this->_xref;
+
+		$obj->form_id = $ac->form_id;
+		$obj->course_code = $ac->course_code;
+		$obj->xref = $this->sessionId;
+		$obj->currency = null;
 		$obj->answers = null;
 
-		$this->_data = $obj;
-    return true;
+		$this->data = $obj;
+
+		return true;
 	}
 
 	/**
@@ -147,18 +116,18 @@ class RedEventModelAttendee extends JModel
 	 *
 	 * @return boolean True on success
 	 */
-	protected function _loadData()
+	private function loadData()
 	{
 		// Lets load the content if it doesn't already exist
-		if (!$this->_id)
+		if (!$this->id)
 		{
 			return false;
 		}
 
-		if (empty($this->_data))
+		if (empty($this->data))
 		{
 			// Get form id and answer id
-			$db = JFactory::getDbo();
+			$db = $this->_db;
 			$query = $db->getQuery(true);
 
 			$query->select('r.*, s.form_id, a.course_code, sp.price, sp.id AS sessionpricegroup_id, sp.currency');
@@ -167,86 +136,20 @@ class RedEventModelAttendee extends JModel
 			$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id =  r.xref');
 			$query->join('INNER', '#__redevent_events AS a ON a.id =  x.eventid');
 			$query->join('LEFT', '#__redevent_sessions_pricegroups AS sp ON sp.id =  r.sessionpricegroup_id');
-			$query->where('r.id = ' . $this->_id);
+			$query->where('r.id = ' . $this->id);
 
 			$db->setQuery($query);
-			$this->_data = $db->loadObject();
+			$this->data = $db->loadObject();
 
-			if (!$this->_data)
+			if (!$this->data)
 			{
 				echo $this->_db->getErrorMsg();
 			}
 
-			return (boolean) $this->_data;
+			return (boolean) $this->data;
 		}
 
 		return true;
-	}
-
-	/**
-	 * Tests if the row is checked out
-	 *
-	 * @access	public
-	 * @param	int	A user id
-	 * @return	boolean	True if checked out
-	 * @since	0.9
-	 */
-	function isCheckedOut( $uid=0 )
-	{
-		if ($this->_loadData())
-		{
-			if ($uid) {
-				return ($this->_data->checked_out && $this->_data->checked_out != $uid);
-			} else {
-				return $this->_data->checked_out;
-			}
-		} elseif ($this->_id < 1) {
-			return false;
-		} else {
-			RedEventError::raiseWarning( 0, 'Unable to Load Data');
-			return false;
-		}
-	}
-
-	/**
-	 * Method to checkin/unlock the item
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	0.9
-	 */
-	function checkin()
-	{
-		if ($this->_id)
-		{
-			$ac = & JTable::getInstance('redevent_register', '');
-			return $ac->checkin($this->_id);
-		}
-		return false;
-	}
-
-	/**
-	 * Method to checkout/lock the item
-	 *
-	 * @access	public
-	 * @param	int	$uid	User ID of the user checking the item out
-	 * @return	boolean	True on success
-	 * @since	0.9
-	 */
-	function checkout($uid = null)
-	{
-		if ($this->_id)
-		{
-			// Make sure we have a user id to checkout the ac with
-			if (is_null($uid)) {
-				$user	=& JFactory::getUser();
-				$uid	= $user->get('id');
-			}
-			// Lets get to it and checkout the thing...
-			$ac = & JTable::getInstance('redevent_register', '');
-			return $ac->checkout($uid, $this->_id);
-		}
-		return false;
 	}
 
 	/**
@@ -258,7 +161,7 @@ class RedEventModelAttendee extends JModel
 	 */
 	public function store($data)
 	{
-		$xref = intval($data['xref']);
+		$xref = $data['xref'];
 
 		if (isset($data['sessionpricegroup_id']))
 		{
@@ -269,10 +172,10 @@ class RedEventModelAttendee extends JModel
 			$pricegroup = 0;
 		}
 
-		$id = JRequest::getInt('id');
+		$id = $data['id'];
 
 		// Get price and activate
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('pg.price, a.activate');
@@ -337,7 +240,7 @@ class RedEventModelAttendee extends JModel
 	{
 		if (!$this->pricegroups)
 		{
-			$db = JFactory::getDbo();
+			$db = $this->_db;
 			$query = $db->getQuery(true);
 
 			$query->select('sp.*, p.name, p.alias, p.tooltip, f.currency AS form_currency');
@@ -348,7 +251,7 @@ class RedEventModelAttendee extends JModel
 			$query->join('INNER', '#__redevent_event_venue_xref AS x on x.id = sp.xref');
 			$query->join('INNER', '#__redevent_events AS e on e.id = x.eventid');
 			$query->join('LEFT', '#__rwf_forms AS f on e.redform_id = f.id');
-			$query->where('sp.xref = ' . $db->Quote($this->_xref));
+			$query->where('sp.xref = ' . $db->Quote($this->sessionId));
 			$query->order('p.ordering ASC');
 
 			$db->setQuery($query);

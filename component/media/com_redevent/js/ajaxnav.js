@@ -1,58 +1,56 @@
 /**
  * javascript for ajax navigation
  */
+var red_ajaxnav = (function($) {
 
-window.addEvent('domready', function() {
-
-	$$('.itemnav').addEvent('click', red_ajaxnav.navigate);
-
-	$$('.ajaxsortcolumn').addEvent('click', red_ajaxnav.sortcolumn);
-});
-
-var red_ajaxnav = {
-	navigate : function(e) {
-		e.stop();
-		var form = this.getParent('form');
-
-		if (form)
-		{
-			form.getElement('.redajax_limitstart').set('value', this.getProperty('startvalue'));
-			red_ajaxnav.submitForm(form);
-		}
-	},
-
-	sortcolumn : function(e) {
-		e.stop();
-		var form = this.getParent('form');
-
-		if (form)
-		{
-			form.getElement('.redajax_order').set('value', this.getProperty('ordercol'));
-			form.getElement('.redajax_order_dir').set('value', this.getProperty('orderdir'));
-
-			red_ajaxnav.submitForm(form);
-		}
-	},
-
-	submitForm : function(form)
-	{
+	var submitForm = function(form) {
 		if (!form.format) {
-			new Element('input', {'name' : 'format', 'value': 'raw', 'type' : 'hidden'}).inject(form);
+			$('<input name="format" value="raw" type="hidden"/>').appendTo(form);
 		}
-		var req = new Request({
+		$.ajax({
 			url: form.action,
-			data: form,
-			method: 'post',
-			onRequest : function(){
-				form.set('spinner').spin();
-			},
-			onSuccess : function(response) {
-				form.unspin();
-				var newdiv = new Element('div').set('html', response).replaces(form);
-				newdiv.getElements('.itemnav').addEvent('click', red_ajaxnav.navigate);
-				newdiv.getElements('.ajaxsortcolumn').addEvent('click', red_ajaxnav.sortcolumn);
+			data: $(form).serialize(),
+			dataType: 'html',
+			type: 'post',
+			beforeSend: function (xhr) {
+				$(form).addClass('loading');
 			}
+		}).done(function(data) {
+			var newdiv = $('<div/>').html(data);
+			form.replaceWith(newdiv);
 		});
-		req.send();
+	};
+
+	var navigate = function(event) {
+		event.preventDefault();
+		var form = $(this).parents('form');
+
+		if (form)
+		{
+			form.find('.redajax_limitstart').val($(this).attr('startvalue'));
+			submitForm(form);
+		}
+	};
+
+	var sortcolumn = function(event) {
+		event.preventDefault();
+		var form = $(this).parents('form');
+
+		if (form)
+		{
+			form.find('.redajax_order').val($(this).attr('ordercol'));
+			form.find('.redajax_order_dir').val($(this).attr('orderdir'));
+			submitForm(form);
+		}
+	};
+
+	$(document).ready(function() {
+		$('#redevent, .redevent-ajaxnav').on('click', '.pagenav', navigate);
+		$('#redevent, .redevent-ajaxnav').on('click', '.ajaxsortcolumn', sortcolumn);
+	});
+
+	// Provide an interface
+	return {
+		submitForm : submitForm
 	}
-};
+})(jQuery);

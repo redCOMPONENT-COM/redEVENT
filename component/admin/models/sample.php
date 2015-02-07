@@ -1,68 +1,56 @@
 <?php
 /**
- * @version 1.0 $Id: redevent.php 30 2009-05-08 10:22:21Z roland $
- * @package Joomla
- * @subpackage redEVENT
- * @copyright (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * EventList is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * EventList is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with EventList; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
-
 /**
- * EventList Component Home Model
+ * redEVENT Component sample data Model
  *
- * @package Joomla
- * @subpackage redEVENT
- * @since		0.9
+ * @package  Redevent.admin
+ * @since    2.0
  */
-class RedeventModelSample extends JModel
+class RedeventModelSample extends RModel
 {
 	/**
 	 * creates sample data for redevent
+	 *
 	 * @return bool
 	 */
-	function create()
+	public function create()
 	{
-		$category = $this->_getCategory();
-		$venue    = $this->_getVenue();
-		$event    = $this->_createEvent($category);
-		$xref     = $this->_createXref($event, $venue);
+		$category = $this->getCategory();
+		$venue    = $this->getVenue();
+		$event    = $this->createEvent($category);
+		$this->createXref($event, $venue);
+
 		return true;
 	}
 
 	/**
 	 * return a category id
+	 *
 	 * @return int
 	 */
-	function _getCategory()
+	private function getCategory()
 	{
-		$query = ' SELECT id '
-		       . ' FROM #__redevent_categories '
-		       . ' WHERE published = 1 '
-		       ;
+		$query = $this->_db->getQuery(true)
+			->select('id')
+			->from('#__redevent_categories')
+			->where('published = 1');
+
 		$this->_db->setQuery($query, 0, 1);
 		$res = $this->_db->loadResult();
 
-		if (!$res) {
-			return $this->_createCategory();
+		if (!$res)
+		{
+			return $this->createCategory();
 		}
-		else {
+		else
+		{
 			return $res;
 		}
 	}
@@ -72,13 +60,13 @@ class RedeventModelSample extends JModel
 	 *
 	 * @return category id
 	 */
-	function _createCategory()
+	private function createCategory()
 	{
-		$row = FOFTable::getAnInstance('Category', 'RedeventTable');
-		$row->catname        = 'Category S1';
-		$row->catdescription = 'Sample category';
-		$row->color          = '#00DD00';
-		$row->published      = 1;
+		$row = RTable::getAdminInstance('Category');
+		$row->name = 'Category S1';
+		$row->description = 'Sample category';
+		$row->color = '#00DD00';
+		$row->published = 1;
 
 		if ($row->check() && $row->store())
 		{
@@ -92,24 +80,27 @@ class RedeventModelSample extends JModel
 		}
 	}
 
-
 	/**
 	 * return a venue id
+	 *
 	 * @return int
 	 */
-	function _getvenue()
+	private function getvenue()
 	{
-		$query = ' SELECT id '
-		       . ' FROM #__redevent_venues '
-		       . ' WHERE published = 1 '
-		       ;
+		$query = $this->_db->getQuery(true)
+			->select('id')
+			->from('#__redevent_venues')
+			->where('published = 1');
+
 		$this->_db->setQuery($query, 0, 1);
 		$res = $this->_db->loadResult();
 
-		if (!$res) {
-			return $this->_createVenue();
+		if (!$res)
+		{
+			return $this->createVenue();
 		}
-		else {
+		else
+		{
 			return $res;
 		}
 	}
@@ -119,30 +110,35 @@ class RedeventModelSample extends JModel
 	 *
 	 * @return venue id
 	 */
-	function _createVenue()
+	private function createVenue()
 	{
-		$row = &JTable::getInstance('redevent_venues', '');
+		$row = RTable::getAdminInstance('venue');
 		$row->venue        = 'Venue S1';
 		$row->locdescription = 'Sample venue';
 		$row->published      = 1;
 
-		if ($row->check() && $row->store()) {
+		if ($row->check() && $row->store())
+		{
 			return $row->id;
 		}
-		else {
+		else
+		{
 			$this->setError(JText::_('COM_REDEVENT_Error_creating_sample_venue'));
+
 			return false;
 		}
 	}
 
 	/**
 	 * creates a sample event
-	 * @param int $category
+	 *
+	 * @param   int  $category  category id
+	 *
 	 * @return unknown_type
 	 */
-	function _createEvent($category)
+	private function createEvent($category)
 	{
-		$event = &JTable::getInstance('redevent_events', '');
+		$event = RTable::getAdminInstance('event');
 		$event->title          = JText::_('COM_REDEVENT_SAMPLE_EVENT_TITLE');
 		$event->datdescription = JText::_('COM_REDEVENT_SAMPLE_EVENT_DESCRIPTION');
 		$event->published      = 1;
@@ -174,7 +170,7 @@ class RedeventModelSample extends JModel
 		$event->submission_type_email    = null;
 		$event->submission_type_external = null;
 		$event->submission_type_phone    = null;
-		$event->max_multi_signup			   = 1;
+		$event->max_multi_signup = 1;
 		$event->submission_type_formal_offer = null;
 		$event->submission_type_formal_offer_subject = null;
 		$event->submission_type_formal_offer_body    = null;
@@ -184,7 +180,6 @@ class RedeventModelSample extends JModel
 		$event->submission_type_webform              = JText::_('COM_REDEVENT_SAMPLE_EVENT_WEBFORM');
 		$event->submission_type_email_subject        = null;
 		$event->submission_type_webform_formal_offer = null;
-// 		$event->show_submission_type_webform_formal_offer = 0;
 
 		$event->send_pdf_form = 0;
 		$event->pdf_form_data = 0;
@@ -192,18 +187,16 @@ class RedeventModelSample extends JModel
 		$event->paymentaccepted   = JText::_('COM_REDEVENT_SAMPLE_EVENT_PAYMENTACCEPTED');
 		$event->paymentprocessing = JText::_('COM_REDEVENT_SAMPLE_EVENT_PAYMENTPROCESSING');
 
+		$event->categories = array($category);
+
 		if ($event->check() && $event->store())
 		{
-		  $query = ' INSERT INTO #__redevent_event_category_xref (event_id, category_id) VALUES (' . $this->_db->Quote($event->id) . ', '. $this->_db->Quote($category) . ')';
-		  $this->_db->setQuery($query);
-	    if (!$this->_db->query()) {
-	      $this->setError($this->_db->getErrorMsg());
-	      return false;
-	    }
 			return $event->id;
 		}
-		else {
+		else
+		{
 			$this->setError(JText::_('COM_REDEVENT_Error_creating_sample_event'));
+
 			return false;
 		}
 	}
@@ -211,11 +204,14 @@ class RedeventModelSample extends JModel
 	/**
 	 * creates a sample event
 	 *
+	 * @param   int  $event  event id
+	 * @param   int  $venue  venue id
+	 *
 	 * @return xref id
 	 */
-	function _createXref($event, $venue)
+	private function createXref($event, $venue)
 	{
-		$row = &JTable::getInstance('redevent_eventvenuexref', '');
+		$row = RTable::getAdminInstance('session');
 		$row->eventid        = $event;
 		$row->venueid        = $venue;
 		$row->details        = 'Sample date';
@@ -229,10 +225,11 @@ class RedeventModelSample extends JModel
 		{
 			return $row->id;
 		}
-		else {
+		else
+		{
 			$this->setError(JText::_('COM_REDEVENT_Error_creating_sample_event_session'));
+
 			return false;
 		}
 	}
-
 }

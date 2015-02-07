@@ -35,32 +35,16 @@ jimport('joomla.application.component.controller');
 class RedeventControllerCsvtool extends RedeventController
 {
 	/**
-	 * Constructor
+	 * Method to edit an existing record.
 	 *
-	 *@since 2.0
+	 * @param   string  $key     The name of the primary key of the URL variable.
+	 * @param   string  $urlVar  The name of the URL variable if different from the primary key
+	 * (sometimes required to avoid router collisions).
+	 *
+	 * @return  boolean  True if access level check and checkout passes, false otherwise.
 	 */
-	function __construct()
+	public function edit($key = null, $urlVar = null)
 	{
-		parent::__construct();
-	}
-	
-	function eventoptions()
-	{
-		$app = &JFactory::getApplication();
-		
-		$model = $this->getModel('csvtool');
-
-		$events = $model->getEventOptions(JRequest::getInt('category_id'), JRequest::getInt('venue_id'));
-		
-		echo json_encode($events);
-		
-		$app->close();
-	}
-	
-	function csvexport()
-	{
-		JRequest::setVar('view', 'csvtool');
-		
-		parent::display();
+		$this->setRedirect('index.php?option=com_redevent&view=attendeescsv');
 	}
 }

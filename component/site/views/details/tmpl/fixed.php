@@ -56,7 +56,7 @@ if ($this->row->venueid != 0) {
 	</h2>
 
 	<?php //flyer
-	$eventimage = redEVENTImage::modalimage($this->row->datimage, $this->row->title);
+	$eventimage = RedeventImage::modalimage($this->row->datimage, $this->row->title);
 	echo $eventimage;
 	?>
 
@@ -107,7 +107,7 @@ if ($this->row->venueid != 0) {
     			<?php
 				$i = 0;
     			foreach ($this->row->categories as $category) :
-    				echo JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($category->slug), $this->escape($category->catname));
+    				echo JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($category->slug), $this->escape($category->name));
 						$i++;
 						if ($i != $n) :
 							echo ',';
@@ -173,7 +173,7 @@ if ($this->row->venueid != 0) {
 		</h2>
 
 		<?php //flyer
-		echo redEVENTImage::modalimage($this->row->locimage, $this->row->venue);
+		echo RedeventImage::modalimage($this->row->locimage, $this->row->venue);
 		echo RedeventHelperOutput::mapicon($this->row, array('class' => 'event-map'));
 		?>
 
@@ -240,7 +240,7 @@ if ($this->row->venueid != 0) {
 		<div class="event-registration">
 		<?php
 		if (!$registration_status->canregister):
-			$imgpath = 'components/com_redevent/assets/images/'.$registration_status->error.'.png';
+			$imgpath = 'media/com_redevent/images/'.$registration_status->error.'.png';
 		  $img = JHTML::_('image', JURI::base() . $imgpath,
 		                          $registration_status->status,
 		                          array('class' => 'hasTip', 'title' => $registration_status->status));
@@ -249,7 +249,7 @@ if ($this->row->venueid != 0) {
 		<?php $venues_html = '';
 		/* Get the different submission types */
 		$submissiontypes = explode(',', $this->row->submission_types);
-		$imagepath = JURI::base() . 'administrator/components/com_redevent/assets/images/';
+		$imagepath = JURI::base() . 'media/com_redevent/images/';
 		foreach ($submissiontypes as $key => $subtype)
 		{
 			switch ($subtype) {

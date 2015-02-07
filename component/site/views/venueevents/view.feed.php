@@ -35,7 +35,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedeventViewVenueevents extends JView
+class RedeventViewVenueevents extends RViewSite
 {
 	/**
 	 * Creates the Event Feed of the Venue
@@ -69,7 +69,7 @@ class RedeventViewVenueevents extends JView
       {
         $category = array();
         foreach ($row->categories AS $cat) {
-          $category[] = $cat->catname;
+          $category[] = $cat->name;
         }
         $category = $this->escape( implode(', ', $category) );
         $category = html_entity_decode( $category );
@@ -157,7 +157,7 @@ class RedeventViewVenueevents extends JView
 			{
 				$category = array();
 				foreach ($row->categories AS $cat) {
-					$category[] = $cat->catname;
+					$category[] = $cat->name;
 				}
 				$category = $this->escape( implode(', ', $category) );
 				$category = html_entity_decode( $category );

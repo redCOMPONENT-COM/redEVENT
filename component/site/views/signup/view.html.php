@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedeventViewSignup extends JView
+class RedeventViewSignup extends JViewLegacy
 {
 	/**
 	 * Creates the output for the details view
@@ -174,11 +174,11 @@ class RedeventViewSignup extends JView
 
 		$this->assign('rfields',  $rfields);
 
-		if ($model->getManageAttendees($registration->xref) && JRequest::getVar('task') == 'manageredit') {
-			$this->assign('edittask',  'manageredit');
+		if ($model->getManageAttendees($registration->xref) && JRequest::getVar('task') == 'registration.manageredit') {
+			$this->assign('edittask',  'registration.manageredit');
 		}
 		else if ($registration->uid == $user->get('id')) {
-			$this->assign('edittask',  'edit');
+			$this->assign('edittask',  'registration.edit');
 		}
 		else {
 			JError::raiseError(403,'NOT AUTHORIZED');

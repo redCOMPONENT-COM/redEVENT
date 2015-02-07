@@ -5,10 +5,12 @@
 			<![CDATA[COM_REDEVENT_DETAILED_CATEGORIES_LAYOUT_DESC]]>
 		</message>
 	</layout>
-	
-	<fields name="params" addfieldpath="/administrator/components/com_redevent/models/fields">
+
+	<fields name="params" addfieldpath="/libraries/redevent/form/fields">
    	<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
-      <field name="parentcategory" type="recategory" default="0" reset="true" label="COM_REDEVENT_SELECT_PARENT_CATEGORY" description="COM_REDEVENT_SELECT_PARENT_CATEGORY_DESC" />
+      <field name="parentcategory" type="recategorylist" default="0" reset="true" label="COM_REDEVENT_SELECT_PARENT_CATEGORY" description="COM_REDEVENT_SELECT_PARENT_CATEGORY_DESC">
+        <option value="0">JSelect</option>
+      </field>
       <field name="display_all_categories" type="radio" default="1" label="COM_REDEVENT_DISPLAY_ALL_CATEGORIES" description="COM_REDEVENT_DISPLAY_ALL_CATEGORIES_TIP">
         <option value="0">No</option>
         <option value="1">Yes</option>

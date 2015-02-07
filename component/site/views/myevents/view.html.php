@@ -32,7 +32,7 @@ jimport('joomla.application.component.view');
  * @subpackage  redevent
  * @since       2.0
 */
-class RedeventViewMyevents extends JView
+class RedeventViewMyevents extends RViewSite
 {
 	/**
 	 * Creates the MyItems View
@@ -75,10 +75,10 @@ class RedeventViewMyevents extends JView
 
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
-		JHTML::_('behavior.mootools');
+		JHTML::_('behavior.framework');
 
-		FOFTemplateUtils::addJS('media://com_redevent/js/myevents.js');
-		FOFTemplateUtils::addJS('media://com_redevent/js/ajaxnav.js');
+		RHelperAsset::load('myevents.js');
+		RHelperAsset::load('ajaxnav.js');
 		JText::script("COM_REDEVENT_MYEVENTS_CANCEL_REGISTRATION_WARNING");
 
 		$js = "
@@ -267,7 +267,7 @@ class RedeventViewMyevents extends JView
 	 */
 	public static function eventeditbutton($id, $xref)
 	{
-		$acl = &RedeventUserAcl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 
 		if (!$acl->canEditEvent($id))
 		{
@@ -325,7 +325,7 @@ class RedeventViewMyevents extends JView
 
 		$overlib = JText::_('COM_REDEVENT_EDIT_ATTENDEES_TIP');
 		$text = JText::_('COM_REDEVENT_EDIT_ATTENDEES');
-		$link 	= RedeventHelperRoute::getManageAttendees($id, 'manageattendees');
+		$link 	= RedeventHelperRoute::getManageAttendees($id, 'registration.manageattendees');
 		$output	= '<a href="' . JRoute::_($link) . '" class="editlinktip hasTip" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
 
 		return $output;
@@ -347,7 +347,7 @@ class RedeventViewMyevents extends JView
 		$overlib = JText::_('COM_REDEVENT_EDIT_VENUE_TIP');
 		$text = JText::_('COM_REDEVENT_EDIT_VENUE');
 
-		$link 	= 'index.php?option=com_redevent&view=editvenue&id=' . $id;
+		$link = RedeventHelperRoute::getEditVenueRoute($id . '&return=' . base64_encode(RedeventHelperRoute::getMyeventsRoute()));
 		$output	= '<a href="' . JRoute::_($link) . '" class="editlinktip hasTip" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
 
 		return $output;

@@ -32,7 +32,7 @@ jimport('joomla.application.component.model');
  * @subpackage  redEVENT
  * @since       0.9
  */
-class RedeventModelCategories extends JModel
+class RedeventModelCategories extends RModel
 {
 	/**
 	 * category to use as a base for queries

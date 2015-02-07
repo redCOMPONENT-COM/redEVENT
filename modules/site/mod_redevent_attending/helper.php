@@ -1,53 +1,43 @@
 <?php
 /**
- * @version 0.9 $Id$
- * @package Joomla
- * @subpackage RedEvent
- * @copyright (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENCE.php
- * RedEvent is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * RedEvent is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with RedEvent; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package     Redevent.Frontend
+ * @subpackage  Modules
+ *
+ * @copyright   Copyright (C) 2008 - 2014 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later, see LICENSE.
  */
 
-// no direct access
+// No direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once (JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'helpers'.DS.'route.php');
-
 /**
- * RedEvent Module helper
+ * Redevent Attending Module helper
  *
- * @package Joomla
- * @subpackage RedEvent Module
- * @since		0.9
+ * @package     Redevent.Frontend
+ * @subpackage  Modules
+ * @since       0.9
 */
-class modRedEventAttendingHelper
+class modRedeventAttendingHelper
 {
 
 	/**
 	 * Method to get the events
 	 *
-	 * @access public
+	 * @param   JRegistry  &$params  parameters
+	 *
 	 * @return array
 	 */
 	public function getList(&$params)
 	{
-		$db			=& JFactory::getDBO();
-		$user		=& JFactory::getUser();
-		if (!$user->get('id')) {
+		$db = JFactory::getDBO();
+		$user = JFactory::getUser();
+
+		if (!$user->get('id'))
+		{
 			return false;
 		}
-		$user_gid	= (int) max($user->getAuthorisedViewLevels());
+
+		$user_gid = (int) max($user->getAuthorisedViewLevels());
 		$reparams = JComponentHelper::getParams('com_redevent');
 		$weekstart = ($reparams->get('week_start', "MO") == "SU" ? 0 : 1);
 

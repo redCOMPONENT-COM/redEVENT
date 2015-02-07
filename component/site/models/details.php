@@ -33,7 +33,7 @@ jimport('joomla.application.component.model');
  * @subpackage redEVENT
  * @since		0.9
 */
-class RedeventModelDetails extends JModel
+class RedeventModelDetails extends JModelLegacy
 {
 	/**
 	 * Details data in details array
@@ -164,7 +164,7 @@ class RedeventModelDetails extends JModel
 
 			$query->select('v.venue, v.id AS venue_id, v.city, v.locimage, v.map, v.country, v.street, v.plz, v.state, v.locdescription, v.url');
 
-			$query->select('c.catname, c.published, c.access');
+			$query->select('c.name AS catname, c.published, c.access');
 
 			$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
 			$query->select('CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug');
@@ -187,7 +187,8 @@ class RedeventModelDetails extends JModel
 			if ($this->_details)
 			{
 				$this->_details = $this->_getEventCategories($this->_details);
-				$this->_details->attachments = RedeventHelperAttachment::getAttachments('event'.$this->_details->did, $user->getAuthorisedViewLevels());
+				$attachementHelper = new RedeventHelperAttachment;
+				$this->_details->attachments = $attachementHelper->getAttachments('event'.$this->_details->did, $user->getAuthorisedViewLevels());
 			}
 
 			return (boolean) $this->_details;
@@ -226,7 +227,7 @@ class RedeventModelDetails extends JModel
 
 			foreach ((array)$rows as $k => $r)
 			{
-				$query = ' SELECT c.id, c.catname, c.image, '
+				$query = ' SELECT c.id, c.name AS catname, c.image, '
 				. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(":", c.id, c.alias) ELSE c.id END as slug '
 				. ' FROM #__redevent_categories AS c '
 				. ' INNER JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = c.id '
@@ -342,7 +343,9 @@ class RedeventModelDetails extends JModel
 			{
 				$table_fields = array();
 				$fields_names = array();
-				foreach ($fields as $key => $field) {
+
+				foreach ($fields as $key => $field)
+				{
 					$table_fields[] = 'a.field_'. $field->id;
 					$fields_names['field_'. $field->id] = $field->field_header;
 				}
@@ -398,28 +401,38 @@ class RedeventModelDetails extends JModel
 	/**
 	 * returns the fields to be shown in attendees list
 	 *
-	 * @param boolean get all fields
-	 * @return array;
+	 * @param   boolean   $all_fields  get all fields
+	 *
+	 * @return array
 	 */
-	function getFormFields($all_fields = false)
+	public function getFormFields($all_fields = false)
 	{
 		// make sure the init is done
 		$this->getDetails();
 
-		if (empty($this->_details->showfields)) {
+		if (empty($this->_details->showfields))
+		{
 			return false;
 		}
-		// load form fields
-		$q = ' SELECT f.id, f.field, f.form_id '
-		. '      , CASE WHEN (CHAR_LENGTH(f.field_header) > 0) THEN f.field_header ELSE f.field END AS field_header '
-		. ' FROM #__rwf_fields AS f '
-		. ' WHERE f.form_id = '. $this->_db->Quote($this->_details->redform_id)
-		. ($all_fields ? '' : '   AND f.id in ('.$this->_details->showfields. ')')
-		. '   AND f.published = 1 '
-		. ' ORDER BY f.ordering ';
-		$this->_db->setQuery($q);
 
-		return $this->_db->loadObjectList();
+		$query = $this->_db->getQuery(true);
+
+		$query->select('f.id, f.field, ff.form_id, f.field_header')
+			->from('#__rwf_fields AS f')
+			->join('LEFT', '#__rwf_form_field AS ff ON ff.field_id = f.id')
+			->where('ff.form_id = '. $this->_db->Quote($this->_details->redform_id))
+			->where('ff.published = 1')
+			->order('ff.ordering');
+
+		if (!$all_fields)
+		{
+			$query->where('f.id in (' . $this->_details->showfields. ')');
+		}
+
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadObjectList();
+
+		return $res;
 	}
 
 	/**
@@ -470,7 +483,7 @@ class RedeventModelDetails extends JModel
 		if (!$row) {
 			return false;
 		}
-		$query =  ' SELECT c.id, c.catname, c.access, '
+		$query =  ' SELECT c.id, c.name, c.access, '
 		. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '
 		. ' FROM #__redevent_categories as c '
 		. ' INNER JOIN #__redevent_event_category_xref as x ON x.category_id = c.id '

@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedeventViewDetails extends JView
+class RedeventViewDetails extends JViewLegacy
 {
 	/**
 	 * Creates the output for the details view
@@ -52,6 +52,7 @@ class RedeventViewDetails extends JView
 		$user		= JFactory::getUser();
 		$dispatcher = JDispatcher::getInstance();
 		$elsettings = RedeventHelper::config();
+//		echo "<pre>" . print_r($elsettings, true) . "</pre>"; exit;
 		$acl        = RedeventUserAcl::getInstance();
 
 		if ($params->get('gplusone', 1)) {
@@ -129,7 +130,7 @@ class RedeventViewDetails extends JView
 		//is the user allready registered at the event
 		if ( $regcheck ) {
 			// add javascript code for cancel button on attendees layout.
-			JHTML::_('behavior.mootools');
+			JHTML::_('behavior.framework');
 			$js = " window.addEvent('domready', function(){
 		            $$('.unreglink').addEvent('click', function(event){
 		                  if (confirm('".JText::_('COM_REDEVENT_CONFIRM_CANCEL_REGISTRATION')."')) {
@@ -267,7 +268,7 @@ class RedeventViewDetails extends JView
     $this->assignRef('uri',              $uri);
     $this->assignRef('lang',             JFactory::getLanguage());
 
-    if ($params->get('fbopengraph', 1)) {
+    if ($params->get('fbopengraph', 0)) {
     	$this->_opengraph();
     }
 
@@ -308,7 +309,7 @@ class RedeventViewDetails extends JView
 
 			case "catsid":
 				// TODO: fix for multiple cats
-				//$content = $row->catname;
+				//$content = $row->name;
 				$content = '';
 				break;
 

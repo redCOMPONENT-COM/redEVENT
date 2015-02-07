@@ -1,4 +1,4 @@
-<?php
+ <?php
 /**
  * @package     Joomla
  * @subpackage  redEVENT
@@ -32,7 +32,7 @@ jimport('joomla.application.component.model');
  * @subpackage  redevent
  * @since       0.9
  */
-class RedeventModelCalendar extends JModel
+class RedeventModelCalendar extends RModel
 {
 	/**
 	 * Events data array
@@ -305,7 +305,7 @@ class RedeventModelCalendar extends JModel
 		$db = &JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('c.id, c.catname, c.color');
+		$query->select('c.id, c.name, c.color');
 		$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug');
 		$query->from('#__redevent_categories as c');
 		$query->join('INNER', '#__redevent_event_category_xref as x ON x.category_id = c.id');

@@ -29,7 +29,7 @@ jimport('joomla.application.component.view');
  * @subpackage  redevent
  * @since       2.0
  */
-class RedeventViewPayment extends JView
+class RedeventViewPayment extends RViewSite
 {
 	/**
 	 * Creates the output for the details view
@@ -162,7 +162,7 @@ class RedeventViewPayment extends JView
 			$cats = array();
 			foreach ($details->categories as $c)
 			{
-				$cats[] = $c->catname;
+				$cats[] = $c->name;
 			}
 			$options['category'] = implode(', ', $cats);
 

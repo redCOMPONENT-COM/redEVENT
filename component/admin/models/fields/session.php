@@ -1,40 +1,18 @@
 <?php
 /**
- * @package     Joomla
- * @subpackage  redEVENT
- * @copyright   redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license     GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008-2014 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.form.formfield');
 
-// Load FOF
-include_once JPATH_LIBRARIES . '/fof/include.php';
-if (!defined('FOF_INCLUDED'))
-{
-	JError::raiseError('500', 'FOF is not installed');
-}
-
 /**
  * Session form field class
  *
- * @package  Joomla
+ * @package  Redevent.admin
  * @since    2.0
 */
 class JFormFieldSession extends JFormField
@@ -53,7 +31,7 @@ class JFormFieldSession extends JFormField
 	protected function getInput()
 	{
 		// Load modal behavior
-		JHtml::_('behavior.modal', 'a.modal');
+		JHtml::_('behavior.modal', 'a.modal_' . $this->id);
 
 		$size		= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : ' size="35"';
 		$reset	= (string) $this->element['reset'];
@@ -72,7 +50,7 @@ class JFormFieldSession extends JFormField
 			$script[] = ' window.addEvent("domready", function(){';
 			$script[] = '    document.id("reset' . $this->id . '").addEvent("click", function() {';
 			$script[] = '        document.id("' . $this->id . '_id").value = 0;';
-			$script[] = '        document.id("' . $this->id . '_name").value = "' . JText::_('COM_REDEVENT_SELECT_CATEGORY', true) . '";';
+			$script[] = '        document.id("' . $this->id . '_name").value = "' . JText::_('COM_REDEVENT_SELECT_SESSION', true) . '";';
 			$script[] = '    });';
 			$script[] = ' });';
 		}
@@ -82,28 +60,19 @@ class JFormFieldSession extends JFormField
 
 		// Setup variables for display
 		$html = array();
-		$link = 'index.php?option=com_redevent&controller=sessions&amp;view=xrefelement&amp;tmpl=component'
+		$link = 'index.php?option=com_redevent&amp;view=sessions&amp;layout=element&amp;tmpl=component'
 		. '&amp;function=jSelectSession_' . $this->id;
 
-		JTable::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_redevent' . DS . 'tables');
-
-		$event =& JTable::getInstance('redevent_events', '');
+		if ($this->element['event'])
+		{
+			$link .= '&jForm[filter.event]=' . $this->element['event'];
+		}
 
 		if ($this->value)
 		{
-			$event->xload($this->value);
+			$title = $this->getSessionTitle($this->value);
 		}
 		else
-		{
-			$event->title = JText::_('COM_REDEVENT_SELECT_SESSION');
-		}
-
-		if ($this->value)
-		{
-			$title = $event->title;
-		}
-
-		if (empty($title))
 		{
 			$title = JText::_('COM_REDEVENT_SELECT_SESSION');
 		}
@@ -111,28 +80,21 @@ class JFormFieldSession extends JFormField
 		$title = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
 
 		// The current input field
-		$html[] = '<div class="fltlft">';
+		$html[] = '<div class="input-append">';
 		$html[] = '  <input type="text" id="' . $this->id . '_name" value="' . $title . '" disabled="disabled"' . $size . ' />';
-		$html[] = '</div>';
 
 		// The select button
-		$html[] = '<div class="button2-left">';
-		$html[] = '  <div class="blank">';
-		$html[] = '    <a class="modal" title="' . JText::_('COM_REDEVENT_SELECT_SESSION') . '" href="' . $link .
+		$html[] = '    <a class="btn btn-primary modal_' . $this->id . '" title="' . JText::_('COM_REDEVENT_SELECT_SESSION') . '" href="' . $link .
 		'" rel="{handler: \'iframe\', size: {x:700, y:450}}">' .
 		JText::_('COM_REDEVENT_SELECT_SESSION') . '</a>';
-		$html[] = '  </div>';
-		$html[] = '</div>';
 
 		if ($reset)
 		{
-			$html[] = '<div class="button2-left">';
-			$html[] = '  <div class="blank">';
-			$html[] = '    <a id="reset' . $this->id . '" title="' . JText::_('COM_REDEVENT_RESET') . '">' .
+			$html[] = '    <a id="reset' . $this->id . '" class="btn" title="' . JText::_('COM_REDEVENT_RESET') . '">' .
 			JText::_('COM_REDEVENT_RESET') . '</a>';
-			$html[] = '  </div>';
-			$html[] = '</div>';
 		}
+
+		$html[] = '</div>';
 
 		// The active id field
 		if (0 == (int) $this->value)
@@ -155,5 +117,36 @@ class JFormFieldSession extends JFormField
 		$html[] = '<input type="hidden" id="' . $this->id . '_id"' . $class . ' name="' . $this->name . '" value="' . $value . '" />';
 
 		return implode("\n", $html);
+	}
+
+	/**
+	 * Get title
+	 *
+	 * @param   int  $sessionId  session if
+	 *
+	 * @return string
+	 */
+	private function getSessionTitle($sessionId)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('e.title, x.dates');
+		$query->from('#__redevent_events AS e');
+		$query->join('INNER', '#__redevent_event_venue_xref AS x');
+		$query->where('x.id = ' . (int) $sessionId);
+
+		$db->setQuery($query, 0, 1);
+
+		$res = $db->loadObject();
+
+		if ($res->dates)
+		{
+			return $res->title . ' - ' . $res->dates;
+		}
+		else
+		{
+			return $res->title;
+		}
 	}
 }

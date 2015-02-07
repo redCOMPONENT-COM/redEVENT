@@ -30,7 +30,7 @@ jimport('joomla.application.component.view');
  * @subpackage  redEvent
  * @since       2.0
  */
-class RedEventViewAttendee extends JView
+class RedEventViewAttendee extends RedeventViewAdmin
 {
 	/**
 	 * Display
@@ -42,18 +42,6 @@ class RedEventViewAttendee extends JView
 	public function display($tpl = null)
 	{
 		$app = JFactory::getApplication();
-
-		// Load pane behavior
-		jimport('joomla.html.pane');
-
-		// Initialise variables
-		$document = JFactory::getDocument();
-		$cid      = JRequest::getVar('cid');
-
-		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_EDITATTENDEE'));
-
-		// Add css to document
-		FOFTemplateUtils::addCSS('media://com_redevent/css/backend.css');
 
 		$row = $this->get('data');
 
@@ -69,28 +57,53 @@ class RedEventViewAttendee extends JView
 		$sessionpricegroups = $this->get('Pricegroups');
 		$lists['pricegroup_id'] = RedeventHelper::getRfPricesSelect($sessionpricegroups, $row->sessionpricegroup_id);
 
-		// Build toolbar
-		if (!empty($cid))
-		{
-			JToolBarHelper::title(JText::_('COM_REDEVENT_EDIT_REGISTRATION'), 'registrations');
-			JToolBarHelper::spacer();
-		}
-		else
-		{
-			JToolBarHelper::title(JText::_('COM_REDEVENT_ADD_REGISTRATION'), 'registrations');
-			JToolBarHelper::spacer();
-		}
-
-		JToolBarHelper::apply();
-		JToolBarHelper::save();
-		JToolBarHelper::spacer();
-		JToolBarHelper::cancel();
-		JToolBarHelper::spacer();
-
 		$this->row = $row;
+		$this->session = $this->get('Session');
 		$this->lists = $lists;
 		$this->returnUrl = $app->input->get('return');
 
 		parent::display($tpl);
+	}
+
+	/**
+	 * Get the view title.
+	 *
+	 * @return  string  The view title.
+	 */
+	public function getTitle()
+	{
+		return JText::_('COM_REDEVENT_PAGETITLE_EDITATTENDEE');
+	}
+
+	/**
+	 * Get the toolbar to render.
+	 *
+	 * @return  RToolbar
+	 */
+	public function getToolbar()
+	{
+		$group = new RToolbarButtonGroup;
+
+		$save = RToolbarBuilder::createSaveButton('attendee.apply');
+		$saveAndClose = RToolbarBuilder::createSaveAndCloseButton('attendee.save');
+
+		$group->addButton($save)
+			->addButton($saveAndClose);
+
+		if (empty($this->item->id))
+		{
+			$cancel = RToolbarBuilder::createCancelButton('attendee.cancel');
+		}
+		else
+		{
+			$cancel = RToolbarBuilder::createCloseButton('attendee.cancel');
+		}
+
+		$group->addButton($cancel);
+
+		$toolbar = new RToolbar;
+		$toolbar->addGroup($group);
+
+		return $toolbar;
 	}
 }

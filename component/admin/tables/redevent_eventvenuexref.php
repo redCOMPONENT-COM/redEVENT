@@ -278,7 +278,7 @@ class RedEvent_eventvenuexref extends JTable
 	public function store($updateNulls = false)
 	{
 		// Make sure the language is same as event
-		$db      = JFactory::getDbo();
+		$db      = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('language');

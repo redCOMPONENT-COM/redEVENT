@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedeventViewVenue extends JView
+class RedeventViewVenue extends RViewSite
 {
 	/**
 	 * Creates the output for venue submissions

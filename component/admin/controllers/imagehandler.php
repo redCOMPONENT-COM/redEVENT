@@ -95,14 +95,14 @@ class RedeventControllerImagehandler extends RedeventController
 		}
 
 		//check the image
-		$check = redEVENTImage::check($file, $elsettings);
+		$check = RedeventImage::check($file, $elsettings);
 
 		if ($check === false) {
 			$mainframe->redirect($_SERVER['HTTP_REFERER']);
 		}
 
 		//sanitize the image filename
-		$filename = redEVENTImage::sanitize($base_Dir, $file['name']);
+		$filename = RedeventImage::sanitize($base_Dir, $file['name']);
 		$filepath = $base_Dir . $filename;
 
 		//upload the image
@@ -112,7 +112,7 @@ class RedeventControllerImagehandler extends RedeventController
 
 		} else {
 			// create thumbnail
-			redEVENTImage::thumb($filepath, dirname($filepath).DS.'small'.DS.$filename, $elsettings->get('imagewidth'), $elsettings->get('imageheight', 100));
+			RedeventImage::thumb($filepath, dirname($filepath).DS.'small'.DS.$filename, $elsettings->get('imagewidth'), $elsettings->get('imageheight', 100));
 
 			echo "<script> alert('".JText::_('COM_REDEVENT_UPLOAD_COMPLETE' )."'); window.history.go(-1); window.parent.elSelectImage('$filename', '$filename'); </script>\n";
 			$mainframe->close();

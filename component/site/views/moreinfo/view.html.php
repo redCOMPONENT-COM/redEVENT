@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 2.0
  */
-class RedeventViewMoreinfo extends JView
+class RedeventViewMoreinfo extends RViewSite
 {
 	/**
 	 * Creates the output
@@ -42,7 +42,7 @@ class RedeventViewMoreinfo extends JView
 	 * @param int $tpl
 	 */
 	function display( $tpl=null )
-	{			
+	{
 		$params = JComponentHelper::getParams('com_redevent');
 		if (!$params->get('enable_moreinfo', 1)) {
 			echo Jtext::_('COM_REDEVENT_MOREINFO_ERROR_DISABLED_BY_ADMIN');
@@ -52,28 +52,28 @@ class RedeventViewMoreinfo extends JView
     {
     	return $this->_displayFinal($tpl);
     }
-    
+
     $xref     = JRequest::getInt('xref');
     $uri      = &JFactory::getUri();
     $document = JFactory::getDocument();
     $user     = &Jfactory::getUser();
-    
+
     if (!$xref) {
     	echo JText::_('COM_REDEVENT_MOREINFO_ERROR_MISSING_XREF');
     }
-		
+
     $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/moreinfo.css');
-    
-    
+
+
     $this->assign('xref',   $xref);
     $this->assign('action', JRoute::_(RedeventHelperRoute::getMoreInfoRoute($xref)));
     $this->assignRef('user', $user);
-		
+
 		parent::display($tpl);
 	}
-		
+
 	function _displayFinal( $tpl=null )
 	{
-		parent::display($tpl);		
+		parent::display($tpl);
 	}
 }

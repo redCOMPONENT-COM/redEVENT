@@ -24,7 +24,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
-<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="attended-events">
+<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="attended-events" class="redevent-ajaxnav">
 
 	<table class="eventtable" summary="attending">
 		<thead>
@@ -44,7 +44,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<?php endif; ?>
 
 				<?php if ($this->params->get('showcat', 1)) : ?>
-					<th id="el_category" class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_CATEGORY'), 'c.catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+					<th id="el_category" class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_CATEGORY'), 'c.name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php endif; ?>
 			</tr>
 		</thead>
@@ -93,10 +93,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						<?php foreach ($row->categories as $k => $cat): ?>
 						<?php if ($this->params->get('catlinklist', 1) == 1) : ?>
 						<a href="<?php echo JRoute::_('index.php?option=com_redevent&view=categoryevents&id='.$cat->slug); ?>">
-							<?php echo $cat->catname ? $this->escape($cat->catname) : '-' ; ?>
+							<?php echo $cat->name ? $this->escape($cat->name) : '-' ; ?>
 						</a>
 	            <?php else: ?>
-	            	<?php echo $cat->catname ? $this->escape($cat->catname) : '-'; ?>
+	            	<?php echo $cat->name ? $this->escape($cat->name) : '-'; ?>
 	            <?php endif; ?>
 	            <?php echo ($k < count($row->categories)) ? '<br/>' : '' ; ?>
 	          <?php endforeach; ?>

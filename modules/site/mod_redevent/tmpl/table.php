@@ -131,7 +131,7 @@ $class_prefix = 'mre-';
 
 				case 'picture':
 					$tdclass = $class_prefix .  'picture';
-					$tdtext = redEVENTImage::modalimage($item->datimage, $item->title_short, intval($params->get('picture_size', 30)));
+					$tdtext = RedeventImage::modalimage($item->datimage, $item->title_short, intval($params->get('picture_size', 30)));
 					break;
 
 

@@ -61,7 +61,7 @@ class RedeventCustomfieldText extends RedeventAbstractCustomfield
 		}
 		$value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-		return '<input type="text" name="' . $this->fieldname . '" id="' . $this->fieldid . '" value="' . $value . '" ' . $this->attributesToString($attributes) . '/>';
+		return '<input type="text" name="jform[' . $this->fieldname . ']" id="' . $this->fieldid . '" value="' . $value . '" ' . $this->attributesToString($attributes) . '/>';
 	}
 
 	public function renderFilter($attributes = array(), $selected = null)

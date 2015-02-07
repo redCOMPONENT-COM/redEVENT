@@ -32,7 +32,7 @@ jimport('joomla.application.component.view');
  * @subpackage  redevent
  * @since       2.0
 */
-class RedeventViewMyevents extends JView
+class RedeventViewMyevents extends RViewSite
 {
 	/**
 	 * Creates the MyItems View
@@ -361,7 +361,7 @@ class RedeventViewMyevents extends JView
 
 		$overlib = JText::_('COM_REDEVENT_EDIT_ATTENDEES_TIP');
 		$text = JText::_('COM_REDEVENT_EDIT_ATTENDEES');
-		$link 	= RedeventHelperRoute::getManageAttendees($id, 'manageattendees');
+		$link 	= RedeventHelperRoute::getManageAttendees($id, 'registration.manageattendees');
 		$output	= '<a href="' . JRoute::_($link) . '" class="editlinktip hasTip" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
 
 		return $output;

@@ -7,8 +7,8 @@
 	<reference>
 		<table name="redevent_categories">
 			<field type="referenceid" name="id" translate="0">ID</field>
-			<field type="titletext" name="catname" translate="1">Category Name</field>
-			<field type="htmltext" name="catdescription" translate="1">Description</field>
+			<field type="titletext" name="name" translate="1">Category Name</field>
+			<field type="htmltext" name="description" translate="1">Description</field>
 		</table>
 
 		<component>

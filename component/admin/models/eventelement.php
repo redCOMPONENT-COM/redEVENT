@@ -142,7 +142,7 @@ class RedEventModelEventelement extends JModel
 		$where		= $this->_buildContentWhere();
 		$orderby	= $this->_buildContentOrderBy();
 
-		$query = 'SELECT a.*, x.dates, x.enddates, x.times, x.endtimes, x.id as xref, loc.venue, loc.city, cat.catname, '
+		$query = 'SELECT a.*, x.dates, x.enddates, x.times, x.endtimes, x.id as xref, loc.venue, loc.city, cat.name AS catname, '
           .  ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(":", a.id, a.alias) ELSE a.id END as slug '
 					. ' FROM #__redevent_events AS a'
 					. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = a.id'
@@ -216,7 +216,7 @@ class RedEventModelEventelement extends JModel
 		}
 
 		if ($search && $filter == 4) {
-			$where[] = ' LOWER(cat.catname) LIKE \'%'.$search.'%\' ';
+			$where[] = ' LOWER(cat.name) LIKE \'%'.$search.'%\' ';
 		}
 
 

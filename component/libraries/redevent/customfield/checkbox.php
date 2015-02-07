@@ -63,7 +63,7 @@ class RedeventCustomfieldCheckbox extends RedeventAbstractCustomfield
 			foreach ($options as $opt)
 			{
 				$option = $this->getOptionLabelValue($opt);
-				$html .= '<input type="checkbox" name="' . $this->fieldname . '[]" value="' . $option->value . '"' . (in_array($option->value, $selected) ? ' checked="checked"' : '') . ' ' . $this->attributesToString($attributes) . '/>' . $option->label;
+				$html .= '<input type="checkbox" name="jform[' . $this->fieldname . '][]" value="' . $option->value . '"' . (in_array($option->value, $selected) ? ' checked="checked"' : '') . ' ' . $this->attributesToString($attributes) . '/>' . $option->label;
 			}
 		}
 		return $html;
