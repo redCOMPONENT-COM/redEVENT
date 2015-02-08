@@ -878,8 +878,8 @@ class RedeventHelper
 
 	public static function icalAddEvent(&$calendartool, $event)
 	{
-		require_once JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'classes'.DS.'iCalcreator.class.php';
-		$mainframe = &JFactory::getApplication();
+		require_once JPATH_SITE . '/components/com_redevent/classes/iCalcreator.class.php';
+		$mainframe = JFactory::getApplication();
 		$params = $mainframe->getParams('com_redevent');
 
 		$offset = $params->get('ical_timezone', 1);
@@ -888,7 +888,7 @@ class RedeventHelper
 		// get categories names
 		$categories = array();
 		foreach ($event->categories as $c) {
-			$categories[] = $c->catname;
+			$categories[] = $c->name;
 		}
 
 		if (!$event->dates || $event->dates == '0000-00-00') {
