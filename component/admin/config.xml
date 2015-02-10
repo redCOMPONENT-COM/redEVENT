@@ -769,20 +769,18 @@
                description="COM_REDEVENT_SETTINGS_SOCIAL_TWEET_RECOMMEND2_TEXT_DESC"/>
     </fieldset>
 
-    <!--
-                <fieldset	name="permissions"
-                    label="JCONFIG_PERMISSIONS_LABEL"
-                    description="JCONFIG_PERMISSIONS_DESC">
-                    <field
-                        name="rules"
-                        type="rrules"
-                        label="JCONFIG_PERMISSIONS_LABEL"
-                        class="inputbox"
-                        validate="rules"
-                        filter="rules"
-                        component="com_redevent"
-                        section="component"
-                    />
-                </fieldset>
-    -->
+    <fieldset	name="permissions"
+        label="JCONFIG_PERMISSIONS_LABEL"
+        description="JCONFIG_PERMISSIONS_DESC">
+        <field
+            name="rules"
+            type="rrules"
+            label="JCONFIG_PERMISSIONS_LABEL"
+            class="inputbox"
+            validate="rules"
+            filter="rules"
+            component="com_redevent"
+            section="component"
+        />
+    </fieldset>
 </config>
