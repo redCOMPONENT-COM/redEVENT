@@ -23,6 +23,10 @@ if (!class_exists('Com_RedcoreInstallerScript'))
 	{
 		require_once $redcoreInstaller;
 	}
+	else
+	{
+		throw new Exception(JText::_('COM_REDEVENT_INSTALLER_ERROR_REDFORM_IS_REQUIRED'), 500);
+	}
 }
 
 /**
