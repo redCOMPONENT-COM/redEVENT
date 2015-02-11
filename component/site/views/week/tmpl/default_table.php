@@ -86,7 +86,7 @@ $colnames = array_map('trim', $colnames);
 					<?php if (strpos($col, 'custom') === 0): ?>
 						<?php $c = $this->customs[intval(substr($col, 6))]; ?>
 	        	<th id="el_custom_<?php echo $c->id; ?>" class="sectiontableheader re_custom">
-	        	<?php echo JHTML::_('grid.sort', isset($colnames[$k]) ? $colnames[$k] : $this->escape($c->name), 'custom'. $c->id, $this->lists['order_Dir'], $this->lists['order'] ); ?>
+	        	<?php echo isset($colnames[$k]) ? $colnames[$k] : $this->escape($c->name); ?>
 	        	<?php if ($c->tips && $this->params->get('lists_show_custom_tip', 1)):?>
 	        	<?php echo JHTML::tooltip(str_replace("\n", "<br/>", $c->tips), '', 'tooltip.png', '', '', false); ?>
 	        	<?php endif; ?>

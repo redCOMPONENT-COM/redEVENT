@@ -174,8 +174,8 @@ class RedeventViewDay extends RViewSite
 		$sortselects[] 	= JHTML::_('select.option', 'type', JText::_('COM_REDEVENT_FILTER_SELECT_CATEGORY') );
 		$sortselect 	= JHTML::_('select.genericlist', $sortselects, 'filter_type', 'size="1" class="inputbox"', 'value', 'text', $filter_type );
 
-		$lists['order_Dir'] 	= $filter_order_Dir;
-		$lists['order'] 		= $filter_order;
+		$this->orderDir 	= $filter_order_Dir;
+		$this->order 		= $filter_order;
 		$lists['filter'] 		= $filter;
 		$lists['filter_types'] 	= $sortselect;
 

@@ -202,8 +202,8 @@ class RedeventViewArchive extends RViewSite
 			$lists['eventfilter'] = JHTML::_('select.genericlist', $options, 'filter_event', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_event );
 		}
 
-		$lists['order_Dir']   = $filter_order_Dir;
-		$lists['order']       = $filter_order;
+		$this->order = $state->get('filter_order');
+		$this->orderDir = $state->get('filter_order_Dir');
 		$lists['filter']      = $filter;
 		$lists['filter_type'] = $sortselect;
 

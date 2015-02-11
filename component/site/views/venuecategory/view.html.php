@@ -85,6 +85,7 @@ class RedeventViewVenuecategory extends RViewSite
 		$category 	= & $this->get('Category');
 		$total 		= & $this->get('Total');
 		$customs 	= & $this->get('ListCustomFields');
+		$state = $this->get('state');
 
 		//are events available?
 		if (!$rows) {
@@ -162,6 +163,9 @@ class RedeventViewVenuecategory extends RViewSite
 		$this->assignRef('elsettings' , 			$elsettings);
 		$this->assignRef('item' , 					$item);
 
+		$this->order = $state->get('filter_order');
+		$this->orderDir = $state->get('filter_order_Dir');
+
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
 		$cols = RedeventHelper::validateColumns($cols);
 		$this->assign('columns',        $cols);
@@ -187,8 +191,6 @@ class RedeventViewVenuecategory extends RViewSite
 		$sortselects[] 	= JHTML::_('select.option', 'type', JText::_('COM_REDEVENT_FILTER_SELECT_CATEGORY') );
 		$sortselect 	= JHTML::_('select.genericlist', $sortselects, 'filter_type', 'size="1" class="inputbox"', 'value', 'text', $filter_type );
 
-		$lists['order_Dir'] 	= $filter_order_Dir;
-		$lists['order'] 		= $filter_order;
 		$lists['filter'] 		= $filter;
 		$lists['filter_type'] 	= $sortselect;
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redcore
+ * @package     Redevent
  * @subpackage  Layouts
  *
  * @copyright   Copyright (C) 2012 - 2014 redCOMPONENT.com. All rights reserved.

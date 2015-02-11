@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * @package     Redevent
+ * @subpackage  Layouts
+ *
+ * @copyright   Copyright (C) 2005 - 2014 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
+defined('JPATH_REDCORE') or die;
 ?>
 <!-- Button to trigger modal -->
 <a href="#pinpointModal" role="button" class="btn" data-toggle="modal"><i class="icon-map-marker"></i> <?php echo JText::_('COM_REDEVENT_BUTTON_LABEL_PINPOINT'); ?></a>

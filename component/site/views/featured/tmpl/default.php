@@ -68,8 +68,8 @@ $toggle = $this->params->get('filter_toggle', 3);
 <?php echo $this->loadTemplate('events'); ?>
 
 <p>
-<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
-<input type="hidden" name="filter_order_Dir" value="" />
+<input type="hidden" name="filter_order" value="<?php echo $this->order; ?>" />
+<input type="hidden" name="filter_order_Dir" value="<?php echo $this->orderDir; ?>" />
 </p>
 </form>
 

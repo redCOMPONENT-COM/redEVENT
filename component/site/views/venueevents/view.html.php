@@ -259,8 +259,8 @@ class RedeventViewVenueevents extends RViewSite
 		$options = array_merge($options, $this->get('CategoriesOptions'));
 		$lists['categoryfilter'] = JHTML::_('select.genericlist', $options, 'filter_category', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_category );
 
-		$lists['order_Dir'] 	= $filter_order_Dir;
-		$lists['order'] 		= $filter_order;
+		$this->order = $state->get('filter_order');
+		$this->orderDir = $state->get('filter_order_Dir');
 		$lists['filter'] 		= $filter;
 		$lists['filter_type'] 	= $sortselect;
 

@@ -55,8 +55,8 @@ class RedeventViewUpcomingvenueevents extends RViewSite
 		$pop			= JRequest::getBool('pop');
 		$upcomingvenueevents = $this->get('UpcomingVenueEvents');
 
-		$model_venueevents = $this->getModel('Venueevents');
-		$venue	 	= & $model_venueevents->getVenue();
+		$model_venueevents = RModel::getFrontInstance('Venueevents');
+		$venue	 	= $model_venueevents->getVenue();
 
 		//add css file
 		if (!$params->get('custom_css')) {

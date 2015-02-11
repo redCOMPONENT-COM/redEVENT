@@ -68,8 +68,9 @@ class RedeventViewWeek extends RViewSite
 		$pathway  = $application->getPathWay();
 
 		//get data from model
-		$rows = & $this->get('Data');
-		$week = & $this->get('Day');
+		$rows = $this->get('Data');
+		$customs = $this->get('ListCustomFields');
+		$week = $this->get('Day');
 
 		//params
 		if ($item) {
@@ -98,6 +99,7 @@ class RedeventViewWeek extends RViewSite
 		$this->assign('weekdays',   $this->get('weekdays'));
 		$this->assign('next',   $this->get('nextweek'));
 		$this->assign('previous',   $this->get('previousweek'));
+		$this->customs = $customs;
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
 		array_unique($cols);
