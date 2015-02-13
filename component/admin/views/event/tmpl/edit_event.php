@@ -119,5 +119,5 @@ defined('_JEXEC') or die('Restricted access');
 	</div>
 </div>
 <div class="span3">
-	<?php echo JLayoutHelper::render('joomla.edit.metadata', $this); ?>
+	<?php echo RLayoutHelper::render('joomla.edit.metadata', $this); ?>
 </div>

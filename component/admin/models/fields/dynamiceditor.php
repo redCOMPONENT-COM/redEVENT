@@ -8,7 +8,6 @@
 defined('_JEXEC') or die();
 
 /**
- * extends form Field class for the FOF framework, adding tags notice
  * An editarea field for content creation and formatted HTML display
  *
  * @since       2.0

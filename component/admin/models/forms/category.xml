@@ -44,7 +44,7 @@
 
     <field
             name="color"
-            type="recolor"
+            type="color"
             default=""
             label="COM_REDEVENT_COLOR"
             description ="COM_REDEVENT_COLOR"

@@ -132,7 +132,7 @@ JHtml::_('rjquery.chosen', 'select');
 					</div>
 				</div>
 				<div class="span3">
-					<?php echo JLayoutHelper::render('joomla.edit.metadata', $this); ?>
+					<?php echo RLayoutHelper::render('joomla.edit.metadata', $this); ?>
 				</div>
 			</div>
 		</div>
