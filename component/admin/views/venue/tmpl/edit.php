@@ -290,7 +290,7 @@ $fieldSets = $this->form->getFieldsets('params');
 
 		<div class="tab-pane" id="rules">
 			<div class="row-fluid">
-				<?php echo $this->form->renderField('rules'); ?>
+				<?php echo $this->form->getField('rules')->renderField(); ?>
 			</div>
 		</div>
 	</div>

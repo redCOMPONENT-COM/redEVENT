@@ -680,7 +680,7 @@
         </field>
         <field name="recurrence_limit" type="text" default="30" label="COM_REDEVENT_RECURRENCE_ANTICIPATION_WINDOW"
                description="COM_REDEVENT_RECURRENCE_ANTICIPATION_WINDOW_DESC"/>
-        <field name="default_content" type="reevent" default="0" label="COM_REDEVENT_SELECT_EVENT_DEFAULT_CONTENT"
+        <field name="default_content" type="reeventlist" default="0" label="COM_REDEVENT_SELECT_EVENT_DEFAULT_CONTENT"
                description="COM_REDEVENT_SELECT_EVENT_DEFAULT_CONTENT_DESC"/>
         <field name="allow_email_aliasing" type="radio" default="1"
                label="COM_REDEVENT_SETTINGS_MISC_ALLOW_EMAIL_ALIASING"
