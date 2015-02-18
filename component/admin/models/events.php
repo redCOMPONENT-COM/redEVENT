@@ -155,14 +155,14 @@ class RedeventModelEvents extends RModelList
 
 		if ($filter_language)
 		{
-			$query->where('obj.language = ' . $db->quote($filter_language));
+			$query->where('obj.language = ' . $this->_db->quote($filter_language));
 		}
 
 		$search = $this->getState('filter.search');
 
 		if ($search)
 		{
-			$like = $db->quote('%' . $search . '%');
+			$like = $this->_db->quote('%' . $search . '%');
 
 			$parts = array();
 			$parts[] = 'LOWER(obj.title) LIKE ' . $like;

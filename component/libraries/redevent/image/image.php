@@ -204,7 +204,7 @@ class RedeventImage
 			$dimage['thumb'] 	= self::getThumbUrl($image);
 
 			//get imagesize of the original
-			$iminfo = @getimagesize(JPATH_SITE.DS.$image);
+			$iminfo = @getimagesize(JPATH_SITE . '/' . $image);
 
 			//if the width or height is too large this formula will resize them accordingly
 			if (($iminfo[0] > $settings->get('imagewidth')) || ($iminfo[1] > $settings->get('imageheight', 100))) {
@@ -228,7 +228,7 @@ class RedeventImage
 			}
 
 			//get imagesize of the thumbnail
-			$thumbiminfo = @getimagesize(dirname(JPATH_SITE.DS.$image).DS.'re_thumb'.DS.basename($image));
+			$thumbiminfo = @getimagesize(dirname(JPATH_SITE . '/' . $image) . '/re_thumb/' . basename($image));
 			$dimage['thumbwidth'] 	= $thumbiminfo[0];
 			$dimage['thumbheight'] 	= $thumbiminfo[1];
 
@@ -256,7 +256,7 @@ class RedeventImage
 			return false;
 		}
 
-		if (!file_exists(JPATH_SITE.DS.$path)) {
+		if (!file_exists(JPATH_SITE . '/' . $path)) {
 			RedeventHelperLog::simpleLog(sprintf('Image not found: %s', $path));
 			return false;
 		}
@@ -306,7 +306,7 @@ class RedeventImage
 		$thumb_name = md5(basename($path)).$width.'_'.$height.'.png';
 		if (dirname($path) != '.')
 		{
-			$thumb_path = JPATH_SITE.DS.dirname($path).DS.'re_thumb'.DS.$thumb_name;
+			$thumb_path = JPATH_SITE . '/' . dirname($path) . '/re_thumb/' . $thumb_name;
 			$thumb_uri = $base.str_replace("\"", "/", dirname($path)).'/re_thumb/'.$thumb_name;
 		}
 		else
@@ -318,14 +318,14 @@ class RedeventImage
 		{
 			return $thumb_uri;
 		}
-		else if (JFile::exists(JPATH_SITE.DS.$path))
+		else if (JFile::exists(JPATH_SITE . '/' . $path))
 		{
 			//try to generate the thumb
 			if (!JFolder::exists(dirname($thumb_path)) && !JFolder::create(dirname($thumb_path))) {
 				RedeventHelperLog::simpleLog(sprintf('Can\'t create path for thumbnail: %s',dirname($thumb_path)));
 				return false;
 			}
-			if (RedeventImage::thumb(JPATH_SITE.DS.$path, $thumb_path, $width, $height)) {
+			if (RedeventImage::thumb(JPATH_SITE . '/' . $path, $thumb_path, $width, $height)) {
 				return $thumb_uri;
 			}
 		}
