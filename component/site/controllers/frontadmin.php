@@ -528,7 +528,17 @@ class RedeventControllerFrontadmin extends FOFController
 				throw new InvalidArgumentException('Missing organization id');
 			}
 
-			$user = RedmemberLib::saveUser(true, null, false, array('assign_organization' => $orgId));
+			if (!$app->input->getInt('id'))
+			{
+				$options = array('assign_organization' => $orgId);
+
+			}
+			else
+			{
+				$options = null;
+			}
+
+			$user = RedmemberLib::saveUser(true, null, false, $options);
 			$resp->status = 1;
 		}
 		catch (Exception $e)
