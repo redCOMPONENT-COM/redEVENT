@@ -132,12 +132,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 	$i = 0;
 	foreach ((array) $this->events as $row) :
+		$editsessionLink = RedeventHelperRoute::getEditXrefRoute($row->slug, $row->xref);
 		?>
   			<tr class="sectiontableentry<?php echo $i +1 . $this->params->get( 'pageclass_sfx' ); ?>" >
 
     			<td headers="el_date" align="left">
     				<?php if ($this->acl->canEditXref($row->xref)): ?>
-   					<?php echo JHTML::link('index.php?option=com_redevent&view=editevent&layout=eventdate&id='.$row->slug.'&xref='.$row->xref,
+   					<?php echo JHTML::link(JRoute::_($editsessionLink),
    					                       RedeventHelperOutput::formatEventDateTime($row),
    					                       array('class' => 'hasTip',
    					                             'title' => JText::_('COM_REDEVENT_EDIT_XREF' ).'::'.JText::_('COM_REDEVENT_EDIT_XREF_TIP' )));	?>

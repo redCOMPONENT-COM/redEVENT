@@ -402,6 +402,7 @@ class RedeventHelperRoute
 		$user 	= JFactory::getUser();
 
 		$view = isset($query['view']) ? $query['view'] : null;
+
 		if (!$view && isset($query['controller']) && $query['controller'] == 'registration') {
 			$view = 'details';
 		}
@@ -445,6 +446,17 @@ class RedeventHelperRoute
 					}
 				}
 			}
+
+			// Special case for edit views
+			$editViews = array('editevent', 'editvenue');
+
+			if (in_array($view, $editViews) || ($view == 'attendees' && @$query['task'] == 'manageattendees'))
+			{
+				if ($item = self::getMyEventsItem($items))
+				{
+					return $item;
+				}
+			}
 		}
 
 		// Still here..
@@ -460,6 +472,26 @@ class RedeventHelperRoute
 		}
 
 		return null;
+	}
+
+	/**
+	 * Return myevents itemid
+	 *
+	 * @param   array  $items  all menu items
+	 *
+	 * @return bool|int
+	 */
+	private function getMyEventsItem($items)
+	{
+		foreach($items as $item)
+		{
+			if (@$item->query['view'] == 'myevents')
+			{
+				return $item;
+			}
+		}
+
+		return false;
 	}
 
 	public static function addLanguageFilter($parts)

@@ -134,12 +134,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 	$i = 0;
 	foreach ((array) $this->events as $row) :
+		$editsessionLink = RedeventHelperRoute::getEditXrefRoute($row->slug, $row->xref);
 		?>
   			<tr class="sectiontableentry<?php echo $i +1 . $this->params->get( 'pageclass_sfx' ); ?>" >
 
     			<td headers="el_date" align="left">
     				<?php if ($this->acl->canEditXref($row->xref)): ?>
-   					<?php echo JHTML::link('index.php?option=com_redevent&view=editevent&layout=eventdate&id='.$row->slug.'&xref='.$row->xref,
+   					<?php echo JHTML::link($editsessionLink,
    					                       RedeventHelperOutput::formatEventDateTime($row),
    					                       array('class' => 'hasTip',
    					                             'title' => JText::_('COM_REDEVENT_EDIT_XREF' ).'::'.JText::_('COM_REDEVENT_EDIT_XREF_TIP' )));	?>
@@ -208,7 +209,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<td headers="el_code" align="left" valign="top"><?php echo $this->escape(RedeventHelper::getSessionCode($row)); ?></td>
 				<?php endif; ?>
 				<td headers="el_edit" align="left" valign="top"><?php echo $row->registered.($row->maxattendees ? '/'.$row->maxattendees : ''); ?> <?php echo $this->xrefattendeesbutton($row->xref); ?></td>
-				<td headers="el_edit" align="left" valign="top"><?php echo $this->eventeditbutton($row->slug, $row->xref); ?></td>
+				<td headers="el_edit" align="left" valign="top"><?php echo $this->eventeditbutton($row->slug, $row->xref).$this->xrefeditbutton($row->slug, $row->xref); ?></td>
 				<td headers="el_edit" align="left" valign="top">
 					<?php if ($row->published == '1'): ?>
 						<?php if ($this->acl->canEditXref($row->xref)): ?>
