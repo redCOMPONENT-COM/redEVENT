@@ -59,12 +59,12 @@ class RedeventViewCalendar extends RViewSite
         $pathway 	= & $app->getPathWay();
 
         //add css file
-        $document->addStyleSheet('media/com_redevent/css/redevent.css');
-        $document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #redevent dd { height: 1%; }</style><![endif]-->');
-        $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redeventcalendar.css');
+	    RHelperAsset::load('redevent.css');
+	    $document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #redevent dd { height: 1%; }</style><![endif]-->');
+	    RHelperAsset::load('redeventcalendar.css');
 
-        // add javascript
-        $document->addScript($this->baseurl.'/components/com_redevent/assets/js/calendar.js');
+	    // add javascript
+	    RHelperAsset::load('calendarview.js');
 
         $year 	= (int)JRequest::getVar('yearID', strftime("%Y"));
         $month 	= (int)JRequest::getVar('monthID', strftime("%m"));

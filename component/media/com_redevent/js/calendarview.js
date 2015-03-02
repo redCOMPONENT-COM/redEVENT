@@ -12,16 +12,16 @@ window.addEvent('domready', function(){
 	   this.toggleClass('catoff');
 	   toggleEvents();
    });
-   
+
    $('buttonshowall').addEvent( 'click', function(event) {
 	   $$('.eventCat').removeClass('catoff');
 	   toggleEvents();
-   }); 
-   
+   });
+
    $('buttonhideall').addEvent( 'click', function(event) {
 	   $$('.eventCat').addClass('catoff');
 	   toggleEvents();
-   }); 
+   });
 
 });
 
@@ -34,7 +34,7 @@ function toggleEvents()
 			visible[i++] = 'cat'+item.getProperty('catid');
 		}
 	});
-	
+
 	$$('div.eventcontent div').each(function(item, index){
 		var show = false;
 		for ( i in visible ) {
@@ -48,6 +48,6 @@ function toggleEvents()
 		}
 		else {
 			item.setStyle('display', 'none');
-		}			
+		}
 	});
 }
