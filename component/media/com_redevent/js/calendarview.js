@@ -1,53 +1,62 @@
-/*
-Add mootools tooltip event, with fading.
-*/
-window.addEvent('domready', function(){
-   //do your tips stuff in here...
-   var eventTip = new Tips($$('.eventTip'), {
-      className: 'custom' //this is the prefix for the CSS class
-   });
+(function($) {
 
-   /* categories filtering */
-   $$('.eventCat').addEvent( 'click', function(event) {
-	   this.toggleClass('catoff');
-	   toggleEvents();
-   });
+	var allvisible = true;
 
-   $('buttonshowall').addEvent( 'click', function(event) {
-	   $$('.eventCat').removeClass('catoff');
-	   toggleEvents();
-   });
-
-   $('buttonhideall').addEvent( 'click', function(event) {
-	   $$('.eventCat').addClass('catoff');
-	   toggleEvents();
-   });
-
-});
-
-function toggleEvents()
-{
-	var visible = new Array();
-	var i = 0;
-	$$('.eventCat').each(function(item, index) {
-		if (!item.hasClass('catoff')) {
-			visible[i++] = 'cat'+item.getProperty('catid');
-		}
-	});
-
-	$$('div.eventcontent div').each(function(item, index){
-		var show = false;
-		for ( i in visible ) {
-			if (item.hasClass(visible[i])) {
-				show = true;
-				break;
+	function toggleEvents()
+	{
+		allvisible = true;
+		var visible = new Array();
+		var i = 0;
+		$('.eventCat').each(function(index) {
+			if (!$(this).hasClass('catoff')) {
+				visible[i++] = 'cat' + $(this).attr('catid');
 			}
-		}
-		if (show == true) {
-			item.setStyle('display', 'block');
-		}
-		else {
-			item.setStyle('display', 'none');
-		}
+			else {
+				allvisible = false;
+			}
+		});
+
+		$('div.eventcontent div').each(function(index){
+			var show = false;
+			for ( i in visible ) {
+				if ($(this).hasClass(visible[i])) {
+					show = true;
+					break;
+				}
+			}
+			if (show == true) {
+				$(this).css('display', 'block');
+			}
+			else {
+				$(this).css('display', 'none');
+			}
+		});
+	}
+
+	$(document).ready(function() {
+		/* categories filtering */
+		$('.eventCat').click(function(event) {
+			if (allvisible) {
+				// Make only this one visible
+				allvisible = false;
+				$('.eventCat').addClass('catoff');
+				this.removeClass('catoff');
+			}
+			else {
+				this.toggleClass('catoff');
+			}
+			toggleEvents();
+		});
+
+		$('#buttonshowall').click(function(event) {
+			$('.eventCat').removeClass('catoff');
+			toggleEvents();
+		});
+
+		$('#buttonhideall').click(function(event) {
+			$('.eventCat').addClass('catoff');
+			toggleEvents();
+		});
 	});
-}
+})(jQuery)
+
