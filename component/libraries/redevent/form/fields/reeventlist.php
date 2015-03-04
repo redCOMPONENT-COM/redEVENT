@@ -31,7 +31,7 @@ class JFormFieldReeventlist extends JFormFieldList
 	protected function getOptions()
 	{
 		$options = array();
-		$model = RModel::getAdminInstance('Events', array('ignore_request' => true));
+		$model = RModel::getAdminInstance('Events', array('ignore_request' => true), 'com_redevent');
 		$model->setState('list.ordering', 'obj.title');
 		$model->setState('list.direction', 'asc');
 		$model->setState('list.limit', 0);

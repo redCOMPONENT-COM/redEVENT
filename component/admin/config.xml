@@ -496,7 +496,7 @@
     <fieldset name="COM_REDEVENT_frontendeventsubmit" label="COM_REDEVENT_frontendeventsubmit"
               description="COM_REDEVENT_SETTINGS_FRONTEND_TIP">
 
-        <field name="event_template" type="text" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EVENT_TEMPLATE"
+        <field name="event_template" type="reeventlist" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EVENT_TEMPLATE"
                description="COM_REDEVENT_SETTINGS_FRONTEND_EVENT_TEMPLATE_TIP"/>
 
         <field name="edit_categories" type="radio" default="0" label="COM_REDEVENT_SETTINGS_FRONTEND_EDIT_CATEGORY"

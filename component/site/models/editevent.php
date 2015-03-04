@@ -52,6 +52,13 @@ class RedeventModelEditevent extends RModelAdmin
 	 */
 	public function save($data)
 	{
+		$pk = (!empty($data['id'])) ? $data['id'] : (int) $this->getState($this->getName() . '.id');
+
+		if (!$pk)
+		{
+			$data = $this->mergeTemplateData($data);
+		}
+
 		$result = parent::save($data);
 
 		if ($result)
@@ -211,5 +218,77 @@ class RedeventModelEditevent extends RModelAdmin
 
 		$return = $app->input->get('return', null, 'base64');
 		$this->setState('return_page', base64_decode($return));
+	}
+
+	/**
+	 * Method to get the data that should be injected in the form.
+	 *
+	 * @return  array  The default data is an empty array.
+	 */
+	protected function loadFormData()
+	{
+		$app = JFactory::getApplication();
+
+		// Check the session for previously entered form data.
+		$data = JFactory::getApplication()->getUserState(
+			$this->context . '.data',
+			array()
+		);
+
+		if (empty($data))
+		{
+			$id = (int) $this->getState($this->getName() . '.id');
+
+			// Load data from event template
+			if (!$id && $templateId = $app->getParams()->get('event_template', 0))
+			{
+				$data = $this->getItem($templateId);
+				$data->id = null;
+				$data->title = null;
+				$data->alias = null;
+				$data->attachments = null;
+			}
+			else
+			{
+				$data = $this->getItem();
+			}
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Method to save the form data.
+	 *
+	 * @param   array  $data  The form data.
+	 *
+	 * @return  array
+	 */
+	private function mergeTemplateData($data)
+	{
+		$app = JFactory::getApplication();
+
+		$templateId = $app->getParams()->get('event_template', 0);
+
+		if ($templateId)
+		{
+			$query = $this->_db->getQuery(true)
+				->select('e.*')
+				->from('#__redevent_events AS e')
+				->where('e.id = ' . (int) $templateId);
+
+			$this->_db->setQuery($query);
+
+			if ($templateData = $this->_db->loadAssoc())
+			{
+				unset($templateData['id']);
+				unset($templateData['title']);
+				unset($templateData['alias']);
+				unset($templateData['course_code']);
+				$data = array_merge($templateData, $data);
+			}
+		}
+
+		return $data;
 	}
 }
