@@ -1,3 +1,7 @@
+/**
+ * This scripts handles the filtering of events categories on the calendar monthly view
+ */
+
 (function($) {
 
 	var allvisible = true;
