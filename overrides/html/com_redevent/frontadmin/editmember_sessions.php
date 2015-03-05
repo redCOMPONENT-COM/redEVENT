@@ -26,6 +26,7 @@ defined('_JEXEC') or die('Restricted access');
 		<thead>
 			<tr>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_DATE'), 'x.dates', $this->order_dir, $this->order); ?></th>
+				<th><?php echo JText::_('COM_REDEVENT_TIME'); ?></th>
 				<th><?php echo JText::_('COM_REDEVENT_EVENT_DURATION'); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TITLE'), 'a.title', $this->order_dir, $this->order); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_VENUE'), 'l.venue', $this->order_dir, $this->order); ?></th>
@@ -39,7 +40,8 @@ defined('_JEXEC') or die('Restricted access');
 		<tbody>
 			<?php foreach ($this->sessions as $row): ?>
 			<tr xref="<?php echo $row->xref; ?>" rid="<?php echo $row->rid; ?>">
-				<td><?php echo RedeventHelperOutput::formatEventDateTime($row, false); ?></td>
+				<td><?php echo RedeventHelperOutput::formatdate($row->dates, false); ?></td>
+				<td><?php echo RedeventHelperOutput::formattime($row->dates, $row->times); ?></td>
 				<td><?php echo RedeventHelper::getEventDuration($row); ?></td>
 				<td><?php echo $row->title; ?></td>
 				<td><?php echo $row->venue; ?></td>
@@ -64,7 +66,8 @@ defined('_JEXEC') or die('Restricted access');
 				<td><?php echo JHTML::image('com_redevent/b2b-delete.png', 'remove'
 						, array('class' => 'unregister hasTip'
 								, 'title' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CANCEL_REGISTRATION')
-								, 'tip' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CANCEL_REGISTRATION_TIP')), true); ?>
+								, 'tip' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CANCEL_REGISTRATION_TIP')
+								, 'confirmtext' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CONFIRM')), true); ?>
 				</td>
 				<?php endif; ?>
 			</tr>

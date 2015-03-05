@@ -88,6 +88,7 @@ $sessionLink = JHtml::_('link', $sessionUrl, $date);
 				<?php if ($this->params->get('attendees_table_show_uniqueid', 1)): ?>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_UNIQUE_ID', 'r.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php endif; ?>
+				<th>B2B</th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_REGISTERED_BY', 'u.username', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_ACTIVATED', 'r.confirmed', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php if ($this->event->maxattendees): ?>
@@ -151,6 +152,7 @@ $sessionLink = JHtml::_('link', $sessionUrl, $date);
 				<?php if ($this->params->get('attendees_table_show_uniqueid', 1)): ?>
 				<td><?php echo $row->course_code .'-'. $row->xref .'-'. $row->attendee_id; ?></td>
         <?php endif; ?>
+				<td><?php echo $row->fromb2b ? JHTML::_('image', 'admin/tick.png', JText::_('JYES'), null, true) : JHTML::_('image', 'admin/publish_x.png', JText::_('JNO'), null, true); ?></td>
 				<td><?php echo $row->name; ?></td>
 				<td>
 				  <?php

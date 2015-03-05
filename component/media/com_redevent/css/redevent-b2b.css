@@ -80,3 +80,10 @@ ul.autocompleter-choices span.autocompleter-queried {
 ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried {
     color:#9FCFFF;
 }
+
+#b2b-login {
+    width: 400px;
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+}

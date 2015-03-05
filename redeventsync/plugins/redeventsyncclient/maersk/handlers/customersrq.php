@@ -92,6 +92,23 @@ class RedeventsyncHandlerCustomersrq extends RedeventsyncHandlerAbstractmessage
 			$success->addChild('CustomerID',      $user->rm_customerid);
 		}
 
+		$companyAddress = array();
+
+		if ($user->organization_address1)
+		{
+			$companyAddress[] = $user->organization_address1;
+		}
+
+		if ($user->organization_address2)
+		{
+			$companyAddress[] = $user->organization_address1;
+		}
+
+		if ($user->organization_address3)
+		{
+			$companyAddress[] = $user->organization_address3;
+		}
+
 		$success->addChild('Firstname',    $user->rm_firstname);
 		$success->addChild('Lastname',     $user->rm_lastname);
 		$success->addChild('Address1',     $user->rm_address1);
@@ -103,15 +120,14 @@ class RedeventsyncHandlerCustomersrq extends RedeventsyncHandlerAbstractmessage
 		$success->addChild('Emailaddress', $user->email);
 		$success->addChild('Nationality', $user->rm_nationality);
 		$success->addChild('TitleRank', $user->titlerank);
-		$success->addChild('Birthdate', $user->birthdate);
+		$success->addChild('Birthdate', $user->rm_birthday);
 		$success->addChild('Phonenumber',  $user->rm_phone);
 		$success->addChild('Mobilephonenumber', $user->rm_mobile);
-		$success->addChild('CompanyCvrNr',      $user->rm_companycvr);
-		$success->addChild('CompanyName',      $user->rm_company);
-		$success->addChild('CompanyZip',      $user->rm_companyzip);
-		$success->addChild('CompanyAddress',      $user->rm_companyaddress);
-		$success->addChild('CompanyPhone',      $user->rm_companyphone);
-		$success->addChild('CompanySegmentPos',      $user->rm_companysegmentpos);
+		$success->addChild('CompanyCvrNr',      $user->organization_vat);
+		$success->addChild('CompanyName',      $user->organization_name);
+		$success->addChild('CompanyZip',      $user->organization_zip);
+		$success->addChild('CompanyAddress',      implode(', ', $companyAddress));
+		$success->addChild('CompanyPhone',      $user->organization_phone);
 
 		$this->appendElement($response, $success);
 

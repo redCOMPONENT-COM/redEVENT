@@ -63,10 +63,12 @@ defined('_JEXEC') or die('Restricted access');
 				</td>
 				<td><?php echo RedeventHelper::getStatusIcon($row->status); ?></td>
 				<?php if ($this->allow_edit_sessions): ?>
-				<td><?php echo JHTML::image('com_redevent/b2b-delete.png', 'remove'
+				<td>
+					<?php echo JHTML::image('com_redevent/b2b-delete.png', 'remove'
 						, array('class' => 'unregister hasTip'
 								, 'title' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CANCEL_REGISTRATION')
-								, 'tip' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CANCEL_REGISTRATION_TIP')), true); ?>
+								, 'tip' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CANCEL_REGISTRATION_TIP')
+								, 'confirmtext' => JText::_('COM_REDEVENT_FRONTEND_ADMIN_CONFIRM')), true); ?>
 				</td>
 				<?php  endif; ?>
 			</tr>

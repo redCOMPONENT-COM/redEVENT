@@ -25,18 +25,19 @@ class RedeventsyncModelSendqueuedmessages extends FOFModel
 			$res = null;
 			$dispatcher->trigger('onSend', array($message->plugin, $message->message, &$res));
 
+			$msg = new ResyncQueueMessage($message->message);
+
 			if ($res)
 			{
 				$this->dequeueMessage($message);
-
-				$msg = new ResyncQueueMessage($message->message);
 
 				ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $msg->getType(), $msg->getTransactionId(), $message->message, 'dequeued');
 				$app->enqueueMessage('Send message ' . $message->redeventsync_queuedmessage_id . ': success');
 			}
 			else
 			{
-				$app->enqueueMessage('Send message ' . $message->redeventsync_queuedmessage_id . ': error', 'error');
+				ResyncHelperMessagelog::log(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $msg->getType(), $msg->getTransactionId(), $message->message, 'dequeueing failed');
+				$app->enqueueMessage('Error Sending message ' . $message->redeventsync_queuedmessage_id . ': error', 'error');
 			}
 		}
 

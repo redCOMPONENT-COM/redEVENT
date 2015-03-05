@@ -147,7 +147,7 @@ class RedeventsyncclientMaerskHelper
 		$query->where('u.email = ' . $db->quote($email));
 		$query->where('x.session_code = ' . $db->quote($session_code));
 		$query->where('v.venue_code = ' . $db->quote($venue_code));
-		$query->where('r.cancelled = 0');
+//		$query->where('r.cancelled = 0');
 
 		$db->setQuery($query);
 		$res = $db->loadObject();

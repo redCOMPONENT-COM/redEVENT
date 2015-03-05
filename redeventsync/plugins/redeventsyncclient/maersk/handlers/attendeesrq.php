@@ -107,11 +107,15 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 	/**
 	 * process CreateAttendeeRQ request
 	 *
-	 * @param   SimpleXMLElement  $xml  xml data for the object
+	 * @param   SimpleXMLElement  $xml     xml data for the object
+	 * @param   boolean           $create  create attendee if not found ?
 	 *
 	 * @return boolean
+	 *
+	 * @throws PlgresyncmaerskExceptionMissinguser
+	 * @throws PlgresyncmaerskExceptionMismatchuser
 	 */
-	protected function processCreateAttendeeRQ(SimpleXMLElement $xml)
+	protected function processAttendeeRQXml(SimpleXMLElement $xml, $create = true)
 	{
 		$transaction_id = (int) $xml->TransactionId;
 
@@ -130,6 +134,10 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 			if ($existing)
 			{
 				$row->bind($existing);
+			}
+			elseif (!$create)
+			{
+				throw new Exception('Attendee not found');
 			}
 			else
 			{
@@ -273,9 +281,23 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 	 *
 	 * @return boolean
 	 */
+	protected function processCreateAttendeeRQ(SimpleXMLElement $xml)
+	{
+		return $this->processAttendeeRQXml($xml, true);
+	}
+
+	/**
+	 * process CreateAttendeeRQ request
+	 *
+	 * @param   SimpleXMLElement  $xml  xml data for the object
+	 *
+	 * @return boolean
+	 */
 	protected function processModifyAttendeeRQ(SimpleXMLElement $xml)
 	{
-		return $this->processCreateAttendeeRQ($xml);
+		$this->create = false;
+
+		return $this->processAttendeeRQXml($xml, false);
 	}
 
 	/**

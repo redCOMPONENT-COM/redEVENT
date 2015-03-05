@@ -79,40 +79,81 @@ class RedeventModelFrontadminCancellationNotification extends JModelLegacy
 	 * Send the notifications
 	 *
 	 * @return void
-	 */
-	public function notify()
-	{
-		$this->notifyManagers();
-
-		$orgSettings = RedeventHelperOrganization::getSettings($this->organizationId);
-
-		// Check the organization flow setting for 'attendee' notification
-		if ($orgSettings->get('b2b_attendee_notification_mailflow', 0) > 0)
-		{
-			$this->notifyOrganizationAdmins();
-		}
-	}
-
-	/**
-	 * Notify managers
-	 *
-	 * @return void
-	 */
-	private function notifyManagers()
-	{
-		$cancelled = $this->getAttendee();
-		$cancelled->notifyManagers(true);
-	}
-
-	/**
-	 * Notify org admins
 	 *
 	 * @throws Exception
 	 */
-	private function notifyOrganizationAdmins()
+	public function notify()
 	{
-		$orgAdmins = RedmemberLib::getOrganizationManagers($this->organizationId);
+		$orgSettings = RedeventHelperOrganization::getSettings($this->organizationId);
 
+		$email = $this->prepareNotify();
+
+		// Check the organization flow setting for 'attendee' notification
+		switch ($orgSettings->get('b2b_attendee_notification_mailflow', 0))
+		{
+			case '0':
+				// Just the attendee
+				$this->addAttendee($email);
+				break;
+
+			case '1':
+				// Just the organizations admins
+				$this->addOrganizationAdmin($email);
+				break;
+
+			case '2':
+				// Both
+				$this->addAttendee($email);
+				$this->addOrganizationAdmin($email);
+				break;
+		}
+
+		if (!$email->send())
+		{
+			throw new Exception('failed sending org admins email');
+		}
+
+		// Notify managers
+		JPluginHelper::importPlugin('redevent');
+		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher->trigger('onB2BCancellationNotifyAdmins', array($this->attendeeId));
+	}
+
+	/**
+	 * Notify attendee
+	 *
+	 * @param   JMail  $email  email
+	 *
+	 * @return void
+	 */
+	private function addAttendee($email)
+	{
+		$attendee = $this->getAttendee();
+		$email->addRecipient($attendee->getEmail());
+	}
+
+	/**
+	 * Notify org admin
+	 *
+	 * @param   JMail  $email  email
+	 *
+	 * @return void
+	 */
+	private function addOrganizationAdmin($email)
+	{
+		$user = JFactory::getUser();
+		$email->addRecipient($user->get('email'));
+	}
+
+	/**
+	 * Prepare email
+	 *
+	 * @return JMail
+	 *
+	 * @throws Exception
+	 */
+	private function prepareNotify()
+	{
 		$attendee = $this->getAttendee();
 
 		$orgSettings = RedeventHelperOrganization::getSettings($this->organizationId);
@@ -126,16 +167,7 @@ class RedeventModelFrontadminCancellationNotification extends JModelLegacy
 			: JText::_('COM_REDEVENT_ATTENDEE_NOTIFICATION_MAILFLOW_ORGADMIN_cancellation_DEFAULT_BODY');
 		$email = $attendee->prepareEmail($subject, $body);
 
-		foreach ($orgAdmins as $id)
-		{
-			$user = JUser::getInstance($id);
-			$email->addRecipient($user->get('email'));
-		}
-
-		if (!$email->send())
-		{
-			throw new Exception('failed sending org admins cancellation email');
-		}
+		return $email;
 	}
 
 	/**

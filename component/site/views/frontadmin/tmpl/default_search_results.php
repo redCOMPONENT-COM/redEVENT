@@ -22,18 +22,27 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <?php if ($this->sessions): ?>
-	<h2><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ALL_EVENTS'); ?></h2>
 
+<div id="sessions-header" class="panel-heading">
+	<h2 class="panel-title">
+		<a data-toggle="collapse" data-parent="#main-results" href="#sessions-result">
+			<?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ALL_EVENTS'); ?>
+		</a>
+	</h2>
+</div>
+
+<div id="sessions-result" class="panel-collapse collapse in">
 	<table class="table">
 		<thead>
 			<tr>
+				<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SELECT_SESSION'); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_DATE'), 'x.dates', $this->order_Dir, $this->order); ?></th>
+				<th><?php echo JText::_('COM_REDEVENT_TIME'); ?></th>
 				<th><?php echo JText::_('COM_REDEVENT_EVENT_DURATION'); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TITLE'), 'a.title', $this->order_Dir, $this->order); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_VENUE'), 'l.venue', $this->order_Dir, $this->order); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CITY'), 'l.city', $this->order_Dir, $this->order); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CATEGORY'), 'c.catname', $this->order_Dir, $this->order); ?></th>
-				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_LANGUAGE'), 'a.language', $this->order_Dir, $this->order); ?></th>
 				<th><?php echo JText::_('COM_REDEVENT_BOOKED'); ?></th>
 				<th colspan="3"><?php echo JText::_('COM_REDEVENT_ACTIONS'); ?></th>
 			</tr>
@@ -51,7 +60,7 @@ defined('_JEXEC') or die('Restricted access');
 				if ($this->useracl->canEditXref($row->xref))
 				{
 					$editsessionlink = JHtml::link(RedeventHelperRoute::getEditXrefRoute($row->id, $row->xref).'&tmpl=component'
-						, RedeventHelperOutput::formatEventDateTime($row, false)
+						, RedeventHelperOutput::formatdate($row->dates, false)
 						, array('class' => 'xrefmodal hasTip',
 							'title' => JText::_('COM_REDEVENT_EDIT_XREF'),
 							'tip' => JText::_('COM_REDEVENT_EDIT_XREF_TIP')));
@@ -62,7 +71,13 @@ defined('_JEXEC') or die('Restricted access');
 				}
 			?>
 				<tr xref="<?php echo $row->xref; ?>">
+					<td>
+						<input type="radio" name="select-session" value="<?php echo $row->xref; ?>"
+						       class="select-session-radio"
+							<?php echo $this->isFull($row) ? 'disabled="disabled"' : ''; ?>/>
+					</td>
 					<td><?php echo $editsessionlink; ?></td>
+					<td><?php echo RedeventHelperOutput::formattime($row->dates, $row->times); ?></td>
 					<td><?php echo RedeventHelper::getEventDuration($row); ?></td>
 					<td><?php echo RedeventHelper::getSessionFullTitle($row); ?></td>
 					<td><?php echo $row->venue; ?></td>
@@ -83,9 +98,12 @@ defined('_JEXEC') or die('Restricted access');
 						echo implode("<br/>", $cats);
 						?>
 					</td>
-					<td><?php echo $row->language_sef; ?></td>
-					<td><?php echo $this->bookbutton($row->xref); ?>
-						<?php echo $this->printPlaces($row); ?>
+					<td>
+						<?php if (!$this->isFull($row)): ?>
+							<?php echo $this->bookbutton($row->xref); ?><?php echo $this->printPlaces($row, false); ?>
+						<?php else: ?>
+							<?php echo $this->printInfoIcon($row); ?>
+						<?php endif; ?>
 					</td>
 					<td>
 					<?php if ($this->useracl->canEditEvent((int) $row->slug)): ?>
@@ -134,11 +152,15 @@ defined('_JEXEC') or die('Restricted access');
 	</table>
 
 	<!--pagination-->
-	<?php if (($this->pagination->get('pages.total') > 1)) : ?>
 	<div class="pagination">
-		<?php echo $this->pagination->getPagesLinks(); ?>
+		<div class="limit"><?php echo JText::_('COM_REDEVENT_FRONTADMIN_PAGINATION_SELECT_LIMIT'); ?>
+			<?php echo $this->getLimitBox(); ?>
+		</div>
+		<?php if (($this->pagination->get('pages.total') > 1)) : ?>
+			<?php echo $this->pagination->getPagesLinks(); ?>
+		<?php  endif; ?>
 	</div>
-	<?php  endif; ?>
 	<!-- pagination end -->
+</div>
 
 <?php endif; ?>

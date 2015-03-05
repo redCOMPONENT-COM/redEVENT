@@ -111,6 +111,21 @@ class RedeventAttendee extends JObject
 	}
 
 	/**
+	 * Get user id for this attendee
+	 *
+	 * @return bool
+	 */
+	public function getUserId()
+	{
+		if ($this->load()->uid)
+		{
+			return $this->load()->uid;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Set Fullname
 	 *
 	 * @param   string  $name  Fullname
@@ -540,77 +555,20 @@ class RedeventAttendee extends JObject
 	 */
 	public function getAdminEmails()
 	{
-		$params = JComponentHelper::getParams('com_redevent');
-		$event = $this->getSessionDetails();
+		$helper = new RedeventHelperSessionadmins;
+		$adminEmails = $helper->getAdminEmails($this->getXref());
 
-		$recipients = array();
-
-		// Default recipients
-		$default = $params->get('registration_default_recipients');
-
-		if (!empty($default))
+		if ($rfRecipients = $this->getRFRecipients())
 		{
-			if (strstr($default, ';'))
+			foreach ((array) $rfRecipients as $r)
 			{
-				$addresses = explode(";", $default);
-			}
-			else
-			{
-				$addresses = explode(",", $default);
-			}
-
-			foreach ($addresses as $a)
-			{
-				$a = trim($a);
-
-				if (JMailHelper::isEmailAddress($a))
+				if (JMailHelper::isEmailAddress($r))
 				{
-					$recipients[] = array('email' => $a, 'name' => '');
+					$adminEmails[] = array('email' => $r, 'name' => '');
 				}
 			}
 		}
 
-		// Creator
-		if ($params->get('registration_notify_creator', 1))
-		{
-			if (JMailHelper::isEmailAddress($event->creator_email))
-			{
-				$recipients[] = array('email' => $event->creator_email, 'name' => $event->creator_name);
-			}
-		}
-
-		// Venue recipients
-		if (!empty($event->venue_email))
-		{
-			$recipients[] = array('email' => $event->venue_email, 'name' => $event->venue);
-		}
-
-		// Group recipients
-		$gprecipients = $this->getXrefRegistrationRecipients();
-
-		if ($gprecipients)
-		{
-			foreach ($gprecipients AS $r)
-			{
-				if (JMailHelper::isEmailAddress($r->email))
-				{
-					$recipients[] = array('email' => $r->email, 'name' => $r->name);
-				}
-			}
-		}
-
-		// Redform recipients
-		$rfrecipients = $this->getRFRecipients();
-
-		foreach ((array) $rfrecipients as $r)
-		{
-			if (JMailHelper::isEmailAddress($r))
-			{
-				$recipients[] = array('email' => $r, 'name' => '');
-			}
-		}
-
-		// Custom recipients
 		$customrecipients = array();
 
 		JPluginHelper::importPlugin('redevent');
@@ -621,11 +579,11 @@ class RedeventAttendee extends JObject
 		{
 			if (JMailHelper::isEmailAddress($r['email']))
 			{
-				$recipients[] = array('email' => $r['email'], 'name' => $r['name']);
+				$adminEmails[] = array('email' => $r['email'], 'name' => $r['name']);
 			}
 		}
 
-		return $recipients;
+		return $adminEmails;
 	}
 
 	public function replaceTags($text)
@@ -647,7 +605,7 @@ class RedeventAttendee extends JObject
 	 *
 	 * @return string
 	 */
-	protected function getRFRecipients()
+	private function getRFRecipients()
 	{
 		$answers = $this->getAnswers();
 
@@ -694,11 +652,11 @@ class RedeventAttendee extends JObject
 
 		if (!isset(self::$sessions[$xref]))
 		{
-			$query = 'SELECT a.id AS did, x.id AS xref, a.title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, '
+			$query = 'SELECT a.id AS did, x.id AS xref, a.title, a.title AS event_title, a.datdescription, a.meta_keywords, a.meta_description, a.datimage, '
 				. ' a.registra, a.unregistra, a.activate, a.notify, a.redform_id as form_id, '
 				. ' a.notify_confirm_body, a.notify_confirm_subject, a.notify_subject, a.notify_body, '
 				. ' a.notify_off_list_subject, a.notify_off_list_body, a.notify_on_list_subject, a.notify_on_list_body, '
-				. ' x.*, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
+				. ' x.*, x.title AS session_title, a.created_by, a.redform_id, x.maxwaitinglist, x.maxattendees, a.juser, a.show_names, a.showfields, '
 				. ' a.submission_type_email, a.submission_type_external, a.submission_type_phone,'
 				. ' v.venue, v.email as venue_email,'
 				. ' u.name AS creator_name, u.email AS creator_email, '
@@ -790,34 +748,6 @@ class RedeventAttendee extends JObject
 	}
 
 	/**
-	 * returns registration recipients from groups acl
-	 *
-	 * @return array
-	 */
-	protected function getXrefRegistrationRecipients()
-	{
-		$event = $this->getSessionDetails();
-		$usersIds = RedeventUserAcl::getXrefRegistrationRecipients($event->xref);
-
-		if (!$usersIds)
-		{
-			return false;
-		}
-
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select('u.name, u.email');
-		$query->from('#__users AS u');
-		$query->where('u.id IN (' . implode(",", $usersIds) . ')');
-
-		$db->setQuery($query);
-		$xref_group_recipients = $db->loadObjectList();
-
-		return $xref_group_recipients;
-	}
-
-	/**
 	 * Send e-mail confirmations
 	 *
 	 * @return boolean
@@ -832,6 +762,8 @@ class RedeventAttendee extends JObject
 		 **/
 		if (isset($eventsettings->notify) && $eventsettings->notify)
 		{
+			$params = JComponentHelper::getParams('com_redevent');
+
 			$subject = $eventsettings->notify_subject;
 			$body = '<html><head><title></title></title></head><body>';
 			$body .= $eventsettings->notify_body;
@@ -847,6 +779,12 @@ class RedeventAttendee extends JObject
 			{
 				/* Add the email address */
 				$mailer->AddAddress($email['email'], $email['fullname']);
+			}
+
+			if ($params->get(registration_notification_attach_ics, 0))
+			{
+				$ics = $this->getIcs();
+				$mailer->addAttachment($ics);
 			}
 
 			/* send */
@@ -1026,5 +964,34 @@ class RedeventAttendee extends JObject
 		$mailer->setSubject($subject);
 
 		return $mailer;
+	}
+
+	/**
+	 * return ics file for session
+	 *
+	 * @return bool|string
+	 */
+	private function getIcs()
+	{
+		$app = JFactory::getApplication();
+
+		// Get data from the model
+		$row = $this->getSessionDetails();
+
+		// initiate new CALENDAR
+		$vcal = RedeventHelper::getCalendarTool();
+		$vcal->setProperty('unique_id', 'session' . $row->xref . '@' . $app->getCfg('sitename'));
+		$vcal->setConfig( "filename", "event".$row->xref.".ics" );
+
+		RedeventHelper::icalAddEvent($vcal, $row);
+
+		if ($vcal->saveCalendar($app->getCfg('tmp_path'), "event" . $row->xref . ".ics"))
+		{
+			return $app->getCfg('tmp_path') . "/event" . $row->xref . ".ics";
+		}
+		else
+		{
+			return false;
+		}
 	}
 }

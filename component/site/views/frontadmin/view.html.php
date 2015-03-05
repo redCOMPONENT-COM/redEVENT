@@ -79,7 +79,17 @@ class RedeventViewFrontadmin extends JView
 			return $this->displayMemberPrevious($tpl);
 		}
 
-		JHTML::_('behavior.framework');
+		if ($this->getLayout() == 'infoform')
+		{
+			return $this->displayInfoform($tpl);
+		}
+
+		if ($this->getLayout() == 'closemodalmember')
+		{
+			return $this->displayCloseModalMember($tpl);
+		}
+
+		JHtml::_('behavior.framework');
 		JHtml::_('behavior.tooltip');
 		JHtml::_('behavior.modal');
 
@@ -119,6 +129,9 @@ class RedeventViewFrontadmin extends JView
 		}
 
 		$document->addScript('media/com_redevent/js/b2b.js?v=' . uniqid());
+
+		// For redmember
+		$document->addScript('components/com_redmember/assets/js/threeselectdate.js');
 
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
@@ -165,6 +178,7 @@ class RedeventViewFrontadmin extends JView
 		$this->bookings_limitstart = $state->get('bookings_limitstart');
 		$this->bookings_order = $state->get('bookings_order');
 		$this->bookings_order_dir = $state->get('bookings_order_dir');
+		$this->bookings_pagination = $this->get('BookingsPagination');
 
 		$this->useracl = $useracl;
 		$this->params  = $params;
@@ -195,8 +209,10 @@ class RedeventViewFrontadmin extends JView
 		JText::script("COM_REDEVENT_FRONTEND_ADMIN_BREADCRUMB_OVERVIEW");
 		JText::script("COM_REDEVENT_FRONTEND_ADMIN_BREADCRUMB_BOOK");
 		JText::script("COM_REDEVENT_FRONTEND_ADMIN_BREADCRUMB_SEARCH_RESULTS");
-		JText::script("COM_REDEVENT_FRONTEND_ADMIN_NO_MORE_PLACES_LEFT");
+		JText::script("COM_REDEVENT_FRONTEND_ADMIN_NOT_ENOUGH_PLACES_LEFT");
 		JText::script("COM_REDEVENT_FRONTEND_ADMIN_PLEASE_SELECT_SESSION_FIRST");
+		JText::script("COM_REDEVENT_FRONTEND_ADMIN_COMMENT_EMAIL_SENT");
+		JText::script("COM_REDEVENT_FRONTEND_ADMIN_MEMBER_SAVED");
 
 		parent::display($tpl);
 	}
@@ -260,7 +276,12 @@ class RedeventViewFrontadmin extends JView
 	 */
 	protected function printPlaces($row, $showBooked = true)
 	{
-		$maxLeftDisplay = 6;
+		if ($this->isFull($row))
+		{
+			return '';
+		}
+
+		$maxLeftDisplay = 2000;
 
 		if (!$row->maxattendees)
 		{
@@ -292,6 +313,61 @@ class RedeventViewFrontadmin extends JView
 				return '<span class="hasTip" title="' . $tip . '">' . $left . '</span>';
 			}
 		}
+	}
+
+	/**
+	 * returns string for info icon when session is full
+	 *
+	 * @param   object  $row  session data
+	 *
+	 * @return string
+	 */
+	protected function printInfoIcon($row)
+	{
+		if (!$this->isFull($row))
+		{
+			return '';
+		}
+
+		$image = JHTML::image('media/com_redevent/images/b2b-getinfo.gif', JText::_('COM_REDEVENT_FRONTEND_ADMIN_QUERY_INFO_SESSION_FULL'));
+
+		$tip  = JText::_('COM_REDEVENT_FRONTEND_ADMIN_QUERY_INFO_SESSION_FULL_DESC');
+		$text = JText::_('COM_REDEVENT_FRONTEND_ADMIN_QUERY_INFO_SESSION_FULL');
+
+		$attribs = array(
+			'xref' => $row->xref,
+			'class' => 'getinfo hasTip',
+			'title' => $text,
+			'tip' => $tip
+		);
+
+		$output = JHtml::link('index.php?option=com_redevent&controller=frontadmin&task=getinfoform&tmpl=component&modal=1&xref=' . $row->xref, $image, $attribs);
+
+		return $output;
+	}
+
+	/**
+	 * Check if event is full
+	 *
+	 * @param $row
+	 *
+	 * @return bool
+	 */
+	protected function isFull($row)
+	{
+		// No limit
+		if (!$row->maxattendees)
+		{
+			return false;
+		}
+
+		// Not full
+		if ($row->registered >= $row->maxattendees)
+		{
+			return true;
+		}
+
+		return false;
 	}
 
 
@@ -340,6 +416,10 @@ class RedeventViewFrontadmin extends JView
 	protected function displayEditMember($tpl= null)
 	{
 		$document = JFactory::getDocument();
+
+		// Load Akeeba Strapper
+		include_once JPATH_ROOT . '/media/akeeba_strapper/strapper.php';
+		AkeebaStrapper::bootstrap();
 
 		$member = $this->get('MemberInfo');
 		$booked = $this->get('MemberBooked');
@@ -443,5 +523,61 @@ class RedeventViewFrontadmin extends JView
 
 		$this->setLayout('editmember_sessions');
 		parent::display($tpl);
+	}
+
+	/**
+	 * Display info form
+	 *
+	 * @param   string  $tpl  template to display
+	 *
+	 * @return void
+	 */
+	protected function displayInfoForm($tpl= null)
+	{
+		// Load Akeeba Strapper
+		include_once JPATH_ROOT . '/media/akeeba_strapper/strapper.php';
+		AkeebaStrapper::bootstrap();
+
+		$this->action = 'index.php?option=com_redevent&controller=frontadmin';
+		$this->xref = JFactory::getApplication()->input->getInt('xref', 0);
+
+		parent::display($tpl);
+	}
+
+	/**
+	 * Display close modal edit member window
+	 *
+	 * @param   string  $tpl  template to display
+	 *
+	 * @return void
+	 */
+	protected function displayCloseModalMember($tpl= null)
+	{
+		$app = JFactory::getApplication();
+		$this->uid = $app->input->get('uid');
+		$this->name = $app->input->get('uname');
+
+		parent::display($tpl);
+	}
+
+	/**
+	 * return html for limit box
+	 *
+	 * @return string html
+	 */
+	protected function getLimitBox()
+	{
+		$state = $this->get('state');
+
+		$options = array(
+			JHtml::_('select.option', 15, 15),
+			JHtml::_('select.option', 25, 25),
+			JHtml::_('select.option', 50, 50)
+		);
+		$html = JHtml::_('select.genericlist', $options, 'limit',
+			array('class' => 'inputbox ajaxlimit'), 'value', 'text', $state->get('limit')
+		);
+
+		return $html;
 	}
 }

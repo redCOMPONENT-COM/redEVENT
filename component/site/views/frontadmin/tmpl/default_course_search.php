@@ -43,16 +43,20 @@ defined('_JEXEC') or die('Restricted access');
 			, array('class' => 'input-medium')
 			, 'value', 'text', $this->state->get('filter_category')); ?>
 	</div>
+	<div class="date-filter-label"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_SEARCH_DATE_FILTER'); ?></div>
 	<div>
-		<?php echo JHtml::calendar($this->filter_from, 'filter_from', 'filter_from', '%Y-%m-%d', array('class' => 'input-small')); ?>
+		<?php echo JHtml::calendar($this->filter_from, 'filter_from', 'filter_from', '%Y-%m-%d',
+			array('class' => 'input-small', 'placeholder' => JText::_('COM_REDEVENT_FROM'))); ?>
 	</div>
 	<div>
-		<?php echo JHTML::calendar($this->filter_to, 'filter_to', 'filter_to', '%Y-%m-%d', array('class' => 'input-small')); ?>
+		<?php echo JHTML::calendar($this->filter_to, 'filter_to', 'filter_to', '%Y-%m-%d',
+			array('class' => 'input-small', 'placeholder' => JText::_('COM_REDEVENT_TO'))); ?>
 	</div>
 
 	<input type="hidden" name="filter_order" value="<?php echo $this->order; ?>"/>
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->order_Dir; ?>"/>
 	<input type="hidden" name="limitstart" value="<?php echo $this->limitstart; ?>"/>
+	<input type="hidden" name="limit" value="<?php echo $this->state->get('limit'); ?>"/>
 
 	<button type="button" id="search-course" class="btn"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSE_BUTTON_SEARCH'); ?></button>
 	<button type="button" id="search-course-reset" class="btn"><?php echo JText::_('COM_REDEVENT_RESET'); ?></button>

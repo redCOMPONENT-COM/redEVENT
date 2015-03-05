@@ -234,40 +234,65 @@ class RedeventModelFrontadminregistration extends JModelLegacy
 		$orgSettings = RedeventHelperOrganization::getSettings($this->organizationId);
 		$registration = $this->getRegistration();
 
+		$email = $this->prepareNotify();
+
 		// Check the organization flow setting for 'attendee' notification
 		switch ($orgSettings->get('b2b_attendee_notification_mailflow', 0))
 		{
 			case '0':
 				// Just the attendee
-				$this->notifyAttendee();
+				$this->addAttendee($email);
 				break;
 
 			case '1':
 				// Just the organizations admins
-				$this->notifyOrganizationAdmins();
+				$this->addOrganizationAdmin($email);
 				break;
 
 			case '2':
 				// Both
-				$this->notifyAttendee();
-				$this->notifyOrganizationAdmins();
+				$this->addAttendee($email);
+				$this->addOrganizationAdmin($email);
 				break;
 		}
 
+		if (!$email->send())
+		{
+			throw new Exception('failed sending org admins email');
+		}
+
 		// Notify managers
-		$this->getRegistrationModel()->notifyManagers($registration->submit_key);
+
+		JPluginHelper::importPlugin( 'redevent' );
+		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher->trigger('onB2BRegistrationNotifyAdmins', array($registration->id));
 	}
 
 	/**
 	 * Notify attendee
 	 *
+	 * @param   JMail  $email  email
+	 *
 	 * @return void
 	 */
-	private function notifyAttendee()
+	private function addAttendee($email)
 	{
 		$registration = $this->getRegistration();
 		$attendee = new RedeventAttendee($registration->id);
-		$attendee->sendNotificationEmail();
+		$email->addRecipient($attendee->getEmail());
+	}
+
+	/**
+	 * Notify org admin
+	 *
+	 * @param   JMail  $email  email
+	 *
+	 * @return void
+	 */
+	private function addOrganizationAdmin($email)
+	{
+		$user = JFactory::getUser();
+		$email->addRecipient($user->get('email'));
 	}
 
 	/**
@@ -277,10 +302,8 @@ class RedeventModelFrontadminregistration extends JModelLegacy
 	 *
 	 * @throws Exception
 	 */
-	private function notifyOrganizationAdmins()
+	private function prepareNotify()
 	{
-		$orgAdmins = RedmemberLib::getOrganizationManagers($this->organizationId);
-
 		$registration = $this->getRegistration();
 		$attendee = new RedeventAttendee($registration->id);
 
@@ -295,16 +318,7 @@ class RedeventModelFrontadminregistration extends JModelLegacy
 			: JText::_('COM_REDEVENT_ATTENDEE_NOTIFICATION_MAILFLOW_ORGADMIN_CONFIRMATION_DEFAULT_BODY');
 		$email = $attendee->prepareEmail($subject, $body);
 
-		foreach ($orgAdmins as $id)
-		{
-			$user = JUser::getInstance($id);
-			$email->addRecipient($user->get('email'));
-		}
-
-		if (!$email->send())
-		{
-			throw new Exception('failed sending org admins email');
-		}
+		return $email;
 	}
 
 	/**

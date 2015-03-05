@@ -28,26 +28,19 @@ JText::script('COM_REDEVENT_FRONTEND_ADMIN_CONFIRM_LEAVE_PAGE');
 		return Joomla.JText._('COM_REDEVENT_FRONTEND_ADMIN_CONFIRM_LEAVE_PAGE');
 	};
 </script>
-<div id="search-toolbar">
-	<?php echo $this->loadTemplate('search_toolbar'); ?>
-</div>
-<div class="clear"></div>
 
 <div id="main-content" class="row-fluid">
-	<div id="main-results" class="span10">
+	<div id="main-results" class="span10 panel-group">
 
-		<ul id="main-breadcrumb" class="breadcrumb">
-		</ul>
-
-		<div id="main-attendees" style="display:none">
-
+		<div id="main-attendees" class="panel panel-default">
+			<?php echo $this->loadTemplate('attendees'); ?>
 		</div>
 
-		<div id="main-bookings">
+		<div id="main-bookings" class="panel panel-default">
 			<?php echo $this->loadTemplate('bookings_search_results'); ?>
 		</div>
 
-		<div id="main-course-results">
+		<div id="main-course-results" class="panel panel-default">
 			<?php echo $this->loadTemplate('search_results'); ?>
 		</div>
 	</div>

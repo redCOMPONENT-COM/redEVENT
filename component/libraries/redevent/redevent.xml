@@ -19,6 +19,7 @@
 		<folder>form</folder>
         <folder>helper</folder>
         <folder>model</folder>
+        <folder>registration</folder>
         <folder>tags</folder>
         <folder>user</folder>
 	</files>

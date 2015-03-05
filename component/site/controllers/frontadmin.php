@@ -222,6 +222,15 @@ class RedeventControllerFrontadmin extends FOFController
 		}
 	}
 
+	public function closemodalmember()
+	{
+		$this->viewName  = 'frontadmin';
+		$this->modelName = 'frontadmin';
+		$this->layout    = 'closemodalmember';
+
+		$this->display();
+	}
+
 	public function getmemberbooked()
 	{
 		$app = JFactory::getApplication();
@@ -519,7 +528,17 @@ class RedeventControllerFrontadmin extends FOFController
 				throw new InvalidArgumentException('Missing organization id');
 			}
 
-			$user = RedmemberLib::saveUser(true, null, false, array('assign_organization' => $orgId));
+			if (!$app->input->getInt('id'))
+			{
+				$options = array('assign_organization' => $orgId);
+
+			}
+			else
+			{
+				$options = null;
+			}
+
+			$user = RedmemberLib::saveUser(true, null, false, $options);
 			$resp->status = 1;
 		}
 		catch (Exception $e)
@@ -540,14 +559,23 @@ class RedeventControllerFrontadmin extends FOFController
 			if ($resp->status)
 			{
 				$app->input->set('uid', $user->get('id'));
-				$app->enqueueMessage(Jtext::_('COM_REDEVENT_FRONTEND_ADMIN_MEMBER_SAVED'));
+				$app->input->set('uname', $user->get('name'));
+
+				if ($app->input->get('modal'))
+				{
+					$this->closemodalmember();
+				}
+				else
+				{
+					$app->enqueueMessage(Jtext::_('COM_REDEVENT_FRONTEND_ADMIN_MEMBER_SAVED'));
+					$this->editmember();
+				}
 			}
 			else
 			{
 				$app->enqueueMessage($resp->error, 'error');
+				$this->editmember();
 			}
-
-			$this->editmember();
 		}
 	}
 
@@ -589,5 +617,55 @@ class RedeventControllerFrontadmin extends FOFController
 		// Send the response.
 		echo json_encode($return);
 		JFactory::getApplication()->close();
+	}
+
+	/**
+	 * display session info form
+	 *
+	 * @return void
+	 */
+	public function getinfoform()
+	{
+		$app = JFactory::getApplication();
+		$app->input->set('tmpl', 'component');
+
+		$this->viewName  = 'frontadmin';
+		$this->modelName = 'frontadmin';
+		$this->layout    = 'infoform';
+
+		$this->display();
+	}
+
+	/**
+	 * Submit session info form
+	 *
+	 * @return void
+	 */
+	public function submitinfoform()
+	{
+		$app = JFactory::getApplication();
+
+		$xref = $app->input->getInt('xref');
+		$question = $app->input->getString('question');
+		$user = JFactory::getUser();
+
+		$model = $this->getModel('frontadmininfo');
+
+		$redirect = 'index.php?option=com_redevent&view=frontadmin&layout=infoformfinal';
+		$msgType = '';
+
+		try
+		{
+			$model->sendNotification($xref, $user, $question);
+			$msg = JText::_('COM_REDEVENT_FRONTEND_ADMIN_SESSION_INFO_FORM_SENT');
+		}
+		catch (Exception $e)
+		{
+			$redirect = 'index.php?option=com_redevent&view=frontadmin&layout=infoform&xref=' . $xref;
+			$msg = $e->getMessage();
+			$msgType = 'error';
+		}
+
+		$this->setRedirect($redirect, $msg, $msgType);
 	}
 }

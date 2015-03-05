@@ -27,7 +27,7 @@
 		       class="redeventsyncitem"
 		       empty_replacement="(no title)"/>
 
-		<field name="date" type="calendar" filter="SERVER_UTC"
+		<field name="date" type="calendar"
 		       empty_replacement="(no title)"
 				/>
 		<field name="direction" type="resdirection"/>

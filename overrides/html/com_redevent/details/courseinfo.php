@@ -46,6 +46,7 @@ function tableOrdering( order, dir, view )
 			<!-- <th class="courseinfo_titlename"><?php echo JText::_('COM_REDEVENT_EVENT_NAME'); ?></th> -->
 			<th class="courseinfo_titledate"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_EVENT_DATE', 'x.dates', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th class="courseinfo_titleduration"><?php echo JText::_('COM_REDEVENT_EVENT_DURATION'); ?></th>
+		<th class="courseinfo_titlelanguage"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_LANGUAGE', 'x.session_language', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th class="courseinfo_titlevenue" colspan="2"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_LOCATION', 'v.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 			<th class="courseinfo_titleprice"><?php echo JText::_('COM_REDEVENT_EVENT_PRICE'); ?></th>
 			<th class="courseinfo_titlecredit"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_EVENT_AVAILABLE_SEAT', 'x.maxattendees', $this->lists['order_Dir'], $this->lists['order'] ); JText::_('COM_REDEVENT_EVENT_AVAILABLE_SEAT'); ?></th>
@@ -76,6 +77,7 @@ else
 			<!--<td class="courseinfo_name"><?php echo JHTML::_('link', $event_url, $event->title); ?></td>-->
 			<td class="courseinfo_date"><?php echo RedeventHelperOutput::formatdate($event->dates, $event->times); ?></td>
 			<td class="courseinfo_duration"><?php echo $duration; ?></td>
+			<td><?php echo RedeventHelperLanguages::getFormattedIso1($event->session_language); ?></td>
 			<td class="courseinfo_venue"><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
 			<td class="courseinfo_country"><?php echo RedeventHelperOutput::getFlag($event->country); ?></td>
 			<td class="courseinfo_prices re-price"><?php echo RedeventHelperOutput::formatListPrices($event->prices); ?></td>

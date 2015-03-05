@@ -21,25 +21,45 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<?php if ($this->bookings): ?>
-	<h2><?php echo JText::sprintf('COM_REDEVENT_FRONTEND_ORGANIZATION_S_BOOKINGS', $this->organization); ?></h2>
+<div id="bookings-header" class="panel-heading">
+	<h2 class="panel-title">
+		<a data-toggle="collapse" data-parent="#main-results" href="#bookings-result">
+			<?php echo JText::sprintf('COM_REDEVENT_FRONTEND_ORGANIZATION_S_BOOKINGS', $this->organization); ?>
+		</a>
+	</h2>
+</div>
+
+<div id="bookings-result" class="panel-collapse collapse in">
+
+	<ul class="inline bookings-filter">
+		<li><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SEARCH_IN'); ?></li>
+		<li><label for="filter_bookings_state"><input name="filter_bookings_state" id="filter_bookings_state0" type="radio" value="1"
+					<?php echo $this->state->get('filter_bookings_state') == 1 ? ' checked="checked"' : ''; ?>/> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ACTIVE_COURSES'); ?></label></li>
+		<li><label for="filter_bookings_state"><input name="filter_bookings_state" id="filter_bookings_state1" type="radio" value="-1"
+					<?php echo $this->state->get('filter_bookings_state') == -1 ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_COURSES_HISTORY'); ?></label></li>
+	</ul>
 
 	<table class="table">
 		<thead>
 			<tr>
+				<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SELECT_SESSION'); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_DATE'), 'x.dates', $this->bookings_order_dir, $this->bookings_order); ?></th>
+				<th><?php echo JText::_('COM_REDEVENT_TIME'); ?></th>
 				<th><?php echo JText::_('COM_REDEVENT_EVENT_DURATION'); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TITLE'), 'a.title', $this->bookings_order_dir, $this->bookings_order); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_VENUE'), 'l.venue', $this->bookings_order_dir, $this->bookings_order); ?></th>
 				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_CATEGORY'), 'c.catname', $this->bookings_order_dir, $this->bookings_order); ?></th>
+				<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_LANGUAGE'), 'x.session_language', $this->bookings_order_dir, $this->bookings_order); ?></th>
 				<th><?php echo JText::_('COM_REDEVENT_B2B_SEATS'); ?></th>
-				<th><?php echo JText::_('COM_REDEVENT_FRONTEND_BOOKINGS_EDIT_PARTICIPANTS'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
+		<?php if ($this->bookings): ?>
 			<?php foreach ($this->bookings as $row): ?>
 				<tr>
+					<td><input type="radio" name="select-session" value="<?php echo $row->xref; ?>" class="select-session-radio"/></td>
 					<td><?php echo RedeventHelperOutput::formatdate($row->dates, false); ?></td>
+					<td><?php echo RedeventHelperOutput::formattime($row->dates, $row->times); ?></td>
 					<td><?php echo RedeventHelper::getEventDuration($row); ?></td>
 					<td><?php echo $row->title; ?></td>
 					<td><?php echo $row->venue; ?></td>
@@ -59,34 +79,29 @@ defined('_JEXEC') or die('Restricted access');
 						echo implode("<br/>", $cats);
 						?>
 					</td>
-					<td><?php echo $this->bookbutton($row->xref); ?><?php echo $this->printPlaces($row, false); ?></td>
+					<td><?php echo RedeventHelperLanguages::getFormattedIso1($row->session_language); ?></td>
 					<td>
-						<?php
-						$image = JHTML::image('media/com_redevent/images/b2b-selectbooksession.png', JText::_('COM_REDEVENT_BOOK_EVENT'));
-
-						$tip  = JText::_('COM_REDEVENT_FRONTEND_BOOKINGS_EDIT_PARTICIPANTS_DESC');
-						$text = JText::_('COM_REDEVENT_FRONTEND_BOOKINGS_EDIT_PARTICIPANTS');
-
-						$attribs = array(
-							'xref' => $row->xref,
-							'class' => 'bookthis hasTip',
-							'title' => $text,
-							'tip' => $tip,
-						);
-
-						echo JHtml::link('#', $image, $attribs);
-						?>
+						<?php if (!$this->isFull($row)): ?>
+							<?php echo $this->bookbutton($row->xref); ?><?php echo $this->printPlaces($row, false); ?>
+						<?php else: ?>
+							<?php echo $this->printInfoIcon($row); ?>
+						<?php endif; ?>
 					</td>
 				</tr>
 			<?php endforeach;?>
+		<?php endif; ?>
 		</tbody>
 	</table>
 
 	<!--pagination-->
-	<?php if (($this->bookings_pagination->get('pages.total') > 1)) : ?>
-	<div class="pagination">
-		<?php echo $this->bookings_pagination->getPagesLinks(); ?>
+    <div class="pagination">
+        <div class="pagination-label"><?php echo JText::_('COM_REDEVENT_FRONTADMIN_PAGINATION_SELECT_LIMIT'); ?></div>
+        <div class="styled-select-admin">
+            <?php echo $this->getLimitBox(); ?>
+        </div>
+		<?php if (($this->bookings_pagination->get('pages.total') > 1)) : ?>
+			<?php echo $this->bookings_pagination->getPagesLinks(); ?>
+		<?php  endif; ?>
 	</div>
-	<?php  endif; ?>
 	<!-- pagination end -->
-<?php endif; ?>
+</div>

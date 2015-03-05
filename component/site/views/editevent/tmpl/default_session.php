@@ -53,6 +53,14 @@ JHTML::_('behavior.calendar');
 		</tr>
 		<?php endif; ?>
 		<tr>
+			<td class="key hasTip" title="<?php echo JText::_('COM_REDEVENT_SESSION_LANGUAGE_DESC'); ?>">
+				<label for="session_language"><?php echo JText::_( 'COM_REDEVENT_SESSION_LANGUAGE' ) .': '; ?></label>
+			</td>
+			<td>
+				<?php echo $this->sessionLanguage; ?>
+			</td>
+		</tr>
+		<tr>
 			<td class="key hasTip"
 				title="<?php echo JText::_('COM_REDEVENT_EDIT_XREF_START_DATE_TIP'); ?>"><label
 				for="dates"><?php echo JText::_('COM_REDEVENT_DATE') .': '; ?></label></td>

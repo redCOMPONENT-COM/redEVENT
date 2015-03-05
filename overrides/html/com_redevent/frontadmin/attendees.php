@@ -21,15 +21,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<h2 id="attendees-title"><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_ATTENDEES_TITLE')?></h2>
 <table id="attendees-tbl" class="table">
 	<thead>
 		<tr>
 			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_SELECT_MEMBER'); ?></th>
 			<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_NAME'), 'u.name', $this->members_order_dir, $this->members_order); ?></th>
-			<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_USERNAME'), 'u.username', $this->members_order_dir, $this->members_order); ?></th>
 			<th><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_EMAIL'), 'u.email', $this->members_order_dir, $this->members_order); ?></th>
-			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_STATUS'); ?></th>
 			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_PO_NUMBER'); ?></th>
 			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_USER_COMMENTS'); ?></th>
 			<th><?php echo JText::_('COM_REDEVENT_FRONTEND_ADMIN_EDIT_MEMBER'); ?></th>
@@ -44,18 +41,9 @@ defined('_JEXEC') or die('Restricted access');
 				<?php endif; ?>
 			</td>
 			<td class="attendee-name"><?php echo $a->name; ?></td>
-			<td><?php echo $a->username; ?></td>
 			<td><?php echo $a->email; ?></td>
 
 			<?php if ($a->registered): ?>
-				<?php
-				$imgstatus = $a->registered->waitinglist ?
-					JHtml::image('com_redevent/b2b-waiting.png', 'waiting',
-						array('class' => "hasTip", 'title' => JText::_('COM_REDEVENT_WAITING_LIST')), true) :
-					JHtml::image('com_redevent/b2b-attending.png', 'attending',
-						array('class' => "hasTip", 'title' => JText::_('COM_REDEVENT_ATTENDING')), true);
-				?>
-				<td><?php echo $imgstatus; ?></td>
 				<td>
 					<input name="ponumber[]" class="input-small ponumber" type="text" value="<?php echo $a->registered->ponumber; ?>" />
 				</td>
@@ -66,7 +54,6 @@ defined('_JEXEC') or die('Restricted access');
 					          rows="1" cols="30"><?php echo trim($a->registered->comments); ?></textarea>
 				</td>
 			<?php else: ?>
-				<td></td>
 				<td></td>
 				<td></td>
 			<?php endif; ?>
@@ -104,9 +91,13 @@ defined('_JEXEC') or die('Restricted access');
 </table>
 
 <!--pagination-->
-<?php if (($this->members_pagination->get('pages.total') > 1)) : ?>
-	<div class="pagination">
-		<?php echo $this->members_pagination->getPagesLinks(); ?>
+<div class="pagination">
+    <div class="pagination-label"><?php echo JText::_('COM_REDEVENT_FRONTADMIN_PAGINATION_SELECT_LIMIT'); ?></div>
+	<div class="styled-select-admin">
+		<?php echo $this->getLimitBox(); ?>
 	</div>
-<?php  endif; ?>
+	<?php if (($this->members_pagination->get('pages.total') > 1)) : ?>
+		<?php echo $this->members_pagination->getPagesLinks(); ?>
+	<?php  endif; ?>
+</div>
 <!-- pagination end -->

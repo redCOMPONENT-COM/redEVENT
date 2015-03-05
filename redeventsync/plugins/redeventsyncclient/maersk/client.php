@@ -179,7 +179,7 @@ class RedeventsyncClientMaersk
 	 *
 	 * @return mixed xml response from server
 	 *
-	 * @throws RuntimeException
+	 * @throws ResyncException
 	 */
 	public function send($xml)
 	{

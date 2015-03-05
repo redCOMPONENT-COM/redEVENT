@@ -41,7 +41,7 @@ var redb2b = {
 		 */
 		init : function() {
 
-			redb2b.updateBreadCrumbs();
+			SqueezeBox.initialize();
 
 			/**
 			 * update sessions options when selecting event
@@ -102,11 +102,10 @@ var redb2b = {
 				var selected = this.get('value');
 				document.id('book-xref').set('value', selected);
 				if (selected) {
-					redb2b.selectSession(id);
+					redb2b.selectSession(selected);
 				}
 				redb2b.getMembersList();
 				redb2b.getSessions();
-				redb2b.updateBreadCrumbs();
 
 				if (typeof ga !== 'undefined')
 				{
@@ -133,95 +132,54 @@ var redb2b = {
 					});
 				}
 
+				redb2b.resetSelected();
+
 				redb2b.searchBookings();
 
-				var person_req = new Request.JSON({
-					url : 'index.php?option=com_redevent&controller=frontadmin&task=getusers&tmpl=component',
-					data : document.id('org-form'),
-					method : 'post',
-					onSuccess : function(options){
-						var sel = document.id('filter_person');
-						sel.empty();
-						new Element('option', {'value': ''}).set('text', Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_SELECT_USER")).inject(sel);
-						if (options.length) {
-							options.each(function(el){
-								new Element('option', {'value': el.value}).set('text', el.text).inject(sel);
-							});
-						}
-					}
-				});
-				person_req.send();
-				// Display organization users ?
+				redb2b.updateOrganizationUserOptions();
+
+				// Display organization users
 				redb2b.getMembersList();
 			}).fireEvent('change');
 
 			/**
-			 * update organization bookings when selecting person
+			 * update organization bookings when selecting member
 			 */
-			document.id('search_person').addEvent('click', function(){
-				redb2b.searchBookings();
-				// Display organization users ?
-				redb2b.getMembersList();
-
-				if (typeof ga !== 'undefined')
+			document.id('redevent-admin').addEvent('input:relay(#filter_person)', function(event){
+				if (this.get('value').length)
 				{
-					ga('send',{
-						'hitType': 'event',
-						'eventCategory': 'b2b organization',
-						'eventAction': 'select',
-						'eventLabel': 'person'
-					});
+					document.id('search_person').addClass('hide');
+					document.id('reset_search_person').removeClass('hide');
+				}
+				else
+				{
+					document.id('search_person').removeClass('hide');
+					document.id('reset_search_person').addClass('hide');
 				}
 			});
 
 			/**
-			 * update organization bookings when selecting person
+			 * update organization bookings when selecting member
 			 */
-			document.id('org-form').addEvent('submit', function(e){
-				e.stop();
+			document.id('redevent-admin').addEvent('change:relay(#filter_person)', function(event){
+				redb2b.filterPerson();
 			});
 
-            /**
-             * update organization bookings when selecting member
-             */
-            document.id('filter_person').addEvent('keydown', function(event){
-                if (event.key == 'enter') {
-                    redb2b.searchBookings();
-                }
-
-				if (typeof ga !== 'undefined')
-				{
-					ga('send',{
-						'hitType': 'event',
-						'eventCategory': 'b2b organization',
-						'eventAction': 'select',
-						'eventLabel': 'person'
-					});
-				}
-            });
+			/**
+			 * update organization bookings when selecting member
+			 */
+			document.id('redevent-admin').addEvent('click:relay(#reset_search_person)', function(event){
+				document.id('filter_person').set('value', '');
+				document.id('search_person').removeClass('hide');
+				document.id('reset_search_person').addClass('hide');
+				redb2b.filterPerson();
+			});
 
 			/**
 			 * update organization bookings when selecting session status active
 			 */
-			$$('[id^=filter_person_]').addEvent('change', function(){
+			document.id('main-bookings').addEvent('click:relay(input[name=filter_bookings_state])', function(){
 				redb2b.searchBookings();
-			});
-
-			/**
-			 * update organization bookings when resetting filter person field
-			 */
-			document.id('reset_person').addEvent('click', function(){
-				document.id('filter_person').set('value', '');
-				document.id('filter_organization').fireEvent('change');
-
-				if (typeof ga !== 'undefined')
-				{
-					ga('send',{
-						'hitType': 'event',
-						'eventCategory': 'b2b organization',
-						'eventAction': 'reset'
-					});
-				}
 			});
 
 			/**
@@ -244,18 +202,16 @@ var redb2b = {
 			 * update course search when clicking on book session button in lists
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.bookthis)', function(e){
-				e.stop();
 				var id = this.getProperty('xref');
 				redb2b.selectSession(id);
+			});
 
-				if (typeof ga !== 'undefined')
-				{
-					ga('send',{
-						'hitType': 'event',
-						'eventCategory': 'b2b',
-						'eventAction': 'select book session'
-					});
-				}
+			/**
+			 * update course search when clicking on book session button in lists
+			 */
+			document.id('redevent-admin').addEvent('click:relay(.select-session-radio)', function(e){
+				var id = this.get('value');
+				redb2b.selectSession(id);
 			});
 
 			/**
@@ -278,82 +234,14 @@ var redb2b = {
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.attendee-sel)', function(e){
 
-				if (!document.id('book-xref').get('value')) {
-					alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_PLEASE_SELECT_SESSION_FIRST"));
-					this.setProperty('checked', null);
-					return;
-				}
-
 				var id = this.id.substr('3');
 				var name = this.getParent('tr').getElement('.attendee-name').get('text');
-				var div = document.id('select-list');
 
 				if (this.getProperty('checked')) {
-					if (redb2b.selected.length >= redb2b.placesleft)
-					{
-						alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_NO_MORE_PLACES_LEFT"));
-						this.setProperty('checked', null);
-						return;
-					}
-
-					if (!redb2b.selected.contains(id)) {
-						div.removeClass('nouser');
-						div.getElement(".notice").set('styles', {display:'none'});
-
-						var newrow = new Element('div#member'+id, {'class' : 'selectedmember'});
-						var img = new Element('img', {
-							'src' : 'media/com_redevent/images/icon-16-delete.png',
-							'alt': 'delete'
-						}).addEvent('click', function(){
-							newrow.dispose();
-							if (document.id('cid'+id)) {
-								document.id('cid'+id).removeProperty('checked');
-							}
-							redb2b.selected.erase(id);
-							if (!redb2b.selected.length) {
-								div.getElement(".notice").set('styles', {display:'block'});
-								div.addClass('nouser');
-							}
-						});
-						var imgspan = new Element('span.member-remove');
-						var input = new Element('input', {'name' : 'reg[]', 'value' : id, 'type' : 'hidden'});
-						var inputspan = new Element('span.member-name').set('text', name);
-
-						newrow.adopt(imgspan.adopt(img));
-						newrow.adopt(inputspan.adopt(input));
-
-						newrow.inject(div);
-
-						redb2b.selected.push(id);
-
-						document.id('book-course').set('styles', {'display' :'block'});
-
-						if (typeof ga !== 'undefined')
-						{
-							ga('send',{
-								'hitType': 'event',
-								'eventCategory': 'b2b booking',
-								'eventAction': 'selected user'
-							});
-						}
-					}
+					redb2b.selectMember(id, name);
 				}
 				else {
-					/** remove from selected list **/
-					document.id('member'+id).dispose();
-					redb2b.selected.erase(id);
-					if (!redb2b.selected.length) {
-						redb2b.resetSelected();
-					}
-
-					if (typeof ga !== 'undefined')
-					{
-						ga('send',{
-							'hitType': 'event',
-							'eventCategory': 'b2b booking',
-							'eventAction': 'unselected user'
-						});
-					}
+					redb2b.unSelectMember(id);
 				}
 			});
 
@@ -382,9 +270,26 @@ var redb2b = {
 			});
 
 			/**
+			 * get info
+			 */
+			document.id('redevent-admin').addEvent('click:relay(.getinfo)', function(e){
+				e.stop();
+				SqueezeBox.open(this, {handler: 'iframe', size: {x: 500, y: 400}});
+			});
+
+			/**
 			 * update member
 			 */
 			document.id('redevent-admin').addEvent('click:relay(.update-employee)', function (e) {
+				e.stop();
+				var form = document.id('member-update');
+
+				if (!form.validate())
+				{
+					alert('Please fix errors to submit');
+					return false;
+				}
+
 				req = new Request.JSON({
 					url: 'index.php?option=com_redevent&controller=frontadmin&task=update_user&tmpl=component',
 					data: document.id('member-update'),
@@ -455,6 +360,7 @@ var redb2b = {
 							document.id('attendees-tbl').set('spinner').unspin();
 							if (response.status == 1) {
 								redb2b.getMembersList();
+								redb2b.placesleft++;
 							}
 							else {
 								alert(response.error);
@@ -479,6 +385,15 @@ var redb2b = {
 					alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_SELECT_SESSION_FIRST"));
 					return false;
 				}
+
+				if (redb2b.selected.length > redb2b.placesleft)
+				{
+					var text = Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_NOT_ENOUGH_PLACES_LEFT");
+					text = text.substitute({'left': redb2b.placesleft, 'selected': redb2b.selected.length, 'remove': redb2b.selected.length - redb2b.placesleft});
+					alert(text);
+					return;
+				}
+
 				var orgId = document.id('filter_organization').get('value');
 				req = new Request.JSON({
 					url : 'index.php?option=com_redevent&controller=frontadmin&task=quickbook&tmpl=component&from=b2b&org=' + orgId,
@@ -498,6 +413,7 @@ var redb2b = {
 						document.id('attendees-tbl').unspin();
 						document.id('selected_users').unspin();
 						if (response.status == 1) {
+							redb2b.placesleft -= redb2b.selected.length;
 							redb2b.getMembersList();
 							redb2b.addGoogleAnalyticsTrans(response);
 							alert(response.message);
@@ -599,6 +515,9 @@ var redb2b = {
 						if (!result.status) {
 							alert(result.error);
 						}
+						else {
+							alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_COMMENT_EMAIL_SENT"));
+						}
 						el.set('tip', el.get('value'));
 						redb2b.refreshTips();
 					}
@@ -660,6 +579,14 @@ var redb2b = {
 				redb2b.getSessions();
 			});
 
+			document.id('redevent-admin').addEvent('change:relay(#main-course-results .ajaxlimit)', function(e){
+				e.stop();
+				var form = document.id('course-search-form');
+				form.limit.value = this.get('value');
+				form.limitstart.value = 0;
+				redb2b.getSessions();
+			});
+
 			$$('#main-course-results .ajaxsortcolumn').addEvent('click', function(e){
 				e.stop();
 				var form = document.id('course-search-form');
@@ -690,6 +617,14 @@ var redb2b = {
 				redb2b.searchBookings();
 			});
 
+			document.id('main-bookings').addEvent('change:relay(.ajaxlimit)', function(e){
+				e.stop();
+				var form = document.id('org-form');
+				form.limit.value = this.get('value');
+				form.bookings_limitstart.value = 0;
+				redb2b.searchBookings();
+			});
+
 			document.id('main-bookings').addEvent('click:relay(.itemnav)', function(e){
 				e.stop();
 				var form = document.id('org-form');
@@ -705,6 +640,14 @@ var redb2b = {
 				redb2b.getMembersList();
 			});
 
+			document.id('main-attendees').addEvent('change:relay(.ajaxlimit)', function(e){
+				e.stop();
+				var form = document.id('org-form');
+				form.limit.value = this.get('value');
+				form.members_limitstart.value = 0;
+				redb2b.getMembersList();
+			});
+
 			document.id('main-attendees').addEvent('click:relay(.itemnav)', function(e){
 				e.stop();
 				var form = document.id('org-form');
@@ -713,15 +656,16 @@ var redb2b = {
 			});
 
 			// For edit events and sessions
-			SqueezeBox.initialize({handler: 'iframe', size: {x: 750, y: 500}});
 			document.id('redevent-admin').addEvent('click:relay(.xrefmodal)', function(e) {
 				e.stop();
-				SqueezeBox.fromElement(this);
+				SqueezeBox.open(this, {handler: 'iframe', size: {x: 750, y: 500}});
 			});
 
-			$('sbox-btn-close').addEvent('click', function() {
+			document.id(document.body).addEvent('click:relay(#sbox-btn-close)', function() {
 				redb2b.getSessions();
 			});
+
+			redb2b.refreshTips();
 		},
 
     /**
@@ -738,7 +682,6 @@ var redb2b = {
 					document.id('main-course-results').empty().set('html', response).unspin();
 					redb2b.refreshTips();
 					redb2b.getMembersList();
-					redb2b.updateBreadCrumbs();
 				}
 			});
 			req.send();
@@ -750,7 +693,6 @@ var redb2b = {
 			redb2b.updateVenueField();
 			redb2b.updateCategoryField();
 			redb2b.getSessions();
-			redb2b.updateBreadCrumbs();
 		},
 
 		updateEventField : function(async) {
@@ -862,7 +804,7 @@ var redb2b = {
 		searchBookings : function() {
 			req = new Request({
 				url : 'index.php?option=com_redevent&controller=frontadmin&task=getbookings&tmpl=component',
-				data : document.id('org-form'),
+				data : redb2b.getAllData(),
 				method : 'post',
 				onSuccess : function(responseText){
 					document.id('main-bookings').set('html', responseText);
@@ -882,18 +824,28 @@ var redb2b = {
 					document.id('filter_session').set('value', id);
 					document.id('book-xref').set('value', id);
 					redb2b.getMembersList();
-					redb2b.updateBreadCrumbs();
 
 					if (session.placesleft == -1)
 					{
-						redb2b.placesleft = 1000;
+						// A bit ugly...
+						redb2b.placesleft = 10000;
 					}
 					else
 					{
 						redb2b.placesleft = session.placesleft;
 					}
 
-					redb2b.resetSelected();
+					redb2b.highlightSelectedSession(id, 'bookings-result');
+					redb2b.highlightSelectedSession(id, 'sessions-result');
+
+					if (typeof ga !== 'undefined')
+					{
+						ga('send',{
+							'hitType': 'event',
+							'eventCategory': 'b2b',
+							'eventAction': 'select book session'
+						});
+					}
 				}
 			});
 			req.send();
@@ -903,27 +855,20 @@ var redb2b = {
 		 * return list of organization members to select for booking
 		 */
 		getMembersList : function() {
-			document.id('main-attendees').set('styles', {'display' : 'none'}).empty();
 			if (document.id('filter_organization').get('value') > 0) {
-				var orgform = document.id('org-form');
 				var req = new Request.HTML({
 					url: 'index.php?option=com_redevent&controller=frontadmin&task=getattendees&tmpl=component',
-					data : {'xref' : document.id('filter_session').get('value'),
-						'org' : document.id('filter_organization').get('value'),
-						'filter_person' : document.id('filter_person').get('value'),
-						'members_order' : orgform.members_order.value,
-						'members_order_dir' : orgform.members_order_dir.value,
-						'members_limitstart' : orgform.members_limitstart.value
-					},
+					data : redb2b.getAllData(),
 					onRequest : function(){
-						document.id('main-attendees').set('spinner').spin();
+						document.id('employees-result').set('spinner').spin();
 					},
 					onSuccess : function(text) {
-						resdiv = document.id('main-attendees').empty().adopt(text).set('styles', {'display' : 'block'}).unspin();
+						resdiv = document.id('employees-result').empty().adopt(text).unspin();
 						Array.each(redb2b.selected, function(val) {
 							var cid = document.id('cid' + val);
 							if (cid) {
 								cid.setProperty('checked', 'checked');
+								cid.getParent('tr').addClass('selected');
 							}
 						});
 						redb2b.refreshTips();
@@ -970,10 +915,9 @@ var redb2b = {
 			}
 
 			var dummylink = new Element('a', {
-				href: "index.php?option=com_redevent&controller=frontadmin&task=editmember&tmpl=component&modal=1&orgId=" + orgId,
-				rel: "{handler: 'iframe', size: {x: 800, y: 400}, onClose: redb2b.getMembersList}"
+				href: "index.php?option=com_redevent&controller=frontadmin&task=editmember&tmpl=component&modal=1&orgId=" + orgId
 			});
-			SqueezeBox.fromElement(dummylink);
+			SqueezeBox.open(dummylink, {handler: 'iframe', size: {x: 800, y: 400}, onClose: redb2b.getMembersList});
 		},
 
 		editmember : function(id) {
@@ -999,10 +943,31 @@ var redb2b = {
 						document.id('redadmin-main').show();
 					});
 					editdiv.inject('redadmin-toolbar', 'after');
+					// load js
+					eval(editdiv);
 					redb2b.refreshTips();
 				}
 			});
 			req.send();
+		},
+
+		updateOrganizationUserOptions : function() {
+			var person_req = new Request.JSON({
+				url : 'index.php?option=com_redevent&controller=frontadmin&task=getusers&tmpl=component',
+				data : {'filter_organization' : document.id('filter_organization').get('value')},
+				method : 'post',
+				onSuccess : function(options){
+					var sel = document.id('filter_person');
+					sel.empty();
+					new Element('option', {'value': ''}).set('text', Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_SELECT_USER")).inject(sel);
+					if (options.length) {
+						options.each(function(el){
+							new Element('option', {'value': el.value}).set('text', el.text).inject(sel);
+						});
+					}
+				}
+			});
+			person_req.send();
 		},
 
 		updateFormList : function(form) {
@@ -1024,39 +989,173 @@ var redb2b = {
 			myTips = new Tips(".hasTip", {text : 'tip'});
 		},
 
-		updateBreadCrumbs : function() {
-			var elements = new Array();
-			elements.push(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_BREADCRUMB_YOU_ARE_HERE"));
-			elements.push(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_BREADCRUMB_OVERVIEW"));
+		getAllData : function() {
+			var data = {};
 
-			if (document.id('filter_session').get('value')) {
-				elements.push(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_BREADCRUMB_BOOK"));
-			}
-			else if (document.id('filter_event').get('value')
-				|| document.id('filter_venue').get('value')
-				|| document.id('filter_category').get('value')
-				|| document.id('filter_from').get('value')
-				|| document.id('filter_to').get('value')
-				) {
-				elements.push(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_BREADCRUMB_SEARCH_RESULTS"));
+			if (document.id('filter_session')) {
+				data.xref = document.id('filter_session').get('value');
 			}
 
-			var bc = document.id('main-breadcrumb');
-			bc.empty();
+			if (document.id('filter_organization')) {
+				data.filter_organization = document.id('filter_organization').get('value');
+				data.org = document.id('filter_organization').get('value');
+			}
 
-			var separator = ' <span class="divider">></span>';
+			if (document.id('filter_person')) {
+				data.filter_person = document.id('filter_person').get('value');
+			}
 
-			Array.each(elements, function(val) {
-				var text = val;
-				if (val != elements.getLast()) {
-					text += separator;
+			if (document.id('members_order')) {
+				data.members_order = document.id('members_order').get('value');
+			}
+
+			if (document.id('members_order_dir')) {
+				data.members_order_dir = document.id('members_order_dir').get('value');
+			}
+
+			if (document.id('members_limitstart')) {
+				data.members_limitstart = document.id('members_limitstart').get('value');
+			}
+
+			if (document.id('bookings_order')) {
+				data.bookings_order = document.id('bookings_order').get('value');
+			}
+
+			if (document.id('bookings_order_dir')) {
+				data.bookings_order_dir = document.id('bookings_order_dir').get('value');
+			}
+
+			if (document.id('bookings_limitstart')) {
+				data.bookings_limitstart = document.id('bookings_limitstart').get('value');
+			}
+
+			if (document.id('filter_bookings_state0') && document.id('filter_bookings_state0').getProperty('checked')) {
+				data.filter_bookings_state = 1;
+			}
+
+			if (document.id('filter_bookings_state1') && document.id('filter_bookings_state1').getProperty('checked')) {
+				data.filter_bookings_state = -1;
+			}
+
+			data.limit = document.id('org-form').limit.value;
+
+			return data;
+		},
+
+		filterPerson : function() {
+			redb2b.getMembersList();
+			redb2b.searchBookings();
+
+			if (typeof ga !== 'undefined')
+			{
+				ga('send',{
+					'hitType': 'event',
+					'eventCategory': 'b2b organization',
+					'eventAction': 'search',
+					'eventLabel': 'person'
+				});
+			}
+		},
+
+		highlightSelectedSession : function(id, parentElementId) {
+			document.id(parentElementId).getElements('tr').each(function(row){
+				if (!row.getElement('.select-session-radio')) {
+					return;
 				}
-				var el = new Element('li').set('html', text);
-				el.inject(bc);
+
+				if (row.getElement('.select-session-radio').get('value') == id) {
+					row.addClass('selected');
+				}
+				else {
+					row.removeClass('selected');
+				}
 			});
 		},
 
-	addGoogleAnalyticsTrans : function(response) {
+		selectMember : function(id, name) {
+			// Check if already added
+			if (redb2b.selected.contains(id)) {
+				return;
+			}
+
+			// Prepare selected employee box
+			var div = document.id('select-list');
+			div.removeClass('nouser');
+			div.getElement(".notice").set('styles', {display:'none'});
+
+			// Highlight in employee list
+			if (document.id('cid'+id)) {
+				document.id('cid'+id).setProperty('checked', 'checked');
+				document.id('cid'+id).getParent('tr').addClass('selected');
+			}
+
+			// Add new row in selected box
+			var newrow = new Element('div#member'+id, {'class' : 'selectedmember'});
+			var imgspan = new Element('span.member-remove').addEvent('click', function(){
+				newrow.dispose();
+				if (document.id('cid'+id)) {
+					document.id('cid'+id).removeProperty('checked');
+					document.id('cid'+id).getParent('tr').removeClass('selected');
+				}
+				redb2b.selected.erase(id);
+				if (!redb2b.selected.length) {
+					redb2b.resetSelected();
+				}
+			});
+			var input = new Element('input', {'name' : 'reg[]', 'value' : id, 'type' : 'hidden'});
+			var inputspan = new Element('span.member-name').set('text', name);
+
+			newrow.adopt(imgspan.adopt(new Element('i', {
+				'class' : 'icon-remove'
+			})));
+			newrow.adopt(inputspan.adopt(input));
+
+			newrow.inject(div);
+
+			// Add to selected array
+			redb2b.selected.push(id);
+
+			// Show book button
+			document.id('book-course').set('styles', {'display' :'block'});
+
+			if (typeof ga !== 'undefined')
+			{
+				ga('send',{
+					'hitType': 'event',
+					'eventCategory': 'b2b booking',
+					'eventAction': 'selected user'
+				});
+			}
+		},
+
+		unSelectMember : function(id) {
+			/** remove from selected list **/
+			document.id('member'+id).dispose();
+			document.id('cid'+id).getParent('tr').removeClass('selected');
+
+			redb2b.selected.erase(id);
+
+			if (!redb2b.selected.length) {
+				redb2b.resetSelected();
+			}
+
+			if (typeof ga !== 'undefined')
+			{
+				ga('send',{
+					'hitType': 'event',
+					'eventCategory': 'b2b booking',
+					'eventAction': 'unselected user'
+				});
+			}
+		},
+
+		closeModalMember : function(uid, name) {
+			SqueezeBox.close();
+			alert(Joomla.JText._("COM_REDEVENT_FRONTEND_ADMIN_MEMBER_SAVED"));
+			redb2b.selectMember(uid, name);
+		},
+
+		addGoogleAnalyticsTrans : function(response) {
 		if (!ga)
 		{
 			return;
@@ -1078,18 +1177,16 @@ var redb2b = {
 			'currency': currency
 		});
 
-		for (var i = 0; i < response.regs.length; i++) {
-			var r = response.regs[i];
-			ga('ecommerce:addItem', {
-				'id' : response.submit_key,
-				'name' : r.details.event_name + ' @ ' + r.details.venue + '(session ' + r.details.xref + ')',
-				'sku' :r.details.event_name,
-				'category' : redb2b.gaJoinCategoyNames(r.details.categories),
-				'price' : r.details.price,    // Unit price.
-				'currency' :r.details.currency,
-				'quantity' : 1    // Unit quantity.
-			});
-		}
+		var r = response.regs[0];
+		ga('ecommerce:addItem', {
+			'id' : response.submit_key,
+			'name' : r.details.event_name + ' @ ' + r.details.venue + '(session ' + r.details.xref + ')',
+			'sku' :r.details.event_name,
+			'category' : redb2b.gaJoinCategoyNames(r.details.categories),
+			'price' : total,    // Unit price.
+			'currency' :r.details.currency,
+			'quantity' : response.regs.length    // Unit quantity.
+		});
 
 		ga('ecommerce:send');
 	},

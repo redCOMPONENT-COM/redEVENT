@@ -21,35 +21,13 @@
             <fieldset name="extra" label="extra">
                 <field name="b2b_sessions_display_num"
                        type="list"
-                       default="20"
+                       default="15"
                        label="PLG_REDEVENT_CONFIG_MAERSK_B2B_SESSIONS_DISPLAY_NUM_LABEL"
                        description="PLG_REDEVENT_CONFIG_MAERSK_B2B_SESSIONS_DISPLAY_NUM_DESCRIPTION"
                        >
-                    <option value="5">5</option>
-                    <option value="10">10</option>
                     <option value="15">15</option>
-                    <option value="20">20</option>
                     <option value="25">25</option>
-                    <option value="30">30</option>
                     <option value="50">50</option>
-                    <option value="100">100</option>
-                    <option value="0">PLG_REDEVENT_CONFIG_MAERSK_ALL</option>
-                </field>
-                <field name="b2b_members_display_num"
-                       type="list"
-                       default="20"
-                       label="PLG_REDEVENT_CONFIG_MAERSK_B2B_MEMBERS_DISPLAY_NUM_LABEL"
-                       description="PLG_REDEVENT_CONFIG_MAERSK_B2B_MEMBERS_DISPLAY_NUM_DESCRIPTION"
-                       >
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="15">15</option>
-                    <option value="20">20</option>
-                    <option value="25">25</option>
-                    <option value="30">30</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                    <option value="0">PLG_REDEVENT_CONFIG_MAERSK_ALL</option>
                 </field>
                 <field name="disable_waitinglist_status_email"
                        type="radio"
@@ -68,6 +46,13 @@
                         >
                     <option value="0">JNo</option>
                     <option value="1">JYes</option>
+                </field>
+                <field name="language_flags"
+                       type="textarea"
+                       label="PLG_REDEVENT_CONFIG_MAERSK_LANGUAGE_FLAGS"
+                       description="PLG_REDEVENT_CONFIG_MAERSK_LANGUAGE_FLAGS_DESC"
+                       rows="10" cols="50"
+                        >
                 </field>
             </fieldset>
         </fields>

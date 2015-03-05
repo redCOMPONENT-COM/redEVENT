@@ -164,6 +164,13 @@ class RedEventViewSession extends JView
 		$currencyoptions = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_PRICEGROUPS_SELECT_CURRENCY')));
 		$currencyoptions = array_merge($currencyoptions, RedformHelperLogCurrency::getCurrencyOptions());
 
+		$this->sessionLanguage = JHtml::_(
+			'select.genericlist',
+			RedeventHelperLanguages::getOptions(),
+			'session_language', null, 'value', 'text',
+			$xref->session_language
+		);
+
 		if (JRequest::getVar('task') == 'copy')
 		{
 			$xref->id = null;

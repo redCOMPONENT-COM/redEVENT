@@ -76,7 +76,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		$this->useracl = RedeventUserAcl::getInstance();
 
 		// Get the number of events from database
-		$limit       	= $app->getUserStateFromRequest('com_redevent.limit', 'limit', $params->def('b2b_sessions_display_num', 20), 'int');
+		$limit       	= $app->getUserStateFromRequest('com_redevent.limit', 'limit', $params->def('b2b_sessions_display_num', 15), 'int');
 		$limitstart		= JRequest::getVar('limitstart', 0, '', 'int');
 
 		// In case limit has been changed, adjust it
@@ -91,8 +91,8 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 			$app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_organization',    'filter_organization',    $this->getUserDefaultOrganization(), 'int')
 		);
 		$this->setState('filter_person', $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_person',    'filter_person',    '', 'string'));
-		$this->setState('filter_person_active',    $app->input->get('filter_person_active',    0, 'int'));
-		$this->setState('filter_person_archive',    $app->input->get('filter_person_archive',    0, 'int'));
+
+		$this->setState('filter_bookings_state', $app->input->get('filter_bookings_state', 1));
 
 		// Manage sessions filters
 		$this->setState('filter_session',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_session',    'filter_session',    0, 'int'));
@@ -611,6 +611,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		$query = $db->getQuery(true);
 
 		$query->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published');
+		$query->select('x.session_language');
 		$query->select('a.id, a.title, a.created, a.datdescription, a.registra, a.course_code');
 		$query->select('l.venue, l.city, l.state, l.url, l.id as locid');
 		$query->select('r.id AS rid, r.status');
@@ -638,26 +639,14 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 
 		$session_state = array();
 
-		if ($this->getState('filter_person_active') == 1)
+		if ($this->getState('filter_bookings_state') == -1)
 		{
-			$session_state[] = 'x.published = 1';
+			$query->where('x.published = -1');
 		}
-		elseif ($this->getState('filter_person_active') == -1)
+		else
 		{
-			$session_state[] = 'x.published = -1';
+			$query->where('x.published = 1');
 		}
-
-		if ($this->getState('filter_person_archive') == 1)
-		{
-			$session_state[] = 'x.published = -1';
-		}
-
-		if (!count($session_state))
-		{
-			$session_state[] = 'x.published <> 0';
-		}
-
-		$query->where('(' . implode(' OR ', $session_state) . ')');
 
 		if ($this->getState('filter_person'))
 		{
@@ -758,6 +747,7 @@ class RedeventModelFrontadmin extends RedeventModelBaseeventlist
 		$query = $db->getQuery(true);
 
 		$query->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.maxattendees, x.maxwaitinglist, x.published');
+		$query->select('x.session_language');
 		$query->select('a.id, a.title, a.created, a.datdescription, a.registra, a.course_code');
 		$query->select('l.venue, l.city, l.state, l.url, l.id as locid');
 		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');

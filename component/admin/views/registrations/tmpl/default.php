@@ -54,6 +54,7 @@ $colspan = 13;
 				<th width="5">#</th>
 				<th width="5"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_REGDATE', 'r.uregdate', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th>B2B</th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_SESSION', 'e.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_UNIQUE_ID', 'r.id', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<th class="title"><?php echo JHTML::_('grid.sort', 'COM_REDEVENT_USERNAME', 'u.username', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
@@ -102,6 +103,7 @@ $colspan = 13;
 					</a></span>
 					<?php } ?>
 				</td>
+				<td><?php echo $row->fromb2b ? JHTML::_('image', 'admin/tick.png', JText::_('JYES'), null, true) : JHTML::_('image', 'admin/publish_x.png', JText::_('JNO'), null, true); ?></td>
 				<td><?php echo $sessionlink; ?></td>
 				<td><?php echo $row->course_code .'-'. $row->xref .'-'. $row->attendee_id; ?><p class="smallsub"><?php echo $row->submit_key;?></p></td>
 				<td><?php echo $row->name; ?></td>

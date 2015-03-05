@@ -123,6 +123,8 @@ class plgRedeventsyncclientMaersk extends JPlugin
 	 * @param   bool    &$response  true if message was successfully sent
 	 *
 	 * @return void
+	 *
+	 * @throws LogicException
 	 */
 	public function onSend($plugin, $message, &$response)
 	{
@@ -133,16 +135,28 @@ class plgRedeventsyncclientMaersk extends JPlugin
 
 		$client = $this->getClient();
 
-		try
+		if (!$this->getType($message))
 		{
-			$client->send($message);
-		}
-		catch (ResyncException $e)
-		{
-			$response = false;
+			throw new LogicException('Undefined message type');
 		}
 
-		$response = true;
+		try
+		{
+			$res = $client->send($message);
+			$this->dblog(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $this->getType($message), $this->getTransactionId($message), $message, 'sent', $res ? 'response: ' . $res : null);
+
+			if ($this->getType($res))
+			{
+				$this->handle($res);
+			}
+
+			$response = true;
+		}
+		catch (Exception $e)
+		{
+			$this->dblog(REDEVENTSYNC_LOG_DIRECTION_OUTGOING, $this->getType($message), $this->getTransactionId($message), $message, 'error', $e->getMessage());
+			$response = false;
+		}
 	}
 
 	/**
@@ -200,7 +214,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 				'',
 				0,
 				$data,
-				'error',
+				'Parsing error',
 				'Parsing error: ' . implode("\n", $errors) . "\n"
 			);
 			throw new Exception('Parsing error: ' . implode("\n", $errors));
@@ -210,7 +224,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		$this->dblog(
 			REDEVENTSYNC_LOG_DIRECTION_INCOMING,
 			$xml->firstChild->nodeName,
-			null,
+			$this->getTransactionId($data),
 			$data,
 			'received'
 		);
@@ -231,10 +245,6 @@ class plgRedeventsyncclientMaersk extends JPlugin
 				'Parsing error: Unsupported schema ' . $type
 			);
 			throw new Exception('Parsing error: Unsupported schema ' . $type);
-		}
-		else
-		{
-			$handler = $this->getHandler($type);
 		}
 
 		// Validate
@@ -262,6 +272,7 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		}
 
 		// Process !
+		$handler = $this->getHandler($type);
 		$handler->handle($data);
 
 		// Display response to request
@@ -269,8 +280,8 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		{
 			$this->dblog(
 				REDEVENTSYNC_LOG_DIRECTION_OUTGOING,
-				$handler->getResponseMessageType(),
-				0,
+				$this->getType($msg),
+				$this->getTransactionId($msg),
 				$msg,
 				'see message'
 			);
@@ -659,6 +670,23 @@ class plgRedeventsyncclientMaersk extends JPlugin
 	}
 
 	/**
+	 * handle user saved
+	 *
+	 * @param   int   $userId  user id
+	 * @param   bool  $isNew   true if new user
+	 *
+	 * @return bool
+	 */
+	public function onHandleUserSaved($userId, $isNew)
+	{
+		// Not supported by picasso, so disable it
+//		$model = $this->getHandler('Customerscrmrq');
+//		$model->sendCustomersCRMRQ($userId, $isNew);
+
+		return true;
+	}
+
+	/**
 	 * Returns the handler
 	 *
 	 * @param   string  $type  handler name
@@ -729,5 +757,33 @@ class plgRedeventsyncclientMaersk extends JPlugin
 		{
 			ResyncHelperMessagelog::log($direction, $type, $transactionid, $message, $status, $debug);
 		}
+	}
+
+	/**
+	 * Return first found transaction id
+	 *
+	 * @param   string  $xml  xml
+	 *
+	 * @return int|string
+	 */
+	public function getTransactionId($xml)
+	{
+		$simpleXml = new SimpleXMLElement($xml);
+		$simpleXml->registerXPathNamespace('re', 'http://www.redcomponent.com/redevent');
+		$result = $simpleXml->xpath('//re:TransactionId');
+
+		if ($result)
+		{
+			$all = array();
+
+			foreach ($result as $tid)
+			{
+				$all[] = (int) $tid;
+			}
+
+			return implode(', ', $all);
+		}
+
+		return '0';
 	}
 }

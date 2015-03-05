@@ -255,6 +255,7 @@ class RedEventModelSession extends JModel
 			$object->rrule = '';
 			$object->count = 0;
 			$object->rrules = RedeventHelperRecurrence::getRule();
+			$object->session_language = 'eng';
 
 			// event title and id from request, if event is already created
 			if ($object->event_id = JFactory::getApplication()->input->getInt('eventid'))

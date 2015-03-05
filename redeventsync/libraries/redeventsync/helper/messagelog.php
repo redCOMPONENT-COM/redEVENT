@@ -29,9 +29,19 @@ class ResyncHelperMessagelog
 	 * @param   string  $debug          debug info
 	 *
 	 * @return void
+	 *
+	 * @throws Exception
 	 */
 	public static function log($direction, $type, $transactionid, $message, $status, $debug = null)
 	{
+		static $tz;
+
+		if (!$tz)
+		{
+			$config = JFactory::getConfig();
+			$tz = new DateTimeZone($config->get('offset'));
+		}
+
 		$log = FOFTable::getAnInstance('logs', 'RedeventsyncTable');
 		$log->direction = $direction;
 		$log->transactionid = $transactionid;
@@ -39,7 +49,8 @@ class ResyncHelperMessagelog
 		$log->message = $message;
 		$log->status = $status;
 		$log->debug = $debug;
-		$log->date = JFactory::getDate()->toSql(true);
+		$date = new JDate('now', $tz);
+		$log->date = $date->toSql(true);
 
 		if (!$log->store())
 		{
