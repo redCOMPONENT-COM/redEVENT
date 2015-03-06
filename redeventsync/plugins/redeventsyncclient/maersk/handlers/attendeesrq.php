@@ -135,10 +135,10 @@ class RedeventsyncHandlerAttendeesrq extends RedeventsyncHandlerAbstractmessage
 			{
 				$row->bind($existing);
 			}
-			elseif (!$create)
-			{
-				throw new Exception('Attendee not found');
-			}
+//			elseif (!$create)
+//			{
+//				throw new Exception('Attendee not found');
+//			}
 			else
 			{
 				if (!isset($attendee->waitinglist))

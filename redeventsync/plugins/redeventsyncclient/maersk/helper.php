@@ -148,6 +148,8 @@ class RedeventsyncclientMaerskHelper
 		$query->where('x.session_code = ' . $db->quote($session_code));
 		$query->where('v.venue_code = ' . $db->quote($venue_code));
 //		$query->where('r.cancelled = 0');
+		// To go around the bug due to previous line...
+		$query->order('r.cancelled DESC');
 
 		$db->setQuery($query);
 		$res = $db->loadObject();
