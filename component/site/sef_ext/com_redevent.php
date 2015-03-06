@@ -64,37 +64,48 @@ if (!class_exists('redEVENTsh404Helper'))
 
 // ------------------  standard plugin initialize function - don't change ---------------------------
 global $sh_LANG;
-$sefConfig = & shRouter::shGetConfig();
+
+$sefConfig = shRouter::shGetConfig();
 $shLangName = '';
 $shLangIso = '';
 $title = array();
 $shItemidString = '';
 $dosef = shInitializePlugin($lang, $shLangName, $shLangIso, $option);
-if ($dosef == false) return;
+
+if ($dosef == false)
+{
+	return;
+}
+
 // ------------------  standard plugin initialize function - don't change ---------------------------
 
 // ------------------  load language file - adjust as needed ----------------------------------------
 require_once 'language.php';
 // ------------------  load language file - adjust as needed ----------------------------------------
-$shHomePageFlag = false;
 
+$shHomePageFlag = false;
 $shHomePageFlag = !$shHomePageFlag ? shIsHomepage($string) : $shHomePageFlag;
 
 if (!$shHomePageFlag)
-{ // we may have found that this is homepage, so we msut return an empty string
-
-	if (isset($task) && $task == 'createpdfemail') $dosef = false;
-	else if (isset($page) && $page == 'print') $dosef = false;
+{
+	if (isset($task) && $task == 'createpdfemail')
+	{
+		$dosef = false;
+	}
+	elseif (isset($page) && $page == 'print')
+	{
+		$dosef = false;
+	}
 	else
 	{
-
-		$app = & JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$reParams = $app->getParams('com_redevent');
 
 		/* Get the DB connection */
 		$db = JFactory::getDBO();
 
 		$Itemid = isset($Itemid) ? @$Itemid : null;
+
 		if (!empty($Itemid))
 		{
 			$menu = JSite::getMenu();
@@ -109,7 +120,7 @@ if (!$shHomePageFlag)
 		{
 			if ($sefConfig->shInsertGlobalItemidIfNone && !empty($shCurrentItemid))
 			{
-				$string .= '&Itemid=' . $shCurrentItemid;; // append current Itemid
+				$string .= '&Itemid=' . $shCurrentItemid; // append current Itemid
 				$Itemid = $shCurrentItemid;
 				shAddToGETVarsList('Itemid', $Itemid); // V 1.2.4.m
 			}
@@ -132,12 +143,12 @@ if (!$shHomePageFlag)
 		{
 			if ($sefConfig->shAlwaysInsertMenuTitle || $reParams->get('sh404sef_always_include_menu_title', 0))
 			{
-				//global $Itemid; V 1.2.4.g we want the string option, not current page !
+				// Global $Itemid; V 1.2.4.g we want the string option, not current page !
 				if ($sefConfig->shDefaultMenuItemName)
 				{
 					$title[] = $sefConfig->shDefaultMenuItemName; // V 1.2.4.q added force language
 				}
-				else if ($menuTitle = getMenuTitle($option, (isset($view) ? @$view : null), $Itemid, '', $shLangName))
+				elseif ($menuTitle = getMenuTitle($option, (isset($view) ? @$view : null), $Itemid, '', $shLangName))
 				{
 					//echo 'Menutitle = '.$menuTitle.'<br />';
 					if ($menuTitle != '/') $title[] = $menuTitle;
@@ -146,7 +157,9 @@ if (!$shHomePageFlag)
 		}
 
 		if (!empty($Itemid))
+		{
 			shRemoveFromGETVarsList('Itemid');
+		}
 
 		/* Remove some default values */
 //  shRemoveFromGETVarsList('option');
@@ -161,11 +174,17 @@ if (!$shHomePageFlag)
 
 		shRemoveFromGETVarsList('option');
 		shRemoveFromGETVarsList('lang');
+
 		// optional removal of limit and limitstart
 		if (!empty($limit)) // use empty to test $limit as $limit is not allowed to be zero
+		{
 			shRemoveFromGETVarsList('limit');
+		}
+
 		if (isset($limitstart)) // use isset to test $limitstart, as it can be zero
+		{
 			shRemoveFromGETVarsList('limitstart');
+		}
 
 		/* Set the main title of the component */
 		if (isset($view))
@@ -202,7 +221,7 @@ if (!$shHomePageFlag)
 					$storeq = $db->getQuery();
 					$details = $db->loadObject();
 				}
-				else if (isset($id))
+				elseif (isset($id))
 				{
 					$q = "SELECT e.title
 		            FROM  #__redevent_events e
@@ -215,6 +234,7 @@ if (!$shHomePageFlag)
 				{
 					Jerror::raiseWarning(0, 'sh404sef redevent missing event id/xref');
 					$dosef = false;
+
 					return;
 				}
 			}
@@ -227,20 +247,25 @@ if (!$shHomePageFlag)
 						$title[] = $id;
 						shRemoveFromGETVarsList('id');
 					}
+
 					if ($menuparams)
 					{
 						$offset = $menuparams->get('days', 0);
+
 						switch ($offset)
 						{
 							case 0:
 								$title[] = $sh_LANG[$shLangIso]['today'];
 								break;
+
 							case 1:
 								$title[] = $sh_LANG[$shLangIso]['tomorrow'];
 								break;
+
 							case -1:
 								$title[] = $sh_LANG[$shLangIso]['yesterday'];
 								break;
+
 							default:
 								$title[] = sprintf($sh_LANG[$shLangIso]['in x days'], $offset);
 								break;
@@ -266,6 +291,7 @@ if (!$shHomePageFlag)
 						$db->setQuery($q);
 						$title[] = $db->loadResult();
 					}
+
 					break;
 
 				case 'categoriesdetailed':
@@ -276,6 +302,7 @@ if (!$shHomePageFlag)
 						$db->setQuery($q);
 						$title[] = $db->loadResult();
 					}
+
 					break;
 
 				case 'venues':
@@ -286,6 +313,7 @@ if (!$shHomePageFlag)
 						$db->setQuery($q);
 						$title[] = $db->loadResult();
 					}
+
 					break;
 
 				case 'venueevents':
@@ -320,8 +348,10 @@ if (!$shHomePageFlag)
 							$dosef = false;
 							return;
 						}
+
 						$title[] = $xref . '-' . $details->title;
 						$title[] = $details->city;
+
 						if ($details->dates == '0000-00-00')
 						{
 							$title[] = $sh_LANG[$shLangIso]['open-date'];
@@ -330,12 +360,18 @@ if (!$shHomePageFlag)
 						{
 							$title[] = $details->dates;
 						}
+
 						if ($details->times != '00-00') $title[] = $details->times;
-						shRemoveFromGETVarsList('xref');
+						{
+							shRemoveFromGETVarsList('xref');
+						}
+
 						if (!empty($id))
+						{
 							shRemoveFromGETVarsList('id');
+						}
 					}
-					else if (isset($id))
+					elseif (isset($id))
 					{
 						$title[] = $id . '-' . $details->title;
 						shRemoveFromGETVarsList('id');
@@ -375,17 +411,21 @@ if (!$shHomePageFlag)
 					$dosef = false;
 					break;
 
+				case 'editevent':
+				case 'editvenue':
+					$dosef = false;
+					break;
+
+				case 'attendees':
+					if (isset($task) && $task == 'manageattendees')
+					{
+						$dosef = false;
+					}
+					break;
+
 				default:
 					break;
 			}
-//    if ($shGETVars['view'] == 'editevent') {
-//      $title[] = $shGETVars['layout'];
-//    }
-//    if ($shGETVars['view'] == 'confirmation') {
-//      $title[] = $shGETVars['view'];
-//      $title[] = $shGETVars['task'];
-//      shRemoveFromGETVarsList('task');
-//    }
 		}
 
 		/* Remove ID field as we no longer need it */
@@ -397,6 +437,7 @@ if (!$shHomePageFlag)
 			$title[] = $subtype;
 			shRemoveFromGETVarsList('subtype');
 		}
+
 		if (isset($submit_key))
 		{
 			if (isset($page))
@@ -406,15 +447,20 @@ if (!$shHomePageFlag)
 					case 'final':
 						$title[] = $action;
 						break;
+
 					default:
 						if ($page != 'confirmation') $title[] = $page;
 						else $title[] = $action;
 						break;
 				}
+
 				shRemoveFromGETVarsList('page');
 				shRemoveFromGETVarsList('action');
 			}
-			else $title[] = 'submit';
+			else
+			{
+				$title[] = 'submit';
+			}
 		}
 
 		if (isset($page))
@@ -430,6 +476,7 @@ if (!$shHomePageFlag)
 				$title[] = $xref;
 				$title[] = $sh_LANG[$shLangIso]['registration'];
 				$title[] = $sh_LANG[$shLangIso]['confirm'];
+
 				if (redEVENTsh404Helper::getIsPaidRegistration($submit_key))
 				{
 					$title[] = $sh_LANG[$shLangIso]['free'];
@@ -438,6 +485,7 @@ if (!$shHomePageFlag)
 				{
 					$title[] = $sh_LANG[$shLangIso]['paid'];
 				}
+
 				$title[] = $submit_key;
 				$title[] = $confirmid;
 				shRemoveFromGETVarsList('submit_key');
@@ -449,6 +497,7 @@ if (!$shHomePageFlag)
 			{
 				$title[] = $task;
 			}
+
 			shRemoveFromGETVarsList('task');
 		}
 
@@ -464,21 +513,28 @@ if (!$shHomePageFlag)
 			{
 				$title[] = 'print';
 			}
+
 			shRemoveFromGETVarsList('pop');
 		}
 
 		/* Handle the RSS feed */
 		if (isset($format))
 		{
-			if (strtolower($format) == 'feed') $title[] = 'feed';
+			if (strtolower($format) == 'feed')
+			{
+				$title[] = 'feed';
+			}
+
 			shRemoveFromGETVarsList('format');
 		}
+
 		if (isset($type))
 		{
 			$title[] = $type;
 			shRemoveFromGETVarsList('type');
 		}
 	}
+
 	// ------------------  standard plugin finalize function - don't change ---------------------------
 	if ($dosef)
 	{

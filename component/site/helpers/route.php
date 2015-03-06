@@ -377,8 +377,10 @@ class RedeventHelperRoute
 			}
 		}
 
-		// Language filter ?
-
+		if (isset($parts['Itemid']) && $parts['Itemid'] == 650)
+		{
+			$parts['fItemid'] = $parts['Itemid'];
+		}
 
 		return 'index.php?'.JURI::buildQuery( $parts );
 	}
