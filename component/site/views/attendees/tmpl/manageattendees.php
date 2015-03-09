@@ -157,5 +157,5 @@ if ($this->manage_attendees) {
 	</form>
 	<?php
 }
-echo JHTML::_('link', JRoute::_('index.php?option=com_redevent&view=myevents'), JText::_('COM_REDEVENT_RETURN_TO_MY_EVENTS'));
+echo JHTML::_('link', JRoute::_(RedeventHelperRoute::getMyeventsRoute()), JText::_('COM_REDEVENT_RETURN_TO_MY_EVENTS'));
 ?>
