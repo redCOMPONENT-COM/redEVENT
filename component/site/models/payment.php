@@ -27,7 +27,7 @@ jimport('joomla.application.component.model');
  * @package  RedEVENT
  * @since    2.0
  */
-class RedeventModelPayment extends JModel
+class RedeventModelPayment extends JModelLegacy
 {
 	/**
 	 * Caching for session details
@@ -52,7 +52,7 @@ class RedeventModelPayment extends JModel
 	{
 		parent::__construct();
 
-		$submit_key = JRequest::getVar('submit_key');
+		$submit_key = JFactory::getApplication()->input->get('submit_key');
 		$this->setSubmitKey($submit_key);
 	}
 
@@ -85,7 +85,7 @@ class RedeventModelPayment extends JModel
 			}
 
 			// Find session associated to key
-			$db = JFactory::getDbo();
+			$db = $this->_db;
 			$query = $db->getQuery(true);
 
 			$query->select('xref');
@@ -95,7 +95,7 @@ class RedeventModelPayment extends JModel
 			$db->setQuery($query);
 			$xref = $db->loadResult();
 
-			$helper = JModel::getInstance('Eventhelper', 'RedeventModel');
+			$helper = RModel::getFrontInstance('Eventhelper');
 			$helper->setXref($xref);
 
 			$this->_event = $helper->getData();
@@ -144,7 +144,7 @@ class RedeventModelPayment extends JModel
 	 */
 	protected function getAttendeeIds()
 	{
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('r.id');
