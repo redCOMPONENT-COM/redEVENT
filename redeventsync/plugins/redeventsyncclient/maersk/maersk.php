@@ -786,4 +786,45 @@ class plgRedeventsyncclientMaersk extends JPlugin
 
 		return '0';
 	}
+
+	/**
+	 * Convert date format from dd-mm-yyyy to ddmmyy
+	 *
+	 * @param   string  $redMemberdate  date
+	 *
+	 * @return string
+	 */
+	public function convertDateToPicasso($redMemberdate)
+	{
+		if (preg_match("/^[0-9]{2}-[0-9]{2}-[0-9]{4}$/", $redMemberdate))
+		{
+			return substr($redMemberdate, 0, 2) . substr($redMemberdate, 3, 2) . substr($redMemberdate, 8, 2);
+		}
+		elseif (preg_match("/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/", $redMemberdate))
+		{
+			return substr($redMemberdate, 8, 2) . substr($redMemberdate, 5, 2) . substr($redMemberdate, 2, 2);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Convert date format from ddmmyy to dd-mm-yyyy
+	 *
+	 * @param   string  $date  date
+	 *
+	 * @return string
+	 */
+	public function convertDateFromPicasso($date)
+	{
+		if (preg_match("/^[0-9]{6}$/", $date))
+		{
+			$year = substr($date, 4, 2);
+			$year = ($year < 20) ? '20' . $year : '19' . $year;
+
+			return substr($date, 0, 2) . '-' . substr($date, 2, 2) . '-' . $year;
+		}
+
+		return false;
+	}
 }

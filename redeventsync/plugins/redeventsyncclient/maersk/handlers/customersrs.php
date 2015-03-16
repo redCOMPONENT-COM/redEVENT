@@ -71,7 +71,12 @@ class RedeventsyncHandlerCustomersrs extends RedeventsyncHandlerAbstractmessage
 		$data['rm_countrycode'] = (string) $customer->Countrycode;
 		$data['rm_nationality'] = (string) $customer->Nationality;
 		$data['rm_titlerank'] = (string) $customer->TitleRank;
-		$data['rm_birthday'] = (string) $customer->Birthdate;
+
+		if ($dob = $this->parent->convertDateFromPicasso((string) $customer->Birthdate))
+		{
+			$data['rm_birthday'] = $dob;
+		}
+
 		$data['rm_phone'] = (string) $customer->Phonenumber;
 		$data['rm_mobile'] = (string) $customer->Mobilephonenumber;
 
