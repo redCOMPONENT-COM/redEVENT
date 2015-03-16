@@ -38,10 +38,7 @@ class RedeventsyncHandlerAttendeesrs extends RedeventsyncHandlerAbstractmessage
 		}
 		else
 		{
-			// Log
-			$this->log(
-				REDEVENTSYNC_LOG_DIRECTION_INCOMING, $transaction_id,
-				$xml, 'error');
+			throw new Exception('AttendeesRS returned error(s)');
 		}
 
 		return true;
