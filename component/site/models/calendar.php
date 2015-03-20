@@ -98,7 +98,7 @@ class RedeventModelCalendar extends RModel
 	 * @access public
 	 * @return array
 	 */
-	public function &getData()
+	public function getData()
 	{
 		// Lets load the content if it doesn't already exist
 		if ( empty($this->_data))
@@ -294,28 +294,32 @@ class RedeventModelCalendar extends RModel
 	/**
 	 * Method to get the Categories
 	 *
-	 * @param   int  $id  top category id
+	 * @param   int  $eventId  filter by event id
 	 *
 	 * @access public
 	 *
-	 * @return integer
+	 * @return array
 	 */
-	protected function getCategories($id)
+	public function getCategories($eventId = null)
 	{
-		$db = &JFactory::getDbo();
-		$query = $db->getQuery(true);
+		$query = $this->_db->getQuery(true);
 
 		$query->select('c.id, c.name, c.color');
 		$query->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug');
 		$query->from('#__redevent_categories as c');
-		$query->join('INNER', '#__redevent_event_category_xref as x ON x.category_id = c.id');
 		$query->where('c.published = 1');
-		$query->where('x.event_id = ' . $this->_db->Quote((int) $id));
 		$query->order('c.ordering');
-		$db->setQuery($query);
 
-		$this->_categories = $db->loadObjectList();
+		if ($eventId)
+		{
+			$query->join('INNER', '#__redevent_event_category_xref as x ON x.category_id = c.id');
+			$query->where('x.event_id = ' . $this->_db->Quote((int) $eventId));
+		}
 
-		return $this->_categories;
+		$this->_db->setQuery($query);
+
+		$res = $this->_db->loadObjectList();
+
+		return $res;
 	}
 }

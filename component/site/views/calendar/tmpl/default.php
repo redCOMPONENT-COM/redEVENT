@@ -172,46 +172,25 @@ foreach ($this->rows as $row)
         <?php echo JText::_('COM_REDEVENT_HIDEALL'); ?>
     </div>
 
-    <?php
-    //print the legend
-	if($this->params->get('displayLegend')) :
+    <?php if($this->params->get('displayLegend')) :
 
-	$counter = array();
+		//walk through events
+		foreach ($this->categories as $category):
+			$eventsCount = isset($countcatevents[$category->id]) ? $countcatevents[$category->id] : 0;
 
-	//walk through events
-	foreach ($this->rows as $row):
+			//build legend
+			if ($this->params->get('showAllCategories', 0) || $eventsCount): ?>
+				<div class="eventCat" catid="<?php echo $category->id; ?>">
+					<?php if (isset($category->color) && $category->color): ?>
+						<span class="colorpic" style="background-color: <?php echo $category->color; ?>"></span>
+					<?php endif;
+					echo $category->name . ' (' . $eventsCount . ')';
+					?>
+				</div>
+			<?php endif;
 
-		//walk through the event categories
-    	foreach ($row->categories as $cat) :
-
-    		//sort out dupes
-    		if(!in_array($cat->id, $counter)):
-
-    			//add cat id to cat counter
-    			$counter[] = $cat->id;
-
-    			//build legend
-        		if (array_key_exists($cat->id, $countcatevents)):
-    			?>
-
-    				<div class="eventCat" catid="<?php echo $cat->id; ?>">
-        				<?php
-        				if ( isset ($cat->color) && $cat->color) :
-            				echo '<span class="colorpic" style="background-color: '.$cat->color.';"></span>';
-        				endif;
-        				echo $cat->name.' ('.$countcatevents[$cat->id].')';
-        				?>
-    				</div>
-    			<?php
-				endif;
-
-			endif;
-
-    	endforeach;
-
-    endforeach;
-	endif;
-    ?>
+		endforeach;
+	endif; ?>
 </div>
 
 <div class="clr"/></div>

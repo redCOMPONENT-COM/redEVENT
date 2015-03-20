@@ -73,7 +73,8 @@ class RedeventViewCalendar extends RViewSite
         $model = & $this->getModel();
         $model->setDate(mktime(0, 0, 1, $month, 1, $year));
 
-        $rows = & $this->get('Data');
+        $rows = $this->get('Data');
+	    $categories = $this->get('Categories');
 
         //Set Meta data
         $document->setTitle($item->title);
@@ -89,6 +90,7 @@ class RedeventViewCalendar extends RViewSite
     		$cal->enableDayLinks(false);
 
         $this->assignRef('rows', 		$rows);
+	    $this->assignRef('categories', $categories);
         $this->assignRef('params', 		$params);
         $this->assignRef('settings', 	$settings);
         $this->assignRef('cal', 		$cal);
