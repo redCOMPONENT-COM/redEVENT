@@ -22,14 +22,14 @@
 
 // requires mootools
 window.addEvent('domready', function(){
-	
+
 	redhint = {
-			
+
 		// some global variables
 		blurClass : 'blur',
-		$input : $('filter'),	
+		$input : $('filter'),
 		$form : $('adminForm'),
-		
+
 		removehint : function() {
 			if (redhint.$input) {
 					if (redhint.$input.value === redhint.$input.title && redhint.$input.hasClass(redhint.blurClass)) {
@@ -37,7 +37,7 @@ window.addEvent('domready', function(){
 					}
 			}
 		},
-			
+
 		init : function() {
 			// only apply logic if the element has the attribute
 			if (redhint.$input) {
@@ -50,15 +50,15 @@ window.addEvent('domready', function(){
 				}).addEvent('focus', redhint.removehint).fireEvent('blur'); // now change input to title
 
 				// clear the pre-defined text when form is submitted
-				redhint.$form.addEvent('submit', redhint.removehint);    
+				redhint.$form.addEvent('submit', redhint.removehint);
 				if ($('limit')) {
 					$('limit').addEvent('click', redhint.removehint);
 				}
 				window.addEvent('unload', redhint.removehint); // handles Firefox's autocomplete
 			}
 		}
-	
 	};
+
 	redhint.init();
 
 	$$('.dynfilter').addEvent('change', function() {
@@ -66,8 +66,7 @@ window.addEvent('domready', function(){
 		this.form.submit();
 		return true;
 	});
-	
-	
+
 	// show/hide filters in views
 	if ($('el-events-filters'))
 	{
@@ -90,19 +89,19 @@ window.addEvent('domready', function(){
 					$('el-events-filters').setStyle('display', 'none');
 					$('f-showfilters').value = 0;
 				}
-			});	
+			});
 		}
 	}
-	
+
 	if ($('filters-reset'))
 	{
 		$('filters-reset').addEvent('click', function(){
 			$('el-events-filters').getElements('input').each(function(el){
-				el.value = ''; 
+				el.value = '';
 			});
 			$('el-events-filters').getElements('select').each(function(el){
-				el.value = ''; 
-			});						
+				el.value = '';
+			});
 			redhint.removehint();
 			this.form.submit();
 			return true;
@@ -110,13 +109,18 @@ window.addEvent('domready', function(){
 	}
 });
 
+function redEventSubmitForm() {
+	redhint.removehint();
+	this.adminForm.submit();
+}
+
 function tableOrdering( order, dir, view )
 {
 	var form = document.getElementById("adminForm");
-	
+
 	// remove the hint from the filter
 	redhint.removehint();
-	
+
 	form.filter_order.value 	= order;
 	form.filter_order_Dir.value	= dir;
 	form.submit( view );
