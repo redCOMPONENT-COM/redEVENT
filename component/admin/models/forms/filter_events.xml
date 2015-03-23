@@ -13,7 +13,7 @@
 			type="rpublished"
 			onchange="this.form.submit();"
 			label="COM_REDEVENT_FILTER_PUBLISHED"
-			statuses="0,1"
+			statuses="0,1,-1"
 		>
 			<option value="">COM_REDEVENT_FILTER_PUBLISHED</option>
 		</field>
