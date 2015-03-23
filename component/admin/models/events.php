@@ -129,7 +129,7 @@ class RedeventModelEvents extends RModelList
 	 */
 	private function buildContentWhere($query)
 	{
-		$filter_state = $this->getState('filter.published', '');
+		$filter_state = $this->getState('filter.published');
 
 		if (is_numeric($filter_state))
 		{
@@ -245,6 +245,9 @@ class RedeventModelEvents extends RModelList
 	 */
 	public function populateState($ordering = 'obj.title', $direction = 'asc')
 	{
+		$published = $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '');
+		$this->setState('filter.published', $published);
+
 		parent::populateState($ordering, $direction);
 	}
 

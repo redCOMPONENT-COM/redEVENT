@@ -163,7 +163,7 @@ class RedeventHelper
 
 					// Update xref to archive
 					$query = $db->getQuery(true)
-						->update('#__redevent_event_venue_xref')
+						->update('#__redevent_event_venue_xref AS x')
 						->set('x.published = -1')
 						->where('x.id IN (' . implode(', ', $xref_ids) . ')');
 

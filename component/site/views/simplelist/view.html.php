@@ -28,31 +28,43 @@ jimport('joomla.application.component.view');
  * HTML View class for the EventList View
  *
  * @package    Joomla
+ *
  * @subpackage redEVENT
+ *
  * @since      0.9
  */
 class RedeventViewSimpleList extends RViewSite
 {
 	/**
+	 * Rows data
+	 *
+	 * @var  array
+	 */
+	public $rows;
+
+	public $minutePixel = 10;
+
+	/**
 	 * Creates the Simple List View
 	 *
 	 * @since 0.9
+	 *
 	 */
 	function display($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
-
 		// Initialize variables
-		$document = JFactory::getDocument();
+		$app        = JFactory::getApplication();
+		$input      = $app->input;
+		$document   = JFactory::getDocument();
 		$elsettings = RedeventHelper::config();
-		$menu = JSite::getMenu();
-		$item = $menu->getActive();
-		$params = $mainframe->getParams();
-		$uri = JFactory::getURI();
-		$pathway = $mainframe->getPathWay();
-		$state = $this->get('state');
+		$menu       = JSite::getMenu();
+		$item       = $menu->getActive();
+		$params     = $app->getParams();
+		$uri        = JFactory::getURI();
+		$pathway    = $app->getPathWay();
+		$state      = $this->get('state');
 
-		//add css file
+		// Add css file
 		if (!$params->get('custom_css'))
 		{
 			$document->addStyleSheet('media/com_redevent/css/redevent.css');
@@ -71,23 +83,21 @@ class RedeventViewSimpleList extends RViewSite
 		$document->addScript($this->baseurl . '/components/com_redevent/assets/js/eventslist.js');
 
 		// Get variables
-		$task = JRequest::getWord('task');
-		$pop = JRequest::getBool('pop');
+		$task   = $input->getWord('task', '');
+		$pop    = $input->getBool('pop', false);
+		$layout = $input->getWord('layout', '');
 
 		// Get data from model
-		$rows = $this->get('Data');
-		$customs = $this->get('ListCustomFields');
+		$this->rows     = $this->get('Data');
+		$customs        = $this->get('ListCustomFields');
 		$customsfilters = $this->get('CustomFilters');
-		$pagination = $this->get('Pagination');
+		$pagination     = $this->get('Pagination');
+		$this->noevents = 1;
 
 		// Are events available?
-		if (!$rows)
+		if (!empty($this->rows))
 		{
-			$noevents = 1;
-		}
-		else
-		{
-			$noevents = 0;
+			$this->noevents = 0;
 		}
 
 		// Params
@@ -104,7 +114,7 @@ class RedeventViewSimpleList extends RViewSite
 		$pagetitle = $params->get('page_title');
 
 		$thumb_link = RedeventHelperRoute::getSimpleListRoute(null, 'thumb');
-		$list_link = RedeventHelperRoute::getSimpleListRoute(null, 'default');
+		$list_link  = RedeventHelperRoute::getSimpleListRoute(null, 'default');
 
 		// Set Page title
 		$this->document->setTitle($pagetitle);
@@ -119,18 +129,16 @@ class RedeventViewSimpleList extends RViewSite
 		$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
 		$document->addHeadLink(JRoute::_($link . '&type=atom'), 'alternate', 'rel', $attribs);
 
-		// create select lists
-		$lists = $this->_buildSortLists();
+		// Create select lists
+		$lists = $this->buildSortLists();
 
 		$filter_customs = $state->get('filter_customs');
 
 		$this->assign('lists', $lists);
 
-		$this->assignRef('rows', $rows);
 		$this->assignRef('customs', $customs);
 		$this->assignRef('customsfilters', $customsfilters);
 		$this->assignRef('task', $task);
-		$this->assignRef('noevents', $noevents);
 		$this->assignRef('print_link', $print_link);
 		$this->assignRef('params', $params);
 		$this->assignRef('dellink', $dellink);
@@ -149,6 +157,11 @@ class RedeventViewSimpleList extends RViewSite
 		$this->order = $state->get('filter_order');
 		$this->orderDir = $state->get('filter_order_Dir');
 
+		if ($layout == 'timeline')
+		{
+			$this->rows = $this->timelineProcessData($this->rows);
+		}
+
 		parent::display($tpl);
 	}
 
@@ -156,10 +169,12 @@ class RedeventViewSimpleList extends RViewSite
 	 * Method to build the sortlists
 	 *
 	 * @access private
+	 *
 	 * @return array
+	 *
 	 * @since  0.9
 	 */
-	function _buildSortLists()
+	private function buildSortLists()
 	{
 		$app = JFactory::getApplication();
 		$uri = JFactory::getURI();
@@ -168,6 +183,7 @@ class RedeventViewSimpleList extends RViewSite
 		// Remove previously set filter in get
 		$uri->delVar('filter');
 		$uri->delVar('filter_type');
+		$uri->delVar('filter_date');
 		$uri->delVar('filter_category');
 		$uri->delVar('filter_venuecategory');
 		$uri->delVar('filter_venue');
@@ -181,11 +197,12 @@ class RedeventViewSimpleList extends RViewSite
 
 		$state = $this->get('state');
 
-		$filter = $state->get('filter');
-		$filter_type = $state->get('filter_type');
+		$filter          = $state->get('filter');
+		$filter_type     = $state->get('filter_type');
 		$filter_category = $state->get('filter_category');
-		$filter_venue = $state->get('filter_venue');
-		$filter_event = $state->get('filter_event');
+		$filter_date     = $state->get('filter_date');
+		$filter_venue    = $state->get('filter_venue');
+		$filter_event    = $state->get('filter_event');
 
 		$this->assign('action', JRoute::_('index.php?option=com_redevent&view=simplelist'));
 
@@ -242,9 +259,101 @@ class RedeventViewSimpleList extends RViewSite
 			$lists['eventfilter'] = JHTML::_('select.genericlist', $options, 'filter_event', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_event);
 		}
 
+		// Date filter
+		if ($params->get('lists_filter_date', 0))
+		{
+			$lists['dateFilter'] = JHTML::_(
+				'calendar',
+				$filter_date,
+				'filter_date',
+				'filter_date',
+				'%Y-%m-%d',
+				' class="dynfilter" onchange="javascript:redEventSubmitForm();"'
+			);
+		}
+
 		$lists['filter'] = $filter;
 		$lists['filter_type'] = $sortselect;
 
 		return $lists;
+	}
+
+	/**
+	 * Method create group data for Timeline view
+	 *
+	 * @param   array  $sessions  Array of sessions
+	 *
+	 * @return  array/boolean  Array of group session. False otherwise.
+	 */
+	public function timelineProcessData($sessions)
+	{
+		if (empty($sessions) || !is_array($sessions))
+		{
+			return false;
+		}
+
+		$venues    = array();
+		$startTime = 9;
+
+		foreach ($sessions as $session)
+		{
+			$venuesKey = $session->venue_id;
+
+			if (!isset($venues[$venuesKey]))
+			{
+				$venues[$venuesKey] = array(
+					'venue'      => $session->venue,
+					'city'       => $session->city,
+					'state'      => $session->state,
+					'url'        => $session->url,
+					'street'     => $session->street,
+					'country'    => $session->country,
+					'venue_code' => $session->venue_code,
+					'id'         => $session->venue_id,
+					'events'     => array()
+				);
+			}
+
+			$eventKey = $session->id;
+
+			if (!isset($venues[$venuesKey]['events'][$eventKey]))
+			{
+				$event = new StdClass;
+				$event->id                       = $session->id;
+				$event->title                    = $session->title;
+				$event->full_title               = $session->full_title;
+				$event->created                  = $session->created;
+				$event->datdescription           = $session->datdescription;
+				$event->registra                 = $session->registra;
+				$event->datimage                 = $session->datimage;
+				$event->summary                  = $session->summary;
+				$event->submission_type_external = $session->submission_type_external;
+				$event->redform_id               = $session->redform_id;
+				$event->sessions                 = array();
+
+				unset($session->id);
+				unset($session->title);
+				unset($session->full_title);
+				unset($session->created);
+				unset($session->datdescription);
+				unset($session->registra);
+				unset($session->datimage);
+				unset($session->summary);
+				unset($session->submission_type_external);
+				unset($session->redform_id);
+
+				$venues[$venuesKey]['events'][$eventKey] = $event;
+			}
+
+			$start = new JDate($session->times);
+			$end   = new JDate($session->endtimes);
+			$session->startPixel = ((($start->format('H') - $startTime) * 60) + $start->format('i')) * $this->minutePixel;
+			$session->endPixel   = ((($end->format('H') - $startTime) * 60) + $end->format('i')) * $this->minutePixel;
+			$session->widthPixel = $session->endPixel - $session->startPixel;
+
+			$venues[$venuesKey]['events'][$eventKey]->sessions[] = $session;
+		}
+
+		return $venues;
 	}
 }

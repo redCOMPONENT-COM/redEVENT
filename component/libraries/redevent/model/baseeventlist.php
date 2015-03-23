@@ -102,7 +102,8 @@ class RedeventModelBaseeventlist extends RModel
 
 		$this->setState('filter_event',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_event',    'filter_event', 0, 'int'));
 		$this->setState('filter_category', $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_category', 'filter_category', 0, 'int'));
-		$this->setState('filter_venue',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_venue',    'filter_venue',    0, 'int'));
+		$this->setState('filter_venue', $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_venue', 'filter_venue', 0, 'int'));
+		$this->setState('filter_date', $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_date', 'filter_date', '', 'string'));
 
 		$this->setState('filter_multicategory', $app->input->get('filter_multicategory', null, 'array'));
 		$this->setState('filter_multivenue',    $app->input->get('filter_multivenue',    null, 'array'));
@@ -145,7 +146,7 @@ class RedeventModelBaseeventlist extends RModel
 	 */
 	public function &getData()
 	{
-		$pop	= JRequest::getBool('pop');
+		$pop = JRequest::getBool('pop');
 
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_data))
@@ -230,7 +231,7 @@ class RedeventModelBaseeventlist extends RModel
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
 
-		$db = &JFactory::getDbo();
+		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.session_code');
@@ -448,9 +449,18 @@ class RedeventModelBaseeventlist extends RModel
 			$query->where(' STRCMP(l.country, ' . $this->_db->Quote($country) . ') = 0 ');
 		}
 
+		// Filter by date
+		$filterDate = $this->getState('filter_date', '');
+
+		if (!empty($filterDate))
+		{
+			$query->where($this->_db->qn('x.dates') . ' = ' . $this->_db->quote($filterDate));
+			$query->where($this->_db->qn('x.enddates') . ' = ' . $this->_db->quote($filterDate));
+		}
+
 		$customs = $this->getState('filter_customs');
 
-//		echo '<pre>'; echo print_r($customs, true); echo '</pre>'; exit;
+		/* echo '<pre>'; echo print_r($customs, true); echo '</pre>'; exit; */
 		foreach ((array) $customs as $key => $custom)
 		{
 			if ($custom)
