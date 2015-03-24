@@ -844,4 +844,16 @@ class RedeventHelperOutput {
 		$newtext = preg_replace($find, $replace, $text);
 		return str_ireplace(JURI::root().JURI::root(), JURI::root(), $newtext);
 	}
+
+	/**
+	 * prints the code for tags display
+	 *
+	 * @param array tags to exclude from printing
+	 *
+	 * @return string
+	 */
+	public static function getTagsModalLink($field = '')
+	{
+		return JHTML::link('index.php?option=com_redevent&view=tags&tmpl=component&field=' . $field, JText::_('COM_REDEVENT_TAGS'), 'class="modal-button"');
+	}
 }

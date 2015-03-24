@@ -29,6 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo $this->form->getLabel('notify_subject'); ?>
 	</div>
 	<div class="controls">
+		<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('notify_subject'); ?></div>
 		<?php echo $this->form->getInput('notify_subject'); ?>
 	</div>
 </div>
@@ -38,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 		<em><?php echo JText::_('COM_REDEVENT_NOTIFY_BODY_NOTE'); ?></em>
 	</div>
 	<div class="controls">
-		<?php echo $this->printTags('notify_body'); ?>
+		<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('notify_body'); ?></div>
 		<?php echo $this->form->getInput('notify_body'); ?>
 	</div>
 </div>
@@ -55,6 +56,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo $this->form->getLabel('notify_confirm_subject'); ?>
 	</div>
 	<div class="controls">
+		<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('notify_confirm_subject'); ?></div>
 		<?php echo $this->form->getInput('notify_confirm_subject'); ?>
 	</div>
 </div>
@@ -63,7 +65,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo $this->form->getLabel('notify_confirm_body'); ?>
 	</div>
 	<div class="controls">
-		<?php echo $this->printTags('notify_confirm_body'); ?>
+		<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('notify_confirm_body'); ?></div>
 		<?php echo $this->form->getInput('notify_confirm_body'); ?>
 	</div>
 </div>

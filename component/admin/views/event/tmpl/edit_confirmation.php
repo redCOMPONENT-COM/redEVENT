@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo $this->form->getLabel('notify_off_list_subject'); ?>
 	</div>
 	<div class="controls">
+		<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('notify_off_list_subject'); ?></div>
 		<?php echo $this->form->getInput('notify_off_list_subject'); ?>
 	</div>
 </div>
@@ -22,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 		<em><?php echo JText::_('COM_REDEVENT_NOTIFY_ATTENDING_NOTE'); ?></em>
 	</div>
 	<div class="controls">
-		<?php echo $this->printTags('notify_off_list_body'); ?>
+		<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('notify_off_list_body'); ?></div>
 		<?php echo $this->form->getInput('notify_off_list_body'); ?>
 	</div>
 </div>
@@ -41,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 		<em><?php echo JText::_('COM_REDEVENT_NOTIFY_ON_LIST_NOTE'); ?></em>
 	</div>
 	<div class="controls">
-		<?php echo $this->printTags('notify_on_list_body'); ?>
+		<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('notify_on_list_body'); ?></div>
 		<?php echo $this->form->getInput('notify_on_list_body'); ?>
 	</div>
 </div>
