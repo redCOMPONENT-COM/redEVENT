@@ -252,7 +252,6 @@ class RedeventModelCalendar extends RModel
 
 			$query_top->select('lft, rgt');
 			$query_top->from('#__redevent_categories');
-			$query_top->join('INNER', '#__ AS ON = ');
 			$query_top->where('id = ' . $this->_db->Quote($topcat));
 			$db->setQuery($query_top);
 			$obj = $this->_db->loadObject();
@@ -263,7 +262,6 @@ class RedeventModelCalendar extends RModel
 
 				$query_ch->select('id');
 				$query_ch->from('#__redevent_categories ');
-				$query_ch->join('INNER', '#__ AS ON = ');
 				$query_ch->where('lft >= ' . $this->_db->Quote($obj->lft));
 				$query_ch->where('rgt <= ' . $this->_db->Quote($obj->rgt));
 				$db->setQuery($query_ch);
@@ -314,6 +312,15 @@ class RedeventModelCalendar extends RModel
 		{
 			$query->join('INNER', '#__redevent_event_category_xref as x ON x.category_id = c.id');
 			$query->where('x.event_id = ' . $this->_db->Quote((int) $eventId));
+		}
+
+		// Check if a category is specified
+		$topcat = JFactory::getApplication()->getParams('com_redevent')->get('topcat', 0);
+
+		if (is_numeric($topcat) && $topcat)
+		{
+			$query->join('inner', '#__redevent_categories AS top ON top.lft <= c.lft AND top.rgt >= c.rgt');
+			$query->where('top.id = ' . (int) $topcat);
 		}
 
 		$this->_db->setQuery($query);
