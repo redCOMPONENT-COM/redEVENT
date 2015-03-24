@@ -338,7 +338,7 @@ class RedeventHelperOutput {
 		$settings = & RedeventHelper::config();
 
 		//Link to map
-		$mapimage = JHTML::image(JURI::root().'components/com_redevent/assets/images/mapsicon.png', JText::_('COM_REDEVENT_MAP' ) );
+		$mapimage = JHTML::image(RHelperAsset::load('mapsicon.png'), JText::_('COM_REDEVENT_MAP' ) );
 
 		//set var
 		$output 	= null;
@@ -849,11 +849,9 @@ class RedeventHelperOutput {
 	 * prints the code for tags display
 	 *
 	 * @param array tags to exclude from printing
-	 *
-	 * @return string
 	 */
 	public static function getTagsModalLink($field = '')
 	{
-		return JHTML::link('index.php?option=com_redevent&view=tags&tmpl=component&field=' . $field, JText::_('COM_REDEVENT_TAGS'), 'class="modal-button"');
+		return JHTML::link('index.php?option=com_redevent&view=tags&tmpl=component&field=' . $field, JText::_('COM_REDEVENT_TAGS'), 'class="modal"');
 	}
 }

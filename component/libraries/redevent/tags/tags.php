@@ -1030,6 +1030,7 @@ class RedeventTags
 			return false;
 		}
 		$rfcore = $this->_getRFCore();
+
 		$fields = $rfcore->getFields($this->getEvent()->getData()->redform_id);
 
 		$tags = array();
