@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package  Redevent.admin
  * @since    2.5
  */
-class RedeventViewTags extends RedeventViewAdmin
+class RedeventViewTags extends RViewBase
 {
 
 	/**
@@ -30,17 +30,5 @@ class RedeventViewTags extends RedeventViewAdmin
 		$this->items = $this->get('Items');
 
 		parent::display($tpl);
-	}
-
-	/**
-	 * Get the page title
-	 *
-	 * @return  string  The title to display
-	 *
-	 * @since   0.9.1
-	 */
-	public function getTitle()
-	{
-		return JText::_('COM_REDEVENT_TAGS');
 	}
 }

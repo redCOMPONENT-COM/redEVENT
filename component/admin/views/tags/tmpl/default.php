@@ -27,26 +27,24 @@ defined('_JEXEC') or die('Restricted access');
 <div class="tab-content">
 	<?php foreach ($this->items as $section => $tags): ?>
 		<div class="tab-pane <?php echo ($active ? ' active' : ''); ?>" id="tags<?php echo $section; ?>">
-			<div class="row-fluid">
-				<table class="tagstable adminlist">
-					<thead>
-						<tr>
-							<th><?php echo JText::_('COM_REDEVENT_TAGS_NAME')?></th>
-							<th><?php echo JText::_('COM_REDEVENT_TAGS_DESCRIPTION')?></th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php $k = 0; ?>
-						<?php foreach ($tags as $tag): ?>
-						<tr class="<?php echo ($k ? 'row1' : 'row0'); ?>">
-							<td>[<?php echo addslashes($this->escape($tag->name)); ?>]</td>
-							<td><?php echo $tag->description; ?></td>
-						</tr>
-						<?php $k = 1 - $k; ?>
-						<?php endforeach; ?>
-					</tbody>
-				</table>
-			</div>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th class="span4"><?php echo JText::_('COM_REDEVENT_TAGS_NAME')?></th>
+						<th class="span8"><?php echo JText::_('COM_REDEVENT_TAGS_DESCRIPTION')?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php $k = 0; ?>
+					<?php foreach ($tags as $tag): ?>
+					<tr>
+						<td>[<?php echo addslashes($this->escape($tag->name)); ?>]</td>
+						<td><?php echo $tag->description; ?></td>
+					</tr>
+					<?php $k = 1 - $k; ?>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
 		</div>
 	<?php endforeach; ?>
 </div>

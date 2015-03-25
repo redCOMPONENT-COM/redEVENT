@@ -852,6 +852,6 @@ class RedeventHelperOutput {
 	 */
 	public static function getTagsModalLink($field = '')
 	{
-		return JHTML::link('index.php?option=com_redevent&view=tags&tmpl=component&field=' . $field, JText::_('COM_REDEVENT_TAGS'), 'class="modal"');
+		return JHTML::link('index.php?option=com_redevent&view=tags&tmpl=component&field=' . $field, JText::_('COM_REDEVENT_TAGS'), 'class="modal-button"');
 	}
 }
