@@ -35,7 +35,7 @@ class RedeventRegistrationCanregister
 		$this->setUser($userId);
 		$this->initResult();
 
-		if (!($this->session->published === 1))
+		if (!($this->session->published == 1))
 		{
 			$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_SESSION_NOT_PUBLISHED'), 'isover');
 
