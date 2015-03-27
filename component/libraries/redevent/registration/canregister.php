@@ -35,6 +35,13 @@ class RedeventRegistrationCanregister
 		$this->setUser($userId);
 		$this->initResult();
 
+		if (!($this->session->published === 1))
+		{
+			$this->setResultError(JText::_('COM_REDEVENT_REGISTRATION_SESSION_NOT_PUBLISHED'), 'isover');
+
+			return $this->result;
+		}
+
 		if ($this->isRegistrationDisabled())
 		{
 			return $this->result;
@@ -88,7 +95,7 @@ class RedeventRegistrationCanregister
 	{
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true)
-			->select('x.id AS xref')
+			->select('x.id AS xref, x.published')
 			->select('x.dates, x.times, x.enddates, x.endtimes, x.maxattendees, x.maxwaitinglist, x.registrationend')
 			->select('e.registra, e.max_multi_signup')
 			->from('#__redevent_event_venue_xref AS x')
