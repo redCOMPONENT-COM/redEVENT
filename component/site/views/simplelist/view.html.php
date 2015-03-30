@@ -19,8 +19,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
+// No direct access
+defined('_JEXEC') or die();
 
 jimport('joomla.application.component.view');
 
@@ -86,6 +86,9 @@ class RedeventViewSimpleList extends RViewSite
 		$task   = $input->getWord('task', '');
 		$pop    = $input->getBool('pop', false);
 		$layout = $input->getWord('layout', '');
+
+		// For "timeline" layout
+		$this->timelinePrepareData();
 
 		// Get data from model
 		$this->rows     = $this->get('Data');
@@ -272,7 +275,7 @@ class RedeventViewSimpleList extends RViewSite
 			);
 		}
 
-		$lists['filter'] = $filter;
+		$lists['filter']      = $filter;
 		$lists['filter_type'] = $sortselect;
 
 		return $lists;
@@ -355,5 +358,67 @@ class RedeventViewSimpleList extends RViewSite
 		}
 
 		return $venues;
+	}
+
+	/**
+	 * Method for get latest start date of published event
+	 *
+	 * @return  boolean   True on success. False otherwise.
+	 */
+	public function timelinePrepareData()
+	{
+		$db = JFactory::getDbo();
+
+		// Get all "Publish" events
+		$query = $db->getQuery(true)
+			->select($db->qn('id'))
+			->from($db->qn('#__redevent_events'))
+			->where($db->qn('published') . ' = 1');
+		$db->setQuery($query);
+		$result = $db->loadObjectList();
+
+		if (!$result)
+		{
+			return false;
+		}
+
+		$currentDate = JFactory::getDate();
+		$startDate   = null;
+		$dateValue   = null;
+
+		foreach ($result as $event)
+		{
+			$query->clear()
+				->select('DISTINCT (' . $db->qn('dates') . ')')
+				->from($db->qn('#__redevent_event_venue_xref'))
+				->where($db->qn('eventid') . ' = ' . $event->id)
+				->order($db->qn('dates') . ' DESC');
+			$db->setQuery($query, 0, 1);
+			$result = $db->loadObject();
+
+			$tmpDate = new JDate($result->dates);
+
+			if (!$startDate)
+			{
+				$startDate = $tmpDate;
+			}
+			elseif ($startDate > $tmpDate)
+			{
+				$startDate = $tmpDate;
+			}
+		}
+
+		if ($currentDate > $startDate)
+		{
+			$dateValue = $currentDate->format('Y-m-d');
+		}
+		else
+		{
+			$dateValue = $startDate->format('Y-m-d');
+		}
+
+		$this->getModel()->setState($dateValue);
+
+		return true;
 	}
 }
