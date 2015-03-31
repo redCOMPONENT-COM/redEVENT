@@ -127,11 +127,11 @@ class RedeventViewCategoryevents extends RViewSite
 		$pageNav = new JPagination($total, $limitstart, $limit);
 
 		//Generate Categorydescription
-		if (empty ($category->catdescription)) {
+		if (empty ($category->description)) {
 			$catdescription = JText::_('COM_REDEVENT_NO_DESCRIPTION' );
 		} else {
 			//execute plugins
-			$catdescription = JHTML::_('content.prepare', $category->catdescription);
+			$catdescription = JHTML::_('content.prepare', $category->description);
 		}
 
 		//create select lists
