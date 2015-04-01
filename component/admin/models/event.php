@@ -110,7 +110,7 @@ class RedeventModelEvent extends RModelAdmin
 
 			if (isset($data[$dbname]))
 			{
-				$validData[$dbname] = $data[$dbname];
+				$validData[$dbname] = is_array($data[$dbname]) ? implode("\n", $data[$dbname]) : $data[$dbname];
 			}
 		}
 
