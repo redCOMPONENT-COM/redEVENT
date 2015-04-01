@@ -35,20 +35,22 @@ class RedeventCustomfieldCheckbox extends RedeventAbstractCustomfield
 	public function render($attributes = array())
 	{
 		$html = '';
-		$option_list = array();
 		$options = explode("\n", $this->options);
 		$values = explode("\n", $this->value);
 
 		$default_values = explode("\n", $this->default_value);
 		$default = array();
+
 		foreach ($default_values as $d)
 		{
 			$d = trim($d);
+
 			if (!empty($d))
 			{
 				$default[] = $d;
 			}
 		}
+
 		if (!is_null($this->value))
 		{
 			$selected = $values;
@@ -66,12 +68,13 @@ class RedeventCustomfieldCheckbox extends RedeventAbstractCustomfield
 				$html .= '<input type="checkbox" name="jform[' . $this->fieldname . '][]" value="' . $option->value . '"' . (in_array($option->value, $selected) ? ' checked="checked"' : '') . ' ' . $this->attributesToString($attributes) . '/>' . $option->label;
 			}
 		}
+
 		return $html;
 	}
 
 	public function renderFilter($attributes = array(), $selected = null)
 	{
-		$app = & JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		if ($selected)
 		{
@@ -83,8 +86,8 @@ class RedeventCustomfieldCheckbox extends RedeventAbstractCustomfield
 		}
 
 		$html = '';
-		$option_list = array();
 		$options = explode("\n", $this->options);
+
 		if ($options)
 		{
 			foreach ($options as $opt)
@@ -94,6 +97,7 @@ class RedeventCustomfieldCheckbox extends RedeventAbstractCustomfield
 					. ' ' . $this->attributesToString($attributes) . '/>' . $option->label;
 			}
 		}
+
 		return $html;
 	}
 }
