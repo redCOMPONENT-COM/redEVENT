@@ -19,8 +19,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
+// No direct access
+defined('_JEXEC') or die();
 
 jimport('joomla.application.component.view');
 
@@ -63,6 +63,7 @@ class RedeventViewSimpleList extends RViewSite
 		$uri        = JFactory::getURI();
 		$pathway    = $app->getPathWay();
 		$state      = $this->get('state');
+		$model      = $this->getModel();
 
 		// Add css file
 		if (!$params->get('custom_css'))
@@ -86,6 +87,12 @@ class RedeventViewSimpleList extends RViewSite
 		$task   = $input->getWord('task', '');
 		$pop    = $input->getBool('pop', false);
 		$layout = $input->getWord('layout', '');
+
+		// For "timeline" layout
+		if ($layout == 'timeline')
+		{
+			$model->timelinePrepareData();
+		}
 
 		// Get data from model
 		$this->rows     = $this->get('Data');
@@ -272,7 +279,7 @@ class RedeventViewSimpleList extends RViewSite
 			);
 		}
 
-		$lists['filter'] = $filter;
+		$lists['filter']      = $filter;
 		$lists['filter_type'] = $sortselect;
 
 		return $lists;
