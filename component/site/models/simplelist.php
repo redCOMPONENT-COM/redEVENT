@@ -70,7 +70,7 @@ class RedeventModelSimpleList extends RedeventModelBaseeventlist
 			$dateValue = $startDate->format('Y-m-d');
 		}
 
-		$this->setState($dateValue);
+		$this->setState('filter_date', $dateValue);
 
 		return true;
 	}
