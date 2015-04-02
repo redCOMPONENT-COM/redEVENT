@@ -33,6 +33,27 @@ $baseHeight    = 30;
 	.redevent-timeline .timeline-sessions-wrapper .timeline-session-header-time {position: absolute; top: 0px; height: <?php echo $baseHeight; ?>px;}
 </style>
 
+<script type="text/javascript">
+	(function($){
+		$(document).ready(function(){
+			$('#timeline-sort-venue-checkbox').change(function(event){
+				event.preventDefault();
+
+				if ($(this).is(':checked')) {
+					$('#timeline-filter-order').val('l.venue');
+					$('#timeline-filter-direction').val('asc');
+				}
+				else {
+					$('#timeline-filter-order').val('x.dates');
+					$('#timeline-filter-direction').val('ASC');
+				}
+
+				$('#adminForm').submit();
+			});
+		});
+	})(jQuery);
+</script>
+
 <div id="redevent" class="rf_thumb">
 	<p class="buttons">
 		<?php
@@ -114,8 +135,8 @@ $baseHeight    = 30;
 				<?php endif; ?>
 			</div>
 		<?php endif; ?>
-		<input type="hidden" name="filter_order" value="<?php echo $this->order; ?>" />
-		<input type="hidden" name="filter_order_Dir" value="<?php echo $this->orderDir; ?>" />
+		<input type="hidden" id="timeline-filter-order" name="filter_order" value="<?php echo $this->order; ?>" />
+		<input type="hidden" id="timeline-filter-direction" name="filter_order_Dir" value="<?php echo $this->orderDir; ?>" />
 		<input type="hidden" name="layout" value="<?php echo $this->getLayout(); ?>" />
 	</form>
 	<!-- filter end -->
@@ -126,9 +147,13 @@ $baseHeight    = 30;
 			<div class="row">
 				<div class="col-md-3">
 					<div class="timeline-venues-header">
-						<?php echo JText::_('COM_REDEVENT_LOCATIONS') ?>
+						<?php echo JText::_('COM_REDEVENT_TIMELINE_LOCATIONS') ?>
+						<?php $sortChecked = ($this->order == 'l.venue') ? ' checked' : ''; ?>
+						<label href="javascript:void(0);" class="timeline-sort-venue-label" for="timeline-sort-venue-checkbox">
+							<input type="checkbox" value="" id="timeline-sort-venue-checkbox" <?php echo $sortChecked ?>/> <?php echo JText::_('COM_REDEVENT_TIMELINE_LOCATIONS_SORT_ALPHABETICAL') ?>
+						</label>
 					</div>
-					<?php $timelineHeight = 1; ?>
+					<?php $timelineHeight = $baseHeight; ?>
 					<?php foreach ($this->rows as $venue): ?>
 						<?php $currentHeight = count($venue['events']) * $baseHeight; ?>
 						<div class="timeline-venue" style="height: <?php echo $currentHeight ?>px;">
