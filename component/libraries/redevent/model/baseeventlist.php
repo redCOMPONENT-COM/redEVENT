@@ -234,7 +234,7 @@ class RedeventModelBaseeventlist extends RModel
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.session_code');
+		$query->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.session_code, x.details');
 		$query->select('x.maxattendees, x.maxwaitinglist, x.course_credit, x.featured, x.icaldetails, x.icalvenue, x.title as session_title');
 		$query->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', a.title, x.title) ELSE a.title END as full_title');
 		$query->select('a.id, a.title, a.created, a.datdescription, a.registra, a.datimage, a.summary, a.submission_type_external');

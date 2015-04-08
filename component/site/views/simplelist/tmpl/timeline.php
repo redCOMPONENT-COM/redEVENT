@@ -21,21 +21,34 @@ $timelineEnd   = 24;
 $timelineBlock = 60;
 
 $timelineWidth = ($timelineEnd - $timelineStart) * 60 * $this->minutePixel;
-$baseHeight    = 30;
+$baseHeight = 50;
+$sessionInforHeight = 400;
 ?>
 
 <style type="text/css">
 	.rf_img {min-height:<?php echo $this->config->get('imageheight', 100);?>px;}
 	.redevent-timeline .timeline-sessions-wrapper {overflow: auto;}
 	.redevent-timeline .timeline-sessions-wrapper .timeline-sessions {overflow: hidden; position: relative;}
-	.redevent-timeline .timeline-sessions-wrapper .timeline-venues {position: absolute; display: block; border: 1px solid #c0c0c0; box-sizing: border-box;}
+	.redevent-timeline .timeline-sessions-wrapper .timeline-venues {position: absolute; display: block; box-sizing: border-box; height: 100%; border-right: 1px solid #0099ff;}
 	.redevent-timeline .timeline-session-header, .redevent-timeline .timeline-venues-header {height: <?php echo $baseHeight; ?>px; background: #c0c0c0;}
 	.redevent-timeline .timeline-sessions-wrapper .timeline-session-header-time {position: absolute; top: 0px; height: <?php echo $baseHeight; ?>px;}
+	.redevent-timeline .timeline-sessions-wrapper .time-venues-base {position: relative; border-left: 1px solid #c0c0c0;}
+	.redevent-timeline .timeline-sessions-wrapper .timeline-venues-wrapper {border-bottom: 1px solid #c0c0c0;}
+	.redevent-timeline .timeline-sessions-wrapper .session-infor-hidden {display: none;}
+	.redevent-timeline .timeline-sessions-wrapper .time-venues-base-information {background: #c0c0c0;display:block;box-sizing: border-box;padding:15px;position: static;}
+	.venues-list {float: left; width: 29.9%; padding-left: 15px;}
+	.sessions-list {float: left; width: 70%;}
+	#timeline-session-information {background: #c0c0c0; position: absolute; overflow: hidden; display: block; width: 100%;}
+	#timeline-session-information .col-left {float: left; width: 29.9%; padding: 15px 15px 15px 30px;}
+	#timeline-session-information .col-right {float: left; width: 70%; padding: 15px 30px 15px 15px;}
+	.timeline-wrapper {position: relative;}
+	.timeline-venues-fake {background: #c0c0c0;}
 </style>
 
 <script type="text/javascript">
 	(function($){
 		$(document).ready(function(){
+			// Sort time checkbox
 			$('#timeline-sort-venue-checkbox').change(function(event){
 				event.preventDefault();
 
@@ -49,6 +62,55 @@ $baseHeight    = 30;
 				}
 
 				$('#adminForm').submit();
+			});
+
+			$('.timeline-venues').click(function(event){
+				event.preventDefault();
+
+				var hiddenInfor = $(this).parent().find('.session-infor-hidden');
+				var rowIndex = hiddenInfor.attr('data-row');
+				var parentBase = $(this).parent().parent();
+				var topPos = parentBase.height() + <?php echo $baseHeight ?>;
+				var targetInfor = $('#' + $(hiddenInfor).attr('data-target'));
+				var targetVenueFake = $('#timeline-venues-fake-' + rowIndex);
+
+				console.log(targetVenueFake);
+
+				$('#timeline-session-information').hide();
+
+				$('.time-venues-base-information').each(function(index){
+					if ($(this).attr('id') != targetInfor.attr('id')) {
+						$(this).hide();
+					}
+				});
+
+				$('.timeline-venues-fake').each(function(index){
+					if ($(this).attr('id') != targetVenueFake.attr('id')) {
+						$(this).hide();
+					}
+				});
+
+				parentBase.prevAll('.time-venues-base').each(function(index){
+					topPos += $(this).height();
+				});
+
+				$('#timeline-session-information').find('.col-left').html($(hiddenInfor).find('.session-left-infor').html());
+				$('#timeline-session-information').find('.col-right').html($(hiddenInfor).find('.session-right-infor').html());
+				$('#timeline-session-information').css('top', topPos + 'px');
+
+				targetVenueFake.slideToggle('slow');
+
+				targetInfor.slideToggle('slow', function(){
+					if (targetInfor.css('display') != 'none') {
+						$('#timeline-session-information').fadeIn();
+					}
+				});
+			});
+
+			$('#timeline-session-information').height(<?php echo $sessionInforHeight ?>).hide();
+
+			$('.time-venues-base-information, .timeline-venues-fake').each(function(index){
+				$(this).height(<?php echo $sessionInforHeight ?>).css('max-height', '<?php echo $sessionInforHeight ?>px').hide();
 			});
 		});
 	})(jQuery);
@@ -145,48 +207,85 @@ $baseHeight    = 30;
 	<div class="redevent-timeline">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-3">
-					<div class="timeline-venues-header">
-						<?php echo JText::_('COM_REDEVENT_TIMELINE_LOCATIONS') ?>
-						<?php $sortChecked = ($this->order == 'l.venue') ? ' checked' : ''; ?>
-						<label href="javascript:void(0);" class="timeline-sort-venue-label" for="timeline-sort-venue-checkbox">
-							<input type="checkbox" value="" id="timeline-sort-venue-checkbox" <?php echo $sortChecked ?>/> <?php echo JText::_('COM_REDEVENT_TIMELINE_LOCATIONS_SORT_ALPHABETICAL') ?>
-						</label>
-					</div>
-					<?php $timelineHeight = $baseHeight; ?>
-					<?php foreach ($this->rows as $venue): ?>
-						<?php $currentHeight = count($venue['events']) * $baseHeight; ?>
-						<div class="timeline-venue" style="height: <?php echo $currentHeight ?>px;">
-							<?php echo $venue['venue'] ?>
+				<div class="timeline-wrapper">
+					<div class="venues-list">
+						<div class="timeline-venues-header">
+							<?php echo JText::_('COM_REDEVENT_TIMELINE_LOCATIONS') ?>
+							<?php $sortChecked = ($this->order == 'l.venue') ? ' checked' : ''; ?>
+							<label href="javascript:void(0);" class="timeline-sort-venue-label" for="timeline-sort-venue-checkbox">
+								<input type="checkbox" value="" id="timeline-sort-venue-checkbox" <?php echo $sortChecked ?>/> <?php echo JText::_('COM_REDEVENT_TIMELINE_LOCATIONS_SORT_ALPHABETICAL') ?>
+							</label>
 						</div>
-						<?php $timelineHeight += $currentHeight; ?>
-					<?php endforeach; ?>
-				</div>
-				<div class="col-md-9">
-					<div class="timeline-sessions-wrapper">
-						<div class="timeline-sessions" style="width: <?php echo $timelineWidth ?>px; height: <?php echo $timelineHeight ?>px;">
-							<div class="timeline-session-header">
-								<?php for ($timelineHour = $timelineStart; $timelineHour <= $timelineEnd; $timelineHour++): ?>
-									<?php $timelineHourLeft = ($timelineHour - $timelineStart) * 60 * $this->minutePixel; ?>
-									<div class="timeline-session-header-time" style="left: <?php echo $timelineHourLeft; ?>px;">
-										<?php echo $timelineHour; ?>:00
-									</div>
-								<?php endfor; ?>
-							</div>
-							<?php $rowIndex = 1; ?>
-							<?php foreach ($this->rows as $venue): ?>
-								<?php foreach ($venue['events'] as $event): ?>
-									<?php $topPos = $rowIndex * $baseHeight; ?>
-									<?php foreach ($event->sessions as $session): ?>
-										<div class="timeline-venues" style="left: <?php echo $session->startPixel ?>px; height: <?php echo $baseHeight ?>px; top: <?php echo $topPos ?>px; width: <?php echo $session->widthPixel ?>px;">
-											<div class="timeline-session-time"><?php echo $session->times ?> - <?php echo $session->endtimes ?></div>
-											<div class="timeline-session-title"><?php echo $session->session_title ?></div>
+						<?php
+						$timelineHeight = $baseHeight;
+						$venueIndex = 0;
+						?>
+						<?php foreach ($this->rows as $venues): ?>
+							<?php foreach ($venues['events'] as $venueEvent): ?>
+								<?php $currentHeight = 0; ?>
+								<?php foreach ($venueEvent->sessions as $sessionsRow): ?>
+									<?php $currentHeight += count($sessionsRow) * $baseHeight; ?>
+								<?php endforeach; ?>
+								<div class="timeline-venue" style="height: <?php echo $currentHeight ?>px;"><?php echo $venues['venue'] ?></div>
+								<div class="timeline-venues-fake" id="timeline-venues-fake-<?php echo $venueIndex ?>"></div>
+								<?php $timelineHeight += $currentHeight; ?>
+							<?php endforeach; ?>
+							<?php $venueIndex++; ?>
+						<?php endforeach; ?>
+					</div>
+					<div class="sessions-list">
+						<div class="timeline-sessions-wrapper">
+							<div class="timeline-sessions" style="width: <?php echo $timelineWidth ?>px;">
+								<div class="timeline-session-header">
+									<?php for ($timelineHour = $timelineStart; $timelineHour <= $timelineEnd; $timelineHour++): ?>
+										<?php $timelineHourLeft = ($timelineHour - $timelineStart) * 60 * $this->minutePixel; ?>
+										<div class="timeline-session-header-time" style="left: <?php echo $timelineHourLeft; ?>px;">
+											<?php echo $timelineHour; ?>:00
 										</div>
+									<?php endfor; ?>
+								</div>
+								<?php $rowIndex = 0; ?>
+								<?php foreach ($this->rows as $venue): ?>
+									<?php foreach ($venue['events'] as $eventIndex => $event): ?>
+										<?php
+										$baseRowHeight = 0;
+										foreach ($event->sessions as $sessionRowIndex => $sessionRow):
+											$baseRowHeight += $baseHeight * count($sessionRow);
+										endforeach;
+										?>
+										<div class="time-venues-base" style="height: <?php echo $baseRowHeight ?>px;">
+										<?php foreach ($event->sessions as $sessionRowIndex => $sessionRow): ?>
+											<?php $sessionRowPos = $sessionRowIndex * $baseHeight; ?>
+												<?php foreach ($sessionRow as $session): ?>
+													<div class="timeline-venues-wrapper" style="height: <?php echo $baseHeight ?>px; top: <?php echo $sessionRowPos ?>px;">
+														<div class="timeline-venues" style="left: <?php echo $session->startPixel ?>px;  width: <?php echo $session->widthPixel ?>px;">
+															<div class="timeline-session-time"><?php echo $session->times ?> - <?php echo $session->endtimes ?></div>
+															<div class="timeline-session-title"><?php echo $session->session_title ?></div>
+														</div>
+														<div class="session-infor-hidden" id="session-infor-<?php echo $session->xref ?>" data-target="time-venues-session-infor-<?php echo $rowIndex ?>" data-row="<?php echo $rowIndex ?>">
+															<?php
+															$displayData = array('session' => $session);
+															echo RLayoutHelper::render('timeline.session', $displayData, null, null);
+															?>
+														</div>
+													</div>
+												<?php endforeach; ?>
+										<?php endforeach; ?>
+										</div>
+										<div class="time-venues-base-information" id="time-venues-session-infor-<?php echo $rowIndex ?>"></div>
 									<?php endforeach; ?>
 									<?php $rowIndex++; ?>
 								<?php endforeach; ?>
-							<?php endforeach; ?>
+							</div>
 						</div>
+					</div>
+					<div class="clear"></div>
+					<div id="timeline-session-information">
+						<div class="col-left">
+						</div>
+						<div class="col-right">
+						</div>
+						<div class="clear"></div>
 					</div>
 				</div>
 			</div>

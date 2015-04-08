@@ -91,6 +91,7 @@ class RedeventViewSimpleList extends RViewSite
 		// For "timeline" layout
 		if ($layout == 'timeline')
 		{
+			$model->setLimit(99999);
 			$model->timelinePrepareData();
 		}
 
@@ -336,7 +337,7 @@ class RedeventViewSimpleList extends RViewSite
 				$event->summary                  = $session->summary;
 				$event->submission_type_external = $session->submission_type_external;
 				$event->redform_id               = $session->redform_id;
-				$event->sessions                 = array();
+				$event->sessions                 = array(0 => array());
 
 				unset($session->id);
 				unset($session->title);
@@ -357,8 +358,32 @@ class RedeventViewSimpleList extends RViewSite
 			$session->startPixel = ((($start->format('H') - $startTime) * 60) + $start->format('i')) * $this->minutePixel;
 			$session->endPixel   = ((($end->format('H') - $startTime) * 60) + $end->format('i')) * $this->minutePixel;
 			$session->widthPixel = $session->endPixel - $session->startPixel;
+			$rowIndex = 0;
 
-			$venues[$venuesKey]['events'][$eventKey]->sessions[] = $session;
+			foreach ($venues[$venuesKey]['events'][$eventKey]->sessions as $row => $sessionList)
+			{
+				foreach ($sessionList as $existSession)
+				{
+					$existSessionStart = new JDate($existSession->times);
+					$existSessionEnd   = new JDate($existSession->endtimes);
+
+					// Check if this session start same time as the old one.
+					if ((($start >= $existSessionStart) && ($start <= $existSessionEnd))
+						|| (($end >= $existSessionStart) && ($end <= $existSessionEnd))
+						|| (($start <= $existSessionStart) && ($end >= $existSessionStart)))
+					{
+						// Move this session to next session.
+						$rowIndex = $row + 1;
+					}
+				}
+			}
+
+			if (!isset($venues[$venuesKey]['events'][$eventKey]->sessions[$rowIndex]))
+			{
+				$venues[$venuesKey]['events'][$eventKey]->sessions[$rowIndex] = array();
+			}
+
+			$venues[$venuesKey]['events'][$eventKey]->sessions[$rowIndex][] = $session;
 		}
 
 		return $venues;
