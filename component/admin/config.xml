@@ -442,6 +442,15 @@
                label="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_BODY"
                description="COM_REDEVENT_SETTINGS_UNREGISTRATION_NOTIFICATION_BODY_DESC"/>
 
+		<field
+				name="user_before_registration"
+				type="radio" default="0"
+				label="COM_REDEVENT_SETTINGS_CREATE_USER_BEFORE_REGISTRATION"
+				description="COM_REDEVENT_SETTINGS_CREATE_USER_BEFORE_REGISTRATION_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+
         <field type="spacer" hr="true"/>
 
         <field name="wl_notify_admin" type="list" default="0"
