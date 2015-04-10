@@ -35,22 +35,32 @@ jimport('joomla.plugin.plugin');
 class plgSearchRedevent extends JPlugin
 {
 	/**
+	 * @var array
+	 */
+	protected $customFieldsQuoted;
+
+	/**
+	 * @var JDatabase|JDatabaseDriver
+	 */
+	protected $_db;
+
+	/**
 	 * Constructor
 	 *
-	 * @access      protected
-	 *
-	 * @param       object $subject The object to observe
-	 * @param       array  $config  An array that holds the plugin configuration
-	 *
-	 * @since       1.5
+	 * @param   object  &$subject  The object to observe
+	 * @param   array   $config    An array that holds the plugin configuration
 	 */
 	public function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
 		$this->loadLanguage();
+
+		$this->_db = isset($config['db']) ? $config['db'] : JFactory::getDbo();
 	}
 
 	/**
+	 * Return search areas
+	 *
 	 * @return array An array of search areas
 	 */
 	public function onContentSearchAreas()
@@ -60,22 +70,25 @@ class plgSearchRedevent extends JPlugin
 			'redeventcategories' => 'PLG_REDEVENT_SEARCH_CATEGORIES',
 			'redeventvenues' => 'PLG_REDEVENT_SEARCH_VENUES',
 		);
+
 		return $areas;
 	}
 
 	/**
-	 * Handles onSearchAreas event
+	 * Redevent Search method
 	 *
-	 * @param string $text     the text to search
-	 * @param string $phrase   the type of search (exact/all/any)
-	 * @param string $ordering ordering of the results (alpha/newest/...)
-	 * @param array  $areas    areas to be search
+	 * The sql must return the following fields that are used in a common display
+	 * routine: href, title, section, created, text, browsernav
 	 *
-	 * @return array matches
+	 * @param   string  $text      Target search string
+	 * @param   string  $phrase    matching option, exact|any|all
+	 * @param   string  $ordering  ordering option, newest|oldest|popular|alpha|category
+	 * @param   mixed   $areas     An array if the search it to be restricted to areas, null if search all
+	 *
+	 * @return array
 	 */
 	public function onContentSearch($text, $phrase = '', $ordering = '', $areas = null)
 	{
-		$db = JFactory::getDBO();
 		$user = JFactory::getUser();
 
 		// If the array is not correct, return it:
@@ -87,67 +100,47 @@ class plgSearchRedevent extends JPlugin
 			}
 		}
 
-		// It is time to define the parameters! First get the right plugin; 'search' (the group), 'nameofplugin'.
-		$plugin = JPluginHelper::getPlugin('search', 'redeventsearch');
+		$limit = $this->params->def('search_limit', 50);
 
-		// Then load the parameters of the plugin..
-		$pluginParams = $this->params;
-
-		$limit = $pluginParams->def('search_limit', 50);
-
-		// Use the function trim to delete spaces in front of or at the back of the searching terms
 		$text = trim($text);
 
-		// Return Array when nothing was filled in
-		if ($text == '')
+		if (!$text)
 		{
 			return array();
 		}
 
 		$rows = array();
 
-		$search = $db->Quote(JText::_('PLG_REDEVENT_SEARCH_EVENTS'));
+		$search = $this->_db->Quote(JText::_('PLG_REDEVENT_SEARCH_EVENTS'));
 
 		if (!$areas || in_array('redeventevents', $areas))
 		{
-			$where = array();
+			$query = $this->_db->getQuery(true);
 
 			switch ($phrase)
 			{
 				// Search exact
 				case 'exact':
-					$string = $db->Quote('%' . $db->getEscaped($text, true) . '%', false);
-					$where[] = 'LOWER(e.title) LIKE ' . $string . ' OR LOWER(x.title) LIKE ' . $string;
+					$query->where($this->eventLike($text));
 					break;
 
-				// Search all or any
 				case 'all':
 				case 'any':
-
-				// Set default
 				default:
 					$words = explode(' ', $text);
 					$wheres = array();
 
 					foreach ($words as $word)
 					{
-						$word = $db->Quote('%' . $db->getEscaped($word, true) . '%', false);
-						$wheres[] = 'LOWER(e.title) LIKE ' . $word . ' OR LOWER(x.title) LIKE ' . $word;
+						$wheres[] = $this->eventLike($word);
 					}
 
-					$where[] = '(' . implode(($phrase == 'all' ? ') AND (' : ') OR ('), $wheres) . ')';
+					$query->where('(' . implode(($phrase == 'all' ? ') AND (' : ') OR ('), $wheres) . ')');
 					break;
 			}
 
-			if ($customs = $this->_buildCustomFieldsQuery($text, $phrase))
-			{
-				$where[] = $customs;
-			}
-
-			// Ordering of the results
 			switch ($ordering)
 			{
-
 				// Alphabetic, ascending
 				case 'alpha':
 					$order = 'e.title ASC, x.dates ASC';
@@ -156,35 +149,34 @@ class plgSearchRedevent extends JPlugin
 				// Oldest first
 				case 'oldest':
 					$order = 'x.dates ASC';
-
-				// Popular first
-				case 'popular':
+					break;
 
 				// Newest first
 				case 'newest':
 					$order = 'x.dates DESC';
+				break;
 
-				// Default setting: alphabetic, ascending
+				case 'popular':
 				default:
 					$order = 'x.dates ASC';
 			}
 
+			$query->order($order);
+
 			// The database query;
-			$query = 'SELECT e.summary AS text, x.id AS xref, x.dates, x.times, '
-				. ' CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', e.title, x.title) ELSE e.title END as title, '
-				. ' CONCAT_WS( " / ", ' . $search . ', ' . $db->Quote(JText::_('PLG_REDEVENT_SEARCH_EVENTS')) . ' ) AS section,'
-				. ' CASE WHEN CHAR_LENGTH( e.alias ) THEN CONCAT_WS( \':\', x.id, e.alias ) ELSE x.id END AS slug, '
-				. ' NULL AS created, '
-				. ' "2" AS browsernav'
-				. ' FROM #__redevent_events AS e'
-				. ' INNER JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
-				. ' WHERE ( ' . implode(' OR ', $where) . ' )'
-				. '   AND x.published = 1 '
-				. ' ORDER BY ' . $order;
+			$query->select('e.summary AS text, x.id AS xref, x.dates, x.times')
+				->select('CASE WHEN CHAR_LENGTH(x.title) THEN CONCAT_WS(\' - \', e.title, x.title) ELSE e.title END as title')
+				->select('CONCAT_WS( " / ", ' . $search . ', ' . $this->_db->Quote(JText::_('PLG_REDEVENT_SEARCH_EVENTS')) . ' ) AS section')
+				->select('CASE WHEN CHAR_LENGTH( e.alias ) THEN CONCAT_WS( \':\', x.id, e.alias ) ELSE x.id END AS slug')
+				->select('NULL AS created')
+				->select('"2" AS browsernav')
+				->from('#__redevent_events AS e')
+				->join('INNER', '#__redevent_event_venue_xref AS x ON x.eventid = e.id')
+				->where('x.published = 1');
 
 			// Set query
-			$db->setQuery($query, 0, $limit);
-			$results = $db->loadObjectList();
+			$this->_db->setQuery($query, 0, $limit);
+			$results = $this->_db->loadObjectList();
 
 			foreach ($results as $key => $row)
 			{
@@ -217,15 +209,15 @@ class plgSearchRedevent extends JPlugin
 
 		if (!$areas || in_array('redeventcategories', $areas))
 		{
-			$where = array();
-			$where[] = 'c.published = 1';
+			$query = $this->_db->getQuery(true)
+				->where('c.published = 1');
 
 			switch ($phrase)
 			{
 				// Search exact
 				case 'exact':
-					$string = $db->Quote('%' . $db->getEscaped($text, true) . '%', false);
-					$where[] = 'LOWER(c.name) LIKE ' . $string;
+					$string = $this->_db->Quote('%' . $this->_db->escape($text, true) . '%', false);
+					$query->where('LOWER(c.name) LIKE ' . $string);
 					break;
 
 				// Search all or any
@@ -239,11 +231,11 @@ class plgSearchRedevent extends JPlugin
 
 					foreach ($words as $word)
 					{
-						$word = $db->Quote('%' . $db->getEscaped($word, true) . '%', false);
+						$word = $this->_db->Quote('%' . $this->_db->escape($word, true) . '%', false);
 						$wheres[] = 'LOWER(c.name) LIKE ' . $word;
 					}
 
-					$where[] = '(' . implode(($phrase == 'all' ? ') AND (' : ') OR ('), $wheres) . ')';
+					$query->where('(' . implode(($phrase == 'all' ? ') AND (' : ') OR ('), $wheres) . ')');
 					break;
 			}
 
@@ -269,19 +261,19 @@ class plgSearchRedevent extends JPlugin
 					$order = 'c.name ASC';
 			}
 
+			$query->order($order);
+
 			// The database query; differs per situation! It will look something like this:
-			$query = 'SELECT c.name AS title,'
-				. ' CONCAT_WS( " / ", ' . $search . ', ' . $db->Quote(JText::_('PLG_REDEVENT_SEARCH_CATEGORIES')) . ' ) AS section,'
-				. ' CASE WHEN CHAR_LENGTH( c.alias ) THEN CONCAT_WS( \':\', c.id, c.alias ) ELSE c.id END AS slug, '
-				. ' NULL AS created, '
-				. ' "2" AS browsernav'
-				. ' FROM #__redevent_categories AS c'
-				. ' WHERE ( ' . implode(' AND ', $where) . ' )'
-				. ' ORDER BY ' . $order;
+			$query->select('c.name AS title')
+				->select('CONCAT_WS( " / ", ' . $search . ', ' . $this->_db->Quote(JText::_('PLG_REDEVENT_SEARCH_CATEGORIES')) . ' ) AS section')
+				->select('CASE WHEN CHAR_LENGTH( c.alias ) THEN CONCAT_WS( \':\', c.id, c.alias ) ELSE c.id END AS slug')
+				->select('NULL AS created')
+				->select('"2" AS browsernav')
+				->from('#__redevent_categories AS c');
 
 			// Set query
-			$db->setQuery($query, 0, $limit);
-			$results = $db->loadObjectList();
+			$this->_db->setQuery($query, 0, $limit);
+			$results = $this->_db->loadObjectList();
 
 			// The 'output' of the displayed link
 			foreach ($results as $key => $row)
@@ -294,140 +286,139 @@ class plgSearchRedevent extends JPlugin
 
 		if (!$areas || in_array('redeventvenues', $areas))
 		{
-			$where = array();
+			$query = $this->_db->getQuery(true);
 
 			switch ($phrase)
 			{
-				//search exact
 				case 'exact':
-					$string = $db->Quote('%' . $db->getEscaped($text, true) . '%', false);
-					$where[] = 'LOWER(v.venue) LIKE ' . $string;
+					$string = $this->_db->Quote('%' . $this->_db->escape($text, true) . '%', false);
+					$query->where('LOWER(v.venue) LIKE ' . $string);
 					break;
 
-				//search all or any
 				case 'all':
 				case 'any':
-
-					//set default
 				default:
 					$words = explode(' ', $text);
 					$wheres = array();
+
 					foreach ($words as $word)
 					{
-						$word = $db->Quote('%' . $db->getEscaped($word, true) . '%', false);
+						$word = $this->_db->Quote('%' . $this->_db->escape($word, true) . '%', false);
 						$wheres[] = 'LOWER(v.venue) LIKE ' . $word;
 					}
-					$where[] = '(' . implode(($phrase == 'all' ? ') AND (' : ') OR ('), $wheres) . ')';
+
+					$query->where('(' . implode(($phrase == 'all' ? ') AND (' : ') OR ('), $wheres) . ')');
 					break;
 			}
 
-			//ordering of the results
 			switch ($ordering)
 			{
-
-				//alphabetic, ascending
 				case 'alpha':
 					$order = 'v.venue ASC';
 					break;
 
-				//oldest first
 				case 'oldest':
-
-					//popular first
 				case 'popular':
-
-					//newest first
 				case 'newest':
-
-					//default setting: alphabetic, ascending
 				default:
 					$order = 'v.venue ASC';
 			}
 
-			//the database query; differs per situation! It will look something like this:
-			$query = 'SELECT v.venue AS title,'
-				. ' CONCAT_WS( " / ", ' . $search . ', ' . $db->Quote(JText::_('PLG_REDEVENT_SEARCH_VENUES')) . ' ) AS section,'
-				. ' CASE WHEN CHAR_LENGTH( v.alias ) THEN CONCAT_WS( \':\', v.id, v.alias ) ELSE v.id END AS slug, '
-				. ' NULL AS created, '
-				. ' "2" AS browsernav'
-				. ' FROM #__redevent_venues AS v'
-				. ' WHERE ( ' . implode(' AND ', $where) . ' )'
-				. ' ORDER BY ' . $order;
+			$query->order($order);
 
-			//Set query
-			$db->setQuery($query, 0, $limit);
-			$results = $db->loadObjectList();
+			$query->select('v.venue AS title')
+				->select('CONCAT_WS( " / ", ' . $search . ', ' . $this->_db->Quote(JText::_('PLG_REDEVENT_SEARCH_VENUES')) . ' ) AS section')
+				->select('CASE WHEN CHAR_LENGTH( v.alias ) THEN CONCAT_WS( \':\', v.id, v.alias ) ELSE v.id END AS slug')
+				->select('NULL AS created')
+				->select(' "2" AS browsernav')
+				->from('#__redevent_venues AS v');
 
-			//The 'output' of the displayed link
+			$this->_db->setQuery($query, 0, $limit);
+			$results = $this->_db->loadObjectList();
+
 			foreach ($results as $key => $row)
 			{
 				$results[$key]->href = RedeventHelperRoute::getVenueEventsRoute($row->slug);
 			}
+
 			$rows = array_merge($rows, $results);
 		}
 
-		//Return the search results in an array
 		return $rows;
 	}
 
 	/**
-	 * build the query parts for custom fields
+	 * return OR condition on field matches for event
 	 *
-	 * @param string $text   to search
-	 * @param string $phrase type of search
+	 * @param   string  $text  to search
+	 *
+	 * @return string
 	 */
-	protected function _buildCustomFieldsQuery($text, $phrase)
+	protected function eventLike($text)
 	{
-		$db = JFactory::getDBO();
-		// get the fields
-		$query = ' SELECT f.id, f.object_key FROM #__redevent_fields AS f '
-			. ' WHERE f.published = 1 '
-			. '   AND f.searchable = 1 '
-			. ' ORDER BY f.ordering ASC ';
-		$db->setQuery($query);
-		$rows = $db->loadObjectList();
+		$fields = array(
+			$this->_db->quoteName('e.title'),
+			$this->_db->quoteName('x.title')
+		);
 
-		$where = array();
-		foreach ($rows as $field)
+		if ($custom = $this->getQuotedCustomFields())
 		{
-			if ($field->object_key == 'redevent.event')
-			{
-				$fieldname = 'e.custom' . $field->id;
-			}
-			else if ($field->object_key == 'redevent.xref')
-			{
-				$fieldname = 'x.custom' . $field->id;
-			}
-			else
-			{
-				continue;
-			}
-
-			switch ($phrase)
-			{
-				//search exact
-				case 'exact':
-					$string = $db->Quote('%' . $db->getEscaped($text, true) . '%', false);
-					$where[] = 'LOWER(' . $fieldname . ') LIKE ' . $string;
-					break;
-
-				//search all or any
-				case 'all':
-				case 'any':
-
-					//set default
-				default:
-					$words = explode(' ', $text);
-					$wheres = array();
-					foreach ($words as $word)
-					{
-						$word = $db->Quote('%' . $db->getEscaped($word, true) . '%', false);
-						$wheres[] = 'LOWER(' . $fieldname . ') LIKE ' . $word;
-					}
-					$where[] = '(' . implode(($phrase == 'all' ? ') AND (' : ') OR ('), $wheres) . ')';
-					break;
-			}
+			$fields = array_merge($fields, $custom);
 		}
-		return count($where) ? implode(" OR ", $where) : false;
+
+		$conditions = array();
+		$search = $this->_db->Quote('%' . $this->_db->escape($text, true) . '%', false);
+
+		foreach ($fields as $field)
+		{
+			$conditions[] = $field . ' LIKE ' . $search;
+		}
+
+		return '(' . implode(' OR ', $conditions) . ')';
+	}
+
+	/**
+	 * Get quoted custom fields
+	 *
+	 * @return array
+	 */
+	protected function getQuotedCustomFields()
+	{
+		if (!$this->customFieldsQuoted)
+		{
+			$fieldNames = array();
+
+			// Get the fields
+			$query = $this->_db->getQuery(true)
+				->select('f.id, f.object_key')
+				->from('#__redevent_fields AS f')
+				->where('f.published = 1')
+				->where('f.searchable = 1')
+				->order('f.ordering ASC');
+			$this->_db->setQuery($query);
+			$rows = $this->_db->loadObjectList();
+
+			foreach ($rows as $field)
+			{
+				if ($field->object_key == 'redevent.event')
+				{
+					$fieldname = 'e.custom' . $field->id;
+				}
+				elseif ($field->object_key == 'redevent.xref')
+				{
+					$fieldname = 'x.custom' . $field->id;
+				}
+				else
+				{
+					continue;
+				}
+
+				$fieldNames[] = $this->_db->quoteName($fieldname);
+			}
+
+			$this->customFieldsQuoted = $fieldNames;
+		}
+
+		return $this->customFieldsQuoted;
 	}
 }
