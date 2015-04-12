@@ -13,20 +13,21 @@
 	<files>
 		<folder>abstract</folder>
 		<folder>ajax</folder>
-        <folder>attendee</folder>
+		<folder>attendee</folder>
 		<folder>controller</folder>
 		<folder>customfield</folder>
 		<folder>error</folder>
 		<folder>factory</folder>
 		<folder>form</folder>
-        <folder>helper</folder>
+		<folder>helper</folder>
 		<folder>image</folder>
-        <folder>model</folder>
-        <folder>recurrence</folder>
+		<folder>model</folder>
+		<folder>recurrence</folder>
+		<folder>registration</folder>
 		<folder>table</folder>
-        <folder>tags</folder>
-        <folder>user</folder>
-        <folder>view</folder>
+		<folder>tags</folder>
+		<folder>user</folder>
+		<folder>view</folder>
 		<file>bootstrap.php</file>
 	</files>
 </extension>

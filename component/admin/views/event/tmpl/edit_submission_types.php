@@ -48,6 +48,7 @@ $submission_types = explode(',', $this->item->submission_types);
 						<?php echo $this->form->getLabel('submission_type_webform'); ?>
 					</div>
 					<div class="controls">
+						<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('submission_type_webform'); ?></div>
 						<?php echo $this->form->getInput('submission_type_webform'); ?>
 					</div>
 				</div>
@@ -56,6 +57,7 @@ $submission_types = explode(',', $this->item->submission_types);
 						<?php echo $this->form->getLabel('review_message'); ?>
 					</div>
 					<div class="controls">
+						<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('review_message'); ?></div>
 						<?php echo $this->form->getInput('review_message'); ?>
 					</div>
 				</div>
@@ -64,6 +66,7 @@ $submission_types = explode(',', $this->item->submission_types);
 						<?php echo $this->form->getLabel('confirmation_message'); ?>
 					</div>
 					<div class="controls">
+						<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('confirmation_message'); ?></div>
 						<?php echo $this->form->getInput('confirmation_message'); ?>
 					</div>
 				</div>
@@ -153,6 +156,7 @@ $submission_types = explode(',', $this->item->submission_types);
 						<?php echo $this->form->getLabel('submission_type_email_subject'); ?>
 					</div>
 					<div class="controls">
+						<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('submission_type_email_subject'); ?></div>
 						<?php echo $this->form->getInput('submission_type_email_subject'); ?>
 					</div>
 				</div>
@@ -161,6 +165,7 @@ $submission_types = explode(',', $this->item->submission_types);
 						<?php echo $this->form->getLabel('submission_type_email_body'); ?>
 					</div>
 					<div class="controls">
+						<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('submission_type_email_body'); ?></div>
 						<?php echo $this->form->getInput('submission_type_email_body'); ?>
 					</div>
 				</div>

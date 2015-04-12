@@ -152,9 +152,12 @@ class RedeventModelCategoryevents extends RedeventModelBaseeventlist
 
 	/**
 	 * override to take into account search type
+	 *
 	 * @see RedeventModelBaseeventlist::getData()
+	 *
+	 * @return array
 	 */
-	public function &getData()
+	public function getData()
 	{
 		if ($this->getState('results_type', 1) == 1)
 		{

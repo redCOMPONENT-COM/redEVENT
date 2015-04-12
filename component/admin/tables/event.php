@@ -221,42 +221,7 @@ class RedeventTableEvent extends RedeventTable
 			$this->showfields = implode(',', $src['showfields']);
 		}
 
-		// Custom fields
-		$customs = $this->_getCustomFieldsColumns();
-
-		foreach ($customs as $c)
-		{
-			if (isset($src[$c]))
-			{
-				$src[$c] = is_array($src[$c]) ? implode("\n", $src[$c]) : $src[$c];
-			}
-			else
-			{
-				$src[$c] = '';
-			}
-		}
-
 		return true;
-	}
-
-	/**
-	 * get custom fields for table
-	 *
-	 * @return array
-	 */
-	protected function _getCustomFieldsColumns()
-	{
-		$db = $this->_db;
-		$query = $db->getQuery(true);
-
-		$query->select('CONCAT("custom", id)');
-		$query->from('#__redevent_fields');
-		$query->where('object_key = ' . $db->Quote('redevent.event'));
-
-		$db->setQuery($query);
-		$res = $db->loadColumn();
-
-		return $res;
 	}
 
 	/**

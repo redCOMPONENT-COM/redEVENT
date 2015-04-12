@@ -42,7 +42,7 @@ class RedeventModelTimeline extends RedeventModelBaseeventlist
 	{
 		$db = JFactory::getDbo();
 
-		// Get all "Publish" events
+		// Get all "Published" events
 		$query = $db->getQuery(true)
 			->select($db->qn('v.dates'))
 			->from($db->qn('#__redevent_event_venue_xref', 'v'))

@@ -328,43 +328,31 @@ class RedeventHelperOutput {
 	/**
 	 * Creates the map button
 	 *
-	 * @param obj $data
-	 * @param obj $settings
+	 * @param   obj  $data        data
+	 * @param   obj  $attributes  attributes
 	 *
-	 * @since 0.9
+	 * @return string
 	 */
-	function mapicon($data, $attributes = array())
+	public static function mapicon($data, $attributes = array())
 	{
-		$settings = & RedeventHelper::config();
-
-		//Link to map
-		$mapimage = JHTML::image(JURI::root().'components/com_redevent/assets/images/mapsicon.png', JText::_('COM_REDEVENT_MAP' ) );
-
-		//set var
-		$output 	= null;
-
-		//stop if disabled
-		if (!$data->map) {
-			return $output;
+		// Stop if disabled
+		if (!$data->map)
+		{
+			return;
 		}
 
-		$data->country = JString::strtoupper($data->country);
-
-		if (isset($attributes['class'])) {
+		if (isset($attributes['class']))
+		{
 			$attributes['class'] .= ' venuemap';
 		}
-		else {
+		else
+		{
 			$attributes['class'] = 'venuemap';
 		}
-		$attributes['handler'] = 'iframe';
 
-		JHTML::_('behavior.modal', 'a.venuemap');
+		$mapLink = JRoute::_('index.php?option=com_redevent&view=venue&layout=gmap&tmpl=component&id=' . $data->venueid);
 
-		foreach ($attributes as $k => $v) {
-			$attributes[$k] = $k.'="'.$v.'"';
-		}
-		$attributes = implode(' ', $attributes);
-		$output = '<a title="'.JText::_('COM_REDEVENT_MAP' ).'" rel="{handler:\'iframe\'}" href="'.JRoute::_('index.php?option=com_redevent&view=venue&layout=gmap&tmpl=component&id='.$data->venueid).'"'.$attributes.'>'.$mapimage.'</a>';
+		$output = RLayoutHelper::render('mapicon', array('link' => $mapLink, 'attributes' => $attributes), null, array('client' => 0));
 
 		return $output;
 	}
@@ -843,5 +831,15 @@ class RedeventHelperOutput {
 		$replace = " src=\"".JURI::root();
 		$newtext = preg_replace($find, $replace, $text);
 		return str_ireplace(JURI::root().JURI::root(), JURI::root(), $newtext);
+	}
+
+	/**
+	 * prints the code for tags display
+	 *
+	 * @param array tags to exclude from printing
+	 */
+	public static function getTagsModalLink($field = '')
+	{
+		return JHTML::link('index.php?option=com_redevent&view=tags&tmpl=component&field=' . $field, JText::_('COM_REDEVENT_TAGS'), 'class="modal-button"');
 	}
 }

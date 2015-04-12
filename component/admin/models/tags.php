@@ -1,199 +1,204 @@
 <?php
 /**
- * @version 2.0
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.model');
 
 /**
  * redEVENT Component tags Model
  *
- * @package Joomla
- * @subpackage redEVENT
- * @since		2.0
+ * @package  Redevent.admin
+ * @since    2.0
  */
-class RedEventModelTags extends RModel
+class RedeventModelTags extends RModel
 {
-	var $field = null;
+	private $field = null;
 
 	/**
 	 * Constructor
 	 *
 	 * @since 2.0
 	 */
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 
-		$this->field = JRequest::getVar('field',  null, '', 'string');
+		$this->field = JFactory::getApplication()->input->getString('field', '');
 	}
 
-	function getData()
+	/**
+	 * Get items
+	 *
+	 * @return array
+	 */
+	public function getItems()
 	{
-		$tags = array_merge($this->_getStandardTags(), $this->_getLibraryTags(), $this->_getCustomTags());
+		$tags = array_merge($this->getStandardTags(), $this->getLibraryTags(), $this->getCustomTags());
 
-		return $this->_tagsBySection($tags);
+		return $this->tagsBySection($tags);
 	}
 
-	function _getStandardTags()
+	/**
+	 * Core tags
+	 *
+	 * @return array
+	 */
+	private function getStandardTags()
 	{
-		// tags
 		$tags = array();
-		$tags[] = new TagsModelTag('event_title', JText::_('COM_REDEVENT_SUBMISSION_EVENT_TITLE'));
-		$tags[] = new TagsModelTag('event_full_title', JText::_('COM_REDEVENT_TAG_DESC_SUBMISSION_EVENT_FULLTITLE'));
-		$tags[] = new TagsModelTag('code', JText::_('COM_REDEVENT_SUBMISSION_EVENT_CODE'));
-		$tags[] = new TagsModelTag('session_code', JText::_('COM_REDEVENT_SESSION_CODE'));
-		$tags[] = new TagsModelTag('category', JText::_('COM_REDEVENT_SUBMISSION_CATEGORY'));
-		$tags[] = new TagsModelTag('date', JText::_('COM_REDEVENT_SUBMISSION_EVENT_DATE'));
-		$tags[] = new TagsModelTag('enddate', JText::_('COM_REDEVENT_SUBMISSION_EVENT_ENDDATE'));
-		$tags[] = new TagsModelTag('time', JText::_('COM_REDEVENT_SUBMISSION_EVENT_TIME'));
-		$tags[] = new TagsModelTag('starttime', JText::_('COM_REDEVENT_SUBMISSION_EVENT_STARTTIME'));
-		$tags[] = new TagsModelTag('endtime', JText::_('COM_REDEVENT_SUBMISSION_EVENT_ENDTIME'));
-		$tags[] = new TagsModelTag('startenddatetime', JText::_('COM_REDEVENT_SUBMISSION_EVENT_STARTENDDATETIME'));
-		$tags[] = new TagsModelTag('duration', JText::_('COM_REDEVENT_SUBMISSION_EVENT_DURATION'));
-		$tags[] = new TagsModelTag('venues', JText::_('COM_REDEVENT_SUBMISSION_VENUES'));
-		$tags[] = new TagsModelTag('price', JText::_('COM_REDEVENT_SUBMISSION_EVENT_PRICE'));
-		$tags[] = new TagsModelTag('credits', JText::_('COM_REDEVENT_SUBMISSION_EVENT_CREDITS'));
-		$tags[] = new TagsModelTag('event_image', JText::_('COM_REDEVENT_SUBMISSION_EVENT_IMAGE'));
-		$tags[] = new TagsModelTag('event_thumb', JText::_('COM_REDEVENT_SUBMISSION_TAG_EVENT_THUMB'));
-		$tags[] = new TagsModelTag('category_image', JText::_('COM_REDEVENT_SUBMISSION_CATEGORY_IMAGE'));
-		$tags[] = new TagsModelTag('category_thumb', JText::_('COM_REDEVENT_SUBMISSION_TAG_CATEGORY_THUMB'));
-		$tags[] = new TagsModelTag('eventcomments', JText::_('COM_REDEVENT_SUBMISSION_EVENT_COMMENTS'));
-		$tags[] = new TagsModelTag('info', JText::_('COM_REDEVENT_SUBMISSION_XREF_INFO'));
-		$tags[] = new TagsModelTag('permanentlink', JText::_('COM_REDEVENT_SUBMISSION_PERMANENT_LINK'));
-		$tags[] = new TagsModelTag('datelink', JText::_('COM_REDEVENT_SUBMISSION_DATE_LINK'));
-		$tags[] = new TagsModelTag('ical', JText::_('COM_REDEVENT_TAG_ICAL'));
-		$tags[] = new TagsModelTag('ical_url', JText::_('COM_REDEVENT_TAG_ICAL_URL'));
-		$tags[] = new TagsModelTag('summary', JText::_('COM_REDEVENT_TAG_SUMMARY'));
-		$tags[] = new TagsModelTag('attachments', JText::_('COM_REDEVENT_TAG_ATTACHMENTS'));
-		$tags[] = new TagsModelTag('author_name', JText::_('COM_REDEVENT_TAG_AUTHOR_NAME'));
-		$tags[] = new TagsModelTag('author_email', JText::_('COM_REDEVENT_TAG_AUTHOR_EMAIL'));
+		$tags[] = new RedeventTagsTag('event_title', JText::_('COM_REDEVENT_SUBMISSION_EVENT_TITLE'));
+		$tags[] = new RedeventTagsTag('event_full_title', JText::_('COM_REDEVENT_TAG_DESC_SUBMISSION_EVENT_FULLTITLE'));
+		$tags[] = new RedeventTagsTag('code', JText::_('COM_REDEVENT_SUBMISSION_EVENT_CODE'));
+		$tags[] = new RedeventTagsTag('session_code', JText::_('COM_REDEVENT_SESSION_CODE'));
+		$tags[] = new RedeventTagsTag('category', JText::_('COM_REDEVENT_SUBMISSION_CATEGORY'));
+		$tags[] = new RedeventTagsTag('date', JText::_('COM_REDEVENT_SUBMISSION_EVENT_DATE'));
+		$tags[] = new RedeventTagsTag('enddate', JText::_('COM_REDEVENT_SUBMISSION_EVENT_ENDDATE'));
+		$tags[] = new RedeventTagsTag('time', JText::_('COM_REDEVENT_SUBMISSION_EVENT_TIME'));
+		$tags[] = new RedeventTagsTag('starttime', JText::_('COM_REDEVENT_SUBMISSION_EVENT_STARTTIME'));
+		$tags[] = new RedeventTagsTag('endtime', JText::_('COM_REDEVENT_SUBMISSION_EVENT_ENDTIME'));
+		$tags[] = new RedeventTagsTag('startenddatetime', JText::_('COM_REDEVENT_SUBMISSION_EVENT_STARTENDDATETIME'));
+		$tags[] = new RedeventTagsTag('duration', JText::_('COM_REDEVENT_SUBMISSION_EVENT_DURATION'));
+		$tags[] = new RedeventTagsTag('venues', JText::_('COM_REDEVENT_SUBMISSION_VENUES'));
+		$tags[] = new RedeventTagsTag('price', JText::_('COM_REDEVENT_SUBMISSION_EVENT_PRICE'));
+		$tags[] = new RedeventTagsTag('credits', JText::_('COM_REDEVENT_SUBMISSION_EVENT_CREDITS'));
+		$tags[] = new RedeventTagsTag('event_image', JText::_('COM_REDEVENT_SUBMISSION_EVENT_IMAGE'));
+		$tags[] = new RedeventTagsTag('event_thumb', JText::_('COM_REDEVENT_SUBMISSION_TAG_EVENT_THUMB'));
+		$tags[] = new RedeventTagsTag('category_image', JText::_('COM_REDEVENT_SUBMISSION_CATEGORY_IMAGE'));
+		$tags[] = new RedeventTagsTag('category_thumb', JText::_('COM_REDEVENT_SUBMISSION_TAG_CATEGORY_THUMB'));
+		$tags[] = new RedeventTagsTag('eventcomments', JText::_('COM_REDEVENT_SUBMISSION_EVENT_COMMENTS'));
+		$tags[] = new RedeventTagsTag('info', JText::_('COM_REDEVENT_SUBMISSION_XREF_INFO'));
+		$tags[] = new RedeventTagsTag('permanentlink', JText::_('COM_REDEVENT_SUBMISSION_PERMANENT_LINK'));
+		$tags[] = new RedeventTagsTag('datelink', JText::_('COM_REDEVENT_SUBMISSION_DATE_LINK'));
+		$tags[] = new RedeventTagsTag('ical', JText::_('COM_REDEVENT_TAG_ICAL'));
+		$tags[] = new RedeventTagsTag('ical_url', JText::_('COM_REDEVENT_TAG_ICAL_URL'));
+		$tags[] = new RedeventTagsTag('summary', JText::_('COM_REDEVENT_TAG_SUMMARY'));
+		$tags[] = new RedeventTagsTag('attachments', JText::_('COM_REDEVENT_TAG_ATTACHMENTS'));
+		$tags[] = new RedeventTagsTag('author_name', JText::_('COM_REDEVENT_TAG_AUTHOR_NAME'));
+		$tags[] = new RedeventTagsTag('author_email', JText::_('COM_REDEVENT_TAG_AUTHOR_EMAIL'));
 
-		$tags[] = new TagsModelTag('venue_title', JText::_('COM_REDEVENT_SUBMISSION_EVENT_VENUE'), 'venue');
-		$tags[] = new TagsModelTag('venue_code', JText::_('COM_REDEVENT_VENUE_CODE'), 'venue');
-		$tags[] = new TagsModelTag('venue_link', JText::_('COM_REDEVENT_SUBMISSION_EVENT_VENUELINK'), 'venue');
-		$tags[] = new TagsModelTag('venue_company', JText::_('COM_REDEVENT_TAGS_VENUE_COMPANY_DESC'), 'venue');
-		$tags[] = new TagsModelTag('venue_city', JText::_('COM_REDEVENT_SUBMISSION_EVENT_CITY'), 'venue');
-		$tags[] = new TagsModelTag('venue_street', JText::_('COM_REDEVENT_SUBMISSION_EVENT_STREET'), 'venue');
-		$tags[] = new TagsModelTag('venue_zip', JText::_('COM_REDEVENT_SUBMISSION_EVENT_ZIP'), 'venue');
-		$tags[] = new TagsModelTag('venue_state', JText::_('COM_REDEVENT_SUBMISSION_EVENT_STATE'), 'venue');
-		$tags[] = new TagsModelTag('venue_website', JText::_('COM_REDEVENT_SUBMISSION_EVENT_VENUE_WEBSITE'), 'venue');
-		$tags[] = new TagsModelTag('venue_image', JText::_('COM_REDEVENT_SUBMISSION_VENUE_IMAGE'), 'venue');
-		$tags[] = new TagsModelTag('venue_thumb', JText::_('COM_REDEVENT_SUBMISSION_TAG_VENUE_THUMB'), 'venue');
-		$tags[] = new TagsModelTag('venue_description', JText::_('COM_REDEVENT_TAGS_VENUE_DESCRIPTION_DESC'), 'venue');
-		$tags[] = new TagsModelTag('venue_country', JText::_('COM_REDEVENT_TAGS_VENUE_COUNTRY_DESC'), 'venue');
-		$tags[] = new TagsModelTag('venue_countryflag', JText::_('COM_REDEVENT_TAGS_VENUE_COUNTRYFLAG_DESC'), 'venue');
-		$tags[] = new TagsModelTag('venue_mapicon', JText::_('COM_REDEVENT_TAGS_VENUE_MAPICON_DESC'), 'venue');
-		$tags[] = new TagsModelTag('venue_map', JText::_('COM_REDEVENT_TAGS_VENUE_MAP_DESC'), 'venue');
-		$tags[] = new TagsModelTag('latlong', JText::_('COM_REDEVENT_TAGS_VENUE_LATLONG_DESC'), 'venue');
+		$tags[] = new RedeventTagsTag('venue_title', JText::_('COM_REDEVENT_SUBMISSION_EVENT_VENUE'), 'venue');
+		$tags[] = new RedeventTagsTag('venue_code', JText::_('COM_REDEVENT_VENUE_CODE'), 'venue');
+		$tags[] = new RedeventTagsTag('venue_link', JText::_('COM_REDEVENT_SUBMISSION_EVENT_VENUELINK'), 'venue');
+		$tags[] = new RedeventTagsTag('venue_company', JText::_('COM_REDEVENT_TAGS_VENUE_COMPANY_DESC'), 'venue');
+		$tags[] = new RedeventTagsTag('venue_city', JText::_('COM_REDEVENT_SUBMISSION_EVENT_CITY'), 'venue');
+		$tags[] = new RedeventTagsTag('venue_street', JText::_('COM_REDEVENT_SUBMISSION_EVENT_STREET'), 'venue');
+		$tags[] = new RedeventTagsTag('venue_zip', JText::_('COM_REDEVENT_SUBMISSION_EVENT_ZIP'), 'venue');
+		$tags[] = new RedeventTagsTag('venue_state', JText::_('COM_REDEVENT_SUBMISSION_EVENT_STATE'), 'venue');
+		$tags[] = new RedeventTagsTag('venue_website', JText::_('COM_REDEVENT_SUBMISSION_EVENT_VENUE_WEBSITE'), 'venue');
+		$tags[] = new RedeventTagsTag('venue_image', JText::_('COM_REDEVENT_SUBMISSION_VENUE_IMAGE'), 'venue');
+		$tags[] = new RedeventTagsTag('venue_thumb', JText::_('COM_REDEVENT_SUBMISSION_TAG_VENUE_THUMB'), 'venue');
+		$tags[] = new RedeventTagsTag('venue_description', JText::_('COM_REDEVENT_TAGS_VENUE_DESCRIPTION_DESC'), 'venue');
+		$tags[] = new RedeventTagsTag('venue_country', JText::_('COM_REDEVENT_TAGS_VENUE_COUNTRY_DESC'), 'venue');
+		$tags[] = new RedeventTagsTag('venue_countryflag', JText::_('COM_REDEVENT_TAGS_VENUE_COUNTRYFLAG_DESC'), 'venue');
+		$tags[] = new RedeventTagsTag('venue_mapicon', JText::_('COM_REDEVENT_TAGS_VENUE_MAPICON_DESC'), 'venue');
+		$tags[] = new RedeventTagsTag('venue_map', JText::_('COM_REDEVENT_TAGS_VENUE_MAP_DESC'), 'venue');
+		$tags[] = new RedeventTagsTag('latlong', JText::_('COM_REDEVENT_TAGS_VENUE_LATLONG_DESC'), 'venue');
 
-		$tags[] = new TagsModelTag('redform', JText::_('COM_REDEVENT_SUBMISSION_EVENT_REDFORM'), 'registration');
-		$tags[] = new TagsModelTag('redform_title', JText::_('COM_REDEVENT_SUBMISSION_EVENT_REDFORM_TITLE'), 'registration');
-		$tags[] = new TagsModelTag('answers', JText::_('COM_REDEVENT_SUBMISSION_TAG_ANSWERS_DESC'), 'registration');
-		$tags[] = new TagsModelTag('activatelink', JText::_('COM_REDEVENT_SUBMISSION_TAG_ACTIVATELINK_DESC'), 'registration');
-		$tags[] = new TagsModelTag('cancellink', JText::_('COM_REDEVENT_TAG_SUBMISSION_CANCELLINK_DESC'), 'registration');
-		$tags[] = new TagsModelTag('registrationend', JText::_('COM_REDEVENT_SUBMISSION_EVENT_REGISTRATIONEND'), 'registration');
-		$tags[] = new TagsModelTag('webformsignup', JText::_('COM_REDEVENT_SUBMISSION_WEBFORM_SIGNUP_LINK'), 'registration');
-		$tags[] = new TagsModelTag('emailsignup', JText::_('COM_REDEVENT_SUBMISSION_EMAIL_SIGNUP_LINK'), 'registration');
-		$tags[] = new TagsModelTag('formalsignup', JText::_('COM_REDEVENT_SUBMISSION_FORMAL_SIGNUP_LINK'), 'registration');
-		$tags[] = new TagsModelTag('externalsignup', JText::_('COM_REDEVENT_SUBMISSION_EXTERNAL_SIGNUP_LINK'), 'registration');
-		$tags[] = new TagsModelTag('phonesignup', JText::_('COM_REDEVENT_SUBMISSION_PHONE_SIGNUP_LINK'), 'registration');
-		$tags[] = new TagsModelTag('webformsignuppage', JText::_('COM_REDEVENT_SUBMISSION_WEBFORM_SIGNUP_PAGE'), 'registration');
-		$tags[] = new TagsModelTag('emailsignuppage', JText::_('COM_REDEVENT_SUBMISSION_EMAIL_SIGNUP_PAGE'), 'registration');
-		$tags[] = new TagsModelTag('formalsignuppage', JText::_('COM_REDEVENT_SUBMISSION_FORMAL_SIGNUP_PAGE'), 'registration');
-		$tags[] = new TagsModelTag('phonesignuppage', JText::_('COM_REDEVENT_SUBMISSION_PHONE_SIGNUP_PAGE'), 'registration');
-		$tags[] = new TagsModelTag('eventplaces', JText::_('COM_REDEVENT_SUBMISSION_EVENTPLACES'), 'registration');
-		$tags[] = new TagsModelTag('waitinglistplaces', JText::_('COM_REDEVENT_SUBMISSION_WAITINGLISTPLACES'), 'registration');
-		$tags[] = new TagsModelTag('eventplacesleft', JText::_('COM_REDEVENT_SUBMISSION_EVENTPLACES_LEFT'), 'registration');
-		$tags[] = new TagsModelTag('waitinglistplacesleft', JText::_('COM_REDEVENT_SUBMISSION_WAITINGLISTPLACES_LEFT'), 'registration');
-		$tags[] = new TagsModelTag('inputname', JText::_('COM_REDEVENT_SUBMISSION_TAG_INPUTENAME_DESC'), 'registration');
-		$tags[] = new TagsModelTag('inputemail', JText::_('COM_REDEVENT_SUBMISSION_TAG_INPUTEMAIL_DESC'), 'registration');
-		$tags[] = new TagsModelTag('submit', JText::_('COM_REDEVENT_SUBMISSION_TAG_SUBMIT_DESC'), 'registration');
-		$tags[] = new TagsModelTag('userfullname', JText::_('COM_REDEVENT_SUBMISSION_TAG_FULLNAME_DESC'), 'registration');
-		$tags[] = new TagsModelTag('username', JText::_('COM_REDEVENT_SUBMISSION_TAG_USERNAME_DESC'), 'registration');
-		$tags[] = new TagsModelTag('useremail', JText::_('COM_REDEVENT_SUBMISSION_TAG_USEREMAIL_DESC'), 'registration');
-		$tags[] = new TagsModelTag('answer_<field id>', JText::_('COM_REDEVENT_SUBMISSION_TAG_REDFORM_FIELD_DESC'), 'registration');
+		$tags[] = new RedeventTagsTag('redform', JText::_('COM_REDEVENT_SUBMISSION_EVENT_REDFORM'), 'registration');
+		$tags[] = new RedeventTagsTag('redform_title', JText::_('COM_REDEVENT_SUBMISSION_EVENT_REDFORM_TITLE'), 'registration');
+		$tags[] = new RedeventTagsTag('answers', JText::_('COM_REDEVENT_SUBMISSION_TAG_ANSWERS_DESC'), 'registration');
+		$tags[] = new RedeventTagsTag('activatelink', JText::_('COM_REDEVENT_SUBMISSION_TAG_ACTIVATELINK_DESC'), 'registration');
+		$tags[] = new RedeventTagsTag('cancellink', JText::_('COM_REDEVENT_TAG_SUBMISSION_CANCELLINK_DESC'), 'registration');
+		$tags[] = new RedeventTagsTag('registrationend', JText::_('COM_REDEVENT_SUBMISSION_EVENT_REGISTRATIONEND'), 'registration');
+		$tags[] = new RedeventTagsTag('webformsignup', JText::_('COM_REDEVENT_SUBMISSION_WEBFORM_SIGNUP_LINK'), 'registration');
+		$tags[] = new RedeventTagsTag('emailsignup', JText::_('COM_REDEVENT_SUBMISSION_EMAIL_SIGNUP_LINK'), 'registration');
+		$tags[] = new RedeventTagsTag('formalsignup', JText::_('COM_REDEVENT_SUBMISSION_FORMAL_SIGNUP_LINK'), 'registration');
+		$tags[] = new RedeventTagsTag('externalsignup', JText::_('COM_REDEVENT_SUBMISSION_EXTERNAL_SIGNUP_LINK'), 'registration');
+		$tags[] = new RedeventTagsTag('phonesignup', JText::_('COM_REDEVENT_SUBMISSION_PHONE_SIGNUP_LINK'), 'registration');
+		$tags[] = new RedeventTagsTag('webformsignuppage', JText::_('COM_REDEVENT_SUBMISSION_WEBFORM_SIGNUP_PAGE'), 'registration');
+		$tags[] = new RedeventTagsTag('emailsignuppage', JText::_('COM_REDEVENT_SUBMISSION_EMAIL_SIGNUP_PAGE'), 'registration');
+		$tags[] = new RedeventTagsTag('formalsignuppage', JText::_('COM_REDEVENT_SUBMISSION_FORMAL_SIGNUP_PAGE'), 'registration');
+		$tags[] = new RedeventTagsTag('phonesignuppage', JText::_('COM_REDEVENT_SUBMISSION_PHONE_SIGNUP_PAGE'), 'registration');
+		$tags[] = new RedeventTagsTag('eventplaces', JText::_('COM_REDEVENT_SUBMISSION_EVENTPLACES'), 'registration');
+		$tags[] = new RedeventTagsTag('waitinglistplaces', JText::_('COM_REDEVENT_SUBMISSION_WAITINGLISTPLACES'), 'registration');
+		$tags[] = new RedeventTagsTag('eventplacesleft', JText::_('COM_REDEVENT_SUBMISSION_EVENTPLACES_LEFT'), 'registration');
+		$tags[] = new RedeventTagsTag('waitinglistplacesleft', JText::_('COM_REDEVENT_SUBMISSION_WAITINGLISTPLACES_LEFT'), 'registration');
+		$tags[] = new RedeventTagsTag('inputname', JText::_('COM_REDEVENT_SUBMISSION_TAG_INPUTENAME_DESC'), 'registration');
+		$tags[] = new RedeventTagsTag('inputemail', JText::_('COM_REDEVENT_SUBMISSION_TAG_INPUTEMAIL_DESC'), 'registration');
+		$tags[] = new RedeventTagsTag('submit', JText::_('COM_REDEVENT_SUBMISSION_TAG_SUBMIT_DESC'), 'registration');
+		$tags[] = new RedeventTagsTag('userfullname', JText::_('COM_REDEVENT_SUBMISSION_TAG_FULLNAME_DESC'), 'registration');
+		$tags[] = new RedeventTagsTag('username', JText::_('COM_REDEVENT_SUBMISSION_TAG_USERNAME_DESC'), 'registration');
+		$tags[] = new RedeventTagsTag('useremail', JText::_('COM_REDEVENT_SUBMISSION_TAG_USEREMAIL_DESC'), 'registration');
+		$tags[] = new RedeventTagsTag('answer_<field id>', JText::_('COM_REDEVENT_SUBMISSION_TAG_REDFORM_FIELD_DESC'), 'registration');
 
-		$tags[] = new TagsModelTag('paymentrequest', JText::_('COM_REDEVENT_SUBMISSION_EVENT_PAYMENTREQUEST'), 'payment');
-		$tags[] = new TagsModelTag('paymentrequestlink', JText::_('COM_REDEVENT_SUBMISSION_EVENT_PAYMENTREQUESTLINK'), 'payment');
-		$tags[] = new TagsModelTag('registrationid', JText::_('COM_REDEVENT_SUBMISSION_EVENT_REGISTRATIONID'), 'payment');
-		$tags[] = new TagsModelTag('total_price', JText::_('COM_REDEVENT_SUBMISSION_TAG_REDFORM_TOTAL_PRICE_DESC'), 'payment');
+		$tags[] = new RedeventTagsTag('paymentrequest', JText::_('COM_REDEVENT_SUBMISSION_EVENT_PAYMENTREQUEST'), 'payment');
+		$tags[] = new RedeventTagsTag('paymentrequestlink', JText::_('COM_REDEVENT_SUBMISSION_EVENT_PAYMENTREQUESTLINK'), 'payment');
+		$tags[] = new RedeventTagsTag('registrationid', JText::_('COM_REDEVENT_SUBMISSION_EVENT_REGISTRATIONID'), 'payment');
+		$tags[] = new RedeventTagsTag('total_price', JText::_('COM_REDEVENT_SUBMISSION_TAG_REDFORM_TOTAL_PRICE_DESC'), 'payment');
 		return $tags;
 	}
 
-	function _getLibraryTags()
+	/**
+	 * Get text snippets tags
+	 *
+	 * @return array
+	 */
+	private function getLibraryTags()
 	{
-		$query = ' SELECT id, text_description, text_name FROM #__redevent_textlibrary ';
+		$query = $this->_db->getQuery(true);
+
+		$query->select('id, text_description, text_name')
+			->from('#__redevent_textlibrary')
+			->order('text_name');
+
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
 
 		$tags = array();
+
 		foreach ((array) $res as $r)
 		{
-			$tags[] = new TagsModelTag($r->text_name, $r->text_description, 'library', $r->id);
+			$tags[] = new RedeventTagsTag($r->text_name, $r->text_description, 'library', $r->id);
 		}
+
 		return $tags;
 	}
 
-	function _getCustomTags()
+	/**
+	 * Get custom fields tags
+	 *
+	 * @return array
+	 */
+	private function getCustomTags()
 	{
-		$query = ' SELECT id, tag, name FROM #__redevent_fields ORDER BY ordering ';
+		$query = $this->_db->getQuery(true);
+
+		$query->select('id, tag, name')
+			->from('#__redevent_fields')
+			->order('ordering');
+
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObjectList();
 
 		$tags = array();
+
 		foreach ((array) $res as $r)
 		{
-			$tags[] = new TagsModelTag($r->tag, $r->name, 'custom', $r->id);
+			$tags[] = new RedeventTagsTag($r->tag, $r->name, 'custom', $r->id);
 		}
+
 		return $tags;
 	}
 
-	function _tagsBySection($tags)
+	/**
+	 * index by section
+	 *
+	 * @param   array  $tags  all tags
+	 *
+	 * @return array
+	 */
+	private function tagsBySection($tags)
 	{
 		$res = array();
+
 		foreach ($tags as $tag)
 		{
 			@$res[$tag->section][] = $tag;
 		}
+
 		return $res;
-	}
-}
-
-class TagsModelTag {
-	var $name;
-	var $description;
-	var $section;
-	var $id = 0; // for custom and text library
-
-	function __construct($name, $desc, $section = 'General', $id = 0)
-	{
-		$name = trim($name);
-		$this->name        = $name;
-		$this->description = trim($desc);
-		$this->section     = trim($section);
-		$this->id          = $id;
-		return $this;
 	}
 }

@@ -36,6 +36,7 @@ class RedeventCustomfieldRadio extends RedeventAbstractCustomfield
 	{
 		$option_list = array();
 		$options = explode("\n", $this->options);
+
 		if ($options)
 		{
 			foreach ($options as $opt)
@@ -45,7 +46,7 @@ class RedeventCustomfieldRadio extends RedeventAbstractCustomfield
 			}
 		}
 
-		// selected option
+		// Selected option
 		if (!empty($this->value))
 		{
 			$selected = trim($this->value);
@@ -59,7 +60,7 @@ class RedeventCustomfieldRadio extends RedeventAbstractCustomfield
 
 	public function renderFilter($attributes = array(), $selected = null)
 	{
-		$app = & JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		if ($selected)
 		{
@@ -73,6 +74,7 @@ class RedeventCustomfieldRadio extends RedeventAbstractCustomfield
 		$option_list = array();
 		$option_list[] = JHTML::_('select.option', '', JText::_('COM_REDEVENT_Select'));
 		$options = explode("\n", $this->options);
+
 		if ($options)
 		{
 			foreach ($options as $opt)
@@ -81,6 +83,9 @@ class RedeventCustomfieldRadio extends RedeventAbstractCustomfield
 				$option_list[] = JHTML::_('select.option', $option->value, $option->label);
 			}
 		}
-		return JHTML::_('select.genericlist', $option_list, 'filtercustom[' . $this->id . ']', $this->attributesToString($attributes), 'value', 'text', $value);
+
+		$attributes['multiple'] = 'multiple';
+
+		return JHTML::_('select.genericlist', $option_list, 'filtercustom[' . $this->id . '][]', $this->attributesToString($attributes), 'value', 'text', $value);
 	}
 }

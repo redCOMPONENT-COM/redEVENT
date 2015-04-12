@@ -144,7 +144,7 @@ class RedeventModelBaseeventlist extends RModel
 	 * @access public
 	 * @return array
 	 */
-	public function &getData()
+	public function getData()
 	{
 		$pop = JRequest::getBool('pop');
 
@@ -231,7 +231,7 @@ class RedeventModelBaseeventlist extends RModel
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);
 
-		$db = JFactory::getDbo();
+		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		$query->select('x.dates, x.enddates, x.times, x.endtimes, x.registrationend, x.id AS xref, x.session_code, x.details');
@@ -284,8 +284,8 @@ class RedeventModelBaseeventlist extends RModel
 	 */
 	protected function _buildOrderBy($query)
 	{
-		$filter_order		  = $this->getState('filter_order');
-		$filter_order_dir	= $this->getState('filter_order_dir');
+		$filter_order = $this->getState('filter_order');
+		$filter_order_dir = $this->getState('filter_order_Dir');
 
 		if (preg_match("/field([0-9]+)/", $filter_order, $regs))
 		{

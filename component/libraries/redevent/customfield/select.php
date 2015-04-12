@@ -62,7 +62,7 @@ class RedeventCustomfieldSelect extends RedeventAbstractCustomfield
 
 	public function renderFilter($attributes = array(), $selected = null)
 	{
-		$app = & JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		if ($selected)
 		{
@@ -75,7 +75,9 @@ class RedeventCustomfieldSelect extends RedeventAbstractCustomfield
 
 		$option_list = $this->getOptions();
 
-		return JHTML::_('select.genericlist', $option_list, 'filtercustom[' . $this->id . ']', $this->attributesToString($attributes), 'value', 'text', $value);
+		$attributes['multiple'] = 'multiple';
+
+		return JHTML::_('select.genericlist', $option_list, 'filtercustom[' . $this->id . '][]', $this->attributesToString($attributes), 'value', 'text', $value);
 	}
 
 	/**

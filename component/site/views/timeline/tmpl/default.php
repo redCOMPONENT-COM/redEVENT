@@ -63,8 +63,6 @@ $sessionInforHeight = 400;
 				var targetInfor = $('#' + $(hiddenInfor).attr('data-target'));
 				var targetVenueFake = $('#timeline-venues-fake-' + rowIndex);
 
-				console.log(targetVenueFake);
-
 				$('#timeline-session-information').hide();
 
 				$('.time-venues-base-information').each(function(index){
@@ -118,9 +116,9 @@ $sessionInforHeight = 400;
 	</p>
 
 	<?php if ($this->params->def('show_page_title', 1)) : ?>
-		<h1 class="componentheading">
+		<h2>
 			<?php echo $this->escape($this->pagetitle); ?>
-		</h1>
+		</h2>
 	<?php endif; ?>
 
 

@@ -122,6 +122,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo $this->form->getLabel('details'); ?>
 		</div>
 		<div class="controls">
+			<div class="tags-info"><?php echo RedeventHelperOutput::getTagsModalLink('session.details'); ?></div>
 			<?php echo $this->form->getInput('details'); ?>
 		</div>
 	</div>
