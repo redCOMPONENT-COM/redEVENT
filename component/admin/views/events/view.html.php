@@ -134,4 +134,22 @@ class RedeventViewEvents extends RedeventViewAdmin
 
 		return $toolbar;
 	}
+
+	/**
+	 * returns toggle image link for event publish state
+	 *
+	 * @param   object  $row  item data
+	 * @param   int     $i    row number
+	 *
+	 * @return string html
+	 */
+	public function published($row, $i)
+	{
+		$states = array(1 => array('unpublish', 'JPUBLISHED', 'JLIB_HTML_UNPUBLISH_ITEM', 'JPUBLISHED', false, 'ok-sign icon-green', 'ok-sign icon-green'),
+			0 => array('publish', 'JUNPUBLISHED', 'JLIB_HTML_PUBLISH_ITEM', 'JUNPUBLISHED', false, 'remove icon-red', 'remove icon-red'),
+			-1 => array('unpublish', 'JARCHIVED', 'JLIB_HTML_UNPUBLISH_ITEM', 'JARCHIVED', false, 'hdd', 'hdd'),
+		);
+
+		return JHtml::_('rgrid.state', $states, $row->published, $i, 'events.', $this->canEditState, true);
+	}
 }

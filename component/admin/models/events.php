@@ -141,6 +141,10 @@ class RedeventModelEvents extends RModelList
 			{
 				$query->where('obj.published = 0');
 			}
+			elseif ($filter_state == '-1' )
+			{
+				$query->where('obj.published = -1');
+			}
 			else
 			{
 				$query->where('obj.published >= 0');
