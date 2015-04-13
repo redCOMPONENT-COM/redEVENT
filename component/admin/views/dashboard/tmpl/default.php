@@ -19,7 +19,6 @@ $icons = array(
 	array('link' => 'index.php?option=com_redevent&view=customfields', 'icon' => 'icon-48-customfields.png', 'text' => JText::_('COM_REDEVENT_CUSTOM_FIELDS'), 'access' => 'core.edit'),
 	array('link' => 'index.php?option=com_redevent&view=roles', 'icon' => 'icon-48-roles.png', 'text' => JText::_('COM_REDEVENT_ROLES'), 'access' => 'core.edit'),
 	array('link' => 'index.php?option=com_redevent&view=pricegroups', 'icon' => 'icon-48-pricegroups.png', 'text' => JText::_('COM_REDEVENT_MENU_PRICEGROUPS'), 'access' => 'core.edit'),
-	array('link' => 'index.php?option=com_redevent&view=archive', 'icon' => 'icon-48-archive.png', 'text' => JText::_('COM_REDEVENT_ARCHIVESCREEN'), 'access' => 'core.edit'),
 	array('link' => 'index.php?option=com_redevent&view=tools', 'icon' => 'icon-48-housekeeping.png', 'text' => JText::_('COM_REDEVENT_TOOLS'), 'access' => 'core.manage'),
 	array('link' => 'index.php?option=com_redevent&view=logs', 'icon' => 'icon-48-log.png', 'text' => JText::_('COM_REDEVENT_LOG'), 'access' => 'core.manage'),
 	array('link' => 'index.php?option=com_redcore&view=config&layout=edit&component=com_redevent&return=' . $return, 'icon' => 'icon-48-settings.png', 'text' => JText::_('COM_REDEVENT_SETTINGS'), 'access' => 'core.manage'),

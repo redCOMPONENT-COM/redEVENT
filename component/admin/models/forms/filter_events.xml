@@ -9,13 +9,16 @@
 			class="js-enter-submits"
 			/>
 		<field
-			name="published"
-			type="rpublished"
-			onchange="this.form.submit();"
-			label="COM_REDEVENT_FILTER_PUBLISHED"
-			statuses="0,1"
-		>
+				name="published"
+				type="list"
+				onchange="this.form.submit();"
+				label="COM_REDEVENT_FILTER_PUBLISHED"
+				>
 			<option value="">COM_REDEVENT_FILTER_PUBLISHED</option>
+			<option value="1">JPUBLISHED</option>
+			<option value="0">JUNPUBLISHED</option>
+			<option value="-1">JARCHIVED</option>
+			<option value="*">JALL</option>
 		</field>
         <field
                 name="language"

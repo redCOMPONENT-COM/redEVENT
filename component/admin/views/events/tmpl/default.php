@@ -117,7 +117,7 @@ $search = $this->state->get('filter.search');
 					</td>
 					<td>
 						<?php if ($this->canEditState) : ?>
-							<?php echo JHtml::_('rgrid.published', $row->published, $i, 'events.', true, 'cb'); ?>
+							<?php echo $this->published($row, $i); ?>
 						<?php else : ?>
 							<?php if ($row->published) : ?>
 								<a class="btn btn-small disabled"><i class="icon-ok-sign icon-green"></i></a>
