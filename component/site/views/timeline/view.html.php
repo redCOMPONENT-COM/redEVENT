@@ -307,6 +307,8 @@ class RedeventViewTimeline extends RViewSite
 		$venues    = array();
 		$startTime = 9;
 
+		$totalrows = 0;
+
 		foreach ($sessions as $session)
 		{
 			$venuesKey = $session->venue_id;
@@ -322,6 +324,7 @@ class RedeventViewTimeline extends RViewSite
 					'country'    => $session->country,
 					'venue_code' => $session->venue_code,
 					'id'         => $session->venue_id,
+					'rowsCount'  => 0,
 					'events'     => array()
 				);
 			}
@@ -341,7 +344,7 @@ class RedeventViewTimeline extends RViewSite
 				$event->summary                  = $session->summary;
 				$event->submission_type_external = $session->submission_type_external;
 				$event->redform_id               = $session->redform_id;
-				$event->sessions                 = array(0 => array());
+				$event->sessions                 = array();
 
 				unset($session->id);
 				unset($session->title);
@@ -355,6 +358,7 @@ class RedeventViewTimeline extends RViewSite
 				unset($session->redform_id);
 
 				$venues[$venuesKey]['events'][$eventKey] = $event;
+				$totalrows++;
 			}
 
 			$start = new JDate($session->times);
@@ -364,31 +368,49 @@ class RedeventViewTimeline extends RViewSite
 			$session->widthPixel = $session->endPixel - $session->startPixel;
 			$rowIndex = 0;
 
+			// We check row by row if we can fit the event
 			foreach ($venues[$venuesKey]['events'][$eventKey]->sessions as $row => $sessionList)
 			{
+				$fitsIn = true;
+
+				// Check if the current session doesn't overlap with an exiting one in this row
 				foreach ($sessionList as $existSession)
 				{
 					$existSessionStart = new JDate($existSession->times);
 					$existSessionEnd   = new JDate($existSession->endtimes);
 
-					// Check if this session start same time as the old one.
 					if ((($start >= $existSessionStart) && ($start <= $existSessionEnd))
 						|| (($end >= $existSessionStart) && ($end <= $existSessionEnd))
 						|| (($start <= $existSessionStart) && ($end >= $existSessionStart)))
 					{
-						// Move this session to next session.
+						// Move this session to next row.
+						$fitsIn = false;
 						$rowIndex = $row + 1;
+						break;
 					}
+					else
+					{
+						// Fits so far
+						$fitsIn = true;
+					}
+				}
+
+				if ($fitsIn)
+				{
+					break;
 				}
 			}
 
 			if (!isset($venues[$venuesKey]['events'][$eventKey]->sessions[$rowIndex]))
 			{
 				$venues[$venuesKey]['events'][$eventKey]->sessions[$rowIndex] = array();
+				$venues[$venuesKey]['rowsCount']++;
 			}
 
 			$venues[$venuesKey]['events'][$eventKey]->sessions[$rowIndex][] = $session;
 		}
+
+		$this->totalrows = $totalrows;
 
 		return $venues;
 	}

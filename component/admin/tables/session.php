@@ -149,20 +149,6 @@ class RedeventTableSession extends RedeventTable
 	 */
 	public function store($updateNulls = false)
 	{
-		$customFields = $this->_getCustomFieldsColumns();
-
-		foreach ($customFields as $customField)
-		{
-			if (isset($this->$customField))
-			{
-				$this->$customField = is_array($this->$customField) ? implode("\n", $this->$customField) : $this->$customField;
-			}
-			else
-			{
-				$this->$customField = '';
-			}
-		}
-
 		if (!$this->language)
 		{
 			// Make sure the language is same as event

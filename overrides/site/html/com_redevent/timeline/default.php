@@ -27,7 +27,7 @@ $baseHeightTimelineHeader    = 30;
 
 <style type="text/css">
 	.rf_img {min-height:<?php echo $this->config->get('imageheight', 100);?>px;}
-	.redevent-timeline .timeline-sessions-wrapper {overflow: auto;}
+	.redevent-timeline .timeline-sessions-wrapper {overflow: auto; width: 100%}
 	.redevent-timeline .timeline-sessions-wrapper .timeline-sessions {overflow: hidden; position: relative;}
 	.redevent-timeline .timeline-sessions-wrapper .timeline-venues {position: absolute; display: block; border: 1px solid #c0c0c0; box-sizing: border-box;}
 	.redevent-timeline .timeline-session-header, .redevent-timeline .timeline-venues-header {height: <?php echo $baseHeight; ?>px; background: #c0c0c0;}
@@ -48,9 +48,9 @@ $baseHeightTimelineHeader    = 30;
 	</p>
 
 	<?php if ($this->params->def('show_page_title', 1)) : ?>
-		<h1 class="componentheading">
+		<h2>
 			<?php echo $this->escape($this->pagetitle); ?>
-		</h1>
+		</h2>
 	<?php endif; ?>
 
 
@@ -122,16 +122,22 @@ $baseHeightTimelineHeader    = 30;
 			$currentTimeS=date('i');
 			$startTimeH=9;
 			$startTimeS=0;
+
 			if($currentTimeH > $startTimeH)
 			{
-				$width=((($currentTimeH - $startTime) * 60) + $currentTimeS) * 0.78;
-				$widthTimeMarker=((($currentTimeH - $startTime) * 60) + $currentTimeS)* ($this->minutePixel);
+				$width = ((($currentTimeH - $startTime) * 60) + $currentTimeS) * 0.78;
+				$widthTimeMarker = ((($currentTimeH - $startTime) * 60) + $currentTimeS) * ($this->minutePixel);
 
 			}
-			else if($currentTimeH == $startTimeH)
+			elseif ($currentTimeH == $startTimeH)
 			{
-				$width=( $currentTimeS) * 0.9;
-				$widthTimeMarker=((($currentTimeH - $startTime) * 60) + $currentTimeS)* (7.5);
+				$width = $currentTimeS * 0.9;
+				$widthTimeMarker = ((($currentTimeH - $startTime) * 60) + $currentTimeS) * (7.5);
+			}
+			else
+			{
+				$width = 0;
+				$widthTimeMarker = 0;
 			}
 		?>
 
@@ -160,7 +166,7 @@ $baseHeightTimelineHeader    = 30;
 							<?php endfor; ?>
 						</div>
 						<div class="scollbar" >
-							<div class="scrollbar-active" style="left: 0px;background:#ff0080;width:<?php echo $width ?>px;height:8px;">
+							<div class="scrollbar-active" style="left: 0px;background:#ff0080;width:<?php echo $width; ?>px;height:8px;">
 							</div>
 							<div class="pointer"></div>
 						</div>
@@ -174,7 +180,7 @@ $baseHeightTimelineHeader    = 30;
 					</div>
 					<?php $timelineHeight = $baseHeight; ?>
 					<?php foreach ($this->rows as $venue): ?>
-						<?php $currentHeight = count($venue['events']) * $baseHeight; ?>
+						<?php $currentHeight = $venue['rowsCount'] * $baseHeight; ?>
 						<div class="timeline-venue" style="height: <?php echo $currentHeight ?>px;">
 							<?php echo $venue['venue'] ?>
 						</div>
@@ -194,32 +200,34 @@ $baseHeightTimelineHeader    = 30;
 									</div>
 								<?php endfor; ?>
 							</div>
-							<?php $rowIndex = 1; ?>
+							<?php $rowIndex = 0; ?>
 							<?php foreach ($this->rows as $venue): ?>
 								<?php foreach ($venue['events'] as $event): ?>
 									<?php //$topPos = $rowIndex * $baseHeightTimelineHeader; ?>
-									<?php $topPos = $rowIndex * $baseHeight; ?>
-									<?php foreach ($event->sessions as $session): ?>
-										<?php
-										// @TODO: For Trang override
-										$additionClass = '';
+									<?php foreach ($event->sessions as $index => $sessions): ?>
+										<?php $topPos = ($rowIndex + 1) * $baseHeight; ?>
+										<?php foreach ($sessions as $session): ?>
+											<?php
+											// @TODO: For Trang override
+											$additionClass = '';
 
-										if (!empty($session->custom10)):
-											$sessionTypes = explode("\n", $session->custom10);
+											if (!empty($session->custom10)):
+												$sessionTypes = explode("\n", $session->custom10);
 
-											foreach ($sessionTypes as $sessionType):
-												$additionClass .= 'type-' . strtolower(JFilterOutput::stringURLSafe($sessionType)) . ' ';
-											endforeach;
-										endif;
-										// @TODO: For Trang override -- End
-										?>
-										<div class="timeline-venues <?php echo $additionClass; ?>" style="left: <?php echo $session->startPixel ?>px; height: <?php echo $baseHeight ?>px; top: <?php echo $topPos ?>px; width: <?php echo $session->widthPixel ?>px;">
-											<div class="<?php echo $additionClass; ?>"></div>
-											<div class="timeline-session-time"><?php echo $session->times ?> - <?php echo $session->endtimes ?></div>
-											<div class="timeline-session-title"><?php echo $session->session_title ?></div>
-										</div>
+												foreach ($sessionTypes as $sessionType):
+													$additionClass .= 'type-' . strtolower(JFilterOutput::stringURLSafe($sessionType)) . ' ';
+												endforeach;
+											endif;
+											// @TODO: For Trang override -- End
+											?>
+											<div class="timeline-venues <?php echo $additionClass; ?>" style="left: <?php echo $session->startPixel ?>px; height: <?php echo $baseHeight ?>px; top: <?php echo $topPos ?>px; width: <?php echo $session->widthPixel ?>px;">
+												<div class="<?php echo $additionClass; ?>"></div>
+												<div class="timeline-session-time"><?php echo $session->times ?> - <?php echo $session->endtimes ?></div>
+												<div class="timeline-session-title"><?php echo $session->session_title ?></div>
+											</div>
+										<?php endforeach; ?>
+										<?php $rowIndex++; ?>
 									<?php endforeach; ?>
-									<?php $rowIndex++; ?>
 								<?php endforeach; ?>
 							<?php endforeach; ?>
 						</div>
