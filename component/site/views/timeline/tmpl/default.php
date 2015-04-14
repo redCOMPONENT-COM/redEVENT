@@ -24,6 +24,10 @@ $timelineBlock = 60;
 $timelineWidth      = ($timelineEnd - $timelineStart) * 60 * $this->minutePixel;
 $baseHeight         = 50;
 $sessionInforHeight = 400;
+
+RHelperAsset::load('timeline.js');
+
+RHtml::_('rjquery.ui');
 ?>
 
 <script type="text/javascript">
@@ -99,6 +103,7 @@ $sessionInforHeight = 400;
 			$('.time-venues-base-information, .timeline-venues-fake').each(function(index){
 				$(this).height(<?php echo $sessionInforHeight ?>).css('max-height', '<?php echo $sessionInforHeight ?>px').hide();
 			});
+
 		});
 	})(jQuery);
 </script>
@@ -192,6 +197,12 @@ $sessionInforHeight = 400;
 	<!-- filter end -->
 
 	<!--  Scrollbar timeline-->
+	<div class="scrollbar">
+		<div id="timeslider">
+		</div>
+		<div id="timeval"></div>
+	</div>
+
 	<?php if (!empty($this->rows)): ?>
 	<div class="redevent-timeline">
 		<div class="container">
