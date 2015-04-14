@@ -193,6 +193,7 @@ class RedeventViewTimeline extends RViewSite
 		$uri    = JFactory::getURI();
 		$params = RedeventHelper::config();
 		$state = $this->get('state');
+		$viewParams = $app->getParams();
 
 		// Remove previously set filter in get
 		$uri->delVar('filter');
@@ -274,14 +275,21 @@ class RedeventViewTimeline extends RViewSite
 		// Date filter
 		if ($params->get('lists_filter_date', 0))
 		{
-			$lists['dateFilter'] = JHTML::_(
-				'calendar',
-				$filter_date,
-				'filter_date',
-				'filter_date',
-				'%Y-%m-%d',
-				' class="dynfilter" onchange="javascript:redEventSubmitForm();"'
-			);
+			if ($viewParams->get('timelineDateFrom'))
+			{
+				$lists['dateFilter'] = $this->setTimelineDateFilter();
+			}
+			else
+			{
+				$lists['dateFilter'] = JHTML::_(
+					'calendar',
+					$filter_date,
+					'filter_date',
+					'filter_date',
+					'%Y-%m-%d',
+					' class="dynfilter" onchange="javascript:redEventSubmitForm();"'
+				);
+			}
 		}
 
 		$lists['filter']      = $filter;
@@ -413,5 +421,39 @@ class RedeventViewTimeline extends RViewSite
 		$this->totalrows = $totalrows;
 
 		return $venues;
+	}
+
+	protected function setTimelineDateFilter()
+	{
+		$params = JFactory::getApplication()->getParams();
+
+		$start = new JDate($params->get('timelineDateFrom'));
+		$end = new JDate($params->get('timelineDateTo'));
+
+		if ($start->toUnix() >= $end->toUnix())
+		{
+			throw new LogicException('Timeline start date after end date');
+		}
+
+		$options = array();
+		$current = $start;
+
+		while ($current->toUnix() <= $end->toUnix())
+		{
+			$options[] = array('value' => $current->format('Y-m-d'), 'text' => $current->format('Y-m-d'));
+			$current->add(new DateInterval('P1D'));
+		}
+
+		$state = $this->get('State');
+
+		return JHTML::_(
+			'select.genericlist',
+			$options,
+			'filter_date',
+			'class="dynfilter" onchange="javascript:redEventSubmitForm();"',
+			'value',
+			'text',
+			$state->get('filter_date')
+		);
 	}
 }

@@ -7,6 +7,16 @@
 	</layout>
 	<fields name="params" addfieldpath="/administrator/components/com_redevent/models/fields">
 		<fieldset name="params" label="COM_REDEVENT_FIELDSET_LAYOUT_OPTIONS">
+			<field name="timelineDateFrom"
+				   type="calendar"
+				   label="COM_REDEVENT_XML_VIEW_TIMELINE_DATEFROM"
+				   description="COM_REDEVENT_XML_VIEW_TIMELINE_DATEFROM_DESC">
+			</field>
+			<field name="timelineDateTo"
+				   type="calendar"
+				   label="COM_REDEVENT_XML_VIEW_TIMELINE_DATETO"
+				   description="COM_REDEVENT_XML_VIEW_TIMELINE_DATETO_DESC">
+			</field>
 			<field name="introtext"
 				type="editor"
 				default=""

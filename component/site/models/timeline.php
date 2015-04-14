@@ -44,6 +44,12 @@ class RedeventModelTimeline extends RedeventModelBaseeventlist
 		{
 			return true;
 		}
+		elseif ($start = JFactory::getApplication()->getParams()->get('timelineDateFrom'))
+		{
+			$this->setState('filter_date', $start);
+
+			return true;
+		}
 
 		$db = JFactory::getDbo();
 
