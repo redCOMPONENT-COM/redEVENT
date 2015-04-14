@@ -454,8 +454,13 @@ class RedeventModelBaseeventlist extends RModel
 
 		if (!empty($filterDate))
 		{
-			$query->where($this->_db->qn('x.dates') . ' = ' . $this->_db->quote($filterDate));
-			$query->where($this->_db->qn('x.enddates') . ' = ' . $this->_db->quote($filterDate));
+			$datesOr = array();
+			$datesOr[] = $this->_db->qn('x.dates') . ' = ' . $this->_db->quote($filterDate);
+			$datesOr[] = $this->_db->qn('x.enddates') . ' = ' . $this->_db->quote($filterDate);
+			$datesOr[] = 'CASE WHEN ' . $this->_db->qn('x.dates') . ' > 0 AND ' . $this->_db->qn('x.enddates') . ' > 0 '
+				. ' THEN ' . $this->_db->quote($filterDate) . ' BETWEEN ' . $this->_db->qn('x.dates') . ' AND ' . $this->_db->qn('x.enddates')
+				. ' ELSE 0 END';
+			$query->where('(' . implode(' OR ', $datesOr) . ')');
 		}
 
 		$customs = $this->getState('filter_customs');

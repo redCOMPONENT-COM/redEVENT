@@ -40,6 +40,11 @@ class RedeventModelTimeline extends RedeventModelBaseeventlist
 	 */
 	public function timelinePrepareData()
 	{
+		if ($this->getState('filter_date'))
+		{
+			return true;
+		}
+
 		$db = JFactory::getDbo();
 
 		// Get all "Published" events
