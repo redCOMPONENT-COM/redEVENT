@@ -181,7 +181,7 @@ $search = $this->state->get('filter.search');
 					</td>
 					<td>
 						<?php if (isset($this->eventvenues[$row->id])): ?>
-							<?php echo JHTML::link('index.php?option=com_redevent&view=sessions&eventid='.$row->id,
+							<?php echo JHTML::link('index.php?option=com_redevent&view=sessions&filter[event]='.$row->id,
 								Jtext::sprintf('COM_REDEVENT_SESSIONS_LINK', $this->eventvenues[$row->id]->total
 									, $this->eventvenues[$row->id]->unpublished
 									, $this->eventvenues[$row->id]->published

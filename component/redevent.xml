@@ -55,7 +55,7 @@
 
 	<administration>
 
-		<menu img="../media/com_redevent/images/redevent.png">redEVENT</menu>
+		<menu img="../media/com_redevent/images/redevent.png">COM_REDEVENT</menu>
 		<submenu>
 			<menu img="../media/com_redevent/images/icon-16-events.png" view="events">COM_REDEVENT_MENU_EVENTS</menu>
 			<menu img="../media/com_redevent/images/icon-16-sessions.png" view="sessions">COM_REDEVENT_MENU_SESSIONS</menu>
