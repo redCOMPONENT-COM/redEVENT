@@ -157,7 +157,7 @@ class RedeventModelVenues extends RModelList
 		if ($search)
 		{
 			$like = $db->quote('%' . $search . '%');
-			$query->where('(LOWER(obj.name) LIKE ' . $like . ' OR LOWER(obj.city) LIKE ' . $like . ')');
+			$query->where('(LOWER(obj.venue) LIKE ' . $like . ' OR LOWER(obj.city) LIKE ' . $like . ')');
 		}
 
 		return $query;

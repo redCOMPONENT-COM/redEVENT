@@ -133,7 +133,7 @@ if (($saveOrder) && ($this->canEdit))
 			<?php $n = count($this->items); ?>
 			<?php foreach ($this->items as $i => $row) : ?>
 				<?php $orderkey = array_search($row->id, $this->ordering[0]); ?>
-				<?php $sessionslink = 'index.php?option=com_redevent&view=sessions&venueid=' . $row->id; ?>
+				<?php $sessionslink = 'index.php?option=com_redevent&view=sessions&filter[venue]=' . $row->id; ?>
 				<tr>
 					<td>
 						<?php echo $this->pagination->getRowOffset($i); ?>

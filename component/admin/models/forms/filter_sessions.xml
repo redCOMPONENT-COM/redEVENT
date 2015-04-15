@@ -2,50 +2,65 @@
 <form>
 	<fields name="filter">
 		<field
-			name="search"
-			type="text"
-			label="COM_REDCORE_FILTER_SEARCH_DESC"
-			placeholder="JSEARCH_FILTER"
-			class="js-enter-submits"
-			/>
-        <field
-                name="event"
-                type="reeventlist"
-                onchange="this.form.submit();"
-                label="COM_REDEVENT_FILTER_EVENT"
-                statuses="0,1"
-                >
-            <option value="">COM_REDEVENT_FILTER_EVENT</option>
-        </field>
+				name="search"
+				type="text"
+				label="COM_REDCORE_FILTER_SEARCH_DESC"
+				placeholder="JSEARCH_FILTER"
+				class="js-enter-submits"
+				/>
 		<field
-			name="published"
-			type="list"
-			onchange="this.form.submit();"
-			label="COM_REDEVENT_FILTER_PUBLISHED"
-		>
-			<option value="">COM_REDEVENT_FILTER_PUBLISHED</option>
-            <option value="1">JPUBLISHED</option>
-            <option value="0">JUNPUBLISHED</option>
-            <option value="-1">JARCHIVED</option>
-            <option value="*">JALL</option>
+				name="event"
+				type="reeventlist"
+				onchange="this.form.submit();"
+				label="COM_REDEVENT_FILTER_EVENT"
+				>
+			<option value="">COM_REDEVENT_FILTER_EVENT</option>
 		</field>
-        <field
-                name="language"
-                type="language"
-                onchange="this.form.submit();"
-                label="COM_REDEVENT_FILTER_LANGUAGE"
-                >
-            <option value="">COM_REDEVENT_FILTER_LANGUAGE</option>
-        </field>
+		<field
+				name="venue"
+				type="revenuelist"
+				onchange="this.form.submit();"
+				label="COM_REDEVENT_FILTER_VENUE"
+				>
+			<option value="">COM_REDEVENT_FILTER_VENUE</option>
+		</field>
+		<field
+				name="category"
+				type="recategorylist"
+				onchange="this.form.submit();"
+				label="COM_REDEVENT_FILTER_CATEGORY"
+				>
+			<option value="">COM_REDEVENT_FILTER_CATEGORY</option>
+		</field>
+		<field
+				name="published"
+				type="list"
+				onchange="this.form.submit();"
+				label="COM_REDEVENT_FILTER_PUBLISHED"
+				>
+			<option value="">COM_REDEVENT_FILTER_PUBLISHED</option>
+			<option value="1">JPUBLISHED</option>
+			<option value="0">JUNPUBLISHED</option>
+			<option value="-1">JARCHIVED</option>
+			<option value="*">JALL</option>
+		</field>
+		<field
+				name="language"
+				type="language"
+				onchange="this.form.submit();"
+				label="COM_REDEVENT_FILTER_LANGUAGE"
+				>
+			<option value="">COM_REDEVENT_FILTER_LANGUAGE</option>
+		</field>
 	</fields>
 	<fields name="list">
 		<field
-			name="sessions_limit"
-			type="rlimitbox"
-			class="inputbox input-mini chzn"
-			default="25"
-			label="JGLOBAL_ORDERING_LIST_LIMIT"
-			description="JGLOBAL_ORDERING_LIST_LIMIT_DESC"
-			onchange="this.form.submit();" />
+				name="sessions_limit"
+				type="rlimitbox"
+				class="inputbox input-mini chzn"
+				default="25"
+				label="JGLOBAL_ORDERING_LIST_LIMIT"
+				description="JGLOBAL_ORDERING_LIST_LIMIT_DESC"
+				onchange="this.form.submit();"/>
 	</fields>
 </form>
