@@ -295,65 +295,6 @@ class RedeventModelEvents extends RModelList
 	}
 
 	/**
-	 * Delete items
-	 *
-	 * @param   mixed  $pks  id or array of ids of items to be deleted
-	 *
-	 * @return  boolean
-	 *
-	 * @TODO: do all the chain deletion in table instead
-	 */
-	public function delete($pks = null)
-	{
-		$result = false;
-
-		if (count($pks))
-		{
-			// First, we don't delete events that have attendees, to preserve records integrity. admin should delete attendees separately first
-			$cids = implode(',', $pks);
-
-			$query = $this->_db->getQuery(true);
-
-			$query->select('e.id, e.title')
-				->from('#__redevent_events AS e')
-				->join('INNER', '#__redevent_event_venue_xref AS x ON x.eventid = e.id')
-				->join('INNER', '#__redevent_register AS r ON r.xref = x.id')
-				->where('e.id IN (' . $cids . ')');
-
-			$this->_db->setQuery($query);
-			$res = $this->_db->loadObjectList();
-
-			if ($res || count($res))
-			{
-				$this->setError(Jtext::_('COM_REDEVENT_ERROR_EVENT_REMOVE_EVENT_HAS_ATTENDEES'));
-
-				return false;
-			}
-
-			$query = ' DELETE e.*, xcat.*, x.*, rp.*, r.*, sr.*, spg.* '
-				. ' FROM #__redevent_events AS e '
-				. ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.event_id = e.id '
-				. ' LEFT JOIN #__redevent_event_venue_xref AS x ON x.eventid = e.id '
-				. ' LEFT JOIN #__redevent_repeats AS rp on rp.xref_id = x.id '
-				. ' LEFT JOIN #__redevent_recurrences AS r on r.id = rp.recurrence_id '
-				. ' LEFT JOIN #__redevent_sessions_roles AS sr on sr.xref = x.id '
-				. ' LEFT JOIN #__redevent_sessions_pricegroups AS spg on spg.xref = x.id '
-				. ' WHERE e.id IN (' . $cids . ')';
-
-			$this->_db->setQuery($query);
-
-			if (!$this->_db->execute())
-			{
-				$this->setError($this->_db->getErrorMsg());
-
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	/**
 	 * Retrieve a list of events, venues and times
 	 *
 	 * @return array

@@ -175,7 +175,6 @@ class RedeventModelEvent extends RModelAdmin
 		return true;
 	}
 
-
 	/**
 	 * Get custom field raw object from db
 	 *

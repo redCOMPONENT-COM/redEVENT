@@ -13,6 +13,7 @@
 				type="reeventlist"
 				onchange="this.form.submit();"
 				label="COM_REDEVENT_FILTER_EVENT"
+				filter_published="*"
 				>
 			<option value="">COM_REDEVENT_FILTER_EVENT</option>
 		</field>
