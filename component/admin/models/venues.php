@@ -172,14 +172,12 @@ class RedeventModelVenues extends RModelList
 	 */
 	private function additionals($rows)
 	{
-		/*
-		* Get editor name
-		*/
 		$count = count($rows);
+		$db = $this->_db;
+
 
 		for ($i = 0, $n = $count; $i < $n; $i++)
 		{
-			$db = $this->_db;
 			$query = $db->getQuery(true);
 
 			$query->select('COUNT(id)');
