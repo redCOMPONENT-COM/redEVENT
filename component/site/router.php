@@ -49,6 +49,20 @@ function RedEventBuildRoute(&$query)
 			};
 			break;
 
+		case 'timeline':
+			if (isset($query['layout']))
+			{
+				$segments[] = $query['layout'];
+				unset($query['layout']);
+
+				if (isset($query['id']))
+				{
+					$segments[] = $query['id'];
+					unset($query['id']);
+				};
+			}
+			break;
+
 		case 'myevents':
 			if(isset($query['controller']))
 			{
@@ -400,6 +414,21 @@ function RedEventParseRoute($segments)
 			if (isset($segments[2]))
 			{
 				$vars['task'] = $segments[2];
+			}
+
+			break;
+
+		case 'timeline':
+			$vars['view'] = $segments[0];
+
+			if (isset($segments[1]))
+			{
+				$vars['layout'] = $segments[1];
+			}
+
+			if (isset($segments[2]))
+			{
+				$vars['id'] = $segments[2];
 			}
 
 			break;

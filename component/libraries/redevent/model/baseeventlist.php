@@ -465,7 +465,6 @@ class RedeventModelBaseeventlist extends RModel
 
 		$customs = $this->getState('filter_customs');
 
-		/* echo '<pre>'; echo print_r($customs, true); echo '</pre>'; exit; */
 		foreach ((array) $customs as $key => $custom)
 		{
 			if ($custom)
@@ -476,10 +475,16 @@ class RedeventModelBaseeventlist extends RModel
 
 					foreach ($custom as $c)
 					{
-						$or[] = 'custom' . $key . ' LIKE ' . $this->_db->Quote('%' . $c . '%');
+						if ($c)
+						{
+							$or[] = 'custom' . $key . ' LIKE ' . $this->_db->Quote('%' . $c . '%');
+						}
 					}
 
-					$query->where('(' . implode(" OR ", $or) . ')');
+					if (count($or))
+					{
+						$query->where('(' . implode(" OR ", $or) . ')');
+					}
 				}
 				else
 				{

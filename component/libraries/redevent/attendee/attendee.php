@@ -1003,8 +1003,11 @@ class RedeventAttendee extends JObject
 			}
 		}
 
-		$mailer->setSubject($tags->ReplaceTags($unreg ? $params->get('unregistration_notification_subject') : $params->get('registration_notification_subject')));
-		$mailer->MsgHTML($mail);
+		$subject = $tags->ReplaceTags($unreg ? $params->get('unregistration_notification_subject') : $params->get('registration_notification_subject'));
+		$mailer->setSubject($subject);
+
+		$htmlmsg = RdfHelper::wrapMailHtmlBody($mail, $subject);
+		$mailer->MsgHTML($htmlmsg);
 
 		if (!$mailer->send())
 		{

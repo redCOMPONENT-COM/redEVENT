@@ -34,6 +34,19 @@ jimport('joomla.application.component.model');
 class RedeventModelTimeline extends RedeventModelBaseeventlist
 {
 	/**
+	 * Constructor
+	 *
+	 * @since 3.0
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+
+		// Get the filter request variables
+		$this->setState('filter_venue',  JFactory::getApplication()->input->getInt('id'));
+	}
+
+	/**
 	 * Method for get latest start date of published event
 	 *
 	 * @return  boolean   True on success. False otherwise.
@@ -120,5 +133,30 @@ class RedeventModelTimeline extends RedeventModelBaseeventlist
 		$db->setQuery($query);
 
 		return $db->loadObjectList();
+	}
+
+	/**
+	 * Return venue info
+	 *
+	 * @return bool|mixed
+	 */
+	public function getVenue()
+	{
+		if ($id = $this->getState('filter_venue'))
+		{
+			$query = $this->_db->getQuery(true);
+
+			$query->select('*')
+				->from('#__redevent_venues')
+				->select('CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\', id, alias) ELSE id END as slug')
+				->where('id = ' . $id);
+
+			$this->_db->setQuery($query);
+			$res = $this->_db->loadObject();
+
+			return $res;
+		}
+
+		return false;
 	}
 }

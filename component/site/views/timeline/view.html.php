@@ -51,7 +51,7 @@ class RedeventViewTimeline extends RViewSite
 	 *
 	 * @return  void
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
 		// Initialize variables
 		$app        = JFactory::getApplication();
@@ -98,7 +98,6 @@ class RedeventViewTimeline extends RViewSite
 		$this->rows     = $this->get('Data');
 		$customs        = $this->get('ListCustomFields');
 		$customsfilters = $this->get('CustomFilters');
-		$pagination     = $this->get('Pagination');
 		$this->noevents = 1;
 
 		// Are events available?
@@ -120,14 +119,8 @@ class RedeventViewTimeline extends RViewSite
 		$print_link = JRoute::_('index.php?option=com_redevent&view=simplelist&tmpl=component&pop=1');
 		$pagetitle = $params->get('page_title');
 
-		$thumb_link = RedeventHelperRoute::getSimpleListRoute(null, 'thumb');
-		$list_link  = RedeventHelperRoute::getSimpleListRoute(null, 'default');
-
 		// Set Page title
 		$this->document->setTitle($pagetitle);
-
-		// Check if the user has access to the form
-		$dellink = JFactory::getUser()->authorise('re.createevent');
 
 		// Add alternate feed link
 		$link = 'index.php?option=com_redevent&view=simplelist&format=feed';
@@ -147,19 +140,10 @@ class RedeventViewTimeline extends RViewSite
 		$this->assignRef('customsfilters', $customsfilters);
 		$this->assignRef('task', $task);
 		$this->assignRef('print_link', $print_link);
-		$this->assignRef('params', $params);
-		$this->assignRef('dellink', $dellink);
-		$this->assignRef('pageNav', $pagination);
-		$this->assignRef('elsettings', $elsettings);
 		$this->assignRef('pagetitle', $pagetitle);
 		$this->assignRef('config', $elsettings);
-		$this->assignRef('thumb_link', $thumb_link);
-		$this->assignRef('list_link', $list_link);
 		$this->assign('filter_customs', $filter_customs);
-
-		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
-		$cols = RedeventHelper::validateColumns($cols);
-		$this->assign('columns', $cols);
+		$this->params = $params;
 
 		$this->order = $state->get('filter_order');
 		$this->orderDir = $state->get('filter_order_Dir');
@@ -170,10 +154,12 @@ class RedeventViewTimeline extends RViewSite
 			$session->prices = $model->getSessionPrice($session->xref);
 		}
 
-		if ($layout == 'default')
+		if ($layout == 'venue' || $layout == 'printvenue')
 		{
-			$this->rows = $this->timelineProcessData($this->rows);
+			$this->venue = $this->get('Venue');
 		}
+
+		$this->sortedRows = $this->timelineProcessData($this->rows);
 
 		parent::display($tpl);
 	}
@@ -332,6 +318,8 @@ class RedeventViewTimeline extends RViewSite
 					'country'    => $session->country,
 					'venue_code' => $session->venue_code,
 					'id'         => $session->venue_id,
+					'description' => $session->locdescription,
+					'slug' =>       $session->venueslug,
 					'rowsCount'  => 0,
 					'events'     => array()
 				);
@@ -353,17 +341,6 @@ class RedeventViewTimeline extends RViewSite
 				$event->submission_type_external = $session->submission_type_external;
 				$event->redform_id               = $session->redform_id;
 				$event->sessions                 = array();
-
-				unset($session->id);
-				unset($session->title);
-				unset($session->full_title);
-				unset($session->created);
-				unset($session->datdescription);
-				unset($session->registra);
-				unset($session->datimage);
-				unset($session->summary);
-				unset($session->submission_type_external);
-				unset($session->redform_id);
 
 				$venues[$venuesKey]['events'][$eventKey] = $event;
 				$totalrows++;

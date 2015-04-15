@@ -56,11 +56,6 @@ RHtml::_('rjquery.ui');
 <div id="redevent" class="rf_thumb">
 	<p class="buttons">
 		<?php
-			if (!$this->params->get('popup')) : //don't show in printpopup
-				echo RedeventHelperOutput::listbutton( $this->list_link, $this->params );
-				echo RedeventHelperOutput::submitbutton( $this->dellink, $this->params );
-			endif;
-
 			echo RedeventHelperOutput::printbutton( $this->print_link, $this->params );
 		?>
 	</p>
@@ -125,14 +120,6 @@ RHtml::_('rjquery.ui');
 					</div>
 					<input type="hidden" id="f-showfilters" name="showfilters" value="<?php echo $toggle == 0 ? '1' : JRequest::getInt('showfilters', $toggle != 3 ? 1 : 0); ?>"/>
 				<?php endif; ?>
-				<?php if ($this->params->get('display_limit_select')) : ?>
-					<div class="el_fright">
-						<?php
-						echo '<label for="limit">'.JText::_('COM_REDEVENT_DISPLAY_NUM').'</label>&nbsp;';
-						echo $this->pageNav->getLimitBox();
-						?>
-					</div>
-				<?php endif; ?>
 			</div>
 		<?php endif; ?>
 		<input type="hidden" id="timeline-filter-order" name="filter_order" value="<?php echo $this->order; ?>" />
@@ -148,7 +135,7 @@ RHtml::_('rjquery.ui');
 		<div id="timeval"></div>
 	</div>
 
-	<?php if (!empty($this->rows)): ?>
+	<?php if (!empty($this->sortedRows)): ?>
 	<div class="redevent-timeline">
 		<div class="container">
 			<div class="row">
@@ -165,10 +152,13 @@ RHtml::_('rjquery.ui');
 						$timelineHeight = $baseHeight;
 						$venueIndex = 0;
 						?>
-						<?php foreach ($this->rows as $venues): ?>
+						<?php foreach ($this->sortedRows as $venues): ?>
 							<?php foreach ($venues['events'] as $venueEvent): ?>
 								<?php $currentHeight = count($venueEvent->sessions) * $baseHeight; ?>
-								<div class="timeline-venue" style="height: <?php echo $currentHeight ?>px;"><?php echo $venues['venue'] ?></div>
+								<?php $venueUrl = RedeventHelperRoute::getVenueTimelineRoute($venues['slug']); ?>
+								<div class="timeline-venue" style="height: <?php echo $currentHeight ?>px;">
+									<?php echo JHtml::link($venueUrl, $venues['venue']); ?>
+								</div>
 								<div class="timeline-venues-fake" id="timeline-venues-fake-<?php echo $venueIndex ?>"></div>
 								<?php $timelineHeight += $currentHeight; ?>
 							<?php endforeach; ?>
@@ -187,7 +177,7 @@ RHtml::_('rjquery.ui');
 									<?php endfor; ?>
 								</div>
 								<?php $rowIndex = 0; ?>
-								<?php foreach ($this->rows as $venue): ?>
+								<?php foreach ($this->sortedRows as $venue): ?>
 									<?php foreach ($venue['events'] as $eventIndex => $event): ?>
 										<?php $baseRowHeight = $baseHeight * count($event->sessions); ?>
 										<div class="time-venues-base" style="height: <?php echo $baseRowHeight ?>px;">

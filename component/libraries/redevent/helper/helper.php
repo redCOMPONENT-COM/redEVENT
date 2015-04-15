@@ -1365,4 +1365,53 @@ class RedeventHelper
 	{
 		return file_exists(JPATH_SITE . '/components/com_redmember/lib/redmemberlib.php');
 	}
+
+	/**
+	 * Return formatted start date
+	 *
+	 * @param   object  $event   event
+	 * @param   string  $format  php date format
+	 *
+	 * @return bool|string
+	 */
+	public static function formatEventStart($event, $format)
+	{
+		return self::formatDate($event->dates, $event->times, $format);
+	}
+
+	/**
+	 * Return formatted end date
+	 *
+	 * @param   object  $event   event
+	 * @param   string  $format  php date format
+	 *
+	 * @return bool|string
+	 */
+	public static function formatEventEnd($event, $format)
+	{
+		return self::formatDate($event->enddates, $event->endtimes, $format);
+	}
+
+	/**
+	 * Return formatted date
+	 *
+	 * @param   string  $date    date in mysql format
+	 * @param   string  $time    time in mysql format
+	 * @param   string  $format  php date format
+	 *
+	 * @return bool|string
+	 */
+	public static function formatDate($date, $time, $format)
+	{
+		$dateString = trim($date . ' ' . $time);
+
+		if (!self::isValidDate($dateString))
+		{
+			return false;
+		}
+
+		$date = new JDate($dateString);
+
+		return $date->format($format);
+	}
 }

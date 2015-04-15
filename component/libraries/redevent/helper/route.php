@@ -363,6 +363,55 @@ class RedeventHelperRoute
 		return self::buildUrl($parts);
 	}
 
+	/**
+	 * route to timeline
+	 *
+	 * @return string
+	 */
+	public static function getTimelineRoute()
+	{
+		$parts = array( "option" => "com_redevent",
+			"view"   => 'timeline'
+		);
+		return self::buildUrl($parts);
+	}
+
+	/**
+	 * Route to venue timeline
+	 *
+	 * @param   int  $venueId  venue id
+	 *
+	 * @return string
+	 */
+	public static function getVenueTimelineRoute($venueId)
+	{
+		$parts = array( "option" => "com_redevent",
+			"view"   => "timeline",
+			"layout" => "venue",
+			"id" => $venueId
+		);
+		return self::buildUrl($parts);
+	}
+
+	/**
+	 * Route to venue timeline
+	 *
+	 * @param   int  $venueId  venue id
+	 *
+	 * @return string
+	 */
+	public static function getVenueTimelinePrintRoute($venueId)
+	{
+		$parts = array( "option" => "com_redevent",
+			"view"   => "timeline",
+			"layout" => "venue",
+			"id" => $venueId,
+			'tmpl' => 'component',
+			'print' => 1
+		);
+		return self::buildUrl($parts);
+	}
+
 	protected static function buildUrl($parts)
 	{
 		if ($item = self::_findItem($parts))
