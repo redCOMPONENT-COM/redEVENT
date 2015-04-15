@@ -24,13 +24,6 @@ $icons = array(
 	array('link' => 'index.php?option=com_redcore&view=config&layout=edit&component=com_redevent&return=' . $return, 'icon' => 'icon-48-settings.png', 'text' => JText::_('COM_REDEVENT_SETTINGS'), 'access' => 'core.manage'),
 );
 ?>
-
-<script type="text/javascript">
-Joomla.submitbutton = function (pressbutton) {
-	submitbutton(pressbutton);
-};
-</script>
-
 <div class="row-fluid">
 	<div class="span9 reDashboardMainIcons">
 		<?php $iconsRow = array_chunk($icons, 6); ?>

@@ -74,6 +74,8 @@ class RedeventModelSessions extends RModelList
 		$id .= ':' . $this->getState('filter.search');
 		$id	.= ':' . $this->getState('filter.language');
 		$id	.= ':' . $this->getState('filter.event');
+		$id	.= ':' . $this->getState('filter.venue');
+		$id	.= ':' . $this->getState('filter.category');
 
 		return parent::getStoreId($id);
 	}
@@ -117,6 +119,7 @@ class RedeventModelSessions extends RModelList
 			->select('v.venue, v.checked_out as venue_checked_out')
 			->from('#__redevent_event_venue_xref AS obj')
 			->join('INNER', '#__redevent_events AS e ON obj.eventid = e.id')
+			->join('LEFT', '#__redevent_event_category_xref AS xcat ON xcat.event_id = e.id')
 			->join('LEFT', '#__redevent_venues AS v ON v.id = obj.venueid');
 
 		$this->buildContentWhere($query);
@@ -211,11 +214,18 @@ class RedeventModelSessions extends RModelList
 			$query->where('obj.language = ' . $this->_db->quote($filter_language));
 		}
 
-		$filter_venueid = $this->getState('filter.venueid', '');
+		$filter_venueid = $this->getState('filter.venue', '');
 
 		if (is_numeric($filter_venueid))
 		{
 			$query->where('obj.venueid = ' . $filter_venueid);
+		}
+
+		$filter_categoryid = $this->getState('filter.category', '');
+
+		if (is_numeric($filter_categoryid))
+		{
+			$query->where('xcat.category_id = ' . $filter_categoryid);
 		}
 
 		return $query;
