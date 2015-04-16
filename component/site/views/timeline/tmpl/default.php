@@ -92,7 +92,9 @@ RHtml::_('rjquery.ui');
 						<?php endif; ?>
 
 						<?php if ($this->params->get('lists_filter_date', 0)): ?>
-							<div id="date-filter"><?php echo $this->lists['dateFilter']; ?></div>
+							<div id="date-filter" class="custom-filter"><?php echo $this->lists['dateFilter']; ?>
+								<ul id="divselectdate" class=" dynfilter"></ul>
+							</div>
 						<?php endif; ?>
 
 						<?php if ($this->params->get('lists_filter_event', 0)): ?>

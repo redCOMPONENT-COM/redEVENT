@@ -80,5 +80,93 @@
 				}
 			});
 		});
+
+
+		// Su check date
+
+		$('ul#divselectdate').before('<div class="date-filter">Dag<span class="valuedatefilter">Alle</span></div>');
+		$('ul#divselectdate').addClass('hiddentype');
+		
+		$('.date-filter').toggle(
+			  function() {
+			  	
+			    $('ul#divselectdate').removeClass('hiddentype');
+			  }, function() {
+			    $('ul#divselectdate').addClass('hiddentype');
+			  }
+		);
+		
+		$(document).click(function(e) {
+		    var target = e.target;
+		    if (!$(target).is('.date-filter') && !$(target).parents().is('.date-filter')) {
+		       $('ul#divselectdate').removeClass().addClass('hiddentype');
+		    }
+		});
+
+		// Add option for li on filter_date
+		$('#filter_date option').each(function(i){
+			var index = i + 1;
+			var additionClass = ($(this).is(':selected')) ? ' active' : '';
+			var days = [
+			    'søn',
+			    'man',
+			    'tir',
+			    'ons',
+			    'tor',
+			    'fre',
+			    'lør'
+			];
+			var d = new Date($(this).text());
+			var dayName = days[d.getDay()];
+			var date = d.getDate();
+			var month = d.getMonth() + 1;
+			var fulldate = dayName + '<span>' + date + '/' + month + '</span>';
+
+			$('<li>').attr('id', index)
+				.addClass('option' + index + ' ' + additionClass)
+				.attr('val', $(this).text())
+				.append($('<div>').addClass('img-type-session ' + additionClass))
+				.append($('<span>').html(fulldate))
+				.appendTo($('#divselectdate'));
+		});
+
+		$('ul#divselectdate').on("click", "li", function (event) {
+			$('#filter_date').val($(this).attr('val'));
+			$('#adminForm').submit();
+		});
+
+		var selecteddagtest = [];
+	    $('#filter_date :selected').each(function(i, selected){
+			  selecteddagtest[i] = $(selected).text();
+
+		});
+
+
+		
+
+
+		var selecteddag = [];
+		$('#filter_date :selected').each(function(i, selected){
+		  selecteddag[i] = $(selected).text();
+		});
+		var days = [
+		    'søn',
+		    'man',
+		    'tir',
+		    'ons',
+		    'tor',
+		    'fre',
+		    'lør'
+		];
+
+	    $.each(selecteddag, function( index, value ) {
+			var d = new Date(value);
+			var dayName = days[d.getDay()];
+			var date = d.getDate();
+			var month = d.getMonth() + 1;
+
+	    	$('.valuedatefilter').html(dayName + '<span>' + date + '/' + month + '</span>');
+
+		});
 	});
 })(jQuery);
