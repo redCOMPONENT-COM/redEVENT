@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage Redevent
  * @since 2.0
  */
-class RedeventViewWeek extends JView
+class RedeventViewWeek extends RViewSite
 {
 	/**
 	 * Creates the week View
@@ -46,7 +46,7 @@ class RedeventViewWeek extends JView
 
 		//initialize variables
 		$document = JFactory::getDocument();
-		$settings = redEVENTHelper::config();
+		$settings = RedeventHelper::config();
 		$menu		  =  JSite::getMenu();
 		$item    	= $menu->getActive();
 		$params 	= $application->getParams();
@@ -54,7 +54,7 @@ class RedeventViewWeek extends JView
 
 		//add css file
     if (!$params->get('custom_css')) {
-      $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
+      $document->addStyleSheet('media/com_redevent/css/redevent.css');
       $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/week.css');
     }
     else {
@@ -62,14 +62,15 @@ class RedeventViewWeek extends JView
     }
 
     // add js
-    JHTML::_('behavior.mootools');
+    JHTML::_('behavior.framework');
 
 		$pop      = JRequest::getBool('pop');
 		$pathway  = $application->getPathWay();
 
 		//get data from model
-		$rows = & $this->get('Data');
-		$week = & $this->get('Day');
+		$rows = $this->get('Data');
+		$customs = $this->get('ListCustomFields');
+		$week = $this->get('Day');
 
 		//params
 		if ($item) {
@@ -98,14 +99,14 @@ class RedeventViewWeek extends JView
 		$this->assign('weekdays',   $this->get('weekdays'));
 		$this->assign('next',   $this->get('nextweek'));
 		$this->assign('previous',   $this->get('previousweek'));
+		$this->customs = $customs;
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
-		array_unshift($cols, 'time');
 		array_unique($cols);
-		$exclude = array('date');
+		$exclude = array('date', 'time');
 		$cols = array_diff($cols, $exclude);
 
-		$cols = redEVENTHelper::validateColumns($cols);
+		$cols = RedeventHelper::validateColumns($cols);
 		$this->assign('columns',        $cols);
 		$start = JComponentHelper::getParams('com_redevent')->get('week_start') == 'MO' ? 1 : 0;
 		$this->assign('start',        $start);

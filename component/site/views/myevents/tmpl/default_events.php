@@ -24,23 +24,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
-<?php	if ($this->hasManagedEvents) :	?>
-
-<h2><?php echo JText::_('COM_REDEVENT_Manage_Events'); ?></h2>
-
-<script type="text/javascript">
-
-	function tableOrdering( order, dir, view )
-	{
-		var form = document.getElementById("adminForm");
-
-		form.filter_order.value 	= order;
-		form.filter_order_Dir.value	= dir;
-		form.submit( view );
-	}
-</script>
-
-<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="adminForm">
+<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="my-managed-events" class="redevent-ajaxnav">
 
 <?php if ($this->params->get('filter_text',1) || $this->params->get('display_limit_select') || $this->params->get('showeventfilter')) : ?>
 <div id="el_filter" class="floattext">
@@ -54,9 +38,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
       <label for="filter_type"><?php echo JText::_('COM_REDEVENT_FILTER'); ?></label> <?php
       echo $this->lists['filter_types'].'&nbsp;';
       ?>
-      <input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" />
-      <button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_('COM_REDEVENT_GO' ); ?></button>
-      <button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_('COM_REDEVENT_RESET' ); ?></button>
+      <input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" />
+      <button type="button" id="filter-go"><?php echo JText::_('COM_REDEVENT_GO' ); ?></button>
+      <button type="reset" id="filter-reset"><?php echo JText::_('COM_REDEVENT_RESET' ); ?></button>
     </div>
     <?php endif; ?>
     <?php if ($this->params->get('display_limit_select')) : ?>
@@ -99,39 +83,39 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 	<thead>
 			<tr>
-				<th id="el_date" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', JText::_('COM_REDEVENT_TABLE_HEADER_DATE'), 'x.dates', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th id="el_date" class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_DATE'), 'x.dates', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php
 				if ($this->params->get('showtitle', 1)) :
 				?>
-				<th id="el_title" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', JText::_('COM_REDEVENT_TABLE_HEADER_TITLE'), 'e.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th id="el_title" class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_TITLE'), 'a.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php
 				endif;
-		
+
 				if ($this->params->get('showlocate', 1)) :
 				?>
-				<th id="el_location" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', JText::_('COM_REDEVENT_TABLE_HEADER_VENUE'), 'l.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th id="el_location" class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_VENUE'), 'l.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php
 				endif;
 				if ($this->params->get('showcity', 0)) :
 				?>
-				<th id="el_city" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', JText::_('COM_REDEVENT_TABLE_HEADER_CITY'), 'l.city', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th id="el_city" class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_CITY'), 'l.city', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php
 				endif;
 				if ($this->params->get('showstate', 0)) :
 				?>
-				<th id="el_state" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', JText::_('COM_REDEVENT_TABLE_HEADER_STATE'), 'l.state', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th id="el_state" class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_STATE'), 'l.state', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php
 				endif;
 				if ($this->params->get('showcat', 1)) :
 				?>
-				<th id="el_category" class="sectiontableheader" align="left"><?php echo JHTML::_('grid.sort', JText::_('COM_REDEVENT_TABLE_HEADER_CATEGORY'), 'c.catname', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th id="el_category" class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_CATEGORY'), 'c.name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
 				<?php
 				endif;
-				?>				
-				
+				?>
+
 				<?php if ($this->params->get('showcode', 1)): ?>
 				<th id="el_code" class="sectiontableheader" align="left"><?php echo JText::_('COM_REDEVENT_Code'); ?></th>
-				<?php endif; ?> 
+				<?php endif; ?>
 				<th id="el_attendees" class="sectiontableheader" align="left"><?php echo JText::_('COM_REDEVENT_Booked'); ?></th>
 				<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('COM_REDEVENT_Edit'); ?></th>
 				<th id="el_edit" class="sectiontableheader" align="left"><?php echo JText::_('COM_REDEVENT_Published'); ?></th>
@@ -145,7 +129,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<tr align="center"><td><?php echo JText::_('COM_REDEVENT_NO_EVENTS' ); ?></td></tr>
 		<?php
 	else :
-	
+
 	$i = 0;
 	foreach ((array) $this->events as $row) :
 		?>
@@ -153,12 +137,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
     			<td headers="el_date" align="left">
     				<?php if ($this->acl->canEditXref($row->xref)): ?>
-   					<?php echo JHTML::link('index.php?option=com_redevent&view=editevent&layout=eventdate&id='.$row->slug.'&xref='.$row->xref, 
-   					                       REOutput::formatEventDateTime($row),
-   					                       array('class' => 'hasTip', 
+   					<?php echo JHTML::link('index.php?option=com_redevent&task=editsession.edit&e_id=' . $row->slug . '&s_id=' . $row->xref,
+   					                       RedeventHelperOutput::formatEventDateTime($row),
+   					                       array('class' => 'hasTip',
    					                             'title' => JText::_('COM_REDEVENT_EDIT_XREF' ).'::'.JText::_('COM_REDEVENT_EDIT_XREF_TIP' )));	?>
     				<?php else: ?>
-   					<?php echo REOutput::formatEventDateTime($row);	?>
+   					<?php echo RedeventHelperOutput::formatEventDateTime($row);	?>
    					<?php endif; ?>
 					</td>
 
@@ -168,7 +152,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				//title
 				?>
 				<td headers="el_title" align="left" valign="top">
-					<a href="<?php echo $detaillink ; ?>"> <?php echo $this->escape($row->full_title); ?></a>
+					<a href="<?php echo $detaillink ; ?>"> <?php echo $this->escape(RedeventHelper::getSessionFullTitle($row)); ?></a>
 				</td>
 
 				<?php if ($this->params->get('showlocate', 1)) :	?>
@@ -205,22 +189,22 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				if ($this->params->get('showcat', 1)) : ?>
           <td headers="el_category" align="left" valign="top">
           <?php foreach ($row->categories as $k => $cat): ?>
-            <?php if ($this->params->get('catlinklist', 1) == 1) : ?> 
+            <?php if ($this->params->get('catlinklist', 1) == 1) : ?>
               <a href="<?php echo JRoute::_('index.php?option=com_redevent&view=categoryevents&id='.$cat->slug); ?>">
-                <?php echo $cat->catname ? $this->escape($cat->catname) : '-' ; ?>
+                <?php echo $cat->name ? $this->escape($cat->name) : '-' ; ?>
               </a>
             <?php else: ?>
-              <?php echo $cat->catname ? $this->escape($cat->catname) : '-'; ?>
+              <?php echo $cat->name ? $this->escape($cat->name) : '-'; ?>
             <?php endif; ?>
             <?php echo ($k < count($row->categories)) ? '<br/>' : '' ; ?>
           <?php endforeach; ?>
-          </td> 
+          </td>
         <?php endif; ?>
 
-				
+
 				<?php if ($this->params->get('showcode', 1)): ?>
-				<td headers="el_code" align="left" valign="top"><?php echo $this->escape(redEVENTHelper::getSessionCode($row)); ?></td>
-				<?php endif; ?> 
+				<td headers="el_code" align="left" valign="top"><?php echo $this->escape(RedeventHelper::getSessionCode($row)); ?></td>
+				<?php endif; ?>
 				<td headers="el_edit" align="left" valign="top"><?php echo $row->registered.($row->maxattendees ? '/'.$row->maxattendees : ''); ?> <?php echo $this->xrefattendeesbutton($row->xref); ?></td>
 				<td headers="el_edit" align="left" valign="top"><?php echo $this->eventeditbutton($row->slug, $row->xref); ?></td>
 				<td headers="el_edit" align="left" valign="top">
@@ -228,7 +212,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						<?php if ($this->acl->canEditXref($row->xref)): ?>
 							<?php echo JHTML::link('index.php?option=com_redevent&task=unpublishxref&xref='. $row->xref, JHTML::_('image', 'components/com_redevent/assets/images/ok.png', JText::_('COM_REDEVENT_Published' ))); ?>
 						<?php else: ?>
-							<?php echo JHTML::_('image', 'components/com_redevent/assets/images/ok.png', JText::_('COM_REDEVENT_Published' )); ?>						
+							<?php echo JHTML::_('image', 'components/com_redevent/assets/images/ok.png', JText::_('COM_REDEVENT_Published' )); ?>
 						<?php endif; ?>
 					<?php elseif ($row->published == '0'):?>
 						<?php if ($this->acl->canEditXref($row->xref)): ?>
@@ -253,11 +237,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 	</tbody>
 </table>
-<p>
-<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
-<input type="hidden" name="filter_order_Dir" value="" />
-</p>
-</form>
 
 <!--pagination-->
 <?php if (($this->params->def('show_pagination', 1) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->events_pageNav->get('pages.total') > 1)) : ?>
@@ -266,18 +245,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<p class="counter">
 				<?php echo $this->events_pageNav->getPagesCounter(); ?>
 		</p>
-	
+
 		<?php endif; ?>
 	<?php echo $this->events_pageNav->getPagesLinks(); ?>
 </div>
 <?php  endif; ?>
 <!-- pagination end -->
 
-<?php endif; ?>
+<input type="hidden" name="limitstart" value="<?php echo $this->lists['limitstart']; ?>" class="redajax_limitstart" />
+<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" class="redajax_order"/>
+<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" class="redajax_order_dir"/>
+<input type="hidden" name="task" value="myevents.managedevents" />
 
-<?php if ($this->canAddXref): ?>
-<div><?php echo JHTML::link(JRoute::_('index.php?option=com_redevent&view=editevent&layout=eventdate', false), JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_EVENT_SESSION')); ?></div>
-<?php endif; ?>
-<?php if ($this->canAddEvent): ?>
-<div><?php echo JHTML::link(RedeventHelperRoute::getEditEventRoute(), JText::_('COM_REDEVENT_MYEVENTS_ADD_NEW_EVENT')); ?></div>
-<?php endif; ?>
+</form>

@@ -27,7 +27,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <thead>
 	<tr>
 		<th><?php echo JText::_('COM_REDEVENT_EVENT_NAME'); ?></th>
-		<th><?php echo JText::_('COM_REDEVENT_EVENT_WHERE'); ?></th> 
+		<th><?php echo JText::_('COM_REDEVENT_EVENT_WHERE'); ?></th>
 		<th><?php echo JText::_('COM_REDEVENT_EVENT_DATE'); ?>&nbsp;<?php echo JText::_('COM_REDEVENT_EVENT_VENUE'); ?></th>
 		<th><?php echo JText::_('COM_REDEVENT_EVENT_PRICE'); ?></th>
 	</tr>
@@ -39,12 +39,12 @@ foreach ($this->_eventlinks as $key => $event) {
 	$venue_url = JURI::current().JRoute::_('index.php?option=com_redevent&view=venueevents&id='.$event->venueid);
 	?>
 	<tr>
-		<td><?php echo JHTML::_('link', $event_url, $event->full_title); ?></td>
+		<td><?php echo JHTML::_('link', $event_url, RedeventHelper::getSessionFullTitle($event)); ?></td>
 		<td><?php echo $event->location; ?></td>
-		<td><?php echo REOutput::formatdate($event->dates, $event->times); ?> 
-		<?php echo redEVENTHelper::getEventDuration($event); ?> 
+		<td><?php echo RedeventHelperOutput::formatdate($event->dates, $event->times); ?>
+		<?php echo RedeventHelper::getEventDuration($event); ?>
 		<?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
-		<td class="re-price"><?php echo REOutput::formatListPrices($event->prices); ?></td>
+		<td class="re-price"><?php echo RedeventHelperOutput::formatListPrices($event->prices); ?></td>
 	</tr>
 <?php }
 ?>

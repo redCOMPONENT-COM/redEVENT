@@ -1,2 +1,12 @@
+# extension name
 comp.name=redevent
+
+# your local test site
 www.dir=/var/www/joomla
+
+#template name for overrides
+www.template.site=protostar
+www.template.admin=hathor
+
+# clean install for unit tests
+www.dirtest=/var/www/joomla_test

@@ -33,26 +33,26 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedeventViewCategories extends JView
+class RedeventViewCategories extends RViewSite
 {
 	function display( $tpl=null )
 	{
 		$mainframe = &JFactory::getApplication();
 
 		$document 	= & JFactory::getDocument();
-		$elsettings = & redEVENTHelper::config();
-    $params   = & $mainframe->getParams();
+		$elsettings = & RedeventHelper::config();
+		$params   = & $mainframe->getParams();
 
 		$rows 		= & $this->get('Data');
 		$total 		= & $this->get('Total');
 
 		//add css file
-    if (!$params->get('custom_css')) {
-      $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
-    }
-    else {
-      $document->addStyleSheet($params->get('custom_css'));     
-    }
+		if (!$params->get('custom_css')) {
+			$document->addStyleSheet('media/com_redevent/css/redevent.css');
+		}
+		else {
+			$document->addStyleSheet($params->get('custom_css'));
+		}
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
 		//get menu information
@@ -91,10 +91,7 @@ class RedeventViewCategories extends JView
 // 		$document->addHeadLink(JRoute::_($link.'&format=feed&type=atom'), 'alternate', 'rel', $attribs);
 
 		//Check if the user has access to the form
-		$maintainer = ELUser::ismaintainer();
-		$genaccess 	= ELUser::validate_user( $elsettings->get('evdelrec'), $elsettings->get('delivereventsyes') );
-
-		if ($maintainer || $genaccess ) $dellink = 1;
+		$dellink = JFactory::getUser()->authorise('re.createevent');
 
 		// Create the pagination object
 		jimport('joomla.html.pagination');

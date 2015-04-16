@@ -24,69 +24,68 @@ jimport( 'joomla.application.component.view');
  * @subpackage	Content
  * @since 1.5
  */
-class RedeventViewSignup extends JView
-{        
+class RedeventViewSignup extends RViewSite
+{
 	function display($tpl = null)
 	{
 		$mainframe = &JFactory::getApplication();
-		
+
 		$dispatcher	=& JDispatcher::getInstance();
-		
+
 		/* Load the event details */
 		$course = $this->get('Details');
 		$venue = $this->get('Venue');
-		
+
     $pdf = new TCPDF("P", "mm", "A4", true);
     $pdf->SetCreator($mainframe->getCfg('sitename'));
     $pdf->SetAuthor($mainframe->getCfg('sitename'));
     $pdf->SetTitle($course->title);
     $pdf->SetSubject($course->title);
-    
+
     $pdf->setHeaderFont(Array('freesans', '', 8));
     $pdf->setFooterFont(Array('freesans', '', 8));
     $pdf->setFont('freesans');
-    
+
     // disable header and footer
     $pdf->setPrintHeader(false);
     $pdf->setPrintFooter(true);
-    
+
     //set the display mode
     $pdf->SetDisplayMode('default');
-    
+
     //initialize document
     $pdf->AliasNbPages();
-    
+
     // add a page
     $pdf->AddPage();
     $pdf->SetFontSize(10);
 
     /* This loads the tags replacer */
-		JView::loadHelper('tags');
-		$tags = new redEVENT_tags();
+		$tags = new RedeventTags;
 		$tags->setXref(JRequest::getInt('xref'));
-		
+
     $message = $tags->ReplaceTags($course->submission_type_email_pdf);
-    
+
 		// convert urls
-		$htmlmsg = REOutput::ImgRelAbs($message);
+		$htmlmsg = RedeventHelperOutput::ImgRelAbs($message);
     $pdf->WriteHTML($message, true);
-    
+
     // add the form data if requested
-    if ($course->pdf_form_data) 
+    if ($course->pdf_form_data)
     {
     	JRequest::setVar('pdfform', $pdf);
     	JPluginHelper::importPlugin('content');
-    	
-    	$form = new stdClass();    	
+
+    	$form = new stdClass();
     	$form->text = '{redform}'.$course->redform_id.',1{/redform}';
     	$form->eventid = $course->did;
     	$form->task = 'userregister';
   		$results = $dispatcher->trigger('onPrepareEvent', array(& $form, array(), 0));
-  		
+
       $pdf->WriteHTML($form->text, true);
     }
     // output the file
     $pdf->Output($course->title .".pdf", "I");
-    exit;     
+    exit;
 	}
 }

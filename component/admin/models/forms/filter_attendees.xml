@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="filter">
+		<field
+			name="search"
+			type="text"
+			label="COM_REDCORE_FILTER_SEARCH_DESC"
+			placeholder="JSEARCH_FILTER"
+			class="js-enter-submits"
+			/>
+		<field
+				name="session"
+				type="session"
+				onchange="this.form.submit();"
+				label="COM_REDEVENT_FORMS_FILTER_REGISTRATION_SESSION"
+				default=""
+				>
+		</field>
+        <field
+                name="confirmed"
+                type="list"
+                onchange="this.form.submit();"
+                label="COM_REDEVENT_FORMS_FILTER_REGISTRATION_CONFIRMED"
+                default=""
+                >
+            <option value="">COM_REDEVENT_FORMS_FILTER_REGISTRATION_CONFIRMED_OPTION_ALL</option>
+	        <option value="0">COM_REDEVENT_FORMS_FILTER_REGISTRATION_CONFIRMED_OPTION_UNCONFIRMED</option>
+	        <option value="1">COM_REDEVENT_FORMS_FILTER_REGISTRATION_CONFIRMED_OPTION_CONFIRMED</option>
+        </field>
+		<field
+				name="waiting"
+				type="list"
+				onchange="this.form.submit();"
+				label="COM_REDEVENT_FORMS_FILTER_REGISTRATION_STATUS"
+				default=""
+				>
+			<option value="">COM_REDEVENT_FORMS_FILTER_REGISTRATION_STATUS_OPTION_ALL</option>
+			<option value="1">COM_REDEVENT_FORMS_FILTER_REGISTRATION_STATUS_OPTION_ATTENDING</option>
+			<option value="2">COM_REDEVENT_FORMS_FILTER_REGISTRATION_STATUS_OPTION_WAITING</option>
+		</field>
+		<field
+				name="cancelled"
+				type="list"
+				onchange="this.form.submit();"
+				label="COM_REDEVENT_FORMS_FILTER_REGISTRATION_CANCELLED"
+		        default="0"
+				>
+			<option value="2">COM_REDEVENT_FORMS_FILTER_REGISTRATION_CANCELLED_OPTION_ALL</option>
+			<option value="0">COM_REDEVENT_FORMS_FILTER_REGISTRATION_CANCELLED_OPTION_ACTIVE</option>
+			<option value="1">COM_REDEVENT_FORMS_FILTER_REGISTRATION_CANCELLED_OPTION_CANCELLED</option>
+		</field>
+	</fields>
+	<fields name="list">
+		<field
+			name="registrations_limit"
+			type="rlimitbox"
+			class="inputbox input-mini chzn"
+			default="25"
+			label="JGLOBAL_ORDERING_LIST_LIMIT"
+			description="JGLOBAL_ORDERING_LIST_LIMIT_DESC"
+			onchange="this.form.submit();" />
+	</fields>
+</form>

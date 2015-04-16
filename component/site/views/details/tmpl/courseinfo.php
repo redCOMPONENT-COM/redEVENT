@@ -28,7 +28,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 function tableOrdering( order, dir, view )
 {
 	var form = document.getElementById("venuesform");
-		
+
 	form.filter_order.value 	= order;
 	form.filter_order_Dir.value	= dir;
 	form.submit( view );
@@ -51,37 +51,37 @@ function tableOrdering( order, dir, view )
 </thead>
 <tbody>
 <?php
-$elsettings = redEVENTHelper::config();
+$elsettings = RedeventHelper::config();
 $imagepath = JURI::base() . 'administrator/components/com_redevent/assets/images/';
 foreach ($this->_eventlinks as $key => $event) {
 	$event_url = JRoute::_(RedeventHelperRoute::getDetailsRoute($event->slug, $event->xslug));
 	$venue_url = JRoute::_(RedeventHelperRoute::getUpcomingVenueEventsRoute($event->venueslug));
 	?>
 	<tr>
-			<td class="courseinfo_name"><?php echo JHTML::_('link', $event_url, $event->full_title); ?></td>
-			<td class="courseinfo_date"><?php echo REOutput::formatdate($event->dates, $event->times); ?></td>
-			<td class="courseinfo_duration"><?php echo redEVENTHelper::getEventDuration($event); ?></td>
+			<td class="courseinfo_name"><?php echo JHTML::_('link', $event_url, RedeventHelper::getSessionFullTitle($event)); ?></td>
+			<td class="courseinfo_date"><?php echo RedeventHelperOutput::formatdate($event->dates, $event->times); ?></td>
+			<td class="courseinfo_duration"><?php echo RedeventHelper::getEventDuration($event); ?></td>
 			<td class="courseinfo_venue"><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
-			<td class="courseinfo_country"><?php echo REOutput::getFlag( $event->country ); ?></td>
-			<td class="courseinfo_prices re-price"><?php echo REOutput::formatListPrices($event->prices); ?></td>
+			<td class="courseinfo_country"><?php echo RedeventHelperOutput::getFlag( $event->country ); ?></td>
+			<td class="courseinfo_prices re-price"><?php echo RedeventHelperOutput::formatListPrices($event->prices); ?></td>
 			<td class="courseinfo_credit"><?php echo $event->course_credit ?></td>
 		<td class="courseinfo_signup" width="*"><div class="courseinfo_signupwrapper">
 		<?php
-		$registration_status = redEVENTHelper::canRegister($event->xref);
-		if (!$registration_status->canregister) 
+		$registration_status = RedeventHelper::canRegister($event->xref);
+		if (!$registration_status->canregister)
 		{
 			$imgpath = 'components/com_redevent/assets/images/'.$registration_status->error.'.png';
-		  $img = JHTML::_('image', JURI::base() . $imgpath, 
-		                          $registration_status->status, 
+		  $img = JHTML::_('image', JURI::base() . $imgpath,
+		                          $registration_status->status,
 		                          array('class' => 'hasTip', 'title' => $registration_status->status));
-			echo REOutput::moreInfoIcon($event->xslug, $img, $registration_status->status);
+			echo RedeventHelperOutput::moreInfoIcon($event->xslug, $img, $registration_status->status);
 		}
-		else 
+		else
 		{
-			$venues_html = '';	
+			$venues_html = '';
 			/* Get the different submission types */
 			$submissiontypes = explode(',', $event->submission_types);
-			foreach ($submissiontypes as $key => $subtype) 
+			foreach ($submissiontypes as $key => $subtype)
 			{
 				switch ($subtype) {
 					case 'email':
@@ -102,13 +102,13 @@ foreach ($this->_eventlinks as $key => $event) {
 					case 'webform':
 						if ($event->prices && count($event->prices))
 						{
-							foreach ($event->prices as $p) 
+							foreach ($event->prices as $p)
 							{
 								$title = ' title="'.$p->name.'::'.addslashes(str_replace("\n", "<br/>", $p->tooltip)).'"';
-								$img = empty($p->image) ? JHTML::_('image', $imagepath.$elsettings->get('signup_webform_img'),  JText::_($p->name)) 
+								$img = empty($p->image) ? JHTML::_('image', $imagepath.$elsettings->get('signup_webform_img'),  JText::_($p->name))
 								                        : JHTML::_('image', JURI::base().$p->image,  JText::_($p->name));
 								$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->slug, $event->xslug, $p->slug));
-								
+
 								$venues_html .= '<div class="courseinfo_vlink courseinfo_webform hasTip '.$p->alias.'"'.$title.'>'
 									             .JHTML::_('link', $link, $img).'</div> ';
 							}
@@ -130,7 +130,7 @@ foreach ($this->_eventlinks as $key => $event) {
 	<?php if ($event->details): ?>
 	<tr>
 	 <td colspan="7">
-			<?php $tagsHelper = new redEVENT_tags(); ?>
+			<?php $tagsHelper = new RedeventTags(); ?>
 			<?php $tagsHelper->setXref($event->xref); ?>
 	   <?php echo $tagsHelper->ReplaceTags($event->details); ?>
 	 </td>

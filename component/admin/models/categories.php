@@ -1,511 +1,255 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
-
 /**
- * EventList Component Categories Model
+ * redEVENT Component Categories Model
  *
- * @package Joomla
- * @subpackage redEVENT
- * @since		0.9
- */
-class RedEventModelCategories extends JModel
+ * @package  Redevent.admin
+ * @since    0.9
+*/
+class RedeventModelCategories extends RModelList
 {
 	/**
-	 * Category data array
+	 * Name of the filter form to load
 	 *
-	 * @var array
+	 * @var  string
 	 */
-	var $_data = null;
+	protected $filterFormName = 'filter_categories';
 
 	/**
-	 * Category total
+	 * Limitstart field used by the pagination
 	 *
-	 * @var integer
+	 * @var  string
 	 */
-	var $_total = null;
+	protected $limitField = 'categories_limit';
 
 	/**
-	 * Pagination object
+	 * Limitstart field used by the pagination
 	 *
-	 * @var object
+	 * @var  string
 	 */
-	var $_pagination = null;
+	protected $limitstartField = 'auto';
 
 	/**
-	 * Categorie id
+	 * Constructor.
 	 *
-	 * @var int
-	 */
-	var $_id = null;
-
-	/**
-	 * Constructor
+	 * @param   array  $config  Configs
 	 *
-	 * @since 0.9
+	 * @see     JController
 	 */
-	function __construct()
+	public function __construct($config = array())
 	{
-		parent::__construct();
-
-		$mainframe = &JFactory::getApplication();
-
-		$option = JRequest::getCmd('option');
-
-		$limit		= $mainframe->getUserStateFromRequest( $option.'.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest( $option.'.limitstart', 'limitstart', 0, 'int' );
-
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-
-		$array = JRequest::getVar('cid',  0, '', 'array');
-		$this->setId((int)$array[0]);
-
-	}
-
-	/**
-	 * Method to set the category identifier
-	 *
-	 * @access	public
-	 * @param	int Category identifier
-	 */
-	function setId($id)
-	{
-		// Set id and wipe data
-		$this->_id	 = $id;
-		$this->_data = null;
-	}
-
-	/**
-	 * Method to get categories item data
-	 *
-	 * @access public
-	 * @return array
-	 */
-	function getData()
-	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_data))
+		if (empty($config['filter_fields']))
 		{
-			$query = $this->_buildQuery();
-			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-			
-			$k = 0;
-			$count = count($this->_data);
-			for($i = 0; $i < $count; $i++)
-			{
-				$category =& $this->_data[$i];
-
-				$category->assignedevents = $this->_countcatevents( $category->id );
-
-				$k = 1 - $k;
-			}
+			$config['filter_fields'] = array(
+				'name', 'c.name',
+				'ordering', 'c.ordering',
+				'published', 'c.published',
+				'id', 'c.id',
+				'access', 'c.access'
+			);
 		}
 
-		return $this->_data;
+		parent::__construct($config);
 	}
 
 	/**
-	 * Method to get the total nr of the categories
+	 * Gets an array of objects from the results of database query.
 	 *
-	 * @access public
-	 * @return integer
+	 * @param   string   $query       The query.
+	 * @param   integer  $limitstart  Offset.
+	 * @param   integer  $limit       The number of records.
+	 *
+	 * @return  array  An array of results.
+	 *
+	 * @since   11.1
 	 */
-	function getTotal()
+	protected function _getList($query, $limitstart = 0, $limit = 0)
 	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_total))
+		$result = parent::_getList($query, $limitstart, $limit);
+
+		if (!$result)
 		{
-			$query = $this->_buildQuery();
-			$this->_total = $this->_getListCount($query);
+			return $result;
 		}
 
-		return $this->_total;
-	}
-
-	/**
-	 * Method to get a pagination object for the categories
-	 *
-	 * @access public
-	 * @return integer
-	 */
-	function getPagination()
-	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_pagination))
+		for ($i = 0, $count = count($result); $i < $count; $i++)
 		{
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
+			$category =& $result[$i];
+			$category->assignedevents = $this->countCategoryEvents($category->id);
 		}
 
-		return $this->_pagination;
+		return $result;
 	}
 
 	/**
-	 * Method to build the query for the categories
+	 * Method to cache the last query constructed.
 	 *
-	 * @access private
-	 * @return integer
-	 * @since 0.9
+	 * This method ensures that the query is constructed only once for a given state of the model.
+	 *
+	 * @return JDatabaseQuery A JDatabaseQuery object
 	 */
-	function _buildQuery()
+	protected function getListQuery()
 	{
-		// Get the WHERE and ORDER BY clauses for the query
-		$where		= $this->_buildContentWhere();
-		$orderby	= $this->_buildContentOrderBy();
+		$db = $this->_db;
+		$query = $db->getQuery(true);
 
-    $query = ' SELECT c.*, c.catname, (COUNT(parent.catname) - 1) AS depth, c.access, c.groupid, '
-           . ' u.name AS editor, g.title AS groupname, gr.name AS catgroup, p.catname as parent_name '
-           . ' FROM #__redevent_categories AS parent, #__redevent_categories AS c '
-           . ' LEFT JOIN #__redevent_categories AS p ON c.parent_id = p.id '
-           . ' LEFT JOIN #__usergroups AS g ON g.id = c.access'
-           . ' LEFT JOIN #__users AS u ON u.id = c.checked_out'
-           . ' LEFT JOIN #__redevent_groups AS gr ON gr.id = c.groupid'
-           . $where
-           . ' GROUP BY c.id '
-           . $orderby
-           ;
-           
+		$query->select('c.*, (COUNT(parent.name) - 1) AS depth, p.name as parent_name');
+		$query->select('u.name AS editor');
+		$query->select('g.title AS groupname');
+		$query->from('#__redevent_categories AS parent, #__redevent_categories AS c');
+		$query->join('LEFT', '#__redevent_categories AS p ON c.parent_id = p.id');
+		$query->join('LEFT', '#__usergroups AS g ON g.id = c.access');
+		$query->join('LEFT', '#__users AS u ON u.id = c.checked_out');
+		$query->where('(c.lft BETWEEN parent.lft AND parent.rgt)');
+		$query->group('c.id');
+
+		// Join over the asset groups.
+		$query->select('ag.title AS access_level');
+		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = c.access');
+
+		// Join over the language
+		$query->select('l.title AS language_title');
+		$query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = c.language');
+
+		// Get the WHERE clause for the query
+		$query = $this->buildContentWhere($query);
+
+		$order = $this->getState('list.ordering');
+		$dir = $this->getState('list.direction');
+		$query->order($db->qn($order) . ' ' . $dir);
+
 		return $query;
-	}
-
-	/**
-	 * Method to build the orderby clause of the query for the categories
-	 *
-	 * @access private
-	 * @return string
-	 * @since 0.9
-	 */
-	function _buildContentOrderBy()
-	{
-		$mainframe = &JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-
-		$filter_order		= $mainframe->getUserStateFromRequest( $option.'.categories.filter_order', 		'filter_order', 	'c.lft', 'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'.categories.filter_order_Dir',	'filter_order_Dir',	'', 'word' );
-
-		$orderby 	= ' ORDER BY '.$filter_order.' '.$filter_order_Dir.', c.ordering';
-
-		return $orderby;
 	}
 
 	/**
 	 * Method to build the where clause of the query for the categories
 	 *
-	 * @access private
-	 * @return string
-	 * @since 0.9
+	 * @param   JDatabaseQuery  $query  query
+	 *
+	 * @return  JDatabaseQuery
 	 */
-	function _buildContentWhere()
+	protected function buildContentWhere($query)
 	{
-		$mainframe = &JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$db = $this->_db;
+		$search = $this->getState('filter.search');
 
-		$filter_state 		= $mainframe->getUserStateFromRequest( $option.'.categories.filter_state', 'filter_state', '', 'word' );
-		$search 			= $mainframe->getUserStateFromRequest( $option.'.categories.search', 'search', '', 'string' );
-		$search 			= $this->_db->getEscaped( trim(JString::strtolower( $search ) ) );
+		$filter_state = $this->getState('filter.published', '');
 
-		$where = array();
-    $where[] = 'c.lft BETWEEN parent.lft AND parent.rgt';
-
-		if ( $filter_state ) {
-			if ( $filter_state == 'P' ) {
-				$where[] = 'c.published = 1';
-			} else if ($filter_state == 'U' ) {
-				$where[] = 'c.published = 0';
+		if (is_numeric($filter_state))
+		{
+			if ($filter_state == '1')
+			{
+				$query->where('c.published = 1');
+			}
+			elseif ($filter_state == '0' )
+			{
+				$query->where('c.published = 0');
 			}
 		}
 
-		if ($search) {
-			$where[] = ' LOWER(c.catname) LIKE \'%'.$search.'%\' ';
+		$filter_language = $this->getState('filter.language');
+
+		if ($filter_language)
+		{
+			$query->where('c.language = ' . $db->quote($filter_language));
 		}
 
-		$where 		= ' WHERE '. implode( ' AND ', $where );
+		if ($search)
+		{
+			$query->where('LOWER(c.name) LIKE \'%' . $search . '%\'');
+		}
 
-		return $where;
+		return $query;
 	}
 
 	/**
-	 * Method to (un)publish a category
+	 * Publish/Unpublish items
 	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	0.9
+	 * @param   mixed    $pks    id or array of ids of items to be published/unpublished
+	 * @param   integer  $state  New desired state
+	 *
+	 * @return  boolean
 	 */
-	function publish($cid = array(), $publish = 1)
+	public function publish($pks = null, $state = 1)
 	{
-		$user 	=& JFactory::getUser();
-
-		if (count( $cid ))
+		if (!parent::publish($pks, $state))
 		{
-			$cids = implode( ',', $cid );
+			return false;
+		}
 
-			$query = 'UPDATE #__redevent_categories'
-				. ' SET published = ' . (int) $publish
-				. ' WHERE id IN ('. $cids .')'
-				. ' AND ( checked_out = 0 OR ( checked_out = ' . (int) $user->get('id'). ' ) )'
-			;
-			$this->_db->setQuery( $query );
-			if (!$this->_db->query()) {
-				$this->setError($this->_db->getErrorMsg());
-				return false;
-			}
-			
-			// for finder plugins
+		if (is_array($pks) && !empty($pks))
+		{
+			// For finder plugins
 			$dispatcher	= JDispatcher::getInstance();
 			JPluginHelper::importPlugin('finder');
-			
+
 			// Trigger the onFinderCategoryChangeState event.
-			$dispatcher->trigger('onFinderCategoryChangeState', array('com_redevent.category', $cids, $publish));
-		}
-		return true;
-	}
-
-	/**
-	 * Method to move a category
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	0.9
-	 */
-	function move($direction)
-	{
-		$row =& JTable::getInstance('redevent_categories', '');
-
-		if (!$row->load( $this->_id ) ) {
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-
-		if (!$row->move( $direction )) {
-			$this->setError($this->_db->getErrorMsg());
-			return false;
+			$dispatcher->trigger('onFinderCategoryChangeState', array('com_redevent.category', $pks, $state));
 		}
 
 		return true;
 	}
 
 	/**
-	 * Method to order categories
+	 * Method to count the number of assigned events to the category
 	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	0.9
-	 */
-	function saveorder($cid = array(), $order)
-	{
-		$row =& JTable::getInstance('redevent_categories', '');
-
-		// update ordering values
-		for( $i=0; $i < count($cid); $i++ )
-		{
-			$row->load( (int) $cid[$i] );
-
-			if ($row->ordering != $order[$i])
-			{
-				$row->ordering = $order[$i];
-				if (!$row->store()) {
-					$this->setError($this->_db->getErrorMsg());
-					return false;
-				}
-			}
-		}
-
-		return true;
-	}
-	
-	/**
-	 * Method to count the nr of assigned events to the category
+	 * @param   int  $id  category id
 	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	0.9
+	 * @return int
 	 */
-	function _countcatevents($id)
+	protected function countCategoryEvents($id)
 	{
-		$query = 'SELECT COUNT( * )'
-				.' FROM #__redevent_event_category_xref AS x'
-				.' WHERE x.category_id = ' . (int)$id
-				;
-					
-		$this->_db->setQuery($query);
-		$number = $this->_db->loadResult();
-    	
-    	return $number;
+		$db = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->select('COUNT(*)');
+		$query->from('#__redevent_event_category_xref');
+		$query->where('category_id = ' . (int) $id);
+
+		$db->setQuery($query);
+		$res = $db->loadResult();
+
+		return $res;
 	}
-	
 
 	/**
-	 * Method to remove a category
+	 * Method to get a store id based on model configuration state.
 	 *
-	 * @access	public
-	 * @return	string $msg
-	 * @since	0.9
+	 * This is necessary because the model is used by the component and
+	 * different modules that might need different sets of data or different
+	 * ordering requirements.
+	 *
+	 * @param   string  $id  A prefix for the store id.
+	 *
+	 * @return	string  A store id.
 	 */
-	function delete($cid)
+	protected function getStoreId($id = '')
 	{
-		$cids = implode( ',', $cid );
+		// Compile the store id.
+		$id	.= ':' . $this->getState('filter.search');
+		$id .= ':' . $this->getState('filter.language');
+		$id	.= ':' . $this->getState('filter.published');
 
-		$query = 'SELECT c.id, c.catname, COUNT( xcat.event_id ) AS numcat'
-				. ' FROM #__redevent_categories AS c'
-        . ' LEFT JOIN #__redevent_event_category_xref AS xcat ON xcat.category_id = c.id'
-				. ' WHERE c.id IN ('. $cids .')'
-				. ' GROUP BY c.id'
-				;
-		$this->_db->setQuery( $query );
-
-		if (!($rows = $this->_db->loadObjectList())) {
-			RedeventError::raiseError( 500, $this->_db->stderr() );
-			return false;
-		}
-
-		$err = array();
-		$cid = array();
-		foreach ($rows as $row) {
-			if ($row->numcat == 0) {
-				$cid[] = $row->id;
-			} else {
-				$err[] = $row->catname;
-			}
-		}
-
-		if (count( $cid ))
-		{
-			$cids = implode( ',', $cid );
-			$query = 'DELETE FROM #__redevent_categories'
-					. ' WHERE id IN ('. $cids .')';
-
-			$this->_db->setQuery( $query );
-
-			if(!$this->_db->query()) {
-				$this->setError($this->_db->getErrorMsg());
-				return false;
-			}
-			
-			// rebuild the tree
-      $table = JTable::getInstance('redevent_categories', '');
-      $table->rebuildTree();
-		}
-
-		if (count( $err )) {
-			$cids 	= implode( ', ', $err );
-    		$msg 	= JText::sprintf( 'COM_REDEVENT_EVENT_ASSIGNED_CATEGORY_S', $cids );
-    		return $msg;
-		} else {
-			$total 	= count( $cid );
-			$msg 	= $total.' '.JText::_('COM_REDEVENT_CATEGORIES_DELETED');
-			return $msg;
-		}
+		return parent::getStoreId($id);
 	}
-	
-  /**
-	 * export venues
-   *
-	 * @param array $categories filter
-	 * @return array
-	 */
-	public function export($categories = null)
-	{
-		$where = array();
-		
-		if (count($where)) {
-			$where = ' WHERE '.implode(' AND ', $where);
-		}
-		else {
-			$where = '';
-		}
-				
-		$query = ' SELECT c.id, c.catname, c.alias, c.catdescription, c.meta_description, c.meta_keywords,  '
-		       . ' c.color, c.image, c.private, c.published, c.access,  '
-		       . ' c.groupid, c.event_template, c.ordering  '
-		       . ' FROM #__redevent_categories AS c '
-		       . $where
-		       ;
-    $this->_db->setQuery($query);
-    
-    $results = $this->_db->loadAssocList();
-    
-    return $results;
-	}
-	
-  /**
-	 * import categories in database
-	 * 
-	 * @param array $records
-	 * @param string $duplicate_method method for handling duplicate record (ignore, create_new, update)
-	 * @return boolean true on success
-	 */
-	public function import($records, $duplicate_method = 'ignore')
-	{
-		$app = JFactory::getApplication();
-		$count = array('added' => 0, 'updated' => 0, 'ignored' => 0);
-		
-		foreach ($records as $r)
-		{			
-			$v = $this->getTable('RedEvent_categories', '');	
-			$v->bind($r);
-			
-			if (isset($r->id) && $r->id) 
-			{
-				// load existing data
-				$found = $v->load($r->id);
-				
-				// discard if set to ignore duplicate
-				if ($found && $duplicate_method == 'ignore') {
-					$count['ignored']++;
-					continue;
-				}
-			}
-			// bind submitted data
-			$v->bind($r);
-			if ($duplicate_method == 'update' && $found) {
-				$updating = 1;
-			}
-			else {
-				$v->id = null; // to be sure to create a new record
-				$updating = 0;
-			}
 
-			// store !
-			if (!$v->check()) {
-				$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$v->getError(), 'error');
-				continue;
-			}
-			if (!$v->store()) {
-				$app->enqueueMessage(JText::_('COM_REDEVENT_IMPORT_ERROR').': '.$v->getError(), 'error');
-				continue;
-			}
-			if ($updating) {
-				$count['updated']++;
-			}
-			else {
-				$count['added']++;
-			}
-		}
-		return $count;
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * @param   string  $ordering   Ordering column
+	 * @param   string  $direction  Direction
+	 *
+	 * @return  void
+	 */
+	public function populateState($ordering = 'c.lft', $direction = 'asc')
+	{
+		parent::populateState($ordering, $direction);
 	}
 }

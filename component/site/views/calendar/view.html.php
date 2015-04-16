@@ -35,7 +35,7 @@ require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'calendar.class.php');
  * @subpackage redEVENT
  * @since 1.1
  */
-class RedeventViewCalendar extends JView
+class RedeventViewCalendar extends RViewSite
 {
     /**
      * Creates the Calendar View
@@ -52,19 +52,19 @@ class RedeventViewCalendar extends JView
         //initialize variables
         $document 	= & JFactory::getDocument();
         $menu 		= & JSite::getMenu();
-        $settings = & redEVENTHelper::config();
+        $settings = & RedeventHelper::config();
         $item 		= $menu->getActive();
         $params 	= & $app->getParams();
         $uri 		= & JFactory::getURI();
         $pathway 	= & $app->getPathWay();
 
         //add css file
-        $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
-        $document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #redevent dd { height: 1%; }</style><![endif]-->');
-        $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redeventcalendar.css');
-        
-        // add javascript
-        $document->addScript($this->baseurl.'/components/com_redevent/assets/js/calendar.js');
+	    RHelperAsset::load('redevent.css');
+	    $document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #redevent dd { height: 1%; }</style><![endif]-->');
+	    RHelperAsset::load('redeventcalendar.css');
+
+	    // add javascript
+	    RHelperAsset::load('calendarview.js');
 
         $year 	= (int)JRequest::getVar('yearID', strftime("%Y"));
         $month 	= (int)JRequest::getVar('monthID', strftime("%m"));
@@ -73,7 +73,8 @@ class RedeventViewCalendar extends JView
         $model = & $this->getModel();
         $model->setDate(mktime(0, 0, 1, $month, 1, $year));
 
-        $rows = & $this->get('Data');
+        $rows = $this->get('Data');
+	    $categories = $this->get('Categories');
 
         //Set Meta data
         $document->setTitle($item->title);
@@ -87,12 +88,13 @@ class RedeventViewCalendar extends JView
     		$cal->enableMonthNav('index.php?option=com_redevent&view=calendar');
     		$cal->setFirstWeekDay(($params->get('week_start', "SU") == 'SU' ? 0 : 1));
     		$cal->enableDayLinks(false);
-    		
+
         $this->assignRef('rows', 		$rows);
+	    $this->assignRef('categories', $categories);
         $this->assignRef('params', 		$params);
         $this->assignRef('settings', 	$settings);
         $this->assignRef('cal', 		$cal);
-        
+
         parent::display($tpl);
     }
 
@@ -112,7 +114,7 @@ class RedeventViewCalendar extends JView
     {
         $tooltip = (htmlspecialchars($tooltip));
         $title = (htmlspecialchars($title));
-        
+
         if ($href) {
             $href = JRoute::_($href);
             $style = '';
@@ -120,7 +122,7 @@ class RedeventViewCalendar extends JView
         } else {
             $tip = '<span class="'.$class.'" title="'.$title.'" rel="'.$tooltip.'">'.$text.'</span>';
         }
-    
+
         return $tip;
     }
 }

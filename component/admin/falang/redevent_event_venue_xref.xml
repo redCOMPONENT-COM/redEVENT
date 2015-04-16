@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<falang type="contentelement">
+	<name>redEVENT - Sessions</name>
+	<author>redCOMPONENT</author>
+	<version>##VERSION##</version>
+	<description>Translations for redEVENT events sessions</description>
+	<reference>
+		<table name="redevent_event_venue_xref">
+			<field type="referenceid" name="id" translate="0">ID</field>
+			<field type="text" name="title" translate="1">Session title</field>
+			<field type="titletext" name="dates" translate="0">Date</field>
+			<field type="htmltext" name="details" translate="1">Details</field>
+			<field type="text" name="note" translate="1">Note</field>
+			<field type="text" name="icaldetails" translate="1">Ical details</field>
+			<field type="text" name="icalvenue" translate="1">Ical venue</field>
+			<field type="published" name="published" translate="0">published</field>
+		</table>
+	</reference>
+	<translationfilters>
+		<published>published</published>
+		<re_event>eventid</re_event>
+		<re_venue>venueid</re_venue>
+	</translationfilters>
+</falang>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fieldset name="export"
+			  addfieldpath="/libraries/redevent/form/fields">
+
+		<field addfieldpath="/libraries/redform/form/fields"
+			name="form"
+			type="RedformForm"
+			label="COM_REDEVENT_TOOLS_CSV_SELECT_FORM"
+			description ="COM_REDEVENT_TOOLS_CSV_SELECT_FORM"
+			>
+		</field>
+
+		<field
+				name="category"
+				type="recategorylist"
+				label="COM_REDEVENT_TOOLS_CSV_SELECT_CATEGORY"
+				description ="COM_REDEVENT_TOOLS_CSV_SELECT_CATEGORY"
+				>
+			<option value="">JALL</option>
+		</field>
+
+		<field
+				name="venue"
+				type="revenuelist"
+				label="COM_REDEVENT_TOOLS_CSV_SELECT_VENUE"
+				description ="COM_REDEVENT_TOOLS_CSV_SELECT_VENUE"
+				>
+			<option value="">JALL</option>
+		</field>
+
+		<field
+				name="state"
+				type="list"
+				label="COM_REDEVENT_TOOLS_CSV_SELECT_STATE"
+				description ="COM_REDEVENT_TOOLS_CSV_SELECT_STATE"
+				>
+			<option value="0">COM_REDEVENT_TOOLS_CSV_SELECT_STATE_PUBLISHED</option>
+			<option value="1">COM_REDEVENT_TOOLS_CSV_SELECT_STATE_ARCHIVED</option>
+			<option value="2">COM_REDEVENT_TOOLS_CSV_SELECT_STATE_ALL</option>
+		</field>
+
+		<field
+				name="attending"
+				type="list"
+				label="COM_REDEVENT_TOOLS_CSV_SELECT_ATTENDEES_STATE_LABEL"
+				description ="COM_REDEVENT_TOOLS_CSV_SELECT_ATTENDEES_STATE_LABEL"
+				>
+			<option value="0">COM_REDEVENT_TOOLS_CSV_SELECT_ATTENDEES_STATE_ALL</option>
+			<option value="1">COM_REDEVENT_TOOLS_CSV_SELECT_ATTENDEES_STATE_ATTENDING</option>
+			<option value="2">COM_REDEVENT_TOOLS_CSV_SELECT_ATTENDEES_STATE_WAITING</option>
+		</field>
+
+		<field
+				name="events"
+				type="list"
+				label="COM_REDEVENT_TOOLS_CSV_SELECT_EVENTS"
+				description ="COM_REDEVENT_TOOLS_CSV_SELECT_EVENTS"
+				multiple="true"
+				>
+		</field>
+
+	</fieldset>
+</form>

@@ -25,61 +25,62 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * redEvetnt venues categories Model class
- * 
+ *
  * The hierachical structure uses the The Nested Set Model (Modified Preorder Tree Traversal)
  * see http://dev.mysql.com/tech-resources/articles/hierarchical-data.html for reference
  *
  * @package Joomla
  * @subpackage redEvetnt
  * @since 0.9
- */
+*/
 class RedEvent_venues_categories extends JTable
 {
 	/**
-	 * Primary Key
-	 * @var int
+	 * @param database A database connector object
 	 */
-	var $id 				= null;
-	/** @var int */
-	var $parent_id			= 0;
-	/** @var string */
-	var $name 			= '';
-	/** @var string */
-	var $alias	 			= '';
-	/** @var string */
-	var $description 	= null;
-	/** @var string */
-	var $meta_description 	= null;
-	/** @var string */
-	var $meta_keywords		= null;
-	/** @var string */
-	var $image 				= '';
-	/** @var int */
-	var $private			= 0;
-	/** @var int */
-	var $published			= null;
-	/** @var int */
-	var $checked_out 		= 0;
-	/** @var date */
-	var $checked_out_time	= 0;
-	/** @var int */
-	var $access 			= 0;
-	/** @var int */
-	var $groupid 			= 0;
-	/** @var string */
-	var $maintainers		= null;
-	/** @var int */
-	var $ordering 			= null;
-
-	/**
-	* @param database A database connector object
-	*/
-	function redevent_venues_categories(& $db) {
+	function __construct(& $db) {
 		parent::__construct('#__redevent_venues_categories', 'id', $db);
 	}
 
-	// overloaded check function
-	function check()
+	/**
+	 * override bind function
+	 *
+	 * @param   array   $array   data
+	 * @param   string  $ignore  An optional array or space separated list of properties to ignore while binding.
+	 *
+	 * @return boolean
+	 */
+	public function bind($array, $ignore = '')
+	{
+		// Bind the rules.
+		if (isset($array['rules']) && is_array($array['rules']))
+		{
+			$filtered = array();
+			foreach ((array) $array['rules'] as $action => $ids)
+			{
+				// Build the rules array.
+				$filtered[$action] = array();
+				foreach ($ids as $id => $p)
+				{
+					if ($p !== '')
+					{
+						$filtered[$action][$id] = ($p == '1' || $p == 'true') ? true : false;
+					}
+				}
+			}
+			$rules = new JAccessRules($filtered);
+			$this->setRules($rules);
+		}
+
+		return parent::bind($array, $ignore);
+	}
+
+	/**
+	 * overrides check
+	 *
+	 * @return boolean
+	 */
+	public function check()
 	{
 		// Not typed in a category name?
 		if (trim( $this->name ) == '') {
@@ -96,44 +97,136 @@ class RedEvent_venues_categories extends JTable
 
 		return true;
 	}
-	
-	function store($updateNulls = false)
+
+	/**
+	 * overrides store function, with the tree rebuild function
+	 *
+	 * @param   boolean  $updateNulls  True to update fields even if they are null.
+	 *
+	 * @return boolean
+	 */
+	public function store($updateNulls = false)
 	{
-		if (parent::store($updateNulls)) {
-			$this->rebuildTree();			
+		if (parent::store($updateNulls))
+		{
+			$this->rebuildTree();
 		}
-		else return false;
-		
+		else
+		{
+			return false;
+		}
+
 		return true;
 	}
-	
-	function rebuildTree()
+
+
+	/**
+	 * rebuild category tree
+	 *
+	 * @return void
+	 */
+	protected function rebuildTree()
 	{
 		$this->_rebuildTree(0, 0);
 	}
-	
-	function _rebuildTree($parent, $left) {
-	   // the right value of this node is the left value + 1
-	   $right = $left+1;
-	
-	   // get all children of this node
-	   $this->_db->setQuery('SELECT id FROM #__redevent_venues_categories WHERE parent_id = '.$this->_db->Quote($parent));
-	   $children = $this->_db->loadResultArray();
-	   foreach((array)$children as $child_id) {
-	       // recursive execution of this function for each
-	       // child of this node
-	       // $right is the current right value, which is
-	       // incremented by the rebuild_tree function
-	       $right = $this->_rebuildTree($child_id, $right);
-	   }
-	
-	   // we've got the left value, and now that we've processed
-	   // the children of this node we also know the right value
-	   $this->_db->setQuery('UPDATE #__redevent_venues_categories SET lft='.$left.', rgt='.
-	                $right.' WHERE id='.$parent);
-	   $this->_db->query();
-	
-	   // return the right value of this node + 1
-	   return $right+1;
+
+	/**
+	 * recursive function to build the tree
+	 *
+	 * @param   object   $parent  parent category
+	 * @param   integer  $left    left value
+	 *
+	 * @return number
+	 */
+	protected function _rebuildTree($parent, $left)
+	{
+		// The right value of this node is the left value + 1
+		$right = $left + 1;
+
+		// Get all children of this node
+		$this->_db->setQuery('SELECT id FROM #__redevent_venues_categories WHERE parent_id = ' . $this->_db->Quote($parent));
+		$children = $this->_db->loadResultArray();
+
+		foreach ((array) $children as $child_id)
+		{
+			/**
+			 * Recursive execution of this function for each
+			 * child of this node
+			 * $right is the current right value, which is
+			 * incremented by the rebuild_tree function
+			 */
+			$right = $this->_rebuildTree($child_id, $right);
+		}
+
+		// We've got the left value, and now that we've processed
+		// the children of this node we also know the right value
+		$this->_db->setQuery('UPDATE #__redevent_venues_categories SET lft=' . $left . ', rgt=' .
+			$right . ' WHERE id=' . $parent
+		);
+		$this->_db->query();
+
+		// Return the right value of this node + 1
+		return $right + 1;
+	}
+	/**
+	 * Method to compute the default name of the asset.
+	 * The default name is in the form `table_name.id`
+	 * where id is the value of the primary key of the table.
+	 *
+	 * @return      string
+	 *
+	 * @since       2.5
+	 **/
+	protected function _getAssetName()
+	{
+		$k = $this->_tbl_key;
+
+		return 'com_redevent.venuecategory.' . (int) $this->$k;
+	}
+
+	/**
+	 * Method to return the title to use for the asset table.
+	 *
+	 * @return      string
+	 *
+	 * @since       2.5
+	 */
+	protected function _getAssetTitle()
+	{
+		return $this->catname;
+	}
+
+	/**
+	 * Method to get the asset-parent-id of the item
+	 *
+	 * @return      int
+	 */
+	protected function _getAssetParentId()
+	{
+		// We will retrieve the parent-asset from the Asset-table
+		$assetParent = JTable::getInstance('Asset');
+
+		// Default: if no asset-parent can be found we take the global asset
+		$assetParentId = $assetParent->getRootId();
+
+		// Find the parent-asset
+		if (($this->parent_id)&& !empty($this->parent_id))
+		{
+			// The item has a category as asset-parent
+			$assetParent->loadByName('com_redevent.venuecategory.' . (int) $this->parent_id);
+		}
+		else
+		{
+			// The item has the component as asset-parent
+			$assetParent->loadByName('com_redevent');
+		}
+
+		// Return the found asset-parent-id
+		if ($assetParent->id)
+		{
+			$assetParentId = $assetParent->id;
+		}
+
+		return $assetParentId;
 	}
 }

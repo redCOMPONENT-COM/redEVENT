@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<josetta>
+	<fields>
+
+		<field>
+			<id>language</id>
+			<name>language</name>
+			<column>language</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+			<grid>yes</grid>
+		</field>
+
+		<field>
+			<id>id</id>
+			<name>JGLOBAL_FIELD_ID_LABEL</name>
+			<description>JGLOBAL_FIELD_ID_DESC</description>
+			<translate>yes</translate>
+			<type>integer</type>
+			<display>yes</display>
+			<require>no</require>
+			<readonly>true</readonly>
+		</field>
+
+		<field>
+			<id>name</id>
+			<name>COM_REDEVENT_NAME</name>
+			<description>COM_REDEVENT_NAME</description>
+			<column>name</column>
+			<type>josettatext</type>
+			<size>60</size>
+			<length>255</length>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>yes</require>
+		</field>
+		
+		<field>
+			<id>tag</id>
+			<name>COM_REDEVENT_Custom_field_Tag</name>
+			<description>COM_REDEVENT_Custom_field_Tag</description>
+			<column>tag</column>
+			<type>josettatext</type>
+			<size>60</size>
+			<length>255</length>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>yes</require>
+		</field>
+
+		<field>
+			<id>tips</id>
+			<name>COM_REDEVENT_Custom_field_Tooltip</name>
+			<description>COM_REDEVENT_Custom_field_Tooltip_tip</description>
+			<column>tips</column>
+			<type>josettatext</type>
+			<size>60</size>
+			<length>255</length>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+
+		<field>
+			<id>options</id>
+			<name>COM_REDEVENT_CUSTOM_FIELD_OPTIONS</name>
+			<description>COM_REDEVENT_CUSTOM_FIELD_OPTIONS_DESC</description>
+			<column>options</column>
+			<type>textarea</type>
+			<size>60</size>
+			<length>255</length>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+
+		<field>
+			<id>default_value</id>
+			<name>COM_REDEVENT_CUSTOM_FIELD_DEFAULT_LABEL</name>
+			<description>COM_REDEVENT_CUSTOM_FIELD_DEFAULT_LABEL_DESC</description>
+			<column>default_value</column>
+			<type>textarea</type>
+			<size>60</size>
+			<length>255</length>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+
+		<field>
+			<id>object_key</id>
+			<name>COM_REDEVENT_Field_for</name>
+			<column>object_key</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>
+
+		<field>
+			<id>type</id>
+			<name>COM_REDEVENT_custom_field_type</name>
+			<column>type</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>
+
+		<field>
+			<id>searchable</id>
+			<name>COM_REDEVENT_Custom_field_Searchable</name>
+			<column>searchable</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>
+
+		<field>
+			<id>in_lists</id>
+			<name>COM_REDEVENT_Show_in_lists</name>
+			<column>in_lists</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>
+
+		<field>
+			<id>frontend_edit</id>
+			<name>COM_REDEVENT_Frontend_edit</name>
+			<column>frontend_edit</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>
+
+		<field>
+			<id>required</id>
+			<name>COM_REDEVENT_Custom_field_Required</name>
+			<column>required</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>
+
+		<field>
+			<id>min</id>
+			<name>COM_REDEVENT_Min_characters</name>
+			<column>min</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>
+
+		<field>
+			<id>max</id>
+			<name>COM_REDEVENT_Max_characters</name>
+			<column>max</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+		</field>
+		
+	</fields>
+</josetta>

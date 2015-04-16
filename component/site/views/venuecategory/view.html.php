@@ -33,14 +33,14 @@ jimport( 'joomla.application.component.view');
  * @subpackage redevent
  * @since 2.0
  */
-class RedeventViewVenuecategory extends JView
+class RedeventViewVenuecategory extends RViewSite
 {
 	/**
 	 * Creates the venue category View
 	 *
 	 * @since 2.0
 	 */
-	function display( $tpl=null ) 
+	function display( $tpl=null )
 	{
 		$mainframe = &JFactory::getApplication();
 		$option = JRequest::getCmd('option');
@@ -48,43 +48,44 @@ class RedeventViewVenuecategory extends JView
 		//initialize variables
 		$document 	= & JFactory::getDocument();
 		$menu		= & JSite::getMenu();
-		$elsettings = & redEVENTHelper::config();
+		$elsettings = & RedeventHelper::config();
 		$item    	= $menu->getActive();
 		$params 	= & $mainframe->getParams();
 		$uri 		= & JFactory::getURI();
 		$pathway 	= & $mainframe->getPathWay();
-		
+
 		/* Check if the item is an object */
 		if (!is_object($item)) {
 			$item = new StdClass;
 			$item->title = '';
 		}
-		
+
 		//add css file
     if (!$params->get('custom_css')) {
-      $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
+      $document->addStyleSheet('media/com_redevent/css/redevent.css');
     }
     else {
-      $document->addStyleSheet($params->get('custom_css'));     
+      $document->addStyleSheet($params->get('custom_css'));
     }
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
-		
+
     // add js
-    JHTML::_('behavior.mootools');
+    JHTML::_('behavior.framework');
     // for filter hint
     $document->addScript($this->baseurl.'/components/com_redevent/assets/js/eventslist.js');
-		
+
 		// Request variables
 		$limitstart		= JRequest::getInt('limitstart');
 		$limit       	= $mainframe->getUserStateFromRequest('com_redevent.venuecategory.limit', 'limit', $params->def('display_num', 0), 'int');
 		$task 			= JRequest::getWord('task');
 		$pop			= JRequest::getBool('pop');
-		
+
 		//get data from model
 		$rows 		= & $this->get('Data');
 		$category 	= & $this->get('Category');
 		$total 		= & $this->get('Total');
 		$customs 	= & $this->get('ListCustomFields');
+		$state = $this->get('state');
 
 		//are events available?
 		if (!$rows) {
@@ -111,14 +112,14 @@ class RedeventViewVenuecategory extends JView
 		if ( $pop ) {
 			$params->set( 'popup', 1 );
 		}
-		
+
 		//add alternate feed link
 		$link    = 'index.php?option=com_redevent&view=venuecategory&format=feed&id='.$category->id;
 		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
 		$document->addHeadLink(JRoute::_($link.'&type=rss'), 'alternate', 'rel', $attribs);
 		$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
 		$document->addHeadLink(JRoute::_($link.'&type=atom'), 'alternate', 'rel', $attribs);
-		
+
 		if ($task == 'archive') {
 			$pathway->addItem( JText::_('COM_REDEVENT_ARCHIVE' ).' - '.$category->name, JRoute::_('index.php?option='.$option.'&view=venuecategory&task=archive&id='.$category->slug));
 			$link = JRoute::_( 'index.php?option=com_redevent&view=venuecategory&task=archive&id='.$category->slug );
@@ -130,10 +131,7 @@ class RedeventViewVenuecategory extends JView
 		}
 
 		//Check if the user has access to the form
-		$maintainer = ELUser::ismaintainer();
-		$genaccess 	= ELUser::validate_user( $elsettings->get('evdelrec'), $elsettings->get('delivereventsyes') );
-
-		if ($maintainer || $genaccess ) $dellink = 1;
+		$dellink = JFactory::getUser()->authorise('re.createevent');
 
 		// Create the pagination object
 		jimport('joomla.html.pagination');
@@ -164,18 +162,21 @@ class RedeventViewVenuecategory extends JView
 		$this->assignRef('pageNav' , 				$pageNav);
 		$this->assignRef('elsettings' , 			$elsettings);
 		$this->assignRef('item' , 					$item);
-		
+
+		$this->order = $state->get('filter_order');
+		$this->orderDir = $state->get('filter_order_Dir');
+
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
-		$cols = redEVENTHelper::validateColumns($cols);
+		$cols = RedeventHelper::validateColumns($cols);
 		$this->assign('columns',        $cols);
-		
+
 		parent::display($tpl);
 	}
 
 	function _buildSortLists($elsettings)
 	{
     $app = & JFactory::getApplication();
-    
+
 		// Table ordering values
 		$filter_order		= JRequest::getCmd('filter_order', 'x.dates');
 		$filter_order_Dir	= JRequest::getCmd('filter_order_Dir', 'ASC');
@@ -190,8 +191,6 @@ class RedeventViewVenuecategory extends JView
 		$sortselects[] 	= JHTML::_('select.option', 'type', JText::_('COM_REDEVENT_FILTER_SELECT_CATEGORY') );
 		$sortselect 	= JHTML::_('select.genericlist', $sortselects, 'filter_type', 'size="1" class="inputbox"', 'value', 'text', $filter_type );
 
-		$lists['order_Dir'] 	= $filter_order_Dir;
-		$lists['order'] 		= $filter_order;
 		$lists['filter'] 		= $filter;
 		$lists['filter_type'] 	= $sortselect;
 

@@ -1,0 +1,56 @@
+/**
+ * @package		JLV.xxxx
+ * @subpackage	com_xxxx
+ * @copyright	Copyright (C) 2012 Julien Vonthron. All rights reserved.
+ * @license		GNU General Public License version 2 or later
+ *
+ * Backend styling
+ */
+
+// Variables
+@colorOverdue: red;
+@colorClosing: #a90;
+@colorEnoughTime: green;
+@labelBackground: rgba(0, 0, 0, 0.1);
+
+// Extension toolbar icon (big badge)
+.icon-48-redeventsync { background: transparent url(../../com_redeventsync/images/icon-48-redeventsync.png) no-repeat !important; }
+.icon-48-sync { background: transparent url(../../com_redeventsync/images/icon-48-sync.png) no-repeat !important; }
+
+// Due date styling
+span {
+	&.xxxx-due-overdue		{ color: @colorOverdue; }
+	&.xxxx-due-closing		{ color: @colorClosing; }
+	&.xxxx-due-enoughtime	{ color: @colorEnoughTime; }
+}
+
+div.xxxx-clear { clear: left; }
+
+.joomla-version-25 {
+	label {
+		&.xxxx-label { min-width: 250px; background-color: @labelBackground; padding: 2px; margin-right: 10px; }
+		&.xxxx-label-main { font-weight: bold; font-size: 120%; }
+	}
+}
+
+.xxxx-title-field { display: block; font-size: x-large; font-weight: bold; border-bottom: thin solid gray; }
+
+.spinner {
+  position: absolute;
+  opacity: 0.9;
+  filter: alpha(opacity=90);
+  z-index: 999;
+  background: #fff;
+}
+
+.spinner-msg {
+  text-align: center;
+  font-weight: bold;
+}
+
+.spinner-img {
+  background: url(../images/spinner.gif) no-repeat;
+  width: 24px;
+  height: 24px;
+  margin: 0 auto;
+}

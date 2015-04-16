@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_events` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `title` varchar(100) NOT NULL default '',
   `alias` varchar(100) NOT NULL default '',
+  `course_code` varchar(255) NOT NULL,
   `created_by` int(11) unsigned NOT NULL default '0',
   `modified` datetime NOT NULL,
   `modified_by` int(11) unsigned NOT NULL default '0',
@@ -9,6 +10,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_events` (
   `created` datetime NOT NULL,
   `summary` mediumtext NOT NULL,
   `datdescription` mediumtext NOT NULL,
+  `mailflow_id` int(11) NOT NULL default '0',
   `details_layout` tinyint(2) NOT NULL,
   `meta_keywords` varchar(200) NOT NULL default '',
   `meta_description` varchar(255) NOT NULL default '',
@@ -36,20 +38,19 @@ CREATE TABLE IF NOT EXISTS `#__redevent_events` (
   `showfields` text,
   `confirmation_message` text,
   `submission_types` varchar(255) default 'email',
-  `course_code` varchar(255) NOT NULL,
+  `max_multi_signup` int(2) unsigned NOT NULL default '1',
   `submission_type_email` text,
   `submission_type_external` varchar(255) NOT NULL,
   `submission_type_phone` text,
-  `max_multi_signup` int(2) unsigned NOT NULL default '1',
   `submission_type_formal_offer` text,
   `submission_type_formal_offer_subject` varchar(255) default NULL,
+  `submission_type_formal_offer_body` text,
+  `submission_type_formal_offer_pdf` text,
   `show_submission_type_webform_formal_offer` tinyint(1) NOT NULL default '0',
   `submission_type_webform` text,
-  `submission_type_formal_offer_body` text,
-  `submission_type_email_body` text,
-  `submission_type_formal_offer_pdf` text,
-  `submission_type_email_pdf` text,
   `submission_type_email_subject` varchar(255) default NULL,
+  `submission_type_email_body` text,
+  `submission_type_email_pdf` text,
   `review_message` text,
   `send_pdf_form` tinyint(1) NOT NULL default '0',
   `pdf_form_data` tinyint(1) NOT NULL default '0',
@@ -58,6 +59,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_events` (
   `paymentprocessing` text NOT NULL,
   `enable_ical` tinyint(2) NOT NULL default '0',
   `enable_activation_confirmation` TINYINT( 1 ) NOT NULL DEFAULT  '0',
+  `language` char(7) NOT NULL,
   PRIMARY KEY  (`id`)
 ) DEFAULT CHARSET=utf8;
 
@@ -65,6 +67,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues` (
 `id` int(11) unsigned NOT NULL auto_increment,
 `venue` varchar(50) NOT NULL default '',
 `alias` varchar(100) NOT NULL default '',
+`venue_code` varchar(100) NOT NULL default '',
 `url` varchar(200)  NOT NULL default '',
 `company` varchar(200) default NULL,
 `street` varchar(50) default NULL,
@@ -72,6 +75,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues` (
 `city` varchar(50) default NULL,
 `state` varchar(50) default NULL,
 `country` varchar(2) default NULL,
+`email` varchar(200) default NULL,
 `latitude` double default NULL,
 `longitude` double default NULL,
 `locdescription` mediumtext NOT NULL,
@@ -79,7 +83,6 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues` (
 `meta_description` text NOT NULL,
 `locimage` varchar(100) NOT NULL default '',
 `map` tinyint(4) NOT NULL default '0',
-`private` tinyint(1) NOT NULL default '0',
 `author_ip` varchar(15) NOT NULL default '',
 `created` datetime NOT NULL,
 `created_by` int(11) unsigned NOT NULL default '0',
@@ -89,30 +92,36 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues` (
 `checked_out` int(11) NOT NULL default '0',
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
 `ordering` int(11) NOT NULL default '0',
-PRIMARY KEY  (`id`)
+`asset_id` int(10) NOT NULL DEFAULT '0',
+`access` int(11) NOT NULL DEFAULT '0',
+`language` char(7) NOT NULL,
+`params` TEXT NOT NULL,
+PRIMARY KEY  (`id`),
+KEY `idx_language` (`language`)
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_categories` (
 `id` int(11) unsigned NOT NULL auto_increment,
 `parent_id` int(11) unsigned NOT NULL default '0',
-`catname` varchar(100) NOT NULL default '',
+`name` varchar(255) NOT NULL default '',
 `alias` varchar(100) NOT NULL default '',
-`catdescription` mediumtext NOT NULL,
+`description` mediumtext NOT NULL,
 `meta_keywords` text NOT NULL,
 `meta_description` text NOT NULL,
 `color` varchar(100) NOT NULL default '',
 `image` varchar(100) NOT NULL default '',
-`private` tinyint(1) NOT NULL default '0',
 `published` tinyint(1) NOT NULL default '0',
 `checked_out` int(11) NOT NULL default '0',
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
 `access` int(11) unsigned NOT NULL default '0',
-`groupid` int(11) NOT NULL default '0',
 `ordering` int(11) NOT NULL default '0',
 `lft` int(11) NOT NULL default '0',
 `rgt` int(11) NOT NULL default '0',
 `event_template` int(11) NOT NULL default '0',
-PRIMARY KEY  (`id`)
+`language` char(7) NOT NULL,
+`asset_id` int(10) NOT NULL DEFAULT '0',
+PRIMARY KEY  (`id`),
+KEY `parent_id` (`parent_id`)
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_register` (
@@ -121,7 +130,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_register` (
 `uid` int(11) NOT NULL default '0',
 `sid` int(11) NOT NULL default '0',
 `cancelled` tinyint(1) NOT NULL default '0',
-`pricegroup_id` int(11) NOT NULL default '0',
+`sessionpricegroup_id` int(11) NOT NULL default '0',
 `waitinglist` tinyint(2) NOT NULL default '0',
 `confirmed` tinyint(2) NOT NULL default '0',
 `confirmdate` datetime NULL default NULL,
@@ -129,11 +138,14 @@ CREATE TABLE IF NOT EXISTS `#__redevent_register` (
 `uregdate` varchar(50) NOT NULL default '',
 `uip` varchar(15) NOT NULL default '',
 `submit_key` varchar(45) NOT NULL,
+`ponumber` varchar(50) NOT NULL,
+`comments` varchar(255) NOT NULL,
+`status` tinyint(4) DEFAULT 0,
 `checked_out` int(11) NOT NULL default '0',
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
 PRIMARY KEY  (`id`),
 KEY `xref` (`xref`),
-KEY `pricegroup_id` (`pricegroup_id`),
+KEY `sessionpricegroup_id` (`sessionpricegroup_id`),
 KEY `submit_key` (`submit_key`),
 KEY `sid` (`sid`)
 ) DEFAULT CHARSET=utf8;
@@ -145,7 +157,9 @@ CREATE TABLE IF NOT EXISTS `#__redevent_roles` (
 `ordering` int(11) NOT NULL default '0',
 `checked_out` int(11) NOT NULL default '0',
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
-PRIMARY KEY  (`id`)
+`language` char(7) NOT NULL,
+PRIMARY KEY  (`id`),
+KEY `idx_language` (`language`)
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_sessions_roles` (
@@ -179,7 +193,9 @@ CREATE TABLE IF NOT EXISTS `#__redevent_pricegroups` (
 `ordering` int(11) NOT NULL default '0',
 `checked_out` int(11) NOT NULL default '0',
 `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
-PRIMARY KEY  (`id`)
+`language` char(7) NOT NULL,
+PRIMARY KEY  (`id`),
+  KEY `idx_language` (`language`)
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_sessions_pricegroups` (
@@ -187,77 +203,14 @@ CREATE TABLE IF NOT EXISTS `#__redevent_sessions_pricegroups` (
 `xref` int(11) NOT NULL default '0',
 `pricegroup_id` int(11) NOT NULL default '0',
 `price` float NOT NULL,
+`currency` VARCHAR(10) NOT NULL,
 PRIMARY KEY  (`id`),
 KEY  (`xref`),
 KEY  (`pricegroup_id`)
 ) DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__redevent_groups` (
-`id` int(11) unsigned NOT NULL auto_increment,
-`name` varchar(150) NOT NULL default '',
-`description` mediumtext NOT NULL,
-`parameters` text NULL DEFAULT NULL,
-`isdefault` tinyint(1) NOT NULL default '0',
-`edit_events` tinyint(4) NOT NULL default '0',
-`edit_venues` tinyint(4) NOT NULL default '0',
-`publish_events` tinyint(4) NOT NULL default '0',
-`publish_venues` tinyint(4) NOT NULL default '0',
-`checked_out` int(11) NOT NULL default '0',
-`checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
-PRIMARY KEY  (`id`)
-) DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__redevent_groupmembers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `group_id` int(11) NOT NULL DEFAULT '0',
-  `member` int(11) NOT NULL DEFAULT '0',
-  `is_admin` tinyint(4) NOT NULL,
-  `manage_events` tinyint(4) NOT NULL,
-  `manage_xrefs` tinyint(4) NOT NULL,
-	`publish_events` tinyint(4) NOT NULL default '0',
-	`publish_venues` tinyint(4) NOT NULL default '0',
-  `manage_attendees` tinyint(4) NOT NULL,
-  `edit_venues` tinyint(4) NOT NULL,
-  `receive_registrations` tinyint(4) NOT NULL,
-  `checked_out` int(11) NOT NULL default '0',
-  `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`),
-  KEY `group_id` (`group_id`),
-  KEY `member` (`member`)
-) DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__redevent_groups_categories` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `group_id` int(11) NOT NULL DEFAULT '0',
-  `category_id` int(11) NOT NULL DEFAULT '0',
-  `accesslevel` tinyint(4) NOT NULL DEFAULT '0',
-	PRIMARY KEY  (`id`),
-  KEY `group_id` (`group_id`),
-  KEY `category_id` (`category_id`)
-) DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__redevent_groups_venues` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `group_id` int(11) NOT NULL DEFAULT '0',
-  `venue_id` int(11) NOT NULL DEFAULT '0',
-  `accesslevel` tinyint(4) NOT NULL DEFAULT '0',
-	PRIMARY KEY  (`id`),
-  KEY `group_id` (`group_id`),
-  KEY `venue_id` (`venue_id`)
-) DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__redevent_groups_venues_categories` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `group_id` int(11) NOT NULL DEFAULT '0',
-  `category_id` int(11) NOT NULL DEFAULT '0',
-  `accesslevel` tinyint(4) NOT NULL DEFAULT '0',
-	PRIMARY KEY  (`id`),
-  KEY `group_id` (`group_id`),
-  KEY `category_id` (`category_id`)
-) DEFAULT CHARSET=utf8;
-
 CREATE TABLE IF NOT EXISTS `#__redevent_settings` (
-  `id` int(11) NOT NULL,  
+  `id` int(11) NOT NULL,
   `lastupdate` varchar(20) NOT NULL default '',
   UNIQUE KEY `id` (`id`)
 ) DEFAULT CHARSET=utf8;
@@ -266,9 +219,9 @@ CREATE TABLE IF NOT EXISTS `#__redevent_event_venue_xref` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `title` varchar(255) default NULL,
   `alias` varchar(255) default NULL,
+  `session_code` varchar(100) NOT NULL,
   `eventid` int(11) unsigned NOT NULL,
   `venueid` int(11) unsigned NOT NULL,
-  `groupid` int(11) unsigned NOT NULL default '0',
   `dates` date NULL default NULL,
   `enddates` date NULL default NULL,
   `times` time NULL default NULL,
@@ -285,10 +238,10 @@ CREATE TABLE IF NOT EXISTS `#__redevent_event_venue_xref` (
   `course_price` decimal(12,2) default '0.00',
   `published` tinyint(1) NOT NULL default '0',
   `featured` tinyint(1) NOT NULL default '0',
+  `language` char(7) NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `eventid` (`eventid`),
-  KEY `venueid` (`venueid`),
-  KEY `groupid` (`groupid`)
+  KEY `venueid` (`venueid`)
 ) COMMENT='Event Venue Cross reference' DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_event_category_xref` (
@@ -302,6 +255,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_textlibrary` (
   `text_name` varchar(255) default NULL,
   `text_description` varchar(255) default NULL,
   `text_field` text,
+  `language` char(7) NOT NULL,
   `checked_out` int(11) NOT NULL default '0',
   `checked_out_time` datetime default '0000-00-00 00:00:00',
   PRIMARY KEY  (`id`),
@@ -318,16 +272,17 @@ CREATE TABLE IF NOT EXISTS `#__redevent_venues_categories` (
   `meta_keywords` text NOT NULL,
   `meta_description` text NOT NULL,
   `image` varchar(100) NOT NULL default '',
-  `private` tinyint(1) NOT NULL default '0',
   `published` tinyint(1) NOT NULL default '0',
   `checked_out` int(11) NOT NULL default '0',
   `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
   `access` int(11) unsigned NOT NULL default '0',
-  `groupid` int(11) NOT NULL default '0',
   `ordering` int(11) NOT NULL default '0',
   `lft` int(11) NOT NULL default '0',
   `rgt` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`)
+  `language` char(7) NOT NULL,
+  `asset_id` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY  (`id`),
+  KEY `idx_language` (`language`)
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_venue_category_xref` (
@@ -356,8 +311,10 @@ CREATE TABLE IF NOT EXISTS `#__redevent_fields` (
   `default_value` varchar(255) NOT NULL,
   `checked_out` int(11) NOT NULL,
   `checked_out_time` datetime NOT NULL,
+  `language` char(7) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `object_key` (`object_key`)
+  KEY `object_key` (`object_key`),
+  KEY `idx_language` (`language`)
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__redevent_countries` (

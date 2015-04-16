@@ -29,66 +29,14 @@ defined('_JEXEC') or die('Restricted access');
  * @package Joomla
  * @subpackage redEVENT
  * @since 0.9
- */
+*/
 class RedEvent_eventvenuexref extends JTable
 {
-	/**
-	 * Primary Key
-	 * @var int
-	 */
-	var $id 		= null;
-  /** @var string */
-  var $title    = null;
-  /** @var string */
-  var $alias    = null;
-	/** @var int */
-	var $eventid 		= null;
-  /** @var int */
-  var $venueid    = null;
-  /** @var int */
-  var $groupid    = null;
-  /** @var string */
-  var $dates    = null;
-  /** @var string */
-  var $enddates    = null;
-  /** @var string */
-  var $times    = null;
-  /** @var string */
-  var $endtimes    = null;
-  /** @var string */
-  var $registrationend  = null;
-  /** @var string */
-  var $note    = null;
-  /** @var string */
-  var $details    = '';
-  /** @var string */
-  var $icaldetails    = '';
-  /** @var string override venue name in ical view */
-  var $icalvenue    = '';
-  /** @var int */
-  var $maxattendees    = 0;
-  /** @var int */
-  var $maxwaitinglist    = 0;
-  /** @var int */
-  var $course_credit    = null;
-  /** @var int */
-  var $featured    = 0;
-  /**
-   * Url for external registration. 
-   * Overrides event external registration
-   * 
-   * @var string
-   */
-  var $external_registration_url = null;
-  /** @var int */
-  var $published = 0;
-	
-
-	function RedEvent_eventvenuexref(& $db) {
+	public function __construct(& $db) {
 		parent::__construct('#__redevent_event_venue_xref', 'id', $db);
 	}
-	
-	function check()
+
+	public function check()
 	{
 		if (!$this->eventid) {
 			$this->setError(JText::_('COM_REDEVENT_SESSION_EVENTID_IS_REQUIRED'));
@@ -104,15 +52,15 @@ class RedEvent_eventvenuexref extends JTable
 		if ($this->endtimes === '') {
 			$this->endtimes = null;
 		}
-				
+
 		$alias = JFilterOutput::stringURLSafe($this->title);
 
 		if (empty($this->alias) && $alias) {
 			$this->alias = $alias;
-		}		
+		}
 		return true;
 	}
-	
+
 	/**
 	 * Generic Publish/Unpublish function
 	 *
@@ -122,7 +70,7 @@ class RedEvent_eventvenuexref extends JTable
 	 * @param integer The id of the user performnig the operation
 	 * @since 1.0.4
 	 */
-	function publish( $cid=null, $publish=1, $user_id=0 )
+	public function publish( $cid=null, $publish=1, $user_id=0 )
 	{
 		JArrayHelper::toInteger( $cid );
 		$user_id	= (int) $user_id;
@@ -170,7 +118,7 @@ class RedEvent_eventvenuexref extends JTable
 		$this->setError('');
 		return true;
 	}
-	
+
 
 	/**
 	 * Default delete method
@@ -180,7 +128,7 @@ class RedEvent_eventvenuexref extends JTable
 	 * @access public
 	 * @return true if successful otherwise returns and error message
 	 */
-	function delete( $oid=null )
+	public function delete( $oid=null )
 	{
 		if (!$this->canDelete( $oid ))
 		{
@@ -193,7 +141,7 @@ class RedEvent_eventvenuexref extends JTable
 		}
 
 		$query = 'DELETE FROM '.$this->_db->nameQuote( $this->_tbl ).
-				' WHERE '.$this->_tbl_key.' = '. $this->_db->Quote($this->$k);
+		' WHERE '.$this->_tbl_key.' = '. $this->_db->Quote($this->$k);
 		$this->_db->setQuery( $query );
 
 		if ($this->_db->query())
@@ -206,26 +154,26 @@ class RedEvent_eventvenuexref extends JTable
 			return false;
 		}
 	}
-	
-	function canDelete($id)
+
+	public function canDelete($id)
 	{
 		// can't delete if there are attendees
 		$query = ' SELECT COUNT(*) FROM #__redevent_register WHERE xref = '. intval( $id );
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadResult();
-		
+
 		if ($res) {
-			$this->setError(JText::_('COM_REDEVENT_EVENT_DATE_HAS_ATTENDEES'));	
-			return false;		
+			$this->setError(JText::_('COM_REDEVENT_EVENT_DATE_HAS_ATTENDEES'));
+			return false;
 		}
-		
+
 		return true;
 	}
 
 	/**
 	 * override for custom fields
 	 */
-	function bind( $from, $ignore=array() )
+	public function bind( $from, $ignore=array() )
 	{
 		$fromArray	= is_array( $from );
 		$fromObject	= is_object( $from );
@@ -253,8 +201,8 @@ class RedEvent_eventvenuexref extends JTable
 		$customs = $this->_getCustomFieldsColumns();
 		foreach ($customs as $c)
 		{
-			if ($fromArray && isset( $from[$c] )) 
-			{				
+			if ($fromArray && isset( $from[$c] ))
+			{
 				$this->$c = is_array($from[$c]) ? implode("\n", $from[$c]) : $from[$c];
 			} else if ($fromObject && isset( $from->$c )) {
 				$this->$c = is_array($from->$c) ? implode("\n", $from->$c) : $from->$c;
@@ -265,42 +213,83 @@ class RedEvent_eventvenuexref extends JTable
 		}
 		return true;
 	}
-	
-	function _getCustomFieldsColumns()
+
+	public function _getCustomFieldsColumns()
 	{
-		$query = ' SELECT CONCAT("custom", id) ' 
-		       . ' FROM #__redevent_fields ' 
-		       . ' WHERE object_key = ' . $this->_db->Quote('redevent.xref');
+		$query = ' SELECT CONCAT("custom", id) '
+		. ' FROM #__redevent_fields '
+		. ' WHERE object_key = ' . $this->_db->Quote('redevent.xref');
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadResultArray();
 		return $res;
 	}
-	
-	function setPrices($prices = array())
-	{	
-    // first remove current rows
-    $query = ' DELETE FROM #__redevent_sessions_pricegroups ' 
-           . ' WHERE xref = ' . $this->_db->Quote($this->id);
-    $this->_db->setQuery($query);     
-    if (!$this->_db->query()) {
-    	$this->setError($this->_db->getErrorMsg());
-    	return false;
-    }
-    
-    // then recreate them if any
-    foreach ((array) $prices as $k => $price)
-    {    	
-    	if (!isset($price->pricegroup_id) || !isset($price->price)) {
-    		continue;
-    	}
-      $new = & JTable::getInstance('RedEvent_sessions_pricegroups', '');
-      $new->set('xref',    $this->id);
-      $new->set('pricegroup_id', $price->pricegroup_id);
-      $new->set('price', $price->price);
-      if (!($new->check() && $new->store())) {
-      	$this->setError($new->getError());
-      	return false;
-      }
-    }
+
+	public function setPrices($prices = array())
+	{
+		// first remove current rows
+		$query = ' DELETE FROM #__redevent_sessions_pricegroups '
+		. ' WHERE xref = ' . $this->_db->Quote($this->id);
+		$this->_db->setQuery($query);
+
+		if (!$this->_db->query())
+		{
+			$this->setError($this->_db->getErrorMsg());
+
+			return false;
+		}
+
+		// then recreate them if any
+		foreach ((array) $prices as $k => $price)
+		{
+			if (!isset($price->pricegroup_id) || !isset($price->price))
+			{
+				continue;
+			}
+
+			$new = JTable::getInstance('RedEvent_sessions_pricegroups', '');
+			$new->set('xref',          $this->id);
+			$new->set('pricegroup_id', $price->pricegroup_id);
+			$new->set('price',         $price->price);
+			$new->set('currency',      $price->currency);
+
+			if (!($new->check() && $new->store()))
+			{
+				$this->setError($new->getError());
+
+				return false;
+			}
+		}
+	}
+
+	/**
+	 * Method to store a row in the database from the JTable instance properties.
+	 * If a primary key value is set the row with that primary key value will be
+	 * updated with the instance property values.  If no primary key value is set
+	 * a new row will be inserted into the database with the properties from the
+	 * JTable instance.
+	 *
+	 * @param   boolean  $updateNulls  True to update fields even if they are null.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @link	http://docs.joomla.org/JTable/store
+	 * @since   11.1
+	 */
+	public function store($updateNulls = false)
+	{
+		// Make sure the language is same as event
+		$db      = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->select('language');
+		$query->from('#__redevent_events');
+		$query->where('id = ' . $this->eventid);
+
+		$db->setQuery($query);
+		$res = $db->loadResult();
+
+		$this->language = $res;
+
+		return parent::store($updateNulls);
 	}
 }

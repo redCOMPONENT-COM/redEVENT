@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension
+	type="module"
+	version="1.7"
+	client="site"
+	method="upgrade">
+	<name>mod_redevent_teaser</name>
+	<creationDate>##DATE##</creationDate>
+	<author>redWEB Aps</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>(C) 2008 - 2012 redCOMPONENT.com</copyright>
+	<license>GNU/GPL</license>
+	<version>##VERSION##</version>
+	<description>MOD_REDEVENT_TEASER_MODULE_DESC</description>
+
+	<files>
+		<filename module="mod_redevent_teaser">mod_redevent_teaser.php</filename>
+		<filename>index.html</filename>
+		<filename>helper.php</filename>
+		<folder>tmpl</folder>
+		<filename>tmpl/index.html</filename>
+		<filename>tmpl/default.php</filename>
+		<filename>tmpl/mod_redevent_teaser.css</filename>
+		<filename>tmpl/red.css</filename>
+		<filename>tmpl/blue.css</filename>
+		<filename>tmpl/green.css</filename>
+		<folder>tmpl/img</folder>
+		<filename>tmpl/img/index.html</filename>
+		<filename>tmpl/img/calendar_red.png</filename>
+		<filename>tmpl/img/calendar_blue.png</filename>
+		<filename>tmpl/img/calendar_green.png</filename>
+		<filename>tmpl/img/calendar_green2.png</filename>
+		<filename>tmpl/img/facebook.png</filename>
+		<filename>tmpl/img/twitter.png</filename>
+		<filename>tmpl/img/digg.png</filename>
+    <folder>language</folder>
+	</files>
+
+	<config addfieldpath="/libraries/redevent/form/fields">
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="type" type="list" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_EVENTS_STATE" description="MOD_REDEVENT_TEASER_SETTINGS_EVENTS_STATE_DESC">
+					<option value="1">MOD_REDEVENT_TEASER_SETTINGS_EVENTS_STATE_UPCOMING</option>
+					<option value="2">MOD_REDEVENT_TEASER_SETTINGS_EVENTS_STATE_ARCHIVED</option>
+					<option value="3">MOD_REDEVENT_TEASER_SETTINGS_EVENTS_STATE_CURRENT</option>
+				</field>
+				<field name="color" type="list" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_COLOR" description="MOD_REDEVENT_TEASER_SETTINGS_COLOR_DESC">
+					<option value="1">MOD_REDEVENT_TEASER_SETTINGS_COLOR_RED</option>
+					<option value="2">MOD_REDEVENT_TEASER_SETTINGS_COLOR_BLUE</option>
+					<option value="3">MOD_REDEVENT_TEASER_SETTINGS_COLOR_GREEN</option>
+				</field>
+				<field name="count" type="text" default="5" label="MOD_REDEVENT_TEASER_SETTINGS_EVENTS_IN_MODULE" description="MOD_REDEVENT_TEASER_SETTINGS_EVENTS_IN_MODULE_DESC" />
+				<field name="cuttitle" type="text" default="35" label="MOD_REDEVENT_TEASER_SETTINGS_MAX_TITLE_LENGTH" description="MOD_REDEVENT_TEASER_SETTINGS_MAX_TITLE_LENGTH_DESC" />
+				<field name="descriptionlength" type="text" default="300" label="MOD_REDEVENT_TEASER_SETTINGS_MAX_DESCRIPTION_LENGTH" description="MOD_REDEVENT_TEASER_SETTINGS_MAX_DESCRIPTION_LENGTH_DESC" />
+				<field name="br" type="radio" default="0" label="MOD_REDEVENT_TEASER_SETTINGS_ALLOW_LINEBREAK" description="MOD_REDEVENT_TEASER_SETTINGS_ALLOW_LINEBREAK_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="showtime" type="radio" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_SHOW_TIME" description="MOD_REDEVENT_TEASER_SETTINGS_SHOW_TIME_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="showvenue" type="radio" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_SHOW_VENUE" description="MOD_REDEVENT_TEASER_SETTINGS_SHOW_VENUE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="showcategory" type="radio" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_SHOW_CATEGORY" description="MOD_REDEVENT_TEASER_SETTINGS_SHOW_CATEGORY_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="showregister" type="radio" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_SHOW_REGISTER" description="MOD_REDEVENT_TEASER_SETTINGS_SHOW_REGISTER_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="linkfb" type="radio" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_LINK_TO_FB" description="MOD_REDEVENT_TEASER_SETTINGS_LINK_TO_FB_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="linktw" type="radio" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_LINK_TO_TWITTER" description="MOD_REDEVENT_TEASER_SETTINGS_LINK_TO_TWITTER_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="linkdi" type="radio" default="1" label="MOD_REDEVENT_TEASER_SETTINGS_LINK_TO_DIGG" description="MOD_REDEVENT_TEASER_SETTINGS_LINK_TO_DIGG_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="catid" type="recategorylist" multiple="1" label="MOD_REDEVENT_TEASER_SETTINGS_CATEGORY_ID" description="MOD_REDEVENT_TEASER_SETTINGS_CATEGORY_ID_DESC" />
+				<field name="venid" type="revenuelist" multiple="1" label="MOD_REDEVENT_TEASER_SETTINGS_VENUE_ID" description="MOD_REDEVENT_TEASER_SETTINGS_VENUE_ID_DESC" />
+
+				<field name="stateloc" type="text" default="" label="MOD_REDEVENT_TEASER_SETTINGS_STATE" description="MOD_REDEVENT_TEASER_SETTINGS_STATE_DESC" />
+				<field name="picture_size" type="text" default="30" label="MOD_REDEVENT_TEASER_PICTURE_SIZE" description="MOD_REDEVENT_TEASER_PICTURE_SIZE_DESC" />
+
+			</fieldset>
+
+			<fieldset
+				name="advanced">
+				<field
+					name="layout"
+					type="modulelayout"
+					label="JFIELD_ALT_LAYOUT_LABEL"
+					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+				<field
+					name="moduleclass_sfx"
+					type="text"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+				<field
+					name="cache"
+					type="list"
+					default="0"
+					label="COM_MODULES_FIELD_CACHING_LABEL"
+					description="COM_MODULES_FIELD_CACHING_DESC">
+					<option
+						value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+
+</extension>

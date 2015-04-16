@@ -50,7 +50,7 @@ class RedEventViewHelp extends JView {
 		$helpsearch 	= JRequest::getString( 'search' );
 
 		//add css and submenu to document
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		RHelperAsset::load('backend.css');
 
 		//Create Submenu
     ELAdmin::setMenu();

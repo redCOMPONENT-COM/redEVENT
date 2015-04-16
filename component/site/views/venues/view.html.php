@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedeventViewVenues extends JView
+class RedeventViewVenues extends RViewSite
 {
 	/**
 	 * Creates the Venuesview
@@ -45,7 +45,7 @@ class RedeventViewVenues extends JView
 		$mainframe = &JFactory::getApplication();
 
 		$document 	= & JFactory::getDocument();
-		$elsettings = & redEVENTHelper::config();
+		$elsettings = & RedeventHelper::config();
 
 		//get menu information
 		$menu		= & JSite::getMenu();
@@ -54,10 +54,10 @@ class RedeventViewVenues extends JView
 
 		//add css file
     if (!$params->get('custom_css')) {
-      $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
+      $document->addStyleSheet('media/com_redevent/css/redevent.css');
     }
     else {
-      $document->addStyleSheet($params->get('custom_css'));     
+      $document->addStyleSheet($params->get('custom_css'));
     }
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
 
@@ -82,7 +82,7 @@ class RedeventViewVenues extends JView
 
 		//pathway
 		$pathway 	= & $mainframe->getPathWay();
-		
+
 		if ( $task == 'archive' ) {
 			$pathway->addItem(JText::_('COM_REDEVENT_ARCHIVE' ), JRoute::_('index.php?option=com_redevent&view=venues&task=archive') );
 			$pagetitle = $params->get('page_title').' - '.JText::_('COM_REDEVENT_ARCHIVE' );
@@ -91,7 +91,7 @@ class RedeventViewVenues extends JView
 			$pagetitle = $params->get('page_title');
 			$print_link = JRoute::_('index.php?option=com_redevent&view=venues&pop=1&tmpl=component');
 		}
-		
+
 		//Set Page title
 		$this->document->setTitle($pagetitle);
    		$document->setMetadata('keywords', $pagetitle );
@@ -106,10 +106,7 @@ class RedeventViewVenues extends JView
 		}
 
 		//Check if the user has access to the form
-		$maintainer = ELUser::ismaintainer();
-		$genaccess 	= ELUser::validate_user( $elsettings->get('evdelrec'), $elsettings->get('delivereventsyes') );
-
-		if ($maintainer || $genaccess ) $dellink = 1;
+		$dellink = JFactory::getUser()->authorise('re.createevent');
 
 		// Create the pagination object
 		jimport('joomla.html.pagination');

@@ -28,10 +28,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <p class="buttons">
 	<?php
 		if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup
-			echo REOutput::submitbutton( $this->dellink, $this->params );
+			echo RedeventHelperOutput::submitbutton( $this->dellink, $this->params );
 		endif;
-		echo REOutput::mailbutton( $this->category->slug, 'venuecategory', $this->params );
-		echo REOutput::printbutton( $this->print_link, $this->params );
+		echo RedeventHelperOutput::mailbutton( $this->category->slug, 'venuecategory', $this->params );
+		echo RedeventHelperOutput::printbutton( $this->print_link, $this->params );
 	?>
 </p>
 
@@ -46,7 +46,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div class="floattext">
 <div class="catimg">
 	<?php if ($this->category->image): ?>
-	<?php echo redEVENTImage::modalimage($this->category->image, $this->category->name); ?>
+	<?php echo RedeventImage::modalimage($this->category->image, $this->category->name); ?>
 	<?php else: ?>
 	<?php echo JHTML::image('components/com_redevent/assets/images/noimage.png', $this->category->name); ?>
 	<?php endif; ?>
@@ -87,8 +87,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php echo $this->loadTemplate('table'); ?>
 <p>
 <input type="hidden" name="option" value="com_redevent" />
-<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
-<input type="hidden" name="filter_order_Dir" value="" />
+<input type="hidden" name="filter_order" value="<?php echo $this->order; ?>" />
+<input type="hidden" name="filter_order_Dir" value="<?php echo $this->orderDir; ?>" />
 <input type="hidden" name="view" value="venuecategory" />
 <input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 <input type="hidden" name="id" value="<?php echo $this->category->id; ?>" />
@@ -105,7 +105,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<p class="counter">
 				<?php echo $this->pageNav->getPagesCounter(); ?>
 		</p>
-	
+
 		<?php endif; ?>
 	<?php echo $this->pageNav->getPagesLinks(); ?>
 </div>

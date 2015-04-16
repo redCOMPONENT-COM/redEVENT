@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 2.0
  */
-class RedeventViewDetails extends JView
+class RedeventViewDetails extends RViewSite
 {
 	/**
 	 * Creates the output for the details view
@@ -47,7 +47,7 @@ class RedeventViewDetails extends JView
 		}
 		echo 'layout not found';
 	}
-	
+
 	/**
 	 * Creates the attendees output for the details view
 	 *
@@ -56,16 +56,16 @@ class RedeventViewDetails extends JView
 	function _displayAttendees($tpl = null)
 	{
 		jimport('joomla.filesystem.file');
-		
+
 		$model = $this->getModel();
-		
+
 		if (!$this->get('ManageAttendees')) {
 			JError::raiseError(403, 'Not authorized');
 		}
-		
-		$event     = $this->get('Details');		
+
+		$event     = $this->get('Details');
 		$registers = $model->getRegisters(true, true);
-		
+
 		$text = "";
 		if (count($registers))
 		{
@@ -75,7 +75,7 @@ class RedeventViewDetails extends JView
 			}
 			$text .= $this->writecsvrow($fields);
 
-			foreach((array) $registers as $r) 
+			foreach((array) $registers as $r)
 			{
 				$data = array();
 				foreach ($r->answers as $val)
@@ -91,11 +91,11 @@ class RedeventViewDetails extends JView
 		else {
 			//$text = "no attendees";
 		}
-		if (!redEVENTHelper::isValidDate($event->dates)) {
+		if (!RedeventHelper::isValidDate($event->dates)) {
 			$event->dates = JText::_('COM_REDEVENT_OPEN_DATE');
 		}
-		$title = JFile::makeSafe($event->full_title .'_'. $event->dates .'_'. $event->venue .'.csv');
-				
+		$title = JFile::makeSafe(RedeventHelper::getSessionFullTitle($event) .'_'. $event->dates .'_'. $event->venue .'.csv');
+
 		$doc =& JFactory::getDocument();
 		$doc->setMimeEncoding('text/csv');
 		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
@@ -103,8 +103,8 @@ class RedeventViewDetails extends JView
 		header('Pragma: no-cache');
 		echo $text;
 	}
-		
-	function writecsvrow($fields, $delimiter = ',', $enclosure = '"') 
+
+	function writecsvrow($fields, $delimiter = ',', $enclosure = '"')
 	{
     $delimiter_esc = preg_quote($delimiter, '/');
     $enclosure_esc = preg_quote($enclosure, '/');
@@ -117,5 +117,5 @@ class RedeventViewDetails extends JView
     }
 
     return join($delimiter, $output) . "\n";
-	} 
+	}
 }

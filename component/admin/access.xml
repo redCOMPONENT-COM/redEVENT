@@ -6,5 +6,66 @@
 		<action name="core.create" title="JACTION_CREATE" description="JACTION_CREATE_COMPONENT_DESC" />
 		<action name="core.delete" title="JACTION_DELETE" description="JACTION_DELETE_COMPONENT_DESC" />
 		<action name="core.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
+		
+		<action name="re.createevent" 
+		        title="COM_REDEVENT_ACCESS_CREATE_EVENT"	
+		        description="COM_REDEVENT_ACCESS_CREATE_EVENT_DESC" />
+		<action name="re.createsession" 
+		        title="COM_REDEVENT_ACCESS_CREATE_SESSION"	
+		        description="COM_REDEVENT_ACCESS_CREATE_SESSION_DESC" />
+		<action name="re.createvenue" 
+		        title="COM_REDEVENT_ACCESS_CREATE_VENUE"	
+		        description="COM_REDEVENT_ACCESS_CREATE_VENUE_DESC" />
+		<action name="re.editevent" 
+		        title="COM_REDEVENT_ACCESS_EDIT_EVENTS"	
+		        description="COM_REDEVENT_ACCESS_EDIT_EVENTS_DESC" />
+		<action name="re.editsession" 
+		        title="COM_REDEVENT_ACCESS_EDIT_SESSIONS"
+		        description="COM_REDEVENT_ACCESS_EDIT_SESSIONS_DESC" />
+		<action name="re.editvenue" 
+		        title="COM_REDEVENT_ACCESS_EDIT_VENUES"
+		        description="COM_REDEVENT_ACCESS_EDIT_VENUES_DESC" />
+		<action name="re.publishown" 
+		        title="COM_REDEVENT_ACCESS_PUBLISH_OWN"	
+		        description="COM_REDEVENT_ACCESS_PUBLISH_OWN_DESC" />
+		<action name="re.publishany" 
+		        title="COM_REDEVENT_ACCESS_PUBLISH_ANY"
+		        description="COM_REDEVENT_ACCESS_PUBLISH_ANY_DESC" />
+		<action name="re.publishvenueown" 
+		        title="COM_REDEVENT_ACCESS_PUBLISH_VENUE_OWN"	
+		        description="COM_REDEVENT_ACCESS_PUBLISH_VENUE_OWN_DESC" />
+		<action name="re.publishvenueany" 
+		        title="COM_REDEVENT_ACCESS_PUBLISH_VENUE_ANY"
+		        description="COM_REDEVENT_ACCESS_PUBLISH_VENUE_ANY_DESC" />
+		<action name="re.viewattendees" 
+		        title="COM_REDEVENT_ACCESS_VIEW_ATTENDEES"
+		        description="COM_REDEVENT_ACCESS_VIEW_ATTENDEES_DESC" />
+		<action name="re.manageattendees" 
+		        title="COM_REDEVENT_ACCESS_MANAGE_ATTENDEES"
+		        description="COM_REDEVENT_ACCESS_MANAGE_ATTENDEES_DESC" />
+		<action name="re.receiveregistrations" 
+		        title="COM_REDEVENT_ACCESS_RECEIVE_REGISTRATIONS"
+		        description="COM_REDEVENT_ACCESS_RECEIVE_REGISTRATIONS_DESC" />	 
+	</section>
+	<section name="category">
+		<action name="re.manageevents"
+		        title="COM_REDEVENT_ACCESS_CATEGORY_MANAGE_EVENTS"
+		        description="COM_REDEVENT_ACCESS_CATEGORY_MANAGE_EVENTS_DESC" />		       
+	</section>
+	<section name="venue">
+		<action name="re.manageevents"
+		        title="COM_REDEVENT_ACCESS_VENUE_MANAGE_EVENTS"
+		        description="COM_REDEVENT_ACCESS_VENUE_MANAGE_EVENTS_DESC" />
+		<action name="re.managevenue"
+		        title="COM_REDEVENT_ACCESS_VENUECATEGORY_MANAGE_VENUE"
+		        description="COM_REDEVENT_ACCESS_VENUECATEGORY_MANAGE_VENUE_DESC" />	
+	</section>
+	<section name="venuecategory">
+		<action name="re.managevenues"
+		        title="COM_REDEVENT_ACCESS_VENUECATEGORY_MANAGE_VENUES"
+		        description="COM_REDEVENT_ACCESS_VENUECATEGORY_MANAGE_VENUES_DESC" />	
+		<action name="re.manageevents"
+		        title="COM_REDEVENT_ACCESS_VENUECATEGORY_MANAGE_EVENTS"
+		        description="COM_REDEVENT_ACCESS_VENUECATEGORY_MANAGE_EVENTS_DESC" />		       
 	</section>
 </access>

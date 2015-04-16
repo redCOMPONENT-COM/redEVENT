@@ -1,0 +1,16 @@
+.redevent-timeline .timeline-session-header, .redevent-timeline .timeline-venues-header {background: #c0c0c0 ;}
+.redevent-timeline .timeline-sessions-wrapper .timeline-session-header-time {position: absolute; top: 0px;}
+.redevent-timeline .timeline-sessions-wrapper .timeline-sessions {overflow: hidden; position: relative;}
+.redevent-timeline .timeline-sessions-wrapper .timeline-venues {position: absolute; display: block; box-sizing: border-box; height: 100%; border-right: 1px solid #0099ff ;}
+.redevent-timeline .timeline-sessions-wrapper .time-venues-base {position: relative; border-left: 1px solid #c0c0c0 ;}
+.redevent-timeline .timeline-sessions-wrapper .timeline-venues-wrapper {border-bottom: 1px solid #c0c0c0 ;}
+.redevent-timeline .timeline-sessions-wrapper .session-infor-hidden {display: none;}
+.redevent-timeline .timeline-sessions-wrapper .time-venues-base-information {background: #c0c0c0 ;display:block;box-sizing: border-box;padding:15px;position: static;}
+.venues-list {float: left; width: 29.9%; padding-left: 15px;}
+.sessions-list {float: left; width: 70%; overflow: auto;}
+#timeline-session-information {background: #c0c0c0 ; position: absolute; overflow: hidden; display: block; width: 100%;}
+#timeline-session-information .col-left {float: left; width: 29.9%; padding: 15px 15px 15px 30px;}
+#timeline-session-information .col-right {float: left; width: 70%; padding: 15px 30px 15px 15px;}
+.timeline-wrapper {position: relative; overflow: hidden;}
+.timeline-venues-fake {background: #c0c0c0 ;}
+.redevent-timeline .timeline-sessions-wrapper {overflow-y: hidden; overflow-x: visible;}

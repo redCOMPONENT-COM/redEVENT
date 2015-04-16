@@ -24,34 +24,113 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
+<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="attending-events" class="redevent-ajaxnav">
 
-<?php if (count((array)$this->attending)) : ?>
-<h2><?php echo JText::_('COM_REDEVENT_ATTENDING'); ?></h2>
+	<table class="eventtable" summary="attending">
+		<thead>
+			<tr>
+				<th class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_DATE'), 'x.dates', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<th class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_TITLE'), 'a.title', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<?php if ($this->params->get('showlocate', 1)) :?>
+					<th class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_VENUE'), 'l.venue', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<?php endif; ?>
 
-<script type="text/javascript">
+				<?php if ($this->params->get('showcity', 0)) : ?>
+					<th class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_CITY'), 'l.city', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<?php endif; ?>
 
-	function tableOrdering( order, dir, view )
-	{
-		var form = document.getElementById("attending-events");
+				<?php if ($this->params->get('showstate', 0)) : ?>
+					<th class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_STATE'), 'l.state', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<?php endif; ?>
 
-		form.filter_order.value 	= order;
-		form.filter_order_Dir.value	= dir;
-		form.submit( view );
-	}
-</script>
+				<?php if ($this->params->get('showcat', 1)) : ?>
+					<th id="el_category" class="sectiontableheader" align="left"><?php echo RedeventHelper::ajaxSortColumn(JText::_('COM_REDEVENT_TABLE_HEADER_CATEGORY'), 'c.name', $this->lists['order_Dir'], $this->lists['order'] ); ?></th>
+				<?php endif; ?>
 
-<form action="<?php echo JRoute::_($this->action); ?>" method="post" id="attending-events">
+				<th id="cancelcol">&nbsp;</th>
+			</tr>
+		</thead>
 
-<?php 
-$this->rows = $this->attending;
-ob_start();
-include(JPATH_COMPONENT_SITE.DS.'views'.DS.'simplelist'.DS.'tmpl'.DS.'default_table.php');
-ob_end_flush();
-?>
-<p>
-<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
-<input type="hidden" name="filter_order_Dir" value="" />
-</p>
+		<tbody>
+		<?php if (count((array)$this->attending) == 0) : ?>
+			<tr align="center"><td colspan="15"><?php echo JText::_('COM_REDEVENT_NO_EVENTS' ); ?></td></tr>
+		<?php else :
+		$i = 0;
+		foreach ((array) $this->attending as $row) : ?>
+	  		<tr class="sectiontableentry<?php echo $i +1 . $this->params->get( 'pageclass_sfx' ); ?>" >
+	  			<td align="left">
+	   				<?php echo RedeventHelperOutput::formatEventDateTime($row);	?>
+				</td>
+
+				<?php
+				//Link to details
+				$detaillink = JRoute::_( 'index.php?option=com_redevent&view=details&id='. $row->slug .'&xref=' . $row->xref);
+				//title
+				?>
+				<td headers="el_title" align="left" valign="top">
+					<a href="<?php echo $detaillink ; ?>"> <?php echo $this->escape(RedeventHelper::getSessionFullTitle($row)); ?></a>
+				</td>
+
+				<?php if ($this->params->get('showlocate', 1)) : ?>
+					<td headers="el_location" align="left" valign="top">
+						<?php
+						if ($this->params->get('showlinkvenue',1) == 1 ) :
+							echo $row->locid != 0 ? "<a href='".JRoute::_('index.php?option=com_redevent&view=venueevents&id='.$row->venueslug)."'>".$this->escape($row->venue)."</a>" : '-';
+						else :
+							echo $row->locid ? $this->escape($row->venue) : '-';
+						endif;
+						?>
+					</td>
+				<?php endif; ?>
+
+				<?php if ($this->params->get('showcity', 0)) : ?>
+					<td headers="el_city" align="left" valign="top"><?php echo $row->city ? $this->escape($row->city) : '-'; ?></td>
+				<?php endif; ?>
+				<?php if ($this->params->get('showstate', 0)) : ?>
+					<td headers="el_state" align="left" valign="top"><?php echo $row->state ? $this->escape($row->state) : '-'; ?></td>
+				<?php endif; ?>
+
+				<?php if ($this->params->get('showcat', 1)) : ?>
+					<td headers="el_category" align="left" valign="top">
+						<?php foreach ($row->categories as $k => $cat): ?>
+						<?php if ($this->params->get('catlinklist', 1) == 1) : ?>
+						<a href="<?php echo JRoute::_('index.php?option=com_redevent&view=categoryevents&id='.$cat->slug); ?>">
+							<?php echo $cat->name ? $this->escape($cat->name) : '-' ; ?>
+						</a>
+	            <?php else: ?>
+	            	<?php echo $cat->name ? $this->escape($cat->name) : '-'; ?>
+	            <?php endif; ?>
+	            <?php echo ($k < count($row->categories)) ? '<br/>' : '' ; ?>
+	          <?php endforeach; ?>
+	          </td>
+	        <?php endif; ?>
+
+				<td class="cancel-reg">
+					<?php if ($row->unregistra): ?>
+						<button type="button" id="unreg-<?php echo $row->attendee_id; ?>" class="unreg-btn" xref="<?php echo $row->xref; ?>">
+							<?php echo Jtext::_('COM_REDEVENT_MYEVENTS_CANCEL_REGISTRATION'); ?>
+						</button>
+					<?php else: ?>
+						&nbsp;
+					<?php endif; ?>
+				</td>
+
+			</tr>
+
+	  		<?php
+	  		$i = 1 - $i;
+			endforeach;
+			endif;
+			?>
+
+		</tbody>
+	</table>
+
+	<input type="hidden" name="limitstart_attending" value="<?php echo $this->lists['limitstart_attending']; ?>" class="redajax_limitstart" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" class="redajax_order"/>
+	<input type="hidden" name="filter_order_Dir" value="" class="redajax_order_dir"/>
+	<input type="hidden" name="task" value="attending" />
+
 </form>
 
 <!--pagination-->
@@ -61,11 +140,9 @@ ob_end_flush();
 		<p class="counter">
 				<?php echo $this->attending_pageNav->getPagesCounter(); ?>
 		</p>
-	
+
 		<?php endif; ?>
 	<?php echo $this->attending_pageNav->getPagesLinks(); ?>
 </div>
 <?php  endif; ?>
 <!-- pagination end -->
-
-<?php endif; ?>

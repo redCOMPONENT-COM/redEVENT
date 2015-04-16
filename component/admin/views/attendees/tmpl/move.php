@@ -20,13 +20,13 @@
  * along with redEVENT; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
- 
-defined('_JEXEC') or die('Restricted access'); 
+
+defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.tooltip');
 JHTML::_('behavior.modal', 'a.xrefmodal');
 JHTML::_('behavior.formvalidation');
 
-$selectxref_link = JRoute::_('index.php?option=com_redevent&controller=attendees&task=selectxref&tmpl=component&form_id='.$this->form_id);
+$selectxref_link = JRoute::_('index.php?option=com_redevent&controller=attendees&task=selectxref&tmpl=component&form_id=' . $this->form_id . '&function=selectXref');
 ?>
 <script language="javascript" type="text/javascript">
 
@@ -41,7 +41,7 @@ $selectxref_link = JRoute::_('index.php?option=com_redevent&controller=attendees
 	{
 		var form = document.getElementById('adminForm');
 		var validator = document.formvalidator;
-			
+
 		if (pressbutton == 'cancel') {
 			submitform( pressbutton );
 			return;
@@ -84,14 +84,14 @@ $selectxref_link = JRoute::_('index.php?option=com_redevent&controller=attendees
 			</td>
 		</tr>
 	</table>
-	
+
 	<input type="hidden" name="option" value="com_redevent" />
 	<input type="hidden" name="controller" value="attendees" />
 	<input type="hidden" name="view" value="attendees" />
 	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="xref" value="<?php echo $this->session->xref; ?>" />	
+	<input type="hidden" name="xref" value="<?php echo $this->session->xref; ?>" />
 	<?php foreach ($this->cid as $attendee_id): ?>
-	<input type="hidden" name="cid[]" value="<?php echo $attendee_id; ?>" />		
+	<input type="hidden" name="cid[]" value="<?php echo $attendee_id; ?>" />
 	<?php endforeach; ?>
 
 </form>

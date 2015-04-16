@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redevent
  * @since		2.0
  */
-class RedeventViewVenuecategory extends JView
+class RedeventViewVenuecategory extends RViewSite
 {
 	/**
 	 * Creates the Event Feed of the Venue Category
@@ -45,7 +45,7 @@ class RedeventViewVenuecategory extends JView
 		$mainframe = &JFactory::getApplication();
 
 		$doc 		= & JFactory::getDocument();
-		$elsettings = & redEVENTHelper::config();
+		$elsettings = & RedeventHelper::config();
 
 		// Get some data from the model
 		JRequest::setVar('limit', $mainframe->getCfg('feed_limit'));
@@ -54,28 +54,28 @@ class RedeventViewVenuecategory extends JView
 		foreach ( $rows as $row )
 		{
 			// strip html from feed item title
-			$title = $this->escape( $row->full_title );
+			$title = $this->escape( RedeventHelper::getSessionFullTitle($row) );
 			$title = html_entity_decode( $title );
 
 			// strip html from feed item category
-			if (!empty($row->categories)) 
+			if (!empty($row->categories))
 			{
 				$category = array();
 				foreach ($row->categories AS $cat) {
-					$category[] = $cat->catname;
+					$category[] = $cat->name;
 				}
 				$category = $this->escape( implode(', ', $category) );
-				$category = html_entity_decode( $category );				
+				$category = html_entity_decode( $category );
 			}
 			else {
 				$category = '';
 			}
 
 			//Format date
-			if (redEVENTHelper::isValidDate($row->dates))
+			if (RedeventHelper::isValidDate($row->dates))
 			{
 				$date = strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $row->dates ));
-				if (!redEVENTHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) {
+				if (!RedeventHelper::isValidDate($row->enddates) || $row->enddates == $row->dates) {
 					$displaydate = $date;
 				} else {
 					$enddate 	= strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $row->enddates ));
@@ -98,7 +98,7 @@ class RedeventViewVenuecategory extends JView
 
 			// url link to article
 			// & used instead of &amp; as this is converted by feed creator
-			
+
 			$link = RedeventHelperRoute::getDetailsRoute($row->slug, $row->xslug);
 			$link = JRoute::_( $link );
 

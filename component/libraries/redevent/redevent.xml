@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="library" method="upgrade" version="2.5">
+	<name>redEVENT - Libraries</name>
+	<libraryname>redevent</libraryname>
+	<creationDate>##DATE##</creationDate>
+	<author>redCOMPONENT</author>
+	<authorEmail>email@redcomponent.com</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>Copyright (C) 2014 redCOMPONENT.com. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later, see LICENSE.</license>
+	<version>##VERSION##</version>
+	<description>redEVENT library</description>
+	<files>
+		<folder>abstract</folder>
+		<folder>ajax</folder>
+		<folder>attendee</folder>
+		<folder>controller</folder>
+		<folder>customfield</folder>
+		<folder>error</folder>
+		<folder>factory</folder>
+		<folder>form</folder>
+		<folder>helper</folder>
+		<folder>image</folder>
+		<folder>model</folder>
+		<folder>recurrence</folder>
+		<folder>registration</folder>
+		<folder>table</folder>
+		<folder>tags</folder>
+		<folder>user</folder>
+		<folder>view</folder>
+		<file>bootstrap.php</file>
+	</files>
+</extension>

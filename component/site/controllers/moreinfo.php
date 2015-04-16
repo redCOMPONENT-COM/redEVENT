@@ -32,7 +32,7 @@ jimport('joomla.application.component.controller');
  * @subpackage redEVENT
  * @since 2.0
  */
-class RedEventControllerMoreinfo extends RedEventController
+class RedeventControllerMoreinfo extends RedeventController
 {
 	/**
 	 * Constructor
@@ -42,35 +42,35 @@ class RedEventControllerMoreinfo extends RedEventController
 	function __construct() {
 		parent::__construct();
 	}
-	
+
 	function submitinfo()
 	{
 		jimport('joomla.mail.helper');
-		
+
 		$app = &JFactory::getApplication();
-		
+
 		$params = JComponentHelper::getParams('com_redevent');
 		if (!$params->get('enable_moreinfo', 1)) {
 			echo Jtext::_('COM_REDEVENT_MOREINFO_ERROR_DISABLED_BY_ADMIN');
 			$app->close(403);
 		}
-		
+
 		$xref = JRequest::getInt('xref');
 		$email = JRequest::getVar('email');
-		
+
 		$model = $this->getModel('details');
 		$details = $model->getDetails();
-		
+
 		if ($xref && $email && JMailHelper::isEmailAddress($email))
-		{			
+		{
 			$mailer = &JFactory::getMailer();
 			$mailer->IsHTML(true);
-			
-			$mailer->setSubject(JText::sprintf('COM_REDEVENT_MOREINFO_MAIL_SUBJECT', $details->full_title));
+
+			$mailer->setSubject(JText::sprintf('COM_REDEVENT_MOREINFO_MAIL_SUBJECT', RedeventHelper::getSessionFullTitle($details)));
 			$mailer->AddAddress($app->getCfg('mailfrom'), $app->getCfg('sitename'));
-			
+
 			$mailer->AddReplyTo(array($email, JRequest::getVar('name')));
-			
+
 			$data = array();
 			if ($d = JRequest::getVar('name')) {
 				$data[] = array(Jtext::_('COM_REDEVENT_MOREINFO_LABEL_NAME'), $d);
@@ -87,23 +87,23 @@ class RedEventControllerMoreinfo extends RedEventController
 			if ($d = JRequest::getVar('comments')) {
 				$data[] = array(Jtext::_('COM_REDEVENT_MOREINFO_LABEL_COMMENTS'), str_replace("\n", "<br/>", $d));
 			}
-			
+
 			$table = '<table>';
 			foreach ($data as $d)
 			{
 				$table .= '<tr><td>'.$d[0].'</td><td>'.$d[1].'</td></tr>';
 			}
 			$table .= '</table>';
-			
+
 			$link = JRoute::_(JURI::base().RedeventHelperRoute::getDetailsRoute($details->did, $details->xslug));
-			$link = JHTML::link($link, $details->full_title);
-			
+			$link = JHTML::link($link, RedeventHelper::getSessionFullTitle($details));
+
 			$body = JText::sprintf('COM_REDEVENT_MOREINFO_MAIL_BODY', $link, $table);
-			
+
 			$mailer->setBody($body);
 			$mailer->send();
 		}
-		
+
 		// confirm sending
 		JRequest::setVar('view', 'moreinfo');
 		Jrequest::setVar('layout', 'final');

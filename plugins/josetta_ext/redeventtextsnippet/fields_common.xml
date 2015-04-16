@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<josetta>
+	<fields>
+
+		<field>
+			<id>language</id>
+			<name>language</name>
+			<column>language</column>
+			<translate>no</translate>
+			<display>no</display>
+			<require>no</require>
+			<grid>yes</grid>
+		</field>
+
+		<field>
+			<id>id</id>
+			<name>JGLOBAL_FIELD_ID_LABEL</name>
+			<description>JGLOBAL_FIELD_ID_DESC</description>
+			<translate>yes</translate>
+			<type>integer</type>
+			<display>yes</display>
+			<require>no</require>
+			<readonly>true</readonly>
+		</field>
+
+		<field>
+			<id>text_name</id>
+			<name>COM_REDEVENT_NAME</name>
+			<description>COM_REDEVENT_NAME</description>
+			<column>text_name</column>
+			<type>josettatext</type>
+			<size>60</size>
+			<length>255</length>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>yes</require>
+		</field>
+		
+		<field>
+			<id>text_description</id>
+			<name>COM_REDEVENT_TEXT_DESCRIPTION</name>
+			<description>COM_REDEVENT_TEXT_DESCRIPTION</description>
+			<column>text_description</column>
+			<type>josettatext</type>
+			<size>60</size>
+			<length>255</length>
+			<translate>yes</translate>
+			<display>yes</display>
+		</field>
+
+		<field>
+			<id>text_field</id>
+			<name>COM_REDEVENT_TEXTLIBRARY_CONTENT_LABEL</name>
+			<description>COM_REDEVENT_TEXTLIBRARY_CONTENT_DESC</description>
+			<column>text_field</column>
+			<type>editor</type>
+			<translate>yes</translate>
+			<display>yes</display>
+			<require>no</require>
+		</field>
+
+	</fields>
+</josetta>

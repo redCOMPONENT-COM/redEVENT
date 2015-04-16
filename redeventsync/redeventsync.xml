@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="component" method="upgrade">
+	<name>COM_REDEVENTSYNC</name>
+	<author>redWEB Aps</author>
+	<authorEmail>email@redweb.dk</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<copyright>(C) 2008 - 2013 redCOMPONENT.com</copyright>
+	<creationDate>##DATE##</creationDate>
+	<license>GNU GPL v3 or later</license>
+	<version>##VERSION##</version>
+	<description>COM_REDEVENTSYNC_XML_DESCRIPTION</description>
+
+	<!-- Public front end files -->
+	<files folder="site">
+		<filename>index.html</filename>
+		<filename>dispatcher.php</filename>
+		<filename>redeventsync.php</filename>
+
+		<folder>controllers</folder>
+		<folder>language</folder>
+		<folder>views</folder>
+	</files>
+
+	<!-- SQL query files to execute on installation -->
+	<install>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install/mysql/install.sql</file>
+			<file driver="mysql">sql/install/mysql/install.sql</file>
+			<file driver="mysqli" charset="utf8">sql/install/mysql/install.sql</file>
+			<file driver="mysqli">sql/install/mysql/install.sql</file>
+		</sql>
+	</install>
+
+	<!-- SQL query files to execute on uninstallation -->
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install/mysql/uninstall.sql</file>
+			<file driver="mysql">sql/install/mysql/uninstall.sql</file>
+			<file driver="mysqli" charset="utf8">sql/install/mysql/uninstall.sql</file>
+			<file driver="mysqli">sql/install/mysql/uninstall.sql</file>
+		</sql>
+	</uninstall>
+
+	<!-- SQL files to run on update -->
+	<update>
+		<schemas>
+			<schemapath type="mysql">sql/updates/mysql</schemapath>
+		</schemas>
+	</update>
+
+	<!-- Media files -->
+	<media folder="media">
+		<folder>com_redeventsync</folder>
+	</media>
+
+	<!-- Administrator back-end section -->
+	<administration>
+		<!-- Administration menu -->
+		<menu view="cpanel"
+			img="../media/com_redeventsync/images/redeventsync-16.png">COM_REDEVENTSYNC</menu>
+
+		<!-- Back-end files -->
+		<files folder="admin">
+			<filename>access.xml</filename>
+			<filename>config.xml</filename>
+			<filename>defines.php</filename>
+			<filename>dispatcher.php</filename>
+			<filename>index.html</filename>
+			<filename>redeventsync.php</filename>
+			<filename>toolbar.php</filename>
+
+			<folder>controllers</folder>
+			<folder>fields</folder>
+			<folder>models</folder>
+			<folder>language</folder>
+			<folder>plugins</folder>
+			<folder>sql</folder>
+			<folder>views</folder>
+		</files>
+
+	</administration>
+
+	<!-- Libraries to install -->
+	<libraries>
+		<library name="redeventsync"/>
+	</libraries>
+
+	<!-- Installation / uninstallation script file -->
+	<scriptfile>install.php</scriptfile>
+
+	<!-- Update servers -->
+	<!--
+	<updateservers>
+		<server type="extension" priority="1" name="To-Do"><![CDATA[http://cdn.akeebabackup.com/updates/redeventsync.xml]]></server>
+	</updateservers>
+	-->
+
+	<!-- Plugins here -->
+	<plugins>
+		<plugin folder="admin/plugins/redevent" plugin="redeventsync" group="redevent" />
+		<plugin folder="admin/plugins/redeventsyncclient" plugin="maersk" group="redeventsyncclient" />
+	</plugins>
+</extension>

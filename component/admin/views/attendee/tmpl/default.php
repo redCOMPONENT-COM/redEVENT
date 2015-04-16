@@ -22,22 +22,14 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+$options = array(
+	'extrafields' => array(
+		array('label' => JText::_('COM_REDEVENT_REGISTRATION_PRICE'), 'field' => $this->lists['pricegroup_id'])
+	),
+	'currency' => $this->row->currency
+);
 ?>
-
-<script language="javascript" type="text/javascript">
-	function submitbutton(task)
-	{
-		var form = document.adminForm;
-
-		if (task == 'cancel') {
-			submitform( task );
-			return;
-		} else {
-			submitform( task );
-		}
-	}
-</script>
-
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
 <fieldset class="adminform"><legend><?php echo JText::_('COM_REDEVENT_Booking' ); ?></legend>
@@ -88,27 +80,26 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 <?php endif; ?>
 </table>
-				
+
 </fieldset>
 
 <fieldset class="adminform editevent"><legend><?php echo JText::_('COM_REDEVENT_Answers' ); ?></legend>
-<?php $options = array('extrafields' => array(array('label' => JText::_('COM_REDEVENT_REGISTRATION_PRICE'), 'field' => $this->lists['pricegroup_id']))); ?>
 <?php
-	$rfcore = new redFormCore(); 
-	echo $rfcore->getFormFields($this->row->form_id, ($this->row->sid ? array($this->row->sid) : null), 1, $options); 
+	$rfcore = RdfCore::getInstance();
+	echo $rfcore->getFormFields($this->row->form_id, ($this->row->sid ? array($this->row->sid) : null), 1, $options);
 ?>
 
 </fieldset>
 
 <?php echo JHTML::_( 'form.token' ); ?>
 <input type="hidden" name="option" value="com_redevent" />
-<input type="hidden" name="controller" value="attendees" />
 <input type="hidden" name="view" value="attendee" />
 <input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
-<input type="hidden" name="xref" value="<?php echo $this->row->xref; ?>" />
+<input type="hidden" name="sessionId" value="<?php echo $this->session->id; ?>" />
 <input type="hidden" name="sid" value="<?php echo $this->row->sid; ?>" />
 <input type="hidden" name="submit_key" value="<?php echo $this->row->submit_key; ?>" />
 <input type="hidden" name="task" value="" />
+<input type="hidden" name="return" value="<?php echo $this->returnUrl; ?>" />
 </form>
 
 <?php

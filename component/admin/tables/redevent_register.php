@@ -32,61 +32,12 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedEvent_register extends JTable
 {
-	/**
-	 * Primary Key
-	 * @var int
-	 */
-	var $id 		= null;
-	/** @var int */
-	var $xref 		= null;
-	/**
-	 * submitter id from redform
-	 * @var int
-	 */
-	var $sid 		= null;
-	/** @var int user id */
-	var $uid 		= null;
-	/** @var int pricegroup_id */
-	var $pricegroup_id = null;
-	/** @var date */
-	var $uregdate 	= null;
-	/** @var string ip address */
-	var $uip 		= null;
-	/** @var string */
-	var $submit_key = null;
-	/**
-	 * on waiting list ?
-	 * @var int
-	 */
-	var $waitinglist = null;
-	/**
-	 * confirmed booking ?
-	 * @var int
-	 */
-	var $confirmed   = null;
-	/**
-	 * confirm timestamp
-	 * @var string (sql date)
-	 */
-	var $confirmdate = null;	
-	/**
-	 * paymentstart timestamp
-	 * @var string (sql date)
-	 */
-	var $paymentstart = null;	
-	
-	/** @var boolean cancelled registration */
-	var $cancelled = null;
-	
-	var $checked_out = null;
-	var $checked_out_time = null;
-
-	function redevent_register(& $db) {
+	function __construct(& $db) {
 		parent::__construct('#__redevent_register', 'id', $db);
 	}
-	
+
 	function loadBySid($sid)
-	{	
+	{
 		$db =& $this->getDBO();
 
 		$query = 'SELECT *'
@@ -101,9 +52,9 @@ class RedEvent_register extends JTable
 		{
 			$this->setError( $db->getErrorMsg() );
 			return false;
-		} 
+		}
 	}
-	
+
 	function check()
 	{
 		if (!$this->sid) {
@@ -118,7 +69,7 @@ class RedEvent_register extends JTable
 			$this->setError(JText::_('COM_REDEVENT_missing_submit_key'));
 			return false;
 		}
-		
+
 		if (!$this->uregdate) {
 			$this->uregdate = gmdate('Y-m-d H:i:s');
 		}

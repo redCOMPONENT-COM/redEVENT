@@ -31,25 +31,25 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<th><?php echo JText::_('COM_REDEVENT_EVENT_DATE'); ?></th>
 		<th></th>
 		<th><?php echo JText::_('COM_REDEVENT_EVENT_VENUE'); ?></th>
-		<th><?php echo JText::_('COM_REDEVENT_EVENT_PRICE'); ?></th>  
+		<th><?php echo JText::_('COM_REDEVENT_EVENT_PRICE'); ?></th>
 	</tr>
 </thead>
 <tbody>
 <?php
-$elsettings = redEVENTHelper::config();
+$elsettings = RedeventHelper::config();
 $imagepath = JURI::root().'administrator/components/com_redevent/assets/images/';
 foreach ($this->upcomingvenueevents as $key => $event) {
 	$event_url = JRoute::_('index.php?option=com_redevent&view=details&xref=' . $event->xref . '&id=' . $event->slug);
 	$venue_url = JRoute::_('index.php?option=com_redevent&view=venueevents&id='.$event->venueslug);
 	?>
 	<tr>
-		<td><?php echo JHTML::_('link', $event_url, $event->full_title); ?></td>
-		<td><?php echo $event->location; ?></td>
-		<td><?php echo REOutput::getFlag( $event->country ); ?></td>
-		<td><?php echo REOutput::formatdate($event->dates, $event->times); ?></td>
-		<td><?php echo redEVENTHelper::getEventDuration($event); ?></td>
+		<td><?php echo JHTML::_('link', $event_url, RedeventHelper::getSessionFullTitle($event)); ?></td>
+		<td><?php echo $event->venue; ?></td>
+		<td><?php echo RedeventHelperOutput::getFlag( $event->country ); ?></td>
+		<td><?php echo RedeventHelperOutput::formatdate($event->dates, $event->times); ?></td>
+		<td><?php echo RedeventHelper::getEventDuration($event); ?></td>
 		<td><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
-		<td class="re-price"><?php echo REOutput::formatListPrices($event->prices); ?></td>
+		<td class="re-price"><?php echo RedeventHelperOutput::formatListPrices($event->prices); ?></td>
 		<td>
 		<?php
 		/* Get the different submission types */
@@ -69,13 +69,13 @@ foreach ($this->upcomingvenueevents as $key => $event) {
 				case 'webform':
 					if ($event->prices && count($event->prices))
 					{
-						foreach ($event->prices as $p) 
+						foreach ($event->prices as $p)
 						{
 							$title = ' title="'.$p->name.'::'.addslashes(str_replace("\n", "<br/>", $p->tooltip)).'"';
 							$img = empty($p->image) ? JHTML::_('image', $imagepath.$elsettings->get('signup_webform_img'),  JText::_($elsettings->get('signup_webform_text')))
 							                        : JHTML::_('image', $imagepath.$p->image,  JText::_($p->name));
 							$link = JRoute::_(RedeventHelperRoute::getSignupRoute('webform', $event->slug, $event->xslug, $p->slug));
-							
+
 							$venues_html .= '<div class="vlink webform hasTip '.$p->alias.'"'.$title.'>'
 								             .JHTML::_('link', $link, $img).'</div> ';
 						}

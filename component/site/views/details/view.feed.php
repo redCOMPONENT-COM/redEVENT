@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedeventViewDetails extends JView
+class RedeventViewDetails extends RViewSite
 {
 	var $_eventlinks = null;
 	/**
@@ -43,28 +43,28 @@ class RedeventViewDetails extends JView
 	 */
 	function display($tpl = null)
 	{
-		$mainframe = & JFactory::getApplication();		
+		$mainframe = & JFactory::getApplication();
     $document   = JFactory::getDocument();
-		
+
     // load event details
     $row    = $this->get('Details');
     $xreflinks = $this->get('XrefLinks');
     $this->_eventlinks = $xreflinks;
-        
-    $document->setTitle($this->escape($row->full_title));
+
+    $document->setTitle($this->escape(RedeventHelper::getSessionFullTitle($row)));
     $document->setDescription('');
-    
+
     ob_start();
     $this->setLayout('courseinfo_rss');
     parent::display();
     $contents = ob_get_contents();
     ob_end_clean();
-    
+
     $link = JRoute::_(RedeventHelperRoute::getDetailsRoute($row->slug, $row->xslug));
-    
+
 		// load individual item creator class
 		$item = new JFeedItem();
-		$item->title    = $row->full_title;
+		$item->title    = RedeventHelper::getSessionFullTitle($row);
 		$item->link     = JRoute::_($link);
 		$item->description  = $contents;
 		$item->date     = '';

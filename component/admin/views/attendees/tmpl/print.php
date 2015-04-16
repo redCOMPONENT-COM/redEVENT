@@ -20,8 +20,8 @@
  * along with redEVENT; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
- 
-defined('_JEXEC') or die('Restricted access'); 
+
+defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.tooltip');
 $colspan = 10;
 ?>
@@ -29,13 +29,13 @@ $colspan = 10;
 	<table class="adminlist">
 		<tr>
 		  	<td width="80%">
-				<b><?php echo JText::_('COM_REDEVENT_DATE' ).':'; ?></b>&nbsp;<?php echo (redEVENTHelper::isValidDate($this->event->dates) ? $this->event->dates : JText::_('COM_REDEVENT_OPEN_DATE')); ?><br />
+				<b><?php echo JText::_('COM_REDEVENT_DATE' ).':'; ?></b>&nbsp;<?php echo (RedeventHelper::isValidDate($this->event->dates) ? $this->event->dates : JText::_('COM_REDEVENT_OPEN_DATE')); ?><br />
 				<b><?php echo JText::_('COM_REDEVENT_EVENT_TITLE' ).':'; ?></b>&nbsp;<?php echo htmlspecialchars($this->event->title, ENT_QUOTES, 'UTF-8'); ?>
 			</td>
 		  </tr>
 	</table>
 	<br />
-	
+
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -62,21 +62,21 @@ $colspan = 10;
 		<tbody>
 			<?php
 			$k = 0;
-			for($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+			for($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			{
 				$row = &$this->rows[$i];
    			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo $i+1; ?></td>
 				<td>
-					<?php echo JHTML::Date( $row->uregdate, JText::_('DATE_FORMAT_LC2' ) ); ?>
+					<?php echo JHTML::Date( $row->uregdate, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME' ) ); ?>
 				</td>
-				<td><?php echo ($row->confirmdate) ? JHTML::Date( $row->confirmdate, JText::_('DATE_FORMAT_LC2' ) ) : '-'; ?></td>
+				<td><?php echo ($row->confirmdate) ? JHTML::Date( $row->confirmdate, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME' ) ) : '-'; ?></td>
 				<td><?php echo $row->course_code .'-'. $row->xref .'-'. $row->attendee_id; ?></td>
 				<td><?php echo $row->name; ?></td>
 				<td>
-				  <?php 
-				  //echo $row->confirmed == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES'); 
+				  <?php
+				  //echo $row->confirmed == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES');
 				  if ($row->confirmed) {
             echo JText::_('COM_REDEVENT_Yes');
 				  }
@@ -86,8 +86,8 @@ $colspan = 10;
 				  ?>
 				</td>
 				<td><?php // echo $row->waitinglist == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES'); ?>
-          <?php 
-          //echo $row->confirmed == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES'); 
+          <?php
+          //echo $row->confirmed == 0 ? JText::_('COM_REDEVENT_NO') : JText::_('COM_REDEVENT_YES');
           if ($row->waitinglist) {
             echo JText::_('COM_REDEVENT_Yes');
           }
@@ -96,12 +96,12 @@ $colspan = 10;
           }
           ?>
         </td>
-				
+
         <?php foreach ((array) $this->rf_fields as $f):?>
 					<?php $fname = 'field_'.$f->id; ?>
 					<td><?php echo $row->$fname; ?></td>
 				<?php endforeach;?>
-        
+
 				<?php if ($this->form->activatepayment): ?>
 					<td>
 						<?php echo $row->price; ?>
@@ -114,7 +114,7 @@ $colspan = 10;
             <?php echo JText::_('COM_REDEVENT_No'); ?>
 						<?php else: ?>
             <?php echo JText::_('COM_REDEVENT_Yes'); ?>
-						<?php endif; ?>						
+						<?php endif; ?>
 					</td>
 				<?php endif; ?>
 			</tr>

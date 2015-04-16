@@ -33,7 +33,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage Redevent
  * @since 0.9
  */
-class RedeventViewDay extends JView
+class RedeventViewDay extends RViewSite
 {
 	/**
 	 * Creates the Day View
@@ -46,7 +46,7 @@ class RedeventViewDay extends JView
 
 		//initialize variables
 		$document 	= & JFactory::getDocument();
-		$elsettings = & redEVENTHelper::config();
+		$elsettings = & RedeventHelper::config();
 		$menu		= & JSite::getMenu();
 		$item    	= $menu->getActive();
 		$params 	= & $mainframe->getParams();
@@ -54,15 +54,15 @@ class RedeventViewDay extends JView
 
 		//add css file
     if (!$params->get('custom_css')) {
-      $document->addStyleSheet($this->baseurl.'/components/com_redevent/assets/css/redevent.css');
+      $document->addStyleSheet('media/com_redevent/css/redevent.css');
     }
     else {
-      $document->addStyleSheet($params->get('custom_css'));     
+      $document->addStyleSheet($params->get('custom_css'));
     }
 		$document->addCustomTag('<!--[if IE]><style type="text/css">.floattext{zoom:1;}, * html #eventlist dd { height: 1%; }</style><![endif]-->');
-		
+
     // add js
-    JHTML::_('behavior.mootools');
+    JHTML::_('behavior.framework');
     // for filter hint
     $document->addScript($this->baseurl.'/components/com_redevent/assets/js/eventslist.js');
 
@@ -78,7 +78,7 @@ class RedeventViewDay extends JView
 		$customs 	= & $this->get('ListCustomFields');
 		$total 		= & $this->get('Total');
 		$day	= & $this->get('Day');
-		
+
 		$daydate = strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $day ));
 
 		//are events available?
@@ -107,10 +107,7 @@ class RedeventViewDay extends JView
 		}
 
 		//Check if the user has access to the form
-		$maintainer = ELUser::ismaintainer();
-		$genaccess 	= ELUser::validate_user( $elsettings->get('evdelrec'), $elsettings->get('delivereventsyes') );
-
-		if ($maintainer || $genaccess ) $dellink = 1;
+		$dellink = JFactory::getUser()->authorise('re.createevent');
 
 		//add alternate feed link
 		$link    = 'index.php?option=com_redevent&view=simplelist&format=feed';
@@ -144,9 +141,9 @@ class RedeventViewDay extends JView
 		$this->assign('action',   JRoute::_(RedeventHelperRoute::getDayRoute(JRequest::getInt('id'))));
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
-		$cols = redEVENTHelper::validateColumns($cols);
+		$cols = RedeventHelper::validateColumns($cols);
 		$this->assign('columns',        $cols);
-		
+
 		parent::display($tpl);
 
 	}//function ListEvents end
@@ -161,9 +158,9 @@ class RedeventViewDay extends JView
 	function _buildSortLists()
 	{
     $app = & JFactory::getApplication();
-    
-		$elsettings = & redEVENTHelper::config();
-		
+
+		$elsettings = & RedeventHelper::config();
+
 		$filter_order		= JRequest::getCmd('filter_order', 'x.dates');
 		$filter_order_Dir	= JRequest::getWord('filter_order_Dir', 'ASC');
 
@@ -177,8 +174,8 @@ class RedeventViewDay extends JView
 		$sortselects[] 	= JHTML::_('select.option', 'type', JText::_('COM_REDEVENT_FILTER_SELECT_CATEGORY') );
 		$sortselect 	= JHTML::_('select.genericlist', $sortselects, 'filter_type', 'size="1" class="inputbox"', 'value', 'text', $filter_type );
 
-		$lists['order_Dir'] 	= $filter_order_Dir;
-		$lists['order'] 		= $filter_order;
+		$this->orderDir 	= $filter_order_Dir;
+		$this->order 		= $filter_order;
 		$lists['filter'] 		= $filter;
 		$lists['filter_types'] 	= $sortselect;
 

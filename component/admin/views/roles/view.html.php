@@ -1,89 +1,106 @@
 <?php
 /**
- * @version 1.0 $Id: archive.php 30 2009-05-08 10:22:21Z roland $
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
-
-jimport( 'joomla.application.component.view');
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * HTML View class for redevent component
+ * View class for Roles list
  *
- * @static
- * @package		redevent
- * @since 2.0
+ * @package  Redevent.admin
+ * @since    2.5
  */
-class RedeventViewRoles extends JView
+class RedEventViewRoles extends RedeventViewAdmin
 {
-	function display($tpl = null)
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a Error object.
+	 */
+	public function display($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-		$user 		= & JFactory::getUser();
-    
-		$document	= & JFactory::getDocument();
-		
-		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_ROLES'));
-    $document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
-		
-		// Set toolbar items for the page
-		JToolBarHelper::title(   JText::_( 'COM_REDEVENT_MENU_ROLES' ), 'roles' );
-		JToolBarHelper::deleteList();
-		JToolBarHelper::editListX();
-		JToolBarHelper::addNewX();
-	
-		if ($user->authorise('core.admin', 'com_redevent')) {
-			JToolBarHelper::preferences('com_redevent', '600', '800');
+		$user = JFactory::getUser();
+
+		$this->items = $this->get('Items');
+		$this->pagination = $this->get('Pagination');
+		$this->filterForm = $this->get('Form');
+		$this->activeFilters = $this->get('ActiveFilters');
+		$this->state = $this->get('State');
+
+		// Ordering
+		$this->ordering = array();
+
+		if ($this->items)
+		{
+			foreach ($this->items as &$item)
+			{
+				$this->ordering[0][] = $item->id;
+			}
 		}
-        
-		$db		=& JFactory::getDBO();
-		$uri	=& JFactory::getURI();
-		
-		// Get data from the model
-		//$model	=& $this->getModel( );
-		//print_r($model);
-		$items		= & $this->get( 'Data' );
-		$total		= & $this->get( 'Total' );
-		$pagination = & $this->get( 'Pagination' );
-		
-		ELAdmin::setMenu();
-				
-		/* Call the state object */
-		$state =& $this->get( 'state' );
-		
-		$lists = array();
-		
-		/* Get the values from the state object that were inserted in the model's construct function */
-		$lists['order_Dir'] = $state->get( 'filter_order_Dir' );
-		$lists['order']     = $state->get( 'filter_order' );
-		$lists['search']    = $state->get( 'search' );
-				
-		$this->assignRef('user',		JFactory::getUser());
-		$this->assignRef('lists',		$lists);
-		$this->assignRef('items',		$items);
-		$this->assignRef('pagination',	$pagination);
-		$this->assignRef('request_url',	$uri->toString());
+
+		// Edit permission
+		$this->canEdit = false;
+
+		if ($user->authorise('core.edit', 'com_redevent'))
+		{
+			$this->canEdit = true;
+		}
 
 		parent::display($tpl);
+	}
+
+	/**
+	 * Get the page title
+	 *
+	 * @return  string  The title to display
+	 *
+	 * @since   0.9.1
+	 */
+	public function getTitle()
+	{
+		return JText::_('COM_REDEVENT_ROLES');
+	}
+
+	/**
+	 * Get the tool-bar to render.
+	 *
+	 * @return  RToolbar
+	 */
+	public function getToolbar()
+	{
+		$user = JFactory::getUser();
+
+		$firstGroup		= new RToolbarButtonGroup;
+		$secondGroup	= new RToolbarButtonGroup;
+		$thirdGroup		= new RToolbarButtonGroup;
+		$fourthGroup		= new RToolbarButtonGroup;
+
+		if ($user->authorise('core.create', 'com_redevent'))
+		{
+			$new = RToolbarBuilder::createNewButton('role.add');
+			$firstGroup->addButton($new);
+		}
+
+		if ($user->authorise('core.edit', 'com_redevent'))
+		{
+			$edit = RToolbarBuilder::createEditButton('role.edit');
+			$secondGroup->addButton($edit);
+		}
+
+		if ($user->authorise('core.delete', 'com_redevent'))
+		{
+			$delete = RToolbarBuilder::createDeleteButton('roles.delete');
+			$fourthGroup->addButton($delete);
+		}
+
+		$toolbar = new RToolbar;
+		$toolbar->addGroup($firstGroup)->addGroup($secondGroup)->addGroup($thirdGroup)->addGroup($fourthGroup);
+
+		return $toolbar;
 	}
 }

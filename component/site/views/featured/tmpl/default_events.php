@@ -27,12 +27,12 @@ $colnames = explode(",", $this->params->get('lists_columns_names', 'date, title,
 $colnames = array_map('trim', $colnames);
 ?>
 <div class="featured-events<?php echo $this->params->get( 'pageclass_sfx' ); ?>" summary="eventlist">
-<?php 
+<?php
 	$k = 0;
-	foreach ($this->rows as $row) :	
+	foreach ($this->rows as $row) :
 		//Link to details
-		$detaillink = JRoute::_( RedeventHelperRoute::getDetailsRoute($row->slug, $row->xslug) );		
-		if (redEVENTHelper::isValidDate($row->dates)) 
+		$detaillink = JRoute::_( RedeventHelperRoute::getDetailsRoute($row->slug, $row->xslug) );
+		if (RedeventHelper::isValidDate($row->dates))
 		{
 			$date = JFactory::getDate($row->times ? $row->dates.' '.$row->times : $row->dates);
 		}
@@ -40,18 +40,18 @@ $colnames = array_map('trim', $colnames);
 		{
 			$date = false;
 		}
-		$img = redEVENTImage::getThumbUrl($row->datimage, 150);
-		$img = ($img ? JHTML::image($img, $row->full_title) : false);
+		$img = RedeventImage::getThumbUrl($row->datimage, 150);
+		$img = ($img ? JHTML::image($img, RedeventHelper::getSessionFullTitle($row)) : false);
 		?>
-  	<div class="event row<?php echo ($k + 1); ?>" 
+  	<div class="event row<?php echo ($k + 1); ?>"
   	    itemscope itemtype="http://schema.org/Event">
-  	    
+
 			<?php if ($img): ?>
 			<div class="event-image" itemprop="image">
 				<?php echo $img; ?>
 			</div>
   	  <?php endif; ?>
-			
+
 			<div class="when-where">
 				<div class="date">
 					<div class="day">
@@ -60,7 +60,7 @@ $colnames = array_map('trim', $colnames);
 						<?php echo JText::_('COM_REDEVENT_OPEN_DATE'); ?>
 						</div>
 					<?php else: ?>
-						<meta itemprop="startDate" content="<?php echo REOutput::getIsoDate($row->dates, $row->times); ?>">
+						<meta itemprop="startDate" content="<?php echo RedeventHelperOutput::getIsoDate($row->dates, $row->times); ?>">
 						<div class="month"><?php echo $date->format('M'); ?></div>
 						<div class="daynumber"><?php echo $date->format('d'); ?></div>
 						<div class="weekday"><?php echo $date->format('D'); ?></div>
@@ -73,12 +73,12 @@ $colnames = array_map('trim', $colnames);
 					<?php endif; ?>
 				</div>
 			</div>
-			
+
 			<div class="description">
 				<div class="event-title" itemprop="name">
-					<a href="<?php echo $detaillink ; ?>" itemprop="url"><?php echo $this->escape($row->full_title); ?></a>
+					<a href="<?php echo $detaillink ; ?>" itemprop="url"><?php echo $this->escape(RedeventHelper::getSessionFullTitle($row)); ?></a>
 				</div>
-				
+
 				<div class="event-venue" itemprop="location" itemscope itemtype="http://schema.org/Place">
 						<?php
 						if ($this->params->get('showlinkvenue',1) == 1 ) :

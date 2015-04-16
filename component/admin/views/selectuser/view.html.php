@@ -41,12 +41,12 @@ class RedEventViewSelectUser extends JView {
 		//initialise variables
 		$document	= & JFactory::getDocument();
 		$fieldname = JRequest::getVar('field');
-		
+
 		JHTML::_('behavior.tooltip');
 		JHTML::_('behavior.modal');
 
 		$state = $this->get('state');
-		
+
 		//get var
 		$filter_order     = $state->get('filter_order');
 		$filter_order_Dir = $state->get('filter_order_Dir');
@@ -54,14 +54,14 @@ class RedEventViewSelectUser extends JView {
 
 		//prepare the document
 		$document->setTitle(JText::_( 'COM_REDEVENT_SELECT_USER' ));
-		$document->addStyleSheet('components/com_redevent/assets/css/redeventbackend.css');
+		RHelperAsset::load('backend.css');
 
 		//Get data from the model
 		$rows      	= & $this->get( 'Data');
 		$pageNav 	= & $this->get( 'Pagination' );
 
 		$lists = array();
-		
+
 		// table ordering
 		$lists['order_Dir'] = $filter_order_Dir;
 		$lists['order']     = $filter_order;

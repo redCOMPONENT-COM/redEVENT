@@ -35,8 +35,8 @@ foreach ($this->rows as $row)
 
 	if ($this->params->get('show_tip_time', 0))
 	{
-		$start = REOutput::formattime($row->dates, $row->times);
-		$end = REOutput::formattime($row->dates, $row->endtimes);
+		$start = RedeventHelperOutput::formattime($row->dates, $row->times);
+		$end = RedeventHelperOutput::formattime($row->dates, $row->endtimes);
 
 		if ($start != '')
 		{
@@ -49,7 +49,7 @@ foreach ($this->rows as $row)
 		}
 	}
 
-	$eventname = '<div class="eventName">'.$this->escape($row->full_title).'</div>';
+	$eventname = '<div class="eventName">'.$this->escape(RedeventHelper::getSessionFullTitle($row)).'</div>';
 
 	//initialize variables
 	$colorpic = '';
@@ -70,10 +70,10 @@ foreach ($this->rows as $row)
 
 		//attach category color if any in front of the catname
 		if ($category->color) {
-			$cat_names[] = '<span class="colorpic" style="background-color: '.$category->color.';"></span>'.$category->catname;
+			$cat_names[] = '<span class="colorpic" style="background-color: '.$category->color.';"></span>'.$category->name;
 		}
 		else {
-			$cat_names[] = $category->catname;
+			$cat_names[] = $category->name;
 		}
 
 		//attach category color if any in front of the event title in the calendar overview
@@ -95,7 +95,7 @@ foreach ($this->rows as $row)
 
 	$catname = '<div class="catname">'.implode(', ', $cat_names).'</div>';
 
-	$eventdate = REOutput::formatdate($row->dates, $row->times);
+	$eventdate = RedeventHelperOutput::formatdate($row->dates, $row->times);
 
 	//venue
 	if ($this->params->get('showlocate', 1) == 1)
@@ -118,24 +118,24 @@ foreach ($this->rows as $row)
 	$content .= $colorpic;
 	if ($this->params->get('show_start_time', 0))
 	{
-		$content .= REOutput::formattime($row->dates, $row->times) . ' ';
+		$content .= RedeventHelperOutput::formattime($row->dates, $row->times) . ' ';
 	}
 
 	// Text to display in calendar
 	if ($this->params->get('session_display', 0) == 0 || !$row->datimage)
 	{
-		$text = $row->full_title;
+		$text = RedeventHelper::getSessionFullTitle($row);
 	}
 	elseif ($this->params->get('session_display', 0) == 1)
 	{
-		$img = redEVENTImage::getThumbUrl($row->datimage, $this->params->get('pic_size', 20));
-		$text = '<span class="session-image">' . JHTML::image($img, $row->full_title) . '</span>';
+		$img = RedeventImage::getThumbUrl($row->datimage, $this->params->get('pic_size', 20));
+		$text = '<span class="session-image">' . JHTML::image($img, RedeventHelper::getSessionFullTitle($row)) . '</span>';
 	}
 	else
 	{
-		$img = redEVENTImage::getThumbUrl($row->datimage, $this->params->get('pic_size', 20));
-		$text = '<span class="session-image">' . JHTML::image($img, $row->full_title) . '</span>';
-		$text .= $row->full_title;
+		$img = RedeventImage::getThumbUrl($row->datimage, $this->params->get('pic_size', 20));
+		$text = '<span class="session-image">' . JHTML::image($img, RedeventHelper::getSessionFullTitle($row)) . '</span>';
+		$text .= RedeventHelper::getSessionFullTitle($row);
 	}
 
 	$content .= $this->caltooltip($catname.$eventname.$timehtml.$venue, $eventdate, $text, $detaillink, 'eventTip');
@@ -172,46 +172,25 @@ foreach ($this->rows as $row)
         <?php echo JText::_('COM_REDEVENT_HIDEALL'); ?>
     </div>
 
-    <?php
-    //print the legend
-	if($this->params->get('displayLegend')) :
+    <?php if($this->params->get('displayLegend')) :
 
-	$counter = array();
+		//walk through events
+		foreach ($this->categories as $category):
+			$eventsCount = isset($countcatevents[$category->id]) ? $countcatevents[$category->id] : 0;
 
-	//walk through events
-	foreach ($this->rows as $row):
+			//build legend
+			if ($this->params->get('showAllCategories', 0) || $eventsCount): ?>
+				<div class="eventCat" catid="<?php echo $category->id; ?>">
+					<?php if (isset($category->color) && $category->color): ?>
+						<span class="colorpic" style="background-color: <?php echo $category->color; ?>"></span>
+					<?php endif;
+					echo $category->name . ' (' . $eventsCount . ')';
+					?>
+				</div>
+			<?php endif;
 
-		//walk through the event categories
-    	foreach ($row->categories as $cat) :
-
-    		//sort out dupes
-    		if(!in_array($cat->id, $counter)):
-
-    			//add cat id to cat counter
-    			$counter[] = $cat->id;
-
-    			//build legend
-        		if (array_key_exists($cat->id, $countcatevents)):
-    			?>
-
-    				<div class="eventCat" catid="<?php echo $cat->id; ?>">
-        				<?php
-        				if ( isset ($cat->color) && $cat->color) :
-            				echo '<span class="colorpic" style="background-color: '.$cat->color.';"></span>';
-        				endif;
-        				echo $cat->catname.' ('.$countcatevents[$cat->id].')';
-        				?>
-    				</div>
-    			<?php
-				endif;
-
-			endif;
-
-    	endforeach;
-
-    endforeach;
-	endif;
-    ?>
+		endforeach;
+	endif; ?>
 </div>
 
 <div class="clr"/></div>

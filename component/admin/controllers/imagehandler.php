@@ -33,7 +33,7 @@ jimport('joomla.filesystem.file');
  * @subpackage redEVENT
  * @since 0.9
  */
-class RedEventControllerImagehandler extends RedEventController
+class RedeventControllerImagehandler extends RedeventController
 {
 	/**
 	 * Constructor
@@ -60,7 +60,7 @@ class RedEventControllerImagehandler extends RedEventController
 	function uploadimage()
 	{
 		$mainframe = &JFactory::getApplication();
-		
+
 		// Check for request forgeries
 		JRequest::checkToken() or die( 'Invalid Token' );
 
@@ -68,7 +68,7 @@ class RedEventControllerImagehandler extends RedEventController
 
 		$file 		= JRequest::getVar( 'userfile', '', 'files', 'array' );
 		$task 		= JRequest::getVar( 'task' );
-		
+
 		// Set FTP credentials, if given
 		jimport('joomla.client.helper');
 		JClientHelper::setCredentialsFromRequest('ftp');
@@ -95,16 +95,16 @@ class RedEventControllerImagehandler extends RedEventController
 		}
 
 		//check the image
-		$check = redEVENTImage::check($file, $elsettings);
+		$check = RedeventImage::check($file, $elsettings);
 
 		if ($check === false) {
 			$mainframe->redirect($_SERVER['HTTP_REFERER']);
 		}
 
 		//sanitize the image filename
-		$filename = redEVENTImage::sanitize($base_Dir, $file['name']);
+		$filename = RedeventImage::sanitize($base_Dir, $file['name']);
 		$filepath = $base_Dir . $filename;
-		
+
 		//upload the image
 		if (!JFile::upload($file['tmp_name'], $filepath)) {
 			echo "<script> alert('".JText::_('COM_REDEVENT_UPLOAD_FAILED' )."'); window.history.go(-1); </script>\n";
@@ -112,8 +112,8 @@ class RedEventControllerImagehandler extends RedEventController
 
 		} else {
 			// create thumbnail
-			redEVENTImage::thumb($filepath, dirname($filepath).DS.'small'.DS.$filename, $elsettings->get('imagewidth'), $elsettings->get('imageheight', 100));
-			
+			RedeventImage::thumb($filepath, dirname($filepath).DS.'small'.DS.$filename, $elsettings->get('imagewidth'), $elsettings->get('imageheight', 100));
+
 			echo "<script> alert('".JText::_('COM_REDEVENT_UPLOAD_COMPLETE' )."'); window.history.go(-1); window.parent.elSelectImage('$filename', '$filename'); </script>\n";
 			$mainframe->close();
 		}

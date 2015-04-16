@@ -32,7 +32,7 @@ jimport('joomla.application.component.controller');
  * @subpackage redEVENT
  * @since 2.0
  */
-class RedEventControllerAttendees extends RedEventController
+class RedeventControllerAttendees extends RedeventController
 {
 	/**
 	 * Constructor
@@ -42,12 +42,12 @@ class RedEventControllerAttendees extends RedEventController
 	function __construct() {
 		parent::__construct();
 	}
-	
+
 	function exportattendees()
 	{
 		JRequest::setVar('view', 'attendees');
 		JRequest::setVar('layout', 'exportattendees');
-		
+
 		parent::display();
 	}
 }

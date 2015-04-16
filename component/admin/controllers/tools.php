@@ -1,118 +1,67 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.admin
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport('joomla.application.component.controller');
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * EventList Component Tools Controller
+ * Redevent Component Tools Controller
  *
- * @package Joomla
- * @subpackage redevent
- * @since 0.9
+ * @package  Redevent.admin
+ * @since    2.0
  */
-class RedEventControllerTools extends RedEventController
+class RedeventControllerTools extends RControllerAdmin
 {
 	/**
-	 * Constructor
+	 * import eventlist events, categories, and venues.
 	 *
-	 * @since 0.9
+	 * @return void
 	 */
-	function __construct()
+	public function importeventlist()
 	{
-		parent::__construct();
+		$model = $this->getModel('importeventlist');
 
-		// Register Extra task
-		$this->registerTask( 'cleaneventimg', 	'delete' );
-		$this->registerTask( 'cleanvenueimg', 	'delete' );
+		$result = $model->importeventlist();
+
+		$link = 'index.php?option=com_redevent&view=tools';
+
+		if (!$result)
+		{
+			$msg = $model->getError();
+			$this->setRedirect($link, $msg, 'error');
+		}
+		else
+		{
+			$msg = JText::sprintf('COM_REDEVENT_EVENTLIST_IMPORT_SUCCESS_D_EVENTS_D_CATEGORIES_D_VENUES', $result['events'], $result['categories'], $result['venues']);
+			$this->setRedirect($link, $msg);
+		}
 	}
 
 	/**
-	 * logic to massdelete unassigned images
+	 * triggers the autoarchive function
 	 *
-	 * @access public
 	 * @return void
-	 * @since 0.9
 	 */
-	function delete()
+	public function autoarchive()
 	{
-		$task = JRequest::getCmd('task');
-
-		if ($task == 'cleaneventimg') {
-			$type = JText::_('COM_REDEVENT_EVENT');
-		} else {
-			$type = JText::_('COM_REDEVENT_VENUE');
-		}
-
-		$model = $this->getModel('tools');
-
-		$total = $model->delete();
-
+		RedeventHelper::cleanup(1);
+		$msg = JText::_('COM_REDEVENT_AUTOARCHIVE_DONE');
 		$link = 'index.php?option=com_redevent&view=tools';
+		$this->setRedirect($link, $msg);
+	}
 
-		$msg = $total.' '.$type.' '.JText::_('COM_REDEVENT_IMAGES_DELETED');
-
-		$this->setRedirect( $link, $msg );
- 	}
- 	
- 	function checkdb()
- 	{
-		$model = $this->getModel('tools');
-		
-		$res = $model->checkdb();
-		
-		$link = 'index.php?option=com_redevent&view=tools';
-		
-		if ($res) {
-			$msg  = JText::_('COM_REDEVENT_DB_TEST_OK');
-			$type = 'message';
-		}
-		else {
-			$msg  = JText::_('COM_REDEVENT_DB_TEST_KO').': '.$model->getError();
-			$type = 'error';
-		}
-		
-		$this->setRedirect( $link, $msg, $type ); 		
- 	}
- 	
- 	function fixdb()
- 	{
-		$model = $this->getModel('tools');
-		
-		$res = $model->fixdb();
-		
-		$link = 'index.php?option=com_redevent&view=tools';
-		
-		if ($res) {
-			$msg  = JText::_('COM_REDEVENT_DB_FIX_OK');
-			$type = 'message';
-		}
-		else {
-			$msg  = JText::_('COM_REDEVENT_DB_FIX_KO').': '.$model->getError();
-			$type = 'error';
-		}
-		
-		$this->setRedirect( $link, $msg, $type ); 		
- 	}
+	/**
+	 * Add sample data
+	 *
+	 * @return void
+	 */
+	public function sampledata()
+	{
+		$model = $this->getModel('sample',  'RedeventModel');
+		$model->create();
+		$this->setRedirect('index.php?option=com_redevent', JText::_('COM_REDEVENT_Sample_data_created'));
+	}
 }

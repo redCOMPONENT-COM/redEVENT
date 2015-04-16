@@ -1,28 +1,12 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.Site
+ *
+ * @copyright  Copyright (C) 2008 - 2014 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
-// no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <style type="text/css">
 .rf_img {min-height:<?php echo $this->config->get('imageheight', 100);?>px;}
@@ -31,18 +15,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <p class="buttons">
 	<?php
 		if ( !$this->params->get( 'popup' ) ) : //don't show in printpopup
-			echo REOutput::listbutton( $this->list_link, $this->params );
-			echo REOutput::submitbutton( $this->dellink, $this->params );
+			echo RedeventHelperOutput::listbutton( $this->list_link, $this->params );
+			echo RedeventHelperOutput::submitbutton( $this->dellink, $this->params );
 		endif;
-		echo REOutput::mailbutton( $this->category->slug, 'categoryevents', $this->params );
-		echo REOutput::printbutton( $this->print_link, $this->params );
+		echo RedeventHelperOutput::mailbutton( $this->category->slug, 'categoryevents', $this->params );
+		echo RedeventHelperOutput::printbutton( $this->print_link, $this->params );
 	?>
 </p>
 
 <?php if ($this->params->def( 'show_page_title', 1 )) : ?>
 
     <h1 class='componentheading'>
-		<?php echo $this->task == 'archive' ? $this->escape($this->category->catname.' - '.JText::_('COM_REDEVENT_ARCHIVE')) : $this->escape($this->category->catname); ?>
+		<?php echo $this->task == 'archive' ? $this->escape($this->category->name.' - '.JText::_('COM_REDEVENT_ARCHIVE')) : $this->escape($this->category->name); ?>
 	</h1>
 
 <?php endif; ?>
@@ -50,9 +34,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div class="floattext">
 <div class="catimg">
 	<?php if ($this->category->image): ?>
-	<?php echo redEVENTImage::modalimage($this->category->image, $this->category->catname); ?>
+	<?php echo RedeventImage::modalimage($this->category->image, $this->category->name); ?>
 	<?php else: ?>
-	<?php echo JHTML::image('components/com_redevent/assets/images/noimage.png', $this->category->catname); ?>
+	<?php echo JHTML::image('components/com_redevent/assets/images/noimage.png', $this->category->name); ?>
 	<?php endif; ?>
 </div>
 
@@ -86,15 +70,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<button onclick="document.getElementById('filter').value='';document.getElementById('adminForm').submit();"><?php echo JText::_('COM_REDEVENT_RESET' ); ?></button>
 			</div>
 			<?php endif; ?>
-			    					
+
 				<?php if ($this->params->get('lists_filter_event', 0)): ?>
 				<div id="event-filter"><?php echo $this->lists['eventfilter']; ?></div>
 	    	<?php endif; ?>
-	    	
+
 			<?php if ($this->params->get('lists_filter_venue', 1)): ?>
 			<div id="venue-filter"><?php echo $this->lists['venuefilter']; ?></div>
     	<?php endif; ?>
-			
+
 			<?php if ($this->customsfilters && count($this->customsfilters)): ?>
     	<?php foreach ($this->customsfilters as $custom): ?>
       <div class="custom-filter" id="filter<?php echo $custom->id; ?>">
@@ -106,7 +90,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		</div>
    	<input type="hidden" id="f-showfilters" name="showfilters" value="<?php echo $toggle == 0 ? '1' : JRequest::getInt('showfilters', $toggle != 3 ? 1 : 0); ?>"/>
 		<?php endif; ?>
-		
+
 		<?php if ($this->params->get('display_limit_select')) : ?>
 		<div class="el_fright">
 			<?php
@@ -122,8 +106,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php echo $this->loadTemplate('items'); ?>
 
 <input type="hidden" name="option" value="com_redevent" />
-<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
-<input type="hidden" name="filter_order_Dir" value="" />
+<input type="hidden" name="filter_order" value="<?php echo $this->order; ?>" />
+<input type="hidden" name="filter_order_Dir" value="<?php echo $this->orderDir; ?>" />
 <input type="hidden" name="view" value="categoryevents" />
 <input type="hidden" name="layout" value="<?php echo $this->getLayout(); ?>" />
 <input type="hidden" name="task" value="<?php echo $this->task; ?>" />
@@ -138,7 +122,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<p class="counter">
 				<?php echo $this->pageNav->getPagesCounter(); ?>
 		</p>
-	
+
 		<?php endif; ?>
 	<?php echo $this->pageNav->getPagesLinks(); ?>
 </div>

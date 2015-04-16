@@ -1,479 +1,281 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.Site
+ * @copyright  redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
+ * @license    GNU/GPL, see LICENSE.php
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
-
 /**
- * EventList Component Editvenue Model
+ * Redevent Frontend edit venue model
  *
- * @package Joomla
- * @subpackage redEVENT
- * @since		0.9
+ * @package  Redevent.front
+ * @since    0.9
  */
-class RedeventModelEditvenue extends JModel
+class RedeventModelEditvenue extends RModelAdmin
 {
-	/**
-	 * Venue data in Venue array
-	 *
-	 * @var array
-	 */
-	var $_venue = null;
+	protected $formName = 'venue';
 
-	var $_categories = null;
-	
 	/**
-	 * Constructor
+	 * Method to get a single record.
 	 *
-	 * @since 1.5
+	 * @param   int  $pk  Record Id
+	 *
+	 * @return  mixed
 	 */
-	function __construct()
+	public function getItem($pk = null)
 	{
-		parent::__construct();
+		$result = parent::getItem($pk);
 
-		$id = JRequest::getInt('id');
-		$this->setId($id);
-	}
-
-	/**
-	 * Method to set the Venue id
-	 *
-	 * @access	public
-	 * @param	int	Venue ID number
-	 */
-	function setId($id)
-	{
-		// Set new venue ID
-		$this->_id			= $id;
-	}
-
-	/**
-	 * Logic to get the venue
-	 *
-	 * @return array
-	 */
-	function &getVenue(  )
-	{
-		$mainframe = &JFactory::getApplication();
-		$params = JComponentHelper::getParams('com_redevent');
-
-		// Initialize variables
-		$user       = & JFactory::getUser();
-		$elsettings = & redEVENTHelper::config();
-
-		$view		= JRequest::getWord('view');
-
-		if ($this->_id) 
+		if ($result && $result->id)
 		{
-			// Load the Event data
-			$this->_loadVenue();
+			$helper = new RedeventHelperAttachment;
+			$files = $helper->getAttachments('venue' . $result->id, JFactory::getUser()->getAuthorisedViewLevels());
+			$result->attachments = $files;
 
-			/*
-			* Error if allready checked out
-			*/
-			if ($this->_venue->isCheckedOut( $user->get('id') )) {
-				$mainframe->redirect( 'index.php?option=&view='.$view, JText::_('COM_REDEVENT_THE_VENUE' ).' '.$this->_venue->venue.' '.JText::_('COM_REDEVENT_EDITED_BY_ANOTHER_ADMIN' ) );
-			} else {
-				$this->_venue->checkout( $user->get('id') );
-			}
-
-		} 
-		else 
-		{			
-			$this->_venue =& JTable::getInstance('redevent_venues', '');
-			//prepare output
-			$this->_venue->id				= '';
-			$this->_venue->venue			= '';
-			$this->_venue->published	= 0;
-      $this->_venue->categories = null;
-			$this->_venue->url				= '';
-			$this->_venue->company        = '';
-			$this->_venue->street			= '';
-			$this->_venue->plz				= '';
-			$this->_venue->locdescription = '';
-			$this->_venue->city				= '';
-			$this->_venue->state			= '';
-			$this->_venue->country			= '';
-			$this->_venue->map				= $params->get('showmapserv', 1);
-			$this->_venue->created			= '';
-			$this->_venue->created_by		= '';
-			$this->_venue->author_ip		= '';
-			$this->_venue->locimage			= '';
-			$this->_venue->latitude			= '';
-			$this->_venue->longitude		= '';
-			$this->_venue->meta_keywords	= '';
-			$this->_venue->meta_description	= '';
-			$this->_venue->attachments	= array();
-
-		}
-
-		return $this->_venue;
-
-	}
-
-
-	/**
-	 * logic to get the categories options
-	 *
-	 * @access public
-	 * @return void
-	 */
-	function getCategoryOptions( )
-	{
-		$user = &JFactory::getUser();
-		$app = &JFactory::getApplication();
-		$params = $app->getParams();
-		$superuser	= UserAcl::superuser();
-
-		//administrators or superadministrators have access to all categories, also maintained ones
-		if($superuser) {
-			$cwhere = ' WHERE c.published = 1';
+			$result->categories = $this->getVenueCategories($result);
 		}
 		else
-		{					
-			$acl = UserACl::getInstance();
-			$managed = $acl->getManagedVenuesCategories();
-			if (!$managed || !count($managed)) {
-				return false;
-			}
-			$cwhere = ' WHERE c.id IN ('.implode(',', $managed).') ';
-		}
-
-		//get the maintained categories and the categories whithout any group
-		//or just get all if somebody have edit rights	
-    $query = ' SELECT c.id, c.name, (COUNT(parent.name) - 1) AS depth, c.ordering '
-           . ' FROM #__redevent_venues_categories AS c, '
-           . ' #__redevent_venues_categories AS parent '
-           . $cwhere
-           . ' AND c.lft BETWEEN parent.lft AND parent.rgt '
-           . ' GROUP BY c.id '
-           . ' ORDER BY c.lft;'
-           ;
-    $this->_db->setQuery($query);
-    
-    $results = $this->_db->loadObjectList();
-    $options = array();
-    foreach((array) $results as $cat)
-    {
-      $options[] = JHTML::_('select.option', $cat->id, str_repeat('>', $cat->depth) . ' ' . $cat->name);
-    }
-
-    $this->_categories = $options;
-
-		return $this->_categories;
-	}
-
-	/**
-	 * logic to get the venue
-	 *
-	 * @access private
-	 * @return array
-	 */
-	function _loadVenue( )
-	{
-		if (empty($this->_venue)) 
 		{
-			$user	= & JFactory::getUser();
-			$this->_venue =& JTable::getInstance('redevent_venues', '');
-			$this->_venue->load( $this->_id );			
-		
-      if ($this->_venue->id) 
-      {
-        $query =  ' SELECT c.id '
-              . ' FROM #__redevent_venues_categories as c '
-              . ' INNER JOIN #__redevent_venue_category_xref as x ON x.category_id = c.id '
-              . ' WHERE c.published = 1 '
-              . '   AND x.venue_id = ' . $this->_db->Quote($this->_venue->id)
-              ;
-        $this->_db->setQuery( $query );
-  
-        $this->_venue->categories = $this->_db->loadResultArray();
-				$this->_venue->attachments = REAttach::getAttachments('venue'.$this->_venue->id, max($user->getAuthorisedViewLevels()));	
-      }
+			$params = RedeventHelper::config();
+
+			$result->attachments = array();
+			$result->categories = array();
+			$result->map = $params->get('showmapserv', 1);
 		}
-	  return $this->_venue;
+
+		return $result;
 	}
 
 	/**
-	 * Method to checkin/unlock the item
+	 * Get the associated JTable
 	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	0.9
+	 * @param   string  $name    Table name
+	 * @param   string  $prefix  Table prefix
+	 * @param   array   $config  Configuration array
+	 *
+	 * @return  JTable
 	 */
-	function checkin()
+	public function getTable($name = null, $prefix = '', $config = array())
 	{
-		if ($this->_id)
+		if (empty($name))
 		{
-			$item = & $this->getTable('redevent_venues', '');
-			if(! $item->checkin($this->_id)) {
-				$this->setError($this->_db->getErrorMsg());
-				return false;
-			}
+			$name = 'Venue';
 		}
-		return false;
+
+		return parent::getTable($name, $prefix, $config);
 	}
 
 	/**
-	 * Method to store the venue
+	 * Method to get the category data
 	 *
-	 * @access	public
-	 * @return	id
-	 * @since	0.9
+	 * @param   object  $result  result to get categories from
+	 *
+	 * @return  array
 	 */
-	function store($data, $file)
+	private function getVenueCategories($result)
 	{
-		$mainframe = &JFactory::getApplication();
-		
-		$user 		= & JFactory::getUser();
-		$elsettings = & redEVENTHelper::config();
+		$db = $this->_db;
+		$query = $db->getQuery(true);
 
-		//Get mailinformation
-		$SiteName 		= $mainframe->getCfg('sitename');
-		$MailFrom	 	= $mainframe->getCfg('mailfrom');
-		$FromName 		= $mainframe->getCfg('fromname');
-		$tzoffset 		= $mainframe->getCfg('offset');
-		
-		$params = $mainframe->getParams('com_redevent');
+		$query->select('c.id');
+		$query->from('#__redevent_venues_categories AS c');
+		$query->join('INNER', '#__redevent_venue_category_xref AS x ON x.category_id = c.id');
+		$query->where('x.venue_id = ' . $result->id);
 
-		$row 		= & JTable::getInstance('redevent_venues', '');
+		$db->setQuery($query);
+		$res = $db->loadColumn();
 
-		//bind it to the table
-		if (!$row->bind($data)) {
-			RedeventError::raiseError( 500, $this->_db->stderr() );
-			return false;
+		return $res;
+	}
+
+	/**
+	 * Method to save the form data.
+	 *
+	 * @param   array  $data  The form data.
+	 *
+	 * @return  boolean  True on success, False on error.
+	 */
+	public function save($data)
+	{
+		$result = parent::save($data);
+
+		if ($result)
+		{
+			$id = $this->getState($this->getName() . '.id');
+
+			// Attachments
+			$helper = new RedeventHelperAttachment;
+			$helper->store('venue' . $id);
+
+			$isNew = isset($data['id']) && $data['id'] ? false : true;
+			$this->notify($id, $isNew);
 		}
 
-		//Are we saving from an item edit?
-		if ($row->id) {
-			$row->modified 		= gmdate('Y-m-d H:i:s');
-			$row->modified_by 	= $user->get('id');
-		} else {
-			//get IP, time and userid
-			$row->created 			= gmdate('Y-m-d H:i:s');
+		return $result;
+	}
 
-			$row->author_ip 		= $elsettings->get('storeip', '1') ? getenv('REMOTE_ADDR') : 'DISABLED';
-			$row->created_by		= $user->get('id');
-		}
+	/**
+	 * Send notifications
+	 *
+	 * @param   int      $id     venue id
+	 * @param   boolean  $isNew  is new
+	 *
+	 * @return void
+	 */
+	private function notify($id, $isNew)
+	{
+		$row = $this->getItem($id);
 
-		//Image upload
+		$this->notifyAdmins($row, $isNew);
+		$this->notifyUser($row, $isNew);
+	}
 
-		//If image upload is required we will stop here if no file was attached
-		if ( empty($file['name']) && $params->get('edit_image', 1) == 2 ) {
-			$this->setError( JText::_('COM_REDEVENT_IMAGE_EMPTY' ) );
-			return false;
-		}
+	/**
+	 * Send notification to admins
+	 *
+	 * @param   object   $row    venue data
+	 * @param   boolean  $isNew  is new
+	 *
+	 * @return void
+	 */
+	private function notifyAdmins($row, $isNew)
+	{
+		$params = RedeventHelper::config();
 
-		if ( ( $params->get('edit_image', 1) == 2 || $params->get('edit_image', 1) == 1 ) && ( !empty($file['name'])  ) )  {
+		// Create mail
+		if (($params->get('mailinform') == 2) || ($params->get('mailinform') == 3))
+		{
+			$app = JFactory::getApplication();
+			$SiteName = $app->getCfg('sitename');
+			$MailFrom = $app->getCfg('mailfrom');
+			$FromName = $app->getCfg('fromname');
 
-			jimport('joomla.filesystem.file');
-			
-			if ($params->get('default_image_path', 'redevent')) {
-				$reldirpath = $params->get('default_image_path', 'redevent').DS.'venues'.DS;
-			}
-			else {
-				$reldirpath = '';
-			}
-			$base_Dir 	= JPATH_SITE.DS.'images'.DS.$reldirpath;
+			$link = JRoute::_(JURI::base() . RedeventHelperRoute::getVenueEventsRoute($row->id), false);
 
-			//check the image
-			$check = redEVENTImage::check($file, $elsettings);
-
-			if ($check === false) {
-				$mainframe->redirect($_SERVER['HTTP_REFERER']);
-			}
-
-			//sanitize the image filename
-			$filename = redEVENTImage::sanitize($base_Dir, $file['name']);
-			$filepath = $base_Dir . $filename;
-
-			if (!JFile::upload( $file['tmp_name'], $filepath )) {
-				$this->setError( JText::_('COM_REDEVENT_UPLOAD_FAILED' ) );
-				return false;
-			} else {
-				$row->locimage = 'images'.DS.$reldirpath.$filename;
-			}
-		} else {
-			//keep image if edited and left blank
-			$row->locimage = $row->curimage;
-		}//end image upload if
-
-		//Check description
-		$editoruser = ELUser::editoruser();
-
-		if (!$editoruser) {
-			//check description --> wipe out code
-			$row->locdescription = strip_tags($row->locdescription, '<br><br/>');
-
-			//convert the linux \n (Mac \r, Win \r\n) to <br /> linebreaks
-			$row->locdescription = str_replace(array("\r\n", "\r", "\n"), "<br />", $row->locdescription);
-
-			//cut too long words
-			$row->locdescription = wordwrap($row->locdescription, 75, " ", 1);
-
-			//check length
-			$length = JString::strlen($row->locdescription);
-			if ($length > $params->get('max_description', 1000)) {
-
-				// if required shorten it
-				$row->locdescription = JString::substr($row->locdescription, 0, $params->get('max_description', 1000));
-				//if shortened add ...
-				$row->locdescription = $row->locdescription.'...';
-			}
-		}
-
-		$row->venue = trim( JFilterOutput::ampReplace( $row->venue ) );
-
-		//Make sure the data is valid
-		if (!$row->check($elsettings)) {
-			$this->setError($row->getError());
-			return false;
-		}
-
-		//is this an edited venue or not?
-		//after store we allways have an id
-		$edited = $row->id ? $row->id : false;
-
-		//store it in the db
-		if (!$row->store()) {
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}		
-	        
-    // update the event category xref
-    // first, delete current rows for this event
-    $query = ' DELETE FROM #__redevent_venue_category_xref WHERE venue_id = ' . $this->_db->Quote($row->id);
-    $this->_db->setQuery($query);
-    if (!$this->_db->query()) {
-      $this->setError($this->_db->getErrorMsg());
-      return false;     
-    }
-    // insert new ref
-    foreach ((array) $data['categories'] as $cat_id) {
-      $query = ' INSERT INTO #__redevent_venue_category_xref (venue_id, category_id) VALUES (' . $this->_db->Quote($row->id) . ', '. $this->_db->Quote($cat_id) . ')';
-      $this->_db->setQuery($query);
-      if (!$this->_db->query()) {
-        $this->setError($this->_db->getErrorMsg());
-        return false;     
-      }     
-    }
-
-		// attachments    
-		if ($params->get('allow_attachments', 1)) {
-			REAttach::store('venue'.$row->id);
-		}
-		
-		jimport('joomla.utilities.mail');
-
-		$link 	= JRoute::_(JURI::base().RedeventHelperRoute::getVenueEventsRoute($row->id), false);
-
-		//create mail
-		if (($params->get('mailinform') == 2) || ($params->get('mailinform') == 3)) {
+			$user = JFactory::getUser();
 
 			$mail = JFactory::getMailer();
 
-			$state 	= $row->published ? JText::sprintf('COM_REDEVENT_MAIL_VENUE_PUBLISHED', $link) : JText::_('COM_REDEVENT_MAIL_VENUE_UNPUBLISHED');
+			$state = $row->published ? JText::sprintf('COM_REDEVENT_MAIL_VENUE_PUBLISHED', $link) : JText::_('COM_REDEVENT_MAIL_VENUE_UNPUBLISHED');
 
-			If ($edited) {
-
-				$modified_ip 	= getenv('REMOTE_ADDR');
-				$edited 		= JHTML::Date( $row->modified, JText::_('DATE_FORMAT_LC2' ) );
-				$mailbody 		= JText::sprintf('COM_REDEVENT_MAIL_EDIT_VENUE', $user->name, $user->username, $user->email, $modified_ip, $edited, $row->venue, $row->url, $row->street, $row->plz, $row->city, $row->country, $row->locdescription, $state);
-				$mail->setSubject( $SiteName.JText::_('COM_REDEVENT_EDIT_VENUE_MAIL' ) );
-
-			} else {
-
-				$created 		= JHTML::Date( $row->modified, JText::_('DATE_FORMAT_LC2' ) );
-				$mailbody 		= JText::sprintf('COM_REDEVENT_MAIL_NEW_VENUE', $user->name, $user->username, $user->email, $row->author_ip, $created, $row->venue, $row->url, $row->street, $row->plz, $row->city, $row->country, $row->locdescription, $state);
-				$mail->setSubject( $SiteName.JText::_('COM_REDEVENT_NEW_VENUE_MAIL' ) );
+			If (!$isNew)
+			{
+				$modified_ip = getenv('REMOTE_ADDR');
+				$edited = JHTML::Date($row->modified, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'));
+				$mailbody = JText::sprintf(
+					'COM_REDEVENT_MAIL_EDIT_VENUE',
+					$user->name,
+					$user->username,
+					$user->email,
+					$modified_ip,
+					$edited,
+					$row->venue,
+					$row->url,
+					$row->street,
+					$row->plz,
+					$row->city,
+					$row->country,
+					$row->locdescription,
+					$state
+				);
+				$mail->setSubject($SiteName . JText::_('COM_REDEVENT_EDIT_VENUE_MAIL'));
 
 			}
+			else
+			{
+				$created = JHTML::Date($row->modified, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'));
+				$mailbody = JText::sprintf(
+					'COM_REDEVENT_MAIL_NEW_VENUE',
+					$user->name,
+					$user->username,
+					$user->email,
+					$row->author_ip,
+					$created,
+					$row->venue,
+					$row->url,
+					$row->street,
+					$row->plz,
+					$row->city,
+					$row->country,
+					$row->locdescription,
+					$state
+				);
+				$mail->setSubject($SiteName . JText::_('COM_REDEVENT_NEW_VENUE_MAIL'));
+			}
 
-			$receivers = explode( ',', trim($params->get('mailinformrec')));
+			$recipients = explode(',', trim($params->get('mailinformrec')));
 
-			$mail->addRecipient( $receivers );
-			$mail->setSender( array( $MailFrom, $FromName ) );
-			$mail->setBody( $mailbody );
+			$mail->addRecipient($recipients);
+			$mail->setSender(array($MailFrom, $FromName));
+			$mail->setBody($mailbody);
 
-      if (!$mail->Send()) {
-        RedeventHelperLog::simpleLog('Error sending created/edited venue notification to site owner');
-      }
+			if (!$mail->Send())
+			{
+				RedeventHelperLog::simpleLog('Error sending created/edited venue notification to site owner');
+			}
 		}
+	}
 
-		//create the mail for the user
-		if (($params->get('mailinformuser') == 2) || ($params->get('mailinformuser') == 3)) {
+	/**
+	 * Send notification to user
+	 *
+	 * @param   object   $row    venue data
+	 * @param   boolean  $isNew  is new
+	 *
+	 * @return void
+	 */
+	private function notifyUser($row, $isNew)
+	{
+		$params = RedeventHelper::config();
 
+		// Create the mail for the user
+		if (($params->get('mailinformuser') == 2) || ($params->get('mailinformuser') == 3))
+		{
+			$app = JFactory::getApplication();
+			$SiteName = $app->getCfg('sitename');
+			$MailFrom = $app->getCfg('mailfrom');
+			$FromName = $app->getCfg('fromname');
+
+			$user = JFactory::getUser();
 			$usermail = JFactory::getMailer();
 
-			$state 	= $row->published ? JText::sprintf('COM_REDEVENT_USER_MAIL_VENUE_PUBLISHED', $link) : JText::_('COM_REDEVENT_USER_MAIL_VENUE_UNPUBLISHED');
+			$link = JRoute::_(JURI::base() . RedeventHelperRoute::getVenueEventsRoute($row->id), false);
 
-			if ($edited) {
+			$state = $row->published ? JText::sprintf('COM_REDEVENT_USER_MAIL_VENUE_PUBLISHED', $link) : JText::_('COM_REDEVENT_USER_MAIL_VENUE_UNPUBLISHED');
 
-				$edited 		= JHTML::Date( $row->modified, JText::_('DATE_FORMAT_LC2' ) );
-				$mailbody 		= JText::sprintf('COM_REDEVENT_USER_MAIL_EDIT_VENUE', $user->name, $user->username, $edited, $row->venue, $row->url, $row->street, $row->plz, $row->city, $row->country, $row->locdescription, $state);
-				$usermail->setSubject( $SiteName.JText::_('COM_REDEVENT_EDIT_USER_VENUE_MAIL' ) );
+			if (!$isNew)
+			{
+				$edited = JHTML::Date($row->modified, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'));
 
-			} else {
+				$mailbody = JText::sprintf('COM_REDEVENT_USER_MAIL_EDIT_VENUE',
+					$user->name, $user->username, $edited, $row->venue, $row->url, $row->street,
+					$row->plz, $row->city, $row->country, $row->locdescription, $state
+				);
 
-				$created 		= JHTML::Date( $row->modified, JText::_('DATE_FORMAT_LC2' ) );
-				$mailbody 		= JText::sprintf('COM_REDEVENT_USER_MAIL_NEW_VENUE', $user->name, $user->username, $created, $row->venue, $row->url, $row->street, $row->plz, $row->city, $row->country, $row->locdescription, $state);
-				$usermail->setSubject( $SiteName.JText::_('COM_REDEVENT_NEW_USER_VENUE_MAIL' ) );
+				$usermail->setSubject($SiteName . JText::_('COM_REDEVENT_EDIT_USER_VENUE_MAIL'));
+			}
+			else
+			{
+				$created = JHTML::Date($row->modified, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'));
 
+				$mailbody = JText::sprintf('COM_REDEVENT_USER_MAIL_NEW_VENUE',
+					$user->name, $user->username, $created, $row->venue, $row->url, $row->street,
+					$row->plz, $row->city, $row->country, $row->locdescription, $state
+				);
+
+				$usermail->setSubject($SiteName . JText::_('COM_REDEVENT_NEW_USER_VENUE_MAIL'));
 			}
 
-			$usermail->addRecipient( $user->email );
-			$usermail->setSender( array( $MailFrom, $FromName ) );
-			$usermail->setBody( $mailbody );
+			$usermail->addRecipient($user->email);
+			$usermail->setSender(array($MailFrom, $FromName));
+			$usermail->setBody($mailbody);
 
-      if (!$usermail->Send()) {
-        RedeventHelperLog::simpleLog('Error sending created/edited venue notification to venue owner');
-      }
+			if (!$usermail->Send())
+			{
+				RedeventHelperLog::simpleLog('Error sending created/edited venue notification to venue owner');
+			}
 		}
-
-		//update item order
-		$row->reorder();
-
-		return $row->id;
 	}
-	
-	function _inAdminGroup()
-	{
-		$venue = $this->_loadVenue();
-				
-		$user 		= & JFactory::getUser();
-		
-		$query = ' SELECT gv.id '
-		       . ' FROM #__redevent_groups_venues AS gv ' 
-		       . ' INNER JOIN #__redevent_groupmembers AS gm ON gv.group_id = gm.group_id '
-		       . ' WHERE gm.member ='. $this->_db->Quote($user->id)
-  	       . '   AND gm.edit_venues > 0 '
-  	       . '   AND gv.accesslevel > 0 '
-		       . '   AND gv.venue_id ='. $this->_db->Quote($venue->id)
-		       ;
-		$this->_db->setQuery($query);
-		
-		return (int) $this->_db->loadResult();
-	}	
 }

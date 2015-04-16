@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<falang type="contentelement">
+	<name>redEVENT - Custom fields</name>
+	<author>redCOMPONENT</author>
+	<version>##VERSION##</version>
+	<description>redEVENT custom fields</description>
+	<reference>
+		<table name="redevent_fields">
+			<field type="referenceid" name="id" translate="0">ID</field>
+			<field type="titletext" name="tag" translate="0">Name</field>
+			<field type="text" name="type" translate="0">Type</field>
+			<field type="htmltext" name="tips" translate="1">Tooltip</field>
+			<field type="text" name="options" translate="1">Options</field>
+			<field type="text" name="default_value" translate="1">default_value</field>
+		</table>
+	</reference>
+</falang>
