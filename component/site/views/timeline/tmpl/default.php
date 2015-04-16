@@ -137,7 +137,7 @@ RHtml::_('rjquery.ui');
 
 	<!--  Scrollbar timeline-->
 	<div class="scrollbar">
-		<div id="timeslider" style="height:30px"></div>
+		<div id="timeslider"></div>
 	</div>
 
 	<?php if (!empty($this->sortedRows)): ?>
