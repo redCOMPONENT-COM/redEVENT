@@ -84,7 +84,7 @@
 
 		// Su check date
 
-		$('ul#divselectdate').before('<div class="date-filter">Dag<span class="valuedatefilter">Alle</span></div>');
+/*		$('ul#divselectdate').before('<div class="date-filter">Dag<span class="valuedatefilter">Alle</span></div>');
 		$('ul#divselectdate').addClass('hiddentype');
 		
 		$('.date-filter').toggle(
@@ -167,6 +167,6 @@
 
 	    	$('.valuedatefilter').html(dayName + '<span>' + date + '/' + month + '</span>');
 
-		});
+		});*/
 	});
 })(jQuery);

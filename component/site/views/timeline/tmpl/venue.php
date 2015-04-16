@@ -8,6 +8,7 @@
 defined('_JEXEC') or die();
 
 $venueData = $this->venue;
+
 ?>
 
 <div id="redevent" class="timeline-venue">
@@ -25,7 +26,9 @@ $venueData = $this->venue;
 				<input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" placeholder="<?php echo JText::_('COM_REDEVENT_EVENTS_FILTER_HINT'); ?>"/>
 			</div>
 
-			<div id="date-filter"><?php echo $this->lists['dateFilter']; ?></div>
+			<div id="date-filter" class="custom-filter"><?php echo $this->lists['dateFilter']; ?>
+				<ul id="divselectdate" class=" dynfilter"></ul>
+			</div>
 
 			<?php if ($this->customsfilters && count($this->customsfilters)): ?>
 				<?php foreach ($this->customsfilters as $custom): ?>
