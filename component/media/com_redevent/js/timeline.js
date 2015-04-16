@@ -31,8 +31,22 @@
 			$('#adminForm').submit();
 		});
 
+		/**
+		 * active session
+		 * @type object
+		 */
+		var active = false;
+
 		$('.timeline-venues').click(function(event){
 			event.preventDefault();
+
+			if (active) {
+				active.removeClass('active');
+				active = null;
+			}
+			else {
+				active = $(this).addClass('active');
+			}
 
 			var hiddenInfor = $(this).next('.session-infor-hidden');
 			var rowIndex = hiddenInfor.attr('data-row');
@@ -86,16 +100,16 @@
 
 		$('ul#divselectdate').before('<div class="date-filter">Dag<span class="valuedatefilter">Alle</span></div>');
 		$('ul#divselectdate').addClass('hiddentype');
-		
+
 		$('.date-filter').toggle(
 			  function() {
-			  	
+
 			    $('ul#divselectdate').removeClass('hiddentype');
 			  }, function() {
 			    $('ul#divselectdate').addClass('hiddentype');
 			  }
 		);
-		
+
 		$(document).click(function(e) {
 		    var target = e.target;
 		    if (!$(target).is('.date-filter') && !$(target).parents().is('.date-filter')) {
@@ -142,7 +156,7 @@
 		});
 
 
-		
+
 
 
 		var selecteddag = [];
