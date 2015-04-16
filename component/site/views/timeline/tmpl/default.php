@@ -25,7 +25,12 @@ $timelineWidth      = ($timelineEnd - $timelineStart) * 60 * $this->minutePixel;
 $baseHeight         = 50;
 $sessionInforHeight = 400;
 
+
+// For filter hint
+RHelperAsset::load('eventslist.js');
+
 RHelperAsset::load('timeline.js');
+RHelperAsset::load('timeline.css');
 
 RHtml::_('rjquery.ui');
 ?>
@@ -132,9 +137,7 @@ RHtml::_('rjquery.ui');
 
 	<!--  Scrollbar timeline-->
 	<div class="scrollbar">
-		<div id="timeslider">
-		</div>
-		<div id="timeval"></div>
+		<div id="timeslider" style="height:30px"></div>
 	</div>
 
 	<?php if (!empty($this->sortedRows)): ?>
@@ -235,15 +238,4 @@ RHtml::_('rjquery.ui');
 	</div>
 	<?php endif; ?>
 
-	<!--footer-->
-	<!--pagination-->
-	<?php if (($showPagination == 1  || ($showPagination == 2)) && ($this->pageNav->get('pages.total') > 1)): ?>
-		<div class="pagination">
-			<?php  if ($showPaginationResults) : ?>
-				<p class="counter"><?php echo $this->pageNav->getPagesCounter(); ?></p>
-			<?php endif; ?>
-			<?php echo $this->pageNav->getPagesLinks(); ?>
-		</div>
-	<?php  endif; ?>
-	<!-- pagination end -->
 </div>
