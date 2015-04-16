@@ -135,14 +135,15 @@ RHtml::_('rjquery.ui');
 	</form>
 	<!-- filter end -->
 
-	<!--  Scrollbar timeline-->
-	<div class="scrollbar">
-		<div id="timeslider"></div>
-	</div>
-
 	<?php if (!empty($this->sortedRows)): ?>
 	<div class="redevent-timeline">
 		<div class="container">
+			<!--  Scrollbar timeline-->
+			<div class="scrollbar row">
+				<div class="col-md-4"></div>
+				<div class="col-md-8"><div id="timeslider"></div></div>
+			</div>
+
 			<div class="row">
 				<div class="timeline-wrapper">
 					<div class="venues-list">
