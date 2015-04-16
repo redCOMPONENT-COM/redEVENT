@@ -7,6 +7,11 @@
 
 		var timelineWidth = parseInt($('.timeline-sessions').css('width'));
 		var hourWidth = timelineWidth / 15;
+
+		// There is a conflict between mootools more and jQuery UI slider (makes the div disappear). next line is a workaround
+		$('#timeslider')[0].slide = null;
+
+		// Now we can use it
 		$('#timeslider').slider({
 			min: 0,
 			max: 14,
