@@ -42,8 +42,8 @@ $venueData = $this->venue;
 
 	<div id="sessions-toolbar">
 		<div id="print">
-			<?php echo JHtml::link(RedeventHelperRoute::getVenueTimelinePrintRoute($venueData->id),
-				JText::_('COM_REDEVENT_TIMELINE_VENUE_PRINT_PROGRAMM')); ?>
+			<?php //echo JHtml::link(RedeventHelperRoute::getVenueTimelinePrintRoute($venueData->id), JText::_('COM_REDEVENT_TIMELINE_VENUE_PRINT_PROGRAMM')); ?>
+			<a href="#" onclick="window.print();return false;"><?php echo JText::_('COM_REDEVENT_TIMELINE_VENUE_PRINT_PROGRAMM'); ?></a>
 		</div>
 		<div id="back">
 			<?php echo JHtml::link(RedeventHelperRoute::getTimelineRoute($venueData->id),
