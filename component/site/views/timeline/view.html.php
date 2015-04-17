@@ -67,12 +67,10 @@ class RedeventViewTimeline extends RViewSite
 		$model      = $this->getModel();
 		$layout     = $this->getLayout();
 
-		$document->addStyleSheet('media/com_redevent/css/timeline.css');
-
 		// Add css file
 		if (!$params->get('custom_css'))
 		{
-			$document->addStyleSheet('media/com_redevent/css/redevent.css');
+			RHelperAsset::load('redevent.css');
 		}
 		else
 		{
@@ -83,9 +81,6 @@ class RedeventViewTimeline extends RViewSite
 
 		// Add js
 		JHTML::_('behavior.framework');
-
-		// For filter hint
-		$document->addScript($this->baseurl . '/components/com_redevent/assets/js/eventslist.js');
 
 		// Get variables
 		$task = $input->getWord('task', '');

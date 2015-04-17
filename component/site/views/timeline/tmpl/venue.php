@@ -98,6 +98,16 @@ $venueData = $this->venue;
 					<div class="signup-link">
 						<?php echo JHtml::link(RedeventHelperRoute::getSignupRoute('webform', $session->slug, $session->xslug), JText::_('COM_REDEVENT_TIMELINE_GET_TICKET')); ?>
 					</div>
+				<div class="col-md-2">
+					<?php if ($session->custom8 == 'no'): ?>
+						<div class="session-free">
+							<?php echo JText::_('COM_REDEVENT_TIMELINE_FREE'); ?>
+						</div>
+					<?php elseif ($session->external_registration_url): ?>
+						<div class="session-paid">
+							<?php echo JHtml::link($session->external_registration_url, JText::_('COM_REDEVENT_TIMELINE_GET_TICKET')); ?>
+						</div>
+					<?php endif; ?>
 				</div>
 			</div>
 		</div>

@@ -7,6 +7,15 @@
 
 		var timelineWidth = parseInt($('.timeline-sessions').css('width'));
 		var hourWidth = timelineWidth / 15;
+
+		// There is a conflict between mootools more and jQuery UI slider (makes the div disappear). next lines is a workaround
+		$('#timeslider').slide = null;
+		if ($('#timeslider')[0]) {
+			$('#timeslider')[0].slide = null;
+		}
+		$('#timeslider').removeAttr('slide');
+
+		// Now we can use it
 		$('#timeslider').slider({
 			min: 0,
 			max: 14,
@@ -31,8 +40,22 @@
 			$('#adminForm').submit();
 		});
 
+		/**
+		 * active session
+		 * @type object
+		 */
+		var active = false;
+
 		$('.timeline-venues').click(function(event){
 			event.preventDefault();
+
+			if (active) {
+				active.removeClass('active');
+				active = null;
+			}
+			else {
+				active = $(this).addClass('active');
+			}
 
 			var hiddenInfor = $(this).next('.session-infor-hidden');
 			var rowIndex = hiddenInfor.attr('data-row');
@@ -86,16 +109,16 @@
 
 /*		$('ul#divselectdate').before('<div class="date-filter">Dag<span class="valuedatefilter">Alle</span></div>');
 		$('ul#divselectdate').addClass('hiddentype');
-		
+
 		$('.date-filter').toggle(
 			  function() {
-			  	
+
 			    $('ul#divselectdate').removeClass('hiddentype');
 			  }, function() {
 			    $('ul#divselectdate').addClass('hiddentype');
 			  }
 		);
-		
+
 		$(document).click(function(e) {
 		    var target = e.target;
 		    if (!$(target).is('.date-filter') && !$(target).parents().is('.date-filter')) {
@@ -142,7 +165,7 @@
 		});
 
 
-		
+
 
 
 		var selecteddag = [];

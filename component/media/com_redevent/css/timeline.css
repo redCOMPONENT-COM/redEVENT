@@ -14,3 +14,6 @@
 .timeline-wrapper {position: relative; overflow: hidden;}
 .timeline-venues-fake {background: #c0c0c0 ;}
 .redevent-timeline .timeline-sessions-wrapper {overflow-y: hidden; overflow-x: visible;}
+div.scrollbar {
+	padding-bottom: 20px;
+}
