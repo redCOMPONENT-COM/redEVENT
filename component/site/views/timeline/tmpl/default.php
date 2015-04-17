@@ -196,17 +196,19 @@ RHtml::_('rjquery.ui');
 													$additionClass = '';
 													$iCalLink = JRoute::_('index.php?option=com_redevent&view=details&id=' . $session->slug . '&xref=' . $session->xslug . '&Itemid=' . $itemId . '&format=raw&layout=ics');
 
-													if (!empty($session->custom10)):
-														$sessionTypes = explode("\n", $session->custom10);
+													if (!empty($session->custom6)):
+														$sessionTypes = explode("\n", $session->custom6);
 
 														foreach ($sessionTypes as $sessionType):
 															$additionClass .= 'type-' . strtolower(JFilterOutput::stringURLSafe($sessionType)) . ' ';
 														endforeach;
 													endif;
+
+													$sessionTitle = (!empty($session->session_title)) ? $session->session_title : $session->title;
 													?>
 														<div class="timeline-venues <?php echo $additionClass; ?>" style="left: <?php echo $session->startPixel ?>px;  width: <?php echo $session->widthPixel ?>px;">
 															<div class="timeline-session-time"><?php echo $session->times ?> - <?php echo $session->endtimes ?></div>
-															<div class="timeline-session-title"><?php echo $session->session_title ?></div>
+															<div class="timeline-session-title"><?php echo $sessionTitle ?></div>
 														</div>
 														<div class="session-infor-hidden" id="session-infor-<?php echo $session->xref ?>" data-target="time-venues-session-infor-<?php echo $rowIndex ?>" data-row="<?php echo $rowIndex ?>">
 															<?php

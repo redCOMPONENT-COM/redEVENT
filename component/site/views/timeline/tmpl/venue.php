@@ -91,7 +91,7 @@ $venueData = $this->venue;
 					</div>
 				</div>
 
-				<div class="col-md-2">
+				<div class="col-md-2 session-status">
 					<?php if ($session->custom8 == 'no'): ?>
 						<div class="session-free">
 							<?php echo JText::_('COM_REDEVENT_TIMELINE_FREE'); ?>
