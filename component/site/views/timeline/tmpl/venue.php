@@ -56,8 +56,9 @@ $venueData = $this->venue;
 
 	<div id="sessions">
 		<?php foreach ($this->rows AS $session): ?>
+		<div class="session-detail">
 			<div class="row">
-				<div class="col-md-3">
+				<div class="col-md-4 session-image">
 					<?php
 					if ($session->datimage)
 					{
@@ -67,7 +68,7 @@ $venueData = $this->venue;
 					?>
 				</div>
 
-				<div class="col-md-7">
+				<div class="col-md-6 session-desc">
 					<div class="session-header">
 						<?php foreach (explode("\n", $session->custom6) as $type): ?>
 							<span class="type-<?php
@@ -90,7 +91,7 @@ $venueData = $this->venue;
 					</div>
 				</div>
 
-				<div class="col-md-2">
+				<div class="col-md-2 session-status">
 					<div class="paid-free paid-<?php echo $session->custom8; ?>">
 						<?php echo $session->custom8 == 'yes' ? JText::_('COM_REDEVENT_TIMELINE_FREE') : JText::_('COM_REDEVENT_TIMELINE_PAID'); ?>
 					</div>
@@ -99,6 +100,7 @@ $venueData = $this->venue;
 					</div>
 				</div>
 			</div>
+		</div>
 		<?php endforeach; ?>
 	</div>
 
