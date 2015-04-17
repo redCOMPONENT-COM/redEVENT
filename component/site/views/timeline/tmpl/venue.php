@@ -92,13 +92,6 @@ $venueData = $this->venue;
 				</div>
 
 				<div class="col-md-2 session-status">
-					<div class="paid-free paid-<?php echo $session->custom8; ?>">
-						<?php echo $session->custom8 == 'yes' ? JText::_('COM_REDEVENT_TIMELINE_FREE') : JText::_('COM_REDEVENT_TIMELINE_PAID'); ?>
-					</div>
-					<div class="signup-link">
-						<?php echo JHtml::link(RedeventHelperRoute::getSignupRoute('webform', $session->slug, $session->xslug), JText::_('COM_REDEVENT_TIMELINE_GET_TICKET')); ?>
-					</div>
-				<div class="col-md-2">
 					<?php if ($session->custom8 == 'no'): ?>
 						<div class="session-free">
 							<?php echo JText::_('COM_REDEVENT_TIMELINE_FREE'); ?>
