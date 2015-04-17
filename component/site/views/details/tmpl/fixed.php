@@ -62,30 +62,21 @@ if ($this->row->venueid != 0) {
 
 	<dl class="event_info floattext">
 
-		<dt class="title"><?php echo JText::_('COM_REDEVENT_TITLE' ).':'; ?></dt>
-    <dd class="title"><?php echo $this->escape($this->row->full_title); ?></dd>
+		<dt class="title"><?php echo JText::_('COM_REDEVENT_TYPE' ); ?></dt>
+    <dd class="title"><?php echo $this->escape($this->row->custom6); ?></dd>
 
-  	<dt class="when"><?php echo JText::_('COM_REDEVENT_WHEN' ).':'; ?></dt>
+  	<dt class="when"><?php echo JText::_('COM_REDEVENT_WHEN' ); ?></dt>
 		<dd class="when">
 			<?php
 			$tmp = RedeventHelperOutput::formatdate($this->row->dates, $this->row->times);
-			if (!empty($this->row->times) && strcasecmp('00:00:00', $this->row->times)) {
-				$tmp .= ' ' .RedeventHelperOutput::formattime($this->row->dates, $this->row->times);
-			}
-			if (!empty($this->row->enddates) && $this->row->enddates != $this->row->dates)
-			{
-				$tmp .= ' - ' .RedeventHelperOutput::formatdate($this->row->enddates, $this->row->endtimes);
-			}
-			if (!empty($this->row->endtimes) && strcasecmp('00:00:00', $this->row->endtimes)) {
-				$tmp .= ' ' .RedeventHelperOutput::formattime($this->row->dates, $this->row->endtimes);
-			}
+
 			echo $tmp;
 			?>
 		</dd>
   		<?php
   		if ($this->row->venueid != 0) :
   		?>
-		    <dt class="where"><?php echo JText::_('COM_REDEVENT_WHERE' ).':'; ?></dt>
+		    <dt class="where"><?php echo JText::_('COM_REDEVENT_WHERE' ); ?></dt>
 		    <dd class="where">
     		<?php if ((!empty($this->row->url))) : ?>
     			<?php echo JHTML::link($this->row->url, $this->escape($this->row->venue)); ?>
@@ -102,19 +93,36 @@ if ($this->row->venueid != 0) {
 		$n = count($this->row->categories);
 		?>
 
-		<dt class="category"><?php echo $n < 2 ? JText::_('COM_REDEVENT_CATEGORY' ) : JText::_('COM_REDEVENT_CATEGORIES' ); ?>:</dt>
+			<dt class="time"><?php echo JText::_('COM_REDEVENT_TIME' ); ?></dt>
+    		<dd class="time">
+    			<?php 
+    				$tmptime = "";
+    				if (!empty($this->row->times) && strcasecmp('00:00:00', $this->row->times)) {
+						$tmptime .= ' ' .RedeventHelperOutput::formattime($this->row->dates, $this->row->times);
+					}
+					if (!empty($this->row->enddates) && $this->row->enddates != $this->row->dates)
+					{
+						$tmptime .= '-' .RedeventHelperOutput::formatdate($this->row->enddates, $this->row->endtimes);
+					}
+					if (!empty($this->row->endtimes) && strcasecmp('00:00:00', $this->row->endtimes)) {
+						$tmptime .= '-' .RedeventHelperOutput::formattime($this->row->dates, $this->row->endtimes);
+					}
+    				echo $tmptime; 
+    			?>
+    		</dd>
+<!-- 		<dt class="category"><?php echo $n < 2 ? JText::_('COM_REDEVENT_CATEGORY' ) : JText::_('COM_REDEVENT_CATEGORIES' ); ?>:</dt>
     		<dd class="category">
     			<?php
-				$i = 0;
-    			foreach ($this->row->categories as $category) :
-    				echo JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($category->slug), $this->escape($category->name));
-						$i++;
-						if ($i != $n) :
-							echo ',';
-						endif;
-					endforeach;
+				//$i = 0;
+    			//foreach ($this->row->categories as $category) :
+    			//	echo JHTML::link(RedeventHelperRoute::getCategoryEventsRoute($category->slug), $this->escape($category->name));
+				//		$i++;
+				//		if ($i != $n) :
+				//			echo ',';
+				//		endif;
+				//	endforeach;
     			?>
-			</dd>
+			</dd> -->
 	</dl>
 
   	<?php
@@ -178,7 +186,7 @@ if ($this->row->venueid != 0) {
 		?>
 
 		<dl class="location floattext">
-			 <dt class="venue"><?php echo JText::_('COM_REDEVENT_VENUE').':'; ?></dt>
+			 <dt class="venue"><?php echo JText::_('COM_REDEVENT_VENUE'); ?></dt>
 				<dd class="venue">
 				<?php echo JHTML::link($venuelink, $this->escape($this->row->venue)); ?>
 				<?php if (!empty($this->row->url)) : ?>
@@ -188,35 +196,35 @@ if ($this->row->venueid != 0) {
 				</dd>
 
   			<?php if ( $this->row->street ) : ?>
-  			<dt class="venue_street"><?php echo JText::_('COM_REDEVENT_STREET' ).':'; ?></dt>
+  			<dt class="venue_street"><?php echo JText::_('COM_REDEVENT_STREET' ); ?></dt>
 				<dd class="venue_street">
     				<?php echo $this->escape($this->row->street); ?>
 				</dd>
 				<?php endif; ?>
 
 				<?php if ( $this->row->plz ) : ?>
-  			<dt class="venue_plz"><?php echo JText::_('COM_REDEVENT_ZIP' ).':'; ?></dt>
+  			<dt class="venue_plz"><?php echo JText::_('COM_REDEVENT_ZIP' ); ?></dt>
 				<dd class="venue_plz">
     				<?php echo $this->escape($this->row->plz); ?>
 				</dd>
 				<?php endif; ?>
 
 				<?php if ( $this->row->city ) : ?>
-    			<dt class="venue_city"><?php echo JText::_('COM_REDEVENT_CITY' ).':'; ?></dt>
+    			<dt class="venue_city"><?php echo JText::_('COM_REDEVENT_CITY' ); ?></dt>
     			<dd class="venue_city">
     				<?php echo $this->escape($this->row->city); ?>
     			</dd>
     		<?php endif; ?>
 
     		<?php if ( $this->row->state ) : ?>
-    			<dt class="venue_state"><?php echo JText::_('COM_REDEVENT_STATE' ).':'; ?></dt>
+    			<dt class="venue_state"><?php echo JText::_('COM_REDEVENT_STATE' ); ?></dt>
     			<dd class="venue_state">
     				<?php echo $this->escape($this->row->state); ?>
     			</dd>
 				<?php endif; ?>
 
 				<?php if ( $this->row->country ) : ?>
-				<dt class="venue_country"><?php echo JText::_('COM_REDEVENT_COUNTRY' ).':'; ?></dt>
+				<dt class="venue_country"><?php echo JText::_('COM_REDEVENT_COUNTRY' ); ?></dt>
     			<dd class="venue_country">
     				<?php echo RedeventHelperCountries::getCountryFlag( $this->row->country ); ?>
     			</dd>

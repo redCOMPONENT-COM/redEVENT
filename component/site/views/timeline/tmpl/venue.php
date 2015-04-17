@@ -56,8 +56,9 @@ $venueData = $this->venue;
 
 	<div id="sessions">
 		<?php foreach ($this->rows AS $session): ?>
+		<div class="session-detail">
 			<div class="row">
-				<div class="col-md-3">
+				<div class="col-md-4 session-image">
 					<?php
 					if ($session->datimage)
 					{
@@ -67,7 +68,7 @@ $venueData = $this->venue;
 					?>
 				</div>
 
-				<div class="col-md-7">
+				<div class="col-md-6 session-desc">
 					<div class="session-header">
 						<?php foreach (explode("\n", $session->custom6) as $type): ?>
 							<span class="type-<?php
@@ -102,6 +103,7 @@ $venueData = $this->venue;
 					<?php endif; ?>
 				</div>
 			</div>
+		</div>
 		<?php endforeach; ?>
 	</div>
 
