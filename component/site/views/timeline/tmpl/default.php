@@ -140,15 +140,26 @@ RHtml::_('rjquery.ui');
 		<div class="container">
 			<!--  Scrollbar timeline-->
 			<div class="scrollbar row">
-				<div class="col-md-4"></div>
-				<div class="col-md-8"><div id="timeslider"></div></div>
+				<div class="col-md-3 sessions-left"></div>
+				<div class="col-md-9 sessions-time">
+					<div class="time-label">
+						<ul>
+						<?php for ($Hour = $timelineStart; $Hour <= $timelineEnd; $Hour++): ?>
+							<li>
+								<?php echo str_pad($Hour, 2, '0', STR_PAD_LEFT); ?>
+							</li>
+						<?php endfor; ?>
+						</ul>
+					</div>
+					<div id="timeslider"></div>
+				</div>
 			</div>
 
 			<div class="row">
 				<div class="timeline-wrapper">
-					<div class="venues-list">
+					<div class="col-md-3 venues-list">
 						<div class="timeline-venues-header">
-							<?php echo JText::_('COM_REDEVENT_TIMELINE_LOCATIONS') ?>
+							<?php echo JText::_('COM_REDEVENT_TIMELINE_LOCATIONS'); ?>
 							<?php $sortChecked = ($this->order == 'l.venue') ? ' checked' : ''; ?>
 							<label href="javascript:void(0);" class="timeline-sort-venue-label" for="timeline-sort-venue-checkbox">
 								<input type="checkbox" value="" id="timeline-sort-venue-checkbox" <?php echo $sortChecked ?>/> <?php echo JText::_('COM_REDEVENT_TIMELINE_LOCATIONS_SORT_ALPHABETICAL') ?>
@@ -171,7 +182,7 @@ RHtml::_('rjquery.ui');
 							<?php $venueIndex++; ?>
 						<?php endforeach; ?>
 					</div>
-					<div class="sessions-list">
+					<div class="col-md-9 sessions-list">
 						<div class="timeline-sessions-wrapper">
 							<div class="timeline-sessions" style="width: <?php echo $timelineWidth ?>px;">
 								<div class="timeline-session-header">
