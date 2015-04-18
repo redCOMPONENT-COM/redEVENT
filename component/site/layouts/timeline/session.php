@@ -15,6 +15,9 @@ $endTime = new JDate($session->endtimes);
 ?>
 
 <div class="session-left-infor">
+	<?php if (!empty($session->eventImage)): ?>
+		<img class="session-left-infor-img" src="<?php echo JUri::root() . $session->eventImage; ?>" />
+	<?php endif; ?>
 	<h3 class="session-left-infor-time"><?php echo $date->format('l d') . ' ' . ucfirst($date->format('F')); ?> kl. <?php echo $startTime->format('H.i') . ' - ' . $endTime->format('H.i'); ?></h3>
 	<h3>
 	<h3 class="session-left-infor-venue"><?php echo $session->venue; ?></h3>
