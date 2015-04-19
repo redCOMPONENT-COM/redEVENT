@@ -359,9 +359,9 @@ class RedeventViewTimeline extends RViewSite
 					$existSessionStart = new JDate($existSession->times);
 					$existSessionEnd   = new JDate($existSession->endtimes);
 
-					if ((($start >= $existSessionStart) && ($start <= $existSessionEnd))
-						|| (($end >= $existSessionStart) && ($end <= $existSessionEnd))
-						|| (($start <= $existSessionStart) && ($end >= $existSessionStart)))
+					if ((($start >= $existSessionStart) && ($start < $existSessionEnd))
+						|| (($end > $existSessionStart) && ($end <= $existSessionEnd))
+						|| (($start < $existSessionStart) && ($end > $existSessionStart)))
 					{
 						// Move this session to next row.
 						$fitsIn = false;

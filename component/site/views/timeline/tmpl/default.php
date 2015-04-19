@@ -233,8 +233,8 @@ RHtml::_('rjquery.ui');
 										<?php endforeach; ?>
 										</div>
 										<div class="time-venues-base-information" id="time-venues-session-infor-<?php echo $rowIndex ?>"></div>
+										<?php $rowIndex++; ?>
 									<?php endforeach; ?>
-									<?php $rowIndex++; ?>
 								<?php endforeach; ?>
 							</div>
 						</div>
