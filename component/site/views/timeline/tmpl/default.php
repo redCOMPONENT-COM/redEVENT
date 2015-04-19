@@ -170,15 +170,16 @@ RHtml::_('rjquery.ui');
 						$venueIndex = 0;
 						?>
 						<?php foreach ($this->sortedRows as $venues): ?>
-							<?php foreach ($venues['events'] as $venueEvent): ?>
+							<?php /*foreach ($venues['events'] as $venueEvent): ?>
 								<?php $currentHeight = count($venueEvent->sessions) * $baseHeight; ?>
-								<?php $venueUrl = RedeventHelperRoute::getVenueTimelineRoute($venues['slug']); ?>
-								<div class="timeline-venue" style="height: <?php echo $currentHeight ?>px;">
-									<?php echo JHtml::link($venueUrl, $venues['venue']); ?>
-								</div>
-								<div class="timeline-venues-fake" id="timeline-venues-fake-<?php echo $venueIndex ?>"></div>
-								<?php $timelineHeight += $currentHeight; ?>
-							<?php endforeach; ?>
+							<?php endforeach;*/ ?>
+							<?php $currentHeight = $venues['rowsCount'] * $baseHeight; ?>
+							<?php $venueUrl = RedeventHelperRoute::getVenueTimelineRoute($venues['slug']); ?>
+							<div class="timeline-venue" style="height: <?php echo $currentHeight ?>px;">
+								<?php echo JHtml::link($venueUrl, $venues['venue']); ?>
+							</div>
+							<div class="timeline-venues-fake" id="timeline-venues-fake-<?php echo $venueIndex ?>"></div>
+							<?php $timelineHeight += $currentHeight; ?>
 							<?php $venueIndex++; ?>
 						<?php endforeach; ?>
 					</div>
