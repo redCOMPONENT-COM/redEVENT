@@ -196,6 +196,7 @@ class RedeventViewTimeline extends RViewSite
 		$filter_category = $state->get('filter_category');
 		$filter_date     = $state->get('filter_date');
 		$filter_venue    = $state->get('filter_venue');
+		$filter_venuecategory = $state->get('filter_venuecategory');
 		$filter_event    = $state->get('filter_event');
 
 		$this->assign('action', JRoute::_('index.php?option=com_redevent&view=timeline'));
@@ -244,6 +245,11 @@ class RedeventViewTimeline extends RViewSite
 		$options = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_FILTER_SELECT_VENUE')));
 		$options = array_merge($options, $this->get('VenuesOptions'));
 		$lists['venuefilter'] = JHTML::_('select.genericlist', $options, 'filter_venue', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_venue);
+
+		// Venue category filter
+		$options = array(JHTML::_('select.option', '', JText::_('COM_REDEVENT_Select_venue_category')));
+		$options = array_merge($options, RedeventHelper::getVenuesCatOptions());
+		$lists['venuecategoryfilter'] = JHTML::_('select.genericlist', $options, 'filter_venuecategory', 'size="1" class="inputbox dynfilter"', 'value', 'text', $filter_venuecategory);
 
 		// Events filter
 		if ($params->get('lists_filter_event', 0))
