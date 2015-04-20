@@ -428,4 +428,29 @@ class RedeventViewTimeline extends RViewSite
 			$state->get('filter_date')
 		);
 	}
+
+	/**
+	 * Support [session_read_more] tag
+	 *
+	 * @param   object  $session  session details
+	 *
+	 * @return string
+	 */
+	protected function getSessionDescription($session)
+	{
+		$text = $session->details;
+
+		if ($pos = strpos($text, '[session_read_more]'))
+		{
+			$text = substr($text, 0, $pos);
+			$text .= '<span class="session-read-more">'
+				. JHtml::link(
+					RedeventHelperRoute::getDetailsRoute($session->slug, $session->xslug),
+					JText::_('COM_REDEVENT_TIMELINE_READMORE')
+				)
+				. '</span>';
+		}
+
+		return $text;
+	}
 }

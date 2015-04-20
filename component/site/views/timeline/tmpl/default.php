@@ -207,6 +207,7 @@ RHtml::_('rjquery.ui');
 													$session->eventImage = $event->datimage;
 													$additionClass = '';
 													$iCalLink = JRoute::_('index.php?option=com_redevent&view=details&id=' . $session->slug . '&xref=' . $session->xslug . '&Itemid=' . $itemId . '&format=raw&layout=ics');
+													$session->details = $this->getSessionDescription($session);
 
 													if (!empty($session->custom6)):
 														$sessionTypes = explode("\n", $session->custom6);
