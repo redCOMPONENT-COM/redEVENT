@@ -107,6 +107,11 @@ class RedeventModelBaseeventlist extends RModel
 		$this->setState('filter_multicategory', $app->input->get('filter_multicategory', null, 'array'));
 		$this->setState('filter_multivenue',    $app->input->get('filter_multivenue',    null, 'array'));
 
+		$filter_venuecategory = $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_venuecategory',
+			'filter_venuecategory', 0, 'int'
+		);
+		$this->setState('filter_venuecategory', $filter_venuecategory);
+
 		$customs      = $app->input->get('filtercustom', array(), 'array');
 		$this->setState('filter_customs', $customs);
 
@@ -375,6 +380,12 @@ class RedeventModelBaseeventlist extends RModel
 						break;
 				}
 			}
+		}
+
+
+		if ($filter_venuecategory = $this->getState('filter_venuecategory'))
+		{
+			$query->where('vc.id = ' . $filter_venuecategory);
 		}
 
 		if ($filter_multivenue = $this->getState('filter_multivenue'))
@@ -959,7 +970,7 @@ class RedeventModelBaseeventlist extends RModel
 
 		if ($vcat)
 		{
-			$category = $this->getCategory($vcat);
+			$category = $this->getVenueCategory($vcat);
 			$where[] = ' (vcat.id = ' . $this->_db->Quote($category->id) . ' OR (vcat.lft > ' . $this->_db->Quote($category->lft) . ' AND vcat.rgt < ' . $this->_db->Quote($category->rgt) . '))';
 		}
 
@@ -1050,6 +1061,24 @@ class RedeventModelBaseeventlist extends RModel
 		$query = ' SELECT c.id, c.name AS catname, c.lft, c.rgt '
 		. ' FROM #__redevent_categories AS c '
 		. ' WHERE c.id = ' . $this->_db->Quote($id);
+		$this->_db->setQuery($query);
+		$res = $this->_db->loadObject();
+
+		return $res;
+	}
+
+	/**
+	 * get a category
+	 *
+	 * @param   int  $id  category id
+	 *
+	 * @return object
+	 */
+	public function getVenueCategory($id)
+	{
+		$query = ' SELECT c.id, c.name AS catname, c.lft, c.rgt '
+			. ' FROM #__redevent_venues_categories AS c '
+			. ' WHERE c.id = ' . $this->_db->Quote($id);
 		$this->_db->setQuery($query);
 		$res = $this->_db->loadObject();
 

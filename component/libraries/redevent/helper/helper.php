@@ -336,7 +336,7 @@ class RedeventHelper
 		$app = JFactory::getApplication();
 		$db  = JFactory::getDBO();
 
-		$gids = JFactory::getUser()->getAuthorisedViewLevels();
+		$gids = array_unique(JFactory::getUser()->getAuthorisedViewLevels());
 		$gids = implode(',', $gids);
 
 		if ($show_empty == false)
@@ -353,26 +353,24 @@ class RedeventHelper
 			;
 			$db->setQuery($query);
 
-			$cats = $db->loadResultArray();
-			if (empty($cats)) {
-				return array();
-			}
+			$cats = $db->loadColumn();
 		}
 		else
 		{
 			// select only categories with published venues
 			$query = ' SELECT c.id '
 			. ' FROM #__redevent_venues_categories AS c '
-			. ' WHERE c.published = 1 '
-			. '   AND c.access IN (' . $gids . ')'
+			. ' WHERE c.access IN (' . $gids . ')'
 			. ' GROUP BY c.id '
 			;
 			$db->setQuery($query);
 
-			$cats = $db->loadResultArray();
-			if (empty($cats)) {
-				return array();
-			}
+			$cats = $db->loadColumn();
+		}
+
+		if (empty($cats))
+		{
+			return array();
 		}
 
 		$query =  ' SELECT c.id, c.name, (COUNT(parent.id) - 1) AS depth '
