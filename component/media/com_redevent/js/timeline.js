@@ -40,22 +40,14 @@
 			$('#adminForm').submit();
 		});
 
-		/**
-		 * active session
-		 * @type object
-		 */
-		var active = false;
-
 		$('.timeline-venues').click(function(event){
 			event.preventDefault();
 
-			if (active) {
-				active.removeClass('active');
-				active = null;
-			}
-			else {
-				active = $(this).addClass('active');
-			}
+			$('.timeline-venues.active').each(function(){
+				$(this).removeClass('active');
+			});
+
+			$(this).addClass('active');
 
 			var hiddenInfor = $(this).next('.session-infor-hidden');
 			var rowIndex = hiddenInfor.attr('data-row');
