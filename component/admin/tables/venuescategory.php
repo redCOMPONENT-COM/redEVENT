@@ -72,7 +72,7 @@ class RedeventTableVenuesCategory extends RedeventTable
 	/**
 	 * Method to store a node in the database table.
 	 *
-	 * @param   boolean  $updateNulls  True to update null values as well.
+	 * @param   boolean $updateNulls True to update null values as well.
 	 *
 	 * @return  boolean  True on success.
 	 */
@@ -91,9 +91,72 @@ class RedeventTableVenuesCategory extends RedeventTable
 	}
 
 	/**
+	 * rebuild category tree
+	 *
+	 * @return void
+	 */
+	public function rebuildTree()
+	{
+		$this->_rebuildTree(0, 0);
+	}
+
+	/**
+	 * recursive function to build the tree
+	 *
+	 * @param   object   $parent  parent category
+	 * @param   integer  $left    left value
+	 *
+	 * @return number
+	 */
+	protected function _rebuildTree($parent, $left)
+	{
+		// The right value of this node is the left value + 1
+		$right = $left + 1;
+
+		// Get all children of this node
+		$db = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->select('id');
+		$query->from('#__redevent_venues_categories');
+		$query->where('parent_id = ' . $this->_db->Quote($parent));
+		$query->order('ordering');
+
+		$db->setQuery($query);
+		$children = $db->loadColumn();
+
+		foreach ((array) $children as $child_id)
+		{
+			/**
+			 * Recursive execution of this function for each
+			 * child of this node
+			 * $right is the current right value, which is
+			 * incremented by the rebuild_tree function
+			 */
+			$right = $this->_rebuildTree($child_id, $right);
+		}
+
+		// We've got the left value, and now that we've processed
+		// the children of this node we also know the right value
+		$db = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->update('#__redevent_venues_categories');
+		$query->set('lft = ' . $left);
+		$query->set('rgt = ' . $right);
+		$query->where('id = ' . $parent);
+
+		$db->setQuery($query);
+		$db->execute();
+
+		// Return the right value of this node + 1
+		return $right + 1;
+	}
+
+	/**
 	 * Called before delete().
 	 *
-	 * @param   mixed  $pk  An optional primary key value to delete.  If not set the instance property value is used.
+	 * @param   mixed $pk An optional primary key value to delete.  If not set the instance property value is used.
 	 *
 	 * @return  boolean  True on success.
 	 */
@@ -139,31 +202,9 @@ class RedeventTableVenuesCategory extends RedeventTable
 	}
 
 	/**
-	 * Check that specified categogries have no events assigned
-	 *
-	 * @param   array  $quotedIds  quoted ids
-	 *
-	 * @return bool
-	 */
-	private function haveNoVenues($quotedIds)
-	{
-		$db = $this->_db;
-		$query = $db->getQuery(true);
-
-		$query->select('COUNT(*)');
-		$query->from('#__redevent_venue_category_xref');
-		$query->where('category_id IN (' . $quotedIds . ')');
-
-		$db->setQuery($query);
-		$res = $db->loadResult();
-
-		return $res ? false : true;
-	}
-
-	/**
 	 * Check that specified categogies have subcategories
 	 *
-	 * @param   array  $quotedIds  quoted ids
+	 * @param   array $quotedIds quoted ids
 	 *
 	 * @return bool
 	 */
@@ -183,9 +224,31 @@ class RedeventTableVenuesCategory extends RedeventTable
 	}
 
 	/**
+	 * Check that specified categogries have no events assigned
+	 *
+	 * @param   array $quotedIds quoted ids
+	 *
+	 * @return bool
+	 */
+	private function haveNoVenues($quotedIds)
+	{
+		$db = $this->_db;
+		$query = $db->getQuery(true);
+
+		$query->select('COUNT(*)');
+		$query->from('#__redevent_venue_category_xref');
+		$query->where('category_id IN (' . $quotedIds . ')');
+
+		$db->setQuery($query);
+		$res = $db->loadResult();
+
+		return $res ? false : true;
+	}
+
+	/**
 	 * Called after delete().
 	 *
-	 * @param   mixed  $pk  An optional primary key value to delete.  If not set the instance property value is used.
+	 * @param   mixed $pk An optional primary key value to delete.  If not set the instance property value is used.
 	 *
 	 * @return  boolean  True on success.
 	 */
@@ -194,36 +257,5 @@ class RedeventTableVenuesCategory extends RedeventTable
 		$this->rebuildTree();
 
 		return parent::afterDelete($pk);
-	}
-
-	public function rebuildTree()
-	{
-		$this->_rebuildTree(0, 0);
-	}
-
-	protected function _rebuildTree($parent, $left)
-	{
-	   // the right value of this node is the left value + 1
-	   $right = $left+1;
-
-	   // get all children of this node
-	   $this->_db->setQuery('SELECT id FROM #__redevent_venues_categories WHERE parent_id = '.$this->_db->Quote($parent));
-	   $children = $this->_db->loadResultArray();
-	   foreach((array)$children as $child_id) {
-	       // recursive execution of this function for each
-	       // child of this node
-	       // $right is the current right value, which is
-	       // incremented by the rebuild_tree function
-	       $right = $this->_rebuildTree($child_id, $right);
-	   }
-
-	   // we've got the left value, and now that we've processed
-	   // the children of this node we also know the right value
-	   $this->_db->setQuery('UPDATE #__redevent_venues_categories SET lft='.$left.', rgt='.
-	                $right.' WHERE id='.$parent);
-	   $this->_db->query();
-
-	   // return the right value of this node + 1
-	   return $right+1;
 	}
 }

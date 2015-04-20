@@ -179,6 +179,7 @@ class RedeventTableCategory extends RedeventTable
 		$query->select('id');
 		$query->from('#__redevent_categories');
 		$query->where('parent_id = ' . $this->_db->Quote($parent));
+		$query->order('ordering');
 
 		$db->setQuery($query);
 		$children = $db->loadColumn();
@@ -212,7 +213,7 @@ class RedeventTableCategory extends RedeventTable
 	}
 
 	/**
-	 * Check that specified categogries have no events assigned
+	 * Check that specified categories have no events assigned
 	 *
 	 * @param   array  $quotedIds  quoted ids
 	 *
