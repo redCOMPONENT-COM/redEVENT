@@ -189,7 +189,7 @@ class RedEventModelXrefelement extends JModel
 		$filter_state 		= $mainframe->getUserStateFromRequest( $option.'.xrefelement.filter_state', 'filter_state', '', 'word' );
 		$filter 			= $mainframe->getUserStateFromRequest( $option.'.xrefelement.filter', 'filter', '', 'int' );
 		$search 			= $mainframe->getUserStateFromRequest( $option.'.xrefelement.search', 'search', '', 'string' );
-		$search 			= $this->_db->getEscaped( trim(JString::strtolower( $search ) ) );
+		$search 			= $this->_db->escape( trim(JString::strtolower( $search ) ) );
 
 		$form_id = JRequest::getInt('form_id');
 

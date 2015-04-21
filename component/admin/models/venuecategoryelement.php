@@ -187,7 +187,7 @@ class RedEventModelVenuecategoryelement extends JModel
 
 		$filter_state 		= $mainframe->getUserStateFromRequest( $option.'.venuecategoryelement.filter_state', 'filter_state', '', 'word' );
 		$search 			= $mainframe->getUserStateFromRequest( $option.'.venuecategoryelement.search', 'search', '', 'string' );
-		$search 			= $this->_db->getEscaped( trim(JString::strtolower( $search ) ) );
+		$search 			= $this->_db->escape( trim(JString::strtolower( $search ) ) );
 
 		$where = array();
 
