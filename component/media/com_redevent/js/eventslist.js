@@ -24,7 +24,6 @@
 window.addEvent('domready', function(){
 
 	$$('.dynfilter').addEvent('change', function() {
-		redhint.removehint();
 		this.form.submit();
 		return true;
 	});
@@ -65,22 +64,9 @@ window.addEvent('domready', function(){
 			$('el-events-filters').getElements('select').each(function(el){
 				el.value = '';
 			});
-			redhint.removehint();
 			this.form.submit();
 			return true;
 		});
 	}
 });
-
-function tableOrdering( order, dir, view )
-{
-	var form = document.getElementById("adminForm");
-
-	// remove the hint from the filter
-	redhint.removehint();
-
-	form.filter_order.value 	= order;
-	form.filter_order_Dir.value	= dir;
-	form.submit( view );
-}
 
