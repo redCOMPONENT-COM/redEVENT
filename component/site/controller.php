@@ -170,6 +170,7 @@ class RedeventController extends JControllerLegacy
 				case 'featured':
 				case 'search':
 				case 'simplelist':
+				case 'timeline':
 				case 'venueevents':
 				case 'venuesmap':
 				case 'week':
