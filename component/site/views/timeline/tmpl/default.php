@@ -110,7 +110,10 @@ RHtml::_('rjquery.ui');
 							<div id="category-filter"><?php echo $this->lists['categoryfilter']; ?></div>
 						<?php endif; ?>
 
-						<div id="venuecategory-filter"><?php echo $this->lists['venuecategoryfilter']; ?></div>
+						<div id="venuecategory-filter" class="custom-filter">
+							<?php echo $this->lists['venuecategoryfilter']; ?>
+							<ul id="divselectvenuecategory" class="dynfilter"></ul>
+						</div>
 
 						<?php if ($this->params->get('lists_filter_venue', 1)): ?>
 							<div id="venue-filter"><?php echo $this->lists['venuefilter']; ?></div>
