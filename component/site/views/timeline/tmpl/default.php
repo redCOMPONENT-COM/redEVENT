@@ -91,7 +91,7 @@ RHtml::_('rjquery.ui');
 							<div id="main-filter">
 								<label for="filter_type"><?php echo JText::_('COM_REDEVENT_FILTER') ?></label>&nbsp
 								<?php echo $this->lists['filter_type'] ?>&nbsp;
-								<input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" title="<?php echo JText::_('COM_REDEVENT_EVENTS_FILTER_HINT'); ?>"/>
+								<input type="text" name="filter" id="filter" value="<?php echo $this->lists['filter'];?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" placeholder="<?php echo JText::_('COM_REDEVENT_EVENTS_FILTER_HINT'); ?>"/>
 								<button onclick="document.getElementById('adminForm').submit();"><?php echo JText::_('COM_REDEVENT_GO' ); ?></button>
 							</div>
 						<?php endif; ?>
