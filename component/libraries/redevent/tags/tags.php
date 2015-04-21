@@ -664,7 +664,7 @@ class RedeventTags
 
 			$query->select('c.id, c.name AS catname, c.image')
 				->select('CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(":", c.id, c.alias) ELSE c.id END as slug')
-				->from('##__redevent_categories AS c')
+				->from('#__redevent_categories AS c')
 				->join('INNER', '#__redevent_event_category_xref AS xcat ON xcat.category_id = c.id')
 				->where('xcat.event_id = ' . $db->Quote($r->id))
 				->order('c.lft');
@@ -1158,7 +1158,7 @@ class RedeventTags
 				. ' FROM #__redevent_register AS r '
 				. ' WHERE r.submit_key = ' . $db->quote($this->_submitkey);
 			$db->setQuery($query);
-			$sids = $db->loadResultArray();
+			$sids = $db->loadColumn();
 		}
 
 		$rfcore = $this->_getRFCore();

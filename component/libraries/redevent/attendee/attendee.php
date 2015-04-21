@@ -782,7 +782,7 @@ class RedeventAttendee extends JObject
 				. '   AND r.cancelled = 0 '
 				. '   AND r.waitinglist = 0 ';
 			$this->_db->setQuery($query);
-			self::$attending[$this->getXref()] = $this->_db->loadResultArray();
+			self::$attending[$this->getXref()] = $this->_db->loadColumn();
 		}
 
 		return self::$attending[$this->getXref()];
