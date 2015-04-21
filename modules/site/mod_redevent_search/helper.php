@@ -89,7 +89,7 @@ class modRedEventSearchHelper
 		$query .= ' ORDER BY c.ordering';
 
 		$this->_db->setQuery($query);
-		$res = $this->_db->loadResultArray();
+		$res = $this->_db->loadColumn();
 
 		return RedeventHelper::getEventsCatOptions(true, false, $res);
 	}

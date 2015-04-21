@@ -1158,7 +1158,7 @@ class RedeventTags
 				. ' FROM #__redevent_register AS r '
 				. ' WHERE r.submit_key = ' . $db->quote($this->_submitkey);
 			$db->setQuery($query);
-			$sids = $db->loadResultArray();
+			$sids = $db->loadColumn();
 		}
 
 		$rfcore = $this->_getRFCore();

@@ -941,7 +941,7 @@ class RedeventModelBaseeventlist extends RModel
 		$query .= ' GROUP BY c.id ';
 
 		$this->_db->setQuery($query);
-		$res = $this->_db->loadResultArray();
+		$res = $this->_db->loadColumn();
 
 		return RedeventHelper::getEventsCatOptions(true, false, $res);
 	}

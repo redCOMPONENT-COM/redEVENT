@@ -171,7 +171,7 @@ class RedeventModelWaitinglist extends RModel {
 		$db = $this->_db;
 		$q = "SELECT id FROM #__redevent_event_venue_xref WHERE eventid = ".$this->eventid;
 		$db->setQuery($q);
-		return $db->loadResultArray();
+		return $db->loadColumn();
 	}
 
 	/**
@@ -209,7 +209,7 @@ class RedeventModelWaitinglist extends RModel {
 			ORDER BY confirmdate
 			LIMIT ".$this->move_off;
 		$db->setQuery($q);
-		$this->move_off_ids = $db->loadResultArray();
+		$this->move_off_ids = $db->loadColumn();
 
 		if (!count($this->move_off_ids)) {
 			return true;
@@ -241,7 +241,7 @@ class RedeventModelWaitinglist extends RModel {
 			ORDER BY confirmdate DESC
 			LIMIT ".$this->move_on;
 		$db->setQuery($q);
-		$this->move_on_ids = $db->loadResultArray();
+		$this->move_on_ids = $db->loadColumn();
 
 
 		if (!count($this->move_on_ids)) {

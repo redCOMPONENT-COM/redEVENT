@@ -108,7 +108,7 @@ class RedEventModelAttendees extends RModel
 		       . '   AND r.cancelled = 0 '
 		       ;
 		$this->_db->setQuery($query);
-		$res = $this->_db->loadResultArray();
+		$res = $this->_db->loadColumn();
 
 		if (!count($res)) {
 			return false;

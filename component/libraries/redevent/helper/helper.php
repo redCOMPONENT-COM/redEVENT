@@ -277,7 +277,7 @@ class RedeventHelper
 			;
 			$db->setQuery($query);
 
-			$notempty = $db->loadResultArray();
+			$notempty = $db->loadColumn();
 			if (empty($notempty)) {
 				return array();
 			}
