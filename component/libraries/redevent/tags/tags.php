@@ -290,10 +290,8 @@ class RedeventTags
 			$query->select('x.id')
 				->from($this->_db->qn('#__redevent_event_venue_xref', 'x'))
 				->join('INNER', '#__redevent_events AS e ON e.id = x.eventid')
-				->join('LEFT', '#__')
 				->where('x.published = 1')
-				->where('x.published = 1')
-				->group('x.eventid = ' . $this->_db->Quote($eventid))
+				->where('x.eventid = ' . $this->_db->Quote($eventid))
 				->order('x.dates ASC');
 
 			$this->_db->setQuery($query);
@@ -729,8 +727,6 @@ class RedeventTags
 
 				$query->select('COUNT(r.id) AS total')
 					->from('#__redevent_register AS r')
-					->join('INNER', '#__')
-					->join('LEFT', '#__')
 					->where('r.xref = ' . $db->Quote($r->xref))
 					->where('r.confirmed = 1')
 					->where('r.cancelled = 0')

@@ -175,7 +175,6 @@ class RedeventTableEvent extends RedeventTable
 		$query->select('e.*');
 		$query->from('#__redevent_events as e');
 		$query->join('INNER', '#__redevent_event_venue_xref as x ON x.eventid = e.id');
-		$query->join('LEFT', '#__');
 		$query->where('x.id = ' . (int) $xref);
 
 		$db->setQuery($query);
