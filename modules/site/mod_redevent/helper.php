@@ -70,29 +70,29 @@ class modRedEventHelper
 		if ($type == 0) // Published
 		{
 			$where[] = 'x.published = 1';
-			$where[] = 'e.published = 1';
+			$where[] = 'a.published = 1';
 		}
 		elseif ($type == 1) // Upcoming
 		{
 			$date = $offset ? 'now +' . $offset . ' days' : 'now';
 			$ref = strftime('%Y-%m-%d %H:%M', strtotime($date));
-			$where[] = 'e.published = 1';
+			$where[] = 'a.published = 1';
 			$where[] = 'x.published = 1 AND (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) > ' . $db->Quote($ref);
 		}
 		elseif ($type == 2) // Archived
 		{
-			$where[] = 'e.published = -1';
+			$where[] = 'a.published = -1';
 			$where[] = 'x.published = -1';
 		}
 		elseif ($type == 3) // Open dates
 		{
 			$where[] = 'x.published = 1';
-			$where[] = 'e.published = 1';
+			$where[] = 'a.published = 1';
 			$where[] = 'x.dates = 0';
 		}
 		elseif ($type == 4) // Just passed dates
 		{
-			$where[] = 'e.published = 1';
+			$where[] = 'a.published = 1';
 			$date = $offset ? 'now -' . $offset . ' days' : 'now';
 			$ref = strftime('%Y-%m-%d %H:%M', strtotime($date));
 			$where[] = 'x.published = 1 AND (CASE WHEN x.times THEN CONCAT(x.dates," ",x.times) ELSE x.dates END) < ' . $db->Quote($ref);
