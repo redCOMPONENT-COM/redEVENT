@@ -81,7 +81,7 @@ class RedeventModelBaseeventlist extends RModel
 		$app = JFactory::getApplication();
 
 		// Get the paramaters of the active menu item
-		$params 	= & $app->getParams('com_redevent');
+		$params 	= $app->getParams('com_redevent');
 
 		// Get the number of events from database
 		$limit       	= $app->getUserStateFromRequest('com_redevent.limit', 'limit', $params->def('display_num', 0), 'int');
@@ -97,19 +97,18 @@ class RedeventModelBaseeventlist extends RModel
 		$this->setState('filter_order',     $app->input->getCmd('filter_order', 'x.dates'));
 		$this->setState('filter_order_Dir', strtoupper($app->input->getCmd('filter_order_Dir', 'ASC')) == 'DESC' ? 'DESC' : 'ASC');
 
-		$this->setState('filter',      $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter',      'filter', '', 'string'));
-		$this->setState('filter_type', $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_type', 'filter_type', '', 'string'));
+		$this->setState('filter',      $app->input->get('filter', '', 'string'));
+		$this->setState('filter_type', $app->input->get('filter_type', '', 'string'));
 
-		$this->setState('filter_event',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_event',    'filter_event', 0, 'int'));
-		$this->setState('filter_category', $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_category', 'filter_category', 0, 'int'));
-		$this->setState('filter_venue',    $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_venue',    'filter_venue',    0, 'int'));
+		$this->setState('filter_event',    $app->input->get('filter_event', 0, 'int'));
+		$this->setState('filter_category', $app->input->get('filter_category', 0, 'int'));
+		$this->setState('filter_venue', $app->input->get('filter_venue', 0, 'int'));
+		$this->setState('filter_date', $app->input->get('filter_date', '', 'string'));
 
 		$this->setState('filter_multicategory', $app->input->get('filter_multicategory', null, 'array'));
 		$this->setState('filter_multivenue',    $app->input->get('filter_multivenue',    null, 'array'));
 
-		$filter_venuecategory = $app->getUserStateFromRequest('com_redevent.' . $this->getName() . '.filter_venuecategory',
-			'filter_venuecategory', 0, 'int'
-		);
+		$filter_venuecategory = $app->input->get('filter_venuecategory', 0, 'int');
 		$this->setState('filter_venuecategory', $filter_venuecategory);
 
 		$customs      = $app->input->get('filtercustom', array(), 'array');

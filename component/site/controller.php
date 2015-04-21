@@ -1,60 +1,63 @@
 <?php
 /**
  * @copyright Copyright (C) 2008 redCOMPONENT.com. All rights reserved.
- * @license can be read in this package of software in the file license.txt or
+ * @license   can be read in this package of software in the file license.txt or
  * read on http://redcomponent.com/license.txt
  * Developed by email@recomponent.com - redCOMPONENT.com
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 
 /**
  * Redevent Component Controller
  *
- * @package Joomla
+ * @package    Joomla
  * @subpackage redEVENT
- * @since 0.9
-*/
+ * @since      0.9
+ */
 class RedeventController extends JControllerLegacy
 {
 	/**
-	 * Constructor
+	 * Constructor.
 	 *
-	 * @since 0.9
+	 * @param   array $config An optional associative array of configuration settings.
+	 *                        Recognized key values include 'name', 'default_task', 'model_path', and
+	 *                        'view_path' (this list is not meant to be comprehensive).
 	 */
-	function __construct()
+	public function __construct($config = array())
 	{
 		parent::__construct();
 
-		//register extratasks
-		$this->registerTask( 'ical', 'vcal' );
-		$this->registerTask( 'unpublishxref', 'publishxref' );
-		$this->registerTask( 'archivexref', 'publishxref' );
-
-		// prevent issues with view name change in 2.0 beta 6.2
-		if (JRequest::getVar('view') == 'eventlist') {
-			JRequest::setVar('view', 'simplelist');
-		}
+		// Register extra tasks
+		$this->registerTask('ical', 'vcal');
+		$this->registerTask('unpublishxref', 'publishxref');
+		$this->registerTask('archivexref', 'publishxref');
 	}
 
 	/**
-	 * Display the view
+	 * Typical view method for MVC based architecture
 	 *
-	 * @since 0.9
+	 * This function is provide as a default implementation, in most cases
+	 * you will need to override it in your own controllers.
+	 *
+	 * @param   boolean  $cachable   If true, the view output will be cached
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 *
+	 * @return  JController  A JController object to support chaining.
 	 */
-	function display()
+	public function display($cachable = false, $urlparams = false)
 	{
-		// if filter is set, put the filter values as get variable so that the user can go back without warning
-		if ($this->_checkfilter()) { // a redirect was set in the filter function
-			return;
-		}
+		// If filter is set, put the filter values as get variable so that the user can go back without warning
+		$this->checkfilter();
 
-		$view = JRequest::getVar('view', '');
+		$view = $this->input->get('view', '');
 
-		$method = '_display'.ucfirst($view);
-		if (method_exists($this, $method)) {
+		$method = '_display' . ucfirst($view);
+
+		if (method_exists($this, $method))
+		{
 			return $this->$method();
 		}
 
@@ -83,15 +86,20 @@ class RedeventController extends JControllerLegacy
 		parent::display();
 	}
 
-	function _checkfilter()
+	/**
+	 * Check if there are post filter, then redirect to get
+	 *
+	 * @return void
+	 */
+	protected function checkfilter()
 	{
-		$app = & JFactory::getApplication();
+		$post = $this->input->post->getArray();
+		$uri = Jfactory::getUri();
 
-		$post = JRequest::get('post');
-		$uri  = Jfactory::getUri();
-
-		$myuri = clone($uri); // do not modify it if not proper view...
+		// Do not modify it if not proper view...
+		$myuri = clone($uri);
 		$vars = 0;
+
 		foreach ($post as $filter => $v)
 		{
 			switch ($filter)
@@ -105,6 +113,7 @@ class RedeventController extends JControllerLegacy
 				case 'filter_type':
 				case 'filter_venue':
 				case 'filter_multivenue':
+				case 'filter_date':
 				case 'layout':
 				case 'task':
 					if ($v)
@@ -113,43 +122,59 @@ class RedeventController extends JControllerLegacy
 						$vars++;
 					}
 					break;
+
 				case 'filtercustom':
 					$filt = array();
+
 					foreach ((array) $v as $n => $val)
 					{
 						if (is_array($val))
 						{
-							//							echo '<pre>';print_r($val); echo '</pre>';exit;
 							$r = array();
-							foreach ($val as $sub) {
-								if ($sub) $r[] = $sub;
+
+							foreach ($val as $sub)
+							{
+								if ($sub)
+								{
+									$r[] = $sub;
+								}
 							}
+
 							$myuri->setVar("filtercustom[$n]", $r);
 						}
-						else {
-							if ($val) $filt[$n] = $val;
+						else
+						{
+							if ($val)
+							{
+								$filt[$n] = $val;
+							}
 						}
 					}
-					if (count($filt)) {
-						//						echo '<pre>';print_r($filt); echo '</pre>';exit;
+
+					if (count($filt))
+					{
 						$myuri->setVar($filter, $filt);
 						$vars++;
 					}
+
 					break;
 			}
 		}
 
 		if ($vars)
 		{
-			switch (JRequest::getVar('view', ''))
+			switch ($this->input->get('view', ''))
 			{
 				case 'categoryevents':
-				case 'venueevents':
-				case 'simplelist':
-				case 'venuesmap':
+				case 'day':
+				case 'featured':
 				case 'search':
+				case 'simplelist':
+				case 'venueevents':
+				case 'venuesmap':
+				case 'week':
 					$this->setRedirect(JRoute::_($myuri->toString(), false));
-					break;
+					$this->redirect();
 			}
 		}
 	}
@@ -161,7 +186,8 @@ class RedeventController extends JControllerLegacy
 	function cancelreg()
 	{
 		$xref = JRequest::getInt('xref');
-		if (!RedeventHelper::canUnregister($xref)) {
+		if (!RedeventHelper::canUnregister($xref))
+		{
 			echo JText::_('COM_REDEVENT_UNREGISTRATION_NOT_ALLOWED');
 			return;
 		}
@@ -188,54 +214,57 @@ class RedeventController extends JControllerLegacy
 	/**
 	 * offers the vcal/ical functonality
 	 *
-	 * @todo Not yet working
+	 * @todo   Not yet working
 	 *
 	 * @author Lybegard Karl-Olof
-	 * @since 0.9
+	 * @since  0.9
 	 */
 	function vcal()
 	{
 		$mainframe = &JFactory::getApplication();
 
-		$task 			= JRequest::getWord( 'task' );
-		$id 			= JRequest::getInt( 'id' );
-		$user_offset 	= $mainframe->getCfg( 'offset_user' );
+		$task = JRequest::getWord('task');
+		$id = JRequest::getInt('id');
+		$user_offset = $mainframe->getCfg('offset_user');
 
 		//get Data from model
-		$model = & $this->getModel('Details', 'RedEventModel');
-		$model->setId((int)$id);
+		$model = &$this->getModel('Details', 'RedEventModel');
+		$model->setId((int) $id);
 
 		$row = $model->getDetails();
 
 		$Start = mktime(strftime('%H', strtotime($row->times)),
-		strftime('%M', strtotime($row->times)),
-		strftime('%S', strtotime($row->times)),
-		strftime('%m', strtotime($row->dates)),
-		strftime('%d', strtotime($row->dates)),
-		strftime('%Y', strtotime($row->dates)),0);
+			strftime('%M', strtotime($row->times)),
+			strftime('%S', strtotime($row->times)),
+			strftime('%m', strtotime($row->dates)),
+			strftime('%d', strtotime($row->dates)),
+			strftime('%Y', strtotime($row->dates)), 0);
 
-		$End   = mktime(strftime('%H', strtotime($row->endtimes)),
-		strftime('%M', strtotime($row->endtimes)),
-		strftime('%S', strtotime($row->endtimes)),
-		strftime('%m', strtotime($row->enddates)),
-		strftime('%d', strtotime($row->enddates)),
-		strftime('%Y', strtotime($row->enddates)),0);
+		$End = mktime(strftime('%H', strtotime($row->endtimes)),
+			strftime('%M', strtotime($row->endtimes)),
+			strftime('%S', strtotime($row->endtimes)),
+			strftime('%m', strtotime($row->enddates)),
+			strftime('%d', strtotime($row->enddates)),
+			strftime('%Y', strtotime($row->enddates)), 0);
 
-		require_once (JPATH_COMPONENT_SITE.DS.'classes'.DS.'vcal.class.php');
+		require_once(JPATH_COMPONENT_SITE . DS . 'classes' . DS . 'vcal.class.php');
 
 		$v = new vCal();
 
 		$v->setTimeZone($user_offset);
-		$v->setSummary($row->venue.'-'.$row->name.'-'.RedeventHelper::getSessionFullTitle($row));
+		$v->setSummary($row->venue . '-' . $row->name . '-' . RedeventHelper::getSessionFullTitle($row));
 		$v->setDescription($row->datdescription);
 		$v->setStartDate($Start);
 		$v->setEndDate($End);
-		$v->setLocation($row->street.', '.$row->plz.', '.$row->city.', '.$row->country);
-		$v->setFilename((int)$row->did);
+		$v->setLocation($row->street . ', ' . $row->plz . ', ' . $row->city . ', ' . $row->country);
+		$v->setFilename((int) $row->did);
 
-		if ($task == 'vcal') {
+		if ($task == 'vcal')
+		{
 			$v->generateHTMLvCal();
-		} else {
+		}
+		else
+		{
 			$v->generateHTMLiCal();
 		}
 
@@ -244,7 +273,8 @@ class RedeventController extends JControllerLegacy
 	/**
 	 * Initialise the mailer object to start sending mails
 	 */
-	private function Mailer() {
+	private function Mailer()
+	{
 		$mainframe = &JFactory::getApplication();
 		jimport('joomla.mail.helper');
 		/* Start the mailer object */
@@ -262,7 +292,7 @@ class RedeventController extends JControllerLegacy
 	 */
 	public function publishxref()
 	{
-		$acl  = RedeventUserAcl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 		$xref = $this->input->getInt('xref');
 
 		if (!$acl->canPublishXref($xref))
@@ -296,7 +326,7 @@ class RedeventController extends JControllerLegacy
 		}
 		else
 		{
-			$msg = JText::_('COM_REDEVENT_PUBLISHED_STATE_UPDATE_ERROR').'<br>'.$model->getError();
+			$msg = JText::_('COM_REDEVENT_PUBLISHED_STATE_UPDATE_ERROR') . '<br>' . $model->getError();
 			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');
 		}
 	}
@@ -309,7 +339,7 @@ class RedeventController extends JControllerLegacy
 	 */
 	public function deletexref()
 	{
-		$acl  = RedeventUserAcl::getInstance();
+		$acl = RedeventUserAcl::getInstance();
 		$xref = $this->input->getInt('xref');
 
 		if (!$acl->canEditXref($xref))
@@ -329,16 +359,16 @@ class RedeventController extends JControllerLegacy
 		}
 		else
 		{
-			$msg = JText::_('COM_REDEVENT_EVENT_DATE_DELETION_ERROR').'<br>'.$model->getError();
+			$msg = JText::_('COM_REDEVENT_EVENT_DATE_DELETION_ERROR') . '<br>' . $model->getError();
 			$this->setRedirect(JRoute::_(RedeventHelperRoute::getMyEventsRoute(), false), $msg, 'error');
 		}
 	}
 
 	function insertevent()
 	{
-		JRequest::setVar( 'view', 'simplelist' );
-		JRequest::setVar( 'layout', 'editors-xtd'  );
-		JRequest::setVar( 'filter_state', 'P'  );
+		JRequest::setVar('view', 'simplelist');
+		JRequest::setVar('layout', 'editors-xtd');
+		JRequest::setVar('filter_state', 'P');
 
 		parent::display();
 	}
@@ -352,7 +382,7 @@ class RedeventController extends JControllerLegacy
 		$app = &JFactory::getApplication();
 		$params = $app->getParams('com_redevent');
 
-		$file = JPATH_COMPONENT_SITE.DS.'reminder.txt';
+		$file = JPATH_COMPONENT_SITE . DS . 'reminder.txt';
 		if (JFile::exists($file))
 		{
 			$date = (int) JFile::read($file);
@@ -364,7 +394,8 @@ class RedeventController extends JControllerLegacy
 
 		// only run this once a day
 		echo sprintf("last update on %s<br/>", strftime('%Y-%m-%d %H:%M', $date));
-		if (time() - $date < 3600*23.9 && !JRequest::getVar('force', 0)) {
+		if (time() - $date < 3600 * 23.9 && !JRequest::getVar('force', 0))
+		{
 			echo "reminder sent less the 24 hours ago<br/>";
 			return;
 		}
@@ -375,10 +406,10 @@ class RedeventController extends JControllerLegacy
 
 		if ($events && count($events))
 		{
-			$mailer   = &JFactory::getMailer();
+			$mailer = &JFactory::getMailer();
 			$MailFrom = $app->getCfg('mailfrom');
 			$FromName = $app->getCfg('fromname');
-			$mailer->setSender( array( $MailFrom, $FromName ) );
+			$mailer->setSender(array($MailFrom, $FromName));
 			$mailer->IsHTML(true);
 
 			$subject = $params->get('reminder_subject');
@@ -386,20 +417,21 @@ class RedeventController extends JControllerLegacy
 
 			foreach ($events as $event)
 			{
-				echo "sending reminder for event: ".RedeventHelper::getSessionFullTitle($event)."<br>";
+				echo "sending reminder for event: " . RedeventHelper::getSessionFullTitle($event) . "<br>";
 
 				$tags = new RedeventTags();
 				$tags->setXref($event->id);
 
 				// get attendees
 				$attendees = $model->getAttendeesEmails($event->id, $params->get('reminder_include_waiting', 1));
-				if (!$attendees) {
+				if (!$attendees)
+				{
 					continue;
 				}
 				foreach ($attendees as $sid => $a)
 				{
 					$msubject = $tags->ReplaceTags($subject, array('sids' => array($sid)));
-					$mbody    = '<html><body>'.$tags->ReplaceTags($body).'</body></html>';
+					$mbody = '<html><body>' . $tags->ReplaceTags($body) . '</body></html>';
 
 					// convert urls
 					$mbody = RedeventHelperOutput::ImgRelAbs($mbody);
@@ -408,7 +440,7 @@ class RedeventController extends JControllerLegacy
 					$mailer->setBody($mbody);
 
 					$mailer->clearAllRecipients();
-					$mailer->addRecipient( $a );
+					$mailer->addRecipient($a);
 
 					$sent = $mailer->Send();
 				}
@@ -430,8 +462,8 @@ class RedeventController extends JControllerLegacy
 	 */
 	public function getfile()
 	{
-		$app  = JFactory::getApplication();
-		$id   = $app->input->getInt('file', 0);
+		$app = JFactory::getApplication();
+		$id = $app->input->getInt('file', 0);
 		$user = JFactory::getUser();
 		$helper = new RedeventHelperAttachment;
 		$path = $helper->getAttachmentPath($id, max($user->getAuthorisedViewLevels()));
@@ -444,25 +476,25 @@ class RedeventController extends JControllerLegacy
 		$doc = JFactory::getDocument();
 		$doc->setMimeEncoding($mime);
 
-		header('Content-Disposition: attachment; filename="'. basename($path) .'"');
+		header('Content-Disposition: attachment; filename="' . basename($path) . '"');
 		header('Content-Transfer-Encoding: binary');
 		header('Expires: 0');
 		header('Cache-Control: no-store, no-cache');
 		header('Pragma: no-cache');
 
-		if ($fd = fopen ($path, "r"))
+		if ($fd = fopen($path, "r"))
 		{
 			$fsize = filesize($path);
 			header("Content-length: $fsize");
 
-			while(!feof($fd))
+			while (!feof($fd))
 			{
 				$buffer = fread($fd, 2048);
 				echo $buffer;
 			}
 		}
 
-		fclose ($fd);
+		fclose($fd);
 		return;
 	}
 
@@ -471,17 +503,18 @@ class RedeventController extends JControllerLegacy
 	 *
 	 * @return true on sucess
 	 * @access private
-	 * @since 1.1
+	 * @since  1.1
 	 */
 	function ajaxattachremove()
 	{
-		$mainframe = & JFactory::getApplication();
-		$id     = JRequest::getVar( 'id', 0, 'request', 'int' );
+		$mainframe = &JFactory::getApplication();
+		$id = JRequest::getVar('id', 0, 'request', 'int');
 
 		$helper = new RedeventHelperAttachment;
 		$res = $helper->remove($id);
 
-		if (!$res) {
+		if (!$res)
+		{
 			echo 0;
 			$mainframe->close();
 		}
