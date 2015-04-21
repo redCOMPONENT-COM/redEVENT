@@ -54,7 +54,7 @@ class RedEventViewxrefelement extends JView {
 		$filter 			= $mainframe->getUserStateFromRequest( $option.'.xrefelement.filter', 'filter', '', 'int' );
 		$filter_state 		= $mainframe->getUserStateFromRequest( $option.'.xrefelement.filter_state', 'filter_state', '*', 'word' );
 		$search 			= $mainframe->getUserStateFromRequest( $option.'.xrefelement.search', 'search', '', 'string' );
-		$search 			= $db->getEscaped( trim(JString::strtolower( $search ) ) );
+		$search 			= $db->escape( trim(JString::strtolower( $search ) ) );
 		$template 			= $mainframe->getTemplate();
 
 		//prepare the document

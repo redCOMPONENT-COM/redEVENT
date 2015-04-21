@@ -54,7 +54,7 @@ class RedEventViewEventelement extends JView {
 		$filter 			= $app->getUserStateFromRequest( $option.'.eventelement.filter', 'filter', '', 'int' );
 		$filter_state 		= $app->getUserStateFromRequest( $option.'.eventelement.filter_state', 'filter_state', '*', 'word' );
 		$search 			= $app->getUserStateFromRequest( $option.'.eventelement.search', 'search', '', 'string' );
-		$search 			= $db->getEscaped( trim(JString::strtolower( $search ) ) );
+		$search 			= $db->escape( trim(JString::strtolower( $search ) ) );
 		$template 			= $app->getTemplate();
 
 		//prepare the document
