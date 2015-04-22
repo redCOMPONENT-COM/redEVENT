@@ -20,27 +20,25 @@
 			min: 0,
 			max: 14,
 			slide: function(event, ui) {
+				var l = hourWidth * ui.value;
 				$('.timeline-sessions').css('left', '-' + (hourWidth * ui.value) + 'px');
 
-				$('.timeline-sessions').find('.time-venues-base').each(function(){
-					$(this).find('.timeline-venues-wrapper').find('.timeline-venues').each(function(){
+				$('.timeline-venues').each(function(){
+					var bW = parseInt($(this).attr('relw'));
+					var bL = parseInt($(this).attr('rell'));
 
-						var bW = parseInt($(this).attr('relw'));
-						var bL = parseInt($(this).attr('rell'));
+					var newW = bW + bL - l;
 
-						var newW = bW + bL - l;
-
-						if (newW < 50 || l == 0)
-						{
-							$(this).css('width', bW);
-							$(this).css('left', bL);
-						}
-						else if (l >= bL)
-						{
-							$(this).css('width', newW);
-							$(this).css('left', l);
-						}
-					});
+					if (newW < 50 || l == 0)
+					{
+						$(this).css('width', bW);
+						$(this).css('left', bL);
+					}
+					else if (l >= bL)
+					{
+						$(this).css('width', newW);
+						$(this).css('left', l);
+					}
 				});
 			}
 		});
