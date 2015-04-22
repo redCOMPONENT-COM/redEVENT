@@ -100,7 +100,7 @@
             default=""
             label="COM_REDEVENT_XREF_NOTE"
             description ="COM_REDEVENT_XREF_NOTE_TIP"
-            size="50" 
+            size="50"
             class="inputbox" />
 
         <field

@@ -320,31 +320,10 @@ class RedeventViewTimeline extends RViewSite
 					'venue_code' => $session->venue_code,
 					'id'         => $session->venue_id,
 					'description' => $session->locdescription,
-					'slug' =>       $session->venueslug,
+					'slug'       => $session->venueslug,
 					'rowsCount'  => 0,
-					'events'     => array()
+					'rows'     => array()
 				);
-			}
-
-			$eventKey = $session->id;
-
-			if (!isset($venues[$venuesKey]['events'][$eventKey]))
-			{
-				$event = new StdClass;
-				$event->id                       = $session->id;
-				$event->title                    = $session->title;
-				$event->full_title               = $session->full_title;
-				$event->created                  = $session->created;
-				$event->datdescription           = $session->datdescription;
-				$event->registra                 = $session->registra;
-				$event->datimage                 = $session->datimage;
-				$event->summary                  = $session->summary;
-				$event->submission_type_external = $session->submission_type_external;
-				$event->redform_id               = $session->redform_id;
-				$event->sessions                 = array();
-
-				$venues[$venuesKey]['events'][$eventKey] = $event;
-				$totalrows++;
 			}
 
 			$start = new JDate($session->times);
@@ -355,7 +334,7 @@ class RedeventViewTimeline extends RViewSite
 			$rowIndex = 0;
 
 			// We check row by row if we can fit the event
-			foreach ($venues[$venuesKey]['events'][$eventKey]->sessions as $row => $sessionList)
+			foreach ($venues[$venuesKey]['rows'] as $rowIndex => $sessionList)
 			{
 				$fitsIn = true;
 
@@ -371,7 +350,7 @@ class RedeventViewTimeline extends RViewSite
 					{
 						// Move this session to next row.
 						$fitsIn = false;
-						$rowIndex = $row + 1;
+						$rowIndex++;
 						break;
 					}
 					else
@@ -387,13 +366,13 @@ class RedeventViewTimeline extends RViewSite
 				}
 			}
 
-			if (!isset($venues[$venuesKey]['events'][$eventKey]->sessions[$rowIndex]))
+			if (!isset($venues[$venuesKey]['rows'][$rowIndex]))
 			{
-				$venues[$venuesKey]['events'][$eventKey]->sessions[$rowIndex] = array();
+				$venues[$venuesKey]['rows'][$rowIndex] = array();
 				$venues[$venuesKey]['rowsCount']++;
 			}
 
-			$venues[$venuesKey]['events'][$eventKey]->sessions[$rowIndex][] = $session;
+			$venues[$venuesKey]['rows'][$rowIndex][] = $session;
 		}
 
 		$this->totalrows = $totalrows;

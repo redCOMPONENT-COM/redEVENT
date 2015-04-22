@@ -175,9 +175,6 @@ RHtml::_('rjquery.ui');
 						$venueIndex = 0;
 						?>
 						<?php foreach ($this->sortedRows as $venues): ?>
-							<?php /*foreach ($venues['events'] as $venueEvent): ?>
-								<?php $currentHeight = count($venueEvent->sessions) * $baseHeight; ?>
-							<?php endforeach;*/ ?>
 							<?php $currentHeight = $venues['rowsCount'] * $baseHeight; ?>
 							<?php $venueUrl = RedeventHelperRoute::getVenueTimelineRoute($venues['slug']); ?>
 							<div class="timeline-venue" style="height: <?php echo $currentHeight ?>px;">
@@ -201,15 +198,12 @@ RHtml::_('rjquery.ui');
 								</div>
 								<?php $rowIndex = 0; ?>
 								<?php foreach ($this->sortedRows as $venue): ?>
-									<?php foreach ($venue['events'] as $eventIndex => $event): ?>
-										<?php $baseRowHeight = $baseHeight * count($event->sessions); ?>
-										<div class="time-venues-base" style="height: <?php echo $baseRowHeight ?>px;">
-										<?php foreach ($event->sessions as $sessionRowIndex => $sessionRow): ?>
-											<?php $sessionRowPos = $sessionRowIndex * $baseHeight; ?>
-											<div class="timeline-venues-wrapper" style="height: <?php echo $baseHeight ?>px; top: <?php echo $sessionRowPos ?>px;">
-												<?php foreach ($sessionRow as $session): ?>
+									<?php foreach ($venue['rows'] as $sessions): ?>
+										<div class="time-venues-base" style="height: <?php echo $baseHeight; ?>px;">
+											<div class="timeline-venues-wrapper" style="height: <?php echo $baseHeight ?>px;">
+												<?php foreach ($sessions as $session): ?>
 													<?php
-													$session->eventImage = $event->datimage;
+													$session->eventImage = $session->datimage;
 													$additionClass = '';
 													$iCalLink = JRoute::_('index.php?option=com_redevent&view=details&id=' . $session->slug . '&xref=' . $session->xslug . '&Itemid=' . $itemId . '&format=raw&layout=ics');
 													$session->details = $this->getSessionDescription($session);
@@ -236,7 +230,6 @@ RHtml::_('rjquery.ui');
 														</div>
 												<?php endforeach; ?>
 											</div>
-										<?php endforeach; ?>
 										</div>
 										<div class="time-venues-base-information" id="time-venues-session-infor-<?php echo $rowIndex ?>"></div>
 										<?php $rowIndex++; ?>
