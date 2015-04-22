@@ -224,8 +224,8 @@ RHtml::_('rjquery.ui');
 
 													$sessionTitle = (!empty($session->session_title)) ? $session->session_title : $session->title;
 													?>
-														<div class="timeline-venues <?php echo $additionClass; ?>" style="left: <?php echo $session->startPixel ?>px;  width: <?php echo $session->widthPixel ?>px;">
-															<div class="timeline-session-time"><?php echo $session->times ?> - <?php echo $session->endtimes ?></div>
+														<div class="timeline-venues <?php echo $additionClass; ?>" style="left: <?php echo $session->startPixel ?>px;  width: <?php echo $session->widthPixel ?>px;" relw="<?php echo $session->widthPixel ?>" rell="<?php echo $session->startPixel ?>">
+															<div class="timeline-session-time"><?php echo date('H:i', strtotime($session->times)) ?> - <?php echo date('H:i', strtotime($session->endtimes)) ?></div>
 															<div class="timeline-session-title"><?php echo $sessionTitle ?></div>
 														</div>
 														<div class="session-infor-hidden" id="session-infor-<?php echo $session->xref ?>" data-target="time-venues-session-infor-<?php echo $rowIndex ?>" data-row="<?php echo $rowIndex ?>">
