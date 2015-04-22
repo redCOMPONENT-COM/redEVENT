@@ -100,7 +100,7 @@
             default=""
             label="COM_REDEVENT_XREF_NOTE"
             description ="COM_REDEVENT_XREF_NOTE_TIP"
-            size="50" maxlength="50"
+            size="50" 
             class="inputbox" />
 
         <field
@@ -109,7 +109,7 @@
             default=""
             label="COM_REDEVENT_XREF_EXTERNAL_REGISTRATION"
             description ="COM_REDEVENT_XREF_EXTERNAL_REGISTRATION_TIP"
-            size="50" maxlength="50"
+            size="50"
             class="inputbox validate-url" />
 
         <field
