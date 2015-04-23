@@ -53,13 +53,19 @@ class RedeventModelTimeline extends RedeventModelBaseeventlist
 	 */
 	public function timelinePrepareData()
 	{
+		$currentDate = JFactory::getDate();
+		$start = JFactory::getApplication()->getParams()->get('timelineDateFrom');
+		$default = JFactory::getApplication()->getParams()->get('timelineDateDefault');
+		$startDate   = JFactory::getDate($start);
+		$defaultDate   = JFactory::getDate($default ? $default : $start);
+
 		if ($this->getState('filter_date'))
 		{
 			return true;
 		}
-		elseif ($start = JFactory::getApplication()->getParams()->get('timelineDateFrom'))
+		elseif ($currentDate->toUnix() < $startDate->toUnix())
 		{
-			$this->setState('filter_date', $start);
+			$this->setState('filter_date', $defaultDate->format('Y-m-d'));
 
 			return true;
 		}

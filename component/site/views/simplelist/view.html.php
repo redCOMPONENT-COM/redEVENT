@@ -88,13 +88,6 @@ class RedeventViewSimpleList extends RViewSite
 		$pop    = $input->getBool('pop', false);
 		$layout = $input->getWord('layout', '');
 
-		// For "timeline" layout
-		if ($layout == 'timeline')
-		{
-			$model->setLimit(99999);
-			$model->timelinePrepareData();
-		}
-
 		// Get data from model
 		$this->rows     = $this->get('Data');
 		$customs        = $this->get('ListCustomFields');

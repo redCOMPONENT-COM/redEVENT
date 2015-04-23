@@ -17,6 +17,11 @@
 				   label="COM_REDEVENT_XML_VIEW_TIMELINE_DATETO"
 				   description="COM_REDEVENT_XML_VIEW_TIMELINE_DATETO_DESC">
 			</field>
+			<field name="timelineDateDefault"
+				   type="calendar"
+				   label="COM_REDEVENT_XML_VIEW_TIMELINE_DATEDEFAULT"
+				   description="COM_REDEVENT_XML_VIEW_TIMELINE_DATEDEFAULT_DESC">
+			</field>
 			<field name="introtext"
 				type="editor"
 				default=""

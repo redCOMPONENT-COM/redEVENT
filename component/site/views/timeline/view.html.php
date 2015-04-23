@@ -402,6 +402,7 @@ class RedeventViewTimeline extends RViewSite
 		}
 
 		$state = $this->get('State');
+		$filterDate = JFactory::getDate($state->get('filter_date'))->format('Y-m-d');
 
 		return JHTML::_(
 			'select.genericlist',
@@ -410,7 +411,7 @@ class RedeventViewTimeline extends RViewSite
 			'class="dynfilter" onchange="javascript:redEventSubmitForm();"',
 			'value',
 			'text',
-			$state->get('filter_date')
+			$filterDate
 		);
 	}
 
