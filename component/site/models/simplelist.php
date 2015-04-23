@@ -33,45 +33,4 @@ jimport('joomla.application.component.model');
  */
 class RedeventModelSimpleList extends RedeventModelBaseeventlist
 {
-	/**
-	 * Method for get latest start date of published event
-	 *
-	 * @return  boolean   True on success. False otherwise.
-	 */
-	public function timelinePrepareData()
-	{
-		$db = JFactory::getDbo();
-
-		// Get all "Publish" events
-		$query = $db->getQuery(true)
-			->select($db->qn('v.dates'))
-			->from($db->qn('#__redevent_event_venue_xref', 'v'))
-			->leftJoin($db->qn('#__redevent_events', 'e') . ' ON ' . $db->qn('e.id') . ' = ' . $db->qn('v.eventid'))
-			->where($db->qn('e.published') . ' = 1')
-			->order($db->qn('v.dates') . ' ASC');
-		$db->setQuery($query, 0, 1);
-		$result = $db->loadObject();
-
-		if (!$result)
-		{
-			return false;
-		}
-
-		$currentDate = JFactory::getDate();
-		$startDate   = new JDate($result->dates);
-		$dateValue   = null;
-
-		if ($currentDate > $startDate)
-		{
-			$dateValue = $currentDate->format('Y-m-d');
-		}
-		else
-		{
-			$dateValue = $startDate->format('Y-m-d');
-		}
-
-		$this->setState('filter_date', $dateValue);
-
-		return true;
-	}
 }
