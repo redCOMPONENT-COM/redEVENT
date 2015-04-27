@@ -27,7 +27,7 @@ if (!class_exists('redEVENTsh404Helper'))
 			$query->select('p.alias');
 			$query->from('#__redevent_sessions_pricegroups AS sp');
 			$query->join('INNER', '#__redevent_pricegroups AS p ON p.id = sp.pricegroup_id');
-			$query->where('id = ' . $db->Quote(intval($id)));
+			$query->where('sp.id = ' . $db->Quote(intval($id)));
 
 			$db->setQuery($query);
 			$res = $db->loadResult();
