@@ -296,10 +296,11 @@ class RedeventModelWaitinglist extends RModel
 				->select('e.notify_off_list_body, e.notify_off_list_subject')
 				->select('e.notify_on_list_body, e.notify_on_list_subject')
 				->select('e.redform_id')
-				->from('#__redevent_event_venue_xref', 'x')
+				->from('#__redevent_event_venue_xref AS x')
 				->join('LEFT', '#__redevent_events e ON x.eventid = e.id')
 				->where('x.id = ' . $this->xref);
 
+			$this->_db->setQuery($query);
 			$this->event_data = $this->_db->loadObject();
 		}
 

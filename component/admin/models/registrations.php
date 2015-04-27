@@ -215,7 +215,7 @@ class RedeventModelRegistrations extends RModelList
 			@$xrefs[$r->xref_id][] = $r->rid;
 		}
 
-		// Now call thje waiting list model per session
+		// Now call the waiting list model per session
 		foreach ($xrefs as $xref => $rids)
 		{
 			$model = RModel::getAdminInstance('waitinglist');

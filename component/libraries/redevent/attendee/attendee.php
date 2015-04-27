@@ -318,13 +318,16 @@ class RedeventAttendee extends JObject
 			$waiting = $data->waitinglist ? 0 : 1;
 		}
 
-		$query = ' UPDATE #__redevent_register AS r '
-			. ' SET r.waitinglist = ' . $waiting
-			. '   , r.paymentstart = NOW() '
-			. ' WHERE id = ' . $this->_db->Quote($this->_id);
+		$query = $this->_db->getQuery(true);
+
+		$query->update('#__redevent_register')
+			->set('waitinglist = ' . $waiting)
+			->set('paymentstart = NOW()')
+			->where('id = ' . $this->_db->Quote($this->_id));
+
 		$this->_db->setQuery($query);
 
-		if (!$this->_db->query())
+		if (!$this->_db->execute())
 		{
 			$this->setError(JText::_('COM_REDEVENT_FAILED_UPDATING_WAITINGLIST_STATUS'));
 
@@ -394,6 +397,7 @@ class RedeventAttendee extends JObject
 		{
 			$this->taghelper = new RedeventTags;
 			$this->taghelper->setXref($data->xref);
+			$this->taghelper->setSubmitkey($data->submit_key);
 		}
 
 		if ($waiting == 0)

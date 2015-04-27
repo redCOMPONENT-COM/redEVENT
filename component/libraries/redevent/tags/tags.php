@@ -2353,10 +2353,12 @@ class RedeventTags
 	{
 		$text = '';
 		$link = $this->_getTag_paymentrequestlink();
+
 		if (!empty($link))
 		{
 			$text = JHTML::link($link, JText::_('COM_REDEVENT_Checkout'), '');
 		}
+
 		return $text;
 	}
 
@@ -2364,6 +2366,7 @@ class RedeventTags
 	{
 		$app = JFactory::getApplication();
 		$lang = $app->input->get('lang');
+		$link = '';
 
 		if (!empty($this->_submitkey))
 		{
@@ -2373,12 +2376,15 @@ class RedeventTags
 					$this->getEvent()->getData()->times));
 			$link = 'index.php?option=com_redform&task=payment.select&source=redevent&key='
 				. $this->_submitkey . '&paymenttitle=' . $title;
+
 			if ($lang)
 			{
 				$link .= '&lang=' . $lang;
 			}
+
 			$link = $this->absoluteUrls($link, false);
 		}
+
 		return $link;
 	}
 

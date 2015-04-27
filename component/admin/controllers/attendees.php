@@ -389,20 +389,37 @@ class RedeventControllerAttendees extends RControllerAdmin
 		$mainframe->close();
 	}
 
-	protected function getRedirectToList()
+	/**
+	 * Get the JRoute object for a redirect to list.
+	 *
+	 * @param   string  $append  An optional string to append to the route
+	 *
+	 * @return  JRoute  The JRoute object
+	 */
+	protected function getRedirectToListRoute($append = null)
 	{
-		$app = JFactory::getApplication();
-		$sessionId = $app->input->getInt('session', 0) or die( 'Missing session Id' );
+		$returnUrl = $this->input->get('return');
 
-		if ($app->input->get('return'))
+		if ($returnUrl)
 		{
-			$link = base64_decode($app->input->get('return'));
+			$returnUrl = base64_decode($returnUrl);
+
+			return JRoute::_($returnUrl . $append, false);
 		}
 		else
 		{
-			$link = 'index.php?option=com_redevent&view=attendees&session=' . $sessionId;
-		}
+			if (!$sessionId = $this->input->getInt('session', 0))
+			{
+				$filters = $this->input->get('filter', null, 'array');
+				$sessionId = isset($filters['session']) ? (int) $filters['session'] : 0;
 
-		return $link;
+				if (!$sessionId)
+				{
+					die( 'Missing session Id' );
+				}
+			}
+
+			return JRoute::_('index.php?option=com_redevent&view=attendees&session=' . $sessionId . $append, false);
+		}
 	}
 }
