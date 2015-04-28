@@ -92,15 +92,16 @@ $venueData = $this->venue;
 				</div>
 
 				<div class="col-md-2 session-status">
-					<?php if ($session->custom8 == 'no'): ?>
-						<div class="session-free">
-							<?php echo JText::_('COM_REDEVENT_TIMELINE_FREE'); ?>
-						</div>
-					<?php elseif ($session->external_registration_url): ?>
-						<div class="session-paid">
-							<?php echo JHtml::link($session->external_registration_url, JText::_('COM_REDEVENT_TIMELINE_GET_TICKET')); ?>
-						</div>
-					<?php endif; ?>
+					<?php $paid = ($session->custom8 == 'no') ? false : true; ?>
+					<div class="session-<?php echo $paid ? 'paid' : 'free'; ?>">
+						<?php if (!$paid): ?>
+							<label><?php echo JText::_('COM_REDEVENT_TIMELINE_FREE'); ?></label>
+						<?php endif; ?>
+
+						<?php if ($session->external_registration_url): ?>
+							<?php echo JHtml::link($session->external_registration_url, JText::_('COM_REDEVENT_TIMELINE_GET_TICKET'), array('class' => 'timeline-getticket')); ?>
+						<?php endif; ?>
+					</div>
 				</div>
 			</div>
 		</div>

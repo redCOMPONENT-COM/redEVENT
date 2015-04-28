@@ -12,6 +12,8 @@ $session = $displayData['session'];
 $date = new JDate($session->dates);
 $startTime = new JDate($session->times);
 $endTime = new JDate($session->endtimes);
+
+$paid = ($session->custom8 == 'yes' ? true : false);
 ?>
 
 <div class="session-left-infor">
@@ -21,16 +23,15 @@ $endTime = new JDate($session->endtimes);
 	<h3 class="session-left-infor-time"><?php echo $date->format('l d') . ' ' . ucfirst($date->format('F')); ?> kl. <?php echo $startTime->format('H.i') . ' - ' . $endTime->format('H.i'); ?></h3>
 	<h3 class="session-left-infor-venue"><?php echo $session->venue; ?></h3>
 
-	<?php if ($session->custom8 == 'no'): ?>
-	<div class="session-free">
-		<?php echo JText::_('COM_REDEVENT_TIMELINE_FREE'); ?>
+	<div class="session-<?php echo $paid ? 'paid' : 'free'; ?>">
+		<?php if (!$paid): ?>
+			<label><?php echo JText::_('COM_REDEVENT_TIMELINE_FREE'); ?></label>
+		<?php endif; ?>
+
+		<?php if ($session->external_registration_url): ?>
+			<?php echo JHtml::link($session->external_registration_url, JText::_('COM_REDEVENT_TIMELINE_GET_TICKET'), array('class' => 'timeline-getticket')); ?>
+		<?php endif; ?>
 	</div>
-	<?php elseif ($session->external_registration_url): ?>
-	<div class="session-paid">
-		<label></label>
-		<?php echo JHtml::link($session->external_registration_url, JText::_('COM_REDEVENT_TIMELINE_GET_TICKET')); ?>
-	</div>
-	<?php endif; ?>
 
 	<div class="link-full"><?php
 		echo JHtml::link(RedeventHelperRoute::getDetailsRoute($session->slug, $session->xslug),
