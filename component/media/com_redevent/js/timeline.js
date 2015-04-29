@@ -3,6 +3,35 @@
  */
 
 (function($){
+
+	function setCurrentTimeLine() {
+		var timelineWidth = parseInt($('.timeline-sessions').css('width'));
+
+		// the timeline covers 15 hours, from 9 to 24, let's compute pixels per minute from there
+		var timelinePixelPerMinute = timelineWidth / (15 * 60);
+
+		var currentDate = new Date();
+
+		// Only display if after 9 am
+		if (currentDate.getHours() < 9)
+		{
+			return;
+		}
+
+		var offset = timelinePixelPerMinute * ((currentDate.getHours() - 9) * 60 + currentDate.getMinutes());
+
+		// Draw the line
+		var lineDiv = $('<div id="currentTime"/>')
+			.css('position', 'absolute')
+			.css('left', offset + 'px')
+			.css('top', '0px')
+			.css('height', '100%')
+			.css('background-color', 'red')
+			.css('width', '2px');
+
+		lineDiv.appendTo($('.timeline-sessions'));
+	}
+
 	$(document).ready(function(){
 
 		var timelineWidth = parseInt($('.timeline-sessions').css('width'));
@@ -114,5 +143,7 @@
 				}
 			});
 		});
+
+		setCurrentTimeLine();
 	});
 })(jQuery);
