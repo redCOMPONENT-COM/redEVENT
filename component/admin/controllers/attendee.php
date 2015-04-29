@@ -93,4 +93,37 @@ class RedeventControllerAttendee extends RControllerForm
 
 		return $append;
 	}
+
+	/**
+	 * Get the JRoute object for a redirect to list.
+	 *
+	 * @param   string  $append  An optional string to append to the route
+	 *
+	 * @return  JRoute  The JRoute object
+	 */
+	protected function getRedirectToListRoute($append = null)
+	{
+		$returnUrl = $this->input->get('return');
+
+		if ($returnUrl)
+		{
+			$returnUrl = base64_decode($returnUrl);
+
+			return JRoute::_($returnUrl . $append, false);
+		}
+		else
+		{
+			if (!$sessionId = $this->input->getInt('sessionId', 0))
+			{
+				$sessionId = $this->input->getInt('session', 0);
+
+				if (!$sessionId)
+				{
+					die( 'Missing session Id' );
+				}
+			}
+
+			return JRoute::_('index.php?option=com_redevent&view=attendees&session=' . $sessionId . $append, false);
+		}
+	}
 }
