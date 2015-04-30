@@ -89,6 +89,28 @@ class RedeventModelAttendees extends RModelList
 	}
 
 	/**
+	 * Method to get an array of data items.
+	 *
+	 * @return  mixed  An array of data items on success, false on failure.
+	 *
+	 * @since   11.1
+	 */
+	public function getItems()
+	{
+		$items = parent::getItems();
+
+		$items = $this->addPaymentInfo($items);
+
+		// Get the storage key.
+		$store = $this->getStoreId();
+
+		// Add back the items to the internal cache.
+		$this->cache[$store] = $items;
+
+		return $this->cache[$store];
+	}
+
+	/**
 	 * Build an SQL query to load the list data.
 	 *
 	 * @return  object  Query object
@@ -108,11 +130,10 @@ class RedeventModelAttendees extends RModelList
 		$query = $db->getQuery(true);
 
 		$query->select('r.*, r.id as attendee_id');
-		$query->select('s.answer_id, s.id AS submitter_id, s.price, s.currency');
+		$query->select('s.answer_id, s.id AS submitter_id, s.price, s.vat, s.currency');
 		$query->select('a.id AS eventid, a.course_code');
 		$query->select('pg.name as pricegroup');
 		$query->select('fo.activatepayment');
-		$query->select('p.paid, p.status');
 		$query->select('u.username, u.name, u.email');
 		$query->from('#__redevent_register AS r');
 		$query->join('INNER', '#__redevent_event_venue_xref AS x ON r.xref = x.id');
@@ -122,8 +143,6 @@ class RedeventModelAttendees extends RModelList
 		$query->join('LEFT', '#__redevent_sessions_pricegroups AS spg ON spg.id = r.sessionpricegroup_id');
 		$query->join('LEFT', '#__redevent_pricegroups AS pg ON pg.id = spg.pricegroup_id');
 		$query->join('LEFT', '#__users AS u ON r.uid = u.id');
-		$query->join('LEFT', '(SELECT MAX(id) as id, submit_key FROM #__rwf_payment GROUP BY submit_key) AS latest_payment ON latest_payment.submit_key = s.submit_key');
-		$query->join('LEFT', '#__rwf_payment AS p ON p.id = latest_payment.id');
 		$query->group('r.id');
 
 		// Add associated form fields
@@ -567,5 +586,54 @@ class RedeventModelAttendees extends RModelList
 		$rfcore = RdfCore::getInstance();
 
 		return $rfcore->getFields($this->getSession()->redform_id);
+	}
+
+	/**
+	 * Add payment info to items
+	 *
+	 * @param   array  $items  items
+	 *
+	 * @return array
+	 */
+	protected function addPaymentInfo($items)
+	{
+		if (!$items)
+		{
+			return $items;
+		}
+
+		$sids = array();
+
+		foreach ($items as $item)
+		{
+			$sids[] = $item->sid;
+		}
+
+		$paymentRequests = RdfCore::getSubmissionsPaymentRequests($sids);
+
+		foreach ($items as &$item)
+		{
+			$item->paid = 1;
+
+			if (isset($paymentRequests[$item->sid]))
+			{
+				$item->paymentRequests = $paymentRequests[$item->sid];
+
+				foreach ($paymentRequests[$item->sid] as $pr)
+				{
+					if ($pr->paid == 0)
+					{
+						$item->paid = 0;
+						break;
+					}
+				}
+			}
+			else
+			{
+				$item->paymentRequests = false;
+			}
+		}
+
+		return $items;
 	}
 }
