@@ -204,6 +204,7 @@ CREATE TABLE IF NOT EXISTS `#__redevent_sessions_pricegroups` (
 `pricegroup_id` int(11) NOT NULL default '0',
 `price` DECIMAL(10,2) NOT NULL default '0',
 `vatrate` DECIMAL(10,2) NOT NULL default '0',
+`sku` VACHAR(255) NOT NULL,
 `currency` VARCHAR(10) NOT NULL,
 PRIMARY KEY  (`id`),
 KEY  (`xref`),

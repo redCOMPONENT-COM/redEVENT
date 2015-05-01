@@ -17,7 +17,9 @@ RHelperAsset::load('xref_prices.js');
 				<?php echo JHTML::_('select.genericlist', $this->pricegroupsoptions, 'jform[pricegroup][]', '', 'value', 'text', $r->pricegroup_id); ?>
 			</td>
 			<td>
-				<input type="text" name="jform[price][]" class="price-val" value="<?php echo $r->price; ?>"/>
+				<input type="text" name="jform[price][]" class="price-val" placeholder="<?php echo JText::_('COM_REDEVENT_SESSION_PRICEGROUP_PRICE'); ?>" value="<?php echo $r->price; ?>"/>
+				<input type="text" name="jform[vatrate][]" class="price-val" placeholder="<?php echo JText::_('COM_REDEVENT_SESSION_PRICEGROUP_VAT'); ?>" value="<?php echo $r->vatrate; ?>"/>
+				<input type="text" name="jform[sku][]" class="price-val" placeholder="<?php echo JText::_('COM_REDEVENT_SESSION_PRICEGROUP_SKU'); ?>" value="<?php echo $r->sku; ?>"/>
 				<?php echo JHTML::_('select.genericlist', $this->currencyoptions, 'jform[currency][]', '', 'value', 'text', $r->currency); ?>
 			</td>
 			<td>
@@ -31,7 +33,9 @@ RHelperAsset::load('xref_prices.js');
 			<?php echo JHTML::_('select.genericlist', $this->pricegroupsoptions, 'jform[pricegroup][]', array('id' => 'newprice', 'class' => 'price-group'), 'value', 'text'); ?>
 		</td>
 		<td>
-			<input type="text" name="jform[price][]" class="price-val" value="0.00" size="10" />
+			<input type="text" name="jform[price][]" class="price-val" placeholder="<?php echo JText::_('COM_REDEVENT_SESSION_PRICEGROUP_PRICE'); ?>"/>
+			<input type="text" name="jform[vatrate][]" class="price-val" placeholder="<?php echo JText::_('COM_REDEVENT_SESSION_PRICEGROUP_VAT'); ?>"/>
+			<input type="text" name="jform[sku][]" class="price-val" placeholder="<?php echo JText::_('COM_REDEVENT_SESSION_PRICEGROUP_SKU'); ?>"/>
 			<?php echo JHTML::_('select.genericlist', $this->currencyoptions, 'jform[currency][]', array('class' => 'price-currency'), 'value', 'text'); ?>
 		</td>
 		<td>
