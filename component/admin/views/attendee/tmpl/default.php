@@ -24,9 +24,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 $options = array(
-	'extrafields' => array(
-		array('label' => JText::_('COM_REDEVENT_REGISTRATION_PRICE'), 'field' => $this->lists['pricegroup_id'])
-	),
+	'extrafields' => $this->extrafields,
 	'currency' => $this->row->currency
 );
 ?>

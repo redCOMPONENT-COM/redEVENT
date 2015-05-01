@@ -69,6 +69,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$xref        = $this->input->getInt('xref');
 		$review      = $this->input->getInt('hasreview', 0);
 		$isedit      = $this->input->getInt('isedit', 0);
+
 		$nbPosted = $this->input->getInt('nbactive', 1);
 		$pricegroups = array();
 

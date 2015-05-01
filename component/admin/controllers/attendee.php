@@ -34,8 +34,17 @@ class RedeventControllerAttendee extends RControllerForm
 
 		$data['id'] = $this->input->getInt('id');
 		$data['xref'] = $xref;
-		$data['sessionpricegroup_id'] = $this->input->getInt('sessionpricegroup_id', 0);
 		$data['uid'] = $this->input->getInt('uid');
+
+		$nbPosted = $this->input->getInt('nbactive', 1);
+		$pricegroups = array();
+
+		for ($i = 1; $i < $nbPosted + 1; $i++)
+		{
+			$pricegroups[] = $this->input->getInt('sessionprice_' . $i);
+		}
+
+		$data['sessionpricegroup_id'] = $pricegroups[0];
 
 		if ($returnid = $model->store($data))
 		{
