@@ -100,7 +100,7 @@
             default=""
             label="COM_REDEVENT_XREF_NOTE"
             description ="COM_REDEVENT_XREF_NOTE_TIP"
-            size="50" 
+            size="50"
             class="inputbox" />
 
         <field
@@ -192,6 +192,14 @@
             name="price"
             type="hidden"
             />
+		<field
+			name="vatrate"
+			type="hidden"
+			/>
+		<field
+			name="sku"
+			type="hidden"
+			/>
         <field
             name="currency"
             type="hidden"

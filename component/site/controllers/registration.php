@@ -69,8 +69,14 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$xref        = $this->input->getInt('xref');
 		$review      = $this->input->getInt('hasreview', 0);
 		$isedit      = $this->input->getInt('isedit', 0);
-		$pricegroups = $this->input->get('sessionpricegroup_id', array(), 'post', 'array');
-		JArrayHelper::toInteger($pricegroups);
+
+		$nbPosted = $this->input->getInt('nbactive', 1);
+		$pricegroups = array();
+
+		for ($i = 1; $i < $nbPosted + 1; $i++)
+		{
+			$pricegroups[] = $this->input->getInt('sessionprice_' . $i);
+		}
 
 		if (!$xref)
 		{
@@ -99,6 +105,9 @@ class RedeventControllerRegistration extends RedeventControllerFront
 		$prices = array();
 		$currency = null;
 
+		$extrafields = array();
+		$i = 1;
+
 		foreach ($pricegroups as $p)
 		{
 			$regPricegroup = $model->getRegistrationPrice($p);
@@ -111,12 +120,17 @@ class RedeventControllerRegistration extends RedeventControllerFront
 				return false;
 			}
 
-			$prices[] = $regPricegroup->price;
+			$field = new RedeventRfieldSessionprice;
+			$field->setOptions(array($regPricegroup));
+			$field->setValue($p);
+			$field->setFormIndex($i);
+
+			$extrafields[$i++] = array($field);
 			$currency = $regPricegroup->currency;
 		}
 
 		// First, ask redform to save it's fields, and return the corresponding sids.
-		$options = array('baseprice' => $prices, 'currency' => $currency);
+		$options = array('extrafields' => $extrafields, 'currency' => $currency);
 
 		if ($review)
 		{

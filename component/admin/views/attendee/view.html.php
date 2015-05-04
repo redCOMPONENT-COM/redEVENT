@@ -55,10 +55,21 @@ class RedEventViewAttendee extends RedeventViewAdmin
 		$lists['user'] = JHTML::_('list.users', 'uid', $row->uid, 1, null, 'name', 0);
 
 		$sessionpricegroups = $this->get('Pricegroups');
-		$lists['pricegroup_id'] = RedeventHelper::getRfPricesSelect($sessionpricegroups, $row->sessionpricegroup_id);
+
+		$field = new RedeventRfieldSessionprice;
+		$field->setOptions($sessionpricegroups);
+		$field->setFormIndex(1);
+
+		if ($row->sessionpricegroup_id)
+		{
+			$field->setValue($row->sessionpricegroup_id);
+		}
+
+		$extrafields = array(1 => array($field));
 
 		$this->row = $row;
 		$this->session = $this->get('Session');
+		$this->extrafields = $extrafields;
 		$this->lists = $lists;
 		$this->returnUrl = $app->input->get('return');
 

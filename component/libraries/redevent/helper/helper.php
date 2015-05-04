@@ -970,6 +970,34 @@ class RedeventHelper
 	}
 
 	/**
+	 * Get options array from session price groups
+	 *
+	 * @param   array  $sessionpricegroups  session pricegroups objects
+	 *
+	 * @return string html
+	 */
+	public static function getSessionpricegroupsOptions($sessionpricegroups)
+	{
+		$options = array();
+
+		foreach ((array) $sessionpricegroups as $i => $p)
+		{
+			$selected = $selected == null ? $p->id : $selected; // force at least one radio to be selected
+			$html[] = '<input type="radio" name="sessionpricegroup_id" value="' . $p->id . '" price="' . $p->price . '"'
+				. ' currency="' . $p->currency . '"'
+				. ' id="sessionpricegroup_id' . $i . '"'
+				. ($p->id == $selected ? ' checked="checked"' : '')
+				. ' class="updateCurrency"'
+				. '/>';
+
+			$html[] = '<label for="sessionpricegroup_id' . $i . '">'
+				. $p->currency . ' ' . $p->price . ' (' . $p->name . ')' . '</label>';
+		}
+
+		return implode($html);
+	}
+
+	/**
 	 * Convert a price between 2 currencies
 	 *
 	 * @param   float   $amount        the amount to convert

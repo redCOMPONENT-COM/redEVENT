@@ -77,6 +77,28 @@ class RedeventModelRegistrations extends RModelList
 	}
 
 	/**
+	 * Method to get an array of data items.
+	 *
+	 * @return  mixed  An array of data items on success, false on failure.
+	 *
+	 * @since   11.1
+	 */
+	public function getItems()
+	{
+		$items = parent::getItems();
+
+		$items = $this->addPaymentInfo($items);
+
+		// Get the storage key.
+		$store = $this->getStoreId();
+
+		// Add back the items to the internal cache.
+		$this->cache[$store] = $items;
+
+		return $this->cache[$store];
+	}
+
+	/**
 	 * Build an SQL query to load the list data.
 	 *
 	 * @return  object  Query object
@@ -87,10 +109,9 @@ class RedeventModelRegistrations extends RModelList
 		$query = $db->getQuery(true);
 
 		$query->select('r.*, r.id as attendee_id');
-		$query->select('s.answer_id, s.id AS submitter_id, s.price, s.currency');
+		$query->select('s.answer_id, s.id AS submitter_id, s.price, s.vat, s.currency');
 		$query->select('u.username, u.name, u.email');
 		$query->select('pg.name as pricegroup');
-		$query->select('p.paid, p.status');
 		$query->select('fo.activatepayment');
 		$query->select('x.dates, x.times, x.maxattendees');
 		$query->select('e.id AS eventid, e.course_code, e.title');
@@ -106,8 +127,6 @@ class RedeventModelRegistrations extends RModelList
 		$query->join('LEFT', '#__users AS auth ON auth.id = e.created_by');
 		$query->join('LEFT', '#__rwf_submitters AS s ON r.sid = s.id');
 		$query->join('LEFT', '#__rwf_forms AS fo ON fo.id = s.form_id');
-		$query->join('LEFT', '(SELECT MAX(id) as id, submit_key FROM #__rwf_payment GROUP BY submit_key) AS latest_payment ON latest_payment.submit_key = s.submit_key');
-		$query->join('LEFT', '#__rwf_payment AS p ON p.id = latest_payment.id');
 
 		$this->buildWhere($query);
 
@@ -239,5 +258,54 @@ class RedeventModelRegistrations extends RModelList
 		}
 
 		return true;
+	}
+
+	/**
+	 * Add payment info to items
+	 *
+	 * @param   array  $items  items
+	 *
+	 * @return array
+	 */
+	protected function addPaymentInfo($items)
+	{
+		if (!$items)
+		{
+			return $items;
+		}
+
+		$sids = array();
+
+		foreach ($items as $item)
+		{
+			$sids[] = $item->sid;
+		}
+
+		$paymentRequests = RdfCore::getSubmissionsPaymentRequests($sids);
+
+		foreach ($items as &$item)
+		{
+			$item->paid = 1;
+
+			if (isset($paymentRequests[$item->sid]))
+			{
+				$item->paymentRequests = $paymentRequests[$item->sid];
+
+				foreach ($paymentRequests[$item->sid] as $pr)
+				{
+					if ($pr->paid == 0)
+					{
+						$item->paid = 0;
+						break;
+					}
+				}
+			}
+			else
+			{
+				$item->paymentRequests = false;
+			}
+		}
+
+		return $items;
 	}
 }

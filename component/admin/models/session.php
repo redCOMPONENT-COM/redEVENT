@@ -382,6 +382,8 @@ class RedeventModelSession extends RModelAdmin
 			$new->set('xref', $sessionId);
 			$new->set('pricegroup_id', $r);
 			$new->set('price', $data['price'][$k]);
+			$new->set('vatrate', $data['vatrate'][$k]);
+			$new->set('sku', $data['sku'][$k]);
 			$new->set('currency', $data['currency'][$k]);
 
 			if (!($new->check() && $new->store()))

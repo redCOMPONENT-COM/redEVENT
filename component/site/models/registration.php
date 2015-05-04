@@ -116,7 +116,7 @@ class RedEventModelRegistration extends RModel
 			return false;
 		}
 
-		$obj = $this->getTable('Redevent_register', '');
+		$obj = $this->getTable('Attendee', 'RedeventTable');
 		$obj->load(array('sid' => $sid));
 		$obj->sid        = $sid;
 		$obj->xref       = $this->_xref;

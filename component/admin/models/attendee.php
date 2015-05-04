@@ -130,7 +130,7 @@ class RedeventModelAttendee extends RModelAdmin
 			$db = $this->_db;
 			$query = $db->getQuery(true);
 
-			$query->select('r.*, s.form_id, a.course_code, sp.price, sp.id AS sessionpricegroup_id, sp.currency');
+			$query->select('r.*, s.form_id, a.course_code, sp.price, sp.vatrate, sp.id AS sessionpricegroup_id, sp.currency');
 			$query->from('#__redevent_register AS r');
 			$query->join('INNER', '#__rwf_submitters AS s ON s.id =  r.sid');
 			$query->join('INNER', '#__redevent_event_venue_xref AS x ON x.id =  r.xref');
@@ -172,6 +172,15 @@ class RedeventModelAttendee extends RModelAdmin
 			$pricegroup = 0;
 		}
 
+		$field = new RedeventRfieldSessionprice;
+		$field->setOptions($this->getPricegroups());
+		$field->setFormIndex(1);
+
+		if ($pricegroup)
+		{
+			$field->setValue($pricegroup);
+		}
+
 		$id = $data['id'];
 
 		// Get price and activate
@@ -191,7 +200,7 @@ class RedeventModelAttendee extends RModelAdmin
 
 		// First save redform data
 		$rfcore = RdfCore::getInstance();
-		$result = $rfcore->saveAnswers('redevent', array('baseprice' => $details->price, 'currency' => $details->currency, 'edit' => 1));
+		$result = $rfcore->saveAnswers('redevent', array('extrafields' => array(1 => array($field)), 'currency' => $details->currency, 'edit' => 1));
 
 		if (!$result)
 		{
@@ -213,7 +222,7 @@ class RedeventModelAttendee extends RModelAdmin
 			$data['paymentstart'] = gmdate('Y-m-d H:i:s');
 		}
 
-		$row = JTable::getInstance('redevent_register', '');
+		$row = $this->getTable('Attendee');
 
 		if ($id)
 		{
