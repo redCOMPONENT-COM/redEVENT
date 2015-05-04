@@ -18,8 +18,8 @@ RHelperAsset::load('xref_prices.js');
 			</td>
 			<td>
 				<input type="text" name="jform[price][]" class="price-val" placeholder="<?php echo JText::_('COM_REDEVENT_SESSION_PRICEGROUP_PRICE'); ?>" value="<?php echo $r->price; ?>"/>
-				<input type="text" name="jform[vatrate][]" class="price-val" placeholder="<?php echo JText::_('COM_REDEVENT_SESSION_PRICEGROUP_VAT'); ?>" value="<?php echo $r->vatrate; ?>"/>
-				<input type="text" name="jform[sku][]" class="price-val" placeholder="<?php echo JText::_('COM_REDEVENT_SESSION_PRICEGROUP_SKU'); ?>" value="<?php echo $r->sku; ?>"/>
+				<input type="text" name="jform[vatrate][]" class="price-vatrate" placeholder="<?php echo JText::_('COM_REDEVENT_SESSION_PRICEGROUP_VAT'); ?>" value="<?php echo $r->vatrate; ?>"/>
+				<input type="text" name="jform[sku][]" class="price-sku" placeholder="<?php echo JText::_('COM_REDEVENT_SESSION_PRICEGROUP_SKU'); ?>" value="<?php echo $r->sku; ?>"/>
 				<?php echo JHTML::_('select.genericlist', $this->currencyoptions, 'jform[currency][]', '', 'value', 'text', $r->currency); ?>
 			</td>
 			<td>
@@ -34,8 +34,8 @@ RHelperAsset::load('xref_prices.js');
 		</td>
 		<td>
 			<input type="text" name="jform[price][]" class="price-val" placeholder="<?php echo JText::_('COM_REDEVENT_SESSION_PRICEGROUP_PRICE'); ?>"/>
-			<input type="text" name="jform[vatrate][]" class="price-val" placeholder="<?php echo JText::_('COM_REDEVENT_SESSION_PRICEGROUP_VAT'); ?>"/>
-			<input type="text" name="jform[sku][]" class="price-val" placeholder="<?php echo JText::_('COM_REDEVENT_SESSION_PRICEGROUP_SKU'); ?>"/>
+			<input type="text" name="jform[vatrate][]" class="price-vatrate" placeholder="<?php echo JText::_('COM_REDEVENT_SESSION_PRICEGROUP_VAT'); ?>"/>
+			<input type="text" name="jform[sku][]" class="price-sku" placeholder="<?php echo JText::_('COM_REDEVENT_SESSION_PRICEGROUP_SKU'); ?>"/>
 			<?php echo JHTML::_('select.genericlist', $this->currencyoptions, 'jform[currency][]', array('class' => 'price-currency'), 'value', 'text'); ?>
 		</td>
 		<td>
