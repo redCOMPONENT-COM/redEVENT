@@ -45,7 +45,7 @@ foreach ($this->upcomingvenueevents as $key => $event) {
 	<tr>
 		<td><?php echo JHTML::_('link', $event_url, RedeventHelper::getSessionFullTitle($event)); ?></td>
 		<td><?php echo $event->venue; ?></td>
-		<td><?php echo RedeventHelperOutput::getFlag( $event->country ); ?></td>
+		<td><?php echo RedeventHelperCountries::getCountryFlag( $event->country ); ?></td>
 		<td><?php echo RedeventHelperOutput::formatdate($event->dates, $event->times); ?></td>
 		<td><?php echo RedeventHelper::getEventDuration($event); ?></td>
 		<td><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>

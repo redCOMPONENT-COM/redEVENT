@@ -62,7 +62,7 @@ foreach ($this->_eventlinks as $key => $event) {
 			<td class="courseinfo_date"><?php echo RedeventHelperOutput::formatdate($event->dates, $event->times); ?></td>
 			<td class="courseinfo_duration"><?php echo RedeventHelper::getEventDuration($event); ?></td>
 			<td class="courseinfo_venue"><?php echo JHTML::_('link', $venue_url, $event->venue); ?></td>
-			<td class="courseinfo_country"><?php echo RedeventHelperOutput::getFlag( $event->country ); ?></td>
+			<td class="courseinfo_country"><?php echo RedeventHelperCountries::getCountryFlag( $event->country ); ?></td>
 			<td class="courseinfo_prices re-price"><?php echo RedeventHelperOutput::formatListPrices($event->prices); ?></td>
 			<td class="courseinfo_credit"><?php echo $event->course_credit ?></td>
 		<td class="courseinfo_signup" width="*"><div class="courseinfo_signupwrapper">

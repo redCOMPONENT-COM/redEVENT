@@ -44,18 +44,18 @@ class RedeventViewCategoryevents extends RViewSite
 	 */
 	function display( )
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		if ($this->getLayout() == 'rsscal') {
 			return $this->_displayRssCal();
 		}
 
-		$doc 		= & JFactory::getDocument();
-		$elsettings = & RedeventHelper::config();
+		$doc 		= JFactory::getDocument();
+		$elsettings = RedeventHelper::config();
 
 		// Get some data from the model
 		JRequest::setVar('limit', $mainframe->getCfg('feed_limit'));
-		$rows = & $this->get('Data');
+		$rows = & $this->get('Sessions');
 
 		foreach ( $rows as $row )
 		{
@@ -134,7 +134,7 @@ class RedeventViewCategoryevents extends RViewSite
 	{
 		define( 'CACHE', './cache' );
 
-		$mainframe  = &JFactory::getApplication();
+		$mainframe  = JFactory::getApplication();
 		$elsettings = RedeventHelper::config();
 
 		$catid = JRequest::getInt('id');
@@ -150,7 +150,7 @@ class RedeventViewCategoryevents extends RViewSite
 		$model = $this->getModel();
 		$model->setLimit($elsettings->get('ical_max_items', 100));
 		$model->setLimitstart(0);
-		$rows = & $this->get('Data');
+		$rows = & $this->get('Sessions');
 
 		foreach ( $rows as $row )
 		{

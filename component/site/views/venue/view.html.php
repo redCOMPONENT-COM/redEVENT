@@ -48,7 +48,7 @@ class RedeventViewVenue extends RViewSite
     	return $this->_displayGmap($tpl);
     }
 
-    $elsettings = & redeventHelper::config();
+    $elsettings = RedeventHelper::config();
 
 
 		//Get Data from the model
@@ -65,10 +65,10 @@ class RedeventViewVenue extends RViewSite
 
 	function _displayGmap( $tpl=null )
 	{
-		$params 	= & JFactory::getApplication()->getParams();
+		$params 	= JFactory::getApplication()->getParams();
 
 		JHTML::_('behavior.framework');
-		$document 	= & JFactory::getDocument();
+		$document 	= JFactory::getDocument();
 		$document->addScript('https://maps.google.com/maps/api/js?sensor=false');
 		$document->addScript(JURI::root().'/components/com_redevent/assets/js/venuemap.js');
 		JText::script("COM_REDEVENT_GET_DIRECTIONS");

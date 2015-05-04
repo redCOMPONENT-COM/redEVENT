@@ -1,9 +1,9 @@
 <?php
 /**
- * @copyright Copyright (C) 2008 redCOMPONENT.com. All rights reserved.
- * @license   can be read in this package of software in the file license.txt or
- * read on http://redcomponent.com/license.txt
- * Developed by email@recomponent.com - redCOMPONENT.com
+ * @package    Redevent.Site
+ *
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -221,7 +221,7 @@ class RedeventController extends JControllerLegacy
 	 */
 	function vcal()
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		$task = JRequest::getWord('task');
 		$id = JRequest::getInt('id');
@@ -275,7 +275,7 @@ class RedeventController extends JControllerLegacy
 	 */
 	private function Mailer()
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		jimport('joomla.mail.helper');
 		/* Start the mailer object */
 		$this->mailer = JFactory::getMailer();
@@ -379,7 +379,7 @@ class RedeventController extends JControllerLegacy
 	function reminder()
 	{
 		jimport('joomla.filesystem.file');
-		$app = &JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$params = $app->getParams('com_redevent');
 
 		$file = JPATH_COMPONENT_SITE . DS . 'reminder.txt';
@@ -406,7 +406,7 @@ class RedeventController extends JControllerLegacy
 
 		if ($events && count($events))
 		{
-			$mailer = &JFactory::getMailer();
+			$mailer = JFactory::getMailer();
 			$MailFrom = $app->getCfg('mailfrom');
 			$FromName = $app->getCfg('fromname');
 			$mailer->setSender(array($MailFrom, $FromName));
@@ -507,7 +507,7 @@ class RedeventController extends JControllerLegacy
 	 */
 	function ajaxattachremove()
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$id = JRequest::getVar('id', 0, 'request', 'int');
 
 		$helper = new RedeventHelperAttachment;
@@ -519,7 +519,7 @@ class RedeventController extends JControllerLegacy
 			$mainframe->close();
 		}
 
-		$cache = &JFactory::getCache('com_redevent');
+		$cache = JFactory::getCache('com_redevent');
 		$cache->clean();
 
 		echo 1;

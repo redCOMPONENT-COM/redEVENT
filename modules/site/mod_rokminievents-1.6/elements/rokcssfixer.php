@@ -11,15 +11,15 @@
 defined('_JEXEC') or die();
 
 class JElementRokCSSFixer extends JElement {
-	
+
 	function fetchElement($name, $value, &$node, $control_name){
-		
+
 		if (defined('ROKCSSFIXER')) return;
-		
-		$document 	=& JFactory::getDocument();
-		
+
+		$document 	=JFactory::getDocument();
+
 		$document->addStyleSheet(JURI::Root(true)."/modules/mod_rokminievents/admin/rokminievents-admin.css");
-		
+
 		define('ROKCSSFIXER', 1);
 	}
 }

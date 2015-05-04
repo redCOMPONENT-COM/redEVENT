@@ -54,9 +54,9 @@ class RedeventViewMoreinfo extends RViewSite
     }
 
     $xref     = JRequest::getInt('xref');
-    $uri      = &JFactory::getUri();
+    $uri      = JFactory::getUri();
     $document = JFactory::getDocument();
-    $user     = &Jfactory::getUser();
+    $user     = JFactory::getUser();
 
     if (!$xref) {
     	echo JText::_('COM_REDEVENT_MOREINFO_ERROR_MISSING_XREF');

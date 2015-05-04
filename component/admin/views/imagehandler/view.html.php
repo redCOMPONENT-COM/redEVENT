@@ -42,9 +42,9 @@ class RedEventViewImagehandler extends JView  {
 	 */
 	function display($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
-		$document =& JFactory::getDocument();
+		$document =JFactory::getDocument();
 
 		if($this->getLayout() == 'uploadimage') {
 			$this->_displayuploadimage($tpl);
@@ -126,8 +126,8 @@ class RedEventViewImagehandler extends JView  {
 	function _displayuploadimage($tpl = null)
 	{
 		//initialise variables
-		$document	= & JFactory::getDocument();
-		$uri 		= & JFactory::getURI();
+		$document	= JFactory::getDocument();
+		$uri 		= JFactory::getURI();
 		$elsettings = JComponentHelper::getParams('com_redevent');
 
 		//get vars

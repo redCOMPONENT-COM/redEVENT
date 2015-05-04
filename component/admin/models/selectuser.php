@@ -32,7 +32,7 @@ jimport('joomla.application.component.model');
  * @package		Redevent
  * @since 2.0
  */
-class RedeventModelSelectUser extends JModel 
+class RedeventModelSelectUser extends JModel
 {
    /**
    * list data array
@@ -54,7 +54,7 @@ class RedeventModelSelectUser extends JModel
    * @var object
    */
   var $_pagination = null;
-  
+
   /**
    * Constructor
    *
@@ -72,17 +72,17 @@ class RedeventModelSelectUser extends JModel
 
     $this->setState('limit', $limit);
     $this->setState('limitstart', $limitstart);
-    
+
     // filters and ordering
     $filter_order     = $mainframe->getUserStateFromRequest( 'com_redevent.selectuser.filter_order', 'filter_order', 'a.name', 'cmd' );
     $filter_order_Dir = $mainframe->getUserStateFromRequest( 'com_redevent.selectuser.filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
     $search           = $mainframe->getUserStateFromRequest( 'com_redevent.selectuser.search', 'search', '', 'string' );
-    
+
     $this->setState('filter_order',      $filter_order);
     $this->setState('filter_order_Dir',  $filter_order_Dir);
     $this->setState('search',            strtolower($search));
   }
-  
+
   /**
    * Method to get List data
    *
@@ -102,12 +102,12 @@ class RedeventModelSelectUser extends JModel
    	  	echo $this->_db->getErrorMsg();
    	  	return false;
   		}
-  		
+
   		$this->_data = $res;
     }
     return $this->_data;
   }
-  
+
 	function _buildQuery()
 	{
 		// Get the WHERE and ORDER BY clauses for the query
@@ -125,7 +125,7 @@ class RedeventModelSelectUser extends JModel
 
 	function _buildContentOrderBy()
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 
 		$filter_order		  = $this->getState('filter_order');
@@ -142,23 +142,23 @@ class RedeventModelSelectUser extends JModel
 
 	function _buildContentWhere()
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 
 		$search				= $this->getState('search');
 
 		$where = array();
-		
+
 		if ($search) {
 			$where[] = '( LOWER(a.name) LIKE '.$this->_db->Quote('%'.$search.'%')
 			         . ' OR LOWER(a.username) LIKE '.$this->_db->Quote('%'.$search.'%').')';
 		}
-		
+
 		$where 		= ( count( $where ) ? ' WHERE '. implode( ' AND ', $where ) : '' );
 
 		return $where;
 	}
-	
+
   /**
    * Method to get a pagination object
    *
@@ -176,7 +176,7 @@ class RedeventModelSelectUser extends JModel
 
     return $this->_pagination;
   }
-  
+
 
   /**
    * Total nr of items
@@ -194,5 +194,5 @@ class RedeventModelSelectUser extends JModel
     }
 
     return $this->_total;
-  }  
+  }
 }

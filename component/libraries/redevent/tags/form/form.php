@@ -180,7 +180,7 @@ class RedeventTagsFormForm
 		$single = $this->input->getInt('single', 0);
 		$max = $this->model->getData()->max_multi_signup;
 
-		if ($max && !$single && JFactory::getUser()->get('id'))
+		if ($max && !$single &JFactory::getUser()->get('id'))
 		{
 			// We must substract current registrations of this user !
 			$nbregs = $this->getUserActiveRegistrationsCount();

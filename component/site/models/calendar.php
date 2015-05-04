@@ -73,7 +73,7 @@ class RedeventModelCalendar extends RModel
 	{
 		parent::__construct();
 
-		$app = & JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		$this->setState('filter.language', $app->getLanguageFilter());
 
@@ -169,7 +169,7 @@ class RedeventModelCalendar extends RModel
 	protected function _buildQuery()
 	{
 		// Get Events from Database
-		$db = &JFactory::getDbo();
+		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('DATEDIFF(x.enddates, x.dates) AS datediff, a.id, x.id AS xref, x.dates, x.enddates, x.times, x.endtimes');
@@ -213,10 +213,10 @@ class RedeventModelCalendar extends RModel
 	 */
 	protected function _buildWhere($query)
 	{
-		$app = & JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		// Get the paramaters of the active menu item
-		$params = & $app->getParams();
+		$params = $app->getParams();
 
 		$task = JRequest::getWord('task');
 
@@ -247,7 +247,7 @@ class RedeventModelCalendar extends RModel
 		if (is_numeric($topcat) && $topcat)
 		{
 			// Get children categories
-			$db = &JFactory::getDbo();
+			$db = JFactory::getDbo();
 			$query_top = $db->getQuery(true);
 
 			$query_top->select('lft, rgt');

@@ -47,13 +47,13 @@ class RedeventViewAttendees extends RViewSite
 			return $this->_displayManageAttendees($tpl);
 		}
 
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		$document 	= JFactory::getDocument();
 		$user		= JFactory::getUser();
 		$elsettings = RedeventHelper::config();
 		$acl        = RedeventUserAcl::getInstance();
-		$uri        = & JFactory::getURI();
+		$uri        = JFactory::getURI();
 		$model      = &$this->getModel();
 
 		//manages attendees
@@ -70,7 +70,7 @@ class RedeventViewAttendees extends RViewSite
 		$item    	= $menu->getActive();
 		if (!$item) $item = $menu->getDefault();
 
-		$params 	= & $mainframe->getParams('com_redevent');
+		$params 	= $mainframe->getParams('com_redevent');
 
 		//Check if the id exists
 		if (!$session)
@@ -90,7 +90,7 @@ class RedeventViewAttendees extends RViewSite
 		$print_link = JRoute::_('index.php?option=com_redevent&view=attendees&xref='.$session->slug.'&pop=1&tmpl=component');
 
 		//pathway
-		$pathway 	= & $mainframe->getPathWay();
+		$pathway 	= $mainframe->getPathWay();
 		$pathway->addItem( JText::_('COM_REDEVENT_ATTENDEES' ), JRoute::_('index.php?option=com_redevent&view=attendees&xref='.$session->slug));
 
 		//set page title and meta stuff
@@ -136,11 +136,11 @@ class RedeventViewAttendees extends RViewSite
 	 */
 	function _displayManageAttendees($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$document 	= JFactory::getDocument();
 		$user		= JFactory::getUser();
 		$elsettings = RedeventHelper::config();
-		$uri        = & JFactory::getURI();
+		$uri        = JFactory::getURI();
 		$session		= $this->get('Session');
 		$registers	= $this->get('Registers');
 		$regcheck	= $this->get('ManageAttendees');
@@ -151,7 +151,7 @@ class RedeventViewAttendees extends RViewSite
 		$item    	= $menu->getActive();
 		if (!$item) $item = $menu->getDefault();
 
-		$params 	= & $mainframe->getParams('com_redevent');
+		$params 	= $mainframe->getParams('com_redevent');
 
 		//Check if the session exists
 		if (!$session)
@@ -176,7 +176,7 @@ class RedeventViewAttendees extends RViewSite
 		$params->def( 'page_title', JText::_('COM_REDEVENT_Manage_attendees' ));
 
 		//pathway
-		$pathway 	= & $mainframe->getPathWay();
+		$pathway 	= $mainframe->getPathWay();
 		$pathway->addItem( JText::_('COM_REDEVENT_Manage_attendees' ). ' - '.RedeventHelper::getSessionFullTitle($session), JRoute::_('index.php?option=com_redevent&view=attendees&layout=manageattendees&id='.$session->slug));
 
 		//Check user if he can edit

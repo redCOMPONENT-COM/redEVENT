@@ -34,7 +34,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			<?php echo JHTML::link( JRoute::_(RedeventHelperRoute::getDetailsRoute($this->row->slug, $this->row->xslug).'&format=raw&layout=ics', false),
 			                        $img ); ?>
 		<?php endif; ?>
-    <?php echo RedeventHelperOutput::editbutton($this->item->id, $this->row->did, $this->params, $this->allowedtoeditevent, 'editevent' ); ?>
+    <?php echo RedeventHelperOutput::editbutton($this->row->did, $this->params, $this->allowedtoeditevent, 'editevent' ); ?>
     <?php if ($this->manage_attendees): ?>
     <?php echo RedeventHelperOutput::xrefattendeesbutton($this->row->xref); ?>
 		<?php endif; ?>

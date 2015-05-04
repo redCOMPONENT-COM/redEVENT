@@ -17,18 +17,18 @@ class RokMiniEvents
     public function loadScripts(&$params)
     {
         JHTML::_('behavior.framework');
-        $doc = &JFactory::getDocument();
+        $doc = JFactory::getDocument();
         $doc->addScript(JURI::Root(true) . '/modules/mod_rokminievents/tmpl/js/rokminievents' . self::_getJSVersion() . '.js');
         $doc->addScript(JURI::Root(true) . '/modules/mod_rokminievents/tmpl/js/rokslider' . self::_getJSVersion() . '.js');
     }
 
     public function getEvents(JParameter &$params)
     {
-        $conf =& JFactory::getConfig();
+        $conf =JFactory::getConfig();
         if ($conf->getValue('config.caching') && $params->get('module_cache'))
         {
-            $user =& JFactory::getUser();
-            $cache =& JFactory::getCache('mod_rokminievents');
+            $user =JFactory::getUser();
+            $cache =JFactory::getCache('mod_rokminievents');
             $cache->setCaching(true);
             $args = array($params);
             $checksum = md5($params->toString());
@@ -54,8 +54,8 @@ class RokMiniEvents
      */
     protected function setTimezone(JParameter $params, &$events)
     {
-        $conf =& JFactory::getConfig();
-        $user = & JFactory::getUser();
+        $conf =JFactory::getConfig();
+        $user = JFactory::getUser();
         $timezone = $conf->getValue('config.offset');
         $localtime = $params->get('localtime', 'local');
         if ($localtime == 'local' && $user->id != 0)

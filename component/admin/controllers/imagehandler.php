@@ -59,7 +59,7 @@ class RedeventControllerImagehandler extends RedeventController
 	 */
 	function uploadimage()
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		// Check for request forgeries
 		JRequest::checkToken() or die( 'Invalid Token' );
@@ -129,7 +129,7 @@ class RedeventControllerImagehandler extends RedeventController
 	 */
 	function delete()
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		// Set FTP credentials, if given
 		jimport('joomla.client.helper');

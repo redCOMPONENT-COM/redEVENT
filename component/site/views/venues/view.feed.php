@@ -42,9 +42,9 @@ class RedeventViewVenues extends RViewSite
 	 */
 	function display( )
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
-		$doc 	= & JFactory::getDocument();
+		$doc 	= JFactory::getDocument();
 
 		// Get some data from the model
 		JRequest::setVar('limit', $mainframe->getCfg('feed_limit'));

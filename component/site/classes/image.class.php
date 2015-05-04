@@ -193,7 +193,7 @@ class RedeventImage
 	*/
 	public static function flyercreator($image)
 	{
-		$settings = & RedeventHelper::config();
+		$settings = RedeventHelper::config();
 
 		jimport('joomla.filesystem.file');
 
@@ -250,7 +250,7 @@ class RedeventImage
 	public static function modalimage($path, $alt, $maxdim = null, $attribs = array())
 	{
 		jimport('joomla.filesystem.file');
-		$app = &JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		if (empty($path)) {
 			return false;
@@ -287,7 +287,7 @@ class RedeventImage
 	public static function getThumbUrl($path, $maxdim = null)
 	{
 		jimport('joomla.filesystem.file');
-		$app = &JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$settings = RedeventHelper::config();
 
 		if ($maxdim)

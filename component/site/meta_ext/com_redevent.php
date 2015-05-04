@@ -21,7 +21,7 @@ global 	$shCustomTitleTag, $shCustomDescriptionTag, $shCustomKeywordsTag, $shCus
 $subtype = JREQUEST::getVar('subtype', null);
 $xref = JRequest::getInt('xref', false);
 
-$app = & JFactory::getApplication();
+$app = JFactory::getApplication();
 
 if (!is_null($subtype) && $xref) {
 	$db = JFactory::getDBO();

@@ -64,16 +64,8 @@ class RedeventModelVenuesmap extends RModel
 	 * @access public
 	 * @return array
 	 */
-	public function &getData()
+	public function getData()
 	{
-		$mainframe = JFactory::getApplication();
-
-		$menu		= JSite::getMenu();
-		$item    	= $menu->getActive();
-		$params		= $menu->getParams($item->id);
-
-		$elsettings = RedeventHelper::config();
-
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_data))
 		{
@@ -82,7 +74,7 @@ class RedeventModelVenuesmap extends RModel
 			// Get a reference to the global cache object.
 			$cache = JFactory::getCache('redevent');
 
-			$this->_data = $cache->call(array('RedeventModelVenuesmap', '_getResultList'), $query);
+			$this->_data = $cache->call(array($this, '_getResultList'), $query);
 
 			$k = 0;
 
@@ -119,7 +111,7 @@ class RedeventModelVenuesmap extends RModel
 				// Create flag
 				if ($venue->country)
 				{
-					$venue->countryimg = RedeventHelperOutput::getFlag( $venue->country );
+					$venue->countryimg = RedeventHelperCountries::getCountryFlag( $venue->country );
 				}
 
 				// Create target link
@@ -199,7 +191,6 @@ class RedeventModelVenuesmap extends RModel
 
 		if ($this->getState('filter.language'))
 		{
-// 			$query->where('(e.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR e.language IS NULL)');
 			$query->where('(v.language in (' . $this->_db->quote(JFactory::getLanguage()->getTag()) . ',' . $this->_db->quote('*') . ') OR v.language IS NULL)');
 		}
 
@@ -216,9 +207,9 @@ class RedeventModelVenuesmap extends RModel
 	 *
 	 * @return array
 	 */
-	function _getResultList($query)
+	public static function _getResultList($query)
 	{
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$db->setQuery($query);
 

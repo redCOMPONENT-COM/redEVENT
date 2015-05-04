@@ -36,10 +36,10 @@ class RedEventViewSelectUser extends JView {
 
 	function display($tpl = null)
 	{
-		$app = &JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		//initialise variables
-		$document	= & JFactory::getDocument();
+		$document	= JFactory::getDocument();
 		$fieldname = JRequest::getVar('field');
 
 		JHTML::_('behavior.tooltip');

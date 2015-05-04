@@ -34,8 +34,8 @@ class RokMiniEventsSourceRSEvents extends RokMiniEvents_SourceBase
             }
         }
 
-        $db =& JFactory::getDBO();
-        $user =& JFactory::getUser();
+        $db =JFactory::getDBO();
+        $user =JFactory::getUser();
         $user_gid = (int)$user->get('aid');
 
 
@@ -126,7 +126,7 @@ class RokMiniEventsSourceRSEvents extends RokMiniEvents_SourceBase
      */
     function available()
     {
-        $db =& JFactory::getDBO();
+        $db =JFactory::getDBO();
         $query = 'select count(*) from #__components as a where a.option = ' . $db->Quote('com_rsevents');
         $db->setQuery($query);
         $count = (int)$db->loadResult();
@@ -138,7 +138,7 @@ class RokMiniEventsSourceRSEvents extends RokMiniEvents_SourceBase
 
 	function getChildCategories($id, &$list)
 	{
-		$db =& JFactory::getDBO();
+		$db =JFactory::getDBO();
 
 		// Initialize variables
 		$return = true;

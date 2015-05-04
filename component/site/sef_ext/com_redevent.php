@@ -88,7 +88,7 @@ if (!$shHomePageFlag)
 	else
 	{
 
-		$app = & JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$reParams = $app->getParams('com_redevent');
 
 		/* Get the DB connection */

@@ -44,7 +44,7 @@ class RedeventViewVenueEvents extends RViewSite
 	 */
 	function display($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$id = JRequest::getInt('id');
 
 		$settings = RedeventHelper::config();

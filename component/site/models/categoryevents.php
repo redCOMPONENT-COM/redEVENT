@@ -103,7 +103,7 @@ class RedeventModelCategoryevents extends RedeventModelBaseeventlist
 	{
 		$query = parent::_buildWhere($query);
 
-		$category = $this->getCategory();
+		$category = $this->getItem();
 		$query->where(' a.published <> 0 ');
 
 		$query->where('(c.id = ' . $this->_db->Quote($category->id)
@@ -118,7 +118,7 @@ class RedeventModelCategoryevents extends RedeventModelBaseeventlist
 	 * @access public
 	 * @return integer
 	 */
-	public function getCategory( )
+	public function getItem()
 	{
 		if (!$this->_category)
 		{
@@ -157,7 +157,7 @@ class RedeventModelCategoryevents extends RedeventModelBaseeventlist
 	 *
 	 * @return array
 	 */
-	public function getData()
+	public function getSessions()
 	{
 		if ($this->getState('results_type', 1) == 1)
 		{

@@ -65,7 +65,7 @@ class RedeventControllerFront extends JControllerLegacy
 
 	function _checkfilter()
 	{
-		$app = & JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		$post = JRequest::get('post');
 		$uri  = Jfactory::getUri();

@@ -19,7 +19,7 @@ class JElementRedEventCategory extends JElement
 	function fetchElement($name, $value, &$node, $control_name)
 	{
 
-        $db			=& JFactory::getDBO();
+        $db			=JFactory::getDBO();
         $query = 'SELECT id, name as name from #__redevent_categories where published = 1 order by ordering';
 
         $db->setQuery($query);

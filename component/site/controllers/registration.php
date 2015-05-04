@@ -451,7 +451,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	 */
 	function activate()
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$msgtype = 'message';
 
 		/* Get the confirm ID */
@@ -576,7 +576,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	{
 		if (empty($this->mailer))
 		{
-			$mainframe = & JFactory::getApplication();
+			$mainframe = JFactory::getApplication();
 			jimport('joomla.mail.helper');
 			/* Start the mailer object */
 			$this->mailer = JFactory::getMailer();
@@ -874,7 +874,7 @@ class RedeventControllerRegistration extends RedeventControllerFront
 	protected function _getUserIdFromEmail($email)
 	{
 		// Initialize some variables
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$query = 'SELECT id FROM #__users WHERE email = ' . $db->Quote( $email );
 		$db->setQuery($query, 0, 1);

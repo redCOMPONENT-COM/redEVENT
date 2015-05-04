@@ -44,14 +44,14 @@ class RedeventViewVenueevents extends RViewSite
 	 */
 	function display( )
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		if ($this->getLayout() == 'rsscal') {
 			return $this->_displayRssCal();
 		}
 
-		$doc 		= & JFactory::getDocument();
-		$elsettings = & RedeventHelper::config();
+		$doc 		= JFactory::getDocument();
+		$elsettings = RedeventHelper::config();
 
 		// Get some data from the model
 		JRequest::setVar('limit', $mainframe->getCfg('feed_limit'));
@@ -129,7 +129,7 @@ class RedeventViewVenueevents extends RViewSite
 	{
 		define( 'CACHE', './cache' );
 
-		$mainframe  = &JFactory::getApplication();
+		$mainframe  = JFactory::getApplication();
 		$elsettings = RedeventHelper::config();
 
 		$id = JRequest::getInt('id');

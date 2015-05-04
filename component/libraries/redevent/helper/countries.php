@@ -558,17 +558,21 @@ class RedeventHelperCountries
 	/**
 	 * return flag url from iso code
 	 *
-	 * @param $iso_code
+	 * @param   string  $iso_code  iso code
+	 *
+	 * @return string url
 	 */
-	function getIsoFlag($iso_code)
+	public static function getIsoFlag($iso_code)
 	{
 		if (strlen($iso_code) == 3)
 		{
 			$iso_code = self::convertIso3to2($iso_code);
 		}
+
 		if ($iso_code)
 		{
-			$path = JURI::root().'components/com_redevent/assets/images/flags/'.strtolower($iso_code).'.gif';
+			$path = RHelperAsset::image('com_redevent/flags/' . strtolower($iso_code) . '.gif', '', null, true, true);
+
 			return $path;
 		}
 		else

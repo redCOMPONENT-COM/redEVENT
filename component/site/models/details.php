@@ -108,7 +108,7 @@ class RedeventModelDetails extends JModelLegacy
 		*/
 		if ($this->_loadDetails())
 		{
-			$user	= & JFactory::getUser();
+			$user	= JFactory::getUser();
 
 			// Is the category published?
 			if (!count($this->_details->categories))
@@ -145,7 +145,7 @@ class RedeventModelDetails extends JModelLegacy
 	{
 		if (empty($this->_details))
 		{
-			$user	= & JFactory::getUser();
+			$user	= JFactory::getUser();
 
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
@@ -273,7 +273,7 @@ class RedeventModelDetails extends JModelLegacy
 	function getUsercheck()
 	{
 		// Initialize variables
-		$user 		= & JFactory::getUser();
+		$user 		= JFactory::getUser();
 		$userid		= (int) $user->get('id', 0);
 
 		//usercheck
@@ -514,7 +514,7 @@ class RedeventModelDetails extends JModelLegacy
 	function notifyManagers()
 	{
 		jimport('joomla.mail.helper');
-		$app    = &JFactory::getApplication();
+		$app    = JFactory::getApplication();
 		$params = $app->getParams('com_redevent');
 
 		$event = $this->getDetails();
@@ -562,7 +562,7 @@ class RedeventModelDetails extends JModelLegacy
 			return true;
 		}
 
-		$mailer = & JFactory::getMailer();
+		$mailer = JFactory::getMailer();
 
 		foreach ($recipients as $r)
 		{

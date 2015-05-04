@@ -103,7 +103,7 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 	 * override to take into account search type
 	 * @see RedeventModelBaseeventlist::getData()
 	 */
-	public function &getData()
+	public function getData()
 	{
 		if ($this->getState('results_type', 1) == 1)
 		{
@@ -188,8 +188,8 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 		if (empty($this->_filter))
 		{
 			// Get the paramaters of the active menu item
-			$mainframe = &Jfactory::getApplication();
-			$params    = & $mainframe->getParams();
+			$mainframe = JFactory::getApplication();
+			$params    = $mainframe->getParams();
 			$post = JRequest::get('request');
 
 			$filter_continent = $this->getState('filter_continent');
@@ -301,7 +301,7 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 
 	public function getCountryOptions()
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$filter_continent = $mainframe->getUserState('com_redevent.search.filter_continent');
 
 		$db      = JFactory::getDbo();
@@ -401,8 +401,8 @@ class RedeventModelSearch extends RedeventModelBaseeventlist
 	 */
 	public function getEventsOptions()
 	{
-		$app = &JFactory::getApplication();
-		$params = & $app->getParams();
+		$app = JFactory::getApplication();
+		$params = $app->getParams();
 		$filter_venuecategory = JRequest::getVar('filter_venuecategory');
 		$filter_category = JRequest::getVar('filter_category', $params->get('category', 0));
 		$filter_venue = JRequest::getVar('filter_venue');

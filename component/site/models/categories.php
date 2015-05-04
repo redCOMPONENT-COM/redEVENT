@@ -181,9 +181,9 @@ class RedeventModelCategories extends RModel
 	protected function _buildQuery()
 	{
 		// Initialize some vars
-		$mainframe = &JFactory::getApplication();
-		$params   = & $mainframe->getParams('com_redevent');
-		$user		= & JFactory::getUser();
+		$mainframe = JFactory::getApplication();
+		$params   = $mainframe->getParams('com_redevent');
+		$user		= JFactory::getUser();
 		$gid		= max($user->getAuthorisedViewLevels());
 
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();

@@ -44,7 +44,7 @@ class RedeventViewFeatured extends JViewLegacy
 	 */
 	function display($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		$settings = RedeventHelper::config();
 

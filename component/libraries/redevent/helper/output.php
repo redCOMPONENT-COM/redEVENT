@@ -1,24 +1,8 @@
 <?php
 /**
- * @version 1.0 $Id$
- * @package Joomla
- * @subpackage redEVENT
- * @copyright redEVENT (C) 2008 redCOMPONENT.com / EventList (C) 2005 - 2008 Christoph Lukes
- * @license GNU/GPL, see LICENSE.php
- * redEVENT is based on EventList made by Christoph Lukes from schlu.net
- * redEVENT can be downloaded from www.redcomponent.com
- * redEVENT is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License 2
- * as published by the Free Software Foundation.
-
- * redEVENT is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with redEVENT; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    Redevent.Library
+ * @copyright  Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @license    GNU General Public License version 2 or later, see LICENSE.
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -26,99 +10,131 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Holds the logic for all output related things
  *
- * @package Joomla
- * @subpackage redEVENT
+ * @package  Redevent.Library
+ * @since    0.9
  */
-class RedeventHelperOutput {
-
+class RedeventHelperOutput
+{
 	/**
-	* Writes footer. Official copyright! Do not remove!
-	* @since 0.9
-	*/
-	function footer( )
+	 * Writes Event submission button
+	 *
+	 * @param   boolean  $allowed  Access of user
+	 * @param   array    &$params  needed params
+	 *
+	 * @return string
+	 */
+	public static function submitbutton($allowed, &$params)
 	{
-	}
+		$output = '';
 
-	/**
-	* Writes Event submission button
-	*
-	* @author Christoph Lukes
-	* @since 0.9
-	*
-	* @param int $dellink Access of user
-	* @param array $params needed params
-	* @param string $view the view the user will redirected to
-	**/
-	function submitbutton( $dellink, &$params )
-	{
-		if ($dellink == 1) {
-
+		if ($allowed)
+		{
 			JHTML::_('behavior.tooltip');
 
-			if ( $params->get('icons', 1) ) {
-				$image = JHTML::_('image', 'components/com_redevent/assets/images/submitevent.png', JText::_('COM_REDEVENT_DELIVER_NEW_EVENT' ));
-			} else {
-				$image = JText::_('COM_REDEVENT_DELIVER_NEW_EVENT' );
+			if ($params->get('icons', 1))
+			{
+				$image = RHelperAsset::load(
+					'submitevent.png',
+					null,
+					array('alt' => JText::_('COM_REDEVENT_DELIVER_NEW_EVENT'))
+				);
+			}
+			else
+			{
+				$image = JText::_('COM_REDEVENT_DELIVER_NEW_EVENT');
 			}
 
-			$link 		= RedeventHelperRoute::getEditEventRoute();
-			$overlib 	= JText::_('COM_REDEVENT_SUBMIT_EVENT_TIP' );
-			$output		= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.JText::_('COM_REDEVENT_DELIVER_NEW_EVENT' ).'::'.$overlib.'">'.$image.'</a>';
+			$link = RedeventHelperRoute::getEditEventRoute();
+			$tip = JText::_('COM_REDEVENT_SUBMIT_EVENT_TIP');
 
-			return $output;
+			$output = JHtml::link(
+				$link,
+				$image,
+				array(
+					'class' => 'hasTip',
+					'title' => JText::_('COM_REDEVENT_DELIVER_NEW_EVENT') . '::' . $tip
+				)
+			);
 		}
-
-		return;
-	}
-
-	/**
-	* Writes Event submission button
-	*
-	* @author Christoph Lukes
-	* @since 0.9
-	*
-	* @param int $dellink Access of user
-	* @param array $params needed params
-	* @param string $view the view the user will redirected to
-	**/
-	function thumbbutton( $link, &$params )
-	{
-    if (!$params->get( 'show_thumb_icon', 1)) {
-      return '';
-    }
-
-		JHTML::_('behavior.tooltip');
-
-		if ( $params->get('icons', 1) ) {
-			$image = JHTML::_('image', 'components/com_redevent/assets/images/thumbnail.png', JText::_('COM_REDEVENT_EVENTS_THUMBNAILS_LAYOUT' ));
-		} else {
-			$image = JText::_('COM_REDEVENT_EVENTS_THUMBNAILS_LAYOUT' );
-		}
-		$output		= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.JText::_('COM_REDEVENT_EVENTS_THUMBNAILS_LAYOUT' ).'::">'.$image.'</a>';
 
 		return $output;
 	}
 
 	/**
-	* Writes Event submission button
-	*
-	* @author Christoph Lukes
-	* @since 0.9
-	*
-	* @param int $dellink Access of user
-	* @param array $params needed params
-	* @param string $view the view the user will redirected to
-	**/
-	function listbutton( $link, &$params )
+	 * Return html code for thumbnails view button
+	 *
+	 * @param   string  $link     link to the view
+	 * @param   array   &$params  needed params
+	 *
+	 * @return string
+	 */
+	public static function thumbbutton($link, &$params)
+	{
+		if (!$params->get('show_thumb_icon', 1))
+		{
+			return '';
+		}
+
+		JHTML::_('behavior.tooltip');
+
+		if ($params->get('icons', 1))
+		{
+			$image = RHelperAsset::load(
+				'thumbnail.png',
+				null,
+				array('alt' => JText::_('COM_REDEVENT_EVENTS_THUMBNAILS_LAYOUT'))
+			);
+		}
+		else
+		{
+			$image = JText::_('COM_REDEVENT_EVENTS_THUMBNAILS_LAYOUT');
+		}
+
+		$output = JHtml::link(
+			$link,
+			$image,
+			array(
+				'class' => 'hasTip',
+				'title' => JText::_('COM_REDEVENT_EVENTS_THUMBNAILS_LAYOUT')
+			)
+		);
+
+		return $output;
+	}
+
+	/**
+	 * Return html code for list view button
+	 *
+	 * @param   string  $link     link to the view
+	 * @param   array   &$params  needed params
+	 *
+	 * @return string
+	 */
+	public static function listbutton($link, &$params)
 	{
 		JHTML::_('behavior.tooltip');
 
-		if ( $params->get('icons') ) {
-			$image = JHTML::_('image', 'components/com_redevent/assets/images/list.png', JText::_('COM_REDEVENT_EVENTS_LIST_LAYOUT' ));
-		} else {
-			$image = JText::_('COM_REDEVENT_EVENTS_LIST_LAYOUT' );
+		if ($params->get('icons'))
+		{
+			$image = RHelperAsset::load(
+				'list.png',
+				null,
+				array('alt' => JText::_('COM_REDEVENT_EVENTS_LIST_LAYOUT'))
+			);
 		}
-		$output		= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.JText::_('COM_REDEVENT_EVENTS_LIST_LAYOUT' ).'::">'.$image.'</a>';
+		else
+		{
+			$image = JText::_('COM_REDEVENT_EVENTS_LIST_LAYOUT');
+		}
+
+		$output = JHtml::link(
+			$link,
+			$image,
+			array(
+				'class' => 'hasTip',
+				'title' => JText::_('COM_REDEVENT_EVENTS_LIST_LAYOUT')
+			)
+		);
 
 		return $output;
 	}
@@ -126,105 +142,136 @@ class RedeventHelperOutput {
 	/**
 	 * returns html code for edit venue button
 	 *
-	 * @param $id venue id/slug
+	 * @param   string  $id  venue id/slug
+	 *
 	 * @return html
 	 */
-	function editVenueButton($id)
+	public static function editVenueButton($id)
 	{
-		$txt   =  ($id ? JText::_('COM_REDEVENT_EDIT_VENUE' ) : JText::_('COM_REDEVENT_ADD_VENUE' ));
-		$link  = JRoute::_(RedeventHelperRoute::getEditVenueRoute($id));
-		$image = JHTML::image('components/com_redevent/assets/images/calendar_edit.png', $txt);
-		return JHTML::link($link, $image, array( 'class' => "editlinktip hasTip", 'title' => $txt.'::'));
+		$txt = ($id ? JText::_('COM_REDEVENT_EDIT_VENUE') : JText::_('COM_REDEVENT_ADD_VENUE'));
+		$link = JRoute::_(RedeventHelperRoute::getEditVenueRoute($id));
+
+		$image = RHelperAsset::load(
+			'calendar_edit.png',
+			null,
+			array('alt' => $txt)
+		);
+
+		return JHTML::link($link, $image, array('class' => "editlinktip hasTip", 'title' => $txt));
 	}
 
 	/**
-	* Writes Archivebutton
-	*
-	* @author Christoph Lukes
-	* @since 0.9
-	*
-	* @param array $params needed params
-	* @return string html
-	*/
-	function archivebutton( &$params )
+	 * returns html code for archive button
+	 *
+	 * @param   array  &$params  needed params
+	 *
+	 * @return string html
+	 */
+	public static function archivebutton(&$params)
 	{
-    if (!$params->get( 'show_gotoarchive_icon', 1)) {
-      return '';
-    }
+		if (!$params->get('show_gotoarchive_icon', 1))
+		{
+			return '';
+		}
 
 		JHTML::_('behavior.tooltip');
 
-		if ( $params->get('icons', 1) ) {
-			$image = JHTML::_('image', 'components/com_redevent/assets/images/archive_front.png', JText::_('COM_REDEVENT_SHOW_ARCHIVE' ));
-		} else {
-			$image = JText::_('COM_REDEVENT_SHOW_ARCHIVE' );
+		if ($params->get('icons', 1))
+		{
+			$image = RHelperAsset::load(
+				'archive_front.png',
+				null,
+				array('alt' => JText::_('COM_REDEVENT_SHOW_ARCHIVE'))
+			);
 		}
-		$overlib 	= JText::_('COM_REDEVENT_SHOW_ARCHIVE_TIP' );
-		$title 		= JText::_('COM_REDEVENT_SHOW_ARCHIVE' );
+		else
+		{
+			$image = JText::_('COM_REDEVENT_SHOW_ARCHIVE');
+		}
 
-		$link		= JRoute::_('index.php?option=com_redevent&view=archive');
+		$tip = JText::_('COM_REDEVENT_SHOW_ARCHIVE_TIP');
+		$title = JText::_('COM_REDEVENT_SHOW_ARCHIVE');
 
-		$output = '<a href="'.$link.'" class="editlinktip hasTip" title="'.$title.'::'.$overlib.'">'.$image.'</a>';
+		$link = JRoute::_('index.php?option=com_redevent&view=archive');
+
+		$output = JHtml::link(
+			$link,
+			$image,
+			array(
+				'class' => 'hasTip',
+				'title' => $title . '::' . $tip
+			)
+		);
 
 		return $output;
 	}
 
 	/**
-	 * display a button for current events
+	 * returns html code for edit button
 	 *
-	 * @param array $params
-	 * @param string $link
-	 * @return html
-	 */
-	public static function currentbutton( &$params, $link)
-	{
-		return '';
-	}
-
-	/**
-	 * Creates the edit button
+	 * @param   int     $id             id of the item to edit
+	 * @param   array   &$params        parameters
+	 * @param   int     $allowedtoedit  allowed to edit
+	 * @param   string  $view           view to go to
 	 *
-	 * @param int $Itemid
-	 * @param int $id
-	 * @param array $params
-	 * @param int $allowedtoedit
-	 * @param string $view
-	 * @since 0.9
+	 * @return string html
 	 */
-	function editbutton( $Itemid, $id, &$params, $allowedtoedit, $view)
+	public static function editbutton($id, &$params, $allowedtoedit, $view)
 	{
-
-		if ( $allowedtoedit )
+		if ($allowedtoedit)
 		{
-
 			JHTML::_('behavior.tooltip');
 
 			switch ($view)
 			{
 				case 'editevent':
-					if ( $params->get('icons', 1) ) {
-						$image = JHTML::_('image', 'components/com_redevent/assets/images/calendar_edit.png', JText::_('COM_REDEVENT_EDIT_EVENT' ));
-					} else {
-						$image = JText::_('COM_REDEVENT_EDIT_EVENT' );
+					if ($params->get('icons', 1))
+					{
+						$image = RHelperAsset::load(
+							'calendar_edit.png',
+							null,
+							array('alt' => JText::_('COM_REDEVENT_EDIT_EVENT'))
+						);
 					}
-					$overlib = JText::_('COM_REDEVENT_EDIT_EVENT_TIP' );
-					$text = JText::_('COM_REDEVENT_EDIT_EVENT' );
-					$link  = JRoute::_(RedeventHelperRoute::getEditEventRoute($id, JRequest::getInt('xref')));
+					else
+					{
+						$image = JText::_('COM_REDEVENT_EDIT_EVENT');
+					}
+
+					$tip = JText::_('COM_REDEVENT_EDIT_EVENT_TIP');
+					$text = JText::_('COM_REDEVENT_EDIT_EVENT');
+					$link = JRoute::_(RedeventHelperRoute::getEditEventRoute($id, JRequest::getInt('xref')));
 					break;
 
 				case 'editvenue':
-					if ( $params->get('icons', 1) ) {
-						$image = JHTML::_('image', 'components/com_redevent/assets/images/calendar_edit.png', JText::_('COM_REDEVENT_EDIT_EVENT' ));
-					} else {
-						$image = JText::_('COM_REDEVENT_EDIT_VENUE' );
+					if ($params->get('icons', 1))
+					{
+						$image = RHelperAsset::load(
+							'calendar_edit.png',
+							null,
+							array('alt' => JText::_('COM_REDEVENT_EDIT_VENUE'))
+						);
 					}
-					$overlib = JText::_('COM_REDEVENT_EDIT_VENUE_TIP' );
-					$text = JText::_('COM_REDEVENT_EDIT_VENUE' );
-					$link  = JRoute::_(RedeventHelperRoute::getEditVenueRoute($id));
+					else
+					{
+						$image = JText::_('COM_REDEVENT_EDIT_VENUE');
+					}
+
+					$tip = JText::_('COM_REDEVENT_EDIT_VENUE_TIP');
+					$text = JText::_('COM_REDEVENT_EDIT_VENUE');
+					$link = JRoute::_(RedeventHelperRoute::getEditVenueRoute($id));
+
 					break;
 			}
 
-			$output	= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
+			$output = JHtml::link(
+				$link,
+				$image,
+				array(
+					'class' => 'hasTip',
+					'title' => $text . '::' . $tip
+				)
+			);
 
 			return $output;
 		}
@@ -235,101 +282,124 @@ class RedeventHelperOutput {
 	/**
 	 * Creates the attendees edit button
 	 *
-	 * @param int xref id
-	 * @since 2.0
+	 * @param   int  $id  xref id
+	 *
+	 * @return string html
 	 */
-	function xrefattendeesbutton($id)
+	public static function xrefattendeesbutton($id)
 	{
 		JHTML::_('behavior.tooltip');
 
-		$image = JHTML::_('image', 'components/com_redevent/assets/images/attendees.png', JText::_('COM_REDEVENT_EDIT_ATTENDEES' ));
+		$image = RHelperAsset::load(
+			'attendees.png',
+			null,
+			array('alt' => JText::_('COM_REDEVENT_EDIT_ATTENDEES'))
+		);
 
-		$overlib = JText::_('COM_REDEVENT_EDIT_ATTENDEES_TIP' );
-		$text = JText::_('COM_REDEVENT_EDIT_ATTENDEES' );
-//		$link 	= 'index.php?option=com_redevent&view=details&layout=manageattendees&xref='. $id;
+		$tip = JText::_('COM_REDEVENT_EDIT_ATTENDEES_TIP');
+		$text = JText::_('COM_REDEVENT_EDIT_ATTENDEES');
 		$link = RedeventHelperRoute::getManageAttendees($id);
-		$output	= '<a href="'.JRoute::_($link).'" class="editlinktip hasTip" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
+
+		$output = JHtml::link(
+			$link,
+			$image,
+			array(
+				'class' => 'hasTip',
+				'title' => $text . '::' . $tip
+			)
+		);
 
 		return $output;
 	}
 
 	/**
-	 * Creates the print button
+	 * returns html code for edit button
 	 *
-	 * @param string $print_link
-	 * @param array $params
-	 * @since 0.9
+	 * @param   string  $print_link  link
+	 * @param   array   &$params     parameters
+	 *
+	 * @return string html
 	 */
-	function printbutton( $print_link, &$params )
+	public static function printbutton($print_link, &$params)
 	{
-		if ($params->get( 'show_print_icon' )) {
-
+		if ($params->get('show_print_icon'))
+		{
 			JHTML::_('behavior.tooltip');
 
 			$status = 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no';
 
-			// checks template image directory for image, if non found default are loaded
-			if ( $params->get( 'icons', 1 ) ) {
+			if ($params->get('icons', 1))
+			{
 				$image = JHTML::_('image', 'images/printButton.png', JText::_('COM_REDEVENT_Print'), null, true);
-			} else {
-				$image = JText::_('COM_REDEVENT_Print' );
+			}
+			else
+			{
+				$image = JText::_('COM_REDEVENT_Print');
 			}
 
-			if (JRequest::getInt('pop')) {
-				//button in popup
-				$output = '<a href="#" onclick="window.print();return false;">'.$image.'</a>';
-			} else {
-				//button in view
-				$overlib = JText::_('COM_REDEVENT_PRINT_TIP' );
-				$text = JText::_('COM_REDEVENT_Print' );
+			if (JRequest::getInt('pop'))
+			{
+				$output = '<a href="#" onclick="window.print();return false;">' . $image . '</a>';
+			}
+			else
+			{
+				$overlib = JText::_('COM_REDEVENT_PRINT_TIP');
+				$text = JText::_('COM_REDEVENT_Print');
 
-				$output	= '<a href="'. JRoute::_($print_link) .'" class="editlinktip hasTip" onclick="window.open(this.href,\'win2\',\''.$status.'\'); return false;" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
+				$output = '<a href="' . JRoute::_($print_link) . '" class="editlinktip hasTip" onclick="window.open(this.href,\'win2\',\'' . $status . '\'); return false;" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
 			}
 
 			return $output;
 		}
+
 		return;
 	}
 
 	/**
 	 * Creates the email button
 	 *
-	 * @param object $slug
-	 * @param array $params
-	 * @since 0.9
+	 * @param   object  $slug    item slug
+	 * @param   string  $view    view to display
+	 * @param   array   $params  parameters
+	 *
+	 * @return string html
 	 */
-	function mailbutton($slug, $view, $params)
+	public static function mailbutton($slug, $view, $params)
 	{
-		if ($params->get('show_email_icon')) {
-
+		if ($params->get('show_email_icon'))
+		{
 			JHTML::_('behavior.tooltip');
-			$uri    =& JURI::getInstance();
-			$base  	= $uri->toString( array('scheme', 'host', 'port'));
-			$link 	= $base.JRoute::_( 'index.php?option=com_redevent&view='.$view.'&id='.$slug, false );
-			$url	= 'index.php?option=com_mailto&tmpl=component&link='.base64_encode( $link );
+			$uri = JURI::getInstance();
+			$base = $uri->toString(array('scheme', 'host', 'port'));
+			$link = $base . JRoute::_('index.php?option=com_redevent&view=' . $view . '&id=' . $slug, false);
+			$url = 'index.php?option=com_mailto&tmpl=component&link=' . base64_encode($link);
 			$status = 'width=400,height=300,menubar=yes,resizable=yes';
 
-			if ($params->get('icons', 1)) 	{
-				$image = JHTML::_('image', 'images/emailButton.png', JText::_('COM_REDEVENT_Email' ), null, true);
-			} else {
-				$image = JText::_('COM_REDEVENT_Email' );
+			if ($params->get('icons', 1))
+			{
+				$image = JHTML::_('image', 'images/emailButton.png', JText::_('COM_REDEVENT_Email'), null, true);
+			}
+			else
+			{
+				$image = JText::_('COM_REDEVENT_Email');
 			}
 
-			$overlib = JText::_('COM_REDEVENT_EMAIL_TIP' );
-			$text = JText::_('COM_REDEVENT_Email' );
+			$overlib = JText::_('COM_REDEVENT_EMAIL_TIP');
+			$text = JText::_('COM_REDEVENT_Email');
 
-			$output	= '<a href="'. JRoute::_($url) .'" class="editlinktip hasTip" onclick="window.open(this.href,\'win2\',\''.$status.'\'); return false;" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
+			$output = '<a href="' . JRoute::_($url) . '" class="editlinktip hasTip" onclick="window.open(this.href,\'win2\',\'' . $status . '\'); return false;" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
 
 			return $output;
 		}
+
 		return;
 	}
 
 	/**
 	 * Creates the map button
 	 *
-	 * @param   obj  $data        data
-	 * @param   obj  $attributes  attributes
+	 * @param   object  $data        data
+	 * @param   array   $attributes  attributes
 	 *
 	 * @return string
 	 */
@@ -357,32 +427,46 @@ class RedeventHelperOutput {
 		return $output;
 	}
 
-	function map($data, $attributes = array())
+	/**
+	 * Return code for venue map
+	 *
+	 * @param   object  $data        data, must include 'venueid'
+	 * @param   array   $attributes  attributes
+	 *
+	 * @return string
+	 */
+	public static function map($data, $attributes = array())
 	{
-		$output = '';
-		$document 	= & JFactory::getDocument();
+		$document = JFactory::getDocument();
 		JHTML::_('behavior.framework');
 
 		$document->addScript('https://maps.google.com/maps/api/js?sensor=false');
-		$document->addScript(JURI::root().'/components/com_redevent/assets/js/venuemap.js');
+		$document->addScript(JURI::root() . '/components/com_redevent/assets/js/venuemap.js');
 		$document->addScriptDeclaration('
-			var basepath = "'.JURI::root().'";
+			var basepath = "' . JURI::root() . '";
 			window.addEvent(\'domready\', function() {
-				mymap.initajax('.$data->venueid.', "venue-location");
+				mymap.initajax(' . $data->venueid . ', "venue-location");
 			});
 		');
 		JText::script("COM_REDEVENT_GET_DIRECTIONS");
-		if (isset($attributes['class'])) {
+
+		if (isset($attributes['class']))
+		{
 			$attributes['class'] .= ' venuemap';
 		}
-		else {
+		else
+		{
 			$attributes['class'] = 'venuemap';
 		}
-		foreach ($attributes as $k => $v) {
-			$attributes[$k] = $k.'="'.$v.'"';
+
+		foreach ($attributes as $k => $v)
+		{
+			$attributes[$k] = $k . '="' . $v . '"';
 		}
+
 		$attributes = implode(' ', $attributes);
-		$output		= '<div id="venue-location" '.$attributes.'></div>';
+		$output = '<div id="venue-location" ' . $attributes . '></div>';
+
 		return $output;
 	}
 
@@ -414,170 +498,64 @@ class RedeventHelperOutput {
 		return $output;
 	}
 
-  /**
-   * returns moreinfo link
-   *
-   * @param string $text the content of the link tag
-   * @param unknown_type $title the 'title' for the link
-   * @return string
-   */
-  public static function moreInfoIcon($xref_slug, $text = null, $title = null)
-  {
-  	if (!$text) {
-  		$text = JText::_('COM_REDEVENT_DETAILS_MOREINFO_BUTTON_LABEL');
-  	}
-  	if (!$title) {
-  		$title = JText::_('COM_REDEVENT_DETAILS_MOREINFO_BUTTON_LABEL');
-  	}
+	/**
+	 * returns moreinfo link
+	 *
+	 * @param   string        $xref_slug  xref slug
+	 * @param   string        $text       the content of the link tag
+	 * @param   unknown_type  $title      the 'title' for the link
+	 *
+	 * @return string
+	 */
+	public static function moreInfoIcon($xref_slug, $text = null, $title = null)
+	{
+		if (!$text)
+		{
+			$text = JText::_('COM_REDEVENT_DETAILS_MOREINFO_BUTTON_LABEL');
+		}
+
+		if (!$title)
+		{
+			$title = JText::_('COM_REDEVENT_DETAILS_MOREINFO_BUTTON_LABEL');
+		}
+
 		JHTML::_('behavior.modal', 'a.moreinfo');
-		$link = JRoute::_(RedeventHelperRoute::getMoreInfoRoute($xref_slug,
-		                                                        array('tmpl' =>'component')));
-		$text = '<a class="moreinfo" title="'.$title
-		      .  '" href="'.$link.'" rel="{handler: \'iframe\', size: {x: 400, y: 500}}">'
-		      . $text
-		      . ' </a>'
-		      ;
+		$link = JRoute::_(
+			RedeventHelperRoute::getMoreInfoRoute($xref_slug, array('tmpl' => 'component'))
+		);
+
+		$text = '<a class="moreinfo" title="' . $title
+			. '" href="' . $link . '" rel="{handler: \'iframe\', size: {x: 400, y: 500}}">'
+			. $text
+			. ' </a>';
+
 		return $text;
-  }
-
-	/**
-	 * Creates the flyer
-	 *
-	 * @param obj $data
-	 * @param obj $settings
-	 * @param array $image
-	 * @param string $type
-	 *
-	 * @since 0.9
-	 */
-	function flyer( $data, $image, $type = 'venue' )
-	{
-		$settings = & RedeventHelper::config();
-
-		//define the environment based on the type
-		if ($type == 'event') {
-			$folder		= 'events';
-			$imagefile	= $data->datimage;
-			$info		= $data->title;
-		} else {
-			$folder 	= 'venues';
-			$imagefile	= $data->locimage;
-			$info		= $data->venue;
-		}
-
-		//do we have an image?
-		if (empty($imagefile)) {
-
-			//nothing to do
-			return;
-
-		} else {
-
-			jimport('joomla.filesystem.file');
-
-			//does a thumbnail exist?
-			if (JFile::exists(JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder.DS.'small'.DS.$imagefile)) {
-
-				if ($settings->get('lightbox') == 0) {
-
-					$url		= '#';
-					$attributes	= 'class="modal" onclick="window.open(\''.JURI::root().'/'.$image['original'].'\',\'Popup\',\'width='.$image['width'].',height='.$image['height'].',location=no,menubar=no,scrollbars=no,status=no,toolbar=no,resizable=no\')"';
-
-				} else {
-
-					JHTML::_('behavior.modal');
-
-					$url		= JURI::root().'/'.$image['original'];
-					$attributes	= 'class="modal" title="'.$info.'"';
-
-				}
-
-				$icon	= '<img src="'.JURI::root().'/'.$image['thumb'].'" width="'.$image['thumbwidth'].'" height="'.$image['thumbheight'].'" alt="'.$info.'" title="'.JText::_('COM_REDEVENT_CLICK_TO_ENLARGE' ).'" />';
-				$output	= '<a href="'.$url.'" '.$attributes.'>'.$icon.'</a>';
-
-			//No thumbnail? Then take the in the settings specified values for the original
-			} else {
-
-				$output	= '<img class="modal" src="'.JURI::root().'/'.$image['original'].'" width="'.$image['width'].'" height="'.$image['height'].'" alt="'.$info.'" />';
-
-			}
-		}
-
-		return $output;
-	}
-
-	/**
-	 * Creates the country flag
-	 *
-	 * @param   string  $country  country code
-	 *
-	 * @return string
-	 */
-	public static function getFlag($country)
-	{
-		$country = JString::strtolower($country);
-
-		jimport('joomla.filesystem.file');
-
-		if (JFile::exists(JPATH_SITE . '/media/com_redevent/images/flags/' . $country . '.gif'))
-		{
-			$countryimg = JHtml::image(
-				JURI::base(true) . '/media/com_redevent/images/flags/' . $country . '.gif',
-				JText::_('COM_REDEVENT_COUNTRY' ).': '.$country,
-				array('width' => 16, 'height' => 11)
-			);
-
-			return $countryimg;
-		}
-
-		return null;
-	}
-
-	/**
-	 *
-	 * Get the country flag
-	 *
-	 * @param   string $country country code
-	 *
-	 * @return string
-	 */
-	public static function getFlagUrl($country)
-	{
-		$country = JString::strtolower($country);
-		jimport('joomla.filesystem.file');
-
-		if (JFile::exists(JPATH_SITE . '/media/com_redevent/images/flags/' . $country . '.gif'))
-		{
-			return '/media/com_redevent/images/flags/' . $country . '.gif';
-		}
-
-		return null;
 	}
 
 	/**
 	 * Formats date
 	 *
-	 * @param string $date
-	 * @param string $time
+	 * @param   string  $date  date to format in a format accepted by strtotime
+	 * @param   string  $time  time to format in a format accepted by strtotime
 	 *
-	 * @return string $formatdate
-	 *
-	 * @since 0.9
+	 * @return string
 	 */
-	function formatdate($date, $time)
+	public static function formatdate($date, $time)
 	{
-		$settings = & RedeventHelper::config();
+		$settings = RedeventHelper::config();
 
-		if(!RedeventHelper::isValidDate($date)) {
+		if (!RedeventHelper::isValidDate($date))
+		{
 			return JText::_('COM_REDEVENT_OPEN_DATE');
 		}
 
-		if(!$time) {
+		if (!$time)
+		{
 			$time = '00:00:00';
 		}
 
-		//Format date
-		$formatdate = strftime( $settings->get('formatdate', '%d.%m.%Y'), strtotime( $date.' '.$time ));
+		// Format date
+		$formatdate = strftime($settings->get('formatdate', '%d.%m.%Y'), strtotime($date . ' ' . $time));
 
 		return $formatdate;
 	}
@@ -585,38 +563,40 @@ class RedeventHelperOutput {
 	/**
 	 * Formats time
 	 *
-	 * @param string $date
-	 * @param string $time
+	 * @param   string  $date  date to format in a format accepted by strtotime
+	 * @param   string  $time  time to format in a format accepted by strtotime
 	 *
-	 * @return string $formattime
-	 *
-	 * @since 0.9
+	 * @return string
 	 */
 	public static function formattime($date, $time)
 	{
-		$settings = & RedeventHelper::config();
+		$settings = RedeventHelper::config();
 
-		if(!$time) {
+		if (!$time)
+		{
 			return;
 		}
 
-		//Format time
-		$formattime = strftime( $settings->get('formattime', '%H:%M'), strtotime( $date.' '.$time ));
+		// Format time
+		$formattime = strftime($settings->get('formattime', '%H:%M'), strtotime($date . ' ' . $time));
+
 		return $formattime;
 	}
 
 	/**
 	 * return formatted event date and time (start and end), or false if open date
 	 *
-	 * @param object $event
-	 * @return string or false for open date
+	 * @param   object   $event     event data
+	 * @param   boolean  $show_end  show end
+	 *
+	 * @return string
 	 */
 	public static function formatEventDateTime($event, $show_end = true)
 	{
 		if (!RedeventHelper::isValidDate($event->dates))
 		{
 			// Open dates
-			$date = '<span class="event-date open-date">'.JText::_('COM_REDEVENT_OPEN_DATE').'</span>';
+			$date = '<span class="event-date open-date">' . JText::_('COM_REDEVENT_OPEN_DATE') . '</span>';
 
 			return $date;
 		}
@@ -626,25 +606,27 @@ class RedeventHelperOutput {
 
 		$date_start = self::formatdate($event->dates, $event->times);
 		$time_start = '';
-		$date_end   = '';
-		$time_end   = '';
+		$date_end = '';
+		$time_end = '';
 
-		// is this a full day(s) event ?
+		// Is this a full day(s) event ?
 		$allday = '00:00:00' == $event->times && '00:00:00' == $event->endtimes;
 
-		if (!$allday )
+		if (!$allday)
 		{
 			$time_start = self::formattime($event->dates, $event->times);
 		}
 
 		if ($allday)
 		{
-			if ($showend && RedeventHelper::isValidDate($event->enddates))
+			if ($showend & RedeventHelper::isValidDate($event->enddates))
 			{
-				if ( strtotime($event->enddates. ' -1 day') != strtotime($event->dates)
-				    && strtotime($event->enddates) != strtotime($event->dates) ) // all day is written as midnight to midnight, so remove last day
+				if (strtotime($event->enddates . ' -1 day') != strtotime($event->dates)
+					&& strtotime($event->enddates) != strtotime($event->dates)
+				)
 				{
-					$date_end = self::formatdate(strftime('%Y-%m-%d', strtotime($event->enddates. ' -1 day')), $event->endtimes);
+					// All day is written as midnight to midnight, so remove last day
+					$date_end = self::formatdate(strftime('%Y-%m-%d', strtotime($event->enddates . ' -1 day')), $event->endtimes);
 				}
 			}
 		}
@@ -664,7 +646,7 @@ class RedeventHelperOutput {
 
 		$date = '<span class="event-date">';
 		$date .= '<span class="event-start">';
-		$date .= '<span class="event-day">' . $date_start .'</span>';
+		$date .= '<span class="event-day">' . $date_start . '</span>';
 
 		if ($settings->get('lists_show_time', 0) == 1 && $time_start)
 		{
@@ -693,69 +675,79 @@ class RedeventHelperOutput {
 	/**
 	 * returns iso date
 	 *
-	 * @param string $date
-	 * @param string $time
+	 * @param   string  $date  date to format in a format accepted by strtotime
+	 * @param   string  $time  time to format in a format accepted by strtotime
+	 *
 	 * @return string
 	 */
-	function getISODate($date, $time)
+	public static function getISODate($date, $time)
 	{
-		$txt = '';
-		if ($date && strtotime($date)) {
+		if ($date && strtotime($date))
+		{
 			$txt = $date;
 		}
-		else {
+		else
+		{
 			return false;
 		}
-		if ($time) {
-			$txt .= 'T'.$time;
+
+		if ($time)
+		{
+			$txt .= 'T' . $time;
 		}
+
 		return $txt;
 	}
 
 	/**
 	 * Returns an array for ical formatting
-	 * @param string date
-	 * @param string time
+	 *
+	 * @param   string  $date  date to format in a format accepted by strtotime
+	 * @param   string  $time  time to format in a format accepted by strtotime
+	 *
 	 * @return array
 	 */
-	function getIcalDateArray($date, $time = null)
+	public static function getIcalDateArray($date, $time = null)
 	{
-		if ($time) {
-			$sec = strtotime($date. ' ' .$time);
+		if ($time)
+		{
+			$sec = strtotime($date . ' ' . $time);
 		}
-		else {
+		else
+		{
 			$sec = strtotime($date);
 		}
-		if (!$sec) {
+
+		if (!$sec)
+		{
 			return false;
 		}
 
-		//Format date
+		// Format date
 		$parsed = strftime('%Y-%m-%d %H:%M:%S', $sec);
 
-		$date = array( 'year'  => (int) substr($parsed, 0, 4),
-		               'month' => (int) substr($parsed, 5, 2),
-		               'day'   => (int) substr($parsed, 8, 2) );
+		$date = array('year' => (int) substr($parsed, 0, 4),
+			'month' => (int) substr($parsed, 5, 2),
+			'day' => (int) substr($parsed, 8, 2));
 
-		//Format time
+		// Format time
 		if (substr($parsed, 11, 8) != '00:00:00')
 		{
 			$date['hour'] = substr($parsed, 11, 2);
 			$date['min'] = substr($parsed, 14, 2);
 			$date['sec'] = substr($parsed, 17, 2);
 		}
+
 		return $date;
 	}
 
 	/**
 	 * Formats time
 	 *
-	 * @param string $date
-	 * @param string $time
+	 * @param   string  $price     price to format
+	 * @param   string  $currency  currency code
 	 *
-	 * @return string $formattime
-	 *
-	 * @since 0.9
+	 * @return string
 	 */
 	public static function formatprice($price, $currency = null)
 	{
@@ -766,77 +758,114 @@ class RedeventHelperOutput {
 			return JText::_('COM_REDEVENT_EVENT_PRICE_FREE');
 		}
 
-		switch ($settings->get('currency_decimals', 'decimals')) {
+		switch ($settings->get('currency_decimals', 'decimals'))
+		{
 			case 'decimals':
-				//Format price
+				// Format price
 				$formatprice = number_format($price, 2, $settings->get('currency_decimal_separator', ','), $settings->get('currency_thousand_separator', '.'));
 				break;
+
 			case 'comma':
-				//Format price
-				$formatprice = number_format($price, 0, $settings->get('currency_decimal_separator', ','), $settings->get('currency_thousand_separator', '.')).',-';
+				// Format price
+				$formatprice = number_format($price, 0, $settings->get('currency_decimal_separator', ','), $settings->get('currency_thousand_separator', '.')) . ',-';
 				break;
+
 			case 'none':
-				//Format price
+				// Format price
 				$formatprice = number_format($price, 0, $settings->get('currency_decimal_separator', ','), $settings->get('currency_thousand_separator', '.'));
 				break;
 		}
-		if ($currency) {
-			return $currency. ' ' .$formatprice;
+
+		if ($currency)
+		{
+			return $currency . ' ' . $formatprice;
 		}
-		else {
+		else
+		{
 			return $formatprice;
 		}
 	}
 
-	function formatPrices($prices)
+	/**
+	 * Format prices as string separated by separator
+	 *
+	 * @param   array  $prices  prices
+	 *
+	 * @return string|void
+	 */
+	public static function formatPrices($prices, $separator = ' / ')
 	{
-		if (!is_array($prices)) {
+		if (!is_array($prices))
+		{
 			return;
 		}
 
-		if (count($prices) == 1) {
+		if (count($prices) == 1)
+		{
 			return self::formatprice($prices[0]->price, $prices[0]->currency);
 		}
+
 		$res = array();
+
 		foreach ($prices as $p)
 		{
 			$res[] = self::formatprice($p->price, $p->currency);
 		}
-		return implode(' / ', $res);
+
+		return implode($separator, $res);
 	}
 
-	function formatListPrices($prices)
+	/**
+	 * Format prices in ul list
+	 *
+	 * @param   array  $prices  prices
+	 *
+	 * @return string|void
+	 */
+	public static function formatListPrices($prices)
 	{
-		if (!is_array($prices)) {
+		if (!is_array($prices))
+		{
 			return;
 		}
 
-		if (count($prices) == 1) {
+		if (count($prices) == 1)
+		{
 			return self::formatprice($prices[0]->price, $prices[0]->currency);
 		}
+
 		$res = array();
+
 		foreach ($prices as $p)
 		{
-			$res[] = $p->name.' '.self::formatprice($p->price, $p->currency);
+			$res[] = '<li>' . $p->name . ' ' . self::formatprice($p->price, $p->currency) . '</li>';
 		}
-		return implode('<br/>', $res);
+
+		return '<ul class="price-list">' . implode("\n", $res) . '</ul>';
 	}
 
 	/**
-	  * Change images from relative to absolute URLs
-	  */
-	public function ImgRelAbs($text)
+	 * Change images from relative to absolute URLs
+	 *
+	 * @param   string  $imgHtml  image html tag
+	 *
+	 * @return string
+	 */
+	public static function ImgRelAbs($imgHtml)
 	{
 		$find = ("/ src=\"/");
-		$replace = " src=\"".JURI::root();
-		$newtext = preg_replace($find, $replace, $text);
-		return str_ireplace(JURI::root().JURI::root(), JURI::root(), $newtext);
+		$replace = " src=\"" . JURI::root();
+		$newtext = preg_replace($find, $replace, $imgHtml);
+
+		return str_ireplace(JURI::root() . JURI::root(), JURI::root(), $newtext);
 	}
 
 	/**
-	 * prints the code for tags display
+	 * return the code for tags display
 	 *
-	 * @param array tags to exclude from printing
+	 * @param   string  $field  field to use tag for, allows filtering
+	 *
+	 * @return html
 	 */
 	public static function getTagsModalLink($field = '')
 	{

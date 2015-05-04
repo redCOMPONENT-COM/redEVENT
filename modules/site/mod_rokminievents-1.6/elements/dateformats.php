@@ -20,13 +20,13 @@ class JElementDateFormats extends JElement
 	function fetchElement($name, $value, &$node, $control_name)
 	{
 		$class = ( $node->attributes('class') ? 'class="'.$node->attributes('class').'"' : 'class="inputbox"' );
-		
+
 		$options = array();
 		$dates = $node->children();
 
-	    $now = &JFactory::getDate();
+	    $now = JFactory::getDate();
 
-        $user = & JFactory::getUser();
+        $user = JFactory::getUser();
         $now->setOffset($user->getParam('timezone',0));
 
 		foreach ($dates as $option)

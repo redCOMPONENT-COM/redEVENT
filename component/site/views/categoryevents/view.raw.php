@@ -44,7 +44,7 @@ class RedeventViewCategoryEvents extends RViewSite
 	 */
 	function display($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		$settings = RedeventHelper::config();
 
@@ -52,7 +52,7 @@ class RedeventViewCategoryEvents extends RViewSite
 		$model = $this->getModel();
 		$model->setLimit($settings->get('ical_max_items', 100));
 		$model->setLimitstart(0);
-		$rows = & $model->getData();
+		$rows = $model->getSessions();
 
     // initiate new CALENDAR
 		$vcal = RedeventHelper::getCalendarTool();

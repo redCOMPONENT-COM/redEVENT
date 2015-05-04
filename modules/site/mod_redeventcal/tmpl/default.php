@@ -1,7 +1,7 @@
 <?php // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-$document = &JFactory::getDocument();
+$document = JFactory::getDocument();
 $document->addStyleSheet( JURI::base() . '/modules/mod_redeventcal/mod_redeventcal.css' );
 
 $year = $req_year;

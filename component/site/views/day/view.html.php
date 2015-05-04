@@ -42,15 +42,15 @@ class RedeventViewDay extends RViewSite
 	 */
 	function display( $tpl = null )
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		//initialize variables
-		$document 	= & JFactory::getDocument();
-		$elsettings = & RedeventHelper::config();
-		$menu		= & JSite::getMenu();
+		$document 	= JFactory::getDocument();
+		$elsettings = RedeventHelper::config();
+		$menu		= $mainframe->getMenu();
 		$item    	= $menu->getActive();
-		$params 	= & $mainframe->getParams();
-    $uri    =& JFactory::getURI();
+		$params 	= $mainframe->getParams();
+    $uri    =JFactory::getURI();
 
 		//add css file
     if (!$params->get('custom_css')) {
@@ -71,13 +71,13 @@ class RedeventViewDay extends RViewSite
 		$limit		= JRequest::getVar('limit', $params->get('display_num'), '', 'int');
 
 		$pop			= JRequest::getBool('pop');
-		$pathway 		= & $mainframe->getPathWay();
+		$pathway 		= $mainframe->getPathWay();
 
 		//get data from model
-		$rows 		= & $this->get('Data');
-		$customs 	= & $this->get('ListCustomFields');
-		$total 		= & $this->get('Total');
-		$day	= & $this->get('Day');
+		$rows 		= $this->get('Data');
+		$customs 	= $this->get('ListCustomFields');
+		$total 		= $this->get('Total');
+		$day	= $this->get('Day');
 
 		$daydate = strftime( $elsettings->get('formatdate', '%d.%m.%Y'), strtotime( $day ));
 
@@ -157,9 +157,9 @@ class RedeventViewDay extends RViewSite
 	 */
 	function _buildSortLists()
 	{
-    $app = & JFactory::getApplication();
+    $app = JFactory::getApplication();
 
-		$elsettings = & RedeventHelper::config();
+		$elsettings = RedeventHelper::config();
 
 		$filter_order		= JRequest::getCmd('filter_order', 'x.dates');
 		$filter_order_Dir	= JRequest::getWord('filter_order_Dir', 'ASC');

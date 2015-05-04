@@ -31,10 +31,10 @@ class RokMiniEventsSourceEventList extends RokMiniEvents_SourceBase
         }
 
 
-        $mainframe =& JFactory::getApplication();
+        $mainframe =JFactory::getApplication();
 
-        $db =& JFactory::getDBO();
-        $user =& JFactory::getUser();
+        $db =JFactory::getDBO();
+        $user =JFactory::getUser();
         $user_gid = (int)$user->get('aid');
 
         $catid = trim($params->get('eventlist_category', 0));
@@ -93,11 +93,11 @@ class RokMiniEventsSourceEventList extends RokMiniEvents_SourceBase
             date_default_timezone_set('UTC');
             $offset = 0;
             if ($params->get('eventlist_dates_format', 'utc') == 'joomla'){
-                $conf =& JFactory::getConfig();
+                $conf =JFactory::getConfig();
                 $timezone = $conf->getValue('config.offset') ;
                 $offset = $timezone * 3600 * -1;
             }
-	        
+
 	        $startdate = strtotime($row->dates . ' ' . $row->times)+$offset;
             $enddate = $row->enddates ? strtotime($row->enddates . ' ' . $row->endtimes)+$offset : strtotime($row->dates . ' ' . $row->endtimes)+$offset;
             $event = new RokMiniEvents_Event($startdate, $enddate, $row->title, $row->datdescription, $link);
@@ -116,7 +116,7 @@ class RokMiniEventsSourceEventList extends RokMiniEvents_SourceBase
      */
     function available()
     {
-        $db =& JFactory::getDBO();
+        $db =JFactory::getDBO();
         $query = 'select count(*) from #__components as a where a.option = ' . $db->Quote('com_eventlist');
         $db->setQuery($query);
         $count = (int)$db->loadResult();
@@ -171,7 +171,7 @@ class RokMiniEventsSourceEventList extends RokMiniEvents_SourceBase
 
         $menus = & JSite::getMenu();
         $items = $menus->getItems('componentid', $component->id);
-        $user = & JFactory::getUser();
+        $user = JFactory::getUser();
         $access = (int)$user->get('aid');
 
         //Not needed currently but kept because of a possible hierarchic link structure in future

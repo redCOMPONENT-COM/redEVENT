@@ -41,10 +41,10 @@ class RedEventViewHelp extends JView {
 		jimport( 'joomla.filesystem.folder' );
 
 		//initialise variables
-		$document		= & JFactory::getDocument();
-		$lang 			= & JFactory::getLanguage();
+		$document		= JFactory::getDocument();
+		$lang 			= JFactory::getLanguage();
 		$pane 			= & JPane::getInstance('sliders');
-		$user			= & JFactory::getUser();
+		$user			= JFactory::getUser();
 
 		//get vars
 		$helpsearch 	= JRequest::getString( 'search' );

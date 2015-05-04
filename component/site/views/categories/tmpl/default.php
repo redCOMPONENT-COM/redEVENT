@@ -21,13 +21,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// no direct access
+// No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
 ?>
 <div id="redevent" class="el_categoriesview">
 <p class="buttons">
 	<?php
-		echo RedeventHelperOutput::submitbutton( $this->dellink, $this->params );
+		echo RedeventHelperOutput::submitbutton($this->canCreate, $this->params);
 	?>
 </p>
 

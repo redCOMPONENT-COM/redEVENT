@@ -55,14 +55,14 @@ class plgButtonRedevent extends JPlugin
 	 */
 	function onDisplay($name)
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
-		$doc = & JFactory::getDocument();
+		$doc = JFactory::getDocument();
 		$template = $mainframe->getTemplate();
-		
+
 		$declaration	="
 		.button2-left .redevent 	{ background: url(components/com_redevent/assets/images/editor_button.png) 100% 0 no-repeat; } ";
-		
+
 		$doc->addStyleDeclaration($declaration);
 
 		$link = 'index.php?option=com_redevent&amp;task=insertevent&amp;tmpl=component&amp;e_name='.$name;

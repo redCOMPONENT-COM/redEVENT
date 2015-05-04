@@ -84,7 +84,7 @@ class RedeventModelVenuecategory extends RedeventModelBaseeventlist
 	protected function _buildWhere($query)
 	{
 		$query = parent::_buildWhere($query);
-		$category = $this->getCategory();
+		$category = $this->getItem();
 
 		$user		= JFactory::getUser();
 		$gid		= max($user->getAuthorisedViewLevels());
@@ -100,7 +100,7 @@ class RedeventModelVenuecategory extends RedeventModelBaseeventlist
 	 * @access public
 	 * @return integer
 	 */
-	public function getCategory( )
+	public function getItem()
 	{
 		if (!$this->_category)
 		{

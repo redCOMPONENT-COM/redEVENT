@@ -54,7 +54,7 @@ class RokMiniEventsSourceRedEventModel extends RedeventModelBaseeventlist {
 	 */
 	function _buildWhere()
 	{
-		$user		= & JFactory::getUser();
+		$user		= JFactory::getUser();
 
 		$where = array();
 

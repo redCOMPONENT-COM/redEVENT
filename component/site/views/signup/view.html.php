@@ -45,9 +45,9 @@ class RedeventViewSignup extends JViewLegacy
 			return $this->_displayEdit();
 		}
 
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
-		$document = &JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$params = &$mainframe->getParams();
 		$menu = JSite::getMenu();
 		$user = JFactory::getUser();
@@ -177,7 +177,7 @@ class RedeventViewSignup extends JViewLegacy
 
 	function _displayEdit($tpl = null)
 	{
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		$submitter_id = JRequest::getInt('submitter_id', 0);
 		if (!$submitter_id)
 		{

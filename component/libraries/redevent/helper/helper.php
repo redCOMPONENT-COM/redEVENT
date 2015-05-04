@@ -427,6 +427,14 @@ class RedeventHelper
 		return $helper->canRegister($xref_id, $user_id);
 	}
 
+	/**
+	 * Check if the user can unregister to the specified xref.
+	 *
+	 * @param   int  $xref_id  session id
+	 * @param   int  $user_id  user id
+	 *
+	 * @return bool
+	 */
 	public static function canUnregister($xref_id, $user_id = null)
 	{
 		$db = JFactory::getDBO();
@@ -438,13 +446,15 @@ class RedeventHelper
 			return false;
 		}
 
-		$query = ' SELECT x.dates, x.times, x.enddates, x.endtimes, x.registrationend, e.unregistra '
-		. ' FROM #__redevent_event_venue_xref AS x '
-		. ' INNER JOIN #__redevent_events AS e ON x.eventid = e.id '
-		. ' WHERE x.id='. $db->Quote($xref_id)
-		;
+		$query = $db->getQuery(true);
+
+		$query->select('x.dates, x.times, x.enddates, x.endtimes, x.registrationend, e.unregistra')
+			->from('#__redevent_event_venue_xref AS x')
+			->join('INNER', '#__redevent_events AS e ON x.eventid = e.id')
+			->where('x.id = '. $db->Quote($xref_id));
+
 		$db->setQuery($query);
-		$event = & $db->loadObject();
+		$event = $db->loadObject();
 
 		// Check if unregistration is allowed
 		if (!$event->unregistra)
@@ -618,7 +628,7 @@ class RedeventHelper
 	 */
 	public static function getAccesslevelOptions()
 	{
-		$db =& JFactory::getDBO();
+		$db =JFactory::getDBO();
 
 		$query = 'SELECT id AS value, title AS text'
 		. ' FROM #__usergroups'
@@ -725,7 +735,7 @@ class RedeventHelper
 	public static function getCalendarTool()
 	{
 		require_once JPATH_SITE.DS.'components'.DS.'com_redevent'.DS.'classes'.DS.'iCalcreator.class.php';
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		$offset = (float) $mainframe->getCfg('offset');
 		$timezone_name = self::getTimeZone($offset);
@@ -895,7 +905,7 @@ class RedeventHelper
 		if (is_array($attribs)) {
 			$attribs = JArrayHelper::toString( $attribs );
 		}
-		$document =& JFactory::getDocument();
+		$document =JFactory::getDocument();
 		$document->addScriptDeclaration('window.addEvent(\'domready\', function() {Calendar.setup({
 		inputField     :    "'.$id.'",     // id of the input field
 		ifFormat       :    "'.$format.'",      // format of the input field
@@ -1073,10 +1083,10 @@ class RedeventHelper
 	 */
 	public static function getUserSelector($field_name, $selected)
 	{
-		$app = &JFactory::getApplication();
-		$document = &JFactory::getDocument();
-		$db = &JFactory::getDBO();
-		$user = &JFactory::getUser($selected);
+		$app = JFactory::getApplication();
+		$document = JFactory::getDocument();
+		$db = JFactory::getDBO();
+		$user = JFactory::getUser($selected);
 
 		JHTML::_('behavior.framework');
 		$document->addScript(JURI::base().'components/com_redevent/assets/js/selectuser.js');
@@ -1102,7 +1112,7 @@ class RedeventHelper
 	 */
 	public static function validateColumns($columns, $allowed = null, $customs = true)
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$columns = array_map('strtolower', $columns);
 		$columns = array_map('trim', $columns);
@@ -1149,7 +1159,7 @@ class RedeventHelper
 	 */
 	public static function getAttendeeSubmitKey($attendee_id)
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$query = ' SELECT submit_key '
 		. ' FROM #__redevent_register '
@@ -1167,7 +1177,7 @@ class RedeventHelper
 	 */
 	public static function getAttendeeSid($attendee_id)
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$query = ' SELECT sid '
 		. ' FROM #__redevent_register '
@@ -1191,7 +1201,7 @@ class RedeventHelper
 			return true;
 		}
 
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		// get expired registrations
 		$query = ' SELECT r.id as attendee_id, r.xref, r.uregdate '

@@ -344,13 +344,13 @@ class RedeventControllerAttendees extends RControllerAdmin
 	/* Obsolete */
 	function export()
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		$model = $this->getModel('attendees');
 
 		$datas = $model->getData();
 
-		$doc =& JFactory::getDocument();
+		$doc =JFactory::getDocument();
 		$doc->setMimeEncoding('text/csv');
 		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 		header('Content-Disposition: attachment; filename=attendees.csv');

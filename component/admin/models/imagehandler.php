@@ -53,7 +53,7 @@ class RedEventModelImagehandler extends JModel
 	{
 		parent::__construct();
 
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		$option = JRequest::getCmd('option');
 
@@ -62,13 +62,13 @@ class RedEventModelImagehandler extends JModel
 		$limitstart = $mainframe->getUserStateFromRequest( $option.'imageselect'.$task.'limitstart', 'limitstart', 0, 'int' );
 		$search 	= $mainframe->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
 		$search 	= trim(JString::strtolower( $search ) );
-		
+
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
 		$this->setState('search', $search);
 
 	}
-	
+
 	function getState($property = null)
 	{
 		static $set;
@@ -91,14 +91,14 @@ class RedEventModelImagehandler extends JModel
 	function getImages()
 	{
 		$list = $this->getList();
-	
+
 		$listimg = array();
-		
+
 		$s = $this->getState('limitstart')+1;
-		
+
 		for ( $i = ($s - 1); $i < $s + $this->getState('limit'); $i++ ) {
 			if ($i+1 <= $this->getState('total') ) {
-				
+
 					$list[$i]->size = $this->_parseSize(filesize($list[$i]->path));
 
 					$info = @getimagesize($list[$i]->path);
@@ -115,12 +115,12 @@ class RedEventModelImagehandler extends JModel
 						$list[$i]->width_60 = $list[$i]->width;
 						$list[$i]->height_60 = $list[$i]->height;
 					}
-				
-				
+
+
     			$listimg[] = $list[$i];
 			}
 		}
-		
+
 		return $listimg;
 	}
 
@@ -145,7 +145,7 @@ class RedEventModelImagehandler extends JModel
 
 		// Initialize variables
 		$basePath = JPATH_SITE.DS.'images'.DS.'redevent'.DS.$folder;
-		
+
 		$images 	= array ();
 
 		// Get the list of files and folders from the given folder
@@ -161,28 +161,28 @@ class RedEventModelImagehandler extends JModel
 						$tmp = new JObject();
 						$tmp->name = $file;
 						$tmp->path = JPath::clean($basePath.DS.$file);
-						
+
 						$images[] = $tmp;
-						
+
 					} elseif(stristr( $file, $search)) {
 						$tmp = new JObject();
 						$tmp->name = $file;
 						$tmp->path = JPath::clean($basePath.DS.$file);
-							
+
 						$images[] = $tmp;
-					
+
 					}
 				}
 			}
 		}
 
 		$list = $images;
-		
+
 		$this->setState('total', count($list));
-		
+
 		return $list;
 	}
-	
+
 	/**
 	 * Method to get a pagination object for the images
 	 *

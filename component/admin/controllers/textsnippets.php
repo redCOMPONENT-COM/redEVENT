@@ -27,7 +27,7 @@ class RedeventControllerTextsnippets extends RControllerAdmin
 
 	function export()
 	{
-		$app			=& JFactory::getApplication();
+		$app			=JFactory::getApplication();
 
 		$model = $this->getModel('textsnippets');
 		$rows = $model->export();

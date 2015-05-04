@@ -57,10 +57,10 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseeventlist
 	{
 		parent::__construct();
 
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		// Get the paramaters of the active menu item
-		$params 	= & $mainframe->getParams('com_redevent');
+		$params 	= $mainframe->getParams('com_redevent');
 
 		if ($params->get('parentcategory', 0))
 		{
@@ -161,9 +161,9 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseeventlist
 	 */
 	public function &_getEvents(&$category)
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
-		$params 	= & $mainframe->getParams('com_redevent');
+		$params 	= $mainframe->getParams('com_redevent');
 
 		// Lets load the content
 		$query = $this->_buildDataQuery($category);
@@ -201,7 +201,7 @@ class RedeventModelCategoriesdetailed extends RedeventModelBaseeventlist
 	 */
 	protected function _buildDataQuery(&$category)
 	{
-		$user		= & JFactory::getUser();
+		$user		= JFactory::getUser();
 
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);

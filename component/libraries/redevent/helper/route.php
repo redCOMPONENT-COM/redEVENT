@@ -397,8 +397,9 @@ class RedeventHelperRoute
 	 */
 	protected static function _findItem($query)
 	{
-		$component =& JComponentHelper::getComponent('com_redevent');
-		$menus	= JApplication::getMenu('site');
+		$app = JFactory::getApplication();
+		$component = JComponentHelper::getComponent('com_redevent');
+		$menus	= $app->getMenu('site');
 		$items	= $menus->getItems('component_id', $component->id);
 		$user 	= JFactory::getUser();
 

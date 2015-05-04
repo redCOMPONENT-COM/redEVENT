@@ -25,7 +25,7 @@ class RokMiniEventsSourceJomSocial extends RokMiniEvents_SourceBase
         $model		= CFactory::getModel( 'Events' );
         $user_id = null;
 //        if ((bool) $params->get( 'jomsocial_user' , false )){
-//            $user = & JFactory::getUser();
+//            $user = JFactory::getUser();
 //            $user_id = $user->id;
 //        }
 
@@ -81,7 +81,7 @@ class RokMiniEventsSourceJomSocial extends RokMiniEvents_SourceBase
      */
     function available()
     {
-        $db =& JFactory::getDBO();
+        $db =JFactory::getDBO();
         $query = 'select count(*) from #__components as a where a.option = ' . $db->Quote('com_community');
 		$db->setQuery($query);
 		$count = (int)$db->loadResult();

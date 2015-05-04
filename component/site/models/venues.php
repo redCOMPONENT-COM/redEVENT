@@ -122,16 +122,8 @@ class RedeventModelVenues extends RModel
 	 * @access public
 	 * @return array
 	 */
-	public function &getData()
+	public function getData()
 	{
-		$mainframe = &JFactory::getApplication();
-
-		$menu		= JSite::getMenu();
-		$item    	= $menu->getActive();
-		$params		= $menu->getParams($item->id);
-
-		$elsettings = RedeventHelper::config();
-
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_data))
 		{
@@ -173,7 +165,7 @@ class RedeventModelVenues extends RModel
 				// Create flag
 				if ($venue->country)
 				{
-					$venue->countryimg = RedeventHelperOutput::getFlag($venue->country);
+					$venue->countryimg = RedeventHelperCountries::getCountryFlag($venue->country);
 				}
 
 				// Create target link
@@ -239,10 +231,10 @@ class RedeventModelVenues extends RModel
 	 */
 	protected function _buildQuery()
 	{
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		// Get the paramaters of the active menu item
-		$params   = & $mainframe->getParams('com_redevent');
+		$params   = $mainframe->getParams('com_redevent');
 
 		$gids = JFactory::getUser()->getAuthorisedViewLevels();
 		$gids = implode(',', $gids);

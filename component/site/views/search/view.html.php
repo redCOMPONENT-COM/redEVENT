@@ -47,7 +47,7 @@ class RedeventViewSearch extends RViewSite
 		//initialize variables
 		$document 	= JFactory::getDocument();
 		$config = RedeventHelper::config();
-		$menu		= JSite::getMenu();
+		$menu		= $mainframe->getMenu();
 		$item    	= $menu->getActive();
 		$params 	= $mainframe->getParams();
 		$uri 		= JFactory::getURI();
@@ -266,6 +266,9 @@ class RedeventViewSearch extends RViewSite
 		$lists['order'] 		= $filter_order;
 		$lists['filter'] 		= $filter;
 		$lists['filter_types'] 	= $sortselect;
+
+		$this->order = $filter_order;
+		$this->orderDir = $filter_order_Dir;
 
 		return $lists;
 	}

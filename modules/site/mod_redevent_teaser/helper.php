@@ -28,10 +28,10 @@ class modRedeventTeaserHelper
 	 */
 	public function getList(&$params)
 	{
-		$mainframe = &Jfactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
-		$db			=& JFactory::getDBO();
-		$user		=& JFactory::getUser();
+		$db			=JFactory::getDBO();
+		$user		=JFactory::getUser();
 
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);

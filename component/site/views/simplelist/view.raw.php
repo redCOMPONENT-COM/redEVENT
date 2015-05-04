@@ -44,7 +44,7 @@ class RedeventViewSimpleList extends RViewSite
 	 */
 	function display($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		$settings = RedeventHelper::config();
 

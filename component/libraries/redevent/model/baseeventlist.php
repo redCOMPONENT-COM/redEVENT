@@ -500,9 +500,9 @@ class RedeventModelBaseeventlist extends RModel
 	 */
 	protected function _buildEventsOptionsWhere()
 	{
-		$app = &JFactory::getApplication();
+		$app = JFactory::getApplication();
 
-		$user		= & JFactory::getUser();
+		$user		= JFactory::getUser();
 		$gid		= max($user->getAuthorisedViewLevels());
 
 		// Get the paramaters of the active menu item
@@ -604,7 +604,7 @@ class RedeventModelBaseeventlist extends RModel
 
 		for ($i = 0, $n = count($rows); $i < $n; $i++)
 		{
-			$db = &JFactory::getDbo();
+			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 
 			$query->select('c.id, c.name AS name, c.color');
@@ -884,7 +884,7 @@ class RedeventModelBaseeventlist extends RModel
 	 */
 	public function getCategoriesOptions()
 	{
-		$app = &JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$filter_venuecategory = JRequest::getVar('filter_venuecategory');
 		$filter_venue         = JRequest::getVar('filter_venue');
 		$task 		            = JRequest::getWord('task');
@@ -952,7 +952,7 @@ class RedeventModelBaseeventlist extends RModel
 	 */
 	public function getVenuesOptions()
 	{
-		$app = &JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$vcat    = JRequest::getVar('filter_venuecategory');
 		$city    = JRequest::getVar('filter_city');
 		$country = JRequest::getVar('filter_country');

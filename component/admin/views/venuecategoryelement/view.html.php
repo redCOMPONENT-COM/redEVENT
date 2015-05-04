@@ -36,12 +36,12 @@ class RedEventViewVenuecategoryelement extends JView {
 
 	function display($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 
 		//initialise variables
-		$document	= & JFactory::getDocument();
-		$db			= & JFactory::getDBO();
+		$document	= JFactory::getDocument();
+		$db			= JFactory::getDBO();
 
 		JHTML::_('behavior.tooltip');
 		JHTML::_('behavior.modal');

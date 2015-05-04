@@ -60,7 +60,7 @@ class RedEventViewCategories extends RedeventViewAdmin
 
 	function _display($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 
 		if ($this->getLayout() == 'importexport') {
@@ -134,7 +134,7 @@ class RedEventViewCategories extends RedeventViewAdmin
 
 	public function displayExport($tpl = null)
 	{
-		$document	= & JFactory::getDocument();
+		$document	= JFactory::getDocument();
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_CATEGORIES_EXPORT'));
 		//add css and submenu to document
 		RHelperAsset::load('backend.css');

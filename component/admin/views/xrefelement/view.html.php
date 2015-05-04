@@ -36,13 +36,13 @@ class RedEventViewxrefelement extends JView {
 
 	function display($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 
 		//initialise variables
-		$db			= & JFactory::getDBO();
+		$db			= JFactory::getDBO();
 		$params   = &JComponentHelper::getParams('com_redevent');
-		$document	= & JFactory::getDocument();
+		$document	= JFactory::getDocument();
 		$fieldname = JRequest::getVar('field');
 
 		JHTML::_('behavior.tooltip');

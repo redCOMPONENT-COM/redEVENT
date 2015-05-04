@@ -39,7 +39,7 @@ class RedeventModelArchive extends RedeventModelBaseeventlist
 	{
 		parent::__construct();
 
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		$filter 		  = $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter', 'filter', '', 'string');
 		$filter_type 	= $mainframe->getUserStateFromRequest('com_redevent.simplelist.filter_type', 'filter_type', '', 'string');
@@ -76,13 +76,13 @@ class RedeventModelArchive extends RedeventModelBaseeventlist
 	 */
 	function _buildWhere($query)
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
-		$user		= & JFactory::getUser();
+		$user		= JFactory::getUser();
 		$gid		= max($user->getAuthorisedViewLevels());
 
 		// Get the paramaters of the active menu item
-		$params 	= & $mainframe->getParams();
+		$params 	= $mainframe->getParams();
 
 		$task 		= JRequest::getWord('task');
 

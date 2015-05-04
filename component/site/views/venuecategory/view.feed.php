@@ -42,10 +42,10 @@ class RedeventViewVenuecategory extends RViewSite
 	 */
 	function display( )
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
-		$doc 		= & JFactory::getDocument();
-		$elsettings = & RedeventHelper::config();
+		$doc 		= JFactory::getDocument();
+		$elsettings = RedeventHelper::config();
 
 		// Get some data from the model
 		JRequest::setVar('limit', $mainframe->getCfg('feed_limit'));

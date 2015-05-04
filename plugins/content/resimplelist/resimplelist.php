@@ -271,7 +271,7 @@ class plgContentRESimplelist extends JPlugin {
 
 		if ($allday)
 		{
-			if ($this->params->get('show_end', 1) && RedeventHelper::isValidDate($event->enddates))
+			if ($this->params->get('show_end', 1) &RedeventHelper::isValidDate($event->enddates))
 			{
 				if ( strtotime($event->enddates. ' -1 day') != strtotime($event->dates)
 				    && strtotime($event->enddates) != strtotime($event->dates) ) // all day is written as midnight to midnight, so remove last day

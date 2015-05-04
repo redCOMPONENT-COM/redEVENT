@@ -211,7 +211,7 @@ class xmap_com_redevent {
 		parse_str( html_entity_decode($link_query['query']), $link_vars );
 		$catid = intval(JArrayHelper::getValue($link_vars,'id',0));
 
-		$db = &JFactory::getDbo();
+		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('c.id , c.name AS catname, c.alias');
@@ -287,7 +287,7 @@ class xmap_com_redevent {
 
 		$view = JArrayHelper::getValue($link_vars,'view','');
 
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 
  		$xmap->changeLevel(1);
 		if ( !$venue_id )
@@ -371,7 +371,7 @@ class xmap_com_redevent {
 		parse_str( html_entity_decode($link_query['query']), $link_vars );
 		$catid = intval(JArrayHelper::getValue($link_vars,'id',0));
 
-		$db = &JFactory::getDbo();
+		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('c.id , c.name, c.alias');

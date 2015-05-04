@@ -333,7 +333,7 @@ class RedeventViewMyevents extends RViewSite
 	public static function xrefdeletebutton($id)
 	{
 		JHTML::_('behavior.tooltip');
-		$document = & JFactory::getDocument();
+		$document = JFactory::getDocument();
 
 		$image = JHTML::_('image', 'components/com_redevent/assets/images/no.png', JText::_('COM_REDEVENT_DELETE_XREF'));
 

@@ -49,7 +49,7 @@ class RokMiniEventsSourceRedEvent extends RokMiniEvents_SourceBase
             date_default_timezone_set('UTC');
             $offset = 0;
             if ($params->get('redevent_dates_format', 'utc') == 'joomla'){
-                $conf =& JFactory::getConfig();
+                $conf =JFactory::getConfig();
                 $timezone = $conf->getValue('config.offset') ;
                 $offset = $timezone * 3600 * -1;
             }
@@ -72,7 +72,7 @@ class RokMiniEventsSourceRedEvent extends RokMiniEvents_SourceBase
      */
     function available()
     {
-        $db =& JFactory::getDBO();
+        $db =JFactory::getDBO();
         $query = 'select count(*) from #__components as a where a.option = ' . $db->Quote('com_redevent');
         $db->setQuery($query);
         $count = (int)$db->loadResult();

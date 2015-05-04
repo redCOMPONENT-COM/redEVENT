@@ -49,7 +49,7 @@ class RedeventControllerRedevent extends RControllerAdmin
 	 */
 	function savecss()
 	{
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		JRequest::checkToken() or die( 'Invalid Token' );
 

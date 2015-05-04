@@ -499,7 +499,7 @@ class plgFinderRe_events extends FinderIndexerAdapter
 	 */
 	protected function addCategoriesTaxonomy(FinderIndexerResult &$item)
 	{
-		$db = &JFactory::getDbo();
+		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('c.name, c.access, c.published AS state');

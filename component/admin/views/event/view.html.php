@@ -101,7 +101,7 @@ class RedeventViewEvent extends RedeventViewAdmin
 
 	public function _display($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		if($this->getLayout() == 'editxref')
 		{
@@ -358,9 +358,9 @@ class RedeventViewEvent extends RedeventViewAdmin
 	function _displayeditxref($tpl)
 	{
 		//initialise variables
-		$editor 	= & JFactory::getEditor();
-		$document	= & JFactory::getDocument();
-		$uri 		= & JFactory::getURI();
+		$editor 	= JFactory::getEditor();
+		$document	= JFactory::getDocument();
+		$uri 		= JFactory::getURI();
 		$params   = JComponentHelper::getParams('com_redevent');
 
 		//add css and js to document

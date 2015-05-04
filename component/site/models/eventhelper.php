@@ -127,7 +127,7 @@ class RedeventModelEventhelper extends RModel
 	{
 		if (empty($this->event))
 		{
-			$user  = & JFactory::getUser();
+			$user  = JFactory::getUser();
 
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);

@@ -48,7 +48,7 @@ class RedEventModelAttendees extends RModel
 	{
 		parent::__construct();
 
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		$xref = JRequest::getInt('xref');
 		$this->setXref((int)$xref);
@@ -76,7 +76,7 @@ class RedEventModelAttendees extends RModel
 
 	function getReminderEvents($days = 14)
 	{
-		$app = &JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$params = $app->getParams('com_redevent');
 
 		$query = ' SELECT x.id, e.title '

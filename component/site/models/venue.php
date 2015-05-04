@@ -77,7 +77,7 @@ class RedeventModelVenue extends RModel
 	 */
 	public function &getData(  )
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		if (empty($this->_venue))
 		{
@@ -124,7 +124,7 @@ class RedeventModelVenue extends RModel
 				// Create flag
 				if ($venue->country)
 				{
-					$venue->countryimg = RedeventHelperOutput::getFlag($venue->country);
+					$venue->countryimg = RedeventHelperCountries::getCountryFlag($venue->country);
 				}
 
 				// Create target link
@@ -149,7 +149,7 @@ class RedeventModelVenue extends RModel
 	{
 		if (empty($this->_venue))
 		{
-			$db = &JFactory::getDbo();
+			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 
 			$query->select('*');

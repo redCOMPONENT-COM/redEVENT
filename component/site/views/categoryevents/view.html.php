@@ -26,17 +26,17 @@ class RedeventViewCategoryevents extends RViewSite
 	 */
 	function display( $tpl=null )
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 
 		//initialize variables
-		$document 	= & JFactory::getDocument();
-		$menu		= & JSite::getMenu();
-		$elsettings = & RedeventHelper::config();
+		$document 	= JFactory::getDocument();
+		$menu		= $mainframe->getMenu();
+		$elsettings = RedeventHelper::config();
 		$item    	= $menu->getActive();
-		$params 	= & $mainframe->getParams();
-		$uri 		= & JFactory::getURI();
-		$pathway 	= & $mainframe->getPathWay();
+		$params 	= $mainframe->getParams();
+		$uri 		= JFactory::getURI();
+		$pathway 	= $mainframe->getPathWay();
 
 		if (!$this->getLayout()) {
 			$this->setLayout($params->get('default_list_layout'));
@@ -68,11 +68,11 @@ class RedeventViewCategoryevents extends RViewSite
 		$pop			= JRequest::getBool('pop');
 
 		//get data from model
-		$rows 		= & $this->get('Data');
-		$customs 	= & $this->get('ListCustomFields');
-		$customsfilters 	= & $this->get('CustomFilters');
-		$category 	= & $this->get('Category');
-		$total 		= & $this->get('Total');
+		$rows 		= $this->get('Sessions');
+		$customs 	= $this->get('ListCustomFields');
+		$customsfilters = $this->get('CustomFilters');
+		$category 	= $this->get('Item');
+		$total 		= $this->get('Total');
 
 		//are events available?
 		if (!$rows) {
@@ -137,7 +137,7 @@ class RedeventViewCategoryevents extends RViewSite
 		//create select lists
 		$lists	= $this->_buildSortLists($elsettings);
 
-		$state    =& $this->get( 'state' );
+		$state    = $this->get( 'state' );
 		$filter_customs   = $state->get('filter_customs');
 
 		$this->assign('lists', 						$lists);
@@ -171,7 +171,7 @@ class RedeventViewCategoryevents extends RViewSite
 
 	function _buildSortLists($elsettings)
 	{
-    $app    = & JFactory::getApplication();
+    $app    = JFactory::getApplication();
 		$params = $app->getParams();
 
 		// Table ordering values

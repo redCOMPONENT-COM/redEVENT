@@ -40,9 +40,9 @@ class RedEventViewEventelement extends JView {
 		$option = JRequest::getCmd('option');
 
 		//initialise variables
-		$db			= & JFactory::getDBO();
+		$db			= JFactory::getDBO();
 		$elsettings = JComponentHelper::getParams('com_redevent');
-		$document	= & JFactory::getDocument();
+		$document	= JFactory::getDocument();
 		$fieldname = JRequest::getVar('field');
 
 		JHTML::_('behavior.tooltip');

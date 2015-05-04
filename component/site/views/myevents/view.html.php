@@ -60,7 +60,7 @@ class RedeventViewMyevents extends RViewSite
 		$uri        = JFactory::getURI();
 		$acl        = RedeventUserAcl::getInstance();
 
-		$menu = JSite::getMenu();
+		$menu = $mainframe->getMenu();
 		$item = $menu->getActive();
 
 		// Add css file
@@ -185,9 +185,9 @@ class RedeventViewMyevents extends RViewSite
 		$this->assignRef('lists',      $lists);
 		$this->assignRef('acl',         $acl);
 		$this->assignRef('hasManagedEvents', $hasManagedEvents);
-		$this->assignRef('canAddXref',  $acl->canAddXref());
-		$this->assignRef('canAddEvent', $acl->canAddEvent());
-		$this->assignRef('canAddVenue', $acl->canAddVenue());
+		$this->assign('canAddXref',  $acl->canAddXref());
+		$this->assign('canAddEvent', $acl->canAddEvent());
+		$this->assign('canAddVenue', $acl->canAddVenue());
 
 		$cols = explode(',', $params->get('lists_columns', 'date, title, venue, city, category'));
 		$cols = RedeventHelper::validateColumns($cols);
@@ -297,7 +297,7 @@ class RedeventViewMyevents extends RViewSite
 	public static function xrefdeletebutton($id)
 	{
 		JHTML::_('behavior.tooltip');
-		$document = & JFactory::getDocument();
+		$document = JFactory::getDocument();
 
 		$image = JHTML::_('image', 'components/com_redevent/assets/images/no.png', JText::_('COM_REDEVENT_DELETE_XREF'));
 

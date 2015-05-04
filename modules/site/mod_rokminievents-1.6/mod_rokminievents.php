@@ -16,7 +16,7 @@ if (!defined('ROKMINIEVENTS_ROOT')) define('ROKMINIEVENTS_ROOT', dirname(__FILE_
 require_once(ROKMINIEVENTS_ROOT . '/lib/include.php');
 
 JHTML::_('behavior.framework');
-$doc = &JFactory::getDocument();
+$doc = JFactory::getDocument();
 if ($params->get('builtin_css', 1)) $doc->addStyleSheet(JURI::Root(true).'/modules/mod_rokminievents/tmpl/css/rokminievents.css');
 
 if ($params->get('set_widths',1)) {

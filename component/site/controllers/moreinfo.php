@@ -47,7 +47,7 @@ class RedeventControllerMoreinfo extends RedeventController
 	{
 		jimport('joomla.mail.helper');
 
-		$app = &JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		$params = JComponentHelper::getParams('com_redevent');
 		if (!$params->get('enable_moreinfo', 1)) {
@@ -63,7 +63,7 @@ class RedeventControllerMoreinfo extends RedeventController
 
 		if ($xref && $email && JMailHelper::isEmailAddress($email))
 		{
-			$mailer = &JFactory::getMailer();
+			$mailer = JFactory::getMailer();
 			$mailer->IsHTML(true);
 
 			$mailer->setSubject(JText::sprintf('COM_REDEVENT_MOREINFO_MAIL_SUBJECT', RedeventHelper::getSessionFullTitle($details)));

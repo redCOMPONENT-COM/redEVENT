@@ -494,7 +494,7 @@ class RedeventTags
 		$lists['order'] = JRequest::getCmd('filter_order', 'x.dates');
 		$this->lists = $lists;
 
-		$uri = & JFactory::getURI('index.php?option=com_redevent');
+		$uri = JFactory::getURI('index.php?option=com_redevent');
 		$this->action = JRoute::_(RedeventHelperRoute::getDetailsRoute($this->_eventid, $this->_xref));
 
 		$this->customs = $this->getXrefCustomFields();
@@ -823,7 +823,7 @@ class RedeventTags
 	 */
 	public function replaceLibraryTags($text)
 	{
-		$tags = & $this->_getLibraryTags();
+		$tags = $this->_getLibraryTags();
 
 		$search = array();
 		$replace = array();
@@ -1954,7 +1954,7 @@ class RedeventTags
 				array('class' => 'hasTip', 'title' => $registration_status->status));
 			return $img;
 		}
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$base_url = JURI::root();
 		$iconspath = $base_url . 'administrator/components/com_redevent/assets/images/';
 		$elsettings = RedeventHelper::config();
@@ -1979,7 +1979,7 @@ class RedeventTags
 				array('class' => 'hasTip', 'title' => $registration_status->status));
 			return $img;
 		}
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$base_url = JURI::root();
 		$iconspath = $base_url . 'administrator/components/com_redevent/assets/images/';
 		$elsettings = RedeventHelper::config();
@@ -2003,7 +2003,7 @@ class RedeventTags
 				array('class' => 'hasTip', 'title' => $registration_status->status));
 			return $img;
 		}
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$base_url = JURI::root();
 		$iconspath = $base_url . 'administrator/components/com_redevent/assets/images/';
 		$elsettings = RedeventHelper::config();
@@ -2027,7 +2027,7 @@ class RedeventTags
 				array('class' => 'hasTip', 'title' => $registration_status->status));
 			return $img;
 		}
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$base_url = JURI::root();
 		$iconspath = $base_url . 'administrator/components/com_redevent/assets/images/';
 		$elsettings = RedeventHelper::config();
@@ -2059,7 +2059,7 @@ class RedeventTags
 				array('class' => 'hasTip', 'title' => $registration_status->status));
 			return $img;
 		}
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$base_url = JURI::root();
 		$iconspath = $base_url . 'administrator/components/com_redevent/assets/images/';
 		$elsettings = RedeventHelper::config();

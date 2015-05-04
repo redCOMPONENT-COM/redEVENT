@@ -96,7 +96,7 @@ class RedeventViewAttendees extends RViewSite
 		}
 		$title = JFile::makeSafe(RedeventHelper::getSessionFullTitle($event) .'_'. $event->dates .'_'. $event->venue .'.csv');
 
-		$doc =& JFactory::getDocument();
+		$doc =JFactory::getDocument();
 		$doc->setMimeEncoding('text/csv');
 		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 		header('Content-Disposition: attachment; filename="'.$title.'"');

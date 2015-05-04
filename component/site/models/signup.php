@@ -98,7 +98,7 @@ class RedeventModelSignup extends RModel
 		 */
 		if ($this->_loadDetails())
 		{
-			$user	= & JFactory::getUser();
+			$user	= JFactory::getUser();
 
 	      // Is the category published?
 	      if (!count($this->_details->categories))
@@ -193,10 +193,10 @@ class RedeventModelSignup extends RModel
     * Initialise the mailer object to start sending mails
     */
     private function Mailer() {
-       $mainframe = &JFactory::getApplication();
+       $mainframe = JFactory::getApplication();
       jimport('joomla.mail.helper');
       /* Start the mailer object */
-      $this->mailer = &JFactory::getMailer();
+      $this->mailer = JFactory::getMailer();
       $this->mailer->isHTML(true);
       $this->mailer->From = $mainframe->getCfg('mailfrom');
       $this->mailer->FromName = $mainframe->getCfg('sitename');

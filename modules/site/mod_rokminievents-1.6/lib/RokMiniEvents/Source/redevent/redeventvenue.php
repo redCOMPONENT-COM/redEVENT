@@ -19,7 +19,7 @@ class JElementRedEventVenue extends JElement
 	function fetchElement($name, $value, &$node, $control_name)
 	{
 
-        $db			=& JFactory::getDBO();
+        $db			=JFactory::getDBO();
         $query = 'SELECT id, venue as name from #__redevent_venues where published = 1 order by ordering';
 
         $db->setQuery($query);

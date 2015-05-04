@@ -39,7 +39,7 @@ class JElementRokMiniEventsSources extends JElement
             if (file_exists($source->paramspath) && is_readable($source->paramspath))
             {
                 $this->element_dirs[] = dirname($source->paramspath)."/".$source->name;
-                $language =& JFactory::getLanguage();
+                $language =JFactory::getLanguage();
                 $language->load('com_'.$source->name, JPATH_ADMINISTRATOR);
                 $language->load($source->name ,dirname($source->paramspath), $language->getTag(), true);
                 $buffer .= $this->renderParamFile($source->paramspath,$name, $value, $node, $control_name);

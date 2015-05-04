@@ -57,7 +57,7 @@ class RedeventModelVenueevents extends RedeventModelBaseeventlist
 	{
 		parent::__construct();
 
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		$id = JRequest::getInt('id');
 		$this->setId((int) $id);
@@ -104,7 +104,7 @@ class RedeventModelVenueevents extends RedeventModelBaseeventlist
 	 * override to take into account search type
 	 * @see RedeventModelBaseeventlist::getData()
 	 */
-	public function &getData()
+	public function getData()
 	{
 		if ($this->getState('results_type', 1) == 1)
 		{

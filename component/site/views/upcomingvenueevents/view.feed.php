@@ -43,7 +43,7 @@ class RedeventViewUpcomingVenueevents extends RViewSite
 	function display()
 	{
 
-		$document	=& JFactory::getDocument();
+		$document	=JFactory::getDocument();
 		$document->link = JRoute::_('index.php?option=com_redevent&view=upcomingvenueevents');
 		$upcomingevents = $this->get('UpcomingVenueEvents');
 		$elsettings = RedeventHelper::config();
@@ -57,7 +57,7 @@ class RedeventViewUpcomingVenueevents extends RViewSite
 			<tr>
 				<td width="100">Course:</td><td>'.JHTML::_('link', $event_url, RedeventHelper::getSessionFullTitle($event), 'target="_blank"').'</td>
 			</tr><tr>
-				<td>Where:</td><td>'.$event->location.' &nbsp; '.RedeventHelperOutput::getFlag( $event->country ).'</td>
+				<td>Where:</td><td>'.$event->location.' &nbsp; '.RedeventHelperCountries::getCountryFlag( $event->country ).'</td>
 			</tr><tr>
 				<td>Date:</td><td>'.RedeventHelperOutput::formatdate($event->dates, $event->times).'</td>
 			</tr><tr>

@@ -51,7 +51,7 @@ if ($this->row->venueid != 0) {
 	<h2 class="redevent">
 		<?php
 		echo Jtext::_('COM_REDEVENT_VIEW_DETAILS_FIXED_SUMMARY_SECTION_TITLE');
-    	echo '&nbsp;'.RedeventHelperOutput::editbutton($this->item->id, $this->row->did, $this->params, $this->allowedtoeditevent, 'editevent' );
+    	echo '&nbsp;'.RedeventHelperOutput::editbutton($this->row->did, $this->params, $this->allowedtoeditevent, 'editevent' );
     	?>
 	</h2>
 
@@ -218,7 +218,7 @@ if ($this->row->venueid != 0) {
 				<?php if ( $this->row->country ) : ?>
 				<dt class="venue_country"><?php echo JText::_('COM_REDEVENT_COUNTRY' ).':'; ?></dt>
     			<dd class="venue_country">
-    				<?php echo RedeventHelperCountries::getCountryFlag( $this->row->country ); ?>
+    				<?php echo RedeventHelperCountries::getCountryFlag($this->row->country); ?>
     			</dd>
     		<?php endif; ?>
 		</dl>

@@ -28,7 +28,7 @@ class RedeventViewSignup extends RViewSite
 {
 	function display($tpl = null)
 	{
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		$dispatcher	=& JDispatcher::getInstance();
 

@@ -25,7 +25,7 @@ class modRedEventHelper
 	 * @access public
 	 * @return array
 	 */
-	public function getList(&$params)
+	public static function getList(&$params)
 	{
 		$app = JFactory::getApplication();
 
@@ -222,7 +222,7 @@ class modRedEventHelper
 	 * @access public
 	 * @return string
 	 */
-	protected function _builddateinfo($row, &$params)
+	protected static function _builddateinfo($row, &$params)
 	{
 		if (!RedeventHelper::isValidDate($row->dates))
 		{
@@ -253,7 +253,7 @@ class modRedEventHelper
 	 * @access public
 	 * @return string
 	 */
-	protected function _format_url($url)
+	protected static function _format_url($url)
 	{
 		if (!empty($url) && strtolower(substr($url, 0, 7)) != "http://")
 		{
@@ -269,7 +269,7 @@ class modRedEventHelper
 	 * @access public
 	 * @return string
 	 */
-	protected function _format_date($date, $time, $format)
+	protected static function _format_date($date, $time, $format)
 	{
 		// Format date
 		$date = strftime($format, strtotime($date . ' ' . $time));
@@ -284,7 +284,7 @@ class modRedEventHelper
 	 *
 	 * @return array
 	 */
-	protected function _categories($rows)
+	protected static function _categories($rows)
 	{
 		$app = JFactory::getApplication();
 		$db  = JFactory::getDBO();
@@ -326,7 +326,7 @@ class modRedEventHelper
 	 *
 	 * @return string html
 	 */
-	public function displayCats($categories)
+	public static function displayCats($categories)
 	{
 		$res = array();
 
@@ -343,7 +343,7 @@ class modRedEventHelper
 	 *
 	 * @return array
 	 */
-	public function getCustomFields()
+	public static function getCustomFields()
 	{
 		$db = Jfactory::getDBO();
 		$query = ' SELECT f.id, f.* FROM #__redevent_fields AS f';

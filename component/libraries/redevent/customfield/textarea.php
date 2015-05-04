@@ -65,7 +65,7 @@ class RedeventCustomfieldTextarea extends RedeventAbstractCustomfield
 
 	public function renderFilter($attributes = array(), $selected = null)
 	{
-		$app = & JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		if ($selected)
 		{

@@ -166,7 +166,7 @@ class RedeventViewAttendees extends RedeventViewAdmin
 	function _displayprint($tpl = null)
 	{
 		$elsettings = JComponentHelper::getParams('com_redevent');
-		$document	= & JFactory::getDocument();
+		$document	= JFactory::getDocument();
 		RHelperAsset::load('backend.css');
 
 		$rows      	= & $this->get( 'Data');

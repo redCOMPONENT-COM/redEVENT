@@ -116,7 +116,7 @@ class RokMiniEventsSourceJEvents extends RokMiniEvents_SourceBase
      */
     function available()
     {
-        $db =& JFactory::getDBO();
+        $db =JFactory::getDBO();
         $query = 'select count(*) from #__components as a where a.option = ' . $db->Quote('com_jevents');
         $db->setQuery($query);
         $count = (int)$db->loadResult();

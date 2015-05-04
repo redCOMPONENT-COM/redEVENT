@@ -106,7 +106,7 @@ class RedEventViewTextsnippets extends RedeventViewAdmin
 
 	protected function _displayImport($tpl = null)
 	{
-		$document	= & JFactory::getDocument();
+		$document	= JFactory::getDocument();
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_TEXTLIBRARY_IMPORT'));
 		//add css to document
 		RHelperAsset::load('backend.css');
