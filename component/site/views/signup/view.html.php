@@ -48,8 +48,8 @@ class RedeventViewSignup extends JViewLegacy
 		$mainframe = JFactory::getApplication();
 
 		$document = JFactory::getDocument();
-		$params = &$mainframe->getParams();
-		$menu = JSite::getMenu();
+		$params = $mainframe->getParams();
+		$menu = $mainframe->getMenu();
 		$user = JFactory::getUser();
 		$item = $menu->getActive();
 
@@ -103,10 +103,12 @@ class RedeventViewSignup extends JViewLegacy
 					JRequest::setVar('xref', $this->tmp_xref);
 					JRequest::setVar('id', $this->tmp_id);
 				}
+
 				/* Load the view */
 				$this->assignRef('page', $course->submission_type_email);
 				$tpl = 'email';
 				break;
+
 			case 'formaloffer':
 				if (JRequest::getVar('sendmail') == '1')
 				{
@@ -122,15 +124,18 @@ class RedeventViewSignup extends JViewLegacy
 					JRequest::setVar('xref', $this->tmp_xref);
 					JRequest::setVar('id', $this->tmp_id);
 				}
+
 				/* Load the view */
 				$this->assignRef('page', $course->submission_type_formal_offer);
 				$tpl = 'formaloffer';
 				break;
+
 			case 'phone':
 				/* Load the view */
 				$this->assignRef('page', $course->submission_type_phone);
 				$tpl = 'phone';
 				break;
+
 			case 'webform':
 			default:
 				if ($params->get('user_before_registration', 0))
@@ -179,18 +184,22 @@ class RedeventViewSignup extends JViewLegacy
 	{
 		$user = JFactory::getUser();
 		$submitter_id = JRequest::getInt('submitter_id', 0);
+
 		if (!$submitter_id)
 		{
 			JError::raise(0, 'Registration id required');
 			return false;
 		}
+
 		$course = $this->get('Details');
 		$model = $this->getModel();
 
 		$registration = $model->getRegistration($submitter_id);
+
 		if (!$registration)
 		{
 			JError::raise(0, $model->getError);
+
 			return false;
 		}
 
@@ -203,7 +212,7 @@ class RedeventViewSignup extends JViewLegacy
 		{
 			$this->assign('edittask', 'registration.manageredit');
 		}
-		else if ($registration->uid == $user->get('id'))
+		elseif ($registration->uid == $user->get('id'))
 		{
 			$this->assign('edittask', 'registration.edit');
 		}
@@ -212,6 +221,7 @@ class RedeventViewSignup extends JViewLegacy
 			JError::raiseError(403, 'NOT AUTHORIZED');
 			return false;
 		}
+
 		parent::display($tpl);
 	}
 }

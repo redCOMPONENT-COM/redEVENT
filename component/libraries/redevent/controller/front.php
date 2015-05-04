@@ -19,22 +19,29 @@ jimport('joomla.application.component.controller');
 */
 class RedeventControllerFront extends JControllerLegacy
 {
+
 	/**
-	 * Display the view
+	 * Typical view method for MVC based architecture
 	 *
-	 * @since 0.9
+	 * This function is provide as a default implementation, in most cases
+	 * you will need to override it in your own controllers.
+	 *
+	 * @param   boolean $cachable  If true, the view output will be cached
+	 * @param   array   $urlparams An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 *
+	 * @return  JController  A JController object to support chaining.
 	 */
-	function display()
+	public function display($cachable = false, $urlparams = false)
 	{
-		// if filter is set, put the filter values as get variable so that the user can go back without warning
-		if ($this->_checkfilter()) { // a redirect was set in the filter function
-			return;
-		}
+		// If filter is set, put the filter values as get variable so that the user can go back without warning
+		$this->checkfilter();
 
-		$view = JRequest::getVar('view', '');
+		$view = $this->input->get('view', '');
 
-		$method = '_display'.ucfirst($view);
-		if (method_exists($this, $method)) {
+		$method = '_display' . ucfirst($view);
+
+		if (method_exists($this, $method))
+		{
 			return $this->$method();
 		}
 
@@ -63,15 +70,20 @@ class RedeventControllerFront extends JControllerLegacy
 		parent::display();
 	}
 
-	function _checkfilter()
+	/**
+	 * Check if there are post filter, then redirect to get
+	 *
+	 * @return void
+	 */
+	protected function checkfilter()
 	{
-		$app = JFactory::getApplication();
+		$post = $this->input->post->getArray();
+		$uri = Jfactory::getUri();
 
-		$post = JRequest::get('post');
-		$uri  = Jfactory::getUri();
-
-		$myuri = clone($uri); // do not modify it if not proper view...
+		// Do not modify it if not proper view...
+		$myuri = clone($uri);
 		$vars = 0;
+
 		foreach ($post as $filter => $v)
 		{
 			switch ($filter)
@@ -85,6 +97,7 @@ class RedeventControllerFront extends JControllerLegacy
 				case 'filter_type':
 				case 'filter_venue':
 				case 'filter_multivenue':
+				case 'filter_date':
 				case 'layout':
 				case 'task':
 					if ($v)
@@ -93,45 +106,60 @@ class RedeventControllerFront extends JControllerLegacy
 						$vars++;
 					}
 					break;
+
 				case 'filtercustom':
 					$filt = array();
+
 					foreach ((array) $v as $n => $val)
 					{
 						if (is_array($val))
 						{
-							//							echo '<pre>';print_r($val); echo '</pre>';exit;
 							$r = array();
-							foreach ($val as $sub) {
-								if ($sub) $r[] = $sub;
+
+							foreach ($val as $sub)
+							{
+								if ($sub)
+								{
+									$r[] = $sub;
+								}
 							}
+
 							$myuri->setVar("filtercustom[$n]", $r);
 						}
-						else {
-							if ($val) $filt[$n] = $val;
+						else
+						{
+							if ($val)
+							{
+								$filt[$n] = $val;
+							}
 						}
 					}
-					if (count($filt)) {
-						//						echo '<pre>';print_r($filt); echo '</pre>';exit;
+
+					if (count($filt))
+					{
 						$myuri->setVar($filter, $filt);
 						$vars++;
 					}
+
 					break;
 			}
 		}
 
 		if ($vars)
 		{
-			switch (JRequest::getVar('view', ''))
+			switch ($this->input->get('view', ''))
 			{
 				case 'categoryevents':
-				case 'venueevents':
-				case 'simplelist':
-				case 'venuesmap':
+				case 'day':
+				case 'featured':
 				case 'search':
+				case 'simplelist':
+				case 'venueevents':
+				case 'venuesmap':
+				case 'week':
 					$this->setRedirect(JRoute::_($myuri->toString(), false));
-					break;
+					$this->redirect();
 			}
 		}
 	}
-
 }

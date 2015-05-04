@@ -1250,6 +1250,15 @@ class RedeventTags
 		return $tag->getHtml($this->getOption('hasreview'));
 	}
 
+	/**
+	 * Transform relative into absolute url
+	 *
+	 * @param   string  $url    url
+	 * @param   bool    $xhtml  escape
+	 * @param   bool    $ssl    ssl prefix
+	 *
+	 * @return mixed|null|string
+	 */
 	private function absoluteUrls($url, $xhtml = true, $ssl = null)
 	{
 		// Get the router
@@ -1268,7 +1277,7 @@ class RedeventTags
 		}
 
 		// Build route
-		$uri = & $router->build($url);
+		$uri = $router->build($url);
 		$url = $uri->toString(array('path', 'query', 'fragment'));
 
 		// Replace spaces

@@ -59,7 +59,7 @@ class RedeventViewPayment extends RViewSite
 		$tags->setSubmitkey($submit_key);
 
 		//get menu information
-		$menu = JSite::getMenu();
+		$menu = $mainframe->getMenu();
 		$item = $menu->getActive();
 		if (!$item) $item = $menu->getDefault();
 

@@ -66,7 +66,7 @@ class RedeventViewAttendees extends RViewSite
 		$roles            = $this->get('Roles');
 
 		//get menu information
-		$menu		= JSite::getMenu();
+		$menu		= $mainframe->getMenu();
 		$item    	= $menu->getActive();
 		if (!$item) $item = $menu->getDefault();
 
@@ -147,7 +147,7 @@ class RedeventViewAttendees extends RViewSite
 		$roles            = $this->get('Roles');
 
 		//get menu information
-		$menu		= & JSite::getMenu();
+		$menu		= $mainframe->getMenu();
 		$item    	= $menu->getActive();
 		if (!$item) $item = $menu->getDefault();
 

@@ -97,7 +97,7 @@ if (!$shHomePageFlag)
 		$Itemid = isset($Itemid) ? @$Itemid : null;
 		if (!empty($Itemid))
 		{
-			$menu = JSite::getMenu();
+			$menu = $app->getMenu();
 			$menuparams = $menu->getParams($Itemid);
 		}
 		else

@@ -114,7 +114,7 @@ class RedeventViewFrontadmin extends JView
 		$uri        = JFactory::getURI();
 		$modelAttendees = RModel::getAutoInstance('FrontadminMembers');
 
-		$menu = JSite::getMenu();
+		$menu = $mainframe->getMenu();
 		$item = $menu->getActive();
 
 		// Add css file
