@@ -196,9 +196,13 @@ $search = $this->state->get('filter.search');
 					<?php if (!$this->event): ?>
 						<td>
 							<?php
-							if (  JTable::isCheckedOut($this->user->get ('id'), $row->event_checked_out ) ) {
+							$table = RTable::getAdminInstance('Event');
+							if ($table->isCheckedOut($this->user->get ('id'), $row->event_checked_out))
+							{
 								echo $row->event_title;
-							} else {
+							}
+							else
+							{
 								?>
 								<a href="<?php echo $eventlink; ?>" title="<?php echo JText::_('COM_REDEVENT_EDIT_EVENT' ); ?>">
 									<?php echo $row->event_title; ?></a>
@@ -210,7 +214,8 @@ $search = $this->state->get('filter.search');
 
 					<td>
 						<?php
-						if (JTable::isCheckedOut($this->user->get('id'), $row->venue_checked_out))
+						$table = RTable::getAdminInstance('Venue');
+						if ($table->isCheckedOut($this->user->get ('id'), $row->event_checked_out))
 						{
 							echo $row->venue;
 						}
