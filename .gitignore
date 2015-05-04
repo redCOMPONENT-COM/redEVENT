@@ -5,3 +5,8 @@ build/build.properties
 tests/unit/phpunit.xml
 
 fof
+
+# Composer
+composer.lock
+/vendor
+vendor
