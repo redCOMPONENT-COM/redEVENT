@@ -134,6 +134,7 @@
 
 			// Set top position
 			$('#timeline-session-information').css('top', topPos + 'px');
+			$('#timeline-session-information').css('height', 'auto');
 
 			targetVenueFake.slideToggle('slow');
 
