@@ -25,7 +25,7 @@ fwrite(STDOUT, "\033[32;1mInitializing PHP_CodeSniffer checks.\033[0m\n");
 
 // Files
 $files = array(
-	REPO_BASE . '/component',
+	REPO_BASE . '/component/admin/controllers',
 //	REPO_BASE . '/plugins'
 );
 
