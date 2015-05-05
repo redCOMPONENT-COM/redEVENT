@@ -1972,7 +1972,7 @@ class RedeventTags
 				$this->absoluteUrls(RedeventHelperRoute::getSignupRoute('webform',
 					$this->getEvent()->getData()->slug,
 					$this->getEvent()->getData()->xslug)),
-				JHTML::_('image', $iconspath . $elsettings->get('signup_webform_img'),
+				JHTML::_('image', $iconspath . $elsettings->get('signup_webform_img', 'form_icon.gif'),
 					JText::_($elsettings->get('signup_webform_text'))))
 			. '</span> ';
 		return $text;
@@ -1995,7 +1995,7 @@ class RedeventTags
 		$text = '<span class="vlink email">'
 			. JHTML::_('link',
 				$this->absoluteUrls(RedeventHelperRoute::getSignupRoute('email', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)),
-				JHTML::_('image', $iconspath . $elsettings->get('signup_email_img'),
+				JHTML::_('image', $iconspath . $elsettings->get('signup_email_img', 'email_icon.gif'),
 					JText::_($elsettings->get('signup_email_text')),
 					'width="24px" height="24px"'))
 			. '</span> ';
@@ -2019,7 +2019,7 @@ class RedeventTags
 		$text = '<span class="vlink formaloffer">'
 			. JHTML::_('link',
 				$this->absoluteUrls(RedeventHelperRoute::getSignupRoute('formaloffer', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)),
-				JHTML::_('image', $iconspath . $elsettings->get('signup_formal_offer_img'),
+				JHTML::_('image', $iconspath . $elsettings->get('signup_formal_offer_img', 'formal_icon.gif'),
 					JText::_($elsettings->get('signup_formal_offer_text')),
 					'width="24px" height="24px"'))
 			. '</span> ';
@@ -2051,7 +2051,7 @@ class RedeventTags
 		$text = '<span class="vlink external">'
 			. JHTML::_('link',
 				$link,
-				JHTML::_('image', $iconspath . $elsettings->get('signup_external_img'),
+				JHTML::_('image', $iconspath . $elsettings->get('signup_external_img', 'external_icon.gif'),
 					$elsettings->get('signup_external_text')),
 				'target="_blank"')
 			. '</span> ';
@@ -2075,7 +2075,7 @@ class RedeventTags
 		$text = '<span class="vlink phone">'
 			. JHTML::_('link',
 				$this->absoluteUrls(RedeventHelperRoute::getSignupRoute('phone', $this->getEvent()->getData()->slug, $this->getEvent()->getData()->xslug)),
-				JHTML::_('image', $iconspath . $elsettings->get('signup_phone_img'),
+				JHTML::_('image', $iconspath . $elsettings->get('signup_phone_img', 'phone_icon.gif'),
 					JText::_($elsettings->get('signup_phone_text')),
 					'width="24px" height="24px"'))
 			. '</span> ';
