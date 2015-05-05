@@ -56,6 +56,13 @@ class RedeventViewUpcomingvenueevents extends RViewSite
 		$model_venueevents = RModel::getFrontInstance('Venueevents');
 		$venue = $model_venueevents->getVenue();
 
+		if (!$venue)
+		{
+			echo JText::_('COM_REDEVENT_ACCESS_NOT_ALLOWED');
+
+			return;
+		}
+
 		//add css file
 		if (!$params->get('custom_css'))
 		{

@@ -170,13 +170,17 @@ class RedeventModelVenueevents extends RedeventModelBaseeventlist
 		$query->where('access IN (' . $gids . ')');
 
 		$db->setQuery($query);
-		$_venue = $db->loadObject();
+		$venue = $db->loadObject();
 
-		$helper = new RedeventHelperAttachment;
-		$_venue->attachments = $helper->getAttachments('venue' . $_venue->id, $user->getAuthorisedViewLevels());
+		if ($venue)
+		{
+			$helper = new RedeventHelperAttachment;
+			$venue->attachments = $helper->getAttachments('venue' . $venue->id, $user->getAuthorisedViewLevels());
+		}
 
-		return $_venue;
+		return $venue;
 	}
+
 	/**
 	 * get Sessions associated to events data
 	 *
