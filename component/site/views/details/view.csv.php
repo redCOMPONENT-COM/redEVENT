@@ -61,7 +61,7 @@ class RedeventViewDetails extends RViewSite
 			{
 				$fields[] = $f;
 			}
-			$text .= $this->writecsvrow($fields);
+			$text .= RedeventHelper::writecsvrow($fields);
 
 			foreach ((array) $registers as $r)
 			{
@@ -74,7 +74,7 @@ class RedeventViewDetails extends RViewSite
 					}
 					$data[] = $val;
 				}
-				$text .= $this->writecsvrow($data);
+				$text .= RedeventHelper::writecsvrow($data);
 			}
 		}
 		else
@@ -93,21 +93,5 @@ class RedeventViewDetails extends RViewSite
 		header('Content-Disposition: attachment; filename="' . $title . '"');
 		header('Pragma: no-cache');
 		echo $text;
-	}
-
-	function writecsvrow($fields, $delimiter = ',', $enclosure = '"')
-	{
-		$delimiter_esc = preg_quote($delimiter, '/');
-		$enclosure_esc = preg_quote($enclosure, '/');
-
-		$output = array();
-		foreach ($fields as $field)
-		{
-			$output[] = preg_match("/(?:${delimiter_esc}|${enclosure_esc}|\s)/", $field) ? (
-				$enclosure . str_replace($enclosure, $enclosure . $enclosure, $field) . $enclosure
-			) : $field;
-		}
-
-		return join($delimiter, $output) . "\n";
 	}
 }

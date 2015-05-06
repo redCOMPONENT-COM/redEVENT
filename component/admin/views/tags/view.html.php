@@ -15,7 +15,6 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventViewTags extends RViewBase
 {
-
 	/**
 	 * Execute and display a template script.
 	 *

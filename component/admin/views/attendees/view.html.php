@@ -74,10 +74,14 @@ class RedeventViewAttendees extends RedeventViewAdmin
 		if ($user->authorise('core.edit', 'com_redevent'))
 		{
 			$firstGroup->addButton(
-				RToolbarBuilder::createStandardButton('emailattendees.emailall', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_ALL', 'send', 'icon-email', false)
+				RToolbarBuilder::createStandardButton(
+					'emailattendees.emailall', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_ALL', 'send', 'icon-email', false
+				)
 			);
 			$firstGroup->addButton(
-				RToolbarBuilder::createStandardButton('emailattendees.email', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_SELECTED', 'send', 'icon-email')
+				RToolbarBuilder::createStandardButton(
+					'emailattendees.email', 'COM_REDEVENT_ATTENDEES_TOOLBAR_EMAIL_SELECTED', 'send', 'icon-email'
+				)
 			);
 
 			$secondGroup->addButton(
@@ -92,7 +96,9 @@ class RedeventViewAttendees extends RedeventViewAdmin
 
 			if ($this->state->get('filter.cancelled') == 1)
 			{
-				$restore = RToolbarBuilder::createStandardButton('attendees.uncancelreg', 'COM_REDEVENT_ATTENDEES_TOOLBAR_RESTORE', '', ' icon-circle-arrow-left');
+				$restore = RToolbarBuilder::createStandardButton(
+					'attendees.uncancelreg', 'COM_REDEVENT_ATTENDEES_TOOLBAR_RESTORE', '', ' icon-circle-arrow-left'
+				);
 				$secondGroup->addButton($restore);
 
 				$delete = RToolbarBuilder::createDeleteButton('attendees.delete');
@@ -150,35 +156,39 @@ class RedeventViewAttendees extends RedeventViewAdmin
 					JHTML::Date($row->confirmdate, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'))
 				)
 			, '', false, 'time', 'time'),
-			0 => array('onwaiting', '', 'COM_REDEVENT_REGISTRATION_CURRENTLY_ATTENDING', 'COM_REDEVENT_REGISTRATION_CLICK_TO_PUT_ON_WAITING_LIST', false, 'user', 'user'),
+			0 => array(
+				'onwaiting', '', 'COM_REDEVENT_REGISTRATION_CURRENTLY_ATTENDING',
+				'COM_REDEVENT_REGISTRATION_CLICK_TO_PUT_ON_WAITING_LIST', false, 'user', 'user'
+			),
 		);
 
 		return JHtml::_('rgrid.state', $states, $row->waitinglist, $i, 'attendees.', $this->canEdit, true);
 	}
 
 	/**
-	 * Prepares the print screen
+	 * Execute and display a template script.
 	 *
-	 * @param $tpl
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @since 0.9
+	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
-	function _displayprint($tpl = null)
+	public function _displayprint($tpl = null)
 	{
 		$elsettings = JComponentHelper::getParams('com_redevent');
-		$document	= JFactory::getDocument();
 		RHelperAsset::load('backend.css');
 
-		$rows      	= & $this->get( 'Data');
-		$event 		= & $this->get( 'Event' );
-		$rf_fields = $this->get( 'RedFormFrontFields' );
-		$form      = $this->get( 'Form' );
+		$rows = $this->get('Data');
+		$event = $this->get('Event');
+		$rf_fields = $this->get('RedFormFrontFields');
+		$form = $this->get('Form');
 
-		$event->dates = RedeventHelper::isValidDate($event->dates) ? strftime($elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime( $event->dates )) : JText::_('COM_REDEVENT_OPEN_DATE');
+		$event->dates = RedeventHelper::isValidDate($event->dates)
+			? strftime($elsettings->get('backend_formatdate', '%d.%m.%Y'), strtotime($event->dates))
+			: JText::_('COM_REDEVENT_OPEN_DATE');
 
-		//assign data to template
-		$this->assignRef('rows'      	, $rows);
-		$this->assignRef('event'		, $event);
+		// Assign data to template
+		$this->assignRef('rows', $rows);
+		$this->assignRef('event', $event);
 		$this->assignRef('rf_fields', $rf_fields);
 		$this->assignRef('form',      $form);
 
@@ -186,13 +196,13 @@ class RedeventViewAttendees extends RedeventViewAdmin
 	}
 
 	/**
-	 * Prepares the print screen
+	 * Execute and display a template script.
 	 *
-	 * @param $tpl
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @since 0.9
+	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
-	function _displaymove($tpl = null)
+	public function _displaymove($tpl = null)
 	{
 		RHelperAsset::load('backend.css');
 
@@ -200,12 +210,12 @@ class RedeventViewAttendees extends RedeventViewAdmin
 
 		$event = $this->get('Event');
 
-		//add toolbar
-		JToolBarHelper::title(JText::_('COM_REDEVENT_REGISTRATIONS' ), 'users');
+		// Add toolbar
+		JToolBarHelper::title(JText::_('COM_REDEVENT_REGISTRATIONS'), 'users');
 		JToolBarHelper::apply('applymove');
 		JToolBarHelper::cancel('cancelmove');
 
-		//assign data to template
+		// Assign data to template
 		$this->assignRef('form_id',  JRequest::getInt('form_id'));
 		$this->assignRef('cid',      $cid);
 		$this->assignRef('session',  $event);

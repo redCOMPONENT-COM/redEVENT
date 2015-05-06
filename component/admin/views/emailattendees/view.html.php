@@ -15,6 +15,13 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventViewEmailattendees extends RedeventViewAdmin
 {
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a Error object.
+	 */
 	public function display($tpl = null)
 	{
 		$this->emails = $this->get('Emails');
@@ -24,7 +31,7 @@ class RedeventViewEmailattendees extends RedeventViewAdmin
 		$this->editor = JFactory::getEditor();
 
 		parent::display($tpl);
-  }
+	}
 
 	/**
 	 * Get the page title

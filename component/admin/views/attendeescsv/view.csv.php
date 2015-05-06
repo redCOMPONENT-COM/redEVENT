@@ -15,11 +15,23 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventViewAttendeescsv extends RViewCsv
 {
+	/**
+	 * Get the columns for the csv file.
+	 *
+	 * @return  array  An associative array of column names as key and the title as value.
+	 */
 	protected function getColumns()
 	{
 		return false;
 	}
 
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a Error object.
+	 */
 	public function display($tpl = null)
 	{
 		$filters = JFactory::getApplication()->input->get('jform', array(), 'array');
@@ -55,15 +67,16 @@ class RedeventViewAttendeescsv extends RViewCsv
 			JText::_('COM_REDEVENT_PAYMENT'),
 		);
 		$cols = array_merge($cols, $stdcols);
-		$text .= $this->writecsvrow($cols);
+		$text .= RedeventHelper::writecsvrow($cols);
 
-
-		$attendees = $model->getRegisters($filters['form'],
+		$attendees = $model->getRegisters(
+			$filters['form'],
 			$events,
 			$filters['category'],
 			$filters['venue'],
 			$filters['state'],
-			$filters['attending']);
+			$filters['attending']
+		);
 
 		if ($attendees)
 		{
@@ -90,10 +103,11 @@ class RedeventViewAttendeescsv extends RViewCsv
 					$r->waitinglist,
 					$r->price,
 					$r->pricegroup,
-					($r->paid ? JText::_('COM_REDEVENT_REGISTRATION_PAID') . ' / ' . $r->status : JText::_('COM_REDEVENT_REGISTRATION_NOT_PAID') . ' / ' . $r->status),
+					($r->paid ? JText::_('COM_REDEVENT_REGISTRATION_PAID')
+						. ' / ' . $r->status : JText::_('COM_REDEVENT_REGISTRATION_NOT_PAID') . ' / ' . $r->status),
 				);
 				$data = array_merge($data, $svals);
-				$text .= $this->writecsvrow($data);
+				$text .= RedeventHelper::writecsvrow($data);
 			}
 		}
 
@@ -103,22 +117,5 @@ class RedeventViewAttendeescsv extends RViewCsv
 		$title = JFile::makeSafe('attendees_' . $date . '.csv');
 		header('Content-Disposition: attachment; filename="' . $title . '"');
 		echo $text;
-	}
-
-	private function writecsvrow($fields, $delimiter = ',', $enclosure = '"')
-	{
-		$delimiter_esc = preg_quote($delimiter, '/');
-		$enclosure_esc = preg_quote($enclosure, '/');
-
-		$output = array();
-
-		foreach ($fields as $field)
-		{
-			$output[] = preg_match("/(?:${delimiter_esc}|${enclosure_esc}|\s)/", $field) ? (
-				$enclosure . str_replace($enclosure, $enclosure . $enclosure, $field) . $enclosure
-			) : $field;
-		}
-
-		return join($delimiter, $output) . "\n";
 	}
 }

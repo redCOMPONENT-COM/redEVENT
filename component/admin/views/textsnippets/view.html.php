@@ -83,7 +83,6 @@ class RedeventViewTextsnippets extends RedeventViewAdmin
 			$export = RToolbarBuilder::createCsvButton();
 			$secondGroup->addButton($export);
 
-
 			$import = RToolbarBuilder::createStandardButton('textsnippets.import', JText::_('COM_REDEVENT_BUTTON_IMPORT'), '', 'icon-table', false);
 			$secondGroup->addButton($import);
 		}

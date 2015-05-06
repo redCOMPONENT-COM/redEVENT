@@ -10,7 +10,6 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * View class for Custom fields list
  *
-/**
  * @package  Redevent.admin
  * @since    2.5
  */
@@ -104,12 +103,6 @@ class RedeventViewCustomfields extends RedeventViewAdmin
 		{
 			$edit = RToolbarBuilder::createEditButton('customfield.edit');
 			$secondGroup->addButton($edit);
-
-//			$export = RToolbarBuilder::createStandardButton('customfield.export', JText::_('COM_REDEVENT_BUTTON_EXPORT'), '', 'icon-table', false);
-//			$secondGroup->addButton($export);
-//
-//			$import = RToolbarBuilder::createStandardButton('customfield.import', JText::_('COM_REDEVENT_BUTTON_IMPORT'), '', 'icon-table', false);
-//			$secondGroup->addButton($import);
 		}
 
 		if ($user->authorise('core.delete', 'com_redevent'))
@@ -124,27 +117,25 @@ class RedeventViewCustomfields extends RedeventViewAdmin
 		return $toolbar;
 	}
 
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a Error object.
+	 */
 	private function _displayImport($tpl = null)
 	{
 		$document	= JFactory::getDocument();
 		$document->setTitle(JText::_('COM_REDEVENT_PAGETITLE_CUSTOMFIELDS_IMPORT'));
-		//add css to document
+
+		// Add css to document
 		RHelperAsset::load('backend.css');
 
-		//Create Submenu
-		ELAdmin::setMenu();
-
-		JHTML::_('behavior.tooltip');
-
-		//create the toolbar
-		JToolBarHelper::title( JText::_( 'COM_REDEVENT_PAGETITLE_CUSTOMFIELDS_IMPORT' ), 'events' );
+		// Create the toolbar
+		JToolBarHelper::title(JText::_('COM_REDEVENT_PAGETITLE_CUSTOMFIELDS_IMPORT'), 'events');
 
 		JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_redevent&view=customfields');
-
-		$lists = array();
-
-		//assign data to template
-		$this->assignRef('lists'      	, $lists);
 
 		parent::display($tpl);
 	}

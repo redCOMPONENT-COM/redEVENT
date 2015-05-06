@@ -15,6 +15,11 @@ defined('_JEXEC') or die('Restricted access');
  */
 class RedeventViewEventscsv extends RViewCsv
 {
+	/**
+	 * Get the columns for the csv file.
+	 *
+	 * @return  array  An associative array of column names as key and the title as value.
+	 */
 	protected function getColumns()
 	{
 		return false;

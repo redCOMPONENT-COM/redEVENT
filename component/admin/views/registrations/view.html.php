@@ -72,7 +72,9 @@ class RedeventViewRegistrations extends RedeventViewAdmin
 		{
 			if ($this->state->get('filter.cancelled') == 1)
 			{
-				$restore = RToolbarBuilder::createStandardButton('registrations.uncancelreg', 'COM_REDEVENT_ATTENDEES_TOOLBAR_RESTORE', '', ' icon-circle-arrow-left');
+				$restore = RToolbarBuilder::createStandardButton(
+					'registrations.uncancelreg', 'COM_REDEVENT_ATTENDEES_TOOLBAR_RESTORE', '', ' icon-circle-arrow-left'
+				);
 				$firstGroup->addButton($restore);
 
 				$delete = RToolbarBuilder::createDeleteButton('registrations.delete');
@@ -130,7 +132,9 @@ class RedeventViewRegistrations extends RedeventViewAdmin
 					JHTML::Date($row->confirmdate, JText::_('COM_REDEVENT_JDATE_FORMAT_DATETIME'))
 				)
 			, '', false, 'time', 'time'),
-			0 => array('onwaiting', '', 'COM_REDEVENT_REGISTRATION_CURRENTLY_ATTENDING', 'COM_REDEVENT_REGISTRATION_CLICK_TO_PUT_ON_WAITING_LIST', false, 'user', 'user'),
+			0 => array('onwaiting', '', 'COM_REDEVENT_REGISTRATION_CURRENTLY_ATTENDING',
+				'COM_REDEVENT_REGISTRATION_CLICK_TO_PUT_ON_WAITING_LIST', false, 'user', 'user'
+			),
 		);
 
 		return JHtml::_('rgrid.state', $states, $row->waitinglist, $i, 'registrations.', $this->canEdit, true);

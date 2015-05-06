@@ -29,7 +29,6 @@ class RedeventViewTools extends RedeventViewAdmin
 		return parent::display($tpl);
 	}
 
-
 	/**
 	 * Get the view title.
 	 *
